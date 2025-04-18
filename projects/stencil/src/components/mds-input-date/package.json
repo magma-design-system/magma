@@ -24,11 +24,12 @@
     "test": "stencil test --spec --e2e"
   },
   "dependencies": {
-    "@maggioli-design-system/mds-calendar": "1.0.0",
-    "@maggioli-design-system/mds-dropdown": "5.8.0",
+    "@maggioli-design-system/mds-button": "6.7.0",
+    "@maggioli-design-system/mds-calendar": "1.1.0",
+    "@maggioli-design-system/mds-dropdown": "5.8.1",
     "@maggioli-design-system/styles": "15.9.1",
     "@stencil/core": "4.27.2",
-    "luxon": "^3.5.0"
+    "luxon": "3.6.1"
   },
   "license": "MIT",
   "author": {

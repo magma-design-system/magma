@@ -1,14 +1,15 @@
 const buttonVariantDictionary = [
+  'ai',
+  'apple',
   'dark',
   'error',
+  'google',
   'info',
   'light',
   'primary',
   'secondary',
   'success',
   'warning',
-  'google',
-  'apple',
 ]
 
 const buttonToneVariantDictionary = [

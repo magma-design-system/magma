@@ -9,26 +9,31 @@
 }
 
 :host([variant="error"]) {
-  --mds-progress-color: theme('colors.status-error-06');
+  --mds-progress-color: theme('colors.status-error-05');
   --mds-progress-background: theme('colors.status-error-09');
 }
 
 :host([variant="warning"]) {
-  --mds-progress-color: theme('colors.status-warning-06');
+  --mds-progress-color: theme('colors.status-warning-05');
   --mds-progress-background: theme('colors.status-warning-09');
 }
 
 :host([variant="success"]) {
-  --mds-progress-color: theme('colors.status-success-06');
+  --mds-progress-color: theme('colors.status-success-05');
   --mds-progress-background: theme('colors.status-success-09');
 }
 
 :host([variant="info"]) {
-  --mds-progress-color: theme('colors.status-info-06');
+  --mds-progress-color: theme('colors.status-info-05');
   --mds-progress-background: theme('colors.status-info-09');
 }
 
 :host([variant="primary"]) {
   --mds-progress-color: theme('colors.variant-primary-03');
   --mds-progress-background: theme('colors.tone-neutral-08');
+}
+
+:host([variant="ai"]) {
+  --mds-progress-color: theme('colors.variant-ai-05');
+  --mds-progress-background: theme('colors.variant-ai-09');
 }

@@ -10,7 +10,8 @@ import { TypographyInfoType, TypographyInputType, TypographyReadingVariants, Typ
 import { MdsAccordionItemEventDetail } from "./components/mds-accordion-item/meta/event-detail";
 import { MdsAccordionTimerEventDetail } from "./components/mds-accordion-timer/meta/event-detail";
 import { MdsAccordionTimerItemEventDetail } from "./components/mds-accordion-timer-item/meta/event-detail";
-import { ChipVariantType, LabelVariantType, ThemeFullVariantAvatarType, ThemeFullVariantType, ThemeLuminanceVariantType, ThemeStatusVariantType, ThemeVariantType, ToneMinimalVariantType, ToneSimpleVariantType, ToneVariantType } from "./type/variant";
+import { ChipVariantType, LabelVariantType, ThemeFullVariantAvatarType, ThemeFullVariantType, ThemeStatusVariantType, ThemeVariantType, ToneMinimalVariantType, ToneSimpleVariantType, ToneVariantType } from "./type/variant";
+import { AvatarSizeType } from "./components/mds-avatar-stack/meta/types";
 import { BenchmarkBarTypographyType } from "./components/mds-benchmark-bar/meta/types";
 import { BibliographyFormatType, BibliographyRelationshipType } from "./components/mds-bibliography/meta/types";
 import { MdsBreadcrumbEventDetail } from "./components/mds-breadcrumb/meta/event-detail";
@@ -35,9 +36,8 @@ import { LoadingType } from "./type/loading";
 import { MdsImgEventDetail } from "./components/mds-img/meta/event-detail";
 import { AutocompleteType } from "./type/autocomplete";
 import { InputControlsIconType, InputControlsLayoutType, InputTextType, MdsInputEventDetail } from "./type/input";
+import { MdsValidationErrors, MdsValidatorFn } from "./components/mds-input/meta/validators";
 import { EventDate } from "./components/mds-input-date-range/mds-input-date-range";
-import { InputFieldType } from "./components/mds-input-field/meta/types";
-import { MdsValidationErrors, MdsValidatorFn } from "./components/mds-input-field/meta/validators";
 import { InputSwitchSizeType, InputSwitchType } from "./components/mds-input-switch/meta/types";
 import { MdsInputSwitchEventDetail } from "./components/mds-input-switch/meta/event-detail";
 import { InputTipPositionType } from "./components/mds-input-tip/meta/types";
@@ -48,6 +48,7 @@ import { KeyboardKeyName } from "./type/keyboard";
 import { ModalAnimationStateType, ModalAnimationStyleType, ModalOverflowType, ModalPositionType } from "./components/mds-modal/meta/types";
 import { StrategyType } from "./components/mds-notification/meta/types";
 import { MdsPaginatorEventDetail } from "./components/mds-paginator/meta/event-detail";
+import { PolicyAiVariant } from "./components/mds-policy-ai/meta/types";
 import { AnimationModeType } from "./components/mds-pref-animation/meta/types";
 import { MdsPrefChangeEventDetail } from "./event-detail/preference";
 import { ConsumptionModeType } from "./type/preference";
@@ -79,7 +80,8 @@ export { TypographyInfoType, TypographyInputType, TypographyReadingVariants, Typ
 export { MdsAccordionItemEventDetail } from "./components/mds-accordion-item/meta/event-detail";
 export { MdsAccordionTimerEventDetail } from "./components/mds-accordion-timer/meta/event-detail";
 export { MdsAccordionTimerItemEventDetail } from "./components/mds-accordion-timer-item/meta/event-detail";
-export { ChipVariantType, LabelVariantType, ThemeFullVariantAvatarType, ThemeFullVariantType, ThemeLuminanceVariantType, ThemeStatusVariantType, ThemeVariantType, ToneMinimalVariantType, ToneSimpleVariantType, ToneVariantType } from "./type/variant";
+export { ChipVariantType, LabelVariantType, ThemeFullVariantAvatarType, ThemeFullVariantType, ThemeStatusVariantType, ThemeVariantType, ToneMinimalVariantType, ToneSimpleVariantType, ToneVariantType } from "./type/variant";
+export { AvatarSizeType } from "./components/mds-avatar-stack/meta/types";
 export { BenchmarkBarTypographyType } from "./components/mds-benchmark-bar/meta/types";
 export { BibliographyFormatType, BibliographyRelationshipType } from "./components/mds-bibliography/meta/types";
 export { MdsBreadcrumbEventDetail } from "./components/mds-breadcrumb/meta/event-detail";
@@ -104,9 +106,8 @@ export { LoadingType } from "./type/loading";
 export { MdsImgEventDetail } from "./components/mds-img/meta/event-detail";
 export { AutocompleteType } from "./type/autocomplete";
 export { InputControlsIconType, InputControlsLayoutType, InputTextType, MdsInputEventDetail } from "./type/input";
+export { MdsValidationErrors, MdsValidatorFn } from "./components/mds-input/meta/validators";
 export { EventDate } from "./components/mds-input-date-range/mds-input-date-range";
-export { InputFieldType } from "./components/mds-input-field/meta/types";
-export { MdsValidationErrors, MdsValidatorFn } from "./components/mds-input-field/meta/validators";
 export { InputSwitchSizeType, InputSwitchType } from "./components/mds-input-switch/meta/types";
 export { MdsInputSwitchEventDetail } from "./components/mds-input-switch/meta/event-detail";
 export { InputTipPositionType } from "./components/mds-input-tip/meta/types";
@@ -117,6 +118,7 @@ export { KeyboardKeyName } from "./type/keyboard";
 export { ModalAnimationStateType, ModalAnimationStyleType, ModalOverflowType, ModalPositionType } from "./components/mds-modal/meta/types";
 export { StrategyType } from "./components/mds-notification/meta/types";
 export { MdsPaginatorEventDetail } from "./components/mds-paginator/meta/event-detail";
+export { PolicyAiVariant } from "./components/mds-policy-ai/meta/types";
 export { AnimationModeType } from "./components/mds-pref-animation/meta/types";
 export { MdsPrefChangeEventDetail } from "./event-detail/preference";
 export { ConsumptionModeType } from "./type/preference";
@@ -208,10 +210,46 @@ export namespace Components {
     }
     interface MdsAvatar {
         /**
+          * The user's inizials displayed if there's no image available, initials will override tone and variant senttings to keep user recognizable from others
+         */
+        "count"?: number;
+        /**
           * Specifies the path to the icon
           * @see https://magma.maggiolicloud.it/storybook/?path=/story/design-icon--default
          */
         "icon"?: string|undefined;
+        /**
+          * The user's inizials displayed if there's no image available, initials will override tone and variant senttings to keep user recognizable from others
+         */
+        "initials"?: string;
+        /**
+          * Specifies the path to the image
+         */
+        "src"?: string;
+        /**
+          * Specifies the color tone of the component
+         */
+        "tone"?: ToneMinimalVariantType;
+        /**
+          * Specifies the color variant of the component
+         */
+        "variant"?: ThemeFullVariantAvatarType;
+    }
+    interface MdsAvatarStack {
+        /**
+          * Specifies the size of the slotted avatars elements
+         */
+        "size"?: AvatarSizeType;
+        /**
+          * Specifies the size of the slotted avatars elements
+         */
+        "total"?: number;
+    }
+    interface MdsAvatarStackItem {
+        /**
+          * Specifies number of total avatars, the total number will be subtracted by the slotted ones
+         */
+        "count"?: number;
         /**
           * The user's inizials displayed if there's no image available, initials will override tone and variant senttings to keep user recognizable from others
          */
@@ -248,6 +286,10 @@ export namespace Components {
         "variant"?: ThemeFullVariantType;
     }
     interface MdsBanner {
+        /**
+          * Shows a decoration around the banner icon
+         */
+        "cockade"?: boolean;
         /**
           * Shows the cross icon to perform cancel/delete action on element
          */
@@ -398,21 +440,65 @@ export namespace Components {
         "variant"?: ButtonVariantType;
     }
     interface MdsCalendar {
+        /**
+          * Specifies the end date of the selection
+          * @description It's in ISO format (YYYY-MM-DD).
+          * @example '2023-10-01'
+         */
         "endDate": string | null;
+        /**
+          * Specifies the minimum date of the selection
+          * @description It's in ISO format (YYYY-MM-DD).
+          * @example '2023-10-01'
+         */
         "max": string | null;
+        /**
+          * Specifies the minimum date of the selection
+          * @description It's in ISO format (YYYY-MM-DD).
+          * @example '2023-10-01'
+         */
         "min": string | null;
         "rangePicker": boolean;
+        /**
+          * Specifies the start date of the selection
+          * @description It's in ISO format (YYYY-MM-DD).
+          * @example '2023-10-01'
+         */
         "startDate": string | null;
         "updateCurrentDate": (date: string) => Promise<void>;
         "updateLang": () => Promise<void>;
     }
     interface MdsCalendarCell {
+        /**
+          * Specifies the date of the cell
+          * @description It's in ISO format (YYYY-MM-DD).
+         */
         "date"?: string;
+        /**
+          * Specifies if the cell is disabled
+         */
         "disabled"?: boolean | undefined;
+        /**
+          * Specifies if the current month or a weekend
+         */
         "month"?: CalendarCellType;
+        /**
+          * Specifies the selection orientation of the cell
+          * @description It can be 'horizontal' or 'vertical', but currently only 'horizontal' is supported
+         */
         "orientation"?: CalendarCellSelectionOrieintationType;
+        /**
+          * Specifies if the selection is a preview or the final selection
+         */
         "preview"?: boolean;
+        /**
+          * Specifies the point of selection of the cell
+          * @description It can be `end`, `middle`, `none`, `single`, `start`
+         */
         "selection"?: CalendarCellSelectionPositionType;
+        /**
+          * Specifies if the cell is today
+         */
         "today"?: boolean | undefined;
     }
     /**
@@ -825,6 +911,7 @@ export namespace Components {
         "width"?: string;
     }
     interface MdsInput {
+        "addValidator": (validator: MdsValidatorFn) => Promise<void>;
         /**
           * Specifies whether the element should have autocomplete enabled
          */
@@ -861,10 +948,17 @@ export namespace Components {
           * If true, the element is displayed as disabled
          */
         "disabled"?: boolean;
+        "getErrors": () => Promise<MdsValidationErrors | null>;
         /**
           * Returns the native `<input>` element used under the hood.
          */
         "getInputElement": () => Promise<HTMLInputElement | HTMLTextAreaElement>;
+        /**
+          * Returns if validator is presen
+          * @param validator validator to check if it is present
+          * @returns if a validator is present or not, if no validator given, return if there are at least one validator
+         */
+        "hasValidator": (validator?: MdsValidatorFn) => Promise<boolean>;
         /**
           * An icon displayed at the right of the input
          */
@@ -896,11 +990,12 @@ export namespace Components {
         /**
           * Specifies a short hint that describes the expected value of the element
          */
-        "placeholder": string;
+        "placeholder"?: string;
         /**
           * Specifies that the element is read-only
          */
         "readonly"?: boolean;
+        "removeValidator": (validator: MdsValidatorFn) => Promise<void>;
         /**
           * Specifies that the element must be filled out before submitting the form
          */
@@ -929,7 +1024,7 @@ export namespace Components {
         /**
           * Specifies the value of the input element
          */
-        "value"?: string;
+        "value": string;
         /**
           * Sets the variant of the input field
          */
@@ -952,6 +1047,8 @@ export namespace Components {
           * @description It's in ISO format (YYYY-MM-DD).
          */
         "min": string | null;
+        "setValue": (value: string) => Promise<void>;
+        "updateLang": () => Promise<void>;
         /**
           * Specifies the value of the input
           * @description It's in ISO format (YYYY-MM-DD).
@@ -985,6 +1082,7 @@ export namespace Components {
           * @description It's in ISO format (YYYY-MM-DD).
          */
         "startDate": string;
+        "updateLang": () => Promise<void>;
     }
     interface MdsInputDateRangePreselection {
         /**
@@ -1001,109 +1099,14 @@ export namespace Components {
         "start": string;
     }
     interface MdsInputField {
-        "addValidator": (validator: MdsValidatorFn) => Promise<void>;
-        /**
-          * Specifies whether the element should have autocomplete enabled
-         */
-        "autocomplete"?: AutocompleteType;
-        /**
-          * Specifies that the element should automatically get focus when the page loads
-         */
-        "autofocus": boolean;
-        /**
-          * Specifies if the spinner icon is shown, replacing the icon if present
-         */
-        "await": boolean;
-        /**
-          * Specifies the icon type of the counter button when the input type is set to `number`
-         */
-        "controlsIcon"?: InputControlsIconType;
-        /**
-          * Specifies the layout of the counter button when the input type is set to `number`
-         */
-        "controlsLayout"?: InputControlsLayoutType;
-        /**
-          * If true, the element is displayed as disabled
-         */
-        "disabled"?: boolean;
-        "getErrors": () => Promise<MdsValidationErrors | null>;
-        /**
-          * Returns the native `<input>` element used under the hood.
-         */
-        "getInputElement": () => Promise<HTMLInputElement | HTMLTextAreaElement | null | undefined>;
-        /**
-          * An icon displayed at the right of the input
-         */
-        "icon"?: string;
         /**
           * Display a text on the top of the input text field
          */
         "label"?: string;
         /**
-          * Specifies the maximum value use it with input type="number" or type="date" Example: max="180", max="2046-12-04"
-         */
-        "max"?: string;
-        /**
-          * Specifies the maximum number of characters allowed in an element use it with input type="number"
-         */
-        "maxlength"?: number;
-        /**
           * Display a message at the bottom of the input text field
          */
         "message"?: string;
-        /**
-          * Specifies the minimum value use it with input type="number" or type="date" Example: min="-3", min="1988-04-15"
-         */
-        "min"?: string;
-        /**
-          * Specifies the minimum number of characters allowed in an element use it with input type="number"
-         */
-        "minlength"?: number;
-        /**
-          * Is needed to reference the form data after the form is submitted
-         */
-        "name"?: string;
-        /**
-          * Specifies a regular expression that element\'s value is checked against
-         */
-        "pattern"?: string;
-        /**
-          * Specifies a short hint that describes the expected value of the element
-         */
-        "placeholder": string;
-        /**
-          * Specifies that the element is read-only
-         */
-        "readonly"?: boolean;
-        "removeValidator": (validator: MdsValidatorFn) => Promise<void>;
-        /**
-          * Specifies that the element must be filled out before submitting the form
-         */
-        "required"?: boolean;
-        /**
-          * Sets focus on the specified `my-input`. Use this method instead of the global `input.focus()`.
-         */
-        "setFocus": () => Promise<void>;
-        /**
-          * Specifies the interval between legal numbers in an input field
-         */
-        "step"?: string;
-        /**
-          * Display the variant of a message at the bottom of the input text field
-         */
-        "tip"?: string;
-        /**
-          * Specifies the type of input element
-         */
-        "type": InputFieldType;
-        /**
-          * Specifies the typography of input element
-         */
-        "typography": TypographyInputType;
-        /**
-          * Specifies the value of the input element
-         */
-        "value": string;
         /**
           * Display the variant of a message at the bottom of the input text field
          */
@@ -1453,6 +1456,25 @@ export namespace Components {
           * Specifies if the item is selected or not, is handled from the parent paginator
          */
         "selected"?: boolean;
+    }
+    interface MdsPolicyAi {
+        /**
+          * Sets the description to custom component long text
+         */
+        "description"?: string;
+        /**
+          * Sets the headline to custom component text
+         */
+        "headline"?: string;
+        /**
+          * Sets the pointing URL of the component
+         */
+        "href"?: string;
+        "updateLang": () => Promise<void>;
+        /**
+          * Sets the variant type of the component
+         */
+        "variant"?: PolicyAiVariant;
     }
     /**
      * @name Pref
@@ -1864,7 +1886,7 @@ export namespace Components {
         /**
           * Sets the theme variant colours
          */
-        "variant"?: ThemeLuminanceVariantType;
+        "variant"?: ThemeVariantType;
         /**
           * Specifies if toast is visible at the bottom or not
          */
@@ -1985,7 +2007,11 @@ export namespace Components {
         /**
           * Specifies if domain is visible on header
          */
-        "domain": boolean;
+        "icon"?: string;
+        /**
+          * Specifies if the window has a label
+         */
+        "label"?: string;
         /**
           * Specifies whether a browser should load an iframe immediately or to defer loading of images until some conditions are met.
          */
@@ -2123,10 +2149,6 @@ export interface MdsInputDateCustomEvent<T> extends CustomEvent<T> {
 export interface MdsInputDateRangeCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLMdsInputDateRangeElement;
-}
-export interface MdsInputFieldCustomEvent<T> extends CustomEvent<T> {
-    detail: T;
-    target: HTMLMdsInputFieldElement;
 }
 export interface MdsInputRangeCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -2318,6 +2340,18 @@ declare global {
         prototype: HTMLMdsAvatarElement;
         new (): HTMLMdsAvatarElement;
     };
+    interface HTMLMdsAvatarStackElement extends Components.MdsAvatarStack, HTMLStencilElement {
+    }
+    var HTMLMdsAvatarStackElement: {
+        prototype: HTMLMdsAvatarStackElement;
+        new (): HTMLMdsAvatarStackElement;
+    };
+    interface HTMLMdsAvatarStackItemElement extends Components.MdsAvatarStackItem, HTMLStencilElement {
+    }
+    var HTMLMdsAvatarStackItemElement: {
+        prototype: HTMLMdsAvatarStackItemElement;
+        new (): HTMLMdsAvatarStackItemElement;
+    };
     interface HTMLMdsBadgeElement extends Components.MdsBadge, HTMLStencilElement {
     }
     var HTMLMdsBadgeElement: {
@@ -2394,8 +2428,8 @@ declare global {
         new (): HTMLMdsButtonElement;
     };
     interface HTMLMdsCalendarElementEventMap {
-        "datesEmitter": {startDate: string, endDate?: string};
-        "checkPreselectionsEmitter": void;
+        "mdsCalendarChange": {startDate: string, endDate?: string};
+        "mdsCalendarPreselect": void;
     }
     interface HTMLMdsCalendarElement extends Components.MdsCalendar, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsCalendarElementEventMap>(type: K, listener: (this: HTMLMdsCalendarElement, ev: MdsCalendarCustomEvent<HTMLMdsCalendarElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -2668,6 +2702,7 @@ declare global {
         "mdsInputKeydown": KeyboardEvent;
         "mdsInputBlur": void;
         "mdsInputFocus": void;
+        "mdsInputValidation": boolean;
     }
     interface HTMLMdsInputElement extends Components.MdsInput, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsInputElementEventMap>(type: K, listener: (this: HTMLMdsInputElement, ev: MdsInputCustomEvent<HTMLMdsInputElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -2684,7 +2719,7 @@ declare global {
         new (): HTMLMdsInputElement;
     };
     interface HTMLMdsInputDateElementEventMap {
-        "valueChange": string;
+        "mdsInputDateSelect": string;
     }
     interface HTMLMdsInputDateElement extends Components.MdsInputDate, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsInputDateElementEventMap>(type: K, listener: (this: HTMLMdsInputDateElement, ev: MdsInputDateCustomEvent<HTMLMdsInputDateElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -2701,7 +2736,7 @@ declare global {
         new (): HTMLMdsInputDateElement;
     };
     interface HTMLMdsInputDateRangeElementEventMap {
-        "dateRangeSelected": { startDate: string, endDate: string };
+        "mdsInputDateRangeSelect": { startDate: string, endDate: string };
     }
     interface HTMLMdsInputDateRangeElement extends Components.MdsInputDateRange, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsInputDateRangeElementEventMap>(type: K, listener: (this: HTMLMdsInputDateRangeElement, ev: MdsInputDateRangeCustomEvent<HTMLMdsInputDateRangeElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -2723,21 +2758,7 @@ declare global {
         prototype: HTMLMdsInputDateRangePreselectionElement;
         new (): HTMLMdsInputDateRangePreselectionElement;
     };
-    interface HTMLMdsInputFieldElementEventMap {
-        "mdsInputFieldChange": MdsInputEventDetail;
-        "mdsInputFieldKeydown": KeyboardEvent;
-        "mdsInputFieldBlur": void;
-        "mdsInputFieldFocus": void;
-    }
     interface HTMLMdsInputFieldElement extends Components.MdsInputField, HTMLStencilElement {
-        addEventListener<K extends keyof HTMLMdsInputFieldElementEventMap>(type: K, listener: (this: HTMLMdsInputFieldElement, ev: MdsInputFieldCustomEvent<HTMLMdsInputFieldElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLMdsInputFieldElementEventMap>(type: K, listener: (this: HTMLMdsInputFieldElement, ev: MdsInputFieldCustomEvent<HTMLMdsInputFieldElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLMdsInputFieldElement: {
         prototype: HTMLMdsInputFieldElement;
@@ -2945,6 +2966,12 @@ declare global {
     var HTMLMdsPaginatorItemElement: {
         prototype: HTMLMdsPaginatorItemElement;
         new (): HTMLMdsPaginatorItemElement;
+    };
+    interface HTMLMdsPolicyAiElement extends Components.MdsPolicyAi, HTMLStencilElement {
+    }
+    var HTMLMdsPolicyAiElement: {
+        prototype: HTMLMdsPolicyAiElement;
+        new (): HTMLMdsPolicyAiElement;
     };
     /**
      * @name Pref
@@ -3425,6 +3452,8 @@ declare global {
         "mds-accordion-timer-item": HTMLMdsAccordionTimerItemElement;
         "mds-author": HTMLMdsAuthorElement;
         "mds-avatar": HTMLMdsAvatarElement;
+        "mds-avatar-stack": HTMLMdsAvatarStackElement;
+        "mds-avatar-stack-item": HTMLMdsAvatarStackItemElement;
         "mds-badge": HTMLMdsBadgeElement;
         "mds-banner": HTMLMdsBannerElement;
         "mds-benchmark-bar": HTMLMdsBenchmarkBarElement;
@@ -3478,6 +3507,7 @@ declare global {
         "mds-notification": HTMLMdsNotificationElement;
         "mds-paginator": HTMLMdsPaginatorElement;
         "mds-paginator-item": HTMLMdsPaginatorItemElement;
+        "mds-policy-ai": HTMLMdsPolicyAiElement;
         "mds-pref": HTMLMdsPrefElement;
         "mds-pref-animation": HTMLMdsPrefAnimationElement;
         "mds-pref-consumption": HTMLMdsPrefConsumptionElement;
@@ -3623,10 +3653,46 @@ declare namespace LocalJSX {
     }
     interface MdsAvatar {
         /**
+          * The user's inizials displayed if there's no image available, initials will override tone and variant senttings to keep user recognizable from others
+         */
+        "count"?: number;
+        /**
           * Specifies the path to the icon
           * @see https://magma.maggiolicloud.it/storybook/?path=/story/design-icon--default
          */
         "icon"?: string|undefined;
+        /**
+          * The user's inizials displayed if there's no image available, initials will override tone and variant senttings to keep user recognizable from others
+         */
+        "initials"?: string;
+        /**
+          * Specifies the path to the image
+         */
+        "src"?: string;
+        /**
+          * Specifies the color tone of the component
+         */
+        "tone"?: ToneMinimalVariantType;
+        /**
+          * Specifies the color variant of the component
+         */
+        "variant"?: ThemeFullVariantAvatarType;
+    }
+    interface MdsAvatarStack {
+        /**
+          * Specifies the size of the slotted avatars elements
+         */
+        "size"?: AvatarSizeType;
+        /**
+          * Specifies the size of the slotted avatars elements
+         */
+        "total"?: number;
+    }
+    interface MdsAvatarStackItem {
+        /**
+          * Specifies number of total avatars, the total number will be subtracted by the slotted ones
+         */
+        "count"?: number;
         /**
           * The user's inizials displayed if there's no image available, initials will override tone and variant senttings to keep user recognizable from others
          */
@@ -3663,6 +3729,10 @@ declare namespace LocalJSX {
         "variant"?: ThemeFullVariantType;
     }
     interface MdsBanner {
+        /**
+          * Shows a decoration around the banner icon
+         */
+        "cockade"?: boolean;
         /**
           * Shows the cross icon to perform cancel/delete action on element
          */
@@ -3823,21 +3893,65 @@ declare namespace LocalJSX {
         "variant"?: ButtonVariantType;
     }
     interface MdsCalendar {
+        /**
+          * Specifies the end date of the selection
+          * @description It's in ISO format (YYYY-MM-DD).
+          * @example '2023-10-01'
+         */
         "endDate"?: string | null;
+        /**
+          * Specifies the minimum date of the selection
+          * @description It's in ISO format (YYYY-MM-DD).
+          * @example '2023-10-01'
+         */
         "max"?: string | null;
+        /**
+          * Specifies the minimum date of the selection
+          * @description It's in ISO format (YYYY-MM-DD).
+          * @example '2023-10-01'
+         */
         "min"?: string | null;
-        "onCheckPreselectionsEmitter"?: (event: MdsCalendarCustomEvent<void>) => void;
-        "onDatesEmitter"?: (event: MdsCalendarCustomEvent<{startDate: string, endDate?: string}>) => void;
+        "onMdsCalendarChange"?: (event: MdsCalendarCustomEvent<{startDate: string, endDate?: string}>) => void;
+        "onMdsCalendarPreselect"?: (event: MdsCalendarCustomEvent<void>) => void;
         "rangePicker"?: boolean;
+        /**
+          * Specifies the start date of the selection
+          * @description It's in ISO format (YYYY-MM-DD).
+          * @example '2023-10-01'
+         */
         "startDate"?: string | null;
     }
     interface MdsCalendarCell {
+        /**
+          * Specifies the date of the cell
+          * @description It's in ISO format (YYYY-MM-DD).
+         */
         "date"?: string;
+        /**
+          * Specifies if the cell is disabled
+         */
         "disabled"?: boolean | undefined;
+        /**
+          * Specifies if the current month or a weekend
+         */
         "month"?: CalendarCellType;
+        /**
+          * Specifies the selection orientation of the cell
+          * @description It can be 'horizontal' or 'vertical', but currently only 'horizontal' is supported
+         */
         "orientation"?: CalendarCellSelectionOrieintationType;
+        /**
+          * Specifies if the selection is a preview or the final selection
+         */
         "preview"?: boolean;
+        /**
+          * Specifies the point of selection of the cell
+          * @description It can be `end`, `middle`, `none`, `single`, `start`
+         */
         "selection"?: CalendarCellSelectionPositionType;
+        /**
+          * Specifies if the cell is today
+         */
         "today"?: boolean | undefined;
     }
     /**
@@ -4380,6 +4494,10 @@ declare namespace LocalJSX {
          */
         "onMdsInputKeydown"?: (event: MdsInputCustomEvent<KeyboardEvent>) => void;
         /**
+          * Emits a boolean event when a input execute validation
+         */
+        "onMdsInputValidation"?: (event: MdsInputCustomEvent<boolean>) => void;
+        /**
           * Specifies a regular expression that element\'s value is checked against
          */
         "pattern"?: string;
@@ -4436,7 +4554,7 @@ declare namespace LocalJSX {
           * @description It's in ISO format (YYYY-MM-DD).
          */
         "min"?: string | null;
-        "onValueChange"?: (event: MdsInputDateCustomEvent<string>) => void;
+        "onMdsInputDateSelect"?: (event: MdsInputDateCustomEvent<string>) => void;
         /**
           * Specifies the value of the input
           * @description It's in ISO format (YYYY-MM-DD).
@@ -4464,7 +4582,7 @@ declare namespace LocalJSX {
           * @description It's in ISO format (YYYY-MM-DD).
          */
         "min"?: string | null;
-        "onDateRangeSelected"?: (event: MdsInputDateRangeCustomEvent<{ startDate: string, endDate: string }>) => void;
+        "onMdsInputDateRangeSelect"?: (event: MdsInputDateRangeCustomEvent<{ startDate: string, endDate: string }>) => void;
         /**
           * Specifies the start date of the range
           * @description It's in ISO format (YYYY-MM-DD).
@@ -4487,113 +4605,13 @@ declare namespace LocalJSX {
     }
     interface MdsInputField {
         /**
-          * Specifies whether the element should have autocomplete enabled
-         */
-        "autocomplete"?: AutocompleteType;
-        /**
-          * Specifies that the element should automatically get focus when the page loads
-         */
-        "autofocus"?: boolean;
-        /**
-          * Specifies if the spinner icon is shown, replacing the icon if present
-         */
-        "await"?: boolean;
-        /**
-          * Specifies the icon type of the counter button when the input type is set to `number`
-         */
-        "controlsIcon"?: InputControlsIconType;
-        /**
-          * Specifies the layout of the counter button when the input type is set to `number`
-         */
-        "controlsLayout"?: InputControlsLayoutType;
-        /**
-          * If true, the element is displayed as disabled
-         */
-        "disabled"?: boolean;
-        /**
-          * An icon displayed at the right of the input
-         */
-        "icon"?: string;
-        /**
           * Display a text on the top of the input text field
          */
         "label"?: string;
         /**
-          * Specifies the maximum value use it with input type="number" or type="date" Example: max="180", max="2046-12-04"
-         */
-        "max"?: string;
-        /**
-          * Specifies the maximum number of characters allowed in an element use it with input type="number"
-         */
-        "maxlength"?: number;
-        /**
           * Display a message at the bottom of the input text field
          */
         "message"?: string;
-        /**
-          * Specifies the minimum value use it with input type="number" or type="date" Example: min="-3", min="1988-04-15"
-         */
-        "min"?: string;
-        /**
-          * Specifies the minimum number of characters allowed in an element use it with input type="number"
-         */
-        "minlength"?: number;
-        /**
-          * Is needed to reference the form data after the form is submitted
-         */
-        "name"?: string;
-        /**
-          * Emits a void event when input element is blurred
-         */
-        "onMdsInputFieldBlur"?: (event: MdsInputFieldCustomEvent<void>) => void;
-        /**
-          * Emits an InputValue when the value of the input element changes
-         */
-        "onMdsInputFieldChange"?: (event: MdsInputFieldCustomEvent<MdsInputEventDetail>) => void;
-        /**
-          * Emits a void event when input element is focused
-         */
-        "onMdsInputFieldFocus"?: (event: MdsInputFieldCustomEvent<void>) => void;
-        /**
-          * Emits a KeyboardEvent when a keboard key is pressed on the focused input element
-         */
-        "onMdsInputFieldKeydown"?: (event: MdsInputFieldCustomEvent<KeyboardEvent>) => void;
-        /**
-          * Specifies a regular expression that element\'s value is checked against
-         */
-        "pattern"?: string;
-        /**
-          * Specifies a short hint that describes the expected value of the element
-         */
-        "placeholder"?: string;
-        /**
-          * Specifies that the element is read-only
-         */
-        "readonly"?: boolean;
-        /**
-          * Specifies that the element must be filled out before submitting the form
-         */
-        "required"?: boolean;
-        /**
-          * Specifies the interval between legal numbers in an input field
-         */
-        "step"?: string;
-        /**
-          * Display the variant of a message at the bottom of the input text field
-         */
-        "tip"?: string;
-        /**
-          * Specifies the type of input element
-         */
-        "type"?: InputFieldType;
-        /**
-          * Specifies the typography of input element
-         */
-        "typography"?: TypographyInputType;
-        /**
-          * Specifies the value of the input element
-         */
-        "value"?: string;
         /**
           * Display the variant of a message at the bottom of the input text field
          */
@@ -4964,6 +4982,24 @@ declare namespace LocalJSX {
           * Specifies if the item is selected or not, is handled from the parent paginator
          */
         "selected"?: boolean;
+    }
+    interface MdsPolicyAi {
+        /**
+          * Sets the description to custom component long text
+         */
+        "description"?: string;
+        /**
+          * Sets the headline to custom component text
+         */
+        "headline"?: string;
+        /**
+          * Sets the pointing URL of the component
+         */
+        "href"?: string;
+        /**
+          * Sets the variant type of the component
+         */
+        "variant"?: PolicyAiVariant;
     }
     /**
      * @name Pref
@@ -5433,7 +5469,7 @@ declare namespace LocalJSX {
         /**
           * Sets the theme variant colours
          */
-        "variant"?: ThemeLuminanceVariantType;
+        "variant"?: ThemeVariantType;
         /**
           * Specifies if toast is visible at the bottom or not
          */
@@ -5560,13 +5596,17 @@ declare namespace LocalJSX {
         /**
           * Specifies if domain is visible on header
          */
-        "domain": boolean;
+        "icon"?: string;
+        /**
+          * Specifies if the window has a label
+         */
+        "label"?: string;
         /**
           * Specifies whether a browser should load an iframe immediately or to defer loading of images until some conditions are met.
          */
         "loading"?: LoadingType;
         /**
-          * Emits when the url view is closed
+          * Emits when the close button is clicked
          */
         "onMdsUrlViewClose"?: (event: MdsUrlViewCustomEvent<void>) => void;
         /**
@@ -5623,6 +5663,8 @@ declare namespace LocalJSX {
         "mds-accordion-timer-item": MdsAccordionTimerItem;
         "mds-author": MdsAuthor;
         "mds-avatar": MdsAvatar;
+        "mds-avatar-stack": MdsAvatarStack;
+        "mds-avatar-stack-item": MdsAvatarStackItem;
         "mds-badge": MdsBadge;
         "mds-banner": MdsBanner;
         "mds-benchmark-bar": MdsBenchmarkBar;
@@ -5676,6 +5718,7 @@ declare namespace LocalJSX {
         "mds-notification": MdsNotification;
         "mds-paginator": MdsPaginator;
         "mds-paginator-item": MdsPaginatorItem;
+        "mds-policy-ai": MdsPolicyAi;
         "mds-pref": MdsPref;
         "mds-pref-animation": MdsPrefAnimation;
         "mds-pref-consumption": MdsPrefConsumption;
@@ -5730,6 +5773,8 @@ declare module "@stencil/core" {
             "mds-accordion-timer-item": LocalJSX.MdsAccordionTimerItem & JSXBase.HTMLAttributes<HTMLMdsAccordionTimerItemElement>;
             "mds-author": LocalJSX.MdsAuthor & JSXBase.HTMLAttributes<HTMLMdsAuthorElement>;
             "mds-avatar": LocalJSX.MdsAvatar & JSXBase.HTMLAttributes<HTMLMdsAvatarElement>;
+            "mds-avatar-stack": LocalJSX.MdsAvatarStack & JSXBase.HTMLAttributes<HTMLMdsAvatarStackElement>;
+            "mds-avatar-stack-item": LocalJSX.MdsAvatarStackItem & JSXBase.HTMLAttributes<HTMLMdsAvatarStackItemElement>;
             "mds-badge": LocalJSX.MdsBadge & JSXBase.HTMLAttributes<HTMLMdsBadgeElement>;
             "mds-banner": LocalJSX.MdsBanner & JSXBase.HTMLAttributes<HTMLMdsBannerElement>;
             "mds-benchmark-bar": LocalJSX.MdsBenchmarkBar & JSXBase.HTMLAttributes<HTMLMdsBenchmarkBarElement>;
@@ -5793,6 +5838,7 @@ declare module "@stencil/core" {
             "mds-notification": LocalJSX.MdsNotification & JSXBase.HTMLAttributes<HTMLMdsNotificationElement>;
             "mds-paginator": LocalJSX.MdsPaginator & JSXBase.HTMLAttributes<HTMLMdsPaginatorElement>;
             "mds-paginator-item": LocalJSX.MdsPaginatorItem & JSXBase.HTMLAttributes<HTMLMdsPaginatorItemElement>;
+            "mds-policy-ai": LocalJSX.MdsPolicyAi & JSXBase.HTMLAttributes<HTMLMdsPolicyAiElement>;
             /**
              * @name Pref
              * @description This component is based on MdsTab component pattern

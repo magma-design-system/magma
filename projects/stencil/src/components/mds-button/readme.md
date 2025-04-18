@@ -9,21 +9,21 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## Properties
 
-| Property       | Attribute       | Description                                                                | Type                                                                                                                               | Default     |
-| -------------- | --------------- | -------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| `active`       | `active`        | Specifies if the button is active or not                                   | `boolean`                                                                                                                          | `undefined` |
-| `autoFocus`    | `auto-focus`    | Specifies if the component is focused when is loaded on the viewport       | `boolean`                                                                                                                          | `undefined` |
-| `await`        | `await`         | Specifies if the button is awaiting for a response                         | `boolean \| undefined`                                                                                                             | `undefined` |
-| `disabled`     | `disabled`      | Specifies if the component is disabled or not                              | `boolean \| undefined`                                                                                                             | `undefined` |
-| `href`         | `href`          | Specifies the URL target of the button                                     | `string \| undefined`                                                                                                              | `undefined` |
-| `icon`         | `icon`          | The icon displayed in the button                                           | `string \| undefined`                                                                                                              | `undefined` |
-| `iconPosition` | `icon-position` | Specifies the horizontal position of the icon displayed in the button      | `"left" \| "right" \| undefined`                                                                                                   | `'left'`    |
-| `size`         | `size`          | Specifies the size for the button                                          | `"lg" \| "md" \| "sm" \| "xl"`                                                                                                     | `'md'`      |
-| `target`       | `target`        | Specifies the target of the URL, if self or blank                          | `"blank" \| "self"`                                                                                                                | `'self'`    |
-| `tone`         | `tone`          | Specifies the tone variant for the button                                  | `"ghost" \| "quiet" \| "strong" \| "weak" \| undefined`                                                                            | `'strong'`  |
-| `truncate`     | `truncate`      | Specifies if the text shoud be truncated or should behave as a normal text | `"all" \| "none" \| "word" \| undefined`                                                                                           | `'word'`    |
-| `type`         | `type`          | The type of the button element                                             | `"a" \| "button" \| "reset" \| "submit" \| undefined`                                                                              | `'submit'`  |
-| `variant`      | `variant`       | Specifies the color variant for the button                                 | `"apple" \| "dark" \| "error" \| "google" \| "info" \| "light" \| "primary" \| "secondary" \| "success" \| "warning" \| undefined` | `'primary'` |
+| Property       | Attribute       | Description                                                                | Type                                                                                                                                       | Default     |
+| -------------- | --------------- | -------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ----------- |
+| `active`       | `active`        | Specifies if the button is active or not                                   | `boolean`                                                                                                                                  | `undefined` |
+| `autoFocus`    | `auto-focus`    | Specifies if the component is focused when is loaded on the viewport       | `boolean`                                                                                                                                  | `undefined` |
+| `await`        | `await`         | Specifies if the button is awaiting for a response                         | `boolean \| undefined`                                                                                                                     | `undefined` |
+| `disabled`     | `disabled`      | Specifies if the component is disabled or not                              | `boolean \| undefined`                                                                                                                     | `undefined` |
+| `href`         | `href`          | Specifies the URL target of the button                                     | `string \| undefined`                                                                                                                      | `undefined` |
+| `icon`         | `icon`          | The icon displayed in the button                                           | `string \| undefined`                                                                                                                      | `undefined` |
+| `iconPosition` | `icon-position` | Specifies the horizontal position of the icon displayed in the button      | `"left" \| "right" \| undefined`                                                                                                           | `'left'`    |
+| `size`         | `size`          | Specifies the size for the button                                          | `"lg" \| "md" \| "sm" \| "xl"`                                                                                                             | `'md'`      |
+| `target`       | `target`        | Specifies the target of the URL, if self or blank                          | `"blank" \| "self"`                                                                                                                        | `'self'`    |
+| `tone`         | `tone`          | Specifies the tone variant for the button                                  | `"ghost" \| "quiet" \| "strong" \| "weak" \| undefined`                                                                                    | `'strong'`  |
+| `truncate`     | `truncate`      | Specifies if the text shoud be truncated or should behave as a normal text | `"all" \| "none" \| "word" \| undefined`                                                                                                   | `'word'`    |
+| `type`         | `type`          | The type of the button element                                             | `"a" \| "button" \| "reset" \| "submit" \| undefined`                                                                                      | `'submit'`  |
+| `variant`      | `variant`       | Specifies the color variant for the button                                 | `"ai" \| "apple" \| "dark" \| "error" \| "google" \| "info" \| "light" \| "primary" \| "secondary" \| "success" \| "warning" \| undefined` | `'primary'` |
 
 
 ## Slots
@@ -85,6 +85,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
  - [mds-label](../mds-label)
  - [mds-modal](../mds-modal)
  - [mds-note](../mds-note)
+ - [mds-policy-ai](../mds-policy-ai)
  - [mds-pref-language-item](../mds-pref-language-item)
  - [mds-push-notification](../mds-push-notification)
  - [mds-push-notification-item](../mds-push-notification-item)
@@ -123,6 +124,7 @@ graph TD;
   mds-label --> mds-button
   mds-modal --> mds-button
   mds-note --> mds-button
+  mds-policy-ai --> mds-button
   mds-pref-language-item --> mds-button
   mds-push-notification --> mds-button
   mds-push-notification-item --> mds-button

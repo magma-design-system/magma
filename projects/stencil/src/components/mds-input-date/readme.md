@@ -17,14 +17,40 @@
 
 ## Events
 
-| Event         | Description | Type                  |
-| ------------- | ----------- | --------------------- |
-| `valueChange` |             | `CustomEvent<string>` |
+| Event                | Description | Type                  |
+| -------------------- | ----------- | --------------------- |
+| `mdsInputDateSelect` |             | `CustomEvent<string>` |
 
 
 ## Methods
 
 ### `focusInput() => Promise<void>`
+
+
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
+### `setValue(value: string) => Promise<void>`
+
+
+
+#### Parameters
+
+| Name    | Type     | Description |
+| ------- | -------- | ----------- |
+| `value` | `string` |             |
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
+### `updateLang() => Promise<void>`
 
 
 

@@ -1,0 +1,17 @@
+:host-context(mds-avatar-stack[size="sm"]) {
+  --mds-avatar-stack-item-size: var(--mds-avatar-stack-item-small-size);
+  --mds-avatar-stack-item-border: var(--mds-avatar-stack-item-small-border);
+  --mds-avatar-stack-item-offset: var(--mds-avatar-stack-item-small-offset);
+}
+
+:host-context(mds-avatar-stack[size="md"]) {
+  --mds-avatar-stack-item-size: var(--mds-avatar-stack-item-medium-size);
+  --mds-avatar-stack-item-border: var(--mds-avatar-stack-item-medium-border);
+  --mds-avatar-stack-item-offset: var(--mds-avatar-stack-item-medium-offset);
+}
+
+:host-context(mds-avatar-stack[size="lg"]) {
+  --mds-avatar-stack-item-size: var(--mds-avatar-stack-item-large-size);
+  --mds-avatar-stack-item-border: var(--mds-avatar-stack-item-large-border);
+  --mds-avatar-stack-item-offset: var(--mds-avatar-stack-item-large-offset);
+}

@@ -1,6 +1,7 @@
 import { Component, Element, Host, h, Method, Prop, State, Event, EventEmitter, Watch } from '@stencil/core'
 import miBaselineCalendarToday from '@icon/mi/baseline/calendar-today.svg'
 import { DateTime } from 'luxon'
+import { Locale } from '@common/locale'
 
 @Component({
   tag: 'mds-input-date',
@@ -10,6 +11,17 @@ import { DateTime } from 'luxon'
 export class MdsInputDate {
   @Element() host: HTMLMdsInputDateElement
   private isSlotted: boolean = false
+  private t:Locale = new Locale({
+    el: {},
+    en: {},
+    es: {},
+    it: {},
+  })
+  @State() language: string
+  @Method()
+  async updateLang (): Promise<void> {
+    this.language = this.t.lang(this.host)
+  }
 
   /**
    * Specifies the value of the input
@@ -40,17 +52,22 @@ export class MdsInputDate {
   @State() calendarKey: number = 0
   @State() dropdownRef?: HTMLMdsDropdownElement
   @State() messageError: string = ''
-  @Event() valueChange: EventEmitter<string>
+  @Event({ eventName: 'mdsInputDateSelect', bubbles: true, composed: true }) valueChange: EventEmitter<string>
 
   @Watch('value')
   handleValue (newValue: string): void {
     this.internalValue = newValue
-    const date = DateTime.fromISO(newValue)
+    this.validateValue(newValue)
+  }
 
-    if (!date.isValid) {
+  private validateValue (value: string): void {
+    const date = DateTime.fromISO(value)
+    if (!value || !date.isValid) {
       this.empty = true
+      this.messageError = this.t.get('invalid_date_format')
     } else {
       this.empty = undefined
+      this.messageError = ''
     }
   }
 
@@ -60,9 +77,16 @@ export class MdsInputDate {
     input.focus()
   }
 
+  @Method()
+  async setValue (value: string): Promise<void> {
+    this.internalValue = value
+    return Promise.resolve()
+  }
+
   componentWillLoad (): void {
     this.isSlotted = !!this.host.getAttribute('slot')
     this.internalValue = this.value || ''
+    this.language = this.t.lang(this.host)
 
     // Se max è precedente a min, imposto max uguale a min
     if (this.min && this.max) {
@@ -77,16 +101,18 @@ export class MdsInputDate {
   handleInput (event: Event): void {
     const input = event.target as HTMLInputElement
     this.internalValue = input.value
+    this.validateValue(this.internalValue)
   }
 
   handleChange (event: Event): void {
     const input = event.target as HTMLInputElement
     this.internalValue = input.value
-    this.valueChange.emit(this.internalValue)
+    this.validateValue(this.internalValue)
   }
 
   manageValue (ev: FocusEvent): void {
     const input = ev.target as HTMLInputElement
+    this.internalValue = input.value
     if (!input.validity.badInput && input.value !== '') {
       this.messageError = ''
       this.valueChange.emit(this.internalValue)
@@ -113,11 +139,12 @@ export class MdsInputDate {
           this.calendarKey += 1
         }}></mds-button>}
 
-        {!this.isSlotted && <mds-dropdown ref={el => this.dropdownRef = el as HTMLMdsDropdownElement} target="#calendar-dropdown">
+        {!this.isSlotted && <mds-dropdown placement="bottom-end" auto-placement={false} ref={el => this.dropdownRef = el as HTMLMdsDropdownElement} target="#calendar-dropdown">
           <mds-calendar
             key={this.calendarKey}
             rangePicker={false}
-            onDatesEmitter={ev => {
+            lang={this.language}
+            onMdsCalendarChange={ev => {
               this.internalValue = ev.detail.startDate
               const date = DateTime.fromISO(this.internalValue)
 

@@ -23,7 +23,18 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `"default"` | Add `text string` to this slot, **avoid** `HTML elements` or `components`. |
 
 
+## Shadow Parts
+
+| Part     | Description |
+| -------- | ----------- |
+| `"icon"` |             |
+
+
 ## Dependencies
+
+### Used by
+
+ - [mds-policy-ai](../mds-policy-ai)
 
 ### Depends on
 
@@ -36,6 +47,7 @@ graph TD;
   mds-help --> mds-icon
   mds-help --> mds-tooltip
   mds-tooltip --> mds-text
+  mds-policy-ai --> mds-help
   style mds-help fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

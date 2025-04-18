@@ -11,7 +11,7 @@ import { MdsInputInterface } from '../mds-input'
 // https://developers.google.com/web/updates/2015/06/checkout-faster-with-autofill
 
 export default {
-  title: 'Form / Input / Input',
+  title: 'Form / Input',
   argTypes: {
     autocomplete: {
       description: 'Specifies whether the element should have autocomplete enabled',
@@ -244,6 +244,11 @@ export const Password = Template.bind({})
 Password.args = {
   type: 'password',
   placeholder: 'Insert a pasword',
+}
+
+export const Placeholder = Template.bind({})
+Placeholder.args = {
+  placeholder: 'Es: change this placeholder',
 }
 
 export const Search = Template.bind({})

@@ -7,15 +7,15 @@
 
 ## Properties
 
-| Property      | Attribute     | Description | Type                                                              | Default        |
-| ------------- | ------------- | ----------- | ----------------------------------------------------------------- | -------------- |
-| `date`        | `date`        |             | `string \| undefined`                                             | `undefined`    |
-| `disabled`    | `disabled`    |             | `boolean \| undefined`                                            | `undefined`    |
-| `month`       | `month`       |             | `"current" \| "other" \| "weekend" \| undefined`                  | `'current'`    |
-| `orientation` | `orientation` |             | `"both" \| "horizontal" \| "vertical" \| undefined`               | `'horizontal'` |
-| `preview`     | `preview`     |             | `boolean \| undefined`                                            | `false`        |
-| `selection`   | `selection`   |             | `"end" \| "middle" \| "none" \| "single" \| "start" \| undefined` | `undefined`    |
-| `today`       | `today`       |             | `boolean \| undefined`                                            | `undefined`    |
+| Property      | Attribute     | Description                                                    | Type                                                              | Default        |
+| ------------- | ------------- | -------------------------------------------------------------- | ----------------------------------------------------------------- | -------------- |
+| `date`        | `date`        | Specifies the date of the cell                                 | `string \| undefined`                                             | `undefined`    |
+| `disabled`    | `disabled`    | Specifies if the cell is disabled                              | `boolean \| undefined`                                            | `undefined`    |
+| `month`       | `month`       | Specifies if the current month or a weekend                    | `"current" \| "other" \| "weekend" \| undefined`                  | `'current'`    |
+| `orientation` | `orientation` | Specifies the selection orientation of the cell                | `"both" \| "horizontal" \| "vertical" \| undefined`               | `'horizontal'` |
+| `preview`     | `preview`     | Specifies if the selection is a preview or the final selection | `boolean \| undefined`                                            | `false`        |
+| `selection`   | `selection`   | Specifies the point of selection of the cell                   | `"end" \| "middle" \| "none" \| "single" \| "start" \| undefined` | `undefined`    |
+| `today`       | `today`       | Specifies if the cell is today                                 | `boolean \| undefined`                                            | `undefined`    |
 
 
 ## Dependencies

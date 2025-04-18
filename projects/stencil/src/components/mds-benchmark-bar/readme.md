@@ -9,12 +9,12 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## Properties
 
-| Property     | Attribute    | Description                                             | Type                                                                                         | Default     |
-| ------------ | ------------ | ------------------------------------------------------- | -------------------------------------------------------------------------------------------- | ----------- |
-| `alias`      | `alias`      | An alias to custom how value is represented             | `string \| undefined`                                                                        | `undefined` |
-| `typography` | `typography` | The typography of the component                         | `"label" \| "option" \| undefined`                                                           | `'label'`   |
-| `value`      | `value`      | A value between 0 and 100 that rapresents the benchmark | `number`                                                                                     | `0`         |
-| `variant`    | `variant`    | Sets the theme variant colors                           | `"dark" \| "error" \| "info" \| "light" \| "primary" \| "success" \| "warning" \| undefined` | `'dark'`    |
+| Property     | Attribute    | Description                                             | Type                                                                                                 | Default     |
+| ------------ | ------------ | ------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ----------- |
+| `alias`      | `alias`      | An alias to custom how value is represented             | `string \| undefined`                                                                                | `undefined` |
+| `typography` | `typography` | The typography of the component                         | `"label" \| "option" \| undefined`                                                                   | `'label'`   |
+| `value`      | `value`      | A value between 0 and 100 that rapresents the benchmark | `number`                                                                                             | `0`         |
+| `variant`    | `variant`    | Sets the theme variant colors                           | `"ai" \| "dark" \| "error" \| "info" \| "light" \| "primary" \| "success" \| "warning" \| undefined` | `'dark'`    |
 
 
 ## Slots

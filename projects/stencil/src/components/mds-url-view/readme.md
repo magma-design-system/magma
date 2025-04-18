@@ -9,18 +9,19 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## Properties
 
-| Property              | Attribute | Description                                                                                                                | Type                             | Default     |
-| --------------------- | --------- | -------------------------------------------------------------------------------------------------------------------------- | -------------------------------- | ----------- |
-| `domain` _(required)_ | `domain`  | Specifies if domain is visible on header                                                                                   | `boolean`                        | `undefined` |
-| `loading`             | `loading` | Specifies whether a browser should load an iframe immediately or to defer loading of images until some conditions are met. | `"eager" \| "lazy" \| undefined` | `'lazy'`    |
-| `src` _(required)_    | `src`     | Specifies the URL to the web page                                                                                          | `string`                         | `undefined` |
+| Property           | Attribute | Description                                                                                                                | Type                             | Default     |
+| ------------------ | --------- | -------------------------------------------------------------------------------------------------------------------------- | -------------------------------- | ----------- |
+| `icon`             | `icon`    | Specifies if domain is visible on header                                                                                   | `string \| undefined`            | `undefined` |
+| `label`            | `label`   | Specifies if the window has a label                                                                                        | `string \| undefined`            | `undefined` |
+| `loading`          | `loading` | Specifies whether a browser should load an iframe immediately or to defer loading of images until some conditions are met. | `"eager" \| "lazy" \| undefined` | `'lazy'`    |
+| `src` _(required)_ | `src`     | Specifies the URL to the web page                                                                                          | `string`                         | `undefined` |
 
 
 ## Events
 
-| Event             | Description                       | Type                |
-| ----------------- | --------------------------------- | ------------------- |
-| `mdsUrlViewClose` | Emits when the url view is closed | `CustomEvent<void>` |
+| Event             | Description                            | Type                |
+| ----------------- | -------------------------------------- | ------------------- |
+| `mdsUrlViewClose` | Emits when the close button is clicked | `CustomEvent<void>` |
 
 
 ## Methods
@@ -50,12 +51,14 @@ Type: `Promise<void>`
 
 ### Depends on
 
+- [mds-icon](../mds-icon)
 - [mds-text](../mds-text)
 - [mds-button](../mds-button)
 
 ### Graph
 ```mermaid
 graph TD;
+  mds-url-view --> mds-icon
   mds-url-view --> mds-text
   mds-url-view --> mds-button
   mds-button --> mds-spinner

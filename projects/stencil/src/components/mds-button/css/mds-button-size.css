@@ -17,6 +17,12 @@
   @apply font-medium;
 }
 
+:host([size="sm"]) .icon {
+  @apply
+    h-400
+    w-400;
+}
+
 :host([size="sm"][await]:not([await="false"]) ) .await {
   transform: scale(theme('scale.75'));
 }

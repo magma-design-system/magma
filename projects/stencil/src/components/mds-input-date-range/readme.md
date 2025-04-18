@@ -18,9 +18,9 @@
 
 ## Events
 
-| Event               | Description | Type                                                   |
-| ------------------- | ----------- | ------------------------------------------------------ |
-| `dateRangeSelected` |             | `CustomEvent<{ startDate: string; endDate: string; }>` |
+| Event                     | Description | Type                                                   |
+| ------------------------- | ----------- | ------------------------------------------------------ |
+| `mdsInputDateRangeSelect` |             | `CustomEvent<{ startDate: string; endDate: string; }>` |
 
 
 ## Methods
@@ -34,6 +34,16 @@
 | Name    | Type        | Description |
 | ------- | ----------- | ----------- |
 | `event` | `EventDate` |             |
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
+### `updateLang() => Promise<void>`
+
+
 
 #### Returns
 

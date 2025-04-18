@@ -25,7 +25,7 @@
   @apply
     gap-400
     px-200
-    py-0
+    py-100
     rounded;
 
   background-color: var(--mds-tooltip-background);
@@ -79,7 +79,7 @@
   z-index: -1;
 }
 
-::slotted( *) {
+::slotted(*) {
   @apply z-10;
 
   position: relative;

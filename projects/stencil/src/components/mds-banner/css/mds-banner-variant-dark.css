@@ -5,6 +5,7 @@
   --mds-banner-color: theme('colors.tone-neutral-08');
   --mds-banner-icon-color: theme('colors.tone-neutral-07');
   --mds-banner-shadow: theme('boxShadow.lg-sharp');
+  --mds-banner-cockade-background: theme('colors.tone-neutral-04');
 }
 
 :host([variant="dark"][tone="weak"]) {

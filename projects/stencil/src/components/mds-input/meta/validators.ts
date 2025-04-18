@@ -6,6 +6,8 @@ export type MdsValidatorFn = (input: string) => null | MdsValidationErrors
 
 export const NullValidator: MdsValidatorFn = () => null
 
+export const requiredValidor: MdsValidatorFn = (input: string) => {return input.length > 0 ? null : { required: '' }}
+
 export const isbnValidatorFn: MdsValidatorFn = (input: string) => {
   if (Number.isNaN(input.slice(0, -1)) || (input.length !== 10 && input.length !== 13)) return { 'isbn-error': 'formato isbn non correto' }
 
@@ -54,8 +56,8 @@ export class Validator {
     return Array.isArray(validators) ? validators.includes(validator) : validators === validator
   }
 
-  hasValidator (validator: MdsValidatorFn): boolean {
-    return this._hasValidator(this._validators, validator)
+  hasValidator (validator?: MdsValidatorFn): boolean {
+    return validator ? this._hasValidator(this._validators, validator) : this._validators.length > 0
   }
 
   removeValidator (validator: MdsValidatorFn | MdsValidatorFn[]): void {
@@ -63,11 +65,6 @@ export class Validator {
   }
 
   validate (value: string): void {
-    if (value.length === 0) {
-      this._errors = null
-      this.isValid = true
-      return
-    }
     const res = this._validators.map(v => v(value)).reduce((prev, curr) => ({ ...prev, ...curr }), NullValidator )
     this._errors = Object.keys(res).length === 0 ? null : res
     this.isValid = !this._errors

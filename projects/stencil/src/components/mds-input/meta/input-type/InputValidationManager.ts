@@ -43,7 +43,6 @@ export class InputValidationManager {
 }
 
 export function createInputValidationManager (type: InputFieldType) : InputValidationManager {
-
   let inputManager: InputValidationManager
   switch (type) {
   case 'tel':

@@ -94,6 +94,17 @@
     width: 100%;
 }
 
+:host(:focus-within) .input {
+  @apply
+    outline-none
+    transition-cosmetic
+    duration-300
+    ease-out-expo;
+
+  --mds-input-date-ring: 0 0 0 3px rgb(var(--mds-input-date-variant-color) / 1);
+  --mds-input-date-shadow: 0 4px 6px 3px rgb(var(--mds-input-date-variant-color) / 0.1), 0 2px 4px -1px rgb(var(--mds-input-date-variant-color) / 0.06);
+}
+
 .input:focus {
   @apply
     outline-none

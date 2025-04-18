@@ -5,6 +5,7 @@ export type ThemeStatusVariantType =
   | 'warning'
 
 export type ThemeVariantType =
+  | 'ai'
   | 'dark'
   | 'error'
   | 'info'
@@ -70,13 +71,24 @@ export type ActionVariantType =
   | 'light'
 
 export type ChipVariantType =
-  | 'primary'
-  | 'secondary'
+  | 'ai'
+  | 'amaranth'
+  | 'aqua'
+  | 'blue'
   | 'dark'
   | 'error'
+  | 'green'
   | 'info'
+  | 'lime'
+  | 'orange'
+  | 'orchid'
+  | 'primary'
+  | 'secondary'
+  | 'sky'
   | 'success'
+  | 'violet'
   | 'warning'
+  | 'yellow'
 
 export type StateVariantType =
   | 'disabled'

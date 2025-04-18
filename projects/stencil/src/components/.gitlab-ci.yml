@@ -55,7 +55,6 @@ base-isolate:
         - projects/stencil/src/components/$COMPONENT/package.json
 
 include:
-  # - '/projects/stencil/src/components/mds-input-field/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-accordion-item/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-accordion-timer-item/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-accordion-timer/.gitlab-ci.yml'
@@ -89,6 +88,8 @@ include:
   - '/projects/stencil/src/components/mds-hr/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-icon/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-img/.gitlab-ci.yml'
+  - '/projects/stencil/src/components/mds-input-field/.gitlab-ci.yml'
+  - '/projects/stencil/src/components/mds-input-otp/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-input-range/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-input-select/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-input-switch/.gitlab-ci.yml'
@@ -108,6 +109,7 @@ include:
   - '/projects/stencil/src/components/mds-notification/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-paginator-item/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-paginator/.gitlab-ci.yml'
+  - '/projects/stencil/src/components/mds-policy-ai/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-pref-animation/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-pref-consumption/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-pref-contrast/.gitlab-ci.yml'
@@ -123,8 +125,8 @@ include:
   - '/projects/stencil/src/components/mds-price-table-list/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-price-table/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-progress/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-push-notification/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-push-notification-item/.gitlab-ci.yml'
+  - '/projects/stencil/src/components/mds-push-notification/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-quote/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-separator/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-spinner/.gitlab-ci.yml'
