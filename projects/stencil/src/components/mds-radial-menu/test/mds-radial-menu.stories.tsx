@@ -69,13 +69,13 @@ const Template = args =>
       <mds-text>Use <b>Right click</b> of the mouse to trigger the component</mds-text>
     </mds-banner> }
     <mds-radial-menu {...args}>
-      <mds-radial-menu-item icon="mi/baseline/favorite" tooltip="Add to favorites" variant="dark" tone="quiet"></mds-radial-menu-item>
-      <mds-radial-menu-item icon="mi/baseline/email" tooltip="Send email" variant="dark" tone="quiet"></mds-radial-menu-item>
-      <mds-radial-menu-item icon="mi/baseline/insert-drive-file" tooltip="New document" variant="dark" tone="quiet"></mds-radial-menu-item>
-      <mds-radial-menu-item icon="mi/baseline/info" tooltip="Show infos" variant="dark" tone="quiet"></mds-radial-menu-item>
-      <mds-radial-menu-item icon="mi/baseline/print" tooltip="Print" variant="dark" tone="quiet"></mds-radial-menu-item>
-      <mds-radial-menu-item icon="mi/baseline/ios-share" tooltip="Share" variant="dark" tone="quiet"></mds-radial-menu-item>
-      <mds-radial-menu-item icon="mi/baseline/edit" tooltip="Edit metadata" variant="dark" tone="quiet"></mds-radial-menu-item>
+      <mds-radial-menu-item icon="mi/baseline/favorite" tooltip="Add to favorites" variant="dark" tone={args.interaction === 'rightclick' ? 'quiet' : 'weak'}></mds-radial-menu-item>
+      <mds-radial-menu-item icon="mi/baseline/email" tooltip="Send email" variant="dark"tone={args.interaction === 'rightclick' ? 'quiet' : 'weak'}></mds-radial-menu-item>
+      <mds-radial-menu-item icon="mi/baseline/insert-drive-file" tooltip="New document" variant="dark"tone={args.interaction === 'rightclick' ? 'quiet' : 'weak'}></mds-radial-menu-item>
+      <mds-radial-menu-item icon="mi/baseline/info" tooltip="Show infos" variant="dark"tone={args.interaction === 'rightclick' ? 'quiet' : 'weak'}></mds-radial-menu-item>
+      <mds-radial-menu-item icon="mi/baseline/print" tooltip="Print" variant="dark"tone={args.interaction === 'rightclick' ? 'quiet' : 'weak'}></mds-radial-menu-item>
+      <mds-radial-menu-item icon="mi/baseline/ios-share" tooltip="Share" variant="dark"tone={args.interaction === 'rightclick' ? 'quiet' : 'weak'}></mds-radial-menu-item>
+      <mds-radial-menu-item icon="mi/baseline/edit" tooltip="Edit metadata" variant="dark"tone={args.interaction === 'rightclick' ? 'quiet' : 'weak'}></mds-radial-menu-item>
       <mds-radial-menu-item icon="mi/baseline/delete" tooltip="Delete" variant="error"></mds-radial-menu-item>
     </mds-radial-menu>
   </div>

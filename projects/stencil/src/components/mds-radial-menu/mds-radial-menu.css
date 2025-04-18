@@ -8,7 +8,6 @@
   --mds-radial-menu-disc-filter: blur(8px);
   --mds-radial-menu-disc-shadow: theme('boxShadow.lg-sharp');
   --mds-radial-menu-disc-size: calc(var(--mds-radial-menu-radius) * 2);
-  --mds-radial-menu-is-full-circle: 0;
   --mds-radial-menu-radius: 5rem;
   --mds-radial-menu-safe-area-offset: 20rem;
   --mds-radial-menu-transition-duration: theme('transitionDuration.500');
@@ -18,6 +17,7 @@
   /* private */ --mds-radial-menu-disc-delay: 0s;
   /* private */ --mds-radial-menu-disc-scale: 0;
   /* private */ --mds-radial-menu-radius-current: 0;
+  /* private */ --mds-radial-menu-is-full-circle: 1;
 
   display: inline-flex;
   position: relative;
