@@ -14,25 +14,26 @@ export class MdsInputField {
 
   @Element() host!: HTMLMdsInputFieldElement
 
-  private handleBlurInput (mdsInput: HTMLMdsInputElement) {
-    mdsInput.hasValidator().then(hasValidator => {
-      if (!hasValidator) return
-      mdsInput.getErrors().then((errors: MdsValidationErrors) => {
-        if (errors) {
-          this.variant = 'error'
-          this.message = Object.entries(errors).map(v => v[1]).join('\n')
-          return
-        }
-        this.variant = 'success'
-        this.message = undefined
-      })
+  private handleValidation (mdsInput: HTMLMdsInputElement) {
+    // mdsInput.hasValidator().then(hasValidator => {
+    // if (!hasValidator) return
+    mdsInput.getErrors().then((errors: MdsValidationErrors) => {
+      if (errors) {
+        this.variant = 'error'
+        const messages = Object.entries(errors).map(v => v[1]).filter(v => v)
+        this.message = messages.length ? messages.join(';') : undefined
+        return
+      }
+      this.variant = 'success'
+      this.message = undefined
     })
+    // })
   }
 
   componentDidLoad (): void {
     const [mdsInput] = this.slotInput.assignedElements() as HTMLMdsInputElement[]
     if (!mdsInput) throw new Error('Mds input not found')
-    mdsInput.addEventListener('blur', () => this.handleBlurInput(mdsInput))
+    mdsInput.addEventListener('mdsInputValidation', () => this.handleValidation(mdsInput))
   }
 
   /**
@@ -58,7 +59,7 @@ export class MdsInputField {
           <div>
             <slot ref={i => this.slotInput = i as HTMLSlotElement }></slot>
           </div>
-          <mds-text class="message" typography="caption">{ this.message }</mds-text>
+          <div class="message" >{ this.message?.split(';').map((m, i) => <mds-text typography="caption" key={i}>{m}</mds-text>) }</div>
         </div>
       </Host>
     )

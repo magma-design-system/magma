@@ -2702,6 +2702,7 @@ declare global {
         "mdsInputKeydown": KeyboardEvent;
         "mdsInputBlur": void;
         "mdsInputFocus": void;
+        "mdsInputValidation": boolean;
     }
     interface HTMLMdsInputElement extends Components.MdsInput, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsInputElementEventMap>(type: K, listener: (this: HTMLMdsInputElement, ev: MdsInputCustomEvent<HTMLMdsInputElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -4492,6 +4493,10 @@ declare namespace LocalJSX {
           * Emits a KeyboardEvent when a keyboard key is pressed on the focused input element
          */
         "onMdsInputKeydown"?: (event: MdsInputCustomEvent<KeyboardEvent>) => void;
+        /**
+          * Emits a boolean event when a input execute validation
+         */
+        "onMdsInputValidation"?: (event: MdsInputCustomEvent<boolean>) => void;
         /**
           * Specifies a regular expression that element\'s value is checked against
          */

@@ -66,7 +66,7 @@ export class MdsInput {
   private tabindex?: number
 
   private inputValidation: InputValidationManager
-
+  private isValid: boolean
   @Element() el: HTMLMdsInputElement
   @State() hasFocus = false
   @State() language: string
@@ -242,6 +242,12 @@ export class MdsInput {
    */
   @Event({ eventName: 'mdsInputFocus' }) focusEvent!: EventEmitter<void>
 
+  /**
+   * Emits a boolean event when a input execute validation
+   */
+  @Event({ eventName: 'mdsInputValidation' }) validationEvent!: EventEmitter<boolean>
+
+
   formResetCallback (): void {
     this.internals.setFormValue('')
   }
@@ -287,6 +293,7 @@ export class MdsInput {
     if (this.maxlength !== undefined) {
       this.countMaxLength()
     }
+    if (!this.isValid) this.validateInput()
   }
 
   @Watch('maxlength')
@@ -326,9 +333,13 @@ export class MdsInput {
   }
 
   private validateInput (): boolean {
-    const isValid = this.inputValidation.isValid(this.value)
-    this.variant = isValid ? 'success' : 'error'
-    return isValid
+    // validate input only when atleast one validator is present
+    if (this.inputValidation.validator.hasValidator()) {
+      this.isValid = this.inputValidation.isValid(this.value)
+      this.variant = this.isValid ? 'success' : 'error'
+      this.validationEvent.emit(this.isValid)
+    }
+    return this.isValid
   }
 
 
@@ -409,7 +420,7 @@ export class MdsInput {
 
   private onBlur = () => {
     this.hasFocus = false
-    this.validateInput()
+    if (this.isValid) this.validateInput()
     this.blurEvent.emit()
     // this.isValidInput = this.validateInput()
   }
@@ -535,7 +546,7 @@ export class MdsInput {
           { this.disabled && <mds-input-tip-item expanded variant="disabled"></mds-input-tip-item> }
           { this.readonly && <mds-input-tip-item expanded variant="readonly"></mds-input-tip-item> }
           { this.required &&
-            <mds-input-tip-item expanded={this.hasFocus} variant={this.value === '' ? 'required' : 'required-success'}></mds-input-tip-item>
+            <mds-input-tip-item expanded={this.hasFocus} variant={this.isValid ? 'required-success' : 'required'}></mds-input-tip-item>
           }
         </mds-input-tip>
         <mds-input-tip lang={this.language} position="bottom" active={this.hasFocus}>

@@ -43,12 +43,13 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## Events
 
-| Event             | Description                                                                       | Type                               |
-| ----------------- | --------------------------------------------------------------------------------- | ---------------------------------- |
-| `mdsInputBlur`    | Emits a void event when input element is blurred                                  | `CustomEvent<void>`                |
-| `mdsInputChange`  | Emits an InputChangeEventDetail when the value of the input element changes       | `CustomEvent<MdsInputEventDetail>` |
-| `mdsInputFocus`   | Emits a void event when input element is focused                                  | `CustomEvent<void>`                |
-| `mdsInputKeydown` | Emits a KeyboardEvent when a keyboard key is pressed on the focused input element | `CustomEvent<KeyboardEvent>`       |
+| Event                | Description                                                                       | Type                               |
+| -------------------- | --------------------------------------------------------------------------------- | ---------------------------------- |
+| `mdsInputBlur`       | Emits a void event when input element is blurred                                  | `CustomEvent<void>`                |
+| `mdsInputChange`     | Emits an InputChangeEventDetail when the value of the input element changes       | `CustomEvent<MdsInputEventDetail>` |
+| `mdsInputFocus`      | Emits a void event when input element is focused                                  | `CustomEvent<void>`                |
+| `mdsInputKeydown`    | Emits a KeyboardEvent when a keyboard key is pressed on the focused input element | `CustomEvent<KeyboardEvent>`       |
+| `mdsInputValidation` | Emits a boolean event when a input execute validation                             | `CustomEvent<boolean>`             |
 
 
 ## Methods

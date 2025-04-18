@@ -43,6 +43,8 @@
     pt-100
     px-200;
 
+  display: flex;
+  flex-direction: column;
   height: auto;
   interpolate-size: allow-keywords;
   max-height: auto;
