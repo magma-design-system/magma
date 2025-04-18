@@ -1,6 +1,6 @@
 {
   "name": "@maggioli-design-system/magma",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "description": "Magma is Maggioli Design System's web-components library.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -55,7 +55,7 @@
     "@floating-ui/dom": "1.6.12",
     "@maggioli-design-system/design-tokens": "13.6.1",
     "@maggioli-design-system/identity": "2.1.1",
-    "@maggioli-design-system/styles": "15.9.1",
+    "@maggioli-design-system/styles": "15.10.0",
     "@stencil/core": "4.27.2",
     "clsx": "2.1.0",
     "crypto-js": "4.2.0",

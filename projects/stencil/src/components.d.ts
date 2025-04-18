@@ -59,7 +59,7 @@ import { DirectionType } from "./components/mds-progress/meta/types";
 import { MdsPushNotificationEventDetail } from "./components/mds-push-notification/meta/event-detail";
 import { NotificationItemDateFormatType, NotificationItemPreviewType } from "./components/mds-push-notification-item/meta/types";
 import { MdsPushNotificationItemEventDetail } from "./components/mds-push-notification-item/meta/event-detail";
-import { Direction } from "./components/mds-radial-menu/meta/types";
+import { Direction, Interaction } from "./components/mds-radial-menu/meta/types";
 import { MdsStepperBarEventDetail } from "./components/mds-stepper-bar/meta/event-detail";
 import { MdsStepperBarItemEventDetail } from "./components/mds-stepper-bar-item/meta/event-detail";
 import { HorizontalActionsAnimationType } from "./type/animation";
@@ -129,7 +129,7 @@ export { DirectionType } from "./components/mds-progress/meta/types";
 export { MdsPushNotificationEventDetail } from "./components/mds-push-notification/meta/event-detail";
 export { NotificationItemDateFormatType, NotificationItemPreviewType } from "./components/mds-push-notification-item/meta/types";
 export { MdsPushNotificationItemEventDetail } from "./components/mds-push-notification-item/meta/event-detail";
-export { Direction } from "./components/mds-radial-menu/meta/types";
+export { Direction, Interaction } from "./components/mds-radial-menu/meta/types";
 export { MdsStepperBarEventDetail } from "./components/mds-stepper-bar/meta/event-detail";
 export { MdsStepperBarItemEventDetail } from "./components/mds-stepper-bar-item/meta/event-detail";
 export { HorizontalActionsAnimationType } from "./type/animation";
@@ -1682,19 +1682,41 @@ export namespace Components {
         "angleEnd"?: number;
         "angleStart"?: number;
         "direction"?: Direction;
+        "disc"?: boolean;
+        /**
+          * The icon displayed in the button
+         */
+        "icon"?: string;
+        "interaction"?: Interaction;
         "opened"?: boolean;
-        "radiusLength"?: number;
+        "radius"?: number;
         /**
           * Specifies the size for the button
          */
         "size": ButtonSizeType;
+        /**
+          * Specifies the tone variant for the button
+         */
+        "tone"?: ToneVariantType;
+        /**
+          * Specifies the color variant for the button
+         */
+        "variant"?: ButtonVariantType;
     }
     interface MdsRadialMenuItem {
-        "icon": string;
+        /**
+          * The icon displayed in the button
+         */
+        "icon"?: string;
         /**
           * Specifies the size for the button
          */
         "size": ButtonSizeType;
+        /**
+          * Specifies the tone variant for the button
+         */
+        "tone"?: ToneVariantType;
+        "tooltip"?: string;
         /**
           * Specifies the color variant for the button
          */
@@ -5285,19 +5307,41 @@ declare namespace LocalJSX {
         "angleEnd"?: number;
         "angleStart"?: number;
         "direction"?: Direction;
+        "disc"?: boolean;
+        /**
+          * The icon displayed in the button
+         */
+        "icon"?: string;
+        "interaction"?: Interaction;
         "opened"?: boolean;
-        "radiusLength"?: number;
+        "radius"?: number;
         /**
           * Specifies the size for the button
          */
         "size"?: ButtonSizeType;
+        /**
+          * Specifies the tone variant for the button
+         */
+        "tone"?: ToneVariantType;
+        /**
+          * Specifies the color variant for the button
+         */
+        "variant"?: ButtonVariantType;
     }
     interface MdsRadialMenuItem {
+        /**
+          * The icon displayed in the button
+         */
         "icon"?: string;
         /**
           * Specifies the size for the button
          */
         "size"?: ButtonSizeType;
+        /**
+          * Specifies the tone variant for the button
+         */
+        "tone"?: ToneVariantType;
+        "tooltip"?: string;
         /**
           * Specifies the color variant for the button
          */
