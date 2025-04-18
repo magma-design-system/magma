@@ -22,6 +22,7 @@ describe('mds-input-field', () => {
     const element = await page.find('mds-input-field')
     const mdsInput = await element.find('mds-input')
 
+    const errorMessage = ['Codice fiscale inserito non corretto', 'Codice fiscale deve essere lungo 16 caratteri' ]
     await mdsInput.click()
     await mdsInput.type('abc')
     // trigger validation on blur
@@ -31,7 +32,11 @@ describe('mds-input-field', () => {
     expect(element).toEqualAttribute('variant', 'error')
     const message = await element.find('>>> .message')
     expect(message).toBeTruthy()
-    expect(message.textContent).toEqual('Codice fiscale inserito non corretto\nCodice fiscale deve essere lungo 16 caratteri' )
+    const errorsElement = await message.findAll('mds-text')
+    expect(errorsElement.length).toEqual(2)
+    errorsElement.forEach((e, i) => {
+      expect(e.textContent).toBe(errorMessage[i])
+    })
   })
 
   it('render variant success when input is valid', async () => {
