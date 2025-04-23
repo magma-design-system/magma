@@ -171,15 +171,16 @@ export class MdsTab {
         this.changedEvent.emit({ id: key, value: item.value })
         this.currentItem = key
         this.scrollTabs(key)
+        item.selected = true
         // for some reason, mds-tab-item looses focus when we click Enter with the keyboard,
         // which forces user to find again where the tab is with keyboard
         const mdsTabEl: HTMLMdsButtonElement = this.tabItems[this.currentItem].shadowRoot?.querySelector('mds-button') as HTMLMdsButtonElement
         setTimeout(() => {
           mdsTabEl.focus()
         }, 0)
-      } else {
-        item.selected = false
+        return
       }
+      item.selected = undefined
     })
     this.selectContentItem()
     if (this.animation === 'slide') {

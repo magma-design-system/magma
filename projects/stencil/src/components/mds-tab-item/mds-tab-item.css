@@ -1,8 +1,20 @@
-@tailwind utilities;
-
 :host {
+  --mds-tab-item-hover-background: transparent;
+  --mds-tab-item-selected-background: theme('colors.tone-neutral');
+  --mds-tab-item-selected-shadow: theme('boxShadow.DEFAULT');
+  --mds-tab-item-default-background: transparent;
+  --mds-tab-item-default-shadow: transparent;
+
   cursor: pointer;
   display: flex;
+}
+
+:host-context(mds-tab[animation="slide"]) {
+  --mds-tab-item-hover-background: transparent;
+  --mds-tab-item-selected-background: transparent;
+  --mds-tab-item-selected-shadow: transparent;
+  --mds-tab-item-default-background: transparent;
+  --mds-tab-item-default-shadow: transparent;
 }
 
 .button {
