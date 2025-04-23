@@ -6,6 +6,7 @@ import {
   buttonToneVariantDictionary,
 } from '@dictionary/button'
 import { directionDictionary } from '../meta/dictionary'
+import { useState } from 'react'
 
 export default {
   title: 'UI / Radial Menu',
@@ -20,6 +21,7 @@ export default {
     },
     radius: {
       type: { name: 'number' },
+      control: { type: 'range', min: 1, max: 20 },
       description: 'Specifies the length of the radius in rem',
     },
     disc: {
@@ -64,18 +66,18 @@ export default {
 }
 
 const Template = args =>
-  <div class="h-dvh min-h-[600px] flex items-center justify-center -m-600">
-    { args.interaction === 'rightclick' && <mds-banner variant='info' tone="strong" icon="mi/baseline/list-alt" headline="Variant with contextual menu">
+  <div class="h-dvh min-h-[600px] flex items-center justify-center">
+    { args.interaction === 'rightclick' && <mds-banner class="max-w-4xl" variant='info' tone="strong" icon="mi/baseline/list-alt" headline="Variant with contextual menu">
       <mds-text>Use <b>Right click</b> of the mouse to trigger the component</mds-text>
     </mds-banner> }
     <mds-radial-menu {...args}>
       <mds-radial-menu-item icon="mi/baseline/favorite" tooltip="Add to favorites" variant="dark" tone={args.interaction === 'rightclick' ? 'quiet' : 'weak'}></mds-radial-menu-item>
       <mds-radial-menu-item icon="mi/baseline/email" tooltip="Send email" variant="dark"tone={args.interaction === 'rightclick' ? 'quiet' : 'weak'}></mds-radial-menu-item>
       <mds-radial-menu-item icon="mi/baseline/insert-drive-file" tooltip="New document" variant="dark"tone={args.interaction === 'rightclick' ? 'quiet' : 'weak'}></mds-radial-menu-item>
-      <mds-radial-menu-item icon="mi/baseline/info" tooltip="Show infos" variant="dark"tone={args.interaction === 'rightclick' ? 'quiet' : 'weak'}></mds-radial-menu-item>
-      <mds-radial-menu-item icon="mi/baseline/print" tooltip="Print" variant="dark"tone={args.interaction === 'rightclick' ? 'quiet' : 'weak'}></mds-radial-menu-item>
-      <mds-radial-menu-item icon="mi/baseline/ios-share" tooltip="Share" variant="dark"tone={args.interaction === 'rightclick' ? 'quiet' : 'weak'}></mds-radial-menu-item>
-      <mds-radial-menu-item icon="mi/baseline/edit" tooltip="Edit metadata" variant="dark"tone={args.interaction === 'rightclick' ? 'quiet' : 'weak'}></mds-radial-menu-item>
+      <mds-radial-menu-item icon="mi/baseline/info" tooltip="Show infos" variant="dark" tone={args.interaction === 'rightclick' ? 'quiet' : 'weak'}></mds-radial-menu-item>
+      <mds-radial-menu-item icon="mi/baseline/print" tooltip="Print" variant="dark" tone={args.interaction === 'rightclick' ? 'quiet' : 'weak'}></mds-radial-menu-item>
+      <mds-radial-menu-item icon="mi/baseline/ios-share" tooltip="Share" variant="dark" tone={args.interaction === 'rightclick' ? 'quiet' : 'weak'}></mds-radial-menu-item>
+      <mds-radial-menu-item icon="mi/baseline/edit" tooltip="Edit metadata" variant="dark" tone={args.interaction === 'rightclick' ? 'quiet' : 'weak'}></mds-radial-menu-item>
       <mds-radial-menu-item icon="mi/baseline/delete" tooltip="Delete" variant="error"></mds-radial-menu-item>
     </mds-radial-menu>
   </div>
@@ -92,7 +94,40 @@ const TemplateImage = args =>
     </div>
   </div>
 
-export const Default = Template.bind({})
+const TemplateNumericOrder = args =>
+  <div class="h-dvh min-h-[600px] flex items-center justify-center -m-600">
+    { args.interaction === 'rightclick' && <mds-banner variant='info' tone="strong" icon="mi/baseline/list-alt" headline="Variant with contextual menu">
+      <mds-text>Use <b>Right click</b> of the mouse to trigger the component</mds-text>
+    </mds-banner> }
+    <mds-radial-menu {...args}>
+      <mds-radial-menu-item icon="mdi/numeric-1" tooltip="Item number 1" variant="info" tone={args.interaction === 'rightclick' ? 'quiet' : 'weak'}></mds-radial-menu-item>
+      <mds-radial-menu-item icon="mdi/numeric-2" tooltip="Item number 2" variant="info" tone={args.interaction === 'rightclick' ? 'quiet' : 'weak'}></mds-radial-menu-item>
+      <mds-radial-menu-item icon="mdi/numeric-3" tooltip="Item number 3" variant="success" tone={args.interaction === 'rightclick' ? 'quiet' : 'weak'}></mds-radial-menu-item>
+      <mds-radial-menu-item icon="mdi/numeric-4" tooltip="Item number 4" variant="success" tone={args.interaction === 'rightclick' ? 'quiet' : 'weak'}></mds-radial-menu-item>
+      <mds-radial-menu-item icon="mdi/numeric-5" tooltip="Item number 5" variant="warning" tone={args.interaction === 'rightclick' ? 'quiet' : 'weak'}></mds-radial-menu-item>
+      <mds-radial-menu-item icon="mdi/numeric-6" tooltip="Item number 6" variant="warning" tone={args.interaction === 'rightclick' ? 'quiet' : 'weak'}></mds-radial-menu-item>
+      <mds-radial-menu-item icon="mdi/numeric-7" tooltip="Item number 7" variant="error" tone={args.interaction === 'rightclick' ? 'quiet' : 'weak'}></mds-radial-menu-item>
+      <mds-radial-menu-item icon="mdi/numeric-8" tooltip="Item number 8" variant="error"></mds-radial-menu-item>
+    </mds-radial-menu>
+  </div>
+
+const TemplateAddRemoveItems = args => {
+  const [count, setCount] = useState(6)
+  return (
+    <div class="h-dvh min-h-[600px] flex items-center justify-center relative">
+      <div class="absolute top-600 left-600 flex gap-400 items-baseline">
+        <mds-button onClick={() => setCount(count + 1) }>Add</mds-button>
+        <mds-button onClick={() => setCount(count - 1) } disabled={count <= 1} variant="error">Remove</mds-button>
+        <mds-text>Items count: {count}</mds-text>
+      </div>
+      <mds-radial-menu {...args}>
+        {Array.from(Array(count).keys()).map(index => <mds-radial-menu-item slot="item" key={index} icon="mi/baseline/favorite" tooltip={`Element ${index + 1}`} variant="dark" tone="weak"></mds-radial-menu-item>)}
+      </mds-radial-menu>
+    </div>
+  )
+}
+
+export const Default = TemplateNumericOrder.bind({})
 
 export const ImageOptions = TemplateImage.bind({})
 ImageOptions.args = {
@@ -106,4 +141,10 @@ export const ContextualMenu = Template.bind({})
 ContextualMenu.args = {
   interaction: 'rightclick',
   disc: true,
+}
+
+export const AddRemoveItems = TemplateAddRemoveItems.bind({})
+AddRemoveItems.args = {
+  radius: 5,
+  opened: true,
 }

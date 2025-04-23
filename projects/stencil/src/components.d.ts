@@ -1671,17 +1671,17 @@ export namespace Components {
         "typography": TypographyTitleType;
     }
     interface MdsRadialMenu {
-        "angleEnd"?: number;
-        "angleStart"?: number;
-        "direction"?: Direction;
+        "angleEnd": number;
+        "angleStart": number;
+        "direction": Direction;
         "disc"?: boolean;
         /**
           * The icon displayed in the button
          */
         "icon"?: string;
-        "interaction"?: Interaction;
+        "interaction": Interaction;
         "opened"?: boolean;
-        "radius"?: number;
+        "radius": number;
         /**
           * Specifies the size for the button
          */

@@ -14,19 +14,19 @@ import { ToneVariantType } from '@type/variant'
 export class MdsRadialMenu {
   @Element() private hostElement: HTMLMdsCardHeaderElement
 
-  @Prop({ reflect: true }) readonly angleStart?: number = 0
+  @Prop({ reflect: true }) readonly angleStart: number = 0
 
-  @Prop({ reflect: true }) readonly angleEnd?: number = 360
+  @Prop({ reflect: true }) readonly angleEnd: number = 360
 
-  @Prop({ reflect: true }) readonly radius?: number = 5
+  @Prop({ reflect: true }) readonly radius: number = 5
 
-  @Prop({ reflect: true }) readonly direction?: Direction = 'clockwise'
+  @Prop({ reflect: true }) readonly direction: Direction = 'clockwise'
 
   @Prop({ mutable: true, reflect: true }) opened?: boolean
 
   @Prop({ reflect: true }) readonly disc?: boolean
 
-  @Prop({ reflect: true }) readonly interaction?: Interaction = 'click'
+  @Prop({ reflect: true }) readonly interaction: Interaction = 'click'
 
   /**
    * The icon displayed in the button
@@ -59,7 +59,7 @@ export class MdsRadialMenu {
   }
 
   private setItemSize = (): void => {
-    this.items.forEach((item: HTMLMdsRadialMenuItemElement) => { item.size = this.size })
+    this.items?.forEach((item: HTMLMdsRadialMenuItemElement) => { item.size = this.size })
   }
 
   private setItemIndex = (): void => {
@@ -68,9 +68,25 @@ export class MdsRadialMenu {
     })
   }
 
-  private setFullCircle = (): void => {
-    const isFullCircle = (this.angleEnd! - this.angleStart! === 360) ? '1' : '0'
+  private setIsFullCircle = (): void => {
+    const isFullCircle = (this.angleEnd - this.angleStart === 360) ? '1' : '0'
     this.hostElement.style.setProperty('--mds-radial-menu-is-full-circle', isFullCircle)
+  }
+
+  private setIsStartGreaterThanEnd = (): void => {
+    if (this.angleStart > this.angleEnd) {
+      this.hostElement.style.setProperty('--mds-radial-menu-is-start-greater-than-end', '-1')
+      return
+    }
+
+    this.hostElement.style.setProperty('--mds-radial-menu-is-start-greater-than-end', '1')
+  }
+
+  private updateItems = (): void => {
+    this.items = this.hostElement.querySelectorAll(':scope > [slot="item"]')
+    this.setItemSize()
+    this.setItemIndex()
+    this.hostElement.style.setProperty('--mds-radial-menu-nth-siblings', (this.items.length - 1).toString())
   }
 
   componentWillLoad (): void {
@@ -82,11 +98,9 @@ export class MdsRadialMenu {
   }
 
   componentDidLoad (): void {
-    this.items = this.hostElement.querySelectorAll(':scope > [slot="item"]')
-    this.setItemSize()
-    this.setItemIndex()
-    this.setFullCircle()
-    this.hostElement.style.setProperty('--mds-radial-menu-nth-siblings', (this.items.length - 1).toString())
+    this.updateItems()
+    this.setIsFullCircle()
+    this.setIsStartGreaterThanEnd()
     this.onOpenedChange(this.opened)
     this.onInteractionChange(this.interaction)
   }
@@ -116,13 +130,15 @@ export class MdsRadialMenu {
   @Watch('angleStart')
   onAngleStartChange (newValue?: number): void {
     this.hostElement.style.setProperty('--mds-radial-menu-angle-start', `${newValue}deg`)
-    this.setFullCircle()
+    this.setIsFullCircle()
+    this.setIsStartGreaterThanEnd()
   }
 
   @Watch('angleEnd')
   onAngleEndChange (newValue?: number): void {
     this.hostElement.style.setProperty('--mds-radial-menu-angle-end', `${newValue}deg`)
-    this.setFullCircle()
+    this.setIsFullCircle()
+    this.setIsStartGreaterThanEnd()
   }
 
   @Watch('radius')
@@ -154,7 +170,7 @@ export class MdsRadialMenu {
           onClick={this.toggleMenu}
         ></mds-button>
         <div class="radial-menu" part="radial-menu">
-          <slot name="item"></slot>
+          <slot name="item" onSlotchange={this.updateItems}></slot>
         </div>
         <div class="disc"></div>
       </Host>

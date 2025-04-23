@@ -18,6 +18,7 @@
   /* private */ --mds-radial-menu-disc-scale: 0;
   /* private */ --mds-radial-menu-radius-current: 0;
   /* private */ --mds-radial-menu-is-full-circle: 1;
+  /* private */ --mds-radial-menu-is-start-greater-than-end: 1;
 
   display: inline-flex;
   position: relative;
@@ -27,11 +28,11 @@
 }
 
 :host([direction="clockwise"]) {
-  --mds-radial-menu-direction: -1;
+  --mds-radial-menu-direction: calc(-1 * var(--mds-radial-menu-is-start-greater-than-end));
 }
 
 :host([direction="counterclockwise"]) {
-  --mds-radial-menu-direction: 1;
+  --mds-radial-menu-direction: calc(1 * var(--mds-radial-menu-is-start-greater-than-end));
 }
 
 .menu-button {
