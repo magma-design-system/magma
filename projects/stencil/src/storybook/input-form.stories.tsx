@@ -19,7 +19,11 @@ const Template = () => {
   useEffect(() => {
     const elEmail = document.querySelector('#email') as HTMLMdsInputElement
     const elInputEmail = document.querySelector('#email mds-input') as HTMLMdsInputElement
-    elEmail.addEventListener('mdsInputBlur', () => {
+    elEmail.addEventListener('mdsInputBlur', (e: CustomEvent) => {
+      const elementValue = (e.target as HTMLMdsInputElement).value
+      if (elementValue.length < 3) {
+        return
+      }
       elInputEmail.setAttribute('await', 'true')
       elEmail.setAttribute('variant', 'primary')
       setTimeout(() => {
