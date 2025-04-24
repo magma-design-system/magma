@@ -1,15 +1,29 @@
+/**
+ * @prop --mds-radial-menu-angle-start: Sets the start angle of the menu
+ * @prop --mds-radial-menu-angle-end: Sets the end angle of the menu
+ * @prop --mds-radial-menu-context-menu-z-index: Sets the z-index of the context menu with rightclick interaction
+ * @prop --mds-radial-menu-delay: Sets the delay before the menu items start appearing
+ * @prop --mds-radial-menu-direction: Sets the direction in which the menu items are positioned
+ * @prop --mds-radial-menu-disc-background: Sets the background of the disc
+ * @prop --mds-radial-menu-disc-filter: Sets the filter of the disc
+ * @prop --mds-radial-menu-disc-shadow: Sets the shadow of the disc
+ * @prop --mds-radial-menu-disc-size: Sets the size of the disc
+ * @prop --mds-radial-menu-radius: Sets the radius of the menu
+ * @prop --mds-radial-menu-transition-duration: Set the transition duration of the menu
+ * @prop --mds-radial-menu-transition-timing-function: Set the transition timing function of the menu
+ */
+
 :host {
-  --mds-radial-menu-angle-end: 360deg;
   --mds-radial-menu-angle-start: 0deg;
+  --mds-radial-menu-angle-end: 360deg;
   --mds-radial-menu-context-menu-z-index: var(--magma-context-menu-z-index, 8000);
   --mds-radial-menu-delay: 0.01s;
   --mds-radial-menu-direction: -1;
-  --mds-radial-menu-disc-background: rgb(var(--tone-neutral) / 0.15);
+  --mds-radial-menu-disc-background: rgb(var(--tone-neutral) / 0.50);
   --mds-radial-menu-disc-filter: blur(8px);
   --mds-radial-menu-disc-shadow: theme('boxShadow.lg-sharp');
   --mds-radial-menu-disc-size: calc(var(--mds-radial-menu-radius) * 2);
   --mds-radial-menu-radius: 5rem;
-  --mds-radial-menu-safe-area-offset: 20rem;
   --mds-radial-menu-transition-duration: theme('transitionDuration.500');
   --mds-radial-menu-transition-timing-function: theme('transitionTimingFunction.out-expo');
 
@@ -25,6 +39,7 @@
   transition-duration: var(--mds-radial-menu-transition-duration);
   transition-property: top, left;
   transition-timing-function: var(--mds-radial-menu-transition-timing-function);
+  z-index: var(--magma-dropdown-z-index, 5000);
 }
 
 :host([direction="clockwise"]) {
@@ -64,43 +79,15 @@
 
 :host(:not([opened])) {
   --mds-radial-menu-radius-current: 0;
-  --mds-radial-menu-disc-scale: 0;
-  --mds-radial-menu-disc-delay: calc((var(--mds-radial-menu-nth-siblings) + 1) * var(--mds-radial-menu-delay));
 }
 
 :host([opened]) {
   --mds-radial-menu-radius-current: var(--mds-radial-menu-radius);
-  --mds-radial-menu-disc-scale: 1;
-  --mds-radial-menu-disc-delay: 0s;
 }
 
 :host([opened]) ::slotted(mds-radial-menu-item) {
   pointer-events: auto;
   transform: scale(1);
-}
-
-.disc {
-  --size: calc(var(--mds-radial-menu-disc-size) + var(--mds-radial-menu-radius));
-
-  backdrop-filter: var(--mds-radial-menu-disc-filter);
-  background-color: var(--mds-radial-menu-disc-background);
-  border-radius: 100%;
-  box-shadow: var(--mds-radial-menu-disc-shadow);
-  display: inline-flex;
-  height: var(--size);
-  inset: 50%;
-  position: absolute;
-  transform: translate(-50%, -50%) scale(var(--mds-radial-menu-disc-scale));
-  transition-delay: var(--mds-radial-menu-disc-delay);
-  transition-duration: var(--mds-radial-menu-transition-duration);
-  transition-property: height, transform, width;
-  transition-timing-function: var(--mds-radial-menu-transition-timing-function);
-  width: var(--size);
-  z-index: 0;
-}
-
-:host(:not([disc])) .disc {
-  display: none;
 }
 
 ::slotted(mds-radial-menu-item) {
@@ -110,5 +97,6 @@
   --mds-radial-menu-item-translate: calc(cos((var(--mds-radial-menu-angle-start) + var(--mds-radial-menu-item-angle-offset))) * var(--mds-radial-menu-radius-current)) calc(sin((var(--mds-radial-menu-angle-start) + var(--mds-radial-menu-item-angle-offset))) * var(--mds-radial-menu-radius-current) * -1);
 }
 
+@import "./css/mds-radial-menu-disc.css";
 @import "./css/mds-radial-menu-interaction.css";
 @import '../../tailwind/fouc.css';

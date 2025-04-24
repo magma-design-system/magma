@@ -13,53 +13,57 @@ export default {
   argTypes: {
     'angle-start': {
       type: { name: 'number' },
-      description: 'Specifies the angle start',
+      description: 'Specifies the starting angle of the menu',
     },
     'angle-end': {
       type: { name: 'number' },
-      description: 'Specifies the angle end',
+      description: 'Specifies the ending angle of the menu',
     },
     radius: {
       type: { name: 'number' },
       control: { type: 'range', min: 1, max: 20 },
-      description: 'Specifies the length of the radius in rem',
-    },
-    disc: {
-      type: { name: 'boolean' },
-      description: '',
-    },
-    icon: {
-      type: { name: 'string' },
-      description: 'The name of the icon set. The icon set is strictly realted to @maggioli-design-system/icons',
-      options: iconsDictionary,
-      control: { type: 'select' },
+      description: 'Specifies the radius of the menu',
     },
     direction: {
       type: { name: 'string' },
-      description: 'Specifies the direction',
+      description: 'Specifies the direction of the menu elements',
       options: directionDictionary,
       control: { type: 'select' },
     },
     opened: {
       type: { name: 'boolean' },
-      description: 'Specifies the opened',
+      description: 'Specifies if the menu is opened or not',
+    },
+    disc: {
+      type: { name: 'boolean' },
+      description: 'Specifies if the menu has a disc beneath or not',
+    },
+    backdrop: {
+      type: { name: 'boolean' },
+      description: 'Specifies if the component has a backdrop background',
+    },
+    icon: {
+      type: { name: 'string' },
+      description: 'The icon displayed in the button',
+      options: iconsDictionary,
+      control: { type: 'select' },
+    },
+    variant: {
+      type: { name: 'string' },
+      description: 'Specifies the color variant for the button',
+      options: buttonVariantDictionary,
+      control: { type: 'select' },
     },
     size: {
       type: { name: 'string' },
-      description: 'Specifies the size of the button',
+      description: 'Specifies the size for the button',
       options: buttonSizeDictionary,
       control: { type: 'select' },
     },
     tone: {
       type: { name: 'string' },
-      description: 'Specifies the tone variant of the button',
+      description: 'Specifies the tone variant for the button',
       options: buttonToneVariantDictionary,
-      control: { type: 'select' },
-    },
-    variant: {
-      type: { name: 'string' },
-      description: 'Specifies the variant of the button',
-      options: buttonVariantDictionary,
       control: { type: 'select' },
     },
   },
@@ -83,7 +87,7 @@ const Template = args =>
   </div>
 
 const TemplateImage = args =>
-  <div class="h-dvh min-h-[600px] flex items-center justify-center -m-600">
+  <div class="h-dvh min-h-[600px] flex items-center justify-center">
     <div class="relative w-full max-w-[320px]">
       <mds-img src="/book-cover-10.webp" class="rounded-xl shadow-lg-sharp"></mds-img>
       <mds-radial-menu {...args} class="absolute top-600 right-600">
@@ -95,7 +99,7 @@ const TemplateImage = args =>
   </div>
 
 const TemplateNumericOrder = args =>
-  <div class="h-dvh min-h-[600px] flex items-center justify-center -m-600">
+  <div class="h-dvh min-h-[600px] flex items-center justify-center">
     { args.interaction === 'rightclick' && <mds-banner variant='info' tone="strong" icon="mi/baseline/list-alt" headline="Variant with contextual menu">
       <mds-text>Use <b>Right click</b> of the mouse to trigger the component</mds-text>
     </mds-banner> }

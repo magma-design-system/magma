@@ -8,7 +8,9 @@ import { ToneVariantType } from '@type/variant'
   shadow: true,
 })
 export class MdsRadialMenuItem {
-
+  /**
+   * The tooltip displayed when hovering over the button
+   */
   @Prop({ reflect: true }) readonly tooltip?: string
 
   /**
@@ -26,9 +28,6 @@ export class MdsRadialMenuItem {
    */
   @Prop({ reflect: true }) readonly variant?: ButtonVariantType = 'dark'
 
-  /**
-   * Specifies the size for the button
-   */
   @Prop({ reflect: true }) readonly size: ButtonSizeType = 'lg'
 
   render () {

@@ -1671,16 +1671,41 @@ export namespace Components {
         "typography": TypographyTitleType;
     }
     interface MdsRadialMenu {
+        /**
+          * Specifies the ending angle of the menu
+         */
         "angleEnd": number;
+        /**
+          * Specifies the starting angle of the menu
+         */
         "angleStart": number;
+        /**
+          * Specifies if the component has a backdrop background
+         */
+        "backdrop"?: boolean;
+        /**
+          * Specifies the direction of the menu elements
+         */
         "direction": Direction;
+        /**
+          * Specifies if the menu has a disc beneath or not
+         */
         "disc"?: boolean;
         /**
           * The icon displayed in the button
          */
         "icon"?: string;
+        /**
+          * Specifies how to open the menu
+         */
         "interaction": Interaction;
+        /**
+          * Specifies if the menu is opened or not
+         */
         "opened"?: boolean;
+        /**
+          * Specifies the radius of the menu
+         */
         "radius": number;
         /**
           * Specifies the size for the button
@@ -1700,14 +1725,14 @@ export namespace Components {
           * The icon displayed in the button
          */
         "icon"?: string;
-        /**
-          * Specifies the size for the button
-         */
         "size": ButtonSizeType;
         /**
           * Specifies the tone variant for the button
          */
         "tone"?: ToneVariantType;
+        /**
+          * The tooltip displayed when hovering over the button
+         */
         "tooltip"?: string;
         /**
           * Specifies the color variant for the button
@@ -5287,16 +5312,41 @@ declare namespace LocalJSX {
         "typography"?: TypographyTitleType;
     }
     interface MdsRadialMenu {
+        /**
+          * Specifies the ending angle of the menu
+         */
         "angleEnd"?: number;
+        /**
+          * Specifies the starting angle of the menu
+         */
         "angleStart"?: number;
+        /**
+          * Specifies if the component has a backdrop background
+         */
+        "backdrop"?: boolean;
+        /**
+          * Specifies the direction of the menu elements
+         */
         "direction"?: Direction;
+        /**
+          * Specifies if the menu has a disc beneath or not
+         */
         "disc"?: boolean;
         /**
           * The icon displayed in the button
          */
         "icon"?: string;
+        /**
+          * Specifies how to open the menu
+         */
         "interaction"?: Interaction;
+        /**
+          * Specifies if the menu is opened or not
+         */
         "opened"?: boolean;
+        /**
+          * Specifies the radius of the menu
+         */
         "radius"?: number;
         /**
           * Specifies the size for the button
@@ -5316,14 +5366,14 @@ declare namespace LocalJSX {
           * The icon displayed in the button
          */
         "icon"?: string;
-        /**
-          * Specifies the size for the button
-         */
         "size"?: ButtonSizeType;
         /**
           * Specifies the tone variant for the button
          */
         "tone"?: ToneVariantType;
+        /**
+          * The tooltip displayed when hovering over the button
+         */
         "tooltip"?: string;
         /**
           * Specifies the color variant for the button

@@ -5,6 +5,7 @@ import miBaselineMoreVert from '@icon/mi/baseline/more-vert.svg'
 import miBaselineClose from '@icon/mi/baseline/close.svg'
 import clsx from 'clsx'
 import { ToneVariantType } from '@type/variant'
+import { Backdrop } from '@common/floating-controller'
 
 @Component({
   tag: 'mds-radial-menu',
@@ -13,19 +14,46 @@ import { ToneVariantType } from '@type/variant'
 })
 export class MdsRadialMenu {
   @Element() private hostElement: HTMLMdsCardHeaderElement
+  private readonly backdropController: Backdrop = new Backdrop('mds-radial-menu-backdrop')
 
+  /**
+   * Specifies the starting angle of the menu
+   */
   @Prop({ reflect: true }) readonly angleStart: number = 0
 
+  /**
+   * Specifies the ending angle of the menu
+   */
   @Prop({ reflect: true }) readonly angleEnd: number = 360
 
+  /**
+   * Specifies the radius of the menu
+   */
   @Prop({ reflect: true }) readonly radius: number = 5
 
+  /**
+   * Specifies the direction of the menu elements
+   */
   @Prop({ reflect: true }) readonly direction: Direction = 'clockwise'
 
+  /**
+   * Specifies if the menu is opened or not
+   */
   @Prop({ mutable: true, reflect: true }) opened?: boolean
 
-  @Prop({ reflect: true }) readonly disc?: boolean
+  /**
+   * Specifies if the menu has a disc beneath or not
+   */
+  @Prop({ mutable: true, reflect: true }) disc?: boolean
 
+  /**
+   * Specifies if the component has a backdrop background
+   */
+  @Prop({ reflect: true }) backdrop?: boolean = false
+
+  /**
+   * Specifies how to open the menu
+   */
   @Prop({ reflect: true }) readonly interaction: Interaction = 'click'
 
   /**
@@ -117,6 +145,33 @@ export class MdsRadialMenu {
     this.toggleMenu()
   }
 
+  private handleBackdrop = (): void => {
+    if (!this.backdrop) {
+      this.backdropController.detachBackdrop()
+      return
+    }
+    if (this.opened) {
+      this.backdropController.attachBackdrop()
+      return
+    }
+    this.backdropController.detachBackdrop()
+  }
+
+  @Watch('disc')
+  onDiscChanged (newValue?: boolean): void {
+    if (newValue === false) {
+      this.disc = undefined
+    }
+  }
+
+  @Watch('backdrop')
+  backdropChanged (newValue: boolean): void {
+    if (newValue === false) {
+      this.backdrop = undefined
+    }
+    this.handleBackdrop()
+  }
+
   @Watch('interaction')
   onInteractionChange (newValue?: Interaction): void {
     if (!document) return
@@ -156,6 +211,7 @@ export class MdsRadialMenu {
     if (newValue === false) {
       this.opened = undefined
     }
+    this.handleBackdrop()
   }
 
   render () {
