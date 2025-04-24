@@ -8,6 +8,7 @@ import { ToneVariantType } from '@type/variant'
   shadow: true,
 })
 export class MdsRadialMenuItem {
+
   /**
    * The tooltip displayed when hovering over the button
    */

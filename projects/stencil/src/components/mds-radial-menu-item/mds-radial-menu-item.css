@@ -12,8 +12,6 @@
 
   display: inline-flex;
   inset: 0;
-
-  /* opacity: 0; */
   pointer-events: none;
   position: absolute;
   transform: scale(0);
