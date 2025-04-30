@@ -115,12 +115,12 @@ export class MdsInputDate {
     this.internalValue = input.value
     if (!input.validity.badInput && input.value !== '') {
       this.messageError = ''
-      this.valueChange.emit(this.internalValue)
       this.empty = undefined
     } else {
       this.messageError = input.validationMessage
       this.empty = true
     }
+    this.valueChange.emit(this.internalValue)
   }
 
   render () {
