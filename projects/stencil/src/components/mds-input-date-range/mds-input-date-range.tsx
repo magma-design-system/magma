@@ -132,6 +132,8 @@ export class MdsInputDateRange {
         }, this.delay)
       }
     }
+
+    this.dateRangeSelected.emit({ startDate: this.internalStartDate, endDate: this.internalEndDate })
     return Promise.resolve()
   }
 
