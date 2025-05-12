@@ -2,18 +2,24 @@
 @tailwind components;
 @tailwind utilities;
 
+/**
+ * @prop --mds-input-date-range-background: Sets the background-color of the component
+ * @prop --mds-input-date-range-fields-firefox-justify-content: Sets the justify-content of the component in Firefox
+ * @prop --mds-input-date-range-fields-gap: Sets the gap between the fields of the component
+ * @prop --mds-input-date-range-icon-color: Sets the icon color of the component
+ * @prop --mds-input-date-range-ring: Sets the box-shadow of the component's input to perform the ring effect
+ * @prop --mds-input-date-range-shadow: Sets the box-shadow of the component's input
+ * @prop --mds-input-date-range-variant-color: Sets the variant colors of the component
+*/
+
 :host {
   --mds-input-date-range-background: theme('colors.tone-neutral');
+  --mds-input-date-range-fields-firefox-justify-content: start;
+  --mds-input-date-range-fields-gap: 0 theme('spacing.200');
   --mds-input-date-range-icon-color: var(--mds-input-date-range-variant-color);
-  --mds-input-date-range-tip-background: 84 84 84;
   --mds-input-date-range-ring: 0 0 0 1px rgb(var(--mds-input-date-range-variant-color) / 0.1);
   --mds-input-date-range-shadow: 0 1px 3px 0 rgb(var(--mds-input-date-range-variant-color) / 0.1), 0 1px 2px 0 rgb(var(--mds-input-date-range-variant-color) / 0.06);
   --mds-input-date-range-variant-color: 0 0 0;
-  --mds-input-date-range-textarea-min-height: theme('size.2400');
-  --mds-input-date-range-textarea-max-height: theme('size.6400');
-  --mds-input-date-range-textarea-field-sizing: content;
-  --mds-input-date-range-fields-firefox-justify-content: start;
-  --mds-input-date-range-fields-gap: 0 theme('spacing.200');
 
   @apply
     gap-200

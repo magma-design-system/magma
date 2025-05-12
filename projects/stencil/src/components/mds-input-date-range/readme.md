@@ -52,6 +52,19 @@ Type: `Promise<void>`
 
 
 
+## CSS Custom Properties
+
+| Name                                                    | Description                                                             |
+| ------------------------------------------------------- | ----------------------------------------------------------------------- |
+| `--mds-input-date-range-background`                     | Sets the background-color of the component                              |
+| `--mds-input-date-range-fields-firefox-justify-content` | Sets the justify-content of the component in Firefox                    |
+| `--mds-input-date-range-fields-gap`                     | Sets the gap between the fields of the component                        |
+| `--mds-input-date-range-icon-color`                     | Sets the icon color of the component                                    |
+| `--mds-input-date-range-ring`                           | Sets the box-shadow of the component's input to perform the ring effect |
+| `--mds-input-date-range-shadow`                         | Sets the box-shadow of the component's input                            |
+| `--mds-input-date-range-variant-color`                  | Sets the variant colors of the component                                |
+
+
 ## Dependencies
 
 ### Depends on
