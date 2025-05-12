@@ -13,7 +13,7 @@
   --mds-input-date-range-textarea-max-height: theme('size.6400');
   --mds-input-date-range-textarea-field-sizing: content;
   --mds-input-date-range-fields-firefox-justify-content: start;
-  --mds-input-date-range-fields-gap: 0 theme('spacing.400');
+  --mds-input-date-range-fields-gap: 0 theme('spacing.200');
 
   @apply
     gap-200
@@ -50,6 +50,7 @@
   color: inherit;
   display: inline-flex;
   flex-wrap: wrap;
+  gap: var(--mds-input-date-range-fields-gap);
   min-height: 3rem;
   overflow: hidden;
   text-overflow: ellipsis;

@@ -156,8 +156,8 @@ export class MdsInputDateRange {
 
   componentDidLoad (): void {
     this.updateInputListeners()
-    this.updateInputValue('start', this.internalStartDate)
-    this.updateInputValue('end', this.internalEndDate)
+    if (this.internalStartDate) this.updateInputValue('start', this.internalStartDate)
+    if (this.internalEndDate) this.updateInputValue('end', this.internalEndDate)
   }
 
   private updateInputValue (slotName: string, newValue: string): void {
