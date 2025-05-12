@@ -29,7 +29,7 @@ const TemplateCustomIcon = () =>
   <div class="grid gap-600 tablet:grid-cols-[200px_auto] p-600 bg-tone-neutral-10 rounded-xl max-w-[500px]">
     <div class="mobile:max-w-[200px] relative">
       <mds-policy-ai variant="icon" class="absolute bottom-200 right-200 z-10"></mds-policy-ai>
-      <mds-img src="/book-cover-06.webp" class="rounded-md shadow-sm"></mds-img>
+      <mds-img src="./book-cover-06.webp" class="rounded-md shadow-sm"></mds-img>
     </div>
     <div class="grid gap-400 auto-rows-min">
       <mds-text typography='h5'>Lorem ipsum dolor sit amet, consectetur adipisicing elit</mds-text>
@@ -39,7 +39,7 @@ const TemplateCustomIcon = () =>
 
 const TemplateCustomChip = args =>
   <div class="grid gap-600 tablet:grid-cols-[200px_auto] p-600 bg-tone-neutral-10 rounded-xl max-w-[500px]">
-    <mds-img src="/book-cover-02.webp" class="rounded-md shadow-sm mobile:max-w-[200px]"></mds-img>
+    <mds-img src="./book-cover-02.webp" class="rounded-md shadow-sm mobile:max-w-[200px]"></mds-img>
     <div class="grid gap-400 auto-rows-min">
       <mds-text typography='h5'>Lorem ipsum dolor sit amet, consectetur adipisicing elit</mds-text>
       <mds-text typography='detail'>Rem nostrum alias, optio illum vel autem perspiciatis, sapiente earum neque amet temporibus ipsam voluptates eveniet distinctio totam, inventore nulla quaerat eius?</mds-text>
@@ -50,7 +50,7 @@ const TemplateCustomChip = args =>
 const TemplateCustomCard = args =>
   <div class="grid gap-600 bg-tone-neutral-10 rounded-xl p-600 max-w-[480px]">
     <div class="grid gap-600">
-      <mds-img src="/book-cover-05.webp" class="rounded-md shadow-sm max-w-[200px] self-start"></mds-img>
+      <mds-img src="./book-cover-05.webp" class="rounded-md shadow-sm max-w-[200px] self-start"></mds-img>
       <div class="grid gap-400 auto-rows-min">
         <mds-text typography='h5'>Lorem ipsum dolor sit amet, consectetur adipisicing elit</mds-text>
         <mds-text typography='detail'>Rem nostrum alias, optio illum vel autem perspiciatis, sapiente earum neque amet temporibus ipsam voluptates eveniet distinctio totam, inventore nulla quaerat eius?</mds-text>
@@ -78,7 +78,7 @@ const TemplateCustomCard = args =>
 const TemplateCustomBanner = args =>
   <div class="grid gap-600 max-w-[728px] m-auto">
     <div class="grid gap-600 tablet:grid-cols-[200px_auto]">
-      <mds-img src="/book-cover-05.webp" class="rounded-md shadow-sm max-w-[200px] self-start"></mds-img>
+      <mds-img src="./book-cover-05.webp" class="rounded-md shadow-sm max-w-[200px] self-start"></mds-img>
       <div class="grid gap-400 auto-rows-min">
         <mds-text typography='h2'>Lorem ipsum dolor sit amet, consectetur adipisicing elit</mds-text>
         <mds-text typography='detail'>Rem nostrum alias, optio illum vel autem perspiciatis, sapiente earum neque amet temporibus ipsam voluptates eveniet distinctio totam, inventore nulla quaerat eius?</mds-text>
