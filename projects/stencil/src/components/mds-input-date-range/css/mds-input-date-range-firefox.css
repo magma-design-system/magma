@@ -1,0 +1,12 @@
+@supports (-moz-appearance: none) {
+  .action-open-calendar {
+    display: none;
+  }
+
+  .inputs {
+    @apply pr-400;
+
+    gap: var(--mds-input-date-range-fields-gap);
+    justify-content: var(--mds-input-date-range-fields-firefox-justify-content);
+  }
+}

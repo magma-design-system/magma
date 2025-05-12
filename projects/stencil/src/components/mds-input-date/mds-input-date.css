@@ -155,4 +155,5 @@ mds-dropdown {
   padding: 0;
 }
 
+@import './css/mds-input-date-firefox.css';
 @import './css/mds-input-date-variant.css';
