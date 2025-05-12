@@ -6,28 +6,22 @@
 
 /**
  * @prop --mds-input-date-background: Sets the background-color of the component
+ * @prop --mds-input-date-field-background-empty: Sets the color of the component when the value is empty or not valid
+ * @prop --mds-input-date-field-color-empty: Sets the color of the component when the value is empty or not valid
  * @prop --mds-input-date-icon-color: Sets the icon color of the component
- * @prop --mds-input-date-ring: Sets the box-shadow of the component's input
+ * @prop --mds-input-date-ring: Sets the box-shadow of the component's input to perform the ring effect
  * @prop --mds-input-date-shadow: Sets the box-shadow of the component's input
- * @prop --mds-input-date-textarea-field-sizing: Sets the height of the textarea automatically, this is an EXPERIMENTAL css property, so it couldn't work in every browser
- * @prop --mds-input-date-textarea-max-height: Sets the `max-height` of the component when attribute `type` is set to `textarea`
- * @prop --mds-input-date-textarea-min-height: Sets the `min-height` of the component when attribute `type` is set to `textarea`
- * @prop --mds-input-date-tip-background: Sets the background color of the tip message at the bottom right of the component
  * @prop --mds-input-date-variant-color: Sets the variant colors of the component
  */
 
 :host {
   --mds-input-date-background: theme('colors.tone-neutral');
+  --mds-input-date-field-background-empty: theme('colors.status-error-10');
+  --mds-input-date-field-color-empty: theme('colors.status-error-06');
   --mds-input-date-icon-color: var(--mds-input-date-variant-color);
-  --mds-input-date-tip-background: 84 84 84;
   --mds-input-date-ring: 0 0 0 1px rgb(var(--mds-input-date-variant-color) / 0.1);
   --mds-input-date-shadow: 0 1px 3px 0 rgb(var(--mds-input-date-variant-color) / 0.1), 0 1px 2px 0 rgb(var(--mds-input-date-variant-color) / 0.06);
   --mds-input-date-variant-color: 0 0 0;
-  --mds-input-date-field-color-empty: theme('colors.status-error-06');
-  --mds-input-date-field-background-empty: theme('colors.status-error-10');
-  --mds-input-date-textarea-min-height: theme('size.2400');
-  --mds-input-date-textarea-max-height: theme('size.6400');
-  --mds-input-date-textarea-field-sizing: content;
 
   @apply
     gap-200
