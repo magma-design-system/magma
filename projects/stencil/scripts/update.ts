@@ -120,7 +120,7 @@ function getNpmPackageShortInfo (c: string): Promise<ShortPackageInfo | null> {
       }
       if (res.status === 404) {
         // return null if a component are not published
-        console.warn(`WARN: Componet ${c} isn't published`)
+        console.warn(`WARN: Component ${c} is NOT published yet`)
         return Promise.resolve(null)
       }
       return Promise.reject(new Error(`cant fetch npm package info ${c}\n${res.status}: ${res.statusText}`))
