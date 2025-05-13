@@ -25,7 +25,7 @@
   "dependencies": {
     "@maggioli-design-system/mds-header-bar": "7.6.0",
     "@maggioli-design-system/mds-modal": "6.2.0",
-    "@maggioli-design-system/styles": "15.9.1",
+    "@maggioli-design-system/styles": "15.10.0",
     "@stencil/core": "4.27.2"
   },
   "license": "MIT",

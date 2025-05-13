@@ -5,6 +5,7 @@
   container-name: mds-author;
   container-type: inline-size;
   display: flex;
+  width: 100%;
 }
 
 .avatar {

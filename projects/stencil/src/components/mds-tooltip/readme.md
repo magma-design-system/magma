@@ -72,6 +72,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
  - [mds-help](../mds-help)
  - [mds-keyboard](../mds-keyboard)
+ - [mds-radial-menu-item](../mds-radial-menu-item)
 
 ### Depends on
 
@@ -83,6 +84,7 @@ graph TD;
   mds-tooltip --> mds-text
   mds-help --> mds-tooltip
   mds-keyboard --> mds-tooltip
+  mds-radial-menu-item --> mds-tooltip
   style mds-tooltip fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

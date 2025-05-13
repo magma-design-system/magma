@@ -1,0 +1,102 @@
+/**
+ * @prop --mds-radial-menu-angle-start: Sets the start angle of the menu
+ * @prop --mds-radial-menu-angle-end: Sets the end angle of the menu
+ * @prop --mds-radial-menu-context-menu-z-index: Sets the z-index of the context menu with rightclick interaction
+ * @prop --mds-radial-menu-delay: Sets the delay before the menu items start appearing
+ * @prop --mds-radial-menu-direction: Sets the direction in which the menu items are positioned
+ * @prop --mds-radial-menu-disc-background: Sets the background of the disc
+ * @prop --mds-radial-menu-disc-filter: Sets the filter of the disc
+ * @prop --mds-radial-menu-disc-shadow: Sets the shadow of the disc
+ * @prop --mds-radial-menu-disc-size: Sets the size of the disc
+ * @prop --mds-radial-menu-radius: Sets the radius of the menu
+ * @prop --mds-radial-menu-transition-duration: Set the transition duration of the menu
+ * @prop --mds-radial-menu-transition-timing-function: Set the transition timing function of the menu
+ */
+
+:host {
+  --mds-radial-menu-angle-start: 0deg;
+  --mds-radial-menu-angle-end: 360deg;
+  --mds-radial-menu-context-menu-z-index: var(--magma-context-menu-z-index, 8000);
+  --mds-radial-menu-delay: 0.01s;
+  --mds-radial-menu-direction: -1;
+  --mds-radial-menu-disc-background: rgb(var(--tone-neutral) / 0.50);
+  --mds-radial-menu-disc-filter: blur(8px);
+  --mds-radial-menu-disc-shadow: theme('boxShadow.lg-sharp');
+  --mds-radial-menu-disc-size: calc(var(--mds-radial-menu-radius) * 2);
+  --mds-radial-menu-radius: 5rem;
+  --mds-radial-menu-transition-duration: theme('transitionDuration.500');
+  --mds-radial-menu-transition-timing-function: theme('transitionTimingFunction.out-expo');
+
+  /* private */ --mds-radial-menu-nth-siblings: 0;
+  /* private */ --mds-radial-menu-disc-delay: 0s;
+  /* private */ --mds-radial-menu-disc-scale: 0;
+  /* private */ --mds-radial-menu-radius-current: 0;
+  /* private */ --mds-radial-menu-is-full-circle: 1;
+  /* private */ --mds-radial-menu-is-start-greater-than-end: 1;
+
+  display: inline-flex;
+  position: relative;
+  transition-duration: var(--mds-radial-menu-transition-duration);
+  transition-property: top, left;
+  transition-timing-function: var(--mds-radial-menu-transition-timing-function);
+  z-index: var(--magma-dropdown-z-index, 5000);
+}
+
+:host([direction="clockwise"]) {
+  --mds-radial-menu-direction: calc(-1 * var(--mds-radial-menu-is-start-greater-than-end));
+}
+
+:host([direction="counterclockwise"]) {
+  --mds-radial-menu-direction: calc(1 * var(--mds-radial-menu-is-start-greater-than-end));
+}
+
+.menu-button {
+  border-radius: 100%;
+  position: relative;
+  transform: scale(1);
+  transition-duration: var(--mds-radial-menu-transition-duration);
+  transition-timing-function: var(--mds-radial-menu-transition-timing-function);
+  z-index: 2;
+}
+
+:host(:not([opened])) .menu-button--hidden {
+  transform: scale(0);
+}
+
+.radial-menu {
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+  transition-delay: calc((var(--mds-radial-menu-nth-siblings) * 2) * var(--mds-radial-menu-delay));
+  transition-property: z-index;
+  z-index: 3;
+}
+
+:host(:not([opened])) .radial-menu {
+  transition-delay: 0s;
+  z-index: 1;
+}
+
+:host(:not([opened])) {
+  --mds-radial-menu-radius-current: 0;
+}
+
+:host([opened]) {
+  --mds-radial-menu-radius-current: var(--mds-radial-menu-radius);
+}
+
+:host([opened]) ::slotted(mds-radial-menu-item) {
+  pointer-events: auto;
+  transform: scale(1);
+}
+
+::slotted(mds-radial-menu-item) {
+  --mds-radial-menu-item-offset-per-child: calc((var(--mds-radial-menu-angle-end) - var(--mds-radial-menu-angle-start)) / (var(--mds-radial-menu-nth-siblings) + var(--mds-radial-menu-is-full-circle)));
+	--mds-radial-menu-item-angle-offset: calc(var(--mds-radial-menu-direction) * var(--mds-radial-menu-item-index) * var(--mds-radial-menu-item-offset-per-child));
+  --mds-radial-menu-item-delay: calc((var(--mds-radial-menu-item-index) + 1) * var(--mds-radial-menu-delay));
+  --mds-radial-menu-item-translate: calc(cos((var(--mds-radial-menu-angle-start) + var(--mds-radial-menu-item-angle-offset))) * var(--mds-radial-menu-radius-current)) calc(sin((var(--mds-radial-menu-angle-start) + var(--mds-radial-menu-item-angle-offset))) * var(--mds-radial-menu-radius-current) * -1);
+}
+
+@import "./css/mds-radial-menu-disc.css";
+@import "./css/mds-radial-menu-interaction.css";
+@import '../../tailwind/fouc.css';

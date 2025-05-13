@@ -1,0 +1,41 @@
+/**
+ * @prop --mds-radial-menu-item-transition-duration: Set the transition duration of the menu items
+ * @prop --mds-radial-menu-item-transition-timing-function: Set the transition timing function of the menu items
+ */
+
+:host {
+  --mds-radial-menu-item-transition-duration: var(--mds-radial-menu-transition-duration, theme('transitionDuration.500'));
+  --mds-radial-menu-item-transition-timing-function: var(--mds-radial-menu-transition-timing-function, theme('transitionTimingFunction.out-expo'));
+
+  /* private */ --mds-radial-menu-item-delay: 0;
+  /* private */ --mds-radial-menu-item-index: 0;
+
+  display: inline-flex;
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+  transform: scale(0);
+  transition-delay: var(--mds-radial-menu-item-delay);
+  transition-duration: var(--mds-radial-menu-item-transition-duration);
+  transition-property: translate, transform;
+  transition-timing-function: var(--mds-radial-menu-item-transition-timing-function);
+  translate: var(--mds-radial-menu-item-translate);
+}
+
+:host(:hover) {
+  z-index: 1;
+}
+
+.button {
+  border-radius: 100%;
+}
+
+.tooltip {
+  --mds-tooltip-delay: 0;
+
+  min-width: max-content;
+  width: min-content;
+
+}
+
+@import '../../tailwind/fouc.css';

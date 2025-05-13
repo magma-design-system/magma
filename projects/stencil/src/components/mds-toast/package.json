@@ -23,7 +23,7 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@maggioli-design-system/styles": "15.9.1",
+    "@maggioli-design-system/styles": "15.10.0",
     "@stencil/core": "4.27.2",
     "clsx": "2.1.0"
   },

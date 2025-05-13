@@ -30,7 +30,7 @@
     "@maggioli-design-system/mds-input-date": "1.0.0",
     "@maggioli-design-system/mds-input-date-range-preselection": "1.0.0",
     "@maggioli-design-system/mds-text": "4.7.2",
-    "@maggioli-design-system/styles": "15.9.1",
+    "@maggioli-design-system/styles": "15.10.0",
     "@stencil/core": "4.27.2",
     "clsx": "2.1.0",
     "luxon": "3.6.1"
