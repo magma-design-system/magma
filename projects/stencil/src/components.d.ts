@@ -60,6 +60,7 @@ import { DirectionType } from "./components/mds-progress/meta/types";
 import { MdsPushNotificationEventDetail } from "./components/mds-push-notification/meta/event-detail";
 import { NotificationItemDateFormatType, NotificationItemPreviewType } from "./components/mds-push-notification-item/meta/types";
 import { MdsPushNotificationItemEventDetail } from "./components/mds-push-notification-item/meta/event-detail";
+import { Direction, Interaction } from "./components/mds-radial-menu/meta/types";
 import { MdsStepperBarEventDetail } from "./components/mds-stepper-bar/meta/event-detail";
 import { MdsStepperBarItemEventDetail } from "./components/mds-stepper-bar-item/meta/event-detail";
 import { HorizontalActionsAnimationType } from "./type/animation";
@@ -130,6 +131,7 @@ export { DirectionType } from "./components/mds-progress/meta/types";
 export { MdsPushNotificationEventDetail } from "./components/mds-push-notification/meta/event-detail";
 export { NotificationItemDateFormatType, NotificationItemPreviewType } from "./components/mds-push-notification-item/meta/types";
 export { MdsPushNotificationItemEventDetail } from "./components/mds-push-notification-item/meta/event-detail";
+export { Direction, Interaction } from "./components/mds-radial-menu/meta/types";
 export { MdsStepperBarEventDetail } from "./components/mds-stepper-bar/meta/event-detail";
 export { MdsStepperBarItemEventDetail } from "./components/mds-stepper-bar-item/meta/event-detail";
 export { HorizontalActionsAnimationType } from "./type/animation";
@@ -1668,6 +1670,75 @@ export namespace Components {
          */
         "typography": TypographyTitleType;
     }
+    interface MdsRadialMenu {
+        /**
+          * Specifies the ending angle of the menu
+         */
+        "angleEnd": number;
+        /**
+          * Specifies the starting angle of the menu
+         */
+        "angleStart": number;
+        /**
+          * Specifies if the component has a backdrop background
+         */
+        "backdrop"?: boolean;
+        /**
+          * Specifies the direction of the menu elements
+         */
+        "direction": Direction;
+        /**
+          * Specifies if the menu has a disc beneath or not
+         */
+        "disc"?: boolean;
+        /**
+          * The icon displayed in the button
+         */
+        "icon"?: string;
+        /**
+          * Specifies how to open the menu
+         */
+        "interaction": Interaction;
+        /**
+          * Specifies if the menu is opened or not
+         */
+        "opened"?: boolean;
+        /**
+          * Specifies the radius of the menu
+         */
+        "radius": number;
+        /**
+          * Specifies the size for the button
+         */
+        "size": ButtonSizeType;
+        /**
+          * Specifies the tone variant for the button
+         */
+        "tone"?: ToneVariantType;
+        /**
+          * Specifies the color variant for the button
+         */
+        "variant"?: ButtonVariantType;
+    }
+    interface MdsRadialMenuItem {
+        /**
+          * The icon displayed in the button
+         */
+        "icon"?: string;
+        "size": ButtonSizeType;
+        /**
+          * Specifies the tone variant for the button
+         */
+        "tone"?: ToneVariantType;
+        /**
+          * The tooltip displayed when hovering over the button
+         */
+        "tooltip"?: string;
+        /**
+          * Specifies the color variant for the button
+         */
+        "variant"?: ButtonVariantType;
+    }
     interface MdsSeparator {
     }
     interface MdsSpinner {
@@ -3189,6 +3260,18 @@ declare global {
         prototype: HTMLMdsQuoteElement;
         new (): HTMLMdsQuoteElement;
     };
+    interface HTMLMdsRadialMenuElement extends Components.MdsRadialMenu, HTMLStencilElement {
+    }
+    var HTMLMdsRadialMenuElement: {
+        prototype: HTMLMdsRadialMenuElement;
+        new (): HTMLMdsRadialMenuElement;
+    };
+    interface HTMLMdsRadialMenuItemElement extends Components.MdsRadialMenuItem, HTMLStencilElement {
+    }
+    var HTMLMdsRadialMenuItemElement: {
+        prototype: HTMLMdsRadialMenuItemElement;
+        new (): HTMLMdsRadialMenuItemElement;
+    };
     interface HTMLMdsSeparatorElement extends Components.MdsSeparator, HTMLStencilElement {
     }
     var HTMLMdsSeparatorElement: {
@@ -3526,6 +3609,8 @@ declare global {
         "mds-push-notification": HTMLMdsPushNotificationElement;
         "mds-push-notification-item": HTMLMdsPushNotificationItemElement;
         "mds-quote": HTMLMdsQuoteElement;
+        "mds-radial-menu": HTMLMdsRadialMenuElement;
+        "mds-radial-menu-item": HTMLMdsRadialMenuItemElement;
         "mds-separator": HTMLMdsSeparatorElement;
         "mds-spinner": HTMLMdsSpinnerElement;
         "mds-stepper-bar": HTMLMdsStepperBarElement;
@@ -5226,6 +5311,75 @@ declare namespace LocalJSX {
          */
         "typography"?: TypographyTitleType;
     }
+    interface MdsRadialMenu {
+        /**
+          * Specifies the ending angle of the menu
+         */
+        "angleEnd"?: number;
+        /**
+          * Specifies the starting angle of the menu
+         */
+        "angleStart"?: number;
+        /**
+          * Specifies if the component has a backdrop background
+         */
+        "backdrop"?: boolean;
+        /**
+          * Specifies the direction of the menu elements
+         */
+        "direction"?: Direction;
+        /**
+          * Specifies if the menu has a disc beneath or not
+         */
+        "disc"?: boolean;
+        /**
+          * The icon displayed in the button
+         */
+        "icon"?: string;
+        /**
+          * Specifies how to open the menu
+         */
+        "interaction"?: Interaction;
+        /**
+          * Specifies if the menu is opened or not
+         */
+        "opened"?: boolean;
+        /**
+          * Specifies the radius of the menu
+         */
+        "radius"?: number;
+        /**
+          * Specifies the size for the button
+         */
+        "size"?: ButtonSizeType;
+        /**
+          * Specifies the tone variant for the button
+         */
+        "tone"?: ToneVariantType;
+        /**
+          * Specifies the color variant for the button
+         */
+        "variant"?: ButtonVariantType;
+    }
+    interface MdsRadialMenuItem {
+        /**
+          * The icon displayed in the button
+         */
+        "icon"?: string;
+        "size"?: ButtonSizeType;
+        /**
+          * Specifies the tone variant for the button
+         */
+        "tone"?: ToneVariantType;
+        /**
+          * The tooltip displayed when hovering over the button
+         */
+        "tooltip"?: string;
+        /**
+          * Specifies the color variant for the button
+         */
+        "variant"?: ButtonVariantType;
+    }
     interface MdsSeparator {
     }
     interface MdsSpinner {
@@ -5737,6 +5891,8 @@ declare namespace LocalJSX {
         "mds-push-notification": MdsPushNotification;
         "mds-push-notification-item": MdsPushNotificationItem;
         "mds-quote": MdsQuote;
+        "mds-radial-menu": MdsRadialMenu;
+        "mds-radial-menu-item": MdsRadialMenuItem;
         "mds-separator": MdsSeparator;
         "mds-spinner": MdsSpinner;
         "mds-stepper-bar": MdsStepperBar;
@@ -5874,6 +6030,8 @@ declare module "@stencil/core" {
             "mds-push-notification": LocalJSX.MdsPushNotification & JSXBase.HTMLAttributes<HTMLMdsPushNotificationElement>;
             "mds-push-notification-item": LocalJSX.MdsPushNotificationItem & JSXBase.HTMLAttributes<HTMLMdsPushNotificationItemElement>;
             "mds-quote": LocalJSX.MdsQuote & JSXBase.HTMLAttributes<HTMLMdsQuoteElement>;
+            "mds-radial-menu": LocalJSX.MdsRadialMenu & JSXBase.HTMLAttributes<HTMLMdsRadialMenuElement>;
+            "mds-radial-menu-item": LocalJSX.MdsRadialMenuItem & JSXBase.HTMLAttributes<HTMLMdsRadialMenuItemElement>;
             "mds-separator": LocalJSX.MdsSeparator & JSXBase.HTMLAttributes<HTMLMdsSeparatorElement>;
             "mds-spinner": LocalJSX.MdsSpinner & JSXBase.HTMLAttributes<HTMLMdsSpinnerElement>;
             "mds-stepper-bar": LocalJSX.MdsStepperBar & JSXBase.HTMLAttributes<HTMLMdsStepperBarElement>;

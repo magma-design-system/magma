@@ -80,6 +80,7 @@ export class MdsInputDate {
   @Method()
   async setValue (value: string): Promise<void> {
     this.internalValue = value
+    this.validateValue(value)
     return Promise.resolve()
   }
 
@@ -115,12 +116,12 @@ export class MdsInputDate {
     this.internalValue = input.value
     if (!input.validity.badInput && input.value !== '') {
       this.messageError = ''
-      this.valueChange.emit(this.internalValue)
       this.empty = undefined
     } else {
       this.messageError = input.validationMessage
       this.empty = true
     }
+    this.valueChange.emit(this.internalValue)
   }
 
   render () {

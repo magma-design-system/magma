@@ -88,6 +88,10 @@ export class MdsInputDateRange {
     }
   }
 
+  componentWillUnload (): void {
+    this.host.removeEventListener('focusout', this.handleFocusOut)
+  }
+
   @Method() async preselect (event: EventDate): Promise<void> {
     if (!this.togglePreselection) {
       this.togglePreselection = Array.from(this.host.querySelectorAll('mds-input-date-range-preselection'))
@@ -128,7 +132,28 @@ export class MdsInputDateRange {
         }, this.delay)
       }
     }
+
+    this.dateRangeSelected.emit({ startDate: this.internalStartDate, endDate: this.internalEndDate })
     return Promise.resolve()
+  }
+
+  private handleFocusOut = (event: FocusEvent) => {
+    if (!this.host.contains(event.relatedTarget as Node)) {
+
+      const startValid = DateTime.fromISO(this.internalStartDate).isValid
+      const endValid = DateTime.fromISO(this.internalEndDate).isValid
+
+      if (startValid && endValid) {
+        this.validateDateRange()
+
+        this.dateRangeSelected.emit({
+          startDate: this.internalStartDate,
+          endDate: this.internalEndDate,
+        })
+
+        this.checkPreselections()
+      }
+    }
   }
 
   private focusInput = (element: HTMLMdsInputDateElement): void => {
@@ -158,6 +183,7 @@ export class MdsInputDateRange {
     this.updateInputListeners()
     this.updateInputValue('start', this.internalStartDate)
     this.updateInputValue('end', this.internalEndDate)
+    this.host.addEventListener('focusout', this.handleFocusOut)
   }
 
   private updateInputValue (slotName: string, newValue: string): void {
@@ -196,16 +222,7 @@ export class MdsInputDateRange {
         this.internalEndDate = event.detail
       }
 
-      this.validateDateRange()
 
-      if (event.detail.valid && this.internalStartDate && this.internalEndDate) {
-        this.dateRangeSelected.emit({
-          startDate: this.internalStartDate,
-          endDate: this.internalEndDate,
-        })
-      }
-
-      this.checkPreselections()
     }
   }
 

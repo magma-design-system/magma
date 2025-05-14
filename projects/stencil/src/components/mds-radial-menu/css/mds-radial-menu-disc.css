@@ -1,0 +1,29 @@
+.disc {
+  --size: calc(var(--mds-radial-menu-disc-size) + var(--mds-radial-menu-radius));
+
+  backdrop-filter: var(--mds-radial-menu-disc-filter);
+  background-color: var(--mds-radial-menu-disc-background);
+  border-radius: 100%;
+  box-shadow: var(--mds-radial-menu-disc-shadow);
+  display: inline-flex;
+  height: var(--size);
+  inset: 50%;
+  position: absolute;
+  transform: translate(-50%, -50%) scale(var(--mds-radial-menu-disc-scale));
+  transition-delay: var(--mds-radial-menu-disc-delay);
+  transition-duration: var(--mds-radial-menu-transition-duration);
+  transition-property: height, transform, width;
+  transition-timing-function: var(--mds-radial-menu-transition-timing-function);
+  width: var(--size);
+  z-index: 0;
+}
+
+:host(:not([opened][disc])) {
+  --mds-radial-menu-disc-scale: 0;
+  --mds-radial-menu-disc-delay: calc((var(--mds-radial-menu-nth-siblings) + 1) * var(--mds-radial-menu-delay));
+}
+
+:host([opened][disc]) {
+  --mds-radial-menu-disc-scale: 1;
+  --mds-radial-menu-disc-delay: 0s;
+}

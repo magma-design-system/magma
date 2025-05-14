@@ -1,0 +1,9 @@
+@supports (-moz-appearance: none) {
+  .action-open-calendar {
+    display: none;
+  }
+
+  :host(:not([slot])) .input {
+    @apply pr-400;
+  }
+}

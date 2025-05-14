@@ -120,6 +120,7 @@ function getNpmPackageShortInfo (c: string): Promise<ShortPackageInfo | null> {
       }
       if (res.status === 404) {
         // return null if a component are not published
+        console.warn(`WARN: Component ${c} is NOT published yet`)
         return Promise.resolve(null)
       }
       return Promise.reject(new Error(`cant fetch npm package info ${c}\n${res.status}: ${res.statusText}`))
@@ -293,6 +294,11 @@ async function updateComponent (c: string, version: string) : Promise<void> {
     if (pInfo) {
       pInfo.version = newVersion
       componentsUpdatedMap.set(c, pInfo)
+      /* adding the package to the array because in cases where
+      the package needs to be updated but its dependencies have already been updated */
+      if (!componentsToBeUpdated.includes(c)){
+        componentsToBeUpdated.push(c)
+      }
     }
 
     componentsMap.get(c)?.forEach(relatedC => {

@@ -1,0 +1,4 @@
+:host([interaction="rightclick"]) {
+  position: fixed;
+  z-index: var(--mds-radial-menu-context-menu-z-index);
+}

@@ -113,6 +113,11 @@ export class MdsImg {
     this.srcsetConsumptionData = this.formatConsumptionData(newValue)
   }
 
+  @Watch('src')
+  srcHandler (): void {
+    this.imageError = false
+  }
+
   private onSuccess = (ev: Event) => {
     this.image = ev.target as HTMLImageElement
     this.loadSuccessEvent.emit({ image: this.image })
