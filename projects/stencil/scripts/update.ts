@@ -294,6 +294,11 @@ async function updateComponent (c: string, version: string) : Promise<void> {
     if (pInfo) {
       pInfo.version = newVersion
       componentsUpdatedMap.set(c, pInfo)
+      /* adding the package to the array because in cases where
+      the package needs to be updated but its dependencies have already been updated */
+      if (!componentsToBeUpdated.includes(c)){
+        componentsToBeUpdated.push(c)
+      }
     }
 
     componentsMap.get(c)?.forEach(relatedC => {
