@@ -1,5 +1,5 @@
 import { citiesDictionary } from '@fixture/cities'
-import { themeStatusVariantDictionary } from '@dictionary/variant'
+import { themeInputVariantDictionary } from '@dictionary/variant'
 import { autoCompleteDictionary } from '@dictionary/autocomplete'
 import { inputTextTypeDictionary, inputControlsLayoutDictionary, inputControlsIconDictionary } from '@dictionary/input'
 import { typographyInputDictionary } from '@dictionary/typography'
@@ -66,6 +66,10 @@ export default {
       type: { name: 'number' },
       description: 'Specifies the maximum number of characters allowed in an element',
     },
+    mic: {
+      type: { name: 'boolean' },
+      description: 'Toggles text recognition',
+    },
     min: {
       type: { name: 'number' },
       description: 'Specifies the minimum value',
@@ -120,7 +124,7 @@ export default {
     },
     variant: {
       type: { name: 'string' },
-      options: themeStatusVariantDictionary,
+      options: themeInputVariantDictionary,
       control: { type: 'select' },
       description: 'Sets the variant of the input field',
     },
@@ -269,6 +273,19 @@ TestLanguageChange.args = {
   icon: 'mi/round/email',
   readonly: true,
   placeholder: 'Status input field',
+}
+
+export const VariantAi = Template.bind({})
+VariantAi.args = {
+  variant: 'ai',
+  placeholder: 'Es: Come si cresce un bovaro del bernese?',
+}
+
+export const TextRecognition = Template.bind({})
+TextRecognition.args = {
+  variant: 'ai',
+  mic: true,
+  placeholder: 'Es: Come si cresce un bovaro del bernese?',
 }
 
 const FormIntegrationTemplate = (args: MdsInputInterface) => {

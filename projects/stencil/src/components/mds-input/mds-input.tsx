@@ -1,14 +1,18 @@
 import clsx from 'clsx'
+import mggAiChatbotOutline from '@icon/mgg/ai-chatbot-outline.svg'
 import miBaselineAdd from '@icon/mi/baseline/add.svg'
 import miBaselineArrowDown from '@icon/mi/baseline/keyboard-arrow-down.svg'
 import miBaselineArrowUp from '@icon/mi/baseline/keyboard-arrow-up.svg'
 import miBaselineRemove from '@icon/mi/baseline/remove.svg'
 import miBaselineVisible from '@icon/mi/baseline/visibility.svg'
 import miBaselineVisibleOff from '@icon/mi/baseline/visibility-off.svg'
+import miOutlineMic from '@icon/mi/outline/mic.svg'
+import miOutlineMicOff from '@icon/mi/outline/mic-off.svg'
+import miOutlineWarningAmber from '@icon/mi/outline/warning-amber.svg'
 import { AttachInternals, Component, Element, Event, EventEmitter, Host, Method, Prop, State, Watch, h } from '@stencil/core'
 import { AutocompleteType } from '@type/autocomplete'
 import { InputTextType, InputControlsLayoutType, InputControlsIconType, MdsInputEventDetail } from '@type/input'
-import { ThemeStatusVariantType } from '@type/variant'
+import { ThemeInputVariantType } from '@type/variant'
 import { TypographyInputType } from '@type/typography'
 import { InputTipItemVariantType } from '@type/input-tip'
 import { Locale } from '@common/locale'
@@ -50,7 +54,7 @@ export interface MdsInputInterface {
   type: InputTextType
   typography?: TypographyInputType
   value?: string
-  variant?: ThemeStatusVariantType
+  variant?: ThemeInputVariantType
 }
 
 @Component({
@@ -67,12 +71,19 @@ export class MdsInput {
 
   private inputValidation: InputValidationManager
   private isValid: boolean
+  private speechToTextLabel: string
+  private speechToTextIcon: string = miOutlineMic
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private recognition: any
+  private speechButton: HTMLMdsButtonElement
   @Element() el: HTMLMdsInputElement
   @State() hasFocus = false
   @State() language: string
+  @State() isRecording: boolean = false
   @State() currentLengthLabel: string
   @State() countVariant: InputTipItemVariantType = 'count-empty'
   @State() isPasswordVisible = false
+  @State() transcript: string = ''
   // private valuePristine?: string
 
   private t:Locale = new Locale({
@@ -138,7 +149,7 @@ export class MdsInput {
   /**
    * An icon displayed at the right of the input
    */
-  @Prop({ reflect: true }) readonly icon?: string
+  @Prop({ mutable: true, reflect: true }) icon?: string
 
   /**
    * Specifies the maximum value
@@ -153,6 +164,11 @@ export class MdsInput {
    * If maxlength is set to 0 or a negative number it will be considered as undefined.
    */
   @Prop({ reflect: true, mutable: true }) maxlength?: number
+
+  /**
+   * Toggles text recognition
+   */
+  @Prop({ reflect: true }) readonly mic?: boolean
 
   /**
    * Specifies the minimum value
@@ -195,7 +211,7 @@ export class MdsInput {
   /**
    * Sets the variant of the input field
    */
-  @Prop({ reflect: true, mutable: true }) variant?: ThemeStatusVariantType
+  @Prop({ reflect: true, mutable: true }) variant?: ThemeInputVariantType = 'primary'
 
   /**
    * Sets the word(s) of the tip of the input field
@@ -243,6 +259,11 @@ export class MdsInput {
   @Event({ eventName: 'mdsInputFocus' }) focusEvent!: EventEmitter<void>
 
   /**
+   * Emits a void event when input speech recognition ends
+   */
+  @Event({ eventName: 'mdsInputSpeechEnd' }) speechEvent!: EventEmitter<void>
+
+  /**
    * Emits a boolean event when a input execute validation
    */
   @Event({ eventName: 'mdsInputValidation' }) validationEvent!: EventEmitter<boolean>
@@ -256,6 +277,7 @@ export class MdsInput {
 
     this.language = this.t.lang(this.el)
     // this.valuePristine = this.value
+    this.speechToTextLabel = this.t.get('speechToTextOn')
 
     // If the mds-input has a tabindex attribute we get the value
     // and pass it down to the native input, then remove it from the
@@ -282,7 +304,9 @@ export class MdsInput {
     if (this.autofocus) {
       this.nativeInput?.focus()
     }
+    this.variantChanged(this.variant ?? 'primary')
   }
+
   /**
    * Emits the change event when the component value changes
    */
@@ -294,6 +318,13 @@ export class MdsInput {
       this.countMaxLength()
     }
     if (!this.isValid) this.validateInput()
+  }
+
+  @Watch('variant')
+  protected variantChanged (newValue: ThemeInputVariantType):void {
+    if (newValue === 'ai' && this.icon === undefined) {
+      this.icon = mggAiChatbotOutline
+    }
   }
 
   @Watch('maxlength')
@@ -452,6 +483,71 @@ export class MdsInput {
     }
   }
 
+  private toggleTextRecognition = (): void => {
+    this.isRecording = !this.isRecording
+
+    if (!this.isRecording) {
+      this.speechToTextLabel = this.t.get('speechToTextOn')
+      this.speechToTextIcon = miOutlineMic
+      this.stopRecognition()
+      return
+    }
+
+    this.speechToTextLabel = this.t.get('speechToTextOff')
+    this.speechToTextIcon = miOutlineMicOff
+    this.startRecognition()
+  }
+
+  private onSpeechRecognitionError = (): void => {
+    console.error('SpeechRecognition API may not work properly on Chrome based browsers.')
+    this.speechButton.classList.remove('mic-toggle-button--recording')
+    this.speechButton.classList.add('toggle-button--error')
+    this.isRecording = false
+    this.speechToTextLabel = this.t.get('speechToTextError')
+    this.speechToTextIcon = miOutlineWarningAmber
+  }
+
+  private startRecognition = (): void => {
+    if (!this.speechButton) {
+      this.speechButton = this.el?.shadowRoot?.querySelector('.mic-toggle-button') as HTMLMdsButtonElement
+    }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition
+    this.value = ''
+
+    if (!SpeechRecognition) {
+      this.onSpeechRecognitionError()
+      return
+    }
+
+    this.recognition = new SpeechRecognition()
+    this.recognition.continuous = true
+    this.recognition.lang = navigator.language || 'it-IT'
+    this.recognition.interimResults = true
+    this.recognition.maxAlternatives = 1
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    this.recognition.onresult = (event: any) => {
+      const speechResult = event.results[0][0].transcript
+      this.transcript = speechResult
+      this.value = this.transcript
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    this.recognition.onerror = (event: any) => {
+      console.error('SpeechRecognition API error:', event.error)
+      this.onSpeechRecognitionError()
+    }
+    this.recognition.start()
+  }
+
+  private stopRecognition = (): void => {
+    if (this.recognition) {
+      this.recognition.stop()
+      this.speechEvent.emit()
+    }
+  }
+
   componentWillRender (): void {
     this.t.lang(this.el)
   }
@@ -471,6 +567,7 @@ export class MdsInput {
             class={clsx(
               'input',
               (this.icon ?? this.await) && 'has-icon',
+              this.mic && 'has-right-icon',
             )}
             autoFocus={this.autofocus}
             disabled={this.disabled}
@@ -492,6 +589,7 @@ export class MdsInput {
             class={clsx(
               'input',
               (this.icon ?? this.await) && 'has-icon',
+              this.mic && 'has-right-icon',
             )}
             autoComplete={this.autocomplete}
             autoFocus={this.autofocus}
@@ -541,6 +639,12 @@ export class MdsInput {
             icon={this.isPasswordVisible ? miBaselineVisibleOff : miBaselineVisible} onClick={() => this.isPasswordVisible = !this.isPasswordVisible}
             tabindex="0" tone="quiet" title={this.isPasswordVisible ? this.t.get('hidePassword') : this.t.get('showPassword')}
             part="password-toggle-button"></mds-button>
+        }
+        {this.mic
+          && <mds-button class={clsx('mic-toggle-button', this.isRecording && 'mic-toggle-button--recording')}
+            icon={this.speechToTextIcon} onClick={() => this.toggleTextRecognition()}
+            tabindex="0" variant="dark" tone="quiet" title={this.speechToTextLabel}
+            part="mic-toggle-button"></mds-button>
         }
         <mds-input-tip lang={this.language} position="top" active={this.hasFocus}>
           { this.disabled && <mds-input-tip-item expanded variant="disabled"></mds-input-tip-item> }

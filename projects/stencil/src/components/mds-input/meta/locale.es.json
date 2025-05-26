@@ -1,6 +1,9 @@
 {
-  "increase": "Aumentar",
   "decrease": "Disminuir",
-  "showPassword": "Mostrar Contraseña",
-  "hidePassword": "Ocultar Contraseña"
+  "hidePassword": "Ocultar contraseña",
+  "increase": "Aumentar",
+  "showPassword": "Mostrar contraseña",
+  "speechToTextError": "Dictado por voz no compatible",
+  "speechToTextOff": "Detener dictado por voz",
+  "speechToTextOn": "Iniciar dictado por voz"
 }

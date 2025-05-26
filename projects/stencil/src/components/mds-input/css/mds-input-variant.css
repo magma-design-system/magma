@@ -7,6 +7,17 @@
   --mds-input-variant-color: var(--variant-primary-04);
 }
 
+:host([variant="ai"]) {
+  --mds-input-icon-color: var(--variant-ai-05);
+  --mds-input-tip-background: var(--variant-ai-05);
+  --mds-input-variant-color: 0 0 0;
+}
+
+:host([variant="ai"]:focus) {
+  --mds-input-icon-color: var(--variant-ai-04);
+  --mds-input-variant-color: var(--variant-ai-05);
+}
+
 :host([variant="info"]) {
   --mds-input-icon-color: var(--status-info-05);
   --mds-input-tip-background: var(--status-info-05);

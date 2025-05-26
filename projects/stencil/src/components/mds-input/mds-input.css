@@ -31,7 +31,7 @@
   --mds-input-tip-background: 84 84 84;
   --mds-input-variant-color: 0 0 0;
   /* private */ --mds-input-controls-border: 2px solid theme('colors.tone-neutral-09');
-  /* private */ --mds-input-controls-color: theme('colors.variant-primary-03');
+  /* private */ --mds-input-controls-color: theme('colors.tone-neutral-03');
 
   @apply
     gap-200
@@ -129,6 +129,10 @@
   @apply pl-1100;
 }
 
+.input.has-right-icon {
+  @apply pr-1100;
+}
+
 
 .await,
 .icon {
@@ -216,6 +220,23 @@
 
   fill: var(--mds-input-controls-color);
   position: absolute;
+}
+
+.mic-toggle-button {
+  @apply
+    top-150
+    right-150;
+
+  fill: var(--mds-input-controls-color);
+  position: absolute;
+}
+
+.toggle-button--error {
+  fill: theme('colors.status-error-06');
+}
+
+.mic-toggle-button--recording {
+  @apply animate-pulse;
 }
 
 :host([type="number"]) .input {

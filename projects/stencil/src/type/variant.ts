@@ -4,6 +4,14 @@ export type ThemeStatusVariantType =
   | 'success'
   | 'warning'
 
+export type ThemeInputVariantType =
+  | 'primary'
+  | 'ai'
+  | 'error'
+  | 'info'
+  | 'success'
+  | 'warning'
+
 export type ThemeVariantType =
   | 'ai'
   | 'dark'

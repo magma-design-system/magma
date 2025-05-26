@@ -10,7 +10,7 @@ import { TypographyInfoType, TypographyInputType, TypographyReadingVariants, Typ
 import { MdsAccordionItemEventDetail } from "./components/mds-accordion-item/meta/event-detail";
 import { MdsAccordionTimerEventDetail } from "./components/mds-accordion-timer/meta/event-detail";
 import { MdsAccordionTimerItemEventDetail } from "./components/mds-accordion-timer-item/meta/event-detail";
-import { ChipVariantType, LabelVariantType, ThemeFullVariantAvatarType, ThemeFullVariantType, ThemeStatusVariantType, ThemeVariantType, ToneMinimalVariantType, ToneSimpleVariantType, ToneVariantType } from "./type/variant";
+import { ChipVariantType, LabelVariantType, ThemeFullVariantAvatarType, ThemeFullVariantType, ThemeInputVariantType, ThemeStatusVariantType, ThemeVariantType, ToneMinimalVariantType, ToneSimpleVariantType, ToneVariantType } from "./type/variant";
 import { AvatarSizeType } from "./components/mds-avatar-stack/meta/types";
 import { BenchmarkBarTypographyType } from "./components/mds-benchmark-bar/meta/types";
 import { BibliographyFormatType, BibliographyRelationshipType } from "./components/mds-bibliography/meta/types";
@@ -81,7 +81,7 @@ export { TypographyInfoType, TypographyInputType, TypographyReadingVariants, Typ
 export { MdsAccordionItemEventDetail } from "./components/mds-accordion-item/meta/event-detail";
 export { MdsAccordionTimerEventDetail } from "./components/mds-accordion-timer/meta/event-detail";
 export { MdsAccordionTimerItemEventDetail } from "./components/mds-accordion-timer-item/meta/event-detail";
-export { ChipVariantType, LabelVariantType, ThemeFullVariantAvatarType, ThemeFullVariantType, ThemeStatusVariantType, ThemeVariantType, ToneMinimalVariantType, ToneSimpleVariantType, ToneVariantType } from "./type/variant";
+export { ChipVariantType, LabelVariantType, ThemeFullVariantAvatarType, ThemeFullVariantType, ThemeInputVariantType, ThemeStatusVariantType, ThemeVariantType, ToneMinimalVariantType, ToneSimpleVariantType, ToneVariantType } from "./type/variant";
 export { AvatarSizeType } from "./components/mds-avatar-stack/meta/types";
 export { BenchmarkBarTypographyType } from "./components/mds-benchmark-bar/meta/types";
 export { BibliographyFormatType, BibliographyRelationshipType } from "./components/mds-bibliography/meta/types";
@@ -974,6 +974,10 @@ export namespace Components {
          */
         "maxlength"?: number;
         /**
+          * Toggles text recognition
+         */
+        "mic"?: boolean;
+        /**
           * Specifies the minimum value use it with input type="number" or type="date" Example: min="-3", min="1988-04-15"
          */
         "min"?: string | number;
@@ -1030,7 +1034,7 @@ export namespace Components {
         /**
           * Sets the variant of the input field
          */
-        "variant"?: ThemeStatusVariantType;
+        "variant"?: ThemeInputVariantType;
     }
     interface MdsInputDate {
         /**
@@ -1112,7 +1116,7 @@ export namespace Components {
         /**
           * Display the variant of a message at the bottom of the input text field
          */
-        "variant"?: ThemeStatusVariantType;
+        "variant"?: ThemeInputVariantType;
     }
     interface MdsInputOtp {
         /**
@@ -2773,6 +2777,7 @@ declare global {
         "mdsInputKeydown": KeyboardEvent;
         "mdsInputBlur": void;
         "mdsInputFocus": void;
+        "mdsInputSpeechEnd": void;
         "mdsInputValidation": boolean;
     }
     interface HTMLMdsInputElement extends Components.MdsInput, HTMLStencilElement {
@@ -4551,6 +4556,10 @@ declare namespace LocalJSX {
          */
         "maxlength"?: number;
         /**
+          * Toggles text recognition
+         */
+        "mic"?: boolean;
+        /**
           * Specifies the minimum value use it with input type="number" or type="date" Example: min="-3", min="1988-04-15"
          */
         "min"?: string | number;
@@ -4578,6 +4587,10 @@ declare namespace LocalJSX {
           * Emits a KeyboardEvent when a keyboard key is pressed on the focused input element
          */
         "onMdsInputKeydown"?: (event: MdsInputCustomEvent<KeyboardEvent>) => void;
+        /**
+          * Emits a void event when input speech recognition ends
+         */
+        "onMdsInputSpeechEnd"?: (event: MdsInputCustomEvent<void>) => void;
         /**
           * Emits a boolean event when a input execute validation
          */
@@ -4621,7 +4634,7 @@ declare namespace LocalJSX {
         /**
           * Sets the variant of the input field
          */
-        "variant"?: ThemeStatusVariantType;
+        "variant"?: ThemeInputVariantType;
     }
     interface MdsInputDate {
         /**
@@ -4700,7 +4713,7 @@ declare namespace LocalJSX {
         /**
           * Display the variant of a message at the bottom of the input text field
          */
-        "variant"?: ThemeStatusVariantType;
+        "variant"?: ThemeInputVariantType;
     }
     interface MdsInputOtp {
         /**

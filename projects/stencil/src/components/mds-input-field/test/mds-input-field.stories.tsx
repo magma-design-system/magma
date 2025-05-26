@@ -1,4 +1,4 @@
-import { themeStatusVariantDictionary } from '@dictionary/variant'
+import { themeInputVariantDictionary } from '@dictionary/variant'
 import { validationModelDictionary } from '@component/mds-input/meta/dictionary'
 import { h } from '@stencil/core'
 
@@ -24,7 +24,7 @@ export default {
     },
     variant: {
       type: { name: 'string' },
-      options: themeStatusVariantDictionary,
+      options: themeInputVariantDictionary,
       control: { type: 'select' },
       description: 'Sets the variant of the input field',
     },
