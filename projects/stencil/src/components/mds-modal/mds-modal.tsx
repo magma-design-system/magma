@@ -2,6 +2,7 @@ import clsx from 'clsx'
 import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, Watch } from '@stencil/core'
 import { ModalPositionType, ModalAnimationStateType, ModalOverflowType, ModalAnimationStyleType } from './meta/types'
 import { cssDurationToMilliseconds } from '@common/unit'
+import miBaselineClose from '@icon/mi/baseline/close.svg'
 
 /**
  * @part action-close - Selects the close button of the modal.
@@ -226,7 +227,7 @@ export class MdsModal {
             }
           </div>
         }
-        { !this.window && <mds-button class="action-close" icon="mi/baseline/close" variant="light" tone="quiet" size="xl" onClick={(e: Event) => { this.closeModal(e) }} part="action-close"></mds-button> }
+        { !this.window && <mds-button class="action-close" icon={miBaselineClose} variant="light" tone="quiet" size="xl" onClick={(e: Event) => { this.closeModal(e) }} part="action-close"></mds-button> }
       </Host>
     )
   }
