@@ -1,0 +1,26 @@
+:host {
+  --mds-emoji-head: rgb(var(--label-yellow-08));
+  --mds-emoji-eyes: rgb(var(--label-yellow-04));
+  --mds-emoji-mouth: rgb(var(--label-yellow-06));
+
+  align-items: stretch;
+  aspect-ratio: 1/1;
+  display: flex;
+  height: theme('size.1200');
+  justify-content: stretch;
+  width: theme('size.1200');
+}
+
+:host .head {
+  fill: var(--mds-emoji-head);
+}
+
+:host .eye {
+  fill: var(--mds-emoji-eyes);
+}
+
+:host .mouth {
+  fill: var(--mds-emoji-mouth);
+}
+
+@import './css/mds-emoji-hexabot.css';

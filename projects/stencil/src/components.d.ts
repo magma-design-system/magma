@@ -634,6 +634,13 @@ export namespace Components {
          */
         "zIndex": number;
     }
+    interface MdsEmoji {
+        "name": string;
+        "startBlinking": () => Promise<void>;
+        "startFollowMouse": () => Promise<void>;
+        "stopBlinking": () => Promise<void>;
+        "stopFollowMouse": () => Promise<void>;
+    }
     interface MdsEntity {
         /**
           * Specifies if the component is awaiting a response from an external resource
@@ -2621,6 +2628,12 @@ declare global {
         prototype: HTMLMdsDropdownElement;
         new (): HTMLMdsDropdownElement;
     };
+    interface HTMLMdsEmojiElement extends Components.MdsEmoji, HTMLStencilElement {
+    }
+    var HTMLMdsEmojiElement: {
+        prototype: HTMLMdsEmojiElement;
+        new (): HTMLMdsEmojiElement;
+    };
     interface HTMLMdsEntityElement extends Components.MdsEntity, HTMLStencilElement {
     }
     var HTMLMdsEntityElement: {
@@ -3560,6 +3573,7 @@ declare global {
         "mds-chip": HTMLMdsChipElement;
         "mds-details": HTMLMdsDetailsElement;
         "mds-dropdown": HTMLMdsDropdownElement;
+        "mds-emoji": HTMLMdsEmojiElement;
         "mds-entity": HTMLMdsEntityElement;
         "mds-file": HTMLMdsFileElement;
         "mds-file-preview": HTMLMdsFilePreviewElement;
@@ -4198,6 +4212,9 @@ declare namespace LocalJSX {
           * Specifies the visibility of the component.
          */
         "zIndex"?: number;
+    }
+    interface MdsEmoji {
+        "name"?: string;
     }
     interface MdsEntity {
         /**
@@ -5850,6 +5867,7 @@ declare namespace LocalJSX {
         "mds-chip": MdsChip;
         "mds-details": MdsDetails;
         "mds-dropdown": MdsDropdown;
+        "mds-emoji": MdsEmoji;
         "mds-entity": MdsEntity;
         "mds-file": MdsFile;
         "mds-file-preview": MdsFilePreview;
@@ -5972,6 +5990,7 @@ declare module "@stencil/core" {
             "mds-chip": LocalJSX.MdsChip & JSXBase.HTMLAttributes<HTMLMdsChipElement>;
             "mds-details": LocalJSX.MdsDetails & JSXBase.HTMLAttributes<HTMLMdsDetailsElement>;
             "mds-dropdown": LocalJSX.MdsDropdown & JSXBase.HTMLAttributes<HTMLMdsDropdownElement>;
+            "mds-emoji": LocalJSX.MdsEmoji & JSXBase.HTMLAttributes<HTMLMdsEmojiElement>;
             "mds-entity": LocalJSX.MdsEntity & JSXBase.HTMLAttributes<HTMLMdsEntityElement>;
             "mds-file": LocalJSX.MdsFile & JSXBase.HTMLAttributes<HTMLMdsFileElement>;
             "mds-file-preview": LocalJSX.MdsFilePreview & JSXBase.HTMLAttributes<HTMLMdsFilePreviewElement>;
