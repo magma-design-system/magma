@@ -26,6 +26,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `icon`                 | `icon`                   | An icon displayed at the right of the input                                                                                                                                        | `string \| undefined`                                                                                                                                          | `undefined`  |
 | `max`                  | `max`                    | Specifies the maximum value use it with input type="number" or type="date" Example: max="180", max="2046-12-04"                                                                    | `string \| undefined`                                                                                                                                          | `undefined`  |
 | `maxlength`            | `maxlength`              | Specifies the maximum number of characters allowed in an element. Use it with input type="text". If maxlength is set to 0 or a negative number it will be considered as undefined. | `number \| undefined`                                                                                                                                          | `undefined`  |
+| `mic`                  | `mic`                    | Toggles text recognition                                                                                                                                                           | `boolean \| undefined`                                                                                                                                         | `undefined`  |
 | `min`                  | `min`                    | Specifies the minimum value use it with input type="number" or type="date" Example: min="-3", min="1988-04-15"                                                                     | `number \| string \| undefined`                                                                                                                                | `undefined`  |
 | `minlength`            | `minlength`              | Specifies the minimum number of characters allowed in an element use it with input type="number"                                                                                   | `number \| undefined`                                                                                                                                          | `undefined`  |
 | `name`                 | `name`                   | Is needed to reference the form data after the form is submitted                                                                                                                   | `string \| undefined`                                                                                                                                          | `undefined`  |
@@ -38,7 +39,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `type`                 | `type`                   | Specifies the type of input element                                                                                                                                                | `"cc" \| "cf" \| "date" \| "email" \| "isbn" \| "number" \| "password" \| "piva" \| "search" \| "tel" \| "text" \| "textarea" \| "time" \| "url" \| undefined` | `'text'`     |
 | `typography`           | `typography`             | Specifies the typography of input element                                                                                                                                          | `"detail" \| "snippet"`                                                                                                                                        | `'detail'`   |
 | `value`                | `value`                  | Specifies the value of the input element                                                                                                                                           | `string`                                                                                                                                                       | `''`         |
-| `variant`              | `variant`                | Sets the variant of the input field                                                                                                                                                | `"error" \| "info" \| "success" \| "warning" \| undefined`                                                                                                     | `undefined`  |
+| `variant`              | `variant`                | Sets the variant of the input field                                                                                                                                                | `"ai" \| "error" \| "info" \| "primary" \| "success" \| "warning" \| undefined`                                                                                | `'primary'`  |
 
 
 ## Events
@@ -49,6 +50,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `mdsInputChange`     | Emits an InputChangeEventDetail when the value of the input element changes       | `CustomEvent<MdsInputEventDetail>` |
 | `mdsInputFocus`      | Emits a void event when input element is focused                                  | `CustomEvent<void>`                |
 | `mdsInputKeydown`    | Emits a KeyboardEvent when a keyboard key is pressed on the focused input element | `CustomEvent<KeyboardEvent>`       |
+| `mdsInputSpeechEnd`  | Emits a void event when input speech recognition ends                             | `CustomEvent<void>`                |
 | `mdsInputValidation` | Emits a boolean event when a input execute validation                             | `CustomEvent<boolean>`             |
 
 
@@ -152,6 +154,7 @@ Type: `Promise<void>`
 | `"counter-button-decrease"` |             |
 | `"counter-button-increase"` |             |
 | `"field"`                   |             |
+| `"mic-toggle-button"`       |             |
 | `"password-toggle-button"`  |             |
 | `"tip-count"`               |             |
 

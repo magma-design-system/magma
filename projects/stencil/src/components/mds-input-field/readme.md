@@ -9,11 +9,11 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## Properties
 
-| Property  | Attribute | Description                                                            | Type                                                       | Default     |
-| --------- | --------- | ---------------------------------------------------------------------- | ---------------------------------------------------------- | ----------- |
-| `label`   | `label`   | Display a text on the top of the input text field                      | `string \| undefined`                                      | `undefined` |
-| `message` | `message` | Display a message at the bottom of the input text field                | `string \| undefined`                                      | `undefined` |
-| `variant` | `variant` | Display the variant of a message at the bottom of the input text field | `"error" \| "info" \| "success" \| "warning" \| undefined` | `undefined` |
+| Property  | Attribute | Description                                                            | Type                                                                            | Default     |
+| --------- | --------- | ---------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ----------- |
+| `label`   | `label`   | Display a text on the top of the input text field                      | `string \| undefined`                                                           | `undefined` |
+| `message` | `message` | Display a message at the bottom of the input text field                | `string \| undefined`                                                           | `undefined` |
+| `variant` | `variant` | Display the variant of a message at the bottom of the input text field | `"ai" \| "error" \| "info" \| "primary" \| "success" \| "warning" \| undefined` | `'primary'` |
 
 
 ## CSS Custom Properties
