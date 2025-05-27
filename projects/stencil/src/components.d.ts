@@ -1393,6 +1393,7 @@ export namespace Components {
           * Specifies if the component is animating itself or not
          */
         "animation"?: ModalAnimationStyleType;
+        "close": () => Promise<void>;
         /**
           * Specifies if the modal is opened or not
          */

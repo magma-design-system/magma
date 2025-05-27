@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, Watch } from '@stencil/core'
+import { Component, Method, Element, Event, EventEmitter, Host, h, Prop, Watch } from '@stencil/core'
 import { ModalPositionType, ModalAnimationStateType, ModalOverflowType, ModalAnimationStyleType } from './meta/types'
 import { cssDurationToMilliseconds } from '@common/unit'
 import miBaselineClose from '@icon/mi/baseline/close.svg'
@@ -61,12 +61,12 @@ export class MdsModal {
   /**
    * Emits when a modal is closed
    */
-  @Event({ bubbles: true, composed: true, eventName: 'mdsModalClose' }) closeEvent: EventEmitter<void>
+  @Event({ eventName: 'mdsModalClose' }) closeEvent: EventEmitter<void>
 
   /**
    * Emits when a modal is totally invisible, can be useful to detach the component when it's hidden and gain memory
    */
-  @Event({ bubbles: true, composed: true, eventName: 'mdsModalHide' }) hideEvent: EventEmitter<void>
+  @Event({ eventName: 'mdsModalHide' }) hideEvent: EventEmitter<void>
 
   private updateCSSCustomProps = (): void => {
     if (typeof window === 'undefined') return
@@ -202,13 +202,8 @@ export class MdsModal {
     this.animateCloseWindow()
   }
 
-  @Listen('mdsModalClose', { target: 'document' })
-  onModalCloseListener (): void {
-    this.opened = false
-  }
-
-  @Listen('mdsBannerClose', { target: 'document' })
-  onBannerCloseListener (): void {
+  @Method()
+  async close (): Promise<void> {
     this.opened = false
   }
 

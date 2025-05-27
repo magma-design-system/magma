@@ -98,10 +98,14 @@ export class MdsBanner {
   /**
    * Emits when the url view is closed
    */
-  @Event({ bubbles: true, composed: true, eventName: 'mdsBannerClose' }) closeEvent: EventEmitter<void>
+  @Event({ eventName: 'mdsBannerClose' }) closeEvent: EventEmitter<void>
 
   private closeBanner = (): void => {
     this.closeEvent.emit()
+    const modalEL = this.host?.closest('mds-modal') as HTMLMdsModalElement
+    if (modalEL) {
+      modalEL.opened = false
+    }
   }
 
   render () {

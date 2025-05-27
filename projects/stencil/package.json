@@ -53,9 +53,9 @@
   },
   "dependencies": {
     "@floating-ui/dom": "1.6.12",
-    "@maggioli-design-system/design-tokens": "13.6.1",
+    "@maggioli-design-system/design-tokens": "13.7.1",
     "@maggioli-design-system/identity": "2.1.1",
-    "@maggioli-design-system/styles": "15.10.0",
+    "@maggioli-design-system/styles": "15.11.0",
     "@stencil/core": "4.27.2",
     "clsx": "2.1.0",
     "crypto-js": "4.2.0",

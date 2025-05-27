@@ -26,6 +26,19 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `mdsModalHide`  | Emits when a modal is totally invisible, can be useful to detach the component when it's hidden and gain memory | `CustomEvent<void>` |
 
 
+## Methods
+
+### `close() => Promise<void>`
+
+
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
+
 ## Slots
 
 | Slot        | Description                                                                                                                |
