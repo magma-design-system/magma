@@ -232,7 +232,8 @@
 }
 
 .toggle-button--error {
-  fill: theme('colors.status-error-06');
+  cursor: help;
+  fill: theme('colors.tone-neutral-06');
 }
 
 .mic-toggle-button--recording {

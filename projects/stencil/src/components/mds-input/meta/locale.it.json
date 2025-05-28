@@ -3,7 +3,7 @@
   "hidePassword": "Nascondi password",
   "increase": "Aumenta",
   "showPassword": "Visualizza password",
-  "speechToTextError": "Dettatura vocale non supportata",
+  "speechToTextError": "Dettatura vocale non supportata da questo browser",
   "speechToTextOff": "Ferma dettatura vocale",
   "speechToTextOn": "Inizia dettatura vocale"
 }

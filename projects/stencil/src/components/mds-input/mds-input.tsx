@@ -8,7 +8,7 @@ import miBaselineVisible from '@icon/mi/baseline/visibility.svg'
 import miBaselineVisibleOff from '@icon/mi/baseline/visibility-off.svg'
 import miOutlineMic from '@icon/mi/outline/mic.svg'
 import miOutlineMicOff from '@icon/mi/outline/mic-off.svg'
-import miOutlineWarningAmber from '@icon/mi/outline/warning-amber.svg'
+import miBaselineDone from '@icon/mi/baseline/done.svg'
 import { AttachInternals, Component, Element, Event, EventEmitter, Host, Method, Prop, State, Watch, h } from '@stencil/core'
 import { AutocompleteType } from '@type/autocomplete'
 import { InputTextType, InputControlsLayoutType, InputControlsIconType, MdsInputEventDetail } from '@type/input'
@@ -494,7 +494,7 @@ export class MdsInput {
     }
 
     this.speechToTextLabel = this.t.get('speechToTextOff')
-    this.speechToTextIcon = miOutlineMicOff
+    this.speechToTextIcon = miBaselineDone
     this.startRecognition()
   }
 
@@ -504,7 +504,7 @@ export class MdsInput {
     this.speechButton.classList.add('toggle-button--error')
     this.isRecording = false
     this.speechToTextLabel = this.t.get('speechToTextError')
-    this.speechToTextIcon = miOutlineWarningAmber
+    this.speechToTextIcon = miOutlineMicOff
   }
 
   private startRecognition = (): void => {

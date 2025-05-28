@@ -3,7 +3,7 @@
   "hidePassword": "Ocultar contraseña",
   "increase": "Aumentar",
   "showPassword": "Mostrar contraseña",
-  "speechToTextError": "Dictado por voz no compatible",
+  "speechToTextError": "El dictado por voz no es compatible con este navegador",
   "speechToTextOff": "Detener dictado por voz",
   "speechToTextOn": "Iniciar dictado por voz"
 }
