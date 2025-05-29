@@ -1,0 +1,5 @@
+:host([name="hexabot"]) {
+  --mds-emoji-head: rgb(var(--variant-ai-08));
+  --mds-emoji-eyes: rgb(var(--variant-ai-03));
+  --mds-emoji-mouth: rgb(var(--variant-ai-04));
+}

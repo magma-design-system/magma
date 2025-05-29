@@ -1,6 +1,9 @@
 {
-  "increase": "Aumenta",
   "decrease": "Diminuisci",
+  "hidePassword": "Nascondi password",
+  "increase": "Aumenta",
   "showPassword": "Visualizza password",
-  "hidePassword": "Nascondi password"
+  "speechToTextError": "Dettatura vocale non supportata da questo browser",
+  "speechToTextOff": "Ferma dettatura vocale",
+  "speechToTextOn": "Inizia dettatura vocale"
 }

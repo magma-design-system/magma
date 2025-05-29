@@ -17,7 +17,7 @@
         "value": "repeat(auto-fit, minmax(12.5rem, 1fr))"
       },
       "full": {
-        "value": "repeat(auto-fit, minmax(1px, 100%))"
+        "value": "repeat(1, minmax(1px, 100%))"
       }
     }
   }

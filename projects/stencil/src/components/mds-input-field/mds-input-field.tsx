@@ -1,6 +1,6 @@
 import { Component, Element, Host, Prop, h } from '@stencil/core'
 import { MdsValidationErrors } from '@component/mds-input/meta/validators'
-import { ThemeStatusVariantType } from '@type/variant'
+import { ThemeInputVariantType } from '@type/variant'
 
 @Component({
   tag: 'mds-input-field',
@@ -49,7 +49,7 @@ export class MdsInputField {
   /**
    * Display the variant of a message at the bottom of the input text field
    */
-  @Prop({ reflect: true, mutable: true }) variant?: ThemeStatusVariantType
+  @Prop({ reflect: true, mutable: true }) variant?: ThemeInputVariantType = 'primary'
 
   render () {
     return (

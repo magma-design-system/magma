@@ -1,6 +1,9 @@
 {
-  "increase": "Increase",
   "decrease": "Decrease",
-  "showPassword": "Show Password",
-  "hidePassword": "Hide Password"
+  "hidePassword": "Hide password",
+  "increase": "Increase",
+  "showPassword": "Show password",
+  "speechToTextError": "Voice dictation is not supported by this browser",
+  "speechToTextOff": "Stop voice dictation",
+  "speechToTextOn": "Start voice dictation"
 }

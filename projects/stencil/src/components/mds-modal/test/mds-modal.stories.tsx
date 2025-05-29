@@ -258,6 +258,43 @@ const CustomTemplate = args => {
   </div>
 }
 
+const NestedModalTemplate = () => {
+  const [openedFirstModal, setFirstModalOpened] = useState(false)
+  const [openedSecondModal, setSecondModalOpened] = useState(false)
+
+  useEffect(() => {
+    const firstModalElement = document.querySelector('#modal-01')
+    const secondModalElement = document.querySelector('#modal-02')
+
+    if (firstModalElement === null || secondModalElement === null) {
+      // eslint-disable-next-line no-alert
+      alert('Element/s not found')
+      return
+    }
+
+    firstModalElement.addEventListener('mdsModalClose', () => {
+      setFirstModalOpened(false)
+    })
+    secondModalElement.addEventListener('mdsModalClose', () => {
+      setSecondModalOpened(false)
+    })
+  }, [])
+
+  return <div>
+    <mds-button onClick={() => setFirstModalOpened(true)}>Open first modal</mds-button>
+    <mds-modal id="modal-01" position="right" opened={openedFirstModal === true ? true : undefined} onMdsModalClose={() => setFirstModalOpened(false)} style={{ '--mds-modal-window-max-width': '66%' }}>
+      <div class="p-600">
+        <mds-button class="self-start justify-self-start" onClick={() => setSecondModalOpened(true)}>Open nested modal</mds-button>
+      </div>
+    </mds-modal>
+    <mds-modal id="modal-02" position="right" opened={openedSecondModal === true ? true : undefined} onMdsModalClose={() => setSecondModalOpened(false)} style={{ '--mds-modal-window-max-width': '33%' }}>
+      <div class="p-600">
+        <mds-text>This is the nested modal</mds-text>
+      </div>
+    </mds-modal>
+  </div>
+}
+
 export const Default = Template.bind({})
 Default.args = {
   position: 'right',
@@ -291,3 +328,5 @@ export const ARIATest = CustomTemplate.bind({})
 ARIATest.args = {
   opened: true,
 }
+
+export const UseCaseNestedModal = NestedModalTemplate.bind({})

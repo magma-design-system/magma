@@ -21,6 +21,15 @@ const themeStatusVariantDictionary = [
   'warning',
 ]
 
+const themeInputVariantDictionary = [
+  'ai',
+  'error',
+  'info',
+  'primary',
+  'success',
+  'warning',
+]
+
 const themeFullVariantDictionary = [
   'amaranth',
   'aqua',
@@ -128,11 +137,12 @@ const toneMinimalVariantDictionary = [
 export {
   themeFullVariantAvatarDictionary,
   themeFullVariantDictionary,
+  themeInputVariantDictionary,
   themeLabelVariantDictionary,
   themeLuminanceVariantDictionary,
   themeStatusVariantDictionary,
-  themeVariantDictionary,
   themeVariantChipDictionary,
+  themeVariantDictionary,
   toneActionVariantDictionary,
   toneMinimalVariantDictionary,
   toneSimpleVariantDictionary,

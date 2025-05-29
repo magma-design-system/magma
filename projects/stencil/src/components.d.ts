@@ -10,7 +10,7 @@ import { TypographyInfoType, TypographyInputType, TypographyReadingVariants, Typ
 import { MdsAccordionItemEventDetail } from "./components/mds-accordion-item/meta/event-detail";
 import { MdsAccordionTimerEventDetail } from "./components/mds-accordion-timer/meta/event-detail";
 import { MdsAccordionTimerItemEventDetail } from "./components/mds-accordion-timer-item/meta/event-detail";
-import { ChipVariantType, LabelVariantType, ThemeFullVariantAvatarType, ThemeFullVariantType, ThemeStatusVariantType, ThemeVariantType, ToneMinimalVariantType, ToneSimpleVariantType, ToneVariantType } from "./type/variant";
+import { ChipVariantType, LabelVariantType, ThemeFullVariantAvatarType, ThemeFullVariantType, ThemeInputVariantType, ThemeStatusVariantType, ThemeVariantType, ToneMinimalVariantType, ToneSimpleVariantType, ToneVariantType } from "./type/variant";
 import { AvatarSizeType } from "./components/mds-avatar-stack/meta/types";
 import { BenchmarkBarTypographyType } from "./components/mds-benchmark-bar/meta/types";
 import { BibliographyFormatType, BibliographyRelationshipType } from "./components/mds-bibliography/meta/types";
@@ -81,7 +81,7 @@ export { TypographyInfoType, TypographyInputType, TypographyReadingVariants, Typ
 export { MdsAccordionItemEventDetail } from "./components/mds-accordion-item/meta/event-detail";
 export { MdsAccordionTimerEventDetail } from "./components/mds-accordion-timer/meta/event-detail";
 export { MdsAccordionTimerItemEventDetail } from "./components/mds-accordion-timer-item/meta/event-detail";
-export { ChipVariantType, LabelVariantType, ThemeFullVariantAvatarType, ThemeFullVariantType, ThemeStatusVariantType, ThemeVariantType, ToneMinimalVariantType, ToneSimpleVariantType, ToneVariantType } from "./type/variant";
+export { ChipVariantType, LabelVariantType, ThemeFullVariantAvatarType, ThemeFullVariantType, ThemeInputVariantType, ThemeStatusVariantType, ThemeVariantType, ToneMinimalVariantType, ToneSimpleVariantType, ToneVariantType } from "./type/variant";
 export { AvatarSizeType } from "./components/mds-avatar-stack/meta/types";
 export { BenchmarkBarTypographyType } from "./components/mds-benchmark-bar/meta/types";
 export { BibliographyFormatType, BibliographyRelationshipType } from "./components/mds-bibliography/meta/types";
@@ -634,6 +634,13 @@ export namespace Components {
          */
         "zIndex": number;
     }
+    interface MdsEmoji {
+        "name": string;
+        "startBlinking": () => Promise<void>;
+        "startFollowMouse": () => Promise<void>;
+        "stopBlinking": () => Promise<void>;
+        "stopFollowMouse": () => Promise<void>;
+    }
     interface MdsEntity {
         /**
           * Specifies if the component is awaiting a response from an external resource
@@ -974,6 +981,10 @@ export namespace Components {
          */
         "maxlength"?: number;
         /**
+          * Toggles text recognition
+         */
+        "mic"?: boolean;
+        /**
           * Specifies the minimum value use it with input type="number" or type="date" Example: min="-3", min="1988-04-15"
          */
         "min"?: string | number;
@@ -1030,7 +1041,7 @@ export namespace Components {
         /**
           * Sets the variant of the input field
          */
-        "variant"?: ThemeStatusVariantType;
+        "variant"?: ThemeInputVariantType;
     }
     interface MdsInputDate {
         /**
@@ -1112,7 +1123,7 @@ export namespace Components {
         /**
           * Display the variant of a message at the bottom of the input text field
          */
-        "variant"?: ThemeStatusVariantType;
+        "variant"?: ThemeInputVariantType;
     }
     interface MdsInputOtp {
         /**
@@ -1389,6 +1400,7 @@ export namespace Components {
           * Specifies if the component is animating itself or not
          */
         "animation"?: ModalAnimationStyleType;
+        "close": () => Promise<void>;
         /**
           * Specifies if the modal is opened or not
          */
@@ -2616,6 +2628,12 @@ declare global {
         prototype: HTMLMdsDropdownElement;
         new (): HTMLMdsDropdownElement;
     };
+    interface HTMLMdsEmojiElement extends Components.MdsEmoji, HTMLStencilElement {
+    }
+    var HTMLMdsEmojiElement: {
+        prototype: HTMLMdsEmojiElement;
+        new (): HTMLMdsEmojiElement;
+    };
     interface HTMLMdsEntityElement extends Components.MdsEntity, HTMLStencilElement {
     }
     var HTMLMdsEntityElement: {
@@ -2773,6 +2791,7 @@ declare global {
         "mdsInputKeydown": KeyboardEvent;
         "mdsInputBlur": void;
         "mdsInputFocus": void;
+        "mdsInputSpeechEnd": void;
         "mdsInputValidation": boolean;
     }
     interface HTMLMdsInputElement extends Components.MdsInput, HTMLStencilElement {
@@ -3554,6 +3573,7 @@ declare global {
         "mds-chip": HTMLMdsChipElement;
         "mds-details": HTMLMdsDetailsElement;
         "mds-dropdown": HTMLMdsDropdownElement;
+        "mds-emoji": HTMLMdsEmojiElement;
         "mds-entity": HTMLMdsEntityElement;
         "mds-file": HTMLMdsFileElement;
         "mds-file-preview": HTMLMdsFilePreviewElement;
@@ -4193,6 +4213,9 @@ declare namespace LocalJSX {
          */
         "zIndex"?: number;
     }
+    interface MdsEmoji {
+        "name"?: string;
+    }
     interface MdsEntity {
         /**
           * Specifies if the component is awaiting a response from an external resource
@@ -4551,6 +4574,10 @@ declare namespace LocalJSX {
          */
         "maxlength"?: number;
         /**
+          * Toggles text recognition
+         */
+        "mic"?: boolean;
+        /**
           * Specifies the minimum value use it with input type="number" or type="date" Example: min="-3", min="1988-04-15"
          */
         "min"?: string | number;
@@ -4578,6 +4605,10 @@ declare namespace LocalJSX {
           * Emits a KeyboardEvent when a keyboard key is pressed on the focused input element
          */
         "onMdsInputKeydown"?: (event: MdsInputCustomEvent<KeyboardEvent>) => void;
+        /**
+          * Emits a void event when input speech recognition ends
+         */
+        "onMdsInputSpeechEnd"?: (event: MdsInputCustomEvent<void>) => void;
         /**
           * Emits a boolean event when a input execute validation
          */
@@ -4621,7 +4652,7 @@ declare namespace LocalJSX {
         /**
           * Sets the variant of the input field
          */
-        "variant"?: ThemeStatusVariantType;
+        "variant"?: ThemeInputVariantType;
     }
     interface MdsInputDate {
         /**
@@ -4700,7 +4731,7 @@ declare namespace LocalJSX {
         /**
           * Display the variant of a message at the bottom of the input text field
          */
-        "variant"?: ThemeStatusVariantType;
+        "variant"?: ThemeInputVariantType;
     }
     interface MdsInputOtp {
         /**
@@ -5836,6 +5867,7 @@ declare namespace LocalJSX {
         "mds-chip": MdsChip;
         "mds-details": MdsDetails;
         "mds-dropdown": MdsDropdown;
+        "mds-emoji": MdsEmoji;
         "mds-entity": MdsEntity;
         "mds-file": MdsFile;
         "mds-file-preview": MdsFilePreview;
@@ -5958,6 +5990,7 @@ declare module "@stencil/core" {
             "mds-chip": LocalJSX.MdsChip & JSXBase.HTMLAttributes<HTMLMdsChipElement>;
             "mds-details": LocalJSX.MdsDetails & JSXBase.HTMLAttributes<HTMLMdsDetailsElement>;
             "mds-dropdown": LocalJSX.MdsDropdown & JSXBase.HTMLAttributes<HTMLMdsDropdownElement>;
+            "mds-emoji": LocalJSX.MdsEmoji & JSXBase.HTMLAttributes<HTMLMdsEmojiElement>;
             "mds-entity": LocalJSX.MdsEntity & JSXBase.HTMLAttributes<HTMLMdsEntityElement>;
             "mds-file": LocalJSX.MdsFile & JSXBase.HTMLAttributes<HTMLMdsFileElement>;
             "mds-file-preview": LocalJSX.MdsFilePreview & JSXBase.HTMLAttributes<HTMLMdsFilePreviewElement>;
