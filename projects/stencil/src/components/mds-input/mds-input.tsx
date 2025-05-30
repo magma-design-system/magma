@@ -156,7 +156,7 @@ export class MdsInput {
    * use it with input type="number" or type="date"
    * Example: max="180", max="2046-12-04"
    */
-  @Prop({ reflect: true }) readonly max?: string
+  @Prop({ reflect: true }) readonly max?: string | number
 
   /**
    * Specifies the maximum number of characters allowed in an element.

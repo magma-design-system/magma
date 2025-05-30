@@ -975,7 +975,7 @@ export namespace Components {
         /**
           * Specifies the maximum value use it with input type="number" or type="date" Example: max="180", max="2046-12-04"
          */
-        "max"?: string;
+        "max"?: string | number;
         /**
           * Specifies the maximum number of characters allowed in an element. Use it with input type="text". If maxlength is set to 0 or a negative number it will be considered as undefined.
          */
@@ -4568,7 +4568,7 @@ declare namespace LocalJSX {
         /**
           * Specifies the maximum value use it with input type="number" or type="date" Example: max="180", max="2046-12-04"
          */
-        "max"?: string;
+        "max"?: string | number;
         /**
           * Specifies the maximum number of characters allowed in an element. Use it with input type="text". If maxlength is set to 0 or a negative number it will be considered as undefined.
          */
