@@ -78,6 +78,7 @@ include:
   - '/projects/stencil/src/components/mds-chip/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-details/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-dropdown/.gitlab-ci.yml'
+  - '/projects/stencil/src/components/mds-emoji/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-entity/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-file-preview/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-file/.gitlab-ci.yml'
