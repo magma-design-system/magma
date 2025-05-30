@@ -61,7 +61,7 @@ export class MdsTab {
   @Event({ eventName: 'mdsTabChange' }) changedEvent: EventEmitter<MdsTabEventDetail>
 
   private queryContentItems = (): Array<HTMLElement> =>
-    Array.from(this.element.querySelectorAll<HTMLElement>('[slot=content]'))
+    Array.from(this.element.querySelectorAll<HTMLElement>(':scope > [slot=content]'))
 
   componentWillLoad (): void {
     this.tabItems = Array.from(this.element.querySelectorAll<HTMLMdsTabItemElement>('mds-tab-item'))
