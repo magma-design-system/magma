@@ -1,0 +1,20 @@
+.base-actions:
+  variables:
+    COMPONENT: mds-actions
+
+# TEST
+actions-publish-test:
+  extends: [.base-stencil-publish-test, .base-actions]
+  dependencies: [base-stencil-build, base-isolate]
+
+# PUBLISH
+actions-publish:
+  extends: [.base-stencil-publish, .base-actions]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, actions-publish-test]
+
+# INSTALL TEST
+actions-install-test:
+  extends: [.base-stencil-install-test, .base-actions]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, actions-publish]
