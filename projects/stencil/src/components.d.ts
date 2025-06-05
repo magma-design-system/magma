@@ -16,7 +16,7 @@ import { BenchmarkBarTypographyType } from "./components/mds-benchmark-bar/meta/
 import { BibliographyFormatType, BibliographyRelationshipType } from "./components/mds-bibliography/meta/types";
 import { MdsBreadcrumbEventDetail } from "./components/mds-breadcrumb/meta/event-detail";
 import { MdsBreadcrumbItemEventDetail } from "./components/mds-breadcrumb-item/meta/event-detail";
-import { ButtonIconPositionType, ButtonSizeType, ButtonTargetType, ButtonType, ButtonVariantType } from "./type/button";
+import { ButtonDropdownVariantType, ButtonIconPositionType, ButtonSizeType, ButtonTargetType, ButtonType, ButtonVariantType } from "./type/button";
 import { TypographyHeadingTagType, TypographyTagType, TypographyTruncateType } from "./type/text";
 import { CalendarCellSelectionOrieintationType, CalendarCellSelectionPositionType, CalendarCellType } from "./components/mds-calendar-cell/meta/types";
 import { MdsChipEvent } from "./components/mds-chip/meta/interface";
@@ -87,7 +87,7 @@ export { BenchmarkBarTypographyType } from "./components/mds-benchmark-bar/meta/
 export { BibliographyFormatType, BibliographyRelationshipType } from "./components/mds-bibliography/meta/types";
 export { MdsBreadcrumbEventDetail } from "./components/mds-breadcrumb/meta/event-detail";
 export { MdsBreadcrumbItemEventDetail } from "./components/mds-breadcrumb-item/meta/event-detail";
-export { ButtonIconPositionType, ButtonSizeType, ButtonTargetType, ButtonType, ButtonVariantType } from "./type/button";
+export { ButtonDropdownVariantType, ButtonIconPositionType, ButtonSizeType, ButtonTargetType, ButtonType, ButtonVariantType } from "./type/button";
 export { TypographyHeadingTagType, TypographyTagType, TypographyTruncateType } from "./type/text";
 export { CalendarCellSelectionOrieintationType, CalendarCellSelectionPositionType, CalendarCellType } from "./components/mds-calendar-cell/meta/types";
 export { MdsChipEvent } from "./components/mds-chip/meta/interface";
@@ -207,6 +207,8 @@ export namespace Components {
           * Used automatically by MdsAccordionTimer wrapper to handle it's siblings
          */
         "uuid": number;
+    }
+    interface MdsActions {
     }
     interface MdsAuthor {
     }
@@ -440,6 +442,60 @@ export namespace Components {
           * Specifies the color variant for the button
          */
         "variant"?: ButtonVariantType;
+    }
+    interface MdsButtonDropdown {
+        /**
+          * Specifies if the button is active or not
+         */
+        "active": boolean;
+        /**
+          * Specifies if the component is focused when is loaded on the viewport
+         */
+        "autoFocus": boolean;
+        /**
+          * Specifies if the button is awaiting for a response
+         */
+        "await"?: boolean;
+        /**
+          * Specifies if the component is disabled or not
+         */
+        "disabled"?: boolean;
+        /**
+          * Specifies the URL target of the button
+         */
+        "href"?: string;
+        /**
+          * The icon displayed in the button
+         */
+        "icon"?: string;
+        /**
+          * Specifies le text label of the component
+         */
+        "label": string;
+        /**
+          * Specifies the size for the button
+         */
+        "size": ButtonSizeType;
+        /**
+          * Specifies the target of the URL, if self or blank
+         */
+        "target": ButtonTargetType;
+        /**
+          * Specifies the tone variant for the button
+         */
+        "tone"?: ToneMinimalVariantType;
+        /**
+          * Specifies if the text shoud be truncated or should behave as a normal text
+         */
+        "truncate"?: TypographyTruncateType;
+        /**
+          * The type of the button element
+         */
+        "type"?: ButtonType;
+        /**
+          * Specifies the color variant for the button
+         */
+        "variant"?: ButtonDropdownVariantType;
     }
     interface MdsCalendar {
         /**
@@ -1759,6 +1815,8 @@ export namespace Components {
          */
         "running"?: boolean;
     }
+    interface MdsStatusBar {
+    }
     interface MdsStepperBar {
         /**
           * Sets the current item to the given index: 0 is none done, 1 is the first item done, last number + 1 is all items done
@@ -2411,6 +2469,12 @@ declare global {
         prototype: HTMLMdsAccordionTimerItemElement;
         new (): HTMLMdsAccordionTimerItemElement;
     };
+    interface HTMLMdsActionsElement extends Components.MdsActions, HTMLStencilElement {
+    }
+    var HTMLMdsActionsElement: {
+        prototype: HTMLMdsActionsElement;
+        new (): HTMLMdsActionsElement;
+    };
     interface HTMLMdsAuthorElement extends Components.MdsAuthor, HTMLStencilElement {
     }
     var HTMLMdsAuthorElement: {
@@ -2509,6 +2573,12 @@ declare global {
     var HTMLMdsButtonElement: {
         prototype: HTMLMdsButtonElement;
         new (): HTMLMdsButtonElement;
+    };
+    interface HTMLMdsButtonDropdownElement extends Components.MdsButtonDropdown, HTMLStencilElement {
+    }
+    var HTMLMdsButtonDropdownElement: {
+        prototype: HTMLMdsButtonDropdownElement;
+        new (): HTMLMdsButtonDropdownElement;
     };
     interface HTMLMdsCalendarElementEventMap {
         "mdsCalendarChange": {startDate: string, endDate?: string};
@@ -3303,6 +3373,12 @@ declare global {
         prototype: HTMLMdsSpinnerElement;
         new (): HTMLMdsSpinnerElement;
     };
+    interface HTMLMdsStatusBarElement extends Components.MdsStatusBar, HTMLStencilElement {
+    }
+    var HTMLMdsStatusBarElement: {
+        prototype: HTMLMdsStatusBarElement;
+        new (): HTMLMdsStatusBarElement;
+    };
     interface HTMLMdsStepperBarElementEventMap {
         "mdsStepperBarChange": MdsStepperBarEventDetail;
     }
@@ -3552,6 +3628,7 @@ declare global {
         "mds-accordion-item": HTMLMdsAccordionItemElement;
         "mds-accordion-timer": HTMLMdsAccordionTimerElement;
         "mds-accordion-timer-item": HTMLMdsAccordionTimerItemElement;
+        "mds-actions": HTMLMdsActionsElement;
         "mds-author": HTMLMdsAuthorElement;
         "mds-avatar": HTMLMdsAvatarElement;
         "mds-avatar-stack": HTMLMdsAvatarStackElement;
@@ -3563,6 +3640,7 @@ declare global {
         "mds-breadcrumb": HTMLMdsBreadcrumbElement;
         "mds-breadcrumb-item": HTMLMdsBreadcrumbItemElement;
         "mds-button": HTMLMdsButtonElement;
+        "mds-button-dropdown": HTMLMdsButtonDropdownElement;
         "mds-calendar": HTMLMdsCalendarElement;
         "mds-calendar-cell": HTMLMdsCalendarCellElement;
         "mds-card": HTMLMdsCardElement;
@@ -3633,6 +3711,7 @@ declare global {
         "mds-radial-menu-item": HTMLMdsRadialMenuItemElement;
         "mds-separator": HTMLMdsSeparatorElement;
         "mds-spinner": HTMLMdsSpinnerElement;
+        "mds-status-bar": HTMLMdsStatusBarElement;
         "mds-stepper-bar": HTMLMdsStepperBarElement;
         "mds-stepper-bar-item": HTMLMdsStepperBarItemElement;
         "mds-tab": HTMLMdsTabElement;
@@ -3753,6 +3832,8 @@ declare namespace LocalJSX {
           * Used automatically by MdsAccordionTimer wrapper to handle it's siblings
          */
         "uuid"?: number;
+    }
+    interface MdsActions {
     }
     interface MdsAuthor {
     }
@@ -3996,6 +4077,60 @@ declare namespace LocalJSX {
           * Specifies the color variant for the button
          */
         "variant"?: ButtonVariantType;
+    }
+    interface MdsButtonDropdown {
+        /**
+          * Specifies if the button is active or not
+         */
+        "active"?: boolean;
+        /**
+          * Specifies if the component is focused when is loaded on the viewport
+         */
+        "autoFocus"?: boolean;
+        /**
+          * Specifies if the button is awaiting for a response
+         */
+        "await"?: boolean;
+        /**
+          * Specifies if the component is disabled or not
+         */
+        "disabled"?: boolean;
+        /**
+          * Specifies the URL target of the button
+         */
+        "href"?: string;
+        /**
+          * The icon displayed in the button
+         */
+        "icon"?: string;
+        /**
+          * Specifies le text label of the component
+         */
+        "label"?: string;
+        /**
+          * Specifies the size for the button
+         */
+        "size"?: ButtonSizeType;
+        /**
+          * Specifies the target of the URL, if self or blank
+         */
+        "target"?: ButtonTargetType;
+        /**
+          * Specifies the tone variant for the button
+         */
+        "tone"?: ToneMinimalVariantType;
+        /**
+          * Specifies if the text shoud be truncated or should behave as a normal text
+         */
+        "truncate"?: TypographyTruncateType;
+        /**
+          * The type of the button element
+         */
+        "type"?: ButtonType;
+        /**
+          * Specifies the color variant for the button
+         */
+        "variant"?: ButtonDropdownVariantType;
     }
     interface MdsCalendar {
         /**
@@ -5419,6 +5554,8 @@ declare namespace LocalJSX {
          */
         "running"?: boolean;
     }
+    interface MdsStatusBar {
+    }
     interface MdsStepperBar {
         /**
           * Sets the current item to the given index: 0 is none done, 1 is the first item done, last number + 1 is all items done
@@ -5846,6 +5983,7 @@ declare namespace LocalJSX {
         "mds-accordion-item": MdsAccordionItem;
         "mds-accordion-timer": MdsAccordionTimer;
         "mds-accordion-timer-item": MdsAccordionTimerItem;
+        "mds-actions": MdsActions;
         "mds-author": MdsAuthor;
         "mds-avatar": MdsAvatar;
         "mds-avatar-stack": MdsAvatarStack;
@@ -5857,6 +5995,7 @@ declare namespace LocalJSX {
         "mds-breadcrumb": MdsBreadcrumb;
         "mds-breadcrumb-item": MdsBreadcrumbItem;
         "mds-button": MdsButton;
+        "mds-button-dropdown": MdsButtonDropdown;
         "mds-calendar": MdsCalendar;
         "mds-calendar-cell": MdsCalendarCell;
         "mds-card": MdsCard;
@@ -5927,6 +6066,7 @@ declare namespace LocalJSX {
         "mds-radial-menu-item": MdsRadialMenuItem;
         "mds-separator": MdsSeparator;
         "mds-spinner": MdsSpinner;
+        "mds-status-bar": MdsStatusBar;
         "mds-stepper-bar": MdsStepperBar;
         "mds-stepper-bar-item": MdsStepperBarItem;
         "mds-tab": MdsTab;
@@ -5959,6 +6099,7 @@ declare module "@stencil/core" {
             "mds-accordion-item": LocalJSX.MdsAccordionItem & JSXBase.HTMLAttributes<HTMLMdsAccordionItemElement>;
             "mds-accordion-timer": LocalJSX.MdsAccordionTimer & JSXBase.HTMLAttributes<HTMLMdsAccordionTimerElement>;
             "mds-accordion-timer-item": LocalJSX.MdsAccordionTimerItem & JSXBase.HTMLAttributes<HTMLMdsAccordionTimerItemElement>;
+            "mds-actions": LocalJSX.MdsActions & JSXBase.HTMLAttributes<HTMLMdsActionsElement>;
             "mds-author": LocalJSX.MdsAuthor & JSXBase.HTMLAttributes<HTMLMdsAuthorElement>;
             "mds-avatar": LocalJSX.MdsAvatar & JSXBase.HTMLAttributes<HTMLMdsAvatarElement>;
             "mds-avatar-stack": LocalJSX.MdsAvatarStack & JSXBase.HTMLAttributes<HTMLMdsAvatarStackElement>;
@@ -5970,6 +6111,7 @@ declare module "@stencil/core" {
             "mds-breadcrumb": LocalJSX.MdsBreadcrumb & JSXBase.HTMLAttributes<HTMLMdsBreadcrumbElement>;
             "mds-breadcrumb-item": LocalJSX.MdsBreadcrumbItem & JSXBase.HTMLAttributes<HTMLMdsBreadcrumbItemElement>;
             "mds-button": LocalJSX.MdsButton & JSXBase.HTMLAttributes<HTMLMdsButtonElement>;
+            "mds-button-dropdown": LocalJSX.MdsButtonDropdown & JSXBase.HTMLAttributes<HTMLMdsButtonDropdownElement>;
             "mds-calendar": LocalJSX.MdsCalendar & JSXBase.HTMLAttributes<HTMLMdsCalendarElement>;
             "mds-calendar-cell": LocalJSX.MdsCalendarCell & JSXBase.HTMLAttributes<HTMLMdsCalendarCellElement>;
             /**
@@ -6067,6 +6209,7 @@ declare module "@stencil/core" {
             "mds-radial-menu-item": LocalJSX.MdsRadialMenuItem & JSXBase.HTMLAttributes<HTMLMdsRadialMenuItemElement>;
             "mds-separator": LocalJSX.MdsSeparator & JSXBase.HTMLAttributes<HTMLMdsSeparatorElement>;
             "mds-spinner": LocalJSX.MdsSpinner & JSXBase.HTMLAttributes<HTMLMdsSpinnerElement>;
+            "mds-status-bar": LocalJSX.MdsStatusBar & JSXBase.HTMLAttributes<HTMLMdsStatusBarElement>;
             "mds-stepper-bar": LocalJSX.MdsStepperBar & JSXBase.HTMLAttributes<HTMLMdsStepperBarElement>;
             "mds-stepper-bar-item": LocalJSX.MdsStepperBarItem & JSXBase.HTMLAttributes<HTMLMdsStepperBarItemElement>;
             "mds-tab": LocalJSX.MdsTab & JSXBase.HTMLAttributes<HTMLMdsTabElement>;
