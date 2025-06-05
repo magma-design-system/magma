@@ -31,8 +31,8 @@
   --mds-button-color: var(--mds-tab-item-hover-color);
 }
 
-:host([selected]) .button,
-:host([selected]) .button:hover {
+.button.selected,
+.button.selected:hover {
   --mds-button-background: var(--mds-tab-item-selected-background);
   --mds-button-color: var(--mds-tab-item-selected-color);
 

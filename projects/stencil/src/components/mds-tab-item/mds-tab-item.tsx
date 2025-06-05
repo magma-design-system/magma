@@ -1,6 +1,7 @@
 import { Component, Element, Event, EventEmitter, Host, Prop, State, Watch, h } from '@stencil/core'
 import { ButtonIconPositionType, ButtonSizeType, ButtonType } from '@type/button'
 import { MdsTabItemEventDetail } from './meta/event-detail'
+import clsx from 'clsx'
 
 /**
  * @slot default - Put text string here, avoid elements
@@ -88,19 +89,9 @@ export class MdsTabItem {
 
   @Watch('selected')
   validateActive (newValue?: boolean): void {
-    if (newValue === false) {
-      this.selected = undefined
-    }
     this.isSelected = newValue
     if (this.isSelected) {
       this.selectedEvent.emit({ target: this.element, value: this.value })
-    }
-  }
-
-  @Watch('disabled')
-  handleDisabledChange (newValue?: boolean): void {
-    if (newValue === false) {
-      this.disabled = undefined
     }
   }
 
@@ -111,9 +102,9 @@ export class MdsTabItem {
   render () {
     return (
       <Host>
-        <mds-button class="button"
+        <mds-button class={clsx('button', this.selected ? 'selected' : '')}
           await={this.await}
-          disabled={this.disabled}
+          disabled={this.disabled ?? undefined}
           href={this.href}
           icon={this.icon}
           iconPosition={this.iconPosition}
