@@ -74,6 +74,8 @@ export class MdsTab {
     this.updateCSSCustomProps()
     this.tabs = this.element.shadowRoot?.querySelector('.tabs') as HTMLElement
     this.tabsContainer = this.element.shadowRoot?.querySelector('.tabs-wrapper') as HTMLElement
+    // attach onSlotChange event here to prevent fire event before componentDidLoad
+    this.element.shadowRoot?.querySelector('slot')?.addEventListener('slotchange', this.updateTabItems.bind(this))
     this.updateContentItems()
     this.initOverflowCheck()
     this.updateSliderPosition()
@@ -241,7 +243,7 @@ export class MdsTab {
           { this.overflow && <div class={clsx('tabs-wrapper-overflow-left', this.overflowLeft && 'tabs-wrapper-overflow-left--show')}></div> }
           { this.overflow && <div class={clsx('tabs-wrapper-overflow-right', this.overflowRight && 'tabs-wrapper-overflow-right--show')}></div> }
           <div class="tabs" part="tabs" role="tablist">
-            <slot onSlotchange={this.updateTabItems}/>
+            <slot/>
             { this.animation === 'slide' &&
               <div class="slider" part="slider" style={{
                 '--mds-tab-slider-width': `${this.sliderWidth}px`,
