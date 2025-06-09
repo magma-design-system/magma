@@ -208,8 +208,6 @@ export namespace Components {
          */
         "uuid": number;
     }
-    interface MdsActions {
-    }
     interface MdsAuthor {
     }
     interface MdsAvatar {
@@ -496,6 +494,8 @@ export namespace Components {
           * Specifies the color variant for the button
          */
         "variant"?: ButtonDropdownVariantType;
+    }
+    interface MdsButtonGroup {
     }
     interface MdsCalendar {
         /**
@@ -2469,12 +2469,6 @@ declare global {
         prototype: HTMLMdsAccordionTimerItemElement;
         new (): HTMLMdsAccordionTimerItemElement;
     };
-    interface HTMLMdsActionsElement extends Components.MdsActions, HTMLStencilElement {
-    }
-    var HTMLMdsActionsElement: {
-        prototype: HTMLMdsActionsElement;
-        new (): HTMLMdsActionsElement;
-    };
     interface HTMLMdsAuthorElement extends Components.MdsAuthor, HTMLStencilElement {
     }
     var HTMLMdsAuthorElement: {
@@ -2579,6 +2573,12 @@ declare global {
     var HTMLMdsButtonDropdownElement: {
         prototype: HTMLMdsButtonDropdownElement;
         new (): HTMLMdsButtonDropdownElement;
+    };
+    interface HTMLMdsButtonGroupElement extends Components.MdsButtonGroup, HTMLStencilElement {
+    }
+    var HTMLMdsButtonGroupElement: {
+        prototype: HTMLMdsButtonGroupElement;
+        new (): HTMLMdsButtonGroupElement;
     };
     interface HTMLMdsCalendarElementEventMap {
         "mdsCalendarChange": {startDate: string, endDate?: string};
@@ -3628,7 +3628,6 @@ declare global {
         "mds-accordion-item": HTMLMdsAccordionItemElement;
         "mds-accordion-timer": HTMLMdsAccordionTimerElement;
         "mds-accordion-timer-item": HTMLMdsAccordionTimerItemElement;
-        "mds-actions": HTMLMdsActionsElement;
         "mds-author": HTMLMdsAuthorElement;
         "mds-avatar": HTMLMdsAvatarElement;
         "mds-avatar-stack": HTMLMdsAvatarStackElement;
@@ -3641,6 +3640,7 @@ declare global {
         "mds-breadcrumb-item": HTMLMdsBreadcrumbItemElement;
         "mds-button": HTMLMdsButtonElement;
         "mds-button-dropdown": HTMLMdsButtonDropdownElement;
+        "mds-button-group": HTMLMdsButtonGroupElement;
         "mds-calendar": HTMLMdsCalendarElement;
         "mds-calendar-cell": HTMLMdsCalendarCellElement;
         "mds-card": HTMLMdsCardElement;
@@ -3832,8 +3832,6 @@ declare namespace LocalJSX {
           * Used automatically by MdsAccordionTimer wrapper to handle it's siblings
          */
         "uuid"?: number;
-    }
-    interface MdsActions {
     }
     interface MdsAuthor {
     }
@@ -4131,6 +4129,8 @@ declare namespace LocalJSX {
           * Specifies the color variant for the button
          */
         "variant"?: ButtonDropdownVariantType;
+    }
+    interface MdsButtonGroup {
     }
     interface MdsCalendar {
         /**
@@ -5983,7 +5983,6 @@ declare namespace LocalJSX {
         "mds-accordion-item": MdsAccordionItem;
         "mds-accordion-timer": MdsAccordionTimer;
         "mds-accordion-timer-item": MdsAccordionTimerItem;
-        "mds-actions": MdsActions;
         "mds-author": MdsAuthor;
         "mds-avatar": MdsAvatar;
         "mds-avatar-stack": MdsAvatarStack;
@@ -5996,6 +5995,7 @@ declare namespace LocalJSX {
         "mds-breadcrumb-item": MdsBreadcrumbItem;
         "mds-button": MdsButton;
         "mds-button-dropdown": MdsButtonDropdown;
+        "mds-button-group": MdsButtonGroup;
         "mds-calendar": MdsCalendar;
         "mds-calendar-cell": MdsCalendarCell;
         "mds-card": MdsCard;
@@ -6099,7 +6099,6 @@ declare module "@stencil/core" {
             "mds-accordion-item": LocalJSX.MdsAccordionItem & JSXBase.HTMLAttributes<HTMLMdsAccordionItemElement>;
             "mds-accordion-timer": LocalJSX.MdsAccordionTimer & JSXBase.HTMLAttributes<HTMLMdsAccordionTimerElement>;
             "mds-accordion-timer-item": LocalJSX.MdsAccordionTimerItem & JSXBase.HTMLAttributes<HTMLMdsAccordionTimerItemElement>;
-            "mds-actions": LocalJSX.MdsActions & JSXBase.HTMLAttributes<HTMLMdsActionsElement>;
             "mds-author": LocalJSX.MdsAuthor & JSXBase.HTMLAttributes<HTMLMdsAuthorElement>;
             "mds-avatar": LocalJSX.MdsAvatar & JSXBase.HTMLAttributes<HTMLMdsAvatarElement>;
             "mds-avatar-stack": LocalJSX.MdsAvatarStack & JSXBase.HTMLAttributes<HTMLMdsAvatarStackElement>;
@@ -6112,6 +6111,7 @@ declare module "@stencil/core" {
             "mds-breadcrumb-item": LocalJSX.MdsBreadcrumbItem & JSXBase.HTMLAttributes<HTMLMdsBreadcrumbItemElement>;
             "mds-button": LocalJSX.MdsButton & JSXBase.HTMLAttributes<HTMLMdsButtonElement>;
             "mds-button-dropdown": LocalJSX.MdsButtonDropdown & JSXBase.HTMLAttributes<HTMLMdsButtonDropdownElement>;
+            "mds-button-group": LocalJSX.MdsButtonGroup & JSXBase.HTMLAttributes<HTMLMdsButtonGroupElement>;
             "mds-calendar": LocalJSX.MdsCalendar & JSXBase.HTMLAttributes<HTMLMdsCalendarElement>;
             "mds-calendar-cell": LocalJSX.MdsCalendarCell & JSXBase.HTMLAttributes<HTMLMdsCalendarCellElement>;
             /**

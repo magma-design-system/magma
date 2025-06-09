@@ -89,7 +89,7 @@
   transition-property: fill;
 }
 
-@import './css/mds-button-actions.css';
+@import './css/mds-button-button-group.css';
 @import './css/mds-button-await.css';
 @import './css/mds-button-disabled.css';
 @import './css/mds-button-size.css';

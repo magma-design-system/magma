@@ -1,11 +1,11 @@
 import { newE2EPage } from '@stencil/core/testing'
 
-describe('mds-actions', () => {
+describe('mds-button-group', () => {
   it('renders', async () => {
     const page = await newE2EPage()
-    await page.setContent('<mds-actions></mds-actions>')
+    await page.setContent('<mds-button-group></mds-button-group>')
 
-    const element = await page.find('mds-actions')
+    const element = await page.find('mds-button-group')
     expect(element).toHaveAttribute('hydrated')
   })
 })

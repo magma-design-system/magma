@@ -1,4 +1,4 @@
-# mds-actions
+# mds-button-group
 
 
 

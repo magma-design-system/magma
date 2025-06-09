@@ -1,11 +1,11 @@
 import { Component, Host, h } from '@stencil/core'
 
 @Component({
-  tag: 'mds-actions',
-  styleUrl: 'mds-actions.css',
+  tag: 'mds-button-group',
+  styleUrl: 'mds-button-group.css',
   shadow: true,
 })
-export class MdsActions {
+export class MdsButtonGroup {
   render () {
     return (
       <Host>
