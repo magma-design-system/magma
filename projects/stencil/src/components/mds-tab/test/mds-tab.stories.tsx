@@ -221,6 +221,42 @@ const TemplateNoSelected = args =>
     </div>
   </div>
 
+const TemplateAdd = args => {
+  const [tabs, setTabs] = useState(Array(12).fill(0).map((_v, i) => {return { id: i, v: (i + 1).toString() }}))
+  const [currentTab, setCurrentTab] = useState<number|null>(1)
+
+  const addTab = () => {
+    const id = Number(tabs[tabs.length - 1].v)
+    setTabs([...tabs, { id, v: (id + 1).toString() }])
+
+  }
+
+  const removeTab = () => {
+    const t = tabs.slice(1)
+    if (tabs[0].id === currentTab) setCurrentTab(null)
+    setTabs([...t])
+
+  }
+
+  return (
+    <div class="grid gap-400">
+      <div class="flex gap-400">
+        <mds-button onClick={() => addTab()}>Add Tab</mds-button>
+        <mds-button onClick={() => removeTab()}>Remove Tab</mds-button>
+      </div>
+      <mds-tab {...args} class="grow">
+        {tabs.map((t, i) => {
+          return <mds-tab-item
+            key={i}
+            onClick={() => setCurrentTab(t.id)}
+            selected={currentTab === t.id}
+          >{t.v}</mds-tab-item>
+        })}
+      </mds-tab>
+    </div>
+  )
+}
+
 export const Default = Template.bind({})
 export const Animation = Template.bind({})
 Animation.args = {
@@ -243,3 +279,5 @@ export const NoSelectedItem = TemplateNoSelected.bind({})
 export const Scroll = TemplateScroll.bind({})
 
 export const AsyncContent = TemplateAsyncContent.bind({})
+
+export const AddTab = TemplateAdd.bind({})
