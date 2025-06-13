@@ -1,7 +1,7 @@
 :host([opened]) {
   --mds-modal-transition-window-transform: none;
 
-  background-color: rgba(var(--mds-modal-overlay-color) / var(--mds-modal-overlay-opacity));
+  background-color: rgb(var(--mds-modal-overlay-color) / var(--mds-modal-overlay-opacity));
   pointer-events: auto;
 }
 

@@ -27,7 +27,7 @@
     "generate.doc": "npx ts-node --skipProject ./scripts/generate-doc.ts",
     "gitlab-ci-yml-regenerate": "npx ts-node --skipProject ./scripts/gitlab-ci-yml-regenerate.ts",
     "lint": "npm run lint.ts && npm run lint.css",
-    "lint.css": "stylelint --config ./.stylelintrc.json 'src/**/*.css'",
+    "lint.css": "stylelint -c ./stylelint.config.mjs  'src/**/*.css'",
     "lint.ts": "eslint --config ./.eslintrc.js src/**/*.{ts,tsx}",
     "prebuild": "npm run storybook.version",
     "publish.isolate.all": "npm run publish.isolate.docs-json && npx ts-node --skipProject ./scripts/isolate-all.ts",

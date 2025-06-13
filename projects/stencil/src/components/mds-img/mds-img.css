@@ -4,7 +4,6 @@
 @tailwind utilities;
 
 :host {
-
   --mds-img-background: theme('colors.variant-primary-03');
   --mds-img-color: theme('colors.variant-primary-09');
   --mds-img-icon-color: theme('colors.variant-primary-07');
@@ -45,7 +44,6 @@ img {
 }
 
 .alt-text-container--error {
-
   --mds-img-background: var(--mds-img-error-background);
   --mds-img-color: var(--mds-img-error-color);
   --mds-img-icon-color: var(--mds-img-error-icon-color);
