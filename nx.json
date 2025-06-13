@@ -1,5 +1,4 @@
 {
-  "npmScope": "maggioli-design-system",
   "implicitDependencies": {
     "workspace.json": "*",
     "package.json": {
@@ -8,15 +7,19 @@
     },
     "nx.json": "*"
   },
-  "tasksRunnerOptions": {
-    "default": {
-      "runner": "@nrwl/workspace/tasks-runners/default",
-      "options": {
-        "cacheableOperations": ["build", "test", "lint", "package"]
-      }
+  "targetDefaults": {
+    "build": {
+      "cache": true
+    },
+    "test": {
+      "cache": true
+    },
+    "lint": {
+      "cache": true
+    },
+    "package": {
+      "cache": true
     }
   },
-  "affected": {
-    "defaultBase": "dev"
-  }
+  "defaultBase": "dev"
 }
