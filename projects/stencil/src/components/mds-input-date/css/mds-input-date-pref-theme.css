@@ -1,0 +1,21 @@
+:host-context(.pref-theme-dark) {
+  --mds-input-date-ring: theme('boxShadow.outline-50');
+  --mds-input-date-background: theme('colors.tone-neutral-09');
+  --mds-input-date-controls-border: 2px solid theme('colors.tone-neutral-06');
+}
+
+:host-context(.pref-theme-dark) .counter-button:hover {
+  --mds-button-background: theme('colors.tone-neutral-08');
+}
+
+@media (prefers-color-scheme: dark) {
+  :host-context(.pref-theme-system) {
+    --mds-input-date-ring: theme('boxShadow.outline-50');
+    --mds-input-date-background: theme('colors.tone-neutral-09');
+    --mds-input-date-controls-border: 2px solid theme('colors.tone-neutral-06');
+  }
+
+  :host-context(.pref-theme-system) .counter-button:hover {
+    --mds-button-background: theme('colors.tone-neutral-08');
+  }
+}
