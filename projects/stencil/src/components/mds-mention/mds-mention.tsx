@@ -1,4 +1,7 @@
-import { Component, Host, h } from '@stencil/core'
+import { Component, Host, h, Prop } from '@stencil/core'
+import miBaselineAlternateEmail from '@icon/mi/baseline/alternate-email.svg'
+import { MentionSize } from './meta/type'
+import { TypographyType } from '@type/typography'
 
 @Component({
   tag: 'mds-mention',
@@ -6,10 +9,39 @@ import { Component, Host, h } from '@stencil/core'
   shadow: true,
 })
 export class MdsMention {
+
+
+  /**
+   * Sets the icon shown at the left of the label
+   */
+  @Prop({ reflect: true }) readonly icon?: string
+
+  /**
+   * Sets the label of the component
+   */
+  @Prop({ reflect: true }) readonly label?: string
+
+  /**
+   * Sets the label of the component
+   */
+  @Prop({ reflect: true }) readonly size?: MentionSize = 'sm'
+
+  private sizeTypography = {
+    sm: 'caption',
+    md: 'detail',
+    lg: 'h6',
+  }
+
   render () {
     return (
       <Host>
-        <slot></slot>
+        <mds-icon name={this.icon ? this.icon : miBaselineAlternateEmail}></mds-icon>
+        <mds-text typography={this.sizeTypography[this.size ?? 'md'] as TypographyType}>
+          { this.size === 'lg'
+            ? this.label
+            : <b>{ this.label }</b>
+          }
+        </mds-text>
       </Host>
     )
   }

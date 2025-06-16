@@ -1,3 +1,22 @@
 :host {
-  display: block;
+  --mds-mention-icon-size: theme('padding.600');
+
+  align-items: center;
+  background-color: theme('colors.tone-neutral-09');
+  border-radius: 100px;
+  color: theme('colors.tone-neutral-03');
+  cursor: pointer;
+  display: inline-flex;
+  fill: currentcolor;
+  padding: theme('padding.25');
+  padding-right: theme('padding.200');
+  vertical-align: middle;
 }
+
+mds-icon {
+  height: var(--mds-mention-icon-size);
+  width: var(--mds-mention-icon-size);
+}
+
+@import './css/mds-mention-size.css';
+@import '../../tailwind/fouc.css';
