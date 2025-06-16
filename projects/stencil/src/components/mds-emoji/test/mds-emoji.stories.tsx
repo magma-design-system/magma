@@ -13,20 +13,22 @@ export default {
 
 const Template = () => {
   const [svgSize, setSvgSize] = useState(256)
+  const [followMouse, setFollowMouse] = useState(false)
+  const [eyeBlinking, setEyeBlinking] = useState(false)
   useEffect(() => {
     const emoji = document.querySelector('mds-emoji')
     const followMouseSwitch = document.getElementById('follow-mouse') as HTMLMdsInputSwitchElement
     const eyeBlinkingSwitch = document.getElementById('eye-blinking') as HTMLMdsInputSwitchElement
+    const buttonAgree = document.getElementById('agree') as HTMLMdsButtonElement
     const sizeRange = document.getElementById('size') as HTMLMdsInputRangeElement
     if (!followMouseSwitch) return
 
-    followMouseSwitch.checked = true
-    eyeBlinkingSwitch.checked = true
-    emoji?.startFollowMouse()
-    emoji?.startBlinking()
+    if (followMouse) emoji?.startFollowMouse()
+    if (eyeBlinking) emoji?.startBlinking()
 
     followMouseSwitch.addEventListener('mdsInputSwitchChange', (event: CustomEvent) => {
-      if (event.detail.checked) {
+      setFollowMouse(event.detail.checked === true)
+      if (event.detail.checked === true) {
         emoji?.startFollowMouse()
       } else {
         emoji?.stopFollowMouse()
@@ -34,7 +36,9 @@ const Template = () => {
     })
 
     eyeBlinkingSwitch.addEventListener('mdsInputSwitchChange', (event: CustomEvent) => {
-      if (event.detail.checked) {
+      // console.log(event.detail.checked)
+      setEyeBlinking(event.detail.checked === true)
+      if (event.detail.checked === true) {
         emoji?.startBlinking()
       } else {
         emoji?.stopBlinking()
@@ -45,14 +49,23 @@ const Template = () => {
       setSvgSize(event.detail)
     })
 
+    buttonAgree.addEventListener('click', () => {
+      followMouseSwitch.checked = undefined
+      eyeBlinkingSwitch.checked = undefined
+      emoji?.stopFollowMouse()
+      emoji?.stopBlinking()
+      emoji?.agree()
+    })
+
   }, [])
   return <div class="grid grid-cols-[300px_auto] gap-600 -m-600 min-h-dvh bg-tone-neutral-10">
     <div class="grid gap-200 auto-rows-min p-600">
-      <mds-input-switch id="follow-mouse" size='sm'>Follow mouse</mds-input-switch>
-      <mds-input-switch id="eye-blinking" size='sm'>Eye blinking</mds-input-switch>
-      <mds-input-range id="size" min={24} max={320} step={8} value={320}></mds-input-range>
+      <mds-input-switch id="follow-mouse" size='sm' checked={followMouse || undefined}>Follow mouse</mds-input-switch>
+      <mds-input-switch id="eye-blinking" size='sm' checked={eyeBlinking || undefined}>Eye blinking</mds-input-switch>
+      <mds-input-range id="size" min={24} max={320} step={8} value={svgSize}></mds-input-range>
+      <mds-button id="agree">Agree</mds-button>
     </div>
-    <div class="flex items-center justify-center bg-tone-neutral rounded-2xl shadow-md m-600 ml-0">
+    <div class="flex items-end justify-end bg-tone-neutral rounded-2xl shadow-md m-600 ml-0">
       <mds-emoji style={{ width: `${svgSize}px`, height: `${svgSize}px` }} name="hexabot" />
     </div>
   </div>
