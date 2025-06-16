@@ -76,6 +76,12 @@
   }
 }
 
+@media (width <= 480px) {
+  :host {
+    --mds-modal-window-max-width: 100%;
+  }
+}
+
 /*
   - - -
   - x -
