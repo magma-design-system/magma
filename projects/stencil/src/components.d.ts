@@ -45,6 +45,7 @@ import { InputTipItemVariantType } from "./type/input-tip";
 import { AttachmentSort, FileError } from "./components/mds-input-upload/meta/types";
 import { KeyboardTest } from "./components/mds-keyboard/meta/type";
 import { KeyboardKeyName } from "./type/keyboard";
+import { MentionSize } from "./components/mds-mention/meta/type";
 import { ModalAnimationStateType, ModalAnimationStyleType, ModalOverflowType, ModalPositionType } from "./components/mds-modal/meta/types";
 import { StrategyType } from "./components/mds-notification/meta/types";
 import { MdsPaginatorEventDetail } from "./components/mds-paginator/meta/event-detail";
@@ -116,6 +117,7 @@ export { InputTipItemVariantType } from "./type/input-tip";
 export { AttachmentSort, FileError } from "./components/mds-input-upload/meta/types";
 export { KeyboardTest } from "./components/mds-keyboard/meta/type";
 export { KeyboardKeyName } from "./type/keyboard";
+export { MentionSize } from "./components/mds-mention/meta/type";
 export { ModalAnimationStateType, ModalAnimationStyleType, ModalOverflowType, ModalPositionType } from "./components/mds-modal/meta/types";
 export { StrategyType } from "./components/mds-notification/meta/types";
 export { MdsPaginatorEventDetail } from "./components/mds-paginator/meta/event-detail";
@@ -691,9 +693,11 @@ export namespace Components {
         "zIndex": number;
     }
     interface MdsEmoji {
+        "agree": (cb?: Function) => Promise<void>;
         "name": string;
         "startBlinking": () => Promise<void>;
         "startFollowMouse": () => Promise<void>;
+        "startThinking": () => Promise<void>;
         "stopBlinking": () => Promise<void>;
         "stopFollowMouse": () => Promise<void>;
     }
@@ -1446,6 +1450,20 @@ export namespace Components {
           * Specifies the variant for `typography`
          */
         "variant"?: TypographyReadingVariants;
+    }
+    interface MdsMention {
+        /**
+          * Sets the icon shown at the left of the label
+         */
+        "icon"?: string;
+        /**
+          * Sets the label of the component
+         */
+        "label"?: string;
+        /**
+          * Sets the label of the component
+         */
+        "size"?: MentionSize;
     }
     interface MdsModal {
         /**
@@ -3063,6 +3081,12 @@ declare global {
         prototype: HTMLMdsListItemElement;
         new (): HTMLMdsListItemElement;
     };
+    interface HTMLMdsMentionElement extends Components.MdsMention, HTMLStencilElement {
+    }
+    var HTMLMdsMentionElement: {
+        prototype: HTMLMdsMentionElement;
+        new (): HTMLMdsMentionElement;
+    };
     interface HTMLMdsModalElementEventMap {
         "mdsModalClose": void;
         "mdsModalHide": void;
@@ -3683,6 +3707,7 @@ declare global {
         "mds-label": HTMLMdsLabelElement;
         "mds-list": HTMLMdsListElement;
         "mds-list-item": HTMLMdsListItemElement;
+        "mds-mention": HTMLMdsMentionElement;
         "mds-modal": HTMLMdsModalElement;
         "mds-note": HTMLMdsNoteElement;
         "mds-notification": HTMLMdsNotificationElement;
@@ -5140,6 +5165,20 @@ declare namespace LocalJSX {
          */
         "variant"?: TypographyReadingVariants;
     }
+    interface MdsMention {
+        /**
+          * Sets the icon shown at the left of the label
+         */
+        "icon"?: string;
+        /**
+          * Sets the label of the component
+         */
+        "label"?: string;
+        /**
+          * Sets the label of the component
+         */
+        "size"?: MentionSize;
+    }
     interface MdsModal {
         /**
           * Specifies if the component is animating itself or not
@@ -6038,6 +6077,7 @@ declare namespace LocalJSX {
         "mds-label": MdsLabel;
         "mds-list": MdsList;
         "mds-list-item": MdsListItem;
+        "mds-mention": MdsMention;
         "mds-modal": MdsModal;
         "mds-note": MdsNote;
         "mds-notification": MdsNotification;
@@ -6164,6 +6204,7 @@ declare module "@stencil/core" {
             "mds-label": LocalJSX.MdsLabel & JSXBase.HTMLAttributes<HTMLMdsLabelElement>;
             "mds-list": LocalJSX.MdsList & JSXBase.HTMLAttributes<HTMLMdsListElement>;
             "mds-list-item": LocalJSX.MdsListItem & JSXBase.HTMLAttributes<HTMLMdsListItemElement>;
+            "mds-mention": LocalJSX.MdsMention & JSXBase.HTMLAttributes<HTMLMdsMentionElement>;
             "mds-modal": LocalJSX.MdsModal & JSXBase.HTMLAttributes<HTMLMdsModalElement>;
             "mds-note": LocalJSX.MdsNote & JSXBase.HTMLAttributes<HTMLMdsNoteElement>;
             "mds-notification": LocalJSX.MdsNotification & JSXBase.HTMLAttributes<HTMLMdsNotificationElement>;
