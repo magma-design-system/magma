@@ -1,6 +1,7 @@
 :host {
   --mds-status-bar-max-width: 500px;
-  --mds-status-bar-backdrop: var(--magma-backdrop, rgb(0 0 0 / 0.1));
+  --mds-status-bar-backdrop: rgb(var(--tone-neutral-01) / 0.1);
+  --mds-status-bar-backdrop-filter: blur(10px);
 }
 
 mds-modal {
@@ -9,11 +10,13 @@ mds-modal {
 }
 
 .status-bar-area {
+  backdrop-filter: var(--mds-status-bar-backdrop-filter);
   background-color: var(--mds-status-bar-backdrop);
   border-radius: theme('borderRadius.xl') theme('borderRadius.xl') 0 0;
   margin-left: theme('padding.600');
   margin-right: theme('padding.600');
   padding: theme('padding.200') theme('padding.200') theme('padding.600') theme('padding.200');
+  transition-property: background-color, transform, opacity;
 }
 
 .status-bar {
@@ -53,3 +56,7 @@ mds-modal {
 }
 
 @import '../../tailwind/fouc.css';
+@import './css/mds-status-bar-pref-animation.css';
+@import './css/mds-status-bar-pref-consumption.css';
+@import './css/mds-status-bar-pref-contrast.css';
+@import './css/mds-status-bar-pref-theme.css';
