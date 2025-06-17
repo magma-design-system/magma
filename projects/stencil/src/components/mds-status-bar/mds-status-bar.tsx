@@ -1,4 +1,4 @@
-import { Component, Host, h } from '@stencil/core'
+import { Component, Host, h, Prop, Element, Watch, Method } from '@stencil/core'
 
 @Component({
   tag: 'mds-status-bar',
@@ -6,10 +6,50 @@ import { Component, Host, h } from '@stencil/core'
   shadow: true,
 })
 export class MdsStatusBar {
+
+  @Element() host: HTMLMdsStatusBarElement
+  private modal: HTMLMdsModalElement
+
+  /**
+   * Specifies the description near the slotted actions
+   */
+  @Prop({ reflect: true }) readonly description?: string
+
+  /**
+   * Specifies if the component is visible
+   */
+  @Prop({ reflect: true, mutable: true }) visible?: boolean
+
+  componentDidLoad (): void {
+    this.modal = this.host.shadowRoot?.querySelector('.modal') as HTMLMdsModalElement
+    this.modal.backdrop = undefined
+  }
+
+  @Watch('visible')
+  handleVisbilityProp (newValue?: boolean): void {
+    if (newValue === false) {
+      this.visible = undefined
+    }
+  }
+
+  @Method()
+  async hide (): Promise<void> {
+    this.visible = undefined
+  }
+
   render () {
     return (
       <Host>
-        <slot></slot>
+        <mds-modal class="modal" opened={this.visible} position="bottom-right" animation="custom">
+          <div class="status-bar-area" part="status-bar-area" slot="window">
+            <div class="status-bar" part="status-bar-area">
+              { this.description && <mds-text typography='caption' class="description">{ this.description }</mds-text> }
+              <div class="actions">
+                <slot></slot>
+              </div>
+            </div>
+          </div>
+        </mds-modal>
       </Host>
     )
   }
