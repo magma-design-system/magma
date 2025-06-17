@@ -14,6 +14,22 @@
 
 ## Methods
 
+### `agree(cb?: Function) => Promise<void>`
+
+
+
+#### Parameters
+
+| Name | Type       | Description |
+| ---- | ---------- | ----------- |
+| `cb` | `Function` |             |
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
 ### `startBlinking() => Promise<void>`
 
 
@@ -25,6 +41,16 @@ Type: `Promise<void>`
 
 
 ### `startFollowMouse() => Promise<void>`
+
+
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
+### `startThinking() => Promise<void>`
 
 
 

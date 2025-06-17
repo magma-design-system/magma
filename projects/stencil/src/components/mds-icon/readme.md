@@ -124,6 +124,7 @@ Type: `Promise<void>`
  - [mds-keyboard-key](../mds-keyboard-key)
  - [mds-kpi-item](../mds-kpi-item)
  - [mds-list-item](../mds-list-item)
+ - [mds-mention](../mds-mention)
  - [mds-paginator-item](../mds-paginator-item)
  - [mds-policy-ai](../mds-policy-ai)
  - [mds-stepper-bar-item](../mds-stepper-bar-item)
@@ -147,6 +148,7 @@ graph TD;
   mds-keyboard-key --> mds-icon
   mds-kpi-item --> mds-icon
   mds-list-item --> mds-icon
+  mds-mention --> mds-icon
   mds-paginator-item --> mds-icon
   mds-policy-ai --> mds-icon
   mds-stepper-bar-item --> mds-icon
