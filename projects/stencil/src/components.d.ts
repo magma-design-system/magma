@@ -1474,6 +1474,10 @@ export namespace Components {
           * Specifies if the component is animating itself or not
          */
         "animation"?: ModalAnimationStyleType;
+        /**
+          * Specifies if the modal shows the backdrop
+         */
+        "backdrop"?: boolean;
         "close": () => Promise<void>;
         /**
           * Specifies if the modal is opened or not
@@ -1834,6 +1838,15 @@ export namespace Components {
         "running"?: boolean;
     }
     interface MdsStatusBar {
+        /**
+          * Specifies the description near the slotted actions
+         */
+        "description"?: string;
+        "hide": () => Promise<void>;
+        /**
+          * Specifies if the component is visible
+         */
+        "visible"?: boolean;
     }
     interface MdsStepperBar {
         /**
@@ -5189,6 +5202,10 @@ declare namespace LocalJSX {
          */
         "animation"?: ModalAnimationStyleType;
         /**
+          * Specifies if the modal shows the backdrop
+         */
+        "backdrop"?: boolean;
+        /**
           * Emits when a modal is closed
          */
         "onMdsModalClose"?: (event: MdsModalCustomEvent<void>) => void;
@@ -5594,6 +5611,14 @@ declare namespace LocalJSX {
         "running"?: boolean;
     }
     interface MdsStatusBar {
+        /**
+          * Specifies the description near the slotted actions
+         */
+        "description"?: string;
+        /**
+          * Specifies if the component is visible
+         */
+        "visible"?: boolean;
     }
     interface MdsStepperBar {
         /**
