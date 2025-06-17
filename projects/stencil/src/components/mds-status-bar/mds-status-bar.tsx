@@ -1,5 +1,11 @@
 import { Component, Host, h, Prop, Element, Watch, Method } from '@stencil/core'
 
+/**
+ * @slot default - Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element.
+ * @part status-bar - Selects the `status-bar` window component wrapped in shadowDOM.
+ * @part status-bar-area - Selects the `status-bar-area` which wraps `status-bar` element with darker area in shadowDOM.
+ */
+
 @Component({
   tag: 'mds-status-bar',
   styleUrl: 'mds-status-bar.css',
