@@ -2928,6 +2928,7 @@ declare global {
     };
     interface HTMLMdsInputDateRangeElementEventMap {
         "mdsInputDateRangeSelect": { startDate: string, endDate: string };
+        "mdsInputDateRangeValueChange": { startDate: string, endDate: string };
     }
     interface HTMLMdsInputDateRangeElement extends Components.MdsInputDateRange, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsInputDateRangeElementEventMap>(type: K, listener: (this: HTMLMdsInputDateRangeElement, ev: MdsInputDateRangeCustomEvent<HTMLMdsInputDateRangeElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -4872,6 +4873,7 @@ declare namespace LocalJSX {
          */
         "min"?: string | null;
         "onMdsInputDateRangeSelect"?: (event: MdsInputDateRangeCustomEvent<{ startDate: string, endDate: string }>) => void;
+        "onMdsInputDateRangeValueChange"?: (event: MdsInputDateRangeCustomEvent<{ startDate: string, endDate: string }>) => void;
         /**
           * Specifies the start date of the range
           * @description It's in ISO format (YYYY-MM-DD).

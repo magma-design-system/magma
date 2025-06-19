@@ -153,7 +153,7 @@ export class MdsCalendar {
     this.setDates()
   }
 
-  componentWillUnload (): void {
+  disconnectedCallback (): void {
     this.host?.shadowRoot?.removeEventListener('mouseover', event => {
       const target = event.target as HTMLElement
       if (target.matches('mds-calendar-cell') && this.startDateIdentifier && this.rangePicker) {
