@@ -7,7 +7,6 @@
 
   border-radius: var(--mds-button-dropdown-radius);
   display: inline-flex;
-  gap: theme('spacing.50');
   transition-property: background-color, box-shadow;
 }
 
