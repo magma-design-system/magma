@@ -1,4 +1,4 @@
 :host {
-  display: flex;
+  display: inline-flex;
   gap: theme('spacing.50');
 }
