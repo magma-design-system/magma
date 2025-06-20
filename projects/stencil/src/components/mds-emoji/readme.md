@@ -14,15 +14,9 @@
 
 ## Methods
 
-### `agree(cb?: Function) => Promise<void>`
+### `agree() => Promise<void>`
 
 
-
-#### Parameters
-
-| Name | Type       | Description |
-| ---- | ---------- | ----------- |
-| `cb` | `Function` |             |
 
 #### Returns
 

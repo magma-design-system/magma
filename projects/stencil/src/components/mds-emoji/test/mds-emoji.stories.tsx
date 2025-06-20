@@ -13,8 +13,8 @@ export default {
 
 const Template = () => {
   const [svgSize, setSvgSize] = useState(256)
-  const [followMouse, setFollowMouse] = useState(false)
-  const [eyeBlinking, setEyeBlinking] = useState(false)
+  const [followMouse, setFollowMouse] = useState(true)
+  const [eyeBlinking, setEyeBlinking] = useState(true)
   useEffect(() => {
     const emoji = document.querySelector('mds-emoji')
     const followMouseSwitch = document.getElementById('follow-mouse') as HTMLMdsInputSwitchElement
@@ -50,10 +50,6 @@ const Template = () => {
     })
 
     buttonAgree.addEventListener('click', () => {
-      followMouseSwitch.checked = undefined
-      eyeBlinkingSwitch.checked = undefined
-      emoji?.stopFollowMouse()
-      emoji?.stopBlinking()
       emoji?.agree()
     })
 
@@ -65,7 +61,7 @@ const Template = () => {
       <mds-input-range id="size" min={24} max={320} step={8} value={svgSize}></mds-input-range>
       <mds-button id="agree">Agree</mds-button>
     </div>
-    <div class="flex items-end justify-end bg-tone-neutral rounded-2xl shadow-md m-600 ml-0">
+    <div class="flex items-center justify-center bg-tone-neutral rounded-2xl shadow-md m-600 ml-0">
       <mds-emoji style={{ width: `${svgSize}px`, height: `${svgSize}px` }} name="hexabot" />
     </div>
   </div>

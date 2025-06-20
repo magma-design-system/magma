@@ -693,7 +693,7 @@ export namespace Components {
         "zIndex": number;
     }
     interface MdsEmoji {
-        "agree": (cb?: Function) => Promise<void>;
+        "agree": () => Promise<void>;
         "name": string;
         "startBlinking": () => Promise<void>;
         "startFollowMouse": () => Promise<void>;

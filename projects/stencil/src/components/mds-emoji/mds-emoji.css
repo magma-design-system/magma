@@ -1,14 +1,25 @@
 :host {
-  --mds-emoji-head: rgb(var(--label-yellow-08));
+  --mds-emoji-expression-follow-mouse-traits-duration: 150ms;
+  --mds-emoji-expression-follow-mouse-head-duration: 200ms;
+  --mds-emoji-expression-max-3d-rotation: 14deg;
   --mds-emoji-eyes: rgb(var(--label-yellow-04));
+  --mds-emoji-head: rgb(var(--label-yellow-08));
   --mds-emoji-mouth: rgb(var(--label-yellow-06));
+  --mds-emoji-perspective: 400px;
 
   align-items: stretch;
   aspect-ratio: 1/1;
   display: flex;
   height: theme('size.1200');
   justify-content: stretch;
+  perspective: var(--mds-emoji-perspective);
+  perspective-origin: center;
   width: theme('size.1200');
+}
+
+svg {
+  transform-style: preserve-3d;
+  transition: transform 0.2s ease-out;
 }
 
 :host .head {

@@ -13,7 +13,6 @@ export class MdsEmoji {
   // private hostSize: number = 24
 
   /*
-    agree(cb)
     startReading()
     stopReading()
     startThinking()
@@ -35,6 +34,10 @@ export class MdsEmoji {
   private mouseY: number = 0
   private blinkTimeout: NodeJS.Timeout
 
+  private currentRotateX: number = 0
+  private currentRotateY: number = 0
+
+  private emojiEl: SVGElement
   private eyeLeftEl: SVGElement
   private eyeRightEl: SVGElement
   private mouth: SVGElement
@@ -75,26 +78,39 @@ export class MdsEmoji {
   }
 
   @Method()
-  async agree (cb: Function = () => {}): Promise<void> { // eslint-disable-line @typescript-eslint/ban-types
-    if (this.isFollowingMouse) await this.stopFollowMouse()
-    if (this.isBlinking) await this.stopBlinking()
-    this.setAgreeAnimation(cb)
+  async agree (): Promise<void> { // eslint-disable-line @typescript-eslint/ban-types
+    this.setAgreeAnimation()
     return Promise.resolve()
   }
 
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  private setAgreeAnimation = (cb: Function = () => {}): void => {
-    const duration = 0.5
-    const margin = 2
-    const ease = 'expo.inOut'
-    gsap.to(this.eyeLeftEl, { attr: { d: this.eyeLeftGeometry.close }, y: `+=${margin}`, onComplete: () => { gsap.to(this.eyeLeftEl, { attr: { d: this.eyeLeftGeometry.open }, y: `-=${margin}` }) }, ease, duration })
-    gsap.to(this.eyeRightEl, { attr: { d: this.eyeRightGeometry.close }, y: `+=${margin}`, onComplete: () => { gsap.to(this.eyeRightEl, { attr: { d: this.eyeRightGeometry.open }, y: `-=${margin}` }) }, ease, duration })
-    gsap.to(this.head, {
-      scaleY: 0.75, transformOrigin: '50% 50%',
-      onComplete: () => { gsap.to(this.head, { scaleY: 1, transformOrigin: '50% 50%' }) },
-      duration,
-      ease,
+  private setAgreeAnimation = (): void => {
+  // Interrompi temporaneamente le rotazioni automatiche
+    this.isFollowingMouse = false
+    gsap.killTweensOf(this.emojiEl)
+
+    const baseX = this.currentRotateX
+
+    const tl = gsap.timeline({
+      onComplete: () => {
+      // Torna alla posizione seguita dal mouse
+        gsap.to(this.emojiEl, {
+          rotateX: this.currentRotateX,
+          rotateY: this.currentRotateY,
+          duration: 0.3,
+          ease: 'power2.out',
+          onComplete: () => {
+            this.isFollowingMouse = true
+          },
+        })
+      },
     })
+
+    tl.to(this.emojiEl, { rotateX: baseX - 40, duration: 0.15, ease: 'power2.out' })
+      .to(this.emojiEl, { rotateX: baseX + 20, duration: 0.2, ease: 'power1.inOut' })
+      .to(this.emojiEl, { rotateX: baseX - 20, duration: 0.15, ease: 'power2.inOut' })
+      .to(this.emojiEl, { rotateX: baseX + 5, duration: 0.2, ease: 'power1.out' })
+      .to(this.emojiEl, { rotateX: baseX, duration: 0.3, ease: 'power3.out' })
+
     gsap.fromTo(this.mouth,
       {
         attr: { d: this.mouthGeometry.happy },
@@ -106,16 +122,13 @@ export class MdsEmoji {
               attr: { d: this.mouthGeometry.smile },
             }, {
               scaleY: 1, transformOrigin: '50% 50%',
-              onComplete: () => {
-                if (cb) {
-                  cb()
-                }
-              },
+              duration: 0.2,
+              ease: 'expo.inOut',
             },
           )
         },
-        duration,
-        ease,
+        duration: 0.75,
+        ease: 'expo.inOut',
       },
     )
   }
@@ -151,11 +164,6 @@ export class MdsEmoji {
               attr: { d: this.mouthGeometry.smile },
             }, {
               scaleY: 1, transformOrigin: '50% 50%',
-              // onComplete: () => {
-              //   if (cb) {
-              //     cb()
-              //   }
-              // },
             },
           )
         },
@@ -220,71 +228,65 @@ export class MdsEmoji {
   }
 
   private followMouse = (): void => {
-    const duration = 0.2
+
     const { centerX } = this.getEmojiCenter()
     const { centerY } = this.getEmojiCenter()
     let currentMouseX = this.getEmojiCenter().centerX
     let currentMouseY = this.getEmojiCenter().centerY
+    const ease = 'power1.out'
 
-    // Normalizza la distanza dal centro (range -1 a 1)
     if (this.isFollowingMouse) {
       currentMouseX = this.mouseX
       currentMouseY = this.mouseY
     }
-    const normX = (currentMouseX - centerX) / centerX
-    const normY = (currentMouseY - centerY) / centerY
-    const clampMargin = 2
-    const maxOffset = 3
-    const clampedX = Math.max(clampMargin * -1, Math.min(clampMargin, normX))
-    const clampedY = Math.max(clampMargin * -1, Math.min(clampMargin, normY))
-    const stretchX = 1 - Math.abs(clampedX) * 0.15 // da 1 → 0.95
-    const stretchY = 1 - Math.abs(clampedY) * 0.15 // da 1 → 0.95
 
-    // eye
-    const eyeOffsetY = clampedY * maxOffset
-    const eyeOffsetLeftX = this.getParallaxOffsetX('left', clampedX, maxOffset)
-    const eyeOffsetRightX = this.getParallaxOffsetX('right', clampedX, maxOffset)
+    const rect = this.host.getBoundingClientRect()
+
+    const maxAngle = 12 // massimo angolo di rotazione in gradi
+
+    const deltaX = currentMouseX - centerX
+    const deltaY = currentMouseY - centerY
+
+    const percentX = deltaX / (rect.width / 2)
+    const percentY = deltaY / (rect.height / 2)
+
+    this.currentRotateY = gsap.utils.clamp(-maxAngle, maxAngle, percentX * maxAngle)
+    this.currentRotateX = gsap.utils.clamp(-maxAngle, maxAngle, -percentY * maxAngle) // Y invertito
+
+    gsap.to(this.emojiEl, {
+      rotateX: this.currentRotateX,
+      rotateY: this.currentRotateY,
+      duration: 0.2,
+      ease,
+    })
+
+    const maxEyeOffset = 1
+    const eyeOffsetX = gsap.utils.clamp(-maxEyeOffset, maxEyeOffset, percentX * maxEyeOffset)
+    const eyeOffsetY = gsap.utils.clamp(-maxEyeOffset, maxEyeOffset, percentY * maxEyeOffset)
+
     gsap.to(this.eyeLeftEl, {
-      x: eyeOffsetLeftX, y: eyeOffsetY,
-      scaleX: stretchX, scaleY: stretchY, transformOrigin: '50% 50%',
-      duration,
+      x: eyeOffsetX,
+      y: eyeOffsetY,
+      duration: 0.16,
+      ease,
     })
     gsap.to(this.eyeRightEl, {
-      x: eyeOffsetRightX, y: eyeOffsetY,
-      scaleX: stretchX, scaleY: stretchY, transformOrigin: '50% 50%',
-      duration,
+      x: eyeOffsetX,
+      y: eyeOffsetY,
+      duration: 0.16,
+      ease,
     })
 
-    // head
-    const headOffsetX = Math.max(-0.5, Math.min(0.5, normX)) * 2
-    const headOffsetY = Math.max(-0.5, Math.min(0.5, normY)) * 2
-    gsap.to(this.head, {
-      x: headOffsetX, y: headOffsetY,
-      scaleX: stretchX, scaleY: stretchY, transformOrigin: '50% 50%',
-      duration,
-    })
+    const maxMouthOffset = 1
+    const mouthOffsetX = gsap.utils.clamp(-maxMouthOffset, maxMouthOffset, percentX * maxMouthOffset)
+    const mouthOffsetY = gsap.utils.clamp(-maxMouthOffset, maxMouthOffset, percentY * maxMouthOffset)
 
-    // mouth
-    const mouthOffsetX = Math.max(-1, Math.min(1, normX)) * 2
-    const mouthOffsetY = Math.max(-1, Math.min(1, normY)) * 2
     gsap.to(this.mouth, {
-      x: mouthOffsetX, y: mouthOffsetY,
-      scaleX: stretchX, scaleY: stretchY, transformOrigin: '50% 50%',
-      duration,
+      x: mouthOffsetX,
+      y: mouthOffsetY,
+      duration: 0.15,
+      ease,
     })
-  }
-
-  private getParallaxOffsetX = (eye: 'left' | 'right', eyeClampedX: number, maxOffset: number): number => {
-    const eyeOffsetX = eyeClampedX * maxOffset
-    const distanceMin = 0.6
-    const distanceMax = 1.2
-    let factor: number
-    if (eye === 'right') {
-      factor = eyeClampedX >= 0 ? distanceMin : distanceMax // se il mouse è a destra, sinistro si muove poco
-    } else {
-      factor = eyeClampedX >= 0 ? distanceMax : distanceMin // se il mouse è a destra, destro si muove tanto
-    }
-    return eyeOffsetX * factor
   }
 
   componentDidLoad (): void {
@@ -300,7 +302,7 @@ export class MdsEmoji {
   render () {
     return <Host>
       { this.name === 'hexabot' && (
-        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg ref={el => (this.emojiEl = el as SVGElement)} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path class="head" ref={el => (this.head = el as SVGElement)} d={this.headGeometry.hexagonRounded} fill="black"/>
           <path class="eye" ref={el => (this.eyeLeftEl = el as SVGElement)} d={this.eyeLeftGeometry.open} fill="white"/>
           <path class="eye" ref={el => (this.eyeRightEl = el as SVGElement)} d={this.eyeRightGeometry.open} fill="white"/>
