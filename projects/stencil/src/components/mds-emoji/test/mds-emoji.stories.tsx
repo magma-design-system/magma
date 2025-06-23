@@ -15,17 +15,20 @@ const Template = () => {
   const [svgSize, setSvgSize] = useState(256)
   const [followMouse, setFollowMouse] = useState(true)
   const [eyeBlinking, setEyeBlinking] = useState(true)
+  const [thinking, setThinking] = useState(false)
   useEffect(() => {
     const emoji = document.querySelector('mds-emoji')
     const followMouseSwitch = document.getElementById('follow-mouse') as HTMLMdsInputSwitchElement
     const eyeBlinkingSwitch = document.getElementById('eye-blinking') as HTMLMdsInputSwitchElement
     const buttonAgree = document.getElementById('agree') as HTMLMdsButtonElement
-    const buttonThink = document.getElementById('think') as HTMLMdsButtonElement
+    const buttonDisagree = document.getElementById('disagree') as HTMLMdsButtonElement
+    const thinkSwitch = document.getElementById('think') as HTMLMdsInputSwitchElement
     const sizeRange = document.getElementById('size') as HTMLMdsInputRangeElement
     if (!followMouseSwitch) return
 
     if (followMouse) emoji?.startFollowMouse()
     if (eyeBlinking) emoji?.startBlinking()
+    if (thinking) emoji?.startThinking()
 
     followMouseSwitch.addEventListener('mdsInputSwitchChange', (event: CustomEvent) => {
       setFollowMouse(event.detail.checked === true)
@@ -54,8 +57,17 @@ const Template = () => {
       emoji?.agree()
     })
 
-    buttonThink.addEventListener('click', () => {
-      emoji?.startThinking()
+    buttonDisagree.addEventListener('click', () => {
+      emoji?.disagree(2000)
+    })
+
+    thinkSwitch.addEventListener('mdsInputSwitchChange', (event: CustomEvent) => {
+      setThinking(event.detail.checked === true)
+      if (event.detail.checked === true) {
+        emoji?.startThinking()
+      } else {
+        emoji?.stopThinking()
+      }
     })
 
   }, [])
@@ -64,8 +76,9 @@ const Template = () => {
       <mds-input-switch id="follow-mouse" size='sm' checked={followMouse || undefined}>Follow mouse</mds-input-switch>
       <mds-input-switch id="eye-blinking" size='sm' checked={eyeBlinking || undefined}>Eye blinking</mds-input-switch>
       <mds-input-range id="size" min={24} max={320} step={8} value={svgSize}></mds-input-range>
-      <mds-button id="agree">Agree</mds-button>
-      <mds-button id="think">Think</mds-button>
+      <mds-input-switch id="think" size='sm' checked={thinking || undefined}>Think</mds-input-switch>
+      <mds-button id="agree" variant="success" tone="weak">Agree</mds-button>
+      <mds-button id="disagree" variant="error" tone="weak">Disgree</mds-button>
     </div>
     <div class="flex items-center justify-center bg-tone-neutral rounded-2xl shadow-md m-600 ml-0">
       <mds-emoji style={{ width: `${svgSize}px`, height: `${svgSize}px` }} name="hexabot" />

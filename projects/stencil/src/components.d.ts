@@ -697,6 +697,10 @@ export namespace Components {
           * @returns Promise<void> Emoji agrees, useful for confirm actions.
          */
         "agree": () => Promise<void>;
+        /**
+          * @returns Promise<void> Emoji disagrees, useful for errors or unwanted results.
+         */
+        "disagree": (turnHappyDelay?: number) => Promise<void>;
         "name": string;
         /**
           * @returns Promise<void> Eyes start blinking.
@@ -718,6 +722,7 @@ export namespace Components {
           * @returns Promise<void> Stops following mouse with CSS 3D transform.
          */
         "stopFollowMouse": () => Promise<void>;
+        "stopThinking": () => Promise<void>;
     }
     interface MdsEntity {
         /**

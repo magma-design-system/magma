@@ -1,6 +1,7 @@
 import { Component, Host, h, Method, Prop, Element } from '@stencil/core'
 import { gsap } from 'gsap'
 import { cssRotationToNumber, cssDurationToSeconds } from '@common/unit'
+import { randomNumber } from '@common/number'
 
 @Component({
   tag: 'mds-emoji',
@@ -30,6 +31,9 @@ export class MdsEmoji {
 
   private isFollowingMouse: boolean = false
   private isBlinking: boolean = false
+  private isThinking: boolean = false
+  private faceOffsetX: number = 0
+  private faceOffsetY: number = 0
 
   private mouseX: number = 0
   private mouseY: number = 0
@@ -72,6 +76,7 @@ export class MdsEmoji {
     quiet: 'M16 15H8C8 17 7.5 17 12 17C16.5 17 16 17 16 15Z',
     sad: 'M8 17C8 15.3431 9.79086 14 12 14C14.1402 14 15.8881 15.2605 15.9951 16.8457L16 17L8 17Z',
     serious: 'M9 15H15V17H9V15Z',
+    think: 'M8 14H16V16H8V14Z',
     happy: 'M16 14H8C8.33333 15.3333 9 18 12 18C15 18 15.6667 15.3333 16 14Z',
     smile: 'M16.707 15.707C15.4771 16.937 13.6985 17.5 12 17.5C10.3015 17.5 8.52294 16.937 7.29297 15.707L8.70703 14.293C9.47706 15.063 10.6985 15.5 12 15.5C13.3015 15.5 14.5229 15.063 15.293 14.293L16.707 15.707Z',
     smileLeft: 'M10 14C10 15.1046 10.8954 16 12 16H14V18H12C9.79086 18 8 16.2091 8 14H10Z',
@@ -86,6 +91,12 @@ export class MdsEmoji {
     }
   }
 
+  private stopConcurrentAnimations = (): void => {
+    if (this.isThinking) {
+      this.stopThinking()
+    }
+  }
+
   /**
    * @returns Promise<void>
    * Emoji agrees, useful for confirm actions.
@@ -93,6 +104,7 @@ export class MdsEmoji {
 
   @Method()
   async agree (): Promise<void> { // eslint-disable-line @typescript-eslint/ban-types
+    this.stopConcurrentAnimations()
     this.setAgreeAnimation()
     return Promise.resolve()
   }
@@ -149,24 +161,115 @@ export class MdsEmoji {
 
   /**
    * @returns Promise<void>
+   * Emoji disagrees, useful for errors or unwanted results.
+   */
+
+  @Method()
+  async disagree (turnHappyDelay: number = 0): Promise<void> { // eslint-disable-line @typescript-eslint/ban-types
+    this.stopConcurrentAnimations()
+    this.setDisagreeAnimation(turnHappyDelay)
+    return Promise.resolve()
+  }
+
+  private setDisagreeAnimation = (turnHappyDelay: number = 0): void => {
+  // Interrompi temporaneamente le rotazioni automatiche
+    this.isFollowingMouse = false
+    gsap.killTweensOf(this.emojiEl)
+
+    const baseX = this.currentRotateX
+
+    const tl = gsap.timeline({
+      onComplete: () => {
+      // Torna alla posizione seguita dal mouse
+        gsap.to(this.emojiEl, {
+          rotateX: this.currentRotateX,
+          rotateY: this.currentRotateY,
+          duration: 0.3,
+          ease: 'power2.out',
+          onComplete: () => {
+            this.isFollowingMouse = true
+          },
+        })
+      },
+    })
+
+    tl.to(this.emojiEl, { rotateY: baseX - 40, duration: 0.15, ease: 'power2.out' })
+      .to(this.emojiEl, { rotateY: baseX + 20, duration: 0.2, ease: 'power1.inOut' })
+      .to(this.emojiEl, { rotateY: baseX - 20, duration: 0.15, ease: 'power2.inOut' })
+      .to(this.emojiEl, { rotateY: baseX + 5, duration: 0.2, ease: 'power1.out' })
+      .to(this.emojiEl, { rotateY: baseX, duration: 0.3, ease: 'power3.out' })
+
+    gsap.to(this.mouthEl, { attr: { d: this.mouthGeometry.sad }, duration: 0, ease: 'none', onComplete: () => {
+      setTimeout(() => {
+        gsap.to(this.mouthEl, { attr: { d: this.mouthGeometry.serious }, duration: 0, ease: 'none', onComplete: () => {
+          if (turnHappyDelay > 0) {
+            setTimeout(() => {
+              gsap.to(this.mouthEl, { attr: { d: this.mouthGeometry.smile }, duration: 0, ease: 'none' })
+            }, turnHappyDelay)
+          }
+        } })
+      }, 1000)
+    } })
+  }
+
+  /**
+   * @returns Promise<void>
    * Emoji start thinking, useful for pending requests.
    */
 
   @Method()
   async startThinking (): Promise<void> { // eslint-disable-line @typescript-eslint/ban-types
-    this.setThinkingAnimation()
+    this.isThinking = true
+    this.setStartThinkingAnimation()
     return Promise.resolve()
   }
 
-  private setThinkingAnimation = (): void => {
-    console.info(this.headEl)
+  @Method()
+  async stopThinking (): Promise<void> { // eslint-disable-line @typescript-eslint/ban-types
+    this.isThinking = false
+    this.setStopThinkingAnimation()
+    return Promise.resolve()
+  }
+
+  private moveEyesThinkAnimation = (): void => {
+    const duration = randomNumber(0.25, 0.75) // Random duration between 0.5 and 1
+    const ease = 'expo.Out'
+
+    const maxJitter = 1 // max +-2 px jitter
+    const randomOffsetX = randomNumber(-1, 1, true) * maxJitter
+    // const randomOffsetY = randomNumber(-0.5, 1) * maxJitter
+
+    const finalX = (this.faceOffsetX ?? 0) + randomOffsetX
+    // const finalY = (this.faceOffsetY ?? 0) + randomOffsetY
+
+    gsap.to(this.eyeLeftEl, { x: finalX, ease, duration })
+    gsap.to(this.eyeRightEl, { x: finalX, ease, duration, onComplete: () => {
+      if (this.isThinking) {
+        this.moveEyesThinkAnimation()
+      } else {
+        // Reset eyes position when not thinking
+        gsap.to(this.eyeLeftEl, { x: 0, ease: 'expo.inOut', duration: 0.5 })
+        gsap.to(this.eyeRightEl, { x: 0, ease: 'expo.inOut', duration: 0.5 })
+      }
+    } })
+  }
+
+  private setStartThinkingAnimation = (): void => {
     const duration = 0.5
-    const margin = 2
     const ease = 'expo.inOut'
     this.handLeftEl.style.visibility = 'visible'
-    gsap.from(this.handLeftEl, { scale:0, y: `+=${margin}`, ease, duration })
-    gsap.to(this.eyeLeftEl, { attr: { d: this.eyeLeftGeometry.close }, ease, duration })
-    gsap.to(this.eyeRightEl, { attr: { d: this.eyeRightGeometry.close }, ease, duration })
+    gsap.fromTo(this.handLeftEl, { scale: 0, rotateZ: 45 }, { scale: 1, rotateZ: 0, ease, duration })
+    this.moveEyesThinkAnimation()
+    gsap.to(this.mouthEl, { attr: { d: this.mouthGeometry.think }, duration: 0, ease: 'none' })
+  }
+
+  private setStopThinkingAnimation = (): void => {
+    const duration = 0.5
+    const ease = 'expo.inOut'
+    gsap.to(this.handLeftEl, { scale: 0, y: 0, rotateZ: 45, ease, duration })
+    gsap.to(this.eyeLeftEl, { x: 0, ease: 'expo.inOut', duration })
+    gsap.to(this.eyeRightEl, { x: 0, ease: 'expo.inOut', duration })
+    gsap.to(this.mouthEl, { attr: { d: this.mouthGeometry.smile }, duration: 0, ease: 'none' })
   }
 
   /**
@@ -201,8 +304,7 @@ export class MdsEmoji {
 
   private queueNextBlink = (): void => {
     if (!this.isBlinking) return
-    const nextDelay = 2000 + Math.random() * 3000 // 2-5s
-    this.blinkTimeout = setTimeout(this.loopBlink.bind(this), nextDelay)
+    this.blinkTimeout = setTimeout(this.loopBlink.bind(this), randomNumber(2000, 5000))
   }
 
   private blinkOnce = (): void => {
@@ -273,32 +375,32 @@ export class MdsEmoji {
       ease,
     })
 
-    const maxEyeOffset = 1
-    const eyeOffsetX = gsap.utils.clamp(-maxEyeOffset, maxEyeOffset, percentX * maxEyeOffset)
-    const eyeOffsetY = gsap.utils.clamp(-maxEyeOffset, maxEyeOffset, percentY * maxEyeOffset)
+    const maxOffset = 1
+
+    this.faceOffsetX = gsap.utils.clamp(-maxOffset, maxOffset, percentX * maxOffset)
+    this.faceOffsetY = gsap.utils.clamp(-maxOffset, maxOffset, percentY * maxOffset)
 
     gsap.to(this.eyeLeftEl, {
-      x: eyeOffsetX,
-      y: eyeOffsetY,
+      x: this.faceOffsetX,
+      y: this.faceOffsetY,
       duration: this.expressionFollowMouseTraitsDuration,
       ease,
     })
     gsap.to(this.eyeRightEl, {
-      x: eyeOffsetX,
-      y: eyeOffsetY,
+      x: this.faceOffsetX,
+      y: this.faceOffsetY,
       duration: this.expressionFollowMouseTraitsDuration,
       ease,
     })
     gsap.to(this.handLeftEl, {
-      x: eyeOffsetX,
-      y: eyeOffsetY,
+      x: this.faceOffsetX,
+      y: this.faceOffsetY,
       duration: this.expressionFollowMouseTraitsDuration,
       ease,
     })
 
-    const maxMouthOffset = 1
-    const mouthOffsetX = gsap.utils.clamp(-maxMouthOffset, maxMouthOffset, percentX * maxMouthOffset)
-    const mouthOffsetY = gsap.utils.clamp(-maxMouthOffset, maxMouthOffset, percentY * maxMouthOffset)
+    const mouthOffsetX = gsap.utils.clamp(-maxOffset, maxOffset, percentX * maxOffset)
+    const mouthOffsetY = gsap.utils.clamp(-maxOffset, maxOffset, percentY * maxOffset)
 
     gsap.to(this.mouthEl, {
       x: mouthOffsetX,
@@ -320,6 +422,8 @@ export class MdsEmoji {
     if (!window) return
     this.updateCSSCustomProps()
     window.addEventListener('mousemove', this.handleFollowMouse)
+    // useless
+    this.headEl.setAttribute('d', this.headGeometry.hexagonRounded)
   }
 
   disconnectedCallback (): void {
