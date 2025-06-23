@@ -23,7 +23,6 @@ export class MdsTab {
 
   @Element() private element: HTMLMdsTabElement
   private currentItem: number = -1
-  private slider: HTMLDivElement | null
   private tabs: HTMLElement
   private tabsContainer: HTMLElement
   private observer: ResizeObserver
@@ -64,15 +63,7 @@ export class MdsTab {
     Array.from(this.element.querySelectorAll<HTMLElement>(':scope > [slot=content]'))
 
   componentWillLoad (): void {
-    this.tabItems = Array.from(this.element.querySelectorAll<HTMLMdsTabItemElement>('mds-tab-item'))
-    this.tabItems.forEach((item, key) => {
-      if (!item.id) {
-        setAttributeIfEmpty(item, 'id', hashRandomValue('mds-tab-item'))
-      }
-      if (item.selected) {
-        this.currentItem = key
-      }
-    })
+    this.setTabsItems()
   }
 
   disconnectedCallback ():void {
@@ -83,11 +74,11 @@ export class MdsTab {
     this.updateCSSCustomProps()
     this.tabs = this.element.shadowRoot?.querySelector('.tabs') as HTMLElement
     this.tabsContainer = this.element.shadowRoot?.querySelector('.tabs-wrapper') as HTMLElement
+    // attach onSlotChange event here to prevent fire event before componentDidLoad
+    this.element.shadowRoot?.querySelector('slot')?.addEventListener('slotchange', this.updateTabItems.bind(this))
     this.updateContentItems()
     this.initOverflowCheck()
-    if (this.animation === 'slide') {
-      this.updateSliderPosition()
-    }
+    this.updateSliderPosition()
     if (this.currentItem > 0) {
       this.scrollTabs(this.currentItem)
     }
@@ -100,6 +91,26 @@ export class MdsTab {
       setAttributeIfEmpty(item, 'aria-labelledby', this.tabItems[key].id)
     })
     this.selectContentItem()
+  }
+
+  private setTabsItems = () => {
+    this.tabItems = Array.from(this.element.querySelectorAll<HTMLMdsTabItemElement>('mds-tab-item'))
+    this.currentItem = -1
+    this.tabItems.forEach((item, key) => {
+      if (!item.id) {
+        setAttributeIfEmpty(item, 'id', hashRandomValue('mds-tab-item'))
+      }
+      if (item.selected) {
+        this.currentItem = key
+      }
+    })
+  }
+
+  private updateTabItems = () : void => {
+    this.setTabsItems()
+    if (this.overflow) this.updateOverflowState()
+    this.updateSliderPosition()
+    this.scrollTabs(this.currentItem)
   }
 
   private unsetOverflowCheck = (): void => {
@@ -129,11 +140,13 @@ export class MdsTab {
   }
 
   private updateSliderPosition = (): void => {
-    if (this.slider && this.currentItem >= 0) {
+    if (this.animation === 'slide' && this.currentItem >= 0) {
       self.requestAnimationFrame(() => {
         this.sliderWidth = this.tabItems[this.currentItem].offsetWidth
         this.sliderOffset = this.tabItems[this.currentItem].offsetLeft - this.tabsContainer.offsetLeft
       })
+    } else {
+      this.sliderWidth = -1
     }
   }
 
@@ -183,9 +196,7 @@ export class MdsTab {
       item.selected = undefined
     })
     this.selectContentItem()
-    if (this.animation === 'slide') {
-      this.updateSliderPosition()
-    }
+    this.updateSliderPosition()
   }
 
   @Listen('mdsTabItemFocus')
@@ -198,12 +209,8 @@ export class MdsTab {
   }
 
   @Watch('animation')
-  handleAnimationChange (newValue: HorizontalActionsAnimationType): void {
-    if (newValue === 'slide') {
-      this.updateSliderPosition()
-      return
-    }
-    this.slider = null
+  handleAnimationChange (): void {
+    this.updateSliderPosition()
   }
 
   @Watch('scrollbar')
@@ -236,9 +243,9 @@ export class MdsTab {
           { this.overflow && <div class={clsx('tabs-wrapper-overflow-left', this.overflowLeft && 'tabs-wrapper-overflow-left--show')}></div> }
           { this.overflow && <div class={clsx('tabs-wrapper-overflow-right', this.overflowRight && 'tabs-wrapper-overflow-right--show')}></div> }
           <div class="tabs" part="tabs" role="tablist">
-            <slot />
+            <slot/>
             { this.animation === 'slide' &&
-              <div class="slider" part="slider" ref={el => this.slider = el as HTMLDivElement} style={{
+              <div class="slider" part="slider" style={{
                 '--mds-tab-slider-width': `${this.sliderWidth}px`,
                 '--mds-tab-slider-offset': `${this.sliderOffset}px`,
               }}></div>
