@@ -176,8 +176,6 @@ export class MdsEmoji {
     this.isFollowingMouse = false
     gsap.killTweensOf(this.emojiEl)
 
-    const baseX = this.currentRotateX
-
     const tl = gsap.timeline({
       onComplete: () => {
       // Torna alla posizione seguita dal mouse
@@ -193,11 +191,13 @@ export class MdsEmoji {
       },
     })
 
-    tl.to(this.emojiEl, { rotateY: baseX - 40, duration: 0.15, ease: 'power2.out' })
-      .to(this.emojiEl, { rotateY: baseX + 20, duration: 0.2, ease: 'power1.inOut' })
-      .to(this.emojiEl, { rotateY: baseX - 20, duration: 0.15, ease: 'power2.inOut' })
-      .to(this.emojiEl, { rotateY: baseX + 5, duration: 0.2, ease: 'power1.out' })
-      .to(this.emojiEl, { rotateY: baseX, duration: 0.3, ease: 'power3.out' })
+    const rotationEase = 'power2.inOut'
+
+    tl.to(this.emojiEl, { rotateY: this.currentRotateY - 40, duration: 0.25, ease: rotationEase })
+      .to(this.emojiEl, { rotateY: this.currentRotateY + 30, duration: 0.2, ease: rotationEase })
+      .to(this.emojiEl, { rotateY: this.currentRotateY - 20, duration: 0.15, ease: rotationEase })
+      .to(this.emojiEl, { rotateY: this.currentRotateY + 10, duration: 0.1, ease: rotationEase })
+      .to(this.emojiEl, { rotateY: this.currentRotateY, duration: 0.3, ease: rotationEase })
 
     gsap.to(this.mouthEl, { attr: { d: this.mouthGeometry.sad }, duration: 0, ease: 'none', onComplete: () => {
       setTimeout(() => {
