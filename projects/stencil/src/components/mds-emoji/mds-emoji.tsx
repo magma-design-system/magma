@@ -199,7 +199,7 @@ export class MdsEmoji {
       .to(this.emojiEl, { rotateY: this.currentRotateY + 10, duration: 0.1, ease: rotationEase })
       .to(this.emojiEl, { rotateY: this.currentRotateY, duration: 0.3, ease: rotationEase })
 
-    gsap.to(this.mouthEl, { attr: { d: this.mouthGeometry.sad }, duration: 0, ease: 'none', onComplete: () => {
+    gsap.to(this.mouthEl, { attr: { d: this.mouthGeometry.serious }, duration: 0, ease: 'none', onComplete: () => {
       setTimeout(() => {
         gsap.to(this.mouthEl, { attr: { d: this.mouthGeometry.serious }, duration: 0, ease: 'none', onComplete: () => {
           if (turnHappyDelay > 0) {
