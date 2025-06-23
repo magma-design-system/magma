@@ -70,8 +70,11 @@ export class MdsInputDateRange {
   @Prop({ reflect: true }) readonly delay: number = 500
 
   private togglePreselection: HTMLMdsInputDateRangePreselectionElement[]
+  private lastEmittedStartDate: string | null = null
+  private lastEmittedEndDate: string | null = null
 
   @Event({ eventName: 'mdsInputDateRangeSelect' }) dateRangeSelected: EventEmitter<{ startDate: string, endDate: string }>
+  @Event({ eventName: 'mdsInputDateRangeValueChange' }) valueChanged: EventEmitter<{ startDate: string, endDate: string }>
 
   componentWillLoad (): void {
     this.language = this.t.lang(this.host)
@@ -88,7 +91,7 @@ export class MdsInputDateRange {
     }
   }
 
-  componentWillUnload (): void {
+  disconnectedCallback (): void {
     this.host.removeEventListener('focusout', this.handleFocusOut)
   }
 
@@ -139,7 +142,6 @@ export class MdsInputDateRange {
 
   private handleFocusOut = (event: FocusEvent) => {
     if (!this.host.contains(event.relatedTarget as Node)) {
-
       const startValid = DateTime.fromISO(this.internalStartDate).isValid
       const endValid = DateTime.fromISO(this.internalEndDate).isValid
 
@@ -153,8 +155,21 @@ export class MdsInputDateRange {
 
         this.checkPreselections()
       }
+
+      if (
+        this.internalStartDate !== this.lastEmittedStartDate ||
+        this.internalEndDate !== this.lastEmittedEndDate
+      ) {
+        this.valueChanged.emit({
+          startDate: this.internalStartDate,
+          endDate: this.internalEndDate,
+        })
+        this.lastEmittedStartDate = this.internalStartDate
+        this.lastEmittedEndDate = this.internalEndDate
+      }
     }
   }
+
 
   private focusInput = (element: HTMLMdsInputDateElement): void => {
     element.focusInput()

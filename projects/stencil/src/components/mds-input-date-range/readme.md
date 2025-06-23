@@ -18,9 +18,10 @@
 
 ## Events
 
-| Event                     | Description | Type                                                   |
-| ------------------------- | ----------- | ------------------------------------------------------ |
-| `mdsInputDateRangeSelect` |             | `CustomEvent<{ startDate: string; endDate: string; }>` |
+| Event                          | Description | Type                                                   |
+| ------------------------------ | ----------- | ------------------------------------------------------ |
+| `mdsInputDateRangeSelect`      |             | `CustomEvent<{ startDate: string; endDate: string; }>` |
+| `mdsInputDateRangeValueChange` |             | `CustomEvent<{ startDate: string; endDate: string; }>` |
 
 
 ## Methods

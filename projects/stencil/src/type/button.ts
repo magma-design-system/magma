@@ -30,3 +30,14 @@ export type ButtonVariantType =
   | 'secondary'
   | 'success'
   | 'warning'
+
+export type ButtonDropdownVariantType =
+  | 'ai'
+  | 'dark'
+  | 'error'
+  | 'info'
+  | 'light'
+  | 'primary'
+  | 'secondary'
+  | 'success'
+  | 'warning'

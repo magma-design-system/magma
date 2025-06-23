@@ -58,9 +58,6 @@ const Template = args => {
     modalElement.addEventListener('mdsModalHide', () => {
       setOpened(false)
     })
-    urlViewElement.addEventListener('mdsUrlViewClose', () => {
-      setOpened(false)
-    })
   }, [])
 
   if (args.opened !== null) {

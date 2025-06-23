@@ -1,0 +1,3 @@
+:host([size="sm"]) {
+  --mds-button-dropdown-radius: theme('borderRadius.md');
+}

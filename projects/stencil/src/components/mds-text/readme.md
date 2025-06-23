@@ -66,6 +66,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
  - [mds-kpi-item](../mds-kpi-item)
  - [mds-label](../mds-label)
  - [mds-list-item](../mds-list-item)
+ - [mds-mention](../mds-mention)
  - [mds-notification](../mds-notification)
  - [mds-paginator-item](../mds-paginator-item)
  - [mds-policy-ai](../mds-policy-ai)
@@ -80,6 +81,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
  - [mds-price-table-list-item](../mds-price-table-list-item)
  - [mds-push-notification-item](../mds-push-notification-item)
  - [mds-quote](../mds-quote)
+ - [mds-status-bar](../mds-status-bar)
  - [mds-stepper-bar-item](../mds-stepper-bar-item)
  - [mds-tab-bar-item](../mds-tab-bar-item)
  - [mds-table-header-cell](../mds-table-header-cell)
@@ -115,6 +117,7 @@ graph TD;
   mds-kpi-item --> mds-text
   mds-label --> mds-text
   mds-list-item --> mds-text
+  mds-mention --> mds-text
   mds-notification --> mds-text
   mds-paginator-item --> mds-text
   mds-policy-ai --> mds-text
@@ -129,6 +132,7 @@ graph TD;
   mds-price-table-list-item --> mds-text
   mds-push-notification-item --> mds-text
   mds-quote --> mds-text
+  mds-status-bar --> mds-text
   mds-stepper-bar-item --> mds-text
   mds-tab-bar-item --> mds-text
   mds-table-header-cell --> mds-text

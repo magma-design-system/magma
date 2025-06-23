@@ -149,5 +149,9 @@ mds-dropdown {
   padding: 0;
 }
 
+@import '../../tailwind/fouc.css';
+@import './css/mds-input-date-pref-animation.css';
+@import './css/mds-input-date-pref-theme.css';
+@import './css/mds-input-date-pref-contrast.css';
 @import './css/mds-input-date-firefox.css';
 @import './css/mds-input-date-variant.css';
