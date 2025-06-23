@@ -20,6 +20,7 @@ const Template = () => {
     const followMouseSwitch = document.getElementById('follow-mouse') as HTMLMdsInputSwitchElement
     const eyeBlinkingSwitch = document.getElementById('eye-blinking') as HTMLMdsInputSwitchElement
     const buttonAgree = document.getElementById('agree') as HTMLMdsButtonElement
+    const buttonThink = document.getElementById('think') as HTMLMdsButtonElement
     const sizeRange = document.getElementById('size') as HTMLMdsInputRangeElement
     if (!followMouseSwitch) return
 
@@ -53,6 +54,10 @@ const Template = () => {
       emoji?.agree()
     })
 
+    buttonThink.addEventListener('click', () => {
+      emoji?.startThinking()
+    })
+
   }, [])
   return <div class="grid grid-cols-[300px_auto] gap-600 -m-600 min-h-dvh bg-tone-neutral-10">
     <div class="grid gap-200 auto-rows-min p-600">
@@ -60,6 +65,7 @@ const Template = () => {
       <mds-input-switch id="eye-blinking" size='sm' checked={eyeBlinking || undefined}>Eye blinking</mds-input-switch>
       <mds-input-range id="size" min={24} max={320} step={8} value={svgSize}></mds-input-range>
       <mds-button id="agree">Agree</mds-button>
+      <mds-button id="think">Think</mds-button>
     </div>
     <div class="flex items-center justify-center bg-tone-neutral rounded-2xl shadow-md m-600 ml-0">
       <mds-emoji style={{ width: `${svgSize}px`, height: `${svgSize}px` }} name="hexabot" />

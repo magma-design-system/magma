@@ -1,5 +1,6 @@
 import { Component, Host, h, Method, Prop, Element } from '@stencil/core'
 import { gsap } from 'gsap'
+import { cssRotationToNumber, cssDurationToSeconds } from '@common/unit'
 
 @Component({
   tag: 'mds-emoji',
@@ -36,12 +37,20 @@ export class MdsEmoji {
 
   private currentRotateX: number = 0
   private currentRotateY: number = 0
+  private expressionAngleMax: number = 16 // massimo angolo di rotazione della emoji
+  private expressionFollowMouseHeadDuration: number = 0.3 // durata dell'animazione di rotazione della testa quando segue il mouse
+  private expressionFollowMouseTraitsDuration: number = 0.2 // durata dell'animazione di rotazione degli occhi e della bocca quando segue il mouse
 
   private emojiEl: SVGElement
   private eyeLeftEl: SVGElement
   private eyeRightEl: SVGElement
-  private mouth: SVGElement
-  private head: SVGElement
+  private mouthEl: SVGElement
+  private headEl: SVGElement
+  private handLeftEl: SVGElement
+
+  private handLeftGeometry = {
+    think: 'M6 15C6.55228 15 7 15.4477 7 16V17H13C13.5523 17 14 17.4477 14 18C14 18.5523 13.5523 19 13 19H10.3818C11.1252 19 11.6088 19.7824 11.2764 20.4473L10.2764 22.4473C10.107 22.786 9.76059 23 9.38184 23H6V22.9541L5.85742 23H4V19L5 17V15H6Z',
+  }
 
   private eyeLeftGeometry = {
     open: 'M8 8H10V11H8V8Z',
@@ -77,6 +86,11 @@ export class MdsEmoji {
     }
   }
 
+  /**
+   * @returns Promise<void>
+   * Emoji agrees, useful for confirm actions.
+   */
+
   @Method()
   async agree (): Promise<void> { // eslint-disable-line @typescript-eslint/ban-types
     this.setAgreeAnimation()
@@ -111,13 +125,13 @@ export class MdsEmoji {
       .to(this.emojiEl, { rotateX: baseX + 5, duration: 0.2, ease: 'power1.out' })
       .to(this.emojiEl, { rotateX: baseX, duration: 0.3, ease: 'power3.out' })
 
-    gsap.fromTo(this.mouth,
+    gsap.fromTo(this.mouthEl,
       {
         attr: { d: this.mouthGeometry.happy },
       }, {
         scaleY: 0.5, transformOrigin: '50% 50%',
         onComplete: () => {
-          gsap.fromTo(this.mouth,
+          gsap.fromTo(this.mouthEl,
             {
               attr: { d: this.mouthGeometry.smile },
             }, {
@@ -133,45 +147,32 @@ export class MdsEmoji {
     )
   }
 
+  /**
+   * @returns Promise<void>
+   * Emoji start thinking, useful for pending requests.
+   */
+
   @Method()
   async startThinking (): Promise<void> { // eslint-disable-line @typescript-eslint/ban-types
-    if (this.isFollowingMouse) await this.stopFollowMouse()
-    if (this.isBlinking) await this.stopBlinking()
     this.setThinkingAnimation()
     return Promise.resolve()
   }
 
   private setThinkingAnimation = (): void => {
+    console.info(this.headEl)
     const duration = 0.5
     const margin = 2
     const ease = 'expo.inOut'
-    gsap.to(this.eyeLeftEl, { attr: { d: this.eyeLeftGeometry.close }, y: `+=${margin}`, onComplete: () => { gsap.to(this.eyeLeftEl, { attr: { d: this.eyeLeftGeometry.open }, y: `-=${margin}` }) }, ease, duration })
-    gsap.to(this.eyeRightEl, { attr: { d: this.eyeRightGeometry.close }, y: `+=${margin}`, onComplete: () => { gsap.to(this.eyeRightEl, { attr: { d: this.eyeRightGeometry.open }, y: `-=${margin}` }) }, ease, duration })
-    gsap.to(this.head, {
-      scaleY: 0.75, transformOrigin: '50% 50%',
-      onComplete: () => { gsap.to(this.head, { scaleY: 1, transformOrigin: '50% 50%' }) },
-      duration,
-      ease,
-    })
-    gsap.fromTo(this.mouth,
-      {
-        attr: { d: this.mouthGeometry.happy },
-      }, {
-        scaleY: 0.5, transformOrigin: '50% 50%',
-        onComplete: () => {
-          gsap.fromTo(this.mouth,
-            {
-              attr: { d: this.mouthGeometry.smile },
-            }, {
-              scaleY: 1, transformOrigin: '50% 50%',
-            },
-          )
-        },
-        duration,
-        ease,
-      },
-    )
+    this.handLeftEl.style.visibility = 'visible'
+    gsap.from(this.handLeftEl, { scale:0, y: `+=${margin}`, ease, duration })
+    gsap.to(this.eyeLeftEl, { attr: { d: this.eyeLeftGeometry.close }, ease, duration })
+    gsap.to(this.eyeRightEl, { attr: { d: this.eyeRightGeometry.close }, ease, duration })
   }
+
+  /**
+   * @returns Promise<void>
+   * Eyes start blinking.
+   */
 
   @Method()
   async startBlinking (): Promise<void> {
@@ -180,6 +181,11 @@ export class MdsEmoji {
     this.queueNextBlink()
     return Promise.resolve()
   }
+
+  /**
+   * @returns Promise<void>
+   * Eyes stop blinking.
+   */
 
   @Method()
   async stopBlinking (): Promise<void> {
@@ -206,6 +212,11 @@ export class MdsEmoji {
     gsap.to(this.eyeRightEl, { attr: { d: this.eyeRightGeometry.close }, duration: durationClose, onComplete: () => { gsap.to(this.eyeRightEl, { attr: { d: this.eyeRightGeometry.open }, duration: durationOpen }) } })
   }
 
+  /**
+   * @returns Promise<void>
+   * Stops following mouse with CSS 3D transform.
+   */
+
   @Method()
   async stopFollowMouse (): Promise<void> {
     this.isFollowingMouse = false
@@ -213,6 +224,10 @@ export class MdsEmoji {
     return Promise.resolve()
   }
 
+  /**
+   * @returns Promise<void>
+   * Starts following mouse with CSS 3D transform.
+   */
   @Method()
   async startFollowMouse (): Promise<void> {
     this.isFollowingMouse = true
@@ -242,21 +257,19 @@ export class MdsEmoji {
 
     const rect = this.host.getBoundingClientRect()
 
-    const maxAngle = 12 // massimo angolo di rotazione in gradi
-
     const deltaX = currentMouseX - centerX
     const deltaY = currentMouseY - centerY
 
     const percentX = deltaX / (rect.width / 2)
     const percentY = deltaY / (rect.height / 2)
 
-    this.currentRotateY = gsap.utils.clamp(-maxAngle, maxAngle, percentX * maxAngle)
-    this.currentRotateX = gsap.utils.clamp(-maxAngle, maxAngle, -percentY * maxAngle) // Y invertito
+    this.currentRotateY = gsap.utils.clamp(- this.expressionAngleMax, this.expressionAngleMax, percentX * this.expressionAngleMax)
+    this.currentRotateX = gsap.utils.clamp(- this.expressionAngleMax, this.expressionAngleMax, - percentY * this.expressionAngleMax) // Y invertito
 
     gsap.to(this.emojiEl, {
       rotateX: this.currentRotateX,
       rotateY: this.currentRotateY,
-      duration: 0.2,
+      duration: this.expressionFollowMouseHeadDuration,
       ease,
     })
 
@@ -267,13 +280,19 @@ export class MdsEmoji {
     gsap.to(this.eyeLeftEl, {
       x: eyeOffsetX,
       y: eyeOffsetY,
-      duration: 0.16,
+      duration: this.expressionFollowMouseTraitsDuration,
       ease,
     })
     gsap.to(this.eyeRightEl, {
       x: eyeOffsetX,
       y: eyeOffsetY,
-      duration: 0.16,
+      duration: this.expressionFollowMouseTraitsDuration,
+      ease,
+    })
+    gsap.to(this.handLeftEl, {
+      x: eyeOffsetX,
+      y: eyeOffsetY,
+      duration: this.expressionFollowMouseTraitsDuration,
       ease,
     })
 
@@ -281,16 +300,25 @@ export class MdsEmoji {
     const mouthOffsetX = gsap.utils.clamp(-maxMouthOffset, maxMouthOffset, percentX * maxMouthOffset)
     const mouthOffsetY = gsap.utils.clamp(-maxMouthOffset, maxMouthOffset, percentY * maxMouthOffset)
 
-    gsap.to(this.mouth, {
+    gsap.to(this.mouthEl, {
       x: mouthOffsetX,
       y: mouthOffsetY,
-      duration: 0.15,
+      duration: this.expressionFollowMouseTraitsDuration,
       ease,
     })
   }
 
+  private readonly updateCSSCustomProps = (): void => {
+    if (typeof window === 'undefined') return
+    const elementStyles = window.getComputedStyle(this.host)
+    this.expressionAngleMax = cssRotationToNumber(elementStyles.getPropertyValue('--mds-emoji-expression-max-rotation'))
+    this.expressionFollowMouseHeadDuration = cssDurationToSeconds(elementStyles.getPropertyValue('--mds-emoji-expression-follow-mouse-head-duration'))
+    this.expressionFollowMouseTraitsDuration = cssDurationToSeconds(elementStyles.getPropertyValue('--mds-emoji-expression-follow-mouse-traits-duration'))
+  }
+
   componentDidLoad (): void {
     if (!window) return
+    this.updateCSSCustomProps()
     window.addEventListener('mousemove', this.handleFollowMouse)
   }
 
@@ -303,10 +331,11 @@ export class MdsEmoji {
     return <Host>
       { this.name === 'hexabot' && (
         <svg ref={el => (this.emojiEl = el as SVGElement)} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path class="head" ref={el => (this.head = el as SVGElement)} d={this.headGeometry.hexagonRounded} fill="black"/>
+          <path class="head" ref={el => (this.headEl = el as SVGElement)} d={this.headGeometry.hexagonRounded} fill="black"/>
           <path class="eye" ref={el => (this.eyeLeftEl = el as SVGElement)} d={this.eyeLeftGeometry.open} fill="white"/>
           <path class="eye" ref={el => (this.eyeRightEl = el as SVGElement)} d={this.eyeRightGeometry.open} fill="white"/>
-          <path class="mouth" ref={el => (this.mouth = el as SVGElement)} d={this.mouthGeometry.smile} fill="white"/>
+          <path class="mouth" ref={el => (this.mouthEl = el as SVGElement)} d={this.mouthGeometry.smile} fill="white"/>
+          <path class="hand" ref={el => (this.handLeftEl = el as SVGElement)} d={this.handLeftGeometry.think} fill="white"/>
         </svg>)
       }
     </Host>

@@ -693,12 +693,30 @@ export namespace Components {
         "zIndex": number;
     }
     interface MdsEmoji {
+        /**
+          * @returns Promise<void> Emoji agrees, useful for confirm actions.
+         */
         "agree": () => Promise<void>;
         "name": string;
+        /**
+          * @returns Promise<void> Eyes start blinking.
+         */
         "startBlinking": () => Promise<void>;
+        /**
+          * @returns Promise<void> Starts following mouse with CSS 3D transform.
+         */
         "startFollowMouse": () => Promise<void>;
+        /**
+          * @returns Promise<void> Emoji start thinking, useful for pending requests.
+         */
         "startThinking": () => Promise<void>;
+        /**
+          * @returns Promise<void> Eyes stop blinking.
+         */
         "stopBlinking": () => Promise<void>;
+        /**
+          * @returns Promise<void> Stops following mouse with CSS 3D transform.
+         */
         "stopFollowMouse": () => Promise<void>;
     }
     interface MdsEntity {

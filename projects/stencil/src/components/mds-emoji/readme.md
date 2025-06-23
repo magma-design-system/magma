@@ -22,7 +22,8 @@
 
 Type: `Promise<void>`
 
-
+Promise<void>
+Emoji agrees, useful for confirm actions.
 
 ### `startBlinking() => Promise<void>`
 
@@ -32,7 +33,8 @@ Type: `Promise<void>`
 
 Type: `Promise<void>`
 
-
+Promise<void>
+Eyes start blinking.
 
 ### `startFollowMouse() => Promise<void>`
 
@@ -42,7 +44,8 @@ Type: `Promise<void>`
 
 Type: `Promise<void>`
 
-
+Promise<void>
+Starts following mouse with CSS 3D transform.
 
 ### `startThinking() => Promise<void>`
 
@@ -52,7 +55,8 @@ Type: `Promise<void>`
 
 Type: `Promise<void>`
 
-
+Promise<void>
+Emoji start thinking, useful for pending requests.
 
 ### `stopBlinking() => Promise<void>`
 
@@ -62,7 +66,8 @@ Type: `Promise<void>`
 
 Type: `Promise<void>`
 
-
+Promise<void>
+Eyes stop blinking.
 
 ### `stopFollowMouse() => Promise<void>`
 
@@ -72,7 +77,8 @@ Type: `Promise<void>`
 
 Type: `Promise<void>`
 
-
+Promise<void>
+Stops following mouse with CSS 3D transform.
 
 
 ----------------------------------------------
