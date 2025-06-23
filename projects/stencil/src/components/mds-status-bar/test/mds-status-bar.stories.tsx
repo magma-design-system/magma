@@ -66,9 +66,8 @@ const Template = args => {
         if (confirm) confirm.disabled = undefined
       }}>Edit stuff</mds-button>
       <mds-status-bar {...args}>
-        <mds-button id="cancel" variant="dark" tone="weak" onClick={() => {
-          statusBar = document.querySelector('mds-status-bar') as HTMLMdsStatusBarElement
-          if (statusBar) statusBar.hide()
+        <mds-button id="cancel" variant="dark" tone="weak" onClick={(e: MouseEvent) => {
+          (e.target as HTMLElement).closest('mds-status-bar')?.hide()
         }}>Annulla</mds-button>
         <mds-button id="confirm" icon={iconMap[buttonState]} variant={variantsMap[buttonState]} tone={tonesMap[buttonState]} await={buttonState === 1} onClick={() => { if (buttonState === 0) setLoadingState() }}>
           { buttonState === 0 && 'Conferma azione' }
