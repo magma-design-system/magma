@@ -108,6 +108,16 @@ const TemplateHeader = () => {
     if (modalResults) {
       modalResults.addEventListener('mdsModalClose', () => {
         closeModalResults()
+        setModalResultsOpen(false)
+      })
+
+      modalResults.addEventListener('mdsModalHide', () => {
+        setShowResults(false)
+        emoji.stopFollowMouse()
+        emoji.agree()
+        setTimeout(() => {
+          emoji.startFollowMouse()
+        }, 1000)
       })
     }
   }, [])
@@ -174,12 +184,12 @@ const TemplateHeader = () => {
         <mds-tab class="rounded-none bg-variant-ai-10" style={{ '--mds-tab-tabs-background': 'var(--variant-ai-10)', '--mds-tab-tabs-padding': '16px' }}>
           <mds-tab-item selected>Ricerche rapide</mds-tab-item>
           <mds-tab-item>Volumi</mds-tab-item>
-        </mds-tab>
-        <mds-hr class="bg-variant-ai-09 rounded-none h-50"></mds-hr> */}
-        <div class="grid gap-200 p-600 bg-variant-ai-10">
+        </mds-tab> */}
+        <mds-hr class="bg-tone-neutral-09 rounded-none h-50"></mds-hr>
+        <div class="grid gap-200 p-600 bg-tone-neutral-10">
           <mds-text typography="label">Esempi di uilizzo</mds-text>
-          <mds-button icon="mi/baseline/search" class="justify-start" variant="ai" tone="weak">Trovami documenti che parlano di infrazioni stradali di massimo 6 mesi fa</mds-button>
-          <mds-button icon="mi/baseline/search" class="justify-start" variant="ai" tone="weak">Cerca volumi sui fallimenti aziendali solo per aziende di grandi dimensioni</mds-button>
+          <mds-button icon="mi/baseline/search" class="justify-start" variant="light" tone="weak">Trovami documenti che parlano di infrazioni stradali di massimo 6 mesi fa</mds-button>
+          <mds-button icon="mi/baseline/search" class="justify-start" variant="light" tone="weak">Cerca volumi sui fallimenti aziendali solo per aziende di grandi dimensioni</mds-button>
         </div>
       </div>
     </mds-modal>
