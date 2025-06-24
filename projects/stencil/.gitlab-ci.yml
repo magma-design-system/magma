@@ -27,9 +27,9 @@ base-stencil-build:
     policy: pull-push
   rules:
     - if: $CI_COMMIT_BRANCH
-      changes:
-        - projects/stencil/**/*
-        - .deploy/**/*
+      # changes:
+      #   - projects/stencil/**/*
+      #   - .deploy/**/*
 
 stencil-storybook-build:
   extends: .base-build
