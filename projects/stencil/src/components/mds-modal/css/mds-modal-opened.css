@@ -1,4 +1,4 @@
-:host([opened]) {
+:host([opened][backdrop]) {
   --mds-modal-transition-window-transform: none;
 
   background-color: rgb(var(--mds-modal-overlay-color) / var(--mds-modal-overlay-opacity));

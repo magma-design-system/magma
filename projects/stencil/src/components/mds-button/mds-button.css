@@ -42,7 +42,7 @@
     duration-200
     ease-out
     focus-bounce
-    px-600
+    px-300
     py-200;
 
   align-items: center;
@@ -89,6 +89,7 @@
   transition-property: fill;
 }
 
+@import './css/mds-button-button-group.css';
 @import './css/mds-button-await.css';
 @import './css/mds-button-disabled.css';
 @import './css/mds-button-size.css';

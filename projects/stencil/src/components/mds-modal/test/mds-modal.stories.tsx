@@ -16,6 +16,10 @@ export default {
       description: 'Specifies if the modal is opened or not',
       type: { name: 'boolean' },
     },
+    backdrop: {
+      description: 'Specifies if the modal shows the backdrop',
+      type: { name: 'boolean' },
+    },
     overflow: {
       description: 'Specifies if the component prevents the body from scrolling when modal window is opened',
       control: { type: 'select' },
@@ -299,6 +303,13 @@ export const Default = Template.bind({})
 Default.args = {
   position: 'right',
   opened: true,
+}
+
+export const Backdrop = Template.bind({})
+Backdrop.args = {
+  position: 'right',
+  opened: true,
+  backdrop: undefined,
 }
 
 export const BodyOverflowDisabled = TemplateOverflow.bind({})

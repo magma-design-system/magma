@@ -1,0 +1,20 @@
+.base-button-group:
+  variables:
+    COMPONENT: mds-button-group
+
+# TEST
+button-group-publish-test:
+  extends: [.base-stencil-publish-test, .base-button-group]
+  dependencies: [base-stencil-build, base-isolate]
+
+# PUBLISH
+button-group-publish:
+  extends: [.base-stencil-publish, .base-button-group]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, button-group-publish-test]
+
+# INSTALL TEST
+button-group-install-test:
+  extends: [.base-stencil-install-test, .base-button-group]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, button-group-publish]

@@ -63,6 +63,7 @@ export class MdsUrlView {
 
   private closeUrlView = (): void => {
     this.closeEvent.emit()
+    this.host.closest('mds-modal')?.close()
   }
 
   componentWillLoad ():void {

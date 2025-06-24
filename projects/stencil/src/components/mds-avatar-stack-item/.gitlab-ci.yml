@@ -1,0 +1,20 @@
+.base-avatar-stack-item:
+  variables:
+    COMPONENT: mds-avatar-stack-item
+
+# TEST
+avatar-stack-item-publish-test:
+  extends: [.base-stencil-publish-test, .base-avatar-stack-item]
+  dependencies: [base-stencil-build, base-isolate]
+
+# PUBLISH
+avatar-stack-item-publish:
+  extends: [.base-stencil-publish, .base-avatar-stack-item]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, avatar-stack-item-publish-test]
+
+# INSTALL TEST
+avatar-stack-item-install-test:
+  extends: [.base-stencil-install-test, .base-avatar-stack-item]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, avatar-stack-item-publish]

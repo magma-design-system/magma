@@ -1,0 +1,17 @@
+:host([size="sm"]) {
+  --mds-mention-icon-size: theme('spacing.400');
+}
+
+:host([size="sm"]) .badge {
+  padding-left: theme('padding.50');
+  padding-right: theme('padding.150');
+}
+
+:host([size="md"]) {
+  --mds-mention-icon-size: theme('padding.600');
+
+}
+
+:host([size="md"]) .badge {
+  padding-right: theme('padding.200');
+}

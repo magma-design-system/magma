@@ -11,6 +11,19 @@ const cssDurationToMilliseconds = (duration: string, defaultValue = 1000): numbe
   return defaultValue
 }
 
+const cssDurationToSeconds = (duration: string, defaultValue = 1000): number => {
+
+  if (duration.includes('ms')) {
+    return Number(duration.replace('ms', '')) / 1000
+  }
+
+  if (duration.includes('s')) {
+    return Number(duration.replace('s', ''))
+  }
+
+  return defaultValue
+}
+
 const cssSizeToNumber = (size: string, defaultValue = 0): number => {
   if (size.includes('px')) {
     return Number(size.replace('px', ''))
@@ -27,7 +40,17 @@ const cssSizeToNumber = (size: string, defaultValue = 0): number => {
   return defaultValue
 }
 
+const cssRotationToNumber = (size: string, defaultValue = 0): number => {
+  if (size.includes('deg')) {
+    return Number(size.replace('deg', ''))
+  }
+
+  return defaultValue
+}
+
 export {
   cssDurationToMilliseconds,
+  cssDurationToSeconds,
+  cssRotationToNumber,
   cssSizeToNumber,
 }

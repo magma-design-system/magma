@@ -1,5 +1,6 @@
 import { Component, Host, h, Prop, Method, Element, State } from '@stencil/core'
-import mggAiBrain from '@icon/mgg/ai-brain.svg'
+// import mggAiBrain from '@icon/mgg/ai-brain.svg'
+import mggAiChatbot from '@icon/mgg/ai-chatbot.svg'
 import miOutlinePolicy from '@icon/mi/outline/policy.svg'
 import { PolicyAiVariant } from './meta/types'
 import { Locale } from '@common/locale'
@@ -64,7 +65,7 @@ export class MdsPolicyAi {
     return (
       <Host>
         { this.variant === 'icon' && (
-          <mds-help icon={mggAiBrain} class="icon-help" onClick={() => window.open(this.href, '_blank')} part="icon">
+          <mds-help icon={mggAiChatbot} class="icon-help" onClick={() => window.open(this.href, '_blank')} part="icon">
             <div class="icon-tip-content">
               <mds-text typography="tip">{ this.headline ?? this.t.get('iconTooltip') }</mds-text>
               <mds-text typography="tip">{ this.description ?? this.t.get('iconLinkLabel') }</mds-text>
@@ -73,7 +74,7 @@ export class MdsPolicyAi {
         )}
         { this.variant === 'chip' && (
           <div class="chip-wrapper" part="chip">
-            <mds-chip id="chip" icon={mggAiBrain} class="chip" variant="ai" label={ this.headline ?? this.t.get('chipLabel') }></mds-chip>
+            <mds-chip id="chip" icon={mggAiChatbot} class="chip" variant="ai" label={ this.headline ?? this.t.get('chipLabel') }></mds-chip>
             <mds-dropdown target="#chip" class="chip-dropdown" interaction="mouseover">
               <mds-text typography="tip">{ this.description ?? this.t.get('cardDescription') }</mds-text>
               <mds-button icon={miOutlinePolicy} href={this.href} variant="ai" tone="weak" size="sm">{ this.t.get('linkLabel') }</mds-button>
@@ -82,7 +83,7 @@ export class MdsPolicyAi {
         )}
         { this.variant === 'card' && (
           <div class="mini-card" part="card">
-            <mds-icon name={mggAiBrain} class="mini-card-icon"></mds-icon>
+            <mds-icon name={mggAiChatbot} class="mini-card-icon"></mds-icon>
             <div class="mini-card-content">
               <mds-text typography="caption">{ this.description ?? this.t.get('iconTooltip') }</mds-text>
               <mds-button class="mini-card-button" icon={miOutlinePolicy} href={this.href} variant="ai" tone="weak" size="sm">
@@ -93,7 +94,7 @@ export class MdsPolicyAi {
           </div>
         )}
         { this.variant === 'banner' && (
-          <mds-banner class="banner" variant="ai" tone="weak" icon={mggAiBrain} headline={ this.headline ?? this.t.get('bannerTitle') } part="banner">
+          <mds-banner class="banner" variant="ai" tone="weak" icon={mggAiChatbot} headline={ this.headline ?? this.t.get('bannerTitle') } part="banner">
             <mds-text typography="caption">{ this.description ?? this.t.get('bannerDescription') }</mds-text>
             <mds-button icon={miOutlinePolicy} slot="action" href={this.href} variant="ai" tone="weak" size="sm">
               <span class="link-label-long">{ this.t.get('linkLabel') }</span>

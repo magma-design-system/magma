@@ -1,0 +1,9 @@
+:host-context(mds-button-group):host(:not(:first-child)) {
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+}
+
+:host-context(mds-button-group):host(:not(:last-child)) {
+  border-bottom-right-radius: 0;
+  border-top-right-radius: 0;
+}

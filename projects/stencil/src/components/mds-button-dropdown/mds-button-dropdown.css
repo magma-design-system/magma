@@ -1,0 +1,42 @@
+:host {
+  --mds-button-dropdown-radius: theme('borderRadius.lg');
+
+  @apply
+    duration-200
+    ease-out;
+
+  border-radius: var(--mds-button-dropdown-radius);
+  display: inline-flex;
+  transition-property: background-color, box-shadow;
+}
+
+mds-dropdown {
+  gap: theme('spacing.50');
+  padding: theme('padding.400');
+}
+
+mds-button {
+  --mds-button-radius: var(--mds-button-dropdown-radius);
+  --mds-button-border-tone-strong-hover-width: 0;
+  --mds-button-border-tone-ghost-hover-width: 0;
+  --mds-button-border-tone-weak-hover-width: 0;
+  --mds-button-border-high-contrast-width: 0;
+}
+
+mds-button:first-child {
+  border-bottom-right-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.dropdown-action {
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+}
+
+::slotted(mds-button) {
+  justify-content: flex-start;
+}
+
+@import '../../tailwind/fouc.css';
+@import './css/mds-button-dropdown-size.css';
+@import './css/mds-button-dropdown-variant.css';

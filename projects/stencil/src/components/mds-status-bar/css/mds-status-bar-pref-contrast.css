@@ -1,0 +1,9 @@
+:host-context(.pref-contrast-more) {
+  --mds-status-bar-backdrop: rgb(var(--tone-neutral-02) / 0.3);
+}
+
+@media (prefers-contrast: more) {
+  :host-context(.pref-contrast-system) {
+    --mds-status-bar-backdrop: rgb(var(--tone-neutral-02) / 0.3);
+  }
+}
