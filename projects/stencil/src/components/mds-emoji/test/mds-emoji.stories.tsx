@@ -168,8 +168,8 @@ const TemplateHeader = () => {
     </mds-tooltip>
     <mds-header nav="all" menu="none">
       <mds-header-bar>
-        <mds-img class="w-1000" src="/logo-mindy-small.svg" ></mds-img>
-        <mds-emoji id="emoji" name="hexabot" class="w-900 h-900 cursor-pointer" slot="nav" onClick={openModal} />
+        <mds-img class="w-1000" src="./logo-mindy-small.svg" ></mds-img>
+        <mds-emoji id="emoji" name="hexabot" class="w-1000 h-1000 cursor-pointer" slot="nav" onClick={openModal} />
         <mds-button-dropdown variant="dark" tone="weak" slot="nav" label='Account'>
           <mds-button variant='light' size='sm'>Settings</mds-button>
           <mds-button variant='light' size='sm'>Options</mds-button>
