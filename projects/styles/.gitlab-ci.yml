@@ -8,8 +8,6 @@ styles-build:
     expire_in: 1 day
     paths:
       - projects/design-tokens/dist
-      - projects/design-tokens/config
-      - projects/design-tokens/properties
       - projects/styles/dist
   cache:
     policy: pull-push
