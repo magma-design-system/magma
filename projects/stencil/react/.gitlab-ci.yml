@@ -11,9 +11,9 @@ stencil-react-build:
       - projects/stencil/react/dist
   rules:
     - if: $CI_COMMIT_BRANCH
-      changes:
-        - projects/stencil/**/*
-        - .deploy/**/*
+      # changes:
+      #   - projects/stencil/**/*
+      #   - .deploy/**/*
 
 # STENCIL REACT PUBLISH TEST
 stencil-react-publish-test:
