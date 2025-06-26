@@ -40,6 +40,7 @@ stages:
     paths:
       - node_modules
       - .cache/puppeteer
+      - .nx
       - projects/design-tokens/node_modules
       - projects/styles/node_modules
       - projects/svg-icons/node_modules

@@ -2,7 +2,6 @@
 styles-build:
   extends: .base-build
   script:
-    - nx run design-tokens:build
     - nx run styles:build
   artifacts:
     name: styles-build
