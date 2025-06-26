@@ -13,9 +13,9 @@ stencil-angular-build:
       - projects/stencil/angular/dist
   rules:
     - if: $CI_COMMIT_BRANCH
-      # changes:
-      #   - projects/stencil/**/*
-      #   - .deploy/**/*
+      changes:
+        - projects/stencil/**/*
+        - .deploy/**/*
 
 # STENCIL ANGULAR PUBLISH TEST
 stencil-angular-publish-test:
@@ -25,9 +25,9 @@ stencil-angular-publish-test:
     BUILD_DIR: projects/stencil/angular/dist/magma-angular
     COMPONENT: magma-angular
   rules:
-    - if: $CI_COMMIT_BRANCH #== "main"
-      # changes:
-      #   - projects/stencil/angular/magma-angular/package.json
+    - if: $CI_COMMIT_BRANCH == "main"
+      changes:
+        - projects/stencil/angular/magma-angular/package.json
 
 # STENCIL ANGULAR PUBLISH
 stencil-angular-publish:

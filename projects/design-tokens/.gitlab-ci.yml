@@ -12,8 +12,8 @@ design-tokens-build:
     policy: pull-push
   rules:
     - if: $CI_COMMIT_BRANCH
-      # changes:
-      #   - projects/design-tokens/**/*
+      changes:
+        - projects/design-tokens/**/*
 
 design-tokens-test:
   extends: .base-test

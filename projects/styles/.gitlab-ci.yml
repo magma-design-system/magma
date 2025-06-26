@@ -13,8 +13,8 @@ styles-build:
     policy: pull-push
   rules:
     - if: $CI_COMMIT_BRANCH
-      # changes:
-      #   - projects/styles/**/*
+      changes:
+        - projects/styles/**/*
 
 # STYLES PUBLISH TEST
 styles-publish-test:

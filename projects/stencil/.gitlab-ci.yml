@@ -23,9 +23,9 @@ base-stencil-build:
     policy: pull-push
   rules:
     - if: $CI_COMMIT_BRANCH
-      # changes:
-      #   - projects/stencil/**/*
-      #   - .deploy/**/*
+      changes:
+        - projects/stencil/**/*
+        - .deploy/**/*
 
 stencil-storybook-build:
   extends: .base-build
@@ -71,8 +71,8 @@ stencil-test:
     BUILD_DIR: projects/stencil
   rules:
     - if: $CI_COMMIT_BRANCH
-      # changes:
-      #   - projects/stencil/**/*
+      changes:
+        - projects/stencil/**/*
 
 # MAGMA PUBLISH TEST
 magma-publish-test:

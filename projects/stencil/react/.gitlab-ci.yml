@@ -13,9 +13,9 @@ stencil-react-build:
       - projects/stencil/react/dist
   rules:
     - if: $CI_COMMIT_BRANCH
-      # changes:
-      #   - projects/stencil/**/*
-      #   - .deploy/**/*
+      changes:
+        - projects/stencil/**/*
+        - .deploy/**/*
 
 # STENCIL REACT PUBLISH TEST
 stencil-react-publish-test:
@@ -25,9 +25,9 @@ stencil-react-publish-test:
     BUILD_DIR: projects/stencil/react
     COMPONENT: magma-react
   rules:
-    - if: $CI_COMMIT_BRANCH #== "main"
-      # changes:
-      #   - projects/stencil/react/package.json
+    - if: $CI_COMMIT_BRANCH == "main"
+      changes:
+        - projects/stencil/react/package.json
 
 # STENCIL REACT PUBLISH
 stencil-react-publish:
