@@ -45,6 +45,8 @@ stages:
       - projects/svg-icons/node_modules
       - projects/icons/node_modules
       - projects/stencil/node_modules
+      - projects/stencil/react/node_modules
+      - projects/stencil/angular/node_modules
       - projects/identity/node_modules
     policy: pull-push
 

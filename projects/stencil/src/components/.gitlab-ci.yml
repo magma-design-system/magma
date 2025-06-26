@@ -14,7 +14,7 @@ base-isolate:
     policy: pull
   resource_group: isolate
   rules:
-    - if: $CI_COMMIT_BRANCH == "main"
+    - if: $CI_COMMIT_BRANCH #== "main"
       # changes:
       #   - projects/stencil/src/components/*/package.json
 
@@ -25,9 +25,9 @@ base-isolate:
     BUILD_DIR: projects/stencil/.build/$COMPONENT
   resource_group: publish-test
   rules:
-    - if: $CI_COMMIT_BRANCH == "main"
-      changes:
-        - projects/stencil/src/components/$COMPONENT/package.json
+    - if: $CI_COMMIT_BRANCH #== "main"
+      # changes:
+      #   - projects/stencil/src/components/$COMPONENT/package.json
 
 # BASE STENCIL COMPONENT PUBLISH
 .base-stencil-publish:
