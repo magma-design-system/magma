@@ -15,8 +15,8 @@ base-isolate:
   resource_group: isolate
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
-      changes:
-        - projects/stencil/src/components/*/package.json
+      # changes:
+      #   - projects/stencil/src/components/*/package.json
 
 # BASE STENCIL COMPONENT PUBLISH TEST
 .base-stencil-publish-test:
