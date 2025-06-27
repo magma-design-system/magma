@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 const { readdirSync } = require('fs')
 const path = require('path')
 
