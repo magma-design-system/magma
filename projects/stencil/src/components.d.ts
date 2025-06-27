@@ -16,7 +16,7 @@ import { BenchmarkBarTypographyType } from "./components/mds-benchmark-bar/meta/
 import { BibliographyFormatType, BibliographyRelationshipType } from "./components/mds-bibliography/meta/types";
 import { MdsBreadcrumbEventDetail } from "./components/mds-breadcrumb/meta/event-detail";
 import { MdsBreadcrumbItemEventDetail } from "./components/mds-breadcrumb-item/meta/event-detail";
-import { ButtonDropdownVariantType, ButtonIconPositionType, ButtonSizeType, ButtonTargetType, ButtonType, ButtonVariantType } from "./type/button";
+import { ButtonDropdownVariantType, ButtonIconPositionType, ButtonSizeType, ButtonTargetType, ButtonType, ButtonVariantType, TabSizeType } from "./type/button";
 import { TypographyHeadingTagType, TypographyTagType, TypographyTruncateType } from "./type/text";
 import { CalendarCellSelectionOrieintationType, CalendarCellSelectionPositionType, CalendarCellType } from "./components/mds-calendar-cell/meta/types";
 import { MdsChipEvent } from "./components/mds-chip/meta/interface";
@@ -88,7 +88,7 @@ export { BenchmarkBarTypographyType } from "./components/mds-benchmark-bar/meta/
 export { BibliographyFormatType, BibliographyRelationshipType } from "./components/mds-bibliography/meta/types";
 export { MdsBreadcrumbEventDetail } from "./components/mds-breadcrumb/meta/event-detail";
 export { MdsBreadcrumbItemEventDetail } from "./components/mds-breadcrumb-item/meta/event-detail";
-export { ButtonDropdownVariantType, ButtonIconPositionType, ButtonSizeType, ButtonTargetType, ButtonType, ButtonVariantType } from "./type/button";
+export { ButtonDropdownVariantType, ButtonIconPositionType, ButtonSizeType, ButtonTargetType, ButtonType, ButtonVariantType, TabSizeType } from "./type/button";
 export { TypographyHeadingTagType, TypographyTagType, TypographyTruncateType } from "./type/text";
 export { CalendarCellSelectionOrieintationType, CalendarCellSelectionPositionType, CalendarCellType } from "./components/mds-calendar-cell/meta/types";
 export { MdsChipEvent } from "./components/mds-chip/meta/interface";
@@ -406,6 +406,10 @@ export namespace Components {
           * Specifies if the component is disabled or not
          */
         "disabled"?: boolean;
+        /**
+          * @private Specifies if the component is focused when is loaded on the viewport
+         */
+        "hasText": boolean;
         /**
           * Specifies the URL target of the button
          */
@@ -1932,6 +1936,10 @@ export namespace Components {
           * Shows the horizontal scrollbar to maximize accessibility
          */
         "scrollbar"?: boolean;
+        /**
+          * Sets the size of the component items nested inside it
+         */
+        "size"?: TabSizeType;
     }
     interface MdsTabBar {
     }
@@ -4102,6 +4110,10 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
+          * @private Specifies if the component is focused when is loaded on the viewport
+         */
+        "hasText"?: boolean;
+        /**
           * Specifies the URL target of the button
          */
         "href"?: string;
@@ -5718,6 +5730,10 @@ declare namespace LocalJSX {
           * Shows the horizontal scrollbar to maximize accessibility
          */
         "scrollbar"?: boolean;
+        /**
+          * Sets the size of the component items nested inside it
+         */
+        "size"?: TabSizeType;
     }
     interface MdsTabBar {
         /**
