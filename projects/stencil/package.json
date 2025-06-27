@@ -15,12 +15,10 @@
     "loader/"
   ],
   "scripts": {
-    "build": "npm run clean && npm run build.fixtures && npm run build.icons && stencil build --prerender --docs-readme --docs-json dist/documentation.json && npm run publish.isolate.docs-json",
-    "build.fixtures": "npm run build.icons.prepare && npx ts-node --skipProject ./scripts/fixtures.ts",
+    "build": "npm run clean && npm run build.icons && stencil build --prerender --docs-readme --docs-json dist/documentation.json && npm run publish.isolate.docs-json",
     "build.icons": "iconsauce --verbose --config ./.storybook/iconsauce.config.js --output-dictionary ./src/fixtures/icons.json --output-svg ./assets/svg",
-    "build.icons.prepare": "nx run svg-icons:dictionary",
     "build.no-cache": "stencil build --no-cache",
-    "build.watch": "npm run build.fixtures && npm run build.icons && stencil build --watch",
+    "build.watch": "npm run build.icons && stencil build --watch",
     "build.watch-no-cache": "stencil build --no-cache --watch",
     "clean": "npx ts-node --skipProject ./scripts/clean.ts",
     "generate": "stencil generate",
@@ -34,9 +32,9 @@
     "publish.isolate.component": "npm run publish.isolate.docs-json && npx ts-node --skipProject ./scripts/isolate-component.ts",
     "publish.isolate.docs-json": "npx ts-node --skipProject ./scripts/isolate-docs-json.ts",
     "start": "npm run storybook.clear-cache && npm run storybook.version && storybook dev -p 6006",
-    "storybook.build": "npm run storybook.version && npm run build.icons.prepare && storybook build -o ./dist-storybook",
+    "storybook.build": "npm run storybook.version && storybook build -o ./dist-storybook",
     "storybook.clear-cache": "npx ts-node --skipProject ./scripts/clean-storybook.ts",
-    "storybook.start": "npm run storybook.clear-cache && npm run build.fixtures && npm run build.icons && npm run storybook.version && storybook dev -p 6006 & npm run build.watch",
+    "storybook.start": "npm run storybook.clear-cache && npm run build.icons && npm run storybook.version && storybook dev -p 6006 & npm run build.watch",
     "storybook.version": "npx ts-node --skipProject ./scripts/list-components-version.ts",
     "storybook.watch-no-cache": "npm run storybook.clear-cache && npm run build.watch-no-cache & npm run storybook.version && storybook dev -p 6006",
     "test": "npm run test.e2e -- --no-build --maxWorkers=2",
@@ -48,8 +46,8 @@
     "test.regression.review": "npm run build && loki test --port 6006 --requireReference --chromeEnableAnimations=false",
     "test.script": "npx jest",
     "update": "npx ts-node --skipProject ./scripts/update.ts",
-    "watch": "npm run build.fixtures && npm run build.icons && stencil build --docs-readme --watch",
-    "dev": "npm run clean && npm run build.fixtures && npm run build.icons && stencil build -c stencil.dev.config.ts --docs-readme --watch"
+    "watch": "npm run build.icons && stencil build --docs-readme --watch",
+    "dev": "npm run clean && npm run build.icons && stencil build -c stencil.dev.config.ts --docs-readme --watch"
   },
   "dependencies": {
     "@floating-ui/dom": "1.6.12",
@@ -74,6 +72,7 @@
     "@babel/preset-env": "7.23.2",
     "@babel/preset-react": "7.22.15",
     "@babel/preset-typescript": "7.23.2",
+    "@maggioli-design-system/svg-icons": "4.0.0",
     "@rollup/plugin-alias": "5.1.0",
     "@stencil-community/eslint-plugin": "0.9.0",
     "@stencil/angular-output-target": "0.10.2",
