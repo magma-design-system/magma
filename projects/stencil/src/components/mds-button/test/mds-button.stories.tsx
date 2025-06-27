@@ -137,7 +137,7 @@ const TemplateKeyboard = args =>
   </div>
 
 const TemplateIcon = args =>
-  <mds-button {...args}/>
+  <mds-button {...args}> </mds-button>
 
 const TemplateForm = args =>
   <form class="flex gap-x-400" action='#' onSubmit={event => {
