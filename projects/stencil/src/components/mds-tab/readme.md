@@ -15,6 +15,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `fill`      | `fill`      | Sets if the tab area should fill the entire width                                       | `boolean \| undefined`           | `undefined` |
 | `overflow`  | `overflow`  | Sets if the tab area should show an inset shadow when the tabs overflows it's container | `boolean \| undefined`           | `undefined` |
 | `scrollbar` | `scrollbar` | Shows the horizontal scrollbar to maximize accessibility                                | `boolean \| undefined`           | `undefined` |
+| `size`      | `size`      | Sets the size of the component items nested inside it                                   | `"md" \| "sm" \| undefined`      | `undefined` |
 
 
 ## Events

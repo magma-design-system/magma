@@ -5,6 +5,7 @@ import { setAttributeIfEmpty, hashRandomValue } from '@common/aria'
 import { HorizontalActionsAnimationType } from '@type/animation'
 import clsx from 'clsx'
 import { cssDurationToMilliseconds } from '@common/unit'
+import { TabSizeType } from '@type/button'
 
 /**
  * @part contents - Selects the container of the tabbed contents elements.
@@ -53,6 +54,11 @@ export class MdsTab {
    * Sets if the tab area should show an inset shadow when the tabs overflows it's container
    */
   @Prop({ reflect: true, mutable: true }) overflow?: boolean
+
+  /**
+   * Sets the size of the component items nested inside it
+   */
+  @Prop({ reflect: true, mutable: true }) size?: TabSizeType
 
   /**
    * Emits when a children is changed
