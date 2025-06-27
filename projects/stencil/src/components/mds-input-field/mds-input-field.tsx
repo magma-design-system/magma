@@ -56,7 +56,7 @@ export class MdsInputField {
       <Host>
         <mds-text class="label" typography="label">{ this.label }</mds-text>
         <div class="message-window">
-          <div>
+          <div class="content" part="content">
             <slot ref={i => this.slotInput = i as HTMLSlotElement }></slot>
           </div>
           <div class="message" >{ this.message?.split(';').map((m, i) => <mds-text typography="caption" key={i}>{m}</mds-text>) }</div>

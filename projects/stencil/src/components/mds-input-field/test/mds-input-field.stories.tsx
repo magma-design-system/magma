@@ -109,3 +109,16 @@ Validation.args = {
   placeholder: 'Es: MRCRSS83B21D704L',
   type: 'cf',
 }
+
+const TemplateNestedButton = args =>
+  <mds-input-field {...args}>
+    <mds-input name="fullName" type={args.type} placeholder={args.placeholder}></mds-input>
+    <mds-button icon="mi/baseline/chevron-right" size='lg'></mds-button>
+  </mds-input-field>
+
+export const NestedButton = TemplateNestedButton.bind({})
+NestedButton.args = {
+  label: 'inserisci il tuo codice fiscale',
+  placeholder: 'Es: MRCRSS83B21D704L',
+  type: 'cf',
+}
