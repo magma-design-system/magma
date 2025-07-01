@@ -1,40 +1,37 @@
-import { defineConfig, globalIgnores } from 'eslint/config'
-import typescriptEslint from '@typescript-eslint/eslint-plugin'
+// @ts-check
+import { globalIgnores } from 'eslint/config'
+import { includeIgnoreFile } from '@eslint/compat'
+import tseslint from 'typescript-eslint'
 import globals from 'globals'
-import tsParser from '@typescript-eslint/parser'
-import path from 'node:path'
+// import tsParser from '@typescript-eslint/parser'
+// import path from 'node:path'
 import { fileURLToPath } from 'node:url'
-import js from '@eslint/js'
-import { FlatCompat } from '@eslint/eslintrc'
+import eslint from '@eslint/js'
+// import { FlatCompat } from '@eslint/eslintrc'
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-  recommendedConfig: js.configs.recommended,
-  allConfig: js.configs.all,
-})
+// const __filename = fileURLToPath(import.meta.url)
+const gitignorePath = fileURLToPath(new URL('.gitignore', import.meta.url))
 
-export default defineConfig([
-  globalIgnores(['**/node_modules/*', '**/dist/*', '**/node_modules', '**/dist']),
+// const __dirname = path.dirname(__filename)
+// const compat = new FlatCompat({
+//   baseDirectory: __dirname,
+//   recommendedConfig: eslint.configs.recommended,
+//   allConfig: eslint.configs.all,
+// })
+
+export default tseslint.config([
+  globalIgnores(['**/node_modules', '**/dist', '**/.cache' ]),
+  includeIgnoreFile(gitignorePath, 'Imported .gitignore patterns'),
+  eslint.configs.recommended,
+  tseslint.configs.recommended,
   {
-    extends: compat.extends(
-      'eslint:recommended',
-      'plugin:@typescript-eslint/eslint-recommended',
-      'plugin:@typescript-eslint/recommended',
-    ),
-
-    plugins: {
-      '@typescript-eslint': typescriptEslint,
-    },
-
     languageOptions: {
       globals: {
         ...globals.browser,
         ...globals.node,
       },
 
-      parser: tsParser,
+      // parser: tsParser,
       ecmaVersion: 12,
       sourceType: 'module',
     },
