@@ -118,8 +118,7 @@ export class MdsPrefLanguage {
     if (!/(auto)|^[a-z]{2}(-[A-Z]{2})?$/gm.exec(set)) {
       throw Error(`Language code setted not reconized: ${set}`)
     }
-    set === 'auto' ? this.set = this.userLanguage ?? this.pageLanguage ?? this.systemLanguage : this.set = this.sanitizeLanguage(set)
-
+    this.set = set === 'auto' ? (this.userLanguage ?? this.pageLanguage ?? this.systemLanguage) : this.sanitizeLanguage(set)
     this.prefChangeEvent.emit({ preference: 'language' })
 
     localStorage.setItem(this.localStorageAlias, this.set)

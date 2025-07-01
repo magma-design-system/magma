@@ -436,7 +436,7 @@ export class MdsInput {
    */
   @Method()
   getInputElement (): Promise<HTMLInputElement | HTMLTextAreaElement> {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+     
     return Promise.resolve(this.nativeInput!)
   }
 

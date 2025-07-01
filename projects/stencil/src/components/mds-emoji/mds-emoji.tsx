@@ -103,7 +103,7 @@ export class MdsEmoji {
    */
 
   @Method()
-  async agree (): Promise<void> { // eslint-disable-line @typescript-eslint/ban-types
+  async agree (): Promise<void> {
     this.stopConcurrentAnimations()
     this.setAgreeAnimation()
     return Promise.resolve()
@@ -165,7 +165,7 @@ export class MdsEmoji {
    */
 
   @Method()
-  async disagree (turnHappyDelay: number = 0): Promise<void> { // eslint-disable-line @typescript-eslint/ban-types
+  async disagree (turnHappyDelay: number = 0): Promise<void> {
     this.stopConcurrentAnimations()
     this.setDisagreeAnimation(turnHappyDelay)
     return Promise.resolve()
@@ -218,14 +218,14 @@ export class MdsEmoji {
    */
 
   @Method()
-  async startThinking (): Promise<void> { // eslint-disable-line @typescript-eslint/ban-types
+  async startThinking (): Promise<void> {
     this.isThinking = true
     this.setStartThinkingAnimation()
     return Promise.resolve()
   }
 
   @Method()
-  async stopThinking (): Promise<void> { // eslint-disable-line @typescript-eslint/ban-types
+  async stopThinking (): Promise<void> {
     this.isThinking = false
     this.setStopThinkingAnimation()
     return Promise.resolve()

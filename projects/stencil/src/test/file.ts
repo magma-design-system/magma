@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+ 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 /* stencil non utilizza jsdom come enviroment per i test che vengono eseguiti su node.js,
