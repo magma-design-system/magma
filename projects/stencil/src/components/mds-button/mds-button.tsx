@@ -7,6 +7,7 @@ import { buttonSizeTypographyVariant } from './meta/variants'
 import { setAttributeIfEmpty, unslugName } from '@common/aria'
 import { isIconFormatIsBase64, isIconFormatIsSVG } from '@common/icon'
 import { TypographyTruncateType } from '@type/text'
+import { hasSlottedContent } from '@common/slot'
 import mdiApple from '@icon/mdi/apple.svg'
 import logoGoogle from './asset/logo-google.svg'
 
@@ -260,8 +261,7 @@ export class MdsButton {
   }
 
   private onSlotChangeHandler = (): void => {
-    const [ slotContent ] = this.host.shadowRoot?.querySelectorAll('slot')[0]?.assignedNodes() as Node[]
-    this.hasText = slotContent.textContent?.trim() !== ''
+    this.hasText = hasSlottedContent(this.host)
   }
 
   render () {
