@@ -3,27 +3,19 @@ import { globalIgnores } from 'eslint/config'
 import { includeIgnoreFile } from '@eslint/compat'
 import tseslint from 'typescript-eslint'
 import globals from 'globals'
-// import tsParser from '@typescript-eslint/parser'
-// import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import eslint from '@eslint/js'
-// import { FlatCompat } from '@eslint/eslintrc'
 
-// const __filename = fileURLToPath(import.meta.url)
 const gitignorePath = fileURLToPath(new URL('.gitignore', import.meta.url))
 
-// const __dirname = path.dirname(__filename)
-// const compat = new FlatCompat({
-//   baseDirectory: __dirname,
-//   recommendedConfig: eslint.configs.recommended,
-//   allConfig: eslint.configs.all,
-// })
 
 export default tseslint.config([
-  globalIgnores(['**/node_modules', '**/dist', '**/.cache' ]),
+  globalIgnores(['**/node_modules', '**/dist', '**/.cache', '**/*.config.*js' ]),
   includeIgnoreFile(gitignorePath, 'Imported .gitignore patterns'),
   eslint.configs.recommended,
   tseslint.configs.recommended,
+  // GLOBAL TYPESCRIPT TYPECHECK
+  // tseslint.configs.recommendedTypeChecked,
   {
     languageOptions: {
       globals: {
@@ -31,11 +23,17 @@ export default tseslint.config([
         ...globals.node,
       },
 
-      // parser: tsParser,
+      // parser: tseslint.parser,
+      // parserOptions: {
+      //   projectService: true,
+      //   tsconfigRootDir: import.meta.dirname,
+      // },
       ecmaVersion: 12,
       sourceType: 'module',
     },
-
+    // plugins: {
+    //   '@typescript-eslint': tseslint.plugin,
+    // },
     rules: {
       '@typescript-eslint/no-explicit-any': 'error',
       '@typescript-eslint/no-require-imports': 'warn',

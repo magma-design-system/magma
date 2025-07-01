@@ -3,60 +3,31 @@ import js from '@eslint/js'
 import { includeIgnoreFile } from '@eslint/compat'
 import { FlatCompat } from '@eslint/eslintrc'
 import { fileURLToPath } from 'node:url'
-import path from 'node:path'
 import rootConfig from '../../eslint.config.mjs'
-// import stencil from '@stencil/eslint'
-
+import stencil from '@stencil/eslint-plugin'
+import tseslint from 'typescript-eslint'
 import storybook from 'eslint-plugin-storybook'
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
 
 const gitignorePath = fileURLToPath(new URL('.gitignore', import.meta.url))
-const gitignorePathReact = fileURLToPath(
-  new URL('react/.gitignore', import.meta.url),
-)
-const gitignorePathAngular = fileURLToPath(
-  new URL('angular/.gitignore', import.meta.url),
-)
 
 const compat = new FlatCompat({
-  baseDirectory: __dirname,
+  baseDirectory: import.meta.dirname,
   recommendedConfig: js.configs.recommended,
   allConfig: js.configs.all,
 })
 
 export default defineConfig([
-  ...storybook.configs['flat/recommended'],
   rootConfig,
-  // rootConfig,
-  // stencil.configs.flat.recommended,
   globalIgnores([
-    '**/*.config.ts',
-    '**/*.config.js',
-    './.build',
-    './dist',
-    './src/componnts.d.ts',
-    './template',
-    '!.storybook',
+    'react',
+    'angular'
   ]),
   includeIgnoreFile(gitignorePath, 'Imported .gitignore patterns'),
+
+  // #region storybook
+  ...storybook.configs['flat/recommended'],
   {
-    basePath: 'react',
-    ignores: includeIgnoreFile(
-      gitignorePathReact,
-      'Imported React project .gitignore patterns',
-    ).ignores,
-  },
-  {
-    basePath: 'angular',
-    ignores: includeIgnoreFile(
-      gitignorePathAngular,
-      'Imported Angular project .gitignore patterns',
-    ).ignores,
-  },
-  {
-    files: ['./**/*.tsx', './**/*.ts'],
     extends: [
       compat.extends(
         'plugin:storybook/recommended',
@@ -64,6 +35,38 @@ export default defineConfig([
       ),
     ],
     rules: {
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          varsIgnorePattern: '^h$',
+        },
+      ],
+    }
+  },
+  // #endregion
+
+  // #region stencil
+  {
+    files: ['./**/src/components/*.tsx', './**/src/components/*.ts'],
+    ignores: ['.storybook/**', '**/*.stories.*'],
+    languageOptions: {
+      parser: tseslint.parser,
+      parserOptions: {
+        projectService: true,
+        project: './tsconfig.json', // important for rules requiring type info
+        tsconfigRootDir: import.meta.dirname, // ensure paths resolve correctly
+        ecmaVersion: 'latest',
+        sourceType: 'module',
+      },
+    },
+     plugins: {
+      '@typescript-eslint': tseslint.plugin,
+      'stencil': stencil
+    },
+    rules: {
+      ...tseslint.configs.recommendedTypeChecked[0].rules,
+      ...stencil.configs.recommended.rules,
+      "@typescript-eslint/strict-boolean-expressions": 0,
       '@typescript-eslint/explicit-module-boundary-types': [
         'error',
         {
@@ -80,7 +83,10 @@ export default defineConfig([
         },
       ],
 
+      // disable rule due to incompatibility stencil plugin, waitinf for update
+      'stencil/strict-boolean-conditions': 'off',
       'react/jsx-no-bind': 'off',
     },
   },
+  // #endregion
 ])
