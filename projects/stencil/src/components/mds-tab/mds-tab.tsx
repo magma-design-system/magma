@@ -6,6 +6,7 @@ import { HorizontalActionsAnimationType } from '@type/animation'
 import clsx from 'clsx'
 import { cssDurationToMilliseconds } from '@common/unit'
 import { TabSizeType } from '@type/button'
+import { DirectionType } from './meta/type'
 
 /**
  * @part contents - Selects the container of the tabbed contents elements.
@@ -37,6 +38,11 @@ export class MdsTab {
   @State() sliderOffsetY: number = -1
   @State() overflowLeft: boolean = false
   @State() overflowRight: boolean = false
+
+  /**
+   * Sets if the component distributes item vertically or horzontally
+   */
+  @Prop({ reflect: true, mutable: true }) direction?: DirectionType = 'horizontal'
 
   /**
    * Shows the horizontal scrollbar to maximize accessibility
@@ -254,6 +260,13 @@ export class MdsTab {
       return
     }
     this.initOverflowCheck()
+  }
+
+  @Watch('size')
+  handleSizeChange (newValue?: TabSizeType): void {
+    this.tabItems.forEach((element: HTMLMdsTabItemElement) => {
+      element.size = newValue
+    })
   }
 
   render () {

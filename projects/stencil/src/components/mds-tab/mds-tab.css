@@ -31,6 +31,7 @@
  */
 
 :host {
+  --mds-tab-direction-vertical-columns: auto auto;
   --mds-tab-item-default-background: transparent;
   --mds-tab-item-default-color: theme('colors.tone-neutral-03');
   --mds-tab-item-default-shadow: transparent;
@@ -47,21 +48,22 @@
   --mds-tab-scroll-scrollbar-size: theme('spacing.200');
   --mds-tab-scroll-scrollbar-thumb-background: rgb(var(--tone-neutral-02) theme('opacity.30'));
   --mds-tab-scroll-scrollbar-track-background: rgb(var(--tone-neutral-06) theme('opacity.30'));
+  --mds-tab-slide-delay: 0.125s;
   --mds-tab-tabs-background: theme('colors.tone-neutral-09');
   --mds-tab-tabs-gap: theme('padding.200');
-  --mds-tab-tabs-padding: theme('padding.200');
-  --mds-tab-tabs-radius: theme('borderRadius.2xl');
   --mds-tab-tabs-overflow-shadow-size: theme('size.600');
   --mds-tab-tabs-overflow-shadow: 0 0 var(--mds-tab-tabs-overflow-shadow-size) -2px rgb(0 0 0 / 0.375);
+  --mds-tab-tabs-padding: theme('padding.200');
+  --mds-tab-tabs-radius: theme('borderRadius.2xl');
   --mds-tab-tabs-wrapper-margin: 0;
   --mds-tab-tabs-wrapper-outline-opacity: 0.7;
   --mds-tab-tabs-wrapper-shadow-color: var(--mds-tab-tabs-background);
   --mds-tab-tabs-wrapper-shadow: 0 0 0 2px var(--mds-tab-tabs-wrapper-shadow-color) inset;
   --mds-tab-transition-duration: 0.5s;
   --mds-tab-transition-timing-function: theme('transitionTimingFunction.out-expo');
-  --mds-tab-slide-delay: 0.125s;
 
   display: grid;
+  gap: 0 theme('gap.600');
 }
 
 :host([animation="slide"]) ::slotted(mds-tab-item) {
@@ -155,6 +157,7 @@
 }
 
 @import './css/mds-tab-animation.css';
+@import './css/mds-tab-direction.css';
 @import './css/mds-tab-scrollbar.css';
 @import './css/mds-tab-tabs-wrapper-overflow.css';
 @import './css/mds-tab-tabs-wrapper-decorator.css';

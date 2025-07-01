@@ -8,6 +8,7 @@ import localeEs from './meta/locale.es.json'
 import localeIt from './meta/locale.it.json'
 import miBaselineKeyboardArrowDown from '@icon/mi/baseline/keyboard-arrow-down.svg'
 import miBaselineKeyboardArrowUp from '@icon/mi/baseline/keyboard-arrow-up.svg'
+import { TabSizeType } from '@type/button'
 
 /**
  * @slot default - Add `mds-pref-language-item` element/s.
@@ -39,6 +40,11 @@ export class MdsPrefLanguage {
   async updateLang (): Promise<void> {
     this.language = this.t.lang(this.element)
   }
+
+  /**
+   * Sets the size of the component items nested inside it
+   */
+  @Prop({ reflect: true }) readonly size?: TabSizeType
 
 
   /**
@@ -134,7 +140,7 @@ export class MdsPrefLanguage {
       <Host>
         <div class="menu" >
           <mds-text class="info" typography="caption"><b>{ this.t.get('label') }</b></mds-text>
-          <mds-tab fill>
+          <mds-tab fill size={this.size}>
             <mds-tab-item selected onClick={this.toggleDropdown} id="mds-pref-language-nav" class="item item--custom-language" icon-position="right" icon={this.showDropdown ? miBaselineKeyboardArrowUp : miBaselineKeyboardArrowDown}>{this.t.get(this.set ?? 'auto')}</mds-tab-item>
           </mds-tab>
         </div>

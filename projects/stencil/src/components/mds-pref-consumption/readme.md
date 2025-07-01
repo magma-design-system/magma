@@ -7,9 +7,10 @@
 
 ## Properties
 
-| Property | Attribute | Description                   | Type                                       | Default     |
-| -------- | --------- | ----------------------------- | ------------------------------------------ | ----------- |
-| `mode`   | `mode`    | Specifies the preference mode | `"high" \| "low" \| "medium" \| undefined` | `undefined` |
+| Property | Attribute | Description                                           | Type                                       | Default     |
+| -------- | --------- | ----------------------------------------------------- | ------------------------------------------ | ----------- |
+| `mode`   | `mode`    | Specifies the preference mode                         | `"high" \| "low" \| "medium" \| undefined` | `undefined` |
+| `size`   | `size`    | Sets the size of the component items nested inside it | `"md" \| "sm" \| undefined`                | `undefined` |
 
 
 ## Events

@@ -64,6 +64,7 @@ import { MdsPushNotificationItemEventDetail } from "./components/mds-push-notifi
 import { Direction, Interaction } from "./components/mds-radial-menu/meta/types";
 import { MdsStepperBarEventDetail } from "./components/mds-stepper-bar/meta/event-detail";
 import { MdsStepperBarItemEventDetail } from "./components/mds-stepper-bar-item/meta/event-detail";
+import { DirectionType as DirectionType1 } from "./components/mds-tab/meta/type";
 import { HorizontalActionsAnimationType } from "./type/animation";
 import { MdsTabEventDetail } from "./components/mds-tab/meta/event-detail";
 import { MdsTabBarEventDetail } from "./components/mds-tab-bar/meta/event-detail";
@@ -136,6 +137,7 @@ export { MdsPushNotificationItemEventDetail } from "./components/mds-push-notifi
 export { Direction, Interaction } from "./components/mds-radial-menu/meta/types";
 export { MdsStepperBarEventDetail } from "./components/mds-stepper-bar/meta/event-detail";
 export { MdsStepperBarItemEventDetail } from "./components/mds-stepper-bar-item/meta/event-detail";
+export { DirectionType as DirectionType1 } from "./components/mds-tab/meta/type";
 export { HorizontalActionsAnimationType } from "./type/animation";
 export { MdsTabEventDetail } from "./components/mds-tab/meta/event-detail";
 export { MdsTabBarEventDetail } from "./components/mds-tab-bar/meta/event-detail";
@@ -1617,6 +1619,10 @@ export namespace Components {
           * Sets if the component works as hidden element controller instead as UI element, visible on the DOM
          */
         "controller"?: boolean;
+        /**
+          * Sets the size of the component items nested inside it
+         */
+        "size"?: TabSizeType;
         "updateLang": () => Promise<void>;
     }
     interface MdsPrefAnimation {
@@ -1624,6 +1630,10 @@ export namespace Components {
           * Specifies the preference mode
          */
         "mode"?: AnimationModeType;
+        /**
+          * Sets the size of the component items nested inside it
+         */
+        "size"?: TabSizeType;
         "updateLang": () => Promise<void>;
     }
     interface MdsPrefConsumption {
@@ -1631,6 +1641,10 @@ export namespace Components {
           * Specifies the preference mode
          */
         "mode"?: ConsumptionModeType;
+        /**
+          * Sets the size of the component items nested inside it
+         */
+        "size"?: TabSizeType;
         "updateLang": () => Promise<void>;
     }
     interface MdsPrefContrast {
@@ -1638,6 +1652,10 @@ export namespace Components {
           * Specifies the preference mode
          */
         "mode"?: ContrastModeType;
+        /**
+          * Sets the size of the component items nested inside it
+         */
+        "size"?: TabSizeType;
         "updateLang": () => Promise<void>;
     }
     interface MdsPrefLanguage {
@@ -1645,6 +1663,10 @@ export namespace Components {
           * Specifies the language code based on HTML `lang` attribute  A string representing the language version as defined in {@link https://datatracker.ietf.org/doc/html/rfc5646 RFC 5646: Tags for Identifying Languages (also known as BCP 47)}.  `Examples of valid language codes include "en", "en-US", "fr", "fr-FR", "es-ES", etc.`  Supported languages are Italiano, English, Español, ελληνικά
          */
         "set": string;
+        /**
+          * Sets the size of the component items nested inside it
+         */
+        "size"?: TabSizeType;
         "updateLang": () => Promise<void>;
     }
     interface MdsPrefLanguageItem {
@@ -1663,6 +1685,10 @@ export namespace Components {
           * Specifies the preference mode
          */
         "mode"?: ThemeModeType;
+        /**
+          * Sets the size of the component items nested inside it
+         */
+        "size"?: TabSizeType;
         /**
           * Specifies the transition of switching from a theme to another one
          */
@@ -1924,6 +1950,10 @@ export namespace Components {
           * Sets the animation type of the selection transition between `mds-tab-item` elements
          */
         "animation"?: HorizontalActionsAnimationType;
+        /**
+          * Sets if the component distributes item vertically or horzontally
+         */
+        "direction"?: DirectionType1;
         /**
           * Sets if the tab area should fill the entire width
          */
@@ -5367,6 +5397,10 @@ declare namespace LocalJSX {
           * Sets if the component works as hidden element controller instead as UI element, visible on the DOM
          */
         "controller"?: boolean;
+        /**
+          * Sets the size of the component items nested inside it
+         */
+        "size"?: TabSizeType;
     }
     interface MdsPrefAnimation {
         /**
@@ -5377,6 +5411,10 @@ declare namespace LocalJSX {
           * Emits when the component is triggered
          */
         "onMdsPrefChange"?: (event: MdsPrefAnimationCustomEvent<MdsPrefChangeEventDetail>) => void;
+        /**
+          * Sets the size of the component items nested inside it
+         */
+        "size"?: TabSizeType;
     }
     interface MdsPrefConsumption {
         /**
@@ -5387,6 +5425,10 @@ declare namespace LocalJSX {
           * Emits when the component is triggered
          */
         "onMdsPrefChange"?: (event: MdsPrefConsumptionCustomEvent<MdsPrefChangeEventDetail>) => void;
+        /**
+          * Sets the size of the component items nested inside it
+         */
+        "size"?: TabSizeType;
     }
     interface MdsPrefContrast {
         /**
@@ -5397,6 +5439,10 @@ declare namespace LocalJSX {
           * Emits when the component is triggered
          */
         "onMdsPrefChange"?: (event: MdsPrefContrastCustomEvent<MdsPrefChangeEventDetail>) => void;
+        /**
+          * Sets the size of the component items nested inside it
+         */
+        "size"?: TabSizeType;
     }
     interface MdsPrefLanguage {
         /**
@@ -5411,6 +5457,10 @@ declare namespace LocalJSX {
           * Specifies the language code based on HTML `lang` attribute  A string representing the language version as defined in {@link https://datatracker.ietf.org/doc/html/rfc5646 RFC 5646: Tags for Identifying Languages (also known as BCP 47)}.  `Examples of valid language codes include "en", "en-US", "fr", "fr-FR", "es-ES", etc.`  Supported languages are Italiano, English, Español, ελληνικά
          */
         "set"?: string;
+        /**
+          * Sets the size of the component items nested inside it
+         */
+        "size"?: TabSizeType;
     }
     interface MdsPrefLanguageItem {
         /**
@@ -5435,6 +5485,10 @@ declare namespace LocalJSX {
           * Emits when the component is triggered
          */
         "onMdsPrefChange"?: (event: MdsPrefThemeCustomEvent<MdsPrefChangeEventDetail>) => void;
+        /**
+          * Sets the size of the component items nested inside it
+         */
+        "size"?: TabSizeType;
         /**
           * Specifies the transition of switching from a theme to another one
          */
@@ -5714,6 +5768,10 @@ declare namespace LocalJSX {
           * Sets the animation type of the selection transition between `mds-tab-item` elements
          */
         "animation"?: HorizontalActionsAnimationType;
+        /**
+          * Sets if the component distributes item vertically or horzontally
+         */
+        "direction"?: DirectionType1;
         /**
           * Sets if the tab area should fill the entire width
          */

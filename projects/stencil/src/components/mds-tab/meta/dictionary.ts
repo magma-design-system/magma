@@ -1,6 +1,6 @@
 const directionDictionary = [
-  'natural',
-  'reverse',
+  'horizontal',
+  'vertical',
 ]
 
 const strategyDictionary = [
