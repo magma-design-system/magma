@@ -73,6 +73,7 @@
 }
 
 .tabs {
+  align-items: flex-start;
   background-color: var(--mds-tab-tabs-background);
   border-radius: var(--mds-tab-tabs-radius);
   box-sizing: border-box;

@@ -277,6 +277,10 @@ Scrollbar.args = {
 }
 export const NoSelectedItem = TemplateNoSelected.bind({})
 export const Scroll = TemplateScroll.bind({})
+export const Size = TemplateOverflow.bind({})
+Size.args = {
+  size: 'sm',
+}
 
 export const AsyncContent = TemplateAsyncContent.bind({})
 
