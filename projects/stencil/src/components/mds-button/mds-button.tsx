@@ -7,7 +7,7 @@ import { buttonSizeTypographyVariant } from './meta/variants'
 import { setAttributeIfEmpty, unslugName } from '@common/aria'
 import { isIconFormatIsBase64, isIconFormatIsSVG } from '@common/icon'
 import { TypographyTruncateType } from '@type/text'
-import { hasSlottedContent } from '@common/slot'
+// import { hasSlottedContent } from '@common/slot'
 import mdiApple from '@icon/mdi/apple.svg'
 import logoGoogle from './asset/logo-google.svg'
 
@@ -187,7 +187,7 @@ export class MdsButton {
 
   componentWillLoad ():void {
     this.hasNotification = this.host.querySelector(':scope > [slot="notification"]') !== null
-    this.hasText = this.host.innerHTML !== ''
+    this.hasText = this.host.innerHTML.trim() !== '' || this.host.children.length > 0
 
     this.handleVariantChange(this.variant)
 
@@ -261,7 +261,7 @@ export class MdsButton {
   }
 
   private onSlotChangeHandler = (): void => {
-    this.hasText = hasSlottedContent(this.host)
+    this.hasText = this.host.innerHTML.trim() !== '' || this.host.children.length > 0
   }
 
   render () {
