@@ -70,7 +70,7 @@ export class MdsInput {
   private tabindex?: number
 
   private inputValidation: InputValidationManager
-  private isValid: boolean
+  private isValid: boolean = true
   private speechToTextLabel: string
   private speechToTextIcon: string = miOutlineMic
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -512,7 +512,7 @@ export class MdsInput {
       this.speechButton = this.el?.shadowRoot?.querySelector('.mic-toggle-button') as HTMLMdsButtonElement
     }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition
+    const SpeechRecognition = (window as any).SpeechRecognition ?? (window as any).webkitSpeechRecognition
     this.value = ''
 
     if (!SpeechRecognition) {
