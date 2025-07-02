@@ -7,10 +7,11 @@
 
 ## Properties
 
-| Property      | Attribute     | Description                                        | Type                   | Default     |
-| ------------- | ------------- | -------------------------------------------------- | ---------------------- | ----------- |
-| `description` | `description` | Specifies the description near the slotted actions | `string \| undefined`  | `undefined` |
-| `visible`     | `visible`     | Specifies if the component is visible              | `boolean \| undefined` | `undefined` |
+| Property      | Attribute     | Description                                                                             | Type                   | Default     |
+| ------------- | ------------- | --------------------------------------------------------------------------------------- | ---------------------- | ----------- |
+| `description` | `description` | Specifies the description near the slotted actions                                      | `string \| undefined`  | `undefined` |
+| `overflow`    | `overflow`    | Specifies if the component prevents the body from scrolling when modal window is opened | `"auto" \| "manual"`   | `'manual'`  |
+| `visible`     | `visible`     | Specifies if the component is visible                                                   | `boolean \| undefined` | `undefined` |
 
 
 ## Methods
