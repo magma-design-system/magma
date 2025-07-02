@@ -39,7 +39,11 @@
   color: var(--mds-chip-color);
   display: inline-flex;
   justify-content: center;
+  justify-self: start;
+  max-width: min-content;
+  min-width: 200px;
   transition-property: background-color, border-color, box-shadow, color, opacity;
+  width: 100%;
 }
 
 
