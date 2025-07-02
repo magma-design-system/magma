@@ -367,7 +367,11 @@ export class MdsInput {
     // validate input only when atleast one validator is present
     if (this.inputValidation.validator.hasValidator()) {
       this.isValid = this.inputValidation.isValid(this.value)
-      this.variant = this.isValid ? 'success' : 'error'
+
+      // set variant attribute
+      if (this.value === '' && !this.required) this.variant = 'primary'
+      else this.variant = this.isValid ? 'success' : 'error'
+
       this.validationEvent.emit(this.isValid)
     }
     return this.isValid
