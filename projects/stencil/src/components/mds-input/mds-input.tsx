@@ -70,7 +70,7 @@ export class MdsInput {
   private tabindex?: number
 
   private inputValidation: InputValidationManager
-  private isValid: boolean = true
+  private isValid: boolean
   private speechToTextLabel: string
   private speechToTextIcon: string = miOutlineMic
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -290,6 +290,7 @@ export class MdsInput {
     this.internals.setFormValue(this.value ?? null)
     this.maxLengthChanged(this.maxlength)
 
+    this.isValid = !(this.required && this.value === '')
     this.el.focus = () => {
       this.nativeInput?.focus()
     }
@@ -317,6 +318,8 @@ export class MdsInput {
     if (this.maxlength !== undefined) {
       this.countMaxLength()
     }
+    // if is necessary for skip validation when reset input to retype correct value, validation is always onBlur
+    if (this.value === '') return
     if (!this.isValid) this.validateInput()
   }
 
@@ -455,7 +458,7 @@ export class MdsInput {
 
   private onBlur = () => {
     this.hasFocus = false
-    if (this.isValid) this.validateInput()
+    this.validateInput()
     this.blurEvent.emit()
     // this.isValidInput = this.validateInput()
   }
