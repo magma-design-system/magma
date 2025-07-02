@@ -62,6 +62,7 @@ import { MdsPushNotificationEventDetail } from "./components/mds-push-notificati
 import { NotificationItemDateFormatType, NotificationItemPreviewType } from "./components/mds-push-notification-item/meta/types";
 import { MdsPushNotificationItemEventDetail } from "./components/mds-push-notification-item/meta/event-detail";
 import { Direction, Interaction } from "./components/mds-radial-menu/meta/types";
+import { ModalOverflowType as ModalOverflowType1 } from "./components.d";
 import { MdsStepperBarEventDetail } from "./components/mds-stepper-bar/meta/event-detail";
 import { MdsStepperBarItemEventDetail } from "./components/mds-stepper-bar-item/meta/event-detail";
 import { DirectionType as DirectionType1 } from "./components/mds-tab/meta/type";
@@ -135,6 +136,7 @@ export { MdsPushNotificationEventDetail } from "./components/mds-push-notificati
 export { NotificationItemDateFormatType, NotificationItemPreviewType } from "./components/mds-push-notification-item/meta/types";
 export { MdsPushNotificationItemEventDetail } from "./components/mds-push-notification-item/meta/event-detail";
 export { Direction, Interaction } from "./components/mds-radial-menu/meta/types";
+export { ModalOverflowType as ModalOverflowType1 } from "./components.d";
 export { MdsStepperBarEventDetail } from "./components/mds-stepper-bar/meta/event-detail";
 export { MdsStepperBarItemEventDetail } from "./components/mds-stepper-bar-item/meta/event-detail";
 export { DirectionType as DirectionType1 } from "./components/mds-tab/meta/type";
@@ -1896,6 +1898,10 @@ export namespace Components {
          */
         "description"?: string;
         "hide": () => Promise<void>;
+        /**
+          * Specifies if the component prevents the body from scrolling when modal window is opened
+         */
+        "overflow": ModalOverflowType;
         /**
           * Specifies if the component is visible
          */
@@ -5706,6 +5712,10 @@ declare namespace LocalJSX {
           * Specifies the description near the slotted actions
          */
         "description"?: string;
+        /**
+          * Specifies if the component prevents the body from scrolling when modal window is opened
+         */
+        "overflow"?: ModalOverflowType;
         /**
           * Specifies if the component is visible
          */
