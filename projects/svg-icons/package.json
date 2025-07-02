@@ -6,8 +6,8 @@
   "scripts": {
     "build": "npm run clean && npm run dictionary && npm run svg",
     "svg": "svgo -f ./svg -o ./dist/svg",
-    "clean": "npx ts-node --skipProject scripts/clean.ts",
-    "dictionary": "npx ts-node --skipProject scripts/iconsauce.ts",
+    "clean": "tsx scripts/clean.ts",
+    "dictionary": "tsx scripts/iconsauce.ts",
     "prepublishOnly": "npm run build"
   },
   "devDependencies": {

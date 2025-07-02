@@ -25,11 +25,11 @@
     "build": "npm run clean && npm run build-style-dictionary && npm run build-figma-tokens && npm run build-cli",
     "build-css-tokens": "run-for-every-file --src ./tokens/css/ --dest dist/scss/ --file '**/*.json' --not-file '**/*.scss' --run 'json-to-scss {{src-file}} {{dest}}{{file-name-ext}}'",
     "build-palette": "node leonardo.mjs",
-    "build-figma-tokens": "npx tsx scripts/generate-figma-tokens.ts",
+    "build-figma-tokens": "tsx scripts/generate-figma-tokens.ts",
     "build-cli": "tsc --project tsconfig.cli.json",
-    "build-style-dictionary": "npx tsx scripts/build.ts",
-    "clean": "npx tsx scripts/clean.ts",
-    "postbuild": "npx tsx scripts/postbuild.ts",
+    "build-style-dictionary": "tsx scripts/build.ts",
+    "clean": "tsx scripts/clean.ts",
+    "postbuild": "tsx scripts/postbuild.ts",
     "cli": "npm run clean && npm run build-cli && npm run postbuild && node ./dist/src/cli.mjs",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest"
   },
@@ -58,10 +58,7 @@
     "js-beautify": "1.14.11",
     "json-to-scss": "1.6.2",
     "run-for-every-file": "1.1.0",
-    "ts-jest": "29.2.5",
-    "ts-node": "10.9.2",
-    "tsx": "4.19.3",
-    "typescript": "5.7.3"
+    "ts-jest": "29.2.5"
   },
   "repository": {
     "type": "git",
