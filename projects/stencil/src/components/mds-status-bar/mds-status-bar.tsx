@@ -1,4 +1,5 @@
 import { Component, Host, h, Prop, Element, Watch, Method } from '@stencil/core'
+import { ModalOverflowType } from 'src/components'
 
 /**
  * @slot default - Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element.
@@ -20,6 +21,11 @@ export class MdsStatusBar {
    * Specifies the description near the slotted actions
    */
   @Prop({ reflect: true }) readonly description?: string
+
+  /**
+   * Specifies if the component prevents the body from scrolling when modal window is opened
+   */
+  @Prop({ reflect: true }) readonly overflow: ModalOverflowType = 'manual'
 
   /**
    * Specifies if the component is visible
@@ -46,7 +52,7 @@ export class MdsStatusBar {
   render () {
     return (
       <Host>
-        <mds-modal class="modal" opened={this.visible} position="bottom-right" animation="custom">
+        <mds-modal class="modal" opened={this.visible} position="bottom-right" animation="custom" overflow={this.overflow}>
           <div class="status-bar-area" part="status-bar-area" slot="window">
             <div class="status-bar" part="status-bar-area">
               { this.description && <mds-text typography='caption' class="description">{ this.description }</mds-text> }
