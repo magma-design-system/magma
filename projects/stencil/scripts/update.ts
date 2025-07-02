@@ -1,5 +1,5 @@
-#!/usr/bin/env ts-node
- 
+#!/usr/bin/env tsx
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-console */
 
@@ -55,7 +55,6 @@ async function getComponents (
 }
 
 async function getMdsDependencies (component: string): Promise<string[]> {
-   
   return readJSON(componentPackagePath(component)).then((p: any) => {
     return (
       Object.entries(p.dependencies)
@@ -100,7 +99,6 @@ async function buildMap (): Promise<void[]> {
   return Promise.all(promises)
 }
 
- 
 function getCurrentComponentDependencies (c: string): Promise<Dep> {
   const d = componentsUpdatedMap.get(c)?.dependencies
   return d ? Promise.resolve(d) : readJSON(componentPackagePath(c)).then(json => json.dependencies)
@@ -125,7 +123,6 @@ function getNpmPackageShortInfo (c: string): Promise<ShortPackageInfo | null> {
       }
       return Promise.reject(new Error(`cant fetch npm package info ${c}\n${res.status}: ${res.statusText}`))
     })
-     
     .then((json: any) => {
       if (!json) return null
       return { version: json.version, dependencies: json.dependencies }})
@@ -139,11 +136,9 @@ function getNpmComponentVersion (c: string): Promise<string> {
       }
       return Promise.reject(new Error(`cant fetch npm version package ${c}\n${res.status}: ${res.statusText}`))
     })
-     
     .then((json: any) => json.version as string)
 }
 
- 
 function getNpmComponentDependencies (c:string): Promise<Dep> {
   const endpoint = `https://registry.npmjs.org/@maggioli-design-system/${c}/latest`
   return fetch(endpoint)
@@ -153,7 +148,6 @@ function getNpmComponentDependencies (c:string): Promise<Dep> {
       }
       return Promise.reject(new Error(`cant fetch npm dependencies of package ${c}\n${res.status}: ${res.statusText}`))
     })
-     
     .then((json: any) => json.dependencies)
 }
 
