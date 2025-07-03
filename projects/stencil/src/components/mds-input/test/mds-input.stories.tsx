@@ -220,6 +220,13 @@ Min.args = {
   value: '5',
 }
 
+export const MinLength = Template.bind({})
+MinLength.args = {
+  MinLength: 5,
+  type: 'text',
+  value: 'Hello',
+}
+
 export const Required = Template.bind({})
 Required.args = {
   required: true,

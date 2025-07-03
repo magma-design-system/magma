@@ -32,6 +32,24 @@ export const minValidator = (min: number): MdsValidatorFn => {
   }
 }
 
+export const maxLenghtValidator = (length: number) : MdsValidatorFn => {
+  return (input: string): MdsValidationErrors | null => {
+    if (input === '' || length === null) {
+      return null // don't validate empty values to allow optional controls
+    }
+    return input.length > length ? { minLenght: `La lunghezza massima accettata è ${length}` } : null
+  }
+}
+
+export const minLenghtValidator = (length: number) : MdsValidatorFn => {
+  return (input: string): MdsValidationErrors | null => {
+    if (input === '' || length === null) {
+      return null // don't validate empty values to allow optional controls
+    }
+    return input.length < length ? { minLenght: `La lunghezza minima accettata è ${length}` } : null
+  }
+}
+
 export const isbnValidatorFn: MdsValidatorFn = (input: string) => {
   if (input === '') return null // don't validate empty values to allow optional controls
 

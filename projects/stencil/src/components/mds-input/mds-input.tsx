@@ -21,7 +21,7 @@ import localeEn from './meta/locale.en.json'
 import localeEs from './meta/locale.es.json'
 import localeIt from './meta/locale.it.json'
 import { createInputValidationManager, InputValidationManager } from './meta/input-type/InputValidationManager'
-import { MdsValidationErrors, MdsValidatorFn, requiredValidor } from './meta/validators'
+import { maxLenghtValidator, maxValidator, MdsValidationErrors, MdsValidatorFn, minLenghtValidator, minValidator, requiredValidor } from './meta/validators'
 import { hashRandomValue } from '@common/aria'
 
 /*
@@ -305,14 +305,20 @@ export class MdsInput {
 
   componentDidLoad (): void {
     this.inputValidation = createInputValidationManager(this.type!)
-    if (this.required) {
-      this.inputValidation.validator.addValidator(requiredValidor)
-    }
+    this.setValidators()
     this.nativeInput?.setAttribute('pattern', String(this.inputValidation.pattern))
     if (this.autofocus) {
       this.nativeInput?.focus()
     }
     this.variantChanged(this.variant ?? 'primary')
+  }
+
+  private setValidators () {
+    if (this.required) this.inputValidation.validator.addValidator(requiredValidor)
+    if (this.max !== '' && Number(this.max)) this.inputValidation.validator.addValidator(maxValidator(Number(this.max)))
+    if (this.min !== '' && Number(this.min)) this.inputValidation.validator.addValidator(minValidator(Number(this.max)))
+    if (this.maxlength) this.inputValidation.validator.addValidator(maxLenghtValidator(this.maxlength))
+    if (this.minlength) this.inputValidation.validator.addValidator(minLenghtValidator(this.minlength))
   }
 
   /**
