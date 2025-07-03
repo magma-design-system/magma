@@ -2,15 +2,12 @@
 styles-build:
   extends: .base-build
   script:
-    - nx run design-tokens:build
     - nx run styles:build
   artifacts:
     name: styles-build
     expire_in: 1 day
     paths:
       - projects/design-tokens/dist
-      - projects/design-tokens/config
-      - projects/design-tokens/properties
       - projects/styles/dist
   cache:
     policy: pull-push

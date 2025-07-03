@@ -76,7 +76,7 @@
   cursor: pointer;
   display: flex;
   position: relative;
-  transition-property: outline-offset opacity;
+  transition-property: outline-offset, opacity;
 }
 
 .label-icon:focus-visible {
@@ -127,7 +127,7 @@
   box-sizing: border-box;
   display: flex;
   flex-shrink: 0;
-  transition-property: width outline-offset opacity;
+  transition-property: width, outline-offset, opacity;
   width: var(--mds-input-switch-toggle-container-size);
 }
 

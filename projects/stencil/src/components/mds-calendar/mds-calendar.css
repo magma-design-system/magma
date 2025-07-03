@@ -71,7 +71,6 @@ nav {
 .week-day-name {
   align-items: center;
   aspect-ratio: 1;
-  max-height: auto;
   min-height: auto;
   padding: 0;
 }

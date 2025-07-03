@@ -1,5 +1,6 @@
 import jsonIconsDictionary from '../fixtures/icons.json'
-import jsonMggIconsDictionary from '../fixtures/iconsauce.json'
+import jsonMggIconsDictionary from '@maggioli-design-system/svg-icons/dist/iconsauce.json'
+
 const iconsDictionary = jsonIconsDictionary
 const mggIconsDictionary = jsonMggIconsDictionary
 const svgIconsDictionary = [

@@ -47,7 +47,6 @@
   flex-direction: column;
   height: auto;
   interpolate-size: allow-keywords;
-  max-height: auto;
   transition-property: height, margin-top, opacity, padding;
 }
 

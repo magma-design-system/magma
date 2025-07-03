@@ -4,8 +4,6 @@ const DIST_STORYBOOK_CACHE_DIR = resolve(__dirname, '../node_modules/.cache/stor
 const DIST_STORYBOOK_MANAGER_CACHE_DIR = resolve(__dirname, '../node_modules/.cache/sb-manager')
 const DIST_PUBLISH_STENCIL_CACHE_DIR = resolve(__dirname, '../.stencil')
 const DIST_STENCIL_CACHE_DIR = resolve(__dirname, '../dist')
-const PROJECT_SVG_ICONS_DIR = resolve(__dirname, '../../svg-icons')
-const SVG_ICONS_DIST_DIR = resolve(PROJECT_SVG_ICONS_DIR, 'dist')
 const BUILD_DIR = resolve(PROJECT_DIR, '.build')
 const DIST_DIR = resolve(PROJECT_DIR, 'dist')
 const DIST_REACT_DIR = resolve(PROJECT_DIR, 'react', 'dist')
@@ -40,7 +38,6 @@ export {
   PROJECT_DIR,
   SRC_DIR,
   SRC_REACT_DIR,
-  SVG_ICONS_DIST_DIR,
   TEMPLATES_DIR,
   TEMP_PROJECT_DIR,
   TEST_REGRESSION_DIR,

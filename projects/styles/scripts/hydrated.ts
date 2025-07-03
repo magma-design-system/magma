@@ -1,11 +1,11 @@
 
 import chalk from 'chalk'
-import { COMPONENTS_DIR } from '../../stencil/scripts/meta'
 import { TEMPLATES_DIR, DIST_DIR } from './meta'
 import { readdir, readFile, writeFile } from 'fs/promises'
 import { join } from 'path'
 import Handlebars from 'handlebars'
 
+const COMPONENTS_DIR = '../stencil/src/components'
 const main = async () => {
   const componentsFolderContents = await readdir(COMPONENTS_DIR)
   const components = componentsFolderContents.filter(element => element !== '.gitlab-ci.yml')

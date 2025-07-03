@@ -535,8 +535,9 @@ export class MdsCalendar {
                 ))}
               </header>
               <div class="month-view__cells">
-                {this.weekDaysinMonth.map(dayInfo => (
+                {this.weekDaysinMonth.map((dayInfo, index) => (
                   <mds-calendar-cell
+                    key={index}
                     today={DateTime.now().toFormat('yyyy-MM-dd') === dayInfo.date.toFormat('yyyy-MM-dd')}
                     date={dayInfo.date.toFormat('yyyy-MM-dd')}
                     month={dayInfo.isCurrentMonth ? 'current' : 'other'}
@@ -554,9 +555,8 @@ export class MdsCalendar {
                     onClick={event => {
                       event.stopPropagation()
                       const target = event.currentTarget as HTMLElement
-                      this.rangePicker
-                        ? this.handleRange(target, dayInfo.date)
-                        : this.handleSingleSelection(target, dayInfo.date)
+                      if (this.rangePicker) this.handleRange(target, dayInfo.date)
+                      else this.handleSingleSelection(target, dayInfo.date)
                     }}
                   >
                     {dayInfo.date.toFormat('dd')}

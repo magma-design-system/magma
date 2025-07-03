@@ -2,10 +2,6 @@
 base-stencil-build:
   extends: .base-build
   script:
-    - nx run design-tokens:build
-    - nx run styles:build
-    - nx run svg-icons:build
-    - nx run icons:build
     - nx run stencil:build
   artifacts:
     name: stencil-build

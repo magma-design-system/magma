@@ -99,7 +99,6 @@ export class MdsInputUpload {
    */
   @Method()
   getFilesError (): Promise<FileError[] | null> {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const err = this.files.filter(file => file.status === Status.ERROR).map(file => ({ filename: file.key, errorMessage: file.errorMessage! }))
     return err.length > 0 ? Promise.resolve(err) : Promise.resolve(null)
   }
@@ -251,7 +250,6 @@ export class MdsInputUpload {
           validity.typeMismatch = true
           break
         }
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         errorMessage.add(error.errorMessage!)
       })
     this.internals.setFormValue(input.value)

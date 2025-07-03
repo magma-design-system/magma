@@ -41,15 +41,17 @@ export class Locale {
 
   update = (doc?: Document | ShadowRoot): void => {
     const context = doc ?? this.element.shadowRoot
-    context && context.querySelectorAll('*').forEach(el => {
-      if (el.tagName.toLowerCase().startsWith('mds-')) {
-        // eslint-disable-next-line no-restricted-syntax
-        if (el && 'updateLang' in el) {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          (el as any).updateLang()
+    if (context) {
+      context.querySelectorAll('*').forEach(el => {
+        if (el.tagName.toLowerCase().startsWith('mds-')) {
+          // eslint-disable-next-line no-restricted-syntax
+          if (el && 'updateLang' in el) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            (el as any).updateLang()
+          }
         }
-      }
-    })
+      })
+    }
   }
 
   private pluralize = (tag: string | string[], context: Record<string, string | number | boolean>): string => {

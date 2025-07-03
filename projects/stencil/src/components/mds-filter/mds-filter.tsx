@@ -110,7 +110,7 @@ export class MdsFilter {
       let itemsSelected = 0
       const list: (HTMLMdsFilterItemElement | null)[] = []
       items.forEach((item, key) => {
-        item.selected ? list.push(item) : list.push(null)
+        list.push(item.selected ? item : null)
         if (item.selected) {
           itemsSelected += 1
         }
