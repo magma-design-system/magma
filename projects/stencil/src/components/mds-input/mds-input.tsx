@@ -22,6 +22,7 @@ import localeEs from './meta/locale.es.json'
 import localeIt from './meta/locale.it.json'
 import { createInputValidationManager, InputValidationManager } from './meta/input-type/InputValidationManager'
 import { MdsValidationErrors, MdsValidatorFn, requiredValidor } from './meta/validators'
+import { hashRandomValue } from '@common/aria'
 
 /*
   * @part counter-button-decrease - Selects the button used to decrese the input value
@@ -76,6 +77,8 @@ export class MdsInput {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private recognition: any
   private speechButton: HTMLMdsButtonElement
+
+  private datalistId: string
   @Element() el: HTMLMdsInputElement
   @State() hasFocus = false
   @State() language: string
@@ -273,6 +276,10 @@ export class MdsInput {
     this.internals.setFormValue('')
   }
 
+  connectedCallback (): void {
+    this.datalistId = `datalist-${hashRandomValue()}`
+  }
+
   componentWillLoad (): void {
 
     this.language = this.t.lang(this.el)
@@ -443,7 +450,7 @@ export class MdsInput {
    */
   @Method()
   getInputElement (): Promise<HTMLInputElement | HTMLTextAreaElement> {
-     
+
     return Promise.resolve(this.nativeInput!)
   }
 
@@ -610,7 +617,7 @@ export class MdsInput {
             onFocus={this.onFocus}
             onInput={this.onInput}
             pattern={this.pattern}
-            list={this.datalist && 'datalist'}
+            list={this.datalistId}
             part="field"
             placeholder={this.placeholder}
             readOnly={this.readonly}
@@ -665,9 +672,9 @@ export class MdsInput {
           { this.maxlength && <mds-input-tip-item part="tip-count" expanded variant={this.countVariant}>{ this.currentLengthLabel }</mds-input-tip-item> }
         </mds-input-tip>
         {this.datalist &&
-          <datalist id="datalist" class="datalist">
-            {this.datalist.forEach(element => {
-              return <option value={element}/>
+          <datalist id={this.datalistId} class="datalist">
+            {this.datalist.map((element, i) => {
+              return <option key={i} value={element}/>
             })}
           </datalist>
         }

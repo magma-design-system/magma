@@ -7,6 +7,7 @@ import { iconsDictionary } from '@dictionary/icon'
 import { h } from '@stencil/core'
 
 import { MdsInputInterface } from '../mds-input'
+import { useEffect } from 'react'
 
 // https://developers.google.com/web/updates/2015/06/checkout-faster-with-autofill
 
@@ -255,7 +256,13 @@ Placeholder.args = {
   placeholder: 'Es: change this placeholder',
 }
 
-export const Search = Template.bind({})
+const TemplateSearch = (args: MdsInputInterface) => {
+  useEffect(() => {
+    document.querySelector('mds-input')!.datalist = args.datalist
+  })
+  return <mds-input {...args}></mds-input>
+}
+export const Search = TemplateSearch.bind({})
 Search.args = {
   datalist: citiesDictionary,
   type: 'search',
