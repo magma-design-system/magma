@@ -39,7 +39,7 @@
     "typescript-eslint": "8.35.1"
   },
   "engines": {
-    "node": ">=20.10.0"
+    "node": ">=22.15.0"
   },
   "scripts": {
     "changelog.design-tokens": "conventional-changelog -p conventionalcommits -i projects/design-tokens/CHANGELOG.md -s --commit-path projects/design-tokens",
