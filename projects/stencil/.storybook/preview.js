@@ -81,7 +81,7 @@ const parameters = {
       { name: 'Dark', value: 'rgb(var(--tone-neutral-01, 33 33 33))' },
       { name: 'Black', value: 'rgb(0 0 0)' },
     ],
-    default: 'White',
+    // default: 'White',
   },
 }
 

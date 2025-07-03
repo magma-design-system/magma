@@ -16,7 +16,7 @@ import { BenchmarkBarTypographyType } from "./components/mds-benchmark-bar/meta/
 import { BibliographyFormatType, BibliographyRelationshipType } from "./components/mds-bibliography/meta/types";
 import { MdsBreadcrumbEventDetail } from "./components/mds-breadcrumb/meta/event-detail";
 import { MdsBreadcrumbItemEventDetail } from "./components/mds-breadcrumb-item/meta/event-detail";
-import { ButtonDropdownVariantType, ButtonIconPositionType, ButtonSizeType, ButtonTargetType, ButtonType, ButtonVariantType } from "./type/button";
+import { ButtonDropdownVariantType, ButtonIconPositionType, ButtonSizeType, ButtonTargetType, ButtonType, ButtonVariantType, TabSizeType } from "./type/button";
 import { TypographyHeadingTagType, TypographyTagType, TypographyTruncateType } from "./type/text";
 import { CalendarCellSelectionOrieintationType, CalendarCellSelectionPositionType, CalendarCellType } from "./components/mds-calendar-cell/meta/types";
 import { MdsChipEvent } from "./components/mds-chip/meta/interface";
@@ -62,8 +62,10 @@ import { MdsPushNotificationEventDetail } from "./components/mds-push-notificati
 import { NotificationItemDateFormatType, NotificationItemPreviewType } from "./components/mds-push-notification-item/meta/types";
 import { MdsPushNotificationItemEventDetail } from "./components/mds-push-notification-item/meta/event-detail";
 import { Direction, Interaction } from "./components/mds-radial-menu/meta/types";
+import { ModalOverflowType as ModalOverflowType1 } from "./components.d";
 import { MdsStepperBarEventDetail } from "./components/mds-stepper-bar/meta/event-detail";
 import { MdsStepperBarItemEventDetail } from "./components/mds-stepper-bar-item/meta/event-detail";
+import { DirectionType as DirectionType1 } from "./components/mds-tab/meta/type";
 import { HorizontalActionsAnimationType } from "./type/animation";
 import { MdsTabEventDetail } from "./components/mds-tab/meta/event-detail";
 import { MdsTabBarEventDetail } from "./components/mds-tab-bar/meta/event-detail";
@@ -88,7 +90,7 @@ export { BenchmarkBarTypographyType } from "./components/mds-benchmark-bar/meta/
 export { BibliographyFormatType, BibliographyRelationshipType } from "./components/mds-bibliography/meta/types";
 export { MdsBreadcrumbEventDetail } from "./components/mds-breadcrumb/meta/event-detail";
 export { MdsBreadcrumbItemEventDetail } from "./components/mds-breadcrumb-item/meta/event-detail";
-export { ButtonDropdownVariantType, ButtonIconPositionType, ButtonSizeType, ButtonTargetType, ButtonType, ButtonVariantType } from "./type/button";
+export { ButtonDropdownVariantType, ButtonIconPositionType, ButtonSizeType, ButtonTargetType, ButtonType, ButtonVariantType, TabSizeType } from "./type/button";
 export { TypographyHeadingTagType, TypographyTagType, TypographyTruncateType } from "./type/text";
 export { CalendarCellSelectionOrieintationType, CalendarCellSelectionPositionType, CalendarCellType } from "./components/mds-calendar-cell/meta/types";
 export { MdsChipEvent } from "./components/mds-chip/meta/interface";
@@ -134,8 +136,10 @@ export { MdsPushNotificationEventDetail } from "./components/mds-push-notificati
 export { NotificationItemDateFormatType, NotificationItemPreviewType } from "./components/mds-push-notification-item/meta/types";
 export { MdsPushNotificationItemEventDetail } from "./components/mds-push-notification-item/meta/event-detail";
 export { Direction, Interaction } from "./components/mds-radial-menu/meta/types";
+export { ModalOverflowType as ModalOverflowType1 } from "./components.d";
 export { MdsStepperBarEventDetail } from "./components/mds-stepper-bar/meta/event-detail";
 export { MdsStepperBarItemEventDetail } from "./components/mds-stepper-bar-item/meta/event-detail";
+export { DirectionType as DirectionType1 } from "./components/mds-tab/meta/type";
 export { HorizontalActionsAnimationType } from "./type/animation";
 export { MdsTabEventDetail } from "./components/mds-tab/meta/event-detail";
 export { MdsTabBarEventDetail } from "./components/mds-tab-bar/meta/event-detail";
@@ -406,6 +410,10 @@ export namespace Components {
           * Specifies if the component is disabled or not
          */
         "disabled"?: boolean;
+        /**
+          * @private Specifies if the component is focused when is loaded on the viewport
+         */
+        "hasText": boolean;
         /**
           * Specifies the URL target of the button
          */
@@ -1613,6 +1621,10 @@ export namespace Components {
           * Sets if the component works as hidden element controller instead as UI element, visible on the DOM
          */
         "controller"?: boolean;
+        /**
+          * Sets the size of the component items nested inside it
+         */
+        "size"?: TabSizeType;
         "updateLang": () => Promise<void>;
     }
     interface MdsPrefAnimation {
@@ -1620,6 +1632,10 @@ export namespace Components {
           * Specifies the preference mode
          */
         "mode"?: AnimationModeType;
+        /**
+          * Sets the size of the component items nested inside it
+         */
+        "size"?: TabSizeType;
         "updateLang": () => Promise<void>;
     }
     interface MdsPrefConsumption {
@@ -1627,6 +1643,10 @@ export namespace Components {
           * Specifies the preference mode
          */
         "mode"?: ConsumptionModeType;
+        /**
+          * Sets the size of the component items nested inside it
+         */
+        "size"?: TabSizeType;
         "updateLang": () => Promise<void>;
     }
     interface MdsPrefContrast {
@@ -1634,6 +1654,10 @@ export namespace Components {
           * Specifies the preference mode
          */
         "mode"?: ContrastModeType;
+        /**
+          * Sets the size of the component items nested inside it
+         */
+        "size"?: TabSizeType;
         "updateLang": () => Promise<void>;
     }
     interface MdsPrefLanguage {
@@ -1641,6 +1665,10 @@ export namespace Components {
           * Specifies the language code based on HTML `lang` attribute  A string representing the language version as defined in {@link https://datatracker.ietf.org/doc/html/rfc5646 RFC 5646: Tags for Identifying Languages (also known as BCP 47)}.  `Examples of valid language codes include "en", "en-US", "fr", "fr-FR", "es-ES", etc.`  Supported languages are Italiano, English, Español, ελληνικά
          */
         "set": string;
+        /**
+          * Sets the size of the component items nested inside it
+         */
+        "size"?: TabSizeType;
         "updateLang": () => Promise<void>;
     }
     interface MdsPrefLanguageItem {
@@ -1659,6 +1687,10 @@ export namespace Components {
           * Specifies the preference mode
          */
         "mode"?: ThemeModeType;
+        /**
+          * Sets the size of the component items nested inside it
+         */
+        "size"?: TabSizeType;
         /**
           * Specifies the transition of switching from a theme to another one
          */
@@ -1867,6 +1899,10 @@ export namespace Components {
         "description"?: string;
         "hide": () => Promise<void>;
         /**
+          * Specifies if the component prevents the body from scrolling when modal window is opened
+         */
+        "overflow": ModalOverflowType;
+        /**
           * Specifies if the component is visible
          */
         "visible"?: boolean;
@@ -1921,6 +1957,10 @@ export namespace Components {
          */
         "animation"?: HorizontalActionsAnimationType;
         /**
+          * Sets if the component distributes item vertically or horzontally
+         */
+        "direction"?: DirectionType1;
+        /**
           * Sets if the tab area should fill the entire width
          */
         "fill"?: boolean;
@@ -1932,6 +1972,10 @@ export namespace Components {
           * Shows the horizontal scrollbar to maximize accessibility
          */
         "scrollbar"?: boolean;
+        /**
+          * Sets the size of the component items nested inside it
+         */
+        "size"?: TabSizeType;
     }
     interface MdsTabBar {
     }
@@ -4102,6 +4146,10 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
+          * @private Specifies if the component is focused when is loaded on the viewport
+         */
+        "hasText"?: boolean;
+        /**
           * Specifies the URL target of the button
          */
         "href"?: string;
@@ -5355,6 +5403,10 @@ declare namespace LocalJSX {
           * Sets if the component works as hidden element controller instead as UI element, visible on the DOM
          */
         "controller"?: boolean;
+        /**
+          * Sets the size of the component items nested inside it
+         */
+        "size"?: TabSizeType;
     }
     interface MdsPrefAnimation {
         /**
@@ -5365,6 +5417,10 @@ declare namespace LocalJSX {
           * Emits when the component is triggered
          */
         "onMdsPrefChange"?: (event: MdsPrefAnimationCustomEvent<MdsPrefChangeEventDetail>) => void;
+        /**
+          * Sets the size of the component items nested inside it
+         */
+        "size"?: TabSizeType;
     }
     interface MdsPrefConsumption {
         /**
@@ -5375,6 +5431,10 @@ declare namespace LocalJSX {
           * Emits when the component is triggered
          */
         "onMdsPrefChange"?: (event: MdsPrefConsumptionCustomEvent<MdsPrefChangeEventDetail>) => void;
+        /**
+          * Sets the size of the component items nested inside it
+         */
+        "size"?: TabSizeType;
     }
     interface MdsPrefContrast {
         /**
@@ -5385,6 +5445,10 @@ declare namespace LocalJSX {
           * Emits when the component is triggered
          */
         "onMdsPrefChange"?: (event: MdsPrefContrastCustomEvent<MdsPrefChangeEventDetail>) => void;
+        /**
+          * Sets the size of the component items nested inside it
+         */
+        "size"?: TabSizeType;
     }
     interface MdsPrefLanguage {
         /**
@@ -5399,6 +5463,10 @@ declare namespace LocalJSX {
           * Specifies the language code based on HTML `lang` attribute  A string representing the language version as defined in {@link https://datatracker.ietf.org/doc/html/rfc5646 RFC 5646: Tags for Identifying Languages (also known as BCP 47)}.  `Examples of valid language codes include "en", "en-US", "fr", "fr-FR", "es-ES", etc.`  Supported languages are Italiano, English, Español, ελληνικά
          */
         "set"?: string;
+        /**
+          * Sets the size of the component items nested inside it
+         */
+        "size"?: TabSizeType;
     }
     interface MdsPrefLanguageItem {
         /**
@@ -5423,6 +5491,10 @@ declare namespace LocalJSX {
           * Emits when the component is triggered
          */
         "onMdsPrefChange"?: (event: MdsPrefThemeCustomEvent<MdsPrefChangeEventDetail>) => void;
+        /**
+          * Sets the size of the component items nested inside it
+         */
+        "size"?: TabSizeType;
         /**
           * Specifies the transition of switching from a theme to another one
          */
@@ -5641,6 +5713,10 @@ declare namespace LocalJSX {
          */
         "description"?: string;
         /**
+          * Specifies if the component prevents the body from scrolling when modal window is opened
+         */
+        "overflow"?: ModalOverflowType;
+        /**
           * Specifies if the component is visible
          */
         "visible"?: boolean;
@@ -5703,6 +5779,10 @@ declare namespace LocalJSX {
          */
         "animation"?: HorizontalActionsAnimationType;
         /**
+          * Sets if the component distributes item vertically or horzontally
+         */
+        "direction"?: DirectionType1;
+        /**
           * Sets if the tab area should fill the entire width
          */
         "fill"?: boolean;
@@ -5718,6 +5798,10 @@ declare namespace LocalJSX {
           * Shows the horizontal scrollbar to maximize accessibility
          */
         "scrollbar"?: boolean;
+        /**
+          * Sets the size of the component items nested inside it
+         */
+        "size"?: TabSizeType;
     }
     interface MdsTabBar {
         /**

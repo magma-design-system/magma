@@ -1,6 +1,6 @@
 export type DirectionType =
-  | 'natural'
-  | 'reverse'
+  | 'horizontal'
+  | 'vertical'
 
 export type StrategyType =
   | 'default'

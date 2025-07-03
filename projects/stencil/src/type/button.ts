@@ -14,6 +14,10 @@ export type ButtonSizeType =
   | 'lg'
   | 'xl'
 
+export type TabSizeType =
+  | 'sm'
+  | 'md'
+
 export type ButtonIconPositionType =
   | 'left'
   | 'right'

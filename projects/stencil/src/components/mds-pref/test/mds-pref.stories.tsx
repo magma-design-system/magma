@@ -1,6 +1,6 @@
 import { h } from '@stencil/core'
 
-// import { animationDictionary } from '../meta/dictionary'
+import { tabSizeDictionary } from '@dictionary/button'
 
 export default {
   title: 'UI / Preferences',
@@ -8,6 +8,12 @@ export default {
     controller: {
       type: { name: 'boolean' },
       description: 'Sets if the component works as hidden element controller instead as UI element, visible on the DOM',
+    },
+    size: {
+      type: { name: 'string' },
+      description: 'Sets the size of the tab item',
+      options: tabSizeDictionary,
+      control: { type: 'select' },
     },
   },
 }

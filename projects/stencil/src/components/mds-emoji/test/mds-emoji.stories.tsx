@@ -1,4 +1,5 @@
 import { h } from '@stencil/core'
+import clsx from 'clsx'
 import { useEffect, useState, Fragment } from 'react'
 
 export default {
@@ -109,6 +110,16 @@ const TemplateHeader = () => {
       modalResults.addEventListener('mdsModalClose', () => {
         closeModalResults()
       })
+
+      modalResults.addEventListener('mdsModalHide', () => {
+        setShowResults(false)
+        setModalResultsOpen(false)
+        emoji.stopFollowMouse()
+        emoji.agree()
+        setTimeout(() => {
+          emoji.startFollowMouse()
+        }, 1000)
+      })
     }
   }, [])
 
@@ -149,14 +160,16 @@ const TemplateHeader = () => {
     emoji?.startFollowMouse()
     emojiResults.stopFollowMouse()
     emojiResults.stopBlinking()
-    setShowResults(false)
   }
 
   return (<Fragment>
+    <mds-tooltip target='#emoji' style={{ '--mds-tooltip-delay': '0s' }}>
+      Chiedimi qualcosa!
+    </mds-tooltip>
     <mds-header nav="all" menu="none">
       <mds-header-bar>
-        <mds-img class="w-1000" src="/logo-gruppo-maggioli.svg" ></mds-img>
-        <mds-emoji id="emoji" name="hexabot" class="w-900 h-900 cursor-pointer" slot="nav" onClick={openModal} />
+        <mds-img class="w-1000" src="./logo-mindy-small.svg" ></mds-img>
+        <mds-emoji id="emoji" name="hexabot" class="w-1000 h-1000 cursor-pointer" slot="nav" onClick={openModal} />
         <mds-button-dropdown variant="dark" tone="weak" slot="nav" label='Account'>
           <mds-button variant='light' size='sm'>Settings</mds-button>
           <mds-button variant='light' size='sm'>Options</mds-button>
@@ -170,28 +183,44 @@ const TemplateHeader = () => {
           <mds-input id="input" class="flex-grow" variant="ai" placeholder='Hi, feel free to ask me something...' mic></mds-input>
           <mds-button icon="mi/baseline/chevron-right" class="shrink-0" variant="ai" tone="weak" size="lg" onClick={() => {openModalResults()}}></mds-button>
         </div>
-        {/* <mds-hr class="bg-variant-ai-09 rounded-none h-50"></mds-hr>
-        <mds-tab class="rounded-none bg-variant-ai-10" style={{ '--mds-tab-tabs-background': 'var(--variant-ai-10)', '--mds-tab-tabs-padding': '16px' }}>
-          <mds-tab-item selected>Ricerche rapide</mds-tab-item>
-          <mds-tab-item>Volumi</mds-tab-item>
-        </mds-tab>
-        <mds-hr class="bg-variant-ai-09 rounded-none h-50"></mds-hr> */}
-        <div class="grid gap-200 p-600 bg-variant-ai-10">
+        <mds-hr class="bg-tone-neutral-09 rounded-none h-50"></mds-hr>
+        <div class="grid gap-200 p-600 bg-tone-neutral-10">
           <mds-text typography="label">Esempi di uilizzo</mds-text>
-          <mds-button icon="mi/baseline/search" class="justify-start" variant="ai" tone="weak">Trovami documenti che parlano di infrazioni stradali di massimo 6 mesi fa</mds-button>
-          <mds-button icon="mi/baseline/search" class="justify-start" variant="ai" tone="weak">Cerca volumi sui fallimenti aziendali solo per aziende di grandi dimensioni</mds-button>
+          <mds-button icon="mi/baseline/search" class="justify-start" variant="light" tone="weak">Trovami documenti che parlano di infrazioni stradali di massimo 6 mesi fa</mds-button>
+          <mds-button icon="mi/baseline/search" class="justify-start" variant="light" tone="weak">Cerca volumi sui fallimenti aziendali solo per aziende di grandi dimensioni</mds-button>
         </div>
       </div>
     </mds-modal>
     <mds-modal id="modal-results" opened={modalResultsOpened === true ? true : undefined} position="right">
       <div class="p-600 grid gap-600 auto-rows-min">
-        <mds-emoji id="emoji-results" name="hexabot" class="w-1800 h-1800 m-auto" />
-        { showResults && <div class="grid gap-600">
-          <div class="p-600 bg-tone-neutral-10 rounded-lg">
-            <mds-text>Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis doloremque asperiores voluptatibus eveniet enim sequi veniam excepturi dignissimos quas molestias illum, at iste temporibus amet tenetur cum praesentium, minus magnam?</mds-text>
+        <div class="grid gap-600">
+          <div class="p-600 bg-tone-neutral-10 rounded-lg rounded-br-none shadow-sm-sharp">
+            <mds-text>Lorem ipsum dolor sit amet consectetur adipisicing elit?</mds-text>
           </div>
-          <mds-input id="input-results" class="flex-grow" variant="ai" placeholder='Hi, feel free to ask me something...' mic></mds-input>
-        </div> }
+          <mds-tooltip target='#emoji-results' style={{ '--mds-tooltip-delay': '0s' }}>
+            { showResults ? 'Ecco la risposta! Ricorda che posso commettere errori, pertanto verifica sempre le fonti se non ti sento sicuro!' : 'ci sono quasi...'}</mds-tooltip>
+          <mds-emoji id="emoji-results" name="hexabot" class={clsx(showResults ? 'w-1800 h-1800' : 'w-2400 h-2400', 'm-auto transition-cosmetic hydrated duration-700 ease-in-out-quart')} />
+          { showResults ? <div class="grid gap-400">
+            <mds-text>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo sed quaerat alias optio praesentium minus provident tempore laboriosam sequi minima? Quaerat laborum suscipit velit atque consectetur expedita error laboriosam maxime?
+            </mds-text>
+            <mds-list>
+              <mds-list-item>Lorem ipsum dolor sit amet consectetur adipisicing elit</mds-list-item>
+              <mds-list-item>Quo sed quaerat alias optio praesentium minus provident tempore laboriosam sequi minima</mds-list-item>
+              <mds-list-item>Quaerat laborum suscipit velit atque consectetur expedita error laboriosam maxime</mds-list-item>
+            </mds-list>
+            <div class="flex items-center justify-end gap-200">
+              <mds-button-group>
+                <mds-button icon="mi/outline/thumb-up" variant="dark" tone="quiet" size="sm"></mds-button>
+                <mds-button icon="mi/outline/thumb-down" variant="dark" tone="quiet" size="sm"></mds-button>
+                <mds-button icon="mi/outline/ios-share" variant="dark" tone="quiet" size="sm"></mds-button>
+              </mds-button-group>
+            </div>
+          </div> :
+            <mds-text class="text-center">Sto pensando...</mds-text>
+          }
+        </div>
+        <mds-input id="input-results" class="flex-grow" variant="ai" placeholder='Hi, feel free to ask me something...' mic></mds-input>
       </div>
     </mds-modal>
   </Fragment>

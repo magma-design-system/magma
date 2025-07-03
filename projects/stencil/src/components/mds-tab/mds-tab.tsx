@@ -5,6 +5,8 @@ import { setAttributeIfEmpty, hashRandomValue } from '@common/aria'
 import { HorizontalActionsAnimationType } from '@type/animation'
 import clsx from 'clsx'
 import { cssDurationToMilliseconds } from '@common/unit'
+import { TabSizeType } from '@type/button'
+import { DirectionType } from './meta/type'
 
 /**
  * @part contents - Selects the container of the tabbed contents elements.
@@ -22,7 +24,8 @@ import { cssDurationToMilliseconds } from '@common/unit'
 export class MdsTab {
 
   @Element() private element: HTMLMdsTabElement
-  private currentItem: number = -1
+  private currentItemIndex: number = -1
+  private currentItemEl: HTMLMdsTabItemElement
   private tabs: HTMLElement
   private tabsContainer: HTMLElement
   private observer: ResizeObserver
@@ -30,9 +33,16 @@ export class MdsTab {
   private contentItems: Array<HTMLElement> = []
   private cssSlideDelayDuration: string
   @State() sliderWidth: number = -1
-  @State() sliderOffset: number = -1
+  @State() sliderHeight: number = -1
+  @State() sliderOffsetX: number = -1
+  @State() sliderOffsetY: number = -1
   @State() overflowLeft: boolean = false
   @State() overflowRight: boolean = false
+
+  /**
+   * Sets if the component distributes item vertically or horzontally
+   */
+  @Prop({ reflect: true, mutable: true }) direction?: DirectionType = 'horizontal'
 
   /**
    * Shows the horizontal scrollbar to maximize accessibility
@@ -53,6 +63,11 @@ export class MdsTab {
    * Sets if the tab area should show an inset shadow when the tabs overflows it's container
    */
   @Prop({ reflect: true, mutable: true }) overflow?: boolean
+
+  /**
+   * Sets the size of the component items nested inside it
+   */
+  @Prop({ reflect: true, mutable: true }) size?: TabSizeType
 
   /**
    * Emits when a children is changed
@@ -79,8 +94,8 @@ export class MdsTab {
     this.updateContentItems()
     this.initOverflowCheck()
     this.updateSliderPosition()
-    if (this.currentItem > 0) {
-      this.scrollTabs(this.currentItem)
+    if (this.currentItemIndex > 0) {
+      this.scrollTabs(this.currentItemIndex)
     }
   }
 
@@ -95,13 +110,18 @@ export class MdsTab {
 
   private setTabsItems = () => {
     this.tabItems = Array.from(this.element.querySelectorAll<HTMLMdsTabItemElement>('mds-tab-item'))
-    this.currentItem = -1
+    this.currentItemIndex = -1
+    this.tabItems.forEach(item => {
+      item.size = this.size
+    })
+
     this.tabItems.forEach((item, key) => {
       if (!item.id) {
         setAttributeIfEmpty(item, 'id', hashRandomValue('mds-tab-item'))
       }
       if (item.selected) {
-        this.currentItem = key
+        this.currentItemIndex = key
+        this.currentItemEl = this.tabItems[this.currentItemIndex]
       }
     })
   }
@@ -110,7 +130,7 @@ export class MdsTab {
     this.setTabsItems()
     if (this.overflow) this.updateOverflowState()
     this.updateSliderPosition()
-    this.scrollTabs(this.currentItem)
+    this.scrollTabs(this.currentItemIndex)
   }
 
   private unsetOverflowCheck = (): void => {
@@ -140,12 +160,17 @@ export class MdsTab {
   }
 
   private updateSliderPosition = (): void => {
-    if (this.animation === 'slide' && this.currentItem >= 0) {
+    if (this.animation === 'slide' && this.currentItemIndex >= 0) {
       self.requestAnimationFrame(() => {
-        this.sliderWidth = this.tabItems[this.currentItem].offsetWidth
-        this.sliderOffset = this.tabItems[this.currentItem].offsetLeft - this.tabsContainer.offsetLeft
+        this.sliderWidth = this.currentItemEl.offsetWidth
+        this.sliderHeight = this.currentItemEl.offsetHeight
+        this.sliderOffsetX = this.currentItemEl.offsetLeft - this.tabsContainer.offsetLeft
+        this.sliderOffsetY = this.currentItemEl.offsetTop - this.tabsContainer.offsetTop + this.currentItemEl.offsetHeight - this.sliderHeight
       })
     } else {
+      this.sliderHeight = -1
+      this.sliderOffsetX = -1
+      this.sliderOffsetY = -1
       this.sliderWidth = -1
     }
   }
@@ -161,7 +186,7 @@ export class MdsTab {
   private selectContentItem = (): void => {
     this.contentItems.forEach((item: HTMLElement, index: number) => {
       item.setAttribute('mds-tab-content-hidden', '')
-      if (index === this.currentItem) {
+      if (index === this.currentItemIndex) {
         item.removeAttribute('mds-tab-content-hidden')
       }
     })
@@ -182,12 +207,13 @@ export class MdsTab {
     this.tabItems.forEach((item, key: number) => {
       if (item.id === event.detail.target.id) {
         this.changedEvent.emit({ id: key, value: item.value })
-        this.currentItem = key
+        this.currentItemIndex = key
+        this.currentItemEl = this.tabItems[this.currentItemIndex]
         this.scrollTabs(key)
         item.selected = true
         // for some reason, mds-tab-item looses focus when we click Enter with the keyboard,
         // which forces user to find again where the tab is with keyboard
-        const mdsTabEl: HTMLMdsButtonElement = this.tabItems[this.currentItem].shadowRoot?.querySelector('mds-button') as HTMLMdsButtonElement
+        const mdsTabEl: HTMLMdsButtonElement = this.tabItems[this.currentItemIndex].shadowRoot?.querySelector('mds-button') as HTMLMdsButtonElement
         setTimeout(() => {
           mdsTabEl.focus()
         }, 0)
@@ -236,6 +262,13 @@ export class MdsTab {
     this.initOverflowCheck()
   }
 
+  @Watch('size')
+  handleSizeChange (newValue?: TabSizeType): void {
+    this.tabItems.forEach((element: HTMLMdsTabItemElement) => {
+      element.size = newValue
+    })
+  }
+
   render () {
     return (
       <Host>
@@ -247,7 +280,9 @@ export class MdsTab {
             { this.animation === 'slide' &&
               <div class="slider" part="slider" style={{
                 '--mds-tab-slider-width': `${this.sliderWidth}px`,
-                '--mds-tab-slider-offset': `${this.sliderOffset}px`,
+                '--mds-tab-slider-height': `${this.sliderHeight}px`,
+                '--mds-tab-slider-offset-x': `${this.sliderOffsetX}px`,
+                '--mds-tab-slider-offset-y': `${this.sliderOffsetY}px`,
               }}></div>
             }
           </div>

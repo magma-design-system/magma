@@ -290,6 +290,7 @@ export class MdsInput {
     this.internals.setFormValue(this.value ?? null)
     this.maxLengthChanged(this.maxlength)
 
+    this.isValid = !(this.required && this.value === '')
     this.el.focus = () => {
       this.nativeInput?.focus()
     }
@@ -317,6 +318,8 @@ export class MdsInput {
     if (this.maxlength !== undefined) {
       this.countMaxLength()
     }
+    // if is necessary for skip validation when reset input to retype correct value, validation is always onBlur
+    if (this.value === '') return
     if (!this.isValid) this.validateInput()
   }
 
@@ -367,7 +370,11 @@ export class MdsInput {
     // validate input only when atleast one validator is present
     if (this.inputValidation.validator.hasValidator()) {
       this.isValid = this.inputValidation.isValid(this.value)
-      this.variant = this.isValid ? 'success' : 'error'
+
+      // set variant attribute
+      if (this.value === '' && !this.required) this.variant = 'primary'
+      else this.variant = this.isValid ? 'success' : 'error'
+
       this.validationEvent.emit(this.isValid)
     }
     return this.isValid
@@ -451,7 +458,7 @@ export class MdsInput {
 
   private onBlur = () => {
     this.hasFocus = false
-    if (this.isValid) this.validateInput()
+    this.validateInput()
     this.blurEvent.emit()
     // this.isValidInput = this.validateInput()
   }
@@ -512,7 +519,7 @@ export class MdsInput {
       this.speechButton = this.el?.shadowRoot?.querySelector('.mic-toggle-button') as HTMLMdsButtonElement
     }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition
+    const SpeechRecognition = (window as any).SpeechRecognition ?? (window as any).webkitSpeechRecognition
     this.value = ''
 
     if (!SpeechRecognition) {

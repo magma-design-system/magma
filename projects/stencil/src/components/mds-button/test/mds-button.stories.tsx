@@ -8,7 +8,7 @@ import {
   buttonIconPositionDictionary,
   buttonTypeDictionary,
 } from '@dictionary/button'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export default {
   title: 'UI / Button',
@@ -137,7 +137,7 @@ const TemplateKeyboard = args =>
   </div>
 
 const TemplateIcon = args =>
-  <mds-button {...args}/>
+  <mds-button {...args}> </mds-button>
 
 const TemplateForm = args =>
   <form class="flex gap-x-400" action='#' onSubmit={event => {
@@ -182,7 +182,30 @@ const TemplateDisabled = () => {
   </div>
 }
 
+const TemplateAsyncContent = () => {
+
+  const [icon, setIcon] = useState('')
+  const [label, setLabel] = useState('')
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIcon('mi/baseline/check')
+      setTimeout(() => {
+        setLabel('Hello async world')
+      }, 1000)
+    }, 1000)
+  }, [icon, label])
+
+  return <mds-button
+    class="max-w-4400"
+    icon={icon}>
+    {label}
+  </mds-button>
+}
+
 export const Default = Template.bind({})
+
+export const AsyncContent = TemplateAsyncContent.bind({})
 
 export const AutoFocus = Template.bind({})
 AutoFocus.args = {
