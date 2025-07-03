@@ -38,6 +38,7 @@ Type: `Promise<void>`
 
 | Part                | Description                                                                                   |
 | ------------------- | --------------------------------------------------------------------------------------------- |
+| `"actions"`         | Selects the `actions` container element wrapped in shadowDOM.                                 |
 | `"status-bar"`      | Selects the `status-bar` window component wrapped in shadowDOM.                               |
 | `"status-bar-area"` | Selects the `status-bar-area` which wraps `status-bar` element with darker area in shadowDOM. |
 
