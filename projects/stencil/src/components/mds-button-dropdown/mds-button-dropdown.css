@@ -37,6 +37,6 @@ mds-button:first-child {
   justify-content: flex-start;
 }
 
-@import '../../tailwind/fouc.css';
 @import './css/mds-button-dropdown-size.css';
 @import './css/mds-button-dropdown-variant.css';
+@import '../../tailwind/fouc.css';

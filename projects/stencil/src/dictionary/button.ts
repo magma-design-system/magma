@@ -48,6 +48,11 @@ const buttonSizeDictionary = [
   'xl',
 ]
 
+const tabSizeDictionary = [
+  'sm',
+  'md',
+]
+
 const buttonIconPositionDictionary = [
   'left',
   'right',
@@ -68,4 +73,5 @@ export {
   buttonToneVariantDictionary,
   buttonTypeDictionary,
   buttonVariantDictionary,
+  tabSizeDictionary,
 }

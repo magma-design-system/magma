@@ -1,4 +1,3 @@
-import clsx from 'clsx'
 import { ButtonIconPositionType, ButtonSizeType, ButtonTargetType, ButtonType, ButtonVariantType } from '@type/button'
 import { Component, Host, Element, h, Prop, Watch, AttachInternals } from '@stencil/core'
 import { KeyboardManager } from '@common/keyboard-manager'
@@ -8,6 +7,7 @@ import { buttonSizeTypographyVariant } from './meta/variants'
 import { setAttributeIfEmpty, unslugName } from '@common/aria'
 import { isIconFormatIsBase64, isIconFormatIsSVG } from '@common/icon'
 import { TypographyTruncateType } from '@type/text'
+// import { hasSlottedContent } from '@common/slot'
 import mdiApple from '@icon/mdi/apple.svg'
 import logoGoogle from './asset/logo-google.svg'
 
@@ -26,7 +26,6 @@ import logoGoogle from './asset/logo-google.svg'
 export class MdsButton {
 
   private typography?: TypographyType
-  private hasText?: boolean
   private hasNotification?: boolean
   private km = new KeyboardManager()
 
@@ -38,6 +37,12 @@ export class MdsButton {
    * Specifies if the component is focused when is loaded on the viewport
    */
   @Prop() readonly autoFocus: boolean
+
+  /**
+   * @private
+   * Specifies if the component is focused when is loaded on the viewport
+   */
+  @Prop({ reflect: true, mutable: true }) hasText: boolean
 
   /**
    * The icon displayed in the button
@@ -182,7 +187,7 @@ export class MdsButton {
 
   componentWillLoad ():void {
     this.hasNotification = this.host.querySelector(':scope > [slot="notification"]') !== null
-    this.hasText = this.host.innerHTML !== ''
+    this.hasText = this.host.innerHTML.trim() !== '' || this.host.children.length > 0
 
     this.handleVariantChange(this.variant)
 
@@ -255,16 +260,20 @@ export class MdsButton {
     this.km.detachClickBehavior()
   }
 
+  private onSlotChangeHandler = (): void => {
+    this.hasText = this.host.innerHTML.trim() !== '' || this.host.children.length > 0
+  }
+
   render () {
     this.typography = buttonSizeTypographyVariant[this.size] as TypographyType
 
     return (
-      <Host class={clsx(!this.hasText && 'no-text')} onMouseDown={this.mouseDown} onMouseUp={this.mouseUp} onMouseOut={this.mouseUp} tabindex="0">
+      <Host onMouseDown={this.mouseDown} onMouseUp={this.mouseUp} onMouseOut={this.mouseUp} tabindex="0">
         <div class="await">
           <mds-spinner class="spinner" running={this.await}/>
         </div>
         { this.icon && this.iconPosition === 'left' && <mds-icon aria-hidden="true" class="icon" name={this.icon} part="icon"/> }
-        { this.hasText && <mds-text class="text" part="label" typography={this.typography} truncate={this.truncate}><slot /></mds-text> }
+        <mds-text class="text" part="label" typography={this.typography} truncate={this.truncate}><slot onSlotchange={this.onSlotChangeHandler}/></mds-text>
         { this.hasNotification && <slot name="notification"/> }
         { this.icon && this.iconPosition === 'right' && <mds-icon aria-hidden="true" class="icon" name={this.icon} part="icon"/> }
       </Host>

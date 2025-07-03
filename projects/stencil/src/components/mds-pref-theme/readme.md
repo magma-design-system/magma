@@ -10,6 +10,7 @@
 | Property     | Attribute    | Description                                                       | Type                                         | Default     |
 | ------------ | ------------ | ----------------------------------------------------------------- | -------------------------------------------- | ----------- |
 | `mode`       | `mode`       | Specifies the preference mode                                     | `"dark" \| "light" \| "system" \| undefined` | `undefined` |
+| `size`       | `size`       | Sets the size of the component items nested inside it             | `"md" \| "sm" \| undefined`                  | `undefined` |
 | `transition` | `transition` | Specifies the transition of switching from a theme to another one | `"flash" \| "none" \| "smooth"`              | `'smooth'`  |
 
 

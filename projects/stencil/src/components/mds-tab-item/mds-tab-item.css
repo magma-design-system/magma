@@ -44,6 +44,14 @@
   pointer-events: none;
 }
 
+:host-context(mds-tab[direction="vertical"]) {
+  width: 100%;
+}
+
+:host-context(mds-tab[direction="vertical"]) .button {
+  justify-content: start;
+}
+
 @import './css/mds-tab-item-pref-theme.css';
 @import './css/mds-tab-item-pref-contrast.css';
 @import '../../tailwind/fouc.css';

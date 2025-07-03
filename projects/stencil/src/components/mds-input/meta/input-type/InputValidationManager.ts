@@ -57,9 +57,11 @@ export function createInputValidationManager (type: InputFieldType) : InputValid
   case 'cf':
     inputManager = new InputValidationManager(InputMaskPattern.CF_MASK)
     inputManager.validator.addValidator((input: string) => {
+      if (input === '') return null // don't validate empty values to allow optional controls
       return InputMaskPattern.CF_Regex.test(input) ? null : { 'cf-regex': 'Codice fiscale inserito non corretto' }
     })
     inputManager.validator.addValidator((input: string) => {
+      if (input === '') return null // don't validate empty values to allow optional controls
       return input.length === 16 ? null : { 'cf-length': 'Codice fiscale deve essere lungo 16 caratteri' }
     })
     break
