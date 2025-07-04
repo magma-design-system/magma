@@ -72,7 +72,7 @@
     "@babel/preset-env": "7.23.2",
     "@babel/preset-react": "7.22.15",
     "@babel/preset-typescript": "7.23.2",
-    "@maggioli-design-system/svg-icons": "4.0.0",
+    "@maggioli-design-system/svg-icons": "4.0.1",
     "@rollup/plugin-alias": "5.1.0",
     "@stencil/angular-output-target": "0.10.2",
     "@stencil/eslint-plugin": "1.1.0",
