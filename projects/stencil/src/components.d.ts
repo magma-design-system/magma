@@ -2745,6 +2745,7 @@ declare global {
     interface HTMLMdsChipElementEventMap {
         "mdsChipClickLabel": MdsChipEvent;
         "mdsChipDelete": MdsChipEvent;
+        "mdsChipSelect": MdsChipEvent;
     }
     interface HTMLMdsChipElement extends Components.MdsChip, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsChipElementEventMap>(type: K, listener: (this: HTMLMdsChipElement, ev: MdsChipCustomEvent<HTMLMdsChipElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -4357,6 +4358,10 @@ declare namespace LocalJSX {
           * Emits when the component's delete button is clicked
          */
         "onMdsChipDelete"?: (event: MdsChipCustomEvent<MdsChipEvent>) => void;
+        /**
+          * Emits when the component's label is clicked and when `selectable` attribute is set to `true`
+         */
+        "onMdsChipSelect"?: (event: MdsChipCustomEvent<MdsChipEvent>) => void;
         /**
           * Sets if the component change is status to selected when is clicked
          */

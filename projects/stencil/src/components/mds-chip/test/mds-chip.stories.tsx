@@ -1,6 +1,7 @@
 import { h } from '@stencil/core'
 import { iconsDictionary } from '@dictionary/icon'
 import { themeVariantChipDictionary, toneMinimalVariantDictionary } from '@dictionary/variant'
+import { useEffect } from 'react'
 
 export default {
   title: 'UI / Chip',
@@ -50,10 +51,25 @@ export default {
   },
 }
 
-const Template = args =>
-  <mds-chip {...args}
+const Template = args => {
+  useEffect(() => {
+    const chipEl = document.querySelector('mds-chip') as HTMLMdsChipElement
+    chipEl.addEventListener('mdsChipClickLabel', (e: CustomEvent) => {
+      console.info('mdsChipClickLabel', e.detail)
+    })
+
+    chipEl.addEventListener('mdsChipDelete', (e: CustomEvent) => {
+      console.info('mdsChipDelete', e.detail)
+    })
+
+    chipEl.addEventListener('mdsChipSelect', (e: CustomEvent) => {
+      console.info('mdsChipSelect', e.detail)
+    })
+  })
+  return <mds-chip {...args}
     onDelete={() => { console.info('onDelete') }}
   />
+}
 
 export const Default = Template.bind({})
 Default.args = {
