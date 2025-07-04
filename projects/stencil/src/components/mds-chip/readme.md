@@ -24,10 +24,11 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## Events
 
-| Event               | Description                                         | Type                        |
-| ------------------- | --------------------------------------------------- | --------------------------- |
-| `mdsChipClickLabel` | Emits when the component's label is clicked         | `CustomEvent<MdsChipEvent>` |
-| `mdsChipDelete`     | Emits when the component's delete button is clicked | `CustomEvent<MdsChipEvent>` |
+| Event               | Description                                                                                  | Type                        |
+| ------------------- | -------------------------------------------------------------------------------------------- | --------------------------- |
+| `mdsChipClickLabel` | Emits when the component's label is clicked                                                  | `CustomEvent<MdsChipEvent>` |
+| `mdsChipDelete`     | Emits when the component's delete button is clicked                                          | `CustomEvent<MdsChipEvent>` |
+| `mdsChipSelect`     | Emits when the component's label is clicked and when `selectable` attribute is set to `true` | `CustomEvent<MdsChipEvent>` |
 
 
 ## Methods

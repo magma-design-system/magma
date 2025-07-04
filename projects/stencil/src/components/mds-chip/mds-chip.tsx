@@ -9,6 +9,7 @@ import localeEl from './meta/locale.el.json'
 import localeEn from './meta/locale.en.json'
 import localeEs from './meta/locale.es.json'
 import localeIt from './meta/locale.it.json'
+import clsx from 'clsx'
 
 @Component({
   tag: 'mds-chip',
@@ -86,6 +87,11 @@ export class MdsChip {
    */
   @Event({ eventName: 'mdsChipDelete' }) deleteEvent: EventEmitter<MdsChipEvent>
 
+  /**
+   * Emits when the component's label is clicked and when `selectable` attribute is set to `true`
+   */
+  @Event({ eventName: 'mdsChipSelect' }) selectEvent: EventEmitter<MdsChipEvent>
+
   @Watch('selectable')
   handleSelectableProp (newValue: boolean): void {
     if (newValue) {
@@ -113,10 +119,15 @@ export class MdsChip {
   }
 
   private onClickLabelHandler (event: Event): void {
-    this.clickLabelEvent.emit({ event, element: this.host })
     if (this.selectable) {
       this.selected = !this.selected
+      if (this.selected === false) {
+        this.selected = undefined
+      }
+      this.selectEvent.emit({ event, element: this.host, selected: this.selected })
+      return
     }
+    this.clickLabelEvent.emit({ event, element: this.host })
   }
 
   private onDeleteHandler (event: Event): void {
@@ -135,7 +146,7 @@ export class MdsChip {
 
   private handleDeletableKeyboard = (isDeletable: boolean): void => {
     if (isDeletable) {
-      const deleteElement = this.host.shadowRoot?.querySelector('.button-delete') as HTMLElement
+      const deleteElement = this.host.shadowRoot?.querySelector('.button-delete') as HTMLMdsButtonElement
       this.km.addElement(deleteElement, 'delete')
       this.km.attachClickBehavior('delete')
       return
@@ -206,7 +217,7 @@ export class MdsChip {
             { this.label }
           </mds-text>
         }
-        { this.deletable && <mds-button class="button-delete" icon={miBaselineCancel} onClick={this.onDeleteHandler.bind(this)} title={ `${this.t.get('deleteLabel')} ${this.label}` } variant="dark" tone="quiet" size="sm"></mds-button> }
+        <mds-button class={clsx('button-delete', !this.deletable && 'button-delete--hidden')} icon={miBaselineCancel} onClick={this.onDeleteHandler.bind(this)} title={ `${this.t.get('deleteLabel')} ${this.label}` } variant="dark" tone="quiet" size="sm"></mds-button>
       </Host>
     )
   }
