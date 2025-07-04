@@ -1,4 +1,3 @@
-/* eslint-disable quote-props */
 import { MdsValidatorFn, Validator, isbnValidatorFn } from '../meta/validators'
 
 let validator = new Validator()

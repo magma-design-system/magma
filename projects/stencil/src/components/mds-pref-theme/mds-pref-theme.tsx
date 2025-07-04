@@ -12,6 +12,7 @@ import localeEs from './meta/locale.es.json'
 import localeIt from './meta/locale.it.json'
 import { ThemeModeType, ThemeTransitionType } from './meta/types'
 import { MdsPrefChangeEventDetail } from '@event/preference'
+import { TabSizeType } from '@type/button'
 
 @Component({
   tag: 'mds-pref-theme',
@@ -55,6 +56,11 @@ export class MdsPrefTheme {
     this.cssOverlayFadeoutDuration = elementStyles.getPropertyValue('--mds-pref-theme-overlay-fadeout-duration') ?? '200'
     this.cssOverlayZIndex = elementStyles.getPropertyValue('--mds-pref-theme-overlay-z-index') ?? '6000'
   }
+
+  /**
+   * Sets the size of the component items nested inside it
+   */
+  @Prop({ reflect: true }) readonly size?: TabSizeType
 
 
   /**
@@ -241,7 +247,7 @@ export class MdsPrefTheme {
     return (
       <Host>
         <mds-text class="info" typography="caption"><b>{this.t.get('label')}</b> {this.disabled ? this.t.get(this.theme[this.mode ?? this.defaultMode].label, { forced: true }) : this.t.get(this.theme[this.mode ?? this.defaultMode].label, { forced: false })}</mds-text>
-        <mds-tab fill>
+        <mds-tab fill size={this.size}>
           <mds-tab-item disabled={this.disabled} selected={this.mode === 'light'} onClick={() => { if (this.overlayShow) { return } this.changeTheme('light') }} class="item item--light" icon={miBaselineLightMode}></mds-tab-item>
           <mds-tab-item disabled={this.disabled} selected={this.mode === 'system'} onClick={() => { if (this.overlayShow) { return } this.changeTheme('system') }} class="item item--system" icon={miBaselineSettings}></mds-tab-item>
           <mds-tab-item disabled={this.disabled} selected={this.mode === 'dark'} onClick={() => { if (this.overlayShow) { return } this.changeTheme('dark') }} class="item item--dark" icon={this.mode === 'dark' ? miBaselineDarkMode : miOutlineDarkMode}></mds-tab-item>

@@ -9,6 +9,7 @@ import localeEn from './meta/locale.en.json'
 import localeEs from './meta/locale.es.json'
 import localeIt from './meta/locale.it.json'
 import { AnimationModeType } from './meta/types'
+import { TabSizeType } from '@type/button'
 
 @Component({
   tag: 'mds-pref-animation',
@@ -32,6 +33,11 @@ export class MdsPrefAnimation {
   async updateLang (): Promise<void> {
     this.language = this.t.lang(this.element)
   }
+
+  /**
+   * Sets the size of the component items nested inside it
+   */
+  @Prop({ reflect: true }) readonly size?: TabSizeType
 
   /**
    * Specifies the preference mode
@@ -89,7 +95,7 @@ export class MdsPrefAnimation {
     return (
       <Host >
         <mds-text class="info" typography="caption"><b>{this.t.get('label')}</b> {this.t.get(this.animation[this.mode ?? this.defaultMode].label)}</mds-text>
-        <mds-tab fill>
+        <mds-tab fill size={this.size}>
           <mds-tab-item selected={this.mode === 'reduce'} onClick={() => { this.setAnimation('reduce') }} class="item item--reduce" icon={miOutlineCircle}></mds-tab-item>
           <mds-tab-item selected={this.mode === 'system'} onClick={() => { this.setAnimation('system') }} class="item item--system" icon={miBaselineSettings}></mds-tab-item>
           <mds-tab-item selected={this.mode === 'no-preference'} onClick={() => { this.setAnimation('no-preference') }} class="item item--no-preference" icon={miBaselineAnimation}></mds-tab-item>

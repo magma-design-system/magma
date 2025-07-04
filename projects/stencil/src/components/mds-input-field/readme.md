@@ -16,6 +16,13 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `variant` | `variant` | Display the variant of a message at the bottom of the input text field | `"ai" \| "error" \| "info" \| "primary" \| "success" \| "warning" \| undefined` | `'primary'` |
 
 
+## Shadow Parts
+
+| Part        | Description |
+| ----------- | ----------- |
+| `"content"` |             |
+
+
 ## CSS Custom Properties
 
 | Name                                   | Description                                                                                                                      |

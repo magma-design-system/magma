@@ -47,7 +47,6 @@
   flex-direction: column;
   height: auto;
   interpolate-size: allow-keywords;
-  max-height: auto;
   transition-property: height, margin-top, opacity, padding;
 }
 
@@ -60,6 +59,29 @@
 
 .label:empty {
   display: none;
+}
+
+.content {
+  container-name: content;
+  container-type: inline-size;
+  display: flex;
+  flex-wrap: wrap;
+  gap: theme('gap.200');
+}
+
+::slotted(*:first-child) {
+  flex-grow: 1;
+}
+
+::slotted(*:not(:first-child)) {
+  flex-shrink: 0;
+}
+
+@container content (max-width: 300px) {
+  ::slotted(*) {
+    flex-grow: 1;
+    min-width: 100%;
+  }
 }
 
 @import './css/mds-input-field-variant.css';

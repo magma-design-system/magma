@@ -7,10 +7,11 @@
 
 ## Properties
 
-| Property      | Attribute     | Description                                        | Type                   | Default     |
-| ------------- | ------------- | -------------------------------------------------- | ---------------------- | ----------- |
-| `description` | `description` | Specifies the description near the slotted actions | `string \| undefined`  | `undefined` |
-| `visible`     | `visible`     | Specifies if the component is visible              | `boolean \| undefined` | `undefined` |
+| Property      | Attribute     | Description                                                                             | Type                   | Default     |
+| ------------- | ------------- | --------------------------------------------------------------------------------------- | ---------------------- | ----------- |
+| `description` | `description` | Specifies the description near the slotted actions                                      | `string \| undefined`  | `undefined` |
+| `overflow`    | `overflow`    | Specifies if the component prevents the body from scrolling when modal window is opened | `"auto" \| "manual"`   | `'manual'`  |
+| `visible`     | `visible`     | Specifies if the component is visible                                                   | `boolean \| undefined` | `undefined` |
 
 
 ## Methods
@@ -37,6 +38,7 @@ Type: `Promise<void>`
 
 | Part                | Description                                                                                   |
 | ------------------- | --------------------------------------------------------------------------------------------- |
+| `"actions"`         | Selects the `actions` container element wrapped in shadowDOM.                                 |
 | `"status-bar"`      | Selects the `status-bar` window component wrapped in shadowDOM.                               |
 | `"status-bar-area"` | Selects the `status-bar-area` which wraps `status-bar` element with darker area in shadowDOM. |
 

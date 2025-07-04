@@ -81,7 +81,6 @@ const TemplateCustomContents = ({ layout, ...args }) =>
     </mds-tooltip>
   </div>
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const NoTarget = () =>
   <div>
     <mds-button id="tooltip-trigger">Trigger</mds-button>

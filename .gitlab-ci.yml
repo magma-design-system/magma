@@ -24,12 +24,15 @@ stages:
 
 # BASE BUILD
 .base-build:
-  image: node:22.11.0
+  image: node:22.15.0
   stage: build
   before_script:
     - apt update && apt install jq -y
-    - npm install -g --force nx yarn
-    - yarn install --frozen-lockfile --prefer-offline
+    - |
+      npm install -g --force nx yarn
+      if [[ ! -d node_modules ]]; then
+        yarn install --frozen-lockfile --prefer-offline
+      fi
   cache:
     key:
       files:
@@ -37,10 +40,14 @@ stages:
     paths:
       - node_modules
       - .cache/puppeteer
+      - .nx
       - projects/design-tokens/node_modules
       - projects/styles/node_modules
+      - projects/svg-icons/node_modules
       - projects/icons/node_modules
       - projects/stencil/node_modules
+      - projects/stencil/react/node_modules
+      - projects/stencil/angular/node_modules
       - projects/identity/node_modules
     policy: pull-push
 
@@ -50,12 +57,6 @@ stages:
   stage: test
   variables:
     BUILD_DIR: to_be_extended
-  before_script:
-    - |
-      if [[ ! -d node_modules ]]; then
-        npm install -g --force nx yarn
-        yarn install --frozen-lockfile --prefer-offline
-      fi
   script:
     - cd $BUILD_DIR
     - npm run test
@@ -68,11 +69,6 @@ stages:
   stage: test:publish
   variables:
     BUILD_DIR: to_be_extended
-  before_script:
-    - |
-      if [[ ! -d node_modules ]]; then
-        yarn install --frozen-lockfile --prefer-offline
-      fi
   script:
     - cd $BUILD_DIR
     - export LATEST_PUBLISHED_V=\"`npm view @maggioli-design-system/${COMPONENT} dist-tags.latest`\"
@@ -97,11 +93,6 @@ stages:
     COMPONENT: to_be_extended
     BUILD_DIR: to_be_extended
     PACK_NAME: to_be_extended
-  before_script:
-    - |
-      if [[ ! -d node_modules ]]; then
-        yarn install --frozen-lockfile --prefer-offline
-      fi
   script:
     - cd $BUILD_DIR
     - npm pack && npm install --prefix ./ $PACK_NAME
@@ -114,11 +105,6 @@ stages:
   stage: publish
   variables:
     BUILD_DIR: to_be_extended
-  before_script:
-    - |
-      if [[ ! -d node_modules ]]; then
-        yarn install --frozen-lockfile --prefer-offline
-      fi
   script:
     - cd $BUILD_DIR
     - npm config --global set //registry.npmjs.org/:_auth $NPM_TOKEN

@@ -23,15 +23,15 @@ import devices from './devices.json'
 // import media from '@maggioli-design-system/design-tokens/dist/js/tailwind-screens'
 
 
-defineCustomElements();
+defineCustomElements()
 
 const pathName = window.location.pathname.replace('/iframe.html', '')
 const svgPath = pathName.charAt(pathName.length - 1) === '/' ? `${pathName}svg/` : `${pathName}/svg/`
 
 window.sessionStorage.setItem('mdsIconSvgPath', svgPath)
 
-const capitalize = (string) => {
-  return string.charAt(0).toUpperCase() + string.slice(1);
+const capitalize = string => {
+  return string.charAt(0).toUpperCase() + string.slice(1)
 }
 
 const setAccessibility = (preference, value) => {
@@ -62,10 +62,6 @@ if (window.localStorage.getItem('mdsPrefLanguage')) {
   document.querySelector('html').setAttribute('lang', window.localStorage.getItem('mdsPrefLanguage'))
 }
 
-const toUpperCase = string => {
-  return string.charAt(0).toUpperCase() + string.slice(1)
-}
-
 const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },
   options: {
@@ -85,17 +81,17 @@ const parameters = {
       { name: 'Dark', value: 'rgb(var(--tone-neutral-01, 33 33 33))' },
       { name: 'Black', value: 'rgb(0 0 0)' },
     ],
-    default: 'White',
+    // default: 'White',
   },
 }
 
 const decorators = [
-  (Story) => (
+  Story => (
     <div className="p-600 min-h-screen">
       <Story />
     </div>
   ),
-];
+]
 
 const preview = {
   parameters,

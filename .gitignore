@@ -35,3 +35,5 @@ projects/scripts/**/*.js
 projects/stencil/assets/svg
 www/
 projects/lit/*/types
+.cursor/rules/nx-rules.mdc
+.github/instructions/nx.instructions.md

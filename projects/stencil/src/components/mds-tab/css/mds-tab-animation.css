@@ -3,23 +3,24 @@
 }
 
 .slider {
-  --mds-tab-slider-offset: 0;
+  --mds-tab-slider-offset-x: 0;
+  --mds-tab-slider-offset-y: 0;
   --mds-tab-slider-width: 0;
+  --mds-tab-slider-height: 0;
 
   background-color: var(--mds-tab-item-selected-background);
   border-radius: var(--mds-tab-item-radius);
-  bottom: var(--mds-tab-tabs-padding);
   box-shadow: var(--mds-tab-item-selected-shadow);
-  left: 0;
+  height: var(--mds-tab-slider-height);
+  inset: 0 auto auto 0;
   pointer-events: none;
   position: absolute;
-  top: var(--mds-tab-tabs-padding);
-  transform: translateX(var(--mds-tab-slider-offset)) translateZ(0);
+  transform: translate(var(--mds-tab-slider-offset-x), var(--mds-tab-slider-offset-y));
   transition-duration: var(--mds-tab-transition-duration);
   transition-property: background-color, box-shadow, transform, width;
   transition-timing-function: var(--mds-tab-transition-timing-function);
   width: var(--mds-tab-slider-width);
-  will-change: transform, width;
+  will-change: height, transform, width;
   z-index: -1;
 }
 

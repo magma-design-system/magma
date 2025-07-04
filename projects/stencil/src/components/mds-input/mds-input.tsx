@@ -21,7 +21,8 @@ import localeEn from './meta/locale.en.json'
 import localeEs from './meta/locale.es.json'
 import localeIt from './meta/locale.it.json'
 import { createInputValidationManager, InputValidationManager } from './meta/input-type/InputValidationManager'
-import { MdsValidationErrors, MdsValidatorFn, requiredValidor } from './meta/validators'
+import { maxLenghtValidator, maxValidator, MdsValidationErrors, MdsValidatorFn, minLenghtValidator, minValidator, requiredValidor } from './meta/validators'
+import { hashRandomValue } from '@common/aria'
 
 /*
   * @part counter-button-decrease - Selects the button used to decrese the input value
@@ -76,6 +77,8 @@ export class MdsInput {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private recognition: any
   private speechButton: HTMLMdsButtonElement
+
+  private datalistId: string
   @Element() el: HTMLMdsInputElement
   @State() hasFocus = false
   @State() language: string
@@ -273,6 +276,10 @@ export class MdsInput {
     this.internals.setFormValue('')
   }
 
+  connectedCallback (): void {
+    this.datalistId = `datalist-${hashRandomValue()}`
+  }
+
   componentWillLoad (): void {
 
     this.language = this.t.lang(this.el)
@@ -290,6 +297,7 @@ export class MdsInput {
     this.internals.setFormValue(this.value ?? null)
     this.maxLengthChanged(this.maxlength)
 
+    this.isValid = !(this.required && this.value === '')
     this.el.focus = () => {
       this.nativeInput?.focus()
     }
@@ -297,14 +305,20 @@ export class MdsInput {
 
   componentDidLoad (): void {
     this.inputValidation = createInputValidationManager(this.type!)
-    if (this.required) {
-      this.inputValidation.validator.addValidator(requiredValidor)
-    }
+    this.setValidators()
     this.nativeInput?.setAttribute('pattern', String(this.inputValidation.pattern))
     if (this.autofocus) {
       this.nativeInput?.focus()
     }
     this.variantChanged(this.variant ?? 'primary')
+  }
+
+  private setValidators () {
+    if (this.required) this.inputValidation.validator.addValidator(requiredValidor)
+    if (this.max !== '' && Number(this.max)) this.inputValidation.validator.addValidator(maxValidator(Number(this.max)))
+    if (this.min !== '' && Number(this.min)) this.inputValidation.validator.addValidator(minValidator(Number(this.max)))
+    if (this.maxlength) this.inputValidation.validator.addValidator(maxLenghtValidator(this.maxlength))
+    if (this.minlength) this.inputValidation.validator.addValidator(minLenghtValidator(this.minlength))
   }
 
   /**
@@ -317,6 +331,8 @@ export class MdsInput {
     if (this.maxlength !== undefined) {
       this.countMaxLength()
     }
+    // if is necessary for skip validation when reset input to retype correct value, validation is always onBlur
+    if (this.value === '') return
     if (!this.isValid) this.validateInput()
   }
 
@@ -367,7 +383,11 @@ export class MdsInput {
     // validate input only when atleast one validator is present
     if (this.inputValidation.validator.hasValidator()) {
       this.isValid = this.inputValidation.isValid(this.value)
-      this.variant = this.isValid ? 'success' : 'error'
+
+      // set variant attribute
+      if (this.value === '' && !this.required) this.variant = 'primary'
+      else this.variant = this.isValid ? 'success' : 'error'
+
       this.validationEvent.emit(this.isValid)
     }
     return this.isValid
@@ -436,7 +456,7 @@ export class MdsInput {
    */
   @Method()
   getInputElement (): Promise<HTMLInputElement | HTMLTextAreaElement> {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+
     return Promise.resolve(this.nativeInput!)
   }
 
@@ -451,7 +471,7 @@ export class MdsInput {
 
   private onBlur = () => {
     this.hasFocus = false
-    if (this.isValid) this.validateInput()
+    this.validateInput()
     this.blurEvent.emit()
     // this.isValidInput = this.validateInput()
   }
@@ -512,7 +532,7 @@ export class MdsInput {
       this.speechButton = this.el?.shadowRoot?.querySelector('.mic-toggle-button') as HTMLMdsButtonElement
     }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition
+    const SpeechRecognition = (window as any).SpeechRecognition ?? (window as any).webkitSpeechRecognition
     this.value = ''
 
     if (!SpeechRecognition) {
@@ -603,7 +623,7 @@ export class MdsInput {
             onFocus={this.onFocus}
             onInput={this.onInput}
             pattern={this.pattern}
-            list={this.datalist && 'datalist'}
+            list={this.datalistId}
             part="field"
             placeholder={this.placeholder}
             readOnly={this.readonly}
@@ -658,9 +678,9 @@ export class MdsInput {
           { this.maxlength && <mds-input-tip-item part="tip-count" expanded variant={this.countVariant}>{ this.currentLengthLabel }</mds-input-tip-item> }
         </mds-input-tip>
         {this.datalist &&
-          <datalist id="datalist" class="datalist">
-            {this.datalist.forEach(element => {
-              return <option value={element}/>
+          <datalist id={this.datalistId} class="datalist">
+            {this.datalist.map((element, i) => {
+              return <option key={i} value={element}/>
             })}
           </datalist>
         }

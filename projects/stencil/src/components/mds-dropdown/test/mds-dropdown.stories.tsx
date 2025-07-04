@@ -110,7 +110,7 @@ const TemplatePlacement = ({ ...args }) =>
     </mds-dropdown>
   </div>
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+ 
 export const NoTarget = () =>
   <div>
     <mds-button id="dropdown-trigger">Trigger</mds-button>

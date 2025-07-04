@@ -98,13 +98,29 @@ FormIntegration.args = {
   label: 'full name',
 }
 
-const TemplateValidation = args =>
-  <mds-input-field {...args}>
-    <mds-input name="fullName" type={args.type} placeholder={args.placeholder}></mds-input>
-  </mds-input-field>
+const TemplateValidation = () =>
+  <div class="grid gap-600">
+    <mds-text typography="h6">Validation NOT required</mds-text>
+    <mds-input-field label="inserisci il tuo codice fiscale">
+      <mds-input name="fullName" type="cf" placeholder="Es: MRCRSS83B21D704L"></mds-input>
+    </mds-input-field>
+    <mds-hr></mds-hr>
+    <mds-text typography="h6">Validation REQUIRED</mds-text>
+    <mds-input-field label="inserisci il tuo codice fiscale">
+      <mds-input name="fullName" type="cf" placeholder="Es: MRCRSS83B21D704L" required></mds-input>
+    </mds-input-field>
+  </div>
 
 export const Validation = TemplateValidation.bind({})
-Validation.args = {
+
+const TemplateNestedButton = args =>
+  <mds-input-field {...args}>
+    <mds-input name="fullName" type={args.type} placeholder={args.placeholder}></mds-input>
+    <mds-button icon="mi/baseline/chevron-right" size='lg'></mds-button>
+  </mds-input-field>
+
+export const NestedButton = TemplateNestedButton.bind({})
+NestedButton.args = {
   label: 'inserisci il tuo codice fiscale',
   placeholder: 'Es: MRCRSS83B21D704L',
   type: 'cf',

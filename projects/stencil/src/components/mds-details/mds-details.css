@@ -32,7 +32,7 @@
   overflow: hidden;
   pointer-events: none;
   transition-duration: var(--mds-details-duration);
-  transition-property: grid-template-rows opacity padding;
+  transition-property: grid-template-rows, opacity, padding;
 }
 
 .content-expander {

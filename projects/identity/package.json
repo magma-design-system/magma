@@ -6,10 +6,10 @@
     "/dist/"
   ],
   "scripts": {
-    "assets": "npx ts-node scripts/build.ts",
+    "assets": "tsx scripts/build.ts",
     "build": "npm run clean && npm run assets && npm run dir-tree",
-    "clean": "npx ts-node scripts/clean.ts",
-    "dir-tree": "npx ts-node scripts/dir-tree.ts"
+    "clean": "tsx scripts/clean.ts",
+    "dir-tree": "tsx scripts/dir-tree.ts"
   },
   "keywords": [
     "asset",
