@@ -10,7 +10,6 @@ base-stencil-build:
       - projects/design-tokens/dist
       - projects/styles/dist
       - projects/svg-icons/dist
-      - projects/icons/dist
       - projects/stencil/dist
       - projects/stencil/src/components.d.ts
       - projects/stencil/src/fixtures

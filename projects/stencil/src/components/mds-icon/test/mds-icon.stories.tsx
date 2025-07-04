@@ -1,7 +1,8 @@
 import { h } from '@stencil/core'
 import { iconsDictionary, mggIconsDictionary, svgIconsDictionary } from '@dictionary/icon'
 import { useState } from 'react'
-import svgIconPackage from '../../../../../svg-icons/package.json'
+import svgIconPackage from '@maggioli-design-system/svg-icons/package.json'
+import '@maggioli-design-system/svg-icons/dist/iconsauce.json'
 
 const urlIcon = `${location.origin}/svg/mi/baseline/email.svg`
 const base64IconEncoded = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgLTk2MCA5NjAgOTYwIiB3aWR0aD0iMjQiPjxwYXRoIGQ9Im0yMzMtODAgNjUtMjgxTDgwLTU1MGwyODgtMjUgMTEyLTI2NSAxMTIgMjY1IDI4OCAyNS0yMTggMTg5IDY1IDI4MS0yNDctMTQ5TDIzMy04MFoiLz48L3N2Zz4='
