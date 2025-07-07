@@ -16,10 +16,10 @@ const stories = [
 ]
 const staticDirs = ['../assets', '../dist']
 const addons = [
-  getAbsolutePath('@storybook/addon-essentials'),
   getAbsolutePath('@storybook/addon-a11y'),
   getAbsolutePath('@storybook/addon-styling-webpack'),
   getAbsolutePath('@storybook/addon-webpack5-compiler-babel'),
+  getAbsolutePath('@storybook/addon-docs'),
 ]
 const webpackFinal = async config => {
   // `configType` has a value of 'DEVELOPMENT' or 'PRODUCTION'
