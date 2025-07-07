@@ -55,7 +55,7 @@ Typography.args = {
 export const OnClickClose = Template.bind({})
 OnClickClose.args = {
   deletable: true,
-  onClickClose: event => { console.info(event, 'hello') },
+  // onClickClose: event => { console.info(event, 'hello') },
 }
 
 export const TailwindRadius = args =>
