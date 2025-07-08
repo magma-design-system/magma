@@ -26,7 +26,7 @@
     "gitlab-ci-yml-regenerate": "tsx ./scripts/gitlab-ci-yml-regenerate.ts",
     "lint": "npm run lint.ts && npm run lint.css",
     "lint.css": "stylelint -c ./stylelint.config.mjs  'src/**/*.css'",
-    "lint.ts": "eslint src/**/*.{ts,tsx}",
+    "lint.ts": "eslint --fix",
     "prebuild": "npm run storybook.version",
     "publish.isolate.all": "npm run publish.isolate.docs-json && tsx ./scripts/isolate-all.ts",
     "publish.isolate.component": "npm run publish.isolate.docs-json && tsx ./scripts/isolate-component.ts",
