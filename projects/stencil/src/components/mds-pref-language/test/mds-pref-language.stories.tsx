@@ -13,14 +13,16 @@ export default {
     },
   },
 }
-const Template = args =>
+const Template = args => (
   <mds-pref-language {...args}>
     <mds-pref-language-item code="it"></mds-pref-language-item>
     <mds-pref-language-item code="en"></mds-pref-language-item>
     <mds-pref-language-item code="el"></mds-pref-language-item>
   </mds-pref-language>
+)
 
-export const Default = Template.bind({})
-Default.args = {
+export const Default = {
+  render: Template,
 
+  args: {},
 }

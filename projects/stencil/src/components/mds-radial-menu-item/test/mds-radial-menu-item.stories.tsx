@@ -33,14 +33,18 @@ export default {
   },
 }
 
-const Template = args =>
+const Template = args => (
   <div class="h-dvh min-h-[600px] flex items-center justify-center">
-    <mds-radial-menu opened size='lg'>
+    <mds-radial-menu opened size="lg">
       <mds-radial-menu-item {...args}></mds-radial-menu-item>
     </mds-radial-menu>
   </div>
+)
 
-export const Default = Template.bind({})
-Default.args = {
-  icon: 'mi/round/email',
+export const Default = {
+  render: Template,
+
+  args: {
+    icon: 'mi/round/email',
+  },
 }

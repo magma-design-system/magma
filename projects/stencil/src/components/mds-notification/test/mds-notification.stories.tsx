@@ -21,58 +21,100 @@ export default {
   },
 }
 
-const Template = args =>
+const Template = args => (
   <div>
-    <mds-notification target="#my-button" {...args}/>
-    <mds-button class="fixed bottom-2000 right-2000" id="my-button" icon="mdi/email">Incoming messages</mds-button>
-  </div>
-
-const TemplateStatic = args =>
-  <div>
-    <mds-button class="fixed bottom-2000 right-2000" id="my-button" icon="mdi/email">
+    <mds-notification target="#my-button" {...args} />
+    <mds-button
+      class="fixed bottom-2000 right-2000"
+      id="my-button"
+      icon="mdi/email"
+    >
       Incoming messages
-      <mds-notification style={{ '--mds-notification-ring-size': '0' }} slot="notification" {...args}/>
     </mds-button>
   </div>
+)
 
-const TemplateStaticPositioning = args =>
+const TemplateStatic = args => (
   <div>
-    <mds-button class="fixed bottom-2000 right-2000" id="my-button" icon="mdi/email">
+    <mds-button
+      class="fixed bottom-2000 right-2000"
+      id="my-button"
+      icon="mdi/email"
+    >
       Incoming messages
-      <mds-notification class="absolute -top-300 -right-200 translate-1/2" slot="notification" {...args}/>
+      <mds-notification
+        style={{ '--mds-notification-ring-size': '0' }}
+        slot="notification"
+        {...args}
+      />
     </mds-button>
   </div>
+)
 
-export const Default = Template.bind({})
+const TemplateStaticPositioning = args => (
+  <div>
+    <mds-button
+      class="fixed bottom-2000 right-2000"
+      id="my-button"
+      icon="mdi/email"
+    >
+      Incoming messages
+      <mds-notification
+        class="absolute -top-300 -right-200 translate-1/2"
+        slot="notification"
+        {...args}
+      />
+    </mds-button>
+  </div>
+)
 
-export const Value = Template.bind({})
-Value.args = {
-  value: 7,
-  visible: true,
+export const Default = {
+  render: Template,
 }
 
-export const NoValue = Template.bind({})
-NoValue.args = {
-  visible: true,
+export const Value = {
+  render: Template,
+
+  args: {
+    value: 7,
+    visible: true,
+  },
 }
 
-export const Static = TemplateStatic.bind({})
-Static.args = {
-  strategy: 'disabled',
-  value: 7,
-  visible: true,
+export const NoValue = {
+  render: Template,
+
+  args: {
+    visible: true,
+  },
 }
 
-export const StaticPositioning = TemplateStaticPositioning.bind({})
-StaticPositioning.args = {
-  strategy: 'disabled',
-  value: 31,
-  visible: true,
+export const Static = {
+  render: TemplateStatic,
+
+  args: {
+    strategy: 'disabled',
+    value: 7,
+    visible: true,
+  },
 }
 
-export const Max = Template.bind({})
-Max.args = {
-  value: 15,
-  max: 9,
-  visible: true,
+export const StaticPositioning = {
+  render: TemplateStaticPositioning,
+
+  args: {
+    strategy: 'disabled',
+    value: 31,
+    visible: true,
+  },
+}
+
+export const Max = {
+  render: Template,
+
+  args: {
+    value: 15,
+    max: 9,
+    visible: true,
+  },
 }

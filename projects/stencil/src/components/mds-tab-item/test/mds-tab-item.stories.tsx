@@ -21,7 +21,8 @@ export default {
     'icon-position': {
       type: { name: 'string' },
       control: { type: 'select' },
-      description: 'Specifies the horizontal position of the icon displayed in the tab item',
+      description:
+        'Specifies the horizontal position of the icon displayed in the tab item',
       options: buttonIconPositionDictionary,
     },
     selected: {
@@ -37,18 +38,24 @@ export default {
   },
 }
 
-const Template = args =>
-  <mds-tab-item {...args}>First Blood</mds-tab-item>
+const Template = args => <mds-tab-item {...args}>First Blood</mds-tab-item>
 
-export const Default = Template.bind({})
-
-
-export const Selected = Template.bind({})
-Selected.args = {
-  selected: true,
+export const Default = {
+  render: Template,
 }
 
-export const Disabled = Template.bind({})
-Disabled.args = {
-  disabled: true,
+export const Selected = {
+  render: Template,
+
+  args: {
+    selected: true,
+  },
+}
+
+export const Disabled = {
+  render: Template,
+
+  args: {
+    disabled: true,
+  },
 }

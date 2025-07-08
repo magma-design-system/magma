@@ -7,7 +7,8 @@ export default {
   argTypes: {
     icon: {
       type: { name: 'string' },
-      description: 'The name of the icon set. The icon set is strictly realted to @maggioli-design-system/icons',
+      description:
+        'The name of the icon set. The icon set is strictly realted to @maggioli-design-system/icons',
       options: iconsDictionary,
       control: { type: 'select' },
     },
@@ -24,12 +25,17 @@ export default {
   },
 }
 
-const Template = args =>
+const Template = args => (
   <mds-text>
-    Ciao <mds-mention {...args}></mds-mention>, sei riuscito poi a inviare il messaggio?
+    Ciao <mds-mention {...args}></mds-mention>, sei riuscito poi a inviare il
+    messaggio?
   </mds-text>
+)
 
-export const Default = Template.bind({})
-Default.args = {
-  label: 'mario.rossi',
+export const Default = {
+  render: Template,
+
+  args: {
+    label: 'mario.rossi',
+  },
 }

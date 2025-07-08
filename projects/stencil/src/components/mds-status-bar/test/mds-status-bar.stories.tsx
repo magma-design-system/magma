@@ -16,9 +16,15 @@ export default {
 }
 
 const Template = args => {
-  let statusBar: HTMLMdsStatusBarElement | null = document.querySelector('mds-status-bar') as HTMLMdsStatusBarElement
-  let cancel: HTMLMdsButtonElement | null = document.querySelector('#cancel') as HTMLMdsButtonElement
-  let confirm: HTMLMdsButtonElement | null = document.querySelector('#confirm') as HTMLMdsButtonElement
+  let statusBar: HTMLMdsStatusBarElement | null = document.querySelector(
+    'mds-status-bar',
+  ) as HTMLMdsStatusBarElement
+  let cancel: HTMLMdsButtonElement | null = document.querySelector(
+    '#cancel',
+  ) as HTMLMdsButtonElement
+  let confirm: HTMLMdsButtonElement | null = document.querySelector(
+    '#confirm',
+  ) as HTMLMdsButtonElement
 
   const [buttonState, setButtonState] = useState(0)
 
@@ -59,27 +65,52 @@ const Template = args => {
 
   return (
     <div>
-      <mds-button onClick={() => {
-        statusBar = document.querySelector('mds-status-bar') as HTMLMdsStatusBarElement
-        if (statusBar) statusBar.visible = true
-        if (cancel) cancel.disabled = undefined
-        if (confirm) confirm.disabled = undefined
-      }}>Edit stuff</mds-button>
+      <mds-button
+        onClick={() => {
+          statusBar = document.querySelector(
+            'mds-status-bar',
+          ) as HTMLMdsStatusBarElement
+          if (statusBar) statusBar.visible = true
+          if (cancel) cancel.disabled = undefined
+          if (confirm) confirm.disabled = undefined
+        }}
+      >
+        Edit stuff
+      </mds-button>
       <mds-status-bar {...args}>
-        <mds-button id="cancel" variant="dark" tone="weak" onClick={(e: MouseEvent) => {
-          (e.target as HTMLElement).closest('mds-status-bar')?.hide()
-        }}>Annulla</mds-button>
-        <mds-button id="confirm" icon={iconMap[buttonState]} variant={variantsMap[buttonState]} tone={tonesMap[buttonState]} await={buttonState === 1} onClick={() => { if (buttonState === 0) setLoadingState() }}>
-          { buttonState === 0 && 'Conferma azione' }
-          { buttonState === 1 && 'Salvataggio in corso...' }
-          { buttonState === 2 && 'Salvataggio riuscito' }
+        <mds-button
+          id="cancel"
+          variant="dark"
+          tone="weak"
+          onClick={(e: MouseEvent) => {
+            (e.target as HTMLElement).closest('mds-status-bar')?.hide()
+          }}
+        >
+          Annulla
+        </mds-button>
+        <mds-button
+          id="confirm"
+          icon={iconMap[buttonState]}
+          variant={variantsMap[buttonState]}
+          tone={tonesMap[buttonState]}
+          await={buttonState === 1}
+          onClick={() => {
+            if (buttonState === 0) setLoadingState()
+          }}
+        >
+          {buttonState === 0 && 'Conferma azione'}
+          {buttonState === 1 && 'Salvataggio in corso...'}
+          {buttonState === 2 && 'Salvataggio riuscito'}
         </mds-button>
       </mds-status-bar>
     </div>
   )
 }
 
-export const Default = Template.bind({})
-Default.args = {
-  description: 'Stai modificando 4 elementi',
+export const Default = {
+  render: Template,
+
+  args: {
+    description: 'Stai modificando 4 elementi',
+  },
 }

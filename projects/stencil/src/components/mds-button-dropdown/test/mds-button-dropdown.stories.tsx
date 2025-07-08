@@ -17,7 +17,8 @@ export default {
     },
     'auto-focus': {
       type: { name: 'boolean' },
-      description: 'Specifies if the component is focused when is loaded on the viewport',
+      description:
+        'Specifies if the component is focused when is loaded on the viewport',
     },
     await: {
       type: { name: 'boolean' },
@@ -33,7 +34,8 @@ export default {
     },
     icon: {
       type: { name: 'string' },
-      description: 'The name of the icon set. The icon set is strictly realted to @maggioli-design-system/icons',
+      description:
+        'The name of the icon set. The icon set is strictly realted to @maggioli-design-system/icons',
       options: iconsDictionary,
       control: { type: 'select' },
     },
@@ -70,16 +72,23 @@ export default {
   },
 }
 
-const Template = args =>
+const Template = args => (
   <mds-button-dropdown {...args}>
-    <mds-button variant="dark" tone="quiet" size="sm">Invia subito</mds-button>
-    <mds-button variant="dark" tone="quiet" size="sm">Elimina</mds-button>
+    <mds-button variant="dark" tone="quiet" size="sm">
+      Invia subito
+    </mds-button>
+    <mds-button variant="dark" tone="quiet" size="sm">
+      Elimina
+    </mds-button>
   </mds-button-dropdown>
+)
 
+export const Default = {
+  render: Template,
 
-export const Default = Template.bind({})
-Default.args = {
-  label: 'Salva come bozza',
-  variant: 'success',
-  tone: 'weak',
+  args: {
+    label: 'Salva come bozza',
+    variant: 'success',
+    tone: 'weak',
+  },
 }

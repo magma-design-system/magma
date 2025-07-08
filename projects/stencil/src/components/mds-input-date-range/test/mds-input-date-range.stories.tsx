@@ -5,7 +5,8 @@ export default {
   argTypes: {
     delay: {
       type: { name: 'number' },
-      description: 'Specifies the delay in milliseconds before closing the calendar dropdown',
+      description:
+        'Specifies the delay in milliseconds before closing the calendar dropdown',
     },
     'start-date': {
       type: { name: 'string' },
@@ -17,11 +18,13 @@ export default {
     },
     min: {
       type: { name: 'string' },
-      description: 'Specifies the min date of the range, user cannot set dates before this date',
+      description:
+        'Specifies the min date of the range, user cannot set dates before this date',
     },
     max: {
       type: { name: 'string' },
-      description: 'Specifies the max date of the range, user cannot set dates after this date',
+      description:
+        'Specifies the max date of the range, user cannot set dates after this date',
     },
   },
 }
@@ -83,13 +86,14 @@ const getDate = (offsetDays: number = 0): string => {
   return `${year}-${month}-${day}`
 }
 
-const Template = args =>
+const Template = args => (
   <mds-input-date-range {...args} class="max-w-[400px]">
     <mds-input-date slot="start"></mds-input-date>
     <mds-input-date slot="end"></mds-input-date>
   </mds-input-date-range>
+)
 
-const TemplateMinMax = args =>
+const TemplateMinMax = args => (
   <div class="grid gap-400 max-w-[400px]">
     <mds-input-date-range {...args}>
       <mds-input-date slot="start"></mds-input-date>
@@ -100,34 +104,54 @@ const TemplateMinMax = args =>
       <mds-text>Max date {args.max}</mds-text>
     </div>
   </div>
+)
 
 const TemplatePreselection = args => {
   const { startOfWeek, endOfWeek } = getWeekBounds()
   const { startOfMonth, endOfMonth } = getMonthBounds()
-  return <div class="grid gap-400 max-w-[400px]">
-    <mds-input-date-range {...args}>
-      <mds-input-date slot="start"></mds-input-date>
-      <mds-input-date slot="end"></mds-input-date>
-      <mds-input-date-range-preselection start={startOfWeek} end={endOfWeek}>Questa settimana</mds-input-date-range-preselection>
-      <mds-input-date-range-preselection start={startOfMonth} end={endOfMonth}>Questo mese</mds-input-date-range-preselection>
-    </mds-input-date-range>
-  </div>
+  return (
+    <div class="grid gap-400 max-w-[400px]">
+      <mds-input-date-range {...args}>
+        <mds-input-date slot="start"></mds-input-date>
+        <mds-input-date slot="end"></mds-input-date>
+        <mds-input-date-range-preselection start={startOfWeek} end={endOfWeek}>
+          Questa settimana
+        </mds-input-date-range-preselection>
+        <mds-input-date-range-preselection
+          start={startOfMonth}
+          end={endOfMonth}
+        >
+          Questo mese
+        </mds-input-date-range-preselection>
+      </mds-input-date-range>
+    </div>
+  )
 }
 
-export const Default = Template.bind({})
-
-export const InvalidDates = Template.bind({})
-InvalidDates.args = {
-  'start-date': getDate(-3),
-  'end-date': getDate(4),
+export const Default = {
+  render: Template,
 }
 
-export const MinMax = TemplateMinMax.bind({})
-MinMax.args = {
-  'start-date': getDate(-3),
-  'end-date': getDate(4),
-  min: getDate(-30),
-  max: getDate(30),
+export const InvalidDates = {
+  render: Template,
+
+  args: {
+    'start-date': getDate(-3),
+    'end-date': getDate(4),
+  },
 }
 
-export const Preselection = TemplatePreselection.bind({})
+export const MinMax = {
+  render: TemplateMinMax,
+
+  args: {
+    'start-date': getDate(-3),
+    'end-date': getDate(4),
+    min: getDate(-30),
+    max: getDate(30),
+  },
+}
+
+export const Preselection = {
+  render: TemplatePreselection,
+}

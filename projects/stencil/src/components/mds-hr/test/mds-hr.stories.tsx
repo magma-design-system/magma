@@ -4,12 +4,16 @@ export default {
   title: 'UI / Hr',
 }
 
-const Template = args =>
-  <mds-hr {...args}/>
+const Template = args => <mds-hr {...args} />
 
-export const Default = Template.bind({})
+export const Default = {
+  render: Template,
+}
 
-export const Style = Template.bind({})
-Style.args = {
-  class: 'bg-tone-neutral-04',
+export const Style = {
+  render: Template,
+
+  args: {
+    class: 'bg-tone-neutral-04',
+  },
 }

@@ -18,23 +18,26 @@ export default {
     },
     step: {
       type: { name: 'number' },
-      description: 'The step attribute is a number that specifies the granularity that the value must adhere to, or the special value any, which is described below',
+      description:
+        'The step attribute is a number that specifies the granularity that the value must adhere to, or the special value any, which is described below',
     },
     value: {
       type: { name: 'number' },
-      description: 'The value attribute contains a number which contains a representation of the selected number',
+      description:
+        'The value attribute contains a number which contains a representation of the selected number',
     },
   },
 }
 
-const Template = args =>
-  <mds-input-range {...args}>
-    Range label
-  </mds-input-range>
+const Template = args => (
+  <mds-input-range {...args}>Range label</mds-input-range>
+)
 
 const TemplateFormatLabel = args => {
   useEffect(() => {
-    (document.querySelector('#custom-labeled') as HTMLMdsInputRangeElement).formatValue = formatValue
+    (
+      document.querySelector('#custom-labeled') as HTMLMdsInputRangeElement
+    ).formatValue = formatValue
   }, [])
   function formatValue (v: number) {
     return formatBytes(v)
@@ -51,11 +54,19 @@ const TemplateFormatLabel = args => {
     return `${value} ${sizes[i]}`
   }
 
-  return <div>
-    <mds-input-range id="custom-labeled" {...args} step="1048576" min="0" max="1073741824">
-      File size
-    </mds-input-range>
-  </div>
+  return (
+    <div>
+      <mds-input-range
+        id="custom-labeled"
+        {...args}
+        step="1048576"
+        min="0"
+        max="1073741824"
+      >
+        File size
+      </mds-input-range>
+    </div>
+  )
 }
 
 const hideHeaderCss = `
@@ -64,42 +75,61 @@ const hideHeaderCss = `
   }
 `
 
-const HideHeaderTemplate = args =>
+const HideHeaderTemplate = args => (
   <div>
     <style>{hideHeaderCss}</style>
-    <mds-input-range {...args}>
-      This shouldn't be visible
-    </mds-input-range>
+    <mds-input-range {...args}>This shouldn't be visible</mds-input-range>
   </div>
+)
 
-
-export const Default = Template.bind({})
-
-export const Disabled = Template.bind({})
-Disabled.args = {
-  disabled: true,
+export const Default = {
+  render: Template,
 }
 
-export const Min = Template.bind({})
-Min.args = {
-  min: -100,
+export const Disabled = {
+  render: Template,
+
+  args: {
+    disabled: true,
+  },
 }
 
-export const Max = Template.bind({})
-Max.args = {
-  max: 200,
+export const Min = {
+  render: Template,
+
+  args: {
+    min: -100,
+  },
 }
 
-export const Step = Template.bind({})
-Step.args = {
-  step: 10,
+export const Max = {
+  render: Template,
+
+  args: {
+    max: 200,
+  },
 }
 
-export const Value = Template.bind({})
-Value.args = {
-  value: 90,
+export const Step = {
+  render: Template,
+
+  args: {
+    step: 10,
+  },
 }
 
-export const FormatLabel = TemplateFormatLabel.bind({})
+export const Value = {
+  render: Template,
 
-export const HideHeader = HideHeaderTemplate.bind({})
+  args: {
+    value: 90,
+  },
+}
+
+export const FormatLabel = {
+  render: TemplateFormatLabel,
+}
+
+export const HideHeader = {
+  render: HideHeaderTemplate,
+}

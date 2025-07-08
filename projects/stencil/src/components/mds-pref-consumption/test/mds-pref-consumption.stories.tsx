@@ -13,10 +13,10 @@ export default {
     },
   },
 }
-const Template = args =>
-  <mds-pref-consumption {...args}/>
+const Template = args => <mds-pref-consumption {...args} />
 
-export const Default = Template.bind({})
-Default.args = {
+export const Default = {
+  render: Template,
 
+  args: {},
 }
