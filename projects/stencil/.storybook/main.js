@@ -12,6 +12,7 @@ const alias = {
 }
 const TsConfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
 const stories = [
+  '../src/**/*.mdx',
   '../src/**/*.stories.@(js|jsx|ts|tsx)',
 ]
 const staticDirs = ['../assets', '../dist']
