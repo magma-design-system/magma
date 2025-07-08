@@ -9,6 +9,7 @@ import {
   buttonTypeDictionary,
 } from '@dictionary/button'
 import { useEffect, useState } from 'react'
+import { expect, fn } from 'storybook/test'
 
 export default {
   title: 'UI / Button',
@@ -257,6 +258,12 @@ export const Disabled = {
   args: {
     disabled: false,
   },
+  play: async ({ canvas, userEvent }) => {
+    const button = await canvas.findByRole('button')
+    expect(button).not.toBeDisabled()
+    await userEvent.click(button)
+    expect(button).toBeDisabled()
+  },
 }
 
 export const Variant = {
@@ -375,5 +382,20 @@ export const FormParticipation = {
 
   args: {
     type: 'button',
+  },
+}
+
+export const TestInteraction = {
+  render: Template,
+  args: {
+    onClick: fn(),
+  },
+  play: async ({ args, canvas, userEvent }) => {
+
+    const button = await canvas.findByRole('button') as HTMLMdsButtonElement
+    await userEvent.click(button)
+    expect(args.onClick).toHaveBeenCalledOnce()
+
+
   },
 }
