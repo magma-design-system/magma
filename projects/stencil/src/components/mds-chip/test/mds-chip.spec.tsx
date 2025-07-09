@@ -11,7 +11,6 @@ describe('mds-chip', () => {
       <mds-chip aria-disabled="false" label="chip" tone="strong" variant="primary">
         <mock:shadow-root>
           <mds-text class="label" truncate="word" typography="caption">chip</mds-text>
-          <mds-button class="button-delete button-delete--hidden" size="sm" title="Remove chip" tone="quiet" variant="dark"></mds-button>
         </mock:shadow-root>
       </mds-chip>
     `)

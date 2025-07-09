@@ -9,7 +9,6 @@ import localeEl from './meta/locale.el.json'
 import localeEn from './meta/locale.en.json'
 import localeEs from './meta/locale.es.json'
 import localeIt from './meta/locale.it.json'
-import clsx from 'clsx'
 
 @Component({
   tag: 'mds-chip',
@@ -217,7 +216,7 @@ export class MdsChip {
             { this.label }
           </mds-text>
         }
-        <mds-button class={clsx('button-delete', !this.deletable && 'button-delete--hidden')} icon={miBaselineCancel} onClick={this.onDeleteHandler.bind(this)} title={ `${this.t.get('deleteLabel')} ${this.label}` } variant="dark" tone="quiet" size="sm"></mds-button>
+        { this.deletable && <mds-button class="button-delete" icon={miBaselineCancel} onClick={this.onDeleteHandler.bind(this)} title={ `${this.t.get('deleteLabel')} ${this.label}` } variant="dark" tone="quiet" size="sm"></mds-button> }
       </Host>
     )
   }
