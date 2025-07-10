@@ -16,11 +16,13 @@ export default {
   },
 }
 
-const Template = args =>
-  <mds-calendar {...args}></mds-calendar>
+const Template = args => <mds-calendar {...args}></mds-calendar>
 
-export const Default = Template.bind({})
-Default.args = {
-  'start-date': '2025-03-18',
-  'end-date': '2025-03-24',
+export const Default = {
+  render: Template,
+
+  args: {
+    'start-date': '2025-03-18',
+    'end-date': '2025-03-24',
+  },
 }

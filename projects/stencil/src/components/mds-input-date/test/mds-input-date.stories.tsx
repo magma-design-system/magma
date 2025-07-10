@@ -29,21 +29,31 @@ const getDate = (offsetDays: number = 0): string => {
   return `${year}-${month}-${day}`
 }
 
-const Template = args =>
+const Template = args => (
   <mds-input-date {...args} class="max-w-[400px]"></mds-input-date>
+)
 
-export const Default = Template.bind({})
-Default.args = {
-  value: getDate(),
+export const Default = {
+  render: Template,
+
+  args: {
+    value: getDate(),
+  },
 }
 
-export const MinMax = Template.bind({})
-MinMax.args = {
-  min: getDate(-15),
-  max: getDate(15),
+export const MinMax = {
+  render: Template,
+
+  args: {
+    min: getDate(-15),
+    max: getDate(15),
+  },
 }
 
-export const Invalid = Template.bind({})
-Invalid.args = {
-  value: '2025-04-31',
+export const Invalid = {
+  render: Template,
+
+  args: {
+    value: '2025-04-31',
+  },
 }

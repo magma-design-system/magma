@@ -15,13 +15,15 @@ export default {
     },
     icon: {
       type: { name: 'string' },
-      description: 'Specifies the icon displayed of the component when is not checked or the current item',
+      description:
+        'Specifies the icon displayed of the component when is not checked or the current item',
       options: mggIconsDictionary.concat(iconsDictionary),
       control: { type: 'select' },
     },
     'icon-checked': {
       type: { name: 'string' },
-      description: 'Specifies the icon displayed of the component when is checked',
+      description:
+        'Specifies the icon displayed of the component when is checked',
       options: mggIconsDictionary.concat(iconsDictionary),
       control: { type: 'select' },
     },
@@ -38,23 +40,51 @@ export default {
   },
 }
 
-const Template = args =>
+const Template = args => (
   <mds-stepper-bar items-done={0}>
-    <mds-stepper-bar-item icon-checked="mi/baseline/done" icon="mi/baseline/agriculture" label="First"/>
-    <mds-stepper-bar-item icon-checked="mi/baseline/done" icon="mi/baseline/adobe" label="Second"/>
-    <mds-stepper-bar-item icon-checked="mi/baseline/done" {...args}/>
-    <mds-stepper-bar-item icon-checked="mi/baseline/done" icon="mi/baseline/css" label="Forth"/>
-    <mds-stepper-bar-item icon-checked="mi/baseline/done" icon="mdi/baseball" label="Fifth"/>
+    <mds-stepper-bar-item
+      icon-checked="mi/baseline/done"
+      icon="mi/baseline/agriculture"
+      label="First"
+    />
+    <mds-stepper-bar-item
+      icon-checked="mi/baseline/done"
+      icon="mi/baseline/adobe"
+      label="Second"
+    />
+    <mds-stepper-bar-item icon-checked="mi/baseline/done" {...args} />
+    <mds-stepper-bar-item
+      icon-checked="mi/baseline/done"
+      icon="mi/baseline/css"
+      label="Forth"
+    />
+    <mds-stepper-bar-item
+      icon-checked="mi/baseline/done"
+      icon="mdi/baseball"
+      label="Fifth"
+    />
   </mds-stepper-bar>
+)
 
-const TemplateDone = args =>
+const TemplateDone = args => (
   <mds-stepper-bar items-done={3}>
-    <mds-stepper-bar-item done icon="mi/baseline/agriculture" icon-checked={args['icon-checked']} label="First"/>
-    <mds-stepper-bar-item done icon="mi/baseline/adobe" icon-checked={args['icon-checked']} label="Second"/>
-    <mds-stepper-bar-item {...args}/>
-    <mds-stepper-bar-item icon="mi/baseline/css" label="Forth"/>
-    <mds-stepper-bar-item icon="mi/baseline/local-activity" label="Fifth"/>
+    <mds-stepper-bar-item
+      done
+      icon="mi/baseline/agriculture"
+      icon-checked={args['icon-checked']}
+      label="First"
+    />
+    <mds-stepper-bar-item
+      done
+      icon="mi/baseline/adobe"
+      icon-checked={args['icon-checked']}
+      label="Second"
+    />
+    <mds-stepper-bar-item {...args} />
+    <mds-stepper-bar-item icon="mi/baseline/css" label="Forth" />
+    <mds-stepper-bar-item icon="mi/baseline/local-activity" label="Fifth" />
   </mds-stepper-bar>
+)
 
 // mi_baseline_local-activity
 // mi_baseline_bluetooth
@@ -64,38 +94,56 @@ const defaultArgs = {
   label: 'Third',
 }
 
-export const Default = Template.bind({})
-Default.args = {
-  ...defaultArgs,
+export const Default = {
+  render: Template,
+
+  args: {
+    ...defaultArgs,
+  },
 }
 
-export const Done = TemplateDone.bind({})
-Done.args = {
-  ...defaultArgs,
-  done: true,
+export const Done = {
+  render: TemplateDone,
+
+  args: {
+    ...defaultArgs,
+    done: true,
+  },
 }
 
-export const Current = TemplateDone.bind({})
-Current.args = {
-  ...defaultArgs,
-  current: true,
+export const Current = {
+  render: TemplateDone,
+
+  args: {
+    ...defaultArgs,
+    current: true,
+  },
 }
 
-export const IconChecked = TemplateDone.bind({})
-IconChecked.args = {
-  ...defaultArgs,
-  done: true,
-  'icon-checked': 'mi/baseline/done',
+export const IconChecked = {
+  render: TemplateDone,
+
+  args: {
+    ...defaultArgs,
+    done: true,
+    'icon-checked': 'mi/baseline/done',
+  },
 }
 
-export const Text = Template.bind({})
-Text.args = {
-  ...defaultArgs,
-  text: 'Item text',
+export const Text = {
+  render: Template,
+
+  args: {
+    ...defaultArgs,
+    text: 'Item text',
+  },
 }
 
-export const Typography = Template.bind({})
-Typography.args = {
-  ...defaultArgs,
-  typography: 'paragraph',
+export const Typography = {
+  render: Template,
+
+  args: {
+    ...defaultArgs,
+    typography: 'paragraph',
+  },
 }

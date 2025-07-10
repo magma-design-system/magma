@@ -5,7 +5,8 @@ export default {
   argTypes: {
     count: {
       type: { name: 'string' },
-      description: 'Shows the number of items will be filtered by the component',
+      description:
+        'Shows the number of items will be filtered by the component',
     },
     selected: {
       type: { name: 'boolean' },
@@ -22,18 +23,25 @@ export default {
   },
 }
 
-const Template = args =>
+const Template = args => (
   <div class="inline-flex">
-    <mds-filter-item {...args}/>
+    <mds-filter-item {...args} />
   </div>
+)
 
-export const Default = Template.bind({})
-Default.args = {
-  label: 'Filter label',
+export const Default = {
+  render: Template,
+
+  args: {
+    label: 'Filter label',
+  },
 }
 
-export const Selected = Template.bind({})
-Selected.args = {
-  label: 'Filter label',
-  selected: true,
+export const Selected = {
+  render: Template,
+
+  args: {
+    label: 'Filter label',
+    selected: true,
+  },
 }

@@ -1,4 +1,7 @@
-import { themeVariantDictionary, toneMinimalVariantDictionary } from '@dictionary/variant'
+import {
+  themeVariantDictionary,
+  toneMinimalVariantDictionary,
+} from '@dictionary/variant'
 import { h } from '@stencil/core'
 import { toastPositionDictionary } from '../meta/dictionary'
 
@@ -6,7 +9,8 @@ export default {
   title: 'UI / Toast',
   argTypes: {
     duration: {
-      description: 'If set, specifies the visibility duration in milliseconds of the element inside the viewport, when the time is up the visible property will be set to false',
+      description:
+        'If set, specifies the visibility duration in milliseconds of the element inside the viewport, when the time is up the visible property will be set to false',
       type: { name: 'number', required: false },
     },
     position: {
@@ -34,7 +38,7 @@ export default {
   },
 }
 
-const checkVariant = (variant: 'dark'|'light') => {
+const checkVariant = (variant: 'dark' | 'light') => {
   if (variant === 'dark') {
     return 'light'
   }
@@ -46,20 +50,35 @@ const checkVariant = (variant: 'dark'|'light') => {
   return variant
 }
 
-const Template = args =>
+const Template = args => (
   <mds-toast {...args}>
     <mds-icon slot="icon" name="mi/baseline/warning" />
     Elemento spidiguddato a sinistra con successo
-    <mds-button slot="action" size="sm" variant={checkVariant(args.variant)} tone={args.tone}>Annulla</mds-button>
+    <mds-button
+      slot="action"
+      size="sm"
+      variant={checkVariant(args.variant)}
+      tone={args.tone}
+    >
+      Annulla
+    </mds-button>
   </mds-toast>
+)
 
-const TemplateSpinner = args =>
+const TemplateSpinner = args => (
   <mds-toast {...args}>
-    <mds-spinner running slot="icon" class="w-600 h-600"/>
+    <mds-spinner running slot="icon" class="w-600 h-600" />
     Invio messaggio in corso...
-    <mds-button slot="action" size="sm" variant="warning" tone="weak">Annulla</mds-button>
+    <mds-button slot="action" size="sm" variant="warning" tone="weak">
+      Annulla
+    </mds-button>
   </mds-toast>
+)
 
-export const Default = Template.bind({})
+export const Default = {
+  render: Template,
+}
 
-export const Spinner = TemplateSpinner.bind({})
+export const Spinner = {
+  render: TemplateSpinner,
+}

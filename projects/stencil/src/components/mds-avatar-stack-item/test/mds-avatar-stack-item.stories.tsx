@@ -1,16 +1,21 @@
 import { h } from '@stencil/core'
-import { themeFullVariantAvatarDictionary, toneMinimalVariantDictionary } from '@dictionary/variant'
+import {
+  themeFullVariantAvatarDictionary,
+  toneMinimalVariantDictionary,
+} from '@dictionary/variant'
 
 export default {
   title: 'UI / Avatar stack / Item',
   argTypes: {
     count: {
       type: { name: 'number' },
-      description: 'The user\'s inizials displayed if there\'s no image available',
+      description:
+        'The user\'s inizials displayed if there\'s no image available',
     },
     initials: {
       type: { name: 'string' },
-      description: 'The user\'s inizials displayed if there\'s no image available',
+      description:
+        'The user\'s inizials displayed if there\'s no image available',
     },
     src: {
       type: { name: 'string' },
@@ -31,34 +36,47 @@ export default {
   },
 }
 
-const Template = args =>
+const Template = args => (
   <mds-avatar-stack>
-    <mds-avatar-stack-item initials='mr' tone="weak"></mds-avatar-stack-item>
-    <mds-avatar-stack-item initials='ac' tone="weak"></mds-avatar-stack-item>
-    <mds-avatar-stack-item initials='er' tone="weak"></mds-avatar-stack-item>
-    <mds-avatar-stack-item initials='mt' tone="weak"></mds-avatar-stack-item>
+    <mds-avatar-stack-item initials="mr" tone="weak"></mds-avatar-stack-item>
+    <mds-avatar-stack-item initials="ac" tone="weak"></mds-avatar-stack-item>
+    <mds-avatar-stack-item initials="er" tone="weak"></mds-avatar-stack-item>
+    <mds-avatar-stack-item initials="mt" tone="weak"></mds-avatar-stack-item>
     <mds-avatar-stack-item {...args}></mds-avatar-stack-item>
   </mds-avatar-stack>
+)
 
-export const Default = Template.bind({})
-Default.args = {
-  initials: 'el',
+export const Default = {
+  render: Template,
+
+  args: {
+    initials: 'el',
+  },
 }
 
-export const Count = Template.bind({})
-Count.args = {
-  initials: 'el',
-  count: 8,
+export const Count = {
+  render: Template,
+
+  args: {
+    initials: 'el',
+    count: 8,
+  },
 }
 
-export const Tone = Template.bind({})
-Tone.args = {
-  initials: 'el',
-  tone: 'strong',
+export const Tone = {
+  render: Template,
+
+  args: {
+    initials: 'el',
+    tone: 'strong',
+  },
 }
 
-export const Variant = Template.bind({})
-Variant.args = {
-  initials: 'el',
-  variant: 'blue',
+export const Variant = {
+  render: Template,
+
+  args: {
+    initials: 'el',
+    variant: 'blue',
+  },
 }

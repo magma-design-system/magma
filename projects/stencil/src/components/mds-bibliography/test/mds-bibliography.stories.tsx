@@ -1,13 +1,20 @@
 import { h } from '@stencil/core'
-import { bibliographyFormatDictionary, bibliographyRelationshipDictionary } from '../meta/dictionary'
-import { typographyInfoDictionary, typographyVariationsDictionary } from '@dictionary/typography'
+import {
+  bibliographyFormatDictionary,
+  bibliographyRelationshipDictionary,
+} from '../meta/dictionary'
+import {
+  typographyInfoDictionary,
+  typographyVariationsDictionary,
+} from '@dictionary/typography'
 
 export default {
   title: 'UI / Bibliography',
   argTypes: {
     author: {
       type: { name: 'string' },
-      description: 'Specifies a single or mupltiple authors, this field expect a string or an array of strings. First name and Last name: "Jhon Doe", you can wrap first name or last name to crop them correctly: "\'Jhon Arthur\' Doe", "\'Jhon Arthur\' \'Doe Jhonson\'", and for multiple authors ["\'Jhon Arthur\' \'Doe Jhonson\'", "Mike Collins", "Erik \'Ross Anderson\'"], you can use single or double quotation marks for composite names',
+      description:
+        'Specifies a single or mupltiple authors, this field expect a string or an array of strings. First name and Last name: "Jhon Doe", you can wrap first name or last name to crop them correctly: "\'Jhon Arthur\' Doe", "\'Jhon Arthur\' \'Doe Jhonson\'", and for multiple authors ["\'Jhon Arthur\' \'Doe Jhonson\'", "Mike Collins", "Erik \'Ross Anderson\'"], you can use single or double quotation marks for composite names',
     },
     date: {
       type: { name: 'string' },
@@ -16,7 +23,8 @@ export default {
     },
     format: {
       type: { name: 'string' },
-      description: 'Specifies the bibliography format to rapresent the bibliography content',
+      description:
+        'Specifies the bibliography format to rapresent the bibliography content',
       options: bibliographyFormatDictionary,
       control: { type: 'select' },
     },
@@ -34,7 +42,8 @@ export default {
     },
     rel: {
       type: { name: 'string' },
-      description: 'Specifies relationship between the current document and the URL',
+      description:
+        'Specifies relationship between the current document and the URL',
       options: bibliographyRelationshipDictionary,
       control: { type: 'select' },
     },
@@ -56,47 +65,61 @@ export default {
   },
 }
 
-const Template = args =>
-  <mds-bibliography {...args}/>
+const Template = args => <mds-bibliography {...args} />
 
-export const Default = Template.bind({})
-
-export const AuthorExample1 = Template.bind({})
-AuthorExample1.args = {
-  author: 'Mario Rossi',
-  date: '2012-08-03',
-  location: 'Milano',
-  name: 'Grosso guaio a Chinatown',
-  publisher: 'Decca Libri',
-  url: 'https://www.maggioli.com',
+export const Default = {
+  render: Template,
 }
 
-export const AuthorExample2 = Template.bind({})
-AuthorExample2.args = {
-  author: '"Mark Jacob" Jhonson',
-  date: '2012-08-03',
-  location: 'Milano',
-  name: 'Grosso guaio a Chinatown',
-  publisher: 'Decca Libri',
-  url: 'https://www.maggioli.com',
+export const AuthorExample1 = {
+  render: Template,
+
+  args: {
+    author: 'Mario Rossi',
+    date: '2012-08-03',
+    location: 'Milano',
+    name: 'Grosso guaio a Chinatown',
+    publisher: 'Decca Libri',
+    url: 'https://www.maggioli.com',
+  },
 }
 
-export const AuthorExample3 = Template.bind({})
-AuthorExample3.args = {
-  author: '"Mario Rossi", "Luigi Verdi"',
-  date: '2012-08-03',
-  location: 'Milano',
-  name: 'Grosso guaio a Chinatown',
-  publisher: 'Decca Libri',
-  url: 'https://www.maggioli.com',
+export const AuthorExample2 = {
+  render: Template,
+
+  args: {
+    author: '"Mark Jacob" Jhonson',
+    date: '2012-08-03',
+    location: 'Milano',
+    name: 'Grosso guaio a Chinatown',
+    publisher: 'Decca Libri',
+    url: 'https://www.maggioli.com',
+  },
 }
 
-export const AuthorExample4 = Template.bind({})
-AuthorExample4.args = {
-  author: '"Mark Jacob" Jhonson, Evelyn \'Ross Bianchetti\', "Jhon Antuan" "Parisi Marchi"',
-  date: '2012-08-03',
-  location: 'Milano',
-  name: 'Grosso guaio a Chinatown',
-  publisher: 'Decca Libri',
-  url: 'https://www.maggioli.com',
+export const AuthorExample3 = {
+  render: Template,
+
+  args: {
+    author: '"Mario Rossi", "Luigi Verdi"',
+    date: '2012-08-03',
+    location: 'Milano',
+    name: 'Grosso guaio a Chinatown',
+    publisher: 'Decca Libri',
+    url: 'https://www.maggioli.com',
+  },
+}
+
+export const AuthorExample4 = {
+  render: Template,
+
+  args: {
+    author:
+      '"Mark Jacob" Jhonson, Evelyn \'Ross Bianchetti\', "Jhon Antuan" "Parisi Marchi"',
+    date: '2012-08-03',
+    location: 'Milano',
+    name: 'Grosso guaio a Chinatown',
+    publisher: 'Decca Libri',
+    url: 'https://www.maggioli.com',
+  },
 }

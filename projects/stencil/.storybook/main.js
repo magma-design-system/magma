@@ -1,3 +1,4 @@
+import { dirname, join } from 'path'
 /* eslint-disable @typescript-eslint/no-require-imports */
 // https://www.mokkapps.de/blog/run-build-and-deploy-stencil-and-storybook-from-one-repository
 const path = require('path')
@@ -11,21 +12,15 @@ const alias = {
 }
 const TsConfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
 const stories = [
-  '../src/**/*.stories.mdx',
+  '../src/**/*.mdx',
   '../src/**/*.stories.@(js|jsx|ts|tsx)',
 ]
 const staticDirs = ['../assets', '../dist']
 const addons = [
-  '@storybook/addon-essentials',
-  '@storybook/addon-a11y',
-  {
-    name: '@storybook/addon-styling',
-    options: {
-      postCss: {
-        implementation: require('postcss'),
-      },
-    },
-  },
+  getAbsolutePath('@storybook/addon-a11y'),
+  getAbsolutePath('@storybook/addon-styling-webpack'),
+  getAbsolutePath('@storybook/addon-webpack5-compiler-babel'),
+  getAbsolutePath('@storybook/addon-docs'),
 ]
 const webpackFinal = async config => {
   // `configType` has a value of 'DEVELOPMENT' or 'PRODUCTION'
@@ -43,7 +38,7 @@ const webpackFinal = async config => {
       exclude: /node_modules/,
     },
     {
-      test: /\.stories.tsx$/,
+      test: /(\.stories\.tsx|preview\.js)$/,
       exclude: /node_modules/,
       use: [
         {
@@ -91,8 +86,8 @@ const webpackFinal = async config => {
   )
   return config
 }
-const framework = { name: '@storybook/react-webpack5', options: {} }
-const docs = { autodocs: true }
+const framework = { name: getAbsolutePath('@storybook/react-webpack5'), options: { legacyRootApi: true } }
+const docs = {}
 
 const config = {
   stories,
@@ -100,12 +95,23 @@ const config = {
   addons,
   webpackFinal,
   framework,
+
   options: {
     storySort: (a, b) => {
       return a.title.localeCompare(b.title, 'it-IT', { numeric: true })
     },
   },
+
   docs,
+
+  typescript: {
+    reactDocgen: 'react-docgen-typescript',
+  },
 }
 
 export default config
+
+function getAbsolutePath (value) {
+  return dirname(require.resolve(join(value, 'package.json')))
+}
+

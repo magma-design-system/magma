@@ -1,6 +1,5 @@
 import { h } from '@stencil/core'
 
-
 export default {
   title: 'UI / Breadcrumb / Breadcrumb Item',
   argTypes: {
@@ -11,15 +10,22 @@ export default {
   },
 }
 
-const Template = args =>
+const Template = args => (
   <mds-breadcrumb>
     <mds-breadcrumb-item {...args}>First item</mds-breadcrumb-item>
     <mds-breadcrumb-item>Second</mds-breadcrumb-item>
     <mds-breadcrumb-item>The third</mds-breadcrumb-item>
   </mds-breadcrumb>
+)
 
-export const Default = Template.bind({})
-export const Selected = Template.bind({})
-Selected.args = {
-  selected: true,
+export const Default = {
+  render: Template,
+}
+
+export const Selected = {
+  render: Template,
+
+  args: {
+    selected: true,
+  },
 }

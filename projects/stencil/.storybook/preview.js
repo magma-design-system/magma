@@ -63,7 +63,6 @@ if (window.localStorage.getItem('mdsPrefLanguage')) {
 }
 
 const parameters = {
-  actions: { argTypesRegex: '^on[A-Z].*' },
   options: {
     storySort: {
       method: 'alphabetical',
@@ -96,6 +95,7 @@ const decorators = [
 const preview = {
   parameters,
   decorators,
+  tags: ['autodocs'],
 }
 
 export default preview

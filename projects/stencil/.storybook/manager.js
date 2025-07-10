@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { AddonPanel, Form } from '@storybook/components'
-import { addons, types } from '@storybook/manager-api'
+import { AddonPanel, Form } from 'storybook/internal/components'
+import { addons, types } from 'storybook/manager-api'
 import themeMaggioli from './theme'
 import clsx from 'clsx'
 

@@ -54,6 +54,9 @@
       ],
       "react": [
         "../../node_modules/react"
+      ],
+      "react/jsx-runtime": [
+        "../../node_modules/react/jsx-runtime.js"
       ]
     },
     "skipLibCheck": true,

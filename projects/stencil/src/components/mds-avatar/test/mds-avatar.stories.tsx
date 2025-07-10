@@ -1,20 +1,25 @@
 import { h } from '@stencil/core'
 import { lokiDisabled } from '@test/loki-disabled'
 import { iconsDictionary, mggIconsDictionary } from '@dictionary/icon'
-import { themeFullVariantAvatarDictionary, toneMinimalVariantDictionary } from '@dictionary/variant'
+import {
+  themeFullVariantAvatarDictionary,
+  toneMinimalVariantDictionary,
+} from '@dictionary/variant'
 
 export default {
   title: 'UI / Avatar',
   argTypes: {
     icon: {
       type: { name: 'string' },
-      description: 'The name of the icon set. The icon set is strictly realted to @maggioli-design-system/icons',
+      description:
+        'The name of the icon set. The icon set is strictly realted to @maggioli-design-system/icons',
       options: mggIconsDictionary.concat(iconsDictionary),
       control: { type: 'select' },
     },
     initials: {
       type: { name: 'string' },
-      description: 'The user\'s inizials displayed if there\'s no image available',
+      description:
+        'The user\'s inizials displayed if there\'s no image available',
     },
     src: {
       type: { name: 'string' },
@@ -35,37 +40,53 @@ export default {
   },
 }
 
-const Template = args =>
-  <mds-avatar {...args} class="w-2400"/>
+const Template = args => <mds-avatar {...args} class="w-2400" />
 
-const TemplateSmall = args =>
-  <mds-avatar {...args} class="w-600"/>
+const TemplateSmall = args => <mds-avatar {...args} class="w-600" />
 
-export const Default = Template.bind({})
-Default.args = {
-  src: './avatar-06-200x200.jpeg',
+export const Default = {
+  render: Template,
+
+  args: {
+    src: './avatar-06-200x200.jpeg',
+  },
 }
 
-export const NoImage = Template.bind({})
-NoImage.args = { }
-
-export const Initials = Template.bind({})
-Initials.args = {
-  initials: 'ts',
+export const NoImage = {
+  render: Template,
+  args: {},
 }
 
-export const InitialsSmall = TemplateSmall.bind({})
-InitialsSmall.args = {
-  initials: 'ts',
+export const Initials = {
+  render: Template,
+
+  args: {
+    initials: 'ts',
+  },
 }
 
-export const Icon = Template.bind({})
-Icon.args = {
-  icon: 'mi/baseline/pets',
+export const InitialsSmall = {
+  render: TemplateSmall,
+
+  args: {
+    initials: 'ts',
+  },
 }
 
-export const BrokenSrc = Template.bind({})
-BrokenSrc.args = {
-  src: 'http://broken-link',
+export const Icon = {
+  render: Template,
+
+  args: {
+    icon: 'mi/baseline/pets',
+  },
 }
-BrokenSrc.story = lokiDisabled
+
+export const BrokenSrc = {
+  render: Template,
+
+  args: {
+    src: 'http://broken-link',
+  },
+
+  story: lokiDisabled,
+}

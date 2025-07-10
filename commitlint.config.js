@@ -41,6 +41,7 @@ module.exports = {
         'magma',
         'react',
         'stencil',
+        'storybook',
         'styles',
         'svg-icons',
       ].concat(webComponents),
