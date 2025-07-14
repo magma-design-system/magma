@@ -10,8 +10,8 @@ export default {
     '**/*.jsx',
     '**/*.svg',
     'src/scss/variables/**/*.scss',
-    'dist/',
-    'node_modules/',
+    '**/dist/**/*',
+    'node_modules/**/*',
   ],
   rules: {
     'alpha-value-notation': 'number',
