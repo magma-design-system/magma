@@ -1,0 +1,22 @@
+{
+  "source": [
+    "tokens/sizing/spacing.json",
+    "tokens/typography/default.json"
+  ],
+  "include": [
+    "tokens/typography/leading.json",
+    "tokens/typography/size.json"
+  ],
+  "platforms": {
+    "css": {
+      "transformGroup": "css",
+      "buildPath": "dist/css/",
+      "files": [
+        {
+          "destination": "tailwind-typography.css",
+          "format": "css/tailwind-theme-typography"
+        }
+      ]
+    }
+  }
+}

@@ -23,6 +23,7 @@ import chalk from 'chalk'
 import pkg from 'fs-extra'
 import { resolve } from 'path'
 import { lilconfig } from 'lilconfig'
+import { cssTailwindThemeTypography } from '@/formats/tailwind-typography/tailwind-typography.js'
 
 // importing for esm
 const { mkdir, writeFile } = pkg
@@ -89,6 +90,7 @@ export function getStyleDictionaryWithAllCustomTransform (): StyleDictionary.Cor
       .registerFormat(jsTailwindLeadingFormat)
       .registerFormat(jsTailwindScreensFormat)
       .registerFormat(jsTailwindPropsFormat)
+      .registerFormat(cssTailwindThemeTypography)
       // transform for flutter font
       .registerTransform(flutterFontWeightTransform)
       .registerTransform(flutterToDoubleTransform)

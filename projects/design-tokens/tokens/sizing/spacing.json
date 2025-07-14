@@ -1,0 +1,38 @@
+{
+  "spacing": "0.0025rem",
+  "container": {
+    "xs": {
+      "value": "320px"
+    },
+    "sm": {
+      "value": "384px"
+    },
+    "md": {
+      "value": "448px"
+    },
+    "lg": {
+      "value": "512px"
+    },
+    "xl": {
+      "value": "576px"
+    },
+    "2xl": {
+      "value": "672px"
+    },
+    "3xl": {
+      "value": "768px"
+    },
+    "4xl": {
+      "value": "896px"
+    },
+    "5xl": {
+      "value": "1024px"
+    },
+    "6xl": {
+      "value": "1152px"
+    },
+    "7xl": {
+      "value": "1280px"
+    }
+  }
+}
