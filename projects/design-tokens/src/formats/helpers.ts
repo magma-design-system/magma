@@ -93,6 +93,7 @@ const ifTailwindFontSizeProp = (property: string, options: HelperOptions) => {
   const attributes = [
     'letterSpacing',
     'lineHeight',
+    'fontWeight',
   ]
   return attributes.includes(property) ? options.fn(this) : options.inverse(this)
 }
