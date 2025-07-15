@@ -5,7 +5,8 @@
   ],
   "include": [
     "tokens/typography/leading.json",
-    "tokens/typography/size.json"
+    "tokens/typography/size.json",
+    "tokens/sizing/primitive.json"
   ],
   "platforms": {
     "css": {
