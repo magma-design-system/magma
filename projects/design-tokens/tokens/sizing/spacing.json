@@ -1,5 +1,28 @@
 {
-  "spacing": "0.0025rem",
+  "spacing-scale": "0.0025rem",
+  "spacing": {
+    "xs": {
+      "value": "{sizing.primitive.100}"
+    },
+    "sm": {
+      "value": "{sizing.primitive.200}"
+    },
+    "md": {
+      "value": "{sizing.primitive.400}"
+    },
+    "lg": {
+      "value": "{sizing.primitive.600}"
+    },
+    "xl": {
+      "value": "{sizing.primitive.800}"
+    },
+    "2xl": {
+      "value": "{sizing.primitive.1200}"
+    },
+    "3xl": {
+      "value": "{sizing.primitive.2000}"
+    }
+  },
   "container": {
     "xs": {
       "value": "320px"
@@ -33,6 +56,18 @@
     },
     "7xl": {
       "value": "1280px"
+    },
+    "phrase": {
+      "value": "50ch"
+    },
+    "prose": {
+      "value": "65ch"
+    },
+    "text": {
+      "value": "75ch"
+    },
+    "title": {
+      "value": "30ch"
     }
   }
 }

@@ -1,6 +1,9 @@
 {
   "screen": {
     "mobile": {
+      "min": {
+        "value": "480px"
+      },
       "max": {
         "value": "767px"
       }

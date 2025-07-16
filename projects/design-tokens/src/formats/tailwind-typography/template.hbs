@@ -37,12 +37,34 @@ Generated at {{ date }}
 {{/each}}
 
 {{!-- spacing --}}
-  --spacing: {{properties.spacing}};
+  --spacing: {{properties.spacing-scale}};
+{{#each properties.spacing as | spacing |}}
+  --spacing-{{@key}}: {{spacing.value}};
+{{/each}}
 
 {{!-- container with --}}
 {{#each properties.container as | container |}}
   --container-{{@key}}: {{container.value}};
 {{/each}}
+
+{{!-- screens breakpoint --}}
+{{#each properties.screen as | screen |}}
+  --breakpoint-{{@key}}: {{screen.min.value}};
+{{/each}}
+
+{{!-- aspet ration --}}
+{{#each properties.sizing.aspectRatio as | ratio |}}
+  --aspect-{{@key}}: {{ratio.value}};
+{{/each}}
 }
 
+{{!-- utilities --}}
+{{!-- transition property --}}
+{{#each properties.css.transitionProperty as | transition |}}
+@utility transition-{{@key}} {
+  transition-property: {{transition.value}};
+  transition-timing-function: var(--default-transition-timing-function); /* cubic-bezier(0.4, 0, 0.2, 1) */
+  transition-duration: var(--default-transition-duration); /* 150ms */
+}
+{{/each}}
 

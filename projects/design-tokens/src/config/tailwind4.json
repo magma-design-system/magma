@@ -1,17 +1,26 @@
 {
   "source": [
     "tokens/sizing/spacing.json",
-    "tokens/typography/default.json"
-  ],
-  "include": [
+    "tokens/typography/default.json",
     "tokens/typography/leading.json",
     "tokens/typography/size.json",
-    "tokens/sizing/primitive.json"
+    "tokens/css/**/*.json",
+    "tokens/screen/default.json",
+    "tokens/sizing/aspect-ratio.json"
+  ],
+  "include": [
+    "tokens/sizing/primitive.json",
+    "tokens/typography/sizing.json"
   ],
   "platforms": {
     "css": {
       "transformGroup": "css",
       "buildPath": "dist/css/",
+      "transforms": [
+        "tailwind/cssAspectRatio",
+        "attribute/cti",
+        "name/cti/kebab"
+      ],
       "files": [
         {
           "destination": "tailwind-typography.css",
