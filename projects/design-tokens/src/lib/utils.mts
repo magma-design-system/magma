@@ -39,14 +39,15 @@ export async function getColorsConfig (path?: string) {
 export function writeJsonTokens (tokens: any, name: string, dirPath: string) {
   const jsonTokens = JSON.stringify(tokens, null, 2)
 
-  mkdir(dirPath, { recursive: true })
-  writeFile(resolve(`${dirPath}/${name}.json`), jsonTokens, 'utf8', err => {
-    if (err) {
-      console.error(
-        chalk.red('An error occured while writing JSON Object to File.'),
-      )
-      console.error(chalk.red(err))
-    }
+  mkdir(dirPath, { recursive: true }).then(() => {
+    writeFile(resolve(`${dirPath}/${name}.json`), jsonTokens, 'utf8', err => {
+      if (err) {
+        console.error(
+          chalk.red('An error occured while writing JSON Object to File.'),
+        )
+        console.error(chalk.red(err))
+      }
+    })
   })
 }
 
