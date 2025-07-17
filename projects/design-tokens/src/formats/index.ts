@@ -1,3 +1,4 @@
+export * from './css-tailwind-theme-color/css-tailwind-theme-color.js'
 export * from './css-tailwind-theme-typography/css-tailwind-theme-typography.js'
 export * from './css-vars-hex/css-vars-hex.js'
 export * from './css-vars-rgb/css-vars-rgb.js'
@@ -12,5 +13,4 @@ export * from './js-tailwind-screens/js-tailwind-screens.js'
 export * from './js/js.js'
 export * from './json-coolors/json-coolors.js'
 export * from './scss-map/scss-map.js'
-
 

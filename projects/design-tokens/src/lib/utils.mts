@@ -19,6 +19,7 @@ import {
   tailwindPxToRemTransform,
   cssTailwindThemeTypography,
   tailwindCss4Filter,
+  cssTailwindThemeColor,
 } from '../formats/index.js'
 import { getBrandColorConfig } from '../config/sd-brand-color.config.js'
 import chalk from 'chalk'
@@ -83,6 +84,7 @@ export function getStyleDictionaryWithAllCustomTransform (): StyleDictionary.Cor
       .registerFormat(flutterColorFormat)
       .registerFormat(cssHexFormat)
       .registerFormat(cssRgbFormat)
+      .registerFormat(cssTailwindThemeColor)
       .registerFormat(jsonCoolorsFormat)
       // FONT
       .registerFormat(flutterFontFormat)
