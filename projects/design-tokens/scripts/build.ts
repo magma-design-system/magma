@@ -6,7 +6,6 @@ import {
 import { createColorTokens } from '../src/lib/color.mjs'
 import { getStyleDictionaryColorConfigAllPlatforms } from '../src/config/styledictionary/sd-color-all-platforms.config'
 import { getBrandColorConfig } from '../src/config/styledictionary/sd-brand-color.config'
-import themeTokens from '../tokens/color/themes.json'
 import { TOKENS_DIR } from './meta'
 
 const GENERATED_TOKEN_DIR = `${TOKENS_DIR}/color/generated`
@@ -20,13 +19,13 @@ getColorsConfig().then(resultConfig => {
   const { tokens, exportGroups } = createColorTokens(resultConfig.config.colors)
 
   // merge color tokens with theme tokens
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const mergeTokens: any = {
-    color: { ...tokens.color, ...themeTokens.color },
-  }
+
+  // const mergeTokens: any = {
+  //   color: { ...tokens.color, ...themeTokens.color },
+  // }
   // build all colors
   styleDictionary
-    .extend(getStyleDictionaryColorConfigAllPlatforms(mergeTokens))
+    .extend(getStyleDictionaryColorConfigAllPlatforms(tokens))
     .buildAllPlatforms()
 
   // build separate colors by export config flag

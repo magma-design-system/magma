@@ -3146,6 +3146,19 @@
   resolved "https://registry.npmjs.org/@lmdb/lmdb-win32-x64/-/lmdb-win32-x64-3.0.13.tgz#93bcd6dc24afd1cc60dd88a65b9e4fab32dcf397"
   integrity sha512-UCrMJQY/gJnOl3XgbWRZZUvGGBuKy6i0YNSptgMzHBjs+QYDYR1Mt/RLTOPy4fzzves65O1EDmlL//OzEqoLlA==
 
+"@maggioli-design-system/design-tokens@13.7.1":
+  version "13.7.1"
+  resolved "https://registry.npmjs.org/@maggioli-design-system/design-tokens/-/design-tokens-13.7.1.tgz#c370b20fa1d80fa0a1e5cc7f7e5a3473e5b8300b"
+  integrity sha512-c0bU+IuSdBnn5nyQzqW1aIGORft+NhYdCBUG65sriJSbacstWCvmVs+FN7zXwCMF/M2Rao3sgJUoomS854ipog==
+  dependencies:
+    "@adobe/leonardo-contrast-colors" "1.0.0"
+    arg "5.0.2"
+    chalk "5.4.1"
+    handlebars "4.7.8"
+    hex-rgb "4.3.0"
+    lilconfig "3.1.3"
+    style-dictionary "3.9.0"
+
 "@maggioli-design-system/svg-icons@^2.6.3":
   version "2.10.1"
   resolved "https://registry.npmjs.org/@maggioli-design-system/svg-icons/-/svg-icons-2.10.1.tgz#3c86d5b738407a7fe756877aa87baf7b4d2d5f8d"
@@ -15358,6 +15371,11 @@ tailwindcss@3.4.17:
     postcss-selector-parser "^6.1.2"
     resolve "^1.22.8"
     sucrase "^3.35.0"
+
+tailwindcss@4.1.11:
+  version "4.1.11"
+  resolved "https://registry.npmjs.org/tailwindcss/-/tailwindcss-4.1.11.tgz#799af3e98c19c5baaefafc6e0c16304a0e684854"
+  integrity sha512-2E9TBm6MDD/xKYe+dvJZAmg3yxIEDNRc0jwlNyDg/4Fil2QcSLjFKGVff0lAf1jjeaArlG/M75Ey/EYr/OJtBA==
 
 tapable@^2.0.0, tapable@^2.1.1, tapable@^2.2.0, tapable@^2.2.1:
   version "2.2.2"

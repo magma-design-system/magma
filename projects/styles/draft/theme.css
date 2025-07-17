@@ -1,0 +1,39 @@
+
+@plugin "magma-design-system/theme" {
+  --magma-theme-color-base-content: var(--magma-color-variant-base-01);
+  --magma-theme-color-base-lv1: var(--magma-color-variant-base-10);
+  --magma-theme-color-base-lv2: var(--magma-color-variant-base-09);
+  --magma-theme-color-base-lv3: var(--magma-color-variant-base-08);
+  --magma-theme-color-error-content: var(--magma-color-status-error-03);
+  --magma-theme-color-error: var(--magma-color-status-error-09);
+  --magma-theme-color-info-content: var(--magma-color-status-info-03);
+  --magma-theme-color-info: var(--magma-color-status-info-09);
+  --magma-theme-color-primary-content: var(--magma-color-variant-primary-03);
+  --magma-theme-color-primary: var(--magma-color-variant-primary-09);
+  --magma-theme-color-secondary-content: var(--magma-color-variant-secondary-03);
+  --magma-theme-color-secondary: var(--magma-color-variant-secondary-09);
+  --magma-theme-color-success-content: var(--magma-color-status-success-03);
+  --magma-theme-color-success: var(--magma-color-status-success-09);
+  --magma-theme-color-warning-content: var(--magma-color-status-warning-03);
+  --magma-theme-color-warning: var(--magma-color-status-warning-09);
+  --magma-theme-depth: var(--use-shadows, false);
+  --magma-theme-size-border: var(--border-lg);
+  --magma-theme-size-element-lg: var(--size-lg);
+  --magma-theme-size-element-sm: var(--size-md);
+  --magma-theme-size-radius-box: var(--radius-lg);
+  --magma-theme-size-radius-field: var(--radius-md);
+  --magma-theme-size-radius-selector: var(--radius-sm);
+
+  color-scheme: "light";
+  name: "maggioli";
+
+  /*
+
+  use-system-theme
+  can-change
+
+  default: true;
+  name: "light";
+  prefersdark: true; */
+}
+

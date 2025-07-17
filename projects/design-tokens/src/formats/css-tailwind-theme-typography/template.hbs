@@ -71,7 +71,7 @@ Generated at {{ date }}
 
 {{!-- box shadow --}}
 {{#each properties.cosmetic.boxShadow as | shadow |}}
-  --shadow-{{@key}}: {{shadow.value}}
+  --shadow-{{@key}}: {{shadow.value}};
 {{/each}}
 }
 
@@ -80,8 +80,8 @@ Generated at {{ date }}
 {{#each properties.css.transitionProperty as | transition |}}
 @utility transition-{{@key}} {
   transition-property: {{transition.value}};
-  transition-timing-function: var(--default-transition-timing-function); /* cubic-bezier(0.4, 0, 0.2, 1) */
-  transition-duration: var(--default-transition-duration); /* 150ms */
+  transition-timing-function: var(--default-transition-timing-function); /* default cubic-bezier(0.4, 0, 0.2, 1) */
+  transition-duration: var(--default-transition-duration); /* default 150ms */
 }
 {{/each}}
 
