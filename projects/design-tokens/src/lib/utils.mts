@@ -17,13 +17,14 @@ import {
   jsTailwindScreensFormat,
   tailwindcssAspetctRationTransform,
   tailwindPxToRemTransform,
+  cssTailwindThemeTypography,
+  tailwindCss4Filter,
 } from '../formats/index.js'
 import { getBrandColorConfig } from '../config/sd-brand-color.config.js'
 import chalk from 'chalk'
 import pkg from 'fs-extra'
 import { resolve } from 'path'
 import { lilconfig } from 'lilconfig'
-import { cssTailwindThemeTypography } from '@/formats/tailwind-typography/tailwind-typography.js'
 
 // importing for esm
 const { mkdir, writeFile } = pkg
@@ -97,5 +98,7 @@ export function getStyleDictionaryWithAllCustomTransform (): StyleDictionary.Cor
       // transform for tailwind props
       .registerTransform(tailwindcssAspetctRationTransform)
       .registerTransform(tailwindPxToRemTransform)
+      // filter for tailwind4 props
+      .registerFilter(tailwindCss4Filter)
   )
 }

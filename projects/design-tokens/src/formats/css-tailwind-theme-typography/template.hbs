@@ -56,6 +56,23 @@ Generated at {{ date }}
 {{#each properties.sizing.aspectRatio as | ratio |}}
   --aspect-{{@key}}: {{ratio.value}};
 {{/each}}
+
+{{!-- timing function --}}
+{{#each properties.css.timingFunction as | timing |}}
+  --ease-{{@key}}: {{timing.value}};
+{{/each}}
+
+{{!-- border --}}
+{{#each properties.cosmetic.border as | border |}}
+  {{#ifTailwind4Border @key}}
+  --border-{{@key}}: {{border.value}};
+  {{/ifTailwind4Border}}
+{{/each}}
+
+{{!-- box shadow --}}
+{{#each properties.cosmetic.boxShadow as | shadow |}}
+  --shadow-{{@key}}: {{shadow.value}}
+{{/each}}
 }
 
 {{!-- utilities --}}
@@ -68,3 +85,9 @@ Generated at {{ date }}
 }
 {{/each}}
 
+{{!-- grid template columns --}}
+{{#each properties.css.gridTemplateColumns as | grid |}}
+@utility grid-cols-{{@key}} {
+  grid-template-columns: {{grid.value}};
+}
+{{/each}}

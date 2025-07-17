@@ -22,14 +22,20 @@
       "default": {
         "value": "{sizing.primitive.25}"
       },
-      "md": {
+      "xs": {
+        "value": "{sizing.primitive.25}"
+      },
+      "sm": {
         "value": "{sizing.primitive.50}"
       },
+      "md": {
+        "value": "3px"
+      },
       "lg": {
-        "value": "{sizing.primitive.200}"
+        "value": "{sizing.primitive.100}"
       },
       "xl": {
-        "value": "{sizing.primitive.800}"
+        "value": "5px"
       }
     }
   }
