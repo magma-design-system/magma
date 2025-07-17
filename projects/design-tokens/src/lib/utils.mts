@@ -21,7 +21,7 @@ import {
   tailwindCss4Filter,
   cssTailwindThemeColor,
 } from '../formats/index.js'
-import { getBrandColorConfig } from '../config/sd-brand-color.config.js'
+import { getBrandColorConfig } from '../config/styledictionary/sd-brand-color.config.js'
 import chalk from 'chalk'
 import pkg from 'fs-extra'
 import { resolve } from 'path'

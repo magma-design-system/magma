@@ -4,8 +4,8 @@ import {
   writeJsonTokens,
 } from '../src/lib/utils.mjs'
 import { createColorTokens } from '../src/lib/color.mjs'
-import { getStyleDictionaryColorConfigAllPlatforms } from '../src/config/sd-color-all-platforms.config'
-import { getBrandColorConfig } from '../src/config/sd-brand-color.config'
+import { getStyleDictionaryColorConfigAllPlatforms } from '../src/config/styledictionary/sd-color-all-platforms.config'
+import { getBrandColorConfig } from '../src/config/styledictionary/sd-brand-color.config'
 import themeTokens from '../tokens/color/themes.json'
 import { TOKENS_DIR } from './meta'
 
@@ -40,14 +40,14 @@ getColorsConfig().then(resultConfig => {
   })
 
   // build fonts
-  styleDictionary.extend('./src/config/typography/default.json').buildAllPlatforms()
+  styleDictionary.extend('./src/config/styledictionary/typography.json').buildAllPlatforms()
 
   // build tailwind css props
-  styleDictionary.extend('./src/config/css.json').buildAllPlatforms()
+  styleDictionary.extend('./src/config/styledictionary/css.json').buildAllPlatforms()
 
   // build tailwind screens props
-  styleDictionary.extend('./src/config/screens.json').buildAllPlatforms()
+  styleDictionary.extend('./src/config/styledictionary/screens.json').buildAllPlatforms()
 
-  styleDictionary.extend('./src/config/tailwind4.json').buildAllPlatforms()
+  styleDictionary.extend('./src/config/styledictionary/tailwind4.json').buildAllPlatforms()
 
 })
