@@ -37,7 +37,7 @@ Generated at {{ date }}
 {{/each}}
 
 {{!-- spacing --}}
-  --spacing: {{properties.spacing-scale}};
+  --spacing: {{properties.spacing-scale.value}};
 {{#each properties.spacing as | spacing |}}
   --spacing-{{@key}}: {{spacing.value}};
 {{/each}}

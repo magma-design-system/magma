@@ -1,5 +1,5 @@
 {
-  "spacing-scale": "0.0025rem",
+  "spacing-scale": { "value": "0.0025rem"},
   "spacing": {
     "xs": {
       "value": "{sizing.primitive.100}"
