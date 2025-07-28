@@ -1,4 +1,5 @@
-@import '~@maggioli-design-system/styles/dist/tailwind/typography.css';
+@import '@maggioli-design-system/styles/dist/tailwind/typography.css';
+@config '../../../tailwind.config.js';
 @tailwind components;
 
 /**

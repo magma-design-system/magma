@@ -1,8 +1,11 @@
 @import '@maggioli-design-system/styles/dist/tailwind/base.css';
 @import '@maggioli-design-system/styles/dist/tailwind/typography.css';
 
+@config '../../tailwind.config.js';
 @tailwind base;
+@config '../../tailwind.config.js';
 @tailwind components;
+@config '../../tailwind.config.js';
 @tailwind utilities;
 
 body {

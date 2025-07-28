@@ -1,5 +1,6 @@
-@import '~@maggioli-design-system/styles/dist/css/animations.css'; /* included for focus effect */
+@import '@maggioli-design-system/styles/dist/css/animations.css'; /* included for focus effect */
 @import '../../tailwind/components.css';
+@config '../../../tailwind.config.js';
 @tailwind components;
 
 /**

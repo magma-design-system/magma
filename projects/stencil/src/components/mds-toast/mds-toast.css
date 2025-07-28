@@ -1,4 +1,5 @@
 @import './css/animate/components.css';
+@config '../../../tailwind.config.js';
 @tailwind utilities;
 
 /**
