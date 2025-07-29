@@ -1,15 +1,15 @@
 :host-context(.pref-theme-dark) {
-  --mds-price-table-features-cell-border-color: theme('colors.tone-neutral-07');
-  --mds-price-table-features-cell-icon-supported-color: theme('colors.label-green-03');
-  --mds-price-table-features-cell-icon-supported-color-hover: theme('colors.label-green-02');
-  --mds-price-table-features-cell-icon-unsupported-color-hover: theme('colors.tone-neutral-04');
+  --mds-price-table-features-cell-border-color: var(--color-tone-neutral-07);
+  --mds-price-table-features-cell-icon-supported-color: var(--color-label-green-03);
+  --mds-price-table-features-cell-icon-supported-color-hover: var(--color-label-green-02);
+  --mds-price-table-features-cell-icon-unsupported-color-hover: var(--color-tone-neutral-04);
 }
 
 @media (prefers-color-scheme: dark) {
   :host-context(.pref-theme-system) {
-    --mds-price-table-features-cell-border-color: theme('colors.tone-neutral-07');
-    --mds-price-table-features-cell-icon-supported-color: theme('colors.label-green-03');
-    --mds-price-table-features-cell-icon-supported-color-hover: theme('colors.label-green-02');
-    --mds-price-table-features-cell-icon-unsupported-color-hover: theme('colors.tone-neutral-04');
+    --mds-price-table-features-cell-border-color: var(--color-tone-neutral-07);
+    --mds-price-table-features-cell-icon-supported-color: var(--color-label-green-03);
+    --mds-price-table-features-cell-icon-supported-color-hover: var(--color-label-green-02);
+    --mds-price-table-features-cell-icon-unsupported-color-hover: var(--color-tone-neutral-04);
   }
 }

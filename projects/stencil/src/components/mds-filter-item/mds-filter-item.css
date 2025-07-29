@@ -1,24 +1,33 @@
-@import '@maggioli-design-system/styles/dist/css/animations.css'; /* included for focus effect */
+@reference '../../tailwind/index.css';
+@import '@maggioli-design-system/styles/dist/css/animations.css'
+  layer(components); /* included for focus effect */
 @import '../../tailwind/components.css';
-@config '../../../tailwind.config.js';
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss/utilities' layer(utilities);
 
-/**
+@import './css/mds-filter-item-pref-animation.css' layer(utilities);
+@import './css/mds-filter-item-pref-theme.css' layer(utilities);
+@import './css/mds-filter-item-pref-contrast.css' layer(utilities);
+@import '../../tailwind/fouc.css' layer(utilities);
+
+
+
+@layer utilities {
+  /**
  * @prop --mds-filter-item-count-background-default: Sets tge default `background-color` of the count element
  * @prop ---mds-filter-item-count-color-default: Sets tge default text `color` of the count element
  * @prop ---mds-filter-item-count-background-selected: Sets the z-index of the component.
  * @prop ---mds-filter-item-count-color-selected: Sets the z-index of the component.
  */
 
-:host {
-  --mds-filter-item-count-background-default: theme('colors.tone-neutral-08');
-  --mds-filter-item-count-color-default: theme('colors.tone-neutral-02');
-  --mds-filter-item-count-background-selected: theme('colors.tone-neutral-05');
-  --mds-filter-item-count-color-selected: theme('colors.tone-neutral');
+  :host {
+    --mds-filter-item-count-background-default: var(--color-tone-neutral-08);
+    --mds-filter-item-count-color-default: var(--color-tone-neutral-02);
+    --mds-filter-item-count-background-selected: theme(
+      'colors.tone-neutral-05'
+    );
+    --mds-filter-item-count-color-selected: var(--color-tone-neutral);
 
-  @apply
-    duration-200
+    @apply duration-200
     ease-out
     focus-bounce
     gap-100
@@ -26,73 +35,68 @@
     py-200
     rounded-full;
 
-  align-items: center;
-  color: theme('colors.tone-neutral-03');
-  cursor: pointer;
-  display: flex;
-  fill: currentcolor;
-  justify-content: center;
-  transition-property: background-color, box-shadow, color, outline, outline-offset;
-  user-select: none;
-  white-space: nowrap;
-}
+    align-items: center;
+    color: var(--color-tone-neutral-03);
+    cursor: pointer;
+    display: flex;
+    fill: currentcolor;
+    justify-content: center;
+    transition-property:
+      background-color, box-shadow, color, outline, outline-offset;
+    user-select: none;
+    white-space: nowrap;
+  }
 
-mds-text {
-  white-space: nowrap;
-}
+  mds-text {
+    white-space: nowrap;
+  }
 
-.count {
-  @apply
-    duration-200
+  .count {
+    @apply duration-200
     ease-out;
 
-  align-items: center;
-  background-color: var(--mds-filter-item-count-background-default);
-  border-radius: theme('size.400');
-  box-sizing: border-box;
-  color: currentcolor;
-  color: var(--mds-filter-item-count-color-default);
-  display: inline-flex;
-  flex-shrink: 0;
-  height: theme('size.400');
-  justify-content: center;
-  min-width: theme('size.400');
-  padding-left: theme('padding.150');
-  padding-right: theme('padding.150');
-  transition-property: background-color, color;
-  user-select: none;
-}
+    align-items: center;
+    background-color: var(--mds-filter-item-count-background-default);
+    border-radius: --spacing(400);
+    box-sizing: border-box;
+    color: currentcolor;
+    color: var(--mds-filter-item-count-color-default);
+    display: inline-flex;
+    flex-shrink: 0;
+    height: --spacing(400);
+    justify-content: center;
+    min-width: --spacing(400);
+    padding-left: var(--padding-150);
+    padding-right: var(--padding-150);
+    transition-property: background-color, color;
+    user-select: none;
+  }
 
-:host(:focus-visible) {
-  @apply focus-bounce--focused;
-}
+  :host(:focus-visible) {
+    @apply focus-bounce--focused;
+  }
 
-:host([icon]:not([label])) {
-  @apply
-    h-900
+  :host([icon]:not([label])) {
+    @apply h-900
     p-0
     w-900;
-}
+  }
 
-:host([selected]:not([selected="false"]) ),
-:host(:hover) {
-  background-color: theme('colors.tone-neutral');
-}
+  :host([selected]:not([selected='false'])),
+  :host(:hover) {
+    background-color: var(--color-tone-neutral);
+  }
 
-:host(:hover) {
-  box-shadow: theme('boxShadow.sm');
-}
+  :host(:hover) {
+    box-shadow: var(--shadow-sm);
+  }
 
-:host([selected]:not([selected="false"])) {
-  color: theme('colors.tone-neutral-01');
-}
+  :host([selected]:not([selected='false'])) {
+    color: var(--color-tone-neutral-01);
+  }
 
-:host([selected]:not([selected="false"]) ) .count {
-  background-color: var(--mds-filter-item-count-background-selected);
-  color: var(--mds-filter-item-count-color-selected);
+  :host([selected]:not([selected='false'])) .count {
+    background-color: var(--mds-filter-item-count-background-selected);
+    color: var(--mds-filter-item-count-color-selected);
+  }
 }
-
-@import './css/mds-filter-item-pref-animation.css';
-@import './css/mds-filter-item-pref-theme.css';
-@import './css/mds-filter-item-pref-contrast.css';
-@import '../../tailwind/fouc.css';

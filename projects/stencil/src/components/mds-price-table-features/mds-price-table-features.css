@@ -1,11 +1,12 @@
+@reference '../../tailwind/index.css';
 /**
  * @prop --mds-price-table-features-padding: Sets the cell padding of the children components
  * @prop --mds-price-table-features-border-color: Sets the border-color of the children components
  */
 
 :host {
-  --mds-price-table-features-border-color: theme('colors.tone-neutral-06');
-  --mds-price-table-features-padding: theme('spacing.300');
+  --mds-price-table-features-border-color: var(--color-tone-neutral-06);
+  --mds-price-table-features-padding: --spacing(300);
 
   @apply
     duration-200

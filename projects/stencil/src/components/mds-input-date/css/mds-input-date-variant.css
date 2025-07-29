@@ -1,5 +1,6 @@
-@config '../../../../tailwind.config.js';
-@tailwind utilities;
+@import 'tailwindcss/utilities' layer(utilities);
+
+
 
 :host {
   --mds-input-date-icon-color: var(--variant-primary-03);

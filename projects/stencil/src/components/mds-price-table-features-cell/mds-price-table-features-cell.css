@@ -1,3 +1,4 @@
+@reference '../../tailwind/index.css';
 @import '../../tailwind/components.css';
 
 /**
@@ -7,12 +8,12 @@
  */
 
 :host {
-  --mds-price-table-features-cell-padding: var(--mds-price-table-features-padding, theme('spacing.300'));
-  --mds-price-table-features-cell-icon-supported-color-hover: theme('colors.label-green-06');
-  --mds-price-table-features-cell-icon-supported-color: theme('colors.label-green-06');
-  --mds-price-table-features-cell-icon-unsupported-color-hover: theme('colors.tone-neutral-06');
-  --mds-price-table-features-cell-icon-unsupported-color: theme('colors.tone-neutral-06');
-  --mds-price-table-features-cell-border-color: theme('colors.tone-neutral-08');
+  --mds-price-table-features-cell-padding: var(--mds-price-table-features-padding, --spacing(300));
+  --mds-price-table-features-cell-icon-supported-color-hover: var(--color-label-green-06);
+  --mds-price-table-features-cell-icon-supported-color: var(--color-label-green-06);
+  --mds-price-table-features-cell-icon-unsupported-color-hover: var(--color-tone-neutral-06);
+  --mds-price-table-features-cell-icon-unsupported-color: var(--color-tone-neutral-06);
+  --mds-price-table-features-cell-border-color: var(--color-tone-neutral-08);
 
   @apply
     duration-200

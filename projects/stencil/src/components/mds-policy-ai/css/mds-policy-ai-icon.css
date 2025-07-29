@@ -1,20 +1,20 @@
 .icon-help {
-  background-color: theme('colors.variant-ai-05');
-  border: 1px solid theme('colors.tone-neutral');
-  border-radius: theme('size.600');
+  background-color: var(--color-variant-ai-05);
+  border: 1px solid var(--color-tone-neutral);
+  border-radius: --spacing(600);
   cursor: pointer;
-  fill: theme('colors.variant-ai-10');
+  fill: var(--color-variant-ai-10);
   height: min-content;
   width: min-content;
 }
 
 .icon-tip-content {
   display: grid;
-  gap: theme('spacing.200');
+  gap: --spacing(200);
 }
 
 .icon-help::part(icon) {
-  height: theme('size.600');
-  padding: theme('size.100');
-  width: theme('size.600');
+  height: --spacing(600);
+  padding: --spacing(100);
+  width: --spacing(600);
 }

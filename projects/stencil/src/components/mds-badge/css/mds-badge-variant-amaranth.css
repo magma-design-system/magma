@@ -1,25 +1,26 @@
-@config '../../../../tailwind.config.js';
-@tailwind utilities;
+@import 'tailwindcss/utilities' layer(utilities);
+
+
 
 :host([variant="amaranth"]) {
-  --mds-badge-color: theme('colors.tone-neutral');
+  --mds-badge-color: var(--color-tone-neutral);
 }
 
 :host([variant="amaranth"][tone="strong"]) {
-  --mds-badge-background: theme('colors.label-amaranth-04');
+  --mds-badge-background: var(--color-label-amaranth-04);
 }
 
 :host([variant="amaranth"][tone="weak"]) {
-  --mds-badge-background: theme('colors.label-amaranth-09');
-  --mds-badge-color: theme('colors.label-amaranth-02');
+  --mds-badge-background: var(--color-label-amaranth-09);
+  --mds-badge-color: var(--color-label-amaranth-02);
 }
 
 :host([variant="amaranth"][tone="quiet"]) {
-  --mds-badge-color: theme('colors.label-amaranth-04');
+  --mds-badge-color: var(--color-label-amaranth-04);
 }
 
 :host([variant="amaranth"][tone="ghost"]) {
   --mds-badge-background: transparent;
-  --mds-badge-border-color: theme('colors.label-amaranth-06');
-  --mds-badge-color: theme('colors.label-amaranth-04');
+  --mds-badge-border-color: var(--color-label-amaranth-06);
+  --mds-badge-color: var(--color-label-amaranth-04);
 }

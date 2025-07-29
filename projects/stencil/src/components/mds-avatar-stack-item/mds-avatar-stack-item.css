@@ -1,15 +1,15 @@
 :host {
 
   /* private */
-  --mds-avatar-stack-item-background: var(--mds-avatar-stack-background, theme('colors.tone-neutral'));
-  --mds-avatar-stack-item-count-background-color: var(--mds-avatar-stack-count-background-color, theme('colors.tone-neutral-09'));
-  --mds-avatar-stack-item-count-color: var(--mds-avatar-stack-count-color, theme('colors.tone-neutral-04'));
-  --mds-avatar-stack-item-large-size: var(--mds-avatar-stack-large-size, theme('size.1500'));
-  --mds-avatar-stack-item-medium-size: var(--mds-avatar-stack-medium-size, theme('size.1200'));
-  --mds-avatar-stack-item-small-size: var(--mds-avatar-stack-small-size, theme('size.900'));
-  --mds-avatar-stack-item-large-border: var(--mds-avatar-stack-large-border, theme('size.100'));
-  --mds-avatar-stack-item-medium-border: var(--mds-avatar-stack-medium-border, theme('size.100'));
-  --mds-avatar-stack-item-small-border: var(--mds-avatar-stack-small-border, theme('size.100'));
+  --mds-avatar-stack-item-background: var(--mds-avatar-stack-background, var(--color-tone-neutral));
+  --mds-avatar-stack-item-count-background-color: var(--mds-avatar-stack-count-background-color, var(--color-tone-neutral-09));
+  --mds-avatar-stack-item-count-color: var(--mds-avatar-stack-count-color, var(--color-tone-neutral-04));
+  --mds-avatar-stack-item-large-size: var(--mds-avatar-stack-large-size, --spacing(1500));
+  --mds-avatar-stack-item-medium-size: var(--mds-avatar-stack-medium-size, --spacing(1200));
+  --mds-avatar-stack-item-small-size: var(--mds-avatar-stack-small-size, --spacing(900));
+  --mds-avatar-stack-item-large-border: var(--mds-avatar-stack-large-border, --spacing(100));
+  --mds-avatar-stack-item-medium-border: var(--mds-avatar-stack-medium-border, --spacing(100));
+  --mds-avatar-stack-item-small-border: var(--mds-avatar-stack-small-border, --spacing(100));
   --mds-avatar-stack-item-large-offset: var(--mds-avatar-stack-large-offset, 2);
   --mds-avatar-stack-item-medium-offset: var(--mds-avatar-stack-medium-offset, 1.75);
   --mds-avatar-stack-item-small-offset: var(--mds-avatar-stack-small-offset, 1.5);

@@ -1,9 +1,9 @@
 :host-context(.pref-contrast-more) {
-  --mds-url-view-shadow: theme('boxShadow.outline-50');
+  --mds-url-view-shadow: var(--shadow-outline-50);
 }
 
 @media (prefers-contrast: more) {
   :host-context(.pref-contrast-system) {
-    --mds-url-view-shadow: theme('boxShadow.outline-50');
+    --mds-url-view-shadow: var(--shadow-outline-50);
   }
 }

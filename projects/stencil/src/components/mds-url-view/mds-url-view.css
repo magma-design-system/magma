@@ -1,97 +1,95 @@
-@import '@maggioli-design-system/styles/dist/css/animations.css'; /* included for focus effect */
-@import '../../tailwind/components.css';
-@config '../../../tailwind.config.js';
-@tailwind components;
+@reference '../../tailwind/index.css';
+/* @import '@maggioli-design-system/styles/dist/css/animations.css' layer(components); included for focus effect */
+/* @import '../../tailwind/components.css';
 
-/**
+@import './css/mds-url-view-pref-animation.css' layer(components);
+@import './css/mds-url-view-pref-theme.css' layer(components);
+@import './css/mds-url-view-pref-contrast.css' layer(components);
+@import '../../tailwind/fouc.css' layer(components); */
+
+
+
+@layer components {
+  /**
  * @prop --mds-url-view-background: Sets the background-color of the component
  * @prop --mds-url-view-color: Sets the text color of the component
  * @prop --mds-url-view-radius: Sets the border-radius of the component
  * @prop --mds-url-view-shadow: Sets the box-shadow of the component
  */
 
-:host {
+  :host {
+    /* stylelint-disable-next-line length-zero-no-unit */
+    --mds-modal-custom-window-distance: 0px;
+    --mds-url-view-background: var(--color-tone-neutral-10);
+    --mds-url-view-color: var(--color-tone-neutral-02);
+    --mds-url-view-radius: var(--radius-md);
+    --mds-url-view-header-shadow: var(--shadow-sm-sharp);
+    --mds-url-view-shadow: var(--shadow-lg);
 
-  /* stylelint-disable-next-line length-zero-no-unit */
-  --mds-modal-custom-window-distance: 0px;
-  --mds-url-view-background: theme('colors.tone-neutral-10');
-  --mds-url-view-color: theme('colors.tone-neutral-02');
-  --mds-url-view-radius: theme('borderRadius.md');
-  --mds-url-view-header-shadow: theme('boxShadow.sm-sharp');
-  --mds-url-view-shadow: theme('boxShadow.lg');
-
-  @apply
-    h-screen
+    @apply h-screen
     p-400;
 
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  margin: 0;
-}
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+  }
 
-.window {
-  @apply
-    duration-200
+  .window {
+    @apply duration-200
     ease-out
     w-full;
 
-  background-color: var(--mds-url-view-background);
-  border-radius: var(--mds-url-view-radius);
-  box-shadow: var(--mds-url-view-shadow);
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  overflow: hidden;
-  transition-property: background-color, box-shadow;
-}
+    background-color: var(--mds-url-view-background);
+    border-radius: var(--mds-url-view-radius);
+    box-shadow: var(--mds-url-view-shadow);
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    overflow: hidden;
+    transition-property: background-color, box-shadow;
+  }
 
-.header {
-  @apply
-    duration-200
+  .header {
+    @apply duration-200
     ease-out
     gap-200
     p-200;
 
-  align-items: center;
-  background-color: var(--mds-url-view-background);
-  box-shadow: var(--mds-url-view-header-shadow);
-  color: var(--mds-url-view-color);
-  display: flex;
-  flex-shrink: 0;
-  justify-content: space-between;
-  position: relative;
-  transition-property: background-color, box-shadow;
-}
+    align-items: center;
+    background-color: var(--mds-url-view-background);
+    box-shadow: var(--mds-url-view-header-shadow);
+    color: var(--mds-url-view-color);
+    display: flex;
+    flex-shrink: 0;
+    justify-content: space-between;
+    position: relative;
+    transition-property: background-color, box-shadow;
+  }
 
-.title {
-  @apply
-    min-w-0
+  .title {
+    @apply min-w-0
     truncate;
 
-  flex-grow: 1;
-  text-align: center;
-}
+    flex-grow: 1;
+    text-align: center;
+  }
 
-.window-icon {
-  fill: var(--mds-url-view-color);
-  flex-shrink: 0;
-}
+  .window-icon {
+    fill: var(--mds-url-view-color);
+    flex-shrink: 0;
+  }
 
-.button-close {
-  cursor: pointer;
-  fill: var(--mds-url-view-color);
-}
+  .button-close {
+    cursor: pointer;
+    fill: var(--mds-url-view-color);
+  }
 
-.iframe {
-  border: 0;
-  flex-grow: 1;
-  margin: 0;
-  padding: 0;
-  width: 100%;
+  .iframe {
+    border: 0;
+    flex-grow: 1;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+  }
 }
-
-@import './css/mds-url-view-pref-animation.css';
-@import './css/mds-url-view-pref-theme.css';
-@import './css/mds-url-view-pref-contrast.css';
-@import '../../tailwind/fouc.css';

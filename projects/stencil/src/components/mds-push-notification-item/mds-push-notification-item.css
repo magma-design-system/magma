@@ -1,156 +1,153 @@
+@reference '../../tailwind/index.css';
 @import '../../tailwind/components.css';
-@config '../../../tailwind.config.js';
-@tailwind utilities;
-@tailwind components;
+@import 'tailwindcss/utilities' layer(utilities);
 
-:host {
-  --mds-push-notification-item-duration: 300ms;
-  --mds-push-notification-item-icon-background-color: transparent;
-  --mds-push-notification-item-icon-color: theme('colors.tone-neutral-04');
-  --mds-push-notification-item-message-line-clamp: 2;
-  --mds-push-notification-item-shadow: theme('boxShadow.DEFAULT');
-  --mds-push-notification-item-subject-line-clamp: 1;
-  --mds-push-notification-item-timing-function: theme('transitionTimingFunction.in-out-quint');
+@import './css/mds-push-notification-item-pref-animation.css' layer(components);
+@import './css/mds-push-notification-item-pref-theme.css' layer(components);
+@import './css/mds-push-notification-item-pref-contrast.css' layer(components);
+@import './css/mds-push-notification-item-variant-primary.css' layer(components);
+@import './css/mds-push-notification-item-variant-label.css' layer(components);
+@import './css/mds-push-notification-item-variant-state.css' layer(components);
+@import '../../tailwind/fouc.css' layer(components);
 
-  @apply
-    gap-400
+
+
+@layer components {
+  :host {
+    --mds-push-notification-item-duration: 300ms;
+    --mds-push-notification-item-icon-background-color: transparent;
+    --mds-push-notification-item-icon-color: var(--color-tone-neutral-04);
+    --mds-push-notification-item-message-line-clamp: 2;
+    --mds-push-notification-item-shadow: var(--shadow);
+    --mds-push-notification-item-subject-line-clamp: 1;
+    --mds-push-notification-item-timing-function: var(--ease-in-out-quint);
+
+    @apply gap-400
     max-w-8000
     min-w-7200
     p-400
     rounded-lg;
 
-  align-items: flex-start;
-  background-color: theme('colors.tone-neutral');
-  box-shadow: var(--mds-push-notification-item-shadow);
-  color: theme('colors.tone-neutral-02');
-  display: flex;
-  pointer-events: auto;
-  position: relative;
-  transition-duration: var(--mds-push-notification-item-duration);
-  transition-property: background-color, box-shadow, color, margin, transform;
-  transition-timing-function: var(--mds-push-notification-item-timing-function);
-}
+    align-items: flex-start;
+    background-color: var(--color-tone-neutral);
+    box-shadow: var(--mds-push-notification-item-shadow);
+    color: var(--color-tone-neutral-02);
+    display: flex;
+    pointer-events: auto;
+    position: relative;
+    transition-duration: var(--mds-push-notification-item-duration);
+    transition-property: background-color, box-shadow, color, margin, transform;
+    transition-timing-function: var(
+      --mds-push-notification-item-timing-function
+    );
+  }
 
-:host([deletable]) {
-  @apply pr-800;
-}
+  :host([deletable]) {
+    @apply pr-800;
+  }
 
-.content {
-  display: grid;
-  flex-grow: 1;
-}
+  .content {
+    display: grid;
+    flex-grow: 1;
+  }
 
-.actions {
-  @apply
-    gap-200
+  .actions {
+    @apply gap-200
     pt-200;
 
-  display: flex;
-  flex-wrap: wrap;
-  min-width: 1px;
-}
+    display: flex;
+    flex-wrap: wrap;
+    min-width: 1px;
+  }
 
-.avatar,
-.picture {
-  flex-shrink: 0;
-}
+  .avatar,
+  .picture {
+    flex-shrink: 0;
+  }
 
-.picture {
-  @apply
-    max-w-1200
+  .picture {
+    @apply max-w-1200
     rounded;
 
-  box-shadow: theme('boxShadow.sm-sharp');
-  width: 100%;
-}
+    box-shadow: var(--shadow-sm-sharp);
+    width: 100%;
+  }
 
-.close-button {
-
-  @apply
-    p-150
+  .close-button {
+    @apply p-150
     transition-cosmetic;
 
-  opacity: 0;
-  position: absolute;
-  right: 0;
-  top: 0;
-}
+    opacity: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
 
-:host-context(:not(.safari)):host(:hover) .close-button {
-  opacity: 1;
-}
+  :host-context(:not(.safari)):host(:hover) .close-button {
+    opacity: 1;
+  }
 
-.close-button:focus-visible,
-.close-button:hover {
-  fill: theme('colors.tone-neutral-03');
-  opacity: 1;
-}
+  .close-button:focus-visible,
+  .close-button:hover {
+    fill: var(--color-tone-neutral-03);
+    opacity: 1;
+  }
 
-.header {
+  .header {
+    @apply gap-100;
 
-  @apply gap-100;
+    align-items: baseline;
+    display: flex;
+    justify-content: space-between;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 
-  align-items: baseline;
-  display: flex;
-  justify-content: space-between;
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
+  .infos {
+    display: flex;
+    flex-direction: column;
+  }
 
-.infos {
-  display: flex;
-  flex-direction: column;
-}
+  .time {
+    @apply mr-100;
 
-.time {
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
 
-  @apply mr-100;
+  .subject {
+    --mds-text-line-clamp: var(--mds-push-notification-item-subject-line-clamp);
 
-  flex-shrink: 0;
-  white-space: nowrap;
-}
+    line-height: var(--leading-sm);
+    text-overflow: ellipsis;
+  }
 
-.subject {
-  --mds-text-line-clamp: var(--mds-push-notification-item-subject-line-clamp);
+  .message {
+    --mds-text-line-clamp: var(--mds-push-notification-item-message-line-clamp);
 
-  line-height: theme('lineHeight.sm');
-  text-overflow: ellipsis;
-}
+    line-height: var(--leading-md);
+    text-overflow: ellipsis;
+  }
 
-.message {
-  --mds-text-line-clamp: var(--mds-push-notification-item-message-line-clamp);
-
-  line-height: theme('lineHeight.md');
-  text-overflow: ellipsis;
-}
-
-.avatar {
-  @apply
-    h-900
+  .avatar {
+    @apply h-900
     w-900;
 
-  background-color: var(--mds-push-notification-item-icon-background-color);
-  border-radius: 1000px;
-  fill: var(--mds-push-notification-item-icon-color);
-}
+    background-color: var(--mds-push-notification-item-icon-background-color);
+    border-radius: 1000px;
+    fill: var(--mds-push-notification-item-icon-color);
+  }
 
-.avatar::part(svg) {
-  @apply w-600;
-}
+  .avatar::part(svg) {
+    @apply w-600;
+  }
 
-:host([src]) .avatar {
-  background-color: transparent;
-}
+  :host([src]) .avatar {
+    background-color: transparent;
+  }
 
-:host([icon]) .avatar::part(wrapper) {
-  @apply p-150;
+  :host([icon]) .avatar::part(wrapper) {
+    @apply p-150;
+  }
 }
-
-@import './css/mds-push-notification-item-pref-animation.css';
-@import './css/mds-push-notification-item-pref-theme.css';
-@import './css/mds-push-notification-item-pref-contrast.css';
-@import './css/mds-push-notification-item-variant-primary.css';
-@import './css/mds-push-notification-item-variant-label.css';
-@import './css/mds-push-notification-item-variant-state.css';
-@import '../../tailwind/fouc.css';

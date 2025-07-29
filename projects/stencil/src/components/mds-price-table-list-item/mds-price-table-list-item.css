@@ -1,41 +1,51 @@
+@reference '../../tailwind/index.css';
 @import '../../tailwind/components.css';
-@config '../../../tailwind.config.js';
-@tailwind components;
 
-:host {
-  --mds-price-table-list-item-supported-icon-color-hover: theme('colors.label-green-05');
-  --mds-price-table-list-item-supported-icon-color: theme('colors.label-green-06');
-  --mds-price-table-list-item-unsupported-icon-color-hover: theme('colors.tone-neutral-04');
-  --mds-price-table-list-item-unsupported-icon-color: theme('colors.tone-neutral-05');
+@import '../../tailwind/fouc.css' layer(components);
 
-  @apply gap-100;
 
-  align-items: flex-start;
-  display: flex;
-}
 
-.text {
-  flex-grow: 1;
-}
+@layer components {
+  :host {
+    --mds-price-table-list-item-supported-icon-color-hover: theme(
+      'colors.label-green-05'
+    );
+    --mds-price-table-list-item-supported-icon-color: theme(
+      'colors.label-green-06'
+    );
+    --mds-price-table-list-item-unsupported-icon-color-hover: theme(
+      'colors.tone-neutral-04'
+    );
+    --mds-price-table-list-item-unsupported-icon-color: theme(
+      'colors.tone-neutral-05'
+    );
 
-.icon-container {
-  flex-shrink: 0;
-}
+    @apply gap-100;
 
-.icon {
-  @apply
-    duration-500
+    align-items: flex-start;
+    display: flex;
+  }
+
+  .text {
+    flex-grow: 1;
+  }
+
+  .icon-container {
+    flex-shrink: 0;
+  }
+
+  .icon {
+    @apply duration-500
     ease-out-expo
     h-600
     svg
     w-600;
 
-  fill: var(--mds-price-table-list-item-unsupported-icon-color);
-  transition-property: fill;
-}
+    fill: var(--mds-price-table-list-item-unsupported-icon-color);
+    transition-property: fill;
+  }
 
-:host([supported]:not([supported="false"])) .icon {
-  fill: var(--mds-price-table-list-item-supported-icon-color);
+  :host([supported]:not([supported='false'])) .icon {
+    fill: var(--mds-price-table-list-item-supported-icon-color);
+  }
 }
-
-@import '../../tailwind/fouc.css';

@@ -1,3 +1,4 @@
+@reference '../../tailwind/index.css';
 
 .navigation--back {
   --position: calc(var(--scroll-margin) - var(--mds-horizontal-scroll-gap) - var(--mds-horizontal-scroll-controls-margin));

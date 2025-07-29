@@ -1,15 +1,15 @@
 :host([variant="primary"][tone="strong"]) {
-  --mds-push-notification-item-icon-background-color: theme('colors.variant-primary-05');
-  --mds-push-notification-item-icon-color: theme('colors.variant-primary-10');
+  --mds-push-notification-item-icon-background-color: var(--color-variant-primary-05);
+  --mds-push-notification-item-icon-color: var(--color-variant-primary-10);
 }
 
 :host([variant="primary"]),
 :host([variant="primary"][tone="weak"]) {
-  --mds-push-notification-item-icon-background-color: theme('colors.variant-primary-09');
-  --mds-push-notification-item-icon-color: theme('colors.variant-primary-05');
+  --mds-push-notification-item-icon-background-color: var(--color-variant-primary-09);
+  --mds-push-notification-item-icon-color: var(--color-variant-primary-05);
 }
 
 :host([variant="primary"][tone="quiet"]) {
   --mds-push-notification-item-icon-background-color: transparent;
-  --mds-push-notification-item-icon-color: theme('colors.variant-primary-05');
+  --mds-push-notification-item-icon-color: var(--color-variant-primary-05);
 }

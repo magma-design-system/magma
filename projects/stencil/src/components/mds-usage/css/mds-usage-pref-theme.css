@@ -1,36 +1,36 @@
 :host-context(.pref-theme-dark) {
-  --mds-usage-badge-background: theme('colors.status-info-05');
+  --mds-usage-badge-background: var(--color-status-info-05);
 
-  box-shadow: theme('boxShadow.outline');
+  box-shadow: var(--shadow-outline);
 }
 
 :host-context(.pref-theme-dark):host([variant="do"]) {
-  --mds-usage-badge-background: theme('colors.status-success-05');
+  --mds-usage-badge-background: var(--color-status-success-05);
 }
 
 :host-context(.pref-theme-dark):host([variant="dont"]) {
-  --mds-usage-badge-background: theme('colors.status-error-05');
+  --mds-usage-badge-background: var(--color-status-error-05);
 }
 
 :host-context(.pref-theme-dark):host([variant="warn"]) {
-  --mds-usage-badge-background: theme('colors.status-warning-05');
+  --mds-usage-badge-background: var(--color-status-warning-05);
 }
 
 @media (prefers-color-scheme: dark) {
   :host-context(.pref-theme-system) {
-    --mds-tooltip-background: theme('colors.tone-neutral-09');
+    --mds-tooltip-background: var(--color-tone-neutral-09);
     --mds-tooltip-drop-shadow: drop-shadow(0 0 2px rgb(var(--tone-neutral-01) / 0.05)) drop-shadow(0 0 2px rgb(var(--tone-neutral-01) / 0.3)) drop-shadow(0 0 2px rgb(var(--tone-neutral-01) / 0.3));
   }
 
   :host-context(.pref-theme-system):host([variant="do"]) {
-    -mds-usage-badge-background: theme('colors.status-success-05');
+    -mds-usage-badge-background: var(--color-status-success-05);
   }
 
   :host-context(.pref-theme-system):host([variant="dont"]) {
-    -mds-usage-badge-background: theme('colors.status-error-05');
+    -mds-usage-badge-background: var(--color-status-error-05);
   }
 
   :host-context(.pref-theme-system):host([variant="warn"]) {
-    -mds-usage-badge-background: theme('colors.status-warning-05');
+    -mds-usage-badge-background: var(--color-status-warning-05);
   }
 }

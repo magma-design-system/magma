@@ -1,17 +1,18 @@
-@config '../../../../../tailwind.config.js';
-@tailwind utilities;
+@import 'tailwindcss/utilities' layer(utilities);
+
+
 
 :host([variant="light"] ),
 :host([variant="light"][tone="strong"]) {
-  --mds-toast-background: theme('colors.tone-neutral');
-  --mds-toast-color: theme('colors.tone-neutral-02');
-  --mds-toast-shadow: theme('boxShadow.lg-sharp');
-  --mds-toast-icon-color: theme('colors.tone-neutral-03');
+  --mds-toast-background: var(--color-tone-neutral);
+  --mds-toast-color: var(--color-tone-neutral-02);
+  --mds-toast-shadow: var(--shadow-lg-sharp);
+  --mds-toast-icon-color: var(--color-tone-neutral-03);
 }
 
 :host([variant="light"][tone="weak"]) {
-  --mds-toast-background: theme('colors.tone-neutral');
-  --mds-toast-color: theme('colors.tone-neutral-02');
-  --mds-toast-shadow: theme('boxShadow.sm-sharp');
-  --mds-toast-icon-color: theme('colors.tone-neutral-04');
+  --mds-toast-background: var(--color-tone-neutral);
+  --mds-toast-color: var(--color-tone-neutral-02);
+  --mds-toast-shadow: var(--shadow-sm-sharp);
+  --mds-toast-icon-color: var(--color-tone-neutral-04);
 }

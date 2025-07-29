@@ -1,11 +1,11 @@
 :host([variant="light"]) {
-  --mds-tooltip-background: theme('colors.tone-neutral');
-  --mds-tooltip-color: theme('colors.tone-neutral-02');
+  --mds-tooltip-background: var(--color-tone-neutral);
+  --mds-tooltip-color: var(--color-tone-neutral-02);
   --mds-tooltip-drop-shadow: drop-shadow(theme('dropShadow.DEFAULT.0')) drop-shadow(theme('dropShadow.DEFAULT.1'));
 }
 
 :host([variant="dark"]) {
-  --mds-tooltip-background: theme('colors.tone-neutral-01');
-  --mds-tooltip-color: theme('colors.tone-neutral');
+  --mds-tooltip-background: var(--color-tone-neutral-01);
+  --mds-tooltip-color: var(--color-tone-neutral);
   --mds-tooltip-drop-shadow: drop-shadow(theme('dropShadow.2xl'));
 }

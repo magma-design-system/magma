@@ -1,3 +1,4 @@
+@reference '../../tailwind/index.css';
 
 /**
  * @prop --mds-table-cell-background-hover: The background-color of the table cell when the mouse is over it

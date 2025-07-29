@@ -1,7 +1,7 @@
 :host {
   --mds-tab-item-hover-background: transparent;
-  --mds-tab-item-selected-background: theme('colors.tone-neutral');
-  --mds-tab-item-selected-shadow: theme('boxShadow.DEFAULT');
+  --mds-tab-item-selected-background: var(--color-tone-neutral);
+  --mds-tab-item-selected-shadow: var(--shadow-DEFAULT);
   --mds-tab-item-default-background: transparent;
   --mds-tab-item-default-shadow: transparent;
 

@@ -1,3 +1,5 @@
+@reference '../../tailwind/index.css';
+
 @import '../../tailwind/components.css';
 
 /**
@@ -8,10 +10,10 @@
  */
 
 :host {
-  --mds-avatar-background-color-pending: theme('colors.tone-neutral-08');
-  --mds-avatar-background-color: theme('colors.variant-primary-05');
-  --mds-avatar-color: theme('colors.variant-primary-10');
-  --mds-avatar-radius: theme('borderRadius.full');
+  --mds-avatar-background-color-pending: var(--color-tone-neutral-08);
+  --mds-avatar-background-color: var(--color-variant-primary-05);
+  --mds-avatar-color: var(--color-variant-primary-10);
+  --mds-avatar-radius: var(--radius-full);
   --mds-avatar-initials-padding: 20%;
 
   aspect-ratio: 1/1;
@@ -20,7 +22,7 @@
   container-type: inline-size;
   display: inline-flex;
   overflow: hidden;
-  width: theme('spacing.1200');
+  width: --spacing(1200);
 }
 
 .avatar {

@@ -1,31 +1,31 @@
 :host-context(.pref-theme-dark) {
-  --mds-paginator-item-background-disabled: theme('colors.tone-neutral-09');
-  --mds-paginator-item-background-hover: theme('colors.tone-neutral-08');
-  --mds-paginator-item-background-selected: theme('colors.variant-primary-03');
+  --mds-paginator-item-background-disabled: var(--color-tone-neutral-09);
+  --mds-paginator-item-background-hover: var(--color-tone-neutral-08);
+  --mds-paginator-item-background-selected: var(--color-variant-primary-03);
   --mds-paginator-item-background: transparent;
-  --mds-paginator-item-color-disabled: theme('colors.tone-neutral-06');
-  --mds-paginator-item-color-hover: theme('colors.tone-neutral-02');
-  --mds-paginator-item-color-selected: theme('colors.tone-neutral');
-  --mds-paginator-item-color: theme('colors.tone-neutral-02');
+  --mds-paginator-item-color-disabled: var(--color-tone-neutral-06);
+  --mds-paginator-item-color-hover: var(--color-tone-neutral-02);
+  --mds-paginator-item-color-selected: var(--color-tone-neutral);
+  --mds-paginator-item-color: var(--color-tone-neutral-02);
   --mds-paginator-item-shadow-disabled: none;
   --mds-paginator-item-shadow-hover: none;
-  --mds-paginator-item-shadow-selected: theme('boxShadow.md-sharp');
+  --mds-paginator-item-shadow-selected: var(--shadow-md-sharp);
   --mds-paginator-item-shadow: none;
 }
 
 @media (prefers-color-scheme: dark) {
   :host-context(.pref-theme-system) {
-    --mds-paginator-item-background-disabled: theme('colors.tone-neutral-09');
-    --mds-paginator-item-background-hover: theme('colors.tone-neutral-08');
-    --mds-paginator-item-background-selected: theme('colors.variant-primary-03');
+    --mds-paginator-item-background-disabled: var(--color-tone-neutral-09);
+    --mds-paginator-item-background-hover: var(--color-tone-neutral-08);
+    --mds-paginator-item-background-selected: var(--color-variant-primary-03);
     --mds-paginator-item-background: transparent;
-    --mds-paginator-item-color-disabled: theme('colors.tone-neutral-06');
-    --mds-paginator-item-color-hover: theme('colors.tone-neutral-02');
-    --mds-paginator-item-color-selected: theme('colors.tone-neutral');
-    --mds-paginator-item-color: theme('colors.tone-neutral-02');
+    --mds-paginator-item-color-disabled: var(--color-tone-neutral-06);
+    --mds-paginator-item-color-hover: var(--color-tone-neutral-02);
+    --mds-paginator-item-color-selected: var(--color-tone-neutral);
+    --mds-paginator-item-color: var(--color-tone-neutral-02);
     --mds-paginator-item-shadow-disabled: none;
     --mds-paginator-item-shadow-hover: none;
-    --mds-paginator-item-shadow-selected: theme('boxShadow.md-sharp');
+    --mds-paginator-item-shadow-selected: var(--shadow-md-sharp);
     --mds-paginator-item-shadow: none;
   }
 }

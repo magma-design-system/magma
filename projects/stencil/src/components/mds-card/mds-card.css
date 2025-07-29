@@ -1,3 +1,4 @@
+@reference '../../tailwind/index.css';
 /**
  * @prop --mds-card-gap: Sets the spacing between card elements
  * @prop --mds-card-padding: Sets the spacing around card elements
@@ -9,12 +10,12 @@
 
   @apply rounded-2xl;
 
-  background-color: theme('colors.tone-neutral');
-  box-shadow: theme('boxShadow.md-sharp');
+  background-color: var(--color-tone-neutral);
+  box-shadow: var(--shadow-md-sharp);
   container-name: mds-card;
   container-type: inline-size;
   display: grid;
-  min-height: theme('spacing.400');
+  min-height: --spacing(400);
   overflow: hidden;
 }
 

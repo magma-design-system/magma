@@ -1,9 +1,24 @@
-@import '@maggioli-design-system/styles/dist/css/animations.css'; /* included for focus effect */
+@reference '../../tailwind/index.css';
+@import '@maggioli-design-system/styles/dist/css/animations.css'
+  layer(components); /* included for focus effect */
 @import '../../tailwind/components.css';
-@config '../../../tailwind.config.js';
-@tailwind components;
 
-/**
+@import './css/mds-modal-action-close.css' layer(components);
+@import './css/mds-modal-animation-3d.css' layer(components);
+@import './css/mds-modal-animation-custom.css' layer(components);
+@import './css/mds-modal-animation-slide.css' layer(components);
+@import './css/mds-modal-opened.css' layer(components);
+@import './css/mds-modal-position.css' layer(components);
+@import './css/mds-modal-window.css' layer(components);
+@import './css/mds-modal-pref-animation.css' layer(components);
+@import './css/mds-modal-pref-contrast.css' layer(components);
+@import './css/mds-modal-pref-theme.css' layer(components);
+@import '../../tailwind/fouc.css' layer(components);
+
+
+
+@layer components {
+  /**
  * @prop --mds-modal-custom-closed-transform: Sets the transform position of the custom window when it's outside the viewport, to it's default position
  * @prop --mds-modal-custom-window-distance: Set the distance between the slotted modal window and the screen bounds
  * @prop --mds-modal-overlay-color: Set the overlay color of the background when the component is opened, this property can be inherited from `globals.css` in `styles^8.0.0`.
@@ -20,50 +35,43 @@
  * @prop --mds-modal-z-index: Set the z-index of the window when the component is opened
  */
 
-:host {
-  --mds-modal-custom-closed-transform: rotateX(10deg) rotateY(0) scale(1.25) translate(0, 10%);
-  --mds-modal-custom-window-distance: theme('spacing.600');
-  --mds-modal-overlay-color: var(--magma-overlay-color, 0 0 0);
-  --mds-modal-overlay-opacity: var(--magma-overlay-opacity, 0.5);
-  --mds-modal-transition-duration: 500ms;
-  --mds-modal-transition-timing-funciton: theme('transitionTimingFunction.in-out-quint');
-  --mds-modal-window-background: theme('colors.tone-neutral');
-  --mds-modal-window-distance: 0;
-  --mds-modal-window-max-width: 33%;
-  --mds-modal-window-min-width: 400px;
-  --mds-modal-window-overflow: auto;
-  --mds-modal-window-radius: 0;
-  --mds-modal-window-shadow: theme('boxShadow.2xl');
-  --mds-modal-z-index: var(--magma-modal-z-index);
-  /* private */ --mds-modal-custom-opened-transform: translate(0, 0);
-  /* private */ --mds-modal-transition-window-transform: translate(0);
-  /* private */ --mds-modal-window-close-margin: theme('size.2000');
+  :host {
+    --mds-modal-custom-closed-transform: rotateX(10deg) rotateY(0) scale(1.25)
+      translate(0, 10%);
+    --mds-modal-custom-window-distance: var(--spacing-600);
+    --mds-modal-overlay-color: var(--magma-overlay-color, 0 0 0);
+    --mds-modal-overlay-opacity: var(--magma-overlay-opacity, 0.5);
+    --mds-modal-transition-duration: 500ms;
+    --mds-modal-transition-timing-funciton: var(--ease-in-out-quint);
+    --mds-modal-window-background: var(--color-tone-neutral);
+    --mds-modal-window-distance: 0;
+    --mds-modal-window-max-width: 33%;
+    --mds-modal-window-min-width: 400px;
+    --mds-modal-window-overflow: auto;
+    --mds-modal-window-radius: 0;
+    --mds-modal-window-shadow: var(--shadow-2xl);
+    --mds-modal-z-index: var(--magma-modal-z-index);
+    /* private */
+    --mds-modal-custom-opened-transform: translate(0, 0);
+    /* private */
+    --mds-modal-transition-window-transform: translate(0);
+    /* private */
+    --mds-modal-window-close-margin: --spacing(2000);
 
-  @apply ease-in-out-quint;
+    @apply ease-in-out-quint;
 
-  align-items: center;
-  background-color: rgb(var(--mds-modal-overlay-color) / 0);
-  display: flex;
-  fill: theme('colors.tone-neutral');
-  inset: 0;
-  justify-content: center;
-  perspective: 600px;
-  pointer-events: none;
-  position: fixed;
-  transition-duration: var(--mds-modal-transition-duration);
-  transition-property: background-color;
-  transition-timing-function: var(--mds-modal-transition-timing-funciton);
-  z-index: var(--mds-modal-z-index, 1000);
+    align-items: center;
+    background-color: rgb(var(--mds-modal-overlay-color) / 0);
+    display: flex;
+    fill: var(--color-tone-neutral);
+    inset: 0;
+    justify-content: center;
+    perspective: 600px;
+    pointer-events: none;
+    position: fixed;
+    transition-duration: var(--mds-modal-transition-duration);
+    transition-property: background-color;
+    transition-timing-function: var(--mds-modal-transition-timing-funciton);
+    z-index: var(--mds-modal-z-index, 1000);
+  }
 }
-
-@import './css/mds-modal-action-close.css';
-@import './css/mds-modal-animation-3d.css';
-@import './css/mds-modal-animation-custom.css';
-@import './css/mds-modal-animation-slide.css';
-@import './css/mds-modal-opened.css';
-@import './css/mds-modal-position.css';
-@import './css/mds-modal-window.css';
-@import './css/mds-modal-pref-animation.css';
-@import './css/mds-modal-pref-contrast.css';
-@import './css/mds-modal-pref-theme.css';
-@import '../../tailwind/fouc.css';

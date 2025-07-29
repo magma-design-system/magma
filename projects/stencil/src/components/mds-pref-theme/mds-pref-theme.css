@@ -1,3 +1,4 @@
+@reference '../../tailwind/index.css';
 /*
  * @prop --mds-pref-theme-overlay-fadeout-duration: Sets the fadeout duration of the overlay which hides UI color flash on theme change
  * @prop --mds-pref-theme-overlay-show-duration: Sets the show duration of the overlay which hides UI color flash on theme change
@@ -15,22 +16,22 @@
 }
 
 .item {
-  --mds-tab-item-default-color: theme('colors.tone-neutral-05');
+  --mds-tab-item-default-color: var(--color-tone-neutral-05);
 
   flex-basis: 0;
   flex-grow: 1;
 }
 
 .item--system {
-  --mds-tab-item-selected-color: theme('colors.tone-neutral-03');
+  --mds-tab-item-selected-color: var(--color-tone-neutral-03);
 }
 
 .item--light {
-  --mds-tab-item-selected-color: theme('colors.label-yellow-06');
+  --mds-tab-item-selected-color: var(--color-label-yellow-06);
 }
 
 .item--dark {
-  --mds-tab-item-selected-color: theme('colors.label-sky-06');
+  --mds-tab-item-selected-color: var(--color-label-sky-06);
 }
 
 @import './css/mds-pref-theme-pref-contrast.css';

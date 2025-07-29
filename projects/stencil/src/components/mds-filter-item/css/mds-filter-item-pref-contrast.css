@@ -1,11 +1,11 @@
 :host-context(.pref-contrast-more):host([selected]:not([selected="false"])),
 :host-context(.pref-contrast-more):host(:hover) {
-  box-shadow: theme('boxShadow.outline-strong-50');
+  box-shadow: var(--shadow-outline-strong-50);
 }
 
 @media (prefers-contrast: more) {
   :host-context(.pref-contrast-system):host([selected]:not([selected="false"])),
   :host-context(.pref-contrast-system):host(:hover) {
-    box-shadow: theme('boxShadow.outline-strong-50');
+    box-shadow: var(--shadow-outline-strong-50);
   }
 }

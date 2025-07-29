@@ -1,45 +1,72 @@
-@import '@maggioli-design-system/styles/dist/tailwind/typography.css';
+@reference '../../tailwind/index.css';
+@import '@maggioli-design-system/styles/dist/tailwind/typography.css'
+  layer(components);
 @import '../../tailwind/components.css';
-@config '../../../tailwind.config.js';
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss/utilities' layer(utilities);
+
+@import './css/mds-input-select-variant.css' layer(utilities);
+@import './css/mds-input-select-pref-animation.css' layer(utilities);
+@import './css/mds-input-select-pref-theme.css' layer(utilities);
+@import './css/mds-input-select-pref-contrast.css' layer(utilities);
+@import '../../tailwind/fouc.css' layer(utilities);
 
 
-:host {
-  @apply text-info-detail;
 
-  --mds-input-select-variant-color: var(--tone-neutral-01);
-  --mds-input-select-ring: 0 0 0 1px rgb(var(--mds-input-select-variant-color) / 0.1);
-  --mds-input-select-shadow: 0 1px 3px 0 rgb(var(--mds-input-select-variant-color) / 0.1), 0 1px 2px 0 rgb(var(--mds-input-select-variant-color) / 0.06);
-  --mds-input-select-arrow-icon-background-color: var(--mds-input-select-arrow-icon-blur-background-color);
-  --mds-input-select-arrow-icon-blur-background-color: transparent;
-  --mds-input-select-arrow-icon-blur-color: rgb(var(--mds-input-select-variant-color) / 0.5);
-  --mds-input-select-arrow-icon-color: var(--mds-input-select-arrow-icon-blur-color);
-  --mds-input-select-arrow-icon-hover-background-color: rgb(var(--mds-input-select-variant-color) / 0.5);
-  --mds-input-select-arrow-icon-hover-color: rgb(var(--mds-input-select-variant-color));
+@layer utilities {
+  :host {
+    @apply text-info-detail;
 
-  color: theme('colors.tone-neutral-02');
-  display: flex;
-  position: relative;
-  user-select: none;
-}
+    --mds-input-select-variant-color: var(--tone-neutral-01);
+    --mds-input-select-ring: 0 0 0 1px
+      rgb(var(--mds-input-select-variant-color) / 0.1);
+    --mds-input-select-shadow:
+      0 1px 3px 0 rgb(var(--mds-input-select-variant-color) / 0.1),
+      0 1px 2px 0 rgb(var(--mds-input-select-variant-color) / 0.06);
+    --mds-input-select-arrow-icon-background-color: var(
+      --mds-input-select-arrow-icon-blur-background-color
+    );
+    --mds-input-select-arrow-icon-blur-background-color: transparent;
+    --mds-input-select-arrow-icon-blur-color: rgb(
+      var(--mds-input-select-variant-color) / 0.5
+    );
+    --mds-input-select-arrow-icon-color: var(
+      --mds-input-select-arrow-icon-blur-color
+    );
+    --mds-input-select-arrow-icon-hover-background-color: rgb(
+      var(--mds-input-select-variant-color) / 0.5
+    );
+    --mds-input-select-arrow-icon-hover-color: rgb(
+      var(--mds-input-select-variant-color)
+    );
 
-:host([required]:not([required="false"]):focus-within) .icon {
-  transform: translate(theme('spacing.150'), theme('spacing.150'));
-}
+    color: var(--color-tone-neutral-02);
+    display: flex;
+    position: relative;
+    user-select: none;
+  }
 
-:host(:hover),
-:host(:focus-within) {
-  --mds-input-select-variant-color: var(--variant-primary-03);
-  --mds-input-select-ring: 0 0 0 3px rgb(var(--mds-input-select-variant-color) / 1);
-  --mds-input-select-shadow: 0 4px 6px -1px rgb(var(--mds-input-select-variant-color) / 0.1), 0 2px 4px -1px rgb(var(--mds-input-select-variant-color) / 0.06);
-  --mds-input-select-arrow-icon-background-color: var(--mds-input-select-arrow-icon-hover-background-color);
-  --mds-input-select-arrow-icon-color: var(--mds-input-select-arrow-icon-hover-color);
-}
+  :host([required]:not([required='false']):focus-within) .icon {
+    transform: translate(var(--spacing-150), var(--spacing-150));
+  }
 
-.input {
-  @apply
-    duration-300
+  :host(:hover),
+  :host(:focus-within) {
+    --mds-input-select-variant-color: var(--variant-primary-03);
+    --mds-input-select-ring: 0 0 0 3px
+      rgb(var(--mds-input-select-variant-color) / 1);
+    --mds-input-select-shadow:
+      0 4px 6px -1px rgb(var(--mds-input-select-variant-color) / 0.1),
+      0 2px 4px -1px rgb(var(--mds-input-select-variant-color) / 0.06);
+    --mds-input-select-arrow-icon-background-color: var(
+      --mds-input-select-arrow-icon-hover-background-color
+    );
+    --mds-input-select-arrow-icon-color: var(
+      --mds-input-select-arrow-icon-hover-color
+    );
+  }
+
+  .input {
+    @apply duration-300
     ease-out-expo
     m-0
     min-h-1200
@@ -50,100 +77,99 @@
     text-info-detail
     w-full;
 
-  appearance: none;
-  background-color: theme('colors.tone-neutral');
-  border: 0;
-  box-shadow: var(--mds-input-select-ring), var(--mds-input-select-shadow);
-  box-sizing: border-box;
-  color: theme('colors.tone-neutral-05');
-  cursor: pointer;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  transition-property: background-color, border-color, box-shadow, color, fill;
-}
+    appearance: none;
+    background-color: var(--color-tone-neutral);
+    border: 0;
+    box-shadow: var(--mds-input-select-ring), var(--mds-input-select-shadow);
+    box-sizing: border-box;
+    color: var(--color-tone-neutral-05);
+    cursor: pointer;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition-property:
+      background-color, border-color, box-shadow, color, fill;
+  }
 
-.input:hover,
-.input:focus {
-  @apply
-    duration-300
+  .input:hover,
+  .input:focus {
+    @apply duration-300
     ease-out-expo
-    outline-none;
+    outline-hidden;
 
-  color: theme('colors.tone-neutral-03');
-}
+    color: var(--color-tone-neutral-03);
+  }
 
-:host([value]:not([value=""])) .input {
-  color: theme('colors.tone-neutral-03');
-}
+  :host([value]:not([value=''])) .input {
+    color: var(--color-tone-neutral-03);
+  }
 
-.input--mds-input-select-selected {
-  color: theme('colors.tone-neutral-02');
-}
+  .input--mds-input-select-selected {
+    color: var(--color-tone-neutral-02);
+  }
 
-.input:disabled {
-  background-color: theme('colors.tone-neutral-09');
-  opacity: 1;
-}
+  .input:disabled {
+    background-color: var(--color-tone-neutral-09);
+    opacity: 1;
+  }
 
-:host([disabled]:not([disabled="false"])) {
-  pointer-events: none;
-}
+  :host([disabled]:not([disabled='false'])) {
+    pointer-events: none;
+  }
 
-:host([disabled]:not([disabled="false"])) .input {
-  pointer-events: none;
-}
+  :host([disabled]:not([disabled='false'])) .input {
+    pointer-events: none;
+  }
 
-:host([disabled]:not([disabled="false"])) .icon {
-  fill: theme('colors.tone-neutral-06');
-  transform: translate(theme('spacing.250'), theme('spacing.200'));
-}
+  :host([disabled]:not([disabled='false'])) .icon {
+    fill: var(--color-tone-neutral-06);
+    transform: translate(var(--spacing-250), var(--spacing-200));
+  }
 
-.icon-container {
-  @apply
-    h-1200
+  .icon-container {
+    @apply h-1200
     right-400;
 
-  align-items: center;
-  color: inherit;
-  display: flex;
-  pointer-events: none;
-  position: absolute;
-}
+    align-items: center;
+    color: inherit;
+    display: flex;
+    pointer-events: none;
+    position: absolute;
+  }
 
-.icon {
-  @apply
-    duration-200
+  .icon {
+    @apply duration-200
     rounded-full
     svg;
 
-  background-color: var(--mds-input-select-arrow-icon-background-color, theme('colors.variant-primary-09'));
-  fill: var(--mds-input-select-arrow-icon-color, theme('colors.variant-primary-04'));
-  transition-property: background-color, fill;
-}
-
-.option-container {
-  display: none;
-}
-
-@container (max-width: 210px) {
-  :host .tip__content,
-  :host(:focus-within) .tip__content {
-    grid-template-columns: 0fr;
-    opacity: 0;
+    background-color: var(
+      --mds-input-select-arrow-icon-background-color,
+      var(--color-variant-primary-09)
+    );
+    fill: var(
+      --mds-input-select-arrow-icon-color,
+      var(--color-variant-primary-04)
+    );
+    transition-property: background-color, fill;
   }
 
-  :host .tip {
-    padding-left: 0;
-    padding-right: 0;
+  .option-container {
+    display: none;
   }
 
-  :host {
-    --mds-input-select-background: theme('colors.variant-primary-07');
+  @container (max-width: 210px) {
+    :host .tip__content,
+    :host(:focus-within) .tip__content {
+      grid-template-columns: 0fr;
+      opacity: 0;
+    }
+
+    :host .tip {
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    :host {
+      --mds-input-select-background: var(--color-variant-primary-07);
+    }
   }
 }
-
-@import './css/mds-input-select-variant.css';
-@import './css/mds-input-select-pref-animation.css';
-@import './css/mds-input-select-pref-theme.css';
-@import './css/mds-input-select-pref-contrast.css';
-@import '../../tailwind/fouc.css';

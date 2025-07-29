@@ -1,10 +1,11 @@
 import alias from '@rollup/plugin-alias'
 import autoprefixer from 'autoprefixer'
 import path from 'path'
-import tailwind from 'tailwindcss'
+import tailwind from '@tailwindcss/postcss'
 import { Config } from '@stencil/core'
 import { inlineSvg } from 'stencil-inline-svg'
 import { postcss } from '@stencil/postcss'
+import postcssImport from 'postcss-import'
 
 import { reactOutputTarget } from '@stencil/react-output-target'
 import { angularOutputTarget } from '@stencil/angular-output-target'
@@ -20,7 +21,7 @@ const srcDir = './src'
 
 export const config: Config = {
   namespace: packageName,
-  // globalStyle: `${srcDir}/tailwind/index.css`,
+  globalStyle: `${srcDir}/tailwind/index.css`,
   hydratedFlag: {
     selector: 'attribute',
   },
@@ -78,7 +79,7 @@ export const config: Config = {
   ],
   plugins: [
     postcss({
-      plugins: [autoprefixer({ flexbox: 'no-2009' }), tailwind()],
+      plugins: [postcssImport, autoprefixer({ flexbox: 'no-2009' }), tailwind()],
     }),
     alias({
       entries: [

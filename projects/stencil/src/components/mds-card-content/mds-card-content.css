@@ -1,15 +1,17 @@
-@config '../../../tailwind.config.js';
-@tailwind utilities;
+@reference '../../tailwind/index.css';
+@import 'tailwindcss/utilities' layer(utilities);
 
-:host {
+@import '../../tailwind/fouc.css' layer(utilities);
 
-  @apply
-    gap-400
+
+
+@layer utilities {
+  :host {
+    @apply gap-400
     p-400;
 
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(1px, 100%));
-  min-width: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(1px, 100%));
+    min-width: 0;
+  }
 }
-
-@import '../../tailwind/fouc.css';

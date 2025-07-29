@@ -12,30 +12,30 @@ mds-modal {
 .status-bar-area {
   backdrop-filter: var(--mds-status-bar-backdrop-filter);
   background-color: var(--mds-status-bar-backdrop);
-  border-radius: theme('borderRadius.xl') theme('borderRadius.xl') 0 0;
-  margin-left: theme('padding.600');
-  margin-right: theme('padding.600');
-  padding: theme('padding.200') theme('padding.200') theme('padding.600') theme('padding.200');
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  margin-left: --spacing(600);
+  margin-right: --spacing(600);
+  padding: --spacing(200) --spacing(200) --spacing(600) --spacing(200);
   transition-property: background-color, transform, opacity;
 }
 
 .status-bar {
   align-items: flex-start;
-  background-color: theme('colors.tone-neutral');
-  border-radius: theme('borderRadius.lg');
-  box-shadow: theme('boxShadow.DEFAULT');
+  background-color: var(--color-tone-neutral);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-DEFAULT);
   display: inline-flex;
   flex-wrap: wrap;
-  gap: theme('spacing.400');
+  gap: --spacing(400);
   max-width: var(--mds-status-bar-max-width);
-  padding: theme('spacing.600');
+  padding: --spacing(600);
 }
 
 .actions {
   display: inline-flex;
   flex-grow: 1;
   flex-wrap: wrap;
-  gap: theme('spacing.400');
+  gap: --spacing(400);
 }
 
 @media (width <= 480px) {
@@ -43,11 +43,11 @@ mds-modal {
     border-radius: 0;
     margin-left: 0;
     margin-right: 0;
-    padding: theme('padding.400');
+    padding: --spacing(400);
   }
 
   .actions {
-    gap: theme('spacing.200');
+    gap: --spacing(200);
   }
 
   ::slotted(*) {

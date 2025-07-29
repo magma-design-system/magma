@@ -3,6 +3,6 @@
 }
 
 .chip-dropdown {
-  max-width: theme('size.7200');
-  padding: theme('size.300') theme('size.400');
+  max-width: --spacing(7200);
+  padding: --spacing(300) --spacing(400);
 }

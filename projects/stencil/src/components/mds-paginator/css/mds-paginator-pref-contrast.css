@@ -1,37 +1,37 @@
 :host-context(.pref-contrast-more) .pages {
-  box-shadow: theme('boxShadow.outline-50') inset;
+  box-shadow: var(--shadow-outline-50) inset;
 }
 
 :host-context(.pref-contrast-more) .item {
-  --mds-paginator-item-background-hover: theme('colors.tone-neutral');
-  --mds-paginator-item-shadow-hover: theme('boxShadow.outline-50') inset;
+  --mds-paginator-item-background-hover: var(--color-tone-neutral);
+  --mds-paginator-item-shadow-hover: var(--shadow-outline-50) inset;
   --mds-paginator-item-shadow: none;
 }
 
 :host-context(.pref-contrast-more) .item-first,
 :host-context(.pref-contrast-more) .item-last,
 :host-context(.pref-contrast-more) .item-icon {
-  --mds-paginator-item-shadow-disabled: theme('boxShadow.outline-50') inset;
-  --mds-paginator-item-shadow-hover: theme('boxShadow.outline-50') inset;
-  --mds-paginator-item-shadow: theme('boxShadow.outline-50') inset;
+  --mds-paginator-item-shadow-disabled: var(--shadow-outline-50) inset;
+  --mds-paginator-item-shadow-hover: var(--shadow-outline-50) inset;
+  --mds-paginator-item-shadow: var(--shadow-outline-50) inset;
 }
 
 @media (prefers-contrast: more) {
   :host-context(.pref-contrast-system) .pages {
-    box-shadow: theme('boxShadow.outline-50') inset;
+    box-shadow: var(--shadow-outline-50) inset;
   }
 
   :host-context(.pref-contrast-system) .item {
-    --mds-paginator-item-background-hover: theme('colors.tone-neutral');
-    --mds-paginator-item-shadow-hover: theme('boxShadow.outline-50') inset;
+    --mds-paginator-item-background-hover: var(--color-tone-neutral);
+    --mds-paginator-item-shadow-hover: var(--shadow-outline-50) inset;
     --mds-paginator-item-shadow: none;
   }
 
   :host-context(.pref-contrast-system) .item-first,
   :host-context(.pref-contrast-system) .item-last,
   :host-context(.pref-contrast-system) .item-icon {
-    --mds-paginator-item-shadow-disabled: theme('boxShadow.outline-50') inset;
-    --mds-paginator-item-shadow-hover: theme('boxShadow.outline-50') inset;
-    --mds-paginator-item-shadow: theme('boxShadow.outline-50') inset;
+    --mds-paginator-item-shadow-disabled: var(--shadow-outline-50) inset;
+    --mds-paginator-item-shadow-hover: var(--shadow-outline-50) inset;
+    --mds-paginator-item-shadow: var(--shadow-outline-50) inset;
   }
 }

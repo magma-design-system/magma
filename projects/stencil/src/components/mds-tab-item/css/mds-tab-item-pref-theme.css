@@ -1,9 +1,9 @@
 :host-context(.pref-theme-dark) {
-  --mds-tab-item-selected-background: theme('colors.tone-neutral-08');
+  --mds-tab-item-selected-background: var(--color-tone-neutral-08);
 }
 
 @media (prefers-color-scheme: dark) {
   :host-context(.pref-theme-system) {
-    --mds-tab-item-selected-background: theme('colors.tone-neutral-08');
+    --mds-tab-item-selected-background: var(--color-tone-neutral-08);
   }
 }

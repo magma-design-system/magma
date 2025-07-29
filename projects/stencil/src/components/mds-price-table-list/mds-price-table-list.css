@@ -1,3 +1,4 @@
+@reference '../../tailwind/index.css';
 :host {
   --mds-price-table-list-separator-color: rgb(var(--tone-neutral-03) / 0.5);
 
@@ -8,7 +9,7 @@
     p-600
     rounded-xl;
 
-  background-color: theme('colors.label-green-10');
+  background-color: var(--color-label-green-10);
   display: grid;
   transition-property: background-color, color;
 }

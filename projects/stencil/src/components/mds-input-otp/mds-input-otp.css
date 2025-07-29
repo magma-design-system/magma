@@ -1,10 +1,10 @@
 :host {
   display: inline-flex;
-  gap: theme('spacing.400');
+  gap: --spacing(400);
 }
 
 .input {
-  width: theme('size.1200');
+  width: --spacing(1200);
 }
 
 .input::part(field) {

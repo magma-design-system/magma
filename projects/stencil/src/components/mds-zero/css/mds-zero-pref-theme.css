@@ -1,11 +1,11 @@
 :host-context(.pref-theme-dark) {
-  background-color: theme('colors.tone-neutral-09');
-  box-shadow: theme('boxShadow.outline');
+  background-color: var(--color-tone-neutral-09);
+  box-shadow: var(--shadow-outline);
 }
 
 @media (prefers-color-scheme: dark) {
   :host-context(.pref-theme-system) {
-    background-color: theme('colors.tone-neutral-09');
-    box-shadow: theme('boxShadow.outline');
+    background-color: var(--color-tone-neutral-09);
+    box-shadow: var(--shadow-outline);
   }
 }

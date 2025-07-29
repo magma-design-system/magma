@@ -1,3 +1,5 @@
+@reference '../../tailwind/index.css';
+
 /**
  * @prop --mds-badge-background: Sets the background-color of the component
  * @prop --mds-badge-radius: Sets the border-radius of the component
@@ -5,11 +7,11 @@
  */
 
 :host {
-  --mds-badge-background: theme('colors.label-sky-09');
-  --mds-badge-border-color: theme('colors.label-sky-06');;
+  --mds-badge-background: var(--color-label-sky-09);
+  --mds-badge-border-color: var(--color-label-sky-06);;
   --mds-badge-border-width: 1px;
-  --mds-badge-color: theme('colors.label-sky-03');
-  --mds-badge-radius: theme('borderRadius.DEFAULT');
+  --mds-badge-color: var(--color-label-sky-03);
+  --mds-badge-radius: var(--radius-DEFAULT);
 
   @apply
     duration-200
@@ -33,7 +35,7 @@
 }
 
 :host([tone="quiet"]) {
-  --mds-badge-background: theme('colors.tone-neutral');
+  --mds-badge-background: var(--color-tone-neutral);
 }
 
 @import './css/mds-badge-variant-amaranth.css';

@@ -1,17 +1,17 @@
 :host-context(.pref-theme-dark) {
-  --mds-paginator-background: theme('colors.tone-neutral-09');
+  --mds-paginator-background: var(--color-tone-neutral-09);
 }
 
 :host-context(.pref-theme-dark) .pages {
-  box-shadow: theme('boxShadow.outline') inset;
+  box-shadow: var(--shadow-outline) inset;
 }
 
 @media (prefers-color-scheme: dark) {
   :host-context(.pref-theme-system) {
-    --mds-paginator-background: theme('colors.tone-neutral-09');
+    --mds-paginator-background: var(--color-tone-neutral-09);
   }
 
   :host-context(.pref-theme-system) .pages {
-    box-shadow: theme('boxShadow.outline') inset;
+    box-shadow: var(--shadow-outline) inset;
   }
 }

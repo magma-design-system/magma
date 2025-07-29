@@ -1,32 +1,32 @@
 :host([variant="ai"]),
 :host([variant="ai"][tone="strong"]) {
-  --mds-banner-background: theme('colors.tone-neutral');
-  --mds-banner-close-icon-hover-background: theme('colors.variant-ai-09');
-  --mds-banner-color: theme('colors.tone-neutral-02');
-  --mds-banner-icon-color: theme('colors.variant-ai-05');
-  --mds-banner-shadow: theme('boxShadow.lg-sharp');
-  --mds-banner-headline-color: theme('colors.variant-ai-02');
-  --mds-banner-cockade-background: theme('colors.variant-ai-09');
+  --mds-banner-background: var(--color-tone-neutral);
+  --mds-banner-close-icon-hover-background: var(--color-variant-ai-09);
+  --mds-banner-color: var(--color-tone-neutral-02);
+  --mds-banner-icon-color: var(--color-variant-ai-05);
+  --mds-banner-shadow: var(--shadow-lg-sharp);
+  --mds-banner-headline-color: var(--color-variant-ai-02);
+  --mds-banner-cockade-background: var(--color-variant-ai-09);
 }
 
 :host([variant="ai"][tone="weak"]) {
-  --mds-banner-background: theme('colors.tone-neutral');
-  --mds-banner-close-icon-hover-background: theme('colors.variant-ai-10');
-  --mds-banner-color: theme('colors.tone-neutral-02');
-  --mds-banner-icon-color: theme('colors.variant-ai-05');
-  --mds-banner-shadow: theme('boxShadow.sm-sharp');
-  --mds-banner-cockade-background: theme('colors.variant-ai-10');
+  --mds-banner-background: var(--color-tone-neutral);
+  --mds-banner-close-icon-hover-background: var(--color-variant-ai-10);
+  --mds-banner-color: var(--color-tone-neutral-02);
+  --mds-banner-icon-color: var(--color-variant-ai-05);
+  --mds-banner-shadow: var(--shadow-sm-sharp);
+  --mds-banner-cockade-background: var(--color-variant-ai-10);
 }
 
 :host([variant="ai"][tone="ghost"]) {
-  --mds-banner-color: theme('colors.tone-neutral-02');
-  --mds-banner-close-icon-hover-background: theme('colors.variant-ai-10');
+  --mds-banner-color: var(--color-tone-neutral-02);
+  --mds-banner-close-icon-hover-background: var(--color-variant-ai-10);
   --mds-banner-shadow: none;
 }
 
 :host([variant="ai"][tone="quiet"]) {
   --mds-banner-background: transparent;
   --mds-banner-close-icon-hover-background: transparent;
-  --mds-banner-color: theme('colors.tone-neutral-10');
+  --mds-banner-color: var(--color-tone-neutral-10);
   --mds-banner-shadow: none;
 }

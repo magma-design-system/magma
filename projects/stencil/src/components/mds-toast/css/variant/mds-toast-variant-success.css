@@ -1,17 +1,18 @@
-@config '../../../../../tailwind.config.js';
-@tailwind utilities;
+@import 'tailwindcss/utilities' layer(utilities);
+
+
 
 :host([variant="success"] ),
 :host([variant="success"][tone="strong"]) {
-  --mds-toast-background: theme('colors.status-success-09');
-  --mds-toast-color: theme('colors.status-success-02');
-  --mds-toast-shadow: theme('boxShadow.lg-sharp');
-  --mds-toast-icon-color: theme('colors.status-success-05');
+  --mds-toast-background: var(--color-status-success-09);
+  --mds-toast-color: var(--color-status-success-02);
+  --mds-toast-shadow: var(--shadow-lg-sharp);
+  --mds-toast-icon-color: var(--color-status-success-05);
 }
 
 :host([variant="success"][tone="weak"]) {
-  --mds-toast-background: theme('colors.status-success-10');
-  --mds-toast-color: theme('colors.status-success-03');
-  --mds-toast-shadow: theme('boxShadow.sm-sharp');
-  --mds-toast-icon-color: theme('colors.status-success-06');
+  --mds-toast-background: var(--color-status-success-10);
+  --mds-toast-color: var(--color-status-success-03);
+  --mds-toast-shadow: var(--shadow-sm-sharp);
+  --mds-toast-icon-color: var(--color-status-success-06);
 }

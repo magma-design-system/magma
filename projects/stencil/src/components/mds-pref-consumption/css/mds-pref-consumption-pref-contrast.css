@@ -1,33 +1,33 @@
 :host-context(.pref-contrast-more) .item {
-  --mds-tab-item-default-color: theme('colors.tone-neutral-01');
+  --mds-tab-item-default-color: var(--color-tone-neutral-01);
 }
 
 :host-context(.pref-contrast-more) .item--high {
-  --mds-tab-item-default-color: theme('colors.status-error-03');
+  --mds-tab-item-default-color: var(--color-status-error-03);
 }
 
 :host-context(.pref-contrast-more) .item--medium {
-  --mds-tab-item-default-color: theme('colors.status-warning-03');
+  --mds-tab-item-default-color: var(--color-status-warning-03);
 }
 
 :host-context(.pref-contrast-more) .item--low {
-  --mds-tab-item-default-color: theme('colors.status-success-03');
+  --mds-tab-item-default-color: var(--color-status-success-03);
 }
 
 @media (prefers-contrast: more) {
   :host-context(.pref-contrast-system) .item {
-    --mds-tab-item-default-color: theme('colors.tone-neutral-01');
+    --mds-tab-item-default-color: var(--color-tone-neutral-01);
   }
 
   :host-context(.pref-contrast-system) .item--high {
-    --mds-tab-item-default-color: theme('colors.status-error-03');
+    --mds-tab-item-default-color: var(--color-status-error-03);
   }
 
   :host-context(.pref-contrast-system) .item--medium {
-    --mds-tab-item-default-color: theme('colors.status-warning-03');
+    --mds-tab-item-default-color: var(--color-status-warning-03);
   }
 
   :host-context(.pref-contrast-system) .item--low {
-    --mds-tab-item-default-color: theme('colors.status-success-03');
+    --mds-tab-item-default-color: var(--color-status-success-03);
   }
 }

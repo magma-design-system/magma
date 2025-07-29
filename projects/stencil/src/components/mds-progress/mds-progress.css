@@ -1,8 +1,16 @@
+@reference '../../tailwind/index.css';
 @import '../../tailwind/components.css';
-@config '../../../tailwind.config.js';
-@tailwind components;
 
-/**
+@import './css/mds-progress-variant.css' layer(components);
+@import './css/mds-progress-pref-animation.css' layer(components);
+@import './css/mds-progress-pref-theme.css' layer(components);
+@import './css/mds-progress-pref-contrast.css' layer(components);
+@import '../../tailwind/fouc.css' layer(components);
+
+
+
+@layer components {
+  /**
  * @prop --mds-progress-background: Sets the background-color of the component
  * @prop --mds-progress-color: Sets the background-color of the progress
  * @prop --mds-progress-duration: Sets the duration of the progress bar animation
@@ -10,48 +18,41 @@
  * @prop --mds-progress-thickness: Sets the thickness of the progress bar
  */
 
-:host {
-  --mds-progress-background: theme('colors.tone-neutral-08');
-  --mds-progress-color: theme('colors.variant-primary-03');
-  --mds-progress-duration: 750ms;
-  --mds-progress-radius: theme('borderRadius.lg');
-  --mds-progress-thickness: theme('height.200');
+  :host {
+    --mds-progress-background: var(--color-tone-neutral-08);
+    --mds-progress-color: var(--color-variant-primary-03);
+    --mds-progress-duration: 750ms;
+    --mds-progress-radius: var(--radius-lg);
+    --mds-progress-thickness: var(--height-200);
 
-  @apply
-    duration-300
+    @apply duration-300
     ease-in-out;
 
-  background-color: var(--mds-progress-background);
-  border-radius: var(--mds-progress-radius);
-  display: flex;
-  height: var(--mds-progress-thickness);
-  min-width: var(--mds-progress-thickness);
-  overflow: hidden;
-  position: relative;
-  transition-property: background-color;
-  width: 100%;
-}
+    background-color: var(--mds-progress-background);
+    border-radius: var(--mds-progress-radius);
+    display: flex;
+    height: var(--mds-progress-thickness);
+    min-width: var(--mds-progress-thickness);
+    overflow: hidden;
+    position: relative;
+    transition-property: background-color;
+    width: 100%;
+  }
 
-:host([direction="vertical"]) {
-  flex-direction: column;
-  height: unset;
-  min-height: var(--mds-progress-thickness);
-  width: var(--mds-progress-thickness);
-}
+  :host([direction='vertical']) {
+    flex-direction: column;
+    height: unset;
+    min-height: var(--mds-progress-thickness);
+    width: var(--mds-progress-thickness);
+  }
 
-.progress {
-  @apply
-    duration-500
+  .progress {
+    @apply duration-500
     ease-out-expo;
 
-  background-color: var(--mds-progress-color);
-  border-radius: var(--mds-progress-radius);
-  transition-duration: var(--mds-progress-duration);
-  transition-property: background-color, flex-grow;
+    background-color: var(--mds-progress-color);
+    border-radius: var(--mds-progress-radius);
+    transition-duration: var(--mds-progress-duration);
+    transition-property: background-color, flex-grow;
+  }
 }
-
-@import './css/mds-progress-variant.css';
-@import './css/mds-progress-pref-animation.css';
-@import './css/mds-progress-pref-theme.css';
-@import './css/mds-progress-pref-contrast.css';
-@import '../../tailwind/fouc.css';

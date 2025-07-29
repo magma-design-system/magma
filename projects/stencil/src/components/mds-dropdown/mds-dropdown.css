@@ -1,3 +1,4 @@
+@reference '../../tailwind/index.css';
 /**
  * @prop --mds-dropdown-arrow-background: Sets the fill color of the arrow.
  * @prop --mds-dropdown-background: Sets the background-color of the dropdown.
@@ -16,12 +17,12 @@
   --mds-dropdown-arrow-background: var(--mds-dropdown-background);
   --mds-dropdown-backdrop-duration: 200ms;
   --mds-dropdown-backdrop-z-index: var(--magma-backdrop-z-index, 3000);
-  --mds-dropdown-background: theme('colors.tone-neutral');
+  --mds-dropdown-background: var(--color-tone-neutral);
   --mds-dropdown-mouseover-delay: 0.5s;
   --mds-dropdown-drop-shadow-color: var(--tone-neutral-01, 0 0 0);
   --mds-dropdown-drop-shadow: drop-shadow(0 10px 8px rgb(var(--mds-dropdown-drop-shadow-color) / 0.05)) drop-shadow(0 4px 3px rgb(var(--mds-dropdown-drop-shadow-color) / 0.15)) drop-shadow(0 0 1px rgb(var(--mds-dropdown-drop-shadow-color) / 0.15));
   --mds-dropdown-duration: 0.5s;
-  --mds-dropdown-ease: theme('transitionTimingFunction.out-expo');
+  --mds-dropdown-ease: var(--ease-out-expo);
   --mds-dropdown-transform-from: scale(0.9) translateY(-3%);
   --mds-dropdown-transform-to: scale(1) translate(0, 0);
   --mds-dropdown-z-index: var(--magma-dropdown-z-index, 4000);

@@ -1,3 +1,4 @@
+@reference '../../tailwind/index.css';
 /**
  * @prop --mds-input-tip-active-translate: Set the translate of the tip when it is active.
  */
@@ -25,15 +26,15 @@
 }
 
 :host([position="top"]) {
-  top: theme('spacing.100');
+  top: --spacing(100);
 }
 
 :host([position="bottom"]) {
-  bottom: theme('spacing.100');
+  bottom: --spacing(100);
 }
 
 :host([position="top"][active]:not([active="false"])) {
-  --mds-input-tip-active-translate: translate(calc(theme('translate.100') * -1), calc(theme('translate.100') * -1));
+  --mds-input-tip-active-translate: translate(calc(--spacing(100) * -1), calc(--spacing(100) * -1));
 }
 
 :host([position="top"][active]:not([active="false"])) ::slotted( mds-input-tip-item) {
@@ -42,7 +43,7 @@
 }
 
 :host([position="bottom"][active]:not([active="false"])) {
-  --mds-input-tip-active-translate: translate(calc(theme('translate.100') * -1), theme('translate.100'));
+  --mds-input-tip-active-translate: translate(calc(--spacing(100) * -1), --spacing(100));
 }
 
 :host([position="bottom"][active]:not([active="false"])) ::slotted( mds-input-tip-item) {

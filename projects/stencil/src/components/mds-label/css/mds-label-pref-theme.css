@@ -1,9 +1,9 @@
 :host-context(.pref-theme-dark) {
-  box-shadow: theme('boxShadow.outline') inset;
+  box-shadow: var(--shadow-outline) inset;
 }
 
 @media (prefers-color-scheme: dark) {
   :host-context(.pref-theme-system) {
-    box-shadow: theme('boxShadow.outline') inset;
+    box-shadow: var(--shadow-outline) inset;
   }
 }

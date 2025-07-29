@@ -1,39 +1,39 @@
 :host-context(.pref-contrast-more):host([variant="yellow"]),
 :host-context(.pref-contrast-more):host([variant="yellow"][tone="strong"]) {
-  --mds-badge-background: theme('colors.label-yellow-03');
+  --mds-badge-background: var(--color-label-yellow-03);
 }
 
 :host-context(.pref-contrast-more):host([variant="yellow"][tone="weak"]) {
-  --mds-badge-color: theme('colors.label-yellow-01');
+  --mds-badge-color: var(--color-label-yellow-01);
 }
 
 :host-context(.pref-contrast-more):host([variant="yellow"][tone="quiet"]) {
-  --mds-badge-color: theme('colors.label-yellow-02');
+  --mds-badge-color: var(--color-label-yellow-02);
 }
 
 :host-context(.pref-contrast-more):host([variant="yellow"][tone="ghost"]) {
   --mds-badge-background: transparent;
-  --mds-badge-color: theme('colors.label-yellow-03');
-  --mds-badge-border-color: theme('colors.label-yellow-03');
+  --mds-badge-color: var(--color-label-yellow-03);
+  --mds-badge-border-color: var(--color-label-yellow-03);
 }
 
 @media (prefers-contrast: more) {
   :host-context(.pref-contrast-system):host([variant="yellow"]),
   :host-context(.pref-contrast-system):host([variant="yellow"][tone="strong"]) {
-    --mds-badge-background: theme('colors.label-yellow-03');
+    --mds-badge-background: var(--color-label-yellow-03);
   }
 
   :host-context(.pref-contrast-system):host([variant="yellow"][tone="weak"]) {
-    --mds-badge-color: theme('colors.label-yellow-01');
+    --mds-badge-color: var(--color-label-yellow-01);
   }
 
   :host-context(.pref-contrast-system):host([variant="yellow"][tone="quiet"]) {
-    --mds-badge-color: theme('colors.label-yellow-02');
+    --mds-badge-color: var(--color-label-yellow-02);
   }
 
   :host-context(.pref-contrast-system):host([variant="yellow"][tone="ghost"]) {
     --mds-badge-background: transparent;
-    --mds-badge-color: theme('colors.label-yellow-03');
-    --mds-badge-border-color: theme('colors.label-yellow-03');
+    --mds-badge-color: var(--color-label-yellow-03);
+    --mds-badge-border-color: var(--color-label-yellow-03);
   }
 }

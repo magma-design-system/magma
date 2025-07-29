@@ -1,9 +1,9 @@
 :host-context(.pref-contrast-more) {
-  --mds-price-table-features-border-color: theme('colors.tone-neutral-03');
+  --mds-price-table-features-border-color: var(--color-tone-neutral-03);
 }
 
 @media (prefers-contrast: more) {
   :host-context(.pref-contrast-system) {
-    --mds-price-table-features-border-color: theme('colors.tone-neutral-03');
+    --mds-price-table-features-border-color: var(--color-tone-neutral-03);
   }
 }

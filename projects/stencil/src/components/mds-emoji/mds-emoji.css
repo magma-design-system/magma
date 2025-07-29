@@ -11,11 +11,11 @@
   align-items: stretch;
   aspect-ratio: 1/1;
   display: flex;
-  height: theme('size.1200');
+  height: --spacing(1200);
   justify-content: stretch;
   perspective: var(--mds-emoji-perspective);
   perspective-origin: center;
-  width: theme('size.1200');
+  width: --spacing(1200);
 }
 
 svg {

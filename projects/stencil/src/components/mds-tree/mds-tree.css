@@ -1,3 +1,4 @@
+@reference '../../tailwind/index.css';
 /**
  * @prop --mds-tree-actions-border-radius: Sets the border-radius of the wrapper container of the actions.
  * @prop --mds-tree-actions-gap: Sets the gap between the actions.
@@ -31,45 +32,45 @@
  */
 
 :host {
-  --mds-tree-actions-border-radius: theme('borderRadius.lg');
-  --mds-tree-actions-gap: theme('spacing.50');
+  --mds-tree-actions-border-radius: var(--radius-lg);
+  --mds-tree-actions-gap: --spacing(50);
   --mds-tree-label-default-background: transparent;
-  --mds-tree-label-hover-background: theme('colors.tone-neutral');
-  --mds-tree-label-icon-default-color: theme('colors.variant-primary-04');
+  --mds-tree-label-hover-background: var(--color-tone-neutral);
+  --mds-tree-label-icon-default-color: var(--color-variant-primary-04);
   --mds-tree-label-icon-hover-color: var(--mds-tree-label-icon-default-color);
   --mds-tree-line-clamp: 2;
-  --mds-tree-branch-border-color: theme('colors.tone-neutral-07');
+  --mds-tree-branch-border-color: var(--color-tone-neutral-07);
   --mds-tree-branch-use-rounded-border: true;
-  --mds-tree-branch-border-size: theme('size.50');
-  --mds-tree-branch-dot-default-color: theme('colors.tone-neutral-07');
-  --mds-tree-branch-dot-expanded-color: theme('colors.tone-neutral-06');
-  --mds-tree-toggle-gap: theme('size.150');
-  --mds-tree-toggle-icon-async-background: theme('colors.tone-neutral-09');
-  --mds-tree-toggle-icon-async-color: theme('colors.variant-primary-03');
-  --mds-tree-toggle-icon-chevron-default-background: theme('colors.variant-primary-04');
-  --mds-tree-toggle-icon-chevron-default-color: theme('colors.tone-neutral');
+  --mds-tree-branch-border-size: --spacing(50);
+  --mds-tree-branch-dot-default-color: var(--color-tone-neutral-07);
+  --mds-tree-branch-dot-expanded-color: var(--color-tone-neutral-06);
+  --mds-tree-toggle-gap: --spacing(150);
+  --mds-tree-toggle-icon-async-background: var(--color-tone-neutral-09);
+  --mds-tree-toggle-icon-async-color: var(--color-variant-primary-03);
+  --mds-tree-toggle-icon-chevron-default-background: var(--color-variant-primary-04);
+  --mds-tree-toggle-icon-chevron-default-color: var(--color-tone-neutral);
   --mds-tree-toggle-icon-chevron-expanded-background: var(--mds-tree-toggle-icon-chevron-default-background);
   --mds-tree-toggle-icon-chevron-expanded-color: var(--mds-tree-toggle-icon-chevron-default-color);
-  --mds-tree-toggle-icon-folder-default-background: theme('colors.tone-neutral-08');
-  --mds-tree-toggle-icon-folder-default-color: theme('colors.variant-primary-04');
+  --mds-tree-toggle-icon-folder-default-background: var(--color-tone-neutral-08);
+  --mds-tree-toggle-icon-folder-default-color: var(--color-variant-primary-04);
   --mds-tree-toggle-icon-folder-expanded-background: var(--mds-tree-toggle-icon-folder-default-background);
   --mds-tree-toggle-icon-folder-expanded-color: var(--mds-tree-toggle-icon-folder-default-color);
   --mds-tree-toggle-icon-position-right-default-background: transparent;
-  --mds-tree-toggle-icon-position-right-default-color: theme('colors.tone-neutral-07');
+  --mds-tree-toggle-icon-position-right-default-color: var(--color-tone-neutral-07);
   --mds-tree-toggle-icon-position-right-expanded-background: transparent;
-  --mds-tree-toggle-icon-position-right-expanded-color: theme('colors.tone-neutral-07');
-  --mds-tree-transition-duration: theme('transitionDuration.300');
-  --mds-tree-transition-timing-function: theme('transitionTimingFunction.in-out-expo');
-  /* private */ --mds-tree-toggle-border-radius: theme('borderRadius.lg');
-  /* private */ --mds-tree-toggle-size: theme('size.900');
+  --mds-tree-toggle-icon-position-right-expanded-color: var(--color-tone-neutral-07);
+  --mds-tree-transition-duration: 300ms;
+  --mds-tree-transition-timing-function: var(--ease-in-out-expo);
+  /* private */ --mds-tree-toggle-border-radius: var(--radius-lg);
+  /* private */ --mds-tree-toggle-size: --spacing(900);
 
   @apply
     duration-200
     ease-out;
 
-  border-radius: theme('size.250');
+  border-radius: --spacing(250);
   display: grid;
-  padding: theme('padding.50');
+  padding: --spacing(50);
   transition-property: background-color;
 }
 

@@ -1,126 +1,126 @@
 :host-context(.pref-contrast-more):host([variant="ai"][tone="strong"]) {
-  --mds-button-background: theme('colors.variant-ai-03');
-  --mds-button-color: theme('colors.tone-neutral');
+  --mds-button-background: var(--color-variant-ai-03);
+  --mds-button-color: var(--color-tone-neutral);
   --mds-button-border-color: var(--variant-ai-03);
 }
 
 :host-context(.pref-contrast-more):host([variant="ai"][tone="strong"][active]),
 :host-context(.pref-contrast-more):host([variant="ai"][tone="strong"]:hover) {
-  --mds-button-background: theme('colors.variant-ai-02');
+  --mds-button-background: var(--color-variant-ai-02);
   --mds-button-border-color: var(--variant-ai-02);
 }
 
 :host-context(.pref-contrast-more):host([variant="ai"][tone="weak"]) {
-  --mds-button-background: theme('colors.variant-ai-09');
-  --mds-button-color: theme('colors.variant-ai-02');
+  --mds-button-background: var(--color-variant-ai-09);
+  --mds-button-color: var(--color-variant-ai-02);
   --mds-button-border-color: var(--variant-ai-06);
   --mds-button-border-width: var(--mds-button-border-high-contrast-width);
 
-  fill: theme('colors.variant-ai-02');
+  fill: var(--color-variant-ai-02);
 }
 
 :host-context(.pref-contrast-more):host([variant="ai"][tone="weak"]:hover) {
-  --mds-button-background: theme('colors.variant-ai-10');
-  --mds-button-color: theme('colors.variant-ai-01');
+  --mds-button-background: var(--color-variant-ai-10);
+  --mds-button-color: var(--color-variant-ai-01);
   --mds-button-border-width: var(--mds-button-border-high-contrast-hover-width);
 
-  fill: theme('colors.variant-ai-01');
+  fill: var(--color-variant-ai-01);
 }
 
 :host-context(.pref-contrast-more):host([variant="ai"][tone="weak"][active]) {
-  --mds-button-background: theme('colors.variant-ai-08');
-  --mds-button-color: theme('colors.variant-ai-01');
+  --mds-button-background: var(--color-variant-ai-08);
+  --mds-button-color: var(--color-variant-ai-01);
 
-  fill: theme('colors.variant-ai-01');
+  fill: var(--color-variant-ai-01);
 }
 
 :host-context(.pref-contrast-more):host([variant="ai"][tone="ghost"]) {
   --mds-button-border-color: var(--variant-ai-03);
-  --mds-button-color: theme('colors.variant-ai-02');
+  --mds-button-color: var(--color-variant-ai-02);
 }
 
 :host-context(.pref-contrast-more):host([variant="ai"][tone="ghost"]:hover) {
   --mds-button-border-color: var(--variant-ai-03);
-  --mds-button-color: theme('colors.variant-ai-01');
+  --mds-button-color: var(--color-variant-ai-01);
 }
 
 :host-context(.pref-contrast-more):host([variant="ai"][tone="ghost"][active]) {
   --mds-button-border-color: var(--variant-ai-04);
-  --mds-button-color: theme('colors.variant-ai-02');
+  --mds-button-color: var(--color-variant-ai-02);
 }
 
 :host-context(.pref-contrast-more):host([variant="ai"][tone="quiet"]) {
-  --mds-button-color: theme('colors.variant-ai-01');
+  --mds-button-color: var(--color-variant-ai-01);
 }
 
 :host-context(.pref-contrast-more):host([variant="ai"][tone="quiet"]:hover) {
-  --mds-button-color: theme('colors.variant-ai-03');
+  --mds-button-color: var(--color-variant-ai-03);
 }
 
 :host-context(.pref-contrast-more):host([variant="ai"][tone="quiet"][active]) {
-  --mds-button-color: theme('colors.variant-ai-01');
+  --mds-button-color: var(--color-variant-ai-01);
 }
 
 @media (prefers-contrast: more) {
   :host-context(.pref-contrast-system):host([variant="ai"][tone="strong"]) {
-    --mds-button-background: theme('colors.variant-ai-03');
-    --mds-button-color: theme('colors.tone-neutral');
+    --mds-button-background: var(--color-variant-ai-03);
+    --mds-button-color: var(--color-tone-neutral);
   }
 
   :host-context(.pref-contrast-system):host([variant="ai"][tone="strong"][active]),
   :host-context(.pref-contrast-system):host([variant="ai"][tone="strong"]:hover) {
-    --mds-button-background: theme('colors.variant-ai-02');
+    --mds-button-background: var(--color-variant-ai-02);
     --mds-button-border-color: var(--variant-ai-02);
   }
 
   :host-context(.pref-contrast-system):host([variant="ai"][tone="weak"]) {
-    --mds-button-background: theme('colors.variant-ai-09');
-    --mds-button-color: theme('colors.variant-ai-02');
+    --mds-button-background: var(--color-variant-ai-09);
+    --mds-button-color: var(--color-variant-ai-02);
     --mds-button-border-color: var(--variant-ai-06);
     --mds-button-border-width: var(--mds-button-border-high-contrast-width);
 
-    fill: theme('colors.variant-ai-02');
+    fill: var(--color-variant-ai-02);
   }
 
   :host-context(.pref-contrast-system):host([variant="ai"][tone="weak"]:hover) {
-    --mds-button-background: theme('colors.variant-ai-10');
-    --mds-button-color: theme('colors.variant-ai-01');
+    --mds-button-background: var(--color-variant-ai-10);
+    --mds-button-color: var(--color-variant-ai-01);
     --mds-button-border-width: var(--mds-button-border-high-contrast-hover-width);
 
-    fill: theme('colors.variant-ai-01');
+    fill: var(--color-variant-ai-01);
   }
 
   :host-context(.pref-contrast-system):host([variant="ai"][tone="weak"][active]) {
-    --mds-button-background: theme('colors.variant-ai-08');
-    --mds-button-color: theme('colors.variant-ai-01');
+    --mds-button-background: var(--color-variant-ai-08);
+    --mds-button-color: var(--color-variant-ai-01);
 
-    fill: theme('colors.variant-ai-01');
+    fill: var(--color-variant-ai-01);
   }
 
   :host-context(.pref-contrast-system):host([variant="ai"][tone="ghost"]) {
     --mds-button-border-color: var(--variant-ai-03);
-    --mds-button-color: theme('colors.variant-ai-02');
+    --mds-button-color: var(--color-variant-ai-02);
   }
 
   :host-context(.pref-contrast-system):host([variant="ai"][tone="ghost"]:hover) {
     --mds-button-border-color: var(--variant-ai-03);
-    --mds-button-color: theme('colors.variant-ai-01');
+    --mds-button-color: var(--color-variant-ai-01);
   }
 
   :host-context(.pref-contrast-system):host([variant="ai"][tone="ghost"][active]) {
     --mds-button-border-color: var(--variant-ai-04);
-    --mds-button-color: theme('colors.variant-ai-02');
+    --mds-button-color: var(--color-variant-ai-02);
   }
 
   :host-context(.pref-contrast-system):host([variant="ai"][tone="quiet"]) {
-    --mds-button-color: theme('colors.variant-ai-01');
+    --mds-button-color: var(--color-variant-ai-01);
   }
 
   :host-context(.pref-contrast-system):host([variant="ai"][tone="quiet"]:hover) {
-    --mds-button-color: theme('colors.variant-ai-03');
+    --mds-button-color: var(--color-variant-ai-03);
   }
 
   :host-context(.pref-contrast-system):host([variant="ai"][tone="quiet"][active]) {
-    --mds-button-color: theme('colors.variant-ai-01');
+    --mds-button-color: var(--color-variant-ai-01);
   }
 }

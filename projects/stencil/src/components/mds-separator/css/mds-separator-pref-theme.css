@@ -1,9 +1,9 @@
 :host-context(.pref-theme-dark) {
-  --mds-separator-background: theme('colors.tone-neutral-07');
+  --mds-separator-background: var(--color-tone-neutral-07);
 }
 
 @media (prefers-color-scheme: dark) {
   :host-context(.pref-theme-system) {
-    --mds-separator-background: theme('colors.tone-neutral-07');
+    --mds-separator-background: var(--color-tone-neutral-07);
   }
 }

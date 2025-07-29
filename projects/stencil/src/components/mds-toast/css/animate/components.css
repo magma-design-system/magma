@@ -1,36 +1,43 @@
-@config '../../../../../tailwind.config.js';
-@tailwind components;
-@tailwind utilities;
+@reference '../../tailwind/index.css';
+/* @import 'tailwindcss/utilities' layer(utilities); */
 
-@layer components {
-  .animate-intro {
-    @apply
-      duration-500
+
+@utility animate-intro {
+  @apply duration-500
       ease-in-out-expo;
 
-    transition-property: background-color, border-color, box-shadow, color, fill, height, margin, opacity, padding, transform, width;
-  }
+  transition-property:
+    background-color, border-color, box-shadow, color, fill, height, margin,
+    opacity, padding, transform, width;
+}
 
-  .animate-outro {
-    @apply ease-in-cubic;
+@utility animate-outro {
+  @apply ease-in-cubic;
 
-    transition-duration: var(--mds-toast-duration, 300ms);
-    transition-property: background-color, border-color, box-shadow, color, fill, height, margin, opacity, padding, transform, width;
-  }
+  transition-duration: var(--mds-toast-duration, 300ms);
+  transition-property:
+    background-color, border-color, box-shadow, color, fill, height, margin,
+    opacity, padding, transform, width;
+}
 
-  .animate-bottom-intro {
-    transform: translate(0, calc(theme('translate.400') * -1));
-  }
+@utility animate-bottom-intro {
+  transform: translate(0, calc(--spacing(400) * -1));
+}
 
-  .animate-bottom-outro {
-    transform: translate(0, calc(theme('translate.full') + theme('translate.200')));
-  }
+@utility animate-bottom-outro {
+  transform: translate(
+    0,
+    calc(--spacing(full) + --spacing(200))
+  );
+}
 
-  .animate-top-intro {
-    transform: translate(0, calc(theme('translate.400')));
-  }
+@utility animate-top-intro {
+  transform: translate(0, calc(--spacing(400)));
+}
 
-  .animate-top-outro {
-    transform: translate(0, calc(-1 * theme('translate.full') - theme('translate.400')));
-  }
+@utility animate-top-outro {
+  transform: translate(
+    0,
+    calc(-1 * --spacing(full) - --spacing(400))
+  );
 }

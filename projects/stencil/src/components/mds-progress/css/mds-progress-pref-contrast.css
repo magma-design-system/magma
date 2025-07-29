@@ -1,13 +1,13 @@
 :host-context(.pref-contrast-more),
 :host-context(.pref-contrast-more):host([variant="primary"]) {
-  --mds-progress-color: theme('colors.variant-primary-05');
-  --mds-progress-background: theme('colors.tone-neutral-07');
+  --mds-progress-color: var(--color-variant-primary-05);
+  --mds-progress-background: var(--color-tone-neutral-07);
 }
 
 @media (prefers-contrast: more) {
   :host-context(.pref-contrast-system),
   :host-context(.pref-contrast-more):host([variant="primary"]) {
-    --mds-progress-color: theme('colors.variant-primary-05');
-    --mds-progress-background: theme('colors.tone-neutral-07');
+    --mds-progress-color: var(--color-variant-primary-05);
+    --mds-progress-background: var(--color-tone-neutral-07);
   }
 }

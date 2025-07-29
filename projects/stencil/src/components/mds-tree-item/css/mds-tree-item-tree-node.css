@@ -35,7 +35,7 @@
 }
 
 .tree-dot {
-  --size: calc(theme('size.300') + var(--mds-tree-item-branch-border-size) * 2);
+  --size: calc(--spacing(300) + var(--mds-tree-item-branch-border-size) * 2);
 
   background-color: var(--mds-tree-item-branch-border-color);
   border-radius: var(--size);

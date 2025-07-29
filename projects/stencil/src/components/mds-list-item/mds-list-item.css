@@ -1,47 +1,49 @@
+@reference '../../tailwind/index.css';
 @import '../../tailwind/components.css';
-@config '../../../tailwind.config.js';
-@tailwind components;
 
-/**
+@import './css/mds-list-item-pref-contrast.css' layer(components);
+@import '../../tailwind/fouc.css' layer(components);
+
+
+
+@layer components {
+  /**
  * @prop --mds-list-item-icon-margin: Sets the margin of the component's icon
  */
 
-:host {
-  --mds-list-item-icon-margin: 0 theme('spacing.200') 0 0;
+  :host {
+    --mds-list-item-icon-margin: 0 var(--spacing-200) 0 0;
 
-  @apply w-full;
+    @apply w-full;
 
-  align-items: flex-start;
-  color: theme('colors.tone-neutral-03');
-  display: flex;
-  justify-content: flex-start;
-}
+    align-items: flex-start;
+    color: var(--color-tone-neutral-03);
+    display: flex;
+    justify-content: flex-start;
+  }
 
-.icon {
-  @apply
-    h-600
+  .icon {
+    @apply h-600
     w-600;
 
-  fill: currentcolor;
-  margin: var(--mds-list-item-icon-margin);
-}
+    fill: currentcolor;
+    margin: var(--mds-list-item-icon-margin);
+  }
 
-:host([typography="paragraph"]) {
-  --mds-list-item-icon-margin: 0.25rem theme('spacing.200') 0 0;
-}
+  :host([typography='paragraph']) {
+    --mds-list-item-icon-margin: 0.25rem var(--spacing-200) 0 0;
+  }
 
-:host([typography="caption"]) {
-  --mds-list-item-icon-margin: -0.125rem theme('spacing.200') 0 0;
-}
+  :host([typography='caption']) {
+    --mds-list-item-icon-margin: -0.125rem var(--spacing-200) 0 0;
+  }
 
-:host([typography="label"]),
-:host([typography="tip"]) {
-  --mds-list-item-icon-margin: -0.25rem theme('spacing.200') 0 0;
-}
+  :host([typography='label']),
+  :host([typography='tip']) {
+    --mds-list-item-icon-margin: -0.25rem var(--spacing-200) 0 0;
+  }
 
-:host([typography="option"]) {
-  --mds-list-item-icon-margin: -0.5rem theme('spacing.200') 0 0;
+  :host([typography='option']) {
+    --mds-list-item-icon-margin: -0.5rem var(--spacing-200) 0 0;
+  }
 }
-
-@import './css/mds-list-item-pref-contrast.css';
-@import '../../tailwind/fouc.css';

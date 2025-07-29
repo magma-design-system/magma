@@ -1,33 +1,33 @@
 :host([variant="success"]),
 :host([variant="success"][tone="strong"]) {
-  --mds-label-background: theme('colors.status-success-04');
-  --mds-label-button-background: theme('colors.status-success-04');
-  --mds-label-button-background-hover: theme('colors.status-success-05');
-  --mds-label-button-icon-color: theme('colors.status-success-10');
-  --mds-label-color: theme('colors.status-success-10');
-  --mds-label-icon-color: theme('colors.status-success-10');
-  --mds-label-selection-background: theme('colors.status-success-08');
-  --mds-label-selection-color: theme('colors.status-success-02');
+  --mds-label-background: var(--color-status-success-04);
+  --mds-label-button-background: var(--color-status-success-04);
+  --mds-label-button-background-hover: var(--color-status-success-05);
+  --mds-label-button-icon-color: var(--color-status-success-10);
+  --mds-label-color: var(--color-status-success-10);
+  --mds-label-icon-color: var(--color-status-success-10);
+  --mds-label-selection-background: var(--color-status-success-08);
+  --mds-label-selection-color: var(--color-status-success-02);
 }
 
 :host([variant="success"][tone="weak"]) {
-  --mds-label-background: theme('colors.status-success-08');
-  --mds-label-button-background: theme('colors.status-success-09');
-  --mds-label-button-background-hover: theme('colors.status-success-08');
-  --mds-label-button-icon-color: theme('colors.status-success-04');
-  --mds-label-color: theme('colors.status-success-02');
-  --mds-label-icon-color: theme('colors.status-success-02');
-  --mds-label-selection-background: theme('colors.status-success-06');
-  --mds-label-selection-color: theme('colors.status-success-10');
+  --mds-label-background: var(--color-status-success-08);
+  --mds-label-button-background: var(--color-status-success-09);
+  --mds-label-button-background-hover: var(--color-status-success-08);
+  --mds-label-button-icon-color: var(--color-status-success-04);
+  --mds-label-color: var(--color-status-success-02);
+  --mds-label-icon-color: var(--color-status-success-02);
+  --mds-label-selection-background: var(--color-status-success-06);
+  --mds-label-selection-color: var(--color-status-success-10);
 }
 
 :host([variant="success"][tone="quiet"]) {
-  --mds-label-background: theme('colors.status-success-09');
-  --mds-label-button-background: theme('colors.status-success-09');
-  --mds-label-button-background-hover: theme('colors.status-success-08');
-  --mds-label-button-icon-color: theme('colors.status-success-04');
-  --mds-label-color: theme('colors.status-success-04');
-  --mds-label-icon-color: theme('colors.status-success-04');
-  --mds-label-selection-background: theme('colors.status-success-05');
-  --mds-label-selection-color: theme('colors.status-success-09');
+  --mds-label-background: var(--color-status-success-09);
+  --mds-label-button-background: var(--color-status-success-09);
+  --mds-label-button-background-hover: var(--color-status-success-08);
+  --mds-label-button-icon-color: var(--color-status-success-04);
+  --mds-label-color: var(--color-status-success-04);
+  --mds-label-icon-color: var(--color-status-success-04);
+  --mds-label-selection-background: var(--color-status-success-05);
+  --mds-label-selection-color: var(--color-status-success-09);
 }

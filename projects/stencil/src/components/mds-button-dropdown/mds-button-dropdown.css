@@ -1,5 +1,6 @@
+@reference '../../tailwind/index.css';
 :host {
-  --mds-button-dropdown-radius: theme('borderRadius.lg');
+  --mds-button-dropdown-radius: var(--radius-lg);
 
   @apply
     duration-200
@@ -11,8 +12,8 @@
 }
 
 mds-dropdown {
-  gap: theme('spacing.50');
-  padding: theme('padding.400');
+  gap: --spacing(50);
+  padding: --spacing(400);
 }
 
 mds-button {

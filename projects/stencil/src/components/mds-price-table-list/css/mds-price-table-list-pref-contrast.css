@@ -1,15 +1,15 @@
 :host-context(.pref-contrast-more) {
   --mds-price-table-list-separator-color: rgb(var(--tone-neutral-01) / 0.5);
 
-    box-shadow: theme('boxShadow.outline-50') inset;
-    color: theme('colors.tone-neutral-01');
+    box-shadow: var(--shadow-outline-50) inset;
+    color: var(--color-tone-neutral-01);
 }
 
 @media (prefers-contrast: more) {
   :host-context(.pref-contrast-system) {
     --mds-price-table-list-separator-color: rgb(var(--tone-neutral-01) / 0.5);
 
-    box-shadow: theme('boxShadow.outline-50') inset;
-    color: theme('colors.tone-neutral-01');
+    box-shadow: var(--shadow-outline-50) inset;
+    color: var(--color-tone-neutral-01);
   }
 }

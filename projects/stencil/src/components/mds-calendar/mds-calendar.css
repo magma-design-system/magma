@@ -1,82 +1,88 @@
-@config '../../../tailwind.config.js';
-@tailwind utilities;
+@reference '../../tailwind/index.css';
+@import 'tailwindcss/utilities' layer(utilities);
 
-:host {
-  --mds-calendar-day-number-other-month-color: theme('colors.tone-neutral-07');
-  --mds-calendar-day-number-color: theme('colors.tone-neutral-01');
-  --mds-calendar-cell-gap: theme('gap.50');
-  --mds-calendar-cell-other-month-visibility: visible;
-  --mds-calendar-border-radius: theme('borderRadius.lg');
-  --mds-calendar-background: theme('colors.tone-neutral');
-  --mds-calendar-padding: theme('padding.400');
+@import './css/mds-calendar-view-month.css' layer(utilities);
+@import './css/mds-calendar-view-month-names.css' layer(utilities);
 
-  background-color: theme('colors.tone-neutral-09');
-  border-radius: var(--mds-calendar-border-radius);
-  cursor: auto;
-  display: inline-flex;
-  max-width: 380px;
-  min-width: min-content;
-  overflow: hidden;
+
+
+@layer utilities {
+  :host {
+    --mds-calendar-day-number-other-month-color: theme(
+      'colors.tone-neutral-07'
+    );
+    --mds-calendar-day-number-color: var(--color-tone-neutral-01);
+    --mds-calendar-cell-gap: var(--gap-50);
+    --mds-calendar-cell-other-month-visibility: visible;
+    --mds-calendar-border-radius: var(--radius-lg);
+    --mds-calendar-background: var(--color-tone-neutral);
+    --mds-calendar-padding: var(--padding-400);
+
+    background-color: var(--color-tone-neutral-09);
+    border-radius: var(--mds-calendar-border-radius);
+    cursor: auto;
+    display: inline-flex;
+    max-width: 380px;
+    min-width: min-content;
+    overflow: hidden;
+  }
+
+  .calendar-view {
+    background-color: var(--mds-calendar-background);
+    border-radius: inherit;
+    display: grid;
+    padding: var(--mds-calendar-padding);
+  }
+
+  .calendar-preselection {
+    display: none;
+    gap: var(--spacing-50);
+    grid-auto-rows: min-content;
+    padding: var(--mds-calendar-padding);
+  }
+
+  .calendar-preselection--has-preselection {
+    display: grid;
+  }
+
+  nav {
+    display: flex;
+    gap: var(--spacing-200);
+    justify-content: space-between;
+  }
+
+  .action {
+    @apply px-200;
+
+    justify-content: left;
+    min-width: min-content;
+  }
+
+  .action-back,
+  .action-forward {
+    flex-shrink: 0;
+  }
+
+  .select-month-or-year {
+    background-color: var(--color-tone-neutral-09);
+    border-radius: var(--radius-lg);
+    display: flex;
+    flex-grow: 1;
+    justify-content: space-evenly;
+  }
+
+  .action-month,
+  .action-year {
+    flex-basis: 0;
+    flex-grow: 1;
+  }
+
+  .week-day-name {
+    align-items: center;
+    aspect-ratio: 1;
+    min-height: auto;
+    padding: 0;
+  }
 }
-
-.calendar-view {
-  background-color: var(--mds-calendar-background);
-  border-radius: inherit;
-  display: grid;
-  padding: var(--mds-calendar-padding);
-}
-
-.calendar-preselection {
-  display: none;
-  gap: theme('spacing.50');
-  grid-auto-rows: min-content;
-  padding: var(--mds-calendar-padding);
-}
-
-.calendar-preselection--has-preselection {
-  display: grid;
-}
-
-nav {
-  display: flex;
-  gap: theme('spacing.200');
-  justify-content: space-between;
-}
-
-.action {
-  @apply px-200;
-
-  justify-content: left;
-  min-width: min-content;
-}
-
-.action-back,
-.action-forward {
-  flex-shrink: 0;
-}
-
-.select-month-or-year {
-  background-color: theme('colors.tone-neutral-09');
-  border-radius: theme('borderRadius.lg');
-  display: flex;
-  flex-grow: 1;
-  justify-content: space-evenly;
-}
-
-.action-month,
-.action-year {
-  flex-basis: 0;
-  flex-grow: 1;
-}
-
-.week-day-name {
-  align-items: center;
-  aspect-ratio: 1;
-  min-height: auto;
-  padding: 0;
-}
-
-@import './css/mds-calendar-view-month.css';
-@import './css/mds-calendar-view-month-names.css';
 
 

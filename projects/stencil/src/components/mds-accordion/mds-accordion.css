@@ -9,13 +9,13 @@
  */
 
 :host {
-  --mds-accordion-border-color: theme('colors.tone-neutral-08');
+  --mds-accordion-border-color: var(--color-tone-neutral-08);
   --mds-accordion-border-width: 2px;
-  --mds-accordion-color: theme('colors.tone-neutral-03');
-  --mds-accordion-description-color: theme('colors.tone-neutral-02');
+  --mds-accordion-color: var(--color-tone-neutral-03);
+  --mds-accordion-description-color: var(--color-tone-neutral-02);
   --mds-accordion-duration: 300ms;
-  --mds-accordion-padding-selected: theme('spacing.400') 0 theme('spacing.800') 0;
-  --mds-accordion-padding-unselected: theme('spacing.400') 0;
+  --mds-accordion-padding-selected: --spacing(400) 0 --spacing(800) 0;
+  --mds-accordion-padding-unselected: --spacing(400) 0;
 
   display: grid;
 }

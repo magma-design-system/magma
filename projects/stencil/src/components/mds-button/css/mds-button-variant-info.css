@@ -1,45 +1,45 @@
 :host([variant="info"][tone="strong"]) {
-  --mds-button-background: theme('colors.status-info-05');
+  --mds-button-background: var(--color-status-info-05);
   --mds-button-border-color: var(--status-info-05);
-  --mds-button-color: theme('colors.tone-neutral');
+  --mds-button-color: var(--color-tone-neutral);
 }
 
 :host([variant="info"][tone="strong"]:hover) {
-  --mds-button-background: theme('colors.status-info-04');
+  --mds-button-background: var(--color-status-info-04);
   --mds-button-border-color: var(--status-info-04);
 }
 
 :host([variant="info"][tone="weak"]) {
-  --mds-button-background: theme('colors.status-info-09');
+  --mds-button-background: var(--color-status-info-09);
   --mds-button-border-color: var(--status-info-09);
-  --mds-button-color: theme('colors.status-info-03');
+  --mds-button-color: var(--color-status-info-03);
 
-  fill: theme('colors.status-info-03');
+  fill: var(--color-status-info-03);
 }
 
 :host([variant="info"][tone="weak"]:hover) {
-  --mds-button-background: theme('colors.status-info-08');
+  --mds-button-background: var(--color-status-info-08);
   --mds-button-border-color: var(--status-info-08);
 }
 
 :host([variant="info"][tone="ghost"]) {
   --mds-button-border-color: var(--status-info-04);
-  --mds-button-color: theme('colors.status-info-03');
+  --mds-button-color: var(--color-status-info-03);
 }
 
 :host([variant="info"][tone="ghost"]:hover) {
   --mds-button-border-color: var(--status-info-04);
-  --mds-button-color: theme('colors.status-info-02');
+  --mds-button-color: var(--color-status-info-02);
 }
 
 :host([variant="info"][tone="quiet"]) {
-  --mds-button-color: theme('colors.status-info-02');
+  --mds-button-color: var(--color-status-info-02);
 }
 
 :host([variant="info"][tone="quiet"]:hover) {
-  --mds-button-color: theme('colors.status-info-04');
+  --mds-button-color: var(--color-status-info-04);
 }
 
 :host([variant="info"][tone="quiet"][active]) {
-  --mds-button-color: theme('colors.status-info-01');
+  --mds-button-color: var(--color-status-info-01);
 }

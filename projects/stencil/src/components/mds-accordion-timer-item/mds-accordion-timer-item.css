@@ -1,3 +1,4 @@
+@reference '../../tailwind/index.css';
 @import '@maggioli-design-system/styles/dist/css/animations.css'; /* included for focus effect */
 @import '../../tailwind/components.css';
 
@@ -10,16 +11,16 @@
  */
 
 :host {
-  --mds-accordion-timer-item-progress-bar-color: var(--mds-accordion-timer-progress-bar-color, theme('colors.tone-neutral-03'));
-  --mds-accordion-timer-item-progress-bar-background: var(--mds-accordion-timer-progress-bar-background, theme('colors.tone-neutral-08'));
-  --mds-accordion-timer-item-progress-bar-thickness: var(--mds-accordion-timer-progress-bar-thickness, theme('width.100'));
+  --mds-accordion-timer-item-progress-bar-color: var(--mds-accordion-timer-progress-bar-color, var(--color-tone-neutral-03));
+  --mds-accordion-timer-item-progress-bar-background: var(--mds-accordion-timer-progress-bar-background, var(--color-tone-neutral-08));
+  --mds-accordion-timer-item-progress-bar-thickness: var(--mds-accordion-timer-progress-bar-thickness, --spacing(100));
   --mds-accordion-timer-item-duration: var(--mds-accordion-timer-duration, 500ms);
 
   @apply
     ease-out-expo
     py-400;
 
-  color: var(--mds-accordion-timer-item-color, theme('colors.tone-neutral-02'));
+  color: var(--mds-accordion-timer-item-color, var(--color-tone-neutral-02));
   display: grid;
   position: relative;
   transition-duration: var(--mds-accordion-timer-item-duration);

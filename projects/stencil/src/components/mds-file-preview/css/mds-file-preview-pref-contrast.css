@@ -1,13 +1,13 @@
 :host-context(.pref-contrast-more) {
-  --mds-file-preview-color: theme('colors.tone-neutral-01');
+  --mds-file-preview-color: var(--color-tone-neutral-01);
 
-  box-shadow: theme('boxShadow.outline-50');
+  box-shadow: var(--shadow-outline-50);
 }
 
 @media (prefers-contrast: more) {
   :host-context(.pref-contrast-system) {
-    --mds-file-preview-color: theme('colors.tone-neutral-01');
+    --mds-file-preview-color: var(--color-tone-neutral-01);
 
-    box-shadow: theme('boxShadow.outline-50');
+    box-shadow: var(--shadow-outline-50);
   }
 }

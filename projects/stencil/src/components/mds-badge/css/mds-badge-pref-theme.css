@@ -1,11 +1,11 @@
 :host-context(.pref-theme-dark) [tone="strong"],
 :host-context(.pref-theme-dark) [tone="weak"] {
-  box-shadow: theme('boxShadow.outline') inset;
+  box-shadow: var(--shadow-outline) inset;
 }
 
 @media (prefers-color-scheme: dark) {
   :host-context(.pref-theme-stystem) [tone="strong"],
   :host-context(.pref-theme-stystem) [tone="weak"] {
-    box-shadow: theme('boxShadow.outline') inset;
+    box-shadow: var(--shadow-outline) inset;
   }
 }

@@ -1,6 +1,7 @@
+@reference '../../tailwind/index.css';
 
 :host {
-  --mds-separator-background: theme('colors.tone-neutral-08');
+  --mds-separator-background: var(--color-tone-neutral-08);
 
   @apply
     rounded-full

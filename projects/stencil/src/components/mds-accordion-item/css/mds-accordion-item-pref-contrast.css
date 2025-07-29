@@ -1,11 +1,11 @@
 :host-context(.pref-contrast-more) {
-  --mds-accordion-item-border-color: var(--mds-accordion-border-color, theme('colors.tone-neutral-01'));
-  --mds-accordion-item-color: var(--mds-accordion-color, theme('colors.tone-neutral-01'));
+  --mds-accordion-item-border-color: var(--mds-accordion-border-color, var(--color-tone-neutral-01));
+  --mds-accordion-item-color: var(--mds-accordion-color, var(--color-tone-neutral-01));
 }
 
 @media (prefers-contrast: more) {
   :host-context(.pref-contrast-system) {
-    --mds-accordion-item-border-color: var(--mds-accordion-border-color, theme('colors.tone-neutral-01'));
-    --mds-accordion-item-color: var(--mds-accordion-color, theme('colors.tone-neutral-01'));
+    --mds-accordion-item-border-color: var(--mds-accordion-border-color, var(--color-tone-neutral-01));
+    --mds-accordion-item-color: var(--mds-accordion-color, var(--color-tone-neutral-01));
   }
 }

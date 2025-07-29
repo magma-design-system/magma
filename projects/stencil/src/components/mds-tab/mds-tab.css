@@ -1,8 +1,20 @@
+@reference '../../tailwind/index.css';
 @import '../../tailwind/components.css';
-@config '../../../tailwind.config.js';
-@tailwind components;
 
-/**
+@import './css/mds-tab-animation.css' layer(components);
+@import './css/mds-tab-direction.css' layer(components);
+@import './css/mds-tab-scrollbar.css';
+@import './css/mds-tab-tabs-wrapper-overflow.css' layer(components);
+@import './css/mds-tab-tabs-wrapper-decorator.css' layer(components);
+@import './css/mds-tab-pref-theme.css' layer(components);
+@import './css/mds-tab-pref-contrast.css' layer(components);
+@import './css/mds-tab-pref-animation.css' layer(components);
+@import '../../tailwind/fouc.css' layer(components);
+
+
+
+@layer components {
+  /**
  * @prop --mds-tab-item-default-background: Sets the `background-color` of `mds-tab-item` or `mds-tab::part(slider)` depending on attribute `animation`
  * @prop --mds-tab-item-default-color: Sets the `color` of `mds-tab-item` or `mds-tab::part(slider)` depending on attribute `animation`
  * @prop --mds-tab-item-default-shadow: Sets the `box-shadow` of `mds-tab-item` or `mds-tab::part(slider)` depending on attribute `animation`
@@ -31,138 +43,133 @@
  * @prop --mds-tab-tabs-wrapper-outline-opacity: Sets the `opacity` of outline border which holds
  */
 
-:host {
-  --mds-tab-direction-vertical-columns: auto auto;
-  --mds-tab-item-default-background: transparent;
-  --mds-tab-item-default-color: theme('colors.tone-neutral-03');
-  --mds-tab-item-default-shadow: transparent;
-  --mds-tab-item-hover-background: transparent;
-  --mds-tab-item-hover-color: theme('colors.tone-neutral-02');
-  --mds-tab-item-hover-shadow: transparent;
-  --mds-tab-item-radius: theme('borderRadius.lg');
-  --mds-tab-item-selected-background: theme('colors.tone-neutral');
-  --mds-tab-item-selected-color: theme('colors.tone-neutral-01');
-  --mds-tab-item-selected-shadow: theme('boxShadow.DEFAULT');
-  --mds-tab-scroll-behavior: smooth;
-  --mds-tab-scroll-scrollbar-margin: 0;
-  --mds-tab-scroll-scrollbar-radius: 0;
-  --mds-tab-scroll-scrollbar-size: theme('spacing.200');
-  --mds-tab-scroll-scrollbar-thumb-background: rgb(var(--tone-neutral-02) theme('opacity.30'));
-  --mds-tab-scroll-scrollbar-track-background: rgb(var(--tone-neutral-06) theme('opacity.30'));
-  --mds-tab-slide-delay: 0.125s;
-  --mds-tab-tabs-background: theme('colors.tone-neutral-09');
-  --mds-tab-tabs-gap: theme('padding.200');
-  --mds-tab-tabs-overflow-shadow-size: theme('size.600');
-  --mds-tab-tabs-overflow-shadow: 0 0 var(--mds-tab-tabs-overflow-shadow-size) -2px rgb(0 0 0 / 0.375);
-  --mds-tab-tabs-padding: theme('padding.200');
-  --mds-tab-tabs-radius: theme('borderRadius.2xl');
-  --mds-tab-tabs-wrapper-margin: 0;
-  --mds-tab-tabs-wrapper-outline-opacity: 0.7;
-  --mds-tab-tabs-wrapper-shadow-color: var(--mds-tab-tabs-background);
-  --mds-tab-tabs-wrapper-shadow: 0 0 0 2px var(--mds-tab-tabs-wrapper-shadow-color) inset;
-  --mds-tab-transition-duration: 0.5s;
-  --mds-tab-transition-timing-function: theme('transitionTimingFunction.out-expo');
+  :host {
+    --mds-tab-direction-vertical-columns: auto auto;
+    --mds-tab-item-default-background: transparent;
+    --mds-tab-item-default-color: var(--color-tone-neutral-03);
+    --mds-tab-item-default-shadow: transparent;
+    --mds-tab-item-hover-background: transparent;
+    --mds-tab-item-hover-color: var(--color-tone-neutral-02);
+    --mds-tab-item-hover-shadow: transparent;
+    --mds-tab-item-radius: var(--radius-lg);
+    --mds-tab-item-selected-background: var(--color-tone-neutral);
+    --mds-tab-item-selected-color: var(--color-tone-neutral-01);
+    --mds-tab-item-selected-shadow: var(--shadow);
+    --mds-tab-scroll-behavior: smooth;
+    --mds-tab-scroll-scrollbar-margin: 0;
+    --mds-tab-scroll-scrollbar-radius: 0;
+    --mds-tab-scroll-scrollbar-size: var(--spacing-200);
+    --mds-tab-scroll-scrollbar-thumb-background: rgb(
+      var(--tone-neutral-02) 30%
+    );
+    --mds-tab-scroll-scrollbar-track-background: rgb(
+      var(--tone-neutral-06) 30%
+    );
+    --mds-tab-slide-delay: 0.125s;
+    --mds-tab-tabs-background: var(--color-tone-neutral-09);
+    --mds-tab-tabs-gap: var(--padding-200);
+    --mds-tab-tabs-overflow-shadow-size: --spacing(600);
+    --mds-tab-tabs-overflow-shadow: 0 0
+      var(--mds-tab-tabs-overflow-shadow-size) -2px rgb(0 0 0 / 0.375);
+    --mds-tab-tabs-padding: var(--padding-200);
+    --mds-tab-tabs-radius: var(--radius-2xl);
+    --mds-tab-tabs-wrapper-margin: 0;
+    --mds-tab-tabs-wrapper-outline-opacity: 0.7;
+    --mds-tab-tabs-wrapper-shadow-color: var(--mds-tab-tabs-background);
+    --mds-tab-tabs-wrapper-shadow: 0 0 0 2px
+      var(--mds-tab-tabs-wrapper-shadow-color) inset;
+    --mds-tab-transition-duration: 0.5s;
+    --mds-tab-transition-timing-function: var(--ease-out-expo);
 
-  display: grid;
-  gap: 0 theme('gap.600');
-}
+    display: grid;
+    gap: 0 var(--gap-600);
+  }
 
-:host([animation="slide"]) ::slotted(mds-tab-item) {
-  --mds-tab-item-hover-background: transparent;
-  --mds-tab-item-selected-background: transparent;
-  --mds-tab-item-selected-shadow: transparent;
-  --mds-tab-item-default-background: transparent;
-  --mds-tab-item-default-shadow: transparent;
-}
+  :host([animation='slide']) ::slotted(mds-tab-item) {
+    --mds-tab-item-hover-background: transparent;
+    --mds-tab-item-selected-background: transparent;
+    --mds-tab-item-selected-shadow: transparent;
+    --mds-tab-item-default-background: transparent;
+    --mds-tab-item-default-shadow: transparent;
+  }
 
-.tabs {
-  align-items: flex-start;
-  background-color: var(--mds-tab-tabs-background);
-  border-radius: var(--mds-tab-tabs-radius);
-  box-sizing: border-box;
-  display: flex;
-  gap: var(--mds-tab-tabs-gap);
-  overflow: auto;
-  padding: var(--mds-tab-tabs-padding);
-  scroll-behavior: var(--mds-tab-scroll-behavior);
-  scroll-snap-type: x mandatory;
-  transition-duration: var(--mds-tab-transition-duration);
-  transition-property: background-color;
-  transition-timing-function: var(--mds-tab-transition-timing-function);
-  z-index: 0;
-}
+  .tabs {
+    align-items: flex-start;
+    background-color: var(--mds-tab-tabs-background);
+    border-radius: var(--mds-tab-tabs-radius);
+    box-sizing: border-box;
+    display: flex;
+    gap: var(--mds-tab-tabs-gap);
+    overflow: auto;
+    padding: var(--mds-tab-tabs-padding);
+    scroll-behavior: var(--mds-tab-scroll-behavior);
+    scroll-snap-type: x mandatory;
+    transition-duration: var(--mds-tab-transition-duration);
+    transition-property: background-color;
+    transition-timing-function: var(--mds-tab-transition-timing-function);
+    z-index: 0;
+  }
 
-.tabs-wrapper {
-  border-radius: var(--mds-tab-tabs-radius);
-  display: grid;
-  margin: var(--mds-tab-tabs-wrapper-margin);
-  max-width: max-content;
-  overflow: hidden;
-  position: relative;
-}
+  .tabs-wrapper {
+    border-radius: var(--mds-tab-tabs-radius);
+    display: grid;
+    margin: var(--mds-tab-tabs-wrapper-margin);
+    max-width: max-content;
+    overflow: hidden;
+    position: relative;
+  }
 
-.tabs-wrapper--fill {
-  max-width: 100%;
-}
+  .tabs-wrapper--fill {
+    max-width: 100%;
+  }
 
-.tabs-wrapper::after {
-  border-radius: var(--mds-tab-tabs-radius);
-  box-shadow: var(--mds-tab-tabs-wrapper-shadow);
-  content: "";
-  inset: 0;
-  opacity: var(--mds-tab-tabs-wrapper-outline-opacity);
-  pointer-events: none;
-  position: absolute;
-  transition-duration: var(--mds-tab-transition-duration);
-  transition-property: box-shadow, opacity;
-  transition-timing-function: var(--mds-tab-transition-timing-function);
-}
+  .tabs-wrapper::after {
+    border-radius: var(--mds-tab-tabs-radius);
+    box-shadow: var(--mds-tab-tabs-wrapper-shadow);
+    content: '';
+    inset: 0;
+    opacity: var(--mds-tab-tabs-wrapper-outline-opacity);
+    pointer-events: none;
+    position: absolute;
+    transition-duration: var(--mds-tab-transition-duration);
+    transition-property: box-shadow, opacity;
+    transition-timing-function: var(--mds-tab-transition-timing-function);
+  }
 
-.contents {
-  --mds-tab-contents-height: auto;
+  .contents {
+    --mds-tab-contents-height: auto;
 
-  @apply
-    gap-600
+    @apply gap-600
     hide-scrollbar;
 
-  align-items: flex-start;
-  box-sizing: border-box;
-  display: flex;
-  height: var(--mds-tab-contents-height);
-  overflow-x: auto;
-  overflow-y: hidden;
-  position: relative;
-  scroll-behavior: var(--mds-tab-scroll-behavior);
-  scroll-snap-type: x mandatory;
-  transition-duration: var(--mds-tab-transition-duration);
-  transition-property: height;
-  transition-timing-function: var(--mds-tab-transition-timing-function);
-}
+    align-items: flex-start;
+    box-sizing: border-box;
+    display: flex;
+    height: var(--mds-tab-contents-height);
+    overflow-x: auto;
+    overflow-y: hidden;
+    position: relative;
+    scroll-behavior: var(--mds-tab-scroll-behavior);
+    scroll-snap-type: x mandatory;
+    transition-duration: var(--mds-tab-transition-duration);
+    transition-property: height;
+    transition-timing-function: var(--mds-tab-transition-timing-function);
+  }
 
-.contents:empty {
-  display: none;
-}
+  .contents:empty {
+    display: none;
+  }
 
-::slotted([slot="content"]) {
-  @apply
-    min-w-full
+  ::slotted([slot='content']) {
+    @apply min-w-full
     w-full;
 
-  flex-basis: 0;
-  flex-grow: 1;
-  scroll-snap-align: start;
-}
+    flex-basis: 0;
+    flex-grow: 1;
+    scroll-snap-align: start;
+  }
 
-::slotted([slot="content"][mds-tab-content-hidden]) {
-  display: none !important;
+  ::slotted([slot='content'][mds-tab-content-hidden]) {
+    display: none !important;
+  }
 }
-
-@import './css/mds-tab-animation.css';
-@import './css/mds-tab-direction.css';
-@import './css/mds-tab-scrollbar.css';
-@import './css/mds-tab-tabs-wrapper-overflow.css';
-@import './css/mds-tab-tabs-wrapper-decorator.css';
-@import './css/mds-tab-pref-theme.css';
-@import './css/mds-tab-pref-contrast.css';
-@import './css/mds-tab-pref-animation.css';
-@import '../../tailwind/fouc.css';

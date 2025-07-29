@@ -1,3 +1,4 @@
+@reference '../../tailwind/index.css';
 /**
  * @prop --mds-notification-color: Sets the text color of the component
  * @prop --mds-notification-dot-background: Sets the background-color of the component
@@ -10,14 +11,14 @@
  */
 
 :host {
-  --mds-notification-color: theme('colors.tone-neutral');
-  --mds-notification-dot-background: theme('colors.status-error-05');
+  --mds-notification-color: var(--color-tone-neutral);
+  --mds-notification-dot-background: var(--color-status-error-05);
   --mds-notification-dot-padding: 6px;
   --mds-notification-size: 20px;
   --mds-notification-ring-size: 2px;
-  --mds-notification-transition-timing-function: theme('transitionTimingFunction.out-cubic');
-  --mds-notification-transition-duration: theme('transitionDuration.200');
-  --mds-notification-ring-color: theme('colors.tone-neutral');
+  --mds-notification-transition-timing-function: var(--ease-out-cubic);
+  --mds-notification-transition-duration: 200ms;
+  --mds-notification-ring-color: var(--color-tone-neutral);
   --mds-notification-translate-offset-x: -1.75;
   --mds-notification-translate-offset-y: -2;
   --mds-notification-translate: translate(calc(var(--mds-notification-size) / var(--mds-notification-translate-offset-x)), calc(var(--mds-notification-size) / var(--mds-notification-translate-offset-y)));

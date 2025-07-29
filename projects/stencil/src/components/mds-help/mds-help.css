@@ -1,49 +1,51 @@
+@reference '../../tailwind/index.css';
 @import '../../tailwind/components.css';
-@config '../../../tailwind.config.js';
-@tailwind components;
 
-:host {
-  --mds-help-tooltip-width: fit-content;
-  --mds-help-tooltip-max-width: 280px;
-  --mds-help-tooltip-min-width: 200px;
-  --mds-help-tooltip-delay: 0.25s;
+@import '../../tailwind/fouc.css' layer(components);
 
-  @apply
-    h-400
+
+
+@layer components {
+  :host {
+    --mds-help-tooltip-width: fit-content;
+    --mds-help-tooltip-max-width: 280px;
+    --mds-help-tooltip-min-width: 200px;
+    --mds-help-tooltip-delay: 0.25s;
+
+    @apply h-400
     ml-100
     w-400;
 
-  color: theme('colors.tone-neutral-03');
-  cursor: help;
-  display: inline-flex;
-  fill: currentcolor;
-  justify-content: flex-start;
-  overflow: visible;
-  position: relative;
+    color: var(--color-tone-neutral-03);
+    cursor: help;
+    display: inline-flex;
+    fill: currentcolor;
+    justify-content: flex-start;
+    overflow: visible;
+    position: relative;
+  }
+
+  i {
+    @apply svg;
+  }
+
+  mds-tooltip {
+    --mds-tooltip-delay: var(--mds-help-tooltip-delay);
+
+    max-width: var(--mds-help-tooltip-max-width);
+    min-width: var(--mds-help-tooltip-min-width);
+  }
+
+  mds-tooltip::part(text) {
+    max-width: var(--mds-help-tooltip-max-width);
+    min-width: var(--mds-help-tooltip-width);
+    width: var(--mds-help-tooltip-width);
+  }
+
+  mds-icon,
+  i {
+    fill: inherit;
+    height: inherit;
+    width: inherit;
+  }
 }
-
-i {
-  @apply svg;
-}
-
-mds-tooltip {
-  --mds-tooltip-delay: var(--mds-help-tooltip-delay);
-
-  max-width: var(--mds-help-tooltip-max-width);
-  min-width: var(--mds-help-tooltip-min-width);
-}
-
-mds-tooltip::part(text) {
-  max-width: var(--mds-help-tooltip-max-width);
-  min-width: var(--mds-help-tooltip-width);
-  width: var(--mds-help-tooltip-width);
-}
-
-mds-icon,
-i {
-  fill: inherit;
-  height: inherit;
-  width: inherit;
-}
-
-@import '../../tailwind/fouc.css';

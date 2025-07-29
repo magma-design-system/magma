@@ -1,45 +1,45 @@
 :host([variant="secondary"][tone="strong"]) {
-  --mds-button-background: theme('colors.variant-secondary-04');
+  --mds-button-background: var(--color-variant-secondary-04);
   --mds-button-border-color: var(--variant-secondary-04);
-  --mds-button-color: theme('colors.tone-neutral');
+  --mds-button-color: var(--color-tone-neutral);
 }
 
 :host([variant="secondary"][tone="strong"]:hover) {
-  --mds-button-background: theme('colors.variant-secondary-03');
+  --mds-button-background: var(--color-variant-secondary-03);
   --mds-button-border-color: var(--variant-secondary-03);
 }
 
 :host([variant="secondary"][tone="weak"]) {
-  --mds-button-background: theme('colors.variant-secondary-09');
+  --mds-button-background: var(--color-variant-secondary-09);
   --mds-button-border-color: var(--variant-secondary-09);
-  --mds-button-color: theme('colors.variant-secondary-03');
+  --mds-button-color: var(--color-variant-secondary-03);
 
-  fill: theme('colors.variant-secondary-03');
+  fill: var(--color-variant-secondary-03);
 }
 
 :host([variant="secondary"][tone="weak"]:hover) {
-  --mds-button-background: theme('colors.variant-secondary-08');
+  --mds-button-background: var(--color-variant-secondary-08);
   --mds-button-border-color: var(--variant-secondary-08);
 }
 
 :host([variant="secondary"][tone="ghost"]) {
   --mds-button-border-color: var(--variant-secondary-04);
-  --mds-button-color: theme('colors.variant-secondary-03');
+  --mds-button-color: var(--color-variant-secondary-03);
 }
 
 :host([variant="secondary"][tone="ghost"]:hover) {
   --mds-button-border-color: var(--variant-secondary-04);
-  --mds-button-color: theme('colors.variant-secondary-02');
+  --mds-button-color: var(--color-variant-secondary-02);
 }
 
 :host([variant="secondary"][tone="quiet"]) {
-  --mds-button-color: theme('colors.variant-secondary-02');
+  --mds-button-color: var(--color-variant-secondary-02);
 }
 
 :host([variant="secondary"][tone="quiet"]:hover) {
-  --mds-button-color: theme('colors.variant-secondary-04');
+  --mds-button-color: var(--color-variant-secondary-04);
 }
 
 :host([variant="secondary"][tone="quiet"][active]) {
-  --mds-button-color: theme('colors.variant-secondary-01');
+  --mds-button-color: var(--color-variant-secondary-01);
 }

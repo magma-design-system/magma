@@ -1,39 +1,39 @@
 :host-context(.pref-contrast-more):host([variant="error"]),
 :host-context(.pref-contrast-more):host([variant="error"][tone="strong"]) {
-  --mds-badge-background: theme('colors.status-error-03');
+  --mds-badge-background: var(--color-status-error-03);
 }
 
 :host-context(.pref-contrast-more):host([variant="error"][tone="weak"]) {
-  --mds-badge-color: theme('colors.status-error-01');
+  --mds-badge-color: var(--color-status-error-01);
 }
 
 :host-context(.pref-contrast-more):host([variant="error"][tone="quiet"]) {
-  --mds-badge-color: theme('colors.status-error-02');
+  --mds-badge-color: var(--color-status-error-02);
 }
 
 :host-context(.pref-contrast-more):host([variant="error"][tone="ghost"]) {
   --mds-badge-background: transparent;
-  --mds-badge-color: theme('colors.status-error-03');
-  --mds-badge-border-color: theme('colors.status-error-03');
+  --mds-badge-color: var(--color-status-error-03);
+  --mds-badge-border-color: var(--color-status-error-03);
 }
 
 @media (prefers-contrast: more) {
   :host-context(.pref-contrast-system):host([variant="error"]),
   :host-context(.pref-contrast-system):host([variant="error"][tone="strong"]) {
-    --mds-badge-background: theme('colors.status-error-03');
+    --mds-badge-background: var(--color-status-error-03);
   }
 
   :host-context(.pref-contrast-system):host([variant="error"][tone="weak"]) {
-    --mds-badge-color: theme('colors.status-error-01');
+    --mds-badge-color: var(--color-status-error-01);
   }
 
   :host-context(.pref-contrast-system):host([variant="error"][tone="quiet"]) {
-    --mds-badge-color: theme('colors.status-error-02');
+    --mds-badge-color: var(--color-status-error-02);
   }
 
   :host-context(.pref-contrast-system):host([variant="error"][tone="ghost"]) {
     --mds-badge-background: transparent;
-    --mds-badge-color: theme('colors.status-error-03');
-    --mds-badge-border-color: theme('colors.status-error-03');
+    --mds-badge-color: var(--color-status-error-03);
+    --mds-badge-border-color: var(--color-status-error-03);
   }
 }

@@ -1,4 +1,4 @@
 .banner {
-  --mds-banner-cockade-background: theme('colors.variant-ai-05');
-  --mds-banner-icon-color: theme('colors.variant-ai-10');
+  --mds-banner-cockade-background: var(--color-variant-ai-05);
+  --mds-banner-icon-color: var(--color-variant-ai-10);
 }

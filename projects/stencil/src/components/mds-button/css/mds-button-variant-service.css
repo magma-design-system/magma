@@ -1,11 +1,11 @@
 :host([variant="google"]),
 :host([variant="google"][tone]) {
-  --mds-button-background: theme('colors.tone-neutral');
-  --mds-button-border-hover-opacity: theme('opacity.50');
+  --mds-button-background: var(--color-tone-neutral);
+  --mds-button-border-hover-opacity: 50%;
   --mds-button-border-hover-width: theme('borderWidth.50');
-  --mds-button-border-opacity: theme('opacity.20');
+  --mds-button-border-opacity: 20%;
   --mds-button-border-width: theme('borderWidth.25');
-  --mds-button-color: theme('colors.tone-neutral-03');
+  --mds-button-color: var(--color-tone-neutral-03);
   --mds-button-border-color: var(--tone-neutral-01);
 
   box-shadow: 0 0 0 var(--mds-button-border-width) rgb(var(--mds-button-border-color) / var(--mds-button-border-opacity));
@@ -19,41 +19,41 @@
 
 :host([variant="apple"]),
 :host([variant="apple"][tone]) {
-  --mds-button-background: theme('colors.tone-neutral-02');
-  --mds-button-color: theme('colors.tone-neutral');
+  --mds-button-background: var(--color-tone-neutral-02);
+  --mds-button-color: var(--color-tone-neutral);
   --mds-button-border-width: 0;
 }
 
 :host-context(.pref-theme-dark):host([variant="google"]),
 :host-context(.pref-theme-dark):host([variant="google"][tone]) {
   --mds-button-border-width: theme('borderWidth.50');
-  --mds-button-border-opacity: theme('opacity.30');
+  --mds-button-border-opacity: 30%;
 }
 
 :host-context(.pref-theme-dark):host([variant="google"]:hover),
 :host-context(.pref-theme-dark):host([variant="google"][tone]:hover) {
-  --mds-button-border-opacity: theme('opacity.50');
+  --mds-button-border-opacity: 50%;
 }
 
 :host-context(.pref-theme-dark):host([variant="apple"]),
 :host-context(.pref-theme-dark):host([variant="apple"][tone]) {
-  --mds-button-background: theme('colors.tone-neutral-01');
+  --mds-button-background: var(--color-tone-neutral-01);
 }
 
 @media (prefers-color-scheme: dark) {
   :host-context(.pref-theme-system):host([variant="apple"]),
   :host-context(.pref-theme-system):host([variant="apple"][tone]) {
-    --mds-button-background: theme('colors.tone-neutral-01');
+    --mds-button-background: var(--color-tone-neutral-01);
   }
 
   :host-context(.pref-theme-system):host([variant="google"]),
   :host-context(.pref-theme-system):host([variant="google"][tone]) {
     --mds-button-border-width: theme('borderWidth.50');
-    --mds-button-border-opacity: theme('opacity.30');
+    --mds-button-border-opacity: 30%;
   }
 
   :host-context(.pref-theme-system):host([variant="google"]:hover),
   :host-context(.pref-theme-system):host([variant="google"][tone]:hover) {
-    --mds-button-border-opacity: theme('opacity.50');
+    --mds-button-border-opacity: 50%;
   }
 }

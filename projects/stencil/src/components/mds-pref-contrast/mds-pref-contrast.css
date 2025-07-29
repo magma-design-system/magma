@@ -1,3 +1,4 @@
+@reference '../../tailwind/index.css';
 :host {
   @apply gap-100;
 
@@ -5,7 +6,7 @@
 }
 
 .item {
-  --mds-tab-item-default-color: theme('colors.tone-neutral-05');
+  --mds-tab-item-default-color: var(--color-tone-neutral-05);
 
   flex-basis: 0;
   flex-grow: 1;
@@ -14,7 +15,7 @@
 .item--default,
 .item--more,
 .item--system {
-  --mds-tab-item-selected-color: theme('colors.tone-neutral-03');
+  --mds-tab-item-selected-color: var(--color-tone-neutral-03);
 }
 
 @import './css/mds-pref-contrast-pref-contrast.css';

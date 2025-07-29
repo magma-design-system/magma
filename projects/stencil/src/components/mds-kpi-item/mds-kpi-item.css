@@ -1,3 +1,4 @@
+@reference '../../tailwind/index.css';
 /**
  * @prop --mds-kpi-item-icon-color: Set the fill color of the icon element
  * @prop --mds-kpi-item-info-background: Set the `background-color` of the text area element
@@ -6,8 +7,8 @@
  */
 
 :host {
-  --mds-kpi-item-icon-color: theme('colors.variant-primary-04');
-  --mds-kpi-item-info-background: theme('colors.tone-neutral');
+  --mds-kpi-item-icon-color: var(--color-variant-primary-04);
+  --mds-kpi-item-info-background: var(--color-tone-neutral);
   --mds-kpi-item-text-animation-placeholder-char: var(--mds-kpi-text-animation-placeholder-char, " ");
   --mds-kpi-item-text-animation-speed: var(--mds-kpi-text-animation-speed, 0.15);
 
@@ -17,13 +18,13 @@
     gap-0;
 
   aspect-ratio: 1;
-  background-color: theme('colors.variant-primary-10');
-  border-radius: theme('borderRadius.2xl');
-  box-shadow: theme('boxShadow.lg');
+  background-color: var(--color-variant-primary-10);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-lg);
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  padding: theme('spacing.400');
+  padding: --spacing(400);
   transition-property: background-color, box-shadow;
 }
 
@@ -57,12 +58,12 @@
     gap-0;
 
   background-color: var(--mds-kpi-item-info-background);
-  border-radius: theme('borderRadius.lg');
-  box-shadow: theme('boxShadow.sm');
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
   display: grid;
   flex-shrink: 0;
   justify-content: center;
-  padding: theme('spacing.400');
+  padding: --spacing(400);
   text-align: center;
   transition-property: background-color, border-radius, box-shadow;
 }

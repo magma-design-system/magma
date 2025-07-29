@@ -1,11 +1,11 @@
 :host-context(.pref-theme-dark) {
-  --mds-modal-window-background: theme('colors.tone-neutral-09');
-  --mds-modal-window-shadow: theme('boxShadow.outline'), theme('boxShadow.xl');
+  --mds-modal-window-background: var(--color-tone-neutral-09);
+  --mds-modal-window-shadow: var(--shadow-outline), var(--shadow-xl);
 }
 
 @media (prefers-color-scheme: dark) {
   :host-context(.pref-theme-system) {
-    --mds-modal-window-background: theme('colors.tone-neutral-09');
-    --mds-modal-window-shadow: theme('boxShadow.outline'), theme('boxShadow.xl');
+    --mds-modal-window-background: var(--color-tone-neutral-09);
+    --mds-modal-window-shadow: var(--shadow-outline), var(--shadow-xl);
   }
 }

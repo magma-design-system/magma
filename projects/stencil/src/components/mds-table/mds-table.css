@@ -1,3 +1,4 @@
+@reference '../../tailwind/index.css';
 /**
  * @prop --mds-table-actions-gap: The gap between slotted actions on `mds-table-row` element
  * @prop --mds-table-background-alt: The background-color of the table cell not hovered, visible when attribute `interactive` is set tu true
@@ -10,14 +11,14 @@
  */
 
 :host {
-  --mds-table-actions-gap: theme('spacing.200');
-  --mds-table-background-alt: theme('colors.tone-neutral-10');
-  --mds-table-background: theme('colors.tone-neutral');
-  --mds-table-border-color: theme('colors.tone-neutral-08');
+  --mds-table-actions-gap: --spacing(200);
+  --mds-table-background-alt: var(--color-tone-neutral-10);
+  --mds-table-background: var(--color-tone-neutral);
+  --mds-table-border-color: var(--color-tone-neutral-08);
   --mds-table-border-width: 2px;
-  --mds-table-cell-padding: theme('spacing.400');
-  --mds-table-color-alt: theme('colors.tone-neutral-05');
-  --mds-table-color: theme('colors.tone-neutral-02');
+  --mds-table-cell-padding: --spacing(400);
+  --mds-table-color-alt: var(--color-tone-neutral-05);
+  --mds-table-color: var(--color-tone-neutral-02);
 
   /* internal */
   --mds-table-cell-border-color: var(--mds-table-border-color);

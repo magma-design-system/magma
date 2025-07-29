@@ -1,11 +1,11 @@
 :host-context(.pref-theme-dark) .items {
-  --mds-filter-items-background-active: theme('colors.tone-neutral-10');
-  --mds-filter-items-background: theme('colors.tone-neutral-09');
+  --mds-filter-items-background-active: var(--color-tone-neutral-10);
+  --mds-filter-items-background: var(--color-tone-neutral-09);
 }
 
 @media (prefers-color-scheme: dark) {
   :host-context(.pref-theme-system) .items {
-    --mds-filter-items-background-active: theme('colors.tone-neutral-10');
-    --mds-filter-items-background: theme('colors.tone-neutral-09');
+    --mds-filter-items-background-active: var(--color-tone-neutral-10);
+    --mds-filter-items-background: var(--color-tone-neutral-09);
   }
 }

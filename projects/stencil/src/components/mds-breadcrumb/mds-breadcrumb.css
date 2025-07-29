@@ -1,3 +1,5 @@
+@reference '../../tailwind/index.css';
+
 @import '../../tailwind/components.css';
 
 /**
@@ -14,16 +16,16 @@
  */
 
 :host {
-  --mds-breadcrumb-arrow-depth-color: theme('colors.tone-neutral-04');
-  --mds-breadcrumb-button-background-current: theme('colors.tone-neutral-09');
+  --mds-breadcrumb-arrow-depth-color: var(--color-tone-neutral-04);
+  --mds-breadcrumb-button-background-current: var(--color-tone-neutral-09);
   --mds-breadcrumb-button-background-disabled: transparent;
-  --mds-breadcrumb-button-background-hover: theme('colors.tone-neutral-10');
+  --mds-breadcrumb-button-background-hover: var(--color-tone-neutral-10);
   --mds-breadcrumb-button-background: transparent;
-  --mds-breadcrumb-button-color-current: theme('colors.tone-neutral-01');
-  --mds-breadcrumb-button-color-disabled: theme('colors.tone-neutral-06');
-  --mds-breadcrumb-button-color-hover: theme('colors.tone-neutral-02');
-  --mds-breadcrumb-button-color: theme('colors.tone-neutral-02');
-  --mds-breadcrumb-current-button-color: theme('colors.tone-neutral-05');
+  --mds-breadcrumb-button-color-current: var(--color-tone-neutral-01);
+  --mds-breadcrumb-button-color-disabled: var(--color-tone-neutral-06);
+  --mds-breadcrumb-button-color-hover: var(--color-tone-neutral-02);
+  --mds-breadcrumb-button-color: var(--color-tone-neutral-02);
+  --mds-breadcrumb-current-button-color: var(--color-tone-neutral-05);
 
   @apply
     gap-0

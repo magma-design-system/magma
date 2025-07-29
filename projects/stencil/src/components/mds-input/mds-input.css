@@ -1,8 +1,16 @@
-@import '@maggioli-design-system/styles/dist/tailwind/typography.css';
-@config '../../../tailwind.config.js';
-@tailwind components;
+@reference '../../tailwind/index.css';
+/* @import '@maggioli-design-system/styles/dist/tailwind/typography.css' layer(components); */
 
-/**
+/* @import './css/mds-input-variant.css' layer(components);
+@import './css/mds-input-pref-animation.css' layer(components);
+@import './css/mds-input-pref-theme.css' layer(components);
+@import './css/mds-input-pref-contrast.css' layer(components); */
+/* @import '../../tailwind/fouc.css' layer(components); */
+
+
+
+@layer components {
+  /**
  * @prop --mds-input-background: Sets the background-color of the component
  * @prop --mds-input-icon-color: Sets the icon color of the component
  * @prop --mds-input-placeholder-default-color: Sets the color of the placeholder
@@ -17,43 +25,47 @@
  * @prop --mds-input-variant-color: Sets the variant colors of the component
  */
 
-:host {
-  --mds-input-background: theme('colors.tone-neutral');
-  --mds-input-icon-color: var(--mds-input-variant-color);
-  --mds-input-placeholder-default-color: theme('colors.tone-neutral-06');
-  --mds-input-placeholder-focus-color: theme('colors.tone-neutral-07');
-  --mds-input-placeholder-hover-color: var(--mds-input-placeholder-default-color);
-  --mds-input-ring: 0 0 0 1px rgb(var(--mds-input-variant-color) / 0.1);
-  --mds-input-shadow: 0 1px 3px 0 rgb(var(--mds-input-variant-color) / 0.1), 0 1px 2px 0 rgb(var(--mds-input-variant-color) / 0.06);
-  --mds-input-textarea-field-sizing: content;
-  --mds-input-textarea-resize: none;
-  --mds-input-textarea-max-height: theme('size.6400');
-  --mds-input-textarea-min-height: theme('size.2400');
-  --mds-input-tip-background: 84 84 84;
-  --mds-input-variant-color: 0 0 0;
-  /* private */ --mds-input-controls-border: 2px solid theme('colors.tone-neutral-09');
-  /* private */ --mds-input-controls-color: theme('colors.tone-neutral-03');
+  :host {
+    --mds-input-background: var(--color-tone-neutral);
+    --mds-input-icon-color: var(--mds-input-variant-color);
+    --mds-input-placeholder-default-color: var(--color-tone-neutral-06);
+    --mds-input-placeholder-focus-color: var(--color-tone-neutral-07);
+    --mds-input-placeholder-hover-color: var(
+      --mds-input-placeholder-default-color
+    );
+    --mds-input-ring: 0 0 0 1px rgb(var(--mds-input-variant-color) / 0.1);
+    --mds-input-shadow:
+      0 1px 3px 0 rgb(var(--mds-input-variant-color) / 0.1),
+      0 1px 2px 0 rgb(var(--mds-input-variant-color) / 0.06);
+    --mds-input-textarea-field-sizing: content;
+    --mds-input-textarea-resize: none;
+    --mds-input-textarea-max-height: --spacing(6400);
+    --mds-input-textarea-min-height: --spacing(2400);
+    --mds-input-tip-background: 84 84 84;
+    --mds-input-variant-color: 0 0 0;
+    /* private */
+    --mds-input-controls-border: 2px solid var(--color-tone-neutral-09);
+    /* private */
+    --mds-input-controls-color: var(--color-tone-neutral-03);
 
-  @apply
-    gap-200
+    @apply gap-200
     text-info-detail;
 
-  container-type: inline-size;
-  display: flex;
-  position: relative;
-}
+    container-type: inline-size;
+    display: flex;
+    position: relative;
+  }
 
-:host([typography="detail"]) .input {
-  @apply text-info-detail;
-}
+  :host([typography='detail']) .input {
+    @apply text-info-detail;
+  }
 
-:host([typography="snippet"]) .input {
-  @apply text-code-snippet;
-}
+  :host([typography='snippet']) .input {
+    @apply text-code-snippet;
+  }
 
-.input {
-  @apply
-    duration-300
+  .input {
+    @apply duration-300
     ease-out-expo
     m-0
     px-400
@@ -65,244 +77,233 @@
     border: 0;
     box-shadow: var(--mds-input-ring), var(--mds-input-shadow);
     box-sizing: border-box;
-    color: theme('colors.tone-neutral-02');
+    color: var(--color-tone-neutral-02);
     max-width: 100%;
     min-height: 3rem;
     overflow: hidden;
     text-overflow: ellipsis;
-    transition-property: background-color, border-color, box-shadow, color, fill, margin, opacity, padding, transform;
+    transition-property:
+      background-color, border-color, box-shadow, color, fill, margin, opacity,
+      padding, transform;
     width: 100%;
-}
+  }
 
-.input::placeholder {
-  @apply
-    duration-300
+  .input::placeholder {
+    @apply duration-300
     ease-out-expo;
 
-  color: var(--mds-input-placeholder-default-color);
-  transition-property: color;
-}
+    color: var(--mds-input-placeholder-default-color);
+    transition-property: color;
+  }
 
-.input:hover::placeholder {
-  color: var(--mds-input-placeholder-hover-color);
-}
+  .input:hover::placeholder {
+    color: var(--mds-input-placeholder-hover-color);
+  }
 
-.input:focus::placeholder {
-  color: var(--mds-input-placeholder-focus-color);
-}
+  .input:focus::placeholder {
+    color: var(--mds-input-placeholder-focus-color);
+  }
 
-.input::-webkit-outer-spin-button,
-.input::-webkit-inner-spin-button {
-  appearance: none;
-  display: none;
-  margin: 0;
-}
+  .input::-webkit-outer-spin-button,
+  .input::-webkit-inner-spin-button {
+    appearance: none;
+    display: none;
+    margin: 0;
+  }
 
-:host textarea.input,
-:host([typography]) textarea.input {
-  @apply rounded-br-none;
+  :host textarea.input,
+  :host([typography]) textarea.input {
+    @apply rounded-br-none;
 
-  field-sizing: var(--mds-input-textarea-field-sizing);
-  max-height: var(--mds-input-textarea-max-height);
-  min-height: var(--mds-input-textarea-min-height);
-  overflow: auto;
-  resize: var(--mds-input-textarea-resize);
-}
+    field-sizing: var(--mds-input-textarea-field-sizing);
+    max-height: var(--mds-input-textarea-max-height);
+    min-height: var(--mds-input-textarea-min-height);
+    overflow: auto;
+    resize: var(--mds-input-textarea-resize);
+  }
 
-.input:focus {
-  @apply outline-none;
+  .input:focus {
+    @apply outline-hidden;
 
-  --mds-input-ring: 0 0 0 3px rgb(var(--mds-input-variant-color) / 1);
-  --mds-input-shadow: 0 4px 6px 3px rgb(var(--mds-input-variant-color) / 0.1), 0 2px 4px -1px rgb(var(--mds-input-variant-color) / 0.06);
+    --mds-input-ring: 0 0 0 3px rgb(var(--mds-input-variant-color) / 1);
+    --mds-input-shadow:
+      0 4px 6px 3px rgb(var(--mds-input-variant-color) / 0.1),
+      0 2px 4px -1px rgb(var(--mds-input-variant-color) / 0.06);
+  }
 
-}
+  .input:disabled {
+    background-color: var(--color-tone-neutral-10);
+  }
 
-.input:disabled {
-  background-color: theme('colors.tone-neutral-10');
-}
+  .input:disabled,
+  .input:disabled::placeholder {
+    color: var(--color-tone-neutral-05);
+  }
 
-.input:disabled,
-.input:disabled::placeholder {
-  color: theme('colors.tone-neutral-05');
-}
+  .input.has-icon {
+    @apply pl-1100;
+  }
 
-.input.has-icon {
-  @apply pl-1100;
-}
+  .input.has-right-icon {
+    @apply pr-1100;
+  }
 
-.input.has-right-icon {
-  @apply pr-1100;
-}
-
-
-.await,
-.icon {
-  @apply
-    left-300
+  .await,
+  .icon {
+    @apply left-300
     top-300;
 
-  fill: rgb(var(--mds-input-icon-color));
-  position: absolute;
-}
+    fill: rgb(var(--mds-input-icon-color));
+    position: absolute;
+  }
 
-.await {
-  color: rgb(var(--mds-input-icon-color));
-  height: 24px;
-  width: 24px;
-}
+  .await {
+    color: rgb(var(--mds-input-icon-color));
+    height: 24px;
+    width: 24px;
+  }
 
-.counter {
-  border-left: var(--mds-input-controls-border);
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  position: absolute;
-  right: 0;
-}
+  .counter {
+    border-left: var(--mds-input-controls-border);
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    position: absolute;
+    right: 0;
+  }
 
-.counter-button {
-  @apply
-    h-600
+  .counter-button {
+    @apply h-600
     rounded-lg
     w-700;
 
-  --mds-button-background: transparent;
+    --mds-button-background: transparent;
 
-  border: 0;
-  fill: var(--mds-input-controls-color);
-  min-height: 0;
-  padding: 0;
-}
+    border: 0;
+    fill: var(--mds-input-controls-color);
+    min-height: 0;
+    padding: 0;
+  }
 
-.counter-button:hover {
-  --mds-button-background: theme('colors.tone-neutral-09');
-}
+  .counter-button:hover {
+    --mds-button-background: var(--color-tone-neutral-09);
+  }
 
-.counter .counter-button:first-child {
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
-  border-top-left-radius: 0;
-}
+  .counter .counter-button:first-child {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-top-left-radius: 0;
+  }
 
-.counter .counter-button:last-child {
-  border-bottom-left-radius: 0;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-}
+  .counter .counter-button:last-child {
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
 
-.counter-button--horizontal {
-  @apply
-    h-1200
+  .counter-button--horizontal {
+    @apply h-1200
     w-1200;
 
-  bottom: 0;
-  position: absolute;
-  top: 0;
-}
+    bottom: 0;
+    position: absolute;
+    top: 0;
+  }
 
-.counter-button--decrease {
-  border-bottom-right-radius: 0;
-  border-right: var(--mds-input-controls-border);
-  border-top-right-radius: 0;
-  left: 0;
-}
+  .counter-button--decrease {
+    border-bottom-right-radius: 0;
+    border-right: var(--mds-input-controls-border);
+    border-top-right-radius: 0;
+    left: 0;
+  }
 
-.counter-button--increase {
-  border-bottom-left-radius: 0;
-  border-left: var(--mds-input-controls-border);
-  border-top-left-radius: 0;
-  right: 0;
-}
+  .counter-button--increase {
+    border-bottom-left-radius: 0;
+    border-left: var(--mds-input-controls-border);
+    border-top-left-radius: 0;
+    right: 0;
+  }
 
-.password-toggle-button {
-  @apply
-    top-150
+  .password-toggle-button {
+    @apply top-150
     right-150;
 
-  fill: var(--mds-input-controls-color);
-  position: absolute;
-}
+    fill: var(--mds-input-controls-color);
+    position: absolute;
+  }
 
-.mic-toggle-button {
-  @apply
-    top-150
+  .mic-toggle-button {
+    @apply top-150
     right-150;
 
-  fill: var(--mds-input-controls-color);
-  position: absolute;
-}
-
-.toggle-button--error {
-  cursor: help;
-  fill: theme('colors.tone-neutral-06');
-}
-
-.mic-toggle-button--recording {
-  @apply animate-pulse;
-}
-
-:host([type="number"]) .input {
-
-  /* required to avoid input number buttons on firefox go be shown always */
-
-  /* stylelint-disable-next-line property-no-vendor-prefix */
-  -moz-appearance: textfield;
-  @apply pr-800;
-}
-
-:host([type="number"][controls-layout="horizontal"]) .input {
-  @apply px-1400;
-
-  text-align: center;
-}
-
-:host([type="number"][controls-layout="horizontal"][icon]) .input {
-  @apply pl-2400;
-
-  text-align: left;
-}
-
-
-:host([type="number"][controls-layout="horizontal"]) .icon {
-  @apply left-1500;
-}
-
-:host([type="password"]) .input {
-  @apply pr-1000;
-}
-
-:host([type="password"]) .input[type="password"]:not(:placeholder-shown) {
-  font-size: theme('fontSize.4xl');
-  max-height: 3rem;
-}
-
-:host([type="password"]) .input[type="text"]:not(:placeholder-shown) {
-  @apply text-code-snippet;
-}
-
-:host([type="cf"]) .input {
-  @apply text-code-snippet uppercase;
-}
-
-@container (max-width: 210px) {
-  :host .tip__content,
-  :host(:focus-within) .tip__content {
-    grid-template-columns: 0fr;
-    opacity: 0;
+    fill: var(--mds-input-controls-color);
+    position: absolute;
   }
 
-  :host .tip {
-    padding-left: 0;
-    padding-right: 0;
+  .toggle-button--error {
+    cursor: help;
+    fill: var(--color-tone-neutral-06);
   }
 
-  :host {
-    --mds-input-background: theme('colors.variant-primary-07');
+  .mic-toggle-button--recording {
+    @apply animate-pulse;
+  }
+
+  :host([type='number']) .input {
+    /* required to avoid input number buttons on firefox go be shown always */
+
+    /* stylelint-disable-next-line property-no-vendor-prefix */
+    -moz-appearance: textfield;
+    @apply pr-800;
+  }
+
+  :host([type='number'][controls-layout='horizontal']) .input {
+    @apply px-1400;
+
+    text-align: center;
+  }
+
+  :host([type='number'][controls-layout='horizontal'][icon]) .input {
+    @apply pl-2400;
+
+    text-align: left;
+  }
+
+  :host([type='number'][controls-layout='horizontal']) .icon {
+    @apply left-1500;
+  }
+
+  :host([type='password']) .input {
+    @apply pr-1000;
+  }
+
+  :host([type='password']) .input[type='password']:not(:placeholder-shown) {
+    font-size: var(--text-4xl);
+    max-height: 3rem;
+  }
+
+  :host([type='password']) .input[type='text']:not(:placeholder-shown) {
+    @apply text-code-snippet;
+  }
+
+  :host([type='cf']) .input {
+    @apply text-code-snippet uppercase;
+  }
+
+  @container (max-width: 210px) {
+    :host .tip__content,
+    :host(:focus-within) .tip__content {
+      grid-template-columns: 0fr;
+      opacity: 0;
+    }
+
+    :host .tip {
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    :host {
+      --mds-input-background: var(--color-variant-primary-07);
+    }
   }
 }
-
-@import './css/mds-input-variant.css';
-@import './css/mds-input-pref-animation.css';
-@import './css/mds-input-pref-theme.css';
-@import './css/mds-input-pref-contrast.css';
-@import '../../tailwind/fouc.css';

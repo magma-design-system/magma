@@ -1,6 +1,7 @@
+@reference '../../tailwind/index.css';
 @import '../../../tailwind/components.css';
-@config '../../../../tailwind.config.js';
-@tailwind components;
+
+
 
 :host(:not([scrollbar])) .tabs {
   @apply hide-scrollbar;
