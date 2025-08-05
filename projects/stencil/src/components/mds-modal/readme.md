@@ -13,6 +13,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | ----------- | ----------- | --------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- | ---------- |
 | `animating` | `animating` | Specifies if the component is animating itself or not                                   | `"intro" \| "none" \| "outro" \| undefined`                                                                                       | `'none'`   |
 | `animation` | `animation` | Specifies if the component is animating itself or not                                   | `"3d" \| "custom" \| "slide" \| undefined`                                                                                        | `'slide'`  |
+| `backdrop`  | `backdrop`  | Specifies if the modal shows the backdrop                                               | `boolean \| undefined`                                                                                                            | `true`     |
 | `opened`    | `opened`    | Specifies if the modal is opened or not                                                 | `boolean \| undefined`                                                                                                            | `false`    |
 | `overflow`  | `overflow`  | Specifies if the component prevents the body from scrolling when modal window is opened | `"auto" \| "manual"`                                                                                                              | `'auto'`   |
 | `position`  | `position`  | Specifies the animation position of the modal window                                    | `"bottom" \| "bottom-left" \| "bottom-right" \| "center" \| "left" \| "right" \| "top" \| "top-left" \| "top-right" \| undefined` | `'center'` |
@@ -82,6 +83,7 @@ Type: `Promise<void>`
 ### Used by
 
  - [mds-header](../mds-header)
+ - [mds-status-bar](../mds-status-bar)
 
 ### Depends on
 
@@ -95,6 +97,7 @@ graph TD;
   mds-button --> mds-icon
   mds-button --> mds-text
   mds-header --> mds-modal
+  mds-status-bar --> mds-modal
   style mds-modal fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

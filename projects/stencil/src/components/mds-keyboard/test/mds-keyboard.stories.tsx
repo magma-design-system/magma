@@ -13,16 +13,17 @@ export default {
   },
 }
 
-const TemplateSingleKey = args =>
+const TemplateSingleKey = args => (
   <mds-keyboard {...args}>
     <mds-keyboard-key name="f1"></mds-keyboard-key>
   </mds-keyboard>
+)
 
-const TemplateMultipleKeys = args =>
+const TemplateMultipleKeys = args => (
   <mds-table>
     <mds-table-header>
-      <mds-table-header-cell label='combination'></mds-table-header-cell>
-      <mds-table-header-cell label='description'></mds-table-header-cell>
+      <mds-table-header-cell label="combination"></mds-table-header-cell>
+      <mds-table-header-cell label="description"></mds-table-header-cell>
     </mds-table-header>
     <mds-table-body>
       <mds-table-row>
@@ -33,7 +34,8 @@ const TemplateMultipleKeys = args =>
           </mds-keyboard>
         </mds-table-cell>
         <mds-table-cell class="align-middle">
-          There are no specific key position for this combination, you can use both command keys.
+          There are no specific key position for this combination, you can use
+          both command keys.
         </mds-table-cell>
       </mds-table-row>
       <mds-table-row>
@@ -66,7 +68,8 @@ const TemplateMultipleKeys = args =>
           </mds-keyboard>
         </mds-table-cell>
         <mds-table-cell class="align-middle">
-          There are no specific key position for this combination, you can use both command keys.
+          There are no specific key position for this combination, you can use
+          both command keys.
         </mds-table-cell>
       </mds-table-row>
       <mds-table-row>
@@ -93,43 +96,65 @@ const TemplateMultipleKeys = args =>
       </mds-table-row>
     </mds-table-body>
   </mds-table>
+)
 
-
-const TemplateKeysDictionary = () =>
+const TemplateKeysDictionary = () => (
   <div class="grid gap-600">
     <div class="grid gap-0">
-      <mds-text typography='h4'>List of the available keys</mds-text>
-      <mds-text>We've decided to keep only the more commond keys to avoid internationalization issues.</mds-text>
+      <mds-text typography="h4">List of the available keys</mds-text>
+      <mds-text>
+        We've decided to keep only the more commond keys to avoid
+        internationalization issues.
+      </mds-text>
     </div>
     <mds-table interactive>
       <mds-table-header>
-        <mds-table-header-cell label='key'></mds-table-header-cell>
-        <mds-table-header-cell label='name' sortable></mds-table-header-cell>
-        <mds-table-header-cell label='group' sortable></mds-table-header-cell>
+        <mds-table-header-cell label="key"></mds-table-header-cell>
+        <mds-table-header-cell label="name" sortable></mds-table-header-cell>
+        <mds-table-header-cell label="group" sortable></mds-table-header-cell>
       </mds-table-header>
       <mds-table-body>
-        { keyboardKeyNameDictionary.map((code, index) => (
+        {keyboardKeyNameDictionary.map((code, index) => (
           <mds-table-row key={index}>
             <mds-table-cell class="align-middle" value={code}>
               <mds-keyboard try>
-                <mds-keyboard-key name={code as KeyboardKeyName}></mds-keyboard-key>
+                <mds-keyboard-key
+                  name={code as KeyboardKeyName}
+                ></mds-keyboard-key>
               </mds-keyboard>
             </mds-table-cell>
-            <mds-table-cell class="align-middle whitespace-nowrap"><mds-text typography='snippet'>{ code }</mds-text></mds-table-cell>
-            <mds-table-cell class="align-middle w-full" value={ keyboardKeys[code].group }>{ keyboardKeys[code].group }</mds-table-cell>
+            <mds-table-cell class="align-middle whitespace-nowrap">
+              <mds-text typography="snippet">{code}</mds-text>
+            </mds-table-cell>
+            <mds-table-cell
+              class="align-middle w-full"
+              value={keyboardKeys[code].group}
+            >
+              {keyboardKeys[code].group}
+            </mds-table-cell>
           </mds-table-row>
         ))}
       </mds-table-body>
     </mds-table>
   </div>
+)
 
-export const Default = TemplateSingleKey.bind({})
-
-export const MultipleKeys = TemplateMultipleKeys.bind({})
-
-export const TestMultipleKeys = TemplateMultipleKeys.bind({})
-TestMultipleKeys.args = {
-  try: true,
+export const Default = {
+  render: TemplateSingleKey,
 }
 
-export const KeysDictionary = TemplateKeysDictionary.bind({})
+export const MultipleKeys = {
+  render: TemplateMultipleKeys,
+}
+
+export const TestMultipleKeys = {
+  render: TemplateMultipleKeys,
+
+  args: {
+    try: true,
+  },
+}
+
+export const KeysDictionary = {
+  render: TemplateKeysDictionary,
+}

@@ -4,6 +4,7 @@ import localeEl from './meta/locale.el.json'
 import localeEn from './meta/locale.en.json'
 import localeEs from './meta/locale.es.json'
 import localeIt from './meta/locale.it.json'
+import { TabSizeType } from '@type/button'
 
 /**
  * @name Pref
@@ -32,6 +33,11 @@ import localeIt from './meta/locale.it.json'
 })
 export class MdsPref {
 
+  /**
+   * Sets the size of the component items nested inside it
+   */
+  @Prop({ reflect: true }) readonly size?: TabSizeType
+
   @Element() host: HTMLMdsPrefElement
   @State() showReload: boolean = false
   private prefNeedsReload: string[] = ['consumption', 'language']
@@ -57,6 +63,15 @@ export class MdsPref {
     if (newValue === false) {
       this.controller = undefined
     }
+  }
+
+  @Watch('size')
+  handleSizeChange (newValue?: TabSizeType): void {
+    const allElements = Array.from(this.host.querySelectorAll('*'))
+    const elements = allElements.filter(el => el.tagName.toLowerCase().startsWith('mds-pref-'))
+    elements.forEach((element: HTMLMdsTabElement) => {
+      element.size = newValue
+    })
   }
 
   componentWillRender (): void {

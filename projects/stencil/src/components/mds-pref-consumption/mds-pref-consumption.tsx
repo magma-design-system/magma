@@ -9,6 +9,7 @@ import localeEn from './meta/locale.en.json'
 import localeEs from './meta/locale.es.json'
 import localeIt from './meta/locale.it.json'
 import { ConsumptionModeType } from '@type/preference'
+import { TabSizeType } from '@type/button'
 
 @Component({
   tag: 'mds-pref-consumption',
@@ -31,6 +32,11 @@ export class MdsPrefContrast {
   async updateLang (): Promise<void> {
     this.language = this.t.lang(this.element)
   }
+
+  /**
+   * Sets the size of the component items nested inside it
+   */
+  @Prop({ reflect: true }) readonly size?: TabSizeType
 
   /**
    * Specifies the preference mode
@@ -87,7 +93,7 @@ export class MdsPrefContrast {
     return (
       <Host>
         <mds-text class="info" typography="caption"><b>{this.t.get('label')}</b> {this.t.get(this.consumption[this.mode ?? this.defaultMode].label)}</mds-text>
-        <mds-tab fill>
+        <mds-tab fill size={this.size}>
           <mds-tab-item selected={this.mode === 'low'} onClick={() => { this.setConsumption('low') }} class="item item--low" icon={mggConsumptionLow}></mds-tab-item>
           <mds-tab-item selected={this.mode === 'medium'} onClick={() => { this.setConsumption('medium') }} class="item item--medium" icon={mggConsumptionMedium}></mds-tab-item>
           <mds-tab-item selected={this.mode === 'high'} onClick={() => { this.setConsumption('high') }} class="item item--high" icon={mggConsumptionHigh}></mds-tab-item>

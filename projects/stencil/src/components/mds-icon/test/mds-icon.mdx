@@ -1,0 +1,22 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+
+<Meta title="Design / Icon / ARIA" />
+
+# ARIA
+
+- [Accessible SVG icons](https://css-tricks.com/accessible-svg-icons/)
+- [Accessible SVGs](https://css-tricks.com/accessible-svgs/#aa-icons)
+
+Always remember to set the ARIA attributes when appropriate:
+
+```html
+<mds-icon name="airplane" aria-label="Now we have an airplane!" />
+```
+
+Remove them when not needed:
+
+```html
+<a href="#" title="Go to the homepage">
+  <mds-icon name="home" aria-hidden="true" />
+</a>
+```

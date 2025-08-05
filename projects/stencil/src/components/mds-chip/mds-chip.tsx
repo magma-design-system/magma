@@ -86,6 +86,11 @@ export class MdsChip {
    */
   @Event({ eventName: 'mdsChipDelete' }) deleteEvent: EventEmitter<MdsChipEvent>
 
+  /**
+   * Emits when the component's label is clicked and when `selectable` attribute is set to `true`
+   */
+  @Event({ eventName: 'mdsChipSelect' }) selectEvent: EventEmitter<MdsChipEvent>
+
   @Watch('selectable')
   handleSelectableProp (newValue: boolean): void {
     if (newValue) {
@@ -113,10 +118,15 @@ export class MdsChip {
   }
 
   private onClickLabelHandler (event: Event): void {
-    this.clickLabelEvent.emit({ event, element: this.host })
     if (this.selectable) {
       this.selected = !this.selected
+      if (this.selected === false) {
+        this.selected = undefined
+      }
+      this.selectEvent.emit({ event, element: this.host, selected: this.selected })
+      return
     }
+    this.clickLabelEvent.emit({ event, element: this.host })
   }
 
   private onDeleteHandler (event: Event): void {
@@ -135,7 +145,7 @@ export class MdsChip {
 
   private handleDeletableKeyboard = (isDeletable: boolean): void => {
     if (isDeletable) {
-      const deleteElement = this.host.shadowRoot?.querySelector('.button-delete') as HTMLElement
+      const deleteElement = this.host.shadowRoot?.querySelector('.button-delete') as HTMLMdsButtonElement
       this.km.addElement(deleteElement, 'delete')
       this.km.attachClickBehavior('delete')
       return

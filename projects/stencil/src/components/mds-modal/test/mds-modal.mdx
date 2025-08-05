@@ -1,0 +1,11 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+
+<Meta title="UI/Modal/Known issues" />
+
+# Known issues
+
+---
+
+### Close event triggered in wrong moments
+
+If you trigger the event `onMouseDown` on the slot `top`, then you trigger `onMouseUp` slot `bottom`, the window closes insted of remaining opened.

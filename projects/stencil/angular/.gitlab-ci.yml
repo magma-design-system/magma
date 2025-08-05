@@ -4,6 +4,8 @@ stencil-angular-build:
   needs: [base-stencil-build]
   script:
     - nx run stencil-angular:build
+  cache:
+    policy: pull
   artifacts:
     name: stencil-angular-build
     expire_in: 1 day

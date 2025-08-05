@@ -17,17 +17,26 @@ export default {
   },
 }
 
-const Template = args =>
+const Template = args => (
   <mds-header-bar {...args}>
     <div class="flex gap-200 items-center">
       <mds-img class="w-100000" src="./logo-gruppo-maggioli.svg" />
       <div class="mb-100">
         <mds-text typography="h6">Mobile menu</mds-text>
-        <mds-text typography="option" class="text-tone-neutral-04">Shows up under 1024px</mds-text>
+        <mds-text typography="option" class="text-tone-neutral-04">
+          Shows up under 1024px
+        </mds-text>
       </div>
     </div>
-    <mds-button slot="nav" variant="dark" tone="ghost">Accedi</mds-button>
-    <mds-button slot="nav" icon="mi/round/person">Registrati</mds-button>
+    <mds-button slot="nav" variant="dark" tone="ghost">
+      Accedi
+    </mds-button>
+    <mds-button slot="nav" icon="mi/round/person">
+      Registrati
+    </mds-button>
   </mds-header-bar>
+)
 
-export const Default = Template.bind({})
+export const Default = {
+  render: Template,
+}

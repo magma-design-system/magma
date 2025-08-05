@@ -2,7 +2,6 @@
 icons-build:
   extends: .base-build
   script:
-    - nx run svg-icons:build
     - nx run icons:build
   artifacts:
     name: icons-build

@@ -61,6 +61,13 @@ Type: `Promise<void>`
 
 
 
+## Shadow Parts
+
+| Part           | Description |
+| -------------- | ----------- |
+| `"input-date"` |             |
+
+
 ## CSS Custom Properties
 
 | Name                                      | Description                                                             |

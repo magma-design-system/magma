@@ -38,5 +38,6 @@
 :host([opened]) .window,
 :host([opened]) > ::slotted([slot="window"]) {
   opacity: 1;
+  pointer-events: auto;
   transition-timing-function: var(--mds-modal-transition-timing-funciton);
 }

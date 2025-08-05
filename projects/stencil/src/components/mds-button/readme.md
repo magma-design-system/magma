@@ -15,6 +15,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `autoFocus`    | `auto-focus`    | Specifies if the component is focused when is loaded on the viewport       | `boolean`                                                                                                                                  | `undefined` |
 | `await`        | `await`         | Specifies if the button is awaiting for a response                         | `boolean \| undefined`                                                                                                                     | `undefined` |
 | `disabled`     | `disabled`      | Specifies if the component is disabled or not                              | `boolean \| undefined`                                                                                                                     | `undefined` |
+| `hasText`      | `has-text`      |                                                                            | `boolean`                                                                                                                                  | `undefined` |
 | `href`         | `href`          | Specifies the URL target of the button                                     | `string \| undefined`                                                                                                                      | `undefined` |
 | `icon`         | `icon`          | The icon displayed in the button                                           | `string \| undefined`                                                                                                                      | `undefined` |
 | `iconPosition` | `icon-position` | Specifies the horizontal position of the icon displayed in the button      | `"left" \| "right" \| undefined`                                                                                                           | `'left'`    |
@@ -69,6 +70,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
  - [mds-banner](../mds-banner)
  - [mds-breadcrumb](../mds-breadcrumb)
+ - [mds-button-dropdown](../mds-button-dropdown)
  - [mds-calendar](../mds-calendar)
  - [mds-calendar-cell](../mds-calendar-cell)
  - [mds-chip](../mds-chip)
@@ -110,6 +112,7 @@ graph TD;
   mds-button --> mds-text
   mds-banner --> mds-button
   mds-breadcrumb --> mds-button
+  mds-button-dropdown --> mds-button
   mds-calendar --> mds-button
   mds-calendar-cell --> mds-button
   mds-chip --> mds-button

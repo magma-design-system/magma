@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 const { readdirSync } = require('fs')
 const path = require('path')
 
@@ -42,6 +41,7 @@ module.exports = {
         'magma',
         'react',
         'stencil',
+        'storybook',
         'styles',
         'svg-icons',
       ].concat(webComponents),
@@ -58,8 +58,8 @@ module.exports = {
           const { scope } = parsed
           const { type } = parsed
 
-          if (type === 'revert' && scope !== null) {
-            return [false, 'Your scope should be empty when type is revert']
+          if (type === 'revert') {
+            return scope ? [false, 'Your scope should be empty when type is revert'] : [true, '']
           }
 
           if (type === 'style' && scope === 'styles') {
@@ -68,6 +68,10 @@ module.exports = {
 
           if (type === 'style' && (scope === 'icons' || scope === 'identity' || scope === 'magma' || scope === 'svg-icons')) {
             return [false, `Type style should be used in projects designed to support CSS, are you sure there is CSS inside scope ${scope}?`]
+          }
+
+          if (!scope) {
+            return [false, 'scope may not be empty']
           }
 
           return r

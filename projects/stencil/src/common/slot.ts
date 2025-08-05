@@ -28,8 +28,20 @@ const hasSlotted = (el: HTMLElement, name?: string): boolean => {
   return false
 }
 
+const hasSlottedContent = (el: HTMLElement, name?: string): boolean => {
+  const query = name ? `slot[name="${name}"]` : 'slot:not([name])'
+  const slot: HTMLSlotElement = el.shadowRoot?.querySelector(query) as HTMLSlotElement
+  if (!slot) return false
+
+  const assignedNodes = slot.assignedNodes({ flatten: true })
+  return assignedNodes.some(node =>
+    node.nodeType === Node.TEXT_NODE && node.textContent?.trim() !== '',
+  )
+}
+
 export {
   hasSlottedElements,
   hasSlottedNodes,
+  hasSlottedContent,
   hasSlotted,
 }

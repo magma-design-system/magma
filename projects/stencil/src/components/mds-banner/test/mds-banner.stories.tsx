@@ -1,6 +1,9 @@
 import { h } from '@stencil/core'
 import { iconsDictionary } from '@dictionary/icon'
-import { themeVariantDictionary, toneSimpleVariantDictionary } from '@dictionary/variant'
+import {
+  themeVariantDictionary,
+  toneSimpleVariantDictionary,
+} from '@dictionary/variant'
 
 export default {
   title: 'UI / Banner',
@@ -11,7 +14,8 @@ export default {
     },
     deletable: {
       type: { name: 'boolean' },
-      description: 'Shows the cross icon to perform cancel/delete action on element',
+      description:
+        'Shows the cross icon to perform cancel/delete action on element',
     },
     headline: {
       type: { name: 'string' },
@@ -19,7 +23,8 @@ export default {
     },
     icon: {
       type: { name: 'string', required: true },
-      description: 'The name of the icon set. The icon set is strictly realted to @maggioli-design-system/icons',
+      description:
+        'The name of the icon set. The icon set is strictly realted to @maggioli-design-system/icons',
       options: iconsDictionary,
       control: { type: 'select' },
     },
@@ -38,110 +43,175 @@ export default {
   },
 }
 
-const Template = args =>
+const Template = args => (
   <mds-banner {...args}>
     <mds-text typography="detail">
-      Questa è una finestra banner, serve a informare gli utenti su uno stato iniziale o sul fatto che è cambiato.
+      Questa è una finestra banner, serve a informare gli utenti su uno stato
+      iniziale o sul fatto che è cambiato.
     </mds-text>
   </mds-banner>
+)
 
-const TemplateActions = args =>
+const TemplateActions = args => (
   <mds-banner {...args}>
     <mds-text typography="detail">
-      Pare che la licenza di questo servizio sia scaduta, il servizio non smetterà di funzionare ma non potrai più utilizzare le <a href="#">funzioni premium</a>.
+      Pare che la licenza di questo servizio sia scaduta, il servizio non
+      smetterà di funzionare ma non potrai più utilizzare le{' '}
+      <a href="#">funzioni premium</a>.
     </mds-text>
-    <mds-button slot="action" variant={args.variant} tone="ghost">Annulla</mds-button>
-    <mds-button slot="action" variant={args.variant}>Rinnova abbonamento</mds-button>
+    <mds-button slot="action" variant={args.variant} tone="ghost">
+      Annulla
+    </mds-button>
+    <mds-button slot="action" variant={args.variant}>
+      Rinnova abbonamento
+    </mds-button>
   </mds-banner>
+)
 
-const TemplateVariantDefault = args =>
+const TemplateVariantDefault = args => (
   <mds-banner {...args}>
     <mds-text typography="detail">
-      Il tuo account è stato aggiornato alla versione PRO, ora puoi utilizzare le notifiche su aggiornamenti di norme di legge e la consultazione dei volumi correlati.
+      Il tuo account è stato aggiornato alla versione PRO, ora puoi utilizzare
+      le notifiche su aggiornamenti di norme di legge e la consultazione dei
+      volumi correlati.
     </mds-text>
-    <mds-button slot="action" variant="primary" tone="ghost">Cancel</mds-button>
-    <mds-button slot="action" variant="primary" tone={args.tone}>Confirm</mds-button>
+    <mds-button slot="action" variant="primary" tone="ghost">
+      Cancel
+    </mds-button>
+    <mds-button slot="action" variant="primary" tone={args.tone}>
+      Confirm
+    </mds-button>
   </mds-banner>
+)
 
-const TemplateVariantDark = args =>
+const TemplateVariantDark = args => (
   <mds-banner {...args}>
     <mds-text typography="detail">
-      Il tuo account è stato aggiornato alla versione PRO, ora puoi utilizzare le notifiche su aggiornamenti di norme di legge e la consultazione dei volumi correlati.
+      Il tuo account è stato aggiornato alla versione PRO, ora puoi utilizzare
+      le notifiche su aggiornamenti di norme di legge e la consultazione dei
+      volumi correlati.
     </mds-text>
-    <mds-button slot="action" variant="light" tone="quiet">Cancel</mds-button>
-    <mds-button slot="action" variant="dark" tone={args.tone}>Confirm</mds-button>
+    <mds-button slot="action" variant="light" tone="quiet">
+      Cancel
+    </mds-button>
+    <mds-button slot="action" variant="dark" tone={args.tone}>
+      Confirm
+    </mds-button>
   </mds-banner>
+)
 
-const TemplateVariantLight = args =>
+const TemplateVariantLight = args => (
   <mds-banner {...args}>
     <mds-text typography="detail">
-      Il tuo account è stato aggiornato alla versione PRO, ora puoi utilizzare le notifiche su aggiornamenti di norme di legge e la consultazione dei volumi correlati.
+      Il tuo account è stato aggiornato alla versione PRO, ora puoi utilizzare
+      le notifiche su aggiornamenti di norme di legge e la consultazione dei
+      volumi correlati.
     </mds-text>
-    <mds-button slot="action" variant="dark" tone="quiet">Cancel</mds-button>
-    <mds-button slot="action" variant="dark" tone={args.tone}>Confirm</mds-button>
+    <mds-button slot="action" variant="dark" tone="quiet">
+      Cancel
+    </mds-button>
+    <mds-button slot="action" variant="dark" tone={args.tone}>
+      Confirm
+    </mds-button>
   </mds-banner>
+)
 
-const TemplateVariantStatus = args =>
+const TemplateVariantStatus = args => (
   <mds-banner {...args}>
     <mds-text typography="detail">
-    Se procederai, perderai i dati relativi modelli del database che hai registrato in precedenza. Conferma solo se sei consapevole di ciò che stai facendo.
+      Se procederai, perderai i dati relativi modelli del database che hai
+      registrato in precedenza. Conferma solo se sei consapevole di ciò che stai
+      facendo.
     </mds-text>
-    <mds-button slot="action" variant={ args.variant } tone="quiet">Annulla</mds-button>
-    <mds-button slot="action" variant={ args.variant } tone="weak">Conferma</mds-button>
+    <mds-button slot="action" variant={args.variant} tone="quiet">
+      Annulla
+    </mds-button>
+    <mds-button slot="action" variant={args.variant} tone="weak">
+      Conferma
+    </mds-button>
   </mds-banner>
+)
 
-export const Default = Template.bind({})
-
-export const Cockade = Template.bind({})
-Cockade.args = {
-  icon: 'mi/baseline/warning',
-  cockade: true,
+export const Default = {
+  render: Template,
 }
 
-export const Headline = Template.bind({})
-Headline.args = {
-  headline: 'Avviso',
+export const Cockade = {
+  render: Template,
+
+  args: {
+    icon: 'mi/baseline/warning',
+    cockade: true,
+  },
 }
 
-export const Icon = Template.bind({})
-Icon.args = {
-  icon: 'mi/baseline/warning',
+export const Headline = {
+  render: Template,
+
+  args: {
+    headline: 'Avviso',
+  },
 }
 
-export const Deletable = Template.bind({})
-Deletable.args = {
-  deletable: true,
+export const Icon = {
+  render: Template,
+
+  args: {
+    icon: 'mi/baseline/warning',
+  },
 }
 
-export const Actions = TemplateActions.bind({})
+export const Deletable = {
+  render: Template,
 
-export const Variant = TemplateVariantDefault.bind({})
-Variant.args = {
-  headline: 'Impostazioni account',
-  icon: 'mi/baseline/info',
-  deletable: true,
+  args: {
+    deletable: true,
+  },
 }
 
-export const VariantDark = TemplateVariantDark.bind({})
-VariantDark.args = {
-  headline: 'Impostazioni account',
-  icon: 'mi/baseline/info',
-  deletable: true,
-  variant: 'dark',
+export const Actions = {
+  render: TemplateActions,
 }
 
-export const VariantLight = TemplateVariantLight.bind({})
-VariantLight.args = {
-  headline: 'Impostazioni account',
-  icon: 'mi/baseline/info',
-  deletable: true,
-  variant: 'light',
+export const Variant = {
+  render: TemplateVariantDefault,
+
+  args: {
+    headline: 'Impostazioni account',
+    icon: 'mi/baseline/info',
+    deletable: true,
+  },
 }
 
-export const VariantStatusWarning = TemplateVariantStatus.bind({})
-VariantStatusWarning.args = {
-  deletable: true,
-  headline: 'Attenzione',
-  icon: 'mi/baseline/warning',
-  variant: 'warning',
+export const VariantDark = {
+  render: TemplateVariantDark,
+
+  args: {
+    headline: 'Impostazioni account',
+    icon: 'mi/baseline/info',
+    deletable: true,
+    variant: 'dark',
+  },
+}
+
+export const VariantLight = {
+  render: TemplateVariantLight,
+
+  args: {
+    headline: 'Impostazioni account',
+    icon: 'mi/baseline/info',
+    deletable: true,
+    variant: 'light',
+  },
+}
+
+export const VariantStatusWarning = {
+  render: TemplateVariantStatus,
+
+  args: {
+    deletable: true,
+    headline: 'Attenzione',
+    icon: 'mi/baseline/warning',
+    variant: 'warning',
+  },
 }

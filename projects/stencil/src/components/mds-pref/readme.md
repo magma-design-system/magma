@@ -7,9 +7,10 @@
 
 ## Properties
 
-| Property     | Attribute    | Description                                                                                        | Type                   | Default     |
-| ------------ | ------------ | -------------------------------------------------------------------------------------------------- | ---------------------- | ----------- |
-| `controller` | `controller` | Sets if the component works as hidden element controller instead as UI element, visible on the DOM | `boolean \| undefined` | `undefined` |
+| Property     | Attribute    | Description                                                                                        | Type                        | Default     |
+| ------------ | ------------ | -------------------------------------------------------------------------------------------------- | --------------------------- | ----------- |
+| `controller` | `controller` | Sets if the component works as hidden element controller instead as UI element, visible on the DOM | `boolean \| undefined`      | `undefined` |
+| `size`       | `size`       | Sets the size of the component items nested inside it                                              | `"md" \| "sm" \| undefined` | `undefined` |
 
 
 ## Methods

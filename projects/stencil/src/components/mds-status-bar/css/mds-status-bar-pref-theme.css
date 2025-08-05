@@ -1,0 +1,9 @@
+:host-context(.pref-theme-dark) .status-bar {
+  box-shadow: theme('boxShadow.outline-light');
+}
+
+@media (prefers-color-scheme: dark) {
+  :host-context(.pref-theme-system) .status-bar {
+    box-shadow: theme('boxShadow.outline-light');
+  }
+}

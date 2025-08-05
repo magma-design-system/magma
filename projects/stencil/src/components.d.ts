@@ -16,7 +16,7 @@ import { BenchmarkBarTypographyType } from "./components/mds-benchmark-bar/meta/
 import { BibliographyFormatType, BibliographyRelationshipType } from "./components/mds-bibliography/meta/types";
 import { MdsBreadcrumbEventDetail } from "./components/mds-breadcrumb/meta/event-detail";
 import { MdsBreadcrumbItemEventDetail } from "./components/mds-breadcrumb-item/meta/event-detail";
-import { ButtonIconPositionType, ButtonSizeType, ButtonTargetType, ButtonType, ButtonVariantType } from "./type/button";
+import { ButtonDropdownVariantType, ButtonIconPositionType, ButtonSizeType, ButtonTargetType, ButtonType, ButtonVariantType, TabSizeType } from "./type/button";
 import { TypographyHeadingTagType, TypographyTagType, TypographyTruncateType } from "./type/text";
 import { CalendarCellSelectionOrieintationType, CalendarCellSelectionPositionType, CalendarCellType } from "./components/mds-calendar-cell/meta/types";
 import { MdsChipEvent } from "./components/mds-chip/meta/interface";
@@ -45,6 +45,7 @@ import { InputTipItemVariantType } from "./type/input-tip";
 import { AttachmentSort, FileError } from "./components/mds-input-upload/meta/types";
 import { KeyboardTest } from "./components/mds-keyboard/meta/type";
 import { KeyboardKeyName } from "./type/keyboard";
+import { MentionSize } from "./components/mds-mention/meta/type";
 import { ModalAnimationStateType, ModalAnimationStyleType, ModalOverflowType, ModalPositionType } from "./components/mds-modal/meta/types";
 import { StrategyType } from "./components/mds-notification/meta/types";
 import { MdsPaginatorEventDetail } from "./components/mds-paginator/meta/event-detail";
@@ -61,8 +62,10 @@ import { MdsPushNotificationEventDetail } from "./components/mds-push-notificati
 import { NotificationItemDateFormatType, NotificationItemPreviewType } from "./components/mds-push-notification-item/meta/types";
 import { MdsPushNotificationItemEventDetail } from "./components/mds-push-notification-item/meta/event-detail";
 import { Direction, Interaction } from "./components/mds-radial-menu/meta/types";
+import { ModalOverflowType as ModalOverflowType1 } from "./components.d";
 import { MdsStepperBarEventDetail } from "./components/mds-stepper-bar/meta/event-detail";
 import { MdsStepperBarItemEventDetail } from "./components/mds-stepper-bar-item/meta/event-detail";
+import { DirectionType as DirectionType1 } from "./components/mds-tab/meta/type";
 import { HorizontalActionsAnimationType } from "./type/animation";
 import { MdsTabEventDetail } from "./components/mds-tab/meta/event-detail";
 import { MdsTabBarEventDetail } from "./components/mds-tab-bar/meta/event-detail";
@@ -87,7 +90,7 @@ export { BenchmarkBarTypographyType } from "./components/mds-benchmark-bar/meta/
 export { BibliographyFormatType, BibliographyRelationshipType } from "./components/mds-bibliography/meta/types";
 export { MdsBreadcrumbEventDetail } from "./components/mds-breadcrumb/meta/event-detail";
 export { MdsBreadcrumbItemEventDetail } from "./components/mds-breadcrumb-item/meta/event-detail";
-export { ButtonIconPositionType, ButtonSizeType, ButtonTargetType, ButtonType, ButtonVariantType } from "./type/button";
+export { ButtonDropdownVariantType, ButtonIconPositionType, ButtonSizeType, ButtonTargetType, ButtonType, ButtonVariantType, TabSizeType } from "./type/button";
 export { TypographyHeadingTagType, TypographyTagType, TypographyTruncateType } from "./type/text";
 export { CalendarCellSelectionOrieintationType, CalendarCellSelectionPositionType, CalendarCellType } from "./components/mds-calendar-cell/meta/types";
 export { MdsChipEvent } from "./components/mds-chip/meta/interface";
@@ -116,6 +119,7 @@ export { InputTipItemVariantType } from "./type/input-tip";
 export { AttachmentSort, FileError } from "./components/mds-input-upload/meta/types";
 export { KeyboardTest } from "./components/mds-keyboard/meta/type";
 export { KeyboardKeyName } from "./type/keyboard";
+export { MentionSize } from "./components/mds-mention/meta/type";
 export { ModalAnimationStateType, ModalAnimationStyleType, ModalOverflowType, ModalPositionType } from "./components/mds-modal/meta/types";
 export { StrategyType } from "./components/mds-notification/meta/types";
 export { MdsPaginatorEventDetail } from "./components/mds-paginator/meta/event-detail";
@@ -132,8 +136,10 @@ export { MdsPushNotificationEventDetail } from "./components/mds-push-notificati
 export { NotificationItemDateFormatType, NotificationItemPreviewType } from "./components/mds-push-notification-item/meta/types";
 export { MdsPushNotificationItemEventDetail } from "./components/mds-push-notification-item/meta/event-detail";
 export { Direction, Interaction } from "./components/mds-radial-menu/meta/types";
+export { ModalOverflowType as ModalOverflowType1 } from "./components.d";
 export { MdsStepperBarEventDetail } from "./components/mds-stepper-bar/meta/event-detail";
 export { MdsStepperBarItemEventDetail } from "./components/mds-stepper-bar-item/meta/event-detail";
+export { DirectionType as DirectionType1 } from "./components/mds-tab/meta/type";
 export { HorizontalActionsAnimationType } from "./type/animation";
 export { MdsTabEventDetail } from "./components/mds-tab/meta/event-detail";
 export { MdsTabBarEventDetail } from "./components/mds-tab-bar/meta/event-detail";
@@ -405,6 +411,10 @@ export namespace Components {
          */
         "disabled"?: boolean;
         /**
+          * @private Specifies if the component is focused when is loaded on the viewport
+         */
+        "hasText": boolean;
+        /**
           * Specifies the URL target of the button
          */
         "href"?: string;
@@ -440,6 +450,62 @@ export namespace Components {
           * Specifies the color variant for the button
          */
         "variant"?: ButtonVariantType;
+    }
+    interface MdsButtonDropdown {
+        /**
+          * Specifies if the button is active or not
+         */
+        "active": boolean;
+        /**
+          * Specifies if the component is focused when is loaded on the viewport
+         */
+        "autoFocus": boolean;
+        /**
+          * Specifies if the button is awaiting for a response
+         */
+        "await"?: boolean;
+        /**
+          * Specifies if the component is disabled or not
+         */
+        "disabled"?: boolean;
+        /**
+          * Specifies the URL target of the button
+         */
+        "href"?: string;
+        /**
+          * The icon displayed in the button
+         */
+        "icon"?: string;
+        /**
+          * Specifies le text label of the component
+         */
+        "label": string;
+        /**
+          * Specifies the size for the button
+         */
+        "size": ButtonSizeType;
+        /**
+          * Specifies the target of the URL, if self or blank
+         */
+        "target": ButtonTargetType;
+        /**
+          * Specifies the tone variant for the button
+         */
+        "tone"?: ToneMinimalVariantType;
+        /**
+          * Specifies if the text shoud be truncated or should behave as a normal text
+         */
+        "truncate"?: TypographyTruncateType;
+        /**
+          * The type of the button element
+         */
+        "type"?: ButtonType;
+        /**
+          * Specifies the color variant for the button
+         */
+        "variant"?: ButtonDropdownVariantType;
+    }
+    interface MdsButtonGroup {
     }
     interface MdsCalendar {
         /**
@@ -635,11 +701,36 @@ export namespace Components {
         "zIndex": number;
     }
     interface MdsEmoji {
+        /**
+          * @returns Promise<void> Emoji agrees, useful for confirm actions.
+         */
+        "agree": () => Promise<void>;
+        /**
+          * @returns Promise<void> Emoji disagrees, useful for errors or unwanted results.
+         */
+        "disagree": (turnHappyDelay?: number) => Promise<void>;
         "name": string;
+        /**
+          * @returns Promise<void> Eyes start blinking.
+         */
         "startBlinking": () => Promise<void>;
+        /**
+          * @returns Promise<void> Starts following mouse with CSS 3D transform.
+         */
         "startFollowMouse": () => Promise<void>;
+        /**
+          * @returns Promise<void> Emoji start thinking, useful for pending requests.
+         */
+        "startThinking": () => Promise<void>;
+        /**
+          * @returns Promise<void> Eyes stop blinking.
+         */
         "stopBlinking": () => Promise<void>;
+        /**
+          * @returns Promise<void> Stops following mouse with CSS 3D transform.
+         */
         "stopFollowMouse": () => Promise<void>;
+        "stopThinking": () => Promise<void>;
     }
     interface MdsEntity {
         /**
@@ -1391,6 +1482,20 @@ export namespace Components {
          */
         "variant"?: TypographyReadingVariants;
     }
+    interface MdsMention {
+        /**
+          * Sets the icon shown at the left of the label
+         */
+        "icon"?: string;
+        /**
+          * Sets the label of the component
+         */
+        "label"?: string;
+        /**
+          * Sets the label of the component
+         */
+        "size"?: MentionSize;
+    }
     interface MdsModal {
         /**
           * Specifies if the component is animating itself or not
@@ -1400,6 +1505,10 @@ export namespace Components {
           * Specifies if the component is animating itself or not
          */
         "animation"?: ModalAnimationStyleType;
+        /**
+          * Specifies if the modal shows the backdrop
+         */
+        "backdrop"?: boolean;
         "close": () => Promise<void>;
         /**
           * Specifies if the modal is opened or not
@@ -1512,6 +1621,10 @@ export namespace Components {
           * Sets if the component works as hidden element controller instead as UI element, visible on the DOM
          */
         "controller"?: boolean;
+        /**
+          * Sets the size of the component items nested inside it
+         */
+        "size"?: TabSizeType;
         "updateLang": () => Promise<void>;
     }
     interface MdsPrefAnimation {
@@ -1519,6 +1632,10 @@ export namespace Components {
           * Specifies the preference mode
          */
         "mode"?: AnimationModeType;
+        /**
+          * Sets the size of the component items nested inside it
+         */
+        "size"?: TabSizeType;
         "updateLang": () => Promise<void>;
     }
     interface MdsPrefConsumption {
@@ -1526,6 +1643,10 @@ export namespace Components {
           * Specifies the preference mode
          */
         "mode"?: ConsumptionModeType;
+        /**
+          * Sets the size of the component items nested inside it
+         */
+        "size"?: TabSizeType;
         "updateLang": () => Promise<void>;
     }
     interface MdsPrefContrast {
@@ -1533,6 +1654,10 @@ export namespace Components {
           * Specifies the preference mode
          */
         "mode"?: ContrastModeType;
+        /**
+          * Sets the size of the component items nested inside it
+         */
+        "size"?: TabSizeType;
         "updateLang": () => Promise<void>;
     }
     interface MdsPrefLanguage {
@@ -1540,6 +1665,10 @@ export namespace Components {
           * Specifies the language code based on HTML `lang` attribute  A string representing the language version as defined in {@link https://datatracker.ietf.org/doc/html/rfc5646 RFC 5646: Tags for Identifying Languages (also known as BCP 47)}.  `Examples of valid language codes include "en", "en-US", "fr", "fr-FR", "es-ES", etc.`  Supported languages are Italiano, English, Español, ελληνικά
          */
         "set": string;
+        /**
+          * Sets the size of the component items nested inside it
+         */
+        "size"?: TabSizeType;
         "updateLang": () => Promise<void>;
     }
     interface MdsPrefLanguageItem {
@@ -1558,6 +1687,10 @@ export namespace Components {
           * Specifies the preference mode
          */
         "mode"?: ThemeModeType;
+        /**
+          * Sets the size of the component items nested inside it
+         */
+        "size"?: TabSizeType;
         /**
           * Specifies the transition of switching from a theme to another one
          */
@@ -1759,6 +1892,21 @@ export namespace Components {
          */
         "running"?: boolean;
     }
+    interface MdsStatusBar {
+        /**
+          * Specifies the description near the slotted actions
+         */
+        "description"?: string;
+        "hide": () => Promise<void>;
+        /**
+          * Specifies if the component prevents the body from scrolling when modal window is opened
+         */
+        "overflow": ModalOverflowType;
+        /**
+          * Specifies if the component is visible
+         */
+        "visible"?: boolean;
+    }
     interface MdsStepperBar {
         /**
           * Sets the current item to the given index: 0 is none done, 1 is the first item done, last number + 1 is all items done
@@ -1809,6 +1957,10 @@ export namespace Components {
          */
         "animation"?: HorizontalActionsAnimationType;
         /**
+          * Sets if the component distributes item vertically or horzontally
+         */
+        "direction"?: DirectionType1;
+        /**
           * Sets if the tab area should fill the entire width
          */
         "fill"?: boolean;
@@ -1820,6 +1972,10 @@ export namespace Components {
           * Shows the horizontal scrollbar to maximize accessibility
          */
         "scrollbar"?: boolean;
+        /**
+          * Sets the size of the component items nested inside it
+         */
+        "size"?: TabSizeType;
     }
     interface MdsTabBar {
     }
@@ -2510,6 +2666,18 @@ declare global {
         prototype: HTMLMdsButtonElement;
         new (): HTMLMdsButtonElement;
     };
+    interface HTMLMdsButtonDropdownElement extends Components.MdsButtonDropdown, HTMLStencilElement {
+    }
+    var HTMLMdsButtonDropdownElement: {
+        prototype: HTMLMdsButtonDropdownElement;
+        new (): HTMLMdsButtonDropdownElement;
+    };
+    interface HTMLMdsButtonGroupElement extends Components.MdsButtonGroup, HTMLStencilElement {
+    }
+    var HTMLMdsButtonGroupElement: {
+        prototype: HTMLMdsButtonGroupElement;
+        new (): HTMLMdsButtonGroupElement;
+    };
     interface HTMLMdsCalendarElementEventMap {
         "mdsCalendarChange": {startDate: string, endDate?: string};
         "mdsCalendarPreselect": void;
@@ -2577,6 +2745,7 @@ declare global {
     interface HTMLMdsChipElementEventMap {
         "mdsChipClickLabel": MdsChipEvent;
         "mdsChipDelete": MdsChipEvent;
+        "mdsChipSelect": MdsChipEvent;
     }
     interface HTMLMdsChipElement extends Components.MdsChip, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsChipElementEventMap>(type: K, listener: (this: HTMLMdsChipElement, ev: MdsChipCustomEvent<HTMLMdsChipElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -2827,6 +2996,7 @@ declare global {
     };
     interface HTMLMdsInputDateRangeElementEventMap {
         "mdsInputDateRangeSelect": { startDate: string, endDate: string };
+        "mdsInputDateRangeValueChange": { startDate: string, endDate: string };
     }
     interface HTMLMdsInputDateRangeElement extends Components.MdsInputDateRange, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsInputDateRangeElementEventMap>(type: K, listener: (this: HTMLMdsInputDateRangeElement, ev: MdsInputDateRangeCustomEvent<HTMLMdsInputDateRangeElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -2992,6 +3162,12 @@ declare global {
     var HTMLMdsListItemElement: {
         prototype: HTMLMdsListItemElement;
         new (): HTMLMdsListItemElement;
+    };
+    interface HTMLMdsMentionElement extends Components.MdsMention, HTMLStencilElement {
+    }
+    var HTMLMdsMentionElement: {
+        prototype: HTMLMdsMentionElement;
+        new (): HTMLMdsMentionElement;
     };
     interface HTMLMdsModalElementEventMap {
         "mdsModalClose": void;
@@ -3303,6 +3479,12 @@ declare global {
         prototype: HTMLMdsSpinnerElement;
         new (): HTMLMdsSpinnerElement;
     };
+    interface HTMLMdsStatusBarElement extends Components.MdsStatusBar, HTMLStencilElement {
+    }
+    var HTMLMdsStatusBarElement: {
+        prototype: HTMLMdsStatusBarElement;
+        new (): HTMLMdsStatusBarElement;
+    };
     interface HTMLMdsStepperBarElementEventMap {
         "mdsStepperBarChange": MdsStepperBarEventDetail;
     }
@@ -3563,6 +3745,8 @@ declare global {
         "mds-breadcrumb": HTMLMdsBreadcrumbElement;
         "mds-breadcrumb-item": HTMLMdsBreadcrumbItemElement;
         "mds-button": HTMLMdsButtonElement;
+        "mds-button-dropdown": HTMLMdsButtonDropdownElement;
+        "mds-button-group": HTMLMdsButtonGroupElement;
         "mds-calendar": HTMLMdsCalendarElement;
         "mds-calendar-cell": HTMLMdsCalendarCellElement;
         "mds-card": HTMLMdsCardElement;
@@ -3605,6 +3789,7 @@ declare global {
         "mds-label": HTMLMdsLabelElement;
         "mds-list": HTMLMdsListElement;
         "mds-list-item": HTMLMdsListItemElement;
+        "mds-mention": HTMLMdsMentionElement;
         "mds-modal": HTMLMdsModalElement;
         "mds-note": HTMLMdsNoteElement;
         "mds-notification": HTMLMdsNotificationElement;
@@ -3633,6 +3818,7 @@ declare global {
         "mds-radial-menu-item": HTMLMdsRadialMenuItemElement;
         "mds-separator": HTMLMdsSeparatorElement;
         "mds-spinner": HTMLMdsSpinnerElement;
+        "mds-status-bar": HTMLMdsStatusBarElement;
         "mds-stepper-bar": HTMLMdsStepperBarElement;
         "mds-stepper-bar-item": HTMLMdsStepperBarItemElement;
         "mds-tab": HTMLMdsTabElement;
@@ -3961,6 +4147,10 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
+          * @private Specifies if the component is focused when is loaded on the viewport
+         */
+        "hasText"?: boolean;
+        /**
           * Specifies the URL target of the button
          */
         "href"?: string;
@@ -3996,6 +4186,62 @@ declare namespace LocalJSX {
           * Specifies the color variant for the button
          */
         "variant"?: ButtonVariantType;
+    }
+    interface MdsButtonDropdown {
+        /**
+          * Specifies if the button is active or not
+         */
+        "active"?: boolean;
+        /**
+          * Specifies if the component is focused when is loaded on the viewport
+         */
+        "autoFocus"?: boolean;
+        /**
+          * Specifies if the button is awaiting for a response
+         */
+        "await"?: boolean;
+        /**
+          * Specifies if the component is disabled or not
+         */
+        "disabled"?: boolean;
+        /**
+          * Specifies the URL target of the button
+         */
+        "href"?: string;
+        /**
+          * The icon displayed in the button
+         */
+        "icon"?: string;
+        /**
+          * Specifies le text label of the component
+         */
+        "label"?: string;
+        /**
+          * Specifies the size for the button
+         */
+        "size"?: ButtonSizeType;
+        /**
+          * Specifies the target of the URL, if self or blank
+         */
+        "target"?: ButtonTargetType;
+        /**
+          * Specifies the tone variant for the button
+         */
+        "tone"?: ToneMinimalVariantType;
+        /**
+          * Specifies if the text shoud be truncated or should behave as a normal text
+         */
+        "truncate"?: TypographyTruncateType;
+        /**
+          * The type of the button element
+         */
+        "type"?: ButtonType;
+        /**
+          * Specifies the color variant for the button
+         */
+        "variant"?: ButtonDropdownVariantType;
+    }
+    interface MdsButtonGroup {
     }
     interface MdsCalendar {
         /**
@@ -4112,6 +4358,10 @@ declare namespace LocalJSX {
           * Emits when the component's delete button is clicked
          */
         "onMdsChipDelete"?: (event: MdsChipCustomEvent<MdsChipEvent>) => void;
+        /**
+          * Emits when the component's label is clicked and when `selectable` attribute is set to `true`
+         */
+        "onMdsChipSelect"?: (event: MdsChipCustomEvent<MdsChipEvent>) => void;
         /**
           * Sets if the component change is status to selected when is clicked
          */
@@ -4699,6 +4949,7 @@ declare namespace LocalJSX {
          */
         "min"?: string | null;
         "onMdsInputDateRangeSelect"?: (event: MdsInputDateRangeCustomEvent<{ startDate: string, endDate: string }>) => void;
+        "onMdsInputDateRangeValueChange"?: (event: MdsInputDateRangeCustomEvent<{ startDate: string, endDate: string }>) => void;
         /**
           * Specifies the start date of the range
           * @description It's in ISO format (YYYY-MM-DD).
@@ -5005,6 +5256,20 @@ declare namespace LocalJSX {
          */
         "variant"?: TypographyReadingVariants;
     }
+    interface MdsMention {
+        /**
+          * Sets the icon shown at the left of the label
+         */
+        "icon"?: string;
+        /**
+          * Sets the label of the component
+         */
+        "label"?: string;
+        /**
+          * Sets the label of the component
+         */
+        "size"?: MentionSize;
+    }
     interface MdsModal {
         /**
           * Specifies if the component is animating itself or not
@@ -5014,6 +5279,10 @@ declare namespace LocalJSX {
           * Specifies if the component is animating itself or not
          */
         "animation"?: ModalAnimationStyleType;
+        /**
+          * Specifies if the modal shows the backdrop
+         */
+        "backdrop"?: boolean;
         /**
           * Emits when a modal is closed
          */
@@ -5139,6 +5408,10 @@ declare namespace LocalJSX {
           * Sets if the component works as hidden element controller instead as UI element, visible on the DOM
          */
         "controller"?: boolean;
+        /**
+          * Sets the size of the component items nested inside it
+         */
+        "size"?: TabSizeType;
     }
     interface MdsPrefAnimation {
         /**
@@ -5149,6 +5422,10 @@ declare namespace LocalJSX {
           * Emits when the component is triggered
          */
         "onMdsPrefChange"?: (event: MdsPrefAnimationCustomEvent<MdsPrefChangeEventDetail>) => void;
+        /**
+          * Sets the size of the component items nested inside it
+         */
+        "size"?: TabSizeType;
     }
     interface MdsPrefConsumption {
         /**
@@ -5159,6 +5436,10 @@ declare namespace LocalJSX {
           * Emits when the component is triggered
          */
         "onMdsPrefChange"?: (event: MdsPrefConsumptionCustomEvent<MdsPrefChangeEventDetail>) => void;
+        /**
+          * Sets the size of the component items nested inside it
+         */
+        "size"?: TabSizeType;
     }
     interface MdsPrefContrast {
         /**
@@ -5169,6 +5450,10 @@ declare namespace LocalJSX {
           * Emits when the component is triggered
          */
         "onMdsPrefChange"?: (event: MdsPrefContrastCustomEvent<MdsPrefChangeEventDetail>) => void;
+        /**
+          * Sets the size of the component items nested inside it
+         */
+        "size"?: TabSizeType;
     }
     interface MdsPrefLanguage {
         /**
@@ -5183,6 +5468,10 @@ declare namespace LocalJSX {
           * Specifies the language code based on HTML `lang` attribute  A string representing the language version as defined in {@link https://datatracker.ietf.org/doc/html/rfc5646 RFC 5646: Tags for Identifying Languages (also known as BCP 47)}.  `Examples of valid language codes include "en", "en-US", "fr", "fr-FR", "es-ES", etc.`  Supported languages are Italiano, English, Español, ελληνικά
          */
         "set"?: string;
+        /**
+          * Sets the size of the component items nested inside it
+         */
+        "size"?: TabSizeType;
     }
     interface MdsPrefLanguageItem {
         /**
@@ -5207,6 +5496,10 @@ declare namespace LocalJSX {
           * Emits when the component is triggered
          */
         "onMdsPrefChange"?: (event: MdsPrefThemeCustomEvent<MdsPrefChangeEventDetail>) => void;
+        /**
+          * Sets the size of the component items nested inside it
+         */
+        "size"?: TabSizeType;
         /**
           * Specifies the transition of switching from a theme to another one
          */
@@ -5419,6 +5712,20 @@ declare namespace LocalJSX {
          */
         "running"?: boolean;
     }
+    interface MdsStatusBar {
+        /**
+          * Specifies the description near the slotted actions
+         */
+        "description"?: string;
+        /**
+          * Specifies if the component prevents the body from scrolling when modal window is opened
+         */
+        "overflow"?: ModalOverflowType;
+        /**
+          * Specifies if the component is visible
+         */
+        "visible"?: boolean;
+    }
     interface MdsStepperBar {
         /**
           * Sets the current item to the given index: 0 is none done, 1 is the first item done, last number + 1 is all items done
@@ -5477,6 +5784,10 @@ declare namespace LocalJSX {
          */
         "animation"?: HorizontalActionsAnimationType;
         /**
+          * Sets if the component distributes item vertically or horzontally
+         */
+        "direction"?: DirectionType1;
+        /**
           * Sets if the tab area should fill the entire width
          */
         "fill"?: boolean;
@@ -5492,6 +5803,10 @@ declare namespace LocalJSX {
           * Shows the horizontal scrollbar to maximize accessibility
          */
         "scrollbar"?: boolean;
+        /**
+          * Sets the size of the component items nested inside it
+         */
+        "size"?: TabSizeType;
     }
     interface MdsTabBar {
         /**
@@ -5857,6 +6172,8 @@ declare namespace LocalJSX {
         "mds-breadcrumb": MdsBreadcrumb;
         "mds-breadcrumb-item": MdsBreadcrumbItem;
         "mds-button": MdsButton;
+        "mds-button-dropdown": MdsButtonDropdown;
+        "mds-button-group": MdsButtonGroup;
         "mds-calendar": MdsCalendar;
         "mds-calendar-cell": MdsCalendarCell;
         "mds-card": MdsCard;
@@ -5899,6 +6216,7 @@ declare namespace LocalJSX {
         "mds-label": MdsLabel;
         "mds-list": MdsList;
         "mds-list-item": MdsListItem;
+        "mds-mention": MdsMention;
         "mds-modal": MdsModal;
         "mds-note": MdsNote;
         "mds-notification": MdsNotification;
@@ -5927,6 +6245,7 @@ declare namespace LocalJSX {
         "mds-radial-menu-item": MdsRadialMenuItem;
         "mds-separator": MdsSeparator;
         "mds-spinner": MdsSpinner;
+        "mds-status-bar": MdsStatusBar;
         "mds-stepper-bar": MdsStepperBar;
         "mds-stepper-bar-item": MdsStepperBarItem;
         "mds-tab": MdsTab;
@@ -5970,6 +6289,8 @@ declare module "@stencil/core" {
             "mds-breadcrumb": LocalJSX.MdsBreadcrumb & JSXBase.HTMLAttributes<HTMLMdsBreadcrumbElement>;
             "mds-breadcrumb-item": LocalJSX.MdsBreadcrumbItem & JSXBase.HTMLAttributes<HTMLMdsBreadcrumbItemElement>;
             "mds-button": LocalJSX.MdsButton & JSXBase.HTMLAttributes<HTMLMdsButtonElement>;
+            "mds-button-dropdown": LocalJSX.MdsButtonDropdown & JSXBase.HTMLAttributes<HTMLMdsButtonDropdownElement>;
+            "mds-button-group": LocalJSX.MdsButtonGroup & JSXBase.HTMLAttributes<HTMLMdsButtonGroupElement>;
             "mds-calendar": LocalJSX.MdsCalendar & JSXBase.HTMLAttributes<HTMLMdsCalendarElement>;
             "mds-calendar-cell": LocalJSX.MdsCalendarCell & JSXBase.HTMLAttributes<HTMLMdsCalendarCellElement>;
             /**
@@ -6022,6 +6343,7 @@ declare module "@stencil/core" {
             "mds-label": LocalJSX.MdsLabel & JSXBase.HTMLAttributes<HTMLMdsLabelElement>;
             "mds-list": LocalJSX.MdsList & JSXBase.HTMLAttributes<HTMLMdsListElement>;
             "mds-list-item": LocalJSX.MdsListItem & JSXBase.HTMLAttributes<HTMLMdsListItemElement>;
+            "mds-mention": LocalJSX.MdsMention & JSXBase.HTMLAttributes<HTMLMdsMentionElement>;
             "mds-modal": LocalJSX.MdsModal & JSXBase.HTMLAttributes<HTMLMdsModalElement>;
             "mds-note": LocalJSX.MdsNote & JSXBase.HTMLAttributes<HTMLMdsNoteElement>;
             "mds-notification": LocalJSX.MdsNotification & JSXBase.HTMLAttributes<HTMLMdsNotificationElement>;
@@ -6067,6 +6389,7 @@ declare module "@stencil/core" {
             "mds-radial-menu-item": LocalJSX.MdsRadialMenuItem & JSXBase.HTMLAttributes<HTMLMdsRadialMenuItemElement>;
             "mds-separator": LocalJSX.MdsSeparator & JSXBase.HTMLAttributes<HTMLMdsSeparatorElement>;
             "mds-spinner": LocalJSX.MdsSpinner & JSXBase.HTMLAttributes<HTMLMdsSpinnerElement>;
+            "mds-status-bar": LocalJSX.MdsStatusBar & JSXBase.HTMLAttributes<HTMLMdsStatusBarElement>;
             "mds-stepper-bar": LocalJSX.MdsStepperBar & JSXBase.HTMLAttributes<HTMLMdsStepperBarElement>;
             "mds-stepper-bar-item": LocalJSX.MdsStepperBarItem & JSXBase.HTMLAttributes<HTMLMdsStepperBarItemElement>;
             "mds-tab": LocalJSX.MdsTab & JSXBase.HTMLAttributes<HTMLMdsTabElement>;

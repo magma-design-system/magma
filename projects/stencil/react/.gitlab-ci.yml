@@ -4,6 +4,8 @@ stencil-react-build:
   needs: [base-stencil-build]
   script:
     - nx run stencil-react:build
+  cache:
+    policy: pull
   artifacts:
     name: stencil-react-build
     expire_in: 1 day

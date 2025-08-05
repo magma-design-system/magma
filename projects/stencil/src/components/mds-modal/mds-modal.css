@@ -41,7 +41,7 @@
   @apply ease-in-out-quint;
 
   align-items: center;
-  background-color: rgba(var(--mds-modal-overlay-color) / 0);
+  background-color: rgb(var(--mds-modal-overlay-color) / 0);
   display: flex;
   fill: theme('colors.tone-neutral');
   inset: 0;

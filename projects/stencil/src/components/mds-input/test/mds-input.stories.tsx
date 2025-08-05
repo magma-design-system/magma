@@ -1,12 +1,17 @@
 import { citiesDictionary } from '@fixture/cities'
 import { themeInputVariantDictionary } from '@dictionary/variant'
 import { autoCompleteDictionary } from '@dictionary/autocomplete'
-import { inputTextTypeDictionary, inputControlsLayoutDictionary, inputControlsIconDictionary } from '@dictionary/input'
+import {
+  inputTextTypeDictionary,
+  inputControlsLayoutDictionary,
+  inputControlsIconDictionary,
+} from '@dictionary/input'
 import { typographyInputDictionary } from '@dictionary/typography'
 import { iconsDictionary } from '@dictionary/icon'
 import { h } from '@stencil/core'
 
 import { MdsInputInterface } from '../mds-input'
+import { useEffect } from 'react'
 
 // https://developers.google.com/web/updates/2015/06/checkout-faster-with-autofill
 
@@ -14,39 +19,47 @@ export default {
   title: 'Form / Input',
   argTypes: {
     autocomplete: {
-      description: 'Specifies whether the element should have autocomplete enabled',
+      description:
+        'Specifies whether the element should have autocomplete enabled',
       options: autoCompleteDictionary,
       control: { type: 'select' },
     },
     autofocus: {
       type: { name: 'boolean' },
-      description: 'Specifies that the element should automatically get focus when the page loads',
+      description:
+        'Specifies that the element should automatically get focus when the page loads',
     },
     await: {
       type: { name: 'boolean' },
-      description: 'Specifies if the spinner icon is shown, replacing the icon if present',
+      description:
+        'Specifies if the spinner icon is shown, replacing the icon if present',
     },
     'control-decrease-label': {
       type: { name: 'string' },
-      description: 'Specifies the label for control button decrease for component when type is number',
+      description:
+        'Specifies the label for control button decrease for component when type is number',
     },
     'control-increase-label': {
       type: { name: 'string' },
-      description: 'Specifies the label for control button increase for component when type is number',
+      description:
+        'Specifies the label for control button increase for component when type is number',
     },
     'controls-icon': {
-      description: 'Specifies the icon type of the counter button when the input type is set to `number`',
+      description:
+        'Specifies the icon type of the counter button when the input type is set to `number`',
       options: inputControlsIconDictionary,
       control: { type: 'select' },
     },
     'controls-layout': {
-      description: 'Specifies the layout of the counter button when the input type is set to `number`',
+      description:
+        'Specifies the layout of the counter button when the input type is set to `number`',
       options: inputControlsLayoutDictionary,
       control: { type: 'select' },
     },
     datalist: {
       type: { name: 'array' },
-      description: 'A list of search terms to be searched from the input field, it should be used with type="search" input',
+      description:
+        'A list of search terms to be searched from the input field, it should be used with type="search" input',
     },
     disabled: {
       type: { name: 'boolean' },
@@ -64,7 +77,8 @@ export default {
     },
     maxLength: {
       type: { name: 'number' },
-      description: 'Specifies the maximum number of characters allowed in an element',
+      description:
+        'Specifies the maximum number of characters allowed in an element',
     },
     mic: {
       type: { name: 'boolean' },
@@ -76,19 +90,23 @@ export default {
     },
     minLength: {
       type: { name: 'number' },
-      description: 'Specifies the minimum number of characters allowed in an element',
+      description:
+        'Specifies the minimum number of characters allowed in an element',
     },
     name: {
       type: { name: 'string' },
-      description: 'Is needed to reference the form data after the form is submitted',
+      description:
+        'Is needed to reference the form data after the form is submitted',
     },
     pattern: {
       type: { name: 'string' },
-      description: 'Specifies a regular expression that element\'s value is checked against',
+      description:
+        'Specifies a regular expression that element\'s value is checked against',
     },
     placeholder: {
       type: { name: 'string' },
-      description: 'Specifies a short hint that describes the expected value of the element',
+      description:
+        'Specifies a short hint that describes the expected value of the element',
     },
     readOnly: {
       type: { name: 'boolean' },
@@ -96,11 +114,13 @@ export default {
     },
     required: {
       type: { name: 'boolean' },
-      description: 'Specifies that the element must be filled out before submitting the form',
+      description:
+        'Specifies that the element must be filled out before submitting the form',
     },
     step: {
       type: { name: 'string' },
-      description: 'Specifies the interval between legal numbers in an input field',
+      description:
+        'Specifies the interval between legal numbers in an input field',
     },
     tip: {
       type: { name: 'string' },
@@ -131,10 +151,9 @@ export default {
   },
 }
 
-const Template = (args: MdsInputInterface) =>
-  <mds-input {...args}></mds-input>
+const Template = (args: MdsInputInterface) => <mds-input {...args}></mds-input>
 
-const TemplateLanguage = (args: MdsInputInterface) =>
+const TemplateLanguage = (args: MdsInputInterface) => (
   <div class="grid gap-400">
     <mds-input {...args}></mds-input>
     <div class="grid gap grid-cols-3">
@@ -149,170 +168,272 @@ const TemplateLanguage = (args: MdsInputInterface) =>
       </mds-pref>
     </div>
   </div>
+)
 
-export const Default = Template.bind({})
-Default.args = {
-  placeholder: 'Scrivi qualcosa',
+export const Default = {
+  render: Template,
+
+  args: {
+    placeholder: 'Scrivi qualcosa',
+  },
 }
 
-export const AutoComplete = Template.bind({})
-AutoComplete.args = {
-  autocomplete: 'address',
-  type: 'text',
-  placeholder: 'Intestatario carta di credito',
+export const AutoComplete = {
+  render: Template,
+
+  args: {
+    autocomplete: 'address',
+    type: 'text',
+    placeholder: 'Intestatario carta di credito',
+  },
 }
 
-export const AutoFocus = Template.bind({})
-AutoFocus.args = {
-  autofocus: true,
-  placeholder: 'Auto focus input text',
+export const AutoFocus = {
+  render: Template,
+
+  args: {
+    autofocus: true,
+    placeholder: 'Auto focus input text',
+  },
 }
 
-export const ControlsLayout = Template.bind({})
-ControlsLayout.args = {
-  'controls-layout': 'horizontal',
-  type: 'number',
-  placeholder: 'Controls layout',
+export const ControlsLayout = {
+  render: Template,
+
+  args: {
+    'controls-layout': 'horizontal',
+    type: 'number',
+    placeholder: 'Controls layout',
+  },
 }
 
-export const ControlsIcon = Template.bind({})
-ControlsIcon.args = {
-  'controls-icon': 'arithmetic',
-  type: 'number',
-  placeholder: 'Controls icon',
+export const ControlsIcon = {
+  render: Template,
+
+  args: {
+    'controls-icon': 'arithmetic',
+    type: 'number',
+    placeholder: 'Controls icon',
+  },
 }
 
-export const ControlsLabels = Template.bind({})
-ControlsLabels.args = {
-  'controls-icon': 'arrow',
-  'controls-layout': 'horizontal',
-  'control-increase-label': 'Alza',
-  'control-decrease-label': 'Abbassa',
-  type: 'number',
-  placeholder: 'Controls labels',
+export const ControlsLabels = {
+  render: Template,
+
+  args: {
+    'controls-icon': 'arrow',
+    'controls-layout': 'horizontal',
+    'control-increase-label': 'Alza',
+    'control-decrease-label': 'Abbassa',
+    type: 'number',
+    placeholder: 'Controls labels',
+  },
 }
 
-export const Disabled = Template.bind({})
-Disabled.args = {
-  disabled: true,
-  placeholder: 'Disabled',
+export const Disabled = {
+  render: Template,
+
+  args: {
+    disabled: true,
+    placeholder: 'Disabled',
+  },
 }
 
-export const Max = Template.bind({})
-Max.args = {
-  max: '3',
-  type: 'number',
-  value: '2',
+export const Max = {
+  render: Template,
+
+  args: {
+    max: '3',
+    type: 'number',
+    value: '2',
+  },
 }
 
-export const MaxLength = Template.bind({})
-MaxLength.args = {
-  maxlength: 128,
-  type: 'text',
-  value: 'Hello',
+export const MaxLength = {
+  render: Template,
+
+  args: {
+    maxlength: 128,
+    type: 'text',
+    value: 'Hello',
+  },
 }
 
-export const Min = Template.bind({})
-Min.args = {
-  min: '3',
-  type: 'number',
-  value: '5',
+export const Min = {
+  render: Template,
+
+  args: {
+    min: '3',
+    type: 'number',
+    value: '5',
+  },
 }
 
-export const Required = Template.bind({})
-Required.args = {
-  required: true,
-  placeholder: 'This is a required field',
+export const MinLength = {
+  render: Template,
+
+  args: {
+    MinLength: 5,
+    type: 'text',
+    value: 'Hello',
+  },
 }
 
-export const ReadOnly = Template.bind({})
-ReadOnly.args = {
-  readOnly: true,
-  value: 'Read only text',
+export const Required = {
+  render: Template,
+
+  args: {
+    required: true,
+    placeholder: 'This is a required field',
+  },
 }
 
-export const Variant = Template.bind({})
-Variant.args = {
-  variant: 'error',
-  placeholder: 'Status input field',
-  tip: 'errore',
+export const ReadOnly = {
+  render: Template,
+
+  args: {
+    readOnly: true,
+    value: 'Read only text',
+  },
 }
 
-export const Tip = Template.bind({})
-Tip.args = {
-  placeholder: 'Scrivi qualcosa...',
-  tip: 'input',
+export const Variant = {
+  render: Template,
+
+  args: {
+    variant: 'error',
+    placeholder: 'Status input field',
+    tip: 'errore',
+  },
 }
 
-export const Password = Template.bind({})
-Password.args = {
-  type: 'password',
-  placeholder: 'Insert a pasword',
+export const Tip = {
+  render: Template,
+
+  args: {
+    placeholder: 'Scrivi qualcosa...',
+    tip: 'input',
+  },
 }
 
-export const Placeholder = Template.bind({})
-Placeholder.args = {
-  placeholder: 'Es: change this placeholder',
+export const Password = {
+  render: Template,
+
+  args: {
+    type: 'password',
+    placeholder: 'Insert a pasword',
+  },
 }
 
-export const Search = Template.bind({})
-Search.args = {
-  datalist: citiesDictionary,
-  type: 'search',
-  placeholder: 'Search a city name...',
+export const Placeholder = {
+  render: Template,
+
+  args: {
+    placeholder: 'Es: change this placeholder',
+  },
 }
 
-export const Icon = Template.bind({})
-Icon.args = {
-  icon: 'mi/round/email',
-  placeholder: 'Status input field',
+const TemplateSearch = (args: MdsInputInterface) => {
+  useEffect(() => {
+    document.querySelector('mds-input')!.datalist = args.datalist
+  })
+  return <mds-input {...args}></mds-input>
 }
 
-export const TestLanguageChange = TemplateLanguage.bind({})
-TestLanguageChange.args = {
-  icon: 'mi/round/email',
-  readonly: true,
-  placeholder: 'Status input field',
+export const Search = {
+  render: TemplateSearch,
+
+  args: {
+    datalist: citiesDictionary,
+    type: 'search',
+    placeholder: 'Search a city name...',
+  },
 }
 
-export const VariantAi = Template.bind({})
-VariantAi.args = {
-  variant: 'ai',
-  placeholder: 'Es: Come si cresce un bovaro del bernese?',
+export const Icon = {
+  render: Template,
+
+  args: {
+    icon: 'mi/round/email',
+    placeholder: 'Status input field',
+  },
 }
 
-export const TextRecognition = Template.bind({})
-TextRecognition.args = {
-  variant: 'ai',
-  mic: true,
-  placeholder: 'Es: Come si cresce un bovaro del bernese?',
+export const TestLanguageChange = {
+  render: TemplateLanguage,
+
+  args: {
+    icon: 'mi/round/email',
+    readonly: true,
+    placeholder: 'Status input field',
+  },
+}
+
+export const VariantAi = {
+  render: Template,
+
+  args: {
+    variant: 'ai',
+    placeholder: 'Es: Come si cresce un bovaro del bernese?',
+  },
+}
+
+export const TextRecognition = {
+  render: Template,
+
+  args: {
+    variant: 'ai',
+    mic: true,
+    placeholder: 'Es: Come si cresce un bovaro del bernese?',
+  },
 }
 
 const FormIntegrationTemplate = (args: MdsInputInterface) => {
   return (
     <div class="grid gap-600">
-      <form class="grid gap-400" id="mds-icon-fi" name="mds-icon-fi" onSubmit={(e: SubmitEvent) => {
-        e.preventDefault()
-        console.info('Submitted', e)
-      }}>
-        <mds-input {...args}></mds-input>
-        <mds-button class="w-min" type="submit" onClick={(e: MouseEvent) => {
+      <form
+        class="grid gap-400"
+        id="mds-icon-fi"
+        name="mds-icon-fi"
+        onSubmit={(e: SubmitEvent) => {
           e.preventDefault()
-          const form = document.querySelector('form') as HTMLFormElement
-          const span = document.querySelector('span.input-value') as HTMLSpanElement
-          span.innerText = form['mds-input'].value !== '' ? form['mds-input'].value : 'Empty'
-        }
-        }>Check value</mds-button>
+          console.info('Submitted', e)
+        }}
+      >
+        <mds-input {...args}></mds-input>
+        <mds-button
+          class="w-min"
+          type="submit"
+          onClick={(e: MouseEvent) => {
+            e.preventDefault()
+            const form = document.querySelector('form') as HTMLFormElement
+            const span = document.querySelector(
+              'span.input-value',
+            ) as HTMLSpanElement
+            span.innerText =
+              form['mds-input'].value !== ''
+                ? form['mds-input'].value
+                : 'Empty'
+          }}
+        >
+          Check value
+        </mds-button>
       </form>
       <mds-text variant="code">
-        Input value taken from form element: <span class="inline-flex input-value rounded text-tone-neutral-01 bg-tone-neutral-08 px-200 py-50">Empty</span>
+        Input value taken from form element:{' '}
+        <span class="inline-flex input-value rounded text-tone-neutral-01 bg-tone-neutral-08 px-200 py-50">
+          Empty
+        </span>
       </mds-text>
     </div>
   )
 }
 
-export const FormIntegration = FormIntegrationTemplate.bind({})
-FormIntegration.args = {
-  placeholder: 'Es: Hello world!',
-  name: 'mds-input',
+export const FormIntegration = {
+  render: FormIntegrationTemplate,
+
+  args: {
+    placeholder: 'Es: Hello world!',
+    name: 'mds-input',
+  },
 }

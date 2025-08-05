@@ -71,7 +71,7 @@
   overflow: hidden;
   padding-top: 0;
   transition-duration: var(--mds-accordion-timer-item-duration);
-  transition-property: grid-template-rows opacity padding;
+  transition-property: grid-template-rows, opacity, padding;
 }
 
 .content-expander {

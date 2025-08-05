@@ -18,6 +18,7 @@ export class MdsInputDate {
     it: {},
   })
   @State() language: string
+  @State() touched: boolean = false
   @Method()
   async updateLang (): Promise<void> {
     this.language = this.t.lang(this.host)
@@ -51,7 +52,6 @@ export class MdsInputDate {
   @State() internalValue: string = ''
   @State() calendarKey: number = 0
   @State() dropdownRef?: HTMLMdsDropdownElement
-  @State() messageError: string = ''
   @Event({ eventName: 'mdsInputDateSelect', bubbles: true, composed: true }) valueChange: EventEmitter<string>
 
   @Watch('value')
@@ -62,12 +62,21 @@ export class MdsInputDate {
 
   private validateValue (value: string): void {
     const date = DateTime.fromISO(value)
-    if (!value || !date.isValid) {
+
+    if (!this.touched) {
+      this.empty = undefined
+      return
+    }
+
+    if (value === '') {
+      this.empty = undefined
+      return
+    }
+
+    if (!date.isValid) {
       this.empty = true
-      this.messageError = this.t.get('invalid_date_format')
     } else {
       this.empty = undefined
-      this.messageError = ''
     }
   }
 
@@ -101,12 +110,14 @@ export class MdsInputDate {
 
   handleInput (event: Event): void {
     const input = event.target as HTMLInputElement
+    this.touched = true
     this.internalValue = input.value
     this.validateValue(this.internalValue)
   }
 
   handleChange (event: Event): void {
     const input = event.target as HTMLInputElement
+    this.touched = true
     this.internalValue = input.value
     this.validateValue(this.internalValue)
   }
@@ -114,15 +125,15 @@ export class MdsInputDate {
   manageValue (ev: FocusEvent): void {
     const input = ev.target as HTMLInputElement
     this.internalValue = input.value
-    if (!input.validity.badInput && input.value !== '') {
-      this.messageError = ''
+    if (!input.validity.badInput && input.value === '') {
       this.empty = undefined
     } else {
-      this.messageError = input.validationMessage
       this.empty = true
     }
+
     this.valueChange.emit(this.internalValue)
   }
+
 
   render () {
     return (
@@ -131,6 +142,7 @@ export class MdsInputDate {
           value={this.internalValue}
           id="dateInput"
           class="input"
+          part="input-date"
           type="date"
           onInput={event => this.handleInput(event)}
           onChange={event => this.handleChange(event)}

@@ -102,6 +102,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ### Used by
 
+ - [mds-button-dropdown](../mds-button-dropdown)
  - [mds-input-date](../mds-input-date)
  - [mds-input-date-range](../mds-input-date-range)
  - [mds-policy-ai](../mds-policy-ai)
@@ -110,6 +111,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 ### Graph
 ```mermaid
 graph TD;
+  mds-button-dropdown --> mds-dropdown
   mds-input-date --> mds-dropdown
   mds-input-date-range --> mds-dropdown
   mds-policy-ai --> mds-dropdown

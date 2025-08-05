@@ -1,0 +1,62 @@
+:host {
+  --mds-status-bar-max-width: 500px;
+  --mds-status-bar-backdrop: rgb(var(--tone-neutral-01) / 0.1);
+  --mds-status-bar-backdrop-filter: blur(10px);
+}
+
+mds-modal {
+  --mds-modal-custom-window-distance: 0;
+  --mds-modal-custom-closed-transform: translate(0, 100%);
+}
+
+.status-bar-area {
+  backdrop-filter: var(--mds-status-bar-backdrop-filter);
+  background-color: var(--mds-status-bar-backdrop);
+  border-radius: theme('borderRadius.xl') theme('borderRadius.xl') 0 0;
+  margin-left: theme('padding.600');
+  margin-right: theme('padding.600');
+  padding: theme('padding.200') theme('padding.200') theme('padding.600') theme('padding.200');
+  transition-property: background-color, transform, opacity;
+}
+
+.status-bar {
+  align-items: flex-start;
+  background-color: theme('colors.tone-neutral');
+  border-radius: theme('borderRadius.lg');
+  box-shadow: theme('boxShadow.DEFAULT');
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: theme('spacing.400');
+  max-width: var(--mds-status-bar-max-width);
+  padding: theme('spacing.600');
+}
+
+.actions {
+  display: inline-flex;
+  flex-grow: 1;
+  flex-wrap: wrap;
+  gap: theme('spacing.400');
+}
+
+@media (width <= 480px) {
+  .status-bar-area {
+    border-radius: 0;
+    margin-left: 0;
+    margin-right: 0;
+    padding: theme('padding.400');
+  }
+
+  .actions {
+    gap: theme('spacing.200');
+  }
+
+  ::slotted(*) {
+    flex-grow: 1;
+  }
+}
+
+@import '../../tailwind/fouc.css';
+@import './css/mds-status-bar-pref-animation.css';
+@import './css/mds-status-bar-pref-consumption.css';
+@import './css/mds-status-bar-pref-contrast.css';
+@import './css/mds-status-bar-pref-theme.css';

@@ -4,7 +4,9 @@ import { themeStatusVariantDictionary } from '@dictionary/variant'
 import { h } from '@stencil/core'
 
 const cities = {}
-citiesDictionary.map((element, index) => { cities[index] = element } )
+citiesDictionary.map((element, index) => {
+  cities[index] = element
+})
 
 export default {
   title: 'Form / Select',
@@ -14,21 +16,25 @@ export default {
       description: 'The selected value of the select',
     },
     autocomplete: {
-      description: 'Specifies whether the element should have autocomplete enabled',
+      description:
+        'Specifies whether the element should have autocomplete enabled',
       options: autoCompleteDictionary,
       control: { type: 'select' },
     },
     autofocus: {
       type: { name: 'boolean' },
-      description: 'Specifies that the element should automatically get focus when the page loads',
+      description:
+        'Specifies that the element should automatically get focus when the page loads',
     },
     placeholder: {
       type: { name: 'string' },
-      description: 'Specifies a short hint that describes the expected value of the element',
+      description:
+        'Specifies a short hint that describes the expected value of the element',
     },
     required: {
       type: { name: 'boolean' },
-      description: 'Specifies that the element must be filled out before submitting the form',
+      description:
+        'Specifies that the element must be filled out before submitting the form',
     },
     disabled: {
       type: { name: 'boolean' },
@@ -36,11 +42,13 @@ export default {
     },
     multiple: {
       type: { name: 'boolean' },
-      description: 'If true, the element allows multiple options to be selected in the list',
+      description:
+        'If true, the element allows multiple options to be selected in the list',
     },
     size: {
       type: { name: 'number' },
-      description: 'When multiple is set to true, represents the number of rows in the list that should be visible',
+      description:
+        'When multiple is set to true, represents the number of rows in the list that should be visible',
     },
     variant: {
       type: { name: 'string' },
@@ -51,23 +59,28 @@ export default {
   },
 }
 
-const Template = args =>
+const Template = args => (
   <mds-input-select {...args}>
     <option value="1">First contact</option>
     <option value="2">Second impact</option>
     <option value="3">The Third Man</option>
     <option value="4">The Fourth Emendament</option>
   </mds-input-select>
+)
 
-const TemplateForm = args =>
-  <form class="flex gap-x-400" action='#' onSubmit={event => {
-    event.preventDefault()
+const TemplateForm = args => (
+  <form
+    class="flex gap-x-400"
+    action="#"
+    onSubmit={event => {
+      event.preventDefault()
 
-    // eslint-disable-next-line no-console
-    console.log('Form submitted via mds-button', event.target?.[0].value)
+      // eslint-disable-next-line no-console
+      console.log('Form submitted via mds-button', event.target?.[0].value)
 
-    return false
-  }}>
+      return false
+    }}
+  >
     <mds-input-select {...args}>
       <option value="1">First contact</option>
       <option value="2">Second impact</option>
@@ -76,30 +89,48 @@ const TemplateForm = args =>
     </mds-input-select>
     <mds-button>Submit</mds-button>
   </form>
+)
 
-export const Default = Template.bind({})
-Default.args = {
-  placeholder: 'Seleziona un film...',
+export const Default = {
+  render: Template,
+
+  args: {
+    placeholder: 'Seleziona un film...',
+  },
 }
 
-export const Multiple = Template.bind({})
-Multiple.args = {
-  multiple: true,
+export const Multiple = {
+  render: Template,
+
+  args: {
+    multiple: true,
+  },
 }
 
-export const Required = Template.bind({})
-Required.args = {
-  required: true,
+export const Required = {
+  render: Template,
+
+  args: {
+    required: true,
+  },
 }
 
-export const Disabled = Template.bind({})
-Disabled.args = {
-  disabled: true,
+export const Disabled = {
+  render: Template,
+
+  args: {
+    disabled: true,
+  },
 }
 
-export const FormIntegrationWithPlaceholder = TemplateForm.bind({})
-FormIntegrationWithPlaceholder.args = {
-  placeholder: 'Seleziona un film...',
+export const FormIntegrationWithPlaceholder = {
+  render: TemplateForm,
+
+  args: {
+    placeholder: 'Seleziona un film...',
+  },
 }
 
-export const FormIntegration = TemplateForm.bind({})
+export const FormIntegration = {
+  render: TemplateForm,
+}

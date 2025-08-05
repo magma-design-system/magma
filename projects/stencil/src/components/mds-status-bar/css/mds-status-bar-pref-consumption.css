@@ -1,0 +1,3 @@
+:host-context(.pref-consumption-medium) {
+  --mds-status-bar-backdrop-filter: none;
+}

@@ -14,6 +14,10 @@ export type ButtonSizeType =
   | 'lg'
   | 'xl'
 
+export type TabSizeType =
+  | 'sm'
+  | 'md'
+
 export type ButtonIconPositionType =
   | 'left'
   | 'right'
@@ -24,6 +28,17 @@ export type ButtonVariantType =
   | 'dark'
   | 'error'
   | 'google'
+  | 'info'
+  | 'light'
+  | 'primary'
+  | 'secondary'
+  | 'success'
+  | 'warning'
+
+export type ButtonDropdownVariantType =
+  | 'ai'
+  | 'dark'
+  | 'error'
   | 'info'
   | 'light'
   | 'primary'

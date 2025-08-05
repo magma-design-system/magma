@@ -5,7 +5,8 @@ export default {
   argTypes: {
     'auto-reset': {
       type: { name: 'boolean' },
-      description: 'Sets an automatic reset of active filters if all filters are triggered',
+      description:
+        'Sets an automatic reset of active filters if all filters are triggered',
     },
     label: {
       type: { name: 'string' },
@@ -13,7 +14,8 @@ export default {
     },
     multiple: {
       type: { name: 'boolean' },
-      description: 'Sets if the filter group can filter multiple filters simultaneously',
+      description:
+        'Sets if the filter group can filter multiple filters simultaneously',
     },
     reset: {
       type: { name: 'boolean' },
@@ -22,31 +24,44 @@ export default {
   },
 }
 
-const Template = args =>
+const Template = args => (
   <mds-filter {...args}>
-    <mds-filter-item label="This first time" value="1" count="101"/>
-    <mds-filter-item label="Infamous second son" value="2" count="43"/>
-    <mds-filter-item label="The third sequence" value="3" count="7"/>
+    <mds-filter-item label="This first time" value="1" count="101" />
+    <mds-filter-item label="Infamous second son" value="2" count="43" />
+    <mds-filter-item label="The third sequence" value="3" count="7" />
   </mds-filter>
+)
 
-export const Default = Template.bind({})
-Default.args = {
-  label: 'Filter label',
+export const Default = {
+  render: Template,
+
+  args: {
+    label: 'Filter label',
+  },
 }
 
-export const AutoReset = Template.bind({})
-AutoReset.args = {
-  multiple: true,
-  'auto-reset': true,
+export const AutoReset = {
+  render: Template,
+
+  args: {
+    multiple: true,
+    'auto-reset': true,
+  },
 }
 
-export const Reset = Template.bind({})
-Reset.args = {
-  multiple: true,
-  reset: true,
+export const Reset = {
+  render: Template,
+
+  args: {
+    multiple: true,
+    reset: true,
+  },
 }
 
-export const Multiple = Template.bind({})
-Multiple.args = {
-  multiple: true,
+export const Multiple = {
+  render: Template,
+
+  args: {
+    multiple: true,
+  },
 }

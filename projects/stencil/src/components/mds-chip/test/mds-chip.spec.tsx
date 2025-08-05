@@ -5,12 +5,12 @@ describe('mds-chip', () => {
   it('renders', async () => {
     const page = await newSpecPage({
       components: [MdsChip],
-      html: '<mds-chip></mds-chip>',
+      html: '<mds-chip label="chip"></mds-chip>',
     })
     expect(page.root).toEqualHtml(`
-      <mds-chip aria-disabled="false" tone="strong" variant="primary">
+      <mds-chip aria-disabled="false" label="chip" tone="strong" variant="primary">
         <mock:shadow-root>
-          <mds-text class="label" truncate="word" typography="caption"></mds-text>
+          <mds-text class="label" truncate="word" typography="caption">chip</mds-text>
         </mock:shadow-root>
       </mds-chip>
     `)

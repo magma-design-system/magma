@@ -12,11 +12,28 @@ const buttonVariantDictionary = [
   'warning',
 ]
 
+const buttonDropdownVariantDictionary = [
+  'ai',
+  'dark',
+  'error',
+  'info',
+  'light',
+  'primary',
+  'secondary',
+  'success',
+  'warning',
+]
+
 const buttonToneVariantDictionary = [
   'strong',
   'weak',
   'ghost',
   'quiet',
+]
+
+const buttonToneMinimalVariantDictionary = [
+  'strong',
+  'weak',
 ]
 
 const buttonTargetDictionary = [
@@ -31,6 +48,11 @@ const buttonSizeDictionary = [
   'xl',
 ]
 
+const tabSizeDictionary = [
+  'sm',
+  'md',
+]
+
 const buttonIconPositionDictionary = [
   'left',
   'right',
@@ -43,10 +65,13 @@ const buttonTypeDictionary = [
 ]
 
 export {
+  buttonDropdownVariantDictionary,
   buttonIconPositionDictionary,
   buttonSizeDictionary,
   buttonTargetDictionary,
+  buttonToneMinimalVariantDictionary,
   buttonToneVariantDictionary,
   buttonTypeDictionary,
   buttonVariantDictionary,
+  tabSizeDictionary,
 }

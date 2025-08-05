@@ -1,6 +1,7 @@
 module.exports = {
   content: [
     './src/**/*.{js,json,ts,tsx}',
+    require.resolve('@maggioli-design-system/svg-icons/dist/iconsauce.json'),
   ],
   plugin: [
     require('@iconsauce/material-icons'),

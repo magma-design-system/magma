@@ -37,7 +37,7 @@
   pointer-events: none;
   position: fixed;
   transform: var(--mds-tooltip-transform-from);
-  transition-delay: 0;
+  transition-delay: 0s;
   transition-duration: var(--mds-tooltip-duration);
   transition-property: opacity, transform, transform-origin;
   transition-timing-function: var(--mds-tooltip-ease);

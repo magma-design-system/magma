@@ -43,7 +43,7 @@ export class MdsAccordionTimer {
     this.children.forEach((item, key) => {
       item.uuid = key
       if (item.selected) {
-        item.duration ? this.currentDuration = item.duration : this.currentDuration = this.duration
+        this.currentDuration = item.duration ?? this.duration
         this.selectedItem = item
       }
     })
@@ -102,7 +102,7 @@ export class MdsAccordionTimer {
     this.children.forEach((item, key) => {
       if (key === uuid) {
         item.selected = true
-        item.duration ? this.currentDuration = item.duration : this.currentDuration = this.duration
+        this.currentDuration = item.duration ?? this.duration
         this.selectedItem = item
         this.changeEvent.emit({ index: key })
       } else {
