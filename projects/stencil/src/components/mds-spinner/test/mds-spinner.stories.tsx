@@ -11,14 +11,18 @@ export default {
   },
 }
 
-const Template = args =>
-  <mds-spinner {...args}/>
+const Template = args => <mds-spinner {...args} />
 
-export const Default = Template.bind({})
-Default.story = lokiDisabled
+export const Default = {
+  render: Template,
+  story: lokiDisabled,
+}
 
-export const Running = Template.bind({})
-Running.story = lokiDisabled
-Running.args = {
-  running: true,
+export const Running = {
+  render: Template,
+  story: lokiDisabled,
+
+  args: {
+    running: true,
+  },
 }

@@ -29,23 +29,33 @@ export default {
   },
 }
 
-const Template = args =>
+const Template = args => (
   <mds-benchmark-bar {...args}>
     This is a benchmark bar that will be cropped if the text is too long
   </mds-benchmark-bar>
+)
 
-export const Default = Template.bind({})
-Default.args = {
-  value: 30,
+export const Default = {
+  render: Template,
+
+  args: {
+    value: 30,
+  },
 }
 
-export const Alias = Template.bind({})
-Alias.args = {
-  value: 33,
-  alias: '1 of 3 tasks',
+export const Alias = {
+  render: Template,
+
+  args: {
+    value: 33,
+    alias: '1 of 3 tasks',
+  },
 }
 
-export const Typography = Template.bind({})
-Typography.args = {
-  typography: 'option',
+export const Typography = {
+  render: Template,
+
+  args: {
+    typography: 'option',
+  },
 }

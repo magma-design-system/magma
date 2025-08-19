@@ -1,6 +1,9 @@
 import { h } from '@stencil/core'
 import { iconsDictionary } from '@dictionary/icon'
-import { themeVariantChipDictionary, toneMinimalVariantDictionary } from '@dictionary/variant'
+import {
+  themeVariantChipDictionary,
+  toneMinimalVariantDictionary,
+} from '@dictionary/variant'
 import { useEffect } from 'react'
 
 export default {
@@ -12,7 +15,8 @@ export default {
     },
     deletable: {
       type: { name: 'boolean' },
-      description: 'Shows the cross icon to perform cancel/delete action on element',
+      description:
+        'Shows the cross icon to perform cancel/delete action on element',
     },
     disabled: {
       type: { name: 'boolean' },
@@ -34,7 +38,8 @@ export default {
     },
     selectable: {
       type: { name: 'boolean' },
-      description: 'Sets if the component change is status to selected when is clicked',
+      description:
+        'Sets if the component change is status to selected when is clicked',
     },
     tone: {
       type: { name: 'string' },
@@ -66,48 +71,71 @@ const Template = args => {
       console.info('mdsChipSelect', e.detail)
     })
   })
-  return <mds-chip {...args}
-    onDelete={() => { console.info('onDelete') }}
-  />
+  return (
+    <mds-chip
+      {...args}
+      onDelete={() => {
+        console.info('onDelete')
+      }}
+    />
+  )
 }
 
-export const Default = Template.bind({})
-Default.args = {
-  label: 'Bovaro del Bernese',
-  icon: 'mi/baseline/pets',
+export const Default = {
+  render: Template,
+
+  args: {
+    label: 'Bovaro del Bernese',
+    icon: 'mi/baseline/pets',
+  },
 }
 
-export const Selected = Template.bind({})
-Selected.args = {
-  label: 'Bovaro del Bernese',
-  icon: 'mi/baseline/pets',
-  selected: true,
+export const Selected = {
+  render: Template,
+
+  args: {
+    label: 'Bovaro del Bernese',
+    icon: 'mi/baseline/pets',
+    selected: true,
+  },
 }
 
-export const Icon = Template.bind({})
-Icon.args = {
-  label: 'Bovaro del Bernese',
-  icon: 'mi/baseline/eco',
+export const Icon = {
+  render: Template,
+
+  args: {
+    label: 'Bovaro del Bernese',
+    icon: 'mi/baseline/eco',
+  },
 }
 
-export const Deletable = Template.bind({})
-Deletable.args = {
-  deletable: true,
-  label: 'Bovaro del Bernese',
+export const Deletable = {
+  render: Template,
+
+  args: {
+    deletable: true,
+    label: 'Bovaro del Bernese',
+  },
 }
 
-export const Clickable = Template.bind({})
-Clickable.args = {
-  clickable: true,
-  selectable: true,
-  icon: 'mi/baseline/eco',
-  label: 'Hover me to interact',
+export const Clickable = {
+  render: Template,
+
+  args: {
+    clickable: true,
+    selectable: true,
+    icon: 'mi/baseline/eco',
+    label: 'Hover me to interact',
+  },
 }
 
-export const FullyInteractive = Template.bind({})
-FullyInteractive.args = {
-  clickable: true,
-  deletable: true,
-  icon: 'mi/baseline/downhill-skiing',
-  label: 'Downhill skiing',
+export const FullyInteractive = {
+  render: Template,
+
+  args: {
+    clickable: true,
+    deletable: true,
+    icon: 'mi/baseline/downhill-skiing',
+    label: 'Downhill skiing',
+  },
 }

@@ -14,18 +14,23 @@ export default {
     },
   },
 }
-const Template = args =>
-  <mds-paginator {...args}/>
+const Template = args => <mds-paginator {...args} />
 
-export const Default = Template.bind({})
-Default.args = {
-  pages: 32,
+export const Default = {
+  render: Template,
+
+  args: {
+    pages: 32,
+  },
 }
 
-export const CurrentPage = Template.bind({})
-CurrentPage.args = {
-  'current-page': 16,
-  pages: 32,
-}
+export const CurrentPage = {
+  render: Template,
 
-CurrentPage.story = lokiDisabled
+  args: {
+    'current-page': 16,
+    pages: 32,
+  },
+
+  story: lokiDisabled,
+}

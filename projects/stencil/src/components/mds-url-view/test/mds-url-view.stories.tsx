@@ -1,13 +1,13 @@
-
 import { loadingDictionary } from '@dictionary/loading'
 import { h } from '@stencil/core'
 import { useEffect, useState } from 'react'
-import { iconsDictionary, mggIconsDictionary, svgIconsDictionary } from '@dictionary/icon'
+import {
+  iconsDictionary,
+  mggIconsDictionary,
+  svgIconsDictionary,
+} from '@dictionary/icon'
 
-const URLs = [
-  'https://www.typeform.com/',
-  'http://azumbrunnen.me/',
-]
+const URLs = ['https://www.typeform.com/', 'http://azumbrunnen.me/']
 
 const urlPage = `${location.origin}/iframe.html?id=common-tests--example-page&viewMode=story`
 
@@ -16,8 +16,11 @@ export default {
   argTypes: {
     icon: {
       type: { name: 'string' },
-      description: 'The name of the icon or a base64 string to render it as an svg',
-      options: mggIconsDictionary.concat(iconsDictionary).concat(svgIconsDictionary),
+      description:
+        'The name of the icon or a base64 string to render it as an svg',
+      options: mggIconsDictionary
+        .concat(iconsDictionary)
+        .concat(svgIconsDictionary),
       control: { type: 'select' },
     },
     domain: {
@@ -26,7 +29,8 @@ export default {
     },
     loading: {
       control: { type: 'select' },
-      description: 'Specifies whether a browser should load an iframe immediately or to defer loading of images until some conditions are met.',
+      description:
+        'Specifies whether a browser should load an iframe immediately or to defer loading of images until some conditions are met.',
       options: loadingDictionary,
       type: { name: 'string' },
     },
@@ -46,7 +50,11 @@ const Template = args => {
     const modalElement = document.querySelector('#modal')
     const urlViewElement = document.querySelector('#url-view')
 
-    if (actionElement === null || modalElement === null || urlViewElement === null) {
+    if (
+      actionElement === null ||
+      modalElement === null ||
+      urlViewElement === null
+    ) {
       // eslint-disable-next-line no-alert
       alert('Element/s not found')
       return
@@ -64,27 +72,49 @@ const Template = args => {
     args.opened = null
   }
 
-  return <div>
-    <mds-button id="action" onClick={() => setOpened(true)}>Open modal</mds-button>
-    <mds-modal position="center" id="modal" opened={opened === true ? true : undefined}>
-      <mds-url-view id="url-view" class="max-w-screen-tablet w-full" slot="window" {...args}/>
-    </mds-modal>
-  </div>
+  return (
+    <div>
+      <mds-button id="action" onClick={() => setOpened(true)}>
+        Open modal
+      </mds-button>
+      <mds-modal
+        position="center"
+        id="modal"
+        opened={opened === true ? true : undefined}
+      >
+        <mds-url-view
+          id="url-view"
+          class="max-w-screen-tablet w-full"
+          slot="window"
+          {...args}
+        />
+      </mds-modal>
+    </div>
+  )
 }
 
-export const Default = Template.bind({})
-Default.args = {
-  src: urlPage,
+export const Default = {
+  render: Template,
+
+  args: {
+    src: urlPage,
+  },
 }
 
-export const Label = Template.bind({})
-Label.args = {
-  src: urlPage,
-  label: 'Fake landing page',
+export const Label = {
+  render: Template,
+
+  args: {
+    src: urlPage,
+    label: 'Fake landing page',
+  },
 }
 
-export const Icon = Template.bind({})
-Icon.args = {
-  src: urlPage,
-  icon: 'mgg/google-book-large',
+export const Icon = {
+  render: Template,
+
+  args: {
+    src: urlPage,
+    icon: 'mgg/google-book-large',
+  },
 }

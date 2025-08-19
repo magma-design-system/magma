@@ -1,12 +1,17 @@
 import { h } from '@stencil/core'
-import { iconsDictionary, mggIconsDictionary, svgIconsDictionary } from '@dictionary/icon'
+import {
+  iconsDictionary,
+  mggIconsDictionary,
+  svgIconsDictionary,
+} from '@dictionary/icon'
 
 export default {
   title: 'UI / KPI / KPI Item',
   argTypes: {
     description: {
       type: { name: 'string' },
-      description: 'Specifies the description under the value in the KPI element',
+      description:
+        'Specifies the description under the value in the KPI element',
     },
     label: {
       type: { name: 'string' },
@@ -14,8 +19,11 @@ export default {
     },
     icon: {
       type: { name: 'string' },
-      description: 'The name of the icon or a base64 string to render it as an svg',
-      options: mggIconsDictionary.concat(iconsDictionary).concat(svgIconsDictionary),
+      description:
+        'The name of the icon or a base64 string to render it as an svg',
+      options: mggIconsDictionary
+        .concat(iconsDictionary)
+        .concat(svgIconsDictionary),
       control: { type: 'select' },
     },
     threshold: {
@@ -25,14 +33,18 @@ export default {
   },
 }
 
-const Template = args =>
+const Template = args => (
   <mds-kpi>
     <mds-kpi-item {...args}></mds-kpi-item>
   </mds-kpi>
+)
 
-export const Default = Template.bind({})
-Default.args = {
-  label: '400',
-  icon: 'mi/baseline/description',
-  description: 'Employees in 2021',
+export const Default = {
+  render: Template,
+
+  args: {
+    label: '400',
+    icon: 'mi/baseline/description',
+    description: 'Employees in 2021',
+  },
 }

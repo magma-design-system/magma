@@ -9,13 +9,15 @@ import {
   buttonTypeDictionary,
 } from '@dictionary/button'
 import { useEffect, useState } from 'react'
+import { expect, fn } from 'storybook/test'
 
 export default {
   title: 'UI / Button',
   argTypes: {
     'auto-focus': {
       type: { name: 'boolean' },
-      description: 'Specifies if the component is focused when is loaded on the viewport',
+      description:
+        'Specifies if the component is focused when is loaded on the viewport',
     },
     await: {
       type: { name: 'boolean' },
@@ -31,13 +33,15 @@ export default {
     },
     icon: {
       type: { name: 'string' },
-      description: 'The name of the icon set. The icon set is strictly realted to @maggioli-design-system/icons',
+      description:
+        'The name of the icon set. The icon set is strictly realted to @maggioli-design-system/icons',
       options: iconsDictionary,
       control: { type: 'select' },
     },
     'icon-position': {
       type: { name: 'string' },
-      description: 'Specifies the horizontal position of the icon displayed in the button',
+      description:
+        'Specifies the horizontal position of the icon displayed in the button',
       options: buttonIconPositionDictionary,
       control: { type: 'select' },
     },
@@ -74,21 +78,18 @@ export default {
   },
 }
 
-const Template = args =>
-  <mds-button {...args}>
-    Conferma azione
-  </mds-button>
+const Template = args => <mds-button {...args}>Conferma azione</mds-button>
 
-const TemplateService = args =>
-  <mds-button {...args}>
-    { args.label }
-  </mds-button>
+const TemplateService = args => (
+  <mds-button {...args}>{args.label}</mds-button>
+)
 
-const TemplateNotifications = args =>
+const TemplateNotifications = args => (
   <mds-button {...args}>
     Notifiche
     <mds-notification slot="notification" value={12}></mds-notification>
   </mds-button>
+)
 
 const TemplateAwait = () => {
   const [buttonState, setButtonState] = useState(0)
@@ -121,39 +122,51 @@ const TemplateAwait = () => {
     }, 2000)
   }
 
-  return (<mds-button icon={iconMap[buttonState]} variant={variantsMap[buttonState]} tone={tonesMap[buttonState]} await={buttonState === 1} onClick={() => { if (buttonState === 0) setLoadingState() }}>
-    { buttonState === 0 && 'Conferma azione' }
-    { buttonState === 1 && 'Salvataggio in corso...' }
-    { buttonState === 2 && 'Azione salvata' }
-  </mds-button>)
+  return (
+    <mds-button
+      icon={iconMap[buttonState]}
+      variant={variantsMap[buttonState]}
+      tone={tonesMap[buttonState]}
+      await={buttonState === 1}
+      onClick={() => {
+        if (buttonState === 0) setLoadingState()
+      }}
+    >
+      {buttonState === 0 && 'Conferma azione'}
+      {buttonState === 1 && 'Salvataggio in corso...'}
+      {buttonState === 2 && 'Azione salvata'}
+    </mds-button>
+  )
 }
 
-const TemplateKeyboard = args =>
+const TemplateKeyboard = args => (
   <div class="bg-tone-grey-10 p-600 grid gap-600">
     <mds-text>Focus this button with tab before press enter.</mds-text>
-    <mds-button {...args}>
-      Click me from enter keyborad
-    </mds-button>
+    <mds-button {...args}>Click me from enter keyborad</mds-button>
   </div>
+)
 
-const TemplateIcon = args =>
-  <mds-button {...args}> </mds-button>
+const TemplateIcon = args => <mds-button {...args}> </mds-button>
 
-const TemplateForm = args =>
-  <form class="flex gap-x-400" action='#' onSubmit={event => {
-    event.preventDefault()
+const TemplateForm = args => (
+  <form
+    class="flex gap-x-400"
+    action="#"
+    onSubmit={event => {
+      event.preventDefault()
 
-    // eslint-disable-next-line no-console
-    console.log('Form submitted via mds-button', event)
+      // eslint-disable-next-line no-console
+      console.log('Form submitted via mds-button', event)
 
-    return false
-  }}>
+      return false
+    }}
+  >
     <input type="text" name="inputTest" />
     <mds-button {...args}>Cliccami</mds-button>
   </form>
+)
 
 const TemplateDisabled = () => {
-
   const [disabled, setDisabled] = useState(false)
 
   function toggle () {
@@ -166,24 +179,35 @@ const TemplateDisabled = () => {
     // document.querySelector('#disabledButton')?.setAttribute('disabled', 'false')
   }
 
-  return <div class="grid grid-cols-1 gap-600">
-    <div class="inline-flex gap-600">
-      <mds-button
-        id='disabledButton'
-        class="w-4400"
-        icon={disabled ? 'mi/baseline/block' : 'mi/baseline/check'}
-        variant="primary"
-        disabled={disabled}
-        onClick={() => toggle()}>
-        {disabled ? 'Disabled button' : 'Click to disable'}
-      </mds-button>
-      { disabled && <mds-button icon="mi/baseline/undo" variant="dark" tone="weak" onClick={() => enableButton()}>Reset</mds-button> }
+  return (
+    <div class="grid grid-cols-1 gap-600">
+      <div class="inline-flex gap-600">
+        <mds-button
+          id="disabledButton"
+          class="w-4400"
+          icon={disabled ? 'mi/baseline/block' : 'mi/baseline/check'}
+          variant="primary"
+          disabled={disabled}
+          onClick={() => toggle()}
+        >
+          {disabled ? 'Disabled button' : 'Click to disable'}
+        </mds-button>
+        {disabled && (
+          <mds-button
+            icon="mi/baseline/undo"
+            variant="dark"
+            tone="weak"
+            onClick={() => enableButton()}
+          >
+            Reset
+          </mds-button>
+        )}
+      </div>
     </div>
-  </div>
+  )
 }
 
 const TemplateAsyncContent = () => {
-
   const [icon, setIcon] = useState('')
   const [label, setLabel] = useState('')
 
@@ -196,105 +220,182 @@ const TemplateAsyncContent = () => {
     }, 1000)
   }, [icon, label])
 
-  return <mds-button
-    class="max-w-4400"
-    icon={icon}>
-    {label}
-  </mds-button>
+  return (
+    <mds-button class="max-w-4400" icon={icon}>
+      {label}
+    </mds-button>
+  )
 }
 
-export const Default = Template.bind({})
-
-export const AsyncContent = TemplateAsyncContent.bind({})
-
-export const AutoFocus = Template.bind({})
-AutoFocus.args = {
-  'auto-focus': true,
+export const Default = {
+  render: Template,
 }
 
-export const Await = TemplateAwait.bind({})
-Await.args = {
-  tone: 'weak',
-  await: true,
+export const AsyncContent = {
+  render: TemplateAsyncContent,
 }
 
-export const Disabled = TemplateDisabled.bind({})
-Disabled.args = {
-  disabled: false,
+export const AutoFocus = {
+  render: Template,
+
+  args: {
+    'auto-focus': true,
+  },
 }
 
-export const Variant = Template.bind({})
-Variant.args = {
-  variant: 'success',
+export const Await = {
+  render: TemplateAwait,
+
+  args: {
+    tone: 'weak',
+    await: true,
+  },
 }
 
-export const ServiceVariantGoogle = TemplateService.bind({})
-ServiceVariantGoogle.args = {
-  variant: 'google',
-  label: 'Login with Google',
+export const Disabled = {
+  render: TemplateDisabled,
+
+  args: {
+    disabled: false,
+  },
+  play: async ({ canvas, userEvent }) => {
+    const button = await canvas.findByRole('button')
+    expect(button).not.toBeDisabled()
+    await userEvent.click(button)
+    expect(button).toBeDisabled()
+  },
 }
 
-export const ServiceVariantApple = TemplateService.bind({})
-ServiceVariantApple.args = {
-  variant: 'apple',
-  label: 'Login with Apple',
+export const Variant = {
+  render: Template,
+
+  args: {
+    variant: 'success',
+  },
 }
 
-export const Tone = Template.bind({})
-Tone.args = {
-  variant: 'success',
-  tone: 'weak',
+export const ServiceVariantGoogle = {
+  render: TemplateService,
+
+  args: {
+    variant: 'google',
+    label: 'Login with Google',
+  },
 }
 
-export const Size = Template.bind({})
-Size.args = {
-  size: 'sm',
+export const ServiceVariantApple = {
+  render: TemplateService,
+
+  args: {
+    variant: 'apple',
+    label: 'Login with Apple',
+  },
 }
 
-export const Icon = TemplateIcon.bind({})
-Icon.args = {
-  icon: 'mi/baseline/eco',
-  title: 'Pianta un albero',
+export const Tone = {
+  render: Template,
+
+  args: {
+    variant: 'success',
+    tone: 'weak',
+  },
 }
 
-export const IconFill = TemplateIcon.bind({})
-IconFill.args = {
-  variant: 'success',
-  icon: 'mi/baseline/eco',
-  class: 'fill-status-error-05',
+export const Size = {
+  render: Template,
+
+  args: {
+    size: 'sm',
+  },
 }
 
-export const IconARIATitle = TemplateIcon.bind({})
-IconARIATitle.args = {
-  icon: 'mi/baseline/eco',
-  'aria-label': 'Pianta un albero',
+export const Icon = {
+  render: TemplateIcon,
+
+  args: {
+    icon: 'mi/baseline/eco',
+    title: 'Pianta un albero',
+  },
 }
 
-export const IconPosition = Template.bind({})
-IconPosition.args = {
-  'icon-position': 'right',
-  icon: 'mi/baseline/eco',
+export const IconFill = {
+  render: TemplateIcon,
+
+  args: {
+    variant: 'success',
+    icon: 'mi/baseline/eco',
+    class: 'fill-status-error-05',
+  },
 }
 
-export const KeyboardPress = TemplateKeyboard.bind({})
-KeyboardPress.args = {
-  onClick: () => { console.info('Button clicked') },
+export const IconARIATitle = {
+  render: TemplateIcon,
+
+  args: {
+    icon: 'mi/baseline/eco',
+    'aria-label': 'Pianta un albero',
+  },
 }
 
-export const Href = Template.bind({})
-Href.args = {
-  href: 'http://www.maggioli.it',
+export const IconPosition = {
+  render: Template,
+
+  args: {
+    'icon-position': 'right',
+    icon: 'mi/baseline/eco',
+  },
 }
 
-export const Target = Template.bind({})
-Target.args = {
-  href: 'http://www.maggioli.it',
-  target: 'blank',
+export const KeyboardPress = {
+  render: TemplateKeyboard,
+
+  args: {
+    onClick: () => {
+      console.info('Button clicked')
+    },
+  },
 }
 
-export const Notifications = TemplateNotifications.bind({})
+export const Href = {
+  render: Template,
 
-export const FormParticipation = TemplateForm.bind({})
-FormParticipation.args = {
-  type: 'button',
+  args: {
+    href: 'http://www.maggioli.it',
+  },
+}
+
+export const Target = {
+  render: Template,
+
+  args: {
+    href: 'http://www.maggioli.it',
+    target: 'blank',
+  },
+}
+
+export const Notifications = {
+  render: TemplateNotifications,
+}
+
+export const FormParticipation = {
+  render: TemplateForm,
+
+  args: {
+    type: 'button',
+  },
+}
+
+export const TestInteraction = {
+  render: Template,
+  args: {
+    onClick: fn(),
+  },
+  play: async ({ args, canvas, userEvent }) => {
+
+    const button = await canvas.findByRole('button') as HTMLMdsButtonElement
+    await userEvent.click(button)
+    expect(args.onClick).toHaveBeenCalledOnce()
+
+
+  },
 }

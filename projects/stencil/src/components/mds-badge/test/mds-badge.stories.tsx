@@ -1,6 +1,12 @@
 import { h } from '@stencil/core'
-import { typographyInfoDictionary, typographyVariationsDictionary } from '@dictionary/typography'
-import { themeFullVariantDictionary, toneVariantDictionary } from '@dictionary/variant'
+import {
+  typographyInfoDictionary,
+  typographyVariationsDictionary,
+} from '@dictionary/typography'
+import {
+  themeFullVariantDictionary,
+  toneVariantDictionary,
+} from '@dictionary/variant'
 
 export default {
   title: 'UI / Badge',
@@ -31,12 +37,13 @@ export default {
   },
 }
 
-const Template = args =>
-  <mds-badge {...args}>bovaro del bernese</mds-badge>
+const Template = args => <mds-badge {...args}>bovaro del bernese</mds-badge>
 
-export const Default = Template.bind( {} )
-Default.args = {
-  tone: 'strong',
-  variant: 'violet',
+export const Default = {
+  render: Template,
+
+  args: {
+    tone: 'strong',
+    variant: 'violet',
+  },
 }
-
