@@ -130,7 +130,7 @@ const Template = () => {
       <div class="flex items-center justify-center bg-tone-neutral rounded-2xl shadow-md m-600 ml-0">
         <mds-emoji
           style={{ width: `${svgSize}px`, height: `${svgSize}px` }}
-          name="hexabot"
+          name="mia"
         />
       </div>
     </div>
@@ -228,7 +228,7 @@ const TemplateHeader = () => {
           <mds-img class="w-1000" src="./logo-mindy-small.svg"></mds-img>
           <mds-emoji
             id="emoji"
-            name="hexabot"
+            name="mia"
             class="w-1000 h-1000 cursor-pointer"
             slot="nav"
             onClick={openModal}
@@ -326,7 +326,7 @@ const TemplateHeader = () => {
             </mds-tooltip>
             <mds-emoji
               id="emoji-results"
-              name="hexabot"
+              name="mia"
               class={clsx(
                 showResults ? 'w-1800 h-1800' : 'w-2400 h-2400',
                 'm-auto transition-cosmetic hydrated duration-700 ease-in-out-quart',
@@ -393,10 +393,73 @@ const TemplateHeader = () => {
   )
 }
 
+const TemplateAnimation = () => {
+
+  const [startIntroAnimation, setStartIntroAnimation] = useState(false)
+  const [startOutroAnimation, setStartOutroAnimation] = useState(false)
+
+  useEffect(() => {
+    const emoji = document.querySelector('#emoji-animation') as HTMLMdsEmojiElement
+    const buttonEl = document.querySelector('#action') as HTMLMdsButtonElement
+    const animationAreaEl = document.querySelector('#animation-area') as HTMLDivElement
+
+    const outroAnimation = () => {
+      setStartOutroAnimation(true)
+      animationAreaEl.style.cursor = 'none'
+      emoji.stopFollowMouse().then(() => {
+        emoji.agree().then(() => {
+          emoji.startThinking()
+          setTimeout(() => {
+            emoji.stopThinking()
+            emoji.agree().then(() => {
+              emoji.startBlinking()
+            })
+          }, 3000)
+        })
+      })
+    }
+
+    setTimeout(() => {
+      animationAreaEl.style.cursor = 'none'
+      setStartIntroAnimation(true)
+      setTimeout(() => {
+        animationAreaEl.style.cursor = 'auto'
+        emoji.smile().then(() => {
+          emoji.startFollowMouse()
+          emoji.startBlinking()
+          buttonEl.addEventListener('click', () => {
+            outroAnimation()
+          })
+        })
+      }, 500)
+    }, 1000)
+  }, [])
+
+  return (
+    <div class="flex items-center justify-center bg-tone-neutral-09 h-dvh">
+      <div id="animation-area" class="flex items-center justify-center flex-col gap-600 bg-tone-neutral w-9600 h-9600">
+        <mds-emoji
+          class={clsx('transition-cosmetic duration-700 ease-in-out-quart', startIntroAnimation ? 'scale-100' : 'scale-0', startOutroAnimation && 'translate-y-1100')}
+          id="emoji-animation"
+          name="mia"
+          style={{ width: '256px', height: '256px' }}
+        />
+        <div id="action-area" class={clsx('duration-700 ease-in-out-quart transition-cosmetic', startIntroAnimation ? 'scale-100' : 'scale-0', startOutroAnimation ? 'opacity-0 scale-0' : 'delay-1000 opacity-100')}>
+          <mds-button size='lg' id="action">MIA</mds-button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export const Default = {
   render: Template,
 }
 
 export const HeaderExample = {
   render: TemplateHeader,
+}
+
+export const IntroAnimation = {
+  render: TemplateAnimation,
 }

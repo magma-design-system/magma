@@ -3,6 +3,8 @@ import { gsap } from 'gsap'
 import { cssRotationToNumber, cssDurationToSeconds } from '@common/unit'
 import { randomNumber } from '@common/number'
 
+export type EmojiNames = 'mia'
+
 @Component({
   tag: 'mds-emoji',
   styleUrl: 'mds-emoji.css',
@@ -10,7 +12,7 @@ import { randomNumber } from '@common/number'
 })
 export class MdsEmoji {
   @Element() host: HTMLMdsEmojiElement
-  @Prop({ reflect: true }) readonly name: string = 'hexabot'
+  @Prop({ reflect: true }) readonly name: EmojiNames = 'mia'
 
   // private hostSize: number = 24
 
@@ -105,13 +107,17 @@ export class MdsEmoji {
   @Method()
   async agree (): Promise<void> {
     this.stopConcurrentAnimations()
-    this.setAgreeAnimation()
+    await this.setAgreeAnimation()
     return Promise.resolve()
   }
 
-  private setAgreeAnimation = (): void => {
-  // Interrompi temporaneamente le rotazioni automatiche
-    this.isFollowingMouse = false
+  private setAgreeAnimation = (): Promise<void> => {
+    // Interrompi temporaneamente le rotazioni automatiche
+    const duration = 1000
+    const wasFollowingMouse = this.isFollowingMouse
+    if (wasFollowingMouse) {
+      this.isFollowingMouse = false
+    }
     gsap.killTweensOf(this.emojiEl)
 
     const baseX = this.currentRotateX
@@ -125,7 +131,9 @@ export class MdsEmoji {
           duration: 0.3,
           ease: 'power2.out',
           onComplete: () => {
-            this.isFollowingMouse = true
+            if (wasFollowingMouse) {
+              this.isFollowingMouse = true
+            }
           },
         })
       },
@@ -157,6 +165,107 @@ export class MdsEmoji {
         ease: 'expo.inOut',
       },
     )
+
+    return new Promise(resolve => setTimeout(resolve, duration))
+  }
+
+  /**
+   * @returns Promise<void>
+   * Emoji smiles, useful for confirm actions.
+   */
+
+  @Method()
+  async smile (): Promise<void> {
+    this.stopConcurrentAnimations()
+    await this.setSmileAnimation()
+    return Promise.resolve()
+  }
+
+  private setSmileAnimation = (): Promise<void> => {
+    // Interrompi temporaneamente le rotazioni automatiche
+    const duration = 1700
+    const wasFollowingMouse = this.isFollowingMouse
+    if (wasFollowingMouse) {
+      this.isFollowingMouse = false
+    }
+    gsap.killTweensOf(this.emojiEl)
+    gsap.fromTo(this.mouthEl,
+      {
+        attr: { d: this.mouthGeometry.happy },
+        transformOrigin: '50% 50%',
+      }, {
+        scaleY: 0.75,
+        duration: 0.15,
+        ease: 'expo.inOut',
+        onComplete: () => {
+          gsap.to(this.mouthEl, { scaleY: 1, duration: 0.15 })
+          gsap.to(this.mouthEl, { scaleY: 0.75, duration: 0.15, delay:0.30 })
+          gsap.to(this.mouthEl, { scaleY: 1, duration: 0.15, delay:0.45 })
+          gsap.to(this.mouthEl, { scaleY: 0.75, duration: 0.15, delay:0.60 })
+          gsap.to(this.mouthEl, { scaleY: 1, duration: 0.15, delay:0.75 })
+          gsap.delayedCall(1.2, () => {
+            gsap.fromTo(this.mouthEl,
+              {
+                attr: { d: this.mouthGeometry.smile },
+                transformOrigin: '50% 50%',
+                scaleY: 1.5,
+              }, {
+                attr: { d: this.mouthGeometry.smile },
+                scaleY: 1,
+                duration: 0.5,
+                ease: 'expo.out',
+              },
+            )
+          })
+        },
+      },
+    )
+
+    const eyeRightTween = gsap.fromTo(this.eyeRightEl,
+      {
+        attr: { d: this.eyeRightGeometry.open },
+      }, {
+        attr: { d: this.eyeRightGeometry.close },
+        translateY: -2.5,
+        scaleY: 1.5,
+        onComplete: () => {
+          gsap.delayedCall(0.25, () => eyeRightTween.reverse())
+        },
+        duration: 0.75,
+        ease: 'expo.inOut',
+      },
+    )
+
+    const eyeLeftTween = gsap.fromTo(this.eyeLeftEl,
+      {
+        attr: { d: this.eyeLeftGeometry.open },
+      }, {
+        attr: { d: this.eyeLeftGeometry.close },
+        translateY: -2.5,
+        scaleY: 1.5,
+        onComplete: () => {
+          gsap.delayedCall(0.25, () => eyeLeftTween.reverse())
+        },
+        duration: 0.75,
+        ease: 'expo.inOut',
+      },
+    )
+
+    const emojiTween = gsap.to(this.emojiEl,
+      {
+        translateY: `-=${this.emojiEl.getBoundingClientRect().height / 10}`,
+        scaleX: 0.9,
+        duration: 0.5,
+        ease: 'expo.inOut',
+        onComplete: () => {
+          gsap.delayedCall(0.5, () => {
+            emojiTween.reverse()
+          })
+        },
+      },
+    )
+
+    return new Promise(resolve => setTimeout(resolve, duration))
   }
 
   /**
@@ -173,8 +282,11 @@ export class MdsEmoji {
 
   private setDisagreeAnimation = (turnHappyDelay: number = 0): void => {
   // Interrompi temporaneamente le rotazioni automatiche
-    this.isFollowingMouse = false
     gsap.killTweensOf(this.emojiEl)
+    const wasFollowingMouse = this.isFollowingMouse
+    if (wasFollowingMouse) {
+      this.isFollowingMouse = false
+    }
 
     const tl = gsap.timeline({
       onComplete: () => {
@@ -185,7 +297,9 @@ export class MdsEmoji {
           duration: 0.3,
           ease: 'power2.out',
           onComplete: () => {
-            this.isFollowingMouse = true
+            if (wasFollowingMouse) {
+              this.isFollowingMouse = true
+            }
           },
         })
       },
@@ -218,16 +332,16 @@ export class MdsEmoji {
    */
 
   @Method()
-  async startThinking (): Promise<void> {
+  async startThinking (duration: number = 0.5): Promise<void> {
     this.isThinking = true
-    this.setStartThinkingAnimation()
+    await this.setStartThinkingAnimation(duration)
     return Promise.resolve()
   }
 
   @Method()
-  async stopThinking (): Promise<void> {
+  async stopThinking (duration: number = 0.5): Promise<void> {
     this.isThinking = false
-    this.setStopThinkingAnimation()
+    await this.setStopThinkingAnimation(duration)
     return Promise.resolve()
   }
 
@@ -254,22 +368,22 @@ export class MdsEmoji {
     } })
   }
 
-  private setStartThinkingAnimation = (): void => {
-    const duration = 0.5
+  private setStartThinkingAnimation = (duration: number = 0.5): Promise<void> => {
     const ease = 'expo.inOut'
     this.handLeftEl.style.visibility = 'visible'
     gsap.fromTo(this.handLeftEl, { scale: 0, rotateZ: 45 }, { scale: 1, rotateZ: 0, ease, duration })
     this.moveEyesThinkAnimation()
     gsap.to(this.mouthEl, { attr: { d: this.mouthGeometry.think }, duration: 0, ease: 'none' })
+    return new Promise(resolve => setTimeout(resolve, duration * 1000))
   }
 
-  private setStopThinkingAnimation = (): void => {
-    const duration = 0.5
+  private setStopThinkingAnimation = (duration: number): Promise<void> => {
     const ease = 'expo.inOut'
     gsap.to(this.handLeftEl, { scale: 0, y: 0, rotateZ: 45, ease, duration })
     gsap.to(this.eyeLeftEl, { x: 0, ease: 'expo.inOut', duration })
     gsap.to(this.eyeRightEl, { x: 0, ease: 'expo.inOut', duration })
     gsap.to(this.mouthEl, { attr: { d: this.mouthGeometry.smile }, duration: 0, ease: 'none' })
+    return new Promise(resolve => setTimeout(resolve, duration * 1000))
   }
 
   /**
@@ -323,7 +437,7 @@ export class MdsEmoji {
   async stopFollowMouse (): Promise<void> {
     this.isFollowingMouse = false
     this.followMouse()
-    return Promise.resolve()
+    return new Promise(resolve => setTimeout(resolve, this.expressionFollowMouseTraitsDuration * 1000))
   }
 
   /**
@@ -433,7 +547,7 @@ export class MdsEmoji {
 
   render () {
     return <Host>
-      { this.name === 'hexabot' && (
+      { this.name === 'mia' && (
         <svg ref={el => (this.emojiEl = el as SVGElement)} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path class="head" ref={el => (this.headEl = el as SVGElement)} d={this.headGeometry.hexagonRounded} fill="black"/>
           <path class="eye" ref={el => (this.eyeLeftEl = el as SVGElement)} d={this.eyeLeftGeometry.open} fill="white"/>

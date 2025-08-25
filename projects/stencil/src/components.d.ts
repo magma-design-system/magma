@@ -23,6 +23,7 @@ import { MdsChipEvent } from "./components/mds-chip/meta/interface";
 import { DropdownInteractionType } from "./components/mds-dropdown/meta/types";
 import { FloatingUIPlacement, FloatingUIStrategy } from "./type/floating-ui";
 import { MdsDropdownEventDetail } from "./components/mds-dropdown/meta/event-detail";
+import { EmojiNames } from "./components/mds-emoji/mds-emoji";
 import { ExtensionSuffixType } from "./type/file-types";
 import { MdsFileEventDetail } from "./components/mds-file/meta/event-detail";
 import { MdsFilePreviewEventDetail } from "./components/mds-file-preview/meta/event-detail";
@@ -97,6 +98,7 @@ export { MdsChipEvent } from "./components/mds-chip/meta/interface";
 export { DropdownInteractionType } from "./components/mds-dropdown/meta/types";
 export { FloatingUIPlacement, FloatingUIStrategy } from "./type/floating-ui";
 export { MdsDropdownEventDetail } from "./components/mds-dropdown/meta/event-detail";
+export { EmojiNames } from "./components/mds-emoji/mds-emoji";
 export { ExtensionSuffixType } from "./type/file-types";
 export { MdsFileEventDetail } from "./components/mds-file/meta/event-detail";
 export { MdsFilePreviewEventDetail } from "./components/mds-file-preview/meta/event-detail";
@@ -709,7 +711,11 @@ export namespace Components {
           * @returns Promise<void> Emoji disagrees, useful for errors or unwanted results.
          */
         "disagree": (turnHappyDelay?: number) => Promise<void>;
-        "name": string;
+        "name": EmojiNames;
+        /**
+          * @returns Promise<void> Emoji smiles, useful for confirm actions.
+         */
+        "smile": () => Promise<void>;
         /**
           * @returns Promise<void> Eyes start blinking.
          */
@@ -721,7 +727,7 @@ export namespace Components {
         /**
           * @returns Promise<void> Emoji start thinking, useful for pending requests.
          */
-        "startThinking": () => Promise<void>;
+        "startThinking": (duration?: number) => Promise<void>;
         /**
           * @returns Promise<void> Eyes stop blinking.
          */
@@ -730,7 +736,7 @@ export namespace Components {
           * @returns Promise<void> Stops following mouse with CSS 3D transform.
          */
         "stopFollowMouse": () => Promise<void>;
-        "stopThinking": () => Promise<void>;
+        "stopThinking": (duration?: number) => Promise<void>;
     }
     interface MdsEntity {
         /**
@@ -4464,7 +4470,7 @@ declare namespace LocalJSX {
         "zIndex"?: number;
     }
     interface MdsEmoji {
-        "name"?: string;
+        "name"?: EmojiNames;
     }
     interface MdsEntity {
         /**
