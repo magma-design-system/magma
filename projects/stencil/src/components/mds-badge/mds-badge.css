@@ -1,4 +1,5 @@
-@reference '../../tailwind/index.css';
+/* @reference 'tailwindcss'; */
+@reference '@maggioli-design-system/styles/tailwind/theme.css';
 
 /**
  * @prop --mds-badge-background: Sets the background-color of the component
@@ -8,16 +9,18 @@
 
 :host {
   --mds-badge-background: var(--color-label-sky-09);
-  --mds-badge-border-color: var(--color-label-sky-06);;
+  --mds-badge-border-color: var(--color-label-sky-06);
   --mds-badge-border-width: 1px;
   --mds-badge-color: var(--color-label-sky-03);
-  --mds-badge-radius: var(--radius-DEFAULT);
+  --mds-badge-radius: var(--radius-sm);
 
   @apply
     duration-200
     ease-out
-    px-200
-    py-100;
+    pl-200
+    pr-200
+    pb-100
+    pt-100;
 
   align-items: center;
   background-color: var(--mds-badge-background);
@@ -37,7 +40,6 @@
 :host([tone="quiet"]) {
   --mds-badge-background: var(--color-tone-neutral);
 }
-
 @import './css/mds-badge-variant-amaranth.css';
 @import './css/mds-badge-variant-amaranth-contrast.css';
 @import './css/mds-badge-variant-aqua.css';
