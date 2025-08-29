@@ -1,14 +1,19 @@
-@import '@maggioli-design-system/styles/dist/tailwind/base.css';
-@import '@maggioli-design-system/styles/dist/tailwind/typography.css';
+@layer theme, base, components, utilities;
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
 
-@config '../../tailwind.config.js';
-@tailwind base;
-@config '../../tailwind.config.js';
-@tailwind components;
-@config '../../tailwind.config.js';
-@tailwind utilities;
+/* @import "tailwindcss"; */
+
+/* @import '@maggioli-design-system/styles/dist/tailwind/theme.css' layer(theme); */
+@import '@maggioli-design-system/design-tokens/dist/css/tailwind-theme-typography.css';
+@import '@maggioli-design-system/design-tokens/dist/css/tailwind-theme-color.css';
+/* @import '@maggioli-design-system/styles/dist/css/base.css';
+@import '@maggioli-design-system/styles/dist/css/typography.css'; */
+
+/* @import "@maggioli-design-system/styles/tailwind/base.css" layer(base); */
 
 body {
+  background-color: #ffffffff !important;
   padding: 0 !important;
 }
 

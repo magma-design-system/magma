@@ -1,11 +1,9 @@
 import alias from '@rollup/plugin-alias'
-import autoprefixer from 'autoprefixer'
+// import autoprefixer from 'autoprefixer'
 import path from 'path'
-import tailwind from '@tailwindcss/postcss'
 import { Config } from '@stencil/core'
 import { inlineSvg } from 'stencil-inline-svg'
-import { postcss } from '@stencil/postcss'
-import postcssImport from 'postcss-import'
+import tailwind from 'stencil-tailwind-plugin'
 
 import { reactOutputTarget } from '@stencil/react-output-target'
 import { angularOutputTarget } from '@stencil/angular-output-target'
@@ -16,12 +14,28 @@ import { angularOutputTarget } from '@stencil/angular-output-target'
 // import tsconfig from './tsconfig.json'
 // console.log(tsconfig)
 
+const twConfigurationFn = () => {
+  // remove tailwind preflight and add custom theme
+  return `
+  @layer theme, base, components, utilities;
+  @reference "tailwindcss/utilities.css" layer(utilities);
+
+  @reference "@maggioli-design-system/styles/tailwind/theme.css";
+  @reference "@maggioli-design-system/styles/tailwind/typography.css";
+  `
+}
+
+const opts = {
+  injectTailwindConfiguration: twConfigurationFn,
+}
+
+
 const packageName = 'magma-components'
 const srcDir = './src'
 
 export const config: Config = {
   namespace: packageName,
-  globalStyle: `${srcDir}/tailwind/index.css`,
+  globalStyle: `${srcDir}/globals.css`,
   hydratedFlag: {
     selector: 'attribute',
   },
@@ -29,7 +43,7 @@ export const config: Config = {
   transformAliasedImportPaths: true,
   srcDir,
   sourceMap: false,
-  minifyCss: true,
+  minifyCss: false,
   minifyJs: true,
   buildEs5: true,
   extras: {
@@ -78,9 +92,7 @@ export const config: Config = {
     },
   ],
   plugins: [
-    postcss({
-      plugins: [postcssImport, autoprefixer({ flexbox: 'no-2009' }), tailwind()],
-    }),
+    tailwind(opts),
     alias({
       entries: [
         { find: /^@common\/(.*)$/, replacement: path.resolve('.', './src/common/$1') },
