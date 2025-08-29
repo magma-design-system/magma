@@ -1,13 +1,9 @@
-@reference "tailwindcss";
-@reference "@maggioli-design-system/design-tokens/dist/css/tailwind-theme-typography.css";
-
 html {
-  @apply ease-out;
-
   color-scheme: dark light;
   hanging-punctuation: first last;
   interpolate-size: allow-keywords;
-  transition-duration: 200ms;
+  transition-duration: theme('transitionDuration.200');
+  transition-timing-function: theme('transitionTimingFunction.out');
 }
 
 *,
@@ -76,23 +72,20 @@ h3,
 h4,
 h5,
 h6 {
-  @apply max-w-title;
-
   margin: 0;
+  max-width: theme('spacing.title');
   text-wrap: balance;
 }
 
 p {
-  @apply max-w-text;
-
   margin: 0;
+  max-width: theme('spacing.text');
   text-wrap: pretty;
 }
 
 li,
 figcaption {
-  @apply max-w-text;
-
+  max-width: theme('spacing.text');
   text-wrap: pretty;
 }
 

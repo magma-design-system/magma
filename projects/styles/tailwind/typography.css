@@ -1,158 +1,156 @@
-@layer components {
-  .text-title-h1 {
-    @apply
-      antialiased
-      font-black
-      font-title
-      min-h-1200
-      text-size-title-h1;
-  }
+@utility text-title-h1 {
+  @apply
+    antialiased
+    font-black
+    font-title
+    min-h-1200
+    text-size-title-h1;
+}
 
-  .text-title-h2 {
-    @apply
-      antialiased
-      font-black
-      font-title
-      min-h-1000
-      text-size-title-h2;
-  }
+@utility text-title-h2 {
+  @apply
+    antialiased
+    font-black
+    font-title
+    min-h-1000
+    text-size-title-h2;
+}
 
-  .text-title-h3 {
-    @apply
-      antialiased
-      font-black
-      font-title
-      min-h-900
-      text-size-title-h3;
-  }
+@utility text-title-h3 {
+  @apply
+    antialiased
+    font-black
+    font-title
+    min-h-900
+    text-size-title-h3;
+}
 
-  .text-title-h4 {
-    @apply
-      antialiased
-      font-bold
-      font-title
-      min-h-800
-      text-size-title-h4;
-  }
+@utility text-title-h4 {
+  @apply
+    antialiased
+    font-bold
+    font-title
+    min-h-800
+    text-size-title-h4;
+}
 
-  .text-title-h5 {
-    @apply
-      antialiased
-      font-bold
-      font-title
-      min-h-700
-      text-size-title-h5;
-  }
+@utility text-title-h5 {
+  @apply
+    antialiased
+    font-bold
+    font-title
+    min-h-700
+    text-size-title-h5;
+}
 
-  .text-title-h6 {
-    @apply
-      antialiased
-      font-bold
-      font-title
-      min-h-600
-      text-size-title-h6;
-  }
+@utility text-title-h6 {
+  @apply
+    antialiased
+    font-bold
+    font-title
+    min-h-600
+    text-size-title-h6;
+}
 
-  .text-title-action {
-    @apply
-      antialiased
-      font-medium
-      font-title
-      min-h-600
-      text-size-title-action;
-  }
+@utility text-title-action {
+  @apply
+    antialiased
+    font-medium
+    font-title
+    min-h-600
+    text-size-title-action;
+}
 
-  .text-info-paragraph {
-    @apply
-      antialiased
-      font-info
-      min-h-800
-      text-size-info-paragraph;
-  }
+@utility text-info-paragraph {
+  @apply
+    antialiased
+    font-info
+    min-h-800
+    text-size-info-paragraph;
+}
 
-  .text-info-detail {
-    @apply
-      antialiased
-      font-info
-      min-h-600
-      text-size-info-detail;
-  }
+@utility text-info-detail {
+  @apply
+    antialiased
+    font-info
+    min-h-600
+    text-size-info-detail;
+}
 
-  .text-info-caption {
-    @apply
-      antialiased
-      font-info
-      min-h-500
-      text-size-info-caption;
-  }
+@utility text-info-caption {
+  @apply
+    antialiased
+    font-info
+    min-h-500
+    text-size-info-caption;
+}
 
-  .text-info-label {
-    @apply
-      antialiased
-      font-bold
-      font-info
-      min-h-400
-      text-size-info-label
-      uppercase;
-  }
+@utility text-info-label {
+  @apply
+    antialiased
+    font-bold
+    font-info
+    min-h-400
+    text-size-info-label
+    uppercase;
+}
 
-  .text-info-option {
-    @apply
-      antialiased
-      font-bold
-      font-info
-      min-h-250
-      text-size-info-option
-      uppercase;
-  }
+@utility text-info-option {
+  @apply
+    antialiased
+    font-bold
+    font-info
+    min-h-250
+    text-size-info-option
+    uppercase;
+}
 
-  .text-info-tip {
-    @apply
-      antialiased
-      font-info
-      min-h-400
-      text-size-info-tip;
-  }
+@utility text-info-tip {
+  @apply
+    antialiased
+    font-info
+    min-h-400
+    text-size-info-tip;
+}
 
-  .text-read-paragraph {
-    @apply
-      antialiased
-      font-light
-      font-read
-      min-h-800
-      text-size-read-paragraph;
-  }
+@utility text-read-paragraph {
+  @apply
+    antialiased
+    font-light
+    font-read
+    min-h-800
+    text-size-read-paragraph;
+}
 
-  .text-read-detail {
-    @apply
-      antialiased
-      font-light
-      font-read
-      min-h-600
-      text-size-read-detail;
-  }
+@utility text-read-detail {
+  @apply
+    antialiased
+    font-light
+    font-read
+    min-h-600
+    text-size-read-detail;
+}
 
-  .text-read-caption {
-    @apply
-      antialiased
-      font-read
-      min-h-500
-      text-size-read-caption;
-  }
+@utility text-read-caption {
+  @apply
+    antialiased
+    font-read
+    min-h-500
+    text-size-read-caption;
+}
 
-  .text-code-snippet {
-    @apply
-      antialiased
-      font-code
-      min-h-600
-      text-size-code-snippet;
-  }
+@utility text-code-snippet {
+  @apply
+    antialiased
+    font-code
+    min-h-600
+    text-size-code-snippet;
+}
 
-  .text-code-hack {
-    @apply
-      antialiased
-      font-code
-      min-h-500
-      text-size-code-hack;
-  }
+@utility text-code-hack {
+  @apply
+    antialiased
+    font-code
+    min-h-500
+    text-size-code-hack;
 }

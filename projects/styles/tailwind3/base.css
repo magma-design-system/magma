@@ -1,0 +1,52 @@
+body {
+  @apply
+    font-info
+    text-info-detail;
+
+  color: rgb(var(--tone-neutral-03, theme('colors.tone-neutral-03')));
+}
+
+:root.pref-contrast-high body {
+  color: rgb(var(--tone-neutral-01, theme('colors.tone-neutral-01')));
+}
+
+@media (prefers-contrast: more) {
+  :root.pref-contrast-system body {
+    color: rgb(var(--tone-neutral-01, theme('colors.tone-neutral-01')));
+  }
+}
+
+::selection {
+  background-color: var(--magma-selection-background, theme('colors.label-sky-09'));
+  color: var(--magma-selection-color, theme('colors.label-sky-01'));
+}
+
+button,
+optgroup,
+select {
+  @apply text-title-action;
+}
+
+b,
+strong {
+  @apply
+    font-semibold
+    tracking-tight;
+}
+
+a {
+  color: rgb(var(--theme-default-02-primary-text, theme('colors.theme-default-02-primary-text')));
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  max-width: theme('spacing.title');
+}
+
+p {
+  max-width: theme('spacing.text');
+}
