@@ -1,5 +1,5 @@
 {
-  "spacing-scale": { "value": "0.0025rem"},
+  "spacing-scale": { "value": "0.0025rem" },
   "spacing": {
     "xs": {
       "value": "{sizing.primitive.100}"
@@ -21,6 +21,18 @@
     },
     "3xl": {
       "value": "{sizing.primitive.2000}"
+    },
+    "phrase": {
+      "value": "50ch"
+    },
+    "prose": {
+      "value": "65ch"
+    },
+    "text": {
+      "value": "75ch"
+    },
+    "title": {
+      "value": "30ch"
     }
   },
   "container": {
@@ -56,18 +68,6 @@
     },
     "7xl": {
       "value": "1280px"
-    },
-    "phrase": {
-      "value": "50ch"
-    },
-    "prose": {
-      "value": "65ch"
-    },
-    "text": {
-      "value": "75ch"
-    },
-    "title": {
-      "value": "30ch"
     }
   }
 }
