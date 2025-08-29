@@ -2,6 +2,7 @@
   "source": [
     "tokens/sizing/spacing.json",
     "tokens/sizing/aspect-ratio.json",
+    "tokens/sizing/radius.json",
     "tokens/typography/default.json",
     "tokens/typography/leading.json",
     "tokens/typography/size.json",

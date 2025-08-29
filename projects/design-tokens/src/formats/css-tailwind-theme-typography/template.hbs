@@ -69,6 +69,13 @@ Generated at {{ date }}
   {{/ifTailwind4Border}}
 {{/each}}
 
+{{!-- radius --}}
+{{#each properties.radius as | radius |}}
+  {{#ifTailwind4Border @key}}
+  --radius-{{@key}}: {{radius.value}};
+  {{/ifTailwind4Border}}
+{{/each}}
+
 {{!-- box shadow --}}
 {{#each properties.cosmetic.boxShadow as | shadow |}}
   --shadow-{{@key}}: {{shadow.value}};

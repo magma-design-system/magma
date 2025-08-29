@@ -14,9 +14,9 @@ Generated at {{ date }}
           {{#ifEquals @key 'light'}}
             {{#each palettes as | palette |}}
               {{#ifEquals @key 'color'}}
-  --color-{{@../../../key}}-{{@../../key}}: var(--{{@../../../key}}-{{@../../key}});
+  --color-{{@../../../key}}-{{@../../key}}: rgb(var(--{{@../../../key}}-{{@../../key}}));
               {{else}}
-  --color-{{@../../../key}}-{{@../../key}}-{{leadZero @key}}: var(--{{@../../../key}}-{{@../../key}}-{{leadZero @key}});
+  --color-{{@../../../key}}-{{@../../key}}-{{leadZero @key}}: rgb(var(--{{@../../../key}}-{{@../../key}}-{{leadZero @key}}));
               {{/ifEquals}}
             {{/each}}
           {{/ifEquals}}
