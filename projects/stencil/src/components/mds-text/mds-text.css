@@ -1,10 +1,8 @@
-@reference '../../tailwind/index.css';
-/* @import '@maggioli-design-system/styles/dist/tailwind/typography.css' layer(components); */
+@reference '@maggioli-design-system/styles/tailwind/theme.css';
+@reference '@maggioli-design-system/styles/tailwind/typography.css';
 
-/* @import './css/mds-text-pref-animation.css' layer(components); */
-/* @import '../../tailwind/fouc.css' layer(components); */
+@import '../../tailwind/fouc.css';
 
-@layer components {
   /**
  * @prop --mds-text-animation-placeholder-char: Sets the animation placeholder char of the text when `animation` attribute is set to `yugop`
  * @prop --mds-text-animation-speed: Sets the animation speed of the text when `animation` attribute is set to `yugop`
@@ -274,4 +272,4 @@
     overflow: inherit;
     text-overflow: inherit;
   }
-}
+
