@@ -1,4 +1,3 @@
-@reference '../../tailwind/index.css';
 .await {
   @apply
     duration-300

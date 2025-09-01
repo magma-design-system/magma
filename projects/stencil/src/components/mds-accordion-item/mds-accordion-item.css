@@ -1,6 +1,5 @@
-@reference '../../tailwind/index.css';
-@import '@maggioli-design-system/styles/dist/css/animations.css'; /* included for focus effect */
-@import '../../tailwind/components.css';
+@reference '@maggioli-design-system/styles/dist/css/animations.css'; /* included for focus effect */
+@reference '../../tailwind/components.css';
 
 /**
  * @prop --mds-accordion-item-border-color: Sets the border-color of the component

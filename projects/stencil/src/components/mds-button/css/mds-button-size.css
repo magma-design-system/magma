@@ -1,4 +1,3 @@
-@reference '../../tailwind/index.css';
 :host([size="sm"]) {
   @apply
     px-300

@@ -3,8 +3,7 @@ import alias from '@rollup/plugin-alias'
 import path from 'path'
 import { Config } from '@stencil/core'
 import { inlineSvg } from 'stencil-inline-svg'
-import tailwind from 'stencil-tailwind-plugin'
-
+import tailwind, { PluginConfigurationOptions } from 'stencil-tailwind-plugin'
 import { reactOutputTarget } from '@stencil/react-output-target'
 import { angularOutputTarget } from '@stencil/angular-output-target'
 
@@ -25,17 +24,16 @@ const twConfigurationFn = () => {
   `
 }
 
-const opts = {
+const opts: PluginConfigurationOptions = {
   injectTailwindConfiguration: twConfigurationFn,
 }
-
 
 const packageName = 'magma-components'
 const srcDir = './src'
 
 export const config: Config = {
   namespace: packageName,
-  globalStyle: `${srcDir}/globals.css`,
+  // globalStyle: `${srcDir}/globals.css`,
   hydratedFlag: {
     selector: 'attribute',
   },
@@ -92,7 +90,10 @@ export const config: Config = {
     },
   ],
   plugins: [
-    tailwind(opts),
+    tailwind({ ...opts,
+      minify: true, // with minify false ' will be replaced with %27 and broke style
+      stripComments: true,
+    }),
     alias({
       entries: [
         { find: /^@common\/(.*)$/, replacement: path.resolve('.', './src/common/$1') },
