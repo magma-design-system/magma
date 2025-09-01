@@ -1,7 +1,4 @@
-@tailwind utilities;
-
-@layer components {
-  .focus-bounce {
+  @utility focus-bounce {
     animation-duration: var(--magma-outline-animation-duration, 1s);
     animation-fill-mode: forwards;
     animation-iteration-count: infinite;
@@ -14,7 +11,12 @@
     transition-timing-function: ease-in-out;
   }
 
-  .focus-bounce--focused,
+  @utility focus-bounce--focused  {
+    --magma-outline-blur: var(--magma-outline-focus);
+
+    animation-play-state: running;
+  }
+
   .focus-bounce:focus-visible {
     --magma-outline-blur: var(--magma-outline-focus);
 
@@ -59,4 +61,4 @@
     transition-duration: 0s;
     visibility: hidden;
   }
-}
+
