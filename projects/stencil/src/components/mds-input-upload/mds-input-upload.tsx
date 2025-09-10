@@ -72,7 +72,7 @@ export class MdsInputUpload {
   @Event({ eventName: 'mdsInputUploadChange' }) changedEvent: EventEmitter<FileList | null>
 
   formResetCallback (): void {
-    this.internals.setFormValue('')
+    this.onReset()
   }
 
   componentWillLoad (): void {
@@ -168,6 +168,15 @@ export class MdsInputUpload {
       this.nativeInput.value = ''
       this.update(this.nativeInput, null)
     }
+  }
+
+  /**
+   * Reset component's files
+   */
+  @Method()
+  reset () : Promise<void> {
+    this.onReset()
+    return Promise.resolve()
   }
 
   private readonly onChangeTab = (event: MdsTabEventDetail): void => {

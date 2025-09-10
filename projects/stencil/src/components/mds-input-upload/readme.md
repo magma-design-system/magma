@@ -44,6 +44,16 @@ Type: `Promise<FileError[] | null>`
 
 
 
+### `reset() => Promise<void>`
+
+Reset component's files
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
 ### `updateLang() => Promise<void>`
 
 
