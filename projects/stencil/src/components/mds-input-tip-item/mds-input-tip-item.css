@@ -1,15 +1,16 @@
 @reference '../../tailwind/index.css';
 @import '../../tailwind/components.css';
 
-@import './css/mds-input-tip-item-expanded.css' layer(components);
-@import './css/mds-input-tip-item-variant.css' layer(components);
-@import './css/mds-input-tip-item-pref-animation.css' layer(components);
-@import './css/mds-input-tip-item-pref-contrast.css' layer(components);
-@import '../../tailwind/fouc.css' layer(components);
+@import './css/mds-input-tip-item-expanded.css';
+@import './css/mds-input-tip-item-variant.css';
+@import './css/mds-input-tip-item-pref-animation.css';
+@import './css/mds-input-tip-item-pref-contrast.css';
+@import '../../tailwind/fouc.css';
 
 
 
-@layer components {
+@layer magma {
+
   /**
  * @prop --mds-input-tip-item-background: Sets the background color of the tip item.
  * @prop --mds-input-tip-item-color: Sets the text color of the tip item.

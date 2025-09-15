@@ -1,20 +1,21 @@
 @reference '../../tailwind/index.css';
 /* stylelint-disable property-no-vendor-prefix */
 
-@import '@maggioli-design-system/styles/dist/tailwind/typography.css'
-  layer(components);
-@import 'tailwindcss/utilities' layer(utilities);
-
-@import '../../tailwind/fouc.css' layer(utilities);
-@import './css/mds-input-date-pref-animation.css' layer(utilities);
-@import './css/mds-input-date-pref-theme.css' layer(utilities);
-@import './css/mds-input-date-pref-contrast.css' layer(utilities);
-@import './css/mds-input-date-firefox.css' layer(utilities);
-@import './css/mds-input-date-variant.css' layer(utilities);
+@reference '@maggioli-design-system/styles/dist/tailwind/typography.css'
+ ;
 
 
+@import '../../tailwind/fouc.css';
+@import './css/mds-input-date-pref-animation.css';
+@import './css/mds-input-date-pref-theme.css';
+@import './css/mds-input-date-pref-contrast.css';
+@import './css/mds-input-date-firefox.css';
+@import './css/mds-input-date-variant.css';
 
-@layer utilities {
+
+
+@layer magma {
+
   /**
  * @prop --mds-input-date-background: Sets the background-color of the component
  * @prop --mds-input-date-field-background-empty: Sets the color of the component when the value is empty or not valid

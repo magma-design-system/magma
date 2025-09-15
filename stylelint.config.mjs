@@ -102,7 +102,7 @@ export default {
       true,
       {
         ignoreProperties: {
-          '/.+/': ['/theme*/'],
+          '/.+/': ['/theme*/', '/--spacing/'],
         },
       },
     ],

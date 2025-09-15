@@ -1,13 +1,14 @@
 @reference '../../tailwind/index.css';
 @import '../../tailwind/components.css';
 
-@import './css/mds-push-notification-pref-theme.css' layer(components);
-@import './css/mds-push-notification-visible.css' layer(components);
-@import '../../tailwind/fouc.css' layer(components);
+@import './css/mds-push-notification-pref-theme.css';
+@import './css/mds-push-notification-visible.css';
+@import '../../tailwind/fouc.css';
 
 
 
-@layer components {
+@layer magma {
+
   :host {
     --mds-push-notification-fadeout-delay: 0s;
     --mds-push-notification-gap: var(--spacing-200);

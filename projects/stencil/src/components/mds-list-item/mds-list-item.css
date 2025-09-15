@@ -1,12 +1,13 @@
 @reference '../../tailwind/index.css';
 @import '../../tailwind/components.css';
 
-@import './css/mds-list-item-pref-contrast.css' layer(components);
-@import '../../tailwind/fouc.css' layer(components);
+@import './css/mds-list-item-pref-contrast.css';
+@import '../../tailwind/fouc.css';
 
 
 
-@layer components {
+@layer magma {
+
   /**
  * @prop --mds-list-item-icon-margin: Sets the margin of the component's icon
  */

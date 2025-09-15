@@ -1,15 +1,16 @@
 @reference '../../tailwind/index.css';
-@import '@maggioli-design-system/styles/dist/css/animations.css'
-  layer(components); /* included for focus effect */
+@reference '@maggioli-design-system/styles/dist/css/animations.css'
+ ; /* included for focus effect */
 @import '../../tailwind/components.css';
 
-@import './css/mds-paginator-item-pref-animation.css' layer(components);
-@import './css/mds-paginator-item-pref-theme.css' layer(components);
-@import '../../tailwind/fouc.css' layer(components);
+@import './css/mds-paginator-item-pref-animation.css';
+@import './css/mds-paginator-item-pref-theme.css';
+@import '../../tailwind/fouc.css';
 
 
+@layer magma {
 
-@layer components {
+
   /**
  * @prop --mds-paginator-item-background-disabled: Sets the background-color of the item when is disabled
  * @prop --mds-paginator-item-background-hover: Sets the background-color of the item when the mouse is over it
@@ -30,9 +31,7 @@
   :host {
     --mds-paginator-item-background-disabled: var(--color-tone-neutral-09);
     --mds-paginator-item-background-hover: var(--color-tone-neutral-08);
-    --mds-paginator-item-background-selected: theme(
-      'colors.variant-primary-03'
-    );
+    --mds-paginator-item-background-selected: var(--color-variant-primary-03);
     --mds-paginator-item-background: transparent;
     --mds-paginator-item-color-disabled: var(--color-tone-neutral-06);
     --mds-paginator-item-color-hover: var(--color-tone-neutral-02);

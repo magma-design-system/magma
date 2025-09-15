@@ -242,7 +242,7 @@ const Template = args => (
         </mds-price-table-features>
       </mds-price-table>
     </div>
-    <mds-price-table {...args} class="tablet-max:hidden">
+    <mds-price-table {...args} class="max-tablet:hidden">
       <mds-price-table-header
         {...args}
         class="mobile:grid-cols-1 tablet:grid-cols-3 desktop:grid-cols-4"

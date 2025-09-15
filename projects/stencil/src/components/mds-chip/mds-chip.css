@@ -1,5 +1,5 @@
 @reference '../../tailwind/index.css';
-@import '@maggioli-design-system/styles/dist/css/animations.css';
+@reference '@maggioli-design-system/styles/dist/css/animations.css';
 @import '../../tailwind/components.css';
 
 /**

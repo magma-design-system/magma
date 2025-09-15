@@ -1,17 +1,18 @@
 @reference '../../tailwind/index.css';
-@import '@maggioli-design-system/styles/dist/css/animations.css'
-  layer(components); /* included for focus effect */
+@reference '@maggioli-design-system/styles/dist/css/animations.css'
+ ; /* included for focus effect */
 @import '../../tailwind/components.css';
-@import 'tailwindcss/utilities' layer(utilities);
-
-@import './css/mds-filter-item-pref-animation.css' layer(utilities);
-@import './css/mds-filter-item-pref-theme.css' layer(utilities);
-@import './css/mds-filter-item-pref-contrast.css' layer(utilities);
-@import '../../tailwind/fouc.css' layer(utilities);
 
 
+@import './css/mds-filter-item-pref-animation.css';
+@import './css/mds-filter-item-pref-theme.css';
+@import './css/mds-filter-item-pref-contrast.css';
+@import '../../tailwind/fouc.css';
 
-@layer utilities {
+
+
+@layer magma {
+
   /**
  * @prop --mds-filter-item-count-background-default: Sets tge default `background-color` of the count element
  * @prop ---mds-filter-item-count-color-default: Sets tge default text `color` of the count element
@@ -22,9 +23,7 @@
   :host {
     --mds-filter-item-count-background-default: var(--color-tone-neutral-08);
     --mds-filter-item-count-color-default: var(--color-tone-neutral-02);
-    --mds-filter-item-count-background-selected: theme(
-      'colors.tone-neutral-05'
-    );
+    --mds-filter-item-count-background-selected: var(--color-tone-neutral-05);
     --mds-filter-item-count-color-selected: var(--color-tone-neutral);
 
     @apply duration-200

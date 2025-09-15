@@ -1,23 +1,24 @@
 @reference '../../tailwind/index.css';
-@import '@maggioli-design-system/styles/dist/css/animations.css'
-  layer(components); /* included for focus effect */
+@reference '@maggioli-design-system/styles/dist/css/animations.css'
+ ; /* included for focus effect */
 @import '../../tailwind/components.css';
 
-@import './css/mds-modal-action-close.css' layer(components);
-@import './css/mds-modal-animation-3d.css' layer(components);
-@import './css/mds-modal-animation-custom.css' layer(components);
-@import './css/mds-modal-animation-slide.css' layer(components);
-@import './css/mds-modal-opened.css' layer(components);
-@import './css/mds-modal-position.css' layer(components);
-@import './css/mds-modal-window.css' layer(components);
-@import './css/mds-modal-pref-animation.css' layer(components);
-@import './css/mds-modal-pref-contrast.css' layer(components);
-@import './css/mds-modal-pref-theme.css' layer(components);
-@import '../../tailwind/fouc.css' layer(components);
+@import './css/mds-modal-action-close.css';
+@import './css/mds-modal-animation-3d.css';
+@import './css/mds-modal-animation-custom.css';
+@import './css/mds-modal-animation-slide.css';
+@import './css/mds-modal-opened.css';
+@import './css/mds-modal-position.css';
+@import './css/mds-modal-window.css';
+@import './css/mds-modal-pref-animation.css';
+@import './css/mds-modal-pref-contrast.css';
+@import './css/mds-modal-pref-theme.css';
+@import '../../tailwind/fouc.css';
 
 
 
-@layer components {
+@layer magma {
+
   /**
  * @prop --mds-modal-custom-closed-transform: Sets the transform position of the custom window when it's outside the viewport, to it's default position
  * @prop --mds-modal-custom-window-distance: Set the distance between the slotted modal window and the screen bounds

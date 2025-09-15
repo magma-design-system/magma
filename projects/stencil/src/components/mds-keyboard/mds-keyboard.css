@@ -1,12 +1,13 @@
 @import '../../tailwind/components.css';
 
-@import './css/mds-keyboard-test.css' layer(components);
-@import './css/mds-keyboard-pref-theme.css' layer(components);
-@import '../../tailwind/fouc.css' layer(components);
+@import './css/mds-keyboard-test.css';
+@import './css/mds-keyboard-pref-theme.css';
+@import '../../tailwind/fouc.css';
 
 
 
-@layer components {
+@layer magma {
+
   /**
  * @prop --mds-keyboard-background-default: `private` Set the default background color of the keyboard area.
  * @prop --mds-keyboard-background-fail: Set the background color of the keyboard area when the test fails.

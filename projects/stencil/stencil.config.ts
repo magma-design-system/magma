@@ -17,7 +17,7 @@ const twConfigurationFn = () => {
   // remove tailwind preflight and add custom theme
   return `
   @layer theme, base, components, utilities;
-  @reference "tailwindcss/utilities.css" layer(utilities);
+  @reference "tailwindcss/utilities.css";
 
   @reference "@maggioli-design-system/styles/tailwind/theme.css";
   @reference "@maggioli-design-system/styles/tailwind/typography.css";

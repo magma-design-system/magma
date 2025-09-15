@@ -1,17 +1,18 @@
 @reference '../../tailwind/index.css';
-@import '@maggioli-design-system/styles/dist/css/animations.css'
-  layer(components); /* included for focus effect */
+@reference '@maggioli-design-system/styles/dist/css/animations.css'
+ ; /* included for focus effect */
 @import '../../tailwind/components.css';
 
-@import './css/mds-note-variants.css' layer(components);
-@import './css/mds-note-pref-animation.css' layer(components);
-@import './css/mds-note-pref-theme.css' layer(components);
-@import './css/mds-note-pref-contrast.css' layer(components);
-@import '../../tailwind/fouc.css' layer(components);
+@import './css/mds-note-variants.css';
+@import './css/mds-note-pref-animation.css';
+@import './css/mds-note-pref-theme.css';
+@import './css/mds-note-pref-contrast.css';
+@import '../../tailwind/fouc.css';
 
 
 
-@layer components {
+@layer magma {
+
   /**
  * @prop --mds-note-background: Sets the background-color of the component
  * @prop --mds-note-color: Sets the text color of the component

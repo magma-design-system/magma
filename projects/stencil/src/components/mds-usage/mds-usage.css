@@ -1,4 +1,6 @@
+@reference 'tailwindcss';
 @reference '../../tailwind/index.css';
+
 /**
  * @prop --mds-usage-border-color: Sets the border color of the component.
  * @prop --mds-usage-badge-color: Sets the badge text color of the component.
@@ -19,7 +21,7 @@
 
   border-color: var(--mds-usage-border-color);
   border-style: solid;
-  border-width: theme('borderWidth.DEFAULT');
+  border-width: --spacing(25);
 
   /* is seems it's not working on web components, due of a bug
   container-name: mds-usage;

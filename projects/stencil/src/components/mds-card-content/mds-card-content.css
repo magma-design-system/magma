@@ -1,11 +1,12 @@
 @reference '../../tailwind/index.css';
-@import 'tailwindcss/utilities' layer(utilities);
-
-@import '../../tailwind/fouc.css' layer(utilities);
 
 
+@import '../../tailwind/fouc.css';
 
-@layer utilities {
+
+
+@layer magma {
+
   :host {
     @apply gap-400
     p-400;

@@ -1,19 +1,20 @@
 @reference '../../tailwind/index.css';
 @import '../../tailwind/components.css';
 
-@import './css/mds-tab-animation.css' layer(components);
-@import './css/mds-tab-direction.css' layer(components);
+@import './css/mds-tab-animation.css';
+@import './css/mds-tab-direction.css';
 @import './css/mds-tab-scrollbar.css';
-@import './css/mds-tab-tabs-wrapper-overflow.css' layer(components);
-@import './css/mds-tab-tabs-wrapper-decorator.css' layer(components);
-@import './css/mds-tab-pref-theme.css' layer(components);
-@import './css/mds-tab-pref-contrast.css' layer(components);
-@import './css/mds-tab-pref-animation.css' layer(components);
-@import '../../tailwind/fouc.css' layer(components);
+@import './css/mds-tab-tabs-wrapper-overflow.css';
+@import './css/mds-tab-tabs-wrapper-decorator.css';
+@import './css/mds-tab-pref-theme.css';
+@import './css/mds-tab-pref-contrast.css';
+@import './css/mds-tab-pref-animation.css';
+@import '../../tailwind/fouc.css';
 
 
 
-@layer components {
+@layer magma {
+
   /**
  * @prop --mds-tab-item-default-background: Sets the `background-color` of `mds-tab-item` or `mds-tab::part(slider)` depending on attribute `animation`
  * @prop --mds-tab-item-default-color: Sets the `color` of `mds-tab-item` or `mds-tab::part(slider)` depending on attribute `animation`

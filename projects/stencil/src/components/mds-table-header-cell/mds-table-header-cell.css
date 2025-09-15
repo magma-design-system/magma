@@ -1,16 +1,17 @@
 @reference '../../tailwind/index.css';
-@import '@maggioli-design-system/styles/dist/tailwind/typography.css'
-  layer(components);
-@import '@maggioli-design-system/styles/dist/css/animations.css'
-  layer(components);
+@reference '@maggioli-design-system/styles/dist/tailwind/typography.css'
+ ;
+@reference '@maggioli-design-system/styles/dist/css/animations.css'
+ ;
 @import '../../tailwind/components.css';
 
-@import './css/mds-table-header-cell-pref-animation.css' layer(components);
-@import '../../tailwind/fouc.css' layer(components);
+@import './css/mds-table-header-cell-pref-animation.css';
+@import '../../tailwind/fouc.css';
 
 
 
-@layer components {
+@layer magma {
+
   /**
  * @prop --mds-table-header-cell-padding: The padding of the table cell
  */

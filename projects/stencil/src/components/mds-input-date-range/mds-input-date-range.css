@@ -1,18 +1,19 @@
 @reference '../../tailwind/index.css';
-@import '@maggioli-design-system/styles/dist/tailwind/typography.css'
-  layer(components);
-@import 'tailwindcss/utilities' layer(utilities);
-
-@import '../../tailwind/fouc.css' layer(utilities);
-@import './css/mds-input-date-range-pref-animation.css' layer(utilities);
-@import './css/mds-input-date-range-pref-theme.css' layer(utilities);
-@import './css/mds-input-date-range-pref-contrast.css' layer(utilities);
-@import './css/mds-input-date-range-firefox.css' layer(utilities);
-@import './css/mds-input-date-range-variant.css' layer(utilities);
+@reference '@maggioli-design-system/styles/dist/tailwind/typography.css'
+ ;
 
 
+@import '../../tailwind/fouc.css';
+@import './css/mds-input-date-range-pref-animation.css';
+@import './css/mds-input-date-range-pref-theme.css';
+@import './css/mds-input-date-range-pref-contrast.css';
+@import './css/mds-input-date-range-firefox.css';
+@import './css/mds-input-date-range-variant.css';
 
-@layer utilities {
+
+
+@layer magma {
+
   /**
  * @prop --mds-input-date-range-background: Sets the background-color of the component
  * @prop --mds-input-date-range-fields-firefox-justify-content: Sets the justify-content of the component in Firefox

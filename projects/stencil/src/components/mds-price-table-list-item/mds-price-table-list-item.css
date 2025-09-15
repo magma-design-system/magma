@@ -1,24 +1,14 @@
 @reference '../../tailwind/index.css';
 @import '../../tailwind/components.css';
 
-@import '../../tailwind/fouc.css' layer(components);
+@import '../../tailwind/fouc.css';
 
-
-
-@layer components {
+@layer magma {
   :host {
-    --mds-price-table-list-item-supported-icon-color-hover: theme(
-      'colors.label-green-05'
-    );
-    --mds-price-table-list-item-supported-icon-color: theme(
-      'colors.label-green-06'
-    );
-    --mds-price-table-list-item-unsupported-icon-color-hover: theme(
-      'colors.tone-neutral-04'
-    );
-    --mds-price-table-list-item-unsupported-icon-color: theme(
-      'colors.tone-neutral-05'
-    );
+    --mds-price-table-list-item-supported-icon-color-hover: var(--color-label-green-05);
+    --mds-price-table-list-item-supported-icon-color: var(--color-label-green-06);
+    --mds-price-table-list-item-unsupported-icon-color-hover: var(--color-tone-neutral-04);
+    --mds-price-table-list-item-unsupported-icon-color: var(--color-tone-neutral-05);
 
     @apply gap-100;
 

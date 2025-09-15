@@ -1,15 +1,16 @@
 @reference '../../tailwind/index.css';
-/* @import '@maggioli-design-system/styles/dist/css/animations.css' layer(components); included for focus effect */
+/* @reference '@maggioli-design-system/styles/dist/css/animations.css'; included for focus effect */
 /* @import '../../tailwind/components.css';
 
-@import './css/mds-url-view-pref-animation.css' layer(components);
-@import './css/mds-url-view-pref-theme.css' layer(components);
-@import './css/mds-url-view-pref-contrast.css' layer(components);
-@import '../../tailwind/fouc.css' layer(components); */
+@import './css/mds-url-view-pref-animation.css';
+@import './css/mds-url-view-pref-theme.css';
+@import './css/mds-url-view-pref-contrast.css';
+@import '../../tailwind/fouc.css'; */
 
 
 
-@layer components {
+@layer magma {
+
   /**
  * @prop --mds-url-view-background: Sets the background-color of the component
  * @prop --mds-url-view-color: Sets the text color of the component

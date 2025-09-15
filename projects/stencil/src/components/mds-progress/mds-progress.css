@@ -1,15 +1,16 @@
 @reference '../../tailwind/index.css';
 @import '../../tailwind/components.css';
 
-@import './css/mds-progress-variant.css' layer(components);
-@import './css/mds-progress-pref-animation.css' layer(components);
-@import './css/mds-progress-pref-theme.css' layer(components);
-@import './css/mds-progress-pref-contrast.css' layer(components);
-@import '../../tailwind/fouc.css' layer(components);
+@import './css/mds-progress-variant.css';
+@import './css/mds-progress-pref-animation.css';
+@import './css/mds-progress-pref-theme.css';
+@import './css/mds-progress-pref-contrast.css';
+@import '../../tailwind/fouc.css';
 
 
 
-@layer components {
+@layer magma {
+
   /**
  * @prop --mds-progress-background: Sets the background-color of the component
  * @prop --mds-progress-color: Sets the background-color of the progress

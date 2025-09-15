@@ -1,19 +1,20 @@
 @reference '../../tailwind/index.css';
-@import '@maggioli-design-system/styles/dist/css/animations.css'
-  layer(components);
+@reference '@maggioli-design-system/styles/dist/css/animations.css'
+ ;
 @import '../../tailwind/components.css';
-@import 'tailwindcss/utilities' layer(utilities);
-
-@import './css/mds-input-switch-disabled.css' layer(utilities);
-@import './css/mds-input-switch-checkbox.css' layer(utilities);
-@import './css/mds-input-switch-explicit.css' layer(utilities);
-@import './css/mds-input-switch-pref-theme.css' layer(utilities);
-@import './css/mds-input-switch-size.css' layer(utilities);
-@import '../../tailwind/fouc.css' layer(utilities);
 
 
+@import './css/mds-input-switch-disabled.css';
+@import './css/mds-input-switch-checkbox.css';
+@import './css/mds-input-switch-explicit.css';
+@import './css/mds-input-switch-pref-theme.css';
+@import './css/mds-input-switch-size.css';
+@import '../../tailwind/fouc.css';
 
-@layer utilities {
+
+
+@layer magma {
+
   /**
  * @prop --mds-input-switch-animation-timing-adjust: Set the size multiplier when the switch toggle is resizing by animation
  * @prop --mds-input-switch-animation-timing-function: Set the timing function of the animation
@@ -43,52 +44,28 @@
   :host {
     --mds-input-switch-animation-timing-adjust: 1.4;
     --mds-input-switch-animation-timing-function: var(--ease-in-out-quad);
-    --mds-input-switch-box-color-enabled-checked: theme(
-      'colors.variant-primary-04'
-    );
-    --mds-input-switch-box-color-enabled-unchecked: theme(
-      'colors.tone-neutral-06'
-    );
-    --mds-input-switch-box-color-disabled-checked: theme(
-      'colors.tone-neutral-08'
-    );
-    --mds-input-switch-box-color-disabled-unchecked: theme(
-      'colors.tone-neutral-08'
-    );
+    --mds-input-switch-box-color-enabled-checked: var(--color-variant-primary-04);
+    --mds-input-switch-box-color-enabled-unchecked: var(--color-tone-neutral-06);
+    --mds-input-switch-box-color-disabled-checked: var(--color-tone-neutral-08);
+    --mds-input-switch-box-color-disabled-unchecked: var(--color-tone-neutral-08);
     --mds-input-switch-box-padding-lg: var(--spacing-100);
     --mds-input-switch-box-padding-md: var(--spacing-100);
     --mds-input-switch-box-padding-sm: var(--spacing-100);
     --mds-input-switch-box-padding: var(--mds-input-switch-box-padding-md);
     --mds-input-switch-duration: 300ms;
-    --mds-input-switch-icon-color-checked-disabled: theme(
-      'colors.tone-neutral-06'
-    );
+    --mds-input-switch-icon-color-checked-disabled: var(--color-tone-neutral-06);
     --mds-input-switch-icon-color-checked: var(--color-variant-primary-04);
-    --mds-input-switch-icon-color-indeterminate-disabled: theme(
-      'colors.tone-neutral-05'
-    );
-    --mds-input-switch-icon-color-indeterminate: theme(
-      'colors.tone-neutral-05'
-    );
-    --mds-input-switch-icon-color-unchecked-disabled: theme(
-      'colors.tone-neutral-06'
-    );
+    --mds-input-switch-icon-color-indeterminate-disabled: var(--color-tone-neutral-05);
+    --mds-input-switch-icon-color-indeterminate: var(--color-tone-neutral-05);
+    --mds-input-switch-icon-color-unchecked-disabled: var(--color-tone-neutral-06);
     --mds-input-switch-icon-color-unchecked: var(--color-tone-neutral-06);
     --mds-input-switch-icon-explicit-color: var(
       --mds-input-switch-icon-color-checked
     );
-    --mds-input-switch-toggle-color-enabled-checked: theme(
-      'colors.tone-neutral'
-    );
-    --mds-input-switch-toggle-color-enabled-unchecked: theme(
-      'colors.tone-neutral-10'
-    );
-    --mds-input-switch-toggle-color-disabled-checked: theme(
-      'colors.tone-neutral'
-    );
-    --mds-input-switch-toggle-color-disabled-unchecked: theme(
-      'colors.tone-neutral'
-    );
+    --mds-input-switch-toggle-color-enabled-checked: var(--color-tone-neutral);
+    --mds-input-switch-toggle-color-enabled-unchecked: var(--color-tone-neutral-10);
+    --mds-input-switch-toggle-color-disabled-checked: var(--color-tone-neutral);
+    --mds-input-switch-toggle-color-disabled-unchecked: var(--color-tone-neutral);
     --mds-input-switch-toggle-container-size: calc(
       calc(var(--mds-input-switch-toggle-size-md) * 2) +
         calc(var(--mds-input-switch-box-padding-md) * 2)

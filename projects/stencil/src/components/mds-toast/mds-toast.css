@@ -1,23 +1,9 @@
 @reference '../../tailwind/index.css';
 @import './css/animate/components.css';
-@import 'tailwindcss/utilities' layer(utilities);
 
-@import './css/variant/mds-toast-variant-dark.css' layer(utilities);
-@import './css/variant/mds-toast-variant-error.css' layer(utilities);
-@import './css/variant/mds-toast-variant-info.css' layer(utilities);
-@import './css/variant/mds-toast-variant-light.css' layer(utilities);
-@import './css/variant/mds-toast-variant-success.css' layer(utilities);
-@import './css/variant/mds-toast-variant-warning.css' layer(utilities);
-@import './css/animate/mds-toast-animate-top.css' layer(utilities);
-@import './css/animate/mds-toast-animate-bottom.css' layer(utilities);
-@import './css/mds-toast-pref-animation.css' layer(utilities);
-@import './css/mds-toast-pref-theme.css' layer(utilities);
-@import './css/mds-toast-pref-contrast.css' layer(utilities);
-@import '../../tailwind/fouc.css' layer(utilities);
+@layer magma {
 
 
-
-@layer utilities {
   /**
  * @prop --mds-toast-background: Sets the background-color of the component
  * @prop --mds-toast-color: Sets the text color of the component
@@ -112,3 +98,16 @@
     transition-property: fill;
   }
 }
+
+@import './css/variant/mds-toast-variant-dark.css';
+@import './css/variant/mds-toast-variant-error.css';
+@import './css/variant/mds-toast-variant-info.css';
+@import './css/variant/mds-toast-variant-light.css';
+@import './css/variant/mds-toast-variant-success.css';
+@import './css/variant/mds-toast-variant-warning.css';
+@import './css/animate/mds-toast-animate-top.css';
+@import './css/animate/mds-toast-animate-bottom.css';
+@import './css/mds-toast-pref-animation.css';
+@import './css/mds-toast-pref-theme.css';
+@import './css/mds-toast-pref-contrast.css';
+@import '../../tailwind/fouc.css';

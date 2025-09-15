@@ -1,17 +1,18 @@
 @reference '../../tailwind/index.css';
-@import '@maggioli-design-system/styles/dist/css/animations.css'
-  layer(components);
+@reference '@maggioli-design-system/styles/dist/css/animations.css'
+ ;
 @import '../../tailwind/components.css';
 
-@import './css/mds-input-range-disabled.css' layer(components);
-@import './css/mds-input-range-pref-animation.css' layer(components);
-@import './css/mds-input-range-pref-theme.css' layer(components);
-@import './css/mds-input-range-pref-contrast.css' layer(components);
-@import '../../tailwind/fouc.css' layer(components);
+@import './css/mds-input-range-disabled.css';
+@import './css/mds-input-range-pref-animation.css';
+@import './css/mds-input-range-pref-theme.css';
+@import './css/mds-input-range-pref-contrast.css';
+@import '../../tailwind/fouc.css';
 
 
 
-@layer components {
+@layer magma {
+
   /**
  * @prop --mds-input-range-thumb-size: Sets the thumb width and height of the component
  * @prop --mds-input-range-thumb-background:
@@ -26,18 +27,10 @@
     --mds-input-range-thumb-shadow: 0 0 0 2px var(--color-tone-neutral);
     --mds-input-range-track-background: var(--color-tone-neutral-08);
     --mds-input-range-track-size: var(--spacing-200);
-    --mds-input-range-track-progress-background: theme(
-      'colors.variant-primary-03'
-    );
-    --mds-input-range-thumb-background-disabled: theme(
-      'colors.tone-neutral-06'
-    );
-    --mds-input-range-track-background-disabled: theme(
-      'colors.tone-neutral-08'
-    );
-    --mds-input-range-track-progress-background-disabled: theme(
-      'colors.tone-neutral-06'
-    );
+    --mds-input-range-track-progress-background: var(--color-variant-primary-03);
+    --mds-input-range-thumb-background-disabled: var(--color-tone-neutral-06);
+    --mds-input-range-track-background-disabled: var(--color-tone-neutral-08);
+    --mds-input-range-track-progress-background-disabled: var(--color-tone-neutral-06);
 
     @apply duration-300
     ease-in-out

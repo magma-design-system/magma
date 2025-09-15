@@ -1,15 +1,16 @@
 @reference '../../tailwind/index.css';
 
-@import 'tailwindcss/utilities' layer(utilities);
-@import '@maggioli-design-system/styles/dist/css/animations.css'
-  layer(components); /* included for focus effect */
+
+@reference '@maggioli-design-system/styles/dist/css/animations.css'
+ ; /* included for focus effect */
 @import '../../tailwind/components.css';
 
-@import '../../tailwind/fouc.css' layer(utilities);
+@import '../../tailwind/fouc.css';
 
 
 
-@layer utilities {
+@layer magma {
+
   /**
  * @prop --mds-bibliography-color: Sets the text color of the component
  * @prop --mds-bibliography-text-decoration: Sets the text decoration color of the link

@@ -1,17 +1,18 @@
 @reference '../../tailwind/index.css';
-@import '@maggioli-design-system/styles/dist/css/animations.css'
-  layer(components); /* included for focus effect */
+@reference '@maggioli-design-system/styles/dist/css/animations.css'
+ ; /* included for focus effect */
 @import '../../tailwind/components.css';
 
-@import './css/mds-file-format.css' layer(components);
-@import './css/mds-file-pref-animation.css' layer(components);
-@import './css/mds-file-pref-theme.css' layer(components);
-@import './css/mds-file-pref-contrast.css' layer(components);
-@import '../../tailwind/fouc.css' layer(components);
+@import './css/mds-file-format.css';
+@import './css/mds-file-pref-animation.css';
+@import './css/mds-file-pref-theme.css';
+@import './css/mds-file-pref-contrast.css';
+@import '../../tailwind/fouc.css';
 
 
 
-@layer components {
+@layer magma {
+
   :host {
     @apply duration-200
     ease-out

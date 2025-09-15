@@ -1,13 +1,14 @@
 @reference '../../tailwind/index.css';
 @import '../../tailwind/components.css';
 
-@import 'tailwindcss/utilities' layer(utilities);
-
-@import '../../tailwind/fouc.css' layer(utilities);
 
 
+@import '../../tailwind/fouc.css';
 
-@layer utilities {
+
+
+@layer magma {
+
   :host {
     --mds-img-background: var(--color-variant-primary-03);
     --mds-img-color: var(--color-variant-primary-09);

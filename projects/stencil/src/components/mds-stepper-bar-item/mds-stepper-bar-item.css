@@ -1,12 +1,13 @@
 @reference '../../tailwind/index.css';
 @import '../../tailwind/components.css';
 
-@import './css/mds-stepper-bar-item-pref-animation.css' layer(components);
-@import '../../tailwind/fouc.css' layer(components);
+@import './css/mds-stepper-bar-item-pref-animation.css';
+@import '../../tailwind/fouc.css';
 
 
 
-@layer components {
+@layer magma {
+
   /**
  * @prop --mds-stepper-bar-item-color: Sets the color of the text
  * @prop --mds-stepper-bar-item-duaration: Sets the duration of the animation
@@ -26,12 +27,8 @@
   :host {
     --mds-stepper-bar-item-color: var(--color-tone-neutral-03);
     --mds-stepper-bar-item-duaration: 250ms;
-    --mds-stepper-bar-item-icon-background-done: theme(
-      'colors.status-success-05'
-    );
-    --mds-stepper-bar-item-icon-background-current: theme(
-      'colors.variant-primary-04'
-    );
+    --mds-stepper-bar-item-icon-background-done: var(--color-status-success-05);
+    --mds-stepper-bar-item-icon-background-current: var(--color-variant-primary-04);
     --mds-stepper-bar-item-icon-background: var(
       --mds-stepper-bar-item-progress-background,
       var(--color-tone-neutral-08)
@@ -42,9 +39,7 @@
     --mds-stepper-bar-item-icon-ring-color: var(
       --mds-stepper-bar-item-icon-background-current
     );
-    --mds-stepper-bar-item-icon-ring-separator-color: theme(
-      'colors.tone-neutral'
-    );
+    --mds-stepper-bar-item-icon-ring-separator-color: var(--color-tone-neutral);
     --mds-stepper-bar-item-icon-ring-separator-size: 0.375rem;
     --mds-stepper-bar-item-icon-ring-size: var(--height-100);
     --mds-stepper-bar-item-min-width: 180px;

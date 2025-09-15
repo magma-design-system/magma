@@ -1,16 +1,17 @@
-@import 'tailwindcss/utilities' layer(utilities);
-
-@import './css/mds-tree-item-actions.css' layer(utilities);
-@import './css/mds-tree-item-children.css' layer(utilities);
-@import './css/mds-tree-item-tree-node.css' layer(utilities);
-@import './css/mds-tree-item-toggle-icon.css' layer(utilities);
-@import './css/mds-tree-item-toggle-position.css' layer(utilities);
-@import './css/mds-tree-item-appearance.css' layer(utilities);
-@import '../../tailwind/fouc.css' layer(utilities);
 
 
+@import './css/mds-tree-item-actions.css';
+@import './css/mds-tree-item-children.css';
+@import './css/mds-tree-item-tree-node.css';
+@import './css/mds-tree-item-toggle-icon.css';
+@import './css/mds-tree-item-toggle-position.css';
+@import './css/mds-tree-item-appearance.css';
+@import '../../tailwind/fouc.css';
 
-@layer utilities {
+
+
+@layer magma {
+
   @container style(--mds-tree-branch-use-rounded-border: true) {
     :host-context(:not(.safari)) {
       --mds-tree-branch-border-radius: var(--radius-lg);

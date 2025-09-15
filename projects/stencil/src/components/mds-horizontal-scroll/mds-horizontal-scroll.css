@@ -1,17 +1,18 @@
 /* stylelint-disable media-query-no-invalid */
 @import '../../tailwind/components.css';
-@import 'tailwindcss/utilities' layer(utilities);
-
-@import './css/mds-horizontal-scroll-pref-animation.css' layer(utilities);
-@import './css/mds-horizontal-scroll-controls.css' layer(utilities);
-@import './css/mds-horizontal-scroll-dot-navigation.css' layer(utilities);
-@import './css/mds-horizontal-scroll-navigation.css' layer(utilities);
-@import './css/mds-horizontal-scroll-snap.css' layer(utilities);
-@import '../../tailwind/fouc.css' layer(utilities);
 
 
+@import './css/mds-horizontal-scroll-pref-animation.css';
+@import './css/mds-horizontal-scroll-controls.css';
+@import './css/mds-horizontal-scroll-dot-navigation.css';
+@import './css/mds-horizontal-scroll-navigation.css';
+@import './css/mds-horizontal-scroll-snap.css';
+@import '../../tailwind/fouc.css';
 
-@layer utilities {
+
+
+@layer magma {
+
   /**
  * @prop --mds-horizontal-scroll-background: Sets the background-color of the component
  * @prop --mds-horizontal-scroll-behavior: Sets the scroll-behavior animation
@@ -32,9 +33,7 @@
     --mds-horizontal-scroll-dot-size: --spacing(200);
     --mds-horizontal-scroll-dot-max-width: auto;
     --mds-horizontal-scroll-dot-background: var(--color-tone-neutral);
-    --mds-horizontal-scroll-dot-area-background: theme(
-      'colors.tone-neutral-08'
-    );
+    --mds-horizontal-scroll-dot-area-background: var(--color-tone-neutral-08);
     --mds-horizontal-scroll-contents-padding: var(--spacing-600);
     --mds-horizontal-scroll-contents-scroll-padding: 0 var(--spacing-600);
     --mds-horizontal-scroll-controls-margin: --spacing(1200);
@@ -51,13 +50,8 @@
     );
 
     /* private custom props, DO NOT OVERRIDE from outside */
-    --max-width: var(
-      --mds-horizontal-scroll-max-width
-    ); /* remember @media (width <= theme('screens.wide')) at the bottom */
-    --scroll-margin: calc(
-      ((100svw - var(--max-width)) / 2) +
-        (var(--mds-horizontal-scroll-controls-margin) * 2)
-    );
+    --max-width: var(--mds-horizontal-scroll-max-width);
+    --scroll-margin: calc(((100svw - var(--max-width)) / 2) + (var(--mds-horizontal-scroll-controls-margin) * 2));
 
     align-items: center;
     container-name: mds-horizontal-scroll;

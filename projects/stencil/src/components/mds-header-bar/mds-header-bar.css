@@ -1,4 +1,5 @@
 @reference '../../tailwind/index.css';
+
 :host {
   --mds-header-bar-hamburger-color: var(--color-tone-neutral-03);
 
@@ -65,7 +66,7 @@
 
 :host([menu="desktop"]) .menu,
 :host([nav="desktop"]) .nav {
-  @apply tablet-max:hidden;
+  @apply max-tablet:hidden;
 }
 
 :host([menu="mobile"]) .menu,
