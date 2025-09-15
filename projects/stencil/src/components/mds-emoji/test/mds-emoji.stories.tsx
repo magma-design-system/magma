@@ -403,33 +403,29 @@ const TemplateAnimation = () => {
     const buttonEl = document.querySelector('#action') as HTMLMdsButtonElement
     const animationAreaEl = document.querySelector('#animation-area') as HTMLDivElement
 
-    const outroAnimation = () => {
+    const outroAnimation = async () => {
       setStartOutroAnimation(true)
       animationAreaEl.style.cursor = 'none'
-      emoji.stopFollowMouse().then(() => {
-        emoji.agree().then(() => {
-          emoji.startThinking()
-          setTimeout(() => {
-            emoji.stopThinking()
-            emoji.agree().then(() => {
-              emoji.startBlinking()
-            })
-          }, 3000)
-        })
-      })
+      await emoji.stopFollowMouse()
+      await emoji.agree()
+      await emoji.startThinking()
+      setTimeout(async () => {
+        await emoji.stopThinking()
+        await emoji.agree()
+        await emoji.startBlinking()
+      }, 3000)
     }
 
-    setTimeout(() => {
+    setTimeout(async () => {
       animationAreaEl.style.cursor = 'none'
       setStartIntroAnimation(true)
-      setTimeout(() => {
+      setTimeout(async () => {
         animationAreaEl.style.cursor = 'auto'
-        emoji.smile().then(() => {
-          emoji.startFollowMouse()
-          emoji.startBlinking()
-          buttonEl.addEventListener('click', () => {
-            outroAnimation()
-          })
+        await emoji.smile()
+        await emoji.startFollowMouse()
+        await emoji.startBlinking()
+        buttonEl.addEventListener('click', () => {
+          outroAnimation()
         })
       }, 500)
     }, 1000)
