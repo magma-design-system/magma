@@ -1,10 +1,4 @@
-/* @reference '@maggioli-design-system/styles/dist/tailwind/typography.css'; */
-
-/* @import './css/mds-input-variant.css';
-@import './css/mds-input-pref-animation.css';
-@import './css/mds-input-pref-theme.css';
-@import './css/mds-input-pref-contrast.css'; */
-@import "../../tailwind/fouc.css";
+@reference '@maggioli-design-system/styles/dist/tailwind/typography.css';
 
 /**
  * @prop --mds-input-background: Sets the background-color of the component
@@ -26,9 +20,7 @@
   --mds-input-icon-color: var(--mds-input-variant-color);
   --mds-input-placeholder-default-color: var(--color-tone-neutral-06);
   --mds-input-placeholder-focus-color: var(--color-tone-neutral-07);
-  --mds-input-placeholder-hover-color: var(
-    --mds-input-placeholder-default-color
-  );
+  --mds-input-placeholder-hover-color: var(--mds-input-placeholder-default-color);
   --mds-input-ring: 0 0 0 1px rgb(var(--mds-input-variant-color) / 0.1);
   --mds-input-shadow: 0 1px 3px 0 rgb(var(--mds-input-variant-color) / 0.1),
     0 1px 2px 0 rgb(var(--mds-input-variant-color) / 0.06);
@@ -38,9 +30,9 @@
   --mds-input-textarea-min-height: --spacing(2400);
   --mds-input-tip-background: 84 84 84;
   --mds-input-variant-color: 0 0 0;
+
   /* private */
   --mds-input-controls-border: 2px solid var(--color-tone-neutral-09);
-  /* private */
   --mds-input-controls-color: var(--color-tone-neutral-03);
 
   @apply gap-200
@@ -243,6 +235,7 @@
 }
 
 :host([type="number"]) .input {
+
   /* required to avoid input number buttons on firefox go be shown always */
 
   /* stylelint-disable-next-line property-no-vendor-prefix */
@@ -299,3 +292,9 @@
     --mds-input-background: var(--color-variant-primary-07);
   }
 }
+
+@import './css/mds-input-variant.css';
+@import './css/mds-input-pref-animation.css';
+@import './css/mds-input-pref-contrast.css';
+@import './css/mds-input-pref-theme.css';
+@import "../../tailwind/fouc.css";
