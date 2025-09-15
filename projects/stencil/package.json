@@ -16,6 +16,7 @@
   ],
   "scripts": {
     "build": "npm run clean && npm run build.icons && stencil build --prerender --docs-readme --docs-json dist/documentation.json && npm run publish.isolate.docs-json",
+    "build.docs": "stencil docs",
     "build.icons": "iconsauce --verbose --config ./.storybook/iconsauce.config.js --output-dictionary ./src/fixtures/icons.json --output-svg ./assets/svg",
     "build.no-cache": "stencil build --no-cache",
     "build.watch": "npm run build.icons && stencil build --watch",

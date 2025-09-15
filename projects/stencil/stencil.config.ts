@@ -3,7 +3,7 @@ import alias from '@rollup/plugin-alias'
 import path from 'path'
 import { Config } from '@stencil/core'
 import { inlineSvg } from 'stencil-inline-svg'
-import tailwind, { PluginConfigurationOptions, tailwindHMR } from 'stencil-tailwind-plugin'
+import tailwind, { PluginConfigurationOptions } from 'stencil-tailwind-plugin'
 import { reactOutputTarget } from '@stencil/react-output-target'
 import { angularOutputTarget } from '@stencil/angular-output-target'
 
@@ -108,7 +108,7 @@ export const config: Config = {
       minify: true, // with minify false ' will be replaced with %27 and broke style
       stripComments: true,
     }),
-    tailwindHMR({ ...opts }), // hot module reload for watch
+    // tailwindHMR({ ...opts }), // hot module reload for watch but not generate docs
     inlineSvg(),
   ],
   testing: {
