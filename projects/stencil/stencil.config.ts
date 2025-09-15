@@ -3,7 +3,7 @@ import alias from '@rollup/plugin-alias'
 import path from 'path'
 import { Config } from '@stencil/core'
 import { inlineSvg } from 'stencil-inline-svg'
-import tailwind, { PluginConfigurationOptions } from 'stencil-tailwind-plugin'
+import tailwind, { PluginConfigurationOptions, tailwindHMR } from 'stencil-tailwind-plugin'
 import { reactOutputTarget } from '@stencil/react-output-target'
 import { angularOutputTarget } from '@stencil/angular-output-target'
 
@@ -90,10 +90,6 @@ export const config: Config = {
     },
   ],
   plugins: [
-    tailwind({ ...opts,
-      minify: true, // with minify false ' will be replaced with %27 and broke style
-      stripComments: true,
-    }),
     alias({
       entries: [
         { find: /^@common\/(.*)$/, replacement: path.resolve('.', './src/common/$1') },
@@ -108,6 +104,11 @@ export const config: Config = {
         { find: /^@type\/(.+)$/, replacement: path.resolve('.', './src/type/$1') },
       ],
     }),
+    tailwind({ ...opts,
+      minify: true, // with minify false ' will be replaced with %27 and broke style
+      stripComments: true,
+    }),
+    tailwindHMR({ ...opts }), // hot module reload for watch
     inlineSvg(),
   ],
   testing: {
