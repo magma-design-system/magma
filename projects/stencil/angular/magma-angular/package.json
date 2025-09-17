@@ -1,6 +1,6 @@
 {
   "name": "@maggioli-design-system/magma-angular",
-  "version": "1.0.0-beta.1.10.2",
+  "version": "1.0.0-beta.1.10.3",
   "peerDependencies": {
     "@angular/common": "^18.2.0",
     "@angular/core": "^18.2.0",

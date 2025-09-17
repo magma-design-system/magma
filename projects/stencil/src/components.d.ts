@@ -1392,6 +1392,10 @@ export namespace Components {
          */
         "maxFiles": number;
         /**
+          * Reset component's files
+         */
+        "reset": () => Promise<void>;
+        /**
           * Specifies if the component should show a sort widget by status or date of upload, if not defined let user choose
          */
         "sort"?: AttachmentSort;
