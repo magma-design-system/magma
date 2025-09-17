@@ -114,7 +114,7 @@ export default {
     'function-disallowed-list': ['hsl', 'lch'],
     'function-linear-gradient-no-nonstandard-direction': true,
     'function-name-case': 'lower',
-    'function-no-unknown': [true, { ignoreFunctions: ['theme'] }],
+    'function-no-unknown': [true, { ignoreFunctions: [''] }],
     'function-url-no-scheme-relative': true,
     'function-url-quotes': 'always',
     'function-url-scheme-disallowed-list': ['ftp://', 'file://'],
