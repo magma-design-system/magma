@@ -7,8 +7,8 @@
  */
 
 :host {
-  --mds-kpi-item-icon-color: var(--color-variant-primary-04);
-  --mds-kpi-item-info-background: var(--color-tone-neutral);
+  --mds-kpi-item-icon-color: rgb(var(--variant-primary-04));
+  --mds-kpi-item-info-background: rgb(var(--tone-neutral));
   --mds-kpi-item-text-animation-placeholder-char: var(--mds-kpi-text-animation-placeholder-char, " ");
   --mds-kpi-item-text-animation-speed: var(--mds-kpi-text-animation-speed, 0.15);
 
@@ -18,7 +18,7 @@
     gap-0;
 
   aspect-ratio: 1;
-  background-color: var(--color-variant-primary-10);
+  background-color: rgb(var(--variant-primary-10));
   border-radius: var(--radius-2xl);
   box-shadow: var(--shadow-lg);
   display: flex;

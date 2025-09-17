@@ -25,26 +25,26 @@
  */
 
   :host {
-    --mds-stepper-bar-item-color: var(--color-tone-neutral-03);
+    --mds-stepper-bar-item-color: rgb(var(--tone-neutral-03));
     --mds-stepper-bar-item-duaration: 250ms;
-    --mds-stepper-bar-item-icon-background-done: var(--color-status-success-05);
-    --mds-stepper-bar-item-icon-background-current: var(--color-variant-primary-04);
+    --mds-stepper-bar-item-icon-background-done: rgb(var(--status-success-05));
+    --mds-stepper-bar-item-icon-background-current: rgb(var(--variant-primary-04));
     --mds-stepper-bar-item-icon-background: var(
       --mds-stepper-bar-item-progress-background,
-      var(--color-tone-neutral-08)
+      rgb(var(--tone-neutral-08))
     );
-    --mds-stepper-bar-item-icon-color-done: var(--color-status-success-10);
-    --mds-stepper-bar-item-icon-color-current: var(--color-tone-neutral);
-    --mds-stepper-bar-item-icon-color: var(--color-tone-neutral-04);
+    --mds-stepper-bar-item-icon-color-done: rgb(var(--status-success-10));
+    --mds-stepper-bar-item-icon-color-current: rgb(var(--tone-neutral));
+    --mds-stepper-bar-item-icon-color: rgb(var(--tone-neutral-04));
     --mds-stepper-bar-item-icon-ring-color: var(
       --mds-stepper-bar-item-icon-background-current
     );
-    --mds-stepper-bar-item-icon-ring-separator-color: var(--color-tone-neutral);
+    --mds-stepper-bar-item-icon-ring-separator-color: rgb(var(--tone-neutral));
     --mds-stepper-bar-item-icon-ring-separator-size: 0.375rem;
     --mds-stepper-bar-item-icon-ring-size: var(--height-100);
     --mds-stepper-bar-item-min-width: 180px;
-    --mds-stepper-bar-item-progress-background: var(--color-tone-neutral-08);
-    --mds-stepper-bar-item-progress-color: var(--color-status-success-04);
+    --mds-stepper-bar-item-progress-background: rgb(var(--tone-neutral-08));
+    --mds-stepper-bar-item-progress-color: rgb(var(--status-success-04));
     --mds-stepper-bar-item-progress-thickness: var(--height-200);
 
     @apply gap-400;
@@ -189,7 +189,7 @@
   .step {
     @apply rounded-full;
 
-    color: var(--color-tone-neutral-04);
+    color: rgb(var(--tone-neutral-04));
     pointer-events: none;
   }
 }

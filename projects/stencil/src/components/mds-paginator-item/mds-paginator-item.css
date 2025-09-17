@@ -29,14 +29,14 @@
  */
 
   :host {
-    --mds-paginator-item-background-disabled: var(--color-tone-neutral-09);
-    --mds-paginator-item-background-hover: var(--color-tone-neutral-08);
-    --mds-paginator-item-background-selected: var(--color-variant-primary-03);
+    --mds-paginator-item-background-disabled: rgb(var(--tone-neutral-09));
+    --mds-paginator-item-background-hover: rgb(var(--tone-neutral-08));
+    --mds-paginator-item-background-selected: rgb(var(--variant-primary-03));
     --mds-paginator-item-background: transparent;
-    --mds-paginator-item-color-disabled: var(--color-tone-neutral-06);
-    --mds-paginator-item-color-hover: var(--color-tone-neutral-02);
-    --mds-paginator-item-color-selected: var(--color-tone-neutral);
-    --mds-paginator-item-color: var(--color-tone-neutral-02);
+    --mds-paginator-item-color-disabled: rgb(var(--tone-neutral-06));
+    --mds-paginator-item-color-hover: rgb(var(--tone-neutral-02));
+    --mds-paginator-item-color-selected: rgb(var(--tone-neutral));
+    --mds-paginator-item-color: rgb(var(--tone-neutral-02));
     --mds-paginator-item-radius: 200px;
     --mds-paginator-item-shadow-disabled: none;
     --mds-paginator-item-shadow-hover: none;

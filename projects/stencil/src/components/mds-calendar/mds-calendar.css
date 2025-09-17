@@ -8,15 +8,15 @@
 
 @layer magma {
   :host {
-    --mds-calendar-day-number-other-month-color: var(--color-tone-neutral-07);
-    --mds-calendar-day-number-color: var(--color-tone-neutral-01);
+    --mds-calendar-day-number-other-month-color: rgb(var(--tone-neutral-07));
+    --mds-calendar-day-number-color: rgb(var(--tone-neutral-01));
     --mds-calendar-cell-gap: var(--gap-50);
     --mds-calendar-cell-other-month-visibility: visible;
     --mds-calendar-border-radius: var(--radius-lg);
-    --mds-calendar-background: var(--color-tone-neutral);
+    --mds-calendar-background: rgb(var(--tone-neutral));
     --mds-calendar-padding: var(--padding-400);
 
-    background-color: var(--color-tone-neutral-09);
+    background-color: rgb(var(--tone-neutral-09));
     border-radius: var(--mds-calendar-border-radius);
     cursor: auto;
     display: inline-flex;
@@ -62,7 +62,7 @@
   }
 
   .select-month-or-year {
-    background-color: var(--color-tone-neutral-09);
+    background-color: rgb(var(--tone-neutral-09));
     border-radius: var(--radius-lg);
     display: flex;
     flex-grow: 1;

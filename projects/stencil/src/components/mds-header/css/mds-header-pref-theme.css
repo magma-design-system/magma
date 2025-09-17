@@ -1,9 +1,9 @@
 :host-context(.pref-theme-dark) {
-  --mds-header-modal-icon-color: var(--color-tone-neutral-01);
+  --mds-header-modal-icon-color: rgb(var(--tone-neutral-01));
 }
 
 @media (prefers-color-scheme: dark) {
   :host-context(.pref-theme-system) {
-    --mds-header-modal-icon-color: var(--color-tone-neutral-01);
+    --mds-header-modal-icon-color: rgb(var(--tone-neutral-01));
   }
 }

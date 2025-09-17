@@ -1,7 +1,7 @@
 :host-context(.pref-contrast-more) {
-  background-color: var(--color-tone-neutral);
+  background-color: rgb(var(--tone-neutral));
   box-shadow: var(--shadow-outline-50);
-  color: var(--color-tone-neutral-01);
+  color: rgb(var(--tone-neutral-01));
 }
 
 :host-context(.pref-contrast-more):host(:hover) {
@@ -10,9 +10,9 @@
 
 @media (prefers-contrast: more) {
   :host-context(.pref-contrast-system) {
-    background-color: var(--color-tone-neutral);
+    background-color: rgb(var(--tone-neutral));
     box-shadow: var(--shadow-outline-50);
-    color: var(--color-tone-neutral-01);
+    color: rgb(var(--tone-neutral-01));
   }
 
   :host-context(.pref-contrast-system):host(:hover) {

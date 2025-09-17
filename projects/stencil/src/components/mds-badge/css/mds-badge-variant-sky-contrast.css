@@ -1,39 +1,39 @@
 :host-context(.pref-contrast-more):host([variant="sky"]),
 :host-context(.pref-contrast-more):host([variant="sky"][tone="strong"]) {
-  --mds-badge-background: var(--color-label-sky-03);
+  --mds-badge-background: rgb(var(--label-sky-03));
 }
 
 :host-context(.pref-contrast-more):host([variant="sky"][tone="weak"]) {
-  --mds-badge-color: var(--color-label-sky-01);
+  --mds-badge-color: rgb(var(--label-sky-01));
 }
 
 :host-context(.pref-contrast-more):host([variant="sky"][tone="quiet"]) {
-  --mds-badge-color: var(--color-label-sky-02);
+  --mds-badge-color: rgb(var(--label-sky-02));
 }
 
 :host-context(.pref-contrast-more):host([variant="sky"][tone="ghost"]) {
   --mds-badge-background: transparent;
-  --mds-badge-color: var(--color-label-sky-03);
-  --mds-badge-border-color: var(--color-label-sky-03);
+  --mds-badge-color: rgb(var(--label-sky-03));
+  --mds-badge-border-color: rgb(var(--label-sky-03));
 }
 
 @media (prefers-contrast: more) {
   :host-context(.pref-contrast-system):host([variant="sky"]),
   :host-context(.pref-contrast-system):host([variant="sky"][tone="strong"]) {
-    --mds-badge-background: var(--color-label-sky-03);
+    --mds-badge-background: rgb(var(--label-sky-03));
   }
 
   :host-context(.pref-contrast-system):host([variant="sky"][tone="weak"]) {
-    --mds-badge-color: var(--color-label-sky-01);
+    --mds-badge-color: rgb(var(--label-sky-01));
   }
 
   :host-context(.pref-contrast-system):host([variant="sky"][tone="quiet"]) {
-    --mds-badge-color: var(--color-label-sky-02);
+    --mds-badge-color: rgb(var(--label-sky-02));
   }
 
   :host-context(.pref-contrast-system):host([variant="sky"][tone="ghost"]) {
     --mds-badge-background: transparent;
-    --mds-badge-color: var(--color-label-sky-03);
-    --mds-badge-border-color: var(--color-label-sky-03);
+    --mds-badge-color: rgb(var(--label-sky-03));
+    --mds-badge-border-color: rgb(var(--label-sky-03));
   }
 }

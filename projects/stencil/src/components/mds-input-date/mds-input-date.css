@@ -27,9 +27,9 @@
  */
 
   :host {
-    --mds-input-date-background: var(--color-tone-neutral);
-    --mds-input-date-field-background-empty: var(--color-status-error-10);
-    --mds-input-date-field-color-empty: var(--color-status-error-06);
+    --mds-input-date-background: rgb(var(--tone-neutral));
+    --mds-input-date-field-background-empty: rgb(var(--status-error-10));
+    --mds-input-date-field-color-empty: rgb(var(--status-error-06));
     --mds-input-date-icon-color: var(--mds-input-date-variant-color);
     --mds-input-date-ring: 0 0 0 1px
       rgb(var(--mds-input-date-variant-color) / 0.1);
@@ -41,7 +41,7 @@
     @apply gap-200
     text-info-detail;
 
-    color: var(--color-tone-neutral-02);
+    color: rgb(var(--tone-neutral-02));
     container-type: inline-size;
     display: flex;
     overflow: visible;
@@ -128,7 +128,7 @@
   }
 
   .input::placeholder {
-    color: var(--color-tone-neutral-04);
+    color: rgb(var(--tone-neutral-04));
   }
 
   .input::-webkit-outer-spin-button,
@@ -139,12 +139,12 @@
   }
 
   .input:disabled {
-    background-color: var(--color-tone-neutral-10);
+    background-color: rgb(var(--tone-neutral-10));
   }
 
   .input:disabled,
   .input:disabled::placeholder {
-    color: var(--color-tone-neutral-05);
+    color: rgb(var(--tone-neutral-05));
   }
 
   .action-open-calendar {

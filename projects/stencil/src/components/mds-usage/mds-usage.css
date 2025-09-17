@@ -7,9 +7,9 @@
  */
 
 :host {
-  --mds-usage-border-color: var(--color-status-info-06);
-  --mds-usage-badge-background: var(--color-status-info-05);
-  --mds-usage-badge-color: var(--color-status-info-10);
+  --mds-usage-border-color: rgb(var(--status-info-06));
+  --mds-usage-badge-background: rgb(var(--status-info-05));
+  --mds-usage-badge-color: rgb(var(--status-info-10));
 
   @apply
     duration-200

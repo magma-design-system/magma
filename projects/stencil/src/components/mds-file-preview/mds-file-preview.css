@@ -1,9 +1,9 @@
 @reference '../../tailwind/index.css';
 
 :host {
-  --mds-file-preview-background-color: var(--color-tone-neutral);
+  --mds-file-preview-background-color: rgb(var(--tone-neutral));
   --mds-file-preview-border-radius: var(--radius-lg);
-  --mds-file-preview-color: var(--color-tone-neutral-03);
+  --mds-file-preview-color: rgb(var(--tone-neutral-03));
   --mds-file-preview-icon-background: inherit;
   --mds-file-preview-icon-color: var(--mds-file-preview-color);
 

@@ -44,7 +44,7 @@
     --mds-modal-overlay-opacity: var(--magma-overlay-opacity, 0.5);
     --mds-modal-transition-duration: 500ms;
     --mds-modal-transition-timing-funciton: var(--ease-in-out-quint);
-    --mds-modal-window-background: var(--color-tone-neutral);
+    --mds-modal-window-background: rgb(var(--tone-neutral));
     --mds-modal-window-distance: 0;
     --mds-modal-window-max-width: 33%;
     --mds-modal-window-min-width: 400px;
@@ -64,7 +64,7 @@
     align-items: center;
     background-color: rgb(var(--mds-modal-overlay-color) / 0);
     display: flex;
-    fill: var(--color-tone-neutral);
+    fill: rgb(var(--tone-neutral));
     inset: 0;
     justify-content: center;
     perspective: 600px;

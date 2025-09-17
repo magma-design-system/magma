@@ -10,9 +10,9 @@
  */
 
 :host {
-  --mds-avatar-background-color-pending: var(--color-tone-neutral-08);
-  --mds-avatar-background-color: var(--color-variant-primary-05);
-  --mds-avatar-color: var(--color-variant-primary-10);
+  --mds-avatar-background-color-pending: rgb(var(--tone-neutral-08));
+  --mds-avatar-background-color: rgb(var(--variant-primary-05));
+  --mds-avatar-color: rgb(var(--variant-primary-10));
   --mds-avatar-radius: var(--radius-full);
   --mds-avatar-initials-padding: 20%;
 

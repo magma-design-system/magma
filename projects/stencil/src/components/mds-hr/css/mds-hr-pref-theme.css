@@ -1,9 +1,9 @@
 :host-context(.pref-theme-dark) {
-  background-color: var(--color-tone-neutral-07);
+  background-color: rgb(var(--tone-neutral-07));
 }
 
 @media (prefers-color-scheme: dark) {
   :host-context(.pref-theme-system) {
-    background-color: var(--color-tone-neutral-07);
+    background-color: rgb(var(--tone-neutral-07));
   }
 }

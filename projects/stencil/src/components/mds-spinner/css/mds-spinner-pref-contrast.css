@@ -1,9 +1,9 @@
 :host-context(.pref-contrast-more) {
-  color: var(--color-variant-primary-01);
+  color: rgb(var(--variant-primary-01));
 }
 
 @media (prefers-contrast: more) {
   :host-context(.pref-contrast-system) {
-    color: var(--color-variant-primary-01);
+    color: rgb(var(--variant-primary-01));
   }
 }

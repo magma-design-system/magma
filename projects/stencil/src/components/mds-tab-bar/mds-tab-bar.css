@@ -4,7 +4,7 @@
     duration-200
     ease-out;
 
-  background-color: var(--color-tone-neutral);
+  background-color: rgb(var(--tone-neutral));
   bottom: 0;
   box-shadow: var(--shadow-outline-light-50);
   display: flex;

@@ -1,65 +1,65 @@
 :host([format="archive"]),
 :host([format="executable"]) {
-  --mds-file-preview-icon-color: var(--color-label-amaranth-04);
-  --mds-file-preview-color: var(--color-label-amaranth-04);
-  --mds-file-preview-icon-bacground: var(--color-label-amaranth-10);
+  --mds-file-preview-icon-color: rgb(var(--label-amaranth-04));
+  --mds-file-preview-color: rgb(var(--label-amaranth-04));
+  --mds-file-preview-icon-bacground: rgb(var(--label-amaranth-10));
 }
 
 :host([format="attachment"]) {
-  --mds-file-preview-icon-color: var(--color-tone-neutral-04);
-  --mds-file-preview-color: var(--color-tone-neutral-04);
-  --mds-file-preview-icon-bacground: var(--color-tone-neutral-10);
+  --mds-file-preview-icon-color: rgb(var(--tone-neutral-04));
+  --mds-file-preview-color: rgb(var(--tone-neutral-04));
+  --mds-file-preview-icon-bacground: rgb(var(--tone-neutral-10));
 }
 
 :host([format="audio"]),
 :host([format="video"]) {
-  --mds-file-preview-icon-color: var(--color-label-violet-04);
-  --mds-file-preview-color: var(--color-label-violet-04);
-  --mds-file-preview-icon-bacground: var(--color-label-violet-10);
+  --mds-file-preview-icon-color: rgb(var(--label-violet-04));
+  --mds-file-preview-color: rgb(var(--label-violet-04));
+  --mds-file-preview-icon-bacground: rgb(var(--label-violet-10));
 }
 
 :host([format="code"]),
 :host([format="data"]),
 :host([format="markup"]) {
-  --mds-file-preview-icon-color: var(--color-label-yellow-04);
-  --mds-file-preview-color: var(--color-label-yellow-04);
-  --mds-file-preview-icon-bacground: var(--color-label-yellow-10);
+  --mds-file-preview-icon-color: rgb(var(--label-yellow-04));
+  --mds-file-preview-color: rgb(var(--label-yellow-04));
+  --mds-file-preview-icon-bacground: rgb(var(--label-yellow-10));
 }
 
 :host([format="certificate"]),
 :host([format="document"]) {
-  --mds-file-preview-icon-color: var(--color-label-orange-04);
-  --mds-file-preview-color: var(--color-label-orange-04);
-  --mds-file-preview-icon-bacground: var(--color-label-orange-10);
+  --mds-file-preview-icon-color: rgb(var(--label-orange-04));
+  --mds-file-preview-color: rgb(var(--label-orange-04));
+  --mds-file-preview-icon-bacground: rgb(var(--label-orange-10));
 }
 
 :host([format="email"]),
 :host([format="text"]) {
-  --mds-file-preview-icon-color: var(--color-label-blue-04);
-  --mds-file-preview-color: var(--color-label-blue-04);
-  --mds-file-preview-icon-bacground: var(--color-label-blue-10);
+  --mds-file-preview-icon-color: rgb(var(--label-blue-04));
+  --mds-file-preview-color: rgb(var(--label-blue-04));
+  --mds-file-preview-icon-bacground: rgb(var(--label-blue-10));
 }
 
 :host([format="image"]) {
-  --mds-file-preview-icon-color: var(--color-label-green-04);
-  --mds-file-preview-color: var(--color-label-green-04);
-  --mds-file-preview-icon-bacground: var(--color-label-green-10);
+  --mds-file-preview-icon-color: rgb(var(--label-green-04));
+  --mds-file-preview-color: rgb(var(--label-green-04));
+  --mds-file-preview-icon-bacground: rgb(var(--label-green-10));
 }
 
 :host([format="slide"]) {
-  --mds-file-preview-icon-color: var(--color-label-orchid-04);
-  --mds-file-preview-color: var(--color-label-orchid-04);
-  --mds-file-preview-icon-bacground: var(--color-label-orchid-10);
+  --mds-file-preview-icon-color: rgb(var(--label-orchid-04));
+  --mds-file-preview-color: rgb(var(--label-orchid-04));
+  --mds-file-preview-icon-bacground: rgb(var(--label-orchid-10));
 }
 
 :host([format="spreadsheet"]) {
-  --mds-file-preview-icon-color: var(--color-label-lime-04);
-  --mds-file-preview-color: var(--color-label-lime-04);
-  --mds-file-preview-icon-bacground: var(--color-label-lime-10);
+  --mds-file-preview-icon-color: rgb(var(--label-lime-04));
+  --mds-file-preview-color: rgb(var(--label-lime-04));
+  --mds-file-preview-icon-bacground: rgb(var(--label-lime-10));
 }
 
 :host([format="vector"]) {
-  --mds-file-preview-icon-color: var(--color-label-aqua-04);
-  --mds-file-preview-color: var(--color-label-aqua-04);
-  --mds-file-preview-icon-bacground: var(--color-label-aqua-10);
+  --mds-file-preview-icon-color: rgb(var(--label-aqua-04));
+  --mds-file-preview-color: rgb(var(--label-aqua-04));
+  --mds-file-preview-icon-bacground: rgb(var(--label-aqua-10));
 }

@@ -9,11 +9,11 @@
 
 :host {
   --mds-price-table-features-cell-padding: var(--mds-price-table-features-padding, --spacing(300));
-  --mds-price-table-features-cell-icon-supported-color-hover: var(--color-label-green-06);
-  --mds-price-table-features-cell-icon-supported-color: var(--color-label-green-06);
-  --mds-price-table-features-cell-icon-unsupported-color-hover: var(--color-tone-neutral-06);
-  --mds-price-table-features-cell-icon-unsupported-color: var(--color-tone-neutral-06);
-  --mds-price-table-features-cell-border-color: var(--color-tone-neutral-08);
+  --mds-price-table-features-cell-icon-supported-color-hover: rgb(var(--label-green-06));
+  --mds-price-table-features-cell-icon-supported-color: rgb(var(--label-green-06));
+  --mds-price-table-features-cell-icon-unsupported-color-hover: rgb(var(--tone-neutral-06));
+  --mds-price-table-features-cell-icon-unsupported-color: rgb(var(--tone-neutral-06));
+  --mds-price-table-features-cell-border-color: rgb(var(--tone-neutral-08));
 
   @apply
     duration-200

@@ -10,12 +10,12 @@
 @layer magma {
 
   :host {
-    --mds-img-background: var(--color-variant-primary-03);
-    --mds-img-color: var(--color-variant-primary-09);
-    --mds-img-icon-color: var(--color-variant-primary-07);
-    --mds-img-error-background: var(--color-status-error-09);
-    --mds-img-error-color: var(--color-status-error-04);
-    --mds-img-error-icon-color: var(--color-status-error-06);
+    --mds-img-background: rgb(var(--variant-primary-03));
+    --mds-img-color: rgb(var(--variant-primary-09));
+    --mds-img-icon-color: rgb(var(--variant-primary-07));
+    --mds-img-error-background: rgb(var(--status-error-09));
+    --mds-img-error-color: rgb(var(--status-error-04));
+    --mds-img-error-icon-color: rgb(var(--status-error-06));
 
     display: flex;
     object-fit: cover;

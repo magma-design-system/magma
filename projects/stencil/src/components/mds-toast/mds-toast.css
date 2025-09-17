@@ -13,10 +13,10 @@
  */
 
   :host {
-    --mds-toast-background: var(--color-tone-neutral-02);
-    --mds-toast-color: var(--color-tone-neutral);
+    --mds-toast-background: rgb(var(--tone-neutral-02));
+    --mds-toast-color: rgb(var(--tone-neutral));
     --mds-toast-duration: 300ms;
-    --mds-toast-icon-color: var(--color-tone-neutral);
+    --mds-toast-icon-color: rgb(var(--tone-neutral));
     --mds-toast-shadow: var(--shadow-xl);
     --mds-toast-width: auto;
 

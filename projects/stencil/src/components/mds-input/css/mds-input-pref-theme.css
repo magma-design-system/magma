@@ -1,21 +1,21 @@
 :host-context(.pref-theme-dark) {
   --mds-input-ring: var(--shadow-outline-50);
-  --mds-input-background: var(--color-tone-neutral-09);
-  --mds-input-controls-border: 2px solid var(--color-tone-neutral-06);
+  --mds-input-background: rgb(var(--tone-neutral-09));
+  --mds-input-controls-border: 2px solid rgb(var(--tone-neutral-06));
 }
 
 :host-context(.pref-theme-dark) .counter-button:hover {
-  --mds-button-background: var(--color-tone-neutral-08);
+  --mds-button-background: rgb(var(--tone-neutral-08));
 }
 
 @media (prefers-color-scheme: dark) {
   :host-context(.pref-theme-system) {
     --mds-input-ring: var(--shadow-outline-50);
-    --mds-input-background: var(--color-tone-neutral-09);
-    --mds-input-controls-border: 2px solid var(--color-tone-neutral-06);
+    --mds-input-background: rgb(var(--tone-neutral-09));
+    --mds-input-controls-border: 2px solid rgb(var(--tone-neutral-06));
   }
 
   :host-context(.pref-theme-system) .counter-button:hover {
-    --mds-button-background: var(--color-tone-neutral-08);
+    --mds-button-background: rgb(var(--tone-neutral-08));
   }
 }

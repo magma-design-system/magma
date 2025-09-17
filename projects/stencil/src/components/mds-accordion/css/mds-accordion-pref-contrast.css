@@ -1,11 +1,11 @@
 :host-context(.pref-contrast-more) {
-  --mds-accordion-border-color: var(--color-tone-neutral-01);
-  --mds-accordion-color: var(--color-tone-neutral-01);
+  --mds-accordion-border-color: rgb(var(--tone-neutral-01));
+  --mds-accordion-color: rgb(var(--tone-neutral-01));
 }
 
 @media (prefers-contrast: more) {
   :host-context(.pref-contrast-system) {
-    --mds-accordion-border-color: var(--color-tone-neutral-01);
-    --mds-accordion-color: var(--color-tone-neutral-01);
+    --mds-accordion-border-color: rgb(var(--tone-neutral-01));
+    --mds-accordion-color: rgb(var(--tone-neutral-01));
   }
 }

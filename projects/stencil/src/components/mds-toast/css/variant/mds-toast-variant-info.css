@@ -4,15 +4,15 @@
 
 :host([variant="info"] ),
 :host([variant="info"][tone="strong"]) {
-  --mds-toast-background: var(--color-status-info-09);
-  --mds-toast-color: var(--color-status-info-02);
+  --mds-toast-background: rgb(var(--status-info-09));
+  --mds-toast-color: rgb(var(--status-info-02));
   --mds-toast-shadow: var(--shadow-lg-sharp);
-  --mds-toast-icon-color: var(--color-status-info-05);
+  --mds-toast-icon-color: rgb(var(--status-info-05));
 }
 
 :host([variant="info"][tone="weak"]) {
-  --mds-toast-background: var(--color-status-info-10);
-  --mds-toast-color: var(--color-status-info-03);
+  --mds-toast-background: rgb(var(--status-info-10));
+  --mds-toast-color: rgb(var(--status-info-03));
   --mds-toast-shadow: var(--shadow-sm-sharp);
-  --mds-toast-icon-color: var(--color-status-info-06);
+  --mds-toast-icon-color: rgb(var(--status-info-06));
 }

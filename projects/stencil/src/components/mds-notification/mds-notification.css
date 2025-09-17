@@ -11,14 +11,14 @@
  */
 
 :host {
-  --mds-notification-color: var(--color-tone-neutral);
-  --mds-notification-dot-background: var(--color-status-error-05);
+  --mds-notification-color: rgb(var(--tone-neutral));
+  --mds-notification-dot-background: rgb(var(--status-error-05));
   --mds-notification-dot-padding: 6px;
   --mds-notification-size: 20px;
   --mds-notification-ring-size: 2px;
   --mds-notification-transition-timing-function: var(--ease-out-cubic);
   --mds-notification-transition-duration: 200ms;
-  --mds-notification-ring-color: var(--color-tone-neutral);
+  --mds-notification-ring-color: rgb(var(--tone-neutral));
   --mds-notification-translate-offset-x: -1.75;
   --mds-notification-translate-offset-y: -2;
   --mds-notification-translate: translate(calc(var(--mds-notification-size) / var(--mds-notification-translate-offset-x)), calc(var(--mds-notification-size) / var(--mds-notification-translate-offset-y)));

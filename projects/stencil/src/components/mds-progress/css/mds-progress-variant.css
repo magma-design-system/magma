@@ -1,39 +1,39 @@
 :host([variant="dark"]) {
-  --mds-progress-color: var(--color-tone-neutral-04);
-  --mds-progress-background: var(--color-tone-neutral-08);
+  --mds-progress-color: rgb(var(--tone-neutral-04));
+  --mds-progress-background: rgb(var(--tone-neutral-08));
 }
 
 :host([variant="light"]) {
-  --mds-progress-color: var(--color-tone-neutral);
-  --mds-progress-background: var(--color-tone-neutral-05);
+  --mds-progress-color: rgb(var(--tone-neutral));
+  --mds-progress-background: rgb(var(--tone-neutral-05));
 }
 
 :host([variant="error"]) {
-  --mds-progress-color: var(--color-status-error-05);
-  --mds-progress-background: var(--color-status-error-09);
+  --mds-progress-color: rgb(var(--status-error-05));
+  --mds-progress-background: rgb(var(--status-error-09));
 }
 
 :host([variant="warning"]) {
-  --mds-progress-color: var(--color-status-warning-05);
-  --mds-progress-background: var(--color-status-warning-09);
+  --mds-progress-color: rgb(var(--status-warning-05));
+  --mds-progress-background: rgb(var(--status-warning-09));
 }
 
 :host([variant="success"]) {
-  --mds-progress-color: var(--color-status-success-05);
-  --mds-progress-background: var(--color-status-success-09);
+  --mds-progress-color: rgb(var(--status-success-05));
+  --mds-progress-background: rgb(var(--status-success-09));
 }
 
 :host([variant="info"]) {
-  --mds-progress-color: var(--color-status-info-05);
-  --mds-progress-background: var(--color-status-info-09);
+  --mds-progress-color: rgb(var(--status-info-05));
+  --mds-progress-background: rgb(var(--status-info-09));
 }
 
 :host([variant="primary"]) {
-  --mds-progress-color: var(--color-variant-primary-03);
-  --mds-progress-background: var(--color-tone-neutral-08);
+  --mds-progress-color: rgb(var(--variant-primary-03));
+  --mds-progress-background: rgb(var(--tone-neutral-08));
 }
 
 :host([variant="ai"]) {
-  --mds-progress-color: var(--color-variant-ai-05);
-  --mds-progress-background: var(--color-variant-ai-09);
+  --mds-progress-color: rgb(var(--variant-ai-05));
+  --mds-progress-background: rgb(var(--variant-ai-09));
 }

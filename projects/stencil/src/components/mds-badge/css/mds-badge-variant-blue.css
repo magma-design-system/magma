@@ -1,22 +1,22 @@
 :host([variant="blue"]) {
-  --mds-badge-color: var(--color-tone-neutral);
+  --mds-badge-color: rgb(var(--tone-neutral));
 }
 
 :host([variant="blue"][tone="strong"]) {
-  --mds-badge-background: var(--color-label-blue-04);
+  --mds-badge-background: rgb(var(--label-blue-04));
 }
 
 :host([variant="blue"][tone="weak"]) {
-  --mds-badge-background: var(--color-label-blue-09);
-  --mds-badge-color: var(--color-label-blue-02);
+  --mds-badge-background: rgb(var(--label-blue-09));
+  --mds-badge-color: rgb(var(--label-blue-02));
 }
 
 :host([variant="blue"][tone="quiet"]) {
-  --mds-badge-color: var(--color-label-blue-04);
+  --mds-badge-color: rgb(var(--label-blue-04));
 }
 
 :host([variant="blue"][tone="ghost"]) {
   --mds-badge-background: transparent;
-  --mds-badge-border-color: var(--color-label-blue-06);
-  --mds-badge-color: var(--color-label-blue-04);
+  --mds-badge-border-color: rgb(var(--label-blue-06));
+  --mds-badge-color: rgb(var(--label-blue-04));
 }

@@ -18,9 +18,9 @@
  */
 
   :host {
-    --mds-input-tip-item-background: var(--color-tone-neutral-01);
-    --mds-input-tip-item-color: var(--color-tone-neutral);
-    --mds-input-tip-item-icon-color: var(--color-tone-neutral);
+    --mds-input-tip-item-background: rgb(var(--tone-neutral-01));
+    --mds-input-tip-item-color: rgb(var(--tone-neutral));
+    --mds-input-tip-item-icon-color: rgb(var(--tone-neutral));
 
     @apply duration-300
     ease-out-expo

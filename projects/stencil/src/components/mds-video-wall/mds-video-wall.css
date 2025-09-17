@@ -13,7 +13,7 @@
   --mds-video-wall-video-fit: cover;
 
   aspect-ratio: 16/9;
-  background-color: var(--color-tone-neutral-02);
+  background-color: rgb(var(--tone-neutral-02));
   display: flex;
   position: relative;
 }

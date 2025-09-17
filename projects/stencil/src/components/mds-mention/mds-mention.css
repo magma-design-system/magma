@@ -2,9 +2,9 @@
   --mds-mention-icon-size: --spacing(600);
 
   align-items: center;
-  background-color: var(--color-tone-neutral-09);
+  background-color: rgb(var(--tone-neutral-09));
   border-radius: 100px;
-  color: var(--color-tone-neutral-03);
+  color: rgb(var(--tone-neutral-03));
   cursor: pointer;
   display: inline-flex;
   fill: currentcolor;

@@ -21,8 +21,8 @@
   :host {
     /* stylelint-disable-next-line length-zero-no-unit */
     --mds-modal-custom-window-distance: 0px;
-    --mds-url-view-background: var(--color-tone-neutral-10);
-    --mds-url-view-color: var(--color-tone-neutral-02);
+    --mds-url-view-background: rgb(var(--tone-neutral-10));
+    --mds-url-view-color: rgb(var(--tone-neutral-02));
     --mds-url-view-radius: var(--radius-md);
     --mds-url-view-header-shadow: var(--shadow-sm-sharp);
     --mds-url-view-shadow: var(--shadow-lg);

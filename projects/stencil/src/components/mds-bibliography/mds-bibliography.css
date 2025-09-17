@@ -20,7 +20,7 @@
   :host {
     --mds-bibliography-color: inherit;
     --mds-bibliography-text-decoration-hover: inherit;
-    --mds-bibliography-text-decoration: var(--color-tone-neutral-06);
+    --mds-bibliography-text-decoration: rgb(var(--tone-neutral-06));
 
     display: inline;
   }

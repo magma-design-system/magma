@@ -1,12 +1,12 @@
 :host-context(.pref-contrast-more) {
-  --mds-header-bar-hamburger-color: var(--color-tone-neutral-01);
+  --mds-header-bar-hamburger-color: rgb(var(--tone-neutral-01));
 
   box-shadow: var(--shadow-outline-strong-50), var(--shadow-2xl);
 }
 
 @media (prefers-contrast: more) {
   :host-context(.pref-contrast-system) {
-    --mds-header-bar-hamburger-color: var(--color-tone-neutral-01);
+    --mds-header-bar-hamburger-color: rgb(var(--tone-neutral-01));
 
     box-shadow: var(--shadow-outline-strong-50), var(--shadow-2xl);
   }

@@ -18,7 +18,7 @@
     @apply w-full;
 
     align-items: flex-start;
-    color: var(--color-tone-neutral-03);
+    color: rgb(var(--tone-neutral-03));
     display: flex;
     justify-content: flex-start;
   }

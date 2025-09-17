@@ -1,9 +1,9 @@
 :host-context(.pref-contrast-more) {
-  --mds-separator-background: var(--color-tone-neutral-06);
+  --mds-separator-background: rgb(var(--tone-neutral-06));
 }
 
 @media (prefers-contrast: more) {
   :host-context(.pref-contrast-system) {
-    --mds-separator-background: var(--color-tone-neutral-06);
+    --mds-separator-background: rgb(var(--tone-neutral-06));
   }
 }

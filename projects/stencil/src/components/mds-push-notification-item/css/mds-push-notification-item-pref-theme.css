@@ -1,13 +1,13 @@
 :host-context(.pref-theme-dark) {
   --mds-push-notifications-shadow: var(--shadow-outline) inset;
 
-  background-color: var(--color-tone-neutral-09);
+  background-color: rgb(var(--tone-neutral-09));
 }
 
 @media (prefers-color-scheme: dark) {
   :host-context(.pref-theme-system) {
     --mds-push-notifications-shadow: var(--shadow-outline) inset;
 
-    background-color: var(--color-tone-neutral-09);
+    background-color: rgb(var(--tone-neutral-09));
   }
 }

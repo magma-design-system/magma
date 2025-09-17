@@ -9,12 +9,12 @@
  */
 
 :host {
-  --mds-entity-background: var(--color-tone-neutral);
-  --mds-entity-color: var(--color-tone-neutral-02);
-  --mds-entity-detail-color: var(--color-tone-neutral-03);
-  --mds-entity-icon-background: var(--color-label-blue-09);
+  --mds-entity-background: rgb(var(--tone-neutral));
+  --mds-entity-color: rgb(var(--tone-neutral-02));
+  --mds-entity-detail-color: rgb(var(--tone-neutral-03));
+  --mds-entity-icon-background: rgb(var(--label-blue-09));
   --mds-entity-icon-radius: var(--radius-DEFAULT);
-  --mds-entity-icon-color: var(--color-label-blue-04);
+  --mds-entity-icon-color: rgb(var(--label-blue-04));
   --mds-entity-shadow: var(--shadow-DEFAULT);
 
   @apply

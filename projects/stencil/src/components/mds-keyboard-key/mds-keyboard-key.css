@@ -30,7 +30,7 @@
 
 .physical-key {
   align-items: baseline;
-  background-color: var(--mds-keyboard-key-background, var(--color-tone-stone-08));
+  background-color: var(--mds-keyboard-key-background, rgb(var(--tone-stone-08)));
   border-radius: var(--radius-md);
   box-shadow: var(--mds-keyboard-key-illumination-light), var(--mds-keyboard-key-illumination-dark), var(--mds-keyboard-key-illumination-shadow);
   box-sizing: border-box;

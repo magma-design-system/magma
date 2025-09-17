@@ -7,11 +7,11 @@
  */
 
 :host {
-  --mds-table-body-background-hover: var(--mds-table-background-alt, var(--color-tone-neutral-10));
-  --mds-table-body-background: var(--mds-table-background, var(--color-tone-neutral));
+  --mds-table-body-background-hover: var(--mds-table-background-alt, rgb(var(--tone-neutral-10)));
+  --mds-table-body-background: var(--mds-table-background, rgb(var(--tone-neutral)));
   --mds-table-body-background-alt: var(--mds-table-body-background-hover);
-  --mds-table-body-color-alt: var(--mds-table-color-alt, var(--color-tone-neutral-05));
-  --mds-table-body-color: var(--mds-table-color, var(--color-tone-neutral-02));
+  --mds-table-body-color-alt: var(--mds-table-color-alt, rgb(var(--tone-neutral-05)));
+  --mds-table-body-color: var(--mds-table-color, rgb(var(--tone-neutral-02)));
 
   /* internal */
   --mds-table-row-color: var(--mds-table-body-color);

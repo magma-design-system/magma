@@ -22,7 +22,7 @@
 
 :host {
   --mds-button-await-duration: 0.725s;
-  --mds-button-background: var(--color-variant-primary-02);
+  --mds-button-background: rgb(var(--variant-primary-02));
   --mds-button-border-color: 0 0 0;
   --mds-button-border-hover-opacity: 75%;
   --mds-button-border-default-opacity: 50%;
@@ -33,7 +33,7 @@
   --mds-button-border-high-contrast-hover-width: 3px;
   --mds-button-border-opacity: 0;
   --mds-button-border-width: --spacing(50);
-  --mds-button-color: var(--color-tone-neutral);
+  --mds-button-color: rgb(var(--tone-neutral));
   --mds-button-gap: --spacing(200);
   --mds-button-line-clamp: 1;
   --mds-button-radius: var(--radius-lg);

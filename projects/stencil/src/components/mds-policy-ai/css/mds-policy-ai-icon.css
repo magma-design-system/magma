@@ -1,9 +1,9 @@
 .icon-help {
-  background-color: var(--color-variant-ai-05);
-  border: 1px solid var(--color-tone-neutral);
+  background-color: rgb(var(--variant-ai-05));
+  border: 1px solid rgb(var(--tone-neutral));
   border-radius: --spacing(600);
   cursor: pointer;
-  fill: var(--color-variant-ai-10);
+  fill: rgb(var(--variant-ai-10));
   height: min-content;
   width: min-content;
 }

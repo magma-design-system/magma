@@ -1,7 +1,7 @@
 :host {
-  --mds-avatar-stack-background: var(--color-tone-neutral);
-  --mds-avatar-stack-count-background-color: var(--color-tone-neutral-09);
-  --mds-avatar-stack-count-color: var(--color-tone-neutral-04);
+  --mds-avatar-stack-background: rgb(var(--tone-neutral));
+  --mds-avatar-stack-count-background-color: rgb(var(--tone-neutral-09));
+  --mds-avatar-stack-count-color: rgb(var(--tone-neutral-04));
   --mds-avatar-stack-large-border: --spacing(100);
   --mds-avatar-stack-large-offset: 2;
   --mds-avatar-stack-large-size: --spacing(1500);

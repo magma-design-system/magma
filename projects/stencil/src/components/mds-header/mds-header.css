@@ -15,11 +15,11 @@
  */
 
 :host {
-  --mds-header-color: var(--color-tone-neutral-02);
+  --mds-header-color: rgb(var(--tone-neutral-02));
   --mds-header-hidden-bar-translate-inline: translateY(-150%);
   --mds-header-hidden-bar-translate-stripe: translateY(-110%);
-  --mds-header-icon-color: var(--mds-header-color, var(--color-tone-neutral-02));
-  --mds-header-modal-icon-color: var(--color-tone-neutral);
+  --mds-header-icon-color: var(--mds-header-color, rgb(var(--tone-neutral-02)));
+  --mds-header-modal-icon-color: rgb(var(--tone-neutral));
   --mds-header-backdrop-filter: blur(10px);
   --mds-header-backdrop-background-image: linear-gradient(to top, rgb(0 0 0 / 0), rgb(0 0 0 / 0.15));
   --mds-header-backdrop-height: --spacing(1600);

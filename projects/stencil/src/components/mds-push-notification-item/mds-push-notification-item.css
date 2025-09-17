@@ -17,7 +17,7 @@
   :host {
     --mds-push-notification-item-duration: 300ms;
     --mds-push-notification-item-icon-background-color: transparent;
-    --mds-push-notification-item-icon-color: var(--color-tone-neutral-04);
+    --mds-push-notification-item-icon-color: rgb(var(--tone-neutral-04));
     --mds-push-notification-item-message-line-clamp: 2;
     --mds-push-notification-item-shadow: var(--shadow);
     --mds-push-notification-item-subject-line-clamp: 1;
@@ -30,9 +30,9 @@
     rounded-lg;
 
     align-items: flex-start;
-    background-color: var(--color-tone-neutral);
+    background-color: rgb(var(--tone-neutral));
     box-shadow: var(--mds-push-notification-item-shadow);
-    color: var(--color-tone-neutral-02);
+    color: rgb(var(--tone-neutral-02));
     display: flex;
     pointer-events: auto;
     position: relative;
@@ -90,7 +90,7 @@
 
   .close-button:focus-visible,
   .close-button:hover {
-    fill: var(--color-tone-neutral-03);
+    fill: rgb(var(--tone-neutral-03));
     opacity: 1;
   }
 

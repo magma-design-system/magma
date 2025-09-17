@@ -8,7 +8,7 @@
 @layer magma {
 
   :host {
-    background-color: var(--color-tone-neutral-09);
+    background-color: rgb(var(--tone-neutral-09));
     display: grid;
     min-width: 0;
     position: relative;

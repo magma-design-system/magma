@@ -1,41 +1,41 @@
 :host-context(.pref-contrast-more):host([variant="count-empty"]) {
-  --mds-input-tip-item-color: var(--color-status-info-10);
-  --mds-input-tip-item-background: var(--color-status-info-05);
+  --mds-input-tip-item-color: rgb(var(--status-info-10));
+  --mds-input-tip-item-background: rgb(var(--status-info-05));
 }
 
 :host-context(.pref-contrast-more):host([variant="count-incomplete"]) {
-  --mds-input-tip-item-color: var(--color-status-success-10);
-  --mds-input-tip-item-background: var(--color-status-success-05);
+  --mds-input-tip-item-color: rgb(var(--status-success-10));
+  --mds-input-tip-item-background: rgb(var(--status-success-05));
 }
 
 :host-context(.pref-contrast-more):host([variant="count-almost"]) {
-  --mds-input-tip-item-color: var(--color-status-warning-10);
-  --mds-input-tip-item-background: var(--color-status-warning-05);
+  --mds-input-tip-item-color: rgb(var(--status-warning-10));
+  --mds-input-tip-item-background: rgb(var(--status-warning-05));
 }
 
 :host-context(.pref-contrast-more):host([variant="count-almost-full"]) {
-  --mds-input-tip-item-color: var(--color-status-error-10);
-  --mds-input-tip-item-background: var(--color-status-error-05);
+  --mds-input-tip-item-color: rgb(var(--status-error-10));
+  --mds-input-tip-item-background: rgb(var(--status-error-05));
 }
 
 @media (prefers-contrast: more) {
   :host-context(.pref-contrast-system):host([variant="count-empty"]) {
-    --mds-input-tip-item-color: var(--color-status-info-10);
-    --mds-input-tip-item-background: var(--color-status-info-05);
+    --mds-input-tip-item-color: rgb(var(--status-info-10));
+    --mds-input-tip-item-background: rgb(var(--status-info-05));
   }
 
   :host-context(.pref-contrast-system):host([variant="count-incomplete"]) {
-    --mds-input-tip-item-color: var(--color-status-success-10);
-    --mds-input-tip-item-background: var(--color-status-success-05);
+    --mds-input-tip-item-color: rgb(var(--status-success-10));
+    --mds-input-tip-item-background: rgb(var(--status-success-05));
   }
 
   :host-context(.pref-contrast-system):host([variant="count-almost"]) {
-    --mds-input-tip-item-color: var(--color-status-warning-10);
-    --mds-input-tip-item-background: var(--color-status-warning-05);
+    --mds-input-tip-item-color: rgb(var(--status-warning-10));
+    --mds-input-tip-item-background: rgb(var(--status-warning-05));
   }
 
   :host-context(.pref-contrast-system):host([variant="count-almost-full"]) {
-    --mds-input-tip-item-color: var(--color-status-error-10);
-    --mds-input-tip-item-background: var(--color-status-error-05);
+    --mds-input-tip-item-color: rgb(var(--status-error-10));
+    --mds-input-tip-item-background: rgb(var(--status-error-05));
   }
 }

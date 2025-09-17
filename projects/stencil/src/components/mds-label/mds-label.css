@@ -8,15 +8,15 @@
  */
 
 :host {
-  --mds-label-background: var(--color-label-yellow-09);
-  --mds-label-color: var(--color-label-yellow-02);
+  --mds-label-background: rgb(var(--label-yellow-09));
+  --mds-label-color: rgb(var(--label-yellow-02));
   --mds-label-icon-color: var(--mds-label-color);
   --mds-label-radius: --spacing(150);
-  --mds-label-selection-background: var(--magma-selection-background, var(--color-label-yellow-09));
-  --mds-label-selection-color: var(--magma-selection-color, var(--color-label-yellow-02));
-  --mds-label-button-background: var(--color-label-yellow-08);
-  --mds-label-button-background-hover: var(--color-label-yellow-07);
-  --mds-label-button-icon-color: var(--color-label-yellow-03);
+  --mds-label-selection-background: var(--magma-selection-background, rgb(var(--label-yellow-09)));
+  --mds-label-selection-color: var(--magma-selection-color, rgb(var(--label-yellow-02)));
+  --mds-label-button-background: rgb(var(--label-yellow-08));
+  --mds-label-button-background-hover: rgb(var(--label-yellow-07));
+  --mds-label-button-icon-color: rgb(var(--label-yellow-03));
 
   @apply
     min-h-900

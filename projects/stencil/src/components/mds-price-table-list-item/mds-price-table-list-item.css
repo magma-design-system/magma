@@ -5,10 +5,10 @@
 
 @layer magma {
   :host {
-    --mds-price-table-list-item-supported-icon-color-hover: var(--color-label-green-05);
-    --mds-price-table-list-item-supported-icon-color: var(--color-label-green-06);
-    --mds-price-table-list-item-unsupported-icon-color-hover: var(--color-tone-neutral-04);
-    --mds-price-table-list-item-unsupported-icon-color: var(--color-tone-neutral-05);
+    --mds-price-table-list-item-supported-icon-color-hover: rgb(var(--label-green-05));
+    --mds-price-table-list-item-supported-icon-color: rgb(var(--label-green-06));
+    --mds-price-table-list-item-unsupported-icon-color-hover: rgb(var(--tone-neutral-04));
+    --mds-price-table-list-item-unsupported-icon-color: rgb(var(--tone-neutral-05));
 
     @apply gap-100;
 

@@ -1,54 +1,54 @@
 :host-context(.pref-theme-dark),
 :host-context(.pref-theme-dark):host([variant="primary"]) {
-  --mds-progress-color: var(--color-variant-primary-05);
-  --mds-progress-background: var(--color-tone-neutral-07);
+  --mds-progress-color: rgb(var(--variant-primary-05));
+  --mds-progress-background: rgb(var(--tone-neutral-07));
 }
 
 :host-context(.pref-theme-dark):host([variant="error"]) {
-  --mds-progress-color: var(--color-status-error-04);
-  --mds-progress-background: var(--color-status-error-07);
+  --mds-progress-color: rgb(var(--status-error-04));
+  --mds-progress-background: rgb(var(--status-error-07));
 }
 
 :host-context(.pref-theme-dark):host([variant="warning"]) {
-  --mds-progress-color: var(--color-status-warning-04);
-  --mds-progress-background: var(--color-status-warning-07);
+  --mds-progress-color: rgb(var(--status-warning-04));
+  --mds-progress-background: rgb(var(--status-warning-07));
 }
 
 :host-context(.pref-theme-dark):host([variant="success"]) {
-  --mds-progress-color: var(--color-status-success-04);
-  --mds-progress-background: var(--color-status-success-07);
+  --mds-progress-color: rgb(var(--status-success-04));
+  --mds-progress-background: rgb(var(--status-success-07));
 }
 
 :host-context(.pref-theme-dark):host([variant="info"]) {
-  --mds-progress-color: var(--color-status-info-04);
-  --mds-progress-background: var(--color-status-info-07);
+  --mds-progress-color: rgb(var(--status-info-04));
+  --mds-progress-background: rgb(var(--status-info-07));
 }
 
 
 @media (prefers-color-scheme: dark) {
   :host-context(.pref-theme-system),
   :host-context(.pref-theme-system):host([variant="primary"]) {
-    --mds-progress-color: var(--color-variant-primary-05);
-    --mds-progress-background: var(--color-tone-neutral-07);
+    --mds-progress-color: rgb(var(--variant-primary-05));
+    --mds-progress-background: rgb(var(--tone-neutral-07));
   }
 
   :host-context(.pref-theme-system):host([variant="error"]) {
-    --mds-progress-color: var(--color-status-error-04);
-    --mds-progress-background: var(--color-status-error-07);
+    --mds-progress-color: rgb(var(--status-error-04));
+    --mds-progress-background: rgb(var(--status-error-07));
   }
 
   :host-context(.pref-theme-system):host([variant="warning"]) {
-    --mds-progress-color: var(--color-status-warning-04);
-    --mds-progress-background: var(--color-status-warning-07);
+    --mds-progress-color: rgb(var(--status-warning-04));
+    --mds-progress-background: rgb(var(--status-warning-07));
   }
 
   :host-context(.pref-theme-system):host([variant="success"]) {
-    --mds-progress-color: var(--color-status-success-04);
-    --mds-progress-background: var(--color-status-success-07);
+    --mds-progress-color: rgb(var(--status-success-04));
+    --mds-progress-background: rgb(var(--status-success-07));
   }
 
   :host-context(.pref-theme-system):host([variant="info"]) {
-    --mds-progress-color: var(--color-status-info-04);
-    --mds-progress-background: var(--color-status-info-07);
+    --mds-progress-color: rgb(var(--status-info-04));
+    --mds-progress-background: rgb(var(--status-info-07));
   }
 }

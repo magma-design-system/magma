@@ -1,5 +1,5 @@
 :host-context(.pref-theme-dark) {
-  --mds-paginator-background: var(--color-tone-neutral-09);
+  --mds-paginator-background: rgb(var(--tone-neutral-09));
 }
 
 :host-context(.pref-theme-dark) .pages {
@@ -8,7 +8,7 @@
 
 @media (prefers-color-scheme: dark) {
   :host-context(.pref-theme-system) {
-    --mds-paginator-background: var(--color-tone-neutral-09);
+    --mds-paginator-background: rgb(var(--tone-neutral-09));
   }
 
   :host-context(.pref-theme-system) .pages {

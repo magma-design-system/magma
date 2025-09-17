@@ -1,22 +1,22 @@
 :host([variant="info"]) {
-  --mds-badge-color: var(--color-tone-neutral);
+  --mds-badge-color: rgb(var(--tone-neutral));
 }
 
 :host([variant="info"][tone="strong"]) {
-  --mds-badge-background: var(--color-status-info-04);
+  --mds-badge-background: rgb(var(--status-info-04));
 }
 
 :host([variant="info"][tone="weak"]) {
-  --mds-badge-background: var(--color-status-info-09);
-  --mds-badge-color: var(--color-status-info-02);
+  --mds-badge-background: rgb(var(--status-info-09));
+  --mds-badge-color: rgb(var(--status-info-02));
 }
 
 :host([variant="info"][tone="quiet"]) {
-  --mds-badge-color: var(--color-status-info-04);
+  --mds-badge-color: rgb(var(--status-info-04));
 }
 
 :host([variant="info"][tone="ghost"]) {
   --mds-badge-background: transparent;
-  --mds-badge-border-color: var(--color-status-info-06);
-  --mds-badge-color: var(--color-status-info-04);
+  --mds-badge-border-color: rgb(var(--status-info-06));
+  --mds-badge-color: rgb(var(--status-info-04));
 }

@@ -1,12 +1,12 @@
 :host-context(.pref-contrast-more.pref-theme-dark) {
-  --mds-kpi-item-info-background: var(--color-tone-neutral);
+  --mds-kpi-item-info-background: rgb(var(--tone-neutral));
 
   box-shadow: var(--shadow-outline-50);
 }
 
 @media (prefers-contrast: more) {
   :host-context(.pref-contrast-system.pref-theme-dark) {
-    --mds-kpi-item-info-background: var(--color-tone-neutral);
+    --mds-kpi-item-info-background: rgb(var(--tone-neutral));
 
     box-shadow: var(--shadow-outline-50);
   }
@@ -14,7 +14,7 @@
 
 @media (prefers-color-scheme: dark) {
   :host-context(.pref-contrast-more.pref-theme-system) {
-    --mds-kpi-item-info-background: var(--color-tone-neutral);
+    --mds-kpi-item-info-background: rgb(var(--tone-neutral));
 
     box-shadow: var(--shadow-outline-50);
   }
@@ -24,7 +24,7 @@
 
   @media (prefers-color-scheme: dark) {
     :host-context(.pref-contrast-system.pref-theme-system) {
-      --mds-kpi-item-info-background: var(--color-tone-neutral);
+      --mds-kpi-item-info-background: rgb(var(--tone-neutral));
 
       box-shadow: var(--shadow-outline-50);
     }

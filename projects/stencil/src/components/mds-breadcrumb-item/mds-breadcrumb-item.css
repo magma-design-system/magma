@@ -17,13 +17,13 @@
  */
 
 :host {
-  --mds-breadcrumb-item-arrow-depth-color: var(--mds-breadcrumb-arrow-depth-color, var(--color-tone-neutral-04));
-  --mds-breadcrumb-item-button-background-selected: var(--mds-breadcrumb-button-background-selected, var(--color-tone-neutral-09));
-  --mds-breadcrumb-item-button-background-hover: var(--mds-breadcrumb-button-background-hover, var(--color-tone-neutral-10));
+  --mds-breadcrumb-item-arrow-depth-color: var(--mds-breadcrumb-arrow-depth-color, rgb(var(--tone-neutral-04)));
+  --mds-breadcrumb-item-button-background-selected: var(--mds-breadcrumb-button-background-selected, rgb(var(--tone-neutral-09)));
+  --mds-breadcrumb-item-button-background-hover: var(--mds-breadcrumb-button-background-hover, rgb(var(--tone-neutral-10)));
   --mds-breadcrumb-item-button-background: var(--mds-breadcrumb-button-background, transparent);
-  --mds-breadcrumb-item-button-color-selected: var(--mds-breadcrumb-button-color-selected, var(--color-tone-neutral-01));
-  --mds-breadcrumb-item-button-color-hover: var(--mds-breadcrumb-button-color-hover, var(--color-tone-neutral-02));
-  --mds-breadcrumb-item-button-color: var(--mds-breadcrumb-button-color, var(--color-tone-neutral-02));
+  --mds-breadcrumb-item-button-color-selected: var(--mds-breadcrumb-button-color-selected, rgb(var(--tone-neutral-01)));
+  --mds-breadcrumb-item-button-color-hover: var(--mds-breadcrumb-button-color-hover, rgb(var(--tone-neutral-02)));
+  --mds-breadcrumb-item-button-color: var(--mds-breadcrumb-button-color, rgb(var(--tone-neutral-02)));
 
   @apply
     duration-200

@@ -1,14 +1,14 @@
 @reference '../../tailwind/index.css';
 
 :host {
-  --mds-header-bar-hamburger-color: var(--color-tone-neutral-03);
+  --mds-header-bar-hamburger-color: rgb(var(--tone-neutral-03));
 
   @apply
     ease-out-expo
     px-600
     py-400;
 
-  background-color: var(--color-tone-neutral);
+  background-color: rgb(var(--tone-neutral));
   box-shadow: var(--shadow-md-sharp);
   display: flex;
   inset: 0 0 auto;

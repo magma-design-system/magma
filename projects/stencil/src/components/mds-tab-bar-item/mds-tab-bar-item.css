@@ -7,10 +7,10 @@
  */
 
 :host {
-  --mds-tab-bar-item-background: var(--color-tone-neutral-10);
+  --mds-tab-bar-item-background: rgb(var(--tone-neutral-10));
   --mds-tab-bar-item-background-selected: transparent;
-  --mds-tab-bar-item-color: var(--color-tone-neutral-04);
-  --mds-tab-bar-item-color-selected: var(--color-variant-primary-03);
+  --mds-tab-bar-item-color: rgb(var(--tone-neutral-04));
+  --mds-tab-bar-item-color-selected: rgb(var(--variant-primary-03));
 
   @apply
     duration-200

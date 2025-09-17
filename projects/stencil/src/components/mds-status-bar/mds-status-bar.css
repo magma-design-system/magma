@@ -21,7 +21,7 @@ mds-modal {
 
 .status-bar {
   align-items: flex-start;
-  background-color: var(--color-tone-neutral);
+  background-color: rgb(var(--tone-neutral));
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-DEFAULT);
   display: inline-flex;

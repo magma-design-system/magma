@@ -5,7 +5,7 @@
     rounded
     w-full;
 
-  background-color: var(--color-tone-neutral-08);
+  background-color: rgb(var(--tone-neutral-08));
   border: 0;
   display: flex;
 }

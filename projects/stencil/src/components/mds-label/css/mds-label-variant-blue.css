@@ -1,33 +1,33 @@
 :host([variant="blue"]),
 :host([variant="blue"][tone="strong"]) {
-  --mds-label-background: var(--color-label-blue-04);
-  --mds-label-button-background: var(--color-label-blue-04);
-  --mds-label-button-background-hover: var(--color-label-blue-05);
-  --mds-label-button-icon-color: var(--color-label-blue-10);
-  --mds-label-color: var(--color-label-blue-10);
-  --mds-label-icon-color: var(--color-label-blue-10);
-  --mds-label-selection-background: var(--color-label-blue-08);
-  --mds-label-selection-color: var(--color-label-blue-02);
+  --mds-label-background: rgb(var(--label-blue-04));
+  --mds-label-button-background: rgb(var(--label-blue-04));
+  --mds-label-button-background-hover: rgb(var(--label-blue-05));
+  --mds-label-button-icon-color: rgb(var(--label-blue-10));
+  --mds-label-color: rgb(var(--label-blue-10));
+  --mds-label-icon-color: rgb(var(--label-blue-10));
+  --mds-label-selection-background: rgb(var(--label-blue-08));
+  --mds-label-selection-color: rgb(var(--label-blue-02));
 }
 
 :host([variant="blue"][tone="weak"]) {
-  --mds-label-background: var(--color-label-blue-08);
-  --mds-label-button-background: var(--color-label-blue-09);
-  --mds-label-button-background-hover: var(--color-label-blue-08);
-  --mds-label-button-icon-color: var(--color-label-blue-04);
-  --mds-label-color: var(--color-label-blue-02);
-  --mds-label-icon-color: var(--color-label-blue-02);
-  --mds-label-selection-background: var(--color-label-blue-06);
-  --mds-label-selection-color: var(--color-label-blue-10);
+  --mds-label-background: rgb(var(--label-blue-08));
+  --mds-label-button-background: rgb(var(--label-blue-09));
+  --mds-label-button-background-hover: rgb(var(--label-blue-08));
+  --mds-label-button-icon-color: rgb(var(--label-blue-04));
+  --mds-label-color: rgb(var(--label-blue-02));
+  --mds-label-icon-color: rgb(var(--label-blue-02));
+  --mds-label-selection-background: rgb(var(--label-blue-06));
+  --mds-label-selection-color: rgb(var(--label-blue-10));
 }
 
 :host([variant="blue"][tone="quiet"]) {
-  --mds-label-background: var(--color-label-blue-09);
-  --mds-label-button-background: var(--color-label-blue-09);
-  --mds-label-button-background-hover: var(--color-label-blue-08);
-  --mds-label-button-icon-color: var(--color-label-blue-04);
-  --mds-label-color: var(--color-label-blue-04);
-  --mds-label-icon-color: var(--color-label-blue-04);
-  --mds-label-selection-background: var(--color-label-blue-05);
-  --mds-label-selection-color: var(--color-label-blue-09);
+  --mds-label-background: rgb(var(--label-blue-09));
+  --mds-label-button-background: rgb(var(--label-blue-09));
+  --mds-label-button-background-hover: rgb(var(--label-blue-08));
+  --mds-label-button-icon-color: rgb(var(--label-blue-04));
+  --mds-label-color: rgb(var(--label-blue-04));
+  --mds-label-icon-color: rgb(var(--label-blue-04));
+  --mds-label-selection-background: rgb(var(--label-blue-05));
+  --mds-label-selection-color: rgb(var(--label-blue-09));
 }

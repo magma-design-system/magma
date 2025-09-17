@@ -5,7 +5,7 @@
  */
 
 :host {
-  --mds-price-table-features-border-color: var(--color-tone-neutral-06);
+  --mds-price-table-features-border-color: rgb(var(--tone-neutral-06));
   --mds-price-table-features-padding: --spacing(300);
 
   @apply

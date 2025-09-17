@@ -1,45 +1,45 @@
 :host([variant="primary"][tone="strong"]) {
-  --mds-button-background: var(--color-variant-primary-04);
+  --mds-button-background: rgb(var(--variant-primary-04));
   --mds-button-border-color: var(--variant-primary-04);
-  --mds-button-color: var(--color-tone-neutral);
+  --mds-button-color: rgb(var(--tone-neutral));
 }
 
 :host([variant="primary"][tone="strong"]:hover) {
-  --mds-button-background: var(--color-variant-primary-03);
+  --mds-button-background: rgb(var(--variant-primary-03));
   --mds-button-border-color: var(--variant-primary-03);
 }
 
 :host([variant="primary"][tone="weak"]) {
-  --mds-button-background: var(--color-variant-primary-09);
+  --mds-button-background: rgb(var(--variant-primary-09));
   --mds-button-border-color: var(--variant-primary-09);
-  --mds-button-color: var(--color-variant-primary-03);
+  --mds-button-color: rgb(var(--variant-primary-03));
 
-  fill: var(--color-variant-primary-03);
+  fill: rgb(var(--variant-primary-03));
 }
 
 :host([variant="primary"][tone="weak"]:hover) {
-  --mds-button-background: var(--color-variant-primary-08);
+  --mds-button-background: rgb(var(--variant-primary-08));
   --mds-button-border-color: var(--variant-primary-08);
 }
 
 :host([variant="primary"][tone="ghost"]) {
   --mds-button-border-color: var(--variant-primary-04);
-  --mds-button-color: var(--color-variant-primary-03);
+  --mds-button-color: rgb(var(--variant-primary-03));
 }
 
 :host([variant="primary"][tone="ghost"]:hover) {
   --mds-button-border-color: var(--variant-primary-04);
-  --mds-button-color: var(--color-variant-primary-02);
+  --mds-button-color: rgb(var(--variant-primary-02));
 }
 
 :host([variant="primary"][tone="quiet"]) {
-  --mds-button-color: var(--color-variant-primary-02);
+  --mds-button-color: rgb(var(--variant-primary-02));
 }
 
 :host([variant="primary"][tone="quiet"]:hover) {
-  --mds-button-color: var(--color-variant-primary-04);
+  --mds-button-color: rgb(var(--variant-primary-04));
 }
 
 :host([variant="primary"][tone="quiet"][active]) {
-  --mds-button-color: var(--color-variant-primary-01);
+  --mds-button-color: rgb(var(--variant-primary-01));
 }

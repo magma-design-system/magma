@@ -10,10 +10,10 @@
  */
 
 :host {
-  --mds-input-upload-drag-area-background-color-on-drag: var(--color-tone-neutral-10);
-  --mds-input-upload-drag-area-background-color: var(--color-tone-neutral);
-  --mds-input-upload-drag-area-border-on-drag: 3px dashed var(--color-tone-neutral-07);
-  --mds-input-upload-drag-area-border: 3px dashed var(--color-tone-neutral-07);
+  --mds-input-upload-drag-area-background-color-on-drag: rgb(var(--tone-neutral-10));
+  --mds-input-upload-drag-area-background-color: rgb(var(--tone-neutral));
+  --mds-input-upload-drag-area-border-on-drag: 3px dashed rgb(var(--tone-neutral-07));
+  --mds-input-upload-drag-area-border: 3px dashed rgb(var(--tone-neutral-07));
   --mds-input-upload-min-cols: 3;
 
   @apply
@@ -28,7 +28,7 @@
   /*
     actually there is no way to custom background-image url
     paramter which not allows to pass custom properties inside
-    --stroke-color: var(--color-tone-neutral-07);
+    --stroke-color: rgb(var(--tone-neutral-07));
     --stroke-dashoffset: 8;
     --stroke-line-width: 8;
     --stroke-width: 5;
@@ -66,29 +66,29 @@
     svg
     w-1200;
 
-  fill: var(--color-variant-primary-05);
+  fill: rgb(var(--variant-primary-05));
 }
 
 .action {
   @apply p-150;
 
   border-radius: 1000px;
-  fill: var(--color-tone-neutral-04);
+  fill: rgb(var(--tone-neutral-04));
   height: auto;
 }
 
 .action--cancel-upload:focus-visible,
 .action--cancel-upload:hover {
-  --mds-button-background: var(--color-status-error-09);
+  --mds-button-background: rgb(var(--status-error-09));
 
-  fill: var(--color-status-error-04);
+  fill: rgb(var(--status-error-04));
 }
 
 .action--retry-upload:focus-visible,
 .action--retry-upload:hover {
-  --mds-button-background: var(--color-status-success-09);
+  --mds-button-background: rgb(var(--status-success-09));
 
-  fill: var(--color-status-success-04);
+  fill: rgb(var(--status-success-04));
 }
 
 .main-action {

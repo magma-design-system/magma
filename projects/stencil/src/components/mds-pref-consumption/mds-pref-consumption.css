@@ -6,22 +6,22 @@
 }
 
 .item {
-  --mds-tab-item-default-color: var(--color-tone-neutral-05);
+  --mds-tab-item-default-color: rgb(var(--tone-neutral-05));
 
   flex-basis: 0;
   flex-grow: 1;
 }
 
 .item--high {
-  --mds-tab-item-selected-color: var(--color-status-error-06);
+  --mds-tab-item-selected-color: rgb(var(--status-error-06));
 }
 
 .item--medium {
-  --mds-tab-item-selected-color: var(--color-status-warning-06);
+  --mds-tab-item-selected-color: rgb(var(--status-warning-06));
 }
 
 .item--low {
-  --mds-tab-item-selected-color: var(--color-status-success-06);
+  --mds-tab-item-selected-color: rgb(var(--status-success-06));
 }
 
 @import './css/mds-pref-consumption-pref-contrast.css';

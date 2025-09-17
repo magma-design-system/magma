@@ -7,7 +7,7 @@
 }
 
 :host-context(.pref-theme-dark) .input {
-  color: var(--color-tone-neutral-03);
+  color: rgb(var(--tone-neutral-03));
 }
 
 @media (prefers-color-scheme: dark) {
@@ -20,6 +20,6 @@
   }
 
   :host-context(.pref-theme-system) .input {
-    color: var(--color-tone-neutral-03);
+    color: rgb(var(--tone-neutral-03));
   }
 }

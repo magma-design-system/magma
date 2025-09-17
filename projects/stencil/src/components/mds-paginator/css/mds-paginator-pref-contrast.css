@@ -3,7 +3,7 @@
 }
 
 :host-context(.pref-contrast-more) .item {
-  --mds-paginator-item-background-hover: var(--color-tone-neutral);
+  --mds-paginator-item-background-hover: rgb(var(--tone-neutral));
   --mds-paginator-item-shadow-hover: var(--shadow-outline-50) inset;
   --mds-paginator-item-shadow: none;
 }
@@ -22,7 +22,7 @@
   }
 
   :host-context(.pref-contrast-system) .item {
-    --mds-paginator-item-background-hover: var(--color-tone-neutral);
+    --mds-paginator-item-background-hover: rgb(var(--tone-neutral));
     --mds-paginator-item-shadow-hover: var(--shadow-outline-50) inset;
     --mds-paginator-item-shadow: none;
   }

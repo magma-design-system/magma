@@ -1,46 +1,46 @@
 :host([variant="dark"][tone="strong"]) {
-  --mds-button-background: var(--color-tone-neutral-04);
+  --mds-button-background: rgb(var(--tone-neutral-04));
   --mds-button-border-color: var(--tone-neutral-04);
-  --mds-button-color: var(--color-tone-neutral);
+  --mds-button-color: rgb(var(--tone-neutral));
 }
 
 :host([variant="dark"][tone="strong"]:hover) {
-  --mds-button-background: var(--color-tone-neutral-05);
+  --mds-button-background: rgb(var(--tone-neutral-05));
   --mds-button-border-color: var(--tone-neutral-05);
 }
 
 :host([variant="dark"][tone="weak"]) {
-  --mds-button-background: var(--color-tone-neutral-08);
+  --mds-button-background: rgb(var(--tone-neutral-08));
   --mds-button-border-color: var(--tone-neutral-08);
-  --mds-button-color: var(--color-tone-neutral-03);
+  --mds-button-color: rgb(var(--tone-neutral-03));
 
-  fill: var(--color-tone-neutral-03);
+  fill: rgb(var(--tone-neutral-03));
 }
 
 :host([variant="dark"][tone="weak"]:hover) {
-  --mds-button-background: var(--color-tone-neutral-07);
+  --mds-button-background: rgb(var(--tone-neutral-07));
   --mds-button-border-color: var(--tone-neutral-07);
-  --mds-button-color: var(--color-tone-neutral-02);
+  --mds-button-color: rgb(var(--tone-neutral-02));
 }
 
 :host([variant="dark"][tone="ghost"]) {
   --mds-button-border-color: var(--tone-neutral-04);
-  --mds-button-color: var(--color-tone-neutral-03);
+  --mds-button-color: rgb(var(--tone-neutral-03));
 }
 
 :host([variant="dark"][tone="ghost"]:hover) {
   --mds-button-border-color: var(--tone-neutral-04);
-  --mds-button-color: var(--color-tone-neutral-02);
+  --mds-button-color: rgb(var(--tone-neutral-02));
 }
 
 :host([variant="dark"][tone="quiet"]) {
-  --mds-button-color: var(--color-tone-neutral-02);
+  --mds-button-color: rgb(var(--tone-neutral-02));
 }
 
 :host([variant="dark"][tone="quiet"]:hover) {
-  --mds-button-color: var(--color-tone-neutral-04);
+  --mds-button-color: rgb(var(--tone-neutral-04));
 }
 
 :host([variant="dark"][tone="quiet"][active]) {
-  --mds-button-color: var(--color-tone-neutral-01);
+  --mds-button-color: rgb(var(--tone-neutral-01));
 }

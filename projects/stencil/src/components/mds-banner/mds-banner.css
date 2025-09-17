@@ -14,14 +14,14 @@
  */
 
   :host {
-  --mds-banner-background: var(--color-tone-neutral-10);
-  --mds-banner-close-icon-hover-background: var(--color-tone-neutral-09);
-  --mds-banner-cockade-background: var(--color-tone-neutral-09);
+  --mds-banner-background: rgb(var(--tone-neutral-10));
+  --mds-banner-close-icon-hover-background: rgb(var(--tone-neutral-09));
+  --mds-banner-cockade-background: rgb(var(--tone-neutral-09));
   --mds-banner-cockade-distance: --spacing(600);
-  --mds-banner-color: var(--color-tone-neutral-02);
+  --mds-banner-color: rgb(var(--tone-neutral-02));
   --mds-banner-gap: --spacing(200) --spacing(400);
   --mds-banner-headline-color: var(--mds-banner-color);
-  --mds-banner-icon-color: var(--color-tone-neutral-04);
+  --mds-banner-icon-color: rgb(var(--tone-neutral-04));
   --mds-banner-radius: var(--radius-lg);
   --mds-banner-shadow: none;
   --mds-banner-transition-duration: 300ms;

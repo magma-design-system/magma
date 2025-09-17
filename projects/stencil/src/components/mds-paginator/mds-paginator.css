@@ -16,7 +16,7 @@
  */
 
   :host {
-    --mds-paginator-background: var(--color-tone-neutral-09);
+    --mds-paginator-background: rgb(var(--tone-neutral-09));
     --mds-paginator-scroll-behavior: smooth;
 
     @apply gap-100;

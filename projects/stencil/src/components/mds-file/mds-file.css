@@ -20,9 +20,9 @@
     rounded-md;
 
     align-items: stretch;
-    background-color: var(--color-tone-neutral);
+    background-color: rgb(var(--tone-neutral));
     box-shadow: var(--shadow-sharp);
-    color: var(--color-tone-neutral-04);
+    color: rgb(var(--tone-neutral-04));
     cursor: pointer;
     display: inline-flex;
     overflow: hidden;
@@ -108,7 +108,7 @@
     @apply min-w-0
     truncate;
 
-    color: var(--color-tone-neutral-05);
+    color: rgb(var(--tone-neutral-05));
   }
 
   .indicator {
@@ -122,6 +122,6 @@
   .downloaded {
     @apply svg;
 
-    fill: var(--color-status-success-06);
+    fill: rgb(var(--status-success-06));
   }
 }

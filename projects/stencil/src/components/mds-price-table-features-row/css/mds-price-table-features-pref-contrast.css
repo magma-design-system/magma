@@ -1,11 +1,11 @@
 :host-context(.pref-contrast-more) {
-  --mds-price-table-features-row-color: var(--color-tone-neutral-01);
-  --mds-price-table-features-row-color-hover: var(--color-tone-neutral-01);
+  --mds-price-table-features-row-color: rgb(var(--tone-neutral-01));
+  --mds-price-table-features-row-color-hover: rgb(var(--tone-neutral-01));
 }
 
 @media (prefers-contrast: more) {
   :host-context(.pref-contrast-system) {
-    --mds-price-table-features-row-color: var(--color-tone-neutral-01);
-    --mds-price-table-features-row-color-hover: var(--color-tone-neutral-01);
+    --mds-price-table-features-row-color: rgb(var(--tone-neutral-01));
+    --mds-price-table-features-row-color-hover: rgb(var(--tone-neutral-01));
   }
 }

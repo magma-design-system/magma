@@ -1,33 +1,33 @@
 :host([variant="light"]),
 :host([variant="light"][tone="strong"]) {
-  --mds-label-background: var(--color-tone-neutral-10);
-  --mds-label-button-background: var(--color-tone-neutral-10);
-  --mds-label-button-background-hover: var(--color-tone-neutral-09);
-  --mds-label-button-icon-color: var(--color-tone-neutral-03);
-  --mds-label-color: var(--color-tone-neutral-03);
-  --mds-label-icon-color: var(--color-tone-neutral-03);
-  --mds-label-selection-background: var(--color-tone-neutral-03);
-  --mds-label-selection-color: var(--color-tone-neutral-09);
+  --mds-label-background: rgb(var(--tone-neutral-10));
+  --mds-label-button-background: rgb(var(--tone-neutral-10));
+  --mds-label-button-background-hover: rgb(var(--tone-neutral-09));
+  --mds-label-button-icon-color: rgb(var(--tone-neutral-03));
+  --mds-label-color: rgb(var(--tone-neutral-03));
+  --mds-label-icon-color: rgb(var(--tone-neutral-03));
+  --mds-label-selection-background: rgb(var(--tone-neutral-03));
+  --mds-label-selection-color: rgb(var(--tone-neutral-09));
 }
 
 :host([variant="light"][tone="weak"]) {
-  --mds-label-background: var(--color-tone-neutral-09);
-  --mds-label-button-background: var(--color-tone-neutral-09);
-  --mds-label-button-background-hover: var(--color-tone-neutral-10);
-  --mds-label-button-icon-color: var(--color-tone-neutral-03);
-  --mds-label-color: var(--color-tone-neutral-03);
-  --mds-label-icon-color: var(--color-tone-neutral-03);
-  --mds-label-selection-background: var(--color-tone-neutral-03);
-  --mds-label-selection-color: var(--color-tone-neutral-09);
+  --mds-label-background: rgb(var(--tone-neutral-09));
+  --mds-label-button-background: rgb(var(--tone-neutral-09));
+  --mds-label-button-background-hover: rgb(var(--tone-neutral-10));
+  --mds-label-button-icon-color: rgb(var(--tone-neutral-03));
+  --mds-label-color: rgb(var(--tone-neutral-03));
+  --mds-label-icon-color: rgb(var(--tone-neutral-03));
+  --mds-label-selection-background: rgb(var(--tone-neutral-03));
+  --mds-label-selection-color: rgb(var(--tone-neutral-09));
 }
 
 :host([variant="light"][tone="quiet"]) {
-  --mds-label-background: var(--color-tone-neutral-09);
-  --mds-label-button-background: var(--color-tone-neutral-09);
-  --mds-label-button-background-hover: var(--color-tone-neutral-09);
-  --mds-label-button-icon-color: var(--color-tone-neutral-02);
-  --mds-label-color: var(--color-tone-neutral-02);
-  --mds-label-icon-color: var(--color-tone-neutral-02);
-  --mds-label-selection-background: var(--color-tone-neutral-02);
-  --mds-label-selection-color: var(--color-tone-neutral-08);
+  --mds-label-background: rgb(var(--tone-neutral-09));
+  --mds-label-button-background: rgb(var(--tone-neutral-09));
+  --mds-label-button-background-hover: rgb(var(--tone-neutral-09));
+  --mds-label-button-icon-color: rgb(var(--tone-neutral-02));
+  --mds-label-color: rgb(var(--tone-neutral-02));
+  --mds-label-icon-color: rgb(var(--tone-neutral-02));
+  --mds-label-selection-background: rgb(var(--tone-neutral-02));
+  --mds-label-selection-color: rgb(var(--tone-neutral-08));
 }

@@ -5,12 +5,12 @@
  */
 
 :host {
-  --mds-input-field-message-color: var(--color-tone-neutral-03);
-  --mds-input-field-message-background: var(--color-tone-neutral-10);
+  --mds-input-field-message-color: rgb(var(--tone-neutral-03));
+  --mds-input-field-message-background: rgb(var(--tone-neutral-10));
 
   @apply gap-200;
 
-  color: var(--color-tone-neutral-02);
+  color: rgb(var(--tone-neutral-02));
   display: grid;
 }
 

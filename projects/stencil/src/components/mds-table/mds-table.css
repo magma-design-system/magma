@@ -12,13 +12,13 @@
 
 :host {
   --mds-table-actions-gap: --spacing(200);
-  --mds-table-background-alt: var(--color-tone-neutral-10);
-  --mds-table-background: var(--color-tone-neutral);
-  --mds-table-border-color: var(--color-tone-neutral-08);
+  --mds-table-background-alt: rgb(var(--tone-neutral-10));
+  --mds-table-background: rgb(var(--tone-neutral));
+  --mds-table-border-color: rgb(var(--tone-neutral-08));
   --mds-table-border-width: 2px;
   --mds-table-cell-padding: --spacing(400);
-  --mds-table-color-alt: var(--color-tone-neutral-05);
-  --mds-table-color: var(--color-tone-neutral-02);
+  --mds-table-color-alt: rgb(var(--tone-neutral-05));
+  --mds-table-color: rgb(var(--tone-neutral-02));
 
   /* internal */
   --mds-table-cell-border-color: var(--mds-table-border-color);

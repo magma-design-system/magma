@@ -3,7 +3,7 @@
 }
 
 :host-context(.pref-contrast-more) .input {
-  color: var(--color-tone-neutral-01);
+  color: rgb(var(--tone-neutral-01));
 }
 
 @media (prefers-contrast: more) {
@@ -12,6 +12,6 @@
   }
 
   :host-context(.pref-contrast-system) .input {
-    color: var(--color-tone-neutral-01);
+    color: rgb(var(--tone-neutral-01));
   }
 }

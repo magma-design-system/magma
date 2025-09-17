@@ -1,9 +1,9 @@
 :host {
 
   /* private */
-  --mds-avatar-stack-item-background: var(--mds-avatar-stack-background, var(--color-tone-neutral));
-  --mds-avatar-stack-item-count-background-color: var(--mds-avatar-stack-count-background-color, var(--color-tone-neutral-09));
-  --mds-avatar-stack-item-count-color: var(--mds-avatar-stack-count-color, var(--color-tone-neutral-04));
+  --mds-avatar-stack-item-background: var(--mds-avatar-stack-background, rgb(var(--tone-neutral)));
+  --mds-avatar-stack-item-count-background-color: var(--mds-avatar-stack-count-background-color, rgb(var(--tone-neutral-09)));
+  --mds-avatar-stack-item-count-color: var(--mds-avatar-stack-count-color, rgb(var(--tone-neutral-04)));
   --mds-avatar-stack-item-large-size: var(--mds-avatar-stack-large-size, --spacing(1500));
   --mds-avatar-stack-item-medium-size: var(--mds-avatar-stack-medium-size, --spacing(1200));
   --mds-avatar-stack-item-small-size: var(--mds-avatar-stack-small-size, --spacing(900));

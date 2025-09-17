@@ -4,34 +4,34 @@
 
 :host([variant="amaranth"]),
 :host([variant="amaranth"][tone="strong"]) {
-  --mds-label-background: var(--color-label-amaranth-04);
-  --mds-label-button-background: var(--color-label-amaranth-04);
-  --mds-label-button-background-hover: var(--color-label-amaranth-05);
-  --mds-label-button-icon-color: var(--color-label-amaranth-10);
-  --mds-label-color: var(--color-label-amaranth-10);
-  --mds-label-icon-color: var(--color-label-amaranth-10);
-  --mds-label-selection-background: var(--color-label-amaranth-08);
-  --mds-label-selection-color: var(--color-label-amaranth-02);
+  --mds-label-background: rgb(var(--label-amaranth-04));
+  --mds-label-button-background: rgb(var(--label-amaranth-04));
+  --mds-label-button-background-hover: rgb(var(--label-amaranth-05));
+  --mds-label-button-icon-color: rgb(var(--label-amaranth-10));
+  --mds-label-color: rgb(var(--label-amaranth-10));
+  --mds-label-icon-color: rgb(var(--label-amaranth-10));
+  --mds-label-selection-background: rgb(var(--label-amaranth-08));
+  --mds-label-selection-color: rgb(var(--label-amaranth-02));
 }
 
 :host([variant="amaranth"][tone="weak"]) {
-  --mds-label-background: var(--color-label-amaranth-08);
-  --mds-label-button-background: var(--color-label-amaranth-09);
-  --mds-label-button-background-hover: var(--color-label-amaranth-08);
-  --mds-label-button-icon-color: var(--color-label-amaranth-04);
-  --mds-label-color: var(--color-label-amaranth-02);
-  --mds-label-icon-color: var(--color-label-amaranth-02);
-  --mds-label-selection-background: var(--color-label-amaranth-06);
-  --mds-label-selection-color: var(--color-label-amaranth-10);
+  --mds-label-background: rgb(var(--label-amaranth-08));
+  --mds-label-button-background: rgb(var(--label-amaranth-09));
+  --mds-label-button-background-hover: rgb(var(--label-amaranth-08));
+  --mds-label-button-icon-color: rgb(var(--label-amaranth-04));
+  --mds-label-color: rgb(var(--label-amaranth-02));
+  --mds-label-icon-color: rgb(var(--label-amaranth-02));
+  --mds-label-selection-background: rgb(var(--label-amaranth-06));
+  --mds-label-selection-color: rgb(var(--label-amaranth-10));
 }
 
 :host([variant="amaranth"][tone="quiet"]) {
-  --mds-label-background: var(--color-label-amaranth-09);
-  --mds-label-button-background: var(--color-label-amaranth-09);
-  --mds-label-button-background-hover: var(--color-label-amaranth-08);
-  --mds-label-button-icon-color: var(--color-label-amaranth-04);
-  --mds-label-color: var(--color-label-amaranth-04);
-  --mds-label-icon-color: var(--color-label-amaranth-04);
-  --mds-label-selection-background: var(--color-label-amaranth-05);
-  --mds-label-selection-color: var(--color-label-amaranth-09);
+  --mds-label-background: rgb(var(--label-amaranth-09));
+  --mds-label-button-background: rgb(var(--label-amaranth-09));
+  --mds-label-button-background-hover: rgb(var(--label-amaranth-08));
+  --mds-label-button-icon-color: rgb(var(--label-amaranth-04));
+  --mds-label-color: rgb(var(--label-amaranth-04));
+  --mds-label-icon-color: rgb(var(--label-amaranth-04));
+  --mds-label-selection-background: rgb(var(--label-amaranth-05));
+  --mds-label-selection-color: rgb(var(--label-amaranth-09));
 }

@@ -15,11 +15,11 @@
  */
 
 :host {
-  --mds-chip-background: var(--color-tone-neutral);
+  --mds-chip-background: rgb(var(--tone-neutral));
   --mds-chip-border: transparent;
-  --mds-chip-color: var(--color-tone-neutral-03);
-  --mds-chip-icon-background: var(--color-variant-primary-06);
-  --mds-chip-icon-color: var(--color-tone-neutral);
+  --mds-chip-color: rgb(var(--tone-neutral-03));
+  --mds-chip-icon-background: rgb(var(--variant-primary-06));
+  --mds-chip-icon-color: rgb(var(--tone-neutral));
   --mds-chip-opacity-disabled: var(--opacity-disabled, 0.5);
   --mds-chip-shadow: var(--shadow-sharp);
 

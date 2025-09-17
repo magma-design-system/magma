@@ -47,14 +47,14 @@
   :host {
     --mds-tab-direction-vertical-columns: auto auto;
     --mds-tab-item-default-background: transparent;
-    --mds-tab-item-default-color: var(--color-tone-neutral-03);
+    --mds-tab-item-default-color: rgb(var(--tone-neutral-03));
     --mds-tab-item-default-shadow: transparent;
     --mds-tab-item-hover-background: transparent;
-    --mds-tab-item-hover-color: var(--color-tone-neutral-02);
+    --mds-tab-item-hover-color: rgb(var(--tone-neutral-02));
     --mds-tab-item-hover-shadow: transparent;
     --mds-tab-item-radius: var(--radius-lg);
-    --mds-tab-item-selected-background: var(--color-tone-neutral);
-    --mds-tab-item-selected-color: var(--color-tone-neutral-01);
+    --mds-tab-item-selected-background: rgb(var(--tone-neutral));
+    --mds-tab-item-selected-color: rgb(var(--tone-neutral-01));
     --mds-tab-item-selected-shadow: var(--shadow);
     --mds-tab-scroll-behavior: smooth;
     --mds-tab-scroll-scrollbar-margin: 0;
@@ -67,7 +67,7 @@
       var(--tone-neutral-06) 30%
     );
     --mds-tab-slide-delay: 0.125s;
-    --mds-tab-tabs-background: var(--color-tone-neutral-09);
+    --mds-tab-tabs-background: rgb(var(--tone-neutral-09));
     --mds-tab-tabs-gap: var(--padding-200);
     --mds-tab-tabs-overflow-shadow-size: --spacing(600);
     --mds-tab-tabs-overflow-shadow: 0 0

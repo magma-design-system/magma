@@ -1,17 +1,17 @@
 :host-context(.pref-theme-dark) {
-  --mds-table-background: var(--color-tone-neutral-08);
-  --mds-table-body-background-hover: var(--color-tone-neutral-10);
-  --mds-table-border-color: var(--color-tone-neutral-07);
-  --mds-table-color-hover: var(--color-tone-neutral-02);
-  --mds-table-color: var(--color-tone-neutral-03);
+  --mds-table-background: rgb(var(--tone-neutral-08));
+  --mds-table-body-background-hover: rgb(var(--tone-neutral-10));
+  --mds-table-border-color: rgb(var(--tone-neutral-07));
+  --mds-table-color-hover: rgb(var(--tone-neutral-02));
+  --mds-table-color: rgb(var(--tone-neutral-03));
 }
 
 @media (prefers-color-scheme: dark) {
   :host-context(.pref-theme-system) {
-    --mds-table-background: var(--color-tone-neutral-08);
-    --mds-table-body-background-hover: var(--color-tone-neutral-10);
-    --mds-table-border-color: var(--color-tone-neutral-07);
-    --mds-table-color-hover: var(--color-tone-neutral-02);
-    --mds-table-color: var(--color-tone-neutral-03);
+    --mds-table-background: rgb(var(--tone-neutral-08));
+    --mds-table-body-background-hover: rgb(var(--tone-neutral-10));
+    --mds-table-border-color: rgb(var(--tone-neutral-07));
+    --mds-table-color-hover: rgb(var(--tone-neutral-02));
+    --mds-table-color: rgb(var(--tone-neutral-03));
   }
 }

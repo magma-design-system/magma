@@ -6,7 +6,7 @@
 :host([expanded]) {
   @apply px-200;
 
-  --mds-input-tip-item-color: var(--color-tone-neutral);
+  --mds-input-tip-item-color: rgb(var(--tone-neutral));
 }
 
 :host([expanded]) .content {

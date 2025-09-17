@@ -16,7 +16,7 @@
     rounded-xl;
 
   align-items: center;
-  background-color: var(--color-tone-neutral-10);
+  background-color: rgb(var(--tone-neutral-10));
   display: flex;
   flex-direction: column;
   justify-items: center;

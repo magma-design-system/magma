@@ -1,44 +1,44 @@
 :host([variant="required"]) {
-  --mds-input-tip-item-background: var(--color-status-error-05);
+  --mds-input-tip-item-background: rgb(var(--status-error-05));
 }
 
 :host([variant="required-success"]) {
-  --mds-input-tip-item-background: var(--color-status-success-05);
+  --mds-input-tip-item-background: rgb(var(--status-success-05));
 }
 
 :host([variant="readonly"]) {
-  --mds-input-tip-item-background: var(--color-status-info-05);
+  --mds-input-tip-item-background: rgb(var(--status-info-05));
 }
 
 :host([variant="disabled"]) {
-  --mds-input-tip-item-background: var(--color-tone-neutral-05);
+  --mds-input-tip-item-background: rgb(var(--tone-neutral-05));
 }
 
 :host([variant="text"]) {
-  --mds-input-tip-item-background: var(--color-tone-neutral-03);
+  --mds-input-tip-item-background: rgb(var(--tone-neutral-03));
 }
 
 :host([variant="count-empty"]) {
-  --mds-input-tip-item-color: var(--color-status-info-02);
-  --mds-input-tip-item-background: var(--color-status-info-08);
+  --mds-input-tip-item-color: rgb(var(--status-info-02));
+  --mds-input-tip-item-background: rgb(var(--status-info-08));
 }
 
 :host([variant="count-incomplete"]) {
-  --mds-input-tip-item-color: var(--color-status-success-02);
-  --mds-input-tip-item-background: var(--color-status-success-08);
+  --mds-input-tip-item-color: rgb(var(--status-success-02));
+  --mds-input-tip-item-background: rgb(var(--status-success-08));
 }
 
 :host([variant="count-almost"]) {
-  --mds-input-tip-item-color: var(--color-status-warning-02);
-  --mds-input-tip-item-background: var(--color-status-warning-08);
+  --mds-input-tip-item-color: rgb(var(--status-warning-02));
+  --mds-input-tip-item-background: rgb(var(--status-warning-08));
 }
 
 :host([variant="count-almost-full"]) {
-  --mds-input-tip-item-color: var(--color-status-error-02);
-  --mds-input-tip-item-background: var(--color-status-error-08);
+  --mds-input-tip-item-color: rgb(var(--status-error-02));
+  --mds-input-tip-item-background: rgb(var(--status-error-08));
 }
 
 :host([variant="count-full"]) {
-  --mds-input-tip-item-color: var(--color-status-error-09);
-  --mds-input-tip-item-background: var(--color-status-error-05);
+  --mds-input-tip-item-color: rgb(var(--status-error-09));
+  --mds-input-tip-item-background: rgb(var(--status-error-05));
 }

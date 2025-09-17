@@ -1,8 +1,8 @@
 :host-context(.pref-contrast-more) {
-  --mds-kpi-item-info-background: var(--color-tone-neutral);
+  --mds-kpi-item-info-background: rgb(var(--tone-neutral));
 
   box-shadow: var(--shadow-lg), var(--shadow-outline);
-  color: var(--color-tone-neutral-01);
+  color: rgb(var(--tone-neutral-01));
 }
 
 :host-context(.pref-contrast-more) .info {
@@ -11,10 +11,10 @@
 
 @media (prefers-contrast: more) {
   :host-context(.pref-contrast-system) {
-    --mds-kpi-item-info-background: var(--color-tone-neutral);
+    --mds-kpi-item-info-background: rgb(var(--tone-neutral));
 
     box-shadow: var(--shadow-lg), var(--shadow-outline);
-    color: var(--color-tone-neutral-01);
+    color: rgb(var(--tone-neutral-01));
   }
 
   :host-context(.pref-contrast-system) .info {

@@ -1,31 +1,31 @@
 :host([variant="dark"]),
 :host([variant="dark"][tone="strong"]) {
-  --mds-banner-background: var(--color-tone-neutral-01);
-  --mds-banner-close-icon-hover-background: var(--color-tone-neutral-03);
-  --mds-banner-color: var(--color-tone-neutral-08);
-  --mds-banner-icon-color: var(--color-tone-neutral-07);
+  --mds-banner-background: rgb(var(--tone-neutral-01));
+  --mds-banner-close-icon-hover-background: rgb(var(--tone-neutral-03));
+  --mds-banner-color: rgb(var(--tone-neutral-08));
+  --mds-banner-icon-color: rgb(var(--tone-neutral-07));
   --mds-banner-shadow: var(--shadow-lg-sharp);
-  --mds-banner-cockade-background: var(--color-tone-neutral-04);
+  --mds-banner-cockade-background: rgb(var(--tone-neutral-04));
 }
 
 :host([variant="dark"][tone="weak"]) {
-  --mds-banner-background: var(--color-tone-neutral-03);
-  --mds-banner-close-icon-hover-background: var(--color-tone-neutral-05);
-  --mds-banner-color: var(--color-tone-neutral-09);
-  --mds-banner-icon-color: var(--color-tone-neutral-07);
+  --mds-banner-background: rgb(var(--tone-neutral-03));
+  --mds-banner-close-icon-hover-background: rgb(var(--tone-neutral-05));
+  --mds-banner-color: rgb(var(--tone-neutral-09));
+  --mds-banner-icon-color: rgb(var(--tone-neutral-07));
   --mds-banner-shadow: var(--shadow-sm-sharp);
 }
 
 :host([variant="dark"][tone="ghost"]) {
-  --mds-banner-color: var(--color-tone-neutral-05);
-  --mds-banner-close-icon-hover-background: var(--color-tone-neutral-03);
-  --mds-banner-icon-color: var(--color-tone-neutral-04);
+  --mds-banner-color: rgb(var(--tone-neutral-05));
+  --mds-banner-close-icon-hover-background: rgb(var(--tone-neutral-03));
+  --mds-banner-icon-color: rgb(var(--tone-neutral-04));
   --mds-banner-shadow: none;
 }
 
 :host([variant="dark"][tone="quiet"]) {
   --mds-banner-background: transparent;
   --mds-banner-close-icon-hover-background: transparent;
-  --mds-banner-color: var(--color-tone-neutral-04);
+  --mds-banner-color: rgb(var(--tone-neutral-04));
   --mds-banner-shadow: none;
 }

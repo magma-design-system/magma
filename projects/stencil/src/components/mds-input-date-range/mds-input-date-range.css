@@ -25,7 +25,7 @@
 */
 
   :host {
-    --mds-input-date-range-background: var(--color-tone-neutral);
+    --mds-input-date-range-background: rgb(var(--tone-neutral));
     --mds-input-date-range-fields-firefox-justify-content: start;
     --mds-input-date-range-fields-gap: 0 var(--spacing-200);
     --mds-input-date-range-icon-color: var(
@@ -41,7 +41,7 @@
     @apply gap-200
     text-info-detail;
 
-    color: var(--color-tone-neutral-02);
+    color: rgb(var(--tone-neutral-02));
     container-type: inline-size;
     cursor: text;
     display: flex;

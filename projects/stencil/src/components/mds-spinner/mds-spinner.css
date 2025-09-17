@@ -14,7 +14,7 @@
     w-1200;
 
   align-items: center;
-  color: var(--color-variant-primary-03);
+  color: rgb(var(--variant-primary-03));
   display: inline-flex;
   justify-content: center;
   opacity: 0;

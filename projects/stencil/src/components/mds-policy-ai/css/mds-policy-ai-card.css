@@ -2,7 +2,7 @@
 .mini-card {
   @apply grid-cols-full;
 
-  background-color: var(--color-tone-neutral);
+  background-color: rgb(var(--tone-neutral));
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-sm-sharp);
   display: inline-flex;
@@ -19,8 +19,8 @@
     p-100
     pt-400;
 
-  background-color: var(--color-variant-ai-05);
-  fill: var(--color-variant-ai-10);
+  background-color: rgb(var(--variant-ai-05));
+  fill: rgb(var(--variant-ai-10));
   height: --spacing(600);
   width: --spacing(600);
 }

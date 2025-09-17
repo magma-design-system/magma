@@ -9,8 +9,8 @@
  */
 
   :host {
-    --mds-text-selection-background: var(--color-label-sky-09);
-    --mds-text-selection-color: var(--color-label-sky-01);
+    --mds-text-selection-background: rgb(var(--label-sky-09));
+    --mds-text-selection-color: rgb(var(--label-sky-01));
     --mds-text-line-clamp: 3;
     --mds-text-animation-speed: 0.5;
     --mds-text-animation-placeholder-char: " ";
@@ -178,9 +178,9 @@
     py-25
     rounded;
 
-    background-color: var(--color-tone-neutral-09);
-    box-shadow: var(--color-tone-neutral-08) 0 0 0 1px;
-    color: var(--color-tone-neutral-03);
+    background-color: rgb(var(--tone-neutral-09));
+    box-shadow: rgb(var(--tone-neutral-08)) 0 0 0 1px;
+    color: rgb(var(--tone-neutral-03));
     transition-property: color, background-color;
   }
 

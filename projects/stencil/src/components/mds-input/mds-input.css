@@ -16,10 +16,10 @@
  */
 
 :host {
-  --mds-input-background: var(--color-tone-neutral);
+  --mds-input-background: rgb(var(--tone-neutral));
   --mds-input-icon-color: var(--mds-input-variant-color);
-  --mds-input-placeholder-default-color: var(--color-tone-neutral-06);
-  --mds-input-placeholder-focus-color: var(--color-tone-neutral-07);
+  --mds-input-placeholder-default-color: rgb(var(--tone-neutral-06));
+  --mds-input-placeholder-focus-color: rgb(var(--tone-neutral-07));
   --mds-input-placeholder-hover-color: var(--mds-input-placeholder-default-color);
   --mds-input-ring: 0 0 0 1px rgb(var(--mds-input-variant-color) / 0.1);
   --mds-input-shadow: 0 1px 3px 0 rgb(var(--mds-input-variant-color) / 0.1),
@@ -32,8 +32,8 @@
   --mds-input-variant-color: 0 0 0;
 
   /* private */
-  --mds-input-controls-border: 2px solid var(--color-tone-neutral-09);
-  --mds-input-controls-color: var(--color-tone-neutral-03);
+  --mds-input-controls-border: 2px solid rgb(var(--tone-neutral-09));
+  --mds-input-controls-color: rgb(var(--tone-neutral-03));
 
   @apply gap-200
     text-info-detail;
@@ -64,7 +64,7 @@
   border: 0;
   box-shadow: var(--mds-input-ring), var(--mds-input-shadow);
   box-sizing: border-box;
-  color: var(--color-tone-neutral-02);
+  color: rgb(var(--tone-neutral-02));
   max-width: 100%;
   min-height: 3rem;
   overflow: hidden;
@@ -117,12 +117,12 @@
 }
 
 .input:disabled {
-  background-color: var(--color-tone-neutral-10);
+  background-color: rgb(var(--tone-neutral-10));
 }
 
 .input:disabled,
 .input:disabled::placeholder {
-  color: var(--color-tone-neutral-05);
+  color: rgb(var(--tone-neutral-05));
 }
 
 .input.has-icon {
@@ -171,7 +171,7 @@
 }
 
 .counter-button:hover {
-  --mds-button-background: var(--color-tone-neutral-09);
+  --mds-button-background: rgb(var(--tone-neutral-09));
 }
 
 .counter .counter-button:first-child {
@@ -227,7 +227,7 @@
 
 .toggle-button--error {
   cursor: help;
-  fill: var(--color-tone-neutral-06);
+  fill: rgb(var(--tone-neutral-06));
 }
 
 .mic-toggle-button--recording {
@@ -289,7 +289,7 @@
   }
 
   :host {
-    --mds-input-background: var(--color-variant-primary-07);
+    --mds-input-background: rgb(var(--variant-primary-07));
   }
 }
 

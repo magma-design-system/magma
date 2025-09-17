@@ -7,8 +7,8 @@
  */
 
 :host {
-  --mds-accordion-timer-progress-bar-color: var(--color-tone-neutral-03);
-  --mds-accordion-timer-progress-bar-background: var(--color-tone-neutral-08);
+  --mds-accordion-timer-progress-bar-color: rgb(var(--tone-neutral-03));
+  --mds-accordion-timer-progress-bar-background: rgb(var(--tone-neutral-08));
   --mds-accordion-timer-progress-bar-thickness: --spacing(100);
   --mds-accordion-timer-duration: 500ms;
 

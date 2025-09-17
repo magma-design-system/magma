@@ -1,9 +1,9 @@
 :host-context(.pref-theme-dark) {
-  background-color: var(--color-tone-neutral-10);
+  background-color: rgb(var(--tone-neutral-10));
 }
 
 :host-context(.pref-theme-dark):host([selected]:not([selected="false"])) {
-  background-color: var(--color-tone-neutral-08);
+  background-color: rgb(var(--tone-neutral-08));
   box-shadow: var(--shadow-outline);
 }
 
@@ -13,11 +13,11 @@
 
 @media (prefers-color-scheme: dark) {
   :host-context(.pref-theme-system) {
-    background-color: var(--color-tone-neutral-10);
+    background-color: rgb(var(--tone-neutral-10));
   }
 
   :host-context(.pref-theme-system):host([selected]:not([selected="false"])) {
-    background-color: var(--color-tone-neutral-08);
+    background-color: rgb(var(--tone-neutral-08));
     box-shadow: var(--shadow-outline);
   }
 

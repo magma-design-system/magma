@@ -1,39 +1,39 @@
 :host-context(.pref-contrast-more):host([variant="success"]),
 :host-context(.pref-contrast-more):host([variant="success"][tone="strong"]) {
-  --mds-badge-background: var(--color-status-success-03);
+  --mds-badge-background: rgb(var(--status-success-03));
 }
 
 :host-context(.pref-contrast-more):host([variant="success"][tone="weak"]) {
-  --mds-badge-color: var(--color-status-success-01);
+  --mds-badge-color: rgb(var(--status-success-01));
 }
 
 :host-context(.pref-contrast-more):host([variant="success"][tone="quiet"]) {
-  --mds-badge-color: var(--color-status-success-02);
+  --mds-badge-color: rgb(var(--status-success-02));
 }
 
 :host-context(.pref-contrast-more):host([variant="success"][tone="ghost"]) {
   --mds-badge-background: transparent;
-  --mds-badge-color: var(--color-status-success-03);
-  --mds-badge-border-color: var(--color-status-success-03);
+  --mds-badge-color: rgb(var(--status-success-03));
+  --mds-badge-border-color: rgb(var(--status-success-03));
 }
 
 @media (prefers-contrast: more) {
   :host-context(.pref-contrast-system):host([variant="success"]),
   :host-context(.pref-contrast-system):host([variant="success"][tone="strong"]) {
-    --mds-badge-background: var(--color-status-success-03);
+    --mds-badge-background: rgb(var(--status-success-03));
   }
 
   :host-context(.pref-contrast-system):host([variant="success"][tone="weak"]) {
-    --mds-badge-color: var(--color-status-success-01);
+    --mds-badge-color: rgb(var(--status-success-01));
   }
 
   :host-context(.pref-contrast-system):host([variant="success"][tone="quiet"]) {
-    --mds-badge-color: var(--color-status-success-02);
+    --mds-badge-color: rgb(var(--status-success-02));
   }
 
   :host-context(.pref-contrast-system):host([variant="success"][tone="ghost"]) {
     --mds-badge-background: transparent;
-    --mds-badge-color: var(--color-status-success-03);
-    --mds-badge-border-color: var(--color-status-success-03);
+    --mds-badge-color: rgb(var(--status-success-03));
+    --mds-badge-border-color: rgb(var(--status-success-03));
   }
 }

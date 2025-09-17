@@ -21,10 +21,10 @@
  */
 
   :host {
-    --mds-filter-item-count-background-default: var(--color-tone-neutral-08);
-    --mds-filter-item-count-color-default: var(--color-tone-neutral-02);
-    --mds-filter-item-count-background-selected: var(--color-tone-neutral-05);
-    --mds-filter-item-count-color-selected: var(--color-tone-neutral);
+    --mds-filter-item-count-background-default: rgb(var(--tone-neutral-08));
+    --mds-filter-item-count-color-default: rgb(var(--tone-neutral-02));
+    --mds-filter-item-count-background-selected: rgb(var(--tone-neutral-05));
+    --mds-filter-item-count-color-selected: rgb(var(--tone-neutral));
 
     @apply duration-200
     ease-out
@@ -35,7 +35,7 @@
     rounded-full;
 
     align-items: center;
-    color: var(--color-tone-neutral-03);
+    color: rgb(var(--tone-neutral-03));
     cursor: pointer;
     display: flex;
     fill: currentcolor;
@@ -83,7 +83,7 @@
 
   :host([selected]:not([selected='false'])),
   :host(:hover) {
-    background-color: var(--color-tone-neutral);
+    background-color: rgb(var(--tone-neutral));
   }
 
   :host(:hover) {
@@ -91,7 +91,7 @@
   }
 
   :host([selected]:not([selected='false'])) {
-    color: var(--color-tone-neutral-01);
+    color: rgb(var(--tone-neutral-01));
   }
 
   :host([selected]:not([selected='false'])) .count {

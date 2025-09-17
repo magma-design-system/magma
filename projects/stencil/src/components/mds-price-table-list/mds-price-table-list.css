@@ -9,7 +9,7 @@
     p-600
     rounded-xl;
 
-  background-color: var(--color-label-green-10);
+  background-color: rgb(var(--label-green-10));
   display: grid;
   transition-property: background-color, color;
 }

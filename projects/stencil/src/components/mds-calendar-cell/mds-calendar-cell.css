@@ -1,15 +1,15 @@
 :host {
   --mds-calendar-cell-background: transparent;
   --mds-calendar-cell-boundaries-background: transparent;
-  --mds-calendar-cell-boundaries-color: var(--color-tone-neutral-01);
+  --mds-calendar-cell-boundaries-color: rgb(var(--tone-neutral-01));
   --mds-calendar-cell-boundaries-padding: --spacing(100);
-  --mds-calendar-cell-color: var(--color-tone-neutral-01);
+  --mds-calendar-cell-color: rgb(var(--tone-neutral-01));
   --mds-calendar-cell-other-month-background: transparent;
-  --mds-calendar-cell-other-month-color: var(--color-tone-neutral-07);
+  --mds-calendar-cell-other-month-color: rgb(var(--tone-neutral-07));
   --mds-calendar-cell-disabled-background: transparent;
-  --mds-calendar-cell-disabled-color: var(--color-tone-neutral-07);
+  --mds-calendar-cell-disabled-color: rgb(var(--tone-neutral-07));
   --mds-calendar-cell-weekend-background: transparent;
-  --mds-calendar-cell-weekend-color: var(--color-tone-neutral-06);
+  --mds-calendar-cell-weekend-color: rgb(var(--tone-neutral-06));
 
   /* radius */
   --mds-calendar-cell-size: --spacing(1200);
@@ -17,34 +17,34 @@
   --mds-calendar-cell-selection-week-boundaries-border-radius: calc(var(--mds-calendar-cell-size) / 2);
 
   /* today */
-  --mds-calendar-cell-preselection-today-background: var(--color-variant-primary-09);
-  --mds-calendar-cell-preselection-today-color: var(--color-variant-primary-03);
+  --mds-calendar-cell-preselection-today-background: rgb(var(--variant-primary-09));
+  --mds-calendar-cell-preselection-today-color: rgb(var(--variant-primary-03));
 
   /* preselection */
 
-  --mds-calendar-cell-preselection-current-month-background: var(--color-variant-primary-08);
-  --mds-calendar-cell-preselection-current-month-color: var(--color-tone-neutral-05);
-  --mds-calendar-cell-preselection-current-month-boundaries-color: var(--color-tone-neutral-05);
-  --mds-calendar-cell-preselection-current-month-boundaries-background: var(--color-variant-primary-10);
-  --mds-calendar-cell-preselection-other-month-background: var(--color-variant-primary-09);
-  --mds-calendar-cell-preselection-other-month-color: var(--color-tone-neutral-05);
-  --mds-calendar-cell-preselection-other-month-boundaries-color: var(--color-tone-neutral-05);
-  --mds-calendar-cell-preselection-other-month-boundaries-background: var(--color-tone-neutral);
+  --mds-calendar-cell-preselection-current-month-background: rgb(var(--variant-primary-08));
+  --mds-calendar-cell-preselection-current-month-color: rgb(var(--tone-neutral-05));
+  --mds-calendar-cell-preselection-current-month-boundaries-color: rgb(var(--tone-neutral-05));
+  --mds-calendar-cell-preselection-current-month-boundaries-background: rgb(var(--variant-primary-10));
+  --mds-calendar-cell-preselection-other-month-background: rgb(var(--variant-primary-09));
+  --mds-calendar-cell-preselection-other-month-color: rgb(var(--tone-neutral-05));
+  --mds-calendar-cell-preselection-other-month-boundaries-color: rgb(var(--tone-neutral-05));
+  --mds-calendar-cell-preselection-other-month-boundaries-background: rgb(var(--tone-neutral));
 
   /* selection */
 
-  --mds-calendar-cell-selection-current-month-background: var(--color-variant-primary-04);
-  --mds-calendar-cell-selection-current-month-color: var(--color-tone-neutral);
-  --mds-calendar-cell-selection-current-month-boundaries-background: var(--color-tone-neutral);
-  --mds-calendar-cell-selection-current-month-boundaries-color: var(--color-tone-neutral-03);
-  --mds-calendar-cell-selection-current-month-weekend-background: var(--color-variant-primary-03);
-  --mds-calendar-cell-selection-current-month-weekend-color: var(--color-variant-primary-07);
-  --mds-calendar-cell-selection-current-month-weekend-boundaries-background: var(--color-variant-primary-03);
-  --mds-calendar-cell-selection-current-month-weekend-boundaries-color: var(--color-tone-neutral-03);
-  --mds-calendar-cell-selection-other-month-background: var(--color-variant-primary-07);
-  --mds-calendar-cell-selection-other-month-color: var(--color-tone-neutral-04);
-  --mds-calendar-cell-selection-other-month-boundaries-background: var(--color-variant-primary-10);
-  --mds-calendar-cell-selection-other-month-boundaries-color: var(--color-tone-neutral-05);
+  --mds-calendar-cell-selection-current-month-background: rgb(var(--variant-primary-04));
+  --mds-calendar-cell-selection-current-month-color: rgb(var(--tone-neutral));
+  --mds-calendar-cell-selection-current-month-boundaries-background: rgb(var(--tone-neutral));
+  --mds-calendar-cell-selection-current-month-boundaries-color: rgb(var(--tone-neutral-03));
+  --mds-calendar-cell-selection-current-month-weekend-background: rgb(var(--variant-primary-03));
+  --mds-calendar-cell-selection-current-month-weekend-color: rgb(var(--variant-primary-07));
+  --mds-calendar-cell-selection-current-month-weekend-boundaries-background: rgb(var(--variant-primary-03));
+  --mds-calendar-cell-selection-current-month-weekend-boundaries-color: rgb(var(--tone-neutral-03));
+  --mds-calendar-cell-selection-other-month-background: rgb(var(--variant-primary-07));
+  --mds-calendar-cell-selection-other-month-color: rgb(var(--tone-neutral-04));
+  --mds-calendar-cell-selection-other-month-boundaries-background: rgb(var(--variant-primary-10));
+  --mds-calendar-cell-selection-other-month-boundaries-color: rgb(var(--tone-neutral-05));
 
   aspect-ratio: 1 / 1;
   display: flex;

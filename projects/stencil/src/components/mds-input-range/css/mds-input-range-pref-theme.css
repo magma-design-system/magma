@@ -1,13 +1,13 @@
 :host-context(.pref-theme-dark) {
-  --mds-input-range-thumb-background: var(--color-variant-primary-04);
-  --mds-input-range-track-background: var(--color-tone-neutral-07);
-  --mds-input-range-track-progress-background: var(--color-variant-primary-05);
+  --mds-input-range-thumb-background: rgb(var(--variant-primary-04));
+  --mds-input-range-track-background: rgb(var(--tone-neutral-07));
+  --mds-input-range-track-progress-background: rgb(var(--variant-primary-05));
 }
 
 @media (prefers-color-scheme: dark) {
   :host-context(.pref-theme-system) {
-    --mds-input-range-thumb-background: var(--color-variant-primary-04);
-    --mds-input-range-track-background: var(--color-tone-neutral-07);
-    --mds-input-range-track-progress-background: var(--color-variant-primary-05);
+    --mds-input-range-thumb-background: rgb(var(--variant-primary-04));
+    --mds-input-range-track-background: rgb(var(--tone-neutral-07));
+    --mds-input-range-track-progress-background: rgb(var(--variant-primary-05));
   }
 }

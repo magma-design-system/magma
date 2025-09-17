@@ -1,9 +1,9 @@
 :host-context(.pref-theme-dark) {
-  --mds-accordion-item-border-color: var(--mds-accordion-border-color, var(--color-tone-neutral-06));
+  --mds-accordion-item-border-color: var(--mds-accordion-border-color, rgb(var(--tone-neutral-06)));
 }
 
 @media (prefers-color-scheme: dark) {
   :host-context(.pref-theme-system) {
-    --mds-accordion-item-border-color: var(--mds-accordion-border-color, var(--color-tone-neutral-06));
+    --mds-accordion-item-border-color: var(--mds-accordion-border-color, rgb(var(--tone-neutral-06)));
   }
 }
