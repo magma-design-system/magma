@@ -13,9 +13,9 @@ Generated at {{ date }}
           {{#ifEquals @key 'light'}}
             {{#each palettes as | palette |}}
               {{#ifEquals @key 'color'}}
-  --{{@../../../key}}-{{@../../key}}: {{palette.value}};
+  --hex-{{@../../../key}}-{{@../../key}}: {{palette.value}};
               {{else}}
-  --{{@../../../key}}-{{@../../key}}-{{leadZero @key}}: {{palette.value}};
+  --hex-{{@../../../key}}-{{@../../key}}-{{leadZero @key}}: {{palette.value}};
               {{/ifEquals}}
             {{/each}}
           {{/ifEquals}}
@@ -33,9 +33,9 @@ Generated at {{ date }}
           {{#ifEquals @key 'dark'}}
             {{#each palettes as | palette |}}
               {{#ifEquals @key 'color'}}
-  --{{@../../../key}}-{{@../../key}}: {{palette.value}};
+  --hex-{{@../../../key}}-{{@../../key}}: {{palette.value}};
               {{else}}
-  --{{@../../../key}}-{{@../../key}}-{{leadZero @key}}: {{palette.value}};
+  --hex-{{@../../../key}}-{{@../../key}}-{{leadZero @key}}: {{palette.value}};
               {{/ifEquals}}
             {{/each}}
           {{/ifEquals}}
@@ -54,9 +54,9 @@ Generated at {{ date }}
             {{#ifEquals @key 'dark'}}
               {{#each palettes as | palette |}}
                 {{#ifEquals @key 'color'}}
-    --{{@../../../key}}-{{@../../key}}: {{palette.value}};
+    --hex-{{@../../../key}}-{{@../../key}}: {{palette.value}};
                 {{else}}
-    --{{@../../../key}}-{{@../../key}}-{{leadZero @key}}: {{palette.value}};
+    --hex-{{@../../../key}}-{{@../../key}}-{{leadZero @key}}: {{palette.value}};
                 {{/ifEquals}}
               {{/each}}
             {{/ifEquals}}
