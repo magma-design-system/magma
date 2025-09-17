@@ -1,4 +1,5 @@
 @reference '../../tailwind/index.css';
+
 @supports (-moz-appearance: none) {
   .action-open-calendar {
     display: none;

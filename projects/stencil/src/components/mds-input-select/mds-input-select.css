@@ -12,7 +12,6 @@
 
 
 
-@layer magma {
 
   :host {
     @apply text-info-detail;
@@ -173,4 +172,4 @@
       --mds-input-select-background: rgb(var(--variant-primary-07));
     }
   }
-}
+

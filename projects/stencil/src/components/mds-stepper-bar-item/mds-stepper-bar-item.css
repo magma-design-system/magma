@@ -6,7 +6,6 @@
 
 
 
-@layer magma {
 
   /**
  * @prop --mds-stepper-bar-item-color: Sets the color of the text
@@ -192,4 +191,4 @@
     color: rgb(var(--tone-neutral-04));
     pointer-events: none;
   }
-}
+

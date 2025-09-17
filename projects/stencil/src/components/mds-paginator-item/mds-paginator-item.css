@@ -1,6 +1,5 @@
 @reference '../../tailwind/index.css';
-@reference '@maggioli-design-system/styles/dist/css/animations.css'
- ; /* included for focus effect */
+@reference '@maggioli-design-system/styles/dist/css/animations.css';
 @import '../../tailwind/components.css';
 
 @import './css/mds-paginator-item-pref-animation.css';
@@ -8,7 +7,6 @@
 @import '../../tailwind/fouc.css';
 
 
-@layer magma {
 
 
   /**
@@ -102,4 +100,4 @@
 
     fill: currentcolor;
   }
-}
+

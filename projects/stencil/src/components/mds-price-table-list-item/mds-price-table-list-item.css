@@ -3,7 +3,6 @@
 
 @import '../../tailwind/fouc.css';
 
-@layer magma {
   :host {
     --mds-price-table-list-item-supported-icon-color-hover: rgb(var(--label-green-05));
     --mds-price-table-list-item-supported-icon-color: rgb(var(--label-green-06));
@@ -38,4 +37,4 @@
   :host([supported]:not([supported='false'])) .icon {
     fill: var(--mds-price-table-list-item-supported-icon-color);
   }
-}
+

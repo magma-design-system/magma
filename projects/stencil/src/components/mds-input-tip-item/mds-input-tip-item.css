@@ -9,7 +9,6 @@
 
 
 
-@layer magma {
 
   /**
  * @prop --mds-input-tip-item-background: Sets the background color of the tip item.
@@ -68,4 +67,4 @@
     fill: var(--mds-input-tip-item-icon-color);
     transform: translateY(-1px);
   }
-}
+

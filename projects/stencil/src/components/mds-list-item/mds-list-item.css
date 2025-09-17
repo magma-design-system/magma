@@ -6,7 +6,6 @@
 
 
 
-@layer magma {
 
   /**
  * @prop --mds-list-item-icon-margin: Sets the margin of the component's icon
@@ -47,4 +46,4 @@
   :host([typography='option']) {
     --mds-list-item-icon-margin: -0.5rem var(--spacing-200) 0 0;
   }
-}
+

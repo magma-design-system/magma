@@ -6,7 +6,6 @@
 
 
 
-@layer magma {
 
   /**
  * @prop --mds-keyboard-background-default: `private` Set the default background color of the keyboard area.
@@ -111,4 +110,4 @@
   ::slotted(mds-keyboard-key) {
     align-self: flex-end;
   }
-}
+

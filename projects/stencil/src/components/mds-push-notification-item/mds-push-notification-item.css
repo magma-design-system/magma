@@ -12,7 +12,6 @@
 
 
 
-@layer magma {
 
   :host {
     --mds-push-notification-item-duration: 300ms;
@@ -151,4 +150,4 @@
   :host([icon]) .avatar::part(wrapper) {
     @apply p-150;
   }
-}
+

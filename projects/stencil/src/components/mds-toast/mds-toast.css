@@ -1,7 +1,6 @@
 @reference '../../tailwind/index.css';
 @import './css/animate/components.css';
 
-@layer magma {
 
 
   /**
@@ -97,7 +96,7 @@
     flex-shrink: 0;
     transition-property: fill;
   }
-}
+
 
 @import './css/variant/mds-toast-variant-dark.css';
 @import './css/variant/mds-toast-variant-error.css';

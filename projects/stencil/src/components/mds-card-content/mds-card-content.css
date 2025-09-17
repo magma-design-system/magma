@@ -2,7 +2,6 @@
 
 @import '../../tailwind/fouc.css';
 
-@layer magma {
   :host {
     @apply gap-400
     p-400;
@@ -11,4 +10,4 @@
     grid-template-columns: repeat(auto-fit, minmax(1px, 100%));
     min-width: 0;
   }
-}
+

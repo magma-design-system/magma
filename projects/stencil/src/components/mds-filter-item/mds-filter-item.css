@@ -1,6 +1,5 @@
 @reference '../../tailwind/index.css';
-@reference '@maggioli-design-system/styles/dist/css/animations.css'
- ; /* included for focus effect */
+@reference '@maggioli-design-system/styles/dist/css/animations.css';
 @import '../../tailwind/components.css';
 
 
@@ -11,7 +10,6 @@
 
 
 
-@layer magma {
 
   /**
  * @prop --mds-filter-item-count-background-default: Sets tge default `background-color` of the count element
@@ -98,4 +96,4 @@
     background-color: var(--mds-filter-item-count-background-selected);
     color: var(--mds-filter-item-count-color-selected);
   }
-}
+

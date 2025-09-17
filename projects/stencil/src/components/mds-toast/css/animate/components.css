@@ -1,6 +1,4 @@
 @reference '../../tailwind/index.css';
-/*  */
-
 
 @utility animate-intro {
   @apply duration-500

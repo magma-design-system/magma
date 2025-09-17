@@ -1,4 +1,5 @@
 @reference '../../tailwind/index.css';
+
 :host {
   @apply
     duration-200

@@ -1,7 +1,5 @@
 @reference '../../tailwind/index.css';
-@reference '@maggioli-design-system/styles/dist/tailwind/typography.css'
- ;
-
+@reference '@maggioli-design-system/styles/dist/tailwind/typography.css';
 
 @import '../../tailwind/fouc.css';
 @import './css/mds-input-date-range-pref-animation.css';
@@ -12,7 +10,6 @@
 
 
 
-@layer magma {
 
   /**
  * @prop --mds-input-date-range-background: Sets the background-color of the component
@@ -137,4 +134,4 @@
   mds-dropdown {
     padding: 0;
   }
-}
+

@@ -1,4 +1,5 @@
 @reference '../../tailwind/index.css';
+
 .mini-card {
   @apply grid-cols-full;
 

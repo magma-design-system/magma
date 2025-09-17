@@ -32,6 +32,7 @@ export default {
         ],
       },
     ],
+    'no-irregular-whitespace': true,
     'at-rule-no-deprecated': [true, { ignoreAtRules: ['apply', 'reference'] }],
     'at-rule-no-unknown': [
       true,

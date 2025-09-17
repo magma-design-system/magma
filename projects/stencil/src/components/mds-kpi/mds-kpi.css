@@ -1,4 +1,5 @@
 @reference '../../tailwind/index.css';
+
 /**
  * @prop --mds-kpi-text-animation-placeholder-char: Sets the animation placeholder char of the text
  * @prop --mds-kpi-text-animation-speed: Sets the animation speed of the text

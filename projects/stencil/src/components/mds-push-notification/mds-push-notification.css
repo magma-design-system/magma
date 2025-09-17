@@ -7,7 +7,6 @@
 
 
 
-@layer magma {
 
   :host {
     --mds-push-notification-fadeout-delay: 0s;
@@ -74,4 +73,4 @@
     );
     visibility: hidden;
   }
-}
+

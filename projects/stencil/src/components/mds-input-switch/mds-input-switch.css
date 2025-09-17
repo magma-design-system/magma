@@ -13,7 +13,6 @@
 
 
 
-@layer magma {
 
   /**
  * @prop --mds-input-switch-animation-timing-adjust: Set the size multiplier when the switch toggle is resizing by animation
@@ -264,4 +263,4 @@
       width: var(--mds-input-switch-toggle-size);
     }
   }
-}
+

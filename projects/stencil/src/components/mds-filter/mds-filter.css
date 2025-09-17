@@ -9,7 +9,6 @@
 
 
 
-@layer magma {
 
   /**
  * @prop --mds-filter-items-background-active: Sets the background-color of the items row area when a filter is active
@@ -87,4 +86,4 @@
   .active {
     background-color: var(--mds-filter-items-background-active);
   }
-}
+

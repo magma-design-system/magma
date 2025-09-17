@@ -1,6 +1,5 @@
 @reference '../../tailwind/index.css';
-@reference '@maggioli-design-system/styles/dist/css/animations.css'
- ; /* included for focus effect */
+@reference '@maggioli-design-system/styles/dist/css/animations.css';
 @import '../../tailwind/components.css';
 
 @import './css/mds-modal-action-close.css';
@@ -17,7 +16,6 @@
 
 
 
-@layer magma {
 
   /**
  * @prop --mds-modal-custom-closed-transform: Sets the transform position of the custom window when it's outside the viewport, to it's default position
@@ -52,10 +50,13 @@
     --mds-modal-window-radius: 0;
     --mds-modal-window-shadow: var(--shadow-2xl);
     --mds-modal-z-index: var(--magma-modal-z-index);
+
     /* private */
     --mds-modal-custom-opened-transform: translate(0, 0);
+
     /* private */
     --mds-modal-transition-window-transform: translate(0);
+
     /* private */
     --mds-modal-window-close-margin: --spacing(2000);
 
@@ -75,4 +76,4 @@
     transition-timing-function: var(--mds-modal-transition-timing-funciton);
     z-index: var(--mds-modal-z-index, 1000);
   }
-}
+

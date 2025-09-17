@@ -9,7 +9,6 @@
 
 
 
-@layer magma {
 
   /**
  * @prop --mds-progress-background: Sets the background-color of the component
@@ -56,4 +55,4 @@
     transition-duration: var(--mds-progress-duration);
     transition-property: background-color, flex-grow;
   }
-}
+

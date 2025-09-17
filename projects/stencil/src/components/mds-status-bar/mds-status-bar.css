@@ -15,7 +15,7 @@ mds-modal {
   border-radius: var(--radius-xl) var(--radius-xl) 0 0;
   margin-left: --spacing(600);
   margin-right: --spacing(600);
-  padding: --spacing(200) --spacing(200) --spacing(600) --spacing(200);
+  padding: --spacing(200) --spacing(200) --spacing(600);
   transition-property: background-color, transform, opacity;
 }
 
@@ -23,7 +23,7 @@ mds-modal {
   align-items: flex-start;
   background-color: rgb(var(--tone-neutral));
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-DEFAULT);
+  box-shadow: var(--shadow-md);
   display: inline-flex;
   flex-wrap: wrap;
   gap: --spacing(400);

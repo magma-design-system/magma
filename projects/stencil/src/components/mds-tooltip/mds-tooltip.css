@@ -1,4 +1,5 @@
 @reference '../../tailwind/index.css';
+
 /**
  * @prop --mds-tooltip-arrow-background: Sets the fill color of the arrow.
  * @prop --mds-tooltip-background: Sets the background-color of the tooltip.

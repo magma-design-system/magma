@@ -8,7 +8,6 @@
 
 
 
-@layer magma {
 
   @container style(--mds-tree-branch-use-rounded-border: true) {
     :host-context(:not(.safari)) {
@@ -155,4 +154,4 @@
     background-color: var(--mds-tree-item-label-hover-background);
     fill: var(--mds-tree-item-label-icon-hover-color);
   }
-}
+

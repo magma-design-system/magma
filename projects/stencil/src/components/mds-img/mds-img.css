@@ -7,7 +7,6 @@
 
 
 
-@layer magma {
 
   :host {
     --mds-img-background: rgb(var(--variant-primary-03));
@@ -70,4 +69,4 @@
 
     fill: var(--mds-img-icon-color);
   }
-}
+

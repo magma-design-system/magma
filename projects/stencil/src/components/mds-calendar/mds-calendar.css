@@ -6,7 +6,6 @@
 
 
 
-@layer magma {
   :host {
     --mds-calendar-day-number-other-month-color: rgb(var(--tone-neutral-07));
     --mds-calendar-day-number-color: rgb(var(--tone-neutral-01));
@@ -81,6 +80,6 @@
     min-height: auto;
     padding: 0;
   }
-}
+
 
 

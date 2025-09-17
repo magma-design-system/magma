@@ -10,7 +10,6 @@
 
 
 
-@layer magma {
   :host {
     @apply duration-200
     ease-out
@@ -122,4 +121,4 @@
 
     fill: rgb(var(--status-success-06));
   }
-}
+

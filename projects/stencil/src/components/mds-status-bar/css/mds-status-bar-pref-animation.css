@@ -1,9 +1,9 @@
 :host-context(.pref-animation-reduce) .status-bar-area {
-  transition-duration: 0;
+  transition-duration: 0s;
 }
 
 @media (prefers-reduced-motion) {
   :host-context(.pref-animation-system) .status-bar-area {
-    transition-duration: 0;
+    transition-duration: 0s;
   }
 }

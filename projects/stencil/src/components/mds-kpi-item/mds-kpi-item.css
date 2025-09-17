@@ -1,4 +1,5 @@
 @reference '../../tailwind/index.css';
+
 /**
  * @prop --mds-kpi-item-icon-color: Set the fill color of the icon element
  * @prop --mds-kpi-item-info-background: Set the `background-color` of the text area element
