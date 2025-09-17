@@ -46,7 +46,7 @@
   }
 
   :host([required]:not([required='false']):focus-within) .icon {
-    transform: translate(var(--spacing-150), var(--spacing-150));
+    transform: translate(--spacing(150), --spacing(150));
   }
 
   :host(:hover),
@@ -122,7 +122,7 @@
 
   :host([disabled]:not([disabled='false'])) .icon {
     fill: rgb(var(--tone-neutral-06));
-    transform: translate(var(--spacing-250), var(--spacing-200));
+    transform: translate(--spacing(250), --spacing(200));
   }
 
   .icon-container {

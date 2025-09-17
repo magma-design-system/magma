@@ -26,11 +26,11 @@
   :host {
     --mds-filter-items-background-active: rgb(var(--tone-neutral-09));
     --mds-filter-items-background: rgb(var(--tone-neutral-09));
-    --mds-filter-items-gap: var(--spacing-200);
-    --mds-filter-items-padding: var(--spacing-200);
+    --mds-filter-items-gap: --spacing(200);
+    --mds-filter-items-padding: --spacing(200);
     --mds-filter-items-radius: var(--radius-full);
     --mds-filter-items-scroll-behavior: smooth;
-    --mds-filter-label-padding: 0 var(--spacing-600);
+    --mds-filter-label-padding: 0 --spacing(600);
     --mds-filter-wrapper-shadow-color: rgb(var(--tone-neutral-06));
     --mds-filter-wrapper-shadow: 0 0 0 2px
       var(--mds-filter-wrapper-shadow-color) inset;

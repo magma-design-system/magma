@@ -10,7 +10,7 @@
 
   :host {
     --mds-push-notification-fadeout-delay: 0s;
-    --mds-push-notification-gap: var(--spacing-200);
+    --mds-push-notification-gap: --spacing(200);
     --mds-push-notification-items-intro-delay: 300ms;
     --mds-push-notification-items-outro-delay: 0ms;
     --mds-push-notification-items-duration: 300ms;

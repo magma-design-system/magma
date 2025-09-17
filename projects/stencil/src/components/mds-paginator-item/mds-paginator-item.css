@@ -40,7 +40,7 @@
     --mds-paginator-item-shadow-hover: none;
     --mds-paginator-item-shadow-selected: var(--shadow-md-sharp);
     --mds-paginator-item-shadow: none;
-    --mds-paginator-item-size: var(--spacing-900);
+    --mds-paginator-item-size: --spacing(900);
 
     @apply duration-200
     ease-out

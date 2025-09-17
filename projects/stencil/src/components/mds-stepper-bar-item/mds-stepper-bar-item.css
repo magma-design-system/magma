@@ -156,7 +156,7 @@
             ) *
             -1
         ) -
-        (var(--spacing-100))
+        (--spacing(100))
     );
     position: relative;
     z-index: -1;

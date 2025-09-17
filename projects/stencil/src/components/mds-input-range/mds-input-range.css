@@ -21,11 +21,11 @@
  */
 
   :host {
-    --mds-input-range-thumb-size: var(--spacing-400);
+    --mds-input-range-thumb-size: --spacing(400);
     --mds-input-range-thumb-background: rgb(var(--variant-primary-04));
     --mds-input-range-thumb-shadow: 0 0 0 2px rgb(var(--tone-neutral));
     --mds-input-range-track-background: rgb(var(--tone-neutral-08));
-    --mds-input-range-track-size: var(--spacing-200);
+    --mds-input-range-track-size: --spacing(200);
     --mds-input-range-track-progress-background: rgb(var(--variant-primary-03));
     --mds-input-range-thumb-background-disabled: rgb(var(--tone-neutral-06));
     --mds-input-range-track-background-disabled: rgb(var(--tone-neutral-08));

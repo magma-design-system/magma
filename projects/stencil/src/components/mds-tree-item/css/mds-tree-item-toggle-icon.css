@@ -46,14 +46,14 @@
 }
 
 :host-context([toggle="folder"][toggle-position="left"]) .toggle-icon mds-button {
-  box-shadow: 0 var(--spacing-25) 0 0 var(--mds-tree-item-branch-border-color);
+  box-shadow: 0 --spacing(25) 0 0 var(--mds-tree-item-branch-border-color);
 }
 
 :host-context([toggle="folder"]) .toggle-icon mds-button {
   --size: auto;
 
   border-radius: var(--radius);
-  padding: var(--spacing-25) var(--spacing-50);
+  padding: --spacing(25) --spacing(50);
 }
 
 :host-context([toggle="folder"]) .toggle-icon {
@@ -102,8 +102,8 @@
   --size: auto;
 
   border-radius: var(--radius);
-  box-shadow: 0 var(--spacing-25) 0 0 var(--mds-tree-item-branch-border-color);
-  padding: var(--spacing-25) var(--spacing-50);
+  box-shadow: 0 --spacing(25) 0 0 var(--mds-tree-item-branch-border-color);
+  padding: --spacing(25) --spacing(50);
 }
 
 .toggle-icon--folder {

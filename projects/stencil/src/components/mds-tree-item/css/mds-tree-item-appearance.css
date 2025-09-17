@@ -11,7 +11,7 @@
 }
 
 :host-context([appearance="none"]) .label-action {
-  --padding: var(--padding-200);
+  --padding: --spacing(200);
 
   margin-left: 0;
   padding-left: var(--padding);
@@ -19,10 +19,10 @@
 }
 
 :host-context([appearance="none"][toggle-position="left"]) .children {
-  padding-left: calc(calc(var(--header-gap) * 2) + var(--mds-tree-item-branch-border-size) + var(--padding-left) * 2);
+  padding-left: calc(calc(var(--header-gap) * 2) + var(--mds-tree-item-branch-border-size) + var(--mds-tree-item-children-padding-left) * 2);
 }
 
 :host-context([appearance="none"][toggle-position="right"]) .children {
-  padding-left: var(--padding-left);
+  padding-left: var(--mds-tree-item-children-padding-left);
 }
 

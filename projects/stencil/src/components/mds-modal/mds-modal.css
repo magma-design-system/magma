@@ -37,7 +37,7 @@
   :host {
     --mds-modal-custom-closed-transform: rotateX(10deg) rotateY(0) scale(1.25)
       translate(0, 10%);
-    --mds-modal-custom-window-distance: var(--spacing-600);
+    --mds-modal-custom-window-distance: --spacing(600);
     --mds-modal-overlay-color: var(--magma-overlay-color, 0 0 0);
     --mds-modal-overlay-opacity: var(--magma-overlay-opacity, 0.5);
     --mds-modal-transition-duration: 500ms;

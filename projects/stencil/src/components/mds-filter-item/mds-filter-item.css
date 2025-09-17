@@ -63,8 +63,8 @@
     height: --spacing(400);
     justify-content: center;
     min-width: --spacing(400);
-    padding-left: var(--padding-150);
-    padding-right: var(--padding-150);
+    padding-left: --spacing(150);
+    padding-right: --spacing(150);
     transition-property: background-color, color;
     user-select: none;
   }

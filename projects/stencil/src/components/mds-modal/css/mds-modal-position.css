@@ -48,8 +48,8 @@
 }
 
 :host([position="left"]) .action-close {
-  right: var(--spacing-300);
-  top: var(--spacing-300);
+  right: --spacing(300);
+  top: --spacing(300);
 }
 
 :host([position="left"][opened]) .action-close {
@@ -105,8 +105,8 @@
 }
 
 :host([position="right"]) .action-close {
-  left: var(--spacing-300);
-  top: var(--spacing-300);
+  left: --spacing(300);
+  top: --spacing(300);
 }
 
 :host([position="right"]:not([opened])) .action-close {

@@ -31,7 +31,7 @@
     color: var(--mds-input-tip-item-color);
     display: flex;
     justify-content: center;
-    min-width: var(--spacing-300);
+    min-width: --spacing(300);
     padding: 0;
     pointer-events: none;
     position: static;
@@ -56,7 +56,7 @@
   }
 
   .text {
-    line-height: var(--spacing-300);
+    line-height: --spacing(300);
   }
 
   .icon {

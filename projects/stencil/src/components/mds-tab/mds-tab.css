@@ -11,10 +11,7 @@
 @import './css/mds-tab-pref-animation.css';
 @import '../../tailwind/fouc.css';
 
-
-
-
-  /**
+/**
  * @prop --mds-tab-item-default-background: Sets the `background-color` of `mds-tab-item` or `mds-tab::part(slider)` depending on attribute `animation`
  * @prop --mds-tab-item-default-color: Sets the `color` of `mds-tab-item` or `mds-tab::part(slider)` depending on attribute `animation`
  * @prop --mds-tab-item-default-shadow: Sets the `box-shadow` of `mds-tab-item` or `mds-tab::part(slider)` depending on attribute `animation`
@@ -58,26 +55,20 @@
     --mds-tab-scroll-behavior: smooth;
     --mds-tab-scroll-scrollbar-margin: 0;
     --mds-tab-scroll-scrollbar-radius: 0;
-    --mds-tab-scroll-scrollbar-size: var(--spacing-200);
-    --mds-tab-scroll-scrollbar-thumb-background: rgb(
-      var(--tone-neutral-02) 30%
-    );
-    --mds-tab-scroll-scrollbar-track-background: rgb(
-      var(--tone-neutral-06) 30%
-    );
+    --mds-tab-scroll-scrollbar-size: --spacing(200);
+    --mds-tab-scroll-scrollbar-thumb-background: rgb(var(--tone-neutral-02) 30%);
+    --mds-tab-scroll-scrollbar-track-background: rgb(var(--tone-neutral-06) 30%);
     --mds-tab-slide-delay: 0.125s;
     --mds-tab-tabs-background: rgb(var(--tone-neutral-09));
-    --mds-tab-tabs-gap: var(--padding-200);
+    --mds-tab-tabs-gap: --spacing(200);
     --mds-tab-tabs-overflow-shadow-size: --spacing(600);
-    --mds-tab-tabs-overflow-shadow: 0 0
-      var(--mds-tab-tabs-overflow-shadow-size) -2px rgb(0 0 0 / 0.375);
-    --mds-tab-tabs-padding: var(--padding-200);
+    --mds-tab-tabs-overflow-shadow: 0 0 var(--mds-tab-tabs-overflow-shadow-size) -2px rgb(0 0 0 / 0.375);
+    --mds-tab-tabs-padding: --spacing(200);
     --mds-tab-tabs-radius: var(--radius-2xl);
     --mds-tab-tabs-wrapper-margin: 0;
     --mds-tab-tabs-wrapper-outline-opacity: 0.7;
     --mds-tab-tabs-wrapper-shadow-color: var(--mds-tab-tabs-background);
-    --mds-tab-tabs-wrapper-shadow: 0 0 0 2px
-      var(--mds-tab-tabs-wrapper-shadow-color) inset;
+    --mds-tab-tabs-wrapper-shadow: 0 0 0 2px var(--mds-tab-tabs-wrapper-shadow-color) inset;
     --mds-tab-transition-duration: 0.5s;
     --mds-tab-transition-timing-function: var(--ease-out-expo);
 

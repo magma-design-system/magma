@@ -39,12 +39,12 @@
     --mds-keyboard-fill-fail: rgb(var(--status-error-06));
     --mds-keyboard-fill-pass: rgb(var(--status-success-06));
     --mds-keyboard-illumination-dark-opacity: 0.05;
-    --mds-keyboard-illumination-dark-size: var(--spacing-150);
+    --mds-keyboard-illumination-dark-size: --spacing(150);
     --mds-keyboard-illumination-dark: 0
       calc(var(--mds-keyboard-illumination-dark-size) * -1) 0 0
       rgb(0 0 0 / var(--mds-keyboard-illumination-dark-opacity)) inset;
     --mds-keyboard-illumination-light-opacity: 0.075;
-    --mds-keyboard-illumination-light-size: var(--spacing-25);
+    --mds-keyboard-illumination-light-size: --spacing(25);
     --mds-keyboard-illumination-light: 0
       var(--mds-keyboard-illumination-light-size) 0 0
       rgb(255 255 255 / var(--mds-keyboard-illumination-light-opacity)) inset;
@@ -53,7 +53,7 @@
     --mds-keyboard-key-illumination-dark-opacity: 0.075;
     --mds-keyboard-key-illumination-light-opacity: 0.5;
     --mds-keyboard-key-illumination-shadow: var(--shadow-sharp);
-    --mds-keyboard-padding: var(--spacing-200);
+    --mds-keyboard-padding: --spacing(200);
     --mds-keyboard-spinner-duration: 1s;
 
     align-items: center;
@@ -65,7 +65,7 @@
       var(--mds-keyboard-illumination-shadow);
     color: var(--mds-keyboard-color);
     display: inline-flex;
-    gap: var(--spacing-200);
+    gap: --spacing(200);
     padding: calc(
         var(--mds-keyboard-illumination-light-size) +
           var(--mds-keyboard-padding)
@@ -83,13 +83,13 @@
 
   .errors {
     display: grid;
-    gap: var(--spacing-100);
+    gap: --spacing(100);
   }
 
   .shortcuts {
     align-items: center;
     display: inline-flex;
-    gap: var(--spacing-100);
+    gap: --spacing(100);
     outline: 0;
   }
 

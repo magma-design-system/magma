@@ -24,7 +24,7 @@
   :host {
     --mds-input-date-range-background: rgb(var(--tone-neutral));
     --mds-input-date-range-fields-firefox-justify-content: start;
-    --mds-input-date-range-fields-gap: 0 var(--spacing-200);
+    --mds-input-date-range-fields-gap: 0 --spacing(200);
     --mds-input-date-range-icon-color: var(
       --mds-input-date-range-variant-color
     );
@@ -48,7 +48,7 @@
 
   .date-preselection {
     display: grid;
-    gap: var(--spacing-200);
+    gap: --spacing(200);
   }
 
   .inputs {
@@ -107,8 +107,8 @@
   }
 
   .date-label {
-    margin-left: var(--spacing-50);
-    margin-right: var(--spacing-50);
+    margin-left: --spacing(50);
+    margin-right: --spacing(50);
     min-width: min-content;
     white-space: nowrap;
   }

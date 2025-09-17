@@ -109,7 +109,7 @@
     --mds-tree-item-icon-color: var(
       --mds-tree-item-toggle-icon-chevron-default-color
     );
-    --header-gap: var(--spacing-100);
+    --header-gap: --spacing(100);
 
     display: grid;
     transition-duration: var(--mds-tree-item-transition-duration);
@@ -131,14 +131,14 @@
     align-items: stretch;
     display: flex;
     flex-grow: 1;
-    gap: var(--spacing-200);
+    gap: --spacing(200);
     justify-content: space-between;
     min-width: 0;
   }
 
   .label-action {
     --mds-button-line-clamp: var(--mds-tree-item-line-clamp);
-    --padding: var(--padding-100);
+    --padding: --spacing(100);
 
     background-color: var(--mds-tree-item-label-default-background);
     border-radius: var(--radius-lg);

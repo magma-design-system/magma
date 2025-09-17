@@ -33,14 +33,14 @@
     --mds-horizontal-scroll-dot-max-width: auto;
     --mds-horizontal-scroll-dot-background: rgb(var(--tone-neutral));
     --mds-horizontal-scroll-dot-area-background: rgb(var(--tone-neutral-08));
-    --mds-horizontal-scroll-contents-padding: var(--spacing-600);
-    --mds-horizontal-scroll-contents-scroll-padding: 0 var(--spacing-600);
+    --mds-horizontal-scroll-contents-padding: --spacing(600);
+    --mds-horizontal-scroll-contents-scroll-padding: 0 --spacing(600);
     --mds-horizontal-scroll-controls-margin: --spacing(1200);
-    --mds-horizontal-scroll-gap: var(--spacing-600);
+    --mds-horizontal-scroll-gap: --spacing(600);
     --mds-horizontal-scroll-max-width: var(--breakpoint-wide);
     --mds-horizontal-scroll-scrollbar-margin: 0;
     --mds-horizontal-scroll-scrollbar-radius: 0;
-    --mds-horizontal-scroll-scrollbar-size: var(--spacing-200);
+    --mds-horizontal-scroll-scrollbar-size: --spacing(200);
     --mds-horizontal-scroll-scrollbar-thumb-background: rgb(
       var(--tone-neutral-02) 30%
     );
