@@ -1,6 +1,6 @@
 @reference '../../tailwind/index.css';
 
-@import '../../tailwind/components.css';
+@reference '../../tailwind/components.css';
 
 /**
  * @prop --mds-breadcrumb-arrow-depth-color: Sets the color of the arrow icon that separates buttons

@@ -1,5 +1,5 @@
 @reference '../../tailwind/index.css';
-@import '../../tailwind/components.css';
+@reference '../../tailwind/components.css';
 
 @import './css/mds-paginator-pref-animation.css';
 @import './css/mds-paginator-pref-theme.css';

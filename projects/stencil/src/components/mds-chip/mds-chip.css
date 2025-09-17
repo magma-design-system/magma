@@ -1,6 +1,6 @@
 @reference '../../tailwind/index.css';
 @reference '@maggioli-design-system/styles/dist/css/animations.css';
-@import '../../tailwind/components.css';
+@reference '../../tailwind/components.css';
 
 /**
  * @prop --mds-chip-background: Sets the `background-color` of the component

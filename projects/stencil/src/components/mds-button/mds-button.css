@@ -1,6 +1,6 @@
 /* @reference '../../tailwind/index.css'; */
 @reference '@maggioli-design-system/styles/dist/css/animations.css';
-@import '../../tailwind/components.css';
+@reference '../../tailwind/components.css';
 
 /**
  * @prop --mds-button-await-duration: Sets the duration of the rotation of the spinner await component

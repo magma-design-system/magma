@@ -1,5 +1,5 @@
 /* stylelint-disable media-query-no-invalid */
-@import '../../tailwind/components.css';
+@reference '../../tailwind/components.css';
 
 
 @import './css/mds-horizontal-scroll-pref-animation.css';

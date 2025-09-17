@@ -1,4 +1,4 @@
-@import '../../tailwind/components.css';
+@reference '../../tailwind/components.css';
 
 @import './css/mds-keyboard-test.css';
 @import './css/mds-keyboard-pref-theme.css';

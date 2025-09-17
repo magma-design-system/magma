@@ -1,5 +1,5 @@
 @reference '../../tailwind/index.css';
-@import '../../tailwind/components.css';
+@reference '../../tailwind/components.css';
 
 @import './css/mds-progress-variant.css';
 @import './css/mds-progress-pref-animation.css';

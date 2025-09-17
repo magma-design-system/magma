@@ -3,7 +3,7 @@
  ;
 @reference '@maggioli-design-system/styles/dist/css/animations.css'
  ;
-@import '../../tailwind/components.css';
+@reference '../../tailwind/components.css';
 
 @import './css/mds-table-header-cell-pref-animation.css';
 @import '../../tailwind/fouc.css';

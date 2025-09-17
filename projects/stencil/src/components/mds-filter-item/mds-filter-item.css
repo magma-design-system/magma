@@ -1,6 +1,6 @@
 @reference '../../tailwind/index.css';
 @reference '@maggioli-design-system/styles/dist/css/animations.css';
-@import '../../tailwind/components.css';
+@reference '../../tailwind/components.css';
 
 
 @import './css/mds-filter-item-pref-animation.css';

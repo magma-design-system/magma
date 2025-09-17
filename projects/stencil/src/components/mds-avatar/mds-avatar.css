@@ -1,6 +1,6 @@
 @reference '../../tailwind/index.css';
 
-@import '../../tailwind/components.css';
+@reference '../../tailwind/components.css';
 
 /**
  * @prop --mds-avatar-background-color-pending: The background-color when an image is loading
