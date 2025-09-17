@@ -1,12 +1,8 @@
 @reference '../../tailwind/index.css';
 
-
 @import '../../tailwind/fouc.css';
 
-
-
 @layer magma {
-
   :host {
     background-color: rgb(var(--tone-neutral-09));
     display: grid;

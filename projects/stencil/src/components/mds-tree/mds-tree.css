@@ -1,4 +1,5 @@
 @reference '../../tailwind/index.css';
+
 /**
  * @prop --mds-tree-actions-border-radius: Sets the border-radius of the wrapper container of the actions.
  * @prop --mds-tree-actions-gap: Sets the gap between the actions.

@@ -1,5 +1,3 @@
-
-
 @import './css/mds-tree-item-actions.css';
 @import './css/mds-tree-item-children.css';
 @import './css/mds-tree-item-tree-node.css';
@@ -20,6 +18,7 @@
 
   @container style(--mds-tree-branch-use-rounded-border: false) {
     :host-context(:not(.safari)) {
+
       /* stylelint-disable-next-line length-zero-no-unit */
       --mds-tree-branch-border-radius: 0px;
     }

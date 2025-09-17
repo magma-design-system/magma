@@ -1,12 +1,10 @@
 @reference '../../tailwind/index.css';
-@import '../../tailwind/components.css';
+@reference '../../tailwind/components.css';
 
 @import '../../tailwind/fouc.css';
 
 
-
 @layer magma {
-
   :host {
     --mds-help-tooltip-width: fit-content;
     --mds-help-tooltip-max-width: 280px;
