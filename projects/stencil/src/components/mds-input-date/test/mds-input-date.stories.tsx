@@ -3,6 +3,10 @@ import { h } from '@stencil/core'
 export default {
   title: 'Form / Input Date',
   argTypes: {
+    disabled: {
+      type: { name: 'boolean' },
+      description: 'If true, the element is displayed as disabled',
+    },
     min: {
       type: { name: 'string' },
       description: 'Specifies the min date can be set',
@@ -10,6 +14,15 @@ export default {
     max: {
       type: { name: 'string' },
       description: 'Specifies the max date can be set',
+    },
+    readOnly: {
+      type: { name: 'boolean' },
+      description: 'Specifies that the element is read-only',
+    },
+    required: {
+      type: { name: 'boolean' },
+      description:
+        'Specifies that the element must be filled out before submitting the form',
     },
     value: {
       type: { name: 'string' },
@@ -55,5 +68,21 @@ export const Invalid = {
 
   args: {
     value: '2025-04-31',
+  },
+}
+
+export const Required = {
+  render: Template,
+
+  args: {
+    required: true,
+  },
+}
+
+export const Disabled = {
+  render: Template,
+
+  args: {
+    disabled: true,
   },
 }

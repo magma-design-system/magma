@@ -4,7 +4,7 @@ import {
 } from '@dictionary/floating-ui'
 import { dropdownInteractionDictionary } from '../meta/dictionary'
 import { h } from '@stencil/core'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 export default {
   title: 'UI / Dropdown',
@@ -279,7 +279,13 @@ const TemplatePerformance = ({ ...args }) => (
 )
 
 const TemplateModalNested = () => {
-  const [isModalOpened, setModalOpen] = useState(false)
+  const [isModalOpened, setModalOpen] = useState(true)
+
+  useEffect(() => {
+    document.querySelector('mds-modal')?.addEventListener('mdsModalClose', () => {
+      setModalOpen(false)
+    })
+  })
 
   return (
     <div class="grid">
@@ -291,9 +297,6 @@ const TemplateModalNested = () => {
       <mds-modal
         position="right"
         opened={isModalOpened}
-        onMdsModalClose={() => {
-          setModalOpen(false)
-        }}
       >
         <header
           slot="top"
