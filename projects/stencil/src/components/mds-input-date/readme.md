@@ -7,12 +7,16 @@
 
 ## Properties
 
-| Property | Attribute | Description                                                                                                             | Type             | Default |
-| -------- | --------- | ----------------------------------------------------------------------------------------------------------------------- | ---------------- | ------- |
-| `delay`  | `delay`   | Specifies the delay in milliseconds before closing the calendar dropdown, if the value is 0 the dropdown will not close | `number`         | `500`   |
-| `max`    | `max`     | Specifies the max date of the range, user cannot set dates after this date                                              | `null \| string` | `null`  |
-| `min`    | `min`     | Specifies the min date of the range, user cannot set dates before this date                                             | `null \| string` | `null`  |
-| `value`  | `value`   | Specifies the value of the input                                                                                        | `string`         | `''`    |
+| Property   | Attribute  | Description                                                                                                             | Type                                                                            | Default     |
+| ---------- | ---------- | ----------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ----------- |
+| `delay`    | `delay`    | Specifies the delay in milliseconds before closing the calendar dropdown, if the value is 0 the dropdown will not close | `number`                                                                        | `500`       |
+| `disabled` | `disabled` | If true, the element is displayed as disabled                                                                           | `boolean \| undefined`                                                          | `false`     |
+| `max`      | `max`      | Specifies the max date of the range, user cannot set dates after this date                                              | `null \| string`                                                                | `null`      |
+| `min`      | `min`      | Specifies the min date of the range, user cannot set dates before this date                                             | `null \| string`                                                                | `null`      |
+| `readonly` | `readonly` | Specifies that the element is read-only                                                                                 | `boolean \| undefined`                                                          | `false`     |
+| `required` | `required` | Specifies that the element must be filled out before submitting the form                                                | `boolean \| undefined`                                                          | `false`     |
+| `value`    | `value`    | Specifies the value of the input                                                                                        | `string`                                                                        | `''`        |
+| `variant`  | `variant`  | Sets the variant of the input field                                                                                     | `"ai" \| "error" \| "info" \| "primary" \| "success" \| "warning" \| undefined` | `'primary'` |
 
 
 ## Events
@@ -86,6 +90,8 @@ Type: `Promise<void>`
 ### Depends on
 
 - [mds-button](../mds-button)
+- [mds-input-tip](../mds-input-tip)
+- [mds-input-tip-item](../mds-input-tip-item)
 - [mds-dropdown](../mds-dropdown)
 - [mds-calendar](../mds-calendar)
 
@@ -93,11 +99,14 @@ Type: `Promise<void>`
 ```mermaid
 graph TD;
   mds-input-date --> mds-button
+  mds-input-date --> mds-input-tip
+  mds-input-date --> mds-input-tip-item
   mds-input-date --> mds-dropdown
   mds-input-date --> mds-calendar
   mds-button --> mds-spinner
   mds-button --> mds-icon
   mds-button --> mds-text
+  mds-input-tip-item --> mds-text
   mds-calendar --> mds-button
   mds-calendar --> mds-calendar-cell
   mds-calendar-cell --> mds-button

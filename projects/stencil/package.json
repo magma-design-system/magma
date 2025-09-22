@@ -1,6 +1,6 @@
 {
   "name": "@maggioli-design-system/magma",
-  "version": "1.10.2",
+  "version": "1.10.3",
   "description": "Magma is Maggioli Design System's web-components library.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -79,6 +79,7 @@
     "@stencil/postcss": "2.1.0",
     "@stencil/react-output-target": "1.0.2",
     "@storybook/addon-a11y": "9.0.15",
+    "@storybook/addon-docs": "9.0.15",
     "@storybook/addon-links": "9.0.15",
     "@storybook/addon-styling-webpack": "2.0.0",
     "@storybook/addon-webpack5-compiler-babel": "3.0.6",
@@ -109,8 +110,7 @@
     "style-loader": "3.3.3",
     "tailwindcss": "3.4.17",
     "ts-loader": "9.5.0",
-    "tsconfig-paths-webpack-plugin": "4.1.0",
-    "@storybook/addon-docs": "9.0.15"
+    "tsconfig-paths-webpack-plugin": "4.1.0"
   },
   "author": {
     "name": "Vittorio Vittori",

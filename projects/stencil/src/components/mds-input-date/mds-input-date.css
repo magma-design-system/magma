@@ -140,6 +140,9 @@
   top: 0;
 }
 
+:host([disabled]:not([disabled="false"])) .action-open-calendar {
+  transform: translate(theme('spacing.250'), theme('spacing.200'));
+}
 
 mds-calendar {
   min-width: max-content;

@@ -25,7 +25,7 @@ export class MdsModal {
   private top = false
   private bodyOverflow: string
   private bottom = false
-  private cssTransitionDuration: string
+  private cssTransitionDuration: string = '500'
   private windowElement: HTMLElement
   private touchStartX: number
   private touchStartY: number
@@ -221,7 +221,7 @@ export class MdsModal {
 
   render () {
     return (
-      <Host aria-modal={clsx(this.opened ? 'true' : 'false' )} onClick={(e: Event) => { this.closeModal(e) }}>
+      <Host aria-modal={clsx(this.opened ? 'true' : 'false' )} onMouseDown={(e: Event) => { this.closeModal(e) }}>
         { this.window
           ? <slot name="window"/>
           : <div class={clsx('window', (this.top || this.bottom) && `window-${this.top ? '-top' : ''}${this.bottom ? '-bottom' : ''}`)} part="window">

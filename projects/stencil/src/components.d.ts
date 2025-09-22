@@ -1140,6 +1140,10 @@ export namespace Components {
           * @description Default is 500
          */
         "delay": number;
+        /**
+          * If true, the element is displayed as disabled
+         */
+        "disabled"?: boolean;
         "focusInput": () => Promise<void>;
         /**
           * Specifies the max date of the range, user cannot set dates after this date
@@ -1151,6 +1155,14 @@ export namespace Components {
           * @description It's in ISO format (YYYY-MM-DD).
          */
         "min": string | null;
+        /**
+          * Specifies that the element is read-only
+         */
+        "readonly"?: boolean;
+        /**
+          * Specifies that the element must be filled out before submitting the form
+         */
+        "required"?: boolean;
         "setValue": (value: string) => Promise<void>;
         "updateLang": () => Promise<void>;
         /**
@@ -1158,6 +1170,10 @@ export namespace Components {
           * @description It's in ISO format (YYYY-MM-DD).
          */
         "value": string;
+        /**
+          * Sets the variant of the input field
+         */
+        "variant"?: ThemeInputVariantType;
     }
     interface MdsInputDateRange {
         /**
@@ -1391,6 +1407,10 @@ export namespace Components {
           * Specifies the max number of files that can be uploaded
          */
         "maxFiles": number;
+        /**
+          * Reset component's files
+         */
+        "reset": () => Promise<void>;
         /**
           * Specifies if the component should show a sort widget by status or date of upload, if not defined let user choose
          */
@@ -4911,6 +4931,10 @@ declare namespace LocalJSX {
          */
         "delay"?: number;
         /**
+          * If true, the element is displayed as disabled
+         */
+        "disabled"?: boolean;
+        /**
           * Specifies the max date of the range, user cannot set dates after this date
           * @description It's in ISO format (YYYY-MM-DD).
          */
@@ -4922,10 +4946,22 @@ declare namespace LocalJSX {
         "min"?: string | null;
         "onMdsInputDateSelect"?: (event: MdsInputDateCustomEvent<string>) => void;
         /**
+          * Specifies that the element is read-only
+         */
+        "readonly"?: boolean;
+        /**
+          * Specifies that the element must be filled out before submitting the form
+         */
+        "required"?: boolean;
+        /**
           * Specifies the value of the input
           * @description It's in ISO format (YYYY-MM-DD).
          */
         "value"?: string;
+        /**
+          * Sets the variant of the input field
+         */
+        "variant"?: ThemeInputVariantType;
     }
     interface MdsInputDateRange {
         /**
