@@ -167,7 +167,7 @@ const Template = args => {
         <GetNotifications notifications={notifications} />
       </mds-push-notification>
       <div class="p-1200 flex justify-center">
-        <div class="grid gap-600 grid-cols-3 mobile:grid-cols-1 max-w-screen-desktop">
+        <div class="grid gap-600 grid-cols-3 max-mobile:grid-cols-1 max-w-screen-desktop">
           {Array(18)
             .fill(null)
             .map((_item, index) => {

@@ -9,7 +9,7 @@ const Template = args => (
     <mds-text typography="h1" tag="h3" class="desktop:hidden">
       Choose the plan for you
     </mds-text>
-    <div class="grid tablet:grid-cols-2 mobile:grid-cols-1 gap-600">
+    <div class="grid tablet:grid-cols-2 max-mobile:grid-cols-1 gap-600">
       <mds-price-table {...args} class="desktop:hidden">
         <mds-price-table-list>
           <mds-text typography="h5" tag="h4" slot="header">
@@ -245,7 +245,7 @@ const Template = args => (
     <mds-price-table {...args} class="tablet-max:hidden">
       <mds-price-table-header
         {...args}
-        class="mobile:grid-cols-1 tablet:grid-cols-3 desktop:grid-cols-4"
+        class="max-mobile:grid-cols-1 tablet:grid-cols-3 desktop:grid-cols-4"
       >
         <mds-text
           typography="h1"
