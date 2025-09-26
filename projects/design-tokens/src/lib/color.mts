@@ -1,4 +1,4 @@
-import { BackgroundColor, Color, InterpolationColorspace, Theme, type ContrastColor, type ContrastColorBackground, type RgbHexColor } from '@adobe/leonardo-contrast-colors'
+import { BackgroundColor, Color, InterpolationColorspace, Theme, type ContrastColor, type ContrastColorBackground, type RgbHexColor } from '@/leonardo/index.js'
 import chalk from 'chalk'
 import DEFAULTS from '../config/deafult-color.json' with {type: 'json'}
 export interface SeedConfig {

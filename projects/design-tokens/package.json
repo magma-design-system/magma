@@ -41,7 +41,9 @@
     "magma-design-tokens": "dist/src/cli.mjs"
   },
   "dependencies": {
-    "@adobe/leonardo-contrast-colors": "1.0.0",
+    "chroma-js": "3.1.2",
+    "apca-w3": "0.1.9",
+    "hsluv": "0.1.0",
     "arg": "5.0.2",
     "chalk": "5.4.1",
     "handlebars": "4.7.8",
