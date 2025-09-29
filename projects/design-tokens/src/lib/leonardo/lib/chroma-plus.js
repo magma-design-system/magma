@@ -10,7 +10,6 @@ governing permissions and limitations under the License.
 */
 
 import chromajs from 'chroma-js'
-import 'hsluv'
 import ciebase from 'ciebase'
 import ciecam02 from 'ciecam02'
 import { Hsluv } from 'hsluv'

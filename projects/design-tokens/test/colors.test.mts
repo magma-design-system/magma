@@ -1,55 +1,55 @@
+import { expect, test } from 'vitest'
+
 import { createColorTokens, formatColortoTokens } from '../src/lib/color.mjs'
 import baseColorResult from './fixtures/base-color-result.json'
 import baseColor from './fixtures/base-color.json'
 import baseColorExport from './fixtures/base-color-export.json'
 import baseColorExportResult from './fixtures/base-color-export-result.json'
-import { ContrastColor } from '@adobe/leonardo-contrast-colors'
+import { ContrastColor } from '@/leonardo/index.js'
 
-describe('Colors generated', () => {
-  it('should create tokens', () => {
-    const result = createColorTokens(baseColor.colors)
-    expect(result.tokens).toEqual(baseColorResult)
-    expect(result.exportGroups).toEqual({ default: baseColorResult })
-  })
-  it('should create tokens with different export', () => {
-    const result = createColorTokens(baseColorExport.colors)
-    expect(result.tokens).toEqual(baseColorResult)
-    expect(result.exportGroups).toEqual(baseColorExportResult)
-  })
-  it('should create tokens with no export', () => {
-    const color = {
-      colors: [
-        { color: '#00379E', name: 'variant.primary' },
-        { color: '#0f4ad5', name: 'variant.secondary' },
-      ],
-    }
-    const result = createColorTokens(color.colors)
-    expect(result.tokens).toEqual(baseColorResult)
-    expect(result.exportGroups).toEqual({})
-  })
-  it('should format color', () => {
-    const { contrastColorsLight, contrastColorsDark, formatColortoTokensResultLight, formatColortoTokensResultDark } = getDataForFormatColor()
-    const name = 'variant.primary'
-    const color = '#00379E'
-    const tokensLight = formatColortoTokens(contrastColorsLight, name, color)
-    const tokensDark = formatColortoTokens(contrastColorsDark, name, color)
-    expect(tokensLight).toEqual(formatColortoTokensResultLight)
-    expect(tokensDark).toEqual(formatColortoTokensResultDark)
-  })
-  it('should format color with seed', () => {
-    const { contrastColorsLight, contrastColorsDark, formatColortoTokensResultLight, formatColortoTokensResultDark } = getDataForFormatColor()
-    const name = 'variant.primary'
-    const color = '#00379E'
-    const seed = { light: '#FFFFFF', dark: '#000000' }
-    const tokensLight = formatColortoTokens(contrastColorsLight, name, color, seed, 'light')
-    const tokensDark = formatColortoTokens(contrastColorsDark, name, color, seed, 'dark')
-
-    // color value should be the seed color
-    expect(tokensLight).toEqual({ ...formatColortoTokensResultLight, color: { value: seed.light } })
-    expect(tokensDark).toEqual({ ...formatColortoTokensResultDark, color: { value: seed.dark } })
-  })
-
+test('should create tokens', () => {
+  const result = createColorTokens(baseColor.colors)
+  expect(result.tokens).toEqual(baseColorResult)
+  expect(result.exportGroups).toEqual({ default: baseColorResult })
 })
+test('should create tokens with different export', () => {
+  const result = createColorTokens(baseColorExport.colors)
+  expect(result.tokens).toEqual(baseColorResult)
+  expect(result.exportGroups).toEqual(baseColorExportResult)
+})
+test('should create tokens with no export', () => {
+  const color = {
+    colors: [
+      { color: '#00379E', name: 'variant.primary' },
+      { color: '#0f4ad5', name: 'variant.secondary' },
+    ],
+  }
+  const result = createColorTokens(color.colors)
+  expect(result.tokens).toEqual(baseColorResult)
+  expect(result.exportGroups).toEqual({})
+})
+test('should format color', () => {
+  const { contrastColorsLight, contrastColorsDark, formatColortoTokensResultLight, formatColortoTokensResultDark } = getDataForFormatColor()
+  const name = 'variant.primary'
+  const color = '#00379E'
+  const tokensLight = formatColortoTokens(contrastColorsLight, name, color)
+  const tokensDark = formatColortoTokens(contrastColorsDark, name, color)
+  expect(tokensLight).toEqual(formatColortoTokensResultLight)
+  expect(tokensDark).toEqual(formatColortoTokensResultDark)
+})
+test('should format color with seed', () => {
+  const { contrastColorsLight, contrastColorsDark, formatColortoTokensResultLight, formatColortoTokensResultDark } = getDataForFormatColor()
+  const name = 'variant.primary'
+  const color = '#00379E'
+  const seed = { light: '#FFFFFF', dark: '#000000' }
+  const tokensLight = formatColortoTokens(contrastColorsLight, name, color, seed, 'light')
+  const tokensDark = formatColortoTokens(contrastColorsDark, name, color, seed, 'dark')
+
+  // color value should be the seed color
+  expect(tokensLight).toEqual({ ...formatColortoTokensResultLight, color: { value: seed.light } })
+  expect(tokensDark).toEqual({ ...formatColortoTokensResultDark, color: { value: seed.dark } })
+})
+
 
 function getDataForFormatColor () {
   const contrastColorsLight: ContrastColor[] = [
