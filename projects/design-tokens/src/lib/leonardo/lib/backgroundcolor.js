@@ -45,14 +45,8 @@ class BackgroundColor extends Color {
       // Convert to HSLuv and keep track of original indices
       .map((c, i) => ({value: Math.round(hsluvArray(c)[2]), index: i}));
 
-      // backgroundColorScale.forEach(c => {
-      //   if(!isNaN(hsluvArray(c)[2])) console.log('[background] hsluv array', c, Math.round(hsluvArray(c)[2]))
-      // });
-    // console.log('colorObj', colorObj)
     const colorObjFiltered = removeDuplicates(colorObj, 'value');
-    console.log('colorObjFiltered', colorObjFiltered)
     const bgColorArrayFiltered = colorObjFiltered.map((data) => backgroundColorScale[data.index]);
-    console.log('colorArrayFiltered', bgColorArrayFiltered)
 
     // Manually cap the background array at 100 colors, then add white back to the end
     // since it sometimes gets removed.
@@ -62,9 +56,6 @@ class BackgroundColor extends Color {
     }
 
     this._backgroundColorScale = bgColorArrayFiltered.map((color) => convertColorValue(color, this._output));
-
-    console.log('[backgroung] color scale: ', this._backgroundColorScale)
-
     return this._backgroundColorScale;
   }
 }

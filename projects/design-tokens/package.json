@@ -31,7 +31,7 @@
     "clean": "tsx scripts/clean.ts",
     "postbuild": "tsx scripts/postbuild.ts",
     "cli": "npm run clean && npm run build-cli && npm run postbuild && node ./dist/src/cli.mjs",
-    "test": "NODE_OPTIONS=--experimental-vm-modules jest"
+    "test": "vitest --run"
   },
   "main": "dist/js/tailwind-colors-css-vars.js",
   "files": [

@@ -326,10 +326,8 @@ function convertColorValue(color, format, object = false) {
   if (format === 'HEX') {
     if (object) {
       const rgb = chroma(String(color)).rgb();
-      console.log('rgb converCOlorValue', rgb)
       return {r: rgb[0], g: rgb[1], b: rgb[2]};
     }
-    console.log('rgb converCOlorValue', colorObj)
 
     return colorObj;
   }

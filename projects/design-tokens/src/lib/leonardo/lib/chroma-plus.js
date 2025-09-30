@@ -155,15 +155,10 @@ const extendChroma = chroma => {
     hsluv.rgb_g = rgb[1]
     hsluv.rgb_b = rgb[2]
     hsluv.rgbToHsluv()
-    console.log('[chroma.prototype.hsluv]', [hsluv.hsluv_h, hsluv.hsluv_l, hsluv.hsluv_s])
     return [hsluv.hsluv_h, hsluv.hsluv_s, hsluv.hsluv_l]
   }
 
-  chroma.hsluv = (...args) => {
-
-    console.log('[chroma]:', Hsluv.hsluvToRgb(args).map(c => Math.floor(c * 255)))
-    return new chroma.Color(...Hsluv.hsluvToRgb(args).map(c => Math.floor(c * 255)), 'rgb')
-  }
+  chroma.hsluv = (...args) => new chroma.Color(...Hsluv.hsluvToRgb(args).map(c => Math.floor(c * 255)), 'rgb')
 
   const oldInterpol = chroma.interpolate
   const RGB2 = {

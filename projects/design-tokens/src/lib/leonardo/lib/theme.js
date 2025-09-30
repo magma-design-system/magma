@@ -202,7 +202,6 @@ class Theme {
   }
 
   _setBackgroundColor(backgroundColor) {
-    console.log('setbackgrounfcolor', backgroundColor)
     if (typeof backgroundColor === 'string') {
       // If it's a string, convert to Color object and assign lightness.
       const newBackgroundColor = new BackgroundColor({
@@ -213,7 +212,6 @@ class Theme {
       const calcLightness = round(chroma(String(backgroundColor)).hsluv()[2]);
 
 
-      console.log('calcLightness', calcLightness)
       this._backgroundColor = newBackgroundColor;
       this._lightness = calcLightness;
       this._backgroundColorValue = newBackgroundColor[this._lightness];
@@ -223,8 +221,6 @@ class Theme {
 
       this._backgroundColor = backgroundColor;
       this._backgroundColorValue = calcBackgroundColorValue;
-      console.log('')
-      console.log('set backgoroung value', this._backgroundColor, this._backgroundColorValue)
     }
   }
 
@@ -239,9 +235,6 @@ class Theme {
   }
 
   _findContrastColors() {
-    console.log('_lightness', this._lightness)
-    console.log('backgorund scale', this._backgroundColor.backgroundColorScale)
-    console.log('background color', this._backgroundColorValue)
     const bgRgbArray = chroma(String(this._backgroundColorValue)).rgb();
     const baseV = this._lightness / 100;
     const convertedBackgroundColorValue = convertColorValue(this._backgroundColorValue, this._output);
