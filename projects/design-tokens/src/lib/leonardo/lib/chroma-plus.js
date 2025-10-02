@@ -10,27 +10,12 @@ governing permissions and limitations under the License.
 */
 
 import chromajs from 'chroma-js'
-import ciebase from 'ciebase'
-import ciecam02 from 'ciecam02'
+import Color from 'colorjs.io'
 import { Hsluv } from 'hsluv'
 
-const cam = ciecam02.cam(
-  {
-    whitePoint: ciebase.illuminant.D65,
-    adaptingLuminance: 40,
-    backgroundLuminance: 20,
-    surroundType: 'average',
-    discounting: false,
-  },
-  ciecam02.cfs('JCh'),
-)
+const jch2rgb = jch => new Color('CAM16-JMH', jch).to('srgb').coords
+const rgb2jch = rgb => new Color('srgb', rgb ).to('CAM16-JMH').coords
 
-const xyz = ciebase.xyz(ciebase.workspace.sRGB, ciebase.illuminant.D65)
-const jch2rgb = jch => xyz.toRgb(cam.toXyz({ J: jch[0], C: jch[1], h: jch[2] }))
-const rgb2jch = rgb => {
-  const jch = cam.fromXyz(xyz.fromRgb(rgb))
-  return [jch.J, jch.C, jch.h]
-}
 const [jch2jab, jab2jch] = (() => {
   const coefs = { k_l: 1, c1: 0.007, c2: 0.0228 }
   const π = Math.PI

@@ -45,6 +45,7 @@
     "arg": "5.0.2",
     "chalk": "5.4.1",
     "chroma-js": "3.1.2",
+    "colorjs.io": "0.5.2",
     "handlebars": "4.7.8",
     "hex-rgb": "4.3.0",
     "hsluv": "1.0.1",

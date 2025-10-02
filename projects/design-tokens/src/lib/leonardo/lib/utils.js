@@ -163,6 +163,10 @@ function createScale({swatches, colorKeys, colorspace = 'LAB', shift = 1, fullSc
 
   let domains;
 
+  // colorKeys.forEach(key => {
+  //   console.log('valori jch', key, chroma(key).lch())
+  // })
+
   if (fullScale) {
     // Set domain of each color key based on percentage (as HSLuv lightness)
     // against the full scale of black to white
