@@ -13,7 +13,7 @@ const TemplateConsumption = args => (
     <div>
       <mds-img {...args} />
     </div>
-    <div class="grid gap-600 mobile:grid-cols-1 tablet:grid-cols-1 grid-cols-3 auto-rows-min">
+    <div class="grid gap-600 max-mobile:grid-cols-1 tablet:grid-cols-1 grid-cols-3 auto-rows-min">
       <div class="grid gap-100 auto-rows-min">
         <mds-text typography="h6">Consumption Low</mds-text>
         <mds-text typography="detail">
@@ -47,7 +47,7 @@ const TemplateConsumption = args => (
 
 const TemplateBook = args => (
   <div class="grid gap-600">
-    <div class="grid gap-600 mobile:grid-cols-1 tablet:grid-cols-1 grid-cols-3 auto-rows-min">
+    <div class="grid gap-600 max-mobile:grid-cols-1 tablet:grid-cols-1 grid-cols-3 auto-rows-min">
       <div class="grid gap-100 auto-rows-min">
         <mds-text typography="h6">Consumption Low</mds-text>
         <mds-text typography="detail">

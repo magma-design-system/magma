@@ -17,7 +17,7 @@ const Template = () => (
       <mds-text typography="h1">Bye</mds-text>
     </div>
     <div class="p-1200 flex justify-center">
-      <div class="grid gap-600 grid-cols-3 mobile:grid-cols-1 max-w-screen-desktop">
+      <div class="grid gap-600 desktop:grid-cols-3 tablet:grid-cols-2 max-w-screen-desktop">
         {Array(18)
           .fill(null)
           .map(() => (

@@ -85,7 +85,7 @@ const FormIntegrationTemplate = (args: MdsInputFieldInterface) => (
       </mds-input-field>
       <div class="flex flex-wrap gap-400 items-baseline">
         <mds-button
-          class="shrink-0 mobile:grow"
+          class="shrink-0 max-mobile:grow"
           type="button"
           role="submit"
           onClick={() => {

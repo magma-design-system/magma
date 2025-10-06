@@ -231,9 +231,9 @@ export class MdsInputSwitch {
             <mds-text class="icon-typography-unchecked" tag="div" typography={this.typography} variant={this.variant}>
               <mds-icon class="icon-unchecked" name={clsx(this.indeterminate ? iconIndeterminate : iconUnchecked)}/>
             </mds-text>
-            <mds-text class="icon-typography-checked" tag="div" typography={this.typography} variant={this.variant}>
+            {this.checked && <mds-text class="icon-typography-checked" tag="div" typography={this.typography} variant={this.variant}>
               <mds-icon class="icon-checked" name={clsx(this.indeterminate ? iconIndeterminate : iconCheckedUser)}/>
-            </mds-text>
+            </mds-text>}
           </label>
         }
         <label htmlFor="field" class={clsx('label-text', !this.hasText && 'label-text--empty')}>

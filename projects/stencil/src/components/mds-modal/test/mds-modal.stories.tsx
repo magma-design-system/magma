@@ -110,7 +110,7 @@ const Template = args => {
           <mds-author class="flex-grow">
             <mds-avatar
               slot="avatar"
-              class="w-1600 mobile:w-1200"
+              class="w-1600 max-mobile:w-1200"
               src="./avatar-01-200x200.jpeg"
             />
             <mds-text typography="h6">{fullName}</mds-text>
@@ -196,7 +196,7 @@ const TemplateStyle = args => {
           <mds-author class="flex-grow">
             <mds-avatar
               slot="avatar"
-              class="w-1600 mobile:w-1200"
+              class="w-1600 max-mobile:w-1200"
               src="./avatar-01-200x200.jpeg"
             />
             <mds-text typography="h6">{fullName}</mds-text>
@@ -299,7 +299,7 @@ const TemplateOverflow = args => {
           <mds-author class="flex-grow">
             <mds-avatar
               slot="avatar"
-              class="w-1600 mobile:w-1200"
+              class="w-1600 max-mobile:w-1200"
               src="./avatar-01-200x200.jpeg"
             />
             <mds-text typography="h6">{fullName}</mds-text>
