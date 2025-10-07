@@ -1,10 +1,10 @@
 {
   "colors": [
-    { "color": "#94a3b8", "export": ["tones"], "name": "tone.slate", "ratios": "tone", "seed": { "light": "#FFFFFF", "dark": "#000000" } },
-    { "color": "#9ca3af", "export": ["tones"], "name": "tone.grey", "ratios": "tone", "seed": { "light": "#FFFFFF", "dark": "#000000" } },
-    { "color": "#a1a1aa", "export": ["tones"], "name": "tone.zinc", "ratios": "tone", "seed": { "light": "#FFFFFF", "dark": "#000000" } },
-    { "color": "#a3a3a3", "export": ["tones", "default"], "name": "tone.neutral", "ratios": "tone", "seed": { "light": "#FFFFFF", "dark": "#000000" } },
-    { "color": "#a8a29e", "export": ["tones"], "name": "tone.stone", "ratios": "tone", "seed": { "light": "#FFFFFF", "dark": "#000000" } },
+    { "color": "#94a3b8", "export": ["tones"], "name": "tone.slate", "ratios": "tone", "formula": "wcag2", "seed": { "light": "#FFFFFF", "dark": "#000000" } },
+    { "color": "#9ca3af", "export": ["tones"], "name": "tone.grey", "ratios": "tone", "formula": "wcag2", "seed": { "light": "#FFFFFF", "dark": "#000000" } },
+    { "color": "#a1a1aa", "export": ["tones"], "name": "tone.zinc", "ratios": "tone", "formula": "wcag2", "seed": { "light": "#FFFFFF", "dark": "#000000" } },
+    { "color": "#a3a3a3", "export": ["tones", "default"], "name": "tone.neutral", "formula": "wcag2", "ratios": "tone", "seed": { "light": "#FFFFFF", "dark": "#000000" } },
+    { "color": "#a8a29e", "export": ["tones"], "name": "tone.stone", "ratios": "tone", "formula": "wcag2", "seed": { "light": "#FFFFFF", "dark": "#000000" } },
 
     { "color": "#23B2E1", "export": ["status", "default"], "name": "status.info", "colorspace": "OKLCH" },
     { "color": "#21BF73", "export": ["status", "default"], "name": "status.success", "colorspace": "OKLCH" },
@@ -31,65 +31,5 @@
     { "color": "#CBA26B", "export": ["brand-rnd"], "name": "brand.rnd", "colorspace": "HSL", "smooth": true }
   ],
   "colorspace": "HSL",
-  "smooth": false,
-  "ratios": {
-    "v1": [
-      1.05,
-      1.1,
-      1.17,
-      1.24,
-      1.32,
-      1.41,
-      1.51,
-      1.65,
-      1.9,
-      2.25,
-      2.7,
-      3.3,
-      4,
-      4.8,
-      5.75,
-      7,
-      8.5,
-      10.3,
-      12.45,
-      15
-    ],
-    "v2": [
-      1.09,
-      1.22,
-      1.42,
-      1.82,
-      2.57,
-      3.71,
-      5.13,
-      6.71,
-      8.75,
-      10.29
-    ],
-    "default": [
-      1.09,
-      1.22,
-      1.42,
-      1.82,
-      3.29,
-      5.13,
-      6.71,
-      8.45,
-      10.29,
-      17.22
-    ],
-    "tone": [
-      1.05,
-      1.1,
-      1.24,
-      1.47,
-      2.54,
-      4.83,
-      7.56,
-      10.31,
-      14.68,
-      16
-    ]
-  }
+  "smooth": false
 }

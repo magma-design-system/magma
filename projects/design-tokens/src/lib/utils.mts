@@ -105,3 +105,32 @@ export function getStyleDictionaryWithAllCustomTransform (): StyleDictionary.Cor
       .registerFilter(tailwindCss4Filter)
   )
 }
+
+
+/**
+ * Deep merge of two object
+ *
+ * @param {object} target
+ * @param {object} source
+ * @returns {object} object merged
+ */
+export function deepMerge (target, source) {
+  const isObject = obj => obj && typeof obj === 'object' && !Array.isArray(obj)
+
+  if (isObject(target) && isObject(source)) {
+    for (const key in source) {
+      if (isObject(source[key])) {
+        if (!target[key]) {
+          target[key] = {}
+        }
+        deepMerge(target[key], source[key])
+      } else if (Array.isArray(source[key])) {
+        target[key] = source[key]
+      } else {
+        target[key] = source[key]
+      }
+    }
+  }
+
+  return target
+}

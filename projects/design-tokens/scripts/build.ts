@@ -16,7 +16,7 @@ const styleDictionary = getStyleDictionaryWithAllCustomTransform()
 getColorsConfig().then(resultConfig => {
   if (!resultConfig) throw Error('Base configuration file not found: colors-config.json')
 
-  const { tokens, exportGroups } = createColorTokens(resultConfig.config.colors)
+  const { tokens, exportGroups } = createColorTokens(resultConfig.config)
 
   // merge color tokens with theme tokens
 

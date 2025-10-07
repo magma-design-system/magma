@@ -17,7 +17,7 @@ export async function main () {
     return
   }
 
-  const { tokens, exportGroups } = createColorTokens(colorsConfig.config.colors)
+  const { tokens, exportGroups } = createColorTokens(colorsConfig.config)
 
   if (opts.exportTokens) {
     if (opts.dryRun) {
