@@ -22,11 +22,11 @@ export type Formula = 'wcag2' | 'wcag3'
 export type RatioData = {[key: string]: number[]}
 
 export interface MagmaConfig {
-  colorspace: string,
-  smooth: boolean,
-  formula: Formula,
+  colorspace?: string,
+  smooth?: boolean,
+  formula?: Formula,
   // eslint-disable-next-line no-unused-vars
-  ratios: {[K in Formula]: RatioData}
+  ratios?: {[K in Formula]: RatioData}
   colors: ColorConfig[]
 }
 
@@ -36,12 +36,12 @@ export type ThemeContrastColor = [ContrastColorBackground, ...ContrastColor[]]
 //   ratios: {[key: string]: number[]}
 // }
 
-function getBackgroundColor (): BackgroundColor {
+function getBackgroundColor (formula = 'wcag3'): BackgroundColor {
   return new BackgroundColor({
     colorKeys: ['#000000'],
     colorspace: DEFAULTS.colorspace as InterpolationColorspace,
     name: 'backgroud',
-    ratios: DEFAULTS.ratios.wcag2.tone,
+    ratios: DEFAULTS.ratios[formula].tone,
     smooth: DEFAULTS.smooth,
   })
 }
@@ -91,7 +91,7 @@ export function createColor (colorItem, config: MagmaConfig): Color {
  */
 export function createColorTokens (magmaConfig: MagmaConfig) {
 
-  const config: MagmaConfig = deepMerge(magmaConfig, DEFAULTS)
+  const config: MagmaConfig = deepMerge(DEFAULTS, magmaConfig)
 
   const palette: {[key:string]: Color[]} = {
     wcag2: [],
@@ -102,12 +102,11 @@ export function createColorTokens (magmaConfig: MagmaConfig) {
   })
 
   const backgroundColor = getBackgroundColor()
-  // const backgroundColorDark = getBackgroundColor('dark')
-  // console.log('background color light', backgroundColor.backgroundColorScale)
-  // console.log('background color dark', backgroundColorDark.colorKeys)
+  const backgroundColorWcag2 = getBackgroundColor('wcag2')
 
   // it doesnt matter backgroundColor color in this case because the lightness is 100 or 0
   // so the background color is basically #ffffff for light theme and #000000 for dark theme
+  // create four theme, light and dark for each contrast type wcag
   const themeLight = new Theme({
     colors: palette.wcag3,
     backgroundColor,
@@ -124,15 +123,26 @@ export function createColorTokens (magmaConfig: MagmaConfig) {
 
   const themeToneLight = new Theme({
     colors: palette.wcag2,
-    backgroundColor,
+    backgroundColor: backgroundColorWcag2,
     lightness: 100,
   })
 
   const themeToneDark = new Theme({
     colors: palette.wcag2,
-    backgroundColor,
+    backgroundColor: backgroundColorWcag2,
     lightness: 0,
   })
+
+  const theme = {
+    wcag2: {
+      light: themeToneLight,
+      dark: themeToneDark,
+    },
+    wcag3: {
+      light: themeLight,
+      dark: themeDark,
+    },
+  }
 
   console.info('Formatting color palette to JSON Design Tokens format')
 
@@ -161,17 +171,24 @@ export function createColorTokens (magmaConfig: MagmaConfig) {
       }
       if (!Object.hasOwn(tokens.color[group], name)) {
         console.info(`Creating ${chalk.blue('color')} ${name}`)
-        if (element.formula === 'wcag2') {
-          tokens.color[group][name] = {
-            light: formatColortoTokens(themeToneLight.contrastColors.slice(1) as ContrastColor[], `${group}.${name}`, element.color, element.seed, 'light'),
-            dark: formatColortoTokens(themeToneDark.contrastColors.slice(1) as ContrastColor[], `${group}.${name}`, element.color, element.seed, 'dark'),
-          }
-        } else {
-          tokens.color[group][name] = {
-            light: formatColortoTokens(themeLight.contrastColors.slice(1) as ContrastColor[], `${group}.${name}`, element.color, element.seed, 'light'),
-            dark: formatColortoTokens(themeDark.contrastColors.slice(1) as ContrastColor[], `${group}.${name}`, element.color, element.seed, 'dark'),
-          }
+
+        console.log(theme[element.formula ?? config.formula].light.contrastColors.slice(1) as ContrastColor[])
+        tokens.color[group][name] = {
+          light: formatColortoTokens(theme[element.formula ?? config.formula].light.contrastColors.slice(1) as ContrastColor[], `${group}.${name}`, element.color, element.seed, 'light'),
+          dark: formatColortoTokens(theme[element.formula ?? config.formula].dark.contrastColors.slice(1) as ContrastColor[], `${group}.${name}`, element.color, element.seed, 'light'),
         }
+        console.log('tokens color ',group, name, tokens.color[group][name], theme[element.formula ?? config.formula].light.contrastColors.slice(1) as ContrastColor[])
+        // if (element.formula === 'wcag2') {
+        //   tokens.color[group][name] = {
+        //     light: formatColortoTokens(themeToneLight.contrastColors.slice(1) as ContrastColor[], `${group}.${name}`, element.color, element.seed, 'light'),
+        //     dark: formatColortoTokens(themeToneDark.contrastColors.slice(1) as ContrastColor[], `${group}.${name}`, element.color, element.seed, 'dark'),
+        //   }
+        // } else {
+        //   tokens.color[group][name] = {
+        //     light: formatColortoTokens(themeLight.contrastColors.slice(1) as ContrastColor[], `${group}.${name}`, element.color, element.seed, 'light'),
+        //     dark: formatColortoTokens(themeDark.contrastColors.slice(1) as ContrastColor[], `${group}.${name}`, element.color, element.seed, 'dark'),
+        //   }
+        // }
       }
 
       if (element.export !== undefined) {
