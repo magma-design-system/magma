@@ -171,24 +171,10 @@ export function createColorTokens (magmaConfig: MagmaConfig) {
       }
       if (!Object.hasOwn(tokens.color[group], name)) {
         console.info(`Creating ${chalk.blue('color')} ${name}`)
-
-        console.log(theme[element.formula ?? config.formula].light.contrastColors.slice(1) as ContrastColor[])
         tokens.color[group][name] = {
           light: formatColortoTokens(theme[element.formula ?? config.formula].light.contrastColors.slice(1) as ContrastColor[], `${group}.${name}`, element.color, element.seed, 'light'),
           dark: formatColortoTokens(theme[element.formula ?? config.formula].dark.contrastColors.slice(1) as ContrastColor[], `${group}.${name}`, element.color, element.seed, 'light'),
         }
-        console.log('tokens color ',group, name, tokens.color[group][name], theme[element.formula ?? config.formula].light.contrastColors.slice(1) as ContrastColor[])
-        // if (element.formula === 'wcag2') {
-        //   tokens.color[group][name] = {
-        //     light: formatColortoTokens(themeToneLight.contrastColors.slice(1) as ContrastColor[], `${group}.${name}`, element.color, element.seed, 'light'),
-        //     dark: formatColortoTokens(themeToneDark.contrastColors.slice(1) as ContrastColor[], `${group}.${name}`, element.color, element.seed, 'dark'),
-        //   }
-        // } else {
-        //   tokens.color[group][name] = {
-        //     light: formatColortoTokens(themeLight.contrastColors.slice(1) as ContrastColor[], `${group}.${name}`, element.color, element.seed, 'light'),
-        //     dark: formatColortoTokens(themeDark.contrastColors.slice(1) as ContrastColor[], `${group}.${name}`, element.color, element.seed, 'dark'),
-        //   }
-        // }
       }
 
       if (element.export !== undefined) {

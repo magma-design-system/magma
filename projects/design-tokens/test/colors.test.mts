@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest'
 
-import { createColorTokens, formatColortoTokens } from '../src/lib/color.mjs'
+import { createColorTokens, formatColortoTokens, MagmaConfig } from '../src/lib/color.mjs'
 import baseColorResult from './fixtures/base-color-result.json'
 import baseColor from './fixtures/base-color.json'
 import baseColorExport from './fixtures/base-color-export.json'
@@ -8,12 +8,12 @@ import baseColorExportResult from './fixtures/base-color-export-result.json'
 import { ContrastColor } from '@/leonardo/index.js'
 
 test('should create tokens', () => {
-  const result = createColorTokens(baseColor)
+  const result = createColorTokens(baseColor as MagmaConfig)
   expect(result.tokens).toEqual(baseColorResult)
   expect(result.exportGroups).toEqual({ default: baseColorResult })
 })
 test('should create tokens with different export', () => {
-  const result = createColorTokens(baseColorExport)
+  const result = createColorTokens(baseColorExport as MagmaConfig)
   expect(result.tokens).toEqual(baseColorResult)
   expect(result.exportGroups).toEqual(baseColorExportResult)
 })
@@ -23,8 +23,9 @@ test('should create tokens with no export', () => {
       { color: '#00379E', name: 'variant.primary' },
       { color: '#0f4ad5', name: 'variant.secondary' },
     ],
+    formula: 'wcag2',
   }
-  const result = createColorTokens(color)
+  const result = createColorTokens(color as MagmaConfig)
   expect(result.tokens).toEqual(baseColorResult)
   expect(result.exportGroups).toEqual({})
 })
