@@ -8,12 +8,12 @@ import baseColorExportResult from './fixtures/base-color-export-result.json'
 import { ContrastColor } from '@/leonardo/index.js'
 
 test('should create tokens', () => {
-  const result = createColorTokens(baseColor.colors)
+  const result = createColorTokens(baseColor)
   expect(result.tokens).toEqual(baseColorResult)
   expect(result.exportGroups).toEqual({ default: baseColorResult })
 })
 test('should create tokens with different export', () => {
-  const result = createColorTokens(baseColorExport.colors)
+  const result = createColorTokens(baseColorExport)
   expect(result.tokens).toEqual(baseColorResult)
   expect(result.exportGroups).toEqual(baseColorExportResult)
 })
@@ -24,7 +24,7 @@ test('should create tokens with no export', () => {
       { color: '#0f4ad5', name: 'variant.secondary' },
     ],
   }
-  const result = createColorTokens(color.colors)
+  const result = createColorTokens(color)
   expect(result.tokens).toEqual(baseColorResult)
   expect(result.exportGroups).toEqual({})
 })
