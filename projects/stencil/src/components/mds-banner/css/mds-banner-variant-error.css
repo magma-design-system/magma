@@ -17,6 +17,23 @@
   --mds-banner-cockade-background: rgb(var(--status-error-09));
 }
 
+/*
+  color-mix is not enought to respect contrast requirements
+  for now we've decided to keep the solid colors
+  we've tried to used status-error seed and the color-mix function shows acceptable contrasts
+  we've tried to used status-success seed and the color-mix function shows contrasts problems on icon, too light
+  we've tried to used label-orchid seed and the color-mix function shows contrasts issues on icon, too dark
+
+  :host-context(.color-mix):host([variant="error"][tone="weak"]) {
+    --mds-banner-background: color-mix(in oklab, rgb(var(--status-error)) 10%, rgb(var(--tone-neutral-10)) 90%);
+    --mds-banner-close-icon-hover-background: color-mix(in oklab, rgb(var(--status-error)) 25%, rgb(var(--tone-neutral-10)) 75%);
+    --mds-banner-color: color-mix(in oklab,rgb(var(--status-error)) 90%,rgb(var(--tone-neutral-03)) 90%);
+    --mds-banner-icon-color: color-mix(in oklab,rgb(var(--status-error)) 100%,rgb(var(--tone-neutral-05)) 10%);
+    --mds-banner-shadow: none;
+    --mds-banner-cockade-background: color-mix(in oklab,rgb(var(--status-error)) 30%,rgb(var(--tone-neutral-10)) 90%);
+  }
+*/
+
 :host([variant="error"][tone="quiet"]) {
   --mds-banner-background: transparent;
   --mds-banner-close-icon-hover-background: rgb(var(--status-error-09));
@@ -28,3 +45,5 @@
 :host([variant="error"][tone="quiet"]) .separator {
   display: none;
 }
+
+

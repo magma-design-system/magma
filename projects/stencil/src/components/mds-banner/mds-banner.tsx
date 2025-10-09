@@ -65,6 +65,18 @@ export class MdsBanner {
    */
   @Prop() readonly icon?: string
 
+  private ariaVariants: Record<ThemeVariantType, { role: string; live: 'polite' | 'assertive' | undefined }> = {
+    ai:      { role: 'status', live: 'polite' },
+    dark:    { role: 'presentation', live: undefined },
+    error:   { role: 'alert', live: 'assertive' },
+    info:    { role: 'status', live: 'polite' },
+    light:   { role: 'presentation', live: undefined },
+    primary: { role: 'status', live: 'polite' },
+    success: { role: 'status', live: 'polite' },
+    warning: { role: 'alert', live: 'assertive' },
+  }
+
+
   private deletableHandler = (): void => {
     if (this.deletable) {
       const closeIcon = this.host.shadowRoot?.querySelector('.close-button') as HTMLElement
@@ -110,7 +122,7 @@ export class MdsBanner {
 
   render () {
     return (
-      <Host aria-label={ this.headline }>
+      <Host aria-label={ this.headline } role={this.ariaVariants[this.variant ?? 'primary'].role} aria-live={this.ariaVariants[this.variant ?? 'primary'].live}>
         <div class="body">
           { this.icon && <mds-icon aria-hidden="true" class="icon" name={this.icon}/> }
           <div class="content">
