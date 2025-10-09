@@ -10,7 +10,7 @@ import localeEl from './meta/locale.el.json'
 import localeEn from './meta/locale.en.json'
 import localeEs from './meta/locale.es.json'
 import localeIt from './meta/locale.it.json'
-import { ThemeModeType, ThemeTransitionType } from './meta/types'
+import { PreferenceThemeModeType, PreferenceThemeTransitionType } from '@type/preference'
 import { MdsPrefChangeEventDetail } from '@event/preference'
 import { TabSizeType } from '@type/button'
 
@@ -21,7 +21,7 @@ import { TabSizeType } from '@type/button'
 })
 export class MdsPrefTheme {
   @Element() private element: HTMLMdsPrefThemeElement
-  private readonly defaultMode: ThemeModeType = 'system'
+  private readonly defaultMode: PreferenceThemeModeType = 'system'
   private readonly t: Locale = new Locale({
     el: localeEl,
     en: localeEn,
@@ -66,12 +66,12 @@ export class MdsPrefTheme {
   /**
    * Specifies the preference mode
    */
-  @Prop({ mutable: true, reflect: true }) mode?: ThemeModeType
+  @Prop({ mutable: true, reflect: true }) mode?: PreferenceThemeModeType
 
   /**
    * Specifies the transition of switching from a theme to another one
    */
-  @Prop({ mutable: true, reflect: true }) transition: ThemeTransitionType = 'smooth'
+  @Prop({ mutable: true, reflect: true }) transition: PreferenceThemeTransitionType = 'smooth'
 
   /**
    * Emits when the component is triggered
@@ -96,7 +96,7 @@ export class MdsPrefTheme {
   componentWillRender (): void {
     this.t.lang(this.element)
     if (!isSafari()) {
-      this.setTheme(this.mode ?? localStorage.getItem(this.localStorageAlias) as ThemeModeType ?? this.defaultMode)
+      this.setTheme(this.mode ?? localStorage.getItem(this.localStorageAlias) as PreferenceThemeModeType ?? this.defaultMode)
       return
     }
     this.disabled = true
@@ -108,15 +108,15 @@ export class MdsPrefTheme {
   }
 
   @Watch('mode')
-  modeChanged (newValue: ThemeModeType, oldValue: ThemeModeType): void {
+  modeChanged (newValue: PreferenceThemeModeType, oldValue: PreferenceThemeModeType): void {
     if (newValue === oldValue) {
       return
     }
     this.setTheme(newValue)
   }
 
-  private readonly setTheme = (mode: ThemeModeType): void => {
-    this.prefChangeEvent.emit({ preference: 'theme' })
+  private readonly setTheme = (mode: PreferenceThemeModeType): void => {
+    this.prefChangeEvent.emit({ preference: 'theme-mode' })
     this.mode = mode
     localStorage.setItem(this.localStorageAlias, this.mode)
     if (document) {
@@ -135,18 +135,18 @@ export class MdsPrefTheme {
     return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
   }
 
-  private readonly getColorScheme = (mode?: ThemeModeType): ThemeModeType => {
+  private readonly getColorScheme = (mode?: PreferenceThemeModeType): PreferenceThemeModeType => {
     if (mode) {
       if (mode === 'system') {
         return this.isDarkMode() ? 'dark' : 'light'
       }
-      return mode as ThemeModeType
+      return mode as PreferenceThemeModeType
     }
 
     if (this.mode === 'system') {
       return this.isDarkMode() ? 'dark' : 'light'
     }
-    return this.mode as ThemeModeType
+    return this.mode as PreferenceThemeModeType
   }
 
   private instanceOverlay = (): void => {
@@ -187,7 +187,7 @@ export class MdsPrefTheme {
     }, cssDurationToMilliseconds(this.cssOverlayShowDuration))
   }
 
-  private attachSmoothOverlayTransition = (mode: ThemeModeType): void => {
+  private attachSmoothOverlayTransition = (mode: PreferenceThemeModeType): void => {
 
     this.overlayShow = true
     this.instanceOverlay()
@@ -212,7 +212,7 @@ export class MdsPrefTheme {
     }, 1)
   }
 
-  private changeTheme = (mode: ThemeModeType): void => {
+  private changeTheme = (mode: PreferenceThemeModeType): void => {
 
     if (this.disabled) {
       return

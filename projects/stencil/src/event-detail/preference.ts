@@ -1,8 +1,7 @@
-import { ThemeModeType } from '@component/mds-pref-theme/meta/types'
-import { UIPreferenceType } from '@type/preference'
+import { UIPreferenceType, PreferenceThemeModeType } from '@type/preference'
 
 export interface MdsPrefEventDetail {
-  theme: ThemeModeType
+  theme: PreferenceThemeModeType
 }
 
 export interface MdsPrefChangeEventDetail {
