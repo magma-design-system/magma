@@ -8,6 +8,7 @@ export type UIPreferenceType =
 
 export type PreferenceThemeSchemeType =
   | 'light'
+  | 'dark'
   | 'all'
 
 export type PreferenceThemeModeType =
