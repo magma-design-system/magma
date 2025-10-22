@@ -20,6 +20,18 @@
     }
   }
 
+  :root.pref-theme-scheme-dark {
+    color-scheme: only dark;
+  }
+
+  :root.pref-theme-scheme-light {
+    color-scheme: only light;
+  }
+
+  :root.pref-theme-scheme-all {
+    color-scheme: light dark;
+  }
+
   ::selection {
     background-color: var(--magma-selection-background);
     color: var(--magma-selection-color);
