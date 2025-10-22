@@ -13,8 +13,9 @@
     "sourceMap": false,
     "target": "ESNext",
     "paths": {
-      "@/formats/*": ["src/formats/*"]
-    }
+      "@/formats/*": ["src/formats/*"],
+      "@/leonardo/*": ["src/lib/leonardo/*"],
+    },
   },
   "include": ["src", "test"],
   "exclude": ["node_modules" ]
