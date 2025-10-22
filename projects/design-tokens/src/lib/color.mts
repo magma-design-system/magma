@@ -159,10 +159,6 @@ export function createColorTokens (magmaConfig: MagmaConfig) {
     const group = element.name.split('.')[groupIndex]
     const name = element.name.split('.')[nameIndex]
 
-    if (element.disabled === undefined) {
-      element.disabled = false
-    }
-
     if (!element.disabled) {
 
       if (!Object.hasOwn(tokens.color, group)) {
@@ -173,7 +169,7 @@ export function createColorTokens (magmaConfig: MagmaConfig) {
         console.info(`Creating ${chalk.blue('color')} ${name}`)
         tokens.color[group][name] = {
           light: formatColortoTokens(theme[element.formula ?? config.formula].light.contrastColors.slice(1) as ContrastColor[], `${group}.${name}`, element.color, element.seed, 'light'),
-          dark: formatColortoTokens(theme[element.formula ?? config.formula].dark.contrastColors.slice(1) as ContrastColor[], `${group}.${name}`, element.color, element.seed, 'light'),
+          dark: formatColortoTokens(theme[element.formula ?? config.formula].dark.contrastColors.slice(1) as ContrastColor[], `${group}.${name}`, element.color, element.seed, 'dark'),
         }
       }
 
