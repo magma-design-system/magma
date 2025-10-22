@@ -1,10 +1,10 @@
-:host-context(.pref-theme-dark) {
+:host-context(.pref-theme-dark:not(.pref-theme-scheme-light)) {
   --mds-tab-tabs-background: rgb(var(--tone-neutral-08));
   --mds-tab-item-selected-background: rgb(var(--tone-neutral-07));
 }
 
 @media (prefers-color-scheme: dark) {
-  :host-context(.pref-theme-system) {
+  :host-context(.pref-theme-system:not(.pref-theme-scheme-light)) {
     --mds-tab-tabs-background: rgb(var(--tone-neutral-08));
     --mds-tab-item-selected-background: rgb(var(--tone-neutral-07));
   }
