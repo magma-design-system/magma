@@ -1,0 +1,66 @@
+:host {
+  --mds-pref-theme-variant-item-color-background: rgb(var(--tint-base-lv1, var(--tone-neutral-09, 243 243 243)));
+  --mds-pref-theme-variant-item-color-status-error: rgb(var(--status-error-06, 233 98 96));
+  --mds-pref-theme-variant-item-color-status-success: rgb(var(--status-success-06, 0 163 89));
+  --mds-pref-theme-variant-item-color-status-warning: rgb(var(--status-warning-06, 179 135 0));
+  --mds-pref-theme-variant-item-color-variant-primary: rgb(var(--variant-primary-03, 0 65 188));
+
+  display: flex;
+}
+
+:host([scheme="dark"]) {
+  color-scheme: dark;
+}
+
+.label {
+  align-items: center;
+  display: flex;
+  gap: --spacing(200);
+}
+
+.theme-preview {
+  background-color: var(--mds-pref-theme-variant-item-color-background);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-outline-light);
+  box-sizing: border-box;
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: --spacing(100);
+  height: --spacing(600);
+  margin: 1px;
+  padding: --spacing(100);
+  width: --spacing(600);
+}
+
+.theme-color {
+  background-color: var(--color-tone-neutral-09);
+  border-radius: var(--radius-lg);
+  height: --spacing(150);
+  position: relative;
+  width: --spacing(150);
+}
+
+.theme-color::after {
+  border-radius: inherit;
+  box-shadow: var(--shadow-outline-light) inset;
+  content: "";
+  display: flex;
+  inset: 0;
+  position: absolute
+}
+
+.theme-color--variant-primary {
+  background-color: var(--mds-pref-theme-variant-item-color-variant-primary);
+}
+
+.theme-color--status-success {
+  background-color: var(--mds-pref-theme-variant-item-color-status-success);
+}
+
+.theme-color--status-warning {
+  background-color: var(--mds-pref-theme-variant-item-color-status-warning);
+}
+
+.theme-color--status-error {
+  background-color: var(--mds-pref-theme-variant-item-color-status-error);
+}

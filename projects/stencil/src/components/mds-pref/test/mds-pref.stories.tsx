@@ -22,6 +22,11 @@ export default {
 const Template = args => (
   <mds-pref {...args}>
     <mds-pref-theme></mds-pref-theme>
+    <mds-pref-theme-variant>
+      <mds-pref-theme-variant-item name="default"></mds-pref-theme-variant-item>
+      <mds-pref-theme-variant-item name="magma"></mds-pref-theme-variant-item>
+      <mds-pref-theme-variant-item name="maggioli-editore"></mds-pref-theme-variant-item>
+    </mds-pref-theme-variant>
     <mds-pref-contrast></mds-pref-contrast>
     <mds-pref-animation></mds-pref-animation>
     <mds-pref-consumption></mds-pref-consumption>

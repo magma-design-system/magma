@@ -122,7 +122,7 @@ export class MdsPrefLanguage {
 
   private readonly setLanguage = (set: string): void => {
     if (!/(auto)|^[a-z]{2}(-[A-Z]{2})?$/gm.exec(set)) {
-      throw Error(`Language code setted not reconized: ${set}`)
+      throw Error(`Language code set not reconized: ${set}`)
     }
     this.set = set === 'auto' ? (this.userLanguage ?? this.pageLanguage ?? this.systemLanguage) : this.sanitizeLanguage(set)
     this.prefChangeEvent.emit({ preference: 'language' })
