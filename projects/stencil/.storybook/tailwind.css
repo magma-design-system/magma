@@ -21,11 +21,6 @@
 
 /* @import "@maggioli-design-system/styles/tailwind/base.css" layer(base); */
 
-body {
-  background-color: #ffffffff !important;
-  padding: 0 !important;
-}
-
 /*
 :root,
 :root.pref-theme-dark {
