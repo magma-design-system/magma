@@ -7,12 +7,12 @@
 
 ## Properties
 
-| Property   | Attribute  | Description                                                      | Type                            | Default     |
-| ---------- | ---------- | ---------------------------------------------------------------- | ------------------------------- | ----------- |
-| `label`    | `label`    | Specifies the theme name                                         | `string \| undefined`           | `undefined` |
-| `name`     | `name`     | Specifies the theme name                                         | `string`                        | `'default'` |
-| `scheme`   | `scheme`   | Specifies the theme scheme which can be 'light', 'dark' or 'all' | `"all" \| "light" \| undefined` | `'all'`     |
-| `selected` | `selected` | Specifies if the element is selected                             | `boolean \| undefined`          | `false`     |
+| Property   | Attribute  | Description                                                      | Type                                      | Default     |
+| ---------- | ---------- | ---------------------------------------------------------------- | ----------------------------------------- | ----------- |
+| `label`    | `label`    | Specifies the theme name                                         | `string \| undefined`                     | `undefined` |
+| `name`     | `name`     | Specifies the theme name                                         | `string`                                  | `'default'` |
+| `scheme`   | `scheme`   | Specifies the theme scheme which can be 'light', 'dark' or 'all' | `"all" \| "dark" \| "light" \| undefined` | `'all'`     |
+| `selected` | `selected` | Specifies if the element is selected                             | `boolean \| undefined`                    | `false`     |
 
 
 ## Events

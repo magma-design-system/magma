@@ -19,12 +19,12 @@ mds-pref-language {
   flex-grow: 1;
 }
 
-.item--custom-language {
+.item--custom-theme-variant {
   cursor: pointer;
 }
 
 .item--auto,
-.item--custom-language {
+.item--custom-theme-variant {
   --mds-tab-item-selected-color: rgb(var(--tone-neutral-03));
 }
 

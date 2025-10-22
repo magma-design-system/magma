@@ -8,10 +8,6 @@
   display: flex;
 }
 
-:host([scheme="dark"]) {
-  color-scheme: dark;
-}
-
 .label {
   align-items: center;
   display: flex;

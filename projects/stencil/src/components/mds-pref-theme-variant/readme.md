@@ -7,11 +7,11 @@
 
 ## Properties
 
-| Property | Attribute | Description                                                                                                                                                                                                                                             | Type                        | Default     |
-| -------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------- | ----------- |
-| `name`   | `name`    | Specifies the theme name attribute A string representing the theme name, should be a simple string name or kebab kase name. `Examples of valid language codes include "magma", "maggioli-editore", etc.`                                                | `string`                    | `'default'` |
-| `scheme` | `scheme`  | Specifies the theme scheme which can be 'light', 'dark' or 'all' Default is 'all' which means this theme supporto both light and dark. If you set 'light' means this theme support only light mode and will be forced and shown light colors mode only. | `"all" \| "light"`          | `'all'`     |
-| `size`   | `size`    | Sets the size of the component items nested inside it                                                                                                                                                                                                   | `"md" \| "sm" \| undefined` | `undefined` |
+| Property | Attribute | Description                                                                                                                                                                                                                                             | Type                         | Default     |
+| -------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------- | ----------- |
+| `name`   | `name`    | Specifies the theme name attribute A string representing the theme name, should be a simple string name or kebab kase name. `Examples of valid language codes include "magma", "maggioli-editore", etc.`                                                | `string`                     | `'default'` |
+| `scheme` | `scheme`  | Specifies the theme scheme which can be 'light', 'dark' or 'all' Default is 'all' which means this theme supporto both light and dark. If you set 'light' means this theme support only light mode and will be forced and shown light colors mode only. | `"all" \| "dark" \| "light"` | `'all'`     |
+| `size`   | `size`    | Sets the size of the component items nested inside it                                                                                                                                                                                                   | `"md" \| "sm" \| undefined`  | `undefined` |
 
 
 ## Events

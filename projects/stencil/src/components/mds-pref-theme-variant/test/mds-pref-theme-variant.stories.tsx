@@ -23,6 +23,7 @@ const TemplateController = args => <mds-pref-theme-variant {...args} ></mds-pref
 const Template = args => <mds-pref-theme-variant {...args}>
   <mds-pref-theme-variant-item
     label="Default"
+    scheme="all"
     name="default"/>
   <mds-pref-theme-variant-item
     label="Summer"
@@ -30,7 +31,8 @@ const Template = args => <mds-pref-theme-variant {...args}>
     scheme="light"/>
   <mds-pref-theme-variant-item
     label="Twilight"
-    name="twilight"/>
+    name="twilight"
+    scheme="dark"/>
 </mds-pref-theme-variant>
 
 export const Default = {
