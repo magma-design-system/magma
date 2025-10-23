@@ -3,6 +3,7 @@ body {
     font-info
     text-info-detail;
 
+  background-color: rgb(var(--tone-neutral, theme('colors.tone-neutral')));
   color: rgb(var(--tone-neutral-03, theme('colors.tone-neutral-03')));
 }
 

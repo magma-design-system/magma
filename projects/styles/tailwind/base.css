@@ -7,6 +7,7 @@
       font-info
       text-info-detail;
 
+    background-color: rgb(var(--tone-neutral));
     color: rgb(var(--tone-neutral-03));
   }
 

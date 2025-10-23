@@ -1,4 +1,46 @@
-/* duration */
+/*
+  Accessibility features
+  They are used by Magma web-components to adapt to user preferences
+  regarding theme, animation, contrast, and consumption.
+*/
+
+@property --magma-pref-theme {
+  inherits: false;
+  initial-value: light;
+  syntax: 'light | dark | system';
+}
+
+@property --magma-pref-theme-scheme {
+  inherits: false;
+  initial-value: light;
+  syntax: 'light | dark | all';
+}
+
+@property --magma-pref-theme-name {
+  inherits: false;
+  initial-value: "magma";
+  syntax: '<string>';
+}
+
+@property --magma-pref-consumption {
+  inherits: false;
+  initial-value: high;
+  syntax: 'high | medium | low';
+}
+
+@property --magma-pref-animation {
+  inherits: false;
+  initial-value: no-preference;
+  syntax: 'reduce | no-preference | system';
+}
+
+@property --magma-pref-contrast {
+  inherits: false;
+  initial-value: no-preference;
+  syntax: 'more | no-preference | system';
+}
+
+/* Animations */
 
 @property --magma-backdrop-animation-duration {
   inherits: false;
@@ -12,7 +54,7 @@
   syntax: '<time>';
 }
 
-/* opacity */
+/* Opacity */
 
 @property --magma-backdrop-opacity {
   inherits: true;
@@ -32,7 +74,7 @@
   syntax: '<number>';
 }
 
-/* blur */
+/* Blur */
 
 @property --magma-backdrop-blur {
   inherits: false;
@@ -52,7 +94,7 @@
   syntax: '<length>';
 }
 
-/* colors */
+/* Colors */
 
 @property --magma-backdrop-color {
   inherits: true;
@@ -143,8 +185,9 @@
 :root {
 
   /*
-    for browser compatibility reasons we add houdini defaults here
-    can be removed once support is more widespread
+    For browser compatibility reasons we add defaults
+    to avoid issues with older browsers that do not support houdini @property
+    (can be removed once support is more widespread)
   */
   --magma-backdrop-animation-duration: 300ms;
   --magma-backdrop-blur: 4px;
@@ -168,7 +211,7 @@
   --magma-theme-overlay-z-index: 7000;
   --magma-tooltip-z-index: 6000;
 
-  /* derived properties */
+  /* Derived properties */
   --magma-backdrop: rgb(var(--magma-backdrop-color) / var(--magma-backdrop-opacity));
   --magma-outline-blur: 2px solid var(--magma-outline-blur-color);
   --magma-outline-focus: 2px solid var(--magma-outline-focus-color);
