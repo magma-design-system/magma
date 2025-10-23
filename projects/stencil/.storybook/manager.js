@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { AddonPanel, Form } from 'storybook/internal/components'
 import { addons, types } from 'storybook/manager-api'
 import themeMaggioli from './theme'
@@ -49,13 +49,13 @@ const AccessibilityPanel = () => {
     }
   }
 
-  const checkAccessibilityUse = reset => {
-    if (reset) {
-      setAccessibility('theme', 'unset')
-      setAccessibility('contrast', 'unset')
-      setAccessibility('animation', 'unset')
-      setAccessibility('consumption', 'unset')
-      setLanguage('unset')
+  const checkAccessibilityUse = enabled => {
+    if (!enabled) {
+      // setAccessibility('theme', 'unset')
+      // setAccessibility('contrast', 'unset')
+      // setAccessibility('animation', 'unset')
+      // setAccessibility('consumption', 'unset')
+      // setLanguage('unset')
       return
     }
 
@@ -75,16 +75,20 @@ const AccessibilityPanel = () => {
 
   const togglePreferences = isEnabled => {
     setEnabledPrefs(isEnabled === 'enable')
-    checkAccessibilityUse(enabled)
-    window.localStorage.setItem('mdsPrefStorybookPrefs', enabled)
+    checkAccessibilityUse(isEnabled === 'enable')
+    window.localStorage.setItem('mdsPrefStorybookPrefs', isEnabled)
   }
+
+  useEffect(() => {
+    checkAccessibilityUse(window.localStorage.getItem('mdsPrefStorybookPrefs') === 'enable')
+  }, [])
 
   return (
     <Form>
       <Form.Field label="Preferences">
         <Form.Select
           name="pref-disable"
-          defaultValue="disable"
+          defaultValue={ window.localStorage.getItem('mdsPrefStorybookPrefs') ?? 'disable' }
           onChange={event => { togglePreferences(event.target.value) }}
         >
           <option value="enable">Enabled</option>

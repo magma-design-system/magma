@@ -11,8 +11,8 @@
 
 /* test */
 
-@import "../src/tailwind/theme-summer.css" layer(theme);
-@import "../src/tailwind/theme-twilight.css" layer(theme);
+/* @import "../src/tailwind/theme-summer.css" layer(theme);
+@import "../src/tailwind/theme-twilight.css" layer(theme); */
 
 /* end test */
 
