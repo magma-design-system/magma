@@ -32,6 +32,10 @@
     color-scheme: light dark;
   }
 
+  :root.pref-theme-scheme-all.pref-theme-dark {
+    color-scheme: dark;
+  }
+
   ::selection {
     background-color: var(--magma-selection-background);
     color: var(--magma-selection-color);

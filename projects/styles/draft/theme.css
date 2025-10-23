@@ -336,6 +336,7 @@
   border multiplier: 0.5px  |    1px  | 1.5px  |   2px
   */
 
+
   --magma-theme-depth: false;
   --magma-theme-border-size: var(--border-lg);
   --magma-theme-element-lg-radius: var(--radius-lg);
@@ -346,7 +347,6 @@
   --magma-theme-element-sm-size: var(--size-md);
 
 
-  color-scheme: "light";
   name: "maggioli";
 
   /*
