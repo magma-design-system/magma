@@ -133,7 +133,7 @@ export default {
     'no-invalid-double-slash-comments': null,
     'no-invalid-position-at-import-rule': null,
     'no-unknown-animations': null,
-    'number-max-precision': [3, { ignoreUnits: ['%', ''] }],
+    'number-max-precision': [4, { ignoreUnits: ['%', ''] }],
     'order/order': ['custom-properties', 'declarations'],
     'order/properties-order': null,
     'order/properties-alphabetical-order': true,
