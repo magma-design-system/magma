@@ -1,16 +1,6 @@
 @reference '../../tailwind/index.css';
 @reference '../../tailwind/components.css';
 
-@import './css/mds-tab-animation.css';
-@import './css/mds-tab-direction.css';
-@import './css/mds-tab-scrollbar.css';
-@import './css/mds-tab-tabs-wrapper-overflow.css';
-@import './css/mds-tab-tabs-wrapper-decorator.css';
-@import './css/mds-tab-pref-theme.css';
-@import './css/mds-tab-pref-contrast.css';
-@import './css/mds-tab-pref-animation.css';
-@import '../../tailwind/fouc.css';
-
 /**
  * @prop --mds-tab-item-default-background: Sets the `background-color` of `mds-tab-item` or `mds-tab::part(slider)` depending on attribute `animation`
  * @prop --mds-tab-item-default-color: Sets the `color` of `mds-tab-item` or `mds-tab::part(slider)` depending on attribute `animation`
@@ -164,3 +154,12 @@
     display: none !important;
   }
 
+@import './css/mds-tab-animation.css';
+@import './css/mds-tab-direction.css';
+@import './css/mds-tab-scrollbar.css';
+@import './css/mds-tab-tabs-wrapper-overflow.css';
+@import './css/mds-tab-tabs-wrapper-decorator.css';
+@import './css/mds-tab-pref-theme.css';
+@import './css/mds-tab-pref-contrast.css';
+@import './css/mds-tab-pref-animation.css';
+@import '../../tailwind/fouc.css';
