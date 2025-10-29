@@ -33,6 +33,12 @@
     color-scheme: light dark;
   }
 
+  @media (prefers-color-scheme: dark) {
+    :root.pref-theme-system {
+      color-scheme: dark;
+    }
+  }
+
   :root.pref-theme-scheme-all.pref-theme-dark {
     color-scheme: dark;
   }
@@ -72,4 +78,18 @@
     @apply max-w-title;
   }
 
+
+
+  .hydrated {
+
+    /*
+      Revert all styles for hydrated web components
+      to avoid tailwind base unwanted overrides
+      all: revert-layer;
+    */
+    border: revert-layer;
+    display: revert-layer;
+    margin: revert-layer;
+    padding: revert-layer;
+  }
 }
