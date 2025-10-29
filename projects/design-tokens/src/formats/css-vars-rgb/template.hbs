@@ -25,7 +25,8 @@ Generated at {{ date }}
   {{/each}}
 }
 
-:root:not(.pref-theme-scheme-light):not(.pref-theme-scheme-dark).pref-theme-dark {
+:root:not(.pref-theme-scheme-light).pref-theme-dark,
+:root.pref-theme-scheme-dark {
   {{#each properties as | groups |}}
     {{#each groups as | names |}}
       {{#each names as | lightModes |}}
@@ -46,7 +47,8 @@ Generated at {{ date }}
 }
 
 @media (prefers-color-scheme: dark) {
-  :root:not(.pref-theme-scheme-light):not(.pref-theme-scheme-dark).pref-theme-system {
+  :root:not(.pref-theme-scheme-light).pref-theme-system,
+  :root:not(.pref-theme-dark):not(.pref-theme-light):not(.pref-theme-scheme-dark):not(.pref-theme-scheme-light):not(.pref-theme-scheme-all):not(.pref-theme-system) {
     {{#each properties as | groups |}}
       {{#each groups as | names |}}
         {{#each names as | lightModes |}}

@@ -3,7 +3,7 @@
     { "color": "#94a3b8", "export": ["tones"], "name": "tone.slate", "ratios": "tone", "formula": "wcag2", "seed": { "light": "#FFFFFF", "dark": "#000000" } },
     { "color": "#9ca3af", "export": ["tones"], "name": "tone.grey", "ratios": "tone", "formula": "wcag2", "seed": { "light": "#FFFFFF", "dark": "#000000" } },
     { "color": "#a1a1aa", "export": ["tones"], "name": "tone.zinc", "ratios": "tone", "formula": "wcag2", "seed": { "light": "#FFFFFF", "dark": "#000000" } },
-    { "color": "#a3a3a3", "export": ["tones", "default"], "name": "tone.neutral", "formula": "wcag2", "ratios": "tone", "seed": { "light": "#FFFFFF", "dark": "#000000" } },
+    { "color": "#a3a3a3", "export": ["tones", "default"], "name": "tone.neutral", "formula": "wcag3", "ratios": "tone", "seed": { "light": "#FFFFFF", "dark": "#000000" } },
     { "color": "#a8a29e", "export": ["tones"], "name": "tone.stone", "ratios": "tone", "formula": "wcag2", "seed": { "light": "#FFFFFF", "dark": "#000000" } },
 
     { "color": "#23B2E1", "export": ["status", "default"], "name": "status.info", "colorspace": "OKLCH" },
