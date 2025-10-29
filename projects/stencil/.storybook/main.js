@@ -65,7 +65,7 @@ const webpackFinal = async config => {
                 require('postcss-iconsauce')(
                   './.storybook/iconsauce.config.js',
                 ),
-                require('tailwindcss')('./.storybook/tailwind.config.js'),
+                require('@tailwindcss/postcss'),
                 require('autoprefixer'),
               ],
             },

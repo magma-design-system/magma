@@ -9,7 +9,7 @@
   opacity: 1;
   position: fixed;
   transform: translate(0, 0);
-  transition-duration: theme('transitionDuration.200');
+  transition-duration: 200ms;
   transition-property: opacity, transform;
   width: 100%;
 

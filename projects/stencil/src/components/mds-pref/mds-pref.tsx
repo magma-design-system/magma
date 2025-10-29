@@ -93,6 +93,7 @@ export class MdsPref {
     this.addEvent(this.host.querySelector('mds-pref-contrast') as HTMLElement)
     this.addEvent(this.host.querySelector('mds-pref-language') as HTMLElement)
     this.addEvent(this.host.querySelector('mds-pref-theme') as HTMLElement)
+    this.addEvent(this.host.querySelector('mds-pref-theme-variant') as HTMLElement)
   }
 
   private removePerfEvents = (): void => {
@@ -100,6 +101,7 @@ export class MdsPref {
     this.removeEvent(this.host.querySelector('mds-pref-contrast') as HTMLElement)
     this.removeEvent(this.host.querySelector('mds-pref-language') as HTMLElement)
     this.removeEvent(this.host.querySelector('mds-pref-theme') as HTMLElement)
+    this.removeEvent(this.host.querySelector('mds-pref-theme-variant') as HTMLElement)
   }
 
   private handlePrefChangeEvent = (e: CustomEvent): void => {

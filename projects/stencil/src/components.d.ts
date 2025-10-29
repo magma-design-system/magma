@@ -53,10 +53,10 @@ import { MdsPaginatorEventDetail } from "./components/mds-paginator/meta/event-d
 import { PolicyAiVariant } from "./components/mds-policy-ai/meta/types";
 import { AnimationModeType } from "./components/mds-pref-animation/meta/types";
 import { MdsPrefChangeEventDetail } from "./event-detail/preference";
-import { ConsumptionModeType } from "./type/preference";
+import { ConsumptionModeType, PreferenceThemeModeType, PreferenceThemeSchemeType, PreferenceThemeTransitionType } from "./type/preference";
 import { ContrastModeType } from "./components/mds-pref-contrast/meta/types";
 import { MdsPrefLanguageEventDetail } from "./event-detail/language";
-import { ThemeModeType, ThemeTransitionType } from "./components/mds-pref-theme/meta/types";
+import { MdsPrefThemeVariantEventDetail } from "./event-detail/theme-variant";
 import { PriceTableFeaturesCellType } from "./components/mds-price-table-features-cell/meta/types";
 import { DirectionType } from "./components/mds-progress/meta/types";
 import { MdsPushNotificationEventDetail } from "./components/mds-push-notification/meta/event-detail";
@@ -128,10 +128,10 @@ export { MdsPaginatorEventDetail } from "./components/mds-paginator/meta/event-d
 export { PolicyAiVariant } from "./components/mds-policy-ai/meta/types";
 export { AnimationModeType } from "./components/mds-pref-animation/meta/types";
 export { MdsPrefChangeEventDetail } from "./event-detail/preference";
-export { ConsumptionModeType } from "./type/preference";
+export { ConsumptionModeType, PreferenceThemeModeType, PreferenceThemeSchemeType, PreferenceThemeTransitionType } from "./type/preference";
 export { ContrastModeType } from "./components/mds-pref-contrast/meta/types";
 export { MdsPrefLanguageEventDetail } from "./event-detail/language";
-export { ThemeModeType, ThemeTransitionType } from "./components/mds-pref-theme/meta/types";
+export { MdsPrefThemeVariantEventDetail } from "./event-detail/theme-variant";
 export { PriceTableFeaturesCellType } from "./components/mds-price-table-features-cell/meta/types";
 export { DirectionType } from "./components/mds-progress/meta/types";
 export { MdsPushNotificationEventDetail } from "./components/mds-push-notification/meta/event-detail";
@@ -1146,6 +1146,10 @@ export namespace Components {
           * @description Default is 500
          */
         "delay": number;
+        /**
+          * If true, the element is displayed as disabled
+         */
+        "disabled"?: boolean;
         "focusInput": () => Promise<void>;
         /**
           * Specifies the max date of the range, user cannot set dates after this date
@@ -1157,6 +1161,14 @@ export namespace Components {
           * @description It's in ISO format (YYYY-MM-DD).
          */
         "min": string | null;
+        /**
+          * Specifies that the element is read-only
+         */
+        "readonly"?: boolean;
+        /**
+          * Specifies that the element must be filled out before submitting the form
+         */
+        "required"?: boolean;
         "setValue": (value: string) => Promise<void>;
         "updateLang": () => Promise<void>;
         /**
@@ -1164,6 +1176,10 @@ export namespace Components {
           * @description It's in ISO format (YYYY-MM-DD).
          */
         "value": string;
+        /**
+          * Sets the variant of the input field
+         */
+        "variant"?: ThemeInputVariantType;
     }
     interface MdsInputDateRange {
         /**
@@ -1397,6 +1413,10 @@ export namespace Components {
           * Specifies the max number of files that can be uploaded
          */
         "maxFiles": number;
+        /**
+          * Reset component's files
+         */
+        "reset": () => Promise<void>;
         /**
           * Specifies if the component should show a sort widget by status or date of upload, if not defined let user choose
          */
@@ -1692,7 +1712,7 @@ export namespace Components {
         /**
           * Specifies the preference mode
          */
-        "mode"?: ThemeModeType;
+        "mode"?: PreferenceThemeModeType;
         /**
           * Sets the size of the component items nested inside it
          */
@@ -1700,7 +1720,41 @@ export namespace Components {
         /**
           * Specifies the transition of switching from a theme to another one
          */
-        "transition": ThemeTransitionType;
+        "transition": PreferenceThemeTransitionType;
+        "updateLang": () => Promise<void>;
+    }
+    interface MdsPrefThemeVariant {
+        /**
+          * Specifies the theme name attribute A string representing the theme name, should be a simple string name or kebab kase name. `Examples of valid language codes include "magma", "maggioli-editore", etc.`
+         */
+        "name": string;
+        /**
+          * Specifies the theme scheme which can be 'light', 'dark' or 'all' Default is 'all' which means this theme supporto both light and dark. If you set 'light' means this theme support only light mode and will be forced and shown light colors mode only.
+         */
+        "scheme": PreferenceThemeSchemeType;
+        /**
+          * Sets the size of the component items nested inside it
+         */
+        "size"?: TabSizeType;
+        "updateLang": () => Promise<void>;
+    }
+    interface MdsPrefThemeVariantItem {
+        /**
+          * Specifies the theme name
+         */
+        "label"?: string;
+        /**
+          * Specifies the theme name
+         */
+        "name": string;
+        /**
+          * Specifies the theme scheme which can be 'light', 'dark' or 'all'
+         */
+        "scheme"?: PreferenceThemeSchemeType;
+        /**
+          * Specifies if the element is selected
+         */
+        "selected"?: boolean;
         "updateLang": () => Promise<void>;
     }
     interface MdsPriceTable {
@@ -2450,6 +2504,14 @@ export interface MdsPrefLanguageItemCustomEvent<T> extends CustomEvent<T> {
 export interface MdsPrefThemeCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLMdsPrefThemeElement;
+}
+export interface MdsPrefThemeVariantCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLMdsPrefThemeVariantElement;
+}
+export interface MdsPrefThemeVariantItemCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLMdsPrefThemeVariantItemElement;
 }
 export interface MdsPushNotificationCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -3371,6 +3433,41 @@ declare global {
         prototype: HTMLMdsPrefThemeElement;
         new (): HTMLMdsPrefThemeElement;
     };
+    interface HTMLMdsPrefThemeVariantElementEventMap {
+        "mdsPrefThemeVariantChange": MdsPrefThemeVariantEventDetail;
+        "mdsPrefChange": MdsPrefChangeEventDetail;
+    }
+    interface HTMLMdsPrefThemeVariantElement extends Components.MdsPrefThemeVariant, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMdsPrefThemeVariantElementEventMap>(type: K, listener: (this: HTMLMdsPrefThemeVariantElement, ev: MdsPrefThemeVariantCustomEvent<HTMLMdsPrefThemeVariantElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMdsPrefThemeVariantElementEventMap>(type: K, listener: (this: HTMLMdsPrefThemeVariantElement, ev: MdsPrefThemeVariantCustomEvent<HTMLMdsPrefThemeVariantElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLMdsPrefThemeVariantElement: {
+        prototype: HTMLMdsPrefThemeVariantElement;
+        new (): HTMLMdsPrefThemeVariantElement;
+    };
+    interface HTMLMdsPrefThemeVariantItemElementEventMap {
+        "mdsPrefThemeVariantItemSelect": MdsPrefThemeVariantEventDetail;
+    }
+    interface HTMLMdsPrefThemeVariantItemElement extends Components.MdsPrefThemeVariantItem, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMdsPrefThemeVariantItemElementEventMap>(type: K, listener: (this: HTMLMdsPrefThemeVariantItemElement, ev: MdsPrefThemeVariantItemCustomEvent<HTMLMdsPrefThemeVariantItemElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMdsPrefThemeVariantItemElementEventMap>(type: K, listener: (this: HTMLMdsPrefThemeVariantItemElement, ev: MdsPrefThemeVariantItemCustomEvent<HTMLMdsPrefThemeVariantItemElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLMdsPrefThemeVariantItemElement: {
+        prototype: HTMLMdsPrefThemeVariantItemElement;
+        new (): HTMLMdsPrefThemeVariantItemElement;
+    };
     interface HTMLMdsPriceTableElement extends Components.MdsPriceTable, HTMLStencilElement {
     }
     var HTMLMdsPriceTableElement: {
@@ -3809,6 +3906,8 @@ declare global {
         "mds-pref-language": HTMLMdsPrefLanguageElement;
         "mds-pref-language-item": HTMLMdsPrefLanguageItemElement;
         "mds-pref-theme": HTMLMdsPrefThemeElement;
+        "mds-pref-theme-variant": HTMLMdsPrefThemeVariantElement;
+        "mds-pref-theme-variant-item": HTMLMdsPrefThemeVariantItemElement;
         "mds-price-table": HTMLMdsPriceTableElement;
         "mds-price-table-features": HTMLMdsPriceTableFeaturesElement;
         "mds-price-table-features-cell": HTMLMdsPriceTableFeaturesCellElement;
@@ -4917,6 +5016,10 @@ declare namespace LocalJSX {
          */
         "delay"?: number;
         /**
+          * If true, the element is displayed as disabled
+         */
+        "disabled"?: boolean;
+        /**
           * Specifies the max date of the range, user cannot set dates after this date
           * @description It's in ISO format (YYYY-MM-DD).
          */
@@ -4928,10 +5031,22 @@ declare namespace LocalJSX {
         "min"?: string | null;
         "onMdsInputDateSelect"?: (event: MdsInputDateCustomEvent<string>) => void;
         /**
+          * Specifies that the element is read-only
+         */
+        "readonly"?: boolean;
+        /**
+          * Specifies that the element must be filled out before submitting the form
+         */
+        "required"?: boolean;
+        /**
           * Specifies the value of the input
           * @description It's in ISO format (YYYY-MM-DD).
          */
         "value"?: string;
+        /**
+          * Sets the variant of the input field
+         */
+        "variant"?: ThemeInputVariantType;
     }
     interface MdsInputDateRange {
         /**
@@ -5497,7 +5612,7 @@ declare namespace LocalJSX {
         /**
           * Specifies the preference mode
          */
-        "mode"?: ThemeModeType;
+        "mode"?: PreferenceThemeModeType;
         /**
           * Emits when the component is triggered
          */
@@ -5509,7 +5624,51 @@ declare namespace LocalJSX {
         /**
           * Specifies the transition of switching from a theme to another one
          */
-        "transition"?: ThemeTransitionType;
+        "transition"?: PreferenceThemeTransitionType;
+    }
+    interface MdsPrefThemeVariant {
+        /**
+          * Specifies the theme name attribute A string representing the theme name, should be a simple string name or kebab kase name. `Examples of valid language codes include "magma", "maggioli-editore", etc.`
+         */
+        "name"?: string;
+        /**
+          * Emits when the component is triggered
+         */
+        "onMdsPrefChange"?: (event: MdsPrefThemeVariantCustomEvent<MdsPrefChangeEventDetail>) => void;
+        /**
+          * Emits when the component changes the language selected from the click event of the dropdown list item
+         */
+        "onMdsPrefThemeVariantChange"?: (event: MdsPrefThemeVariantCustomEvent<MdsPrefThemeVariantEventDetail>) => void;
+        /**
+          * Specifies the theme scheme which can be 'light', 'dark' or 'all' Default is 'all' which means this theme supporto both light and dark. If you set 'light' means this theme support only light mode and will be forced and shown light colors mode only.
+         */
+        "scheme"?: PreferenceThemeSchemeType;
+        /**
+          * Sets the size of the component items nested inside it
+         */
+        "size"?: TabSizeType;
+    }
+    interface MdsPrefThemeVariantItem {
+        /**
+          * Specifies the theme name
+         */
+        "label"?: string;
+        /**
+          * Specifies the theme name
+         */
+        "name"?: string;
+        /**
+          * Emits when the component trigger the language
+         */
+        "onMdsPrefThemeVariantItemSelect"?: (event: MdsPrefThemeVariantItemCustomEvent<MdsPrefThemeVariantEventDetail>) => void;
+        /**
+          * Specifies the theme scheme which can be 'light', 'dark' or 'all'
+         */
+        "scheme"?: PreferenceThemeSchemeType;
+        /**
+          * Specifies if the element is selected
+         */
+        "selected"?: boolean;
     }
     interface MdsPriceTable {
     }
@@ -6236,6 +6395,8 @@ declare namespace LocalJSX {
         "mds-pref-language": MdsPrefLanguage;
         "mds-pref-language-item": MdsPrefLanguageItem;
         "mds-pref-theme": MdsPrefTheme;
+        "mds-pref-theme-variant": MdsPrefThemeVariant;
+        "mds-pref-theme-variant-item": MdsPrefThemeVariantItem;
         "mds-price-table": MdsPriceTable;
         "mds-price-table-features": MdsPriceTableFeatures;
         "mds-price-table-features-cell": MdsPriceTableFeaturesCell;
@@ -6380,6 +6541,8 @@ declare module "@stencil/core" {
             "mds-pref-language": LocalJSX.MdsPrefLanguage & JSXBase.HTMLAttributes<HTMLMdsPrefLanguageElement>;
             "mds-pref-language-item": LocalJSX.MdsPrefLanguageItem & JSXBase.HTMLAttributes<HTMLMdsPrefLanguageItemElement>;
             "mds-pref-theme": LocalJSX.MdsPrefTheme & JSXBase.HTMLAttributes<HTMLMdsPrefThemeElement>;
+            "mds-pref-theme-variant": LocalJSX.MdsPrefThemeVariant & JSXBase.HTMLAttributes<HTMLMdsPrefThemeVariantElement>;
+            "mds-pref-theme-variant-item": LocalJSX.MdsPrefThemeVariantItem & JSXBase.HTMLAttributes<HTMLMdsPrefThemeVariantItemElement>;
             "mds-price-table": LocalJSX.MdsPriceTable & JSXBase.HTMLAttributes<HTMLMdsPriceTableElement>;
             "mds-price-table-features": LocalJSX.MdsPriceTableFeatures & JSXBase.HTMLAttributes<HTMLMdsPriceTableFeaturesElement>;
             "mds-price-table-features-cell": LocalJSX.MdsPriceTableFeaturesCell & JSXBase.HTMLAttributes<HTMLMdsPriceTableFeaturesCellElement>;

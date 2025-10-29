@@ -3,10 +3,10 @@
     px-300
     py-0;
 
-  --mds-button-radius: theme('borderRadius.md');
+  --mds-button-radius: var(--radius-md);
 
-  min-height: theme('size.700');
-  min-width: theme('size.700');
+  min-height: --spacing(700);
+  min-width: --spacing(700);
 }
 
 :host([size="sm"]:not([has-text])) {
@@ -24,7 +24,7 @@
 }
 
 :host([size="sm"][await]:not([await="false"]) ) .await {
-  transform: scale(theme('scale.75'));
+  transform: scale(75);
 }
 
 :host([size="md"]) {
@@ -32,8 +32,8 @@
     px-300
     py-100;
 
-  min-height: theme('size.900');
-  min-width: theme('size.900');
+  min-height: --spacing(900);
+  min-width: --spacing(900);
 }
 
 :host([size="md"]:not([has-text])) {
@@ -45,8 +45,8 @@
     px-600
     py-200;
 
-  min-height: theme('size.1200');
-  min-width: theme('size.1200');
+  min-height: --spacing(1200);
+  min-width: --spacing(1200);
 }
 
 :host([size="lg"]:not([has-text])) {
@@ -58,8 +58,8 @@
     px-800
     py-200;
 
-  min-height: theme('size.1300');
-  min-width: theme('size.1300');
+  min-height: --spacing(1300);
+  min-width: --spacing(1300);
 }
 
 :host([size="xl"]:not([has-text])) {

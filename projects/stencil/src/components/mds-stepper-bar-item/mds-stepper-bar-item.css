@@ -1,7 +1,13 @@
-@import '../../tailwind/components.css';
-@tailwind components;
+@reference '../../tailwind/index.css';
+@reference '../../tailwind/components.css';
 
-/**
+@import './css/mds-stepper-bar-item-pref-animation.css';
+@import '../../tailwind/fouc.css';
+
+
+
+
+  /**
  * @prop --mds-stepper-bar-item-color: Sets the color of the text
  * @prop --mds-stepper-bar-item-duaration: Sets the duration of the animation
  * @prop --mds-stepper-bar-item-icon-background-done: Sets the background-color of the icon when the component is done
@@ -17,140 +23,172 @@
  * @prop --mds-stepper-bar-item-progress-thickness: Sets the thickness of the progress bar
  */
 
-:host {
-  --mds-stepper-bar-item-color: theme('colors.tone-neutral-03');
-  --mds-stepper-bar-item-duaration: 250ms;
-  --mds-stepper-bar-item-icon-background-done: theme('colors.status-success-05');
-  --mds-stepper-bar-item-icon-background-current: theme('colors.variant-primary-04');
-  --mds-stepper-bar-item-icon-background: var(--mds-stepper-bar-item-progress-background, theme('colors.tone-neutral-08'));
-  --mds-stepper-bar-item-icon-color-done: theme('colors.status-success-10');
-  --mds-stepper-bar-item-icon-color-current: theme('colors.tone-neutral');
-  --mds-stepper-bar-item-icon-color: theme('colors.tone-neutral-04');
-  --mds-stepper-bar-item-icon-ring-color: var(--mds-stepper-bar-item-icon-background-current);
-  --mds-stepper-bar-item-icon-ring-separator-color: theme('colors.tone-neutral');
-  --mds-stepper-bar-item-icon-ring-separator-size: 0.375rem;
-  --mds-stepper-bar-item-icon-ring-size: theme('height.100');
-  --mds-stepper-bar-item-min-width: 180px;
-  --mds-stepper-bar-item-progress-background: theme('colors.tone-neutral-08');
-  --mds-stepper-bar-item-progress-color: theme('colors.status-success-04');
-  --mds-stepper-bar-item-progress-thickness: theme('height.200');
+  :host {
+    --mds-stepper-bar-item-color: rgb(var(--tone-neutral-03));
+    --mds-stepper-bar-item-duaration: 250ms;
+    --mds-stepper-bar-item-icon-background-done: rgb(var(--status-success-05));
+    --mds-stepper-bar-item-icon-background-current: rgb(var(--variant-primary-04));
+    --mds-stepper-bar-item-icon-background: var(
+      --mds-stepper-bar-item-progress-background,
+      rgb(var(--tone-neutral-08))
+    );
+    --mds-stepper-bar-item-icon-color-done: rgb(var(--status-success-10));
+    --mds-stepper-bar-item-icon-color-current: rgb(var(--tone-neutral));
+    --mds-stepper-bar-item-icon-color: rgb(var(--tone-neutral-04));
+    --mds-stepper-bar-item-icon-ring-color: var(
+      --mds-stepper-bar-item-icon-background-current
+    );
+    --mds-stepper-bar-item-icon-ring-separator-color: rgb(var(--tone-neutral));
+    --mds-stepper-bar-item-icon-ring-separator-size: 0.375rem;
+    --mds-stepper-bar-item-icon-ring-size: var(--height-100);
+    --mds-stepper-bar-item-min-width: 180px;
+    --mds-stepper-bar-item-progress-background: rgb(var(--tone-neutral-08));
+    --mds-stepper-bar-item-progress-color: rgb(var(--status-success-04));
+    --mds-stepper-bar-item-progress-thickness: var(--height-200);
 
-  @apply gap-400;
+    @apply gap-400;
 
-  align-items: flex-start;
-  display: flex;
-  flex-basis: 0;
-  flex-direction: column;
-  flex-grow: 1;
-  flex-shrink: 0;
-  min-width: var(--mds-stepper-bar-item-min-width);
-  padding-left: calc(var(--mds-stepper-bar-item-icon-ring-size) + var(--mds-stepper-bar-item-icon-ring-separator-size));
-  padding-top: calc(var(--mds-stepper-bar-item-icon-ring-size) + var(--mds-stepper-bar-item-icon-ring-separator-size));
-  position: relative;
-  scroll-snap-align: center;
-  transition-property: outline, outline-offset;
-}
+    align-items: flex-start;
+    display: flex;
+    flex-basis: 0;
+    flex-direction: column;
+    flex-grow: 1;
+    flex-shrink: 0;
+    min-width: var(--mds-stepper-bar-item-min-width);
+    padding-left: calc(
+      var(--mds-stepper-bar-item-icon-ring-size) +
+        var(--mds-stepper-bar-item-icon-ring-separator-size)
+    );
+    padding-top: calc(
+      var(--mds-stepper-bar-item-icon-ring-size) +
+        var(--mds-stepper-bar-item-icon-ring-separator-size)
+    );
+    position: relative;
+    scroll-snap-align: center;
+    transition-property: outline, outline-offset;
+  }
 
-:host(:last-of-type) {
-  @apply basis-100;
-}
+  :host(:last-of-type) {
+    @apply basis-100;
+  }
 
-:host(:last-of-type) .progress {
-  display: none;
-}
+  :host(:last-of-type) .progress {
+    display: none;
+  }
 
-:host([done]) .icon {
-  --mds-stepper-bar-item-icon-background: var(--mds-stepper-bar-item-icon-background-done);
-  --mds-stepper-bar-item-icon-color: var(--mds-stepper-bar-item-icon-color-done);
+  :host([done]) .icon {
+    --mds-stepper-bar-item-icon-background: var(
+      --mds-stepper-bar-item-icon-background-done
+    );
+    --mds-stepper-bar-item-icon-color: var(
+      --mds-stepper-bar-item-icon-color-done
+    );
 
-  transition-delay: 0ms;
-}
+    transition-delay: 0ms;
+  }
 
-:host([current]) .icon {
-  --mds-stepper-bar-item-icon-background: var(--mds-stepper-bar-item-icon-background-current);
-  --mds-stepper-bar-item-icon-color: var(--mds-stepper-bar-item-icon-color-current);
+  :host([current]) .icon {
+    --mds-stepper-bar-item-icon-background: var(
+      --mds-stepper-bar-item-icon-background-current
+    );
+    --mds-stepper-bar-item-icon-color: var(
+      --mds-stepper-bar-item-icon-color-current
+    );
 
-  transition-delay: calc(var(--mds-stepper-bar-item-duaration) / 2);
-}
+    transition-delay: calc(var(--mds-stepper-bar-item-duaration) / 2);
+  }
 
-:host(:not([done])) .icon,
-:host(:not([current])) .icon {
-  --mds-stepper-bar-item-icon-ring-color: var(--mds-stepper-bar-item-icon-background);
-}
+  :host(:not([done])) .icon,
+  :host(:not([current])) .icon {
+    --mds-stepper-bar-item-icon-ring-color: var(
+      --mds-stepper-bar-item-icon-background
+    );
+  }
 
-.header {
-  @apply
-    duration-200
+  .header {
+    @apply duration-200
     ease-out
     rounded-md
     w-full;
 
-  align-items: center;
-  display: flex;
-  transition-property: outline, outline-offset;
-}
+    align-items: center;
+    display: flex;
+    transition-property: outline, outline-offset;
+  }
 
-.icon {
-  @apply
-    p-200
+  .icon {
+    @apply p-200
     ease-in-out
     duration-150
     rounded-full;
 
-  background-color: var(--mds-stepper-bar-item-icon-background);
-  box-shadow: 0 0 0 var(--mds-stepper-bar-item-icon-ring-size) var(--mds-stepper-bar-item-icon-ring-color), 0 0 0 var(--mds-stepper-bar-item-icon-ring-separator-size) var(--mds-stepper-bar-item-icon-ring-separator-color);
-  display: flex;
-  fill: var(--mds-stepper-bar-item-icon-color);
-  flex-shrink: 0;
-  position: relative;
-  transition-duration: var(--mds-stepper-bar-item-duaration);
-  transition-property: background-color, box-shadow, fill;
-}
+    background-color: var(--mds-stepper-bar-item-icon-background);
+    box-shadow:
+      0 0 0 var(--mds-stepper-bar-item-icon-ring-size)
+        var(--mds-stepper-bar-item-icon-ring-color),
+      0 0 0 var(--mds-stepper-bar-item-icon-ring-separator-size)
+        var(--mds-stepper-bar-item-icon-ring-separator-color);
+    display: flex;
+    fill: var(--mds-stepper-bar-item-icon-color);
+    flex-shrink: 0;
+    position: relative;
+    transition-duration: var(--mds-stepper-bar-item-duaration);
+    transition-property: background-color, box-shadow, fill;
+  }
 
-.progress {
-  --mds-stepper-bar-item-background: var(--mds-stepper-bar-item-progress-background);
-  --mds-stepper-bar-item-color: var(--mds-stepper-bar-item-progress-color);
-  --mds-stepper-bar-item-thickness: var(--mds-stepper-bar-item-progress-thickness);
+  .progress {
+    --mds-stepper-bar-item-background: var(
+      --mds-stepper-bar-item-progress-background
+    );
+    --mds-stepper-bar-item-color: var(--mds-stepper-bar-item-progress-color);
+    --mds-stepper-bar-item-thickness: var(
+      --mds-stepper-bar-item-progress-thickness
+    );
 
-  @apply -ml-100;
+    @apply -ml-100;
 
-  flex-grow: 1;
-  margin-right: calc(calc(calc(var(--mds-stepper-bar-item-icon-ring-size) + var(--mds-stepper-bar-item-icon-ring-separator-size)) * -1) - theme('spacing.100'));
-  position: relative;
-  z-index: -1;
-}
+    flex-grow: 1;
+    margin-right: calc(
+      calc(
+          calc(
+              var(--mds-stepper-bar-item-icon-ring-size) +
+                var(--mds-stepper-bar-item-icon-ring-separator-size)
+            ) *
+            -1
+        ) -
+        (--spacing(100))
+    );
+    position: relative;
+    z-index: -1;
+  }
 
-.infos {
-  @apply
-    gap-100
+  .infos {
+    @apply gap-100
     pl-100;
 
-  display: grid;
-}
+    display: grid;
+  }
 
-.text {
-  @apply
-    ease-in-out
+  .text {
+    @apply ease-in-out
     duration-150;
 
-  color: var(--mds-stepper-bar-item-color);
-  pointer-events: none;
-  transition-duration: var(--mds-stepper-bar-item-duaration);
-  transition-property: color;
-}
+    color: var(--mds-stepper-bar-item-color);
+    pointer-events: none;
+    transition-duration: var(--mds-stepper-bar-item-duaration);
+    transition-property: color;
+  }
 
-.badge {
-  @apply rounded-full;
+  .badge {
+    @apply rounded-full;
 
-  pointer-events: none;
-}
+    pointer-events: none;
+  }
 
-.step {
-  @apply rounded-full;
+  .step {
+    @apply rounded-full;
 
-  color: theme('colors.tone-neutral-04');
-  pointer-events: none;
-}
+    color: rgb(var(--tone-neutral-04));
+    pointer-events: none;
+  }
 
-@import './css/mds-stepper-bar-item-pref-animation.css';
-@import '../../tailwind/fouc.css';

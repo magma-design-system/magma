@@ -1,4 +1,10 @@
-@import './components.css';
-@tailwind components;
-@tailwind utilities;
+/* @import "tailwindcss"; */
+@reference 'tailwindcss';
+@reference '@maggioli-design-system/design-tokens/dist/css/tailwind-theme-typography.css';
+@reference '@maggioli-design-system/design-tokens/dist/css/tailwind-theme-color.css';
+
+@reference './components.css';
+
+
+
 

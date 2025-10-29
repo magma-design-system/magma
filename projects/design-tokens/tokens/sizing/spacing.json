@@ -1,0 +1,73 @@
+{
+  "spacing-scale": { "value": "0.0025rem" },
+  "spacing": {
+    "xs": {
+      "value": "{sizing.primitive.100}"
+    },
+    "sm": {
+      "value": "{sizing.primitive.200}"
+    },
+    "md": {
+      "value": "{sizing.primitive.400}"
+    },
+    "lg": {
+      "value": "{sizing.primitive.600}"
+    },
+    "xl": {
+      "value": "{sizing.primitive.800}"
+    },
+    "2xl": {
+      "value": "{sizing.primitive.1200}"
+    },
+    "3xl": {
+      "value": "{sizing.primitive.2000}"
+    },
+    "phrase": {
+      "value": "50ch"
+    },
+    "prose": {
+      "value": "65ch"
+    },
+    "text": {
+      "value": "75ch"
+    },
+    "title": {
+      "value": "30ch"
+    }
+  },
+  "container": {
+    "xs": {
+      "value": "320px"
+    },
+    "sm": {
+      "value": "384px"
+    },
+    "md": {
+      "value": "448px"
+    },
+    "lg": {
+      "value": "512px"
+    },
+    "xl": {
+      "value": "576px"
+    },
+    "2xl": {
+      "value": "672px"
+    },
+    "3xl": {
+      "value": "768px"
+    },
+    "4xl": {
+      "value": "896px"
+    },
+    "5xl": {
+      "value": "1024px"
+    },
+    "6xl": {
+      "value": "1152px"
+    },
+    "7xl": {
+      "value": "1280px"
+    }
+  }
+}

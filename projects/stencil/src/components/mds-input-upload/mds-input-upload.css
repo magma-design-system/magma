@@ -1,4 +1,5 @@
-@import '../../tailwind/components.css';
+@reference '../../tailwind/index.css';
+@reference '../../tailwind/components.css';
 
 /**
  * @prop --mds-input-upload-drag-area-background-color-on-drag: Set the background color of the drag area when a file is dragged over it.
@@ -9,10 +10,10 @@
  */
 
 :host {
-  --mds-input-upload-drag-area-background-color-on-drag: theme('colors.tone-neutral-10');
-  --mds-input-upload-drag-area-background-color: theme('colors.tone-neutral');
-  --mds-input-upload-drag-area-border-on-drag: 3px dashed theme('colors.tone-neutral-07');
-  --mds-input-upload-drag-area-border: 3px dashed theme('colors.tone-neutral-07');
+  --mds-input-upload-drag-area-background-color-on-drag: rgb(var(--tone-neutral-10));
+  --mds-input-upload-drag-area-background-color: rgb(var(--tone-neutral));
+  --mds-input-upload-drag-area-border-on-drag: 3px dashed rgb(var(--tone-neutral-07));
+  --mds-input-upload-drag-area-border: 3px dashed rgb(var(--tone-neutral-07));
   --mds-input-upload-min-cols: 3;
 
   @apply
@@ -27,13 +28,13 @@
   /*
     actually there is no way to custom background-image url
     paramter which not allows to pass custom properties inside
-    --stroke-color: theme('colors.tone-neutral-07');
+    --stroke-color: rgb(var(--tone-neutral-07));
     --stroke-dashoffset: 8;
     --stroke-line-width: 8;
     --stroke-width: 5;
-    --stroke-line-distance: theme('spacing.400');
+    --stroke-line-distance: --spacing(400);
     --stroke-dasharray-line: var(--stroke-line-width) '%2c' var(--stroke-line-distance);
-    --border-radius: theme('borderRadius.2xl');
+    --border-radius: var(--radius-2xl);
     --url: "url(data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='" var(--border-radius) "' ry='" var(--border-radius) "' stroke='" var(--stroke-color) "' stroke-width='" var(--stroke-width) "' stroke-dasharray='8%2c 16' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e)";
     background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx="16" ry='16' stroke='red' stroke-width='5' stroke-dasharray='8%2c 16' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
  */
@@ -65,29 +66,29 @@
     svg
     w-1200;
 
-  fill: theme('colors.variant-primary-05');
+  fill: rgb(var(--variant-primary-05));
 }
 
 .action {
   @apply p-150;
 
   border-radius: 1000px;
-  fill: theme('colors.tone-neutral-04');
+  fill: rgb(var(--tone-neutral-04));
   height: auto;
 }
 
 .action--cancel-upload:focus-visible,
 .action--cancel-upload:hover {
-  --mds-button-background: theme('colors.status-error-09');
+  --mds-button-background: rgb(var(--status-error-09));
 
-  fill: theme('colors.status-error-04');
+  fill: rgb(var(--status-error-04));
 }
 
 .action--retry-upload:focus-visible,
 .action--retry-upload:hover {
-  --mds-button-background: theme('colors.status-success-09');
+  --mds-button-background: rgb(var(--status-success-09));
 
-  fill: theme('colors.status-success-04');
+  fill: rgb(var(--status-success-04));
 }
 
 .main-action {
@@ -132,16 +133,16 @@
 :host-context(:not(.safari)) .file-list {
   --cols: var(--mds-input-upload-min-cols);
   --perc-w: calc(100% / var(--cols));
-  --gap: theme('spacing.400');
+  --gap: --spacing(400);
   --gap-w: calc(var(--gap) - calc(var(--gap) / var(--cols)));
   --max-w: calc(var(--perc-w) - var(--gap-w));
-  --template-cols: repeat(auto-fit, minmax(theme('spacing.4000'), var(--max-w)));
+  --template-cols: repeat(auto-fit, minmax(--spacing(4000), var(--max-w)));
 
   grid-template-columns: var(--template-cols);
 }
 
 :host-context(:not(.safari)) .file-list--more-items {
-  --template-cols: repeat(auto-fit, minmax(theme('spacing.4000'), 1fr));
+  --template-cols: repeat(auto-fit, minmax(--spacing(4000), 1fr));
 }
 
 .main-infos {

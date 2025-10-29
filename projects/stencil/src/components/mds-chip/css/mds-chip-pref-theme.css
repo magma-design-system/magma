@@ -1,13 +1,13 @@
 :host-context(.pref-theme-dark) {
-  --mds-chip-background: theme('colors.tone-neutral-08');
+  --mds-chip-background: rgb(var(--tone-neutral-08));
 
-  box-shadow: theme('boxShadow.outline');
+  box-shadow: var(--shadow-outline);
 }
 
 @media (prefers-color-scheme: dark) {
   :host-context(.pref-theme-system) {
-    --mds-chip-background: theme('colors.tone-neutral-08');
+    --mds-chip-background: rgb(var(--tone-neutral-08));
 
-    box-shadow: theme('boxShadow.outline');
+    box-shadow: var(--shadow-outline);
   }
 }

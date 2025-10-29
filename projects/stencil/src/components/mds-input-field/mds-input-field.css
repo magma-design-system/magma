@@ -1,15 +1,17 @@
+@reference '../../tailwind/index.css';
+
 /**
  * @prop --mds-input-field-message-color: Sets the message text color of the component
  * @prop --mds-input-field-message-background: Sets the message background color of the component, will be visible only if there is a text defined by `tip` component attribute
  */
 
 :host {
-  --mds-input-field-message-color: theme('colors.tone-neutral-03');
-  --mds-input-field-message-background: theme('colors.tone-neutral-10');
+  --mds-input-field-message-color: rgb(var(--tone-neutral-03));
+  --mds-input-field-message-background: rgb(var(--tone-neutral-10));
 
   @apply gap-200;
 
-  color: theme('colors.tone-neutral-02');
+  color: rgb(var(--tone-neutral-02));
   display: grid;
 }
 
@@ -66,7 +68,7 @@
   container-type: inline-size;
   display: flex;
   flex-wrap: wrap;
-  gap: theme('gap.200');
+  gap: --spacing(200);
 }
 
 ::slotted(*:first-child) {

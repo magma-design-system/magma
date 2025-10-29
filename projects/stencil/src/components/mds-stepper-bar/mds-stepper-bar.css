@@ -1,3 +1,5 @@
+@reference '../../tailwind/index.css';
+
 /**
  * @prop --mds-stepper-bar-scroll-behavior: Sets the scroll-behavior animation
  */

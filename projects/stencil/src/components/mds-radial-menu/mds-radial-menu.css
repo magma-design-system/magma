@@ -21,11 +21,11 @@
   --mds-radial-menu-direction: -1;
   --mds-radial-menu-disc-background: rgb(var(--tone-neutral) / 0.50);
   --mds-radial-menu-disc-filter: blur(8px);
-  --mds-radial-menu-disc-shadow: theme('boxShadow.lg-sharp');
+  --mds-radial-menu-disc-shadow: var(--shadow-lg-sharp);
   --mds-radial-menu-disc-size: calc(var(--mds-radial-menu-radius) * 2);
   --mds-radial-menu-radius: 5rem;
-  --mds-radial-menu-transition-duration: theme('transitionDuration.500');
-  --mds-radial-menu-transition-timing-function: theme('transitionTimingFunction.out-expo');
+  --mds-radial-menu-transition-duration: 500ms;
+  --mds-radial-menu-transition-timing-function: var(--ease-out-expo);
 
   /* private */ --mds-radial-menu-nth-siblings: 0;
   /* private */ --mds-radial-menu-disc-delay: 0s;

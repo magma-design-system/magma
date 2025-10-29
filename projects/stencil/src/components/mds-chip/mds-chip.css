@@ -1,5 +1,6 @@
-@import '~@maggioli-design-system/styles/dist/css/animations.css';
-@import '../../tailwind/components.css';
+@reference '../../tailwind/index.css';
+@reference '@maggioli-design-system/styles/dist/css/animations.css';
+@reference '../../tailwind/components.css';
 
 /**
  * @prop --mds-chip-background: Sets the `background-color` of the component
@@ -14,13 +15,13 @@
  */
 
 :host {
-  --mds-chip-background: theme('colors.tone-neutral');
+  --mds-chip-background: rgb(var(--tone-neutral));
   --mds-chip-border: transparent;
-  --mds-chip-color: theme('colors.tone-neutral-03');
-  --mds-chip-icon-background: theme('colors.variant-primary-06');
-  --mds-chip-icon-color: theme('colors.tone-neutral');
+  --mds-chip-color: rgb(var(--tone-neutral-03));
+  --mds-chip-icon-background: rgb(var(--variant-primary-06));
+  --mds-chip-icon-color: rgb(var(--tone-neutral));
   --mds-chip-opacity-disabled: var(--opacity-disabled, 0.5);
-  --mds-chip-shadow: theme('boxShadow.sharp');
+  --mds-chip-shadow: var(--shadow-sharp);
 
   @apply
     duration-150

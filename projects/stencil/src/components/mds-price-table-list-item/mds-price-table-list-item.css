@@ -1,40 +1,40 @@
-@import '../../tailwind/components.css';
-@tailwind components;
+@reference '../../tailwind/index.css';
+@reference '../../tailwind/components.css';
 
-:host {
-  --mds-price-table-list-item-supported-icon-color-hover: theme('colors.label-green-05');
-  --mds-price-table-list-item-supported-icon-color: theme('colors.label-green-06');
-  --mds-price-table-list-item-unsupported-icon-color-hover: theme('colors.tone-neutral-04');
-  --mds-price-table-list-item-unsupported-icon-color: theme('colors.tone-neutral-05');
+@import '../../tailwind/fouc.css';
 
-  @apply gap-100;
+  :host {
+    --mds-price-table-list-item-supported-icon-color-hover: rgb(var(--label-green-05));
+    --mds-price-table-list-item-supported-icon-color: rgb(var(--label-green-06));
+    --mds-price-table-list-item-unsupported-icon-color-hover: rgb(var(--tone-neutral-04));
+    --mds-price-table-list-item-unsupported-icon-color: rgb(var(--tone-neutral-05));
 
-  align-items: flex-start;
-  display: flex;
-}
+    @apply gap-100;
 
-.text {
-  flex-grow: 1;
-}
+    align-items: flex-start;
+    display: flex;
+  }
 
-.icon-container {
-  flex-shrink: 0;
-}
+  .text {
+    flex-grow: 1;
+  }
 
-.icon {
-  @apply
-    duration-500
+  .icon-container {
+    flex-shrink: 0;
+  }
+
+  .icon {
+    @apply duration-500
     ease-out-expo
     h-600
     svg
     w-600;
 
-  fill: var(--mds-price-table-list-item-unsupported-icon-color);
-  transition-property: fill;
-}
+    fill: var(--mds-price-table-list-item-unsupported-icon-color);
+    transition-property: fill;
+  }
 
-:host([supported]:not([supported="false"])) .icon {
-  fill: var(--mds-price-table-list-item-supported-icon-color);
-}
+  :host([supported]:not([supported='false'])) .icon {
+    fill: var(--mds-price-table-list-item-supported-icon-color);
+  }
 
-@import '../../tailwind/fouc.css';

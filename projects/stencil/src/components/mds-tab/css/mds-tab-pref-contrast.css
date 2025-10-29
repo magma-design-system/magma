@@ -1,15 +1,15 @@
 :host-context(.pref-contrast-more) {
-  --mds-tab-item-selected-shadow: theme('boxShadow.outline-50');
-  --mds-tab-tabs-wrapper-shadow: 0 0 0 theme('size.50') var(--mds-tab-tabs-wrapper-shadow-color) inset;
-  --mds-tab-tabs-wrapper-shadow-color: theme('colors.tone-neutral-07');
-  --mds-tab-tabs-wrapper-outline-opacity: theme('opacity.30');
+  --mds-tab-item-selected-shadow: var(--shadow-outline-50);
+  --mds-tab-tabs-wrapper-shadow: 0 0 0 --spacing(50) var(--mds-tab-tabs-wrapper-shadow-color) inset;
+  --mds-tab-tabs-wrapper-shadow-color: rgb(var(--tone-neutral-07));
+  --mds-tab-tabs-wrapper-outline-opacity: 30%;
 }
 
 @media (prefers-contrast: more) {
   :host-context(.pref-contrast-system) {
-    --mds-tab-item-selected-shadow: theme('boxShadow.outline-50');
-    --mds-tab-tabs-wrapper-shadow: 0 0 0 theme('size.50') var(--mds-tab-tabs-wrapper-shadow-color) inset;
-    --mds-tab-tabs-wrapper-shadow-color: theme('colors.tone-neutral-07');
-    --mds-tab-tabs-wrapper-outline-opacity: theme('opacity.30');
+    --mds-tab-item-selected-shadow: var(--shadow-outline-50);
+    --mds-tab-tabs-wrapper-shadow: 0 0 0 --spacing(50) var(--mds-tab-tabs-wrapper-shadow-color) inset;
+    --mds-tab-tabs-wrapper-shadow-color: rgb(var(--tone-neutral-07));
+    --mds-tab-tabs-wrapper-outline-opacity: 30%;
   }
 }

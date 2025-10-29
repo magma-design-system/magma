@@ -6,7 +6,7 @@
     w-600;
 
   display: none;
-  margin-right: calc(calc(-1 * var(--mds-button-gap)) - theme('spacing.600'));
+  margin-right: calc(calc(-1 * var(--mds-button-gap)) - --spacing(600));
   transform: scale(0);
   transition-behavior: allow-discrete;
   transition-property: display, margin-right, opacity, transform, width;
@@ -38,7 +38,7 @@
   transform: scale(1);
 
   @starting-style {
-    margin-right: calc(calc(-1 * var(--mds-button-gap)) - theme('spacing.600'));
+    margin-right: calc(calc(-1 * var(--mds-button-gap)) - --spacing(600));
     opacity: 0;
     transform: scale(0);
   }

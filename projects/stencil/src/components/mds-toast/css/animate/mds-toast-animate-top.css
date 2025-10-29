@@ -1,3 +1,5 @@
+@reference '../../tailwind/index.css';
+
 .to-top-left,
 .to-top-center,
 .to-top-right{

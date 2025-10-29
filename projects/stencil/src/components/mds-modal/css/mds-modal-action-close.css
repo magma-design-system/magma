@@ -9,6 +9,6 @@
 }
 
 .action-close::part(icon) {
-  height: theme('size.900');
-  width: theme('size.900');
+  height: --spacing(900);
+  width: --spacing(900);
 }

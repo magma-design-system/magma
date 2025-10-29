@@ -1,3 +1,5 @@
+@reference '../../tailwind/index.css';
+
 mds-pref-language {
   @apply gap-400;
 
@@ -11,7 +13,7 @@ mds-pref-language {
 }
 
 .item {
-  --mds-tab-item-default-color: theme('colors.tone-neutral-05');
+  --mds-tab-item-default-color: rgb(var(--tone-neutral-05));
 
   flex-basis: 0;
   flex-grow: 1;
@@ -23,7 +25,7 @@ mds-pref-language {
 
 .item--auto,
 .item--custom-language {
-  --mds-tab-item-selected-color: theme('colors.tone-neutral-03');
+  --mds-tab-item-selected-color: rgb(var(--tone-neutral-03));
 }
 
 @import '../../tailwind/fouc.css';

@@ -1,6 +1,6 @@
 {
   "name": "@maggioli-design-system/magma",
-  "version": "1.10.2",
+  "version": "1.10.3",
   "description": "Magma is Maggioli Design System's web-components library.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -16,6 +16,7 @@
   ],
   "scripts": {
     "build": "npm run clean && npm run build.icons && stencil build --prerender --docs-readme --docs-json dist/documentation.json && npm run publish.isolate.docs-json",
+    "build.docs": "stencil docs",
     "build.icons": "iconsauce --verbose --config ./.storybook/iconsauce.config.js --output-dictionary ./src/fixtures/icons.json --output-svg ./assets/svg",
     "build.no-cache": "stencil build --no-cache",
     "build.watch": "npm run build.icons && stencil build --watch",
@@ -52,7 +53,7 @@
   "dependencies": {
     "@floating-ui/dom": "1.6.12",
     "@maggioli-design-system/design-tokens": "13.7.1",
-    "@maggioli-design-system/styles": "15.11.0",
+    "@maggioli-design-system/styles": "16.0.0",
     "@stencil/core": "4.27.2",
     "clsx": "2.1.0",
     "crypto-js": "4.2.0",
@@ -76,14 +77,16 @@
     "@rollup/plugin-alias": "5.1.0",
     "@stencil/angular-output-target": "0.10.2",
     "@stencil/eslint-plugin": "1.1.0",
-    "@stencil/postcss": "2.1.0",
     "@stencil/react-output-target": "1.0.2",
     "@storybook/addon-a11y": "9.0.15",
+    "@storybook/addon-docs": "9.0.15",
     "@storybook/addon-links": "9.0.15",
     "@storybook/addon-styling-webpack": "2.0.0",
     "@storybook/addon-webpack5-compiler-babel": "3.0.6",
     "@storybook/react-webpack5": "9.0.15",
     "@storybook/storybook-deployer": "2.8.16",
+    "@tailwindcss/postcss": "4.1.11",
+    "stencil-tailwind-plugin": "2.0.5",
     "@types/autoprefixer": "10.2.4",
     "@types/crypto-js": "4.2.1",
     "autoprefixer": "10.4.20",
@@ -107,10 +110,9 @@
     "stencil-inline-svg": "1.1.0",
     "storybook": "9.0.15",
     "style-loader": "3.3.3",
-    "tailwindcss": "3.4.17",
+    "tailwindcss": "4.1.11",
     "ts-loader": "9.5.0",
-    "tsconfig-paths-webpack-plugin": "4.1.0",
-    "@storybook/addon-docs": "9.0.15"
+    "tsconfig-paths-webpack-plugin": "4.1.0"
   },
   "author": {
     "name": "Vittorio Vittori",

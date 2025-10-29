@@ -1,8 +1,10 @@
+@reference '../../tailwind/index.css';
+
 :host {
   --mds-price-table-features-row-background: transparent;
-  --mds-price-table-features-row-background-hover: theme('colors.tone-neutral-10');
-  --mds-price-table-features-row-color: theme('colors.tone-neutral-04');
-  --mds-price-table-features-row-color-hover: theme('colors.tone-neutral-01');
+  --mds-price-table-features-row-background-hover: rgb(var(--tone-neutral-10));
+  --mds-price-table-features-row-color: rgb(var(--tone-neutral-04));
+  --mds-price-table-features-row-color-hover: rgb(var(--tone-neutral-01));
 
   @apply
     duration-200
@@ -29,7 +31,7 @@
 }
 
 :host-context(:not(.safari)):host(:hover) > ::slotted([type="label"]) {
-  transform: translate(theme('spacing.200'), 0);
+  transform: translate(--spacing(200), 0);
 }
 
 @import './css/mds-price-table-features-pref-animation.css';

@@ -1,3 +1,5 @@
+@reference '../../tailwind/index.css';
+
 /**
  * @prop --mds-tooltip-arrow-background: Sets the fill color of the arrow.
  * @prop --mds-tooltip-background: Sets the background-color of the tooltip.
@@ -12,12 +14,12 @@
 
 :host {
   --mds-tooltip-arrow-background: var(--mds-tooltip-background);
-  --mds-tooltip-background: theme('colors.tone-neutral');
+  --mds-tooltip-background: rgb(var(--tone-neutral));
   --mds-tooltip-delay: 1s;
   --mds-tooltip-drop-shadow: drop-shadow(0 10px 8px rgb(0 0 0 / 0.04)) drop-shadow(0 4px 3px rgb(0 0 0 / 0.1)) drop-shadow(0 0 1px rgb(0 0 0 / 0.1));
   --mds-tooltip-duration: 0.5s;
-  --mds-tooltip-ease: theme('transitionTimingFunction.out-expo');
-  --mds-tooltip-dot-padding: theme('spacing.100');
+  --mds-tooltip-ease: var(--ease-out-expo);
+  --mds-tooltip-dot-padding: --spacing(100);
   --mds-tooltip-transform-from: scale(0.9) translateY(-3%);
   --mds-tooltip-transform-to: scale(1) translate(0, 0);
   --mds-tooltip-z-index: var(--magma-tooltip-z-index, 4000);
@@ -32,7 +34,7 @@
   box-sizing: border-box;
   display: grid;
   filter: var(--mds-tooltip-drop-shadow);
-  max-width: theme('spacing.6400');
+  max-width: --spacing(6400);
   opacity: 0;
   pointer-events: none;
   position: fixed;

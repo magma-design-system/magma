@@ -1,17 +1,17 @@
 :host-context(.pref-theme-dark) {
-  box-shadow: theme('boxShadow.outline');
+  box-shadow: var(--shadow-outline);
 }
 
 :host-context(.pref-theme-dark):host(:hover) {
-  box-shadow: theme('boxShadow.outline-50');
+  box-shadow: var(--shadow-outline-50);
 }
 
 @media (prefers-color-scheme: dark) {
   :host-context(.pref-theme-system) {
-    box-shadow: theme('boxShadow.outline');
+    box-shadow: var(--shadow-outline);
   }
 
   :host-context(.pref-theme-system):host(:hover) {
-    box-shadow: theme('boxShadow.outline-50');
+    box-shadow: var(--shadow-outline-50);
   }
 }

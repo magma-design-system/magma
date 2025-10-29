@@ -1,9 +1,11 @@
+@reference '../../tailwind/index.css';
+
 :host {
-  --mds-table-row-color-hover: var(--mds-table-color, theme('colors.tone-neutral-02'));
-  --mds-table-row-color-alt: var(--mds-table-color-alt, theme('colors.tone-neutral-02'));
-  --mds-table-row-background-hover: var(--mds-table-background, theme('colors.tone-neutral'));
-  --mds-table-row-background-alt: var(--mds-table-background-alt, theme('colors.tone-neutral'));
-  --mds-table-row-actions-gap: var(--mds-table-actions-gap, theme('spacing.400'));
+  --mds-table-row-color-hover: var(--mds-table-color, rgb(var(--tone-neutral-02)));
+  --mds-table-row-color-alt: var(--mds-table-color-alt, rgb(var(--tone-neutral-02)));
+  --mds-table-row-background-hover: var(--mds-table-background, rgb(var(--tone-neutral)));
+  --mds-table-row-background-alt: var(--mds-table-background-alt, rgb(var(--tone-neutral)));
+  --mds-table-row-actions-gap: var(--mds-table-actions-gap, --spacing(400));
 
   @apply
     duration-200

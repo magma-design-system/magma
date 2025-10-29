@@ -1,3 +1,5 @@
+@reference '../../tailwind/index.css';
+
 /**
  * @prop --mds-label-background: Sets the background-color of the component
  * @prop --mds-label-color: Sets the text color of the component
@@ -7,15 +9,15 @@
  */
 
 :host {
-  --mds-label-background: theme('colors.label-yellow-09');
-  --mds-label-color: theme('colors.label-yellow-02');
+  --mds-label-background: rgb(var(--label-yellow-09));
+  --mds-label-color: rgb(var(--label-yellow-02));
   --mds-label-icon-color: var(--mds-label-color);
-  --mds-label-radius: theme('spacing.150');
-  --mds-label-selection-background: var(--magma-selection-background, theme('colors.label-yellow-09'));
-  --mds-label-selection-color: var(--magma-selection-color, theme('colors.label-yellow-02'));
-  --mds-label-button-background: theme('colors.label-yellow-08');
-  --mds-label-button-background-hover: theme('colors.label-yellow-07');
-  --mds-label-button-icon-color: theme('colors.label-yellow-03');
+  --mds-label-radius: --spacing(150);
+  --mds-label-selection-background: var(--magma-selection-background, rgb(var(--label-yellow-09)));
+  --mds-label-selection-color: var(--magma-selection-color, rgb(var(--label-yellow-02)));
+  --mds-label-button-background: rgb(var(--label-yellow-08));
+  --mds-label-button-background-hover: rgb(var(--label-yellow-07));
+  --mds-label-button-icon-color: rgb(var(--label-yellow-03));
 
   @apply
     min-h-900

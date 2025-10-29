@@ -38,6 +38,15 @@ const pascalCase = (options: HelperOptions) => {
   return arr.join('')
 }
 
+const kebabCase = (options: HelperOptions) => {
+  if (typeof options.fn(this) !== 'string') {
+    return options.fn(this)
+  }
+  const value = options.fn(this)
+  return value.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase()
+
+}
+
 const rgbCommaSeparatedChannel = (value: string) => {
   const color = hexRgb(value)
   return `${color.red}, ${color.green}, ${color.blue}`
@@ -84,6 +93,7 @@ const ifTailwindFontSizeProp = (property: string, options: HelperOptions) => {
   const attributes = [
     'letterSpacing',
     'lineHeight',
+    'fontWeight',
   ]
   return attributes.includes(property) ? options.fn(this) : options.inverse(this)
 }
@@ -121,6 +131,7 @@ export {
   ifDartTextStyleProp,
   ifEquals,
   ifTailwindFontSizeProp,
+  kebabCase,
   leadZero,
   pascalCase,
   pixelToEm,

@@ -1,16 +1,16 @@
 :host {
-  --mds-avatar-stack-background: theme('colors.tone-neutral');
-  --mds-avatar-stack-count-background-color: theme('colors.tone-neutral-09');
-  --mds-avatar-stack-count-color: theme('colors.tone-neutral-04');
-  --mds-avatar-stack-large-border: theme('spacing.100');
+  --mds-avatar-stack-background: rgb(var(--tone-neutral));
+  --mds-avatar-stack-count-background-color: rgb(var(--tone-neutral-09));
+  --mds-avatar-stack-count-color: rgb(var(--tone-neutral-04));
+  --mds-avatar-stack-large-border: --spacing(100);
   --mds-avatar-stack-large-offset: 2;
-  --mds-avatar-stack-large-size: theme('size.1500');
-  --mds-avatar-stack-medium-border: theme('spacing.100');
+  --mds-avatar-stack-large-size: --spacing(1500);
+  --mds-avatar-stack-medium-border: --spacing(100);
   --mds-avatar-stack-medium-offset: 1.75;
-  --mds-avatar-stack-medium-size: theme('size.1200');
-  --mds-avatar-stack-small-border: theme('spacing.50');
+  --mds-avatar-stack-medium-size: --spacing(1200);
+  --mds-avatar-stack-small-border: --spacing(50);
   --mds-avatar-stack-small-offset: 1.5;
-  --mds-avatar-stack-small-size: theme('size.900');
+  --mds-avatar-stack-small-size: --spacing(900);
 
   background-color: var(--mds-avatar-stack-background);
   border-radius: 1000px;

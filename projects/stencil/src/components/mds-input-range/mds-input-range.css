@@ -1,8 +1,18 @@
-@import '~@maggioli-design-system/styles/dist/css/animations.css';
-@import '../../tailwind/components.css';
-@tailwind components;
+@reference '../../tailwind/index.css';
+@reference '@maggioli-design-system/styles/dist/css/animations.css'
+ ;
+@reference '../../tailwind/components.css';
 
-/**
+@import './css/mds-input-range-disabled.css';
+@import './css/mds-input-range-pref-animation.css';
+@import './css/mds-input-range-pref-theme.css';
+@import './css/mds-input-range-pref-contrast.css';
+@import '../../tailwind/fouc.css';
+
+
+
+
+  /**
  * @prop --mds-input-range-thumb-size: Sets the thumb width and height of the component
  * @prop --mds-input-range-thumb-background:
  * @prop --mds-input-range-track-background:
@@ -10,134 +20,123 @@
  * @prop --mds-input-range-track-progress-background:
  */
 
-:host {
-  --mds-input-range-thumb-size: theme('spacing.400');
-  --mds-input-range-thumb-background: theme('colors.variant-primary-04');
-  --mds-input-range-thumb-shadow: 0 0 0 2px theme('colors.tone-neutral');
-  --mds-input-range-track-background: theme('colors.tone-neutral-08');
-  --mds-input-range-track-size: theme('spacing.200');
-  --mds-input-range-track-progress-background: theme('colors.variant-primary-03');
-  --mds-input-range-thumb-background-disabled: theme('colors.tone-neutral-06');
-  --mds-input-range-track-background-disabled: theme('colors.tone-neutral-08');
-  --mds-input-range-track-progress-background-disabled: theme('colors.tone-neutral-06');
+  :host {
+    --mds-input-range-thumb-size: --spacing(400);
+    --mds-input-range-thumb-background: rgb(var(--variant-primary-04));
+    --mds-input-range-thumb-shadow: 0 0 0 2px rgb(var(--tone-neutral));
+    --mds-input-range-track-background: rgb(var(--tone-neutral-08));
+    --mds-input-range-track-size: --spacing(200);
+    --mds-input-range-track-progress-background: rgb(var(--variant-primary-03));
+    --mds-input-range-thumb-background-disabled: rgb(var(--tone-neutral-06));
+    --mds-input-range-track-background-disabled: rgb(var(--tone-neutral-08));
+    --mds-input-range-track-progress-background-disabled: rgb(var(--tone-neutral-06));
 
-  @apply
-    duration-300
+    @apply duration-300
     ease-in-out
     gap-100;
 
-  display: grid;
-  transition-property: color;
-}
+    display: grid;
+    transition-property: color;
+  }
 
-.header {
-  @apply gap-200;
+  .header {
+    @apply gap-200;
 
-  display: flex;
-}
+    display: flex;
+  }
 
-.label {
-  @apply
-    min-w-0
+  .label {
+    @apply min-w-0
     truncate;
-}
+  }
 
-.value {
-  margin-left: auto;
-}
+  .value {
+    margin-left: auto;
+  }
 
-.range {
-  align-items: center;
-  display: flex;
-  height: var(--mds-input-range-thumb-size);
-  position: relative;
-}
+  .range {
+    align-items: center;
+    display: flex;
+    height: var(--mds-input-range-thumb-size);
+    position: relative;
+  }
 
-.track {
-  @apply w-full;
+  .track {
+    @apply w-full;
 
-  --margin: calc(var(--mds-input-range-track-size) / 2);
+    --margin: calc(var(--mds-input-range-track-size) / 2);
 
-  box-sizing: border-box;
-  padding: 0 var(--margin);
-  position: absolute;
-}
+    box-sizing: border-box;
+    padding: 0 var(--margin);
+    position: absolute;
+  }
 
-.field {
-  @apply
-    focus-bounce
+  .field {
+    @apply focus-bounce
     h-400
     z-20;
 
-  appearance: none;
-  background-color: transparent;
-  border-radius: 1000px;
-  flex-grow: 1;
-  margin: 0;
-}
+    appearance: none;
+    background-color: transparent;
+    border-radius: 1000px;
+    flex-grow: 1;
+    margin: 0;
+  }
 
-.field:focus-visible {
-  @apply focus-bounce--focused;
-}
+  .field:focus-visible {
+    @apply focus-bounce--focused;
+  }
 
-.field::-webkit-slider-thumb {
-  @apply
-    ease-in-out
+  .field::-webkit-slider-thumb {
+    @apply ease-in-out
     duration-300;
 
-  appearance: none;
-  background-color: var(--mds-input-range-thumb-background);
-  border: 0;
-  border-radius: var(--mds-input-range-thumb-size);
-  box-shadow: var(--mds-input-range-thumb-shadow);
-  cursor: grab;
-  height: var(--mds-input-range-thumb-size);
-  line-height: 0;
-  transform: translate(0, -50%);
-  transition-property: background-color, box-shadow;
-  width: var(--mds-input-range-thumb-size);
-}
+    appearance: none;
+    background-color: var(--mds-input-range-thumb-background);
+    border: 0;
+    border-radius: var(--mds-input-range-thumb-size);
+    box-shadow: var(--mds-input-range-thumb-shadow);
+    cursor: grab;
+    height: var(--mds-input-range-thumb-size);
+    line-height: 0;
+    transform: translate(0, -50%);
+    transition-property: background-color, box-shadow;
+    width: var(--mds-input-range-thumb-size);
+  }
 
-.field::-webkit-slider-runnable-track {
-  appearance: none;
-  border: 0;
-  height: 0;
-  width: 100%;
-}
+  .field::-webkit-slider-runnable-track {
+    appearance: none;
+    border: 0;
+    height: 0;
+    width: 100%;
+  }
 
-.track-progress {
-  @apply
-    ease-in-out
+  .track-progress {
+    @apply ease-in-out
     duration-300;
 
-  background-color: var(--mds-input-range-track-progress-background);
-  display: flex;
-  height: var(--mds-input-range-track-size);
-  transition-property: background-color;
-}
+    background-color: var(--mds-input-range-track-progress-background);
+    display: flex;
+    height: var(--mds-input-range-track-size);
+    transition-property: background-color;
+  }
 
-.track-total {
-  @apply
-    ease-in-out
+  .track-total {
+    @apply ease-in-out
     duration-300;
 
-  background-color: var(--mds-input-range-track-background);
-  border-radius: var(--mds-input-range-track-size);
-  display: flex;
-  height: var(--mds-input-range-track-size);
-  overflow: hidden;
-  transition-property: background-color;
-  width: 100%;
-}
+    background-color: var(--mds-input-range-track-background);
+    border-radius: var(--mds-input-range-track-size);
+    display: flex;
+    height: var(--mds-input-range-track-size);
+    overflow: hidden;
+    transition-property: background-color;
+    width: 100%;
+  }
 
-.contrast-area {
-  @apply mx-100;
+  .contrast-area {
+    @apply mx-100;
 
-  border-radius: var(--mds-input-range-track-size);
-}
+    border-radius: var(--mds-input-range-track-size);
+  }
 
-@import './css/mds-input-range-disabled.css';
-@import './css/mds-input-range-pref-animation.css';
-@import './css/mds-input-range-pref-theme.css';
-@import './css/mds-input-range-pref-contrast.css';
-@import '../../tailwind/fouc.css';

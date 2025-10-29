@@ -1,16 +1,18 @@
-@tailwind utilities;
+
+
+
 
 :host([variant="error"] ),
 :host([variant="error"][tone="strong"]) {
-  --mds-toast-background: theme('colors.status-error-09');
-  --mds-toast-color: theme('colors.status-error-02');
-  --mds-toast-shadow: theme('boxShadow.lg-sharp');
-  --mds-toast-icon-color: theme('colors.status-error-05');
+  --mds-toast-background: rgb(var(--status-error-09));
+  --mds-toast-color: rgb(var(--status-error-02));
+  --mds-toast-shadow: var(--shadow-lg-sharp);
+  --mds-toast-icon-color: rgb(var(--status-error-05));
 }
 
 :host([variant="error"][tone="weak"]) {
-  --mds-toast-background: theme('colors.status-error-10');
-  --mds-toast-color: theme('colors.status-error-03');
-  --mds-toast-shadow: theme('boxShadow.sm-sharp');
-  --mds-toast-icon-color: theme('colors.status-error-06');
+  --mds-toast-background: rgb(var(--status-error-10));
+  --mds-toast-color: rgb(var(--status-error-03));
+  --mds-toast-shadow: var(--shadow-sm-sharp);
+  --mds-toast-icon-color: rgb(var(--status-error-06));
 }

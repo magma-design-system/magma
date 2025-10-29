@@ -1,45 +1,45 @@
 :host([variant="error"][tone="strong"]) {
-  --mds-button-background: theme('colors.status-error-05');
+  --mds-button-background: rgb(var(--status-error-05));
   --mds-button-border-color: var(--status-error-05);
-  --mds-button-color: theme('colors.tone-neutral');
+  --mds-button-color: rgb(var(--tone-neutral));
 }
 
 :host([variant="error"][tone="strong"]:hover) {
-  --mds-button-background: theme('colors.status-error-04');
+  --mds-button-background: rgb(var(--status-error-04));
   --mds-button-border-color: var(--status-error-04);
 }
 
 :host([variant="error"][tone="weak"]) {
-  --mds-button-background: theme('colors.status-error-09');
+  --mds-button-background: rgb(var(--status-error-09));
   --mds-button-border-color: var(--status-error-09);
-  --mds-button-color: theme('colors.status-error-03');
+  --mds-button-color: rgb(var(--status-error-03));
 
-  fill: theme('colors.status-error-03');
+  fill: rgb(var(--status-error-03));
 }
 
 :host([variant="error"][tone="weak"]:hover) {
-  --mds-button-background: theme('colors.status-error-08');
+  --mds-button-background: rgb(var(--status-error-08));
   --mds-button-border-color: var(--status-error-08);
 }
 
 :host([variant="error"][tone="ghost"]) {
   --mds-button-border-color: var(--status-error-04);
-  --mds-button-color: theme('colors.status-error-03');
+  --mds-button-color: rgb(var(--status-error-03));
 }
 
 :host([variant="error"][tone="ghost"]:hover) {
   --mds-button-border-color: var(--status-error-04);
-  --mds-button-color: theme('colors.status-error-02');
+  --mds-button-color: rgb(var(--status-error-02));
 }
 
 :host([variant="error"][tone="quiet"]) {
-  --mds-button-color: theme('colors.status-error-02');
+  --mds-button-color: rgb(var(--status-error-02));
 }
 
 :host([variant="error"][tone="quiet"]:hover) {
-  --mds-button-color: theme('colors.status-error-04');
+  --mds-button-color: rgb(var(--status-error-04));
 }
 
 :host([variant="error"][tone="quiet"][active]) {
-  --mds-button-color: theme('colors.status-error-01');
+  --mds-button-color: rgb(var(--status-error-01));
 }

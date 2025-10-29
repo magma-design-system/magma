@@ -8,14 +8,56 @@
  * @prop --mds-accordion-padding-unselected: Sets the vertical padding of the component children mds-accordion-item when it's unselected
  */
 
+@property --mds-accordion-border-color {
+  inherits: true;
+  initial-value: rgb(29 29 29);
+  syntax: '<color>';
+}
+
+@property --mds-accordion-color {
+  inherits: true;
+  initial-value: rgb(181 181 181);
+  syntax: '<color>';
+}
+
+@property --mds-accordion-description-color {
+  inherits: true;
+  initial-value: rgb(215 215 215);
+  syntax: '<color>';
+}
+
+@property --mds-accordion-border-width {
+  inherits: false;
+  initial-value: 2px;
+  syntax: '<length>';
+}
+
+@property --mds-accordion-duration {
+  inherits: false;
+  initial-value: 300ms;
+  syntax: '<time>';
+}
+
+@property --mds-accordion-padding-selected {
+  inherits: false;
+  initial-value: 1rem 0 2rem 0;
+  syntax: '<length>+';
+}
+
+@property --mds-accordion-padding-unselected {
+  inherits: false;
+  initial-value: 1rem 0;
+  syntax: '<length>+';
+}
+
 :host {
-  --mds-accordion-border-color: theme('colors.tone-neutral-08');
+  --mds-accordion-border-color: rgb(var(--tone-neutral-08, 29 29 29));
   --mds-accordion-border-width: 2px;
-  --mds-accordion-color: theme('colors.tone-neutral-03');
-  --mds-accordion-description-color: theme('colors.tone-neutral-02');
+  --mds-accordion-color: rgb(var(--tone-neutral-03, 181 181 181));
+  --mds-accordion-description-color: rgb(var(--tone-neutral-02, 215 215 215));
   --mds-accordion-duration: 300ms;
-  --mds-accordion-padding-selected: theme('spacing.400') 0 theme('spacing.800') 0;
-  --mds-accordion-padding-unselected: theme('spacing.400') 0;
+  --mds-accordion-padding-selected: --spacing(400) 0 --spacing(800) 0;
+  --mds-accordion-padding-unselected: --spacing(400) 0;
 
   display: grid;
 }

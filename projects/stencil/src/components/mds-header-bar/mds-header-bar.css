@@ -1,13 +1,15 @@
+@reference '../../tailwind/index.css';
+
 :host {
-  --mds-header-bar-hamburger-color: theme('colors.tone-neutral-03');
+  --mds-header-bar-hamburger-color: rgb(var(--tone-neutral-03));
 
   @apply
     ease-out-expo
     px-600
     py-400;
 
-  background-color: theme('colors.tone-neutral');
-  box-shadow: theme('boxShadow.md-sharp');
+  background-color: rgb(var(--tone-neutral));
+  box-shadow: var(--shadow-md-sharp);
   display: flex;
   inset: 0 0 auto;
   interpolate-size: allow-keywords; /* not supported yet https://youtu.be/JN-nme9oF10 */
@@ -16,7 +18,7 @@
   margin-right: auto;
   max-width: 100%;
   position: fixed;
-  transition-duration: theme('transitionDuration.500');
+  transition-duration: 500ms;
   transition-property: background-color, border-radius, margin, max-width, transform, width;
   width: auto;
   z-index: var(--mds-header-z-index, 1000);
@@ -64,7 +66,7 @@
 
 :host([menu="desktop"]) .menu,
 :host([nav="desktop"]) .nav {
-  @apply tablet-max:hidden;
+  @apply max-tablet:hidden;
 }
 
 :host([menu="mobile"]) .menu,

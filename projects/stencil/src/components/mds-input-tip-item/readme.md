@@ -40,6 +40,7 @@ Type: `Promise<void>`
 ### Used by
 
  - [mds-input](../mds-input)
+ - [mds-input-date](../mds-input-date)
  - [mds-input-select](../mds-input-select)
 
 ### Depends on
@@ -51,6 +52,7 @@ Type: `Promise<void>`
 graph TD;
   mds-input-tip-item --> mds-text
   mds-input --> mds-input-tip-item
+  mds-input-date --> mds-input-tip-item
   mds-input-select --> mds-input-tip-item
   style mds-input-tip-item fill:#f9f,stroke:#333,stroke-width:4px
 ```

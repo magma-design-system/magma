@@ -1,9 +1,9 @@
 :host-context(.pref-contrast-more) .item {
-  --mds-tab-item-color: theme('colors.tone-neutral-01');
+  --mds-tab-item-color: rgb(var(--tone-neutral-01));
 }
 
 @media (prefers-contrast: more) {
   :host-context(.pref-contrast-system) .item {
-    --mds-tab-item-color: theme('colors.tone-neutral-01');
+    --mds-tab-item-color: rgb(var(--tone-neutral-01));
   }
 }

@@ -1,39 +1,39 @@
 :host-context(.pref-contrast-more):host([variant="info"]),
 :host-context(.pref-contrast-more):host([variant="info"][tone="strong"]) {
-  --mds-badge-background: theme('colors.status-info-03');
+  --mds-badge-background: rgb(var(--status-info-03));
 }
 
 :host-context(.pref-contrast-more):host([variant="info"][tone="weak"]) {
-  --mds-badge-color: theme('colors.status-info-01');
+  --mds-badge-color: rgb(var(--status-info-01));
 }
 
 :host-context(.pref-contrast-more):host([variant="info"][tone="quiet"]) {
-  --mds-badge-color: theme('colors.status-info-02');
+  --mds-badge-color: rgb(var(--status-info-02));
 }
 
 :host-context(.pref-contrast-more):host([variant="info"][tone="ghost"]) {
   --mds-badge-background: transparent;
-  --mds-badge-color: theme('colors.status-info-03');
-  --mds-badge-border-color: theme('colors.status-info-03');
+  --mds-badge-color: rgb(var(--status-info-03));
+  --mds-badge-border-color: rgb(var(--status-info-03));
 }
 
 @media (prefers-contrast: more) {
   :host-context(.pref-contrast-system):host([variant="info"]),
   :host-context(.pref-contrast-system):host([variant="info"][tone="strong"]) {
-    --mds-badge-background: theme('colors.status-info-03');
+    --mds-badge-background: rgb(var(--status-info-03));
   }
 
   :host-context(.pref-contrast-system):host([variant="info"][tone="weak"]) {
-    --mds-badge-color: theme('colors.status-info-01');
+    --mds-badge-color: rgb(var(--status-info-01));
   }
 
   :host-context(.pref-contrast-system):host([variant="info"][tone="quiet"]) {
-    --mds-badge-color: theme('colors.status-info-02');
+    --mds-badge-color: rgb(var(--status-info-02));
   }
 
   :host-context(.pref-contrast-system):host([variant="info"][tone="ghost"]) {
     --mds-badge-background: transparent;
-    --mds-badge-color: theme('colors.status-info-03');
-    --mds-badge-border-color: theme('colors.status-info-03');
+    --mds-badge-color: rgb(var(--status-info-03));
+    --mds-badge-border-color: rgb(var(--status-info-03));
   }
 }

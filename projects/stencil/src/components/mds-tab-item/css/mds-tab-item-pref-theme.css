@@ -1,9 +1,9 @@
-:host-context(.pref-theme-dark) {
-  --mds-tab-item-selected-background: theme('colors.tone-neutral-08');
+:host-context(.pref-theme-dark:not(.pref-theme-scheme-light)), :host-context(.pref-theme-scheme-dark) {
+  --mds-tab-item-selected-background: rgb(var(--tone-neutral-07));
 }
 
 @media (prefers-color-scheme: dark) {
-  :host-context(.pref-theme-system) {
-    --mds-tab-item-selected-background: theme('colors.tone-neutral-08');
+  :host-context(.pref-theme-system:not(.pref-theme-scheme-light)), :host-context(:not(.pref-theme-dark):not(.pref-theme-light):not(.pref-theme-scheme-dark):not(.pref-theme-scheme-light):not(.pref-theme-scheme-all):not(.pref-theme-system)) {
+    --mds-tab-item-selected-background: rgb(var(--tone-neutral-07));
   }
 }

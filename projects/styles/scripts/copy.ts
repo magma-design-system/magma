@@ -20,6 +20,7 @@ const copyDirectory = async (src: string, dest: string): Promise<void> => {
 
 const main = async () => {
   await copyDirectory(path.join(PROJECT_DIR, 'tailwind'), path.join(DIST_DIR, 'tailwind'))
+  await copyDirectory(path.join(PROJECT_DIR, 'tailwind3'), path.join(DIST_DIR, 'tailwind3'))
   await copyDirectory(path.join(PROJECT_DIR, 'css'), path.join(DIST_DIR, 'css'))
   await copyDirectory(path.join(PROJECT_DIR, '../design-tokens/dist/css'), path.join(DIST_DIR, 'css'))
 }

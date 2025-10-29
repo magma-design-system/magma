@@ -1,16 +1,15 @@
-@tailwind utilities;
-
-:host {
-
-  @apply
-    gap-400
-    p-400;
-
-  align-items: center;
-  display: flex;
-  flex-grow: 1;
-  justify-content: space-between;
-  min-width: 0;
-}
+@reference '../../tailwind/index.css';
 
 @import '../../tailwind/fouc.css';
+
+  :host {
+    @apply gap-400
+    p-400;
+
+    align-items: center;
+    display: flex;
+    flex-grow: 1;
+    justify-content: space-between;
+    min-width: 0;
+  }
+

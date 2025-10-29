@@ -1,9 +1,9 @@
 :host-context(.pref-contrast-more) {
-  --mds-toast-shadow: theme('boxShadow.outline-strong-50') !important;
+  --mds-toast-shadow: var(--shadow-outline-strong-50) !important;
 }
 
 @media (prefers-contrast: more) {
   :host-context(.pref-contrast-system) {
-    --mds-toast-shadow: theme('boxShadow.outline-strong-50') !important;
+    --mds-toast-shadow: var(--shadow-outline-strong-50) !important;
   }
 }

@@ -32,7 +32,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | --------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `--mds-text-animation-placeholder-char` | Sets the animation placeholder char of the text when `animation` attribute is set to `yugop`                                                                                                                                      |
 | `--mds-text-animation-speed`            | Sets the animation speed of the text when `animation` attribute is set to `yugop`                                                                                                                                                 |
-| `--mds-text-line-clamp`                 | Sets the max number of visible lines before the text overflows with ellipsis. It works only if attribute `truncate='all' is set`. **WARNING:** this is supported only by Chrome, Safare and Firefox with native browser prefixes. |
+| `--mds-text-line-clamp`                 | Sets the max number of visible lines before the text overflows with ellipsis. It works only if attribute `truncate="all" is set`. **WARNING:** this is supported only by Chrome, Safare and Firefox with native browser prefixes. |
 | `--mds-text-selection-background`       | Sets the background-color of the text when the text is selected                                                                                                                                                                   |
 | `--mds-text-selection-color`            | Sets the color of the text when the text is selected                                                                                                                                                                              |
 
@@ -76,6 +76,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
  - [mds-pref-contrast](../mds-pref-contrast)
  - [mds-pref-language](../mds-pref-language)
  - [mds-pref-theme](../mds-pref-theme)
+ - [mds-pref-theme-variant](../mds-pref-theme-variant)
  - [mds-price-table-features](../mds-price-table-features)
  - [mds-price-table-features-cell](../mds-price-table-features-cell)
  - [mds-price-table-list-item](../mds-price-table-list-item)
@@ -127,6 +128,7 @@ graph TD;
   mds-pref-contrast --> mds-text
   mds-pref-language --> mds-text
   mds-pref-theme --> mds-text
+  mds-pref-theme-variant --> mds-text
   mds-price-table-features --> mds-text
   mds-price-table-features-cell --> mds-text
   mds-price-table-list-item --> mds-text

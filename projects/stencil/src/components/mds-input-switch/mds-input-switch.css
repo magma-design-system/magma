@@ -1,9 +1,20 @@
-@import '~@maggioli-design-system/styles/dist/css/animations.css';
-@import '../../tailwind/components.css';
-@tailwind components;
-@tailwind utilities;
+@reference '../../tailwind/index.css';
+@reference '@maggioli-design-system/styles/dist/css/animations.css'
+ ;
+@reference '../../tailwind/components.css';
 
-/**
+
+@import './css/mds-input-switch-disabled.css';
+@import './css/mds-input-switch-checkbox.css';
+@import './css/mds-input-switch-explicit.css';
+@import './css/mds-input-switch-pref-theme.css';
+@import './css/mds-input-switch-size.css';
+@import '../../tailwind/fouc.css';
+
+
+
+
+  /**
  * @prop --mds-input-switch-animation-timing-adjust: Set the size multiplier when the switch toggle is resizing by animation
  * @prop --mds-input-switch-animation-timing-function: Set the timing function of the animation
  * @prop --mds-input-switch-duration: Set the duration of the animation
@@ -29,221 +40,227 @@
  * @prop --mds-input-switch-toggle-size-lg: Sets the size of the switch toggle
  */
 
-:host {
-  --mds-input-switch-animation-timing-adjust: 1.4;
-  --mds-input-switch-animation-timing-function: theme('transitionTimingFunction.in-out-quad');
-  --mds-input-switch-box-color-enabled-checked: theme('colors.variant-primary-04');
-  --mds-input-switch-box-color-enabled-unchecked: theme('colors.tone-neutral-06');
-  --mds-input-switch-box-color-disabled-checked: theme('colors.tone-neutral-08');
-  --mds-input-switch-box-color-disabled-unchecked: theme('colors.tone-neutral-08');
-  --mds-input-switch-box-padding-lg: theme('spacing.100');
-  --mds-input-switch-box-padding-md: theme('spacing.100');
-  --mds-input-switch-box-padding-sm: theme('spacing.100');
-  --mds-input-switch-box-padding: var(--mds-input-switch-box-padding-md);
-  --mds-input-switch-duration: 300ms;
-  --mds-input-switch-icon-color-checked-disabled: theme('colors.tone-neutral-06');
-  --mds-input-switch-icon-color-checked: theme('colors.variant-primary-04');
-  --mds-input-switch-icon-color-indeterminate-disabled: theme('colors.tone-neutral-05');
-  --mds-input-switch-icon-color-indeterminate: theme('colors.tone-neutral-05');
-  --mds-input-switch-icon-color-unchecked-disabled: theme('colors.tone-neutral-06');
-  --mds-input-switch-icon-color-unchecked: theme('colors.tone-neutral-06');
-  --mds-input-switch-icon-explicit-color: var(--mds-input-switch-icon-color-checked);
-  --mds-input-switch-toggle-color-enabled-checked: theme('colors.tone-neutral');
-  --mds-input-switch-toggle-color-enabled-unchecked: theme('colors.tone-neutral-10');
-  --mds-input-switch-toggle-color-disabled-checked: theme('colors.tone-neutral');
-  --mds-input-switch-toggle-color-disabled-unchecked: theme('colors.tone-neutral');
-  --mds-input-switch-toggle-container-size: calc(calc(var(--mds-input-switch-toggle-size-md) * 2) + calc(var(--mds-input-switch-box-padding-md) * 2));
-  --mds-input-switch-toggle-size-lg: theme('spacing.800');
-  --mds-input-switch-toggle-size-md: theme('spacing.600');
-  --mds-input-switch-toggle-size-sm: theme('spacing.400');
-  --mds-input-switch-toggle-size: var(--mds-input-switch-toggle-size-md);
+  :host {
+    --mds-input-switch-animation-timing-adjust: 1.4;
+    --mds-input-switch-animation-timing-function: var(--ease-in-out-quad);
+    --mds-input-switch-box-color-enabled-checked: rgb(var(--variant-primary-04));
+    --mds-input-switch-box-color-enabled-unchecked: rgb(var(--tone-neutral-06));
+    --mds-input-switch-box-color-disabled-checked: rgb(var(--tone-neutral-08));
+    --mds-input-switch-box-color-disabled-unchecked: rgb(var(--tone-neutral-08));
+    --mds-input-switch-box-padding-lg: --spacing(100);
+    --mds-input-switch-box-padding-md: --spacing(100);
+    --mds-input-switch-box-padding-sm: --spacing(100);
+    --mds-input-switch-box-padding: var(--mds-input-switch-box-padding-md);
+    --mds-input-switch-duration: 300ms;
+    --mds-input-switch-icon-color-checked-disabled: rgb(var(--tone-neutral-06));
+    --mds-input-switch-icon-color-checked: rgb(var(--variant-primary-04));
+    --mds-input-switch-icon-color-indeterminate-disabled: rgb(var(--tone-neutral-05));
+    --mds-input-switch-icon-color-indeterminate: rgb(var(--tone-neutral-05));
+    --mds-input-switch-icon-color-unchecked-disabled: rgb(var(--tone-neutral-06));
+    --mds-input-switch-icon-color-unchecked: rgb(var(--tone-neutral-06));
+    --mds-input-switch-icon-explicit-color: var(
+      --mds-input-switch-icon-color-checked
+    );
+    --mds-input-switch-toggle-color-enabled-checked: rgb(var(--tone-neutral));
+    --mds-input-switch-toggle-color-enabled-unchecked: rgb(var(--tone-neutral-10));
+    --mds-input-switch-toggle-color-disabled-checked: rgb(var(--tone-neutral));
+    --mds-input-switch-toggle-color-disabled-unchecked: rgb(var(--tone-neutral));
+    --mds-input-switch-toggle-container-size: calc(
+      calc(var(--mds-input-switch-toggle-size-md) * 2) +
+        calc(var(--mds-input-switch-box-padding-md) * 2)
+    );
+    --mds-input-switch-toggle-size-lg: --spacing(800);
+    --mds-input-switch-toggle-size-md: --spacing(600);
+    --mds-input-switch-toggle-size-sm: --spacing(400);
+    --mds-input-switch-toggle-size: var(--mds-input-switch-toggle-size-md);
 
-  @apply gap-200;
+    @apply gap-200;
 
-  align-items: flex-start;
-  display: inline-flex;
-}
+    align-items: flex-start;
+    display: inline-flex;
+  }
 
-.field {
-  display: none;
-}
+  .field {
+    display: none;
+  }
 
-.label-icon {
-  @apply focus-bounce;
+  .label-icon {
+    @apply focus-bounce;
 
-  align-items: baseline;
-  border-radius: theme('borderRadius.DEFAULT');
-  cursor: pointer;
-  display: flex;
-  position: relative;
-  transition-property: outline-offset, opacity;
-}
+    align-items: baseline;
+    border-radius: var(--radius);
+    cursor: pointer;
+    display: flex;
+    position: relative;
+    transition-property: outline-offset, opacity;
+  }
 
-.label-icon:focus-visible {
-  @apply focus-bounce--focused;
-}
+  .label-icon:focus-visible {
+    @apply focus-bounce--focused;
+  }
 
-.label-text {
-  cursor: pointer;
-  display: flex;
-}
+  .label-text {
+    cursor: pointer;
+    display: flex;
+  }
 
-.label-text--empty {
-  display: none;
-}
+  .label-text--empty {
+    display: none;
+  }
 
-:host([type="switch"]) .label-text {
-  align-items: center;
-  align-self: center;
-}
+  :host([type='switch']) .label-text {
+    align-items: center;
+    align-self: center;
+  }
 
-.icon-explicit {
-  fill: var(--mds-input-switch-icon-explicit-color);
-  height: var(--mds-input-switch-toggle-size);
-  width: var(--mds-input-switch-toggle-size);
-}
+  .icon-explicit {
+    fill: var(--mds-input-switch-icon-explicit-color);
+    height: var(--mds-input-switch-toggle-size);
+    width: var(--mds-input-switch-toggle-size);
+  }
 
-.icon-typography-checked,
-.icon-typography-unchecked {
-  align-items: center;
-  display: inline-flex;
-}
+  .icon-typography-checked,
+  .icon-typography-unchecked {
+    align-items: center;
+    display: inline-flex;
+  }
 
-.icon-typography-checked {
-  @apply
-    left-0
+  .icon-typography-checked {
+    @apply left-0
     top-0;
 
-  position: absolute;
-}
+    position: absolute;
+  }
 
-.switch-container {
-
-  @apply
-    focus-bounce
+  .switch-container {
+    @apply focus-bounce
     rounded-full;
 
-  align-self: stretch;
-  box-sizing: border-box;
-  display: flex;
-  flex-shrink: 0;
-  transition-property: width, outline-offset, opacity;
-  width: var(--mds-input-switch-toggle-container-size);
-}
+    align-self: stretch;
+    box-sizing: border-box;
+    display: flex;
+    flex-shrink: 0;
+    transition-property: width, outline-offset, opacity;
+    width: var(--mds-input-switch-toggle-container-size);
+  }
 
-.switch-container:focus-visible {
-  @apply focus-bounce--focused;
-}
+  .switch-container:focus-visible {
+    @apply focus-bounce--focused;
+  }
 
-.switch {
-  @apply
-    rounded-full
+  .switch {
+    @apply rounded-full
     ease-in-out
     duration-200;
 
-  background-color: var(--mds-input-switch-box-color-enabled-unchecked);
-  box-sizing: border-box;
-  cursor: pointer;
-  display: inline-flex;
-  flex-shrink: 0;
-  height: min-content;
-  padding: var(--mds-input-switch-box-padding);
-  transition-duration: var(--mds-input-switch-duration);
-  transition-property: background-color, border-color, box-shadow, color, fill, height, margin, opacity, padding, transform, width;
-  width: var(--mds-input-switch-toggle-container-size);
-}
+    background-color: var(--mds-input-switch-box-color-enabled-unchecked);
+    box-sizing: border-box;
+    cursor: pointer;
+    display: inline-flex;
+    flex-shrink: 0;
+    height: min-content;
+    padding: var(--mds-input-switch-box-padding);
+    transition-duration: var(--mds-input-switch-duration);
+    transition-property:
+      background-color, border-color, box-shadow, color, fill, height, margin,
+      opacity, padding, transform, width;
+    width: var(--mds-input-switch-toggle-container-size);
+  }
 
-.switch-toggle {
-  @apply
-    ease-linear
+  .switch-toggle {
+    @apply ease-linear
     rounded-full
     duration-200;
 
-  align-items: center;
-  animation-duration: calc(var(--mds-input-switch-duration) * 1.5);
-  animation-fill-mode: forwards;
-  animation-iteration-count: 1;
-  animation-name: none;
-  animation-play-state: paused;
-  animation-timing-function: var(--mds-input-switch-animation-timing-function);
-  background-color: var(--mds-input-switch-toggle-color-enabled-checked);
-  box-shadow: theme('boxShadow.DEFAULT');
-  display: flex;
-  height: var(--mds-input-switch-toggle-size);
-  justify-content: center;
-  transition-property: background-color, border-color, box-shadow, color, fill, height, margin, opacity, padding, transform, width;
-  width: var(--mds-input-switch-toggle-size);
-}
-
-.field:checked + .switch-container .switch {
-  background-color: var(--mds-input-switch-box-color-enabled-checked);
-}
-
-.field:checked + .switch-container .switch-toggle {
-  animation-name: check;
-  animation-play-state: initial;
-  background-color: var(--mds-input-switch-toggle-color-enabled-checked);
-}
-
-.field:not(:checked) + .dirty .switch-toggle {
-  animation-name: uncheck;
-  animation-play-state: initial;
-  background-color: var(--mds-input-switch-toggle-color-enabled-unchecked);
-}
-
-.field:disabled + .switch-container .switch {
-  background-color: var(--mds-input-switch-box-color-disabled-unchecked);
-}
-
-.field:checked:disabled + .switch-container .switch {
-  background-color: var(--mds-input-switch-box-color-disabled-checked);
-}
-
-.field:disabled + .switch-container .switch-toggle {
-  background-color: var(--mds-input-switch-toggle-color-disabled-unchecked);
-}
-
-.field:checked:disabled + .switch-container .switch-toggle {
-  background-color: var(--mds-input-switch-toggle-color-disabled-checked);
-}
-
-@keyframes check {
-  0% {
-    transform: translateX(0);
+    align-items: center;
+    animation-duration: calc(var(--mds-input-switch-duration) * 1.5);
+    animation-fill-mode: forwards;
+    animation-iteration-count: 1;
+    animation-name: none;
+    animation-play-state: paused;
+    animation-timing-function: var(
+      --mds-input-switch-animation-timing-function
+    );
+    background-color: var(--mds-input-switch-toggle-color-enabled-checked);
+    box-shadow: var(--shadow);
+    display: flex;
+    height: var(--mds-input-switch-toggle-size);
+    justify-content: center;
+    transition-property:
+      background-color, border-color, box-shadow, color, fill, height, margin,
+      opacity, padding, transform, width;
     width: var(--mds-input-switch-toggle-size);
   }
 
-  50% {
-    transform: translateX(0);
-    width: calc(var(--mds-input-switch-toggle-size) * var(--mds-input-switch-animation-timing-adjust));
+  .field:checked + .switch-container .switch {
+    background-color: var(--mds-input-switch-box-color-enabled-checked);
   }
 
-  100% {
-    transform: translateX(100%);
-    width: var(--mds-input-switch-toggle-size);
-  }
-}
-
-@keyframes uncheck {
-  0% {
-    transform: translateX(100%);
-    width: var(--mds-input-switch-toggle-size);
+  .field:checked + .switch-container .switch-toggle {
+    animation-name: check;
+    animation-play-state: initial;
+    background-color: var(--mds-input-switch-toggle-color-enabled-checked);
   }
 
-  50% {
-    transform: translateX(0);
-    width: calc(var(--mds-input-switch-toggle-size) * var(--mds-input-switch-animation-timing-adjust));
+  .field:not(:checked) + .dirty .switch-toggle {
+    animation-name: uncheck;
+    animation-play-state: initial;
+    background-color: var(--mds-input-switch-toggle-color-enabled-unchecked);
   }
 
-  100% {
-    transform: translateX(0);
-    width: var(--mds-input-switch-toggle-size);
+  .field:disabled + .switch-container .switch {
+    background-color: var(--mds-input-switch-box-color-disabled-unchecked);
   }
-}
 
-@import './css/mds-input-switch-disabled.css';
-@import './css/mds-input-switch-checkbox.css';
-@import './css/mds-input-switch-explicit.css';
-@import './css/mds-input-switch-pref-theme.css';
-@import './css/mds-input-switch-size.css';
-@import '../../tailwind/fouc.css';
+  .field:checked:disabled + .switch-container .switch {
+    background-color: var(--mds-input-switch-box-color-disabled-checked);
+  }
+
+  .field:disabled + .switch-container .switch-toggle {
+    background-color: var(--mds-input-switch-toggle-color-disabled-unchecked);
+  }
+
+  .field:checked:disabled + .switch-container .switch-toggle {
+    background-color: var(--mds-input-switch-toggle-color-disabled-checked);
+  }
+
+  @keyframes check {
+    0% {
+      transform: translateX(0);
+      width: var(--mds-input-switch-toggle-size);
+    }
+
+    50% {
+      transform: translateX(0);
+      width: calc(
+        var(--mds-input-switch-toggle-size) *
+          var(--mds-input-switch-animation-timing-adjust)
+      );
+    }
+
+    100% {
+      transform: translateX(100%);
+      width: var(--mds-input-switch-toggle-size);
+    }
+  }
+
+  @keyframes uncheck {
+    0% {
+      transform: translateX(100%);
+      width: var(--mds-input-switch-toggle-size);
+    }
+
+    50% {
+      transform: translateX(0);
+      width: calc(
+        var(--mds-input-switch-toggle-size) *
+          var(--mds-input-switch-animation-timing-adjust)
+      );
+    }
+
+    100% {
+      transform: translateX(0);
+      width: var(--mds-input-switch-toggle-size);
+    }
+  }
+

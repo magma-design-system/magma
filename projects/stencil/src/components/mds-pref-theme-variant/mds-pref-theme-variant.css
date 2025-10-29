@@ -1,0 +1,31 @@
+@reference '../../tailwind/index.css';
+
+mds-pref-language {
+  @apply gap-400;
+
+  display: grid;
+}
+
+.mds-pref-theme-variant-dropdown {
+  @apply
+    gap-100
+    p-400;
+}
+
+.item {
+  --mds-tab-item-default-color: rgb(var(--tone-neutral-05));
+
+  flex-basis: 0;
+  flex-grow: 1;
+}
+
+.item--custom-theme-variant {
+  cursor: pointer;
+}
+
+.item--auto,
+.item--custom-theme-variant {
+  --mds-tab-item-selected-color: rgb(var(--tone-neutral-03));
+}
+
+@import '../../tailwind/fouc.css';

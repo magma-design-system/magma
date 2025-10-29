@@ -11,7 +11,7 @@
     "tokens/typography/sizing.json"
   ],
   "include": [
-    "tokens/sizing/default.json"
+    "tokens/sizing/primitive.json"
   ],
   "platforms": {
     "js": {

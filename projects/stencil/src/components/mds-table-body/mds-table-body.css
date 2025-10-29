@@ -1,3 +1,4 @@
+@reference '../../tailwind/index.css';
 @import '../../tailwind/fouc.css';
 
 /**
@@ -6,11 +7,11 @@
  */
 
 :host {
-  --mds-table-body-background-hover: var(--mds-table-background-alt, theme('colors.tone-neutral-10'));
-  --mds-table-body-background: var(--mds-table-background, theme('colors.tone-neutral'));
+  --mds-table-body-background-hover: var(--mds-table-background-alt, rgb(var(--tone-neutral-10)));
+  --mds-table-body-background: var(--mds-table-background, rgb(var(--tone-neutral)));
   --mds-table-body-background-alt: var(--mds-table-body-background-hover);
-  --mds-table-body-color-alt: var(--mds-table-color-alt, theme('colors.tone-neutral-05'));
-  --mds-table-body-color: var(--mds-table-color, theme('colors.tone-neutral-02'));
+  --mds-table-body-color-alt: var(--mds-table-color-alt, rgb(var(--tone-neutral-05)));
+  --mds-table-body-color: var(--mds-table-color, rgb(var(--tone-neutral-02)));
 
   /* internal */
   --mds-table-row-color: var(--mds-table-body-color);

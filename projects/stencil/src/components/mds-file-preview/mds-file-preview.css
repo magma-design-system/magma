@@ -1,14 +1,16 @@
+@reference '../../tailwind/index.css';
+
 :host {
-  --mds-file-preview-background-color: theme('colors.tone-neutral');
-  --mds-file-preview-border-radius: theme('borderRadius.lg');
-  --mds-file-preview-color: theme('colors.tone-neutral-03');
+  --mds-file-preview-background-color: rgb(var(--tone-neutral));
+  --mds-file-preview-border-radius: var(--radius-lg);
+  --mds-file-preview-color: rgb(var(--tone-neutral-03));
   --mds-file-preview-icon-background: inherit;
   --mds-file-preview-icon-color: var(--mds-file-preview-color);
 
   align-items: stretch;
   background-color: var(--mds-file-preview-background-color);
   border-radius: var(--mds-file-preview-border-radius);
-  box-shadow: theme('boxShadow.DEFAULT');
+  box-shadow: var(--shadow-md);
   display: flex;
   fill: var(--mds-file-preview-color);
   justify-content: stretch;
@@ -31,7 +33,7 @@
   @apply aspect-square;
 
   background-color: var(--mds-file-preview-icon-background);
-  border-radius: theme('borderRadius.DEFAULT');
+  border-radius: var(--radius-md);
   box-sizing: border-box;
   color:  var(--mds-file-preview-color);
   fill:  var(--mds-file-preview-icon-color);
@@ -73,7 +75,7 @@
   position: absolute;
   right: 0;
   top: 0;
-  z-index: theme('zIndex.10');
+  z-index: 10;
 }
 
 .infos {

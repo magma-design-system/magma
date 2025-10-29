@@ -1,10 +1,10 @@
 :host {
-  --mds-tab-item-hover-background: transparent;
-  --mds-tab-item-selected-background: theme('colors.tone-neutral');
-  --mds-tab-item-selected-shadow: theme('boxShadow.DEFAULT');
-  --mds-tab-item-default-background: transparent;
-  --mds-tab-item-default-shadow: transparent;
 
+  /* --mds-tab-item-hover-background: transparent;
+  --mds-tab-item-selected-background: rgb(var(--tone-neutral));
+  --mds-tab-item-selected-shadow: var(--shadow-md);
+  --mds-tab-item-default-background: transparent;
+  --mds-tab-item-default-shadow: transparent; */
   cursor: pointer;
   display: flex;
 }
@@ -52,6 +52,6 @@
   justify-content: start;
 }
 
-@import './css/mds-tab-item-pref-theme.css';
+/* @import './css/mds-tab-item-pref-theme.css'; */
 @import './css/mds-tab-item-pref-contrast.css';
 @import '../../tailwind/fouc.css';

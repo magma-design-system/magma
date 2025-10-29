@@ -1,24 +1,24 @@
 :host([variant="ai"]) {
-  --mds-input-field-message-color: theme('colors.variant-ai-02');
-  --mds-input-field-message-background: theme('colors.variant-ai-09');
+  --mds-input-field-message-color: rgb(var(--variant-ai-02));
+  --mds-input-field-message-background: rgb(var(--variant-ai-09));
 }
 
 :host([variant="info"]) {
-  --mds-input-field-message-color: theme('colors.status-info-02');
-  --mds-input-field-message-background: theme('colors.status-info-09');
+  --mds-input-field-message-color: rgb(var(--status-info-02));
+  --mds-input-field-message-background: rgb(var(--status-info-09));
 }
 
 :host([variant="success"]) {
-  --mds-input-field-message-color: theme('colors.status-success-02');
-  --mds-input-field-message-background: theme('colors.status-success-09');
+  --mds-input-field-message-color: rgb(var(--status-success-02));
+  --mds-input-field-message-background: rgb(var(--status-success-09));
 }
 
 :host([variant="warning"]) {
-  --mds-input-field-message-color: theme('colors.status-warning-02');
-  --mds-input-field-message-background: theme('colors.status-warning-09');
+  --mds-input-field-message-color: rgb(var(--status-warning-02));
+  --mds-input-field-message-background: rgb(var(--status-warning-09));
 }
 
 :host([variant="error"]) {
-  --mds-input-field-message-color: theme('colors.status-error-02');
-  --mds-input-field-message-background: theme('colors.status-error-09');
+  --mds-input-field-message-color: rgb(var(--status-error-02));
+  --mds-input-field-message-background: rgb(var(--status-error-09));
 }

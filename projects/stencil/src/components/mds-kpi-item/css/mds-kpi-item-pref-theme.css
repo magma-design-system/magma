@@ -1,15 +1,15 @@
 :host-context(.pref-theme-dark) {
-  --mds-kpi-item-info-background: theme('colors.tone-neutral-09');
+  --mds-kpi-item-info-background: rgb(var(--tone-neutral-09));
 
-  background-color: theme('colors.variant-primary-09');
-  box-shadow: theme('boxShadow.outline');
+  background-color: rgb(var(--variant-primary-09));
+  box-shadow: var(--shadow-outline);
 }
 
 @media (prefers-color-scheme: dark) {
   :host-context(.pref-theme-system) {
-    --mds-kpi-item-info-background: theme('colors.tone-neutral-09');
+    --mds-kpi-item-info-background: rgb(var(--tone-neutral-09));
 
-    background-color: theme('colors.variant-primary-09');
-    box-shadow: theme('boxShadow.outline');
+    background-color: rgb(var(--variant-primary-09));
+    box-shadow: var(--shadow-outline);
   }
 }

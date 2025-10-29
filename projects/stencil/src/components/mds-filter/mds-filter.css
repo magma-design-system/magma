@@ -1,7 +1,16 @@
-@import '../../tailwind/components.css';
-@tailwind components;
+@reference '../../tailwind/index.css';
+@reference '../../tailwind/components.css';
 
-/**
+@import './css/mds-filter-reset.css';
+@import './css/mds-filter-pref-animation.css';
+@import './css/mds-filter-pref-theme.css';
+@import './css/mds-filter-pref-contrast.css';
+@import '../../tailwind/fouc.css';
+
+
+
+
+  /**
  * @prop --mds-filter-items-background-active: Sets the background-color of the items row area when a filter is active
  * @prop --mds-filter-items-background: Sets the background-color of the items row area
  * @prop --mds-filter-items-gap: Sets the gap between items
@@ -14,73 +23,67 @@
  * @prop --mds-filter-wrapper-shodow-opacity: Sets the opacity of the outline border
  */
 
-:host {
-  --mds-filter-items-background-active: theme('colors.tone-neutral-09');
-  --mds-filter-items-background: theme('colors.tone-neutral-09');
-  --mds-filter-items-gap: theme('spacing.200');
-  --mds-filter-items-padding: theme('spacing.200');
-  --mds-filter-items-radius: theme('borderRadius.full');
-  --mds-filter-items-scroll-behavior: smooth;
-  --mds-filter-label-padding: 0 theme('spacing.600');
-  --mds-filter-wrapper-shadow-color: theme('colors.tone-neutral-06');
-  --mds-filter-wrapper-shadow: 0 0 0 2px var(--mds-filter-wrapper-shadow-color) inset;
-  --mds-filter-wrapper-shodow-opacity: theme('opacity.10');
+  :host {
+    --mds-filter-items-background-active: rgb(var(--tone-neutral-09));
+    --mds-filter-items-background: rgb(var(--tone-neutral-09));
+    --mds-filter-items-gap: --spacing(200);
+    --mds-filter-items-padding: --spacing(200);
+    --mds-filter-items-radius: var(--radius-full);
+    --mds-filter-items-scroll-behavior: smooth;
+    --mds-filter-label-padding: 0 --spacing(600);
+    --mds-filter-wrapper-shadow-color: rgb(var(--tone-neutral-06));
+    --mds-filter-wrapper-shadow: 0 0 0 2px
+      var(--mds-filter-wrapper-shadow-color) inset;
+    --mds-filter-wrapper-shodow-opacity: 10%;
 
-  @apply gap-100;
+    @apply gap-100;
 
-  display: grid;
-  grid-auto-rows: min-content;
-}
+    display: grid;
+    grid-auto-rows: min-content;
+  }
 
-.items {
-  @apply
-    duration-300
+  .items {
+    @apply duration-300
     ease-in-out-expo
     hide-scrollbar;
 
-  background-color: var(--mds-filter-items-background);
-  border-radius: var(--mds-filter-items-radius);
-  display: flex;
-  gap: var(--mds-filter-items-gap);
-  overflow: auto;
-  padding: var(--mds-filter-items-padding);
-  position: relative;
-  scroll-behavior: var(--mds-filter-items-scroll-behavior);
-  scroll-snap-type: x mandatory;
-  transition-property: background-color;
+    background-color: var(--mds-filter-items-background);
+    border-radius: var(--mds-filter-items-radius);
+    display: flex;
+    gap: var(--mds-filter-items-gap);
+    overflow: auto;
+    padding: var(--mds-filter-items-padding);
+    position: relative;
+    scroll-behavior: var(--mds-filter-items-scroll-behavior);
+    scroll-snap-type: x mandatory;
+    transition-property: background-color;
+  }
 
-}
+  .items-wrapper {
+    display: grid;
+    overflow: hidden;
+    position: relative;
+  }
 
-.items-wrapper {
-  display: grid;
-  overflow: hidden;
-  position: relative;
-}
+  .items-wrapper::after {
+    border-radius: var(--mds-filter-items-radius);
+    box-shadow: var(--mds-filter-wrapper-shadow);
+    content: '';
+    inset: 0;
+    opacity: var(--mds-filter-wrapper-shodow-opacity);
+    pointer-events: none;
+    position: absolute;
+  }
 
-.items-wrapper::after {
-  border-radius: var(--mds-filter-items-radius);
-  box-shadow: var(--mds-filter-wrapper-shadow);
-  content: "";
-  inset: 0;
-  opacity: var(--mds-filter-wrapper-shodow-opacity);
-  pointer-events: none;
-  position: absolute;
-}
+  .items::-webkit-scrollbar {
+    display: none;
+  }
 
-.items::-webkit-scrollbar {
-  display: none;
-}
+  .label {
+    padding: var(--mds-filter-label-padding);
+  }
 
-.label {
-  padding: var(--mds-filter-label-padding);
-}
+  .active {
+    background-color: var(--mds-filter-items-background-active);
+  }
 
-.active {
-  background-color: var(--mds-filter-items-background-active);
-}
-
-@import './css/mds-filter-reset.css';
-@import './css/mds-filter-pref-animation.css';
-@import './css/mds-filter-pref-theme.css';
-@import './css/mds-filter-pref-contrast.css';
-@import '../../tailwind/fouc.css';

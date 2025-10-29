@@ -1,52 +1,95 @@
-body {
-  @apply
-    font-info
-    text-info-detail;
+@reference "./typography.css";
+@reference "@maggioli-design-system/design-tokens/dist/css/tailwind-theme-typography.css";
 
-  color: rgb(var(--tone-neutral-03, theme('colors.tone-neutral-03')));
-}
+@layer base {
+  body {
+    @apply
+      font-info
+      text-info-detail;
 
-:root.pref-contrast-high body {
-  color: rgb(var(--tone-neutral-01, theme('colors.tone-neutral-01')));
-}
-
-@media (prefers-contrast: more) {
-  :root.pref-contrast-system body {
-    color: rgb(var(--tone-neutral-01, theme('colors.tone-neutral-01')));
+    background-color: rgb(var(--tone-neutral));
+    color: rgb(var(--tone-neutral-03));
   }
-}
 
-::selection {
-  background-color: var(--magma-selection-background, theme('colors.label-sky-09'));
-  color: var(--magma-selection-color, theme('colors.label-sky-01'));
-}
+  :root.pref-contrast-high body {
+    color: rgb(var(--tone-neutral-01));
+  }
 
-button,
-optgroup,
-select {
-  @apply text-title-action;
-}
+  @media (prefers-contrast: more) {
+    :root.pref-contrast-system body {
+      color: rgb(var(--tone-neutral-01));
+    }
+  }
 
-b,
-strong {
-  @apply
-    font-semibold
-    tracking-tight;
-}
+  :root.pref-theme-scheme-dark {
+    color-scheme: only dark;
+  }
 
-a {
-  color: rgb(var(--theme-default-02-primary-text, theme('colors.theme-default-02-primary-text')));
-}
+  :root.pref-theme-scheme-light {
+    color-scheme: only light;
+  }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  max-width: theme('spacing.title');
-}
+  :root.pref-theme-scheme-all {
+    color-scheme: light dark;
+  }
 
-p {
-  max-width: theme('spacing.text');
+  @media (prefers-color-scheme: dark) {
+    :root.pref-theme-system {
+      color-scheme: dark;
+    }
+  }
+
+  :root.pref-theme-scheme-all.pref-theme-dark {
+    color-scheme: dark;
+  }
+
+  ::selection {
+    background-color: var(--magma-selection-background);
+    color: var(--magma-selection-color);
+  }
+
+  button,
+  optgroup,
+  select {
+    @apply text-title-action;
+  }
+
+  b,
+  strong {
+    @apply
+      font-semibold
+      tracking-tight;
+  }
+
+  a {
+    color: rgb(var(--theme-default-02-primary-text));
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply max-w-title;
+  }
+
+  p {
+    @apply max-w-title;
+  }
+
+
+
+  .hydrated {
+
+    /*
+      Revert all styles for hydrated web components
+      to avoid tailwind base unwanted overrides
+      all: revert-layer;
+    */
+    border: revert-layer;
+    display: revert-layer;
+    margin: revert-layer;
+    padding: revert-layer;
+  }
 }

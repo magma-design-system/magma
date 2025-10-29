@@ -1,15 +1,15 @@
 :host {
-  --mds-mention-icon-size: theme('padding.600');
+  --mds-mention-icon-size: --spacing(600);
 
   align-items: center;
-  background-color: theme('colors.tone-neutral-09');
+  background-color: rgb(var(--tone-neutral-09));
   border-radius: 100px;
-  color: theme('colors.tone-neutral-03');
+  color: rgb(var(--tone-neutral-03));
   cursor: pointer;
   display: inline-flex;
   fill: currentcolor;
-  padding: theme('padding.25');
-  padding-right: theme('padding.200');
+  padding: --spacing(25);
+  padding-right: --spacing(200);
   vertical-align: middle;
 }
 

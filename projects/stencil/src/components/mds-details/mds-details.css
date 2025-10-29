@@ -1,5 +1,6 @@
-@import '~@maggioli-design-system/styles/dist/css/animations.css'; /* included for focus effect */
-@import '../../tailwind/components.css';
+@reference '../../tailwind/index.css';
+@reference '@maggioli-design-system/styles/dist/css/animations.css'; /* included for focus effect */
+@reference '../../tailwind/components.css';
 
 /**
  * @prop --mds-details-icon-color: Sets the icon color the component
@@ -8,8 +9,8 @@
 
 :host {
   --mds-details-duration: 300ms;
-  --mds-details-icon-color: theme('colors.variant-primary-04');
-  --mds-details-helper-icon-color: theme('colors.tone-neutral-03');
+  --mds-details-icon-color: rgb(var(--variant-primary-04));
+  --mds-details-helper-icon-color: rgb(var(--tone-neutral-03));
 
   @apply gap-200;
 

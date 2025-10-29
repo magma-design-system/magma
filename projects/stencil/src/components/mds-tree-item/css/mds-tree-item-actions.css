@@ -1,6 +1,6 @@
 .actions-container {
-  --duration: theme('transitionDuration.300');
-  --ease: theme('transitionTimingFunction.in-out-expo');
+  --duration: 300ms;
+  --ease: var(--ease-in-out-expo);
 
   align-items: center;
   border-radius: var(--mds-tree-item-actions-border-radius);

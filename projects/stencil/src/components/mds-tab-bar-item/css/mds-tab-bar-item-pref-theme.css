@@ -1,11 +1,11 @@
 :host-context(.pref-theme-dark) {
-  --mds-tab-bar-item-color: theme('colors.tone-neutral-04');
-  --mds-tab-bar-item-color-selected: theme('colors.variant-primary-02');
+  --mds-tab-bar-item-color: rgb(var(--tone-neutral-04));
+  --mds-tab-bar-item-color-selected: rgb(var(--variant-primary-02));
 }
 
 @media (prefers-color-scheme: dark) {
   :host-context(.pref-theme-system) {
-    --mds-tab-bar-item-color: theme('colors.tone-neutral-04');
-    --mds-tab-bar-item-color-selected: theme('colors.variant-primary-02');
+    --mds-tab-bar-item-color: rgb(var(--tone-neutral-04));
+    --mds-tab-bar-item-color-selected: rgb(var(--variant-primary-02));
   }
 }

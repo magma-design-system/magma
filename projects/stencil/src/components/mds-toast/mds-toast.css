@@ -1,7 +1,9 @@
+@reference '../../tailwind/index.css';
 @import './css/animate/components.css';
-@tailwind utilities;
 
-/**
+
+
+  /**
  * @prop --mds-toast-background: Sets the background-color of the component
  * @prop --mds-toast-color: Sets the text color of the component
  * @prop --mds-toast-duration: Sets the animation duration of the component, used also by component's logic
@@ -9,96 +11,92 @@
  * @prop --mds-toast-shadow: Sets the box-shadow of the component
  */
 
-:host {
-  --mds-toast-background: theme('colors.tone-neutral-02');
-  --mds-toast-color: theme('colors.tone-neutral');
-  --mds-toast-duration: 300ms;
-  --mds-toast-icon-color: theme('colors.tone-neutral');
-  --mds-toast-shadow: theme('boxShadow.xl');
-  --mds-toast-width: auto;
+  :host {
+    --mds-toast-background: rgb(var(--tone-neutral-02));
+    --mds-toast-color: rgb(var(--tone-neutral));
+    --mds-toast-duration: 300ms;
+    --mds-toast-icon-color: rgb(var(--tone-neutral));
+    --mds-toast-shadow: var(--shadow-xl);
+    --mds-toast-width: auto;
 
-  @apply
-    left-0
+    @apply left-0
     right-0;
 
-  color: var(--mds-toast-color);
-  display: flex;
-  pointer-events: none;
-  position: fixed;
-}
+    color: var(--mds-toast-color);
+    display: flex;
+    pointer-events: none;
+    position: fixed;
+  }
 
-.dialog {
-  @apply
-    ease-in-cubic
+  .dialog {
+    @apply ease-in-cubic
     gap-400
     max-w-full
     mx-400
     p-400
     rounded-xl;
 
-  align-items: center;
-  background-color: var(--mds-toast-background);
-  box-shadow: var(--mds-toast-shadow);
-  display: inline-flex;
-  pointer-events: none;
-  transition-duration: var(--mds-toast-duration);
-  transition-property: box-shadow, background-color, color, transform;
-  width: var(--mds-toast-width);
-}
+    align-items: center;
+    background-color: var(--mds-toast-background);
+    box-shadow: var(--mds-toast-shadow);
+    display: inline-flex;
+    pointer-events: none;
+    transition-duration: var(--mds-toast-duration);
+    transition-property: box-shadow, background-color, color, transform;
+    width: var(--mds-toast-width);
+  }
 
-:host([visible]:not([visible="false"])) .dialog {
-  pointer-events: auto;
-}
+  :host([visible]:not([visible='false'])) .dialog {
+    pointer-events: auto;
+  }
 
+  :host([position^='top']) {
+    @apply top-0;
+  }
 
-:host([position^="top"]) {
-  @apply top-0;
-}
+  :host([position='top-left']) {
+    justify-content: flex-start;
+  }
 
-:host([position="top-left"]) {
-  justify-content: flex-start;
-}
+  :host([position='top-center']) {
+    justify-content: center;
+  }
 
-:host([position="top-center"]) {
-  justify-content: center;
-}
+  :host([position='top-right']) {
+    justify-content: flex-end;
+  }
 
-:host([position="top-right"]) {
-  justify-content: flex-end;
-}
+  :host([position^='bottom']) {
+    @apply bottom-0;
+  }
 
+  :host([position='bottom-left']) {
+    justify-content: flex-start;
+  }
 
-:host([position^="bottom"]) {
-  @apply bottom-0;
-}
+  :host([position='bottom-center']) {
+    justify-content: center;
+  }
 
-:host([position="bottom-left"]) {
-  justify-content: flex-start
-}
+  :host([position='bottom-right']) {
+    justify-content: flex-end;
+  }
 
-:host([position="bottom-center"]) {
-  justify-content: center;
-}
+  .actions {
+    @apply gap-200;
 
-:host([position="bottom-right"]) {
-  justify-content: flex-end;
-}
+    display: flex;
+  }
 
-.actions {
-  @apply gap-200;
-
-  display: flex;
-}
-
-::slotted( [slot="icon"]) {
-  @apply
-    duration-200
+  ::slotted([slot='icon']) {
+    @apply duration-200
     ease-out;
 
-  fill: var(--mds-toast-icon-color);
-  flex-shrink: 0;
-  transition-property: fill;
-}
+    fill: var(--mds-toast-icon-color);
+    flex-shrink: 0;
+    transition-property: fill;
+  }
+
 
 @import './css/variant/mds-toast-variant-dark.css';
 @import './css/variant/mds-toast-variant-error.css';

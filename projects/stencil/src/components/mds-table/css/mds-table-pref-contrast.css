@@ -1,11 +1,11 @@
 :host-context(.pref-contrast-more) {
-  --mds-tab-bar-item-color: theme('colors.tone-neutral-04');
-  --mds-tab-bar-item-color-selected: theme('colors.variant-primary-02');
+  --mds-tab-bar-item-color: rgb(var(--tone-neutral-04));
+  --mds-tab-bar-item-color-selected: rgb(var(--variant-primary-02));
 }
 
 @media (prefers-contrast: more) {
   :host-context(.pref-contrast-system) {
-    --mds-tab-bar-item-color: theme('colors.tone-neutral-04');
-    --mds-tab-bar-item-color-selected: theme('colors.variant-primary-02');
+    --mds-tab-bar-item-color: rgb(var(--tone-neutral-04));
+    --mds-tab-bar-item-color-selected: rgb(var(--variant-primary-02));
   }
 }

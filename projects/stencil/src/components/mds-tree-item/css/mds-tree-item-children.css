@@ -1,12 +1,12 @@
 .children {
-  --padding-left: calc(calc(var(--mds-tree-item-toggle-size) - var(--mds-tree-item-branch-border-size)) / 2);
+  --mds-tree-item-children-padding-left: calc(calc(var(--mds-tree-item-toggle-size) - var(--mds-tree-item-branch-border-size)) / 2);
 
   display: flex;
   flex-direction: column;
   height: 0;
   interpolate-size: allow-keywords;
   overflow: clip;
-  padding-left: var(--padding-left);
+  padding-left: var(--mds-tree-item-children-padding-left);
   position: relative;
   transform: translateY(calc(var(--mds-tree-item-toggle-size) / 2 * -1));
   transition-duration: var(--mds-tree-item-transition-duration);

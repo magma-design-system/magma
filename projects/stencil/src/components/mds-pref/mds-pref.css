@@ -1,3 +1,5 @@
+@reference '../../tailwind/index.css';
+
 :host {
   @apply gap-400;
 

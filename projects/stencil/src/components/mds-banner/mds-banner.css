@@ -1,3 +1,5 @@
+@reference '../../tailwind/index.css';
+
 /**
  * @prop --mds-banner-background: Sets the background-color of the component
  * @prop --mds-banner-close-icon-hover-background: Sets the background color of the close icon when the mouse is over it
@@ -12,18 +14,18 @@
  */
 
   :host {
-  --mds-banner-background: theme('colors.tone-neutral-10');
-  --mds-banner-close-icon-hover-background: theme('colors.tone-neutral-09');
-  --mds-banner-cockade-background: theme('colors.tone-neutral-09');
-  --mds-banner-cockade-distance: theme('spacing.600');
-  --mds-banner-color: theme('colors.tone-neutral-02');
-  --mds-banner-gap: theme('spacing.200') theme('spacing.400');
+  --mds-banner-background: rgb(var(--tone-neutral-10));
+  --mds-banner-close-icon-hover-background: rgb(var(--tone-neutral-09));
+  --mds-banner-cockade-background: rgb(var(--tone-neutral-09));
+  --mds-banner-cockade-distance: --spacing(600);
+  --mds-banner-color: rgb(var(--tone-neutral-02));
+  --mds-banner-gap: --spacing(200) --spacing(400);
   --mds-banner-headline-color: var(--mds-banner-color);
-  --mds-banner-icon-color: theme('colors.tone-neutral-04');
-  --mds-banner-radius: theme('borderRadius.lg');
+  --mds-banner-icon-color: rgb(var(--tone-neutral-04));
+  --mds-banner-radius: var(--radius-lg);
   --mds-banner-shadow: none;
-  --mds-banner-transition-duration: theme('transitionDuration.300');
-  --mds-banner-transition-timing-function: theme('transitionTimingFunction.in-out-expo');
+  --mds-banner-transition-duration: 300ms;
+  --mds-banner-transition-timing-function: var(--ease-in-out-expo);
 
   @apply p-600 grid-cols-full;
 
@@ -34,7 +36,7 @@
   container-name: mds-banner;
   container-type: inline-size;
   display: grid;
-  gap: theme('spacing.400');
+  gap: --spacing(400);
   position: relative;
   transition-duration: var(--mds-banner-transition-duration);
   transition-property: background-color, box-shadow, color;

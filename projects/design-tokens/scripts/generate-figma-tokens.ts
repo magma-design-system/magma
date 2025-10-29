@@ -2,7 +2,7 @@
 // https://www.figma.com/plugin-docs/working-with-variables/#createvariable
 import chalk from 'chalk'
 import defaultTokens from '../tokens/color/generated/default.json'
-import spacing from '../tokens/sizing/default.json'
+import spacing from '../tokens/sizing/primitive.json'
 import gap from '../tokens/sizing/gap.json'
 import screen from '../tokens/screen/default.json'
 import borderRadius from '../tokens/cosmetic/border-radius.json'

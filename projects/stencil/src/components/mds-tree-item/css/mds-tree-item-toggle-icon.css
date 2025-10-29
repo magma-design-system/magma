@@ -16,7 +16,7 @@
 }
 
 .toggle-icon mds-button {
-  --size: theme('size.600');
+  --size: --spacing(600);
 
   background-color: var(--mds-tree-item-icon-background-color);
   border: 0;
@@ -46,14 +46,14 @@
 }
 
 :host-context([toggle="folder"][toggle-position="left"]) .toggle-icon mds-button {
-  box-shadow: 0 theme('spacing.25') 0 0 var(--mds-tree-item-branch-border-color);
+  box-shadow: 0 --spacing(25) 0 0 var(--mds-tree-item-branch-border-color);
 }
 
 :host-context([toggle="folder"]) .toggle-icon mds-button {
   --size: auto;
 
-  border-radius: theme('borderRadius.DEFAULT');
-  padding: theme('spacing.25') theme('spacing.50');
+  border-radius: var(--radius);
+  padding: --spacing(25) --spacing(50);
 }
 
 :host-context([toggle="folder"]) .toggle-icon {
@@ -101,9 +101,9 @@
 .toggle-icon--folder mds-button {
   --size: auto;
 
-  border-radius: theme('borderRadius.DEFAULT');
-  box-shadow: 0 theme('spacing.25') 0 0 var(--mds-tree-item-branch-border-color);
-  padding: theme('spacing.25') theme('spacing.50');
+  border-radius: var(--radius);
+  box-shadow: 0 --spacing(25) 0 0 var(--mds-tree-item-branch-border-color);
+  padding: --spacing(25) --spacing(50);
 }
 
 .toggle-icon--folder {

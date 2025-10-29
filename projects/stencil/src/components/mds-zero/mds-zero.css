@@ -1,3 +1,5 @@
+@reference '../../tailwind/index.css';
+
 /**
  * @prop --mds-zero-contents-max-width: Set if the contents has a max width to be centered in the component
  */
@@ -14,7 +16,7 @@
     rounded-xl;
 
   align-items: center;
-  background-color: theme('colors.tone-neutral-10');
+  background-color: rgb(var(--tone-neutral-10));
   display: flex;
   flex-direction: column;
   justify-items: center;

@@ -1,33 +1,33 @@
 :host([variant="error"]),
 :host([variant="error"][tone="strong"]) {
-  --mds-label-background: theme('colors.status-error-04');
-  --mds-label-button-background: theme('colors.status-error-04');
-  --mds-label-button-background-hover: theme('colors.status-error-05');
-  --mds-label-button-icon-color: theme('colors.status-error-10');
-  --mds-label-color: theme('colors.status-error-10');
-  --mds-label-icon-color: theme('colors.status-error-10');
-  --mds-label-selection-background: theme('colors.status-error-08');
-  --mds-label-selection-color: theme('colors.status-error-02');
+  --mds-label-background: rgb(var(--status-error-04));
+  --mds-label-button-background: rgb(var(--status-error-04));
+  --mds-label-button-background-hover: rgb(var(--status-error-05));
+  --mds-label-button-icon-color: rgb(var(--status-error-10));
+  --mds-label-color: rgb(var(--status-error-10));
+  --mds-label-icon-color: rgb(var(--status-error-10));
+  --mds-label-selection-background: rgb(var(--status-error-08));
+  --mds-label-selection-color: rgb(var(--status-error-02));
 }
 
 :host([variant="error"][tone="weak"]) {
-  --mds-label-background: theme('colors.status-error-08');
-  --mds-label-button-background: theme('colors.status-error-09');
-  --mds-label-button-background-hover: theme('colors.status-error-08');
-  --mds-label-button-icon-color: theme('colors.status-error-04');
-  --mds-label-color: theme('colors.status-error-02');
-  --mds-label-icon-color: theme('colors.status-error-02');
-  --mds-label-selection-background: theme('colors.status-error-06');
-  --mds-label-selection-color: theme('colors.status-error-10');
+  --mds-label-background: rgb(var(--status-error-08));
+  --mds-label-button-background: rgb(var(--status-error-09));
+  --mds-label-button-background-hover: rgb(var(--status-error-08));
+  --mds-label-button-icon-color: rgb(var(--status-error-04));
+  --mds-label-color: rgb(var(--status-error-02));
+  --mds-label-icon-color: rgb(var(--status-error-02));
+  --mds-label-selection-background: rgb(var(--status-error-06));
+  --mds-label-selection-color: rgb(var(--status-error-10));
 }
 
 :host([variant="error"][tone="quiet"]) {
-  --mds-label-background: theme('colors.status-error-09');
-  --mds-label-button-background: theme('colors.status-error-09');
-  --mds-label-button-background-hover: theme('colors.status-error-08');
-  --mds-label-button-icon-color: theme('colors.status-error-04');
-  --mds-label-color: theme('colors.status-error-04');
-  --mds-label-icon-color: theme('colors.status-error-04');
-  --mds-label-selection-background: theme('colors.status-error-05');
-  --mds-label-selection-color: theme('colors.status-error-09');
+  --mds-label-background: rgb(var(--status-error-09));
+  --mds-label-button-background: rgb(var(--status-error-09));
+  --mds-label-button-background-hover: rgb(var(--status-error-08));
+  --mds-label-button-icon-color: rgb(var(--status-error-04));
+  --mds-label-color: rgb(var(--status-error-04));
+  --mds-label-icon-color: rgb(var(--status-error-04));
+  --mds-label-selection-background: rgb(var(--status-error-05));
+  --mds-label-selection-color: rgb(var(--status-error-09));
 }

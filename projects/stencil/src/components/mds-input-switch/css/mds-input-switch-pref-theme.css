@@ -1,35 +1,35 @@
 :host-context(.pref-theme-dark) {
-  --mds-input-switch-box-color-enabled-checked: theme('colors.variant-primary-04');
-  --mds-input-switch-box-color-enabled-unchecked: theme('colors.tone-neutral-06');
-  --mds-input-switch-box-color-disabled-checked: theme('colors.tone-neutral-08');
-  --mds-input-switch-box-color-disabled-unchecked: theme('colors.tone-neutral-08');
-  --mds-input-switch-toggle-color-enabled-checked: theme('colors.tone-neutral');
-  --mds-input-switch-toggle-color-enabled-unchecked: theme('colors.tone-neutral-10');
-  --mds-input-switch-toggle-color-disabled-checked: theme('colors.tone-neutral');
-  --mds-input-switch-toggle-color-disabled-unchecked: theme('colors.tone-neutral');
-  --mds-input-switch-icon-color-checked-disabled: theme('colors.tone-neutral-06');
-  --mds-input-switch-icon-color-checked: theme('colors.variant-primary-06');
-  --mds-input-switch-icon-color-indeterminate-disabled: theme('colors.tone-neutral-05');
-  --mds-input-switch-icon-color-indeterminate: theme('colors.tone-neutral-05');
-  --mds-input-switch-icon-color-unchecked-disabled: theme('colors.tone-neutral-06');
-  --mds-input-switch-icon-color-unchecked: theme('colors.tone-neutral-06');
+  --mds-input-switch-box-color-enabled-checked: rgb(var(--variant-primary-04));
+  --mds-input-switch-box-color-enabled-unchecked: rgb(var(--tone-neutral-06));
+  --mds-input-switch-box-color-disabled-checked: rgb(var(--tone-neutral-08));
+  --mds-input-switch-box-color-disabled-unchecked: rgb(var(--tone-neutral-08));
+  --mds-input-switch-toggle-color-enabled-checked: rgb(var(--tone-neutral));
+  --mds-input-switch-toggle-color-enabled-unchecked: rgb(var(--tone-neutral-10));
+  --mds-input-switch-toggle-color-disabled-checked: rgb(var(--tone-neutral));
+  --mds-input-switch-toggle-color-disabled-unchecked: rgb(var(--tone-neutral));
+  --mds-input-switch-icon-color-checked-disabled: rgb(var(--tone-neutral-06));
+  --mds-input-switch-icon-color-checked: rgb(var(--variant-primary-06));
+  --mds-input-switch-icon-color-indeterminate-disabled: rgb(var(--tone-neutral-05));
+  --mds-input-switch-icon-color-indeterminate: rgb(var(--tone-neutral-05));
+  --mds-input-switch-icon-color-unchecked-disabled: rgb(var(--tone-neutral-06));
+  --mds-input-switch-icon-color-unchecked: rgb(var(--tone-neutral-06));
 }
 
 @media (prefers-color-scheme: dark) {
   :host-context(.pref-theme-system) {
-    --mds-input-switch-box-color-enabled-checked: theme('colors.variant-primary-04');
-    --mds-input-switch-box-color-enabled-unchecked: theme('colors.tone-neutral-06');
-    --mds-input-switch-box-color-disabled-checked: theme('colors.tone-neutral-08');
-    --mds-input-switch-box-color-disabled-unchecked: theme('colors.tone-neutral-08');
-    --mds-input-switch-toggle-color-enabled-checked: theme('colors.tone-neutral');
-    --mds-input-switch-toggle-color-enabled-unchecked: theme('colors.tone-neutral-10');
-    --mds-input-switch-toggle-color-disabled-checked: theme('colors.tone-neutral');
-    --mds-input-switch-toggle-color-disabled-unchecked: theme('colors.tone-neutral');
-    --mds-input-switch-icon-color-checked-disabled: theme('colors.tone-neutral-06');
-    --mds-input-switch-icon-color-checked: theme('colors.variant-primary-06');
-    --mds-input-switch-icon-color-indeterminate-disabled: theme('colors.tone-neutral-05');
-    --mds-input-switch-icon-color-indeterminate: theme('colors.tone-neutral-05');
-    --mds-input-switch-icon-color-unchecked-disabled: theme('colors.tone-neutral-06');
-    --mds-input-switch-icon-color-unchecked: theme('colors.tone-neutral-06');
+    --mds-input-switch-box-color-enabled-checked: rgb(var(--variant-primary-04));
+    --mds-input-switch-box-color-enabled-unchecked: rgb(var(--tone-neutral-06));
+    --mds-input-switch-box-color-disabled-checked: rgb(var(--tone-neutral-08));
+    --mds-input-switch-box-color-disabled-unchecked: rgb(var(--tone-neutral-08));
+    --mds-input-switch-toggle-color-enabled-checked: rgb(var(--tone-neutral));
+    --mds-input-switch-toggle-color-enabled-unchecked: rgb(var(--tone-neutral-10));
+    --mds-input-switch-toggle-color-disabled-checked: rgb(var(--tone-neutral));
+    --mds-input-switch-toggle-color-disabled-unchecked: rgb(var(--tone-neutral));
+    --mds-input-switch-icon-color-checked-disabled: rgb(var(--tone-neutral-06));
+    --mds-input-switch-icon-color-checked: rgb(var(--variant-primary-06));
+    --mds-input-switch-icon-color-indeterminate-disabled: rgb(var(--tone-neutral-05));
+    --mds-input-switch-icon-color-indeterminate: rgb(var(--tone-neutral-05));
+    --mds-input-switch-icon-color-unchecked-disabled: rgb(var(--tone-neutral-06));
+    --mds-input-switch-icon-color-unchecked: rgb(var(--tone-neutral-06));
   }
 }

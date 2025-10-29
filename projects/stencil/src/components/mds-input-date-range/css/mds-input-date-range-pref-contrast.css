@@ -1,21 +1,21 @@
 :host-context(.pref-contrast-more) {
-  --mds-input-date-range-ring: theme('boxShadow.outline-strong-50');
-  --mds-input-date-range-background: theme('colors.tone-neutral-09');
-  --mds-input-date-range-controls-border: 2px solid theme('colors.tone-neutral-05');
+  --mds-input-date-range-ring: var(--shadow-outline-strong-50);
+  --mds-input-date-range-background: rgb(var(--tone-neutral-09));
+  --mds-input-date-range-controls-border: 2px solid rgb(var(--tone-neutral-05));
 }
 
 :host-context(.pref-contrast-more) .input::placeholder {
-  color: theme('colors.tone-neutral-03');
+  color: rgb(var(--tone-neutral-03));
 }
 
 @media (prefers-contrast: more) {
   :host-context(.pref-contrast-system) {
-    --mds-input-date-range-ring: theme('boxShadow.outline-strong-50');
-    --mds-input-date-range-background: theme('colors.tone-neutral-09');
-    --mds-input-date-range-controls-border: 2px solid theme('colors.tone-neutral-05');
+    --mds-input-date-range-ring: var(--shadow-outline-strong-50);
+    --mds-input-date-range-background: rgb(var(--tone-neutral-09));
+    --mds-input-date-range-controls-border: 2px solid rgb(var(--tone-neutral-05));
   }
 
   :host-context(.pref-contrast-more) .input::placeholder {
-    color: theme('colors.tone-neutral-03');
+    color: rgb(var(--tone-neutral-03));
   }
 }

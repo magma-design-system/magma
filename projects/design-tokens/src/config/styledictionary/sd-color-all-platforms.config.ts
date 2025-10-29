@@ -75,6 +75,10 @@ export function getStyleDictionaryColorConfigAllPlatforms (
             format: 'css/vars-rgb-channels',
             destination: 'colors-rgb.css',
           },
+          {
+            format: 'css/css-tailwind-theme-color',
+            destination: 'tailwind-theme-color.css',
+          },
         ],
       },
 

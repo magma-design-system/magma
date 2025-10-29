@@ -1,4 +1,6 @@
-@import '../../tailwind/components.css';
+@reference '../../tailwind/index.css';
+
+@reference '../../tailwind/components.css';
 
 /**
  * @prop --mds-breadcrumb-arrow-depth-color: Sets the color of the arrow icon that separates buttons
@@ -14,16 +16,16 @@
  */
 
 :host {
-  --mds-breadcrumb-arrow-depth-color: theme('colors.tone-neutral-04');
-  --mds-breadcrumb-button-background-current: theme('colors.tone-neutral-09');
+  --mds-breadcrumb-arrow-depth-color: rgb(var(--tone-neutral-04));
+  --mds-breadcrumb-button-background-current: rgb(var(--tone-neutral-09));
   --mds-breadcrumb-button-background-disabled: transparent;
-  --mds-breadcrumb-button-background-hover: theme('colors.tone-neutral-10');
+  --mds-breadcrumb-button-background-hover: rgb(var(--tone-neutral-10));
   --mds-breadcrumb-button-background: transparent;
-  --mds-breadcrumb-button-color-current: theme('colors.tone-neutral-01');
-  --mds-breadcrumb-button-color-disabled: theme('colors.tone-neutral-06');
-  --mds-breadcrumb-button-color-hover: theme('colors.tone-neutral-02');
-  --mds-breadcrumb-button-color: theme('colors.tone-neutral-02');
-  --mds-breadcrumb-current-button-color: theme('colors.tone-neutral-05');
+  --mds-breadcrumb-button-color-current: rgb(var(--tone-neutral-01));
+  --mds-breadcrumb-button-color-disabled: rgb(var(--tone-neutral-06));
+  --mds-breadcrumb-button-color-hover: rgb(var(--tone-neutral-02));
+  --mds-breadcrumb-button-color: rgb(var(--tone-neutral-02));
+  --mds-breadcrumb-current-button-color: rgb(var(--tone-neutral-05));
 
   @apply
     gap-0

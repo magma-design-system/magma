@@ -17,8 +17,11 @@ import {
   jsTailwindScreensFormat,
   tailwindcssAspetctRationTransform,
   tailwindPxToRemTransform,
+  cssTailwindThemeTypography,
+  tailwindCss4Filter,
+  cssTailwindThemeColor,
 } from '../formats/index.js'
-import { getBrandColorConfig } from '../config/sd-brand-color.config.js'
+import { getBrandColorConfig } from '../config/styledictionary/sd-brand-color.config.js'
 import chalk from 'chalk'
 import pkg from 'fs-extra'
 import { resolve } from 'path'
@@ -36,14 +39,15 @@ export async function getColorsConfig (path?: string) {
 export function writeJsonTokens (tokens: any, name: string, dirPath: string) {
   const jsonTokens = JSON.stringify(tokens, null, 2)
 
-  mkdir(dirPath, { recursive: true })
-  writeFile(resolve(`${dirPath}/${name}.json`), jsonTokens, 'utf8', err => {
-    if (err) {
-      console.error(
-        chalk.red('An error occured while writing JSON Object to File.'),
-      )
-      console.error(chalk.red(err))
-    }
+  mkdir(dirPath, { recursive: true }).then(() => {
+    writeFile(resolve(`${dirPath}/${name}.json`), jsonTokens, 'utf8', err => {
+      if (err) {
+        console.error(
+          chalk.red('An error occured while writing JSON Object to File.'),
+        )
+        console.error(chalk.red(err))
+      }
+    })
   })
 }
 
@@ -81,6 +85,7 @@ export function getStyleDictionaryWithAllCustomTransform (): StyleDictionary.Cor
       .registerFormat(flutterColorFormat)
       .registerFormat(cssHexFormat)
       .registerFormat(cssRgbFormat)
+      .registerFormat(cssTailwindThemeColor)
       .registerFormat(jsonCoolorsFormat)
       // FONT
       .registerFormat(flutterFontFormat)
@@ -89,11 +94,43 @@ export function getStyleDictionaryWithAllCustomTransform (): StyleDictionary.Cor
       .registerFormat(jsTailwindLeadingFormat)
       .registerFormat(jsTailwindScreensFormat)
       .registerFormat(jsTailwindPropsFormat)
+      .registerFormat(cssTailwindThemeTypography)
       // transform for flutter font
       .registerTransform(flutterFontWeightTransform)
       .registerTransform(flutterToDoubleTransform)
       // transform for tailwind props
       .registerTransform(tailwindcssAspetctRationTransform)
       .registerTransform(tailwindPxToRemTransform)
+      // filter for tailwind4 props
+      .registerFilter(tailwindCss4Filter)
   )
+}
+
+
+/**
+ * Deep merge of two object
+ *
+ * @param {object} target
+ * @param {object} source
+ * @returns {object} object merged
+ */
+export function deepMerge (target, source) {
+  const isObject = obj => obj && typeof obj === 'object' && !Array.isArray(obj)
+
+  if (isObject(target) && isObject(source)) {
+    for (const key in source) {
+      if (isObject(source[key])) {
+        if (!target[key]) {
+          target[key] = {}
+        }
+        deepMerge(target[key], source[key])
+      } else if (Array.isArray(source[key])) {
+        target[key] = source[key]
+      } else {
+        target[key] = source[key]
+      }
+    }
+  }
+
+  return target
 }

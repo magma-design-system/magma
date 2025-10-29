@@ -1,20 +1,22 @@
-@tailwind components;
-
-@layer components {
-  .focus-bounce {
+  @utility focus-bounce {
     animation-duration: var(--magma-outline-animation-duration, 1s);
     animation-fill-mode: forwards;
     animation-iteration-count: infinite;
     animation-name: focus-bounce;
     animation-play-state: paused;
-    animation-timing-function: theme('transitionTimingFunction.out');
+    animation-timing-function: var(--ease-out);
     outline: var(--magma-outline-blur);
     transition-duration: 200ms;
     transition-property: background-color, border-color, box-shadow, color, fill, outline, outline-offset, transform;
     transition-timing-function: ease-in-out;
   }
 
-  .focus-bounce--focused,
+  @utility focus-bounce--focused  {
+    --magma-outline-blur: var(--magma-outline-focus);
+
+    animation-play-state: running;
+  }
+
   .focus-bounce:focus-visible {
     --magma-outline-blur: var(--magma-outline-focus);
 
@@ -42,14 +44,14 @@
     --magma-outline-blur: 2px solid rgb(var(--tone-neutral));
   }
 
-  .hide-scrollbar {
+  @utility hide-scrollbar {
     -webkit-overflow-scrolling: touch;
     -ms-overflow-style: none;
     scrollbar-width: none;
-  }
 
-  .hide-scrollbar::-webkit-scrollbar {
-    display: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 
   .not-hydrated {
@@ -59,4 +61,4 @@
     transition-duration: 0s;
     visibility: hidden;
   }
-}
+

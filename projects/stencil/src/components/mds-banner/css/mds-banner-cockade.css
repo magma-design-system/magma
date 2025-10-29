@@ -1,15 +1,17 @@
+@reference '../../tailwind/index.css';
+
 :host([cockade]:not([cockade="false"])) .icon {
   @apply rounded-b-lg;
 
   background-color: var(--mds-banner-cockade-background);
   margin-top: calc(-1 * var(--mds-banner-cockade-distance));
-  padding: theme('padding.200');
+  padding: --spacing(200);
   padding-top: var(--mds-banner-cockade-distance);
 }
 
 @container mds-banner (max-width: 300px) {
   :host([cockade]:not([cockade="false"])) .icon {
-    padding-top: theme('padding.200');
+    padding-top: --spacing(200);
   }
 
   .body {

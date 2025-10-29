@@ -1,4 +1,6 @@
-@import '../../tailwind/components.css';
+@reference '../../tailwind/index.css';
+
+@reference '../../tailwind/components.css';
 
 /**
  * @prop --mds-avatar-background-color-pending: The background-color when an image is loading
@@ -8,10 +10,10 @@
  */
 
 :host {
-  --mds-avatar-background-color-pending: theme('colors.tone-neutral-08');
-  --mds-avatar-background-color: theme('colors.variant-primary-05');
-  --mds-avatar-color: theme('colors.variant-primary-10');
-  --mds-avatar-radius: theme('borderRadius.full');
+  --mds-avatar-background-color-pending: rgb(var(--tone-neutral-08));
+  --mds-avatar-background-color: rgb(var(--variant-primary-05));
+  --mds-avatar-color: rgb(var(--variant-primary-10));
+  --mds-avatar-radius: var(--radius-full);
   --mds-avatar-initials-padding: 20%;
 
   aspect-ratio: 1/1;
@@ -20,7 +22,7 @@
   container-type: inline-size;
   display: inline-flex;
   overflow: hidden;
-  width: theme('spacing.1200');
+  width: --spacing(1200);
 }
 
 .avatar {

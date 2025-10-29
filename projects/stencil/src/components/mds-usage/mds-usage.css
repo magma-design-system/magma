@@ -1,12 +1,15 @@
+@reference 'tailwindcss';
+@reference '../../tailwind/index.css';
+
 /**
  * @prop --mds-usage-border-color: Sets the border color of the component.
  * @prop --mds-usage-badge-color: Sets the badge text color of the component.
  */
 
 :host {
-  --mds-usage-border-color: theme('colors.status-info-06');
-  --mds-usage-badge-background: theme('colors.status-info-05');
-  --mds-usage-badge-color: theme('colors.status-info-10');
+  --mds-usage-border-color: rgb(var(--status-info-06));
+  --mds-usage-badge-background: rgb(var(--status-info-05));
+  --mds-usage-badge-color: rgb(var(--status-info-10));
 
   @apply
     duration-200
@@ -18,7 +21,7 @@
 
   border-color: var(--mds-usage-border-color);
   border-style: solid;
-  border-width: theme('borderWidth.DEFAULT');
+  border-width: --spacing(25);
 
   /* is seems it's not working on web components, due of a bug
   container-name: mds-usage;

@@ -1,9 +1,9 @@
 :host-context(.pref-contrast-more) {
-  box-shadow: theme('boxShadow.outline-50');
+  box-shadow: var(--shadow-outline-50);
 }
 
 @media (prefers-contrast: more) {
   :host-context(.pref-contrast-system) {
-    box-shadow: theme('boxShadow.outline-50');
+    box-shadow: var(--shadow-outline-50);
   }
 }

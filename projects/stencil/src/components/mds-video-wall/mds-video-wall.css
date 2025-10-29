@@ -1,3 +1,5 @@
+@reference '../../tailwind/index.css';
+
 /**
  * @prop --mds-video-wall-noise-background-color: Sets the background-color of the noise when active
  * @prop --mds-video-wall-noise-background-size: Sets the background-color of the noise when active
@@ -12,7 +14,7 @@
   --mds-video-wall-video-fit: cover;
 
   aspect-ratio: 16/9;
-  background-color: theme('colors.tone-neutral-02');
+  background-color: rgb(var(--tone-neutral-02));
   display: flex;
   position: relative;
 }

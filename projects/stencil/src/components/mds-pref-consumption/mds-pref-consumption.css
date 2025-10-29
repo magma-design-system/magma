@@ -1,3 +1,5 @@
+@reference '../../tailwind/index.css';
+
 :host {
   @apply gap-100;
 
@@ -5,22 +7,22 @@
 }
 
 .item {
-  --mds-tab-item-default-color: theme('colors.tone-neutral-05');
+  --mds-tab-item-default-color: rgb(var(--tone-neutral-05));
 
   flex-basis: 0;
   flex-grow: 1;
 }
 
 .item--high {
-  --mds-tab-item-selected-color: theme('colors.status-error-06');
+  --mds-tab-item-selected-color: rgb(var(--status-error-06));
 }
 
 .item--medium {
-  --mds-tab-item-selected-color: theme('colors.status-warning-06');
+  --mds-tab-item-selected-color: rgb(var(--status-warning-06));
 }
 
 .item--low {
-  --mds-tab-item-selected-color: theme('colors.status-success-06');
+  --mds-tab-item-selected-color: rgb(var(--status-success-06));
 }
 
 @import './css/mds-pref-consumption-pref-contrast.css';

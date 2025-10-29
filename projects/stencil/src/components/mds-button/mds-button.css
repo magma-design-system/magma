@@ -1,6 +1,6 @@
-@import '~@maggioli-design-system/styles/dist/tailwind/typography.css';
-@import '~@maggioli-design-system/styles/dist/css/animations.css';
-@import '../../tailwind/components.css';
+/* @reference '../../tailwind/index.css'; */
+@reference '@maggioli-design-system/styles/dist/css/animations.css';
+@reference '../../tailwind/components.css';
 
 /**
  * @prop --mds-button-await-duration: Sets the duration of the rotation of the spinner await component
@@ -22,21 +22,21 @@
 
 :host {
   --mds-button-await-duration: 0.725s;
-  --mds-button-background: theme('colors.variant-primary-02');
+  --mds-button-background: rgb(var(--variant-primary-02));
   --mds-button-border-color: 0 0 0;
-  --mds-button-border-hover-opacity: theme('opacity.75');
-  --mds-button-border-default-opacity: theme('opacity.50');
-  --mds-button-border-tone-strong-hover-width: theme('borderWidth.25');
+  --mds-button-border-hover-opacity: 75%;
+  --mds-button-border-default-opacity: 50%;
+  --mds-button-border-tone-strong-hover-width: --spacing(25);
   --mds-button-border-tone-ghost-hover-width: 3px;
-  --mds-button-border-tone-weak-hover-width: theme('borderWidth.25');
-  --mds-button-border-high-contrast-width: theme('borderWidth.50');
+  --mds-button-border-tone-weak-hover-width: --spacing(25);
+  --mds-button-border-high-contrast-width: --spacing(50);
   --mds-button-border-high-contrast-hover-width: 3px;
   --mds-button-border-opacity: 0;
-  --mds-button-border-width: theme('borderWidth.50');
-  --mds-button-color: theme('colors.tone-neutral');
-  --mds-button-gap: theme('spacing.200');
+  --mds-button-border-width: --spacing(50);
+  --mds-button-color: rgb(var(--tone-neutral));
+  --mds-button-gap: --spacing(200);
   --mds-button-line-clamp: 1;
-  --mds-button-radius: theme('borderRadius.lg');
+  --mds-button-radius: var(--radius-lg);
 
   @apply
     duration-200

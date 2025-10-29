@@ -1,32 +1,32 @@
 :host([variant="primary"]),
 :host([variant="primary"][tone="strong"]) {
-  --mds-banner-background: theme('colors.tone-neutral');
-  --mds-banner-close-icon-hover-background: theme('colors.variant-primary-09');
-  --mds-banner-color: theme('colors.tone-neutral-02');
-  --mds-banner-icon-color: theme('colors.variant-primary-05');
-  --mds-banner-shadow: theme('boxShadow.lg-sharp');
-  --mds-banner-headline-color: theme('colors.variant-primary-02');
-  --mds-banner-cockade-background: theme('colors.variant-primary-09');
+  --mds-banner-background: rgb(var(--tone-neutral));
+  --mds-banner-close-icon-hover-background: rgb(var(--variant-primary-09));
+  --mds-banner-color: rgb(var(--tone-neutral-02));
+  --mds-banner-icon-color: rgb(var(--variant-primary-05));
+  --mds-banner-shadow: var(--shadow-lg-sharp);
+  --mds-banner-headline-color: rgb(var(--variant-primary-02));
+  --mds-banner-cockade-background: rgb(var(--variant-primary-09));
 }
 
 :host([variant="primary"][tone="weak"]) {
-  --mds-banner-background: theme('colors.tone-neutral');
-  --mds-banner-close-icon-hover-background: theme('colors.variant-primary-10');
-  --mds-banner-color: theme('colors.tone-neutral-02');
-  --mds-banner-icon-color: theme('colors.variant-primary-05');
-  --mds-banner-shadow: theme('boxShadow.sm-sharp');
-  --mds-banner-cockade-background: theme('colors.variant-primary-10');
+  --mds-banner-background: rgb(var(--tone-neutral));
+  --mds-banner-close-icon-hover-background: rgb(var(--variant-primary-10));
+  --mds-banner-color: rgb(var(--tone-neutral-02));
+  --mds-banner-icon-color: rgb(var(--variant-primary-05));
+  --mds-banner-shadow: var(--shadow-sm-sharp);
+  --mds-banner-cockade-background: rgb(var(--variant-primary-10));
 }
 
 :host([variant="primary"][tone="ghost"]) {
-  --mds-banner-color: theme('colors.tone-neutral-02');
-  --mds-banner-close-icon-hover-background: theme('colors.variant-primary-10');
+  --mds-banner-color: rgb(var(--tone-neutral-02));
+  --mds-banner-close-icon-hover-background: rgb(var(--variant-primary-10));
   --mds-banner-shadow: none;
 }
 
 :host([variant="primary"][tone="quiet"]) {
   --mds-banner-background: transparent;
   --mds-banner-close-icon-hover-background: transparent;
-  --mds-banner-color: theme('colors.tone-neutral-10');
+  --mds-banner-color: rgb(var(--tone-neutral-10));
   --mds-banner-shadow: none;
 }

@@ -1,7 +1,8 @@
-@import '~@maggioli-design-system/styles/dist/css/animations.css'; /* included for focus effect */
-@import '../../tailwind/components.css';
-@tailwind components;
-@tailwind utilities;
+@reference '../../tailwind/index.css';
+@reference '@maggioli-design-system/styles/dist/css/animations.css';
+
+@reference '../../tailwind/components.css';
+@import '../../tailwind/fouc.css';
 
 /**
  * @prop --mds-bibliography-color: Sets the text color of the component
@@ -12,15 +13,14 @@
 :host {
   --mds-bibliography-color: inherit;
   --mds-bibliography-text-decoration-hover: inherit;
-  --mds-bibliography-text-decoration: theme('colors.tone-neutral-06');
+  --mds-bibliography-text-decoration: rgb(var(--tone-neutral-06));
 
   display: inline;
 }
 
 .link {
-  @apply
-    duration-200
-    rounded;
+  @apply duration-200
+  rounded;
 
   color: var(--mds-bibliography-color);
   text-decoration-color: var(--mds-bibliography-text-decoration);
@@ -31,4 +31,3 @@
   text-decoration-color: var(--mds-bibliography-text-decoration-hover);
 }
 
-@import '../../tailwind/fouc.css';

@@ -1,13 +1,13 @@
 :host-context(.pref-contrast-more) {
-  --mds-push-notification-item-shadow: theme('boxShadow.outline-strong-50') inset;
+  --mds-push-notification-item-shadow: var(--shadow-outline-strong-50) inset;
 
-  color: theme('colors.tone-neutral-01');
+  color: rgb(var(--tone-neutral-01));
 }
 
 @media (prefers-contrast: more) {
   :host-context(.pref-contrast-system) {
-    --mds-push-notification-item-shadow: theme('boxShadow.outline-strong-50') inset;
+    --mds-push-notification-item-shadow: var(--shadow-outline-strong-50) inset;
 
-    color: theme('colors.tone-neutral-01');
+    color: rgb(var(--tone-neutral-01));
   }
 }

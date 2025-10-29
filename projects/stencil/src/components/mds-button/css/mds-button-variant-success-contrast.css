@@ -1,126 +1,126 @@
 :host-context(.pref-contrast-more):host([variant="success"][tone="strong"]) {
-  --mds-button-background: theme('colors.status-success-03');
-  --mds-button-color: theme('colors.tone-neutral');
+  --mds-button-background: rgb(var(--status-success-03));
+  --mds-button-color: rgb(var(--tone-neutral));
   --mds-button-border-color: var(--status-success-03);
 }
 
 :host-context(.pref-contrast-more):host([variant="success"][tone="strong"][active]),
 :host-context(.pref-contrast-more):host([variant="success"][tone="strong"]:hover) {
-  --mds-button-background: theme('colors.status-success-02');
+  --mds-button-background: rgb(var(--status-success-02));
   --mds-button-border-color: var(--status-success-02);
 }
 
 :host-context(.pref-contrast-more):host([variant="success"][tone="weak"]) {
-  --mds-button-background: theme('colors.status-success-09');
-  --mds-button-color: theme('colors.status-success-02');
+  --mds-button-background: rgb(var(--status-success-09));
+  --mds-button-color: rgb(var(--status-success-02));
   --mds-button-border-color: var(--status-success-06);
   --mds-button-border-width: var(--mds-button-border-high-contrast-width);
 
-  fill: theme('colors.status-success-02');
+  fill: rgb(var(--status-success-02));
 }
 
 :host-context(.pref-contrast-more):host([variant="success"][tone="weak"]:hover) {
-  --mds-button-background: theme('colors.status-success-10');
-  --mds-button-color: theme('colors.status-success-01');
+  --mds-button-background: rgb(var(--status-success-10));
+  --mds-button-color: rgb(var(--status-success-01));
   --mds-button-border-width: var(--mds-button-border-high-contrast-hover-width);
 
-  fill: theme('colors.status-success-01');
+  fill: rgb(var(--status-success-01));
 }
 
 :host-context(.pref-contrast-more):host([variant="success"][tone="weak"][active]) {
-  --mds-button-background: theme('colors.status-success-08');
-  --mds-button-color: theme('colors.status-success-01');
+  --mds-button-background: rgb(var(--status-success-08));
+  --mds-button-color: rgb(var(--status-success-01));
 
-  fill: theme('colors.status-success-01');
+  fill: rgb(var(--status-success-01));
 }
 
 :host-context(.pref-contrast-more):host([variant="success"][tone="ghost"]) {
   --mds-button-border-color: var(--status-success-03);
-  --mds-button-color: theme('colors.status-success-02');
+  --mds-button-color: rgb(var(--status-success-02));
 }
 
 :host-context(.pref-contrast-more):host([variant="success"][tone="ghost"]:hover) {
   --mds-button-border-color: var(--status-success-03);
-  --mds-button-color: theme('colors.status-success-01');
+  --mds-button-color: rgb(var(--status-success-01));
 }
 
 :host-context(.pref-contrast-more):host([variant="success"][tone="ghost"][active]) {
   --mds-button-border-color: var(--status-success-04);
-  --mds-button-color: theme('colors.status-success-02');
+  --mds-button-color: rgb(var(--status-success-02));
 }
 
 :host-context(.pref-contrast-more):host([variant="success"][tone="quiet"]) {
-  --mds-button-color: theme('colors.status-success-01');
+  --mds-button-color: rgb(var(--status-success-01));
 }
 
 :host-context(.pref-contrast-more):host([variant="success"][tone="quiet"]:hover) {
-  --mds-button-color: theme('colors.status-success-03');
+  --mds-button-color: rgb(var(--status-success-03));
 }
 
 :host-context(.pref-contrast-more):host([variant="success"][tone="quiet"][active]) {
-  --mds-button-color: theme('colors.status-success-01');
+  --mds-button-color: rgb(var(--status-success-01));
 }
 
 @media (prefers-contrast: more) {
   :host-context(.pref-contrast-system):host([variant="success"][tone="strong"]) {
-    --mds-button-background: theme('colors.status-success-03');
-    --mds-button-color: theme('colors.tone-neutral');
+    --mds-button-background: rgb(var(--status-success-03));
+    --mds-button-color: rgb(var(--tone-neutral));
   }
 
   :host-context(.pref-contrast-system):host([variant="success"][tone="strong"][active]),
   :host-context(.pref-contrast-system):host([variant="success"][tone="strong"]:hover) {
-    --mds-button-background: theme('colors.status-success-02');
+    --mds-button-background: rgb(var(--status-success-02));
     --mds-button-border-color: var(--status-success-02);
   }
 
   :host-context(.pref-contrast-system):host([variant="success"][tone="weak"]) {
-    --mds-button-background: theme('colors.status-success-09');
-    --mds-button-color: theme('colors.status-success-02');
+    --mds-button-background: rgb(var(--status-success-09));
+    --mds-button-color: rgb(var(--status-success-02));
     --mds-button-border-color: var(--status-success-06);
     --mds-button-border-width: var(--mds-button-border-high-contrast-width);
 
-    fill: theme('colors.status-success-02');
+    fill: rgb(var(--status-success-02));
   }
 
   :host-context(.pref-contrast-system):host([variant="success"][tone="weak"]:hover) {
-    --mds-button-background: theme('colors.status-success-10');
-    --mds-button-color: theme('colors.status-success-01');
+    --mds-button-background: rgb(var(--status-success-10));
+    --mds-button-color: rgb(var(--status-success-01));
     --mds-button-border-width: var(--mds-button-border-high-contrast-hover-width);
 
-    fill: theme('colors.status-success-01');
+    fill: rgb(var(--status-success-01));
   }
 
   :host-context(.pref-contrast-system):host([variant="success"][tone="weak"][active]) {
-    --mds-button-background: theme('colors.status-success-08');
-    --mds-button-color: theme('colors.status-success-01');
+    --mds-button-background: rgb(var(--status-success-08));
+    --mds-button-color: rgb(var(--status-success-01));
 
-    fill: theme('colors.status-success-01');
+    fill: rgb(var(--status-success-01));
   }
 
   :host-context(.pref-contrast-system):host([variant="success"][tone="ghost"]) {
     --mds-button-border-color: var(--status-success-03);
-    --mds-button-color: theme('colors.status-success-02');
+    --mds-button-color: rgb(var(--status-success-02));
   }
 
   :host-context(.pref-contrast-system):host([variant="success"][tone="ghost"]:hover) {
     --mds-button-border-color: var(--status-success-03);
-    --mds-button-color: theme('colors.status-success-01');
+    --mds-button-color: rgb(var(--status-success-01));
   }
 
   :host-context(.pref-contrast-system):host([variant="success"][tone="ghost"][active]) {
     --mds-button-border-color: var(--status-success-04);
-    --mds-button-color: theme('colors.status-success-02');
+    --mds-button-color: rgb(var(--status-success-02));
   }
 
   :host-context(.pref-contrast-system):host([variant="success"][tone="quiet"]) {
-    --mds-button-color: theme('colors.status-success-01');
+    --mds-button-color: rgb(var(--status-success-01));
   }
 
   :host-context(.pref-contrast-system):host([variant="success"][tone="quiet"]:hover) {
-    --mds-button-color: theme('colors.status-success-03');
+    --mds-button-color: rgb(var(--status-success-03));
   }
 
   :host-context(.pref-contrast-system):host([variant="success"][tone="quiet"][active]) {
-    --mds-button-color: theme('colors.status-success-01');
+    --mds-button-color: rgb(var(--status-success-01));
   }
 }

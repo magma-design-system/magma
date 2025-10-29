@@ -85,6 +85,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
  - [mds-pref-contrast](../mds-pref-contrast)
  - [mds-pref-language](../mds-pref-language)
  - [mds-pref-theme](../mds-pref-theme)
+ - [mds-pref-theme-variant](../mds-pref-theme-variant)
 
 ### Graph
 ```mermaid
@@ -95,6 +96,7 @@ graph TD;
   mds-pref-contrast --> mds-tab
   mds-pref-language --> mds-tab
   mds-pref-theme --> mds-tab
+  mds-pref-theme-variant --> mds-tab
   style mds-tab fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

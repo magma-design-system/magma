@@ -1,3 +1,5 @@
+@reference '../../tailwind/index.css';
+
 /**
  * @prop --mds-entity-background: The background-color of the entity
  * @prop --mds-entity-color: The color of the entity name
@@ -8,13 +10,13 @@
  */
 
 :host {
-  --mds-entity-background: theme('colors.tone-neutral');
-  --mds-entity-color: theme('colors.tone-neutral-02');
-  --mds-entity-detail-color: theme('colors.tone-neutral-03');
-  --mds-entity-icon-background: theme('colors.label-blue-09');
-  --mds-entity-icon-radius: theme('borderRadius.DEFAULT');
-  --mds-entity-icon-color: theme('colors.label-blue-04');
-  --mds-entity-shadow: theme('boxShadow.DEFAULT');
+  --mds-entity-background: rgb(var(--tone-neutral));
+  --mds-entity-color: rgb(var(--tone-neutral-02));
+  --mds-entity-detail-color: rgb(var(--tone-neutral-03));
+  --mds-entity-icon-background: rgb(var(--label-blue-09));
+  --mds-entity-icon-radius: var(--radius-md);
+  --mds-entity-icon-color: rgb(var(--label-blue-04));
+  --mds-entity-shadow: var(--shadow-md);
 
   @apply
     gap-200

@@ -1,8 +1,8 @@
+@reference '../../tailwind/index.css';
+
 /* stylelint-disable property-no-vendor-prefix */
 
-@import '~@maggioli-design-system/styles/dist/tailwind/typography.css';
-@tailwind components;
-@tailwind utilities;
+@reference '@maggioli-design-system/styles/dist/tailwind/typography.css';
 
 /**
  * @prop --mds-input-date-background: Sets the background-color of the component
@@ -15,19 +15,18 @@
  */
 
 :host {
-  --mds-input-date-background: theme('colors.tone-neutral');
-  --mds-input-date-field-background-empty: theme('colors.status-error-10');
-  --mds-input-date-field-color-empty: theme('colors.status-error-06');
+  --mds-input-date-background: rgb(var(--tone-neutral));
+  --mds-input-date-field-background-empty: rgb(var(--status-error-10));
+  --mds-input-date-field-color-empty: rgb(var(--status-error-06));
   --mds-input-date-icon-color: var(--mds-input-date-variant-color);
   --mds-input-date-ring: 0 0 0 1px rgb(var(--mds-input-date-variant-color) / 0.1);
   --mds-input-date-shadow: 0 1px 3px 0 rgb(var(--mds-input-date-variant-color) / 0.1), 0 1px 2px 0 rgb(var(--mds-input-date-variant-color) / 0.06);
   --mds-input-date-variant-color: 0 0 0;
 
-  @apply
-    gap-200
-    text-info-detail;
+  @apply gap-200
+  text-info-detail;
 
-  color: theme('colors.tone-neutral-02');
+  color: rgb(var(--tone-neutral-02));
   container-type: inline-size;
   display: flex;
   overflow: visible;
@@ -43,20 +42,21 @@
 }
 
 .input {
-  @apply
-    duration-300
-    ease-out-expo
-    m-0
-    text-code-hack;
+  @apply duration-300
+  ease-out-expo
+  m-0
+  text-code-hack;
 
   background-color: transparent;
   border: 0;
-  border-radius: theme('borderRadius.lg');
+  border-radius: var(--radius-lg);
   box-sizing: border-box;
   color: inherit;
   overflow: hidden;
   text-overflow: ellipsis;
-  transition-property: background-color, border-color, box-shadow, color, fill, margin, opacity, padding, transform;
+  transition-property:
+    background-color, border-color, box-shadow, color, fill, margin, opacity,
+    padding, transform;
   width: min-content;
 }
 
@@ -76,42 +76,44 @@
 }
 
 :host(:not([slot])) .input {
-  @apply
-    pl-400
-    pr-1200
-    py-300
-    rounded-lg;
+  @apply pl-400
+  pr-1200
+  py-300
+  rounded-lg;
 
-    background-color: var(--mds-input-date-background);
-    box-shadow: var(--mds-input-date-ring), var(--mds-input-date-shadow);
-    min-height: 3rem;
-    width: 100%;
+  background-color: var(--mds-input-date-background);
+  box-shadow: var(--mds-input-date-ring), var(--mds-input-date-shadow);
+  min-height: 3rem;
+  width: 100%;
 }
 
 :host(:focus-within) .input {
-  @apply
-    outline-none
-    transition-cosmetic
-    duration-300
-    ease-out-expo;
+  @apply outline-hidden
+  transition-cosmetic
+  duration-300
+  ease-out-expo;
 
-  --mds-input-date-ring: 0 0 0 3px rgb(var(--mds-input-date-variant-color) / 1);
-  --mds-input-date-shadow: 0 4px 6px 3px rgb(var(--mds-input-date-variant-color) / 0.1), 0 2px 4px -1px rgb(var(--mds-input-date-variant-color) / 0.06);
+  --mds-input-date-ring: 0 0 0 3px
+    rgb(var(--mds-input-date-variant-color) / 1);
+  --mds-input-date-shadow:
+    0 4px 6px 3px rgb(var(--mds-input-date-variant-color) / 0.1),
+    0 2px 4px -1px rgb(var(--mds-input-date-variant-color) / 0.06);
 }
 
 .input:focus {
-  @apply
-    outline-none
-    duration-300
-    ease-out-expo;
+  @apply outline-hidden
+  duration-300
+  ease-out-expo;
 
-  --mds-input-date-ring: 0 0 0 3px rgb(var(--mds-input-date-variant-color) / 1);
-  --mds-input-date-shadow: 0 4px 6px 3px rgb(var(--mds-input-date-variant-color) / 0.1), 0 2px 4px -1px rgb(var(--mds-input-date-variant-color) / 0.06);
-
+  --mds-input-date-ring: 0 0 0 3px
+    rgb(var(--mds-input-date-variant-color) / 1);
+  --mds-input-date-shadow:
+    0 4px 6px 3px rgb(var(--mds-input-date-variant-color) / 0.1),
+    0 2px 4px -1px rgb(var(--mds-input-date-variant-color) / 0.06);
 }
 
 .input::placeholder {
-  color: theme('colors.tone-neutral-04');
+  color: rgb(var(--tone-neutral-04));
 }
 
 .input::-webkit-outer-spin-button,
@@ -122,12 +124,12 @@
 }
 
 .input:disabled {
-  background-color: theme('colors.tone-neutral-10');
+  background-color: rgb(var(--tone-neutral-10));
 }
 
 .input:disabled,
 .input:disabled::placeholder {
-  color: theme('colors.tone-neutral-05');
+  color: rgb(var(--tone-neutral-05));
 }
 
 .action-open-calendar {
@@ -140,6 +142,9 @@
   top: 0;
 }
 
+:host([disabled]:not([disabled="false"])) .action-open-calendar {
+  transform: translate(--spacing(250), --spacing(200));
+}
 
 mds-calendar {
   min-width: max-content;
