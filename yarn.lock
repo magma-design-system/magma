@@ -3141,7 +3141,7 @@
   resolved "https://registry.npmjs.org/@lmdb/lmdb-win32-x64/-/lmdb-win32-x64-3.0.13.tgz#93bcd6dc24afd1cc60dd88a65b9e4fab32dcf397"
   integrity sha512-UCrMJQY/gJnOl3XgbWRZZUvGGBuKy6i0YNSptgMzHBjs+QYDYR1Mt/RLTOPy4fzzves65O1EDmlL//OzEqoLlA==
 
-"@maggioli-design-system/design-tokens@13.7.1":
+"@maggioli-design-system/design-tokens@13.7.1", "@maggioli-design-system/design-tokens@15.0.0":
   version "13.7.1"
   resolved "https://registry.npmjs.org/@maggioli-design-system/design-tokens/-/design-tokens-13.7.1.tgz#c370b20fa1d80fa0a1e5cc7f7e5a3473e5b8300b"
   integrity sha512-c0bU+IuSdBnn5nyQzqW1aIGORft+NhYdCBUG65sriJSbacstWCvmVs+FN7zXwCMF/M2Rao3sgJUoomS854ipog==

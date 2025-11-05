@@ -1,9 +1,11 @@
-import { Component, Host, h, Method, Prop, Element } from '@stencil/core'
+import { Component, Host, h, Method, Prop, Element, Watch } from '@stencil/core'
 import { gsap } from 'gsap'
 import { cssRotationToNumber, cssDurationToSeconds } from '@common/unit'
 import { randomNumber } from '@common/number'
 
-export type EmojiNames = 'mia'
+export type EmojiNames =
+  | 'mia'
+  | 'simi'
 
 @Component({
   tag: 'mds-emoji',
@@ -46,6 +48,17 @@ export class MdsEmoji {
   private expressionAngleMax: number = 16 // massimo angolo di rotazione della emoji
   private expressionFollowMouseHeadDuration: number = 0.3 // durata dell'animazione di rotazione della testa quando segue il mouse
   private expressionFollowMouseTraitsDuration: number = 0.2 // durata dell'animazione di rotazione degli occhi e della bocca quando segue il mouse
+
+  @Watch('name')
+  checkNameChanged (emojiName: EmojiNames): void {
+    if (emojiName === 'mia') {
+      this.initEmojiMia()
+    }
+  }
+
+  private initEmojiMia = () => {
+
+  }
 
   private emojiEl: SVGElement
   private eyeLeftEl: SVGElement
@@ -537,7 +550,8 @@ export class MdsEmoji {
     this.updateCSSCustomProps()
     window.addEventListener('mousemove', this.handleFollowMouse)
     // useless
-    this.headEl.setAttribute('d', this.headGeometry.hexagonRounded)
+    // this.headEl.setAttribute('d', this.headGeometry.hexagonRounded)
+    this.checkNameChanged(this.name)
   }
 
   disconnectedCallback (): void {
