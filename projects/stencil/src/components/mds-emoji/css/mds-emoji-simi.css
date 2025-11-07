@@ -1,7 +1,6 @@
 :host([name="simi"]) {
   --mds-emoji-simi-eye-iris: #40281B;
   --mds-emoji-simi-eye-light: #FFFFFF;
-  --mds-emoji-simi-eye-sclera: #FFFFFF;
   --mds-emoji-simi-eyebrow: #FEEFD8;
   --mds-emoji-simi-gadget: #2B1C15;
   --mds-emoji-simi-mouth: #2B1C15;
@@ -11,4 +10,12 @@
   --mds-emoji-simi-skin-dark: #C3481B;
   --mds-emoji-simi-skin-light: #FEEFD8;
   --mds-emoji-simi-skin: #F36320;
+  --mds-emoji-offset-hand: 18px;
+  --mds-emoji-offset-mouth: 16px;
+  --mds-emoji-offset-gadget: 14px;
+  --mds-emoji-offset-eyebrows: 10px;
+  --mds-emoji-offset-eyes: 7px;
+  --mds-emoji-offset-head: 5px;
+  --mds-emoji-offset-ears: 0;
+
 }
