@@ -44,7 +44,7 @@ const Template = args => {
     if (!followMouseSwitch) return
 
     if (followMouse) emoji?.startFollowMouse()
-    // if (eyeBlinking) emoji?.startBlinking()
+    if (eyeBlinking) emoji?.startBlinking()
     // if (thinking) emoji?.startThinking()
 
     followMouseSwitch.addEventListener(
@@ -65,9 +65,9 @@ const Template = args => {
         // console.log(event.detail.checked)
         setEyeBlinking(event.detail.checked === true)
         if (event.detail.checked === true) {
-          // emoji?.startBlinking()
+          emoji?.startBlinking()
         } else {
-          // emoji?.stopBlinking()
+          emoji?.stopBlinking()
         }
       },
     )

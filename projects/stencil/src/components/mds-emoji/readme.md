@@ -14,6 +14,17 @@
 
 ## Methods
 
+### `startBlinking() => Promise<void>`
+
+
+
+#### Returns
+
+Type: `Promise<void>`
+
+Promise<void>
+Eyes start blinking.
+
 ### `startFollowMouse() => Promise<void>`
 
 
@@ -24,6 +35,17 @@ Type: `Promise<void>`
 
 Promise<void>
 Starts following mouse with CSS 3D transform.
+
+### `stopBlinking() => Promise<void>`
+
+
+
+#### Returns
+
+Type: `Promise<void>`
+
+Promise<void>
+Eyes stop blinking.
 
 ### `stopFollowMouse() => Promise<void>`
 

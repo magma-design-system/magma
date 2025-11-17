@@ -37,15 +37,19 @@
     <path id="left-eyebrow" fill="var(--mds-emoji-simi-eyebrow, #FEEFD8)" d="M175.248 176.007C177.691 183.997 168.289 189.539 152.865 194.255C137.442 198.97 131.072 201.193 128.629 193.203C126.186 185.212 132.802 175.371 148.226 170.655C163.649 165.94 172.805 168.016 175.248 176.007Z"/>
     <path id="right-eyebrow" fill="var(--mds-emoji-simi-eyebrow, #FEEFD8)" d="M265.189 175.007C262.746 182.997 272.148 188.539 287.572 193.255C302.995 197.97 309.365 200.193 311.808 192.203C314.251 184.212 307.635 174.371 292.211 169.655C276.788 164.94 267.632 167.016 265.189 175.007Z"/>
   </g>
-  <g id="eyes-default">
+  <g id="eyes-default" style="transform-origin:50% 50%;">
     <g id="right-eye">
-      <ellipse id="right-eye-inner-shape" fill="var(--mds-emoji-simi-eye-iris, #40281B)" cx="287.002" cy="249.057" rx="18.5" ry="24.5" transform="rotate(12 287.002 249.057)"/>
+      <ellipse id="right-eye-inner-shape" fill="var(--mds-emoji-simi-eye, #40281B)" cx="287.002" cy="249.057" rx="18.5" ry="24.5" transform="rotate(12 287.002 249.057)"/>
       <circle id="right-eye-inner-light" fill="var(--mds-emoji-simi-eye-light, #FFFFFF)" cx="291" cy="242.557" r="6"/>
     </g>
     <g id="left-eye">
-      <ellipse id="left-eye-inner-shape" fill="var(--mds-emoji-simi-eye-iris, #40281B)" cx="18.5" cy="24.5" rx="18.5" ry="24.5" transform="matrix(-0.978148 0.207912 0.207912 0.978148 165.139 221.541)"/>
+      <ellipse id="left-eye-inner-shape" fill="var(--mds-emoji-simi-eye, #40281B)" cx="18.5" cy="24.5" rx="18.5" ry="24.5" transform="matrix(-0.978148 0.207912 0.207912 0.978148 165.139 221.541)"/>
       <circle id="left-eye-inner-light" fill="var(--mds-emoji-simi-eye-light, #FFFFFF)" cx="6" cy="6" r="6" transform="matrix(-1 0 0 1 160.14 236.852)"/>
     </g>
+  </g>
+  <g id="eyes-closed" style="transform-origin:50% 50%; visibility: hidden;">
+    <path id="left-eye-closed" stroke="var(--mds-emoji-simi-eye, #40281B)" stroke-width="12" stroke-linecap="round" d="M125 248.5C137.5 240.5 167.1 241.3 179.5 248.5"/>
+    <path id="right-eye-closed" stroke="var(--mds-emoji-simi-eye, #40281B)" stroke-width="12" stroke-linecap="round" d="M315.5 248.5C303 240.5 273.4 241.3 261 248.5"/>
   </g>
   <path id="gadget-default" fill="var(--mds-emoji-simi-gadget, #2B1C15)" fill-rule="evenodd" clip-rule="evenodd" d="M296 186C327.723 186 353.88 209.825 357.557 240.558H367C370.314 240.558 373 243.244 373 246.558C373 249.871 370.314 252.558 367 252.558H357.834C355.501 284.671 328.709 310 296 310C262.189 310 234.7 282.936 234.014 249.289C230.711 246.983 225.885 245.558 220.5 245.558C215.114 245.558 210.288 246.983 206.985 249.289C206.299 282.936 178.811 310 145 310C112.291 310 85.4993 284.671 83.166 252.558H74C70.6864 252.558 68.0002 249.871 68 246.558C68 243.244 70.6863 240.558 74 240.558H83.4434C87.12 209.825 113.277 186 145 186C175.248 186 200.437 207.662 205.9 236.318C210.539 234.42 215.652 233.558 220.5 233.558C225.348 233.558 230.461 234.419 235.099 236.317C240.563 207.661 265.752 186 296 186ZM145 198C117.386 198 95 220.386 95 248C95 275.614 117.386 298 145 298C172.614 298 195 275.614 195 248C195 220.386 172.614 198 145 198ZM296 198C268.386 198 246 220.386 246 248C246 275.614 268.386 298 296 298C323.614 298 346 275.614 346 248C346 220.386 323.614 198 296 198Z"/>
   <g id="mouth-default">

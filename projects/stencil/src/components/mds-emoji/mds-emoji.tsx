@@ -2,7 +2,7 @@ import { Component, Host, h, Method, Prop, Element, Watch } from '@stencil/core'
 import { cssRotationToNumber, cssDurationToSeconds, cssSizeToNumber } from '@common/unit'
 import type { EmojiNames, SvgDictionary, SvgNode, SvgPart } from './meta/types'
 import { gsap } from 'gsap'
-// import { randomNumber } from '@common/number'
+import { randomNumber } from '@common/number'
 
 import miaSvg from './asset/mia.svg'
 import simiSvg from './asset/simi.svg'
@@ -17,7 +17,7 @@ export class MdsEmoji {
   @Prop({ reflect: true }) readonly name: EmojiNames = 'mia'
 
   private isFollowingMouse: boolean = false
-  // private isBlinking: boolean = false
+  private isBlinking: boolean = false
   // private isThinking: boolean = false
   private headOffsetX: number = 0
   private headOffsetY: number = 0
@@ -43,7 +43,7 @@ export class MdsEmoji {
 
   private mouseX: number = 0
   private mouseY: number = 0
-  // private blinkTimeout: NodeJS.Timeout
+  private blinkTimeout: NodeJS.Timeout
 
   private currentRotateX: number = 0
   private currentRotateY: number = 0
@@ -133,30 +133,30 @@ export class MdsEmoji {
   //   return Promise.resolve()
   // }
 
-  // /**
-  //  * @returns Promise<void>
-  //  * Eyes start blinking.
-  //  */
+  /**
+   * @returns Promise<void>
+   * Eyes start blinking.
+   */
 
-  // @Method()
-  // async startBlinking (): Promise<void> {
-  //   if (this.isBlinking) return
-  //   this.isBlinking = true
-  //   this.queueNextBlink()
-  //   return Promise.resolve()
-  // }
+  @Method()
+  async startBlinking (): Promise<void> {
+    if (this.isBlinking) return
+    this.isBlinking = true
+    this.queueNextBlink()
+    return Promise.resolve()
+  }
 
-  // /**
-  //  * @returns Promise<void>
-  //  * Eyes stop blinking.
-  //  */
+  /**
+   * @returns Promise<void>
+   * Eyes stop blinking.
+   */
 
-  // @Method()
-  // async stopBlinking (): Promise<void> {
-  //   this.isBlinking = false
-  //   clearTimeout(this.blinkTimeout)
-  //   return Promise.resolve()
-  // }
+  @Method()
+  async stopBlinking (): Promise<void> {
+    this.isBlinking = false
+    clearTimeout(this.blinkTimeout)
+    return Promise.resolve()
+  }
 
   /**
    * @returns Promise<void>
@@ -485,24 +485,52 @@ export class MdsEmoji {
   //   return new Promise(resolve => setTimeout(resolve, duration * 1000))
   // }
 
+  private loopBlink = (): void => {
+    this.blinkOnce()
+    this.queueNextBlink()
+  }
 
+  private queueNextBlink = (): void => {
+    if (!this.isBlinking) return
+    this.blinkTimeout = setTimeout(this.loopBlink.bind(this), randomNumber(2000, 5000))
+  }
 
-  // private loopBlink = (): void => {
-  //   this.blinkOnce()
-  //   this.queueNextBlink()
-  // }
-
-  // private queueNextBlink = (): void => {
-  //   if (!this.isBlinking) return
-  //   this.blinkTimeout = setTimeout(this.loopBlink.bind(this), randomNumber(2000, 5000))
-  // }
-
-  // private blinkOnce = (): void => {
-  //   const durationClose = 0.15
-  //   const durationOpen = 0.15
-  //   gsap.to(this.eyeLeftEl, { attr: { d: this.eyeLeftGeometry.close }, duration: durationClose, onComplete: () => { gsap.to(this.eyeLeftEl, { attr: { d: this.eyeLeftGeometry.open }, duration: durationOpen }) } })
-  //   gsap.to(this.eyeRightEl, { attr: { d: this.eyeRightGeometry.close }, duration: durationClose, onComplete: () => { gsap.to(this.eyeRightEl, { attr: { d: this.eyeRightGeometry.open }, duration: durationOpen }) } })
-  // }
+  private blinkOnce = (): void => {
+    const durationClose = 0.15
+    const durationOpen = 0.15
+    this.eyesEl = this.svgPartState('eyes', 'default')
+    gsap.to(this.eyesEl,
+      {
+        duration: durationClose,
+        ease: 'expo.in',
+        scaleY: 0.5,
+        onComplete: () => {
+          this.eyesEl = this.svgPartState('eyes', 'closed')
+          gsap.fromTo(this.eyesEl,
+            {
+              scaleY: 0.75,
+            }, {
+              duration: durationOpen,
+              ease: 'expo.out',
+              scaleY: 1,
+              onComplete: () => {
+                this.eyesEl = this.svgPartState('eyes', 'default')
+                gsap.fromTo(this.eyesEl,
+                  {
+                    scaleY: 0.75,
+                  }, {
+                    scaleY: 1,
+                    ease: 'expo.out',
+                    duration: durationOpen,
+                  },
+                )
+              },
+            },
+          )
+        },
+      },
+    )
+  }
 
   private handleFollowMouse = (e: MouseEvent): void => {
     if (!this.isFollowingMouse) return
