@@ -4,6 +4,7 @@ import {
   modalPositionDictionary,
   modalOverflowDictionary,
   modalAnimationStyleDictionary,
+  modalInteractionDictionary,
 } from '../meta/dictionary'
 
 export default {
@@ -15,12 +16,18 @@ export default {
       options: modalAnimationStyleDictionary,
       type: { name: 'string' },
     },
-    opened: {
-      description: 'Specifies if the modal is opened or not',
-      type: { name: 'boolean' },
-    },
     backdrop: {
       description: 'Specifies if the modal shows the backdrop',
+      type: { name: 'boolean' },
+    },
+    interaction: {
+      control: { type: 'select' },
+      description: 'Specifies the animation style of the window',
+      options: modalInteractionDictionary,
+      type: { name: 'string' },
+    },
+    opened: {
+      description: 'Specifies if the modal is opened or not',
       type: { name: 'boolean' },
     },
     overflow: {
@@ -84,7 +91,9 @@ const Template = args => {
           slot="top"
           class="p-800 flex gap-400 items-center border-b border-solid border-0 border-tone-neutral-09"
         >
-          <mds-img class="w-1600" src="./logo-gruppo-maggioli-512w.webp" />
+          <div class="dark:bg-tone-neutral-01 bg-transparent w-1600 h-1600 dark:p-200">
+            <mds-img class="w-full" src="./logo-gruppo-maggioli-512w.webp" />
+          </div>
           <div class="text-tone-neutral-02">
             <mds-text typography="h5" class="truncate min-w-0">
               Maggioli Editore
