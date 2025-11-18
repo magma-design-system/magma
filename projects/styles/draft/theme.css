@@ -43,6 +43,8 @@
   --tone-slate-04: rgb(var(--tone-grey-04, 71 85 106));
 }
 
+/* @media (prefers-color-scheme: dark) { &:is(.pref-theme-system *) } */
+
 @theme {
   --tint-base-lv1: var(--tone-neutral);
   --tint-base-lv2: var(--tone-neutral-10);

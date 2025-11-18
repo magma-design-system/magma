@@ -46,7 +46,7 @@
     "@fontsource/merriweather": "5.1.0",
     "@fontsource/roboto": "5.1.0",
     "@fontsource/roboto-mono": "5.1.0",
-    "@maggioli-design-system/design-tokens": "15.0.0",
+    "@maggioli-design-system/design-tokens": "15.1.0",
     "normalize.css": "8.0.1"
   },
   "devDependencies": {
