@@ -41,6 +41,7 @@ export default {
           'apply',
           'at-root',
           'container',
+          'custom-variant',
           'each',
           'else',
           'error',
