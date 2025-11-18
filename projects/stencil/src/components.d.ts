@@ -23,7 +23,7 @@ import { MdsChipEvent } from "./components/mds-chip/meta/interface";
 import { DropdownInteractionType } from "./components/mds-dropdown/meta/types";
 import { FloatingUIPlacement, FloatingUIStrategy } from "./type/floating-ui";
 import { MdsDropdownEventDetail } from "./components/mds-dropdown/meta/event-detail";
-import { EmojiNames } from "./components/mds-emoji/mds-emoji";
+import { EmojiNames } from "./components/mds-emoji/meta/types";
 import { ExtensionSuffixType } from "./type/file-types";
 import { MdsFileEventDetail } from "./components/mds-file/meta/event-detail";
 import { MdsFilePreviewEventDetail } from "./components/mds-file-preview/meta/event-detail";
@@ -47,7 +47,7 @@ import { AttachmentSort, FileError } from "./components/mds-input-upload/meta/ty
 import { KeyboardTest } from "./components/mds-keyboard/meta/type";
 import { KeyboardKeyName } from "./type/keyboard";
 import { MentionSize } from "./components/mds-mention/meta/type";
-import { ModalAnimationStateType, ModalAnimationStyleType, ModalOverflowType, ModalPositionType } from "./components/mds-modal/meta/types";
+import { ModalAnimationStateType, ModalAnimationStyleType, ModalInteractionType, ModalOverflowType, ModalPositionType } from "./components/mds-modal/meta/types";
 import { StrategyType } from "./components/mds-notification/meta/types";
 import { MdsPaginatorEventDetail } from "./components/mds-paginator/meta/event-detail";
 import { PolicyAiVariant } from "./components/mds-policy-ai/meta/types";
@@ -98,7 +98,7 @@ export { MdsChipEvent } from "./components/mds-chip/meta/interface";
 export { DropdownInteractionType } from "./components/mds-dropdown/meta/types";
 export { FloatingUIPlacement, FloatingUIStrategy } from "./type/floating-ui";
 export { MdsDropdownEventDetail } from "./components/mds-dropdown/meta/event-detail";
-export { EmojiNames } from "./components/mds-emoji/mds-emoji";
+export { EmojiNames } from "./components/mds-emoji/meta/types";
 export { ExtensionSuffixType } from "./type/file-types";
 export { MdsFileEventDetail } from "./components/mds-file/meta/event-detail";
 export { MdsFilePreviewEventDetail } from "./components/mds-file-preview/meta/event-detail";
@@ -122,7 +122,7 @@ export { AttachmentSort, FileError } from "./components/mds-input-upload/meta/ty
 export { KeyboardTest } from "./components/mds-keyboard/meta/type";
 export { KeyboardKeyName } from "./type/keyboard";
 export { MentionSize } from "./components/mds-mention/meta/type";
-export { ModalAnimationStateType, ModalAnimationStyleType, ModalOverflowType, ModalPositionType } from "./components/mds-modal/meta/types";
+export { ModalAnimationStateType, ModalAnimationStyleType, ModalInteractionType, ModalOverflowType, ModalPositionType } from "./components/mds-modal/meta/types";
 export { StrategyType } from "./components/mds-notification/meta/types";
 export { MdsPaginatorEventDetail } from "./components/mds-paginator/meta/event-detail";
 export { PolicyAiVariant } from "./components/mds-policy-ai/meta/types";
@@ -703,19 +703,7 @@ export namespace Components {
         "zIndex": number;
     }
     interface MdsEmoji {
-        /**
-          * @returns Promise<void> Emoji agrees, useful for confirm actions.
-         */
-        "agree": () => Promise<void>;
-        /**
-          * @returns Promise<void> Emoji disagrees, useful for errors or unwanted results.
-         */
-        "disagree": (turnHappyDelay?: number) => Promise<void>;
         "name": EmojiNames;
-        /**
-          * @returns Promise<void> Emoji smiles, useful for confirm actions.
-         */
-        "smile": () => Promise<void>;
         /**
           * @returns Promise<void> Eyes start blinking.
          */
@@ -725,10 +713,6 @@ export namespace Components {
          */
         "startFollowMouse": () => Promise<void>;
         /**
-          * @returns Promise<void> Emoji start thinking, useful for pending requests.
-         */
-        "startThinking": (duration?: number) => Promise<void>;
-        /**
           * @returns Promise<void> Eyes stop blinking.
          */
         "stopBlinking": () => Promise<void>;
@@ -736,7 +720,6 @@ export namespace Components {
           * @returns Promise<void> Stops following mouse with CSS 3D transform.
          */
         "stopFollowMouse": () => Promise<void>;
-        "stopThinking": (duration?: number) => Promise<void>;
     }
     interface MdsEntity {
         /**
@@ -1536,6 +1519,10 @@ export namespace Components {
          */
         "backdrop"?: boolean;
         "close": () => Promise<void>;
+        /**
+          * Specifies if the component can be closed with close button, or also if the backdrop background is cliccked. If `strict` is selected only the close button can dismiss the component via UI. If `relaxed` is selected the component can be dismissed also by cliccking the backdrop area.
+         */
+        "interaction": ModalInteractionType;
         /**
           * Specifies if the modal is opened or not
          */
@@ -5404,6 +5391,10 @@ declare namespace LocalJSX {
           * Specifies if the modal shows the backdrop
          */
         "backdrop"?: boolean;
+        /**
+          * Specifies if the component can be closed with close button, or also if the backdrop background is cliccked. If `strict` is selected only the close button can dismiss the component via UI. If `relaxed` is selected the component can be dismissed also by cliccking the backdrop area.
+         */
+        "interaction"?: ModalInteractionType;
         /**
           * Emits when a modal is closed
          */

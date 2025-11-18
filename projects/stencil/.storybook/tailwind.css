@@ -1,12 +1,14 @@
-@layer theme, base, components, utilities;
+@layer base, theme, components, utilities;
 @import "tailwindcss/theme.css" layer(theme);
 @import "tailwindcss/utilities.css" layer(utilities);
 
 /* @import "tailwindcss"; */
 
-/* @import '@maggioli-design-system/styles/dist/tailwind/theme.css' layer(theme); */
-@import '@maggioli-design-system/design-tokens/dist/css/tailwind-theme-color.css';
-@import '@maggioli-design-system/design-tokens/dist/css/tailwind-theme-typography.css';
+/* @import '@maggioli-design-system/design-tokens/dist/css/tailwind-theme-color.css';
+@import '@maggioli-design-system/design-tokens/dist/css/tailwind-theme-typography.css'; */
+
+/* @import '@maggioli-design-system/styles/dist/tailwind/dark-mode.css'; */
+@import '@maggioli-design-system/styles/dist/tailwind/theme.css';
 @import "@maggioli-design-system/styles/dist/css/hydrated.css";
 
 /* test */
