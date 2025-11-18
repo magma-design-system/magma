@@ -91,7 +91,7 @@ const Template = args => {
           slot="top"
           class="p-800 flex gap-400 items-center border-b border-solid border-0 border-tone-neutral-09"
         >
-          <div class="dark:bg-tone-neutral-01 bg-transparent w-1600 h-1600 dark:p-200">
+          <div class="dark:bg-tone-neutral-01 dark:p-200 bg-transparent w-1600 h-1600">
             <mds-img class="w-full" src="./logo-gruppo-maggioli-512w.webp" />
           </div>
           <div class="text-tone-neutral-02">
