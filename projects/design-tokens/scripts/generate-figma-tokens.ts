@@ -2,10 +2,11 @@
 // https://www.figma.com/plugin-docs/working-with-variables/#createvariable
 import chalk from 'chalk'
 import defaultTokens from '../tokens/color/generated/default.json'
-import spacing from '../tokens/sizing/primitive.json'
+import primitive from '../tokens/sizing/primitive.json'
+import spacing from '../tokens/sizing/spacing.json'
 import gap from '../tokens/sizing/gap.json'
 import screen from '../tokens/screen/default.json'
-import borderRadius from '../tokens/cosmetic/border-radius.json'
+import radius from '../tokens/sizing/radius.json'
 import { readJSON, readdir, writeFile } from 'fs-extra'
 import { mkdir } from 'fs/promises'
 import { resolve } from 'path'
@@ -26,6 +27,10 @@ enum Scope {
   Frame = 'FRAME_FILL',
   Shape = 'SHAPE_FILL',
   Text = 'TEXT_FILL',
+  WidthHeight = "WIDTH_HEIGHT",
+  Gap = 'GAP',
+  CornerRadius = 'CORNER_RADIUS',
+  ParagraphSpacing= 'PARAGRAPH_SPACING',
   Stroke = 'STROKE_COLOR',
 }
 
@@ -59,7 +64,7 @@ interface Variable {
   resolvedValuesByMode: {
     [key: string]: {
       resolvedValue: Color | number | string | boolean;
-      alias?: string;
+      alias?: string | null;
     };
   };
   scopes: Scope[];
@@ -80,10 +85,12 @@ const generateFigmaTokens = (nameCollection: string) => {
   }
 
   const variables = new Map([
-    ...buildTokenVariables('Spacing', spacing),
-    ...buildTokenVariables('Gap', gap),
-    ...buildTokenVariables('BorderRadius', borderRadius),
-    ...buildScreenToken('Screen', screen),
+    ...buildTokenVariables('Spacing', {'sizing': {'spacing': spacing.spacing}}, [Scope.WidthHeight]),
+    ...buildTokenVariables('Container', {'sizing': { 'container': spacing.container}}, [Scope.WidthHeight]),
+    ...buildTokenVariables('Gap', gap, [Scope.Gap, Scope.ParagraphSpacing]),
+    ...buildTokenVariables('BorderRadius', {'borderRadius': radius}, [Scope.CornerRadius]),
+    ...buildScreenToken('Screen', screen, [Scope.WidthHeight]),
+    ...buildTokenVariables('Primitive', primitive),
   ])
 
   // console.log(variables)
@@ -116,7 +123,7 @@ const generateFigmaColors = (nameCollection: string, tokens) => {
   writeFigmaVariables(collection)
 }
 
-const buildScreenToken = (name: string, tokens): Map<string, Variable> => {
+const buildScreenToken = (name: string, tokens, scopes?: Scope[]): Map<string, Variable> => {
   const variables: Map<string, Variable> = new Map()
   Object.entries(tokens).forEach(type => {
     Object.entries(type[1]).forEach(subtype => {
@@ -125,6 +132,40 @@ const buildScreenToken = (name: string, tokens): Map<string, Variable> => {
           const UID = `${name}:${subtype[0]}`
           // eslint-disable-next-line dot-notation
           const value = getValue(token[1]['value'])
+          if(value) {
+            variables.set(UID, {
+              id: UID,
+              name: UID.replace(/:/g, '/'),
+              description: '',
+              type: VariableType.Number,
+              valuesByMode: {
+                value,
+              },
+              resolvedValuesByMode: {
+                value: {
+                  resolvedValue: value,
+                  alias: null,
+                },
+              },
+              scopes: scopes ?? [Scope.All],
+              hiddenFromPublishing: false,
+            })
+          }
+        }
+      })
+    })
+  })
+  return variables
+}
+
+const buildTokenVariables = (name: string, tokens, scopes?: Scope[]): Map<string, Variable> => {
+  const variables: Map<string, Variable> = new Map()
+  Object.entries(tokens).forEach(type => {
+    Object.entries(type[1]).forEach(subtype => {
+      Object.entries(subtype[1]).forEach(token => {
+        const UID = `${name}:${token[0]}`
+        const value = getValue(token[1]['value'] as string)
+        if(!isNaN(Number(value))) {
           variables.set(UID, {
             id: UID,
             name: UID.replace(/:/g, '/'),
@@ -139,42 +180,10 @@ const buildScreenToken = (name: string, tokens): Map<string, Variable> => {
                 alias: null,
               },
             },
-            scopes: [Scope.All],
+            scopes: scopes ?? [Scope.All],
             hiddenFromPublishing: false,
           })
         }
-      })
-    })
-  })
-  return variables
-}
-
-const buildTokenVariables = (name: string, tokens): Map<string, Variable> => {
-  const variables: Map<string, Variable> = new Map()
-  Object.entries(tokens).forEach(type => {
-    Object.entries(type[1]).forEach(subtype => {
-      Object.entries(subtype[1]).forEach(token => {
-        const UID = `${name}:${token[0]}`
-        // eslint-disable-next-line dot-notation
-        const value = getValue(token[1]['value'] as string)
-
-        variables.set(UID, {
-          id: UID,
-          name: UID.replace(/:/g, '/'),
-          description: '',
-          type: VariableType.Number,
-          valuesByMode: {
-            value,
-          },
-          resolvedValuesByMode: {
-            value: {
-              resolvedValue: value,
-              alias: null,
-            },
-          },
-          scopes: [Scope.All],
-          hiddenFromPublishing: false,
-        })
       })
     })
   })
@@ -186,14 +195,18 @@ const buildTokenVariables = (name: string, tokens): Map<string, Variable> => {
  * @param value a string rappresenting value "1px" or "{spacing.sizing.1000}"
  * @returns value as number
  */
-const getValue = (value: string): number => {
+const getValue = (value: string): number | undefined => {
+  if(!value) return
+  // tokens reference "{spacing.sizing.1000}"
   if (value.startsWith('{')) {
     const ref = value.slice(1, -1).split('.')
     if (ref[1] === 'gap') {
       return getValue(gap[ref[0]][ref[1]][ref[2]].value)
     }
-    return getValue(spacing[ref[0]][ref[1]][ref[2]].value)
+    return getValue(primitive[ref[0]][ref[1]][ref[2]].value)
   }
+// tokens where unit isn't px are ignored
+  if(!value.endsWith('px')) return
   return Number(value.match(/\d+/)[0])
 }
 const buildColorVariables = (tokens): Map<string, Variable> => {
