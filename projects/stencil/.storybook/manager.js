@@ -17,8 +17,11 @@ const AccessibilityPanel = () => {
       const htmlEl = iframeDocument.querySelector('html')
 
       if (value === 'unset') {
-        htmlEl.removeAttribute('class')
-        htmlEl.removeAttribute('style')
+        htmlEl.style.removeProperty(`--magma-pref-${preference}`)
+        // eslint-disable-next-line guard-for-in
+        list.forEach(value => {
+          htmlEl.classList.remove(`pref-${preference}-${value}`)
+        });
         window.localStorage.removeItem(`mdsPref${capitalize(preference)}`)
         return
       }
@@ -50,15 +53,21 @@ const AccessibilityPanel = () => {
   }
 
   const checkAccessibilityUse = enabled => {
+    const iframe = document.getElementById('storybook-preview-iframe')
+    const iframeDocument = iframe.contentDocument || iframe.contentWindow.document
+    const html = iframeDocument.querySelector('html')
+
     if (!enabled) {
-      // setAccessibility('theme', 'unset')
-      // setAccessibility('contrast', 'unset')
-      // setAccessibility('animation', 'unset')
-      // setAccessibility('consumption', 'unset')
-      // setLanguage('unset')
+      html.removeAttribute('data-magma-pref-theme')
+      setAccessibility('theme', 'unset', ['light', 'system', 'dark'])
+      setAccessibility('contrast', 'unset', ['more', 'system', 'no-preference'])
+      setAccessibility('animation', 'unset', ['reduce', 'system', 'no-preference'])
+      setAccessibility('consumption', 'unset', ['low', 'medium', 'high'])
+      setLanguage('unset')
       return
     }
 
+    html.setAttribute('data-magma-pref-theme', 'true')
     setAccessibility('theme', window.localStorage.getItem('mdsPrefTheme') ?? 'light', ['light', 'system', 'dark'])
     setAccessibility('contrast', window.localStorage.getItem('mdsPrefContrast') ?? 'no-preference', ['more', 'system', 'no-preference'])
     setAccessibility('animation', window.localStorage.getItem('mdsPrefAnimation') ?? 'no-preference', ['reduce', 'system', 'no-preference'])
@@ -106,7 +115,6 @@ const AccessibilityPanel = () => {
           <option value="light">Light</option>
           <option value="system">System</option>
           <option value="dark">Dark</option>
-          <option value="unset">Unset</option>
         </Form.Select>
       </Form.Field>
       <Form.Field label="Contrast">
