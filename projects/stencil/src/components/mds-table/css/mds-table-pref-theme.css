@@ -1,4 +1,4 @@
-:host-context(.pref-theme-dark) {
+:host-context(:root:not(.pref-theme-scheme-light).pref-theme-dark) {
   --mds-table-background: rgb(var(--tone-neutral-08));
   --mds-table-body-background-hover: rgb(var(--tone-neutral-10));
   --mds-table-border-color: rgb(var(--tone-neutral-07));
@@ -7,7 +7,8 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  :host-context(.pref-theme-system) {
+  :host-context(:root:not(.pref-theme-scheme-light).pref-theme-system),
+  :host-context(:root:not([data-magma-pref])) {
     --mds-table-background: rgb(var(--tone-neutral-08));
     --mds-table-body-background-hover: rgb(var(--tone-neutral-10));
     --mds-table-border-color: rgb(var(--tone-neutral-07));

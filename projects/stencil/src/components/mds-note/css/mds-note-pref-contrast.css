@@ -1,19 +1,20 @@
-:host-context(.pref-contrast-more) {
+:host-context(:root.pref-contrast-more) {
   box-shadow: var(--shadow-outline-50) inset;
-}
 
-:host-context(.pref-contrast-more) .fold {
-  bottom: --spacing(50);
-  right: --spacing(50);
+  .fold {
+    bottom: --spacing(50);
+    right: --spacing(50);
+  }
 }
 
 @media (prefers-contrast: more) {
-  :host-context(.pref-contrast-system) {
+  :host-context(:root.pref-contrast-system),
+  :host-context(:root:not([data-magma-pref])) {
     box-shadow: var(--shadow-outline-50) inset;
-  }
 
-  :host-context(.pref-contrast-system) .fold {
-    bottom: --spacing(50);
-    right: --spacing(50);
+    .fold {
+      bottom: --spacing(50);
+      right: --spacing(50);
+    }
   }
 }

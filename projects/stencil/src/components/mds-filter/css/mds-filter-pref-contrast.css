@@ -1,4 +1,4 @@
-:host-context(.pref-contrast-more) {
+:host-context(:root.pref-contrast-more) {
   --mds-filter-items-background-active: rgb(var(--tone-neutral-09));
   --mds-filter-items-background: rgb(var(--tone-neutral-10));
   --mds-filter-wrapper-shadow-opacity: 30%;
@@ -7,7 +7,8 @@
 }
 
 @media (prefers-contrast: more) {
-  :host-context(.pref-contrast-system) {
+  :host-context(:root.pref-contrast-system),
+  :host-context(:root:not([data-magma-pref])) {
     --mds-filter-items-background-active: rgb(var(--tone-neutral-09));
     --mds-filter-items-background: rgb(var(--tone-neutral-10));
     --mds-filter-wrapper-shadow-opacity: 30%;

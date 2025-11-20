@@ -1,4 +1,4 @@
-:host-context(.pref-theme-dark) {
+:host-context(:root:not(.pref-theme-scheme-light).pref-theme-dark) {
   --mds-input-switch-box-color-enabled-checked: rgb(var(--variant-primary-04));
   --mds-input-switch-box-color-enabled-unchecked: rgb(var(--tone-neutral-06));
   --mds-input-switch-box-color-disabled-checked: rgb(var(--tone-neutral-08));
@@ -16,7 +16,8 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  :host-context(.pref-theme-system) {
+  :host-context(:root:not(.pref-theme-scheme-light).pref-theme-system),
+  :host-context(:root:not([data-magma-pref])) {
     --mds-input-switch-box-color-enabled-checked: rgb(var(--variant-primary-04));
     --mds-input-switch-box-color-enabled-unchecked: rgb(var(--tone-neutral-06));
     --mds-input-switch-box-color-disabled-checked: rgb(var(--tone-neutral-08));

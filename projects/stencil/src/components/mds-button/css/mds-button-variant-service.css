@@ -24,36 +24,41 @@
   --mds-button-border-width: 0;
 }
 
-:host-context(.pref-theme-dark):host([variant="google"]),
-:host-context(.pref-theme-dark):host([variant="google"][tone]) {
-  --mds-button-border-width: --spacing(50);
-  --mds-button-border-opacity: 30%;
-}
-
-:host-context(.pref-theme-dark):host([variant="google"]:hover),
-:host-context(.pref-theme-dark):host([variant="google"][tone]:hover) {
-  --mds-button-border-opacity: 50%;
-}
-
-:host-context(.pref-theme-dark):host([variant="apple"]),
-:host-context(.pref-theme-dark):host([variant="apple"][tone]) {
-  --mds-button-background: rgb(var(--tone-neutral-01));
-}
-
-@media (prefers-color-scheme: dark) {
-  :host-context(.pref-theme-system):host([variant="apple"]),
-  :host-context(.pref-theme-system):host([variant="apple"][tone]) {
-    --mds-button-background: rgb(var(--tone-neutral-01));
-  }
-
-  :host-context(.pref-theme-system):host([variant="google"]),
-  :host-context(.pref-theme-system):host([variant="google"][tone]) {
+:host-context(:root:not(.pref-theme-scheme-light).pref-theme-dark) {
+  &:host([variant="google"]),
+  &:host([variant="google"][tone]) {
     --mds-button-border-width: --spacing(50);
     --mds-button-border-opacity: 30%;
   }
 
-  :host-context(.pref-theme-system):host([variant="google"]:hover),
-  :host-context(.pref-theme-system):host([variant="google"][tone]:hover) {
+  &:host([variant="google"]:hover),
+  &:host([variant="google"][tone]:hover) {
     --mds-button-border-opacity: 50%;
+  }
+
+  &:host([variant="apple"]),
+  &:host([variant="apple"][tone]) {
+    --mds-button-background: rgb(var(--tone-neutral-01));
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :host-context(:root:not(.pref-theme-scheme-light).pref-theme-system),
+  :host-context(:root:not([data-magma-pref])) {
+    &:host([variant="apple"]),
+    &:host([variant="apple"][tone]) {
+      --mds-button-background: rgb(var(--tone-neutral-01));
+    }
+
+    &:host([variant="google"]),
+    &:host([variant="google"][tone]) {
+      --mds-button-border-width: --spacing(50);
+      --mds-button-border-opacity: 30%;
+    }
+
+    &:host([variant="google"]:hover),
+    &:host([variant="google"][tone]:hover) {
+      --mds-button-border-opacity: 50%;
+    }
   }
 }

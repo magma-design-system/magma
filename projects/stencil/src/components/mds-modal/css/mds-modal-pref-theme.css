@@ -1,4 +1,4 @@
-:host-context(:root.pref-theme-dark) {
+:host-context(:root:not(.pref-theme-scheme-light).pref-theme-dark) {
   --mds-modal-window-background: rgb(var(--tone-neutral-10));
   --mds-modal-window-shadow: var(--shadow-outline), var(--shadow-xl);
 

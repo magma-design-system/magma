@@ -1,21 +1,11 @@
-
-/* caso 1 quando il tema è impostato a dark dall'utente */
-
-/* caso 2 quando il tema è forzato a dark dal tema */
-
-:host-context(.pref-theme-dark:not(.pref-theme-scheme-light)),
-:host-context(.pref-theme-scheme-dark) {
+:host-context(:root:not(.pref-theme-scheme-light).pref-theme-dark) {
   --mds-tab-tabs-background: rgb(var(--tone-neutral-10));
   --mds-tab-item-selected-background: rgb(var(--tone-neutral-08));
 }
 
-/* caso 3 quando il tema è impostato a dark dal sistema */
-
-/* caso 4 quando non viene gestito il dark mode dal componente pref ma il componente in questione va comunque in dark mode */
-
 @media (prefers-color-scheme: dark) {
-  :host-context(.pref-theme-system:not(.pref-theme-scheme-light)),
-  :host-context(:not([data-magma-pref-theme])) {
+  :host-context(:root:not(.pref-theme-scheme-light).pref-theme-system),
+  :host-context(:root:not([data-magma-pref])) {
     --mds-tab-tabs-background: rgb(var(--tone-neutral-10));
     --mds-tab-item-selected-background: rgb(var(--tone-neutral-08));
   }

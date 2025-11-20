@@ -1,11 +1,11 @@
-:host-context(.pref-theme-dark) [tone="strong"],
-:host-context(.pref-theme-dark) [tone="weak"] {
+:host-context(:root:not(.pref-theme-scheme-light).pref-theme-dark) [tone="strong"],
+:host-context(:root:not(.pref-theme-scheme-light).pref-theme-dark) [tone="weak"] {
   box-shadow: var(--shadow-outline) inset;
 }
 
 @media (prefers-color-scheme: dark) {
-  :host-context(.pref-theme-stystem) [tone="strong"],
-  :host-context(.pref-theme-stystem) [tone="weak"] {
+  :host-context(:root.pref-theme-stystem) [tone="strong"],
+  :host-context(:root.pref-theme-stystem) [tone="weak"] {
     box-shadow: var(--shadow-outline) inset;
   }
 }

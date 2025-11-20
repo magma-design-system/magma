@@ -1,13 +1,17 @@
-:host-context(.pref-animation-reduce),
-:host-context(.pref-animation-reduce) .window,
-:host-context(.pref-animation-reduce) .header {
+:host-context(:root.pref-animation-reduce),
+:host-context(:root.pref-animation-reduce) .window,
+:host-context(:root.pref-animation-reduce) .header {
   transition-duration: 0s;
 }
 
 @media (prefers-reduced-motion) {
-  :host-context(.pref-animation-system),
-  :host-context(.pref-animation-system) .window,
-  :host-context(.pref-animation-system) .header {
+  :host-context(:root.pref-animation-system),
+  :host-context(:root:not([data-magma-pref])) {
     transition-duration: 0s;
+
+    .window,
+    .header {
+      transition-duration: 0s;
+    }
   }
 }

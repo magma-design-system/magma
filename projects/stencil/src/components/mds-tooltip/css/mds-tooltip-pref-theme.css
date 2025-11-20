@@ -1,10 +1,11 @@
-:host-context(.pref-theme-dark) {
+:host-context(:root:not(.pref-theme-scheme-light).pref-theme-dark) {
   --mds-tooltip-background: rgb(var(--tone-neutral-09));
   --mds-tooltip-drop-shadow: drop-shadow(0 0 2px rgb(var(--tone-neutral-01) / 0.05)) drop-shadow(0 0 2px rgb(var(--tone-neutral-01) / 0.3)) drop-shadow(0 0 2px rgb(var(--tone-neutral-01) / 0.3));
 }
 
 @media (prefers-color-scheme: dark) {
-  :host-context(.pref-theme-system) {
+  :host-context(:root:not(.pref-theme-scheme-light).pref-theme-system),
+  :host-context(:root:not([data-magma-pref])) {
     --mds-tooltip-background: rgb(var(--tone-neutral-09));
     --mds-tooltip-drop-shadow: drop-shadow(0 0 2px rgb(var(--tone-neutral-01) / 0.05)) drop-shadow(0 0 2px rgb(var(--tone-neutral-01) / 0.3)) drop-shadow(0 0 2px rgb(var(--tone-neutral-01) / 0.3));
   }

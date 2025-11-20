@@ -1,9 +1,12 @@
-:host-context(.pref-theme-dark) .status-bar {
+:host-context(:root:not(.pref-theme-scheme-light).pref-theme-dark) .status-bar {
   box-shadow: var(--shadow-outline-light);
 }
 
 @media (prefers-color-scheme: dark) {
-  :host-context(.pref-theme-system) .status-bar {
-    box-shadow: var(--shadow-outline-light);
+  :host-context(:root:not(.pref-theme-scheme-light).pref-theme-system),
+  :host-context(:root:not([data-magma-pref])) {
+    .status-bar {
+      box-shadow: var(--shadow-outline-light);
+    }
   }
 }

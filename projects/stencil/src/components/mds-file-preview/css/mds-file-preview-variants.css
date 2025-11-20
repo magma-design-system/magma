@@ -91,185 +91,191 @@
 
 /* contrast + variant */
 
-:host-context(.pref-contrast-more):host([variant="primary"][message]) {
-  --mds-file-preview-icon-background: rgb(var(--variant-primary-10));
-  --mds-file-preview-icon-color: rgb(var(--variant-primary-02));
-  --mds-file-preview-color: rgb(var(--variant-primary-01));
-}
-
-:host-context(.pref-contrast-more):host([variant="info"][message]) {
-  --mds-file-preview-icon-background: rgb(var(--status-info-10));
-  --mds-file-preview-icon-color: rgb(var(--status-info-02));
-  --mds-file-preview-color: rgb(var(--status-info-01));
-}
-
-:host-context(.pref-contrast-more):host([variant="success"][message]) {
-  --mds-file-preview-icon-background: rgb(var(--status-success-10));
-  --mds-file-preview-icon-color: rgb(var(--status-success-02));
-  --mds-file-preview-color: rgb(var(--status-success-01));
-}
-
-:host-context(.pref-contrast-more):host([variant="warning"][message]) {
-  --mds-file-preview-icon-background: rgb(var(--status-warning-10));
-  --mds-file-preview-icon-color: rgb(var(--status-warning-02));
-  --mds-file-preview-color: rgb(var(--status-warning-01));
-}
-
-:host-context(.pref-contrast-more):host([variant="error"][message]) {
-  --mds-file-preview-icon-background: rgb(var(--status-error-10));
-  --mds-file-preview-icon-color: rgb(var(--status-error-02));
-  --mds-file-preview-color: rgb(var(--status-error-01));
-}
-
-:host-context(.pref-contrast-more):host([variant="amaranth"][message]) {
-  --mds-file-preview-icon-background: rgb(var(--label-amaranth-10));
-  --mds-file-preview-icon-color: rgb(var(--label-amaranth-02));
-  --mds-file-preview-color: rgb(var(--label-amaranth-01));
-}
-
-:host-context(.pref-contrast-more):host([variant="aqua"][message]) {
-  --mds-file-preview-icon-background: rgb(var(--label-aqua-10));
-  --mds-file-preview-icon-color: rgb(var(--label-aqua-02));
-  --mds-file-preview-color: rgb(var(--label-aqua-01));
-}
-
-
-:host-context(.pref-contrast-more):host([variant="blue"][message]) {
-  --mds-file-preview-icon-background: rgb(var(--label-blue-10));
-  --mds-file-preview-icon-color: rgb(var(--label-blue-02));
-  --mds-file-preview-color: rgb(var(--label-blue-01));
-}
-
-:host-context(.pref-contrast-more):host([variant="green"][message]) {
-  --mds-file-preview-icon-background: rgb(var(--label-green-10));
-  --mds-file-preview-icon-color: rgb(var(--label-green-02));
-  --mds-file-preview-color: rgb(var(--label-green-01));
-}
-
-:host-context(.pref-contrast-more):host([variant="lime"][message]) {
-  --mds-file-preview-icon-background: rgb(var(--label-lime-10));
-  --mds-file-preview-icon-color: rgb(var(--label-lime-02));
-  --mds-file-preview-color: rgb(var(--label-lime-01));
-}
-
-:host-context(.pref-contrast-more):host([variant="orange"][message]) {
-  --mds-file-preview-icon-background: rgb(var(--label-orange-10));
-  --mds-file-preview-icon-color: rgb(var(--label-orange-02));
-  --mds-file-preview-color: rgb(var(--label-orange-01));
-}
-
-:host-context(.pref-contrast-more):host([variant="orchid"][message]) {
-  --mds-file-preview-icon-background: rgb(var(--label-orchid-10));
-  --mds-file-preview-icon-color: rgb(var(--label-orchid-02));
-  --mds-file-preview-color: rgb(var(--label-orchid-01));
-}
-
-:host-context(.pref-contrast-more):host([variant="sky"][message]) {
-  --mds-file-preview-icon-background: rgb(var(--label-sky-10));
-  --mds-file-preview-icon-color: rgb(var(--label-sky-02));
-  --mds-file-preview-color: rgb(var(--label-sky-01));
-}
-
-:host-context(.pref-contrast-more):host([variant="violet"][message]) {
-  --mds-file-preview-icon-background: rgb(var(--label-violet-10));
-  --mds-file-preview-icon-color: rgb(var(--label-violet-02));
-  --mds-file-preview-color: rgb(var(--label-violet-01));
-}
-
-:host-context(.pref-contrast-more):host([variant="yellow"][message]) {
-  --mds-file-preview-icon-background: rgb(var(--label-yellow-10));
-  --mds-file-preview-icon-color: rgb(var(--label-yellow-02));
-  --mds-file-preview-color: rgb(var(--label-yellow-01));
-}
-
-@media (prefers-contrast: more) {
-  :host-context(.pref-contrast-system):host([variant="primary"][message]) {
+:host-context(:root.pref-contrast-more) {
+  &:host([variant="primary"][message]) {
     --mds-file-preview-icon-background: rgb(var(--variant-primary-10));
     --mds-file-preview-icon-color: rgb(var(--variant-primary-02));
     --mds-file-preview-color: rgb(var(--variant-primary-01));
   }
 
-  :host-context(.pref-contrast-system):host([variant="info"][message]) {
+  &:host([variant="info"][message]) {
     --mds-file-preview-icon-background: rgb(var(--status-info-10));
     --mds-file-preview-icon-color: rgb(var(--status-info-02));
     --mds-file-preview-color: rgb(var(--status-info-01));
   }
 
-  :host-context(.pref-contrast-system):host([variant="success"][message]) {
+  &:host([variant="success"][message]) {
     --mds-file-preview-icon-background: rgb(var(--status-success-10));
     --mds-file-preview-icon-color: rgb(var(--status-success-02));
     --mds-file-preview-color: rgb(var(--status-success-01));
   }
 
-  :host-context(.pref-contrast-system):host([variant="warning"][message]) {
+  &:host([variant="warning"][message]) {
     --mds-file-preview-icon-background: rgb(var(--status-warning-10));
     --mds-file-preview-icon-color: rgb(var(--status-warning-02));
     --mds-file-preview-color: rgb(var(--status-warning-01));
   }
 
-  :host-context(.pref-contrast-system):host([variant="error"][message]) {
+  &:host([variant="error"][message]) {
     --mds-file-preview-icon-background: rgb(var(--status-error-10));
     --mds-file-preview-icon-color: rgb(var(--status-error-02));
     --mds-file-preview-color: rgb(var(--status-error-01));
   }
 
-  :host-context(.pref-contrast-system):host([variant="amaranth"][message]) {
+  &:host([variant="amaranth"][message]) {
     --mds-file-preview-icon-background: rgb(var(--label-amaranth-10));
     --mds-file-preview-icon-color: rgb(var(--label-amaranth-02));
     --mds-file-preview-color: rgb(var(--label-amaranth-01));
   }
 
-  :host-context(.pref-contrast-system):host([variant="aqua"][message]) {
+  &:host([variant="aqua"][message]) {
     --mds-file-preview-icon-background: rgb(var(--label-aqua-10));
     --mds-file-preview-icon-color: rgb(var(--label-aqua-02));
     --mds-file-preview-color: rgb(var(--label-aqua-01));
   }
 
-  :host-context(.pref-contrast-system):host([variant="blue"][message]) {
+
+  &:host([variant="blue"][message]) {
     --mds-file-preview-icon-background: rgb(var(--label-blue-10));
     --mds-file-preview-icon-color: rgb(var(--label-blue-02));
     --mds-file-preview-color: rgb(var(--label-blue-01));
   }
 
-  :host-context(.pref-contrast-system):host([variant="green"][message]) {
+  &:host([variant="green"][message]) {
     --mds-file-preview-icon-background: rgb(var(--label-green-10));
     --mds-file-preview-icon-color: rgb(var(--label-green-02));
     --mds-file-preview-color: rgb(var(--label-green-01));
   }
 
-  :host-context(.pref-contrast-system):host([variant="lime"][message]) {
+  &:host([variant="lime"][message]) {
     --mds-file-preview-icon-background: rgb(var(--label-lime-10));
     --mds-file-preview-icon-color: rgb(var(--label-lime-02));
     --mds-file-preview-color: rgb(var(--label-lime-01));
   }
 
-  :host-context(.pref-contrast-system):host([variant="orange"][message]) {
+  &:host([variant="orange"][message]) {
     --mds-file-preview-icon-background: rgb(var(--label-orange-10));
     --mds-file-preview-icon-color: rgb(var(--label-orange-02));
     --mds-file-preview-color: rgb(var(--label-orange-01));
   }
 
-  :host-context(.pref-contrast-system):host([variant="orchid"][message]) {
+  &:host([variant="orchid"][message]) {
     --mds-file-preview-icon-background: rgb(var(--label-orchid-10));
     --mds-file-preview-icon-color: rgb(var(--label-orchid-02));
     --mds-file-preview-color: rgb(var(--label-orchid-01));
   }
 
-  :host-context(.pref-contrast-system):host([variant="sky"][message]) {
+  &:host([variant="sky"][message]) {
     --mds-file-preview-icon-background: rgb(var(--label-sky-10));
     --mds-file-preview-icon-color: rgb(var(--label-sky-02));
     --mds-file-preview-color: rgb(var(--label-sky-01));
   }
 
-  :host-context(.pref-contrast-system):host([variant="violet"][message]) {
+  &:host([variant="violet"][message]) {
     --mds-file-preview-icon-background: rgb(var(--label-violet-10));
     --mds-file-preview-icon-color: rgb(var(--label-violet-02));
     --mds-file-preview-color: rgb(var(--label-violet-01));
   }
 
-  :host-context(.pref-contrast-system):host([variant="yellow"][message]) {
+  &:host([variant="yellow"][message]) {
     --mds-file-preview-icon-background: rgb(var(--label-yellow-10));
     --mds-file-preview-icon-color: rgb(var(--label-yellow-02));
     --mds-file-preview-color: rgb(var(--label-yellow-01));
+  }
+}
+
+
+@media (prefers-contrast: more) {
+  :host-context(:root.pref-contrast-system),
+  :host-context(:root:not([data-magma-pref])) {
+    &:host([variant="primary"][message]) {
+      --mds-file-preview-icon-background: rgb(var(--variant-primary-10));
+      --mds-file-preview-icon-color: rgb(var(--variant-primary-02));
+      --mds-file-preview-color: rgb(var(--variant-primary-01));
+    }
+
+    &:host([variant="info"][message]) {
+      --mds-file-preview-icon-background: rgb(var(--status-info-10));
+      --mds-file-preview-icon-color: rgb(var(--status-info-02));
+      --mds-file-preview-color: rgb(var(--status-info-01));
+    }
+
+    &:host([variant="success"][message]) {
+      --mds-file-preview-icon-background: rgb(var(--status-success-10));
+      --mds-file-preview-icon-color: rgb(var(--status-success-02));
+      --mds-file-preview-color: rgb(var(--status-success-01));
+    }
+
+    &:host([variant="warning"][message]) {
+      --mds-file-preview-icon-background: rgb(var(--status-warning-10));
+      --mds-file-preview-icon-color: rgb(var(--status-warning-02));
+      --mds-file-preview-color: rgb(var(--status-warning-01));
+    }
+
+    &:host([variant="error"][message]) {
+      --mds-file-preview-icon-background: rgb(var(--status-error-10));
+      --mds-file-preview-icon-color: rgb(var(--status-error-02));
+      --mds-file-preview-color: rgb(var(--status-error-01));
+    }
+
+    &:host([variant="amaranth"][message]) {
+      --mds-file-preview-icon-background: rgb(var(--label-amaranth-10));
+      --mds-file-preview-icon-color: rgb(var(--label-amaranth-02));
+      --mds-file-preview-color: rgb(var(--label-amaranth-01));
+    }
+
+    &:host([variant="aqua"][message]) {
+      --mds-file-preview-icon-background: rgb(var(--label-aqua-10));
+      --mds-file-preview-icon-color: rgb(var(--label-aqua-02));
+      --mds-file-preview-color: rgb(var(--label-aqua-01));
+    }
+
+    &:host([variant="blue"][message]) {
+      --mds-file-preview-icon-background: rgb(var(--label-blue-10));
+      --mds-file-preview-icon-color: rgb(var(--label-blue-02));
+      --mds-file-preview-color: rgb(var(--label-blue-01));
+    }
+
+    &:host([variant="green"][message]) {
+      --mds-file-preview-icon-background: rgb(var(--label-green-10));
+      --mds-file-preview-icon-color: rgb(var(--label-green-02));
+      --mds-file-preview-color: rgb(var(--label-green-01));
+    }
+
+    &:host([variant="lime"][message]) {
+      --mds-file-preview-icon-background: rgb(var(--label-lime-10));
+      --mds-file-preview-icon-color: rgb(var(--label-lime-02));
+      --mds-file-preview-color: rgb(var(--label-lime-01));
+    }
+
+    &:host([variant="orange"][message]) {
+      --mds-file-preview-icon-background: rgb(var(--label-orange-10));
+      --mds-file-preview-icon-color: rgb(var(--label-orange-02));
+      --mds-file-preview-color: rgb(var(--label-orange-01));
+    }
+
+    &:host([variant="orchid"][message]) {
+      --mds-file-preview-icon-background: rgb(var(--label-orchid-10));
+      --mds-file-preview-icon-color: rgb(var(--label-orchid-02));
+      --mds-file-preview-color: rgb(var(--label-orchid-01));
+    }
+
+    &:host([variant="sky"][message]) {
+      --mds-file-preview-icon-background: rgb(var(--label-sky-10));
+      --mds-file-preview-icon-color: rgb(var(--label-sky-02));
+      --mds-file-preview-color: rgb(var(--label-sky-01));
+    }
+
+    &:host([variant="violet"][message]) {
+      --mds-file-preview-icon-background: rgb(var(--label-violet-10));
+      --mds-file-preview-icon-color: rgb(var(--label-violet-02));
+      --mds-file-preview-color: rgb(var(--label-violet-01));
+    }
+
+    &:host([variant="yellow"][message]) {
+      --mds-file-preview-icon-background: rgb(var(--label-yellow-10));
+      --mds-file-preview-icon-color: rgb(var(--label-yellow-02));
+      --mds-file-preview-color: rgb(var(--label-yellow-01));
+    }
   }
 }

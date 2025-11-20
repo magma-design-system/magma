@@ -1,9 +1,10 @@
-:host-context(.pref-theme-dark) {
+:host-context(:root.pref-theme-dark) {
   --mds-separator-background: rgb(var(--tone-neutral-07));
 }
 
 @media (prefers-color-scheme: dark) {
-  :host-context(.pref-theme-system) {
+  :host-context(:root:not(.pref-theme-scheme-light).pref-theme-system),
+  :host-context(:root:not([data-magma-pref])) {
     --mds-separator-background: rgb(var(--tone-neutral-07));
   }
 }

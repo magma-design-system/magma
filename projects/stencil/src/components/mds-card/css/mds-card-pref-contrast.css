@@ -1,9 +1,10 @@
-:host-context(.pref-contrast-more) {
+:host-context(:root.pref-contrast-more) {
   box-shadow: var(--shadow-outline-50), var(--shadow-lg);
 }
 
 @media (prefers-contrast: more) {
-  :host-context(.pref-contrast-system) {
+  :host-context(:root.pref-contrast-system),
+  :host-context(:root:not([data-magma-pref])) {
     box-shadow: var(--shadow-outline-50), var(--shadow-lg);
   }
 }

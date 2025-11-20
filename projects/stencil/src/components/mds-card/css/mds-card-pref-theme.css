@@ -1,10 +1,11 @@
-:host-context(.pref-theme-dark) {
+:host-context(:root:not(.pref-theme-scheme-light).pref-theme-dark) {
   background-color: rgb(var(--tone-neutral-09));
   box-shadow: var(--shadow-outline-light);
 }
 
 @media (prefers-color-scheme: dark) {
-  :host-context(.pref-theme-system) {
+  :host-context(:root:not(.pref-theme-scheme-light).pref-theme-system),
+  :host-context(:root:not([data-magma-pref])) {
     background-color: rgb(var(--tone-neutral-09));
     box-shadow: var(--shadow-outline-light);
   }

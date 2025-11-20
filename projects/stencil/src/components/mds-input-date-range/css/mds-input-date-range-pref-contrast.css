@@ -1,21 +1,22 @@
-:host-context(.pref-contrast-more) {
+:host-context(:root.pref-contrast-more) {
   --mds-input-date-range-ring: var(--shadow-outline-strong-50);
   --mds-input-date-range-background: rgb(var(--tone-neutral-09));
   --mds-input-date-range-controls-border: 2px solid rgb(var(--tone-neutral-05));
-}
 
-:host-context(.pref-contrast-more) .input::placeholder {
-  color: rgb(var(--tone-neutral-03));
+  .input::placeholder {
+    color: rgb(var(--tone-neutral-03));
+  }
 }
 
 @media (prefers-contrast: more) {
-  :host-context(.pref-contrast-system) {
+  :host-context(:root.pref-contrast-system),
+  :host-context(:root:not([data-magma-pref])) {
     --mds-input-date-range-ring: var(--shadow-outline-strong-50);
     --mds-input-date-range-background: rgb(var(--tone-neutral-09));
     --mds-input-date-range-controls-border: 2px solid rgb(var(--tone-neutral-05));
-  }
 
-  :host-context(.pref-contrast-more) .input::placeholder {
-    color: rgb(var(--tone-neutral-03));
+    .input::placeholder {
+      color: rgb(var(--tone-neutral-03));
+    }
   }
 }

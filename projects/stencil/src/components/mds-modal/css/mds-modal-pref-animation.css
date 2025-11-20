@@ -10,7 +10,8 @@
 }
 
 @media (prefers-reduced-motion) {
-  :host-context(:root.pref-animation-system) {
+  :host-context(:root.pref-animation-system),
+  :host-context(:root:not([data-magma-pref])) {
     --mds-modal-transition-duration: 0s;
 
     transition-duration: 0s !important;

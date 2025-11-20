@@ -1,37 +1,42 @@
-:host-context(.pref-contrast-more):host([variant="success"]),
-:host-context(.pref-contrast-more):host([variant="success"][tone="strong"]) {
+:host-context(:root.pref-contrast-more):host([variant="success"]),
+:host-context(:root.pref-contrast-more):host([variant="success"][tone="strong"]) {
   --mds-badge-background: rgb(var(--status-success-03));
 }
 
-:host-context(.pref-contrast-more):host([variant="success"][tone="weak"]) {
+:host-context(:root.pref-contrast-more):host([variant="success"][tone="weak"]) {
   --mds-badge-color: rgb(var(--status-success-01));
 }
 
-:host-context(.pref-contrast-more):host([variant="success"][tone="quiet"]) {
+:host-context(:root.pref-contrast-more):host([variant="success"][tone="quiet"]) {
   --mds-badge-color: rgb(var(--status-success-02));
 }
 
-:host-context(.pref-contrast-more):host([variant="success"][tone="ghost"]) {
+:host-context(:root.pref-contrast-more):host([variant="success"][tone="ghost"]) {
   --mds-badge-background: transparent;
   --mds-badge-color: rgb(var(--status-success-03));
   --mds-badge-border-color: rgb(var(--status-success-03));
 }
 
 @media (prefers-contrast: more) {
-  :host-context(.pref-contrast-system):host([variant="success"]),
-  :host-context(.pref-contrast-system):host([variant="success"][tone="strong"]) {
+  :host-context(:root.pref-contrast-system),
+  :host-context(:root:not([data-magma-pref])):host([variant="success"]),
+  :host-context(:root.pref-contrast-system),
+  :host-context(:root:not([data-magma-pref])):host([variant="success"][tone="strong"]) {
     --mds-badge-background: rgb(var(--status-success-03));
   }
 
-  :host-context(.pref-contrast-system):host([variant="success"][tone="weak"]) {
+  :host-context(:root.pref-contrast-system),
+  :host-context(:root:not([data-magma-pref])):host([variant="success"][tone="weak"]) {
     --mds-badge-color: rgb(var(--status-success-01));
   }
 
-  :host-context(.pref-contrast-system):host([variant="success"][tone="quiet"]) {
+  :host-context(:root.pref-contrast-system),
+  :host-context(:root:not([data-magma-pref])):host([variant="success"][tone="quiet"]) {
     --mds-badge-color: rgb(var(--status-success-02));
   }
 
-  :host-context(.pref-contrast-system):host([variant="success"][tone="ghost"]) {
+  :host-context(:root.pref-contrast-system),
+  :host-context(:root:not([data-magma-pref])):host([variant="success"][tone="ghost"]) {
     --mds-badge-background: transparent;
     --mds-badge-color: rgb(var(--status-success-03));
     --mds-badge-border-color: rgb(var(--status-success-03));

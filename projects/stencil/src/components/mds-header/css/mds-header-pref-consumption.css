@@ -1,11 +1,11 @@
-:host-context(.pref-consumption-high) .backdrop {
+:host-context(:root.pref-consumption-high) .backdrop {
   --mds-header-backdrop-background-image: none;
 }
 
-:host-context(.pref-consumption-medium) .backdrop {
+:host-context(:root.pref-consumption-medium) .backdrop {
   --mds-header-backdrop-filter: none;
 }
 
-:host-context(.pref-consumption-low) .backdrop {
+:host-context(:root.pref-consumption-low) .backdrop {
   display: none;
 }

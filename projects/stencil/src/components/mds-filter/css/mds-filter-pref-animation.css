@@ -1,21 +1,24 @@
-:host-context(.pref-animation-reduce) {
+:host-context(:root.pref-animation-reduce) {
   --mds-filter-items-scroll-behavior: auto;
-}
 
-:host-context(.pref-animation-reduce),
-:host-context(.pref-animation-reduce) .reset-button,
-:host-context(.pref-animation-reduce) .items {
   transition-duration: 0s;
+
+  .reset-button,
+  .items {
+    transition-duration: 0s;
+  }
 }
 
 @media (prefers-reduced-motion) {
-  :host-context(.pref-animation-system) {
+  :host-context(:root.pref-animation-system),
+  :host-context(:root:not([data-magma-pref])) {
     --mds-filter-items-scroll-behavior: auto;
-  }
 
-  :host-context(.pref-animation-system),
-  :host-context(.pref-animation-system) .reset-button,
-  :host-context(.pref-animation-system) .items {
     transition-duration: 0s;
+
+    .reset-button,
+    .items {
+      transition-duration: 0s;
+    }
   }
 }

@@ -1,10 +1,11 @@
-:host-context(.pref-animation-reduce) {
+:host-context(:root.pref-animation-reduce) {
   --mds-tab-scroll-behavior: auto;
   --mds-tab-transition-duration: 0s;
 }
 
 @media (prefers-reduced-motion) {
-  :host-context(.pref-animation-system) {
+  :host-context(:root.pref-animation-system),
+  :host-context(:root:not([data-magma-pref])) {
     --mds-tab-scroll-behavior: auto;
     --mds-tab-transition-duration: 0s;
   }

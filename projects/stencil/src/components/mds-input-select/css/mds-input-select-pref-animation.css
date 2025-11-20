@@ -1,17 +1,24 @@
-:host-context(.pref-animation-reduce),
-:host-context(.pref-animation-reduce) .input,
-:host-context(.pref-animation-reduce) .input:hover,
-:host-context(.pref-animation-reduce) .input:focus,
-:host-context(.pref-animation-reduce) .icon {
+:host-context(:root.pref-animation-reduce) {
   transition-duration: 0s;
+
+  .input,
+  .input:hover,
+  .input:focus,
+  .icon {
+    transition-duration: 0s;
+  }
 }
 
 @media (prefers-reduced-motion) {
-  :host-context(.pref-animation-system),
-  :host-context(.pref-animation-system) .input,
-  :host-context(.pref-animation-system) .input:hover,
-  :host-context(.pref-animation-system) .input:focus,
-  :host-context(.pref-animation-system) .icon {
+  :host-context(:root.pref-animation-system),
+  :host-context(:root:not([data-magma-pref])) {
     transition-duration: 0s;
+
+    .input,
+    .input:hover,
+    .input:focus,
+    .icon {
+      transition-duration: 0s;
+    }
   }
 }

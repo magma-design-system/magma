@@ -1,11 +1,14 @@
-:host-context(.pref-theme-dark) .items {
+:host-context(:root:not(.pref-theme-scheme-light).pref-theme-dark) .items {
   --mds-filter-items-background-active: rgb(var(--tone-neutral-10));
   --mds-filter-items-background: rgb(var(--tone-neutral-09));
 }
 
 @media (prefers-color-scheme: dark) {
-  :host-context(.pref-theme-system) .items {
-    --mds-filter-items-background-active: rgb(var(--tone-neutral-10));
-    --mds-filter-items-background: rgb(var(--tone-neutral-09));
+  :host-context(:root:not(.pref-theme-scheme-light).pref-theme-system),
+  :host-context(:root:not([data-magma-pref])) {
+      .items {
+      --mds-filter-items-background-active: rgb(var(--tone-neutral-10));
+      --mds-filter-items-background: rgb(var(--tone-neutral-09));
+    }
   }
 }

@@ -1,10 +1,11 @@
-:host-context(.pref-animation-reduce) {
+:host-context(:root.pref-animation-reduce) {
   --mds-dropdown-backdrop-duration: 0s;
   --mds-dropdown-duration: 0s;
 }
 
 @media (prefers-reduced-motion) {
-  :host-context(.pref-animation-system) {
+  :host-context(:root.pref-animation-system),
+  :host-context(:root:not([data-magma-pref])) {
     --mds-dropdown-backdrop-duration: 0s;
     --mds-dropdown-duration: 0s;
   }

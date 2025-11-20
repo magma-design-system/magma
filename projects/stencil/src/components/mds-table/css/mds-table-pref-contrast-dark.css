@@ -1,4 +1,4 @@
-:host-context(.pref-contrast-more.pref-theme-dark) {
+:host-context(:root.pref-contrast-more.pref-theme-dark) {
   --mds-table-background: rgb(var(--tone-neutral-08));
   --mds-table-body-background-hover: rgb(var(--tone-neutral));
   --mds-table-border-color: rgb(var(--tone-neutral-05));
@@ -7,7 +7,7 @@
 }
 
 @media (prefers-contrast: more) {
-  :host-context(.pref-contrast-system.pref-theme-dark) {
+  :host-context(:root.pref-contrast-system.pref-theme-dark) {
     --mds-table-background: rgb(var(--tone-neutral-08));
     --mds-table-body-background-hover: rgb(var(--tone-neutral));
     --mds-table-border-color: rgb(var(--tone-neutral-05));
@@ -17,7 +17,7 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  :host-context(.pref-contrast-more.pref-theme-system) {
+  :host-context(:root.pref-contrast-more.pref-theme-system) {
     --mds-table-background: rgb(var(--tone-neutral-08));
     --mds-table-body-background-hover: rgb(var(--tone-neutral));
     --mds-table-border-color: rgb(var(--tone-neutral-05));
@@ -27,7 +27,7 @@
 }
 
 @media (prefers-contrast: more) and (prefers-color-scheme: dark) {
-  :host-context(.pref-contrast-system.pref-theme-system) {
+  :host-context(:root.pref-contrast-system.pref-theme-system) {
     --mds-table-background: rgb(var(--tone-neutral-08));
     --mds-table-body-background-hover: rgb(var(--tone-neutral));
     --mds-table-border-color: rgb(var(--tone-neutral-05));

@@ -1,17 +1,26 @@
-:host-context(.pref-animation-reduce),
-:host-context(.pref-animation-reduce) .header,
-:host-context(.pref-animation-reduce) .icon,
-:host-context(.pref-animation-reduce) .text {
+:host-context(:root.pref-animation-reduce) {
   transition-delay: 0s !important;
   transition-duration: 0s;
+
+  .header,
+  .icon,
+  .text {
+    transition-delay: 0s !important;
+    transition-duration: 0s;
+  }
 }
 
 @media (prefers-reduced-motion) {
-  :host-context(.pref-animation-system),
-  :host-context(.pref-animation-system) .header,
-  :host-context(.pref-animation-system) .icon,
-  :host-context(.pref-animation-system) .text {
+  :host-context(:root.pref-animation-system),
+  :host-context(:root:not([data-magma-pref])) {
     transition-delay: 0s !important;
     transition-duration: 0s;
+
+    .header,
+    .icon,
+    .text {
+      transition-delay: 0s !important;
+      transition-duration: 0s;
+    }
   }
 }
