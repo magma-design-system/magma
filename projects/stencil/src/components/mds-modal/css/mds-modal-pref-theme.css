@@ -1,5 +1,5 @@
-:host-context(.pref-theme-dark) {
-  --mds-modal-window-background: rgb(var(--tone-neutral-09));
+:host-context(:root.pref-theme-dark) {
+  --mds-modal-window-background: rgb(var(--tone-neutral-10));
   --mds-modal-window-shadow: var(--shadow-outline), var(--shadow-xl);
 
   .action-close {
@@ -8,8 +8,9 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  :host-context(.pref-theme-system) {
-    --mds-modal-window-background: rgb(var(--tone-neutral-09));
+  :host-context(:root:not(.pref-theme-scheme-light).pref-theme-system),
+  :host-context(:root:not([data-magma-pref])) {
+    --mds-modal-window-background: rgb(var(--tone-neutral-10));
     --mds-modal-window-shadow: var(--shadow-outline), var(--shadow-xl);
 
     .action-close {

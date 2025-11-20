@@ -89,7 +89,7 @@ const Template = args => {
       >
         <header
           slot="top"
-          class="p-800 flex gap-400 items-center border-b border-solid border-0 border-tone-neutral-09"
+          class="p-800 flex gap-400 items-center border-b border-solid border-0 border-tone-neutral-09 dark:border-tone-neutral-08"
         >
           <div class="dark:bg-tone-neutral-01 dark:p-200 bg-transparent w-1600 h-1600">
             <mds-img class="w-full" src="./logo-gruppo-maggioli-512w.webp" />
@@ -114,7 +114,7 @@ const Template = args => {
         </div>
         <footer
           slot="bottom"
-          class="p-800 flex gap-400 text-tone-neutral-02 border-t border-solid border-0 border-tone-neutral-09"
+          class="p-800 flex gap-400 text-tone-neutral-02 border-t border-solid border-0 border-tone-neutral-09 dark:border-tone-neutral-08"
         >
           <mds-author class="flex-grow">
             <mds-avatar
@@ -372,7 +372,7 @@ const CustomTemplate = args => {
         <mds-banner
           id="window"
           slot="window"
-          class="max-w-xl mx-6"
+          class="max-w-[400px] w-full mx-6"
           deletable
           headline="Action required"
         >
@@ -494,6 +494,9 @@ export const DefaultWindowCustomized = {
 
 export const CustomWindowAnimation = {
   render: CustomTemplate,
+  args: {
+    animation: 'custom',
+  },
 }
 
 export const CustomWindowElement = {

@@ -1,21 +1,23 @@
-:host-context(.pref-animation-reduce) {
+:host-context(:root.pref-animation-reduce) {
   --mds-modal-transition-duration: 0s;
-}
 
-:host-context(.pref-animation-reduce),
-:host-context(.pref-animation-reduce) .action-close,
-:host-context(.pref-animation-reduce) .window {
   transition-duration: 0s !important;
+
+  .action-close,
+  .window {
+    transition-duration: 0s !important;
+  }
 }
 
 @media (prefers-reduced-motion) {
-  :host-context(.pref-animation-system) {
+  :host-context(:root.pref-animation-system) {
     --mds-modal-transition-duration: 0s;
-  }
 
-  :host-context(.pref-animation-system),
-  :host-context(.pref-animation-system) .action-close,
-  :host-context(.pref-animation-system) .window {
     transition-duration: 0s !important;
+
+    .action-close,
+    .window {
+      transition-duration: 0s !important;
+    }
   }
 }
