@@ -11,6 +11,14 @@
 @import '@maggioli-design-system/styles/dist/tailwind/theme.css';
 @import "@maggioli-design-system/styles/dist/css/hydrated.css";
 
+body {
+  @apply
+  bg-tone-neutral
+    transition-colors
+    duration-300
+    ease-in-out;
+}
+
 /* test */
 
 /* @import "../src/tailwind/theme-summer.css" layer(theme);
