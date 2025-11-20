@@ -126,7 +126,6 @@ export class MdsPrefTheme {
           element?.classList.remove(this.theme[key].selector)
         }
       }
-      element?.setAttribute('data-magma-pref-theme', this.mode)
       element?.classList.add(this.theme[mode].selector)
       element?.style.setProperty(this.customPropertyAlias, this.mode)
     }

@@ -5,7 +5,7 @@
   @media (prefers-color-scheme: dark) {
     &:where(
       :root:not(.pref-theme-scheme-light).pref-theme-system *,
-      :root:not([data-magma-pref-theme]) *
+      :root:not([data-magma-pref]) *
     ){
       @slot;
     }

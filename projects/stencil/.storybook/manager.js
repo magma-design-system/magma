@@ -18,11 +18,11 @@ const AccessibilityPanel = () => {
 
       if (value === 'unset') {
         htmlEl.style.removeProperty(`--magma-pref-${preference}`)
-        // eslint-disable-next-line guard-for-in
+
         list.forEach(value => {
           htmlEl.classList.remove(`pref-${preference}-${value}`)
-        });
-        window.localStorage.removeItem(`mdsPref${capitalize(preference)}`)
+        })
+        // window.localStorage.removeItem(`mdsPref${capitalize(preference)}`)
         return
       }
 
@@ -58,7 +58,7 @@ const AccessibilityPanel = () => {
     const html = iframeDocument.querySelector('html')
 
     if (!enabled) {
-      html.removeAttribute('data-magma-pref-theme')
+      html.removeAttribute('data-magma-pref')
       setAccessibility('theme', 'unset', ['light', 'system', 'dark'])
       setAccessibility('contrast', 'unset', ['more', 'system', 'no-preference'])
       setAccessibility('animation', 'unset', ['reduce', 'system', 'no-preference'])
@@ -67,7 +67,7 @@ const AccessibilityPanel = () => {
       return
     }
 
-    html.setAttribute('data-magma-pref-theme', 'true')
+    html.setAttribute('data-magma-pref', '')
     setAccessibility('theme', window.localStorage.getItem('mdsPrefTheme') ?? 'light', ['light', 'system', 'dark'])
     setAccessibility('contrast', window.localStorage.getItem('mdsPrefContrast') ?? 'no-preference', ['more', 'system', 'no-preference'])
     setAccessibility('animation', window.localStorage.getItem('mdsPrefAnimation') ?? 'no-preference', ['reduce', 'system', 'no-preference'])
