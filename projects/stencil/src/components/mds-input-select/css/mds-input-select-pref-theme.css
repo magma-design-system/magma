@@ -1,4 +1,4 @@
-:host-context(:root:not(.pref-theme-scheme-light).pref-theme-dark) {
+:host-context(:root.pref-theme-dark:not(.pref-theme-scheme-light)) {
   --mds-input-select-ring: var(--shadow-outline-50);
   --mds-input-select-arrow-icon-blur-background-color: rgb(var(--variant-primary-05));
   --mds-input-select-arrow-icon-blur-color: rgb(var(--mds-input-select-variant-color));
@@ -11,7 +11,7 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  :host-context(:root:not(.pref-theme-scheme-light).pref-theme-system),
+  :host-context(:root.pref-theme-system:not(.pref-theme-scheme-light)),
   :host-context(:root:not([data-magma-pref])) {
     --mds-input-select-ring: var(--shadow-outline-50);
     --mds-input-select-arrow-icon-blur-background-color: rgb(var(--variant-primary-05));

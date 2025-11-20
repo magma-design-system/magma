@@ -1,11 +1,16 @@
-:host-context(:root:not(.pref-theme-scheme-light).pref-theme-dark) [tone="strong"],
-:host-context(:root:not(.pref-theme-scheme-light).pref-theme-dark) [tone="weak"] {
-  box-shadow: var(--shadow-outline) inset;
+:host-context(:root.pref-theme-dark:not(.pref-theme-scheme-light)) {
+  &:host([tone="strong"]),
+  &:host([tone="weak"]) {
+    box-shadow: var(--shadow-outline) inset;
+  }
 }
 
 @media (prefers-color-scheme: dark) {
-  :host-context(:root.pref-theme-stystem) [tone="strong"],
-  :host-context(:root.pref-theme-stystem) [tone="weak"] {
-    box-shadow: var(--shadow-outline) inset;
+  :host-context(:root.pref-theme-system:not(.pref-theme-scheme-light)),
+  :host-context(:root:not([data-magma-pref])) {
+    &:host([tone="strong"]),
+    &:host([tone="weak"]) {
+      box-shadow: var(--shadow-outline) inset;
+    }
   }
 }

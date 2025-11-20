@@ -1,11 +1,11 @@
-:host-context(:root:not(.pref-theme-scheme-light).pref-theme-dark) {
+:host-context(:root.pref-theme-dark:not(.pref-theme-scheme-light)) {
   --mds-input-range-thumb-background: rgb(var(--variant-primary-04));
   --mds-input-range-track-background: rgb(var(--tone-neutral-07));
   --mds-input-range-track-progress-background: rgb(var(--variant-primary-05));
 }
 
 @media (prefers-color-scheme: dark) {
-  :host-context(:root:not(.pref-theme-scheme-light).pref-theme-system),
+  :host-context(:root.pref-theme-system:not(.pref-theme-scheme-light)),
   :host-context(:root:not([data-magma-pref])) {
     --mds-input-range-thumb-background: rgb(var(--variant-primary-04));
     --mds-input-range-track-background: rgb(var(--tone-neutral-07));

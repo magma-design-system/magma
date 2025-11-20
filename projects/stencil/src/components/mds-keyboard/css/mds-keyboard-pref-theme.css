@@ -1,4 +1,4 @@
-:host-context(:root:not(.pref-theme-scheme-light).pref-theme-dark) {
+:host-context(:root.pref-theme-dark:not(.pref-theme-scheme-light)) {
   --mds-keyboard-color: rgb(var(--tone-slate-01));
   --mds-keyboard-background: rgb(var(--tone-slate-07));
   --mds-keyboard-illumination-dark-opacity: 0.5;
@@ -11,7 +11,7 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  :host-context(:root:not(.pref-theme-scheme-light).pref-theme-system),
+  :host-context(:root.pref-theme-system:not(.pref-theme-scheme-light)),
   :host-context(:root:not([data-magma-pref])) {
     --mds-keyboard-color: rgb(var(--tone-slate-01));
     --mds-keyboard-background: rgb(var(--tone-slate-07));

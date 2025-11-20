@@ -1,11 +1,11 @@
-:host-context(:root:not(.pref-theme-scheme-light).pref-theme-dark) {
+:host-context(:root.pref-theme-dark:not(.pref-theme-scheme-light)) {
   --mds-push-notifications-shadow: var(--shadow-outline) inset;
 
   background-color: rgb(var(--tone-neutral-09));
 }
 
 @media (prefers-color-scheme: dark) {
-  :host-context(:root:not(.pref-theme-scheme-light).pref-theme-system),
+  :host-context(:root.pref-theme-system:not(.pref-theme-scheme-light)),
   :host-context(:root:not([data-magma-pref])) {
     --mds-push-notifications-shadow: var(--shadow-outline) inset;
 

@@ -24,7 +24,7 @@
   --mds-button-border-width: 0;
 }
 
-:host-context(:root:not(.pref-theme-scheme-light).pref-theme-dark) {
+:host-context(:root.pref-theme-dark:not(.pref-theme-scheme-light)) {
   &:host([variant="google"]),
   &:host([variant="google"][tone]) {
     --mds-button-border-width: --spacing(50);
@@ -43,7 +43,7 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  :host-context(:root:not(.pref-theme-scheme-light).pref-theme-system),
+  :host-context(:root.pref-theme-system:not(.pref-theme-scheme-light)),
   :host-context(:root:not([data-magma-pref])) {
     &:host([variant="apple"]),
     &:host([variant="apple"][tone]) {
