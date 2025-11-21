@@ -128,7 +128,8 @@ export class MdsInputDate {
   handleChange (event: Event): void {
     const input = event.target as HTMLInputElement
     this.touched = true
-    this.value = input.value
+    // manage case when i insert 0 on date and default input behavior change in 01 instead of resetting all date
+    if (input.value) this.value = input.value
     this.validateValue()
   }
 
