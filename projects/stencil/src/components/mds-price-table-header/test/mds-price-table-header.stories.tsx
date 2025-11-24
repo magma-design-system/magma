@@ -7,7 +7,7 @@ export default {
 const Template = args => (
   <mds-price-table-header
     {...args}
-    class="mobile:grid-cols-1 tablet:grid-cols-3 desktop:grid-cols-4"
+    class="max-mobile:grid-cols-1 tablet:grid-cols-3 desktop:grid-cols-4"
   >
     <mds-text
       typography="h1"

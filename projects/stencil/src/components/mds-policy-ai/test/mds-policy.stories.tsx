@@ -28,7 +28,7 @@ const Template = args => (
 
 const TemplateCustomIcon = () => (
   <div class="grid gap-600 tablet:grid-cols-[200px_auto] p-600 bg-tone-neutral-10 rounded-xl max-w-[500px]">
-    <div class="mobile:max-w-[200px] relative">
+    <div class="max-mobile:max-w-[200px] relative">
       <mds-policy-ai
         variant="icon"
         class="absolute bottom-200 right-200 z-10"
@@ -55,7 +55,7 @@ const TemplateCustomChip = args => (
   <div class="grid gap-600 tablet:grid-cols-[200px_auto] p-600 bg-tone-neutral-10 rounded-xl max-w-[500px]">
     <mds-img
       src="./book-cover-02.webp"
-      class="rounded-md shadow-sm mobile:max-w-[200px]"
+      class="rounded-md shadow-sm max-mobile:max-w-[200px]"
     ></mds-img>
     <div class="grid gap-400 auto-rows-min">
       <mds-text typography="h5">

@@ -8,6 +8,8 @@ import { KeyboardManager } from '@common/keyboard-manager'
  * @slot action - Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element.
  * @slot icon - Insert an icon image, it can be `HTML elements` or `components`, it is **recommended** to add `mds-icon` element.
  * @slot title - Add a `text string`, `HTML elements` or `components`, it is **recommended** to use `mds-text` element.
+ * @part header - The header of the component
+ * @part content - The content wrapper of the `default` and `content` slots
  */
 
 @Component({
@@ -62,14 +64,12 @@ export class MdsDetails {
           <slot name="icon"/>
         </div>
         <div class="content">
-          <div>
-            <header class="header focus-bounce" tabindex="0" onClick={ this.toggle }>
-              <div class="title">
-                <slot name="title"/>
-              </div>
-              <i class={clsx('helper-icon', this.isOpened && 'opened')} innerHTML={miBaselineKeyboardArrowDown}/>
-            </header>
-          </div>
+          <header class="header focus-bounce" part="header" tabindex="0" onClick={ this.toggle }>
+            <div class="title">
+              <slot name="title"/>
+            </div>
+            <i class={clsx('helper-icon', this.isOpened && 'opened')} innerHTML={miBaselineKeyboardArrowDown}/>
+          </header>
           <div class={clsx('details', this.isOpened && 'opened')}>
             <div class="content-expander" part="content">
               <slot/>

@@ -86,7 +86,6 @@ export class MdsInput {
   @State() currentLengthLabel: string
   @State() countVariant: InputTipItemVariantType = 'count-empty'
   @State() isPasswordVisible = false
-  @State() transcript: string = ''
   // private valuePristine?: string
 
   private t:Locale = new Locale({
@@ -546,11 +545,20 @@ export class MdsInput {
     this.recognition.interimResults = true
     this.recognition.maxAlternatives = 1
 
+    let transcript = ''
+    let progress = 0 // need to save position progress on speech results
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     this.recognition.onresult = (event: any) => {
-      const speechResult = event.results[0][0].transcript
-      this.transcript = speechResult
-      this.value = this.transcript
+      const speechResult = event.results
+      const interimResult = speechResult[progress]
+      if (interimResult.isFinal) {
+        transcript += interimResult[0].transcript
+        this.value = transcript
+        progress += 1
+        return
+      }
+      this.value = transcript + interimResult[0].transcript
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

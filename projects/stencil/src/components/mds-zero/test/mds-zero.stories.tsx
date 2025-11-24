@@ -14,7 +14,7 @@ const Template = args => (
       Contribuisci alla creazione contenuti editoriali di riferimento per la
       pubblica amminstrazione in Italia.
     </mds-text>
-    <mds-button slot="action" size="lg" class="mobile:w-full">
+    <mds-button slot="action" size="lg" class="max-mobile:w-full">
       Nuovo
     </mds-button>
   </mds-zero>
