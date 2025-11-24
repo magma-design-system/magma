@@ -48,7 +48,7 @@ Generated at {{ date }}
 
 @media (prefers-color-scheme: dark) {
   :root:not(.pref-theme-scheme-light).pref-theme-system,
-  :root:not(.pref-theme-dark):not(.pref-theme-light):not(.pref-theme-scheme-dark):not(.pref-theme-scheme-light):not(.pref-theme-scheme-all):not(.pref-theme-system) {
+  :root:not([data-magma-pref]) {
     {{#each properties as | groups |}}
       {{#each groups as | names |}}
         {{#each names as | lightModes |}}

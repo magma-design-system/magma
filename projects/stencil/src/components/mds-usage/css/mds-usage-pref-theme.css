@@ -1,36 +1,38 @@
-:host-context(.pref-theme-dark) {
+:host-context(:root.pref-theme-dark:not(.pref-theme-scheme-light)) {
   --mds-usage-badge-background: rgb(var(--status-info-05));
 
   box-shadow: var(--shadow-outline);
-}
 
-:host-context(.pref-theme-dark):host([variant="do"]) {
-  --mds-usage-badge-background: rgb(var(--status-success-05));
-}
+  &:host([variant="do"]) {
+    --mds-usage-badge-background: rgb(var(--status-success-05));
+  }
 
-:host-context(.pref-theme-dark):host([variant="dont"]) {
-  --mds-usage-badge-background: rgb(var(--status-error-05));
-}
+  &:host([variant="dont"]) {
+    --mds-usage-badge-background: rgb(var(--status-error-05));
+  }
 
-:host-context(.pref-theme-dark):host([variant="warn"]) {
-  --mds-usage-badge-background: rgb(var(--status-warning-05));
+  &:host([variant="warn"]) {
+    --mds-usage-badge-background: rgb(var(--status-warning-05));
+  }
 }
 
 @media (prefers-color-scheme: dark) {
-  :host-context(.pref-theme-system) {
-    --mds-tooltip-background: rgb(var(--tone-neutral-09));
-    --mds-tooltip-drop-shadow: drop-shadow(0 0 2px rgb(var(--tone-neutral-01) / 0.05)) drop-shadow(0 0 2px rgb(var(--tone-neutral-01) / 0.3)) drop-shadow(0 0 2px rgb(var(--tone-neutral-01) / 0.3));
-  }
+  :host-context(:root.pref-theme-system:not(.pref-theme-scheme-light)),
+  :host-context(:root:not([data-magma-pref])) {
+    --mds-usage-badge-background: rgb(var(--status-info-05));
 
-  :host-context(.pref-theme-system):host([variant="do"]) {
-    -mds-usage-badge-background: rgb(var(--status-success-05));
-  }
+    box-shadow: var(--shadow-outline);
 
-  :host-context(.pref-theme-system):host([variant="dont"]) {
-    -mds-usage-badge-background: rgb(var(--status-error-05));
-  }
+    &:host([variant="do"]) {
+      --mds-usage-badge-background: rgb(var(--status-success-05));
+    }
 
-  :host-context(.pref-theme-system):host([variant="warn"]) {
-    -mds-usage-badge-background: rgb(var(--status-warning-05));
+    &:host([variant="dont"]) {
+      --mds-usage-badge-background: rgb(var(--status-error-05));
+    }
+
+    &:host([variant="warn"]) {
+      --mds-usage-badge-background: rgb(var(--status-warning-05));
+    }
   }
 }

@@ -1,79 +1,17 @@
-:host-context(.pref-contrast-more):host([variant="ai"][tone="strong"]) {
-  --mds-button-background: rgb(var(--variant-ai-03));
-  --mds-button-color: rgb(var(--tone-neutral));
-  --mds-button-border-color: var(--variant-ai-03);
-}
-
-:host-context(.pref-contrast-more):host([variant="ai"][tone="strong"][active]),
-:host-context(.pref-contrast-more):host([variant="ai"][tone="strong"]:hover) {
-  --mds-button-background: rgb(var(--variant-ai-02));
-  --mds-button-border-color: var(--variant-ai-02);
-}
-
-:host-context(.pref-contrast-more):host([variant="ai"][tone="weak"]) {
-  --mds-button-background: rgb(var(--variant-ai-09));
-  --mds-button-color: rgb(var(--variant-ai-02));
-  --mds-button-border-color: var(--variant-ai-06);
-  --mds-button-border-width: var(--mds-button-border-high-contrast-width);
-
-  fill: rgb(var(--variant-ai-02));
-}
-
-:host-context(.pref-contrast-more):host([variant="ai"][tone="weak"]:hover) {
-  --mds-button-background: rgb(var(--variant-ai-10));
-  --mds-button-color: rgb(var(--variant-ai-01));
-  --mds-button-border-width: var(--mds-button-border-high-contrast-hover-width);
-
-  fill: rgb(var(--variant-ai-01));
-}
-
-:host-context(.pref-contrast-more):host([variant="ai"][tone="weak"][active]) {
-  --mds-button-background: rgb(var(--variant-ai-08));
-  --mds-button-color: rgb(var(--variant-ai-01));
-
-  fill: rgb(var(--variant-ai-01));
-}
-
-:host-context(.pref-contrast-more):host([variant="ai"][tone="ghost"]) {
-  --mds-button-border-color: var(--variant-ai-03);
-  --mds-button-color: rgb(var(--variant-ai-02));
-}
-
-:host-context(.pref-contrast-more):host([variant="ai"][tone="ghost"]:hover) {
-  --mds-button-border-color: var(--variant-ai-03);
-  --mds-button-color: rgb(var(--variant-ai-01));
-}
-
-:host-context(.pref-contrast-more):host([variant="ai"][tone="ghost"][active]) {
-  --mds-button-border-color: var(--variant-ai-04);
-  --mds-button-color: rgb(var(--variant-ai-02));
-}
-
-:host-context(.pref-contrast-more):host([variant="ai"][tone="quiet"]) {
-  --mds-button-color: rgb(var(--variant-ai-01));
-}
-
-:host-context(.pref-contrast-more):host([variant="ai"][tone="quiet"]:hover) {
-  --mds-button-color: rgb(var(--variant-ai-03));
-}
-
-:host-context(.pref-contrast-more):host([variant="ai"][tone="quiet"][active]) {
-  --mds-button-color: rgb(var(--variant-ai-01));
-}
-
-@media (prefers-contrast: more) {
-  :host-context(.pref-contrast-system):host([variant="ai"][tone="strong"]) {
+:host-context(:root.pref-contrast-more) {
+  &:host([variant="ai"][tone="strong"]) {
     --mds-button-background: rgb(var(--variant-ai-03));
     --mds-button-color: rgb(var(--tone-neutral));
+    --mds-button-border-color: var(--variant-ai-03);
   }
 
-  :host-context(.pref-contrast-system):host([variant="ai"][tone="strong"][active]),
-  :host-context(.pref-contrast-system):host([variant="ai"][tone="strong"]:hover) {
+  &:host([variant="ai"][tone="strong"][active]),
+  &:host([variant="ai"][tone="strong"]:hover) {
     --mds-button-background: rgb(var(--variant-ai-02));
     --mds-button-border-color: var(--variant-ai-02);
   }
 
-  :host-context(.pref-contrast-system):host([variant="ai"][tone="weak"]) {
+  &:host([variant="ai"][tone="weak"]) {
     --mds-button-background: rgb(var(--variant-ai-09));
     --mds-button-color: rgb(var(--variant-ai-02));
     --mds-button-border-color: var(--variant-ai-06);
@@ -82,7 +20,7 @@
     fill: rgb(var(--variant-ai-02));
   }
 
-  :host-context(.pref-contrast-system):host([variant="ai"][tone="weak"]:hover) {
+  &:host([variant="ai"][tone="weak"]:hover) {
     --mds-button-background: rgb(var(--variant-ai-10));
     --mds-button-color: rgb(var(--variant-ai-01));
     --mds-button-border-width: var(--mds-button-border-high-contrast-hover-width);
@@ -90,37 +28,105 @@
     fill: rgb(var(--variant-ai-01));
   }
 
-  :host-context(.pref-contrast-system):host([variant="ai"][tone="weak"][active]) {
+  &:host([variant="ai"][tone="weak"][active]) {
     --mds-button-background: rgb(var(--variant-ai-08));
     --mds-button-color: rgb(var(--variant-ai-01));
 
     fill: rgb(var(--variant-ai-01));
   }
 
-  :host-context(.pref-contrast-system):host([variant="ai"][tone="ghost"]) {
+  &:host([variant="ai"][tone="ghost"]) {
     --mds-button-border-color: var(--variant-ai-03);
     --mds-button-color: rgb(var(--variant-ai-02));
   }
 
-  :host-context(.pref-contrast-system):host([variant="ai"][tone="ghost"]:hover) {
+  &:host([variant="ai"][tone="ghost"]:hover) {
     --mds-button-border-color: var(--variant-ai-03);
     --mds-button-color: rgb(var(--variant-ai-01));
   }
 
-  :host-context(.pref-contrast-system):host([variant="ai"][tone="ghost"][active]) {
+  &:host([variant="ai"][tone="ghost"][active]) {
     --mds-button-border-color: var(--variant-ai-04);
     --mds-button-color: rgb(var(--variant-ai-02));
   }
 
-  :host-context(.pref-contrast-system):host([variant="ai"][tone="quiet"]) {
+  &:host([variant="ai"][tone="quiet"]) {
     --mds-button-color: rgb(var(--variant-ai-01));
   }
 
-  :host-context(.pref-contrast-system):host([variant="ai"][tone="quiet"]:hover) {
+  &:host([variant="ai"][tone="quiet"]:hover) {
     --mds-button-color: rgb(var(--variant-ai-03));
   }
 
-  :host-context(.pref-contrast-system):host([variant="ai"][tone="quiet"][active]) {
+  &:host([variant="ai"][tone="quiet"][active]) {
     --mds-button-color: rgb(var(--variant-ai-01));
+  }
+}
+
+
+@media (prefers-contrast: more) {
+  :host-context(:root.pref-contrast-system),
+  :host-context(:root:not([data-magma-pref])) {
+    &:host([variant="ai"][tone="strong"]) {
+      --mds-button-background: rgb(var(--variant-ai-03));
+      --mds-button-color: rgb(var(--tone-neutral));
+    }
+
+    &:host([variant="ai"][tone="strong"][active]),
+    &:host([variant="ai"][tone="strong"]:hover) {
+      --mds-button-background: rgb(var(--variant-ai-02));
+      --mds-button-border-color: var(--variant-ai-02);
+    }
+
+    &:host([variant="ai"][tone="weak"]) {
+      --mds-button-background: rgb(var(--variant-ai-09));
+      --mds-button-color: rgb(var(--variant-ai-02));
+      --mds-button-border-color: var(--variant-ai-06);
+      --mds-button-border-width: var(--mds-button-border-high-contrast-width);
+
+      fill: rgb(var(--variant-ai-02));
+    }
+
+    &:host([variant="ai"][tone="weak"]:hover) {
+      --mds-button-background: rgb(var(--variant-ai-10));
+      --mds-button-color: rgb(var(--variant-ai-01));
+      --mds-button-border-width: var(--mds-button-border-high-contrast-hover-width);
+
+      fill: rgb(var(--variant-ai-01));
+    }
+
+    &:host([variant="ai"][tone="weak"][active]) {
+      --mds-button-background: rgb(var(--variant-ai-08));
+      --mds-button-color: rgb(var(--variant-ai-01));
+
+      fill: rgb(var(--variant-ai-01));
+    }
+
+    &:host([variant="ai"][tone="ghost"]) {
+      --mds-button-border-color: var(--variant-ai-03);
+      --mds-button-color: rgb(var(--variant-ai-02));
+    }
+
+    &:host([variant="ai"][tone="ghost"]:hover) {
+      --mds-button-border-color: var(--variant-ai-03);
+      --mds-button-color: rgb(var(--variant-ai-01));
+    }
+
+    &:host([variant="ai"][tone="ghost"][active]) {
+      --mds-button-border-color: var(--variant-ai-04);
+      --mds-button-color: rgb(var(--variant-ai-02));
+    }
+
+    &:host([variant="ai"][tone="quiet"]) {
+      --mds-button-color: rgb(var(--variant-ai-01));
+    }
+
+    &:host([variant="ai"][tone="quiet"]:hover) {
+      --mds-button-color: rgb(var(--variant-ai-03));
+    }
+
+    &:host([variant="ai"][tone="quiet"][active]) {
+      --mds-button-color: rgb(var(--variant-ai-01));
+    }
   }
 }

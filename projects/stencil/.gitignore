@@ -17,4 +17,5 @@
 /src/fixtures/iconsauce.json
 /src/stencil.config.ts
 /src/storybook/components-version.json
+/src/components/mds-emoji/asset/**/*-backup.svg
 /www

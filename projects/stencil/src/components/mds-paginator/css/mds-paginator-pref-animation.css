@@ -1,15 +1,21 @@
-:host-context(.pref-animation-reduce),
-:host-context(.pref-animation-reduce) .pages {
+:host-context(:root.pref-animation-reduce),
+:host-context(:root.pref-animation-reduce) .pages {
   --mds-paginator-scroll-behavior: auto;
 
   transition-duration: 0s;
 }
 
 @media (prefers-reduced-motion) {
-  :host-context(.pref-animation-system),
-  :host-context(.pref-animation-system) .pages {
+  :host-context(:root.pref-animation-system),
+  :host-context(:root:not([data-magma-pref])) {
     --mds-paginator-scroll-behavior: auto;
 
     transition-duration: 0s;
+
+    .pages {
+      --mds-paginator-scroll-behavior: auto;
+
+      transition-duration: 0s;
+    }
   }
 }

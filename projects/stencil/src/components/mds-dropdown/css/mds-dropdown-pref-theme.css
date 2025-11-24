@@ -1,9 +1,10 @@
-:host-context(.pref-theme-dark) {
+:host-context(:root.pref-theme-dark:not(.pref-theme-scheme-light)) {
   --mds-dropdown-drop-shadow: drop-shadow(0 0 2px rgb(var(--tone-neutral-01) / 0.05)) drop-shadow(0 0 2px rgb(var(--tone-neutral-01) / 0.3)) drop-shadow(0 0 2px rgb(var(--tone-neutral-01) / 0.3));
 }
 
 @media (prefers-color-scheme: dark) {
-  :host-context(.pref-theme-system) {
+  :host-context(:root.pref-theme-system:not(.pref-theme-scheme-light)),
+  :host-context(:root:not([data-magma-pref])) {
     --mds-dropdown-drop-shadow: drop-shadow(0 0 2px rgb(var(--tone-neutral-01) / 0.05)) drop-shadow(0 0 2px rgb(var(--tone-neutral-01) / 0.3)) drop-shadow(0 0 2px rgb(var(--tone-neutral-01) / 0.3));
   }
 }

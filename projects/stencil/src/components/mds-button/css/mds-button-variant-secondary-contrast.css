@@ -1,79 +1,17 @@
-:host-context(.pref-contrast-more):host([variant="secondary"][tone="strong"]) {
-  --mds-button-background: rgb(var(--variant-secondary-03));
-  --mds-button-color: rgb(var(--tone-neutral));
-  --mds-button-border-color: var(--variant-secondary-03);
-}
-
-:host-context(.pref-contrast-more):host([variant="secondary"][tone="strong"][active]),
-:host-context(.pref-contrast-more):host([variant="secondary"][tone="strong"]:hover) {
-  --mds-button-background: rgb(var(--variant-secondary-02));
-  --mds-button-border-color: var(--variant-secondary-02);
-}
-
-:host-context(.pref-contrast-more):host([variant="secondary"][tone="weak"]) {
-  --mds-button-background: rgb(var(--variant-secondary-09));
-  --mds-button-color: rgb(var(--variant-secondary-02));
-  --mds-button-border-color: var(--variant-secondary-06);
-  --mds-button-border-width: var(--mds-button-border-high-contrast-width);
-
-  fill: rgb(var(--variant-secondary-02));
-}
-
-:host-context(.pref-contrast-more):host([variant="secondary"][tone="weak"]:hover) {
-  --mds-button-background: rgb(var(--variant-secondary-10));
-  --mds-button-color: rgb(var(--variant-secondary-01));
-  --mds-button-border-width: var(--mds-button-border-high-contrast-hover-width);
-
-  fill: rgb(var(--variant-secondary-01));
-}
-
-:host-context(.pref-contrast-more):host([variant="secondary"][tone="weak"][active]) {
-  --mds-button-background: rgb(var(--variant-secondary-08));
-  --mds-button-color: rgb(var(--variant-secondary-01));
-
-  fill: rgb(var(--variant-secondary-01));
-}
-
-:host-context(.pref-contrast-more):host([variant="secondary"][tone="ghost"]) {
-  --mds-button-border-color: var(--variant-secondary-03);
-  --mds-button-color: rgb(var(--variant-secondary-02));
-}
-
-:host-context(.pref-contrast-more):host([variant="secondary"][tone="ghost"]:hover) {
-  --mds-button-border-color: var(--variant-secondary-03);
-  --mds-button-color: rgb(var(--variant-secondary-01));
-}
-
-:host-context(.pref-contrast-more):host([variant="secondary"][tone="ghost"][active]) {
-  --mds-button-border-color: var(--variant-secondary-04);
-  --mds-button-color: rgb(var(--variant-secondary-02));
-}
-
-:host-context(.pref-contrast-more):host([variant="secondary"][tone="quiet"]) {
-  --mds-button-color: rgb(var(--variant-secondary-01));
-}
-
-:host-context(.pref-contrast-more):host([variant="secondary"][tone="quiet"]:hover) {
-  --mds-button-color: rgb(var(--variant-secondary-03));
-}
-
-:host-context(.pref-contrast-more):host([variant="secondary"][tone="quiet"][active]) {
-  --mds-button-color: rgb(var(--variant-secondary-01));
-}
-
-@media (prefers-contrast: more) {
-  :host-context(.pref-contrast-system):host([variant="secondary"][tone="strong"]) {
+:host-context(:root.pref-contrast-more) {
+  &:host([variant="secondary"][tone="strong"]) {
     --mds-button-background: rgb(var(--variant-secondary-03));
     --mds-button-color: rgb(var(--tone-neutral));
+    --mds-button-border-color: var(--variant-secondary-03);
   }
 
-  :host-context(.pref-contrast-system):host([variant="secondary"][tone="strong"][active]),
-  :host-context(.pref-contrast-system):host([variant="secondary"][tone="strong"]:hover) {
+  &:host([variant="secondary"][tone="strong"][active]),
+  &:host([variant="secondary"][tone="strong"]:hover) {
     --mds-button-background: rgb(var(--variant-secondary-02));
     --mds-button-border-color: var(--variant-secondary-02);
   }
 
-  :host-context(.pref-contrast-system):host([variant="secondary"][tone="weak"]) {
+  &:host([variant="secondary"][tone="weak"]) {
     --mds-button-background: rgb(var(--variant-secondary-09));
     --mds-button-color: rgb(var(--variant-secondary-02));
     --mds-button-border-color: var(--variant-secondary-06);
@@ -82,7 +20,7 @@
     fill: rgb(var(--variant-secondary-02));
   }
 
-  :host-context(.pref-contrast-system):host([variant="secondary"][tone="weak"]:hover) {
+  &:host([variant="secondary"][tone="weak"]:hover) {
     --mds-button-background: rgb(var(--variant-secondary-10));
     --mds-button-color: rgb(var(--variant-secondary-01));
     --mds-button-border-width: var(--mds-button-border-high-contrast-hover-width);
@@ -90,37 +28,105 @@
     fill: rgb(var(--variant-secondary-01));
   }
 
-  :host-context(.pref-contrast-system):host([variant="secondary"][tone="weak"][active]) {
+  &:host([variant="secondary"][tone="weak"][active]) {
     --mds-button-background: rgb(var(--variant-secondary-08));
     --mds-button-color: rgb(var(--variant-secondary-01));
 
     fill: rgb(var(--variant-secondary-01));
   }
 
-  :host-context(.pref-contrast-system):host([variant="secondary"][tone="ghost"]) {
+  &:host([variant="secondary"][tone="ghost"]) {
     --mds-button-border-color: var(--variant-secondary-03);
     --mds-button-color: rgb(var(--variant-secondary-02));
   }
 
-  :host-context(.pref-contrast-system):host([variant="secondary"][tone="ghost"]:hover) {
+  &:host([variant="secondary"][tone="ghost"]:hover) {
     --mds-button-border-color: var(--variant-secondary-03);
     --mds-button-color: rgb(var(--variant-secondary-01));
   }
 
-  :host-context(.pref-contrast-system):host([variant="secondary"][tone="ghost"][active]) {
+  &:host([variant="secondary"][tone="ghost"][active]) {
     --mds-button-border-color: var(--variant-secondary-04);
     --mds-button-color: rgb(var(--variant-secondary-02));
   }
 
-  :host-context(.pref-contrast-system):host([variant="secondary"][tone="quiet"]) {
+  &:host([variant="secondary"][tone="quiet"]) {
     --mds-button-color: rgb(var(--variant-secondary-01));
   }
 
-  :host-context(.pref-contrast-system):host([variant="secondary"][tone="quiet"]:hover) {
+  &:host([variant="secondary"][tone="quiet"]:hover) {
     --mds-button-color: rgb(var(--variant-secondary-03));
   }
 
-  :host-context(.pref-contrast-system):host([variant="secondary"][tone="quiet"][active]) {
+  &:host([variant="secondary"][tone="quiet"][active]) {
     --mds-button-color: rgb(var(--variant-secondary-01));
+  }
+}
+
+
+@media (prefers-contrast: more) {
+  :host-context(:root.pref-contrast-system),
+  :host-context(:root:not([data-magma-pref])) {
+    &:host([variant="secondary"][tone="strong"]) {
+      --mds-button-background: rgb(var(--variant-secondary-03));
+      --mds-button-color: rgb(var(--tone-neutral));
+    }
+
+    &:host([variant="secondary"][tone="strong"][active]),
+    &:host([variant="secondary"][tone="strong"]:hover) {
+      --mds-button-background: rgb(var(--variant-secondary-02));
+      --mds-button-border-color: var(--variant-secondary-02);
+    }
+
+    &:host([variant="secondary"][tone="weak"]) {
+      --mds-button-background: rgb(var(--variant-secondary-09));
+      --mds-button-color: rgb(var(--variant-secondary-02));
+      --mds-button-border-color: var(--variant-secondary-06);
+      --mds-button-border-width: var(--mds-button-border-high-contrast-width);
+
+      fill: rgb(var(--variant-secondary-02));
+    }
+
+    &:host([variant="secondary"][tone="weak"]:hover) {
+      --mds-button-background: rgb(var(--variant-secondary-10));
+      --mds-button-color: rgb(var(--variant-secondary-01));
+      --mds-button-border-width: var(--mds-button-border-high-contrast-hover-width);
+
+      fill: rgb(var(--variant-secondary-01));
+    }
+
+    &:host([variant="secondary"][tone="weak"][active]) {
+      --mds-button-background: rgb(var(--variant-secondary-08));
+      --mds-button-color: rgb(var(--variant-secondary-01));
+
+      fill: rgb(var(--variant-secondary-01));
+    }
+
+    &:host([variant="secondary"][tone="ghost"]) {
+      --mds-button-border-color: var(--variant-secondary-03);
+      --mds-button-color: rgb(var(--variant-secondary-02));
+    }
+
+    &:host([variant="secondary"][tone="ghost"]:hover) {
+      --mds-button-border-color: var(--variant-secondary-03);
+      --mds-button-color: rgb(var(--variant-secondary-01));
+    }
+
+    &:host([variant="secondary"][tone="ghost"][active]) {
+      --mds-button-border-color: var(--variant-secondary-04);
+      --mds-button-color: rgb(var(--variant-secondary-02));
+    }
+
+    &:host([variant="secondary"][tone="quiet"]) {
+      --mds-button-color: rgb(var(--variant-secondary-01));
+    }
+
+    &:host([variant="secondary"][tone="quiet"]:hover) {
+      --mds-button-color: rgb(var(--variant-secondary-03));
+    }
+
+    &:host([variant="secondary"][tone="quiet"][active]) {
+      --mds-button-color: rgb(var(--variant-secondary-01));
+    }
   }
 }

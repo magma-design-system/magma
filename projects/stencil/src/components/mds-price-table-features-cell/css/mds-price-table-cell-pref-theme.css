@@ -1,4 +1,4 @@
-:host-context(.pref-theme-dark) {
+:host-context(:root.pref-theme-dark:not(.pref-theme-scheme-light)) {
   --mds-price-table-features-cell-border-color: rgb(var(--tone-neutral-07));
   --mds-price-table-features-cell-icon-supported-color: rgb(var(--label-green-03));
   --mds-price-table-features-cell-icon-supported-color-hover: rgb(var(--label-green-02));
@@ -6,7 +6,8 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  :host-context(.pref-theme-system) {
+  :host-context(:root.pref-theme-system:not(.pref-theme-scheme-light)),
+  :host-context(:root:not([data-magma-pref])) {
     --mds-price-table-features-cell-border-color: rgb(var(--tone-neutral-07));
     --mds-price-table-features-cell-icon-supported-color: rgb(var(--label-green-03));
     --mds-price-table-features-cell-icon-supported-color-hover: rgb(var(--label-green-02));

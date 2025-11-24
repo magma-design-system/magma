@@ -1,11 +1,12 @@
-:host-context(.pref-contrast-more) {
+:host-context(:root.pref-contrast-more) {
   --mds-header-bar-hamburger-color: rgb(var(--tone-neutral-01));
 
   box-shadow: var(--shadow-outline-strong-50), var(--shadow-2xl);
 }
 
 @media (prefers-contrast: more) {
-  :host-context(.pref-contrast-system) {
+  :host-context(:root.pref-contrast-system),
+  :host-context(:root:not([data-magma-pref])) {
     --mds-header-bar-hamburger-color: rgb(var(--tone-neutral-01));
 
     box-shadow: var(--shadow-outline-strong-50), var(--shadow-2xl);

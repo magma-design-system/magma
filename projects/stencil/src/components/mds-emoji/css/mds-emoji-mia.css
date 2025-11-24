@@ -1,0 +1,11 @@
+:host([name="mia"]) {
+  --mds-emoji-mia-head: rgb(var(--variant-ai-08));
+  --mds-emoji-mia-eyes: rgb(var(--variant-ai-03));
+  --mds-emoji-mia-mouth: rgb(var(--variant-ai-06));
+  --mds-emoji-mia-hands: rgb(var(--variant-ai-06));
+  --mds-emoji-offset-eyes: 1px;
+  --mds-emoji-offset-gadget: 1px;
+  --mds-emoji-offset-hand: 2px;
+  --mds-emoji-offset-head: 0;
+  --mds-emoji-offset-mouth: 1px;
+}

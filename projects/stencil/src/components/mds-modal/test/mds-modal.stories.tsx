@@ -4,6 +4,7 @@ import {
   modalPositionDictionary,
   modalOverflowDictionary,
   modalAnimationStyleDictionary,
+  modalInteractionDictionary,
 } from '../meta/dictionary'
 
 export default {
@@ -15,12 +16,18 @@ export default {
       options: modalAnimationStyleDictionary,
       type: { name: 'string' },
     },
-    opened: {
-      description: 'Specifies if the modal is opened or not',
-      type: { name: 'boolean' },
-    },
     backdrop: {
       description: 'Specifies if the modal shows the backdrop',
+      type: { name: 'boolean' },
+    },
+    interaction: {
+      control: { type: 'select' },
+      description: 'Specifies the animation style of the window',
+      options: modalInteractionDictionary,
+      type: { name: 'string' },
+    },
+    opened: {
+      description: 'Specifies if the modal is opened or not',
       type: { name: 'boolean' },
     },
     overflow: {
@@ -82,9 +89,11 @@ const Template = args => {
       >
         <header
           slot="top"
-          class="p-800 flex gap-400 items-center border-b border-solid border-0 border-tone-neutral-09"
+          class="p-800 flex gap-400 items-center border-b border-solid border-0 border-tone-neutral-09 dark:border-tone-neutral-08"
         >
-          <mds-img class="w-1600" src="./logo-gruppo-maggioli-512w.webp" />
+          <div class="dark:bg-tone-neutral-01 dark:p-200 bg-transparent w-1600 h-1600">
+            <mds-img class="w-full" src="./logo-gruppo-maggioli-512w.webp" />
+          </div>
           <div class="text-tone-neutral-02">
             <mds-text typography="h5" class="truncate min-w-0">
               Maggioli Editore
@@ -105,7 +114,7 @@ const Template = args => {
         </div>
         <footer
           slot="bottom"
-          class="p-800 flex gap-400 text-tone-neutral-02 border-t border-solid border-0 border-tone-neutral-09"
+          class="p-800 flex gap-400 text-tone-neutral-02 border-t border-solid border-0 border-tone-neutral-09 dark:border-tone-neutral-08"
         >
           <mds-author class="flex-grow">
             <mds-avatar
@@ -363,7 +372,7 @@ const CustomTemplate = args => {
         <mds-banner
           id="window"
           slot="window"
-          class="max-w-xl mx-6"
+          class="max-w-[400px] w-full mx-6"
           deletable
           headline="Action required"
         >
@@ -485,6 +494,9 @@ export const DefaultWindowCustomized = {
 
 export const CustomWindowAnimation = {
   render: CustomTemplate,
+  args: {
+    animation: 'custom',
+  },
 }
 
 export const CustomWindowElement = {

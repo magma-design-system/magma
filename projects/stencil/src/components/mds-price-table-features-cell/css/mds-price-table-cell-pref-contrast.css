@@ -1,4 +1,4 @@
-:host-context(.pref-contrast-more) {
+:host-context(:root.pref-contrast-more) {
   --mds-price-table-features-cell-icon-supported-color-hover: rgb(var(--label-green-01));
   --mds-price-table-features-cell-icon-supported-color: rgb(var(--label-green-02));
   --mds-price-table-features-cell-icon-unsupported-color-hover: rgb(var(--tone-neutral-02));
@@ -7,7 +7,8 @@
 }
 
 @media (prefers-contrast: more) {
-  :host-context(.pref-contrast-system) {
+  :host-context(:root.pref-contrast-system),
+  :host-context(:root:not([data-magma-pref])) {
     --mds-price-table-features-cell-icon-supported-color-hover: rgb(var(--label-green-01));
     --mds-price-table-features-cell-icon-supported-color: rgb(var(--label-green-02));
     --mds-price-table-features-cell-icon-unsupported-color-hover: rgb(var(--tone-neutral-02));

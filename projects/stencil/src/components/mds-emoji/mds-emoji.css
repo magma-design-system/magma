@@ -2,10 +2,6 @@
   --mds-emoji-expression-follow-mouse-traits-duration: 200ms;
   --mds-emoji-expression-follow-mouse-head-duration: 300ms;
   --mds-emoji-expression-max-rotation: 16deg;
-  --mds-emoji-eyes: rgb(var(--label-yellow-04));
-  --mds-emoji-head: rgb(var(--label-yellow-08));
-  --mds-emoji-mouth: rgb(var(--label-yellow-06));
-  --mds-emoji-hand: rgb(var(--label-yellow-06));
   --mds-emoji-perspective: 400px;
 
   align-items: stretch;
@@ -19,8 +15,11 @@
 }
 
 svg {
+  height: 100%;
+  overflow: visible;
   transform-style: preserve-3d;
   transition: transform 0.2s ease-out;
+  width: 100%;
 }
 
 :host .head {
@@ -40,4 +39,5 @@ svg {
   visibility: hidden
 }
 
-@import './css/mds-emoji-hexabot.css';
+@import './css/mds-emoji-mia.css';
+@import './css/mds-emoji-simi.css';

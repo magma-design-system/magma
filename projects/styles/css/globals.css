@@ -116,8 +116,8 @@
 
 @property --magma-overlay-color {
   inherits: true;
-  initial-value: rgb(0 0 0);
-  syntax: '<color>';
+  initial-value: 0 0 0;
+  syntax: '<integer>+';
 }
 
 @property --magma-selection-background {

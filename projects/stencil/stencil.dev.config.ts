@@ -16,12 +16,12 @@ import { inlineSvg } from 'stencil-inline-svg'
 const twConfigurationFn = () => {
   // remove tailwind preflight and add custom theme
   return `
-  @layer theme, base, components, utilities;
-  @reference "tailwindcss/theme.css" layer(theme);
+  @layer base, theme, components, utilities;
+  @reference "tailwindcss/theme.css";
   @reference "tailwindcss/utilities.css";
-
   @reference "@maggioli-design-system/styles/tailwind/theme.css";
-  @reference "@maggioli-design-system/styles/tailwind/typography.css";`
+  @reference "@maggioli-design-system/styles/tailwind/typography.css";
+  `
 }
 
 const opts = {

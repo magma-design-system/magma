@@ -1,13 +1,18 @@
-:host-context(.pref-contrast-more) .avatar--icon,
-:host-context(.pref-contrast-more) .avatar--fallback,
-:host-context(.pref-contrast-more) .avatar--initials {
-  box-shadow: var(--shadow-outline-50) inset;
+:host-context(:root.pref-contrast-more) {
+  .avatar--icon,
+  .avatar--fallback,
+  .avatar--initials {
+    box-shadow: var(--shadow-outline-50) inset;
+  }
 }
 
 @media (prefers-contrast: more) {
-  :host-context(.pref-contrast-system) .avatar--icon,
-  :host-context(.pref-contrast-system) .avatar--fallback,
-  :host-context(.pref-contrast-system) .avatar--initials {
-    box-shadow: var(--shadow-outline-50), var(--shadow-lg);
+  :host-context(:root.pref-contrast-system),
+  :host-context(:root:not([data-magma-pref])) {
+    .avatar--icon,
+    .avatar--fallback,
+    .avatar--initials {
+      box-shadow: var(--shadow-outline-50), var(--shadow-lg);
+    }
   }
 }

@@ -1,4 +1,6 @@
 .action-close {
+  --mds-button-color: rgb(var(--tone-neutral-10));
+
   border-radius: 100px;
   opacity: 0;
   pointer-events: none;

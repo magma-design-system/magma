@@ -1,9 +1,10 @@
-:host-context(.pref-theme-dark) {
+:host-context(:root.pref-theme-dark:not(.pref-theme-scheme-light)) {
   box-shadow: var(--shadow-outline) inset;
 }
 
 @media (prefers-color-scheme: dark) {
-  :host-context(.pref-theme-system) {
+  :host-context(:root.pref-theme-system:not(.pref-theme-scheme-light)),
+  :host-context(:root:not([data-magma-pref])) {
     box-shadow: var(--shadow-outline) inset;
   }
 }

@@ -42,7 +42,7 @@ getColorsConfig().then(resultConfig => {
   styleDictionary.extend('./src/config/styledictionary/typography.json').buildAllPlatforms()
 
   // build tailwind css props
-  styleDictionary.extend('./src/config/styledictionary/css.json').buildAllPlatforms()
+  styleDictionary.extend('./src/config/styledictionary/tailwind3.json').buildAllPlatforms()
 
   // build tailwind screens props
   styleDictionary.extend('./src/config/styledictionary/screens.json').buildAllPlatforms()

@@ -1,17 +1,18 @@
-:host-context(.pref-theme-dark) {
+:host-context(:root.pref-theme-dark:not(.pref-theme-scheme-light)) {
   box-shadow: var(--shadow-outline);
-}
 
-:host-context(.pref-theme-dark):host(:hover) {
-  box-shadow: var(--shadow-outline-50);
+  &:host(:hover) {
+    box-shadow: var(--shadow-outline-50);
+  }
 }
 
 @media (prefers-color-scheme: dark) {
-  :host-context(.pref-theme-system) {
+  :host-context(:root.pref-theme-system:not(.pref-theme-scheme-light)),
+  :host-context(:root:not([data-magma-pref])) {
     box-shadow: var(--shadow-outline);
-  }
 
-  :host-context(.pref-theme-system):host(:hover) {
-    box-shadow: var(--shadow-outline-50);
+    &:host(:hover) {
+      box-shadow: var(--shadow-outline-50);
+    }
   }
 }

@@ -36,7 +36,7 @@
   --mds-button-color: rgb(var(--tone-neutral));
   --mds-button-gap: --spacing(200);
   --mds-button-line-clamp: 1;
-  --mds-button-radius: var(--radius-lg);
+  --mds-button-radius: var(--radius-xs);
 
   @apply
     duration-200

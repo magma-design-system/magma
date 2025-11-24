@@ -57,7 +57,6 @@ if (window.localStorage.getItem('mdsPrefStorybookPrefs') && window.localStorage.
   checkAccessibility('consumption', 'high')
 }
 
-document.querySelector('html').classList.add('bg-tone-neutral', 'transition-colors')
 if (window.localStorage.getItem('mdsPrefLanguage')) {
   document.querySelector('html').setAttribute('lang', window.localStorage.getItem('mdsPrefLanguage'))
 }

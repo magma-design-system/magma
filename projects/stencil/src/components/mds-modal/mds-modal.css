@@ -15,8 +15,6 @@
 @import '../../tailwind/fouc.css';
 
 
-
-
   /**
  * @prop --mds-modal-custom-closed-transform: Sets the transform position of the custom window when it's outside the viewport, to it's default position
  * @prop --mds-modal-custom-window-distance: Set the distance between the slotted modal window and the screen bounds
@@ -35,8 +33,7 @@
  */
 
   :host {
-    --mds-modal-custom-closed-transform: rotateX(10deg) rotateY(0) scale(1.25)
-      translate(0, 10%);
+    --mds-modal-custom-closed-transform: rotateX(10deg) rotateY(0) scale(1.25) translate(0, 10%);
     --mds-modal-custom-window-distance: --spacing(600);
     --mds-modal-overlay-color: var(--magma-overlay-color, 0 0 0);
     --mds-modal-overlay-opacity: var(--magma-overlay-opacity, 0.5);

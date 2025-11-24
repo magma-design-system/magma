@@ -1,4 +1,4 @@
-:host-context(.pref-contrast-more) {
+:host-context(:root.pref-contrast-more) {
   --mds-entity-background: rgb(var(--tone-neutral));
   --mds-entity-color: rgb(var(--tone-neutral-01));
   --mds-entity-detail-color: rgb(var(--tone-neutral-02));
@@ -8,7 +8,8 @@
 }
 
 @media (prefers-contrast: more) {
-  :host-context(.pref-contrast-system) {
+  :host-context(:root.pref-contrast-system),
+  :host-context(:root:not([data-magma-pref])) {
     --mds-entity-background: rgb(var(--tone-neutral));
     --mds-entity-color: rgb(var(--tone-neutral-01));
     --mds-entity-detail-color: rgb(var(--tone-neutral-02));

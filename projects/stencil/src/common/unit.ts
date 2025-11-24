@@ -37,6 +37,10 @@ const cssSizeToNumber = (size: string, defaultValue = 0): number => {
     return Number(size.replace('em', '')) * 16
   }
 
+  if (size === Number(size).toString()) {
+    return Number(size)
+  }
+
   return defaultValue
 }
 

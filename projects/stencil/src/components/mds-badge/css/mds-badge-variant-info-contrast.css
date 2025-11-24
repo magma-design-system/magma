@@ -1,39 +1,44 @@
-:host-context(.pref-contrast-more):host([variant="info"]),
-:host-context(.pref-contrast-more):host([variant="info"][tone="strong"]) {
-  --mds-badge-background: rgb(var(--status-info-03));
-}
-
-:host-context(.pref-contrast-more):host([variant="info"][tone="weak"]) {
-  --mds-badge-color: rgb(var(--status-info-01));
-}
-
-:host-context(.pref-contrast-more):host([variant="info"][tone="quiet"]) {
-  --mds-badge-color: rgb(var(--status-info-02));
-}
-
-:host-context(.pref-contrast-more):host([variant="info"][tone="ghost"]) {
-  --mds-badge-background: transparent;
-  --mds-badge-color: rgb(var(--status-info-03));
-  --mds-badge-border-color: rgb(var(--status-info-03));
-}
-
-@media (prefers-contrast: more) {
-  :host-context(.pref-contrast-system):host([variant="info"]),
-  :host-context(.pref-contrast-system):host([variant="info"][tone="strong"]) {
+:host-context(:root.pref-contrast-more) {
+  &:host([variant="info"]),
+  &:host([variant="info"][tone="strong"]) {
     --mds-badge-background: rgb(var(--status-info-03));
   }
 
-  :host-context(.pref-contrast-system):host([variant="info"][tone="weak"]) {
+  &:host([variant="info"][tone="weak"]) {
     --mds-badge-color: rgb(var(--status-info-01));
   }
 
-  :host-context(.pref-contrast-system):host([variant="info"][tone="quiet"]) {
+  &:host([variant="info"][tone="quiet"]) {
     --mds-badge-color: rgb(var(--status-info-02));
   }
 
-  :host-context(.pref-contrast-system):host([variant="info"][tone="ghost"]) {
+  &:host([variant="info"][tone="ghost"]) {
     --mds-badge-background: transparent;
     --mds-badge-color: rgb(var(--status-info-03));
     --mds-badge-border-color: rgb(var(--status-info-03));
+  }
+}
+
+@media (prefers-contrast: more) {
+  :host-context(:root.pref-contrast-system),
+  :host-context(:root:not([data-magma-pref])) {
+    &:host([variant="info"]),
+    &:host([variant="info"][tone="strong"]) {
+      --mds-badge-background: rgb(var(--status-info-03));
+    }
+
+    &:host([variant="info"][tone="weak"]) {
+      --mds-badge-color: rgb(var(--status-info-01));
+    }
+
+    &:host([variant="info"][tone="quiet"]) {
+      --mds-badge-color: rgb(var(--status-info-02));
+    }
+
+    &:host([variant="info"][tone="ghost"]) {
+      --mds-badge-background: transparent;
+      --mds-badge-color: rgb(var(--status-info-03));
+      --mds-badge-border-color: rgb(var(--status-info-03));
+    }
   }
 }

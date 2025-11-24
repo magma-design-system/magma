@@ -1,17 +1,18 @@
-:host-context(.pref-theme-dark) {
+:host-context(:root.pref-theme-dark:not(.pref-theme-scheme-light)) {
   --mds-paginator-background: rgb(var(--tone-neutral-09));
-}
 
-:host-context(.pref-theme-dark) .pages {
-  box-shadow: var(--shadow-outline) inset;
+  .pages {
+    box-shadow: var(--shadow-outline) inset;
+  }
 }
 
 @media (prefers-color-scheme: dark) {
-  :host-context(.pref-theme-system) {
+  :host-context(:root.pref-theme-system:not(.pref-theme-scheme-light)),
+  :host-context(:root:not([data-magma-pref])) {
     --mds-paginator-background: rgb(var(--tone-neutral-09));
-  }
 
-  :host-context(.pref-theme-system) .pages {
-    box-shadow: var(--shadow-outline) inset;
+    .pages {
+      box-shadow: var(--shadow-outline) inset;
+    }
   }
 }

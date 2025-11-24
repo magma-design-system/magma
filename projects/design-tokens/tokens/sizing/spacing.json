@@ -1,6 +1,9 @@
 {
   "spacing-scale": { "value": "0.0025rem" },
   "spacing": {
+    "none": {
+      "value": "0px"
+    },
     "xs": {
       "value": "{sizing.primitive.100}"
     },
@@ -20,7 +23,10 @@
       "value": "{sizing.primitive.1200}"
     },
     "3xl": {
-      "value": "{sizing.primitive.2000}"
+      "value": "{sizing.primitive.1600}"
+    },
+    "4xl": {
+      "value": "{sizing.primitive.2400}"
     },
     "phrase": {
       "value": "50ch"
@@ -36,38 +42,47 @@
     }
   },
   "container": {
+    "4xs": {
+      "value": "{sizing.primitive.3200}"
+    },
+    "3xs": {
+      "value": "{sizing.primitive.4800}"
+    },
+    "2xs": {
+      "value": "{sizing.primitive.6000}"
+    },
     "xs": {
-      "value": "320px"
+      "value": "{sizing.primitive.8000}"
     },
     "sm": {
-      "value": "384px"
+      "value": "{sizing.primitive.9600}"
     },
     "md": {
-      "value": "448px"
+      "value": "{sizing.primitive.11200}"
     },
     "lg": {
-      "value": "512px"
+      "value": "{sizing.primitive.12800}"
     },
     "xl": {
-      "value": "576px"
+      "value": "{sizing.primitive.14200}"
     },
     "2xl": {
-      "value": "672px"
+      "value": "{sizing.primitive.16000}"
     },
     "3xl": {
-      "value": "768px"
+      "value": "{sizing.primitive.19200}"
     },
     "4xl": {
-      "value": "896px"
+      "value": "{sizing.primitive.24000}"
     },
     "5xl": {
-      "value": "1024px"
+      "value": "{sizing.primitive.25600}"
     },
     "6xl": {
-      "value": "1152px"
+      "value": "{sizing.primitive.28800}"
     },
     "7xl": {
-      "value": "1280px"
+      "value": "{sizing.primitive.32000}"
     }
   }
 }

@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 import { Component, Method, Element, Event, EventEmitter, Host, h, Prop, Watch } from '@stencil/core'
-import { ModalPositionType, ModalAnimationStateType, ModalOverflowType, ModalAnimationStyleType } from './meta/types'
+import { ModalPositionType, ModalAnimationStateType, ModalOverflowType, ModalAnimationStyleType, ModalInteractionType } from './meta/types'
 import { cssDurationToMilliseconds } from '@common/unit'
 import miBaselineClose from '@icon/mi/baseline/close.svg'
 
@@ -62,6 +62,13 @@ export class MdsModal {
    * Specifies if the component prevents the body from scrolling when modal window is opened
    */
   @Prop({ reflect: true }) readonly overflow: ModalOverflowType = 'auto'
+
+  /**
+   * Specifies if the component can be closed with close button, or also if the backdrop background is cliccked.
+   * If `strict` is selected only the close button can dismiss the component via UI.
+   * If `relaxed` is selected the component can be dismissed also by cliccking the backdrop area.
+   */
+  @Prop({ reflect: true }) readonly interaction: ModalInteractionType = 'relaxed'
 
   /**
    * Emits when a modal is closed
@@ -181,10 +188,14 @@ export class MdsModal {
     }
   }
 
-  private closeModal = (e:Event): void => {
-    if ((e.target as HTMLElement)?.localName !== 'mds-modal') {
-      return
+  private closeModal = (e:Event, force?: boolean): void => {
+    if (!force) {
+      if (this.interaction === 'strict') return
+      if ((e.target as HTMLElement)?.localName !== 'mds-modal') {
+        return
+      }
     }
+
     this.opened = e.target !== e.currentTarget
     if (!this.opened) {
       this.closeEvent.emit()
@@ -234,7 +245,7 @@ export class MdsModal {
             }
           </div>
         }
-        { !this.window && <mds-button class="action-close" icon={miBaselineClose} variant="light" tone="quiet" size="xl" onClick={(e: Event) => { this.closeModal(e) }} part="action-close"></mds-button> }
+        { !this.window && <mds-button class="action-close" icon={miBaselineClose} variant="light" tone="quiet" size="xl" onClick={(e: Event) => { this.closeModal(e, true) }} part="action-close"></mds-button> }
       </Host>
     )
   }

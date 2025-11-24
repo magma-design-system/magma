@@ -1,4 +1,4 @@
-:host-context(.pref-theme-dark) {
+:host-context(:root.pref-theme-dark:not(.pref-theme-scheme-light)) {
   --mds-paginator-item-background-disabled: rgb(var(--tone-neutral-09));
   --mds-paginator-item-background-hover: rgb(var(--tone-neutral-08));
   --mds-paginator-item-background-selected: rgb(var(--variant-primary-03));
@@ -14,7 +14,8 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  :host-context(.pref-theme-system) {
+  :host-context(:root.pref-theme-system:not(.pref-theme-scheme-light)),
+  :host-context(:root:not([data-magma-pref])) {
     --mds-paginator-item-background-disabled: rgb(var(--tone-neutral-09));
     --mds-paginator-item-background-hover: rgb(var(--tone-neutral-08));
     --mds-paginator-item-background-selected: rgb(var(--variant-primary-03));

@@ -1,17 +1,24 @@
-:host-context(.pref-animation-reduce),
-:host-context(.pref-animation-reduce) .field::-webkit-slider-thumb,
-:host-context(.pref-animation-reduce) .field::-webkit-slider-runnable-track,
-:host-context(.pref-animation-reduce) .track-progress,
-:host-context(.pref-animation-reduce) .track-total {
+:host-context(:root.pref-animation-reduce) {
   transition-duration: 0s;
+
+  .field::-webkit-slider-thumb,
+  .field::-webkit-slider-runnable-track,
+  .track-progress,
+  .track-total {
+    transition-duration: 0s;
+  }
 }
 
 @media (prefers-reduced-motion) {
-  :host-context(.pref-animation-system),
-  :host-context(.pref-animation-system) .field::-webkit-slider-thumb,
-  :host-context(.pref-animation-system) .field::-webkit-slider-runnable-track,
-  :host-context(.pref-animation-system) .track-progress,
-  :host-context(.pref-animation-system) .track-total {
+  :host-context(:root.pref-animation-system),
+  :host-context(:root:not([data-magma-pref])) {
     transition-duration: 0s;
+
+    .field::-webkit-slider-thumb,
+    .field::-webkit-slider-runnable-track,
+    .track-progress,
+    .track-total {
+      transition-duration: 0s;
+    }
   }
 }
