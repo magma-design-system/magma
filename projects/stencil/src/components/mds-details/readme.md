@@ -33,9 +33,10 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## Shadow Parts
 
-| Part        | Description |
-| ----------- | ----------- |
-| `"content"` |             |
+| Part        | Description                                              |
+| ----------- | -------------------------------------------------------- |
+| `"content"` | The content wrapper of the `default` and `content` slots |
+| `"header"`  | The header of the component                              |
 
 
 ## CSS Custom Properties
