@@ -6,6 +6,6 @@ describe('mds-pref-theme-variant-item', () => {
     await page.setContent('<mds-pref-theme-variant-item></mds-pref-theme-variant-item>')
 
     const element = await page.find('mds-pref-theme-variant-item')
-    expect(element).toHaveClass('hydrated')
+    expect(element).toHaveAttribute('hydrated')
   })
 })
