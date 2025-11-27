@@ -64,6 +64,7 @@
 
   display: grid;
   gap: 0 theme('gap.600');
+  grid-template-rows: min-content auto;
 }
 
 :host([animation="slide"]) ::slotted(mds-tab-item) {
@@ -94,6 +95,7 @@
 .tabs-wrapper {
   border-radius: var(--mds-tab-tabs-radius);
   display: grid;
+  flex-shrink: 0;
   margin: var(--mds-tab-tabs-wrapper-margin);
   max-width: max-content;
   overflow: hidden;
@@ -124,9 +126,10 @@
     gap-600
     hide-scrollbar;
 
-  align-items: flex-start;
+  align-items: stretch;
   box-sizing: border-box;
   display: flex;
+  flex-grow: 1;
   height: var(--mds-tab-contents-height);
   overflow-x: auto;
   overflow-y: hidden;

@@ -1,5 +1,6 @@
 :host([direction="vertical"]) {
   grid-template-columns: var(--mds-tab-direction-vertical-columns);
+  grid-template-rows: 1fr;
 }
 
 :host([direction="vertical"]) .tabs {
