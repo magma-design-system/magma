@@ -63,7 +63,7 @@ export class MdsPrefThemeVariantItem {
   render () {
     return (
       <Host onClick={this.handleClick}>
-        <mds-button icon={this.selected ? miBaselineCheckCircle : miOutlineCircle} variant="dark" tone="quiet">
+        <mds-button icon={this.selected ? miBaselineCheckCircle : miOutlineCircle} variant="dark" tone="text">
           <div class="label">
             <div class="theme-preview">
               <div class="theme-color theme-color--variant-primary"></div>

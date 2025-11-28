@@ -59,7 +59,7 @@ const TemplateActions = args => (
       smetterà di funzionare ma non potrai più utilizzare le{' '}
       <a href="#">funzioni premium</a>.
     </mds-text>
-    <mds-button slot="action" variant={args.variant} tone="ghost">
+    <mds-button slot="action" variant={args.variant} tone="outline">
       Annulla
     </mds-button>
     <mds-button slot="action" variant={args.variant}>
@@ -75,7 +75,7 @@ const TemplateVariantDefault = args => (
       le notifiche su aggiornamenti di norme di legge e la consultazione dei
       volumi correlati.
     </mds-text>
-    <mds-button slot="action" variant="primary" tone="ghost">
+    <mds-button slot="action" variant="primary" tone="outline">
       Cancel
     </mds-button>
     <mds-button slot="action" variant="primary" tone={args.tone}>
@@ -91,7 +91,7 @@ const TemplateVariantDark = args => (
       le notifiche su aggiornamenti di norme di legge e la consultazione dei
       volumi correlati.
     </mds-text>
-    <mds-button slot="action" variant="light" tone="quiet">
+    <mds-button slot="action" variant="light" tone="text">
       Cancel
     </mds-button>
     <mds-button slot="action" variant="dark" tone={args.tone}>
@@ -107,7 +107,7 @@ const TemplateVariantLight = args => (
       le notifiche su aggiornamenti di norme di legge e la consultazione dei
       volumi correlati.
     </mds-text>
-    <mds-button slot="action" variant="dark" tone="quiet">
+    <mds-button slot="action" variant="dark" tone="text">
       Cancel
     </mds-button>
     <mds-button slot="action" variant="dark" tone={args.tone}>
@@ -123,7 +123,7 @@ const TemplateVariantStatus = args => (
       registrato in precedenza. Conferma solo se sei consapevole di ciò che stai
       facendo.
     </mds-text>
-    <mds-button slot="action" variant={args.variant} tone="quiet">
+    <mds-button slot="action" variant={args.variant} tone="text">
       Annulla
     </mds-button>
     <mds-button slot="action" variant={args.variant} tone="weak">

@@ -383,7 +383,7 @@ const CustomTemplate = args => {
             the specification stage, giving us more confidence that we’re
             future-proofing our components as more brands adopt NewsKit.
           </mds-text>
-          <mds-button slot="actions" variant="primary" tone="quiet">
+          <mds-button slot="actions" variant="primary" tone="text">
             Cancel
           </mds-button>
           <mds-button slot="actions" variant="primary">

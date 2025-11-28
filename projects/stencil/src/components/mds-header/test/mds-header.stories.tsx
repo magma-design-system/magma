@@ -78,7 +78,7 @@ const Template = args => (
             </mds-text>
           </div>
         </div>
-        <mds-button slot="nav" variant="dark" tone="ghost">
+        <mds-button slot="nav" variant="dark" tone="outline">
           Accedi
         </mds-button>
         <mds-button slot="nav" icon="mi/round/person">
@@ -96,7 +96,7 @@ const Template = args => (
           </div>
         </div>
         <div class="grid gap-200 p-600">
-          <mds-button variant="dark" tone="ghost">
+          <mds-button variant="dark" tone="outline">
             Accedi
           </mds-button>
           <mds-button icon="mi/round/person">Registrati</mds-button>
@@ -137,7 +137,7 @@ const TemplateAutoHide = args => (
             </mds-text>
           </div>
         </div>
-        <mds-button slot="nav" variant="dark" tone="ghost">
+        <mds-button slot="nav" variant="dark" tone="outline">
           Accedi
         </mds-button>
         <mds-button slot="nav" icon="mi/round/person">
@@ -155,7 +155,7 @@ const TemplateAutoHide = args => (
           </div>
         </div>
         <div class="grid gap-200 p-600">
-          <mds-button variant="dark" tone="ghost">
+          <mds-button variant="dark" tone="outline">
             Accedi
           </mds-button>
           <mds-button icon="mi/round/person">Registrati</mds-button>
@@ -207,7 +207,7 @@ const TemplateLandingPage = args => (
             </mds-text>
           </div>
         </div>
-        <mds-button slot="nav" variant="dark" tone="ghost">
+        <mds-button slot="nav" variant="dark" tone="outline">
           Accedi
         </mds-button>
         <mds-button slot="nav" icon="mi/round/person">
@@ -225,7 +225,7 @@ const TemplateLandingPage = args => (
           </div>
         </div>
         <div class="grid gap-200 p-600">
-          <mds-button variant="dark" tone="ghost">
+          <mds-button variant="dark" tone="outline">
             Accedi
           </mds-button>
           <mds-button icon="mi/round/person">Registrati</mds-button>

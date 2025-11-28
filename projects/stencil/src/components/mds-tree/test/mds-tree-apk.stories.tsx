@@ -49,7 +49,7 @@ const TemplateNavigationMenu = () => {
                 icon="mi/baseline/favorite"
                 class="fill-tone-neutral-04"
                 variant="dark"
-                tone="quiet"
+                tone="text"
               ></mds-button>
             </mds-tree-item>
             <mds-tree-item label="Nuovo protocollo in partenza">
@@ -58,7 +58,7 @@ const TemplateNavigationMenu = () => {
                 icon="mi/baseline/favorite-border"
                 class="fill-tone-neutral-07"
                 variant="dark"
-                tone="quiet"
+                tone="text"
               ></mds-button>
             </mds-tree-item>
           </mds-tree-item>
@@ -69,7 +69,7 @@ const TemplateNavigationMenu = () => {
                 icon="mi/baseline/favorite-border"
                 class="fill-tone-neutral-07"
                 variant="dark"
-                tone="quiet"
+                tone="text"
               ></mds-button>
             </mds-tree-item>
             <mds-tree-item label="Gestione Allegati">
@@ -78,7 +78,7 @@ const TemplateNavigationMenu = () => {
                 icon="mi/baseline/favorite-border"
                 class="fill-tone-neutral-07"
                 variant="dark"
-                tone="quiet"
+                tone="text"
               ></mds-button>
             </mds-tree-item>
             <mds-tree-item label="Autenticazione Documenti" actions="visible">
@@ -87,7 +87,7 @@ const TemplateNavigationMenu = () => {
                 icon="mi/baseline/favorite"
                 class="fill-tone-neutral-04"
                 variant="dark"
-                tone="quiet"
+                tone="text"
               ></mds-button>
             </mds-tree-item>
           </mds-tree-item>
@@ -98,7 +98,7 @@ const TemplateNavigationMenu = () => {
                 icon="mi/baseline/favorite-border"
                 class="fill-tone-neutral-07"
                 variant="dark"
-                tone="quiet"
+                tone="text"
               ></mds-button>
             </mds-tree-item>
             <mds-tree-item label="Fascicoli">
@@ -107,7 +107,7 @@ const TemplateNavigationMenu = () => {
                 icon="mi/baseline/favorite-border"
                 class="fill-tone-neutral-07"
                 variant="dark"
-                tone="quiet"
+                tone="text"
               ></mds-button>
             </mds-tree-item>
             <mds-tree-item label="Iter Documentale" actions="visible">
@@ -116,7 +116,7 @@ const TemplateNavigationMenu = () => {
                 icon="mi/baseline/favorite"
                 class="fill-tone-neutral-04"
                 variant="dark"
-                tone="quiet"
+                tone="text"
               ></mds-button>
             </mds-tree-item>
             <mds-tree-item label="Pratiche">
@@ -125,7 +125,7 @@ const TemplateNavigationMenu = () => {
                 icon="mi/baseline/favorite-border"
                 class="fill-tone-neutral-07"
                 variant="dark"
-                tone="quiet"
+                tone="text"
               ></mds-button>
             </mds-tree-item>
           </mds-tree-item>

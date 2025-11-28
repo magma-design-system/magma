@@ -165,7 +165,7 @@ export class MdsInputDate {
           onInput={this.handleChange}
           onChange={this.handleChange}
         />
-        {!this.isSlotted && <mds-button id="calendar-dropdown" class="action-open-calendar" disabled={this.disabled} variant="dark" tone="quiet" icon={miBaselineCalendarToday} onClick={() => {
+        {!this.isSlotted && <mds-button id="calendar-dropdown" class="action-open-calendar" disabled={this.disabled} variant="dark" tone="text" icon={miBaselineCalendarToday} onClick={() => {
           this.calendarKey += 1
         }}></mds-button>}
         <mds-input-tip lang={this.language} position="top" active={this.hasFocus}>

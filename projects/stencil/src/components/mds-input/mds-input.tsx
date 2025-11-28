@@ -665,13 +665,13 @@ export class MdsInput {
         {this.type === 'password'
           && <mds-button class="password-toggle-button"
             icon={this.isPasswordVisible ? miBaselineVisibleOff : miBaselineVisible} onClick={() => this.isPasswordVisible = !this.isPasswordVisible}
-            tabindex="0" tone="quiet" title={this.isPasswordVisible ? this.t.get('hidePassword') : this.t.get('showPassword')}
+            tabindex="0" tone="text" title={this.isPasswordVisible ? this.t.get('hidePassword') : this.t.get('showPassword')}
             part="password-toggle-button"></mds-button>
         }
         {this.mic
           && <mds-button class={clsx('mic-toggle-button', this.isRecording && 'mic-toggle-button--recording')}
             icon={this.speechToTextIcon} onClick={() => this.toggleTextRecognition()}
-            tabindex="0" variant="dark" tone="quiet" title={this.speechToTextLabel}
+            tabindex="0" variant="dark" tone="text" title={this.speechToTextLabel}
             part="mic-toggle-button"></mds-button>
         }
         <mds-input-tip lang={this.language} position="top" active={this.hasFocus}>

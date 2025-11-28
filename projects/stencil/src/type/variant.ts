@@ -103,22 +103,14 @@ export type StateVariantType =
   | 'focused'
   | 'readonly'
 
-export type ToneActionVariantType =
-  | 'primary' // background strong
-  | 'secondary' // background weak
-  | 'strong' // background strong
-  | 'weak' // background weak
-  | 'ghost' // bordered
-  | 'quiet' // no background, no border
-
 export type ToneVariantType =
   | 'strong' // background strong
   | 'weak' // background weak
-  | 'ghost' // bordered
-  | 'quiet' // no background, no border
+  | 'outline' // bordered
+  | 'text' // no background, no border
 
 export type ToneSimpleVariantType =
-  | 'quiet'
+  | 'text'
   | 'strong'
   | 'weak'
 

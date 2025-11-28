@@ -89,43 +89,43 @@ const Template = args => (
         icon="mi/baseline/favorite"
         tooltip="Add to favorites"
         variant="dark"
-        tone={args.interaction === 'rightclick' ? 'quiet' : 'weak'}
+        tone={args.interaction === 'rightclick' ? 'text' : 'weak'}
       ></mds-radial-menu-item>
       <mds-radial-menu-item
         icon="mi/baseline/email"
         tooltip="Send email"
         variant="dark"
-        tone={args.interaction === 'rightclick' ? 'quiet' : 'weak'}
+        tone={args.interaction === 'rightclick' ? 'text' : 'weak'}
       ></mds-radial-menu-item>
       <mds-radial-menu-item
         icon="mi/baseline/insert-drive-file"
         tooltip="New document"
         variant="dark"
-        tone={args.interaction === 'rightclick' ? 'quiet' : 'weak'}
+        tone={args.interaction === 'rightclick' ? 'text' : 'weak'}
       ></mds-radial-menu-item>
       <mds-radial-menu-item
         icon="mi/baseline/info"
         tooltip="Show infos"
         variant="dark"
-        tone={args.interaction === 'rightclick' ? 'quiet' : 'weak'}
+        tone={args.interaction === 'rightclick' ? 'text' : 'weak'}
       ></mds-radial-menu-item>
       <mds-radial-menu-item
         icon="mi/baseline/print"
         tooltip="Print"
         variant="dark"
-        tone={args.interaction === 'rightclick' ? 'quiet' : 'weak'}
+        tone={args.interaction === 'rightclick' ? 'text' : 'weak'}
       ></mds-radial-menu-item>
       <mds-radial-menu-item
         icon="mi/baseline/ios-share"
         tooltip="Share"
         variant="dark"
-        tone={args.interaction === 'rightclick' ? 'quiet' : 'weak'}
+        tone={args.interaction === 'rightclick' ? 'text' : 'weak'}
       ></mds-radial-menu-item>
       <mds-radial-menu-item
         icon="mi/baseline/edit"
         tooltip="Edit metadata"
         variant="dark"
-        tone={args.interaction === 'rightclick' ? 'quiet' : 'weak'}
+        tone={args.interaction === 'rightclick' ? 'text' : 'weak'}
       ></mds-radial-menu-item>
       <mds-radial-menu-item
         icon="mi/baseline/delete"
@@ -183,43 +183,43 @@ const TemplateNumericOrder = args => (
         icon="mdi/numeric-1"
         tooltip="Item number 1"
         variant="info"
-        tone={args.interaction === 'rightclick' ? 'quiet' : 'weak'}
+        tone={args.interaction === 'rightclick' ? 'text' : 'weak'}
       ></mds-radial-menu-item>
       <mds-radial-menu-item
         icon="mdi/numeric-2"
         tooltip="Item number 2"
         variant="info"
-        tone={args.interaction === 'rightclick' ? 'quiet' : 'weak'}
+        tone={args.interaction === 'rightclick' ? 'text' : 'weak'}
       ></mds-radial-menu-item>
       <mds-radial-menu-item
         icon="mdi/numeric-3"
         tooltip="Item number 3"
         variant="success"
-        tone={args.interaction === 'rightclick' ? 'quiet' : 'weak'}
+        tone={args.interaction === 'rightclick' ? 'text' : 'weak'}
       ></mds-radial-menu-item>
       <mds-radial-menu-item
         icon="mdi/numeric-4"
         tooltip="Item number 4"
         variant="success"
-        tone={args.interaction === 'rightclick' ? 'quiet' : 'weak'}
+        tone={args.interaction === 'rightclick' ? 'text' : 'weak'}
       ></mds-radial-menu-item>
       <mds-radial-menu-item
         icon="mdi/numeric-5"
         tooltip="Item number 5"
         variant="warning"
-        tone={args.interaction === 'rightclick' ? 'quiet' : 'weak'}
+        tone={args.interaction === 'rightclick' ? 'text' : 'weak'}
       ></mds-radial-menu-item>
       <mds-radial-menu-item
         icon="mdi/numeric-6"
         tooltip="Item number 6"
         variant="warning"
-        tone={args.interaction === 'rightclick' ? 'quiet' : 'weak'}
+        tone={args.interaction === 'rightclick' ? 'text' : 'weak'}
       ></mds-radial-menu-item>
       <mds-radial-menu-item
         icon="mdi/numeric-7"
         tooltip="Item number 7"
         variant="error"
-        tone={args.interaction === 'rightclick' ? 'quiet' : 'weak'}
+        tone={args.interaction === 'rightclick' ? 'text' : 'weak'}
       ></mds-radial-menu-item>
       <mds-radial-menu-item
         icon="mdi/numeric-8"

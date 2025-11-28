@@ -27,8 +27,8 @@ const buttonDropdownVariantDictionary = [
 const buttonToneVariantDictionary = [
   'strong',
   'weak',
-  'ghost',
-  'quiet',
+  'outline',
+  'text',
 ]
 
 const buttonToneMinimalVariantDictionary = [

@@ -9,17 +9,17 @@ const Template = args => (
     <mds-button
       icon="mi/baseline/text-format"
       variant="dark"
-      tone="quiet"
+      tone="text"
     ></mds-button>
     <mds-button
       icon="mi/baseline/text-rotate-up"
       variant="dark"
-      tone="quiet"
+      tone="text"
     ></mds-button>
     <mds-button
       icon="mi/baseline/wrap-text"
       variant="dark"
-      tone="quiet"
+      tone="text"
     ></mds-button>
   </mds-button-group>
 )
@@ -30,17 +30,17 @@ const TemplateComplex = args => (
       <mds-button
         icon="mi/baseline/text-format"
         variant="dark"
-        tone="quiet"
+        tone="text"
       ></mds-button>
       <mds-button
         icon="mi/baseline/text-rotate-up"
         variant="dark"
-        tone="quiet"
+        tone="text"
       ></mds-button>
       <mds-button
         icon="mi/baseline/wrap-text"
         variant="dark"
-        tone="quiet"
+        tone="text"
       ></mds-button>
     </mds-button-group>
   </div>

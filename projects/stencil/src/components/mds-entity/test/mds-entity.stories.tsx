@@ -158,7 +158,7 @@ const TemplateDownload = args => {
             setUpload(true)
           }}
           variant="dark"
-          tone="ghost"
+          tone="outline"
         >
           Riavvia
         </mds-button>

@@ -48,7 +48,7 @@ export class MdsLabel {
   /**
    * Sets the tone of the color variant
    */
-  @Prop({ reflect: true }) readonly tone: ToneSimpleVariantType = 'quiet'
+  @Prop({ reflect: true }) readonly tone: ToneSimpleVariantType = 'text'
 
   /**
    * Truncates text inside the label or displays it in multiline if needed

@@ -142,7 +142,7 @@ export class MdsTableHeaderCell {
     return (
       <Host role="columnheader" aria-sort={this.direction}>
         { this.sortable
-          ? <mds-button class="action" icon={clsx(this.direction === 'none' && miBaselineUnfoldMore, this.direction === 'ascending' && miBaselineKeyboardArrowUp, this.direction === 'descending' && miBaselineKeyboardArrowDown)} icon-position="right" onClick={this.sort} tone="quiet" variant="dark" size="sm" part="action">
+          ? <mds-button class="action" icon={clsx(this.direction === 'none' && miBaselineUnfoldMore, this.direction === 'ascending' && miBaselineKeyboardArrowUp, this.direction === 'descending' && miBaselineKeyboardArrowDown)} icon-position="right" onClick={this.sort} tone="text" variant="dark" size="sm" part="action">
             { this.label }
           </mds-button>
           : <mds-text class="label" typography="label" part="label">

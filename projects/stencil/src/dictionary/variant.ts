@@ -83,8 +83,8 @@ const themeLabelVariantDictionary = [
 const toneVariantDictionary = [
   'strong',
   'weak',
-  'ghost',
-  'quiet',
+  'outline',
+  'text',
 ]
 
 const themeVariantChipDictionary = [
@@ -108,25 +108,16 @@ const themeVariantChipDictionary = [
   'yellow',
 ]
 
-const toneActionVariantDictionary = [
-  'primary',
-  'secondary',
-  'tertiary',
-  'strong',
-  'weak',
-  'quiet',
-]
-
 const toneSimpleVariantDictionary = [
   'strong',
   'weak',
-  'quiet',
+  'text',
 ]
 
 const toneSmartVariantDictionary = [
   'strong',
   'weak',
-  'ghost',
+  'outline',
 ]
 
 const toneMinimalVariantDictionary = [
@@ -143,7 +134,6 @@ export {
   themeStatusVariantDictionary,
   themeVariantChipDictionary,
   themeVariantDictionary,
-  toneActionVariantDictionary,
   toneMinimalVariantDictionary,
   toneSimpleVariantDictionary,
   toneSmartVariantDictionary,

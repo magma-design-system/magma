@@ -301,7 +301,7 @@ export class MdsInputDateRange {
         <mds-button
           class="action-open-calendar"
           variant="dark"
-          tone="quiet"
+          tone="text"
           icon={miBaselineCalendarToday}
           id="calendar-dropdown"
           onClick={() => {

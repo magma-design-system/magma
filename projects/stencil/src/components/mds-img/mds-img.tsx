@@ -206,7 +206,7 @@ export class MdsImg {
               ? <div aria-hidden="true" class="alt-text-container alt-text-container--default-aspect-ratio">
                 <mds-icon class="icon" name={miBaselinePanorama}></mds-icon>
                 <mds-text class="alt-text" typography="h6"><i>{ this.alt }</i></mds-text>
-                <mds-button aria-hidden="true" role="none" class="click-to-load" tabIndex={-1} variant="light" tone="ghost">{ this.t.get('clickToLoad') }</mds-button>
+                <mds-button aria-hidden="true" role="none" class="click-to-load" tabIndex={-1} variant="light" tone="outline">{ this.t.get('clickToLoad') }</mds-button>
               </div>
               : <img
                 alt={this.alt}

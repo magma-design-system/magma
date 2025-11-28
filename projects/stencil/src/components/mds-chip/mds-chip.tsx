@@ -216,7 +216,7 @@ export class MdsChip {
             { this.label }
           </mds-text>
         }
-        { this.deletable && <mds-button class="button-delete" icon={miBaselineCancel} onClick={this.onDeleteHandler.bind(this)} title={ `${this.t.get('deleteLabel')} ${this.label}` } variant="dark" tone="quiet" size="sm"></mds-button> }
+        { this.deletable && <mds-button class="button-delete" icon={miBaselineCancel} onClick={this.onDeleteHandler.bind(this)} title={ `${this.t.get('deleteLabel')} ${this.label}` } variant="dark" tone="text" size="sm"></mds-button> }
       </Host>
     )
   }

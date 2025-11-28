@@ -28,7 +28,7 @@ const Template = args => (
         </mds-text>
       </div>
     </div>
-    <mds-button slot="nav" variant="dark" tone="ghost">
+    <mds-button slot="nav" variant="dark" tone="outline">
       Accedi
     </mds-button>
     <mds-button slot="nav" icon="mi/round/person">

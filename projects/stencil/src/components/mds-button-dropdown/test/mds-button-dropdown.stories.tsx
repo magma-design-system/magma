@@ -74,10 +74,10 @@ export default {
 
 const Template = args => (
   <mds-button-dropdown {...args}>
-    <mds-button variant="dark" tone="quiet" size="sm">
+    <mds-button variant="dark" tone="text" size="sm">
       Invia subito
     </mds-button>
-    <mds-button variant="dark" tone="quiet" size="sm">
+    <mds-button variant="dark" tone="text" size="sm">
       Elimina
     </mds-button>
   </mds-button-dropdown>

@@ -187,10 +187,10 @@ export class MdsTreeItem {
             <div class="tree-dot"></div>
           </div>
           <div class={clsx('toggle-icon', `toggle-icon--${this.toggle}`)}>
-            <mds-button await={this.await} onClick={this.onClick.bind(this)} icon={!this.await ? this.currentToggleIcon : undefined} title={ this.t.get(this.expanded ? 'collapse' : 'expand', { label: this.label }) } variant="dark" tone="quiet" size="sm"/>
+            <mds-button await={this.await} onClick={this.onClick.bind(this)} icon={!this.await ? this.currentToggleIcon : undefined} title={ this.t.get(this.expanded ? 'collapse' : 'expand', { label: this.label }) } variant="dark" tone="text" size="sm"/>
           </div>
           <div class="title">
-            <mds-button class={clsx('label-action', this.await && 'label-action--await')} disabled={this.await} icon={this.icon} onClick={this.onClick.bind(this)} variant="dark" tone="quiet" truncate={this.truncate}>{ this.label }</mds-button>
+            <mds-button class={clsx('label-action', this.await && 'label-action--await')} disabled={this.await} icon={this.icon} onClick={this.onClick.bind(this)} variant="dark" tone="text" truncate={this.truncate}>{ this.label }</mds-button>
             <div class={clsx('actions-container', this.hasActions && 'actions-container--has-actions')} part="actions-container">
               <div class="actions" part="actions-list">
                 <slot name="action"></slot>

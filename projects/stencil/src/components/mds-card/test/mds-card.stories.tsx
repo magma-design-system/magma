@@ -35,7 +35,7 @@ const FullCardTemplate = args => (
           id="action-example"
           icon="mi/round/more-vert"
           variant="dark"
-          tone="quiet"
+          tone="text"
         ></mds-button>
       </mds-card-header>
       <mds-card-media>
@@ -47,7 +47,7 @@ const FullCardTemplate = args => (
         sed odio hendrerit diam maximus blandit ac malesuada odio.
       </mds-card-content>
       <mds-card-footer>
-        <mds-button variant="dark" tone="quiet">
+        <mds-button variant="dark" tone="text">
           Cancel
         </mds-button>
         <mds-button>Contact</mds-button>
@@ -58,13 +58,13 @@ const FullCardTemplate = args => (
       class="max-w-[350px] p-200 gap-100"
       backdrop
     >
-      <mds-button variant="dark" tone="quiet" class="justify-start">
+      <mds-button variant="dark" tone="text" class="justify-start">
         Modifica account
       </mds-button>
-      <mds-button variant="dark" tone="quiet" class="justify-start">
+      <mds-button variant="dark" tone="text" class="justify-start">
         Elimina
       </mds-button>
-      <mds-button variant="dark" tone="quiet" class="justify-start">
+      <mds-button variant="dark" tone="text" class="justify-start">
         Esci dalla sessione
       </mds-button>
     </mds-dropdown>
@@ -96,7 +96,7 @@ const CustomSlotsTemplate = args => (
           id="action-example"
           icon="mi/round/more-vert"
           variant="dark"
-          tone="quiet"
+          tone="text"
         ></mds-button>
       </div>
       <mds-img src={URLs[0]} slot="media" class="object-cover"></mds-img>
@@ -114,13 +114,13 @@ const CustomSlotsTemplate = args => (
       class="max-w-[350px] p-200 gap-100"
       backdrop
     >
-      <mds-button variant="dark" tone="quiet" class="justify-start">
+      <mds-button variant="dark" tone="text" class="justify-start">
         Modifica account
       </mds-button>
-      <mds-button variant="dark" tone="quiet" class="justify-start">
+      <mds-button variant="dark" tone="text" class="justify-start">
         Elimina
       </mds-button>
-      <mds-button variant="dark" tone="quiet" class="justify-start">
+      <mds-button variant="dark" tone="text" class="justify-start">
         Esci dalla sessione
       </mds-button>
     </mds-dropdown>
@@ -147,7 +147,7 @@ const LayoutHMCFTemplate = args => (
       <mds-button
         icon="mi/round/more-vert"
         variant="dark"
-        tone="quiet"
+        tone="text"
       ></mds-button>
     </mds-card-header>
     <mds-card-media>
@@ -159,7 +159,7 @@ const LayoutHMCFTemplate = args => (
       sed odio hendrerit diam maximus blandit ac malesuada odio.
     </mds-card-content>
     <mds-card-footer>
-      <mds-button variant="dark" tone="quiet">
+      <mds-button variant="dark" tone="text">
         Cancel
       </mds-button>
       <mds-button>Contact</mds-button>
@@ -187,7 +187,7 @@ const LayoutHMCTemplate = args => (
       <mds-button
         icon="mi/round/more-vert"
         variant="dark"
-        tone="quiet"
+        tone="text"
       ></mds-button>
     </mds-card-header>
     <mds-card-media>
@@ -221,14 +221,14 @@ const LayoutHMFTemplate = args => (
       <mds-button
         icon="mi/round/more-vert"
         variant="dark"
-        tone="quiet"
+        tone="text"
       ></mds-button>
     </mds-card-header>
     <mds-card-media>
       <mds-img src={URLs[0]} class="object-cover"></mds-img>
     </mds-card-media>
     <mds-card-footer>
-      <mds-button variant="dark" tone="quiet">
+      <mds-button variant="dark" tone="text">
         Cancel
       </mds-button>
       <mds-button>Contact</mds-button>
@@ -256,7 +256,7 @@ const LayoutHCFTemplate = args => (
       <mds-button
         icon="mi/round/more-vert"
         variant="dark"
-        tone="quiet"
+        tone="text"
       ></mds-button>
     </mds-card-header>
     <mds-card-content class="py-0">
@@ -265,7 +265,7 @@ const LayoutHCFTemplate = args => (
       sed odio hendrerit diam maximus blandit ac malesuada odio.
     </mds-card-content>
     <mds-card-footer>
-      <mds-button variant="dark" tone="quiet">
+      <mds-button variant="dark" tone="text">
         Cancel
       </mds-button>
       <mds-button>Contact</mds-button>
@@ -284,7 +284,7 @@ const LayoutMCFTemplate = args => (
       sed odio hendrerit diam maximus blandit ac malesuada odio.
     </mds-card-content>
     <mds-card-footer class="pt-0">
-      <mds-button variant="dark" tone="quiet">
+      <mds-button variant="dark" tone="text">
         Cancel
       </mds-button>
       <mds-button>Contact</mds-button>
@@ -305,7 +305,7 @@ const LayoutHCTemplate = args => (
       <mds-button
         icon="mi/round/more-vert"
         variant="dark"
-        tone="quiet"
+        tone="text"
       ></mds-button>
     </mds-card-header>
     <mds-card-content class="pt-0">
@@ -335,7 +335,7 @@ const LayoutMFTemplate = args => (
       <mds-img src={URLs[0]} class="object-cover"></mds-img>
     </mds-card-media>
     <mds-card-footer>
-      <mds-button variant="dark" tone="quiet">
+      <mds-button variant="dark" tone="text">
         Cancel
       </mds-button>
       <mds-button>Contact</mds-button>
@@ -356,7 +356,7 @@ const LayoutHMTemplate = args => (
       <mds-button
         icon="mi/round/more-vert"
         variant="dark"
-        tone="quiet"
+        tone="text"
       ></mds-button>
     </mds-card-header>
     <mds-card-media>
@@ -373,7 +373,7 @@ const LayoutCFTemplate = args => (
       sed odio hendrerit diam maximus blandit ac malesuada odio.
     </mds-card-content>
     <mds-card-footer class="pt-0">
-      <mds-button variant="dark" tone="quiet">
+      <mds-button variant="dark" tone="text">
         Cancel
       </mds-button>
       <mds-button>Contact</mds-button>
@@ -394,11 +394,11 @@ const LayoutHFTemplate = args => (
       <mds-button
         icon="mi/round/more-vert"
         variant="dark"
-        tone="quiet"
+        tone="text"
       ></mds-button>
     </mds-card-header>
     <mds-card-footer class="pt-0">
-      <mds-button variant="dark" tone="quiet">
+      <mds-button variant="dark" tone="text">
         Cancel
       </mds-button>
       <mds-button>Contact</mds-button>
@@ -427,7 +427,7 @@ const LayoutHTemplate = args => (
       <mds-button
         icon="mi/round/more-vert"
         variant="dark"
-        tone="quiet"
+        tone="text"
       ></mds-button>
     </mds-card-header>
   </mds-card>
@@ -446,7 +446,7 @@ const LayoutCTemplate = args => (
 const LayoutFTemplate = args => (
   <mds-card {...args}>
     <mds-card-footer>
-      <mds-button variant="dark" tone="quiet">
+      <mds-button variant="dark" tone="text">
         Cancel
       </mds-button>
       <mds-button>Contact</mds-button>

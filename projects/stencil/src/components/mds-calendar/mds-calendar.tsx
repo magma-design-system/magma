@@ -486,7 +486,7 @@ export class MdsCalendar {
         </div>
         <div class="calendar-view">
           <nav>
-            <mds-button class="action-back" icon={miBaselineBackIosNew} variant="dark" tone="quiet" onClick={event => {
+            <mds-button class="action-back" icon={miBaselineBackIosNew} variant="dark" tone="text" onClick={event => {
               if (this.currentView === 'calendar') {
                 event.stopPropagation()
                 this.changeMonth(-1)
@@ -498,7 +498,7 @@ export class MdsCalendar {
               }
             }}></mds-button>
             <div class="select-month-or-year">
-              {(this.currentView === 'calendar' || this.currentView === 'months') && <mds-button class="action-month" variant="dark" tone="quiet" onClick={event => {
+              {(this.currentView === 'calendar' || this.currentView === 'months') && <mds-button class="action-month" variant="dark" tone="text" onClick={event => {
                 event.stopPropagation()
                 this.currentView = this.currentView === 'months' ? 'calendar' : 'months'
                 requestAnimationFrame(() => {
@@ -506,7 +506,7 @@ export class MdsCalendar {
                 })
 
               }}>{this.currentMonth}</mds-button>}
-              {(this.currentView === 'calendar' || this.currentView === 'years') && <mds-button class="action-year" variant="dark" tone="quiet" onClick={event => {
+              {(this.currentView === 'calendar' || this.currentView === 'years') && <mds-button class="action-year" variant="dark" tone="text" onClick={event => {
                 event.stopPropagation()
                 this.currentView = this.currentView === 'years' ? 'calendar' : 'years'
                 requestAnimationFrame(() => {
@@ -515,7 +515,7 @@ export class MdsCalendar {
               }}>{this.currentYear}</mds-button>}
 
             </div>
-            <mds-button class="action-forward" icon={miBaselineForwardIos} variant="dark" tone="quiet" onClick={event => {
+            <mds-button class="action-forward" icon={miBaselineForwardIos} variant="dark" tone="text" onClick={event => {
               if (this.currentView === 'calendar') {
                 event.stopPropagation()
                 this.changeMonth(1)
@@ -531,7 +531,7 @@ export class MdsCalendar {
             <section class="month-view">
               <header class="month-view__days-names">
                 {this.weekdays.map(day => (
-                  <mds-button class="week-day-name" variant="dark" tone="quiet">{day}</mds-button>
+                  <mds-button class="week-day-name" variant="dark" tone="text">{day}</mds-button>
                 ))}
               </header>
               <div class="month-view__cells">
@@ -572,7 +572,7 @@ export class MdsCalendar {
                 {Array.from({ length: 12 }).map((_, index) => {
                   const monthName = DateTime.local().set({ month: index + 1 }).setLocale(this.language).toFormat('MMMM')
                   return (
-                    <mds-button class='action' variant='dark' tone='quiet' onClick={event => {
+                    <mds-button class='action' variant='dark' tone='text' onClick={event => {
                       event.stopPropagation()
                       this.currentDate = this.currentDate.set({ month: index + 1 })
                       this.currentMonth = this.currentDate.toFormat('MMMM')
@@ -596,7 +596,7 @@ export class MdsCalendar {
                 {Array.from({ length: 12 }).map((_, index) => {
                   const year = this.selectedYear + index
                   return (
-                    <mds-button class='action' variant='dark' tone='quiet' onClick={event => {
+                    <mds-button class='action' variant='dark' tone='text' onClick={event => {
                       event.stopPropagation()
                       this.currentDate = this.currentDate.set({ year })
                       this.currentYear = year.toString()

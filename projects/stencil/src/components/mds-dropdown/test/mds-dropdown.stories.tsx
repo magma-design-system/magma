@@ -104,7 +104,7 @@ const Template = ({ layout, ...args }) => (
         class="justify-start px-0"
         icon="mi/baseline/info"
         variant="dark"
-        tone="quiet"
+        tone="text"
       >
         User infos
       </mds-button>
@@ -112,7 +112,7 @@ const Template = ({ layout, ...args }) => (
         class="justify-start px-0"
         icon="mi/baseline/settings"
         variant="dark"
-        tone="quiet"
+        tone="text"
       >
         Account
       </mds-button>
@@ -120,7 +120,7 @@ const Template = ({ layout, ...args }) => (
         class="justify-start px-0"
         icon="mi/baseline/logout"
         variant="dark"
-        tone="quiet"
+        tone="text"
       >
         Exit
       </mds-button>
@@ -155,7 +155,7 @@ const TemplatePlacement = ({ ...args }) => (
         class="justify-start px-0"
         icon="mi/baseline/info"
         variant="dark"
-        tone="quiet"
+        tone="text"
       >
         User infos
       </mds-button>
@@ -163,7 +163,7 @@ const TemplatePlacement = ({ ...args }) => (
         class="justify-start px-0"
         icon="mi/baseline/settings"
         variant="dark"
-        tone="quiet"
+        tone="text"
       >
         Account
       </mds-button>
@@ -171,7 +171,7 @@ const TemplatePlacement = ({ ...args }) => (
         class="justify-start px-0"
         icon="mi/baseline/logout"
         variant="dark"
-        tone="quiet"
+        tone="text"
       >
         Exit
       </mds-button>
@@ -231,7 +231,7 @@ const TemplateNested = ({ ...args }) => (
         class="justify-start px-0"
         icon="mi/baseline/info"
         variant="dark"
-        tone="quiet"
+        tone="text"
       >
         User infos
       </mds-button>
@@ -239,7 +239,7 @@ const TemplateNested = ({ ...args }) => (
         class="justify-start px-0"
         icon="mi/baseline/settings"
         variant="dark"
-        tone="quiet"
+        tone="text"
       >
         Account
       </mds-button>
@@ -247,7 +247,7 @@ const TemplateNested = ({ ...args }) => (
         class="justify-start px-0"
         icon="mi/baseline/logout"
         variant="dark"
-        tone="quiet"
+        tone="text"
       >
         Exit
       </mds-button>
@@ -392,7 +392,7 @@ const TemplateStrategy = ({ ...args }) => (
             class="justify-start px-0"
             icon="mi/baseline/info"
             variant="dark"
-            tone="quiet"
+            tone="text"
           >
             User infos
           </mds-button>
@@ -400,7 +400,7 @@ const TemplateStrategy = ({ ...args }) => (
             class="justify-start px-0"
             icon="mi/baseline/settings"
             variant="dark"
-            tone="quiet"
+            tone="text"
           >
             Account
           </mds-button>
@@ -408,7 +408,7 @@ const TemplateStrategy = ({ ...args }) => (
             class="justify-start px-0"
             icon="mi/baseline/logout"
             variant="dark"
-            tone="quiet"
+            tone="text"
           >
             Exit
           </mds-button>
@@ -451,7 +451,7 @@ const TemplateStrategy = ({ ...args }) => (
           class="justify-start px-0"
           icon="mi/baseline/info"
           variant="dark"
-          tone="quiet"
+          tone="text"
         >
           User infos
         </mds-button>
@@ -459,7 +459,7 @@ const TemplateStrategy = ({ ...args }) => (
           class="justify-start px-0"
           icon="mi/baseline/settings"
           variant="dark"
-          tone="quiet"
+          tone="text"
         >
           Account
         </mds-button>
@@ -467,7 +467,7 @@ const TemplateStrategy = ({ ...args }) => (
           class="justify-start px-0"
           icon="mi/baseline/logout"
           variant="dark"
-          tone="quiet"
+          tone="text"
         >
           Exit
         </mds-button>

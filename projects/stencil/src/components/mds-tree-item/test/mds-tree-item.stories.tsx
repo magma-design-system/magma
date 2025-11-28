@@ -39,14 +39,14 @@ const Template = ({ ...args }) => (
         slot="action"
         icon="mi/baseline/attach-file"
         variant="primary"
-        tone="quiet"
+        tone="text"
         title="Schedule"
       ></mds-button>
       <mds-button
         slot="action"
         icon="mi/baseline/more-vert"
         variant="primary"
-        tone="quiet"
+        tone="text"
         title="Options"
       ></mds-button>
       <mds-tree-item {...args} label="First children element"></mds-tree-item>
@@ -70,14 +70,14 @@ const Template = ({ ...args }) => (
         slot="action"
         icon="mi/baseline/attach-file"
         variant="primary"
-        tone="quiet"
+        tone="text"
         title="Schedule"
       ></mds-button>
       <mds-button
         slot="action"
         icon="mi/baseline/more-vert"
         variant="primary"
-        tone="quiet"
+        tone="text"
         title="Options"
       ></mds-button>
       <mds-tree-item {...args} label="First children element"></mds-tree-item>
