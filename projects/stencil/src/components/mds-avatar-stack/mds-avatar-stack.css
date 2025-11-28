@@ -1,16 +1,115 @@
+/**
+ * @prop --mds-avatar-stack-background: Background color for the avatar stack container
+ * @prop --mds-avatar-stack-count-background-color: Background color of the count indicator (e.g., "+3")
+ * @prop --mds-avatar-stack-count-color: Text color of the count indicator
+ * @prop --mds-avatar-stack-lg-border: Border width for large avatar stack items
+ * @prop --mds-avatar-stack-lg-offset: Horizontal overlap offset for large avatars
+ * @prop --mds-avatar-stack-lg-size: Size of large avatars in the stack
+ * @prop --mds-avatar-stack-md-border: Border width for medium avatar stack items
+ * @prop --mds-avatar-stack-md-offset: Horizontal overlap offset for medium avatars
+ * @prop --mds-avatar-stack-md-size: Size of medium avatars in the stack
+ * @prop --mds-avatar-stack-sm-border: Border width for small avatar stack items
+ * @prop --mds-avatar-stack-sm-offset: Horizontal overlap offset for small avatars
+ * @prop --mds-avatar-stack-sm-size: Size of small avatars in the stack
+ */
+
+/* COLORS */
+
+@property --mds-avatar-stack-background {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral, 255 255 255));
+  syntax: "<color>";
+}
+
+@property --mds-avatar-stack-count-background-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-09, 237 237 237));
+  syntax: "<color>";
+}
+
+@property --mds-avatar-stack-count-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-04, 84 84 84));
+  syntax: "<color>";
+}
+
+
+/* LARGE */
+
+@property --mds-avatar-stack-lg-border {
+  inherits: false;
+  initial-value: var(--spacing-100, 0.25rem);
+  syntax: "<length>";
+}
+
+@property --mds-avatar-stack-lg-offset {
+  inherits: false;
+  initial-value: 2;
+  syntax: "<number>";
+}
+
+@property --mds-avatar-stack-lg-size {
+  inherits: false;
+  initial-value: var(--spacing-1500, 3.75rem);
+  syntax: "<length>";
+}
+
+
+/* MEDIUM */
+
+@property --mds-avatar-stack-md-border {
+  inherits: false;
+  initial-value: var(--spacing-100, 0.25rem);
+  syntax: "<length>";
+}
+
+@property --mds-avatar-stack-md-offset {
+  inherits: false;
+  initial-value: 1.75;
+  syntax: "<number>";
+}
+
+@property --mds-avatar-stack-md-size {
+  inherits: false;
+  initial-value: var(--spacing-1200, 3rem);
+  syntax: "<length>";
+}
+
+
+/* SMALL */
+
+@property --mds-avatar-stack-sm-border {
+  inherits: false;
+  initial-value: var(--spacing-50, 0.125rem);
+  syntax: "<length>";
+}
+
+@property --mds-avatar-stack-sm-offset {
+  inherits: false;
+  initial-value: 1.5;
+  syntax: "<number>";
+}
+
+@property --mds-avatar-stack-sm-size {
+  inherits: false;
+  initial-value: var(--spacing-900, 2.25rem);
+  syntax: "<length>";
+}
+
+
 :host {
-  --mds-avatar-stack-background: rgb(var(--tone-neutral));
-  --mds-avatar-stack-count-background-color: rgb(var(--tone-neutral-09));
-  --mds-avatar-stack-count-color: rgb(var(--tone-neutral-04));
-  --mds-avatar-stack-large-border: --spacing(100);
-  --mds-avatar-stack-large-offset: 2;
-  --mds-avatar-stack-large-size: --spacing(1500);
-  --mds-avatar-stack-medium-border: --spacing(100);
-  --mds-avatar-stack-medium-offset: 1.75;
-  --mds-avatar-stack-medium-size: --spacing(1200);
-  --mds-avatar-stack-small-border: --spacing(50);
-  --mds-avatar-stack-small-offset: 1.5;
-  --mds-avatar-stack-small-size: --spacing(900);
+  --mds-avatar-stack-background: rgb(var(--tone-neutral, 255 255 255));
+  --mds-avatar-stack-count-background-color: rgb(var(--tone-neutral-09, 237 237 237));
+  --mds-avatar-stack-count-color: rgb(var(--tone-neutral-04, 84 84 84));
+  --mds-avatar-stack-lg-border: --spacing(100);
+  --mds-avatar-stack-lg-offset: 2;
+  --mds-avatar-stack-lg-size: --spacing(1500);
+  --mds-avatar-stack-md-border: --spacing(100);
+  --mds-avatar-stack-md-offset: 1.75;
+  --mds-avatar-stack-md-size: --spacing(1200);
+  --mds-avatar-stack-sm-border: --spacing(50);
+  --mds-avatar-stack-sm-offset: 1.5;
+  --mds-avatar-stack-sm-size: --spacing(900);
 
   background-color: var(--mds-avatar-stack-background);
   border-radius: 1000px;

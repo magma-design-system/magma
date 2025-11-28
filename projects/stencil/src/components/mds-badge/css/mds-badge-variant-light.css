@@ -12,7 +12,7 @@
   --mds-badge-color: rgb(var(--tone-neutral-03));
 }
 
-:host([variant="light"][tone="ghost"]) {
+:host([variant="light"][tone="outline"]) {
   --mds-badge-color: rgb(var(--tone-neutral-02));
   --mds-badge-border-color: rgb(var(--tone-neutral-09));
 }

@@ -22,24 +22,24 @@
   --mds-button-border-color: var(--status-success-08);
 }
 
-:host([variant="success"][tone="ghost"]) {
+:host([variant="success"][tone="outline"]) {
   --mds-button-border-color: var(--status-success-04);
   --mds-button-color: rgb(var(--status-success-03));
 }
 
-:host([variant="success"][tone="ghost"]:hover) {
+:host([variant="success"][tone="outline"]:hover) {
   --mds-button-border-color: var(--status-success-04);
   --mds-button-color: rgb(var(--status-success-02));
 }
 
-:host([variant="success"][tone="quiet"]) {
+:host([variant="success"][tone="text"]) {
   --mds-button-color: rgb(var(--status-success-02));
 }
 
-:host([variant="success"][tone="quiet"]:hover) {
+:host([variant="success"][tone="text"]:hover) {
   --mds-button-color: rgb(var(--status-success-04));
 }
 
-:host([variant="success"][tone="quiet"][active]) {
+:host([variant="success"][tone="text"][active]) {
   --mds-button-color: rgb(var(--status-success-01));
 }

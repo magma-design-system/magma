@@ -6,6 +6,31 @@
  * @prop --mds-accordion-timer-duration: Sets the transition duration of open/close animation of the mds-accordion-timer-item
  */
 
+@property --mds-accordion-timer-progress-bar-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-03, 64 64 64));
+  syntax: "<color>";
+}
+
+@property --mds-accordion-timer-progress-bar-background {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-08));
+  syntax: "<color>";
+}
+
+@property --mds-accordion-timer-progress-bar-thickness {
+  inherits: false;
+  initial-value: 1px; /* placeholder valido (Houdini non accetta --spacing) */
+  syntax: "<length>";
+}
+
+@property --mds-accordion-timer-duration {
+  inherits: false;
+  initial-value: 500ms;
+  syntax: "<time>";
+}
+
+
 :host {
   --mds-accordion-timer-progress-bar-color: rgb(var(--tone-neutral-03));
   --mds-accordion-timer-progress-bar-background: rgb(var(--tone-neutral-08));

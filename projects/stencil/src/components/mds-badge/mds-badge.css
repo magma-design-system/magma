@@ -7,12 +7,48 @@
  * @prop --mds-badge-color: Sets the text color of the component
  */
 
+ /* Colors */
+
+@property --mds-badge-background {
+  inherits: false;
+  initial-value: rgb(var(--label-sky-09, 208 234 254));
+  syntax: "<color>";
+}
+
+@property --mds-badge-border-color {
+  inherits: false;
+  initial-value: rgb(var(--label-sky-06, 7 143 248));
+  syntax: "<color>";
+}
+
+@property --mds-badge-color {
+  inherits: false;
+  initial-value: rgb(var(--label-sky-03, 4 78 134));
+  syntax: "<color>";
+}
+
+/* Border width */
+
+@property --mds-badge-border-width {
+  inherits: true;
+  initial-value: 1px;
+  syntax: "<length>";
+}
+
+/* Border radius */
+
+@property --mds-badge-radius {
+  inherits: true;
+  initial-value: 10px; /* var(--radius-sm fallback) */
+  syntax: "<length>";
+}
+
 :host {
-  --mds-badge-background: rgb(var(--label-sky-09));
-  --mds-badge-border-color: rgb(var(--label-sky-06));
+  --mds-badge-background: rgb(var(--label-sky-09, 208 234 254));
+  --mds-badge-border-color: rgb(var(--label-sky-06, 7 143 248));
   --mds-badge-border-width: 1px;
-  --mds-badge-color: rgb(var(--label-sky-03));
-  --mds-badge-radius: var(--radius-sm);
+  --mds-badge-color: rgb(var(--label-sky-03, 4 78 134));
+  --mds-badge-radius: var(--radius-sm, 10px);
 
   @apply
     duration-200
@@ -31,13 +67,13 @@
   transition-property: background-color, border-color, border-width, color;
 }
 
-:host([tone="ghost"]) {
+:host([tone="outline"]) {
   border-color: var(--mds-badge-border-color);
   border-style: solid;
   border-width: var(--mds-badge-border-width);
 }
 
-:host([tone="quiet"]) {
+:host([tone="text"]) {
   --mds-badge-background: rgb(var(--tone-neutral));
 }
 @import './css/mds-badge-variant-amaranth.css';

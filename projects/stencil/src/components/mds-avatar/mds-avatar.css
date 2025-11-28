@@ -6,14 +6,45 @@
  * @prop --mds-avatar-background-color-pending: The background-color when an image is loading
  * @prop --mds-avatar-background-color: The background-color of the component
  * @prop --mds-avatar-color: The color of the placeholder icon
+ * @prop --mds-avatar-initials-padding: Sets the padding of the initials inside the avatar
  * @prop --mds-avatar-radius: The border-radius of the element
  */
 
+@property --mds-avatar-background-color-pending {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-08, 230 230 230));
+  syntax: "<color>";
+}
+
+@property --mds-avatar-background-color {
+  inherits: false;
+  initial-value: rgb(var(--variant-primary-05, 0 89 254));
+  syntax: "<color>";
+}
+
+@property --mds-avatar-color {
+  inherits: false;
+  initial-value: rgb(var(--variant-primary-10, 230 239 255));
+  syntax: "<color>";
+}
+
+@property --mds-avatar-radius {
+  inherits: false;
+  initial-value: 1000px;
+  syntax: "<length>";
+}
+
+@property --mds-avatar-initials-padding {
+  inherits: false;
+  initial-value: 20%;
+  syntax: "<percentage>";
+}
+
 :host {
-  --mds-avatar-background-color-pending: rgb(var(--tone-neutral-08));
-  --mds-avatar-background-color: rgb(var(--variant-primary-05));
-  --mds-avatar-color: rgb(var(--variant-primary-10));
-  --mds-avatar-radius: var(--radius-full);
+  --mds-avatar-background-color-pending: rgb(var(--tone-neutral-08, 230 230 230));
+  --mds-avatar-background-color: rgb(var(--variant-primary-05, 0 89 254));
+  --mds-avatar-color: rgb(var(--variant-primary-10, 230 239 255));
+  --mds-avatar-radius: var(--radius-full, 1000px);
   --mds-avatar-initials-padding: 20%;
 
   aspect-ratio: 1/1;

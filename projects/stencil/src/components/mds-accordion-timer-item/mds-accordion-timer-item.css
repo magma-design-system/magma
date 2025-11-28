@@ -3,16 +3,47 @@
 @reference '../../tailwind/components.css';
 
 /**
- * @prop --mds-accordion-timer-item-progress-bar-color: Sets the color of the progress bar when the item is selected
- * @prop --mds-accordion-timer-item-progress-bar-background: Sets the background-color of the progress bar when the item is selected
  * @prop --mds-accordion-timer-item-color: Sets the text color of the component
- * @prop --mds-accordion-timer-item-progress-bar-thickness: Sets thickness of the progress bar
  * @prop --mds-accordion-timer-item-duration: Sets the transition duration of open/close animation
+ * @prop --mds-accordion-timer-item-progress-bar-background: Sets the background-color of the progress bar when the item is selected
+ * @prop --mds-accordion-timer-item-progress-bar-color: Sets the color of the progress bar when the item is selected
+ * @prop --mds-accordion-timer-item-progress-bar-thickness: Sets thickness of the progress bar
  */
 
+@property --mds-accordion-timer-item-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-02, 42 42 42));
+  syntax: "<color>";
+}
+
+@property --mds-accordion-timer-item-progress-bar-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-03, 64 64 64));
+  syntax: "<color>";
+}
+
+@property --mds-accordion-timer-item-progress-bar-background {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-08, 230 230 230));
+  syntax: "<color>";
+}
+
+@property --mds-accordion-timer-item-progress-bar-thickness {
+  inherits: false;
+  initial-value: 0.25rem;
+  syntax: "<length>";
+}
+
+@property --mds-accordion-timer-item-duration {
+  inherits: false;
+  initial-value: 500ms;
+  syntax: "<time>";
+}
+
 :host {
-  --mds-accordion-timer-item-progress-bar-color: var(--mds-accordion-timer-progress-bar-color, rgb(var(--tone-neutral-03)));
-  --mds-accordion-timer-item-progress-bar-background: var(--mds-accordion-timer-progress-bar-background, rgb(var(--tone-neutral-08)));
+  --mds-accordion-timer-item-color: var(--mds-accordion-timer-color, rgb(var(--tone-neutral-02, 42 42 42)));
+  --mds-accordion-timer-item-progress-bar-color: var(--mds-accordion-timer-progress-bar-color, rgb(var(--tone-neutral-03, 64 64 64)));
+  --mds-accordion-timer-item-progress-bar-background: var(--mds-accordion-timer-progress-bar-background, rgb(var(--tone-neutral-08, 230 230 230)));
   --mds-accordion-timer-item-progress-bar-thickness: var(--mds-accordion-timer-progress-bar-thickness, --spacing(100));
   --mds-accordion-timer-item-duration: var(--mds-accordion-timer-duration, 500ms);
 
@@ -20,7 +51,7 @@
     ease-out-expo
     py-400;
 
-  color: var(--mds-accordion-timer-item-color, rgb(var(--tone-neutral-02)));
+  color: var(--mds-accordion-timer-item-color);
   display: grid;
   position: relative;
   transition-duration: var(--mds-accordion-timer-item-duration);

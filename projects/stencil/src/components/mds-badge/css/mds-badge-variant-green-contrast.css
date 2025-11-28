@@ -8,11 +8,11 @@
     --mds-badge-color: rgb(var(--label-green-01));
   }
 
-  &:host([variant="green"][tone="quiet"]) {
+  &:host([variant="green"][tone="text"]) {
     --mds-badge-color: rgb(var(--label-green-02));
   }
 
-  &:host([variant="green"][tone="ghost"]) {
+  &:host([variant="green"][tone="outline"]) {
     --mds-badge-background: transparent;
     --mds-badge-color: rgb(var(--label-green-03));
     --mds-badge-border-color: rgb(var(--label-green-03));
@@ -31,11 +31,11 @@
       --mds-badge-color: rgb(var(--label-green-01));
     }
 
-    &:host([variant="green"][tone="quiet"]) {
+    &:host([variant="green"][tone="text"]) {
       --mds-badge-color: rgb(var(--label-green-02));
     }
 
-    &:host([variant="green"][tone="ghost"]) {
+    &:host([variant="green"][tone="outline"]) {
       --mds-badge-background: transparent;
       --mds-badge-color: rgb(var(--label-green-03));
       --mds-badge-border-color: rgb(var(--label-green-03));

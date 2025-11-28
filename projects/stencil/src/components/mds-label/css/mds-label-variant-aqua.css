@@ -21,7 +21,7 @@
   --mds-label-selection-color: rgb(var(--label-aqua-10));
 }
 
-:host([variant="aqua"][tone="quiet"]) {
+:host([variant="aqua"][tone="text"]) {
   --mds-label-background: rgb(var(--label-aqua-09));
   --mds-label-button-background: rgb(var(--label-aqua-09));
   --mds-label-button-background-hover: rgb(var(--label-aqua-08));

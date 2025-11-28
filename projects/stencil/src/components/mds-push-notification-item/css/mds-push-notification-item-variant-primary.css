@@ -9,7 +9,7 @@
   --mds-push-notification-item-icon-color: rgb(var(--variant-primary-05));
 }
 
-:host([variant="primary"][tone="quiet"]) {
+:host([variant="primary"][tone="text"]) {
   --mds-push-notification-item-icon-background-color: transparent;
   --mds-push-notification-item-icon-color: rgb(var(--variant-primary-05));
 }

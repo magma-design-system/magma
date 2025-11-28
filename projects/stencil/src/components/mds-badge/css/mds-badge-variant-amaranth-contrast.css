@@ -7,11 +7,11 @@
   --mds-badge-color: rgb(var(--label-amaranth-01));
 }
 
-:host-context(:root.pref-contrast-more):host([variant="amaranth"][tone="quiet"]) {
+:host-context(:root.pref-contrast-more):host([variant="amaranth"][tone="text"]) {
   --mds-badge-color: rgb(var(--label-amaranth-02));
 }
 
-:host-context(:root.pref-contrast-more):host([variant="amaranth"][tone="ghost"]) {
+:host-context(:root.pref-contrast-more):host([variant="amaranth"][tone="outline"]) {
   --mds-badge-background: transparent;
   --mds-badge-color: rgb(var(--label-amaranth-03));
   --mds-badge-border-color: rgb(var(--label-amaranth-03));
@@ -20,7 +20,6 @@
 @media (prefers-contrast: more) {
   :host-context(:root.pref-contrast-system),
   :host-context(:root:not([data-magma-pref])):host([variant="amaranth"]),
-  :host-context(:root.pref-contrast-system),
   :host-context(:root:not([data-magma-pref])):host([variant="amaranth"][tone="strong"]) {
     --mds-badge-background: rgb(var(--label-amaranth-03));
   }
@@ -31,12 +30,12 @@
   }
 
   :host-context(:root.pref-contrast-system),
-  :host-context(:root:not([data-magma-pref])):host([variant="amaranth"][tone="quiet"]) {
+  :host-context(:root:not([data-magma-pref])):host([variant="amaranth"][tone="text"]) {
     --mds-badge-color: rgb(var(--label-amaranth-02));
   }
 
   :host-context(:root.pref-contrast-system),
-  :host-context(:root:not([data-magma-pref])):host([variant="amaranth"][tone="ghost"]) {
+  :host-context(:root:not([data-magma-pref])):host([variant="amaranth"][tone="outline"]) {
     --mds-badge-background: transparent;
     --mds-badge-color: rgb(var(--label-amaranth-03));
     --mds-badge-border-color: rgb(var(--label-amaranth-03));

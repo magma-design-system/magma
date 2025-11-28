@@ -1,17 +1,17 @@
 :host-context(mds-avatar-stack[size="sm"]) {
-  --mds-avatar-stack-item-size: var(--mds-avatar-stack-item-small-size);
-  --mds-avatar-stack-item-border: var(--mds-avatar-stack-item-small-border);
-  --mds-avatar-stack-item-offset: var(--mds-avatar-stack-item-small-offset);
+  --mds-avatar-stack-item-size: var(--mds-avatar-stack-item-sm-size);
+  --mds-avatar-stack-item-border: var(--mds-avatar-stack-item-sm-border);
+  --mds-avatar-stack-item-offset: var(--mds-avatar-stack-item-sm-offset);
 }
 
 :host-context(mds-avatar-stack[size="md"]) {
-  --mds-avatar-stack-item-size: var(--mds-avatar-stack-item-medium-size);
-  --mds-avatar-stack-item-border: var(--mds-avatar-stack-item-medium-border);
-  --mds-avatar-stack-item-offset: var(--mds-avatar-stack-item-medium-offset);
+  --mds-avatar-stack-item-size: var(--mds-avatar-stack-item-md-size);
+  --mds-avatar-stack-item-border: var(--mds-avatar-stack-item-md-border);
+  --mds-avatar-stack-item-offset: var(--mds-avatar-stack-item-md-offset);
 }
 
 :host-context(mds-avatar-stack[size="lg"]) {
-  --mds-avatar-stack-item-size: var(--mds-avatar-stack-item-large-size);
-  --mds-avatar-stack-item-border: var(--mds-avatar-stack-item-large-border);
-  --mds-avatar-stack-item-offset: var(--mds-avatar-stack-item-large-offset);
+  --mds-avatar-stack-item-size: var(--mds-avatar-stack-item-lg-size);
+  --mds-avatar-stack-item-border: var(--mds-avatar-stack-item-lg-border);
+  --mds-avatar-stack-item-offset: var(--mds-avatar-stack-item-lg-offset);
 }

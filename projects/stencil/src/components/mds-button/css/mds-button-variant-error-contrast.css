@@ -35,30 +35,30 @@
     fill: rgb(var(--status-error-01));
   }
 
-  &:host([variant="error"][tone="ghost"]) {
+  &:host([variant="error"][tone="outline"]) {
     --mds-button-border-color: var(--status-error-03);
     --mds-button-color: rgb(var(--status-error-02));
   }
 
-  &:host([variant="error"][tone="ghost"]:hover) {
+  &:host([variant="error"][tone="outline"]:hover) {
     --mds-button-border-color: var(--status-error-03);
     --mds-button-color: rgb(var(--status-error-01));
   }
 
-  &:host([variant="error"][tone="ghost"][active]) {
+  &:host([variant="error"][tone="outline"][active]) {
     --mds-button-border-color: var(--status-error-04);
     --mds-button-color: rgb(var(--status-error-02));
   }
 
-  &:host([variant="error"][tone="quiet"]) {
+  &:host([variant="error"][tone="text"]) {
     --mds-button-color: rgb(var(--status-error-01));
   }
 
-  &:host([variant="error"][tone="quiet"]:hover) {
+  &:host([variant="error"][tone="text"]:hover) {
     --mds-button-color: rgb(var(--status-error-03));
   }
 
-  &:host([variant="error"][tone="quiet"][active]) {
+  &:host([variant="error"][tone="text"][active]) {
     --mds-button-color: rgb(var(--status-error-01));
   }
 }
@@ -102,30 +102,30 @@
       fill: rgb(var(--status-error-01));
     }
 
-    &:host([variant="error"][tone="ghost"]) {
+    &:host([variant="error"][tone="outline"]) {
       --mds-button-border-color: var(--status-error-03);
       --mds-button-color: rgb(var(--status-error-02));
     }
 
-    &:host([variant="error"][tone="ghost"]:hover) {
+    &:host([variant="error"][tone="outline"]:hover) {
       --mds-button-border-color: var(--status-error-03);
       --mds-button-color: rgb(var(--status-error-01));
     }
 
-    &:host([variant="error"][tone="ghost"][active]) {
+    &:host([variant="error"][tone="outline"][active]) {
       --mds-button-border-color: var(--status-error-04);
       --mds-button-color: rgb(var(--status-error-02));
     }
 
-    &:host([variant="error"][tone="quiet"]) {
+    &:host([variant="error"][tone="text"]) {
       --mds-button-color: rgb(var(--status-error-01));
     }
 
-    &:host([variant="error"][tone="quiet"]:hover) {
+    &:host([variant="error"][tone="text"]:hover) {
       --mds-button-color: rgb(var(--status-error-03));
     }
 
-    &:host([variant="error"][tone="quiet"][active]) {
+    &:host([variant="error"][tone="text"][active]) {
       --mds-button-color: rgb(var(--status-error-01));
     }
   }

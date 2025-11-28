@@ -25,7 +25,7 @@
   --mds-label-selection-color: rgb(var(--label-amaranth-10));
 }
 
-:host([variant="amaranth"][tone="quiet"]) {
+:host([variant="amaranth"][tone="text"]) {
   --mds-label-background: rgb(var(--label-amaranth-09));
   --mds-label-button-background: rgb(var(--label-amaranth-09));
   --mds-label-button-background-hover: rgb(var(--label-amaranth-08));

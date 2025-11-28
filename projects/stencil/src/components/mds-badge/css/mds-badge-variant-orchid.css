@@ -11,11 +11,11 @@
   --mds-badge-color: rgb(var(--label-orchid-02));
 }
 
-:host([variant="orchid"][tone="quiet"]) {
+:host([variant="orchid"][tone="text"]) {
   --mds-badge-color: rgb(var(--label-orchid-04));
 }
 
-:host([variant="orchid"][tone="ghost"]) {
+:host([variant="orchid"][tone="outline"]) {
   --mds-badge-background: transparent;
   --mds-badge-border-color: rgb(var(--label-orchid-06));
   --mds-badge-color: rgb(var(--label-orchid-04));

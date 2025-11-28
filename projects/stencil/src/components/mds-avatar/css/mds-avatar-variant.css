@@ -1,7 +1,3 @@
-
-
-
-
 :host([variant="primary"]),
 :host([variant="primary"][tone="strong"]) {
   --mds-avatar-background-color: rgb(var(--variant-primary-05));

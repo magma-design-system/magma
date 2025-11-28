@@ -9,20 +9,20 @@
  */
 
 @property --mds-accordion-border-color {
-  inherits: true;
-  initial-value: rgb(29 29 29);
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-08, 29 29 29));
   syntax: '<color>';
 }
 
 @property --mds-accordion-color {
-  inherits: true;
-  initial-value: rgb(181 181 181);
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-03, 181 181 181));
   syntax: '<color>';
 }
 
 @property --mds-accordion-description-color {
-  inherits: true;
-  initial-value: rgb(215 215 215);
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-02, 215 215 215));
   syntax: '<color>';
 }
 

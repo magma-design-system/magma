@@ -21,7 +21,7 @@
   --mds-label-selection-color: rgb(var(--label-lime-10));
 }
 
-:host([variant="lime"][tone="quiet"]) {
+:host([variant="lime"][tone="text"]) {
   --mds-label-background: rgb(var(--label-lime-09));
   --mds-label-button-background: rgb(var(--label-lime-09));
   --mds-label-button-background-hover: rgb(var(--label-lime-08));

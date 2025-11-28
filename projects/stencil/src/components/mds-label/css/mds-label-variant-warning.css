@@ -21,7 +21,7 @@
   --mds-label-selection-color: rgb(var(--status-warning-10));
 }
 
-:host([variant="warning"][tone="quiet"]) {
+:host([variant="warning"][tone="text"]) {
   --mds-label-background: rgb(var(--status-warning-09));
   --mds-label-button-background: rgb(var(--status-warning-09));
   --mds-label-button-background-hover: rgb(var(--status-warning-08));

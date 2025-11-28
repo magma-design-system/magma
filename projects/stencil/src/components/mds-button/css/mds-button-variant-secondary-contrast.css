@@ -35,30 +35,30 @@
     fill: rgb(var(--variant-secondary-01));
   }
 
-  &:host([variant="secondary"][tone="ghost"]) {
+  &:host([variant="secondary"][tone="outline"]) {
     --mds-button-border-color: var(--variant-secondary-03);
     --mds-button-color: rgb(var(--variant-secondary-02));
   }
 
-  &:host([variant="secondary"][tone="ghost"]:hover) {
+  &:host([variant="secondary"][tone="outline"]:hover) {
     --mds-button-border-color: var(--variant-secondary-03);
     --mds-button-color: rgb(var(--variant-secondary-01));
   }
 
-  &:host([variant="secondary"][tone="ghost"][active]) {
+  &:host([variant="secondary"][tone="outline"][active]) {
     --mds-button-border-color: var(--variant-secondary-04);
     --mds-button-color: rgb(var(--variant-secondary-02));
   }
 
-  &:host([variant="secondary"][tone="quiet"]) {
+  &:host([variant="secondary"][tone="text"]) {
     --mds-button-color: rgb(var(--variant-secondary-01));
   }
 
-  &:host([variant="secondary"][tone="quiet"]:hover) {
+  &:host([variant="secondary"][tone="text"]:hover) {
     --mds-button-color: rgb(var(--variant-secondary-03));
   }
 
-  &:host([variant="secondary"][tone="quiet"][active]) {
+  &:host([variant="secondary"][tone="text"][active]) {
     --mds-button-color: rgb(var(--variant-secondary-01));
   }
 }
@@ -102,30 +102,30 @@
       fill: rgb(var(--variant-secondary-01));
     }
 
-    &:host([variant="secondary"][tone="ghost"]) {
+    &:host([variant="secondary"][tone="outline"]) {
       --mds-button-border-color: var(--variant-secondary-03);
       --mds-button-color: rgb(var(--variant-secondary-02));
     }
 
-    &:host([variant="secondary"][tone="ghost"]:hover) {
+    &:host([variant="secondary"][tone="outline"]:hover) {
       --mds-button-border-color: var(--variant-secondary-03);
       --mds-button-color: rgb(var(--variant-secondary-01));
     }
 
-    &:host([variant="secondary"][tone="ghost"][active]) {
+    &:host([variant="secondary"][tone="outline"][active]) {
       --mds-button-border-color: var(--variant-secondary-04);
       --mds-button-color: rgb(var(--variant-secondary-02));
     }
 
-    &:host([variant="secondary"][tone="quiet"]) {
+    &:host([variant="secondary"][tone="text"]) {
       --mds-button-color: rgb(var(--variant-secondary-01));
     }
 
-    &:host([variant="secondary"][tone="quiet"]:hover) {
+    &:host([variant="secondary"][tone="text"]:hover) {
       --mds-button-color: rgb(var(--variant-secondary-03));
     }
 
-    &:host([variant="secondary"][tone="quiet"][active]) {
+    &:host([variant="secondary"][tone="text"][active]) {
       --mds-button-color: rgb(var(--variant-secondary-01));
     }
   }

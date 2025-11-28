@@ -17,7 +17,7 @@
   --mds-banner-cockade-background: rgb(var(--status-info-09));
 }
 
-:host([variant="info"][tone="quiet"]) {
+:host([variant="info"][tone="text"]) {
   --mds-banner-background: transparent;
   --mds-banner-close-icon-hover-background: rgb(var(--status-info-09));
   --mds-banner-color: rgb(var(--status-info-03));
@@ -25,6 +25,6 @@
   --mds-banner-shadow: none;
 }
 
-:host([variant="info"][tone="quiet"]) .separator {
+:host([variant="info"][tone="text"]) .separator {
   display: none;
 }

@@ -35,30 +35,30 @@
     fill: rgb(var(--status-warning-01));
   }
 
-  &:host([variant="warning"][tone="ghost"]) {
+  &:host([variant="warning"][tone="outline"]) {
     --mds-button-border-color: var(--status-warning-03);
     --mds-button-color: rgb(var(--status-warning-02));
   }
 
-  &:host([variant="warning"][tone="ghost"]:hover) {
+  &:host([variant="warning"][tone="outline"]:hover) {
     --mds-button-border-color: var(--status-warning-03);
     --mds-button-color: rgb(var(--status-warning-01));
   }
 
-  &:host([variant="warning"][tone="ghost"][active]) {
+  &:host([variant="warning"][tone="outline"][active]) {
     --mds-button-border-color: var(--status-warning-04);
     --mds-button-color: rgb(var(--status-warning-02));
   }
 
-  &:host([variant="warning"][tone="quiet"]) {
+  &:host([variant="warning"][tone="text"]) {
     --mds-button-color: rgb(var(--status-warning-01));
   }
 
-  &:host([variant="warning"][tone="quiet"]:hover) {
+  &:host([variant="warning"][tone="text"]:hover) {
     --mds-button-color: rgb(var(--status-warning-03));
   }
 
-  &:host([variant="warning"][tone="quiet"][active]) {
+  &:host([variant="warning"][tone="text"][active]) {
     --mds-button-color: rgb(var(--status-warning-01));
   }
 }
@@ -102,30 +102,30 @@
       fill: rgb(var(--status-warning-01));
     }
 
-    &:host([variant="warning"][tone="ghost"]) {
+    &:host([variant="warning"][tone="outline"]) {
       --mds-button-border-color: var(--status-warning-03);
       --mds-button-color: rgb(var(--status-warning-02));
     }
 
-    &:host([variant="warning"][tone="ghost"]:hover) {
+    &:host([variant="warning"][tone="outline"]:hover) {
       --mds-button-border-color: var(--status-warning-03);
       --mds-button-color: rgb(var(--status-warning-01));
     }
 
-    &:host([variant="warning"][tone="ghost"][active]) {
+    &:host([variant="warning"][tone="outline"][active]) {
       --mds-button-border-color: var(--status-warning-04);
       --mds-button-color: rgb(var(--status-warning-02));
     }
 
-    &:host([variant="warning"][tone="quiet"]) {
+    &:host([variant="warning"][tone="text"]) {
       --mds-button-color: rgb(var(--status-warning-01));
     }
 
-    &:host([variant="warning"][tone="quiet"]:hover) {
+    &:host([variant="warning"][tone="text"]:hover) {
       --mds-button-color: rgb(var(--status-warning-03));
     }
 
-    &:host([variant="warning"][tone="quiet"][active]) {
+    &:host([variant="warning"][tone="text"][active]) {
       --mds-button-color: rgb(var(--status-warning-01));
     }
   }

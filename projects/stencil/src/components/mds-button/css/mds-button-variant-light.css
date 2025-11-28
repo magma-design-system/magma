@@ -23,24 +23,24 @@
   --mds-button-color: rgb(var(--tone-neutral-02));
 }
 
-:host([variant="light"][tone="ghost"]) {
+:host([variant="light"][tone="outline"]) {
   --mds-button-border-color: var(--tone-neutral);
   --mds-button-color: rgb(var(--tone-neutral));
 }
 
-:host([variant="light"][tone="ghost"]:hover) {
+:host([variant="light"][tone="outline"]:hover) {
   --mds-button-border-color: var(--tone-neutral);
   --mds-button-color: rgb(var(--tone-neutral));
 }
 
-:host([variant="light"][tone="quiet"]) {
+:host([variant="light"][tone="text"]) {
   --mds-button-color: rgb(var(--tone-neutral));
 }
 
-:host([variant="light"][tone="quiet"]:hover) {
+:host([variant="light"][tone="text"]:hover) {
   --mds-button-color: rgb(var(--tone-neutral));
 }
 
-:host([variant="light"][tone="quiet"][active]) {
+:host([variant="light"][tone="text"][active]) {
   --mds-button-color: rgb(var(--tone-neutral));
 }

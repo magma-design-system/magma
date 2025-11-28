@@ -1,23 +1,147 @@
+/**
+ * @prop --mds-avatar-stack-item-background: The background color of each avatar in the stack
+ * @prop --mds-avatar-stack-item-count-background-color: Background color of the count badge in the stack
+ * @prop --mds-avatar-stack-item-count-color: Text color for the count badge in the stack
+ * @prop --mds-avatar-stack-item-lg-size: Size of large avatars in the stack
+ * @prop --mds-avatar-stack-item-md-size: Size of medium avatars in the stack
+ * @prop --mds-avatar-stack-item-sm-size: Size of small avatars in the stack
+ * @prop --mds-avatar-stack-item-lg-border: Border width for large avatars
+ * @prop --mds-avatar-stack-item-md-border: Border width for medium avatars
+ * @prop --mds-avatar-stack-item-sm-border: Border width for small avatars
+ * @prop --mds-avatar-stack-item-lg-offset: Overlap factor for large avatars (higher = more overlap)
+ * @prop --mds-avatar-stack-item-md-offset: Overlap factor for medium avatars
+ * @prop --mds-avatar-stack-item-sm-offset: Overlap factor for small avatars
+ * @prop --mds-avatar-stack-item-border: Computed active border (based on selected size)
+ * @prop --mds-avatar-stack-item-size: Computed active size (based on selected size)
+ * @prop --mds-avatar-stack-item-offset: Computed active offset (based on selected size)
+ * @prop --mds-avatar-stack-item-offset-margin: Computed margin for overlapping avatars
+ */
+
+/* Background of each avatar stack item */
+
+@property --mds-avatar-stack-item-background {
+  inherits: false;
+  initial-value: var(--mds-avatar-stack-background, rgb(var(--tone-neutral, 255 255 255)));
+  syntax: "<color>";
+}
+
+/* Badge background (count bubble) */
+
+@property --mds-avatar-stack-item-count-background-color {
+  inherits: false;
+  initial-value: var(--mds-avatar-stack-count-background-color, rgb(var(--tone-neutral-09, 237 237 237)));
+  syntax: "<color>";
+}
+
+/* Badge color */
+
+@property --mds-avatar-stack-item-count-color {
+  inherits: false;
+  initial-value: var(--mds-avatar-stack-count-color, rgb(var(--tone-neutral-04, 84 84 84)));
+  syntax: "<color>";
+}
+
+/* Sizes */
+
+
+@property --mds-avatar-stack-item-lg-size {
+  inherits: true;
+  initial-value: var(--mds-avatar-stack-lg-size, 3.75rem); /* --spacing(1500) */
+  syntax: "<length>";
+}
+
+@property --mds-avatar-stack-item-md-size {
+  inherits: true;
+  initial-value: var(--mds-avatar-stack-md-size, 3rem); /* --spacing(1200) */
+  syntax: "<length>";
+}
+
+@property --mds-avatar-stack-item-sm-size {
+  inherits: true;
+  initial-value: var(--mds-avatar-stack-sm-size, 2.25rem); /* --spacing(900) */
+  syntax: "<length>";
+}
+
+/* Borders */
+
+@property --mds-avatar-stack-item-lg-border {
+  inherits: true;
+  initial-value: var(--mds-avatar-stack-lg-border, 0.25rem);
+  syntax: "<length>";
+}
+
+@property --mds-avatar-stack-item-md-border {
+  inherits: true;
+  initial-value: var(--mds-avatar-stack-md-border, 0.25rem);
+  syntax: "<length>";
+}
+
+@property --mds-avatar-stack-item-sm-border {
+  inherits: true;
+  initial-value: var(--mds-avatar-stack-sm-border, 0.25rem);
+  syntax: "<length>";
+}
+
+/* Offsets */
+
+@property --mds-avatar-stack-item-lg-offset {
+  inherits: true;
+  initial-value: var(--mds-avatar-stack-lg-offset, 2);
+  syntax: "<number>";
+}
+
+@property --mds-avatar-stack-item-md-offset {
+  inherits: true;
+  initial-value: var(--mds-avatar-stack-md-offset, 1.75);
+  syntax: "<number>";
+}
+
+@property --mds-avatar-stack-item-sm-offset {
+  inherits: true;
+  initial-value: var(--mds-avatar-stack-sm-offset, 1.5);
+  syntax: "<number>";
+}
+
+/* Borders */
+
+@property --mds-avatar-stack-item-lg-border {
+  inherits: true;
+  initial-value: var(--mds-avatar-stack-lg-border, 0.25rem); /* --spacing(100) */
+  syntax: "<length>";
+}
+
+@property --mds-avatar-stack-item-md-border {
+  inherits: true;
+  initial-value: var(--mds-avatar-stack-md-border, 0.25rem); /* --spacing(100) */
+  syntax: "<length>";
+}
+
+@property --mds-avatar-stack-item-sm-border {
+  inherits: true;
+  initial-value: var(--mds-avatar-stack-sm-border, 0.25rem); /* --spacing(100) */
+  syntax: "<length>";
+}
+
 :host {
 
   /* private */
   --mds-avatar-stack-item-background: var(--mds-avatar-stack-background, rgb(var(--tone-neutral)));
   --mds-avatar-stack-item-count-background-color: var(--mds-avatar-stack-count-background-color, rgb(var(--tone-neutral-09)));
   --mds-avatar-stack-item-count-color: var(--mds-avatar-stack-count-color, rgb(var(--tone-neutral-04)));
-  --mds-avatar-stack-item-large-size: var(--mds-avatar-stack-large-size, --spacing(1500));
-  --mds-avatar-stack-item-medium-size: var(--mds-avatar-stack-medium-size, --spacing(1200));
-  --mds-avatar-stack-item-small-size: var(--mds-avatar-stack-small-size, --spacing(900));
-  --mds-avatar-stack-item-large-border: var(--mds-avatar-stack-large-border, --spacing(100));
-  --mds-avatar-stack-item-medium-border: var(--mds-avatar-stack-medium-border, --spacing(100));
-  --mds-avatar-stack-item-small-border: var(--mds-avatar-stack-small-border, --spacing(100));
-  --mds-avatar-stack-item-large-offset: var(--mds-avatar-stack-large-offset, 2);
-  --mds-avatar-stack-item-medium-offset: var(--mds-avatar-stack-medium-offset, 1.75);
-  --mds-avatar-stack-item-small-offset: var(--mds-avatar-stack-small-offset, 1.5);
+  --mds-avatar-stack-item-lg-size: var(--mds-avatar-stack-lg-size, --spacing(1500));
+  --mds-avatar-stack-item-md-size: var(--mds-avatar-stack-md-size, --spacing(1200));
+  --mds-avatar-stack-item-sm-size: var(--mds-avatar-stack-sm-size, --spacing(900));
+  --mds-avatar-stack-item-lg-border: var(--mds-avatar-stack-lg-border, --spacing(100));
+  --mds-avatar-stack-item-md-border: var(--mds-avatar-stack-md-border, --spacing(100));
+  --mds-avatar-stack-item-sm-border: var(--mds-avatar-stack-sm-border, --spacing(100));
+  --mds-avatar-stack-item-lg-offset: var(--mds-avatar-stack-lg-offset, 2);
+  --mds-avatar-stack-item-md-offset: var(--mds-avatar-stack-md-offset, 1.75);
+  --mds-avatar-stack-item-sm-offset: var(--mds-avatar-stack-sm-offset, 1.5);
 
   /* apply */
-  --mds-avatar-stack-item-border: var(--mds-avatar-stack-medium-border);
-  --mds-avatar-stack-item-size: var(--mds-avatar-stack-item-medium-size);
-  --mds-avatar-stack-item-offset: var(--mds-avatar-stack-item-medium-offset);
+  --mds-avatar-stack-item-border: var(--mds-avatar-stack-md-border);
+  --mds-avatar-stack-item-size: var(--mds-avatar-stack-item-md-size);
+  --mds-avatar-stack-item-offset: var(--mds-avatar-stack-item-md-offset);
   --mds-avatar-stack-item-offset-margin: calc(var(--mds-avatar-stack-item-size) / var(--mds-avatar-stack-item-offset));
 
   display: inline-flex;

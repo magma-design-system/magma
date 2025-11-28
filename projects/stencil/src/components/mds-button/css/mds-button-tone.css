@@ -1,6 +1,6 @@
-:host([tone="quiet"]),
-:host([tone="quiet"]:hover),
-:host([tone="ghost"]) {
+:host([tone="text"]),
+:host([tone="text"]:hover),
+:host([tone="outline"]) {
   --mds-button-background: transparent;
 }
 
@@ -12,7 +12,7 @@
 
 :host([tone="strong"]),
 :host([tone="weak"]),
-:host([tone="ghost"]) {
+:host([tone="outline"]) {
   --mds-button-border-opacity: var(--mds-button-border-default-opacity);
 }
 
@@ -26,8 +26,8 @@
   --mds-button-border-width: var(--mds-button-border-tone-weak-hover-width);
 }
 
-:host([tone="ghost"]:hover),
-:host([tone="ghost"][active]) {
+:host([tone="outline"]:hover),
+:host([tone="outline"][active]) {
   --mds-button-background: transparent;
   --mds-button-border-width: var(--mds-button-border-tone-ghost-hover-width);
   --mds-button-border-opacity: var(--mds-button-border-hover-opacity);

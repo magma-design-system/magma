@@ -21,7 +21,7 @@
   --mds-label-selection-color: rgb(var(--label-orchid-10));
 }
 
-:host([variant="orchid"][tone="quiet"]) {
+:host([variant="orchid"][tone="text"]) {
   --mds-label-background: rgb(var(--label-orchid-09));
   --mds-label-button-background: rgb(var(--label-orchid-09));
   --mds-label-button-background-hover: rgb(var(--label-orchid-08));
