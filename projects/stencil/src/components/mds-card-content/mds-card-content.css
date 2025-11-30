@@ -1,13 +1,11 @@
-@reference '../../tailwind/index.css';
-
 @import '../../tailwind/fouc.css';
 
-  :host {
-    @apply gap-400
-    p-400;
+:host {
+  @apply gap-400
+  p-400;
 
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(1px, 100%));
-    min-width: 0;
-  }
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(1px, 100%));
+  min-width: 0;
+}
 

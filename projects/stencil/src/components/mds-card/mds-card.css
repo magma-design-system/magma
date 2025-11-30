@@ -5,6 +5,19 @@
  * @prop --mds-card-padding: Sets the spacing around card elements
  */
 
+@property --mds-card-gap {
+  inherits: false;
+  initial-value: 0;
+  syntax: "<length>";
+}
+
+@property --mds-card-padding {
+  inherits: false;
+  initial-value: 0;
+  syntax: "<length>";
+}
+
+
 :host {
   --mds-card-gap: 0;
   --mds-card-padding: 0;

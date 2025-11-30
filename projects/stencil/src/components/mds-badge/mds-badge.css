@@ -5,6 +5,8 @@
  * @prop --mds-badge-background: Sets the background-color of the component
  * @prop --mds-badge-radius: Sets the border-radius of the component
  * @prop --mds-badge-color: Sets the text color of the component
+ * @prop --mds-badge-border-color: Sets the border color of the component when tone is "outline"
+ * @prop --mds-badge-border-width: Sets the border width of the component when tone is "outline"
  */
 
  /* Colors */
@@ -39,7 +41,7 @@
 
 @property --mds-badge-radius {
   inherits: true;
-  initial-value: 10px; /* var(--radius-sm fallback) */
+  initial-value: 10px;
   syntax: "<length>";
 }
 
@@ -74,7 +76,7 @@
 }
 
 :host([tone="text"]) {
-  --mds-badge-background: rgb(var(--tone-neutral));
+  --mds-badge-background: rgb(var(--tone-neutral, 255 255 255));
 }
 @import './css/mds-badge-variant-amaranth.css';
 @import './css/mds-badge-variant-amaranth-contrast.css';

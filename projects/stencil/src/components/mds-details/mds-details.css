@@ -3,9 +3,28 @@
 @reference '../../tailwind/components.css';
 
 /**
- * @prop --mds-details-icon-color: Sets the icon color the component
- * @prop --mds-details-helper-icon-color: Sets icon color of the helper icon of the component
+ * @prop --mds-details-duration: Sets the transition duration for details component
+ * @prop --mds-details-icon-color: Sets the color of the details icon
+ * @prop --mds-details-helper-icon-color: Sets the color of the helper icon in the details component
  */
+
+@property --mds-details-duration {
+  inherits: false;
+  initial-value: 300ms;
+  syntax: "<time>";
+}
+
+@property --mds-details-icon-color {
+  inherits: false;
+  initial-value: rgb(var(--variant-primary-04));
+  syntax: "<color>";
+}
+
+@property --mds-details-helper-icon-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-03));
+  syntax: "<color>";
+}
 
 :host {
   --mds-details-duration: 300ms;

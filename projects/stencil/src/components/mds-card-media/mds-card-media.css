@@ -1,26 +1,24 @@
-@reference '../../tailwind/index.css';
-
 @import '../../tailwind/fouc.css';
 
-  :host {
-    background-color: rgb(var(--tone-neutral-09));
-    display: grid;
-    min-width: 0;
-    position: relative;
-  }
+:host {
+  background-color: rgb(var(--tone-neutral-09));
+  display: grid;
+  min-width: 0;
+  position: relative;
+}
 
-  .content {
-    @apply gap-200
-    p-400;
+.content {
+  @apply gap-200
+  p-400;
 
-    align-items: flex-end;
-    display: flex;
-    inset: 0;
-    justify-content: center;
-    position: absolute;
-  }
+  align-items: flex-end;
+  display: flex;
+  inset: 0;
+  justify-content: center;
+  position: absolute;
+}
 
-  .img {
-    object-fit: contain;
-  }
+.img {
+  object-fit: contain;
+}
 

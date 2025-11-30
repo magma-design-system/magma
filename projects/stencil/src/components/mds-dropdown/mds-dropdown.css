@@ -2,28 +2,82 @@
 
 /**
  * @prop --mds-dropdown-arrow-background: Sets the fill color of the arrow.
- * @prop --mds-dropdown-background: Sets the background-color of the dropdown.
  * @prop --mds-dropdown-backdrop-duration: Sets the transition duration of the backdrop, used by component's code too.
  * @prop --mds-dropdown-backdrop-z-indx: Sets the backdrop z-index, used by component's code too.
+ * @prop --mds-dropdown-background: Sets the background-color of the dropdown.
+ * @prop --mds-dropdown-drop-shadow-color-rgb: Sets the color used for the dropdown shadow
  * @prop --mds-dropdown-drop-shadow: Sets the drop-shadow of the dropdown.
- * @prop --mds-dropdown-mouseover-delay: Sets the delay duration of the component when the caller trigger mouseover event, it's used by the javascript code.
  * @prop --mds-dropdown-duration: Sets the duration of the dropdown animation.
  * @prop --mds-dropdown-ease: Sets the easing of the dropdown animation.
+ * @prop --mds-dropdown-mouseover-delay: Sets the delay duration of the component when the caller trigger mouseover event, it's used by the javascript code.
  * @prop --mds-dropdown-transform-from: Sets the from animation transform of the dropdown.
  * @prop --mds-dropdown-transform-to: Sets the to animation transform of the dropdown.
  * @prop --mds-dropdown-z-index: Sets the z-index of the component.
  */
+
+@property --mds-dropdown-arrow-background {
+  inherits: false;
+  initial-value: var(--mds-dropdown-background);
+  syntax: "<color>";
+}
+
+@property --mds-dropdown-backdrop-duration {
+  inherits: false;
+  initial-value: 200ms;
+  syntax: "<time>";
+}
+
+@property --mds-dropdown-backdrop-z-index {
+  inherits: false;
+  initial-value: 3000;
+  syntax: "<integer>";
+}
+
+@property --mds-dropdown-background {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral));
+  syntax: "<color>";
+}
+
+@property --mds-dropdown-mouseover-delay {
+  inherits: false;
+  initial-value: 0.5s;
+  syntax: "<time>";
+}
+
+@property --mds-dropdown-drop-shadow-color-rgb {
+  inherits: false;
+  initial-value: 0 0 0;
+  syntax: "<number>+";
+}
+
+/* The following properties are not supported by Houdini:
+  --mds-dropdown-drop-shadow, --mds-dropdown-ease,
+  --mds-dropdown-transform-from, --mds-dropdown-transform-to
+*/
+
+@property --mds-dropdown-duration {
+  inherits: false;
+  initial-value: 0.5s;
+  syntax: "<time>";
+}
+
+@property --mds-dropdown-z-index {
+  inherits: false;
+  initial-value: 4000;
+  syntax: "<integer>";
+}
 
 :host {
   --mds-dropdown-arrow-background: var(--mds-dropdown-background);
   --mds-dropdown-backdrop-duration: 200ms;
   --mds-dropdown-backdrop-z-index: var(--magma-backdrop-z-index, 3000);
   --mds-dropdown-background: rgb(var(--tone-neutral));
-  --mds-dropdown-mouseover-delay: 0.5s;
-  --mds-dropdown-drop-shadow-color: var(--tone-neutral-01, 0 0 0);
-  --mds-dropdown-drop-shadow: drop-shadow(0 10px 8px rgb(var(--mds-dropdown-drop-shadow-color) / 0.05)) drop-shadow(0 4px 3px rgb(var(--mds-dropdown-drop-shadow-color) / 0.15)) drop-shadow(0 0 1px rgb(var(--mds-dropdown-drop-shadow-color) / 0.15));
+  --mds-dropdown-drop-shadow-color-rgb: var(--tone-neutral-01, 0 0 0);
+  --mds-dropdown-drop-shadow: drop-shadow(0 10px 8px rgb(var(--mds-dropdown-drop-shadow-color-rgb) / 0.05)) drop-shadow(0 4px 3px rgb(var(--mds-dropdown-drop-shadow-color) / 0.15)) drop-shadow(0 0 1px rgb(var(--mds-dropdown-drop-shadow-color) / 0.15));
   --mds-dropdown-duration: 0.5s;
   --mds-dropdown-ease: var(--ease-out-expo);
+  --mds-dropdown-mouseover-delay: 0.5s;
   --mds-dropdown-transform-from: scale(0.9) translateY(-3%);
   --mds-dropdown-transform-to: scale(1) translate(0, 0);
   --mds-dropdown-z-index: var(--magma-dropdown-z-index, 4000);

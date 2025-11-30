@@ -1,3 +1,269 @@
+/**
+ * @prop --mds-calendar-cell-background: Background of calendar cells.
+ * @prop --mds-calendar-cell-boundaries-background: Background for selection boundaries.
+ * @prop --mds-calendar-cell-boundaries-color: Color for selection boundary lines.
+ * @prop --mds-calendar-cell-boundaries-padding: Padding inside selection boundaries.
+ * @prop --mds-calendar-cell-color: Text color of calendar cells.
+ * @prop --mds-calendar-cell-other-month-background: Background of days from adjacent months.
+ * @prop --mds-calendar-cell-other-month-color: Text color of days from adjacent months.
+ * @prop --mds-calendar-cell-disabled-background: Background for disabled days.
+ * @prop --mds-calendar-cell-disabled-color: Text color for disabled days.
+ * @prop --mds-calendar-cell-weekend-background: Background for weekend days.
+ * @prop --mds-calendar-cell-weekend-color: Text colorfor weekend days.
+ * @prop --mds-calendar-cell-size: Size (width/height) of each day cell.
+ * @prop --mds-calendar-cell-selection-boundaries-border-radius: Border radius for day selection boundaries.
+ * @prop --mds-calendar-cell-selection-week-boundaries-border-radius: Border radius for week selection boundaries.
+ * @prop --mds-calendar-cell-preselection-today-background: Background for today's date in preselection state.
+ * @prop --mds-calendar-cell-preselection-today-color: Text color for today's date in preselection state.
+ * @prop --mds-calendar-cell-preselection-current-month-background: Background for preselected days (current month).
+ * @prop --mds-calendar-cell-preselection-current-month-color: Text color for preselected days (current month).
+ * @prop --mds-calendar-cell-preselection-current-month-boundaries-color: Boundary color for preselected days (current month).
+ * @prop --mds-calendar-cell-preselection-current-month-boundaries-background: Boundary background for preselected days (current month).
+ * @prop --mds-calendar-cell-preselection-other-month-background: Background for preselected days (other months).
+ * @prop --mds-calendar-cell-preselection-other-month-color: Text color for preselected days (other months).
+ * @prop --mds-calendar-cell-preselection-other-month-boundaries-color: Boundary color for preselected days (other months).
+ * @prop --mds-calendar-cell-preselection-other-month-boundaries-background: Boundary background for preselected days (other months).
+ * @prop --mds-calendar-cell-selection-current-month-background: Background for selected days (current month).
+ * @prop --mds-calendar-cell-selection-current-month-color: Text color for selected days (current month).
+ * @prop --mds-calendar-cell-selection-current-month-boundaries-background: Boundary background for selected days (current month).
+ * @prop --mds-calendar-cell-selection-current-month-boundaries-color: Boundary color for selected days (current month).
+ * @prop --mds-calendar-cell-selection-current-month-weekend-background: Background for selected weekend days (current month).
+ * @prop --mds-calendar-cell-selection-current-month-weekend-color: Text color for selected weekend days (current month).
+ * @prop --mds-calendar-cell-selection-current-month-weekend-boundaries-background: Boundary background for selected weekend days.
+ * @prop --mds-calendar-cell-selection-current-month-weekend-boundaries-color: Boundary color for selected weekend days.
+ * @prop --mds-calendar-cell-selection-other-month-background: Background for selected days (other months).
+ * @prop --mds-calendar-cell-selection-other-month-color: Text color for selected days (other months).
+ * @prop --mds-calendar-cell-selection-other-month-boundaries-background: Boundary background for selected days (other months).
+ * @prop --mds-calendar-cell-selection-other-month-boundaries-color: Boundary color for selected days (other months).
+ */
+
+
+/*  Base styles                                  */
+
+@property --mds-calendar-cell-background {
+  inherits: false;
+  initial-value: transparent;
+  syntax: "<color>";
+}
+
+@property --mds-calendar-cell-boundaries-background {
+  inherits: false;
+  initial-value: transparent;
+  syntax: "<color>";
+}
+
+@property --mds-calendar-cell-boundaries-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-01));
+  syntax: "<color>";
+}
+
+@property --mds-calendar-cell-boundaries-padding {
+  inherits: false;
+  initial-value: 0.25rem;
+  syntax: "<length>";
+}
+
+@property --mds-calendar-cell-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-01));
+  syntax: "<color>";
+}
+
+@property --mds-calendar-cell-other-month-background {
+  inherits: false;
+  initial-value: transparent;
+  syntax: "<color>";
+}
+
+@property --mds-calendar-cell-other-month-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-07));
+  syntax: "<color>";
+}
+
+@property --mds-calendar-cell-disabled-background {
+  inherits: false;
+  initial-value: transparent;
+  syntax: "<color>";
+}
+
+@property --mds-calendar-cell-disabled-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-07));
+  syntax: "<color>";
+}
+
+@property --mds-calendar-cell-weekend-background {
+  inherits: false;
+  initial-value: transparent;
+  syntax: "<color>";
+}
+
+@property --mds-calendar-cell-weekend-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-06));
+  syntax: "<color>";
+}
+
+
+@property --mds-calendar-cell-size {
+  inherits: false;
+  initial-value: 3rem;
+  syntax: "<length>";
+}
+
+@property --mds-calendar-cell-selection-boundaries-border-radius {
+  inherits: false;
+  initial-value: 1.5rem;
+  syntax: "<length>";
+}
+
+@property --mds-calendar-cell-selection-week-boundaries-border-radius {
+  inherits: false;
+  initial-value: 1.5rem;
+  syntax: "<length>";
+}
+
+/*  Today (preselection) */
+
+@property --mds-calendar-cell-preselection-today-background {
+  inherits: false;
+  initial-value: rgb(var(--variant-primary-09));
+  syntax: "<color>";
+}
+
+@property --mds-calendar-cell-preselection-today-color {
+  inherits: false;
+  initial-value: rgb(var(--variant-primary-03));
+  syntax: "<color>";
+}
+
+/*  Preselection */
+
+@property --mds-calendar-cell-preselection-current-month-background {
+  inherits: false;
+  initial-value: rgb(var(--variant-primary-08));
+  syntax: "<color>";
+}
+
+@property --mds-calendar-cell-preselection-current-month-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-05));
+  syntax: "<color>";
+}
+
+@property --mds-calendar-cell-preselection-current-month-boundaries-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-05));
+  syntax: "<color>";
+}
+
+@property --mds-calendar-cell-preselection-current-month-boundaries-background {
+  inherits: false;
+  initial-value: rgb(var(--variant-primary-10));
+  syntax: "<color>";
+}
+
+@property --mds-calendar-cell-preselection-other-month-background {
+  inherits: false;
+  initial-value: rgb(var(--variant-primary-09));
+  syntax: "<color>";
+}
+
+@property --mds-calendar-cell-preselection-other-month-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-05));
+  syntax: "<color>";
+}
+
+@property --mds-calendar-cell-preselection-other-month-boundaries-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-05));
+  syntax: "<color>";
+}
+
+@property --mds-calendar-cell-preselection-other-month-boundaries-background {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral));
+  syntax: "<color>";
+}
+
+/*  Selection */
+
+@property --mds-calendar-cell-selection-current-month-background {
+  inherits: false;
+  initial-value: rgb(var(--variant-primary-04));
+  syntax: "<color>";
+}
+
+@property --mds-calendar-cell-selection-current-month-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral));
+  syntax: "<color>";
+}
+
+@property --mds-calendar-cell-selection-current-month-boundaries-background {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral));
+  syntax: "<color>";
+}
+
+@property --mds-calendar-cell-selection-current-month-boundaries-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-03));
+  syntax: "<color>";
+}
+
+@property --mds-calendar-cell-selection-current-month-weekend-background {
+  inherits: false;
+  initial-value: rgb(var(--variant-primary-03));
+  syntax: "<color>";
+}
+
+@property --mds-calendar-cell-selection-current-month-weekend-color {
+  inherits: false;
+  initial-value: rgb(var(--variant-primary-07));
+  syntax: "<color>";
+}
+
+@property --mds-calendar-cell-selection-current-month-weekend-boundaries-background {
+  inherits: false;
+  initial-value: rgb(var(--variant-primary-03));
+  syntax: "<color>";
+}
+
+@property --mds-calendar-cell-selection-current-month-weekend-boundaries-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-03));
+  syntax: "<color>";
+}
+
+@property --mds-calendar-cell-selection-other-month-background {
+  inherits: false;
+  initial-value: rgb(var(--variant-primary-07));
+  syntax: "<color>";
+}
+
+@property --mds-calendar-cell-selection-other-month-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-04));
+  syntax: "<color>";
+}
+
+@property --mds-calendar-cell-selection-other-month-boundaries-background {
+  inherits: false;
+  initial-value: rgb(var(--variant-primary-10));
+  syntax: "<color>";
+}
+
+@property --mds-calendar-cell-selection-other-month-boundaries-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-05));
+  syntax: "<color>";
+}
+
+
 :host {
   --mds-calendar-cell-background: transparent;
   --mds-calendar-cell-boundaries-background: transparent;

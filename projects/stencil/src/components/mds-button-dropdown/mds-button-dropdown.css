@@ -1,4 +1,12 @@
-@reference '../../tailwind/index.css';
+/**
+ * @prop --mds-button-dropdown-radius: Sets the border-radius of the component
+ */
+
+@property --mds-button-dropdown-radius {
+  inherits: true;
+  initial-value: var(--radius-lg);
+  syntax: "<length>";
+}
 
 :host {
   --mds-button-dropdown-radius: var(--radius-lg);
