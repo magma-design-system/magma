@@ -6,6 +6,7 @@ import { inlineSvg } from 'stencil-inline-svg'
 import tailwind, { PluginConfigurationOptions } from 'stencil-tailwind-plugin'
 import { reactOutputTarget } from '@stencil/react-output-target'
 import { angularOutputTarget } from '@stencil/angular-output-target'
+import tokenFallbackPlugin from './scripts/postcss-token-fallbacks'
 
 // https://github.com/ionic-team/stencil/issues/1307
 // still not working
@@ -90,6 +91,10 @@ export const config: Config = {
     },
   ],
   plugins: [
+    tokenFallbackPlugin({
+      warnOnMissing: false,
+      failOnMissing: true,
+    }),
     alias({
       entries: [
         { find: /^@common\/(.*)$/, replacement: path.resolve('.', './src/common/$1') },

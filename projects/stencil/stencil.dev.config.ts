@@ -3,6 +3,7 @@ import path from 'path'
 import tailwind from 'stencil-tailwind-plugin'
 import { Config } from '@stencil/core'
 import { inlineSvg } from 'stencil-inline-svg'
+import tokenFallbackPlugin from './scripts/postcss-token-fallbacks'
 
 // import { reactOutputTarget } from '@stencil/react-output-target'
 // import { angularOutputTarget } from '@stencil/angular-output-target'
@@ -84,6 +85,10 @@ export const config: Config = {
     // },
   ],
   plugins: [
+    tokenFallbackPlugin({
+      warnOnMissing: true,
+      failOnMissing: false,
+    }),
     tailwind(opts),
     alias({
       entries: [

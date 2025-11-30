@@ -1,5 +1,6 @@
 import { resolve, join } from 'path'
 const PROJECT_DIR = resolve(__dirname, '../')
+const TOKENS_DIR = resolve(__dirname, '../../design-tokens/')
 const DIST_STORYBOOK_CACHE_DIR = resolve(__dirname, '../node_modules/.cache/storybook')
 const DIST_STORYBOOK_MANAGER_CACHE_DIR = resolve(__dirname, '../node_modules/.cache/sb-manager')
 const DIST_PUBLISH_STENCIL_CACHE_DIR = resolve(__dirname, '../.stencil')
@@ -41,5 +42,6 @@ export {
   TEMPLATES_DIR,
   TEMP_PROJECT_DIR,
   TEST_REGRESSION_DIR,
+  TOKENS_DIR,
   WWW_DIR,
 }
