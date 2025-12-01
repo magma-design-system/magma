@@ -55,7 +55,7 @@ export class MdsTableRow {
 
   componentDidLoad (): void {
     // needed to capture sizer width when become visible
-    this.initObserver()
+    if (this.hasActions) this.initObserver()
   }
 
   private initObserver () {
