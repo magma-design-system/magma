@@ -1,11 +1,44 @@
+/**
+ * @prop --mds-emoji-mia-head: Sets the color of Mia's head
+ * @prop --mds-emoji-mia-eyes: Sets the color of Mia's eyes
+ * @prop --mds-emoji-mia-mouth: Sets the color of Mia's mouth
+ * @prop --mds-emoji-mia-hands: Sets the color of Mia's hands
+ */
+
+@property --mds-emoji-mia-head {
+  inherits: false;
+  initial-value: rgb(var(--variant-ai-08));
+  syntax: "<color>";
+}
+
+@property --mds-emoji-mia-eyes {
+  inherits: false;
+  initial-value: rgb(var(--variant-ai-03));
+  syntax: "<color>";
+}
+
+@property --mds-emoji-mia-mouth {
+  inherits: false;
+  initial-value: rgb(var(--variant-ai-06));
+  syntax: "<color>";
+}
+
+@property --mds-emoji-mia-hands {
+  inherits: false;
+  initial-value: rgb(var(--variant-ai-06));
+  syntax: "<color>";
+}
+
 :host([name="mia"]) {
-  --mds-emoji-mia-head: rgb(var(--variant-ai-08));
-  --mds-emoji-mia-eyes: rgb(var(--variant-ai-03));
-  --mds-emoji-mia-mouth: rgb(var(--variant-ai-06));
-  --mds-emoji-mia-hands: rgb(var(--variant-ai-06));
+  --mds-emoji-mia-eyes-color: rgb(var(--variant-ai-03));
+  --mds-emoji-mia-hands-color: rgb(var(--variant-ai-06));
+  --mds-emoji-mia-head-color: rgb(var(--variant-ai-08));
+  --mds-emoji-mia-head-stroke-color: rgb(var(--variant-ai-06));
+  --mds-emoji-mia-head-stroke-width: 4px;
+  --mds-emoji-mia-mouth-color: rgb(var(--variant-ai-04));
   --mds-emoji-offset-eyes: 1px;
   --mds-emoji-offset-gadget: 1px;
-  --mds-emoji-offset-hand: 2px;
+  --mds-emoji-offset-hands: 2px;
   --mds-emoji-offset-head: 0;
   --mds-emoji-offset-mouth: 1px;
 }

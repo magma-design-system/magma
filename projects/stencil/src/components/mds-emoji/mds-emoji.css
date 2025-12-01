@@ -1,3 +1,83 @@
+/**
+ * @prop --mds-emoji-expression-follow-mouse-head-duration: Sets the duration for the head to follow the mouse
+ * @prop --mds-emoji-expression-follow-mouse-traits-duration: Sets the duration for facial traits to follow the mouse
+ * @prop --mds-emoji-expression-max-rotation: Sets the maximum rotation angle for the emoji expression
+ * @prop --mds-emoji-offset-ears: Sets the positional offset for the ears
+ * @prop --mds-emoji-offset-eyebrows: Sets the positional offset for eyebrows
+ * @prop --mds-emoji-offset-eyes: Sets the positional offset for eyes
+ * @prop --mds-emoji-offset-gadget: Sets the positional offset for gadgets
+ * @prop --mds-emoji-offset-hands: Sets the positional offset for the hands
+ * @prop --mds-emoji-offset-head: Sets the positional offset for the head
+ * @prop --mds-emoji-offset-mouth: Sets the positional offset for the mouth
+ * @prop --mds-emoji-perspective: Sets the perspective distance for 3D transformations of the emoji
+ */
+
+@property --mds-emoji-expression-follow-mouse-traits-duration {
+  inherits: false;
+  initial-value: 200ms;
+  syntax: "<time>";
+}
+
+@property --mds-emoji-expression-follow-mouse-head-duration {
+  inherits: false;
+  initial-value: 300ms;
+  syntax: "<time>";
+}
+
+@property --mds-emoji-expression-max-rotation {
+  inherits: false;
+  initial-value: 16deg;
+  syntax: "<angle>";
+}
+
+@property --mds-emoji-perspective {
+  inherits: false;
+  initial-value: 400px;
+  syntax: "<length>";
+}
+
+@property --mds-emoji-offset-eyes {
+  inherits: false;
+  initial-value: 1px;
+  syntax: "<length>";
+}
+
+@property --mds-emoji-offset-gadget {
+  inherits: false;
+  initial-value: 1px;
+  syntax: "<length>";
+}
+
+@property --mds-emoji-offset-hands {
+  inherits: false;
+  initial-value: 2px;
+  syntax: "<length>";
+}
+
+@property --mds-emoji-offset-head {
+  inherits: false;
+  initial-value: 0;
+  syntax: "<length>";
+}
+
+@property --mds-emoji-offset-mouth {
+  inherits: false;
+  initial-value: 1px;
+  syntax: "<length>";
+}
+
+@property --mds-emoji-offset-eyebrows {
+  inherits: false;
+  initial-value: 10px;
+  syntax: "<length>";
+}
+
+@property --mds-emoji-offset-ears {
+  inherits: false;
+  initial-value: 0;
+  syntax: "<length>";
+}
+
 :host {
   --mds-emoji-expression-follow-mouse-traits-duration: 200ms;
   --mds-emoji-expression-follow-mouse-head-duration: 300ms;
@@ -20,23 +100,6 @@ svg {
   transform-style: preserve-3d;
   transition: transform 0.2s ease-out;
   width: 100%;
-}
-
-:host .head {
-  fill: var(--mds-emoji-head);
-}
-
-:host .eye {
-  fill: var(--mds-emoji-eyes);
-}
-
-:host .mouth {
-  fill: var(--mds-emoji-mouth);
-}
-
-:host .hand {
-  fill: var(--mds-emoji-hand);
-  visibility: hidden
 }
 
 @import './css/mds-emoji-mia.css';
