@@ -20,8 +20,10 @@ const twConfigurationFn = () => {
   @layer base, theme, components, utilities;
   @reference "tailwindcss/theme.css";
   @reference "tailwindcss/utilities.css";
-  @reference "@maggioli-design-system/styles/tailwind/theme.css";
-  @reference "@maggioli-design-system/styles/tailwind/typography.css";
+  @reference "${path.resolve('./src/tailwind/', 'utilities.css')}";
+  @reference "@maggioli-design-system/styles/dist/css/animations.css";
+  @reference "@maggioli-design-system/styles/dist/tailwind/theme.css";
+  @reference "@maggioli-design-system/styles/dist/tailwind/typography.css";
   `
 }
 

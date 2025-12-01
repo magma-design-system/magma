@@ -1,4 +1,4 @@
-@reference '@maggioli-design-system/styles/dist/tailwind/components.css';
+@reference '@maggioli-design-system/styles/dist/tailwind/utilities.css';
 
 @utility svg {
   @apply flex;

@@ -1,0 +1,63 @@
+@utility focus-bounce {
+  animation-duration: var(--magma-outline-animation-duration, 1s);
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+  animation-name: focus-bounce;
+  animation-play-state: paused;
+  animation-timing-function: var(--ease-out);
+  outline: var(--magma-outline-blur);
+  transition-duration: 200ms;
+  transition-property: background-color, border-color, box-shadow, color, fill, outline, outline-offset, transform;
+  transition-timing-function: ease-in-out;
+}
+
+@utility focus-bounce--focused  {
+  --magma-outline-blur: var(--magma-outline-focus);
+
+  animation-play-state: running;
+}
+
+.focus-bounce:focus-visible {
+  --magma-outline-blur: var(--magma-outline-focus);
+
+  animation-play-state: running;
+}
+
+.focus-zoom {
+  @apply
+    duration-200
+    ease-out;
+
+  outline: var(--magma-outline-blur);
+  outline-offset: var(--magma-outline-blur-offset);
+  transition-property: background-color, border-color, box-shadow, color, fill, outline, outline-offset, transform;
+}
+
+.focus-zoom--focused,
+.focus-zoom:focus-visible {
+  --magma-outline-blur-offset: var(--magma-outline-focus-offset);
+  --magma-outline-blur: var(--magma-outline-focus);
+}
+
+.focus-zoom--light.focus-zoom--focused,
+.focus-zoom--light:focus-visible {
+  --magma-outline-blur: 2px solid rgb(var(--tone-neutral));
+}
+
+@utility hide-scrollbar {
+  -webkit-overflow-scrolling: touch;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.not-hydrated {
+  animation-duration: 0s;
+  opacity: 0;
+  transition-delay: 0.1s;
+  transition-duration: 0s;
+  visibility: hidden;
+}
