@@ -468,6 +468,38 @@ const TemplateAdd = args => {
   )
 }
 
+const TemplateStretchHeight = args => {
+  return <div class="grid gap-600 max-w-[480px]">
+    <mds-tab {...args} class="h-[1000px]">
+      <mds-tab-item selected>First Blood</mds-tab-item>
+      <mds-tab-item>Double Impact</mds-tab-item>
+      <div slot='content'>
+        <mds-text>
+            Vietnam veteran and drifter John J. Rambo (Sylvester Stallone)
+            wanders into a small Washington town in search of an old friend, but
+            is met with intolerance and brutality by the local sheriff, Will
+            Teasle (Brian Dennehy). When Teasle and his deputies restrain and
+            shave Rambo, he flashes back to his time as a prisoner of war and
+            unleashes his fury on the officers. He narrowly escapes the manhunt,
+            but it will take his former commander (Richard Crenna) to save the
+            hunters from the hunted.
+        </mds-text></div>
+      <div slot='content'>
+        <mds-text>
+            Nearly 25 years after seeing his father killed by Hong Kong crime
+            boss Raymond Zhang (Philip Chan Yan Kin), Chad Wagner (Jean-Claude
+            Van Damme) is living in Los Angeles as a flourishing yet peaceful
+            martial arts trainer. But Chad has a twin brother, Alex (also Van
+            Damme), who suddenly reunites with his less-aggressive sibling and
+            wants to avenge their father's death. As the pair plan their payback
+            against Zhang, they also struggle to overcome their personal
+            differences.
+        </mds-text>
+      </div>
+    </mds-tab>
+  </div>
+}
+
 export const Default = {
   render: Template,
 }
@@ -538,4 +570,8 @@ export const AsyncContent = {
 
 export const AddTab = {
   render: TemplateAdd,
+}
+
+export const StretchHeight = {
+  render: TemplateStretchHeight,
 }
