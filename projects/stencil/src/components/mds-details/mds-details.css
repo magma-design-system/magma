@@ -1,6 +1,5 @@
-@reference '../../tailwind/index.css';
-@reference '@maggioli-design-system/styles/dist/css/animations.css'; /* included for focus effect */
-@reference '../../tailwind/components.css';
+@import '~@maggioli-design-system/styles/dist/css/animations.css';
+@import '../../tailwind/fouc.css';
 
 /**
  * @prop --mds-details-duration: Sets the transition duration for details component
@@ -72,10 +71,15 @@
 }
 
 .header {
-  @apply gap-200;
+  @apply gap-200 focus-bounce;
 
   align-items: center;
   display: inline-flex;
+}
+
+.header:focus-visible {
+
+  @apply focus-bounce--focused;
 }
 
 .icon {
@@ -112,4 +116,3 @@
 
 @import './css/mds-details-pref-animation.css';
 @import './css/mds-details-pref-contrast.css';
-@import '../../tailwind/fouc.css';

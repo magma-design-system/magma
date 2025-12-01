@@ -1,17 +1,17 @@
 :host([variant="ai"][tone="strong"]) {
   --mds-button-background: rgb(var(--variant-ai-05));
-  --mds-button-border-color: var(--variant-ai-05);
+  --mds-button-border-color-rgb: var(--variant-ai-05);
   --mds-button-color: rgb(var(--tone-neutral));
 }
 
 :host([variant="ai"][tone="strong"]:hover) {
   --mds-button-background: rgb(var(--variant-ai-04));
-  --mds-button-border-color: var(--variant-ai-04);
+  --mds-button-border-color-rgb: var(--variant-ai-04);
 }
 
 :host([variant="ai"][tone="weak"]) {
   --mds-button-background: rgb(var(--variant-ai-09));
-  --mds-button-border-color: var(--variant-ai-09);
+  --mds-button-border-color-rgb: var(--variant-ai-09);
   --mds-button-color: rgb(var(--variant-ai-03));
 
   fill: rgb(var(--variant-ai-03));
@@ -19,16 +19,16 @@
 
 :host([variant="ai"][tone="weak"]:hover) {
   --mds-button-background: rgb(var(--variant-ai-08));
-  --mds-button-border-color: var(--variant-ai-08);
+  --mds-button-border-color-rgb: var(--variant-ai-08);
 }
 
 :host([variant="ai"][tone="outline"]) {
-  --mds-button-border-color: var(--variant-ai-04);
+  --mds-button-border-color-rgb: var(--variant-ai-04);
   --mds-button-color: rgb(var(--variant-ai-03));
 }
 
 :host([variant="ai"][tone="outline"]:hover) {
-  --mds-button-border-color: var(--variant-ai-04);
+  --mds-button-border-color-rgb: var(--variant-ai-04);
   --mds-button-color: rgb(var(--variant-ai-02));
 }
 

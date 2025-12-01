@@ -1,4 +1,4 @@
-@reference '../../tailwind/index.css';
+@import '../../tailwind/fouc.css';
 
 :host {
   @apply
@@ -19,4 +19,3 @@
 @import './css/mds-tab-bar-pref-animation.css';
 @import './css/mds-tab-bar-pref-theme.css';
 @import './css/mds-tab-bar-pref-contrast.css';
-@import '../../tailwind/fouc.css';

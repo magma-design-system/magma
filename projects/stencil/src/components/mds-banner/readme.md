@@ -15,7 +15,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `deletable` | `deletable` | Shows the cross icon to perform cancel/delete action on element | `boolean \| undefined`                                                                               | `undefined` |
 | `headline`  | `headline`  | The title on the top of the banner                              | `string \| undefined`                                                                                | `undefined` |
 | `icon`      | `icon`      | An icon displayed at the top left of the banner                 | `string \| undefined`                                                                                | `undefined` |
-| `tone`      | `tone`      | Sets the tone of the color variant                              | `"quiet" \| "strong" \| "weak" \| undefined`                                                         | `'weak'`    |
+| `tone`      | `tone`      | Sets the tone of the color variant                              | `"strong" \| "text" \| "weak" \| undefined`                                                          | `'weak'`    |
 | `variant`   | `variant`   | Sets the theme variant colors                                   | `"ai" \| "dark" \| "error" \| "info" \| "light" \| "primary" \| "success" \| "warning" \| undefined` | `'light'`   |
 
 
@@ -61,6 +61,8 @@ Type: `Promise<void>`
 | `--mds-banner-icon-color`                  | Sets the close icon fill color of the component                                                      |
 | `--mds-banner-radius`                      | Sets the border-radius of the component                                                              |
 | `--mds-banner-shadow`                      | Sets the box-shadow of the component                                                                 |
+| `--mds-banner-transition-duration`         | Sets the transition duration                                                                         |
+| `--mds-banner-transition-timing-function`  | Sets the transition timing function                                                                  |
 
 
 ## Dependencies

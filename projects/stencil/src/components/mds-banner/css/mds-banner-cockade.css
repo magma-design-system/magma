@@ -1,4 +1,4 @@
-@reference '../../tailwind/index.css';
+
 
 :host([cockade]:not([cockade="false"])) .icon {
   @apply rounded-b-lg;

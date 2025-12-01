@@ -1,4 +1,4 @@
-@reference '../../tailwind/index.css';
+@import '../../tailwind/fouc.css';
 
 :host {
   @apply gap-400;
@@ -29,5 +29,3 @@
     text-align: center;
   }
 }
-
-@import '../../tailwind/fouc.css';

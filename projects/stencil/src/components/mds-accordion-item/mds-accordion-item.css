@@ -1,5 +1,5 @@
-@reference '@maggioli-design-system/styles/dist/css/animations.css'; /* included for focus effect */
-@reference '../../tailwind/components.css';
+@import '~@maggioli-design-system/styles/dist/css/animations.css';
+@import '../../tailwind/fouc.css';
 
 /**
  * @prop --mds-accordion-item-border-color: Sets the border-color of the component
@@ -14,7 +14,7 @@
 
 @property --mds-accordion-item-border-color {
   inherits: false;
-  initial-value: rgb(var(--tone-neutral-08, 230 230 230));
+  initial-value: rgb(var(--tone-neutral-08));
   syntax: "<color>";
 }
 
@@ -26,13 +26,13 @@
 
 @property --mds-accordion-item-color {
   inherits: false;
-  initial-value: rgb(var(--tone-neutral-03, 64 64 64));
+  initial-value: rgb(var(--tone-neutral-03));
   syntax: "<color>";
 }
 
 @property --mds-accordion-item-description-color {
   inherits: false;
-  initial-value: rgb(var(--tone-neutral-02, 42 42 42));
+  initial-value: rgb(var(--tone-neutral-02));
   syntax: "<color>";
 }
 
@@ -86,7 +86,7 @@
   @apply
     focus-bounce
     gap-400
-    rounded-lg;
+    rounded;
 
   background-color: transparent;
   border: 0;
@@ -171,4 +171,3 @@
 @import './css/mds-accordion-item-pref-animation.css';
 @import './css/mds-accordion-item-pref-theme.css';
 @import './css/mds-accordion-item-pref-contrast.css';
-@import '../../tailwind/fouc.css';

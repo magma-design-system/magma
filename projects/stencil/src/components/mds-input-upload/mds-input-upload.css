@@ -1,5 +1,5 @@
-@reference '../../tailwind/index.css';
-@reference '../../tailwind/components.css';
+
+
 
 /**
  * @prop --mds-input-upload-drag-area-background-color-on-drag: Set the background color of the drag area when a file is dragged over it.

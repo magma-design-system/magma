@@ -1,5 +1,5 @@
-@reference '../../tailwind/index.css';
-@reference '../../tailwind/components.css';
+
+
 
 @import './css/mds-paginator-pref-animation.css';
 @import './css/mds-paginator-pref-theme.css';
@@ -7,9 +7,7 @@
 @import '../../tailwind/fouc.css';
 
 
-
-
-  /**
+/**
  * @prop --mds-paginator-background: Sets the background-color of the pages area and the item
  * @prop --mds-paginator-scroll-behavior: Sets the scroll-behavior animation
  */

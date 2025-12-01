@@ -1,6 +1,6 @@
-@reference '../../tailwind/index.css';
+
 @reference '@maggioli-design-system/styles/dist/tailwind/typography.css';
-@reference '../../tailwind/components.css';
+
 
 @import './css/mds-input-select-variant.css';
 @import './css/mds-input-select-pref-animation.css';

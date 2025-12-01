@@ -1,6 +1,6 @@
-@reference '../../tailwind/index.css';
+
 @reference '@maggioli-design-system/styles/dist/css/animations.css';
-@reference '../../tailwind/components.css';
+
 
 @import './css/mds-modal-action-close.css';
 @import './css/mds-modal-animation-3d.css';

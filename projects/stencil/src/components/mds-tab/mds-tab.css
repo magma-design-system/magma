@@ -1,5 +1,5 @@
-@reference '../../tailwind/index.css';
-@reference '../../tailwind/components.css';
+
+
 
 /**
  * @prop --mds-tab-item-default-background: Sets the `background-color` of `mds-tab-item` or `mds-tab::part(slider)` depending on attribute `animation`

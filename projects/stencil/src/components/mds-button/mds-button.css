@@ -1,17 +1,16 @@
-/* @reference '../../tailwind/index.css'; */
-@reference '@maggioli-design-system/styles/dist/css/animations.css';
-@reference '../../tailwind/components.css';
+@import '~@maggioli-design-system/styles/dist/css/animations.css';
+@import '../../tailwind/fouc.css';
 
 /**
  * @prop --mds-button-await-duration: Sets the duration of the rotation of the spinner await component
  * @prop --mds-button-background: Sets the background-color of the component
- * @prop --mds-button-border-color: Sets the color of the border of the component (based on box-shadow declaration)
+ * @prop --mds-button-border-color-rgb: Sets the color of the border of the component (based on box-shadow declaration)
  * @prop --mds-button-border-default-opacity: Sets the default opacity of the border color of the component (based on box-shadow declaration)
  * @prop --mds-button-border-high-contrast-hover-width: Sets the width of the border when the component is hovered and the contrast is high (based on box-shadow declaration)
  * @prop --mds-button-border-high-contrast-width: Sets the width of the border of the component and the contrast is high (based on box-shadow declaration)
  * @prop --mds-button-border-hover-opacity: Sets the opacity of the border color when the component is hovered (based on box-shadow declaration)
  * @prop --mds-button-border-opacity: Sets the border opacity of the component (based on box-shadow declaration)
- * @prop --mds-button-border-tone-ghost-hover-width: Sets the width of the border when the component is hovered when the tone is set to `ghost` (based on box-shadow declaration)
+ * @prop --mds-button-border-tone-outline-hover-width: Sets the width of the border when the component is hovered when the tone is set to `ghost` (based on box-shadow declaration)
  * @prop --mds-button-border-tone-strong-hover-width: Sets the width of the border when the component is hovered when the tone is set to `strong` (based on box-shadow declaration)
  * @prop --mds-button-border-tone-weak-hover-width: Sets the width of the border when the component is hovered when the tone is set to `weak` (based on box-shadow declaration)
  * @prop --mds-button-border-width: Sets the border width of the component (based on box-shadow declaration)
@@ -40,14 +39,8 @@
 
 @property --mds-button-border-hover-opacity {
   inherits: true;
-  initial-value: 75%;
-  syntax: "<percentage>";
-}
-
-@property --mds-button-border-default-opacity {
-  inherits: true;
-  initial-value: 50%;
-  syntax: "<percentage>";
+  initial-value: 0.75;
+  syntax: "<number>";
 }
 
 @property --mds-button-border-tone-strong-hover-width {
@@ -56,7 +49,7 @@
   syntax: "<length>";
 }
 
-@property --mds-button-border-tone-ghost-hover-width {
+@property --mds-button-border-tone-outline-hover-width {
   inherits: true;
   initial-value: 3px;
   syntax: "<length>";
@@ -78,6 +71,12 @@
   inherits: true;
   initial-value: 3px;
   syntax: "<length>";
+}
+
+@property --mds-button-border-default-opacity {
+  inherits: true;
+  initial-value: 0;
+  syntax: "<number>";
 }
 
 @property --mds-button-border-opacity {
@@ -118,15 +117,16 @@
 
 :host {
   --mds-button-await-duration: 0.725s;
-  --mds-button-background: rgb(var(--variant-primary-02));
-  --mds-button-border-color: 0 0 0;
-  --mds-button-border-hover-opacity: 75%;
-  --mds-button-border-default-opacity: 50%;
-  --mds-button-border-tone-strong-hover-width: --spacing(25);
-  --mds-button-border-tone-ghost-hover-width: 3px;
-  --mds-button-border-tone-weak-hover-width: --spacing(25);
-  --mds-button-border-high-contrast-width: --spacing(50);
+  --mds-button-background: rgb(var(--mds-button-border-color-rgb));
+  --mds-button-border-color-rgb: var(--variant-primary-02);
+  --mds-button-border-hover-opacity: 0.75;
   --mds-button-border-high-contrast-hover-width: 3px;
+  --mds-button-border-high-contrast-width: --spacing(50);
+  --mds-button-border-tone-outline-hover-width: 3px;
+  --mds-button-border-tone-outline-opacity: 0.5;
+  --mds-button-border-tone-strong-hover-width: --spacing(50);
+  --mds-button-border-tone-weak-hover-width: --spacing(50);
+  --mds-button-border-default-opacity: 0;
   --mds-button-border-opacity: 0;
   --mds-button-border-width: --spacing(50);
   --mds-button-color: rgb(var(--tone-neutral));
@@ -144,7 +144,7 @@
   align-items: center;
   background-color: var(--mds-button-background);
   border-radius: var(--mds-button-radius);
-  box-shadow: 0 0 0 var(--mds-button-border-width) rgb(var(--mds-button-border-color) / var(--mds-button-border-opacity));
+  box-shadow: 0 0 0 var(--mds-button-border-width) rgb(var(--mds-button-border-color-rgb) / var(--mds-button-border-opacity));
   box-sizing: border-box;
   color: var(--mds-button-color);
   cursor: pointer;
@@ -209,4 +209,3 @@
 @import './css/mds-button-tone.css';
 @import './css/mds-button-variant-service.css';
 @import './css/mds-button-pref-animation.css';
-@import '../../tailwind/fouc.css';

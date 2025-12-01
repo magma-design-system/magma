@@ -1,5 +1,5 @@
 @reference 'tailwindcss';
-@reference '../../tailwind/index.css';
+
 
 /**
  * @prop --mds-usage-border-color: Sets the border color of the component.

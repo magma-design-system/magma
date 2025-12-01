@@ -1,17 +1,17 @@
 :host([variant="success"][tone="strong"]) {
   --mds-button-background: rgb(var(--status-success-05));
-  --mds-button-border-color: var(--status-success-05);
+  --mds-button-border-color-rgb: var(--status-success-05);
   --mds-button-color: rgb(var(--tone-neutral));
 }
 
 :host([variant="success"][tone="strong"]:hover) {
   --mds-button-background: rgb(var(--status-success-04));
-  --mds-button-border-color: var(--status-success-04);
+  --mds-button-border-color-rgb: var(--status-success-04);
 }
 
 :host([variant="success"][tone="weak"]) {
   --mds-button-background: rgb(var(--status-success-09));
-  --mds-button-border-color: var(--status-success-09);
+  --mds-button-border-color-rgb: var(--status-success-09);
   --mds-button-color: rgb(var(--status-success-03));
 
   fill: rgb(var(--status-success-03));
@@ -19,16 +19,16 @@
 
 :host([variant="success"][tone="weak"]:hover) {
   --mds-button-background: rgb(var(--status-success-08));
-  --mds-button-border-color: var(--status-success-08);
+  --mds-button-border-color-rgb: var(--status-success-08);
 }
 
 :host([variant="success"][tone="outline"]) {
-  --mds-button-border-color: var(--status-success-04);
+  --mds-button-border-color-rgb: var(--status-success-04);
   --mds-button-color: rgb(var(--status-success-03));
 }
 
 :host([variant="success"][tone="outline"]:hover) {
-  --mds-button-border-color: var(--status-success-04);
+  --mds-button-border-color-rgb: var(--status-success-04);
   --mds-button-color: rgb(var(--status-success-02));
 }
 

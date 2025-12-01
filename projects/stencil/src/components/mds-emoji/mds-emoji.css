@@ -1,3 +1,5 @@
+@import '../../tailwind/fouc.css';
+
 /**
  * @prop --mds-emoji-expression-follow-mouse-head-duration: Sets the duration for the head to follow the mouse
  * @prop --mds-emoji-expression-follow-mouse-traits-duration: Sets the duration for facial traits to follow the mouse

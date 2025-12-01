@@ -1,4 +1,4 @@
-@reference '../../tailwind/index.css';
+@import '../../tailwind/fouc.css';
 
 /**
  * @prop --mds-entity-background: The background-color of the entity
@@ -8,6 +8,48 @@
  * @prop --mds-entity-icon-color: The color of the icon
  * @prop --mds-entity-shadow: The box-shadow od the component
  */
+
+@property --mds-entity-background {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral));
+  syntax: "<color>";
+}
+
+@property --mds-entity-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-02));
+  syntax: "<color>";
+}
+
+@property --mds-entity-detail-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-03));
+  syntax: "<color>";
+}
+
+@property --mds-entity-icon-background {
+  inherits: false;
+  initial-value: rgb(var(--label-blue-09));
+  syntax: "<color>";
+}
+
+@property --mds-entity-icon-radius {
+  inherits: false;
+  initial-value: var(--radius-md);
+  syntax: "<length>";
+}
+
+@property --mds-entity-icon-color {
+  inherits: false;
+  initial-value: rgb(var(--label-blue-04));
+  syntax: "<color>";
+}
+
+/* @property --mds-entity-shadow {
+  inherits: false;
+  initial-value: var(--shadow-md);
+  syntax: "*";
+} */
 
 :host {
   --mds-entity-background: rgb(var(--tone-neutral));
@@ -126,4 +168,3 @@ mds-spinner {
 
 @import './css/mds-entity-pref-contrast.css';
 @import './css/mds-entity-pref-theme.css';
-@import '../../tailwind/fouc.css';

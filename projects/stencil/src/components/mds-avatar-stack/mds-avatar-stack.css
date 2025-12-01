@@ -1,3 +1,5 @@
+@import '../../tailwind/fouc.css';
+
 /**
  * @prop --mds-avatar-stack-background: Background color for the avatar stack container
  * @prop --mds-avatar-stack-count-background-color: Background color of the count indicator (e.g., "+3")
@@ -12,8 +14,6 @@
  * @prop --mds-avatar-stack-sm-offset: Horizontal overlap offset for small avatars
  * @prop --mds-avatar-stack-sm-size: Size of small avatars in the stack
  */
-
-/* COLORS */
 
 @property --mds-avatar-stack-background {
   inherits: false;
@@ -33,9 +33,6 @@
   syntax: "<color>";
 }
 
-
-/* LARGE */
-
 @property --mds-avatar-stack-lg-border {
   inherits: false;
   initial-value: var(--spacing-100, 0.25rem);
@@ -53,9 +50,6 @@
   initial-value: var(--spacing-1500, 3.75rem);
   syntax: "<length>";
 }
-
-
-/* MEDIUM */
 
 @property --mds-avatar-stack-md-border {
   inherits: false;
@@ -75,9 +69,6 @@
   syntax: "<length>";
 }
 
-
-/* SMALL */
-
 @property --mds-avatar-stack-sm-border {
   inherits: false;
   initial-value: var(--spacing-50, 0.125rem);
@@ -95,7 +86,6 @@
   initial-value: var(--spacing-900, 2.25rem);
   syntax: "<length>";
 }
-
 
 :host {
   --mds-avatar-stack-background: rgb(var(--tone-neutral, 255 255 255));

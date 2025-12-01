@@ -1,6 +1,4 @@
-@reference '../../tailwind/index.css';
-
-@reference '../../tailwind/components.css';
+@import '../../tailwind/fouc.css';
 
 /**
  * @prop --mds-avatar-background-color-pending: The background-color when an image is loading
@@ -145,10 +143,6 @@
   width: 100%;
 }
 
-@import './css/mds-avatar-variant.css';
-@import './css/mds-avatar-pref-animation.css';
-@import './css/mds-avatar-pref-contrast.css';
-
 @container (max-width: 24px) {
   :host-context(:not(.safari)) .avatar--initials {
     padding: 0 var(--mds-avatar-initials-padding);
@@ -159,4 +153,6 @@
   }
 }
 
-@import '../../tailwind/fouc.css';
+@import './css/mds-avatar-variant.css';
+@import './css/mds-avatar-pref-animation.css';
+@import './css/mds-avatar-pref-contrast.css';

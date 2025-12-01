@@ -1,3 +1,5 @@
+@import '../../tailwind/fouc.css';
+
 /**
  * @prop --mds-button-dropdown-radius: Sets the border-radius of the component
  */
@@ -49,4 +51,3 @@ mds-button:first-child {
 
 @import './css/mds-button-dropdown-size.css';
 @import './css/mds-button-dropdown-variant.css';
-@import '../../tailwind/fouc.css';

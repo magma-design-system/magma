@@ -106,7 +106,7 @@ export class MdsAccordionTimerItem {
         <div class="row">
           <mds-progress aria-hidden="true" class="progress-bar" progress={Number(this.progress?.toFixed(2))} direction="vertical" part="progress"/>
           <div class="accordion">
-            <button aria-controls="content" aria-expanded={this.selected ? 'true' : 'false'} class="action focus-bounce" id="action" onClick={this.toggle} role="button" tabindex="0">
+            <button aria-controls="content" aria-expanded={this.selected ? 'true' : 'false'} class="action" id="action" onClick={this.toggle} role="button" tabindex="0">
               <mds-text typography={this.typography} part="label">{this.description}</mds-text>
               <mds-text aria-hidden="true" class="icon-button" typography={this.typography} part="icon">
                 <i class="icon" innerHTML={miBaselineKeyboardArrowDown} />

@@ -2,19 +2,19 @@
   &:host([variant="warning"][tone="strong"]) {
     --mds-button-background: rgb(var(--status-warning-03));
     --mds-button-color: rgb(var(--tone-neutral));
-    --mds-button-border-color: var(--status-warning-03);
+    --mds-button-border-color-rgb: var(--status-warning-03);
   }
 
   &:host([variant="warning"][tone="strong"][active]),
   &:host([variant="warning"][tone="strong"]:hover) {
     --mds-button-background: rgb(var(--status-warning-02));
-    --mds-button-border-color: var(--status-warning-02);
+    --mds-button-border-color-rgb: var(--status-warning-02);
   }
 
   &:host([variant="warning"][tone="weak"]) {
     --mds-button-background: rgb(var(--status-warning-09));
     --mds-button-color: rgb(var(--status-warning-02));
-    --mds-button-border-color: var(--status-warning-06);
+    --mds-button-border-color-rgb: var(--status-warning-06);
     --mds-button-border-width: var(--mds-button-border-high-contrast-width);
 
     fill: rgb(var(--status-warning-02));
@@ -36,17 +36,17 @@
   }
 
   &:host([variant="warning"][tone="outline"]) {
-    --mds-button-border-color: var(--status-warning-03);
+    --mds-button-border-color-rgb: var(--status-warning-03);
     --mds-button-color: rgb(var(--status-warning-02));
   }
 
   &:host([variant="warning"][tone="outline"]:hover) {
-    --mds-button-border-color: var(--status-warning-03);
+    --mds-button-border-color-rgb: var(--status-warning-03);
     --mds-button-color: rgb(var(--status-warning-01));
   }
 
   &:host([variant="warning"][tone="outline"][active]) {
-    --mds-button-border-color: var(--status-warning-04);
+    --mds-button-border-color-rgb: var(--status-warning-04);
     --mds-button-color: rgb(var(--status-warning-02));
   }
 
@@ -75,13 +75,13 @@
     &:host([variant="warning"][tone="strong"][active]),
     &:host([variant="warning"][tone="strong"]:hover) {
       --mds-button-background: rgb(var(--status-warning-02));
-      --mds-button-border-color: var(--status-warning-02);
+      --mds-button-border-color-rgb: var(--status-warning-02);
     }
 
     &:host([variant="warning"][tone="weak"]) {
       --mds-button-background: rgb(var(--status-warning-09));
       --mds-button-color: rgb(var(--status-warning-02));
-      --mds-button-border-color: var(--status-warning-06);
+      --mds-button-border-color-rgb: var(--status-warning-06);
       --mds-button-border-width: var(--mds-button-border-high-contrast-width);
 
       fill: rgb(var(--status-warning-02));
@@ -103,17 +103,17 @@
     }
 
     &:host([variant="warning"][tone="outline"]) {
-      --mds-button-border-color: var(--status-warning-03);
+      --mds-button-border-color-rgb: var(--status-warning-03);
       --mds-button-color: rgb(var(--status-warning-02));
     }
 
     &:host([variant="warning"][tone="outline"]:hover) {
-      --mds-button-border-color: var(--status-warning-03);
+      --mds-button-border-color-rgb: var(--status-warning-03);
       --mds-button-color: rgb(var(--status-warning-01));
     }
 
     &:host([variant="warning"][tone="outline"][active]) {
-      --mds-button-border-color: var(--status-warning-04);
+      --mds-button-border-color-rgb: var(--status-warning-04);
       --mds-button-color: rgb(var(--status-warning-02));
     }
 

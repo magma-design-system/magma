@@ -1,4 +1,4 @@
-@reference '../../tailwind/index.css';
+
 
 :host {
   --mds-price-table-list-separator-color: rgb(var(--tone-neutral-03) / 0.5);

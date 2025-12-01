@@ -60,11 +60,11 @@ export class MdsDetails {
   render () {
     return (
       <Host>
-        <div class="icon" onClick={ this.toggle }>
+        <div class="icon" onClick={ this.toggle } aria-disabled="true">
           <slot name="icon"/>
         </div>
         <div class="content">
-          <header class="header focus-bounce" part="header" tabindex="0" onClick={ this.toggle }>
+          <header class="header" part="header" tabindex="0" onClick={ this.toggle }>
             <div class="title">
               <slot name="title"/>
             </div>

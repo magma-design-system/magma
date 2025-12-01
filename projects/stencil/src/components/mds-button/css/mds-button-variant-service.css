@@ -6,7 +6,7 @@
   --mds-button-border-opacity: 20%;
   --mds-button-border-width: --spacing(25);
   --mds-button-color: rgb(var(--tone-neutral-03));
-  --mds-button-border-color: var(--tone-neutral-01);
+  --mds-button-border-color-rgb: var(--tone-neutral-01);
 
   box-shadow: 0 0 0 var(--mds-button-border-width) rgb(var(--mds-button-border-color) / var(--mds-button-border-opacity));
 }

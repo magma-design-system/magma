@@ -1,6 +1,4 @@
-@reference '../../tailwind/index.css';
-@reference '@maggioli-design-system/styles/dist/css/animations.css'; /* included for focus effect */
-@reference '../../tailwind/components.css';
+@import '../../tailwind/fouc.css';
 
 /**
  * @prop --mds-accordion-timer-item-color: Sets the text color of the component
@@ -12,25 +10,25 @@
 
 @property --mds-accordion-timer-item-color {
   inherits: false;
-  initial-value: rgb(var(--tone-neutral-02, 42 42 42));
+  initial-value: rgb(var(--tone-neutral-02));
   syntax: "<color>";
 }
 
 @property --mds-accordion-timer-item-progress-bar-color {
   inherits: false;
-  initial-value: rgb(var(--tone-neutral-03, 64 64 64));
+  initial-value: rgb(var(--tone-neutral-03));
   syntax: "<color>";
 }
 
 @property --mds-accordion-timer-item-progress-bar-background {
   inherits: false;
-  initial-value: rgb(var(--tone-neutral-08, 230 230 230));
+  initial-value: rgb(var(--tone-neutral-08));
   syntax: "<color>";
 }
 
 @property --mds-accordion-timer-item-progress-bar-thickness {
   inherits: false;
-  initial-value: 0.25rem;
+  initial-value: --spacing(100);
   syntax: "<length>";
 }
 
@@ -41,9 +39,9 @@
 }
 
 :host {
-  --mds-accordion-timer-item-color: var(--mds-accordion-timer-color, rgb(var(--tone-neutral-02, 42 42 42)));
-  --mds-accordion-timer-item-progress-bar-color: var(--mds-accordion-timer-progress-bar-color, rgb(var(--tone-neutral-03, 64 64 64)));
-  --mds-accordion-timer-item-progress-bar-background: var(--mds-accordion-timer-progress-bar-background, rgb(var(--tone-neutral-08, 230 230 230)));
+  --mds-accordion-timer-item-color: var(--mds-accordion-timer-color, rgb(var(--tone-neutral-02)));
+  --mds-accordion-timer-item-progress-bar-color: var(--mds-accordion-timer-progress-bar-color, rgb(var(--tone-neutral-03)));
+  --mds-accordion-timer-item-progress-bar-background: var(--mds-accordion-timer-progress-bar-background, rgb(var(--tone-neutral-08)));
   --mds-accordion-timer-item-progress-bar-thickness: var(--mds-accordion-timer-progress-bar-thickness, --spacing(100));
   --mds-accordion-timer-item-duration: var(--mds-accordion-timer-duration, 500ms);
 
@@ -138,4 +136,3 @@
 }
 
 @import './css/mds-accordion-timer-item-pref-animation.css';
-@import '../../tailwind/fouc.css';

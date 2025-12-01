@@ -1,6 +1,4 @@
-@reference '../../tailwind/index.css';
-
-@reference '../../tailwind/components.css';
+@import '../../tailwind/fouc.css';
 
 /**
  * @prop --mds-breadcrumb-arrow-depth-color: Sets the color of the arrow icon that separates buttons
@@ -128,4 +126,3 @@
 }
 
 @import './css/mds-breadcrumb-pref-animation.css';
-@import '../../tailwind/fouc.css';

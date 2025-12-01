@@ -1,6 +1,6 @@
+@import '../../tailwind/fouc.css';
+
 :host {
   display: inline-flex;
   gap: --spacing(50);
 }
-
-@import '../../tailwind/fouc.css';

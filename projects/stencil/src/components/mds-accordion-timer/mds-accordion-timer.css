@@ -1,3 +1,5 @@
+@import '../../tailwind/fouc.css';
+
 /**
  * @prop --mds-accordion-timer-progress-bar-color: Sets the color of the progress bar when the mds-accordion-timer-item is selected
  * @prop --mds-accordion-timer-progress-bar-background: Sets the background-color of the progress bar when the mds-accordion-timer-item is selected
@@ -8,7 +10,7 @@
 
 @property --mds-accordion-timer-progress-bar-color {
   inherits: false;
-  initial-value: rgb(var(--tone-neutral-03, 64 64 64));
+  initial-value: rgb(var(--tone-neutral-03));
   syntax: "<color>";
 }
 
@@ -40,5 +42,5 @@
   display: block;
 }
 
+
 @import './css/mds-accordion-timer-pref-animation.css';
-@import '../../tailwind/fouc.css';

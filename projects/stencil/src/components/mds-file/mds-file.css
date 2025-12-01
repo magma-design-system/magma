@@ -1,124 +1,148 @@
-@reference '../../tailwind/index.css';
-@reference '@maggioli-design-system/styles/dist/css/animations.css';
-@reference '../../tailwind/components.css';
+@import '~@maggioli-design-system/styles/dist/css/animations.css';
+@import '../../tailwind/fouc.css';
+
+/**
+ * @prop --mds-file-preview-icon-color: Sets the color of the file preview icon
+ * @prop --mds-file-preview-color: Sets the text color used in the file preview
+ * @prop --mds-file-preview-icon-bacground: Sets the background color of the file preview icon
+ */
+
+@property --mds-file-preview-icon-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-04));
+  syntax: "<color>";
+}
+
+@property --mds-file-preview-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-04));
+  syntax: "<color>";
+}
+
+@property --mds-file-preview-icon-bacground {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-10));
+  syntax: "<color>";
+}
+
+
+:host {
+  --mds-file-preview-icon-color: rgb(var(--tone-neutral-04));
+  --mds-file-preview-color: rgb(var(--tone-neutral-04));
+  --mds-file-preview-icon-bacground: rgb(var(--tone-neutral-10));
+
+  @apply duration-200
+  ease-out
+  focus-bounce
+  rounded-md;
+
+  align-items: stretch;
+  background-color: rgb(var(--tone-neutral));
+  box-shadow: var(--shadow-sharp);
+  color: rgb(var(--tone-neutral-04));
+  cursor: pointer;
+  display: inline-flex;
+  overflow: hidden;
+  transition-property: box-shadow, outline, outline-offset;
+  width: 100%;
+}
+
+:host(:focus-visible) {
+  @apply focus-bounce--focused;
+}
+
+:host(:hover) {
+  box-shadow: var(--shadow-md-sharp);
+}
+
+.preview {
+  @apply duration-300
+  ease-in-out
+  w-1400;
+
+  align-items: center;
+  background-color: var(--mds-file-preview-icon-bacground);
+  color: var(--mds-file-preview-color);
+  display: flex;
+  fill: var(--mds-file-preview-icon-color);
+  flex-shrink: 0;
+  justify-content: center;
+  position: relative;
+  transition-property: color, background-color, fill;
+}
+
+.image-preview {
+  @apply bottom-300
+  left-300
+  right-300
+  top-300;
+
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  position: absolute;
+}
+
+.info {
+  @apply min-w-0
+  px-300
+  py-200;
+
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.filename {
+  @apply min-w-0;
+
+  display: flex;
+}
+
+.name {
+  @apply min-w-0
+  truncate;
+}
+
+.extension {
+  flex-shrink: 0;
+}
+
+.detail {
+  @apply gap-200
+  min-w-0;
+
+  align-items: center;
+  display: flex;
+}
+
+.suffix {
+  flex-shrink: 0;
+  pointer-events: none;
+}
+
+.description {
+  @apply min-w-0
+  truncate;
+
+  color: rgb(var(--tone-neutral-05));
+}
+
+.indicator {
+  @apply pr-400;
+
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.downloaded {
+  @apply svg;
+
+  fill: rgb(var(--status-success-06));
+}
 
 @import './css/mds-file-format.css';
 @import './css/mds-file-pref-animation.css';
 @import './css/mds-file-pref-theme.css';
 @import './css/mds-file-pref-contrast.css';
-@import '../../tailwind/fouc.css';
-
-
-
-  :host {
-    @apply duration-200
-    ease-out
-    focus-bounce
-    rounded-md;
-
-    align-items: stretch;
-    background-color: rgb(var(--tone-neutral));
-    box-shadow: var(--shadow-sharp);
-    color: rgb(var(--tone-neutral-04));
-    cursor: pointer;
-    display: inline-flex;
-    overflow: hidden;
-    transition-property: box-shadow, outline, outline-offset;
-    width: 100%;
-  }
-
-  :host(:focus-visible) {
-    @apply focus-bounce--focused;
-  }
-
-  :host(:hover) {
-    box-shadow: var(--shadow-md-sharp);
-  }
-
-  .preview {
-    @apply duration-300
-    ease-in-out
-    w-1400;
-
-    align-items: center;
-    background-color: var(--mds-file-preview-icon-bacground);
-    color: var(--mds-file-preview-color);
-    display: flex;
-    fill: var(--mds-file-preview-icon-color);
-    flex-shrink: 0;
-    justify-content: center;
-    position: relative;
-    transition-property: color, background-color, fill;
-  }
-
-  .image-preview {
-    @apply bottom-300
-    left-300
-    right-300
-    top-300;
-
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: contain;
-    position: absolute;
-  }
-
-  .info {
-    @apply min-w-0
-    px-300
-    py-200;
-
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-  }
-
-  .filename {
-    @apply min-w-0;
-
-    display: flex;
-  }
-
-  .name {
-    @apply min-w-0
-    truncate;
-  }
-
-  .extension {
-    flex-shrink: 0;
-  }
-
-  .detail {
-    @apply gap-200
-    min-w-0;
-
-    align-items: center;
-    display: flex;
-  }
-
-  .suffix {
-    flex-shrink: 0;
-    pointer-events: none;
-  }
-
-  .description {
-    @apply min-w-0
-    truncate;
-
-    color: rgb(var(--tone-neutral-05));
-  }
-
-  .indicator {
-    @apply pr-400;
-
-    align-items: center;
-    display: flex;
-    justify-content: center;
-  }
-
-  .downloaded {
-    @apply svg;
-
-    fill: rgb(var(--status-success-06));
-  }
-

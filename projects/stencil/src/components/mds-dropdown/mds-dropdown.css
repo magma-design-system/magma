@@ -1,4 +1,4 @@
-@reference '../../tailwind/index.css';
+@import '../../tailwind/fouc.css';
 
 /**
  * @prop --mds-dropdown-arrow-background: Sets the fill color of the arrow.
@@ -138,4 +138,3 @@
 @import './css/mds-dropdown-pref-theme.css';
 @import './css/mds-dropdown-pref-contrast.css';
 @import './css/mds-dropdown-pref-contrast-dark.css';
-@import '../../tailwind/fouc.css';

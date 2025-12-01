@@ -1,4 +1,4 @@
-@reference '../../tailwind/index.css';
+
 
 :host ::slotted([slot="window"]) {
   margin: var(--mds-modal-custom-window-distance);

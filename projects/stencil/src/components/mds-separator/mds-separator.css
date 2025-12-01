@@ -1,4 +1,4 @@
-@reference '../../tailwind/index.css';
+
 
 :host {
   --mds-separator-background: rgb(var(--tone-neutral-08));

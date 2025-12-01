@@ -1,4 +1,5 @@
-@reference '../../tailwind/index.css';
+
+
 
 :host(:not([navigation="scrollbar"])) .contents {
   @apply hide-scrollbar;

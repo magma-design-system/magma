@@ -39,6 +39,15 @@ Type: `Promise<void>`
 
 
 
+## CSS Custom Properties
+
+| Name                                | Description                                        |
+| ----------------------------------- | -------------------------------------------------- |
+| `--mds-file-preview-color`          | Sets the text color used in the file preview       |
+| `--mds-file-preview-icon-bacground` | Sets the background color of the file preview icon |
+| `--mds-file-preview-icon-color`     | Sets the color of the file preview icon            |
+
+
 ## Dependencies
 
 ### Depends on

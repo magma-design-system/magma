@@ -11,7 +11,7 @@
 | --------- | --------- | --------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ----------- |
 | `icon`    | `icon`    | The icon displayed in the button                    | `string \| undefined`                                                                                                                      | `undefined` |
 | `size`    | `size`    |                                                     | `"lg" \| "md" \| "sm" \| "xl"`                                                                                                             | `'lg'`      |
-| `tone`    | `tone`    | Specifies the tone variant for the button           | `"ghost" \| "quiet" \| "strong" \| "weak" \| undefined`                                                                                    | `'weak'`    |
+| `tone`    | `tone`    | Specifies the tone variant for the button           | `"outline" \| "strong" \| "text" \| "weak" \| undefined`                                                                                   | `'weak'`    |
 | `tooltip` | `tooltip` | The tooltip displayed when hovering over the button | `string \| undefined`                                                                                                                      | `undefined` |
 | `variant` | `variant` | Specifies the color variant for the button          | `"ai" \| "apple" \| "dark" \| "error" \| "google" \| "info" \| "light" \| "primary" \| "secondary" \| "success" \| "warning" \| undefined` | `'dark'`    |
 

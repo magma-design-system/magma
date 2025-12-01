@@ -1,3 +1,5 @@
+@import '../../tailwind/fouc.css';
+
 /**
  * @prop --mds-calendar-cell-background: Background of calendar cells.
  * @prop --mds-calendar-cell-boundaries-background: Background for selection boundaries.
@@ -37,8 +39,6 @@
  * @prop --mds-calendar-cell-selection-other-month-boundaries-color: Boundary color for selected days (other months).
  */
 
-
-/*  Base styles                                  */
 
 @property --mds-calendar-cell-background {
   inherits: false;

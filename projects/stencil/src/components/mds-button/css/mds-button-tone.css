@@ -29,6 +29,6 @@
 :host([tone="outline"]:hover),
 :host([tone="outline"][active]) {
   --mds-button-background: transparent;
-  --mds-button-border-width: var(--mds-button-border-tone-ghost-hover-width);
+  --mds-button-border-width: var(--mds-button-border-tone-outline-hover-width);
   --mds-button-border-opacity: var(--mds-button-border-hover-opacity);
 }

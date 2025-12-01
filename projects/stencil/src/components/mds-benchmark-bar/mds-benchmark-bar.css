@@ -1,4 +1,4 @@
-@reference '../../tailwind/index.css';
+@import '../../tailwind/fouc.css';
 
 :host {
   @apply
@@ -25,5 +25,3 @@
 
   min-width: 0;
 }
-
-@import '../../tailwind/fouc.css';

@@ -1,6 +1,4 @@
 @import '../../tailwind/fouc.css';
-@import './css/mds-calendar-view-month.css';
-@import './css/mds-calendar-view-month-names.css';
 
 /**
  * @prop --mds-calendar-day-number-other-month-color: The color of the day numbers belonging to previous/next months.
@@ -129,3 +127,5 @@ nav {
   padding: 0;
 }
 
+@import './css/mds-calendar-view-month.css';
+@import './css/mds-calendar-view-month-names.css';

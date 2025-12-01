@@ -1,4 +1,4 @@
-@reference '../../tailwind/index.css';
+
 @reference '@maggioli-design-system/styles/dist/tailwind/typography.css';
 
 @import '../../tailwind/fouc.css';

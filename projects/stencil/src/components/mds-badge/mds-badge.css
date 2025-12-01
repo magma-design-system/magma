@@ -1,5 +1,4 @@
-/* @reference 'tailwindcss'; */
-@reference '@maggioli-design-system/styles/tailwind/theme.css';
+@import '../../tailwind/fouc.css';
 
 /**
  * @prop --mds-badge-background: Sets the background-color of the component
@@ -13,19 +12,19 @@
 
 @property --mds-badge-background {
   inherits: false;
-  initial-value: rgb(var(--label-sky-09, 208 234 254));
+  initial-value: rgb(var(--label-sky-09));
   syntax: "<color>";
 }
 
 @property --mds-badge-border-color {
   inherits: false;
-  initial-value: rgb(var(--label-sky-06, 7 143 248));
+  initial-value: rgb(var(--label-sky-06));
   syntax: "<color>";
 }
 
 @property --mds-badge-color {
   inherits: false;
-  initial-value: rgb(var(--label-sky-03, 4 78 134));
+  initial-value: rgb(var(--label-sky-03));
   syntax: "<color>";
 }
 
@@ -46,10 +45,10 @@
 }
 
 :host {
-  --mds-badge-background: rgb(var(--label-sky-09, 208 234 254));
-  --mds-badge-border-color: rgb(var(--label-sky-06, 7 143 248));
+  --mds-badge-background: rgb(var(--label-sky-09));
+  --mds-badge-border-color: rgb(var(--label-sky-06));
   --mds-badge-border-width: 1px;
-  --mds-badge-color: rgb(var(--label-sky-03, 4 78 134));
+  --mds-badge-color: rgb(var(--label-sky-03));
   --mds-badge-radius: var(--radius-sm, 10px);
 
   @apply
@@ -76,8 +75,9 @@
 }
 
 :host([tone="text"]) {
-  --mds-badge-background: rgb(var(--tone-neutral, 255 255 255));
+  --mds-badge-background: rgb(var(--tone-neutral));
 }
+
 @import './css/mds-badge-variant-amaranth.css';
 @import './css/mds-badge-variant-amaranth-contrast.css';
 @import './css/mds-badge-variant-aqua.css';
@@ -112,4 +112,3 @@
 @import './css/mds-badge-pref-theme.css';
 @import './css/mds-badge-pref-contrast.css';
 @import './css/mds-badge-pref-contrast-dark.css';
-@import '../../tailwind/fouc.css';

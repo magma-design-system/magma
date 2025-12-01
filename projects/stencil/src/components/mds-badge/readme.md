@@ -11,7 +11,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 | Property            | Attribute            | Description                             | Type                                                                                                                                                                                            | Default     |
 | ------------------- | -------------------- | --------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| `tone`              | `tone`               | Sets the tone of the color variant      | `"ghost" \| "quiet" \| "strong" \| "weak" \| undefined`                                                                                                                                         | `'weak'`    |
+| `tone`              | `tone`               | Sets the tone of the color variant      | `"outline" \| "strong" \| "text" \| "weak" \| undefined`                                                                                                                                        | `'weak'`    |
 | `typography`        | `typography`         | Specifies the typography of the element | `"caption" \| "detail" \| "label" \| "option" \| "paragraph" \| "tip"`                                                                                                                          | `'option'`  |
 | `typographyVariant` | `typography-variant` | Specifies the variant for `typography`  | `"code" \| "info" \| "read" \| "title" \| undefined`                                                                                                                                            | `undefined` |
 | `variant`           | `variant`            | Sets the theme variant colors           | `"amaranth" \| "aqua" \| "blue" \| "dark" \| "error" \| "green" \| "info" \| "light" \| "lime" \| "orange" \| "orchid" \| "sky" \| "success" \| "violet" \| "warning" \| "yellow" \| undefined` | `'green'`   |
@@ -26,11 +26,13 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## CSS Custom Properties
 
-| Name                     | Description                                |
-| ------------------------ | ------------------------------------------ |
-| `--mds-badge-background` | Sets the background-color of the component |
-| `--mds-badge-color`      | Sets the text color of the component       |
-| `--mds-badge-radius`     | Sets the border-radius of the component    |
+| Name                       | Description                                                   |
+| -------------------------- | ------------------------------------------------------------- |
+| `--mds-badge-background`   | Sets the background-color of the component                    |
+| `--mds-badge-border-color` | Sets the border color of the component when tone is "outline" |
+| `--mds-badge-border-width` | Sets the border width of the component when tone is "outline" |
+| `--mds-badge-color`        | Sets the text color of the component                          |
+| `--mds-badge-radius`       | Sets the border-radius of the component                       |
 
 
 ## Dependencies

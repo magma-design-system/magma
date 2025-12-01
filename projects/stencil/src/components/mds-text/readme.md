@@ -47,7 +47,6 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
  - [mds-banner](../mds-banner)
  - [mds-benchmark-bar](../mds-benchmark-bar)
  - [mds-bibliography](../mds-bibliography)
- - [mds-breadcrumb-item](../mds-breadcrumb-item)
  - [mds-button](../mds-button)
  - [mds-chip](../mds-chip)
  - [mds-file](../mds-file)
@@ -99,7 +98,6 @@ graph TD;
   mds-banner --> mds-text
   mds-benchmark-bar --> mds-text
   mds-bibliography --> mds-text
-  mds-breadcrumb-item --> mds-text
   mds-button --> mds-text
   mds-chip --> mds-text
   mds-file --> mds-text

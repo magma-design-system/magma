@@ -1,4 +1,4 @@
-@reference '../../tailwind/index.css';
+
 
 :host {
   --mds-table-row-color-hover: var(--mds-table-color, rgb(var(--tone-neutral-02)));

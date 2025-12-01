@@ -2,19 +2,19 @@
   &:host([variant="secondary"][tone="strong"]) {
     --mds-button-background: rgb(var(--variant-secondary-03));
     --mds-button-color: rgb(var(--tone-neutral));
-    --mds-button-border-color: var(--variant-secondary-03);
+    --mds-button-border-color-rgb: var(--variant-secondary-03);
   }
 
   &:host([variant="secondary"][tone="strong"][active]),
   &:host([variant="secondary"][tone="strong"]:hover) {
     --mds-button-background: rgb(var(--variant-secondary-02));
-    --mds-button-border-color: var(--variant-secondary-02);
+    --mds-button-border-color-rgb: var(--variant-secondary-02);
   }
 
   &:host([variant="secondary"][tone="weak"]) {
     --mds-button-background: rgb(var(--variant-secondary-09));
     --mds-button-color: rgb(var(--variant-secondary-02));
-    --mds-button-border-color: var(--variant-secondary-06);
+    --mds-button-border-color-rgb: var(--variant-secondary-06);
     --mds-button-border-width: var(--mds-button-border-high-contrast-width);
 
     fill: rgb(var(--variant-secondary-02));
@@ -36,17 +36,17 @@
   }
 
   &:host([variant="secondary"][tone="outline"]) {
-    --mds-button-border-color: var(--variant-secondary-03);
+    --mds-button-border-color-rgb: var(--variant-secondary-03);
     --mds-button-color: rgb(var(--variant-secondary-02));
   }
 
   &:host([variant="secondary"][tone="outline"]:hover) {
-    --mds-button-border-color: var(--variant-secondary-03);
+    --mds-button-border-color-rgb: var(--variant-secondary-03);
     --mds-button-color: rgb(var(--variant-secondary-01));
   }
 
   &:host([variant="secondary"][tone="outline"][active]) {
-    --mds-button-border-color: var(--variant-secondary-04);
+    --mds-button-border-color-rgb: var(--variant-secondary-04);
     --mds-button-color: rgb(var(--variant-secondary-02));
   }
 
@@ -75,13 +75,13 @@
     &:host([variant="secondary"][tone="strong"][active]),
     &:host([variant="secondary"][tone="strong"]:hover) {
       --mds-button-background: rgb(var(--variant-secondary-02));
-      --mds-button-border-color: var(--variant-secondary-02);
+      --mds-button-border-color-rgb: var(--variant-secondary-02);
     }
 
     &:host([variant="secondary"][tone="weak"]) {
       --mds-button-background: rgb(var(--variant-secondary-09));
       --mds-button-color: rgb(var(--variant-secondary-02));
-      --mds-button-border-color: var(--variant-secondary-06);
+      --mds-button-border-color-rgb: var(--variant-secondary-06);
       --mds-button-border-width: var(--mds-button-border-high-contrast-width);
 
       fill: rgb(var(--variant-secondary-02));
@@ -103,17 +103,17 @@
     }
 
     &:host([variant="secondary"][tone="outline"]) {
-      --mds-button-border-color: var(--variant-secondary-03);
+      --mds-button-border-color-rgb: var(--variant-secondary-03);
       --mds-button-color: rgb(var(--variant-secondary-02));
     }
 
     &:host([variant="secondary"][tone="outline"]:hover) {
-      --mds-button-border-color: var(--variant-secondary-03);
+      --mds-button-border-color-rgb: var(--variant-secondary-03);
       --mds-button-color: rgb(var(--variant-secondary-01));
     }
 
     &:host([variant="secondary"][tone="outline"][active]) {
-      --mds-button-border-color: var(--variant-secondary-04);
+      --mds-button-border-color-rgb: var(--variant-secondary-04);
       --mds-button-color: rgb(var(--variant-secondary-02));
     }
 

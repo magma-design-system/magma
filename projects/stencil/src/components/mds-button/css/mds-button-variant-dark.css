@@ -1,17 +1,17 @@
 :host([variant="dark"][tone="strong"]) {
   --mds-button-background: rgb(var(--tone-neutral-04));
-  --mds-button-border-color: var(--tone-neutral-04);
+  --mds-button-border-color-rgb: var(--tone-neutral-04);
   --mds-button-color: rgb(var(--tone-neutral));
 }
 
 :host([variant="dark"][tone="strong"]:hover) {
   --mds-button-background: rgb(var(--tone-neutral-05));
-  --mds-button-border-color: var(--tone-neutral-05);
+  --mds-button-border-color-rgb: var(--tone-neutral-05);
 }
 
 :host([variant="dark"][tone="weak"]) {
   --mds-button-background: rgb(var(--tone-neutral-08));
-  --mds-button-border-color: var(--tone-neutral-08);
+  --mds-button-border-color-rgb: var(--tone-neutral-08);
   --mds-button-color: rgb(var(--tone-neutral-03));
 
   fill: rgb(var(--tone-neutral-03));
@@ -19,17 +19,17 @@
 
 :host([variant="dark"][tone="weak"]:hover) {
   --mds-button-background: rgb(var(--tone-neutral-07));
-  --mds-button-border-color: var(--tone-neutral-07);
+  --mds-button-border-color-rgb: var(--tone-neutral-07);
   --mds-button-color: rgb(var(--tone-neutral-02));
 }
 
 :host([variant="dark"][tone="outline"]) {
-  --mds-button-border-color: var(--tone-neutral-04);
+  --mds-button-border-color-rgb: var(--tone-neutral-04);
   --mds-button-color: rgb(var(--tone-neutral-03));
 }
 
 :host([variant="dark"][tone="outline"]:hover) {
-  --mds-button-border-color: var(--tone-neutral-04);
+  --mds-button-border-color-rgb: var(--tone-neutral-04);
   --mds-button-color: rgb(var(--tone-neutral-02));
 }
 

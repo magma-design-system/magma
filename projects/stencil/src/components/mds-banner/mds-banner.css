@@ -1,4 +1,4 @@
-@reference '../../tailwind/index.css';
+@import '../../tailwind/fouc.css';
 
 /**
  * @prop --mds-banner-background: Sets the background-color of the component
@@ -187,7 +187,6 @@
   }
 }
 
-
 @import './css/mds-banner-cockade.css';
 @import './css/mds-banner-variant-ai.css';
 @import './css/mds-banner-variant-dark.css';
@@ -200,4 +199,3 @@
 @import './css/mds-banner-pref-animation.css';
 @import './css/mds-banner-pref-theme.css';
 @import './css/mds-banner-pref-contrast.css';
-@import '../../tailwind/fouc.css';

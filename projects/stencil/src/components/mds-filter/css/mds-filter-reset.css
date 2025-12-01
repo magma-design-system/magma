@@ -1,5 +1,3 @@
-@reference '../../tailwind/index.css';
-
 .reset {
   @apply
     duration-300
