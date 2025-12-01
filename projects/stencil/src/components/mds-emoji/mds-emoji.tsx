@@ -2,7 +2,7 @@ import { Component, Host, h, Method, Prop, Element, Watch } from '@stencil/core'
 import { cssRotationToNumber, cssDurationToSeconds, cssSizeToNumber } from '@common/unit'
 import type { EmojiNames, SvgDictionary, SvgNode, SvgPart } from './meta/types'
 import { gsap } from 'gsap'
-import { randomNumber } from '@common/number'
+// import { randomNumber } from '@common/number'
 
 import miaSvg from './asset/mia.svg'
 import simiSvg from './asset/simi.svg'
@@ -43,7 +43,7 @@ export class MdsEmoji {
 
   private mouseX: number = 0
   private mouseY: number = 0
-  private blinkTimeout: NodeJS.Timeout
+  // private blinkTimeout: NodeJS.Timeout
 
   private currentRotateX: number = 0
   private currentRotateY: number = 0
@@ -51,13 +51,15 @@ export class MdsEmoji {
   private expressionFollowMouseHeadDuration: number = 0.3 // durata dell'animazione di rotazione della testa quando segue il mouse
   private expressionFollowMouseTraitsDuration: number = 0.2 // durata dell'animazione di rotazione degli occhi e della bocca quando segue il mouse
 
-  private eyesEl: SVGElement | SVGGElement | NodeListOf<SVGElement | SVGGElement>
-  private gadgetEl: SVGElement | SVGGElement | NodeListOf<SVGElement | SVGGElement>
-  private handEl: SVGElement | SVGGElement | NodeListOf<SVGElement | SVGGElement>
-  private eyebrowsEl: SVGElement | SVGGElement | NodeListOf<SVGElement | SVGGElement>
-  private headEl: SVGElement | SVGGElement | NodeListOf<SVGElement | SVGGElement>
-  private earsEl: SVGElement | SVGGElement | NodeListOf<SVGElement | SVGGElement>
-  private mouthEl: SVGElement | SVGGElement | NodeListOf<SVGElement | SVGGElement>
+  private eyesEl: SVGElement | SVGGElement | NodeListOf<SVGElement | SVGGElement> | null
+  private gadgetEl: SVGElement | SVGGElement | NodeListOf<SVGElement | SVGGElement> | null
+  private handEl: SVGElement | SVGGElement | NodeListOf<SVGElement | SVGGElement> | null
+  private eyebrowsEl: SVGElement | SVGGElement | NodeListOf<SVGElement | SVGGElement> | null
+  private headEl: SVGElement | SVGGElement | NodeListOf<SVGElement | SVGGElement> | null
+  private earsEl: SVGElement | SVGGElement | NodeListOf<SVGElement | SVGGElement> | null
+  private mouthEl: SVGElement | SVGGElement | NodeListOf<SVGElement | SVGGElement> | null
+
+  private eyesTimeline: gsap.core.Timeline
 
   private svgLibrary = {
     mia: miaSvg,
@@ -71,7 +73,18 @@ export class MdsEmoji {
     this.updateCSSCustomProps()
     window.addEventListener('mousemove', this.handleFollowMouse)
     this.checkNameChanged(this.name)
+
   }
+
+  // componentWillLoad (): void {
+  //   this.headEl = this.svgPartState('head')
+  //   this.eyebrowsEl = this.svgPartState('eyebrows')
+  //   this.earsEl = this.svgPartState('ears')
+  //   this.eyesEl = this.svgPartState('eyes')
+  //   this.handEl = this.svgPartState('hand', 'think')
+  //   this.mouthEl = this.svgPartState('mouth')
+  //   this.gadgetEl = this.svgPartState('gadget')
+  // }
 
   disconnectedCallback (): void {
     if (!window) return
@@ -140,9 +153,14 @@ export class MdsEmoji {
 
   @Method()
   async startBlinking (): Promise<void> {
-    if (this.isBlinking) return
-    this.isBlinking = true
-    this.queueNextBlink()
+    // console.log('startBlinking')
+    if (!this.eyesTimeline) {
+      // console.log('eyesTimeline init')
+      const eyesOpened = this.svgPartState('eyes', 'default') as SVGElement
+      const eyesClosed = this.svgPartState('eyes', 'closed') as SVGElement
+      this.eyesTimeline = this.randomBlink(eyesOpened, eyesClosed)
+    }
+    this.eyesTimeline.play()
     return Promise.resolve()
   }
 
@@ -153,8 +171,8 @@ export class MdsEmoji {
 
   @Method()
   async stopBlinking (): Promise<void> {
-    this.isBlinking = false
-    clearTimeout(this.blinkTimeout)
+    // console.log('stopBlinking')
+    this.eyesTimeline.pause()
     return Promise.resolve()
   }
 
@@ -208,15 +226,22 @@ export class MdsEmoji {
     const tpl = document.createElement('template')
     tpl.innerHTML = this.svgLibrary[emoji].trim()
     this.svgRootEl = tpl.content.firstElementChild as SVGElement
-    // this.populateSvgDictionary()
-    // this.initializeVisibility()
     this.updateCSSCustomProps()
     if (this.host.shadowRoot) this.host.shadowRoot.innerHTML = this.svgRootEl.outerHTML
   }
 
-  private svgPartState<K extends keyof SvgDictionary> (part: K, state?: keyof SvgPart): SVGElement | SVGGElement | NodeListOf<SVGElement | SVGGElement> {
+  private svgPartState<K extends keyof SvgDictionary> (part: K, state?: keyof SvgPart): SVGElement | SVGGElement | NodeListOf<SVGElement | SVGGElement> | null {
     const group = this.host.shadowRoot?.firstElementChild?.querySelectorAll(`[id^='${part}-']`) as NodeListOf<SVGElement | SVGGElement>
-    if (!state && group) return group
+    if (group.length === 0) return null
+    if (!state && group) {
+      group?.forEach((el: SVGElement | SVGGElement) => {
+        if (el.id.split('-')[1] !== 'default') {
+          // console.log(el.id.split('-')[0], el.id.split('-')[1])
+          el.style.visibility = 'hidden'
+        }
+      })
+      return group
+    }
     let element: SVGElement | SVGGElement = this.host.shadowRoot?.firstElementChild?.querySelector(`[id='${part}-default']`) as SVGElement | SVGGElement
     group?.forEach((el: SVGElement | SVGGElement) => {
       if (el.id.split('-')[1] === state) {
@@ -481,61 +506,93 @@ export class MdsEmoji {
   // }
 
   private loopBlink = (): void => {
-    this.blinkOnce()
-    this.queueNextBlink()
+    // this.blinkOnce()
+    // this.queueNextBlink()
+    // this.randomBlink()
   }
 
-  private queueNextBlink = (): void => {
-    if (!this.isBlinking) return
-    this.blinkTimeout = setTimeout(this.loopBlink.bind(this), randomNumber(2000, 5000))
-  }
+  private randomBlink = (eyesOpened: SVGElement, eyesClosed: SVGElement): gsap.core.Timeline => {
+    const delay = gsap.utils.random(1, 2, 0.1, true)()
+    const animateIn = { ease: 'expo.in', duration: 0.15, overwrite: true }
+    const animateOut = { ease: 'expo.out', duration: 0.15, overwrite: true }
 
-  private blinkOnce = (): void => {
-    const durationClose = 0.15
-    const durationOpen = 0.15
-
-    const eyesOpened = this.svgPartState('eyes', 'default') as SVGElement
-    const eyesClosed = this.svgPartState('eyes', 'closed') as SVGElement
-
-    gsap.to(eyesOpened,
-      {
-        duration: durationClose,
-        ease: 'expo.in',
-        scaleY: 0.5,
-        // transformOrigin: '50% 50%',
-        onComplete: () => {
-          eyesOpened.style.visibility = 'hidden'
-          eyesClosed.style.visibility = 'visible'
-          gsap.fromTo(eyesClosed,
-            {
-              scaleY: 0.75,
-              // transformOrigin: '50% 50%',
-            }, {
-              duration: durationOpen,
-              ease: 'expo.out',
-              scaleY: 1,
-              // transformOrigin: '50% 50%',
-              onComplete: () => {
-                eyesOpened.style.visibility = 'visible'
-                eyesClosed.style.visibility = 'hidden'
-                gsap.fromTo(eyesOpened,
-                  {
-                    scaleY: 0.75,
-                    // transformOrigin: '50% 50%',
-                  }, {
-                    scaleY: 1,
-                    ease: 'expo.out',
-                    // transformOrigin: '50% 50%',
-                    duration: durationOpen,
-                  },
-                )
+    return gsap.timeline({ delay })
+      .to(eyesOpened,
+        {
+          scaleY: 0.5,
+          ...animateIn,
+          onComplete: () => {
+            eyesOpened.style.visibility = 'hidden'
+            gsap.fromTo(eyesClosed,
+              { scaleY: 0.75, visibility: 'visible' },
+              { scaleY: 1, ...animateOut,
+                onComplete: () => {
+                  eyesClosed.style.visibility = 'hidden'
+                  gsap.fromTo(eyesOpened,
+                    { scaleY: 0.75, visibility: 'visible', ...animateIn },
+                    { scaleY: 1, ...animateOut },
+                  )
+                },
               },
-            },
-          )
+            )
+          },
         },
-      },
-    )
+        delay,
+      )
+      .eventCallback('onComplete', () => { this.randomBlink(eyesOpened, eyesClosed) })
   }
+
+  // private queueNextBlink = (): void => {
+  //   if (!this.isBlinking) return
+  //   this.blinkTimeout = setTimeout(this.loopBlink.bind(this), randomNumber(2000, 5000))
+  // }
+
+  // private blinkOnce = (): void => {
+  //   const durationClose = 0.15
+  //   const durationOpen = 0.15
+  //   const eyesOpened = this.svgPartState('eyes', 'default') as SVGElement
+  //   const eyesClosed = this.svgPartState('eyes', 'closed') as SVGElement
+
+  //   gsap.to(eyesOpened,
+  //     {
+  //       duration: durationClose,
+  //       ease: 'expo.in',
+  //       scaleY: 0.5,
+  //       onComplete: () => {
+  //         eyesOpened.style.visibility = 'hidden'
+  //         eyesClosed.style.visibility = 'visible'
+  //         gsap.fromTo(eyesClosed,
+  //           {
+  //             scaleY: 0.75,
+  //             visibility: 'visible',
+  //             overwrite: true,
+  //           }, {
+  //             duration: durationOpen,
+  //             ease: 'expo.out',
+  //             scaleY: 1,
+  //             overwrite: true,
+  //             onComplete: () => {
+  //               eyesOpened.style.visibility = 'visible'
+  //               eyesClosed.style.visibility = 'hidden'
+  //               gsap.fromTo(eyesOpened,
+  //                 {
+  //                   scaleY: 0.75,
+  //                   overwrite: true,
+  //                   visibility: 'visible',
+  //                 }, {
+  //                   scaleY: 1,
+  //                   overwrite: true,
+  //                   ease: 'expo.out',
+  //                   duration: durationOpen,
+  //                 },
+  //               )
+  //             },
+  //           },
+  //         )
+  //       },
+  //     },
+  //   )
+  // }
 
   private handleFollowMouse = (e: MouseEvent): void => {
     if (!this.isFollowingMouse) return
@@ -568,13 +625,15 @@ export class MdsEmoji {
     this.currentRotateY = gsap.utils.clamp(- this.expressionAngleMax, this.expressionAngleMax, percentX * this.expressionAngleMax)
     this.currentRotateX = gsap.utils.clamp(- this.expressionAngleMax, this.expressionAngleMax, - percentY * this.expressionAngleMax) // Y invertito
 
-    this.headEl = this.svgPartState('head')
-    this.eyebrowsEl = this.svgPartState('eyebrows')
-    this.earsEl = this.svgPartState('ears')
-    this.eyesEl = this.svgPartState('eyes')
-    this.handEl = this.svgPartState('hand', 'think')
-    this.mouthEl = this.svgPartState('mouth')
-    this.gadgetEl = this.svgPartState('gadget')
+    if (!this.headEl) {
+      this.headEl = this.svgPartState('head')
+      this.eyebrowsEl = this.svgPartState('eyebrows')
+      this.earsEl = this.svgPartState('ears')
+      this.eyesEl = this.svgPartState('eyes')
+      this.handEl = this.svgPartState('hand', 'think')
+      this.mouthEl = this.svgPartState('mouth')
+      this.gadgetEl = this.svgPartState('gadget')
+    }
 
     this.headOffsetX = gsap.utils.clamp(-this.headOffset, this.headOffset, percentX * this.headOffset)
     this.headOffsetY = gsap.utils.clamp(-this.headOffset, this.headOffset, percentY * this.headOffset)
@@ -608,6 +667,7 @@ export class MdsEmoji {
         transformOrigin: '50% 50%',
         duration: this.expressionFollowMouseTraitsDuration,
         ease,
+        overwrite: false,
       })
     }
 
@@ -618,6 +678,7 @@ export class MdsEmoji {
         transformOrigin: '50% 50%',
         duration: this.expressionFollowMouseTraitsDuration,
         ease,
+        overwrite: false,
       })
     }
 
@@ -628,6 +689,7 @@ export class MdsEmoji {
         transformOrigin: '50% 50%',
         duration: this.expressionFollowMouseTraitsDuration,
         ease,
+        overwrite: false,
       })
     }
 
@@ -638,6 +700,7 @@ export class MdsEmoji {
         transformOrigin: '50% 50%',
         duration: this.expressionFollowMouseTraitsDuration,
         ease,
+        overwrite: false,
       })
     }
 
@@ -648,6 +711,7 @@ export class MdsEmoji {
         transformOrigin: '50% 50%',
         duration: this.expressionFollowMouseTraitsDuration,
         ease,
+        overwrite: false,
       })
     }
 
@@ -658,6 +722,7 @@ export class MdsEmoji {
         transformOrigin: '50% 50%',
         duration: this.expressionFollowMouseTraitsDuration,
         ease,
+        overwrite: false,
       })
     }
 
@@ -668,6 +733,7 @@ export class MdsEmoji {
         transformOrigin: '50% 50%',
         duration: this.expressionFollowMouseTraitsDuration,
         ease,
+        overwrite: false,
       })
     }
   }
