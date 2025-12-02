@@ -2,11 +2,35 @@
 @import '../../tailwind/fouc.css';
 
 /**
- * @prop --mds-filter-item-count-background-default: Sets tge default `background-color` of the count element
- * @prop ---mds-filter-item-count-color-default: Sets tge default text `color` of the count element
- * @prop ---mds-filter-item-count-background-selected: Sets the z-index of the component.
- * @prop ---mds-filter-item-count-color-selected: Sets the z-index of the component.
+ * @prop --mds-filter-item-count-background-default: Sets the default `background-color` of the count element
+ * @prop --mds-filter-item-count-color-default: Sets the default text `color` of the count element
+ * @prop --mds-filter-item-count-background-selected: Sets the `background-color` of the count element when it's selected
+ * @prop --mds-filter-item-count-color-selected: Sets the `color` of the count element when it's selected
  */
+
+@property --mds-filter-item-count-background-default {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-08));
+  syntax: "<color>";
+}
+
+@property --mds-filter-item-count-color-default {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-02));
+  syntax: "<color>";
+}
+
+@property --mds-filter-item-count-background-selected {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-05));
+  syntax: "<color>";
+}
+
+@property --mds-filter-item-count-color-selected {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral));
+  syntax: "<color>";
+}
 
 :host {
   --mds-filter-item-count-background-default: rgb(var(--tone-neutral-08));

@@ -1,13 +1,4 @@
-
-@import './css/mds-horizontal-scroll-pref-animation.css';
-@import './css/mds-horizontal-scroll-controls.css';
-@import './css/mds-horizontal-scroll-dot-navigation.css';
-@import './css/mds-horizontal-scroll-navigation.css';
-@import './css/mds-horizontal-scroll-snap.css';
 @import '../../tailwind/fouc.css';
-
-
-
 
 /**
  * @prop --mds-horizontal-scroll-background: Sets the background-color of the component
@@ -22,6 +13,108 @@
  * @prop --mds-horizontal-scroll-scrollbar-thumb-background: Sets the background-color of the browser scroll bar thumb (if supported)
  * @prop --mds-horizontal-scroll-scrollbar-track-background: Sets the background-color of the browser scroll bar track (if supported)
  */
+
+/* ❌ Not supported: scroll-behavior cannot be expressed in @property syntax
+@property --mds-horizontal-scroll-behavior {
+  inherits: false;
+  syntax: "auto | smooth";
+  initial-value: smooth;
+}
+*/
+
+@property --mds-horizontal-scroll-dots-gap {
+  inherits: false;
+  initial-value: --spacing(100);
+  syntax: "<length>";
+}
+
+@property --mds-horizontal-scroll-dot-size {
+  inherits: false;
+  initial-value: --spacing(200);
+  syntax: "<length>";
+}
+
+/* ❌ Not supported: 'auto' is not a <length>
+
+@property --mds-horizontal-scroll-dot-max-width {
+  inherits: false;
+  initial-value: auto;
+  syntax: "<custom-ident>";
+}
+*/
+
+@property --mds-horizontal-scroll-contents-padding {
+  inherits: false;
+  initial-value: --spacing(600);
+  syntax: "<length>";
+}
+
+@property --mds-horizontal-scroll-contents-scroll-padding {
+  inherits: false;
+  initial-value: 0 --spacing(600);
+  syntax: "<length>+";
+}
+
+@property --mds-horizontal-scroll-controls-margin {
+  inherits: false;
+  initial-value: --spacing(1200);
+  syntax: "<length>";
+}
+
+@property --mds-horizontal-scroll-gap {
+  inherits: false;
+  initial-value: --spacing(600);
+  syntax: "<length>";
+}
+
+@property --mds-horizontal-scroll-max-width {
+  inherits: false;
+  initial-value: var(--breakpoint-wide);
+  syntax: "<length>";
+}
+
+@property --mds-horizontal-scroll-scrollbar-margin {
+  inherits: false;
+  initial-value: 0;
+  syntax: "<length>";
+}
+
+@property --mds-horizontal-scroll-scrollbar-radius {
+  inherits: false;
+  initial-value: 0;
+  syntax: "<length>";
+}
+
+@property --mds-horizontal-scroll-scrollbar-size {
+  inherits: false;
+  initial-value: --spacing(200);
+  syntax: "<length>";
+}
+
+@property --mds-horizontal-scroll-dot-background {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral));
+  syntax: "<color>";
+}
+
+@property --mds-horizontal-scroll-dot-area-background {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-08));
+  syntax: "<color>";
+}
+
+@property --mds-horizontal-scroll-scrollbar-thumb-background {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-02) / 0.3);
+  syntax: "<color>";
+}
+
+@property --mds-horizontal-scroll-scrollbar-track-background {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-06) / 0.3);
+  syntax: "<color>";
+}
+
 
 :host {
   --mds-horizontal-scroll-behavior: smooth;
@@ -38,12 +131,8 @@
   --mds-horizontal-scroll-scrollbar-margin: 0;
   --mds-horizontal-scroll-scrollbar-radius: 0;
   --mds-horizontal-scroll-scrollbar-size: --spacing(200);
-  --mds-horizontal-scroll-scrollbar-thumb-background: rgb(
-    var(--tone-neutral-02) 30%
-  );
-  --mds-horizontal-scroll-scrollbar-track-background: rgb(
-    var(--tone-neutral-06) 30%
-  );
+  --mds-horizontal-scroll-scrollbar-thumb-background: rgb(var(--tone-neutral-02) / 0.3);
+  --mds-horizontal-scroll-scrollbar-track-background: rgb(var(--tone-neutral-06) / 0.3);
 
   /* private custom props, DO NOT OVERRIDE from outside */
   --max-width: var(--mds-horizontal-scroll-max-width);
@@ -132,3 +221,9 @@ right: clamp(calc(var(--mds-horizontal-scroll-gap) / 2), var(--position), var(--
     scroll-margin: 0 var(--mds-horizontal-scroll-contents-scroll-padding);
   }
 }
+
+@import './css/mds-horizontal-scroll-pref-animation.css';
+@import './css/mds-horizontal-scroll-controls.css';
+@import './css/mds-horizontal-scroll-dot-navigation.css';
+@import './css/mds-horizontal-scroll-navigation.css';
+@import './css/mds-horizontal-scroll-snap.css';

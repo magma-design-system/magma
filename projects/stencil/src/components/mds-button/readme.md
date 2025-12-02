@@ -49,14 +49,12 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | ----------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
 | `--mds-button-await-duration`                   | Sets the duration of the rotation of the spinner await component                                                              |
 | `--mds-button-background`                       | Sets the background-color of the component                                                                                    |
-| `--mds-button-border-color`                     | Sets the color of the border of the component (based on box-shadow declaration)                                               |
 | `--mds-button-border-color-rgb`                 | Sets the color of the border of the component (based on box-shadow declaration)                                               |
 | `--mds-button-border-default-opacity`           | Sets the default opacity of the border color of the component (based on box-shadow declaration)                               |
 | `--mds-button-border-high-contrast-hover-width` | Sets the width of the border when the component is hovered and the contrast is high (based on box-shadow declaration)         |
 | `--mds-button-border-high-contrast-width`       | Sets the width of the border of the component and the contrast is high (based on box-shadow declaration)                      |
 | `--mds-button-border-hover-opacity`             | Sets the opacity of the border color when the component is hovered (based on box-shadow declaration)                          |
 | `--mds-button-border-opacity`                   | Sets the border opacity of the component (based on box-shadow declaration)                                                    |
-| `--mds-button-border-tone-ghost-hover-width`    | Sets the width of the border when the component is hovered when the tone is set to `ghost` (based on box-shadow declaration)  |
 | `--mds-button-border-tone-outline-hover-width`  | Sets the width of the border when the component is hovered when the tone is set to `ghost` (based on box-shadow declaration)  |
 | `--mds-button-border-tone-strong-hover-width`   | Sets the width of the border when the component is hovered when the tone is set to `strong` (based on box-shadow declaration) |
 | `--mds-button-border-tone-weak-hover-width`     | Sets the width of the border when the component is hovered when the tone is set to `weak` (based on box-shadow declaration)   |

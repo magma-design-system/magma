@@ -1,137 +1,120 @@
-
-@reference '@maggioli-design-system/styles/dist/tailwind/typography.css';
-
 @import '../../tailwind/fouc.css';
-@import './css/mds-input-date-range-pref-animation.css';
-@import './css/mds-input-date-range-pref-theme.css';
-@import './css/mds-input-date-range-pref-contrast.css';
-@import './css/mds-input-date-range-firefox.css';
-@import './css/mds-input-date-range-variant.css';
 
-
-
-
-  /**
+/**
  * @prop --mds-input-date-range-background: Sets the background-color of the component
  * @prop --mds-input-date-range-fields-firefox-justify-content: Sets the justify-content of the component in Firefox
  * @prop --mds-input-date-range-fields-gap: Sets the gap between the fields of the component
  * @prop --mds-input-date-range-icon-color: Sets the icon color of the component
  * @prop --mds-input-date-range-ring: Sets the box-shadow of the component's input to perform the ring effect
  * @prop --mds-input-date-range-shadow: Sets the box-shadow of the component's input
- * @prop --mds-input-date-range-variant-color: Sets the variant colors of the component
-*/
+ * @prop --mds-input-date-range-variant-color-rgb: Sets the variant colors of the component
+ */
 
-  :host {
-    --mds-input-date-range-background: rgb(var(--tone-neutral));
-    --mds-input-date-range-fields-firefox-justify-content: start;
-    --mds-input-date-range-fields-gap: 0 --spacing(200);
-    --mds-input-date-range-icon-color: var(
-      --mds-input-date-range-variant-color
-    );
-    --mds-input-date-range-ring: 0 0 0 1px
-      rgb(var(--mds-input-date-range-variant-color) / 0.1);
-    --mds-input-date-range-shadow:
-      0 1px 3px 0 rgb(var(--mds-input-date-range-variant-color) / 0.1),
-      0 1px 2px 0 rgb(var(--mds-input-date-range-variant-color) / 0.06);
-    --mds-input-date-range-variant-color: 0 0 0;
+:host {
+  --mds-input-date-range-background: rgb(var(--tone-neutral));
+  --mds-input-date-range-fields-firefox-justify-content: start;
+  --mds-input-date-range-fields-gap: 0 --spacing(200);
+  --mds-input-date-range-icon-color: rgb(var(--variant-primary-03));
+  --mds-input-date-range-ring: 0 0 0 1px rgb(var(--mds-input-date-range-variant-color-rgb) / 0.1);
+  --mds-input-date-range-shadow: 0 1px 3px 0 rgb(var(--mds-input-date-range-variant-color-rgb) / 0.1), 0 1px 2px 0 rgb(var(--mds-input-date-range-variant-color-rgb) / 0.06);
+  --mds-input-date-range-variant-color-rgb: 0 0 0;
 
-    @apply gap-200
-    text-info-detail;
+  @apply gap-200
+  text-info-detail;
 
-    color: rgb(var(--tone-neutral-02));
-    container-type: inline-size;
-    cursor: text;
-    display: flex;
-    overflow: visible;
-    position: relative;
-  }
+  color: rgb(var(--tone-neutral-02));
+  container-type: inline-size;
+  cursor: text;
+  display: flex;
+  overflow: visible;
+  position: relative;
+}
 
-  .date-preselection {
-    display: grid;
-    gap: --spacing(200);
-  }
+.date-preselection {
+  display: grid;
+  gap: --spacing(200);
+}
 
-  .inputs {
-    @apply duration-300
-    ease-out-expo
-    m-0
-    pl-400
-    pr-1200
-    rounded-lg
-    text-code-hack;
+.inputs {
+  @apply duration-300
+  ease-out-expo
+  m-0
+  pl-400
+  pr-1200
+  text-code-hack;
 
-    align-items: center;
-    background-color: var(--mds-input-date-range-background);
-    border: 0;
-    box-shadow:
-      var(--mds-input-date-range-ring), var(--mds-input-date-range-shadow);
-    box-sizing: border-box;
-    color: inherit;
-    display: inline-flex;
-    flex-wrap: wrap;
-    gap: var(--mds-input-date-range-fields-gap);
-    min-height: 3rem;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    transition-property:
-      background-color, border-color, box-shadow, color, fill, margin, opacity,
-      padding, transform;
-    width: 100%;
-  }
+  align-items: center;
+  background-color: var(--mds-input-date-range-background);
+  border: 0;
+  border-radius: var(--radius-xs);
+  box-shadow: var(--mds-input-date-range-ring), var(--mds-input-date-range-shadow);
+  box-sizing: border-box;
+  color: inherit;
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: var(--mds-input-date-range-fields-gap);
+  min-height: 3rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition-property: background-color, border-color, box-shadow, color, fill, margin, opacity, padding, transform;
+  width: 100%;
+}
 
-  .input-element {
-    align-items: baseline;
-    display: inline-flex;
-  }
+.input-element {
+  align-items: baseline;
+  display: inline-flex;
+}
 
-  :host(:focus-within) .inputs {
-    @apply outline-hidden
-    transition-cosmetic
-    duration-300
-    ease-out-expo;
+:host(:focus-within) .inputs {
+  @apply outline-hidden
+  transition-cosmetic
+  duration-300
+  ease-out-expo;
 
-    --mds-input-date-range-ring: 0 0 0 3px
-      rgb(var(--mds-input-date-range-variant-color) / 1);
-    --mds-input-date-range-shadow:
-      0 4px 6px 3px rgb(var(--mds-input-date-range-variant-color) / 0.1),
-      0 2px 4px -1px rgb(var(--mds-input-date-range-variant-color) / 0.06);
-  }
+  --mds-input-date-range-ring: 0 0 0 3px rgb(var(--mds-input-date-range-variant-color-rgb) / 1);
+  --mds-input-date-range-shadow: 0 4px 6px 3px rgb(var(--mds-input-date-range-variant-color-rgb) / 0.1), 0 2px 4px -1px rgb(var(--mds-input-date-range-variant-color-rgb) / 0.06);
+}
 
-  .input-wrapper {
-    display: flex;
-    flex-shrink: 0;
-  }
+.input-wrapper {
+  display: flex;
+  flex-shrink: 0;
+}
 
-  :host() ::slotted(mds-input-date) {
-    color: inherit;
-  }
+:host() ::slotted(mds-input-date) {
+  color: inherit;
+}
 
-  .date-label {
-    margin-left: --spacing(50);
-    margin-right: --spacing(50);
-    min-width: min-content;
-    white-space: nowrap;
-  }
+.date-label {
+  margin-left: --spacing(50);
+  margin-right: --spacing(50);
+  min-width: min-content;
+  white-space: nowrap;
+}
 
-  .date-label:first-child {
-    margin-left: 0;
-  }
+.date-label:first-child {
+  margin-left: 0;
+}
 
-  mds-calendar {
-    min-width: max-content;
-  }
+mds-calendar {
+  min-width: max-content;
+}
 
-  .action-open-calendar {
-    --mds-button-color: rgb(var(--mds-input-date-range-icon-color));
+.action-open-calendar {
+  --mds-button-color: var(--mds-input-date-range-icon-color);
 
-    aspect-ratio: 1;
-    bottom: 0;
-    position: absolute;
-    right: 0;
-    top: 0;
-  }
+  aspect-ratio: 1;
+  bottom: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
 
-  mds-dropdown {
-    padding: 0;
-  }
+mds-dropdown {
+  padding: 0;
+}
 
+@import './css/mds-input-date-range-pref-animation.css';
+@import './css/mds-input-date-range-pref-theme.css';
+@import './css/mds-input-date-range-pref-contrast.css';
+@import './css/mds-input-date-range-firefox.css';
+@import './css/mds-input-date-range-variant.css';

@@ -14,6 +14,84 @@
  * @prop --mds-header-z-index: Sets the z-index of the modal
  */
 
+@property --mds-header-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-02));
+  syntax: "<color>";
+}
+
+@property --mds-header-icon-color {
+  inherits: false;
+  initial-value: var(--mds-header-color);
+  syntax: "<color>";
+}
+
+@property --mds-header-modal-icon-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral));
+  syntax: "<color>";
+}
+
+@property --mds-header-backdrop-height {
+  inherits: false;
+  initial-value: --spacing(1600);
+  syntax: "<length>";
+}
+
+@property --mds-header-inline-margin-mobile {
+  inherits: false;
+  initial-value: --spacing(400);
+  syntax: "<length>";
+}
+
+@property --mds-header-inline-margin {
+  inherits: false;
+  initial-value: --spacing(600);
+  syntax: "<length>";
+}
+
+@property --mds-header-z-index {
+  inherits: false;
+  initial-value: var(--magma-header-z-index, 1000);
+  syntax: "<integer>";
+}
+
+@property --mds-header-backdrop-show {
+  inherits: false;
+  initial-value: true;
+  syntax: "true | false";
+}
+
+/* ❌ Not supported: transform values cannot be validated by @property
+@property --mds-header-hidden-bar-translate-inline {
+  inherits: false;
+  syntax: "<transform-function>";
+  initial-value: translateY(-150%);
+}
+
+@property --mds-header-hidden-bar-translate-stripe {
+  inherits: false;
+  syntax: "<transform-function>";
+  initial-value: translateY(-110%);
+}
+*/
+
+/* ❌ Not supported: filter() and backdrop-filter() are not allowed in @property syntax
+@property --mds-header-backdrop-filter {
+  inherits: false;
+  syntax: "<filter-function>";
+  initial-value: blur(10px);
+}
+*/
+
+/* ❌ Not supported: gradients are not supported in @property
+@property --mds-header-backdrop-background-image {
+  inherits: false;
+  syntax: "<image>";
+  initial-value: linear-gradient(to top, rgb(0 0 0 / 0), rgb(0 0 0 / 0.15));
+}
+*/
+
 :host {
   --mds-header-color: rgb(var(--tone-neutral-02));
   --mds-header-hidden-bar-translate-inline: translateY(-150%);

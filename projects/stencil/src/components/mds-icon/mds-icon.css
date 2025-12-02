@@ -1,4 +1,4 @@
-
+@import '../../tailwind/fouc.css';
 
 :host {
   @apply
@@ -23,5 +23,3 @@
   height: auto;
   width: 100%;
 }
-
-@import '../../tailwind/fouc.css';

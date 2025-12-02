@@ -39,6 +39,15 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `"header"`  | The header of the component                              |
 
 
+## CSS Custom Properties
+
+| Name                              | Description                                                |
+| --------------------------------- | ---------------------------------------------------------- |
+| `--mds-details-duration`          | Sets the transition duration for details component         |
+| `--mds-details-helper-icon-color` | Sets the color of the helper icon in the details component |
+| `--mds-details-icon-color`        | Sets the color of the details icon                         |
+
+
 ----------------------------------------------
 
 Built with love @ [Gruppo Maggioli](https://www.maggioli.com) from [R&D Department](https://www.maggioli.com/it-it/chi-siamo/ricerca-sviluppo)

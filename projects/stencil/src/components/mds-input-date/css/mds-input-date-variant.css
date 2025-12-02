@@ -1,56 +1,64 @@
-
-
-
-
 :host {
-  --mds-input-date-icon-color: var(--variant-primary-03);
-  --mds-input-date-variant-color: 0 0 0;
+  --mds-input-date-icon-color: rgb(var(--variant-primary-04));
+  --mds-input-date-variant-color-rgb: 0 0 0;
 }
 
-:host(:focus-within) {
-  --mds-input-date-variant-color: var(--variant-primary-04);
+:host(:focus) {
+  --mds-input-date-icon-color: rgb(var(--variant-primary-05));
+  --mds-input-date-variant-color-rgb: var(--variant-primary-04);
+}
+
+:host([variant="ai"]) {
+  --mds-input-date-icon-color: rgb(var(--variant-ai-04));
+  --mds-input-tip-background: rgb(var(--variant-ai-05));
+  --mds-input-date-variant-color-rgb: 0 0 0;
+}
+
+:host([variant="ai"]:focus) {
+  --mds-input-date-icon-color: rgb(var(--variant-ai-05));
+  --mds-input-date-variant-color-rgb: var(--variant-ai-04);
 }
 
 :host([variant="info"]) {
-  --mds-input-date-icon-color: var(--status-info-05);
-  --mds-input-date-tip-background: var(--status-info-05);
-  --mds-input-date-variant-color: 0 0 0;
+  --mds-input-date-icon-color: rgb(var(--status-info-04));
+  --mds-input-tip-background: rgb(var(--status-info-05));
+  --mds-input-date-variant-color-rgb: 0 0 0;
 }
 
-:host([variant="info"]:focus-within) {
-  --mds-input-date-icon-color: var(--status-info-04);
-  --mds-input-date-variant-color: var(--status-info-05);
+:host([variant="info"]:focus) {
+  --mds-input-date-icon-color: rgb(var(--status-info-05));
+  --mds-input-date-variant-color-rgb: var(--status-info-04);
 }
 
 :host([variant="success"]) {
-  --mds-input-date-icon-color: var(--status-success-05);
-  --mds-input-date-tip-background: var(--status-success-05);
-  --mds-input-date-variant-color: 0 0 0;
+  --mds-input-date-icon-color: rgb(var(--status-success-04));
+  --mds-input-tip-background: rgb(var(--status-success-05));
+  --mds-input-date-variant-color-rgb: 0 0 0;
 }
 
-:host([variant="success"]:focus-within) {
-  --mds-input-date-icon-color: var(--status-success-04);
-  --mds-input-date-variant-color: var(--status-success-05);
+:host([variant="success"]:focus) {
+  --mds-input-date-icon-color: rgb(var(--status-success-05));
+  --mds-input-date-variant-color-rgb: var(--status-success-04);
 }
 
 :host([variant="warning"]) {
-  --mds-input-date-icon-color: var(--status-warning-05);
-  --mds-input-date-tip-background: var(--status-warning-05);
-  --mds-input-date-variant-color: 0 0 0;
+  --mds-input-date-icon-color: rgb(var(--status-warning-04));
+  --mds-input-tip-background: rgb(var(--status-warning-05));
+  --mds-input-date-variant-color-rgb: 0 0 0;
 }
 
-:host([variant="warning"]:focus-within) {
-  --mds-input-date-icon-color: var(--status-warning-04);
-  --mds-input-date-variant-color: var(--status-warning-05);
+:host([variant="warning"]:focus) {
+  --mds-input-date-icon-color: rgb(var(--status-warning-05));
+  --mds-input-date-variant-color-rgb: var(--status-warning-04);
 }
 
 :host([variant="error"]) {
-  --mds-input-date-icon-color: var(--status-error-05);
-  --mds-input-date-tip-background: var(--status-error-05);
-  --mds-input-date-variant-color: 0 0 0;
+  --mds-input-date-icon-color: rgb(var(--status-error-04));
+  --mds-input-tip-background: rgb(var(--status-error-05));
+  --mds-input-date-variant-color-rgb: 0 0 0;
 }
 
-:host([variant="error"]:focus-within) {
-  --mds-input-date-icon-color: var(--status-error-04);
-  --mds-input-date-variant-color: var(--status-error-05);
+:host([variant="error"]:focus) {
+  --mds-input-date-icon-color: rgb(var(--status-error-05));
+  --mds-input-date-variant-color-rgb: var(--status-error-04);
 }

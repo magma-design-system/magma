@@ -312,8 +312,10 @@
   --mds-calendar-cell-selection-other-month-boundaries-background: rgb(var(--variant-primary-10));
   --mds-calendar-cell-selection-other-month-boundaries-color: rgb(var(--tone-neutral-05));
 
+  align-items: center;
   aspect-ratio: 1 / 1;
   display: flex;
+  justify-content: center;
   padding: var(--mds-calendar-cell-boundaries-padding);
   position: relative;
 }

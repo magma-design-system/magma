@@ -65,7 +65,7 @@
   border-radius: var(--mds-calendar-border-radius);
   cursor: auto;
   display: inline-flex;
-  max-width: 380px;
+  max-width: 400px;
   min-width: min-content;
   overflow: hidden;
 }
@@ -75,6 +75,7 @@
   border-radius: inherit;
   display: grid;
   padding: var(--mds-calendar-padding);
+  width: clamp(280px, 320px, 400px);
 }
 
 .calendar-preselection {

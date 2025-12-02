@@ -1,3 +1,4 @@
+@import '../../tailwind/fouc.css';
 
 
 /**
@@ -6,6 +7,10 @@
 
 :host {
   --mds-input-tip-active-translate: translate(0, 0);
+  --mds-input-tip-background: rgb(var(--tone-neutral-03));
+  --mds-input-tip-horizontal-offset-focused: 0px;
+  --mds-input-tip-horizontal-offset: --spacing(400);
+  --mds-input-tip-vertical-offset: --spacing(100);
 
   @apply
     duration-300
@@ -16,8 +21,10 @@
 
   display: flex;
   justify-content: flex-end;
+  left: var(--mds-input-tip-horizontal-offset);
   pointer-events: none;
   position: absolute;
+  right: var(--mds-input-tip-horizontal-offset);
   transform: var(--mds-input-tip-active-translate);
   transition-property: transform;
 }
@@ -27,30 +34,29 @@
 }
 
 :host([position="top"]) {
-  top: --spacing(100);
+  top: var(--mds-input-tip-vertical-offset);
 }
 
 :host([position="bottom"]) {
-  bottom: --spacing(100);
+  bottom: var(--mds-input-tip-vertical-offset);
 }
 
 :host([position="top"][active]:not([active="false"])) {
-  --mds-input-tip-active-translate: translate(calc(--spacing(100) * -1), calc(--spacing(100) * -1));
+  --mds-input-tip-active-translate: translate(calc(var(--mds-input-tip-horizontal-offset-focused) * -1), calc(var(--mds-input-tip-vertical-offset) * -1));
 }
 
-:host([position="top"][active]:not([active="false"])) ::slotted( mds-input-tip-item) {
+:host([position="top"][active]:not([active="false"])) ::slotted(mds-input-tip-item) {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
 
 :host([position="bottom"][active]:not([active="false"])) {
-  --mds-input-tip-active-translate: translate(calc(--spacing(100) * -1), --spacing(100));
+  --mds-input-tip-active-translate: translate(calc(var(--mds-input-tip-horizontal-offset-focused) * -1), var(--mds-input-tip-vertical-offset));
 }
 
-:host([position="bottom"][active]:not([active="false"])) ::slotted( mds-input-tip-item) {
+:host([position="bottom"][active]:not([active="false"])) ::slotted(mds-input-tip-item) {
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
 }
 
 @import './css/mds-input-tip-pref-animation.css';
-@import '../../tailwind/fouc.css';

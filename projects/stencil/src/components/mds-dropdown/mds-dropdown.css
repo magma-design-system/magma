@@ -73,8 +73,8 @@
   --mds-dropdown-backdrop-duration: 200ms;
   --mds-dropdown-backdrop-z-index: var(--magma-backdrop-z-index, 3000);
   --mds-dropdown-background: rgb(var(--tone-neutral));
-  --mds-dropdown-drop-shadow-color-rgb: var(--tone-neutral-01, 0 0 0);
-  --mds-dropdown-drop-shadow: drop-shadow(0 10px 8px rgb(var(--mds-dropdown-drop-shadow-color-rgb) / 0.05)) drop-shadow(0 4px 3px rgb(var(--mds-dropdown-drop-shadow-color) / 0.15)) drop-shadow(0 0 1px rgb(var(--mds-dropdown-drop-shadow-color) / 0.15));
+  --mds-dropdown-drop-shadow-color-rgb: var(--tone-neutral-01);
+  --mds-dropdown-drop-shadow: drop-shadow(0 10px 8px rgb(var(--mds-dropdown-drop-shadow-color-rgb) / 0.05)) drop-shadow(0 4px 3px rgb(var(--mds-dropdown-drop-shadow-color-rgb) / 0.15)) drop-shadow(0 0 1px rgb(var(--mds-dropdown-drop-shadow-color-rgb) / 0.15));
   --mds-dropdown-duration: 0.5s;
   --mds-dropdown-ease: var(--ease-out-expo);
   --mds-dropdown-mouseover-delay: 0.5s;

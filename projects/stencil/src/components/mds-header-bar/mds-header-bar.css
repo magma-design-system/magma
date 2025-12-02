@@ -1,5 +1,15 @@
 @import '../../tailwind/fouc.css';
 
+/**
+ * @prop --mds-header-bar-hamburger-color: The color of the hamburger icon used in the header bar.
+ */
+
+@property --mds-header-bar-hamburger-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-03));
+  syntax: "<color>";
+}
+
 :host {
   --mds-header-bar-hamburger-color: rgb(var(--tone-neutral-03));
 

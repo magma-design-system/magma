@@ -1,72 +1,108 @@
-
-
-
-
-
 @import '../../tailwind/fouc.css';
 
+/**
+ * @prop --mds-img-background: The background color of the image container.
+ * @prop --mds-img-color: The foreground/text color used inside the image component.
+ * @prop --mds-img-icon-color: The color applied to icons displayed within the image element.
+ * @prop --mds-img-error-background: The background color shown when the image fails to load.
+ * @prop --mds-img-error-color: The text or foreground color shown in the error state.
+ * @prop --mds-img-error-icon-color: The icon color used in the error state.
+ */
 
+@property --mds-img-background {
+  inherits: false;
+  initial-value: rgb(var(--variant-primary-03));
+  syntax: "<color>";
+}
 
+@property --mds-img-color {
+  inherits: false;
+  initial-value: rgb(var(--variant-primary-09));
+  syntax: "<color>";
+}
 
-  :host {
-    --mds-img-background: rgb(var(--variant-primary-03));
-    --mds-img-color: rgb(var(--variant-primary-09));
-    --mds-img-icon-color: rgb(var(--variant-primary-07));
-    --mds-img-error-background: rgb(var(--status-error-09));
-    --mds-img-error-color: rgb(var(--status-error-04));
-    --mds-img-error-icon-color: rgb(var(--status-error-06));
+@property --mds-img-icon-color {
+  inherits: false;
+  initial-value: rgb(var(--variant-primary-07));
+  syntax: "<color>";
+}
 
-    display: flex;
-    object-fit: cover;
-    overflow: hidden;
-    position: relative;
-  }
+@property --mds-img-error-background {
+  inherits: false;
+  initial-value: rgb(var(--status-error-09));
+  syntax: "<color>";
+}
 
-  img {
-    @apply w-full;
+@property --mds-img-error-color {
+  inherits: false;
+  initial-value: rgb(var(--status-error-04));
+  syntax: "<color>";
+}
 
-    object-fit: inherit;
-  }
+@property --mds-img-error-icon-color {
+  inherits: false;
+  initial-value: rgb(var(--status-error-06));
+  syntax: "<color>";
+}
 
-  .alt-text-container {
-    @apply gap-600
-    p-600;
+:host {
+  --mds-img-background: rgb(var(--variant-primary-03));
+  --mds-img-color: rgb(var(--variant-primary-09));
+  --mds-img-icon-color: rgb(var(--variant-primary-07));
+  --mds-img-error-background: rgb(var(--status-error-09));
+  --mds-img-error-color: rgb(var(--status-error-04));
+  --mds-img-error-icon-color: rgb(var(--status-error-06));
 
-    align-items: center;
-    background-color: var(--mds-img-background);
-    color: var(--mds-img-color);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    text-align: center;
-  }
+  display: flex;
+  object-fit: cover;
+  overflow: hidden;
+  position: relative;
+}
 
-  .alt-text-container--absolute {
-    cursor: pointer;
-    inset: 0;
-    position: absolute;
-  }
+img {
+  @apply w-full;
 
-  .alt-text-container--error {
-    --mds-img-background: var(--mds-img-error-background);
-    --mds-img-color: var(--mds-img-error-color);
-    --mds-img-icon-color: var(--mds-img-error-icon-color);
+  object-fit: inherit;
+}
 
-    cursor: not-allowed;
-  }
+.alt-text-container {
+  @apply gap-600
+  p-600;
 
-  .alt-text-container--default-aspect-ratio {
-    cursor: pointer;
-    width: 100%;
-  }
+  align-items: center;
+  background-color: var(--mds-img-background);
+  color: var(--mds-img-color);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
 
-  .click-to-load {
-    pointer-events: none;
-  }
+.alt-text-container--absolute {
+  cursor: pointer;
+  inset: 0;
+  position: absolute;
+}
 
-  .icon {
-    @apply w-900;
+.alt-text-container--error {
+  --mds-img-background: var(--mds-img-error-background);
+  --mds-img-color: var(--mds-img-error-color);
+  --mds-img-icon-color: var(--mds-img-error-icon-color);
 
-    fill: var(--mds-img-icon-color);
-  }
+  cursor: not-allowed;
+}
 
+.alt-text-container--default-aspect-ratio {
+  cursor: pointer;
+  width: 100%;
+}
+
+.click-to-load {
+  pointer-events: none;
+}
+
+.icon {
+  @apply w-900;
+
+  fill: var(--mds-img-icon-color);
+}

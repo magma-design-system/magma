@@ -1,4 +1,4 @@
-
+@import '../../tailwind/fouc.css';
 
 :host {
   @apply
@@ -12,4 +12,3 @@
 }
 
 @import './css/mds-hr-pref-theme.css';
-@import '../../tailwind/fouc.css';

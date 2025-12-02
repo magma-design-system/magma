@@ -51,6 +51,18 @@ Type: `Promise<void>`
 | `"media"` |             |
 
 
+## CSS Custom Properties
+
+| Name                         | Description                                                    |
+| ---------------------------- | -------------------------------------------------------------- |
+| `--mds-img-background`       | The background color of the image container.                   |
+| `--mds-img-color`            | The foreground/text color used inside the image component.     |
+| `--mds-img-error-background` | The background color shown when the image fails to load.       |
+| `--mds-img-error-color`      | The text or foreground color shown in the error state.         |
+| `--mds-img-error-icon-color` | The icon color used in the error state.                        |
+| `--mds-img-icon-color`       | The color applied to icons displayed within the image element. |
+
+
 ## Dependencies
 
 ### Used by
