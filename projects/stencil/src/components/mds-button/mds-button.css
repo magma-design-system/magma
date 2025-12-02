@@ -136,10 +136,7 @@
 
   @apply
     duration-200
-    ease-out
-    focus-bounce
-    px-300
-    py-200;
+    focus-bounce;
 
   align-items: center;
   background-color: var(--mds-button-background);
@@ -152,15 +149,17 @@
   fill: currentcolor;
   gap: var(--mds-button-gap);
   justify-content: center;
+  padding: --spacing(200) --spacing(300);
   position: relative;
   transition-property: background-color, border-color, box-shadow, color, outline, outline-offset, padding-left, padding-right, transform;
+  transition-timing-function: var(--ease-out-quad);
   user-select: none;
 }
 
 :host(:focus-visible) {
-  @apply
-    focus-bounce--focused
-    z-10;
+  @apply focus-bounce--focused;
+
+  z-index: 10;
 }
 
 .text {
@@ -172,9 +171,7 @@
 }
 
 .icon {
-  @apply
-    duration-300
-    ease-in-out;
+  @apply duration-300;
 
   align-items: center;
   display: inline-flex;
@@ -183,6 +180,7 @@
   justify-content: center;
   pointer-events: none;
   transition-property: fill;
+  transition-timing-function: var(--ease-in-out-quad);
 }
 
 @import './css/mds-button-button-group.css';

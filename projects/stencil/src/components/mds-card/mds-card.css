@@ -22,9 +22,8 @@
   --mds-card-gap: 0;
   --mds-card-padding: 0;
 
-  @apply rounded-2xl;
-
   background-color: rgb(var(--tone-neutral));
+  border-radius: var(--radius-lg);
   box-shadow: var(--shadow-md-sharp);
   container-name: mds-card;
   container-type: inline-size;
@@ -50,8 +49,6 @@
 }
 
 .layout {
-  @apply p-400;
-
   display: grid;
   gap: var(--mds-card-gap);
   grid-template-columns: repeat(auto-fit, minmax(1px, 100%));

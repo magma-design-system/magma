@@ -37,8 +37,8 @@ export class MdsBenchmarkBar {
     return (
       <Host>
         <div class="infos">
-          <mds-text typography={ this.typography } class="label" id="label"><slot/></mds-text>
-          <mds-text typography={ this.typography } class="value">{ this.alias ?? this.value }</mds-text>
+          <mds-text typography={ this.typography } class="label" id="label" truncate="word"><slot/></mds-text>
+          <mds-text typography={ this.typography } class="value" truncate="word">{ this.alias ?? this.value }</mds-text>
         </div>
         <mds-progress aria-labelledby="label" aria-valuetext={ this.alias } class="progress" variant={this.variant} progress={this.value / 100}/>
       </Host>

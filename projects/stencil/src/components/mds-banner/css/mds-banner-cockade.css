@@ -1,9 +1,9 @@
 
 
 :host([cockade]:not([cockade="false"])) .icon {
-  @apply rounded-b-lg;
-
   background-color: var(--mds-banner-cockade-background);
+  border-bottom-left-radius: var(--radius-lg);
+  border-bottom-right-radius: var(--radius-lg);
   margin-top: calc(-1 * var(--mds-banner-cockade-distance));
   padding: --spacing(200);
   padding-top: var(--mds-banner-cockade-distance);

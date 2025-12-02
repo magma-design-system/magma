@@ -68,6 +68,18 @@
   syntax: "<integer>";
 }
 
+@property --mds-dropdown-transform-from {
+  inherits: false;
+  initial-value: scale(0.9) translateY(-3%);
+  syntax: "<transform-list>";
+}
+
+@property --mds-dropdown-transform-to {
+  inherits: false;
+  initial-value: scale(0.9) translateY(-3%);
+  syntax: "<transform-list>";
+}
+
 :host {
   --mds-dropdown-arrow-background: var(--mds-dropdown-background);
   --mds-dropdown-backdrop-duration: 200ms;
@@ -82,16 +94,14 @@
   --mds-dropdown-transform-to: scale(1) translate(0, 0);
   --mds-dropdown-z-index: var(--magma-dropdown-z-index, 4000);
 
-  @apply
-    gap-400
-    opacity-0
-    p-600
-    rounded-lg;
-
   background-color: var(--mds-dropdown-background);
+  border-radius: var(--radius-md);
   box-sizing: border-box;
   display: none;
   filter: var(--mds-dropdown-drop-shadow);
+  gap: --spacing(400);
+  opacity: 0;
+  padding: --spacing(600);
   pointer-events: none;
   position: fixed;
   transform: var(--mds-dropdown-transform-from);
@@ -103,9 +113,8 @@
 }
 
 :host([visible]:not([visible="false"])) {
-  @apply opacity-100;
-
   display: grid;
+  opacity: 1;
   pointer-events: auto;
   transform: var(--mds-dropdown-transform-to);
 
@@ -120,18 +129,16 @@
 }
 
 .arrow {
-  @apply -top-400;
-
   display: flex;
   fill: var(--mds-dropdown-arrow-background);
   pointer-events: none;
   position: fixed;
+  top: --spacing(-400);
 }
 
 ::slotted(*) {
-  @apply z-10;
-
   position: relative;
+  z-index: 10;
 }
 
 @import './css/mds-dropdown-pref-animation.css';

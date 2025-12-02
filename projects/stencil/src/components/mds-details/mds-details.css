@@ -30,10 +30,9 @@
   --mds-details-icon-color: rgb(var(--variant-primary-04));
   --mds-details-helper-icon-color: rgb(var(--tone-neutral-03));
 
-  @apply gap-200;
-
   align-items: flex-start;
   display: flex;
+  gap: --spacing(200);
 }
 
 .content {
@@ -41,40 +40,37 @@
 }
 
 .details {
-  @apply
-    gap-400
-    opacity-0
-    pt-0;
-
   display: grid;
+  gap: --spacing(400);
   grid-template-rows: 0fr;
+  opacity: 0;
   overflow: hidden;
+  padding-top: 0;
   pointer-events: none;
   transition-duration: var(--mds-details-duration);
   transition-property: grid-template-rows, opacity, padding;
 }
 
 .content-expander {
-  @apply gap-400;
-
   display: grid;
+  gap: --spacing(400);
   min-height: 0;
 }
 
 .details.opened {
-  @apply pt-400;
-
   grid-template-rows: 1fr;
   opacity: 1;
   overflow: visible;
+  padding-top: --spacing(400);
   pointer-events: auto;
 }
 
 .header {
-  @apply gap-200 focus-bounce;
+  @apply focus-bounce;
 
   align-items: center;
   display: inline-flex;
+  gap: --spacing(200);
 }
 
 .header:focus-visible {
@@ -94,7 +90,6 @@
 .helper-icon {
   @apply
     duration-300
-    ease-in-out-expo
     svg;
 
   cursor: pointer;
@@ -102,6 +97,7 @@
   flex-shrink: 0;
   rotate: 0deg;
   transition-property: transform;
+  transition-timing-function: var(--ease-in-out-expo);
 }
 
 .helper-icon.opened {
@@ -109,9 +105,8 @@
 }
 
 .actions {
-  @apply gap-400;
-
   display: flex;
+  gap: --spacing(400);
 }
 
 @import './css/mds-details-pref-animation.css';

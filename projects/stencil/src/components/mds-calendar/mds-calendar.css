@@ -96,10 +96,10 @@ nav {
 }
 
 .action {
-  @apply px-200;
-
   justify-content: left;
   min-width: min-content;
+  padding-left: --spacing(200);
+  padding-right: --spacing(200);
 }
 
 .action-back,

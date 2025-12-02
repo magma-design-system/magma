@@ -63,9 +63,7 @@
   --mds-accordion-item-padding-selected: var(--mds-accordion-padding-selected, --spacing(400) 0 --spacing(800) 0);
   --mds-accordion-item-padding-unselected: var(--mds-accordion-padding-unselected, --spacing(400) 0 --spacing(400) 0);
 
-  @apply
-    duration-500
-    ease-out-expo;
+  @apply duration-500;
 
   border-bottom: solid var(--mds-accordion-item-border-width) transparent;
   border-top: solid var(--mds-accordion-item-border-width) transparent;
@@ -76,6 +74,7 @@
   padding: var(--mds-accordion-item-padding-unselected);
   position: relative;
   transition-property: background-color, border-color, color, fill, margin, padding;
+  transition-timing-function: var(--ease-out-expo);
 }
 
 :host(:first-child) {
@@ -83,16 +82,15 @@
 }
 
 .action {
-  @apply
-    focus-bounce
-    gap-400
-    rounded;
+  @apply focus-bounce;
 
   background-color: transparent;
   border: 0;
+  border-radius: var(--radius-md);
   color: var(--mds-accordion-item-description-color);
   cursor: pointer;
   display: grid;
+  gap: --spacing(400);
   grid-auto-columns: min-content;
   grid-template-columns: auto 24px;
   padding: 0;
@@ -110,11 +108,10 @@
 }
 
 .content {
-  @apply
-    ease-in-out-expo
-    gap-400;
+  @apply ease-in-out-expo;
 
   display: grid;
+  gap: --spacing(400);
   grid-template-rows: 0fr;
   min-height: 0;
   opacity: 0;
@@ -122,6 +119,7 @@
   padding-top: 0;
   transition-duration: var(--mds-accordion-item-duration);
   transition-property: grid-template-rows, opacity, padding;
+  transition-timing-function: var(--ease-in-out-expo);
 }
 
 .content-expander {
@@ -129,14 +127,12 @@
 }
 
 .icon {
-  @apply
-    duration-500
-    ease-out-expo
-    svg;
+  @apply duration-500 svg;
 
   fill: var(--mds-accordion-item-color);
   transform: rotate(180deg);
   transition-property: transform;
+  transition-timing-function: var(--ease-out-expo);
 }
 
 :host([selected]:not([selected="false"])) {
@@ -146,22 +142,19 @@
 }
 
 :host([selected]:not([selected="false"]):first-child) {
-  @apply mt-0;
-
   border-top-color: transparent;
+  margin-top: 0;
 }
 
 :host([selected]:not([selected="false"]):last-child) {
-  @apply mb-0;
-
   border-bottom-color: transparent;
+  margin-bottom: 0;
 }
 
 :host([selected]:not([selected="false"])) .content {
-  @apply pt-400;
-
   grid-template-rows: 1fr;
   opacity: 1;
+  padding-top: --spacing(400);
 }
 
 :host([selected]:not([selected="false"])) .icon {

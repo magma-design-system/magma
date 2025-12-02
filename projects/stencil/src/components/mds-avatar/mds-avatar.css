@@ -132,14 +132,12 @@
 }
 
 .icon {
-
-  @apply
-    duration-300
-    ease-in-out-expo;
+  @apply duration-300;
 
   fill: var(--mds-avatar-color);
   height: 100%;
   transition-property: fill;
+  transition-timing-function: var(--ease-in-out-expo);
   width: 100%;
 }
 

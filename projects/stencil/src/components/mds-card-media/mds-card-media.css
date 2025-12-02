@@ -8,13 +8,12 @@
 }
 
 .content {
-  @apply gap-200
-  p-400;
-
   align-items: flex-end;
   display: flex;
+  gap: --spacing(200);
   inset: 0;
   justify-content: center;
+  padding: --spacing(400);
   position: absolute;
 }
 

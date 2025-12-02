@@ -1,13 +1,12 @@
 @import '../../tailwind/fouc.css';
 
 :host {
-  @apply gap-400
-  p-400;
-
   align-items: center;
   display: flex;
   flex-grow: 1;
+  gap: --spacing(400);
   justify-content: space-between;
   min-width: 0;
+  padding: --spacing(400);
 }
 

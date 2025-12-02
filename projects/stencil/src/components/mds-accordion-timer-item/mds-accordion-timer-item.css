@@ -45,21 +45,19 @@
   --mds-accordion-timer-item-progress-bar-thickness: var(--mds-accordion-timer-progress-bar-thickness, --spacing(100));
   --mds-accordion-timer-item-duration: var(--mds-accordion-timer-duration, 500ms);
 
-  @apply
-    ease-out-expo
-    py-400;
-
   color: var(--mds-accordion-timer-item-color);
   display: grid;
+  padding-bottom: --spacing(400);
+  padding-top: --spacing(400);
   position: relative;
   transition-duration: var(--mds-accordion-timer-item-duration);
   transition-property: color;
+  transition-timing-function: var(--ease-out-expo);
 }
 
 .row {
-  @apply gap-400;
-
   display: flex;
+  gap: --spacing(400);
 }
 
 .accordion {
@@ -75,26 +73,21 @@
 }
 
 .action {
-  @apply
-    gap-400
-    rounded-xl;
-
   background-color: transparent;
   border: 0;
+  border-radius: var(--radius-xs);
   color: inherit;
   cursor: pointer;
   display: flex;
+  gap: --spacing(400);
   justify-content: space-between;
   padding: 0;
   text-align: left;
 }
 
 .content {
-  @apply
-    ease-in-out-expo
-    gap-400;
-
   display: grid;
+  gap: --spacing(400);
   grid-template-rows: 0fr;
   min-height: 0;
   opacity: 0;
@@ -102,6 +95,7 @@
   padding-top: 0;
   transition-duration: var(--mds-accordion-timer-item-duration);
   transition-property: grid-template-rows, opacity, padding;
+  transition-timing-function: var(--ease-in-out-expo);
 }
 
 .content-expander {
@@ -109,14 +103,12 @@
 }
 
 .icon {
-  @apply
-    duration-500
-    ease-out-expo
-    svg;
+  @apply duration-500 svg;
 
   fill: currentcolor;
   transform: rotate(180deg);
   transition-property: transform;
+  transition-timing-function: var(--ease-out-expo);
 }
 
 :host([selected]:not([selected="false"])) .action {
@@ -128,11 +120,10 @@
 }
 
 :host([selected]:not([selected="false"])) .content {
-  @apply
-    opacity-100
-    pt-400;
+  @apply opacity-100;
 
   grid-template-rows: 1fr;
+  padding-top: --spacing(400);
 }
 
 @import './css/mds-accordion-timer-item-pref-animation.css';

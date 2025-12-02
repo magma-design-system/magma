@@ -1,16 +1,13 @@
 :host([size="sm"]) {
-  @apply
-    px-300
-    py-0;
-
   --mds-button-radius: var(--radius-md);
 
   min-height: --spacing(700);
   min-width: --spacing(700);
+  padding: 0 --spacing(300);
 }
 
 :host([size="sm"]:not([has-text])) {
-  @apply p-0;
+  padding: 0;
 }
 
 :host([size="sm"]) .text {
@@ -18,9 +15,7 @@
 }
 
 :host([size="sm"]) .icon {
-  @apply
-    h-400
-    w-400;
+  size: --spacing(400);
 }
 
 :host([size="sm"][await]:not([await="false"]) ) .await {
@@ -28,40 +23,31 @@
 }
 
 :host([size="md"]) {
-  @apply
-    px-300
-    py-100;
-
   min-height: --spacing(900);
   min-width: --spacing(900);
+  padding: --spacing(100) --spacing(300);
 }
 
 :host([size="md"]:not([has-text])) {
-  @apply p-100;
+  padding: --spacing(100);
 }
 
 :host([size="lg"]) {
-  @apply
-    px-600
-    py-200;
-
   min-height: --spacing(1200);
   min-width: --spacing(1200);
+  padding: --spacing(200) --spacing(600);
 }
 
 :host([size="lg"]:not([has-text])) {
-  @apply p-200;
+  padding: --spacing(200);
 }
 
 :host([size="xl"]) {
-  @apply
-    px-800
-    py-200;
-
   min-height: --spacing(1300);
   min-width: --spacing(1300);
+  padding: --spacing(200) --spacing(800);
 }
 
 :host([size="xl"]:not([has-text])) {
-  @apply p-200;
+  padding: --spacing(200);
 }

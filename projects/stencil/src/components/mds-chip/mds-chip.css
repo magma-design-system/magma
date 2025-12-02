@@ -60,28 +60,25 @@
   --mds-chip-opacity-disabled: 0.5;
   --mds-chip-shadow: var(--shadow-sharp);
 
-  @apply
-    duration-150
-    ease-in-out
-    gap-150
-    h-900
-    py-150
-    px-100
-    rounded-full;
+  @apply duration-150;
 
   align-items: center;
   background-color: var(--mds-chip-background);
   border: 2px solid var(--mds-chip-border);
+  border-radius: 1000px;
   box-shadow: var(--mds-chip-shadow);
   box-sizing: border-box;
   color: var(--mds-chip-color);
   display: inline-flex;
+  gap: --spacing(150);
   justify-content: center;
   justify-self: start;
   max-width: min-content;
   min-width: min-content;
+  padding: --spacing(150) --spacing(100);
+  size: 100% --spacing(900);
   transition-property: background-color, border-color, box-shadow, color, opacity;
-  width: 100%;
+  transition-timing-function: var(--ease-in-out-quad);
 }
 
 
@@ -91,14 +88,13 @@
 }
 
 .label {
-  @apply
-    duration-200
-    ease-out
-    rounded-full;
+  @apply duration-200;
 
+  border-radius: 1000px;
   flex-grow: 1;
   text-decoration-color: transparent;
   transition-property: color, text-decoration-color, outline, outline-offset;
+  transition-timing-function: var(--ease-out-quad);
 }
 
 :host([clickable]:not([clickable="false"]) ) .label {
@@ -111,11 +107,11 @@
 }
 
 .label:first-child {
-  @apply pl-200;
+  padding-left: --spacing(200);
 }
 
 .label:last-child {
-  @apply pr-200;
+  padding-right: --spacing(200);
 }
 
 .label--interactive {
@@ -123,33 +119,28 @@
 }
 
 .label--interactive:focus-visible {
-  @apply
-    focus-bounce--focused
-    z-10;
+  @apply focus-bounce--focused;
+
+  z-index: 10;
 }
 
 .icon-area {
-  @apply
-    h-600
-    justify-center
-    rounded-full
-    w-600;
-
   align-items: center;
   background-color: var(--mds-chip-icon-background);
+  border-radius: 1000px;
   display: flex;
   flex-shrink: 0;
+  justify-content: center;
+  size: --spacing(600);
   transition-duration: inherit;
   transition-timing-function: inherit;
 }
 
 .icon {
-  @apply
-    duration-200
-    h-400
-    w-400;
+  @apply duration-200;
 
   fill: var(--mds-chip-icon-color);
+  size: --spacing(400);
   transition: fill;
 }
 

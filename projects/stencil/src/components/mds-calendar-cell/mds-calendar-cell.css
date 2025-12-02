@@ -106,7 +106,6 @@
   syntax: "<color>";
 }
 
-
 @property --mds-calendar-cell-size {
   inherits: false;
   initial-value: 3rem;
@@ -125,8 +124,6 @@
   syntax: "<length>";
 }
 
-/*  Today (preselection) */
-
 @property --mds-calendar-cell-preselection-today-background {
   inherits: false;
   initial-value: rgb(var(--variant-primary-09));
@@ -138,8 +135,6 @@
   initial-value: rgb(var(--variant-primary-03));
   syntax: "<color>";
 }
-
-/*  Preselection */
 
 @property --mds-calendar-cell-preselection-current-month-background {
   inherits: false;
@@ -188,8 +183,6 @@
   initial-value: rgb(var(--tone-neutral));
   syntax: "<color>";
 }
-
-/*  Selection */
 
 @property --mds-calendar-cell-selection-current-month-background {
   inherits: false;

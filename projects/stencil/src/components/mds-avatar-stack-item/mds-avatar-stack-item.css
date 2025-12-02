@@ -19,15 +19,11 @@
  * @prop --mds-avatar-stack-item-offset-margin: Computed margin for overlapping avatars
  */
 
-/* Background of each avatar stack item */
-
 @property --mds-avatar-stack-item-background {
   inherits: false;
   initial-value: var(--mds-avatar-stack-background, rgb(var(--tone-neutral)));
   syntax: "<color>";
 }
-
-/* Badge background (count bubble) */
 
 @property --mds-avatar-stack-item-count-background-color {
   inherits: false;
@@ -35,16 +31,11 @@
   syntax: "<color>";
 }
 
-/* Badge color */
-
 @property --mds-avatar-stack-item-count-color {
   inherits: false;
   initial-value: var(--mds-avatar-stack-count-color, rgb(var(--tone-neutral-04)));
   syntax: "<color>";
 }
-
-/* Sizes */
-
 
 @property --mds-avatar-stack-item-lg-size {
   inherits: true;
@@ -64,8 +55,6 @@
   syntax: "<length>";
 }
 
-/* Borders */
-
 @property --mds-avatar-stack-item-lg-border {
   inherits: true;
   initial-value: var(--mds-avatar-stack-lg-border);
@@ -84,8 +73,6 @@
   syntax: "<length>";
 }
 
-/* Offsets */
-
 @property --mds-avatar-stack-item-lg-offset {
   inherits: true;
   initial-value: var(--mds-avatar-stack-lg-offset);
@@ -103,8 +90,6 @@
   initial-value: var(--mds-avatar-stack-sm-offset);
   syntax: "<number>";
 }
-
-/* Borders */
 
 @property --mds-avatar-stack-item-lg-border {
   inherits: true;

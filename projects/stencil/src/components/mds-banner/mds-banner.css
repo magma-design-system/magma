@@ -15,8 +15,6 @@
  * @prop --mds-banner-transition-timing-function: Sets the transition timing function
  */
 
-/* Colors */
-
 @property --mds-banner-background {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-10, 238 238 238));
@@ -53,35 +51,23 @@
   syntax: "<color>";
 }
 
-/* Distances / spacing */
-
 @property --mds-banner-cockade-distance {
   inherits: true;
-  initial-value: 1.5rem; /* --spacing(600) */
+  initial-value: --spacing(600);
   syntax: "<length>";
 }
 
 @property --mds-banner-gap {
   inherits: true;
-  initial-value: 0.5rem 1rem; /* --spacing(200) --spacing(400) */
+  initial-value: --spacing(200) --spacing(400);
   syntax: "<length>+";
 }
 
-/* Radius / shadow */
-
 @property --mds-banner-radius {
   inherits: true;
-  initial-value: 16px; /* var(--radius-lg fallback) */
+  initial-value: var(--radius-lg);
   syntax: "<length>";
 }
-
-/* @property --mds-banner-shadow {
-  inherits: true;
-  initial-value: none;
-  syntax: "<shadow>";
-} */
-
-/* Transitions */
 
 @property --mds-banner-transition-duration {
   inherits: true;
@@ -89,11 +75,19 @@
   syntax: "<time>";
 }
 
-/* @property --mds-banner-transition-timing-function {
+/*
+@property --mds-banner-shadow {
+  inherits: true;
+  initial-value: none;
+  syntax: "<box-shadow>";
+}
+
+@property --mds-banner-transition-timing-function {
   inherits: true;
   initial-value: var(--ease-in-out-expo, cubic-bezier(1, 0, 0, 1));
   syntax: "<timing-function>";
-} */
+}
+*/
 
 
   :host {
@@ -110,7 +104,7 @@
   --mds-banner-transition-duration: 300ms;
   --mds-banner-transition-timing-function: var(--ease-in-out-expo, cubic-bezier(1, 0, 0, 1));
 
-  @apply p-600 grid-cols-full;
+  @apply grid-cols-full;
 
   background-color: var(--mds-banner-background);
   border-radius: var(--mds-banner-radius);
@@ -120,6 +114,7 @@
   container-type: inline-size;
   display: grid;
   gap: --spacing(400);
+  padding: --spacing(600);
   position: relative;
   transition-duration: var(--mds-banner-transition-duration);
   transition-property: background-color, box-shadow, color;

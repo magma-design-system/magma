@@ -1,5 +1,4 @@
 @import '../../tailwind/fouc.css';
-@import '~@maggioli-design-system/styles/dist/css/animations.css';
 
 /**
  * @prop --mds-bibliography-color: Sets the text color of the component
@@ -36,9 +35,9 @@
 .link {
   @apply
     duration-200
-    focus-bounce
-    rounded;
+    focus-bounce;
 
+  border-radius: var(--radius-lg);
   color: var(--mds-bibliography-color);
   text-decoration-color: var(--mds-bibliography-text-decoration);
   transition-property: text-decoration, color, outline, outline-offset;

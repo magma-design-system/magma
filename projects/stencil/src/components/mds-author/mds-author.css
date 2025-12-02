@@ -1,12 +1,11 @@
 @import '../../tailwind/fouc.css';
 
 :host {
-  @apply gap-400;
-
   align-items: center;
   container-name: mds-author;
   container-type: inline-size;
   display: flex;
+  gap: --spacing(400);
   width: 100%;
 }
 

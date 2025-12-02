@@ -85,14 +85,13 @@
   --mds-breadcrumb-button-color: rgb(var(--tone-neutral-02));
   --mds-breadcrumb-current-button-color: rgb(var(--tone-neutral-05));
 
-  @apply
-    gap-0
-    hide-scrollbar
-    p-200;
+  @apply hide-scrollbar;
 
   align-items: center;
   display: flex;
+  gap: 0;
   overflow: auto;
+  padding: --spacing(200);
   scroll-behavior: smooth;
   scroll-snap-type: x mandatory;
   width: 100%;
@@ -104,12 +103,11 @@
 }
 
 .back {
-  @apply mr-100;
-
   --mds-button-background: var(--mds-breadcrumb-button-background);
 
   fill: var(--mds-breadcrumb-button-color);
   flex-shrink: 0;
+  margin-right: --spacing(100);
 }
 
 .back:hover {
