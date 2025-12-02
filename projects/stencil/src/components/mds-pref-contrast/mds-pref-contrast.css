@@ -1,10 +1,10 @@
-
+@import '../../tailwind/fouc.css';
 
 :host {
-  @apply gap-100;
-
   display: grid;
+  gap: --spacing(100);
 }
+
 
 .item {
   --mds-tab-item-default-color: rgb(var(--tone-neutral-05));
@@ -20,4 +20,3 @@
 }
 
 @import './css/mds-pref-contrast-pref-contrast.css';
-@import '../../tailwind/fouc.css';

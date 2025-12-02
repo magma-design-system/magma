@@ -1,4 +1,35 @@
+@import '../../tailwind/fouc.css';
 
+/**
+ * @prop --mds-price-table-features-row-background: Default background color of a features row.
+ * @prop --mds-price-table-features-row-background-hover: Background color of a features row on hover.
+ * @prop --mds-price-table-features-row-color: Default text color of a features row.
+ * @prop --mds-price-table-features-row-color-hover: Text color of a features row on hover.
+ */
+
+@property --mds-price-table-features-row-background {
+  inherits: false;
+  initial-value: transparent;
+  syntax: "<color>";
+}
+
+@property --mds-price-table-features-row-background-hover {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-10));
+  syntax: "<color>";
+}
+
+@property --mds-price-table-features-row-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-04));
+  syntax: "<color>";
+}
+
+@property --mds-price-table-features-row-color-hover {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-01));
+  syntax: "<color>";
+}
 
 :host {
   --mds-price-table-features-row-background: transparent;
@@ -37,4 +68,4 @@
 @import './css/mds-price-table-features-pref-animation.css';
 @import './css/mds-price-table-features-pref-contrast.css';
 @import './css/mds-price-table-features-pref-theme.css';
-@import '../../tailwind/fouc.css';
+

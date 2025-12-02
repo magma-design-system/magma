@@ -1,58 +1,82 @@
+@import '../../tailwind/fouc.css';
 
+/**
+ * @prop --mds-progress-background: Background color of the progress bar.
+ * @prop --mds-progress-color: Foreground color of the progress indicator.
+ * @prop --mds-progress-duration: Duration of the progress animation.
+ * @prop --mds-progress-radius: Border-radius of the progress bar.
+ * @prop --mds-progress-thickness: Thickness (height) of the progress bar.
+ */
 
+@property --mds-progress-background {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-08));
+  syntax: "<color>";
+}
+
+@property --mds-progress-color {
+  inherits: false;
+  initial-value: rgb(var(--variant-primary-03));
+  syntax: "<color>";
+}
+
+@property --mds-progress-duration {
+  inherits: false;
+  initial-value: 750ms;
+  syntax: "<time>";
+}
+
+@property --mds-progress-radius {
+  inherits: false;
+  initial-value: var(--radius-lg);
+  syntax: "<length>";
+}
+
+@property --mds-progress-thickness {
+  inherits: false;
+  initial-value: var(--height-200);
+  syntax: "<length>";
+}
+
+:host {
+  --mds-progress-background: rgb(var(--tone-neutral-08));
+  --mds-progress-color: rgb(var(--variant-primary-03));
+  --mds-progress-duration: 750ms;
+  --mds-progress-radius: var(--radius-lg);
+  --mds-progress-thickness: var(--height-200);
+
+  @apply duration-300
+  ease-in-out;
+
+  background-color: var(--mds-progress-background);
+  border-radius: var(--mds-progress-radius);
+  display: flex;
+  height: var(--mds-progress-thickness);
+  min-width: var(--mds-progress-thickness);
+  overflow: hidden;
+  position: relative;
+  transition-property: background-color;
+  width: 100%;
+}
+
+:host([direction='vertical']) {
+  flex-direction: column;
+  height: unset;
+  min-height: var(--mds-progress-thickness);
+  width: var(--mds-progress-thickness);
+}
+
+.progress {
+  @apply duration-500
+  ease-out-expo;
+
+  background-color: var(--mds-progress-color);
+  border-radius: var(--mds-progress-radius);
+  transition-duration: var(--mds-progress-duration);
+  transition-property: background-color, flex-grow;
+}
 
 @import './css/mds-progress-variant.css';
 @import './css/mds-progress-pref-animation.css';
 @import './css/mds-progress-pref-theme.css';
 @import './css/mds-progress-pref-contrast.css';
-@import '../../tailwind/fouc.css';
-
-
-
-
-  /**
- * @prop --mds-progress-background: Sets the background-color of the component
- * @prop --mds-progress-color: Sets the background-color of the progress
- * @prop --mds-progress-duration: Sets the duration of the progress bar animation
- * @prop --mds-progress-radius: Sets the border-radius of the component
- * @prop --mds-progress-thickness: Sets the thickness of the progress bar
- */
-
-  :host {
-    --mds-progress-background: rgb(var(--tone-neutral-08));
-    --mds-progress-color: rgb(var(--variant-primary-03));
-    --mds-progress-duration: 750ms;
-    --mds-progress-radius: var(--radius-lg);
-    --mds-progress-thickness: var(--height-200);
-
-    @apply duration-300
-    ease-in-out;
-
-    background-color: var(--mds-progress-background);
-    border-radius: var(--mds-progress-radius);
-    display: flex;
-    height: var(--mds-progress-thickness);
-    min-width: var(--mds-progress-thickness);
-    overflow: hidden;
-    position: relative;
-    transition-property: background-color;
-    width: 100%;
-  }
-
-  :host([direction='vertical']) {
-    flex-direction: column;
-    height: unset;
-    min-height: var(--mds-progress-thickness);
-    width: var(--mds-progress-thickness);
-  }
-
-  .progress {
-    @apply duration-500
-    ease-out-expo;
-
-    background-color: var(--mds-progress-color);
-    border-radius: var(--mds-progress-radius);
-    transition-duration: var(--mds-progress-duration);
-    transition-property: background-color, flex-grow;
-  }
-

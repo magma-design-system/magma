@@ -1,15 +1,63 @@
-
+@import '../../tailwind/fouc.css';
 
 /**
- * @prop --mds-table-actions-gap: The gap between slotted actions on `mds-table-row` element
- * @prop --mds-table-background-alt: The background-color of the table cell not hovered, visible when attribute `interactive` is set tu true
- * @prop --mds-table-background: The background-color of the table
- * @prop --mds-table-border-color: The border-color of the table
- * @prop --mds-table-border-width: The border-width of the table, visible when attribute `interactive` is set tu true
- * @prop --mds-table-cell-padding: The padding of the table cell
- * @prop --mds-table-color-alt: The text color of the table
- * @prop --mds-table-color: The text color of the table
+ * @prop --mds-table-actions-gap: Gap between table action elements.
+ * @prop --mds-table-background-alt: Alternate background color for table rows.
+ * @prop --mds-table-background: Default background color of the table.
+ * @prop --mds-table-border-color: Color of the table border.
+ * @prop --mds-table-border-width: Width of the table border.
+ * @prop --mds-table-cell-padding: Padding inside table cells.
+ * @prop --mds-table-color-alt: Text color for alternate table rows.
+ * @prop --mds-table-color: Default text color of the table.
  */
+
+@property --mds-table-actions-gap {
+  inherits: false;
+  initial-value: --spacing(200);
+  syntax: "<length>";
+}
+
+@property --mds-table-background-alt {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-10));
+  syntax: "<color>";
+}
+
+@property --mds-table-background {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral));
+  syntax: "<color>";
+}
+
+@property --mds-table-border-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-08));
+  syntax: "<color>";
+}
+
+@property --mds-table-border-width {
+  inherits: false;
+  initial-value: 2px;
+  syntax: "<length>";
+}
+
+@property --mds-table-cell-padding {
+  inherits: false;
+  initial-value: --spacing(400);
+  syntax: "<length>";
+}
+
+@property --mds-table-color-alt {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-05));
+  syntax: "<color>";
+}
+
+@property --mds-table-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-02));
+  syntax: "<color>";
+}
 
 :host {
   --mds-table-actions-gap: --spacing(200);
@@ -49,4 +97,3 @@
 @import './css/mds-table-pref-theme.css';
 @import './css/mds-table-pref-contrast.css';
 @import './css/mds-table-pref-contrast-dark.css';
-@import '../../tailwind/fouc.css';

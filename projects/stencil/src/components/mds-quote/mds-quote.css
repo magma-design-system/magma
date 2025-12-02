@@ -1,4 +1,4 @@
-
+@import '../../tailwind/fouc.css';
 
 :host {
   display: inline-flex
@@ -20,4 +20,3 @@ span {
 }
 
 @import './css/mds-quote-pref-contrast.css';
-@import '../../tailwind/fouc.css';

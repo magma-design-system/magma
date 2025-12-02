@@ -77,6 +77,20 @@ Type: `Promise<void>`
 | `"notifications"` | The container wrapper of the notifications. |
 
 
+## CSS Custom Properties
+
+| Name                                            | Description                                                       |
+| ----------------------------------------------- | ----------------------------------------------------------------- |
+| `--mds-push-notification-background`            | Background of the push notification, supports gradients.          |
+| `--mds-push-notification-fadeout-delay`         | Delay before the push notification starts fading out.             |
+| `--mds-push-notification-gap`                   | Gap between multiple push notifications.                          |
+| `--mds-push-notification-items-duration`        | Duration of the item animation inside the notification.           |
+| `--mds-push-notification-items-gap`             | Gap between items inside the notification.                        |
+| `--mds-push-notification-items-intro-delay`     | Delay before items inside the notification animate in.            |
+| `--mds-push-notification-items-outro-delay`     | Delay before items inside the notification animate out.           |
+| `--mds-push-notification-items-timing-function` | Timing function used for item animations inside the notification. |
+
+
 ## Dependencies
 
 ### Depends on

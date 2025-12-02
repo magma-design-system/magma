@@ -1,4 +1,42 @@
+@import '../../tailwind/fouc.css';
 
+/**
+ * @prop --mds-table-row-color-hover: Text color for table row on hover.
+ * @prop --mds-table-row-color-alt: Text color for alternate table rows.
+ * @prop --mds-table-row-background-hover: Background color for table row on hover.
+ * @prop --mds-table-row-background-alt: Background color for alternate table rows.
+ * @prop --mds-table-row-actions-gap: Gap spacing for actions inside table rows.
+ */
+
+@property --mds-table-row-color-hover {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-02));
+  syntax: "<color>";
+}
+
+@property --mds-table-row-color-alt {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-02));
+  syntax: "<color>";
+}
+
+@property --mds-table-row-background-hover {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral));
+  syntax: "<color>";
+}
+
+@property --mds-table-row-background-alt {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral));
+  syntax: "<color>";
+}
+
+@property --mds-table-row-actions-gap {
+  inherits: false;
+  initial-value: --spacing(400);
+  syntax: "<length>";
+}
 
 :host {
   --mds-table-row-color-hover: var(--mds-table-color, rgb(var(--tone-neutral-02)));
@@ -31,4 +69,3 @@
 @import './css/mds-table-row-sorted.css';
 @import './css/mds-table-row-actions.css';
 @import './css/mds-table-row-pref-animation.css';
-@import '../../tailwind/fouc.css';

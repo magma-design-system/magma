@@ -7,6 +7,13 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 <!-- Auto Generated Below -->
 
 
+## CSS Custom Properties
+
+| Name                         | Description                                |
+| ---------------------------- | ------------------------------------------ |
+| `--mds-separator-background` | Background color of the separator element. |
+
+
 ## Dependencies
 
 ### Used by

@@ -1,9 +1,3 @@
-
-@reference '@maggioli-design-system/styles/dist/css/animations.css';
-
-
-@import './css/mds-paginator-item-pref-animation.css';
-@import './css/mds-paginator-item-pref-theme.css';
 @import '../../tailwind/fouc.css';
 
 /**
@@ -23,78 +17,167 @@
  * @prop --mds-paginator-item-size: Sets the height and the min-width of the paginator item
  */
 
-  :host {
-    --mds-paginator-item-background-disabled: rgb(var(--tone-neutral-09));
-    --mds-paginator-item-background-hover: rgb(var(--tone-neutral-08));
-    --mds-paginator-item-background-selected: rgb(var(--variant-primary-03));
-    --mds-paginator-item-background: transparent;
-    --mds-paginator-item-color-disabled: rgb(var(--tone-neutral-06));
-    --mds-paginator-item-color-hover: rgb(var(--tone-neutral-02));
-    --mds-paginator-item-color-selected: rgb(var(--tone-neutral));
-    --mds-paginator-item-color: rgb(var(--tone-neutral-02));
-    --mds-paginator-item-radius: 200px;
-    --mds-paginator-item-shadow-disabled: none;
-    --mds-paginator-item-shadow-hover: none;
-    --mds-paginator-item-shadow-selected: var(--shadow-md-sharp);
-    --mds-paginator-item-shadow: none;
-    --mds-paginator-item-size: --spacing(900);
+@property --mds-paginator-item-background-disabled {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-09));
+  syntax: "<color>";
+}
 
-    @apply duration-200
-    ease-out
-    focus-bounce
-    px-300;
+@property --mds-paginator-item-background-hover {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-08));
+  syntax: "<color>";
+}
 
-    align-items: center;
-    background-color: var(--mds-paginator-item-background);
-    border-radius: var(--mds-paginator-item-radius);
-    box-shadow: var(--mds-paginator-item-shadow);
-    box-sizing: border-box;
-    color: var(--mds-paginator-item-color);
-    cursor: pointer;
-    display: inline-flex;
-    flex-shrink: 0;
-    height: var(--mds-paginator-item-size);
-    justify-content: center;
-    min-width: var(--mds-paginator-item-size);
-    transition-property:
-      background-color, box-shadow, color, outline, outline-offset;
-    user-select: none;
-  }
+@property --mds-paginator-item-background-selected {
+  inherits: false;
+  initial-value: rgb(var(--variant-primary-03));
+  syntax: "<color>";
+}
 
-  :host(:focus-visible) {
-    @apply focus-bounce--focused;
-  }
+@property --mds-paginator-item-background {
+  inherits: false;
+  initial-value: transparent;
+  syntax: "<color>";
+}
 
-  :host(:hover) {
-    background-color: var(--mds-paginator-item-background-hover);
-    box-shadow: var(--mds-paginator-item-shadow-hover);
-    color: var(--mds-paginator-item-color-hover);
-    fill: var(--mds-paginator-item-color-hover);
-  }
+@property --mds-paginator-item-color-disabled {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-06));
+  syntax: "<color>";
+}
 
-  :host([icon]) {
-    @apply p-0;
-  }
+@property --mds-paginator-item-color-hover {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-02));
+  syntax: "<color>";
+}
 
-  :host([selected]) {
-    background-color: var(--mds-paginator-item-background-selected);
-    box-shadow: var(--mds-paginator-item-shadow-selected);
-    color: var(--mds-paginator-item-color-selected);
-    fill: var(--mds-paginator-item-color-selected);
-    pointer-events: none;
-  }
+@property --mds-paginator-item-color-selected {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral));
+  syntax: "<color>";
+}
 
-  :host([disabled]) {
-    background-color: var(--mds-paginator-item-background-disabled);
-    box-shadow: var(--mds-paginator-item-shadow-disabled);
-    color: var(--mds-paginator-item-color-disabled);
-    fill: var(--mds-paginator-item-color-disabled);
-    pointer-events: none;
-  }
+@property --mds-paginator-item-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-02));
+  syntax: "<color>";
+}
 
-  .icon {
-    @apply px-0;
+@property --mds-paginator-item-radius {
+  inherits: false;
+  initial-value: 200px;
+  syntax: "<length>";
+}
 
-    fill: currentcolor;
-  }
+@property --mds-paginator-item-size {
+  inherits: false;
+  initial-value: --spacing(900);
+  syntax: "<length>";
+}
 
+/* ❌ Not supported
+@property --mds-paginator-item-shadow-disabled {
+  inherits: false;
+  initial-value: none;
+  syntax: "<box-shadow>";
+}
+
+@property --mds-paginator-item-shadow-hover {
+  inherits: false;
+  initial-value: none;
+  syntax: "<box-shadow>";
+}
+
+@property --mds-paginator-item-shadow-selected {
+  inherits: false;
+  initial-value: var(--shadow-md-sharp);
+  syntax: "<box-shadow>";
+}
+
+
+@property --mds-paginator-item-shadow {
+  inherits: false;
+  initial-value: none;
+  syntax: "<box-shadow>";
+}
+*/
+
+:host {
+  --mds-paginator-item-background-disabled: rgb(var(--tone-neutral-09));
+  --mds-paginator-item-background-hover: rgb(var(--tone-neutral-08));
+  --mds-paginator-item-background-selected: rgb(var(--variant-primary-03));
+  --mds-paginator-item-background: transparent;
+  --mds-paginator-item-color-disabled: rgb(var(--tone-neutral-06));
+  --mds-paginator-item-color-hover: rgb(var(--tone-neutral-02));
+  --mds-paginator-item-color-selected: rgb(var(--tone-neutral));
+  --mds-paginator-item-color: rgb(var(--tone-neutral-02));
+  --mds-paginator-item-radius: 200px;
+  --mds-paginator-item-shadow-disabled: none;
+  --mds-paginator-item-shadow-hover: none;
+  --mds-paginator-item-shadow-selected: var(--shadow-md-sharp);
+  --mds-paginator-item-shadow: none;
+  --mds-paginator-item-size: --spacing(900);
+
+  @apply duration-200
+  ease-out
+  focus-bounce
+  px-300;
+
+  align-items: center;
+  background-color: var(--mds-paginator-item-background);
+  border-radius: var(--mds-paginator-item-radius);
+  box-shadow: var(--mds-paginator-item-shadow);
+  box-sizing: border-box;
+  color: var(--mds-paginator-item-color);
+  cursor: pointer;
+  display: inline-flex;
+  flex-shrink: 0;
+  height: var(--mds-paginator-item-size);
+  justify-content: center;
+  min-width: var(--mds-paginator-item-size);
+  transition-property:
+    background-color, box-shadow, color, outline, outline-offset;
+  user-select: none;
+}
+
+:host(:focus-visible) {
+  @apply focus-bounce--focused;
+}
+
+:host(:hover) {
+  background-color: var(--mds-paginator-item-background-hover);
+  box-shadow: var(--mds-paginator-item-shadow-hover);
+  color: var(--mds-paginator-item-color-hover);
+  fill: var(--mds-paginator-item-color-hover);
+}
+
+:host([icon]) {
+  @apply p-0;
+}
+
+:host([selected]) {
+  background-color: var(--mds-paginator-item-background-selected);
+  box-shadow: var(--mds-paginator-item-shadow-selected);
+  color: var(--mds-paginator-item-color-selected);
+  fill: var(--mds-paginator-item-color-selected);
+  pointer-events: none;
+}
+
+:host([disabled]) {
+  background-color: var(--mds-paginator-item-background-disabled);
+  box-shadow: var(--mds-paginator-item-shadow-disabled);
+  color: var(--mds-paginator-item-color-disabled);
+  fill: var(--mds-paginator-item-color-disabled);
+  pointer-events: none;
+}
+
+.icon {
+  @apply px-0;
+
+  fill: currentcolor;
+}
+
+@import './css/mds-paginator-item-pref-animation.css';
+@import './css/mds-paginator-item-pref-theme.css';

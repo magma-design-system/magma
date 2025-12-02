@@ -1,10 +1,29 @@
-@reference 'tailwindcss';
-
+@import '../../tailwind/fouc.css';
 
 /**
- * @prop --mds-usage-border-color: Sets the border color of the component.
- * @prop --mds-usage-badge-color: Sets the badge text color of the component.
+ * @prop --mds-usage-border-color: The border-color applied to the usage container or indicator.
+ * @prop --mds-usage-badge-background: The background-color of the usage badge.
+ * @prop --mds-usage-badge-color: The text/icon color of the usage badge.
  */
+
+@property --mds-usage-border-color {
+  inherits: false;
+  initial-value: rgb(var(--status-info-06));
+  syntax: "<color>";
+}
+
+@property --mds-usage-badge-background {
+  inherits: false;
+  initial-value: rgb(var(--status-info-05));
+  syntax: "<color>";
+}
+
+@property --mds-usage-badge-color {
+  inherits: false;
+  initial-value: rgb(var(--status-info-10));
+  syntax: "<color>";
+}
+
 
 :host {
   --mds-usage-border-color: rgb(var(--status-info-06));
@@ -46,4 +65,3 @@
 @import './css/mds-usage-pref-contrast.css';
 @import './css/mds-usage-pref-theme.css';
 @import './css/mds-usage-variant.css';
-@import '../../tailwind/fouc.css';

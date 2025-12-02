@@ -1,9 +1,8 @@
-
+@import '../../tailwind/fouc.css';
 
 :host {
-  @apply gap-100;
-
   display: grid;
+  gap: --spacing(100);
 }
 
 .item {
@@ -26,4 +25,3 @@
 }
 
 @import './css/mds-pref-animation-pref-contrast.css';
-@import '../../tailwind/fouc.css';

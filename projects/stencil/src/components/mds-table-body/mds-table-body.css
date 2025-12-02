@@ -2,9 +2,42 @@
 @import '../../tailwind/fouc.css';
 
 /**
- * @prop --mds-table-body-background-hover: The background-color of the table body when the mouse is over it
- * @prop --mds-table-body-background: The background-color of the table body
+ * @prop --mds-table-body-background-hover: Background color for table body rows on hover.
+ * @prop --mds-table-body-background: Default background color of table body rows.
+ * @prop --mds-table-body-background-alt: Alternate background color for table body rows.
+ * @prop --mds-table-body-color-alt: Text color for alternate table body rows.
+ * @prop --mds-table-body-color: Default text color for table body rows.
  */
+
+@property --mds-table-body-background-hover {
+  inherits: false;
+  initial-value: var(--mds-table-background-alt, rgb(var(--tone-neutral-10)));
+  syntax: "<color>";
+}
+
+@property --mds-table-body-background {
+  inherits: false;
+  initial-value: var(--mds-table-background, rgb(var(--tone-neutral)));
+  syntax: "<color>";
+}
+
+@property --mds-table-body-background-alt {
+  inherits: false;
+  initial-value: var(--mds-table-body-background-hover);
+  syntax: "<color>";
+}
+
+@property --mds-table-body-color-alt {
+  inherits: false;
+  initial-value: var(--mds-table-color-alt, rgb(var(--tone-neutral-05)));
+  syntax: "<color>";
+}
+
+@property --mds-table-body-color {
+  inherits: false;
+  initial-value: var(--mds-table-color, rgb(var(--tone-neutral-02)));
+  syntax: "<color>";
+}
 
 :host {
   --mds-table-body-background-hover: var(--mds-table-background-alt, rgb(var(--tone-neutral-10)));

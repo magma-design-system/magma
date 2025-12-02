@@ -47,6 +47,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 | Name                                          | Description                                                                                                                           |
 | --------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| `--mds-tab-direction-vertical-columns`        | Defines the column layout for vertical tabs.                                                                                          |
 | `--mds-tab-item-default-background`           | Sets the `background-color` of `mds-tab-item` or `mds-tab::part(slider)` depending on attribute `animation`                           |
 | `--mds-tab-item-default-color`                | Sets the `color` of `mds-tab-item` or `mds-tab::part(slider)` depending on attribute `animation`                                      |
 | `--mds-tab-item-default-shadow`               | Sets the `box-shadow` of `mds-tab-item` or `mds-tab::part(slider)` depending on attribute `animation`                                 |
@@ -59,6 +60,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `--mds-tab-item-selected-shadow`              | Sets the `box-shadow` when the item is selected of `mds-tab-item` or `mds-tab::part(slider)` depending on attribute `animation`       |
 | `--mds-tab-item-transition-duration`          | Sets the animation duration on how the contents height is resized when the component switch from a content to another one             |
 | `--mds-tab-item-transition-timing-function`   | Sets the animation timing function on how the contents height is resized when the component switch from a content to another one      |
+| `--mds-tab-scroll-behavior`                   | Scroll behavior for tab container.                                                                                                    |
 | `--mds-tab-scroll-scrollbar-margin`           | Sets the margin of the browser scroll bar (if supported)                                                                              |
 | `--mds-tab-scroll-scrollbar-radius`           | Sets the border-radius of the browser scroll bar (if supported)                                                                       |
 | `--mds-tab-scroll-scrollbar-size`             | Sets the height and width of the browser scroll bar (if supported)                                                                    |
@@ -73,6 +75,10 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `--mds-tab-tabs-radius`                       | Sets the `border-radius` of `mds-tab::part(tabs)`                                                                                     |
 | `--mds-tab-tabs-wrapper-margin`               | Sets the `margin` of tabs wrapper                                                                                                     |
 | `--mds-tab-tabs-wrapper-outline-opacity`      | Sets the `opacity` of outline border which holds                                                                                      |
+| `--mds-tab-tabs-wrapper-shadow`               | Shadow for the tabs wrapper.                                                                                                          |
+| `--mds-tab-tabs-wrapper-shadow-color`         | Color of the wrapper shadow.                                                                                                          |
+| `--mds-tab-transition-duration`               | Duration of tab transition animation.                                                                                                 |
+| `--mds-tab-transition-timing-function`        | Timing function for tab transition animation.                                                                                         |
 
 
 ## Dependencies

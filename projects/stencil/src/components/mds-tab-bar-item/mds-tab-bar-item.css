@@ -1,4 +1,4 @@
-
+@import '../../tailwind/fouc.css';
 
 /**
  * @prop --mds-tab-bar-item-background-selected: Sets the background-color of the component when it's selected
@@ -6,6 +6,30 @@
  * @prop --mds-tab-bar-item-color-selected: Sets the text color of the component when it's selected
  * @prop --mds-tab-bar-item-color: Sets the text color of the component
  */
+
+@property --mds-tab-bar-item-background {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-10));
+  syntax: "<color>";
+}
+
+@property --mds-tab-bar-item-background-selected {
+  inherits: false;
+  initial-value: transparent;
+  syntax: "<color>";
+}
+
+@property --mds-tab-bar-item-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-04));
+  syntax: "<color>";
+}
+
+@property --mds-tab-bar-item-color-selected {
+  inherits: false;
+  initial-value: rgb(var(--variant-primary-03));
+  syntax: "<color>";
+}
 
 :host {
   --mds-tab-bar-item-background: rgb(var(--tone-neutral-10));
@@ -42,4 +66,3 @@
 @import './css/mds-tab-bar-item-pref-animation.css';
 @import './css/mds-tab-bar-item-pref-theme.css';
 @import './css/mds-tab-bar-item-pref-contrast.css';
-@import '../../tailwind/fouc.css';

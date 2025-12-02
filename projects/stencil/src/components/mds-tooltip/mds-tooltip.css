@@ -1,16 +1,78 @@
-
+@import '../../tailwind/fouc.css';
 
 /**
- * @prop --mds-tooltip-arrow-background: Sets the fill color of the arrow.
- * @prop --mds-tooltip-background: Sets the background-color of the tooltip.
- * @prop --mds-tooltip-delay: Sets the delay of the tooltip.
- * @prop --mds-tooltip-drop-shadow: Sets the drop-shadow of the tooltip.
- * @prop --mds-tooltip-duration: Sets the duration of the tooltip animation.
- * @prop --mds-tooltip-ease: Sets the easing of the tooltip animation.
- * @prop --mds-tooltip-transform-from: Sets the from animation transform of the tooltip.
- * @prop --mds-tooltip-transform-to: Sets the to animation transform of the tooltip.
- * @prop --mds-tooltip-z-index: Sets the z-index of the component.
+ * @prop --mds-tooltip-arrow-background: Background color of the tooltip arrow.
+ * @prop --mds-tooltip-background: Background color of the tooltip body.
+ * @prop --mds-tooltip-delay: Delay before showing the tooltip.
+ * @prop --mds-tooltip-drop-shadow: Drop shadow applied to the tooltip.
+ * @prop --mds-tooltip-duration: Duration of the tooltip animation.
+ * @prop --mds-tooltip-ease: Timing function for the tooltip animation.
+ * @prop --mds-tooltip-dot-padding: Padding around the tooltip dot (if present).
+ * @prop --mds-tooltip-transform-from: Transform applied at the start of the tooltip animation.
+ * @prop --mds-tooltip-transform-to: Transform applied at the end of the tooltip animation.
+ * @prop --mds-tooltip-z-index: z-index of the tooltip container.
  */
+
+@property --mds-tooltip-arrow-background {
+  inherits: false;
+  initial-value: var(--mds-tooltip-background);
+  syntax: "<color>";
+}
+
+@property --mds-tooltip-background {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral));
+  syntax: "<color>";
+}
+
+@property --mds-tooltip-delay {
+  inherits: false;
+  initial-value: 1s;
+  syntax: "<time>";
+}
+
+@property --mds-tooltip-duration {
+  inherits: false;
+  initial-value: 0.5s;
+  syntax: "<time>";
+}
+
+@property --mds-tooltip-dot-padding {
+  inherits: false;
+  initial-value: --spacing(100);
+  syntax: "<length>";
+}
+
+@property --mds-tooltip-transform-from {
+  inherits: false;
+  initial-value: scale(0.9) translateY(-3%);
+  syntax: "<transform-function>";
+}
+
+@property --mds-tooltip-transform-to {
+  inherits: false;
+  initial-value: scale(1) translate(0, 0);
+  syntax: "<transform-list>";
+}
+
+@property --mds-tooltip-z-index {
+  inherits: false;
+  initial-value: var(--magma-tooltip-z-index, 4000);
+  syntax: "<integer>";
+}
+
+/* ❌ Not supported
+@property --mds-tooltip-drop-shadow {
+  inherits: false;
+  initial-value: drop-shadow(0 10px 8px rgb(0 0 0 / 0.04)) drop-shadow(0 4px 3px rgb(0 0 0 / 0.1)) drop-shadow(0 0 1px rgb(0 0 0 / 0.1));
+  syntax: "<drop-shadow>";
+}
+@property --mds-tooltip-ease {
+  inherits: false;
+  initial-value: var(--ease-out-expo);
+  syntax: "<timing-function>";
+}
+*/
 
 :host {
   --mds-tooltip-arrow-background: var(--mds-tooltip-background);
@@ -20,7 +82,7 @@
   --mds-tooltip-duration: 0.5s;
   --mds-tooltip-ease: var(--ease-out-expo);
   --mds-tooltip-dot-padding: --spacing(100);
-  --mds-tooltip-transform-from: scale(0.9) translateY(-3%);
+  --mds-tooltip-transform-from: scale(0.9) translateY(calc(--spacing(400) * -1));
   --mds-tooltip-transform-to: scale(1) translate(0, 0);
   --mds-tooltip-z-index: var(--magma-tooltip-z-index, 4000);
 
@@ -90,4 +152,3 @@
 @import './css/mds-tooltip-pref-animation.css';
 @import './css/mds-tooltip-pref-theme.css';
 @import './css/mds-tooltip-pref-contrast.css';
-@import '../../tailwind/fouc.css';

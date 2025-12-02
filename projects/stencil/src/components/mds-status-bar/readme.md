@@ -43,6 +43,15 @@ Type: `Promise<void>`
 | `"status-bar-area"` | Selects the `status-bar-area` which wraps `status-bar` element with darker area in shadowDOM. |
 
 
+## CSS Custom Properties
+
+| Name                               | Description                                  |
+| ---------------------------------- | -------------------------------------------- |
+| `--mds-status-bar-backdrop`        | Background color of the status bar backdrop. |
+| `--mds-status-bar-backdrop-filter` | Filter applied to the status bar backdrop.   |
+| `--mds-status-bar-max-width`       | Maximum width of the status bar.             |
+
+
 ## Dependencies
 
 ### Depends on

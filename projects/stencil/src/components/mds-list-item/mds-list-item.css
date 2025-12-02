@@ -1,49 +1,49 @@
-
-
-
-@import './css/mds-list-item-pref-contrast.css';
 @import '../../tailwind/fouc.css';
 
-
-
-
-  /**
+/**
  * @prop --mds-list-item-icon-margin: Sets the margin of the component's icon
  */
 
-  :host {
-    --mds-list-item-icon-margin: 0 --spacing(200) 0 0;
+@property --mds-list-item-icon-margin {
+  inherits: false;
+  initial-value: 0 --spacing(200) 0 0;
+  syntax: "<length>+";
+}
 
-    @apply w-full;
+:host {
+  --mds-list-item-icon-margin: 0 --spacing(200) 0 0;
 
-    align-items: flex-start;
-    color: rgb(var(--tone-neutral-03));
-    display: flex;
-    justify-content: flex-start;
-  }
+  @apply w-full;
 
-  .icon {
-    @apply h-600
-    w-600;
+  align-items: flex-start;
+  color: rgb(var(--tone-neutral-03));
+  display: flex;
+  justify-content: flex-start;
+}
 
-    fill: currentcolor;
-    margin: var(--mds-list-item-icon-margin);
-  }
+.icon {
+  @apply h-600
+  w-600;
 
-  :host([typography='paragraph']) {
-    --mds-list-item-icon-margin: 0.25rem --spacing(200) 0 0;
-  }
+  fill: currentcolor;
+  margin: var(--mds-list-item-icon-margin);
+}
 
-  :host([typography='caption']) {
-    --mds-list-item-icon-margin: -0.125rem --spacing(200) 0 0;
-  }
+:host([typography='paragraph']) {
+  --mds-list-item-icon-margin: 0.25rem --spacing(200) 0 0;
+}
 
-  :host([typography='label']),
-  :host([typography='tip']) {
-    --mds-list-item-icon-margin: -0.25rem --spacing(200) 0 0;
-  }
+:host([typography='caption']) {
+  --mds-list-item-icon-margin: -0.125rem --spacing(200) 0 0;
+}
 
-  :host([typography='option']) {
-    --mds-list-item-icon-margin: -0.5rem --spacing(200) 0 0;
-  }
+:host([typography='label']),
+:host([typography='tip']) {
+  --mds-list-item-icon-margin: -0.25rem --spacing(200) 0 0;
+}
 
+:host([typography='option']) {
+  --mds-list-item-icon-margin: -0.5rem --spacing(200) 0 0;
+}
+
+@import './css/mds-list-item-pref-contrast.css';

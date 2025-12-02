@@ -1,8 +1,12 @@
-
-
 /**
  * @prop --mds-zero-contents-max-width: Set if the contents has a max width to be centered in the component
  */
+
+@property --mds-zero-contents-max-width {
+  inherits: false;
+  initial-value: none;
+  syntax: "<length> | none";
+}
 
 :host {
   --mds-zero-contents-max-width: 400px;

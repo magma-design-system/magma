@@ -1,3 +1,15 @@
+@import '../../tailwind/fouc.css';
+
+/**
+ * @prop --mds-mention-icon-size: Sets the size (width and height) of the mention icon.
+ */
+
+@property --mds-mention-icon-size {
+  inherits: false;
+  initial-value: --spacing(600);
+  syntax: "<length>";
+}
+
 :host {
   --mds-mention-icon-size: --spacing(600);
 
@@ -19,4 +31,3 @@ mds-icon {
 }
 
 @import './css/mds-mention-size.css';
-@import '../../tailwind/fouc.css';

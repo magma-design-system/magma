@@ -1,6 +1,196 @@
+@import '../../tailwind/fouc.css';
 
+/**
+ * @prop --mds-push-notification-item-duration: Duration of the individual push notification item animation.
+ * @prop --mds-push-notification-item-icon-background-color: Background color of the item's icon.
+ * @prop --mds-push-notification-item-icon-color: Color of the item's icon.
+ * @prop --mds-push-notification-item-message-line-clamp: Number of lines to clamp the message text.
+ * @prop --mds-push-notification-item-shadow: Shadow applied to the push notification item.
+ * @prop --mds-push-notification-item-subject-line-clamp: Number of lines to clamp the subject text.
+ * @prop --mds-push-notification-item-timing-function: Timing function used for the item animation.
+ */
 
+@property --mds-push-notification-item-duration {
+  inherits: false;
+  initial-value: 300ms;
+  syntax: "<time>";
+}
 
+@property --mds-push-notification-item-icon-background-color {
+  inherits: false;
+  initial-value: transparent;
+  syntax: "<color>";
+}
+
+@property --mds-push-notification-item-icon-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-04));
+  syntax: "<color>";
+}
+
+@property --mds-push-notification-item-message-line-clamp {
+  inherits: false;
+  initial-value: 2;
+  syntax: "<integer>";
+}
+
+@property --mds-push-notification-item-subject-line-clamp {
+  inherits: false;
+  initial-value: 1;
+  syntax: "<integer>";
+}
+
+/* ❌ Not supported
+@property --mds-push-notification-item-shadow {
+  inherits: false;
+  initial-value: var(--shadow);
+  syntax: "<missing>";
+}
+
+@property --mds-push-notification-item-timing-function {
+  inherits: false;
+  initial-value: var(--ease-in-out-quint);
+  syntax: "<timing-function>";
+}
+*/
+
+:host {
+  --mds-push-notification-item-duration: 300ms;
+  --mds-push-notification-item-icon-background-color: transparent;
+  --mds-push-notification-item-icon-color: rgb(var(--tone-neutral-04));
+  --mds-push-notification-item-message-line-clamp: 2;
+  --mds-push-notification-item-shadow: var(--shadow);
+  --mds-push-notification-item-subject-line-clamp: 1;
+  --mds-push-notification-item-timing-function: var(--ease-in-out-quint);
+
+  @apply gap-400
+  max-w-8000
+  min-w-7200
+  p-400
+  rounded-lg;
+
+  align-items: flex-start;
+  background-color: rgb(var(--tone-neutral));
+  box-shadow: var(--mds-push-notification-item-shadow);
+  color: rgb(var(--tone-neutral-02));
+  display: flex;
+  pointer-events: auto;
+  position: relative;
+  transition-duration: var(--mds-push-notification-item-duration);
+  transition-property: background-color, box-shadow, color, margin, transform;
+  transition-timing-function: var(
+    --mds-push-notification-item-timing-function
+  );
+}
+
+:host([deletable]) {
+  @apply pr-800;
+}
+
+.content {
+  display: grid;
+  flex-grow: 1;
+}
+
+.actions {
+  @apply gap-200
+  pt-200;
+
+  display: flex;
+  flex-wrap: wrap;
+  min-width: 1px;
+}
+
+.avatar,
+.picture {
+  flex-shrink: 0;
+}
+
+.picture {
+  @apply max-w-1200
+  rounded;
+
+  box-shadow: var(--shadow-sm-sharp);
+  width: 100%;
+}
+
+.close-button {
+  @apply p-150
+  transition-cosmetic;
+
+  opacity: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+:host-context(:not(.safari)):host(:hover) .close-button {
+  opacity: 1;
+}
+
+.close-button:focus-visible,
+.close-button:hover {
+  fill: rgb(var(--tone-neutral-03));
+  opacity: 1;
+}
+
+.header {
+  @apply gap-100;
+
+  align-items: baseline;
+  display: flex;
+  justify-content: space-between;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.infos {
+  display: flex;
+  flex-direction: column;
+}
+
+.time {
+  @apply mr-100;
+
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.subject {
+  --mds-text-line-clamp: var(--mds-push-notification-item-subject-line-clamp);
+
+  line-height: var(--leading-sm);
+  text-overflow: ellipsis;
+}
+
+.message {
+  --mds-text-line-clamp: var(--mds-push-notification-item-message-line-clamp);
+
+  line-height: var(--leading-md);
+  text-overflow: ellipsis;
+}
+
+.avatar {
+  @apply h-900
+  w-900;
+
+  background-color: var(--mds-push-notification-item-icon-background-color);
+  border-radius: 1000px;
+  fill: var(--mds-push-notification-item-icon-color);
+}
+
+.avatar::part(svg) {
+  @apply w-600;
+}
+
+:host([src]) .avatar {
+  background-color: transparent;
+}
+
+:host([icon]) .avatar::part(wrapper) {
+  @apply p-150;
+}
 
 @import './css/mds-push-notification-item-pref-animation.css';
 @import './css/mds-push-notification-item-pref-theme.css';
@@ -8,146 +198,3 @@
 @import './css/mds-push-notification-item-variant-primary.css';
 @import './css/mds-push-notification-item-variant-label.css';
 @import './css/mds-push-notification-item-variant-state.css';
-@import '../../tailwind/fouc.css';
-
-
-
-
-  :host {
-    --mds-push-notification-item-duration: 300ms;
-    --mds-push-notification-item-icon-background-color: transparent;
-    --mds-push-notification-item-icon-color: rgb(var(--tone-neutral-04));
-    --mds-push-notification-item-message-line-clamp: 2;
-    --mds-push-notification-item-shadow: var(--shadow);
-    --mds-push-notification-item-subject-line-clamp: 1;
-    --mds-push-notification-item-timing-function: var(--ease-in-out-quint);
-
-    @apply gap-400
-    max-w-8000
-    min-w-7200
-    p-400
-    rounded-lg;
-
-    align-items: flex-start;
-    background-color: rgb(var(--tone-neutral));
-    box-shadow: var(--mds-push-notification-item-shadow);
-    color: rgb(var(--tone-neutral-02));
-    display: flex;
-    pointer-events: auto;
-    position: relative;
-    transition-duration: var(--mds-push-notification-item-duration);
-    transition-property: background-color, box-shadow, color, margin, transform;
-    transition-timing-function: var(
-      --mds-push-notification-item-timing-function
-    );
-  }
-
-  :host([deletable]) {
-    @apply pr-800;
-  }
-
-  .content {
-    display: grid;
-    flex-grow: 1;
-  }
-
-  .actions {
-    @apply gap-200
-    pt-200;
-
-    display: flex;
-    flex-wrap: wrap;
-    min-width: 1px;
-  }
-
-  .avatar,
-  .picture {
-    flex-shrink: 0;
-  }
-
-  .picture {
-    @apply max-w-1200
-    rounded;
-
-    box-shadow: var(--shadow-sm-sharp);
-    width: 100%;
-  }
-
-  .close-button {
-    @apply p-150
-    transition-cosmetic;
-
-    opacity: 0;
-    position: absolute;
-    right: 0;
-    top: 0;
-  }
-
-  :host-context(:not(.safari)):host(:hover) .close-button {
-    opacity: 1;
-  }
-
-  .close-button:focus-visible,
-  .close-button:hover {
-    fill: rgb(var(--tone-neutral-03));
-    opacity: 1;
-  }
-
-  .header {
-    @apply gap-100;
-
-    align-items: baseline;
-    display: flex;
-    justify-content: space-between;
-    min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .infos {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .time {
-    @apply mr-100;
-
-    flex-shrink: 0;
-    white-space: nowrap;
-  }
-
-  .subject {
-    --mds-text-line-clamp: var(--mds-push-notification-item-subject-line-clamp);
-
-    line-height: var(--leading-sm);
-    text-overflow: ellipsis;
-  }
-
-  .message {
-    --mds-text-line-clamp: var(--mds-push-notification-item-message-line-clamp);
-
-    line-height: var(--leading-md);
-    text-overflow: ellipsis;
-  }
-
-  .avatar {
-    @apply h-900
-    w-900;
-
-    background-color: var(--mds-push-notification-item-icon-background-color);
-    border-radius: 1000px;
-    fill: var(--mds-push-notification-item-icon-color);
-  }
-
-  .avatar::part(svg) {
-    @apply w-600;
-  }
-
-  :host([src]) .avatar {
-    background-color: transparent;
-  }
-
-  :host([icon]) .avatar::part(wrapper) {
-    @apply p-150;
-  }
-

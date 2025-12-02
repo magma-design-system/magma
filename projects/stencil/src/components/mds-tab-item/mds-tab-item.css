@@ -1,10 +1,48 @@
-:host {
+@import '../../tailwind/fouc.css';
 
-  /* --mds-tab-item-hover-background: transparent;
-  --mds-tab-item-selected-background: rgb(var(--tone-neutral));
-  --mds-tab-item-selected-shadow: var(--shadow-md);
-  --mds-tab-item-default-background: transparent;
-  --mds-tab-item-default-shadow: transparent; */
+/**
+ * @prop --mds-tab-item-hover-background: Background color when hovering a tab item.
+ * @prop --mds-tab-item-selected-background: Background color of a selected tab item.
+ * @prop --mds-tab-item-selected-shadow: Shadow of a selected tab item.
+ * @prop --mds-tab-item-default-background: Default background color of a tab item.
+ * @prop --mds-tab-item-default-shadow: Default shadow of a tab item.
+ */
+
+@property --mds-tab-item-hover-background {
+  inherits: false;
+  initial-value: transparent;
+  syntax: "<color>";
+}
+
+@property --mds-tab-item-selected-background {
+  inherits: false;
+  initial-value: transparent;
+  syntax: "<color>";
+}
+
+@property --mds-tab-item-default-background {
+  inherits: false;
+  initial-value: transparent;
+  syntax: "<color>";
+}
+
+/* Not supported
+@property --mds-tab-item-selected-shadow {
+  inherits: false;
+  initial-value: none;
+  syntax: "<box-shadow>";
+}
+
+@property --mds-tab-item-default-shadow {
+  inherits: false;
+  initial-value: none;
+  syntax: "<box-shadow>";
+}
+*/
+
+:host {
+  --mds-tab-item-selected-shadow: var(inherit, var(--shadow-xl));
+
   cursor: pointer;
   display: flex;
 }
@@ -12,9 +50,9 @@
 :host-context(mds-tab[animation="slide"]) {
   --mds-tab-item-hover-background: transparent;
   --mds-tab-item-selected-background: transparent;
-  --mds-tab-item-selected-shadow: transparent;
+  --mds-tab-item-selected-shadow: none;
   --mds-tab-item-default-background: transparent;
-  --mds-tab-item-default-shadow: transparent;
+  --mds-tab-item-default-shadow: none;
 }
 
 .button {
@@ -54,4 +92,3 @@
 
 /* @import './css/mds-tab-item-pref-theme.css'; */
 @import './css/mds-tab-item-pref-contrast.css';
-@import '../../tailwind/fouc.css';

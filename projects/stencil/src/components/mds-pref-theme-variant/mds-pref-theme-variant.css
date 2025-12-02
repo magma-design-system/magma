@@ -1,15 +1,13 @@
-
+@import '../../tailwind/fouc.css';
 
 mds-pref-language {
-  @apply gap-400;
-
   display: grid;
+  gap: --spacing(400);
 }
 
 .mds-pref-theme-variant-dropdown {
-  @apply
-    gap-100
-    p-400;
+  gap: --spacing(100);
+  padding: --spacing(400);
 }
 
 .item {
@@ -28,4 +26,3 @@ mds-pref-language {
   --mds-tab-item-selected-color: rgb(var(--tone-neutral-03));
 }
 
-@import '../../tailwind/fouc.css';

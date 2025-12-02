@@ -1,46 +1,54 @@
-
-
-
-@import './css/mds-paginator-pref-animation.css';
-@import './css/mds-paginator-pref-theme.css';
-@import './css/mds-paginator-pref-contrast.css';
 @import '../../tailwind/fouc.css';
-
 
 /**
  * @prop --mds-paginator-background: Sets the background-color of the pages area and the item
  * @prop --mds-paginator-scroll-behavior: Sets the scroll-behavior animation
  */
 
-  :host {
-    --mds-paginator-background: rgb(var(--tone-neutral-09));
-    --mds-paginator-scroll-behavior: smooth;
+@property --mds-paginator-background {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-09));
+  syntax: "<color>";
+}
 
-    @apply gap-100;
+@property --mds-paginator-scroll-behavior {
+  inherits: false;
+  initial-value: smooth;
+  syntax: "smooth | auto";
+}
 
-    align-items: center;
-    display: flex;
-  }
+:host {
+  --mds-paginator-background: rgb(var(--tone-neutral-09));
+  --mds-paginator-scroll-behavior: smooth;
 
-  .pages {
-    @apply duration-200
+  align-items: center;
+  display: flex;
+  gap: --spacing(100);
+}
+
+.pages {
+  @apply
+    duration-200
     hide-scrollbar
     ease-in-out
     mx-200
     p-200
     rounded-full;
 
-    align-items: center;
-    background-color: var(--mds-paginator-background);
-    display: flex;
-    flex-shrink: 1;
-    gap: 2px;
-    overflow: auto;
-    scroll-behavior: var(--mds-paginator-scroll-behavior);
-    transition-property: background-color, box-shadow;
-  }
+  align-items: center;
+  background-color: var(--mds-paginator-background);
+  display: flex;
+  flex-shrink: 1;
+  gap: 2px;
+  overflow: auto;
+  scroll-behavior: var(--mds-paginator-scroll-behavior);
+  transition-property: background-color, box-shadow;
+}
 
-  .pages::-webkit-scrollbar {
-    display: none;
-  }
+.pages::-webkit-scrollbar {
+  display: none;
+}
 
+@import './css/mds-paginator-pref-animation.css';
+@import './css/mds-paginator-pref-theme.css';
+@import './css/mds-paginator-pref-contrast.css';

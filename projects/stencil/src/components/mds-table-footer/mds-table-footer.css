@@ -1,4 +1,4 @@
-
+@import '../../tailwind/fouc.css';
 
 :host {
   @apply
@@ -16,4 +16,3 @@
 }
 
 @import './css/mds-table-footer-pref-animation.css';
-@import '../../tailwind/fouc.css';

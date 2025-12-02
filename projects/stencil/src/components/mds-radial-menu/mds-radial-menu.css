@@ -1,17 +1,93 @@
+@import '../../tailwind/fouc.css';
+
 /**
- * @prop --mds-radial-menu-angle-start: Sets the start angle of the menu
- * @prop --mds-radial-menu-angle-end: Sets the end angle of the menu
- * @prop --mds-radial-menu-context-menu-z-index: Sets the z-index of the context menu with rightclick interaction
- * @prop --mds-radial-menu-delay: Sets the delay before the menu items start appearing
- * @prop --mds-radial-menu-direction: Sets the direction in which the menu items are positioned
- * @prop --mds-radial-menu-disc-background: Sets the background of the disc
- * @prop --mds-radial-menu-disc-filter: Sets the filter of the disc
- * @prop --mds-radial-menu-disc-shadow: Sets the shadow of the disc
- * @prop --mds-radial-menu-disc-size: Sets the size of the disc
- * @prop --mds-radial-menu-radius: Sets the radius of the menu
- * @prop --mds-radial-menu-transition-duration: Set the transition duration of the menu
- * @prop --mds-radial-menu-transition-timing-function: Set the transition timing function of the menu
+ * @prop --mds-radial-menu-angle-start: Starting angle of the radial menu.
+ * @prop --mds-radial-menu-angle-end: Ending angle of the radial menu.
+ * @prop --mds-radial-menu-context-menu-z-index: Z-index of the radial menu context.
+ * @prop --mds-radial-menu-delay: Delay before the radial menu opens.
+ * @prop --mds-radial-menu-direction: Direction multiplier for menu expansion (-1 or 1).
+ * @prop --mds-radial-menu-disc-background: Background color of the radial menu disc.
+ * @prop --mds-radial-menu-disc-filter: Filter applied to the radial menu disc.
+ * @prop --mds-radial-menu-disc-shadow: Shadow applied to the radial menu disc.
+ * @prop --mds-radial-menu-disc-size: Size of the radial menu disc.
+ * @prop --mds-radial-menu-radius: Radius of the radial menu.
+ * @prop --mds-radial-menu-transition-duration: Duration of the radial menu open/close transition.
+ * @prop --mds-radial-menu-transition-timing-function: Timing function of the radial menu transition.
  */
+
+@property --mds-radial-menu-angle-start {
+  inherits: false;
+  initial-value: 0deg;
+  syntax: "<angle>";
+}
+
+@property --mds-radial-menu-angle-end {
+  inherits: false;
+  initial-value: 360deg;
+  syntax: "<angle>";
+}
+
+@property --mds-radial-menu-context-menu-z-index {
+  inherits: false;
+  initial-value: var(--magma-context-menu-z-index, 8000);
+  syntax: "<integer>";
+}
+
+@property --mds-radial-menu-delay {
+  inherits: false;
+  initial-value: 0.01s;
+  syntax: "<time>";
+}
+
+@property --mds-radial-menu-direction {
+  inherits: false;
+  initial-value: -1;
+  syntax: "<integer>";
+}
+
+@property --mds-radial-menu-disc-background {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral) / 0.50);
+  syntax: "<color>";
+}
+
+@property --mds-radial-menu-disc-size {
+  inherits: false;
+  initial-value: calc(var(--mds-radial-menu-radius) * 2);
+  syntax: "<length>";
+}
+
+@property --mds-radial-menu-radius {
+  inherits: false;
+  initial-value: 5rem;
+  syntax: "<length>";
+}
+
+@property --mds-radial-menu-transition-duration {
+  inherits: false;
+  initial-value: 500ms;
+  syntax: "<time>";
+}
+
+/* ❌ Not supported
+@property --mds-radial-menu-disc-filter {
+  inherits: false;
+  initial-value: blur(8px);
+  syntax: "<missing>";
+}
+
+@property --mds-radial-menu-disc-shadow {
+  inherits: false;
+  initial-value: var(--shadow-lg-sharp);
+  syntax: "<missing>";
+}
+
+@property --mds-radial-menu-transition-timing-function {
+  inherits: false;
+  initial-value: var(--ease-out-expo);
+  syntax: "<timing-function>";
+}
+*/
 
 :host {
   --mds-radial-menu-angle-start: 0deg;
@@ -99,4 +175,3 @@
 
 @import "./css/mds-radial-menu-disc.css";
 @import "./css/mds-radial-menu-interaction.css";
-@import '../../tailwind/fouc.css';

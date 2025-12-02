@@ -1,7 +1,23 @@
+@import '../../tailwind/fouc.css';
+
 /**
- * @prop --mds-radial-menu-item-transition-duration: Set the transition duration of the menu items
- * @prop --mds-radial-menu-item-transition-timing-function: Set the transition timing function of the menu items
+ * @prop --mds-radial-menu-item-transition-duration: Duration of individual radial menu item transitions.
+ * @prop --mds-radial-menu-item-transition-timing-function: Timing function for individual radial menu item transitions.
  */
+
+@property --mds-radial-menu-item-transition-duration {
+  inherits: false;
+  initial-value: var(--mds-radial-menu-transition-duration, 500ms);
+  syntax: "<time>";
+}
+
+/* ❌ Not supported
+@property --mds-radial-menu-item-transition-timing-function {
+  inherits: false;
+  initial-value: var(--mds-radial-menu-transition-timing-function, var(--ease-out-expo));
+  syntax: "<timing-function>";
+}
+*/
 
 :host {
   --mds-radial-menu-item-transition-duration: var(--mds-radial-menu-transition-duration, 500ms);
@@ -38,4 +54,3 @@
 
 }
 
-@import '../../tailwind/fouc.css';

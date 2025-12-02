@@ -1,13 +1,52 @@
+@import '../../tailwind/fouc.css';
+
 /**
  * @prop --mds-keyboard-key-illumination-dark-size: Set the size of the dark illumination of the keyboard key.
  * @prop --mds-keyboard-key-illumination-light-size: Set the size of the light illumination of the keyboard key.
  * @prop --mds-keyboard-key-illumination-dark: Set the dark illumination of the keyboard key.
  * @prop --mds-keyboard-key-illumination-light: Set the light illumination of the keyboard key.
- * @prop --mds-keyboard-key-color: Set the color of the keyboard key.
- * @prop --mds-keyboard-key-direction-color: Set the color of the direction key.
  * @prop --mds-keyboard-key-padding: Set the padding of the keyboard key.
  * @prop --mds-keyboard-key-transition-duration: Set the transition duration of the keyboard key.
  */
+
+@property --mds-keyboard-key-illumination-dark-size {
+  inherits: false;
+  initial-value: --spacing(150);
+  syntax: "<length>";
+}
+
+@property --mds-keyboard-key-illumination-light-size {
+  inherits: false;
+  initial-value: --spacing(50);
+  syntax: "<length>";
+}
+
+@property --mds-keyboard-key-padding {
+  inherits: false;
+  initial-value: --spacing(100);
+  syntax: "<length>";
+}
+
+@property --mds-keyboard-key-transition-duration {
+  inherits: false;
+  initial-value: 300ms;
+  syntax: "<time>";
+}
+
+/* ❌ Not supported
+
+@property --mds-keyboard-key-illumination-dark {
+  inherits: false;
+  initial-value: 0 calc(var(--mds-keyboard-key-illumination-dark-size) * -1) 0 0 rgb(0 0 0 / var(--mds-keyboard-key-illumination-dark-opacity, 0.05)) inset;
+  syntax: "<box-shadow>";
+}
+
+@property --mds-keyboard-key-illumination-light {
+  inherits: false;
+  initial-value: 0 var(--mds-keyboard-key-illumination-light-size) 0 0 rgb(255 255 255 / var(--mds-keyboard-key-illumination-light-opacity, 0.5)) inset;
+  syntax: "<box-shadow>";
+}
+*/
 
 :host {
   --mds-keyboard-key-illumination-dark-size: --spacing(150);
@@ -80,4 +119,3 @@ mds-badge {
   white-space: nowrap;
 }
 
-@import '../../tailwind/fouc.css';

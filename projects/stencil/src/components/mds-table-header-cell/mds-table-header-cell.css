@@ -1,55 +1,44 @@
-
-@reference '@maggioli-design-system/styles/dist/tailwind/typography.css'
- ;
-@reference '@maggioli-design-system/styles/dist/css/animations.css'
- ;
-
-
-@import './css/mds-table-header-cell-pref-animation.css';
 @import '../../tailwind/fouc.css';
 
-
-
-
-  /**
+/**
  * @prop --mds-table-header-cell-padding: The padding of the table cell
  */
 
-  :host {
-    @apply duration-200
-    ease-out;
+:host {
+  @apply duration-200
+  ease-out;
 
-    background-color: var(--mds-table-background);
-    border-bottom: var(--mds-table-cell-border-width) solid
-      var(--mds-table-cell-border-color) !important;
-    border-top: var(--mds-table-cell-border-width) solid transparent !important;
-    display: table-cell;
-    padding: var(--mds-table-cell-padding);
-    transition-property: background-color, border-color, color;
-    vertical-align: top;
-    white-space: nowrap;
-  }
+  background-color: var(--mds-table-background);
+  border-bottom: var(--mds-table-cell-border-width) solid var(--mds-table-cell-border-color) !important;
+  border-top: var(--mds-table-cell-border-width) solid transparent !important;
+  display: table-cell;
+  padding: var(--mds-table-cell-padding);
+  transition-property: background-color, border-color, color;
+  vertical-align: top;
+  white-space: nowrap;
+}
 
-  .action {
-    @apply px-200 -mx-200;
-  }
+.action {
+  @apply px-200 -mx-200;
+}
 
-  :host([direction='ascending']) .action,
-  :host([direction='descending']) .action,
-  .action:hover {
-    background-color: var(--mds-table-background-alt);
-  }
+:host([direction='ascending']) .action,
+:host([direction='descending']) .action,
+.action:hover {
+  background-color: var(--mds-table-background-alt);
+}
 
-  .action::part(label) {
-    @apply text-info-label
-    text-size-info-label;
-  }
+.action::part(label) {
+  @apply text-info-label
+  text-size-info-label;
+}
 
-  .label {
-    @apply h-700
-    px-200;
+.label {
+  @apply h-700
+  px-200;
 
-    align-items: center;
-    display: inline-flex;
-  }
+  align-items: center;
+  display: inline-flex;
+}
 
+@import './css/mds-table-header-cell-pref-animation.css';

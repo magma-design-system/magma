@@ -1,9 +1,47 @@
+/**
+ * @prop --mds-pref-theme-variant-item-color-background: Background color of a theme variant item.
+ * @prop --mds-pref-theme-variant-item-color-status-error: Color representing an error status for a variant item.
+ * @prop --mds-pref-theme-variant-item-color-status-success: Color representing a success status for a variant item.
+ * @prop --mds-pref-theme-variant-item-color-status-warning: Color representing a warning status for a variant item.
+ * @prop --mds-pref-theme-variant-item-color-variant-primary: Color for the primary variant item.
+ */
+
+@property --mds-pref-theme-variant-item-color-background {
+  inherits: false;
+  initial-value: rgb(var(--tint-base-lv1, var(--tone-neutral-09)));
+  syntax: "<color>";
+}
+
+@property --mds-pref-theme-variant-item-color-status-error {
+  inherits: false;
+  initial-value: rgb(var(--status-error-06));
+  syntax: "<color>";
+}
+
+@property --mds-pref-theme-variant-item-color-status-success {
+  inherits: false;
+  initial-value: rgb(var(--status-success-06));
+  syntax: "<color>";
+}
+
+@property --mds-pref-theme-variant-item-color-status-warning {
+  inherits: false;
+  initial-value: rgb(var(--status-warning-06));
+  syntax: "<color>";
+}
+
+@property --mds-pref-theme-variant-item-color-variant-primary {
+  inherits: false;
+  initial-value: rgb(var(--variant-primary-03));
+  syntax: "<color>";
+}
+
 :host {
-  --mds-pref-theme-variant-item-color-background: rgb(var(--tint-base-lv1, var(--tone-neutral-09, 243 243 243)));
-  --mds-pref-theme-variant-item-color-status-error: rgb(var(--status-error-06, 233 98 96));
-  --mds-pref-theme-variant-item-color-status-success: rgb(var(--status-success-06, 0 163 89));
-  --mds-pref-theme-variant-item-color-status-warning: rgb(var(--status-warning-06, 179 135 0));
-  --mds-pref-theme-variant-item-color-variant-primary: rgb(var(--variant-primary-03, 0 65 188));
+  --mds-pref-theme-variant-item-color-background: rgb(var(--tint-base-lv1, var(--tone-neutral-09)));
+  --mds-pref-theme-variant-item-color-status-error: rgb(var(--status-error-06));
+  --mds-pref-theme-variant-item-color-status-success: rgb(var(--status-success-06));
+  --mds-pref-theme-variant-item-color-status-warning: rgb(var(--status-warning-06));
+  --mds-pref-theme-variant-item-color-variant-primary: rgb(var(--variant-primary-03));
 
   display: flex;
 }

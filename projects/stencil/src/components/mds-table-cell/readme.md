@@ -26,9 +26,12 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | Name                                | Description                                                      |
 | ----------------------------------- | ---------------------------------------------------------------- |
 | `--mds-table-cell-background`       | The background-color of the table cell                           |
+| `--mds-table-cell-background-alt`   | Alternate background color for table cells.                      |
 | `--mds-table-cell-background-hover` | The background-color of the table cell when the mouse is over it |
 | `--mds-table-cell-border-color`     | The border-color of the table cell                               |
 | `--mds-table-cell-border-width`     | The border-width of the table cell                               |
+| `--mds-table-cell-color`            | Default text color of table cells.                               |
+| `--mds-table-cell-color-alt`        | Text color for alternate table cells.                            |
 | `--mds-table-cell-padding`          | The padding of the table cell                                    |
 
 

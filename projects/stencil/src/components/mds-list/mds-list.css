@@ -1,20 +1,13 @@
-
-
-
 @import '../../tailwind/fouc.css';
 
+:host {
+  @apply gap-400
+  pl-400;
 
+  display: grid;
+}
 
-
-  :host {
-    @apply gap-400
-    pl-400;
-
-    display: grid;
-  }
-
-  ul {
-    @apply m-0
-    p-0;
-  }
-
+ul {
+  @apply m-0
+  p-0;
+}

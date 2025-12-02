@@ -1,4 +1,14 @@
+@import '../../tailwind/fouc.css';
 
+/**
+ * @prop --mds-price-table-list-separator-color: Color of the separator line in the price table list.
+ */
+
+@property --mds-price-table-list-separator-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-03) / 0.5);
+  syntax: "<color>";
+}
 
 :host {
   --mds-price-table-list-separator-color: rgb(var(--tone-neutral-03) / 0.5);
@@ -45,4 +55,3 @@
 @import './css/mds-price-table-list-pref-animation.css';
 @import './css/mds-price-table-list-pref-theme.css';
 @import './css/mds-price-table-list-pref-contrast.css';
-@import '../../tailwind/fouc.css';

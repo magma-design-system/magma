@@ -103,16 +103,20 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## CSS Custom Properties
 
-| Name                                    | Description                                           |
-| --------------------------------------- | ----------------------------------------------------- |
-| `--mds-notification-color`              | Sets the text color of the component                  |
-| `--mds-notification-dot-background`     | Sets the background-color of the component            |
-| `--mds-notification-dot-padding`        | Sets the size of the component                        |
-| `--mds-notification-ring-color`         | Sets the border color of ring around the notification |
-| `--mds-notification-ring-size`          | Sets the border size of ring around the notification  |
-| `--mds-notification-size`               | Sets the size of the component                        |
-| `--mds-notification-translate-offset-x` | Sets offset x positioning of the notification         |
-| `--mds-notification-translate-offset-y` | Sets offset y positioning of the notification         |
+| Name                                            | Description                                             |
+| ----------------------------------------------- | ------------------------------------------------------- |
+| `--mds-notification-color`                      | Sets the text color of the component                    |
+| `--mds-notification-dot-background`             | Sets the background-color of the component              |
+| `--mds-notification-dot-padding`                | Sets the size of the component                          |
+| `--mds-notification-min-width`                  | The minimum width of the notification component.        |
+| `--mds-notification-ring-color`                 | Sets the border color of ring around the notification   |
+| `--mds-notification-ring-size`                  | Sets the border size of ring around the notification    |
+| `--mds-notification-size`                       | Sets the size of the component                          |
+| `--mds-notification-transition-duration`        | Duration of notification transitions.                   |
+| `--mds-notification-transition-timing-function` | Timing function for notification transitions.           |
+| `--mds-notification-translate`                  | The CSS transform applied for notification positioning. |
+| `--mds-notification-translate-offset-x`         | Sets offset x positioning of the notification           |
+| `--mds-notification-translate-offset-y`         | Sets offset y positioning of the notification           |
 
 
 ## Dependencies

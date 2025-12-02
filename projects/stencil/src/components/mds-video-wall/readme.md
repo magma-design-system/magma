@@ -30,12 +30,13 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## CSS Custom Properties
 
-| Name                                      | Description                                        |
-| ----------------------------------------- | -------------------------------------------------- |
-| `--mds-video-wall-noise-background-color` | Sets the background-color of the noise when active |
-| `--mds-video-wall-noise-background-size`  | Sets the background-color of the noise when active |
-| `--mds-video-wall-noise-filter`           | Sets filter to manipulate pattern noise color      |
-| `--mds-video-wall-video-fit`              | Sets the object-fit of the video stream            |
+| Name                                      | Description                                                         |
+| ----------------------------------------- | ------------------------------------------------------------------- |
+| `--mds-video-wall-noise-background-color` | Sets the background-color of the noise when active                  |
+| `--mds-video-wall-noise-background-size`  | Sets the background-color of the noise when active                  |
+| `--mds-video-wall-noise-filter`           | Sets filter to manipulate pattern noise color                       |
+| `--mds-video-wall-noise-fitler`           | The CSS filter applied to the noise layer (e.g., blur, brightness). |
+| `--mds-video-wall-video-fit`              | Sets the object-fit of the video stream                             |
 
 
 ----------------------------------------------

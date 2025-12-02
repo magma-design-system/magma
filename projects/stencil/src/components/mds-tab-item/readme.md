@@ -44,6 +44,17 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `"button"` |             |
 
 
+## CSS Custom Properties
+
+| Name                                 | Description                                |
+| ------------------------------------ | ------------------------------------------ |
+| `--mds-tab-item-default-background`  | Default background color of a tab item.    |
+| `--mds-tab-item-default-shadow`      | Default shadow of a tab item.              |
+| `--mds-tab-item-hover-background`    | Background color when hovering a tab item. |
+| `--mds-tab-item-selected-background` | Background color of a selected tab item.   |
+| `--mds-tab-item-selected-shadow`     | Shadow of a selected tab item.             |
+
+
 ## Dependencies
 
 ### Used by

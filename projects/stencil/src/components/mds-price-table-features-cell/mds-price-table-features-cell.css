@@ -1,11 +1,49 @@
-
-
+@import '../../tailwind/fouc.css';
 
 /**
- * @prop --mds-price-table-features-cell-padding: Sets the cell padding of the component
- * @prop --mds-price-table-features-cell-icon-supported-color: Sets the border-color of the component
- * @prop --mds-price-table-features-cell-icon-unsupported-color: Sets the border-width of the separators of the component
+ * @prop --mds-price-table-features-cell-padding: Padding applied to each feature cell, defaults to the section padding.
+ * @prop --mds-price-table-features-cell-icon-supported-color-hover: Color of the supported feature icon on hover.
+ * @prop --mds-price-table-features-cell-icon-supported-color: Default color of the supported feature icon.
+ * @prop --mds-price-table-features-cell-icon-unsupported-color-hover: Color of the unsupported feature icon on hover.
+ * @prop --mds-price-table-features-cell-icon-unsupported-color: Default color of the unsupported feature icon.
+ * @prop --mds-price-table-features-cell-border-color: Border color of individual feature cells.
  */
+
+@property --mds-price-table-features-cell-padding {
+  inherits: false;
+  initial-value: var(--mds-price-table-features-padding, --spacing(300));
+  syntax: "<length>";
+}
+
+@property --mds-price-table-features-cell-icon-supported-color-hover {
+  inherits: false;
+  initial-value: rgb(var(--label-green-06));
+  syntax: "<color>";
+}
+
+@property --mds-price-table-features-cell-icon-supported-color {
+  inherits: false;
+  initial-value: rgb(var(--label-green-06));
+  syntax: "<color>";
+}
+
+@property --mds-price-table-features-cell-icon-unsupported-color-hover {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-06));
+  syntax: "<color>";
+}
+
+@property --mds-price-table-features-cell-icon-unsupported-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-06));
+  syntax: "<color>";
+}
+
+@property --mds-price-table-features-cell-border-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-08));
+  syntax: "<color>";
+}
 
 :host {
   --mds-price-table-features-cell-padding: var(--mds-price-table-features-padding, --spacing(300));
@@ -51,4 +89,3 @@
 @import './css/mds-price-table-cell-pref-animation.css';
 @import './css/mds-price-table-cell-pref-theme.css';
 @import './css/mds-price-table-cell-pref-contrast.css';
-@import '../../tailwind/fouc.css';

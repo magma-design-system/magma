@@ -41,6 +41,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `--mds-toast-duration`   | Sets the animation duration of the component, used also by component's logic |
 | `--mds-toast-icon-color` | Sets the text color of the component                                         |
 | `--mds-toast-shadow`     | Sets the box-shadow of the component                                         |
+| `--mds-toast-width`      | Width of the toast component.                                                |
 
 
 ## Dependencies

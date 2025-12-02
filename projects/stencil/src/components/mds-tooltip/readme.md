@@ -58,6 +58,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `--mds-tooltip-arrow-background` | Sets the fill color of the arrow.                 |
 | `--mds-tooltip-background`       | Sets the background-color of the tooltip.         |
 | `--mds-tooltip-delay`            | Sets the delay of the tooltip.                    |
+| `--mds-tooltip-dot-padding`      | Padding around the tooltip dot (if present).      |
 | `--mds-tooltip-drop-shadow`      | Sets the drop-shadow of the tooltip.              |
 | `--mds-tooltip-duration`         | Sets the duration of the tooltip animation.       |
 | `--mds-tooltip-ease`             | Sets the easing of the tooltip animation.         |

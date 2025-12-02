@@ -1,9 +1,8 @@
-
+@import '../../tailwind/fouc.css';
 
 :host {
-  @apply gap-400;
-
   display: grid;
+  gap: --spacing(400);
 }
 
 :host([controller]) {
@@ -15,9 +14,6 @@
 }
 
 .reload-required {
-  @apply gap-200;
-
   display: grid;
+  gap: --spacing(200);
 }
-
-@import '../../tailwind/fouc.css';

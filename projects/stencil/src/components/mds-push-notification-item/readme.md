@@ -61,6 +61,19 @@ Type: `Promise<void>`
 | `"picture"` | The picture image added by `src` attribute |
 
 
+## CSS Custom Properties
+
+| Name                                                 | Description                                                  |
+| ---------------------------------------------------- | ------------------------------------------------------------ |
+| `--mds-push-notification-item-duration`              | Duration of the individual push notification item animation. |
+| `--mds-push-notification-item-icon-background-color` | Background color of the item's icon.                         |
+| `--mds-push-notification-item-icon-color`            | Color of the item's icon.                                    |
+| `--mds-push-notification-item-message-line-clamp`    | Number of lines to clamp the message text.                   |
+| `--mds-push-notification-item-shadow`                | Shadow applied to the push notification item.                |
+| `--mds-push-notification-item-subject-line-clamp`    | Number of lines to clamp the subject text.                   |
+| `--mds-push-notification-item-timing-function`       | Timing function used for the item animation.                 |
+
+
 ## Dependencies
 
 ### Depends on

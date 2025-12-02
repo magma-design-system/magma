@@ -1,3 +1,31 @@
+@import '../../tailwind/fouc.css';
+
+/**
+ * @prop --mds-status-bar-max-width: Maximum width of the status bar.
+ * @prop --mds-status-bar-backdrop: Background color of the status bar backdrop.
+ * @prop --mds-status-bar-backdrop-filter: Filter applied to the status bar backdrop.
+ */
+
+@property --mds-status-bar-max-width {
+  inherits: false;
+  initial-value: 500px;
+  syntax: "<length>";
+}
+
+@property --mds-status-bar-backdrop {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-01) / 0.1);
+  syntax: "<color>";
+}
+
+/* ❌ Not supported
+@property --mds-status-bar-backdrop-filter {
+  inherits: false;
+  initial-value: blur(10px);
+  syntax: "<filter-function>";
+}
+*/
+
 :host {
   --mds-status-bar-max-width: 500px;
   --mds-status-bar-backdrop: rgb(var(--tone-neutral-01) / 0.1);
@@ -55,7 +83,6 @@ mds-modal {
   }
 }
 
-@import '../../tailwind/fouc.css';
 @import './css/mds-status-bar-pref-animation.css';
 @import './css/mds-status-bar-pref-consumption.css';
 @import './css/mds-status-bar-pref-contrast.css';

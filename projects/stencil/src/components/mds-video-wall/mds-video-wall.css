@@ -1,11 +1,38 @@
-
+@import '../../tailwind/fouc.css';
 
 /**
- * @prop --mds-video-wall-noise-background-color: Sets the background-color of the noise when active
- * @prop --mds-video-wall-noise-background-size: Sets the background-color of the noise when active
- * @prop --mds-video-wall-noise-filter: Sets filter to manipulate pattern noise color
- * @prop --mds-video-wall-video-fit: Sets the object-fit of the video stream
+ * @prop --mds-video-wall-noise-background-color: The background color applied to the noise layer of the video wall.
+ * @prop --mds-video-wall-noise-background-size: The background-size used for the noise texture.
+ * @prop --mds-video-wall-noise-fitler: The CSS filter applied to the noise layer (e.g., blur, brightness).
+ * @prop --mds-video-wall-video-fit: Defines how the video content should scale to fit its container (e.g., cover, contain).
  */
+
+@property --mds-video-wall-noise-background-color {
+  inherits: false;
+  initial-value: rgb(var(--variant-primary-03) / 0.8);
+  syntax: "<color>";
+}
+
+@property --mds-video-wall-noise-background-size {
+  inherits: false;
+  initial-value: auto;
+  syntax: "auto | <length>";
+}
+
+@property --mds-video-wall-video-fit {
+  inherits: false;
+  initial-value: cover;
+  syntax: "contain | cover | fill | none | scale-down";
+}
+
+/*
+@property --mds-video-wall-noise-fitler {
+  inherits: false;
+  initial-value: none;
+  syntax: "<filter-function> | none";
+}
+*/
+
 
 :host {
   --mds-video-wall-noise-background-color: rgb(var(--variant-primary-03) / 0.8);
@@ -13,7 +40,7 @@
   --mds-video-wall-noise-fitler: none;
   --mds-video-wall-video-fit: cover;
 
-  aspect-ratio: 16/9;
+  aspect-ratio: var(--aspect-video);
   background-color: rgb(var(--tone-neutral-02));
   display: flex;
   position: relative;
@@ -68,4 +95,3 @@ video {
 }
 
 @import "./css/mds-video-wall-pref-animation.css";
-@import '../../tailwind/fouc.css';

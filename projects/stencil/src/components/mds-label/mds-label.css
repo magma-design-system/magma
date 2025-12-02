@@ -1,12 +1,70 @@
-
+@import '../../tailwind/fouc.css';
 
 /**
- * @prop --mds-label-background: Sets the background-color of the component
- * @prop --mds-label-color: Sets the text color of the component
- * @prop --mds-label-icon-color: Sets the color of the icon
- * @prop --mds-label-selection-background: Sets the selection background color of the text
- * @prop --mds-label-selection-color: Sets the selection color of the text
+ * @prop --mds-label-background: The background color of the label component.
+ * @prop --mds-label-color: The text color of the label.
+ * @prop --mds-label-icon-color: The color applied to any icon inside the label.
+ * @prop --mds-label-radius: The border-radius of the label.
+ * @prop --mds-label-selection-background: The background color applied when the label is selected.
+ * @prop --mds-label-selection-color: The text color applied when the label is selected.
+ * @prop --mds-label-button-background: The background color of a button inside the label.
+ * @prop --mds-label-button-background-hover: The background color of the button when hovered.
+ * @prop --mds-label-button-icon-color: The color of the icon inside the button.
  */
+
+@property --mds-label-background {
+  inherits: false;
+  initial-value: rgb(var(--label-yellow-09));
+  syntax: "<color>";
+}
+
+@property --mds-label-color {
+  inherits: false;
+  initial-value: rgb(var(--label-yellow-02));
+  syntax: "<color>";
+}
+
+@property --mds-label-icon-color {
+  inherits: false;
+  initial-value: var(--mds-label-color);
+  syntax: "<color>";
+}
+
+@property --mds-label-radius {
+  inherits: false;
+  initial-value: --spacing(150);
+  syntax: "<length>";
+}
+
+@property --mds-label-selection-background {
+  inherits: false;
+  initial-value: var(--magma-selection-background, rgb(var(--label-yellow-09)));
+  syntax: "<color>";
+}
+
+@property --mds-label-selection-color {
+  inherits: false;
+  initial-value: var(--magma-selection-color, rgb(var(--label-yellow-02)));
+  syntax: "<color>";
+}
+
+@property --mds-label-button-background {
+  inherits: false;
+  initial-value: rgb(var(--label-yellow-08));
+  syntax: "<color>";
+}
+
+@property --mds-label-button-background-hover {
+  inherits: false;
+  initial-value: rgb(var(--label-yellow-07));
+  syntax: "<color>";
+}
+
+@property --mds-label-button-icon-color {
+  inherits: false;
+  initial-value: rgb(var(--label-yellow-03));
+  syntax: "<color>";
+}
 
 :host {
   --mds-label-background: rgb(var(--label-yellow-09));
@@ -94,4 +152,3 @@
 @import './css/mds-label-variant-yellow.css';
 @import './css/mds-label-pref-theme.css';
 @import './css/mds-label-pref-contrast.css';
-@import '../../tailwind/fouc.css';

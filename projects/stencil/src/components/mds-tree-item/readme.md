@@ -66,6 +66,42 @@ Type: `Promise<void>`
 | `"actions-list"`      | Selects the container of the actions.                |
 
 
+## CSS Custom Properties
+
+| Name                                                             | Description                                                 |
+| ---------------------------------------------------------------- | ----------------------------------------------------------- |
+| `--mds-tree-item-actions-border-radius`                          | Inherits the border-radius used for tree action containers. |
+| `--mds-tree-item-actions-gap`                                    | Spacing between tree item action elements.                  |
+| `--mds-tree-item-branch-border-color`                            | The border color of the branch connector for the item.      |
+| `--mds-tree-item-branch-border-radius`                           | The border-radius applied to the branch connector.          |
+| `--mds-tree-item-branch-border-size`                             | The thickness of the branch connector line.                 |
+| `--mds-tree-item-branch-dot-default-color`                       | Default color of the branch dot indicator.                  |
+| `--mds-tree-item-branch-dot-expanded-color`                      | Color of the branch dot when expanded.                      |
+| `--mds-tree-item-label-default-background`                       | Background color of the label in default state.             |
+| `--mds-tree-item-label-hover-background`                         | Background color of the label in hover state.               |
+| `--mds-tree-item-label-icon-default-color`                       | Default icon color inside the label.                        |
+| `--mds-tree-item-label-icon-hover-color`                         | Icon color inside the label when hovering.                  |
+| `--mds-tree-item-line-clamp`                                     | Defines the number of lines before text is truncated.       |
+| `--mds-tree-item-toggle-gap`                                     | Spacing between the label and the toggle control.           |
+| `--mds-tree-item-toggle-icon-async-background`                   | Background color for async-loading toggle icons.            |
+| `--mds-tree-item-toggle-icon-async-color`                        | Icon color for async-loading toggles.                       |
+| `--mds-tree-item-toggle-icon-chevron-default-background`         | Background for the default chevron toggle.                  |
+| `--mds-tree-item-toggle-icon-chevron-default-color`              | Icon color for the default chevron toggle.                  |
+| `--mds-tree-item-toggle-icon-chevron-expanded-background`        | Background for the expanded chevron toggle.                 |
+| `--mds-tree-item-toggle-icon-chevron-expanded-color`             | Icon color for the expanded chevron toggle.                 |
+| `--mds-tree-item-toggle-icon-folder-default-background`          | Background for the default folder toggle.                   |
+| `--mds-tree-item-toggle-icon-folder-default-color`               | Icon color for the default folder toggle.                   |
+| `--mds-tree-item-toggle-icon-folder-expanded-background`         | Background for the expanded folder toggle.                  |
+| `--mds-tree-item-toggle-icon-folder-expanded-color`              | Icon color for the expanded folder toggle.                  |
+| `--mds-tree-item-toggle-icon-position-right-default-background`  | Background for right-positioned toggle in default state.    |
+| `--mds-tree-item-toggle-icon-position-right-default-color`       | Icon color for right-positioned toggle in default state.    |
+| `--mds-tree-item-toggle-icon-position-right-expanded-background` | Background for right-positioned toggle in expanded state.   |
+| `--mds-tree-item-toggle-icon-position-right-expanded-color`      | Icon color for right-positioned toggle in expanded state.   |
+| `--mds-tree-item-toggle-size`                                    | Size of the toggle control.                                 |
+| `--mds-tree-item-transition-duration`                            | Transition duration for tree item animation.                |
+| `--mds-tree-item-transition-timing-function`                     | Transition easing function for tree item animation.         |
+
+
 ## Dependencies
 
 ### Depends on

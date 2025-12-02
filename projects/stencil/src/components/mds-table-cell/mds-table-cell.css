@@ -1,12 +1,33 @@
-
-
 /**
- * @prop --mds-table-cell-background-hover: The background-color of the table cell when the mouse is over it
- * @prop --mds-table-cell-background: The background-color of the table cell
- * @prop --mds-table-cell-border-color: The border-color of the table cell
- * @prop --mds-table-cell-border-width: The border-width of the table cell
- * @prop --mds-table-cell-padding: The padding of the table cell
+ * @prop --mds-table-cell-background: Default background color of table cells.
+ * @prop --mds-table-cell-background-alt: Alternate background color for table cells.
+ * @prop --mds-table-cell-color-alt: Text color for alternate table cells.
+ * @prop --mds-table-cell-color: Default text color of table cells.
  */
+
+@property --mds-table-cell-background {
+  inherits: false;
+  initial-value: var(--mds-table-row-background);
+  syntax: "<color>";
+}
+
+@property --mds-table-cell-background-alt {
+  inherits: false;
+  initial-value: var(--mds-table-row-background-alt);
+  syntax: "<color>";
+}
+
+@property --mds-table-cell-color-alt {
+  inherits: false;
+  initial-value: var(--mds-table-row-color-alt);
+  syntax: "<color>";
+}
+
+@property --mds-table-cell-color {
+  inherits: false;
+  initial-value: var(--mds-table-row-color);
+  syntax: "<color>";
+}
 
 :host {
   --mds-table-cell-background: var(--mds-table-row-background);

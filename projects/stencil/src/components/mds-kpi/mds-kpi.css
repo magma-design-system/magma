@@ -1,18 +1,28 @@
-
+@import '../../tailwind/fouc.css';
 
 /**
  * @prop --mds-kpi-text-animation-placeholder-char: Sets the animation placeholder char of the text
  * @prop --mds-kpi-text-animation-speed: Sets the animation speed of the text
  */
 
+@property --mds-kpi-text-animation-speed {
+  inherits: false;
+  initial-value: 0.15;
+  syntax: "<number>";
+}
+
+@property --mds-kpi-text-animation-placeholder-char {
+  inherits: false;
+  initial-value: " ";
+  syntax: "<string>";
+}
+
 :host {
   --mds-kpi-text-animation-speed: 0.15;
   --mds-kpi-text-animation-placeholder-char: " ";
 
-  @apply gap-400;
-
   display: grid;
+  gap: --spacing(400);
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
 }
 
-@import '../../tailwind/fouc.css';
