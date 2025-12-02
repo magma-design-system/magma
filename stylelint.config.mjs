@@ -124,7 +124,7 @@ export default {
     'import-notation': 'string',
     'keyframe-declaration-no-important': true,
     'keyframes-name-pattern': null,
-    'length-zero-no-unit': true,
+    'length-zero-no-unit': null,
     'max-nesting-depth': null,
     'media-feature-name-no-unknown': true,
     'no-descending-specificity': null,
