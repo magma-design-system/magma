@@ -2,7 +2,6 @@ import { Component, Host, h, Method, Prop, Element, Watch } from '@stencil/core'
 import { cssRotationToNumber, cssDurationToSeconds, cssSizeToNumber } from '@common/unit'
 import type { EmojiNames, SvgDictionary, SvgNode, SvgPart } from './meta/types'
 import { gsap } from 'gsap'
-// import { randomNumber } from '@common/number'
 
 import miaSvg from './asset/mia.svg'
 import simiSvg from './asset/simi.svg'
@@ -17,8 +16,7 @@ export class MdsEmoji {
   @Prop({ reflect: true }) readonly name: EmojiNames = 'mia'
 
   private isFollowingMouse: boolean = false
-  private isBlinking: boolean = false
-  // private isThinking: boolean = false
+  private isThinking: boolean = false
   private headOffsetX: number = 0
   private headOffsetY: number = 0
   private headOffset: number = 0
@@ -43,7 +41,6 @@ export class MdsEmoji {
 
   private mouseX: number = 0
   private mouseY: number = 0
-  // private blinkTimeout: NodeJS.Timeout
 
   private currentRotateX: number = 0
   private currentRotateY: number = 0
@@ -127,24 +124,24 @@ export class MdsEmoji {
   //   return Promise.resolve()
   // }
 
-  // /**
-  //  * @returns Promise<void>
-  //  * Emoji start thinking, useful for pending requests.
-  //  */
+  /**
+   * @returns Promise<void>
+   * Emoji start thinking, useful for pending requests.
+   */
 
-  // @Method()
-  // async startThinking (duration: number = 0.5): Promise<void> {
-  //   this.isThinking = true
-  //   await this.setStartThinkingAnimation(duration)
-  //   return Promise.resolve()
-  // }
+  @Method()
+  async startThinking (duration: number = 0.5): Promise<void> {
+    this.isThinking = true
+    await this.setStartThinkingAnimation(duration)
+    return Promise.resolve()
+  }
 
-  // @Method()
-  // async stopThinking (duration: number = 0.5): Promise<void> {
-  //   this.isThinking = false
-  //   await this.setStopThinkingAnimation(duration)
-  //   return Promise.resolve()
-  // }
+  @Method()
+  async stopThinking (duration: number = 0.5): Promise<void> {
+    this.isThinking = false
+    await this.setStopThinkingAnimation(duration)
+    return Promise.resolve()
+  }
 
   /**
    * @returns Promise<void>
@@ -153,9 +150,7 @@ export class MdsEmoji {
 
   @Method()
   async startBlinking (): Promise<void> {
-    // console.log('startBlinking')
     if (!this.eyesTimeline) {
-      // console.log('eyesTimeline init')
       const eyesOpened = this.svgPartState('eyes', 'default') as SVGElement
       const eyesClosed = this.svgPartState('eyes', 'closed') as SVGElement
       this.eyesTimeline = this.randomBlink(eyesOpened, eyesClosed)
@@ -168,10 +163,8 @@ export class MdsEmoji {
    * @returns Promise<void>
    * Eyes stop blinking.
    */
-
   @Method()
   async stopBlinking (): Promise<void> {
-    // console.log('stopBlinking')
     this.eyesTimeline.pause()
     return Promise.resolve()
   }
@@ -248,7 +241,7 @@ export class MdsEmoji {
         element = el
       }
     })
-    return element
+    return element as SVGElement | SVGGElement
   }
 
   private getEmojiCenter = (): { centerX: number, centerY: number } => {
@@ -462,59 +455,66 @@ export class MdsEmoji {
   //   } })
   // }
 
+  private setStartThinkingAnimation = (duration: number = 0.5): Promise<void> => {
+    if (!this.handEl || this.handEl instanceof NodeList) return new Promise(() => {})
 
+    const ease = 'expo.inOut'
+    this.handEl.style.visibility = 'visible'
+    gsap.fromTo(this.handEl, { scale: 0, rotateZ: 45, transformOrigin: '0 100%' }, { scale: 1, rotateZ: 0, ease, duration })
+    this.moveEyesThinkAnimation()
+    const mouthDefaultEl = this.svgPartState('mouth', 'default') as SVGElement | SVGGElement
+    if (mouthDefaultEl) {
+      mouthDefaultEl.style.visibility = 'hidden'
+    }
+    const mouthThinkEl = this.svgPartState('mouth', 'serious') as SVGElement | SVGGElement
+    if (mouthThinkEl) {
+      mouthThinkEl.style.visibility = 'visible'
+    }
+    // gsap.to(mouthThinkEl, { duration: 0, ease: 'none' })
+    return new Promise(resolve => setTimeout(resolve, duration * 1000))
+  }
 
-  // private moveEyesThinkAnimation = (): void => {
-  //   const duration = randomNumber(0.25, 0.75) // Random duration between 0.5 and 1
-  //   const ease = 'expo.Out'
+  private moveEyesThinkAnimation = (): void => {
+    const duration = gsap.utils.random(0.15, 0.3, 0.01, true)()
+    const ease = 'expo.out'
 
-  //   const maxJitter = 1 // max +-2 px jitter
-  //   const randomOffsetX = randomNumber(-1, 1, true) * maxJitter
-  //   // const randomOffsetY = randomNumber(-0.5, 1) * maxJitter
+    const animation = { duration, ease, overwrite: true }
 
-  //   const finalX = (this.faceOffsetX ?? 0) + randomOffsetX
-  //   // const finalY = (this.faceOffsetY ?? 0) + randomOffsetY
+    const maxJitter = 1 // max +-2 px jitter
+    const randomOffsetX = gsap.utils.random(-1, 1, 1) * maxJitter
+    const randomOffsetY = gsap.utils.random(-0.5, 1, 0.5) * maxJitter
 
-  //   gsap.to(this.eyeLeftEl, { x: finalX, ease, duration })
-  //   gsap.to(this.eyeRightEl, { x: finalX, ease, duration, onComplete: () => {
-  //     if (this.isThinking) {
-  //       this.moveEyesThinkAnimation()
-  //     } else {
-  //       // Reset eyes position when not thinking
-  //       gsap.to(this.eyeLeftEl, { x: 0, ease: 'expo.inOut', duration: 0.5 })
-  //       gsap.to(this.eyeRightEl, { x: 0, ease: 'expo.inOut', duration: 0.5 })
-  //     }
-  //   } })
-  // }
+    gsap.to(this.eyesEl, { x: randomOffsetX, y: randomOffsetY, ...animation, onComplete: () => {
+      if (this.isThinking) {
+        const nextDelay = gsap.utils.random(0.2, 0.7, 0.1)
+        gsap.delayedCall(nextDelay, this.moveEyesThinkAnimation)
+      } else {
+        // Reset eyes position when not thinking
+        gsap.to(this.eyesEl, { x: 0, y:0, ease: 'expo.out', duration: 0.5 })
+      }
+    } })
+  }
 
-  // private setStartThinkingAnimation = (duration: number = 0.5): Promise<void> => {
-  //   const ease = 'expo.inOut'
-  //   this.handLeftEl.style.visibility = 'visible'
-  //   gsap.fromTo(this.handLeftEl, { scale: 0, rotateZ: 45 }, { scale: 1, rotateZ: 0, ease, duration })
-  //   this.moveEyesThinkAnimation()
-  //   gsap.to(this.mouthEl, { attr: { d: this.mouthGeometry.think }, duration: 0, ease: 'none' })
-  //   return new Promise(resolve => setTimeout(resolve, duration * 1000))
-  // }
-
-  // private setStopThinkingAnimation = (duration: number): Promise<void> => {
-  //   const ease = 'expo.inOut'
-  //   gsap.to(this.handLeftEl, { scale: 0, y: 0, rotateZ: 45, ease, duration })
-  //   gsap.to(this.eyeLeftEl, { x: 0, ease: 'expo.inOut', duration })
-  //   gsap.to(this.eyeRightEl, { x: 0, ease: 'expo.inOut', duration })
-  //   gsap.to(this.mouthEl, { attr: { d: this.mouthGeometry.smile }, duration: 0, ease: 'none' })
-  //   return new Promise(resolve => setTimeout(resolve, duration * 1000))
-  // }
-
-  private loopBlink = (): void => {
-    // this.blinkOnce()
-    // this.queueNextBlink()
-    // this.randomBlink()
+  private setStopThinkingAnimation = (duration: number = 0.5): Promise<void> => {
+    const ease = 'expo.inOut'
+    gsap.to(this.handEl, { scale: 0, rotateZ: 45, transformOrigin: '0 100%', ease, duration })
+    gsap.to(this.eyesEl, { x: 0, ease: 'expo.out', duration, overwrite: true })
+    const mouthDefaultEl = this.svgPartState('mouth', 'default') as SVGElement | SVGGElement
+    if (mouthDefaultEl) {
+      mouthDefaultEl.style.visibility = 'visible'
+    }
+    const mouthThinkEl = this.svgPartState('mouth', 'serious') as SVGElement | SVGGElement
+    if (mouthThinkEl) {
+      mouthThinkEl.style.visibility = 'hidden'
+    }
+    return new Promise(resolve => setTimeout(resolve, duration * 1000))
   }
 
   private randomBlink = (eyesOpened: SVGElement, eyesClosed: SVGElement): gsap.core.Timeline => {
-    const delay = gsap.utils.random(1, 2, 0.1, true)()
-    const animateIn = { ease: 'expo.in', duration: 0.15, overwrite: true }
-    const animateOut = { ease: 'expo.out', duration: 0.15, overwrite: true }
+    const blinkDuration = 0.2
+    const delay = gsap.utils.random(1, 3, 0.1, true)()
+    const animateIn = { ease: 'power2.in', duration: blinkDuration, overwrite: true }
+    const animateOut = { ease: 'power2.out', duration: blinkDuration, overwrite: true }
 
     return gsap.timeline({ delay })
       .to(eyesOpened,
@@ -524,7 +524,7 @@ export class MdsEmoji {
           onComplete: () => {
             eyesOpened.style.visibility = 'hidden'
             gsap.fromTo(eyesClosed,
-              { scaleY: 0.75, visibility: 'visible' },
+              { scaleY: 1.5, visibility: 'visible' },
               { scaleY: 1, ...animateOut,
                 onComplete: () => {
                   eyesClosed.style.visibility = 'hidden'
@@ -541,58 +541,6 @@ export class MdsEmoji {
       )
       .eventCallback('onComplete', () => { this.randomBlink(eyesOpened, eyesClosed) })
   }
-
-  // private queueNextBlink = (): void => {
-  //   if (!this.isBlinking) return
-  //   this.blinkTimeout = setTimeout(this.loopBlink.bind(this), randomNumber(2000, 5000))
-  // }
-
-  // private blinkOnce = (): void => {
-  //   const durationClose = 0.15
-  //   const durationOpen = 0.15
-  //   const eyesOpened = this.svgPartState('eyes', 'default') as SVGElement
-  //   const eyesClosed = this.svgPartState('eyes', 'closed') as SVGElement
-
-  //   gsap.to(eyesOpened,
-  //     {
-  //       duration: durationClose,
-  //       ease: 'expo.in',
-  //       scaleY: 0.5,
-  //       onComplete: () => {
-  //         eyesOpened.style.visibility = 'hidden'
-  //         eyesClosed.style.visibility = 'visible'
-  //         gsap.fromTo(eyesClosed,
-  //           {
-  //             scaleY: 0.75,
-  //             visibility: 'visible',
-  //             overwrite: true,
-  //           }, {
-  //             duration: durationOpen,
-  //             ease: 'expo.out',
-  //             scaleY: 1,
-  //             overwrite: true,
-  //             onComplete: () => {
-  //               eyesOpened.style.visibility = 'visible'
-  //               eyesClosed.style.visibility = 'hidden'
-  //               gsap.fromTo(eyesOpened,
-  //                 {
-  //                   scaleY: 0.75,
-  //                   overwrite: true,
-  //                   visibility: 'visible',
-  //                 }, {
-  //                   scaleY: 1,
-  //                   overwrite: true,
-  //                   ease: 'expo.out',
-  //                   duration: durationOpen,
-  //                 },
-  //               )
-  //             },
-  //           },
-  //         )
-  //       },
-  //     },
-  //   )
-  // }
 
   private handleFollowMouse = (e: MouseEvent): void => {
     if (!this.isFollowingMouse) return

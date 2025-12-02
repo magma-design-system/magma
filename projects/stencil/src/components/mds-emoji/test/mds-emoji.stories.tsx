@@ -89,9 +89,9 @@ const Template = args => {
       (event: CustomEvent) => {
         setThinking(event.detail.checked === true)
         if (event.detail.checked === true) {
-          // emoji?.startThinking()
+          emoji?.startThinking()
         } else {
-          // emoji?.stopThinking()
+          emoji?.stopThinking()
         }
       },
     )

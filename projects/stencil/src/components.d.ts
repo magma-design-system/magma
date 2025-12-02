@@ -713,6 +713,10 @@ export namespace Components {
          */
         "startFollowMouse": () => Promise<void>;
         /**
+          * @returns Promise<void> Emoji start thinking, useful for pending requests.
+         */
+        "startThinking": (duration?: number) => Promise<void>;
+        /**
           * @returns Promise<void> Eyes stop blinking.
          */
         "stopBlinking": () => Promise<void>;
@@ -720,6 +724,7 @@ export namespace Components {
           * @returns Promise<void> Stops following mouse with CSS 3D transform.
          */
         "stopFollowMouse": () => Promise<void>;
+        "stopThinking": (duration?: number) => Promise<void>;
     }
     interface MdsEntity {
         /**

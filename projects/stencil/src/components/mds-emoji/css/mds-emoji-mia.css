@@ -31,7 +31,7 @@
 
 :host([name="mia"]) {
   --mds-emoji-mia-eyes-color: rgb(var(--variant-ai-03));
-  --mds-emoji-mia-hands-color: rgb(var(--variant-ai-06));
+  --mds-emoji-mia-hands-color: rgb(var(--variant-ai-04));
   --mds-emoji-mia-head-color: rgb(var(--variant-ai-08));
   --mds-emoji-mia-head-stroke-color: rgb(var(--variant-ai-06));
   --mds-emoji-mia-head-stroke-width: 4px;
@@ -41,4 +41,6 @@
   --mds-emoji-offset-hands: 2px;
   --mds-emoji-offset-head: 0;
   --mds-emoji-offset-mouth: 1px;
+
+  container-type: size;
 }
