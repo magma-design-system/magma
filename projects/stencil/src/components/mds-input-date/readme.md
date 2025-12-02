@@ -74,17 +74,21 @@ Type: `Promise<void>`
 
 ## CSS Custom Properties
 
-| Name                                      | Description                                                             |
-| ----------------------------------------- | ----------------------------------------------------------------------- |
-| `--mds-input-date-background`             | Sets the background-color of the component                              |
-| `--mds-input-date-field-background-empty` | Sets the color of the component when the value is empty or not valid    |
-| `--mds-input-date-field-color-empty`      | Sets the color of the component when the value is empty or not valid    |
-| `--mds-input-date-icon-color`             | Sets the icon color of the component                                    |
-| `--mds-input-date-icon-color-rgb`         | Sets the icon color of the component                                    |
-| `--mds-input-date-ring`                   | Sets the box-shadow of the component's input to perform the ring effect |
-| `--mds-input-date-shadow`                 | Sets the box-shadow of the component's input                            |
-| `--mds-input-date-variant-color`          | Sets the variant colors of the component                                |
-| `--mds-input-date-variant-color-rgb`      | Sets the variant colors of the component                                |
+| Name                                        | Description                                                             |
+| ------------------------------------------- | ----------------------------------------------------------------------- |
+| `--mds-input-date-background`               | Sets the background-color of the component                              |
+| `--mds-input-date-field-background-empty`   | Sets the color of the component when the value is empty or not valid    |
+| `--mds-input-date-field-color-empty`        | Sets the color of the component when the value is empty or not valid    |
+| `--mds-input-date-icon-color`               | Sets the icon color of the component                                    |
+| `--mds-input-date-icon-color-rgb`           | Sets the icon color of the component                                    |
+| `--mds-input-date-ring`                     | Sets the box-shadow of the component's input to perform the ring effect |
+| `--mds-input-date-shadow`                   | Sets the box-shadow of the component's input                            |
+| `--mds-input-date-variant-color`            | Sets the variant colors of the component                                |
+| `--mds-input-date-variant-color-rgb`        | Sets the variant colors of the component                                |
+| `--mds-input-tip-background`                | The background of the input tip                                         |
+| `--mds-input-tip-horizontal-offset`         | The horizontal offset for the input tip                                 |
+| `--mds-input-tip-horizontal-offset-focused` | The horizontal offset when the input tip is focused                     |
+| `--mds-input-tip-vertical-offset`           | The vertical offset for the input tip                                   |
 
 
 ## Dependencies

@@ -1,18 +1,29 @@
-
+@import '../../tailwind/fouc.css';
 
 /**
  * @prop --mds-input-field-message-color: Sets the message text color of the component
  * @prop --mds-input-field-message-background: Sets the message background color of the component, will be visible only if there is a text defined by `tip` component attribute
  */
 
+@property --mds-input-field-message-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-03));
+  syntax: "<color>";
+}
+
+@property --mds-input-field-message-background {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-10));
+  syntax: "<color>";
+}
+
 :host {
   --mds-input-field-message-color: rgb(var(--tone-neutral-03));
   --mds-input-field-message-background: rgb(var(--tone-neutral-10));
 
-  @apply gap-200;
-
   color: rgb(var(--tone-neutral-02));
   display: grid;
+  gap: --spacing(200);
 }
 
 .message-window {
@@ -20,10 +31,10 @@
     duration-300
     ease-out-expo
     gap-0
-    p-0
-    rounded-xl;
+    p-0;
 
   background-color: transparent;
+  border-radius: var(--radius-lg);
   color: var(--mds-input-field-message-color);
   display: grid;
   transition-property: background-color, color, gap, padding;
@@ -87,4 +98,3 @@
 }
 
 @import './css/mds-input-field-variant.css';
-@import '../../tailwind/fouc.css';

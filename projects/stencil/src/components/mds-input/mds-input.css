@@ -107,8 +107,7 @@
 @property --mds-input-shadow {
   inherits: false;
   syntax: "<shadow>";
-  initial-value: 0 1px 3px 0 rgb(var(--mds-input-variant-color-rgb) / 0.1),
-                0 1px 2px 0 rgb(var(--mds-input-variant-color-rgb) / 0.06);
+  initial-value: 0 1px 3px 0 rgb(var(--mds-input-variant-color-rgb) / 0.1), 0 1px 2px 0 rgb(var(--mds-input-variant-color-rgb) / 0.06);
 }
 */
 
@@ -142,11 +141,11 @@
   --mds-input-controls-border: 2px solid rgb(var(--tone-neutral-09));
   --mds-input-controls-color: rgb(var(--tone-neutral-03));
 
-  @apply gap-200
-    text-info-detail;
+  @apply text-info-detail;
 
   container-type: inline-size;
   display: flex;
+  gap: --spacing(200);
   position: relative;
 }
 
@@ -159,12 +158,7 @@
 }
 
 .input {
-  @apply duration-300
-    ease-out-expo
-    m-0
-    px-400
-    py-300
-    text-info-detail;
+  @apply text-info-detail;
 
   background-color: var(--mds-input-background);
   border: 0;
@@ -172,12 +166,15 @@
   box-shadow: var(--mds-input-ring), var(--mds-input-shadow);
   box-sizing: border-box;
   color: rgb(var(--tone-neutral-02));
+  margin: 0;
   max-width: 100%;
   min-height: 3rem;
   overflow: hidden;
+  padding: --spacing(300) --spacing(400);
   text-overflow: ellipsis;
-  transition-property: background-color, border-color, box-shadow, color, fill,
-    margin, opacity, padding, transform;
+  transition-duration: var(--duration);
+  transition-property: background-color, border-color, box-shadow, color, fill, margin, opacity, padding, transform;
+  transition-timing-function: var(--ease-out-expo);
   width: 100%;
 }
 
@@ -383,7 +380,7 @@
   @apply text-code-snippet uppercase;
 }
 
-:host mds-input-tip {
+mds-input-tip {
   --mds-input-tip-horizontal-offset: inherit;
   --mds-input-tip-horizontal-offset-focused: inherit;
   --mds-input-tip-vertical-offset: inherit;

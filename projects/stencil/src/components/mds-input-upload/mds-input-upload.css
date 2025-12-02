@@ -1,5 +1,4 @@
-
-
+@import '../../tailwind/fouc.css';
 
 /**
  * @prop --mds-input-upload-drag-area-background-color-on-drag: Set the background color of the drag area when a file is dragged over it.
@@ -9,18 +8,49 @@
  * @prop --mds-input-upload-min-cols: Set the minimum number of columns for the file list.
  */
 
+@property --mds-input-upload-drag-area-background-color-on-drag {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-10));
+  syntax: "<color>";
+}
+
+@property --mds-input-upload-drag-area-background-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral));
+  syntax: "<color>";
+}
+
+@property --mds-input-upload-min-cols {
+  inherits: false;
+  initial-value: 3;
+  syntax: "<integer>";
+}
+
+/* ❌ Not supported
+@property --mds-input-upload-drag-area-border-on-drag {
+  inherits: false;
+  initial-value: 3px dashed rgb(var(--tone-neutral-04));
+  syntax: "<missing>";
+}
+
+@property --mds-input-upload-drag-area-border {
+  inherits: false;
+  initial-value: 3px dashed rgb(var(--tone-neutral-07));
+  syntax: "<missing>";
+}
+*/
+
 :host {
   --mds-input-upload-drag-area-background-color-on-drag: rgb(var(--tone-neutral-10));
   --mds-input-upload-drag-area-background-color: rgb(var(--tone-neutral));
-  --mds-input-upload-drag-area-border-on-drag: 3px dashed rgb(var(--tone-neutral-07));
+  --mds-input-upload-drag-area-border-on-drag: 3px dashed rgb(var(--tone-neutral-04));
   --mds-input-upload-drag-area-border: 3px dashed rgb(var(--tone-neutral-07));
   --mds-input-upload-min-cols: 3;
 
-  @apply
-    gap-400
-    grid-cols-full;
+  @apply grid-cols-full;
 
   display: grid;
+  gap: --spacing(400);
 }
 
 .drag-area {
@@ -196,4 +226,3 @@
   }
 }
 
-@import '../../tailwind/fouc.css';

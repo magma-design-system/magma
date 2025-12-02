@@ -1,9 +1,42 @@
 @import '../../tailwind/fouc.css';
 
-
 /**
- * @prop --mds-input-tip-active-translate: Set the translate of the tip when it is active.
+ * @prop --mds-input-tip-active-translate: Transform applied to the tip when active
+ * @prop --mds-input-tip-background: Background color of the input tip
+ * @prop --mds-input-tip-horizontal-offset-focused: Horizontal offset applied when the input is focused
+ * @prop --mds-input-tip-horizontal-offset: Default horizontal offset of the input tip
+ * @prop --mds-input-tip-vertical-offset: Vertical offset of the input tip
  */
+
+@property --mds-input-tip-active-translate {
+  inherits: false;
+  initial-value: translate(0, 0);
+  syntax: "<transform-function>";
+}
+
+@property --mds-input-tip-background {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-03));
+  syntax: "<color>";
+}
+
+@property --mds-input-tip-horizontal-offset-focused {
+  inherits: false;
+  initial-value: 0px;
+  syntax: "<length>";
+}
+
+@property --mds-input-tip-horizontal-offset {
+  inherits: false;
+  initial-value: --spacing(400);
+  syntax: "<length>";
+}
+
+@property --mds-input-tip-vertical-offset {
+  inherits: false;
+  initial-value: --spacing(100);
+  syntax: "<length>";
+}
 
 :host {
   --mds-input-tip-active-translate: translate(0, 0);

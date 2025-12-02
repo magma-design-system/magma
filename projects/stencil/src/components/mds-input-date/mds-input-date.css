@@ -1,12 +1,91 @@
 /**
- * @prop --mds-input-date-background: Sets the background-color of the component
- * @prop --mds-input-date-field-background-empty: Sets the color of the component when the value is empty or not valid
- * @prop --mds-input-date-field-color-empty: Sets the color of the component when the value is empty or not valid
- * @prop --mds-input-date-icon-color-rgb: Sets the icon color of the component
- * @prop --mds-input-date-ring: Sets the box-shadow of the component's input to perform the ring effect
- * @prop --mds-input-date-shadow: Sets the box-shadow of the component's input
- * @prop --mds-input-date-variant-color-rgb: Sets the variant colors of the component
+ * @prop --mds-input-date-icon-color: The color of the date input icon
+ * @prop --mds-input-date-background: The background of the date input
+ * @prop --mds-input-date-field-background-empty: The background when the date field is empty
+ * @prop --mds-input-date-field-color-empty: The text/icon color when the date field is empty
+ * @prop --mds-input-date-icon-color-rgb: The RGB channels used for the icon color
+ * @prop --mds-input-date-ring: The focus ring of the date input
+ * @prop --mds-input-date-shadow: The shadow applied to the date input
+ * @prop --mds-input-date-variant-color-rgb: The base RGB value for the date input variant
+ * @prop --mds-input-tip-horizontal-offset: The horizontal offset for the input tip
+ * @prop --mds-input-tip-horizontal-offset-focused: The horizontal offset when the input tip is focused
+ * @prop --mds-input-tip-vertical-offset: The vertical offset for the input tip
+ * @prop --mds-input-tip-background: The background of the input tip
  */
+
+@property --mds-input-date-icon-color {
+  inherits: false;
+  initial-value: rgb(var(--variant-primary-03));
+  syntax: "<color>";
+}
+
+@property --mds-input-date-background {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral));
+  syntax: "<color>";
+}
+
+@property --mds-input-date-field-background-empty {
+  inherits: false;
+  initial-value: rgb(var(--status-error-10));
+  syntax: "<color>";
+}
+
+@property --mds-input-date-field-color-empty {
+  inherits: false;
+  initial-value: rgb(var(--status-error-06));
+  syntax: "<color>";
+}
+
+@property --mds-input-date-icon-color-rgb {
+  inherits: false;
+  initial-value: var(--mds-input-date-variant-color-rgb);
+  syntax: "<integer>+"; /* RGB channels */
+}
+
+@property --mds-input-date-variant-color-rgb {
+  inherits: false;
+  initial-value: 0 0 0;
+  syntax: "<integer>+";
+}
+
+@property --mds-input-tip-horizontal-offset {
+  inherits: false;
+  initial-value: --spacing(100);
+  syntax: "<length>";
+}
+
+@property --mds-input-tip-horizontal-offset-focused {
+  inherits: false;
+  initial-value: --spacing(1000);
+  syntax: "<length>";
+}
+
+@property --mds-input-tip-vertical-offset {
+  inherits: false;
+  initial-value: --spacing(100);
+  syntax: "<length>";
+}
+
+@property --mds-input-tip-background {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-03));
+  syntax: "<color>";
+}
+
+/* ❌ Not supported
+@property --mds-input-date-ring {
+  inherits: false;
+  initial-value: 0 0 0 1px rgb(var(--mds-input-date-variant-color-rgb) / 0.1);
+  syntax: "<missing>";
+}
+
+@property --mds-input-date-shadow {
+  inherits: false;
+  initial-value: 0 1px 3px 0 rgb(var(--mds-input-date-variant-color-rgb) / 0.1), 0 1px 2px 0 rgb(var(--mds-input-date-variant-color-rgb) / 0.06);
+  syntax: "<missing>";
+}
+*/
 
 :host {
   --mds-input-date-icon-color: rgb(var(--variant-primary-03));
@@ -22,13 +101,12 @@
   --mds-input-tip-vertical-offset: --spacing(100);
   --mds-input-tip-background: rgb(var(--tone-neutral-03));
 
-
-  @apply gap-200
-  text-info-detail;
+  @apply text-info-detail;
 
   color: rgb(var(--tone-neutral-02));
   container-type: inline-size;
   display: flex;
+  gap: --spacing(200);
   overflow: visible;
   position: relative;
 }
@@ -98,6 +176,7 @@
     0 2px 4px -1px rgb(var(--mds-input-date-variant-color-rgb) / 0.06);
 }
 
+/*
 .input:focus {
   @apply outline-hidden
   duration-300
@@ -108,7 +187,7 @@
   --mds-input-date-shadow:
     0 4px 6px 3px rgb(var(--mds-input-date-variant-color-rgb) / 0.1),
     0 2px 4px -1px rgb(var(--mds-input-date-variant-color-rgb) / 0.06);
-}
+} */
 
 .input::placeholder {
   color: rgb(var(--tone-neutral-04));
@@ -156,6 +235,7 @@ mds-input-tip {
   --mds-input-tip-horizontal-offset: inherit;
   --mds-input-tip-horizontal-offset-focused: inherit;
   --mds-input-tip-vertical-offset: inherit;
+  --mds-input-tip-background: inherit;
 }
 
 @import '../../tailwind/fouc.css';

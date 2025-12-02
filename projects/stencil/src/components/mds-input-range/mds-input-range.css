@@ -1,21 +1,73 @@
-
-@reference '@maggioli-design-system/styles/dist/css/animations.css';
-
-
-@import './css/mds-input-range-disabled.css';
-@import './css/mds-input-range-pref-animation.css';
-@import './css/mds-input-range-pref-theme.css';
-@import './css/mds-input-range-pref-contrast.css';
 @import '../../tailwind/fouc.css';
 
-
 /**
- * @prop --mds-input-range-thumb-size: Sets the thumb width and height of the component
- * @prop --mds-input-range-thumb-background:
- * @prop --mds-input-range-track-background:
- * @prop --mds-input-range-track-size:
- * @prop --mds-input-range-track-progress-background:
+ * @prop --mds-input-range-thumb-size: Defines the size of the range input thumb
+ * @prop --mds-input-range-thumb-background: Background color of the range input thumb
+ * @prop --mds-input-range-thumb-shadow: Shadow applied around the thumb element
+ * @prop --mds-input-range-track-background: Background color of the full track
+ * @prop --mds-input-range-track-size: Height/thickness of the track
+ * @prop --mds-input-range-track-progress-background: Background color of the filled portion of the track
+ * @prop --mds-input-range-thumb-background-disabled: Thumb background when disabled
+ * @prop --mds-input-range-track-background-disabled: Track background when disabled
+ * @prop --mds-input-range-track-progress-background-disabled: Filled track background when disabled
  */
+
+@property --mds-input-range-thumb-size {
+  inherits: false;
+  initial-value: --spacing(400);
+  syntax: "<length>";
+}
+
+@property --mds-input-range-thumb-background {
+  inherits: false;
+  initial-value: rgb(var(--variant-primary-04));
+  syntax: "<color>";
+}
+
+@property --mds-input-range-track-background {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-08));
+  syntax: "<color>";
+}
+
+@property --mds-input-range-track-size {
+  inherits: false;
+  initial-value: --spacing(200);
+  syntax: "<length>";
+}
+
+@property --mds-input-range-track-progress-background {
+  inherits: false;
+  initial-value: rgb(var(--variant-primary-03));
+  syntax: "<color>";
+}
+
+@property --mds-input-range-thumb-background-disabled {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-06));
+  syntax: "<color>";
+}
+
+@property --mds-input-range-track-background-disabled {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-08));
+  syntax: "<color>";
+}
+
+@property --mds-input-range-track-progress-background-disabled {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-06));
+  syntax: "<color>";
+}
+
+/* ❌ Not supported
+@property --mds-input-range-thumb-shadow {
+  inherits: false;
+  initial-value: 0 0 0 2px rgb(var(--tone-neutral));
+  syntax: "<missing>";
+}
+*/
+
 
 :host {
   --mds-input-range-thumb-size: --spacing(400);
@@ -136,3 +188,8 @@
 
   border-radius: var(--mds-input-range-track-size);
 }
+
+@import './css/mds-input-range-disabled.css';
+@import './css/mds-input-range-pref-animation.css';
+@import './css/mds-input-range-pref-theme.css';
+@import './css/mds-input-range-pref-contrast.css';

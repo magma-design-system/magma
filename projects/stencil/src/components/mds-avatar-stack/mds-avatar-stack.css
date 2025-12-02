@@ -42,7 +42,7 @@
 @property --mds-avatar-stack-lg-offset {
   inherits: false;
   initial-value: 2;
-  syntax: "<number>";
+  syntax: "<integer>";
 }
 
 @property --mds-avatar-stack-lg-size {

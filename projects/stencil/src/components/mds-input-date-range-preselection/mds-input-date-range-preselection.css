@@ -1,3 +1,71 @@
+@import '../../tailwind/fouc.css';
+
+/**
+ * @prop --mds-date-range-preselection-default-background: Background used for the default (unselected) preselection state
+ * @prop --mds-date-range-preselection-default-border: Border color used for the default preselection state
+ * @prop --mds-date-range-preselection-default-color: Text color used in the default preselection state
+ * @prop --mds-date-range-preselection-selected-background: Background used for the selected preselection state
+ * @prop --mds-date-range-preselection-selected-border: Border color used for the selected preselection state
+ * @prop --mds-date-range-preselection-selected-color: Text color used in the selected preselection state
+ * @prop --mds-date-range-preselection-hover-background: Background used when a preselection item is hovered
+ * @prop --mds-date-range-preselection-hover-border: Border color used on hover state
+ * @prop --mds-date-range-preselection-hover-color: Text color used on hover state
+ */
+
+@property --mds-date-range-preselection-default-background {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-08) / 0);
+  syntax: "<color>";
+}
+
+@property --mds-date-range-preselection-default-border {
+  inherits: false;
+  initial-value: var(--tone-neutral-08);
+  syntax: "<color>";
+}
+
+@property --mds-date-range-preselection-default-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-03));
+  syntax: "<color>";
+}
+
+@property --mds-date-range-preselection-selected-background {
+  inherits: false;
+  initial-value: rgb(var(--variant-primary-03));
+  syntax: "<color>";
+}
+
+@property --mds-date-range-preselection-selected-border {
+  inherits: false;
+  initial-value: var(--variant-primary-03);
+  syntax: "<color>";
+}
+
+@property --mds-date-range-preselection-selected-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral));
+  syntax: "<color>";
+}
+
+@property --mds-date-range-preselection-hover-background {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral));
+  syntax: "<color>";
+}
+
+@property --mds-date-range-preselection-hover-border {
+  inherits: false;
+  initial-value: var(--tone-neutral);
+  syntax: "<color>";
+}
+
+@property --mds-date-range-preselection-hover-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-03));
+  syntax: "<color>";
+}
+
 :host {
   --mds-date-range-preselection-default-background: rgb(var(--tone-neutral-08) / 0);
   --mds-date-range-preselection-default-border: var(--tone-neutral-08);

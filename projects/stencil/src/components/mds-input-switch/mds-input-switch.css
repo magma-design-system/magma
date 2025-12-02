@@ -1,40 +1,204 @@
-
-@reference '@maggioli-design-system/styles/dist/css/animations.css';
-
-
-@import './css/mds-input-switch-disabled.css';
-@import './css/mds-input-switch-checkbox.css';
-@import './css/mds-input-switch-explicit.css';
-@import './css/mds-input-switch-pref-theme.css';
-@import './css/mds-input-switch-size.css';
 @import '../../tailwind/fouc.css';
 
-
 /**
- * @prop --mds-input-switch-animation-timing-adjust: Set the size multiplier when the switch toggle is resizing by animation
- * @prop --mds-input-switch-animation-timing-function: Set the timing function of the animation
- * @prop --mds-input-switch-duration: Set the duration of the animation
- * @prop --mds-input-switch-icon-color-checked-disabled: Set the color of the icon when the switch is disabled and checked
- * @prop --mds-input-switch-icon-color-checked: Set the color of the icon when the switch is checked
- * @prop --mds-input-switch-icon-color-indeterminate-disabled: Set the color of the icon when the switch is disabled and indeterminate
- * @prop --mds-input-switch-icon-color-indeterminate: Set the color of the icon when the switch is indeterminate
- * @prop --mds-input-switch-icon-color-unchecked-disabled: Set the color of the icon when the switch is disabled and unchecked
- * @prop --mds-input-switch-icon-color-unchecked: Set the color of the icon when the switch is unchecked
- * @prop --mds-input-switch-box-color-enabled-checked: Set the color of the switch when the switch is checked
- * @prop --mds-input-switch-box-color-disabled-checked: Set the color of the switch when the switch is disabled and checked
- * @prop --mds-input-switch-box-color-disabled-unchecked: Set the color of the switch when the switch is disabled and unchecked
- * @prop --mds-input-switch-box-color-enabled-unchecked: Set the color of the switch when the switch is unchecked
- * @prop --mds-input-switch-box-padding-sm: Set the padding of the switch toggle's container
- * @prop --mds-input-switch-box-padding-md: Set the padding of the switch toggle's container
- * @prop --mds-input-switch-box-padding-lg: Set the padding of the switch toggle's container
- * @prop --mds-input-switch-toggle-color-enabled-checked: Set the color of the switch toggle when the switch is checked
- * @prop --mds-input-switch-toggle-color-disabled-checked: Set the color of the switch toggle when the switch is disabled and checked
- * @prop --mds-input-switch-toggle-color-disabled-unchecked: Set the color of the switch toggle when the switch is disabled and unchecked
- * @prop --mds-input-switch-toggle-color-enabled-unchecked: Set the color of the switch toggle when the switch is unchecked
- * @prop --mds-input-switch-toggle-size-sm: Sets the size of the switch toggle
- * @prop --mds-input-switch-toggle-size-md: Sets the size of the switch toggle
- * @prop --mds-input-switch-toggle-size-lg: Sets the size of the switch toggle
+ * @prop --mds-input-switch-animation-timing-adjust: Multiplier used to fine-tune animation timing
+ * @prop --mds-input-switch-animation-timing-function: Easing function applied to switch animations
+ * @prop --mds-input-switch-box-color-enabled-checked: Background color of the switch box when enabled and checked
+ * @prop --mds-input-switch-box-color-enabled-unchecked: Background color of the switch box when enabled and unchecked
+ * @prop --mds-input-switch-box-color-disabled-checked: Background color of the switch box when disabled and checked
+ * @prop --mds-input-switch-box-color-disabled-unchecked: Background color of the switch box when disabled and unchecked
+ * @prop --mds-input-switch-box-padding-lg: Padding of the switch container (large size)
+ * @prop --mds-input-switch-box-padding-md: Padding of the switch container (medium size)
+ * @prop --mds-input-switch-box-padding-sm: Padding of the switch container (small size)
+ * @prop --mds-input-switch-box-padding: Effective padding used for the switch box
+ * @prop --mds-input-switch-duration: Duration of switch state transitions
+ * @prop --mds-input-switch-icon-color-checked-disabled: Icon color when checked and disabled
+ * @prop --mds-input-switch-icon-color-checked: Icon color when checked
+ * @prop --mds-input-switch-icon-color-indeterminate-disabled: Icon color for indeterminate state when disabled
+ * @prop --mds-input-switch-icon-color-indeterminate: Icon color for indeterminate state
+ * @prop --mds-input-switch-icon-color-unchecked-disabled: Icon color when unchecked and disabled
+ * @prop --mds-input-switch-icon-color-unchecked: Icon color when unchecked
+ * @prop --mds-input-switch-icon-explicit-color: Explicitly forced icon color
+ * @prop --mds-input-switch-toggle-color-enabled-checked: Toggle color when enabled and checked
+ * @prop --mds-input-switch-toggle-color-enabled-unchecked: Toggle color when enabled and unchecked
+ * @prop --mds-input-switch-toggle-color-disabled-checked: Toggle color when disabled and checked
+ * @prop --mds-input-switch-toggle-color-disabled-unchecked: Toggle color when disabled and unchecked
+ * @prop --mds-input-switch-toggle-container-size: Computed size of the toggle container
+ * @prop --mds-input-switch-toggle-size-lg: Toggle size for large variant
+ * @prop --mds-input-switch-toggle-size-md: Toggle size for medium variant
+ * @prop --mds-input-switch-toggle-size-sm: Toggle size for small variant
+ * @prop --mds-input-switch-toggle-size: Effective toggle size currently in use
  */
+
+@property --mds-input-switch-animation-timing-adjust {
+  inherits: false;
+  initial-value: 1.4;
+  syntax: "<number>";
+}
+
+@property --mds-input-switch-box-color-enabled-checked {
+  inherits: false;
+  initial-value: rgb(var(--variant-primary-04));
+  syntax: "<color>";
+}
+
+@property --mds-input-switch-box-color-enabled-unchecked {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-06));
+  syntax: "<color>";
+}
+
+@property --mds-input-switch-box-color-disabled-checked {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-08));
+  syntax: "<color>";
+}
+
+@property --mds-input-switch-box-color-disabled-unchecked {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-08));
+  syntax: "<color>";
+}
+
+@property --mds-input-switch-box-padding-lg {
+  inherits: false;
+  initial-value: --spacing(100);
+  syntax: "<length>";
+}
+
+@property --mds-input-switch-box-padding-md {
+  inherits: false;
+  initial-value: --spacing(100);
+  syntax: "<length>";
+}
+
+@property --mds-input-switch-box-padding-sm {
+  inherits: false;
+  initial-value: --spacing(100);
+  syntax: "<length>";
+}
+
+@property --mds-input-switch-box-padding {
+  inherits: false;
+  initial-value: var(--mds-input-switch-box-padding-md);
+  syntax: "<length>";
+}
+
+@property --mds-input-switch-duration {
+  inherits: false;
+  initial-value: 300ms;
+  syntax: "<time>";
+}
+
+@property --mds-input-switch-icon-color-checked-disabled {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-06));
+  syntax: "<color>";
+}
+
+@property --mds-input-switch-icon-color-checked {
+  inherits: false;
+  initial-value: rgb(var(--variant-primary-04));
+  syntax: "<color>";
+}
+
+@property --mds-input-switch-icon-color-indeterminate-disabled {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-05));
+  syntax: "<color>";
+}
+
+@property --mds-input-switch-icon-color-indeterminate {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-05));
+  syntax: "<color>";
+}
+
+@property --mds-input-switch-icon-color-unchecked-disabled {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-06));
+  syntax: "<color>";
+}
+
+@property --mds-input-switch-icon-color-unchecked {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-06));
+  syntax: "<color>";
+}
+
+@property --mds-input-switch-icon-explicit-color {
+  inherits: false;
+  initial-value: var(--mds-input-switch-icon-color-checked);
+  syntax: "<color>";
+}
+
+@property --mds-input-switch-toggle-color-enabled-checked {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral));
+  syntax: "<color>";
+}
+
+@property --mds-input-switch-toggle-color-enabled-unchecked {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-10));
+  syntax: "<color>";
+}
+
+@property --mds-input-switch-toggle-color-disabled-checked {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral));
+  syntax: "<color>";
+}
+
+@property --mds-input-switch-toggle-color-disabled-unchecked {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral));
+  syntax: "<color>";
+}
+
+@property --mds-input-switch-toggle-container-size {
+  inherits: false;
+  initial-value: calc(calc(var(--mds-input-switch-toggle-size-md) * 2) + calc(var(--mds-input-switch-box-padding-md) * 2));
+  syntax: "<length>";
+}
+
+@property --mds-input-switch-toggle-size-lg {
+  inherits: false;
+  initial-value: --spacing(800);
+  syntax: "<length>";
+}
+
+@property --mds-input-switch-toggle-size-md {
+  inherits: false;
+  initial-value: --spacing(600);
+  syntax: "<length>";
+}
+
+@property --mds-input-switch-toggle-size-sm {
+  inherits: false;
+  initial-value: --spacing(400);
+  syntax: "<length>";
+}
+
+@property --mds-input-switch-toggle-size {
+  inherits: false;
+  initial-value: var(--mds-input-switch-toggle-size-md);
+  syntax: "<length>";
+}
+
+/* ❌ Not supported
+@property --mds-input-switch-animation-timing-function {
+  inherits: false;
+  initial-value: var(--ease-in-out-quad);
+  syntax: "<easing-function>";
+}
+
+@property --mds-input-switch-box-shadow {
+  inherits: false;
+  initial-value: <missing value>;
+  syntax: "<missing>";
+}
+*/
 
 :host {
   --mds-input-switch-animation-timing-adjust: 1.4;
@@ -54,26 +218,20 @@
   --mds-input-switch-icon-color-indeterminate: rgb(var(--tone-neutral-05));
   --mds-input-switch-icon-color-unchecked-disabled: rgb(var(--tone-neutral-06));
   --mds-input-switch-icon-color-unchecked: rgb(var(--tone-neutral-06));
-  --mds-input-switch-icon-explicit-color: var(
-    --mds-input-switch-icon-color-checked
-  );
+  --mds-input-switch-icon-explicit-color: var(--mds-input-switch-icon-color-checked);
   --mds-input-switch-toggle-color-enabled-checked: rgb(var(--tone-neutral));
   --mds-input-switch-toggle-color-enabled-unchecked: rgb(var(--tone-neutral-10));
   --mds-input-switch-toggle-color-disabled-checked: rgb(var(--tone-neutral));
   --mds-input-switch-toggle-color-disabled-unchecked: rgb(var(--tone-neutral));
-  --mds-input-switch-toggle-container-size: calc(
-    calc(var(--mds-input-switch-toggle-size-md) * 2) +
-      calc(var(--mds-input-switch-box-padding-md) * 2)
-  );
+  --mds-input-switch-toggle-container-size: calc(calc(var(--mds-input-switch-toggle-size-md) * 2) + calc(var(--mds-input-switch-box-padding-md) * 2));
   --mds-input-switch-toggle-size-lg: --spacing(800);
   --mds-input-switch-toggle-size-md: --spacing(600);
   --mds-input-switch-toggle-size-sm: --spacing(400);
   --mds-input-switch-toggle-size: var(--mds-input-switch-toggle-size-md);
 
-  @apply gap-200;
-
   align-items: flex-start;
   display: inline-flex;
+  gap: --spacing(200);
 }
 
 .field {
@@ -259,3 +417,9 @@
     width: var(--mds-input-switch-toggle-size);
   }
 }
+
+@import './css/mds-input-switch-disabled.css';
+@import './css/mds-input-switch-checkbox.css';
+@import './css/mds-input-switch-explicit.css';
+@import './css/mds-input-switch-pref-theme.css';
+@import './css/mds-input-switch-size.css';

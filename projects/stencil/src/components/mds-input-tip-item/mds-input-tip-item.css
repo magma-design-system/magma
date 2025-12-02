@@ -6,6 +6,24 @@
  * @prop --mds-input-tip-item-icon-color: Sets the icon color fill of the tip item.
  */
 
+@property --mds-input-tip-item-background {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-03));
+  syntax: "<color>";
+}
+
+@property --mds-input-tip-item-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral));
+  syntax: "<color>";
+}
+
+@property --mds-input-tip-item-icon-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral));
+  syntax: "<color>";
+}
+
 :host {
   --mds-input-tip-item-background: var(--mds-input-tip-background, rgb(var(--tone-neutral-03)));
   --mds-input-tip-item-color: rgb(var(--tone-neutral));

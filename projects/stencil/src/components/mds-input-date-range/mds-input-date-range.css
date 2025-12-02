@@ -10,6 +10,51 @@
  * @prop --mds-input-date-range-variant-color-rgb: Sets the variant colors of the component
  */
 
+@property --mds-input-date-range-background {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral));
+  syntax: "<color>";
+}
+
+@property --mds-input-date-range-fields-firefox-justify-content {
+  inherits: false;
+  initial-value: start;
+  syntax: "start | end | center | left | right | flex-start | flex-end";
+}
+
+@property --mds-input-date-range-fields-gap {
+  inherits: false;
+  initial-value: 0 --spacing(200);
+  syntax: "<length>+";
+}
+
+@property --mds-input-date-range-icon-color {
+  inherits: false;
+  initial-value: rgb(var(--variant-primary-03));
+  syntax: "<color>";
+}
+
+@property --mds-input-date-range-variant-color-rgb {
+  inherits: false;
+  initial-value: 0 0 0;
+  syntax: "<integer>+";
+}
+
+/* ❌ Not supported
+@property --mds-input-date-range-ring {
+  inherits: false;
+  initial-value: 0 0 0 1px rgb(var(--mds-input-date-range-variant-color-rgb) / 0.1);
+  syntax: "<missing>";
+}
+
+@property --mds-input-date-range-shadow {
+  inherits: false;
+  initial-value: 0 1px 3px 0 rgb(var(--mds-input-date-range-variant-color-rgb) / 0.1), 0 1px 2px 0 rgb(var(--mds-input-date-range-variant-color-rgb) / 0.06);
+  syntax: "<missing>";
+}
+*/
+
+
 :host {
   --mds-input-date-range-background: rgb(var(--tone-neutral));
   --mds-input-date-range-fields-firefox-justify-content: start;
@@ -19,13 +64,13 @@
   --mds-input-date-range-shadow: 0 1px 3px 0 rgb(var(--mds-input-date-range-variant-color-rgb) / 0.1), 0 1px 2px 0 rgb(var(--mds-input-date-range-variant-color-rgb) / 0.06);
   --mds-input-date-range-variant-color-rgb: 0 0 0;
 
-  @apply gap-200
-  text-info-detail;
+  @apply text-info-detail;
 
   color: rgb(var(--tone-neutral-02));
   container-type: inline-size;
   cursor: text;
   display: flex;
+  gap: --spacing(200);
   overflow: visible;
   position: relative;
 }
