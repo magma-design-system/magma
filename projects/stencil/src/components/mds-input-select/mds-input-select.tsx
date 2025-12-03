@@ -1,4 +1,3 @@
-import clsx from 'clsx'
 import miBaselineKeyboardArrowDown from '@icon/mi/baseline/keyboard-arrow-down.svg'
 import { AttachInternals, Component, Element, Event, EventEmitter, Host, Prop, h, State, Watch } from '@stencil/core'
 import { MdsInputEventDetail } from '@type/input'
@@ -16,8 +15,9 @@ import { ThemeStatusVariantType } from '@type/variant'
 })
 export class MdsInputSelect {
 
+  private selectEl: HTMLSelectElement
   @Element() host: HTMLMdsInputSelectElement
-  @State() selected: boolean
+  // @State() selected: boolean
   @State() hasFocus = false
   @AttachInternals() internals: ElementInternals
 
@@ -67,6 +67,11 @@ export class MdsInputSelect {
   @Prop({ reflect: true }) value?: string | number | null = ''
 
   /**
+   * Specifies the default value of the component
+   */
+  @Prop({ reflect: true }) defaultValue?: string | number | null
+
+  /**
    * Sets the variant of the component
    */
   @Prop({ reflect: true }) readonly variant?: ThemeStatusVariantType
@@ -81,7 +86,6 @@ export class MdsInputSelect {
    */
   @Watch('value')
   protected valueChanged ():void {
-    this.selected = this.value !== ''
     this.changeEvent.emit({ value: this.value?.toString() })
     this.internals.setFormValue(this.value?.toString() ?? null)
   }
@@ -98,14 +102,40 @@ export class MdsInputSelect {
     }
   }
 
+  /**
+   * This is for the react component because placeholder is valued after didload
+   * and therefore the placeholder option is drawn as the last option.
+   * Here the option is brought back to the first position
+   * @param newValue placeholder new value
+   * @param oldValue placeholder old value
+   */
+  @Watch('placeholder')
+  protected placeholderChanged (newValue: string | undefined, oldValue: string | undefined) {
+    if (newValue && !oldValue) {
+      let defaultOption: HTMLOptionElement | null = document.querySelector('.placeholder-option')
+      if (defaultOption) defaultOption.remove()
+      defaultOption = document.createElement('option')
+      this.selectEl.insertBefore(defaultOption, this.selectEl.firstChild)
+      defaultOption.value = ''
+      defaultOption.text = newValue
+      if (!this.defaultValue) defaultOption.selected = true
+      if (this.required) defaultOption.disabled = true
+    }
+  }
+
   formResetCallback (): void {
     this.internals.setFormValue('')
   }
 
+  componentWillLoad (): void {
+    // needed for react component, this prop should be used as default-value html attributo instead of defaultValue prop
+    if (this.defaultValue) {
+      this.value = this.defaultValue
+    }
+  }
+
   componentDidLoad (): void {
     if (this.value) {
-      this.selected = true
-
       this.internals.setFormValue(this.value.toString())
     }
   }
@@ -146,8 +176,7 @@ export class MdsInputSelect {
 
   private onSlotChangeHandler = (): void => {
     const elements = this.host.shadowRoot?.querySelectorAll('slot')[0]?.assignedNodes()
-    const select = this.host.shadowRoot?.querySelector('select')
-    const options = select?.querySelectorAll('option')
+    const options = this.selectEl?.querySelectorAll('option')
 
     if (!options) {
       return
@@ -162,19 +191,15 @@ export class MdsInputSelect {
     }
 
     elements?.forEach((element: HTMLOptionElement) => {
-      select?.appendChild(element.cloneNode(true))
+      this.selectEl?.appendChild(element.cloneNode(true))
     })
 
-    /**
-     * I found only this way to make the `select` element SEE the
-     * selected option that we wanted as a default
-     */
-    if (this.value){
-      select?.querySelectorAll('option').forEach((element: HTMLOptionElement) => {
+    if (this.value && this.selectEl){
+      this.selectEl.querySelectorAll('option').forEach((element: HTMLOptionElement) => {
         element.selected = element.value === this.value
       })
     } else if (!this.placeholder) {
-      this.value = select?.querySelectorAll('option')[0].value
+      this.value = this.selectEl?.querySelectorAll('option')[0].value
     }
   }
 
@@ -182,7 +207,7 @@ export class MdsInputSelect {
     return (
       <Host>
         <select
-          class={clsx('input', this.selected && 'input--selected')}
+          class='input'
           onInput={this.onInput.bind(this)}
           onBlur={this.onBlur}
           onFocus={this.onFocus}
@@ -192,14 +217,16 @@ export class MdsInputSelect {
           multiple={this.multiple}
           size={this.size}
           part="select"
+          ref={el => this.selectEl = el as HTMLSelectElement}
         >
-          { this.placeholder && <option value="" disabled selected>{ this.placeholder }</option> }
+          <option class="placeholder-option" value="" disabled={!this.required ? undefined : true} selected={this.defaultValue ? undefined : true}>{ this.placeholder }</option>
         </select>
         <div class="icon-container">
           <i class="icon" innerHTML={miBaselineKeyboardArrowDown} />
         </div>
         <div class="option-container">
-          <slot onSlotchange={this.onSlotChangeHandler}></slot>
+          <slot onSlotchange={this.onSlotChangeHandler}>
+          </slot>
         </div>
         <mds-input-tip position="top" active={this.hasFocus}>
           { this.disabled && <mds-input-tip-item expanded variant="disabled"></mds-input-tip-item> }

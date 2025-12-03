@@ -1282,6 +1282,10 @@ export namespace Components {
          */
         "autocomplete"?: 'on';
         /**
+          * Specifies the default value of the component
+         */
+        "defaultValue"?: string | number | null;
+        /**
           * If true, the element is displayed as disabled
          */
         "disabled"?: boolean;
@@ -5073,6 +5077,10 @@ declare namespace LocalJSX {
           * Specifies a short hint that describes the expected value of the element
          */
         "autocomplete"?: 'on';
+        /**
+          * Specifies the default value of the component
+         */
+        "defaultValue"?: string | number | null;
         /**
           * If true, the element is displayed as disabled
          */

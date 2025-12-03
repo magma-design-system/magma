@@ -54,7 +54,7 @@
   border: 0;
   box-shadow: var(--mds-input-select-ring), var(--mds-input-select-shadow);
   box-sizing: border-box;
-  color: theme('colors.tone-neutral-05');
+  color: theme('colors.tone-neutral-02');
   cursor: pointer;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -75,8 +75,8 @@
   color: theme('colors.tone-neutral-03');
 }
 
-.input--mds-input-select-selected {
-  color: theme('colors.tone-neutral-02');
+:host([required]:not([required="false"])) .input {
+  color: theme('colors.tone-neutral-05');
 }
 
 .input:disabled {
