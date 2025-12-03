@@ -41,11 +41,11 @@ Type: `Promise<void>`
 
 | Name                           | Description                                            |
 | ------------------------------ | ------------------------------------------------------ |
-| `--mds-url-view-background`    | Sets the background-color of the component             |
-| `--mds-url-view-color`         | Sets the text color of the component                   |
+| `--mds-url-view-background`    | Background color of the URL view container.            |
+| `--mds-url-view-color`         | Text color used inside the URL view.                   |
 | `--mds-url-view-header-shadow` | Box-shadow applied to the header area of the URL view. |
-| `--mds-url-view-radius`        | Sets the border-radius of the component                |
-| `--mds-url-view-shadow`        | Sets the box-shadow of the component                   |
+| `--mds-url-view-radius`        | Border-radius applied to the URL view container.       |
+| `--mds-url-view-shadow`        | Box-shadow applied to the entire URL view container.   |
 
 
 ## Dependencies

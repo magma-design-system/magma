@@ -31,24 +31,24 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## CSS Custom Properties
 
-| Name                                               | Description                                                         |
-| -------------------------------------------------- | ------------------------------------------------------------------- |
-| `--mds-stepper-bar-item-color`                     | Sets the color of the text                                          |
-| `--mds-stepper-bar-item-duaration`                 | Sets the duration of the animation                                  |
-| `--mds-stepper-bar-item-icon-background`           | Sets the background-color of the icon                               |
-| `--mds-stepper-bar-item-icon-background-current`   | Sets the background-color of the icon when the component is current |
-| `--mds-stepper-bar-item-icon-background-done`      | Sets the background-color of the icon when the component is done    |
-| `--mds-stepper-bar-item-icon-color`                | Sets the color of the icon                                          |
-| `--mds-stepper-bar-item-icon-color-current`        | Sets the color of the icon when the component is current            |
-| `--mds-stepper-bar-item-icon-color-done`           | Sets the color of the icon when the component is done               |
-| `--mds-stepper-bar-item-icon-ring-color`           | Color of the icon ring.                                             |
-| `--mds-stepper-bar-item-icon-ring-separator-color` | Color of the ring separator.                                        |
-| `--mds-stepper-bar-item-icon-ring-separator-size`  | Size of the ring separator.                                         |
-| `--mds-stepper-bar-item-icon-ring-size`            | Sets the size of the icon circle when the component is current      |
-| `--mds-stepper-bar-item-min-width`                 | Sets the minimum width of the component                             |
-| `--mds-stepper-bar-item-progress-background`       | Sets the background color of the progress bar                       |
-| `--mds-stepper-bar-item-progress-color`            | Sets the color of the progress bar                                  |
-| `--mds-stepper-bar-item-progress-thickness`        | Sets the thickness of the progress bar                              |
+| Name                                               | Description                                        |
+| -------------------------------------------------- | -------------------------------------------------- |
+| `--mds-stepper-bar-item-color`                     | Color of the stepper bar item text.                |
+| `--mds-stepper-bar-item-duaration`                 | Duration of stepper bar item animations.           |
+| `--mds-stepper-bar-item-icon-background`           | Default background color of stepper item icons.    |
+| `--mds-stepper-bar-item-icon-background-current`   | Background color of the current stepper item icon. |
+| `--mds-stepper-bar-item-icon-background-done`      | Background color of a completed stepper item icon. |
+| `--mds-stepper-bar-item-icon-color`                | Default icon color.                                |
+| `--mds-stepper-bar-item-icon-color-current`        | Icon color for the current stepper item.           |
+| `--mds-stepper-bar-item-icon-color-done`           | Icon color for completed stepper items.            |
+| `--mds-stepper-bar-item-icon-ring-color`           | Color of the icon ring.                            |
+| `--mds-stepper-bar-item-icon-ring-separator-color` | Color of the ring separator.                       |
+| `--mds-stepper-bar-item-icon-ring-separator-size`  | Size of the ring separator.                        |
+| `--mds-stepper-bar-item-icon-ring-size`            | Size of the icon ring.                             |
+| `--mds-stepper-bar-item-min-width`                 | Minimum width of a stepper item.                   |
+| `--mds-stepper-bar-item-progress-background`       | Background color of the progress indicator.        |
+| `--mds-stepper-bar-item-progress-color`            | Color of the progress indicator.                   |
+| `--mds-stepper-bar-item-progress-thickness`        | Thickness of the progress indicator.               |
 
 
 ## Dependencies

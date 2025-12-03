@@ -28,13 +28,13 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## CSS Custom Properties
 
-| Name                                    | Description                                                                                                                                                                                                                       |
-| --------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `--mds-text-animation-placeholder-char` | Sets the animation placeholder char of the text when `animation` attribute is set to `yugop`                                                                                                                                      |
-| `--mds-text-animation-speed`            | Sets the animation speed of the text when `animation` attribute is set to `yugop`                                                                                                                                                 |
-| `--mds-text-line-clamp`                 | Sets the max number of visible lines before the text overflows with ellipsis. It works only if attribute `truncate="all" is set`. **WARNING:** this is supported only by Chrome, Safare and Firefox with native browser prefixes. |
-| `--mds-text-selection-background`       | Sets the background-color of the text when the text is selected                                                                                                                                                                   |
-| `--mds-text-selection-color`            | Sets the color of the text when the text is selected                                                                                                                                                                              |
+| Name                                    | Description                                       |
+| --------------------------------------- | ------------------------------------------------- |
+| `--mds-text-animation-placeholder-char` | Placeholder character used during text animation. |
+| `--mds-text-animation-speed`            | Speed of text animation.                          |
+| `--mds-text-line-clamp`                 | Number of lines to clamp text to (line-clamp).    |
+| `--mds-text-selection-background`       | Background color used when text is selected.      |
+| `--mds-text-selection-color`            | Text color used when text is selected.            |
 
 
 ## Dependencies

@@ -34,14 +34,14 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## CSS Custom Properties
 
-| Name                     | Description                                                                  |
-| ------------------------ | ---------------------------------------------------------------------------- |
-| `--mds-toast-background` | Sets the background-color of the component                                   |
-| `--mds-toast-color`      | Sets the text color of the component                                         |
-| `--mds-toast-duration`   | Sets the animation duration of the component, used also by component's logic |
-| `--mds-toast-icon-color` | Sets the text color of the component                                         |
-| `--mds-toast-shadow`     | Sets the box-shadow of the component                                         |
-| `--mds-toast-width`      | Width of the toast component.                                                |
+| Name                     | Description                              |
+| ------------------------ | ---------------------------------------- |
+| `--mds-toast-background` | Background color of the toast component. |
+| `--mds-toast-color`      | Text color inside the toast.             |
+| `--mds-toast-duration`   | Duration of the toast display.           |
+| `--mds-toast-icon-color` | Color of the icon inside the toast.      |
+| `--mds-toast-shadow`     | Shadow applied to the toast container.   |
+| `--mds-toast-width`      | Width of the toast component.            |
 
 
 ## Dependencies

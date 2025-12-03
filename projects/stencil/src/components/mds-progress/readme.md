@@ -19,13 +19,13 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## CSS Custom Properties
 
-| Name                        | Description                                     |
-| --------------------------- | ----------------------------------------------- |
-| `--mds-progress-background` | Sets the background-color of the component      |
-| `--mds-progress-color`      | Sets the background-color of the progress       |
-| `--mds-progress-duration`   | Sets the duration of the progress bar animation |
-| `--mds-progress-radius`     | Sets the border-radius of the component         |
-| `--mds-progress-thickness`  | Sets the thickness of the progress bar          |
+| Name                        | Description                                 |
+| --------------------------- | ------------------------------------------- |
+| `--mds-progress-background` | Background color of the progress bar.       |
+| `--mds-progress-color`      | Foreground color of the progress indicator. |
+| `--mds-progress-duration`   | Duration of the progress animation.         |
+| `--mds-progress-radius`     | Border-radius of the progress bar.          |
+| `--mds-progress-thickness`  | Thickness (height) of the progress bar.     |
 
 
 ## Dependencies

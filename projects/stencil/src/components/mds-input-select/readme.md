@@ -49,7 +49,6 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `--mds-input-select-arrow-icon-hover-color`            | Color of the arrow icon when hovered                             |
 | `--mds-input-select-ring`                              | Focus ring applied around the select component                   |
 | `--mds-input-select-shadow`                            | Shadow applied to the select component                           |
-| `--mds-input-select-variant-color`                     | Base color used to derive all select component visual states     |
 | `--mds-input-select-variant-color-rgb`                 | Base color used to derive all select component visual states     |
 
 

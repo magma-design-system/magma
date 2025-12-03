@@ -38,9 +38,9 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## CSS Custom Properties
 
-| Name                                | Description                        |
-| ----------------------------------- | ---------------------------------- |
-| `--mds-stepper-bar-scroll-behavior` | Sets the scroll-behavior animation |
+| Name                                | Description                         |
+| ----------------------------------- | ----------------------------------- |
+| `--mds-stepper-bar-scroll-behavior` | Scroll behavior of the stepper bar. |
 
 
 ----------------------------------------------

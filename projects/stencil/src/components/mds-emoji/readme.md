@@ -36,6 +36,23 @@ Type: `Promise<void>`
 Promise<void>
 Starts following mouse with CSS 3D transform.
 
+### `startThinking(duration?: number) => Promise<void>`
+
+
+
+#### Parameters
+
+| Name       | Type     | Description |
+| ---------- | -------- | ----------- |
+| `duration` | `number` |             |
+
+#### Returns
+
+Type: `Promise<void>`
+
+Promise<void>
+Emoji start thinking, useful for pending requests.
+
 ### `stopBlinking() => Promise<void>`
 
 
@@ -57,6 +74,22 @@ Type: `Promise<void>`
 
 Promise<void>
 Stops following mouse with CSS 3D transform.
+
+### `stopThinking(duration?: number) => Promise<void>`
+
+
+
+#### Parameters
+
+| Name       | Type     | Description |
+| ---------- | -------- | ----------- |
+| `duration` | `number` |             |
+
+#### Returns
+
+Type: `Promise<void>`
+
+
 
 
 ## CSS Custom Properties

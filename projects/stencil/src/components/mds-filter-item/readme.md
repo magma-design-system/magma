@@ -28,15 +28,12 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## CSS Custom Properties
 
-| Name                                           | Description                                              |
-| ---------------------------------------------- | -------------------------------------------------------- |
-| `---mds-filter-item-count-background-selected` | Sets the z-index of the component.                       |
-| `---mds-filter-item-count-color-default`       | Sets tge default text `color` of the count element       |
-| `---mds-filter-item-count-color-selected`      | Sets the z-index of the component.                       |
-| `--mds-filter-item-count-background-default`   | Sets tge default `background-color` of the count element |
-| `--mds-filter-item-count-background-selected`  | Sets the z-index of the component.                       |
-| `--mds-filter-item-count-color-default`        | Sets tge default text `color` of the count element       |
-| `--mds-filter-item-count-color-selected`       | Sets the z-index of the component.                       |
+| Name                                          | Description                                                         |
+| --------------------------------------------- | ------------------------------------------------------------------- |
+| `--mds-filter-item-count-background-default`  | Sets the default `background-color` of the count element            |
+| `--mds-filter-item-count-background-selected` | Sets the `background-color` of the count element when it's selected |
+| `--mds-filter-item-count-color-default`       | Sets the default text `color` of the count element                  |
+| `--mds-filter-item-count-color-selected`      | Sets the `color` of the count element when it's selected            |
 
 
 ## Dependencies

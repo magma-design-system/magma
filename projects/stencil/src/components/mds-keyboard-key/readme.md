@@ -30,8 +30,6 @@ Type: `Promise<void>`
 
 | Name                                         | Description                                                 |
 | -------------------------------------------- | ----------------------------------------------------------- |
-| `--mds-keyboard-key-color`                   | Set the color of the keyboard key.                          |
-| `--mds-keyboard-key-direction-color`         | Set the color of the direction key.                         |
 | `--mds-keyboard-key-illumination-dark`       | Set the dark illumination of the keyboard key.              |
 | `--mds-keyboard-key-illumination-dark-size`  | Set the size of the dark illumination of the keyboard key.  |
 | `--mds-keyboard-key-illumination-light`      | Set the light illumination of the keyboard key.             |

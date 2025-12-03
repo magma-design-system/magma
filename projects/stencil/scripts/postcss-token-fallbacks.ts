@@ -43,9 +43,9 @@ export default function tokenFallbackPlugin (
 
   return {
     postcssPlugin: 'token-fallback-injector',
-
     Declaration (decl: Declaration) {
-      const varRegex = /var\(--([a-zA-Z0-9-_]+)\)/g
+      const varRegex = /var\(--([a-z0-9-_]+)\)/g
+      console.info('token-fallback-injector')
 
       decl.value = decl.value.replace(varRegex, (_, tokenName) => {
         const fallback = colorTokens[tokenName]
@@ -62,10 +62,12 @@ export default function tokenFallbackPlugin (
 
           return `var(--${tokenName})`
         }
-
+        console.info(`var(--${tokenName}, ${fallback})`)
         // Se trovato, aggiunge il fallback
         return `var(--${tokenName}, ${fallback})`
       })
+
+      console.info(decl.value)
     },
   }
 }

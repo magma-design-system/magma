@@ -61,16 +61,16 @@ Type: `Promise<void>`
 
 ## CSS Custom Properties
 
-| Name                         | Description                                                                                             |
-| ---------------------------- | ------------------------------------------------------------------------------------------------------- |
-| `--mds-table-actions-gap`    | The gap between slotted actions on `mds-table-row` element                                              |
-| `--mds-table-background`     | The background-color of the table                                                                       |
-| `--mds-table-background-alt` | The background-color of the table cell not hovered, visible when attribute `interactive` is set tu true |
-| `--mds-table-border-color`   | The border-color of the table                                                                           |
-| `--mds-table-border-width`   | The border-width of the table, visible when attribute `interactive` is set tu true                      |
-| `--mds-table-cell-padding`   | The padding of the table cell                                                                           |
-| `--mds-table-color`          | The text color of the table                                                                             |
-| `--mds-table-color-alt`      | The text color of the table                                                                             |
+| Name                         | Description                                |
+| ---------------------------- | ------------------------------------------ |
+| `--mds-table-actions-gap`    | Gap between table action elements.         |
+| `--mds-table-background`     | Default background color of the table.     |
+| `--mds-table-background-alt` | Alternate background color for table rows. |
+| `--mds-table-border-color`   | Color of the table border.                 |
+| `--mds-table-border-width`   | Width of the table border.                 |
+| `--mds-table-cell-padding`   | Padding inside table cells.                |
+| `--mds-table-color`          | Default text color of the table.           |
+| `--mds-table-color-alt`      | Text color for alternate table rows.       |
 
 
 ----------------------------------------------

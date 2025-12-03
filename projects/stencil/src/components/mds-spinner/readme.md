@@ -16,9 +16,9 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## CSS Custom Properties
 
-| Name                     | Description                             |
-| ------------------------ | --------------------------------------- |
-| `--mds-spinner-duration` | Sets the duration of the icon animation |
+| Name                     | Description                        |
+| ------------------------ | ---------------------------------- |
+| `--mds-spinner-duration` | Duration of the spinner animation. |
 
 
 ## Dependencies

@@ -18,10 +18,10 @@
 
 ## CSS Custom Properties
 
-| Name                                                | Description                                          |
-| --------------------------------------------------- | ---------------------------------------------------- |
-| `--mds-radial-menu-item-transition-duration`        | Set the transition duration of the menu items        |
-| `--mds-radial-menu-item-transition-timing-function` | Set the transition timing function of the menu items |
+| Name                                                | Description                                                  |
+| --------------------------------------------------- | ------------------------------------------------------------ |
+| `--mds-radial-menu-item-transition-duration`        | Duration of individual radial menu item transitions.         |
+| `--mds-radial-menu-item-transition-timing-function` | Timing function for individual radial menu item transitions. |
 
 
 ## Dependencies

@@ -48,17 +48,17 @@ Type: `Promise<void>`
 
 ## CSS Custom Properties
 
-| Name                                  | Description                                        |
-| ------------------------------------- | -------------------------------------------------- |
-| `--mds-label-background`              | Sets the background-color of the component         |
-| `--mds-label-button-background`       | The background color of a button inside the label. |
-| `--mds-label-button-background-hover` | The background color of the button when hovered.   |
-| `--mds-label-button-icon-color`       | The color of the icon inside the button.           |
-| `--mds-label-color`                   | Sets the text color of the component               |
-| `--mds-label-icon-color`              | Sets the color of the icon                         |
-| `--mds-label-radius`                  | The border-radius of the label.                    |
-| `--mds-label-selection-background`    | Sets the selection background color of the text    |
-| `--mds-label-selection-color`         | Sets the selection color of the text               |
+| Name                                  | Description                                              |
+| ------------------------------------- | -------------------------------------------------------- |
+| `--mds-label-background`              | The background color of the label component.             |
+| `--mds-label-button-background`       | The background color of a button inside the label.       |
+| `--mds-label-button-background-hover` | The background color of the button when hovered.         |
+| `--mds-label-button-icon-color`       | The color of the icon inside the button.                 |
+| `--mds-label-color`                   | The text color of the label.                             |
+| `--mds-label-icon-color`              | The color applied to any icon inside the label.          |
+| `--mds-label-radius`                  | The border-radius of the label.                          |
+| `--mds-label-selection-background`    | The background color applied when the label is selected. |
+| `--mds-label-selection-color`         | The text color applied when the label is selected.       |
 
 
 ## Dependencies
