@@ -17,19 +17,19 @@
 
 @property --mds-avatar-stack-background {
   inherits: false;
-  initial-value: rgb(var(--tone-neutral, 255 255 255));
+  initial-value: rgb(var(--tone-neutral));
   syntax: "<color>";
 }
 
 @property --mds-avatar-stack-count-background-color {
   inherits: false;
-  initial-value: rgb(var(--tone-neutral-09, 237 237 237));
+  initial-value: rgb(var(--tone-neutral-09));
   syntax: "<color>";
 }
 
 @property --mds-avatar-stack-count-color {
   inherits: false;
-  initial-value: rgb(var(--tone-neutral-04, 84 84 84));
+  initial-value: rgb(var(--tone-neutral-04));
   syntax: "<color>";
 }
 
@@ -88,9 +88,9 @@
 }
 
 :host {
-  --mds-avatar-stack-background: rgb(var(--tone-neutral, 255 255 255));
-  --mds-avatar-stack-count-background-color: rgb(var(--tone-neutral-09, 237 237 237));
-  --mds-avatar-stack-count-color: rgb(var(--tone-neutral-04, 84 84 84));
+  --mds-avatar-stack-background: rgb(var(--tone-neutral));
+  --mds-avatar-stack-count-background-color: rgb(var(--tone-neutral-09));
+  --mds-avatar-stack-count-color: rgb(var(--tone-neutral-04));
   --mds-avatar-stack-lg-border: --spacing(100);
   --mds-avatar-stack-lg-offset: 2;
   --mds-avatar-stack-lg-size: --spacing(1500);

@@ -55,10 +55,10 @@
 }
 
 :host {
-  --mds-accordion-item-border-color: var(--mds-accordion-border-color, rgb(var(--tone-neutral-08, 230 230 230)));
+  --mds-accordion-item-border-color: var(--mds-accordion-border-color, rgb(var(--tone-neutral-08)));
   --mds-accordion-item-border-width: var(--mds-accordion-border-width, 2px);
-  --mds-accordion-item-color: var(--mds-accordion-color, rgb(var(--tone-neutral-03, 64 64 64)));
-  --mds-accordion-item-description-color: var(--mds-accordion-description-color, rgb(var(--tone-neutral-02, 42 42 42)));
+  --mds-accordion-item-color: var(--mds-accordion-color, rgb(var(--tone-neutral-03)));
+  --mds-accordion-item-description-color: var(--mds-accordion-description-color, rgb(var(--tone-neutral-02)));
   --mds-accordion-item-duration: var(--mds-accordion-duration, 300ms);
   --mds-accordion-item-padding-selected: var(--mds-accordion-padding-selected, --spacing(400) 0 --spacing(800) 0);
   --mds-accordion-item-padding-unselected: var(--mds-accordion-padding-unselected, --spacing(400) 0 --spacing(400) 0);
