@@ -15,6 +15,7 @@ export class MdsEmoji {
   @Element() host: HTMLMdsEmojiElement
   @Prop({ reflect: true }) readonly name: EmojiNames = 'mia'
 
+  private emojiOriginalSize: number = 0
   private isFollowingMouse: boolean = false
   private isThinking: boolean = false
   private headOffsetX: number = 0
@@ -151,8 +152,8 @@ export class MdsEmoji {
   @Method()
   async startBlinking (): Promise<void> {
     if (!this.eyesTimeline) {
-      const eyesOpened = this.svgPartState('eyes', 'default') as SVGElement
       const eyesClosed = this.svgPartState('eyes', 'closed') as SVGElement
+      const eyesOpened = this.svgPartState('eyes', 'default') as SVGElement
       this.eyesTimeline = this.randomBlink(eyesOpened, eyesClosed)
     }
     this.eyesTimeline.play()
@@ -218,6 +219,7 @@ export class MdsEmoji {
     if (typeof window === 'undefined') return
     const tpl = document.createElement('template')
     tpl.innerHTML = this.svgLibrary[emoji].trim()
+    this.emojiOriginalSize = Number(tpl.content.firstElementChild?.getAttribute('width'))
     this.svgRootEl = tpl.content.firstElementChild as SVGElement
     this.updateCSSCustomProps()
     if (this.host.shadowRoot) this.host.shadowRoot.innerHTML = this.svgRootEl.outerHTML
@@ -228,19 +230,20 @@ export class MdsEmoji {
     if (group.length === 0) return null
     if (!state && group) {
       group?.forEach((el: SVGElement | SVGGElement) => {
-        if (el.id.split('-')[1] !== 'default') {
-          // console.log(el.id.split('-')[0], el.id.split('-')[1])
-          el.style.visibility = 'hidden'
-        }
+        const currentState = el.id.split('-')[1]
+        el.style.visibility = 'hidden'
+        if (currentState === 'default') el.style.visibility = 'visible'
       })
       return group
     }
     let element: SVGElement | SVGGElement = this.host.shadowRoot?.firstElementChild?.querySelector(`[id='${part}-default']`) as SVGElement | SVGGElement
     group?.forEach((el: SVGElement | SVGGElement) => {
+      el.style.visibility = 'hidden'
       if (el.id.split('-')[1] === state) {
         element = el
       }
     })
+    element.style.visibility = 'visible'
     return element as SVGElement | SVGGElement
   }
 
@@ -455,22 +458,35 @@ export class MdsEmoji {
   //   } })
   // }
 
+  private size = (value: number): number => {
+    return value * this.emojiOriginalSize / 24
+  }
+
   private setStartThinkingAnimation = (duration: number = 0.5): Promise<void> => {
     if (!this.handEl || this.handEl instanceof NodeList) return new Promise(() => {})
 
     const ease = 'expo.inOut'
     this.handEl.style.visibility = 'visible'
-    gsap.fromTo(this.handEl, { scale: 0, rotateZ: 45, transformOrigin: '0 100%' }, { scale: 1, rotateZ: 0, ease, duration })
+    gsap.fromTo(this.handEl, {
+      scale: 0,
+      rotateZ: 45,
+      translateX: this.size(-4),
+      translateY: this.size(4),
+      overwrite: true,
+    }, {
+      x: this.handOffsetX,
+      y: this.handOffsetY,
+      scale: 1,
+      rotateZ: 0,
+      translateX: 0,
+      translateY: 0,
+      overwrite: true,
+      ease,
+      duration,
+    })
     this.moveEyesThinkAnimation()
-    const mouthDefaultEl = this.svgPartState('mouth', 'default') as SVGElement | SVGGElement
-    if (mouthDefaultEl) {
-      mouthDefaultEl.style.visibility = 'hidden'
-    }
-    const mouthThinkEl = this.svgPartState('mouth', 'serious') as SVGElement | SVGGElement
-    if (mouthThinkEl) {
-      mouthThinkEl.style.visibility = 'visible'
-    }
-    // gsap.to(mouthThinkEl, { duration: 0, ease: 'none' })
+    this.svgPartState('mouth', 'serious')
+    this.svgPartState('eyes', 'focused')
     return new Promise(resolve => setTimeout(resolve, duration * 1000))
   }
 
@@ -479,34 +495,32 @@ export class MdsEmoji {
     const ease = 'expo.out'
 
     const animation = { duration, ease, overwrite: true }
-
-    const maxJitter = 1 // max +-2 px jitter
+    const maxJitter = this.size(1) // 24px is the base scale of an icon to calculate jitter
     const randomOffsetX = gsap.utils.random(-1, 1, 1) * maxJitter
     const randomOffsetY = gsap.utils.random(-0.5, 1, 0.5) * maxJitter
 
-    gsap.to(this.eyesEl, { x: randomOffsetX, y: randomOffsetY, ...animation, onComplete: () => {
-      if (this.isThinking) {
-        const nextDelay = gsap.utils.random(0.2, 0.7, 0.1)
-        gsap.delayedCall(nextDelay, this.moveEyesThinkAnimation)
-      } else {
+    gsap.to(this.eyesEl, {
+      translateX: randomOffsetX,
+      translateY: randomOffsetY,
+      ...animation,
+      onComplete: () => {
+        if (this.isThinking) {
+          const nextDelay = gsap.utils.random(0.2, 0.7, 0.1)
+          gsap.delayedCall(nextDelay, this.moveEyesThinkAnimation)
+        } else {
         // Reset eyes position when not thinking
-        gsap.to(this.eyesEl, { x: 0, y:0, ease: 'expo.out', duration: 0.5 })
-      }
-    } })
+          gsap.to(this.eyesEl, { x: 0, y:0, ease: 'expo.out', duration: 0.5 })
+        }
+      } })
   }
 
   private setStopThinkingAnimation = (duration: number = 0.5): Promise<void> => {
     const ease = 'expo.inOut'
-    gsap.to(this.handEl, { scale: 0, rotateZ: 45, transformOrigin: '0 100%', ease, duration })
-    gsap.to(this.eyesEl, { x: 0, ease: 'expo.out', duration, overwrite: true })
-    const mouthDefaultEl = this.svgPartState('mouth', 'default') as SVGElement | SVGGElement
-    if (mouthDefaultEl) {
-      mouthDefaultEl.style.visibility = 'visible'
-    }
-    const mouthThinkEl = this.svgPartState('mouth', 'serious') as SVGElement | SVGGElement
-    if (mouthThinkEl) {
-      mouthThinkEl.style.visibility = 'hidden'
-    }
+    // this.handEl.style.transformOrigin = '0 100%'
+    gsap.to(this.handEl, { scale: 0, rotateZ: 45, translateX: this.size(-4), translateY: this.size(4), ease, duration, overwrite: true })
+    gsap.to(this.eyesEl, { translateX: 0, translateY: 0, ease: 'expo.out', duration, overwrite: true })
+    this.svgPartState('mouth', 'default')
+    this.svgPartState('eyes', 'default')
     return new Promise(resolve => setTimeout(resolve, duration * 1000))
   }
 
@@ -579,6 +593,7 @@ export class MdsEmoji {
       this.earsEl = this.svgPartState('ears')
       this.eyesEl = this.svgPartState('eyes')
       this.handEl = this.svgPartState('hand', 'think')
+      if (this.handEl) (this.handEl as SVGElement).style.visibility = 'hidden'
       this.mouthEl = this.svgPartState('mouth')
       this.gadgetEl = this.svgPartState('gadget')
     }
@@ -634,7 +649,7 @@ export class MdsEmoji {
       gsap.to(this.headEl, {
         x: this.headOffsetX,
         y: this.headOffsetY,
-        transformOrigin: '50% 50%',
+        transformOrigin: '0% 100%',
         duration: this.expressionFollowMouseTraitsDuration,
         ease,
         overwrite: false,
