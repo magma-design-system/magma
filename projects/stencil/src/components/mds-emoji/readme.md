@@ -14,6 +14,17 @@ Illustrations come from [Magma Emoji Figma](https://www.figma.com/design/09SuDQM
 
 ## Methods
 
+### `agree() => Promise<void>`
+
+
+
+#### Returns
+
+Type: `Promise<void>`
+
+Promise<void>
+Emoji agrees, useful for confirm actions.
+
 ### `startBlinking() => Promise<void>`
 
 

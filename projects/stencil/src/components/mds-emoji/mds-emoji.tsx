@@ -1,6 +1,6 @@
 import { Component, Host, h, Method, Prop, Element, Watch } from '@stencil/core'
 import { cssRotationToNumber, cssDurationToSeconds, cssSizeToNumber } from '@common/unit'
-import type { EmojiNames, SvgDictionary, SvgNode, SvgPart } from './meta/types'
+import type { EmojiNames, SvgDictionary, SvgPart } from './meta/types'
 import { gsap } from 'gsap'
 
 import miaSvg from './asset/mia.svg'
@@ -89,17 +89,17 @@ export class MdsEmoji {
     window.removeEventListener('mousemove', this.handleFollowMouse)
   }
 
-  // /**
-  //  * @returns Promise<void>
-  //  * Emoji agrees, useful for confirm actions.
-  //  */
+  /**
+   * @returns Promise<void>
+   * Emoji agrees, useful for confirm actions.
+   */
 
-  // @Method()
-  // async agree (): Promise<void> {
-  //   this.stopConcurrentAnimations()
-  //   await this.setAgreeAnimation()
-  //   return Promise.resolve()
-  // }
+  @Method()
+  async agree (): Promise<void> {
+    this.stopConcurrentAnimations()
+    await this.setAgreeAnimation()
+    return Promise.resolve()
+  }
 
   // /**
   //  * @returns Promise<void>
@@ -212,8 +212,8 @@ export class MdsEmoji {
     this.earsOffset = cssSizeToNumber(elementStyles.getPropertyValue('--mds-emoji-offset-ears'), 1)
   }
 
-  private getSvgElement = (idSelector: string): SvgNode | null =>
-    this.svgRootEl.querySelector(`#${idSelector}`) as SvgNode | null
+  // private getSvgElement = (idSelector: string): SvgNode | null =>
+  //   this.svgRootEl.querySelector(`#${idSelector}`) as SvgNode | null
 
   private updateSvgDictionary = (emoji: EmojiNames) => {
     if (typeof window === 'undefined') return
@@ -230,9 +230,9 @@ export class MdsEmoji {
     if (group.length === 0) return null
     if (!state && group) {
       group?.forEach((el: SVGElement | SVGGElement) => {
-        const currentState = el.id.split('-')[1]
+        // const currentState = el.id.split('-')[1]
         el.style.visibility = 'hidden'
-        if (currentState === 'default') el.style.visibility = 'visible'
+        if (el.id.split('-')[1] === 'default') el.style.visibility = 'visible'
       })
       return group
     }
@@ -255,71 +255,93 @@ export class MdsEmoji {
     }
   }
 
-  // private stopConcurrentAnimations = (): void => {
-  //   if (this.isThinking) {
-  //     this.stopThinking()
-  //   }
-  // }
+  private stopConcurrentAnimations = (): void => {
+    if (this.isThinking) {
+      this.stopThinking()
+    }
+  }
 
 
+  private agreePart = (part: SVGElement | SVGGElement | NodeListOf<SVGElement | SVGGElement> | null, offset: number): void => {
+    const step1 = gsap.utils.clamp(-offset, offset, 40 * offset)
+    const step2 = gsap.utils.clamp(-offset, offset, 20 * offset)
+    const step3 = gsap.utils.clamp(-offset, offset, 0.5 * offset)
+    gsap.timeline()
+      .to(part, { y: `+=${step1}`, duration: 0.15, ease: 'power2.out', overwrite: 'auto' })
+      .to(part, { y: `-=${step1 + step2}`, duration: 0.2, ease: 'power1.out', overwrite: 'auto' })
+      .to(part, { y: `+=${step1 + step2}`, duration: 0.15, ease: 'power2.out', overwrite: 'auto' })
+      .to(part, { y: `-=${step1 + step2 + step3}`, duration: 0.2, ease: 'power1.out', overwrite: 'auto' })
+      // .to(part, { y: offset, duration: 0.3, ease: 'power3.out', overwrite: 'auto' })
+  }
 
-  // private setAgreeAnimation = (): Promise<void> => {
-  //   // Interrompi temporaneamente le rotazioni automatiche
-  //   const duration = 1000
-  //   const wasFollowingMouse = this.isFollowingMouse
-  //   if (wasFollowingMouse) {
-  //     this.isFollowingMouse = false
-  //   }
-  //   gsap.killTweensOf(this.svgRootEl)
+  private setAgreeAnimation = (): Promise<void> => {
+    const duration = 1000
+    const wasFollowingMouse = this.isFollowingMouse
+    if (wasFollowingMouse) {
+      this.isFollowingMouse = false
+    }
+    // gsap.killTweensOf(this.host)
 
-  //   const baseX = this.currentRotateX
+    const ease = 'expo.out'
+    const overwrite = 'auto'
 
-  //   const tl = gsap.timeline({
-  //     onComplete: () => {
-  //     // Torna alla posizione seguita dal mouse
-  //       gsap.to(this.svgRootEl, {
-  //         rotateX: this.currentRotateX,
-  //         rotateY: this.currentRotateY,
-  //         duration: 0.3,
-  //         ease: 'power2.out',
-  //         onComplete: () => {
-  //           if (wasFollowingMouse) {
-  //             this.isFollowingMouse = true
-  //           }
-  //         },
-  //       })
-  //     },
-  //   })
+    const centeredX = this.getEmojiCenter().centerX
+    const state = { value: this.getEmojiCenter().centerY }
 
-  //   tl.to(this.svgRootEl, { rotateX: baseX - 40, duration: 0.15, ease: 'power2.out' })
-  //     .to(this.svgRootEl, { rotateX: baseX + 20, duration: 0.2, ease: 'power1.inOut' })
-  //     .to(this.svgRootEl, { rotateX: baseX - 20, duration: 0.15, ease: 'power2.inOut' })
-  //     .to(this.svgRootEl, { rotateX: baseX + 5, duration: 0.2, ease: 'power1.out' })
-  //     .to(this.svgRootEl, { rotateX: baseX, duration: 0.3, ease: 'power3.out' })
+    gsap.timeline({
+      defaults: { ease, overwrite },
+      onComplete: () => {
+        if (wasFollowingMouse) {
+          // console.log('stop')
+          this.isFollowingMouse = true
+          this.followMouse(true, this.mouseX, this.mouseY)
+          return
+        }
+        this.followMouse(true, centeredX, this.getEmojiCenter().centerY)
+      },
+    })
+      .to(state, { value: -1400, duration: 0.40, onUpdate: () => { this.followMouse(true, centeredX, state.value) } })
+      .to(state, { value: 1200, duration: 0.24, onUpdate: () => { this.followMouse(true, centeredX, state.value) } })
+      .to(state, { value: -800, duration: 0.18, onUpdate: () => { this.followMouse(true, centeredX, state.value) } })
+      .to(state, { value: 400, duration: 0.09, onUpdate: () => { this.followMouse(true, centeredX, state.value) } })
+      .to(state, { value: 0, duration: 0.20, onUpdate: () => { this.followMouse(true, centeredX, state.value) } })
 
-  //   this.svgPartState('mouth', 'default')
-  //   this.mouthEl = this.svgElementsDictionary.mouth.default as SVGElement
-  //   gsap.fromTo(this.mouthEl,
-  //     {
-  //       scaleY: 0.5, transformOrigin: '50% 50%',
-  //       onComplete: () => {
-  //         this.svgPartState('mouth', 'default')
-  //         this.mouthEl = this.svgElementsDictionary.mouth.smile as SVGElement
-  //         gsap.fromTo(this.mouthEl,
-  //           {
-  //             scaleY: 1, transformOrigin: '50% 50%',
-  //             duration: 0.2,
-  //             ease: 'expo.inOut',
-  //           },
-  //         )
-  //       },
-  //       duration: 0.75,
-  //       ease: 'expo.inOut',
-  //     },
-  //   )
 
-  //   return new Promise(resolve => setTimeout(resolve, duration))
-  // }
+    // tl.to(this.host, { rotateX: this.currentRotateX - 40, duration: 0.15, ease, overwrite })
+    //   .to(this.host, { rotateX: this.currentRotateX + 20, duration: 0.2, ease, overwrite })
+    //   .to(this.host, { rotateX: this.currentRotateX - 20, duration: 0.15, ease, overwrite })
+    //   .to(this.host, { rotateX: this.currentRotateX + 5, duration: 0.2, ease, overwrite })
+    //   .to(this.host, { rotateX: this.currentRotateX, duration: 0.3, ease, overwrite })
+    // this.agreePart(this.headEl, this.headOffsetY)
+    // this.agreePart(this.eyesEl, this.eyesOffsetY)
+    // this.agreePart(this.mouthEl, this.mouthOffsetY)
+    // this.agreePart(this.gadgetEl, this.gadgetOffsetY)
+    // this.agreePart(this.handEl, this.handOffsetY)
+    // this.agreePart(this.eyebrowsEl, this.eyebrowsOffsetY)
+    // this.agreePart(this.earsEl, this.earsOffsetY)
+
+    // this.svgPartState('mouth', 'default')
+    // gsap.to(this.mouthEl,
+    //   {
+    //     scaleY: 0.5, transformOrigin: '50% 50%',
+    //     onComplete: () => {
+    //       // this.svgPartState('mouth', 'default')
+    //       this.svgPartState('mouth', 'smile')
+    //       gsap.to(this.mouthEl,
+    //         {
+    //           scaleY: 1, transformOrigin: '50% 50%',
+    //           duration: 0.2,
+    //           ease: 'expo.inOut',
+    //         },
+    //       )
+    //     },
+    //     duration: 0.75,
+    //     ease: 'expo.inOut',
+    //   },
+    // )
+
+    return new Promise(resolve => setTimeout(resolve, duration))
+  }
 
 
 
@@ -563,7 +585,7 @@ export class MdsEmoji {
     this.followMouse()
   }
 
-  private followMouse = (): void => {
+  private followMouse = (override: boolean = false, x: number = -1, y: number = -1): void => {
 
     const { centerX } = this.getEmojiCenter()
     const { centerY } = this.getEmojiCenter()
@@ -574,6 +596,11 @@ export class MdsEmoji {
     if (this.isFollowingMouse) {
       currentMouseX = this.mouseX
       currentMouseY = this.mouseY
+    }
+
+    if (override) {
+      currentMouseX = x
+      currentMouseY = y
     }
 
     const rect = this.host.getBoundingClientRect()
