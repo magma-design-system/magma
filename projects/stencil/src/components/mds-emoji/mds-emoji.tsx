@@ -45,7 +45,7 @@ export class MdsEmoji {
 
   private currentRotateX: number = 0
   private currentRotateY: number = 0
-  private expressionAngleMax: number = 16 // massimo angolo di rotazione della emoji
+  private expressionAngleMax: number = 24 // massimo angolo di rotazione della emoji
   private expressionFollowMouseHeadDuration: number = 0.3 // durata dell'animazione di rotazione della testa quando segue il mouse
   private expressionFollowMouseTraitsDuration: number = 0.2 // durata dell'animazione di rotazione degli occhi e della bocca quando segue il mouse
 
@@ -73,16 +73,6 @@ export class MdsEmoji {
     this.checkNameChanged(this.name)
 
   }
-
-  // componentWillLoad (): void {
-  //   this.headEl = this.svgPartState('head')
-  //   this.eyebrowsEl = this.svgPartState('eyebrows')
-  //   this.earsEl = this.svgPartState('ears')
-  //   this.eyesEl = this.svgPartState('eyes')
-  //   this.handEl = this.svgPartState('hand', 'think')
-  //   this.mouthEl = this.svgPartState('mouth')
-  //   this.gadgetEl = this.svgPartState('gadget')
-  // }
 
   disconnectedCallback (): void {
     if (!window) return
@@ -176,8 +166,8 @@ export class MdsEmoji {
    */
   @Method()
   async stopFollowMouse (): Promise<void> {
-    this.isFollowingMouse = false
     this.followMouse()
+    this.isFollowingMouse = false
     return new Promise(resolve => setTimeout(resolve, this.expressionFollowMouseTraitsDuration * 1000))
   }
 
@@ -262,18 +252,6 @@ export class MdsEmoji {
   }
 
 
-  private agreePart = (part: SVGElement | SVGGElement | NodeListOf<SVGElement | SVGGElement> | null, offset: number): void => {
-    const step1 = gsap.utils.clamp(-offset, offset, 40 * offset)
-    const step2 = gsap.utils.clamp(-offset, offset, 20 * offset)
-    const step3 = gsap.utils.clamp(-offset, offset, 0.5 * offset)
-    gsap.timeline()
-      .to(part, { y: `+=${step1}`, duration: 0.15, ease: 'power2.out', overwrite: 'auto' })
-      .to(part, { y: `-=${step1 + step2}`, duration: 0.2, ease: 'power1.out', overwrite: 'auto' })
-      .to(part, { y: `+=${step1 + step2}`, duration: 0.15, ease: 'power2.out', overwrite: 'auto' })
-      .to(part, { y: `-=${step1 + step2 + step3}`, duration: 0.2, ease: 'power1.out', overwrite: 'auto' })
-      // .to(part, { y: offset, duration: 0.3, ease: 'power3.out', overwrite: 'auto' })
-  }
-
   private setAgreeAnimation = (): Promise<void> => {
     const duration = 1000
     const wasFollowingMouse = this.isFollowingMouse
@@ -285,8 +263,7 @@ export class MdsEmoji {
     const ease = 'expo.out'
     const overwrite = 'auto'
 
-    const centeredX = this.getEmojiCenter().centerX
-    const state = { value: this.getEmojiCenter().centerY }
+    const state = { value: 0 }
 
     gsap.timeline({
       defaults: { ease, overwrite },
@@ -294,17 +271,17 @@ export class MdsEmoji {
         if (wasFollowingMouse) {
           // console.log('stop')
           this.isFollowingMouse = true
-          this.followMouse(true, this.mouseX, this.mouseY)
+          this.moveHead(this.mouseX, this.mouseY)
           return
         }
-        this.followMouse(true, centeredX, this.getEmojiCenter().centerY)
+        this.moveHead(this.getEmojiCenter().centerX, this.getEmojiCenter().centerY)
       },
     })
-      .to(state, { value: -1400, duration: 0.40, onUpdate: () => { this.followMouse(true, centeredX, state.value) } })
-      .to(state, { value: 1200, duration: 0.24, onUpdate: () => { this.followMouse(true, centeredX, state.value) } })
-      .to(state, { value: -800, duration: 0.18, onUpdate: () => { this.followMouse(true, centeredX, state.value) } })
-      .to(state, { value: 400, duration: 0.09, onUpdate: () => { this.followMouse(true, centeredX, state.value) } })
-      .to(state, { value: 0, duration: 0.20, onUpdate: () => { this.followMouse(true, centeredX, state.value) } })
+      .to(state, { value: 0, duration: 0.08, onUpdate: () => { this.rotate(0, state.value) } })
+      .to(state, { value: -100, duration: 0.24, onUpdate: () => { this.rotate(0, state.value) } })
+      .to(state, { value: 50, duration: 0.18, onUpdate: () => { this.rotate(0, state.value) } })
+      .to(state, { value: -25, duration: 0.12, onUpdate: () => { this.rotate(0, state.value) } })
+      .to(state, { value: 0, duration: 0.16, onUpdate: () => { this.rotate(0, state.value) } })
 
 
     // tl.to(this.host, { rotateX: this.currentRotateX - 40, duration: 0.15, ease, overwrite })
@@ -585,22 +562,15 @@ export class MdsEmoji {
     this.followMouse()
   }
 
-  private followMouse = (override: boolean = false, x: number = -1, y: number = -1): void => {
+  private followMouse = (): void => {
 
-    const { centerX } = this.getEmojiCenter()
-    const { centerY } = this.getEmojiCenter()
-    let currentMouseX = this.getEmojiCenter().centerX
-    let currentMouseY = this.getEmojiCenter().centerY
-    const ease = 'power1.out'
+    const { centerX, centerY } = this.getEmojiCenter()
+    let currentMouseX = centerX
+    let currentMouseY = centerY
 
     if (this.isFollowingMouse) {
       currentMouseX = this.mouseX
       currentMouseY = this.mouseY
-    }
-
-    if (override) {
-      currentMouseX = x
-      currentMouseY = y
     }
 
     const rect = this.host.getBoundingClientRect()
@@ -611,20 +581,28 @@ export class MdsEmoji {
     const percentX = deltaX / (rect.width / 2)
     const percentY = deltaY / (rect.height / 2)
 
-    this.currentRotateY = gsap.utils.clamp(- this.expressionAngleMax, this.expressionAngleMax, percentX * this.expressionAngleMax)
+    this.rotate(percentX, percentY)
+  }
+
+  private moveHead = (x: number, y: number): void => {
+
+    const { centerX, centerY } = this.getEmojiCenter()
+    const rect = this.host.getBoundingClientRect()
+
+    const deltaX = x - centerX
+    const deltaY = y - centerY
+
+    const percentX = deltaX / (rect.width / 2)
+    const percentY = deltaY / (rect.height / 2)
+
+    this.rotate(percentX, percentY)
+  }
+
+  private rotate = (percentX: number, percentY: number): void => {
+    const ease = 'power1.out'
+
     this.currentRotateX = gsap.utils.clamp(- this.expressionAngleMax, this.expressionAngleMax, - percentY * this.expressionAngleMax) // Y invertito
-
-    if (!this.headEl) {
-      this.headEl = this.svgPartState('head')
-      this.eyebrowsEl = this.svgPartState('eyebrows')
-      this.earsEl = this.svgPartState('ears')
-      this.eyesEl = this.svgPartState('eyes')
-      this.handEl = this.svgPartState('hand', 'think')
-      if (this.handEl) (this.handEl as SVGElement).style.visibility = 'hidden'
-      this.mouthEl = this.svgPartState('mouth')
-      this.gadgetEl = this.svgPartState('gadget')
-    }
-
+    this.currentRotateY = gsap.utils.clamp(- this.expressionAngleMax, this.expressionAngleMax, percentX * this.expressionAngleMax)
     this.headOffsetX = gsap.utils.clamp(-this.headOffset, this.headOffset, percentX * this.headOffset)
     this.headOffsetY = gsap.utils.clamp(-this.headOffset, this.headOffset, percentY * this.headOffset)
     this.eyesOffsetX = gsap.utils.clamp(-this.eyesOffset, this.eyesOffset, percentX * this.eyesOffset)
@@ -641,6 +619,17 @@ export class MdsEmoji {
     this.eyebrowsOffsetY = gsap.utils.clamp(-this.eyebrowsOffset, this.eyebrowsOffset, percentY * this.eyebrowsOffset)
     this.earsOffsetX = gsap.utils.clamp(-this.earsOffset, this.earsOffset, percentX * this.earsOffset)
     this.earsOffsetY = gsap.utils.clamp(-this.earsOffset, this.earsOffset, percentY * this.earsOffset)
+
+    if (!this.headEl) {
+      this.headEl = this.svgPartState('head')
+      this.eyebrowsEl = this.svgPartState('eyebrows')
+      this.earsEl = this.svgPartState('ears')
+      this.eyesEl = this.svgPartState('eyes')
+      this.handEl = this.svgPartState('hand', 'think')
+      if (this.handEl) (this.handEl as SVGElement).style.visibility = 'hidden'
+      this.mouthEl = this.svgPartState('mouth')
+      this.gadgetEl = this.svgPartState('gadget')
+    }
 
     gsap.to(this.host, {
       rotateX: this.currentRotateX,
