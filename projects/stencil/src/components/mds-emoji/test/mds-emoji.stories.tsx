@@ -16,36 +16,29 @@ export default {
   },
 }
 
+let isUseEffectDefined = false
 const Template = args => {
   const [svgSize, setSvgSize] = useState(256)
   const [followMouse, setFollowMouse] = useState(true)
   const [eyeBlinking, setEyeBlinking] = useState(true)
   const [thinking, setThinking] = useState(false)
   useEffect(() => {
+    if (isUseEffectDefined) return
+    isUseEffectDefined = true
+
     const emoji = document.querySelector('mds-emoji')
-    const followMouseSwitch = document.getElementById(
-      'follow-mouse',
-    ) as HTMLMdsInputSwitchElement
-    const eyeBlinkingSwitch = document.getElementById(
-      'eye-blinking',
-    ) as HTMLMdsInputSwitchElement
-    const buttonAgree = document.getElementById(
-      'agree',
-    ) as HTMLMdsButtonElement
-    const buttonDisagree = document.getElementById(
-      'disagree',
-    ) as HTMLMdsButtonElement
-    const thinkSwitch = document.getElementById(
-      'think',
-    ) as HTMLMdsInputSwitchElement
-    const sizeRange = document.getElementById(
-      'size',
-    ) as HTMLMdsInputRangeElement
+    const followMouseSwitch = document.getElementById('follow-mouse') as HTMLMdsInputSwitchElement
+    const eyeBlinkingSwitch = document.getElementById('eye-blinking') as HTMLMdsInputSwitchElement
+    const buttonAgree = document.getElementById('agree') as HTMLMdsButtonElement
+    const buttonDisagree = document.getElementById('disagree') as HTMLMdsButtonElement
+    const buttonSmile = document.getElementById('smile') as HTMLMdsButtonElement
+    const thinkSwitch = document.getElementById('think') as HTMLMdsInputSwitchElement
+    const sizeRange = document.getElementById('size') as HTMLMdsInputRangeElement
     if (!followMouseSwitch) return
 
     if (followMouse) emoji?.startFollowMouse()
     if (eyeBlinking) emoji?.startBlinking()
-    // if (thinking) emoji?.startThinking()
+    if (thinking) emoji?.startThinking()
 
     followMouseSwitch.addEventListener(
       'mdsInputSwitchChange',
@@ -84,6 +77,10 @@ const Template = args => {
       // emoji?.disagree(2000)
     })
 
+    buttonSmile.addEventListener('click', () => {
+      emoji?.smile()
+    })
+
     thinkSwitch.addEventListener(
       'mdsInputSwitchChange',
       (event: CustomEvent) => {
@@ -96,6 +93,7 @@ const Template = args => {
       },
     )
   }, [])
+
   return (
     <div class="grid grid-cols-[300px_auto] gap-600 -m-600 min-h-dvh bg-tone-neutral-10">
       <div class="grid gap-200 auto-rows-min p-600">
@@ -123,6 +121,9 @@ const Template = args => {
         <mds-input-switch id="think" size="sm" checked={thinking || undefined}>
           Think
         </mds-input-switch>
+        <mds-button id="smile" variant="info" tone="weak">
+          Smile
+        </mds-button>
         <mds-button id="agree" variant="success" tone="weak">
           Agree
         </mds-button>
