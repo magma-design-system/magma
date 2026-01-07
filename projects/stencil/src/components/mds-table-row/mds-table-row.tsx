@@ -23,7 +23,7 @@ export class MdsTableRow {
   @Element() host: HTMLMdsTableRowElement
   private actions: HTMLDivElement
   private hasActions: boolean = true
-  private observer: ResizeObserver
+  private observer?: ResizeObserver
   @State() sizerWidth: string
   private t:Locale = new Locale({
     el: localeEl,
@@ -66,7 +66,7 @@ export class MdsTableRow {
   }
 
   disconnectedCallback () {
-    this.observer.disconnect()
+    if (this.observer) this.observer.disconnect()
   }
 
   private handleSelectionChange = (e: CustomEvent): void => {
