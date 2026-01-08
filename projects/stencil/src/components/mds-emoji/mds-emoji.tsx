@@ -185,7 +185,7 @@ export class MdsEmoji {
    */
   @Method()
   async stopBlinking (): Promise<void> {
-    this.eyesTimeline.pause()
+    this.eyesTimeline.reverse(undefined, true)
     return Promise.resolve()
   }
 
@@ -504,17 +504,16 @@ export class MdsEmoji {
   }
 
   private randomBlink = (): void => {
+    if (this.isBusy) return
+
     const delay = gsap.utils.random(1, 3, 0.1, true)()
     const animateIn = { ease: 'expo.in', duration: 0.2, overwrite: true }
     const animateOut = { ease: 'expo.out', duration: 0.2, overwrite: true }
 
-    if (!this.isBusy) return
-
-    // console.log('blink')
     this.eyesTimeline
-      .delay(delay)
       .to(this.svgPartState('eyes', 'default'),
         {
+          delay,
           scaleY: 0.5,
           ...animateIn,
           onComplete: () => {
@@ -526,7 +525,6 @@ export class MdsEmoji {
                     { scaleY: 0.75, ...animateIn },
                     { scaleY: 1, ...animateOut,
                       onComplete: () => {
-                      // console.log('randomBlink', this.isBlinking)
                         this.randomBlink()
                       },
                     },
