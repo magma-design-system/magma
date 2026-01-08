@@ -703,7 +703,19 @@ export namespace Components {
         "zIndex": number;
     }
     interface MdsEmoji {
+        /**
+          * @returns Promise<void> Emoji agrees, useful for confirm actions.
+         */
+        "agree": () => Promise<void>;
+        /**
+          * @returns Promise<void> Emoji disagrees, useful for errors or unwanted results.
+         */
+        "disagree": (turnHappyDelay?: number) => Promise<void>;
         "name": EmojiNames;
+        /**
+          * @returns Promise<void> Emoji smiles, useful for confirm actions.
+         */
+        "smile": () => Promise<void>;
         /**
           * @returns Promise<void> Eyes start blinking.
          */
