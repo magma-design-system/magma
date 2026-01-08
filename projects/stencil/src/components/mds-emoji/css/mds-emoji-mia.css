@@ -34,7 +34,7 @@
   --mds-emoji-mia-hands-color: rgb(var(--variant-ai-04));
   --mds-emoji-mia-head-color: rgb(var(--variant-ai-08));
   --mds-emoji-mia-head-stroke-color: rgb(var(--variant-ai-06));
-  --mds-emoji-mia-head-stroke-width: 4px;
+  --mds-emoji-mia-head-stroke-width: 0px;
   --mds-emoji-mia-mouth-color: rgb(var(--variant-ai-04));
   --mds-emoji-offset-eyes: 1px;
   --mds-emoji-offset-gadget: 1px;

@@ -74,7 +74,7 @@ const Template = args => {
     })
 
     buttonDisagree.addEventListener('click', () => {
-      // emoji?.disagree(2000)
+      emoji?.disagree()
     })
 
     buttonSmile.addEventListener('click', () => {

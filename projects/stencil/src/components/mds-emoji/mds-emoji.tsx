@@ -119,19 +119,20 @@ export class MdsEmoji {
     return Promise.resolve()
   }
 
-  // /**
-  //  * @returns Promise<void>
-  //  * Emoji disagrees, useful for errors or unwanted results.
-  //  */
+  /**
+   * @returns Promise<void>
+   * Emoji disagrees, useful for errors or unwanted results.
+   */
 
-  // @Method()
-  // async disagree (turnHappyDelay: number = 0): Promise<void> {
-  //   if (this.isBusy) return
-  //   this.isBusy = true
-  //   this.stopConcurrentAnimations()
-  //   this.setDisagreeAnimation(turnHappyDelay)
-  //   return Promise.resolve()
-  // }
+  @Method()
+  async disagree (turnHappyDelay: number = 0): Promise<void> {
+    if (this.isBusy) return
+    this.isBusy = true
+    this.stopConcurrentAnimations()
+    this.moveHead(this.getEmojiCenter().centerX, this.getEmojiCenter().centerY)
+    await this.setDisagreeAnimation(turnHappyDelay)
+    return Promise.resolve()
+  }
 
   /**
    * @returns Promise<void>
@@ -141,6 +142,7 @@ export class MdsEmoji {
   @Method()
   async startThinking (duration: number = 0.5): Promise<void> {
     if (this.isBusy) return
+    // await this.stopFollowMouse()
     this.stopConcurrentAnimations()
     this.moveHead(this.getEmojiCenter().centerX, this.getEmojiCenter().centerY)
     this.isBusy = true
@@ -193,8 +195,9 @@ export class MdsEmoji {
    */
   @Method()
   async stopFollowMouse (): Promise<void> {
-    this.followMouse()
+    if (!this.isFollowingMouse) return Promise.resolve()
     this.isFollowingMouse = false
+    this.rotate(0, 0)
     return new Promise(resolve => setTimeout(resolve, this.expressionFollowMouseTraitsDuration * 1000))
   }
 
@@ -204,7 +207,9 @@ export class MdsEmoji {
    */
   @Method()
   async startFollowMouse (): Promise<void> {
+    if (this.isFollowingMouse) return Promise.resolve()
     this.isFollowingMouse = true
+    this.wasFollowingMouse = true
     this.followMouse()
     return Promise.resolve()
   }
@@ -269,18 +274,25 @@ export class MdsEmoji {
     }
   }
 
+  private restoreReadyState = (): void => {
+    this.isBusy = false
+    this.restoreFollowMouse()
+  }
+
   private restoreFollowMouse = (): void => {
     // console.log('restoreConcurrentAnimations', this.wasFollowingMouse)
     if (this.wasFollowingMouse) {
-      this.isFollowingMouse = true
-      this.followMouse()
+      this.moveHead(this.mouseX, this.mouseY)
+      this.startFollowMouse()
     }
+    this.moveHead(this.getEmojiCenter().centerX, this.getEmojiCenter().centerY)
   }
 
   private stopConcurrentAnimations = (): void => {
     // console.log('stopConcurrentAnimations', this.isFollowingMouse)
-    this.wasFollowingMouse = this.isFollowingMouse
-    if (this.wasFollowingMouse) this.isFollowingMouse = false
+    if (this.wasFollowingMouse) {
+      this.stopFollowMouse()
+    }
     if (this.isThinking) {
       this.stopThinking()
     }
@@ -296,13 +308,7 @@ export class MdsEmoji {
     gsap.timeline({
       defaults: { ease, overwrite },
       onComplete: () => {
-        this.isBusy = false
-        this.restoreFollowMouse()
-        if (this.wasFollowingMouse) {
-          this.moveHead(this.mouseX, this.mouseY)
-          return
-        }
-        this.moveHead(this.getEmojiCenter().centerX, this.getEmojiCenter().centerY)
+        this.restoreReadyState()
       },
     })
       .to(state, { value: 0, duration: 0.08, onUpdate: () => { this.rotate(0, state.value) } })
@@ -312,13 +318,15 @@ export class MdsEmoji {
       .to(state, { value: 0, duration: 0.16, onUpdate: () => { this.rotate(0, state.value) } })
 
     // eyebrows
-    const eyebrowsTween = gsap.timeline({
-      defaults: { ease: 'expo.out', overwrite: true },
-      onComplete: () => {
-        eyebrowsTween.reverse()
-      },
-    })
-      .to(this.eyebrowsEl, { yPercent: -40, duration: 0.4 })
+    if (this.eyebrowsEl) {
+      const eyebrowsTween = gsap.timeline({
+        defaults: { ease: 'expo.out', overwrite: true },
+        onComplete: () => {
+          eyebrowsTween.reverse()
+        },
+      })
+        .to(this.eyebrowsEl, { yPercent: -40, duration: 0.4 })
+    }
 
     // mouth
     this.svgPartState('mouth', 'smile')
@@ -369,11 +377,13 @@ export class MdsEmoji {
       .to(this.eyesEl, { yPercent: 10 })
 
     // eyebrows
-    gsap.timeline({
-      defaults: { ease, overwrite },
-    })
-      .to(this.eyebrowsEl, { yPercent: '-=15', duration: 0.15 })
-      .to(this.eyebrowsEl, { yPercent: '+=10', duration: 0.15 })
+    if (this.eyebrowsEl) {
+      gsap.timeline({
+        defaults: { ease, overwrite },
+      })
+        .to(this.eyebrowsEl, { yPercent: '-=15', duration: 0.15 })
+        .to(this.eyebrowsEl, { yPercent: '+=10', duration: 0.15 })
+    }
 
     // emoji
     gsap.timeline({
@@ -401,53 +411,36 @@ export class MdsEmoji {
 
 
 
-  // private setDisagreeAnimation = (turnHappyDelay: number = 0): void => {
-  // // Interrompi temporaneamente le rotazioni automatiche
-  //   gsap.killTweensOf(this.svgRootEl)
-  //   const wasFollowingMouse = this.isFollowingMouse
-  //   if (wasFollowingMouse) {
-  //     this.isFollowingMouse = false
-  //   }
+  private setDisagreeAnimation = (turnHappyDelay: number = 0): Promise<void> => {
+    const state = { value: 0 }
 
-  //   const tl = gsap.timeline({
-  //     onComplete: () => {
-  //     // Torna alla posizione seguita dal mouse
-  //       gsap.to(this.svgRootEl, {
-  //         rotateX: this.currentRotateX,
-  //         rotateY: this.currentRotateY,
-  //         duration: 0.3,
-  //         ease: 'power2.out',
-  //         onComplete: () => {
-  //           if (wasFollowingMouse) {
-  //             this.isFollowingMouse = true
-  //           }
-  //         },
-  //       })
-  //     },
-  //   })
+    gsap.timeline({
+      ease: 'power2.inOut',
+      onStart: () => {
+        this.svgPartState('mouth', 'serious')
+      },
+      onComplete: () => {
+        if (turnHappyDelay > 0) {
+          gsap.delayedCall(turnHappyDelay / 1000, () => {
+            this.svgPartState('mouth', 'default')
+            this.restoreReadyState()
+          })
+          return
+        }
+        this.svgPartState('mouth', 'default')
+        this.restoreReadyState()
+      },
+    })
+      .to(state, { value: 0, duration: 0.08, onUpdate: () => { this.rotate(state.value, 0) } })
+      .to(state, { value: -100, duration: 0.24, onUpdate: () => { this.rotate(state.value, 0) } })
+      .to(state, { value: 50, duration: 0.18, onUpdate: () => { this.rotate(state.value, 0) } })
+      .to(state, { value: -25, duration: 0.12, onUpdate: () => { this.rotate(state.value, 0) } })
+      .to(state, { value: 0, duration: 0.16, onUpdate: () => { this.rotate(state.value, 0) } })
 
-  //   const rotationEase = 'power2.inOut'
+    return new Promise(resolve => setTimeout(resolve, 780 + turnHappyDelay))
+  }
 
-  //   tl.to(this.svgRootEl, { rotateY: this.currentRotateY - 40, duration: 0.25, ease: rotationEase })
-  //     .to(this.svgRootEl, { rotateY: this.currentRotateY + 30, duration: 0.2, ease: rotationEase })
-  //     .to(this.svgRootEl, { rotateY: this.currentRotateY - 20, duration: 0.15, ease: rotationEase })
-  //     .to(this.svgRootEl, { rotateY: this.currentRotateY + 10, duration: 0.1, ease: rotationEase })
-  //     .to(this.svgRootEl, { rotateY: this.currentRotateY, duration: 0.3, ease: rotationEase })
-
-  //   gsap.to(this.mouthEl, { attr: { d: this.mouthGeometry.serious }, duration: 0, ease: 'none', onComplete: () => {
-  //     setTimeout(() => {
-  //       gsap.to(this.mouthEl, { attr: { d: this.mouthGeometry.serious }, duration: 0, ease: 'none', onComplete: () => {
-  //         if (turnHappyDelay > 0) {
-  //           setTimeout(() => {
-  //             gsap.to(this.mouthEl, { attr: { d: this.mouthGeometry.smile }, duration: 0, ease: 'none' })
-  //           }, turnHappyDelay)
-  //         }
-  //       } })
-  //     }, 1000)
-  //   } })
-  // }
-
-  private size = (value: number): number => {
+  private scaleSize = (value: number): number => {
     return value * this.emojiOriginalSize / 24
   }
 
@@ -458,8 +451,8 @@ export class MdsEmoji {
     gsap.fromTo(this.handEl, {
       scale: 0,
       rotateZ: 45,
-      xPercent: this.size(-4),
-      yPercent: this.size(4),
+      xPercent: this.scaleSize(-4),
+      yPercent: this.scaleSize(4),
       overwrite: true,
     }, {
       xPercent: this.handOffsetX,
@@ -481,15 +474,13 @@ export class MdsEmoji {
     const ease = 'expo.out'
 
     const animation = { duration, ease, overwrite: true }
-    const maxJitter = this.size(1) // 24px is the base scale of an icon to calculate jitter
-    const randomOffsetX = gsap.utils.random(-0.5, 0.5, 0.1) * maxJitter
-    const randomOffsetY = gsap.utils.random(-0.5, 0.5, 0.1) * maxJitter
-
-    this.rotate(randomOffsetX / 20, randomOffsetY / 20)
+    const eyesMargin = 5
+    const randomEyesOffsetX = gsap.utils.random(eyesMargin * -1, eyesMargin, 0.1)
+    const randomEyesOffsetY = gsap.utils.random(eyesMargin * -1, eyesMargin, 0.1)
 
     gsap.to(this.eyesEl, {
-      xPercent: randomOffsetX,
-      yPercent: randomOffsetY,
+      xPercent: randomEyesOffsetX,
+      yPercent: randomEyesOffsetY,
       ...animation,
       onComplete: () => {
         if (this.isThinking) {
@@ -504,7 +495,7 @@ export class MdsEmoji {
 
   private setStopThinkingAnimation = (duration: number = 0.5): Promise<void> => {
     const ease = 'expo.inOut'
-    gsap.to(this.handEl, { scale: 0, rotateZ: 45, translateX: this.size(-4), translateY: this.size(4), ease, duration, overwrite: true })
+    gsap.to(this.handEl, { scale: 0, rotateZ: 45, translateX: this.scaleSize(-4), translateY: this.scaleSize(4), ease, duration, overwrite: true })
     gsap.to(this.eyesEl, { xPercent: 0, yPercent: 0, ease: 'expo.out', duration, overwrite: true })
     this.svgPartState('mouth', 'default')
     this.svgPartState('eyes', 'default')
