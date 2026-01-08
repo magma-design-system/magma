@@ -123,7 +123,7 @@
   --mds-button-border-high-contrast-hover-width: 3px;
   --mds-button-border-high-contrast-width: --spacing(50);
   --mds-button-border-tone-outline-hover-width: 3px;
-  --mds-button-border-tone-outline-opacity: 0.5;
+  --mds-button-border-tone-outline-opacity: 0.3;
   --mds-button-border-tone-strong-hover-width: --spacing(50);
   --mds-button-border-tone-weak-hover-width: --spacing(50);
   --mds-button-border-default-opacity: 0;
@@ -132,7 +132,7 @@
   --mds-button-color: rgb(var(--tone-neutral));
   --mds-button-gap: --spacing(200);
   --mds-button-line-clamp: 1;
-  --mds-button-radius: var(--radius-xs);
+  --mds-button-radius: var(--radius-md);
 
   @apply
     duration-200
