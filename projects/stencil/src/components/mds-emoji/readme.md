@@ -25,6 +25,34 @@ Type: `Promise<void>`
 Promise<void>
 Emoji agrees, useful for confirm actions.
 
+### `disagree(turnHappyDelay?: number) => Promise<void>`
+
+
+
+#### Parameters
+
+| Name             | Type     | Description |
+| ---------------- | -------- | ----------- |
+| `turnHappyDelay` | `number` |             |
+
+#### Returns
+
+Type: `Promise<void>`
+
+Promise<void>
+Emoji disagrees, useful for errors or unwanted results.
+
+### `smile() => Promise<void>`
+
+
+
+#### Returns
+
+Type: `Promise<void>`
+
+Promise<void>
+Emoji smiles, useful for confirm actions.
+
 ### `startBlinking() => Promise<void>`
 
 
