@@ -49,4 +49,7 @@ getColorsConfig().then(resultConfig => {
 
   styleDictionary.extend('./src/config/styledictionary/tailwind4.json').buildAllPlatforms()
 
+  // build CSS transitions
+  styleDictionary.extend('./src/config/styledictionary/transitions.json').buildAllPlatforms()
+
 })

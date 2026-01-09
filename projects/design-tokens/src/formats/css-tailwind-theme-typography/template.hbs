@@ -62,6 +62,11 @@ Generated at {{ date }}
   --ease-{{@key}}: {{timing.value}};
 {{/each}}
 
+{{!-- duration --}}
+{{#each properties.css.duration as | duration |}}
+  --duration-{{@key}}: {{duration.value}};
+{{/each}}
+
 {{!-- border --}}
 {{#each properties.cosmetic.border as | border |}}
   {{#ifTailwind4Border @key}}

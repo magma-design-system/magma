@@ -20,6 +20,7 @@ import {
   cssTailwindThemeTypography,
   tailwindCss4Filter,
   cssTailwindThemeColor,
+  cssVarsTransitionsFormat,
 } from '../formats/index.js'
 import { getBrandColorConfig } from '../config/styledictionary/sd-brand-color.config.js'
 import chalk from 'chalk'
@@ -95,6 +96,8 @@ export function getStyleDictionaryWithAllCustomTransform (): StyleDictionary.Cor
       .registerFormat(jsTailwindScreensFormat)
       .registerFormat(jsTailwindPropsFormat)
       .registerFormat(cssTailwindThemeTypography)
+      // TRANSITIONS
+      .registerFormat(cssVarsTransitionsFormat)
       // transform for flutter font
       .registerTransform(flutterFontWeightTransform)
       .registerTransform(flutterToDoubleTransform)
