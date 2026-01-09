@@ -88,7 +88,7 @@ Returns the native `<input>` element used under the hood.
 
 #### Returns
 
-Type: `Promise<HTMLTextAreaElement | HTMLInputElement>`
+Type: `Promise<HTMLInputElement | HTMLTextAreaElement>`
 
 
 
@@ -155,6 +155,8 @@ Type: `Promise<void>`
 | `"counter-button-increase"` |             |
 | `"field"`                   |             |
 | `"mic-toggle-button"`       |             |
+| `"password-mask-item"`      |             |
+| `"password-mask-items"`     |             |
 | `"password-toggle-button"`  |             |
 | `"tip-count"`               |             |
 

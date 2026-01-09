@@ -29,6 +29,8 @@ import { hashRandomValue } from '@common/aria'
   * @part counter-button-increase - Selects the button used to increse the input value
   * @part field - Selects the native input field used by the component
   * @part password-toggle-button - Selects the button used to show or hide password
+  * @part password-mask-items - Selects the items wrapper used to mask the password
+  * @part password-mask-item - Selects the item used to mask the password
   * @part tip-count - Selects the mds-input-tip shown when maxlength attribute is set, can be used to hide it if needed
   */
 
@@ -668,6 +670,13 @@ export class MdsInput {
             tabindex="0" tone="text" title={this.isPasswordVisible ? this.t.get('hidePassword') : this.t.get('showPassword')}
             part="password-toggle-button"></mds-button>
         }
+        {this.type === 'password' && !this.isPasswordVisible && this.value?.length > 0 && <div class="password-mask">
+          <div class="password-mask-items" part="password-mask-items">
+            { Array.from({ length: this.value.length }).map((_, index) => (
+              <div key={index} class="password-mask-item" part="password-mask-item"></div>
+            )) }
+          </div>
+        </div>}
         {this.mic
           && <mds-button class={clsx('mic-toggle-button', this.isRecording && 'mic-toggle-button--recording')}
             icon={this.speechToTextIcon} onClick={() => this.toggleTextRecognition()}

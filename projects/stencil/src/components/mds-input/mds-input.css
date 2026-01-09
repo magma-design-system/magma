@@ -367,11 +367,6 @@
   @apply pr-1000;
 }
 
-:host([type="password"]) .input[type="password"]:not(:placeholder-shown) {
-  font-size: var(--text-4xl);
-  max-height: 3rem;
-}
-
 :host([type="password"]) .input[type="text"]:not(:placeholder-shown) {
   @apply text-code-snippet;
 }
@@ -404,3 +399,4 @@ mds-input-tip {
 @import './css/mds-input-pref-animation.css';
 @import './css/mds-input-pref-contrast.css';
 @import './css/mds-input-pref-theme.css';
+@import './css/mds-input-type-password.css';
