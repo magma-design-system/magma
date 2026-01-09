@@ -85,7 +85,7 @@ const parameters = {
 
 const decorators = [
   Story => (
-    <div className="p-600 min-h-screen">
+    <div className="p-600">
       <Story />
     </div>
   ),
