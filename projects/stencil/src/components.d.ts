@@ -16,6 +16,7 @@ import { BenchmarkBarTypographyType } from "./components/mds-benchmark-bar/meta/
 import { BibliographyFormatType, BibliographyRelationshipType } from "./components/mds-bibliography/meta/types";
 import { MdsBreadcrumbEventDetail } from "./components/mds-breadcrumb/meta/event-detail";
 import { MdsBreadcrumbItemEventDetail } from "./components/mds-breadcrumb-item/meta/event-detail";
+import { TextAnimationType } from "./components/mds-text/meta/types";
 import { ButtonDropdownVariantType, ButtonIconPositionType, ButtonSizeType, ButtonTargetType, ButtonType, ButtonVariantType, TabSizeType } from "./type/button";
 import { TypographyHeadingTagType, TypographyTagType, TypographyTruncateType } from "./type/text";
 import { CalendarCellSelectionOrieintationType, CalendarCellSelectionPositionType, CalendarCellType } from "./components/mds-calendar-cell/meta/types";
@@ -74,7 +75,7 @@ import { MdsTabItemEventDetail } from "./components/mds-tab-item/meta/event-deta
 import { MdsTableSelectionEventDetail } from "./components/mds-table/meta/event-detail";
 import { MdsTableRowSelection } from "./components/mds-table/meta/type";
 import { SortDirectionType } from "./components/mds-table-header-cell/meta/types";
-import { TextAnimationType } from "./components/mds-text/meta/types";
+import { TextAnimationType as TextAnimationType1 } from "./components/mds-text/meta/types";
 import { ToastPosition } from "./components/mds-toast/meta/types";
 import { TreeActions, TreeAppearance, TreeIcon } from "./type/tree";
 import { MdsTreeItemEventDetail } from "./components/mds-tree-item/meta/event-detail";
@@ -91,6 +92,7 @@ export { BenchmarkBarTypographyType } from "./components/mds-benchmark-bar/meta/
 export { BibliographyFormatType, BibliographyRelationshipType } from "./components/mds-bibliography/meta/types";
 export { MdsBreadcrumbEventDetail } from "./components/mds-breadcrumb/meta/event-detail";
 export { MdsBreadcrumbItemEventDetail } from "./components/mds-breadcrumb-item/meta/event-detail";
+export { TextAnimationType } from "./components/mds-text/meta/types";
 export { ButtonDropdownVariantType, ButtonIconPositionType, ButtonSizeType, ButtonTargetType, ButtonType, ButtonVariantType, TabSizeType } from "./type/button";
 export { TypographyHeadingTagType, TypographyTagType, TypographyTruncateType } from "./type/text";
 export { CalendarCellSelectionOrieintationType, CalendarCellSelectionPositionType, CalendarCellType } from "./components/mds-calendar-cell/meta/types";
@@ -149,7 +151,7 @@ export { MdsTabItemEventDetail } from "./components/mds-tab-item/meta/event-deta
 export { MdsTableSelectionEventDetail } from "./components/mds-table/meta/event-detail";
 export { MdsTableRowSelection } from "./components/mds-table/meta/type";
 export { SortDirectionType } from "./components/mds-table-header-cell/meta/types";
-export { TextAnimationType } from "./components/mds-text/meta/types";
+export { TextAnimationType as TextAnimationType1 } from "./components/mds-text/meta/types";
 export { ToastPosition } from "./components/mds-toast/meta/types";
 export { TreeActions, TreeAppearance, TreeIcon } from "./type/tree";
 export { MdsTreeItemEventDetail } from "./components/mds-tree-item/meta/event-detail";
@@ -401,6 +403,10 @@ export namespace Components {
          */
         "active": boolean;
         /**
+          * Specifies if the text is animated when it is rendered
+         */
+        "animation"?: TextAnimationType;
+        /**
           * Specifies if the component is focused when is loaded on the viewport
          */
         "autoFocus": boolean;
@@ -413,10 +419,6 @@ export namespace Components {
          */
         "disabled"?: boolean;
         /**
-          * @private Specifies if the component is focused when is loaded on the viewport
-         */
-        "hasText": boolean;
-        /**
           * Specifies the URL target of the button
          */
         "href"?: string;
@@ -428,6 +430,10 @@ export namespace Components {
           * Specifies the horizontal position of the icon displayed in the button
          */
         "iconPosition"?: ButtonIconPositionType;
+        /**
+          * The label of the button
+         */
+        "label"?: string;
         /**
           * Specifies the size for the button
          */
@@ -2151,7 +2157,7 @@ export namespace Components {
         /**
           * Specifies if the text is animated when it is rendered
          */
-        "animation"?: TextAnimationType;
+        "animation"?: TextAnimationType1;
         /**
           * Specifies the HTML tag of the element
          */
@@ -4244,6 +4250,10 @@ declare namespace LocalJSX {
          */
         "active"?: boolean;
         /**
+          * Specifies if the text is animated when it is rendered
+         */
+        "animation"?: TextAnimationType;
+        /**
           * Specifies if the component is focused when is loaded on the viewport
          */
         "autoFocus"?: boolean;
@@ -4256,10 +4266,6 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
-          * @private Specifies if the component is focused when is loaded on the viewport
-         */
-        "hasText"?: boolean;
-        /**
           * Specifies the URL target of the button
          */
         "href"?: string;
@@ -4271,6 +4277,10 @@ declare namespace LocalJSX {
           * Specifies the horizontal position of the icon displayed in the button
          */
         "iconPosition"?: ButtonIconPositionType;
+        /**
+          * The label of the button
+         */
+        "label"?: string;
         /**
           * Specifies the size for the button
          */
@@ -6100,7 +6110,7 @@ declare namespace LocalJSX {
         /**
           * Specifies if the text is animated when it is rendered
          */
-        "animation"?: TextAnimationType;
+        "animation"?: TextAnimationType1;
         /**
           * Specifies the HTML tag of the element
          */

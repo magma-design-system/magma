@@ -10,6 +10,7 @@ import { TypographyTruncateType } from '@type/text'
 // import { hasSlottedContent } from '@common/slot'
 import mdiApple from '@icon/mdi/apple.svg'
 import logoGoogle from './asset/logo-google.svg'
+import { TextAnimationType } from '@component/mds-text/meta/types'
 
 /**
  * @slot default - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
@@ -39,10 +40,14 @@ export class MdsButton {
   @Prop() readonly autoFocus: boolean
 
   /**
-   * @private
-   * Specifies if the component is focused when is loaded on the viewport
+   * The label of the button
    */
-  @Prop({ reflect: true, mutable: true }) hasText: boolean
+  @Prop({ reflect: true, mutable: true }) label?: string
+
+  /**
+   * Specifies if the text is animated when it is rendered
+   */
+  @Prop({ reflect: true }) readonly animation?: TextAnimationType = 'none'
 
   /**
    * The icon displayed in the button
@@ -120,6 +125,20 @@ export class MdsButton {
     this.disabled = undefined
   }
 
+  @Watch('label')
+  labelChanged (newValue?: string): void {
+    if (!newValue) {
+      this.label = undefined
+      return
+    }
+
+    if (newValue.trim() === '') {
+      this.label = undefined
+      return
+    }
+    this.label = newValue.trim()
+  }
+
   @Watch('await')
   awaitChanged (newValue?: boolean): void {
     this.host.setAttribute('aria-busy', (!!newValue).toString())
@@ -187,7 +206,6 @@ export class MdsButton {
 
   componentWillLoad ():void {
     this.hasNotification = this.host.querySelector(':scope > [slot="notification"]') !== null
-    this.hasText = this.host.innerHTML.trim() !== '' || this.host.children.length > 0
 
     this.handleVariantChange(this.variant)
 
@@ -229,7 +247,11 @@ export class MdsButton {
       return
     }
 
-    if (!this.hasText && this.icon) {
+    if (this.label === '') {
+      this.label = undefined
+    }
+
+    if (!this.label && this.icon) {
       const iconTitle = unslugName(this.icon)
       if (!this.host.hasAttribute('aria-label')) {
         setAttributeIfEmpty(this.host, 'title', iconTitle)
@@ -261,7 +283,9 @@ export class MdsButton {
   }
 
   private onSlotChangeHandler = (): void => {
-    this.hasText = this.host.innerHTML.trim() !== '' || this.host.children.length > 0
+    /* this should be removed in the future once slotted text is no longer used, use the label property instead */
+    if (this.label) return
+    this.label = this.host.innerHTML.trim() ?? undefined
   }
 
   render () {
@@ -273,7 +297,10 @@ export class MdsButton {
           <mds-spinner class="spinner" running={this.await}/>
         </div>
         { this.icon && this.iconPosition === 'left' && <mds-icon aria-hidden="true" class="icon" name={this.icon} part="icon"/> }
-        <mds-text class="text" part="label" typography={this.typography} truncate={this.truncate}><slot onSlotchange={this.onSlotChangeHandler}/></mds-text>
+        <mds-text class="text" part="label" tag="span" typography={this.typography} truncate={this.truncate} animation={this.animation} text={this.label}>
+          {/* this should be removed in the future once slotted text is no longer used, use the label property instead */}
+          { !this.label && <slot onSlotchange={this.onSlotChangeHandler}/> }
+        </mds-text>
         { this.hasNotification && <slot name="notification"/> }
         { this.icon && this.iconPosition === 'right' && <mds-icon aria-hidden="true" class="icon" name={this.icon} part="icon"/> }
       </Host>

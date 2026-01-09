@@ -8,8 +8,11 @@ import {
   buttonIconPositionDictionary,
   buttonTypeDictionary,
 } from '@dictionary/button'
+import { ButtonVariantType } from '@type/button'
+import { ToneVariantType } from '@type/variant'
 import { useEffect, useState } from 'react'
 import { expect, fn } from 'storybook/test'
+import { textAnimateDictionary } from '@component/mds-text/meta/dictionary'
 
 export default {
   title: 'UI / Button',
@@ -22,6 +25,12 @@ export default {
     await: {
       type: { name: 'boolean' },
       description: 'Specifies if the component is awaiting to load a response',
+    },
+    animation: {
+      type: { name: 'string' },
+      description: 'Specifies if the text is animated when it is rendered',
+      options: textAnimateDictionary,
+      control: { type: 'select' },
     },
     disabled: {
       type: { name: 'boolean' },
@@ -207,6 +216,57 @@ const TemplateDisabled = () => {
   )
 }
 
+const TemplateAnimation = () => {
+  const [buttonStateIndex, setButtonStateIndex] = useState(0)
+  const buttonState: Array<{
+    label: string
+    await: boolean
+    variant: ButtonVariantType
+    tone: ToneVariantType
+    icon?: string
+  }> = [
+    {
+      label: 'Click me',
+      await: false,
+      variant: 'primary',
+      tone: 'strong',
+    },
+    {
+      label: 'Loading...',
+      variant: 'success',
+      tone: 'weak',
+      await: true,
+    },
+    {
+      label: 'Load completed',
+      icon: 'mi/baseline/check',
+      variant: 'success',
+      tone: 'strong',
+      await: false,
+    },
+  ]
+
+  const checkButtonState = () => {
+    if (buttonStateIndex === 0) {
+      setButtonStateIndex(1)
+      setTimeout(() => {
+        setButtonStateIndex(2)
+      }, 2000)
+      return
+    }
+
+    if (buttonStateIndex === 2) {
+      setButtonStateIndex(0)
+    }
+
+    setButtonStateIndex((buttonStateIndex + 1) % buttonState.length)
+  }
+
+  return (
+    <mds-button id="button-text-animation" onClick={checkButtonState} class="w-full max-w-8000" animation="yugop" label={buttonState[buttonStateIndex].label} icon={buttonState[buttonStateIndex].icon} variant={buttonState[buttonStateIndex].variant} tone={buttonState[buttonStateIndex].tone} await={buttonState[buttonStateIndex].await}></mds-button>
+  )
+}
+
 const TemplateAsyncContent = () => {
   const [icon, setIcon] = useState('')
   const [label, setLabel] = useState('')
@@ -221,9 +281,7 @@ const TemplateAsyncContent = () => {
   }, [icon, label])
 
   return (
-    <mds-button class="max-w-4400" icon={icon}>
-      {label}
-    </mds-button>
+    <mds-button class="max-w-4400" icon={icon} label={label}></mds-button>
   )
 }
 
@@ -233,6 +291,10 @@ export const Default = {
 
 export const AsyncContent = {
   render: TemplateAsyncContent,
+}
+
+export const TextAnimation = {
+  render: TemplateAnimation,
 }
 
 export const AutoFocus = {
