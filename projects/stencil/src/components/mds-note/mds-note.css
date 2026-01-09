@@ -52,13 +52,13 @@
   --mds-note-selection-background: var(--magma-selection-background, rgb(var(--label-yellow-09)));
   --mds-note-selection-color: var(--magma-selection-color, rgb(var(--label-yellow-02)));
 
-  @apply duration-300
-  ease-in-out
+  @apply ease-in-out
   gap-200
   p-600
   rounded;
 
   background-color: var(--mds-note-background);
+  transition-duration: var(--duration-300);
   color: var(--mds-note-color);
   display: grid;
   overflow: hidden;
@@ -101,12 +101,12 @@
 }
 
 .button-close {
-  @apply duration-200
-  ease-out
+  @apply ease-out
   p-100
   rounded-full;
 
   background-color: transparent;
+  transition-duration: var(--duration-200);
   cursor: pointer;
   fill: var(--mds-note-color);
   transition-property: background-color, fill, outline, outline-offset;

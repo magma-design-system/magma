@@ -76,12 +76,11 @@
   --mds-breadcrumb-item-button-color: var(--mds-breadcrumb-button-color, rgb(var(--tone-neutral-02)));
   --mds-breadcrumb-item-button-border-radius: 1000px;
 
-  @apply duration-200;
-
   align-items: center;
   display: flex;
   flex-shrink: 0;
   gap: 0;
+  transition-duration: var(--duration-200);
   transition-property: box-shadow, outline, outline-offset;
   transition-timing-function: var(--ease-out-quad);
   user-select: none;

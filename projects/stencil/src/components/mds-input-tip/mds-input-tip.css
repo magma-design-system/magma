@@ -45,21 +45,17 @@
   --mds-input-tip-horizontal-offset: --spacing(400);
   --mds-input-tip-vertical-offset: --spacing(100);
 
-  @apply
-    duration-300
-    ease-out-expo
-    gap-100
-    left-100
-    right-100;
-
   display: flex;
+  gap: --spacing(100);
   justify-content: flex-end;
   left: var(--mds-input-tip-horizontal-offset);
   pointer-events: none;
   position: absolute;
   right: var(--mds-input-tip-horizontal-offset);
   transform: var(--mds-input-tip-active-translate);
+  transition-duration: var(--duration-300);
   transition-property: transform;
+  transition-timing-function: var(--ease-out-expo);
 }
 
 :host(:empty) {

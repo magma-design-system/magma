@@ -55,13 +55,12 @@
 }
 
 .avatar {
-  @apply duration-200;
-
   aspect-ratio: 1/1;
   border-radius: var(--mds-avatar-radius);
   color: transparent;
   display: inline-flex;
   overflow: hidden;
+  transition-duration: var(--duration-200);
   transition-property: color, background-color, box-shadow, fill;
   width: 100%;
 }
@@ -113,8 +112,8 @@
 
 .initials-text {
   @apply
-    font-title
-    font-bold;
+    font-bold
+    font-title;
 
   align-items: center;
   color: var(--mds-avatar-color);
@@ -132,10 +131,9 @@
 }
 
 .icon {
-  @apply duration-300;
-
   fill: var(--mds-avatar-color);
   height: 100%;
+  transition-duration: var(--duration-300);
   transition-property: fill;
   transition-timing-function: var(--ease-in-out-expo);
   width: 100%;

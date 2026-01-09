@@ -2,12 +2,11 @@
 
 .icon-checked,
 .icon-unchecked {
-  @apply
-    duration-200
-    ease-out-expo
-    font-normal;
+  @apply font-normal;
 
+  transition-duration: var(--duration-200);
   transition-property: fill, transform;
+  transition-timing-function: var(--ease-out-expo);
 }
 
 .icon-unchecked {
@@ -32,8 +31,7 @@
 }
 
 .field:checked + .label-icon .icon-unchecked {
-  @apply opacity-0;
-
+  opacity: 0;
   transform: scale(1.5);
   transition-duration: calc(var(--mds-input-switch-duration) * 2);
 }

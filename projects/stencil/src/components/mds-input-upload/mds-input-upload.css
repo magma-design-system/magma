@@ -54,6 +54,15 @@
 }
 
 .drag-area {
+  align-items: center;
+  background-color: var(--mds-input-upload-drag-area-background-color);
+  border: var(--mds-input-upload-drag-area-border);
+  border-radius: var(--radius-2xl);
+  display: flex;
+  flex-direction: column;
+  gap: --spacing(400);
+  justify-content: center;
+  padding: --spacing(600);
 
   /*
     actually there is no way to custom background-image url
@@ -68,21 +77,9 @@
     --url: "url(data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='" var(--border-radius) "' ry='" var(--border-radius) "' stroke='" var(--stroke-color) "' stroke-width='" var(--stroke-width) "' stroke-dasharray='8%2c 16' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e)";
     background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx="16" ry='16' stroke='red' stroke-width='5' stroke-dasharray='8%2c 16' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
  */
-
-  @apply
-    duration-300
-    ease-in-out
-    gap-400
-    p-600
-    rounded-2xl;
-
-  align-items: center;
-  background-color: var(--mds-input-upload-drag-area-background-color);
-  border: var(--mds-input-upload-drag-area-border);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  transition-duration: var(--duration-300);
   transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+  transition-timing-function: var(--ease-in-out);
   user-select: none;
 }
 
@@ -92,19 +89,17 @@
 }
 
 .icon {
-  @apply
-    svg
-    w-1200;
+  @apply svg;
 
   fill: rgb(var(--variant-primary-05));
+  width: --spacing(1200);
 }
 
 .action {
-  @apply p-150;
-
   border-radius: 1000px;
   fill: rgb(var(--tone-neutral-04));
   height: auto;
+  padding: --spacing(150);
 }
 
 .action--cancel-upload:focus-visible,
@@ -130,13 +125,10 @@
 }
 
 .main-actions {
-
-  @apply
-    gap-200
-    min-w-3200;
-
   display: flex;
   flex-direction: column;
+  gap: --spacing(200);
+  min-width: --spacing(3200);
 }
 
 .main-action-icon {
@@ -147,17 +139,16 @@
 
 .file-list,
 .main-infos {
-  @apply
-    gap-100
-    grid-cols-full;
+  @apply grid-cols-full;
 
   display: grid;
+  gap: --spacing(100);
 }
 
 .file-list {
-  @apply
-    gap-400
-    grid-cols-fit-sm;
+  @apply grid-cols-fit-sm;
+
+  gap: --spacing(400);
 }
 
 :host-context(:not(.safari)) .file-list {
@@ -176,8 +167,7 @@
 }
 
 .main-infos {
-  @apply max-w-4800;
-
+  max-width: --spacing(4800);
   min-width: 0;
   text-align: center;
   width: 100%;
@@ -189,24 +179,18 @@
 }
 
 .additional-infos {
-
-  @apply gap-400;
-
   align-items: flex-start;
   display: flex;
   flex-wrap: wrap;
+  gap: --spacing(400);
   justify-content: space-between;
 }
 
 .file-specs {
-
-  @apply
-    gap-x-400
-    gap-y-100;
-
   display: flex;
   flex-grow: 1;
   flex-wrap: wrap;
+  gap: --spacing(100) --spacing(400);
   justify-content: space-between;
 }
 

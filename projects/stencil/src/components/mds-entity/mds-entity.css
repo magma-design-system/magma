@@ -60,26 +60,22 @@
   --mds-entity-icon-color: rgb(var(--label-blue-04));
   --mds-entity-shadow: var(--shadow-md);
 
-  @apply
-    gap-200
-    p-200
-    rounded-lg;
-
   align-items: stretch;
   background-color: var(--mds-entity-background);
+  border-radius: var(--radius-lg);
   box-shadow: var(--mds-entity-shadow);
   color: var(--mds-entity-color);
   display: flex;
+  gap: --spacing(200);
+  padding: --spacing(200);
 }
 
 .spinner,
 .preview,
 .delete {
-  @apply
-    rounded
-    w-1100;
-
+  border-radius: var(--radius-md);
   flex-shrink: 0;
+  width: --spacing(1100);
 }
 
 .preview {
@@ -112,44 +108,38 @@
 }
 
 mds-spinner {
-  @apply
-    h-900
-    w-900;
+  height: --spacing(900);
+  width: --spacing(900);
 }
 
 .infos {
-  @apply
-    gap-0
-    min-w-0;
-
   display: flex;
   flex-direction: column;
   flex-grow: 1;
+  gap: --spacing(0);
   justify-content: center;
+  min-width: 0;
   white-space: nowrap;
 }
 
 .details {
-  @apply gap-100;
-
   align-items: center;
   color: var(--mds-entity-detail-color);
   display: flex;
+  gap: --spacing(100);
 }
 
 .actions {
-  @apply gap-200;
-
   align-items: center;
   display: flex;
+  gap: --spacing(200);
 }
 
 ::slotted( [slot="action"]) {
-  @apply
-    aspect-square
-    w-1100;
+  @apply aspect-square;
 
   height: auto;
+  width: --spacing(1100);
 }
 
 ::slotted( *) {
@@ -159,11 +149,10 @@ mds-spinner {
 }
 
 .title {
-  @apply
-    min-w-0
-    truncate;
+  @apply truncate;
 
   display: flex;
+  min-width: 0px;
 }
 
 @import './css/mds-entity-pref-contrast.css';

@@ -45,8 +45,7 @@
   --mds-progress-radius: var(--radius-lg);
   --mds-progress-thickness: var(--height-200);
 
-  @apply duration-300
-  ease-in-out;
+  @apply ease-in-out;
 
   background-color: var(--mds-progress-background);
   border-radius: var(--mds-progress-radius);
@@ -55,6 +54,7 @@
   min-width: var(--mds-progress-thickness);
   overflow: hidden;
   position: relative;
+  transition-duration: var(--duration-300);
   transition-property: background-color;
   width: 100%;
 }
@@ -67,8 +67,7 @@
 }
 
 .progress {
-  @apply duration-500
-  ease-out-expo;
+  @apply ease-out-expo;
 
   background-color: var(--mds-progress-color);
   border-radius: var(--mds-progress-radius);

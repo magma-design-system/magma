@@ -88,14 +88,13 @@
 }
 
 .helper-icon {
-  @apply
-    duration-300
-    svg;
+  @apply svg;
 
   cursor: pointer;
   fill: var(--mds-details-helper-icon-color);
   flex-shrink: 0;
   rotate: 0deg;
+  transition-duration: var(--duration-300);
   transition-property: transform;
   transition-timing-function: var(--ease-in-out-expo);
 }

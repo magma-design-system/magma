@@ -61,11 +61,11 @@
 }
 
 .window {
-  @apply duration-200
-  ease-out
+  @apply ease-out
   w-full;
 
   background-color: var(--mds-url-view-background);
+  transition-duration: var(--duration-200);
   border-radius: var(--mds-url-view-radius);
   box-shadow: var(--mds-url-view-shadow);
   display: flex;
@@ -76,12 +76,12 @@
 }
 
 .header {
-  @apply duration-200
-  ease-out
+  @apply ease-out
   gap-200
   p-200;
 
   align-items: center;
+  transition-duration: var(--duration-200);
   background-color: var(--mds-url-view-background);
   box-shadow: var(--mds-url-view-header-shadow);
   color: var(--mds-url-view-color);

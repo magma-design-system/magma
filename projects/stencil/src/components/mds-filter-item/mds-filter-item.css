@@ -38,22 +38,21 @@
   --mds-filter-item-count-background-selected: rgb(var(--tone-neutral-05));
   --mds-filter-item-count-color-selected: rgb(var(--tone-neutral));
 
-  @apply duration-200
-  ease-out
-  focus-bounce
-  gap-100
-  px-400
-  py-200
-  rounded-full;
+  @apply focus-bounce;
 
   align-items: center;
+  border-radius: 1000px;
   color: rgb(var(--tone-neutral-03));
   cursor: pointer;
   display: flex;
   fill: currentcolor;
+  gap: --spacing(100);
   justify-content: center;
+  padding: --spacing(200) --spacing(400);
+  transition-duration: var(--duration-200);
   transition-property:
     background-color, box-shadow, color, outline, outline-offset;
+  transition-timing-function: var(--ease-out);
   user-select: none;
   white-space: nowrap;
 }
@@ -63,9 +62,6 @@ mds-text {
 }
 
 .count {
-  @apply duration-200
-  ease-out;
-
   align-items: center;
   background-color: var(--mds-filter-item-count-background-default);
   border-radius: --spacing(400);
@@ -79,7 +75,9 @@ mds-text {
   min-width: --spacing(400);
   padding-left: --spacing(150);
   padding-right: --spacing(150);
+  transition-duration: var(--duration-200);
   transition-property: background-color, color;
+  transition-timing-function: var(--ease-out);
   user-select: none;
 }
 
@@ -88,9 +86,9 @@ mds-text {
 }
 
 :host([icon]:not([label])) {
-  @apply h-900
-  p-0
-  w-900;
+  height: --spacing(900);
+  padding: 0;
+  width: --spacing(900);
 }
 
 :host([selected]:not([selected='false'])),

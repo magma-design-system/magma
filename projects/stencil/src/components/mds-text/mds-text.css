@@ -203,13 +203,13 @@
 }
 
 :host([tag="code"]) {
-  @apply duration-200
-  ease-in-out
+  @apply ease-in-out
   px-100
   py-25
   rounded;
 
   background-color: rgb(var(--tone-neutral-09));
+  transition-duration: var(--duration-200);
   box-shadow: rgb(var(--tone-neutral-08)) 0 0 0 1px;
   color: rgb(var(--tone-neutral-03));
   transition-property: color, background-color;

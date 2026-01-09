@@ -56,13 +56,12 @@
 }
 
 .card {
-  @apply
-    gap-200
-    grid-cols-full
-    p-400;
+  @apply grid-cols-full;
 
   border-radius: var(--mds-file-preview-border-radius);
   display: grid;
+  gap: --spacing(200);
+  padding: --spacing(400);
   width: 100%;
 }
 
@@ -92,16 +91,13 @@
 }
 
 .preview--status {
-
-  @apply
-    gap-200
-    p-400;
+  gap: --spacing(200);
+  padding: --spacing(400);
 }
 
 .icon {
-  @apply
-    h-1200
-    w-1200;
+  height: --spacing(1200);
+  width: --spacing(1200);
 }
 
 .message {
@@ -117,11 +113,9 @@
 }
 
 .infos {
-
-  @apply gap-200;
-
   align-items: center;
   display: flex;
+  gap: --spacing(200);
 }
 
 .suffix {

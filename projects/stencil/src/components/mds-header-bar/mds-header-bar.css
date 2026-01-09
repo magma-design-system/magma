@@ -13,11 +13,6 @@
 :host {
   --mds-header-bar-hamburger-color: rgb(var(--tone-neutral-03));
 
-  @apply
-    ease-out-expo
-    px-600
-    py-400;
-
   background-color: rgb(var(--tone-neutral));
   box-shadow: var(--shadow-md-sharp);
   display: flex;
@@ -27,9 +22,11 @@
   margin-left: auto;
   margin-right: auto;
   max-width: 100%;
+  padding: --spacing(400) --spacing(600);
   position: fixed;
   transition-duration: 500ms;
   transition-property: background-color, border-radius, margin, max-width, transform, width;
+  transition-timing-function: var(--ease-out-expo);
   width: auto;
   z-index: var(--mds-header-z-index, 1000);
 }
@@ -40,27 +37,23 @@
 }
 
 .content {
-  @apply
-    gap-400
-    max-w-screen-wide;
-
   align-items: center;
   display: flex;
   flex-grow: 1;
+  gap: --spacing(400);
   justify-content: space-between;
+  max-width: var(--breakpoint-wide);
 }
 
 .actions {
-  @apply gap-600;
-
   display: flex;
+  gap: --spacing(600);
 }
 
 .nav {
-  @apply gap-400;
-
   display: inline-flex;
   flex-shrink: 0;
+  gap: --spacing(400);
 }
 
 .menu {
@@ -71,7 +64,7 @@
 }
 
 .menu::part(icon) {
-  @apply w-800;
+  width: --spacing(800);
 }
 
 :host([menu="desktop"]) .menu,

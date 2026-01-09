@@ -60,21 +60,19 @@
 }
 
 img {
-  @apply w-full;
-
   object-fit: inherit;
+  width: 100%;
 }
 
 .alt-text-container {
-  @apply gap-600
-  p-600;
-
   align-items: center;
   background-color: var(--mds-img-background);
   color: var(--mds-img-color);
   display: flex;
   flex-direction: column;
+  gap: --spacing(600);
   justify-content: center;
+  padding: --spacing(600);
   text-align: center;
 }
 
@@ -102,7 +100,6 @@ img {
 }
 
 .icon {
-  @apply w-900;
-
   fill: var(--mds-img-icon-color);
+  width: --spacing(900);
 }

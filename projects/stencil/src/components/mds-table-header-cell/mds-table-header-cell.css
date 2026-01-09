@@ -5,10 +5,10 @@
  */
 
 :host {
-  @apply duration-200
-  ease-out;
+  @apply ease-out;
 
   background-color: var(--mds-table-background);
+  transition-duration: var(--duration-200);
   border-bottom: var(--mds-table-cell-border-width) solid var(--mds-table-cell-border-color) !important;
   border-top: var(--mds-table-cell-border-width) solid transparent !important;
   display: table-cell;

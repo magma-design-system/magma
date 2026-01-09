@@ -81,12 +81,7 @@
 }
 
 .inputs {
-  @apply duration-300
-  ease-out-expo
-  m-0
-  pl-400
-  pr-1200
-  text-code-hack;
+  @apply text-code-hack;
 
   align-items: center;
   background-color: var(--mds-input-date-range-background);
@@ -98,10 +93,15 @@
   display: inline-flex;
   flex-wrap: wrap;
   gap: var(--mds-input-date-range-fields-gap);
+  margin: 0;
   min-height: 3rem;
   overflow: hidden;
+  padding-left: --spacing(400);
+  padding-right: --spacing(1200);
   text-overflow: ellipsis;
+  transition-duration: var(--duration-300);
   transition-property: background-color, border-color, box-shadow, color, fill, margin, opacity, padding, transform;
+  transition-timing-function: var(--ease-out-expo);
   width: 100%;
 }
 
@@ -111,13 +111,13 @@
 }
 
 :host(:focus-within) .inputs {
-  @apply outline-hidden
-  transition-cosmetic
-  duration-300
-  ease-out-expo;
+  @apply outline-hidden transition-cosmetic;
 
   --mds-input-date-range-ring: 0 0 0 3px rgb(var(--mds-input-date-range-variant-color-rgb) / 1);
   --mds-input-date-range-shadow: 0 4px 6px 3px rgb(var(--mds-input-date-range-variant-color-rgb) / 0.1), 0 2px 4px -1px rgb(var(--mds-input-date-range-variant-color-rgb) / 0.06);
+
+  transition-duration: var(--duration-300);
+  transition-timing-function: var(--ease-out-expo);
 }
 
 .input-wrapper {

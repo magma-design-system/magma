@@ -1,11 +1,10 @@
 .await {
-  @apply duration-300;
-
   display: none;
   height: --spacing(600);
   margin-right: calc(calc(-1 * var(--mds-button-gap)) - --spacing(600));
   transform: scale(0);
   transition-behavior: allow-discrete;
+  transition-duration: var(--duration-300);
   transition-property: display, margin-right, opacity, transform, width;
   transition-timing-function: var(--ease-in-out-quad);
   width: --spacing(600);
@@ -22,8 +21,7 @@
 :host(:not([await])),
 :host([await="false"]) {
   .spinner {
-    @apply duration-200;
-
+    transition-duration: var(--duration-200);
     transition-timing-function: var(--ease-out-quad);
   }
 }

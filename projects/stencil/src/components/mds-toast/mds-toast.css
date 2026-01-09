@@ -129,10 +129,10 @@
 }
 
 ::slotted([slot='icon']) {
-  @apply duration-200
-  ease-out;
+  @apply ease-out;
 
   fill: var(--mds-toast-icon-color);
+  transition-duration: var(--duration-200);
   flex-shrink: 0;
   transition-property: fill;
 }

@@ -172,18 +172,17 @@
   overflow: hidden;
   padding: --spacing(300) --spacing(400);
   text-overflow: ellipsis;
-  transition-duration: var(--duration);
+  transition-duration: var(--duration-300);
   transition-property: background-color, border-color, box-shadow, color, fill, margin, opacity, padding, transform;
   transition-timing-function: var(--ease-out-expo);
   width: 100%;
 }
 
 .input::placeholder {
-  @apply duration-300
-    ease-out-expo;
-
   color: var(--mds-input-placeholder-default-color);
+  transition-duration: var(--duration-300);
   transition-property: color;
+  transition-timing-function: var(--ease-out-expo);
 }
 
 .input:hover::placeholder {
@@ -203,13 +202,19 @@
 
 :host textarea.input,
 :host([typography]) textarea.input {
-  @apply rounded-br-none;
-
+  border-radius: var(--radius-xs);
   field-sizing: var(--mds-input-textarea-field-sizing);
   max-height: var(--mds-input-textarea-max-height);
   min-height: var(--mds-input-textarea-min-height);
   overflow: auto;
   resize: var(--mds-input-textarea-resize);
+}
+
+@container style(--mds-input-textarea-resize: none) {
+  :host textarea.input,
+  :host([typography]) textarea.input {
+    border-bottom-right-radius: 0;
+  }
 }
 
 .input:focus {
@@ -230,20 +235,19 @@
 }
 
 .input.has-icon {
-  @apply pl-1100;
+  padding-left: --spacing(1100);
 }
 
 .input.has-right-icon {
-  @apply pr-1100;
+  padding-right: --spacing(1100);
 }
 
 .await,
 .icon {
-  @apply left-300
-    top-300;
-
   fill: var(--mds-input-icon-color);
+  left: --spacing(300);
   position: absolute;
+  top: --spacing(300);
 }
 
 .await {
@@ -262,16 +266,15 @@
 }
 
 .counter-button {
-  @apply h-600
-    rounded-lg
-    w-700;
-
   --mds-button-background: transparent;
 
   border: 0;
+  border-radius: var(--radius-lg);
   fill: var(--mds-input-controls-color);
+  height: --spacing(600);
   min-height: 0;
   padding: 0;
+  width: --spacing(700);
 }
 
 .counter-button:hover {
@@ -291,12 +294,11 @@
 }
 
 .counter-button--horizontal {
-  @apply h-1200
-    w-1200;
-
   bottom: 0;
+  height: --spacing(1200);
   position: absolute;
   top: 0;
+  width: --spacing(1200);
 }
 
 .counter-button--decrease {
@@ -314,19 +316,17 @@
 }
 
 .password-toggle-button {
-  @apply top-150
-    right-150;
-
   fill: var(--mds-input-controls-color);
   position: absolute;
+  right: --spacing(150);
+  top: --spacing(150);
 }
 
 .mic-toggle-button {
-  @apply top-150
-    right-150;
-
   fill: var(--mds-input-controls-color);
   position: absolute;
+  right: --spacing(150);
+  top: --spacing(150);
 }
 
 .toggle-button--error {
@@ -344,27 +344,26 @@
 
   /* stylelint-disable-next-line property-no-vendor-prefix */
   -moz-appearance: textfield;
-  @apply pr-800;
+  padding-right: --spacing(800);
 }
 
 :host([type="number"][controls-layout="horizontal"]) .input {
-  @apply px-1400;
-
+  padding-left: --spacing(1400);
+  padding-right: --spacing(1400);
   text-align: center;
 }
 
 :host([type="number"][controls-layout="horizontal"][icon]) .input {
-  @apply pl-2400;
-
+  padding-left: --spacing(2400);
   text-align: left;
 }
 
 :host([type="number"][controls-layout="horizontal"]) .icon {
-  @apply left-1500;
+  left: --spacing(1500);
 }
 
 :host([type="password"]) .input {
-  @apply pr-1000;
+  padding-right: --spacing(1000);
 }
 
 :host([type="password"]) .input[type="text"]:not(:placeholder-shown) {
@@ -372,7 +371,9 @@
 }
 
 :host([type="cf"]) .input {
-  @apply text-code-snippet uppercase;
+  @apply text-code-snippet;
+
+  text-transform: uppercase;
 }
 
 mds-input-tip {

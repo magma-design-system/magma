@@ -31,19 +31,19 @@
   --mds-file-preview-color: rgb(var(--tone-neutral-04));
   --mds-file-preview-icon-bacground: rgb(var(--tone-neutral-10));
 
-  @apply duration-200
-  ease-out
-  focus-bounce
-  rounded-md;
+  @apply focus-bounce;
 
   align-items: stretch;
   background-color: rgb(var(--tone-neutral));
+  border-radius: var(--radius-md);
   box-shadow: var(--shadow-sharp);
   color: rgb(var(--tone-neutral-04));
   cursor: pointer;
   display: inline-flex;
   overflow: hidden;
+  transition-duration: var(--duration-200);
   transition-property: box-shadow, outline, outline-offset;
+  transition-timing-function: var(--ease-out);
   width: 100%;
 }
 
@@ -56,10 +56,6 @@
 }
 
 .preview {
-  @apply duration-300
-  ease-in-out
-  w-1400;
-
   align-items: center;
   background-color: var(--mds-file-preview-icon-bacground);
   color: var(--mds-file-preview-color);
@@ -68,40 +64,37 @@
   flex-shrink: 0;
   justify-content: center;
   position: relative;
+  transition-duration: var(--duration-300);
   transition-property: color, background-color, fill;
+  transition-timing-function: var(--ease-in-out);
+  width: --spacing(1400);
 }
 
 .image-preview {
-  @apply bottom-300
-  left-300
-  right-300
-  top-300;
-
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
+  inset: --spacing(300);
   position: absolute;
 }
 
 .info {
-  @apply min-w-0
-  px-300
-  py-200;
-
   display: flex;
   flex-direction: column;
   flex-grow: 1;
+  min-width: 0px;
+  padding: --spacing(200) --spacing(300);
 }
 
 .filename {
-  @apply min-w-0;
-
   display: flex;
+  min-width: 0px;
 }
 
 .name {
-  @apply min-w-0
-  truncate;
+  @apply truncate;
+
+  min-width: 0px;
 }
 
 .extension {
@@ -109,11 +102,10 @@
 }
 
 .detail {
-  @apply gap-200
-  min-w-0;
-
   align-items: center;
   display: flex;
+  gap: --spacing(200);
+  min-width: 0px;
 }
 
 .suffix {
@@ -122,18 +114,17 @@
 }
 
 .description {
-  @apply min-w-0
-  truncate;
+  @apply truncate;
 
   color: rgb(var(--tone-neutral-05));
+  min-width: 0px;
 }
 
 .indicator {
-  @apply pr-400;
-
   align-items: center;
   display: flex;
   justify-content: center;
+  padding-right: --spacing(400);
 }
 
 .downloaded {

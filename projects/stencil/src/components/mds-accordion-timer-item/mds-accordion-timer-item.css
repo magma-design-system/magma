@@ -103,10 +103,11 @@
 }
 
 .icon {
-  @apply duration-500 svg;
+  @apply svg;
 
   fill: currentcolor;
   transform: rotate(180deg);
+  transition-duration: var(--duration-500);
   transition-property: transform;
   transition-timing-function: var(--ease-out-expo);
 }
@@ -120,9 +121,8 @@
 }
 
 :host([selected]:not([selected="false"])) .content {
-  @apply opacity-100;
-
   grid-template-rows: 1fr;
+  opacity: 1;
   padding-top: --spacing(400);
 }
 

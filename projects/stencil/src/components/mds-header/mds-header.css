@@ -121,12 +121,10 @@
 :host([appearance="inline"]) ::slotted(mds-header-bar) {
   --mds-header-inline-margin-current: var(--mds-header-inline-margin);
 
-  @apply
-    max-w-screen-wide
-    rounded-lg;
-
+  border-radius: var(--radius-lg);
   margin-bottom: var(--mds-header-inline-margin-current);
   margin-top: var(--mds-header-inline-margin-current);
+  max-width: var(--breakpoint-wide);
   width: calc(100% - calc(var(--mds-header-inline-margin-current) * 2));
 }
 

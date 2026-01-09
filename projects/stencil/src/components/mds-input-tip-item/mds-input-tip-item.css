@@ -29,15 +29,12 @@
   --mds-input-tip-item-color: rgb(var(--tone-neutral));
   --mds-input-tip-item-icon-color: rgb(var(--tone-neutral));
 
-  @apply duration-300
-  ease-out-expo
-  h-300;
-
   align-items: center;
   background-color: var(--mds-input-tip-item-background);
   border-radius: var(--radius-2xs);
   color: var(--mds-input-tip-item-color);
   display: flex;
+  height: --spacing(300);
   justify-content: center;
   min-width: --spacing(300);
   padding: 0;
@@ -45,20 +42,21 @@
   position: static;
   text-align: center;
   transform: translate(0, 0);
+  transition-duration: var(--duration-300);
   transition-property: background-color, border-radius, color, padding-left, padding-right, transform;
+  transition-timing-function: var(--ease-out-expo);
   user-select: none;
 }
 
 .content {
-  @apply duration-200
-  ease-out-expo
-  h-300;
-
   display: grid;
   grid-template-columns: 0fr;
+  height: --spacing(300);
   opacity: 0;
   overflow: hidden;
+  transition-duration: var(--duration-200);
   transition-property: grid-template-columns, opacity;
+  transition-timing-function: var(--ease-out-expo);
 }
 
 .text {
@@ -66,12 +64,12 @@
 }
 
 .icon {
-  @apply h-300
-  svg
-  w-300;
+  @apply svg;
 
   fill: var(--mds-input-tip-item-icon-color);
+  height: --spacing(300);
   transform: translateY(-1px);
+  width: --spacing(300);
 }
 
 @import './css/mds-input-tip-item-expanded.css';

@@ -45,8 +45,6 @@
   --mds-badge-color: rgb(var(--label-sky-03));
   --mds-badge-radius: var(--radius-sm, 10px);
 
-  @apply duration-200;
-
   align-items: center;
   background-color: var(--mds-badge-background);
   border-radius: var(--mds-badge-radius);
@@ -54,6 +52,7 @@
   display: inline-flex;
   min-width: min-content;
   padding: --spacing(100) --spacing(200);
+  transition-duration: var(--duration-200);
   transition-property: background-color, border-color, border-width, color;
   transition-timing-function: var(--ease-out-quad);
 }

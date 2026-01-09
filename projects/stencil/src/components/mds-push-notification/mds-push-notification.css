@@ -64,8 +64,7 @@
   --mds-push-notification-items-timing-function: var(--ease-in-out-quint);
   --mds-push-notification-background: linear-gradient(to right, rgb(220 220 220 / 0) 0%, rgb(220 220 220 / 0.85) 100%);
 
-  @apply duration-500
-    ease-in-out-expo
+  @apply ease-in-out-expo
     gap-200
     max-w-[360px]
     min-w-7200
@@ -75,6 +74,7 @@
 
   /* stylelint-disable-next-line property-disallowed-list */
   background: var(--mds-push-notification-background);
+  transition-duration: var(--duration-500);
   bottom: 0;
   box-sizing: content-box !important;
   display: flex;

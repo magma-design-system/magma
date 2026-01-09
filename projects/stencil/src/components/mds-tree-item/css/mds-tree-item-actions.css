@@ -1,5 +1,5 @@
 .actions-container {
-  --duration: 300ms;
+  --duration-300: 300ms;
   --ease: var(--ease-in-out-expo);
 
   align-items: center;
@@ -10,7 +10,7 @@
   min-width: 0;
   overflow: hidden;
   transition-behavior: allow-discrete;
-  transition-duration: var(--duration);
+  transition-duration: var(--duration-300);
   transition-property: min-width, width, overflow;
   transition-timing-function: var(--ease);
   width: 0;
@@ -28,7 +28,7 @@
   gap: var(--mds-tree-item-actions-gap);
   pointer-events: none;
   transform: scale(0);
-  transition-duration: var(--duration);
+  transition-duration: var(--duration-300);
   transition-property: transform;
   transition-timing-function: var(--ease);
 }
@@ -44,7 +44,7 @@
 :host([actions="visible"]):host-context([actions="auto"]) .actions-container,
 .header:focus-within .actions-container,
 .header:hover .actions-container {
-  animation: toggleOverflow var(--duration) forwards;
+  animation: toggleOverflow var(--duration-300) forwards;
   min-width: fit-content;
   width: fit-content;
 }

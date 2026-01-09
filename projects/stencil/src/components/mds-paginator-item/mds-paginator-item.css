@@ -120,12 +120,12 @@
   --mds-paginator-item-shadow: none;
   --mds-paginator-item-size: --spacing(900);
 
-  @apply duration-200
-  ease-out
+  @apply ease-out
   focus-bounce
   px-300;
 
   align-items: center;
+  transition-duration: var(--duration-200);
   background-color: var(--mds-paginator-item-background);
   border-radius: var(--mds-paginator-item-radius);
   box-shadow: var(--mds-paginator-item-shadow);

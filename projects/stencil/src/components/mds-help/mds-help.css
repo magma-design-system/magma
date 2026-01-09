@@ -41,17 +41,17 @@
   --mds-help-tooltip-min-width: 200px;
   --mds-help-tooltip-delay: 0.25s;
 
-  @apply h-400
-    ml-100
-    w-400;
 
   color: rgb(var(--tone-neutral-03));
   cursor: help;
   display: inline-flex;
   fill: currentcolor;
+  height: --spacing(400);
   justify-content: flex-start;
+  margin-left: --spacing(100);
   overflow: visible;
   position: relative;
+  width: --spacing(400);
 }
 
 i {

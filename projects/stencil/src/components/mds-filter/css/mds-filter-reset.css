@@ -1,23 +1,19 @@
 .reset {
-  @apply
-    duration-300
-    ease-in-out-expo;
-
   display: flex;
   flex-grow: 1;
   justify-content: flex-end;
   transform: scale(0);
   transform-origin: center;
+  transition-duration: var(--duration-300);
   transition-property: transform;
+  transition-timing-function: var(--ease-in-out-expo);
 }
 
 .reset-button {
-  @apply
-    duration-300
-    ease-in-out-expo;
-
   transform: scale(0);
+  transition-duration: var(--duration-300);
   transition-property: transform;
+  transition-timing-function: var(--ease-in-out-expo);
 }
 
 .reset-button-opened {

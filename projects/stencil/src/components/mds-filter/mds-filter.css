@@ -87,17 +87,13 @@
   --mds-filter-wrapper-shadow: 0 0 0 2px var(--mds-filter-wrapper-shadow-color) inset;
   --mds-filter-wrapper-shadow-opacity: 0.1;
 
-  @apply gap-100;
-
   display: grid;
+  gap: --spacing(100);
   grid-auto-rows: min-content;
 }
 
 .items {
-  @apply
-    duration-300
-    ease-in-out-expo
-    hide-scrollbar;
+  @apply hide-scrollbar;
 
   background-color: var(--mds-filter-items-background);
   border-radius: var(--mds-filter-items-radius);
@@ -108,7 +104,9 @@
   position: relative;
   scroll-behavior: var(--mds-filter-items-scroll-behavior);
   scroll-snap-type: x mandatory;
+  transition-duration: var(--duration-300);
   transition-property: background-color;
+  transition-timing-function: var(--ease-in-out-expo);
 }
 
 .items-wrapper {

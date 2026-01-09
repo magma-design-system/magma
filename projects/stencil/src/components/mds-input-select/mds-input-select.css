@@ -130,15 +130,7 @@
 }
 
 .input {
-  @apply duration-300
-  ease-out-expo
-  m-0
-  min-h-1200
-  pl-400
-  pr-1200
-  py-300
-  text-info-detail
-  w-full;
+  @apply text-info-detail;
 
   appearance: none;
   background-color: rgb(var(--tone-neutral));
@@ -148,18 +140,26 @@
   box-sizing: border-box;
   color: rgb(var(--tone-neutral-05));
   cursor: pointer;
+  margin: 0;
+  min-height: --spacing(1200);
   overflow: hidden;
+  padding-left: --spacing(400);
+  padding-right: --spacing(1200);
+  padding-top: --spacing(300);
   text-overflow: ellipsis;
+  transition-duration: var(--duration-300);
   transition-property: background-color, border-color, box-shadow, color, fill;
+  transition-timing-function: var(--ease-out-expo);
+  width: 100%;
 }
 
 .input:hover,
 .input:focus {
-  @apply duration-300
-  ease-out-expo
-  outline-hidden;
+  @apply outline-hidden;
 
   color: rgb(var(--tone-neutral-03));
+  transition-duration: var(--duration-300);
+  transition-timing-function: var(--ease-out-expo);
 }
 
 :host([value]:not([value=''])) .input {
@@ -189,23 +189,22 @@
 }
 
 .icon-container {
-  @apply h-1200
-  right-400;
-
   align-items: center;
   color: inherit;
   display: flex;
+  height: --spacing(1200);
   pointer-events: none;
   position: absolute;
+  right: --spacing(400);
 }
 
 .icon {
-  @apply duration-200
-  rounded-full
-  svg;
+  @apply svg;
 
   background-color: var(--mds-input-select-arrow-icon-background-color);
+  border-radius: var(--radius-full);
   fill: var(--mds-input-select-arrow-icon-color);
+  transition-duration: var(--duration-200);
   transition-property: background-color, fill;
 }
 

@@ -27,40 +27,35 @@
 }
 
 .message-window {
-  @apply
-    duration-300
-    ease-out-expo
-    gap-0
-    p-0;
-
   background-color: transparent;
   border-radius: var(--radius-lg);
   color: var(--mds-input-field-message-color);
   display: grid;
+  gap: 0;
+  padding: 0;
+  transition-duration: var(--duration-300);
   transition-property: background-color, color, gap, padding;
+  transition-timing-function: var(--ease-out-expo);
 }
 
 .message-window:has(.message:not(:empty)) {
-  @apply
-    gap-200
-    p-200;
-
   background-color: var(--mds-input-field-message-background);
+  gap: --spacing(200);
+  padding: --spacing(200);
 }
 
 .message {
-  @apply
-    duration-300
-    ease-out-expo
-    pb-200
-    pt-100
-    px-200;
-
   display: flex;
   flex-direction: column;
   height: auto;
   interpolate-size: allow-keywords;
+  padding-bottom: --spacing(200);
+  padding-left: --spacing(200);
+  padding-right: --spacing(200);
+  padding-top: --spacing(100);
+  transition-duration: var(--duration-300);
   transition-property: height, margin-top, opacity, padding;
+  transition-timing-function: var(--ease-out-expo);
 }
 
 .message:empty {

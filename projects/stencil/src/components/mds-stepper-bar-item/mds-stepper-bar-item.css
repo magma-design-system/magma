@@ -194,12 +194,12 @@
 }
 
 .header {
-  @apply duration-200
-  ease-out
+  @apply ease-out
   rounded-md
   w-full;
 
   align-items: center;
+  transition-duration: var(--duration-200);
   display: flex;
   transition-property: outline, outline-offset;
 }

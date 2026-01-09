@@ -52,13 +52,13 @@
 }
 
 .icon {
-  @apply duration-500
-  ease-out-expo
+  @apply ease-out-expo
   h-600
   svg
   w-600;
 
   fill: var(--mds-price-table-list-item-unsupported-icon-color);
+  transition-duration: var(--duration-500);
   transition-property: fill;
 }
 

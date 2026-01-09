@@ -280,17 +280,16 @@
 }
 
 .icon-typography-checked {
-  @apply left-0
-  top-0;
-
+  left: 0;
   position: absolute;
+  top: 0;
 }
 
 .switch-container {
-  @apply focus-bounce
-  rounded-full;
+  @apply focus-bounce;
 
   align-self: stretch;
+  border-radius: var(--radius-full);
   box-sizing: border-box;
   display: flex;
   flex-shrink: 0;
@@ -303,11 +302,8 @@
 }
 
 .switch {
-  @apply rounded-full
-  ease-in-out
-  duration-200;
-
   background-color: var(--mds-input-switch-box-color-enabled-unchecked);
+  border-radius: var(--radius-full);
   box-sizing: border-box;
   cursor: pointer;
   display: inline-flex;
@@ -318,31 +314,29 @@
   transition-property:
     background-color, border-color, box-shadow, color, fill, height, margin,
     opacity, padding, transform, width;
+  transition-timing-function: var(--ease-in-out);
   width: var(--mds-input-switch-toggle-container-size);
 }
 
 .switch-toggle {
-  @apply ease-linear
-  rounded-full
-  duration-200;
-
   align-items: center;
   animation-duration: calc(var(--mds-input-switch-duration) * 1.5);
   animation-fill-mode: forwards;
   animation-iteration-count: 1;
   animation-name: none;
   animation-play-state: paused;
-  animation-timing-function: var(
-    --mds-input-switch-animation-timing-function
-  );
+  animation-timing-function: var(--mds-input-switch-animation-timing-function);
   background-color: var(--mds-input-switch-toggle-color-enabled-checked);
+  border-radius: var(--radius-full);
   box-shadow: var(--shadow);
   display: flex;
   height: var(--mds-input-switch-toggle-size);
   justify-content: center;
+  transition-duration: var(--duration-200);
   transition-property:
     background-color, border-color, box-shadow, color, fill, height, margin,
     opacity, padding, transform, width;
+  transition-timing-function: var(--ease-linear);
   width: var(--mds-input-switch-toggle-size);
 }
 

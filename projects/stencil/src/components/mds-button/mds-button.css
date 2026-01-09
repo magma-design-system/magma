@@ -171,14 +171,13 @@
 }
 
 .icon {
-  @apply duration-300;
-
   align-items: center;
   display: inline-flex;
   fill: inherit;
   flex-shrink: 0;
   justify-content: center;
   pointer-events: none;
+  transition-duration: var(--duration-300);
   transition-property: fill;
   transition-timing-function: var(--ease-in-out-quad);
 }

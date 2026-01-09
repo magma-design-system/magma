@@ -60,8 +60,6 @@
   --mds-chip-opacity-disabled: 0.5;
   --mds-chip-shadow: var(--shadow-sharp);
 
-  @apply duration-150;
-
   align-items: center;
   background-color: var(--mds-chip-background);
   border: 2px solid var(--mds-chip-border);
@@ -77,6 +75,7 @@
   min-width: min-content;
   padding: --spacing(150) --spacing(100);
   size: 100% --spacing(900);
+  transition-duration: var(--duration-150);
   transition-property: background-color, border-color, box-shadow, color, opacity;
   transition-timing-function: var(--ease-in-out-quad);
 }
@@ -88,11 +87,10 @@
 }
 
 .label {
-  @apply duration-200;
-
   border-radius: 1000px;
   flex-grow: 1;
   text-decoration-color: transparent;
+  transition-duration: var(--duration-200);
   transition-property: color, text-decoration-color, outline, outline-offset;
   transition-timing-function: var(--ease-out-quad);
 }
@@ -137,11 +135,10 @@
 }
 
 .icon {
-  @apply duration-200;
-
   fill: var(--mds-chip-icon-color);
   size: --spacing(400);
   transition: fill;
+  transition-duration: var(--duration-200);
 }
 
 .button-delete {
