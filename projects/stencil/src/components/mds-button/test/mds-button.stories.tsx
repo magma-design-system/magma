@@ -262,8 +262,26 @@ const TemplateAnimation = () => {
     setButtonStateIndex((buttonStateIndex + 1) % buttonState.length)
   }
 
+  const [buttonHoverStateIndex, setButtonHoverStateIndex] = useState(0)
+
+  const buttonHoverState = [
+    'Hover me, if you dare',
+    'Now go!',
+  ]
+
+  const handleMouseOver = () => {
+    setButtonHoverStateIndex(1)
+  }
+
+  const handleMouseOut = () => {
+    setButtonHoverStateIndex(0)
+  }
+
   return (
-    <mds-button id="button-text-animation" onClick={checkButtonState} class="w-full max-w-8000" animation="yugop" label={buttonState[buttonStateIndex].label} icon={buttonState[buttonStateIndex].icon} variant={buttonState[buttonStateIndex].variant} tone={buttonState[buttonStateIndex].tone} await={buttonState[buttonStateIndex].await}></mds-button>
+    <div class="grid gap-600">
+      <mds-button onClick={checkButtonState} class="w-full max-w-8000" animation="yugop" label={buttonState[buttonStateIndex].label} icon={buttonState[buttonStateIndex].icon} variant={buttonState[buttonStateIndex].variant} tone={buttonState[buttonStateIndex].tone} await={buttonState[buttonStateIndex].await}></mds-button>
+      <mds-button onMouseOver={handleMouseOver} onMouseOut={handleMouseOut} label={buttonHoverState[buttonHoverStateIndex]} class="w-full max-w-8000" animation="yugop"></mds-button>
+    </div>
   )
 }
 
