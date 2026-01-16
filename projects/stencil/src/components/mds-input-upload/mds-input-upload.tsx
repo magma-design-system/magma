@@ -92,8 +92,8 @@ export class MdsInputUpload {
   }
 
   @Watch('initialValue')
-  updateInitialValue (newValue: FileList | File[], oldValue: FileList | File[] | undefined ) {
-    if (!oldValue) {
+  updateInitialValue (newValue: FileList | File[] | undefined, oldValue: FileList | File[] | undefined ) {
+    if ((!oldValue || oldValue.length === 0) && newValue) {
       this.onAdd(newValue)
     }
   }
