@@ -1403,6 +1403,7 @@ export namespace Components {
           * Returns a promise of files error or null if there's none
          */
         "getFilesError": () => Promise<FileError[] | null>;
+        "initialValue"?: FileList | File[];
         /**
           * Specifies the max size of a single file that can be uploaded in MB
          */
@@ -5197,6 +5198,7 @@ declare namespace LocalJSX {
           * Defines the file types the file input should accept
          */
         "accept"?: string;
+        "initialValue"?: FileList | File[];
         /**
           * Specifies the max size of a single file that can be uploaded in MB
          */

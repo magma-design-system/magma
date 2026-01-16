@@ -67,6 +67,11 @@ export class MdsInputUpload {
   @Prop({ reflect: true }) readonly sort?: AttachmentSort
 
   /**
+   * Specifies initial files uploaded
+   */
+  @Prop() readonly initialValue?: FileList | File[]
+
+  /**
    * Emits when the component files are changed
    */
   @Event({ eventName: 'mdsInputUploadChange' }) changedEvent: EventEmitter<FileList | null>
@@ -84,6 +89,13 @@ export class MdsInputUpload {
 
   componentDidLoad (): void {
     this.updateCSSCustomProps()
+  }
+
+  @Watch('initialValue')
+  updateInitialValue (newValue: FileList | File[], oldValue: FileList | File[] | undefined ) {
+    if (!oldValue) {
+      this.onAdd(newValue)
+    }
   }
 
   /**
@@ -141,9 +153,14 @@ export class MdsInputUpload {
     event.preventDefault()
   }
 
-  private readonly onAdd = (event: Event) => {
-    const input = ((event.target) as HTMLInputElement)
-    this.update(input, this.prepareFiles(input.files))
+  private readonly onAdd = (event: Event | FileList | File[]) => {
+    if (!event) return
+    if (event instanceof FileList || Array.isArray(event)) {
+      this.update(this.nativeInput!, this.prepareFiles(event))
+    } else {
+      const input = ((event.target) as HTMLInputElement)
+      this.update(input, this.prepareFiles(input.files))
+    }
   }
 
   /**
@@ -193,9 +210,9 @@ export class MdsInputUpload {
    * @param fileList list recieved from input selection or drag and drop
    * @returns list of files accepted
    */
-  private prepareFiles (fileList: FileList | null): FileList | null {
+  private prepareFiles (fileList: FileList | File[] | null): FileList | null {
     if (!fileList) return null
-    const files = Array.from(fileList)
+    const files = fileList instanceof FileList ? Array.from(fileList) : fileList
     const data = new DataTransfer()
     // prepare new file added
     for (const file of files) {
