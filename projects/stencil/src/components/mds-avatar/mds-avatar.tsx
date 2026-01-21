@@ -8,6 +8,7 @@ import miBaselinePerson from '@icon/mi/baseline/person.svg'
 /**
  * @part icon - The selected icon of the avatar
  * @part wrapper - The wrapper which contains media displayed
+ * @part media - The media displayed
  */
 
 @Component({
@@ -178,6 +179,7 @@ export class MdsAvatar {
             loading="lazy"
             onMdsImgLoadError={ () => { this.loaded = true; this.fallback = true } }
             onMdsImgLoadSuccess={ () => { this.loaded = true } }
+            part="media"
             src={ this.src }
           />
           }
