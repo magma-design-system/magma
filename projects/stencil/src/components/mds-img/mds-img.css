@@ -60,6 +60,7 @@
 }
 
 img {
+  height: 100%;
   object-fit: inherit;
   width: 100%;
 }
