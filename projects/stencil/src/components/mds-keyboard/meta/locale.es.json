@@ -1,3 +1,5 @@
 {
-  "testKeyCombination": "Haz clic para probar la combinación escribiendo en el teclado"
+  "testKeyCombination": "Haz clic para probar la combinación escribiendo en el teclado",
+  "testPassed": "La combinación es correcta",
+  "wrongKeysCombination": "La combinación que introdujiste no parece ser correcta. Inténtalo de nuevo."
 }
