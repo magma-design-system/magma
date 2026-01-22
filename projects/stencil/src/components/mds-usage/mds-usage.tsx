@@ -43,7 +43,7 @@ export class MdsUsage {
 
   render () {
     return (
-      <Host role="suggestion">
+      <Host>
         <mds-badge class="badge">{ this.alias ?? this.t.get(this.variant) }</mds-badge>
         <div class="content" role={ this.variant === 'do' || this.variant === 'info' ? 'insertion' : 'deletion'}>
           <slot/>
