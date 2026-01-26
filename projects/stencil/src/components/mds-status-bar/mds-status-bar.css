@@ -72,6 +72,11 @@ mds-modal {
     margin-left: 0;
     margin-right: 0;
     padding: --spacing(400);
+    width: 100%;
+  }
+
+  .status-bar {
+    width: 100%;
   }
 
   .actions {
