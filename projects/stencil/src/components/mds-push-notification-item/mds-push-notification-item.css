@@ -167,7 +167,6 @@
 .message {
   --mds-text-line-clamp: var(--mds-push-notification-item-message-line-clamp);
 
-  line-height: var(--leading-md);
   text-overflow: ellipsis;
 }
 
