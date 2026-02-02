@@ -37,6 +37,7 @@ export type ThemeFullVariantType =
   | 'sky'
   | 'success'
   | 'violet'
+  | 'purple'
   | 'warning'
   | 'yellow'
 
@@ -54,6 +55,7 @@ export type ThemeFullVariantAvatarType =
   | 'sky'
   | 'success'
   | 'violet'
+  | 'purple'
   | 'warning'
   | 'yellow'
 
@@ -71,6 +73,7 @@ export type LabelVariantType =
   | 'orchid'
   | 'sky'
   | 'violet'
+  | 'purple'
   | 'yellow'
 
 export type ActionVariantType =
@@ -95,6 +98,7 @@ export type ChipVariantType =
   | 'sky'
   | 'success'
   | 'violet'
+  | 'purple'
   | 'warning'
   | 'yellow'
 
