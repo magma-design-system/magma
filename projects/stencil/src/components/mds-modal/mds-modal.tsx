@@ -182,6 +182,7 @@ export class MdsModal {
   }
 
   disconnectedCallback (): void {
+    this.enableOverflow()
     if (this.windowElement) {
       this.windowElement.removeEventListener('touchstart', this.setTouchStart)
       this.windowElement.removeEventListener('touchend', this.setTouchEnd)
