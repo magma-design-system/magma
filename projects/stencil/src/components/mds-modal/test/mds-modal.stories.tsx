@@ -444,13 +444,13 @@ const NestedModalTemplate = () => {
   )
 }
 
-const FocusTemplate = () => {
+const ShowTemplate = () => {
   const [opened, setOpened] = useState(false)
   const input = useRef<HTMLMdsInputElement>(null)
   useEffect(() => {
     const modalEl = document.querySelector('#modal-focus')
 
-    modalEl?.addEventListener('mdsModalOpen', () => {
+    modalEl?.addEventListener('mdsModalShow', () => {
       input.current?.setFocus()
     })
     modalEl?.addEventListener('mdsModalClose', () => {
@@ -533,6 +533,6 @@ export const UseCaseNestedModal = {
   render: NestedModalTemplate,
 }
 
-export const FocusModal = {
-  render: FocusTemplate,
+export const EventModalShow = {
+  render: ShowTemplate,
 }

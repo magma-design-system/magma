@@ -69,6 +69,11 @@ export class MdsModal {
   @Event({ eventName: 'mdsModalOpen' }) openEvent: EventEmitter<void>
 
   /**
+   * Emits when a modal is totally visible, when the modal intro animation is finished
+   */
+  @Event({ eventName: 'mdsModalShow' }) showEvent: EventEmitter<void>
+
+  /**
    * Emits when a modal is closed
    */
   @Event({ eventName: 'mdsModalClose' }) closeEvent: EventEmitter<void>
@@ -87,6 +92,7 @@ export class MdsModal {
   private stopIntroAnimationWindow = (): void => {
     this.animating = 'none'
     this.host.setAttribute('animating', 'none') // wtf?
+    this.showEvent.emit()
     clearTimeout(this.animationDelayTimeout)
   }
 

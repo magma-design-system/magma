@@ -3199,6 +3199,7 @@ declare global {
     };
     interface HTMLMdsModalElementEventMap {
         "mdsModalOpen": void;
+        "mdsModalShow": void;
         "mdsModalClose": void;
         "mdsModalHide": void;
     }
@@ -5348,6 +5349,10 @@ declare namespace LocalJSX {
           * Emits when a modal is closed
          */
         "onMdsModalOpen"?: (event: MdsModalCustomEvent<void>) => void;
+        /**
+          * Emits when a modal is totally visible, when the modal intro animation is finished
+         */
+        "onMdsModalShow"?: (event: MdsModalCustomEvent<void>) => void;
         /**
           * Specifies if the modal is opened or not
          */
