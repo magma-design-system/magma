@@ -156,7 +156,9 @@ Type: `Promise<void>`
 | `"field"`                   |             |
 | `"mic-toggle-button"`       |             |
 | `"password-toggle-button"`  |             |
+| `"tip-bottom"`              |             |
 | `"tip-count"`               |             |
+| `"tip-top"`                 |             |
 
 
 ## CSS Custom Properties

@@ -299,9 +299,6 @@ export class MdsInput {
     this.maxLengthChanged(this.maxlength)
 
     this.isValid = !(this.required && this.value === '')
-    this.el.focus = () => {
-      this.nativeInput?.focus()
-    }
   }
 
   componentDidLoad (): void {
