@@ -198,6 +198,7 @@ export class MdsModal {
       return
     }
     this.opened = e.target !== e.currentTarget
+    this.closeEvent.emit()
   }
 
   @Watch('opened')
@@ -215,7 +216,6 @@ export class MdsModal {
       this.enableOverflow()
     }
     this.animateCloseWindow()
-    this.closeEvent.emit()
   }
 
   @Watch('backdrop')
