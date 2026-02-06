@@ -198,7 +198,9 @@ export class MdsModal {
       return
     }
     this.opened = e.target !== e.currentTarget
-    this.closeEvent.emit()
+    if (!this.opened) {
+      this.closeEvent.emit()
+    }
   }
 
   @Watch('opened')
