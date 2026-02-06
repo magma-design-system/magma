@@ -25,6 +25,8 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | --------------- | --------------------------------------------------------------------------------------------------------------- | ------------------- |
 | `mdsModalClose` | Emits when a modal is closed                                                                                    | `CustomEvent<void>` |
 | `mdsModalHide`  | Emits when a modal is totally invisible, can be useful to detach the component when it's hidden and gain memory | `CustomEvent<void>` |
+| `mdsModalOpen`  | Emits when a modal is closed                                                                                    | `CustomEvent<void>` |
+| `mdsModalShow`  | Emits when a modal is totally visible, when the modal intro animation is finished                               | `CustomEvent<void>` |
 
 
 ## Methods
