@@ -77,7 +77,7 @@ export class MdsTableHeader {
           </mds-table-cell>
         }
         <slot/>
-        { this.hasActions && <mds-table-header-cell class="actions" label={this.t.get('actions')}></mds-table-header-cell> }
+        { this.hasActions && <mds-table-header-cell part="actions" class="actions" label={this.t.get('actions')}></mds-table-header-cell> }
       </Host>
     )
   }
