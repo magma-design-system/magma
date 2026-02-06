@@ -41,8 +41,7 @@
 
 .label {
   @apply
-    h-700
-    px-200;
+    h-700;
 
   align-items: center;
   display: inline-flex;
