@@ -17,15 +17,11 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `variant`   | `variant`   | Sets the theme variant colors                                          | `"ai" \| "dark" \| "error" \| "info" \| "light" \| "primary" \| "success" \| "warning"` | `'primary'`                               |
 
 
-## CSS Custom Properties
+## Shadow Parts
 
-| Name                        | Description                                     |
-| --------------------------- | ----------------------------------------------- |
-| `--mds-progress-background` | Sets the background-color of the component      |
-| `--mds-progress-color`      | Sets the background-color of the progress       |
-| `--mds-progress-duration`   | Sets the duration of the progress bar animation |
-| `--mds-progress-radius`     | Sets the border-radius of the component         |
-| `--mds-progress-thickness`  | Sets the thickness of the progress bar          |
+| Part         | Description                                              |
+| ------------ | -------------------------------------------------------- |
+| `"progress"` | Selects the `div` element that contains the progress bar |
 
 
 ## Dependencies
