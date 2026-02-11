@@ -1,5 +1,6 @@
 import { Component, Host, h, Prop, Element, Watch, Method } from '@stencil/core'
 import { ModalOverflowType } from 'src/components'
+import { StatusBarPositionType } from './meta/types'
 
 /**
  * @slot default - Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element.
@@ -29,6 +30,11 @@ export class MdsStatusBar {
   @Prop({ reflect: true }) readonly overflow: ModalOverflowType = 'manual'
 
   /**
+   * Specifies the position of the status bar
+   */
+  @Prop({ reflect: true }) readonly position: StatusBarPositionType = 'bottom-right'
+
+  /**
    * Specifies if the component is visible
    */
   @Prop({ reflect: true, mutable: true }) visible?: boolean
@@ -53,7 +59,7 @@ export class MdsStatusBar {
   render () {
     return (
       <Host>
-        <mds-modal class="modal" opened={this.visible} position="bottom-right" animation="custom" overflow={this.overflow}>
+        <mds-modal class="modal" opened={this.visible} position={this.position} animation="custom" overflow={this.overflow}>
           <div class="status-bar-area" part="status-bar-area" slot="window">
             <div class="status-bar" part="status-bar">
               { this.description && <mds-text typography='caption' class="description">{ this.description }</mds-text> }
