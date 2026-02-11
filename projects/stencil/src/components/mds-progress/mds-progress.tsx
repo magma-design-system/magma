@@ -64,7 +64,6 @@ export class MdsProgress {
   render () {
     return (
       <Host aria-valuemax="100" aria-valuemin="0" aria-valuenow={ !ifAttribute(this.element, 'aria-hidden') && Math.round(this.progress * 100) } role="progressbar">
-        <div class="contrast-area"></div>
         <div class="progress" style={
           this.direction === 'horizontal'
             ? { flexGrow: `${this.progress}` }
