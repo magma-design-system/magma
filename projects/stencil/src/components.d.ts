@@ -1294,6 +1294,10 @@ export namespace Components {
          */
         "autocomplete"?: 'on';
         /**
+          * Specifies the default value of the component
+         */
+        "defaultValue"?: string | number | null;
+        /**
           * If true, the element is displayed as disabled
          */
         "disabled"?: boolean;
@@ -1411,6 +1415,10 @@ export namespace Components {
           * Returns a promise of files error or null if there's none
          */
         "getFilesError": () => Promise<FileError[] | null>;
+        /**
+          * Specifies initial files uploaded
+         */
+        "initialValue"?: FileList | File[];
         /**
           * Specifies the max size of a single file that can be uploaded in MB
          */
@@ -3248,6 +3256,8 @@ declare global {
         new (): HTMLMdsMentionElement;
     };
     interface HTMLMdsModalElementEventMap {
+        "mdsModalOpen": void;
+        "mdsModalShow": void;
         "mdsModalClose": void;
         "mdsModalHide": void;
     }
@@ -5173,6 +5183,10 @@ declare namespace LocalJSX {
          */
         "autocomplete"?: 'on';
         /**
+          * Specifies the default value of the component
+         */
+        "defaultValue"?: string | number | null;
+        /**
           * If true, the element is displayed as disabled
          */
         "disabled"?: boolean;
@@ -5288,6 +5302,10 @@ declare namespace LocalJSX {
           * Defines the file types the file input should accept
          */
         "accept"?: string;
+        /**
+          * Specifies initial files uploaded
+         */
+        "initialValue"?: FileList | File[];
         /**
           * Specifies the max size of a single file that can be uploaded in MB
          */
@@ -5430,6 +5448,14 @@ declare namespace LocalJSX {
           * Emits when a modal is totally invisible, can be useful to detach the component when it's hidden and gain memory
          */
         "onMdsModalHide"?: (event: MdsModalCustomEvent<void>) => void;
+        /**
+          * Emits when a modal is closed
+         */
+        "onMdsModalOpen"?: (event: MdsModalCustomEvent<void>) => void;
+        /**
+          * Emits when a modal is totally visible, when the modal intro animation is finished
+         */
+        "onMdsModalShow"?: (event: MdsModalCustomEvent<void>) => void;
         /**
           * Specifies if the modal is opened or not
          */

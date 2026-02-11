@@ -92,7 +92,7 @@ export class MdsText {
   }
 
   componentDidLoad (): void {
-    this.updateCSSCustomProps()
+    if (this.animation === 'yugop') this.updateCSSCustomProps()
   }
 
   @Watch('text')

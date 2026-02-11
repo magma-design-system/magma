@@ -112,6 +112,7 @@ export const Required = {
 
   args: {
     required: true,
+    placeholder: 'Seleziona un film...',
   },
 }
 

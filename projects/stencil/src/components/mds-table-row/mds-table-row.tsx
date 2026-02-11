@@ -23,6 +23,7 @@ export class MdsTableRow {
   @Element() host: HTMLMdsTableRowElement
   private actions: HTMLDivElement
   private hasActions: boolean = true
+  private observer?: ResizeObserver
   @State() sizerWidth: string
   private t:Locale = new Locale({
     el: localeEl,
@@ -52,23 +53,20 @@ export class MdsTableRow {
     this.hasActions = this.host.querySelector(':scope > [slot="action"]') !== null
   }
 
-  connectedCallback (): void {
+  componentDidLoad (): void {
     // needed to capture sizer width when become visible
-    this.initObserver()
+    if (this.hasActions) this.initObserver()
   }
 
   private initObserver () {
-    const observer = new IntersectionObserver(entries => {
-      if (entries[0].isIntersecting && this.actions) {
-        this.sizerWidth = `${this.actions.offsetWidth.toString()}px`
-        observer.unobserve(this.host) // stop observer
-      }
-    }, {
-      root: this.host.parentElement,
-      threshold: 1, // trigger observer when is entirely visible
+    this.observer = new ResizeObserver(entry => {
+      this.sizerWidth = `${entry[0].borderBoxSize[0].inlineSize.toString()}px`
     })
+    this.observer.observe(this.actions)
+  }
 
-    observer.observe(this.host)
+  disconnectedCallback () {
+    if (this.observer) this.observer.disconnect()
   }
 
   private handleSelectionChange = (e: CustomEvent): void => {

@@ -32,6 +32,8 @@ import { hashRandomValue } from '@common/aria'
   * @part password-mask-items - Selects the items wrapper used to mask the password
   * @part password-mask-item - Selects the item used to mask the password
   * @part tip-count - Selects the mds-input-tip shown when maxlength attribute is set, can be used to hide it if needed
+  * @part tip-top - Selects the verbose status of input on top of element
+  * @part tip-bottom - Selects the verbose status of input on bottom of element
   */
 
 export interface MdsInputInterface {
@@ -299,9 +301,6 @@ export class MdsInput {
     this.maxLengthChanged(this.maxlength)
 
     this.isValid = !(this.required && this.value === '')
-    this.el.focus = () => {
-      this.nativeInput?.focus()
-    }
   }
 
   componentDidLoad (): void {
@@ -683,14 +682,14 @@ export class MdsInput {
             tabindex="0" variant="dark" tone="text" title={this.speechToTextLabel}
             part="mic-toggle-button"></mds-button>
         }
-        <mds-input-tip lang={this.language} position="top" active={this.hasFocus}>
+        <mds-input-tip lang={this.language} position="top" active={this.hasFocus} part='tip-top'>
           { this.disabled && <mds-input-tip-item expanded variant="disabled"></mds-input-tip-item> }
           { this.readonly && <mds-input-tip-item expanded variant="readonly"></mds-input-tip-item> }
           { this.required &&
             <mds-input-tip-item expanded={this.hasFocus} variant={this.isValid ? 'required-success' : 'required'}></mds-input-tip-item>
           }
         </mds-input-tip>
-        <mds-input-tip lang={this.language} position="bottom" active={this.hasFocus}>
+        <mds-input-tip lang={this.language} position="bottom" active={this.hasFocus} part='tip-bottom'>
           { this.tip && <mds-input-tip-item expanded variant="text">{ this.tip }</mds-input-tip-item>}
           { this.maxlength && <mds-input-tip-item part="tip-count" expanded variant={this.countVariant}>{ this.currentLengthLabel }</mds-input-tip-item> }
         </mds-input-tip>

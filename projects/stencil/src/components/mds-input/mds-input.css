@@ -383,7 +383,7 @@ mds-input-tip {
   --mds-input-tip-background: inherit;
 }
 
-@container (max-width: 210px) {
+/* @container (max-width: 210px) {
   :host .tip__content,
   :host(:focus-within) .tip__content {
     grid-template-columns: 0fr;
@@ -394,7 +394,11 @@ mds-input-tip {
     padding-left: 0;
     padding-right: 0;
   }
-}
+
+  :host {
+    --mds-input-background: theme('colors.variant-primary-07');
+  }
+} */
 
 @import './css/mds-input-variant.css';
 @import './css/mds-input-pref-animation.css';

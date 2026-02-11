@@ -51,6 +51,13 @@ Type: `Promise<void>`
 | `"default"` | Add `mds-table-row` element/s. |
 
 
+## Shadow Parts
+
+| Part        | Description |
+| ----------- | ----------- |
+| `"actions"` |             |
+
+
 ## Dependencies
 
 ### Depends on

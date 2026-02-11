@@ -158,7 +158,9 @@ Type: `Promise<void>`
 | `"password-mask-item"`      |             |
 | `"password-mask-items"`     |             |
 | `"password-toggle-button"`  |             |
+| `"tip-bottom"`              |             |
 | `"tip-count"`               |             |
+| `"tip-top"`                 |             |
 
 
 ## CSS Custom Properties

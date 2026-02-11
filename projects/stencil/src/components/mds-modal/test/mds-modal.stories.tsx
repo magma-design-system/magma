@@ -1,5 +1,5 @@
 import { h } from '@stencil/core'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import {
   modalPositionDictionary,
   modalOverflowDictionary,
@@ -453,6 +453,32 @@ const NestedModalTemplate = () => {
   )
 }
 
+const ShowTemplate = () => {
+  const [opened, setOpened] = useState(false)
+  const input = useRef<HTMLMdsInputElement>(null)
+  useEffect(() => {
+    const modalEl = document.querySelector('#modal-focus')
+
+    modalEl?.addEventListener('mdsModalShow', () => {
+      input.current?.setFocus()
+    })
+    modalEl?.addEventListener('mdsModalClose', () => {
+      setOpened(false)
+    })
+  }, [])
+  return (
+    <div>
+      <mds-button id="action" onClick={() => setOpened(true)}>
+        Open modal
+      </mds-button>
+      <mds-modal id='modal-focus' opened={opened === true ? true : undefined} position='right'>
+        <div class="p-400">
+          <mds-input ref={input}></mds-input>
+        </div>
+      </mds-modal>
+    </div>)
+}
+
 export const Default = {
   render: Template,
 
@@ -517,4 +543,8 @@ export const ARIATest = {
 
 export const UseCaseNestedModal = {
   render: NestedModalTemplate,
+}
+
+export const EventModalShow = {
+  render: ShowTemplate,
 }

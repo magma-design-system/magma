@@ -73,6 +73,16 @@ export class MdsModal {
   /**
    * Emits when a modal is closed
    */
+  @Event({ eventName: 'mdsModalOpen' }) openEvent: EventEmitter<void>
+
+  /**
+   * Emits when a modal is totally visible, when the modal intro animation is finished
+   */
+  @Event({ eventName: 'mdsModalShow' }) showEvent: EventEmitter<void>
+
+  /**
+   * Emits when a modal is closed
+   */
   @Event({ eventName: 'mdsModalClose' }) closeEvent: EventEmitter<void>
 
   /**
@@ -89,6 +99,7 @@ export class MdsModal {
   private stopIntroAnimationWindow = (): void => {
     this.animating = 'none'
     this.host.setAttribute('animating', 'none') // wtf?
+    this.showEvent.emit()
     clearTimeout(this.animationDelayTimeout)
   }
 
@@ -187,6 +198,7 @@ export class MdsModal {
       this.windowElement.removeEventListener('touchstart', this.setTouchStart)
       this.windowElement.removeEventListener('touchend', this.setTouchEnd)
     }
+    this.enableOverflow()
   }
 
   private closeModal = (e:Event, force?: boolean): void => {
@@ -210,6 +222,7 @@ export class MdsModal {
         this.disableOverflow()
       }
       this.animateOpenWindow()
+      this.openEvent.emit()
       return
     }
     this.opened = undefined
