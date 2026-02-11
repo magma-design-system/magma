@@ -250,7 +250,7 @@
   --mds-tab-transition-timing-function: var(--ease-out-expo);
 
   display: grid;
-  gap: 0 theme('gap.600');
+  gap: 0 --spacing(600);
   grid-template-rows: min-content auto;
 }
 
