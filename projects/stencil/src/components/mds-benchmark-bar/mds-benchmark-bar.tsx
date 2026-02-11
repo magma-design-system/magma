@@ -4,6 +4,7 @@ import { BenchmarkBarTypographyType } from './meta/types'
 
 /**
  * @slot default - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
+ * @part bar - Selects the `mds-progress` element that contains the progress bar
  */
 
 @Component({
@@ -40,7 +41,7 @@ export class MdsBenchmarkBar {
           <mds-text typography={ this.typography } class="label" id="label"><slot/></mds-text>
           <mds-text typography={ this.typography } class="value">{ this.alias ?? this.value }</mds-text>
         </div>
-        <mds-progress aria-labelledby="label" aria-valuetext={ this.alias } class="progress" variant={this.variant} progress={this.value / 100}/>
+        <mds-progress aria-labelledby="label" aria-valuetext={ this.alias } class="progress" variant={this.variant} progress={this.value / 100} part="bar"/>
       </Host>
     )
   }
