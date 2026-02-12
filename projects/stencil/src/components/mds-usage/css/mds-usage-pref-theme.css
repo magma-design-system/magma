@@ -1,38 +1,38 @@
 :host-context(:root.pref-theme-dark:not(.pref-theme-scheme-light)) {
-  --mds-usage-badge-background: rgb(var(--status-info-05));
+  --mds-usage-header-background: rgb(var(--status-info-05));
 
   box-shadow: var(--shadow-outline);
 
   &:host([variant="do"]) {
-    --mds-usage-badge-background: rgb(var(--status-success-05));
+    --mds-usage-header-background: rgb(var(--status-success-05));
   }
 
   &:host([variant="dont"]) {
-    --mds-usage-badge-background: rgb(var(--status-error-05));
+    --mds-usage-header-background: rgb(var(--status-error-05));
   }
 
   &:host([variant="warn"]) {
-    --mds-usage-badge-background: rgb(var(--status-warning-05));
+    --mds-usage-header-background: rgb(var(--status-warning-05));
   }
 }
 
 @media (prefers-color-scheme: dark) {
   :host-context(:root.pref-theme-system:not(.pref-theme-scheme-light)),
   :host-context(:root:not([data-magma-pref])) {
-    --mds-usage-badge-background: rgb(var(--status-info-05));
+    --mds-usage-header-background: rgb(var(--status-info-05));
 
     box-shadow: var(--shadow-outline);
 
     &:host([variant="do"]) {
-      --mds-usage-badge-background: rgb(var(--status-success-05));
+      --mds-usage-header-background: rgb(var(--status-success-05));
     }
 
     &:host([variant="dont"]) {
-      --mds-usage-badge-background: rgb(var(--status-error-05));
+      --mds-usage-header-background: rgb(var(--status-error-05));
     }
 
     &:host([variant="warn"]) {
-      --mds-usage-badge-background: rgb(var(--status-warning-05));
+      --mds-usage-header-background: rgb(var(--status-warning-05));
     }
   }
 }

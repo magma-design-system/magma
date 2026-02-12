@@ -35,26 +35,38 @@ Type: `Promise<void>`
 | `"default"` | Add `text string`, `HTML elements` or `components` to this slot. |
 
 
+## Shadow Parts
+
+| Part       | Description |
+| ---------- | ----------- |
+| `"header"` |             |
+| `"icon"`   |             |
+| `"label"`  |             |
+
+
 ## CSS Custom Properties
 
-| Name                           | Description                                                   |
-| ------------------------------ | ------------------------------------------------------------- |
-| `--mds-usage-badge-background` | The background-color of the usage badge.                      |
-| `--mds-usage-badge-color`      | The text/icon color of the usage badge.                       |
-| `--mds-usage-border-color`     | The border-color applied to the usage container or indicator. |
+| Name                            | Description                                                   |
+| ------------------------------- | ------------------------------------------------------------- |
+| `--mds-usag-icon-color`         | The color of the usage icon.                                  |
+| `--mds-usage-border-color`      | The border-color applied to the usage container or indicator. |
+| `--mds-usage-header-background` | The background-color of the usage header.                     |
+| `--mds-usage-header-color`      | The text/icon color of the usage header.                      |
+| `--mds-usage-icon-color`        | The color of the usage icon.                                  |
 
 
 ## Dependencies
 
 ### Depends on
 
-- [mds-badge](../mds-badge)
+- [mds-icon](../mds-icon)
+- [mds-text](../mds-text)
 
 ### Graph
 ```mermaid
 graph TD;
-  mds-usage --> mds-badge
-  mds-badge --> mds-text
+  mds-usage --> mds-icon
+  mds-usage --> mds-text
   style mds-usage fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

@@ -44,7 +44,10 @@ export class MdsUsage {
   render () {
     return (
       <Host>
-        <mds-badge class="badge">{ this.alias ?? this.t.get(this.variant) }</mds-badge>
+        <div class="header" part="header">
+          <mds-icon name="mi/baseline/info" part="icon" />
+          <mds-text typography="label" class="label" part="label">{ this.alias ?? this.t.get(this.variant) }</mds-text>
+        </div>
         <div class="content" role={ this.variant === 'do' || this.variant === 'info' ? 'insertion' : 'deletion'}>
           <slot/>
         </div>

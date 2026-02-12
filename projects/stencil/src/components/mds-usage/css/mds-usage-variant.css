@@ -1,17 +1,19 @@
 :host([variant="do"]) {
-  --mds-usage-border-color: rgb(var(--status-success-06));
-  --mds-usage-badge-background: rgb(var(--status-success-05));
-  --mds-usage-badge-color: rgb(var(--status-success-10));
+  --mds-usage-border-color: rgb(var(--status-success-05));
+  --mds-usage-header-color: rgb(var(--status-success-10));
+}
+
+:host([variant="info"]) {
+  --mds-usage-border-color: rgb(var(--status-info-05));
+  --mds-usage-header-color: rgb(var(--status-info-10));
 }
 
 :host([variant="dont"]) {
-  --mds-usage-border-color: rgb(var(--status-error-06));
-  --mds-usage-badge-background: rgb(var(--status-error-05));
-  --mds-usage-badge-color: rgb(var(--status-error-10));
+  --mds-usage-border-color: rgb(var(--status-error-05));
+  --mds-usage-header-color: rgb(var(--status-error-10));
 }
 
 :host([variant="warn"]) {
-  --mds-usage-border-color: rgb(var(--status-warning-06));
-  --mds-usage-badge-background: rgb(var(--status-warning-08));
-  --mds-usage-badge-color: rgb(var(--status-warning-01));
+  --mds-usage-border-color: rgb(var(--status-warning-08));
+  --mds-usage-header-color: rgb(var(--status-warning-02));
 }
