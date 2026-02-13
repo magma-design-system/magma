@@ -63,6 +63,7 @@ import { NotificationItemDateFormatType, NotificationItemPreviewType } from "./c
 import { MdsPushNotificationItemEventDetail } from "./components/mds-push-notification-item/meta/event-detail";
 import { Direction, Interaction } from "./components/mds-radial-menu/meta/types";
 import { ModalOverflowType as ModalOverflowType1 } from "./components.d";
+import { StatusBarPositionType } from "./components/mds-status-bar/meta/types";
 import { MdsStepperBarEventDetail } from "./components/mds-stepper-bar/meta/event-detail";
 import { MdsStepperBarItemEventDetail } from "./components/mds-stepper-bar-item/meta/event-detail";
 import { DirectionType as DirectionType1 } from "./components/mds-tab/meta/type";
@@ -137,6 +138,7 @@ export { NotificationItemDateFormatType, NotificationItemPreviewType } from "./c
 export { MdsPushNotificationItemEventDetail } from "./components/mds-push-notification-item/meta/event-detail";
 export { Direction, Interaction } from "./components/mds-radial-menu/meta/types";
 export { ModalOverflowType as ModalOverflowType1 } from "./components.d";
+export { StatusBarPositionType } from "./components/mds-status-bar/meta/types";
 export { MdsStepperBarEventDetail } from "./components/mds-stepper-bar/meta/event-detail";
 export { MdsStepperBarItemEventDetail } from "./components/mds-stepper-bar-item/meta/event-detail";
 export { DirectionType as DirectionType1 } from "./components/mds-tab/meta/type";
@@ -1930,6 +1932,10 @@ export namespace Components {
           * Specifies if the component prevents the body from scrolling when modal window is opened
          */
         "overflow": ModalOverflowType;
+        /**
+          * Specifies the position of the status bar
+         */
+        "position": StatusBarPositionType;
         /**
           * Specifies if the component is visible
          */
@@ -5783,6 +5789,10 @@ declare namespace LocalJSX {
           * Specifies if the component prevents the body from scrolling when modal window is opened
          */
         "overflow"?: ModalOverflowType;
+        /**
+          * Specifies the position of the status bar
+         */
+        "position"?: StatusBarPositionType;
         /**
           * Specifies if the component is visible
          */

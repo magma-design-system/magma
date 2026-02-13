@@ -4,8 +4,6 @@
 :host-context(.pref-contrast-more):host([variant="warn"]) {
   --mds-usage-badge-color: theme('colors.tone-neutral-01');
   --mds-usage-color: theme('colors.tone-neutral-01');
-
-  box-shadow: theme('boxShadow.outline-50');
 }
 
 @media (prefers-contrast: more) {
@@ -15,7 +13,5 @@
   :host-context(.pref-contrast-system):host([variant="warn"]) {
     --mds-usage-badge-color: theme('colors.tone-neutral-01');
     --mds-usage-color: theme('colors.tone-neutral-01');
-
-    box-shadow: theme('boxShadow.outline-50');
   }
 }

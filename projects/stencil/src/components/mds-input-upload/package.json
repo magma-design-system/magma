@@ -1,6 +1,6 @@
 {
   "name": "@maggioli-design-system/mds-input-upload",
-  "version": "2.9.1",
+  "version": "2.9.2",
   "description": "mds-input-upload is a web-component from Magma Design System, built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScript framework you are using.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -27,7 +27,7 @@
     "@maggioli-design-system/mds-button": "6.8.2",
     "@maggioli-design-system/mds-entity": "5.4.5",
     "@maggioli-design-system/mds-file-preview": "2.7.5",
-    "@maggioli-design-system/mds-progress": "3.2.3",
+    "@maggioli-design-system/mds-progress": "3.3.0",
     "@maggioli-design-system/mds-text": "4.7.5",
     "@maggioli-design-system/styles": "15.11.0",
     "@stencil/core": "4.27.2",

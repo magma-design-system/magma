@@ -1,7 +1,11 @@
-:host-context(.pref-theme-dark),
 :host-context(.pref-theme-dark):host([variant="primary"]) {
   --mds-progress-color: theme('colors.variant-primary-05');
   --mds-progress-background: theme('colors.tone-neutral-07');
+}
+
+:host-context(.pref-theme-dark):host([variant="dark"]) {
+  --mds-progress-color: theme('colors.tone-neutral-04');
+  --mds-progress-background: theme('colors.tone-neutral-08');
 }
 
 :host-context(.pref-theme-dark):host([variant="error"]) {
@@ -26,10 +30,14 @@
 
 
 @media (prefers-color-scheme: dark) {
-  :host-context(.pref-theme-system),
   :host-context(.pref-theme-system):host([variant="primary"]) {
     --mds-progress-color: theme('colors.variant-primary-05');
     --mds-progress-background: theme('colors.tone-neutral-07');
+  }
+
+  :host-context(.pref-theme-system):host([variant="dark"]) {
+    --mds-progress-color: theme('colors.tone-neutral-04');
+    --mds-progress-background: theme('colors.tone-neutral-08');
   }
 
   :host-context(.pref-theme-system):host([variant="error"]) {

@@ -3,6 +3,10 @@ import { DirectionType } from './meta/types'
 import { ThemeVariantType } from '@type/variant'
 import { removeAttributesIf, ifAttribute } from '@common/aria'
 
+/**
+ * @part progress - Selects the `div` element that contains the progress bar
+ */
+
 @Component({
   tag: 'mds-progress',
   styleUrl: 'mds-progress.css',
@@ -64,8 +68,7 @@ export class MdsProgress {
   render () {
     return (
       <Host aria-valuemax="100" aria-valuemin="0" aria-valuenow={ !ifAttribute(this.element, 'aria-hidden') && Math.round(this.progress * 100) } role="progressbar">
-        <div class="contrast-area"></div>
-        <div class="progress" style={
+        <div class="progress" part="progress" style={
           this.direction === 'horizontal'
             ? { flexGrow: `${this.progress}` }
             : { flexGrow: `${this.progress}`, width: '100%' }

@@ -17,6 +17,13 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `variant`   | `variant`   | Sets the theme variant colors                                          | `"ai" \| "dark" \| "error" \| "info" \| "light" \| "primary" \| "success" \| "warning"` | `'primary'`                               |
 
 
+## Shadow Parts
+
+| Part         | Description                                              |
+| ------------ | -------------------------------------------------------- |
+| `"progress"` | Selects the `div` element that contains the progress bar |
+
+
 ## CSS Custom Properties
 
 | Name                        | Description                                     |
