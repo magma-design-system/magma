@@ -1,0 +1,66 @@
+:host([position="right"]),
+:host([position="left"]) {
+  --mds-modal-window-height: 100dvh;
+  --mds-modal-window-max-height: 100dvh;
+}
+
+/*
+  - - -
+  x - -
+  - - -
+*/
+
+:host([position="left"]) {
+  align-items: center;
+  justify-content: flex-start;
+}
+
+:host([position="left"]) .action-close {
+  right: theme('spacing.300');
+  top: theme('spacing.300');
+}
+
+:host([position="left"][opened]) .action-close {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+:host([position="left"]:not([opened])) .action-close {
+  transform: translateX(-120%) rotate(-45deg);
+}
+
+/*
+  - - -
+  - x -
+  - - -
+*/
+
+:host([position="center"]) {
+  align-items: center;
+  justify-content: center;
+}
+
+/*
+  - - -
+  - - x
+  - - -
+*/
+
+:host([position="right"]) {
+  align-items: center;
+  justify-content: flex-end;
+}
+
+:host([position="right"]) .action-close {
+  left: theme('spacing.300');
+  top: theme('spacing.300');
+}
+
+:host([position="right"]:not([opened])) .action-close {
+  transform: translateX(120%) rotate(45deg);
+}
+
+:host([position="right"][opened]) .action-close {
+  opacity: 1;
+  pointer-events: auto;
+}
