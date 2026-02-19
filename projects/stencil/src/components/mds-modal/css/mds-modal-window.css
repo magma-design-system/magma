@@ -8,13 +8,38 @@
   background-color: var(--mds-modal-window-background);
   border-radius: var(--mds-modal-window-radius);
   box-shadow: var(--mds-modal-window-shadow);
+  box-sizing: border-box;
   display: grid;
-  grid-template-rows: 1fr;
+  grid-template-columns: repeat(1, minmax(0, 100%));
   margin: var(--mds-modal-window-distance);
   overflow: var(--mds-modal-window-overflow);
+  position: relative;
 }
 
-.window--top {
+.window-content--empty {
+  display: none;
+}
+
+.window-content-wrapper {
+  max-height: calc(100dvh - calc(var(--mds-modal-window-distance) * 2));
+  overflow: auto;
+}
+
+.window-header,
+.window-footer {
+  box-sizing: border-box;
+  position: absolute;
+}
+
+.window-header {
+  inset: 0 0 auto;
+}
+
+.window-footer {
+  inset: auto 0 0;
+}
+
+/* .window--top {
   grid-template-rows: auto 1fr;
 }
 
@@ -24,7 +49,7 @@
 
 .window--top-bottom {
   grid-template-rows: auto 1fr auto;
-}
+} */
 
 :host .window,
 :host > ::slotted([slot="window"]) {

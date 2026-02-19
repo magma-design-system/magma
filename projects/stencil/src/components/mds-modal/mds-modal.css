@@ -29,7 +29,7 @@
   --mds-modal-window-background: theme('colors.tone-neutral');
   --mds-modal-window-distance: 0;
   --mds-modal-window-max-width: 33%;
-  --mds-modal-window-height: 100dvh;
+  --mds-modal-window-height: calc(100dvh - calc(var(--mds-modal-window-distance) * 2));
   --mds-modal-window-max-height: calc(100dvh - calc(var(--mds-modal-window-distance) * 2));
   --mds-modal-window-min-width: 400px;
   --mds-modal-window-overflow: auto;
