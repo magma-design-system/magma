@@ -31,6 +31,25 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `mdsInputSelectChange` | Emits an InputChangeEventDetail when the value of the input element changes | `CustomEvent<MdsInputEventDetail>` |
 
 
+## Methods
+
+### `setValue(value: string | number | null) => Promise<void>`
+
+Sets the value of the component
+
+#### Parameters
+
+| Name    | Type                       | Description |
+| ------- | -------------------------- | ----------- |
+| `value` | `string \| number \| null` |             |
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
+
 ## Shadow Parts
 
 | Part       | Description             |

@@ -1,7 +1,7 @@
 :host([position="right"]),
 :host([position="left"]) {
-  --mds-modal-window-height: 100dvh;
-  --mds-modal-window-max-height: 100dvh;
+  --mds-modal-window-height: 100%;
+  --mds-modal-window-max-height: calc(100dvh - calc(var(--mds-modal-window-distance) * 2));
 }
 
 /*

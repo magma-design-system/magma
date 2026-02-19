@@ -39,10 +39,79 @@ export default {
   },
 }
 
-const firstName = 'Mario'
-const lastName = 'Rossi'
+const firstName = 'Mary'
+const lastName = 'Reds'
 const fullName = `${firstName} ${lastName}`
 const email = `${firstName.toLowerCase()}.${lastName.toLowerCase()}@nintendo.com`
+
+const HeaderComponent = ({ slot = undefined }: { slot?: string } = {}) => {
+  return (
+    <header
+      slot={slot}
+      class="p-400 bg-tone-neutral/80 backdrop-blur-md shadow-sm flex gap-400 items-center "
+    >
+      <mds-img class="w-800 h-800" src="./logo-gruppo-maggioli-512w.webp" />
+      <div class="text-tone-neutral-02 grid grid-cols-full">
+        <mds-text typography="h6" truncate="word">
+          Maggioli Editore
+        </mds-text>
+        <mds-text typography="caption" truncate="word">
+          Menu di servizio
+        </mds-text>
+      </div>
+    </header>
+  )
+}
+
+const FooterComponent = ({ slot = undefined }: { slot?: string } = {}) => {
+  return (
+    <footer
+      slot={slot}
+      class="flex gap-400 text-tone-neutral-02 p-400 bg-tone-neutral/80 backdrop-blur-md shadow-sm"
+    >
+      <mds-author class="flex-grow">
+        <mds-avatar
+          slot="avatar"
+          class="w-800 h-800"
+          src="./avatar-01-200x200.jpeg"
+        />
+        <mds-text typography="h6" truncate="word">{fullName}</mds-text>
+        <mds-text typography="caption" truncate="word">
+          {email}
+        </mds-text>
+      </mds-author>
+    </footer>
+  )
+}
+
+const ContentComponent = () => {
+
+  return (
+    <div class="p-400 grid gap-400 grid-cols-full">
+      <mds-text>
+        As a multi-brand design syastem, our components need to be flexible
+        enough for any one of our brands to use them for multiple use cases.
+        To achieve this, we ensure that all of the brands are involved in
+        the specification stage, giving us more confidence that we’re
+        future-proofing our components as more brands adopt NewsKit.
+      </mds-text>
+      <mds-text>
+        As a multi-brand design syastem, our components need to be flexible
+        enough for any one of our brands to use them for multiple use cases.
+        To achieve this, we ensure that all of the brands are involved in
+        the specification stage, giving us more confidence that we’re
+        future-proofing our components as more brands adopt NewsKit.
+      </mds-text>
+      <mds-text>
+        As a multi-brand design syastem, our components need to be flexible
+        enough for any one of our brands to use them for multiple use cases.
+        To achieve this, we ensure that all of the brands are involved in
+        the specification stage, giving us more confidence that we’re
+        future-proofing our components as more brands adopt NewsKit.
+      </mds-text>
+    </div>
+  )
+}
 
 const Template = args => {
   const [opened, setOpened] = useState(false)
@@ -80,21 +149,95 @@ const Template = args => {
         {...args}
         opened={opened === true ? true : undefined}
       >
-        <header
-          slot="top"
-          class="p-800 flex gap-400 items-center border-b border-solid border-0 border-tone-neutral-09"
-        >
-          <mds-img class="w-1600" src="./logo-gruppo-maggioli-512w.webp" />
-          <div class="text-tone-neutral-02">
-            <mds-text typography="h5" class="truncate min-w-0">
-              Maggioli Editore
-            </mds-text>
-            <mds-text typography="detail" class="truncate min-w-0">
-              Menu di servizio
-            </mds-text>
-          </div>
-        </header>
-        <div class="p-800">
+        <HeaderComponent/>
+        <ContentComponent/>
+        <FooterComponent/>
+      </mds-modal>
+    </div>
+  )
+}
+
+const TemplateHeaderAndFooter = args => {
+  const [opened, setOpened] = useState(false)
+  useEffect(() => {
+    const actionElement = document.querySelector('#action')
+    const modalElement = document.querySelector('#modal')
+
+    if (actionElement === null || modalElement === null) {
+      // eslint-disable-next-line no-alert
+      alert('Element/s not found')
+      return
+    }
+
+    modalElement.addEventListener('mdsModalClose', () => {
+      console.info('mdsModalClose')
+      setOpened(false)
+    })
+    modalElement.addEventListener('mdsModalHide', () => {
+      console.info('mdsModalHide')
+      setOpened(false)
+    })
+  }, [])
+
+  if (args.opened !== null) {
+    args.opened = null
+  }
+
+  return (
+    <div>
+      <mds-button id="action" onClick={() => setOpened(true)}>
+        Open modal
+      </mds-button>
+      <mds-modal
+        id="modal"
+        {...args}
+        opened={opened === true ? true : undefined}
+      >
+        <HeaderComponent slot="top" />
+        <ContentComponent/>
+        <FooterComponent slot="bottom" />
+      </mds-modal>
+    </div>
+  )
+}
+
+const TemplateSmallContent = args => {
+  const [opened, setOpened] = useState(false)
+  useEffect(() => {
+    const actionElement = document.querySelector('#action')
+    const modalElement = document.querySelector('#modal')
+
+    if (actionElement === null || modalElement === null) {
+      // eslint-disable-next-line no-alert
+      alert('Element/s not found')
+      return
+    }
+
+    modalElement.addEventListener('mdsModalClose', () => {
+      console.info('mdsModalClose')
+      setOpened(false)
+    })
+    modalElement.addEventListener('mdsModalHide', () => {
+      console.info('mdsModalHide')
+      setOpened(false)
+    })
+  }, [])
+
+  if (args.opened !== null) {
+    args.opened = null
+  }
+
+  return (
+    <div>
+      <mds-button id="action" onClick={() => setOpened(true)}>
+        Open modal
+      </mds-button>
+      <mds-modal
+        id="modal"
+        {...args}
+        opened={opened === true ? true : undefined}
+      >
+        <div class="p-400 grid gap-400 grid-cols-full">
           <mds-text>
             As a multi-brand design syastem, our components need to be flexible
             enough for any one of our brands to use them for multiple use cases.
@@ -103,29 +246,12 @@ const Template = args => {
             future-proofing our components as more brands adopt NewsKit.
           </mds-text>
         </div>
-        <footer
-          slot="bottom"
-          class="p-800 flex gap-400 text-tone-neutral-02 border-t border-solid border-0 border-tone-neutral-09"
-        >
-          <mds-author class="flex-grow">
-            <mds-avatar
-              slot="avatar"
-              class="w-1600 max-mobile:w-1200"
-              src="./avatar-01-200x200.jpeg"
-            />
-            <mds-text typography="h6">{fullName}</mds-text>
-            <mds-text typography="caption" class="text-tone-neutral-04">
-              {email}
-            </mds-text>
-          </mds-author>
-          <mds-button icon="mdi/dots-vertical" variant="light"></mds-button>
-        </footer>
       </mds-modal>
     </div>
   )
 }
 
-const TemplateStyle = args => {
+const TemplateCustomWindow = args => {
   const [opened, setOpened] = useState(false)
   useEffect(() => {
     const actionElement = document.querySelector('#action')
@@ -166,46 +292,58 @@ const TemplateStyle = args => {
         }}
         opened={opened === true ? true : undefined}
       >
-        <header
-          slot="top"
-          class="p-800 flex gap-400 items-center border-b border-solid border-0 border-tone-neutral-09"
-        >
-          <mds-img class="w-1600" src="./logo-gruppo-maggioli-512w.webp" />
-          <div class="text-tone-neutral-02">
-            <mds-text typography="h5" class="truncate min-w-0">
-              Maggioli Editore
-            </mds-text>
-            <mds-text typography="detail" class="truncate min-w-0">
-              Menu di servizio
-            </mds-text>
-          </div>
-        </header>
-        <div class="p-800">
-          <mds-text>
-            As a multi-brand design syastem, our components need to be flexible
-            enough for any one of our brands to use them for multiple use cases.
-            To achieve this, we ensure that all of the brands are involved in
-            the specification stage, giving us more confidence that we’re
-            future-proofing our components as more brands adopt NewsKit.
-          </mds-text>
-        </div>
-        <footer
-          slot="bottom"
-          class="p-800 flex gap-400 text-tone-neutral-02 border-t border-solid border-0 border-tone-neutral-09"
-        >
-          <mds-author class="flex-grow">
-            <mds-avatar
-              slot="avatar"
-              class="w-1600 max-mobile:w-1200"
-              src="./avatar-01-200x200.jpeg"
-            />
-            <mds-text typography="h6">{fullName}</mds-text>
-            <mds-text typography="caption" class="text-tone-neutral-04">
-              {email}
-            </mds-text>
-          </mds-author>
-          <mds-button icon="mdi/dots-vertical" variant="light"></mds-button>
-        </footer>
+        <HeaderComponent/>
+        <ContentComponent/>
+        <FooterComponent/>
+      </mds-modal>
+    </div>
+  )
+}
+
+const TemplateCustomWindowHeaderAndFooter = args => {
+  const [opened, setOpened] = useState(false)
+  useEffect(() => {
+    const actionElement = document.querySelector('#action')
+    const modalElement = document.querySelector('#modal')
+
+    if (actionElement === null || modalElement === null) {
+      // eslint-disable-next-line no-alert
+      alert('Element/s not found')
+      return
+    }
+
+    modalElement.addEventListener('mdsModalClose', () => {
+      console.info('mdsModalClose')
+      setOpened(false)
+    })
+    modalElement.addEventListener('mdsModalHide', () => {
+      console.info('mdsModalHide')
+      setOpened(false)
+    })
+  }, [])
+
+  if (args.opened !== null) {
+    args.opened = null
+  }
+
+  return (
+    <div>
+      <mds-button id="action" onClick={() => setOpened(true)}>
+        Open modal
+      </mds-button>
+      <mds-modal
+        id="modal"
+        {...args}
+        style={{
+          '--mds-modal-window-overflow': 'hidden',
+          '--mds-modal-window-distance': '1rem',
+          '--mds-modal-window-radius': '1rem',
+        }}
+        opened={opened === true ? true : undefined}
+      >
+        <HeaderComponent slot="top" />
+        <ContentComponent/>
+        <FooterComponent slot="bottom" />
       </mds-modal>
     </div>
   )
@@ -269,46 +407,9 @@ const TemplateOverflow = args => {
         {...args}
         opened={opened === true ? true : undefined}
       >
-        <header
-          slot="top"
-          class="p-800 flex gap-400 items-center border-b border-solid border-0 border-tone-neutral-09"
-        >
-          <mds-img class="w-1600" src="./logo-gruppo-maggioli-512w.webp" />
-          <div class="text-tone-neutral-02">
-            <mds-text typography="h5" class="truncate min-w-0">
-              Maggioli Editore
-            </mds-text>
-            <mds-text typography="detail" class="truncate min-w-0">
-              Menu di servizio
-            </mds-text>
-          </div>
-        </header>
-        <div class="p-800">
-          <mds-text>
-            As a multi-brand design syastem, our components need to be flexible
-            enough for any one of our brands to use them for multiple use cases.
-            To achieve this, we ensure that all of the brands are involved in
-            the specification stage, giving us more confidence that we’re
-            future-proofing our components as more brands adopt NewsKit.
-          </mds-text>
-        </div>
-        <footer
-          slot="bottom"
-          class="p-800 flex gap-400 text-tone-neutral-02 border-t border-solid border-0 border-tone-neutral-09"
-        >
-          <mds-author class="flex-grow">
-            <mds-avatar
-              slot="avatar"
-              class="w-1600 max-mobile:w-1200"
-              src="./avatar-01-200x200.jpeg"
-            />
-            <mds-text typography="h6">{fullName}</mds-text>
-            <mds-text typography="caption" class="text-tone-neutral-04">
-              {email}
-            </mds-text>
-          </mds-author>
-          <mds-button icon="mdi/dots-vertical" variant="light"></mds-button>
-        </footer>
+        <HeaderComponent/>
+        <ContentComponent/>
+        <FooterComponent/>
       </mds-modal>
     </div>
   )
@@ -479,6 +580,24 @@ export const Default = {
   },
 }
 
+export const HeaderAndFooterFixedPosition = {
+  render: TemplateHeaderAndFooter,
+
+  args: {
+    position: 'right',
+    opened: true,
+  },
+}
+
+export const SmallContent = {
+  render: TemplateSmallContent,
+
+  args: {
+    position: 'right',
+    opened: true,
+  },
+}
+
 export const Backdrop = {
   render: Template,
 
@@ -500,7 +619,17 @@ export const BodyOverflowDisabled = {
 }
 
 export const DefaultWindowCustomized = {
-  render: TemplateStyle,
+  render: TemplateCustomWindow,
+
+  args: {
+    position: 'right',
+    animation: 'slide',
+    opened: true,
+  },
+}
+
+export const DefaultWindowCustomizedHeaderAndFooter = {
+  render: TemplateCustomWindowHeaderAndFooter,
 
   args: {
     position: 'right',
