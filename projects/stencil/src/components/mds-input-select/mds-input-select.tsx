@@ -1,5 +1,5 @@
 import miBaselineKeyboardArrowDown from '@icon/mi/baseline/keyboard-arrow-down.svg'
-import { AttachInternals, Component, Element, Event, EventEmitter, Host, Prop, h, State, Watch } from '@stencil/core'
+import { AttachInternals, Component, Element, Event, EventEmitter, Host, Method, Prop, h, State, Watch } from '@stencil/core'
 import { MdsInputEventDetail } from '@type/input'
 import { ThemeStatusVariantType } from '@type/variant'
 
@@ -82,11 +82,21 @@ export class MdsInputSelect {
   @Event({ eventName: 'mdsInputSelectChange' }) changeEvent: EventEmitter<MdsInputEventDetail>
 
   /**
+   * Sets the value of the component
+   */
+  @Method()
+  async setValue (value: string | number | null): Promise<void> {
+    this.value = value
+    return Promise.resolve()
+  }
+
+  /**
    * Emits the change event when the component value changes
    */
   @Watch('value')
   protected valueChanged ():void {
     this.changeEvent.emit({ value: this.value?.toString() })
+    this.setCurrentValue()
     this.internals.setFormValue(this.value?.toString() ?? null)
   }
 
@@ -194,6 +204,10 @@ export class MdsInputSelect {
       this.selectEl?.appendChild(element.cloneNode(true))
     })
 
+    this.setCurrentValue()
+  }
+
+  private setCurrentValue = (): void => {
     if (this.value && this.selectEl){
       this.selectEl.querySelectorAll('option').forEach((element: HTMLOptionElement) => {
         element.selected = element.value === this.value

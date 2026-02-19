@@ -56,6 +56,10 @@ export default {
       control: { type: 'select' },
       description: 'Sets the variant of the component',
     },
+    setValue: {
+      type: { name: 'function' },
+      description: 'Sets the value of the component',
+    },
   },
 }
 
