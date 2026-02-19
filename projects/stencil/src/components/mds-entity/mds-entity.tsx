@@ -4,6 +4,8 @@ import { ThemeFullVariantAvatarType, ToneMinimalVariantType } from '@type/varian
 /**
  * @slot default - Add `text string`, `HTML elements` or `components` to this slot.
  * @slot action - Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element.
+ * @part spinner - The spinner element
+ * @part avatar - The avatar element
  */
 
 @Component({
@@ -71,11 +73,11 @@ export class MdsEntity {
   render () {
     return (
       <Host>
-        <div class="spinner">
+        <div class="spinner" part="spinner">
           <mds-spinner running></mds-spinner>
         </div>
         { this.checkAvatar() &&
-          <mds-avatar class="preview" icon={this.icon} initials={this.initials} src={this.src} tone={this.tone} variant={this.variant}/>
+          <mds-avatar class="preview" icon={this.icon} initials={this.initials} src={this.src} tone={this.tone} variant={this.variant} part="avatar" />
         }
         <div class="infos">
           <slot/>
