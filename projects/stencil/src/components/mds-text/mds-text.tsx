@@ -65,7 +65,7 @@ export class MdsText {
     const textElement = this.host.shadowRoot?.querySelector('.text') as HTMLElement
     this.randomTextOptions.speed = this.cssTextAnimationSpeed
     this.randomTextOptions.placeholderChar = this.cssTextAnimationPlaceholderChar
-    console.info('animateText', this.cssTextAnimationPlaceholderChar)
+    // console.info('animateText', this.cssTextAnimationPlaceholderChar)
     this.randomText = new RandomText({
       str: text,
       onProgress: (str: string) => { textElement.innerHTML = str },
