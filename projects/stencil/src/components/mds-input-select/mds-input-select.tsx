@@ -128,7 +128,10 @@ export class MdsInputSelect {
       this.selectEl.insertBefore(defaultOption, this.selectEl.firstChild)
       defaultOption.value = ''
       defaultOption.text = newValue
-      if (!this.defaultValue) defaultOption.selected = true
+      if (!this.defaultValue) {
+        defaultOption.selected = true
+        this.value = undefined
+      }
       if (this.required) defaultOption.disabled = true
     }
   }
@@ -208,7 +211,8 @@ export class MdsInputSelect {
   }
 
   private setCurrentValue = (): void => {
-    if (this.value && this.selectEl){
+    if (!this.selectEl) return
+    if (this.value){
       this.selectEl.querySelectorAll('option').forEach((element: HTMLOptionElement) => {
         element.selected = element.value === this.value
       })
