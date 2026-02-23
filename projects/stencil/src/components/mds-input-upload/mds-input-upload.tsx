@@ -156,7 +156,7 @@ export class MdsInputUpload {
   private readonly onAdd = (event: Event | FileList | File[]) => {
     if (!event) return
     if (event instanceof FileList || Array.isArray(event)) {
-      this.update(this.nativeInput!, this.prepareFiles(event))
+      this.update(this.nativeInput, this.prepareFiles(event))
     } else {
       const input = ((event.target) as HTMLInputElement)
       this.update(input, this.prepareFiles(input.files))
@@ -258,7 +258,8 @@ export class MdsInputUpload {
     return { errorMessage, type }
   }
 
-  private update (input: HTMLInputElement, files: FileList | null): void {
+  private update (input: HTMLInputElement | undefined, files: FileList | null): void {
+    if (!input) return
     input.files = files
 
     const validity : ValidityStateFlags = {}

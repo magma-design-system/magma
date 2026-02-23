@@ -1918,12 +1918,6 @@ export namespace Components {
          */
         "variant"?: ButtonVariantType;
     }
-    interface MdsRadialProgress {
-        /**
-          * A value between 0 and 1 that rapresents the status progress
-         */
-        "progress": number;
-    }
     interface MdsSeparator {
     }
     interface MdsSpinner {
@@ -3513,12 +3507,6 @@ declare global {
         prototype: HTMLMdsRadialMenuItemElement;
         new (): HTMLMdsRadialMenuItemElement;
     };
-    interface HTMLMdsRadialProgressElement extends Components.MdsRadialProgress, HTMLStencilElement {
-    }
-    var HTMLMdsRadialProgressElement: {
-        prototype: HTMLMdsRadialProgressElement;
-        new (): HTMLMdsRadialProgressElement;
-    };
     interface HTMLMdsSeparatorElement extends Components.MdsSeparator, HTMLStencilElement {
     }
     var HTMLMdsSeparatorElement: {
@@ -3868,7 +3856,6 @@ declare global {
         "mds-quote": HTMLMdsQuoteElement;
         "mds-radial-menu": HTMLMdsRadialMenuElement;
         "mds-radial-menu-item": HTMLMdsRadialMenuItemElement;
-        "mds-radial-progress": HTMLMdsRadialProgressElement;
         "mds-separator": HTMLMdsSeparatorElement;
         "mds-spinner": HTMLMdsSpinnerElement;
         "mds-status-bar": HTMLMdsStatusBarElement;
@@ -5789,12 +5776,6 @@ declare namespace LocalJSX {
          */
         "variant"?: ButtonVariantType;
     }
-    interface MdsRadialProgress {
-        /**
-          * A value between 0 and 1 that rapresents the status progress
-         */
-        "progress"?: number;
-    }
     interface MdsSeparator {
     }
     interface MdsSpinner {
@@ -6338,7 +6319,6 @@ declare namespace LocalJSX {
         "mds-quote": MdsQuote;
         "mds-radial-menu": MdsRadialMenu;
         "mds-radial-menu-item": MdsRadialMenuItem;
-        "mds-radial-progress": MdsRadialProgress;
         "mds-separator": MdsSeparator;
         "mds-spinner": MdsSpinner;
         "mds-status-bar": MdsStatusBar;
@@ -6483,7 +6463,6 @@ declare module "@stencil/core" {
             "mds-quote": LocalJSX.MdsQuote & JSXBase.HTMLAttributes<HTMLMdsQuoteElement>;
             "mds-radial-menu": LocalJSX.MdsRadialMenu & JSXBase.HTMLAttributes<HTMLMdsRadialMenuElement>;
             "mds-radial-menu-item": LocalJSX.MdsRadialMenuItem & JSXBase.HTMLAttributes<HTMLMdsRadialMenuItemElement>;
-            "mds-radial-progress": LocalJSX.MdsRadialProgress & JSXBase.HTMLAttributes<HTMLMdsRadialProgressElement>;
             "mds-separator": LocalJSX.MdsSeparator & JSXBase.HTMLAttributes<HTMLMdsSeparatorElement>;
             "mds-spinner": LocalJSX.MdsSpinner & JSXBase.HTMLAttributes<HTMLMdsSpinnerElement>;
             "mds-status-bar": LocalJSX.MdsStatusBar & JSXBase.HTMLAttributes<HTMLMdsStatusBarElement>;
