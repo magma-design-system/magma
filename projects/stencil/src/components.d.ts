@@ -1315,6 +1315,7 @@ export namespace Components {
           * When `multiple` is set to `true`, represents the number or rows in the list that should be visible
          */
         "size"?: number;
+        "updateLang": () => Promise<void>;
         /**
           * Specifies the value of the component
          */

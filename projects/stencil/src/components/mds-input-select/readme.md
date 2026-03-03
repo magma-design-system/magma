@@ -49,12 +49,23 @@ Type: `Promise<void>`
 
 
 
+### `updateLang() => Promise<void>`
+
+
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
 
 ## Shadow Parts
 
-| Part       | Description             |
-| ---------- | ----------------------- |
-| `"select"` | The select HTML element |
+| Part        | Description                                           |
+| ----------- | ----------------------------------------------------- |
+| `"select"`  | The select HTML element                               |
+| `"tip-top"` | Selects the verbose status of input on top of element |
 
 
 ## Dependencies
