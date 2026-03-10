@@ -4,7 +4,7 @@
   --magma-backdrop-color: 0 0 0;
   --magma-backdrop-opacity: 0.1;
   --magma-backdrop-z-index: 4000;
-  --magma-backdrop: rgba(var(--magma-backdrop-color) / var(--magma-backdrop-opacity));
+  --magma-backdrop: rgb(var(--magma-backdrop-color) / var(--magma-backdrop-opacity));
   --magma-context-menu-z-index: 8000;
   --magma-disabled-opacity: 0.5;
   --magma-dropdown-z-index: 5000;
@@ -21,7 +21,7 @@
   --magma-overlay-blur: var(--magma-backdrop-blur);
   --magma-overlay-color: var(--magma-backdrop-color);
   --magma-overlay-opacity: 0.5;
-  --magma-overlay: rgba(var(--magma-overlay-color) / var(--magma-overlay-opacity));
+  --magma-overlay: rgb(var(--magma-overlay-color) / var(--magma-overlay-opacity));
   --magma-selection-background: rgb(var(--label-sky-09));
   --magma-selection-color: rgb(var(--label-sky-01));
   --magma-theme-overlay-z-index: 7000;
