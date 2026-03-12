@@ -1,10 +1,10 @@
 {
   "colors": [
-    { "color": "#94a3b8", "export": ["tones"], "name": "tone.slate", "ratios": "tone", "formula": "wcag2", "seed": { "light": "#FFFFFF", "dark": "#000000" } },
-    { "color": "#9ca3af", "export": ["tones"], "name": "tone.grey", "ratios": "tone", "formula": "wcag2", "seed": { "light": "#FFFFFF", "dark": "#000000" } },
-    { "color": "#a1a1aa", "export": ["tones"], "name": "tone.zinc", "ratios": "tone", "formula": "wcag2", "seed": { "light": "#FFFFFF", "dark": "#000000" } },
+    { "color": "#94a3b8", "export": ["tones"], "name": "tone.slate", "ratios": "tone", "formula": "wcag3", "seed": { "light": "#FFFFFF", "dark": "#000000" } },
+    { "color": "#9ca3af", "export": ["tones"], "name": "tone.grey", "ratios": "tone", "formula": "wcag3", "seed": { "light": "#FFFFFF", "dark": "#000000" } },
+    { "color": "#a1a1aa", "export": ["tones"], "name": "tone.zinc", "ratios": "tone", "formula": "wcag3", "seed": { "light": "#FFFFFF", "dark": "#000000" } },
     { "color": "#a3a3a3", "export": ["tones", "default"], "name": "tone.neutral", "formula": "wcag3", "ratios": "tone", "seed": { "light": "#FFFFFF", "dark": "#000000" } },
-    { "color": "#a8a29e", "export": ["tones"], "name": "tone.stone", "ratios": "tone", "formula": "wcag2", "seed": { "light": "#FFFFFF", "dark": "#000000" } },
+    { "color": "#a8a29e", "export": ["tones"], "name": "tone.stone", "ratios": "tone", "formula": "wcag3", "seed": { "light": "#FFFFFF", "dark": "#000000" } },
 
     { "color": "#23B2E1", "export": ["status", "default"], "name": "status.info", "colorspace": "OKLCH" },
     { "color": "#21BF73", "export": ["status", "default"], "name": "status.success", "colorspace": "OKLCH" },
@@ -14,8 +14,8 @@
     { "color": "#ef4444", "export": ["label", "default"], "name": "label.red" },
     { "color": "#f43f5e", "export": ["label", "default"], "name": "label.amaranth" },
     { "color": "#ec4899", "export": ["label", "default"], "name": "label.orchid" },
-    { "color": "#8b5cf6", "export": ["label", "default"], "name": "label.violet" },
     { "color": "#a855f7", "export": ["label", "default"], "name": "label.purple" },
+    { "color": "#8b5cf6", "export": ["label", "default"], "name": "label.violet" },
     { "color": "#0E36F6", "export": ["label", "default"], "name": "label.blue" },
     { "color": "#0ea5e9", "export": ["label", "default"], "name": "label.sky" },
     { "color": "#06b6d4", "export": ["label", "default"], "name": "label.aqua" },
