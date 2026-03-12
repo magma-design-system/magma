@@ -11,6 +11,7 @@ import localeIt from './meta/locale.it.json'
 /**
  * @slot default - Add `text string`, `HTML elements` or `components` to this slot.
  * @slot action - Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element.
+ * @part text - The text wrapper of the `default` and `content` slots
  */
 
 @Component({
@@ -127,7 +128,7 @@ export class MdsBanner {
           { this.icon && <mds-icon aria-hidden="true" class="icon" name={this.icon}/> }
           <div class="content">
             { this.headline && <mds-text aria-hidden="true" class="headline" typography="h6">{ this.headline }</mds-text> }
-            <div class="text">
+            <div class="text" part="text">
               <slot/>
             </div>
           </div>
