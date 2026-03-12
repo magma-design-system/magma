@@ -138,14 +138,13 @@
   border-radius: var(--radius-xs);
   box-shadow: var(--mds-input-select-ring), var(--mds-input-select-shadow);
   box-sizing: border-box;
-  color: theme('colors.tone-neutral-02');
+  color: rgb(var(--tone-neutral-02));
   cursor: pointer;
   margin: 0;
   min-height: --spacing(1200);
   overflow: hidden;
   padding-left: --spacing(400);
   padding-right: --spacing(1200);
-  padding-top: --spacing(300);
   text-overflow: ellipsis;
   transition-duration: var(--duration-300);
   transition-property: background-color, border-color, box-shadow, color, fill;
@@ -167,7 +166,7 @@
 }
 
 :host([required]:not([required="false"])) .input {
-  color: theme('colors.tone-neutral-05');
+  color: rgb(var(--tone-neutral-05));
 }
 
 .input:disabled {
