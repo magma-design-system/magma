@@ -225,8 +225,7 @@ export class MdsInputSelect {
           <i class="icon" innerHTML={miBaselineKeyboardArrowDown} />
         </div>
         <div class="option-container">
-          <slot onSlotchange={this.onSlotChangeHandler}>
-          </slot>
+          <slot onSlotchange={this.onSlotChangeHandler}></slot>
         </div>
         <mds-input-tip position="top" active={this.hasFocus}>
           { this.disabled && <mds-input-tip-item expanded variant="disabled"></mds-input-tip-item> }
