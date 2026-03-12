@@ -173,6 +173,8 @@
   display: grid;
   flex-grow: 1;
   gap: var(--mds-banner-gap);
+  padding-bottom: --spacing(200);
+  padding-top: --spacing(400);
 }
 
 @container mds-banner (max-width: 300px) {
