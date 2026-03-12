@@ -73,8 +73,9 @@
   justify-self: start;
   max-width: min-content;
   min-width: min-content;
-  padding: --spacing(150) --spacing(100);
-  size: 100% --spacing(900);
+  padding: --spacing(100);
+
+  /* size: 100% --spacing(900); */
   transition-duration: var(--duration-150);
   transition-property: background-color, border-color, box-shadow, color, opacity;
   transition-timing-function: var(--ease-in-out-quad);
@@ -128,17 +129,19 @@
   border-radius: 1000px;
   display: flex;
   flex-shrink: 0;
+  height: --spacing(600);
   justify-content: center;
-  size: --spacing(600);
   transition-duration: inherit;
   transition-timing-function: inherit;
+  width: --spacing(600);
 }
 
 .icon {
   fill: var(--mds-chip-icon-color);
-  size: --spacing(400);
+  height: --spacing(400);
   transition: fill;
   transition-duration: var(--duration-200);
+  width: --spacing(400);
 }
 
 .button-delete {
