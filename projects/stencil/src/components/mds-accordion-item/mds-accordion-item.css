@@ -120,7 +120,12 @@
 }
 
 .content-expander {
+  display: grid;
+  grid-template-columns: minmax(0, 100%);
   min-height: 0;
+  transition-duration: var(--mds-accordion-item-duration);
+  transition-property: opacity, padding;
+  transition-timing-function: var(--ease-out-expo);
 }
 
 .icon {
