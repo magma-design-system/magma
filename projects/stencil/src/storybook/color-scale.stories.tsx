@@ -1,15 +1,21 @@
 import { h } from '@stencil/core'
-import { ThemeFullVariantType, ThemeVariantType, ToneSimpleVariantType } from '@type/variant'
-// import { useState } from 'react'
+import { ChipVariantType, ThemeFullVariantType, ThemeVariantType, ToneSimpleVariantType, ToneVariantType, ToneMinimalVariantType } from '@type/variant'
+import { themeVariantChipDictionary, toneMinimalVariantDictionary, themeVariantDictionary, themeFullVariantDictionary, toneVariantDictionary } from '@dictionary/variant'
+import { useState, useEffect, useRef } from 'react'
+import { MdsInputSelectCustomEvent } from 'src/components'
+import type { MdsInputEventDetail } from '@type/input'
 
 const colorGroups = [
   'tone',
   'status',
   'label',
   'variant',
-]
+] as const
+
+type ColorGroupKey = (typeof colorGroups)[number]
 
 const capitalize = (value: string): string => value.charAt(0).toUpperCase() + value.slice(1)
+
 
 const colors = [
   'tone-slate',
@@ -52,7 +58,7 @@ const colorScale = [
   '10',
 ]
 
-const colorPalette = {
+const colorPalette: Record<ColorGroupKey, string[]> = {
   tone: [
     'slate',
     'grey',
@@ -87,15 +93,98 @@ const colorPalette = {
   ],
 }
 
-const variantTones = [
+const variantTones: ToneVariantType[] = [
   'strong',
-  'outline',
   'weak',
+  'outline',
   'text',
 ]
-// let selectedGroup: keyof typeof colorPalette = 'variant'
-const selectedDefaultVariant: ThemeVariantType = 'primary'
-const selectedDefaultTone: ToneSimpleVariantType = 'strong'
+
+const mapToThemeVariant = (group: ColorGroupKey, value: string): ThemeVariantType => {
+  // status group maps directly to status variants
+  if (group === 'status') {
+    if (['info', 'success', 'error', 'warning'].includes(value)) {
+      return value as ThemeVariantType
+    }
+  }
+
+  // variant group: only some are valid ThemeVariantType
+  if (group === 'variant') {
+    if (value === 'ai') return 'ai'
+    if (value === 'primary' || value === 'secondary') return 'primary'
+  }
+
+  // other groups (tone, label) don't correspond to ThemeVariantType, fall back
+  return 'primary'
+}
+
+const toSimpleTone = (tone: string): ToneSimpleVariantType => {
+  const allowedTones = ['strong', 'weak', 'outline', 'text']
+  if (allowedTones.includes(tone)) {
+    return tone as ToneSimpleVariantType
+  }
+  return 'strong'
+}
+
+const toTone = (tone: string): ToneVariantType => {
+  const allowedTones = toneVariantDictionary as ToneVariantType[]
+  if (allowedTones.includes(tone as ToneVariantType)) {
+    return tone as ToneVariantType
+  }
+  return 'strong'
+}
+
+const toFullVariant = (variant: string): ThemeFullVariantType => {
+  const allowedVariants = themeFullVariantDictionary as ThemeFullVariantType[]
+  if (allowedVariants.includes(variant as ThemeFullVariantType)) {
+    return variant as ThemeFullVariantType
+  }
+  return 'blue'
+}
+
+const toVariant = (variant: string): ThemeVariantType => {
+  const allowedVariants = themeVariantDictionary as ThemeVariantType[]
+  if (allowedVariants.includes(variant as ThemeVariantType)) {
+    return variant as ThemeVariantType
+  }
+  return 'primary'
+}
+
+const toChipVariant = (variant: string): ChipVariantType => {
+  const allowedVariants = themeVariantChipDictionary as ChipVariantType[]
+  if (allowedVariants.includes(variant as ChipVariantType)) {
+    return variant as ChipVariantType
+  }
+  return 'primary'
+}
+
+const toMinimalTone = (tone: string): ToneMinimalVariantType => {
+  const allowedTones = toneMinimalVariantDictionary as ToneMinimalVariantType[]
+  if (allowedTones.includes(tone as ToneMinimalVariantType)) {
+    return tone as ToneMinimalVariantType
+  }
+  return 'strong'
+}
+type ComponentVariantsProps = {
+  variant?: string
+  tone?: string
+}
+
+const ComponentVariants = ({ variant = 'primary', tone = 'strong' }: ComponentVariantsProps) => {
+  console.info(variant, tone)
+  return (
+    <div class="grid gap-600 grid-cols-full justify-items-start">
+      <mds-banner headline="Banner component" icon="mi/baseline/warning" variant={toVariant(variant)} tone={toSimpleTone(tone)}>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.
+        <mds-button variant={toVariant(variant)} tone="text" slot="action">Cancel action</mds-button>
+        <mds-button variant={toVariant(variant)} tone="strong" slot="action">Confirm action</mds-button>
+      </mds-banner>
+      <mds-badge variant={toFullVariant(variant)} tone={toTone(tone)}>badge component</mds-badge>
+      <mds-chip icon="mi/baseline/pets" label="Chip label" variant={toChipVariant(variant)} tone={toMinimalTone(tone)}></mds-chip>
+      <mds-button await variant={toVariant(variant)} tone={toMinimalTone(tone)} onClick={() => console.info('clicked')}>Click me</mds-button>
+    </div>
+  )
+}
 
 
 /*
@@ -368,26 +457,6 @@ export default {
   title: 'Common tests',
 }
 
-type ComponentVariantsProps = {
-  variant?: ThemeVariantType
-  tone?: ToneSimpleVariantType
-}
-
-const ComponentVariants = ({ variant = 'primary', tone = 'strong' }: ComponentVariantsProps) => {
-  return (
-    <div class="grid gap-600 grid-cols-full justify-items-start">
-      <mds-banner id="color-scale-preview-banner" headline="Banner component" icon="mi/baseline/warning" variant={variant} tone={tone}>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.
-        <mds-button variant={variant} tone="text" slot="action">Cancel action</mds-button>
-        <mds-button variant={variant} tone="strong" slot="action">Confirm action</mds-button>
-      </mds-banner>
-      <mds-badge id="color-scale-preview-badge" variant={variant as ThemeFullVariantType} tone={tone}>badge component</mds-badge>
-      {variant}
-      <mds-button await variant={variant} tone={tone} onClick={() => console.info('clicked')}>Click me</mds-button>
-    </div>
-  )
-}
-
 const ColorGrid = ({ group, selected }: { group: string, selected: boolean }) => {
   const groupColors = colors.filter(color => color.startsWith(group))
   return (
@@ -418,11 +487,67 @@ const ColorItem = ({ color, scale }: { color: string, scale: string }) => {
 }
 
 const Template = () => {
+  const [selectedGroup, setSelectedGroup] = useState<string>('variant')
+  const [selectedVariantKey, setSelectedVariantKey] = useState<string>(colorPalette.variant[0])
+  const [selectedTone, setSelectedTone] = useState<string>('strong')
 
-  const selectedVariant = selectedDefaultVariant
-  const selectedTone = selectedDefaultTone
-  // const [selectedVariant, setSelectedVariant] = useState<ThemeVariantType>(selectedDefaultVariant)
-  // const [selectedTone, setSelectedTone] = useState<ToneSimpleVariantType>(selectedDefaultTone)
+  const groupSelectRef = useRef<HTMLMdsInputSelectElement>(null)
+  const variantSelectRef = useRef<HTMLMdsInputSelectElement>(null)
+  const toneSelectRef = useRef<HTMLMdsInputSelectElement>(null)
+
+  const variantOptions = colorPalette[selectedGroup]
+  const selectedVariant: ThemeVariantType = mapToThemeVariant(selectedGroup, selectedVariantKey)
+
+  useEffect(() => {
+    const handleGroupChange = (event: MdsInputSelectCustomEvent<MdsInputEventDetail>) => {
+      const nextGroup = event.detail?.value as ColorGroupKey | undefined
+      if (!nextGroup) return
+
+      setSelectedGroup(nextGroup)
+      const firstVariant = colorPalette[nextGroup][0]
+      setSelectedVariantKey(firstVariant)
+    }
+    const groupEl = groupSelectRef.current as HTMLElement | null
+    if (!groupEl) return
+
+
+    groupEl.addEventListener('mdsInputSelectChange', handleGroupChange)
+    return () => {
+      groupEl.removeEventListener('mdsInputSelectChange', handleGroupChange)
+    }
+  }, [])
+
+  useEffect(() => {
+    const variantEl = variantSelectRef.current as HTMLElement | null
+    if (!variantEl) return
+
+    const handleVariantChange = (event: MdsInputSelectCustomEvent<MdsInputEventDetail>) => {
+      const value = event.detail?.value as string | undefined
+      if (!value) return
+      setSelectedVariantKey(value)
+    }
+
+    variantEl.addEventListener('mdsInputSelectChange', handleVariantChange)
+    return () => {
+      variantEl.removeEventListener('mdsInputSelectChange', handleVariantChange)
+    }
+  }, [])
+
+  useEffect(() => {
+    const toneEl = toneSelectRef.current as HTMLElement | null
+    if (!toneEl) return
+
+    const handleToneChange = (event: MdsInputSelectCustomEvent<MdsInputEventDetail>) => {
+      const value = event.detail?.value as ToneVariantType | undefined
+      if (!value) return
+      setSelectedTone(value)
+    }
+
+    toneEl.addEventListener('mdsInputSelectChange', handleToneChange)
+    return () => {
+      toneEl.removeEventListener('mdsInputSelectChange', handleToneChange)
+    }
+  }, [])
 
   return (
     <div class="grid-cols-full grid tablet:grid-cols-[3fr_2fr] gap-600">
@@ -434,21 +559,33 @@ const Template = () => {
       <div class="sticky top-0 self-start p-600 grid gap-600 grid-cols-full">
         <div class="grid gap-600 grid-cols-2">
           <mds-input-field label="group" class="col-span-2">
-            <mds-input-select id="color-scale-group-select">
+            <mds-input-select
+              id="color-scale-group-select"
+              value={selectedGroup}
+              ref={groupSelectRef}
+            >
               {colorGroups.map(group => (
                 <option value={group}>{capitalize(group)}</option>
               ))}
             </mds-input-select>
           </mds-input-field>
           <mds-input-field label="variant">
-            <mds-input-select id="color-scale-variant-select">
-              {colorPalette.variant.map(name => (
+            <mds-input-select
+              id="color-scale-variant-select"
+              value={selectedVariantKey}
+              ref={variantSelectRef}
+            >
+              {variantOptions.map(name => (
                 <option value={name}>{capitalize(name)}</option>
               ))}
             </mds-input-select>
           </mds-input-field>
           <mds-input-field label="tone">
-            <mds-input-select id="color-scale-tone-select">
+            <mds-input-select
+              id="color-scale-tone-select"
+              value={selectedTone}
+              ref={toneSelectRef}
+            >
               {variantTones.map(name => (
                 <option value={name}>{capitalize(name)}</option>
               ))}
