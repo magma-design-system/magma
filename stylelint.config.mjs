@@ -141,7 +141,13 @@ export default {
     'property-disallowed-list': ['background'],
     'property-no-unknown': [
       true,
-      { ignoreProperties: ['field-sizing', 'interpolate-size'] },
+      {
+        ignoreProperties: [
+          'field-sizing',
+          'interpolate-size',
+          'corner-shape',
+        ],
+      },
     ],
     'property-no-vendor-prefix': [
       true,
