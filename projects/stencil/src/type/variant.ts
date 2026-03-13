@@ -112,14 +112,19 @@ export type StateVariantType =
   | 'readonly'
 
 export type ToneVariantType =
+  | 'outline' // bordered
+  | 'strong' // background strong
+  | 'text' // no background, no border
+  | 'weak' // background weak
+
+export type ToneSmartVariantType =
+  | 'outline' // bordered
   | 'strong' // background strong
   | 'weak' // background weak
-  | 'outline' // bordered
-  | 'text' // no background, no border
 
 export type ToneSimpleVariantType =
-  | 'text'
   | 'strong'
+  | 'text'
   | 'weak'
 
 export type ToneMinimalVariantType =

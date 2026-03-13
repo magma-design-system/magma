@@ -1,11 +1,10 @@
 import { h } from '@stencil/core'
 import {
-  typographyInfoDictionary,
-  typographyVariationsDictionary,
+  typographyLabelDictionary,
 } from '@dictionary/typography'
 import {
   themeFullVariantDictionary,
-  toneVariantDictionary,
+  toneSmartVariantDictionary,
 } from '@dictionary/variant'
 
 export default {
@@ -15,18 +14,13 @@ export default {
       type: { name: 'string' },
       control: { type: 'select' },
       description: 'Sets the tone of the color variant',
-      options: toneVariantDictionary,
+      options: toneSmartVariantDictionary,
     },
     typography: {
       type: { name: 'string' },
       control: { type: 'select' },
       description: 'Specifies the font typography of the element',
-      options: typographyInfoDictionary,
-    },
-    'typography-variant': {
-      description: 'Specifies the variant for `typography`',
-      options: typographyVariationsDictionary,
-      control: { type: 'select' },
+      options: typographyLabelDictionary,
     },
     variant: {
       type: { name: 'string' },
