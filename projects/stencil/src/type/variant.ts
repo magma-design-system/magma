@@ -34,10 +34,11 @@ export type ThemeFullVariantType =
   | 'lime'
   | 'orange'
   | 'orchid'
+  | 'purple'
+  | 'red'
   | 'sky'
   | 'success'
   | 'violet'
-  | 'purple'
   | 'warning'
   | 'yellow'
 
@@ -52,10 +53,11 @@ export type ThemeFullVariantAvatarType =
   | 'orange'
   | 'orchid'
   | 'primary'
+  | 'purple'
+  | 'red'
   | 'sky'
   | 'success'
   | 'violet'
-  | 'purple'
   | 'warning'
   | 'yellow'
 
@@ -71,9 +73,10 @@ export type LabelVariantType =
   | 'lime'
   | 'orange'
   | 'orchid'
+  | 'purple'
+  | 'red'
   | 'sky'
   | 'violet'
-  | 'purple'
   | 'yellow'
 
 export type ActionVariantType =
@@ -94,11 +97,12 @@ export type ChipVariantType =
   | 'orange'
   | 'orchid'
   | 'primary'
+  | 'purple'
+  | 'red'
   | 'secondary'
   | 'sky'
   | 'success'
   | 'violet'
-  | 'purple'
   | 'warning'
   | 'yellow'
 
@@ -119,5 +123,5 @@ export type ToneSimpleVariantType =
   | 'weak'
 
 export type ToneMinimalVariantType =
-| 'strong'
-| 'weak'
+  | 'strong'
+  | 'weak'

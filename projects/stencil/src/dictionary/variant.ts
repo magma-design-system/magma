@@ -32,6 +32,7 @@ const themeInputVariantDictionary = [
 
 const themeFullVariantDictionary = [
   'amaranth',
+  'red',
   'aqua',
   'blue',
   'dark',
@@ -51,6 +52,7 @@ const themeFullVariantDictionary = [
 
 const themeFullVariantAvatarDictionary = [
   'amaranth',
+  'red',
   'aqua',
   'blue',
   'error',
@@ -69,6 +71,7 @@ const themeFullVariantAvatarDictionary = [
 
 const themeLabelVariantDictionary = [
   'amaranth',
+  'red',
   'aqua',
   'blue',
   'green',
@@ -90,6 +93,7 @@ const toneVariantDictionary = [
 const themeVariantChipDictionary = [
   'ai',
   'amaranth',
+  'red',
   'aqua',
   'blue',
   'dark',
