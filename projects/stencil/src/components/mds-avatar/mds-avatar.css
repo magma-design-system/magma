@@ -133,7 +133,7 @@
 .icon {
   fill: var(--mds-avatar-color);
   height: 100%;
-  transition-duration: var(--duration-300);
+  transition-duration: var(--duration-200);
   transition-property: fill;
   transition-timing-function: var(--ease-in-out-expo);
   width: 100%;
@@ -150,5 +150,7 @@
 }
 
 @import './css/mds-avatar-variant.css';
+@import './css/mds-avatar-variant-label.css';
+@import './css/mds-avatar-variant-status.css';
 @import './css/mds-avatar-pref-animation.css';
 @import './css/mds-avatar-pref-contrast.css';

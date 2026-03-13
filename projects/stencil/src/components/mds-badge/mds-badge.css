@@ -43,7 +43,7 @@
   --mds-badge-border-color: rgb(var(--label-sky-06));
   --mds-badge-border-width: 1px;
   --mds-badge-color: rgb(var(--label-sky-03));
-  --mds-badge-radius: var(--radius-sm, 10px);
+  --mds-badge-radius: var(--radius-lg, 10px);
 
   align-items: center;
   background-color: var(--mds-badge-background);
@@ -67,36 +67,11 @@
   --mds-badge-background: rgb(var(--tone-neutral));
 }
 
-@import './css/mds-badge-variant-amaranth.css';
-@import './css/mds-badge-variant-amaranth-contrast.css';
-@import './css/mds-badge-variant-aqua.css';
-@import './css/mds-badge-variant-aqua-contrast.css';
-@import './css/mds-badge-variant-blue.css';
-@import './css/mds-badge-variant-blue-contrast.css';
-@import './css/mds-badge-variant-dark.css';
-@import './css/mds-badge-variant-error.css';
-@import './css/mds-badge-variant-error-contrast.css';
-@import './css/mds-badge-variant-green.css';
-@import './css/mds-badge-variant-green-contrast.css';
-@import './css/mds-badge-variant-info.css';
-@import './css/mds-badge-variant-info-contrast.css';
-@import './css/mds-badge-variant-light.css';
-@import './css/mds-badge-variant-lime.css';
-@import './css/mds-badge-variant-lime-contrast.css';
-@import './css/mds-badge-variant-orange.css';
-@import './css/mds-badge-variant-orange-contrast.css';
-@import './css/mds-badge-variant-orchid.css';
-@import './css/mds-badge-variant-orchid-contrast.css';
-@import './css/mds-badge-variant-sky.css';
-@import './css/mds-badge-variant-sky-contrast.css';
-@import './css/mds-badge-variant-success.css';
-@import './css/mds-badge-variant-success-contrast.css';
-@import './css/mds-badge-variant-violet.css';
-@import './css/mds-badge-variant-violet-contrast.css';
-@import './css/mds-badge-variant-warning.css';
-@import './css/mds-badge-variant-warning-contrast.css';
-@import './css/mds-badge-variant-yellow.css';
-@import './css/mds-badge-variant-yellow-contrast.css';
+@import './css/mds-badge-variant-label.css';
+@import './css/mds-badge-variant-status.css';
+@import './css/mds-badge-variant-tone.css';
+@import './css/mds-badge-variant.css';
+
 @import './css/mds-badge-pref-animation.css';
 @import './css/mds-badge-pref-theme.css';
 @import './css/mds-badge-pref-contrast.css';
