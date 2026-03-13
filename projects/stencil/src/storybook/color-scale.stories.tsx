@@ -171,7 +171,7 @@ type ComponentVariantsProps = {
 }
 
 const ComponentVariants = ({ variant = 'primary', tone = 'strong' }: ComponentVariantsProps) => {
-  console.info(variant, tone)
+  // console.info(variant, tone)
   return (
     <div class="grid gap-600 grid-cols-full justify-items-start">
       <mds-banner headline="Banner component" icon="mi/baseline/warning" variant={toVariant(variant)} tone={toSimpleTone(tone)}>
@@ -550,7 +550,7 @@ const Template = () => {
   }, [])
 
   return (
-    <div class="grid-cols-full grid tablet:grid-cols-[3fr_2fr] gap-600">
+    <div class="grid-cols-full grid desktop:grid-cols-[3fr_2fr] gap-600">
       <mds-accordion class="auto-rows-min" closable={false}>
         {colorGroups.map(group => (
           <ColorGrid group={group} selected={group === 'tone'}/>
