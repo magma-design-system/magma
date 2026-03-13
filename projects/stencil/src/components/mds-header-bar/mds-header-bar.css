@@ -1,4 +1,4 @@
-@import '../../tailwind/fouc.css';
+@import './css/mds-header-bar-fouc.css';
 
 /**
  * @prop --mds-header-bar-hamburger-color: The color of the hamburger icon used in the header bar.

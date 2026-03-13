@@ -1,0 +1,8 @@
+@import '../../../tailwind/fouc.css';
+
+mds-input-switch,
+mds-table-header-cell {
+  &:not(:is([hydrated], .hydrated)) {
+    @apply not-hydrated;
+  }
+}

@@ -1,4 +1,4 @@
-@import '../../tailwind/fouc.css';
+@import './css/mds-button-dropdown-fouc.css';
 
 /**
  * @prop --mds-button-dropdown-radius: Sets the border-radius of the component

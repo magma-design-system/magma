@@ -1,4 +1,4 @@
-@import '../../tailwind/fouc.css';
+@import './css/mds-push-notification-item-fouc.css';
 
 /**
  * @prop --mds-push-notification-item-duration: Duration of the individual push notification item animation.

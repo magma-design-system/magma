@@ -1,4 +1,4 @@
-@import '../../tailwind/fouc.css';
+@import './css/mds-badge-fouc.css';
 
 /**
  * @prop --mds-badge-background: Sets the background-color of the component

@@ -1,4 +1,4 @@
-@import '../../tailwind/fouc.css';
+@import './css/mds-list-item-fouc.css';
 
 /**
  * @prop --mds-list-item-icon-margin: Sets the margin of the component's icon

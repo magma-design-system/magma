@@ -1,4 +1,4 @@
-@import '../../tailwind/fouc.css';
+@import './css/mds-tree-fouc.css';
 
 /**
  * @prop --mds-tree-actions-border-radius: Sets the border-radius of the wrapper container of the actions.

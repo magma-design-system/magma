@@ -1,4 +1,4 @@
-@import '../../tailwind/fouc.css';
+@import './css/mds-note-fouc.css';
 
 /**
  * @prop --mds-note-background: Sets the background-color of the component

@@ -1,4 +1,4 @@
-@import '../../tailwind/fouc.css';
+@import './css/mds-input-tip-fouc.css';
 
 /**
  * @prop --mds-input-tip-active-translate: Transform applied to the tip when active

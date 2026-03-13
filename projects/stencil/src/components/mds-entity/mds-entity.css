@@ -1,4 +1,4 @@
-@import '../../tailwind/fouc.css';
+@import './css/mds-entity-fouc.css';
 
 /**
  * @prop --mds-entity-background: The background-color of the entity

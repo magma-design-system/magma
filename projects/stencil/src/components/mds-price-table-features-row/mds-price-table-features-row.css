@@ -1,4 +1,4 @@
-@import '../../tailwind/fouc.css';
+@import './css/mds-price-table-features-row-fouc.css';
 
 /**
  * @prop --mds-price-table-features-row-background: Default background color of a features row.

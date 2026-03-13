@@ -1,4 +1,4 @@
-@import '../../tailwind/fouc.css';
+@import './css/mds-label-fouc.css';
 
 /**
  * @prop --mds-label-background: The background color of the label component.

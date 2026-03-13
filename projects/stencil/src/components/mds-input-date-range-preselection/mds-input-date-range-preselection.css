@@ -1,4 +1,4 @@
-@import '../../tailwind/fouc.css';
+@import './css/mds-input-date-range-preselection-fouc.css';
 
 /**
  * @prop --mds-date-range-preselection-default-background: Background used for the default (unselected) preselection state

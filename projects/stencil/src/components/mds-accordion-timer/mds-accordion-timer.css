@@ -1,4 +1,4 @@
-@import '../../tailwind/fouc.css';
+@import './css/mds-accordion-timer-fouc.css';
 
 /**
  * @prop --mds-accordion-timer-progress-bar-color: Sets the color of the progress bar when the mds-accordion-timer-item is selected

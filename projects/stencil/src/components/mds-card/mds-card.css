@@ -1,4 +1,4 @@
-@import '../../tailwind/fouc.css';
+@import './css/mds-card-fouc.css';
 
 /**
  * @prop --mds-card-gap: Sets the spacing between card elements

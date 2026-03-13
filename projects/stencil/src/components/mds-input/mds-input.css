@@ -1,4 +1,4 @@
-@import "../../tailwind/fouc.css";
+@import './css/mds-input-fouc.css';
 
 /**
  * @prop --mds-input-background: The background color of the input field.

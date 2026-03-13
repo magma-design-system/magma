@@ -1,4 +1,4 @@
-@import '../../tailwind/fouc.css';
+@import './css/mds-usage-fouc.css';
 
 /**
  * @prop --mds-usage-border-color: The border-color applied to the usage container or indicator.

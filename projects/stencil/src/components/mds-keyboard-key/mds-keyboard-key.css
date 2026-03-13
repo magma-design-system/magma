@@ -1,4 +1,4 @@
-@import '../../tailwind/fouc.css';
+@import './css/mds-keyboard-key-fouc.css';
 
 /**
  * @prop --mds-keyboard-key-illumination-dark-size: Set the size of the dark illumination of the keyboard key.

@@ -1,4 +1,4 @@
-@import '../../tailwind/fouc.css';
+@import './css/mds-table-row-fouc.css';
 
 /**
  * @prop --mds-table-row-color-hover: Text color for table row on hover.

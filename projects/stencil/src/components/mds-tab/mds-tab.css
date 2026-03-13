@@ -1,4 +1,4 @@
-@import '../../tailwind/fouc.css';
+@import './css/mds-tab-fouc.css';
 
 /**
  * @prop --mds-tab-direction-vertical-columns: Defines the column layout for vertical tabs.

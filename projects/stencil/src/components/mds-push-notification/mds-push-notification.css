@@ -1,4 +1,4 @@
-@import '../../tailwind/fouc.css';
+@import './css/mds-push-notification-fouc.css';
 
 /**
  * @prop --mds-push-notification-fadeout-delay: Delay before the push notification starts fading out.

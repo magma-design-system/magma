@@ -1,0 +1,10 @@
+@import '../../../tailwind/fouc.css';
+
+mds-card-content,
+mds-card-footer,
+mds-card-header,
+mds-card-media {
+  &:not(:is([hydrated], .hydrated)) {
+    @apply not-hydrated;
+  }
+}

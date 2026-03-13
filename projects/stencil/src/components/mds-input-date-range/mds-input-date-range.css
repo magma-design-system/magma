@@ -1,4 +1,4 @@
-@import '../../tailwind/fouc.css';
+@import './css/mds-input-date-range-fouc.css';
 
 /**
  * @prop --mds-input-date-range-background: Sets the background-color of the component

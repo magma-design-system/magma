@@ -1,4 +1,4 @@
-@import '../../tailwind/fouc.css';
+@import './css/mds-policy-ai-fouc.css';
 
 :host {
   display: inline-flex;

@@ -1,5 +1,5 @@
 @import '~@maggioli-design-system/styles/dist/css/animations.css';
-@import '../../tailwind/fouc.css';
+@import './css/mds-button-fouc.css';
 
 /**
  * @prop --mds-button-await-duration: Sets the duration of the rotation of the spinner await component
@@ -132,7 +132,7 @@
   --mds-button-color: rgb(var(--tone-neutral));
   --mds-button-gap: --spacing(200);
   --mds-button-line-clamp: 1;
-  --mds-button-radius: var(--radius-md);
+  --mds-button-radius: var(--radius-lg);
 
   @apply
     duration-200
@@ -144,6 +144,7 @@
   box-shadow: 0 0 0 var(--mds-button-border-width) rgb(var(--mds-button-border-color-rgb) / var(--mds-button-border-opacity));
   box-sizing: border-box;
   color: var(--mds-button-color);
+  corner-shape: var(--magma-corner-shape, round);
   cursor: pointer;
   display: inline-flex;
   fill: currentcolor;

@@ -1,4 +1,4 @@
-@import '../../tailwind/fouc.css';
+@import './css/mds-input-select-fouc.css';
 
 /**
  * @prop --mds-input-select-variant-color-rgb: Base color used to derive all select component visual states

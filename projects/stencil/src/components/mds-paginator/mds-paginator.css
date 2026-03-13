@@ -1,4 +1,4 @@
-@import '../../tailwind/fouc.css';
+@import './css/mds-paginator-fouc.css';
 
 /**
  * @prop --mds-paginator-background: Sets the background-color of the pages area and the item

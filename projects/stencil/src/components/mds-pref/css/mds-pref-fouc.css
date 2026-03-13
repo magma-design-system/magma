@@ -1,0 +1,11 @@
+@import '../../../tailwind/fouc.css';
+
+mds-pref-animation,
+mds-pref-consumption,
+mds-pref-contrast,
+mds-pref-language,
+mds-pref-theme {
+  &:not(:is([hydrated], .hydrated)) {
+    @apply not-hydrated;
+  }
+}

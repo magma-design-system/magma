@@ -1,0 +1,9 @@
+@import '../../../tailwind/fouc.css';
+
+mds-dropdown,
+mds-pref-language-item,
+mds-text {
+  &:not(:is([hydrated], .hydrated)) {
+    @apply not-hydrated;
+  }
+}

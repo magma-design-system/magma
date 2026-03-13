@@ -1,4 +1,4 @@
-@import '../../tailwind/fouc.css';
+@import './css/mds-list-fouc.css';
 
 :host {
   @apply gap-400

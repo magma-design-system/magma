@@ -1,4 +1,4 @@
-@import '../../tailwind/fouc.css';
+@import './css/mds-img-fouc.css';
 
 /**
  * @prop --mds-img-background: The background color of the image container.

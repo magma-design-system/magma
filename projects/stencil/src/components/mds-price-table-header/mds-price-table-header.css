@@ -1,4 +1,4 @@
-@import '../../tailwind/fouc.css';
+@import './css/mds-price-table-header-fouc.css';
 
 :host {
   display: grid;

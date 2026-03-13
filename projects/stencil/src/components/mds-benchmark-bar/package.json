@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "@maggioli-design-system/mds-progress": "3.2.3",
+    "@maggioli-design-system/mds-text": "4.7.6",
     "@maggioli-design-system/styles": "15.11.0",
     "@stencil/core": "4.27.2"
   },

@@ -1,0 +1,7 @@
+@import '../../../tailwind/fouc.css';
+
+mds-progress {
+  &:not(:is([hydrated], .hydrated)) {
+    @apply not-hydrated;
+  }
+}

@@ -1,4 +1,4 @@
-@import '../../tailwind/fouc.css';
+@import './css/mds-mention-fouc.css';
 
 /**
  * @prop --mds-mention-icon-size: Sets the size (width and height) of the mention icon.

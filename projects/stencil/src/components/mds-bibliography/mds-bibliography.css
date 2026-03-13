@@ -1,4 +1,4 @@
-@import '../../tailwind/fouc.css';
+@import './css/mds-bibliography-fouc.css';
 
 /**
  * @prop --mds-bibliography-color: Sets the text color of the component

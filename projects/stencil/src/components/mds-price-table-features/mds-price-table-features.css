@@ -48,4 +48,4 @@ header {
 @import './css/mds-price-table-features-pref-animation.css';
 @import './css/mds-price-table-features-pref-theme.css';
 @import './css/mds-price-table-features-pref-contrast.css';
-@import '../../tailwind/fouc.css';
+@import './css/mds-price-table-features-fouc.css';

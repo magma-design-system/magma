@@ -1,4 +1,4 @@
-@import '../../tailwind/fouc.css';
+@import './css/mds-radial-menu-fouc.css';
 
 /**
  * @prop --mds-radial-menu-angle-start: Starting angle of the radial menu.

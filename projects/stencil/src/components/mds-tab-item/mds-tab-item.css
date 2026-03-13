@@ -1,4 +1,4 @@
-@import '../../tailwind/fouc.css';
+@import './css/mds-tab-item-fouc.css';
 
 /**
  * @prop --mds-tab-item-hover-background: Background color when hovering a tab item.

@@ -1,4 +1,4 @@
-@import '../../tailwind/fouc.css';
+@import './css/mds-notification-fouc.css';
 
 /**
  * @prop --mds-notification-color: The text/icon color of the notification component.

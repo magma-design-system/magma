@@ -1,4 +1,4 @@
-@import '../../tailwind/fouc.css';
+@import './css/mds-pref-language-fouc.css';
 
 mds-pref-language {
   display: grid;

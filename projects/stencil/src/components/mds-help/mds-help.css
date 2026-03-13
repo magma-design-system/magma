@@ -1,4 +1,4 @@
-@import '../../tailwind/fouc.css';
+@import './css/mds-help-fouc.css';
 
 /**
  * @prop --mds-help-tooltip-width: The width of the tooltip element.

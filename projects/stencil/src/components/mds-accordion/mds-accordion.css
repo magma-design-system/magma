@@ -1,4 +1,4 @@
-@import '../../tailwind/fouc.css';
+@import './css/mds-accordion-fouc.css';
 
 /**
  * @prop --mds-accordion-border-color: Sets the border-color of the component children mds-accordion-item

@@ -1,4 +1,4 @@
-@import '../../tailwind/fouc.css';
+@import './css/mds-modal-fouc.css';
 
 /**
  * @prop --mds-modal-custom-closed-transform: Sets the transform position of the custom window when it's outside the viewport, to it's default position

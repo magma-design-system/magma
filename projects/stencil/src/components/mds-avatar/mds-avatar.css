@@ -1,4 +1,4 @@
-@import '../../tailwind/fouc.css';
+@import './css/mds-avatar-fouc.css';
 
 /**
  * @prop --mds-avatar-background-color-pending: The background-color when an image is loading

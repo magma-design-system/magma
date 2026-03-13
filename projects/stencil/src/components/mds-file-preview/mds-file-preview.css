@@ -1,4 +1,4 @@
-@import '../../tailwind/fouc.css';
+@import './css/mds-file-preview-fouc.css';
 
 /**
  * @prop --mds-file-preview-background-color: Sets the background color of the file preview container

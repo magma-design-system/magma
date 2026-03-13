@@ -1,0 +1,9 @@
+@import '../../../tailwind/fouc.css';
+
+mds-button,
+mds-calendar,
+mds-dropdown {
+  &:not(:is([hydrated], .hydrated)) {
+    @apply not-hydrated;
+  }
+}

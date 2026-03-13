@@ -1,4 +1,4 @@
-@import '../../tailwind/fouc.css';
+@import './css/mds-price-table-features-cell-fouc.css';
 
 /**
  * @prop --mds-price-table-features-cell-padding: Padding applied to each feature cell, defaults to the section padding.

@@ -1,4 +1,4 @@
-@import '../../tailwind/fouc.css';
+@import './css/mds-stepper-bar-fouc.css';
 
 /**
  * @prop --mds-stepper-bar-scroll-behavior: Scroll behavior of the stepper bar.

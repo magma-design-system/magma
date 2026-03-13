@@ -1,4 +1,4 @@
-@import '../../tailwind/fouc.css';
+@import './css/mds-accordion-timer-item-fouc.css';
 
 /**
  * @prop --mds-accordion-timer-item-color: Sets the text color of the component

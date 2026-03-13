@@ -1,4 +1,4 @@
-@import '../../tailwind/fouc.css';
+@import './css/mds-filter-fouc.css';
 
 /**
  * @prop --mds-filter-items-background-active: Sets the background-color of the items row area when a filter is active

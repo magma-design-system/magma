@@ -1,4 +1,4 @@
-@import '../../tailwind/fouc.css';
+@import './css/mds-table-fouc.css';
 
 /**
  * @prop --mds-table-actions-gap: Gap between table action elements.

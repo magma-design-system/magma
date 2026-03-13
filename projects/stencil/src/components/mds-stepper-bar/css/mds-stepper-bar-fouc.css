@@ -1,0 +1,8 @@
+@import '../../../tailwind/fouc.css';
+
+mds-progress,
+mds-stepper-bar-item {
+  &:not(:is([hydrated], .hydrated)) {
+    @apply not-hydrated;
+  }
+}

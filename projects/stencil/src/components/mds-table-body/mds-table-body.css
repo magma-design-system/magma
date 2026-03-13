@@ -1,5 +1,5 @@
 
-@import '../../tailwind/fouc.css';
+@import './css/mds-table-body-fouc.css';
 
 /**
  * @prop --mds-table-body-background-hover: Background color for table body rows on hover.

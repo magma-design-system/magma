@@ -1,4 +1,4 @@
-@import '../../tailwind/fouc.css';
+@import './css/mds-radial-menu-item-fouc.css';
 
 /**
  * @prop --mds-radial-menu-item-transition-duration: Duration of individual radial menu item transitions.

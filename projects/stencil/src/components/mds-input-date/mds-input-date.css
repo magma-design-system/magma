@@ -224,7 +224,7 @@ mds-input-tip {
   --mds-input-tip-background: inherit;
 }
 
-@import '../../tailwind/fouc.css';
+@import './css/mds-input-date-fouc.css';
 @import './css/mds-input-date-pref-animation.css';
 @import './css/mds-input-date-pref-theme.css';
 @import './css/mds-input-date-pref-contrast.css';

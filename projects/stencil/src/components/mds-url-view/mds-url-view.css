@@ -1,4 +1,4 @@
-@import '../../tailwind/fouc.css';
+@import './css/mds-url-view-fouc.css';
 
 /**
  * @prop --mds-url-view-background: Background color of the URL view container.

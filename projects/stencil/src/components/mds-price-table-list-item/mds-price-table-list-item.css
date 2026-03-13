@@ -1,4 +1,4 @@
-@import '../../tailwind/fouc.css';
+@import './css/mds-price-table-list-item-fouc.css';
 
 /**
  * @prop --mds-price-table-list-item-supported-icon-color-hover: Color of the supported icon in a list item on hover.

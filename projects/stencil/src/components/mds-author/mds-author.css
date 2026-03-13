@@ -1,4 +1,4 @@
-@import '../../tailwind/fouc.css';
+@import './css/mds-author-fouc.css';
 
 :host {
   align-items: center;

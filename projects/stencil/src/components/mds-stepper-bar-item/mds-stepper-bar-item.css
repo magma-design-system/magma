@@ -1,4 +1,4 @@
-@import '../../tailwind/fouc.css';
+@import './css/mds-stepper-bar-item-fouc.css';
 
 /**
  * @prop --mds-stepper-bar-item-color: Color of the stepper bar item text.

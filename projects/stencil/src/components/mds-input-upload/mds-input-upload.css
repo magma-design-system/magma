@@ -1,4 +1,4 @@
-@import '../../tailwind/fouc.css';
+@import './css/mds-input-upload-fouc.css';
 
 /**
  * @prop --mds-input-upload-drag-area-background-color-on-drag: Set the background color of the drag area when a file is dragged over it.

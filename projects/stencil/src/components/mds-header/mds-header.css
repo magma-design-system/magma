@@ -1,4 +1,4 @@
-@import '../../tailwind/fouc.css';
+@import './css/mds-header-fouc.css';
 
 /**
  * @prop --mds-header-backdrop-background-image: Sets the background-image of the backdrop element visibile when the component attribute `appearance` is set to `inline`, by default is shown when mds-pref-consumtion is set to `medium`

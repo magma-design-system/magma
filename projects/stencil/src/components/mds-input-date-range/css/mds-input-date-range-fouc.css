@@ -1,0 +1,12 @@
+@import '../../../tailwind/fouc.css';
+
+mds-button,
+mds-calendar,
+mds-dropdown,
+mds-input-date,
+mds-input-date-range-preselection,
+mds-text {
+  &:not(:is([hydrated], .hydrated)) {
+    @apply not-hydrated;
+  }
+}

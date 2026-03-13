@@ -1,4 +1,4 @@
-@import '../../tailwind/fouc.css';
+@import './css/mds-input-field-fouc.css';
 
 /**
  * @prop --mds-input-field-message-color: Sets the message text color of the component

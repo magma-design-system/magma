@@ -1,5 +1,5 @@
 @import '~@maggioli-design-system/styles/dist/css/animations.css';
-@import '../../tailwind/fouc.css';
+@import './css/mds-file-fouc.css';
 
 /**
  * @prop --mds-file-preview-icon-color: Sets the color of the file preview icon

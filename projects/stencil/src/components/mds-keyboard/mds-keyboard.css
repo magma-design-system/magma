@@ -1,4 +1,4 @@
-@import '../../tailwind/fouc.css';
+@import './css/mds-keyboard-fouc.css';
 
 /**
  * @prop --mds-keyboard-background-default: `private` Set the default background color of the keyboard area.
