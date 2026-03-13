@@ -15,8 +15,8 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `deletable` | `deletable` | Shows the cross icon to perform cancel/delete action on element | `boolean \| undefined`                                                                               | `undefined` |
 | `headline`  | `headline`  | The title on the top of the banner                              | `string \| undefined`                                                                                | `undefined` |
 | `icon`      | `icon`      | An icon displayed at the top left of the banner                 | `string \| undefined`                                                                                | `undefined` |
-| `tone`      | `tone`      | Sets the tone of the color variant                              | `"strong" \| "text" \| "weak" \| undefined`                                                          | `'weak'`    |
-| `variant`   | `variant`   | Sets the theme variant colors                                   | `"ai" \| "dark" \| "error" \| "info" \| "light" \| "primary" \| "success" \| "warning" \| undefined` | `'light'`   |
+| `tone`      | `tone`      | Sets the tone of the color variant                              | `"strong" \| "weak" \| undefined`                                                                    | `'weak'`    |
+| `variant`   | `variant`   | Sets the theme variant colors                                   | `"ai" \| "dark" \| "error" \| "info" \| "light" \| "primary" \| "success" \| "warning" \| undefined` | `'primary'` |
 
 
 ## Events
@@ -63,7 +63,7 @@ Type: `Promise<void>`
 | `--mds-banner-cockade-background`          | When cockade attribute is set, the icon will be wrapper with a colored area, this is it's background |
 | `--mds-banner-cockade-distance`            | When cockade attribute is set, the icon will be wrapper with a colored area, this is it's icon color |
 | `--mds-banner-color`                       | Sets the text color of the component                                                                 |
-| `--mds-banner-gap`                         | Sets gap between banner elements                                                                     |
+| `--mds-banner-content-gap`                 | Sets gap between banner elements                                                                     |
 | `--mds-banner-headline-color`              | The text color of the headline                                                                       |
 | `--mds-banner-icon-color`                  | Sets the close icon fill color of the component                                                      |
 | `--mds-banner-radius`                      | Sets the border-radius of the component                                                              |

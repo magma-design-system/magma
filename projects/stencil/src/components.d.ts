@@ -313,7 +313,7 @@ export namespace Components {
         /**
           * Sets the tone of the color variant
          */
-        "tone"?: ToneSimpleVariantType;
+        "tone"?: ToneMinimalVariantType;
         "updateLang": () => Promise<void>;
         /**
           * Sets the theme variant colors
@@ -4160,7 +4160,7 @@ declare namespace LocalJSX {
         /**
           * Sets the tone of the color variant
          */
-        "tone"?: ToneSimpleVariantType;
+        "tone"?: ToneMinimalVariantType;
         /**
           * Sets the theme variant colors
          */

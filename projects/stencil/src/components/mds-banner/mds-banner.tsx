@@ -1,5 +1,5 @@
 import { Component, Element, Event, EventEmitter, Host, Prop, h, State, Method } from '@stencil/core'
-import { ToneSimpleVariantType, ThemeVariantType } from '@type/variant'
+import { ToneMinimalVariantType, ThemeVariantType } from '@type/variant'
 import miBaselineClose from '@icon/mi/baseline/close.svg'
 import { KeyboardManager } from '@common/keyboard-manager'
 import { Locale } from '@common/locale'
@@ -39,12 +39,12 @@ export class MdsBanner {
   /**
    * Sets the theme variant colors
    */
-  @Prop({ reflect: true }) readonly variant?: ThemeVariantType = 'light'
+  @Prop({ reflect: true }) readonly variant?: ThemeVariantType = 'primary'
 
   /**
    * Sets the tone of the color variant
    */
-  @Prop({ reflect: true }) readonly tone?: ToneSimpleVariantType = 'weak'
+  @Prop({ reflect: true }) readonly tone?: ToneMinimalVariantType = 'weak'
 
   /**
    * Shows a decoration around the banner icon

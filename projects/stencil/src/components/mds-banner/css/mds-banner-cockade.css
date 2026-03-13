@@ -20,7 +20,7 @@
 
   .close-button {
     position: absolute;
-    right: var(--mds-banner-cockade-distance);
-    top: var(--mds-banner-cockade-distance);
+    right: calc(var(--mds-banner-cockade-distance) / 2);
+    top: calc(var(--mds-banner-cockade-distance) / 2);
   }
 }

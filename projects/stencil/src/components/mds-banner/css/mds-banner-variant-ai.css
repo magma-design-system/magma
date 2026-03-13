@@ -18,15 +18,3 @@
   --mds-banner-cockade-background: rgb(var(--variant-ai-10));
 }
 
-:host([variant="ai"][tone="outline"]) {
-  --mds-banner-color: rgb(var(--tone-neutral-02));
-  --mds-banner-close-icon-hover-background: rgb(var(--variant-ai-10));
-  --mds-banner-shadow: none;
-}
-
-:host([variant="ai"][tone="text"]) {
-  --mds-banner-background: transparent;
-  --mds-banner-close-icon-hover-background: transparent;
-  --mds-banner-color: rgb(var(--tone-neutral-10));
-  --mds-banner-shadow: none;
-}

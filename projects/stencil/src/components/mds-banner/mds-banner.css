@@ -6,7 +6,7 @@
  * @prop --mds-banner-cockade-background: When cockade attribute is set, the icon will be wrapper with a colored area, this is it's background
  * @prop --mds-banner-cockade-distance: When cockade attribute is set, the icon will be wrapper with a colored area, this is it's icon color
  * @prop --mds-banner-color: Sets the text color of the component
- * @prop --mds-banner-gap: Sets gap between banner elements
+ * @prop --mds-banner-content-gap: Sets gap between banner elements
  * @prop --mds-banner-headline-color: The text color of the headline
  * @prop --mds-banner-icon-color: Sets the close icon fill color of the component
  * @prop --mds-banner-radius: Sets the border-radius of the component
@@ -57,7 +57,7 @@
   syntax: "<length>";
 }
 
-@property --mds-banner-gap {
+@property --mds-banner-content-gap {
   inherits: true;
   initial-value: --spacing(200) --spacing(400);
   syntax: "<length>+";
@@ -96,7 +96,7 @@
   --mds-banner-cockade-background: rgb(var(--tone-neutral-09));
   --mds-banner-cockade-distance: --spacing(600);
   --mds-banner-color: rgb(var(--tone-neutral-02));
-  --mds-banner-gap: --spacing(200) --spacing(400);
+  --mds-banner-content-gap: --spacing(400);
   --mds-banner-headline-color: var(--mds-banner-color);
   --mds-banner-icon-color: rgb(var(--tone-neutral-04));
   --mds-banner-radius: var(--radius-lg, 16px);
@@ -113,7 +113,7 @@
   container-name: mds-banner;
   container-type: inline-size;
   display: grid;
-  gap: --spacing(400);
+  gap: --spacing(600);
   padding: --spacing(600);
   position: relative;
   transition-duration: var(--mds-banner-transition-duration);
@@ -125,7 +125,7 @@
 .body {
   align-items: flex-start;
   display: flex;
-  gap: var(--mds-banner-gap);
+  gap: var(--mds-banner-content-gap);
   justify-content: space-between;
 }
 
@@ -138,14 +138,14 @@
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  gap: var(--mds-banner-gap);
+  gap: var(--mds-banner-content-gap);
   justify-content: center;
 }
 
 .actions {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--mds-banner-gap);
+  gap: var(--mds-banner-content-gap);
   justify-content: flex-end;
 }
 
@@ -172,12 +172,22 @@
 .text {
   display: grid;
   flex-grow: 1;
-  gap: var(--mds-banner-gap);
-  padding-bottom: --spacing(200);
-  padding-top: --spacing(400);
+  gap: var(--mds-banner-content-gap);
 }
 
 @container mds-banner (max-width: 300px) {
+  :host([deletable]:not([deletable="false"])) {
+    & .headline {
+      padding-right: --spacing(800);
+    }
+
+    &:host(:not([headline])) {
+      & .content {
+        padding-right: --spacing(800);
+      }
+    }
+  }
+
   ::slotted([slot="action"]) {
     flex-basis: 100%;
     flex-grow: 1;
@@ -185,14 +195,9 @@
 }
 
 @import './css/mds-banner-cockade.css';
-@import './css/mds-banner-variant-ai.css';
-@import './css/mds-banner-variant-dark.css';
-@import './css/mds-banner-variant-error.css';
-@import './css/mds-banner-variant-info.css';
-@import './css/mds-banner-variant-light.css';
-@import './css/mds-banner-variant-primary.css';
-@import './css/mds-banner-variant-success.css';
-@import './css/mds-banner-variant-warning.css';
+@import './css/mds-banner-variant.css';
+@import './css/mds-banner-variant-status.css';
+@import './css/mds-banner-variant-tone.css';
 @import './css/mds-banner-pref-animation.css';
 @import './css/mds-banner-pref-theme.css';
 @import './css/mds-banner-pref-contrast.css';

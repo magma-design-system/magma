@@ -2,7 +2,7 @@ import { h } from '@stencil/core'
 import { iconsDictionary } from '@dictionary/icon'
 import {
   themeVariantDictionary,
-  toneSimpleVariantDictionary,
+  toneMinimalVariantDictionary,
 } from '@dictionary/variant'
 
 export default {
@@ -31,7 +31,7 @@ export default {
     tone: {
       type: { name: 'string' },
       description: 'Sets the tone of the color variant',
-      options: toneSimpleVariantDictionary,
+      options: toneMinimalVariantDictionary,
       control: { type: 'select' },
     },
     variant: {
@@ -75,10 +75,10 @@ const TemplateVariantDefault = args => (
       le notifiche su aggiornamenti di norme di legge e la consultazione dei
       volumi correlati.
     </mds-text>
-    <mds-button slot="action" variant="primary" tone="outline">
+    <mds-button slot="action" variant={args.variant} tone="outline">
       Cancel
     </mds-button>
-    <mds-button slot="action" variant="primary" tone={args.tone}>
+    <mds-button slot="action" variant={args.variant} tone={args.tone}>
       Confirm
     </mds-button>
   </mds-banner>

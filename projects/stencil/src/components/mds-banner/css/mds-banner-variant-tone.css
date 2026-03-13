@@ -1,0 +1,36 @@
+:host([variant="dark"]) {
+  --mds-banner-background: rgb(var(--tone-neutral-01));
+  --mds-banner-close-icon-hover-background: rgb(var(--tone-neutral-03));
+  --mds-banner-cockade-background: rgb(var(--tone-neutral-04));
+  --mds-banner-color: rgb(var(--tone-neutral-08));
+  --mds-banner-headline-color: rgb(var(--tone-neutral));
+  --mds-banner-icon-color: rgb(var(--tone-neutral-07));
+  --mds-banner-shadow: var(--shadow-lg-sharp);
+
+  &:host([tone="weak"]) {
+    --mds-banner-background: rgb(var(--tone-neutral-03));
+    --mds-banner-close-icon-hover-background: rgb(var(--tone-neutral-05));
+    --mds-banner-color: rgb(var(--tone-neutral-09));
+    --mds-banner-icon-color: rgb(var(--tone-neutral-07));
+    --mds-banner-shadow: var(--shadow-sm-sharp);
+  }
+}
+
+:host([variant="light"]) {
+  --mds-banner-background: rgb(var(--tone-neutral));
+  --mds-banner-close-icon-hover-background: rgb(var(--tone-neutral-09));
+  --mds-banner-color: rgb(var(--tone-neutral-02));
+  --mds-banner-icon-color: rgb(var(--tone-neutral-05));
+  --mds-banner-shadow: var(--shadow-lg-sharp);
+  --mds-banner-headline-color: rgb(var(--tone-neutral-02));
+  --mds-banner-cockade-background: rgb(var(--tone-neutral-10));
+
+  &:host([tone="weak"]) {
+    --mds-banner-background: rgb(var(--tone-neutral));
+    --mds-banner-close-icon-hover-background: rgb(var(--tone-neutral-10));
+    --mds-banner-color: rgb(var(--tone-neutral-02));
+    --mds-banner-icon-color: rgb(var(--tone-neutral-05));
+    --mds-banner-shadow: var(--shadow-sm-sharp);
+    --mds-banner-cockade-background: rgb(var(--tone-neutral-09));
+  }
+}
