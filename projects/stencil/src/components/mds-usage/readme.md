@@ -48,11 +48,9 @@ Type: `Promise<void>`
 
 | Name                            | Description                                                   |
 | ------------------------------- | ------------------------------------------------------------- |
-| `--mds-usag-icon-color`         | The color of the usage icon.                                  |
 | `--mds-usage-border-color`      | The border-color applied to the usage container or indicator. |
 | `--mds-usage-header-background` | The background-color of the usage header.                     |
 | `--mds-usage-header-color`      | The text/icon color of the usage header.                      |
-| `--mds-usage-icon-color`        | The color of the usage icon.                                  |
 
 
 ## Dependencies

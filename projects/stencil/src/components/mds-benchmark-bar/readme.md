@@ -24,6 +24,13 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `"default"` | Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here. |
 
 
+## Shadow Parts
+
+| Part             | Description              |
+| ---------------- | ------------------------ |
+| `"progress-bar"` | The progress bar element |
+
+
 ## Dependencies
 
 ### Depends on

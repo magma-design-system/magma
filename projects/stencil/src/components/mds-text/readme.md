@@ -88,6 +88,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
  - [mds-toast](../mds-toast)
  - [mds-tooltip](../mds-tooltip)
  - [mds-url-view](../mds-url-view)
+ - [mds-usage](../mds-usage)
 
 ### Graph
 ```mermaid
@@ -139,6 +140,7 @@ graph TD;
   mds-toast --> mds-text
   mds-tooltip --> mds-text
   mds-url-view --> mds-text
+  mds-usage --> mds-text
   style mds-text fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

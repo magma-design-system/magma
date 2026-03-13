@@ -9,12 +9,12 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## Properties
 
-| Property            | Attribute            | Description                             | Type                                                                                                                                                                                            | Default     |
-| ------------------- | -------------------- | --------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| `tone`              | `tone`               | Sets the tone of the color variant      | `"outline" \| "strong" \| "text" \| "weak" \| undefined`                                                                                                                                        | `'weak'`    |
-| `typography`        | `typography`         | Specifies the typography of the element | `"caption" \| "detail" \| "label" \| "option" \| "paragraph" \| "tip"`                                                                                                                          | `'option'`  |
-| `typographyVariant` | `typography-variant` | Specifies the variant for `typography`  | `"code" \| "info" \| "read" \| "title" \| undefined`                                                                                                                                            | `undefined` |
-| `variant`           | `variant`            | Sets the theme variant colors           | `"amaranth" \| "aqua" \| "blue" \| "dark" \| "error" \| "green" \| "info" \| "light" \| "lime" \| "orange" \| "orchid" \| "sky" \| "success" \| "violet" \| "warning" \| "yellow" \| undefined` | `'green'`   |
+| Property            | Attribute            | Description                             | Type                                                                                                                                                                                                                 | Default     |
+| ------------------- | -------------------- | --------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| `tone`              | `tone`               | Sets the tone of the color variant      | `"outline" \| "strong" \| "text" \| "weak" \| undefined`                                                                                                                                                             | `'weak'`    |
+| `typography`        | `typography`         | Specifies the typography of the element | `"caption" \| "detail" \| "label" \| "option" \| "paragraph" \| "tip"`                                                                                                                                               | `'option'`  |
+| `typographyVariant` | `typography-variant` | Specifies the variant for `typography`  | `"code" \| "info" \| "read" \| "title" \| undefined`                                                                                                                                                                 | `undefined` |
+| `variant`           | `variant`            | Sets the theme variant colors           | `"amaranth" \| "aqua" \| "blue" \| "dark" \| "error" \| "green" \| "info" \| "light" \| "lime" \| "orange" \| "orchid" \| "purple" \| "red" \| "sky" \| "success" \| "violet" \| "warning" \| "yellow" \| undefined` | `'green'`   |
 
 
 ## Slots
@@ -42,7 +42,6 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
  - [mds-file](../mds-file)
  - [mds-file-preview](../mds-file-preview)
  - [mds-stepper-bar-item](../mds-stepper-bar-item)
- - [mds-usage](../mds-usage)
 
 ### Depends on
 
@@ -55,7 +54,6 @@ graph TD;
   mds-file --> mds-badge
   mds-file-preview --> mds-badge
   mds-stepper-bar-item --> mds-badge
-  mds-usage --> mds-badge
   style mds-badge fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
