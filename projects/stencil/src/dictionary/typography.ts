@@ -63,6 +63,11 @@ const typographySmallerDictionary = [
   'tip',
 ]
 
+const typographyLabelDictionary = [
+  'option',
+  'label',
+]
+
 const typographyTooltipDictionary = [
   'caption',
   'detail',
@@ -78,6 +83,7 @@ export {
   typographyDictionary,
   typographyInfoDictionary,
   typographyInputDictionary,
+  typographyLabelDictionary,
   typographyMonoDictionary,
   typographyReadDictionary,
   typographyReadingVariationsDictionary,

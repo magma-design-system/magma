@@ -6,11 +6,11 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { MdsAccordionEventDetail } from "./components/mds-accordion/meta/event-detail";
-import { TypographyInfoType, TypographyInputType, TypographyReadingVariants, TypographyReadType, TypographySmallerType, TypographyTitleType, TypographyTooltipType, TypographyType, TypographyVariants } from "./type/typography";
+import { TypographyInfoType, TypographyInputType, TypographyLabelType, TypographyReadingVariants, TypographyReadType, TypographySmallerType, TypographyTitleType, TypographyTooltipType, TypographyType, TypographyVariants } from "./type/typography";
 import { MdsAccordionItemEventDetail } from "./components/mds-accordion-item/meta/event-detail";
 import { MdsAccordionTimerEventDetail } from "./components/mds-accordion-timer/meta/event-detail";
 import { MdsAccordionTimerItemEventDetail } from "./components/mds-accordion-timer-item/meta/event-detail";
-import { ChipVariantType, LabelVariantType, ThemeFullVariantAvatarType, ThemeFullVariantType, ThemeInputVariantType, ThemeStatusVariantType, ThemeVariantType, ToneMinimalVariantType, ToneSimpleVariantType, ToneVariantType } from "./type/variant";
+import { ChipVariantType, LabelVariantType, ThemeFullVariantAvatarType, ThemeFullVariantType, ThemeInputVariantType, ThemeStatusVariantType, ThemeVariantType, ToneMinimalVariantType, ToneSimpleVariantType, ToneSmartVariantType, ToneVariantType } from "./type/variant";
 import { AvatarSizeType } from "./components/mds-avatar-stack/meta/types";
 import { BenchmarkBarTypographyType } from "./components/mds-benchmark-bar/meta/types";
 import { BibliographyFormatType, BibliographyRelationshipType } from "./components/mds-bibliography/meta/types";
@@ -82,11 +82,11 @@ import { MdsTreeItemEventDetail } from "./components/mds-tree-item/meta/event-de
 import { UsageType } from "./components/mds-usage/meta/types";
 import { NoiseType, PreloadType } from "./components/mds-video-wall/meta/types";
 export { MdsAccordionEventDetail } from "./components/mds-accordion/meta/event-detail";
-export { TypographyInfoType, TypographyInputType, TypographyReadingVariants, TypographyReadType, TypographySmallerType, TypographyTitleType, TypographyTooltipType, TypographyType, TypographyVariants } from "./type/typography";
+export { TypographyInfoType, TypographyInputType, TypographyLabelType, TypographyReadingVariants, TypographyReadType, TypographySmallerType, TypographyTitleType, TypographyTooltipType, TypographyType, TypographyVariants } from "./type/typography";
 export { MdsAccordionItemEventDetail } from "./components/mds-accordion-item/meta/event-detail";
 export { MdsAccordionTimerEventDetail } from "./components/mds-accordion-timer/meta/event-detail";
 export { MdsAccordionTimerItemEventDetail } from "./components/mds-accordion-timer-item/meta/event-detail";
-export { ChipVariantType, LabelVariantType, ThemeFullVariantAvatarType, ThemeFullVariantType, ThemeInputVariantType, ThemeStatusVariantType, ThemeVariantType, ToneMinimalVariantType, ToneSimpleVariantType, ToneVariantType } from "./type/variant";
+export { ChipVariantType, LabelVariantType, ThemeFullVariantAvatarType, ThemeFullVariantType, ThemeInputVariantType, ThemeStatusVariantType, ThemeVariantType, ToneMinimalVariantType, ToneSimpleVariantType, ToneSmartVariantType, ToneVariantType } from "./type/variant";
 export { AvatarSizeType } from "./components/mds-avatar-stack/meta/types";
 export { BenchmarkBarTypographyType } from "./components/mds-benchmark-bar/meta/types";
 export { BibliographyFormatType, BibliographyRelationshipType } from "./components/mds-bibliography/meta/types";
@@ -283,15 +283,11 @@ export namespace Components {
         /**
           * Sets the tone of the color variant
          */
-        "tone"?: ToneVariantType;
+        "tone"?: ToneSmartVariantType;
         /**
           * Specifies the typography of the element
          */
-        "typography": TypographyInfoType | TypographyReadType;
-        /**
-          * Specifies the variant for `typography`
-         */
-        "typographyVariant"?: TypographyVariants;
+        "typography": TypographyLabelType;
         /**
           * Sets the theme variant colors
          */
@@ -4130,15 +4126,11 @@ declare namespace LocalJSX {
         /**
           * Sets the tone of the color variant
          */
-        "tone"?: ToneVariantType;
+        "tone"?: ToneSmartVariantType;
         /**
           * Specifies the typography of the element
          */
-        "typography"?: TypographyInfoType | TypographyReadType;
-        /**
-          * Specifies the variant for `typography`
-         */
-        "typographyVariant"?: TypographyVariants;
+        "typography"?: TypographyLabelType;
         /**
           * Sets the theme variant colors
          */

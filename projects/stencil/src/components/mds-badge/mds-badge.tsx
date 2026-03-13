@@ -1,6 +1,6 @@
 import { Component, Host, h, Prop } from '@stencil/core'
-import { TypographyInfoType, TypographyReadType, TypographyVariants } from '@type/typography'
-import { ThemeFullVariantType, ToneVariantType } from '@type/variant'
+import { TypographyLabelType } from '@type/typography'
+import { ThemeFullVariantType, ToneSmartVariantType } from '@type/variant'
 
 /**
  * @slot default - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
@@ -16,27 +16,22 @@ export class MdsBadge {
   /**
    * Sets the theme variant colors
    */
-  @Prop( { reflect: true } ) variant?: ThemeFullVariantType = 'green'
+  @Prop({ reflect: true }) variant?: ThemeFullVariantType = 'green'
 
   /**
    * Sets the tone of the color variant
    */
-  @Prop( { reflect: true } ) tone?: ToneVariantType = 'weak'
+  @Prop({ reflect: true }) tone?: ToneSmartVariantType = 'weak'
 
   /**
    * Specifies the typography of the element
    */
-  @Prop() readonly typography: TypographyInfoType | TypographyReadType = 'option'
-
-  /**
-   * Specifies the variant for `typography`
-   */
-  @Prop() readonly typographyVariant?: TypographyVariants
+  @Prop({ reflect: true }) readonly typography: TypographyLabelType = 'option'
 
   render () {
     return (
       <Host>
-        <mds-text tag="span" typography={this.typography} variant={this.typographyVariant}>
+        <mds-text tag="span" typography={this.typography} variant="info">
           <slot/>
         </mds-text>
       </Host>

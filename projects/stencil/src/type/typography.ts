@@ -51,6 +51,10 @@ export type TypographySmallerType =
   | 'tip'
   | 'option'
 
+export type TypographyLabelType =
+  | 'label'
+  | 'option'
+
 export type TypographyMonoType =
   | 'snippet'
   | 'hack'
