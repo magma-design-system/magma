@@ -132,6 +132,16 @@
   syntax: '<color>';
 }
 
+/* border radius */
+
+/* corner-shape also supports superellipse(-1.0 to 1.0) method */
+
+@property --magma-corner-shape {
+  inherits: false;
+  initial-value: squircle;
+  syntax: 'bevel | notch | round | scoop | square | squircle';
+}
+
 /* z-index */
 
 @property --magma-header-z-index {
@@ -190,6 +200,7 @@
     (can be removed once support is more widespread)
   */
   --magma-backdrop-animation-duration: 300ms;
+  --magma-corner-shape: squircle;
   --magma-backdrop-blur: 4px;
   --magma-backdrop-color: 0 0 0;
   --magma-backdrop-opacity: 0.1;
