@@ -1,5 +1,6 @@
 @import '../../../tailwind/fouc.css';
 
+mds-button,
 mds-calendar-cell {
   &:not(:is([hydrated], .hydrated)) {
     @apply not-hydrated;

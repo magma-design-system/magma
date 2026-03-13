@@ -1,6 +1,6 @@
 @import '../../../tailwind/fouc.css';
 
-mds-price-table-features-row {
+mds-text {
   &:not(:is([hydrated], .hydrated)) {
     @apply not-hydrated;
   }

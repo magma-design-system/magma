@@ -1,4 +1,4 @@
-@import '../../tailwind/fouc.css';
+@import './css/mds-tree-item-fouc.css';
 
 /**
  * @prop --mds-tree-item-actions-border-radius: Inherits the border-radius used for tree action containers.

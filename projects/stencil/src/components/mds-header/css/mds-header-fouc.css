@@ -1,6 +1,5 @@
 @import '../../../tailwind/fouc.css';
 
-mds-header-bar,
 mds-modal {
   &:not(:is([hydrated], .hydrated)) {
     @apply not-hydrated;

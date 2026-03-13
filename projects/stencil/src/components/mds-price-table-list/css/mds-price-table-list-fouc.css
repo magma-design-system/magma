@@ -1,6 +1,6 @@
 @import '../../../tailwind/fouc.css';
 
-mds-price-table-list-item {
+mds-separator {
   &:not(:is([hydrated], .hydrated)) {
     @apply not-hydrated;
   }

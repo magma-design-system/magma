@@ -1,8 +1,6 @@
 @import '../../../tailwind/fouc.css';
 
-mds-tab,
-mds-tab-item,
-mds-text {
+mds-avatar {
   &:not(:is([hydrated], .hydrated)) {
     @apply not-hydrated;
   }

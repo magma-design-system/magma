@@ -1,9 +1,10 @@
 @import '../../../tailwind/fouc.css';
 
 mds-button,
-mds-entity,
 mds-file-preview,
 mds-progress,
+mds-tab,
+mds-tab-item,
 mds-text {
   &:not(:is([hydrated], .hydrated)) {
     @apply not-hydrated;

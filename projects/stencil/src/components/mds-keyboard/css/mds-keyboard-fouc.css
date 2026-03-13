@@ -1,7 +1,6 @@
 @import '../../../tailwind/fouc.css';
 
 mds-button,
-mds-keyboard-key,
 mds-text,
 mds-tooltip {
   &:not(:is([hydrated], .hydrated)) {

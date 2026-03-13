@@ -1,6 +1,7 @@
 @import '../../../tailwind/fouc.css';
 
-mds-filter-item {
+mds-filter-item,
+mds-text {
   &:not(:is([hydrated], .hydrated)) {
     @apply not-hydrated;
   }

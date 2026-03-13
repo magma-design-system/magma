@@ -1,4 +1,4 @@
-@import '../../tailwind/fouc.css';
+@import './css/mds-avatar-stack-item-fouc.css';
 
 /**
  * @prop --mds-avatar-stack-item-background: The background color of each avatar in the stack

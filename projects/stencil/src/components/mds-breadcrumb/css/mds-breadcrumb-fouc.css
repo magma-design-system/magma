@@ -1,7 +1,6 @@
 @import '../../../tailwind/fouc.css';
 
-mds-button,
-mds-breadcrumb-item {
+mds-button {
   &:not(:is([hydrated], .hydrated)) {
     @apply not-hydrated;
   }

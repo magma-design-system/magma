@@ -1,4 +1,4 @@
-@import '../../tailwind/fouc.css';
+@import './css/mds-input-switch-fouc.css';
 
 /**
  * @prop --mds-input-switch-animation-timing-adjust: Multiplier used to fine-tune animation timing

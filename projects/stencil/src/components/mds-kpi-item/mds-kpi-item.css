@@ -1,4 +1,4 @@
-@import '../../tailwind/fouc.css';
+@import './css/mds-kpi-item-fouc.css';
 
 /**
  * @prop --mds-kpi-item-icon-color: Set the fill color of the icon element

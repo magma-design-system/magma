@@ -48,6 +48,7 @@
     "test.regression.review": "npm run build && loki test --port 6006 --requireReference --chromeEnableAnimations=false",
     "test.script": "npx jest",
     "update": "tsx ./scripts/update.ts",
+    "update:fouc": "tsx ./scripts/update-fouc.ts",
     "watch": "npm run build.icons && stencil build --docs-readme --watch",
     "dev": "npm run clean && npm run build.icons && stencil build -c stencil.dev.config.ts --docs-readme --watch"
   },

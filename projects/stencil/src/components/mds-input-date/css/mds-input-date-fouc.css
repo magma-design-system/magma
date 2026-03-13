@@ -2,7 +2,9 @@
 
 mds-button,
 mds-calendar,
-mds-dropdown {
+mds-dropdown,
+mds-input-tip,
+mds-input-tip-item {
   &:not(:is([hydrated], .hydrated)) {
     @apply not-hydrated;
   }

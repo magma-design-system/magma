@@ -1,6 +1,6 @@
 @import '../../../tailwind/fouc.css';
 
-mds-push-notification-item {
+mds-button {
   &:not(:is([hydrated], .hydrated)) {
     @apply not-hydrated;
   }

@@ -1,5 +1,5 @@
 @reference './css/animate/utilities.css';
-@import '../../tailwind/fouc.css';
+@import './css/mds-toast-fouc.css';
 
 /**
  * @prop --mds-toast-background: Background color of the toast component.

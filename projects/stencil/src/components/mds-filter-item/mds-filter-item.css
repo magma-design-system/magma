@@ -1,5 +1,5 @@
 @import '~@maggioli-design-system/styles/dist/css/animations.css';
-@import '../../tailwind/fouc.css';
+@import './css/mds-filter-item-fouc.css';
 
 /**
  * @prop --mds-filter-item-count-background-default: Sets the default `background-color` of the count element

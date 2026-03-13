@@ -3,7 +3,8 @@
 mds-button,
 mds-icon,
 mds-input-tip,
-mds-text {
+mds-input-tip-item,
+mds-spinner {
   &:not(:is([hydrated], .hydrated)) {
     @apply not-hydrated;
   }

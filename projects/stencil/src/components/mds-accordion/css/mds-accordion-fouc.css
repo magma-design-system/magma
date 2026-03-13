@@ -1,7 +1,1 @@
 @import '../../../tailwind/fouc.css';
-
-mds-accordion-item {
-  &:not(:is([hydrated], .hydrated)) {
-    @apply not-hydrated;
-  }
-}

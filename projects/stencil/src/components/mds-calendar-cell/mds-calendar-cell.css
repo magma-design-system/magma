@@ -1,4 +1,4 @@
-@import '../../tailwind/fouc.css';
+@import './css/mds-calendar-cell-fouc.css';
 
 /**
  * @prop --mds-calendar-cell-background: Background of calendar cells.
