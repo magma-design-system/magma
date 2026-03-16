@@ -11,10 +11,6 @@
   --mds-button-border-opacity: var(--mds-button-border-default-opacity);
 }
 
-:host([tone="outline"]) {
-  --mds-button-border-opacity: var(--mds-button-border-tone-outline-opacity);
-}
-
 :host([tone="strong"]:hover),
 :host([tone="strong"][active]) {
   --mds-button-border-width: var(--mds-button-border-tone-strong-hover-width);
@@ -23,6 +19,10 @@
 :host([tone="weak"]:hover),
 :host([tone="weak"][active]) {
   --mds-button-border-width: var(--mds-button-border-tone-weak-hover-width);
+}
+
+:host([tone="outline"]) {
+  --mds-button-border-opacity: var(--mds-button-border-tone-outline-opacity);
 }
 
 :host([tone="outline"]:hover),

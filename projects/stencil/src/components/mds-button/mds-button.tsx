@@ -297,10 +297,11 @@ export class MdsButton {
           <mds-spinner class="spinner" running={this.await}/>
         </div>
         { this.icon && this.iconPosition === 'left' && <mds-icon aria-hidden="true" class="icon" name={this.icon} part="icon"/> }
-        <mds-text class="text" part="label" tag="span" typography={this.typography} truncate={this.truncate} animation={this.animation} text={this.label}>
+        { this.label && <mds-text class="text" part="label" tag="span" typography={this.typography} truncate={this.truncate} animation={this.animation} text={this.label}>
           {/* this should be removed in the future once slotted text is no longer used, use the label property instead */}
-          { !this.label && <slot onSlotchange={this.onSlotChangeHandler}/> }
+          { this.label }
         </mds-text>
+        }
         { this.hasNotification && <slot name="notification"/> }
         { this.icon && this.iconPosition === 'right' && <mds-icon aria-hidden="true" class="icon" name={this.icon} part="icon"/> }
       </Host>

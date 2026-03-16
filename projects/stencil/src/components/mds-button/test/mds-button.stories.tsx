@@ -84,18 +84,21 @@ export default {
       options: buttonTypeDictionary,
       control: { type: 'select' },
     },
+    label: {
+      type: { name: 'string' },
+      description: 'Specifies the label of the button',
+    },
   },
 }
 
 const Template = args => <mds-button {...args}>Conferma azione</mds-button>
 
 const TemplateService = args => (
-  <mds-button {...args}>{args.label}</mds-button>
+  <mds-button {...args}></mds-button>
 )
 
 const TemplateNotifications = args => (
-  <mds-button {...args}>
-    Notifiche
+  <mds-button {...args} label="Notifiche">
     <mds-notification slot="notification" value={12}></mds-notification>
   </mds-button>
 )
@@ -121,6 +124,12 @@ const TemplateAwait = () => {
     2: 'strong',
   }
 
+  function getLabel (state: number) {
+    if (state === 0) return 'Conferma azione'
+    if (state === 1) return 'Salvataggio in corso...'
+    return 'Azione salvata'
+  }
+
   function setLoadingState () {
     setButtonState(1)
     setTimeout(() => {
@@ -140,10 +149,8 @@ const TemplateAwait = () => {
       onClick={() => {
         if (buttonState === 0) setLoadingState()
       }}
+      label={getLabel(buttonState)}
     >
-      {buttonState === 0 && 'Conferma azione'}
-      {buttonState === 1 && 'Salvataggio in corso...'}
-      {buttonState === 2 && 'Azione salvata'}
     </mds-button>
   )
 }
@@ -151,29 +158,33 @@ const TemplateAwait = () => {
 const TemplateKeyboard = args => (
   <div class="bg-tone-grey-10 p-600 grid gap-600">
     <mds-text>Focus this button with tab before press enter.</mds-text>
-    <mds-button {...args}>Click me from enter keyborad</mds-button>
+    <mds-button {...args} label="Click me from enter keyborad"></mds-button>
   </div>
 )
 
 const TemplateIcon = args => <mds-button {...args}> </mds-button>
 
-const TemplateForm = args => (
-  <form
-    class="flex gap-x-400"
-    action="#"
-    onSubmit={event => {
-      event.preventDefault()
-
-      // eslint-disable-next-line no-console
-      console.log('Form submitted via mds-button', event)
-
-      return false
-    }}
-  >
-    <input type="text" name="inputTest" />
-    <mds-button {...args}>Cliccami</mds-button>
-  </form>
-)
+const TemplateForm = args => {
+  const [inputValue, setInputValue] = useState('')
+  return (
+    <form
+      class="grid grid-cols-full gap-400 max-w-[400px]"
+      action="#"
+      onSubmit={event => {
+        event.preventDefault()
+        const form = event.currentTarget as HTMLFormElement
+        const formData = new FormData(form)
+        setInputValue(formData.get('inputTest'))
+        return false
+      }}
+    >
+      {/* <input type="text" name="inputTest" /> */}
+      <mds-input type="text" name="inputTest" class="w-full" placeholder="Es: hello world"/>
+      <mds-button {...args} label="Click me" type="submit" size="lg"></mds-button>
+      { inputValue && <mds-text>Input value: <b>{inputValue}</b></mds-text> }
+    </form>
+  )
+}
 
 const TemplateDisabled = () => {
   const [disabled, setDisabled] = useState(false)
@@ -198,8 +209,8 @@ const TemplateDisabled = () => {
           variant="primary"
           disabled={disabled}
           onClick={() => toggle()}
+          label={disabled ? 'Disabled button' : 'Click to disable'}
         >
-          {disabled ? 'Disabled button' : 'Click to disable'}
         </mds-button>
         {disabled && (
           <mds-button
@@ -207,8 +218,8 @@ const TemplateDisabled = () => {
             variant="dark"
             tone="weak"
             onClick={() => enableButton()}
+            label="Reset"
           >
-            Reset
           </mds-button>
         )}
       </div>
@@ -431,7 +442,8 @@ export const KeyboardPress = {
 
   args: {
     onClick: () => {
-      console.info('Button clicked')
+      // eslint-disable-next-line no-alert
+      alert('Button clicked')
     },
   },
 }

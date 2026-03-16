@@ -8,13 +8,18 @@
   --mds-button-color: rgb(var(--tone-neutral-03));
   --mds-button-border-color-rgb: var(--tone-neutral-01);
 
-  box-shadow: 0 0 0 var(--mds-button-border-width) rgb(var(--mds-button-border-color) / var(--mds-button-border-opacity));
+  box-shadow: 0 0 0 var(--mds-button-border-width) rgb(var(--mds-button-border-color-rgb) / var(--mds-button-border-opacity));
 }
 
 :host([variant="google"]:hover),
 :host([variant="google"][tone]:hover) {
+  --mds-button-background: rgb(var(--tone-neutral));
   --mds-button-border-width: var(--mds-button-border-hover-width);
   --mds-button-border-opacity: var(--mds-button-border-hover-opacity);
+}
+
+:host([variant="apple"]) .icon {
+  transform: translateY(-5%);
 }
 
 :host([variant="apple"]),
@@ -22,6 +27,11 @@
   --mds-button-background: rgb(var(--tone-neutral-02));
   --mds-button-color: rgb(var(--tone-neutral));
   --mds-button-border-width: 0;
+}
+
+:host([variant="apple"]:hover),
+:host([variant="apple"][tone]:hover) {
+  --mds-button-background: rgb(var(--tone-neutral-02));
 }
 
 :host-context(:root.pref-theme-dark:not(.pref-theme-scheme-light)) {
