@@ -68,6 +68,11 @@ export class MdsModal {
   @Prop({ reflect: true }) readonly overflow: ModalOverflowType = 'auto'
 
   /**
+   * Specifies if the modal window is automatically closed when the user clicks outside of it
+   */
+  @Prop({ reflect: true }) readonly backdropClose: boolean = false
+
+  /**
    * Emits when a modal is closed
    */
   @Event({ eventName: 'mdsModalOpen' }) openEvent: EventEmitter<void>
@@ -210,10 +215,18 @@ export class MdsModal {
     if ((e.target as HTMLElement)?.localName !== 'mds-modal') {
       return
     }
+    if ((e.target as HTMLElement)?.localName === 'mds-modal' && !this.backdropClose) {
+      return
+    }
     this.opened = e.target !== e.currentTarget
     if (!this.opened) {
       this.closeEvent.emit()
     }
+  }
+
+  private closeButtonModal = (): void => {
+    this.opened = undefined
+    this.closeEvent.emit()
   }
 
   @Watch('opened')
@@ -264,7 +277,7 @@ export class MdsModal {
             </div>
           </div>
         }
-        { !this.window && <mds-button class="action-close" icon={miBaselineClose} variant="light" tone="quiet" size="xl" onClick={(e: Event) => { this.closeModal(e) }} part="action-close"></mds-button> }
+        { !this.window && <mds-button class="action-close" icon={miBaselineClose} variant="light" tone="quiet" size="xl" onClick={() => { this.closeButtonModal() }} part="action-close"></mds-button> }
       </Host>
     )
   }
