@@ -116,21 +116,6 @@ const TemplateVariantLight = args => (
   </mds-banner>
 )
 
-const TemplateVariantStatus = args => (
-  <mds-banner {...args}>
-    <mds-text typography="detail">
-      Se procederai, perderai i dati relativi modelli del database che hai
-      registrato in precedenza. Conferma solo se sei consapevole di ciò che stai
-      facendo.
-    </mds-text>
-    <mds-button slot="action" variant={args.variant} tone="text">
-      Annulla
-    </mds-button>
-    <mds-button slot="action" variant={args.variant} tone="weak">
-      Conferma
-    </mds-button>
-  </mds-banner>
-)
 
 export const Default = {
   render: Template,
@@ -202,16 +187,5 @@ export const VariantLight = {
     icon: 'mi/baseline/info',
     deletable: true,
     variant: 'light',
-  },
-}
-
-export const VariantStatusWarning = {
-  render: TemplateVariantStatus,
-
-  args: {
-    deletable: true,
-    headline: 'Attenzione',
-    icon: 'mi/baseline/warning',
-    variant: 'warning',
   },
 }
