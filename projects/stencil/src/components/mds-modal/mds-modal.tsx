@@ -70,7 +70,7 @@ export class MdsModal {
   /**
    * Specifies if the modal window is automatically closed when the user clicks outside of it
    */
-  @Prop({ reflect: true }) readonly backdropClose: boolean = false
+  @Prop({ reflect: true }) readonly backdropClose: boolean = true
 
   /**
    * Emits when a modal is closed
