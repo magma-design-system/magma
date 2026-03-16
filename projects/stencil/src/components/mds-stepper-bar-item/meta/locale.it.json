@@ -1,0 +1,6 @@
+{
+  "badgeDone": "Completato",
+  "badgeCurrent": "In corso",
+  "badgeQueued": "In coda",
+  "step": "Step {{ index }}"
+}

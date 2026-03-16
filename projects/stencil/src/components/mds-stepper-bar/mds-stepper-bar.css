@@ -4,6 +4,7 @@
 
 :host {
   --mds-stepper-bar-scroll-behavior: smooth;
+  --mds-stepper-bar-gap: theme('spacing.50');
 
   @apply gap-600;
 
@@ -13,12 +14,14 @@
 
 .items {
   @apply
-    gap-0
     w-full
+    p-300
     z-10;
 
+  align-items: start;
   display: flex;
   flex-grow: 1;
+  gap: var(--mds-stepper-bar-gap);
   overflow: auto;
   position: relative;
   scroll-behavior: var(--mds-stepper-bar-scroll-behavior);
@@ -34,19 +37,11 @@
   pointer-events: auto;
 }
 
-
 .contents {
-  @apply
-    w-full
-    opacity-0
-    transition-opacity;
+  @apply w-full;
 
   display: flex;
   flex-direction: column;
-}
-
-:host([hydrated] ) .contents {
-  opacity: 1;
 }
 
 @import './css/mds-stepper-bar-pref-animation.css';
