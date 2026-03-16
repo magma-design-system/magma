@@ -1544,6 +1544,10 @@ export namespace Components {
           * Specifies if the modal shows the backdrop
          */
         "backdrop"?: boolean;
+        /**
+          * Specifies if the modal window is automatically closed when the user clicks outside of it
+         */
+        "backdropClose": boolean;
         "close": () => Promise<void>;
         /**
           * Specifies if the modal is opened or not
@@ -1919,6 +1923,12 @@ export namespace Components {
          */
         "variant"?: ButtonVariantType;
     }
+    interface MdsRadialProgress {
+        /**
+          * A value between 0 and 1 that rapresents the status progress
+         */
+        "progress": number;
+    }
     interface MdsSeparator {
     }
     interface MdsSpinner {
@@ -1985,6 +1995,7 @@ export namespace Components {
           * Specifies the typography of the element
          */
         "typography"?: TypographyType;
+        "updateLang": () => Promise<void>;
         /**
           * Specifies the value the component will return mdsStepperBarItemSelect event
          */
@@ -3508,6 +3519,12 @@ declare global {
         prototype: HTMLMdsRadialMenuItemElement;
         new (): HTMLMdsRadialMenuItemElement;
     };
+    interface HTMLMdsRadialProgressElement extends Components.MdsRadialProgress, HTMLStencilElement {
+    }
+    var HTMLMdsRadialProgressElement: {
+        prototype: HTMLMdsRadialProgressElement;
+        new (): HTMLMdsRadialProgressElement;
+    };
     interface HTMLMdsSeparatorElement extends Components.MdsSeparator, HTMLStencilElement {
     }
     var HTMLMdsSeparatorElement: {
@@ -3857,6 +3874,7 @@ declare global {
         "mds-quote": HTMLMdsQuoteElement;
         "mds-radial-menu": HTMLMdsRadialMenuElement;
         "mds-radial-menu-item": HTMLMdsRadialMenuItemElement;
+        "mds-radial-progress": HTMLMdsRadialProgressElement;
         "mds-separator": HTMLMdsSeparatorElement;
         "mds-spinner": HTMLMdsSpinnerElement;
         "mds-status-bar": HTMLMdsStatusBarElement;
@@ -5349,6 +5367,10 @@ declare namespace LocalJSX {
          */
         "backdrop"?: boolean;
         /**
+          * Specifies if the modal window is automatically closed when the user clicks outside of it
+         */
+        "backdropClose"?: boolean;
+        /**
           * Emits when a modal is closed
          */
         "onMdsModalClose"?: (event: MdsModalCustomEvent<void>) => void;
@@ -5776,6 +5798,12 @@ declare namespace LocalJSX {
           * Specifies the color variant for the button
          */
         "variant"?: ButtonVariantType;
+    }
+    interface MdsRadialProgress {
+        /**
+          * A value between 0 and 1 that rapresents the status progress
+         */
+        "progress"?: number;
     }
     interface MdsSeparator {
     }
@@ -6320,6 +6348,7 @@ declare namespace LocalJSX {
         "mds-quote": MdsQuote;
         "mds-radial-menu": MdsRadialMenu;
         "mds-radial-menu-item": MdsRadialMenuItem;
+        "mds-radial-progress": MdsRadialProgress;
         "mds-separator": MdsSeparator;
         "mds-spinner": MdsSpinner;
         "mds-status-bar": MdsStatusBar;
@@ -6464,6 +6493,7 @@ declare module "@stencil/core" {
             "mds-quote": LocalJSX.MdsQuote & JSXBase.HTMLAttributes<HTMLMdsQuoteElement>;
             "mds-radial-menu": LocalJSX.MdsRadialMenu & JSXBase.HTMLAttributes<HTMLMdsRadialMenuElement>;
             "mds-radial-menu-item": LocalJSX.MdsRadialMenuItem & JSXBase.HTMLAttributes<HTMLMdsRadialMenuItemElement>;
+            "mds-radial-progress": LocalJSX.MdsRadialProgress & JSXBase.HTMLAttributes<HTMLMdsRadialProgressElement>;
             "mds-separator": LocalJSX.MdsSeparator & JSXBase.HTMLAttributes<HTMLMdsSeparatorElement>;
             "mds-spinner": LocalJSX.MdsSpinner & JSXBase.HTMLAttributes<HTMLMdsSpinnerElement>;
             "mds-status-bar": LocalJSX.MdsStatusBar & JSXBase.HTMLAttributes<HTMLMdsStatusBarElement>;
