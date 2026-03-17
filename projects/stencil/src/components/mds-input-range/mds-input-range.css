@@ -4,22 +4,24 @@
 
 /**
  * @prop --mds-input-range-thumb-size: Sets the thumb width and height of the component
- * @prop --mds-input-range-thumb-background:
- * @prop --mds-input-range-track-background:
- * @prop --mds-input-range-track-size:
- * @prop --mds-input-range-track-progress-background:
+ * @prop --mds-input-range-thumb-background: Sets the thumb background color
+ * @prop --mds-input-range-thumb-shadow: Sets the thumb shadow
+ * @prop --mds-input-range-track-background: Sets the track background color
+ * @prop --mds-input-range-track-size: Sets the track width and height
+ * @prop --mds-input-range-track-progress-background: Sets the track progress background color
  */
 
 :host {
+  --mds-input-range-track-size: theme('spacing.600');
   --mds-input-range-thumb-size: theme('spacing.400');
-  --mds-input-range-thumb-background: theme('colors.variant-primary-04');
-  --mds-input-range-thumb-shadow: 0 0 0 2px theme('colors.tone-neutral');
-  --mds-input-range-track-background: theme('colors.tone-neutral-08');
-  --mds-input-range-track-size: theme('spacing.200');
-  --mds-input-range-track-progress-background: theme('colors.variant-primary-03');
-  --mds-input-range-thumb-background-disabled: theme('colors.tone-neutral-06');
-  --mds-input-range-track-background-disabled: theme('colors.tone-neutral-08');
-  --mds-input-range-track-progress-background-disabled: theme('colors.tone-neutral-06');
+  --mds-input-range-thumb-background: rgb(var(--tone-neutral));
+
+  /* --mds-input-range-thumb-shadow: 0 0 0 var(--mds-input-range-thumb-shadow-size) var(--mds-input-range-track-progress-background); */
+  --mds-input-range-track-background: rgb(var(--tone-neutral-08));
+  --mds-input-range-track-progress-background: rgb(var(--variant-primary-03));
+  --mds-input-range-thumb-background-disabled: rgb(var(--tone-neutral-06));
+  --mds-input-range-track-background-disabled: rgb(var(--tone-neutral-08));
+  --mds-input-range-track-progress-background-disabled: rgb(var(--tone-neutral-06));
 
   @apply
     duration-300
@@ -51,15 +53,14 @@
   display: flex;
   height: var(--mds-input-range-thumb-size);
   position: relative;
+
+  /* width: calc(100% - var(--mds-input-range-track-size) * 2); */
 }
 
 .track {
   @apply w-full;
 
-  --margin: calc(var(--mds-input-range-track-size) / 2);
-
   box-sizing: border-box;
-  padding: 0 var(--margin);
   position: absolute;
 }
 
@@ -85,17 +86,21 @@
     ease-in-out
     duration-300;
 
+  --border-width: calc(calc(var(--mds-input-range-track-size) - var(--mds-input-range-thumb-size)) / 2);
+  --thumb-size: calc(var(--mds-input-range-thumb-size) + var(--border-width) * 2);
+
   appearance: none;
   background-color: var(--mds-input-range-thumb-background);
-  border: 0;
+  border-color: var(--mds-input-range-track-progress-background);
   border-radius: var(--mds-input-range-thumb-size);
-  box-shadow: var(--mds-input-range-thumb-shadow);
+  border-style: solid;
+  border-width: var(--border-width);
   cursor: grab;
-  height: var(--mds-input-range-thumb-size);
+  height: var(--thumb-size);
   line-height: 0;
   transform: translate(0, -50%);
-  transition-property: background-color, box-shadow;
-  width: var(--mds-input-range-thumb-size);
+  transition-property: background-color, border;
+  width: var(--thumb-size);
 }
 
 .field::-webkit-slider-runnable-track {
@@ -114,6 +119,16 @@
   display: flex;
   height: var(--mds-input-range-track-size);
   transition-property: background-color;
+
+  /*
+    Align fill end with thumb center.
+    Thumb center travels across (100% - thumbSize); at 0% and 100% it's inset by thumbSize/2.
+    We use track size as the thumb's outer size (matches current thumb calc).
+  */
+  width: calc(
+    (100% - var(--mds-input-range-track-size)) * (var(--mds-input-range-progress, 0) * 0.01)
+    + (var(--mds-input-range-track-size) / 2)
+  );
 }
 
 .track-total {
