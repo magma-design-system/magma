@@ -64,6 +64,7 @@ import { MdsPushNotificationItemEventDetail } from "./components/mds-push-notifi
 import { Direction, Interaction } from "./components/mds-radial-menu/meta/types";
 import { ModalOverflowType as ModalOverflowType1 } from "./components.d";
 import { StatusBarPositionType } from "./components/mds-status-bar/meta/types";
+import { StepperBarNavigationType } from "./components/mds-stepper-bar/meta/meta";
 import { MdsStepperBarEventDetail } from "./components/mds-stepper-bar/meta/event-detail";
 import { MdsStepperBarItemEventDetail } from "./components/mds-stepper-bar-item/meta/event-detail";
 import { DirectionType as DirectionType1 } from "./components/mds-tab/meta/type";
@@ -139,6 +140,7 @@ export { MdsPushNotificationItemEventDetail } from "./components/mds-push-notifi
 export { Direction, Interaction } from "./components/mds-radial-menu/meta/types";
 export { ModalOverflowType as ModalOverflowType1 } from "./components.d";
 export { StatusBarPositionType } from "./components/mds-status-bar/meta/types";
+export { StepperBarNavigationType } from "./components/mds-stepper-bar/meta/meta";
 export { MdsStepperBarEventDetail } from "./components/mds-stepper-bar/meta/event-detail";
 export { MdsStepperBarItemEventDetail } from "./components/mds-stepper-bar-item/meta/event-detail";
 export { DirectionType as DirectionType1 } from "./components/mds-tab/meta/type";
@@ -1961,6 +1963,10 @@ export namespace Components {
           * Sets the current item to the given index: 0 is none done, 1 is the first item done, last number + 1 is all items done
          */
         "itemsDone": number;
+        /**
+          * Specifies the navigation type
+         */
+        "navigation": StepperBarNavigationType;
     }
     interface MdsStepperBarItem {
         /**
@@ -5836,6 +5842,10 @@ declare namespace LocalJSX {
           * Sets the current item to the given index: 0 is none done, 1 is the first item done, last number + 1 is all items done
          */
         "itemsDone"?: number;
+        /**
+          * Specifies the navigation type
+         */
+        "navigation"?: StepperBarNavigationType;
         /**
           * Emits when a step is changed
          */
