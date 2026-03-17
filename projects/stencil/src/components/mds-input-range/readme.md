@@ -31,17 +31,19 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | Part       | Description                                                        |
 | ---------- | ------------------------------------------------------------------ |
 | `"header"` | The element containing the labels displayed over the input element |
+| `"track"`  | The element containing the track of the input range                |
 
 
 ## CSS Custom Properties
 
 | Name                                          | Description                                      |
 | --------------------------------------------- | ------------------------------------------------ |
-| `--mds-input-range-thumb-background`          |                                                  |
+| `--mds-input-range-thumb-background`          | Sets the thumb background color                  |
+| `--mds-input-range-thumb-shadow`              | Sets the thumb shadow                            |
 | `--mds-input-range-thumb-size`                | Sets the thumb width and height of the component |
-| `--mds-input-range-track-background`          |                                                  |
-| `--mds-input-range-track-progress-background` |                                                  |
-| `--mds-input-range-track-size`                |                                                  |
+| `--mds-input-range-track-background`          | Sets the track background color                  |
+| `--mds-input-range-track-progress-background` | Sets the track progress background color         |
+| `--mds-input-range-track-size`                | Sets the track width and height                  |
 
 
 ## Dependencies
