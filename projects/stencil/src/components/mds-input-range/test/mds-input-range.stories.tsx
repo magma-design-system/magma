@@ -30,7 +30,9 @@ export default {
 }
 
 const Template = args => (
-  <mds-input-range {...args}>Range label</mds-input-range>
+  <div class="grid gap-400">
+    <mds-input-range {...args}>Range label</mds-input-range>
+  </div>
 )
 
 const TemplateFormatLabel = args => {

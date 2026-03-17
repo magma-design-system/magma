@@ -2,6 +2,7 @@ import { AttachInternals, Component, Element, Event, EventEmitter, Host, h, Prop
 
 /**
  * @part header - The element containing the labels displayed over the input element
+ * @part track - The element containing the track of the input range
  */
 @Component({
   tag: 'mds-input-range',
@@ -138,10 +139,13 @@ export class MdsInputRange {
           <mds-text class="value" typography="label">{ this.formatValue ? this.formatValue(this.value) : this.value }</mds-text>
         </header>
         <div class="range">
-          <div class="track">
+          <div class="track" part="track">
             <div class="contrast-area"></div>
             <div class="track-total">
-              <div class="track-progress" style={{ width: `${this.progress}%` }}></div>
+              <div
+                class="track-progress"
+                style={{ '--mds-input-range-progress': `${this.progress ?? 0}` }}
+              ></div>
             </div>
           </div>
           <input

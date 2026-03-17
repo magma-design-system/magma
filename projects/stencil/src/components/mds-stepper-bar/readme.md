@@ -9,9 +9,10 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## Properties
 
-| Property    | Attribute    | Description                                                                                                           | Type     | Default |
-| ----------- | ------------ | --------------------------------------------------------------------------------------------------------------------- | -------- | ------- |
-| `itemsDone` | `items-done` | Sets the current item to the given index: 0 is none done, 1 is the first item done, last number + 1 is all items done | `number` | `1`     |
+| Property     | Attribute    | Description                                                                                                           | Type                    | Default  |
+| ------------ | ------------ | --------------------------------------------------------------------------------------------------------------------- | ----------------------- | -------- |
+| `itemsDone`  | `items-done` | Sets the current item to the given index: 0 is none done, 1 is the first item done, last number + 1 is all items done | `number`                | `1`      |
+| `navigation` | `navigation` | Specifies the navigation type                                                                                         | `"none" \| "scrollbar"` | `'none'` |
 
 
 ## Events
@@ -31,9 +32,10 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## Shadow Parts
 
-| Part         | Description |
-| ------------ | ----------- |
-| `"contents"` |             |
+| Part         | Description                                                    |
+| ------------ | -------------------------------------------------------------- |
+| `"contents"` | Selects the `contents` container element wrapped in shadowDOM. |
+| `"items"`    | Selects the `items` container element wrapped in shadowDOM.    |
 
 
 ## CSS Custom Properties

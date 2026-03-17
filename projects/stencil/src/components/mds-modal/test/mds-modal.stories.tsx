@@ -23,6 +23,10 @@ export default {
       description: 'Specifies if the modal shows the backdrop',
       type: { name: 'boolean' },
     },
+    'backdrop-close': {
+      description: 'Specifies if the modal window is automatically closed when the user clicks outside of it',
+      type: { name: 'boolean' },
+    },
     overflow: {
       description:
         'Specifies if the component prevents the body from scrolling when modal window is opened',
@@ -577,6 +581,15 @@ export const Default = {
   args: {
     position: 'right',
     opened: true,
+  },
+}
+
+export const BackdropClose = {
+  render: Template,
+
+  args: {
+    position: 'right',
+    'backdrop-close': true,
   },
 }
 

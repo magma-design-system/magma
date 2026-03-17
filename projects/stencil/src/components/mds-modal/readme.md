@@ -9,14 +9,15 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## Properties
 
-| Property    | Attribute   | Description                                                                             | Type                                                                                                                              | Default    |
-| ----------- | ----------- | --------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- | ---------- |
-| `animating` | `animating` | Specifies if the component is animating itself or not                                   | `"intro" \| "none" \| "outro" \| undefined`                                                                                       | `'none'`   |
-| `animation` | `animation` | Specifies if the component is animating itself or not                                   | `"3d" \| "custom" \| "slide" \| undefined`                                                                                        | `'slide'`  |
-| `backdrop`  | `backdrop`  | Specifies if the modal shows the backdrop                                               | `boolean \| undefined`                                                                                                            | `true`     |
-| `opened`    | `opened`    | Specifies if the modal is opened or not                                                 | `boolean \| undefined`                                                                                                            | `false`    |
-| `overflow`  | `overflow`  | Specifies if the component prevents the body from scrolling when modal window is opened | `"auto" \| "manual"`                                                                                                              | `'auto'`   |
-| `position`  | `position`  | Specifies the animation position of the modal window                                    | `"bottom" \| "bottom-left" \| "bottom-right" \| "center" \| "left" \| "right" \| "top" \| "top-left" \| "top-right" \| undefined` | `'center'` |
+| Property        | Attribute        | Description                                                                              | Type                                                                                                                              | Default    |
+| --------------- | ---------------- | ---------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- | ---------- |
+| `animating`     | `animating`      | Specifies if the component is animating itself or not                                    | `"intro" \| "none" \| "outro" \| undefined`                                                                                       | `'none'`   |
+| `animation`     | `animation`      | Specifies if the component is animating itself or not                                    | `"3d" \| "custom" \| "slide" \| undefined`                                                                                        | `'slide'`  |
+| `backdrop`      | `backdrop`       | Specifies if the modal shows the backdrop                                                | `boolean \| undefined`                                                                                                            | `true`     |
+| `backdropClose` | `backdrop-close` | Specifies if the modal window is automatically closed when the user clicks outside of it | `boolean`                                                                                                                         | `true`     |
+| `opened`        | `opened`         | Specifies if the modal is opened or not                                                  | `boolean \| undefined`                                                                                                            | `false`    |
+| `overflow`      | `overflow`       | Specifies if the component prevents the body from scrolling when modal window is opened  | `"auto" \| "manual"`                                                                                                              | `'auto'`   |
+| `position`      | `position`       | Specifies the animation position of the modal window                                     | `"bottom" \| "bottom-left" \| "bottom-right" \| "center" \| "left" \| "right" \| "top" \| "top-left" \| "top-right" \| undefined` | `'center'` |
 
 
 ## Events
