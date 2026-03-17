@@ -3,30 +3,36 @@
 @tailwind components;
 
 /**
- * @prop --mds-input-range-thumb-size: Sets the thumb width and height of the component
+ * @prop --mds-input-range-thumb-background-disabled: Sets the thumb background color when the component is disabled
  * @prop --mds-input-range-thumb-background: Sets the thumb background color
- * @prop --mds-input-range-thumb-shadow: Sets the thumb shadow
+ * @prop --mds-input-range-thumb-cursor: Sets the thumb cursor
+ * @prop --mds-input-range-thumb-size: Sets the thumb width and height of the component
+ * @prop --mds-input-range-track-background-disabled: Sets the track background color when the component is disabled
  * @prop --mds-input-range-track-background: Sets the track background color
- * @prop --mds-input-range-track-size: Sets the track width and height
+ * @prop --mds-input-range-track-progress-background-disabled: Sets the track progress background color when the component is disabled
  * @prop --mds-input-range-track-progress-background: Sets the track progress background color
+ * @prop --mds-input-range-track-size: Sets the track width and height
  */
 
 :host {
-  --mds-input-range-track-size: theme('spacing.600');
-  --mds-input-range-thumb-size: theme('spacing.400');
+  --mds-input-range-thumb-background-disabled: rgb(var(--tone-neutral-08));
   --mds-input-range-thumb-background: rgb(var(--tone-neutral));
-
-  /* --mds-input-range-thumb-shadow: 0 0 0 var(--mds-input-range-thumb-shadow-size) var(--mds-input-range-track-progress-background); */
-  --mds-input-range-track-background: rgb(var(--tone-neutral-08));
-  --mds-input-range-track-progress-background: rgb(var(--variant-primary-03));
-  --mds-input-range-thumb-background-disabled: rgb(var(--tone-neutral-06));
+  --mds-input-range-thumb-cursor: col-resize;
+  --mds-input-range-thumb-size: theme('spacing.400');
   --mds-input-range-track-background-disabled: rgb(var(--tone-neutral-08));
+  --mds-input-range-track-background: rgb(var(--tone-neutral-08));
   --mds-input-range-track-progress-background-disabled: rgb(var(--tone-neutral-06));
+  --mds-input-range-track-progress-background: rgb(var(--variant-primary-03));
+  --mds-input-range-track-size: theme('spacing.600');
+
+  /* private properties */
+  --private-border-width: calc(calc(var(--mds-input-range-track-size) - var(--mds-input-range-thumb-size)) / 2);
+  --private-thumb-size: calc(var(--mds-input-range-thumb-size) + var(--private-border-width) * 2);
 
   @apply
     duration-300
     ease-in-out
-    gap-100;
+    gap-200;
 
   display: grid;
   transition-property: color;
@@ -51,10 +57,8 @@
 .range {
   align-items: center;
   display: flex;
-  height: var(--mds-input-range-thumb-size);
+  height: var(--private-thumb-size);
   position: relative;
-
-  /* width: calc(100% - var(--mds-input-range-track-size) * 2); */
 }
 
 .track {
@@ -86,21 +90,18 @@
     ease-in-out
     duration-300;
 
-  --border-width: calc(calc(var(--mds-input-range-track-size) - var(--mds-input-range-thumb-size)) / 2);
-  --thumb-size: calc(var(--mds-input-range-thumb-size) + var(--border-width) * 2);
-
   appearance: none;
   background-color: var(--mds-input-range-thumb-background);
   border-color: var(--mds-input-range-track-progress-background);
   border-radius: var(--mds-input-range-thumb-size);
   border-style: solid;
-  border-width: var(--border-width);
-  cursor: grab;
-  height: var(--thumb-size);
+  border-width: var(--private-border-width);
+  cursor: var(--mds-input-range-thumb-cursor);
+  height: var(--private-thumb-size);
   line-height: 0;
   transform: translate(0, -50%);
   transition-property: background-color, border;
-  width: var(--thumb-size);
+  width: var(--private-thumb-size);
 }
 
 .field::-webkit-slider-runnable-track {
