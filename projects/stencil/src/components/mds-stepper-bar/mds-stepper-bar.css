@@ -1,3 +1,8 @@
+/* stylelint-disable media-query-no-invalid */
+@import '../../tailwind/components.css';
+@tailwind components;
+@tailwind utilities;
+
 /**
  * @prop --mds-stepper-bar-scroll-behavior: Sets the scroll-behavior animation
  */
@@ -5,6 +10,12 @@
 :host {
   --mds-stepper-bar-scroll-behavior: smooth;
   --mds-stepper-bar-gap: theme('spacing.50');
+  --mds-stepper-bar-scrollbar-margin: 0;
+  --mds-stepper-bar-scrollbar-radius: 0;
+  --mds-stepper-bar-scrollbar-size: theme('spacing.200');
+  --mds-stepper-bar-scrollbar-thumb-background: theme('colors.tone-neutral-06');
+  --mds-stepper-bar-scrollbar-track-background: theme('colors.tone-neutral-08');
+  --mds-stepper-bar-offset-margin: 0;
 
   @apply gap-600;
 
@@ -15,14 +26,15 @@
 .items {
   @apply
     w-full
-    p-300
     z-10;
 
   align-items: start;
   display: flex;
   flex-grow: 1;
   gap: var(--mds-stepper-bar-gap);
+  margin: 0 calc(var(--mds-stepper-bar-offset-margin) * -1);
   overflow: auto;
+  padding: 0 var(--mds-stepper-bar-offset-margin);
   position: relative;
   scroll-behavior: var(--mds-stepper-bar-scroll-behavior);
   scroll-snap-type: x mandatory;
@@ -45,4 +57,5 @@
 }
 
 @import './css/mds-stepper-bar-pref-animation.css';
+@import './css/mds-stepper-bar-navigation.css';
 @import '../../tailwind/fouc.css';
