@@ -1,84 +1,36 @@
 @import './css/mds-input-range-fouc.css';
 
 /**
- * @prop --mds-input-range-thumb-size: Defines the size of the range input thumb
- * @prop --mds-input-range-thumb-background: Background color of the range input thumb
- * @prop --mds-input-range-thumb-shadow: Shadow applied around the thumb element
- * @prop --mds-input-range-track-background: Background color of the full track
- * @prop --mds-input-range-track-size: Height/thickness of the track
- * @prop --mds-input-range-track-progress-background: Background color of the filled portion of the track
- * @prop --mds-input-range-thumb-background-disabled: Thumb background when disabled
- * @prop --mds-input-range-track-background-disabled: Track background when disabled
- * @prop --mds-input-range-track-progress-background-disabled: Filled track background when disabled
+ * @prop --mds-input-range-thumb-background-disabled: Sets the thumb background color when the component is disabled
+ * @prop --mds-input-range-thumb-background: Sets the thumb background color
+ * @prop --mds-input-range-thumb-cursor: Sets the thumb cursor
+ * @prop --mds-input-range-thumb-size: Sets the thumb width and height of the component
+ * @prop --mds-input-range-track-background-disabled: Sets the track background color when the component is disabled
+ * @prop --mds-input-range-track-background: Sets the track background color
+ * @prop --mds-input-range-track-progress-background-disabled: Sets the track progress background color when the component is disabled
+ * @prop --mds-input-range-track-progress-background: Sets the track progress background color
+ * @prop --mds-input-range-track-size: Sets the track width and height
  */
 
-@property --mds-input-range-thumb-size {
-  inherits: false;
-  initial-value: --spacing(400);
-  syntax: "<length>";
-}
-
-@property --mds-input-range-thumb-background {
-  inherits: false;
-  initial-value: rgb(var(--variant-primary-04));
-  syntax: "<color>";
-}
-
-@property --mds-input-range-track-background {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-08));
-  syntax: "<color>";
-}
-
-@property --mds-input-range-track-size {
-  inherits: false;
-  initial-value: --spacing(200);
-  syntax: "<length>";
-}
-
-@property --mds-input-range-track-progress-background {
-  inherits: false;
-  initial-value: rgb(var(--variant-primary-03));
-  syntax: "<color>";
-}
-
-@property --mds-input-range-thumb-background-disabled {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-06));
-  syntax: "<color>";
-}
-
-@property --mds-input-range-track-background-disabled {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-08));
-  syntax: "<color>";
-}
-
-@property --mds-input-range-track-progress-background-disabled {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-06));
-  syntax: "<color>";
-}
-
-/* ❌ Not supported
-@property --mds-input-range-thumb-shadow {
-  inherits: false;
-  initial-value: 0 0 0 2px rgb(var(--tone-neutral));
-  syntax: "<missing>";
-}
-*/
-
-
 :host {
+  --mds-input-range-thumb-background-disabled: rgb(var(--tone-neutral-08));
+  --mds-input-range-thumb-background: rgb(var(--tone-neutral));
+  --mds-input-range-thumb-cursor: col-resize;
   --mds-input-range-thumb-size: --spacing(400);
-  --mds-input-range-thumb-background: rgb(var(--variant-primary-04));
-  --mds-input-range-thumb-shadow: 0 0 0 2px rgb(var(--tone-neutral));
-  --mds-input-range-track-background: rgb(var(--tone-neutral-08));
-  --mds-input-range-track-size: --spacing(200);
-  --mds-input-range-track-progress-background: rgb(var(--variant-primary-03));
-  --mds-input-range-thumb-background-disabled: rgb(var(--tone-neutral-06));
   --mds-input-range-track-background-disabled: rgb(var(--tone-neutral-08));
+  --mds-input-range-track-background: rgb(var(--tone-neutral-08));
   --mds-input-range-track-progress-background-disabled: rgb(var(--tone-neutral-06));
+  --mds-input-range-track-progress-background: rgb(var(--variant-primary-03));
+  --mds-input-range-track-size: --spacing(600);
+
+  /* private properties */
+  --private-border-width: calc(calc(var(--mds-input-range-track-size) - var(--mds-input-range-thumb-size)) / 2);
+  --private-thumb-size: calc(var(--mds-input-range-thumb-size) + var(--private-border-width) * 2);
+
+  @apply
+    duration-300
+    ease-in-out
+    gap-200;
 
   display: grid;
   gap: --spacing(100);
@@ -105,15 +57,14 @@
 .range {
   align-items: center;
   display: flex;
-  height: var(--mds-input-range-thumb-size);
+  height: var(--private-thumb-size);
   position: relative;
 }
 
 .track {
-  --margin: calc(var(--mds-input-range-track-size) / 2);
+  @apply w-full;
 
   box-sizing: border-box;
-  padding: 0 var(--margin);
   position: absolute;
   width: 100%;
 }
@@ -136,17 +87,16 @@
 .field::-webkit-slider-thumb {
   appearance: none;
   background-color: var(--mds-input-range-thumb-background);
-  border: 0;
+  border-color: var(--mds-input-range-track-progress-background);
   border-radius: var(--mds-input-range-thumb-size);
-  box-shadow: var(--mds-input-range-thumb-shadow);
-  cursor: grab;
-  height: var(--mds-input-range-thumb-size);
+  border-style: solid;
+  border-width: var(--private-border-width);
+  cursor: var(--mds-input-range-thumb-cursor);
+  height: var(--private-thumb-size);
   line-height: 0;
   transform: translate(0, -50%);
-  transition-duration: var(--duration-300);
-  transition-property: background-color, box-shadow;
-  transition-timing-function: var(--ease-in-out);
-  width: var(--mds-input-range-thumb-size);
+  transition-property: background-color, border;
+  width: var(--private-thumb-size);
 }
 
 .field::-webkit-slider-runnable-track {
@@ -162,7 +112,16 @@
   height: var(--mds-input-range-track-size);
   transition-duration: var(--duration-300);
   transition-property: background-color;
-  transition-timing-function: var(--ease-in-out);
+
+  /*
+    Align fill end with thumb center.
+    Thumb center travels across (100% - thumbSize); at 0% and 100% it's inset by thumbSize/2.
+    We use track size as the thumb's outer size (matches current thumb calc).
+  */
+  width: calc(
+    (100% - var(--mds-input-range-track-size)) * (var(--mds-input-range-progress, 0) * 0.01)
+    + (var(--mds-input-range-track-size) / 2)
+  );
 }
 
 .track-total {

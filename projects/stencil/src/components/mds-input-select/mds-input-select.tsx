@@ -1,10 +1,12 @@
+import { Locale } from '@common/locale'
 import miBaselineKeyboardArrowDown from '@icon/mi/baseline/keyboard-arrow-down.svg'
-import { AttachInternals, Component, Element, Event, EventEmitter, Host, Prop, h, State, Watch } from '@stencil/core'
+import { AttachInternals, Component, Element, Event, EventEmitter, Host, Method, Prop, h, State, Watch } from '@stencil/core'
 import { MdsInputEventDetail } from '@type/input'
 import { ThemeStatusVariantType } from '@type/variant'
 
 /**
  * @part select - The select HTML element
+ * @part tip-top - Selects the verbose status of input on top of element
  */
 
 @Component({
@@ -19,7 +21,16 @@ export class MdsInputSelect {
   @Element() host: HTMLMdsInputSelectElement
   // @State() selected: boolean
   @State() hasFocus = false
+  @State() language: string
   @AttachInternals() internals: ElementInternals
+
+  private t:Locale = new Locale()
+
+  @Method()
+  async updateLang (): Promise<void> {
+    this.language = this.t.lang(this.host)
+    this.t.update()
+  }
 
   /**
    * Specifies a short hint that describes the expected value of the element
@@ -82,11 +93,21 @@ export class MdsInputSelect {
   @Event({ eventName: 'mdsInputSelectChange' }) changeEvent: EventEmitter<MdsInputEventDetail>
 
   /**
+   * Sets the value of the component
+   */
+  @Method()
+  async setValue (value: string | number | null): Promise<void> {
+    this.value = value
+    return Promise.resolve()
+  }
+
+  /**
    * Emits the change event when the component value changes
    */
   @Watch('value')
   protected valueChanged ():void {
     this.changeEvent.emit({ value: this.value?.toString() })
+    this.setCurrentValue()
     this.internals.setFormValue(this.value?.toString() ?? null)
   }
 
@@ -118,7 +139,10 @@ export class MdsInputSelect {
       this.selectEl.insertBefore(defaultOption, this.selectEl.firstChild)
       defaultOption.value = ''
       defaultOption.text = newValue
-      if (!this.defaultValue) defaultOption.selected = true
+      if (!this.defaultValue) {
+        defaultOption.selected = true
+        this.value = undefined
+      }
       if (this.required) defaultOption.disabled = true
     }
   }
@@ -128,6 +152,7 @@ export class MdsInputSelect {
   }
 
   componentWillLoad (): void {
+    this.language = this.t.lang(this.host)
     // needed for react component, this prop should be used as default-value html attributo instead of defaultValue prop
     if (this.defaultValue) {
       this.value = this.defaultValue
@@ -194,7 +219,12 @@ export class MdsInputSelect {
       this.selectEl?.appendChild(element.cloneNode(true))
     })
 
-    if (this.value && this.selectEl){
+    this.setCurrentValue()
+  }
+
+  private setCurrentValue = (): void => {
+    if (!this.selectEl) return
+    if (this.value){
       this.selectEl.querySelectorAll('option').forEach((element: HTMLOptionElement) => {
         element.selected = element.value === this.value
       })
@@ -227,7 +257,7 @@ export class MdsInputSelect {
         <div class="option-container">
           <slot onSlotchange={this.onSlotChangeHandler}></slot>
         </div>
-        <mds-input-tip position="top" active={this.hasFocus}>
+        <mds-input-tip position="top" lang={this.language} active={this.hasFocus} part="tip-top">
           { this.disabled && <mds-input-tip-item expanded variant="disabled"></mds-input-tip-item> }
           { this.required &&
             <mds-input-tip-item expanded={this.hasFocus} variant={this.value === '' ? 'required' : 'required-success'}></mds-input-tip-item>

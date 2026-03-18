@@ -1,22 +1,16 @@
-@import './css/mds-stepper-bar-item-fouc.css';
-
 /**
- * @prop --mds-stepper-bar-item-color: Color of the stepper bar item text.
- * @prop --mds-stepper-bar-item-duaration: Duration of stepper bar item animations.
- * @prop --mds-stepper-bar-item-icon-background-done: Background color of a completed stepper item icon.
- * @prop --mds-stepper-bar-item-icon-background-current: Background color of the current stepper item icon.
- * @prop --mds-stepper-bar-item-icon-background: Default background color of stepper item icons.
- * @prop --mds-stepper-bar-item-icon-color-done: Icon color for completed stepper items.
- * @prop --mds-stepper-bar-item-icon-color-current: Icon color for the current stepper item.
- * @prop --mds-stepper-bar-item-icon-color: Default icon color.
- * @prop --mds-stepper-bar-item-icon-ring-color: Color of the icon ring.
- * @prop --mds-stepper-bar-item-icon-ring-separator-color: Color of the ring separator.
- * @prop --mds-stepper-bar-item-icon-ring-separator-size: Size of the ring separator.
- * @prop --mds-stepper-bar-item-icon-ring-size: Size of the icon ring.
- * @prop --mds-stepper-bar-item-min-width: Minimum width of a stepper item.
- * @prop --mds-stepper-bar-item-progress-background: Background color of the progress indicator.
- * @prop --mds-stepper-bar-item-progress-color: Color of the progress indicator.
- * @prop --mds-stepper-bar-item-progress-thickness: Thickness of the progress indicator.
+ * @prop --mds-stepper-bar-item-color: Sets the color of the text
+ * @prop --mds-stepper-bar-item-duaration: Sets the duration of the animation
+ * @prop --mds-stepper-bar-item-icon-background-done: Sets the background-color of the icon when the component is done
+ * @prop --mds-stepper-bar-item-icon-background-current: Sets the background-color of the icon when the component is current
+ * @prop --mds-stepper-bar-item-icon-background: Sets the background-color of the icon
+ * @prop --mds-stepper-bar-item-icon-color-done: Sets the color of the icon when the component is done
+ * @prop --mds-stepper-bar-item-icon-color-current: Sets the color of the icon when the component is current
+ * @prop --mds-stepper-bar-item-icon-color: Sets the color of the icon
+ * @prop --mds-stepper-bar-item-min-width: Sets the minimum width of the component
+ * @prop --mds-stepper-bar-item-progress-background: Sets the background color of the progress bar
+ * @prop --mds-stepper-bar-item-progress-color: Sets the color of the progress bar
+ * @prop --mds-stepper-bar-item-progress-thickness: Sets the thickness of the progress bar
  */
 
 
@@ -117,18 +111,15 @@
 }
 
 :host {
+  --mds-stepper-bar-item-header-gap: var(--mds-stepper-bar-gap, theme('spacing.50'));
   --mds-stepper-bar-item-color: rgb(var(--tone-neutral-03));
   --mds-stepper-bar-item-duaration: 250ms;
   --mds-stepper-bar-item-icon-background-done: rgb(var(--status-success-05));
   --mds-stepper-bar-item-icon-background-current: rgb(var(--variant-primary-04));
-  --mds-stepper-bar-item-icon-background: var( --mds-stepper-bar-item-progress-background, rgb(var(--tone-neutral-08)));
+  --mds-stepper-bar-item-icon-background: var(--mds-stepper-bar-item-progress-background, rgb(var(--tone-neutral-08)));
   --mds-stepper-bar-item-icon-color-done: rgb(var(--status-success-10));
   --mds-stepper-bar-item-icon-color-current: rgb(var(--tone-neutral));
   --mds-stepper-bar-item-icon-color: rgb(var(--tone-neutral-04));
-  --mds-stepper-bar-item-icon-ring-color: var(--mds-stepper-bar-item-icon-background-current);
-  --mds-stepper-bar-item-icon-ring-separator-color: rgb(var(--tone-neutral));
-  --mds-stepper-bar-item-icon-ring-separator-size: 0.375rem;
-  --mds-stepper-bar-item-icon-ring-size: var(--height-100);
   --mds-stepper-bar-item-min-width: 180px;
   --mds-stepper-bar-item-progress-background: rgb(var(--tone-neutral-08));
   --mds-stepper-bar-item-progress-color: rgb(var(--status-success-04));
@@ -137,24 +128,28 @@
   @apply gap-400;
 
   align-items: flex-start;
-  display: flex;
+  border-radius: var(--radius-xl);
+  display: grid;
   flex-basis: 0;
   flex-direction: column;
   flex-grow: 1;
   flex-shrink: 0;
   min-width: var(--mds-stepper-bar-item-min-width);
-  padding-left: calc(
-    var(--mds-stepper-bar-item-icon-ring-size) +
-      var(--mds-stepper-bar-item-icon-ring-separator-size)
-  );
-  padding-top: calc(
-    var(--mds-stepper-bar-item-icon-ring-size) +
-      var(--mds-stepper-bar-item-icon-ring-separator-size)
-  );
   position: relative;
   scroll-snap-align: center;
-  transition-property: outline, outline-offset;
+  transition-duration: var(--mds-stepper-bar-item-duaration);
+  transition-property: outline, outline-offset, background-color;
 }
+
+/* :host {
+  @apply focus-bounce;
+
+  cursor: pointer;
+
+  &:host(:focus-visible) {
+    @apply focus-bounce--focused z-10;
+  }
+} */
 
 :host(:last-of-type) {
   @apply basis-100;
@@ -165,15 +160,21 @@
 }
 
 :host([done]) .icon {
-  --mds-stepper-bar-item-icon-background: var(
-    --mds-stepper-bar-item-icon-background-done
-  );
-  --mds-stepper-bar-item-icon-color: var(
-    --mds-stepper-bar-item-icon-color-done
-  );
+  --mds-stepper-bar-item-icon-background: var(--mds-stepper-bar-item-icon-background-done);
+  --mds-stepper-bar-item-icon-color: var(--mds-stepper-bar-item-icon-color-done);
 
   transition-delay: 0ms;
 }
+
+/*
+:host(:not([done])) {
+  pointer-events: none;
+}
+
+:host([done]:hover) .icon {
+  --mds-stepper-bar-item-icon-background: var(--mds-stepper-bar-item-icon-background-current);
+  --mds-stepper-bar-item-icon-color: var(--mds-stepper-bar-item-icon-color-current);
+} */
 
 :host([current]) .icon {
   --mds-stepper-bar-item-icon-background: var(
@@ -186,68 +187,41 @@
   transition-delay: calc(var(--mds-stepper-bar-item-duaration) / 2);
 }
 
-:host(:not([done])) .icon,
-:host(:not([current])) .icon {
-  --mds-stepper-bar-item-icon-ring-color: var(
-    --mds-stepper-bar-item-icon-background
-  );
-}
-
 .header {
   @apply ease-out
   rounded-md
   w-full;
 
   align-items: center;
-  transition-duration: var(--duration-200);
   display: flex;
+  gap: var(--mds-stepper-bar-item-header-gap);
+  transition-duration: var(--duration-200);
   transition-property: outline, outline-offset;
 }
 
 .icon {
-  @apply p-200
+  @apply
   ease-in-out
   duration-150
   rounded-full;
 
   background-color: var(--mds-stepper-bar-item-icon-background);
-  box-shadow:
-    0 0 0 var(--mds-stepper-bar-item-icon-ring-size)
-      var(--mds-stepper-bar-item-icon-ring-color),
-    0 0 0 var(--mds-stepper-bar-item-icon-ring-separator-size)
-      var(--mds-stepper-bar-item-icon-ring-separator-color);
   display: flex;
   fill: var(--mds-stepper-bar-item-icon-color);
   flex-shrink: 0;
+  padding: --spacing(200);
   position: relative;
   transition-duration: var(--mds-stepper-bar-item-duaration);
-  transition-property: background-color, box-shadow, fill;
+  transition-property: background-color, fill;
 }
 
 .progress {
-  --mds-stepper-bar-item-background: var(
-    --mds-stepper-bar-item-progress-background
-  );
+  --mds-stepper-bar-item-background: var(--mds-stepper-bar-item-progress-background);
   --mds-stepper-bar-item-color: var(--mds-stepper-bar-item-progress-color);
-  --mds-stepper-bar-item-thickness: var(
-    --mds-stepper-bar-item-progress-thickness
-  );
-
-  @apply -ml-100;
+  --mds-stepper-bar-item-thickness: var(--mds-stepper-bar-item-progress-thickness);
+  --mds-progress-radius: 0;
 
   flex-grow: 1;
-  margin-right: calc(
-    calc(
-        calc(
-            var(--mds-stepper-bar-item-icon-ring-size) +
-              var(--mds-stepper-bar-item-icon-ring-separator-size)
-          ) *
-          -1
-      ) -
-      (--spacing(100))
-  );
-  position: relative;
-  z-index: -1;
 }
 
 .infos {

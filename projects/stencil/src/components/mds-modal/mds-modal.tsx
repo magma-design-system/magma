@@ -27,6 +27,10 @@ export class MdsModal {
   private bottom = false
   private cssTransitionDuration: string = '500'
   private windowElement: HTMLElement
+  private windowHeaderElement: HTMLElement
+  private windowFooterElement: HTMLElement
+  private windowHeaderHeight: number
+  private windowFooterHeight: number
   private touchStartX: number
   private touchStartY: number
   private touchMargin: number = 50
@@ -186,6 +190,15 @@ export class MdsModal {
 
   componentDidLoad (): void {
     this.windowElement = this.host.shadowRoot?.querySelector('.window') as HTMLElement
+    this.windowHeaderElement = this.host.shadowRoot?.querySelector('.window-header') as HTMLElement
+    this.windowFooterElement = this.host.shadowRoot?.querySelector('.window-footer') as HTMLElement
+
+    if (this.windowHeaderElement) {
+      this.windowHeaderHeight = this.windowHeaderElement.offsetHeight
+    }
+    if (this.windowFooterElement) {
+      this.windowFooterHeight = this.windowFooterElement.offsetHeight
+    }
     if (this.windowElement) {
       this.addMobileEvents()
     }
@@ -208,11 +221,15 @@ export class MdsModal {
         return
       }
     }
-
     this.opened = e.target !== e.currentTarget
     if (!this.opened) {
       this.closeEvent.emit()
     }
+  }
+
+  private closeButtonModal = (): void => {
+    this.opened = undefined
+    this.closeEvent.emit()
   }
 
   @Watch('opened')
@@ -249,14 +266,18 @@ export class MdsModal {
       <Host aria-modal={clsx(this.opened ? 'true' : 'false' )} onMouseDown={(e: Event) => { this.closeModal(e) }}>
         { this.window
           ? <slot name="window"/>
-          : <div class={clsx('window', (this.top || this.bottom) && `window-${this.top ? '-top' : ''}${this.bottom ? '-bottom' : ''}`)} part="window">
-            { this.top &&
+          : <div class="window" part="window">
+            <div class={clsx('window-header', this.top ? '' : 'window-content--empty')}>
               <slot name="top"/>
-            }
-            <slot/>
-            { this.bottom &&
+            </div>
+            <div class="window-content-wrapper">
+              <div class="window-content" style={{ paddingTop: `${this.windowHeaderHeight}px`, paddingBottom: `${this.windowFooterHeight}px` }}>
+                <slot/>
+              </div>
+            </div>
+            <div class={clsx('window-footer', this.bottom ? '' : 'window-content--empty')}>
               <slot name="bottom"/>
-            }
+            </div>
           </div>
         }
         { !this.window && <mds-button class="action-close" icon={miBaselineClose} variant="light" tone="text" size="xl" onClick={(e: Event) => { this.closeModal(e, true) }} part="action-close"></mds-button> }

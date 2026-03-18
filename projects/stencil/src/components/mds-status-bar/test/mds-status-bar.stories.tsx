@@ -1,5 +1,6 @@
 import { h } from '@stencil/core'
 import { useState } from 'react'
+import { statusBarPositionDictionary } from '../meta/dictionary'
 
 export default {
   title: 'UI / Status bar',
@@ -7,6 +8,12 @@ export default {
     description: {
       type: { name: 'string' },
       description: 'Specifies the description near the slotted actions',
+    },
+    position: {
+      type: { name: 'string' },
+      description: 'Specifies the position of the status bar',
+      options: statusBarPositionDictionary,
+      control: { type: 'select' },
     },
     visible: {
       type: { name: 'boolean' },

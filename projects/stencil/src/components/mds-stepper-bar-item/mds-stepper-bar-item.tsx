@@ -1,8 +1,18 @@
-import { Component, Element, Event, EventEmitter, Host, Prop, State, Watch, h } from '@stencil/core'
+import { Component, Element, Event, EventEmitter, Method, Host, Prop, State, Watch, h } from '@stencil/core'
 import { TypographyType } from '@type/typography'
 import clsx from 'clsx'
 import { MdsBadge } from '../mds-badge/mds-badge'
 import { MdsStepperBarItemEventDetail } from './meta/event-detail'
+import { KeyboardManager } from '@common/keyboard-manager'
+import { Locale } from '@common/locale'
+import localeEl from './meta/locale.el.json'
+import localeEn from './meta/locale.en.json'
+import localeEs from './meta/locale.es.json'
+import localeIt from './meta/locale.it.json'
+
+/**
+ * @part badge - The badge wrapper
+ */
 
 @Component({
   tag: 'mds-stepper-bar-item',
@@ -16,6 +26,18 @@ export class MdsStepperBarItem {
   @State() isDone: boolean
   @State() isCurrent: boolean
   @State() index: number
+  private km = new KeyboardManager()
+  private t:Locale = new Locale({
+    el: localeEl,
+    en: localeEn,
+    es: localeEs,
+    it: localeIt,
+  })
+  @State() language: string
+  @Method()
+  async updateLang (): Promise<void> {
+    this.language = this.t.lang(this.host)
+  }
 
   /**
    * Specifies a short description of the component
@@ -69,6 +91,19 @@ export class MdsStepperBarItem {
     if (parent) this.index = [...Array.from(parent.childNodes)].indexOf(this.host)
   }
 
+  componentDidLoad (): void {
+    this.km.addElement(this.host)
+    this.km.attachClickBehavior()
+  }
+
+  componentWillRender (): void {
+    this.t.lang(this.host)
+  }
+
+  disconnectedCallback (): void {
+    this.km.detachClickBehavior()
+  }
+
   @Watch('done')
   selectedHandler (newValue: boolean): void {
     this.isDone = newValue
@@ -81,12 +116,12 @@ export class MdsStepperBarItem {
 
   private showBadge = (): MdsBadge => {
     if (this.isDone) {
-      return <mds-badge class="badge" variant="success" tone="weak" typography="option">Completato</mds-badge>
+      return <mds-badge class="badge" variant="success" tone="weak" typography="option">{ this.t.get('badgeDone') }</mds-badge>
     }
     if (this.isCurrent) {
-      return <mds-badge class="badge" variant="info" tone="weak" typography="option">In corso</mds-badge>
+      return <mds-badge class="badge" variant="info" tone="weak" typography="option">{ this.t.get('badgeCurrent') }</mds-badge>
     }
-    return <mds-badge class="badge" variant="dark" tone="weak" typography="option">In coda</mds-badge>
+    return <mds-badge class="badge" variant="dark" tone="weak" typography="option">{ this.t.get('badgeQueued') }</mds-badge>
   }
 
   /**
@@ -97,14 +132,14 @@ export class MdsStepperBarItem {
   render () {
     return (
       <Host>
-        <div class="header" tabindex="0">
+        <div class="header">
           <mds-icon class="icon" name={ clsx(this.isDone && !this.isCurrent ? this.iconChecked : this.icon) }/>
           <mds-progress aria-hidden="true" class="progress" progress={ this.isDone ? 1 : 0 }/>
         </div>
         <div class="infos">
-          { this.step && <mds-text class="step" typography="option">step { this.index + 1 }</mds-text> }
+          { this.step && <mds-text class="step" typography="option">{this.t.get('step', { index: this.index + 1 }) }</mds-text> }
           { this.label && <mds-text class="text" typography={ this.typography }>{ this.label }</mds-text> }
-          { this.badge && <div>{ this.showBadge() }</div> }
+          { this.badge && <div part="badge">{ this.showBadge() }</div> }
         </div>
       </Host>
     )

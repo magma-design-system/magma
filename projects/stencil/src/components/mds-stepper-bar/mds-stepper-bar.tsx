@@ -1,9 +1,11 @@
 import { Component, Element, Event, EventEmitter, Host, Listen, Prop, State, Watch, h } from '@stencil/core'
 import { MdsStepperBarEventDetail } from './meta/event-detail'
-
+import { StepperBarNavigationType } from './meta/meta'
 /**
  * @slot default - Add `mds-tepper-bar-item` element/s.
  * @slot content - Add `HTML elements` or `components`, one per mds-stepper-bar-item added
+ * @part items - Selects the `items` container element wrapped in shadowDOM.
+ * @part contents - Selects the `contents` container element wrapped in shadowDOM.
  */
 
 @Component({
@@ -22,6 +24,11 @@ export class MdsStepperBar {
    * Sets the current item to the given index: 0 is none done, 1 is the first item done, last number + 1 is all items done
    */
   @Prop() readonly itemsDone: number = 1
+
+  /**
+   * Specifies the navigation type
+   */
+  @Prop({ reflect: true }) readonly navigation: StepperBarNavigationType = 'none'
 
   private queryItems = (): NodeListOf<HTMLMdsStepperBarItemElement> =>
     this.element.querySelectorAll<HTMLMdsStepperBarItemElement>('mds-stepper-bar-item')
@@ -128,7 +135,7 @@ export class MdsStepperBar {
   render () {
     return (
       <Host>
-        <div class="items">
+        <div class="items" part="items">
           <slot/>
         </div>
         <div class="contents" part="contents">

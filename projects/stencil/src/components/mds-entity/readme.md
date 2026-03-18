@@ -27,6 +27,14 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `"default"` | Add `text string`, `HTML elements` or `components` to this slot.                        |
 
 
+## Shadow Parts
+
+| Part        | Description         |
+| ----------- | ------------------- |
+| `"avatar"`  | The avatar element  |
+| `"spinner"` | The spinner element |
+
+
 ## CSS Custom Properties
 
 | Name                           | Description                        |

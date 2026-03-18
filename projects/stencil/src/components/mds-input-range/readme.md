@@ -31,21 +31,22 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | Part       | Description                                                        |
 | ---------- | ------------------------------------------------------------------ |
 | `"header"` | The element containing the labels displayed over the input element |
+| `"track"`  | The element containing the track of the input range                |
 
 
 ## CSS Custom Properties
 
-| Name                                                   | Description                                         |
-| ------------------------------------------------------ | --------------------------------------------------- |
-| `--mds-input-range-thumb-background`                   | Background color of the range input thumb           |
-| `--mds-input-range-thumb-background-disabled`          | Thumb background when disabled                      |
-| `--mds-input-range-thumb-shadow`                       | Shadow applied around the thumb element             |
-| `--mds-input-range-thumb-size`                         | Defines the size of the range input thumb           |
-| `--mds-input-range-track-background`                   | Background color of the full track                  |
-| `--mds-input-range-track-background-disabled`          | Track background when disabled                      |
-| `--mds-input-range-track-progress-background`          | Background color of the filled portion of the track |
-| `--mds-input-range-track-progress-background-disabled` | Filled track background when disabled               |
-| `--mds-input-range-track-size`                         | Height/thickness of the track                       |
+| Name                                                   | Description                                                             |
+| ------------------------------------------------------ | ----------------------------------------------------------------------- |
+| `--mds-input-range-thumb-background`                   | Sets the thumb background color                                         |
+| `--mds-input-range-thumb-background-disabled`          | Sets the thumb background color when the component is disabled          |
+| `--mds-input-range-thumb-cursor`                       | Sets the thumb cursor                                                   |
+| `--mds-input-range-thumb-size`                         | Sets the thumb width and height of the component                        |
+| `--mds-input-range-track-background`                   | Sets the track background color                                         |
+| `--mds-input-range-track-background-disabled`          | Sets the track background color when the component is disabled          |
+| `--mds-input-range-track-progress-background`          | Sets the track progress background color                                |
+| `--mds-input-range-track-progress-background-disabled` | Sets the track progress background color when the component is disabled |
+| `--mds-input-range-track-size`                         | Sets the track width and height                                         |
 
 
 ## Dependencies

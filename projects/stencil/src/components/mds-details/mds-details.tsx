@@ -22,7 +22,7 @@ export class MdsDetails {
   @Element() private host: HTMLMdsDetailsElement
   @State() isOpened: boolean
   private km = new KeyboardManager()
-
+  private hasIcon: boolean = false
   /**
    * Specifies if the component is opened
    */
@@ -44,6 +44,7 @@ export class MdsDetails {
 
   componentDidLoad (): void {
     const header = this.host.shadowRoot?.querySelector('.header') as HTMLElement
+    this.hasIcon = this.host.querySelector(':scope > [slot="icon"]') !== null
     this.km.addElement(header)
     this.km.attachClickBehavior()
   }
@@ -60,9 +61,11 @@ export class MdsDetails {
   render () {
     return (
       <Host>
-        <div class="icon" onClick={ this.toggle } aria-disabled="true">
-          <slot name="icon"/>
-        </div>
+        {this.hasIcon &&
+          <div class="icon" onClick={ this.toggle } aria-disabled="true">
+            <slot name="icon"/>
+          </div>
+        }
         <div class="content">
           <header class="header" part="header" tabindex="0" onClick={ this.toggle }>
             <div class="title">

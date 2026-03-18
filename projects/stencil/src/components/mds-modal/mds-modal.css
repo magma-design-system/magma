@@ -113,6 +113,8 @@
   --mds-modal-window-background: rgb(var(--tone-neutral));
   --mds-modal-window-distance: 0;
   --mds-modal-window-max-width: 33%;
+  --mds-modal-window-height: calc(100dvh - calc(var(--mds-modal-window-distance) * 2));
+  --mds-modal-window-max-height: calc(100dvh - calc(var(--mds-modal-window-distance) * 2));
   --mds-modal-window-min-width: 400px;
   --mds-modal-window-overflow: auto;
   --mds-modal-window-radius: 0;
@@ -150,8 +152,11 @@
 @import './css/mds-modal-animation-custom.css';
 @import './css/mds-modal-animation-slide.css';
 @import './css/mds-modal-opened.css';
-@import './css/mds-modal-position.css';
 @import './css/mds-modal-window.css';
+@import './css/mds-modal-position.css';
+@import './css/mds-modal-position-top.css';
+@import './css/mds-modal-position-center.css';
+@import './css/mds-modal-position-bottom.css';
 @import './css/mds-modal-pref-animation.css';
 @import './css/mds-modal-pref-contrast.css';
 @import './css/mds-modal-pref-theme.css';

@@ -1,6 +1,6 @@
 {
   "name": "@maggioli-design-system/mds-policy-ai",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "description": "mds-policy-ai is a web-component from Magma Design System, built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScript framework you are using.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -24,13 +24,13 @@
     "test": "stencil test --spec --e2e"
   },
   "dependencies": {
-    "@maggioli-design-system/mds-banner": "7.3.3",
-    "@maggioli-design-system/mds-button": "6.8.2",
-    "@maggioli-design-system/mds-chip": "3.8.3",
+    "@maggioli-design-system/mds-banner": "7.3.4",
+    "@maggioli-design-system/mds-button": "6.8.3",
+    "@maggioli-design-system/mds-chip": "3.8.4",
     "@maggioli-design-system/mds-dropdown": "5.8.3",
     "@maggioli-design-system/mds-help": "1.7.3",
     "@maggioli-design-system/mds-icon": "2.13.3",
-    "@maggioli-design-system/mds-text": "4.7.5",
+    "@maggioli-design-system/mds-text": "4.7.6",
     "@maggioli-design-system/styles": "15.11.0"
   },
   "license": "MIT",
