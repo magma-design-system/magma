@@ -1,6 +1,6 @@
 import { h } from '@stencil/core'
-import { ChipVariantType, ThemeFullVariantType, ThemeVariantType, ToneSimpleVariantType, ToneVariantType, ToneMinimalVariantType } from '@type/variant'
-import { themeVariantChipDictionary, toneMinimalVariantDictionary, themeVariantDictionary, themeFullVariantDictionary, toneVariantDictionary } from '@dictionary/variant'
+import { ChipVariantType, ThemeFullVariantType, ThemeVariantType, ToneVariantType, ToneMinimalVariantType, ToneSmartVariantType } from '@type/variant'
+import { themeVariantChipDictionary, toneMinimalVariantDictionary, themeVariantDictionary, themeFullVariantDictionary, toneSmartVariantDictionary } from '@dictionary/variant'
 import { useState, useEffect, useRef } from 'react'
 import { MdsInputSelectCustomEvent } from 'src/components'
 import type { MdsInputEventDetail } from '@type/input'
@@ -118,18 +118,26 @@ const mapToThemeVariant = (group: ColorGroupKey, value: string): ThemeVariantTyp
   return 'primary'
 }
 
-const toSimpleTone = (tone: string): ToneSimpleVariantType => {
-  const allowedTones = ['strong', 'weak', 'outline', 'text']
-  if (allowedTones.includes(tone)) {
-    return tone as ToneSimpleVariantType
-  }
-  return 'strong'
-}
+// const toSimpleTone = (tone: string): ToneSimpleVariantType => {
+//   const allowedTones = ['strong', 'weak', 'outline', 'text']
+//   if (allowedTones.includes(tone)) {
+//     return tone as ToneSimpleVariantType
+//   }
+//   return 'strong'
+// }
 
-const toTone = (tone: string): ToneVariantType => {
-  const allowedTones = toneVariantDictionary as ToneVariantType[]
-  if (allowedTones.includes(tone as ToneVariantType)) {
-    return tone as ToneVariantType
+// const toTone = (tone: string): ToneVariantType => {
+//   const allowedTones = toneVariantDictionary as ToneVariantType[]
+//   if (allowedTones.includes(tone as ToneVariantType)) {
+//     return tone as ToneVariantType
+//   }
+//   return 'strong'
+// }
+
+const toToneSmart = (tone: string): ToneSmartVariantType => {
+  const allowedTones = toneSmartVariantDictionary as ToneSmartVariantType[]
+  if (allowedTones.includes(tone as ToneSmartVariantType)) {
+    return tone as ToneSmartVariantType
   }
   return 'strong'
 }
@@ -171,15 +179,14 @@ type ComponentVariantsProps = {
 }
 
 const ComponentVariants = ({ variant = 'primary', tone = 'strong' }: ComponentVariantsProps) => {
-  // console.info(variant, tone)
   return (
     <div class="grid gap-600 grid-cols-full justify-items-start">
-      <mds-banner headline="Banner component" icon="mi/baseline/warning" variant={toVariant(variant)} tone={toSimpleTone(tone)}>
+      <mds-banner headline="Banner component" icon="mi/baseline/warning" variant={toVariant(variant)} tone={toMinimalTone(tone)}>
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.
         <mds-button variant={toVariant(variant)} tone="text" slot="action">Cancel action</mds-button>
         <mds-button variant={toVariant(variant)} tone="strong" slot="action">Confirm action</mds-button>
       </mds-banner>
-      <mds-badge variant={toFullVariant(variant)} tone={toTone(tone)}>badge component</mds-badge>
+      <mds-badge variant={toFullVariant(variant)} tone={toToneSmart(tone)}>badge component</mds-badge>
       <mds-chip icon="mi/baseline/pets" label="Chip label" variant={toChipVariant(variant)} tone={toMinimalTone(tone)}></mds-chip>
       <mds-button await variant={toVariant(variant)} tone={toMinimalTone(tone)} onClick={() => console.info('clicked')}>Click me</mds-button>
     </div>
@@ -474,12 +481,13 @@ const ColorGrid = ({ group, selected }: { group: string, selected: boolean }) =>
 
 const ColorItem = ({ color, scale }: { color: string, scale: string }) => {
   const colorClass = `bg-${color}${scale ? `-${scale}` : ''}`
+  const [, colorName] = color.split('-')
   return (
     <div class={`color-item aspect-square flex items-start p-100 justify-start ${colorClass}`}>
       <div class={`inline-flex px-100 py-50 ${scale ? 'bg-transparent' : ''} ${color.startsWith('tone') ? 'bg-tone-neutral-09' : 'bg-tone-neutral'}`}>
         {scale
           ? <mds-text class={`${Number(scale) > 5 ? 'text-tone-neutral-01' : 'text-tone-neutral'}`} typography='option'>{ scale }</mds-text>
-          : <mds-text class="text-tone-neutral-01" typography='option'>{ color.split('-')[1] }</mds-text>
+          : <mds-text class="text-tone-neutral-01" typography='option'>{ colorName }</mds-text>
         }
       </div>
     </div>
