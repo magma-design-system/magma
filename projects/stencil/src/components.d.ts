@@ -6,7 +6,7 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { MdsAccordionEventDetail } from "./components/mds-accordion/meta/event-detail";
-import { TypographyInfoType, TypographyInputType, TypographyReadingVariants, TypographyReadType, TypographySmallerType, TypographyTitleType, TypographyTooltipType, TypographyType, TypographyVariants } from "./type/typography";
+import { TypographyInfoType, TypographyInputType, TypographyReadingVariants, TypographyReadType, TypographySmallerType, TypographyTechnicalType, TypographyTitleType, TypographyTooltipType, TypographyType, TypographyVariants } from "./type/typography";
 import { MdsAccordionItemEventDetail } from "./components/mds-accordion-item/meta/event-detail";
 import { MdsAccordionTimerEventDetail } from "./components/mds-accordion-timer/meta/event-detail";
 import { MdsAccordionTimerItemEventDetail } from "./components/mds-accordion-timer-item/meta/event-detail";
@@ -62,7 +62,6 @@ import { MdsPushNotificationEventDetail } from "./components/mds-push-notificati
 import { NotificationItemDateFormatType, NotificationItemPreviewType } from "./components/mds-push-notification-item/meta/types";
 import { MdsPushNotificationItemEventDetail } from "./components/mds-push-notification-item/meta/event-detail";
 import { Direction, Interaction } from "./components/mds-radial-menu/meta/types";
-import { ModalOverflowType as ModalOverflowType1 } from "./components.d";
 import { StatusBarPositionType } from "./components/mds-status-bar/meta/types";
 import { StepperBarNavigationType } from "./components/mds-stepper-bar/meta/meta";
 import { MdsStepperBarEventDetail } from "./components/mds-stepper-bar/meta/event-detail";
@@ -82,7 +81,7 @@ import { MdsTreeItemEventDetail } from "./components/mds-tree-item/meta/event-de
 import { UsageType } from "./components/mds-usage/meta/types";
 import { NoiseType, PreloadType } from "./components/mds-video-wall/meta/types";
 export { MdsAccordionEventDetail } from "./components/mds-accordion/meta/event-detail";
-export { TypographyInfoType, TypographyInputType, TypographyReadingVariants, TypographyReadType, TypographySmallerType, TypographyTitleType, TypographyTooltipType, TypographyType, TypographyVariants } from "./type/typography";
+export { TypographyInfoType, TypographyInputType, TypographyReadingVariants, TypographyReadType, TypographySmallerType, TypographyTechnicalType, TypographyTitleType, TypographyTooltipType, TypographyType, TypographyVariants } from "./type/typography";
 export { MdsAccordionItemEventDetail } from "./components/mds-accordion-item/meta/event-detail";
 export { MdsAccordionTimerEventDetail } from "./components/mds-accordion-timer/meta/event-detail";
 export { MdsAccordionTimerItemEventDetail } from "./components/mds-accordion-timer-item/meta/event-detail";
@@ -138,7 +137,6 @@ export { MdsPushNotificationEventDetail } from "./components/mds-push-notificati
 export { NotificationItemDateFormatType, NotificationItemPreviewType } from "./components/mds-push-notification-item/meta/types";
 export { MdsPushNotificationItemEventDetail } from "./components/mds-push-notification-item/meta/event-detail";
 export { Direction, Interaction } from "./components/mds-radial-menu/meta/types";
-export { ModalOverflowType as ModalOverflowType1 } from "./components.d";
 export { StatusBarPositionType } from "./components/mds-status-bar/meta/types";
 export { StepperBarNavigationType } from "./components/mds-stepper-bar/meta/meta";
 export { MdsStepperBarEventDetail } from "./components/mds-stepper-bar/meta/event-detail";
@@ -1782,9 +1780,13 @@ export namespace Components {
          */
         "steps": string;
         /**
+          * The typography of the component
+         */
+        "typography"?: TypographyTechnicalType;
+        /**
           * Sets the theme variant colors
          */
-        "variant": ThemeVariantType;
+        "variant"?: ThemeVariantType;
     }
     interface MdsPushNotification {
         /**
@@ -1924,6 +1926,20 @@ export namespace Components {
           * Specifies the color variant for the button
          */
         "variant"?: ButtonVariantType;
+    }
+    interface MdsRadialProgress {
+        /**
+          * A value between 0 and 1 that rapresents the status progress
+         */
+        "progress": number;
+        /**
+          * The typography of the component
+         */
+        "typography"?: TypographyTechnicalType;
+        /**
+          * Sets the theme variant colors
+         */
+        "variant"?: ThemeVariantType;
     }
     interface MdsSeparator {
     }
@@ -3519,6 +3535,12 @@ declare global {
         prototype: HTMLMdsRadialMenuItemElement;
         new (): HTMLMdsRadialMenuItemElement;
     };
+    interface HTMLMdsRadialProgressElement extends Components.MdsRadialProgress, HTMLStencilElement {
+    }
+    var HTMLMdsRadialProgressElement: {
+        prototype: HTMLMdsRadialProgressElement;
+        new (): HTMLMdsRadialProgressElement;
+    };
     interface HTMLMdsSeparatorElement extends Components.MdsSeparator, HTMLStencilElement {
     }
     var HTMLMdsSeparatorElement: {
@@ -3868,6 +3890,7 @@ declare global {
         "mds-quote": HTMLMdsQuoteElement;
         "mds-radial-menu": HTMLMdsRadialMenuElement;
         "mds-radial-menu-item": HTMLMdsRadialMenuItemElement;
+        "mds-radial-progress": HTMLMdsRadialProgressElement;
         "mds-separator": HTMLMdsSeparatorElement;
         "mds-spinner": HTMLMdsSpinnerElement;
         "mds-status-bar": HTMLMdsStatusBarElement;
@@ -5637,6 +5660,10 @@ declare namespace LocalJSX {
          */
         "steps"?: string;
         /**
+          * The typography of the component
+         */
+        "typography"?: TypographyTechnicalType;
+        /**
           * Sets the theme variant colors
          */
         "variant"?: ThemeVariantType;
@@ -5791,6 +5818,20 @@ declare namespace LocalJSX {
           * Specifies the color variant for the button
          */
         "variant"?: ButtonVariantType;
+    }
+    interface MdsRadialProgress {
+        /**
+          * A value between 0 and 1 that rapresents the status progress
+         */
+        "progress"?: number;
+        /**
+          * The typography of the component
+         */
+        "typography"?: TypographyTechnicalType;
+        /**
+          * Sets the theme variant colors
+         */
+        "variant"?: ThemeVariantType;
     }
     interface MdsSeparator {
     }
@@ -6339,6 +6380,7 @@ declare namespace LocalJSX {
         "mds-quote": MdsQuote;
         "mds-radial-menu": MdsRadialMenu;
         "mds-radial-menu-item": MdsRadialMenuItem;
+        "mds-radial-progress": MdsRadialProgress;
         "mds-separator": MdsSeparator;
         "mds-spinner": MdsSpinner;
         "mds-status-bar": MdsStatusBar;
@@ -6483,6 +6525,7 @@ declare module "@stencil/core" {
             "mds-quote": LocalJSX.MdsQuote & JSXBase.HTMLAttributes<HTMLMdsQuoteElement>;
             "mds-radial-menu": LocalJSX.MdsRadialMenu & JSXBase.HTMLAttributes<HTMLMdsRadialMenuElement>;
             "mds-radial-menu-item": LocalJSX.MdsRadialMenuItem & JSXBase.HTMLAttributes<HTMLMdsRadialMenuItemElement>;
+            "mds-radial-progress": LocalJSX.MdsRadialProgress & JSXBase.HTMLAttributes<HTMLMdsRadialProgressElement>;
             "mds-separator": LocalJSX.MdsSeparator & JSXBase.HTMLAttributes<HTMLMdsSeparatorElement>;
             "mds-spinner": LocalJSX.MdsSpinner & JSXBase.HTMLAttributes<HTMLMdsSpinnerElement>;
             "mds-status-bar": LocalJSX.MdsStatusBar & JSXBase.HTMLAttributes<HTMLMdsStatusBarElement>;

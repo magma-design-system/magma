@@ -74,10 +74,16 @@ const typographyInputDictionary = [
   'detail',
 ]
 
+const typographyTechnicalDictionary = [
+  'option',
+  'label',
+]
+
 export {
   typographyDictionary,
   typographyInfoDictionary,
   typographyInputDictionary,
+  typographyTechnicalDictionary,
   typographyMonoDictionary,
   typographyReadDictionary,
   typographyReadingVariationsDictionary,

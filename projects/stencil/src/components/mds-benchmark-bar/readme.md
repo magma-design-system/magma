@@ -43,6 +43,8 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 graph TD;
   mds-benchmark-bar --> mds-text
   mds-benchmark-bar --> mds-progress
+  mds-progress --> mds-radial-progress
+  mds-radial-progress --> mds-text
   style mds-benchmark-bar fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
