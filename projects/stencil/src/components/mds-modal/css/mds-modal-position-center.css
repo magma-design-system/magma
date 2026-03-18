@@ -16,8 +16,8 @@
 }
 
 :host([position="left"]) .action-close {
-  right: theme('spacing.300');
-  top: theme('spacing.300');
+  right: --spacing(300);
+  top: --spacing(300);
 }
 
 :host([position="left"][opened]) .action-close {
@@ -52,8 +52,8 @@
 }
 
 :host([position="right"]) .action-close {
-  left: theme('spacing.300');
-  top: theme('spacing.300');
+  left: --spacing(300);
+  top: --spacing(300);
 }
 
 :host([position="right"]:not([opened])) .action-close {

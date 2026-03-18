@@ -286,7 +286,7 @@ const TemplateOffsetMargin = args => (
         <mds-button
           variant="dark"
           class="absolute bottom-600 left-600"
-          tone="ghost"
+          tone="outline"
           onClick={() => {
             document
               .querySelector('mds-stepper-bar')
@@ -315,7 +315,7 @@ const TemplateOffsetMargin = args => (
         <mds-button
           variant="dark"
           class="absolute bottom-600 left-600"
-          tone="ghost"
+          tone="outline"
           onClick={() => {
             document
               .querySelector('mds-stepper-bar')
@@ -344,7 +344,7 @@ const TemplateOffsetMargin = args => (
         <mds-button
           variant="dark"
           class="absolute bottom-600 left-600"
-          tone="ghost"
+          tone="outline"
           onClick={() => {
             document
               .querySelector('mds-stepper-bar')
@@ -373,7 +373,7 @@ const TemplateOffsetMargin = args => (
         <mds-button
           variant="dark"
           class="absolute bottom-600 left-600"
-          tone="ghost"
+          tone="outline"
           onClick={() => {
             document
               .querySelector('mds-stepper-bar')
@@ -402,7 +402,7 @@ const TemplateOffsetMargin = args => (
         <mds-button
           variant="dark"
           class="absolute bottom-600 left-600"
-          tone="ghost"
+          tone="outline"
           onClick={() => {
             document
               .querySelector('mds-stepper-bar')

@@ -396,7 +396,7 @@ mds-input-tip {
   }
 
   :host {
-    --mds-input-background: theme('colors.variant-primary-07');
+    --mds-input-background: var(--variant-primary-07');
   }
 } */
 

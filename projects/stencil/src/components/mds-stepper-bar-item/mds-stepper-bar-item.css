@@ -111,7 +111,7 @@
 }
 
 :host {
-  --mds-stepper-bar-item-header-gap: var(--mds-stepper-bar-gap, theme('spacing.50'));
+  --mds-stepper-bar-item-header-gap: var(--mds-stepper-bar-gap, --spacing(50));
   --mds-stepper-bar-item-color: rgb(var(--tone-neutral-03));
   --mds-stepper-bar-item-duaration: 250ms;
   --mds-stepper-bar-item-icon-background-done: rgb(var(--status-success-05));
