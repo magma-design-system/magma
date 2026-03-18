@@ -97,6 +97,7 @@
   background-color: var(--mds-dropdown-background);
   border-radius: var(--radius-md);
   box-sizing: border-box;
+  corner-shape: var(--magma-corner-shape, round);
   display: none;
   filter: var(--mds-dropdown-drop-shadow);
   gap: --spacing(400);

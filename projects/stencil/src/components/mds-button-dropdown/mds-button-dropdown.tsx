@@ -91,7 +91,8 @@ export class MdsButtonDropdown {
           tone={this.tone}
           type={this.type}
           variant={this.variant}
-        >{ this.label }</mds-button>
+          label={this.label}
+        ></mds-button>
         <mds-button
           active={this.active}
           autoFocus={this.autoFocus}

@@ -74,12 +74,16 @@ export default {
 
 const Template = args => (
   <mds-button-dropdown {...args}>
-    <mds-button variant="dark" tone="text" size="sm">
-      Invia subito
-    </mds-button>
-    <mds-button variant="dark" tone="text" size="sm">
-      Elimina
-    </mds-button>
+    <mds-button
+      icon="mi/baseline/send"
+      variant="dark"
+      tone="text"
+      label="Invia subito"></mds-button>
+    <mds-button
+      icon="mi/baseline/delete"
+      variant="dark"
+      tone="text"
+      label="Elimina"></mds-button>
   </mds-button-dropdown>
 )
 
