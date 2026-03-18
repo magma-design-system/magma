@@ -6,6 +6,6 @@ describe('mds-radial-progress', () => {
     await page.setContent('<mds-radial-progress></mds-radial-progress>')
 
     const element = await page.find('mds-radial-progress')
-    expect(element).toHaveClass('hydrated')
+    expect(element).toHaveAttribute('hydrated')
   })
 })
