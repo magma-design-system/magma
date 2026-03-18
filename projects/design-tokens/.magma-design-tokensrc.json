@@ -11,7 +11,7 @@
     { "color": "#ED6663", "export": ["status", "default"], "name": "status.error", "colorspace": "OKLCH" },
     { "color": "#FFC107", "export": ["status", "default"], "name": "status.warning" },
 
-    { "color": "#ef4444", "export": ["label", "default"], "name": "label.red" },
+    { "color": "#d01b1b", "export": ["label", "default"], "name": "label.red" },
     { "color": "#f43f5e", "export": ["label", "default"], "name": "label.amaranth" },
     { "color": "#ec4899", "export": ["label", "default"], "name": "label.orchid" },
     { "color": "#a855f7", "export": ["label", "default"], "name": "label.purple" },
