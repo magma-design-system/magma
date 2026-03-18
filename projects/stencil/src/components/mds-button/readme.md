@@ -4,7 +4,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## Magma 2.0 migration guide
 
-- Button labels now are only set via the `label` property, `default` slot is no longer avaiable.
+- Button labels can be set via the `label` property or the `default` slot for convenience.
 
 <!-- Auto Generated Below -->
 

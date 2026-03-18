@@ -37,7 +37,8 @@
   }
 
   &:host([tone="text"]:hover) {
-    --mds-button-color: rgb(var(--tone-neutral));
+    --mds-button-color: rgb(var(--tone-neutral-10));
+    --mds-button-background: rgb(var(--tone-neutral-03));
   }
 
   &:host([tone="text"][active]) {
@@ -84,7 +85,8 @@
   }
 
   &:host([tone="text"]:hover) {
-    --mds-button-color: rgb(var(--tone-neutral-04));
+    --mds-button-color: rgb(var(--tone-neutral-01));
+    --mds-button-background: rgb(var(--tone-neutral-10));
   }
 
   &:host([tone="text"][active]) {

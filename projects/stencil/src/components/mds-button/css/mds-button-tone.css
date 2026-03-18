@@ -1,5 +1,4 @@
 :host([tone="text"]),
-:host([tone="text"]:hover),
 :host([tone="outline"]) {
   --mds-button-background: transparent;
 }

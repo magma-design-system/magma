@@ -91,7 +91,7 @@ export default {
   },
 }
 
-const Template = args => <mds-button {...args}>Conferma azione</mds-button>
+const Template = args => <mds-button {...args} label="Conferma azione"></mds-button>
 
 const TemplateService = args => (
   <mds-button {...args}></mds-button>

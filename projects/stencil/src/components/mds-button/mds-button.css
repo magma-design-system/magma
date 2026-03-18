@@ -132,7 +132,7 @@
   --mds-button-color: rgb(var(--tone-neutral));
   --mds-button-gap: --spacing(200);
   --mds-button-line-clamp: 1;
-  --mds-button-radius: var(--radius-lg);
+  --mds-button-radius: var(--radius-2xl);
 
   @apply
     duration-200
@@ -150,7 +150,7 @@
   fill: currentcolor;
   gap: var(--mds-button-gap);
   justify-content: center;
-  padding: --spacing(200) --spacing(300);
+  padding: --spacing(100) --spacing(400);
   position: relative;
   transition-property: background-color, border-color, box-shadow, color, outline, outline-offset, padding-left, padding-right, transform;
   transition-timing-function: var(--ease-out-quad);
@@ -188,10 +188,10 @@
 @import './css/mds-button-disabled.css';
 @import './css/mds-button-size.css';
 @import './css/mds-button-no-text.css';
-@import './css/mds-button-tone.css';
 
 @import './css/mds-button-variant.css';
 @import './css/mds-button-variant-status.css';
 @import './css/mds-button-variant-tone.css';
 @import './css/mds-button-variant-service.css';
+@import './css/mds-button-tone.css';
 @import './css/mds-button-pref-animation.css';

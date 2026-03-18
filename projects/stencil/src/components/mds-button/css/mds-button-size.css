@@ -35,18 +35,18 @@
   min-height: --spacing(900);
   min-width: --spacing(900);
   padding: --spacing(100) --spacing(400);
-}
 
-:host([size="md"][icon]) {
-  padding: --spacing(100) --spacing(500) --spacing(100) --spacing(300);
-}
+  &:host([icon]) {
+    padding: --spacing(100) --spacing(500) --spacing(100) --spacing(300);
+  }
 
-:host([size="md"][icon][icon-position="right"]) {
-  padding: --spacing(100) --spacing(300) --spacing(100) --spacing(500);
-}
+  &:host([icon][icon-position="right"]) {
+    padding: --spacing(100) --spacing(300) --spacing(100) --spacing(500);
+  }
 
-:host([size="md"]:not([label])) {
-  padding: --spacing(100);
+  &:host([size="md"]:not(:empty)) {
+    padding: --spacing(100);
+  }
 }
 
 :host([size="lg"]) {
