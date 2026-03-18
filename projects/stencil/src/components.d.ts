@@ -62,6 +62,7 @@ import { MdsPushNotificationEventDetail } from "./components/mds-push-notificati
 import { NotificationItemDateFormatType, NotificationItemPreviewType } from "./components/mds-push-notification-item/meta/types";
 import { MdsPushNotificationItemEventDetail } from "./components/mds-push-notification-item/meta/event-detail";
 import { Direction, Interaction } from "./components/mds-radial-menu/meta/types";
+import { ModalOverflowType as ModalOverflowType1 } from "./components.d";
 import { StatusBarPositionType } from "./components/mds-status-bar/meta/types";
 import { StepperBarNavigationType } from "./components/mds-stepper-bar/meta/meta";
 import { MdsStepperBarEventDetail } from "./components/mds-stepper-bar/meta/event-detail";
@@ -137,6 +138,7 @@ export { MdsPushNotificationEventDetail } from "./components/mds-push-notificati
 export { NotificationItemDateFormatType, NotificationItemPreviewType } from "./components/mds-push-notification-item/meta/types";
 export { MdsPushNotificationItemEventDetail } from "./components/mds-push-notification-item/meta/event-detail";
 export { Direction, Interaction } from "./components/mds-radial-menu/meta/types";
+export { ModalOverflowType as ModalOverflowType1 } from "./components.d";
 export { StatusBarPositionType } from "./components/mds-status-bar/meta/types";
 export { StepperBarNavigationType } from "./components/mds-stepper-bar/meta/meta";
 export { MdsStepperBarEventDetail } from "./components/mds-stepper-bar/meta/event-detail";
