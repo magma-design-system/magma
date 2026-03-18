@@ -18,6 +18,10 @@ export type ModalOverflowType =
   | 'auto'
   | 'manual'
 
+export type ModalInteractionType =
+  | 'strict'
+  | 'relaxed'
+
 export type ModalAnimationStyleType =
   | 'slide'
   | 'custom'

@@ -4,6 +4,7 @@ import {
   modalPositionDictionary,
   modalOverflowDictionary,
   modalAnimationStyleDictionary,
+  modalInteractionDictionary,
 } from '../meta/dictionary'
 
 export default {
@@ -15,16 +16,18 @@ export default {
       options: modalAnimationStyleDictionary,
       type: { name: 'string' },
     },
-    opened: {
-      description: 'Specifies if the modal is opened or not',
-      type: { name: 'boolean' },
-    },
     backdrop: {
       description: 'Specifies if the modal shows the backdrop',
       type: { name: 'boolean' },
     },
-    'backdrop-close': {
-      description: 'Specifies if the modal window is automatically closed when the user clicks outside of it',
+    interaction: {
+      control: { type: 'select' },
+      description: 'Specifies the animation style of the window',
+      options: modalInteractionDictionary,
+      type: { name: 'string' },
+    },
+    opened: {
+      description: 'Specifies if the modal is opened or not',
       type: { name: 'boolean' },
     },
     overflow: {
@@ -468,7 +471,7 @@ const CustomTemplate = args => {
         <mds-banner
           id="window"
           slot="window"
-          class="max-w-xl mx-6"
+          class="max-w-[400px] w-full mx-6"
           deletable
           headline="Action required"
         >
@@ -653,6 +656,9 @@ export const DefaultWindowCustomizedHeaderAndFooter = {
 
 export const CustomWindowAnimation = {
   render: CustomTemplate,
+  args: {
+    animation: 'custom',
+  },
 }
 
 export const CustomWindowElement = {
