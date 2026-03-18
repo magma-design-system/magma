@@ -6,7 +6,7 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { MdsAccordionEventDetail } from "./components/mds-accordion/meta/event-detail";
-import { TypographyInfoType, TypographyInputType, TypographyReadingVariants, TypographyReadType, TypographySmallerType, TypographyTitleType, TypographyTooltipType, TypographyType, TypographyVariants } from "./type/typography";
+import { TypographyInfoType, TypographyInputType, TypographyReadingVariants, TypographyReadType, TypographySmallerType, TypographyTechnicalType, TypographyTitleType, TypographyTooltipType, TypographyType, TypographyVariants } from "./type/typography";
 import { MdsAccordionItemEventDetail } from "./components/mds-accordion-item/meta/event-detail";
 import { MdsAccordionTimerEventDetail } from "./components/mds-accordion-timer/meta/event-detail";
 import { MdsAccordionTimerItemEventDetail } from "./components/mds-accordion-timer-item/meta/event-detail";
@@ -46,7 +46,7 @@ import { AttachmentSort, FileError } from "./components/mds-input-upload/meta/ty
 import { KeyboardTest } from "./components/mds-keyboard/meta/type";
 import { KeyboardKeyName } from "./type/keyboard";
 import { MentionSize } from "./components/mds-mention/meta/type";
-import { ModalAnimationStateType, ModalAnimationStyleType, ModalOverflowType, ModalPositionType } from "./components/mds-modal/meta/types";
+import { ModalAnimationStateType, ModalAnimationStyleType, ModalInteractionType, ModalOverflowType, ModalPositionType } from "./components/mds-modal/meta/types";
 import { StrategyType } from "./components/mds-notification/meta/types";
 import { MdsPaginatorEventDetail } from "./components/mds-paginator/meta/event-detail";
 import { PolicyAiVariant } from "./components/mds-policy-ai/meta/types";
@@ -82,7 +82,7 @@ import { MdsTreeItemEventDetail } from "./components/mds-tree-item/meta/event-de
 import { UsageType } from "./components/mds-usage/meta/types";
 import { NoiseType, PreloadType } from "./components/mds-video-wall/meta/types";
 export { MdsAccordionEventDetail } from "./components/mds-accordion/meta/event-detail";
-export { TypographyInfoType, TypographyInputType, TypographyReadingVariants, TypographyReadType, TypographySmallerType, TypographyTitleType, TypographyTooltipType, TypographyType, TypographyVariants } from "./type/typography";
+export { TypographyInfoType, TypographyInputType, TypographyReadingVariants, TypographyReadType, TypographySmallerType, TypographyTechnicalType, TypographyTitleType, TypographyTooltipType, TypographyType, TypographyVariants } from "./type/typography";
 export { MdsAccordionItemEventDetail } from "./components/mds-accordion-item/meta/event-detail";
 export { MdsAccordionTimerEventDetail } from "./components/mds-accordion-timer/meta/event-detail";
 export { MdsAccordionTimerItemEventDetail } from "./components/mds-accordion-timer-item/meta/event-detail";
@@ -122,7 +122,7 @@ export { AttachmentSort, FileError } from "./components/mds-input-upload/meta/ty
 export { KeyboardTest } from "./components/mds-keyboard/meta/type";
 export { KeyboardKeyName } from "./type/keyboard";
 export { MentionSize } from "./components/mds-mention/meta/type";
-export { ModalAnimationStateType, ModalAnimationStyleType, ModalOverflowType, ModalPositionType } from "./components/mds-modal/meta/types";
+export { ModalAnimationStateType, ModalAnimationStyleType, ModalInteractionType, ModalOverflowType, ModalPositionType } from "./components/mds-modal/meta/types";
 export { StrategyType } from "./components/mds-notification/meta/types";
 export { MdsPaginatorEventDetail } from "./components/mds-paginator/meta/event-detail";
 export { PolicyAiVariant } from "./components/mds-policy-ai/meta/types";
@@ -1546,11 +1546,11 @@ export namespace Components {
           * Specifies if the modal shows the backdrop
          */
         "backdrop"?: boolean;
-        /**
-          * Specifies if the modal window is automatically closed when the user clicks outside of it
-         */
-        "backdropClose": boolean;
         "close": () => Promise<void>;
+        /**
+          * Specifies if the component can be closed with close button, or also if the backdrop background is cliccked. If `strict` is selected only the close button can dismiss the component via UI. If `relaxed` is selected the component can be dismissed also by cliccking the backdrop area.
+         */
+        "interaction": ModalInteractionType;
         /**
           * Specifies if the modal is opened or not
          */
@@ -1924,6 +1924,16 @@ export namespace Components {
           * Specifies the color variant for the button
          */
         "variant"?: ButtonVariantType;
+    }
+    interface MdsRadialProgress {
+        /**
+          * A value between 0 and 1 that rapresents the status progress
+         */
+        "progress": number;
+        /**
+          * The typography of the component
+         */
+        "typography"?: TypographyTechnicalType;
     }
     interface MdsSeparator {
     }
@@ -3519,6 +3529,12 @@ declare global {
         prototype: HTMLMdsRadialMenuItemElement;
         new (): HTMLMdsRadialMenuItemElement;
     };
+    interface HTMLMdsRadialProgressElement extends Components.MdsRadialProgress, HTMLStencilElement {
+    }
+    var HTMLMdsRadialProgressElement: {
+        prototype: HTMLMdsRadialProgressElement;
+        new (): HTMLMdsRadialProgressElement;
+    };
     interface HTMLMdsSeparatorElement extends Components.MdsSeparator, HTMLStencilElement {
     }
     var HTMLMdsSeparatorElement: {
@@ -3868,6 +3884,7 @@ declare global {
         "mds-quote": HTMLMdsQuoteElement;
         "mds-radial-menu": HTMLMdsRadialMenuElement;
         "mds-radial-menu-item": HTMLMdsRadialMenuItemElement;
+        "mds-radial-progress": HTMLMdsRadialProgressElement;
         "mds-separator": HTMLMdsSeparatorElement;
         "mds-spinner": HTMLMdsSpinnerElement;
         "mds-status-bar": HTMLMdsStatusBarElement;
@@ -5360,9 +5377,9 @@ declare namespace LocalJSX {
          */
         "backdrop"?: boolean;
         /**
-          * Specifies if the modal window is automatically closed when the user clicks outside of it
+          * Specifies if the component can be closed with close button, or also if the backdrop background is cliccked. If `strict` is selected only the close button can dismiss the component via UI. If `relaxed` is selected the component can be dismissed also by cliccking the backdrop area.
          */
-        "backdropClose"?: boolean;
+        "interaction"?: ModalInteractionType;
         /**
           * Emits when a modal is closed
          */
@@ -5791,6 +5808,16 @@ declare namespace LocalJSX {
           * Specifies the color variant for the button
          */
         "variant"?: ButtonVariantType;
+    }
+    interface MdsRadialProgress {
+        /**
+          * A value between 0 and 1 that rapresents the status progress
+         */
+        "progress"?: number;
+        /**
+          * The typography of the component
+         */
+        "typography"?: TypographyTechnicalType;
     }
     interface MdsSeparator {
     }
@@ -6339,6 +6366,7 @@ declare namespace LocalJSX {
         "mds-quote": MdsQuote;
         "mds-radial-menu": MdsRadialMenu;
         "mds-radial-menu-item": MdsRadialMenuItem;
+        "mds-radial-progress": MdsRadialProgress;
         "mds-separator": MdsSeparator;
         "mds-spinner": MdsSpinner;
         "mds-status-bar": MdsStatusBar;
@@ -6483,6 +6511,7 @@ declare module "@stencil/core" {
             "mds-quote": LocalJSX.MdsQuote & JSXBase.HTMLAttributes<HTMLMdsQuoteElement>;
             "mds-radial-menu": LocalJSX.MdsRadialMenu & JSXBase.HTMLAttributes<HTMLMdsRadialMenuElement>;
             "mds-radial-menu-item": LocalJSX.MdsRadialMenuItem & JSXBase.HTMLAttributes<HTMLMdsRadialMenuItemElement>;
+            "mds-radial-progress": LocalJSX.MdsRadialProgress & JSXBase.HTMLAttributes<HTMLMdsRadialProgressElement>;
             "mds-separator": LocalJSX.MdsSeparator & JSXBase.HTMLAttributes<HTMLMdsSeparatorElement>;
             "mds-spinner": LocalJSX.MdsSpinner & JSXBase.HTMLAttributes<HTMLMdsSpinnerElement>;
             "mds-status-bar": LocalJSX.MdsStatusBar & JSXBase.HTMLAttributes<HTMLMdsStatusBarElement>;
