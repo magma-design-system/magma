@@ -1,0 +1,14 @@
+:host([variant="primary"]) {
+  --mds-radial-progress-color: rgb(var(--variant-primary-03));
+  --mds-radial-progress-background: rgb(var(--tone-neutral-09));
+}
+
+:host([variant="secondary"]) {
+  --mds-radial-progress-color: rgb(var(--variant-secondary-03));
+  --mds-radial-progress-background: rgb(var(--tone-neutral-09));
+}
+
+:host([variant="ai"]) {
+  --mds-radial-progress-color: rgb(var(--variant-ai-04));
+  --mds-radial-progress-background: rgb(var(--variant-ai-09));
+}

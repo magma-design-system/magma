@@ -65,6 +65,10 @@
   fill: var(--mds-details-icon-color);
 }
 
+.icon--hidden {
+  display: none;
+}
+
 .title {
   cursor: pointer;
 }

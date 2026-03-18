@@ -63,3 +63,7 @@ export type TypographyTooltipType =
 export type TypographyInputType =
   | 'snippet'
   | 'detail'
+
+export type TypographyTechnicalType =
+  | 'option'
+  | 'label'

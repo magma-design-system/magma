@@ -21,8 +21,8 @@ export class MdsDetails {
 
   @Element() private host: HTMLMdsDetailsElement
   @State() isOpened: boolean
+  @State() hasIcon: boolean = false
   private km = new KeyboardManager()
-  private hasIcon: boolean = false
   /**
    * Specifies if the component is opened
    */
@@ -61,11 +61,9 @@ export class MdsDetails {
   render () {
     return (
       <Host>
-        {this.hasIcon &&
-          <div class="icon" onClick={ this.toggle }>
-            <slot name="icon"/>
-          </div>
-        }
+        <div class={clsx('icon', this.hasIcon ? '' : 'icon--hidden')} onClick={ this.toggle }>
+          <slot name="icon"/>
+        </div>
         <div class="content">
           <header class="header" part="header" tabindex="0" onClick={ this.toggle }>
             <div class="title">
