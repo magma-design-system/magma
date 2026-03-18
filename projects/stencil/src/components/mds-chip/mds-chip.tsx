@@ -104,12 +104,6 @@ export class MdsChip {
     this.handleClickableKeyboard(newValue)
   }
 
-  @Watch('deletable')
-  handleDeletableProp (newValue: boolean): void {
-    this.handleDeletableElement(newValue)
-    this.handleDeletableKeyboard(newValue)
-  }
-
   @Watch('selected')
   handleSelectedProp (newValue: boolean): void {
     if (newValue === false) {
@@ -143,16 +137,6 @@ export class MdsChip {
     this.km.detachClickBehavior('label')
   }
 
-  private handleDeletableKeyboard = (isDeletable: boolean): void => {
-    if (isDeletable) {
-      const deleteElement = this.host.shadowRoot?.querySelector('.button-delete') as HTMLMdsButtonElement
-      this.km.addElement(deleteElement, 'delete')
-      this.km.attachClickBehavior('delete')
-      return
-    }
-    this.km.detachClickBehavior('delete')
-  }
-
   private handleClickableElement = (isClickable: boolean): void => {
     const label = this.host.shadowRoot?.querySelector('.label') as HTMLElement
     if (!label) {
@@ -167,19 +151,6 @@ export class MdsChip {
     label.removeEventListener('click', this.onClickLabelHandler.bind(this))
   }
 
-  private handleDeletableElement = (isDeletable: boolean): void => {
-    const deleteElement = this.host.shadowRoot?.querySelector('.button-delete') as HTMLElement
-    if (!deleteElement) {
-      return
-    }
-    if (isDeletable) {
-      deleteElement.addEventListener('click', this.onDeleteHandler.bind(this))
-      return
-    }
-    deleteElement.removeAttribute('aria-hidden')
-    deleteElement.removeEventListener('click', this.onDeleteHandler.bind(this))
-  }
-
   componentWillLoad (): void {
     this.t.lang(this.host)
   }
@@ -189,15 +160,10 @@ export class MdsChip {
       this.handleClickableElement(true)
       this.handleClickableKeyboard(true)
     }
-    if (this.deletable) {
-      this.handleDeletableElement(true)
-      this.handleDeletableKeyboard(true)
-    }
   }
 
   disconnectedCallback ():void {
     this.km.detachClickBehavior('label')
-    this.km.detachClickBehavior('delete')
   }
 
   render () {
