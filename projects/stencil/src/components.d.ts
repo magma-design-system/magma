@@ -1973,6 +1973,10 @@ export namespace Components {
     }
     interface MdsRadialProgress {
         /**
+          * Specifies if the component should display an icon
+         */
+        "icon"?: string | undefined;
+        /**
           * A value between 0 and 1 that rapresents the status progress
          */
         "progress": number;
@@ -5953,6 +5957,10 @@ declare namespace LocalJSX {
         "variant"?: ButtonVariantType;
     }
     interface MdsRadialProgress {
+        /**
+          * Specifies if the component should display an icon
+         */
+        "icon"?: string | undefined;
         /**
           * A value between 0 and 1 that rapresents the status progress
          */
