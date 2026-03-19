@@ -1047,14 +1047,6 @@ export namespace Components {
          */
         "await": boolean;
         /**
-          * Specifies the label for control button decrease for component when type is number
-         */
-        "controlDecreaseLabel"?: string;
-        /**
-          * Specifies the label for control button increase for component when type is number
-         */
-        "controlIncreaseLabel"?: string;
-        /**
           * Specifies the icon type of the counter button when the input type is set to `number`
          */
         "controlsIcon"?: InputControlsIconType;
@@ -4981,14 +4973,6 @@ declare namespace LocalJSX {
           * Specifies if the spinner icon is shown, replacing the icon if present
          */
         "await"?: boolean;
-        /**
-          * Specifies the label for control button decrease for component when type is number
-         */
-        "controlDecreaseLabel"?: string;
-        /**
-          * Specifies the label for control button increase for component when type is number
-         */
-        "controlIncreaseLabel"?: string;
         /**
           * Specifies the icon type of the counter button when the input type is set to `number`
          */

@@ -132,16 +132,6 @@ export class MdsInput {
   @Prop({ reflect: true }) readonly controlsIcon?: InputControlsIconType = 'arrow'
 
   /**
-   * Specifies the label for control button increase for component when type is number
-   */
-  @Prop({ reflect: true }) readonly controlIncreaseLabel?: string = 'Aumenta'
-
-  /**
-   * Specifies the label for control button decrease for component when type is number
-   */
-  @Prop({ reflect: true }) readonly controlDecreaseLabel?: string = 'Riduci'
-
-  /**
    * A list of search terms to be searched from the input field,
    * it should be used with type="search" input.
    */
@@ -589,6 +579,8 @@ export class MdsInput {
           && <mds-button class="counter-button counter-button--horizontal counter-button--decrease"
             icon={this.controlsIcon === 'arrow' ? miBaselineArrowDown : miBaselineRemove}
             onClick={this.stepDown} tabindex="0" title={this.t.get('decrease')}
+            variant="dark"
+            tone="text"
             part="counter-button-decrease"></mds-button>
         }
         {this.type === 'textarea'
@@ -647,26 +639,37 @@ export class MdsInput {
         {this.type === 'number'
           && this.controlsLayout === 'vertical'
           && <div class="counter counter--vertical">
-            <mds-button class="counter-button" icon={this.controlsIcon === 'arrow' ? miBaselineArrowUp : miBaselineAdd}
+            <mds-button class="counter-button"
+              icon={this.controlsIcon === 'arrow' ? miBaselineArrowUp : miBaselineAdd}
               onClick={this.stepUp} tabindex="0" title={this.t.get('increase')}
+              variant="dark"
+              size="sm"
+              tone="text"
               part="counter-button-increase"></mds-button>
             <mds-button class="counter-button"
               icon={this.controlsIcon === 'arrow' ? miBaselineArrowDown : miBaselineRemove}
               onClick={this.stepDown} tabindex="0" title={this.t.get('decrease')}
+              variant="dark"
+              size="sm"
+              tone="text"
               part="counter-button-decrease"></mds-button>
           </div>
         }
         {this.type === 'number'
           && this.controlsLayout === 'horizontal'
           && <mds-button class="counter-button counter-button--horizontal counter-button--increase"
+            variant="dark"
+            tone="text"
             icon={this.controlsIcon === 'arrow' ? miBaselineArrowUp : miBaselineAdd} onClick={this.stepUp}
             tabindex="0" title={this.t.get('increase')}
             part="counter-button-increase"></mds-button>
         }
         {this.type === 'password'
           && <mds-button class="password-toggle-button"
+            variant="dark"
+            tone="text"
             icon={this.isPasswordVisible ? miBaselineVisibleOff : miBaselineVisible} onClick={() => this.isPasswordVisible = !this.isPasswordVisible}
-            tabindex="0" tone="text" title={this.isPasswordVisible ? this.t.get('hidePassword') : this.t.get('showPassword')}
+            tabindex="0" title={this.isPasswordVisible ? this.t.get('hidePassword') : this.t.get('showPassword')}
             part="password-toggle-button"></mds-button>
         }
         {this.type === 'password' && !this.isPasswordVisible && this.value?.length > 0 && <div class="password-mask">
@@ -679,7 +682,9 @@ export class MdsInput {
         {this.mic
           && <mds-button class={clsx('mic-toggle-button', this.isRecording && 'mic-toggle-button--recording')}
             icon={this.speechToTextIcon} onClick={() => this.toggleTextRecognition()}
-            tabindex="0" variant="dark" tone="text" title={this.speechToTextLabel}
+            tabindex="0" title={this.speechToTextLabel}
+            variant="dark"
+            tone="text"
             part="mic-toggle-button"></mds-button>
         }
         <mds-input-tip lang={this.language} position="top" active={this.hasFocus} part='tip-top'>

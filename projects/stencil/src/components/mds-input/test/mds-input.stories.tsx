@@ -34,16 +34,6 @@ export default {
       description:
         'Specifies if the spinner icon is shown, replacing the icon if present',
     },
-    'control-decrease-label': {
-      type: { name: 'string' },
-      description:
-        'Specifies the label for control button decrease for component when type is number',
-    },
-    'control-increase-label': {
-      type: { name: 'string' },
-      description:
-        'Specifies the label for control button increase for component when type is number',
-    },
     'controls-icon': {
       description:
         'Specifies the icon type of the counter button when the input type is set to `number`',
@@ -214,19 +204,6 @@ export const ControlsIcon = {
     'controls-icon': 'arithmetic',
     type: 'number',
     placeholder: 'Controls icon',
-  },
-}
-
-export const ControlsLabels = {
-  render: Template,
-
-  args: {
-    'controls-icon': 'arrow',
-    'controls-layout': 'horizontal',
-    'control-increase-label': 'Alza',
-    'control-decrease-label': 'Abbassa',
-    type: 'number',
-    placeholder: 'Controls labels',
   },
 }
 
