@@ -146,6 +146,7 @@
 
 .button-delete {
   border-radius: 100px;
+  corner-shape: round;
   height: auto;
   padding: 0;
 }
