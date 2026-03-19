@@ -132,7 +132,7 @@
   @apply svg;
 
   fill: var(--mds-accordion-item-color);
-  transform: rotate(180deg);
+  transform: rotate(0deg);
   transition-duration: var(--duration-500);
   transition-property: transform;
   transition-timing-function: var(--ease-out-expo);
@@ -161,7 +161,7 @@
 }
 
 :host([selected]:not([selected="false"])) .icon {
-  transform: rotate(0deg);
+  transform: rotate(90deg);
 }
 
 @import './css/mds-accordion-item-pref-animation.css';

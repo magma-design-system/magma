@@ -1,6 +1,6 @@
 import { Component, Element, Event, EventEmitter, Host, Prop, State, Watch, h } from '@stencil/core'
 import clsx from 'clsx'
-import miBaselineKeyboardArrowDown from '@icon/mi/baseline/keyboard-arrow-down.svg'
+import miBaselineKeyboardArrowRight from '@icon/mi/baseline/keyboard-arrow-right.svg'
 import { KeyboardManager } from '@common/keyboard-manager'
 
 /**
@@ -9,6 +9,7 @@ import { KeyboardManager } from '@common/keyboard-manager'
  * @slot icon - Insert an icon image, it can be `HTML elements` or `components`, it is **recommended** to add `mds-icon` element.
  * @slot title - Add a `text string`, `HTML elements` or `components`, it is **recommended** to use `mds-text` element.
  * @part header - The header of the component
+ * @part title - The title of the component
  * @part content - The content wrapper of the `default` and `content` slots
  */
 
@@ -21,8 +22,8 @@ export class MdsDetails {
 
   @Element() private host: HTMLMdsDetailsElement
   @State() isOpened: boolean
+  @State() hasIcon: boolean = false
   private km = new KeyboardManager()
-  private hasIcon: boolean = false
   /**
    * Specifies if the component is opened
    */
@@ -61,17 +62,15 @@ export class MdsDetails {
   render () {
     return (
       <Host>
-        {this.hasIcon &&
-          <div class="icon" onClick={ this.toggle } aria-disabled="true">
-            <slot name="icon"/>
-          </div>
-        }
+        <div class={clsx('icon', this.hasIcon ? '' : 'icon--hidden')} onClick={ this.toggle }>
+          <slot name="icon"/>
+        </div>
         <div class="content">
           <header class="header" part="header" tabindex="0" onClick={ this.toggle }>
-            <div class="title">
+            <div class="title" part="title">
               <slot name="title"/>
             </div>
-            <i class={clsx('helper-icon', this.isOpened && 'opened')} innerHTML={miBaselineKeyboardArrowDown}/>
+            <i class={clsx('helper-icon', this.isOpened && 'opened')} innerHTML={miBaselineKeyboardArrowRight}/>
           </header>
           <div class={clsx('details', this.isOpened && 'opened')}>
             <div class="content-expander" part="content">

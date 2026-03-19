@@ -55,7 +55,7 @@
 
 .content-expander {
   display: grid;
-  gap: --spacing(400);
+  gap: --spacing(500);
   min-height: 0;
 }
 
@@ -63,7 +63,7 @@
   grid-template-rows: 1fr;
   opacity: 1;
   overflow: visible;
-  padding-top: --spacing(400);
+  padding-top: --spacing(300);
   pointer-events: auto;
 }
 
@@ -86,6 +86,10 @@
   fill: var(--mds-details-icon-color);
 }
 
+.icon--hidden {
+  display: none;
+}
+
 .title {
   cursor: pointer;
 }
@@ -98,12 +102,12 @@
   flex-shrink: 0;
   rotate: 0deg;
   transition-duration: var(--duration-300);
-  transition-property: transform;
+  transition-property: rotate;
   transition-timing-function: var(--ease-in-out-expo);
 }
 
 .helper-icon.opened {
-  rotate: 180deg;
+  rotate: 90deg;
 }
 
 .actions {
