@@ -65,7 +65,7 @@ export default {
       type: { name: 'number' },
       description: 'Specifies the maximum value',
     },
-    maxLength: {
+    maxlength: {
       type: { name: 'number' },
       description:
         'Specifies the maximum number of characters allowed in an element',
@@ -78,7 +78,7 @@ export default {
       type: { name: 'number' },
       description: 'Specifies the minimum value',
     },
-    minLength: {
+    minlength: {
       type: { name: 'number' },
       description:
         'Specifies the minimum number of characters allowed in an element',
@@ -250,7 +250,7 @@ export const MinLength = {
   render: Template,
 
   args: {
-    MinLength: 5,
+    minlength: 5,
     type: 'text',
     value: 'Hello',
   },
@@ -278,9 +278,8 @@ export const Variant = {
   render: Template,
 
   args: {
-    variant: 'error',
-    placeholder: 'Status input field',
-    tip: 'errore',
+    placeholder: 'Es: 1234 5678 7654 3234',
+    tip: 'visa',
   },
 }
 

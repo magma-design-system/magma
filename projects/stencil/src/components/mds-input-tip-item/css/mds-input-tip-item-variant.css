@@ -14,9 +14,9 @@
   --mds-input-tip-item-background: rgb(var(--tone-neutral-05));
 }
 
-:host([variant="text"]) {
+/* :host([variant="text"]) {
   --mds-input-tip-item-background: rgb(var(--tone-neutral-03));
-}
+} */
 
 :host([variant="count-empty"]) {
   --mds-input-tip-item-color: rgb(var(--status-info-02));

@@ -23,7 +23,7 @@
 
   color: rgb(var(--tone-neutral-02));
   display: grid;
-  gap: --spacing(200);
+  gap: --spacing(300);
 }
 
 .message-window {

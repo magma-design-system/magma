@@ -48,6 +48,11 @@
   user-select: none;
 }
 
+mds-text {
+  display: flex;
+  place-self: center;
+}
+
 .content {
   display: grid;
   grid-template-columns: 0fr;
@@ -57,10 +62,6 @@
   transition-duration: var(--duration-200);
   transition-property: grid-template-columns, opacity;
   transition-timing-function: var(--ease-out-expo);
-}
-
-.text {
-  line-height: --spacing(300);
 }
 
 .icon {
