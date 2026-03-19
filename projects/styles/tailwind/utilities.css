@@ -11,10 +11,25 @@
   transition-timing-function: ease-in-out;
 }
 
-@utility focus-bounce--focused  {
+@utility focus-bounce--focused {
   --magma-outline-blur: var(--magma-outline-focus);
 
   animation-play-state: running;
+}
+
+@utility text-box-uppercase {
+  min-height: auto;
+  text-box: trim-both cap alphabetic;
+}
+
+@utility text-box-vertical-margin {
+  min-height: auto;
+  text-box: trim-both text;
+}
+
+@utility text-box-vertical-align {
+  min-height: auto;
+  text-box: trim-both cap alphabetic;
 }
 
 .focus-bounce:focus-visible {
