@@ -9,19 +9,21 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## Properties
 
-| Property    | Attribute   | Description                                                            | Type                                                                                    | Default                                   |
-| ----------- | ----------- | ---------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | ----------------------------------------- |
-| `direction` | `direction` | Specifies the direction of the progress bar, if horizonatl or vertical | `"horizontal" \| "vertical" \| undefined`                                               | `'horizontal'`                            |
-| `progress`  | `progress`  | A value between 0 and 1 that rapresents the status progress            | `number`                                                                                | `0`                                       |
-| `steps`     | `steps`     | Sets the steps that can be pronounced by accessibility technologies    | `string`                                                                                | `'Inizio,Un quarto,Metà,Tre quarti,Fine'` |
-| `variant`   | `variant`   | Sets the theme variant colors                                          | `"ai" \| "dark" \| "error" \| "info" \| "light" \| "primary" \| "success" \| "warning"` | `'primary'`                               |
+| Property     | Attribute    | Description                                                            | Type                                                                                                 | Default                                   |
+| ------------ | ------------ | ---------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ----------------------------------------- |
+| `direction`  | `direction`  | Specifies the direction of the progress bar, if horizonatl or vertical | `"horizontal" \| "radial" \| "vertical" \| undefined`                                                | `'horizontal'`                            |
+| `progress`   | `progress`   | A value between 0 and 1 that rapresents the status progress            | `number`                                                                                             | `0`                                       |
+| `steps`      | `steps`      | Sets the steps that can be pronounced by accessibility technologies    | `string`                                                                                             | `'Inizio,Un quarto,Metà,Tre quarti,Fine'` |
+| `typography` | `typography` | The typography of the component                                        | `"label" \| "option" \| undefined`                                                                   | `'option'`                                |
+| `variant`    | `variant`    | Sets the theme variant colors                                          | `"ai" \| "dark" \| "error" \| "info" \| "light" \| "primary" \| "success" \| "warning" \| undefined` | `'primary'`                               |
 
 
 ## Shadow Parts
 
-| Part         | Description                                              |
-| ------------ | -------------------------------------------------------- |
-| `"progress"` | Selects the `div` element that contains the progress bar |
+| Part                | Description                                                                     |
+| ------------------- | ------------------------------------------------------------------------------- |
+| `"progress"`        | Selects the `div` element that contains the progress bar                        |
+| `"radial-progress"` | Selects the `mds-radial-progress` element that contains the radial progress bar |
 
 
 ## CSS Custom Properties
@@ -44,9 +46,15 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
  - [mds-input-upload](../mds-input-upload)
  - [mds-stepper-bar-item](../mds-stepper-bar-item)
 
+### Depends on
+
+- [mds-radial-progress](../mds-radial-progress)
+
 ### Graph
 ```mermaid
 graph TD;
+  mds-progress --> mds-radial-progress
+  mds-radial-progress --> mds-text
   mds-accordion-timer-item --> mds-progress
   mds-benchmark-bar --> mds-progress
   mds-input-upload --> mds-progress

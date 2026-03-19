@@ -2,9 +2,11 @@ import { Component, Element, Host, h, Prop, Watch, State } from '@stencil/core'
 import { DirectionType } from './meta/types'
 import { ThemeVariantType } from '@type/variant'
 import { removeAttributesIf, ifAttribute } from '@common/aria'
+import { TypographyTechnicalType } from '@type/typography'
 
 /**
  * @part progress - Selects the `div` element that contains the progress bar
+ * @part radial-progress - Selects the `mds-radial-progress` element that contains the radial progress bar
  */
 
 @Component({
@@ -30,7 +32,12 @@ export class MdsProgress {
   /**
    * Sets the theme variant colors
    */
-  @Prop({ reflect: true }) readonly variant: ThemeVariantType = 'primary'
+  @Prop({ reflect: true }) readonly variant?: ThemeVariantType = 'primary'
+
+  /**
+   * The typography of the component
+   */
+  @Prop() readonly typography?: TypographyTechnicalType = 'option'
 
   /**
    * Sets the steps that can be pronounced by accessibility technologies
@@ -68,11 +75,14 @@ export class MdsProgress {
   render () {
     return (
       <Host aria-valuemax="100" aria-valuemin="0" aria-valuenow={ !ifAttribute(this.element, 'aria-hidden') && Math.round(this.progress * 100) } role="progressbar">
-        <div class="progress" part="progress" style={
-          this.direction === 'horizontal'
-            ? { flexGrow: `${this.progress}` }
-            : { flexGrow: `${this.progress}`, width: '100%' }
-        }></div>
+        { this.direction === 'radial'
+          ? <mds-radial-progress progress={this.progress} part="radial-progress" typography={this.typography} variant={this.variant}></mds-radial-progress>
+          : <div class="progress" part="progress" style={
+            this.direction === 'horizontal'
+              ? { flexGrow: `${this.progress}` }
+              : { flexGrow: `${this.progress}`, width: '100%' }
+          }></div>
+        }
       </Host>
     )
   }

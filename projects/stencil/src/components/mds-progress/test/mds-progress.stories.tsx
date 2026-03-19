@@ -1,6 +1,7 @@
 import { directionDictionary } from '../meta/dictionary'
 import { themeVariantDictionary } from '@dictionary/variant'
 import { h } from '@stencil/core'
+import { typographyTechnicalDictionary } from '@dictionary/typography'
 
 export default {
   title: 'UI / Progress',
@@ -17,6 +18,12 @@ export default {
       type: { name: 'number', required: false },
       description:
         'A value between 0 and 1 that rapresents the status progress',
+    },
+    typography: {
+      type: { name: 'string', required: false },
+      description: 'Specifies the typography of the progress bar',
+      options: typographyTechnicalDictionary,
+      control: { type: 'select' },
     },
     variant: {
       type: { name: 'string', required: false },
@@ -36,5 +43,29 @@ export const Default = {
 
   args: {
     progress: 0.35,
+  },
+}
+
+export const Vertical = {
+  render: Template,
+
+  args: {
+    progress: 0.35,
+    direction: 'vertical',
+    style: {
+      height: '200px',
+    },
+  },
+}
+
+export const Radial = {
+  render: Template,
+
+  args: {
+    progress: 0.35,
+    direction: 'radial',
+    style: {
+      width: '64px',
+    },
   },
 }

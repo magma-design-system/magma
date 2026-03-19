@@ -100,6 +100,8 @@ graph TD;
   mds-button --> mds-spinner
   mds-button --> mds-icon
   mds-button --> mds-text
+  mds-progress --> mds-radial-progress
+  mds-radial-progress --> mds-text
   mds-tab-item --> mds-button
   mds-file-preview --> mds-button
   mds-file-preview --> mds-img

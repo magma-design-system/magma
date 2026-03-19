@@ -66,6 +66,16 @@
   width: var(--mds-progress-thickness);
 }
 
+:host([direction="radial"]) {
+  aspect-ratio: 1;
+  background-color: transparent;
+  height: auto;
+}
+
+:host([direction="radial"]) mds-radial-progress {
+  width: inherit;
+}
+
 .progress {
   @apply ease-out-expo;
 

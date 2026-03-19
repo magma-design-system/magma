@@ -1,0 +1,80 @@
+@property --mds-radial-progress {
+  inherits: false;
+  initial-value: 0%;
+  syntax: "<length-percentage>";
+}
+
+:host {
+  --mds-radial-progress-background: rgb(var(--tone-neutral-09));
+  --mds-radial-progress-color: rgb(var(--variant-primary-03));
+  --mds-radial-progress-text-background-shadow: theme('boxShadow.sm-sharp');
+  --mds-radial-progress-text-background: rgb(var(--tone-neutral));
+  --mds-radial-progress-text-suffix: '%';
+  --mds-radial-progress: 0%;
+
+  align-items: center;
+  aspect-ratio: 1;
+  background-color: var(--mds-radial-progress-background);
+  background-image: conic-gradient(var(--mds-radial-progress-color) var(--mds-radial-progress), transparent 0%);
+  border-radius: calc(infinity * 1px);
+  box-sizing: border-box;
+  container-name: mds-radial-progress;
+  container-type: inline-size;
+  display: flex;
+  height: auto;
+  justify-content: center;
+  padding: theme('width.200');
+  transition-duration: 500ms;
+  transition-property: background-color, --mds-radial-progress-color, --mds-radial-progress;
+  transition-timing-function: ease-out;
+  width: theme('width.1200');
+}
+
+.value-container {
+  align-items: center;
+  aspect-ratio: 1;
+  background-color: var(--mds-radial-progress-text-background);
+  border-radius: inherit;
+  box-shadow: var(--mds-radial-progress-text-background-shadow);
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.value {
+  color: currentcolor;
+  display: inline-flex;
+}
+
+.value::after {
+  content: var(--mds-radial-progress-text-suffix);
+}
+
+
+@container mds-radial-progress (max-width: 35px) {
+  :host([typography="label"]) .value {
+    --mds-radial-progress-text-suffix: '';
+  }
+}
+
+@container mds-radial-progress (max-width: 31px) {
+  :host([typography="option"]) .value {
+    --mds-radial-progress-text-suffix: '';
+  }
+}
+
+@container mds-radial-progress (max-width: 23px) {
+  :host([typography="label"]) .value {
+    display: none;
+  }
+}
+
+@container mds-radial-progress (max-width: 19px) {
+  :host([typography="option"]) .value {
+    display: none;
+  }
+}
+
+@import './css/mds-radial-progress-variant.css';
+@import './css/mds-radial-progress-variant-status.css';
+@import './css/mds-radial-progress-variant-tone.css';

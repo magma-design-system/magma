@@ -227,11 +227,6 @@ export class MdsModal {
     }
   }
 
-  private closeButtonModal = (): void => {
-    this.opened = undefined
-    this.closeEvent.emit()
-  }
-
   @Watch('opened')
   handleOpenProp (newValue: boolean): void {
     if (newValue) {
