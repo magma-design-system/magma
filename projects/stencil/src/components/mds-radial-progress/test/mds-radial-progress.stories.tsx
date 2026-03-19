@@ -1,6 +1,7 @@
 import { h } from '@stencil/core'
 import { typographyTechnicalDictionary } from '@dictionary/typography'
 import { themeVariantDictionary } from '@dictionary/variant'
+import { iconsDictionary } from '@dictionary/icon'
 
 export default {
   title: 'UI / Radial Progress',
@@ -15,6 +16,12 @@ export default {
       type: { name: 'number' },
       control: { type: 'range', step: 0.01, min: 0, max: 1 },
       description: 'Specifies the progress of the radial progress',
+    },
+    icon: {
+      type: { name: 'string' },
+      description: 'Specifies the icon of the element',
+      control: { type: 'select' },
+      options: iconsDictionary,
     },
     variant: {
       type: { name: 'string' },

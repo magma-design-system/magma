@@ -2,6 +2,11 @@ import { Component, Host, h, Prop, State, Watch } from '@stencil/core'
 import { TypographyTechnicalType, TypographyType } from '@type/typography'
 import { ThemeVariantType } from '@type/variant'
 
+/**
+ * @part value-container - Selects the value container of the radial progress.
+ * @part icon - Selects the icon of the radial progress.
+ */
+
 @Component({
   tag: 'mds-radial-progress',
   styleUrl: 'mds-radial-progress.css',
@@ -16,6 +21,11 @@ export class MdsRadialProgress {
   @State() private animatedProgress: number = 0
 
   private rafId: number | null = null
+
+  /**
+   * Specifies if the component should display an icon
+   */
+  @Prop({ reflect: true }) readonly icon?: string | undefined
 
   /**
    * The typography of the component
@@ -92,8 +102,11 @@ export class MdsRadialProgress {
     const progressText = this.progressPercentage(this.clampProgress(this.progress))
     return (
       <Host style={{ '--mds-radial-progress': progressVar }} role="progressbar">
-        <div class="value-container">
-          <mds-text class="value" typography={this.typography as TypographyType}>{progressText}</mds-text>
+        <div class="value-container" part="value-container">
+          {this.icon && <mds-icon class="icon" name={this.icon} part="icon" />}
+          <div class="value-container__text">
+            <mds-text class="value" typography={this.typography as TypographyType}>{progressText}</mds-text>
+          </div>
         </div>
       </Host>
     )

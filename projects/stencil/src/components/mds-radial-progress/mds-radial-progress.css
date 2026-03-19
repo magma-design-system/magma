@@ -1,3 +1,5 @@
+@import './css/mds-radial-progress-fouc.css';
+
 @property --mds-radial-progress {
   inherits: false;
   initial-value: 0%;
@@ -7,7 +9,7 @@
 :host {
   --mds-radial-progress-background: rgb(var(--tone-neutral-09));
   --mds-radial-progress-color: rgb(var(--variant-primary-03));
-  --mds-radial-progress-text-background-shadow: theme('boxShadow.sm-sharp');
+  --mds-radial-progress-text-background-shadow: var(--shadow-sm-sharp);
   --mds-radial-progress-text-background: rgb(var(--tone-neutral));
   --mds-radial-progress-text-suffix: '%';
   --mds-radial-progress: 0%;
@@ -23,11 +25,11 @@
   display: flex;
   height: auto;
   justify-content: center;
-  padding: theme('width.200');
+  padding: --spacing(200);
   transition-duration: 500ms;
   transition-property: background-color, --mds-radial-progress-color, --mds-radial-progress;
   transition-timing-function: ease-out;
-  width: theme('width.1200');
+  width: --spacing(1200);
 }
 
 .value-container {
@@ -37,8 +39,17 @@
   border-radius: inherit;
   box-shadow: var(--mds-radial-progress-text-background-shadow);
   display: flex;
+  flex-direction: column;
+  gap: --spacing(50);
   justify-content: center;
+  padding: --spacing(50);
   width: 100%;
+}
+
+.value-container__text {
+  align-items: center;
+  display: inline-flex;
+  justify-content: center;
 }
 
 .value {
@@ -50,6 +61,24 @@
   content: var(--mds-radial-progress-text-suffix);
 }
 
+.icon {
+  aspect-ratio: 1;
+  max-height: --spacing(600);
+  max-width: --spacing(600);
+  width: 100%;
+}
+
+@container mds-radial-progress (max-width: 47px) {
+  :host([typography="label"][icon]) .value-container__text {
+    display: none;
+  }
+}
+
+@container mds-radial-progress (max-width: 47px) {
+  :host([typography="option"][icon]) .value-container__text {
+    display: none;
+  }
+}
 
 @container mds-radial-progress (max-width: 35px) {
   :host([typography="label"]) .value {
