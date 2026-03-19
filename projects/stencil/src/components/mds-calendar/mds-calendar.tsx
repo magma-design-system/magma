@@ -558,6 +558,7 @@ export class MdsCalendar {
                       if (this.rangePicker) this.handleRange(target, dayInfo.date)
                       else this.handleSingleSelection(target, dayInfo.date)
                     }}
+                    title={dayInfo.date.setLocale(this.language).toFormat('cccc d LLLL').replace(/^./, char => char.toUpperCase())}
                     label={dayInfo.date.toFormat('dd')}
                   >
                   </mds-calendar-cell>
