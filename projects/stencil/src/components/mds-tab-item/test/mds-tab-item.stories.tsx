@@ -29,6 +29,10 @@ export default {
       type: { name: 'boolean' },
       description: 'Specifies if the tab item is selected or not',
     },
+    label: {
+      type: { name: 'string' },
+      description: 'The label of the tab item',
+    },
     size: {
       type: { name: 'string' },
       control: { type: 'select' },
@@ -38,7 +42,7 @@ export default {
   },
 }
 
-const Template = args => <mds-tab-item {...args}>First Blood</mds-tab-item>
+const Template = args => <mds-tab-item {...args} label="First Blood"></mds-tab-item>
 
 export const Default = {
   render: Template,

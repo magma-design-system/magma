@@ -26,6 +26,12 @@
   syntax: "<color>";
 }
 
+@property --mds-tab-item-corner-shape {
+  inherits: false;
+  initial-value: round;
+  syntax: 'bevel | notch | round | scoop | square | squircle';
+}
+
 /* Not supported
 @property --mds-tab-item-selected-shadow {
   inherits: false;
@@ -42,6 +48,7 @@
 
 :host {
   --mds-tab-item-selected-shadow: var(inherit, var(--shadow-xl));
+  --mds-tab-item-corner-shape: var(--mds-tab-corner-shape, round);
 
   cursor: pointer;
   display: flex;
@@ -60,6 +67,7 @@
   --mds-button-color: var(--mds-tab-item-default-color);
   --mds-button-radius: var(--mds-tab-item-radius);
   --mds-button-border-default-opacity: 0;
+  --mds-button-corner-shape: var(--mds-tab-item-corner-shape, round);
 
   flex-grow: 1;
 }

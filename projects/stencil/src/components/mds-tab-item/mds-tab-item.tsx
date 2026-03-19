@@ -39,6 +39,11 @@ export class MdsTabItem {
   @Prop() readonly icon?: string
 
   /**
+   * The label of the tab item
+   */
+  @Prop({ reflect: true }) readonly label?: string
+
+  /**
    * Specifies the horizontal position of the icon displayed in the tab item
    */
   @Prop() readonly iconPosition?: ButtonIconPositionType = 'left'
@@ -112,11 +117,10 @@ export class MdsTabItem {
           onClick={this.toggle}
           part="button"
           role="tab"
+          label={this.label}
           size={this.size}
           type={this.type}
-        >
-          { this.hasText && <slot/> }
-        </mds-button>
+        ></mds-button>
       </Host>
     )
   }

@@ -59,11 +59,9 @@ const TemplateEmpty = args => {
   return (
     <div class="grid gap-600">
       <mds-tab id="manual-tabs" {...args}>
-        <mds-tab-item selected>First Blood</mds-tab-item>
-        <mds-tab-item icon="mdi/alien" id="button">
-          Double Impact
-        </mds-tab-item>
-        <mds-tab-item>The Third Man</mds-tab-item>
+        <mds-tab-item label="First Blood" selected></mds-tab-item>
+        <mds-tab-item label="Double Impact" icon="mdi/alien" id="button"></mds-tab-item>
+        <mds-tab-item label="The Third Man"></mds-tab-item>
       </mds-tab>
       {currentElement === 0 && (
         <div class="min-h-[400px] flex items-center justify-center p-600 bg-label-amaranth-09 rounded-2xl">
@@ -104,11 +102,10 @@ const TemplateScroll = () => (
   <div class="grid gap-600 pt-[60px]">
     <div class="fixed top-0 left-0 right-0 p-400 px-600 shadow-sm flex bg-tone-neutral">
       <mds-tab>
-        <mds-tab-item href="#section-1" selected>
-          Section 1
+        <mds-tab-item href="#section-1" selected label="Section 1">
         </mds-tab-item>
-        <mds-tab-item href="#section-2">Section 2</mds-tab-item>
-        <mds-tab-item href="#section-3">Section 3</mds-tab-item>
+        <mds-tab-item href="#section-2" label="Section 2"></mds-tab-item>
+        <mds-tab-item href="#section-3" label="Section 3"></mds-tab-item>
       </mds-tab>
     </div>
     <div class="grid gap-600">
@@ -143,13 +140,9 @@ const TemplateAsyncContent = () => {
   return (
     <div class="grid gap-600 pt-[60px]">
       <mds-tab>
-        <mds-tab-item href="#section-1" selected>
-          Section 1
-        </mds-tab-item>
-        <mds-tab-item href="#section-2" await={!tabContentLoaded}>
-          Section 2
-        </mds-tab-item>
-        <mds-tab-item href="#section-3">Section 3</mds-tab-item>
+        <mds-tab-item href="#section-1" label="Section 1" selected></mds-tab-item>
+        <mds-tab-item href="#section-2" label="Section 2" await={!tabContentLoaded}></mds-tab-item>
+        <mds-tab-item href="#section-3" label="Section 3"></mds-tab-item>
         <SectionComponent
           id="section-1"
           slot="content"
@@ -178,16 +171,16 @@ const TemplateAsyncContent = () => {
 const TemplateOverflow = args => (
   <div class="grid gap-600 max-w-[480px]">
     <mds-tab {...args}>
-      <mds-tab-item>First Blood</mds-tab-item>
-      <mds-tab-item>Double Impact</mds-tab-item>
-      <mds-tab-item selected>The Third Man</mds-tab-item>
-      <mds-tab-item>The Fantastic Four</mds-tab-item>
-      <mds-tab-item>The Fifth Element</mds-tab-item>
-      <mds-tab-item>6 Underground</mds-tab-item>
-      <mds-tab-item>Seven Samurai</mds-tab-item>
-      <mds-tab-item>The Hateful Eight</mds-tab-item>
-      <mds-tab-item>Nine Perfect Strangers</mds-tab-item>
-      <mds-tab-item>10 Things I Hate About You</mds-tab-item>
+      <mds-tab-item label="First Blood"></mds-tab-item>
+      <mds-tab-item label="Double Impact"></mds-tab-item>
+      <mds-tab-item label="The Third Man" selected></mds-tab-item>
+      <mds-tab-item label="The Fantastic Four"></mds-tab-item>
+      <mds-tab-item label="The Fifth Element"></mds-tab-item>
+      <mds-tab-item label="6 Underground"></mds-tab-item>
+      <mds-tab-item label="Seven Samurai"></mds-tab-item>
+      <mds-tab-item label="The Hateful Eight"></mds-tab-item>
+      <mds-tab-item label="Nine Perfect Strangers"></mds-tab-item>
+      <mds-tab-item label="10 Things I Hate About You"></mds-tab-item>
     </mds-tab>
   </div>
 )
@@ -195,11 +188,9 @@ const TemplateOverflow = args => (
 const Template = args => (
   <div class="grid gap-600">
     <mds-tab {...args}>
-      <mds-tab-item>First Blood</mds-tab-item>
-      <mds-tab-item icon="mdi/alien" id="button" selected>
-        Double Impact
-      </mds-tab-item>
-      <mds-tab-item>The Third Man</mds-tab-item>
+      <mds-tab-item label="First Blood"></mds-tab-item>
+      <mds-tab-item icon="mdi/alien" id="button" selected label="Double Impact"></mds-tab-item>
+      <mds-tab-item label="The Third Man"></mds-tab-item>
       <div
         slot="content"
         class="gap-600 grid px-200 py-600 tablet:grid-cols-[1fr_2fr]"
@@ -276,9 +267,9 @@ const Template = args => (
 const TemplateDirection = args => (
   <div class="grid gap-600">
     <mds-tab {...args}>
-      <mds-tab-item>First Blood</mds-tab-item>
-      <mds-tab-item selected>Double Impact</mds-tab-item>
-      <mds-tab-item>The Third Man</mds-tab-item>
+      <mds-tab-item label="First Blood"></mds-tab-item>
+      <mds-tab-item selected label="Double Impact"></mds-tab-item>
+      <mds-tab-item label="The Third Man"></mds-tab-item>
       <div slot="content" class="grid tablet:grid-cols-[1fr_2fr] gap-600">
         <mds-img class="rounded-lg" src="./movie-first-blood.jpg" />
         <div class="grid gap-100 auto-rows-min">
@@ -346,11 +337,9 @@ const TemplateDirection = args => (
 const TemplateNoSelected = args => (
   <div class="grid gap-600">
     <mds-tab {...args}>
-      <mds-tab-item>First Blood</mds-tab-item>
-      <mds-tab-item icon="mdi/alien" id="button">
-        Double Impact
-      </mds-tab-item>
-      <mds-tab-item>The Third Man</mds-tab-item>
+      <mds-tab-item label="First Blood"></mds-tab-item>
+      <mds-tab-item icon="mdi/alien" id="button" label="Double Impact"></mds-tab-item>
+      <mds-tab-item label="The Third Man"></mds-tab-item>
       <div
         slot="content"
         class="py-600 px-200 grid tablet:grid-cols-[1fr_2fr] gap-600"
@@ -458,8 +447,8 @@ const TemplateAdd = args => {
               key={i}
               onClick={() => setCurrentTab(t.id)}
               selected={currentTab === t.id}
+              label={`Tab ${t.v}`}
             >
-              {t.v}
             </mds-tab-item>
           )
         })}
@@ -471,8 +460,8 @@ const TemplateAdd = args => {
 const TemplateStretchHeight = args => {
   return <div class="grid gap-600 max-w-[480px]">
     <mds-tab {...args} class="h-[1000px]">
-      <mds-tab-item selected>First Blood</mds-tab-item>
-      <mds-tab-item>Double Impact</mds-tab-item>
+      <mds-tab-item selected label="First Blood"></mds-tab-item>
+      <mds-tab-item label="Double Impact"></mds-tab-item>
       <div slot='content'>
         <mds-text>
             Vietnam veteran and drifter John J. Rambo (Sylvester Stallone)

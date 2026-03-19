@@ -197,6 +197,12 @@
   syntax: "<time>";
 }
 
+@property --mds-tab-corner-shape {
+  inherits: false;
+  initial-value: squircle;
+  syntax: 'bevel | notch | round | scoop | square | squircle';
+}
+
 /* ❌ Not supported
 @property --mds-tab-tabs-wrapper-shadow {
   inherits: false;
@@ -219,6 +225,7 @@
 
 :host {
   --mds-tab-direction-vertical-columns: auto auto;
+  --mds-tab-corner-shape: var(--magma-corner-shape, round);
   --mds-tab-item-default-background: transparent;
   --mds-tab-item-default-color: rgb(var(--tone-neutral-03));
   --mds-tab-item-default-shadow: transparent;
@@ -267,6 +274,7 @@
   background-color: var(--mds-tab-tabs-background);
   border-radius: var(--mds-tab-tabs-radius);
   box-sizing: border-box;
+  corner-shape: var(--mds-tab-corner-shape);
   display: flex;
   gap: var(--mds-tab-tabs-gap);
   overflow: auto;
@@ -281,6 +289,7 @@
 
 .tabs-wrapper {
   border-radius: var(--mds-tab-tabs-radius);
+  corner-shape: var(--mds-tab-corner-shape);
   display: grid;
   flex-shrink: 0;
   margin: var(--mds-tab-tabs-wrapper-margin);
@@ -297,6 +306,7 @@
   border-radius: var(--mds-tab-tabs-radius);
   box-shadow: var(--mds-tab-tabs-wrapper-shadow);
   content: '';
+  corner-shape: var(--mds-tab-corner-shape);
   inset: 0;
   opacity: var(--mds-tab-tabs-wrapper-outline-opacity);
   pointer-events: none;
