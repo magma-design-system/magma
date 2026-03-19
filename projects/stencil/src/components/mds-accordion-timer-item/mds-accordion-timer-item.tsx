@@ -1,4 +1,4 @@
-import miBaselineKeyboardArrowDown from '@icon/mi/baseline/keyboard-arrow-down.svg'
+import miBaselineKeyboardArrowRight from '@icon/mi/baseline/keyboard-arrow-right.svg'
 import { Component, Event, EventEmitter, Host, Prop, h, Watch } from '@stencil/core'
 import { MdsAccordionTimerItemEventDetail } from './meta/event-detail'
 import { TypographyTitleType } from '@type/typography'
@@ -104,12 +104,12 @@ export class MdsAccordionTimerItem {
     return (
       <Host onMouseEnter={this.mouseEnter} onMouseLeave={this.mouseLeave}>
         <div class="row">
-          <mds-progress aria-hidden="true" class="progress-bar" progress={Number(this.progress?.toFixed(2))} direction="vertical" part="progress"/>
+          <mds-progress aria-hidden="true" class="progress-bar" progress={Number(this.progress?.toFixed(2))} direction="vertical" size="sm" part="progress"/>
           <div class="accordion">
             <button aria-controls="content" aria-expanded={this.selected ? 'true' : 'false'} class="action" id="action" onClick={this.toggle} role="button" tabindex="0">
               <mds-text typography={this.typography} part="label">{this.description}</mds-text>
               <mds-text aria-hidden="true" class="icon-button" typography={this.typography} part="icon">
-                <i class="icon" innerHTML={miBaselineKeyboardArrowDown} />
+                <i class="icon" innerHTML={miBaselineKeyboardArrowRight} />
               </mds-text>
             </button>
             <div class="content" id="content">
