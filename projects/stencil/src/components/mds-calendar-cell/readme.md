@@ -11,6 +11,7 @@
 | ------------- | ------------- | -------------------------------------------------------------- | ----------------------------------------------------------------- | -------------- |
 | `date`        | `date`        | Specifies the date of the cell                                 | `string \| undefined`                                             | `undefined`    |
 | `disabled`    | `disabled`    | Specifies if the cell is disabled                              | `boolean \| undefined`                                            | `undefined`    |
+| `label`       | `label`       | Specifies the label of the cell                                | `string \| undefined`                                             | `undefined`    |
 | `month`       | `month`       | Specifies if the current month or a weekend                    | `"current" \| "other" \| "weekend" \| undefined`                  | `'current'`    |
 | `orientation` | `orientation` | Specifies the selection orientation of the cell                | `"both" \| "horizontal" \| "vertical" \| undefined`               | `'horizontal'` |
 | `preview`     | `preview`     | Specifies if the selection is a preview or the final selection | `boolean \| undefined`                                            | `false`        |

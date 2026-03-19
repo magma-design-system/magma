@@ -14,6 +14,11 @@ export class MdsCalendarCell {
   @Prop({ reflect: true }) readonly month?: CalendarCellType = 'current'
 
   /**
+   * Specifies the label of the cell
+   */
+  @Prop({ reflect: true }) readonly label?: string
+
+  /**
    * Specifies the date of the cell
    * @description It's in ISO format (YYYY-MM-DD).
    */
@@ -51,9 +56,7 @@ export class MdsCalendarCell {
       <Host>
         <div class="inner-dot"></div>
         <div class="area-background"></div>
-        <mds-button class="action" variant="dark" tone="text" disabled={this.disabled}>
-          <slot></slot>
-        </mds-button>
+        <mds-button class="action" variant="dark" tone="text" disabled={this.disabled} label={this.label}></mds-button>
       </Host>
     )
   }

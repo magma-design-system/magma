@@ -558,8 +558,8 @@ export class MdsCalendar {
                       if (this.rangePicker) this.handleRange(target, dayInfo.date)
                       else this.handleSingleSelection(target, dayInfo.date)
                     }}
+                    label={dayInfo.date.toFormat('dd')}
                   >
-                    {dayInfo.date.toFormat('dd')}
                   </mds-calendar-cell>
                 ))}
               </div>

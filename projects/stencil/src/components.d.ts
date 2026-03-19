@@ -555,6 +555,10 @@ export namespace Components {
          */
         "disabled"?: boolean | undefined;
         /**
+          * Specifies the label of the cell
+         */
+        "label"?: string;
+        /**
           * Specifies if the current month or a weekend
          */
         "month"?: CalendarCellType;
@@ -4450,6 +4454,10 @@ declare namespace LocalJSX {
           * Specifies if the cell is disabled
          */
         "disabled"?: boolean | undefined;
+        /**
+          * Specifies the label of the cell
+         */
+        "label"?: string;
         /**
           * Specifies if the current month or a weekend
          */

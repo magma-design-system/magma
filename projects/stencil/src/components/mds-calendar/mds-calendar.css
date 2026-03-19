@@ -55,7 +55,7 @@
 :host {
   --mds-calendar-day-number-other-month-color: rgb(var(--tone-neutral-07));
   --mds-calendar-day-number-color: rgb(var(--tone-neutral-01));
-  --mds-calendar-cell-gap: var(--gap-50);
+  --mds-calendar-cell-gap: --spacing(50);
   --mds-calendar-cell-other-month-visibility: visible;
   --mds-calendar-border-radius: var(--radius-lg);
   --mds-calendar-background: rgb(var(--tone-neutral));
