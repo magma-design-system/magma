@@ -3,6 +3,7 @@ import { DirectionType } from './meta/types'
 import { ThemeVariantType } from '@type/variant'
 import { removeAttributesIf, ifAttribute } from '@common/aria'
 import { TypographyTechnicalType } from '@type/typography'
+import { ProgressBarSizeType } from '@type/progress'
 
 /**
  * @part progress - Selects the `div` element that contains the progress bar
@@ -38,6 +39,11 @@ export class MdsProgress {
    * The typography of the component
    */
   @Prop() readonly typography?: TypographyTechnicalType = 'option'
+
+  /**
+   * Sets the size of the component
+   */
+  @Prop({ reflect: true }) readonly size?: ProgressBarSizeType = 'sm'
 
   /**
    * Sets the steps that can be pronounced by accessibility technologies

@@ -51,6 +51,7 @@
   border-radius: var(--mds-progress-radius);
   display: flex;
   height: var(--mds-progress-thickness);
+  min-height: var(--mds-progress-thickness);
   min-width: var(--mds-progress-thickness);
   overflow: hidden;
   position: relative;
@@ -86,6 +87,7 @@
 }
 
 @import './css/mds-progress-variant.css';
+@import './css/mds-progress-size.css';
 @import './css/mds-progress-pref-animation.css';
 @import './css/mds-progress-pref-theme.css';
 @import './css/mds-progress-pref-contrast.css';

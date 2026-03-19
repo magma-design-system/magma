@@ -13,6 +13,7 @@ import { MdsAccordionTimerItemEventDetail } from "./components/mds-accordion-tim
 import { ChipVariantType, LabelVariantType, ThemeFullVariantAvatarType, ThemeFullVariantType, ThemeInputVariantType, ThemeStatusVariantType, ThemeVariantType, ToneMinimalVariantType, ToneSimpleVariantType, ToneSmartVariantType, ToneVariantType } from "./type/variant";
 import { AvatarSizeType } from "./components/mds-avatar-stack/meta/types";
 import { BenchmarkBarTypographyType } from "./components/mds-benchmark-bar/meta/types";
+import { ProgressBarSizeType } from "./type/progress";
 import { BibliographyFormatType, BibliographyRelationshipType } from "./components/mds-bibliography/meta/types";
 import { MdsBreadcrumbEventDetail } from "./components/mds-breadcrumb/meta/event-detail";
 import { MdsBreadcrumbItemEventDetail } from "./components/mds-breadcrumb-item/meta/event-detail";
@@ -91,6 +92,7 @@ export { MdsAccordionTimerItemEventDetail } from "./components/mds-accordion-tim
 export { ChipVariantType, LabelVariantType, ThemeFullVariantAvatarType, ThemeFullVariantType, ThemeInputVariantType, ThemeStatusVariantType, ThemeVariantType, ToneMinimalVariantType, ToneSimpleVariantType, ToneSmartVariantType, ToneVariantType } from "./type/variant";
 export { AvatarSizeType } from "./components/mds-avatar-stack/meta/types";
 export { BenchmarkBarTypographyType } from "./components/mds-benchmark-bar/meta/types";
+export { ProgressBarSizeType } from "./type/progress";
 export { BibliographyFormatType, BibliographyRelationshipType } from "./components/mds-bibliography/meta/types";
 export { MdsBreadcrumbEventDetail } from "./components/mds-breadcrumb/meta/event-detail";
 export { MdsBreadcrumbItemEventDetail } from "./components/mds-breadcrumb-item/meta/event-detail";
@@ -329,6 +331,10 @@ export namespace Components {
           * An alias to custom how value is represented
          */
         "alias"?: string;
+        /**
+          * Sets the size of the component
+         */
+        "size"?: ProgressBarSizeType;
         /**
           * The typography of the component
          */
@@ -1824,6 +1830,10 @@ export namespace Components {
          */
         "progress": number;
         /**
+          * Sets the size of the component
+         */
+        "size"?: ProgressBarSizeType;
+        /**
           * Sets the steps that can be pronounced by accessibility technologies
          */
         "steps": string;
@@ -2129,6 +2139,10 @@ export namespace Components {
           * Specifies the horizontal position of the icon displayed in the tab item
          */
         "iconPosition"?: ButtonIconPositionType;
+        /**
+          * The label of the tab item
+         */
+        "label"?: string;
         /**
           * Specifies if the tab item is selected or not
          */
@@ -4223,6 +4237,10 @@ declare namespace LocalJSX {
          */
         "alias"?: string;
         /**
+          * Sets the size of the component
+         */
+        "size"?: ProgressBarSizeType;
+        /**
           * The typography of the component
          */
         "typography"?: BenchmarkBarTypographyType;
@@ -5801,6 +5819,10 @@ declare namespace LocalJSX {
          */
         "progress"?: number;
         /**
+          * Sets the size of the component
+         */
+        "size"?: ProgressBarSizeType;
+        /**
           * Sets the steps that can be pronounced by accessibility technologies
          */
         "steps"?: string;
@@ -6136,6 +6158,10 @@ declare namespace LocalJSX {
           * Specifies the horizontal position of the icon displayed in the tab item
          */
         "iconPosition"?: ButtonIconPositionType;
+        /**
+          * The label of the tab item
+         */
+        "label"?: string;
         /**
           * Emits when the tab item is selected
          */

@@ -1,6 +1,7 @@
 import { h } from '@stencil/core'
 import { themeVariantDictionary } from '@dictionary/variant'
 import { benchmarkBarTypographyDictionary } from '../meta/dictionary'
+import { progressBarSizeDictionary } from '@dictionary/progress'
 
 export default {
   title: 'UI / Benchmark Bar',
@@ -19,6 +20,12 @@ export default {
       type: { name: 'string' },
       description: 'Sets the theme variant colors',
       options: themeVariantDictionary,
+      control: { type: 'select' },
+    },
+    size: {
+      type: { name: 'string' },
+      description: 'Sets the size of the component',
+      options: progressBarSizeDictionary,
       control: { type: 'select' },
     },
     value: {

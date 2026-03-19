@@ -9,7 +9,7 @@
 
 .infos {
   display: flex;
-  gap: --spacing(100);
+  gap: --spacing(200);
   justify-content: space-between;
   width: 100%;
 }
@@ -21,3 +21,5 @@
 .label {
   min-width: 0;
 }
+
+@import './css/mds-benchmark-bar-size.css';

@@ -2,6 +2,7 @@ import { directionDictionary } from '../meta/dictionary'
 import { themeVariantDictionary } from '@dictionary/variant'
 import { h } from '@stencil/core'
 import { typographyTechnicalDictionary } from '@dictionary/typography'
+import { progressBarSizeDictionary } from '@dictionary/progress'
 
 export default {
   title: 'UI / Progress',
@@ -18,6 +19,12 @@ export default {
       type: { name: 'number', required: false },
       description:
         'A value between 0 and 1 that rapresents the status progress',
+    },
+    size: {
+      type: { name: 'string', required: false },
+      description: 'Sets the size of the component',
+      options: progressBarSizeDictionary,
+      control: { type: 'select' },
     },
     typography: {
       type: { name: 'string', required: false },
