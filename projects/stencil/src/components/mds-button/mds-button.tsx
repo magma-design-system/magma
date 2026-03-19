@@ -57,7 +57,7 @@ export class MdsButton {
   /**
    * Specifies the horizontal position of the icon displayed in the button
    */
-  @Prop() readonly iconPosition?: ButtonIconPositionType = 'left'
+  @Prop({ reflect: true }) readonly iconPosition?: ButtonIconPositionType = 'left'
 
   /**
    * The type of the button element

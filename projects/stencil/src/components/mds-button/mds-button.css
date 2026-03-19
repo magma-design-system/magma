@@ -150,9 +150,9 @@
   fill: currentcolor;
   gap: var(--mds-button-gap);
   justify-content: center;
-  padding: --spacing(100) --spacing(400);
+  padding: 0 --spacing(400);
   position: relative;
-  transition-property: background-color, border-color, box-shadow, color, outline, outline-offset, padding-left, padding-right, transform;
+  transition-property: background-color, border-color, box-shadow, color, outline, outline-offset, transform;
   transition-timing-function: var(--ease-out-quad);
   user-select: none;
 }

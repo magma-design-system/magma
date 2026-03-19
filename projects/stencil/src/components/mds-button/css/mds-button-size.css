@@ -4,88 +4,65 @@
   min-height: --spacing(700);
   min-width: --spacing(700);
   padding: 0 --spacing(300);
-}
 
-:host([size="sm"][icon]) {
-  padding: 0 --spacing(400) 0 --spacing(300);
-}
+  .icon {
+    height: --spacing(400);
+    width: --spacing(400);
+  }
 
-:host([size="sm"][icon][icon-position="right"]) {
-  padding: 0 --spacing(300) 0 --spacing(400);
-}
+  .text {
+    @apply font-medium;
+  }
 
-:host([size="sm"]:not([label])) {
-  padding: 0;
-}
-
-:host([size="sm"]) .text {
-  @apply font-medium;
-}
-
-:host([size="sm"]) .icon {
-  height: --spacing(400);
-  width: --spacing(400);
-}
-
-:host([size="sm"][await]:not([await="false"]) ) .await {
-  transform: scale(75);
+  &:host([await]:not([await="false"])) .await {
+    transform: scale(75);
+  }
 }
 
 :host([size="md"]) {
   min-height: --spacing(900);
   min-width: --spacing(900);
-  padding: --spacing(100) --spacing(400);
+  padding-left: --spacing(400);
+  padding-right: --spacing(400);
 
-  &:host([icon]) {
-    padding: --spacing(100) --spacing(500) --spacing(100) --spacing(300);
+  &:host([icon][icon-position="left"]) {
+    padding-left: --spacing(300);
   }
 
   &:host([icon][icon-position="right"]) {
-    padding: --spacing(100) --spacing(300) --spacing(100) --spacing(500);
-  }
-
-  &:host([size="md"]:not(:empty)) {
-    padding: --spacing(100);
+    padding-right: --spacing(300);
   }
 }
 
 :host([size="lg"]) {
   min-height: --spacing(1200);
   min-width: --spacing(1200);
-  padding: --spacing(200) --spacing(500);
-}
+  padding-left: --spacing(500);
+  padding-right: --spacing(500);
 
-:host([size="lg"][icon]) {
-  padding: --spacing(200) --spacing(600) --spacing(200) --spacing(500);
-}
+  &:host([icon][icon-position="left"]) {
+    padding-left: --spacing(400);
+  }
 
-:host([size="lg"][icon][icon-position="right"]) {
-  padding: --spacing(200) --spacing(500) --spacing(200) --spacing(600);
-}
-
-:host([size="lg"]:not([label])) {
-  padding: --spacing(200);
+  &:host([icon][icon-position="right"]) {
+    padding-right: --spacing(400);
+  }
 }
 
 :host([size="xl"]) {
   min-height: --spacing(1300);
   min-width: --spacing(1300);
-  padding: --spacing(200) --spacing(600);
+  padding-left: --spacing(600);
+  padding-right: --spacing(600);
+
+
+  .icon {
+    height: --spacing(800);
+    width: --spacing(800);
+  }
 }
 
-:host([size="xl"][icon]) {
-  padding: --spacing(200) --spacing(800) --spacing(200) --spacing(600);
-}
-
-:host([size="xl"][icon][icon-position="right"]) {
-  padding: --spacing(200) --spacing(600) --spacing(200) --spacing(800);
-}
-
-:host([size="xl"]:not([label])) {
-  padding: --spacing(200);
-}
-
-:host([size="xl"]) .icon {
-  height: --spacing(800);
-  width: --spacing(800);
+:host([size][icon][icon-position]:not([label])) {
+  aspect-ratio: 1;
+  padding: 0;
 }
