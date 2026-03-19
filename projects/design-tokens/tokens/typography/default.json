@@ -101,6 +101,7 @@
           "fontSize": { "value": "{typography.fontSize.xs}" },
           "fontWeight": { "value": 700 },
           "lineHeight": { "value": "{typography.leading.xs}" },
+          "textBox": { "value": "trim-both cap alphabetic" },
           "textTransform": { "value": "uppercase" }
         },
         "option": {
@@ -108,6 +109,7 @@
           "fontWeight": { "value": 700 },
           "letterSpacing": { "value": "-0.4px" },
           "lineHeight": { "value": "{typography.leading.2xs}" },
+          "textBox": { "value": "trim-both cap alphabetic" },
           "textTransform": { "value": "uppercase" }
         },
         "tip": {
