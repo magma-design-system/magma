@@ -132,7 +132,7 @@ export class MdsBanner {
               <slot/>
             </div>
           </div>
-          { this.deletable && <mds-button class="close-button" icon={miBaselineClose} onClick={this.closeBanner} title={ this.t.get('cancel') }/>}
+          { this.deletable && <mds-button class="close-button" icon={miBaselineClose} onClick={this.closeBanner} title={ this.t.get('cancel') } variant={this.variant} tone="text"/>}
         </div>
         { this.actions
           &&

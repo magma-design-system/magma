@@ -150,18 +150,6 @@
   justify-content: flex-end;
 }
 
-.close-button {
-  --mds-button-background: transparent;
-  --mds-button-border-color: 0 0 0;
-  --mds-button-border-default-opacity: 0;
-
-  fill: var(--mds-banner-color);
-}
-
-.close-button:hover {
-  --mds-button-background: var(--mds-banner-close-icon-hover-background);
-}
-
 .icon {
   fill: var(--mds-banner-icon-color);
   flex-shrink: 0;
