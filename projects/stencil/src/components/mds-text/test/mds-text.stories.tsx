@@ -53,6 +53,14 @@ const Template = args => (
   </mds-text>
 )
 
+const TemplateTextBox = args => (
+  <div class="inline-flex items-center justify-center">
+    <mds-text {...args} class="bg-tone-neutral-01 text-status-error-06">
+      Lorem ipsum dolor sit amet.
+    </mds-text>
+  </div>
+)
+
 const AnimateTemplate = () => {
   const [text, setText] = useState('Choose a song...')
 
@@ -255,4 +263,8 @@ export const VariantCodeHack = {
     tag: 'div',
     typography: 'hack',
   },
+}
+
+export const TextBox = {
+  render: TemplateTextBox,
 }
