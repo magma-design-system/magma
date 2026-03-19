@@ -1,4 +1,4 @@
-import { Component, Element, Event, EventEmitter, Host, Prop, h, State, Method } from '@stencil/core'
+import { Component, Element, Event, EventEmitter, Host, Prop, h, State, Method, Watch } from '@stencil/core'
 import { ToneMinimalVariantType, ThemeVariantType } from '@type/variant'
 import miBaselineClose from '@icon/mi/baseline/close.svg'
 import { KeyboardManager } from '@common/keyboard-manager'
@@ -35,6 +35,8 @@ export class MdsBanner {
   async updateLang (): Promise<void> {
     this.language = this.t.lang(this.host)
   }
+
+  @State() closeButtonVariant: ThemeVariantType
 
   /**
    * Sets the theme variant colors
@@ -94,6 +96,7 @@ export class MdsBanner {
 
   componentWillLoad (): void {
     this.actions = this.host.querySelector(':scope > [slot="action"]') !== null
+    this.setCloseButtonVariant(this.variant)
   }
 
   componentDidLoad (): void {
@@ -108,10 +111,27 @@ export class MdsBanner {
     this.km.detachClickBehavior()
   }
 
+  @Watch('variant')
+  variantHandler (newValue: ThemeVariantType): void {
+    this.setCloseButtonVariant(newValue)
+  }
+
   /**
    * Emits when the url view is closed
    */
   @Event({ eventName: 'mdsBannerClose' }) closeEvent: EventEmitter<void>
+
+  private setCloseButtonVariant = (newValue?: ThemeVariantType): void => {
+    if (newValue === 'dark') {
+      this.closeButtonVariant = 'light'
+      return
+    }
+    if (newValue === 'light') {
+      this.closeButtonVariant = 'dark'
+      return
+    }
+    this.closeButtonVariant = newValue ?? 'primary'
+  }
 
   private closeBanner = (): void => {
     this.closeEvent.emit()
@@ -132,7 +152,7 @@ export class MdsBanner {
               <slot/>
             </div>
           </div>
-          { this.deletable && <mds-button class="close-button" icon={miBaselineClose} onClick={this.closeBanner} title={ this.t.get('cancel') } variant={this.variant} tone="text"/>}
+          { this.deletable && <mds-button class="close-button" icon={miBaselineClose} onClick={this.closeBanner} title={ this.t.get('cancel') } variant={this.closeButtonVariant} tone="text"/>}
         </div>
         { this.actions
           &&
