@@ -214,7 +214,7 @@
   --magma-outline-animation-duration: 1.5s;
   --magma-outline-blur-color: transparent;
   --magma-outline-blur-offset: 6px;
-  --magma-outline-focus-color: rgb(var(--tone-neutral-04, 0 0 0));
+  --magma-outline-focus-color: rgb(var(--tone-neutral-05, 0 0 0));
   --magma-outline-focus-offset: 2px;
   --magma-overlay-opacity: 0.5;
   --magma-selection-background: rgb(var(--label-sky-09));
