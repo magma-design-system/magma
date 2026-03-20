@@ -16,6 +16,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `href`         | `href`          | Specifies the URL target of the button                                  | `string \| undefined`                                 | `undefined` |
 | `icon`         | `icon`          | The icon displayed in the tab item                                      | `string \| undefined`                                 | `undefined` |
 | `iconPosition` | `icon-position` | Specifies the horizontal position of the icon displayed in the tab item | `"left" \| "right" \| undefined`                      | `'left'`    |
+| `label`        | `label`         | The label of the tab item                                               | `string \| undefined`                                 | `undefined` |
 | `selected`     | `selected`      | Specifies if the tab item is selected or not                            | `boolean \| undefined`                                | `undefined` |
 | `size`         | `size`          | Specifies the size for the tab item                                     | `"lg" \| "md" \| "sm" \| "xl" \| undefined`           | `'md'`      |
 | `type`         | `type`          | The type of the tab item element                                        | `"a" \| "button" \| "reset" \| "submit" \| undefined` | `'submit'`  |

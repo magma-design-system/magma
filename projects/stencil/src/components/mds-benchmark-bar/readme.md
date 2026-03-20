@@ -12,6 +12,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | Property     | Attribute    | Description                                             | Type                                                                                                 | Default     |
 | ------------ | ------------ | ------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ----------- |
 | `alias`      | `alias`      | An alias to custom how value is represented             | `string \| undefined`                                                                                | `undefined` |
+| `size`       | `size`       | Sets the size of the component                          | `"lg" \| "md" \| "sm" \| "xl" \| undefined`                                                          | `'md'`      |
 | `typography` | `typography` | The typography of the component                         | `"label" \| "option" \| undefined`                                                                   | `'label'`   |
 | `value`      | `value`      | A value between 0 and 100 that rapresents the benchmark | `number`                                                                                             | `0`         |
 | `variant`    | `variant`    | Sets the theme variant colors                           | `"ai" \| "dark" \| "error" \| "info" \| "light" \| "primary" \| "success" \| "warning" \| undefined` | `'dark'`    |
@@ -44,6 +45,7 @@ graph TD;
   mds-benchmark-bar --> mds-text
   mds-benchmark-bar --> mds-progress
   mds-progress --> mds-radial-progress
+  mds-radial-progress --> mds-icon
   mds-radial-progress --> mds-text
   style mds-benchmark-bar fill:#f9f,stroke:#333,stroke-width:4px
 ```

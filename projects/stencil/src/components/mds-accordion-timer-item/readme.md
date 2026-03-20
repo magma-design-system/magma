@@ -70,6 +70,7 @@ graph TD;
   mds-accordion-timer-item --> mds-progress
   mds-accordion-timer-item --> mds-text
   mds-progress --> mds-radial-progress
+  mds-radial-progress --> mds-icon
   mds-radial-progress --> mds-text
   style mds-accordion-timer-item fill:#f9f,stroke:#333,stroke-width:4px
 ```

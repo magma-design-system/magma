@@ -9,9 +9,18 @@
 
 | Property     | Attribute    | Description                                                 | Type                                                                                                 | Default     |
 | ------------ | ------------ | ----------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ----------- |
+| `icon`       | `icon`       | Specifies if the component should display an icon           | `string \| undefined`                                                                                | `undefined` |
 | `progress`   | `progress`   | A value between 0 and 1 that rapresents the status progress | `number`                                                                                             | `0`         |
 | `typography` | `typography` | The typography of the component                             | `"label" \| "option" \| undefined`                                                                   | `'option'`  |
 | `variant`    | `variant`    | Sets the theme variant colors                               | `"ai" \| "dark" \| "error" \| "info" \| "light" \| "primary" \| "success" \| "warning" \| undefined` | `'primary'` |
+
+
+## Shadow Parts
+
+| Part                | Description                                         |
+| ------------------- | --------------------------------------------------- |
+| `"icon"`            | Selects the icon of the radial progress.            |
+| `"value-container"` | Selects the value container of the radial progress. |
 
 
 ## Dependencies
@@ -22,11 +31,13 @@
 
 ### Depends on
 
+- [mds-icon](../mds-icon)
 - [mds-text](../mds-text)
 
 ### Graph
 ```mermaid
 graph TD;
+  mds-radial-progress --> mds-icon
   mds-radial-progress --> mds-text
   mds-progress --> mds-radial-progress
   style mds-radial-progress fill:#f9f,stroke:#333,stroke-width:4px

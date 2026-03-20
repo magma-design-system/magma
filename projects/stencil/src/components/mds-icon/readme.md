@@ -127,6 +127,7 @@ Type: `Promise<void>`
  - [mds-mention](../mds-mention)
  - [mds-paginator-item](../mds-paginator-item)
  - [mds-policy-ai](../mds-policy-ai)
+ - [mds-radial-progress](../mds-radial-progress)
  - [mds-stepper-bar-item](../mds-stepper-bar-item)
  - [mds-tab-bar-item](../mds-tab-bar-item)
  - [mds-url-view](../mds-url-view)
@@ -152,6 +153,7 @@ graph TD;
   mds-mention --> mds-icon
   mds-paginator-item --> mds-icon
   mds-policy-ai --> mds-icon
+  mds-radial-progress --> mds-icon
   mds-stepper-bar-item --> mds-icon
   mds-tab-bar-item --> mds-icon
   mds-url-view --> mds-icon

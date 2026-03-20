@@ -40,9 +40,9 @@ Type: `Promise<void>`
 
 #### Parameters
 
-| Name           | Type  | Description |
-| -------------- | ----- | ----------- |
-| `notification` | `any` |             |
+| Name           | Type                                                                         | Description |
+| -------------- | ---------------------------------------------------------------------------- | ----------- |
+| `notification` | `HTMLMdsPushNotificationItemElement \| HTMLMdsPushNotificationItemElement[]` |             |
 
 #### Returns
 

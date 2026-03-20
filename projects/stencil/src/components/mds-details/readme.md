@@ -37,6 +37,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | ----------- | -------------------------------------------------------- |
 | `"content"` | The content wrapper of the `default` and `content` slots |
 | `"header"`  | The header of the component                              |
+| `"title"`   | The title of the component                               |
 
 
 ## CSS Custom Properties

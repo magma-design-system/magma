@@ -13,6 +13,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | ------------ | ------------ | ---------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ----------------------------------------- |
 | `direction`  | `direction`  | Specifies the direction of the progress bar, if horizonatl or vertical | `"horizontal" \| "radial" \| "vertical" \| undefined`                                                | `'horizontal'`                            |
 | `progress`   | `progress`   | A value between 0 and 1 that rapresents the status progress            | `number`                                                                                             | `0`                                       |
+| `size`       | `size`       | Sets the size of the component                                         | `"lg" \| "md" \| "sm" \| "xl" \| undefined`                                                          | `'sm'`                                    |
 | `steps`      | `steps`      | Sets the steps that can be pronounced by accessibility technologies    | `string`                                                                                             | `'Inizio,Un quarto,Metà,Tre quarti,Fine'` |
 | `typography` | `typography` | The typography of the component                                        | `"label" \| "option" \| undefined`                                                                   | `'option'`                                |
 | `variant`    | `variant`    | Sets the theme variant colors                                          | `"ai" \| "dark" \| "error" \| "info" \| "light" \| "primary" \| "success" \| "warning" \| undefined` | `'primary'`                               |
@@ -54,6 +55,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 ```mermaid
 graph TD;
   mds-progress --> mds-radial-progress
+  mds-radial-progress --> mds-icon
   mds-radial-progress --> mds-text
   mds-accordion-timer-item --> mds-progress
   mds-benchmark-bar --> mds-progress
