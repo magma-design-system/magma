@@ -22,14 +22,16 @@
   --mds-input-field-message-background: rgb(var(--tone-neutral-10));
 
   color: rgb(var(--tone-neutral-02));
+  corner-shape: var(--magma-corner-shape, round);
   display: grid;
   gap: --spacing(300);
 }
 
 .message-window {
   background-color: transparent;
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-2xl);
   color: var(--mds-input-field-message-color);
+  corner-shape: inherit;
   display: grid;
   gap: 0;
   padding: 0;
