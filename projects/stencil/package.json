@@ -19,7 +19,7 @@
     "build.docs": "stencil docs",
     "build.icons": "iconsauce --verbose --config ./.storybook/iconsauce.config.js --output-dictionary ./src/fixtures/icons.json --output-svg ./assets/svg",
     "build.no-cache": "stencil build --no-cache",
-    "build.watch": "npm run build.icons && stencil build --watch",
+    "build.watch": "npm run build.icons && stencil build --dev",
     "build.watch-no-cache": "stencil build --no-cache --watch",
     "clean": "tsx ./scripts/clean.ts",
     "generate": "stencil generate",
