@@ -25,6 +25,11 @@ export class MdsInputRange {
   @Prop() readonly formatValue?: (value: number) => string
 
   /**
+   * Is needed to reference the form data after the form is submitted
+   */
+  @Prop({ reflect: true }) readonly name?: string
+
+  /**
    * The greatest value in the range of permitted values
    */
   @Prop() readonly max: number = 100
@@ -159,6 +164,7 @@ export class MdsInputRange {
             step={this.step}
             type="range"
             value={this.value}
+            name={this.name}
           />
         </div>
       </Host>

@@ -1,4 +1,4 @@
-import { Component, Element, Host, h, Method, Prop, State, Event, EventEmitter, Watch } from '@stencil/core'
+import { Component, Element, Host, h, Method, Prop, State, Event, EventEmitter, Watch, AttachInternals } from '@stencil/core'
 import miBaselineCalendarToday from '@icon/mi/baseline/calendar-today.svg'
 import { DateTime } from 'luxon'
 import { Locale } from '@common/locale'
@@ -9,9 +9,11 @@ import { ThemeInputVariantType } from '@type/variant'
   tag: 'mds-input-date',
   styleUrl: 'mds-input-date.css',
   shadow: true,
+  formAssociated: true,
 })
 export class MdsInputDate {
   @Element() host: HTMLMdsInputDateElement
+  @AttachInternals() internals: ElementInternals
   private isSlotted: boolean = false
   @State() isValid: boolean
   private t:Locale = new Locale({
@@ -32,6 +34,11 @@ export class MdsInputDate {
    * @description It's in ISO format (YYYY-MM-DD).
    */
   @Prop({ reflect: true }) value: string = ''
+
+  /**
+   * Is needed to reference the form data after the form is submitted
+   */
+  @Prop({ reflect: true }) readonly name?: string
 
   /**
    * Sets the variant of the input field
@@ -80,6 +87,7 @@ export class MdsInputDate {
   handleValue (): void {
     this.valueChange.emit(this.value)
     this.validateValue()
+    this.internals.setFormValue(this.value)
   }
 
   private validateValue (): void {
@@ -160,6 +168,7 @@ export class MdsInputDate {
           part="input-date"
           type="date"
           disabled={this.disabled}
+          name={this.name}
           onBlur={this.onBlur}
           onFocus={this.onFocus}
           onInput={this.handleChange}

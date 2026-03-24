@@ -1160,6 +1160,10 @@ export namespace Components {
          */
         "min": string | null;
         /**
+          * Is needed to reference the form data after the form is submitted
+         */
+        "name"?: string;
+        /**
           * Specifies that the element is read-only
          */
         "readonly"?: boolean;
@@ -1267,6 +1271,10 @@ export namespace Components {
           * The lowest value in the range of permitted values
          */
         "min": number;
+        /**
+          * Is needed to reference the form data after the form is submitted
+         */
+        "name"?: string;
         /**
           * The step attribute is a number that specifies the granularity that the value must adhere to, or the special value any, which is described below.
          */
@@ -5001,6 +5009,10 @@ declare namespace LocalJSX {
           * @description It's in ISO format (YYYY-MM-DD).
          */
         "min"?: string | null;
+        /**
+          * Is needed to reference the form data after the form is submitted
+         */
+        "name"?: string;
         "onMdsInputDateSelect"?: (event: MdsInputDateCustomEvent<string>) => void;
         /**
           * Specifies that the element is read-only
@@ -5108,6 +5120,10 @@ declare namespace LocalJSX {
           * The lowest value in the range of permitted values
          */
         "min"?: number;
+        /**
+          * Is needed to reference the form data after the form is submitted
+         */
+        "name"?: string;
         /**
           * Emits when the input range is changed
          */
