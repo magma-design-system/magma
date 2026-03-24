@@ -1268,6 +1268,10 @@ export namespace Components {
          */
         "min": number;
         /**
+          * Is needed to reference the form data after the form is submitted
+         */
+        "name"?: string;
+        /**
           * The step attribute is a number that specifies the granularity that the value must adhere to, or the special value any, which is described below.
          */
         "step": number;
@@ -5108,6 +5112,10 @@ declare namespace LocalJSX {
           * The lowest value in the range of permitted values
          */
         "min"?: number;
+        /**
+          * Is needed to reference the form data after the form is submitted
+         */
+        "name"?: string;
         /**
           * Emits when the input range is changed
          */
