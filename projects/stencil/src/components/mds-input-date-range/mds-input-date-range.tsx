@@ -1,4 +1,4 @@
-import { Component, Element, Host, h, Prop, State, Event, EventEmitter, Method } from '@stencil/core'
+import { Component, Element, Host, h, Prop, State, Event, EventEmitter, Method, Watch } from '@stencil/core'
 import miBaselineCalendarToday from '@icon/mi/baseline/calendar-today.svg'
 import { DateTime } from 'luxon'
 import clsx from 'clsx'
@@ -75,6 +75,16 @@ export class MdsInputDateRange {
 
   @Event({ eventName: 'mdsInputDateRangeSelect' }) dateRangeSelected: EventEmitter<{ startDate: string, endDate: string }>
   @Event({ eventName: 'mdsInputDateRangeValueChange' }) valueChanged: EventEmitter<{ startDate: string, endDate: string }>
+
+  @Watch('startDate')
+  handleStartDateChange (newValue: string): void {
+    this.syncExternalDate('start', newValue)
+  }
+
+  @Watch('endDate')
+  handleEndDateChange (newValue: string): void {
+    this.syncExternalDate('end', newValue)
+  }
 
   componentWillLoad (): void {
     this.language = this.t.lang(this.host)
@@ -199,6 +209,23 @@ export class MdsInputDateRange {
     this.updateInputValue('start', this.internalStartDate)
     this.updateInputValue('end', this.internalEndDate)
     this.host.addEventListener('focusout', this.handleFocusOut)
+  }
+
+  private syncExternalDate (slotName: 'start' | 'end', newValue: string): void {
+    const normalizedValue = newValue ?? ''
+
+    if (slotName === 'start') {
+      if (normalizedValue === this.internalStartDate) return
+      this.internalStartDate = normalizedValue
+    } else {
+      if (normalizedValue === this.internalEndDate) return
+      this.internalEndDate = normalizedValue
+    }
+
+    this.validateDateRange()
+    this.updateInputValue('start', this.internalStartDate)
+    this.updateInputValue('end', this.internalEndDate)
+    this.checkPreselections()
   }
 
   private updateInputValue (slotName: string, newValue: string): void {
