@@ -3,9 +3,11 @@
 }
 
 :host-context(:root.pref-consumption-medium) .backdrop {
-  --mds-header-backdrop-filter: none;
+  --mds-header-backdrop-blur-strength: 1px;
 }
 
 :host-context(:root.pref-consumption-low) .backdrop {
+  --mds-header-backdrop-blur-strength: 0px;
+
   display: none;
 }

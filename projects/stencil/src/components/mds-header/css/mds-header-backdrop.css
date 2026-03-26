@@ -1,6 +1,6 @@
 .backdrop {
   align-items: center;
-  backdrop-filter: var(--mds-header-backdrop-filter);
+  backdrop-filter: blur(var(--mds-header-backdrop-blur-strength, 10px));
   background-image: var(--mds-header-backdrop-background-image);
   content: '';
   display: flex;
@@ -12,21 +12,57 @@
   transition-duration: 200ms;
   transition-property: opacity, transform;
   width: 100%;
+}
 
+.backdrop-blur-item {
 
-  /* should blurs the blur effect but not blurring */
+  /* https://caniuse.com/?search=sibling-count actually 75% (not good) */
+  --private-gradient-position: calc(
+    100% - calc(calc(sibling-count() - sibling-index()) * 5%)
+  );
 
-  /* mask-image: linear-gradient(rgb(0 0 0 / 1), transparent); */
+  display: none;
+
+  &:nth-child(1) { --private-gradient-position: 100% }
+  &:nth-child(2) { --private-gradient-position: 95% }
+  &:nth-child(3) { --private-gradient-position: 90% }
+  &:nth-child(4) { --private-gradient-position: 85% }
+  &:nth-child(5) { --private-gradient-position: 80% }
+  &:nth-child(6) { --private-gradient-position: 75% }
+  &:nth-child(7) { --private-gradient-position: 70% }
+  &:nth-child(8) { --private-gradient-position: 65% }
+  &:nth-child(9) { --private-gradient-position: 60% }
+  &:nth-child(10) { --private-gradient-position: 55% }
+  &:nth-child(11) { --private-gradient-position: 50% }
+}
+
+@supports (mask-image: linear-gradient(rgb(0 0 0 / 1), transparent)) {
+
+  /* https://caniuse.com/?search=mask-image */
+
+  .backdrop {
+    backdrop-filter:none;
+    background-image:none;
+  }
+
+  .backdrop-blur-item {
+    backdrop-filter: blur(var(--mds-header-backdrop-blur-strength, 1px));
+    display: flex;
+    inset: 0;
+    mask-image: linear-gradient(to bottom, rgb(0 0 0 / var(--private-mask-opacity, 1)) 40%, rgb(0 0 0 / 0) var(--private-gradient-position, 100%));
+    pointer-events: none;
+    position: absolute;
+  }
 }
 
 :host([appearance="inline"]) .backdrop {
-  opacity: 1;
   transform: translate(0, 0);
 }
 
 :host([visibility="hidden"]) .backdrop,
 :host([appearance="stripe"]) .backdrop {
-  opacity: 0;
+  --mds-header-backdrop-blur-strength: 0px;
+
   transform: translate(0, -100%);
 }
 

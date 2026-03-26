@@ -244,7 +244,18 @@ export class MdsHeader {
   render () {
     return (
       <Host>
-        { this.backdrop && <div class="backdrop"></div> }
+        { this.backdrop && <div class="backdrop">
+          <div class="backdrop-blur-item"></div>
+          <div class="backdrop-blur-item"></div>
+          <div class="backdrop-blur-item"></div>
+          <div class="backdrop-blur-item"></div>
+          <div class="backdrop-blur-item"></div>
+          <div class="backdrop-blur-item"></div>
+          <div class="backdrop-blur-item"></div>
+          <div class="backdrop-blur-item"></div>
+          <div class="backdrop-blur-item"></div>
+          <div class="backdrop-blur-item"></div>
+        </div> }
         <slot />
         {this.hasMenu &&
           <div class="menu" part="menu">

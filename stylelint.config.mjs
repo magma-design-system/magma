@@ -104,7 +104,7 @@ export default {
       true,
       {
         ignoreProperties: {
-          '/.+/': ['/theme*/', '/--spacing/'],
+          '/.+/': ['/theme*/', '/--spacing/', 'sibling-index'],
         },
       },
     ],
