@@ -1,4 +1,4 @@
-import { render } from 'mustache'
+import mustache from 'mustache'
 
 type LocaleConfig = {
   el?: Record<string, string | string[]>
@@ -80,7 +80,7 @@ export class Locale {
       }
     }
 
-    return render(translatePhrase, context)
+    return mustache.render(translatePhrase, context)
   }
 
   get = (tag: string | string[], context?: Record<string, string | number | boolean>): string => {
