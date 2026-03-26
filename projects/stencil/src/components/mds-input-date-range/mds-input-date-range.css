@@ -66,8 +66,10 @@
 
   @apply text-info-detail;
 
+  border-radius: var(--radius-2xl);
   color: rgb(var(--tone-neutral-02));
   container-type: inline-size;
+  corner-shape: var(--magma-corner-shape, round);
   cursor: text;
   display: flex;
   gap: --spacing(200);
@@ -86,10 +88,11 @@
   align-items: center;
   background-color: var(--mds-input-date-range-background);
   border: 0;
-  border-radius: var(--radius-xs);
+  border-radius: inherit;
   box-shadow: var(--mds-input-date-range-ring), var(--mds-input-date-range-shadow);
   box-sizing: border-box;
   color: inherit;
+  corner-shape: inherit;
   display: inline-flex;
   flex-wrap: wrap;
   gap: var(--mds-input-date-range-fields-gap);
@@ -144,14 +147,19 @@ mds-calendar {
   min-width: max-content;
 }
 
-.action-open-calendar {
-  --mds-button-color: var(--mds-input-date-range-icon-color);
-
+.action-open-calendar-wrapper {
+  align-items: center;
   aspect-ratio: 1;
   bottom: 0;
+  display: flex;
+  justify-content: center;
   position: absolute;
   right: 0;
   top: 0;
+}
+
+.action-open-calendar {
+  --mds-button-color: var(--mds-input-date-range-icon-color);
 }
 
 mds-dropdown {

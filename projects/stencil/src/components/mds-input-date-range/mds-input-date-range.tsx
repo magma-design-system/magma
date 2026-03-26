@@ -297,17 +297,18 @@ export class MdsInputDateRange {
             </div>
           </div>
         </div>
-
-        <mds-button
-          class="action-open-calendar"
-          variant="dark"
-          tone="text"
-          icon={miBaselineCalendarToday}
-          id="calendar-dropdown"
-          onClick={() => {
-            this.calendarKey += 1
-          }}>
-        </mds-button>
+        <div class="action-open-calendar-wrapper">
+          <mds-button
+            class="action-open-calendar"
+            variant="dark"
+            tone="text"
+            icon={miBaselineCalendarToday}
+            id="calendar-dropdown"
+            onClick={() => {
+              this.calendarKey += 1
+            }}>
+          </mds-button>
+        </div>
 
         <mds-dropdown ref={el => this.dropdownRef = el as HTMLMdsDropdownElement} target="#calendar-dropdown" auto-placement={false} placement="bottom-end">
           <mds-calendar

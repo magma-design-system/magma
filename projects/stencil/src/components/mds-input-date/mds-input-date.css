@@ -103,8 +103,10 @@
 
   @apply text-info-detail;
 
+  border-radius: var(--radius-2xl);
   color: rgb(var(--tone-neutral-02));
   container-type: inline-size;
+  corner-shape: var(--magma-corner-shape, round);
   display: flex;
   gap: --spacing(200);
   overflow: visible;
@@ -124,9 +126,10 @@
 
   background-color: transparent;
   border: 0;
-  border-radius: var(--radius-xs);
+  border-radius: inherit;
   box-sizing: border-box;
   color: inherit;
+  corner-shape: inherit;
   margin: 0;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -153,7 +156,8 @@
 
 :host(:not([slot])) .input {
   background-color: var(--mds-input-date-background);
-  border-radius: var(--radius-xs);
+
+  /* border-radius: var(--radius-xs); */
   box-shadow: var(--mds-input-date-ring), var(--mds-input-date-shadow);
   min-height: 3rem;
   padding-left: --spacing(400);
@@ -195,14 +199,19 @@
   color: rgb(var(--tone-neutral-05));
 }
 
-.action-open-calendar {
-  --mds-button-color: var(--mds-input-date-icon-color);
-
+.action-open-calendar-wrapper {
+  align-items: center;
   aspect-ratio: 1;
   bottom: 0;
+  display: flex;
+  justify-content: center;
   position: absolute;
   right: 0;
   top: 0;
+}
+
+.action-open-calendar {
+  --mds-button-color: var(--mds-input-date-icon-color);
 }
 
 :host([disabled]:not([disabled="false"])) .action-open-calendar {

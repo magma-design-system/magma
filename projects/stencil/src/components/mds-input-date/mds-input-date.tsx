@@ -165,9 +165,9 @@ export class MdsInputDate {
           onInput={this.handleChange}
           onChange={this.handleChange}
         />
-        {!this.isSlotted && <mds-button id="calendar-dropdown" class="action-open-calendar" disabled={this.disabled} variant="dark" tone="text" icon={miBaselineCalendarToday} onClick={() => {
+        {!this.isSlotted && <div class="action-open-calendar-wrapper"><mds-button id="calendar-dropdown" class="action-open-calendar" disabled={this.disabled} variant="dark" tone="text" icon={miBaselineCalendarToday} onClick={() => {
           this.calendarKey += 1
-        }}></mds-button>}
+        }}></mds-button></div>}
         <mds-input-tip lang={this.language} position="top" active={this.hasFocus}>
           { this.disabled && <mds-input-tip-item expanded variant="disabled"></mds-input-tip-item> }
           { this.readonly && <mds-input-tip-item expanded variant="readonly"></mds-input-tip-item> }
