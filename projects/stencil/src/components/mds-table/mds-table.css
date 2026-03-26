@@ -93,6 +93,7 @@
   corner-shape: inherit;
   display: flex;
   overflow: auto;
+  width: 100%;
 }
 
 .table {
