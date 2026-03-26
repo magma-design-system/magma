@@ -44,7 +44,8 @@ const CardTemplate = ({ title, initials }) => (
       <mds-button
         id="action-example"
         icon="mi/round/more-vert"
-        variant="light"
+        variant="dark"
+        tone="text"
       ></mds-button>
     </mds-card-header>
     <mds-card-media>
@@ -54,9 +55,11 @@ const CardTemplate = ({ title, initials }) => (
       ></mds-img>
     </mds-card-media>
     <mds-card-content>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin quis
-      elementum lorem. Phasellus vel quam leo. Ut eget finibus libero. Integer
-      sed odio hendrerit diam maximus blandit ac malesuada odio.
+      <mds-text>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin quis
+        elementum lorem. Phasellus vel quam leo. Ut eget finibus libero. Integer
+        sed odio hendrerit diam maximus blandit ac malesuada odio.
+      </mds-text>
     </mds-card-content>
   </mds-card>
 )
