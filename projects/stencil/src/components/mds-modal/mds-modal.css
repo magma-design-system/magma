@@ -112,23 +112,20 @@
   --mds-modal-transition-timing-funciton: var(--ease-in-out-quint);
   --mds-modal-window-background: rgb(var(--tone-neutral));
   --mds-modal-window-distance: 0;
-  --mds-modal-window-max-width: 33%;
   --mds-modal-window-height: calc(100dvh - calc(var(--mds-modal-window-distance) * 2));
   --mds-modal-window-max-height: calc(100dvh - calc(var(--mds-modal-window-distance) * 2));
-  --mds-modal-window-min-width: 400px;
   --mds-modal-window-overflow: auto;
   --mds-modal-window-radius: 0;
   --mds-modal-window-shadow: var(--shadow-2xl);
+  --mds-modal-window-max-width: 33%;
+  --mds-modal-window-min-width: 400px;
   --mds-modal-z-index: var(--magma-modal-z-index);
 
   /* private */
-  --mds-modal-custom-opened-transform: translate(0, 0);
-
-  /* private */
-  --mds-modal-transition-window-transform: translate(0);
-
-  /* private */
-  --mds-modal-window-close-margin: --spacing(2000);
+  --private-modal-width: calc(100vw - var(--private-modal-window-close-margin));
+  --private-modal-custom-opened-transform: translate(0, 0);
+  --private-modal-transition-window-transform: translate(0);
+  --private-modal-window-close-margin: --spacing(2000);
 
   @apply ease-in-out-quint;
 

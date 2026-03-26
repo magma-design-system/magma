@@ -1,12 +1,11 @@
 .action-close {
   --mds-button-color: rgb(var(--tone-neutral-10));
 
-  border-radius: 100px;
   opacity: 0;
   pointer-events: none;
   position: absolute;
   transition-duration: var(--mds-modal-transition-duration);
-  transition-property: bottom, opacity, top, transform;
+  transition-property: background-color, bottom, color, fill, opacity, top, transform;
   transition-timing-function: var(--mds-modal-transition-timing-function);
 }
 

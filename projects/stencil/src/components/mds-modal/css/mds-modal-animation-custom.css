@@ -1,7 +1,7 @@
 :host([animation="custom"]:not([opened])) {
-  --mds-modal-transition-window-transform: var(--mds-modal-custom-closed-transform);
+  --private-modal-transition-window-transform: var(--mds-modal-custom-closed-transform);
 }
 
 :host([animation="custom"][opened]) {
-  --mds-modal-transition-window-transform: var(--mds-modal-custom-opened-transform);
+  --private-modal-transition-window-transform: var(--private-modal-custom-opened-transform);
 }

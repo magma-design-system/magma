@@ -5,7 +5,7 @@
 */
 
 :host([position="top-left"][animation="slide"]:not([opened])) {
-  --mds-modal-transition-window-transform: translate(-50%, -100%);
+  --private-modal-transition-window-transform: translate(-50%, -100%);
 }
 
 /*
@@ -15,7 +15,7 @@
 */
 
 :host([position="top"][animation="slide"]:not([opened])) {
-  --mds-modal-transition-window-transform: translate(0, -100%);
+  --private-modal-transition-window-transform: translate(0, -100%);
 }
 
 /*
@@ -25,7 +25,7 @@
 */
 
 :host([position="top-right"][animation="slide"]:not([opened])) {
-  --mds-modal-transition-window-transform: translate(50%, -100%);
+  --private-modal-transition-window-transform: translate(50%, -100%);
 }
 
 /*
@@ -35,7 +35,7 @@
 */
 
 :host([position="left"][animation="slide"]:not([opened])) {
-  --mds-modal-transition-window-transform: translate(-100%, 0%);
+  --private-modal-transition-window-transform: translate(-100%, 0%);
 }
 
 /*
@@ -45,7 +45,7 @@
 */
 
 :host([position="center"][animation="slide"]:not([opened])) {
-  --mds-modal-transition-window-transform: translate(0, 25%);
+  --private-modal-transition-window-transform: translate(0, 25%);
 }
 
 /*
@@ -55,7 +55,7 @@
 */
 
 :host([position="right"][animation="slide"]:not([opened])) {
-  --mds-modal-transition-window-transform: translate(100%, 0%);
+  --private-modal-transition-window-transform: translate(100%, 0%);
 }
 
 /*
@@ -65,7 +65,7 @@
 */
 
 :host([position="bottom-left"][animation="slide"]:not([opened])) {
-  --mds-modal-transition-window-transform: translate(-50%, 100%);
+  --private-modal-transition-window-transform: translate(-50%, 100%);
 }
 
 /*
@@ -75,7 +75,7 @@
 */
 
 :host([position="bottom"][animation="slide"]:not([opened])) {
-  --mds-modal-transition-window-transform: translateY(50%);
+  --private-modal-transition-window-transform: translateY(50%);
 }
 
 /*
@@ -85,5 +85,5 @@
 */
 
 :host([position="bottom-right"][animation="slide"]:not([opened])) {
-  --mds-modal-transition-window-transform: translate(50%, 100%);
+  --private-modal-transition-window-transform: translate(50%, 100%);
 }

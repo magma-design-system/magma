@@ -56,7 +56,7 @@
 :host .window,
 :host > ::slotted([slot="window"]) {
   opacity: 0;
-  transform: var(--mds-modal-transition-window-transform);
+  transform: var(--private-modal-transition-window-transform);
   transition-duration: var(--mds-modal-transition-duration);
   transition-property: transform, opacity;
   transition-timing-function: var(--mds-modal-transition-timing-funciton);
