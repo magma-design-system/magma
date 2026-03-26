@@ -91,8 +91,8 @@
 .icon {
   @apply svg;
 
-  fill: rgb(var(--variant-primary-05));
-  width: --spacing(1200);
+  fill: rgb(var(--tone-neutral-03));
+  width: --spacing(600);
 }
 
 .action {
@@ -120,6 +120,7 @@
   @apply grid-cols-full;
 
   display: grid;
+  gap: --spacing(200);
   pointer-events: none;
   text-align: center;
 }

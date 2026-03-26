@@ -2,7 +2,7 @@ import Mime from 'mime'
 import clsx from 'clsx'
 import iconSortByStatus from '@icon/mi/baseline/category.svg'
 import iconSortById from '@icon/mi/outline/schedule.svg'
-import miBaselineAddCircle from '@icon/mi/baseline/add-circle.svg'
+import miOutlineFileUpload from '@icon/mi/outline/file-upload.svg'
 import { AttachInternals, Component, Element, Event, EventEmitter, Host, Method, Prop, State, h, Watch } from '@stencil/core'
 import { AttachmentSort, ErrorType, FileError, FileStatus, LOCALSTORAGE_KEY_USER_SORT, Status } from './meta/types'
 import { genericMimeToExt } from '@dictionary/file-extensions'
@@ -367,7 +367,7 @@ export class MdsInputUpload {
         >
           <div class="main-action">
             <div class="main-action-icon">
-              <i class="icon" innerHTML={miBaselineAddCircle}/>
+              <mds-icon class="icon" name={miOutlineFileUpload}></mds-icon>
             </div>
             <mds-text animation={this.animateText ? 'yugop' : 'none'} variant="title" typography="action" text={ this.actionTitle }></mds-text>
           </div>

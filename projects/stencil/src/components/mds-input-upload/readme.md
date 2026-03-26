@@ -81,6 +81,7 @@ Type: `Promise<void>`
 
 ### Depends on
 
+- [mds-icon](../mds-icon)
 - [mds-text](../mds-text)
 - [mds-button](../mds-button)
 - [mds-progress](../mds-progress)
@@ -91,6 +92,7 @@ Type: `Promise<void>`
 ### Graph
 ```mermaid
 graph TD;
+  mds-input-upload --> mds-icon
   mds-input-upload --> mds-text
   mds-input-upload --> mds-button
   mds-input-upload --> mds-progress
