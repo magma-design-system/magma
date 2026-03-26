@@ -2,9 +2,18 @@ import clsx from 'clsx'
 import { Component, Host, h, Prop, Event, EventEmitter, Watch, Element, Method, State } from '@stencil/core'
 import { MdsTableSelectionEventDetail } from './meta/event-detail'
 import { MdsTableRowSelection } from './meta/type'
+import { Locale } from '@common/locale'
+import localeEl from './meta/locale.el.json'
+import localeEn from './meta/locale.en.json'
+import localeEs from './meta/locale.es.json'
+import localeIt from './meta/locale.it.json'
 
 /**
  * @slot default - Put `mds-table-header`, `mds-table-body`, `mds-table-footer` element/s.
+ * @slot batch-actions - Put `mds-button` element/s.
+ * @part table-wrapper - Selects the element which wraps the table
+ * @part table - Selects the table element
+ * @part batch-actions - Selects the element which wraps the batch actions
  */
 
 @Component({
@@ -18,10 +27,18 @@ export class MdsTable {
   private rows: NodeListOf<HTMLMdsTableRowElement>
   private body: HTMLMdsTableBodyElement
   private header: HTMLMdsTableHeaderElement
+  private scrollWrapper: HTMLDivElement
   private resizeObserver?: ResizeObserver
   private tableBodyObserver: MutationObserver
   private cellsWidth: number = 0
   @State() selectedRows: MdsTableRowSelection[] = []
+  private t:Locale = new Locale({
+    el: localeEl,
+    en: localeEn,
+    es: localeEs,
+    it: localeIt,
+  })
+  @State() language: string
 
   /**
    * Specifies if the table rows are higlighted on mouseover event
@@ -114,13 +131,14 @@ export class MdsTable {
 
   private handleActions = (): void => {
     this.updateCellsSize()
-    const overlayActions = this.host.offsetWidth + this.host.scrollLeft < this.cellsWidth
+    const overlayActions = this.scrollWrapper.offsetWidth + this.scrollWrapper.scrollLeft < this.cellsWidth
     this.rows.forEach((row: HTMLMdsTableRowElement) => {
       row.overlayActions = overlayActions
     })
   }
 
   componentWillLoad (): void {
+    this.language = this.t.lang(this.host)
     this.body = this.host.querySelector('mds-table-body')!
     this.header = this.host.querySelector('mds-table-header')!
     this.rows = this.host.querySelectorAll('mds-table-row')
@@ -133,7 +151,12 @@ export class MdsTable {
   componentDidLoad (): void {
     this.header.selectable = this.selectable
     if (this.hasActions()) {
-      this.host.addEventListener('scroll', this.handleActions)
+      const scrollWrapper = this.host.shadowRoot?.querySelector('.table-wrapper')
+      if (!scrollWrapper) {
+        throw new Error('Table element table-wrapper not found')
+      }
+      this.scrollWrapper = scrollWrapper as HTMLDivElement
+      this.scrollWrapper.addEventListener('scroll', this.handleActions)
       this.resizeObserver = new ResizeObserver(this.handleActions)
       this.resizeObserver.observe(this.host)
       this.handleActions()
@@ -155,9 +178,22 @@ export class MdsTable {
   render () {
     return (
       <Host>
-        <table class={clsx('table', this.interactive && 'table--interactive')} role="table">
-          <slot onSlotchange={this.updateSlottedElements}/>
-        </table>
+        <div class="table-wrapper" part="table-wrapper">
+          <table class={clsx('table', this.interactive && 'table--interactive')} role="table" part="table">
+            <slot onSlotchange={this.updateSlottedElements}/>
+          </table>
+        </div>
+        { this.selectable &&
+          <div class={clsx('batch-actions-wrapper', this.selectedRows.length > 0 ? 'batch-actions-wrapper--has-selected-rows' : '')} part="batch-actions-wrapper">
+            <div class="batch-actions" part="batch-actions">
+              <div class="batch-actions-header">
+                <mds-text class="batch-actions-label" typography="label">{ this.t.get('batchActions') }</mds-text>
+                <mds-badge variant="dark" tone="outline" typography="label">{this.selectedRows.length}</mds-badge>
+              </div>
+              <slot name="batch-action"/>
+            </div>
+          </div>
+        }
       </Host>
     )
   }

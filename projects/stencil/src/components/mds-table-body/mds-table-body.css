@@ -59,8 +59,8 @@
   transition-property: background-color;
 }
 
-:host(:last-child) ::slotted(*:last-child) {
-  --mds-table-cell-border-color: transparent;
+:host(:last-of-type) ::slotted(*:last-of-type) {
+  --private-cell-border-color: transparent;
 }
 
 @import './css/mds-table-body-interactive.css';

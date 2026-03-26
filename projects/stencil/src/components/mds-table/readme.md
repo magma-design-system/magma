@@ -54,24 +54,37 @@ Type: `Promise<void>`
 
 ## Slots
 
-| Slot        | Description                                                             |
-| ----------- | ----------------------------------------------------------------------- |
-| `"default"` | Put `mds-table-header`, `mds-table-body`, `mds-table-footer` element/s. |
+| Slot              | Description                                                             |
+| ----------------- | ----------------------------------------------------------------------- |
+| `"batch-actions"` | Put `mds-button` element/s.                                             |
+| `"default"`       | Put `mds-table-header`, `mds-table-body`, `mds-table-footer` element/s. |
 
 
-## CSS Custom Properties
+## Shadow Parts
 
-| Name                         | Description                                |
-| ---------------------------- | ------------------------------------------ |
-| `--mds-table-actions-gap`    | Gap between table action elements.         |
-| `--mds-table-background`     | Default background color of the table.     |
-| `--mds-table-background-alt` | Alternate background color for table rows. |
-| `--mds-table-border-color`   | Color of the table border.                 |
-| `--mds-table-border-width`   | Width of the table border.                 |
-| `--mds-table-cell-padding`   | Padding inside table cells.                |
-| `--mds-table-color`          | Default text color of the table.           |
-| `--mds-table-color-alt`      | Text color for alternate table rows.       |
+| Part                      | Description                                       |
+| ------------------------- | ------------------------------------------------- |
+| `"batch-actions"`         | Selects the element which wraps the batch actions |
+| `"batch-actions-wrapper"` |                                                   |
+| `"table"`                 | Selects the table element                         |
+| `"table-wrapper"`         | Selects the element which wraps the table         |
 
+
+## Dependencies
+
+### Depends on
+
+- [mds-text](../mds-text)
+- [mds-badge](../mds-badge)
+
+### Graph
+```mermaid
+graph TD;
+  mds-table --> mds-text
+  mds-table --> mds-badge
+  mds-badge --> mds-text
+  style mds-table fill:#f9f,stroke:#333,stroke-width:4px
+```
 
 ----------------------------------------------
 

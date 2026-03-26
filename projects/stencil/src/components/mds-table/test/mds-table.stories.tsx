@@ -72,6 +72,7 @@ const TemplateRowActions: FC<ComponentRowProps> = ({ name, email, date }) => {
         icon="mi/baseline/delete"
         title="Remove record"
         variant="error"
+        tone="text"
       ></mds-button>
     </mds-table-row>
   )
@@ -310,20 +311,21 @@ const TemplateSortableActions = args => (
           icon="mi/baseline/send"
           title="Write message"
           variant="dark"
-          tone="weak"
+          tone="text"
         ></mds-button>
         <mds-button
           slot="action"
           icon="mi/baseline/call"
           title="Call number"
           variant="dark"
-          tone="weak"
+          tone="text"
         ></mds-button>
         <mds-button
           slot="action"
           icon="mi/baseline/delete"
           title="Remove record"
           variant="error"
+          tone="text"
         ></mds-button>
       </mds-table-row>
       <mds-table-row>
@@ -352,20 +354,21 @@ const TemplateSortableActions = args => (
           icon="mi/baseline/send"
           title="Write message"
           variant="dark"
-          tone="weak"
+          tone="text"
         ></mds-button>
         <mds-button
           slot="action"
           icon="mi/baseline/call"
           title="Call number"
           variant="dark"
-          tone="weak"
+          tone="text"
         ></mds-button>
         <mds-button
           slot="action"
           icon="mi/baseline/delete"
           title="Remove record"
           variant="error"
+          tone="text"
         ></mds-button>
       </mds-table-row>
       <mds-table-row>
@@ -394,20 +397,21 @@ const TemplateSortableActions = args => (
           icon="mi/baseline/send"
           title="Write message"
           variant="dark"
-          tone="weak"
+          tone="text"
         ></mds-button>
         <mds-button
           slot="action"
           icon="mi/baseline/call"
           title="Call number"
           variant="dark"
-          tone="weak"
+          tone="text"
         ></mds-button>
         <mds-button
           slot="action"
           icon="mi/baseline/delete"
           title="Remove record"
           variant="error"
+          tone="text"
         ></mds-button>
       </mds-table-row>
       <mds-table-row>
@@ -436,20 +440,21 @@ const TemplateSortableActions = args => (
           icon="mi/baseline/send"
           title="Write message"
           variant="dark"
-          tone="weak"
+          tone="text"
         ></mds-button>
         <mds-button
           slot="action"
           icon="mi/baseline/call"
           title="Call number"
           variant="dark"
-          tone="weak"
+          tone="text"
         ></mds-button>
         <mds-button
           slot="action"
           icon="mi/baseline/delete"
           title="Remove record"
           variant="error"
+          tone="text"
         ></mds-button>
       </mds-table-row>
     </mds-table-body>
@@ -494,20 +499,21 @@ const TemplateSelectable = args => (
           icon="mi/baseline/send"
           title="Write message"
           variant="dark"
-          tone="weak"
+          tone="text"
         ></mds-button>
         <mds-button
           slot="action"
           icon="mi/baseline/call"
           title="Call number"
           variant="dark"
-          tone="weak"
+          tone="text"
         ></mds-button>
         <mds-button
           slot="action"
           icon="mi/baseline/delete"
           title="Remove record"
           variant="error"
+          tone="text"
         ></mds-button>
       </mds-table-row>
       <mds-table-row value="second element">
@@ -536,20 +542,21 @@ const TemplateSelectable = args => (
           icon="mi/baseline/send"
           title="Write message"
           variant="dark"
-          tone="weak"
+          tone="text"
         ></mds-button>
         <mds-button
           slot="action"
           icon="mi/baseline/call"
           title="Call number"
           variant="dark"
-          tone="weak"
+          tone="text"
         ></mds-button>
         <mds-button
           slot="action"
           icon="mi/baseline/delete"
           title="Remove record"
           variant="error"
+          tone="text"
         ></mds-button>
       </mds-table-row>
       <mds-table-row value={33}>
@@ -578,20 +585,21 @@ const TemplateSelectable = args => (
           icon="mi/baseline/send"
           title="Write message"
           variant="dark"
-          tone="weak"
+          tone="text"
         ></mds-button>
         <mds-button
           slot="action"
           icon="mi/baseline/call"
           title="Call number"
           variant="dark"
-          tone="weak"
+          tone="text"
         ></mds-button>
         <mds-button
           slot="action"
           icon="mi/baseline/delete"
           title="Remove record"
           variant="error"
+          tone="text"
         ></mds-button>
       </mds-table-row>
       <mds-table-row value="forth element">
@@ -620,23 +628,233 @@ const TemplateSelectable = args => (
           icon="mi/baseline/send"
           title="Write message"
           variant="dark"
-          tone="weak"
+          tone="text"
         ></mds-button>
         <mds-button
           slot="action"
           icon="mi/baseline/call"
           title="Call number"
           variant="dark"
-          tone="weak"
+          tone="text"
         ></mds-button>
         <mds-button
           slot="action"
           icon="mi/baseline/delete"
           title="Remove record"
           variant="error"
+          tone="text"
         ></mds-button>
       </mds-table-row>
     </mds-table-body>
+  </mds-table>
+)
+
+const TemplateBatchActions = args => (
+  <mds-table {...args}>
+    <mds-table-header>
+      <mds-table-header-cell sortable label="Numbers"></mds-table-header-cell>
+      <mds-table-header-cell sortable label="Strings"></mds-table-header-cell>
+      <mds-table-header-cell
+        sortable
+        label="Strings from cell"
+      ></mds-table-header-cell>
+      <mds-table-header-cell label="No sortable column"></mds-table-header-cell>
+    </mds-table-header>
+    <mds-table-body>
+      <mds-table-row value="first element">
+        <mds-table-cell>
+          <mds-text class="text-nowrap" typography="detail">
+            3
+          </mds-text>
+        </mds-table-cell>
+        <mds-table-cell>
+          <mds-text class="text-nowrap" typography="detail">
+            01
+          </mds-text>
+        </mds-table-cell>
+        <mds-table-cell>
+          <mds-text class="text-nowrap" typography="detail">
+            Tower Plaza
+          </mds-text>
+        </mds-table-cell>
+        <mds-table-cell>
+          <mds-text class="text-nowrap" typography="detail">
+            +22 777 892301
+          </mds-text>
+        </mds-table-cell>
+        <mds-button
+          slot="action"
+          icon="mi/baseline/send"
+          title="Write message"
+          variant="dark"
+          tone="text"
+        ></mds-button>
+        <mds-button
+          slot="action"
+          icon="mi/baseline/call"
+          title="Call number"
+          variant="dark"
+          tone="text"
+        ></mds-button>
+        <mds-button
+          slot="action"
+          icon="mi/baseline/delete"
+          title="Remove record"
+          variant="error"
+          tone="text"
+        ></mds-button>
+      </mds-table-row>
+      <mds-table-row value="second element">
+        <mds-table-cell>
+          <mds-text class="text-nowrap" typography="detail">
+            1
+          </mds-text>
+        </mds-table-cell>
+        <mds-table-cell>
+          <mds-text class="text-nowrap" typography="detail">
+            05
+          </mds-text>
+        </mds-table-cell>
+        <mds-table-cell>
+          <mds-text class="text-nowrap" typography="detail">
+            22nd Evenue
+          </mds-text>
+        </mds-table-cell>
+        <mds-table-cell>
+          <mds-text class="text-nowrap" typography="detail">
+            +22 433 471047
+          </mds-text>
+        </mds-table-cell>
+        <mds-button
+          slot="action"
+          icon="mi/baseline/send"
+          title="Write message"
+          variant="dark"
+          tone="text"
+        ></mds-button>
+        <mds-button
+          slot="action"
+          icon="mi/baseline/call"
+          title="Call number"
+          variant="dark"
+          tone="text"
+        ></mds-button>
+        <mds-button
+          slot="action"
+          icon="mi/baseline/delete"
+          title="Remove record"
+          variant="error"
+          tone="text"
+        ></mds-button>
+      </mds-table-row>
+      <mds-table-row value={33}>
+        <mds-table-cell>
+          <mds-text class="text-nowrap" typography="detail">
+            2
+          </mds-text>
+        </mds-table-cell>
+        <mds-table-cell>
+          <mds-text class="text-nowrap" typography="detail">
+            11
+          </mds-text>
+        </mds-table-cell>
+        <mds-table-cell>
+          <mds-text class="text-nowrap" typography="detail">
+            ARK Plaza
+          </mds-text>
+        </mds-table-cell>
+        <mds-table-cell>
+          <mds-text class="text-nowrap" typography="detail">
+            +22 334 187366
+          </mds-text>
+        </mds-table-cell>
+        <mds-button
+          slot="action"
+          icon="mi/baseline/send"
+          title="Write message"
+          variant="dark"
+          tone="text"
+        ></mds-button>
+        <mds-button
+          slot="action"
+          icon="mi/baseline/call"
+          title="Call number"
+          variant="dark"
+          tone="text"
+        ></mds-button>
+        <mds-button
+          slot="action"
+          icon="mi/baseline/delete"
+          title="Remove record"
+          variant="error"
+          tone="text"
+        ></mds-button>
+      </mds-table-row>
+      <mds-table-row value="forth element">
+        <mds-table-cell>
+          <mds-text class="text-nowrap" typography="detail">
+            4
+          </mds-text>
+        </mds-table-cell>
+        <mds-table-cell>
+          <mds-text class="text-nowrap" typography="detail">
+            22
+          </mds-text>
+        </mds-table-cell>
+        <mds-table-cell>
+          <mds-text class="text-nowrap" typography="detail">
+            _Underscore Building
+          </mds-text>
+        </mds-table-cell>
+        <mds-table-cell>
+          <mds-text class="text-nowrap" typography="detail">
+            +22 333 997741
+          </mds-text>
+        </mds-table-cell>
+        <mds-button
+          slot="action"
+          icon="mi/baseline/send"
+          title="Write message"
+          variant="dark"
+          tone="text"
+        ></mds-button>
+        <mds-button
+          slot="action"
+          icon="mi/baseline/call"
+          title="Call number"
+          variant="dark"
+          tone="text"
+        ></mds-button>
+        <mds-button
+          slot="action"
+          icon="mi/baseline/delete"
+          title="Remove record"
+          variant="error"
+          tone="text"
+        ></mds-button>
+      </mds-table-row>
+    </mds-table-body>
+    <mds-button
+      slot="batch-action"
+      icon="mi/outline/send"
+      label="Write message"
+      variant="dark"
+      tone="text"
+    ></mds-button>
+    <mds-button
+      slot="batch-action"
+      icon="mi/outline/call"
+      label="Call number"
+      variant="dark"
+      tone="text"
+    ></mds-button>
+    <mds-button
+      slot="batch-action"
+      icon="mi/outline/delete"
+      label="Remove record"
+      variant="error"
+      tone="text"
+    ></mds-button>
   </mds-table>
 )
 
@@ -658,6 +876,7 @@ const AsyncSlottedRow: FC<ComponentRowProps> = ({ name, email }) => {
         icon="mi/baseline/delete"
         title="Remove record"
         variant="error"
+        tone="text"
       ></mds-button>
     </mds-table-row>
   )
@@ -713,7 +932,7 @@ const TemplateAsyncSlottedContents = () => {
             icon="mi/baseline/undo"
             onClick={() => resetData()}
             variant="dark"
-            tone="weak"
+            tone="text"
           >
             Reset list
           </mds-button>
@@ -785,4 +1004,13 @@ export const AsyncSlottedContents = {
 
 export const NestedTable = {
   render: TemplateNestedTab,
+}
+
+export const BatchActions = {
+  render: TemplateBatchActions,
+
+  args: {
+    interactive: false,
+    selectable: true,
+  },
 }

@@ -5,14 +5,14 @@
     duration-200
     ease-out;
 
-  border-top: var(--mds-table-cell-border-width) solid var(--mds-table-cell-border-color);
+  border-top: var(--private-cell-border-width) solid var(--private-cell-border-color);
   display: table-row;
   overflow: hidden;
   transition-property: border-color;
 }
 
 ::slotted(mds-table-cell) {
-  --mds-table-cell-border-color: transparent;
+  --private-cell-border-color: transparent;
 }
 
 @import './css/mds-table-footer-pref-animation.css';

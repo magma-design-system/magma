@@ -8,8 +8,8 @@
   @apply ease-out;
 
   background-color: var(--mds-table-background);
-  border-bottom: var(--mds-table-cell-border-width) solid var(--mds-table-cell-border-color) !important;
-  border-top: var(--mds-table-cell-border-width) solid transparent !important;
+  border-bottom: var(--private-cell-border-width) solid var(--private-cell-border-color) !important;
+  border-top: var(--private-cell-border-width) solid transparent !important;
   display: table-cell;
   padding: var(--mds-table-cell-padding);
   transition-duration: var(--duration-200);
