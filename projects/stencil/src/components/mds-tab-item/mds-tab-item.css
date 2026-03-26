@@ -47,9 +47,10 @@
 */
 
 :host {
-  --mds-tab-item-selected-shadow: var(inherit, var(--shadow-xl));
-  --mds-tab-item-corner-shape: var(--mds-tab-corner-shape, round);
+  --mds-tab-item-selected-shadow: inherit;
+  --mds-tab-item-radius: inherit;
 
+  corner-shape: var(--magma-corner-shape, round);
   cursor: pointer;
   display: flex;
 }

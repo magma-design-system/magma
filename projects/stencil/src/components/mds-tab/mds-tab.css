@@ -197,12 +197,6 @@
   syntax: "<time>";
 }
 
-@property --mds-tab-corner-shape {
-  inherits: false;
-  initial-value: squircle;
-  syntax: 'bevel | notch | round | scoop | square | squircle';
-}
-
 /* ❌ Not supported
 @property --mds-tab-tabs-wrapper-shadow {
   inherits: false;
@@ -225,14 +219,13 @@
 
 :host {
   --mds-tab-direction-vertical-columns: auto auto;
-  --mds-tab-corner-shape: var(--magma-corner-shape, round);
   --mds-tab-item-default-background: transparent;
   --mds-tab-item-default-color: rgb(var(--tone-neutral-03));
   --mds-tab-item-default-shadow: transparent;
   --mds-tab-item-hover-background: transparent;
   --mds-tab-item-hover-color: rgb(var(--tone-neutral-02));
   --mds-tab-item-hover-shadow: transparent;
-  --mds-tab-item-radius: var(--radius-xs);
+  --mds-tab-item-radius: calc(var(--mds-tab-tabs-radius) - var(--mds-tab-tabs-padding));
   --mds-tab-item-selected-background: rgb(var(--tone-neutral));
   --mds-tab-item-selected-color: rgb(var(--tone-neutral-01));
   --mds-tab-item-selected-shadow: var(--shadow-sm);
@@ -248,17 +241,32 @@
   --mds-tab-tabs-overflow-shadow-size: --spacing(600);
   --mds-tab-tabs-overflow-shadow: 0 0 var(--mds-tab-tabs-overflow-shadow-size) -2px rgb(0 0 0 / 0.375);
   --mds-tab-tabs-padding: --spacing(200);
-  --mds-tab-tabs-radius: var(--radius-lg);
+  --mds-tab-tabs-radius: var(--radius-2xl);
   --mds-tab-tabs-wrapper-margin: 0;
   --mds-tab-tabs-wrapper-outline-opacity: 0.7;
   --mds-tab-tabs-wrapper-shadow-color: var(--mds-tab-tabs-background);
   --mds-tab-tabs-wrapper-shadow: 0 0 0 2px var(--mds-tab-tabs-wrapper-shadow-color) inset;
   --mds-tab-transition-duration: 0.5s;
   --mds-tab-transition-timing-function: var(--ease-out-expo);
+  --mds-tab-corner-shape: var(--magma-corner-shape, round);
 
+  border-radius: var(--mds-tab-tabs-radius);
+  corner-shape: var(--mds-tab-corner-shape, round);
   display: grid;
   gap: 0 --spacing(600);
   grid-template-rows: min-content auto;
+}
+
+@container style(--mds-tab-corner-shape: round) {
+  :host {
+    --mds-tab-item-radius: calc(var(--mds-tab-tabs-radius) - calc(var(--mds-tab-tabs-padding) * 2));
+  }
+}
+
+@container style(--mds-tab-corner-shape: squircle) {
+  :host {
+    --mds-tab-item-radius: calc(var(--mds-tab-tabs-radius) - calc(var(--mds-tab-tabs-padding) * 2));
+  }
 }
 
 :host([animation='slide']) ::slotted(mds-tab-item) {
@@ -272,9 +280,9 @@
 .tabs {
   align-items: flex-start;
   background-color: var(--mds-tab-tabs-background);
-  border-radius: var(--mds-tab-tabs-radius);
+  border-radius: inherit;
   box-sizing: border-box;
-  corner-shape: var(--mds-tab-corner-shape);
+  corner-shape: inherit;
   display: flex;
   gap: var(--mds-tab-tabs-gap);
   overflow: auto;
@@ -288,8 +296,8 @@
 }
 
 .tabs-wrapper {
-  border-radius: var(--mds-tab-tabs-radius);
-  corner-shape: var(--mds-tab-corner-shape);
+  border-radius: inherit;
+  corner-shape: inherit;
   display: grid;
   flex-shrink: 0;
   margin: var(--mds-tab-tabs-wrapper-margin);
@@ -303,10 +311,10 @@
 }
 
 .tabs-wrapper::after {
-  border-radius: var(--mds-tab-tabs-radius);
+  border-radius: inherit;
   box-shadow: var(--mds-tab-tabs-wrapper-shadow);
   content: '';
-  corner-shape: var(--mds-tab-corner-shape);
+  corner-shape: inherit;
   inset: 0;
   opacity: var(--mds-tab-tabs-wrapper-outline-opacity);
   pointer-events: none;
