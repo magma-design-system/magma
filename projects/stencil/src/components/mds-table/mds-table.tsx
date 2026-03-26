@@ -30,6 +30,7 @@ export class MdsTable {
   private scrollWrapper: HTMLDivElement
   private resizeObserver?: ResizeObserver
   private tableBodyObserver: MutationObserver
+  private hasBatchActions: boolean = false
   private cellsWidth: number = 0
   @State() selectedRows: MdsTableRowSelection[] = []
   private t:Locale = new Locale({
@@ -142,6 +143,7 @@ export class MdsTable {
     this.body = this.host.querySelector('mds-table-body')!
     this.header = this.host.querySelector('mds-table-header')!
     this.rows = this.host.querySelectorAll('mds-table-row')
+    this.hasBatchActions = this.host.querySelector(':scope > [slot="batch-action"]') !== null
     this.tableBodyObserver = new MutationObserver(() => {
       this.updateSlottedElements()
     })
@@ -183,7 +185,7 @@ export class MdsTable {
             <slot onSlotchange={this.updateSlottedElements}/>
           </table>
         </div>
-        { this.selectable &&
+        { this.selectable && this.hasBatchActions &&
           <div class={clsx('batch-actions-wrapper', this.selectedRows.length > 0 ? 'batch-actions-wrapper--has-selected-rows' : '')} part="batch-actions-wrapper">
             <div class="batch-actions" part="batch-actions">
               <div class="batch-actions-header">
