@@ -42,9 +42,11 @@ const FullCardTemplate = args => (
         <mds-img src={URLs[0]} class="object-cover"></mds-img>
       </mds-card-media>
       <mds-card-content>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin quis
-        elementum lorem. Phasellus vel quam leo. Ut eget finibus libero. Integer
-        sed odio hendrerit diam maximus blandit ac malesuada odio.
+        <mds-text>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin quis
+          elementum lorem. Phasellus vel quam leo. Ut eget finibus libero. Integer
+          sed odio hendrerit diam maximus blandit ac malesuada odio.
+        </mds-text>
       </mds-card-content>
       <mds-card-footer>
         <mds-button variant="dark" tone="text">
@@ -100,11 +102,11 @@ const CustomSlotsTemplate = args => (
         ></mds-button>
       </div>
       <mds-img src={URLs[0]} slot="media" class="object-cover"></mds-img>
-      <div slot="content" class="px-400">
+      <mds-text slot="content" class="px-400">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin quis
         elementum lorem. Phasellus vel quam leo. Ut eget finibus libero. Integer
         sed odio hendrerit diam maximus blandit ac malesuada odio.
-      </div>
+      </mds-text>
       <div slot="footer" class="px-400 py-400 text-right">
         <mds-button variant="dark">Contact</mds-button>
       </div>
@@ -154,9 +156,11 @@ const LayoutHMCFTemplate = args => (
       <mds-img src={URLs[0]} class="object-cover"></mds-img>
     </mds-card-media>
     <mds-card-content>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin quis
-      elementum lorem. Phasellus vel quam leo. Ut eget finibus libero. Integer
-      sed odio hendrerit diam maximus blandit ac malesuada odio.
+      <mds-text>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin quis
+        elementum lorem. Phasellus vel quam leo. Ut eget finibus libero. Integer
+        sed odio hendrerit diam maximus blandit ac malesuada odio.
+      </mds-text>
     </mds-card-content>
     <mds-card-footer>
       <mds-button variant="dark" tone="text">
@@ -194,9 +198,11 @@ const LayoutHMCTemplate = args => (
       <mds-img src={URLs[0]} class="object-cover"></mds-img>
     </mds-card-media>
     <mds-card-content>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin quis
-      elementum lorem. Phasellus vel quam leo. Ut eget finibus libero. Integer
-      sed odio hendrerit diam maximus blandit ac malesuada odio.
+      <mds-text>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin quis
+        elementum lorem. Phasellus vel quam leo. Ut eget finibus libero. Integer
+        sed odio hendrerit diam maximus blandit ac malesuada odio.
+      </mds-text>
     </mds-card-content>
   </mds-card>
 )
@@ -260,9 +266,11 @@ const LayoutHCFTemplate = args => (
       ></mds-button>
     </mds-card-header>
     <mds-card-content class="py-0">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin quis
-      elementum lorem. Phasellus vel quam leo. Ut eget finibus libero. Integer
-      sed odio hendrerit diam maximus blandit ac malesuada odio.
+      <mds-text>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin quis
+        elementum lorem. Phasellus vel quam leo. Ut eget finibus libero. Integer
+        sed odio hendrerit diam maximus blandit ac malesuada odio.
+      </mds-text>
     </mds-card-content>
     <mds-card-footer>
       <mds-button variant="dark" tone="text">
@@ -279,9 +287,11 @@ const LayoutMCFTemplate = args => (
       <mds-img src={URLs[0]} class="object-cover"></mds-img>
     </mds-card-media>
     <mds-card-content>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin quis
-      elementum lorem. Phasellus vel quam leo. Ut eget finibus libero. Integer
-      sed odio hendrerit diam maximus blandit ac malesuada odio.
+      <mds-text>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin quis
+        elementum lorem. Phasellus vel quam leo. Ut eget finibus libero. Integer
+        sed odio hendrerit diam maximus blandit ac malesuada odio.
+      </mds-text>
     </mds-card-content>
     <mds-card-footer class="pt-0">
       <mds-button variant="dark" tone="text">
@@ -309,9 +319,11 @@ const LayoutHCTemplate = args => (
       ></mds-button>
     </mds-card-header>
     <mds-card-content class="pt-0">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin quis
-      elementum lorem. Phasellus vel quam leo. Ut eget finibus libero. Integer
-      sed odio hendrerit diam maximus blandit ac malesuada odio.
+      <mds-text>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin quis
+        elementum lorem. Phasellus vel quam leo. Ut eget finibus libero. Integer
+        sed odio hendrerit diam maximus blandit ac malesuada odio.
+      </mds-text>
     </mds-card-content>
   </mds-card>
 )
@@ -322,9 +334,11 @@ const LayoutMCTemplate = args => (
       <mds-img src={URLs[0]} class="object-cover"></mds-img>
     </mds-card-media>
     <mds-card-content>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin quis
-      elementum lorem. Phasellus vel quam leo. Ut eget finibus libero. Integer
-      sed odio hendrerit diam maximus blandit ac malesuada odio.
+      <mds-text>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin quis
+        elementum lorem. Phasellus vel quam leo. Ut eget finibus libero. Integer
+        sed odio hendrerit diam maximus blandit ac malesuada odio.
+      </mds-text>
     </mds-card-content>
   </mds-card>
 )
@@ -368,9 +382,11 @@ const LayoutHMTemplate = args => (
 const LayoutCFTemplate = args => (
   <mds-card {...args}>
     <mds-card-content>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin quis
-      elementum lorem. Phasellus vel quam leo. Ut eget finibus libero. Integer
-      sed odio hendrerit diam maximus blandit ac malesuada odio.
+      <mds-text>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin quis
+        elementum lorem. Phasellus vel quam leo. Ut eget finibus libero. Integer
+        sed odio hendrerit diam maximus blandit ac malesuada odio.
+      </mds-text>
     </mds-card-content>
     <mds-card-footer class="pt-0">
       <mds-button variant="dark" tone="text">
@@ -436,9 +452,11 @@ const LayoutHTemplate = args => (
 const LayoutCTemplate = args => (
   <mds-card {...args}>
     <mds-card-content>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin quis
-      elementum lorem. Phasellus vel quam leo. Ut eget finibus libero. Integer
-      sed odio hendrerit diam maximus blandit ac malesuada odio.
+      <mds-text>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin quis
+        elementum lorem. Phasellus vel quam leo. Ut eget finibus libero. Integer
+        sed odio hendrerit diam maximus blandit ac malesuada odio.
+      </mds-text>
     </mds-card-content>
   </mds-card>
 )

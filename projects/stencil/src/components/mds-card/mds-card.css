@@ -23,10 +23,11 @@
   --mds-card-padding: 0;
 
   background-color: rgb(var(--tone-neutral));
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-2xl);
   box-shadow: var(--shadow-md-sharp);
   container-name: mds-card;
   container-type: inline-size;
+  corner-shape: var(--magma-corner-shape, round);
   display: grid;
   min-height: --spacing(400);
   overflow: hidden;
