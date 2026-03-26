@@ -167,10 +167,12 @@ export namespace Components {
     interface MdsAccordion {
         /**
           * Specifies if an item can be closed by user
+          * @default true
          */
         "closable"?: boolean;
         /**
           * Choose if multiple siblings can be selected simultaneously
+          * @default false
          */
         "multiple"?: boolean;
     }
@@ -185,12 +187,14 @@ export namespace Components {
         "selected"?: boolean;
         /**
           * Specifies the typography of the element
+          * @default 'h5'
          */
         "typography"?: TypographyTitleType;
     }
     interface MdsAccordionTimer {
         /**
           * Sets the duration of the single accordion item
+          * @default 10000
          */
         "duration": number;
         /**
@@ -209,18 +213,22 @@ export namespace Components {
         "duration"?: number;
         /**
           * A value between 0 and 100 that rapresents the status progress
+          * @default 0
          */
         "progress": number;
         /**
           * Specifies if the accordion item is opened or not
+          * @default false
          */
         "selected": boolean;
         /**
           * Specifies the typography of the element
+          * @default 'h5'
          */
         "typography": TypographyTitleType;
         /**
           * Used automatically by MdsAccordionTimer wrapper to handle it's siblings
+          * @default 0
          */
         "uuid": number;
     }
@@ -278,6 +286,7 @@ export namespace Components {
         "src"?: string;
         /**
           * Specifies the color tone of the component
+          * @default 'weak'
          */
         "tone"?: ToneMinimalVariantType;
         /**
@@ -288,20 +297,24 @@ export namespace Components {
     interface MdsBadge {
         /**
           * Sets the tone of the color variant
+          * @default 'weak'
          */
         "tone"?: ToneSmartVariantType;
         /**
           * Specifies the typography of the element
+          * @default 'option'
          */
         "typography": TypographyLabelType;
         /**
           * Sets the theme variant colors
+          * @default 'green'
          */
         "variant"?: ThemeFullVariantType;
     }
     interface MdsBanner {
         /**
           * Shows a decoration around the banner icon
+          * @default true
          */
         "cockade"?: boolean;
         /**
@@ -318,11 +331,13 @@ export namespace Components {
         "icon"?: string;
         /**
           * Sets the tone of the color variant
+          * @default 'weak'
          */
         "tone"?: ToneMinimalVariantType;
         "updateLang": () => Promise<void>;
         /**
           * Sets the theme variant colors
+          * @default 'primary'
          */
         "variant"?: ThemeVariantType;
     }
@@ -333,18 +348,22 @@ export namespace Components {
         "alias"?: string;
         /**
           * Sets the size of the component
+          * @default 'md'
          */
         "size"?: ProgressBarSizeType;
         /**
           * The typography of the component
+          * @default 'label'
          */
         "typography"?: BenchmarkBarTypographyType;
         /**
           * A value between 0 and 100 that rapresents the benchmark
+          * @default 0
          */
         "value": number;
         /**
           * Sets the theme variant colors
+          * @default 'dark'
          */
         "variant"?: ThemeVariantType;
     }
@@ -359,6 +378,7 @@ export namespace Components {
         "date"?: string;
         /**
           * Specifies the bibliography format to rapresent the bibliography content
+          * @default 'apa'
          */
         "format": BibliographyFormatType;
         /**
@@ -375,10 +395,12 @@ export namespace Components {
         "publisher"?: string;
         /**
           * Specifies relationship between the current document and the URL
+          * @default 'external'
          */
         "rel": BibliographyRelationshipType;
         /**
           * Specifies the font typography of the element
+          * @default 'detail'
          */
         "typography": TypographyInfoType | TypographyReadType;
         /**
@@ -393,6 +415,7 @@ export namespace Components {
     interface MdsBreadcrumb {
         /**
           * Choose to display or not the back arrow button
+          * @default true
          */
         "back"?: boolean;
         "updateLang": () => Promise<void>;
@@ -410,6 +433,7 @@ export namespace Components {
         "active": boolean;
         /**
           * Specifies if the text is animated when it is rendered
+          * @default 'none'
          */
         "animation"?: TextAnimationType;
         /**
@@ -434,6 +458,7 @@ export namespace Components {
         "icon"?: string;
         /**
           * Specifies the horizontal position of the icon displayed in the button
+          * @default 'left'
          */
         "iconPosition"?: ButtonIconPositionType;
         /**
@@ -442,26 +467,32 @@ export namespace Components {
         "label"?: string;
         /**
           * Specifies the size for the button
+          * @default 'md'
          */
         "size": ButtonSizeType;
         /**
           * Specifies the target of the URL, if self or blank
+          * @default 'self'
          */
         "target": ButtonTargetType;
         /**
           * Specifies the tone variant for the button
+          * @default 'strong'
          */
         "tone"?: ToneVariantType;
         /**
           * Specifies if the text shoud be truncated or should behave as a normal text
+          * @default 'word'
          */
         "truncate"?: TypographyTruncateType;
         /**
           * The type of the button element
+          * @default 'submit'
          */
         "type"?: ButtonType;
         /**
           * Specifies the color variant for the button
+          * @default 'primary'
          */
         "variant"?: ButtonVariantType;
     }
@@ -496,26 +527,32 @@ export namespace Components {
         "label": string;
         /**
           * Specifies the size for the button
+          * @default 'md'
          */
         "size": ButtonSizeType;
         /**
           * Specifies the target of the URL, if self or blank
+          * @default 'self'
          */
         "target": ButtonTargetType;
         /**
           * Specifies the tone variant for the button
+          * @default 'strong'
          */
         "tone"?: ToneMinimalVariantType;
         /**
           * Specifies if the text shoud be truncated or should behave as a normal text
+          * @default 'word'
          */
         "truncate"?: TypographyTruncateType;
         /**
           * The type of the button element
+          * @default 'submit'
          */
         "type"?: ButtonType;
         /**
           * Specifies the color variant for the button
+          * @default 'primary'
          */
         "variant"?: ButtonDropdownVariantType;
     }
@@ -526,25 +563,32 @@ export namespace Components {
           * Specifies the end date of the selection
           * @description It's in ISO format (YYYY-MM-DD).
           * @example '2023-10-01'
+          * @default null
          */
         "endDate": string | null;
         /**
           * Specifies the minimum date of the selection
           * @description It's in ISO format (YYYY-MM-DD).
           * @example '2023-10-01'
+          * @default null
          */
         "max": string | null;
         /**
           * Specifies the minimum date of the selection
           * @description It's in ISO format (YYYY-MM-DD).
           * @example '2023-10-01'
+          * @default null
          */
         "min": string | null;
+        /**
+          * @default true
+         */
         "rangePicker": boolean;
         /**
           * Specifies the start date of the selection
           * @description It's in ISO format (YYYY-MM-DD).
           * @example '2023-10-01'
+          * @default null
          */
         "startDate": string | null;
         "updateCurrentDate": (date: string) => Promise<void>;
@@ -558,6 +602,7 @@ export namespace Components {
         "date"?: string;
         /**
           * Specifies if the cell is disabled
+          * @default undefined
          */
         "disabled"?: boolean | undefined;
         /**
@@ -566,15 +611,18 @@ export namespace Components {
         "label"?: string;
         /**
           * Specifies if the current month or a weekend
+          * @default 'current'
          */
         "month"?: CalendarCellType;
         /**
           * Specifies the selection orientation of the cell
           * @description It can be 'horizontal' or 'vertical', but currently only 'horizontal' is supported
+          * @default 'horizontal'
          */
         "orientation"?: CalendarCellSelectionOrieintationType;
         /**
           * Specifies if the selection is a preview or the final selection
+          * @default false
          */
         "preview"?: boolean;
         /**
@@ -584,6 +632,7 @@ export namespace Components {
         "selection"?: CalendarCellSelectionPositionType;
         /**
           * Specifies if the cell is today
+          * @default undefined
          */
         "today"?: boolean | undefined;
     }
@@ -600,6 +649,7 @@ export namespace Components {
     interface MdsCard {
         /**
           * Enables automatic responsive behavior based on container queries
+          * @default true
          */
         "autoGrid": boolean;
     }
@@ -622,6 +672,7 @@ export namespace Components {
         "deletable"?: boolean;
         /**
           * Sets the component disabled status
+          * @default false
          */
         "disabled"?: boolean;
         /**
@@ -634,6 +685,7 @@ export namespace Components {
         "label": string;
         /**
           * Sets if the component change is status to selected when is clicked
+          * @default false
          */
         "selectable"?: boolean;
         /**
@@ -642,67 +694,82 @@ export namespace Components {
         "selected"?: boolean;
         /**
           * Sets the color variant tone of the component
+          * @default 'strong'
          */
         "tone"?: ToneMinimalVariantType;
         "updateLang": () => Promise<void>;
         /**
           * Sets the color variant of the component
+          * @default 'primary'
          */
         "variant"?: ChipVariantType;
     }
     interface MdsDetails {
         /**
           * Specifies if the component is opened
+          * @default false
          */
         "opened": boolean;
     }
     interface MdsDropdown {
         /**
           * If set, the component will have an arrow pointing to the caller.
+          * @default true
          */
         "arrow": boolean;
         /**
           * Sets the distance between arrow and dropdown margins.
+          * @default 24
          */
         "arrowPadding": number;
         /**
           * If set, the component will be placed automatically near it's caller.
+          * @default false
          */
         "autoPlacement": boolean;
         /**
           * Specifies if the component has a backdrop background
+          * @default false
          */
         "backdrop"?: boolean;
         /**
           * Specifies the placement of the component if no space is available where it is placed.
+          * @default false
          */
         "flip": boolean;
         /**
           * Specifies if the component is triggered from the caller on mouseover or click event
+          * @default 'click'
          */
         "interaction": DropdownInteractionType;
         /**
           * Sets distance between the dropdown and the caller.
+          * @default 24
          */
         "offset": number;
         /**
           * Specifies where the component should be placed relative to the caller.
+          * @default 'bottom'
          */
         "placement": FloatingUIPlacement;
         /**
           * If set, the component will be kept inside the viewport.
+          * @default true
          */
         "shift": boolean;
         /**
           * Sets a safe area distance between the dropdown and the viewport.
+          * @default 24
          */
         "shiftPadding": number;
         /**
           * If set, the component will follow the caller smoothly, visible when the page scrolls.
+          * @default true
          */
         "smooth": boolean;
         /**
           * Sets the CSS position strategy of the component.
+          * @default 'absolute'
          */
         "strategy": FloatingUIStrategy;
         /**
@@ -711,6 +778,7 @@ export namespace Components {
         "target": string;
         /**
           * Specifies the visibility of the component.
+          * @default false
          */
         "visible": boolean;
         /**
@@ -727,6 +795,9 @@ export namespace Components {
           * @returns Promise<void> Emoji disagrees, useful for errors or unwanted results.
          */
         "disagree": (turnHappyDelay?: number) => Promise<void>;
+        /**
+          * @default 'mia'
+         */
         "name": EmojiNames;
         /**
           * @returns Promise<void> Emoji smiles, useful for confirm actions.
@@ -799,6 +870,7 @@ export namespace Components {
         "preview"?: string;
         /**
           * Sets if the download icon must be shown or not
+          * @default true
          */
         "showDownloadedIcon"?: boolean;
         /**
@@ -850,6 +922,7 @@ export namespace Components {
         "suffix"?: ExtensionSuffixType;
         /**
           * Truncates the filename shown
+          * @default 'word'
          */
         "truncate"?: TypographyTruncateType;
         "updateLang": () => Promise<void>;
@@ -905,6 +978,7 @@ export namespace Components {
     interface MdsHeader {
         /**
           * Sets the appearance of the header bar element when loaded, it can be changed depending on how `appearance-set` attribute is set
+          * @default 'stripe'
          */
         "appearance": string;
         /**
@@ -917,33 +991,40 @@ export namespace Components {
         "autoHide"?: number;
         /**
           * Sets if the backdrop is shown when the mds-header-bar attribute appearace is set to `inline`
+          * @default true
          */
         "backdrop"?: boolean;
         /**
           * Sets the visibility type of the hamburger menu of mds-header-bar
+          * @default 'mobile'
          */
         "menu": HeaderBarMenuType;
         /**
           * Sets the visibility type of the navigation menu of mds-header-bar
+          * @default 'desktop'
          */
         "nav": HeaderBarNavType;
         "setOpened": (isOpened?: boolean) => Promise<void>;
         /**
           * Sets the threshold margin to trigger hide or show status of the `mds-header-bar` when the page is scrolled
+          * @default 1
          */
         "threshold": number;
         /**
           * Sets the visibility type of the navigation menu of mds-header-bar
+          * @default 'visible'
          */
         "visibility"?: 'hidden' | 'visible';
     }
     interface MdsHeaderBar {
         /**
           * Sets the visibility type of the hamburger menu
+          * @default 'mobile'
          */
         "menu": HeaderBarMenuType;
         /**
           * Sets the visibility type of the navigation menu
+          * @default 'desktop'
          */
         "nav": HeaderBarNavType;
         "setOpened": (isOpened?: boolean) => Promise<void>;
@@ -951,6 +1032,7 @@ export namespace Components {
     interface MdsHelp {
         /**
           * If set, the component will be placed automatically near it's caller.
+          * @default true
          */
         "autoPlacement"?: boolean;
         /**
@@ -959,20 +1041,24 @@ export namespace Components {
         "icon"?: string;
         /**
           * Specifies where the component should be placed relative to the caller.
+          * @default 'top'
          */
         "placement"?: FloatingUIPlacement;
     }
     interface MdsHorizontalScroll {
         /**
           * Specifies the viewport which will display navigation controls
+          * @default 'desktop'
          */
         "controls"?: ViewportType;
         /**
           * Specifies the box’s snap position as an alignment of its snap area
+          * @default 'position'
          */
         "navigation"?: NavigationType;
         /**
           * Specifies the box’s snap position as an alignment of its snap area
+          * @default 'start'
          */
         "snap"?: SnapType;
     }
@@ -992,10 +1078,12 @@ export namespace Components {
     interface MdsImg {
         /**
           * Specifies an alternate text for an image
+          * @default ''
          */
         "alt": string;
         /**
           * Allow images from third-party sites that allow cross-origin access to be used with canvas
+          * @default 'use-credentials'
          */
         "crossorigin"?: CrossoriginType;
         /**
@@ -1004,10 +1092,12 @@ export namespace Components {
         "height"?: string;
         /**
           * Specifies whether a browser should load an image immediately or to defer loading of images until some conditions are met.
+          * @default 'lazy'
          */
         "loading"?: LoadingType;
         /**
           * Specifies which referrer information to use when fetching an image.
+          * @default 'no-referrer-when-downgrade'
          */
         "referrerpolicy"?: ReferrerpolicyType;
         /**
@@ -1036,22 +1126,27 @@ export namespace Components {
         "addValidator": (validator: MdsValidatorFn) => Promise<void>;
         /**
           * Specifies whether the element should have autocomplete enabled
+          * @default 'off'
          */
         "autocomplete"?: AutocompleteType;
         /**
           * Specifies that the element should automatically get focus when the page loads
+          * @default false
          */
         "autofocus": boolean;
         /**
           * Specifies if the spinner icon is shown, replacing the icon if present
+          * @default false
          */
         "await": boolean;
         /**
           * Specifies the icon type of the counter button when the input type is set to `number`
+          * @default 'arrow'
          */
         "controlsIcon"?: InputControlsIconType;
         /**
           * Specifies the layout of the counter button when the input type is set to `number`
+          * @default 'vertical'
          */
         "controlsLayout"?: InputControlsLayoutType;
         /**
@@ -1060,6 +1155,7 @@ export namespace Components {
         "datalist"?: string[];
         /**
           * If true, the element is displayed as disabled
+          * @default false
          */
         "disabled"?: boolean;
         "getErrors": () => Promise<MdsValidationErrors | null>;
@@ -1111,11 +1207,13 @@ export namespace Components {
         "placeholder"?: string;
         /**
           * Specifies that the element is read-only
+          * @default false
          */
         "readonly"?: boolean;
         "removeValidator": (validator: MdsValidatorFn) => Promise<void>;
         /**
           * Specifies that the element must be filled out before submitting the form
+          * @default false
          */
         "required"?: boolean;
         /**
@@ -1132,19 +1230,23 @@ export namespace Components {
         "tip"?: string;
         /**
           * Specifies the type of input element
+          * @default 'text'
          */
         "type"?: InputTextType;
         /**
           * Specifies the typography of input element
+          * @default 'detail'
          */
         "typography": TypographyInputType;
         "updateLang": () => Promise<void>;
         /**
           * Specifies the value of the input element
+          * @default ''
          */
         "value": string;
         /**
           * Sets the variant of the input field
+          * @default 'primary'
          */
         "variant"?: ThemeInputVariantType;
     }
@@ -1152,29 +1254,35 @@ export namespace Components {
         /**
           * Specifies the delay in milliseconds before closing the calendar dropdown, if the value is 0 the dropdown will not close
           * @description Default is 500
+          * @default 500
          */
         "delay": number;
         /**
           * If true, the element is displayed as disabled
+          * @default false
          */
         "disabled"?: boolean;
         "focusInput": () => Promise<void>;
         /**
           * Specifies the max date of the range, user cannot set dates after this date
           * @description It's in ISO format (YYYY-MM-DD).
+          * @default null
          */
         "max": string | null;
         /**
           * Specifies the min date of the range, user cannot set dates before this date
           * @description It's in ISO format (YYYY-MM-DD).
+          * @default null
          */
         "min": string | null;
         /**
           * Specifies that the element is read-only
+          * @default false
          */
         "readonly"?: boolean;
         /**
           * Specifies that the element must be filled out before submitting the form
+          * @default false
          */
         "required"?: boolean;
         "setValue": (value: string) => Promise<void>;
@@ -1182,10 +1290,12 @@ export namespace Components {
         /**
           * Specifies the value of the input
           * @description It's in ISO format (YYYY-MM-DD).
+          * @default ''
          */
         "value": string;
         /**
           * Sets the variant of the input field
+          * @default 'primary'
          */
         "variant"?: ThemeInputVariantType;
     }
@@ -1193,27 +1303,32 @@ export namespace Components {
         /**
           * Specifies the delay in milliseconds before closing the calendar dropdown, if the value is 0 the dropdown will not close
           * @description Default is 500
+          * @default 500
          */
         "delay": number;
         /**
           * Specifies the end date of the range
           * @description It's in ISO format (YYYY-MM-DD).
+          * @default ''
          */
         "endDate": string;
         /**
           * Specifies the max date of the range, user cannot set dates after this date
           * @description It's in ISO format (YYYY-MM-DD).
+          * @default null
          */
         "max": string | null;
         /**
           * Specifies the min date of the range, user cannot set dates before this date
           * @description It's in ISO format (YYYY-MM-DD).
+          * @default null
          */
         "min": string | null;
         "preselect": (event: EventDate) => Promise<void>;
         /**
           * Specifies the start date of the range
           * @description It's in ISO format (YYYY-MM-DD).
+          * @default ''
          */
         "startDate": string;
         "updateLang": () => Promise<void>;
@@ -1243,20 +1358,24 @@ export namespace Components {
         "message"?: string;
         /**
           * Display the variant of a message at the bottom of the input text field
+          * @default 'primary'
          */
         "variant"?: ThemeInputVariantType;
     }
     interface MdsInputOtp {
         /**
           * Automatically submits the form when the OTP code is complete
+          * @default false
          */
         "autosubmit": boolean;
         /**
           * Number of digits in the OTP code
+          * @default 6
          */
         "length": number;
         /**
           * The current value of the OTP code
+          * @default ''
          */
         "value"?: string;
     }
@@ -1271,14 +1390,17 @@ export namespace Components {
         "formatValue"?: (value: number) => string;
         /**
           * The greatest value in the range of permitted values
+          * @default 100
          */
         "max": number;
         /**
           * The lowest value in the range of permitted values
+          * @default 0
          */
         "min": number;
         /**
           * The step attribute is a number that specifies the granularity that the value must adhere to, or the special value any, which is described below.
+          * @default 1
          */
         "step": number;
         /**
@@ -1301,10 +1423,12 @@ export namespace Components {
         "defaultValue"?: string | number | null;
         /**
           * If true, the element is displayed as disabled
+          * @default false
          */
         "disabled"?: boolean;
         /**
           * Specifies if the select should allow multiple options to be selected in the list
+          * @default false
          */
         "multiple"?: boolean;
         /**
@@ -1317,6 +1441,7 @@ export namespace Components {
         "placeholder"?: string;
         /**
           * Specifies that the element must be filled out before submitting the form
+          * @default false
          */
         "required"?: boolean;
         /**
@@ -1325,11 +1450,13 @@ export namespace Components {
         "setValue": (value: string | number | null) => Promise<void>;
         /**
           * When `multiple` is set to `true`, represents the number or rows in the list that should be visible
+          * @default 0
          */
         "size"?: number;
         "updateLang": () => Promise<void>;
         /**
           * Specifies the value of the component
+          * @default ''
          */
         "value"?: string | number | null;
         /**
@@ -1356,6 +1483,7 @@ export namespace Components {
         "explicit"?: boolean;
         /**
           * The checked icon displayed
+          * @default ''
          */
         "icon": string;
         /**
@@ -1364,23 +1492,28 @@ export namespace Components {
         "indeterminate"?: boolean;
         /**
           * Specifies the name of an <input> element
+          * @default ''
          */
         "name": string;
         /**
           * Specifies the size for the switch toggle, it works only if attribute 'type' is set to 'switch'
+          * @default 'md'
          */
         "size": InputSwitchSizeType;
         /**
           * Specifies switch type: switch (default), checkbox and radio
+          * @default 'switch'
          */
         "type": InputSwitchType;
         /**
           * Specifies the font typography of the element
+          * @default 'detail'
          */
         "typography"?: TypographyInfoType | TypographyReadType;
         "updateLang": () => Promise<void>;
         /**
           * Specifies the value of the input element
+          * @default ''
          */
         "value"?: string;
         /**
@@ -1391,10 +1524,12 @@ export namespace Components {
     interface MdsInputTip {
         /**
           * Specifies if the component is active and shows expanded children or not
+          * @default false
          */
         "active"?: boolean;
         /**
           * Specifies the position of the element relative to its container
+          * @default 'top'
          */
         "position"?: InputTipPositionType;
     }
@@ -1406,12 +1541,14 @@ export namespace Components {
         "updateLang": () => Promise<void>;
         /**
           * Specifies the variant of the element
+          * @default 'required'
          */
         "variant"?: InputTipItemVariantType;
     }
     interface MdsInputUpload {
         /**
           * Defines the file types the file input should accept
+          * @default ''
          */
         "accept": string;
         /**
@@ -1428,10 +1565,12 @@ export namespace Components {
         "initialValue"?: FileList | File[];
         /**
           * Specifies the max size of a single file that can be uploaded in MB
+          * @default 20
          */
         "maxFileSize": number;
         /**
           * Specifies the max number of files that can be uploaded
+          * @default 1
          */
         "maxFiles": number;
         /**
@@ -1483,20 +1622,24 @@ export namespace Components {
         "label"?: string;
         /**
           * Specifies the page threshold which starts the text animation
+          * @default 0
          */
         "threshold"?: number;
     }
     interface MdsLabel {
         /**
           * Enables the cross icon to perform cancel/delete action on element
+          * @default false
          */
         "deletable": boolean;
         /**
           * Specifies the ARIA label for remove element
+          * @default 'Rimuovi'
          */
         "labelAction"?: string;
         /**
           * Sets the tone of the color variant
+          * @default 'text'
          */
         "tone": ToneSimpleVariantType;
         /**
@@ -1505,11 +1648,13 @@ export namespace Components {
         "truncate"?: TypographyTruncateType;
         /**
           * Specifies the typography of the element
+          * @default 'caption'
          */
         "typography": TypographyType;
         "updateLang": () => Promise<void>;
         /**
           * Sets the theme variant colors
+          * @default 'sky'
          */
         "variant": ThemeFullVariantType;
     }
@@ -1522,10 +1667,12 @@ export namespace Components {
         "icon"?: string;
         /**
           * Specifies the typography of the element
+          * @default 'detail'
          */
         "typography": TypographyInfoType | TypographyReadType;
         /**
           * Specifies the variant for `typography`
+          * @default 'info'
          */
         "variant"?: TypographyReadingVariants;
     }
@@ -1540,48 +1687,58 @@ export namespace Components {
         "label"?: string;
         /**
           * Sets the label of the component
+          * @default 'sm'
          */
         "size"?: MentionSize;
     }
     interface MdsModal {
         /**
           * Specifies if the component is animating itself or not
+          * @default 'none'
          */
         "animating"?: ModalAnimationStateType;
         /**
           * Specifies if the component is animating itself or not
+          * @default 'slide'
          */
         "animation"?: ModalAnimationStyleType;
         /**
           * Specifies if the modal shows the backdrop
+          * @default true
          */
         "backdrop"?: boolean;
         "close": () => Promise<void>;
         /**
           * Specifies if the component can be closed with close button, or also if the backdrop background is cliccked. If `strict` is selected only the close button can dismiss the component via UI. If `relaxed` is selected the component can be dismissed also by cliccking the backdrop area.
+          * @default 'relaxed'
          */
         "interaction": ModalInteractionType;
         /**
           * Specifies if the modal is opened or not
+          * @default false
          */
         "opened"?: boolean;
         /**
           * Specifies if the component prevents the body from scrolling when modal window is opened
+          * @default 'auto'
          */
         "overflow": ModalOverflowType;
         /**
           * Specifies the animation position of the modal window
+          * @default 'center'
          */
         "position"?: ModalPositionType;
     }
     interface MdsNote {
         /**
           * Enables the cross icon to perform cancel/delete action on element
+          * @default false
          */
         "deletable"?: boolean;
         "updateLang": () => Promise<void>;
         /**
           * Specifies the color variant for the element
+          * @default 'yellow'
          */
         "variant"?: LabelVariantType;
     }
@@ -1592,6 +1749,7 @@ export namespace Components {
         "max"?: number;
         /**
           * Specifies the position strategy of the notification
+          * @default 'fixed'
          */
         "strategy": StrategyType;
         /**
@@ -1600,20 +1758,24 @@ export namespace Components {
         "target": string;
         /**
           * Specifies number of notifications to display, if it set to 0, the element will be hidden
+          * @default 0
          */
         "value": number;
         /**
           * Specifies if the notification is visible
+          * @default true
          */
         "visible": boolean;
     }
     interface MdsPaginator {
         /**
           * Specifies the current page selected in the paginator
+          * @default 1
          */
         "currentPage": number;
         /**
           * Specifies the number of total pages to be handled
+          * @default 0
          */
         "pages": number;
     }
@@ -1642,11 +1804,13 @@ export namespace Components {
         "headline"?: string;
         /**
           * Sets the pointing URL of the component
+          * @default 'https://www.maggiolieditore.it/il-regolamento-europeo-sull-intelligenza-artificiale.html'
          */
         "href"?: string;
         "updateLang": () => Promise<void>;
         /**
           * Sets the variant type of the component
+          * @default 'chip'
          */
         "variant"?: PolicyAiVariant;
     }
@@ -1714,6 +1878,7 @@ export namespace Components {
     interface MdsPrefLanguage {
         /**
           * Specifies the language code based on HTML `lang` attribute  A string representing the language version as defined in {@link https://datatracker.ietf.org/doc/html/rfc5646 RFC 5646: Tags for Identifying Languages (also known as BCP 47)}.  `Examples of valid language codes include "en", "en-US", "fr", "fr-FR", "es-ES", etc.`  Supported languages are Italiano, English, Español, ελληνικά
+          * @default 'auto'
          */
         "set": string;
         /**
@@ -1729,6 +1894,7 @@ export namespace Components {
         "code": string;
         /**
           * Specifies if the element is selected
+          * @default false
          */
         "selected"?: boolean;
         "updateLang": () => Promise<void>;
@@ -1744,6 +1910,7 @@ export namespace Components {
         "size"?: TabSizeType;
         /**
           * Specifies the transition of switching from a theme to another one
+          * @default 'smooth'
          */
         "transition": PreferenceThemeTransitionType;
         "updateLang": () => Promise<void>;
@@ -1751,10 +1918,12 @@ export namespace Components {
     interface MdsPrefThemeVariant {
         /**
           * Specifies the theme name attribute A string representing the theme name, should be a simple string name or kebab kase name. `Examples of valid language codes include "magma", "maggioli-editore", etc.`
+          * @default 'default'
          */
         "name": string;
         /**
           * Specifies the theme scheme which can be 'light', 'dark' or 'all' Default is 'all' which means this theme supporto both light and dark. If you set 'light' means this theme support only light mode and will be forced and shown light colors mode only.
+          * @default 'all'
          */
         "scheme": PreferenceThemeSchemeType;
         /**
@@ -1770,14 +1939,17 @@ export namespace Components {
         "label"?: string;
         /**
           * Specifies the theme name
+          * @default 'default'
          */
         "name": string;
         /**
           * Specifies the theme scheme which can be 'light', 'dark' or 'all'
+          * @default 'all'
          */
         "scheme"?: PreferenceThemeSchemeType;
         /**
           * Specifies if the element is selected
+          * @default false
          */
         "selected"?: boolean;
         "updateLang": () => Promise<void>;
@@ -1793,6 +1965,7 @@ export namespace Components {
     interface MdsPriceTableFeaturesCell {
         /**
           * Specifies the support type which is represented
+          * @default 'text'
          */
         "type"?: PriceTableFeaturesCellType;
     }
@@ -1805,42 +1978,51 @@ export namespace Components {
     interface MdsPriceTableListItem {
         /**
           * Specifies if the feature is supported or not
+          * @default false
          */
         "supported": boolean;
         /**
           * Specifies if the feature is supported or not
+          * @default 'detail'
          */
         "typography": TypographyReadType;
     }
     interface MdsProgress {
         /**
           * Specifies the direction of the progress bar, if horizonatl or vertical
+          * @default 'horizontal'
          */
         "direction"?: DirectionType;
         /**
           * A value between 0 and 1 that rapresents the status progress
+          * @default 0
          */
         "progress": number;
         /**
           * Sets the size of the component
+          * @default 'sm'
          */
         "size"?: ProgressBarSizeType;
         /**
           * Sets the steps that can be pronounced by accessibility technologies
+          * @default 'Inizio,Un quarto,Metà,Tre quarti,Fine'
          */
         "steps": string;
         /**
           * The typography of the component
+          * @default 'option'
          */
         "typography"?: TypographyTechnicalType;
         /**
           * Sets the theme variant colors
+          * @default 'primary'
          */
         "variant"?: ThemeVariantType;
     }
     interface MdsPushNotification {
         /**
           * Specifies if the component is visible or not. behavior = manual should hide when click outside should hide when all notifications are removed should show when change visible from component or call show method  behavior = auto should hide when all notifications are removed should show when one or more notifications are added
+          * @default 'auto'
          */
         "behavior"?: 'auto' | 'manual';
         "hide": () => Promise<void>;
@@ -1854,6 +2036,7 @@ export namespace Components {
     interface MdsPushNotificationItem {
         /**
           * Specifies if the notification date format shows time passed or displays date as a static string
+          * @default 'timeago'
          */
         "dateFormat": NotificationItemDateFormatType;
         /**
@@ -1862,6 +2045,7 @@ export namespace Components {
         "datetime"?: string;
         /**
           * Specifies if the component is dismissable or not, it should be set to true by default is used with it's parent component `mds-push-notification-items`
+          * @default true
          */
         "deletable"?: boolean;
         /**
@@ -1874,10 +2058,12 @@ export namespace Components {
         "initials"?: string;
         /**
           * Specifies the message of the component
+          * @default 'Nessun messaggio disponibile'
          */
         "message": string;
         /**
           * Specifies if the `src` attribute is used to show a the image as avatar or full image
+          * @default 'image'
          */
         "preview"?: NotificationItemPreviewType;
         /**
@@ -1890,6 +2076,7 @@ export namespace Components {
         "subject"?: string;
         /**
           * Specifies the color tone of the component
+          * @default 'weak'
          */
         "tone"?: ToneMinimalVariantType;
         "updateLang": () => Promise<void>;
@@ -1901,28 +2088,34 @@ export namespace Components {
     interface MdsQuote {
         /**
           * Specifies the tag the element
+          * @default 'h3'
          */
         "tag": TypographyHeadingTagType;
         /**
           * Specifies the font typography of the element
+          * @default 'h3'
          */
         "typography": TypographyTitleType;
     }
     interface MdsRadialMenu {
         /**
           * Specifies the ending angle of the menu
+          * @default 360
          */
         "angleEnd": number;
         /**
           * Specifies the starting angle of the menu
+          * @default 0
          */
         "angleStart": number;
         /**
           * Specifies if the component has a backdrop background
+          * @default false
          */
         "backdrop"?: boolean;
         /**
           * Specifies the direction of the menu elements
+          * @default 'clockwise'
          */
         "direction": Direction;
         /**
@@ -1935,6 +2128,7 @@ export namespace Components {
         "icon"?: string;
         /**
           * Specifies how to open the menu
+          * @default 'click'
          */
         "interaction": Interaction;
         /**
@@ -1943,18 +2137,22 @@ export namespace Components {
         "opened"?: boolean;
         /**
           * Specifies the radius of the menu
+          * @default 5
          */
         "radius": number;
         /**
           * Specifies the size for the button
+          * @default 'lg'
          */
         "size": ButtonSizeType;
         /**
           * Specifies the tone variant for the button
+          * @default 'strong'
          */
         "tone"?: ToneVariantType;
         /**
           * Specifies the color variant for the button
+          * @default 'dark'
          */
         "variant"?: ButtonVariantType;
     }
@@ -1963,9 +2161,13 @@ export namespace Components {
           * The icon displayed in the button
          */
         "icon"?: string;
+        /**
+          * @default 'lg'
+         */
         "size": ButtonSizeType;
         /**
           * Specifies the tone variant for the button
+          * @default 'weak'
          */
         "tone"?: ToneVariantType;
         /**
@@ -1974,6 +2176,7 @@ export namespace Components {
         "tooltip"?: string;
         /**
           * Specifies the color variant for the button
+          * @default 'dark'
          */
         "variant"?: ButtonVariantType;
     }
@@ -1984,14 +2187,17 @@ export namespace Components {
         "icon"?: string | undefined;
         /**
           * A value between 0 and 1 that rapresents the status progress
+          * @default 0
          */
         "progress": number;
         /**
           * The typography of the component
+          * @default 'option'
          */
         "typography"?: TypographyTechnicalType;
         /**
           * Sets the theme variant colors
+          * @default 'primary'
          */
         "variant"?: ThemeVariantType;
     }
@@ -2000,6 +2206,7 @@ export namespace Components {
     interface MdsSpinner {
         /**
           * Specifies if the animation is running or not, it's required for performance reasons
+          * @default false
          */
         "running"?: boolean;
     }
@@ -2011,10 +2218,12 @@ export namespace Components {
         "hide": () => Promise<void>;
         /**
           * Specifies if the component prevents the body from scrolling when modal window is opened
+          * @default 'manual'
          */
         "overflow": ModalOverflowType;
         /**
           * Specifies the position of the status bar
+          * @default 'bottom-right'
          */
         "position": StatusBarPositionType;
         /**
@@ -2025,10 +2234,12 @@ export namespace Components {
     interface MdsStepperBar {
         /**
           * Sets the current item to the given index: 0 is none done, 1 is the first item done, last number + 1 is all items done
+          * @default 1
          */
         "itemsDone": number;
         /**
           * Specifies the navigation type
+          * @default 'none'
          */
         "navigation": StepperBarNavigationType;
     }
@@ -2039,10 +2250,12 @@ export namespace Components {
         "badge": boolean;
         /**
           * Specifies if the component is the current or not
+          * @default false
          */
         "current": boolean;
         /**
           * Specifies if the component is checked or not
+          * @default false
          */
         "done": boolean;
         /**
@@ -2051,6 +2264,7 @@ export namespace Components {
         "icon": string;
         /**
           * Specifies the icon displayed of the component when is checked
+          * @default this.icon
          */
         "iconChecked"?: string | undefined;
         /**
@@ -2063,6 +2277,7 @@ export namespace Components {
         "step": boolean;
         /**
           * Specifies the typography of the element
+          * @default 'h6'
          */
         "typography"?: TypographyType;
         "updateLang": () => Promise<void>;
@@ -2074,10 +2289,12 @@ export namespace Components {
     interface MdsTab {
         /**
           * Sets the animation type of the selection transition between `mds-tab-item` elements
+          * @default 'slide'
          */
         "animation"?: HorizontalActionsAnimationType;
         /**
           * Sets if the component distributes item vertically or horzontally
+          * @default 'horizontal'
          */
         "direction"?: DirectionType1;
         /**
@@ -2100,6 +2317,9 @@ export namespace Components {
     interface MdsTabBar {
     }
     interface MdsTabBarItem {
+        /**
+          * @default ''
+         */
         "icon": string;
         /**
           * Specifies if the component is selected or not
@@ -2107,6 +2327,7 @@ export namespace Components {
         "selected": boolean;
         /**
           * Specifies the typography of the element
+          * @default 'tip'
          */
         "typography"?: TypographySmallerType;
     }
@@ -2129,6 +2350,7 @@ export namespace Components {
         "icon"?: string;
         /**
           * Specifies the horizontal position of the icon displayed in the tab item
+          * @default 'left'
          */
         "iconPosition"?: ButtonIconPositionType;
         /**
@@ -2141,10 +2363,12 @@ export namespace Components {
         "selected"?: boolean;
         /**
           * Specifies the size for the tab item
+          * @default 'md'
          */
         "size"?: ButtonSizeType;
         /**
           * The type of the tab item element
+          * @default 'submit'
          */
         "type"?: ButtonType;
         /**
@@ -2189,6 +2413,9 @@ export namespace Components {
         "updateLang": () => Promise<void>;
     }
     interface MdsTableHeaderCell {
+        /**
+          * @default 'none'
+         */
         "direction": SortDirectionType;
         /**
           * Sets a label for the cell
@@ -2202,6 +2429,9 @@ export namespace Components {
     interface MdsTableRow {
         "interactive"?: boolean;
         "overlayActions": boolean;
+        /**
+          * @default undefined
+         */
         "selectable"?: boolean;
         "selected"?: boolean;
         "updateLang": () => Promise<void>;
@@ -2210,6 +2440,7 @@ export namespace Components {
     interface MdsText {
         /**
           * Specifies if the text is animated when it is rendered
+          * @default 'none'
          */
         "animation"?: TextAnimationType1;
         /**
@@ -2226,6 +2457,7 @@ export namespace Components {
         "truncate"?: TypographyTruncateType;
         /**
           * Specifies the font typography of the element
+          * @default 'detail'
          */
         "typography": TypographyType;
         /**
@@ -2236,18 +2468,22 @@ export namespace Components {
     interface MdsToast {
         /**
           * If set, specifies the visibility duration in milliseconds of the element inside the viewport, when the time is up the visible property will be set to false. If the duration is set to 0 the component will still visible until intentionally closed by user.
+          * @default 5000
          */
         "duration"?: number;
         /**
           * Sets position of toast
+          * @default 'bottom-center'
          */
         "position": ToastPosition;
         /**
           * Sets the tone of the color variant
+          * @default 'strong'
          */
         "tone"?: ToneMinimalVariantType;
         /**
           * Sets the theme variant colours
+          * @default 'light'
          */
         "variant"?: ThemeVariantType;
         /**
@@ -2256,34 +2492,47 @@ export namespace Components {
         "visible"?: boolean;
     }
     interface MdsTooltip {
+        /**
+          * @default true
+         */
         "arrow": boolean;
+        /**
+          * @default 4
+         */
         "arrowPadding": number;
         /**
           * If set, the component will be placed automatically near it's caller.
+          * @default true
          */
         "autoPlacement": boolean;
         /**
           * Specifies the placement of the component if no space is available where it is placed.
+          * @default false
          */
         "flip": boolean;
         /**
           * Sets distance between the tooltip and the caller.
+          * @default 12
          */
         "offset": number;
         /**
           * Specifies where the component should be placed relative to the caller.
+          * @default 'top'
          */
         "placement": FloatingUIPlacement;
         /**
           * If set, the component will be kept inside the viewport.
+          * @default true
          */
         "shift": boolean;
         /**
           * Sets a safe area distance between the tooltip and the viewport.
+          * @default 12
          */
         "shiftPadding": number;
         /**
           * Sets the CSS position strategy of the component.
+          * @default 'fixed'
          */
         "strategy": FloatingUIStrategy;
         /**
@@ -2292,20 +2541,24 @@ export namespace Components {
         "target": string;
         /**
           * Specifies the font typography of the element
+          * @default 'tip'
          */
         "typography": TypographyTooltipType;
         /**
           * Specifies the visibility of the component.
+          * @default false
          */
         "visible": boolean;
     }
     interface MdsTree {
         /**
           * Show actions on the every tree item on hover or by default.
+          * @default 'auto'
          */
         "actions"?: TreeActions;
         /**
           * Specifies if the branches depth decorations are visible.
+          * @default 'depth'
          */
         "appearance": TreeAppearance;
         /**
@@ -2322,14 +2575,17 @@ export namespace Components {
         "label": string;
         /**
           * Specifies the toggle icon of the element
+          * @default 'chevron'
          */
         "toggle": TreeIcon;
         /**
           * Specifies the toggle icon position of the element
+          * @default 'left'
          */
         "togglePosition": ButtonIconPositionType;
         /**
           * Truncate the text of the element on one single line.
+          * @default 'word'
          */
         "truncate": TypographyTruncateType;
     }
@@ -2362,6 +2618,7 @@ export namespace Components {
         "toggle"?: TreeIcon;
         /**
           * Truncate the text of the element on one single line.
+          * @default 'word'
          */
         "truncate"?: TypographyTruncateType;
         "updateLang": () => Promise<void>;
@@ -2377,6 +2634,7 @@ export namespace Components {
         "label"?: string;
         /**
           * Specifies whether a browser should load an iframe immediately or to defer loading of images until some conditions are met.
+          * @default 'lazy'
          */
         "loading"?: LoadingType;
         /**
@@ -2393,24 +2651,29 @@ export namespace Components {
         "updateLang": () => Promise<void>;
         /**
           * Specifies the delay when the tooltip will trigger
+          * @default 'info'
          */
         "variant": UsageType;
     }
     interface MdsVideoWall {
         /**
           * Specifies that the video will start playing as soon as it is ready
+          * @default true
          */
         "autoplay": true;
         /**
           * Specifies that the video will start over again, every time it is finished
+          * @default true
          */
         "loop": true;
         /**
           * Specifies that the audio output of the video should be muted
+          * @default true
          */
         "muted": true;
         /**
           * Specifies if the video has a noise overlay effect
+          * @default 'none'
          */
         "noise"?: NoiseType;
         /**
@@ -2419,6 +2682,7 @@ export namespace Components {
         "poster"?: string;
         /**
           * Specifies if and how the author thinks the video should be loaded when the page loads. Note: The preload attribute is ignored if autoplay is present
+          * @default 'auto'
          */
         "preload"?: PreloadType;
         /**
@@ -4025,10 +4289,12 @@ declare namespace LocalJSX {
     interface MdsAccordion {
         /**
           * Specifies if an item can be closed by user
+          * @default true
          */
         "closable"?: boolean;
         /**
           * Choose if multiple siblings can be selected simultaneously
+          * @default false
          */
         "multiple"?: boolean;
         /**
@@ -4059,12 +4325,14 @@ declare namespace LocalJSX {
         "selected"?: boolean;
         /**
           * Specifies the typography of the element
+          * @default 'h5'
          */
         "typography"?: TypographyTitleType;
     }
     interface MdsAccordionTimer {
         /**
           * Sets the duration of the single accordion item
+          * @default 10000
          */
         "duration"?: number;
         /**
@@ -4103,18 +4371,22 @@ declare namespace LocalJSX {
         "onMdsAccordionTimerItemSelect"?: (event: MdsAccordionTimerItemCustomEvent<MdsAccordionTimerItemEventDetail>) => void;
         /**
           * A value between 0 and 100 that rapresents the status progress
+          * @default 0
          */
         "progress"?: number;
         /**
           * Specifies if the accordion item is opened or not
+          * @default false
          */
         "selected"?: boolean;
         /**
           * Specifies the typography of the element
+          * @default 'h5'
          */
         "typography"?: TypographyTitleType;
         /**
           * Used automatically by MdsAccordionTimer wrapper to handle it's siblings
+          * @default 0
          */
         "uuid"?: number;
     }
@@ -4172,6 +4444,7 @@ declare namespace LocalJSX {
         "src"?: string;
         /**
           * Specifies the color tone of the component
+          * @default 'weak'
          */
         "tone"?: ToneMinimalVariantType;
         /**
@@ -4182,20 +4455,24 @@ declare namespace LocalJSX {
     interface MdsBadge {
         /**
           * Sets the tone of the color variant
+          * @default 'weak'
          */
         "tone"?: ToneSmartVariantType;
         /**
           * Specifies the typography of the element
+          * @default 'option'
          */
         "typography"?: TypographyLabelType;
         /**
           * Sets the theme variant colors
+          * @default 'green'
          */
         "variant"?: ThemeFullVariantType;
     }
     interface MdsBanner {
         /**
           * Shows a decoration around the banner icon
+          * @default true
          */
         "cockade"?: boolean;
         /**
@@ -4216,10 +4493,12 @@ declare namespace LocalJSX {
         "onMdsBannerClose"?: (event: MdsBannerCustomEvent<void>) => void;
         /**
           * Sets the tone of the color variant
+          * @default 'weak'
          */
         "tone"?: ToneMinimalVariantType;
         /**
           * Sets the theme variant colors
+          * @default 'primary'
          */
         "variant"?: ThemeVariantType;
     }
@@ -4230,18 +4509,22 @@ declare namespace LocalJSX {
         "alias"?: string;
         /**
           * Sets the size of the component
+          * @default 'md'
          */
         "size"?: ProgressBarSizeType;
         /**
           * The typography of the component
+          * @default 'label'
          */
         "typography"?: BenchmarkBarTypographyType;
         /**
           * A value between 0 and 100 that rapresents the benchmark
+          * @default 0
          */
         "value"?: number;
         /**
           * Sets the theme variant colors
+          * @default 'dark'
          */
         "variant"?: ThemeVariantType;
     }
@@ -4256,6 +4539,7 @@ declare namespace LocalJSX {
         "date"?: string;
         /**
           * Specifies the bibliography format to rapresent the bibliography content
+          * @default 'apa'
          */
         "format"?: BibliographyFormatType;
         /**
@@ -4272,10 +4556,12 @@ declare namespace LocalJSX {
         "publisher"?: string;
         /**
           * Specifies relationship between the current document and the URL
+          * @default 'external'
          */
         "rel"?: BibliographyRelationshipType;
         /**
           * Specifies the font typography of the element
+          * @default 'detail'
          */
         "typography"?: TypographyInfoType | TypographyReadType;
         /**
@@ -4290,6 +4576,7 @@ declare namespace LocalJSX {
     interface MdsBreadcrumb {
         /**
           * Choose to display or not the back arrow button
+          * @default true
          */
         "back"?: boolean;
         /**
@@ -4314,6 +4601,7 @@ declare namespace LocalJSX {
         "active"?: boolean;
         /**
           * Specifies if the text is animated when it is rendered
+          * @default 'none'
          */
         "animation"?: TextAnimationType;
         /**
@@ -4338,6 +4626,7 @@ declare namespace LocalJSX {
         "icon"?: string;
         /**
           * Specifies the horizontal position of the icon displayed in the button
+          * @default 'left'
          */
         "iconPosition"?: ButtonIconPositionType;
         /**
@@ -4346,26 +4635,32 @@ declare namespace LocalJSX {
         "label"?: string;
         /**
           * Specifies the size for the button
+          * @default 'md'
          */
         "size"?: ButtonSizeType;
         /**
           * Specifies the target of the URL, if self or blank
+          * @default 'self'
          */
         "target"?: ButtonTargetType;
         /**
           * Specifies the tone variant for the button
+          * @default 'strong'
          */
         "tone"?: ToneVariantType;
         /**
           * Specifies if the text shoud be truncated or should behave as a normal text
+          * @default 'word'
          */
         "truncate"?: TypographyTruncateType;
         /**
           * The type of the button element
+          * @default 'submit'
          */
         "type"?: ButtonType;
         /**
           * Specifies the color variant for the button
+          * @default 'primary'
          */
         "variant"?: ButtonVariantType;
     }
@@ -4400,26 +4695,32 @@ declare namespace LocalJSX {
         "label"?: string;
         /**
           * Specifies the size for the button
+          * @default 'md'
          */
         "size"?: ButtonSizeType;
         /**
           * Specifies the target of the URL, if self or blank
+          * @default 'self'
          */
         "target"?: ButtonTargetType;
         /**
           * Specifies the tone variant for the button
+          * @default 'strong'
          */
         "tone"?: ToneMinimalVariantType;
         /**
           * Specifies if the text shoud be truncated or should behave as a normal text
+          * @default 'word'
          */
         "truncate"?: TypographyTruncateType;
         /**
           * The type of the button element
+          * @default 'submit'
          */
         "type"?: ButtonType;
         /**
           * Specifies the color variant for the button
+          * @default 'primary'
          */
         "variant"?: ButtonDropdownVariantType;
     }
@@ -4430,27 +4731,34 @@ declare namespace LocalJSX {
           * Specifies the end date of the selection
           * @description It's in ISO format (YYYY-MM-DD).
           * @example '2023-10-01'
+          * @default null
          */
         "endDate"?: string | null;
         /**
           * Specifies the minimum date of the selection
           * @description It's in ISO format (YYYY-MM-DD).
           * @example '2023-10-01'
+          * @default null
          */
         "max"?: string | null;
         /**
           * Specifies the minimum date of the selection
           * @description It's in ISO format (YYYY-MM-DD).
           * @example '2023-10-01'
+          * @default null
          */
         "min"?: string | null;
         "onMdsCalendarChange"?: (event: MdsCalendarCustomEvent<{startDate: string, endDate?: string}>) => void;
         "onMdsCalendarPreselect"?: (event: MdsCalendarCustomEvent<void>) => void;
+        /**
+          * @default true
+         */
         "rangePicker"?: boolean;
         /**
           * Specifies the start date of the selection
           * @description It's in ISO format (YYYY-MM-DD).
           * @example '2023-10-01'
+          * @default null
          */
         "startDate"?: string | null;
     }
@@ -4462,6 +4770,7 @@ declare namespace LocalJSX {
         "date"?: string;
         /**
           * Specifies if the cell is disabled
+          * @default undefined
          */
         "disabled"?: boolean | undefined;
         /**
@@ -4470,15 +4779,18 @@ declare namespace LocalJSX {
         "label"?: string;
         /**
           * Specifies if the current month or a weekend
+          * @default 'current'
          */
         "month"?: CalendarCellType;
         /**
           * Specifies the selection orientation of the cell
           * @description It can be 'horizontal' or 'vertical', but currently only 'horizontal' is supported
+          * @default 'horizontal'
          */
         "orientation"?: CalendarCellSelectionOrieintationType;
         /**
           * Specifies if the selection is a preview or the final selection
+          * @default false
          */
         "preview"?: boolean;
         /**
@@ -4488,6 +4800,7 @@ declare namespace LocalJSX {
         "selection"?: CalendarCellSelectionPositionType;
         /**
           * Specifies if the cell is today
+          * @default undefined
          */
         "today"?: boolean | undefined;
     }
@@ -4504,6 +4817,7 @@ declare namespace LocalJSX {
     interface MdsCard {
         /**
           * Enables automatic responsive behavior based on container queries
+          * @default true
          */
         "autoGrid"?: boolean;
     }
@@ -4526,6 +4840,7 @@ declare namespace LocalJSX {
         "deletable"?: boolean;
         /**
           * Sets the component disabled status
+          * @default false
          */
         "disabled"?: boolean;
         /**
@@ -4550,6 +4865,7 @@ declare namespace LocalJSX {
         "onMdsChipSelect"?: (event: MdsChipCustomEvent<MdsChipEvent>) => void;
         /**
           * Sets if the component change is status to selected when is clicked
+          * @default false
          */
         "selectable"?: boolean;
         /**
@@ -4558,10 +4874,12 @@ declare namespace LocalJSX {
         "selected"?: boolean;
         /**
           * Sets the color variant tone of the component
+          * @default 'strong'
          */
         "tone"?: ToneMinimalVariantType;
         /**
           * Sets the color variant of the component
+          * @default 'primary'
          */
         "variant"?: ChipVariantType;
     }
@@ -4572,36 +4890,44 @@ declare namespace LocalJSX {
         "onMdsDetailsChange"?: (event: MdsDetailsCustomEvent<boolean>) => void;
         /**
           * Specifies if the component is opened
+          * @default false
          */
         "opened"?: boolean;
     }
     interface MdsDropdown {
         /**
           * If set, the component will have an arrow pointing to the caller.
+          * @default true
          */
         "arrow"?: boolean;
         /**
           * Sets the distance between arrow and dropdown margins.
+          * @default 24
          */
         "arrowPadding"?: number;
         /**
           * If set, the component will be placed automatically near it's caller.
+          * @default false
          */
         "autoPlacement"?: boolean;
         /**
           * Specifies if the component has a backdrop background
+          * @default false
          */
         "backdrop"?: boolean;
         /**
           * Specifies the placement of the component if no space is available where it is placed.
+          * @default false
          */
         "flip"?: boolean;
         /**
           * Specifies if the component is triggered from the caller on mouseover or click event
+          * @default 'click'
          */
         "interaction"?: DropdownInteractionType;
         /**
           * Sets distance between the dropdown and the caller.
+          * @default 24
          */
         "offset"?: number;
         /**
@@ -4618,22 +4944,27 @@ declare namespace LocalJSX {
         "onMdsDropdownVisible"?: (event: MdsDropdownCustomEvent<MdsDropdownEventDetail>) => void;
         /**
           * Specifies where the component should be placed relative to the caller.
+          * @default 'bottom'
          */
         "placement"?: FloatingUIPlacement;
         /**
           * If set, the component will be kept inside the viewport.
+          * @default true
          */
         "shift"?: boolean;
         /**
           * Sets a safe area distance between the dropdown and the viewport.
+          * @default 24
          */
         "shiftPadding"?: number;
         /**
           * If set, the component will follow the caller smoothly, visible when the page scrolls.
+          * @default true
          */
         "smooth"?: boolean;
         /**
           * Sets the CSS position strategy of the component.
+          * @default 'absolute'
          */
         "strategy"?: FloatingUIStrategy;
         /**
@@ -4642,6 +4973,7 @@ declare namespace LocalJSX {
         "target": string;
         /**
           * Specifies the visibility of the component.
+          * @default false
          */
         "visible"?: boolean;
         /**
@@ -4650,6 +4982,9 @@ declare namespace LocalJSX {
         "zIndex"?: number;
     }
     interface MdsEmoji {
+        /**
+          * @default 'mia'
+         */
         "name"?: EmojiNames;
     }
     interface MdsEntity {
@@ -4701,6 +5036,7 @@ declare namespace LocalJSX {
         "preview"?: string;
         /**
           * Sets if the download icon must be shown or not
+          * @default true
          */
         "showDownloadedIcon"?: boolean;
         /**
@@ -4759,6 +5095,7 @@ declare namespace LocalJSX {
         "suffix"?: ExtensionSuffixType;
         /**
           * Truncates the filename shown
+          * @default 'word'
          */
         "truncate"?: TypographyTruncateType;
         /**
@@ -4821,6 +5158,7 @@ declare namespace LocalJSX {
     interface MdsHeader {
         /**
           * Sets the appearance of the header bar element when loaded, it can be changed depending on how `appearance-set` attribute is set
+          * @default 'stripe'
          */
         "appearance"?: string;
         /**
@@ -4833,14 +5171,17 @@ declare namespace LocalJSX {
         "autoHide"?: number;
         /**
           * Sets if the backdrop is shown when the mds-header-bar attribute appearace is set to `inline`
+          * @default true
          */
         "backdrop"?: boolean;
         /**
           * Sets the visibility type of the hamburger menu of mds-header-bar
+          * @default 'mobile'
          */
         "menu"?: HeaderBarMenuType;
         /**
           * Sets the visibility type of the navigation menu of mds-header-bar
+          * @default 'desktop'
          */
         "nav"?: HeaderBarNavType;
         /**
@@ -4853,20 +5194,24 @@ declare namespace LocalJSX {
         "onMdsHeaderVisibilityChange"?: (event: MdsHeaderCustomEvent<MdsHeaderVisibilityEventDetail>) => void;
         /**
           * Sets the threshold margin to trigger hide or show status of the `mds-header-bar` when the page is scrolled
+          * @default 1
          */
         "threshold"?: number;
         /**
           * Sets the visibility type of the navigation menu of mds-header-bar
+          * @default 'visible'
          */
         "visibility"?: 'hidden' | 'visible';
     }
     interface MdsHeaderBar {
         /**
           * Sets the visibility type of the hamburger menu
+          * @default 'mobile'
          */
         "menu"?: HeaderBarMenuType;
         /**
           * Sets the visibility type of the navigation menu
+          * @default 'desktop'
          */
         "nav"?: HeaderBarNavType;
         /**
@@ -4877,6 +5222,7 @@ declare namespace LocalJSX {
     interface MdsHelp {
         /**
           * If set, the component will be placed automatically near it's caller.
+          * @default true
          */
         "autoPlacement"?: boolean;
         /**
@@ -4885,20 +5231,24 @@ declare namespace LocalJSX {
         "icon"?: string;
         /**
           * Specifies where the component should be placed relative to the caller.
+          * @default 'top'
          */
         "placement"?: FloatingUIPlacement;
     }
     interface MdsHorizontalScroll {
         /**
           * Specifies the viewport which will display navigation controls
+          * @default 'desktop'
          */
         "controls"?: ViewportType;
         /**
           * Specifies the box’s snap position as an alignment of its snap area
+          * @default 'position'
          */
         "navigation"?: NavigationType;
         /**
           * Specifies the box’s snap position as an alignment of its snap area
+          * @default 'start'
          */
         "snap"?: SnapType;
     }
@@ -4913,10 +5263,12 @@ declare namespace LocalJSX {
     interface MdsImg {
         /**
           * Specifies an alternate text for an image
+          * @default ''
          */
         "alt"?: string;
         /**
           * Allow images from third-party sites that allow cross-origin access to be used with canvas
+          * @default 'use-credentials'
          */
         "crossorigin"?: CrossoriginType;
         /**
@@ -4925,6 +5277,7 @@ declare namespace LocalJSX {
         "height"?: string;
         /**
           * Specifies whether a browser should load an image immediately or to defer loading of images until some conditions are met.
+          * @default 'lazy'
          */
         "loading"?: LoadingType;
         /**
@@ -4937,6 +5290,7 @@ declare namespace LocalJSX {
         "onMdsImgLoadSuccess"?: (event: MdsImgCustomEvent<MdsImgEventDetail>) => void;
         /**
           * Specifies which referrer information to use when fetching an image.
+          * @default 'no-referrer-when-downgrade'
          */
         "referrerpolicy"?: ReferrerpolicyType;
         /**
@@ -4963,22 +5317,27 @@ declare namespace LocalJSX {
     interface MdsInput {
         /**
           * Specifies whether the element should have autocomplete enabled
+          * @default 'off'
          */
         "autocomplete"?: AutocompleteType;
         /**
           * Specifies that the element should automatically get focus when the page loads
+          * @default false
          */
         "autofocus"?: boolean;
         /**
           * Specifies if the spinner icon is shown, replacing the icon if present
+          * @default false
          */
         "await"?: boolean;
         /**
           * Specifies the icon type of the counter button when the input type is set to `number`
+          * @default 'arrow'
          */
         "controlsIcon"?: InputControlsIconType;
         /**
           * Specifies the layout of the counter button when the input type is set to `number`
+          * @default 'vertical'
          */
         "controlsLayout"?: InputControlsLayoutType;
         /**
@@ -4987,6 +5346,7 @@ declare namespace LocalJSX {
         "datalist"?: string[];
         /**
           * If true, the element is displayed as disabled
+          * @default false
          */
         "disabled"?: boolean;
         /**
@@ -5051,10 +5411,12 @@ declare namespace LocalJSX {
         "placeholder"?: string;
         /**
           * Specifies that the element is read-only
+          * @default false
          */
         "readonly"?: boolean;
         /**
           * Specifies that the element must be filled out before submitting the form
+          * @default false
          */
         "required"?: boolean;
         /**
@@ -5067,18 +5429,22 @@ declare namespace LocalJSX {
         "tip"?: string;
         /**
           * Specifies the type of input element
+          * @default 'text'
          */
         "type"?: InputTextType;
         /**
           * Specifies the typography of input element
+          * @default 'detail'
          */
         "typography"?: TypographyInputType;
         /**
           * Specifies the value of the input element
+          * @default ''
          */
         "value"?: string;
         /**
           * Sets the variant of the input field
+          * @default 'primary'
          */
         "variant"?: ThemeInputVariantType;
     }
@@ -5086,38 +5452,46 @@ declare namespace LocalJSX {
         /**
           * Specifies the delay in milliseconds before closing the calendar dropdown, if the value is 0 the dropdown will not close
           * @description Default is 500
+          * @default 500
          */
         "delay"?: number;
         /**
           * If true, the element is displayed as disabled
+          * @default false
          */
         "disabled"?: boolean;
         /**
           * Specifies the max date of the range, user cannot set dates after this date
           * @description It's in ISO format (YYYY-MM-DD).
+          * @default null
          */
         "max"?: string | null;
         /**
           * Specifies the min date of the range, user cannot set dates before this date
           * @description It's in ISO format (YYYY-MM-DD).
+          * @default null
          */
         "min"?: string | null;
         "onMdsInputDateSelect"?: (event: MdsInputDateCustomEvent<string>) => void;
         /**
           * Specifies that the element is read-only
+          * @default false
          */
         "readonly"?: boolean;
         /**
           * Specifies that the element must be filled out before submitting the form
+          * @default false
          */
         "required"?: boolean;
         /**
           * Specifies the value of the input
           * @description It's in ISO format (YYYY-MM-DD).
+          * @default ''
          */
         "value"?: string;
         /**
           * Sets the variant of the input field
+          * @default 'primary'
          */
         "variant"?: ThemeInputVariantType;
     }
@@ -5125,21 +5499,25 @@ declare namespace LocalJSX {
         /**
           * Specifies the delay in milliseconds before closing the calendar dropdown, if the value is 0 the dropdown will not close
           * @description Default is 500
+          * @default 500
          */
         "delay"?: number;
         /**
           * Specifies the end date of the range
           * @description It's in ISO format (YYYY-MM-DD).
+          * @default ''
          */
         "endDate"?: string;
         /**
           * Specifies the max date of the range, user cannot set dates after this date
           * @description It's in ISO format (YYYY-MM-DD).
+          * @default null
          */
         "max"?: string | null;
         /**
           * Specifies the min date of the range, user cannot set dates before this date
           * @description It's in ISO format (YYYY-MM-DD).
+          * @default null
          */
         "min"?: string | null;
         "onMdsInputDateRangeSelect"?: (event: MdsInputDateRangeCustomEvent<{ startDate: string, endDate: string }>) => void;
@@ -5147,6 +5525,7 @@ declare namespace LocalJSX {
         /**
           * Specifies the start date of the range
           * @description It's in ISO format (YYYY-MM-DD).
+          * @default ''
          */
         "startDate"?: string;
     }
@@ -5175,20 +5554,24 @@ declare namespace LocalJSX {
         "message"?: string;
         /**
           * Display the variant of a message at the bottom of the input text field
+          * @default 'primary'
          */
         "variant"?: ThemeInputVariantType;
     }
     interface MdsInputOtp {
         /**
           * Automatically submits the form when the OTP code is complete
+          * @default false
          */
         "autosubmit"?: boolean;
         /**
           * Number of digits in the OTP code
+          * @default 6
          */
         "length"?: number;
         /**
           * The current value of the OTP code
+          * @default ''
          */
         "value"?: string;
     }
@@ -5203,10 +5586,12 @@ declare namespace LocalJSX {
         "formatValue"?: (value: number) => string;
         /**
           * The greatest value in the range of permitted values
+          * @default 100
          */
         "max"?: number;
         /**
           * The lowest value in the range of permitted values
+          * @default 0
          */
         "min"?: number;
         /**
@@ -5215,6 +5600,7 @@ declare namespace LocalJSX {
         "onMdsInputRangeChange"?: (event: MdsInputRangeCustomEvent<number>) => void;
         /**
           * The step attribute is a number that specifies the granularity that the value must adhere to, or the special value any, which is described below.
+          * @default 1
          */
         "step"?: number;
         /**
@@ -5237,10 +5623,12 @@ declare namespace LocalJSX {
         "defaultValue"?: string | number | null;
         /**
           * If true, the element is displayed as disabled
+          * @default false
          */
         "disabled"?: boolean;
         /**
           * Specifies if the select should allow multiple options to be selected in the list
+          * @default false
          */
         "multiple"?: boolean;
         /**
@@ -5257,14 +5645,17 @@ declare namespace LocalJSX {
         "placeholder"?: string;
         /**
           * Specifies that the element must be filled out before submitting the form
+          * @default false
          */
         "required"?: boolean;
         /**
           * When `multiple` is set to `true`, represents the number or rows in the list that should be visible
+          * @default 0
          */
         "size"?: number;
         /**
           * Specifies the value of the component
+          * @default ''
          */
         "value"?: string | number | null;
         /**
@@ -5291,6 +5682,7 @@ declare namespace LocalJSX {
         "explicit"?: boolean;
         /**
           * The checked icon displayed
+          * @default ''
          */
         "icon"?: string;
         /**
@@ -5299,6 +5691,7 @@ declare namespace LocalJSX {
         "indeterminate"?: boolean;
         /**
           * Specifies the name of an <input> element
+          * @default ''
          */
         "name"?: string;
         /**
@@ -5307,18 +5700,22 @@ declare namespace LocalJSX {
         "onMdsInputSwitchChange"?: (event: MdsInputSwitchCustomEvent<MdsInputSwitchEventDetail>) => void;
         /**
           * Specifies the size for the switch toggle, it works only if attribute 'type' is set to 'switch'
+          * @default 'md'
          */
         "size"?: InputSwitchSizeType;
         /**
           * Specifies switch type: switch (default), checkbox and radio
+          * @default 'switch'
          */
         "type"?: InputSwitchType;
         /**
           * Specifies the font typography of the element
+          * @default 'detail'
          */
         "typography"?: TypographyInfoType | TypographyReadType;
         /**
           * Specifies the value of the input element
+          * @default ''
          */
         "value"?: string;
         /**
@@ -5329,10 +5726,12 @@ declare namespace LocalJSX {
     interface MdsInputTip {
         /**
           * Specifies if the component is active and shows expanded children or not
+          * @default false
          */
         "active"?: boolean;
         /**
           * Specifies the position of the element relative to its container
+          * @default 'top'
          */
         "position"?: InputTipPositionType;
     }
@@ -5343,12 +5742,14 @@ declare namespace LocalJSX {
         "expanded"?: boolean;
         /**
           * Specifies the variant of the element
+          * @default 'required'
          */
         "variant"?: InputTipItemVariantType;
     }
     interface MdsInputUpload {
         /**
           * Defines the file types the file input should accept
+          * @default ''
          */
         "accept"?: string;
         /**
@@ -5357,10 +5758,12 @@ declare namespace LocalJSX {
         "initialValue"?: FileList | File[];
         /**
           * Specifies the max size of a single file that can be uploaded in MB
+          * @default 20
          */
         "maxFileSize"?: number;
         /**
           * Specifies the max number of files that can be uploaded
+          * @default 1
          */
         "maxFiles"?: number;
         /**
@@ -5409,16 +5812,19 @@ declare namespace LocalJSX {
         "label"?: string;
         /**
           * Specifies the page threshold which starts the text animation
+          * @default 0
          */
         "threshold"?: number;
     }
     interface MdsLabel {
         /**
           * Enables the cross icon to perform cancel/delete action on element
+          * @default false
          */
         "deletable"?: boolean;
         /**
           * Specifies the ARIA label for remove element
+          * @default 'Rimuovi'
          */
         "labelAction"?: string;
         /**
@@ -5427,6 +5833,7 @@ declare namespace LocalJSX {
         "onMdsLabelDelete"?: (event: MdsLabelCustomEvent<void>) => void;
         /**
           * Sets the tone of the color variant
+          * @default 'text'
          */
         "tone"?: ToneSimpleVariantType;
         /**
@@ -5435,10 +5842,12 @@ declare namespace LocalJSX {
         "truncate"?: TypographyTruncateType;
         /**
           * Specifies the typography of the element
+          * @default 'caption'
          */
         "typography"?: TypographyType;
         /**
           * Sets the theme variant colors
+          * @default 'sky'
          */
         "variant"?: ThemeFullVariantType;
     }
@@ -5451,10 +5860,12 @@ declare namespace LocalJSX {
         "icon"?: string;
         /**
           * Specifies the typography of the element
+          * @default 'detail'
          */
         "typography"?: TypographyInfoType | TypographyReadType;
         /**
           * Specifies the variant for `typography`
+          * @default 'info'
          */
         "variant"?: TypographyReadingVariants;
     }
@@ -5469,24 +5880,29 @@ declare namespace LocalJSX {
         "label"?: string;
         /**
           * Sets the label of the component
+          * @default 'sm'
          */
         "size"?: MentionSize;
     }
     interface MdsModal {
         /**
           * Specifies if the component is animating itself or not
+          * @default 'none'
          */
         "animating"?: ModalAnimationStateType;
         /**
           * Specifies if the component is animating itself or not
+          * @default 'slide'
          */
         "animation"?: ModalAnimationStyleType;
         /**
           * Specifies if the modal shows the backdrop
+          * @default true
          */
         "backdrop"?: boolean;
         /**
           * Specifies if the component can be closed with close button, or also if the backdrop background is cliccked. If `strict` is selected only the close button can dismiss the component via UI. If `relaxed` is selected the component can be dismissed also by cliccking the backdrop area.
+          * @default 'relaxed'
          */
         "interaction"?: ModalInteractionType;
         /**
@@ -5507,20 +5923,24 @@ declare namespace LocalJSX {
         "onMdsModalShow"?: (event: MdsModalCustomEvent<void>) => void;
         /**
           * Specifies if the modal is opened or not
+          * @default false
          */
         "opened"?: boolean;
         /**
           * Specifies if the component prevents the body from scrolling when modal window is opened
+          * @default 'auto'
          */
         "overflow"?: ModalOverflowType;
         /**
           * Specifies the animation position of the modal window
+          * @default 'center'
          */
         "position"?: ModalPositionType;
     }
     interface MdsNote {
         /**
           * Enables the cross icon to perform cancel/delete action on element
+          * @default false
          */
         "deletable"?: boolean;
         /**
@@ -5529,6 +5949,7 @@ declare namespace LocalJSX {
         "onMdsNoteDelete"?: (event: MdsNoteCustomEvent<void>) => void;
         /**
           * Specifies the color variant for the element
+          * @default 'yellow'
          */
         "variant"?: LabelVariantType;
     }
@@ -5539,6 +5960,7 @@ declare namespace LocalJSX {
         "max"?: number;
         /**
           * Specifies the position strategy of the notification
+          * @default 'fixed'
          */
         "strategy"?: StrategyType;
         /**
@@ -5547,16 +5969,19 @@ declare namespace LocalJSX {
         "target"?: string;
         /**
           * Specifies number of notifications to display, if it set to 0, the element will be hidden
+          * @default 0
          */
         "value"?: number;
         /**
           * Specifies if the notification is visible
+          * @default true
          */
         "visible"?: boolean;
     }
     interface MdsPaginator {
         /**
           * Specifies the current page selected in the paginator
+          * @default 1
          */
         "currentPage"?: number;
         /**
@@ -5565,6 +5990,7 @@ declare namespace LocalJSX {
         "onMdsPaginatorChange"?: (event: MdsPaginatorCustomEvent<MdsPaginatorEventDetail>) => void;
         /**
           * Specifies the number of total pages to be handled
+          * @default 0
          */
         "pages"?: number;
     }
@@ -5593,10 +6019,12 @@ declare namespace LocalJSX {
         "headline"?: string;
         /**
           * Sets the pointing URL of the component
+          * @default 'https://www.maggiolieditore.it/il-regolamento-europeo-sull-intelligenza-artificiale.html'
          */
         "href"?: string;
         /**
           * Sets the variant type of the component
+          * @default 'chip'
          */
         "variant"?: PolicyAiVariant;
     }
@@ -5680,6 +6108,7 @@ declare namespace LocalJSX {
         "onMdsPrefLanguageChange"?: (event: MdsPrefLanguageCustomEvent<MdsPrefLanguageEventDetail>) => void;
         /**
           * Specifies the language code based on HTML `lang` attribute  A string representing the language version as defined in {@link https://datatracker.ietf.org/doc/html/rfc5646 RFC 5646: Tags for Identifying Languages (also known as BCP 47)}.  `Examples of valid language codes include "en", "en-US", "fr", "fr-FR", "es-ES", etc.`  Supported languages are Italiano, English, Español, ελληνικά
+          * @default 'auto'
          */
         "set"?: string;
         /**
@@ -5698,6 +6127,7 @@ declare namespace LocalJSX {
         "onMdsPrefLanguageItemSelect"?: (event: MdsPrefLanguageItemCustomEvent<MdsPrefLanguageEventDetail>) => void;
         /**
           * Specifies if the element is selected
+          * @default false
          */
         "selected"?: boolean;
     }
@@ -5716,12 +6146,14 @@ declare namespace LocalJSX {
         "size"?: TabSizeType;
         /**
           * Specifies the transition of switching from a theme to another one
+          * @default 'smooth'
          */
         "transition"?: PreferenceThemeTransitionType;
     }
     interface MdsPrefThemeVariant {
         /**
           * Specifies the theme name attribute A string representing the theme name, should be a simple string name or kebab kase name. `Examples of valid language codes include "magma", "maggioli-editore", etc.`
+          * @default 'default'
          */
         "name"?: string;
         /**
@@ -5734,6 +6166,7 @@ declare namespace LocalJSX {
         "onMdsPrefThemeVariantChange"?: (event: MdsPrefThemeVariantCustomEvent<MdsPrefThemeVariantEventDetail>) => void;
         /**
           * Specifies the theme scheme which can be 'light', 'dark' or 'all' Default is 'all' which means this theme supporto both light and dark. If you set 'light' means this theme support only light mode and will be forced and shown light colors mode only.
+          * @default 'all'
          */
         "scheme"?: PreferenceThemeSchemeType;
         /**
@@ -5748,6 +6181,7 @@ declare namespace LocalJSX {
         "label"?: string;
         /**
           * Specifies the theme name
+          * @default 'default'
          */
         "name"?: string;
         /**
@@ -5756,10 +6190,12 @@ declare namespace LocalJSX {
         "onMdsPrefThemeVariantItemSelect"?: (event: MdsPrefThemeVariantItemCustomEvent<MdsPrefThemeVariantEventDetail>) => void;
         /**
           * Specifies the theme scheme which can be 'light', 'dark' or 'all'
+          * @default 'all'
          */
         "scheme"?: PreferenceThemeSchemeType;
         /**
           * Specifies if the element is selected
+          * @default false
          */
         "selected"?: boolean;
     }
@@ -5774,6 +6210,7 @@ declare namespace LocalJSX {
     interface MdsPriceTableFeaturesCell {
         /**
           * Specifies the support type which is represented
+          * @default 'text'
          */
         "type"?: PriceTableFeaturesCellType;
     }
@@ -5786,42 +6223,51 @@ declare namespace LocalJSX {
     interface MdsPriceTableListItem {
         /**
           * Specifies if the feature is supported or not
+          * @default false
          */
         "supported"?: boolean;
         /**
           * Specifies if the feature is supported or not
+          * @default 'detail'
          */
         "typography"?: TypographyReadType;
     }
     interface MdsProgress {
         /**
           * Specifies the direction of the progress bar, if horizonatl or vertical
+          * @default 'horizontal'
          */
         "direction"?: DirectionType;
         /**
           * A value between 0 and 1 that rapresents the status progress
+          * @default 0
          */
         "progress"?: number;
         /**
           * Sets the size of the component
+          * @default 'sm'
          */
         "size"?: ProgressBarSizeType;
         /**
           * Sets the steps that can be pronounced by accessibility technologies
+          * @default 'Inizio,Un quarto,Metà,Tre quarti,Fine'
          */
         "steps"?: string;
         /**
           * The typography of the component
+          * @default 'option'
          */
         "typography"?: TypographyTechnicalType;
         /**
           * Sets the theme variant colors
+          * @default 'primary'
          */
         "variant"?: ThemeVariantType;
     }
     interface MdsPushNotification {
         /**
           * Specifies if the component is visible or not. behavior = manual should hide when click outside should hide when all notifications are removed should show when change visible from component or call show method  behavior = auto should hide when all notifications are removed should show when one or more notifications are added
+          * @default 'auto'
          */
         "behavior"?: 'auto' | 'manual';
         /**
@@ -5844,6 +6290,7 @@ declare namespace LocalJSX {
     interface MdsPushNotificationItem {
         /**
           * Specifies if the notification date format shows time passed or displays date as a static string
+          * @default 'timeago'
          */
         "dateFormat"?: NotificationItemDateFormatType;
         /**
@@ -5852,6 +6299,7 @@ declare namespace LocalJSX {
         "datetime"?: string;
         /**
           * Specifies if the component is dismissable or not, it should be set to true by default is used with it's parent component `mds-push-notification-items`
+          * @default true
          */
         "deletable"?: boolean;
         /**
@@ -5864,6 +6312,7 @@ declare namespace LocalJSX {
         "initials"?: string;
         /**
           * Specifies the message of the component
+          * @default 'Nessun messaggio disponibile'
          */
         "message"?: string;
         /**
@@ -5872,6 +6321,7 @@ declare namespace LocalJSX {
         "onMdsPushNotificationItemClose"?: (event: MdsPushNotificationItemCustomEvent<MdsPushNotificationItemEventDetail>) => void;
         /**
           * Specifies if the `src` attribute is used to show a the image as avatar or full image
+          * @default 'image'
          */
         "preview"?: NotificationItemPreviewType;
         /**
@@ -5884,6 +6334,7 @@ declare namespace LocalJSX {
         "subject"?: string;
         /**
           * Specifies the color tone of the component
+          * @default 'weak'
          */
         "tone"?: ToneMinimalVariantType;
         /**
@@ -5894,28 +6345,34 @@ declare namespace LocalJSX {
     interface MdsQuote {
         /**
           * Specifies the tag the element
+          * @default 'h3'
          */
         "tag"?: TypographyHeadingTagType;
         /**
           * Specifies the font typography of the element
+          * @default 'h3'
          */
         "typography"?: TypographyTitleType;
     }
     interface MdsRadialMenu {
         /**
           * Specifies the ending angle of the menu
+          * @default 360
          */
         "angleEnd"?: number;
         /**
           * Specifies the starting angle of the menu
+          * @default 0
          */
         "angleStart"?: number;
         /**
           * Specifies if the component has a backdrop background
+          * @default false
          */
         "backdrop"?: boolean;
         /**
           * Specifies the direction of the menu elements
+          * @default 'clockwise'
          */
         "direction"?: Direction;
         /**
@@ -5928,6 +6385,7 @@ declare namespace LocalJSX {
         "icon"?: string;
         /**
           * Specifies how to open the menu
+          * @default 'click'
          */
         "interaction"?: Interaction;
         /**
@@ -5936,18 +6394,22 @@ declare namespace LocalJSX {
         "opened"?: boolean;
         /**
           * Specifies the radius of the menu
+          * @default 5
          */
         "radius"?: number;
         /**
           * Specifies the size for the button
+          * @default 'lg'
          */
         "size"?: ButtonSizeType;
         /**
           * Specifies the tone variant for the button
+          * @default 'strong'
          */
         "tone"?: ToneVariantType;
         /**
           * Specifies the color variant for the button
+          * @default 'dark'
          */
         "variant"?: ButtonVariantType;
     }
@@ -5956,9 +6418,13 @@ declare namespace LocalJSX {
           * The icon displayed in the button
          */
         "icon"?: string;
+        /**
+          * @default 'lg'
+         */
         "size"?: ButtonSizeType;
         /**
           * Specifies the tone variant for the button
+          * @default 'weak'
          */
         "tone"?: ToneVariantType;
         /**
@@ -5967,6 +6433,7 @@ declare namespace LocalJSX {
         "tooltip"?: string;
         /**
           * Specifies the color variant for the button
+          * @default 'dark'
          */
         "variant"?: ButtonVariantType;
     }
@@ -5977,14 +6444,17 @@ declare namespace LocalJSX {
         "icon"?: string | undefined;
         /**
           * A value between 0 and 1 that rapresents the status progress
+          * @default 0
          */
         "progress"?: number;
         /**
           * The typography of the component
+          * @default 'option'
          */
         "typography"?: TypographyTechnicalType;
         /**
           * Sets the theme variant colors
+          * @default 'primary'
          */
         "variant"?: ThemeVariantType;
     }
@@ -5993,6 +6463,7 @@ declare namespace LocalJSX {
     interface MdsSpinner {
         /**
           * Specifies if the animation is running or not, it's required for performance reasons
+          * @default false
          */
         "running"?: boolean;
     }
@@ -6003,10 +6474,12 @@ declare namespace LocalJSX {
         "description"?: string;
         /**
           * Specifies if the component prevents the body from scrolling when modal window is opened
+          * @default 'manual'
          */
         "overflow"?: ModalOverflowType;
         /**
           * Specifies the position of the status bar
+          * @default 'bottom-right'
          */
         "position"?: StatusBarPositionType;
         /**
@@ -6017,10 +6490,12 @@ declare namespace LocalJSX {
     interface MdsStepperBar {
         /**
           * Sets the current item to the given index: 0 is none done, 1 is the first item done, last number + 1 is all items done
+          * @default 1
          */
         "itemsDone"?: number;
         /**
           * Specifies the navigation type
+          * @default 'none'
          */
         "navigation"?: StepperBarNavigationType;
         /**
@@ -6035,10 +6510,12 @@ declare namespace LocalJSX {
         "badge"?: boolean;
         /**
           * Specifies if the component is the current or not
+          * @default false
          */
         "current"?: boolean;
         /**
           * Specifies if the component is checked or not
+          * @default false
          */
         "done"?: boolean;
         /**
@@ -6047,6 +6524,7 @@ declare namespace LocalJSX {
         "icon": string;
         /**
           * Specifies the icon displayed of the component when is checked
+          * @default this.icon
          */
         "iconChecked"?: string | undefined;
         /**
@@ -6063,6 +6541,7 @@ declare namespace LocalJSX {
         "step"?: boolean;
         /**
           * Specifies the typography of the element
+          * @default 'h6'
          */
         "typography"?: TypographyType;
         /**
@@ -6073,10 +6552,12 @@ declare namespace LocalJSX {
     interface MdsTab {
         /**
           * Sets the animation type of the selection transition between `mds-tab-item` elements
+          * @default 'slide'
          */
         "animation"?: HorizontalActionsAnimationType;
         /**
           * Sets if the component distributes item vertically or horzontally
+          * @default 'horizontal'
          */
         "direction"?: DirectionType1;
         /**
@@ -6107,6 +6588,9 @@ declare namespace LocalJSX {
         "onMdsTabBarChange"?: (event: MdsTabBarCustomEvent<MdsTabBarEventDetail>) => void;
     }
     interface MdsTabBarItem {
+        /**
+          * @default ''
+         */
         "icon"?: string;
         /**
           * Emits when the component is selected
@@ -6118,6 +6602,7 @@ declare namespace LocalJSX {
         "selected"?: boolean;
         /**
           * Specifies the typography of the element
+          * @default 'tip'
          */
         "typography"?: TypographySmallerType;
     }
@@ -6140,6 +6625,7 @@ declare namespace LocalJSX {
         "icon"?: string;
         /**
           * Specifies the horizontal position of the icon displayed in the tab item
+          * @default 'left'
          */
         "iconPosition"?: ButtonIconPositionType;
         /**
@@ -6160,10 +6646,12 @@ declare namespace LocalJSX {
         "selected"?: boolean;
         /**
           * Specifies the size for the tab item
+          * @default 'md'
          */
         "size"?: ButtonSizeType;
         /**
           * The type of the tab item element
+          * @default 'submit'
          */
         "type"?: ButtonType;
         /**
@@ -6202,6 +6690,9 @@ declare namespace LocalJSX {
         "selectable"?: boolean;
     }
     interface MdsTableHeaderCell {
+        /**
+          * @default 'none'
+         */
         "direction"?: SortDirectionType;
         /**
           * Sets a label for the cell
@@ -6215,6 +6706,9 @@ declare namespace LocalJSX {
     interface MdsTableRow {
         "interactive"?: boolean;
         "overlayActions"?: boolean;
+        /**
+          * @default undefined
+         */
         "selectable"?: boolean;
         "selected"?: boolean;
         "value"?: string | number;
@@ -6222,6 +6716,7 @@ declare namespace LocalJSX {
     interface MdsText {
         /**
           * Specifies if the text is animated when it is rendered
+          * @default 'none'
          */
         "animation"?: TextAnimationType1;
         /**
@@ -6238,6 +6733,7 @@ declare namespace LocalJSX {
         "truncate"?: TypographyTruncateType;
         /**
           * Specifies the font typography of the element
+          * @default 'detail'
          */
         "typography"?: TypographyType;
         /**
@@ -6248,6 +6744,7 @@ declare namespace LocalJSX {
     interface MdsToast {
         /**
           * If set, specifies the visibility duration in milliseconds of the element inside the viewport, when the time is up the visible property will be set to false. If the duration is set to 0 the component will still visible until intentionally closed by user.
+          * @default 5000
          */
         "duration"?: number;
         /**
@@ -6256,14 +6753,17 @@ declare namespace LocalJSX {
         "onMdsToastClose"?: (event: MdsToastCustomEvent<void>) => void;
         /**
           * Sets position of toast
+          * @default 'bottom-center'
          */
         "position"?: ToastPosition;
         /**
           * Sets the tone of the color variant
+          * @default 'strong'
          */
         "tone"?: ToneMinimalVariantType;
         /**
           * Sets the theme variant colours
+          * @default 'light'
          */
         "variant"?: ThemeVariantType;
         /**
@@ -6272,34 +6772,47 @@ declare namespace LocalJSX {
         "visible"?: boolean;
     }
     interface MdsTooltip {
+        /**
+          * @default true
+         */
         "arrow"?: boolean;
+        /**
+          * @default 4
+         */
         "arrowPadding"?: number;
         /**
           * If set, the component will be placed automatically near it's caller.
+          * @default true
          */
         "autoPlacement"?: boolean;
         /**
           * Specifies the placement of the component if no space is available where it is placed.
+          * @default false
          */
         "flip"?: boolean;
         /**
           * Sets distance between the tooltip and the caller.
+          * @default 12
          */
         "offset"?: number;
         /**
           * Specifies where the component should be placed relative to the caller.
+          * @default 'top'
          */
         "placement"?: FloatingUIPlacement;
         /**
           * If set, the component will be kept inside the viewport.
+          * @default true
          */
         "shift"?: boolean;
         /**
           * Sets a safe area distance between the tooltip and the viewport.
+          * @default 12
          */
         "shiftPadding"?: number;
         /**
           * Sets the CSS position strategy of the component.
+          * @default 'fixed'
          */
         "strategy"?: FloatingUIStrategy;
         /**
@@ -6308,20 +6821,24 @@ declare namespace LocalJSX {
         "target": string;
         /**
           * Specifies the font typography of the element
+          * @default 'tip'
          */
         "typography"?: TypographyTooltipType;
         /**
           * Specifies the visibility of the component.
+          * @default false
          */
         "visible"?: boolean;
     }
     interface MdsTree {
         /**
           * Show actions on the every tree item on hover or by default.
+          * @default 'auto'
          */
         "actions"?: TreeActions;
         /**
           * Specifies if the branches depth decorations are visible.
+          * @default 'depth'
          */
         "appearance"?: TreeAppearance;
         /**
@@ -6338,14 +6855,17 @@ declare namespace LocalJSX {
         "label"?: string;
         /**
           * Specifies the toggle icon of the element
+          * @default 'chevron'
          */
         "toggle"?: TreeIcon;
         /**
           * Specifies the toggle icon position of the element
+          * @default 'left'
          */
         "togglePosition"?: ButtonIconPositionType;
         /**
           * Truncate the text of the element on one single line.
+          * @default 'word'
          */
         "truncate"?: TypographyTruncateType;
     }
@@ -6385,6 +6905,7 @@ declare namespace LocalJSX {
         "toggle"?: TreeIcon;
         /**
           * Truncate the text of the element on one single line.
+          * @default 'word'
          */
         "truncate"?: TypographyTruncateType;
     }
@@ -6399,6 +6920,7 @@ declare namespace LocalJSX {
         "label"?: string;
         /**
           * Specifies whether a browser should load an iframe immediately or to defer loading of images until some conditions are met.
+          * @default 'lazy'
          */
         "loading"?: LoadingType;
         /**
@@ -6417,24 +6939,29 @@ declare namespace LocalJSX {
         "alias"?: string;
         /**
           * Specifies the delay when the tooltip will trigger
+          * @default 'info'
          */
         "variant"?: UsageType;
     }
     interface MdsVideoWall {
         /**
           * Specifies that the video will start playing as soon as it is ready
+          * @default true
          */
         "autoplay"?: true;
         /**
           * Specifies that the video will start over again, every time it is finished
+          * @default true
          */
         "loop"?: true;
         /**
           * Specifies that the audio output of the video should be muted
+          * @default true
          */
         "muted"?: true;
         /**
           * Specifies if the video has a noise overlay effect
+          * @default 'none'
          */
         "noise"?: NoiseType;
         /**
@@ -6443,6 +6970,7 @@ declare namespace LocalJSX {
         "poster"?: string;
         /**
           * Specifies if and how the author thinks the video should be loaded when the page loads. Note: The preload attribute is ignored if autoplay is present
+          * @default 'auto'
          */
         "preload"?: PreloadType;
         /**
