@@ -123,7 +123,7 @@ const Template = args => (
 
 const TemplateNestedTab = args => (
   <mds-tab>
-    <mds-tab-item>Primo</mds-tab-item>
+    <mds-tab-item label="Tab"></mds-tab-item>
     <div slot="content">
       <mds-table {...args}>
         <mds-table-header>
