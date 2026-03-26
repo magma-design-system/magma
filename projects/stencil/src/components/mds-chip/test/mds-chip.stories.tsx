@@ -86,7 +86,6 @@ export const Default = {
 
   args: {
     label: 'Bovaro del Bernese',
-    icon: 'mi/baseline/pets',
   },
 }
 
@@ -105,7 +104,7 @@ export const Icon = {
 
   args: {
     label: 'Bovaro del Bernese',
-    icon: 'mi/baseline/eco',
+    icon: 'mi/baseline/pets',
   },
 }
 

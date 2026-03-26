@@ -208,14 +208,16 @@ export class MdsChip {
             <mds-icon class="icon" name={this.icon} />
           </div>
         }
-        { this.clickable
-          ? <mds-text class="label label--interactive" tabindex="0" typography="caption" truncate="word">
-            { this.label }
-          </mds-text>
-          : <mds-text class="label" typography="caption" truncate="word">
-            { this.label }
-          </mds-text>
-        }
+        <div class="label-wrapper">
+          { this.clickable
+            ? <mds-text class="label label--interactive" tabindex="0" typography="caption" truncate="word">
+              { this.label }
+            </mds-text>
+            : <mds-text class="label" typography="caption" truncate="word">
+              { this.label }
+            </mds-text>
+          }
+        </div>
         { this.deletable && <mds-button class="button-delete" icon={miBaselineCancel} onClick={this.onDeleteHandler.bind(this)} title={ `${this.t.get('deleteLabel')} ${this.label}` } variant="dark" tone="text" size="sm"></mds-button> }
       </Host>
     )
