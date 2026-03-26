@@ -1,5 +1,4 @@
 html {
-  color-scheme: dark light;
   hanging-punctuation: first last;
   interpolate-size: allow-keywords;
   transition-duration: theme('transitionDuration.200');
