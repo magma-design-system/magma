@@ -87,13 +87,13 @@ export class MdsInputDate {
   handleValue (): void {
     this.valueChange.emit(this.value)
     this.validateValue()
-    this.internals.setFormValue(this.value)
   }
 
   private validateValue (): void {
     const date = DateTime.fromISO(this.value)
 
     this.isValid = false
+    this.internals.setFormValue(null)
     this.variant = 'error'
     if (date.invalid && this.required) return
 
@@ -102,6 +102,7 @@ export class MdsInputDate {
 
     this.isValid = true
     this.variant = 'primary'
+    this.internals.setFormValue(this.value)
   }
 
   @Method()
@@ -115,6 +116,10 @@ export class MdsInputDate {
     this.value = value
     this.validateValue()
     return Promise.resolve()
+  }
+
+  formResetCallback (): void {
+    this.internals.setFormValue('')
   }
 
   componentWillLoad (): void {
@@ -133,7 +138,7 @@ export class MdsInputDate {
     this.validateValue()
   }
 
-  handleChange (event: Event): void {
+  handleChange = (event: Event) => {
     const input = event.target as HTMLInputElement
     this.touched = true
     // manage case when i insert 0 on date and default input behavior change in 01 instead of resetting all date
