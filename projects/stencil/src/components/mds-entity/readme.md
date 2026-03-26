@@ -25,6 +25,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | ----------- | --------------------------------------------------------------------------------------- |
 | `"action"`  | Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element. |
 | `"default"` | Add `text string`, `HTML elements` or `components` to this slot.                        |
+| `"detail"`  | Add `HTML elements` or `components` to this slot.                                       |
 
 
 ## Shadow Parts
