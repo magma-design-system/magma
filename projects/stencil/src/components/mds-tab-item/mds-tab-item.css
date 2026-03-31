@@ -70,6 +70,7 @@
   --mds-button-border-default-opacity: 0;
   --mds-button-corner-shape: var(--mds-tab-item-corner-shape, round);
 
+  aspect-ratio: initial;
   flex-grow: 1;
 }
 
