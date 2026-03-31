@@ -28,7 +28,7 @@
 @utility text-title-h4 {
   @apply
     antialiased
-    font-bold
+    font-black
     font-title
     text-box-vertical-margin
     text-size-title-h4;
@@ -37,7 +37,7 @@
 @utility text-title-h5 {
   @apply
     antialiased
-    font-bold
+    font-black
     font-title
     text-box-vertical-margin
     text-size-title-h5;
