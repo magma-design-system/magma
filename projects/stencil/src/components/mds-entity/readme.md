@@ -45,7 +45,6 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `--mds-entity-detail-color`    | The color of the text details      |
 | `--mds-entity-icon-background` | The background-color of the icon   |
 | `--mds-entity-icon-color`      | The color of the icon              |
-| `--mds-entity-shadow`          | The box-shadow od the component    |
 
 
 ## Dependencies

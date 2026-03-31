@@ -10,7 +10,7 @@ import { TypographyInfoType, TypographyInputType, TypographyLabelType, Typograph
 import { MdsAccordionItemEventDetail } from "./components/mds-accordion-item/meta/event-detail";
 import { MdsAccordionTimerEventDetail } from "./components/mds-accordion-timer/meta/event-detail";
 import { MdsAccordionTimerItemEventDetail } from "./components/mds-accordion-timer-item/meta/event-detail";
-import { ChipVariantType, ThemeFullVariantAvatarType, ThemeFullVariantType, ThemeInputVariantType, ThemeLabelVariantType, ThemeStatusVariantType, ThemeVariantType, ToneMinimalVariantType, ToneSimpleVariantType, ToneSmartVariantType, ToneVariantType } from "./type/variant";
+import { ChipVariantType, ThemeFullVariantAvatarType, ThemeFullVariantType, ThemeInputVariantType, ThemeLabelVariantType, ThemeStatusVariantType, ThemeVariantType, ToneMinimalVariantType, ToneSmartVariantType, ToneVariantType } from "./type/variant";
 import { AvatarSizeType } from "./components/mds-avatar-stack/meta/types";
 import { BenchmarkBarTypographyType } from "./components/mds-benchmark-bar/meta/types";
 import { ProgressBarSizeType } from "./type/progress";
@@ -90,7 +90,7 @@ export { TypographyInfoType, TypographyInputType, TypographyLabelType, Typograph
 export { MdsAccordionItemEventDetail } from "./components/mds-accordion-item/meta/event-detail";
 export { MdsAccordionTimerEventDetail } from "./components/mds-accordion-timer/meta/event-detail";
 export { MdsAccordionTimerItemEventDetail } from "./components/mds-accordion-timer-item/meta/event-detail";
-export { ChipVariantType, ThemeFullVariantAvatarType, ThemeFullVariantType, ThemeInputVariantType, ThemeLabelVariantType, ThemeStatusVariantType, ThemeVariantType, ToneMinimalVariantType, ToneSimpleVariantType, ToneSmartVariantType, ToneVariantType } from "./type/variant";
+export { ChipVariantType, ThemeFullVariantAvatarType, ThemeFullVariantType, ThemeInputVariantType, ThemeLabelVariantType, ThemeStatusVariantType, ThemeVariantType, ToneMinimalVariantType, ToneSmartVariantType, ToneVariantType } from "./type/variant";
 export { AvatarSizeType } from "./components/mds-avatar-stack/meta/types";
 export { BenchmarkBarTypographyType } from "./components/mds-benchmark-bar/meta/types";
 export { ProgressBarSizeType } from "./type/progress";
@@ -1640,9 +1640,9 @@ export namespace Components {
         "label"?: string;
         /**
           * Sets the tone of the color variant
-          * @default 'text'
+          * @default 'weak'
          */
-        "tone": ToneSimpleVariantType;
+        "tone": ToneMinimalVariantType;
         /**
           * Truncates text inside the label or displays it in multiline if needed
           * @default 'word'
@@ -5834,9 +5834,9 @@ declare namespace LocalJSX {
         "onMdsLabelDelete"?: (event: MdsLabelCustomEvent<void>) => void;
         /**
           * Sets the tone of the color variant
-          * @default 'text'
+          * @default 'weak'
          */
-        "tone"?: ToneSimpleVariantType;
+        "tone"?: ToneMinimalVariantType;
         /**
           * Truncates text inside the label or displays it in multiline if needed
           * @default 'word'

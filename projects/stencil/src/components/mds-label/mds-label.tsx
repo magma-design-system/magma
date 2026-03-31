@@ -1,7 +1,7 @@
 import miBaselineCancel from '@icon/mi/baseline/cancel.svg'
 import { Component, Element, Event, EventEmitter, Host, h, Prop, State, Method } from '@stencil/core'
 import { KeyboardManager } from '@common/keyboard-manager'
-import { ThemeLabelVariantType, ThemeStatusVariantType, ToneSimpleVariantType } from '@type/variant'
+import { ThemeLabelVariantType, ThemeStatusVariantType, ToneMinimalVariantType } from '@type/variant'
 import { TypographyTooltipType } from '@type/typography'
 import { TypographyTruncateType } from '@type/text'
 import { Locale } from '@common/locale'
@@ -50,7 +50,7 @@ export class MdsLabel {
   /**
    * Sets the tone of the color variant
    */
-  @Prop({ reflect: true }) readonly tone: ToneSimpleVariantType = 'text'
+  @Prop({ reflect: true }) readonly tone: ToneMinimalVariantType = 'weak'
 
   /**
    * Truncates text inside the label or displays it in multiline if needed
