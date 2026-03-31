@@ -20,8 +20,8 @@
 
   aspect-ratio: 1;
   background-color: rgb(var(--variant-primary-10));
-  border-radius: var(--radius-2xl);
-  box-shadow: var(--shadow-lg);
+  border-radius: var(--radius-4xl);
+  corner-shape: var(--magma-corner-shape, round);
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -59,8 +59,9 @@
     gap-0;
 
   background-color: var(--mds-kpi-item-info-background);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-xl);
   box-shadow: var(--shadow-sm);
+  corner-shape: inherit;
   display: grid;
   flex-shrink: 0;
   justify-content: center;

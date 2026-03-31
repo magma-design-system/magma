@@ -62,6 +62,7 @@
   --key-size-pressed: calc(var(--icon-size) + calc(var(--mds-keyboard-key-padding) * 2) + calc(var(--mds-keyboard-key-illumination-light-size) * 2));
 
   align-items: flex-end;
+  corner-shape: var(--magma-corner-shape, round);
   display: inline-flex;
   min-height: var(--key-size-default);
   min-width: var(--key-size-default);
@@ -70,9 +71,10 @@
 .physical-key {
   align-items: baseline;
   background-color: var(--mds-keyboard-key-background, rgb(var(--tone-stone-08)));
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg);
   box-shadow: var(--mds-keyboard-key-illumination-light), var(--mds-keyboard-key-illumination-dark), var(--mds-keyboard-key-illumination-shadow);
   box-sizing: border-box;
+  corner-shape: inherit;
   display: inline-flex;
   flex-grow: 1;
   flex-shrink: 0;
