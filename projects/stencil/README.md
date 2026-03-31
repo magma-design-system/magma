@@ -1,6 +1,53 @@
 ![Built With Stencil](https://img.shields.io/badge/-Built%20With%20Stencil-16161d.svg?logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDE5LjIuMSwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPgo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IgoJIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA1MTIgNTEyOyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI%2BCjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI%2BCgkuc3Qwe2ZpbGw6I0ZGRkZGRjt9Cjwvc3R5bGU%2BCjxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik00MjQuNywzNzMuOWMwLDM3LjYtNTUuMSw2OC42LTkyLjcsNjguNkgxODAuNGMtMzcuOSwwLTkyLjctMzAuNy05Mi43LTY4LjZ2LTMuNmgzMzYuOVYzNzMuOXoiLz4KPHBhdGggY2xhc3M9InN0MCIgZD0iTTQyNC43LDI5Mi4xSDE4MC40Yy0zNy42LDAtOTIuNy0zMS05Mi43LTY4LjZ2LTMuNkgzMzJjMzcuNiwwLDkyLjcsMzEsOTIuNyw2OC42VjI5Mi4xeiIvPgo8cGF0aCBjbGFzcz0ic3QwIiBkPSJNNDI0LjcsMTQxLjdIODcuN3YtMy42YzAtMzcuNiw1NC44LTY4LjYsOTIuNy02OC42SDMzMmMzNy45LDAsOTIuNywzMC43LDkyLjcsNjguNlYxNDEuN3oiLz4KPC9zdmc%2BCg%3D%3D&colorA=16161d&style=flat-square)
 
-# Maggioli Design System Web-Component
+# Magma 2
+---
+
+
+#### Tones name changes
+
+Now tones have new names to make them more consistent with the rest of the system and to be more semantiaclly correct.
+
+| V1 | V2 | V1 compatibility |
+|---------|---------|-------------|
+| `strong`  | `strong`  | ✅ |
+| `weak`    | `weak`    | ✅ |
+| `ghost`   | `outline` | ⚠️ |
+| `quiet`   | `text`    | ⚠️ |
+
+#### Design tokens
+
+- ⚠️ added `text-box` css module with vertically treats text nodes with a better optical alignment.
+- ✅ Added additional box shadow tokens.
+- ✅ CSS tokens are now dynamically calculated with `calc()` method instead of hardcoded values.
+
+#### Styles changes
+
+- ⚠️ Library is now using tailwind 4 instead of 3, this means the config is now CSS custom properties based instad of pure javascript configuration.
+- ✅ Added `--magma-corner-shape` to style the corner shape of the components globally.
+
+#### Component changes
+
+| Change | Component | Description |
+|---------|---------|-------------|
+| ⚠️ | `mds-text`                 | added `text-box` css module with vertically treats text nodes with a better optical alignment.
+| ⚠️ | `mds-banner`               | Removed old `quiet` tone which is NOT replaced with `text` tone. |
+| ✅ | `mds-file`                  | Added download icon on hover to make component more explicit. |
+| ✅ | `mds-table`                | Added batch actions to the table when rows are selectable. |
+| ✅ | `mds-header-bar`           | The overlay blur effect is now applied progressively rather than sharply outlined. |
+| ✅ | `mds-button`               | Added `label` attribute to the component. |
+| ✅ | `mds-modal`                | Added a fixed position to `header` and `footer` slotted elements |
+| ✅ | `mds-input-range`          | Changed appearance of the component to be more consistent with the rest of the system. |
+| ✅ | `mds-accordion-item`       | Changed the toggle arrow icon to be more visually constent and semantically clear. |
+| ✅ | `mds-accordion-timer-item` | Changed the toggle arrow icon to be more visually constent and semantically clear. |
+| ✅ | `mds-details`              | Changed the toggle arrow icon to be more visually constent and semantically clear. |
+
+
+### Breaking changes
+
+---
+
+## Maggioli Design System Web-Component
 
 Questa libreria fornisce una lista di componenti basati sullo standard web-component agnostici rispetto ai framework Javascript
 
