@@ -63,6 +63,7 @@
 
 .icon {
   aspect-ratio: 1;
+  fill: var(--mds-radial-progress-color);
   max-height: --spacing(600);
   max-width: --spacing(600);
   width: 100%;
