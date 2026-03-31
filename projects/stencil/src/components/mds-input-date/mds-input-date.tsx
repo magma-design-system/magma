@@ -3,6 +3,7 @@ import miBaselineCalendarToday from '@icon/mi/baseline/calendar-today.svg'
 import { DateTime } from 'luxon'
 import { Locale } from '@common/locale'
 import { ThemeInputVariantType } from '@type/variant'
+import { MdsValidationErrors } from 'src/components'
 
 // TODO add input validation manager for error message
 @Component({
@@ -78,6 +79,11 @@ export class MdsInputDate {
    */
   @Prop({ reflect: true }) readonly required?: boolean = false
 
+  /**
+   * Emits a boolean event when a input execute validation
+   */
+  @Event({ eventName: 'mdsInputValidation' }) validationEvent!: EventEmitter<boolean>
+
   @State() calendarKey: number = 0
   @State() dropdownRef?: HTMLMdsDropdownElement
   @State() hasFocus = false
@@ -92,17 +98,21 @@ export class MdsInputDate {
   private validateValue (): void {
     const date = DateTime.fromISO(this.value)
 
-    this.isValid = false
-    this.internals.setFormValue(null)
-    this.variant = 'error'
-    if (date.invalid && this.required) return
+    const isInvalidDate = date.invalid
+    const outOfRange = (this.max && DateTime.fromISO(this.max) < date) ||
+                     (this.min && DateTime.fromISO(this.min) > date)
 
-    if ((this.max && DateTime.fromISO(this.max) < date) ||
-    (this.min && DateTime.fromISO(this.min) > date)) return
+    if ((isInvalidDate && this.required) || outOfRange) {
+      this.isValid = false
+      this.variant = 'error'
+      this.internals.setFormValue(null)
+    } else {
+      this.isValid = true
+      this.variant = 'primary'
+      this.internals.setFormValue(this.value)
+    }
 
-    this.isValid = true
-    this.variant = 'primary'
-    this.internals.setFormValue(this.value)
+    this.validationEvent.emit(this.isValid)
   }
 
   @Method()
@@ -116,6 +126,10 @@ export class MdsInputDate {
     this.value = value
     this.validateValue()
     return Promise.resolve()
+  }
+  @Method()
+  async getErrors (): Promise<MdsValidationErrors | null> {
+    return Promise.resolve(this.isValid ? null : { error: '' })
   }
 
   formResetCallback (): void {

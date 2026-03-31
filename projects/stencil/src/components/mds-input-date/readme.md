@@ -22,9 +22,10 @@
 
 ## Events
 
-| Event                | Description | Type                  |
-| -------------------- | ----------- | --------------------- |
-| `mdsInputDateSelect` |             | `CustomEvent<string>` |
+| Event                | Description                                           | Type                   |
+| -------------------- | ----------------------------------------------------- | ---------------------- |
+| `mdsInputDateSelect` |                                                       | `CustomEvent<string>`  |
+| `mdsInputValidation` | Emits a boolean event when a input execute validation | `CustomEvent<boolean>` |
 
 
 ## Methods
@@ -36,6 +37,16 @@
 #### Returns
 
 Type: `Promise<void>`
+
+
+
+### `getErrors() => Promise<MdsValidationErrors | null>`
+
+
+
+#### Returns
+
+Type: `Promise<MdsValidationErrors | null>`
 
 
 
