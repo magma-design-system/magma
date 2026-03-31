@@ -3,6 +3,7 @@
   --mds-button-background: transparent;
 }
 
+:host([tone="box"]),
 :host([tone="strong"]),
 :host([tone="weak"]) {
   --mds-button-border-default-opacity: 1;
@@ -29,4 +30,13 @@
   --mds-button-background: transparent;
   --mds-button-border-width: var(--mds-button-border-tone-outline-hover-width);
   --mds-button-border-opacity: var(--mds-button-border-hover-opacity);
+}
+
+:host([tone="box"]) {
+  box-shadow: var(--shadow-box-solid-strong);
+  transition-property: background-color, border-color, box-shadow, color, outline, filter, outline-offset, transform;
+
+  &:host(:hover) {
+    filter: brightness(1.1);
+  }
 }

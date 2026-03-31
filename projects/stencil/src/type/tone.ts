@@ -4,6 +4,13 @@ export const toneMinimalVariantDictionary = [
 ] as const
 export type ToneMinimalVariantType = (typeof toneMinimalVariantDictionary)[number]
 
+export const toneMinimalBoxVariantDictionary = [
+  'strong',
+  'weak',
+  'box',
+] as const
+export type ToneMinimalBoxVariantType = (typeof toneMinimalBoxVariantDictionary)[number]
+
 export const toneSmartVariantDictionary = [
   ...toneMinimalVariantDictionary,
   'outline',
@@ -23,3 +30,12 @@ export const toneVariantDictionary = [
   'weak',
 ] as const
 export type ToneVariantType = (typeof toneVariantDictionary)[number]
+
+export const toneBoxVariantDictionary = [
+  'outline',
+  'strong',
+  'text',
+  'box',
+  'weak',
+] as const
+export type ToneBoxVariantType = (typeof toneBoxVariantDictionary)[number]

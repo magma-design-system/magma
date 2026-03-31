@@ -1,6 +1,6 @@
 import { Component, Element, Event, EventEmitter, Host, Prop, h, State, Method, Watch } from '@stencil/core'
 import { ThemeVariantType } from '@type/variant'
-import { ToneMinimalVariantType } from '@type/tone'
+import { ToneMinimalBoxVariantType } from '@type/tone'
 
 import miBaselineClose from '@icon/mi/baseline/close.svg'
 import { KeyboardManager } from '@common/keyboard-manager'
@@ -48,7 +48,7 @@ export class MdsBanner {
   /**
    * Sets the tone of the color variant
    */
-  @Prop({ reflect: true }) readonly tone?: ToneMinimalVariantType = 'weak'
+  @Prop({ reflect: true }) readonly tone?: ToneMinimalBoxVariantType = 'weak'
 
   /**
    * Shows a decoration around the banner icon

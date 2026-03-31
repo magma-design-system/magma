@@ -53,6 +53,17 @@ const groupedShadows = boxShadowEntries.reduce((acc, [name, token]) => {
 }, {} as Record<string, Array<{ name: string, value: string }>>)
 
 const groupOrder = ['Default', 'Outline', 'Glow', 'Box', 'Highlight', 'Inset']
+const fallbackShadowValue = boxShadowEntries[0]?.[1]?.value ?? 'none'
+
+const getShadowValue = (preferredKeys: string[]): string => {
+  for (const key of preferredKeys) {
+    const value = boxShadowDictionary[key]?.value
+    if (value) {
+      return value
+    }
+  }
+  return fallbackShadowValue
+}
 
 const StackedDocuments = ({ value }: { value: string }) => (
   <div class="flex justify-start items-center">
@@ -75,10 +86,7 @@ const Template = () => (
         </ShadowsGroup>
       )
     ))}
-    <StackedDocuments value={boxShadowDictionary['box-lg'].value} />
-    <div>
-      <mds-button label="Button" icon="mi/baseline/add" class="pb-50" style={{ boxShadow: boxShadowDictionary['box-2xl'].value }}></mds-button>
-    </div>
+    <StackedDocuments value={getShadowValue(['box-lg', 'box-md', 'lg', 'md', 'DEFAULT', 'default'])} />
   </div>
 )
 

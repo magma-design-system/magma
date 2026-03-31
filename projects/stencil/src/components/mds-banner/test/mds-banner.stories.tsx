@@ -1,7 +1,7 @@
 import { h } from '@stencil/core'
 import { iconsDictionary } from '@type/icon'
 import { themeVariantDictionary } from '@type/variant'
-import { toneMinimalVariantDictionary } from '@type/tone'
+import { toneMinimalBoxVariantDictionary } from '@type/tone'
 
 export default {
   title: 'UI / Banner',
@@ -29,7 +29,7 @@ export default {
     tone: {
       type: { name: 'string' },
       description: 'Sets the tone of the color variant',
-      options: toneMinimalVariantDictionary,
+      options: toneMinimalBoxVariantDictionary,
       control: { type: 'select' },
     },
     variant: {

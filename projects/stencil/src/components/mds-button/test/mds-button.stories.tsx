@@ -3,11 +3,11 @@ import { iconsDictionary } from '@type/icon'
 import {
   buttonVariantDictionary,
   buttonSizeDictionary,
-  buttonToneVariantDictionary,
   buttonTargetDictionary,
   buttonIconPositionDictionary,
   buttonTypeDictionary,
 } from '@type/button'
+import { toneVariantDictionary } from '@type/tone'
 import { ButtonVariantType } from '@type/button'
 import { ToneVariantType } from '@type/tone'
 
@@ -70,7 +70,7 @@ export default {
     tone: {
       type: { name: 'string' },
       description: 'Specifies the tone variant of the button',
-      options: buttonToneVariantDictionary,
+      options: toneVariantDictionary,
       control: { type: 'select' },
     },
     variant: {

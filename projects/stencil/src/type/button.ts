@@ -1,4 +1,4 @@
-import { ThemeBrandVariantType, ThemeStatusVariantType, ThemeLuminanceVariantType } from './variant'
+import { ThemeBrandVariantType, themeStatusVariantDictionary, themeBrandVariantDictionary, themeLuminanceVariantDictionary, ThemeStatusVariantType, ThemeLuminanceVariantType } from './variant'
 
 export const buttonTypeDictionary = [
   'button',
@@ -44,6 +44,13 @@ export const buttonToneVariantDictionary = [
   'text',
 ] as const
 
+export const buttonToneFullVariantDictionary = [
+  ...buttonToneMinimalVariantDictionary,
+  'outline',
+  'text',
+  'box',
+] as const
+
 export type ButtonVariantType =
   | 'apple'
   | 'google'
@@ -57,15 +64,9 @@ export type ButtonDropdownVariantType =
   | ThemeStatusVariantType
 
 export const buttonDropdownVariantDictionary: ButtonDropdownVariantType[] = [
-  'ai',
-  'dark',
-  'error',
-  'info',
-  'light',
-  'primary',
-  'secondary',
-  'success',
-  'warning',
+  ...themeLuminanceVariantDictionary,
+  ...themeBrandVariantDictionary,
+  ...themeStatusVariantDictionary,
 ]
 
 export const buttonVariantDictionary: ButtonVariantType[] = [

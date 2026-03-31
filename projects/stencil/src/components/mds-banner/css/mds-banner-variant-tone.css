@@ -34,3 +34,7 @@
     --mds-banner-cockade-background: rgb(var(--tone-neutral-09));
   }
 }
+
+:host([tone="box"]) {
+  box-shadow: var(--shadow-box-solid-weak);
+}

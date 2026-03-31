@@ -1,7 +1,7 @@
 import { ButtonIconPositionType, ButtonSizeType, ButtonTargetType, ButtonType, ButtonVariantType } from '@type/button'
 import { Component, Host, Element, h, Prop, Watch, AttachInternals } from '@stencil/core'
 import { KeyboardManager } from '@common/keyboard-manager'
-import { ToneVariantType } from '@type/tone'
+import { ToneBoxVariantType } from '@type/tone'
 
 import { TypographyType } from '@type/typography'
 import { buttonSizeTypographyVariant } from './meta/variants'
@@ -73,7 +73,7 @@ export class MdsButton {
   /**
    * Specifies the tone variant for the button
    */
-  @Prop({ reflect: true }) readonly tone?: ToneVariantType = 'strong'
+  @Prop({ reflect: true }) readonly tone?: ToneBoxVariantType = 'strong'
 
   /**
    * Specifies the size for the button

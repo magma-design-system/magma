@@ -15,7 +15,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `deletable` | `deletable` | Shows the cross icon to perform cancel/delete action on element | `boolean \| undefined`                                                                               | `undefined` |
 | `headline`  | `headline`  | The title on the top of the banner                              | `string \| undefined`                                                                                | `undefined` |
 | `icon`      | `icon`      | An icon displayed at the top left of the banner                 | `string \| undefined`                                                                                | `undefined` |
-| `tone`      | `tone`      | Sets the tone of the color variant                              | `"strong" \| "weak" \| undefined`                                                                    | `'weak'`    |
+| `tone`      | `tone`      | Sets the tone of the color variant                              | `"box" \| "strong" \| "weak" \| undefined`                                                           | `'weak'`    |
 | `variant`   | `variant`   | Sets the theme variant colors                                   | `"ai" \| "dark" \| "error" \| "info" \| "light" \| "primary" \| "success" \| "warning" \| undefined` | `'primary'` |
 
 

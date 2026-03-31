@@ -10,7 +10,7 @@ import { TypographyInfoType, TypographyInputType, TypographyLabelType, Typograph
 import { MdsAccordionItemEventDetail } from "./components/mds-accordion-item/meta/event-detail";
 import { MdsAccordionTimerEventDetail } from "./components/mds-accordion-timer/meta/event-detail";
 import { MdsAccordionTimerItemEventDetail } from "./components/mds-accordion-timer-item/meta/event-detail";
-import { ToneMinimalVariantType, ToneSmartVariantType, ToneVariantType } from "./type/tone";
+import { ToneBoxVariantType, ToneMinimalBoxVariantType, ToneMinimalVariantType, ToneSmartVariantType, ToneVariantType } from "./type/tone";
 import { ChipVariantType, ThemeFullVariantAvatarType, ThemeFullVariantType, ThemeInputVariantType, ThemeLabelVariantType, ThemeStatusVariantType, ThemeVariantType } from "./type/variant";
 import { AvatarSizeType } from "./components/mds-avatar-stack/meta/types";
 import { BenchmarkBarTypographyType } from "./components/mds-benchmark-bar/meta/types";
@@ -91,7 +91,7 @@ export { TypographyInfoType, TypographyInputType, TypographyLabelType, Typograph
 export { MdsAccordionItemEventDetail } from "./components/mds-accordion-item/meta/event-detail";
 export { MdsAccordionTimerEventDetail } from "./components/mds-accordion-timer/meta/event-detail";
 export { MdsAccordionTimerItemEventDetail } from "./components/mds-accordion-timer-item/meta/event-detail";
-export { ToneMinimalVariantType, ToneSmartVariantType, ToneVariantType } from "./type/tone";
+export { ToneBoxVariantType, ToneMinimalBoxVariantType, ToneMinimalVariantType, ToneSmartVariantType, ToneVariantType } from "./type/tone";
 export { ChipVariantType, ThemeFullVariantAvatarType, ThemeFullVariantType, ThemeInputVariantType, ThemeLabelVariantType, ThemeStatusVariantType, ThemeVariantType } from "./type/variant";
 export { AvatarSizeType } from "./components/mds-avatar-stack/meta/types";
 export { BenchmarkBarTypographyType } from "./components/mds-benchmark-bar/meta/types";
@@ -337,7 +337,7 @@ export namespace Components {
           * Sets the tone of the color variant
           * @default 'weak'
          */
-        "tone"?: ToneMinimalVariantType;
+        "tone"?: ToneMinimalBoxVariantType;
         "updateLang": () => Promise<void>;
         /**
           * Sets the theme variant colors
@@ -483,7 +483,7 @@ export namespace Components {
           * Specifies the tone variant for the button
           * @default 'strong'
          */
-        "tone"?: ToneVariantType;
+        "tone"?: ToneBoxVariantType;
         /**
           * Specifies if the text shoud be truncated or should behave as a normal text
           * @default 'word'
@@ -4499,7 +4499,7 @@ declare namespace LocalJSX {
           * Sets the tone of the color variant
           * @default 'weak'
          */
-        "tone"?: ToneMinimalVariantType;
+        "tone"?: ToneMinimalBoxVariantType;
         /**
           * Sets the theme variant colors
           * @default 'primary'
@@ -4651,7 +4651,7 @@ declare namespace LocalJSX {
           * Specifies the tone variant for the button
           * @default 'strong'
          */
-        "tone"?: ToneVariantType;
+        "tone"?: ToneBoxVariantType;
         /**
           * Specifies if the text shoud be truncated or should behave as a normal text
           * @default 'word'
