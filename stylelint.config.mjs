@@ -146,6 +146,8 @@ export default {
           'field-sizing',
           'interpolate-size',
           'corner-shape',
+          'corner-left-shape',
+          'corner-right-shape',
         ],
       },
     ],
