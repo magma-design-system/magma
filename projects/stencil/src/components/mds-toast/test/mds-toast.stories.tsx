@@ -1,7 +1,7 @@
 import {
   themeVariantDictionary,
   toneMinimalVariantDictionary,
-} from '@dictionary/variant'
+} from '@type/variant'
 import { h } from '@stencil/core'
 import { toastPositionDictionary } from '../meta/dictionary'
 

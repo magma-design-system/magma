@@ -1,7 +1,7 @@
 import { h } from '@stencil/core'
-import { themeVariantDictionary } from '@dictionary/variant'
+import { themeVariantDictionary } from '@type/variant'
 import { benchmarkBarTypographyDictionary } from '../meta/dictionary'
-import { progressBarSizeDictionary } from '@dictionary/progress'
+import { progressBarSizeDictionary } from '@type/progress'
 
 export default {
   title: 'UI / Benchmark Bar',

@@ -6,7 +6,7 @@ import {
 import {
   typographyInfoDictionary,
   typographyVariationsDictionary,
-} from '@dictionary/typography'
+} from '@type/typography'
 
 export default {
   title: 'UI / Bibliography',

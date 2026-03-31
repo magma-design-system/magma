@@ -1,7 +1,7 @@
 import { h } from '@stencil/core'
-import { typographyTechnicalDictionary } from '@dictionary/typography'
-import { themeVariantDictionary } from '@dictionary/variant'
-import { iconsDictionary } from '@dictionary/icon'
+import { typographyTechnicalDictionary } from '@type/typography'
+import { themeVariantDictionary } from '@type/variant'
+import { iconsDictionary } from '@type/icon'
 
 export default {
   title: 'UI / Radial Progress',

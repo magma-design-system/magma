@@ -1,6 +1,6 @@
 import { h } from '@stencil/core'
 
-import { tabSizeDictionary } from '@dictionary/button'
+import { tabSizeDictionary } from '@type/button'
 
 export default {
   title: 'UI / Preferences',

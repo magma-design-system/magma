@@ -1,4 +1,4 @@
-import { typographyReadDictionary } from '@dictionary/typography'
+import { typographyReadDictionary } from '@type/typography'
 import { h } from '@stencil/core'
 import { lokiDisabled } from '@test/loki-disabled'
 

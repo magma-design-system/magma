@@ -1,9 +1,9 @@
 import { h } from '@stencil/core'
-import { iconsDictionary } from '@dictionary/icon'
+import { iconsDictionary } from '@type/icon'
 import {
   buttonVariantDictionary,
   buttonToneVariantDictionary,
-} from '@dictionary/button'
+} from '@type/button'
 
 export default {
   title: 'UI / Radial Menu / Radial Menu Item',

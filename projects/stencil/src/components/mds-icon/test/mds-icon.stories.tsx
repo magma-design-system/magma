@@ -3,7 +3,7 @@ import {
   iconsDictionary,
   mggIconsDictionary,
   svgIconsDictionary,
-} from '@dictionary/icon'
+} from '@type/icon'
 import { useState } from 'react'
 import svgIconPackage from '@maggioli-design-system/svg-icons/package.json'
 

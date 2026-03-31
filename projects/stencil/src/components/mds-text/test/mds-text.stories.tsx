@@ -1,11 +1,11 @@
 import {
   typographyDictionary,
   typographyVariationsDictionary,
-} from '@dictionary/typography'
+} from '@type/typography'
 import { h } from '@stencil/core'
 import { useState } from 'react'
 import { tagsDictionary, textAnimateDictionary } from '../meta/dictionary'
-import { truncateDictionary } from '@dictionary/text'
+import { truncateDictionary } from '@type/text'
 
 export default {
   title: 'Design / Typography',

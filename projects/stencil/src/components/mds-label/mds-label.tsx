@@ -1,8 +1,8 @@
 import miBaselineCancel from '@icon/mi/baseline/cancel.svg'
 import { Component, Element, Event, EventEmitter, Host, h, Prop, State, Method } from '@stencil/core'
 import { KeyboardManager } from '@common/keyboard-manager'
-import { ThemeFullVariantType, ToneSimpleVariantType } from '@type/variant'
-import { TypographyType } from '@type/typography'
+import { ThemeLabelVariantType, ThemeStatusVariantType, ToneSimpleVariantType } from '@type/variant'
+import { TypographyTooltipType } from '@type/typography'
 import { TypographyTruncateType } from '@type/text'
 import { Locale } from '@common/locale'
 import localeEl from './meta/locale.el.json'
@@ -13,6 +13,8 @@ import localeIt from './meta/locale.it.json'
 /**
  * @slot default - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
  */
+
+export type MdsLabelVariantType = ThemeLabelVariantType | ThemeStatusVariantType
 
 @Component({
   tag: 'mds-label',
@@ -36,14 +38,14 @@ export class MdsLabel {
   }
 
   /**
-   * Specifies the ARIA label for remove element
+   * The label of the component
    */
-  @Prop() readonly labelAction?: string = 'Rimuovi'
+  @Prop({ reflect: true }) readonly label?: string
 
   /**
    * Sets the theme variant colors
    */
-  @Prop({ reflect: true }) readonly variant: ThemeFullVariantType = 'sky'
+  @Prop({ reflect: true }) readonly variant: MdsLabelVariantType = 'sky'
 
   /**
    * Sets the tone of the color variant
@@ -53,12 +55,12 @@ export class MdsLabel {
   /**
    * Truncates text inside the label or displays it in multiline if needed
    */
-  @Prop({ reflect: true }) readonly truncate?: TypographyTruncateType
+  @Prop({ reflect: true }) readonly truncate?: TypographyTruncateType = 'word'
 
   /**
    * Specifies the typography of the element
    */
-  @Prop() readonly typography: TypographyType = 'caption'
+  @Prop() readonly typography: TypographyTooltipType = 'caption'
 
   /**
    * Enables the cross icon to perform cancel/delete action on element
@@ -103,9 +105,9 @@ export class MdsLabel {
     return (
       <Host>
         <mds-text class="text" truncate={this.truncate} typography={this.typography}>
-          <slot/>
+          { this.label }
         </mds-text>
-        { this.deletable && <mds-button class="button-close" icon={miBaselineCancel} onClick={ this.onClickDelete.bind(this) } title={this.t.get('remove')}></mds-button> }
+        { this.deletable && <mds-button class="button-close" icon={miBaselineCancel} onClick={ this.onClickDelete.bind(this) } title={this.t.get('remove')} size="sm"></mds-button> }
       </Host>
     )
   }

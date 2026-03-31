@@ -1,5 +1,5 @@
 import { h } from '@stencil/core'
-import { keyboardKeyNameDictionary } from '@dictionary/keyboard'
+import { keyboardKeyNameDictionary } from '@type/keyboard'
 
 export default {
   title: 'UI / Keyboard / Key',

@@ -1,10 +1,10 @@
 import { h } from '@stencil/core'
-import { iconsDictionary } from '@dictionary/icon'
+import { iconsDictionary } from '@type/icon'
 import {
   buttonVariantDictionary,
   buttonSizeDictionary,
   buttonToneVariantDictionary,
-} from '@dictionary/button'
+} from '@type/button'
 import { directionDictionary } from '../meta/dictionary'
 import { useState } from 'react'
 

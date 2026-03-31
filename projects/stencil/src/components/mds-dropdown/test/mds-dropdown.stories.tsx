@@ -1,7 +1,7 @@
 import {
   floatingUIPlacementDictionary,
   floatingUIStrategyDictionary,
-} from '@dictionary/floating-ui'
+} from '@type/floating-ui'
 import { dropdownInteractionDictionary } from '../meta/dictionary'
 import { h } from '@stencil/core'
 import { useState, useEffect } from 'react'

@@ -1,10 +1,10 @@
 import { h } from '@stencil/core'
 import { useState } from 'react'
-import { iconsDictionary } from '@dictionary/icon'
+import { iconsDictionary } from '@type/icon'
 import {
   themeFullVariantAvatarDictionary,
   toneMinimalVariantDictionary,
-} from '@dictionary/variant'
+} from '@type/variant'
 
 export default {
   title: 'UI / Entity',

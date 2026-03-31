@@ -1,8 +1,8 @@
 import { directionDictionary } from '../meta/dictionary'
-import { themeVariantDictionary } from '@dictionary/variant'
+import { themeVariantDictionary } from '@type/variant'
 import { h } from '@stencil/core'
-import { typographyTechnicalDictionary } from '@dictionary/typography'
-import { progressBarSizeDictionary } from '@dictionary/progress'
+import { typographyTechnicalDictionary } from '@type/typography'
+import { progressBarSizeDictionary } from '@type/progress'
 
 export default {
   title: 'UI / Progress',

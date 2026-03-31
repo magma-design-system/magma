@@ -1,5 +1,5 @@
 import { h } from '@stencil/core'
-import { iconsDictionary } from '@dictionary/icon'
+import { iconsDictionary } from '@type/icon'
 import { mentionSizeDictionary } from '../meta/dictionary'
 
 export default {

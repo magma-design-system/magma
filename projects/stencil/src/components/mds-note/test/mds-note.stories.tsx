@@ -1,4 +1,4 @@
-import { themeLabelVariantDictionary } from '@dictionary/variant'
+import { themeLabelVariantDictionary } from '@type/variant'
 import { h } from '@stencil/core'
 
 export default {

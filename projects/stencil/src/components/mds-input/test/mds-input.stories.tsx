@@ -1,13 +1,13 @@
 import { citiesDictionary } from '@fixture/cities'
-import { themeInputVariantDictionary } from '@dictionary/variant'
-import { autoCompleteDictionary } from '@dictionary/autocomplete'
+import { themeInputVariantDictionary } from '@type/variant'
+import { autoCompleteDictionary } from '@type/autocomplete'
 import {
   inputTextTypeDictionary,
   inputControlsLayoutDictionary,
   inputControlsIconDictionary,
-} from '@dictionary/input'
-import { typographyInputDictionary } from '@dictionary/typography'
-import { iconsDictionary } from '@dictionary/icon'
+} from '@type/input'
+import { typographyInputDictionary } from '@type/typography'
+import { iconsDictionary } from '@type/icon'
 import { h } from '@stencil/core'
 
 import { MdsInputInterface } from '../mds-input'

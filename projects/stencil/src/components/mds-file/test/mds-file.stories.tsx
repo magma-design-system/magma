@@ -1,5 +1,5 @@
 import { h } from '@stencil/core'
-import { fileExtensionsDictionary } from '@dictionary/file-extensions'
+import { fileExtensionsDictionary } from '@type/file-types'
 import { filesList, namedFilesList } from '@fixture/filenames'
 
 const extensionsList = Object.keys(fileExtensionsDictionary).sort()

@@ -1,8 +1,8 @@
-import { iconsDictionary } from '@dictionary/icon'
+import { iconsDictionary } from '@type/icon'
 import {
   buttonSizeDictionary,
   buttonIconPositionDictionary,
-} from '@dictionary/button'
+} from '@type/button'
 import { h } from '@stencil/core'
 
 export default {

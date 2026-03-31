@@ -1,5 +1,5 @@
 import { h } from '@stencil/core'
-import { typographyReadDictionary } from '@dictionary/typography'
+import { typographyReadDictionary } from '@type/typography'
 
 export default {
   title: 'UI / Accordion / Accordion Item',

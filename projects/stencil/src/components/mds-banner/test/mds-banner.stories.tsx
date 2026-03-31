@@ -1,9 +1,9 @@
 import { h } from '@stencil/core'
-import { iconsDictionary } from '@dictionary/icon'
+import { iconsDictionary } from '@type/icon'
 import {
   themeVariantDictionary,
   toneMinimalVariantDictionary,
-} from '@dictionary/variant'
+} from '@type/variant'
 
 export default {
   title: 'UI / Banner',

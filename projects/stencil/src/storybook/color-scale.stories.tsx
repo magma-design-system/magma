@@ -1,6 +1,6 @@
 import { h } from '@stencil/core'
 import { ChipVariantType, ThemeFullVariantType, ThemeVariantType, ToneVariantType, ToneMinimalVariantType, ToneSmartVariantType } from '@type/variant'
-import { themeVariantChipDictionary, toneMinimalVariantDictionary, themeVariantDictionary, themeFullVariantDictionary, toneSmartVariantDictionary } from '@dictionary/variant'
+import { themeVariantChipDictionary, toneMinimalVariantDictionary, themeVariantDictionary, themeFullVariantDictionary, toneSmartVariantDictionary } from '@type/variant'
 import { useState, useEffect, useRef } from 'react'
 import { MdsInputSelectCustomEvent } from 'src/components'
 import type { MdsInputEventDetail } from '@type/input'
@@ -135,7 +135,7 @@ const mapToThemeVariant = (group: ColorGroupKey, value: string): ThemeVariantTyp
 // }
 
 const toToneSmart = (tone: string): ToneSmartVariantType => {
-  const allowedTones = toneSmartVariantDictionary as ToneSmartVariantType[]
+  const allowedTones = toneSmartVariantDictionary as readonly ToneSmartVariantType[]
   if (allowedTones.includes(tone as ToneSmartVariantType)) {
     return tone as ToneSmartVariantType
   }
@@ -143,7 +143,7 @@ const toToneSmart = (tone: string): ToneSmartVariantType => {
 }
 
 const toFullVariant = (variant: string): ThemeFullVariantType => {
-  const allowedVariants = themeFullVariantDictionary as ThemeFullVariantType[]
+  const allowedVariants = themeFullVariantDictionary as readonly ThemeFullVariantType[]
   if (allowedVariants.includes(variant as ThemeFullVariantType)) {
     return variant as ThemeFullVariantType
   }
@@ -151,7 +151,7 @@ const toFullVariant = (variant: string): ThemeFullVariantType => {
 }
 
 const toVariant = (variant: string): ThemeVariantType => {
-  const allowedVariants = themeVariantDictionary as ThemeVariantType[]
+  const allowedVariants = themeVariantDictionary as readonly ThemeVariantType[]
   if (allowedVariants.includes(variant as ThemeVariantType)) {
     return variant as ThemeVariantType
   }
@@ -159,7 +159,7 @@ const toVariant = (variant: string): ThemeVariantType => {
 }
 
 const toChipVariant = (variant: string): ChipVariantType => {
-  const allowedVariants = themeVariantChipDictionary as ChipVariantType[]
+  const allowedVariants = themeVariantChipDictionary as readonly ChipVariantType[]
   if (allowedVariants.includes(variant as ChipVariantType)) {
     return variant as ChipVariantType
   }
@@ -167,7 +167,7 @@ const toChipVariant = (variant: string): ChipVariantType => {
 }
 
 const toMinimalTone = (tone: string): ToneMinimalVariantType => {
-  const allowedTones = toneMinimalVariantDictionary as ToneMinimalVariantType[]
+  const allowedTones = toneMinimalVariantDictionary as readonly ToneMinimalVariantType[]
   if (allowedTones.includes(tone as ToneMinimalVariantType)) {
     return tone as ToneMinimalVariantType
   }
@@ -512,7 +512,7 @@ const Template = () => {
       if (!nextGroup) return
 
       setSelectedGroup(nextGroup)
-      const firstVariant = colorPalette[nextGroup][0]
+      const [firstVariant] = colorPalette[nextGroup]
       setSelectedVariantKey(firstVariant)
     }
     const groupEl = groupSelectRef.current as HTMLElement | null

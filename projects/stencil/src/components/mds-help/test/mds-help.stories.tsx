@@ -1,5 +1,5 @@
 import { h } from '@stencil/core'
-import { iconsDictionary, mggIconsDictionary } from '@dictionary/icon'
+import { iconsDictionary, mggIconsDictionary } from '@type/icon'
 
 export default {
   title: 'UI / Help',

@@ -1,11 +1,11 @@
 import { h } from '@stencil/core'
 import {
   typographyLabelDictionary,
-} from '@dictionary/typography'
+} from '@type/typography'
 import {
   themeFullVariantDictionary,
   toneSmartVariantDictionary,
-} from '@dictionary/variant'
+} from '@type/variant'
 
 export default {
   title: 'UI / Badge',

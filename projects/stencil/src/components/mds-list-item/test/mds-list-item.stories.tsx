@@ -1,8 +1,8 @@
 import {
   typographyInfoDictionary,
   typographyReadingVariationsDictionary,
-} from '@dictionary/typography'
-import { iconsDictionary } from '@dictionary/icon'
+} from '@type/typography'
+import { iconsDictionary } from '@type/icon'
 import { h } from '@stencil/core'
 
 export default {

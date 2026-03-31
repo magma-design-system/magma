@@ -1,4 +1,4 @@
-import { typographySmallerDictionary } from '@dictionary/typography'
+import { typographySmallerDictionary } from '@type/typography'
 import { h } from '@stencil/core'
 
 export default {

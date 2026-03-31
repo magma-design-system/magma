@@ -1,5 +1,5 @@
 import { h } from '@stencil/core'
-import { keyboardKeyNameDictionary } from '@dictionary/keyboard'
+import { keyboardKeyNameDictionary } from '@type/keyboard'
 import { KeyboardKeyName } from '@type/keyboard'
 import keyboardKeys from '@meta/keyboard/keys.json'
 
@@ -34,8 +34,8 @@ const TemplateMultipleKeys = args => (
           </mds-keyboard>
         </mds-table-cell>
         <mds-table-cell class="align-middle">
-          There are no specific key position for this combination, you can use
-          both command keys.
+          <mds-text>There are no specific key position for this combination, you can use
+          both command keys.</mds-text>
         </mds-table-cell>
       </mds-table-row>
       <mds-table-row>
@@ -46,7 +46,7 @@ const TemplateMultipleKeys = args => (
           </mds-keyboard>
         </mds-table-cell>
         <mds-table-cell class="align-middle">
-          You must use the <b>left</b> command key or the test will fail.
+          <mds-text>You must use the <b>left</b> command key or the test will fail.</mds-text>
         </mds-table-cell>
       </mds-table-row>
       <mds-table-row>
@@ -57,7 +57,7 @@ const TemplateMultipleKeys = args => (
           </mds-keyboard>
         </mds-table-cell>
         <mds-table-cell class="align-middle">
-          You must use the <b>right</b> command key or the test will fail.
+          <mds-text>You must use the <b>right</b> command key or the test will fail.</mds-text>
         </mds-table-cell>
       </mds-table-row>
       <mds-table-row>
@@ -68,8 +68,8 @@ const TemplateMultipleKeys = args => (
           </mds-keyboard>
         </mds-table-cell>
         <mds-table-cell class="align-middle">
-          There are no specific key position for this combination, you can use
-          both command keys.
+          <mds-text>There are no specific key position for this combination, you can use
+          both command keys.</mds-text>
         </mds-table-cell>
       </mds-table-row>
       <mds-table-row>
@@ -80,7 +80,7 @@ const TemplateMultipleKeys = args => (
           </mds-keyboard>
         </mds-table-cell>
         <mds-table-cell class="align-middle">
-          You must use the <b>left</b> command key or the test will fail.
+          <mds-text>You must use the <b>left</b> command key or the test will fail.</mds-text>
         </mds-table-cell>
       </mds-table-row>
       <mds-table-row>
@@ -91,7 +91,7 @@ const TemplateMultipleKeys = args => (
           </mds-keyboard>
         </mds-table-cell>
         <mds-table-cell class="align-middle">
-          You must use the <b>right</b> command key or the test will fail.
+          <mds-text>You must use the <b>right</b> command key or the test will fail.</mds-text>
         </mds-table-cell>
       </mds-table-row>
     </mds-table-body>
@@ -130,7 +130,7 @@ const TemplateKeysDictionary = () => (
               class="align-middle w-full"
               value={keyboardKeys[code].group}
             >
-              {keyboardKeys[code].group}
+              <mds-text>{keyboardKeys[code].group}</mds-text>
             </mds-table-cell>
           </mds-table-row>
         ))}

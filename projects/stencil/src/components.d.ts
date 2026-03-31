@@ -10,7 +10,7 @@ import { TypographyInfoType, TypographyInputType, TypographyLabelType, Typograph
 import { MdsAccordionItemEventDetail } from "./components/mds-accordion-item/meta/event-detail";
 import { MdsAccordionTimerEventDetail } from "./components/mds-accordion-timer/meta/event-detail";
 import { MdsAccordionTimerItemEventDetail } from "./components/mds-accordion-timer-item/meta/event-detail";
-import { ChipVariantType, LabelVariantType, ThemeFullVariantAvatarType, ThemeFullVariantType, ThemeInputVariantType, ThemeStatusVariantType, ThemeVariantType, ToneMinimalVariantType, ToneSimpleVariantType, ToneSmartVariantType, ToneVariantType } from "./type/variant";
+import { ChipVariantType, ThemeFullVariantAvatarType, ThemeFullVariantType, ThemeInputVariantType, ThemeLabelVariantType, ThemeStatusVariantType, ThemeVariantType, ToneMinimalVariantType, ToneSimpleVariantType, ToneSmartVariantType, ToneVariantType } from "./type/variant";
 import { AvatarSizeType } from "./components/mds-avatar-stack/meta/types";
 import { BenchmarkBarTypographyType } from "./components/mds-benchmark-bar/meta/types";
 import { ProgressBarSizeType } from "./type/progress";
@@ -48,6 +48,7 @@ import { InputTipItemVariantType } from "./type/input-tip";
 import { AttachmentSort, FileError } from "./components/mds-input-upload/meta/types";
 import { KeyboardTest } from "./components/mds-keyboard/meta/type";
 import { KeyboardKeyName } from "./type/keyboard";
+import { MdsLabelVariantType } from "./components/mds-label/mds-label";
 import { MentionSize } from "./components/mds-mention/meta/type";
 import { ModalAnimationStateType, ModalAnimationStyleType, ModalInteractionType, ModalOverflowType, ModalPositionType } from "./components/mds-modal/meta/types";
 import { StrategyType } from "./components/mds-notification/meta/types";
@@ -89,7 +90,7 @@ export { TypographyInfoType, TypographyInputType, TypographyLabelType, Typograph
 export { MdsAccordionItemEventDetail } from "./components/mds-accordion-item/meta/event-detail";
 export { MdsAccordionTimerEventDetail } from "./components/mds-accordion-timer/meta/event-detail";
 export { MdsAccordionTimerItemEventDetail } from "./components/mds-accordion-timer-item/meta/event-detail";
-export { ChipVariantType, LabelVariantType, ThemeFullVariantAvatarType, ThemeFullVariantType, ThemeInputVariantType, ThemeStatusVariantType, ThemeVariantType, ToneMinimalVariantType, ToneSimpleVariantType, ToneSmartVariantType, ToneVariantType } from "./type/variant";
+export { ChipVariantType, ThemeFullVariantAvatarType, ThemeFullVariantType, ThemeInputVariantType, ThemeLabelVariantType, ThemeStatusVariantType, ThemeVariantType, ToneMinimalVariantType, ToneSimpleVariantType, ToneSmartVariantType, ToneVariantType } from "./type/variant";
 export { AvatarSizeType } from "./components/mds-avatar-stack/meta/types";
 export { BenchmarkBarTypographyType } from "./components/mds-benchmark-bar/meta/types";
 export { ProgressBarSizeType } from "./type/progress";
@@ -127,6 +128,7 @@ export { InputTipItemVariantType } from "./type/input-tip";
 export { AttachmentSort, FileError } from "./components/mds-input-upload/meta/types";
 export { KeyboardTest } from "./components/mds-keyboard/meta/type";
 export { KeyboardKeyName } from "./type/keyboard";
+export { MdsLabelVariantType } from "./components/mds-label/mds-label";
 export { MentionSize } from "./components/mds-mention/meta/type";
 export { ModalAnimationStateType, ModalAnimationStyleType, ModalInteractionType, ModalOverflowType, ModalPositionType } from "./components/mds-modal/meta/types";
 export { StrategyType } from "./components/mds-notification/meta/types";
@@ -1633,10 +1635,9 @@ export namespace Components {
          */
         "deletable": boolean;
         /**
-          * Specifies the ARIA label for remove element
-          * @default 'Rimuovi'
+          * The label of the component
          */
-        "labelAction"?: string;
+        "label"?: string;
         /**
           * Sets the tone of the color variant
           * @default 'text'
@@ -1644,19 +1645,20 @@ export namespace Components {
         "tone": ToneSimpleVariantType;
         /**
           * Truncates text inside the label or displays it in multiline if needed
+          * @default 'word'
          */
         "truncate"?: TypographyTruncateType;
         /**
           * Specifies the typography of the element
           * @default 'caption'
          */
-        "typography": TypographyType;
+        "typography": TypographyTooltipType;
         "updateLang": () => Promise<void>;
         /**
           * Sets the theme variant colors
           * @default 'sky'
          */
-        "variant": ThemeFullVariantType;
+        "variant": MdsLabelVariantType;
     }
     interface MdsList {
     }
@@ -1740,7 +1742,7 @@ export namespace Components {
           * Specifies the color variant for the element
           * @default 'yellow'
          */
-        "variant"?: LabelVariantType;
+        "variant"?: ThemeLabelVariantType;
     }
     interface MdsNotification {
         /**
@@ -5823,10 +5825,9 @@ declare namespace LocalJSX {
          */
         "deletable"?: boolean;
         /**
-          * Specifies the ARIA label for remove element
-          * @default 'Rimuovi'
+          * The label of the component
          */
-        "labelAction"?: string;
+        "label"?: string;
         /**
           * Emits when the label has to be cancelled
          */
@@ -5838,18 +5839,19 @@ declare namespace LocalJSX {
         "tone"?: ToneSimpleVariantType;
         /**
           * Truncates text inside the label or displays it in multiline if needed
+          * @default 'word'
          */
         "truncate"?: TypographyTruncateType;
         /**
           * Specifies the typography of the element
           * @default 'caption'
          */
-        "typography"?: TypographyType;
+        "typography"?: TypographyTooltipType;
         /**
           * Sets the theme variant colors
           * @default 'sky'
          */
-        "variant"?: ThemeFullVariantType;
+        "variant"?: MdsLabelVariantType;
     }
     interface MdsList {
     }
@@ -5951,7 +5953,7 @@ declare namespace LocalJSX {
           * Specifies the color variant for the element
           * @default 'yellow'
          */
-        "variant"?: LabelVariantType;
+        "variant"?: ThemeLabelVariantType;
     }
     interface MdsNotification {
         /**

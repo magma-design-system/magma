@@ -1,6 +1,6 @@
 import { h } from '@stencil/core'
-import { treeIconDictionary } from '@dictionary/tree'
-import { iconsDictionary } from '@dictionary/icon'
+import { treeIconDictionary } from '@type/tree'
+import { iconsDictionary } from '@type/icon'
 import { MdsTreeItemEventDetail } from 'src/components'
 import { useEffect } from 'react'
 

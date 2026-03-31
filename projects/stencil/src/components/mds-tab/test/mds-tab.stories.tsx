@@ -1,7 +1,7 @@
 import { h } from '@stencil/core'
-import { horizontalActionsAnimationDictionary } from '@dictionary/animation'
+import { horizontalActionsAnimationDictionary } from '@type/animation'
 import { directionDictionary } from '../meta/dictionary'
-import { tabSizeDictionary } from '@dictionary/button'
+import { tabSizeDictionary } from '@type/button'
 import clsx from 'clsx'
 import { useEffect, useState } from 'react'
 

@@ -1,13 +1,13 @@
 import { h } from '@stencil/core'
-import { fileExtensionsDictionary } from '@dictionary/file-extensions'
+import { fileExtensionsDictionary } from '@type/file-types'
 import { filesList } from '@fixture/filenames'
-import { truncateDictionary } from '@dictionary/text'
+import { truncateDictionary } from '@type/text'
 import {
   iconsDictionary,
   mggIconsDictionary,
   svgIconsDictionary,
-} from '@dictionary/icon'
-import { themeFullVariantAvatarDictionary } from '@dictionary/variant'
+} from '@type/icon'
+import { themeFullVariantAvatarDictionary } from '@type/variant'
 
 const extensionsList = Object.keys(fileExtensionsDictionary).sort()
 

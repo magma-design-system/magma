@@ -1,5 +1,5 @@
-import { iconsDictionary, mggIconsDictionary } from '@dictionary/icon'
-import { typographyInfoDictionary } from '@dictionary/typography'
+import { iconsDictionary, mggIconsDictionary } from '@type/icon'
+import { typographyInfoDictionary } from '@type/typography'
 import { h } from '@stencil/core'
 
 export default {

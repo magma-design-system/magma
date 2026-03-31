@@ -2,7 +2,7 @@ import { h } from '@stencil/core'
 import {
   themeFullVariantAvatarDictionary,
   toneMinimalVariantDictionary,
-} from '@dictionary/variant'
+} from '@type/variant'
 
 export default {
   title: 'UI / Avatar stack / Item',

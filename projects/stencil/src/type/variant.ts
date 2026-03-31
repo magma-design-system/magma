@@ -1,132 +1,101 @@
-export type ThemeStatusVariantType =
-  | 'error'
-  | 'info'
-  | 'success'
-  | 'warning'
+export const themeStatusVariantDictionary = [
+  'error',
+  'info',
+  'success',
+  'warning',
+] as const
+export type ThemeStatusVariantType = (typeof themeStatusVariantDictionary)[number]
 
-export type ThemeInputVariantType =
-  | 'primary'
-  | 'ai'
-  | 'error'
-  | 'info'
-  | 'success'
-  | 'warning'
+export const themeLabelVariantDictionary = [
+  'amaranth',
+  'red',
+  'aqua',
+  'blue',
+  'green',
+  'lime',
+  'orange',
+  'orchid',
+  'purple',
+  'sky',
+  'violet',
+  'yellow',
+] as const
+export type ThemeLabelVariantType = (typeof themeLabelVariantDictionary)[number]
 
-export type ThemeVariantType =
-  | 'ai'
-  | 'dark'
-  | 'error'
-  | 'info'
-  | 'light'
-  | 'primary'
-  | 'success'
-  | 'warning'
+export const themeLuminanceVariantDictionary = [
+  'dark',
+  'light',
+] as const
+export type ThemeLuminanceVariantType = (typeof themeLuminanceVariantDictionary)[number]
 
-export type ThemeFullVariantType =
-  | 'amaranth'
-  | 'aqua'
-  | 'blue'
-  | 'dark'
-  | 'error'
-  | 'green'
-  | 'info'
-  | 'light'
-  | 'lime'
-  | 'orange'
-  | 'orchid'
-  | 'purple'
-  | 'red'
-  | 'sky'
-  | 'success'
-  | 'violet'
-  | 'warning'
-  | 'yellow'
+export const themeBrandVariantDictionary = [
+  'ai',
+  'primary',
+  'secondary',
+] as const
+export type ThemeBrandVariantType = (typeof themeBrandVariantDictionary)[number]
 
-export type ThemeFullVariantAvatarType =
-  | 'amaranth'
-  | 'aqua'
-  | 'blue'
-  | 'error'
-  | 'green'
-  | 'info'
-  | 'lime'
-  | 'orange'
-  | 'orchid'
-  | 'primary'
-  | 'purple'
-  | 'red'
-  | 'sky'
-  | 'success'
-  | 'violet'
-  | 'warning'
-  | 'yellow'
+export const toneMinimalVariantDictionary = [
+  'strong',
+  'weak',
+] as const
+export type ToneMinimalVariantType = (typeof toneMinimalVariantDictionary)[number]
 
-export type ThemeLuminanceVariantType =
-  | 'dark'
-  | 'light'
+export const toneSmartVariantDictionary = [
+  ...toneMinimalVariantDictionary,
+  'outline',
+] as const
+export type ToneSmartVariantType = (typeof toneSmartVariantDictionary)[number]
 
-export type LabelVariantType =
-  | 'amaranth'
-  | 'aqua'
-  | 'blue'
-  | 'green'
-  | 'lime'
-  | 'orange'
-  | 'orchid'
-  | 'purple'
-  | 'red'
-  | 'sky'
-  | 'violet'
-  | 'yellow'
+export const toneSimpleVariantDictionary = [
+  ...toneMinimalVariantDictionary,
+  'text',
+] as const
+export type ToneSimpleVariantType = (typeof toneSimpleVariantDictionary)[number]
 
-export type ActionVariantType =
-  | 'primary'
-  | 'dark'
-  | 'light'
+export const toneVariantDictionary = [
+  ...toneSmartVariantDictionary,
+  'text',
+] as const
+export type ToneVariantType = (typeof toneVariantDictionary)[number]
 
-export type ChipVariantType =
-  | 'ai'
-  | 'amaranth'
-  | 'aqua'
-  | 'blue'
-  | 'dark'
-  | 'error'
-  | 'green'
-  | 'info'
-  | 'lime'
-  | 'orange'
-  | 'orchid'
-  | 'primary'
-  | 'purple'
-  | 'red'
-  | 'secondary'
-  | 'sky'
-  | 'success'
-  | 'violet'
-  | 'warning'
-  | 'yellow'
+export const themeInputVariantDictionary = [
+  'ai',
+  'primary',
+  ...themeStatusVariantDictionary,
+] as const
+export type ThemeInputVariantType = (typeof themeInputVariantDictionary)[number]
 
-export type StateVariantType =
-  | 'disabled'
-  | 'focused'
-  | 'readonly'
+export const themeVariantDictionary = [
+  ...themeInputVariantDictionary,
+  ...themeLuminanceVariantDictionary,
+] as const
+export type ThemeVariantType = (typeof themeVariantDictionary)[number]
 
-export type ToneVariantType =
-  | 'outline' // bordered
-  | 'strong' // background strong
-  | 'text' // no background, no border
-  | 'weak' // background weak
+export const themeFullVariantDictionary = [
+  ...themeLabelVariantDictionary,
+  ...themeLuminanceVariantDictionary,
+  ...themeStatusVariantDictionary,
+] as const
+export type ThemeFullVariantType = (typeof themeFullVariantDictionary)[number]
 
-export type ToneSmartVariantType =
-  | 'outline' // bordered
-  | 'strong' // background strong
-  | 'weak' // background weak
+export const themeFullVariantAvatarDictionary = [
+  ...themeLabelVariantDictionary,
+  ...themeStatusVariantDictionary,
+  'primary',
+] as const
+export type ThemeFullVariantAvatarType = (typeof themeFullVariantAvatarDictionary)[number]
 
-export type ToneSimpleVariantType =
-  | 'strong'
-  | 'text'
-  | 'weak'
+export const actionVariantDictionary = [
+  'primary',
+  ...themeLuminanceVariantDictionary,
+] as const
+export type ActionVariantType = (typeof actionVariantDictionary)[number]
 
-export type ToneMinimalVariantType =
-  | 'strong'
-  | 'weak'
+export const themeVariantChipDictionary = [
+  'dark',
+  ...themeLabelVariantDictionary,
+  ...themeBrandVariantDictionary,
+  ...themeStatusVariantDictionary,
+] as const
+export type ChipVariantType = (typeof themeVariantChipDictionary)[number]

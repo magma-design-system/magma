@@ -1,63 +1,69 @@
-export type TypographyTagType =
-  | 'abbr'
-  | 'address'
-  | 'article'
-  | 'b'
-  | 'bdo'
-  | 'blockquote'
-  | 'cite'
-  | 'code'
-  | 'dd'
-  | 'del'
-  | 'details'
-  | 'dfn'
-  | 'div'
-  | 'dl'
-  | 'dt'
-  | 'em'
-  | 'figcaption'
-  | 'h1'
-  | 'h2'
-  | 'h3'
-  | 'h4'
-  | 'h5'
-  | 'h6'
-  | 'i'
-  | 'ins'
-  | 'kbd'
-  | 'label'
-  | 'legend'
-  | 'li'
-  | 'mark'
-  | 'ol'
-  | 'p'
-  | 'pre'
-  | 'q'
-  | 'rb'
-  | 'rt'
-  | 'ruby'
-  | 's'
-  | 'samp'
-  | 'small'
-  | 'span'
-  | 'strong'
-  | 'sub'
-  | 'summary'
-  | 'sup'
-  | 'time'
-  | 'u'
-  | 'ul'
-  | 'var'
+export const typographyTagDictionary = [
+  'abbr',
+  'address',
+  'article',
+  'b',
+  'bdo',
+  'blockquote',
+  'cite',
+  'code',
+  'dd',
+  'del',
+  'details',
+  'dfn',
+  'div',
+  'dl',
+  'dt',
+  'em',
+  'figcaption',
+  'h1',
+  'h2',
+  'h3',
+  'h4',
+  'h5',
+  'h6',
+  'i',
+  'ins',
+  'kbd',
+  'label',
+  'legend',
+  'li',
+  'mark',
+  'ol',
+  'p',
+  'pre',
+  'q',
+  'rb',
+  'rt',
+  'ruby',
+  's',
+  'samp',
+  'small',
+  'span',
+  'strong',
+  'sub',
+  'summary',
+  'sup',
+  'time',
+  'u',
+  'ul',
+  'var',
+] as const
+export type TypographyTagType = (typeof typographyTagDictionary)[number]
 
-export type TypographyHeadingTagType =
-  | 'h1'
-  | 'h2'
-  | 'h3'
-  | 'h4'
-  | 'h5'
-  | 'h6'
+export const typographyHeadingTagDictionary = [
+  'h1',
+  'h2',
+  'h3',
+  'h4',
+  'h5',
+  'h6',
+] as const
+export type TypographyHeadingTagType = (typeof typographyHeadingTagDictionary)[number]
 
-export type TypographyTruncateType =
-  | 'all'
-  | 'none'
-  | 'word'
+export const truncateDictionary = [
+  'all',
+  'none',
+  'word',
+] as const
+export type TypographyTruncateType = (typeof truncateDictionary)[number]

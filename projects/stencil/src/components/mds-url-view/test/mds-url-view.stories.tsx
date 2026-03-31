@@ -1,11 +1,11 @@
-import { loadingDictionary } from '@dictionary/loading'
+import { loadingDictionary } from '@type/loading'
 import { h } from '@stencil/core'
 import { useEffect, useState } from 'react'
 import {
   iconsDictionary,
   mggIconsDictionary,
   svgIconsDictionary,
-} from '@dictionary/icon'
+} from '@type/icon'
 
 const URLs = ['https://www.typeform.com/', 'http://azumbrunnen.me/']
 

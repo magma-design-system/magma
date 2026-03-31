@@ -1,11 +1,11 @@
 import { h } from '@stencil/core'
-import { buttonIconPositionDictionary } from '@dictionary/button'
+import { buttonIconPositionDictionary } from '@type/button'
 import {
   treeIconDictionary,
   treeAppearanceDictionary,
   treeActionsDictionary,
-} from '@dictionary/tree'
-import { truncateDictionary } from '@dictionary/text'
+} from '@type/tree'
+import { truncateDictionary } from '@type/text'
 
 export default {
   title: 'UI / Tree',

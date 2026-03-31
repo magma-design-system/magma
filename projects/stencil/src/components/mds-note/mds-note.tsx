@@ -1,7 +1,7 @@
 import miBaselineClose from '@icon/mi/baseline/close.svg'
 import { Component, Element, Event, EventEmitter, Host, h, Prop, State, Method } from '@stencil/core'
 import { KeyboardManager } from '@common/keyboard-manager'
-import { LabelVariantType } from '@type/variant'
+import { ThemeLabelVariantType } from '@type/variant'
 import { Locale } from '@common/locale'
 import localeEl from './meta/locale.el.json'
 import localeEn from './meta/locale.en.json'
@@ -42,7 +42,7 @@ export class MdsNote {
   /**
    * Specifies the color variant for the element
    */
-  @Prop({ reflect: true }) readonly variant?: LabelVariantType = 'yellow'
+  @Prop({ reflect: true }) readonly variant?: ThemeLabelVariantType = 'yellow'
 
   private onClickClose = () => {
     this.deleteEvent.emit()

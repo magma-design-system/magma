@@ -1,12 +1,12 @@
 import { h } from '@stencil/core'
-import { iconsDictionary } from '@dictionary/icon'
+import { iconsDictionary } from '@type/icon'
 import {
   buttonDropdownVariantDictionary,
   buttonSizeDictionary,
   buttonToneMinimalVariantDictionary,
   buttonTargetDictionary,
   buttonTypeDictionary,
-} from '@dictionary/button'
+} from '@type/button'
 
 export default {
   title: 'UI / Button dropdown',

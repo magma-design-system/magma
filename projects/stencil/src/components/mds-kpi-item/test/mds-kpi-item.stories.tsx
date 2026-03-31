@@ -3,7 +3,7 @@ import {
   iconsDictionary,
   mggIconsDictionary,
   svgIconsDictionary,
-} from '@dictionary/icon'
+} from '@type/icon'
 
 export default {
   title: 'UI / KPI / KPI Item',

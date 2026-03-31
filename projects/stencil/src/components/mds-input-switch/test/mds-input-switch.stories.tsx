@@ -1,9 +1,9 @@
 import {
   typographyInfoDictionary,
   typographyVariationsDictionary,
-} from '@dictionary/typography'
+} from '@type/typography'
 import { inputSwitchSizeDictionary } from '../meta/dictionary'
-import { iconsDictionary } from '@dictionary/icon'
+import { iconsDictionary } from '@type/icon'
 import { h } from '@stencil/core'
 
 export default {

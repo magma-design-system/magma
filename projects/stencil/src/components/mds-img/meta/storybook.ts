@@ -1,4 +1,4 @@
-import { loadingDictionary } from '@dictionary/loading'
+import { loadingDictionary } from '@type/loading'
 
 const URLs = [
   '1920x1024.png',

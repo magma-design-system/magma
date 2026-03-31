@@ -1,4 +1,4 @@
-import { themeInputVariantDictionary } from '@dictionary/variant'
+import { themeInputVariantDictionary } from '@type/variant'
 import { validationModelDictionary } from '@component/mds-input/meta/dictionary'
 import { h } from '@stencil/core'
 

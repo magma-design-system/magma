@@ -1,9 +1,9 @@
 import {
   floatingUIPlacementDictionary,
   floatingUIStrategyDictionary,
-} from '@dictionary/floating-ui'
+} from '@type/floating-ui'
 import { h } from '@stencil/core'
-import { typographyTooltipDictionary } from '@dictionary/typography'
+import { typographyTooltipDictionary } from '@type/typography'
 
 export default {
   title: 'UI / Tooltip',

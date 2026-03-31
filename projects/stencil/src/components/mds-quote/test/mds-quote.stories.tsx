@@ -1,5 +1,5 @@
-import { typographyReadDictionary } from '@dictionary/typography'
-import { typographyHeadingTagDictionary } from '@dictionary/text'
+import { typographyReadDictionary } from '@type/typography'
+import { typographyHeadingTagDictionary } from '@type/text'
 import { h } from '@stencil/core'
 
 export default {

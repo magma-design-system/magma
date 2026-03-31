@@ -1,6 +1,6 @@
 import { citiesDictionary } from '@fixture/cities'
-import { autoCompleteDictionary } from '@dictionary/autocomplete'
-import { themeStatusVariantDictionary } from '@dictionary/variant'
+import { autoCompleteDictionary } from '@type/autocomplete'
+import { themeStatusVariantDictionary } from '@type/variant'
 import { h } from '@stencil/core'
 
 const cities = {}
