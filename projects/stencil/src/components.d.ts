@@ -426,6 +426,10 @@ export namespace Components {
     }
     interface MdsBreadcrumbItem {
         /**
+          * Sets the label of the breadcrumb item
+         */
+        "label"?: string;
+        /**
           * Choose if the component is selected or not
          */
         "selected"?: boolean;
@@ -4589,6 +4593,10 @@ declare namespace LocalJSX {
         "onMdsBreadcrumbChange"?: (event: MdsBreadcrumbCustomEvent<MdsBreadcrumbEventDetail>) => void;
     }
     interface MdsBreadcrumbItem {
+        /**
+          * Sets the label of the breadcrumb item
+         */
+        "label"?: string;
         /**
           * Emits when the breadcrumb is active
          */

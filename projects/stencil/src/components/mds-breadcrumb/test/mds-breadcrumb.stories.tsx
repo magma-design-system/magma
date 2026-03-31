@@ -12,9 +12,9 @@ export default {
 
 const Template = args => (
   <mds-breadcrumb {...args}>
-    <mds-breadcrumb-item>First item</mds-breadcrumb-item>
-    <mds-breadcrumb-item>Second</mds-breadcrumb-item>
-    <mds-breadcrumb-item>The third</mds-breadcrumb-item>
+    <mds-breadcrumb-item label="First item"></mds-breadcrumb-item>
+    <mds-breadcrumb-item label="Second"></mds-breadcrumb-item>
+    <mds-breadcrumb-item label="The third"></mds-breadcrumb-item>
   </mds-breadcrumb>
 )
 

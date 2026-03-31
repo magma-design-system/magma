@@ -12,14 +12,18 @@ export default {
 
 const Template = args => (
   <mds-breadcrumb>
-    <mds-breadcrumb-item {...args}>First item</mds-breadcrumb-item>
-    <mds-breadcrumb-item>Second</mds-breadcrumb-item>
-    <mds-breadcrumb-item>The third</mds-breadcrumb-item>
+    <mds-breadcrumb-item {...args}></mds-breadcrumb-item>
+    <mds-breadcrumb-item label="Second"></mds-breadcrumb-item>
+    <mds-breadcrumb-item label="The third"></mds-breadcrumb-item>
   </mds-breadcrumb>
 )
 
 export const Default = {
   render: Template,
+
+  args: {
+    label: 'First item',
+  },
 }
 
 export const Selected = {
@@ -27,5 +31,6 @@ export const Selected = {
 
   args: {
     selected: true,
+    label: 'First item',
   },
 }

@@ -23,6 +23,11 @@ export class MdsBreadcrumbItem {
   @Prop({ mutable: true, reflect: true }) selected?: boolean
 
   /**
+   * Sets the label of the breadcrumb item
+   */
+  @Prop({ reflect: true }) label?: string
+
+  /**
    * Emits when the breadcrumb is active
    */
   @Event({ eventName: 'mdsBreadcrumbItemSelect' }) selectedEvent: EventEmitter<MdsBreadcrumbItemEventDetail>
@@ -53,7 +58,7 @@ export class MdsBreadcrumbItem {
   render () {
     return (
       <Host>
-        <mds-button onClick={ this.toggle } part="button"><slot/></mds-button>
+        <mds-button onClick={ this.toggle } part="button" label={this.label}></mds-button>
         <i aria-hidden="true" class="icon" innerHTML={miBaselineNavigateNext}/>
       </Host>
     )
