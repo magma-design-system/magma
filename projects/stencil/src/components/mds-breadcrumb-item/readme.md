@@ -11,6 +11,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 | Property   | Attribute  | Description                                | Type                   | Default     |
 | ---------- | ---------- | ------------------------------------------ | ---------------------- | ----------- |
+| `label`    | `label`    | Sets the label of the breadcrumb item      | `string \| undefined`  | `undefined` |
 | `selected` | `selected` | Choose if the component is selected or not | `boolean \| undefined` | `undefined` |
 
 

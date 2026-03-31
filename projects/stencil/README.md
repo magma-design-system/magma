@@ -32,6 +32,7 @@ Now tones have new names to make them more consistent with the rest of the syste
 |---------|---------|-------------|
 | ⚠️ | `mds-text`                 | added `text-box` css module with vertically treats text nodes with a better optical alignment.
 | ⚠️ | `mds-banner`               | Removed old `quiet` tone which is NOT replaced with `text` tone. |
+| ⚠️ | `mds-breadcrumb`           | Now item requires `label` attribute to be set. |
 | ✅ | `mds-file`                  | Added download icon on hover to make component more explicit. |
 | ✅ | `mds-table`                | Added batch actions to the table when rows are selectable. |
 | ✅ | `mds-header-bar`           | The overlay blur effect is now applied progressively rather than sharply outlined. |
