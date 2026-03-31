@@ -30,14 +30,16 @@
   --mds-file-preview-icon-color: rgb(var(--tone-neutral-04));
   --mds-file-preview-color: rgb(var(--tone-neutral-04));
   --mds-file-preview-icon-bacground: rgb(var(--tone-neutral-10));
+  --private-icon-download-offset: 10%;
 
   @apply focus-bounce;
 
   align-items: stretch;
   background-color: rgb(var(--tone-neutral));
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-sharp);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-outline-weak);
   color: rgb(var(--tone-neutral-04));
+  corner-shape: var(--magma-corner-shape, round);
   cursor: pointer;
   display: inline-flex;
   overflow: hidden;
@@ -52,7 +54,30 @@
 }
 
 :host(:hover) {
-  box-shadow: var(--shadow-md-sharp);
+  box-shadow: var(--shadow-box-md);
+
+  & .download-icon {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  & .image-preview, & .icon-preview {
+    opacity: 0;
+    transform: translateY(var(--private-icon-download-offset));
+  }
+}
+
+.download-icon {
+  align-items: center;
+  display: flex;
+  inset: 0;
+  justify-content: center;
+  opacity: 0;
+  position: absolute;
+  transform: translateY(calc(var(--private-icon-download-offset) * -1));
+  transition-duration: inherit;
+  transition-property: opacity, transform;
+  transition-timing-function: inherit;
 }
 
 .preview {
@@ -64,7 +89,7 @@
   flex-shrink: 0;
   justify-content: center;
   position: relative;
-  transition-duration: var(--duration-300);
+  transition-duration: inherit;
   transition-property: color, background-color, fill;
   transition-timing-function: var(--ease-in-out);
   width: --spacing(1400);
@@ -78,12 +103,22 @@
   position: absolute;
 }
 
+.image-preview,
+.icon-preview {
+  transition-duration: inherit;
+  transition-property: opacity, transform;
+  transition-timing-function: inherit;
+}
+
 .info {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
+  gap: --spacing(100);
+  height: --spacing(1400);
+  justify-content: center;
   min-width: 0px;
-  padding: --spacing(200) --spacing(300);
+  padding: 0 --spacing(300);
 }
 
 .filename {

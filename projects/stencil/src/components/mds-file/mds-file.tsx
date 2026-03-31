@@ -5,6 +5,7 @@ import { ThemeFullVariantType } from '@type/variant'
 import { MD5 } from 'crypto-js'
 import { getFormatsVariant, getName, getSuffix, getExtensionInfos } from '@common/file'
 import miBaselineFileDownloadDone from '@icon/mi/baseline/file-download-done.svg'
+import miOutlineFileDownload from '@icon/mi/outline/file-download.svg'
 import { Locale } from '@common/locale'
 import localeEl from './meta/locale.el.json'
 import localeEn from './meta/locale.en.json'
@@ -110,8 +111,11 @@ export class MdsFile {
         <div class="preview">
           { this.preview !== undefined
             ? <div class="image-preview" style={{ backgroundImage: `url(${this.preview})` }}></div>
-            : <mds-icon name={getFormatsVariant(this.filename, this.suffix).icon}/>
+            : <mds-icon class="icon-preview" name={getFormatsVariant(this.filename, this.suffix).icon}/>
           }
+          <div class="download-icon">
+            <mds-icon name={miOutlineFileDownload}></mds-icon>
+          </div>
         </div>
         <div class="info">
           <div class="filename" title={ this.filename }>
