@@ -26,17 +26,17 @@
   }
 }
 
-:host([variant="acqua"]) {
-  --mds-badge-background: rgb(var(--label-acqua-04));
+:host([variant="aqua"]) {
+  --mds-badge-background: rgb(var(--label-aqua-04));
 
   &:host([tone="weak"]) {
-    --mds-badge-background: rgb(var(--label-acqua-09));
-    --mds-badge-color: rgb(var(--label-acqua-02));
+    --mds-badge-background: rgb(var(--label-aqua-09));
+    --mds-badge-color: rgb(var(--label-aqua-02));
   }
 
   &:host([tone="outline"]) {
-    --mds-badge-border-color: rgb(var(--label-acqua-06));
-    --mds-badge-color: rgb(var(--label-acqua-04));
+    --mds-badge-border-color: rgb(var(--label-aqua-06));
+    --mds-badge-color: rgb(var(--label-aqua-04));
   }
 }
 
