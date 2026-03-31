@@ -30,6 +30,9 @@ export default {
 }
 
 const Template = args => <mds-badge {...args}>bovaro del bernese</mds-badge>
+const variantToneCombinations = themeFullVariantDictionary.flatMap(variant =>
+  toneSmartVariantDictionary.map(tone => ({ tone, variant })),
+)
 
 export const Default = {
   render: Template,
@@ -38,4 +41,33 @@ export const Default = {
     tone: 'strong',
     variant: 'violet',
   },
+}
+
+const VariantsTableTemplate = () => (
+  <mds-table interactive>
+    <mds-table-header>
+      <mds-table-header-cell label="Preview"></mds-table-header-cell>
+      <mds-table-header-cell label="Variant" sortable></mds-table-header-cell>
+      <mds-table-header-cell label="Tone" sortable></mds-table-header-cell>
+    </mds-table-header>
+    <mds-table-body>
+      {variantToneCombinations.map(({ tone, variant }) => (
+        <mds-table-row key={`${variant}-${tone}`}>
+          <mds-table-cell>
+            <mds-badge variant={variant} tone={tone}>bovaro del bernese</mds-badge>
+          </mds-table-cell>
+          <mds-table-cell value={variant}>
+            <mds-text typography="hack">{variant}</mds-text>
+          </mds-table-cell>
+          <mds-table-cell value={tone}>
+            <mds-text typography="hack">{tone}</mds-text>
+          </mds-table-cell>
+        </mds-table-row>
+      ))}
+    </mds-table-body>
+  </mds-table>
+)
+
+export const VariantsTable = {
+  render: VariantsTableTemplate,
 }
