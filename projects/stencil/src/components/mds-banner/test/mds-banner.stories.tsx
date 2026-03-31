@@ -186,3 +186,48 @@ export const VariantLight = {
     variant: 'light',
   },
 }
+
+const variantToneCombinations = themeVariantDictionary.flatMap(variant =>
+  toneMinimalBoxVariantDictionary.map(tone => ({ tone, variant })),
+)
+
+const VariantsTableTemplate = () => (
+  <mds-table>
+    <mds-table-header>
+      <mds-table-header-cell label="Preview"></mds-table-header-cell>
+      <mds-table-header-cell label="Variant" sortable></mds-table-header-cell>
+      <mds-table-header-cell label="Tone" sortable></mds-table-header-cell>
+    </mds-table-header>
+    <mds-table-body>
+      {variantToneCombinations.map(({ tone, variant }) => (
+        <mds-table-row key={`${variant}-${tone}`}>
+          <mds-table-cell>
+            <mds-banner class="w-[400px]" variant={variant} tone={tone}>
+              <mds-text typography="detail">
+                Il tuo account è stato aggiornato alla versione PRO, ora puoi utilizzare
+                le notifiche su aggiornamenti di norme di legge e la consultazione dei
+                volumi correlati.
+              </mds-text>
+              <mds-button slot="action" variant={variant} tone="outline">
+                Cancel
+              </mds-button>
+              <mds-button slot="action" variant={variant} tone={tone}>
+                Confirm
+              </mds-button>
+            </mds-banner>
+          </mds-table-cell>
+          <mds-table-cell value={variant}>
+            <mds-text typography="hack" class="whitespace-nowrap">{variant}</mds-text>
+          </mds-table-cell>
+          <mds-table-cell value={tone}>
+            <mds-text typography="hack" class="whitespace-nowrap">{tone}</mds-text>
+          </mds-table-cell>
+        </mds-table-row>
+      ))}
+    </mds-table-body>
+  </mds-table>
+)
+
+export const VariantsTable = {
+  render: VariantsTableTemplate,
+}

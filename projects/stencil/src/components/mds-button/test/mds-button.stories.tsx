@@ -7,7 +7,7 @@ import {
   buttonIconPositionDictionary,
   buttonTypeDictionary,
 } from '@type/button'
-import { toneVariantDictionary } from '@type/tone'
+import { toneBoxVariantDictionary } from '@type/tone'
 import { ButtonVariantType } from '@type/button'
 import { ToneVariantType } from '@type/tone'
 
@@ -70,7 +70,7 @@ export default {
     tone: {
       type: { name: 'string' },
       description: 'Specifies the tone variant of the button',
-      options: toneVariantDictionary,
+      options: toneBoxVariantDictionary,
       control: { type: 'select' },
     },
     variant: {
@@ -490,4 +490,37 @@ export const TestInteraction = {
     expect(args.onClick).toHaveBeenCalledOnce()
 
   },
+}
+
+const variantToneCombinations = buttonVariantDictionary.flatMap(variant =>
+  toneBoxVariantDictionary.map(tone => ({ tone, variant })),
+)
+
+const VariantsTableTemplate = () => (
+  <mds-table>
+    <mds-table-header>
+      <mds-table-header-cell label="Preview"></mds-table-header-cell>
+      <mds-table-header-cell label="Variant" sortable></mds-table-header-cell>
+      <mds-table-header-cell label="Tone" sortable></mds-table-header-cell>
+    </mds-table-header>
+    <mds-table-body>
+      {variantToneCombinations.map(({ tone, variant }) => (
+        <mds-table-row key={`${variant}-${tone}`}>
+          <mds-table-cell>
+            <mds-button variant={variant} tone={tone} label="Hello world"></mds-button>
+          </mds-table-cell>
+          <mds-table-cell value={variant}>
+            <mds-text typography="hack" class="whitespace-nowrap">{variant}</mds-text>
+          </mds-table-cell>
+          <mds-table-cell value={tone}>
+            <mds-text typography="hack" class="whitespace-nowrap">{tone}</mds-text>
+          </mds-table-cell>
+        </mds-table-row>
+      ))}
+    </mds-table-body>
+  </mds-table>
+)
+
+export const VariantsTable = {
+  render: VariantsTableTemplate,
 }
