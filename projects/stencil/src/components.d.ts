@@ -37,6 +37,7 @@ import { MdsImgEventDetail } from "./components/mds-img/meta/event-detail";
 import { AutocompleteType } from "./type/autocomplete";
 import { InputControlsIconType, InputControlsLayoutType, InputTextType, MdsInputEventDetail } from "./type/input";
 import { MdsValidationErrors, MdsValidatorFn } from "./components/mds-input/meta/validators";
+import { MdsValidationErrors as MdsValidationErrors1, ModalOverflowType as ModalOverflowType1 } from "./components.d";
 import { EventDate } from "./components/mds-input-date-range/mds-input-date-range";
 import { InputSwitchSizeType, InputSwitchType } from "./components/mds-input-switch/meta/types";
 import { MdsInputSwitchEventDetail } from "./components/mds-input-switch/meta/event-detail";
@@ -62,7 +63,6 @@ import { MdsPushNotificationEventDetail } from "./components/mds-push-notificati
 import { NotificationItemDateFormatType, NotificationItemPreviewType } from "./components/mds-push-notification-item/meta/types";
 import { MdsPushNotificationItemEventDetail } from "./components/mds-push-notification-item/meta/event-detail";
 import { Direction, Interaction } from "./components/mds-radial-menu/meta/types";
-import { ModalOverflowType as ModalOverflowType1 } from "./components.d";
 import { StatusBarPositionType } from "./components/mds-status-bar/meta/types";
 import { StepperBarNavigationType } from "./components/mds-stepper-bar/meta/meta";
 import { MdsStepperBarEventDetail } from "./components/mds-stepper-bar/meta/event-detail";
@@ -113,6 +113,7 @@ export { MdsImgEventDetail } from "./components/mds-img/meta/event-detail";
 export { AutocompleteType } from "./type/autocomplete";
 export { InputControlsIconType, InputControlsLayoutType, InputTextType, MdsInputEventDetail } from "./type/input";
 export { MdsValidationErrors, MdsValidatorFn } from "./components/mds-input/meta/validators";
+export { MdsValidationErrors as MdsValidationErrors1, ModalOverflowType as ModalOverflowType1 } from "./components.d";
 export { EventDate } from "./components/mds-input-date-range/mds-input-date-range";
 export { InputSwitchSizeType, InputSwitchType } from "./components/mds-input-switch/meta/types";
 export { MdsInputSwitchEventDetail } from "./components/mds-input-switch/meta/event-detail";
@@ -138,7 +139,6 @@ export { MdsPushNotificationEventDetail } from "./components/mds-push-notificati
 export { NotificationItemDateFormatType, NotificationItemPreviewType } from "./components/mds-push-notification-item/meta/types";
 export { MdsPushNotificationItemEventDetail } from "./components/mds-push-notification-item/meta/event-detail";
 export { Direction, Interaction } from "./components/mds-radial-menu/meta/types";
-export { ModalOverflowType as ModalOverflowType1 } from "./components.d";
 export { StatusBarPositionType } from "./components/mds-status-bar/meta/types";
 export { StepperBarNavigationType } from "./components/mds-stepper-bar/meta/meta";
 export { MdsStepperBarEventDetail } from "./components/mds-stepper-bar/meta/event-detail";
@@ -1149,6 +1149,7 @@ export namespace Components {
          */
         "disabled"?: boolean;
         "focusInput": () => Promise<void>;
+        "getErrors": () => Promise<MdsValidationErrors | null>;
         /**
           * Specifies the max date of the range, user cannot set dates after this date
           * @description It's in ISO format (YYYY-MM-DD).
@@ -1204,6 +1205,10 @@ export namespace Components {
           * @description It's in ISO format (YYYY-MM-DD).
          */
         "min": string | null;
+        /**
+          * Is needed to reference the form data after the form is submitted
+         */
+        "name"?: string;
         "preselect": (event: EventDate) => Promise<void>;
         /**
           * Specifies the start date of the range
@@ -3054,6 +3059,7 @@ declare global {
         new (): HTMLMdsInputElement;
     };
     interface HTMLMdsInputDateElementEventMap {
+        "mdsInputValidation": boolean;
         "mdsInputDateSelect": string;
     }
     interface HTMLMdsInputDateElement extends Components.MdsInputDate, HTMLStencilElement {
@@ -5015,6 +5021,10 @@ declare namespace LocalJSX {
         "name"?: string;
         "onMdsInputDateSelect"?: (event: MdsInputDateCustomEvent<string>) => void;
         /**
+          * Emits a boolean event when a input execute validation
+         */
+        "onMdsInputValidation"?: (event: MdsInputDateCustomEvent<boolean>) => void;
+        /**
           * Specifies that the element is read-only
          */
         "readonly"?: boolean;
@@ -5053,6 +5063,10 @@ declare namespace LocalJSX {
           * @description It's in ISO format (YYYY-MM-DD).
          */
         "min"?: string | null;
+        /**
+          * Is needed to reference the form data after the form is submitted
+         */
+        "name"?: string;
         "onMdsInputDateRangeSelect"?: (event: MdsInputDateRangeCustomEvent<{ startDate: string, endDate: string }>) => void;
         "onMdsInputDateRangeValueChange"?: (event: MdsInputDateRangeCustomEvent<{ startDate: string, endDate: string }>) => void;
         /**
