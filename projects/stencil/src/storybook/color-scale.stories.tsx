@@ -495,7 +495,7 @@ const ColorItem = ({ color, scale }: { color: string, scale: string }) => {
   )
 }
 
-const Template = () => {
+const ColorScaleCanvas = () => {
   const [selectedGroup, setSelectedGroup] = useState<string>('variant')
   const [selectedVariantKey, setSelectedVariantKey] = useState<string>(colorPalette.variant[0])
   const [selectedTone, setSelectedTone] = useState<string>('strong')
@@ -605,6 +605,8 @@ const Template = () => {
     </div>
   )
 }
+
+const Template = () => <ColorScaleCanvas />
 
 export const ColorScale = {
   render: Template,

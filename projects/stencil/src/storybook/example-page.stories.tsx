@@ -20,8 +20,8 @@ const Template = () => (
       <div class="grid gap-600 desktop:grid-cols-3 tablet:grid-cols-2 max-w-screen-desktop">
         {Array(18)
           .fill(null)
-          .map(() => (
-            <div class="grid gap-25">
+          .map((_, index) => (
+            <div class="grid gap-25" key={index}>
               <mds-text typography="h5" tag="h2">
                 This is a section title
               </mds-text>

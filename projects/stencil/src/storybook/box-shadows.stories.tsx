@@ -79,11 +79,15 @@ const Template = () => (
   <div class="grid gap-1200">
     {groupOrder.map(group => (
       groupedShadows[group] && groupedShadows[group].length > 0 && (
-        <ShadowsGroup label={group}>
-          {groupedShadows[group].map(shadow => (
-            <BoxShadow value={shadow.value} label={shadow.name} remove={shadow.name === 'none'} />
-          ))}
-        </ShadowsGroup>
+        <div key={group}>
+          <ShadowsGroup label={group}>
+            {groupedShadows[group].map(shadow => (
+              <div key={shadow.name}>
+                <BoxShadow value={shadow.value} label={shadow.name} remove={shadow.name === 'none'} />
+              </div>
+            ))}
+          </ShadowsGroup>
+        </div>
       )
     ))}
     <StackedDocuments value={getShadowValue(['box-lg', 'box-md', 'lg', 'md', 'DEFAULT', 'default'])} />
