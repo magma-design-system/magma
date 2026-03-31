@@ -6,7 +6,6 @@
  * @prop --mds-entity-detail-color: The color of the text details
  * @prop --mds-entity-icon-background: The background-color of the icon
  * @prop --mds-entity-icon-color: The color of the icon
- * @prop --mds-entity-shadow: The box-shadow od the component
  */
 
 @property --mds-entity-background {
@@ -45,12 +44,6 @@
   syntax: "<color>";
 }
 
-/* @property --mds-entity-shadow {
-  inherits: false;
-  initial-value: var(--shadow-md);
-  syntax: "*";
-} */
-
 :host {
   --mds-entity-background: rgb(var(--tone-neutral));
   --mds-entity-color: rgb(var(--tone-neutral-02));
@@ -58,12 +51,11 @@
   --mds-entity-icon-background: rgb(var(--label-blue-09));
   --mds-entity-icon-radius: var(--radius-md);
   --mds-entity-icon-color: rgb(var(--label-blue-04));
-  --mds-entity-shadow: var(--shadow-md);
 
   align-items: stretch;
   background-color: var(--mds-entity-background);
   border-radius: var(--radius-lg);
-  box-shadow: var(--mds-entity-shadow);
+  box-shadow: var(--shadow-outline-weak);
   color: var(--mds-entity-color);
   display: flex;
   gap: --spacing(200);
