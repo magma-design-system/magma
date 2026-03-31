@@ -42,13 +42,13 @@
   --mds-progress-background: rgb(var(--tone-neutral-08));
   --mds-progress-color: rgb(var(--variant-primary-03));
   --mds-progress-duration: 750ms;
-  --mds-progress-radius: var(--radius-lg);
   --mds-progress-thickness: var(--height-200);
 
   @apply ease-in-out;
 
   background-color: var(--mds-progress-background);
-  border-radius: var(--mds-progress-radius);
+  border-radius: var(--radius-2xl);
+  corner-shape: var(--magma-corner-shape, round);
   display: flex;
   height: var(--mds-progress-thickness);
   min-height: var(--mds-progress-thickness);
@@ -81,7 +81,8 @@
   @apply ease-out-expo;
 
   background-color: var(--mds-progress-color);
-  border-radius: var(--mds-progress-radius);
+  border-radius: inherit;
+  corner-shape: inherit;
   transition-duration: var(--mds-progress-duration);
   transition-property: background-color, flex-grow;
 }
