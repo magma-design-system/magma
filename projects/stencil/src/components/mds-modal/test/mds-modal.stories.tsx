@@ -472,6 +472,7 @@ const CustomTemplate = args => {
           id="window"
           slot="window"
           class="max-w-[400px] w-full mx-6"
+          tone="box"
           deletable
           headline="Action required"
         >
