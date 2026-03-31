@@ -1,4 +1,5 @@
 @import '../tailwind/typography.css';
+@import '../tailwind/utilities.css';
 @reference 'tailwindcss';
 @reference "@maggioli-design-system/design-tokens/dist/css/tailwind-theme-typography.css";
 

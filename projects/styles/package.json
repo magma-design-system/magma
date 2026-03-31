@@ -38,6 +38,11 @@
       "name": "Daniele Tardia",
       "email": "daniele.tardia@hibo.it",
       "role": "Senior Developer"
+    },
+    {
+      "name": "Nicola Tamburini",
+      "email": "nicola.tamburini@maggioli.it",
+      "role": "Software Engineer"
     }
   ],
   "license": "ISC",
@@ -50,10 +55,10 @@
     "normalize.css": "8.0.1"
   },
   "devDependencies": {
-    "autoprefixer": "10.4.20",
-    "postcss-cli": "11.0.0",
-    "postcss": "8.4.49",
-    "postcss-import": "16.1.0",
-    "tailwindcss": "4.1.11"
+    "autoprefixer": "10.4.27",
+    "postcss-cli": "11.0.1",
+    "postcss": "8.5.8",
+    "postcss-import": "16.1.1",
+    "tailwindcss": "4.2.2"
   }
 }
