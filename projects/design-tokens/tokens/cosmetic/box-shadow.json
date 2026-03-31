@@ -31,44 +31,17 @@
       "2xl": {
         "value": "0 25px 50px -12px rgb(0 0 0 / 0.25)"
       },
-      "inner": {
-        "value": "inset 0 2px 4px 0 rgb(0 0 0 / 0.05)"
+      "inset-sm": {
+        "value": "inset 0 2px 4px 0 rgb(0 0 0 / 0.05), inset 0 0 0 1px rgb(0 0 0 / 0.01)"
       },
-      "none": {
-        "value": "0 0 rgb(0 0 0 / 0)"
+      "inset-md": {
+        "value": "inset 0 4px 6px -1px rgb(0 0 0 / 0.1), inset 0 0 0 1px rgb(0 0 0 / 0.02)"
       },
-      "outline": {
-        "value": "0 0 0 1px rgb(var(--tone-neutral-01) / 0.3)"
+      "inset-lg": {
+        "value": "inset 0 10px 15px -3px rgb(0 0 0 / 0.1), inset 0 0 0 1px rgb(0 0 0 / 0.04)"
       },
-      "outline-50": {
-        "value": "0 0 0 2px rgb(var(--tone-neutral-01) / 0.3)"
-      },
-      "outline-75": {
-        "value": "0 0 0 3px rgb(var(--tone-neutral-01) / 0.3)"
-      },
-      "outline-100": {
-        "value": "0 0 0 4px rgb(var(--tone-neutral-01) / 0.3)"
-      },
-      "outline-light": {
-        "value": "0 0 0 1px rgb(var(--tone-neutral-01) / 0.15)"
-      },
-      "outline-light-50": {
-        "value": "0 0 0 2px rgb(var(--tone-neutral-01) / 0.15)"
-      },
-      "outline-light-75": {
-        "value": "0 0 0 3px rgb(var(--tone-neutral-01) / 0.15)"
-      },
-      "outline-light-100": {
-        "value": "0 0 0 4px rgb(var(--tone-neutral-01) / 0.15)"
-      },
-      "outline-strong-50": {
-        "value": "0 0 0 2px rgb(var(--tone-neutral-01) / 0.6)"
-      },
-      "outline-strong-75": {
-        "value": "0 0 0 3px rgb(var(--tone-neutral-01) / 0.6)"
-      },
-      "outline-strong-100": {
-        "value": "0 0 0 4px rgb(var(--tone-neutral-01) / 0.6)"
+      "inset-xl": {
+        "value": "inset 0 20px 25px -5px rgb(0 0 0 / 0.1), inset 0 0 0 1px rgb(0 0 0 / 0.04)"
       },
       "glow-near-strong": {
         "value": "rgb(0 0 0 / 0.2) 0px 12px 28px 0px, rgb(0 0 0 / 0.1) 0px 2px 4px 0px"
