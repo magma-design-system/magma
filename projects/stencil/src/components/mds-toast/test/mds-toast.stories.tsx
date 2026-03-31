@@ -1,7 +1,6 @@
-import {
-  themeVariantDictionary,
-  toneMinimalVariantDictionary,
-} from '@type/variant'
+import { themeVariantDictionary } from '@type/variant'
+import { toneMinimalVariantDictionary } from '@type/tone'
+
 import { h } from '@stencil/core'
 import { toastPositionDictionary } from '../meta/dictionary'
 

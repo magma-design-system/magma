@@ -1,6 +1,9 @@
 import { h } from '@stencil/core'
-import { ChipVariantType, ThemeFullVariantType, ThemeVariantType, ToneVariantType, ToneMinimalVariantType, ToneSmartVariantType } from '@type/variant'
-import { themeVariantChipDictionary, toneMinimalVariantDictionary, themeVariantDictionary, themeFullVariantDictionary, toneSmartVariantDictionary } from '@type/variant'
+import { ChipVariantType, ThemeFullVariantType, ThemeVariantType } from '@type/variant'
+import { ToneVariantType, ToneMinimalVariantType, ToneSmartVariantType } from '@type/tone'
+
+import { themeVariantChipDictionary, themeVariantDictionary, themeFullVariantDictionary } from '@type/variant'
+import { toneMinimalVariantDictionary, toneSmartVariantDictionary } from '@type/tone'
 import { useState, useEffect, useRef } from 'react'
 import { MdsInputSelectCustomEvent } from 'src/components'
 import type { MdsInputEventDetail } from '@type/input'
@@ -15,7 +18,6 @@ const colorGroups = [
 type ColorGroupKey = (typeof colorGroups)[number]
 
 const capitalize = (value: string): string => value.charAt(0).toUpperCase() + value.slice(1)
-
 
 const colors = [
   'tone-slate',
@@ -192,7 +194,6 @@ const ComponentVariants = ({ variant = 'primary', tone = 'strong' }: ComponentVa
     </div>
   )
 }
-
 
 /*
 bg-tone-slate
@@ -517,7 +518,6 @@ const Template = () => {
     }
     const groupEl = groupSelectRef.current as HTMLElement | null
     if (!groupEl) return
-
 
     groupEl.addEventListener('mdsInputSelectChange', handleGroupChange)
     return () => {

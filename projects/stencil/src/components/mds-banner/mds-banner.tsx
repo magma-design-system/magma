@@ -1,5 +1,7 @@
 import { Component, Element, Event, EventEmitter, Host, Prop, h, State, Method, Watch } from '@stencil/core'
-import { ToneMinimalVariantType, ThemeVariantType } from '@type/variant'
+import { ThemeVariantType } from '@type/variant'
+import { ToneMinimalVariantType } from '@type/tone'
+
 import miBaselineClose from '@icon/mi/baseline/close.svg'
 import { KeyboardManager } from '@common/keyboard-manager'
 import { Locale } from '@common/locale'
@@ -78,7 +80,6 @@ export class MdsBanner {
     success: { role: 'status', live: 'polite' },
     warning: { role: 'alert', live: 'assertive' },
   }
-
 
   private deletableHandler = (): void => {
     if (this.deletable) {

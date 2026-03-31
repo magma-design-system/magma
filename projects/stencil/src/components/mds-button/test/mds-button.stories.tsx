@@ -9,7 +9,8 @@ import {
   buttonTypeDictionary,
 } from '@type/button'
 import { ButtonVariantType } from '@type/button'
-import { ToneVariantType } from '@type/variant'
+import { ToneVariantType } from '@type/tone'
+
 import { useEffect, useState } from 'react'
 import { expect, fn } from 'storybook/test'
 import { textAnimateDictionary } from '@component/mds-text/meta/dictionary'
@@ -487,7 +488,6 @@ export const TestInteraction = {
     const button = await canvas.findByRole('button') as HTMLMdsButtonElement
     await userEvent.click(button)
     expect(args.onClick).toHaveBeenCalledOnce()
-
 
   },
 }

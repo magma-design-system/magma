@@ -1,9 +1,7 @@
 import { h } from '@stencil/core'
 import { iconsDictionary } from '@type/icon'
-import {
-  themeVariantDictionary,
-  toneMinimalVariantDictionary,
-} from '@type/variant'
+import { themeVariantDictionary } from '@type/variant'
+import { toneMinimalVariantDictionary } from '@type/tone'
 
 export default {
   title: 'UI / Banner',
@@ -115,7 +113,6 @@ const TemplateVariantLight = args => (
     </mds-button>
   </mds-banner>
 )
-
 
 export const Default = {
   render: Template,

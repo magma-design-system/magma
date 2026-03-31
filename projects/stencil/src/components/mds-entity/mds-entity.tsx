@@ -1,5 +1,6 @@
 import { Component, Element, Host, h, Prop } from '@stencil/core'
-import { ThemeFullVariantAvatarType, ToneMinimalVariantType } from '@type/variant'
+import { ThemeFullVariantAvatarType } from '@type/variant'
+import { ToneMinimalVariantType } from '@type/tone'
 
 /**
  * @slot default - Add `text string`, `HTML elements` or `components` to this slot.

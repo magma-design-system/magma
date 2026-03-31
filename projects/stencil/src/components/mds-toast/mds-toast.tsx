@@ -1,6 +1,8 @@
 import { cssDurationToMilliseconds } from '@common/unit'
 import { Component, Element, Event, EventEmitter, Host, Prop, Watch, h } from '@stencil/core'
-import { ToneMinimalVariantType, ThemeVariantType } from '@type/variant'
+import { ThemeVariantType } from '@type/variant'
+import { ToneMinimalVariantType } from '@type/tone'
+
 import clsx from 'clsx'
 import { ToastPosition } from './meta/types'
 

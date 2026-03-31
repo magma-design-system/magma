@@ -1,7 +1,8 @@
 import { Component, Host, h, Prop } from '@stencil/core'
 import miBaselineKeyboardArrowDown from '@icon/mi/baseline/keyboard-arrow-down.svg'
 import { ButtonSizeType, ButtonTargetType, ButtonType, ButtonDropdownVariantType } from '@type/button'
-import { ToneMinimalVariantType } from '@type/variant'
+import { ToneMinimalVariantType } from '@type/tone'
+
 import { TypographyTruncateType } from '@type/text'
 
 @Component({

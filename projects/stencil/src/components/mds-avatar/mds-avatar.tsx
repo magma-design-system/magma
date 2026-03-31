@@ -1,7 +1,9 @@
 import clsx from 'clsx'
 import fitty from 'fitty/dist/fitty.min.js'
 import { Component, Element, Host, h, State, Prop, Watch } from '@stencil/core'
-import { ThemeFullVariantAvatarType, ToneMinimalVariantType } from '@type/variant'
+import { ThemeFullVariantAvatarType } from '@type/variant'
+import { ToneMinimalVariantType } from '@type/tone'
+
 import { avatarVariant } from './meta/variants'
 import miBaselinePerson from '@icon/mi/baseline/person.svg'
 

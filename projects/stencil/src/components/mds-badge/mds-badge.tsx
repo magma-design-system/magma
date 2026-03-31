@@ -1,6 +1,7 @@
 import { Component, Host, h, Prop } from '@stencil/core'
 import { TypographyLabelType } from '@type/typography'
-import { ThemeFullVariantType, ToneSmartVariantType } from '@type/variant'
+import { ThemeFullVariantType } from '@type/variant'
+import { ToneSmartVariantType } from '@type/tone'
 
 /**
  * @slot default - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.

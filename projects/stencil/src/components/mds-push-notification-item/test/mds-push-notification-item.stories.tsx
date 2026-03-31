@@ -1,9 +1,8 @@
 import { h } from '@stencil/core'
 import { iconsDictionary } from '@type/icon'
-import {
-  themeFullVariantAvatarDictionary,
-  toneMinimalVariantDictionary,
-} from '@type/variant'
+import { themeFullVariantAvatarDictionary } from '@type/variant'
+import { toneMinimalVariantDictionary } from '@type/tone'
+
 import {
   notificationItemPreviewDictionary,
   notificationItemDateFormatDictionary,

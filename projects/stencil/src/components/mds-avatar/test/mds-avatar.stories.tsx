@@ -1,10 +1,8 @@
 import { h } from '@stencil/core'
 import { lokiDisabled } from '@test/loki-disabled'
 import { iconsDictionary, mggIconsDictionary } from '@type/icon'
-import {
-  themeFullVariantAvatarDictionary,
-  toneMinimalVariantDictionary,
-} from '@type/variant'
+import { themeFullVariantAvatarDictionary } from '@type/variant'
+import { toneMinimalVariantDictionary } from '@type/tone'
 
 export default {
   title: 'UI / Avatar',

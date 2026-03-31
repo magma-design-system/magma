@@ -10,7 +10,8 @@ import { TypographyInfoType, TypographyInputType, TypographyLabelType, Typograph
 import { MdsAccordionItemEventDetail } from "./components/mds-accordion-item/meta/event-detail";
 import { MdsAccordionTimerEventDetail } from "./components/mds-accordion-timer/meta/event-detail";
 import { MdsAccordionTimerItemEventDetail } from "./components/mds-accordion-timer-item/meta/event-detail";
-import { ChipVariantType, ThemeFullVariantAvatarType, ThemeFullVariantType, ThemeInputVariantType, ThemeLabelVariantType, ThemeStatusVariantType, ThemeVariantType, ToneMinimalVariantType, ToneSmartVariantType, ToneVariantType } from "./type/variant";
+import { ToneMinimalVariantType, ToneSmartVariantType, ToneVariantType } from "./type/tone";
+import { ChipVariantType, ThemeFullVariantAvatarType, ThemeFullVariantType, ThemeInputVariantType, ThemeLabelVariantType, ThemeStatusVariantType, ThemeVariantType } from "./type/variant";
 import { AvatarSizeType } from "./components/mds-avatar-stack/meta/types";
 import { BenchmarkBarTypographyType } from "./components/mds-benchmark-bar/meta/types";
 import { ProgressBarSizeType } from "./type/progress";
@@ -90,7 +91,8 @@ export { TypographyInfoType, TypographyInputType, TypographyLabelType, Typograph
 export { MdsAccordionItemEventDetail } from "./components/mds-accordion-item/meta/event-detail";
 export { MdsAccordionTimerEventDetail } from "./components/mds-accordion-timer/meta/event-detail";
 export { MdsAccordionTimerItemEventDetail } from "./components/mds-accordion-timer-item/meta/event-detail";
-export { ChipVariantType, ThemeFullVariantAvatarType, ThemeFullVariantType, ThemeInputVariantType, ThemeLabelVariantType, ThemeStatusVariantType, ThemeVariantType, ToneMinimalVariantType, ToneSmartVariantType, ToneVariantType } from "./type/variant";
+export { ToneMinimalVariantType, ToneSmartVariantType, ToneVariantType } from "./type/tone";
+export { ChipVariantType, ThemeFullVariantAvatarType, ThemeFullVariantType, ThemeInputVariantType, ThemeLabelVariantType, ThemeStatusVariantType, ThemeVariantType } from "./type/variant";
 export { AvatarSizeType } from "./components/mds-avatar-stack/meta/types";
 export { BenchmarkBarTypographyType } from "./components/mds-benchmark-bar/meta/types";
 export { ProgressBarSizeType } from "./type/progress";

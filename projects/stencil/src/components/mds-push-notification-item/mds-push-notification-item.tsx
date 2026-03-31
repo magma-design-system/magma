@@ -9,7 +9,9 @@ import { Component, Element, Event, EventEmitter, Host, h, Prop, Method, State, 
 import { Locale } from '@common/locale'
 import { MdsPushNotificationItemEventDetail } from './meta/event-detail'
 import { NotificationItemPreviewType, NotificationItemDateFormatType, RelativeTimeType } from './meta/types'
-import { ThemeFullVariantAvatarType, ToneMinimalVariantType } from '@type/variant'
+import { ThemeFullVariantAvatarType } from '@type/variant'
+import { ToneMinimalVariantType } from '@type/tone'
+
 import { sanitizeISO8601Date } from '@common/date'
 
 dayjs.extend(relativeTime)

@@ -4,7 +4,8 @@ import { Direction, Interaction } from './meta/types'
 import miBaselineMoreVert from '@icon/mi/baseline/more-vert.svg'
 import miBaselineClose from '@icon/mi/baseline/close.svg'
 import clsx from 'clsx'
-import { ToneVariantType } from '@type/variant'
+import { ToneVariantType } from '@type/tone'
+
 import { Backdrop } from '@common/floating-controller'
 
 @Component({

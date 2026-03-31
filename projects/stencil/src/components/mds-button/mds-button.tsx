@@ -1,7 +1,8 @@
 import { ButtonIconPositionType, ButtonSizeType, ButtonTargetType, ButtonType, ButtonVariantType } from '@type/button'
 import { Component, Host, Element, h, Prop, Watch, AttachInternals } from '@stencil/core'
 import { KeyboardManager } from '@common/keyboard-manager'
-import { ToneVariantType } from '@type/variant'
+import { ToneVariantType } from '@type/tone'
+
 import { TypographyType } from '@type/typography'
 import { buttonSizeTypographyVariant } from './meta/variants'
 import { setAttributeIfEmpty, unslugName } from '@common/aria'

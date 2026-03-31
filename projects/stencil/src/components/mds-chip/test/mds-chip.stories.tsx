@@ -1,9 +1,8 @@
 import { h } from '@stencil/core'
 import { iconsDictionary } from '@type/icon'
-import {
-  themeVariantChipDictionary,
-  toneMinimalVariantDictionary,
-} from '@type/variant'
+import { themeVariantChipDictionary } from '@type/variant'
+import { toneMinimalVariantDictionary } from '@type/tone'
+
 import { useEffect } from 'react'
 
 export default {

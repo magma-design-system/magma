@@ -1,5 +1,6 @@
 import { Component, Host, h, Prop } from '@stencil/core'
-import { ThemeFullVariantAvatarType, ToneMinimalVariantType } from '@type/variant'
+import { ThemeFullVariantAvatarType } from '@type/variant'
+import { ToneMinimalVariantType } from '@type/tone'
 
 @Component({
   tag: 'mds-avatar-stack-item',

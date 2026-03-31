@@ -1,6 +1,6 @@
 import { Component, Host, Prop, h } from '@stencil/core'
 import { ButtonSizeType, ButtonVariantType } from '@type/button'
-import { ToneVariantType } from '@type/variant'
+import { ToneVariantType } from '@type/tone'
 
 @Component({
   tag: 'mds-radial-menu-item',

@@ -1,7 +1,9 @@
 import miBaselineCancel from '@icon/mi/baseline/cancel.svg'
 import { Component, Element, Event, EventEmitter, Host, h, Prop, State, Method } from '@stencil/core'
 import { KeyboardManager } from '@common/keyboard-manager'
-import { ThemeLabelVariantType, ThemeStatusVariantType, ToneMinimalVariantType } from '@type/variant'
+import { ThemeLabelVariantType, ThemeStatusVariantType } from '@type/variant'
+import { ToneMinimalVariantType } from '@type/tone'
+
 import { TypographyTooltipType } from '@type/typography'
 import { TypographyTruncateType } from '@type/text'
 import { Locale } from '@common/locale'

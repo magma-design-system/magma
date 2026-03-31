@@ -1,8 +1,7 @@
 import { typographyTooltipDictionary } from '@type/typography'
-import {
-  themeLabelVariantDictionary,
-  toneSimpleVariantDictionary,
-} from '@type/variant'
+import { themeLabelVariantDictionary } from '@type/variant'
+import { toneSimpleVariantDictionary } from '@type/tone'
+
 import { h } from '@stencil/core'
 import { truncateDictionary } from '@type/text'
 
