@@ -40,7 +40,7 @@
 
 :host {
   --mds-file-preview-background-color: rgb(var(--tone-neutral));
-  --mds-file-preview-border-radius: var(--radius-lg);
+  --mds-file-preview-border-radius: var(--radius-2xl);
   --mds-file-preview-color: rgb(var(--tone-neutral-03));
   --mds-file-preview-icon-background: inherit;
   --mds-file-preview-icon-color: var(--mds-file-preview-color);
@@ -48,17 +48,19 @@
   align-items: stretch;
   background-color: var(--mds-file-preview-background-color);
   border-radius: var(--mds-file-preview-border-radius);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-box-md);
+  corner-shape: var(--magma-corner-shape, round);
   display: flex;
   fill: var(--mds-file-preview-color);
   justify-content: stretch;
+  overflow: hidden;
   position: relative;
 }
 
 .card {
   @apply grid-cols-full;
 
-  border-radius: var(--mds-file-preview-border-radius);
+  corner-shape: inherit;
   display: grid;
   gap: --spacing(200);
   padding: --spacing(400);
@@ -70,9 +72,10 @@
   @apply aspect-square;
 
   background-color: var(--mds-file-preview-icon-background);
-  border-radius: var(--radius-md);
+  border-radius: calc(var(--mds-file-preview-border-radius) - --spacing(200));
   box-sizing: border-box;
   color:  var(--mds-file-preview-color);
+  corner-shape: inherit;
   fill:  var(--mds-file-preview-icon-color);
   width: 100%;
 }
