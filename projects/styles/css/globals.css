@@ -132,9 +132,11 @@
   syntax: '<color>';
 }
 
-/* border radius */
-
-/* corner-shape also supports superellipse(-1.0 to 1.0) method */
+/*
+ * corner-shape
+ * https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/corner-shape
+ * also supports superellipse(-1.0 to 1.0) method
+ */
 
 @property --magma-corner-shape {
   inherits: false;
@@ -192,6 +194,16 @@
   syntax: '<integer>';
 }
 
+/* @view-transition
+ * https://developer.chrome.com/docs/web-platform/view-transitions/cross-document?hl=it
+ */
+
+@property --magma-view-transition-navigation {
+  inherits: false;
+  initial-value: auto;
+  syntax: 'auto | traverse | push | replace';
+}
+
 :root {
 
   /*
@@ -221,6 +233,7 @@
   --magma-selection-color: rgb(var(--label-sky-01));
   --magma-theme-overlay-z-index: 7000;
   --magma-tooltip-z-index: 6000;
+  --magma-view-transition-navigation: auto;
 
   /* Derived properties */
   --magma-backdrop: rgb(var(--magma-backdrop-color) / var(--magma-backdrop-opacity));

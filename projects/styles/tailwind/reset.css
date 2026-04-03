@@ -1,121 +1,133 @@
 @reference "tailwindcss";
 @reference "@maggioli-design-system/design-tokens/dist/css/tailwind-theme-typography.css";
 
-html {
-  @apply ease-out;
+@layer reset {
+  :root {
 
-  hanging-punctuation: first last;
-  interpolate-size: allow-keywords;
-  transition-duration: 200ms;
-}
-
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  overflow-wrap: anywhere;
-}
-
-body,
-html {
-  margin: 0;
-}
-
-body {
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
-  min-height: 100svh;
-  -webkit-tap-highlight-color: transparent;
-  text-rendering: optimizelegibility;
-  text-size-adjust: 100%;
-}
-
-input,
-textarea {
-  appearance: none;
-  font-family: inherit;
-}
-
-a {
-  font-family: inherit;
-  font-size: inherit;
-  font-weight: inherit;
-}
-
-a,
-aside,
-body,
-code,
-div,
-datalist,
-footer,
-form,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-header,
-hr,
-html,
-input,
-li,
-main,
-section,
-span,
-ul,
-textarea {
-  box-sizing: border-box;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  @apply max-w-title;
-
-  margin: 0;
-  text-wrap: balance;
-}
-
-p {
-  @apply max-w-text;
-
-  margin: 0;
-  text-wrap: pretty;
-}
-
-li,
-figcaption {
-  @apply max-w-text;
-
-  text-wrap: pretty;
-}
-
-header,
-footer,
-section,
-article {
-  container-type: inline-size;
-}
-
-img,
-picture,
-svg,
-video {
-  display: block;
-  max-width: 100%;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  html {
-    scroll-behavior: smooth;
+    @media (prefers-reduced-motion: no-preference) {
+      interpolate-size: allow-keywords;
+    }
   }
 
-  :has(:target) {
-    scroll-behavior: smooth;
+  html {
+    @apply ease-out;
+
+    hanging-punctuation: first last;
+    interpolate-size: allow-keywords;
+    scrollbar-gutter: stable;
+    transition-duration: 200ms;
+  }
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    overflow-wrap: anywhere;
+  }
+
+  body,
+  html {
+    margin: 0;
+  }
+
+  body {
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+
+    /* min-block-size: 100svh; */
+    min-height: 100svh;
+    -webkit-tap-highlight-color: transparent;
+    text-rendering: optimizelegibility;
+    text-size-adjust: 100%;
+  }
+
+  input,
+  textarea {
+    appearance: none;
+    font-family: inherit;
+  }
+
+  a {
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+  }
+
+  a,
+  aside,
+  body,
+  code,
+  div,
+  datalist,
+  footer,
+  form,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  header,
+  hr,
+  html,
+  input,
+  li,
+  main,
+  section,
+  span,
+  ul,
+  textarea {
+    box-sizing: border-box;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply max-w-title;
+
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  p {
+    @apply max-w-text;
+
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  li,
+  figcaption {
+    @apply max-w-text;
+
+    text-wrap: pretty;
+  }
+
+  header,
+  footer,
+  section,
+  article {
+    container-type: inline-size;
+  }
+
+  img,
+  picture,
+  svg,
+  video {
+    display: block;
+    max-width: 100%;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+
+    :has(:target) {
+      scroll-behavior: smooth;
+    }
   }
 }

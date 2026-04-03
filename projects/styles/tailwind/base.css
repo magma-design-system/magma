@@ -2,6 +2,16 @@
 @reference "@maggioli-design-system/design-tokens/dist/css/tailwind-theme-typography.css";
 
 @layer base {
+
+  @view-transition {
+    navigation: var(--magma-view-transition-navigation, auto);
+  }
+
+  html {
+    transition-duration: 200ms;
+    transition-timing-function: var(--ease-out);
+  }
+
   body {
     @apply
       font-info
