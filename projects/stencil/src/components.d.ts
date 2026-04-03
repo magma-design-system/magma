@@ -785,6 +785,11 @@ export namespace Components {
          */
         "target": string;
         /**
+          * Specifies where the component should be placed relative to the caller.
+          * @default 'bottom'
+         */
+        "tone": string;
+        /**
           * Specifies the visibility of the component.
           * @default false
          */
@@ -4983,6 +4988,11 @@ declare namespace LocalJSX {
           * Specifies the selector of the target element, this attribute is used with `querySelector` method.
          */
         "target": string;
+        /**
+          * Specifies where the component should be placed relative to the caller.
+          * @default 'bottom'
+         */
+        "tone"?: string;
         /**
           * Specifies the visibility of the component.
           * @default false
