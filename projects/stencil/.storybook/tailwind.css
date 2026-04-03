@@ -1,36 +1,8 @@
-@layer base, theme, components, utilities;
+
 @import "tailwindcss/theme.css" layer(theme);
 @import "tailwindcss/utilities.css" layer(utilities);
-
-/* @import "tailwindcss"; */
-
-/* @import '@maggioli-design-system/design-tokens/dist/css/tailwind-theme-color.css';
-@import '@maggioli-design-system/design-tokens/dist/css/tailwind-theme-typography.css'; */
-
-/* @import '@maggioli-design-system/styles/dist/tailwind/dark-mode.css'; */
 @import '@maggioli-design-system/styles/dist/tailwind/theme.css';
-@import "@maggioli-design-system/styles/dist/css/hydrated.css";
 
-body {
-  @apply
-  bg-tone-neutral
-  text-tone-neutral-03
-    transition-colors
-    duration-300
-    ease-in-out;
-}
-
-/* test */
-
-/* @import "../src/tailwind/theme-summer.css" layer(theme);
-@import "../src/tailwind/theme-twilight.css" layer(theme); */
-
-/* end test */
-
-/* @import '@maggioli-design-system/styles/dist/css/base.css';
-@import '@maggioli-design-system/styles/dist/css/typography.css'; */
-
-/* @import "@maggioli-design-system/styles/tailwind/base.css" layer(base); */
 
 /*
 :root,

@@ -76,6 +76,7 @@ const webpackFinal = async config => {
     },
   )
   config.resolve.fallback = {
+    crypto: false,
     path: false,
   }
   config.resolve.plugins = config.resolve.plugins || []
