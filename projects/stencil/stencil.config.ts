@@ -17,7 +17,7 @@ import tokenFallbackPlugin from './scripts/postcss-token-fallbacks'
 const twConfigurationFn = () => {
   // remove tailwind preflight and add custom theme
   return `
-  @layer base, theme, components, utilities;
+  @layer reset, vendor, theme, base, components, utilities;
   @reference "tailwindcss/theme.css";
   @reference "tailwindcss/utilities.css";
   @reference "${path.resolve('./src/tailwind/', 'utilities.css')}";
