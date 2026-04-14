@@ -65,6 +65,7 @@
   display: grid;
   gap: 0 theme('gap.600');
   grid-template-rows: min-content auto;
+  position: relative;
 }
 
 :host([animation="slide"]) ::slotted(mds-tab-item) {
