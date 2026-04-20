@@ -237,7 +237,7 @@ export class MdsInputSwitch {
           </label>
         }
         <label htmlFor="field" class={clsx('label-text', !this.hasText && 'label-text--empty')}>
-          <mds-text typography={this.typography} variant={this.variant}>
+          <mds-text typography={this.typography} tag='p' variant={this.variant}>
             <slot></slot>
           </mds-text>
         </label>
