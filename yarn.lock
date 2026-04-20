@@ -3357,6 +3357,51 @@
   resolved "https://registry.npmjs.org/@lmdb/lmdb-win32-x64/-/lmdb-win32-x64-3.0.13.tgz#93bcd6dc24afd1cc60dd88a65b9e4fab32dcf397"
   integrity sha512-UCrMJQY/gJnOl3XgbWRZZUvGGBuKy6i0YNSptgMzHBjs+QYDYR1Mt/RLTOPy4fzzves65O1EDmlL//OzEqoLlA==
 
+"@maggioli-design-system/design-tokens@13.7.1":
+  version "13.7.1"
+  resolved "https://registry.npmjs.org/@maggioli-design-system/design-tokens/-/design-tokens-13.7.1.tgz#c370b20fa1d80fa0a1e5cc7f7e5a3473e5b8300b"
+  integrity sha512-c0bU+IuSdBnn5nyQzqW1aIGORft+NhYdCBUG65sriJSbacstWCvmVs+FN7zXwCMF/M2Rao3sgJUoomS854ipog==
+  dependencies:
+    "@adobe/leonardo-contrast-colors" "1.0.0"
+    arg "5.0.2"
+    chalk "5.4.1"
+    handlebars "4.7.8"
+    hex-rgb "4.3.0"
+    lilconfig "3.1.3"
+    style-dictionary "3.9.0"
+
+"@maggioli-design-system/magma@1.11.7":
+  version "1.11.7"
+  resolved "https://registry.npmjs.org/@maggioli-design-system/magma/-/magma-1.11.7.tgz#15478fe588a3beac922d09952549d68deb425a87"
+  integrity sha512-YqZCMHG0nJcq/dzbUYKFEyvzlLu/+4YhRA/k9XTelH3FglodiprPQWlicCteQzW4gPX39sj0yxQJYgMa947HYA==
+  dependencies:
+    "@floating-ui/dom" "1.6.12"
+    "@maggioli-design-system/design-tokens" "13.7.1"
+    "@maggioli-design-system/styles" "15.11.0"
+    "@stencil/core" "4.27.2"
+    clsx "2.1.0"
+    crypto-js "4.2.0"
+    dayjs "1.11.13"
+    filesize "10.1.0"
+    fitty "2.4.2"
+    gsap "3.13.0"
+    idb-keyval "6.2.1"
+    luxon "3.6.1"
+    mime "4.0.4"
+    mustache "4.2.0"
+
+"@maggioli-design-system/styles@15.11.0":
+  version "15.11.0"
+  resolved "https://registry.npmjs.org/@maggioli-design-system/styles/-/styles-15.11.0.tgz#e2f4e4cae61da328e508ac69b1d7e6038aca3eb0"
+  integrity sha512-yw1WGqX1LgeTlZfw53c/Dvp460/6Wsa4Xr1SuOgp2B3TMW5fvP5pNbufrIwWLLIB8r/2McLbmfx59LOCq4HYFQ==
+  dependencies:
+    "@fontsource/karla" "5.1.0"
+    "@fontsource/merriweather" "5.1.0"
+    "@fontsource/roboto" "5.1.0"
+    "@fontsource/roboto-mono" "5.1.0"
+    "@maggioli-design-system/design-tokens" "13.7.1"
+    normalize.css "8.0.1"
+
 "@maggioli-design-system/svg-icons@4.0.1":
   version "4.0.1"
   resolved "https://registry.npmjs.org/@maggioli-design-system/svg-icons/-/svg-icons-4.0.1.tgz#161d87d84a618f5a3486461dba14f79cc9447109"
@@ -9518,6 +9563,18 @@ handlebars@4.7.8, handlebars@^4.7.7:
   version "4.7.8"
   resolved "https://registry.npmjs.org/handlebars/-/handlebars-4.7.8.tgz#41c42c18b1be2365439188c77c6afae71c0cd9e9"
   integrity sha512-vafaFqs8MZkRrSX7sFVUdo3ap/eNiLnb4IakshzvP56X5Nr1iGKAIqdX6tMlm6HcNRIkr6AxO5jFEoJzzpT8aQ==
+  dependencies:
+    minimist "^1.2.5"
+    neo-async "^2.6.2"
+    source-map "^0.6.1"
+    wordwrap "^1.0.0"
+  optionalDependencies:
+    uglify-js "^3.1.4"
+
+handlebars@4.7.9:
+  version "4.7.9"
+  resolved "https://registry.npmjs.org/handlebars/-/handlebars-4.7.9.tgz#6f139082ab58dc4e5a0e51efe7db5ae890d56a0f"
+  integrity sha512-4E71E0rpOaQuJR2A3xDZ+GM1HyWYv1clR58tC8emQNeQe3RH7MAzSbat+V0wG78LQBo6m6bzSG/L4pBuCsgnUQ==
   dependencies:
     minimist "^1.2.5"
     neo-async "^2.6.2"
