@@ -1,5 +1,6 @@
 {
   "accessibility": "material/accessibility_new",
+  "account-clipboard": "mdi/clipboard-account",
   "account-details": "mdi/account-details",
   "account-settings": "mdi/account-cog",
   "action-approval": "material/approval",
@@ -282,6 +283,7 @@
   "file-archive": "mdi/folder-zip",
   "file-attachment": "material/attach_file",
   "file-certificate": "maggioli/file-certificate",
+  "file-check": "mdi/file-check",
   "file-clock": "maggioli/file-clock",
   "file-document-outline": "mdi/file-document-outline",
   "file-download": "maggioli/file-download",
@@ -298,6 +300,7 @@
   "file-lock": "mdi/file-lock",
   "file-multiple": "mdi/file-multiple",
   "file-restore-outline": "mdi/file-restore-outline",
+  "file-scheduled-check": "maggioli/file-scheduled-check",
   "file-settings-alt": "maggioli/file-settings-alt",
   "file-settings": "mdi/file-settings",
   "file-stack-alt": "maggioli/file-stack-alt",
@@ -336,7 +339,7 @@
   "folder-remove": "mdi/folder-remove",
   "form-checkbox-checked-clean": "maggioli/google-check-small",
   "form-checkbox-checked": "material/check_box",
-  "form-checkbox-indeterminate-outline": "material/indeterminate_check_box",
+  "form-checkbox-indeterminate-outline": "mdi/minus-box-outline",
   "form-checkbox-indeterminate": "material/indeterminate_check_box",
   "form-checkbox-unchecked": "material/check_box_outline_blank",
   "form-dropdown": "material/keyboard_arrow_down",
@@ -709,4 +712,6 @@
   "workspace": "material/workspaces",
   "write-only": "material/drive_file_rename_outline",
   "zen-mode": "material/self_improvement"
+
+
 }
