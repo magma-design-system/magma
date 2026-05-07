@@ -289,8 +289,7 @@ export class MdsInput {
     }
     this.internals.setFormValue(this.value ?? null)
     this.maxLengthChanged(this.maxlength)
-
-    this.isValid = !(this.required && this.value === '')
+    this.isValid = !(this.required && !this.value)
   }
 
   componentDidLoad (): void {

@@ -1,6 +1,6 @@
 {
   "name": "@maggioli-design-system/magma",
-  "version": "1.11.0",
+  "version": "1.11.8",
   "description": "Magma is Maggioli Design System's web-components library.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -95,7 +95,7 @@
     "css-loader": "6.8.1",
     "eslint-plugin-react": "7.37.5",
     "eslint-plugin-storybook": "9.0.15",
-    "handlebars": "4.7.8",
+    "handlebars": "4.7.9",
     "jest-environment-node": "29.7.0",
     "jest-transformer-svg": "2.0.2",
     "postcss": "8.5.8",

@@ -13,6 +13,7 @@
 | `disabled` | `disabled` | If true, the element is displayed as disabled                                                                           | `boolean \| undefined`                                                          | `false`     |
 | `max`      | `max`      | Specifies the max date of the range, user cannot set dates after this date                                              | `null \| string`                                                                | `null`      |
 | `min`      | `min`      | Specifies the min date of the range, user cannot set dates before this date                                             | `null \| string`                                                                | `null`      |
+| `name`     | `name`     | Is needed to reference the form data after the form is submitted                                                        | `string \| undefined`                                                           | `undefined` |
 | `readonly` | `readonly` | Specifies that the element is read-only                                                                                 | `boolean \| undefined`                                                          | `false`     |
 | `required` | `required` | Specifies that the element must be filled out before submitting the form                                                | `boolean \| undefined`                                                          | `false`     |
 | `value`    | `value`    | Specifies the value of the input                                                                                        | `string`                                                                        | `''`        |
@@ -21,9 +22,10 @@
 
 ## Events
 
-| Event                | Description | Type                  |
-| -------------------- | ----------- | --------------------- |
-| `mdsInputDateSelect` |             | `CustomEvent<string>` |
+| Event                | Description                                           | Type                   |
+| -------------------- | ----------------------------------------------------- | ---------------------- |
+| `mdsInputDateSelect` |                                                       | `CustomEvent<string>`  |
+| `mdsInputValidation` | Emits a boolean event when a input execute validation | `CustomEvent<boolean>` |
 
 
 ## Methods
@@ -35,6 +37,16 @@
 #### Returns
 
 Type: `Promise<void>`
+
+
+
+### `getErrors() => Promise<MdsValidationErrors | null>`
+
+
+
+#### Returns
+
+Type: `Promise<MdsValidationErrors | null>`
 
 
 

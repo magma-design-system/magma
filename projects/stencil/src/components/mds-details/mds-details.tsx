@@ -22,7 +22,7 @@ export class MdsDetails {
 
   @Element() private host: HTMLMdsDetailsElement
   @State() isOpened: boolean
-  @State() hasIcon: boolean = false
+  @State() hasIcon: boolean = true
   private km = new KeyboardManager()
   /**
    * Specifies if the component is opened

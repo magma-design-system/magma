@@ -1,17 +1,20 @@
-import { Component, Element, Host, h, Method, Prop, State, Event, EventEmitter, Watch } from '@stencil/core'
+import { Component, Element, Host, h, Method, Prop, State, Event, EventEmitter, Watch, AttachInternals } from '@stencil/core'
 import miBaselineCalendarToday from '@icon/mi/baseline/calendar-today.svg'
 import { DateTime } from 'luxon'
 import { Locale } from '@common/locale'
 import { ThemeInputVariantType } from '@type/variant'
+import { MdsValidationErrors } from 'src/components'
 
 // TODO add input validation manager for error message
 @Component({
   tag: 'mds-input-date',
   styleUrl: 'mds-input-date.css',
   shadow: true,
+  formAssociated: true,
 })
 export class MdsInputDate {
   @Element() host: HTMLMdsInputDateElement
+  @AttachInternals() internals: ElementInternals
   private isSlotted: boolean = false
   @State() isValid: boolean
   private t:Locale = new Locale({
@@ -32,6 +35,11 @@ export class MdsInputDate {
    * @description It's in ISO format (YYYY-MM-DD).
    */
   @Prop({ reflect: true }) value: string = ''
+
+  /**
+   * Is needed to reference the form data after the form is submitted
+   */
+  @Prop({ reflect: true }) readonly name?: string
 
   /**
    * Sets the variant of the input field
@@ -71,6 +79,11 @@ export class MdsInputDate {
    */
   @Prop({ reflect: true }) readonly required?: boolean = false
 
+  /**
+   * Emits a boolean event when a input execute validation
+   */
+  @Event({ eventName: 'mdsInputValidation' }) validationEvent!: EventEmitter<boolean>
+
   @State() calendarKey: number = 0
   @State() dropdownRef?: HTMLMdsDropdownElement
   @State() hasFocus = false
@@ -85,15 +98,21 @@ export class MdsInputDate {
   private validateValue (): void {
     const date = DateTime.fromISO(this.value)
 
-    this.isValid = false
-    this.variant = 'error'
-    if (date.invalid && this.required) return
+    const isInvalidDate = date.invalid
+    const outOfRange = (this.max && DateTime.fromISO(this.max) < date) ||
+                     (this.min && DateTime.fromISO(this.min) > date)
 
-    if ((this.max && DateTime.fromISO(this.max) < date) ||
-    (this.min && DateTime.fromISO(this.min) > date)) return
+    if ((isInvalidDate && this.required) || outOfRange) {
+      this.isValid = false
+      this.variant = 'error'
+      this.internals.setFormValue(null)
+    } else {
+      this.isValid = true
+      this.variant = 'primary'
+      this.internals.setFormValue(this.value)
+    }
 
-    this.isValid = true
-    this.variant = 'primary'
+    this.validationEvent.emit(this.isValid)
   }
 
   @Method()
@@ -107,6 +126,14 @@ export class MdsInputDate {
     this.value = value
     this.validateValue()
     return Promise.resolve()
+  }
+  @Method()
+  async getErrors (): Promise<MdsValidationErrors | null> {
+    return Promise.resolve(this.isValid ? null : { error: '' })
+  }
+
+  formResetCallback (): void {
+    this.internals.setFormValue('')
   }
 
   componentWillLoad (): void {
@@ -125,7 +152,7 @@ export class MdsInputDate {
     this.validateValue()
   }
 
-  handleChange (event: Event): void {
+  handleChange = (event: Event) => {
     const input = event.target as HTMLInputElement
     this.touched = true
     // manage case when i insert 0 on date and default input behavior change in 01 instead of resetting all date
@@ -160,6 +187,7 @@ export class MdsInputDate {
           part="input-date"
           type="date"
           disabled={this.disabled}
+          name={this.name}
           onBlur={this.onBlur}
           onFocus={this.onFocus}
           onInput={this.handleChange}

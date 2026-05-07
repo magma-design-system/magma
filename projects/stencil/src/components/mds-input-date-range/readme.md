@@ -7,13 +7,14 @@
 
 ## Properties
 
-| Property    | Attribute    | Description                                                                                                             | Type             | Default |
-| ----------- | ------------ | ----------------------------------------------------------------------------------------------------------------------- | ---------------- | ------- |
-| `delay`     | `delay`      | Specifies the delay in milliseconds before closing the calendar dropdown, if the value is 0 the dropdown will not close | `number`         | `500`   |
-| `endDate`   | `end-date`   | Specifies the end date of the range                                                                                     | `string`         | `''`    |
-| `max`       | `max`        | Specifies the max date of the range, user cannot set dates after this date                                              | `null \| string` | `null`  |
-| `min`       | `min`        | Specifies the min date of the range, user cannot set dates before this date                                             | `null \| string` | `null`  |
-| `startDate` | `start-date` | Specifies the start date of the range                                                                                   | `string`         | `''`    |
+| Property    | Attribute    | Description                                                                                                             | Type                  | Default     |
+| ----------- | ------------ | ----------------------------------------------------------------------------------------------------------------------- | --------------------- | ----------- |
+| `delay`     | `delay`      | Specifies the delay in milliseconds before closing the calendar dropdown, if the value is 0 the dropdown will not close | `number`              | `500`       |
+| `endDate`   | `end-date`   | Specifies the end date of the range                                                                                     | `string`              | `''`        |
+| `max`       | `max`        | Specifies the max date of the range, user cannot set dates after this date                                              | `null \| string`      | `null`      |
+| `min`       | `min`        | Specifies the min date of the range, user cannot set dates before this date                                             | `null \| string`      | `null`      |
+| `name`      | `name`       | Is needed to reference the form data after the form is submitted                                                        | `string \| undefined` | `undefined` |
+| `startDate` | `start-date` | Specifies the start date of the range                                                                                   | `string`              | `''`        |
 
 
 ## Events

@@ -85,6 +85,7 @@ export class MdsInputUpload {
     this.t.lang(this.host)
     this.actionTitle = this.t.get('clickOrDrag', { maxFiles: this.maxFiles })
     this.userSort = localStorage.getItem(LOCALSTORAGE_KEY_USER_SORT) as AttachmentSort ?? 'date'
+    this.updateInitialValue(this.initialValue)
   }
 
   componentDidLoad (): void {
@@ -92,8 +93,8 @@ export class MdsInputUpload {
   }
 
   @Watch('initialValue')
-  updateInitialValue (newValue: FileList | File[] | undefined, oldValue: FileList | File[] | undefined ) {
-    if ((!oldValue || oldValue.length === 0) && newValue) {
+  updateInitialValue (newValue: FileList | File[] | undefined) {
+    if (newValue) {
       this.onAdd(newValue)
     }
   }

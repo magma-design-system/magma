@@ -1,4 +1,4 @@
-import { Component, Element, Host, h, Prop, State, Event, EventEmitter, Method } from '@stencil/core'
+import { Component, Element, Host, h, Prop, State, Event, EventEmitter, Method, Watch, AttachInternals } from '@stencil/core'
 import miBaselineCalendarToday from '@icon/mi/baseline/calendar-today.svg'
 import { DateTime } from 'luxon'
 import clsx from 'clsx'
@@ -17,10 +17,12 @@ export interface EventDate {
 @Component({
   tag: 'mds-input-date-range',
   styleUrl: 'mds-input-date-range.css',
+  formAssociated: true,
   shadow: true,
 })
 export class MdsInputDateRange {
   @Element() host: HTMLMdsInputDateRangeElement
+  @AttachInternals() internals: ElementInternals
 
   @State() calendarKey: number = 0
   @State() internalStartDate: string = ''
@@ -68,18 +70,36 @@ export class MdsInputDateRange {
    * @description Default is 500
    */
   @Prop({ reflect: true }) readonly delay: number = 500
+  /**
+   * Is needed to reference the form data after the form is submitted
+   */
+  @Prop({ reflect: true }) readonly name?: string
 
   private togglePreselection: HTMLMdsInputDateRangePreselectionElement[]
   private lastEmittedStartDate: string | null = null
   private lastEmittedEndDate: string | null = null
+  private initialStartDate: string = ''
+  private initialEndDate: string = ''
 
   @Event({ eventName: 'mdsInputDateRangeSelect' }) dateRangeSelected: EventEmitter<{ startDate: string, endDate: string }>
   @Event({ eventName: 'mdsInputDateRangeValueChange' }) valueChanged: EventEmitter<{ startDate: string, endDate: string }>
+
+  @Watch('startDate')
+  handleStartDateChange (newValue: string): void {
+    this.syncExternalDate('start', newValue)
+  }
+
+  @Watch('endDate')
+  handleEndDateChange (newValue: string): void {
+    this.syncExternalDate('end', newValue)
+  }
 
   componentWillLoad (): void {
     this.language = this.t.lang(this.host)
     this.internalStartDate = this.startDate
     this.internalEndDate = this.endDate
+    this.initialStartDate = this.startDate
+    this.initialEndDate = this.endDate
 
     // Se max è precedente a min, imposto max uguale a min
     if (this.min && this.max) {
@@ -89,6 +109,7 @@ export class MdsInputDateRange {
         this.max = this.min
       }
     }
+    this.syncFormValue()
   }
 
   disconnectedCallback (): void {
@@ -122,6 +143,7 @@ export class MdsInputDateRange {
       this.internalEndDate = event.start
     }
     this.updateInputValue('end', this.internalEndDate)
+    this.syncFormValue()
 
     const calendar = this.host?.shadowRoot?.querySelector('mds-calendar')
 
@@ -147,6 +169,7 @@ export class MdsInputDateRange {
 
       if (startValid && endValid) {
         this.validateDateRange()
+        this.syncFormValue()
 
         this.dateRangeSelected.emit({
           startDate: this.internalStartDate,
@@ -198,7 +221,35 @@ export class MdsInputDateRange {
     this.updateInputListeners()
     this.updateInputValue('start', this.internalStartDate)
     this.updateInputValue('end', this.internalEndDate)
+    this.syncFormValue()
     this.host.addEventListener('focusout', this.handleFocusOut)
+  }
+
+  formResetCallback (): void {
+    this.internalStartDate = this.initialStartDate
+    this.internalEndDate = this.initialEndDate
+    this.updateInputValue('start', this.internalStartDate)
+    this.updateInputValue('end', this.internalEndDate)
+    this.checkPreselections()
+    this.syncFormValue()
+  }
+
+  private syncExternalDate (slotName: 'start' | 'end', newValue: string): void {
+    const normalizedValue = newValue ?? ''
+
+    if (slotName === 'start') {
+      if (normalizedValue === this.internalStartDate) return
+      this.internalStartDate = normalizedValue
+    } else {
+      if (normalizedValue === this.internalEndDate) return
+      this.internalEndDate = normalizedValue
+    }
+
+    this.validateDateRange()
+    this.updateInputValue('start', this.internalStartDate)
+    this.updateInputValue('end', this.internalEndDate)
+    this.checkPreselections()
+    this.syncFormValue()
   }
 
   private updateInputValue (slotName: string, newValue: string): void {
@@ -236,6 +287,7 @@ export class MdsInputDateRange {
       } else {
         this.internalEndDate = event.detail
       }
+      this.syncFormValue()
 
 
     }
@@ -322,6 +374,7 @@ export class MdsInputDateRange {
                 this.internalEndDate = ev.detail.endDate
                 this.updateInputValue('end', this.internalEndDate)
               }
+              this.syncFormValue()
 
               if (this.internalStartDate && this.internalEndDate) {
                 this.dateRangeSelected.emit({
@@ -352,5 +405,17 @@ export class MdsInputDateRange {
         </mds-dropdown>
       </Host>
     )
+  }
+
+  private syncFormValue (): void {
+    const startDate = this.internalStartDate?.trim() ?? ''
+    const endDate = this.internalEndDate?.trim() ?? ''
+
+    if (!startDate && !endDate) {
+      this.internals.setFormValue(null)
+      return
+    }
+
+    this.internals.setFormValue(JSON.stringify({ startDate, endDate }))
   }
 }

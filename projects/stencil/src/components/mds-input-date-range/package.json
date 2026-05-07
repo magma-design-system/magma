@@ -1,6 +1,6 @@
 {
   "name": "@maggioli-design-system/mds-input-date-range",
-  "version": "1.1.5",
+  "version": "1.1.8",
   "description": "mds-input-date-range is a web-component from Magma Design System, built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScript framework you are using.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -27,7 +27,7 @@
     "@maggioli-design-system/mds-button": "6.8.3",
     "@maggioli-design-system/mds-calendar": "1.0.1",
     "@maggioli-design-system/mds-dropdown": "5.8.3",
-    "@maggioli-design-system/mds-input-date": "1.2.3",
+    "@maggioli-design-system/mds-input-date": "1.4.0",
     "@maggioli-design-system/mds-input-date-range-preselection": "1.0.5",
     "@maggioli-design-system/mds-text": "4.7.6",
     "@maggioli-design-system/styles": "15.11.0",
