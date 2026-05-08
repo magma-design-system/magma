@@ -5,7 +5,7 @@ export function getBrandColorConfig (fileName: string, inputTokens: string[] | D
   const buildPath = outputDir ?? 'dist'
   let source, tokens
   if (typeof inputTokens === 'object') {
-    tokens = inputTokens
+    tokens = inputTokens as DesignToken
   } else {
     source = tokens
   }

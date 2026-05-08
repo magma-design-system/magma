@@ -7,11 +7,11 @@ export function getStyleDictionaryColorConfigAllPlatforms (
   const buildPath = outputDir ?? 'dist'
   let source, tokens
   if (typeof inputTokens === 'object') {
-    tokens = inputTokens
+    tokens = inputTokens as DesignToken
   } else {
     source = tokens
   }
-  const c = {
+  return {
     source,
     tokens,
     platforms: {
@@ -101,7 +101,6 @@ export function getStyleDictionaryColorConfigAllPlatforms (
             destination: 'StyleDictionaryColor.h',
             format: 'ios/colors.h',
             className: 'StyleDictionaryColor',
-            type: 'StyleDictionaryColorName',
             filter: {
               attributes: {
                 category: 'color',
@@ -112,7 +111,6 @@ export function getStyleDictionaryColorConfigAllPlatforms (
             destination: 'StyleDictionaryColor.m',
             format: 'ios/colors.m',
             className: 'StyleDictionaryColor',
-            type: 'StyleDictionaryColorName',
             filter: {
               attributes: {
                 category: 'color',
@@ -151,6 +149,4 @@ export function getStyleDictionaryColorConfigAllPlatforms (
       },
     },
   }
-
-  return c
 }

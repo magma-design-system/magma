@@ -36,20 +36,22 @@ export async function getColorsConfig (path?: string) {
   return lilconfig('magma-design-tokens', {}).search()
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function writeJsonTokens (tokens: any, name: string, dirPath: string) {
+export async function writeJsonTokens (tokens: any, name: string, dirPath?: string): Promise<void> {
+  if (!dirPath) {
+    throw new Error('dirPath is required')
+  }
+
   const jsonTokens = JSON.stringify(tokens, null, 2)
 
-  mkdir(dirPath, { recursive: true }).then(() => {
-    writeFile(resolve(`${dirPath}/${name}.json`), jsonTokens, 'utf8', err => {
-      if (err) {
-        console.error(
-          chalk.red('An error occured while writing JSON Object to File.'),
-        )
-        console.error(chalk.red(err))
-      }
-    })
-  })
+  await mkdir(dirPath, { recursive: true })
+  try {
+    await writeFile(resolve(`${dirPath}/${name}.json`), jsonTokens, 'utf8')
+  } catch (err) {
+    console.error(
+      chalk.red('An error occured while writing JSON Object to File.'),
+    )
+    console.error(chalk.red(err))
+  }
 }
 
 /**
@@ -59,8 +61,9 @@ export function writeJsonTokens (tokens: any, name: string, dirPath: string) {
  * @param outputDir output directory
  * @param platform array of platform that needs to build, if undefined build all platform for colors (css, dart, js)
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function exportColors (
-  tokens,
+  tokens: any,
   fileName: string,
   outputDir?: string,
   platform?: string[],
@@ -117,8 +120,8 @@ export function getStyleDictionaryWithAllCustomTransform (): StyleDictionary.Cor
  * @param {object} source
  * @returns {object} object merged
  */
-export function deepMerge (target, source) {
-  const isObject = obj => obj && typeof obj === 'object' && !Array.isArray(obj)
+export function deepMerge (target: Record<string, unknown>, source: Record<string, unknown>): Record<string, unknown> {
+  const isObject = (obj: unknown): obj is Record<string, unknown> => obj !== null && typeof obj === 'object' && !Array.isArray(obj)
 
   if (isObject(target) && isObject(source)) {
     for (const key in source) {
@@ -126,9 +129,7 @@ export function deepMerge (target, source) {
         if (!target[key]) {
           target[key] = {}
         }
-        deepMerge(target[key], source[key])
-      } else if (Array.isArray(source[key])) {
-        target[key] = source[key]
+        deepMerge(target[key] as Record<string, unknown>, source[key] as Record<string, unknown>)
       } else {
         target[key] = source[key]
       }

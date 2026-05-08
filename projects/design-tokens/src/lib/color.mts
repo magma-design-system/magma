@@ -15,7 +15,22 @@ export interface ColorConfig {
   title?: string,
   alias?: string,
   ratios?: string,
-  formula?: string,
+  formula?: Formula,
+  colorspace?: InterpolationColorspace,
+  smooth?: boolean,
+}
+
+export interface ColorTokenValue {
+  value: string
+}
+
+export interface ColorTokenSet {
+  light: Record<string, ColorTokenValue>
+  dark: Record<string, ColorTokenValue>
+}
+
+export interface ExportGroupTokens {
+  color: Record<string, Record<string,ColorTokenSet>>
 }
 
 export type Formula = 'wcag2' | 'wcag3'
@@ -25,18 +40,18 @@ export interface MagmaConfig {
   colorspace?: string,
   smooth?: boolean,
   formula?: Formula,
-  // eslint-disable-next-line no-unused-vars
   ratios?: {[K in Formula]: RatioData}
   colors: ColorConfig[]
 }
 
 export type ThemeContrastColor = [ContrastColorBackground, ...ContrastColor[]]
+export type ColorTokensMap = Record<string, Record<string, ColorTokenSet>>
 // interface DesignTokensConfig {
 //   colors: ColorConfig[],
 //   ratios: {[key: string]: number[]}
 // }
 
-function getBackgroundColor (formula = 'wcag3'): BackgroundColor {
+function getBackgroundColor (formula: Formula = 'wcag3'): BackgroundColor {
   return new BackgroundColor({
     colorKeys: ['#000000'],
     colorspace: DEFAULTS.colorspace as InterpolationColorspace,
@@ -46,7 +61,7 @@ function getBackgroundColor (formula = 'wcag3'): BackgroundColor {
   })
 }
 
-export function formatColortoTokens (contrastColors: ContrastColor[], colorName, colorValue, seed?, colorMode?) {
+export function formatColortoTokens (contrastColors: ContrastColor[], colorName: string, colorValue: RgbHexColor, seed?: SeedConfig, colorMode?: keyof SeedConfig) {
 
   const palette: {[key: string]: {value: string}} = {}
 
@@ -73,13 +88,13 @@ export function formatColortoTokens (contrastColors: ContrastColor[], colorName,
   return palette
 }
 
-export function createColor (colorItem, config: MagmaConfig): Color {
-  const formula = colorItem.formula ?? config.formula
+export function createColor (colorItem: ColorConfig, config: MagmaConfig): Color {
+  const formula = (colorItem.formula ?? config.formula)!
   return new Color({
     colorKeys: [colorItem.color],
-    colorspace: colorItem.colorspace !== undefined ? colorItem.colorspace : config.colorspace,
+    colorspace: colorItem.colorspace !== undefined ? colorItem.colorspace : config.colorspace as InterpolationColorspace,
     name: colorItem.name,
-    ratios: colorItem.ratios !== undefined ? config.ratios[formula][colorItem.ratios] : config.ratios[formula].default,
+    ratios: colorItem.ratios !== undefined ? config.ratios![formula][colorItem.ratios] : config.ratios![formula].default,
     smooth: colorItem.smooth ?? config.smooth,
   })
 }
@@ -91,14 +106,18 @@ export function createColor (colorItem, config: MagmaConfig): Color {
  */
 export function createColorTokens (magmaConfig: MagmaConfig) {
 
-  const config: MagmaConfig = deepMerge(DEFAULTS, magmaConfig)
+  const config = deepMerge(
+    DEFAULTS as unknown as Record<string, unknown>,
+    magmaConfig as unknown as Record<string, unknown>,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  ) as any as MagmaConfig
 
   const palette: {[key:string]: Color[]} = {
     wcag2: [],
     wcag3: [],
   }
   config.colors.forEach(element => {
-    palette[element.formula ?? config.formula].push(createColor(element, config))
+    palette[element.formula ?? config.formula!].push(createColor(element, config))
   })
 
   const backgroundColor = getBackgroundColor()
@@ -146,12 +165,11 @@ export function createColorTokens (magmaConfig: MagmaConfig) {
 
   console.info('Formatting color palette to JSON Design Tokens format')
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const tokens: any = {
+  const tokens: { color: ColorTokensMap } = {
     color: {},
   }
 
-  const exportGroups = {}
+  const exportGroups: Record<string, ExportGroupTokens> = {}
 
   config.colors.forEach(element => {
     const groupIndex = 0
@@ -168,16 +186,15 @@ export function createColorTokens (magmaConfig: MagmaConfig) {
       if (!Object.hasOwn(tokens.color[group], name)) {
         console.info(`Creating ${chalk.blue('color')} ${name}`)
         tokens.color[group][name] = {
-          light: formatColortoTokens(theme[element.formula ?? config.formula].light.contrastColors.slice(1) as ContrastColor[], `${group}.${name}`, element.color, element.seed, 'light'),
-          dark: formatColortoTokens(theme[element.formula ?? config.formula].dark.contrastColors.slice(1) as ContrastColor[], `${group}.${name}`, element.color, element.seed, 'dark'),
+          light: formatColortoTokens(theme[element.formula ?? config.formula!].light.contrastColors.slice(1) as ContrastColor[], `${group}.${name}`, element.color, element.seed, 'light'),
+          dark: formatColortoTokens(theme[element.formula ?? config.formula!].dark.contrastColors.slice(1) as ContrastColor[], `${group}.${name}`, element.color, element.seed, 'dark'),
         }
       }
 
       if (element.export !== undefined) {
         element.export.forEach(exportElement => {
           if (exportGroups[exportElement] === undefined) {
-            exportGroups[exportElement] = {}
-            exportGroups[exportElement].color = {}
+            exportGroups[exportElement] = { color: {} }
           }
           if (exportGroups[exportElement].color[group] === undefined) {
             exportGroups[exportElement].color[group] = {}

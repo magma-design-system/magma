@@ -4,7 +4,7 @@ export const OUTPUT_PLATFORM = ['css', 'dart', 'tailwind']
 
 function outputTypeHandler (
   value: string,
-  argName,
+  argName: string,
   previousValue: string[] | undefined | null,
 ) {
   if (previousValue === null) return null

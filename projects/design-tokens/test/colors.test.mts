@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest'
 
-import { createColorTokens, formatColortoTokens, MagmaConfig } from '../src/lib/color.mjs'
+import { createColorTokens, formatColortoTokens, MagmaConfig, SeedConfig } from '../src/lib/color.mjs'
 import baseColorResult from './fixtures/base-color-result.json'
 import baseColor from './fixtures/base-color.json'
 import baseColorExport from './fixtures/base-color-export.json'
@@ -42,7 +42,7 @@ test('should format color with seed', () => {
   const { contrastColorsLight, contrastColorsDark, formatColortoTokensResultLight, formatColortoTokensResultDark } = getDataForFormatColor()
   const name = 'variant.primary'
   const color = '#00379E'
-  const seed = { light: '#FFFFFF', dark: '#000000' }
+  const seed: SeedConfig = { light: '#FFFFFF', dark: '#000000' }
   const tokensLight = formatColortoTokens(contrastColorsLight, name, color, seed, 'light')
   const tokensDark = formatColortoTokens(contrastColorsDark, name, color, seed, 'dark')
 
