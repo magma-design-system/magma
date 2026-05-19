@@ -22,8 +22,8 @@ const capitalize = (value: string): string => value.charAt(0).toUpperCase() + va
 const colors = [
   'tone-slate',
   'tone-grey',
-  'tone-zinc',
   'tone-neutral',
+  'tone-zinc',
   'tone-stone',
   'status-info',
   'status-success',
@@ -64,8 +64,8 @@ const colorPalette: Record<ColorGroupKey, string[]> = {
   tone: [
     'slate',
     'grey',
-    'zinc',
     'neutral',
+    'zinc',
     'stone',
   ],
   status: [
