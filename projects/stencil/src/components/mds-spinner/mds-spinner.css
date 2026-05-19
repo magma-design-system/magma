@@ -22,6 +22,7 @@
   display: inline-flex;
   justify-content: center;
   opacity: 0;
+  overflow: hidden;
   transform: scale(0);
   transition-property: opacity, transform;
 }

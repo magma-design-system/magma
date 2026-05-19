@@ -116,7 +116,7 @@
 }
 
 .infos {
-  align-items: center;
+  align-items: baseline;
   display: flex;
   gap: --spacing(200);
 }

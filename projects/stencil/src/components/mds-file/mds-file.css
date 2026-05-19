@@ -137,7 +137,7 @@
 }
 
 .detail {
-  align-items: center;
+  align-items: baseline;
   display: flex;
   gap: --spacing(200);
   min-width: 0px;

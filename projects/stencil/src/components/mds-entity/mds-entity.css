@@ -115,7 +115,7 @@ mds-spinner {
 }
 
 .details {
-  align-items: center;
+  align-items: baseline;
   color: var(--mds-entity-detail-color);
   display: flex;
   gap: --spacing(100);

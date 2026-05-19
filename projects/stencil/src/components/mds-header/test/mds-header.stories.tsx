@@ -71,8 +71,8 @@ const Template = args => (
       <mds-header-bar>
         <div class="flex gap-400 items-center">
           <mds-img class="w-1000" src="/logo-gruppo-maggioli.svg" />
-          <div class="mb-100">
-            <mds-text typography="h6">Mobile menu</mds-text>
+          <div class="mb-100 grid grid-cols-full gap-100">
+            <mds-text typography="h5">Mobile menu</mds-text>
             <mds-text typography="option" class="text-tone-neutral-04">
               Shows up under 1024px
             </mds-text>
@@ -130,8 +130,8 @@ const TemplateAutoHide = args => (
       <mds-header-bar>
         <div class="flex gap-400 items-center">
           <mds-img class="w-1000" src="/logo-gruppo-maggioli.svg" />
-          <div class="mb-100">
-            <mds-text typography="h6">Mobile menu</mds-text>
+          <div class="mb-100 grid grid-cols-full gap-100">
+            <mds-text typography="h5">Mobile menu</mds-text>
             <mds-text typography="option" class="text-tone-neutral-04">
               Shows up under 1024px
             </mds-text>
@@ -200,8 +200,8 @@ const TemplateLandingPage = args => (
       <mds-header-bar>
         <div class="flex gap-400 items-center">
           <mds-img class="w-1000" src="/logo-gruppo-maggioli.svg" />
-          <div class="mb-100">
-            <mds-text typography="h6">Mobile menu</mds-text>
+          <div class="mb-100 grid grid-cols-full gap-100">
+            <mds-text typography="h5">Mobile menu</mds-text>
             <mds-text typography="option" class="text-tone-neutral-04">
               Shows up under 1024px
             </mds-text>

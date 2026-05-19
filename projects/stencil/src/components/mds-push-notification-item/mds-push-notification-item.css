@@ -59,7 +59,7 @@
   --mds-push-notification-item-icon-background-color: transparent;
   --mds-push-notification-item-icon-color: rgb(var(--tone-neutral-04));
   --mds-push-notification-item-message-line-clamp: 2;
-  --mds-push-notification-item-shadow: var(--shadow);
+  --mds-push-notification-item-shadow: var(--shadow-sm-sharp);
   --mds-push-notification-item-subject-line-clamp: 1;
   --mds-push-notification-item-timing-function: var(--ease-in-out-quint);
 

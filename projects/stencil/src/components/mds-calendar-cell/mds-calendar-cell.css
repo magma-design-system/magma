@@ -272,8 +272,8 @@
 
   /* radius */
   --mds-calendar-cell-size: --spacing(1200);
-  --mds-calendar-cell-selection-boundaries-border-radius: calc(var(--mds-calendar-cell-size) / 2);
-  --mds-calendar-cell-selection-week-boundaries-border-radius: calc(var(--mds-calendar-cell-size) / 2);
+  --mds-calendar-cell-selection-boundaries-border-radius: 200px;
+  --mds-calendar-cell-selection-week-boundaries-border-radius: 200px;
 
   /* today */
   --mds-calendar-cell-preselection-today-background: rgb(var(--variant-primary-09));

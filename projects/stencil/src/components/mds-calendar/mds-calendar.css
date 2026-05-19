@@ -60,13 +60,15 @@
   --mds-calendar-border-radius: var(--radius-lg);
   --mds-calendar-background: rgb(var(--tone-neutral));
   --mds-calendar-padding: --spacing(400);
+  --mds-calendar-max-width: 480px;
+  --mds-calendar-min-width: 280px;
 
   background-color: rgb(var(--tone-neutral-09));
   border-radius: var(--mds-calendar-border-radius);
   cursor: auto;
   display: inline-flex;
-  max-width: 400px;
-  min-width: min-content;
+  max-width: var(--mds-calendar-max-width);
+  min-width: max-content;
   overflow: hidden;
 }
 
@@ -75,7 +77,9 @@
   border-radius: inherit;
   display: grid;
   padding: var(--mds-calendar-padding);
-  width: clamp(280px, 320px, 400px);
+
+  /* width: clamp(var(--mds-calendar-min-width), calc((var(--mds-calendar-max-width) + var(--mds-calendar-min-width)) / 2), var(--mds-calendar-max-width)); */
+  width: 100%;
 }
 
 .calendar-preselection {
