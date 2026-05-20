@@ -58,7 +58,7 @@
   --mds-chip-icon-background: rgb(var(--variant-primary-06));
   --mds-chip-icon-color: rgb(var(--tone-neutral));
   --mds-chip-opacity-disabled: 0.5;
-  --mds-chip-shadow: var(--shadow-sharp);
+  --mds-chip-shadow: var(--shadow-sm-sharp);
 
   align-items: center;
   background-color: var(--mds-chip-background);
