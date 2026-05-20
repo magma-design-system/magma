@@ -1,6 +1,6 @@
 import { BackgroundColor, Color, InterpolationColorspace, Theme, type ContrastColor, type ContrastColorBackground, type RgbHexColor } from '@/leonardo/index.js'
 import chalk from 'chalk'
-import DEFAULTS from '../config/deafult-color.json' with {type: 'json'}
+import DEFAULTS from '../config/default-color.json' with {type: 'json'}
 import { deepMerge } from './utils.mjs'
 export interface SeedConfig {
   light: RgbHexColor,
