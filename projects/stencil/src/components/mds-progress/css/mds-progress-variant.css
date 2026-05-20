@@ -1,6 +1,6 @@
 :host([variant="dark"]) {
-  --mds-progress-color: rgb(var(--tone-neutral-04));
-  --mds-progress-background: rgb(var(--tone-neutral-08));
+  --mds-progress-color: rgb(var(--tone-neutral-03));
+  --mds-progress-background: rgb(var(--tone-neutral-10));
 }
 
 :host([variant="light"]) {
