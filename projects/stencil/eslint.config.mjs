@@ -3,7 +3,7 @@ import js from '@eslint/js'
 import { includeIgnoreFile } from '@eslint/compat'
 import { FlatCompat } from '@eslint/eslintrc'
 import { fileURLToPath } from 'node:url'
-import rootConfig from '../../eslint.config.mjs'
+import { baseConfig } from '../../eslint.config.mjs'
 import stencil from '@stencil/eslint-plugin'
 import tseslint from 'typescript-eslint'
 import storybook from 'eslint-plugin-storybook'
@@ -18,7 +18,7 @@ const compat = new FlatCompat({
 })
 
 export default defineConfig([
-  rootConfig,
+  ...baseConfig,
   globalIgnores([
     'react',
     'angular'
@@ -34,14 +34,6 @@ export default defineConfig([
         'plugin:@typescript-eslint/recommended',
       ),
     ],
-    rules: {
-      '@typescript-eslint/no-unused-vars': [
-        'error',
-        {
-          varsIgnorePattern: '^h$',
-        },
-      ],
-    }
   },
   // #endregion
 
@@ -59,33 +51,13 @@ export default defineConfig([
         sourceType: 'module',
       },
     },
-     plugins: {
+    plugins: {
       '@typescript-eslint': tseslint.plugin,
       'stencil': stencil
     },
     rules: {
       ...tseslint.configs.recommendedTypeChecked[0].rules,
       ...stencil.configs.recommended.rules,
-      "@typescript-eslint/strict-boolean-expressions": 0,
-      '@typescript-eslint/explicit-module-boundary-types': [
-        'error',
-        {
-          allowedNames: ['render'],
-        },
-      ],
-
-      // '@typescript-eslint/prefer-nullish-coalescing': 'error',
-
-      '@typescript-eslint/no-unused-vars': [
-        'error',
-        {
-          varsIgnorePattern: '^h$',
-        },
-      ],
-
-      // disable rule due to incompatibility stencil plugin, waitinf for update
-      'stencil/strict-boolean-conditions': 'off',
-      'react/jsx-no-bind': 'off',
     },
   },
   // #endregion
