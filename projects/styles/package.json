@@ -12,7 +12,9 @@
     "tailwind.reset": "postcss ./postcss/reset.css -o ./dist/css/reset.css",
     "tailwind.layer": "postcss ./postcss/layer.css -o ./dist/css/layer.css",
     "tailwind.build": "npm run tailwind.base && npm run tailwind.reset && npm run tailwind.layer && npm run tailwind.typography",
-    "tailwind.typography": "postcss ./postcss/typography.css -o ./dist/css/typography.css"
+    "tailwind.typography": "postcss ./postcss/typography.css -o ./dist/css/typography.css",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "files": [
     "/postcss.config.js",
