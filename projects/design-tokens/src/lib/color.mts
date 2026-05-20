@@ -10,6 +10,7 @@ import {
 import chalk from "chalk";
 import DEFAULTS from "../config/default-color.json" with { type: "json" };
 import { deepMerge } from "./utils.mjs";
+import { DesignToken, DesignTokens } from "style-dictionary";
 export interface SeedConfig {
   light: RgbHexColor;
   dark: RgbHexColor;
@@ -38,8 +39,10 @@ export interface ColorTokenSet {
 }
 
 export interface ExportGroupTokens {
-  color: Record<string, Record<string, ColorTokenSet>>;
+  // color: Record<string, Record<string, ColorTokenSet>>;
+   [key: string]: DesignTokens | DesignToken;
 }
+export type ExportGroups = Record<string, ExportGroupTokens>;
 
 export type Formula = "wcag2" | "wcag3";
 export type RatioData = { [key: string]: number[] };
@@ -54,10 +57,11 @@ export interface MagmaConfig {
 
 export type ThemeContrastColor = [ContrastColorBackground, ...ContrastColor[]];
 export type ColorTokensMap = Record<string, Record<string, ColorTokenSet>>;
-// interface DesignTokensConfig {
-//   colors: ColorConfig[],
-//   ratios: {[key: string]: number[]}
-// }
+
+export interface ColorTokens {
+  // color: ColorTokensMap;
+  [key: string]: DesignTokens | DesignToken;
+}
 
 function getBackgroundColor(formula: Formula = "wcag3"): BackgroundColor {
   return new BackgroundColor({
@@ -130,8 +134,7 @@ export function createColorTokens(magmaConfig: MagmaConfig) {
   const config = deepMerge(
     DEFAULTS as unknown as Record<string, unknown>,
     magmaConfig as unknown as Record<string, unknown>,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ) as any as MagmaConfig;
+  ) as unknown as MagmaConfig;
 
   const palette: { [key: string]: Color[] } = {
     wcag2: [],
@@ -188,11 +191,11 @@ export function createColorTokens(magmaConfig: MagmaConfig) {
 
   console.info("Formatting color palette to JSON Design Tokens format");
 
-  const tokens: { color: ColorTokensMap } = {
+  const tokens: ColorTokens = {
     color: {},
   };
 
-  const exportGroups: Record<string, ExportGroupTokens> = {};
+  const exportGroups: ExportGroups = {};
 
   config.colors.forEach((element) => {
     const groupIndex = 0;

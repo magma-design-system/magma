@@ -1,4 +1,4 @@
-import StyleDictionary from 'style-dictionary'
+import StyleDictionary, { DesignTokens } from 'style-dictionary'
 
 import {
   flutterColorFormat,
@@ -36,7 +36,7 @@ export async function getColorsConfig (path?: string) {
   return lilconfig('magma-design-tokens', {}).search()
 }
 
-export async function writeJsonTokens (tokens: any, name: string, dirPath?: string): Promise<void> {
+export async function writeJsonTokens (tokens: unknown, name: string, dirPath?: string): Promise<void> {
   if (!dirPath) {
     throw new Error('dirPath is required')
   }
@@ -61,9 +61,9 @@ export async function writeJsonTokens (tokens: any, name: string, dirPath?: stri
  * @param outputDir output directory
  * @param platform array of platform that needs to build, if undefined build all platform for colors (css, dart, js)
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+
 export function exportColors (
-  tokens: any,
+  tokens: DesignTokens,
   fileName: string,
   outputDir?: string,
   platform?: string[],

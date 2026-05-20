@@ -1,13 +1,13 @@
-import StyleDictionary, { DesignToken } from 'style-dictionary'
+import StyleDictionary, { DesignTokens } from 'style-dictionary'
 
 export function getStyleDictionaryColorConfigAllPlatforms (
-  inputTokens: string[] | DesignToken,
+  inputTokens: string[] | DesignTokens,
   outputDir?: string,
 ): StyleDictionary.Config {
   const buildPath = outputDir ?? 'dist'
   let source, tokens
   if (typeof inputTokens === 'object') {
-    tokens = inputTokens as DesignToken
+    tokens = inputTokens as DesignTokens
   } else {
     source = tokens
   }
