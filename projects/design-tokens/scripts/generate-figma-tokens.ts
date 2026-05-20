@@ -72,6 +72,15 @@ interface Variable {
   codeSyntax?: CodeSyntax;
 }
 
+type TokenValue = { value: string }
+type TokenTree = Record<string, Record<string, Record<string, TokenValue>>>
+interface FigmaColorTokens {
+  color: Record<string, Record<string, {
+    light: Record<string, TokenValue>
+    dark: Record<string, TokenValue>
+  }>>
+}
+
 const capitalizeFirstLetter = (value: string): string =>
   value.charAt(0).toUpperCase() + value.slice(1)
 
@@ -101,7 +110,7 @@ const generateFigmaTokens = (nameCollection: string) => {
   writeFigmaVariables(collection)
 }
 
-const generateFigmaColors = (nameCollection: string, tokens) => {
+const generateFigmaColors = (nameCollection: string, tokens: FigmaColorTokens) => {
   const lightMode = 'light'
   const darkMode = 'dark'
 
@@ -123,14 +132,14 @@ const generateFigmaColors = (nameCollection: string, tokens) => {
   writeFigmaVariables(collection)
 }
 
-const buildScreenToken = (name: string, tokens, scopes?: Scope[]): Map<string, Variable> => {
+const buildScreenToken = (name: string, tokens: TokenTree, scopes?: Scope[]): Map<string, Variable> => {
   const variables: Map<string, Variable> = new Map()
   Object.entries(tokens).forEach(type => {
     Object.entries(type[1]).forEach(subtype => {
       Object.entries(subtype[1]).forEach(token => {
         if (token[0] === 'min') {
           const UID = `${name}:${subtype[0]}`
-          // eslint-disable-next-line dot-notation
+
           const value = getValue(token[1]['value'])
           if(value) {
             variables.set(UID, {
@@ -158,14 +167,14 @@ const buildScreenToken = (name: string, tokens, scopes?: Scope[]): Map<string, V
   return variables
 }
 
-const buildTokenVariables = (name: string, tokens, scopes?: Scope[]): Map<string, Variable> => {
+const buildTokenVariables = (name: string, tokens: TokenTree, scopes?: Scope[]): Map<string, Variable> => {
   const variables: Map<string, Variable> = new Map()
   Object.entries(tokens).forEach(type => {
     Object.entries(type[1]).forEach(subtype => {
       Object.entries(subtype[1]).forEach(token => {
         const UID = `${name}:${token[0]}`
         const value = getValue(token[1]['value'] as string)
-        if(!isNaN(Number(value))) {
+        if(value && !isNaN(Number(value))) {
           variables.set(UID, {
             id: UID,
             name: UID.replace(/:/g, '/'),
@@ -201,15 +210,16 @@ const getValue = (value: string): number | undefined => {
   if (value.startsWith('{')) {
     const ref = value.slice(1, -1).split('.')
     if (ref[1] === 'gap') {
-      return getValue(gap[ref[0]][ref[1]][ref[2]].value)
+      return getValue((gap as TokenTree)[ref[0]][ref[1]][ref[2]].value)
     }
-    return getValue(primitive[ref[0]][ref[1]][ref[2]].value)
+    return getValue((primitive as TokenTree)[ref[0]][ref[1]][ref[2]].value)
   }
 // tokens where unit isn't px are ignored
   if(!value.endsWith('px')) return
-  return Number(value.match(/\d+/)[0])
+  const digits = value.match(/\d+/)
+  return digits ? Number(digits[0]) : undefined
 }
-const buildColorVariables = (tokens): Map<string, Variable> => {
+const buildColorVariables = (tokens: FigmaColorTokens): Map<string, Variable> => {
   const variables: Map<string, Variable> = new Map()
 
   /**
@@ -237,7 +247,7 @@ const buildColorVariables = (tokens): Map<string, Variable> => {
     Object.entries(group[1]).forEach(name => {
       Object.entries(name[1]).forEach(lightMode => {
         Object.entries(lightMode[1]).forEach(palette => {
-          let paletteId: string|number = palette[0]
+          let paletteId = palette[0]
           if (!isNaN(parseInt(paletteId)) && parseInt(paletteId) < 10) {
             paletteId = `0${paletteId}`
           }
@@ -262,7 +272,7 @@ const buildColorVariables = (tokens): Map<string, Variable> => {
            * this permits to use as key of mode in valuesByMode and resolvedValuesByMode object
            * so it can be set the right light mode of that variable
            */
-          const variable = variables.get(paletteUID)
+          const variable = variables.get(paletteUID)!
           variable.valuesByMode[lightMode[0]] = colorRGB
           variable.resolvedValuesByMode[lightMode[0]] = {
             resolvedValue: colorRGB,
@@ -286,17 +296,16 @@ const writeFigmaVariables = (collection: Collection) => {
 }
 
 const hexToRgbA = (hex: string): Color => {
-  let c
   if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
-    c = hex.substring(1).split('')
+    let c = hex.substring(1).split('')
     if (c.length === 3) {
       c = [c[0], c[0], c[1], c[1], c[2], c[2]]
     }
-    c = '0x' + c.join('')
+    const h = parseInt('0x' + c.join(''), 16)
     return {
-      r: ((c >> 16) & 255) / 255,
-      g: ((c >> 8) & 255) / 255,
-      b: (c & 255) / 255,
+      r: ((h >> 16) & 255) / 255,
+      g: ((h >> 8) & 255) / 255,
+      b: (h & 255) / 255,
       a: 1,
     }
   }
@@ -316,14 +325,13 @@ const mergeTokens = async () => {
         .reduce((prev, current) => Object.assign(prev, { ...current })),
     )
   })
-  const tokens = defaultTokens
-  tokens.color.brand = sortJsonByKeys(brandColors, (a, b) => b.localeCompare(a))
+  const tokens = defaultTokens as FigmaColorTokens
+  tokens.color.brand = sortJsonByKeys(brandColors, (a, b) => b.localeCompare(a)) as unknown as FigmaColorTokens['color'][string]
   return tokens
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function sortJsonByKeys (json, compareFn: (a: string, b: string) => number): any {
-  return Object.keys(json).sort(compareFn).reduce(
+function sortJsonByKeys (json: Record<string, unknown>, compareFn: (a: string, b: string) => number): Record<string, unknown> {
+  return Object.keys(json).sort(compareFn).reduce<Record<string, unknown>>(
     (obj, key) => {
       obj[key] = json[key]
       return obj
