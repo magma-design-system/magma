@@ -23,6 +23,7 @@
     "build.watch-no-cache": "stencil build --no-cache --watch",
     "clean": "tsx --tsconfig script.tsconfig.json ./scripts/clean.ts",
     "generate": "stencil generate",
+    "generate.spec": "tsx --tsconfig script.tsconfig.json ./scripts/generate-spec.ts",
     "generate.doc": "tsx --tsconfig script.tsconfig.json ./scripts/generate-doc.ts",
     "gitlab-ci-yml-regenerate": "tsx --tsconfig script.tsconfig.json ./scripts/gitlab-ci-yml-regenerate.ts",
     "lint": "npm run lint.ts && npm run lint.css",
