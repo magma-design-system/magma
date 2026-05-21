@@ -9,6 +9,221 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 <!-- Auto Generated Below -->
 
 
+## Usage
+
+### Antipattern
+
+Below are incorrect uses, anti-patterns, and bad practices for the `<mds-button>` component.
+
+## 1. Do Not Pass Boolean Attributes as Strings
+Never set `disabled="false"` or `await="false"`. In HTML/Stencil, a non-empty string is truthy, meaning the button will remain disabled/loading. Instead, completely remove the attribute.
+```html
+<!-- INCORRECT -->
+<mds-button disabled="false" label="Clicca qui"></mds-button>
+<mds-button await="false" label="Invia"></mds-button>
+
+<!-- CORRECT -->
+<mds-button label="Clicca qui"></mds-button>
+```
+
+## 2. Avoid Rich HTML Markup in the Default Slot
+The default slot is reserved strictly for text content. Do not nest icons, spans, or complex layout divs inside it. Use properties for icons/labels or dedicated slots instead.
+```html
+<!-- INCORRECT -->
+<mds-button>
+  <img src="icon.svg" />
+  <span>Download</span>
+</mds-button>
+
+<!-- CORRECT -->
+<mds-button label="Download" icon="action-download"></mds-button>
+```
+
+## 3. Do Not Nest Button Inside an Anchor Link
+If you need a button that acts as a hyperlink, use the `href` attribute directly on the component. Wrapping `<mds-button>` in `<a>` creates nested interactive controls which violate HTML accessibility specifications.
+```html
+<!-- INCORRECT -->
+<a href="/login">
+  <mds-button label="Accedi"></mds-button>
+</a>
+
+<!-- CORRECT -->
+<mds-button label="Accedi" href="/login"></mds-button>
+```
+
+## 4. Avoid Custom CSS Overrides and Shadow Piercing
+Do not attempt to style internal elements by targeting tags, classes, or shadow selectors like `::part()`. Use the documented CSS custom variables.
+```css
+/* INCORRECT */
+mds-button >>> .text {
+  font-weight: bold;
+}
+mds-button::part(label) {
+  color: red;
+}
+
+/* CORRECT */
+mds-button {
+  --mds-button-color: red;
+}
+```
+
+## 5. Never Use Icon-Only Buttons without Accessible Description
+Screen readers will not know what an icon-only button does if there is no text. Always include `aria-label` or `title` when `label` is empty.
+```html
+<!-- INCORRECT -->
+<mds-button icon="action-delete"></mds-button>
+
+<!-- CORRECT -->
+<mds-button icon="action-delete" aria-label="Elimina elemento"></mds-button>
+```
+
+## 6. Do Not Mix Multiple Icon Methods
+Do not use standard HTML child elements for icons. Use the component's `icon` attribute.
+```html
+<!-- INCORRECT -->
+<mds-button>
+  <mds-icon name="action-add"></mds-icon>
+  Aggiungi
+</mds-button>
+
+<!-- CORRECT -->
+<mds-button label="Aggiungi" icon="action-add"></mds-button>
+```
+
+
+### Description
+
+The `<mds-button>` web component represents an interactive button or hyperlink within the Magma Design System. It encapsulates states, styling, accessibility behavior, and icons inside a Shadow DOM, exposing styling hooks via CSS Custom Properties.
+
+## Semantic Behavior
+
+- **Button vs. Link**: By default, `<mds-button>` renders as an interactive button (`role="button"`). If the `href` property is provided, it acts as a link redirecting the browser window, utilizing the `target` property (`self` or `blank`) to determine target window context.
+- **Form Association**: Fully form-associated (`formAssociated: true`), allowing it to natively trigger form submission (`type="submit"`) or resets (`type="reset"`) when enclosed inside a `<form>` element.
+- **Active State**: Tracks visual pressed state natively via the `active` attribute.
+- **Disabled State**: Setting the `disabled` property disables interactions, prevents click events, and removes it from the tab sequence.
+- **Await State**: Triggers a loading spinner (`<mds-spinner>`) and intercepts mouse/keyboard click events while preserving accessibility (automatically maps to `aria-busy="true"`).
+
+## Properties & Visual Configurations
+
+- **`variant`**: Defines the color role. Supports brand colors (`primary`, `secondary`, `ai`), luminance states (`dark`, `light`), status indicators (`success`, `warning`, `error`, `info`), and preset login identities (`google`, `apple`).
+- **`tone`**: Controls the visual weight and styling archetype:
+  - `strong`: Solid filled background (highest emphasis).
+  - `weak`: Subtle background tint (medium emphasis).
+  - `outline`: Bordered outline with no solid background (medium-low emphasis).
+  - `text`: Borderless and background-less (lowest emphasis).
+  - `box`: High-contrast, boxed container style.
+- **`size`**: Controls overall sizing. Values: `sm`, `md`, `lg`, `xl` (default: `md`).
+- **`icon`**: An SVG filename slug from the icon library.
+- **`iconPosition`**: Positions the icon relative to the label: `left` (default) or `right`.
+- **`truncate`**: Handles long label text overflow truncation. Values: `all`, `none`, `word` (default: `word`).
+- **`animation`**: Text entry/rendering animation. Values: `none` (default), `yugop`.
+
+## Layout & Slots
+
+- **`default` Slot**: Main content slot. **Must contain only text strings.** Placing HTML markup inside the default slot is not supported. Use the `label` property as the preferred alternative.
+- **`notification` Slot**: Specifically designed for badges, counters, or status indicators. Placing `mds-notification` inside this slot is highly recommended.
+
+## Styling Hook System
+
+Styles are customized exclusively via exposed CSS custom properties such as:
+- `--mds-button-background`
+- `--mds-button-color`
+- `--mds-button-radius`
+- `--mds-button-gap`
+- `--mds-button-border-width`
+
+
+### Pattern
+
+Here are correct and recommended usage patterns for the `<mds-button>` component.
+
+## 1. Text Button (Preferred Approach)
+Use the `label` property to set the text content, rather than nesting text inside the slot.
+```html
+<!-- Primary strong button -->
+<mds-button label="Salva modifiche" variant="primary" tone="strong"></mds-button>
+```
+
+## 2. Text Button using Slot (Fallback)
+If using the default slot, supply **only** a plain text string. Do not embed nested HTML elements.
+```html
+<mds-button variant="primary">Invia modulo</mds-button>
+```
+
+## 3. Button with Icon
+Reference icons by their filename slug (without the `.svg` suffix). Set position using `iconPosition`.
+```html
+<!-- Left icon (default) -->
+<mds-button label="Aggiungi" icon="action-plus" variant="secondary" tone="weak"></mds-button>
+
+<!-- Right icon -->
+<mds-button label="Avanti" icon="arrow-right" icon-position="right" variant="primary" tone="strong"></mds-button>
+```
+
+## 4. Icon-Only Button (Accessible)
+When using only an icon without label text, you must supply `aria-label` or `title` for screen readers.
+```html
+<mds-button icon="action-delete" aria-label="Elimina elemento" variant="error" tone="text"></mds-button>
+```
+
+## 5. Navigation Link Style
+Provide an `href` prop to convert the button behavior to a hyperlink. Use `target="blank"` to open in a new tab.
+```html
+<mds-button label="Visita il sito" href="https://example.com" target="blank" variant="secondary" tone="outline"></mds-button>
+```
+
+## 6. Await (Loading) State
+To show a loading state during asynchronous operations, set the `await` attribute. Remove the attribute when complete (do not set `await="false"`).
+```html
+<mds-button label="Caricamento..." await variant="primary"></mds-button>
+```
+
+## 7. Button with Notification Badge
+Use the named `notification` slot to attach a notification indicator, such as `<mds-notification>`.
+```html
+<mds-button label="Messaggi" icon="communication-email" variant="secondary" tone="weak">
+  <mds-notification slot="notification" count="5" variant="error"></mds-notification>
+</mds-button>
+```
+
+## 8. Form Submission and Reset
+Since `<mds-button>` is form-associated, nesting it in a form will naturally submit or reset form data.
+```html
+<form>
+  <!-- Native submit button -->
+  <mds-button type="submit" label="Invia modulo" variant="success"></mds-button>
+  <!-- Native reset button -->
+  <mds-button type="reset" label="Annulla" variant="light" tone="outline"></mds-button>
+</form>
+```
+
+## 9. Visual Variations
+Select appropriate tone and variant combinations according to importance.
+```html
+<!-- High importance action -->
+<mds-button label="Salva" variant="primary" tone="strong"></mds-button>
+
+<!-- Medium importance action -->
+<mds-button label="Modifica" variant="secondary" tone="outline"></mds-button>
+
+<!-- Low importance action -->
+<mds-button label="Cancella" variant="error" tone="text"></mds-button>
+```
+
+## 10. Styling Customization
+Always use CSS Custom Properties when customizing the button from outside.
+```css
+/* Customizing button aesthetics in your application stylesheet */
+.custom-action-button {
+  --mds-button-background: var(--mds-color-primary-600);
+  --mds-button-color: var(--mds-color-white);
+  --mds-button-radius: 8px;
+}
+```
+
+
+
 ## Properties
 
 | Property       | Attribute       | Description                                                                | Type                                                                                                                                       | Default     |
@@ -89,6 +304,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
  - [mds-input-upload](../mds-input-upload)
  - [mds-keyboard](../mds-keyboard)
  - [mds-label](../mds-label)
+ - [mds-mention](../mds-mention)
  - [mds-modal](../mds-modal)
  - [mds-note](../mds-note)
  - [mds-policy-ai](../mds-policy-ai)
@@ -133,6 +349,7 @@ graph TD;
   mds-input-upload --> mds-button
   mds-keyboard --> mds-button
   mds-label --> mds-button
+  mds-mention --> mds-button
   mds-modal --> mds-button
   mds-note --> mds-button
   mds-policy-ai --> mds-button
