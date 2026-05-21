@@ -9,6 +9,7 @@
 /src/components/**/components.d.ts
 /src/components/**/documentation.json
 /src/components/**/src
+/src/components/**/SPEC.md
 /src/components/**/stencil.config.ts
 /src/components/**/tailwind.config.js
 /src/components/**/tsconfig.json
