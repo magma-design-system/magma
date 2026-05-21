@@ -2,7 +2,7 @@
   --mds-chip-background: rgb(var(--tone-neutral));
   --mds-chip-border: transparent;
   --mds-chip-color: rgb(var(--tone-neutral-04));
-  --mds-chip-shadow: var(--shadow-sharp);
+  --mds-chip-shadow: var(--shadow-sm-sharp);
 }
 
 /* variant */
