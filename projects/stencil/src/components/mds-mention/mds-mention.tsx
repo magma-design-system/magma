@@ -1,5 +1,6 @@
 import { Component, Host, h, Prop } from '@stencil/core'
 import miBaselineAlternateEmail from '@icon/mi/baseline/alternate-email.svg'
+import miBaselineCancel from '@icon/mi/baseline/cancel.svg'
 import { MentionSize } from './meta/type'
 import { TypographyType } from '@type/typography'
 
@@ -42,6 +43,7 @@ export class MdsMention {
             : <b>{ this.label }</b>
           }
         </mds-text>
+        <mds-button class="action-remove" title="Remove" variant="dark" tone="text" size="sm" icon={miBaselineCancel}></mds-button>
       </Host>
     )
   }
