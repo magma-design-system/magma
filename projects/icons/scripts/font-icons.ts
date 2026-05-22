@@ -123,7 +123,7 @@ const optimizeCSSOutputs = async () => {
 
 const splitCSSEncoded = (cssBuffer: Buffer, fontFacePath: PathLike | fs.FileHandle, classesPath: PathLike | fs.FileHandle) => {
   const cssAscii = cssBuffer.toString('ascii')
-  const regex = /@font-face \{.|[^\}]*\}$/m
+  const regex = /@font-face \{.|[^}]*\}$/m
   const [ fontFaceAsciiTemp ] = cssAscii.match(regex) || []
   const fontFaceAscii = fontFaceAsciiTemp ?? ''
   const cssSelectorsAscii = cssAscii.replace(regex, '')
@@ -150,7 +150,7 @@ const buildCSSEncoded = (buildFontsDir: string, buildPathDir: string, fontName: 
   return fs.mkdir(BASE64_PATH_DIR, { recursive: true })
     .then(() => Promise.all([fontBase64$, cssAscii$]))
     .then(([ fontBase64, cssAscii]) => {
-      const regex = /src:(.|[\r\n][^\}])*/m
+      const regex = /src:(.|[\r\n][^}])*/m
       const [ stringToReplaceTemp ] = cssAscii.match(regex) || []
       const stringToReplace = stringToReplaceTemp ?? ''
       return Promise.resolve(cssAscii.replace(stringToReplace, `src: url(data:font/truetype;charset=utf-8;base64,${fontBase64});`))
