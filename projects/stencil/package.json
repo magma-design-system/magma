@@ -29,7 +29,7 @@
     "lint": "npm run lint.ts && npm run lint.css",
     "lint:fix": "eslint . --fix",
     "lint.css": "stylelint -c ./stylelint.config.mjs  'src/**/*.css'",
-    "lint.ts": "eslint --fix",
+    "lint.ts": "eslint .",
     "publish.isolate.all": "npm run publish.isolate.docs-json && tsx --tsconfig script.tsconfig.json ./scripts/isolate-all.ts",
     "publish.isolate.component": "npm run publish.isolate.docs-json && tsx --tsconfig script.tsconfig.json ./scripts/isolate-component.ts",
     "publish.isolate.docs-json": "tsx --tsconfig script.tsconfig.json ./scripts/isolate-docs-json.ts",
