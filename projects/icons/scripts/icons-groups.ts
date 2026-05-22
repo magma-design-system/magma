@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
-
 import chalk from 'chalk'
 import fs from 'fs/promises'
 import path from 'path'
@@ -96,7 +94,7 @@ class MaterialIconsSvg {
    * Search the requested icon in Material icons
    */
   static async getPath (iconName: string): Promise<string> {
-    const pattern = new RegExp('\/' + iconName)
+    const pattern = new RegExp('/' + iconName)
     const subdirectories = (await MaterialIconsSvg.subDirectories()).filter(path => path.match(pattern) !== null)
     const filename = 'baseline.svg'
     return iconGroupGetHelper('material-icons-svg', subdirectories, iconName, filename)
