@@ -26,7 +26,6 @@ const AccessibilityPanel = () => {
         return
       }
 
-      // eslint-disable-next-line guard-for-in
       for (const key in list) {
         htmlEl.classList.remove(`pref-${preference}-${list[key]}`)
       }
