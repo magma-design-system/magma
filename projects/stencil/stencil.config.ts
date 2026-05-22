@@ -105,7 +105,7 @@ export const config: Config = {
         { find: /^@event\/(.*)$/, replacement: path.resolve('.', './src/event-detail/$1') },
         { find: /^@fixture\/(.*)$/, replacement: path.resolve('.', './src/fixtures/$1') },
         { find: /^@meta\/(.*)$/, replacement: path.resolve('.', './src/meta/$1') },
-        { find: /^@icon\/([a-zA-Z-\/]+)\.svg$/, replacement: path.resolve(__dirname, './assets/svg/$1.svg') },
+        { find: /^@icon\/([a-zA-Z-/]+)\.svg$/, replacement: path.resolve(__dirname, './assets/svg/$1.svg') },
         { find: /^@tailwind\/(.*)$/, replacement: path.resolve('.', './src/tailwind/$1') },
         { find: /^@test\/(.+)$/, replacement: path.resolve('.', './src/test/$1') },
         { find: /^@type\/(.+)$/, replacement: path.resolve('.', './src/type/$1') },
