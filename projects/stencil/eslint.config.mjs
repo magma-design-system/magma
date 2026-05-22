@@ -1,45 +1,51 @@
-import { defineConfig, globalIgnores } from 'eslint/config'
-import js from '@eslint/js'
-import { includeIgnoreFile } from '@eslint/compat'
-import { FlatCompat } from '@eslint/eslintrc'
-import { fileURLToPath } from 'node:url'
-import { baseConfig } from '../../eslint.config.mjs'
-import stencil from '@stencil/eslint-plugin'
-import tseslint from 'typescript-eslint'
-import storybook from 'eslint-plugin-storybook'
+import { defineConfig, globalIgnores } from 'eslint/config';
+import js from '@eslint/js';
+import { includeIgnoreFile } from '@eslint/compat';
+import { FlatCompat } from '@eslint/eslintrc';
+import { fileURLToPath } from 'node:url';
+import { baseConfig } from '../../eslint.config.mjs';
+import stencil from '@stencil/eslint-plugin';
+import tseslint from 'typescript-eslint';
+import storybook from 'eslint-plugin-storybook';
 
-
-const gitignorePath = fileURLToPath(new URL('.gitignore', import.meta.url))
+const gitignorePath = fileURLToPath(new URL('.gitignore', import.meta.url));
 
 const compat = new FlatCompat({
   baseDirectory: import.meta.dirname,
   recommendedConfig: js.configs.recommended,
   allConfig: js.configs.all,
-})
+});
 
 export default defineConfig([
   ...baseConfig,
-  globalIgnores([
-    'react',
-    'angular'
-  ]),
+  globalIgnores(['react', 'angular']),
   includeIgnoreFile(gitignorePath, 'Imported .gitignore patterns'),
 
+  {
+    rules: {
+      '@typescript-eslint/no-unused-vars': [
+        'warn',
+        {
+          varsIgnorePattern: '^(h|Fragment)$',
+        },
+      ],
+    },
+  },
   // #region storybook
   ...storybook.configs['flat/recommended'],
   {
     extends: [
-      compat.extends(
-        'plugin:storybook/recommended',
-        'plugin:@typescript-eslint/recommended',
-      ),
+      compat.extends('plugin:storybook/recommended', 'plugin:@typescript-eslint/recommended'),
     ],
   },
   // #endregion
 
   // #region stencil
   {
-    files: ['./**/src/components/*.tsx', './**/src/components/*.ts'],
+    extends: [
+      stencil.configs.flat.recommended,
+    ],
+    files: ['./**/src/components/**/*.{tsx,ts}'],
     ignores: ['.storybook/**', '**/*.stories.*'],
     languageOptions: {
       parser: tseslint.parser,
@@ -51,14 +57,6 @@ export default defineConfig([
         sourceType: 'module',
       },
     },
-    plugins: {
-      '@typescript-eslint': tseslint.plugin,
-      'stencil': stencil
-    },
-    rules: {
-      ...tseslint.configs.recommendedTypeChecked[0].rules,
-      ...stencil.configs.recommended.rules,
-    },
   },
   // #endregion
-])
+]);
