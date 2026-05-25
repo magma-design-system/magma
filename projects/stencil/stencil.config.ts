@@ -1,12 +1,12 @@
-import alias from '@rollup/plugin-alias'
+import alias from '@rollup/plugin-alias';
 // import autoprefixer from 'autoprefixer'
-import path from 'path'
-import { Config } from '@stencil/core'
-import { inlineSvg } from 'stencil-inline-svg'
-import tailwind, { PluginConfigurationOptions } from 'stencil-tailwind-plugin'
-import { reactOutputTarget } from '@stencil/react-output-target'
-import { angularOutputTarget } from '@stencil/angular-output-target'
-import tokenFallbackPlugin from './scripts/postcss-token-fallbacks'
+import path from 'path';
+import { Config } from '@stencil/core';
+import { inlineSvg } from 'stencil-inline-svg';
+import tailwind, { PluginConfigurationOptions } from 'stencil-tailwind-plugin';
+import { reactOutputTarget } from '@stencil/react-output-target';
+import { angularOutputTarget } from '@stencil/angular-output-target';
+import tokenFallbackPlugin from './scripts/postcss-token-fallbacks';
 
 // https://github.com/ionic-team/stencil/issues/1307
 // still not working
@@ -24,15 +24,15 @@ const twConfigurationFn = () => {
   @reference "@maggioli-design-system/styles/dist/css/animations.css";
   @reference "@maggioli-design-system/styles/dist/tailwind/theme.css";
   @reference "@maggioli-design-system/styles/dist/tailwind/typography.css";
-  `
-}
+  `;
+};
 
 const opts: PluginConfigurationOptions = {
   injectTailwindConfiguration: twConfigurationFn,
-}
+};
 
-const packageName = 'magma-components'
-const srcDir = './src'
+const packageName = 'magma-components';
+const srcDir = './src';
 
 export const config: Config = {
   namespace: packageName,
@@ -76,7 +76,8 @@ export const config: Config = {
     // },
     {
       type: 'docs-readme',
-      footer: 'Built with love @ [Gruppo Maggioli](https://www.maggioli.com) from [R&D Department](https://www.maggioli.com/it-it/chi-siamo/ricerca-sviluppo)',
+      footer:
+        'Built with love @ [Gruppo Maggioli](https://www.maggioli.com) from [R&D Department](https://www.maggioli.com/it-it/chi-siamo/ricerca-sviluppo)',
     },
     {
       type: 'docs-json',
@@ -105,13 +106,17 @@ export const config: Config = {
         { find: /^@event\/(.*)$/, replacement: path.resolve('.', './src/event-detail/$1') },
         { find: /^@fixture\/(.*)$/, replacement: path.resolve('.', './src/fixtures/$1') },
         { find: /^@meta\/(.*)$/, replacement: path.resolve('.', './src/meta/$1') },
-        { find: /^@icon\/([a-zA-Z-/]+)\.svg$/, replacement: path.resolve(__dirname, './assets/svg/$1.svg') },
+        {
+          find: /^@icon\/([a-zA-Z-/]+)\.svg$/,
+          replacement: path.resolve(__dirname, './assets/svg/$1.svg'),
+        },
         { find: /^@tailwind\/(.*)$/, replacement: path.resolve('.', './src/tailwind/$1') },
         { find: /^@test\/(.+)$/, replacement: path.resolve('.', './src/test/$1') },
         { find: /^@type\/(.+)$/, replacement: path.resolve('.', './src/type/$1') },
       ],
     }),
-    tailwind({ ...opts,
+    tailwind({
+      ...opts,
       minify: true, // with minify false ' will be replaced with %27 and broke style
       stripComments: true,
     }),
@@ -124,7 +129,11 @@ export const config: Config = {
      * before it can run your tests
      */
     browserArgs: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'],
-    coveragePathIgnorePatterns: ['<rootDir>/.build/', '<rootDir>/template/', '<rootDir>/node_modules/'],
+    coveragePathIgnorePatterns: [
+      '<rootDir>/.build/',
+      '<rootDir>/template/',
+      '<rootDir>/node_modules/',
+    ],
     // moduleNameMapper: tsconfigPathsJest(tsconfig),
     moduleNameMapper: {
       '@common/(.*)': '<rootDir>src/common/$1',
@@ -138,10 +147,28 @@ export const config: Config = {
       '@test/(.*)': '<rootDir>src/test/$1',
       '@type/(.*)': '<rootDir>src/type/$1',
     },
-    modulePathIgnorePatterns: ['<rootDir>/.build/', '<rootDir>/template/', '<rootDir>/node_modules/', '<rootDir>/angular/', '<rootDir>/react/'],
-    testPathIgnorePatterns: ['<rootDir>/.cache', '<rootDir>/template/', '<rootDir>/node_modules/', '<rootDir>/.vscode', '/.stencil', '/dist', '/www', '/scripts'],
-    transform: { '^.+\\.svg$': 'jest-transformer-svg', '^.+\\.(ts|tsx|js|jsx|css)$': '@stencil/core/testing/jest-preprocessor' },
+    modulePathIgnorePatterns: [
+      '<rootDir>/.build/',
+      '<rootDir>/template/',
+      '<rootDir>/node_modules/',
+      '<rootDir>/angular/',
+      '<rootDir>/react/',
+    ],
+    testPathIgnorePatterns: [
+      '<rootDir>/.cache',
+      '<rootDir>/template/',
+      '<rootDir>/node_modules/',
+      '<rootDir>/.vscode',
+      '/.stencil',
+      '/dist',
+      '/www',
+      '/scripts',
+    ],
+    transform: {
+      '^.+\\.svg$': 'jest-transformer-svg',
+      '^.+\\.(ts|tsx|js|jsx|css)$': '@stencil/core/testing/jest-preprocessor',
+    },
     transformIgnorePatterns: ['<rootDir>/.build/', '<rootDir>/template/'],
     watchPathIgnorePatterns: ['"^.+\\.d\\.ts$" '],
   },
-}
+};

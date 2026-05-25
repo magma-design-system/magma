@@ -14,49 +14,49 @@
 @property --mds-stepper-bar-gap {
   inherits: false;
   initial-value: --spacing(500);
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-stepper-bar-offset-margin {
   inherits: false;
   initial-value: 0;
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-stepper-bar-scroll-behavior {
   inherits: false;
   initial-value: smooth;
-  syntax: "smooth | auto";
+  syntax: 'smooth | auto';
 }
 
 @property --mds-stepper-bar-scrollbar-margin {
   inherits: false;
   initial-value: 0;
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-stepper-bar-scrollbar-radius {
   inherits: false;
   initial-value: 0;
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-stepper-bar-scrollbar-size {
   inherits: false;
   initial-value: --spacing(200);
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-stepper-bar-scrollbar-thumb-background {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-06));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-stepper-bar-scrollbar-track-background {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-08));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 :host {
@@ -76,8 +76,7 @@
 }
 
 .items {
-  @apply
-    w-full
+  @apply w-full
     z-10;
 
   align-items: start;
@@ -92,12 +91,12 @@
   scroll-snap-type: x mandatory;
 }
 
-:host([linear="true"] ) ::slotted( mds-stepper-bar-item ),
-:host([linear] ) ::slotted( mds-stepper-bar-item) {
+:host([linear='true']) ::slotted(mds-stepper-bar-item),
+:host([linear]) ::slotted(mds-stepper-bar-item) {
   pointer-events: none;
 }
 
-:host([linear="false"] ) ::slotted( mds-stepper-bar-item) {
+:host([linear='false']) ::slotted(mds-stepper-bar-item) {
   pointer-events: auto;
 }
 

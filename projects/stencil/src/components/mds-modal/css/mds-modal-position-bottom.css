@@ -4,7 +4,7 @@
   x - -
 */
 
-:host([position="bottom-left"]) {
+:host([position='bottom-left']) {
   align-items: flex-end;
   justify-content: flex-start;
 }
@@ -15,7 +15,7 @@
   - x -
 */
 
-:host([position="bottom"]) {
+:host([position='bottom']) {
   --mds-modal-window-height: auto;
 
   align-items: flex-end;
@@ -28,7 +28,7 @@
   - - x
 */
 
-:host([position="bottom-right"]) {
+:host([position='bottom-right']) {
   align-items: flex-end;
   justify-content: flex-end;
 }

@@ -1,5 +1,5 @@
-import { Component, Element, Host, h, State, Prop } from '@stencil/core'
-import clsx from 'clsx'
+import { Component, Element, Host, h, State, Prop } from '@stencil/core';
+import clsx from 'clsx';
 
 /**
  * @name Button
@@ -23,40 +23,47 @@ import clsx from 'clsx'
   shadow: true,
 })
 export class MdsCard {
-
-  @Element() private host: HTMLMdsCardElement
-  @State() layout: string
+  @Element() private host: HTMLMdsCardElement;
+  @State() layout: string;
 
   /**
    * Enables automatic responsive behavior based on container queries
    */
-  @Prop({ reflect: true }) readonly autoGrid: boolean = true
+  @Prop({ reflect: true }) readonly autoGrid: boolean = true;
 
-  componentWillLoad (): void {
+  componentWillLoad(): void {
     this.layout = Array.from(this.host.children)
       // check custom slot
-      .map(c => (c.getAttribute('slot')
+      .map((c) =>
+        (c.getAttribute('slot') ??
         // if no custom slot find mds-card-{component}
-        ?? c.tagName.startsWith('MDS-CARD-')
-        // replace mds-card-header with header (for all mds-card-{component})
-        ? c.tagName.toLocaleLowerCase().replace('mds-card-', '')
-        // if find other tag do nothing
-        : ''))
+        c.tagName.startsWith('MDS-CARD-'))
+          ? // replace mds-card-header with header (for all mds-card-{component})
+            c.tagName.toLocaleLowerCase().replace('mds-card-', '')
+          : // if find other tag do nothing
+            '',
+      )
       .sort()
-      .reduce((prev, curr) => prev + curr.charAt(0), '')
+      .reduce((prev, curr) => prev + curr.charAt(0), '');
   }
 
-  render () {
+  render() {
     return (
       <Host>
-        <div class={clsx('layout', this.layout && `layout--${this.layout}`, !this.autoGrid ? 'layout--disabled' : '')} part="container">
-          <slot name="media"/>
-          <slot name="header"/>
-          <slot name="content"/>
-          <slot name="footer"/>
+        <div
+          class={clsx(
+            'layout',
+            this.layout && `layout--${this.layout}`,
+            !this.autoGrid ? 'layout--disabled' : '',
+          )}
+          part="container"
+        >
+          <slot name="media" />
+          <slot name="header" />
+          <slot name="content" />
+          <slot name="footer" />
         </div>
       </Host>
-    )
+    );
   }
-
 }

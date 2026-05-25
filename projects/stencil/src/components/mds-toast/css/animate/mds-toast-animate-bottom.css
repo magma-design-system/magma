@@ -1,19 +1,13 @@
-
-
 .to-bottom-left,
 .to-bottom-center,
-.to-bottom-right{
-  @apply
-    animate-outro
+.to-bottom-right {
+  @apply animate-outro
     animate-bottom-outro;
 }
 
 .to-bottom-left.dialog--visible,
 .to-bottom-center.dialog--visible,
 .to-bottom-right.dialog--visible {
-  @apply
-    animate-intro
+  @apply animate-intro
     animate-bottom-intro;
 }
-
-

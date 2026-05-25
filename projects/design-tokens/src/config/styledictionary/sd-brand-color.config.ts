@@ -1,13 +1,16 @@
-import StyleDictionary, { DesignTokens } from 'style-dictionary'
+import StyleDictionary, { DesignTokens } from 'style-dictionary';
 
-export function getBrandColorConfig (fileName: string, inputTokens: string[] | DesignTokens,
-  outputDir?: string): StyleDictionary.Config {
-  const buildPath = outputDir ?? 'dist'
-  let source, tokens
+export function getBrandColorConfig(
+  fileName: string,
+  inputTokens: string[] | DesignTokens,
+  outputDir?: string,
+): StyleDictionary.Config {
+  const buildPath = outputDir ?? 'dist';
+  let source, tokens;
   if (typeof inputTokens === 'object') {
-    tokens = inputTokens as DesignTokens
+    tokens = inputTokens as DesignTokens;
   } else {
-    source = tokens
+    source = tokens;
   }
   return {
     source,
@@ -48,5 +51,5 @@ export function getBrandColorConfig (fileName: string, inputTokens: string[] | D
         ],
       },
     },
-  }
+  };
 }

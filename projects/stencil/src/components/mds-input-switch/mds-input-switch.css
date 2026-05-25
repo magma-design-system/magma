@@ -33,157 +33,160 @@
 @property --mds-input-switch-animation-timing-adjust {
   inherits: false;
   initial-value: 1.4;
-  syntax: "<number>";
+  syntax: '<number>';
 }
 
 @property --mds-input-switch-box-color-enabled-checked {
   inherits: false;
   initial-value: rgb(var(--variant-primary-04));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-input-switch-box-color-enabled-unchecked {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-06));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-input-switch-box-color-disabled-checked {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-08));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-input-switch-box-color-disabled-unchecked {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-08));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-input-switch-box-padding-lg {
   inherits: false;
   initial-value: --spacing(100);
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-input-switch-box-padding-md {
   inherits: false;
   initial-value: --spacing(100);
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-input-switch-box-padding-sm {
   inherits: false;
   initial-value: --spacing(100);
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-input-switch-box-padding {
   inherits: false;
   initial-value: var(--mds-input-switch-box-padding-md);
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-input-switch-duration {
   inherits: false;
   initial-value: 300ms;
-  syntax: "<time>";
+  syntax: '<time>';
 }
 
 @property --mds-input-switch-icon-color-checked-disabled {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-06));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-input-switch-icon-color-checked {
   inherits: false;
   initial-value: rgb(var(--variant-primary-04));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-input-switch-icon-color-indeterminate-disabled {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-05));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-input-switch-icon-color-indeterminate {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-05));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-input-switch-icon-color-unchecked-disabled {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-06));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-input-switch-icon-color-unchecked {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-06));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-input-switch-icon-explicit-color {
   inherits: false;
   initial-value: var(--mds-input-switch-icon-color-checked);
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-input-switch-toggle-color-enabled-checked {
   inherits: false;
   initial-value: rgb(var(--tone-neutral));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-input-switch-toggle-color-enabled-unchecked {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-10));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-input-switch-toggle-color-disabled-checked {
   inherits: false;
   initial-value: rgb(var(--tone-neutral));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-input-switch-toggle-color-disabled-unchecked {
   inherits: false;
   initial-value: rgb(var(--tone-neutral));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-input-switch-toggle-container-size {
   inherits: false;
-  initial-value: calc(calc(var(--mds-input-switch-toggle-size-md) * 2) + calc(var(--mds-input-switch-box-padding-md) * 2));
-  syntax: "<length>";
+  initial-value: calc(
+    calc(var(--mds-input-switch-toggle-size-md) * 2) +
+      calc(var(--mds-input-switch-box-padding-md) * 2)
+  );
+  syntax: '<length>';
 }
 
 @property --mds-input-switch-toggle-size-lg {
   inherits: false;
   initial-value: --spacing(800);
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-input-switch-toggle-size-md {
   inherits: false;
   initial-value: --spacing(600);
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-input-switch-toggle-size-sm {
   inherits: false;
   initial-value: --spacing(400);
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-input-switch-toggle-size {
   inherits: false;
   initial-value: var(--mds-input-switch-toggle-size-md);
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 /* ❌ Not supported
@@ -223,7 +226,10 @@
   --mds-input-switch-toggle-color-enabled-unchecked: rgb(var(--tone-neutral-10));
   --mds-input-switch-toggle-color-disabled-checked: rgb(var(--tone-neutral));
   --mds-input-switch-toggle-color-disabled-unchecked: rgb(var(--tone-neutral));
-  --mds-input-switch-toggle-container-size: calc(calc(var(--mds-input-switch-toggle-size-md) * 2) + calc(var(--mds-input-switch-box-padding-md) * 2));
+  --mds-input-switch-toggle-container-size: calc(
+    calc(var(--mds-input-switch-toggle-size-md) * 2) +
+      calc(var(--mds-input-switch-box-padding-md) * 2)
+  );
   --mds-input-switch-toggle-size-lg: --spacing(800);
   --mds-input-switch-toggle-size-md: --spacing(600);
   --mds-input-switch-toggle-size-sm: --spacing(400);
@@ -312,8 +318,8 @@
   padding: var(--mds-input-switch-box-padding);
   transition-duration: var(--mds-input-switch-duration);
   transition-property:
-    background-color, border-color, box-shadow, color, fill, height, margin,
-    opacity, padding, transform, width;
+    background-color, border-color, box-shadow, color, fill, height, margin, opacity, padding,
+    transform, width;
   transition-timing-function: var(--ease-in-out);
   width: var(--mds-input-switch-toggle-container-size);
 }
@@ -334,8 +340,8 @@
   justify-content: center;
   transition-duration: var(--duration-200);
   transition-property:
-    background-color, border-color, box-shadow, color, fill, height, margin,
-    opacity, padding, transform, width;
+    background-color, border-color, box-shadow, color, fill, height, margin, opacity, padding,
+    transform, width;
   transition-timing-function: var(--ease-linear);
   width: var(--mds-input-switch-toggle-size);
 }
@@ -381,8 +387,7 @@
   50% {
     transform: translateX(0);
     width: calc(
-      var(--mds-input-switch-toggle-size) *
-        var(--mds-input-switch-animation-timing-adjust)
+      var(--mds-input-switch-toggle-size) * var(--mds-input-switch-animation-timing-adjust)
     );
   }
 
@@ -401,8 +406,7 @@
   50% {
     transform: translateX(0);
     width: calc(
-      var(--mds-input-switch-toggle-size) *
-        var(--mds-input-switch-animation-timing-adjust)
+      var(--mds-input-switch-toggle-size) * var(--mds-input-switch-animation-timing-adjust)
     );
   }
 

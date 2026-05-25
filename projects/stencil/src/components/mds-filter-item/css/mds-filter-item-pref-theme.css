@@ -1,7 +1,7 @@
 :host-context(:root.pref-theme-dark:not(.pref-theme-scheme-light)) {
   background-color: rgb(var(--tone-neutral-10));
 
-  &:host([selected]:not([selected="false"])) {
+  &:host([selected]:not([selected='false'])) {
     background-color: rgb(var(--tone-neutral-08));
     box-shadow: var(--shadow-outline);
   }
@@ -16,7 +16,7 @@
   :host-context(:root:not([data-magma-pref])) {
     background-color: rgb(var(--tone-neutral-10));
 
-    &:host([selected]:not([selected="false"])) {
+    &:host([selected]:not([selected='false'])) {
       background-color: rgb(var(--tone-neutral-08));
       box-shadow: var(--shadow-outline);
     }

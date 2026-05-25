@@ -1,7 +1,5 @@
-import { MdsTableRowSelection } from './type'
+import { MdsTableRowSelection } from './type';
 
 export interface MdsTableSelectionEventDetail {
-  rows: MdsTableRowSelection[]
+  rows: MdsTableRowSelection[];
 }
-
-

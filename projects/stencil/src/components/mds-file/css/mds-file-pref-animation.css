@@ -2,8 +2,8 @@
   transition-duration: 0s;
 
   .preview {
-      transition-duration: 0s;
-    }
+    transition-duration: 0s;
+  }
 }
 
 @media (prefers-reduced-motion) {

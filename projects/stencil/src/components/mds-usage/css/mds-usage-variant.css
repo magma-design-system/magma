@@ -1,19 +1,19 @@
-:host([variant="do"]) {
+:host([variant='do']) {
   --mds-usage-border-color: rgb(var(--status-success-05));
   --mds-usage-header-color: rgb(var(--status-success-10));
 }
 
-:host([variant="info"]) {
+:host([variant='info']) {
   --mds-usage-border-color: rgb(var(--status-info-05));
   --mds-usage-header-color: rgb(var(--status-info-10));
 }
 
-:host([variant="dont"]) {
+:host([variant='dont']) {
   --mds-usage-border-color: rgb(var(--status-error-05));
   --mds-usage-header-color: rgb(var(--status-error-10));
 }
 
-:host([variant="warn"]) {
+:host([variant='warn']) {
   --mds-usage-border-color: rgb(var(--status-warning-08));
   --mds-usage-header-color: rgb(var(--status-warning-02));
 }

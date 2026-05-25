@@ -1,5 +1,5 @@
-import { Component, Host, h, Prop, Watch } from '@stencil/core'
-import awaitIcon from './assets/await-rounded.svg'
+import { Component, Host, h, Prop, Watch } from '@stencil/core';
+import awaitIcon from './assets/await-rounded.svg';
 
 @Component({
   tag: 'mds-spinner',
@@ -7,24 +7,23 @@ import awaitIcon from './assets/await-rounded.svg'
   shadow: true,
 })
 export class MdsSpinner {
-
   /**
    * Specifies if the animation is running or not, it's required for performance reasons
    */
-  @Prop({ reflect: true, mutable: true }) running?: boolean = false
+  @Prop({ reflect: true, mutable: true }) running?: boolean = false;
 
   @Watch('running')
-  handleRunning (newValue?: boolean): void {
+  handleRunning(newValue?: boolean): void {
     if (newValue === false) {
-      this.running = undefined
+      this.running = undefined;
     }
   }
 
-  render () {
+  render() {
     return (
       <Host>
-        <i class="await-icon" innerHTML={awaitIcon}/>
+        <i class="await-icon" innerHTML={awaitIcon} />
       </Host>
-    )
+    );
   }
 }

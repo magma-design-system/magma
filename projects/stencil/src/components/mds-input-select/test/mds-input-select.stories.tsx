@@ -1,12 +1,12 @@
-import { citiesDictionary } from '@fixture/cities'
-import { autoCompleteDictionary } from '@type/autocomplete'
-import { themeStatusVariantDictionary } from '@type/variant'
-import { h } from '@stencil/core'
+import { citiesDictionary } from '@fixture/cities';
+import { autoCompleteDictionary } from '@type/autocomplete';
+import { themeStatusVariantDictionary } from '@type/variant';
+import { h } from '@stencil/core';
 
-const cities = {}
+const cities = {};
 citiesDictionary.map((element, index) => {
-  cities[index] = element
-})
+  cities[index] = element;
+});
 
 export default {
   title: 'Form / Select',
@@ -16,25 +16,21 @@ export default {
       description: 'The selected value of the select',
     },
     autocomplete: {
-      description:
-        'Specifies whether the element should have autocomplete enabled',
+      description: 'Specifies whether the element should have autocomplete enabled',
       options: autoCompleteDictionary,
       control: { type: 'select' },
     },
     autofocus: {
       type: { name: 'boolean' },
-      description:
-        'Specifies that the element should automatically get focus when the page loads',
+      description: 'Specifies that the element should automatically get focus when the page loads',
     },
     placeholder: {
       type: { name: 'string' },
-      description:
-        'Specifies a short hint that describes the expected value of the element',
+      description: 'Specifies a short hint that describes the expected value of the element',
     },
     required: {
       type: { name: 'boolean' },
-      description:
-        'Specifies that the element must be filled out before submitting the form',
+      description: 'Specifies that the element must be filled out before submitting the form',
     },
     disabled: {
       type: { name: 'boolean' },
@@ -42,8 +38,7 @@ export default {
     },
     multiple: {
       type: { name: 'boolean' },
-      description:
-        'If true, the element allows multiple options to be selected in the list',
+      description: 'If true, the element allows multiple options to be selected in the list',
     },
     size: {
       type: { name: 'number' },
@@ -61,28 +56,27 @@ export default {
       description: 'Sets the value of the component',
     },
   },
-}
+};
 
-const Template = args => (
+const Template = (args) => (
   <mds-input-select {...args}>
     <option value="1">First contact</option>
     <option value="2">Second impact</option>
     <option value="3">The Third Man</option>
     <option value="4">The Fourth Emendament</option>
   </mds-input-select>
-)
+);
 
-const TemplateForm = args => (
+const TemplateForm = (args) => (
   <form
     class="flex gap-x-400"
     action="#"
-    onSubmit={event => {
-      event.preventDefault()
+    onSubmit={(event) => {
+      event.preventDefault();
 
-       
-      console.log('Form submitted via mds-button', event.target?.[0].value)
+      console.log('Form submitted via mds-button', event.target?.[0].value);
 
-      return false
+      return false;
     }}
   >
     <mds-input-select {...args}>
@@ -93,7 +87,7 @@ const TemplateForm = args => (
     </mds-input-select>
     <mds-button>Submit</mds-button>
   </form>
-)
+);
 
 export const Default = {
   render: Template,
@@ -101,7 +95,7 @@ export const Default = {
   args: {
     placeholder: 'Seleziona un film...',
   },
-}
+};
 
 export const Multiple = {
   render: Template,
@@ -109,7 +103,7 @@ export const Multiple = {
   args: {
     multiple: true,
   },
-}
+};
 
 export const Required = {
   render: Template,
@@ -118,7 +112,7 @@ export const Required = {
     required: true,
     placeholder: 'Seleziona un film...',
   },
-}
+};
 
 export const Disabled = {
   render: Template,
@@ -126,7 +120,7 @@ export const Disabled = {
   args: {
     disabled: true,
   },
-}
+};
 
 export const FormIntegrationWithPlaceholder = {
   render: TemplateForm,
@@ -134,8 +128,8 @@ export const FormIntegrationWithPlaceholder = {
   args: {
     placeholder: 'Seleziona un film...',
   },
-}
+};
 
 export const FormIntegration = {
   render: TemplateForm,
-}
+};

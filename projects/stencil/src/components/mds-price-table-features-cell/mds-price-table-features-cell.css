@@ -12,37 +12,37 @@
 @property --mds-price-table-features-cell-padding {
   inherits: false;
   initial-value: var(--mds-price-table-features-padding, --spacing(300));
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-price-table-features-cell-icon-supported-color-hover {
   inherits: false;
   initial-value: rgb(var(--label-green-06));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-price-table-features-cell-icon-supported-color {
   inherits: false;
   initial-value: rgb(var(--label-green-06));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-price-table-features-cell-icon-unsupported-color-hover {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-06));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-price-table-features-cell-icon-unsupported-color {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-06));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-price-table-features-cell-border-color {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-08));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 :host {
@@ -53,8 +53,7 @@
   --mds-price-table-features-cell-icon-unsupported-color: rgb(var(--tone-neutral-06));
   --mds-price-table-features-cell-border-color: rgb(var(--tone-neutral-08));
 
-  @apply
-    duration-200
+  @apply duration-200
     ease-out;
 
   border-bottom: 1px solid var(--mds-price-table-features-cell-border-color);
@@ -65,8 +64,7 @@
 }
 
 .icon {
-  @apply
-    h-600
+  @apply h-600
     duration-200
     ease-out
     svg
@@ -75,7 +73,6 @@
   display: flex;
   fill: var(--icon-fill-color, currentColor);
   transition-property: fill;
-
 }
 
 .icon--supported {

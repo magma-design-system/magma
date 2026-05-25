@@ -1,5 +1,5 @@
 :host-context(:root.pref-contrast-more) {
-  &:host([selected]:not([selected="false"])),
+  &:host([selected]:not([selected='false'])),
   &:host(:hover) {
     box-shadow: var(--shadow-outline-strong-50);
   }
@@ -8,7 +8,7 @@
 @media (prefers-contrast: more) {
   :host-context(:root.pref-contrast-system),
   :host-context(:root:not([data-magma-pref])) {
-    &:host([selected]:not([selected="false"])),
+    &:host([selected]:not([selected='false'])),
     &:host(:hover) {
       box-shadow: var(--shadow-outline-strong-50);
     }

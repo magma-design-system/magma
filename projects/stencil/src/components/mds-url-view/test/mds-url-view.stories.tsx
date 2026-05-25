@@ -1,26 +1,19 @@
-import { loadingDictionary } from '@type/loading'
-import { h } from '@stencil/core'
-import { useEffect, useState } from 'react'
-import {
-  iconsDictionary,
-  mggIconsDictionary,
-  svgIconsDictionary,
-} from '@type/icon'
+import { loadingDictionary } from '@type/loading';
+import { h } from '@stencil/core';
+import { useEffect, useState } from 'react';
+import { iconsDictionary, mggIconsDictionary, svgIconsDictionary } from '@type/icon';
 
-const URLs = ['https://www.typeform.com/', 'http://azumbrunnen.me/']
+const URLs = ['https://www.typeform.com/', 'http://azumbrunnen.me/'];
 
-const urlPage = `${location.origin}/iframe.html?id=common-tests--example-page&viewMode=story`
+const urlPage = `${location.origin}/iframe.html?id=common-tests--example-page&viewMode=story`;
 
 export default {
   title: 'UI / URL View',
   argTypes: {
     icon: {
       type: { name: 'string' },
-      description:
-        'The name of the icon or a base64 string to render it as an svg',
-      options: mggIconsDictionary
-        .concat(iconsDictionary)
-        .concat(svgIconsDictionary),
+      description: 'The name of the icon or a base64 string to render it as an svg',
+      options: mggIconsDictionary.concat(iconsDictionary).concat(svgIconsDictionary),
       control: { type: 'select' },
     },
     domain: {
@@ -41,35 +34,30 @@ export default {
       type: { name: 'string', required: true },
     },
   },
-}
+};
 
-const Template = args => {
-  const [opened, setOpened] = useState(false)
+const Template = (args) => {
+  const [opened, setOpened] = useState(false);
   useEffect(() => {
-    const actionElement = document.querySelector('#action')
-    const modalElement = document.querySelector('#modal')
-    const urlViewElement = document.querySelector('#url-view')
+    const actionElement = document.querySelector('#action');
+    const modalElement = document.querySelector('#modal');
+    const urlViewElement = document.querySelector('#url-view');
 
-    if (
-      actionElement === null ||
-      modalElement === null ||
-      urlViewElement === null
-    ) {
-       
-      alert('Element/s not found')
-      return
+    if (actionElement === null || modalElement === null || urlViewElement === null) {
+      alert('Element/s not found');
+      return;
     }
 
     modalElement.addEventListener('mdsModalClose', () => {
-      setOpened(false)
-    })
+      setOpened(false);
+    });
     modalElement.addEventListener('mdsModalHide', () => {
-      setOpened(false)
-    })
-  }, [])
+      setOpened(false);
+    });
+  }, []);
 
   if (args.opened !== null) {
-    args.opened = null
+    args.opened = null;
   }
 
   return (
@@ -77,21 +65,12 @@ const Template = args => {
       <mds-button id="action" onClick={() => setOpened(true)}>
         Open modal
       </mds-button>
-      <mds-modal
-        position="center"
-        id="modal"
-        opened={opened === true ? true : undefined}
-      >
-        <mds-url-view
-          id="url-view"
-          class="max-w-screen-tablet w-full"
-          slot="window"
-          {...args}
-        />
+      <mds-modal position="center" id="modal" opened={opened === true ? true : undefined}>
+        <mds-url-view id="url-view" class="max-w-screen-tablet w-full" slot="window" {...args} />
       </mds-modal>
     </div>
-  )
-}
+  );
+};
 
 export const Default = {
   render: Template,
@@ -99,7 +78,7 @@ export const Default = {
   args: {
     src: urlPage,
   },
-}
+};
 
 export const Label = {
   render: Template,
@@ -108,7 +87,7 @@ export const Label = {
     src: urlPage,
     label: 'Fake landing page',
   },
-}
+};
 
 export const Icon = {
   render: Template,
@@ -117,4 +96,4 @@ export const Icon = {
     src: urlPage,
     icon: 'mgg/google-book-large',
   },
-}
+};

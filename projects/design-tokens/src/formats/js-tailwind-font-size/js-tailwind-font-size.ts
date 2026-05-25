@@ -1,18 +1,18 @@
-import Handlebars from 'handlebars'
-import StyleDictionary from 'style-dictionary'
-import fs from 'fs'
-import path from 'path'
-import { version } from '../../../package.json'
-import { FormatterArguments } from 'style-dictionary/types/Format'
-import { tailwindFontSize, ifEquals, safeString, ifTailwindFontSizeProp } from '../helpers'
+import Handlebars from 'handlebars';
+import StyleDictionary from 'style-dictionary';
+import fs from 'fs';
+import path from 'path';
+import { version } from '../../../package.json';
+import { FormatterArguments } from 'style-dictionary/types/Format';
+import { tailwindFontSize, ifEquals, safeString, ifTailwindFontSizeProp } from '../helpers';
 
-const templatePath = path.resolve(__dirname, './template.hbs')
-const template = Handlebars.compile(fs.readFileSync(templatePath).toString())
+const templatePath = path.resolve(__dirname, './template.hbs');
+const template = Handlebars.compile(fs.readFileSync(templatePath).toString());
 
-Handlebars.registerHelper('getSafeFontName', safeString)
-Handlebars.registerHelper('ifEquals', ifEquals)
-Handlebars.registerHelper('ifTailwindFontSizeProp', ifTailwindFontSizeProp)
-Handlebars.registerHelper('tailwindFontSize', tailwindFontSize)
+Handlebars.registerHelper('getSafeFontName', safeString);
+Handlebars.registerHelper('ifEquals', ifEquals);
+Handlebars.registerHelper('ifTailwindFontSizeProp', ifTailwindFontSizeProp);
+Handlebars.registerHelper('tailwindFontSize', tailwindFontSize);
 
 export const jsTailwindFontSizeFormat: StyleDictionary.Format = {
   name: 'js/tailwind-font-size',
@@ -22,6 +22,6 @@ export const jsTailwindFontSizeFormat: StyleDictionary.Format = {
       date: new Date().toUTCString(),
       options: platform,
       version,
-    })
+    });
   },
-}
+};

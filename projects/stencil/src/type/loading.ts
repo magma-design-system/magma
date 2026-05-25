@@ -1,6 +1,3 @@
-export const loadingDictionary = [
-  'eager',
-  'lazy',
-] as const
+export const loadingDictionary = ['eager', 'lazy'] as const;
 
-export type LoadingType = (typeof loadingDictionary)[number]
+export type LoadingType = (typeof loadingDictionary)[number];

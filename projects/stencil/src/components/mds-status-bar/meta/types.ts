@@ -1,4 +1,1 @@
-export type StatusBarPositionType =
-  | 'bottom'
-  | 'bottom-left'
-  | 'bottom-right'
+export type StatusBarPositionType = 'bottom' | 'bottom-left' | 'bottom-right';

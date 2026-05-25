@@ -1,18 +1,18 @@
-import Handlebars, { HelperOptions } from 'handlebars'
-import StyleDictionary from 'style-dictionary'
-import fs from 'fs'
-import path from 'path'
-import { version } from '../../../package.json'
-import { FormatterArguments } from 'style-dictionary/types/Format'
-import { ifEquals, pixelToRem } from '../helpers'
+import Handlebars, { HelperOptions } from 'handlebars';
+import StyleDictionary from 'style-dictionary';
+import fs from 'fs';
+import path from 'path';
+import { version } from '../../../package.json';
+import { FormatterArguments } from 'style-dictionary/types/Format';
+import { ifEquals, pixelToRem } from '../helpers';
 
-const templatePath = path.resolve(__dirname, './template.hbs')
-const template = Handlebars.compile(fs.readFileSync(templatePath).toString())
+const templatePath = path.resolve(__dirname, './template.hbs');
+const template = Handlebars.compile(fs.readFileSync(templatePath).toString());
 
-Handlebars.registerHelper('ifEquals', ifEquals)
+Handlebars.registerHelper('ifEquals', ifEquals);
 Handlebars.registerHelper('pixelToRem', (options: HelperOptions) => {
-  return pixelToRem(options.fn(this))
-})
+  return pixelToRem(options.fn(this));
+});
 
 export const jsTailwindLeadingFormat: StyleDictionary.Format = {
   name: 'js/tailwind-leading',
@@ -22,6 +22,6 @@ export const jsTailwindLeadingFormat: StyleDictionary.Format = {
       date: new Date().toUTCString(),
       options: platform,
       version,
-    })
+    });
   },
-}
+};

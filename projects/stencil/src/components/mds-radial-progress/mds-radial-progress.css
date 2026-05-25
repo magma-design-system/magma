@@ -3,7 +3,7 @@
 @property --mds-radial-progress {
   inherits: false;
   initial-value: 0%;
-  syntax: "<length-percentage>";
+  syntax: '<length-percentage>';
 }
 
 :host {
@@ -17,7 +17,10 @@
   align-items: center;
   aspect-ratio: 1;
   background-color: var(--mds-radial-progress-background);
-  background-image: conic-gradient(var(--mds-radial-progress-color) var(--mds-radial-progress), transparent 0%);
+  background-image: conic-gradient(
+    var(--mds-radial-progress-color) var(--mds-radial-progress),
+    transparent 0%
+  );
   border-radius: calc(infinity * 1px);
   box-sizing: border-box;
   container-name: mds-radial-progress;
@@ -70,37 +73,37 @@
 }
 
 @container mds-radial-progress (max-width: 47px) {
-  :host([typography="label"][icon]) .value-container__text {
+  :host([typography='label'][icon]) .value-container__text {
     display: none;
   }
 }
 
 @container mds-radial-progress (max-width: 47px) {
-  :host([typography="option"][icon]) .value-container__text {
+  :host([typography='option'][icon]) .value-container__text {
     display: none;
   }
 }
 
 @container mds-radial-progress (max-width: 35px) {
-  :host([typography="label"]) .value {
+  :host([typography='label']) .value {
     --mds-radial-progress-text-suffix: '';
   }
 }
 
 @container mds-radial-progress (max-width: 31px) {
-  :host([typography="option"]) .value {
+  :host([typography='option']) .value {
     --mds-radial-progress-text-suffix: '';
   }
 }
 
 @container mds-radial-progress (max-width: 23px) {
-  :host([typography="label"]) .value {
+  :host([typography='label']) .value {
     display: none;
   }
 }
 
 @container mds-radial-progress (max-width: 19px) {
-  :host([typography="option"]) .value {
+  :host([typography='option']) .value {
     display: none;
   }
 }

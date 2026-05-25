@@ -1,10 +1,10 @@
-:host-context(:root.pref-contrast-more):host([tone="weak"]) {
+:host-context(:root.pref-contrast-more):host([tone='weak']) {
   box-shadow: var(--shadow-outline) inset;
 }
 
 @media (prefers-contrast: more) {
   :host-context(:root.pref-contrast-system),
-  :host-context(:root:not([data-magma-pref])):host([tone="weak"]) {
+  :host-context(:root:not([data-magma-pref])):host([tone='weak']) {
     box-shadow: var(--shadow-outline) inset;
   }
 }

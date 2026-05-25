@@ -10,11 +10,13 @@
 :host {
   --mds-kpi-item-icon-color: rgb(var(--variant-primary-04));
   --mds-kpi-item-info-background: rgb(var(--tone-neutral));
-  --mds-kpi-item-text-animation-placeholder-char: var(--mds-kpi-text-animation-placeholder-char, " ");
+  --mds-kpi-item-text-animation-placeholder-char: var(
+    --mds-kpi-text-animation-placeholder-char,
+    ' '
+  );
   --mds-kpi-item-text-animation-speed: var(--mds-kpi-text-animation-speed, 0.15);
 
-  @apply
-    duration-300
+  @apply duration-300
     ease-out
     gap-0;
 
@@ -30,9 +32,7 @@
 }
 
 .icon-container {
-
-  @apply
-    duration-300
+  @apply duration-300
     ease-out;
 
   align-items: center;
@@ -43,8 +43,7 @@
 }
 
 .icon {
-  @apply
-    duration-300
+  @apply duration-300
     ease-out;
 
   fill: var(--mds-kpi-item-icon-color);
@@ -53,8 +52,7 @@
 }
 
 .info {
-  @apply
-    duration-300
+  @apply duration-300
     ease-out
     gap-0;
 
@@ -72,9 +70,7 @@
 
 .label,
 .description {
-
-  @apply
-    duration-300
+  @apply duration-300
     ease-out;
 
   --mds-text-animation-speed: var(--mds-kpi-item-text-animation-speed);

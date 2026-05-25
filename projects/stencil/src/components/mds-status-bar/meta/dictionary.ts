@@ -1,9 +1,3 @@
-const statusBarPositionDictionary = [
-  'bottom',
-  'bottom-left',
-  'bottom-right',
-]
+const statusBarPositionDictionary = ['bottom', 'bottom-left', 'bottom-right'];
 
-export {
-  statusBarPositionDictionary,
-}
+export { statusBarPositionDictionary };

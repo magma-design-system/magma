@@ -16,49 +16,49 @@
 @property --mds-filter-items-background-active {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-09));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-filter-items-background {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-09));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-filter-items-gap {
   inherits: false;
   initial-value: --spacing(200);
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-filter-items-padding {
   inherits: false;
   initial-value: --spacing(200);
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-filter-items-radius {
   inherits: false;
   initial-value: var(--radius-full);
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-filter-items-scroll-behavior {
   inherits: false;
   initial-value: smooth;
-  syntax: "smooth | auto";
+  syntax: 'smooth | auto';
 }
 
 @property --mds-filter-label-padding {
   inherits: false;
   initial-value: 0 --spacing(600);
-  syntax: "<length>+";
+  syntax: '<length>+';
 }
 
 @property --mds-filter-wrapper-shadow-color {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-06));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 /* ❌ Not supported: <shadow> syntax is not allowed in @property
@@ -72,7 +72,7 @@
 @property --mds-filter-wrapper-shadow-opacity {
   inherits: false;
   initial-value: 0.1;
-  syntax: "<number>";
+  syntax: '<number>';
 }
 
 :host {

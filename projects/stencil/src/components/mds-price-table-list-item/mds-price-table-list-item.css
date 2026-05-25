@@ -10,25 +10,25 @@
 @property --mds-price-table-list-item-supported-icon-color-hover {
   inherits: false;
   initial-value: rgb(var(--label-green-05));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-price-table-list-item-supported-icon-color {
   inherits: false;
   initial-value: rgb(var(--label-green-06));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-price-table-list-item-unsupported-icon-color-hover {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-04));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-price-table-list-item-unsupported-icon-color {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-05));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 :host {
@@ -65,4 +65,3 @@
 :host([supported]:not([supported='false'])) .icon {
   fill: var(--mds-price-table-list-item-supported-icon-color);
 }
-

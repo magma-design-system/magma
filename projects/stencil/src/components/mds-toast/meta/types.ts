@@ -4,5 +4,4 @@ export type ToastPosition =
   | 'top-right'
   | 'bottom-left'
   | 'bottom-center'
-  | 'bottom-right'
-
+  | 'bottom-right';

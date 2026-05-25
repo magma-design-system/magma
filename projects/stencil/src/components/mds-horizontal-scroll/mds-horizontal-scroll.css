@@ -25,13 +25,13 @@
 @property --mds-horizontal-scroll-dots-gap {
   inherits: false;
   initial-value: --spacing(100);
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-horizontal-scroll-dot-size {
   inherits: false;
   initial-value: --spacing(200);
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 /* ❌ Not supported: 'auto' is not a <length>
@@ -46,75 +46,74 @@
 @property --mds-horizontal-scroll-contents-padding {
   inherits: false;
   initial-value: --spacing(600);
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-horizontal-scroll-contents-scroll-padding {
   inherits: false;
   initial-value: 0 --spacing(600);
-  syntax: "<length>+";
+  syntax: '<length>+';
 }
 
 @property --mds-horizontal-scroll-controls-margin {
   inherits: false;
   initial-value: --spacing(1200);
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-horizontal-scroll-gap {
   inherits: false;
   initial-value: --spacing(600);
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-horizontal-scroll-max-width {
   inherits: false;
   initial-value: var(--breakpoint-wide);
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-horizontal-scroll-scrollbar-margin {
   inherits: false;
   initial-value: 0;
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-horizontal-scroll-scrollbar-radius {
   inherits: false;
   initial-value: 0;
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-horizontal-scroll-scrollbar-size {
   inherits: false;
   initial-value: --spacing(200);
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-horizontal-scroll-dot-background {
   inherits: false;
   initial-value: rgb(var(--tone-neutral));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-horizontal-scroll-dot-area-background {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-08));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-horizontal-scroll-scrollbar-thumb-background {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-02) / 0.3);
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-horizontal-scroll-scrollbar-track-background {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-06) / 0.3);
-  syntax: "<color>";
+  syntax: '<color>';
 }
-
 
 :host {
   --mds-horizontal-scroll-behavior: smooth;
@@ -136,7 +135,9 @@
 
   /* private custom props, DO NOT OVERRIDE from outside */
   --max-width: var(--mds-horizontal-scroll-max-width);
-  --scroll-margin: calc(((100svw - var(--max-width)) / 2) + (var(--mds-horizontal-scroll-controls-margin) * 2));
+  --scroll-margin: calc(
+    ((100svw - var(--max-width)) / 2) + (var(--mds-horizontal-scroll-controls-margin) * 2)
+  );
 
   align-items: center;
   container-name: mds-horizontal-scroll;

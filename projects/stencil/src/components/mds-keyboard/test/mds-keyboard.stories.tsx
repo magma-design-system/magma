@@ -1,7 +1,7 @@
-import { h } from '@stencil/core'
-import { keyboardKeyNameDictionary } from '@type/keyboard'
-import { KeyboardKeyName } from '@type/keyboard'
-import keyboardKeys from '@meta/keyboard/keys.json'
+import { h } from '@stencil/core';
+import { keyboardKeyNameDictionary } from '@type/keyboard';
+import { KeyboardKeyName } from '@type/keyboard';
+import keyboardKeys from '@meta/keyboard/keys.json';
 
 export default {
   title: 'UI / Keyboard',
@@ -11,15 +11,15 @@ export default {
       description: 'Sets if the keyboard key combination test is enabled',
     },
   },
-}
+};
 
-const TemplateSingleKey = args => (
+const TemplateSingleKey = (args) => (
   <mds-keyboard {...args}>
     <mds-keyboard-key name="f1"></mds-keyboard-key>
   </mds-keyboard>
-)
+);
 
-const TemplateMultipleKeys = args => (
+const TemplateMultipleKeys = (args) => (
   <mds-table>
     <mds-table-header>
       <mds-table-header-cell label="combination"></mds-table-header-cell>
@@ -34,8 +34,9 @@ const TemplateMultipleKeys = args => (
           </mds-keyboard>
         </mds-table-cell>
         <mds-table-cell class="align-middle">
-          <mds-text>There are no specific key position for this combination, you can use
-          both command keys.</mds-text>
+          <mds-text>
+            There are no specific key position for this combination, you can use both command keys.
+          </mds-text>
         </mds-table-cell>
       </mds-table-row>
       <mds-table-row>
@@ -46,7 +47,9 @@ const TemplateMultipleKeys = args => (
           </mds-keyboard>
         </mds-table-cell>
         <mds-table-cell class="align-middle">
-          <mds-text>You must use the <b>left</b> command key or the test will fail.</mds-text>
+          <mds-text>
+            You must use the <b>left</b> command key or the test will fail.
+          </mds-text>
         </mds-table-cell>
       </mds-table-row>
       <mds-table-row>
@@ -57,7 +60,9 @@ const TemplateMultipleKeys = args => (
           </mds-keyboard>
         </mds-table-cell>
         <mds-table-cell class="align-middle">
-          <mds-text>You must use the <b>right</b> command key or the test will fail.</mds-text>
+          <mds-text>
+            You must use the <b>right</b> command key or the test will fail.
+          </mds-text>
         </mds-table-cell>
       </mds-table-row>
       <mds-table-row>
@@ -68,8 +73,9 @@ const TemplateMultipleKeys = args => (
           </mds-keyboard>
         </mds-table-cell>
         <mds-table-cell class="align-middle">
-          <mds-text>There are no specific key position for this combination, you can use
-          both command keys.</mds-text>
+          <mds-text>
+            There are no specific key position for this combination, you can use both command keys.
+          </mds-text>
         </mds-table-cell>
       </mds-table-row>
       <mds-table-row>
@@ -80,7 +86,9 @@ const TemplateMultipleKeys = args => (
           </mds-keyboard>
         </mds-table-cell>
         <mds-table-cell class="align-middle">
-          <mds-text>You must use the <b>left</b> command key or the test will fail.</mds-text>
+          <mds-text>
+            You must use the <b>left</b> command key or the test will fail.
+          </mds-text>
         </mds-table-cell>
       </mds-table-row>
       <mds-table-row>
@@ -91,20 +99,21 @@ const TemplateMultipleKeys = args => (
           </mds-keyboard>
         </mds-table-cell>
         <mds-table-cell class="align-middle">
-          <mds-text>You must use the <b>right</b> command key or the test will fail.</mds-text>
+          <mds-text>
+            You must use the <b>right</b> command key or the test will fail.
+          </mds-text>
         </mds-table-cell>
       </mds-table-row>
     </mds-table-body>
   </mds-table>
-)
+);
 
 const TemplateKeysDictionary = () => (
   <div class="grid gap-600">
     <div class="grid gap-0">
       <mds-text typography="h4">List of the available keys</mds-text>
       <mds-text>
-        We've decided to keep only the more commond keys to avoid
-        internationalization issues.
+        We've decided to keep only the more commond keys to avoid internationalization issues.
       </mds-text>
     </div>
     <mds-table interactive>
@@ -118,18 +127,13 @@ const TemplateKeysDictionary = () => (
           <mds-table-row key={index}>
             <mds-table-cell class="align-middle" value={code}>
               <mds-keyboard try>
-                <mds-keyboard-key
-                  name={code as KeyboardKeyName}
-                ></mds-keyboard-key>
+                <mds-keyboard-key name={code as KeyboardKeyName}></mds-keyboard-key>
               </mds-keyboard>
             </mds-table-cell>
             <mds-table-cell class="align-middle whitespace-nowrap">
               <mds-text typography="snippet">{code}</mds-text>
             </mds-table-cell>
-            <mds-table-cell
-              class="align-middle w-full"
-              value={keyboardKeys[code].group}
-            >
+            <mds-table-cell class="align-middle w-full" value={keyboardKeys[code].group}>
               <mds-text>{keyboardKeys[code].group}</mds-text>
             </mds-table-cell>
           </mds-table-row>
@@ -137,15 +141,15 @@ const TemplateKeysDictionary = () => (
       </mds-table-body>
     </mds-table>
   </div>
-)
+);
 
 export const Default = {
   render: TemplateSingleKey,
-}
+};
 
 export const MultipleKeys = {
   render: TemplateMultipleKeys,
-}
+};
 
 export const TestMultipleKeys = {
   render: TemplateMultipleKeys,
@@ -153,8 +157,8 @@ export const TestMultipleKeys = {
   args: {
     try: true,
   },
-}
+};
 
 export const KeysDictionary = {
   render: TemplateKeysDictionary,
-}
+};

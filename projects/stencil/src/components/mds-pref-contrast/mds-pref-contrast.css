@@ -5,7 +5,6 @@
   gap: --spacing(100);
 }
 
-
 .item {
   --mds-tab-item-default-color: rgb(var(--tone-neutral-05));
 

@@ -6,7 +6,7 @@
   background-color: var(--mds-tab-tabs-background);
   border-radius: 100%;
   box-shadow: var(--mds-tab-tabs-overflow-shadow);
-  content: "";
+  content: '';
   display: inline-flex;
   height: auto;
   pointer-events: none;

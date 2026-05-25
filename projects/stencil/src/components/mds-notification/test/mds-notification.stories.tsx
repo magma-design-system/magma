@@ -1,5 +1,5 @@
-import { strategyDictionary } from '../meta/dictionary'
-import { h } from '@stencil/core'
+import { strategyDictionary } from '../meta/dictionary';
+import { h } from '@stencil/core';
 
 export default {
   title: 'UI / Notification',
@@ -19,28 +19,20 @@ export default {
       type: { name: 'boolean' },
     },
   },
-}
+};
 
-const Template = args => (
+const Template = (args) => (
   <div>
     <mds-notification target="#my-button" {...args} />
-    <mds-button
-      class="fixed bottom-2000 right-2000"
-      id="my-button"
-      icon="mdi/email"
-    >
+    <mds-button class="fixed bottom-2000 right-2000" id="my-button" icon="mdi/email">
       Incoming messages
     </mds-button>
   </div>
-)
+);
 
-const TemplateStatic = args => (
+const TemplateStatic = (args) => (
   <div>
-    <mds-button
-      class="fixed bottom-2000 right-2000"
-      id="my-button"
-      icon="mdi/email"
-    >
+    <mds-button class="fixed bottom-2000 right-2000" id="my-button" icon="mdi/email">
       Incoming messages
       <mds-notification
         style={{ '--mds-notification-ring-size': '0' }}
@@ -49,15 +41,11 @@ const TemplateStatic = args => (
       />
     </mds-button>
   </div>
-)
+);
 
-const TemplateStaticPositioning = args => (
+const TemplateStaticPositioning = (args) => (
   <div>
-    <mds-button
-      class="fixed bottom-2000 right-2000"
-      id="my-button"
-      icon="mdi/email"
-    >
+    <mds-button class="fixed bottom-2000 right-2000" id="my-button" icon="mdi/email">
       Incoming messages
       <mds-notification
         class="absolute -top-300 -right-200 translate-1/2"
@@ -66,11 +54,11 @@ const TemplateStaticPositioning = args => (
       />
     </mds-button>
   </div>
-)
+);
 
 export const Default = {
   render: Template,
-}
+};
 
 export const Value = {
   render: Template,
@@ -79,7 +67,7 @@ export const Value = {
     value: 7,
     visible: true,
   },
-}
+};
 
 export const NoValue = {
   render: Template,
@@ -87,7 +75,7 @@ export const NoValue = {
   args: {
     visible: true,
   },
-}
+};
 
 export const Static = {
   render: TemplateStatic,
@@ -97,7 +85,7 @@ export const Static = {
     value: 7,
     visible: true,
   },
-}
+};
 
 export const StaticPositioning = {
   render: TemplateStaticPositioning,
@@ -107,7 +95,7 @@ export const StaticPositioning = {
     value: 31,
     visible: true,
   },
-}
+};
 
 export const Max = {
   render: Template,
@@ -117,4 +105,4 @@ export const Max = {
     max: 9,
     visible: true,
   },
-}
+};

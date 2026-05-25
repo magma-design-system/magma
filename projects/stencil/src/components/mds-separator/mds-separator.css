@@ -7,14 +7,13 @@
 @property --mds-separator-background {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-08));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 :host {
   --mds-separator-background: rgb(var(--tone-neutral-08));
 
-  @apply
-    rounded-full
+  @apply rounded-full
     h-[1px];
 
   background-color: var(--mds-separator-background);

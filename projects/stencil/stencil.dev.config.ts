@@ -1,9 +1,9 @@
-import alias from '@rollup/plugin-alias'
-import path from 'path'
-import tailwind from 'stencil-tailwind-plugin'
-import { Config } from '@stencil/core'
-import { inlineSvg } from 'stencil-inline-svg'
-import tokenFallbackPlugin from './scripts/postcss-token-fallbacks'
+import alias from '@rollup/plugin-alias';
+import path from 'path';
+import tailwind from 'stencil-tailwind-plugin';
+import { Config } from '@stencil/core';
+import { inlineSvg } from 'stencil-inline-svg';
+import tokenFallbackPlugin from './scripts/postcss-token-fallbacks';
 
 // import { reactOutputTarget } from '@stencil/react-output-target'
 // import { angularOutputTarget } from '@stencil/angular-output-target'
@@ -24,15 +24,15 @@ const twConfigurationFn = () => {
   @reference "@maggioli-design-system/styles/dist/css/animations.css";
   @reference "@maggioli-design-system/styles/dist/tailwind/theme.css";
   @reference "@maggioli-design-system/styles/dist/tailwind/typography.css";
-  `
-}
+  `;
+};
 
 const opts = {
   injectTailwindConfiguration: twConfigurationFn,
-}
+};
 
-const packageName = 'magma-components'
-const srcDir = './src'
+const packageName = 'magma-components';
+const srcDir = './src';
 
 export const config: Config = {
   namespace: packageName,
@@ -100,7 +100,10 @@ export const config: Config = {
         { find: /^@event\/(.*)$/, replacement: path.resolve('.', './src/event-detail/$1') },
         { find: /^@fixture\/(.*)$/, replacement: path.resolve('.', './src/fixtures/$1') },
         { find: /^@meta\/(.*)$/, replacement: path.resolve('.', './src/meta/$1') },
-        { find: /^@icon\/([a-zA-Z-/]+)\.svg$/, replacement: path.resolve(__dirname, './assets/svg/$1.svg') },
+        {
+          find: /^@icon\/([a-zA-Z-/]+)\.svg$/,
+          replacement: path.resolve(__dirname, './assets/svg/$1.svg'),
+        },
         { find: /^@tailwind\/(.*)$/, replacement: path.resolve('.', './src/tailwind/$1') },
         { find: /^@test\/(.+)$/, replacement: path.resolve('.', './src/test/$1') },
         { find: /^@type\/(.+)$/, replacement: path.resolve('.', './src/type/$1') },
@@ -108,4 +111,4 @@ export const config: Config = {
     }),
     inlineSvg(),
   ],
-}
+};

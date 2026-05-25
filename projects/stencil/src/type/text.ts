@@ -48,22 +48,11 @@ export const typographyTagDictionary = [
   'u',
   'ul',
   'var',
-] as const
-export type TypographyTagType = (typeof typographyTagDictionary)[number]
+] as const;
+export type TypographyTagType = (typeof typographyTagDictionary)[number];
 
-export const typographyHeadingTagDictionary = [
-  'h1',
-  'h2',
-  'h3',
-  'h4',
-  'h5',
-  'h6',
-] as const
-export type TypographyHeadingTagType = (typeof typographyHeadingTagDictionary)[number]
+export const typographyHeadingTagDictionary = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] as const;
+export type TypographyHeadingTagType = (typeof typographyHeadingTagDictionary)[number];
 
-export const truncateDictionary = [
-  'all',
-  'none',
-  'word',
-] as const
-export type TypographyTruncateType = (typeof truncateDictionary)[number]
+export const truncateDictionary = ['all', 'none', 'word'] as const;
+export type TypographyTruncateType = (typeof truncateDictionary)[number];

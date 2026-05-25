@@ -2,7 +2,7 @@
   --mds-badge-color: rgb(var(--tone-neutral));
 }
 
-:host([tone="text"]),
-:host([tone="outline"]) {
+:host([tone='text']),
+:host([tone='outline']) {
   --mds-badge-background: transparent;
 }

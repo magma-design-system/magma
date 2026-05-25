@@ -9,5 +9,5 @@ export const formRelDictionary = [
   'opener',
   'prev', // The previous document in a selection
   'search', // Links to a search tool for the document
-] as const
-export type FormRelType = (typeof formRelDictionary)[number]
+] as const;
+export type FormRelType = (typeof formRelDictionary)[number];

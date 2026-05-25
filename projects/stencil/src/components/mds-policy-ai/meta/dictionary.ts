@@ -1,10 +1,3 @@
-const policyAiDictionary = [
-  'icon',
-  'chip',
-  'card',
-  'banner',
-]
+const policyAiDictionary = ['icon', 'chip', 'card', 'banner'];
 
-export {
-  policyAiDictionary,
-}
+export { policyAiDictionary };

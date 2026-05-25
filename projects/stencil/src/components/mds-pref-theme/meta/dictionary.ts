@@ -1,16 +1,5 @@
-const themeModeDictionary = [
-  'light',
-  'dark',
-  'system',
-]
+const themeModeDictionary = ['light', 'dark', 'system'];
 
-const transitionDictionary = [
-  'none',
-  'flash',
-  'smooth',
-]
+const transitionDictionary = ['none', 'flash', 'smooth'];
 
-export {
-  themeModeDictionary,
-  transitionDictionary,
-}
+export { themeModeDictionary, transitionDictionary };

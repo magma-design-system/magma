@@ -2,7 +2,6 @@
 @reference "@maggioli-design-system/design-tokens/dist/css/tailwind-theme-typography.css";
 
 @layer base {
-
   @view-transition {
     navigation: var(--magma-view-transition-navigation, auto);
   }
@@ -13,8 +12,7 @@
   }
 
   body {
-    @apply
-      font-info
+    @apply font-info
       text-info-detail;
 
     background-color: rgb(var(--tone-neutral));
@@ -66,8 +64,7 @@
 
   b,
   strong {
-    @apply
-      font-semibold
+    @apply font-semibold
       tracking-tight;
   }
 
@@ -88,10 +85,7 @@
     @apply max-w-title;
   }
 
-
-
   .hydrated {
-
     /*
       Revert all styles for hydrated web components
       to avoid tailwind base unwanted overrides

@@ -1,7 +1,3 @@
-export type Direction =
-  | 'clockwise'
-  | 'counterclockwise'
+export type Direction = 'clockwise' | 'counterclockwise';
 
-export type Interaction =
-  | 'click'
-  | 'rightclick'
+export type Interaction = 'click' | 'rightclick';

@@ -1,8 +1,8 @@
-import { h } from '@stencil/core'
+import { h } from '@stencil/core';
 
 export default {
   title: 'UI / List',
-}
+};
 
 const Template = () => (
   <mds-list>
@@ -10,8 +10,8 @@ const Template = () => (
     <mds-list-item>Acqua</mds-list-item>
     <mds-list-item>Pasta</mds-list-item>
   </mds-list>
-)
+);
 
 export const Default = {
   render: Template,
-}
+};

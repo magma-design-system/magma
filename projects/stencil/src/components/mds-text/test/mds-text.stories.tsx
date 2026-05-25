@@ -1,11 +1,8 @@
-import {
-  typographyDictionary,
-  typographyVariationsDictionary,
-} from '@type/typography'
-import { h } from '@stencil/core'
-import { useState } from 'react'
-import { tagsDictionary, textAnimateDictionary } from '../meta/dictionary'
-import { truncateDictionary } from '@type/text'
+import { typographyDictionary, typographyVariationsDictionary } from '@type/typography';
+import { h } from '@stencil/core';
+import { useState } from 'react';
+import { tagsDictionary, textAnimateDictionary } from '../meta/dictionary';
+import { truncateDictionary } from '@type/text';
 
 export default {
   title: 'Design / Typography',
@@ -22,13 +19,11 @@ export default {
     },
     text: {
       type: { name: 'string' },
-      description:
-        'Specifies the text string to the component instead of passing an HTML node',
+      description: 'Specifies the text string to the component instead of passing an HTML node',
     },
     truncate: {
       control: { type: 'select' },
-      description:
-        'Specifies if the text shoud be truncated or should behave as a normal text',
+      description: 'Specifies if the text shoud be truncated or should behave as a normal text',
       options: truncateDictionary,
     },
     typography: {
@@ -42,32 +37,31 @@ export default {
       options: typographyVariationsDictionary,
     },
   },
-}
-const Template = args => (
+};
+const Template = (args) => (
   <mds-text {...args}>
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent dictum nec
-    eros vitae dictum. Nunc lobortis pharetra lectus. Mauris egestas velit et
-    mattis molestie. Sed risus purus, laoreet a massa in, tincidunt iaculis sem.
-    Nam congue, ipsum viverra condimentum dignissim, mauris mi lacinia tortor,
-    eu sodales magna augue a dui.
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent dictum nec eros vitae dictum.
+    Nunc lobortis pharetra lectus. Mauris egestas velit et mattis molestie. Sed risus purus, laoreet
+    a massa in, tincidunt iaculis sem. Nam congue, ipsum viverra condimentum dignissim, mauris mi
+    lacinia tortor, eu sodales magna augue a dui.
   </mds-text>
-)
+);
 
-const TemplateTextBox = args => (
+const TemplateTextBox = (args) => (
   <div class="inline-flex items-center justify-center">
     <mds-text {...args} class="bg-tone-neutral-01 text-status-error-06">
       Lorem ipsum dolor sit amet.
     </mds-text>
   </div>
-)
+);
 
 const AnimateTemplate = () => {
-  const [text, setText] = useState('Choose a song...')
+  const [text, setText] = useState('Choose a song...');
 
   const setValue = (event: Event): void | undefined => {
-    const selectEl = event.target as HTMLSelectElement
-    setText(selectEl.value)
-  }
+    const selectEl = event.target as HTMLSelectElement;
+    setText(selectEl.value);
+  };
 
   return (
     <div class="grid gap-400">
@@ -82,23 +76,21 @@ const AnimateTemplate = () => {
             <option value="One">One</option>
             <option value="Zoo Station">Zoo Station</option>
             <option value="With or Without You">With or Without You</option>
-            <option value="Where The Streets Have No Name">
-              Where The Streets Have No Name
-            </option>
+            <option value="Where The Streets Have No Name">Where The Streets Have No Name</option>
           </select>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export const Default = {
   render: Template,
-}
+};
 
 export const Animation = {
   render: AnimateTemplate,
-}
+};
 
 export const Text = {
   render: Template,
@@ -106,7 +98,7 @@ export const Text = {
   args: {
     text: 'This is a text string passed by text attribute',
   },
-}
+};
 
 export const Truncate = {
   render: Template,
@@ -114,7 +106,7 @@ export const Truncate = {
   args: {
     truncate: 'word',
   },
-}
+};
 
 export const VariantTitleAction = {
   render: Template,
@@ -122,7 +114,7 @@ export const VariantTitleAction = {
   args: {
     typography: 'action',
   },
-}
+};
 
 export const VariantTitleH1 = {
   render: Template,
@@ -130,7 +122,7 @@ export const VariantTitleH1 = {
   args: {
     typography: 'h1',
   },
-}
+};
 
 export const VariantTitleH2 = {
   render: Template,
@@ -138,7 +130,7 @@ export const VariantTitleH2 = {
   args: {
     typography: 'h2',
   },
-}
+};
 
 export const VariantTitleH3 = {
   render: Template,
@@ -146,7 +138,7 @@ export const VariantTitleH3 = {
   args: {
     typography: 'h3',
   },
-}
+};
 
 export const VariantTitleH4 = {
   render: Template,
@@ -154,7 +146,7 @@ export const VariantTitleH4 = {
   args: {
     typography: 'h4',
   },
-}
+};
 
 export const VariantTitleH5 = {
   render: Template,
@@ -162,7 +154,7 @@ export const VariantTitleH5 = {
   args: {
     typography: 'h5',
   },
-}
+};
 
 export const VariantTitleH6 = {
   render: Template,
@@ -170,7 +162,7 @@ export const VariantTitleH6 = {
   args: {
     typography: 'h6',
   },
-}
+};
 
 export const VariantInfoCaption = {
   render: Template,
@@ -178,7 +170,7 @@ export const VariantInfoCaption = {
   args: {
     typography: 'caption',
   },
-}
+};
 
 export const VariantInfoDetail = {
   render: Template,
@@ -186,7 +178,7 @@ export const VariantInfoDetail = {
   args: {
     typography: 'detail',
   },
-}
+};
 
 export const VariantInfoLabel = {
   render: Template,
@@ -194,7 +186,7 @@ export const VariantInfoLabel = {
   args: {
     typography: 'label',
   },
-}
+};
 
 export const VariantInfoOption = {
   render: Template,
@@ -202,7 +194,7 @@ export const VariantInfoOption = {
   args: {
     typography: 'option',
   },
-}
+};
 
 export const VariantInfoParagraph = {
   render: Template,
@@ -210,7 +202,7 @@ export const VariantInfoParagraph = {
   args: {
     typography: 'paragraph',
   },
-}
+};
 
 export const VariantInfoTip = {
   render: Template,
@@ -218,7 +210,7 @@ export const VariantInfoTip = {
   args: {
     typography: 'tip',
   },
-}
+};
 
 export const VariantReadCaption = {
   render: Template,
@@ -227,7 +219,7 @@ export const VariantReadCaption = {
     typography: 'caption',
     variant: 'read',
   },
-}
+};
 
 export const VariantReadDetail = {
   render: Template,
@@ -236,7 +228,7 @@ export const VariantReadDetail = {
     typography: 'detail',
     variant: 'read',
   },
-}
+};
 
 export const VariantReadParagraph = {
   render: Template,
@@ -245,7 +237,7 @@ export const VariantReadParagraph = {
     typography: 'paragraph',
     variant: 'read',
   },
-}
+};
 
 export const VariantCodeSnippet = {
   render: Template,
@@ -254,7 +246,7 @@ export const VariantCodeSnippet = {
     tag: 'div',
     typography: 'snippet',
   },
-}
+};
 
 export const VariantCodeHack = {
   render: Template,
@@ -263,8 +255,8 @@ export const VariantCodeHack = {
     tag: 'div',
     typography: 'hack',
   },
-}
+};
 
 export const TextBox = {
   render: TemplateTextBox,
-}
+};

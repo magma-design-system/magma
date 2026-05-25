@@ -1,12 +1,9 @@
-import { h } from '@stencil/core'
+import { h } from '@stencil/core';
 import {
   bibliographyFormatDictionary,
   bibliographyRelationshipDictionary,
-} from '../meta/dictionary'
-import {
-  typographyInfoDictionary,
-  typographyVariationsDictionary,
-} from '@type/typography'
+} from '../meta/dictionary';
+import { typographyInfoDictionary, typographyVariationsDictionary } from '@type/typography';
 
 export default {
   title: 'UI / Bibliography',
@@ -23,8 +20,7 @@ export default {
     },
     format: {
       type: { name: 'string' },
-      description:
-        'Specifies the bibliography format to rapresent the bibliography content',
+      description: 'Specifies the bibliography format to rapresent the bibliography content',
       options: bibliographyFormatDictionary,
       control: { type: 'select' },
     },
@@ -42,8 +38,7 @@ export default {
     },
     rel: {
       type: { name: 'string' },
-      description:
-        'Specifies relationship between the current document and the URL',
+      description: 'Specifies relationship between the current document and the URL',
       options: bibliographyRelationshipDictionary,
       control: { type: 'select' },
     },
@@ -63,13 +58,13 @@ export default {
       description: 'Specifies the URL of the bibliography',
     },
   },
-}
+};
 
-const Template = args => <mds-bibliography {...args} />
+const Template = (args) => <mds-bibliography {...args} />;
 
 export const Default = {
   render: Template,
-}
+};
 
 export const AuthorExample1 = {
   render: Template,
@@ -82,7 +77,7 @@ export const AuthorExample1 = {
     publisher: 'Decca Libri',
     url: 'https://www.maggioli.com',
   },
-}
+};
 
 export const AuthorExample2 = {
   render: Template,
@@ -95,7 +90,7 @@ export const AuthorExample2 = {
     publisher: 'Decca Libri',
     url: 'https://www.maggioli.com',
   },
-}
+};
 
 export const AuthorExample3 = {
   render: Template,
@@ -108,18 +103,17 @@ export const AuthorExample3 = {
     publisher: 'Decca Libri',
     url: 'https://www.maggioli.com',
   },
-}
+};
 
 export const AuthorExample4 = {
   render: Template,
 
   args: {
-    author:
-      '"Mark Jacob" Jhonson, Evelyn \'Ross Bianchetti\', "Jhon Antuan" "Parisi Marchi"',
+    author: '"Mark Jacob" Jhonson, Evelyn \'Ross Bianchetti\', "Jhon Antuan" "Parisi Marchi"',
     date: '2012-08-03',
     location: 'Milano',
     name: 'Grosso guaio a Chinatown',
     publisher: 'Decca Libri',
     url: 'https://www.maggioli.com',
   },
-}
+};

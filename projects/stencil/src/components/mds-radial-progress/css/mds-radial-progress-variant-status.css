@@ -1,19 +1,19 @@
-:host([variant="error"]) {
+:host([variant='error']) {
   --mds-radial-progress-color: rgb(var(--status-error-05));
   --mds-radial-progress-background: rgb(var(--status-error-09));
 }
 
-:host([variant="warning"]) {
+:host([variant='warning']) {
   --mds-radial-progress-color: rgb(var(--status-warning-05));
   --mds-radial-progress-background: rgb(var(--status-warning-09));
 }
 
-:host([variant="success"]) {
+:host([variant='success']) {
   --mds-radial-progress-color: rgb(var(--status-success-05));
   --mds-radial-progress-background: rgb(var(--status-success-09));
 }
 
-:host([variant="info"]) {
+:host([variant='info']) {
   --mds-radial-progress-color: rgb(var(--status-info-05));
   --mds-radial-progress-background: rgb(var(--status-info-09));
 }

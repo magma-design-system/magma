@@ -1,13 +1,6 @@
-export type SnapType =
-  | 'center'
-  | 'end'
-  | 'none'
-  | 'start'
+export type SnapType = 'center' | 'end' | 'none' | 'start';
 
-export type NavigationType =
-  | 'none'
-  | 'scrollbar'
-  | 'position'
+export type NavigationType = 'none' | 'scrollbar' | 'position';
 
 export type ViewportType =
   | 'all'
@@ -17,5 +10,4 @@ export type ViewportType =
   | 'wide'
   | 'desktop'
   | 'tablet'
-  | 'none'
-
+  | 'none';

@@ -1,9 +1,9 @@
-import { h } from '@stencil/core'
-import { iconsDictionary } from '@type/icon'
-import { themeVariantChipDictionary } from '@type/variant'
-import { toneMinimalVariantDictionary } from '@type/tone'
+import { h } from '@stencil/core';
+import { iconsDictionary } from '@type/icon';
+import { themeVariantChipDictionary } from '@type/variant';
+import { toneMinimalVariantDictionary } from '@type/tone';
 
-import { useEffect } from 'react'
+import { useEffect } from 'react';
 
 export default {
   title: 'UI / Chip',
@@ -14,8 +14,7 @@ export default {
     },
     deletable: {
       type: { name: 'boolean' },
-      description:
-        'Shows the cross icon to perform cancel/delete action on element',
+      description: 'Shows the cross icon to perform cancel/delete action on element',
     },
     disabled: {
       type: { name: 'boolean' },
@@ -29,7 +28,7 @@ export default {
     },
     label: {
       type: { name: 'string' },
-      description: 'The label displayed to the right of the component\'s icon',
+      description: "The label displayed to the right of the component's icon",
     },
     selected: {
       type: { name: 'boolean' },
@@ -37,8 +36,7 @@ export default {
     },
     selectable: {
       type: { name: 'boolean' },
-      description:
-        'Sets if the component change is status to selected when is clicked',
+      description: 'Sets if the component change is status to selected when is clicked',
     },
     tone: {
       type: { name: 'string' },
@@ -53,32 +51,32 @@ export default {
       description: 'Sets the color variant of the component',
     },
   },
-}
+};
 
-const Template = args => {
+const Template = (args) => {
   useEffect(() => {
-    const chipEl = document.querySelector('mds-chip') as HTMLMdsChipElement
+    const chipEl = document.querySelector('mds-chip') as HTMLMdsChipElement;
     chipEl.addEventListener('mdsChipClickLabel', (e: CustomEvent) => {
-      console.info('mdsChipClickLabel', e.detail)
-    })
+      console.info('mdsChipClickLabel', e.detail);
+    });
 
     chipEl.addEventListener('mdsChipDelete', (e: CustomEvent) => {
-      console.info('mdsChipDelete', e.detail)
-    })
+      console.info('mdsChipDelete', e.detail);
+    });
 
     chipEl.addEventListener('mdsChipSelect', (e: CustomEvent) => {
-      console.info('mdsChipSelect', e.detail)
-    })
-  })
+      console.info('mdsChipSelect', e.detail);
+    });
+  });
   return (
     <mds-chip
       {...args}
       onDelete={() => {
-        console.info('onDelete')
+        console.info('onDelete');
       }}
     />
-  )
-}
+  );
+};
 
 export const Default = {
   render: Template,
@@ -86,7 +84,7 @@ export const Default = {
   args: {
     label: 'Bovaro del Bernese',
   },
-}
+};
 
 export const Selected = {
   render: Template,
@@ -96,7 +94,7 @@ export const Selected = {
     icon: 'mi/baseline/pets',
     selected: true,
   },
-}
+};
 
 export const Icon = {
   render: Template,
@@ -105,7 +103,7 @@ export const Icon = {
     label: 'Bovaro del Bernese',
     icon: 'mi/baseline/pets',
   },
-}
+};
 
 export const Deletable = {
   render: Template,
@@ -114,7 +112,7 @@ export const Deletable = {
     deletable: true,
     label: 'Bovaro del Bernese',
   },
-}
+};
 
 export const Clickable = {
   render: Template,
@@ -125,7 +123,7 @@ export const Clickable = {
     icon: 'mi/baseline/eco',
     label: 'Hover me to interact',
   },
-}
+};
 
 export const FullyInteractive = {
   render: Template,
@@ -136,12 +134,11 @@ export const FullyInteractive = {
     icon: 'mi/baseline/downhill-skiing',
     label: 'Downhill skiing',
   },
-}
+};
 
-
-const variantToneCombinations = themeVariantChipDictionary.flatMap(variant =>
-  toneMinimalVariantDictionary.map(tone => ({ tone, variant })),
-)
+const variantToneCombinations = themeVariantChipDictionary.flatMap((variant) =>
+  toneMinimalVariantDictionary.map((tone) => ({ tone, variant })),
+);
 
 const VariantsTableTemplate = () => (
   <mds-table>
@@ -154,20 +151,30 @@ const VariantsTableTemplate = () => (
       {variantToneCombinations.map(({ tone, variant }) => (
         <mds-table-row key={`${variant}-${tone}`}>
           <mds-table-cell>
-            <mds-chip variant={variant} tone={tone} icon="mi/baseline/pets" label="Hello world" deletable></mds-chip>
+            <mds-chip
+              variant={variant}
+              tone={tone}
+              icon="mi/baseline/pets"
+              label="Hello world"
+              deletable
+            ></mds-chip>
           </mds-table-cell>
           <mds-table-cell value={variant}>
-            <mds-text typography="hack" class="whitespace-nowrap">{variant}</mds-text>
+            <mds-text typography="hack" class="whitespace-nowrap">
+              {variant}
+            </mds-text>
           </mds-table-cell>
           <mds-table-cell value={tone}>
-            <mds-text typography="hack" class="whitespace-nowrap">{tone}</mds-text>
+            <mds-text typography="hack" class="whitespace-nowrap">
+              {tone}
+            </mds-text>
           </mds-table-cell>
         </mds-table-row>
       ))}
     </mds-table-body>
   </mds-table>
-)
+);
 
 export const VariantsTable = {
   render: VariantsTableTemplate,
-}
+};

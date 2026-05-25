@@ -1,7 +1,7 @@
-import { h } from '@stencil/core'
-import { iconsDictionary } from '@type/icon'
-import { themeVariantDictionary } from '@type/variant'
-import { toneMinimalBoxVariantDictionary } from '@type/tone'
+import { h } from '@stencil/core';
+import { iconsDictionary } from '@type/icon';
+import { themeVariantDictionary } from '@type/variant';
+import { toneMinimalBoxVariantDictionary } from '@type/tone';
 
 export default {
   title: 'UI / Banner',
@@ -12,8 +12,7 @@ export default {
     },
     deletable: {
       type: { name: 'boolean' },
-      description:
-        'Shows the cross icon to perform cancel/delete action on element',
+      description: 'Shows the cross icon to perform cancel/delete action on element',
     },
     headline: {
       type: { name: 'string' },
@@ -39,23 +38,22 @@ export default {
       control: { type: 'select' },
     },
   },
-}
+};
 
-const Template = args => (
+const Template = (args) => (
   <mds-banner {...args}>
     <mds-text typography="detail">
-      Questa è una finestra banner, serve a informare gli utenti su uno stato
-      iniziale o sul fatto che è cambiato.
+      Questa è una finestra banner, serve a informare gli utenti su uno stato iniziale o sul fatto
+      che è cambiato.
     </mds-text>
   </mds-banner>
-)
+);
 
-const TemplateActions = args => (
+const TemplateActions = (args) => (
   <mds-banner {...args}>
     <mds-text typography="detail">
-      Pare che la licenza di questo servizio sia scaduta, il servizio non
-      smetterà di funzionare ma non potrai più utilizzare le{' '}
-      <a href="#">funzioni premium</a>.
+      Pare che la licenza di questo servizio sia scaduta, il servizio non smetterà di funzionare ma
+      non potrai più utilizzare le <a href="#">funzioni premium</a>.
     </mds-text>
     <mds-button slot="action" variant={args.variant} tone="outline">
       Annulla
@@ -64,14 +62,13 @@ const TemplateActions = args => (
       Rinnova abbonamento
     </mds-button>
   </mds-banner>
-)
+);
 
-const TemplateVariantDefault = args => (
+const TemplateVariantDefault = (args) => (
   <mds-banner {...args}>
     <mds-text typography="detail">
-      Il tuo account è stato aggiornato alla versione PRO, ora puoi utilizzare
-      le notifiche su aggiornamenti di norme di legge e la consultazione dei
-      volumi correlati.
+      Il tuo account è stato aggiornato alla versione PRO, ora puoi utilizzare le notifiche su
+      aggiornamenti di norme di legge e la consultazione dei volumi correlati.
     </mds-text>
     <mds-button slot="action" variant={args.variant} tone="outline">
       Cancel
@@ -80,14 +77,13 @@ const TemplateVariantDefault = args => (
       Confirm
     </mds-button>
   </mds-banner>
-)
+);
 
-const TemplateVariantDark = args => (
+const TemplateVariantDark = (args) => (
   <mds-banner {...args}>
     <mds-text typography="detail">
-      Il tuo account è stato aggiornato alla versione PRO, ora puoi utilizzare
-      le notifiche su aggiornamenti di norme di legge e la consultazione dei
-      volumi correlati.
+      Il tuo account è stato aggiornato alla versione PRO, ora puoi utilizzare le notifiche su
+      aggiornamenti di norme di legge e la consultazione dei volumi correlati.
     </mds-text>
     <mds-button slot="action" variant="light" tone="text">
       Cancel
@@ -96,14 +92,13 @@ const TemplateVariantDark = args => (
       Confirm
     </mds-button>
   </mds-banner>
-)
+);
 
-const TemplateVariantLight = args => (
+const TemplateVariantLight = (args) => (
   <mds-banner {...args}>
     <mds-text typography="detail">
-      Il tuo account è stato aggiornato alla versione PRO, ora puoi utilizzare
-      le notifiche su aggiornamenti di norme di legge e la consultazione dei
-      volumi correlati.
+      Il tuo account è stato aggiornato alla versione PRO, ora puoi utilizzare le notifiche su
+      aggiornamenti di norme di legge e la consultazione dei volumi correlati.
     </mds-text>
     <mds-button slot="action" variant="dark" tone="text">
       Cancel
@@ -112,11 +107,11 @@ const TemplateVariantLight = args => (
       Confirm
     </mds-button>
   </mds-banner>
-)
+);
 
 export const Default = {
   render: Template,
-}
+};
 
 export const Cockade = {
   render: Template,
@@ -125,7 +120,7 @@ export const Cockade = {
     icon: 'mi/baseline/warning',
     cockade: true,
   },
-}
+};
 
 export const Headline = {
   render: Template,
@@ -133,7 +128,7 @@ export const Headline = {
   args: {
     headline: 'Avviso',
   },
-}
+};
 
 export const Icon = {
   render: Template,
@@ -141,7 +136,7 @@ export const Icon = {
   args: {
     icon: 'mi/baseline/warning',
   },
-}
+};
 
 export const Deletable = {
   render: Template,
@@ -149,11 +144,11 @@ export const Deletable = {
   args: {
     deletable: true,
   },
-}
+};
 
 export const Actions = {
   render: TemplateActions,
-}
+};
 
 export const Variant = {
   render: TemplateVariantDefault,
@@ -163,7 +158,7 @@ export const Variant = {
     icon: 'mi/baseline/info',
     deletable: true,
   },
-}
+};
 
 export const VariantDark = {
   render: TemplateVariantDark,
@@ -174,7 +169,7 @@ export const VariantDark = {
     deletable: true,
     variant: 'dark',
   },
-}
+};
 
 export const VariantLight = {
   render: TemplateVariantLight,
@@ -185,11 +180,11 @@ export const VariantLight = {
     deletable: true,
     variant: 'light',
   },
-}
+};
 
-const variantToneCombinations = themeVariantDictionary.flatMap(variant =>
-  toneMinimalBoxVariantDictionary.map(tone => ({ tone, variant })),
-)
+const variantToneCombinations = themeVariantDictionary.flatMap((variant) =>
+  toneMinimalBoxVariantDictionary.map((tone) => ({ tone, variant })),
+);
 
 const VariantsTableTemplate = () => (
   <mds-table>
@@ -204,9 +199,9 @@ const VariantsTableTemplate = () => (
           <mds-table-cell>
             <mds-banner class="w-[400px]" variant={variant} tone={tone}>
               <mds-text typography="detail">
-                Il tuo account è stato aggiornato alla versione PRO, ora puoi utilizzare
-                le notifiche su aggiornamenti di norme di legge e la consultazione dei
-                volumi correlati.
+                Il tuo account è stato aggiornato alla versione PRO, ora puoi utilizzare le
+                notifiche su aggiornamenti di norme di legge e la consultazione dei volumi
+                correlati.
               </mds-text>
               <mds-button slot="action" variant={variant} tone="outline">
                 Cancel
@@ -217,17 +212,21 @@ const VariantsTableTemplate = () => (
             </mds-banner>
           </mds-table-cell>
           <mds-table-cell value={variant}>
-            <mds-text typography="hack" class="whitespace-nowrap">{variant}</mds-text>
+            <mds-text typography="hack" class="whitespace-nowrap">
+              {variant}
+            </mds-text>
           </mds-table-cell>
           <mds-table-cell value={tone}>
-            <mds-text typography="hack" class="whitespace-nowrap">{tone}</mds-text>
+            <mds-text typography="hack" class="whitespace-nowrap">
+              {tone}
+            </mds-text>
           </mds-table-cell>
         </mds-table-row>
       ))}
     </mds-table-body>
   </mds-table>
-)
+);
 
 export const VariantsTable = {
   render: VariantsTableTemplate,
-}
+};

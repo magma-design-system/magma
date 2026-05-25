@@ -21,7 +21,6 @@
 }
 
 .batch-actions {
-
   @apply grid-cols-full auto-rows-min;
 
   background-color: var(--mds-table-background);
@@ -35,7 +34,7 @@
   width: 100%;
 }
 
-::slotted([slot="batch-action"]) {
+::slotted([slot='batch-action']) {
   justify-content: start;
   width: 100%;
 }

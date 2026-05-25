@@ -11,38 +11,47 @@
 @property --mds-accordion-timer-item-color {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-02));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-accordion-timer-item-progress-bar-color {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-03));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-accordion-timer-item-progress-bar-background {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-08));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-accordion-timer-item-progress-bar-thickness {
   inherits: false;
   initial-value: --spacing(100);
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-accordion-timer-item-duration {
   inherits: false;
   initial-value: 500ms;
-  syntax: "<time>";
+  syntax: '<time>';
 }
 
 :host {
   --mds-accordion-timer-item-color: var(--mds-accordion-timer-color, rgb(var(--tone-neutral-02)));
-  --mds-accordion-timer-item-progress-bar-color: var(--mds-accordion-timer-progress-bar-color, rgb(var(--tone-neutral-03)));
-  --mds-accordion-timer-item-progress-bar-background: var(--mds-accordion-timer-progress-bar-background, rgb(var(--tone-neutral-08)));
-  --mds-accordion-timer-item-progress-bar-thickness: var(--mds-accordion-timer-progress-bar-thickness, --spacing(100));
+  --mds-accordion-timer-item-progress-bar-color: var(
+    --mds-accordion-timer-progress-bar-color,
+    rgb(var(--tone-neutral-03))
+  );
+  --mds-accordion-timer-item-progress-bar-background: var(
+    --mds-accordion-timer-progress-bar-background,
+    rgb(var(--tone-neutral-08))
+  );
+  --mds-accordion-timer-item-progress-bar-thickness: var(
+    --mds-accordion-timer-progress-bar-thickness,
+    --spacing(100)
+  );
   --mds-accordion-timer-item-duration: var(--mds-accordion-timer-duration, 500ms);
 
   color: var(--mds-accordion-timer-item-color);
@@ -112,15 +121,15 @@
   transition-timing-function: var(--ease-out-expo);
 }
 
-:host([selected]:not([selected="false"])) .action {
+:host([selected]:not([selected='false'])) .action {
   cursor: auto;
 }
 
-:host([selected]:not([selected="false"])) .icon {
+:host([selected]:not([selected='false'])) .icon {
   transform: rotate(90deg);
 }
 
-:host([selected]:not([selected="false"])) .content {
+:host([selected]:not([selected='false'])) .content {
   grid-template-rows: 1fr;
   opacity: 1;
   padding-top: --spacing(400);

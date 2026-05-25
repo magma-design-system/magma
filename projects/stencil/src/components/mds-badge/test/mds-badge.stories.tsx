@@ -1,9 +1,7 @@
-import { h } from '@stencil/core'
-import {
-  typographyLabelDictionary,
-} from '@type/typography'
-import { themeFullVariantDictionary } from '@type/variant'
-import { toneSmartVariantDictionary } from '@type/tone'
+import { h } from '@stencil/core';
+import { typographyLabelDictionary } from '@type/typography';
+import { themeFullVariantDictionary } from '@type/variant';
+import { toneSmartVariantDictionary } from '@type/tone';
 
 export default {
   title: 'UI / Badge',
@@ -27,12 +25,12 @@ export default {
       options: themeFullVariantDictionary,
     },
   },
-}
+};
 
-const Template = args => <mds-badge {...args}>bovaro del bernese</mds-badge>
-const variantToneCombinations = themeFullVariantDictionary.flatMap(variant =>
-  toneSmartVariantDictionary.map(tone => ({ tone, variant })),
-)
+const Template = (args) => <mds-badge {...args}>bovaro del bernese</mds-badge>;
+const variantToneCombinations = themeFullVariantDictionary.flatMap((variant) =>
+  toneSmartVariantDictionary.map((tone) => ({ tone, variant })),
+);
 
 export const Default = {
   render: Template,
@@ -41,7 +39,7 @@ export const Default = {
     tone: 'strong',
     variant: 'violet',
   },
-}
+};
 
 const VariantsTableTemplate = () => (
   <mds-table interactive>
@@ -54,7 +52,9 @@ const VariantsTableTemplate = () => (
       {variantToneCombinations.map(({ tone, variant }) => (
         <mds-table-row key={`${variant}-${tone}`}>
           <mds-table-cell>
-            <mds-badge variant={variant} tone={tone}>bovaro del bernese</mds-badge>
+            <mds-badge variant={variant} tone={tone}>
+              bovaro del bernese
+            </mds-badge>
           </mds-table-cell>
           <mds-table-cell value={variant}>
             <mds-text typography="hack">{variant}</mds-text>
@@ -66,8 +66,8 @@ const VariantsTableTemplate = () => (
       ))}
     </mds-table-body>
   </mds-table>
-)
+);
 
 export const VariantsTable = {
   render: VariantsTableTemplate,
-}
+};

@@ -1,9 +1,3 @@
-const animationDictionary = [
-  'reduce',
-  'no-preference',
-  'system',
-]
+const animationDictionary = ['reduce', 'no-preference', 'system'];
 
-export {
-  animationDictionary,
-}
+export { animationDictionary };

@@ -1,8 +1,7 @@
 @import './css/mds-tab-bar-fouc.css';
 
 :host {
-  @apply
-    duration-200
+  @apply duration-200
     ease-out;
 
   background-color: rgb(var(--tone-neutral));

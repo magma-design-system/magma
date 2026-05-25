@@ -1,4 +1,4 @@
-import { h } from '@stencil/core'
+import { h } from '@stencil/core';
 
 export default {
   title: 'UI / Calendar',
@@ -14,9 +14,9 @@ export default {
       description: 'Sets the end date of the calendar',
     },
   },
-}
+};
 
-const Template = args => <mds-calendar {...args}></mds-calendar>
+const Template = (args) => <mds-calendar {...args}></mds-calendar>;
 
 export const Default = {
   render: Template,
@@ -25,4 +25,4 @@ export const Default = {
     'start-date': '2025-03-18',
     'end-date': '2025-03-24',
   },
-}
+};

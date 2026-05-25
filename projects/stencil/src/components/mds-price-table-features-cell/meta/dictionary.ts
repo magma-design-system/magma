@@ -4,8 +4,6 @@ const priceTableFeaturesCellTypeDictionary = [
   'supported',
   'text',
   'unsupported',
-]
+];
 
-export {
-  priceTableFeaturesCellTypeDictionary,
-}
+export { priceTableFeaturesCellTypeDictionary };

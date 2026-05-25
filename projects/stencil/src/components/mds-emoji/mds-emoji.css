@@ -17,67 +17,67 @@
 @property --mds-emoji-expression-follow-mouse-traits-duration {
   inherits: false;
   initial-value: 200ms;
-  syntax: "<time>";
+  syntax: '<time>';
 }
 
 @property --mds-emoji-expression-follow-mouse-head-duration {
   inherits: false;
   initial-value: 300ms;
-  syntax: "<time>";
+  syntax: '<time>';
 }
 
 @property --mds-emoji-expression-max-rotation {
   inherits: false;
   initial-value: 16deg;
-  syntax: "<angle>";
+  syntax: '<angle>';
 }
 
 @property --mds-emoji-perspective {
   inherits: false;
   initial-value: 400px;
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-emoji-offset-eyes {
   inherits: false;
   initial-value: 1px;
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-emoji-offset-gadget {
   inherits: false;
   initial-value: 1px;
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-emoji-offset-hands {
   inherits: false;
   initial-value: 2px;
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-emoji-offset-head {
   inherits: false;
   initial-value: 0;
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-emoji-offset-mouth {
   inherits: false;
   initial-value: 1px;
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-emoji-offset-eyebrows {
   inherits: false;
   initial-value: 10px;
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-emoji-offset-ears {
   inherits: false;
   initial-value: 0;
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 :host {

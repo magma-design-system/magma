@@ -24,11 +24,12 @@
   --mds-input-range-track-size: --spacing(600);
 
   /* private properties */
-  --private-border-width: calc(calc(var(--mds-input-range-track-size) - var(--mds-input-range-thumb-size)) / 2);
+  --private-border-width: calc(
+    calc(var(--mds-input-range-track-size) - var(--mds-input-range-thumb-size)) / 2
+  );
   --private-thumb-size: calc(var(--mds-input-range-thumb-size) + var(--private-border-width) * 2);
 
-  @apply
-    duration-300
+  @apply duration-300
     ease-in-out
     gap-200;
 
@@ -119,8 +120,8 @@
     We use track size as the thumb's outer size (matches current thumb calc).
   */
   width: calc(
-    (100% - var(--mds-input-range-track-size)) * (var(--mds-input-range-progress, 0) * 0.01)
-    + (var(--mds-input-range-track-size) / 2)
+    (100% - var(--mds-input-range-track-size)) * (var(--mds-input-range-progress, 0) * 0.01) +
+      (var(--mds-input-range-track-size) / 2)
   );
 }
 

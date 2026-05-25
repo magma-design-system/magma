@@ -1,65 +1,93 @@
-import clsx from 'clsx'
-import mggAiChatbotOutline from '@icon/mgg/ai-chatbot-outline.svg'
-import miBaselineAdd from '@icon/mi/baseline/add.svg'
-import miBaselineArrowDown from '@icon/mi/baseline/keyboard-arrow-down.svg'
-import miBaselineArrowUp from '@icon/mi/baseline/keyboard-arrow-up.svg'
-import miBaselineRemove from '@icon/mi/baseline/remove.svg'
-import miBaselineVisible from '@icon/mi/baseline/visibility.svg'
-import miBaselineVisibleOff from '@icon/mi/baseline/visibility-off.svg'
-import miOutlineMic from '@icon/mi/outline/mic.svg'
-import miOutlineMicOff from '@icon/mi/outline/mic-off.svg'
-import miBaselineDone from '@icon/mi/baseline/done.svg'
-import { AttachInternals, Component, Element, Event, EventEmitter, Host, Method, Prop, State, Watch, h } from '@stencil/core'
-import { AutocompleteType } from '@type/autocomplete'
-import { InputTextType, InputControlsLayoutType, InputControlsIconType, MdsInputEventDetail } from '@type/input'
-import { ThemeInputVariantType } from '@type/variant'
-import { TypographyInputType } from '@type/typography'
-import { InputTipItemVariantType } from '@type/input-tip'
-import { Locale } from '@common/locale'
-import localeEl from './meta/locale.el.json'
-import localeEn from './meta/locale.en.json'
-import localeEs from './meta/locale.es.json'
-import localeIt from './meta/locale.it.json'
-import { createInputValidationManager, InputValidationManager } from './meta/input-type/InputValidationManager'
-import { maxLenghtValidator, maxValidator, MdsValidationErrors, MdsValidatorFn, minLenghtValidator, minValidator, requiredValidor } from './meta/validators'
-import { hashRandomValue } from '@common/aria'
+import clsx from 'clsx';
+import mggAiChatbotOutline from '@icon/mgg/ai-chatbot-outline.svg';
+import miBaselineAdd from '@icon/mi/baseline/add.svg';
+import miBaselineArrowDown from '@icon/mi/baseline/keyboard-arrow-down.svg';
+import miBaselineArrowUp from '@icon/mi/baseline/keyboard-arrow-up.svg';
+import miBaselineRemove from '@icon/mi/baseline/remove.svg';
+import miBaselineVisible from '@icon/mi/baseline/visibility.svg';
+import miBaselineVisibleOff from '@icon/mi/baseline/visibility-off.svg';
+import miOutlineMic from '@icon/mi/outline/mic.svg';
+import miOutlineMicOff from '@icon/mi/outline/mic-off.svg';
+import miBaselineDone from '@icon/mi/baseline/done.svg';
+import {
+  AttachInternals,
+  Component,
+  Element,
+  Event,
+  EventEmitter,
+  Host,
+  Method,
+  Prop,
+  State,
+  Watch,
+  h,
+} from '@stencil/core';
+import { AutocompleteType } from '@type/autocomplete';
+import {
+  InputTextType,
+  InputControlsLayoutType,
+  InputControlsIconType,
+  MdsInputEventDetail,
+} from '@type/input';
+import { ThemeInputVariantType } from '@type/variant';
+import { TypographyInputType } from '@type/typography';
+import { InputTipItemVariantType } from '@type/input-tip';
+import { Locale } from '@common/locale';
+import localeEl from './meta/locale.el.json';
+import localeEn from './meta/locale.en.json';
+import localeEs from './meta/locale.es.json';
+import localeIt from './meta/locale.it.json';
+import {
+  createInputValidationManager,
+  InputValidationManager,
+} from './meta/input-type/InputValidationManager';
+import {
+  maxLenghtValidator,
+  maxValidator,
+  MdsValidationErrors,
+  MdsValidatorFn,
+  minLenghtValidator,
+  minValidator,
+  requiredValidor,
+} from './meta/validators';
+import { hashRandomValue } from '@common/aria';
 
 /*
-  * @part counter-button-decrease - Selects the button used to decrese the input value
-  * @part counter-button-increase - Selects the button used to increse the input value
-  * @part field - Selects the native input field used by the component
-  * @part password-toggle-button - Selects the button used to show or hide password
-  * @part password-mask-items - Selects the items wrapper used to mask the password
-  * @part password-mask-item - Selects the item used to mask the password
-  * @part tip-count - Selects the mds-input-tip shown when maxlength attribute is set, can be used to hide it if needed
-  * @part tip-top - Selects the verbose status of input on top of element
-  * @part tip-bottom - Selects the verbose status of input on bottom of element
-  */
+ * @part counter-button-decrease - Selects the button used to decrese the input value
+ * @part counter-button-increase - Selects the button used to increse the input value
+ * @part field - Selects the native input field used by the component
+ * @part password-toggle-button - Selects the button used to show or hide password
+ * @part password-mask-items - Selects the items wrapper used to mask the password
+ * @part password-mask-item - Selects the item used to mask the password
+ * @part tip-count - Selects the mds-input-tip shown when maxlength attribute is set, can be used to hide it if needed
+ * @part tip-top - Selects the verbose status of input on top of element
+ * @part tip-bottom - Selects the verbose status of input on bottom of element
+ */
 
 export interface MdsInputInterface {
-  autocomplete?: AutocompleteType
-  autofocus?: boolean
-  controlsIcon?: InputControlsIconType
-  controlsLayout?: InputControlsLayoutType
-  datalist?: string[]
-  disabled?: boolean
-  icon?: string
-  max?: string
-  maxLength?: number
-  min?: string
-  minLength?: number
-  name?: string
-  pattern?: string
-  placeholder?: string
-  readOnly?: boolean
-  required?: boolean
-  step?: string
-  tabindex?: number
-  tip?: string
-  type: InputTextType
-  typography?: TypographyInputType
-  value?: string
-  variant?: ThemeInputVariantType
+  autocomplete?: AutocompleteType;
+  autofocus?: boolean;
+  controlsIcon?: InputControlsIconType;
+  controlsLayout?: InputControlsLayoutType;
+  datalist?: string[];
+  disabled?: boolean;
+  icon?: string;
+  max?: string;
+  maxLength?: number;
+  min?: string;
+  minLength?: number;
+  name?: string;
+  pattern?: string;
+  placeholder?: string;
+  readOnly?: boolean;
+  required?: boolean;
+  step?: string;
+  tabindex?: number;
+  tip?: string;
+  type: InputTextType;
+  typography?: TypographyInputType;
+  value?: string;
+  variant?: ThemeInputVariantType;
 }
 
 @Component({
@@ -68,289 +96,289 @@ export interface MdsInputInterface {
   formAssociated: true,
   shadow: true,
 })
-
 export class MdsInput {
+  private nativeInput?: HTMLInputElement | HTMLTextAreaElement;
+  private tabindex?: number;
 
-  private nativeInput?: HTMLInputElement | HTMLTextAreaElement
-  private tabindex?: number
-
-  private inputValidation: InputValidationManager
-  private isValid: boolean
-  private speechToTextLabel: string
-  private speechToTextIcon: string = miOutlineMic
+  private inputValidation: InputValidationManager;
+  private isValid: boolean;
+  private speechToTextLabel: string;
+  private speechToTextIcon: string = miOutlineMic;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private recognition: any
-  private speechButton: HTMLMdsButtonElement
+  private recognition: any;
+  private speechButton: HTMLMdsButtonElement;
 
-  private datalistId: string
-  @Element() el: HTMLMdsInputElement
-  @State() hasFocus = false
-  @State() language: string
-  @State() isRecording: boolean = false
-  @State() currentLengthLabel: string
-  @State() countVariant: InputTipItemVariantType = 'count-empty'
-  @State() isPasswordVisible = false
+  private datalistId: string;
+  @Element() el: HTMLMdsInputElement;
+  @State() hasFocus = false;
+  @State() language: string;
+  @State() isRecording: boolean = false;
+  @State() currentLengthLabel: string;
+  @State() countVariant: InputTipItemVariantType = 'count-empty';
+  @State() isPasswordVisible = false;
   // private valuePristine?: string
 
-  private t:Locale = new Locale({
+  private t: Locale = new Locale({
     el: localeEl,
     en: localeEn,
     es: localeEs,
     it: localeIt,
-  })
+  });
   @Method()
-  async updateLang (): Promise<void> {
-    this.language = this.t.lang(this.el)
-    this.t.update()
+  async updateLang(): Promise<void> {
+    this.language = this.t.lang(this.el);
+    this.t.update();
   }
 
-  @AttachInternals() internals: ElementInternals
+  @AttachInternals() internals: ElementInternals;
 
   /**
    * Specifies whether the element should have autocomplete enabled
    */
-  @Prop({ reflect: true }) readonly autocomplete?: AutocompleteType = 'off'
+  @Prop({ reflect: true }) readonly autocomplete?: AutocompleteType = 'off';
 
   /**
    * Specifies that the element should automatically get focus when the page loads
    */
-  @Prop({ reflect: true }) readonly autofocus: boolean = false
+  @Prop({ reflect: true }) readonly autofocus: boolean = false;
 
   /**
    * Specifies if the spinner icon is shown, replacing the icon if present
    */
-  @Prop({ reflect: true }) readonly await: boolean = false
+  @Prop({ reflect: true }) readonly await: boolean = false;
 
   /**
    * Specifies the layout of the counter button when the input type is set to `number`
    */
-  @Prop({ reflect: true }) readonly controlsLayout?: InputControlsLayoutType = 'vertical'
+  @Prop({ reflect: true }) readonly controlsLayout?: InputControlsLayoutType = 'vertical';
 
   /**
    * Specifies the icon type of the counter button when the input type is set to `number`
    */
-  @Prop({ reflect: true }) readonly controlsIcon?: InputControlsIconType = 'arrow'
+  @Prop({ reflect: true }) readonly controlsIcon?: InputControlsIconType = 'arrow';
 
   /**
    * A list of search terms to be searched from the input field,
    * it should be used with type="search" input.
    */
-  @Prop() readonly datalist?: string[]
+  @Prop() readonly datalist?: string[];
 
   /**
    * If true, the element is displayed as disabled
    */
-  @Prop({ reflect: true }) readonly disabled?: boolean = false
+  @Prop({ reflect: true }) readonly disabled?: boolean = false;
 
   /**
    * An icon displayed at the right of the input
    */
-  @Prop({ mutable: true, reflect: true }) icon?: string
+  @Prop({ mutable: true, reflect: true }) icon?: string;
 
   /**
    * Specifies the maximum value
    * use it with input type="number" or type="date"
    * Example: max="180", max="2046-12-04"
    */
-  @Prop({ reflect: true }) readonly max?: string | number
+  @Prop({ reflect: true }) readonly max?: string | number;
 
   /**
    * Specifies the maximum number of characters allowed in an element.
    * Use it with input type="text".
    * If maxlength is set to 0 or a negative number it will be considered as undefined.
    */
-  @Prop({ reflect: true, mutable: true }) maxlength?: number
+  @Prop({ reflect: true, mutable: true }) maxlength?: number;
 
   /**
    * Toggles text recognition
    */
-  @Prop({ reflect: true }) readonly mic?: boolean
+  @Prop({ reflect: true }) readonly mic?: boolean;
 
   /**
    * Specifies the minimum value
    * use it with input type="number" or type="date"
    * Example: min="-3", min="1988-04-15"
    */
-  @Prop({ reflect: true }) readonly min?: string | number
+  @Prop({ reflect: true }) readonly min?: string | number;
 
   /**
    * Specifies the minimum number of characters allowed in an element
    * use it with input type="number"
    */
-  @Prop({ reflect: true }) readonly minlength?: number
+  @Prop({ reflect: true }) readonly minlength?: number;
 
   /**
    * Is needed to reference the form data after the form is submitted
    */
-  @Prop({ reflect: true }) readonly name?: string
+  @Prop({ reflect: true }) readonly name?: string;
 
   /**
    * Specifies a regular expression that element\'s value is checked against
    */
-  @Prop({ reflect: true }) readonly pattern?: string
+  @Prop({ reflect: true }) readonly pattern?: string;
 
   /**
    * Specifies a short hint that describes the expected value of the element
    */
-  @Prop({ reflect: true }) readonly placeholder?: string
+  @Prop({ reflect: true }) readonly placeholder?: string;
 
   /**
    * Specifies that the element is read-only
    */
-  @Prop({ reflect: true }) readonly readonly?: boolean = false
+  @Prop({ reflect: true }) readonly readonly?: boolean = false;
 
   /**
    * Specifies that the element must be filled out before submitting the form
    */
-  @Prop({ reflect: true }) readonly required?: boolean = false
+  @Prop({ reflect: true }) readonly required?: boolean = false;
 
   /**
    * Sets the variant of the input field
    */
-  @Prop({ reflect: true, mutable: true }) variant?: ThemeInputVariantType = 'primary'
+  @Prop({ reflect: true, mutable: true }) variant?: ThemeInputVariantType = 'primary';
 
   /**
    * Sets the word(s) of the tip of the input field
    */
-  @Prop({ reflect: true }) readonly tip?: string
+  @Prop({ reflect: true }) readonly tip?: string;
 
   /**
    * Specifies the interval between legal numbers in an input field
    */
-  @Prop({ reflect: true }) readonly step?: string
+  @Prop({ reflect: true }) readonly step?: string;
 
   /**
    * Specifies the type of input element
    */
-  @Prop({ reflect: true }) readonly type?: InputTextType = 'text'
+  @Prop({ reflect: true }) readonly type?: InputTextType = 'text';
 
   /**
    * Specifies the typography of input element
    */
-  @Prop({ reflect: true }) typography: TypographyInputType = 'detail'
+  @Prop({ reflect: true }) typography: TypographyInputType = 'detail';
 
   /**
    * Specifies the value of the input element
    */
-  @Prop({ mutable:true, reflect: true }) value: string = ''
+  @Prop({ mutable: true, reflect: true }) value: string = '';
 
   /**
    * Emits an InputChangeEventDetail when the value of the input element changes
    */
-  @Event({ eventName: 'mdsInputChange' }) changeEvent!: EventEmitter<MdsInputEventDetail>
+  @Event({ eventName: 'mdsInputChange' }) changeEvent!: EventEmitter<MdsInputEventDetail>;
 
   /**
    * Emits a KeyboardEvent when a keyboard key is pressed on the focused input element
    */
-  @Event({ eventName: 'mdsInputKeydown' }) keyDownEvent!: EventEmitter<KeyboardEvent>
+  @Event({ eventName: 'mdsInputKeydown' }) keyDownEvent!: EventEmitter<KeyboardEvent>;
 
   /**
    * Emits a void event when input element is blurred
    */
-  @Event({ eventName: 'mdsInputBlur' }) blurEvent!: EventEmitter<void>
+  @Event({ eventName: 'mdsInputBlur' }) blurEvent!: EventEmitter<void>;
 
   /**
    * Emits a void event when input element is focused
    */
-  @Event({ eventName: 'mdsInputFocus' }) focusEvent!: EventEmitter<void>
+  @Event({ eventName: 'mdsInputFocus' }) focusEvent!: EventEmitter<void>;
 
   /**
    * Emits a void event when input speech recognition ends
    */
-  @Event({ eventName: 'mdsInputSpeechEnd' }) speechEvent!: EventEmitter<void>
+  @Event({ eventName: 'mdsInputSpeechEnd' }) speechEvent!: EventEmitter<void>;
 
   /**
    * Emits a boolean event when a input execute validation
    */
-  @Event({ eventName: 'mdsInputValidation' }) validationEvent!: EventEmitter<boolean>
+  @Event({ eventName: 'mdsInputValidation' }) validationEvent!: EventEmitter<boolean>;
 
-
-  formResetCallback (): void {
-    this.internals.setFormValue('')
+  formResetCallback(): void {
+    this.internals.setFormValue('');
   }
 
-  connectedCallback (): void {
-    this.datalistId = `datalist-${hashRandomValue()}`
+  connectedCallback(): void {
+    this.datalistId = `datalist-${hashRandomValue()}`;
   }
 
-  componentWillLoad (): void {
-
-    this.language = this.t.lang(this.el)
+  componentWillLoad(): void {
+    this.language = this.t.lang(this.el);
     // this.valuePristine = this.value
-    this.speechToTextLabel = this.t.get('speechToTextOn')
+    this.speechToTextLabel = this.t.get('speechToTextOn');
 
     // If the mds-input has a tabindex attribute we get the value
     // and pass it down to the native input, then remove it from the
     // mds-input to avoid causing tabbing twice on the same element
     if (this.el.hasAttribute('tabindex')) {
-      const tabindex = this.el.getAttribute('tabindex')
-      this.tabindex = tabindex !== null ? parseInt(tabindex) : undefined
-      this.el.removeAttribute('tabindex')
+      const tabindex = this.el.getAttribute('tabindex');
+      this.tabindex = tabindex !== null ? parseInt(tabindex) : undefined;
+      this.el.removeAttribute('tabindex');
     }
-    this.internals.setFormValue(this.value ?? null)
-    this.maxLengthChanged(this.maxlength)
-    this.isValid = !(this.required && !this.value)
+    this.internals.setFormValue(this.value ?? null);
+    this.maxLengthChanged(this.maxlength);
+    this.isValid = !(this.required && !this.value);
   }
 
-  componentDidLoad (): void {
-    this.inputValidation = createInputValidationManager(this.type!)
-    this.setValidators()
-    this.nativeInput?.setAttribute('pattern', String(this.inputValidation.pattern))
+  componentDidLoad(): void {
+    this.inputValidation = createInputValidationManager(this.type!);
+    this.setValidators();
+    this.nativeInput?.setAttribute('pattern', String(this.inputValidation.pattern));
     if (this.autofocus) {
-      this.nativeInput?.focus()
+      this.nativeInput?.focus();
     }
-    this.variantChanged(this.variant ?? 'primary')
+    this.variantChanged(this.variant ?? 'primary');
   }
 
-  private setValidators () {
-    if (this.required) this.inputValidation.validator.addValidator(requiredValidor)
-    if (this.max !== '' && Number(this.max)) this.inputValidation.validator.addValidator(maxValidator(Number(this.max)))
-    if (this.min !== '' && Number(this.min)) this.inputValidation.validator.addValidator(minValidator(Number(this.max)))
-    if (this.maxlength) this.inputValidation.validator.addValidator(maxLenghtValidator(this.maxlength))
-    if (this.minlength) this.inputValidation.validator.addValidator(minLenghtValidator(this.minlength))
+  private setValidators() {
+    if (this.required) this.inputValidation.validator.addValidator(requiredValidor);
+    if (this.max !== '' && Number(this.max))
+      this.inputValidation.validator.addValidator(maxValidator(Number(this.max)));
+    if (this.min !== '' && Number(this.min))
+      this.inputValidation.validator.addValidator(minValidator(Number(this.max)));
+    if (this.maxlength)
+      this.inputValidation.validator.addValidator(maxLenghtValidator(this.maxlength));
+    if (this.minlength)
+      this.inputValidation.validator.addValidator(minLenghtValidator(this.minlength));
   }
 
   /**
    * Emits the change event when the component value changes
    */
   @Watch('value')
-  protected valueChanged ():void {
-    this.changeEvent.emit({ value: this.value })
-    this.internals.setFormValue(this.value ?? null)
+  protected valueChanged(): void {
+    this.changeEvent.emit({ value: this.value });
+    this.internals.setFormValue(this.value ?? null);
     if (this.maxlength !== undefined) {
-      this.countMaxLength()
+      this.countMaxLength();
     }
     // if is necessary for skip validation when reset input to retype correct value, validation is always onBlur
-    if (this.value === '') return
-    if (!this.isValid) this.validateInput()
+    if (this.value === '') return;
+    if (!this.isValid) this.validateInput();
   }
 
   @Watch('variant')
-  protected variantChanged (newValue: ThemeInputVariantType):void {
+  protected variantChanged(newValue: ThemeInputVariantType): void {
     if (newValue === 'ai' && this.icon === undefined) {
-      this.icon = mggAiChatbotOutline
+      this.icon = mggAiChatbotOutline;
     }
   }
 
   @Watch('maxlength')
-  private maxLengthChanged (newValue?: number):void {
-    if (newValue === undefined) return
+  private maxLengthChanged(newValue?: number): void {
+    if (newValue === undefined) return;
     if (newValue <= 0) {
-      this.maxlength = undefined
-      return
+      this.maxlength = undefined;
+      return;
     }
-    this.countMaxLength()
+    this.countMaxLength();
   }
 
   @Method()
-  async addValidator (validator: MdsValidatorFn): Promise<void> {
-    this.inputValidation.validator.addValidator(validator)
-    return Promise.resolve()
+  async addValidator(validator: MdsValidatorFn): Promise<void> {
+    this.inputValidation.validator.addValidator(validator);
+    return Promise.resolve();
   }
 
   @Method()
-  async removeValidator (validator: MdsValidatorFn): Promise<void> {
-    this.inputValidation.validator.removeValidator(validator)
+  async removeValidator(validator: MdsValidatorFn): Promise<void> {
+    this.inputValidation.validator.removeValidator(validator);
   }
 
   /**
@@ -359,72 +387,71 @@ export class MdsInput {
    * @returns if a validator is present or not, if no validator given, return if there are at least one validator
    */
   @Method()
-  async hasValidator (validator?: MdsValidatorFn): Promise<boolean> {
-    return this.inputValidation.validator.hasValidator(validator)
+  async hasValidator(validator?: MdsValidatorFn): Promise<boolean> {
+    return this.inputValidation.validator.hasValidator(validator);
   }
 
   @Method()
-  async getErrors (): Promise<MdsValidationErrors | null> {
-    return Promise.resolve(this.inputValidation.validator.errors)
+  async getErrors(): Promise<MdsValidationErrors | null> {
+    return Promise.resolve(this.inputValidation.validator.errors);
   }
 
-  private validateInput (): boolean {
+  private validateInput(): boolean {
     // validate input only when atleast one validator is present
     if (this.inputValidation.validator.hasValidator()) {
-      this.isValid = this.inputValidation.isValid(this.value)
+      this.isValid = this.inputValidation.isValid(this.value);
 
       // set variant attribute
-      if (this.value === '' && !this.required) this.variant = 'primary'
-      else this.variant = this.isValid ? 'success' : 'error'
+      if (this.value === '' && !this.required) this.variant = 'primary';
+      else this.variant = this.isValid ? 'success' : 'error';
 
-      this.validationEvent.emit(this.isValid)
+      this.validationEvent.emit(this.isValid);
     }
-    return this.isValid
+    return this.isValid;
   }
 
-
   private countMaxLength = (): void => {
-    if (!this.maxlength) return
-    if (this.value === undefined) return
+    if (!this.maxlength) return;
+    if (this.value === undefined) return;
 
-    this.currentLengthLabel = `${this.value?.length ?? 0} / ${this.maxlength}`
+    this.currentLengthLabel = `${this.value?.length ?? 0} / ${this.maxlength}`;
 
-    const completionPerc = Math.round(this.value.length * 100 / this.maxlength)
+    const completionPerc = Math.round((this.value.length * 100) / this.maxlength);
 
     if (this.value?.length === this.maxlength) {
-      this.countVariant = 'count-full'
-      return
+      this.countVariant = 'count-full';
+      return;
     }
 
     if (completionPerc >= 100) {
-      this.countVariant = 'count-full'
-      return
+      this.countVariant = 'count-full';
+      return;
     }
 
     if (completionPerc >= 75) {
-      this.countVariant = 'count-almost-full'
-      return
+      this.countVariant = 'count-almost-full';
+      return;
     }
     if (completionPerc >= 50) {
-      this.countVariant = 'count-almost'
-      return
+      this.countVariant = 'count-almost';
+      return;
     }
     if (completionPerc >= 25) {
-      this.countVariant = 'count-incomplete'
-      return
+      this.countVariant = 'count-incomplete';
+      return;
     }
-    this.countVariant = 'count-empty'
-  }
+    this.countVariant = 'count-empty';
+  };
 
   @Watch('disabled')
-  protected disabledChanged (newValue: boolean):void {
+  protected disabledChanged(newValue: boolean): void {
     /**
      * This is related to ALL disabled attributes set on Magma input components
      * if solved, please check mds-button, mds-input, mds-input-*
      * https://github.com/ionic-team/stencil/issues/5461
      */
     if (newValue) {
-      this.internals.setFormValue(null)
+      this.internals.setFormValue(null);
     }
   }
 
@@ -434,9 +461,9 @@ export class MdsInput {
    * of the global `input.focus()`.
    */
   @Method()
-  async setFocus ():Promise<void> {
+  async setFocus(): Promise<void> {
     if (this.nativeInput) {
-      this.nativeInput.focus()
+      this.nativeInput.focus();
     }
   }
 
@@ -444,146 +471,151 @@ export class MdsInput {
    * Returns the native `<input>` element used under the hood.
    */
   @Method()
-  getInputElement (): Promise<HTMLInputElement | HTMLTextAreaElement> {
-
-    return Promise.resolve(this.nativeInput!)
+  getInputElement(): Promise<HTMLInputElement | HTMLTextAreaElement> {
+    return Promise.resolve(this.nativeInput!);
   }
 
   private onInput = (ev: InputEvent) => {
-    const input = ev.target as HTMLInputElement | HTMLTextAreaElement | false
+    const input = ev.target as HTMLInputElement | HTMLTextAreaElement | false;
     if (input) {
-      this.value = input.value
-      this.internals.setFormValue(this.value)
+      this.value = input.value;
+      this.internals.setFormValue(this.value);
     }
-    this.keyDownEvent.emit(ev as Event as KeyboardEvent)
-  }
+    this.keyDownEvent.emit(ev as Event as KeyboardEvent);
+  };
 
   private onBlur = () => {
-    this.hasFocus = false
-    this.validateInput()
-    this.blurEvent.emit()
+    this.hasFocus = false;
+    this.validateInput();
+    this.blurEvent.emit();
     // this.isValidInput = this.validateInput()
-  }
+  };
 
   private onFocus = (ev: Event) => {
-    const input = ev.target as HTMLInputElement | HTMLTextAreaElement
-    this.hasFocus = true
-    this.focusEvent.emit()
+    const input = ev.target as HTMLInputElement | HTMLTextAreaElement;
+    this.hasFocus = true;
+    this.focusEvent.emit();
     if (this.readonly) {
       // setTimeout to avoid Safari 14.1.2
       // to unselect text when mouse is clicked slowly
       setTimeout(() => {
-        input.select()
-      }, 10)
+        input.select();
+      }, 10);
     }
-  }
+  };
 
   private stepUp = () => {
     if (this.nativeInput && !this.readonly && !this.disabled) {
-      (this.nativeInput as HTMLInputElement).stepUp()
-      this.value = this.nativeInput.value
+      (this.nativeInput as HTMLInputElement).stepUp();
+      this.value = this.nativeInput.value;
     }
-  }
+  };
 
   private stepDown = () => {
     if (this.nativeInput && !this.readonly && !this.disabled) {
-      (this.nativeInput as HTMLInputElement).stepDown()
-      this.value = this.nativeInput.value
+      (this.nativeInput as HTMLInputElement).stepDown();
+      this.value = this.nativeInput.value;
     }
-  }
+  };
 
   private toggleTextRecognition = (): void => {
-    this.isRecording = !this.isRecording
+    this.isRecording = !this.isRecording;
 
     if (!this.isRecording) {
-      this.speechToTextLabel = this.t.get('speechToTextOn')
-      this.speechToTextIcon = miOutlineMic
-      this.stopRecognition()
-      return
+      this.speechToTextLabel = this.t.get('speechToTextOn');
+      this.speechToTextIcon = miOutlineMic;
+      this.stopRecognition();
+      return;
     }
 
-    this.speechToTextLabel = this.t.get('speechToTextOff')
-    this.speechToTextIcon = miBaselineDone
-    this.startRecognition()
-  }
+    this.speechToTextLabel = this.t.get('speechToTextOff');
+    this.speechToTextIcon = miBaselineDone;
+    this.startRecognition();
+  };
 
   private onSpeechRecognitionError = (): void => {
-    console.error('SpeechRecognition API may not work properly on Chrome based browsers.')
-    this.speechButton.classList.remove('mic-toggle-button--recording')
-    this.speechButton.classList.add('toggle-button--error')
-    this.isRecording = false
-    this.speechToTextLabel = this.t.get('speechToTextError')
-    this.speechToTextIcon = miOutlineMicOff
-  }
+    console.error('SpeechRecognition API may not work properly on Chrome based browsers.');
+    this.speechButton.classList.remove('mic-toggle-button--recording');
+    this.speechButton.classList.add('toggle-button--error');
+    this.isRecording = false;
+    this.speechToTextLabel = this.t.get('speechToTextError');
+    this.speechToTextIcon = miOutlineMicOff;
+  };
 
   private startRecognition = (): void => {
     if (!this.speechButton) {
-      this.speechButton = this.el?.shadowRoot?.querySelector('.mic-toggle-button') as HTMLMdsButtonElement
+      this.speechButton = this.el?.shadowRoot?.querySelector(
+        '.mic-toggle-button',
+      ) as HTMLMdsButtonElement;
     }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const SpeechRecognition = (window as any).SpeechRecognition ?? (window as any).webkitSpeechRecognition
-    this.value = ''
+    const SpeechRecognition =
+      (window as any).SpeechRecognition ?? (window as any).webkitSpeechRecognition;
+    this.value = '';
 
     if (!SpeechRecognition) {
-      this.onSpeechRecognitionError()
-      return
+      this.onSpeechRecognitionError();
+      return;
     }
 
-    this.recognition = new SpeechRecognition()
-    this.recognition.continuous = true
-    this.recognition.lang = navigator.language || 'it-IT'
-    this.recognition.interimResults = true
-    this.recognition.maxAlternatives = 1
+    this.recognition = new SpeechRecognition();
+    this.recognition.continuous = true;
+    this.recognition.lang = navigator.language || 'it-IT';
+    this.recognition.interimResults = true;
+    this.recognition.maxAlternatives = 1;
 
-    let transcript = ''
-    let progress = 0 // need to save position progress on speech results
+    let transcript = '';
+    let progress = 0; // need to save position progress on speech results
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     this.recognition.onresult = (event: any) => {
-      const speechResult = event.results
-      const interimResult = speechResult[progress]
+      const speechResult = event.results;
+      const interimResult = speechResult[progress];
       if (interimResult.isFinal) {
-        transcript += interimResult[0].transcript
-        this.value = transcript
-        progress += 1
-        return
+        transcript += interimResult[0].transcript;
+        this.value = transcript;
+        progress += 1;
+        return;
       }
-      this.value = transcript + interimResult[0].transcript
-    }
+      this.value = transcript + interimResult[0].transcript;
+    };
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     this.recognition.onerror = (event: any) => {
-      console.error('SpeechRecognition API error:', event.error)
-      this.onSpeechRecognitionError()
-    }
-    this.recognition.start()
-  }
+      console.error('SpeechRecognition API error:', event.error);
+      this.onSpeechRecognitionError();
+    };
+    this.recognition.start();
+  };
 
   private stopRecognition = (): void => {
     if (this.recognition) {
-      this.recognition.stop()
-      this.speechEvent.emit()
+      this.recognition.stop();
+      this.speechEvent.emit();
     }
+  };
+
+  componentWillRender(): void {
+    this.t.lang(this.el);
   }
 
-  componentWillRender (): void {
-    this.t.lang(this.el)
-  }
-
-  render () {
+  render() {
     return (
       <Host>
-        {this.type === 'number'
-          && this.controlsLayout === 'horizontal'
-          && <mds-button class="counter-button counter-button--horizontal counter-button--decrease"
+        {this.type === 'number' && this.controlsLayout === 'horizontal' && (
+          <mds-button
+            class="counter-button counter-button--horizontal counter-button--decrease"
             icon={this.controlsIcon === 'arrow' ? miBaselineArrowDown : miBaselineRemove}
-            onClick={this.stepDown} tabindex="0" title={this.t.get('decrease')}
+            onClick={this.stepDown}
+            tabindex="0"
+            title={this.t.get('decrease')}
             variant="dark"
             tone="text"
-            part="counter-button-decrease"></mds-button>
-        }
-        {this.type === 'textarea'
-          ? <textarea
+            part="counter-button-decrease"
+          ></mds-button>
+        )}
+        {this.type === 'textarea' ? (
+          <textarea
             class={clsx(
               'input',
               (this.icon ?? this.await) && 'has-icon',
@@ -600,12 +632,13 @@ export class MdsInput {
             part="field"
             placeholder={this.placeholder}
             readOnly={this.readonly}
-            ref={input => (this.nativeInput = input)}
+            ref={(input) => (this.nativeInput = input)}
             required={this.required}
             tabIndex={this.tabindex}
-            value={this.value}>
-          </textarea>
-          : <input
+            value={this.value}
+          ></textarea>
+        ) : (
+          <input
             class={clsx(
               'input',
               (this.icon ?? this.await) && 'has-icon',
@@ -627,86 +660,124 @@ export class MdsInput {
             part="field"
             placeholder={this.placeholder}
             readOnly={this.readonly}
-            ref={input => (this.nativeInput = input)}
+            ref={(input) => (this.nativeInput = input)}
             required={this.required}
             step={this.step}
             tabIndex={this.tabindex}
             type={this.type === 'password' && this.isPasswordVisible ? 'text' : this.type}
             value={this.value}
           />
-        }
-        {this.type === 'number'
-          && this.controlsLayout === 'vertical'
-          && <div class="counter counter--vertical">
-            <mds-button class="counter-button"
+        )}
+        {this.type === 'number' && this.controlsLayout === 'vertical' && (
+          <div class="counter counter--vertical">
+            <mds-button
+              class="counter-button"
               icon={this.controlsIcon === 'arrow' ? miBaselineArrowUp : miBaselineAdd}
-              onClick={this.stepUp} tabindex="0" title={this.t.get('increase')}
+              onClick={this.stepUp}
+              tabindex="0"
+              title={this.t.get('increase')}
               variant="dark"
               size="sm"
               tone="text"
-              part="counter-button-increase"></mds-button>
-            <mds-button class="counter-button"
+              part="counter-button-increase"
+            ></mds-button>
+            <mds-button
+              class="counter-button"
               icon={this.controlsIcon === 'arrow' ? miBaselineArrowDown : miBaselineRemove}
-              onClick={this.stepDown} tabindex="0" title={this.t.get('decrease')}
+              onClick={this.stepDown}
+              tabindex="0"
+              title={this.t.get('decrease')}
               variant="dark"
               size="sm"
               tone="text"
-              part="counter-button-decrease"></mds-button>
+              part="counter-button-decrease"
+            ></mds-button>
           </div>
-        }
-        {this.type === 'number'
-          && this.controlsLayout === 'horizontal'
-          && <mds-button class="counter-button counter-button--horizontal counter-button--increase"
+        )}
+        {this.type === 'number' && this.controlsLayout === 'horizontal' && (
+          <mds-button
+            class="counter-button counter-button--horizontal counter-button--increase"
             variant="dark"
             tone="text"
-            icon={this.controlsIcon === 'arrow' ? miBaselineArrowUp : miBaselineAdd} onClick={this.stepUp}
-            tabindex="0" title={this.t.get('increase')}
-            part="counter-button-increase"></mds-button>
-        }
-        {this.type === 'password'
-          && <mds-button class="password-toggle-button"
+            icon={this.controlsIcon === 'arrow' ? miBaselineArrowUp : miBaselineAdd}
+            onClick={this.stepUp}
+            tabindex="0"
+            title={this.t.get('increase')}
+            part="counter-button-increase"
+          ></mds-button>
+        )}
+        {this.type === 'password' && (
+          <mds-button
+            class="password-toggle-button"
             variant="dark"
             tone="text"
-            icon={this.isPasswordVisible ? miBaselineVisibleOff : miBaselineVisible} onClick={() => this.isPasswordVisible = !this.isPasswordVisible}
-            tabindex="0" title={this.isPasswordVisible ? this.t.get('hidePassword') : this.t.get('showPassword')}
-            part="password-toggle-button"></mds-button>
-        }
-        {this.type === 'password' && !this.isPasswordVisible && this.value?.length > 0 && <div class="password-mask">
-          <div class="password-mask-items" part="password-mask-items">
-            { Array.from({ length: this.value.length }).map((_, index) => (
-              <div key={index} class="password-mask-item" part="password-mask-item"></div>
-            )) }
+            icon={this.isPasswordVisible ? miBaselineVisibleOff : miBaselineVisible}
+            onClick={() => (this.isPasswordVisible = !this.isPasswordVisible)}
+            tabindex="0"
+            title={this.isPasswordVisible ? this.t.get('hidePassword') : this.t.get('showPassword')}
+            part="password-toggle-button"
+          ></mds-button>
+        )}
+        {this.type === 'password' && !this.isPasswordVisible && this.value?.length > 0 && (
+          <div class="password-mask">
+            <div class="password-mask-items" part="password-mask-items">
+              {Array.from({ length: this.value.length }).map((_, index) => (
+                <div key={index} class="password-mask-item" part="password-mask-item"></div>
+              ))}
+            </div>
           </div>
-        </div>}
-        {this.mic
-          && <mds-button class={clsx('mic-toggle-button', this.isRecording && 'mic-toggle-button--recording')}
-            icon={this.speechToTextIcon} onClick={() => this.toggleTextRecognition()}
-            tabindex="0" title={this.speechToTextLabel}
+        )}
+        {this.mic && (
+          <mds-button
+            class={clsx('mic-toggle-button', this.isRecording && 'mic-toggle-button--recording')}
+            icon={this.speechToTextIcon}
+            onClick={() => this.toggleTextRecognition()}
+            tabindex="0"
+            title={this.speechToTextLabel}
             variant="dark"
             tone="text"
-            part="mic-toggle-button"></mds-button>
-        }
-        <mds-input-tip lang={this.language} position="top" active={this.hasFocus} part='tip-top'>
-          { this.disabled && <mds-input-tip-item expanded variant="disabled"></mds-input-tip-item> }
-          { this.readonly && <mds-input-tip-item expanded variant="readonly"></mds-input-tip-item> }
-          { this.required &&
-            <mds-input-tip-item expanded={this.hasFocus} variant={this.isValid ? 'required-success' : 'required'}></mds-input-tip-item>
-          }
+            part="mic-toggle-button"
+          ></mds-button>
+        )}
+        <mds-input-tip lang={this.language} position="top" active={this.hasFocus} part="tip-top">
+          {this.disabled && <mds-input-tip-item expanded variant="disabled"></mds-input-tip-item>}
+          {this.readonly && <mds-input-tip-item expanded variant="readonly"></mds-input-tip-item>}
+          {this.required && (
+            <mds-input-tip-item
+              expanded={this.hasFocus}
+              variant={this.isValid ? 'required-success' : 'required'}
+            ></mds-input-tip-item>
+          )}
         </mds-input-tip>
-        <mds-input-tip lang={this.language} position="bottom" active={this.hasFocus} part='tip-bottom'>
-          { this.tip && <mds-input-tip-item expanded variant="text">{ this.tip }</mds-input-tip-item>}
-          { this.maxlength && <mds-input-tip-item part="tip-count" expanded variant={this.countVariant}>{ this.currentLengthLabel }</mds-input-tip-item> }
+        <mds-input-tip
+          lang={this.language}
+          position="bottom"
+          active={this.hasFocus}
+          part="tip-bottom"
+        >
+          {this.tip && (
+            <mds-input-tip-item expanded variant="text">
+              {this.tip}
+            </mds-input-tip-item>
+          )}
+          {this.maxlength && (
+            <mds-input-tip-item part="tip-count" expanded variant={this.countVariant}>
+              {this.currentLengthLabel}
+            </mds-input-tip-item>
+          )}
         </mds-input-tip>
-        {this.datalist &&
+        {this.datalist && (
           <datalist id={this.datalistId} class="datalist">
             {this.datalist.map((element, i) => {
-              return <option key={i} value={element}/>
+              return <option key={i} value={element} />;
             })}
           </datalist>
-        }
-        {this.icon && !this.await && <mds-icon class={clsx('icon', this.variant)} name={this.icon}/>}
-        <mds-spinner running={this.await} class={clsx('await', this.variant)}/>
+        )}
+        {this.icon && !this.await && (
+          <mds-icon class={clsx('icon', this.variant)} name={this.icon} />
+        )}
+        <mds-spinner running={this.await} class={clsx('await', this.variant)} />
       </Host>
-    )
+    );
   }
 }

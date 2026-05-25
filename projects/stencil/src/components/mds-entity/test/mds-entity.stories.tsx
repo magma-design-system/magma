@@ -1,28 +1,26 @@
-import { h } from '@stencil/core'
-import { useState } from 'react'
-import { iconsDictionary } from '@type/icon'
-import { themeFullVariantAvatarDictionary } from '@type/variant'
-import { toneMinimalVariantDictionary } from '@type/tone'
+import { h } from '@stencil/core';
+import { useState } from 'react';
+import { iconsDictionary } from '@type/icon';
+import { themeFullVariantAvatarDictionary } from '@type/variant';
+import { toneMinimalVariantDictionary } from '@type/tone';
 
 export default {
   title: 'UI / Entity',
   argTypes: {
     await: {
       type: { name: 'boolean' },
-      description:
-        'Specifies if the component is awaiting a response from an external resource',
+      description: 'Specifies if the component is awaiting a response from an external resource',
     },
     icon: {
       type: { name: 'string' },
-      description:
-        'Specifies the icon to be displayed if src propery is not used',
+      description: 'Specifies the icon to be displayed if src propery is not used',
       options: iconsDictionary,
       control: { type: 'select' },
     },
     initials: {
       type: { name: 'string' },
       description:
-        'The user\'s inizials displayed if there\'s no image available and icon is not set',
+        "The user's inizials displayed if there's no image available and icon is not set",
     },
     src: {
       type: { name: 'string' },
@@ -41,34 +39,22 @@ export default {
       control: { type: 'select' },
     },
   },
-}
+};
 
-const Template = args => (
+const Template = (args) => (
   <mds-entity {...args} aria-label="Personaggio">
     <mds-text truncate="word" aria-label="Nome" role="text" typography="h6">
       Mario Rossi
     </mds-text>
-    <mds-badge
-      aria-label="Carattere"
-      role="text"
-      slot="detail"
-      variant="orange"
-      tone="weak"
-    >
+    <mds-badge aria-label="Carattere" role="text" slot="detail" variant="orange" tone="weak">
       buono
     </mds-badge>
-    <mds-text
-      truncate="word"
-      aria-label="Email"
-      role="text"
-      slot="detail"
-      typography="caption"
-    >
+    <mds-text truncate="word" aria-label="Email" role="text" slot="detail" typography="caption">
       mario@nintendo.com
     </mds-text>
     <mds-button
       onClick={() => {
-        console.info('Restore')
+        console.info('Restore');
       }}
       slot="action"
       icon="mdi/replay"
@@ -78,7 +64,7 @@ const Template = args => (
     />
     <mds-button
       onClick={() => {
-        console.info('Delete')
+        console.info('Delete');
       }}
       slot="action"
       icon="mdi/delete"
@@ -87,9 +73,9 @@ const Template = args => (
       title="Delete"
     />
   </mds-entity>
-)
+);
 
-const TemplateLocation = args => (
+const TemplateLocation = (args) => (
   <mds-entity {...args} aria-label="Luogo">
     <mds-text truncate="word" typography="h6" title="Nome">
       Maggioli Headquarters
@@ -105,19 +91,19 @@ const TemplateLocation = args => (
       title="Go to Google Maps"
     />
   </mds-entity>
-)
+);
 
-const TemplateDownload = args => {
-  const [isUploading, setUpload] = useState(true)
-  const [isComplete, setUploadComplete] = useState(false)
-  let message = 'Upload in corso...'
+const TemplateDownload = (args) => {
+  const [isUploading, setUpload] = useState(true);
+  const [isComplete, setUploadComplete] = useState(false);
+  let message = 'Upload in corso...';
   if (isUploading) {
-    message = 'Upload in corso...'
+    message = 'Upload in corso...';
   } else {
-    message = 'Upload annullato'
+    message = 'Upload annullato';
   }
   if (isComplete) {
-    message = 'Upload completato con successo'
+    message = 'Upload completato con successo';
   }
   return (
     <div class="grid gap-400 grid-cols-full">
@@ -131,12 +117,7 @@ const TemplateDownload = args => {
         <mds-text truncate="word" aria-label="Nome" typography="h6">
           Report finanziario 2024.docx
         </mds-text>
-        <mds-text
-          truncate="word"
-          aria-label="Stato caricamento"
-          slot="detail"
-          typography="caption"
-        >
+        <mds-text truncate="word" aria-label="Stato caricamento" slot="detail" typography="caption">
           {message}
         </mds-text>
         {isUploading && !isComplete && (
@@ -152,8 +133,8 @@ const TemplateDownload = args => {
       <div class="flex gap-400 flex-wrap justify-between">
         <mds-button
           onClick={() => {
-            setUploadComplete(false)
-            setUpload(true)
+            setUploadComplete(false);
+            setUpload(true);
           }}
           variant="dark"
           tone="outline"
@@ -162,17 +143,17 @@ const TemplateDownload = args => {
         </mds-button>
         <mds-button
           onClick={() => {
-            setUploadComplete(true)
+            setUploadComplete(true);
           }}
         >
           Completa upload
         </mds-button>
       </div>
     </div>
-  )
-}
+  );
+};
 
-const TemplateCustomIconColors = args => (
+const TemplateCustomIconColors = (args) => (
   <mds-entity
     {...args}
     style={{
@@ -195,9 +176,9 @@ const TemplateCustomIconColors = args => (
       title="Go to Google Maps"
     />
   </mds-entity>
-)
+);
 
-const TemplateInitials = args => (
+const TemplateInitials = (args) => (
   <mds-entity {...args} aria-label="Luogo">
     <mds-text truncate="word" typography="h6" title="Nome">
       Maggioli Headquarters
@@ -213,7 +194,7 @@ const TemplateInitials = args => (
       title="Go to Google Maps"
     />
   </mds-entity>
-)
+);
 
 export const Default = {
   render: Template,
@@ -221,7 +202,7 @@ export const Default = {
   args: {
     src: './avatar-mario-01.png',
   },
-}
+};
 
 export const Initials = {
   render: TemplateInitials,
@@ -229,7 +210,7 @@ export const Initials = {
   args: {
     initials: 'mr',
   },
-}
+};
 
 export const Icon = {
   render: TemplateLocation,
@@ -237,7 +218,7 @@ export const Icon = {
   args: {
     icon: 'mi/baseline/route',
   },
-}
+};
 
 export const CustomIconColors = {
   render: TemplateCustomIconColors,
@@ -245,7 +226,7 @@ export const CustomIconColors = {
   args: {
     icon: 'mi/baseline/route',
   },
-}
+};
 
 export const Uploading = {
   render: TemplateDownload,
@@ -253,4 +234,4 @@ export const Uploading = {
   args: {
     tone: 'weak',
   },
-}
+};

@@ -1,10 +1,3 @@
+const dropdownInteractionDictionary = ['click', 'none', 'mouseover'];
 
-const dropdownInteractionDictionary = [
-  'click',
-  'none',
-  'mouseover',
-]
-
-export {
-  dropdownInteractionDictionary,
-}
+export { dropdownInteractionDictionary };

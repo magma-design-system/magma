@@ -16,8 +16,6 @@ const avatarVariant = [
   'bg-status-info-05',
   'bg-status-success-05',
   'bg-status-warning-05',
-]
+];
 
-export {
-  avatarVariant,
-}
+export { avatarVariant };

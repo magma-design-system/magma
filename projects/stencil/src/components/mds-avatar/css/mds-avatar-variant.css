@@ -1,9 +1,9 @@
 :host,
-:host([variant="primary"]) {
+:host([variant='primary']) {
   --mds-avatar-background-color: rgb(var(--variant-primary-05));
   --mds-avatar-color: rgb(var(--variant-primary-10));
 
-  &:host([tone="weak"]) {
+  &:host([tone='weak']) {
     --mds-avatar-background-color: rgb(var(--variant-primary-09));
     --mds-avatar-color: rgb(var(--variant-primary-05));
   }

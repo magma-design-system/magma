@@ -14,49 +14,49 @@
 @property --mds-table-actions-gap {
   inherits: false;
   initial-value: --spacing(200);
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-table-background-alt {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-10));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-table-background {
   inherits: false;
   initial-value: rgb(var(--tone-neutral));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-table-border-color {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-08));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-table-border-width {
   inherits: false;
   initial-value: 2px;
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-table-cell-padding {
   inherits: false;
   initial-value: --spacing(400);
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-table-color-alt {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-05));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-table-color {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-02));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 :host {
@@ -74,8 +74,7 @@
   --private-cell-border-color: var(--mds-table-border-color);
   --private-cell-border-width: var(--mds-table-border-width);
 
-  @apply
-    duration-200
+  @apply duration-200
     ease-out;
 
   background-color: var(--mds-table-background-alt);
@@ -99,7 +98,7 @@
 .table {
   border-collapse: separate;
   border-spacing: 0;
-  width: 100%
+  width: 100%;
 }
 
 @import './css/mds-table-batch-actions.css';

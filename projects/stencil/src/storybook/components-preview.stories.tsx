@@ -1,65 +1,87 @@
-import { h } from '@stencil/core'
-import { ReactNode } from 'react'
+import { h } from '@stencil/core';
+import { ReactNode } from 'react';
 // import { URLs } from '../components/mds-img/meta/storybook'
 
 export default {
   title: 'Common tests / Component previews',
-}
+};
 
 const Layout = ({ children }: { children?: ReactNode }) => (
   <div class="max-w-[480px] flex flex-wrap gap-400 p-600 outline-1 outline-offset-8 bg-tone-neutral">
-    { children }
+    {children}
   </div>
-)
+);
 
-const LayoutGrid = ({ children, className }: { children?: ReactNode, className?: string }) => (
-  <div class={`max-w-[480px] grid gap-400 p-600 outline-1 outline-offset-8 bg-tone-neutral ${className}`}>
-    { children }
+const LayoutGrid = ({ children, className }: { children?: ReactNode; className?: string }) => (
+  <div
+    class={`max-w-[480px] grid gap-400 p-600 outline-1 outline-offset-8 bg-tone-neutral ${className}`}
+  >
+    {children}
   </div>
-)
+);
 
 export const Banner = () => (
   <Layout>
     <mds-banner icon="mi/baseline/info" headline="This is a banner" variant="primary" tone="strong">
-      <mds-text typography="detail">Magma is a design system with 90+ components, designed to
-      help you build beautiful, high-quality products.</mds-text>
+      <mds-text typography="detail">
+        Magma is a design system with 90+ components, designed to help you build beautiful,
+        high-quality products.
+      </mds-text>
       <mds-button slot="action" label="Cancel" variant="dark" tone="outline"></mds-button>
       <mds-button slot="action" label="Confirm"></mds-button>
     </mds-banner>
   </Layout>
-)
+);
 
 export const Accordion = () => (
   <Layout>
     <mds-accordion>
       <mds-accordion-item label="Accordion" selected>
-        <mds-text>Magma has a full set of components to help you build beautiful, high-quality products. Accessibility is a first class citizen in this design system.</mds-text>
+        <mds-text>
+          Magma has a full set of components to help you build beautiful, high-quality products.
+          Accessibility is a first class citizen in this design system.
+        </mds-text>
       </mds-accordion-item>
       <mds-accordion-item label="Scalable by design">
-        <mds-text>Magma has a full set of components to help you build beautiful, high-quality products. Accessibility is a first class citizen in this design system.</mds-text>
+        <mds-text>
+          Magma has a full set of components to help you build beautiful, high-quality products.
+          Accessibility is a first class citizen in this design system.
+        </mds-text>
       </mds-accordion-item>
       <mds-accordion-item label="Accessibility first">
-        <mds-text>Magma has a full set of components to help you build beautiful, high-quality products. Accessibility is a first class citizen in this design system.</mds-text>
+        <mds-text>
+          Magma has a full set of components to help you build beautiful, high-quality products.
+          Accessibility is a first class citizen in this design system.
+        </mds-text>
       </mds-accordion-item>
     </mds-accordion>
   </Layout>
-)
+);
 
 export const AccordionTimer = () => (
   <Layout>
     <mds-accordion-timer>
       <mds-accordion-timer-item description="Accordion Timer">
-        <mds-text>Magma has a full set of components to help you build beautiful, high-quality products. Accessibility is a first class citizen in this design system.</mds-text>
+        <mds-text>
+          Magma has a full set of components to help you build beautiful, high-quality products.
+          Accessibility is a first class citizen in this design system.
+        </mds-text>
       </mds-accordion-timer-item>
       <mds-accordion-timer-item description="Scalable by design" selected>
-        <mds-text>Magma has a full set of components to help you build beautiful, high-quality products. Accessibility is a first class citizen in this design system.</mds-text>
+        <mds-text>
+          Magma has a full set of components to help you build beautiful, high-quality products.
+          Accessibility is a first class citizen in this design system.
+        </mds-text>
       </mds-accordion-timer-item>
       <mds-accordion-timer-item description="Future proof technology">
-        <mds-text>Magma has a full set of components to help you build beautiful, high-quality products. Accessibility is a first class citizen in this design system.</mds-text>
+        <mds-text>
+          Magma has a full set of components to help you build beautiful, high-quality products.
+          Accessibility is a first class citizen in this design system.
+        </mds-text>
       </mds-accordion-timer-item>
     </mds-accordion-timer>
   </Layout>
-)
+);
 
 export const Author = () => (
   <Layout>
@@ -70,44 +92,37 @@ export const Author = () => (
         slot="avatar"
         src="./avatar-06-200x200.jpeg"
       />
-      <mds-text typography="h6">
-        Eric Bolton
-      </mds-text>
-      <mds-text typography="caption">
-        Design System Architect
-      </mds-text>
-      <mds-text typography="caption">
-        Author & Publisher
-      </mds-text>
+      <mds-text typography="h6">Eric Bolton</mds-text>
+      <mds-text typography="caption">Design System Architect</mds-text>
+      <mds-text typography="caption">Author & Publisher</mds-text>
     </mds-author>
   </Layout>
-)
+);
 
 export const Avatar = () => (
-  <LayoutGrid className='grid-cols-5'>
+  <LayoutGrid className="grid-cols-5">
     <mds-avatar class="w-full" initials="eb" src="./avatar-06-200x200.jpeg" />
     <mds-avatar class="w-full" initials="eb" />
-    <mds-avatar class="w-full" initials="ab" tone="strong"/>
-    <mds-avatar class="w-full" initials="cd" tone="strong"/>
-    <mds-avatar class="w-full" initials="ef" tone="strong"/>
-    <mds-avatar class="w-full" initials="gh" tone="weak"/>
-    <mds-avatar class="w-full" initials="ij" tone="weak"/>
-    <mds-avatar class="w-full" initials="kl" tone="weak"/>
-    <mds-avatar class="w-full" initials="mn" tone="weak"/>
-    <mds-avatar class="w-full" initials="op" tone="weak"/>
-    <mds-avatar class="w-full" initials="qr" tone="weak"/>
-    <mds-avatar class="w-full" initials="st" tone="weak"/>
-    <mds-avatar class="w-full" initials="uv" tone="weak"/>
-    <mds-avatar class="w-full" initials="wx" tone="weak"/>
-    <mds-avatar class="w-full" initials="yz" tone="weak"/>
+    <mds-avatar class="w-full" initials="ab" tone="strong" />
+    <mds-avatar class="w-full" initials="cd" tone="strong" />
+    <mds-avatar class="w-full" initials="ef" tone="strong" />
+    <mds-avatar class="w-full" initials="gh" tone="weak" />
+    <mds-avatar class="w-full" initials="ij" tone="weak" />
+    <mds-avatar class="w-full" initials="kl" tone="weak" />
+    <mds-avatar class="w-full" initials="mn" tone="weak" />
+    <mds-avatar class="w-full" initials="op" tone="weak" />
+    <mds-avatar class="w-full" initials="qr" tone="weak" />
+    <mds-avatar class="w-full" initials="st" tone="weak" />
+    <mds-avatar class="w-full" initials="uv" tone="weak" />
+    <mds-avatar class="w-full" initials="wx" tone="weak" />
+    <mds-avatar class="w-full" initials="yz" tone="weak" />
     <mds-avatar class="w-full" variant="info" />
     <mds-avatar class="w-full" variant="error" tone="weak" />
     <mds-avatar class="size-1600" variant="warning" tone="weak" />
     <mds-avatar class="size-1200" variant="success" tone="weak" />
     <mds-avatar class="size-800" variant="info" tone="weak" />
   </LayoutGrid>
-)
-
+);
 
 export const AvatarStack = () => (
   <Layout>
@@ -150,46 +165,84 @@ export const AvatarStack = () => (
       <mds-avatar-stack-item initials="sd" tone="weak" />
     </mds-avatar-stack>
   </Layout>
-)
+);
 
 export const Badge = () => (
   <Layout>
     <mds-badge tone="weak">badge</mds-badge>
-    <mds-badge variant="yellow" tone="strong">banana</mds-badge>
-    <mds-badge variant="dark" tone="outline">cherry</mds-badge>
-    <mds-badge variant="yellow" tone="weak">date</mds-badge>
-    <mds-badge variant="amaranth" tone="strong">elderberry</mds-badge>
-    <mds-badge variant="aqua" tone="outline">fig</mds-badge>
-    <mds-badge variant="blue" tone="weak">grape</mds-badge>
-    <mds-badge variant="dark" tone="strong">honeydew</mds-badge>
-    <mds-badge variant="error" tone="outline">kiwi</mds-badge>
-    <mds-badge variant="green" tone="weak">lemon</mds-badge>
-    <mds-badge variant="info" tone="strong">mango</mds-badge>
-    <mds-badge variant="lime" tone="outline">nectarine</mds-badge>
-    <mds-badge variant="orange" tone="weak">orange</mds-badge>
-    <mds-badge variant="purple" tone="strong">papaya</mds-badge>
-    <mds-badge variant="red" tone="outline">quince</mds-badge>
-    <mds-badge variant="sky" tone="weak">raspberry</mds-badge>
-    <mds-badge variant="success" tone="strong">strawberry</mds-badge>
-    <mds-badge variant="violet" tone="outline">tangerine</mds-badge>
-    <mds-badge variant="warning" tone="weak">watermelon</mds-badge>
-    <mds-badge variant="yellow" tone="strong">zucchini</mds-badge>
+    <mds-badge variant="yellow" tone="strong">
+      banana
+    </mds-badge>
+    <mds-badge variant="dark" tone="outline">
+      cherry
+    </mds-badge>
+    <mds-badge variant="yellow" tone="weak">
+      date
+    </mds-badge>
+    <mds-badge variant="amaranth" tone="strong">
+      elderberry
+    </mds-badge>
+    <mds-badge variant="aqua" tone="outline">
+      fig
+    </mds-badge>
+    <mds-badge variant="blue" tone="weak">
+      grape
+    </mds-badge>
+    <mds-badge variant="dark" tone="strong">
+      honeydew
+    </mds-badge>
+    <mds-badge variant="error" tone="outline">
+      kiwi
+    </mds-badge>
+    <mds-badge variant="green" tone="weak">
+      lemon
+    </mds-badge>
+    <mds-badge variant="info" tone="strong">
+      mango
+    </mds-badge>
+    <mds-badge variant="lime" tone="outline">
+      nectarine
+    </mds-badge>
+    <mds-badge variant="orange" tone="weak">
+      orange
+    </mds-badge>
+    <mds-badge variant="purple" tone="strong">
+      papaya
+    </mds-badge>
+    <mds-badge variant="red" tone="outline">
+      quince
+    </mds-badge>
+    <mds-badge variant="sky" tone="weak">
+      raspberry
+    </mds-badge>
+    <mds-badge variant="success" tone="strong">
+      strawberry
+    </mds-badge>
+    <mds-badge variant="violet" tone="outline">
+      tangerine
+    </mds-badge>
+    <mds-badge variant="warning" tone="weak">
+      watermelon
+    </mds-badge>
+    <mds-badge variant="yellow" tone="strong">
+      zucchini
+    </mds-badge>
   </Layout>
-)
+);
 
 export const BenchmarkBar = () => (
   <Layout>
-    <mds-benchmark-bar class="w-full" value={30} alias='30%' variant="error">
+    <mds-benchmark-bar class="w-full" value={30} alias="30%" variant="error">
       Not much
     </mds-benchmark-bar>
-    <mds-benchmark-bar class="w-full" value={50} alias='50%'>
+    <mds-benchmark-bar class="w-full" value={50} alias="50%">
       Benchmark bar
     </mds-benchmark-bar>
-    <mds-benchmark-bar class="w-full" value={60} alias='60%' variant="success">
+    <mds-benchmark-bar class="w-full" value={60} alias="60%" variant="success">
       Too much
     </mds-benchmark-bar>
   </Layout>
-)
+);
 
 export const Bibliography = () => (
   <Layout>
@@ -202,7 +255,7 @@ export const Bibliography = () => (
       url="https://www.maggioli.com"
     />
   </Layout>
-)
+);
 
 export const Breadcrumb = () => (
   <Layout>
@@ -212,134 +265,66 @@ export const Breadcrumb = () => (
       <mds-breadcrumb-item label="Let's just go" />
     </mds-breadcrumb>
   </Layout>
-)
+);
 
 export const Button = () => (
   <Layout>
     <mds-button label="Hello world"></mds-button>
     <mds-button label="Magma Design System" variant="dark"></mds-button>
     <mds-button label="Library" variant="dark" tone="outline"></mds-button>
-    <mds-button label="Magma" variant="light" tone="box" icon="mi/baseline/animation" class="pb-50"></mds-button>
+    <mds-button
+      label="Magma"
+      variant="light"
+      tone="box"
+      icon="mi/baseline/animation"
+      class="pb-50"
+    ></mds-button>
     <mds-button label="Information" variant="info" tone="weak"></mds-button>
-    <mds-button label="Design System" icon="mgg/ai-chatbot-outline" variant="ai" tone="weak"></mds-button>
+    <mds-button
+      label="Design System"
+      icon="mgg/ai-chatbot-outline"
+      variant="ai"
+      tone="weak"
+    ></mds-button>
     <mds-button label="Apple" variant="apple"></mds-button>
-    <mds-button label="Go" variant="success" icon="mi/baseline/arrow-forward" icon-position="right"></mds-button>
+    <mds-button
+      label="Go"
+      variant="success"
+      icon="mi/baseline/arrow-forward"
+      icon-position="right"
+    ></mds-button>
     <mds-button label="Google" variant="google"></mds-button>
   </Layout>
-)
+);
 
 export const ButtonDropdown = () => (
   <Layout>
-    <mds-button-dropdown
-      label="Button dropdown"
-      tone="weak"
-      variant="success"
-    >
-      <mds-button
-        icon="mi/baseline/send"
-        label="Invia subito"
-        tone="text"
-        variant="dark"
-      />
-      <mds-button
-        icon="mi/baseline/delete"
-        label="Elimina"
-        tone="text"
-        variant="dark"
-      />
+    <mds-button-dropdown label="Button dropdown" tone="weak" variant="success">
+      <mds-button icon="mi/baseline/send" label="Invia subito" tone="text" variant="dark" />
+      <mds-button icon="mi/baseline/delete" label="Elimina" tone="text" variant="dark" />
     </mds-button-dropdown>
-    <mds-button-dropdown
-      label="Checkout item information"
-      tone="weak"
-      variant="info"
-    >
-      <mds-button
-        icon="mi/baseline/send"
-        label="Invia subito"
-        tone="text"
-        variant="dark"
-      />
-      <mds-button
-        icon="mi/baseline/delete"
-        label="Elimina"
-        tone="text"
-        variant="dark"
-      />
+    <mds-button-dropdown label="Checkout item information" tone="weak" variant="info">
+      <mds-button icon="mi/baseline/send" label="Invia subito" tone="text" variant="dark" />
+      <mds-button icon="mi/baseline/delete" label="Elimina" tone="text" variant="dark" />
     </mds-button-dropdown>
-    <mds-button-dropdown
-      label="Continue"
-      tone="strong"
-      variant="dark"
-    >
-      <mds-button
-        icon="mi/baseline/send"
-        label="Invia subito"
-        tone="text"
-        variant="dark"
-      />
-      <mds-button
-        icon="mi/baseline/delete"
-        label="Elimina"
-        tone="text"
-        variant="dark"
-      />
+    <mds-button-dropdown label="Continue" tone="strong" variant="dark">
+      <mds-button icon="mi/baseline/send" label="Invia subito" tone="text" variant="dark" />
+      <mds-button icon="mi/baseline/delete" label="Elimina" tone="text" variant="dark" />
     </mds-button-dropdown>
-    <mds-button-dropdown
-      label="Avoid sugar"
-      tone="weak"
-      variant="dark"
-    >
-      <mds-button
-        icon="mi/baseline/send"
-        label="Invia subito"
-        tone="text"
-        variant="dark"
-      />
-      <mds-button
-        icon="mi/baseline/delete"
-        label="Elimina"
-        tone="text"
-        variant="dark"
-      />
+    <mds-button-dropdown label="Avoid sugar" tone="weak" variant="dark">
+      <mds-button icon="mi/baseline/send" label="Invia subito" tone="text" variant="dark" />
+      <mds-button icon="mi/baseline/delete" label="Elimina" tone="text" variant="dark" />
     </mds-button-dropdown>
-    <mds-button-dropdown
-      label="You are warned"
-      tone="weak"
-      variant="warning"
-    >
-      <mds-button
-        icon="mi/baseline/send"
-        label="Invia subito"
-        tone="text"
-        variant="dark"
-      />
-      <mds-button
-        icon="mi/baseline/delete"
-        label="Elimina"
-        tone="text"
-        variant="dark"
-      />
+    <mds-button-dropdown label="You are warned" tone="weak" variant="warning">
+      <mds-button icon="mi/baseline/send" label="Invia subito" tone="text" variant="dark" />
+      <mds-button icon="mi/baseline/delete" label="Elimina" tone="text" variant="dark" />
     </mds-button-dropdown>
-    <mds-button-dropdown
-      label="Errors found"
-      tone="weak"
-      variant="error"
-    >
-      <mds-button
-        icon="mi/baseline/send"
-        label="Invia subito"
-        tone="text"
-        variant="dark"
-      />
-      <mds-button
-        icon="mi/baseline/delete"
-        label="Elimina"
-        tone="text"
-        variant="dark"
-      />
+    <mds-button-dropdown label="Errors found" tone="weak" variant="error">
+      <mds-button icon="mi/baseline/send" label="Invia subito" tone="text" variant="dark" />
+      <mds-button icon="mi/baseline/delete" label="Elimina" tone="text" variant="dark" />
     </mds-button-dropdown>
   </Layout>
-)
+);
 
 export const ButtonGroup = () => (
   <Layout>
@@ -354,23 +339,20 @@ export const ButtonGroup = () => (
       <mds-button icon="mi/baseline/format-bold" tone="text" variant="dark" />
     </mds-button-group>
   </Layout>
-)
+);
 
 export const Calendar = () => (
   <Layout>
     <mds-calendar end-date="2025-03-24" start-date="2025-03-18" class="w-full" />
   </Layout>
-)
+);
 
 export const Card = () => (
   <Layout>
     <mds-card class="w-full">
       <mds-card-header>
         <div class="flex gap-400 items-center min-w-0">
-          <mds-avatar
-            class="w-1100 min-w-1100 shrink-0"
-            initials="md"
-          ></mds-avatar>
+          <mds-avatar class="w-1100 min-w-1100 shrink-0" initials="md"></mds-avatar>
           <div class="flex gap-0 flex-col grow min-w-0">
             <mds-text typography="h6" truncate="word">
               Magma Design System
@@ -393,9 +375,9 @@ export const Card = () => (
       </mds-card-media>
       <mds-card-content>
         <mds-text>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin quis
-          elementum lorem. Phasellus vel quam leo. Ut eget finibus libero. Integer
-          sed odio hendrerit diam maximus blandit ac malesuada odio.
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin quis elementum lorem.
+          Phasellus vel quam leo. Ut eget finibus libero. Integer sed odio hendrerit diam maximus
+          blandit ac malesuada odio.
         </mds-text>
       </mds-card-content>
       <mds-card-footer>
@@ -406,7 +388,7 @@ export const Card = () => (
       </mds-card-footer>
     </mds-card>
   </Layout>
-)
+);
 
 export const Chip = () => (
   <Layout>
@@ -415,20 +397,43 @@ export const Chip = () => (
     <mds-chip icon="mi/baseline/ac-unit" label="Cold" variant="info" tone="weak"></mds-chip>
     <mds-chip icon="mi/baseline/grass" label="Grass" variant="green" tone="weak"></mds-chip>
     <mds-chip icon="mi/baseline/pets" label="Dog" variant="warning" tone="strong"></mds-chip>
-    <mds-chip icon="mi/baseline/sports-bar" label="Go drink something" variant="warning" tone="weak"></mds-chip>
+    <mds-chip
+      icon="mi/baseline/sports-bar"
+      label="Go drink something"
+      variant="warning"
+      tone="weak"
+    ></mds-chip>
     <mds-chip icon="mi/baseline/desk" label="Desk" variant="info" tone="weak"></mds-chip>
-    <mds-chip icon="mi/baseline/family-restroom" label="Family" variant="orchid" tone="weak"></mds-chip>
+    <mds-chip
+      icon="mi/baseline/family-restroom"
+      label="Family"
+      variant="orchid"
+      tone="weak"
+    ></mds-chip>
     <mds-chip icon="mi/outline/light" label="Light" variant="orange" tone="weak"></mds-chip>
-    <mds-chip icon="mi/baseline/headphones" label="Hear music" variant="blue" tone="strong"></mds-chip>
-    <mds-chip icon="mi/baseline/play-arrow" label="Removable item" variant="lime" tone="weak" deletable></mds-chip>
+    <mds-chip
+      icon="mi/baseline/headphones"
+      label="Hear music"
+      variant="blue"
+      tone="strong"
+    ></mds-chip>
+    <mds-chip
+      icon="mi/baseline/play-arrow"
+      label="Removable item"
+      variant="lime"
+      tone="weak"
+      deletable
+    ></mds-chip>
   </Layout>
-)
+);
 
 export const Details = () => (
   <Layout>
     <mds-details opened>
       <mds-icon name="mi/baseline/check-circle" slot="icon" />
-      <mds-text slot="title" typography="h6">Details</mds-text>
+      <mds-text slot="title" typography="h6">
+        Details
+      </mds-text>
       <mds-text typography="detail">
         This component is used to display additional information in a collapsible section.
       </mds-text>
@@ -438,7 +443,9 @@ export const Details = () => (
     </mds-details>
     <mds-details>
       <mds-icon name="mgg/ai-chatbot" slot="icon" />
-      <mds-text slot="title" typography="h6">Chatbot</mds-text>
+      <mds-text slot="title" typography="h6">
+        Chatbot
+      </mds-text>
       <mds-text typography="detail">
         This component is used to display additional information in a collapsible section.
       </mds-text>
@@ -448,7 +455,9 @@ export const Details = () => (
     </mds-details>
     <mds-details>
       <mds-icon name="mi/baseline/park" slot="icon" />
-      <mds-text slot="title" typography="h6">Tree</mds-text>
+      <mds-text slot="title" typography="h6">
+        Tree
+      </mds-text>
       <mds-text typography="detail">
         This component is used to display additional information in a collapsible section.
       </mds-text>
@@ -457,18 +466,13 @@ export const Details = () => (
       </mds-button>
     </mds-details>
   </Layout>
-)
+);
 
 export const Dropdown = () => (
   <Layout>
     <div class="flex items-start justify-center h-[300px] w-full">
-      <mds-button id="my-dropdown">
-        Show Fred
-      </mds-button>
-      <mds-dropdown
-        class="max-w-[350px] w-full"
-        target="#my-dropdown"
-      >
+      <mds-button id="my-dropdown">Show Fred</mds-button>
+      <mds-dropdown class="max-w-[350px] w-full" target="#my-dropdown">
         <mds-author class="text-tone-neutral-04">
           <mds-avatar
             aria-describedby="A protrait of Frederick Phillips Brooks Jr."
@@ -477,53 +481,91 @@ export const Dropdown = () => (
             slot="avatar"
             src="./fred-brooks-zoom.webp"
           />
-          <mds-text
-            class="text-tone-neutral-02"
-            typography="h6"
-          >
+          <mds-text class="text-tone-neutral-02" typography="h6">
             Fred Brooks
           </mds-text>
-          <mds-text typography="caption">
-            Software engineer
-          </mds-text>
-          <mds-text typography="caption">
-            IT
-          </mds-text>
+          <mds-text typography="caption">Software engineer</mds-text>
+          <mds-text typography="caption">IT</mds-text>
         </mds-author>
-        <mds-text
-          class="text-tone-neutral-04"
-          typography="detail"
-        >
-          Frederick Phillips "Fred" Brooks Jr. (born April 19, 1931) is an American computer architect, software engineer, and computer scientist.
+        <mds-text class="text-tone-neutral-04" typography="detail">
+          Frederick Phillips "Fred" Brooks Jr. (born April 19, 1931) is an American computer
+          architect, software engineer, and computer scientist.
         </mds-text>
       </mds-dropdown>
     </div>
   </Layout>
-)
+);
 
 export const Entity = () => (
   <Layout>
     <mds-entity aria-label="Luogo" initials="EC" class="w-full">
-      <mds-text truncate="word" typography="h6" title="Nome">Entity</mds-text>
-      <mds-text truncate="word" title="Strada" slot="detail" typography="caption">Component</mds-text>
-      <mds-button slot="action" icon="mdi/map-marker" variant="primary" tone="strong" title="Go to Google Maps"/>
+      <mds-text truncate="word" typography="h6" title="Nome">
+        Entity
+      </mds-text>
+      <mds-text truncate="word" title="Strada" slot="detail" typography="caption">
+        Component
+      </mds-text>
+      <mds-button
+        slot="action"
+        icon="mdi/map-marker"
+        variant="primary"
+        tone="strong"
+        title="Go to Google Maps"
+      />
     </mds-entity>
 
     <mds-entity aria-label="Personaggio" src="./example-avatar-02.png" class="w-full">
-      <mds-text aria-label="Nome" role="text" truncate="word" typography="h6">Mike Wazowski</mds-text>
-      <mds-badge aria-label="Carattere" role="text" slot="detail" tone="weak" variant="orange">buono</mds-badge>
-      <mds-text aria-label="Email" role="text" slot="detail" truncate="word" typography="caption">mike@wazowski.com</mds-text>
-      <mds-button icon="mdi/replay" onClick={() => {}} slot="action" title="Restore" tone="strong" variant="primary"/>
-      <mds-button icon="mdi/delete" onClick={() => {}} slot="action" title="Delete" tone="strong" variant="error"/>
+      <mds-text aria-label="Nome" role="text" truncate="word" typography="h6">
+        Mike Wazowski
+      </mds-text>
+      <mds-badge aria-label="Carattere" role="text" slot="detail" tone="weak" variant="orange">
+        buono
+      </mds-badge>
+      <mds-text aria-label="Email" role="text" slot="detail" truncate="word" typography="caption">
+        mike@wazowski.com
+      </mds-text>
+      <mds-button
+        icon="mdi/replay"
+        onClick={() => {}}
+        slot="action"
+        title="Restore"
+        tone="strong"
+        variant="primary"
+      />
+      <mds-button
+        icon="mdi/delete"
+        onClick={() => {}}
+        slot="action"
+        title="Delete"
+        tone="strong"
+        variant="error"
+      />
     </mds-entity>
 
-    <mds-entity aria-label="File" await icon="mi/baseline/remove-circle" tone="weak" variant="warning" class="w-full">
-      <mds-text aria-label="Nome" truncate="word" typography="h6">Report_2016_2017.docx</mds-text>
-      <mds-text aria-label="Stato caricamento" slot="detail" truncate="word" typography="caption">Uploading...</mds-text>
-      <mds-button icon="mi/baseline/cancel" onClick={() => {}} slot="action" title="Annulla upload" variant="light"/>
+    <mds-entity
+      aria-label="File"
+      await
+      icon="mi/baseline/remove-circle"
+      tone="weak"
+      variant="warning"
+      class="w-full"
+    >
+      <mds-text aria-label="Nome" truncate="word" typography="h6">
+        Report_2016_2017.docx
+      </mds-text>
+      <mds-text aria-label="Stato caricamento" slot="detail" truncate="word" typography="caption">
+        Uploading...
+      </mds-text>
+      <mds-button
+        icon="mi/baseline/cancel"
+        onClick={() => {}}
+        slot="action"
+        title="Annulla upload"
+        variant="light"
+      />
     </mds-entity>
   </Layout>
-)
+);
 
 export const File = () => (
   <Layout>
@@ -535,15 +577,15 @@ export const File = () => (
     <mds-file filename="data.json" />
     <mds-file filename="audio file.mp3" />
   </Layout>
-)
+);
 
 export const FilePreview = () => (
-  <LayoutGrid className='grid-cols-2'>
+  <LayoutGrid className="grid-cols-2">
     <mds-file-preview filename="audio file.mp3" filesize="10248594" />
     <mds-file-preview filename="CV_Rossi.pdf" filesize="6475532" />
     <mds-file-preview filename="Vector Image.svg" filesize="248594" />
   </LayoutGrid>
-)
+);
 
 export const Header = () => (
   <Layout>
@@ -584,7 +626,7 @@ export const Header = () => (
       </div>
     </mds-header>
   </Layout>
-)
+);
 
 export const Keyboard = () => (
   <Layout>
@@ -607,7 +649,7 @@ export const Keyboard = () => (
       <mds-keyboard-key name="x"></mds-keyboard-key>
     </mds-keyboard>
   </Layout>
-)
+);
 
 export const Label = () => (
   <Layout>
@@ -623,39 +665,43 @@ export const Label = () => (
     <mds-label label="Yellow" variant="yellow"></mds-label>
     <mds-label label="Orange" variant="orange"></mds-label>
   </Layout>
-)
+);
 
 export const List = () => (
   <Layout>
     <mds-list>
-      <mds-list-item>This is a list item, the first element, which can be as long as you want</mds-list-item>
+      <mds-list-item>
+        This is a list item, the first element, which can be as long as you want
+      </mds-list-item>
       <mds-list-item>Then, this is the second element in the list</mds-list-item>
       <mds-list-item>And finally, this is the third element in the list</mds-list-item>
     </mds-list>
   </Layout>
-)
+);
 
 export const Mention = () => (
   <Layout>
     <mds-text>
-      Hello <mds-mention label="mario.rossi"></mds-mention>, are you ready to be mentioned with this fantastic and incredible component?
+      Hello <mds-mention label="mario.rossi"></mds-mention>, are you ready to be mentioned with this
+      fantastic and incredible component?
     </mds-text>
   </Layout>
-)
+);
 
 export const Note = () => (
   <Layout>
     <mds-note>
-      What one programmer can do in one month, two programmers can do in two months. That's what Fred Brooks said.
+      What one programmer can do in one month, two programmers can do in two months. That's what
+      Fred Brooks said.
     </mds-note>
   </Layout>
-)
+);
 
 export const Paginator = () => (
   <Layout>
     <mds-paginator class="min-w-0" pages={32} />
   </Layout>
-)
+);
 
 export const Preference = () => (
   <Layout>
@@ -666,4 +712,4 @@ export const Preference = () => (
       <mds-pref-consumption />
     </mds-pref>
   </Layout>
-)
+);

@@ -1,10 +1,3 @@
-const validationModelDictionary = [
-  'cf',
-  'email',
-  'isbn',
-  'piva',
-]
+const validationModelDictionary = ['cf', 'email', 'isbn', 'piva'];
 
-export {
-  validationModelDictionary,
-}
+export { validationModelDictionary };

@@ -1,8 +1,3 @@
-const attachmentSortDictionary = [
-  'date',
-  'status',
-]
+const attachmentSortDictionary = ['date', 'status'];
 
-export {
-  attachmentSortDictionary,
-}
+export { attachmentSortDictionary };

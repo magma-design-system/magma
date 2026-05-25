@@ -34,8 +34,7 @@
 }
 
 .label {
-  @apply
-    h-700;
+  @apply h-700;
 
   align-items: center;
   display: inline-flex;

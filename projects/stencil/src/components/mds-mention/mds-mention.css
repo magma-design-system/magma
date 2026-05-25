@@ -7,7 +7,7 @@
 @property --mds-mention-icon-size {
   inherits: false;
   initial-value: --spacing(600);
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 :host {

@@ -18,25 +18,25 @@
 
 @property --magma-theme-name {
   inherits: false;
-  initial-value: "default";
+  initial-value: 'default';
   syntax: '<string>';
 }
 
-:root[data-theme-name="solo-light"] {
+:root[data-theme-name='solo-light'] {
   --tone-slate-01: rgb(var(--tone-grey-01, 28 34 42));
   --tone-slate-02: rgb(var(--tone-grey-02, 33 41 50));
   --tone-slate-03: rgb(var(--tone-grey-03, 54 65 81));
   --tone-slate-04: rgb(var(--tone-grey-04, 71 85 106));
 }
 
-:root[data-theme-name="solo-dark"] {
+:root[data-theme-name='solo-dark'] {
   --tone-slate-01: rgb(var(--tone-grey-01, 28 34 42));
   --tone-slate-02: rgb(var(--tone-grey-02, 33 41 50));
   --tone-slate-03: rgb(var(--tone-grey-03, 54 65 81));
   --tone-slate-04: rgb(var(--tone-grey-04, 71 85 106));
 }
 
-:root[data-theme-name="solo-both"] {
+:root[data-theme-name='solo-both'] {
   --tone-slate-01: rgb(var(--tone-grey-01, 28 34 42));
   --tone-slate-02: rgb(var(--tone-grey-02, 33 41 50));
   --tone-slate-03: rgb(var(--tone-grey-03, 54 65 81));
@@ -338,7 +338,6 @@
   border multiplier: 0.5px  |    1px  | 1.5px  |   2px
   */
 
-
   --magma-theme-depth: false;
   --magma-theme-border-size: var(--border-lg);
   --magma-theme-element-lg-radius: var(--radius-lg);
@@ -356,22 +355,33 @@
   default: true;
   name: "light";
   prefersdark: true; */
-  --shadow-box-2xl: rgb(0 0 0 / 0.4) 0px 2px 4px, rgb(0 0 0 / 0.3) 0px 7px 13px -3px, rgb(0 0 0 / 0.35) 0px -3px 0px inset, rgb(255 255 255 / 0.1) 0px -8px 10px inset, rgb(255 255 255 / 0.15) 0px -4px 0px inset;
+  --shadow-box-2xl:
+    rgb(0 0 0 / 0.4) 0px 2px 4px, rgb(0 0 0 / 0.3) 0px 7px 13px -3px,
+    rgb(0 0 0 / 0.35) 0px -3px 0px inset, rgb(255 255 255 / 0.1) 0px -8px 10px inset,
+    rgb(255 255 255 / 0.15) 0px -4px 0px inset;
   --shadow-box-lg: rgb(0 0 0 / 0.25) 0px 4px 8px -2px, rgb(0 0 0 / 0.08) 0px 0px 0px 1px;
-  --shadow-box-md: rgb(0 0 0 / 0.06) 0px 0px 0px 1px, rgb(0 0 0 / 0.03) 0px 1px 1px -0.5px, rgb(0 0 0 / 0.04) 0px 2px 2px -1px, rgb(0 0 0 / 0.04) 0px 3px 3px -1.5px, rgb(0 0 0 / 0.03) 0px 5px 5px -2.5px, rgb(0 0 0 / 0.03) 0px 10px 10px -5px, rgb(0 0 0 / 0.03) 0px 24px 24px -8px;
-  --shadow-box-xl: rgb(0 0 0 / 0.05) 0px 0px 0px 1px, rgb(0 0 0 / 0.1) 0px 1px 1px -0.5px, rgb(0 0 0 / 0.1) 0px 3px 3px -1.5px, rgb(0 0 0 / 0.1) 0px 6px 6px -3px, rgb(0 0 0 / 0.1) 0px 12px 12px -6px, rgb(0 0 0 / 0.1) 0px 24px 24px -12px;
-  --shadow-glow-distant-strong: rgb(0 0 0 / 0.25) 0px 50px 100px -20px, rgb(0 0 0 / 0.3) 0px 30px 60px -30px;
+  --shadow-box-md:
+    rgb(0 0 0 / 0.06) 0px 0px 0px 1px, rgb(0 0 0 / 0.03) 0px 1px 1px -0.5px,
+    rgb(0 0 0 / 0.04) 0px 2px 2px -1px, rgb(0 0 0 / 0.04) 0px 3px 3px -1.5px,
+    rgb(0 0 0 / 0.03) 0px 5px 5px -2.5px, rgb(0 0 0 / 0.03) 0px 10px 10px -5px,
+    rgb(0 0 0 / 0.03) 0px 24px 24px -8px;
+  --shadow-box-xl:
+    rgb(0 0 0 / 0.05) 0px 0px 0px 1px, rgb(0 0 0 / 0.1) 0px 1px 1px -0.5px,
+    rgb(0 0 0 / 0.1) 0px 3px 3px -1.5px, rgb(0 0 0 / 0.1) 0px 6px 6px -3px,
+    rgb(0 0 0 / 0.1) 0px 12px 12px -6px, rgb(0 0 0 / 0.1) 0px 24px 24px -12px;
+  --shadow-glow-distant-strong:
+    rgb(0 0 0 / 0.25) 0px 50px 100px -20px, rgb(0 0 0 / 0.3) 0px 30px 60px -30px;
   --shadow-glow-distant-weak: rgb(0 0 0 / 0.2) 0px 60px 40px -7px;
   --shadow-glow-near-strong: rgb(0 0 0 / 0.2) 0px 12px 28px 0px, rgb(0 0 0 / 0.1) 0px 2px 4px 0px;
   --shadow-highlight-md: rgb(0 0 0 / 0.5) 0px 0px 0px 1px, rgb(0 0 0 / 0.3) 0px 4px 6px -1px;
   --shadow-highlight-strong: rgb(0 0 0 / 0.4) 0px 0px 0px 2px, rgb(0 0 0 / 0.65) 0px 4px 6px -1px;
   --shadow-highlight-weak: rgb(0 0 0 / 0.3) 0px 0px 0px 1px;
-  --shadow-outline-glow-strong: rgb(0 0 0 / 0.16) 0px 10px 36px 0px, rgb(0 0 0 / 0.06) 0px 0px 0px 1px;
+  --shadow-outline-glow-strong:
+    rgb(0 0 0 / 0.16) 0px 10px 36px 0px, rgb(0 0 0 / 0.06) 0px 0px 0px 1px;
   --shadow-outline-glow-weak: rgb(0 0 0 / 0.05) 0px 6px 24px 0px, rgb(0 0 0 / 0.08) 0px 0px 0px 1px;
   --shadow-outline-md: 0 0 0 1px rgb(0 0 0 / 0.1);
   --shadow-outline-strong: rgb(0 0 0 / 0.25) 0px 1px 1px, rgb(0 0 0 / 0.13) 0px 0px 1px 1px;
   --shadow-outline-weak: 0 0 0 1px rgb(0 0 0 / 0.05), 0 1px 2px 0 rgb(0 0 0 / 0.05);
 
-  name: "maggioli";
+  name: 'maggioli';
 }
-

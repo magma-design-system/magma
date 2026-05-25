@@ -1,7 +1,7 @@
 @import './css/mds-quote-fouc.css';
 
 :host {
-  display: inline-flex
+  display: inline-flex;
 }
 
 .open-quote {

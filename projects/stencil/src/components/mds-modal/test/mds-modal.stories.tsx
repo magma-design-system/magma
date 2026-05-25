@@ -1,11 +1,11 @@
-import { h } from '@stencil/core'
-import { useState, useEffect, useRef } from 'react'
+import { h } from '@stencil/core';
+import { useState, useEffect, useRef } from 'react';
 import {
   modalPositionDictionary,
   modalOverflowDictionary,
   modalAnimationStyleDictionary,
   modalInteractionDictionary,
-} from '../meta/dictionary'
+} from '../meta/dictionary';
 
 export default {
   title: 'UI / Modal',
@@ -44,12 +44,12 @@ export default {
       type: { name: 'string' },
     },
   },
-}
+};
 
-const firstName = 'Mary'
-const lastName = 'Reds'
-const fullName = `${firstName} ${lastName}`
-const email = `${firstName.toLowerCase()}.${lastName.toLowerCase()}@nintendo.com`
+const firstName = 'Mary';
+const lastName = 'Reds';
+const fullName = `${firstName} ${lastName}`;
+const email = `${firstName.toLowerCase()}.${lastName.toLowerCase()}@nintendo.com`;
 
 const HeaderComponent = ({ slot = undefined }: { slot?: string } = {}) => {
   return (
@@ -67,8 +67,8 @@ const HeaderComponent = ({ slot = undefined }: { slot?: string } = {}) => {
         </mds-text>
       </div>
     </header>
-  )
-}
+  );
+};
 
 const FooterComponent = ({ slot = undefined }: { slot?: string } = {}) => {
   return (
@@ -77,73 +77,66 @@ const FooterComponent = ({ slot = undefined }: { slot?: string } = {}) => {
       class="flex gap-400 text-tone-neutral-02 p-400 bg-tone-neutral/80 backdrop-blur-md shadow-outline-light"
     >
       <mds-author class="flex-grow">
-        <mds-avatar
-          slot="avatar"
-          class="w-800 h-800"
-          src="./avatar-01-200x200.jpeg"
-        />
-        <mds-text typography="h6" truncate="word">{fullName}</mds-text>
+        <mds-avatar slot="avatar" class="w-800 h-800" src="./avatar-01-200x200.jpeg" />
+        <mds-text typography="h6" truncate="word">
+          {fullName}
+        </mds-text>
         <mds-text typography="caption" truncate="word">
           {email}
         </mds-text>
       </mds-author>
     </footer>
-  )
-}
+  );
+};
 
 const ContentComponent = () => {
-
   return (
     <div class="p-400 grid gap-400 grid-cols-full">
       <mds-text>
-        As a multi-brand design syastem, our components need to be flexible
-        enough for any one of our brands to use them for multiple use cases.
-        To achieve this, we ensure that all of the brands are involved in
-        the specification stage, giving us more confidence that we’re
+        As a multi-brand design syastem, our components need to be flexible enough for any one of
+        our brands to use them for multiple use cases. To achieve this, we ensure that all of the
+        brands are involved in the specification stage, giving us more confidence that we’re
         future-proofing our components as more brands adopt NewsKit.
       </mds-text>
       <mds-text>
-        As a multi-brand design syastem, our components need to be flexible
-        enough for any one of our brands to use them for multiple use cases.
-        To achieve this, we ensure that all of the brands are involved in
-        the specification stage, giving us more confidence that we’re
+        As a multi-brand design syastem, our components need to be flexible enough for any one of
+        our brands to use them for multiple use cases. To achieve this, we ensure that all of the
+        brands are involved in the specification stage, giving us more confidence that we’re
         future-proofing our components as more brands adopt NewsKit.
       </mds-text>
       <mds-text>
-        As a multi-brand design syastem, our components need to be flexible
-        enough for any one of our brands to use them for multiple use cases.
-        To achieve this, we ensure that all of the brands are involved in
-        the specification stage, giving us more confidence that we’re
+        As a multi-brand design syastem, our components need to be flexible enough for any one of
+        our brands to use them for multiple use cases. To achieve this, we ensure that all of the
+        brands are involved in the specification stage, giving us more confidence that we’re
         future-proofing our components as more brands adopt NewsKit.
       </mds-text>
     </div>
-  )
-}
+  );
+};
 
-const Template = args => {
-  const [opened, setOpened] = useState(false)
+const Template = (args) => {
+  const [opened, setOpened] = useState(false);
   useEffect(() => {
-    const actionElement = document.querySelector('#action')
-    const modalElement = document.querySelector('#modal')
+    const actionElement = document.querySelector('#action');
+    const modalElement = document.querySelector('#modal');
 
     if (actionElement === null || modalElement === null) {
-       
-      alert('Element/s not found')
-      return
+      alert('Element/s not found');
+      return;
     }
 
     modalElement.addEventListener('mdsModalClose', () => {
-      console.info('mdsModalClose')
-      setOpened(false)
-    })
+      console.info('mdsModalClose');
+      setOpened(false);
+    });
     modalElement.addEventListener('mdsModalHide', () => {
-      console.info('mdsModalHide')
-      setOpened(false)
-    })
-  }, [])
+      console.info('mdsModalHide');
+      setOpened(false);
+    });
+  }, []);
 
   if (args.opened !== null) {
-    args.opened = null
+    args.opened = null;
   }
 
   return (
@@ -151,43 +144,38 @@ const Template = args => {
       <mds-button id="action" onClick={() => setOpened(true)}>
         Open modal
       </mds-button>
-      <mds-modal
-        id="modal"
-        {...args}
-        opened={opened === true ? true : undefined}
-      >
-        <HeaderComponent/>
-        <ContentComponent/>
-        <FooterComponent/>
+      <mds-modal id="modal" {...args} opened={opened === true ? true : undefined}>
+        <HeaderComponent />
+        <ContentComponent />
+        <FooterComponent />
       </mds-modal>
     </div>
-  )
-}
+  );
+};
 
-const TemplateHeaderAndFooter = args => {
-  const [opened, setOpened] = useState(false)
+const TemplateHeaderAndFooter = (args) => {
+  const [opened, setOpened] = useState(false);
   useEffect(() => {
-    const actionElement = document.querySelector('#action')
-    const modalElement = document.querySelector('#modal')
+    const actionElement = document.querySelector('#action');
+    const modalElement = document.querySelector('#modal');
 
     if (actionElement === null || modalElement === null) {
-       
-      alert('Element/s not found')
-      return
+      alert('Element/s not found');
+      return;
     }
 
     modalElement.addEventListener('mdsModalClose', () => {
-      console.info('mdsModalClose')
-      setOpened(false)
-    })
+      console.info('mdsModalClose');
+      setOpened(false);
+    });
     modalElement.addEventListener('mdsModalHide', () => {
-      console.info('mdsModalHide')
-      setOpened(false)
-    })
-  }, [])
+      console.info('mdsModalHide');
+      setOpened(false);
+    });
+  }, []);
 
   if (args.opened !== null) {
-    args.opened = null
+    args.opened = null;
   }
 
   return (
@@ -195,43 +183,38 @@ const TemplateHeaderAndFooter = args => {
       <mds-button id="action" onClick={() => setOpened(true)}>
         Open modal
       </mds-button>
-      <mds-modal
-        id="modal"
-        {...args}
-        opened={opened === true ? true : undefined}
-      >
+      <mds-modal id="modal" {...args} opened={opened === true ? true : undefined}>
         <HeaderComponent slot="top" />
-        <ContentComponent/>
+        <ContentComponent />
         <FooterComponent slot="bottom" />
       </mds-modal>
     </div>
-  )
-}
+  );
+};
 
-const TemplateSmallContent = args => {
-  const [opened, setOpened] = useState(false)
+const TemplateSmallContent = (args) => {
+  const [opened, setOpened] = useState(false);
   useEffect(() => {
-    const actionElement = document.querySelector('#action')
-    const modalElement = document.querySelector('#modal')
+    const actionElement = document.querySelector('#action');
+    const modalElement = document.querySelector('#modal');
 
     if (actionElement === null || modalElement === null) {
-       
-      alert('Element/s not found')
-      return
+      alert('Element/s not found');
+      return;
     }
 
     modalElement.addEventListener('mdsModalClose', () => {
-      console.info('mdsModalClose')
-      setOpened(false)
-    })
+      console.info('mdsModalClose');
+      setOpened(false);
+    });
     modalElement.addEventListener('mdsModalHide', () => {
-      console.info('mdsModalHide')
-      setOpened(false)
-    })
-  }, [])
+      console.info('mdsModalHide');
+      setOpened(false);
+    });
+  }, []);
 
   if (args.opened !== null) {
-    args.opened = null
+    args.opened = null;
   }
 
   return (
@@ -239,49 +222,43 @@ const TemplateSmallContent = args => {
       <mds-button id="action" onClick={() => setOpened(true)}>
         Open modal
       </mds-button>
-      <mds-modal
-        id="modal"
-        {...args}
-        opened={opened === true ? true : undefined}
-      >
+      <mds-modal id="modal" {...args} opened={opened === true ? true : undefined}>
         <div class="p-400 grid gap-400 grid-cols-full">
           <mds-text>
-            As a multi-brand design syastem, our components need to be flexible
-            enough for any one of our brands to use them for multiple use cases.
-            To achieve this, we ensure that all of the brands are involved in
-            the specification stage, giving us more confidence that we’re
+            As a multi-brand design syastem, our components need to be flexible enough for any one
+            of our brands to use them for multiple use cases. To achieve this, we ensure that all of
+            the brands are involved in the specification stage, giving us more confidence that we’re
             future-proofing our components as more brands adopt NewsKit.
           </mds-text>
         </div>
       </mds-modal>
     </div>
-  )
-}
+  );
+};
 
-const TemplateCustomWindow = args => {
-  const [opened, setOpened] = useState(false)
+const TemplateCustomWindow = (args) => {
+  const [opened, setOpened] = useState(false);
   useEffect(() => {
-    const actionElement = document.querySelector('#action')
-    const modalElement = document.querySelector('#modal')
+    const actionElement = document.querySelector('#action');
+    const modalElement = document.querySelector('#modal');
 
     if (actionElement === null || modalElement === null) {
-       
-      alert('Element/s not found')
-      return
+      alert('Element/s not found');
+      return;
     }
 
     modalElement.addEventListener('mdsModalClose', () => {
-      console.info('mdsModalClose')
-      setOpened(false)
-    })
+      console.info('mdsModalClose');
+      setOpened(false);
+    });
     modalElement.addEventListener('mdsModalHide', () => {
-      console.info('mdsModalHide')
-      setOpened(false)
-    })
-  }, [])
+      console.info('mdsModalHide');
+      setOpened(false);
+    });
+  }, []);
 
   if (args.opened !== null) {
-    args.opened = null
+    args.opened = null;
   }
 
   return (
@@ -299,38 +276,37 @@ const TemplateCustomWindow = args => {
         }}
         opened={opened === true ? true : undefined}
       >
-        <HeaderComponent/>
-        <ContentComponent/>
-        <FooterComponent/>
+        <HeaderComponent />
+        <ContentComponent />
+        <FooterComponent />
       </mds-modal>
     </div>
-  )
-}
+  );
+};
 
-const TemplateCustomWindowHeaderAndFooter = args => {
-  const [opened, setOpened] = useState(false)
+const TemplateCustomWindowHeaderAndFooter = (args) => {
+  const [opened, setOpened] = useState(false);
   useEffect(() => {
-    const actionElement = document.querySelector('#action')
-    const modalElement = document.querySelector('#modal')
+    const actionElement = document.querySelector('#action');
+    const modalElement = document.querySelector('#modal');
 
     if (actionElement === null || modalElement === null) {
-       
-      alert('Element/s not found')
-      return
+      alert('Element/s not found');
+      return;
     }
 
     modalElement.addEventListener('mdsModalClose', () => {
-      console.info('mdsModalClose')
-      setOpened(false)
-    })
+      console.info('mdsModalClose');
+      setOpened(false);
+    });
     modalElement.addEventListener('mdsModalHide', () => {
-      console.info('mdsModalHide')
-      setOpened(false)
-    })
-  }, [])
+      console.info('mdsModalHide');
+      setOpened(false);
+    });
+  }, []);
 
   if (args.opened !== null) {
-    args.opened = null
+    args.opened = null;
   }
 
   return (
@@ -349,37 +325,36 @@ const TemplateCustomWindowHeaderAndFooter = args => {
         opened={opened === true ? true : undefined}
       >
         <HeaderComponent slot="top" />
-        <ContentComponent/>
+        <ContentComponent />
         <FooterComponent slot="bottom" />
       </mds-modal>
     </div>
-  )
-}
+  );
+};
 
-const TemplateOverflow = args => {
-  const [opened, setOpened] = useState(false)
+const TemplateOverflow = (args) => {
+  const [opened, setOpened] = useState(false);
   useEffect(() => {
-    const actionElement = document.querySelector('#action')
-    const modalElement = document.querySelector('#modal')
+    const actionElement = document.querySelector('#action');
+    const modalElement = document.querySelector('#modal');
 
     if (actionElement === null || modalElement === null) {
-       
-      alert('Element/s not found')
-      return
+      alert('Element/s not found');
+      return;
     }
 
     modalElement.addEventListener('mdsModalClose', () => {
-      console.info('mdsModalClose')
-      setOpened(false)
-    })
+      console.info('mdsModalClose');
+      setOpened(false);
+    });
     modalElement.addEventListener('mdsModalHide', () => {
-      console.info('mdsModalHide')
-      setOpened(false)
-    })
-  }, [])
+      console.info('mdsModalHide');
+      setOpened(false);
+    });
+  }, []);
 
   if (args.opened !== null) {
-    args.opened = null
+    args.opened = null;
   }
 
   return (
@@ -402,60 +377,47 @@ const TemplateOverflow = args => {
             </div>
           ))}
       </div>
-      <mds-button
-        class="fixed top-600 left-600"
-        id="action"
-        onClick={() => setOpened(true)}
-      >
+      <mds-button class="fixed top-600 left-600" id="action" onClick={() => setOpened(true)}>
         Open modal
       </mds-button>
-      <mds-modal
-        id="modal"
-        {...args}
-        opened={opened === true ? true : undefined}
-      >
-        <HeaderComponent/>
-        <ContentComponent/>
-        <FooterComponent/>
+      <mds-modal id="modal" {...args} opened={opened === true ? true : undefined}>
+        <HeaderComponent />
+        <ContentComponent />
+        <FooterComponent />
       </mds-modal>
     </div>
-  )
-}
+  );
+};
 
-const CustomTemplate = args => {
-  const [opened, setOpened] = useState(false)
+const CustomTemplate = (args) => {
+  const [opened, setOpened] = useState(false);
   useEffect(() => {
-    const actionElement = document.querySelector('#action')
-    const modalElement = document.querySelector('#modal')
-    const windowElement = document.querySelector('#window')
+    const actionElement = document.querySelector('#action');
+    const modalElement = document.querySelector('#modal');
+    const windowElement = document.querySelector('#window');
 
-    if (
-      actionElement === null ||
-      modalElement === null ||
-      windowElement === null
-    ) {
-       
-      alert('Element/s not found')
-      return
+    if (actionElement === null || modalElement === null || windowElement === null) {
+      alert('Element/s not found');
+      return;
     }
 
     windowElement.addEventListener('mdsBannerClose', () => {
-      console.info('mdsBannerClose')
-      setOpened(false)
-    })
+      console.info('mdsBannerClose');
+      setOpened(false);
+    });
 
     modalElement.addEventListener('mdsModalClose', () => {
-      console.info('mdsModalClose')
-      setOpened(false)
-    })
+      console.info('mdsModalClose');
+      setOpened(false);
+    });
     modalElement.addEventListener('mdsModalHide', () => {
-      console.info('mdsModalHide')
-      setOpened(false)
-    })
-  }, [])
+      console.info('mdsModalHide');
+      setOpened(false);
+    });
+  }, []);
 
   if (args.opened !== null) {
-    args.opened = null
+    args.opened = null;
   }
 
   return (
@@ -463,11 +425,7 @@ const CustomTemplate = args => {
       <mds-button id="action" onClick={() => setOpened(true)}>
         Open modal
       </mds-button>
-      <mds-modal
-        id="modal"
-        {...args}
-        opened={opened === true ? true : undefined}
-      >
+      <mds-modal id="modal" {...args} opened={opened === true ? true : undefined}>
         <mds-banner
           id="window"
           slot="window"
@@ -477,10 +435,9 @@ const CustomTemplate = args => {
           headline="Action required"
         >
           <mds-text typography="detail">
-            As a multi-brand design system, our components need to be flexible
-            enough for any one of our brands to use them for multiple use cases.
-            To achieve this, we ensure that all of the brands are involved in
-            the specification stage, giving us more confidence that we’re
+            As a multi-brand design system, our components need to be flexible enough for any one of
+            our brands to use them for multiple use cases. To achieve this, we ensure that all of
+            the brands are involved in the specification stage, giving us more confidence that we’re
             future-proofing our components as more brands adopt NewsKit.
           </mds-text>
           <mds-button slot="actions" variant="primary" tone="text">
@@ -492,36 +449,33 @@ const CustomTemplate = args => {
         </mds-banner>
       </mds-modal>
     </div>
-  )
-}
+  );
+};
 
 const NestedModalTemplate = () => {
-  const [openedFirstModal, setFirstModalOpened] = useState(false)
-  const [openedSecondModal, setSecondModalOpened] = useState(false)
+  const [openedFirstModal, setFirstModalOpened] = useState(false);
+  const [openedSecondModal, setSecondModalOpened] = useState(false);
 
   useEffect(() => {
-    const firstModalElement = document.querySelector('#modal-01')
-    const secondModalElement = document.querySelector('#modal-02')
+    const firstModalElement = document.querySelector('#modal-01');
+    const secondModalElement = document.querySelector('#modal-02');
 
     if (firstModalElement === null || secondModalElement === null) {
-       
-      alert('Element/s not found')
-      return
+      alert('Element/s not found');
+      return;
     }
 
     firstModalElement.addEventListener('mdsModalClose', () => {
-      setFirstModalOpened(false)
-    })
+      setFirstModalOpened(false);
+    });
     secondModalElement.addEventListener('mdsModalClose', () => {
-      setSecondModalOpened(false)
-    })
-  }, [])
+      setSecondModalOpened(false);
+    });
+  }, []);
 
   return (
     <div>
-      <mds-button onClick={() => setFirstModalOpened(true)}>
-        Open first modal
-      </mds-button>
+      <mds-button onClick={() => setFirstModalOpened(true)}>Open first modal</mds-button>
       <mds-modal
         id="modal-01"
         position="right"
@@ -550,34 +504,35 @@ const NestedModalTemplate = () => {
         </div>
       </mds-modal>
     </div>
-  )
-}
+  );
+};
 
 const ShowTemplate = () => {
-  const [opened, setOpened] = useState(false)
-  const input = useRef<HTMLMdsInputElement>(null)
+  const [opened, setOpened] = useState(false);
+  const input = useRef<HTMLMdsInputElement>(null);
   useEffect(() => {
-    const modalEl = document.querySelector('#modal-focus')
+    const modalEl = document.querySelector('#modal-focus');
 
     modalEl?.addEventListener('mdsModalShow', () => {
-      input.current?.setFocus()
-    })
+      input.current?.setFocus();
+    });
     modalEl?.addEventListener('mdsModalClose', () => {
-      setOpened(false)
-    })
-  }, [])
+      setOpened(false);
+    });
+  }, []);
   return (
     <div>
       <mds-button id="action" onClick={() => setOpened(true)}>
         Open modal
       </mds-button>
-      <mds-modal id='modal-focus' opened={opened === true ? true : undefined} position='right'>
+      <mds-modal id="modal-focus" opened={opened === true ? true : undefined} position="right">
         <div class="p-400">
           <mds-input ref={input}></mds-input>
         </div>
       </mds-modal>
-    </div>)
-}
+    </div>
+  );
+};
 
 export const Default = {
   render: Template,
@@ -586,7 +541,7 @@ export const Default = {
     position: 'right',
     opened: true,
   },
-}
+};
 
 export const BackdropClose = {
   render: Template,
@@ -595,7 +550,7 @@ export const BackdropClose = {
     position: 'right',
     'backdrop-close': true,
   },
-}
+};
 
 export const HeaderAndFooterFixedPosition = {
   render: TemplateHeaderAndFooter,
@@ -604,7 +559,7 @@ export const HeaderAndFooterFixedPosition = {
     position: 'right',
     opened: true,
   },
-}
+};
 
 export const SmallContent = {
   render: TemplateSmallContent,
@@ -613,7 +568,7 @@ export const SmallContent = {
     position: 'right',
     opened: true,
   },
-}
+};
 
 export const Backdrop = {
   render: Template,
@@ -623,7 +578,7 @@ export const Backdrop = {
     opened: true,
     backdrop: undefined,
   },
-}
+};
 
 export const BodyOverflowDisabled = {
   render: TemplateOverflow,
@@ -633,7 +588,7 @@ export const BodyOverflowDisabled = {
     opened: true,
     position: 'right',
   },
-}
+};
 
 export const DefaultWindowCustomized = {
   render: TemplateCustomWindow,
@@ -643,7 +598,7 @@ export const DefaultWindowCustomized = {
     animation: 'slide',
     opened: true,
   },
-}
+};
 
 export const DefaultWindowCustomizedHeaderAndFooter = {
   render: TemplateCustomWindowHeaderAndFooter,
@@ -653,14 +608,14 @@ export const DefaultWindowCustomizedHeaderAndFooter = {
     animation: 'slide',
     opened: true,
   },
-}
+};
 
 export const CustomWindowAnimation = {
   render: CustomTemplate,
   args: {
     animation: 'custom',
   },
-}
+};
 
 export const CustomWindowElement = {
   render: CustomTemplate,
@@ -668,7 +623,7 @@ export const CustomWindowElement = {
   args: {
     opened: true,
   },
-}
+};
 
 export const ARIATest = {
   render: CustomTemplate,
@@ -676,12 +631,12 @@ export const ARIATest = {
   args: {
     opened: true,
   },
-}
+};
 
 export const UseCaseNestedModal = {
   render: NestedModalTemplate,
-}
+};
 
 export const EventModalShow = {
   render: ShowTemplate,
-}
+};

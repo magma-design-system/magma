@@ -1,4 +1,4 @@
-:host([size="sm"]) {
+:host([size='sm']) {
   --mds-button-radius: var(--radius-md);
 
   min-height: --spacing(700);
@@ -14,47 +14,46 @@
     @apply font-medium;
   }
 
-  &:host([await]:not([await="false"])) .await {
+  &:host([await]:not([await='false'])) .await {
     transform: scale(75);
   }
 }
 
-:host([size="md"]) {
+:host([size='md']) {
   min-height: --spacing(900);
   min-width: --spacing(900);
   padding-left: --spacing(400);
   padding-right: --spacing(400);
 
-  &:host([icon][icon-position="left"]) {
+  &:host([icon][icon-position='left']) {
     padding-left: --spacing(300);
   }
 
-  &:host([icon][icon-position="right"]) {
+  &:host([icon][icon-position='right']) {
     padding-right: --spacing(300);
   }
 }
 
-:host([size="lg"]) {
+:host([size='lg']) {
   min-height: --spacing(1200);
   min-width: --spacing(1200);
   padding-left: --spacing(500);
   padding-right: --spacing(500);
 
-  &:host([icon][icon-position="left"]) {
+  &:host([icon][icon-position='left']) {
     padding-left: --spacing(400);
   }
 
-  &:host([icon][icon-position="right"]) {
+  &:host([icon][icon-position='right']) {
     padding-right: --spacing(400);
   }
 }
 
-:host([size="xl"]) {
+:host([size='xl']) {
   min-height: --spacing(1300);
   min-width: --spacing(1300);
   padding-left: --spacing(600);
   padding-right: --spacing(600);
-
 
   .icon {
     height: --spacing(800);

@@ -5,7 +5,7 @@
 @media (prefers-contrast: more) {
   :host-context(:root.pref-contrast-system),
   :host-context(:root:not([data-magma-pref])) {
-      .item {
+    .item {
       --mds-tab-item-default-color: rgb(var(--tone-neutral-01));
     }
   }

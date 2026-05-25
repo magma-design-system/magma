@@ -1,3 +1,3 @@
 export interface MdsTabBarEventDetail {
-  index: number
+  index: number;
 }

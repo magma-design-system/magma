@@ -13,31 +13,31 @@
 @property --mds-push-notification-item-duration {
   inherits: false;
   initial-value: 300ms;
-  syntax: "<time>";
+  syntax: '<time>';
 }
 
 @property --mds-push-notification-item-icon-background-color {
   inherits: false;
   initial-value: transparent;
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-push-notification-item-icon-color {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-04));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-push-notification-item-message-line-clamp {
   inherits: false;
   initial-value: 2;
-  syntax: "<integer>";
+  syntax: '<integer>';
 }
 
 @property --mds-push-notification-item-subject-line-clamp {
   inherits: false;
   initial-value: 1;
-  syntax: "<integer>";
+  syntax: '<integer>';
 }
 
 /* ❌ Not supported
@@ -78,9 +78,7 @@
   position: relative;
   transition-duration: var(--mds-push-notification-item-duration);
   transition-property: background-color, box-shadow, color, margin, transform;
-  transition-timing-function: var(
-    --mds-push-notification-item-timing-function
-  );
+  transition-timing-function: var(--mds-push-notification-item-timing-function);
 }
 
 :host([deletable]) {

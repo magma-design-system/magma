@@ -58,7 +58,7 @@ export const extensionSuffixDictionary = [
   'xlsx',
   'xml',
   'zip',
-] as const
-export type ExtensionSuffixType = (typeof extensionSuffixDictionary)[number]
+] as const;
+export type ExtensionSuffixType = (typeof extensionSuffixDictionary)[number];
 
-export * from '@dictionary/file-extensions'
+export * from '@dictionary/file-extensions';

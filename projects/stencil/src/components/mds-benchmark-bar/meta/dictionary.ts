@@ -1,8 +1,3 @@
-const benchmarkBarTypographyDictionary = [
-  'option',
-  'label',
-]
+const benchmarkBarTypographyDictionary = ['option', 'label'];
 
-export {
-  benchmarkBarTypographyDictionary,
-}
+export { benchmarkBarTypographyDictionary };

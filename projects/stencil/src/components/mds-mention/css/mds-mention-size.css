@@ -1,17 +1,16 @@
-:host([size="sm"]) {
+:host([size='sm']) {
   --mds-mention-icon-size: --spacing(400);
 }
 
-:host([size="sm"]) .badge {
+:host([size='sm']) .badge {
   padding-left: --spacing(50);
   padding-right: --spacing(150);
 }
 
-:host([size="md"]) {
+:host([size='md']) {
   --mds-mention-icon-size: --spacing(600);
-
 }
 
-:host([size="md"]) .badge {
+:host([size='md']) .badge {
   padding-right: --spacing(200);
 }

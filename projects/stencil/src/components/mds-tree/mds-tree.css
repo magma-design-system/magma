@@ -35,169 +35,169 @@
 @property --mds-tree-actions-border-radius {
   inherits: false;
   initial-value: 0;
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-tree-actions-gap {
   inherits: false;
   initial-value: 0;
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-tree-label-default-background {
   inherits: false;
   initial-value: transparent;
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-tree-label-hover-background {
   inherits: false;
   initial-value: transparent;
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-tree-label-icon-default-color {
   inherits: false;
   initial-value: rgb(0 0 0);
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-tree-label-icon-hover-color {
   inherits: false;
   initial-value: rgb(0 0 0);
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-tree-line-clamp {
   inherits: false;
   initial-value: 1;
-  syntax: "<integer>";
+  syntax: '<integer>';
 }
 
 @property --mds-tree-branch-border-color {
   inherits: false;
   initial-value: rgb(0 0 0);
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-tree-branch-use-rounded-border {
   inherits: false;
   initial-value: true;
-  syntax: "true | false";
+  syntax: 'true | false';
 }
 
 @property --mds-tree-branch-border-size {
   inherits: false;
   initial-value: 0;
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-tree-branch-dot-default-color {
   inherits: false;
   initial-value: rgb(0 0 0);
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-tree-branch-dot-expanded-color {
   inherits: false;
   initial-value: rgb(0 0 0);
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-tree-toggle-gap {
   inherits: false;
   initial-value: 0;
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-tree-toggle-icon-async-background {
   inherits: false;
   initial-value: rgb(0 0 0);
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-tree-toggle-icon-async-color {
   inherits: false;
   initial-value: rgb(0 0 0);
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-tree-toggle-icon-chevron-default-background {
   inherits: false;
   initial-value: rgb(0 0 0);
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-tree-toggle-icon-chevron-default-color {
   inherits: false;
   initial-value: rgb(0 0 0);
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-tree-toggle-icon-chevron-expanded-background {
   inherits: false;
   initial-value: rgb(0 0 0);
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-tree-toggle-icon-chevron-expanded-color {
   inherits: false;
   initial-value: rgb(0 0 0);
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-tree-toggle-icon-folder-default-background {
   inherits: false;
   initial-value: rgb(0 0 0);
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-tree-toggle-icon-folder-default-color {
   inherits: false;
   initial-value: rgb(0 0 0);
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-tree-toggle-icon-folder-expanded-background {
   inherits: false;
   initial-value: rgb(0 0 0);
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-tree-toggle-icon-folder-expanded-color {
   inherits: false;
   initial-value: rgb(0 0 0);
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-tree-toggle-icon-position-right-default-background {
   inherits: false;
   initial-value: transparent;
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-tree-toggle-icon-position-right-default-color {
   inherits: false;
   initial-value: rgb(0 0 0);
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-tree-toggle-icon-position-right-expanded-background {
   inherits: false;
   initial-value: transparent;
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-tree-toggle-icon-position-right-expanded-color {
   inherits: false;
   initial-value: rgb(0 0 0);
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-tree-transition-duration {
   inherits: false;
   initial-value: 0s;
-  syntax: "<time>";
+  syntax: '<time>';
 }
 
 /* ❌ Not supported
@@ -228,7 +228,6 @@
 }
 */
 
-
 :host {
   --mds-tree-actions-border-radius: var(--radius-lg);
   --mds-tree-actions-gap: --spacing(50);
@@ -247,11 +246,15 @@
   --mds-tree-toggle-icon-async-color: rgb(var(--variant-primary-03));
   --mds-tree-toggle-icon-chevron-default-background: rgb(var(--variant-primary-04));
   --mds-tree-toggle-icon-chevron-default-color: rgb(var(--tone-neutral));
-  --mds-tree-toggle-icon-chevron-expanded-background: var(--mds-tree-toggle-icon-chevron-default-background);
+  --mds-tree-toggle-icon-chevron-expanded-background: var(
+    --mds-tree-toggle-icon-chevron-default-background
+  );
   --mds-tree-toggle-icon-chevron-expanded-color: var(--mds-tree-toggle-icon-chevron-default-color);
   --mds-tree-toggle-icon-folder-default-background: rgb(var(--tone-neutral-08));
   --mds-tree-toggle-icon-folder-default-color: rgb(var(--variant-primary-04));
-  --mds-tree-toggle-icon-folder-expanded-background: var(--mds-tree-toggle-icon-folder-default-background);
+  --mds-tree-toggle-icon-folder-expanded-background: var(
+    --mds-tree-toggle-icon-folder-default-background
+  );
   --mds-tree-toggle-icon-folder-expanded-color: var(--mds-tree-toggle-icon-folder-default-color);
   --mds-tree-toggle-icon-position-right-default-background: transparent;
   --mds-tree-toggle-icon-position-right-default-color: rgb(var(--tone-neutral-07));
@@ -259,11 +262,12 @@
   --mds-tree-toggle-icon-position-right-expanded-color: rgb(var(--tone-neutral-07));
   --mds-tree-transition-duration: 300ms;
   --mds-tree-transition-timing-function: var(--ease-in-out-expo);
-  /* private */ --mds-tree-toggle-border-radius: var(--radius-lg);
-  /* private */ --mds-tree-toggle-size: --spacing(900);
+  /* private */
+  --mds-tree-toggle-border-radius: var(--radius-lg);
+  /* private */
+  --mds-tree-toggle-size: --spacing(900);
 
-  @apply
-    duration-200
+  @apply duration-200
     ease-out;
 
   border-radius: --spacing(250);
@@ -271,4 +275,3 @@
   padding: --spacing(50);
   transition-property: background-color;
 }
-

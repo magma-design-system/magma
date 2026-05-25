@@ -1,12 +1,10 @@
-
-
 @utility animate-intro {
   @apply ease-in-out-expo;
 
   transition-duration: var(--duration-500);
   transition-property:
-    background-color, border-color, box-shadow, color, fill, height, margin,
-    opacity, padding, transform, width;
+    background-color, border-color, box-shadow, color, fill, height, margin, opacity, padding,
+    transform, width;
 }
 
 @utility animate-outro {
@@ -14,8 +12,8 @@
 
   transition-duration: var(--mds-toast-duration, 300ms);
   transition-property:
-    background-color, border-color, box-shadow, color, fill, height, margin,
-    opacity, padding, transform, width;
+    background-color, border-color, box-shadow, color, fill, height, margin, opacity, padding,
+    transform, width;
 }
 
 @utility animate-bottom-intro {
@@ -23,10 +21,7 @@
 }
 
 @utility animate-bottom-outro {
-  transform: translate(
-    0,
-    calc(--spacing(full) + --spacing(200))
-  );
+  transform: translate(0, calc(--spacing(full) + --spacing(200)));
 }
 
 @utility animate-top-intro {
@@ -34,8 +29,5 @@
 }
 
 @utility animate-top-outro {
-  transform: translate(
-    0,
-    calc(-1 * --spacing(full) - --spacing(400))
-  );
+  transform: translate(0, calc(-1 * --spacing(full) - --spacing(400)));
 }

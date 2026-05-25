@@ -12,37 +12,37 @@
 @property --mds-img-background {
   inherits: false;
   initial-value: rgb(var(--variant-primary-03));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-img-color {
   inherits: false;
   initial-value: rgb(var(--variant-primary-09));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-img-icon-color {
   inherits: false;
   initial-value: rgb(var(--variant-primary-07));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-img-error-background {
   inherits: false;
   initial-value: rgb(var(--status-error-09));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-img-error-color {
   inherits: false;
   initial-value: rgb(var(--status-error-04));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-img-error-icon-color {
   inherits: false;
   initial-value: rgb(var(--status-error-06));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 :host {

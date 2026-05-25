@@ -9,4 +9,4 @@ module.exports = {
     require('@iconsauce/mdi-svg'),
     require('@iconsauce/mgg-icons'),
   ],
-}
+};

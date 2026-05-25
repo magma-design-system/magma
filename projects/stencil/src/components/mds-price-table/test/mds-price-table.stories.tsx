@@ -1,10 +1,10 @@
-import { h } from '@stencil/core'
+import { h } from '@stencil/core';
 
 export default {
   title: 'UI / Price table',
-}
+};
 
-const Template = args => (
+const Template = (args) => (
   <div class="grid gap-600">
     <mds-text typography="h1" tag="h3" class="desktop:hidden">
       Choose the plan for you
@@ -16,8 +16,7 @@ const Template = args => (
             Basic plan
           </mds-text>
           <mds-text typography="detail" slot="header">
-            Piano adatto a liberi professionisti con studi di piccole
-            dimensioni.
+            Piano adatto a liberi professionisti con studi di piccole dimensioni.
           </mds-text>
           <mds-text typography="h2" tag="h4" slot="price">
             49€
@@ -34,20 +33,12 @@ const Template = args => (
             <mds-price-table-features-cell type="supported"></mds-price-table-features-cell>
           </mds-price-table-features-row>
           <mds-price-table-features-row>
-            <mds-price-table-features-cell type="label">
-              Users
-            </mds-price-table-features-cell>
-            <mds-price-table-features-cell type="text">
-              10
-            </mds-price-table-features-cell>
+            <mds-price-table-features-cell type="label">Users</mds-price-table-features-cell>
+            <mds-price-table-features-cell type="text">10</mds-price-table-features-cell>
           </mds-price-table-features-row>
           <mds-price-table-features-row>
-            <mds-price-table-features-cell type="label">
-              User data
-            </mds-price-table-features-cell>
-            <mds-price-table-features-cell type="text">
-              10GB
-            </mds-price-table-features-cell>
+            <mds-price-table-features-cell type="label">User data</mds-price-table-features-cell>
+            <mds-price-table-features-cell type="text">10GB</mds-price-table-features-cell>
           </mds-price-table-features-row>
           <mds-price-table-features-row>
             <mds-price-table-features-cell type="label">
@@ -62,9 +53,7 @@ const Template = args => (
             <mds-price-table-features-cell type="unsupported"></mds-price-table-features-cell>
           </mds-price-table-features-row>
           <mds-price-table-features-row>
-            <mds-price-table-features-cell type="label">
-              Analytics
-            </mds-price-table-features-cell>
+            <mds-price-table-features-cell type="label">Analytics</mds-price-table-features-cell>
             <mds-price-table-features-cell type="supported"></mds-price-table-features-cell>
           </mds-price-table-features-row>
           <mds-price-table-features-row>
@@ -93,8 +82,7 @@ const Template = args => (
             Professional plan
           </mds-text>
           <mds-text typography="detail" slot="header">
-            Piano adatto a liberi professionisti con studi di piccole
-            dimensioni.
+            Piano adatto a liberi professionisti con studi di piccole dimensioni.
           </mds-text>
           <mds-text typography="h2" tag="h4" slot="price">
             99€
@@ -111,20 +99,12 @@ const Template = args => (
             <mds-price-table-features-cell type="supported"></mds-price-table-features-cell>
           </mds-price-table-features-row>
           <mds-price-table-features-row>
-            <mds-price-table-features-cell type="label">
-              Users
-            </mds-price-table-features-cell>
-            <mds-price-table-features-cell type="text">
-              20
-            </mds-price-table-features-cell>
+            <mds-price-table-features-cell type="label">Users</mds-price-table-features-cell>
+            <mds-price-table-features-cell type="text">20</mds-price-table-features-cell>
           </mds-price-table-features-row>
           <mds-price-table-features-row>
-            <mds-price-table-features-cell type="label">
-              User data
-            </mds-price-table-features-cell>
-            <mds-price-table-features-cell type="text">
-              20GB
-            </mds-price-table-features-cell>
+            <mds-price-table-features-cell type="label">User data</mds-price-table-features-cell>
+            <mds-price-table-features-cell type="text">20GB</mds-price-table-features-cell>
           </mds-price-table-features-row>
           <mds-price-table-features-row>
             <mds-price-table-features-cell type="label">
@@ -139,9 +119,7 @@ const Template = args => (
             <mds-price-table-features-cell type="supported"></mds-price-table-features-cell>
           </mds-price-table-features-row>
           <mds-price-table-features-row>
-            <mds-price-table-features-cell type="label">
-              Analytics
-            </mds-price-table-features-cell>
+            <mds-price-table-features-cell type="label">Analytics</mds-price-table-features-cell>
             <mds-price-table-features-cell type="supported"></mds-price-table-features-cell>
           </mds-price-table-features-row>
           <mds-price-table-features-row>
@@ -170,8 +148,7 @@ const Template = args => (
             Enterprise plan
           </mds-text>
           <mds-text typography="detail" slot="header">
-            Piano adatto a liberi professionisti con studi di piccole
-            dimensioni.
+            Piano adatto a liberi professionisti con studi di piccole dimensioni.
           </mds-text>
           <mds-text typography="h2" tag="h4" slot="price">
             149€
@@ -188,20 +165,12 @@ const Template = args => (
             <mds-price-table-features-cell type="supported"></mds-price-table-features-cell>
           </mds-price-table-features-row>
           <mds-price-table-features-row>
-            <mds-price-table-features-cell type="label">
-              Users
-            </mds-price-table-features-cell>
-            <mds-price-table-features-cell type="text">
-              Unlimited
-            </mds-price-table-features-cell>
+            <mds-price-table-features-cell type="label">Users</mds-price-table-features-cell>
+            <mds-price-table-features-cell type="text">Unlimited</mds-price-table-features-cell>
           </mds-price-table-features-row>
           <mds-price-table-features-row>
-            <mds-price-table-features-cell type="label">
-              User data
-            </mds-price-table-features-cell>
-            <mds-price-table-features-cell type="text">
-              1TB
-            </mds-price-table-features-cell>
+            <mds-price-table-features-cell type="label">User data</mds-price-table-features-cell>
+            <mds-price-table-features-cell type="text">1TB</mds-price-table-features-cell>
           </mds-price-table-features-row>
           <mds-price-table-features-row>
             <mds-price-table-features-cell type="label">
@@ -216,9 +185,7 @@ const Template = args => (
             <mds-price-table-features-cell type="supported"></mds-price-table-features-cell>
           </mds-price-table-features-row>
           <mds-price-table-features-row>
-            <mds-price-table-features-cell type="label">
-              Analytics
-            </mds-price-table-features-cell>
+            <mds-price-table-features-cell type="label">Analytics</mds-price-table-features-cell>
             <mds-price-table-features-cell type="supported"></mds-price-table-features-cell>
           </mds-price-table-features-row>
           <mds-price-table-features-row>
@@ -259,8 +226,7 @@ const Template = args => (
             Basic plan
           </mds-text>
           <mds-text typography="detail" slot="header">
-            Piano adatto a liberi professionisti con studi di piccole
-            dimensioni.
+            Piano adatto a liberi professionisti con studi di piccole dimensioni.
           </mds-text>
           <mds-text typography="h2" tag="h4" slot="price">
             49€
@@ -274,8 +240,7 @@ const Template = args => (
             Professional plan
           </mds-text>
           <mds-text typography="detail" slot="header">
-            Piano adatto a liberi professionisti con studi di piccole
-            dimensioni.
+            Piano adatto a liberi professionisti con studi di piccole dimensioni.
           </mds-text>
           <mds-text typography="h2" tag="h4" slot="price">
             99€
@@ -289,8 +254,7 @@ const Template = args => (
             Enterprise plan
           </mds-text>
           <mds-text typography="detail" slot="header">
-            Piano adatto a liberi professionisti con studi di piccole
-            dimensioni.
+            Piano adatto a liberi professionisti con studi di piccole dimensioni.
           </mds-text>
           <mds-text typography="h2" tag="h4" slot="price">
             149€
@@ -304,42 +268,26 @@ const Template = args => (
         <mds-price-table-features-row>
           <mds-price-table-features-cell type="label">
             Base features
-            <mds-help>
-              The base features are: Login, Logout and Register.
-            </mds-help>
+            <mds-help>The base features are: Login, Logout and Register.</mds-help>
           </mds-price-table-features-cell>
           <mds-price-table-features-cell type="supported"></mds-price-table-features-cell>
           <mds-price-table-features-cell type="supported"></mds-price-table-features-cell>
           <mds-price-table-features-cell type="supported"></mds-price-table-features-cell>
         </mds-price-table-features-row>
         <mds-price-table-features-row>
-          <mds-price-table-features-cell type="label">
-            Users
-          </mds-price-table-features-cell>
-          <mds-price-table-features-cell type="text">
-            10
-          </mds-price-table-features-cell>
-          <mds-price-table-features-cell type="text">
-            20
-          </mds-price-table-features-cell>
+          <mds-price-table-features-cell type="label">Users</mds-price-table-features-cell>
+          <mds-price-table-features-cell type="text">10</mds-price-table-features-cell>
+          <mds-price-table-features-cell type="text">20</mds-price-table-features-cell>
           <mds-price-table-features-cell type="text">
             Unlimited
             <mds-help>Aw, c'mon... You know it's impossible.</mds-help>
           </mds-price-table-features-cell>
         </mds-price-table-features-row>
         <mds-price-table-features-row>
-          <mds-price-table-features-cell type="label">
-            User data
-          </mds-price-table-features-cell>
-          <mds-price-table-features-cell type="text">
-            10GB
-          </mds-price-table-features-cell>
-          <mds-price-table-features-cell type="text">
-            20GB
-          </mds-price-table-features-cell>
-          <mds-price-table-features-cell type="text">
-            1TB
-          </mds-price-table-features-cell>
+          <mds-price-table-features-cell type="label">User data</mds-price-table-features-cell>
+          <mds-price-table-features-cell type="text">10GB</mds-price-table-features-cell>
+          <mds-price-table-features-cell type="text">20GB</mds-price-table-features-cell>
+          <mds-price-table-features-cell type="text">1TB</mds-price-table-features-cell>
         </mds-price-table-features-row>
         <mds-price-table-features-row>
           <mds-price-table-features-cell type="label">
@@ -358,17 +306,13 @@ const Template = args => (
           <mds-price-table-features-cell type="supported"></mds-price-table-features-cell>
         </mds-price-table-features-row>
         <mds-price-table-features-row>
-          <mds-price-table-features-cell type="label">
-            Analytics
-          </mds-price-table-features-cell>
+          <mds-price-table-features-cell type="label">Analytics</mds-price-table-features-cell>
           <mds-price-table-features-cell type="supported"></mds-price-table-features-cell>
           <mds-price-table-features-cell type="supported"></mds-price-table-features-cell>
           <mds-price-table-features-cell type="supported"></mds-price-table-features-cell>
         </mds-price-table-features-row>
         <mds-price-table-features-row>
-          <mds-price-table-features-cell type="label">
-            Export reports
-          </mds-price-table-features-cell>
+          <mds-price-table-features-cell type="label">Export reports</mds-price-table-features-cell>
           <mds-price-table-features-cell type="unsupported"></mds-price-table-features-cell>
           <mds-price-table-features-cell type="supported"></mds-price-table-features-cell>
           <mds-price-table-features-cell type="supported"></mds-price-table-features-cell>
@@ -392,7 +336,7 @@ const Template = args => (
       </mds-price-table-features>
     </mds-price-table>
   </div>
-)
+);
 
 export const Default = {
   render: Template,
@@ -400,4 +344,4 @@ export const Default = {
   args: {
     label: 'Report e analisi',
   },
-}
+};

@@ -13,31 +13,31 @@
 @property --mds-toast-background {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-02));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-toast-color {
   inherits: false;
   initial-value: rgb(var(--tone-neutral));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-toast-duration {
   inherits: false;
   initial-value: 300ms;
-  syntax: "<time>";
+  syntax: '<time>';
 }
 
 @property --mds-toast-icon-color {
   inherits: false;
   initial-value: rgb(var(--tone-neutral));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-toast-width {
   inherits: false;
   initial-value: auto;
-  syntax: "<length> | auto";
+  syntax: '<length> | auto';
 }
 
 /* ❌ Not supported
@@ -68,8 +68,7 @@
 }
 
 .dialog {
-  @apply
-    ease-in-cubic
+  @apply ease-in-cubic
     gap-400
     max-w-full
     mx-400

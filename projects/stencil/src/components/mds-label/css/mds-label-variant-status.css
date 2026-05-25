@@ -1,4 +1,4 @@
-:host([variant="error"]) {
+:host([variant='error']) {
   --mds-label-background: rgb(var(--status-error-04));
   --mds-label-button-background: rgb(var(--status-error-04));
   --mds-label-button-background-hover: rgb(var(--status-error-05));
@@ -8,7 +8,7 @@
   --mds-label-selection-background: rgb(var(--status-error-08));
   --mds-label-selection-color: rgb(var(--status-error-02));
 
-  &:host([tone="weak"]) {
+  &:host([tone='weak']) {
     --mds-label-background: rgb(var(--status-error-08));
     --mds-label-button-background: rgb(var(--status-error-09));
     --mds-label-button-background-hover: rgb(var(--status-error-08));
@@ -20,7 +20,7 @@
   }
 }
 
-:host([variant="warning"]) {
+:host([variant='warning']) {
   --mds-label-background: rgb(var(--status-warning-04));
   --mds-label-button-background: rgb(var(--status-warning-04));
   --mds-label-button-background-hover: rgb(var(--status-warning-05));
@@ -30,7 +30,7 @@
   --mds-label-selection-background: rgb(var(--status-warning-08));
   --mds-label-selection-color: rgb(var(--status-warning-02));
 
-  &:host([tone="weak"]) {
+  &:host([tone='weak']) {
     --mds-label-background: rgb(var(--status-warning-08));
     --mds-label-button-background: rgb(var(--status-warning-09));
     --mds-label-button-background-hover: rgb(var(--status-warning-08));
@@ -42,7 +42,7 @@
   }
 }
 
-:host([variant="success"]) {
+:host([variant='success']) {
   --mds-label-background: rgb(var(--status-success-04));
   --mds-label-button-background: rgb(var(--status-success-04));
   --mds-label-button-background-hover: rgb(var(--status-success-05));
@@ -52,7 +52,7 @@
   --mds-label-selection-background: rgb(var(--status-success-08));
   --mds-label-selection-color: rgb(var(--status-success-02));
 
-  &:host([tone="weak"]) {
+  &:host([tone='weak']) {
     --mds-label-background: rgb(var(--status-success-08));
     --mds-label-button-background: rgb(var(--status-success-09));
     --mds-label-button-background-hover: rgb(var(--status-success-08));
@@ -64,7 +64,7 @@
   }
 }
 
-:host([variant="info"]) {
+:host([variant='info']) {
   --mds-label-background: rgb(var(--status-info-04));
   --mds-label-button-background: rgb(var(--status-info-04));
   --mds-label-button-background-hover: rgb(var(--status-info-05));
@@ -74,7 +74,7 @@
   --mds-label-selection-background: rgb(var(--status-info-08));
   --mds-label-selection-color: rgb(var(--status-info-02));
 
-  &:host([tone="weak"]) {
+  &:host([tone='weak']) {
     --mds-label-background: rgb(var(--status-info-08));
     --mds-label-button-background: rgb(var(--status-info-09));
     --mds-label-button-background-hover: rgb(var(--status-info-08));

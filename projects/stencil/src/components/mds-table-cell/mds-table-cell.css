@@ -8,25 +8,25 @@
 @property --mds-table-cell-background {
   inherits: false;
   initial-value: var(--mds-table-row-background);
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-table-cell-background-alt {
   inherits: false;
   initial-value: var(--mds-table-row-background-alt);
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-table-cell-color-alt {
   inherits: false;
   initial-value: var(--mds-table-row-color-alt);
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-table-cell-color {
   inherits: false;
   initial-value: var(--mds-table-row-color);
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 :host {
@@ -35,8 +35,7 @@
   --mds-table-cell-color-alt: var(--mds-table-row-color-alt);
   --mds-table-cell-color: var(--mds-table-row-color);
 
-  @apply
-    duration-200
+  @apply duration-200
     ease-out;
 
   background-color: var(--mds-table-cell-background);

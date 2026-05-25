@@ -1,163 +1,160 @@
-import { SpecPage, newSpecPage } from '@stencil/core/testing'
-import { MdsInputUpload } from '../mds-input-upload'
-import { mockFile, mockFileList } from '@test/file'
-import { Status } from '../meta/types'
+import { SpecPage, newSpecPage } from '@stencil/core/testing';
+import { MdsInputUpload } from '../mds-input-upload';
+import { mockFile, mockFileList } from '@test/file';
+import { Status } from '../meta/types';
 
 describe('mds-input-upload', () => {
-  let page: SpecPage
-  let component: HTMLMdsInputUploadElement | null
+  let page: SpecPage;
+  let component: HTMLMdsInputUploadElement | null;
 
   beforeEach(async () => {
     page = await newSpecPage({
       components: [MdsInputUpload],
       html: '<mds-input-upload></mds-input-upload>',
-    })
-    component = page.body.querySelector('mds-input-upload')
-  })
+    });
+    component = page.body.querySelector('mds-input-upload');
+  });
 
   it('should set default attribut', () => {
-    expect(component).toBeDefined()
-    expect(component?.accept).toBe('')
-    expect(component?.maxFileSize).toBe(20)
-    expect(component?.maxFiles).toBe(1)
-    expect(component?.sort).toBeUndefined()
-  })
+    expect(component).toBeDefined();
+    expect(component?.accept).toBe('');
+    expect(component?.maxFileSize).toBe(20);
+    expect(component?.maxFiles).toBe(1);
+    expect(component?.sort).toBeUndefined();
+  });
 
   it('should accept only pdf', async () => {
-    await page.setContent('<mds-input-upload accept=".pdf"></mds-input-upload>')
-    await page.waitForChanges()
-    component = page.body.querySelector('mds-input-upload')
+    await page.setContent('<mds-input-upload accept=".pdf"></mds-input-upload>');
+    await page.waitForChanges();
+    component = page.body.querySelector('mds-input-upload');
 
     if (component) {
-      const extensionText =
-        component.shadowRoot?.querySelector('.file-specs')?.firstChild
-      const sizeText =
-        component.shadowRoot?.querySelector('.file-specs')?.lastChild
+      const extensionText = component.shadowRoot?.querySelector('.file-specs')?.firstChild;
+      const sizeText = component.shadowRoot?.querySelector('.file-specs')?.lastChild;
 
-      expect(component.accept).toBe('.pdf')
-      expect(
-        component.shadowRoot?.querySelector('.main-actions')?.childElementCount,
-      ).toBe(1)
+      expect(component.accept).toBe('.pdf');
+      expect(component.shadowRoot?.querySelector('.main-actions')?.childElementCount).toBe(1);
 
-      expect(extensionText?.textContent).toContain('PDF')
-      expect(sizeText?.textContent).toContain('20')
+      expect(extensionText?.textContent).toContain('PDF');
+      expect(sizeText?.textContent).toContain('20');
     }
-  })
+  });
 
   it('should show 10 max files with 5mb max file size', async () => {
-    await page.setContent(
-      '<mds-input-upload max-files=10 max-file-size=5></mds-input-upload>',
-    )
-    await page.waitForChanges()
-    component = page.body.querySelector('mds-input-upload')
+    await page.setContent('<mds-input-upload max-files=10 max-file-size=5></mds-input-upload>');
+    await page.waitForChanges();
+    component = page.body.querySelector('mds-input-upload');
 
     if (component) {
-      const extensionText =
-        component.shadowRoot?.querySelector('.file-specs')?.firstChild
-      const sizeText =
-        component.shadowRoot?.querySelector('.file-specs')?.lastChild
-      const nfilesText = component.shadowRoot?.querySelector(
-        '.main-infos mds-text',
-      )
+      const extensionText = component.shadowRoot?.querySelector('.file-specs')?.firstChild;
+      const sizeText = component.shadowRoot?.querySelector('.file-specs')?.lastChild;
+      const nfilesText = component.shadowRoot?.querySelector('.main-infos mds-text');
 
-      expect(component.accept).toBe('')
-      expect(component.maxFiles).toBe(10)
-      expect(component.maxFileSize).toBe(5)
+      expect(component.accept).toBe('');
+      expect(component.maxFiles).toBe(10);
+      expect(component.maxFileSize).toBe(5);
 
-      expect(extensionText?.textContent).toContain('')
-      expect(nfilesText?.textContent).toContain('10')
-      expect(sizeText?.textContent).toContain('5')
+      expect(extensionText?.textContent).toContain('');
+      expect(nfilesText?.textContent).toContain('10');
+      expect(sizeText?.textContent).toContain('5');
     }
-  })
+  });
 
   it('should not show sort', async () => {
-    await page.setContent('<mds-input-upload sort="status"></mds-input-upload>')
-    await page.waitForChanges()
-    component = page.body.querySelector('mds-input-upload')
+    await page.setContent('<mds-input-upload sort="status"></mds-input-upload>');
+    await page.waitForChanges();
+    component = page.body.querySelector('mds-input-upload');
 
     if (component) {
-      expect(component?.sort).toBe('status')
-      const sortTab = component?.shadowRoot?.querySelector('.action-sort')
-      expect(sortTab).toBeNull()
+      expect(component?.sort).toBe('status');
+      const sortTab = component?.shadowRoot?.querySelector('.action-sort');
+      expect(sortTab).toBeNull();
     }
-  })
+  });
 
   it('should not show sort when more than one file is added and sort hasnt been set', async () => {
-    const inputElement = component?.shadowRoot?.querySelector('input') as HTMLInputElement
-    if (!inputElement) throw new Error('input not found')
+    const inputElement = component?.shadowRoot?.querySelector('input') as HTMLInputElement;
+    if (!inputElement) throw new Error('input not found');
 
     // status is on ERROR for not trigger browser File type related code
-    page.rootInstance.files = [ {
-      key: '1',
-      file:  mockFile('file-a', 2 * 1024 * 1024),
-      status: Status.ERROR,
-      id: 0,
-    }, {
-      key: '2',
-      file: mockFile('file-b', 6 * 1024 * 1024),
-      status: Status.ERROR,
-      id: 1,
-    }]
-    await page.waitForChanges()
-    component = page.body.querySelector('mds-input-upload')
+    page.rootInstance.files = [
+      {
+        key: '1',
+        file: mockFile('file-a', 2 * 1024 * 1024),
+        status: Status.ERROR,
+        id: 0,
+      },
+      {
+        key: '2',
+        file: mockFile('file-b', 6 * 1024 * 1024),
+        status: Status.ERROR,
+        id: 1,
+      },
+    ];
+    await page.waitForChanges();
+    component = page.body.querySelector('mds-input-upload');
 
-    const sortTab = component?.shadowRoot?.querySelector('.action-sort')
-    expect(sortTab).toBeNull()
-  })
+    const sortTab = component?.shadowRoot?.querySelector('.action-sort');
+    expect(sortTab).toBeNull();
+  });
 
   it('should not show sort when one file is added and sort has been set', async () => {
-    await page.setContent('<mds-input-upload sort="date"></mds-input-upload>')
-    const inputElement = component?.shadowRoot?.querySelector('input') as HTMLInputElement
-    if (!inputElement) throw new Error('input not found')
+    await page.setContent('<mds-input-upload sort="date"></mds-input-upload>');
+    const inputElement = component?.shadowRoot?.querySelector('input') as HTMLInputElement;
+    if (!inputElement) throw new Error('input not found');
 
     // status is on ERROR for not trigger browser File type related code
-    page.rootInstance.files = [ {
-      key: '1',
-      file:  mockFile('file-a', 2 * 1024 * 1024),
-      status: Status.ERROR,
-      id: 0,
-    }]
-    await page.waitForChanges()
+    page.rootInstance.files = [
+      {
+        key: '1',
+        file: mockFile('file-a', 2 * 1024 * 1024),
+        status: Status.ERROR,
+        id: 0,
+      },
+    ];
+    await page.waitForChanges();
 
-    component = page.body.querySelector('mds-input-upload')
-    const sortTab = component?.shadowRoot?.querySelector('.action-sort')
-    expect(sortTab).toBeNull()
-  })
+    component = page.body.querySelector('mds-input-upload');
+    const sortTab = component?.shadowRoot?.querySelector('.action-sort');
+    expect(sortTab).toBeNull();
+  });
 
   it('should show sort when more than one file is added and sort has been set', async () => {
-    await page.setContent('<mds-input-upload sort="date"></mds-input-upload>')
+    await page.setContent('<mds-input-upload sort="date"></mds-input-upload>');
 
     // status is on ERROR for not trigger browser File type related code
-    page.rootInstance.files = [ {
-      key: '1',
-      file: mockFile('file-a', 2 * 1024 * 1024),
-      status: Status.ERROR,
-      id: 0,
-    }, {
-      key: '2',
-      file: mockFile('file-b', 6 * 1024 * 1024),
-      status: Status.ERROR,
-      id: 1,
-    }]
-    await page.waitForChanges()
-    component = page.body.querySelector('mds-input-upload')
-    const sortTab = component?.shadowRoot?.querySelector('.action-sort')
-    expect(sortTab).toBeTruthy()
-    expect(sortTab?.firstChild).toHaveAttribute('selected')
-  })
+    page.rootInstance.files = [
+      {
+        key: '1',
+        file: mockFile('file-a', 2 * 1024 * 1024),
+        status: Status.ERROR,
+        id: 0,
+      },
+      {
+        key: '2',
+        file: mockFile('file-b', 6 * 1024 * 1024),
+        status: Status.ERROR,
+        id: 1,
+      },
+    ];
+    await page.waitForChanges();
+    component = page.body.querySelector('mds-input-upload');
+    const sortTab = component?.shadowRoot?.querySelector('.action-sort');
+    expect(sortTab).toBeTruthy();
+    expect(sortTab?.firstChild).toHaveAttribute('selected');
+  });
 
   it('should set files', async () => {
-    const inputElement = component?.shadowRoot?.querySelector('input') as HTMLInputElement
-    if (!inputElement) throw new Error('input not found')
+    const inputElement = component?.shadowRoot?.querySelector('input') as HTMLInputElement;
+    if (!inputElement) throw new Error('input not found');
 
     inputElement.files = mockFileList([
       mockFile('file-a', 2 * 1024 * 1024),
       mockFile('file-b', 6 * 1024 * 1024),
-    ])
+    ]);
     // cant test prepareFiles in this test Environment, dataTransfer is not defined
     // inputElement.dispatchEvent(new Event('change'))
-    await page.waitForChanges()
-    expect(await component?.getFiles()).toHaveLength(2)
-  })
-
-})
+    await page.waitForChanges();
+    expect(await component?.getFiles()).toHaveLength(2);
+  });
+});

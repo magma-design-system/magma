@@ -20,6 +20,6 @@
   transform: scale(1);
 }
 
-:host([reset]:not([reset="false"])) .reset {
+:host([reset]:not([reset='false'])) .reset {
   transform: scale(1);
 }

@@ -1,4 +1,4 @@
-import { Component, Host, h } from '@stencil/core'
+import { Component, Host, h } from '@stencil/core';
 
 /**
  * @slot default - Add `mds-list-item` element/s.
@@ -9,15 +9,12 @@ import { Component, Host, h } from '@stencil/core'
   styleUrl: 'mds-list.css',
   shadow: true,
 })
-
 export class MdsList {
-
-  render () {
+  render() {
     return (
       <Host role="list">
         <slot></slot>
       </Host>
-    )
+    );
   }
-
 }

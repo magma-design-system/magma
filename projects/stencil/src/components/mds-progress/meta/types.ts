@@ -1,4 +1,1 @@
-export type DirectionType =
-  | 'horizontal'
-  | 'vertical'
-  | 'radial'
+export type DirectionType = 'horizontal' | 'vertical' | 'radial';

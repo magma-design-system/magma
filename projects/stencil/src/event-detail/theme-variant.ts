@@ -1,6 +1,6 @@
-import { PreferenceThemeSchemeType } from '@type/preference'
+import { PreferenceThemeSchemeType } from '@type/preference';
 
 export interface MdsPrefThemeVariantEventDetail {
-  name?: string
-  scheme?: PreferenceThemeSchemeType
+  name?: string;
+  scheme?: PreferenceThemeSchemeType;
 }

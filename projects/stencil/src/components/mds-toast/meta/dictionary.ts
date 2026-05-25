@@ -5,8 +5,6 @@ const toastPositionDictionary = [
   'bottom-left',
   'bottom-center',
   'bottom-right',
-]
+];
 
-export {
-  toastPositionDictionary,
-}
+export { toastPositionDictionary };

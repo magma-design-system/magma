@@ -1,4 +1,4 @@
-import { Component, Host, h, Element } from '@stencil/core'
+import { Component, Host, h, Element } from '@stencil/core';
 
 /**
  * @slot default - Add `text string`, `HTML elements` or `components` to this slot. Insert author information, name, role or other useful author infos.
@@ -10,27 +10,25 @@ import { Component, Host, h, Element } from '@stencil/core'
   shadow: true,
 })
 export class MdsAuthor {
+  private hasAvatar: boolean;
+  @Element() hostElement: HTMLMdsAuthorElement;
 
-  private hasAvatar: boolean
-  @Element() hostElement: HTMLMdsAuthorElement
-
-  componentWillLoad (): void {
-    this.hasAvatar = this.hostElement.querySelector(':scope > [slot="avatar"]') !== null
+  componentWillLoad(): void {
+    this.hasAvatar = this.hostElement.querySelector(':scope > [slot="avatar"]') !== null;
   }
 
-  render () {
+  render() {
     return (
       <Host>
-        { this.hasAvatar &&
+        {this.hasAvatar && (
           <div class="avatar">
-            <slot name="avatar"/>
+            <slot name="avatar" />
           </div>
-        }
+        )}
         <div class="info">
-          <slot/>
+          <slot />
         </div>
       </Host>
-    )
+    );
   }
-
 }

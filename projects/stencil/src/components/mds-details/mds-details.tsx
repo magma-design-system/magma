@@ -1,7 +1,17 @@
-import { Component, Element, Event, EventEmitter, Host, Prop, State, Watch, h } from '@stencil/core'
-import clsx from 'clsx'
-import miBaselineKeyboardArrowRight from '@icon/mi/baseline/keyboard-arrow-right.svg'
-import { KeyboardManager } from '@common/keyboard-manager'
+import {
+  Component,
+  Element,
+  Event,
+  EventEmitter,
+  Host,
+  Prop,
+  State,
+  Watch,
+  h,
+} from '@stencil/core';
+import clsx from 'clsx';
+import miBaselineKeyboardArrowRight from '@icon/mi/baseline/keyboard-arrow-right.svg';
+import { KeyboardManager } from '@common/keyboard-manager';
 
 /**
  * @slot default - Add `text string`, `HTML elements` or `components` to this slot.
@@ -19,77 +29,79 @@ import { KeyboardManager } from '@common/keyboard-manager'
   shadow: true,
 })
 export class MdsDetails {
-
-  @Element() private host: HTMLMdsDetailsElement
-  @State() isOpened: boolean
-  @State() hasIcon: boolean = true
-  private km = new KeyboardManager()
+  @Element() private host: HTMLMdsDetailsElement;
+  @State() isOpened: boolean;
+  @State() hasIcon: boolean = true;
+  private km = new KeyboardManager();
   /**
    * Specifies if the component is opened
    */
-  @Prop({ mutable: true, reflect: true }) opened = false
+  @Prop({ mutable: true, reflect: true }) opened = false;
 
   /**
    * Emits when the component is opened
    */
-  @Event({ eventName: 'mdsDetailsChange' }) changedEvent: EventEmitter<boolean>
+  @Event({ eventName: 'mdsDetailsChange' }) changedEvent: EventEmitter<boolean>;
 
   @Watch('opened')
-  validateOpened (newValue: boolean): void {
-    this.isOpened = newValue
+  validateOpened(newValue: boolean): void {
+    this.isOpened = newValue;
   }
 
-  componentWillLoad (): void {
-    this.isOpened = this.opened
-    this.checkIcon()
+  componentWillLoad(): void {
+    this.isOpened = this.opened;
+    this.checkIcon();
   }
 
-  componentDidLoad (): void {
-    const header = this.host.shadowRoot?.querySelector('.header') as HTMLElement
-    this.km.addElement(header)
-    this.km.attachClickBehavior()
+  componentDidLoad(): void {
+    const header = this.host.shadowRoot?.querySelector('.header') as HTMLElement;
+    this.km.addElement(header);
+    this.km.attachClickBehavior();
   }
 
-  disconnectedCallback (): void {
-    this.km.detachClickBehavior()
+  disconnectedCallback(): void {
+    this.km.detachClickBehavior();
   }
 
   private toggle = () => {
-    this.isOpened = !this.isOpened
-    this.changedEvent.emit(this.isOpened)
-  }
+    this.isOpened = !this.isOpened;
+    this.changedEvent.emit(this.isOpened);
+  };
 
   private checkIcon = (): void => {
-    this.hasIcon = this.host.querySelector(':scope > [slot="icon"]') !== null
-  }
+    this.hasIcon = this.host.querySelector(':scope > [slot="icon"]') !== null;
+  };
 
   private onSlotChangeHandler = (): void => {
-    this.checkIcon()
-  }
+    this.checkIcon();
+  };
 
-  render () {
+  render() {
     return (
       <Host>
-        <div class={clsx('icon', this.hasIcon ? '' : 'icon--hidden')} onClick={ this.toggle }>
-          <slot name="icon" onSlotchange={ this.onSlotChangeHandler }/>
+        <div class={clsx('icon', this.hasIcon ? '' : 'icon--hidden')} onClick={this.toggle}>
+          <slot name="icon" onSlotchange={this.onSlotChangeHandler} />
         </div>
         <div class="content">
-          <header class="header" part="header" tabindex="0" onClick={ this.toggle }>
+          <header class="header" part="header" tabindex="0" onClick={this.toggle}>
             <div class="title" part="title">
-              <slot name="title"/>
+              <slot name="title" />
             </div>
-            <i class={clsx('helper-icon', this.isOpened && 'opened')} innerHTML={miBaselineKeyboardArrowRight}/>
+            <i
+              class={clsx('helper-icon', this.isOpened && 'opened')}
+              innerHTML={miBaselineKeyboardArrowRight}
+            />
           </header>
           <div class={clsx('details', this.isOpened && 'opened')}>
             <div class="content-expander" part="content">
-              <slot/>
+              <slot />
               <div class="actions">
-                <slot name="action"/>
+                <slot name="action" />
               </div>
             </div>
           </div>
         </div>
       </Host>
-    )
+    );
   }
 }

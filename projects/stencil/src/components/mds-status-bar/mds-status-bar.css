@@ -9,13 +9,13 @@
 @property --mds-status-bar-max-width {
   inherits: false;
   initial-value: 500px;
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-status-bar-backdrop {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-01) / 0.1);
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 /* ❌ Not supported

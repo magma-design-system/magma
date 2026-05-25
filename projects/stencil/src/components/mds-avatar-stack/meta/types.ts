@@ -1,4 +1,1 @@
-export type AvatarSizeType =
-  | 'sm'
-  | 'md'
-  | 'lg'
+export type AvatarSizeType = 'sm' | 'md' | 'lg';

@@ -1,7 +1,7 @@
-import { h } from '@stencil/core'
-import { typographyTechnicalDictionary } from '@type/typography'
-import { themeVariantDictionary } from '@type/variant'
-import { iconsDictionary } from '@type/icon'
+import { h } from '@stencil/core';
+import { typographyTechnicalDictionary } from '@type/typography';
+import { themeVariantDictionary } from '@type/variant';
+import { iconsDictionary } from '@type/icon';
 
 export default {
   title: 'UI / Radial Progress',
@@ -35,11 +35,11 @@ export default {
       type: { name: 'number' },
     },
   },
-}
+};
 
-const Template = args => (
+const Template = (args) => (
   <mds-radial-progress {...args} style={{ width: `${args.width}px` }}></mds-radial-progress>
-)
+);
 
 export const Default = {
   render: Template,
@@ -47,4 +47,4 @@ export const Default = {
     width: 48,
     progress: 0.65,
   },
-}
+};

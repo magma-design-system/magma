@@ -1,5 +1,5 @@
-:host([variant="ai"]),
-:host([variant="ai"][tone="strong"]) {
+:host([variant='ai']),
+:host([variant='ai'][tone='strong']) {
   --mds-banner-background: rgb(var(--tone-neutral));
   --mds-banner-close-icon-hover-background: rgb(var(--variant-ai-09));
   --mds-banner-color: rgb(var(--tone-neutral-02));
@@ -9,7 +9,7 @@
   --mds-banner-cockade-background: rgb(var(--variant-ai-09));
 }
 
-:host([variant="ai"][tone="weak"]) {
+:host([variant='ai'][tone='weak']) {
   --mds-banner-background: rgb(var(--tone-neutral));
   --mds-banner-close-icon-hover-background: rgb(var(--variant-ai-10));
   --mds-banner-color: rgb(var(--tone-neutral-02));
@@ -17,4 +17,3 @@
   --mds-banner-shadow: var(--shadow-sm-sharp);
   --mds-banner-cockade-background: rgb(var(--variant-ai-10));
 }
-

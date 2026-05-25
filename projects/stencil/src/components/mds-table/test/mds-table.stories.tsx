@@ -1,20 +1,19 @@
-import { h } from '@stencil/core'
-import { useState, FC } from 'react'
+import { h } from '@stencil/core';
+import { useState, FC } from 'react';
 
 export default {
   title: 'Layout / Table',
   argTypes: {
     interactive: {
       type: { name: 'boolean' },
-      description:
-        'Specifies if the table rows are higlighted on mouseover event',
+      description: 'Specifies if the table rows are higlighted on mouseover event',
     },
     selectable: {
       type: { name: 'boolean' },
       description: 'Specifies if the table rows are selectable by a checkbox',
     },
   },
-}
+};
 
 type ComponentRowProps = {
   key?: number;
@@ -44,8 +43,8 @@ const TemplateRow: FC<ComponentRowProps> = ({ name, email, date }) => {
         </mds-table-cell>
       )}
     </mds-table-row>
-  )
-}
+  );
+};
 
 const TemplateRowActions: FC<ComponentRowProps> = ({ name, email, date }) => {
   return (
@@ -75,10 +74,10 @@ const TemplateRowActions: FC<ComponentRowProps> = ({ name, email, date }) => {
         tone="text"
       ></mds-button>
     </mds-table-row>
-  )
-}
+  );
+};
 
-const Template = args => (
+const Template = (args) => (
   <mds-table {...args}>
     <mds-table-header>
       <mds-table-header-cell label="Username"></mds-table-header-cell>
@@ -86,21 +85,9 @@ const Template = args => (
       <mds-table-header-cell label="Date"></mds-table-header-cell>
     </mds-table-header>
     <mds-table-body>
-      <TemplateRow
-        name="Mario Rossi"
-        email="mario.rossi@nintendo.com"
-        date="12 ottobre 1985"
-      />
-      <TemplateRow
-        name="Luigi Verdi"
-        email="luigi.verdi@nintendo.com"
-        date="12 ottobre 1985"
-      />
-      <TemplateRow
-        name="Wario Gialli"
-        email="wario.gialli@nintendo.com"
-        date="3 marzo 1993"
-      />
+      <TemplateRow name="Mario Rossi" email="mario.rossi@nintendo.com" date="12 ottobre 1985" />
+      <TemplateRow name="Luigi Verdi" email="luigi.verdi@nintendo.com" date="12 ottobre 1985" />
+      <TemplateRow name="Wario Gialli" email="wario.gialli@nintendo.com" date="3 marzo 1993" />
       <TemplateRow
         name="Waluigi Violini"
         email="waluigi.violini@nintendo.com"
@@ -119,9 +106,9 @@ const Template = args => (
       </mds-table-cell>
     </mds-table-footer>
   </mds-table>
-)
+);
 
-const TemplateNestedTab = args => (
+const TemplateNestedTab = (args) => (
   <mds-tab>
     <mds-tab-item label="Tab"></mds-tab-item>
     <div slot="content">
@@ -167,17 +154,14 @@ const TemplateNestedTab = args => (
       </mds-table>
     </div>
   </mds-tab>
-)
+);
 
-const TemplateSortable = args => (
+const TemplateSortable = (args) => (
   <mds-table {...args}>
     <mds-table-header>
       <mds-table-header-cell sortable label="Numbers"></mds-table-header-cell>
       <mds-table-header-cell sortable label="Strings"></mds-table-header-cell>
-      <mds-table-header-cell
-        sortable
-        label="Strings from cell"
-      ></mds-table-header-cell>
+      <mds-table-header-cell sortable label="Strings from cell"></mds-table-header-cell>
       <mds-table-header-cell label="No sortable column"></mds-table-header-cell>
     </mds-table-header>
     <mds-table-body>
@@ -271,17 +255,14 @@ const TemplateSortable = args => (
       </mds-table-row>
     </mds-table-body>
   </mds-table>
-)
+);
 
-const TemplateSortableActions = args => (
+const TemplateSortableActions = (args) => (
   <mds-table {...args}>
     <mds-table-header>
       <mds-table-header-cell sortable label="Numbers"></mds-table-header-cell>
       <mds-table-header-cell sortable label="Strings"></mds-table-header-cell>
-      <mds-table-header-cell
-        sortable
-        label="Strings from cell"
-      ></mds-table-header-cell>
+      <mds-table-header-cell sortable label="Strings from cell"></mds-table-header-cell>
       <mds-table-header-cell label="No sortable column"></mds-table-header-cell>
     </mds-table-header>
     <mds-table-body>
@@ -459,17 +440,14 @@ const TemplateSortableActions = args => (
       </mds-table-row>
     </mds-table-body>
   </mds-table>
-)
+);
 
-const TemplateSelectable = args => (
+const TemplateSelectable = (args) => (
   <mds-table {...args}>
     <mds-table-header>
       <mds-table-header-cell sortable label="Numbers"></mds-table-header-cell>
       <mds-table-header-cell sortable label="Strings"></mds-table-header-cell>
-      <mds-table-header-cell
-        sortable
-        label="Strings from cell"
-      ></mds-table-header-cell>
+      <mds-table-header-cell sortable label="Strings from cell"></mds-table-header-cell>
       <mds-table-header-cell label="No sortable column"></mds-table-header-cell>
     </mds-table-header>
     <mds-table-body>
@@ -647,17 +625,14 @@ const TemplateSelectable = args => (
       </mds-table-row>
     </mds-table-body>
   </mds-table>
-)
+);
 
-const TemplateBatchActions = args => (
+const TemplateBatchActions = (args) => (
   <mds-table {...args}>
     <mds-table-header>
       <mds-table-header-cell sortable label="Numbers"></mds-table-header-cell>
       <mds-table-header-cell sortable label="Strings"></mds-table-header-cell>
-      <mds-table-header-cell
-        sortable
-        label="Strings from cell"
-      ></mds-table-header-cell>
+      <mds-table-header-cell sortable label="Strings from cell"></mds-table-header-cell>
       <mds-table-header-cell label="No sortable column"></mds-table-header-cell>
     </mds-table-header>
     <mds-table-body>
@@ -856,7 +831,7 @@ const TemplateBatchActions = args => (
       tone="text"
     ></mds-button>
   </mds-table>
-)
+);
 
 const AsyncSlottedRow: FC<ComponentRowProps> = ({ name, email }) => {
   return (
@@ -879,8 +854,8 @@ const AsyncSlottedRow: FC<ComponentRowProps> = ({ name, email }) => {
         tone="text"
       ></mds-button>
     </mds-table-row>
-  )
-}
+  );
+};
 
 const TemplateAsyncSlottedContents = () => {
   const firstList = [
@@ -888,7 +863,7 @@ const TemplateAsyncSlottedContents = () => {
     { name: 'Luigi Verdi', email: 'luigi.verdi@nintendo.com' },
     { name: 'Wario Gialli', email: 'wario.gialli@nintendo.com' },
     { name: 'Waluigi Violetti', email: 'waluigi.violetti@nintendo.com' },
-  ]
+  ];
   const secondList = [
     {
       name: 'Devastatore Decepticoni',
@@ -897,23 +872,23 @@ const TemplateAsyncSlottedContents = () => {
     { name: 'Galvatrone Megatroni', email: 'galvatrone.megatroni@hasbro.com' },
     { name: 'Ottimo Primo', email: 'ottimo.primo@hasbro.com' },
     { name: 'Strillo Stella', email: 'strillo.stella@hasbro.com' },
-  ]
+  ];
 
-  const [dataList, setData] = useState(firstList)
-  const [changedList, setListStatus] = useState(false)
+  const [dataList, setData] = useState(firstList);
+  const [changedList, setListStatus] = useState(false);
 
-  function updateData () {
-    setListStatus(true)
+  function updateData() {
+    setListStatus(true);
     if (dataList.length > 4) {
-      setData(firstList)
-      return
+      setData(firstList);
+      return;
     }
-    setData(firstList.concat(secondList))
+    setData(firstList.concat(secondList));
   }
 
-  function resetData () {
-    setListStatus(false)
-    setData(firstList)
+  function resetData() {
+    setListStatus(false);
+    setData(firstList);
   }
 
   return (
@@ -940,10 +915,7 @@ const TemplateAsyncSlottedContents = () => {
       </div>
       <mds-table selectable interactive>
         <mds-table-header>
-          <mds-table-header-cell
-            sortable
-            label="Full Name"
-          ></mds-table-header-cell>
+          <mds-table-header-cell sortable label="Full Name"></mds-table-header-cell>
           <mds-table-header-cell sortable label="Email"></mds-table-header-cell>
         </mds-table-header>
         <mds-table-body>
@@ -953,12 +925,12 @@ const TemplateAsyncSlottedContents = () => {
         </mds-table-body>
       </mds-table>
     </div>
-  )
-}
+  );
+};
 
 export const Default = {
   render: Template,
-}
+};
 
 export const Interactive = {
   render: Template,
@@ -966,7 +938,7 @@ export const Interactive = {
   args: {
     interactive: true,
   },
-}
+};
 
 export const Sortable = {
   render: TemplateSortable,
@@ -974,7 +946,7 @@ export const Sortable = {
   args: {
     interactive: true,
   },
-}
+};
 
 export const Actions = {
   render: TemplateSortableActions,
@@ -982,7 +954,7 @@ export const Actions = {
   args: {
     interactive: true,
   },
-}
+};
 
 export const Selectable = {
   render: TemplateSelectable,
@@ -991,7 +963,7 @@ export const Selectable = {
     interactive: false,
     selectable: true,
   },
-}
+};
 
 export const AsyncSlottedContents = {
   render: TemplateAsyncSlottedContents,
@@ -1000,11 +972,11 @@ export const AsyncSlottedContents = {
     interactive: false,
     selectable: true,
   },
-}
+};
 
 export const NestedTable = {
   render: TemplateNestedTab,
-}
+};
 
 export const BatchActions = {
   render: TemplateBatchActions,
@@ -1013,4 +985,4 @@ export const BatchActions = {
     interactive: false,
     selectable: true,
   },
-}
+};

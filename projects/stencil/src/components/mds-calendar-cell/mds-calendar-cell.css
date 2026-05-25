@@ -39,223 +39,221 @@
  * @prop --mds-calendar-cell-selection-other-month-boundaries-color: Boundary color for selected days (other months).
  */
 
-
 @property --mds-calendar-cell-background {
   inherits: false;
   initial-value: transparent;
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-calendar-cell-boundaries-background {
   inherits: false;
   initial-value: transparent;
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-calendar-cell-boundaries-color {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-01));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-calendar-cell-boundaries-padding {
   inherits: false;
   initial-value: 0.25rem;
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-calendar-cell-color {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-01));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-calendar-cell-other-month-background {
   inherits: false;
   initial-value: transparent;
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-calendar-cell-other-month-color {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-07));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-calendar-cell-disabled-background {
   inherits: false;
   initial-value: transparent;
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-calendar-cell-disabled-color {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-07));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-calendar-cell-weekend-background {
   inherits: false;
   initial-value: transparent;
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-calendar-cell-weekend-color {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-06));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-calendar-cell-size {
   inherits: false;
   initial-value: 3rem;
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-calendar-cell-selection-boundaries-border-radius {
   inherits: false;
   initial-value: 1.5rem;
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-calendar-cell-selection-week-boundaries-border-radius {
   inherits: false;
   initial-value: 1.5rem;
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-calendar-cell-preselection-today-background {
   inherits: false;
   initial-value: rgb(var(--variant-primary-09));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-calendar-cell-preselection-today-color {
   inherits: false;
   initial-value: rgb(var(--variant-primary-03));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-calendar-cell-preselection-current-month-background {
   inherits: false;
   initial-value: rgb(var(--variant-primary-08));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-calendar-cell-preselection-current-month-color {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-05));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-calendar-cell-preselection-current-month-boundaries-color {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-05));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-calendar-cell-preselection-current-month-boundaries-background {
   inherits: false;
   initial-value: rgb(var(--variant-primary-10));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-calendar-cell-preselection-other-month-background {
   inherits: false;
   initial-value: rgb(var(--variant-primary-09));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-calendar-cell-preselection-other-month-color {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-05));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-calendar-cell-preselection-other-month-boundaries-color {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-05));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-calendar-cell-preselection-other-month-boundaries-background {
   inherits: false;
   initial-value: rgb(var(--tone-neutral));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-calendar-cell-selection-current-month-background {
   inherits: false;
   initial-value: rgb(var(--variant-primary-04));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-calendar-cell-selection-current-month-color {
   inherits: false;
   initial-value: rgb(var(--tone-neutral));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-calendar-cell-selection-current-month-boundaries-background {
   inherits: false;
   initial-value: rgb(var(--tone-neutral));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-calendar-cell-selection-current-month-boundaries-color {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-03));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-calendar-cell-selection-current-month-weekend-background {
   inherits: false;
   initial-value: rgb(var(--variant-primary-03));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-calendar-cell-selection-current-month-weekend-color {
   inherits: false;
   initial-value: rgb(var(--variant-primary-07));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-calendar-cell-selection-current-month-weekend-boundaries-background {
   inherits: false;
   initial-value: rgb(var(--variant-primary-03));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-calendar-cell-selection-current-month-weekend-boundaries-color {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-03));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-calendar-cell-selection-other-month-background {
   inherits: false;
   initial-value: rgb(var(--variant-primary-07));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-calendar-cell-selection-other-month-color {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-04));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-calendar-cell-selection-other-month-boundaries-background {
   inherits: false;
   initial-value: rgb(var(--variant-primary-10));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-calendar-cell-selection-other-month-boundaries-color {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-05));
-  syntax: "<color>";
+  syntax: '<color>';
 }
-
 
 :host {
   --mds-calendar-cell-background: transparent;
@@ -284,7 +282,9 @@
   --mds-calendar-cell-preselection-current-month-background: rgb(var(--variant-primary-08));
   --mds-calendar-cell-preselection-current-month-color: rgb(var(--tone-neutral-05));
   --mds-calendar-cell-preselection-current-month-boundaries-color: rgb(var(--tone-neutral-05));
-  --mds-calendar-cell-preselection-current-month-boundaries-background: rgb(var(--variant-primary-10));
+  --mds-calendar-cell-preselection-current-month-boundaries-background: rgb(
+    var(--variant-primary-10)
+  );
   --mds-calendar-cell-preselection-other-month-background: rgb(var(--variant-primary-09));
   --mds-calendar-cell-preselection-other-month-color: rgb(var(--tone-neutral-05));
   --mds-calendar-cell-preselection-other-month-boundaries-color: rgb(var(--tone-neutral-05));
@@ -298,7 +298,9 @@
   --mds-calendar-cell-selection-current-month-boundaries-color: rgb(var(--tone-neutral-03));
   --mds-calendar-cell-selection-current-month-weekend-background: rgb(var(--variant-primary-03));
   --mds-calendar-cell-selection-current-month-weekend-color: rgb(var(--variant-primary-07));
-  --mds-calendar-cell-selection-current-month-weekend-boundaries-background: rgb(var(--variant-primary-03));
+  --mds-calendar-cell-selection-current-month-weekend-boundaries-background: rgb(
+    var(--variant-primary-03)
+  );
   --mds-calendar-cell-selection-current-month-weekend-boundaries-color: rgb(var(--tone-neutral-03));
   --mds-calendar-cell-selection-other-month-background: rgb(var(--variant-primary-07));
   --mds-calendar-cell-selection-other-month-color: rgb(var(--tone-neutral-04));
@@ -313,7 +315,7 @@
   position: relative;
 }
 
-:host([month="other"]) {
+:host([month='other']) {
   visibility: var(--mds-calendar-cell-other-month-visibility, hidden);
 }
 
@@ -355,18 +357,18 @@
 
 /* selection boundaries */
 
-:host([selection][orientation="horizontal"]) .area-background {
+:host([selection][orientation='horizontal']) .area-background {
   margin-left: calc(var(--mds-calendar-cell-gap) * -1);
   margin-right: calc(var(--mds-calendar-cell-gap) * -1);
 }
 
-:host([selection="start"][orientation="horizontal"]) .area-background {
+:host([selection='start'][orientation='horizontal']) .area-background {
   border-bottom-left-radius: var(--mds-calendar-cell-selection-boundaries-border-radius);
   border-top-left-radius: var(--mds-calendar-cell-selection-boundaries-border-radius);
   margin-left: 0;
 }
 
-:host([selection="end"][orientation="horizontal"]) .area-background {
+:host([selection='end'][orientation='horizontal']) .area-background {
   border-bottom-right-radius: var(--mds-calendar-cell-selection-boundaries-border-radius);
   border-top-right-radius: var(--mds-calendar-cell-selection-boundaries-border-radius);
   margin-right: 0;
@@ -374,53 +376,55 @@
 
 /* vertical orientation */
 
-:host([selection][orientation="vertical"]) .area-background {
+:host([selection][orientation='vertical']) .area-background {
   margin-bottom: calc(var(--mds-calendar-cell-gap) * -1);
   margin-top: calc(var(--mds-calendar-cell-gap) * -1);
 }
 
-:host([selection="start"][orientation="vertical"]) .area-background {
-  border-radius: var(--mds-calendar-cell-selection-boundaries-border-radius) var(--mds-calendar-cell-selection-boundaries-border-radius) 0 0;
+:host([selection='start'][orientation='vertical']) .area-background {
+  border-radius: var(--mds-calendar-cell-selection-boundaries-border-radius)
+    var(--mds-calendar-cell-selection-boundaries-border-radius) 0 0;
   margin-top: 0;
 }
 
-:host([selection="end"][orientation="vertical"]) .area-background {
-  border-radius: 0 0 var(--mds-calendar-cell-selection-boundaries-border-radius) var(--mds-calendar-cell-selection-boundaries-border-radius);
+:host([selection='end'][orientation='vertical']) .area-background {
+  border-radius: 0 0 var(--mds-calendar-cell-selection-boundaries-border-radius)
+    var(--mds-calendar-cell-selection-boundaries-border-radius);
   margin-bottom: 0;
 }
 
-:host([orientation="vertical"]:not([selection="start"], [selection="end"])) .area-background {
+:host([orientation='vertical']:not([selection='start'], [selection='end'])) .area-background {
   border-radius: 0;
 }
 
 /* first week-day */
 
 :host(:nth-child(7n - 6)) .area-background,
-:host([selection="end"][orientation="horizontal"]:nth-child(7n - 6)) .area-background {
+:host([selection='end'][orientation='horizontal']:nth-child(7n - 6)) .area-background {
   border-bottom-left-radius: var(--mds-calendar-cell-selection-week-boundaries-border-radius);
   border-top-left-radius: var(--mds-calendar-cell-selection-week-boundaries-border-radius);
 }
 
 :host(:nth-child(7n)) .area-background,
-:host([selection="end"][orientation="horizontal"]:nth-child(7n)) .area-background {
+:host([selection='end'][orientation='horizontal']:nth-child(7n)) .area-background {
   border-bottom-right-radius: var(--mds-calendar-cell-selection-week-boundaries-border-radius);
   border-top-right-radius: var(--mds-calendar-cell-selection-week-boundaries-border-radius);
 }
 
-:host([selection="end"][orientation="horizontal"]:nth-child(7n)) .area-background {
+:host([selection='end'][orientation='horizontal']:nth-child(7n)) .area-background {
   border-bottom-right-radius: var(--mds-calendar-cell-selection-boundaries-border-radius);
   border-top-right-radius: var(--mds-calendar-cell-selection-boundaries-border-radius);
 }
 
-:host([selection][orientation="horizontal"]:nth-child(7n - 6)) .area-background {
+:host([selection][orientation='horizontal']:nth-child(7n - 6)) .area-background {
   margin-left: 0;
 }
 
-:host([selection][orientation="horizontal"]:nth-child(7n)) .area-background {
+:host([selection][orientation='horizontal']:nth-child(7n)) .area-background {
   margin-right: 0;
 }
 
-:host([selection="single"][orientation="horizontal"]) .area-background {
+:host([selection='single'][orientation='horizontal']) .area-background {
   border-radius: var(--mds-calendar-cell-selection-boundaries-border-radius);
   margin-left: 0;
   margin-right: 0;
@@ -436,7 +440,7 @@
 
 /* month */
 
-:host([month="other"]:not([selection])) {
+:host([month='other']:not([selection])) {
   --mds-calendar-cell-color: var(--mds-calendar-cell-other-month-color);
   --mds-calendar-cell-background: var(--mds-calendar-cell-other-month-background);
 }

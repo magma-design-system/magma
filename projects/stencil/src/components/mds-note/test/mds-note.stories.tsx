@@ -1,5 +1,5 @@
-import { themeLabelVariantDictionary } from '@type/variant'
-import { h } from '@stencil/core'
+import { themeLabelVariantDictionary } from '@type/variant';
+import { h } from '@stencil/core';
 
 export default {
   title: 'UI / Note',
@@ -16,18 +16,17 @@ export default {
       control: { type: 'select' },
     },
   },
-}
+};
 
-const Template = args => (
+const Template = (args) => (
   <mds-note {...args}>
     <mds-text typography="detail">
-      What one programmer can do in one month, two programmers can do in two
-      months.
+      What one programmer can do in one month, two programmers can do in two months.
     </mds-text>
   </mds-note>
-)
+);
 
-const TemplateTitle = args => (
+const TemplateTitle = (args) => (
   <mds-note {...args}>
     <mds-text typography="h5" slot="title">
       Nota riunione Synbee
@@ -36,15 +35,15 @@ const TemplateTitle = args => (
       Posso prendere i dati solo dopo previa conferma dell'utente registrato.
     </mds-text>
     <mds-text typography="detail">
-      È necessario dare il consenso anche a partner di terze parti per poter
-      rendere al massimo l'analisi dei dati dell'utente.
+      È necessario dare il consenso anche a partner di terze parti per poter rendere al massimo
+      l'analisi dei dati dell'utente.
     </mds-text>
   </mds-note>
-)
+);
 
 export const Default = {
   render: Template,
-}
+};
 
 export const Deletable = {
   render: Template,
@@ -52,8 +51,8 @@ export const Deletable = {
   args: {
     deletable: true,
   },
-}
+};
 
 export const Title = {
   render: TemplateTitle,
-}
+};

@@ -9,9 +9,9 @@ OF ANY KIND, either express or implied. See the License for the specific languag
 governing permissions and limitations under the License.
 */
 
-import {APCAcontrast, sRGBtoY} from 'apca-w3';
+import { APCAcontrast, sRGBtoY } from 'apca-w3';
 import chroma from 'chroma-js';
-import {catmullRom2bezier, prepareCurve} from './curve.js';
+import { catmullRom2bezier, prepareCurve } from './curve.js';
 
 const colorSpaces = {
   HEX: 'hex',
@@ -107,7 +107,7 @@ function smoothScale(ColorsArray, domains, space) {
       }
     }
     // force hue to go on the shortest route
-    if (space in {hcl: 1, hsl: 1, hsluv: 1, hsv: 1, jch: 1}) {
+    if (space in { hcl: 1, hsl: 1, hsluv: 1, hsv: 1, jch: 1 }) {
       let prev = point[1];
       let addon = 0;
       for (let i = 3; i < point.length; i += 2) {
@@ -126,7 +126,9 @@ function smoothScale(ColorsArray, domains, space) {
       }
     }
   });
-  const prep = points.map((point) => catmullRom2bezier(point).map((curve) => prepareCurve(...curve)));
+  const prep = points.map((point) =>
+    catmullRom2bezier(point).map((curve) => prepareCurve(...curve)),
+  );
   return (d) => {
     const ch = prep.map((p) => {
       for (let i = 0; i < p.length; i++) {
@@ -152,7 +154,17 @@ function makePowScale(exp = 1, domains = [0, 1], range = [0, 1]) {
   return (x) => m * x ** exp + c;
 }
 
-function createScale({swatches, colorKeys, colorspace = 'LAB', shift = 1, fullScale = true, smooth = false, distributeLightness = 'linear', sortColor = true, asFun = false} = {}) {
+function createScale({
+  swatches,
+  colorKeys,
+  colorspace = 'LAB',
+  shift = 1,
+  fullScale = true,
+  smooth = false,
+  distributeLightness = 'linear',
+  sortColor = true,
+  asFun = false,
+} = {}) {
   const space = colorSpaces[colorspace];
   if (!space) {
     throw new Error(`Colorspace “${colorspace}” not supported`);
@@ -222,7 +234,7 @@ function createScale({swatches, colorKeys, colorspace = 'LAB', shift = 1, fullSc
 
   const sortedColor = colorKeys
     // Convert to HSLuv and keep track of original indices
-    .map((c, i) => ({colorKeys: cArray(c), index: i}))
+    .map((c, i) => ({ colorKeys: cArray(c), index: i }))
     // Sort by lightness
     .sort((c1, c2) => c2.colorKeys[0] - c1.colorKeys[0])
     // Retrieve original RGB color
@@ -271,7 +283,7 @@ function createScale({swatches, colorKeys, colorspace = 'LAB', shift = 1, fullSc
             return color;
           }
           return String(color);
-        })
+        }),
       )
       .domain(domains)
       .mode(space);
@@ -330,7 +342,7 @@ function convertColorValue(color, format, object = false) {
   if (format === 'HEX') {
     if (object) {
       const rgb = chroma(String(color)).rgb();
-      return {r: rgb[0], g: rgb[1], b: rgb[2]};
+      return { r: rgb[0], g: rgb[1], b: rgb[2] };
     }
 
     return colorObj;
@@ -350,7 +362,7 @@ function convertColorValue(color, format, object = false) {
       letter = 'C';
     }
     colorObject[letter === 'j' ? 'J' : letter] = rnd;
-    if (space in {lab: 1, lch: 1, jab: 1, jch: 1}) {
+    if (space in { lab: 1, lch: 1, jab: 1, jch: 1 }) {
       if (!object) {
         if (letter === 'l' || letter === 'j') {
           rnd += '%';
@@ -425,7 +437,9 @@ function getContrast(color, base, baseV, method = 'wcag2') {
     }
     return -cr1;
   } else if (method === 'wcag3') {
-    return baseV < 0.5 ? APCAcontrast(sRGBtoY(color), sRGBtoY(base)) * -1 : APCAcontrast(sRGBtoY(color), sRGBtoY(base));
+    return baseV < 0.5
+      ? APCAcontrast(sRGBtoY(color), sRGBtoY(base)) * -1
+      : APCAcontrast(sRGBtoY(color), sRGBtoY(base));
   } else {
     throw new Error(`Contrast calculation method ${method} unsupported; use 'wcag2' or 'wcag3'`);
   }
@@ -479,7 +493,7 @@ const searchColors = (color, bgRgbArray, baseV, ratioValues, formula) => {
     colorspace: color._colorspace,
     shift: 1,
     smooth: color._smooth,
-    asFun: true
+    asFun: true,
   });
   const ccache = {};
   // let ccounter = 0;
@@ -520,4 +534,19 @@ const searchColors = (color, bgRgbArray, baseV, ratioValues, formula) => {
   return outputColors;
 };
 
-export {cArray, hsluvArray, colorSpaces, convertColorValue, createScale, getContrast, luminance, minPositive, multiplyRatios, ratioName, removeDuplicates, round, searchColors, uniq};
+export {
+  cArray,
+  hsluvArray,
+  colorSpaces,
+  convertColorValue,
+  createScale,
+  getContrast,
+  luminance,
+  minPositive,
+  multiplyRatios,
+  ratioName,
+  removeDuplicates,
+  round,
+  searchColors,
+  uniq,
+};

@@ -18,55 +18,55 @@
 @property --mds-radial-menu-angle-start {
   inherits: false;
   initial-value: 0deg;
-  syntax: "<angle>";
+  syntax: '<angle>';
 }
 
 @property --mds-radial-menu-angle-end {
   inherits: false;
   initial-value: 360deg;
-  syntax: "<angle>";
+  syntax: '<angle>';
 }
 
 @property --mds-radial-menu-context-menu-z-index {
   inherits: false;
   initial-value: var(--magma-context-menu-z-index, 8000);
-  syntax: "<integer>";
+  syntax: '<integer>';
 }
 
 @property --mds-radial-menu-delay {
   inherits: false;
   initial-value: 0.01s;
-  syntax: "<time>";
+  syntax: '<time>';
 }
 
 @property --mds-radial-menu-direction {
   inherits: false;
   initial-value: -1;
-  syntax: "<integer>";
+  syntax: '<integer>';
 }
 
 @property --mds-radial-menu-disc-background {
   inherits: false;
-  initial-value: rgb(var(--tone-neutral) / 0.50);
-  syntax: "<color>";
+  initial-value: rgb(var(--tone-neutral) / 0.5);
+  syntax: '<color>';
 }
 
 @property --mds-radial-menu-disc-size {
   inherits: false;
   initial-value: calc(var(--mds-radial-menu-radius) * 2);
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-radial-menu-radius {
   inherits: false;
   initial-value: 5rem;
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-radial-menu-transition-duration {
   inherits: false;
   initial-value: 500ms;
-  syntax: "<time>";
+  syntax: '<time>';
 }
 
 /* ❌ Not supported
@@ -95,7 +95,7 @@
   --mds-radial-menu-context-menu-z-index: var(--magma-context-menu-z-index, 8000);
   --mds-radial-menu-delay: 0.01s;
   --mds-radial-menu-direction: -1;
-  --mds-radial-menu-disc-background: rgb(var(--tone-neutral) / 0.50);
+  --mds-radial-menu-disc-background: rgb(var(--tone-neutral) / 0.5);
   --mds-radial-menu-disc-filter: blur(8px);
   --mds-radial-menu-disc-shadow: var(--shadow-lg-sharp);
   --mds-radial-menu-disc-size: calc(var(--mds-radial-menu-radius) * 2);
@@ -103,12 +103,18 @@
   --mds-radial-menu-transition-duration: 500ms;
   --mds-radial-menu-transition-timing-function: var(--ease-out-expo);
 
-  /* private */ --mds-radial-menu-nth-siblings: 0;
-  /* private */ --mds-radial-menu-disc-delay: 0s;
-  /* private */ --mds-radial-menu-disc-scale: 0;
-  /* private */ --mds-radial-menu-radius-current: 0;
-  /* private */ --mds-radial-menu-is-full-circle: 1;
-  /* private */ --mds-radial-menu-is-start-greater-than-end: 1;
+  /* private */
+  --mds-radial-menu-nth-siblings: 0;
+  /* private */
+  --mds-radial-menu-disc-delay: 0s;
+  /* private */
+  --mds-radial-menu-disc-scale: 0;
+  /* private */
+  --mds-radial-menu-radius-current: 0;
+  /* private */
+  --mds-radial-menu-is-full-circle: 1;
+  /* private */
+  --mds-radial-menu-is-start-greater-than-end: 1;
 
   display: inline-flex;
   position: relative;
@@ -118,11 +124,11 @@
   z-index: var(--magma-dropdown-z-index, 5000);
 }
 
-:host([direction="clockwise"]) {
+:host([direction='clockwise']) {
   --mds-radial-menu-direction: calc(-1 * var(--mds-radial-menu-is-start-greater-than-end));
 }
 
-:host([direction="counterclockwise"]) {
+:host([direction='counterclockwise']) {
   --mds-radial-menu-direction: calc(1 * var(--mds-radial-menu-is-start-greater-than-end));
 }
 
@@ -167,11 +173,26 @@
 }
 
 ::slotted(mds-radial-menu-item) {
-  --mds-radial-menu-item-offset-per-child: calc((var(--mds-radial-menu-angle-end) - var(--mds-radial-menu-angle-start)) / (var(--mds-radial-menu-nth-siblings) + var(--mds-radial-menu-is-full-circle)));
-	--mds-radial-menu-item-angle-offset: calc(var(--mds-radial-menu-direction) * var(--mds-radial-menu-item-index) * var(--mds-radial-menu-item-offset-per-child));
-  --mds-radial-menu-item-delay: calc((var(--mds-radial-menu-item-index) + 1) * var(--mds-radial-menu-delay));
-  --mds-radial-menu-item-translate: calc(cos((var(--mds-radial-menu-angle-start) + var(--mds-radial-menu-item-angle-offset))) * var(--mds-radial-menu-radius-current)) calc(sin((var(--mds-radial-menu-angle-start) + var(--mds-radial-menu-item-angle-offset))) * var(--mds-radial-menu-radius-current) * -1);
+  --mds-radial-menu-item-offset-per-child: calc(
+    (var(--mds-radial-menu-angle-end) - var(--mds-radial-menu-angle-start)) /
+      (var(--mds-radial-menu-nth-siblings) + var(--mds-radial-menu-is-full-circle))
+  );
+  --mds-radial-menu-item-angle-offset: calc(
+    var(--mds-radial-menu-direction) * var(--mds-radial-menu-item-index) *
+      var(--mds-radial-menu-item-offset-per-child)
+  );
+  --mds-radial-menu-item-delay: calc(
+    (var(--mds-radial-menu-item-index) + 1) * var(--mds-radial-menu-delay)
+  );
+  --mds-radial-menu-item-translate: calc(
+      cos((var(--mds-radial-menu-angle-start) + var(--mds-radial-menu-item-angle-offset))) *
+        var(--mds-radial-menu-radius-current)
+    )
+    calc(
+      sin((var(--mds-radial-menu-angle-start) + var(--mds-radial-menu-item-angle-offset))) *
+        var(--mds-radial-menu-radius-current) * -1
+    );
 }
 
-@import "./css/mds-radial-menu-disc.css";
-@import "./css/mds-radial-menu-interaction.css";
+@import './css/mds-radial-menu-disc.css';
+@import './css/mds-radial-menu-interaction.css';

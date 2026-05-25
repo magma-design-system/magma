@@ -1,15 +1,15 @@
-:host([size="sm"]) {
+:host([size='sm']) {
   gap: --spacing(200);
 }
 
-:host([size="md"]) {
+:host([size='md']) {
   gap: --spacing(200);
 }
 
-:host([size="lg"]) {
+:host([size='lg']) {
   gap: --spacing(300);
 }
 
-:host([size="xl"]) {
+:host([size='xl']) {
   gap: --spacing(300);
 }

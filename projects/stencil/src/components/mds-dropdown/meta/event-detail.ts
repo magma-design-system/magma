@@ -1,4 +1,4 @@
 export interface MdsDropdownEventDetail {
-  caller: HTMLElement
-  visible: boolean
+  caller: HTMLElement;
+  visible: boolean;
 }

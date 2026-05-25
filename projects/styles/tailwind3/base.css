@@ -1,6 +1,5 @@
 body {
-  @apply
-    font-info
+  @apply font-info
     text-info-detail;
 
   background-color: rgb(var(--tone-neutral, theme('colors.tone-neutral')));
@@ -30,8 +29,7 @@ select {
 
 b,
 strong {
-  @apply
-    font-semibold
+  @apply font-semibold
     tracking-tight;
 }
 

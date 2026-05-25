@@ -1,5 +1,5 @@
-import { h } from '@stencil/core'
-import { keyboardKeyNameDictionary } from '@type/keyboard'
+import { h } from '@stencil/core';
+import { keyboardKeyNameDictionary } from '@type/keyboard';
 
 export default {
   title: 'UI / Keyboard / Key',
@@ -12,13 +12,13 @@ export default {
       control: { type: 'select' },
     },
   },
-}
+};
 
-const TemplateSingleKey = args => (
+const TemplateSingleKey = (args) => (
   <mds-keyboard>
     <mds-keyboard-key {...args}></mds-keyboard-key>
   </mds-keyboard>
-)
+);
 
 export const Default = {
   render: TemplateSingleKey,
@@ -26,4 +26,4 @@ export const Default = {
   args: {
     name: 'control',
   },
-}
+};

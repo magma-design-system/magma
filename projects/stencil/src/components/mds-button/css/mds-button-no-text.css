@@ -1,4 +1,4 @@
 :host(:not([label])) .text,
-:host([label=""]) .text {
+:host([label='']) .text {
   display: none;
 }

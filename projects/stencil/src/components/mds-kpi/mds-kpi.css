@@ -8,21 +8,20 @@
 @property --mds-kpi-text-animation-speed {
   inherits: false;
   initial-value: 0.15;
-  syntax: "<number>";
+  syntax: '<number>';
 }
 
 @property --mds-kpi-text-animation-placeholder-char {
   inherits: false;
-  initial-value: " ";
-  syntax: "<string>";
+  initial-value: ' ';
+  syntax: '<string>';
 }
 
 :host {
   --mds-kpi-text-animation-speed: 0.15;
-  --mds-kpi-text-animation-placeholder-char: " ";
+  --mds-kpi-text-animation-placeholder-char: ' ';
 
   display: grid;
   gap: --spacing(400);
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
 }
-

@@ -18,61 +18,61 @@
 @property --mds-banner-background {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-10));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-banner-close-icon-hover-background {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-09));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-banner-cockade-background {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-09));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-banner-color {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-02));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-banner-headline-color {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-02));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-banner-icon-color {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-04));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-banner-cockade-distance {
   inherits: true;
   initial-value: --spacing(600);
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-banner-content-gap {
   inherits: true;
   initial-value: --spacing(200) --spacing(400);
-  syntax: "<length>+";
+  syntax: '<length>+';
 }
 
 @property --mds-banner-radius {
   inherits: true;
   initial-value: var(--radius-lg);
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-banner-transition-duration {
   inherits: true;
   initial-value: 300ms;
-  syntax: "<time>";
+  syntax: '<time>';
 }
 
 /*
@@ -89,8 +89,7 @@
 }
 */
 
-
-  :host {
+:host {
   --mds-banner-background: rgb(var(--tone-neutral-10));
   --mds-banner-close-icon-hover-background: rgb(var(--tone-neutral-09));
   --mds-banner-cockade-background: rgb(var(--tone-neutral-09));
@@ -165,7 +164,7 @@
 }
 
 @container mds-banner (max-width: 300px) {
-  :host([deletable]:not([deletable="false"])) {
+  :host([deletable]:not([deletable='false'])) {
     & .headline {
       padding-right: --spacing(800);
     }
@@ -177,7 +176,7 @@
     }
   }
 
-  ::slotted([slot="action"]) {
+  ::slotted([slot='action']) {
     flex-basis: 100%;
     flex-grow: 1;
   }

@@ -22,97 +22,97 @@
 @property --mds-button-await-duration {
   inherits: true;
   initial-value: 0.725s;
-  syntax: "<time>";
+  syntax: '<time>';
 }
 
 @property --mds-button-background {
   inherits: true;
   initial-value: rgb(var(--variant-primary-02));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-button-border-color-rgb {
   inherits: true;
   initial-value: 0 0 0;
-  syntax: "<number>+";
+  syntax: '<number>+';
 }
 
 @property --mds-button-border-hover-opacity {
   inherits: true;
   initial-value: 0.75;
-  syntax: "<number>";
+  syntax: '<number>';
 }
 
 @property --mds-button-border-tone-strong-hover-width {
   inherits: true;
   initial-value: 0.0625rem;
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-button-border-tone-outline-hover-width {
   inherits: true;
   initial-value: 3px;
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-button-border-tone-weak-hover-width {
   inherits: true;
   initial-value: 0.0625rem;
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-button-border-high-contrast-width {
   inherits: true;
   initial-value: 0.125rem;
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-button-border-high-contrast-hover-width {
   inherits: true;
   initial-value: 3px;
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-button-border-default-opacity {
   inherits: true;
   initial-value: 0;
-  syntax: "<number>";
+  syntax: '<number>';
 }
 
 @property --mds-button-border-opacity {
   inherits: true;
   initial-value: 0;
-  syntax: "<number>";
+  syntax: '<number>';
 }
 
 @property --mds-button-border-width {
   inherits: true;
   initial-value: 0.125rem;
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-button-color {
   inherits: true;
   initial-value: rgb(var(--tone-neutral));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-button-gap {
   inherits: true;
   initial-value: 0.5rem;
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-button-line-clamp {
   inherits: true;
   initial-value: 1;
-  syntax: "<integer>";
+  syntax: '<integer>';
 }
 
 @property --mds-button-radius {
   inherits: true;
   initial-value: var(--radius-xs);
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 :host {
@@ -134,14 +134,14 @@
   --mds-button-line-clamp: 1;
   --mds-button-radius: var(--radius-2xl);
 
-  @apply
-    duration-200
+  @apply duration-200
     focus-bounce;
 
   align-items: center;
   background-color: var(--mds-button-background);
   border-radius: var(--mds-button-radius);
-  box-shadow: 0 0 0 var(--mds-button-border-width) rgb(var(--mds-button-border-color-rgb) / var(--mds-button-border-opacity));
+  box-shadow: 0 0 0 var(--mds-button-border-width)
+    rgb(var(--mds-button-border-color-rgb) / var(--mds-button-border-opacity));
   box-sizing: border-box;
   color: var(--mds-button-color);
   corner-shape: var(--magma-corner-shape, round);
@@ -152,7 +152,8 @@
   justify-content: center;
   padding: 0 --spacing(400);
   position: relative;
-  transition-property: background-color, border-color, box-shadow, color, outline, outline-offset, transform;
+  transition-property:
+    background-color, border-color, box-shadow, color, outline, outline-offset, transform;
   transition-timing-function: var(--ease-out-quad);
   user-select: none;
 }

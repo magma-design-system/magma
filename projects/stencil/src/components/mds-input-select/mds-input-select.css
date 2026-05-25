@@ -15,67 +15,67 @@
 @property --mds-input-select-variant-color-rgb {
   inherits: false;
   initial-value: var(--tone-neutral-01);
-  syntax: "<integer>+";
+  syntax: '<integer>+';
 }
 
 @property --mds-input-select-arrow-icon-background-color {
   inherits: false;
   initial-value: var(--mds-input-select-arrow-icon-blur-background-color);
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-input-select-arrow-icon-blur-background-color {
   inherits: false;
   initial-value: rgb(var(--mds-input-select-variant-color-rgb) / 0);
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-input-select-arrow-icon-blur-color {
   inherits: false;
   initial-value: rgb(var(--mds-input-select-variant-color-rgb) / 0.5);
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-input-select-arrow-icon-color {
   inherits: false;
   initial-value: var(--mds-input-select-arrow-icon-blur-color);
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-input-select-arrow-icon-hover-background-color {
   inherits: false;
   initial-value: rgb(var(--mds-input-select-variant-color-rgb) / 0.5);
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-input-select-arrow-icon-hover-color {
   inherits: false;
   initial-value: rgb(var(--mds-input-select-variant-color-rgb));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-input-tip-horizontal-offset {
   inherits: false;
   initial-value: --spacing(100);
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-input-tip-horizontal-offset-focused {
   inherits: false;
   initial-value: --spacing(1000);
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-input-tip-vertical-offset {
   inherits: false;
   initial-value: --spacing(100);
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-input-tip-background {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-03));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 /* ❌ Not supported
@@ -92,16 +92,23 @@
 }
 */
 
-
 :host {
   --mds-input-select-variant-color-rgb: var(--tone-neutral-01);
   --mds-input-select-ring: 0 0 0 1px rgb(var(--mds-input-select-variant-color-rgb) / 0.1);
-  --mds-input-select-shadow: 0 1px 3px 0 rgb(var(--mds-input-select-variant-color-rgb) / 0.1), 0 1px 2px 0 rgb(var(--mds-input-select-variant-color-rgb) / 0.06);
-  --mds-input-select-arrow-icon-background-color: var(--mds-input-select-arrow-icon-blur-background-color);
-  --mds-input-select-arrow-icon-blur-background-color: rgb(var(--mds-input-select-variant-color-rgb) / 0);
+  --mds-input-select-shadow:
+    0 1px 3px 0 rgb(var(--mds-input-select-variant-color-rgb) / 0.1),
+    0 1px 2px 0 rgb(var(--mds-input-select-variant-color-rgb) / 0.06);
+  --mds-input-select-arrow-icon-background-color: var(
+    --mds-input-select-arrow-icon-blur-background-color
+  );
+  --mds-input-select-arrow-icon-blur-background-color: rgb(
+    var(--mds-input-select-variant-color-rgb) / 0
+  );
   --mds-input-select-arrow-icon-blur-color: rgb(var(--mds-input-select-variant-color-rgb) / 0.5);
   --mds-input-select-arrow-icon-color: var(--mds-input-select-arrow-icon-blur-color);
-  --mds-input-select-arrow-icon-hover-background-color: rgb(var(--mds-input-select-variant-color-rgb) / 0.5);
+  --mds-input-select-arrow-icon-hover-background-color: rgb(
+    var(--mds-input-select-variant-color-rgb) / 0.5
+  );
   --mds-input-select-arrow-icon-hover-color: rgb(var(--mds-input-select-variant-color-rgb));
   --mds-input-tip-horizontal-offset: --spacing(100);
   --mds-input-tip-horizontal-offset-focused: --spacing(1000);
@@ -124,8 +131,12 @@
 :host(:focus-within) {
   --mds-input-select-variant-color-rgb: var(--variant-primary-03);
   --mds-input-select-ring: 0 0 0 3px rgb(var(--mds-input-select-variant-color-rgb) / 1);
-  --mds-input-select-shadow: 0 4px 6px -1px rgb(var(--mds-input-select-variant-color-rgb) / 0.1), 0 2px 4px -1px rgb(var(--mds-input-select-variant-color-rgb) / 0.06);
-  --mds-input-select-arrow-icon-background-color: var(--mds-input-select-arrow-icon-hover-background-color);
+  --mds-input-select-shadow:
+    0 4px 6px -1px rgb(var(--mds-input-select-variant-color-rgb) / 0.1),
+    0 2px 4px -1px rgb(var(--mds-input-select-variant-color-rgb) / 0.06);
+  --mds-input-select-arrow-icon-background-color: var(
+    --mds-input-select-arrow-icon-hover-background-color
+  );
   --mds-input-select-arrow-icon-color: var(--mds-input-select-arrow-icon-hover-color);
 }
 
@@ -165,7 +176,7 @@
   color: rgb(var(--tone-neutral-03));
 }
 
-:host([required]:not([required="false"])) .input {
+:host([required]:not([required='false'])) .input {
   color: rgb(var(--tone-neutral-05));
 }
 

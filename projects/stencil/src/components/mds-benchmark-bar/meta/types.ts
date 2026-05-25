@@ -1,3 +1,1 @@
-export type BenchmarkBarTypographyType =
-  | 'option'
-  | 'label'
+export type BenchmarkBarTypographyType = 'option' | 'label';

@@ -1,5 +1,7 @@
 .children {
-  --mds-tree-item-children-padding-left: calc(calc(var(--mds-tree-item-toggle-size) - var(--mds-tree-item-branch-border-size)) / 2);
+  --mds-tree-item-children-padding-left: calc(
+    calc(var(--mds-tree-item-toggle-size) - var(--mds-tree-item-branch-border-size)) / 2
+  );
 
   display: flex;
   flex-direction: column;

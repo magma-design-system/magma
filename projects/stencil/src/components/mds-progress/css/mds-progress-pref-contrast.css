@@ -2,7 +2,7 @@
   --mds-progress-color: rgb(var(--variant-primary-05));
   --mds-progress-background: rgb(var(--tone-neutral-07));
 
-  &:host([variant="primary"]) {
+  &:host([variant='primary']) {
     --mds-progress-color: rgb(var(--variant-primary-05));
     --mds-progress-background: rgb(var(--tone-neutral-07));
   }
@@ -14,7 +14,7 @@
     --mds-progress-color: rgb(var(--variant-primary-05));
     --mds-progress-background: rgb(var(--tone-neutral-07));
 
-    &:host([variant="primary"]) {
+    &:host([variant='primary']) {
       --mds-progress-color: rgb(var(--variant-primary-05));
       --mds-progress-background: rgb(var(--tone-neutral-07));
     }

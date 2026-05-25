@@ -1,1 +1,1 @@
-export * from '@dictionary/icon'
+export * from '@dictionary/icon';

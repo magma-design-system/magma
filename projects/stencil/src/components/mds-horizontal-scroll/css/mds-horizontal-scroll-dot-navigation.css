@@ -11,7 +11,7 @@
   width: 100%;
 }
 
-:host([navigation="position"]) .dot-navigation {
+:host([navigation='position']) .dot-navigation {
   display: inline-flex;
 }
 

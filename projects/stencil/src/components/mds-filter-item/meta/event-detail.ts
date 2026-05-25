@@ -1,4 +1,4 @@
 export interface MdsFilterItemEventDetail {
-  id: string
-  selected: boolean
+  id: string;
+  selected: boolean;
 }

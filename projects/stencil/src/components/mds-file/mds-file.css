@@ -10,21 +10,20 @@
 @property --mds-file-preview-icon-color {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-04));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-file-preview-color {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-04));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-file-preview-icon-bacground {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-10));
-  syntax: "<color>";
+  syntax: '<color>';
 }
-
 
 :host {
   --mds-file-preview-icon-color: rgb(var(--tone-neutral-04));
@@ -61,7 +60,8 @@
     transform: translateY(0);
   }
 
-  & .image-preview, & .icon-preview {
+  & .image-preview,
+  & .icon-preview {
     opacity: 0;
     transform: translateY(var(--private-icon-download-offset));
   }

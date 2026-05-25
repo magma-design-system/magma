@@ -1,5 +1,1 @@
-export type SortDirectionType =
-  | 'ascending'
-  | 'descending'
-  | 'none'
-
+export type SortDirectionType = 'ascending' | 'descending' | 'none';

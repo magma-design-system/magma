@@ -1,14 +1,5 @@
-const directionDictionary = [
-  'horizontal',
-  'vertical',
-]
+const directionDictionary = ['horizontal', 'vertical'];
 
-const strategyDictionary = [
-  'default',
-  'scroll',
-]
+const strategyDictionary = ['default', 'scroll'];
 
-export {
-  directionDictionary,
-  strategyDictionary,
-}
+export { directionDictionary, strategyDictionary };

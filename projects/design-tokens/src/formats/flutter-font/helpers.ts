@@ -1,4 +1,4 @@
-import { HelperOptions } from 'handlebars'
+import { HelperOptions } from 'handlebars';
 
 const magmaToFlutterMap = new Map<string, string>([
   ['title-h1', 'displayLarge'],
@@ -16,14 +16,14 @@ const magmaToFlutterMap = new Map<string, string>([
   ['info-option', 'labelSmall'],
   ['read-paragraph', 'bodyLarge'],
   ['read-paragraph-bold', 'titleLarge'],
-])
+]);
 
 const ifFlutterCompatible = (...args: unknown[]) => {
   // l'ultimo argomento passato alla funzione e' sempre options
-  const options = args.pop() as HelperOptions
-  const magmaFont = args.toString().replace( /,/g, '-' )
-  return magmaToFlutterMap.has(magmaFont) ? options.fn(this) : options.inverse(this)
-}
+  const options = args.pop() as HelperOptions;
+  const magmaFont = args.toString().replace(/,/g, '-');
+  return magmaToFlutterMap.has(magmaFont) ? options.fn(this) : options.inverse(this);
+};
 
 const ifFlutterTextThemeVariant = (property: string, options: HelperOptions) => {
   const attributes = [
@@ -33,20 +33,16 @@ const ifFlutterTextThemeVariant = (property: string, options: HelperOptions) => 
     'letterSpacing',
     'lineHeight',
     'fontWeight',
-  ]
-  return attributes.includes(property) ? options.fn(this) : options.inverse(this)
-}
+  ];
+  return attributes.includes(property) ? options.fn(this) : options.inverse(this);
+};
 
 const flutterTextThemeVariant = (...args: unknown[]) => {
   // l'ultimo argomento passato alla funzione e' sempre options
   // e non viene utilizzato in questa funzione cosi lo si toglie da args
-  args.pop()
-  const magmaFont = args.toString().replace( /,/g, '-' )
-  return magmaToFlutterMap.get(magmaFont)
-}
+  args.pop();
+  const magmaFont = args.toString().replace(/,/g, '-');
+  return magmaToFlutterMap.get(magmaFont);
+};
 
-export {
-  ifFlutterCompatible,
-  ifFlutterTextThemeVariant,
-  flutterTextThemeVariant,
-}
+export { ifFlutterCompatible, ifFlutterTextThemeVariant, flutterTextThemeVariant };

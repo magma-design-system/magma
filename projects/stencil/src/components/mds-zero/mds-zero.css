@@ -5,14 +5,13 @@
 @property --mds-zero-contents-max-width {
   inherits: false;
   initial-value: none;
-  syntax: "<length> | none";
+  syntax: '<length> | none';
 }
 
 :host {
   --mds-zero-contents-max-width: 400px;
 
-  @apply
-    duration-200
+  @apply duration-200
     ease-out
     mobile:px-600
     rounded-xl;
@@ -47,7 +46,7 @@
   width: 100%;
 }
 
-:host ::slotted([slot="action"]) {
+:host ::slotted([slot='action']) {
   margin: auto;
 }
 

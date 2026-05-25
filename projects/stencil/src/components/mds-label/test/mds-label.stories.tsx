@@ -1,17 +1,16 @@
-import { typographyTooltipDictionary } from '@type/typography'
-import { themeLabelVariantDictionary } from '@type/variant'
-import { toneSimpleVariantDictionary } from '@type/tone'
+import { typographyTooltipDictionary } from '@type/typography';
+import { themeLabelVariantDictionary } from '@type/variant';
+import { toneSimpleVariantDictionary } from '@type/tone';
 
-import { h } from '@stencil/core'
-import { truncateDictionary } from '@type/text'
+import { h } from '@stencil/core';
+import { truncateDictionary } from '@type/text';
 
 export default {
   title: 'UI / Label',
   argTypes: {
     deletable: {
       type: { name: 'boolean' },
-      description:
-        'Enables the cross icon to perform cancel/delete action on element',
+      description: 'Enables the cross icon to perform cancel/delete action on element',
     },
     label: {
       type: { name: 'string' },
@@ -21,8 +20,7 @@ export default {
       type: { name: 'string' },
       control: { type: 'select' },
       options: truncateDictionary,
-      description:
-        'Truncates text inside the tag or displays it in multiline if needed',
+      description: 'Truncates text inside the tag or displays it in multiline if needed',
     },
     typography: {
       type: { name: 'string' },
@@ -43,17 +41,15 @@ export default {
       options: themeLabelVariantDictionary,
     },
   },
-}
-const Template = args => (
-  <mds-label {...args}></mds-label>
-)
+};
+const Template = (args) => <mds-label {...args}></mds-label>;
 
 export const Default = {
   render: Template,
   args: {
     label: 'This is a text label',
   },
-}
+};
 
 export const Truncate = {
   render: Template,
@@ -63,7 +59,7 @@ export const Truncate = {
     label: 'This is a very long text that should be truncated',
     class: 'w-3200',
   },
-}
+};
 
 export const Typography = {
   render: Template,
@@ -72,7 +68,7 @@ export const Typography = {
     typography: 'caption',
     label: 'This is a text label',
   },
-}
+};
 
 export const OnClickClose = {
   render: Template,
@@ -82,4 +78,4 @@ export const OnClickClose = {
     label: 'This is a text label',
     // onClickClose: event => { console.info(event, 'hello') },
   },
-}
+};

@@ -1,7 +1,7 @@
-import postcssImport from 'postcss-import'
-import iconsauce from 'postcss-iconsauce'
-import tailwindcss from '@tailwindcss/postcss'
-import autoprefixer from 'autoprefixer'
+import postcssImport from 'postcss-import';
+import iconsauce from 'postcss-iconsauce';
+import tailwindcss from '@tailwindcss/postcss';
+import autoprefixer from 'autoprefixer';
 
 export default {
   plugins: [
@@ -12,4 +12,4 @@ export default {
       flexbox: 'no-2009',
     }),
   ],
-}
+};

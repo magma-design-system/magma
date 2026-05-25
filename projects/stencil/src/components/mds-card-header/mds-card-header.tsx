@@ -1,4 +1,4 @@
-import { Component, Host, h, Element } from '@stencil/core'
+import { Component, Host, h, Element } from '@stencil/core';
 
 /**
  * @slot default - Add `text string`, `HTML elements` or `components` to this slot.
@@ -11,23 +11,23 @@ import { Component, Host, h, Element } from '@stencil/core'
   shadow: true,
 })
 export class MdsCardHeader {
+  @Element() private hostElement: HTMLMdsCardHeaderElement;
+  private actions: boolean;
 
-  @Element() private hostElement: HTMLMdsCardHeaderElement
-  private actions: boolean
-
-  componentWillLoad (): void {
-    this.actions = this.hostElement.querySelector(':scope > [slot="action"]') !== null
+  componentWillLoad(): void {
+    this.actions = this.hostElement.querySelector(':scope > [slot="action"]') !== null;
   }
 
-  render () {
+  render() {
     return (
       <Host slot="header">
-        <slot/>
-        { this.actions && <div class="actions">
-          <slot name="action"/>
-        </div> }
+        <slot />
+        {this.actions && (
+          <div class="actions">
+            <slot name="action" />
+          </div>
+        )}
       </Host>
-    )
+    );
   }
-
 }

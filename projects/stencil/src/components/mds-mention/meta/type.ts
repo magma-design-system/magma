@@ -1,4 +1,1 @@
-export type MentionSize =
-  | 'sm'
-  | 'md'
-  | 'lg'
+export type MentionSize = 'sm' | 'md' | 'lg';

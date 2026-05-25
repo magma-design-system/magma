@@ -1,16 +1,16 @@
-:host([variant="required"]) {
+:host([variant='required']) {
   --mds-input-tip-item-background: rgb(var(--status-error-05));
 }
 
-:host([variant="required-success"]) {
+:host([variant='required-success']) {
   --mds-input-tip-item-background: rgb(var(--status-success-05));
 }
 
-:host([variant="readonly"]) {
+:host([variant='readonly']) {
   --mds-input-tip-item-background: rgb(var(--status-info-05));
 }
 
-:host([variant="disabled"]) {
+:host([variant='disabled']) {
   --mds-input-tip-item-background: rgb(var(--tone-neutral-05));
 }
 
@@ -18,27 +18,27 @@
   --mds-input-tip-item-background: rgb(var(--tone-neutral-03));
 } */
 
-:host([variant="count-empty"]) {
+:host([variant='count-empty']) {
   --mds-input-tip-item-color: rgb(var(--status-info-02));
   --mds-input-tip-item-background: rgb(var(--status-info-08));
 }
 
-:host([variant="count-incomplete"]) {
+:host([variant='count-incomplete']) {
   --mds-input-tip-item-color: rgb(var(--status-success-02));
   --mds-input-tip-item-background: rgb(var(--status-success-08));
 }
 
-:host([variant="count-almost"]) {
+:host([variant='count-almost']) {
   --mds-input-tip-item-color: rgb(var(--status-warning-02));
   --mds-input-tip-item-background: rgb(var(--status-warning-08));
 }
 
-:host([variant="count-almost-full"]) {
+:host([variant='count-almost-full']) {
   --mds-input-tip-item-color: rgb(var(--status-error-02));
   --mds-input-tip-item-background: rgb(var(--status-error-08));
 }
 
-:host([variant="count-full"]) {
+:host([variant='count-full']) {
   --mds-input-tip-item-color: rgb(var(--status-error-09));
   --mds-input-tip-item-background: rgb(var(--status-error-05));
 }

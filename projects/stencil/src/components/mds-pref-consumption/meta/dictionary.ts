@@ -1,9 +1,3 @@
-const consumptionDictionary = [
-  'high',
-  'medium',
-  'low',
-]
+const consumptionDictionary = ['high', 'medium', 'low'];
 
-export {
-  consumptionDictionary,
-}
+export { consumptionDictionary };

@@ -1,20 +1,20 @@
 :host-context(:root.pref-contrast-more) {
-  &:host([variant="count-empty"]) {
+  &:host([variant='count-empty']) {
     --mds-input-tip-item-color: rgb(var(--status-info-10));
     --mds-input-tip-item-background: rgb(var(--status-info-05));
   }
 
-  &:host([variant="count-incomplete"]) {
+  &:host([variant='count-incomplete']) {
     --mds-input-tip-item-color: rgb(var(--status-success-10));
     --mds-input-tip-item-background: rgb(var(--status-success-05));
   }
 
-  &:host([variant="count-almost"]) {
+  &:host([variant='count-almost']) {
     --mds-input-tip-item-color: rgb(var(--status-warning-10));
     --mds-input-tip-item-background: rgb(var(--status-warning-05));
   }
 
-  &:host([variant="count-almost-full"]) {
+  &:host([variant='count-almost-full']) {
     --mds-input-tip-item-color: rgb(var(--status-error-10));
     --mds-input-tip-item-background: rgb(var(--status-error-05));
   }
@@ -23,22 +23,22 @@
 @media (prefers-contrast: more) {
   :host-context(:root.pref-contrast-system),
   :host-context(:root:not([data-magma-pref])) {
-    &:host([variant="count-empty"]) {
+    &:host([variant='count-empty']) {
       --mds-input-tip-item-color: rgb(var(--status-info-10));
       --mds-input-tip-item-background: rgb(var(--status-info-05));
     }
 
-    &:host([variant="count-incomplete"]) {
+    &:host([variant='count-incomplete']) {
       --mds-input-tip-item-color: rgb(var(--status-success-10));
       --mds-input-tip-item-background: rgb(var(--status-success-05));
     }
 
-    &:host([variant="count-almost"]) {
+    &:host([variant='count-almost']) {
       --mds-input-tip-item-color: rgb(var(--status-warning-10));
       --mds-input-tip-item-background: rgb(var(--status-warning-05));
     }
 
-    &:host([variant="count-almost-full"]) {
+    &:host([variant='count-almost-full']) {
       --mds-input-tip-item-color: rgb(var(--status-error-10));
       --mds-input-tip-item-background: rgb(var(--status-error-05));
     }

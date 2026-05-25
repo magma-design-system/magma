@@ -11,31 +11,31 @@
 @property --mds-table-row-color-hover {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-02));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-table-row-color-alt {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-02));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-table-row-background-hover {
   inherits: false;
   initial-value: rgb(var(--tone-neutral));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-table-row-background-alt {
   inherits: false;
   initial-value: rgb(var(--tone-neutral));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-table-row-actions-gap {
   inherits: false;
   initial-value: --spacing(400);
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 :host {
@@ -45,15 +45,13 @@
   --mds-table-row-background-alt: var(--mds-table-background-alt, rgb(var(--tone-neutral)));
   --mds-table-row-actions-gap: var(--mds-table-actions-gap, --spacing(400));
 
-  @apply
-    duration-200
+  @apply duration-200
     ease-out;
 
   color: var(--mds-table-row-color);
   display: table-row;
   position: relative;
   transition-property: color;
-
 }
 
 .selection-cell {

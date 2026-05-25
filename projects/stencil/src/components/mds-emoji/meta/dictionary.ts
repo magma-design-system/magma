@@ -1,9 +1,3 @@
+const nameDictionary = ['mia', 'simi'];
 
-const nameDictionary = [
-  'mia',
-  'simi',
-]
-
-export {
-  nameDictionary,
-}
+export { nameDictionary };

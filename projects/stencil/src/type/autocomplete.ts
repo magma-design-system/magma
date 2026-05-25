@@ -54,8 +54,8 @@ export const autoCompleteDictionary = [
   'transaction-currency',
   'url',
   'username',
-] as const
-export type AutocompleteType = (typeof autoCompleteDictionary)[number]
+] as const;
+export type AutocompleteType = (typeof autoCompleteDictionary)[number];
 
 export const inputTextTypeDictionary = [
   'date',
@@ -68,5 +68,5 @@ export const inputTextTypeDictionary = [
   'textarea',
   'time',
   'url',
-] as const
-export type InputTextType = (typeof inputTextTypeDictionary)[number]
+] as const;
+export type InputTextType = (typeof inputTextTypeDictionary)[number];

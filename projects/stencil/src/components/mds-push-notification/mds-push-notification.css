@@ -14,31 +14,31 @@
 @property --mds-push-notification-fadeout-delay {
   inherits: false;
   initial-value: 0s;
-  syntax: "<time>";
+  syntax: '<time>';
 }
 
 @property --mds-push-notification-gap {
   inherits: false;
   initial-value: --spacing(200);
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-push-notification-items-intro-delay {
   inherits: false;
   initial-value: 300ms;
-  syntax: "<time>";
+  syntax: '<time>';
 }
 
 @property --mds-push-notification-items-outro-delay {
   inherits: false;
   initial-value: 0ms;
-  syntax: "<time>";
+  syntax: '<time>';
 }
 
 @property --mds-push-notification-items-duration {
   inherits: false;
   initial-value: 300ms;
-  syntax: "<time>";
+  syntax: '<time>';
 }
 
 /* ❌ Not supported
@@ -62,7 +62,11 @@
   --mds-push-notification-items-duration: 300ms;
   --mds-push-notification-items-gap: var(--mds-push-notification-gap);
   --mds-push-notification-items-timing-function: var(--ease-in-out-quint);
-  --mds-push-notification-background: linear-gradient(to right, rgb(220 220 220 / 0) 0%, rgb(220 220 220 / 0.85) 100%);
+  --mds-push-notification-background: linear-gradient(
+    to right,
+    rgb(220 220 220 / 0) 0%,
+    rgb(220 220 220 / 0.85) 100%
+  );
 
   @apply ease-in-out-expo
     gap-200
@@ -96,21 +100,12 @@
 }
 
 .notifications ::slotted(mds-push-notification-item) {
-  --mds-push-notification-duration: var(
-    --mds-push-notification-items-duration
-  );
-  --mds-push-notification-timing-function: var(
-    --mds-push-notification-items-timing-function
-  );
+  --mds-push-notification-duration: var(--mds-push-notification-items-duration);
+  --mds-push-notification-timing-function: var(--mds-push-notification-items-timing-function);
 
   position: absolute;
   transform: translate(
-    calc(
-      100% +
-        calc(
-          var(--mds-push-notification-gap) + var(--mds-push-notification-gap)
-        )
-    ),
+    calc(100% + calc(var(--mds-push-notification-gap) + var(--mds-push-notification-gap))),
     0
   );
   visibility: hidden;

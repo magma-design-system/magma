@@ -8,7 +8,7 @@
   :host-context(:root:not([data-magma-pref])) {
     transition-duration: 0s;
 
-    .content{
+    .content {
       transition-duration: 0s;
     }
   }

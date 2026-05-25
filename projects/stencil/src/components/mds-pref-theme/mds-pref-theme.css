@@ -9,19 +9,19 @@
 @property --mds-pref-theme-overlay-fadeout-duration {
   inherits: false;
   initial-value: 200ms;
-  syntax: "<time>";
+  syntax: '<time>';
 }
 
 @property --mds-pref-theme-overlay-show-duration {
   inherits: false;
   initial-value: 300ms;
-  syntax: "<time>";
+  syntax: '<time>';
 }
 
 @property --mds-pref-theme-overlay-z-index {
   inherits: false;
   initial-value: var(--magma-theme-overlay-z-index, 6000);
-  syntax: "<integer>";
+  syntax: '<integer>';
 }
 
 :host {

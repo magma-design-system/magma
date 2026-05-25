@@ -1,6 +1,16 @@
-import { Component, Element, Host, h, Prop, Event, EventEmitter, Watch, Method } from '@stencil/core'
-import { cssDurationToMilliseconds, cssSizeToNumber } from '@common/unit'
-import { MdsPushNotificationEventDetail } from './meta/event-detail'
+import {
+  Component,
+  Element,
+  Host,
+  h,
+  Prop,
+  Event,
+  EventEmitter,
+  Watch,
+  Method,
+} from '@stencil/core';
+import { cssDurationToMilliseconds, cssSizeToNumber } from '@common/unit';
+import { MdsPushNotificationEventDetail } from './meta/event-detail';
 /**
  * @part notifications - The container wrapper of the notifications.
  * @slot top - Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element.
@@ -14,18 +24,17 @@ import { MdsPushNotificationEventDetail } from './meta/event-detail'
   shadow: true,
 })
 export class MdsPushNotification {
-
-  @Element() host: HTMLMdsPushNotificationElement
-  slotNotifications!: HTMLSlotElement
-  private cssItemsIntroDuration: string
-  private cssItemsOutroDuration: string
-  private cssItemsGap: string
+  @Element() host: HTMLMdsPushNotificationElement;
+  slotNotifications!: HTMLSlotElement;
+  private cssItemsIntroDuration: string;
+  private cssItemsOutroDuration: string;
+  private cssItemsGap: string;
   // private totalItems = 0
 
   /**
    * Specifies if the component is visible or not.
    */
-  @Prop({ reflect: true, mutable: true }) visible?: boolean
+  @Prop({ reflect: true, mutable: true }) visible?: boolean;
 
   /**
    * Specifies if the component is visible or not.
@@ -38,22 +47,23 @@ export class MdsPushNotification {
    * should hide when all notifications are removed
    * should show when one or more notifications are added
    */
-  @Prop() behavior?: 'auto' | 'manual' = 'auto'
+  @Prop() behavior?: 'auto' | 'manual' = 'auto';
 
   /**
    * Emits when the component visibility changes
    */
-  @Event({ eventName: 'mdsPushNotificationChange' }) changedEvent: EventEmitter<MdsPushNotificationEventDetail>
+  @Event({ eventName: 'mdsPushNotificationChange' })
+  changedEvent: EventEmitter<MdsPushNotificationEventDetail>;
 
   /**
    * Emits when the component is shown
    */
-  @Event({ eventName: 'mdsPushNotificationShow' }) shownEvent: EventEmitter<void>
+  @Event({ eventName: 'mdsPushNotificationShow' }) shownEvent: EventEmitter<void>;
 
   /**
    * Emits when the component is hidden
    */
-  @Event({ eventName: 'mdsPushNotificationHide' }) hiddenEvent: EventEmitter<void>
+  @Event({ eventName: 'mdsPushNotificationHide' }) hiddenEvent: EventEmitter<void>;
 
   // TODO [fix] If visibility is set to false, hide all the notifications area also when they are added
   // TODO [fix] If visibility is set to true, and there are not notifications, show the notifications area
@@ -69,20 +79,20 @@ export class MdsPushNotification {
    */
   private introItem = (element: HTMLElement): Promise<void> => {
     // no reason why I must duplicata marginBottom negative to prevent flickering
-    element.style.marginBottom = `-${element.offsetHeight + cssSizeToNumber(this.cssItemsGap)}px`
-    return new Promise<void>(resolve => {
+    element.style.marginBottom = `-${element.offsetHeight + cssSizeToNumber(this.cssItemsGap)}px`;
+    return new Promise<void>((resolve) => {
       setTimeout(() => {
-        element.style.marginBottom = `-${element.offsetHeight + cssSizeToNumber(this.cssItemsGap)}px`
+        element.style.marginBottom = `-${element.offsetHeight + cssSizeToNumber(this.cssItemsGap)}px`;
         setTimeout(() => {
-          element.style.visibility = 'visible'
-          element.style.position = 'relative'
-          element.style.transform = 'translate(0, 0)'
-          element.style.marginBottom = '0px'
-          resolve()
-        }, cssDurationToMilliseconds(this.cssItemsIntroDuration))
-      }, 15) // hope to find a better solution not based on 15ms of delay, not very robust
-    })
-  }
+          element.style.visibility = 'visible';
+          element.style.position = 'relative';
+          element.style.transform = 'translate(0, 0)';
+          element.style.marginBottom = '0px';
+          resolve();
+        }, cssDurationToMilliseconds(this.cssItemsIntroDuration));
+      }, 15); // hope to find a better solution not based on 15ms of delay, not very robust
+    });
+  };
 
   /**
    * Animation for close notification
@@ -90,106 +100,115 @@ export class MdsPushNotification {
    * @returns
    */
   private outroItem = (element: HTMLElement): Promise<void> => {
-    if (this.slotNotifications.assignedNodes().length <= 1) this.hide()
+    if (this.slotNotifications.assignedNodes().length <= 1) this.hide();
     // no reason why I must duplicate marginBottom negative to prevent flickering
-    element.style.marginBottom = '0px'
-    return new Promise<void>(resolve => {
+    element.style.marginBottom = '0px';
+    return new Promise<void>((resolve) => {
       setTimeout(() => {
-        element.style.marginBottom = '0px'
+        element.style.marginBottom = '0px';
         setTimeout(() => {
           element.addEventListener('transitionend', () => {
             // element.removeEventListener('transitionend')
-            element.remove()
-          })
-          element.style.removeProperty('transform')
-          element.style.marginBottom = `-${element.offsetHeight + cssSizeToNumber(this.cssItemsGap)}px`
-          resolve()
-        }, cssDurationToMilliseconds(this.cssItemsOutroDuration))
-      }, 15) // hope to find a better solution not based on 15ms of delay, not very robust
-    })
-  }
+            element.remove();
+          });
+          element.style.removeProperty('transform');
+          element.style.marginBottom = `-${element.offsetHeight + cssSizeToNumber(this.cssItemsGap)}px`;
+          resolve();
+        }, cssDurationToMilliseconds(this.cssItemsOutroDuration));
+      }, 15); // hope to find a better solution not based on 15ms of delay, not very robust
+    });
+  };
 
   /**
    * manages the opening of notifications when they are added to the slot
    */
   private handleSlotChange = (): void => {
-    const elements = this.slotNotifications.assignedElements().map(e => e as HTMLElement).filter(e => !e.style.visibility )
-    if (elements.length === 0) return
+    const elements = this.slotNotifications
+      .assignedElements()
+      .map((e) => e as HTMLElement)
+      .filter((e) => !e.style.visibility);
+    if (elements.length === 0) return;
 
-    elements.forEach(async e => {
-      e.addEventListener('mdsPushNotificationItemClose', () => this.outroItem(e))
-      await this.introItem(e)
-    })
-    if (this.behavior === 'auto') this.show()
-  }
+    elements.forEach(async (e) => {
+      e.addEventListener('mdsPushNotificationItemClose', () => this.outroItem(e));
+      await this.introItem(e);
+    });
+    if (this.behavior === 'auto') this.show();
+  };
 
   private updateCSSCustomProps = (): void => {
-    const elementStyles = window.getComputedStyle(this.host)
-    this.cssItemsGap = elementStyles.getPropertyValue('--mds-push-notification-items-gap') ?? '0.5rem'
-    this.cssItemsIntroDuration = elementStyles.getPropertyValue('--mds-push-notification-items-intro-delay') ?? '200ms'
-    this.cssItemsOutroDuration = elementStyles.getPropertyValue('--mds-push-notification-items-outro-delay') ?? '0ms'
-  }
+    const elementStyles = window.getComputedStyle(this.host);
+    this.cssItemsGap =
+      elementStyles.getPropertyValue('--mds-push-notification-items-gap') ?? '0.5rem';
+    this.cssItemsIntroDuration =
+      elementStyles.getPropertyValue('--mds-push-notification-items-intro-delay') ?? '200ms';
+    this.cssItemsOutroDuration =
+      elementStyles.getPropertyValue('--mds-push-notification-items-outro-delay') ?? '0ms';
+  };
 
-  private clear (): void {
-    this.slotNotifications.assignedElements().forEach(e => this.outroItem(e as HTMLElement))
-    this.hide()
-  }
-
-  @Method()
-  show (): Promise<void> {
-    this.visible = true
-    return Promise.resolve()
+  private clear(): void {
+    this.slotNotifications.assignedElements().forEach((e) => this.outroItem(e as HTMLElement));
+    this.hide();
   }
 
   @Method()
-  hide (): Promise<void> {
-    this.visible = undefined
-    return Promise.resolve()
+  show(): Promise<void> {
+    this.visible = true;
+    return Promise.resolve();
   }
 
   @Method()
-  removeNotification (notification: HTMLMdsPushNotificationItemElement | HTMLMdsPushNotificationItemElement[]): Promise<void> {
+  hide(): Promise<void> {
+    this.visible = undefined;
+    return Promise.resolve();
+  }
+
+  @Method()
+  removeNotification(
+    notification: HTMLMdsPushNotificationItemElement | HTMLMdsPushNotificationItemElement[],
+  ): Promise<void> {
     if (Array.isArray(notification)) {
-      notification.forEach(this.outroItem)
+      notification.forEach(this.outroItem);
     } else {
-      this.outroItem(notification)
+      this.outroItem(notification);
     }
-    return Promise.resolve()
+    return Promise.resolve();
   }
 
-  componentDidLoad (): void {
-    this.updateCSSCustomProps()
+  componentDidLoad(): void {
+    this.updateCSSCustomProps();
 
-    this.slotNotifications.addEventListener('slotchange', this.handleSlotChange)
-    this.handleSlotChange()
+    this.slotNotifications.addEventListener('slotchange', this.handleSlotChange);
+    this.handleSlotChange();
   }
 
   @Watch('visible')
-  visibleChanged (newValue?: boolean): void {
+  visibleChanged(newValue?: boolean): void {
     if (newValue) {
-      this.changedEvent.emit({ visible: true })
-      this.shownEvent.emit()
-      return
+      this.changedEvent.emit({ visible: true });
+      this.shownEvent.emit();
+      return;
     }
     if (newValue === undefined) {
-      this.changedEvent.emit({ visible: false })
-      this.hiddenEvent.emit()
-      return
+      this.changedEvent.emit({ visible: false });
+      this.hiddenEvent.emit();
+      return;
     }
-    this.visible = undefined
+    this.visible = undefined;
   }
 
-  render () {
+  render() {
     return (
       <Host>
         {/* <slot name="top"></slot> */}
-        <mds-button variant="dark" onClick={this.clear.bind(this)}>Cancella notifiche</mds-button>
+        <mds-button variant="dark" onClick={this.clear.bind(this)}>
+          Cancella notifiche
+        </mds-button>
         <div class="notifications" part="notifications">
-          <slot ref={el => this.slotNotifications = el as HTMLSlotElement}/>
+          <slot ref={(el) => (this.slotNotifications = el as HTMLSlotElement)} />
         </div>
         {/* <slot name="bottom"></slot> */}
       </Host>
-    )
+    );
   }
 }
-

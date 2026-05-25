@@ -1,8 +1,7 @@
 @import './css/mds-table-footer-fouc.css';
 
 :host {
-  @apply
-    duration-200
+  @apply duration-200
     ease-out;
 
   border-top: var(--private-cell-border-width) solid var(--private-cell-border-color);

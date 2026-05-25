@@ -11,31 +11,31 @@
 @property --mds-badge-background {
   inherits: false;
   initial-value: rgb(var(--label-sky-09));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-badge-border-color {
   inherits: false;
   initial-value: rgb(var(--label-sky-06));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-badge-color {
   inherits: false;
   initial-value: rgb(var(--label-sky-03));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-badge-border-width {
   inherits: true;
   initial-value: 1px;
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-badge-radius {
   inherits: true;
   initial-value: 10px;
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 :host {
@@ -57,13 +57,13 @@
   transition-timing-function: var(--ease-out-quad);
 }
 
-:host([tone="outline"]) {
+:host([tone='outline']) {
   border-color: var(--mds-badge-border-color);
   border-style: solid;
   border-width: var(--mds-badge-border-width);
 }
 
-:host([tone="text"]) {
+:host([tone='text']) {
   --mds-badge-background: rgb(var(--tone-neutral));
 }
 

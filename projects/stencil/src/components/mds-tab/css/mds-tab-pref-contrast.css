@@ -9,7 +9,8 @@
   :host-context(:root.pref-contrast-system),
   :host-context(:root:not([data-magma-pref])) {
     --mds-tab-item-selected-shadow: var(--shadow-outline-50);
-    --mds-tab-tabs-wrapper-shadow: 0 0 0 --spacing(50) var(--mds-tab-tabs-wrapper-shadow-color) inset;
+    --mds-tab-tabs-wrapper-shadow: 0 0 0 --spacing(50) var(--mds-tab-tabs-wrapper-shadow-color)
+      inset;
     --mds-tab-tabs-wrapper-shadow-color: rgb(var(--tone-neutral-07));
     --mds-tab-tabs-wrapper-outline-opacity: 30%;
   }

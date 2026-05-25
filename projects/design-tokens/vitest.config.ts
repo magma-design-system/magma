@@ -1,5 +1,5 @@
-import { defineConfig } from 'vitest/config'
-import path from 'path'
+import { defineConfig } from 'vitest/config';
+import path from 'path';
 
 export default defineConfig({
   resolve: {
@@ -8,6 +8,5 @@ export default defineConfig({
       '@/leonardo': path.resolve(__dirname, './src/lib/leonardo'),
     },
   },
-  test: {
-  },
-})
+  test: {},
+});

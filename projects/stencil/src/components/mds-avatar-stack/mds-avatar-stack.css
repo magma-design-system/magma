@@ -18,73 +18,73 @@
 @property --mds-avatar-stack-background {
   inherits: false;
   initial-value: rgb(var(--tone-neutral));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-avatar-stack-count-background-color {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-09));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-avatar-stack-count-color {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-04));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-avatar-stack-lg-border {
   inherits: false;
   initial-value: var(--spacing-100, 0.25rem);
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-avatar-stack-lg-offset {
   inherits: false;
   initial-value: 2;
-  syntax: "<integer>";
+  syntax: '<integer>';
 }
 
 @property --mds-avatar-stack-lg-size {
   inherits: false;
   initial-value: var(--spacing-1500, 3.75rem);
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-avatar-stack-md-border {
   inherits: false;
   initial-value: var(--spacing-100, 0.25rem);
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-avatar-stack-md-offset {
   inherits: false;
   initial-value: 1.75;
-  syntax: "<number>";
+  syntax: '<number>';
 }
 
 @property --mds-avatar-stack-md-size {
   inherits: false;
   initial-value: var(--spacing-1200, 3rem);
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-avatar-stack-sm-border {
   inherits: false;
   initial-value: var(--spacing-50, 0.125rem);
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-avatar-stack-sm-offset {
   inherits: false;
   initial-value: 1.5;
-  syntax: "<number>";
+  syntax: '<number>';
 }
 
 @property --mds-avatar-stack-sm-size {
   inherits: false;
   initial-value: var(--spacing-900, 2.25rem);
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 :host {

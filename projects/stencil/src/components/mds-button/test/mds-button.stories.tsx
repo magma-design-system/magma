@@ -1,27 +1,26 @@
-import { h } from '@stencil/core'
-import { iconsDictionary } from '@type/icon'
+import { h } from '@stencil/core';
+import { iconsDictionary } from '@type/icon';
 import {
   buttonVariantDictionary,
   buttonSizeDictionary,
   buttonTargetDictionary,
   buttonIconPositionDictionary,
   buttonTypeDictionary,
-} from '@type/button'
-import { toneBoxVariantDictionary } from '@type/tone'
-import { ButtonVariantType } from '@type/button'
-import { ToneVariantType } from '@type/tone'
+} from '@type/button';
+import { toneBoxVariantDictionary } from '@type/tone';
+import { ButtonVariantType } from '@type/button';
+import { ToneVariantType } from '@type/tone';
 
-import { useEffect, useState } from 'react'
-import { expect, fn } from 'storybook/test'
-import { textAnimateDictionary } from '@component/mds-text/meta/dictionary'
+import { useEffect, useState } from 'react';
+import { expect, fn } from 'storybook/test';
+import { textAnimateDictionary } from '@component/mds-text/meta/dictionary';
 
 export default {
   title: 'UI / Button',
   argTypes: {
     'auto-focus': {
       type: { name: 'boolean' },
-      description:
-        'Specifies if the component is focused when is loaded on the viewport',
+      description: 'Specifies if the component is focused when is loaded on the viewport',
     },
     await: {
       type: { name: 'boolean' },
@@ -50,8 +49,7 @@ export default {
     },
     'icon-position': {
       type: { name: 'string' },
-      description:
-        'Specifies the horizontal position of the icon displayed in the button',
+      description: 'Specifies the horizontal position of the icon displayed in the button',
       options: buttonIconPositionDictionary,
       control: { type: 'select' },
     },
@@ -90,55 +88,53 @@ export default {
       description: 'Specifies the label of the button',
     },
   },
-}
+};
 
-const Template = args => <mds-button {...args} label="Conferma azione"></mds-button>
+const Template = (args) => <mds-button {...args} label="Conferma azione"></mds-button>;
 
-const TemplateService = args => (
-  <mds-button {...args}></mds-button>
-)
+const TemplateService = (args) => <mds-button {...args}></mds-button>;
 
-const TemplateNotifications = args => (
+const TemplateNotifications = (args) => (
   <mds-button {...args} label="Notifiche">
     <mds-notification slot="notification" value={12}></mds-notification>
   </mds-button>
-)
+);
 
 const TemplateAwait = () => {
-  const [buttonState, setButtonState] = useState(0)
+  const [buttonState, setButtonState] = useState(0);
 
   const iconMap = {
     0: 'mi/baseline/eco',
     1: undefined,
     2: 'mi/baseline/done',
-  }
+  };
 
   const variantsMap = {
     0: 'primary',
     1: 'primary',
     2: 'success',
-  }
+  };
 
   const tonesMap = {
     0: 'strong',
     1: 'weak',
     2: 'strong',
+  };
+
+  function getLabel(state: number) {
+    if (state === 0) return 'Conferma azione';
+    if (state === 1) return 'Salvataggio in corso...';
+    return 'Azione salvata';
   }
 
-  function getLabel (state: number) {
-    if (state === 0) return 'Conferma azione'
-    if (state === 1) return 'Salvataggio in corso...'
-    return 'Azione salvata'
-  }
-
-  function setLoadingState () {
-    setButtonState(1)
+  function setLoadingState() {
+    setButtonState(1);
     setTimeout(() => {
-      setButtonState(2)
+      setButtonState(2);
       setTimeout(() => {
-        setButtonState(0)
-      }, 2000)
-    }, 2000)
+        setButtonState(0);
+      }, 2000);
+    }, 2000);
   }
 
   return (
@@ -148,55 +144,58 @@ const TemplateAwait = () => {
       tone={tonesMap[buttonState]}
       await={buttonState === 1}
       onClick={() => {
-        if (buttonState === 0) setLoadingState()
+        if (buttonState === 0) setLoadingState();
       }}
       label={getLabel(buttonState)}
-    >
-    </mds-button>
-  )
-}
+    ></mds-button>
+  );
+};
 
-const TemplateKeyboard = args => (
+const TemplateKeyboard = (args) => (
   <div class="bg-tone-grey-10 p-600 grid gap-600">
     <mds-text>Focus this button with tab before press enter.</mds-text>
     <mds-button {...args} label="Click me from enter keyborad"></mds-button>
   </div>
-)
+);
 
-const TemplateIcon = args => <mds-button {...args}> </mds-button>
+const TemplateIcon = (args) => <mds-button {...args}> </mds-button>;
 
-const TemplateForm = args => {
-  const [inputValue, setInputValue] = useState('')
+const TemplateForm = (args) => {
+  const [inputValue, setInputValue] = useState('');
   return (
     <form
       class="grid grid-cols-full gap-400 max-w-[400px]"
       action="#"
-      onSubmit={event => {
-        event.preventDefault()
-        const form = event.currentTarget as HTMLFormElement
-        const formData = new FormData(form)
-        setInputValue(formData.get('inputTest'))
-        return false
+      onSubmit={(event) => {
+        event.preventDefault();
+        const form = event.currentTarget as HTMLFormElement;
+        const formData = new FormData(form);
+        setInputValue(formData.get('inputTest'));
+        return false;
       }}
     >
       {/* <input type="text" name="inputTest" /> */}
-      <mds-input type="text" name="inputTest" class="w-full" placeholder="Es: hello world"/>
+      <mds-input type="text" name="inputTest" class="w-full" placeholder="Es: hello world" />
       <mds-button {...args} label="Click me" type="submit" size="lg"></mds-button>
-      { inputValue && <mds-text>Input value: <b>{inputValue}</b></mds-text> }
+      {inputValue && (
+        <mds-text>
+          Input value: <b>{inputValue}</b>
+        </mds-text>
+      )}
     </form>
-  )
-}
+  );
+};
 
 const TemplateDisabled = () => {
-  const [disabled, setDisabled] = useState(false)
+  const [disabled, setDisabled] = useState(false);
 
-  function toggle () {
-    setDisabled(!disabled)
-    console.info('disabled', disabled)
+  function toggle() {
+    setDisabled(!disabled);
+    console.info('disabled', disabled);
   }
 
-  function enableButton () {
-    setDisabled(false)
+  function enableButton() {
+    setDisabled(false);
     // document.querySelector('#disabledButton')?.setAttribute('disabled', 'false')
   }
 
@@ -211,8 +210,7 @@ const TemplateDisabled = () => {
           disabled={disabled}
           onClick={() => toggle()}
           label={disabled ? 'Disabled button' : 'Click to disable'}
-        >
-        </mds-button>
+        ></mds-button>
         {disabled && (
           <mds-button
             icon="mi/baseline/undo"
@@ -220,22 +218,21 @@ const TemplateDisabled = () => {
             tone="weak"
             onClick={() => enableButton()}
             label="Reset"
-          >
-          </mds-button>
+          ></mds-button>
         )}
       </div>
     </div>
-  )
-}
+  );
+};
 
 const TemplateAnimation = () => {
-  const [buttonStateIndex, setButtonStateIndex] = useState(0)
+  const [buttonStateIndex, setButtonStateIndex] = useState(0);
   const buttonState: Array<{
-    label: string
-    await: boolean
-    variant: ButtonVariantType
-    tone: ToneVariantType
-    icon?: string
+    label: string;
+    await: boolean;
+    variant: ButtonVariantType;
+    tone: ToneVariantType;
+    icon?: string;
   }> = [
     {
       label: 'Click me',
@@ -256,76 +253,86 @@ const TemplateAnimation = () => {
       tone: 'strong',
       await: false,
     },
-  ]
+  ];
 
   const checkButtonState = () => {
     if (buttonStateIndex === 0) {
-      setButtonStateIndex(1)
+      setButtonStateIndex(1);
       setTimeout(() => {
-        setButtonStateIndex(2)
-      }, 2000)
-      return
+        setButtonStateIndex(2);
+      }, 2000);
+      return;
     }
 
     if (buttonStateIndex === 2) {
-      setButtonStateIndex(0)
+      setButtonStateIndex(0);
     }
 
-    setButtonStateIndex((buttonStateIndex + 1) % buttonState.length)
-  }
+    setButtonStateIndex((buttonStateIndex + 1) % buttonState.length);
+  };
 
-  const [buttonHoverStateIndex, setButtonHoverStateIndex] = useState(0)
+  const [buttonHoverStateIndex, setButtonHoverStateIndex] = useState(0);
 
-  const buttonHoverState = [
-    'Hover me, if you dare',
-    'Now go!',
-  ]
+  const buttonHoverState = ['Hover me, if you dare', 'Now go!'];
 
   const handleMouseOver = () => {
-    setButtonHoverStateIndex(1)
-  }
+    setButtonHoverStateIndex(1);
+  };
 
   const handleMouseOut = () => {
-    setButtonHoverStateIndex(0)
-  }
+    setButtonHoverStateIndex(0);
+  };
 
   return (
     <div class="grid gap-600">
-      <mds-button onClick={checkButtonState} class="w-full max-w-8000" animation="yugop" label={buttonState[buttonStateIndex].label} icon={buttonState[buttonStateIndex].icon} variant={buttonState[buttonStateIndex].variant} tone={buttonState[buttonStateIndex].tone} await={buttonState[buttonStateIndex].await}></mds-button>
-      <mds-button onMouseOver={handleMouseOver} onMouseOut={handleMouseOut} label={buttonHoverState[buttonHoverStateIndex]} class="w-full max-w-8000" animation="yugop"></mds-button>
+      <mds-button
+        onClick={checkButtonState}
+        class="w-full max-w-8000"
+        animation="yugop"
+        label={buttonState[buttonStateIndex].label}
+        icon={buttonState[buttonStateIndex].icon}
+        variant={buttonState[buttonStateIndex].variant}
+        tone={buttonState[buttonStateIndex].tone}
+        await={buttonState[buttonStateIndex].await}
+      ></mds-button>
+      <mds-button
+        onMouseOver={handleMouseOver}
+        onMouseOut={handleMouseOut}
+        label={buttonHoverState[buttonHoverStateIndex]}
+        class="w-full max-w-8000"
+        animation="yugop"
+      ></mds-button>
     </div>
-  )
-}
+  );
+};
 
 const TemplateAsyncContent = () => {
-  const [icon, setIcon] = useState('')
-  const [label, setLabel] = useState('')
+  const [icon, setIcon] = useState('');
+  const [label, setLabel] = useState('');
 
   useEffect(() => {
     setTimeout(() => {
-      setIcon('mi/baseline/check')
+      setIcon('mi/baseline/check');
       setTimeout(() => {
-        setLabel('Hello async world')
-      }, 1000)
-    }, 1000)
-  }, [icon, label])
+        setLabel('Hello async world');
+      }, 1000);
+    }, 1000);
+  }, [icon, label]);
 
-  return (
-    <mds-button class="max-w-4400" icon={icon} label={label}></mds-button>
-  )
-}
+  return <mds-button class="max-w-4400" icon={icon} label={label}></mds-button>;
+};
 
 export const Default = {
   render: Template,
-}
+};
 
 export const AsyncContent = {
   render: TemplateAsyncContent,
-}
+};
 
 export const TextAnimation = {
   render: TemplateAnimation,
-}
+};
 
 export const AutoFocus = {
   render: Template,
@@ -333,7 +340,7 @@ export const AutoFocus = {
   args: {
     'auto-focus': true,
   },
-}
+};
 
 export const Await = {
   render: TemplateAwait,
@@ -342,7 +349,7 @@ export const Await = {
     tone: 'weak',
     await: true,
   },
-}
+};
 
 export const Disabled = {
   render: TemplateDisabled,
@@ -351,12 +358,12 @@ export const Disabled = {
     disabled: false,
   },
   play: async ({ canvas, userEvent }) => {
-    const button = await canvas.findByRole('button')
-    expect(button).not.toBeDisabled()
-    await userEvent.click(button)
-    expect(button).toBeDisabled()
+    const button = await canvas.findByRole('button');
+    expect(button).not.toBeDisabled();
+    await userEvent.click(button);
+    expect(button).toBeDisabled();
   },
-}
+};
 
 export const Variant = {
   render: Template,
@@ -364,7 +371,7 @@ export const Variant = {
   args: {
     variant: 'success',
   },
-}
+};
 
 export const ServiceVariantGoogle = {
   render: TemplateService,
@@ -373,7 +380,7 @@ export const ServiceVariantGoogle = {
     variant: 'google',
     label: 'Login with Google',
   },
-}
+};
 
 export const ServiceVariantApple = {
   render: TemplateService,
@@ -382,7 +389,7 @@ export const ServiceVariantApple = {
     variant: 'apple',
     label: 'Login with Apple',
   },
-}
+};
 
 export const Tone = {
   render: Template,
@@ -391,7 +398,7 @@ export const Tone = {
     variant: 'success',
     tone: 'weak',
   },
-}
+};
 
 export const Size = {
   render: Template,
@@ -399,7 +406,7 @@ export const Size = {
   args: {
     size: 'sm',
   },
-}
+};
 
 export const Icon = {
   render: TemplateIcon,
@@ -408,7 +415,7 @@ export const Icon = {
     icon: 'mi/baseline/eco',
     title: 'Pianta un albero',
   },
-}
+};
 
 export const IconFill = {
   render: TemplateIcon,
@@ -418,7 +425,7 @@ export const IconFill = {
     icon: 'mi/baseline/eco',
     class: 'fill-status-error-05',
   },
-}
+};
 
 export const IconARIATitle = {
   render: TemplateIcon,
@@ -427,7 +434,7 @@ export const IconARIATitle = {
     icon: 'mi/baseline/eco',
     'aria-label': 'Pianta un albero',
   },
-}
+};
 
 export const IconPosition = {
   render: Template,
@@ -436,18 +443,17 @@ export const IconPosition = {
     'icon-position': 'right',
     icon: 'mi/baseline/eco',
   },
-}
+};
 
 export const KeyboardPress = {
   render: TemplateKeyboard,
 
   args: {
     onClick: () => {
-       
-      alert('Button clicked')
+      alert('Button clicked');
     },
   },
-}
+};
 
 export const Href = {
   render: Template,
@@ -455,7 +461,7 @@ export const Href = {
   args: {
     href: 'http://www.maggioli.it',
   },
-}
+};
 
 export const Target = {
   render: Template,
@@ -464,11 +470,11 @@ export const Target = {
     href: 'http://www.maggioli.it',
     target: 'blank',
   },
-}
+};
 
 export const Notifications = {
   render: TemplateNotifications,
-}
+};
 
 export const FormParticipation = {
   render: TemplateForm,
@@ -476,7 +482,7 @@ export const FormParticipation = {
   args: {
     type: 'button',
   },
-}
+};
 
 export const TestInteraction = {
   render: Template,
@@ -484,17 +490,15 @@ export const TestInteraction = {
     onClick: fn(),
   },
   play: async ({ args, canvas, userEvent }) => {
-
-    const button = await canvas.findByRole('button') as HTMLMdsButtonElement
-    await userEvent.click(button)
-    expect(args.onClick).toHaveBeenCalledOnce()
-
+    const button = (await canvas.findByRole('button')) as HTMLMdsButtonElement;
+    await userEvent.click(button);
+    expect(args.onClick).toHaveBeenCalledOnce();
   },
-}
+};
 
-const variantToneCombinations = buttonVariantDictionary.flatMap(variant =>
-  toneBoxVariantDictionary.map(tone => ({ tone, variant })),
-)
+const variantToneCombinations = buttonVariantDictionary.flatMap((variant) =>
+  toneBoxVariantDictionary.map((tone) => ({ tone, variant })),
+);
 
 const VariantsTableTemplate = () => (
   <mds-table>
@@ -510,17 +514,21 @@ const VariantsTableTemplate = () => (
             <mds-button variant={variant} tone={tone} label="Hello world"></mds-button>
           </mds-table-cell>
           <mds-table-cell value={variant}>
-            <mds-text typography="hack" class="whitespace-nowrap">{variant}</mds-text>
+            <mds-text typography="hack" class="whitespace-nowrap">
+              {variant}
+            </mds-text>
           </mds-table-cell>
           <mds-table-cell value={tone}>
-            <mds-text typography="hack" class="whitespace-nowrap">{tone}</mds-text>
+            <mds-text typography="hack" class="whitespace-nowrap">
+              {tone}
+            </mds-text>
           </mds-table-cell>
         </mds-table-row>
       ))}
     </mds-table-body>
   </mds-table>
-)
+);
 
 export const VariantsTable = {
   render: VariantsTableTemplate,
-}
+};

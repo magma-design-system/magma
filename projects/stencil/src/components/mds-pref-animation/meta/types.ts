@@ -1,4 +1,1 @@
-export type AnimationModeType =
-  | 'reduce'
-  | 'no-preference'
-  | 'system'
+export type AnimationModeType = 'reduce' | 'no-preference' | 'system';

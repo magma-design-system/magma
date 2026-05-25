@@ -1,5 +1,5 @@
-:root[data-theme-name="twilight"],
-mds-pref-theme-variant-item[name="twilight"] {
+:root[data-theme-name='twilight'],
+mds-pref-theme-variant-item[name='twilight'] {
   --tone-slate-01: 28 34 42;
   --tone-slate-02: 33 41 50;
   --tone-slate-03: 54 65 81;

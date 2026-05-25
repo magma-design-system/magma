@@ -1,7 +1,6 @@
 @layer components {
   .text-title-h1 {
-    @apply
-      antialiased
+    @apply antialiased
       font-black
       font-title
       min-h-1200
@@ -9,8 +8,7 @@
   }
 
   .text-title-h2 {
-    @apply
-      antialiased
+    @apply antialiased
       font-black
       font-title
       min-h-1000
@@ -18,8 +16,7 @@
   }
 
   .text-title-h3 {
-    @apply
-      antialiased
+    @apply antialiased
       font-black
       font-title
       min-h-900
@@ -27,8 +24,7 @@
   }
 
   .text-title-h4 {
-    @apply
-      antialiased
+    @apply antialiased
       font-bold
       font-title
       min-h-800
@@ -36,8 +32,7 @@
   }
 
   .text-title-h5 {
-    @apply
-      antialiased
+    @apply antialiased
       font-bold
       font-title
       min-h-700
@@ -45,8 +40,7 @@
   }
 
   .text-title-h6 {
-    @apply
-      antialiased
+    @apply antialiased
       font-bold
       font-title
       min-h-600
@@ -54,8 +48,7 @@
   }
 
   .text-title-action {
-    @apply
-      antialiased
+    @apply antialiased
       font-medium
       font-title
       min-h-600
@@ -63,32 +56,28 @@
   }
 
   .text-info-paragraph {
-    @apply
-      antialiased
+    @apply antialiased
       font-info
       min-h-800
       text-size-info-paragraph;
   }
 
   .text-info-detail {
-    @apply
-      antialiased
+    @apply antialiased
       font-info
       min-h-600
       text-size-info-detail;
   }
 
   .text-info-caption {
-    @apply
-      antialiased
+    @apply antialiased
       font-info
       min-h-500
       text-size-info-caption;
   }
 
   .text-info-label {
-    @apply
-      antialiased
+    @apply antialiased
       font-bold
       font-info
       min-h-400
@@ -97,8 +86,7 @@
   }
 
   .text-info-option {
-    @apply
-      antialiased
+    @apply antialiased
       font-bold
       font-info
       min-h-250
@@ -107,16 +95,14 @@
   }
 
   .text-info-tip {
-    @apply
-      antialiased
+    @apply antialiased
       font-info
       min-h-400
       text-size-info-tip;
   }
 
   .text-read-paragraph {
-    @apply
-      antialiased
+    @apply antialiased
       font-light
       font-read
       min-h-800
@@ -124,8 +110,7 @@
   }
 
   .text-read-detail {
-    @apply
-      antialiased
+    @apply antialiased
       font-light
       font-read
       min-h-600
@@ -133,24 +118,21 @@
   }
 
   .text-read-caption {
-    @apply
-      antialiased
+    @apply antialiased
       font-read
       min-h-500
       text-size-read-caption;
   }
 
   .text-code-snippet {
-    @apply
-      antialiased
+    @apply antialiased
       font-code
       min-h-600
       text-size-code-snippet;
   }
 
   .text-code-hack {
-    @apply
-      antialiased
+    @apply antialiased
       font-code
       min-h-500
       text-size-code-hack;

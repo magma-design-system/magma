@@ -1,14 +1,5 @@
-const notificationItemPreviewDictionary = [
-  'avatar',
-  'image',
-]
+const notificationItemPreviewDictionary = ['avatar', 'image'];
 
-const notificationItemDateFormatDictionary = [
-  'timeago',
-  'none',
-]
+const notificationItemDateFormatDictionary = ['timeago', 'none'];
 
-export {
-  notificationItemDateFormatDictionary,
-  notificationItemPreviewDictionary,
-}
+export { notificationItemDateFormatDictionary, notificationItemPreviewDictionary };

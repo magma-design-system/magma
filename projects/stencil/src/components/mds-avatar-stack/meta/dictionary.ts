@@ -1,9 +1,3 @@
-const sizesDictionary = [
-  'sm',
-  'md',
-  'lg',
-]
+const sizesDictionary = ['sm', 'md', 'lg'];
 
-export {
-  sizesDictionary,
-}
+export { sizesDictionary };

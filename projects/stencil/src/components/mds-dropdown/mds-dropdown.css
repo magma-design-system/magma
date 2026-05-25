@@ -18,37 +18,37 @@
 @property --mds-dropdown-arrow-background {
   inherits: false;
   initial-value: var(--mds-dropdown-background);
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-dropdown-backdrop-duration {
   inherits: false;
   initial-value: 200ms;
-  syntax: "<time>";
+  syntax: '<time>';
 }
 
 @property --mds-dropdown-backdrop-z-index {
   inherits: false;
   initial-value: 3000;
-  syntax: "<integer>";
+  syntax: '<integer>';
 }
 
 @property --mds-dropdown-background {
   inherits: false;
   initial-value: rgb(var(--tone-neutral));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-dropdown-mouseover-delay {
   inherits: false;
   initial-value: 0.5s;
-  syntax: "<time>";
+  syntax: '<time>';
 }
 
 @property --mds-dropdown-drop-shadow-color-rgb {
   inherits: false;
   initial-value: 0 0 0;
-  syntax: "<number>+";
+  syntax: '<number>+';
 }
 
 /* The following properties are not supported by Houdini:
@@ -59,25 +59,25 @@
 @property --mds-dropdown-duration {
   inherits: false;
   initial-value: 0.5s;
-  syntax: "<time>";
+  syntax: '<time>';
 }
 
 @property --mds-dropdown-z-index {
   inherits: false;
   initial-value: 4000;
-  syntax: "<integer>";
+  syntax: '<integer>';
 }
 
 @property --mds-dropdown-transform-from {
   inherits: false;
   initial-value: scale(0.9) translateY(-3%);
-  syntax: "<transform-list>";
+  syntax: '<transform-list>';
 }
 
 @property --mds-dropdown-transform-to {
   inherits: false;
   initial-value: scale(0.9) translateY(-3%);
-  syntax: "<transform-list>";
+  syntax: '<transform-list>';
 }
 
 :host {
@@ -86,7 +86,11 @@
   --mds-dropdown-backdrop-z-index: var(--magma-backdrop-z-index, 3000);
   --mds-dropdown-background: rgb(var(--tone-neutral));
   --mds-dropdown-drop-shadow-color-rgb: var(--tone-neutral-01);
-  --mds-dropdown-drop-shadow: drop-shadow(0 10px 8px rgb(var(--mds-dropdown-drop-shadow-color-rgb) / 0.05)) drop-shadow(0 4px 3px rgb(var(--mds-dropdown-drop-shadow-color-rgb) / 0.15)) drop-shadow(0 0 1px rgb(var(--mds-dropdown-drop-shadow-color-rgb) / 0.15));
+  --mds-dropdown-drop-shadow: drop-shadow(
+      0 10px 8px rgb(var(--mds-dropdown-drop-shadow-color-rgb) / 0.05)
+    )
+    drop-shadow(0 4px 3px rgb(var(--mds-dropdown-drop-shadow-color-rgb) / 0.15))
+    drop-shadow(0 0 1px rgb(var(--mds-dropdown-drop-shadow-color-rgb) / 0.15));
   --mds-dropdown-duration: 0.5s;
   --mds-dropdown-ease: var(--ease-out-expo);
   --mds-dropdown-mouseover-delay: 0.5s;
@@ -113,7 +117,7 @@
   z-index: var(--mds-dropdown-z-index);
 }
 
-:host([visible]:not([visible="false"])) {
+:host([visible]:not([visible='false'])) {
   display: grid;
   opacity: 1;
   pointer-events: auto;
@@ -125,7 +129,7 @@
   }
 }
 
-:host([smooth]:not([smooth="false"])) {
+:host([smooth]:not([smooth='false'])) {
   transition-property: bottom, left, opacity, right, top, transform, transform-origin;
 }
 

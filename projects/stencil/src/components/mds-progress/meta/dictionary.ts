@@ -1,10 +1,3 @@
-const directionDictionary = [
-  'horizontal',
-  'vertical',
-  'radial',
-]
+const directionDictionary = ['horizontal', 'vertical', 'radial'];
 
-export {
-  directionDictionary,
-}
-
+export { directionDictionary };

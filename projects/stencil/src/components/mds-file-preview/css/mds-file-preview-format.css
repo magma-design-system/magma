@@ -1,64 +1,64 @@
-:host([format="archive"]),
-:host([format="executable"]) {
+:host([format='archive']),
+:host([format='executable']) {
   --mds-file-preview-color: rgb(var(--label-amaranth-04));
   --mds-file-preview-icon-background: rgb(var(--label-amaranth-10));
   --mds-file-preview-icon-color: rgb(var(--label-amaranth-04));
 }
 
-:host([format="attachment"]) {
+:host([format='attachment']) {
   --mds-file-preview-color: rgb(var(--tone-neutral-04));
   --mds-file-preview-icon-background: rgb(var(--tone-neutral-10));
   --mds-file-preview-icon-color: rgb(var(--tone-neutral-04));
 }
 
-:host([format="audio"]),
-:host([format="video"]) {
+:host([format='audio']),
+:host([format='video']) {
   --mds-file-preview-color: rgb(var(--label-violet-04));
   --mds-file-preview-icon-background: rgb(var(--label-violet-10));
   --mds-file-preview-icon-color: rgb(var(--label-violet-04));
 }
 
-:host([format="code"]),
-:host([format="data"]),
-:host([format="markup"]) {
+:host([format='code']),
+:host([format='data']),
+:host([format='markup']) {
   --mds-file-preview-color: rgb(var(--label-yellow-04));
   --mds-file-preview-icon-background: rgb(var(--label-yellow-10));
   --mds-file-preview-icon-color: rgb(var(--label-yellow-04));
 }
 
-:host([format="document"]),
-:host([format="certificate"]) {
+:host([format='document']),
+:host([format='certificate']) {
   --mds-file-preview-color: rgb(var(--label-orange-04));
   --mds-file-preview-icon-background: rgb(var(--label-orange-10));
   --mds-file-preview-icon-color: rgb(var(--label-orange-04));
 }
 
-:host([format="email"]),
-:host([format="text"]) {
+:host([format='email']),
+:host([format='text']) {
   --mds-file-preview-color: rgb(var(--label-blue-04));
   --mds-file-preview-icon-background: rgb(var(--label-blue-10));
   --mds-file-preview-icon-color: rgb(var(--label-blue-04));
 }
 
-:host([format="image"]) {
+:host([format='image']) {
   --mds-file-preview-color: rgb(var(--label-green-04));
   --mds-file-preview-icon-background: rgb(var(--label-green-10));
   --mds-file-preview-icon-color: rgb(var(--label-green-04));
 }
 
-:host([format="slide"]) {
+:host([format='slide']) {
   --mds-file-preview-color: rgb(var(--label-orchid-04));
   --mds-file-preview-icon-background: rgb(var(--label-orchid-10));
   --mds-file-preview-icon-color: rgb(var(--label-orchid-04));
 }
 
-:host([format="spreadsheet"]) {
+:host([format='spreadsheet']) {
   --mds-file-preview-color: rgb(var(--label-lime-04));
   --mds-file-preview-icon-background: rgb(var(--label-lime-10));
   --mds-file-preview-icon-color: rgb(var(--label-lime-04));
 }
 
-:host([format="vector"]) {
+:host([format='vector']) {
   --mds-file-preview-color: rgb(var(--label-aqua-04));
   --mds-file-preview-icon-background: rgb(var(--label-aqua-10));
   --mds-file-preview-icon-color: rgb(var(--label-aqua-04));

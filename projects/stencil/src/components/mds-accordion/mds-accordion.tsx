@@ -1,6 +1,6 @@
-import { MdsAccordionItemEventDetail } from '@component/mds-accordion-item/meta/event-detail'
-import { Component, Element, Event, EventEmitter, Host, Listen, Prop, h } from '@stencil/core'
-import { MdsAccordionEventDetail } from './meta/event-detail'
+import { MdsAccordionItemEventDetail } from '@component/mds-accordion-item/meta/event-detail';
+import { Component, Element, Event, EventEmitter, Host, Listen, Prop, h } from '@stencil/core';
+import { MdsAccordionEventDetail } from './meta/event-detail';
 
 /**
  * @slot default - Add `mds-accordion-item` element/s.
@@ -12,76 +12,76 @@ import { MdsAccordionEventDetail } from './meta/event-detail'
   shadow: true,
 })
 export class MdsAccordion {
-
-  @Element() private element: HTMLMdsAccordionElement
+  @Element() private element: HTMLMdsAccordionElement;
 
   /**
    * Choose if multiple siblings can be selected simultaneously
    */
-  @Prop() readonly multiple?: boolean = false
+  @Prop() readonly multiple?: boolean = false;
 
   /**
    * Specifies if an item can be closed by user
    */
-  @Prop() readonly closable?: boolean = true
+  @Prop() readonly closable?: boolean = true;
 
   /**
    * Emits when the component attribute selected is changed
    */
-  @Event({ eventName: 'mdsAccordionChange' }) changedEvent: EventEmitter<MdsAccordionEventDetail>
+  @Event({ eventName: 'mdsAccordionChange' }) changedEvent: EventEmitter<MdsAccordionEventDetail>;
 
   private queryItems = (): NodeListOf<HTMLMdsAccordionItemElement> =>
-    this.element.querySelectorAll<HTMLMdsAccordionItemElement>('mds-accordion-item')
+    this.element.querySelectorAll<HTMLMdsAccordionItemElement>('mds-accordion-item');
 
-  componentWillLoad (): void {
-    const items = this.queryItems()
-    items.forEach((item, key) => item.id = `item-${key}`)
+  componentWillLoad(): void {
+    const items = this.queryItems();
+    items.forEach((item, key) => (item.id = `item-${key}`));
   }
 
   private selectMultipleItems = (): void => {
-    const items = this.queryItems()
-    const list: (HTMLMdsAccordionItemElement | null)[] = []
-    const selectedItem: number[] = []
+    const items = this.queryItems();
+    const list: (HTMLMdsAccordionItemElement | null)[] = [];
+    const selectedItem: number[] = [];
     items.forEach((item, key) => {
-      list.push(item.selected ? item : null)
+      list.push(item.selected ? item : null);
       if (item.selected) {
-        selectedItem.push(key)
+        selectedItem.push(key);
       }
-    })
-    this.changedEvent.emit({ children: items, selected: selectedItem.toString() })
-  }
+    });
+    this.changedEvent.emit({ children: items, selected: selectedItem.toString() });
+  };
 
   private changedChildrenHandler = (event: CustomEvent<MdsAccordionItemEventDetail>): void => {
-    const items = this.queryItems()
+    const items = this.queryItems();
 
     if (this.multiple) {
-      this.selectMultipleItems()
-      return
+      this.selectMultipleItems();
+      return;
     }
 
     items.forEach((item, key) => {
-      item.selected = `item-${key}` === event.detail.id && (event.detail.selected || !this.closable)
+      item.selected =
+        `item-${key}` === event.detail.id && (event.detail.selected || !this.closable);
       if (item.selected) {
-        this.changedEvent.emit({ children: items, selected: key.toString() })
+        this.changedEvent.emit({ children: items, selected: key.toString() });
       }
-    })
-  }
+    });
+  };
 
   @Listen('mdsAccordionItemSelect')
-  selectedEventHandler (event: CustomEvent<MdsAccordionItemEventDetail>): void {
-    this.changedChildrenHandler(event)
+  selectedEventHandler(event: CustomEvent<MdsAccordionItemEventDetail>): void {
+    this.changedChildrenHandler(event);
   }
 
   @Listen('mdsAccordionItemUnselect')
-  unselectedEventHandler (event: CustomEvent<MdsAccordionItemEventDetail>): void {
-    this.changedChildrenHandler(event)
+  unselectedEventHandler(event: CustomEvent<MdsAccordionItemEventDetail>): void {
+    this.changedChildrenHandler(event);
   }
 
-  render () {
+  render() {
     return (
       <Host>
         <slot />
       </Host>
-    )
+    );
   }
 }

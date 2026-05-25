@@ -16,61 +16,61 @@
 @property --mds-input-date-icon-color {
   inherits: false;
   initial-value: rgb(var(--variant-primary-03));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-input-date-background {
   inherits: false;
   initial-value: rgb(var(--tone-neutral));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-input-date-field-background-empty {
   inherits: false;
   initial-value: rgb(var(--status-error-10));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-input-date-field-color-empty {
   inherits: false;
   initial-value: rgb(var(--status-error-06));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-input-date-icon-color-rgb {
   inherits: false;
   initial-value: var(--mds-input-date-variant-color-rgb);
-  syntax: "<integer>+"; /* RGB channels */
+  syntax: '<integer>+'; /* RGB channels */
 }
 
 @property --mds-input-date-variant-color-rgb {
   inherits: false;
   initial-value: 0 0 0;
-  syntax: "<integer>+";
+  syntax: '<integer>+';
 }
 
 @property --mds-input-tip-horizontal-offset {
   inherits: false;
   initial-value: --spacing(100);
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-input-tip-horizontal-offset-focused {
   inherits: false;
   initial-value: --spacing(1000);
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-input-tip-vertical-offset {
   inherits: false;
   initial-value: --spacing(100);
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-input-tip-background {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-03));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 /* ❌ Not supported
@@ -94,7 +94,9 @@
   --mds-input-date-field-color-empty: rgb(var(--status-error-06));
   --mds-input-date-icon-color-rgb: var(--mds-input-date-variant-color-rgb);
   --mds-input-date-ring: 0 0 0 1px rgb(var(--mds-input-date-variant-color-rgb) / 0.1);
-  --mds-input-date-shadow: 0 1px 3px 0 rgb(var(--mds-input-date-variant-color-rgb) / 0.1), 0 1px 2px 0 rgb(var(--mds-input-date-variant-color-rgb) / 0.06);
+  --mds-input-date-shadow:
+    0 1px 3px 0 rgb(var(--mds-input-date-variant-color-rgb) / 0.1),
+    0 1px 2px 0 rgb(var(--mds-input-date-variant-color-rgb) / 0.06);
   --mds-input-date-variant-color-rgb: 0 0 0;
   --mds-input-tip-horizontal-offset: --spacing(100);
   --mds-input-tip-horizontal-offset-focused: --spacing(1000);
@@ -134,7 +136,8 @@
   overflow: hidden;
   text-overflow: ellipsis;
   transition-duration: var(--duration-300);
-  transition-property: background-color, border-color, box-shadow, color, fill, margin, opacity, padding, transform;
+  transition-property:
+    background-color, border-color, box-shadow, color, fill, margin, opacity, padding, transform;
   transition-timing-function: var(--ease-out-expo);
   width: min-content;
 }
@@ -169,8 +172,7 @@
 :host(:focus-within) .input {
   @apply outline-hidden transition-cosmetic;
 
-  --mds-input-date-ring: 0 0 0 3px
-    rgb(var(--mds-input-date-variant-color-rgb) / 1);
+  --mds-input-date-ring: 0 0 0 3px rgb(var(--mds-input-date-variant-color-rgb) / 1);
   --mds-input-date-shadow:
     0 4px 6px 3px rgb(var(--mds-input-date-variant-color-rgb) / 0.1),
     0 2px 4px -1px rgb(var(--mds-input-date-variant-color-rgb) / 0.06);
@@ -214,7 +216,7 @@
   --mds-button-color: var(--mds-input-date-icon-color);
 }
 
-:host([disabled]:not([disabled="false"])) .action-open-calendar {
+:host([disabled]:not([disabled='false'])) .action-open-calendar {
   transform: translate(--spacing(250), --spacing(200));
 }
 

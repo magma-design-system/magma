@@ -1,8 +1,8 @@
-import { h } from '@stencil/core'
+import { h } from '@stencil/core';
 
 export default {
   title: 'Common tests',
-}
+};
 
 const Template = () => (
   <div class="-m-600">
@@ -26,18 +26,17 @@ const Template = () => (
                 This is a section title
               </mds-text>
               <mds-text>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                Accusamus iure, ratione beatae quam optio cumque rerum modi
-                consectetur odit eligendi omnis veniam fuga non ipsam voluptatum
-                a ut neque illum.
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus iure, ratione
+                beatae quam optio cumque rerum modi consectetur odit eligendi omnis veniam fuga non
+                ipsam voluptatum a ut neque illum.
               </mds-text>
             </div>
           ))}
       </div>
     </div>
   </div>
-)
+);
 
 export const ExamplePage = {
   render: Template,
-}
+};

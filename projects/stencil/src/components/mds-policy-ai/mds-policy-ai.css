@@ -4,7 +4,7 @@
   display: inline-flex;
 }
 
-:host(:not([variant="icon"])) {
+:host(:not([variant='icon'])) {
   container-name: mds-policy-ai;
   container-type: inline-size;
   width: 100%;

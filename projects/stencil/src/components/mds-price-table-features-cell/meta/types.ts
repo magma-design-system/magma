@@ -1,7 +1,1 @@
-export type PriceTableFeaturesCellType =
-  | 'custom'
-  | 'label'
-  | 'supported'
-  | 'text'
-  | 'unsupported'
-
+export type PriceTableFeaturesCellType = 'custom' | 'label' | 'supported' | 'text' | 'unsupported';

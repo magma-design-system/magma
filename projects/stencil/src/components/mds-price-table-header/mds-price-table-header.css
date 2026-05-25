@@ -5,4 +5,3 @@
   gap: --spacing(600);
   grid-template-columns: repeat(auto-fit, minmax(1px, 1fr));
 }
-

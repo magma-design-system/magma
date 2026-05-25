@@ -11,27 +11,26 @@
 @property --mds-accordion-timer-progress-bar-color {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-03));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-accordion-timer-progress-bar-background {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-08));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-accordion-timer-progress-bar-thickness {
   inherits: false;
   initial-value: 1px; /* placeholder valido (Houdini non accetta --spacing) */
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-accordion-timer-duration {
   inherits: false;
   initial-value: 500ms;
-  syntax: "<time>";
+  syntax: '<time>';
 }
-
 
 :host {
   --mds-accordion-timer-progress-bar-color: rgb(var(--tone-neutral-03));
@@ -41,6 +40,5 @@
 
   display: block;
 }
-
 
 @import './css/mds-accordion-timer-pref-animation.css';

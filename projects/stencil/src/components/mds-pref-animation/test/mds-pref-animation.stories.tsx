@@ -1,6 +1,6 @@
-import { h } from '@stencil/core'
+import { h } from '@stencil/core';
 
-import { animationDictionary } from '../meta/dictionary'
+import { animationDictionary } from '../meta/dictionary';
 
 export default {
   title: 'UI / Preferences / Animation',
@@ -12,11 +12,11 @@ export default {
       description: 'Specifies the preference mode',
     },
   },
-}
-const Template = args => <mds-pref-animation {...args} />
+};
+const Template = (args) => <mds-pref-animation {...args} />;
 
 export const Default = {
   render: Template,
 
   args: {},
-}
+};

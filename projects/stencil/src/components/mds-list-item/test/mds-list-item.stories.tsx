@@ -1,9 +1,6 @@
-import {
-  typographyInfoDictionary,
-  typographyReadingVariationsDictionary,
-} from '@type/typography'
-import { iconsDictionary } from '@type/icon'
-import { h } from '@stencil/core'
+import { typographyInfoDictionary, typographyReadingVariationsDictionary } from '@type/typography';
+import { iconsDictionary } from '@type/icon';
+import { h } from '@stencil/core';
 
 export default {
   title: 'UI / List / List Item',
@@ -27,15 +24,15 @@ export default {
       control: { type: 'select' },
     },
   },
-}
-const Template = args => (
+};
+const Template = (args) => (
   <mds-list>
     <mds-list-item {...args}>Pane</mds-list-item>
     <mds-list-item {...args}>Acqua</mds-list-item>
     <mds-list-item {...args}>Pasta</mds-list-item>
   </mds-list>
-)
+);
 
 export const Default = {
   render: Template,
-}
+};

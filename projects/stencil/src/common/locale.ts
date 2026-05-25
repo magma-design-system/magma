@@ -1,92 +1,97 @@
-import mustache from 'mustache'
+import mustache from 'mustache';
 
 type LocaleConfig = {
-  el?: Record<string, string | string[]>
-  en: Record<string, string | string[]>
-  es?: Record<string, string | string[]>
-  it?: Record<string, string | string[]>
-}
+  el?: Record<string, string | string[]>;
+  en: Record<string, string | string[]>;
+  es?: Record<string, string | string[]>;
+  it?: Record<string, string | string[]>;
+};
 
 export class Locale {
-  rollbackLanguage: string = 'en'
-  language: string
-  config: LocaleConfig
-  closestElement:HTMLElement
-  element: HTMLElement
+  rollbackLanguage: string = 'en';
+  language: string;
+  config: LocaleConfig;
+  closestElement: HTMLElement;
+  element: HTMLElement;
 
-  constructor (configData?: LocaleConfig) {
+  constructor(configData?: LocaleConfig) {
     if (configData) {
-      this.set(configData)
+      this.set(configData);
     }
   }
 
   set = (configData: LocaleConfig): void => {
-    this.config = configData
-  }
+    this.config = configData;
+  };
 
   lang = (el: HTMLElement): string => {
-    this.element = el
-    this.closestElement = this.element.closest('[lang]') as HTMLElement
+    this.element = el;
+    this.closestElement = this.element.closest('[lang]') as HTMLElement;
 
     if (this.closestElement) {
       if (this.closestElement.lang) {
-        this.language = this.closestElement.lang
-        return this.language
+        this.language = this.closestElement.lang;
+        return this.language;
       }
     }
 
-    this.language = this.rollbackLanguage
-    return this.language
-  }
+    this.language = this.rollbackLanguage;
+    return this.language;
+  };
 
   update = (doc?: Document | ShadowRoot): void => {
-    const context = doc ?? this.element.shadowRoot
+    const context = doc ?? this.element.shadowRoot;
     if (context) {
-      context.querySelectorAll('*').forEach(el => {
+      context.querySelectorAll('*').forEach((el) => {
         if (el.tagName.toLowerCase().startsWith('mds-')) {
-           
           if (el && 'updateLang' in el) {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            (el as any).updateLang()
+            (el as any).updateLang();
           }
         }
-      })
+      });
     }
-  }
+  };
 
-  private pluralize = (tag: string | string[], context: Record<string, string | number | boolean>): string => {
-
-    const languagePhrase: string | string[] = this.config[this.language] ? this.config[this.language][tag] : this.config[this.rollbackLanguage][tag]
-    const phrases: string[] = []
+  private pluralize = (
+    tag: string | string[],
+    context: Record<string, string | number | boolean>,
+  ): string => {
+    const languagePhrase: string | string[] = this.config[this.language]
+      ? this.config[this.language][tag]
+      : this.config[this.rollbackLanguage][tag];
+    const phrases: string[] = [];
 
     if (Array.isArray(languagePhrase)) {
-      phrases.push(languagePhrase[0])
-      phrases.push(languagePhrase[1])
+      phrases.push(languagePhrase[0]);
+      phrases.push(languagePhrase[1]);
     } else {
-      phrases.push(languagePhrase)
-      phrases.push(languagePhrase)
+      phrases.push(languagePhrase);
+      phrases.push(languagePhrase);
     }
 
-    const [ defaultPhrase ] = phrases
-    let translatePhrase: string = defaultPhrase
+    const [defaultPhrase] = phrases;
+    let translatePhrase: string = defaultPhrase;
 
-    const keys = Object.keys(context)
+    const keys = Object.keys(context);
     if (keys.length > 0) {
-      const [firstKey] = keys
+      const [firstKey] = keys;
       if (typeof context[firstKey] === 'number') {
         if (context[firstKey] !== 1) {
-          translatePhrase = phrases[1]
+          translatePhrase = phrases[1];
         }
       }
     }
 
-    return mustache.render(translatePhrase, context)
-  }
+    return mustache.render(translatePhrase, context);
+  };
 
   get = (tag: string | string[], context?: Record<string, string | number | boolean>): string => {
     if (context) {
-      return this.pluralize(tag, context)
+      return this.pluralize(tag, context);
     }
-    return this.config[this.language] ? this.config[this.language][tag] : this.config[this.rollbackLanguage][tag]
-  }
+    return this.config[this.language]
+      ? this.config[this.language][tag]
+      : this.config[this.rollbackLanguage][tag];
+  };
 }

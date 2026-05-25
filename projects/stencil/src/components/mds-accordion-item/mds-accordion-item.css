@@ -11,57 +11,65 @@
  * @prop --mds-accordion-item-padding-unselected: Sets the vertical padding of the component when it's unselected
  */
 
-
 @property --mds-accordion-item-border-color {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-08));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-accordion-item-border-width {
   inherits: false;
   initial-value: 2px;
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-accordion-item-color {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-03));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-accordion-item-description-color {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-02));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-accordion-item-duration {
   inherits: false;
   initial-value: 300ms;
-  syntax: "<time>";
+  syntax: '<time>';
 }
 
 @property --mds-accordion-item-padding-selected {
   inherits: false;
   initial-value: 1rem 0 2rem 0;
-  syntax: "<length>+";
+  syntax: '<length>+';
 }
 
 @property --mds-accordion-item-padding-unselected {
   inherits: false;
   initial-value: 1rem 0 1rem 0;
-  syntax: "<length>+";
+  syntax: '<length>+';
 }
 
 :host {
   --mds-accordion-item-border-color: var(--mds-accordion-border-color, rgb(var(--tone-neutral-08)));
   --mds-accordion-item-border-width: var(--mds-accordion-border-width, 2px);
   --mds-accordion-item-color: var(--mds-accordion-color, rgb(var(--tone-neutral-03)));
-  --mds-accordion-item-description-color: var(--mds-accordion-description-color, rgb(var(--tone-neutral-02)));
+  --mds-accordion-item-description-color: var(
+    --mds-accordion-description-color,
+    rgb(var(--tone-neutral-02))
+  );
   --mds-accordion-item-duration: var(--mds-accordion-duration, 300ms);
-  --mds-accordion-item-padding-selected: var(--mds-accordion-padding-selected, --spacing(400) 0 --spacing(800) 0);
-  --mds-accordion-item-padding-unselected: var(--mds-accordion-padding-unselected, --spacing(400) 0 --spacing(400) 0);
+  --mds-accordion-item-padding-selected: var(
+    --mds-accordion-padding-selected,
+    --spacing(400) 0 --spacing(800) 0
+  );
+  --mds-accordion-item-padding-unselected: var(
+    --mds-accordion-padding-unselected,
+    --spacing(400) 0 --spacing(400) 0
+  );
 
   border-bottom: solid var(--mds-accordion-item-border-width) transparent;
   border-top: solid var(--mds-accordion-item-border-width) transparent;
@@ -138,29 +146,29 @@
   transition-timing-function: var(--ease-out-expo);
 }
 
-:host([selected]:not([selected="false"])) {
+:host([selected]:not([selected='false'])) {
   border-bottom: solid var(--mds-accordion-item-border-width) var(--mds-accordion-item-border-color);
   border-top: solid var(--mds-accordion-item-border-width) var(--mds-accordion-item-border-color);
   padding: var(--mds-accordion-item-padding-selected);
 }
 
-:host([selected]:not([selected="false"]):first-child) {
+:host([selected]:not([selected='false']):first-child) {
   border-top-color: transparent;
   margin-top: 0;
 }
 
-:host([selected]:not([selected="false"]):last-child) {
+:host([selected]:not([selected='false']):last-child) {
   border-bottom-color: transparent;
   margin-bottom: 0;
 }
 
-:host([selected]:not([selected="false"])) .content {
+:host([selected]:not([selected='false'])) .content {
   grid-template-rows: 1fr;
   opacity: 1;
   padding-top: --spacing(400);
 }
 
-:host([selected]:not([selected="false"])) .icon {
+:host([selected]:not([selected='false'])) .icon {
   transform: rotate(90deg);
 }
 

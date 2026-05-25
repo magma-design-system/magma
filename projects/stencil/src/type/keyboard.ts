@@ -1,10 +1,10 @@
 export type KeyboardKeyData = {
-  alias: string
-  description: string
-  group: string
-  keyCodes: string[]
-  keyboardPosition?: { left?: boolean; right?: boolean }
-}
+  alias: string;
+  description: string;
+  group: string;
+  keyCodes: string[];
+  keyboardPosition?: { left?: boolean; right?: boolean };
+};
 
 export const keyboardKeyNameDictionary = [
   '0',
@@ -88,7 +88,7 @@ export const keyboardKeyNameDictionary = [
   'x',
   'y',
   'z',
-] as const
+] as const;
 
-export type KeyboardKeyName = (typeof keyboardKeyNameDictionary)[number]
+export type KeyboardKeyName = (typeof keyboardKeyNameDictionary)[number];
 export type KeyboardKeyMap = Record<KeyboardKeyName, KeyboardKeyData>;

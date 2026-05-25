@@ -20,61 +20,61 @@
 @property --mds-paginator-item-background-disabled {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-09));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-paginator-item-background-hover {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-08));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-paginator-item-background-selected {
   inherits: false;
   initial-value: rgb(var(--variant-primary-03));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-paginator-item-background {
   inherits: false;
   initial-value: transparent;
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-paginator-item-color-disabled {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-06));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-paginator-item-color-hover {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-02));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-paginator-item-color-selected {
   inherits: false;
   initial-value: rgb(var(--tone-neutral));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-paginator-item-color {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-02));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-paginator-item-radius {
   inherits: false;
   initial-value: 200px;
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-paginator-item-size {
   inherits: false;
   initial-value: --spacing(900);
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 /* ❌ Not supported
@@ -137,8 +137,7 @@
   height: var(--mds-paginator-item-size);
   justify-content: center;
   min-width: var(--mds-paginator-item-size);
-  transition-property:
-    background-color, box-shadow, color, outline, outline-offset;
+  transition-property: background-color, box-shadow, color, outline, outline-offset;
   user-select: none;
 }
 

@@ -1,14 +1,14 @@
-:host([variant="primary"]) {
+:host([variant='primary']) {
   --mds-button-background: rgb(var(--variant-primary-04));
   --mds-button-border-color-rgb: var(--variant-primary-04);
   --mds-button-color: rgb(var(--tone-neutral));
 
-  &:host([tone="strong"]:hover) {
+  &:host([tone='strong']:hover) {
     --mds-button-background: rgb(var(--variant-primary-03));
     --mds-button-border-color-rgb: var(--variant-primary-03);
   }
 
-  &:host([tone="weak"]) {
+  &:host([tone='weak']) {
     --mds-button-background: rgb(var(--variant-primary-09));
     --mds-button-border-color-rgb: var(--variant-primary-09);
     --mds-button-color: rgb(var(--variant-primary-03));
@@ -16,46 +16,46 @@
     fill: rgb(var(--variant-primary-03));
   }
 
-  &:host([tone="weak"]:hover) {
+  &:host([tone='weak']:hover) {
     --mds-button-background: rgb(var(--variant-primary-08));
     --mds-button-border-color-rgb: var(--variant-primary-08);
   }
 
-  &:host([tone="outline"]) {
+  &:host([tone='outline']) {
     --mds-button-border-color-rgb: var(--variant-primary-04);
     --mds-button-color: rgb(var(--variant-primary-03));
   }
 
-  &:host([tone="outline"]:hover) {
+  &:host([tone='outline']:hover) {
     --mds-button-border-color-rgb: var(--variant-primary-04);
     --mds-button-color: rgb(var(--variant-primary-02));
   }
 
-  &:host([tone="text"]) {
+  &:host([tone='text']) {
     --mds-button-color: rgb(var(--variant-primary-02));
   }
 
-  &:host([tone="text"]:hover) {
+  &:host([tone='text']:hover) {
     --mds-button-color: rgb(var(--variant-primary-04));
     --mds-button-background: rgb(var(--variant-primary-10));
   }
 
-  &:host([tone="text"][active]) {
+  &:host([tone='text'][active]) {
     --mds-button-color: rgb(var(--variant-primary-01));
   }
 }
 
-:host([variant="secondary"]) {
+:host([variant='secondary']) {
   --mds-button-background: rgb(var(--variant-secondary-04));
   --mds-button-border-color-rgb: var(--variant-secondary-04);
   --mds-button-color: rgb(var(--tone-neutral));
 
-  &:host([tone="strong"]:hover) {
+  &:host([tone='strong']:hover) {
     --mds-button-background: rgb(var(--variant-secondary-03));
     --mds-button-border-color-rgb: var(--variant-secondary-03);
   }
 
-  &:host([tone="weak"]) {
+  &:host([tone='weak']) {
     --mds-button-background: rgb(var(--variant-secondary-09));
     --mds-button-border-color-rgb: var(--variant-secondary-09);
     --mds-button-color: rgb(var(--variant-secondary-03));
@@ -63,46 +63,46 @@
     fill: rgb(var(--variant-secondary-03));
   }
 
-  &:host([tone="weak"]:hover) {
+  &:host([tone='weak']:hover) {
     --mds-button-background: rgb(var(--variant-secondary-08));
     --mds-button-border-color-rgb: var(--variant-secondary-08);
   }
 
-  &:host([tone="outline"]) {
+  &:host([tone='outline']) {
     --mds-button-border-color-rgb: var(--variant-secondary-04);
     --mds-button-color: rgb(var(--variant-secondary-03));
   }
 
-  &:host([tone="outline"]:hover) {
+  &:host([tone='outline']:hover) {
     --mds-button-border-color-rgb: var(--variant-secondary-04);
     --mds-button-color: rgb(var(--variant-secondary-02));
   }
 
-  &:host([tone="text"]) {
+  &:host([tone='text']) {
     --mds-button-color: rgb(var(--variant-secondary-02));
   }
 
-  &:host([tone="text"]:hover) {
+  &:host([tone='text']:hover) {
     --mds-button-color: rgb(var(--variant-secondary-04));
     --mds-button-background: rgb(var(--variant-secondary-10));
   }
 
-  &:host([tone="text"][active]) {
+  &:host([tone='text'][active]) {
     --mds-button-color: rgb(var(--variant-secondary-01));
   }
 }
 
-:host([variant="ai"]) {
+:host([variant='ai']) {
   --mds-button-background: rgb(var(--variant-ai-04));
   --mds-button-border-color-rgb: var(--variant-ai-04);
   --mds-button-color: rgb(var(--tone-neutral));
 
-  &:host([tone="strong"]:hover) {
+  &:host([tone='strong']:hover) {
     --mds-button-background: rgb(var(--variant-ai-03));
     --mds-button-border-color-rgb: var(--variant-ai-03);
   }
 
-  &:host([tone="weak"]) {
+  &:host([tone='weak']) {
     --mds-button-background: rgb(var(--variant-ai-09));
     --mds-button-border-color-rgb: var(--variant-ai-09);
     --mds-button-color: rgb(var(--variant-ai-03));
@@ -110,31 +110,31 @@
     fill: rgb(var(--variant-ai-03));
   }
 
-  &:host([tone="weak"]:hover) {
+  &:host([tone='weak']:hover) {
     --mds-button-background: rgb(var(--variant-ai-08));
     --mds-button-border-color-rgb: var(--variant-ai-08);
   }
 
-  &:host([tone="outline"]) {
+  &:host([tone='outline']) {
     --mds-button-border-color-rgb: var(--variant-ai-04);
     --mds-button-color: rgb(var(--variant-ai-03));
   }
 
-  &:host([tone="outline"]:hover) {
+  &:host([tone='outline']:hover) {
     --mds-button-border-color-rgb: var(--variant-ai-04);
     --mds-button-color: rgb(var(--variant-ai-02));
   }
 
-  &:host([tone="text"]) {
+  &:host([tone='text']) {
     --mds-button-color: rgb(var(--variant-ai-02));
   }
 
-  &:host([tone="text"]:hover) {
+  &:host([tone='text']:hover) {
     --mds-button-color: rgb(var(--variant-ai-04));
     --mds-button-background: rgb(var(--variant-ai-10));
   }
 
-  &:host([tone="text"][active]) {
+  &:host([tone='text'][active]) {
     --mds-button-color: rgb(var(--variant-ai-01));
   }
 }

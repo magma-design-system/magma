@@ -36,165 +36,163 @@
 @property --mds-tab-direction-vertical-columns {
   inherits: false;
   initial-value: auto auto;
-  syntax: "<length>+";
+  syntax: '<length>+';
 }
 
 @property --mds-tab-item-default-background {
   inherits: false;
   initial-value: transparent;
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-tab-item-default-color {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-03));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-tab-item-default-shadow {
   inherits: false;
   initial-value: transparent;
-  syntax: "<missing>";
+  syntax: '<missing>';
 }
 
 @property --mds-tab-item-hover-background {
   inherits: false;
   initial-value: transparent;
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-tab-item-hover-color {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-02));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-tab-item-hover-shadow {
   inherits: false;
   initial-value: transparent;
-  syntax: "<missing>";
+  syntax: '<missing>';
 }
 
 @property --mds-tab-item-radius {
   inherits: false;
   initial-value: var(--radius-lg);
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-tab-item-selected-background {
   inherits: false;
   initial-value: rgb(var(--tone-neutral));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-tab-item-selected-color {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-01));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-tab-item-selected-shadow {
   inherits: false;
   initial-value: var(--shadow);
-  syntax: "<missing>";
+  syntax: '<missing>';
 }
 
 @property --mds-tab-scroll-behavior {
   inherits: false;
   initial-value: smooth;
-  syntax: "<missing>";
+  syntax: '<missing>';
 }
 
 @property --mds-tab-scroll-scrollbar-margin {
   inherits: false;
   initial-value: 0;
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-tab-scroll-scrollbar-radius {
   inherits: false;
   initial-value: 0;
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-tab-scroll-scrollbar-size {
   inherits: false;
   initial-value: --spacing(200);
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-tab-scroll-scrollbar-thumb-background {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-02) 30%);
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-tab-scroll-scrollbar-track-background {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-06) 30%);
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-tab-slide-delay {
   inherits: false;
   initial-value: 0.125s;
-  syntax: "<time>";
+  syntax: '<time>';
 }
 
 @property --mds-tab-tabs-background {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-09));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-tab-tabs-gap {
   inherits: false;
   initial-value: --spacing(200);
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-tab-tabs-overflow-shadow-size {
   inherits: false;
   initial-value: --spacing(600);
-  syntax: "<length>";
+  syntax: '<length>';
 }
-
-
 
 @property --mds-tab-tabs-padding {
   inherits: false;
   initial-value: --spacing(200);
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-tab-tabs-radius {
   inherits: false;
   initial-value: var(--radius-2xl);
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-tab-tabs-wrapper-margin {
   inherits: false;
   initial-value: 0;
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-tab-tabs-wrapper-outline-opacity {
   inherits: false;
   initial-value: 0.7;
-  syntax: "<number>";
+  syntax: '<number>';
 }
 
 @property --mds-tab-tabs-wrapper-shadow-color {
   inherits: false;
   initial-value: var(--mds-tab-tabs-background);
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-tab-transition-duration {
   inherits: false;
   initial-value: 0.5s;
-  syntax: "<time>";
+  syntax: '<time>';
 }
 
 /* ❌ Not supported
@@ -239,7 +237,8 @@
   --mds-tab-tabs-background: rgb(var(--tone-neutral-09));
   --mds-tab-tabs-gap: --spacing(200);
   --mds-tab-tabs-overflow-shadow-size: --spacing(600);
-  --mds-tab-tabs-overflow-shadow: 0 0 var(--mds-tab-tabs-overflow-shadow-size) -2px rgb(0 0 0 / 0.375);
+  --mds-tab-tabs-overflow-shadow: 0 0 var(--mds-tab-tabs-overflow-shadow-size) -2px
+    rgb(0 0 0 / 0.375);
   --mds-tab-tabs-padding: --spacing(200);
   --mds-tab-tabs-radius: var(--radius-2xl);
   --mds-tab-tabs-wrapper-margin: 0;

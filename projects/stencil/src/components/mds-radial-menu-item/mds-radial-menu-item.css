@@ -8,7 +8,7 @@
 @property --mds-radial-menu-item-transition-duration {
   inherits: false;
   initial-value: var(--mds-radial-menu-transition-duration, 500ms);
-  syntax: "<time>";
+  syntax: '<time>';
 }
 
 /* ❌ Not supported
@@ -21,10 +21,15 @@
 
 :host {
   --mds-radial-menu-item-transition-duration: var(--mds-radial-menu-transition-duration, 500ms);
-  --mds-radial-menu-item-transition-timing-function: var(--mds-radial-menu-transition-timing-function, var(--ease-out-expo));
+  --mds-radial-menu-item-transition-timing-function: var(
+    --mds-radial-menu-transition-timing-function,
+    var(--ease-out-expo)
+  );
 
-  /* private */ --mds-radial-menu-item-delay: 0;
-  /* private */ --mds-radial-menu-item-index: 0;
+  /* private */
+  --mds-radial-menu-item-delay: 0;
+  /* private */
+  --mds-radial-menu-item-index: 0;
 
   display: inline-flex;
   inset: 0;
@@ -51,6 +56,4 @@
 
   min-width: max-content;
   width: min-content;
-
 }
-

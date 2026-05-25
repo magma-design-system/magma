@@ -6,7 +6,10 @@
 @media (prefers-contrast: more) {
   :host-context(:root.pref-contrast-system),
   :host-context(:root:not([data-magma-pref])) {
-    --mds-accordion-item-border-color: var(--mds-accordion-border-color, rgb(var(--tone-neutral-01)));
+    --mds-accordion-item-border-color: var(
+      --mds-accordion-border-color,
+      rgb(var(--tone-neutral-01))
+    );
     --mds-accordion-item-color: var(--mds-accordion-color, rgb(var(--tone-neutral-01)));
   }
 }

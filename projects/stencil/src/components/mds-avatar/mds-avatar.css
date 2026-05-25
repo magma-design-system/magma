@@ -11,31 +11,31 @@
 @property --mds-avatar-background-color-pending {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-08));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-avatar-background-color {
   inherits: false;
   initial-value: rgb(var(--variant-primary-05));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-avatar-color {
   inherits: false;
   initial-value: rgb(var(--variant-primary-10));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-avatar-radius {
   inherits: false;
   initial-value: 1000px;
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-avatar-initials-padding {
   inherits: false;
   initial-value: 20%;
-  syntax: "<percentage>";
+  syntax: '<percentage>';
 }
 
 :host {
@@ -109,10 +109,8 @@
   width: 100%;
 }
 
-
 .initials-text {
-  @apply
-    font-bold
+  @apply font-bold
     font-title;
 
   align-items: center;

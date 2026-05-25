@@ -11,37 +11,37 @@
 @property --mds-note-background {
   inherits: false;
   initial-value: rgb(var(--label-yellow-10));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-note-color {
   inherits: false;
   initial-value: rgb(var(--label-yellow-02));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-note-fold-color {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-10));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-note-fold-size {
   inherits: false;
   initial-value: 40px;
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-note-selection-background {
   inherits: false;
   initial-value: var(--magma-selection-background, rgb(var(--label-yellow-09)));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-note-selection-color {
   inherits: false;
   initial-value: var(--magma-selection-color, rgb(var(--label-yellow-02)));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 :host {

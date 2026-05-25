@@ -11,11 +11,8 @@ export const floatingUIPlacementDictionary = [
   'top',
   'top-end',
   'top-start',
-] as const
-export type FloatingUIPlacement = (typeof floatingUIPlacementDictionary)[number]
+] as const;
+export type FloatingUIPlacement = (typeof floatingUIPlacementDictionary)[number];
 
-export const floatingUIStrategyDictionary = [
-  'absolute',
-  'fixed',
-] as const
-export type FloatingUIStrategy = (typeof floatingUIStrategyDictionary)[number]
+export const floatingUIStrategyDictionary = ['absolute', 'fixed'] as const;
+export type FloatingUIStrategy = (typeof floatingUIStrategyDictionary)[number];

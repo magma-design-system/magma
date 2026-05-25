@@ -1,4 +1,3 @@
-
 @import './css/mds-table-body-fouc.css';
 
 /**
@@ -12,31 +11,31 @@
 @property --mds-table-body-background-hover {
   inherits: false;
   initial-value: var(--mds-table-background-alt, rgb(var(--tone-neutral-10)));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-table-body-background {
   inherits: false;
   initial-value: var(--mds-table-background, rgb(var(--tone-neutral)));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-table-body-background-alt {
   inherits: false;
   initial-value: var(--mds-table-body-background-hover);
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-table-body-color-alt {
   inherits: false;
   initial-value: var(--mds-table-color-alt, rgb(var(--tone-neutral-05)));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-table-body-color {
   inherits: false;
   initial-value: var(--mds-table-color, rgb(var(--tone-neutral-02)));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 :host {
@@ -49,8 +48,7 @@
   /* internal */
   --mds-table-row-color: var(--mds-table-body-color);
 
-  @apply
-    duration-200
+  @apply duration-200
     ease-out;
 
   background-color: var(--mds-table-body-background);

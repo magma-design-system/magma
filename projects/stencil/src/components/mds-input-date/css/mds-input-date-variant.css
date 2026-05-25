@@ -8,57 +8,57 @@
   --mds-input-date-variant-color-rgb: var(--variant-primary-04);
 }
 
-:host([variant="ai"]) {
+:host([variant='ai']) {
   --mds-input-date-icon-color: rgb(var(--variant-ai-04));
   --mds-input-tip-background: rgb(var(--variant-ai-05));
   --mds-input-date-variant-color-rgb: 0 0 0;
 }
 
-:host([variant="ai"]:focus) {
+:host([variant='ai']:focus) {
   --mds-input-date-icon-color: rgb(var(--variant-ai-05));
   --mds-input-date-variant-color-rgb: var(--variant-ai-04);
 }
 
-:host([variant="info"]) {
+:host([variant='info']) {
   --mds-input-date-icon-color: rgb(var(--status-info-04));
   --mds-input-tip-background: rgb(var(--status-info-05));
   --mds-input-date-variant-color-rgb: 0 0 0;
 }
 
-:host([variant="info"]:focus) {
+:host([variant='info']:focus) {
   --mds-input-date-icon-color: rgb(var(--status-info-05));
   --mds-input-date-variant-color-rgb: var(--status-info-04);
 }
 
-:host([variant="success"]) {
+:host([variant='success']) {
   --mds-input-date-icon-color: rgb(var(--status-success-04));
   --mds-input-tip-background: rgb(var(--status-success-05));
   --mds-input-date-variant-color-rgb: 0 0 0;
 }
 
-:host([variant="success"]:focus) {
+:host([variant='success']:focus) {
   --mds-input-date-icon-color: rgb(var(--status-success-05));
   --mds-input-date-variant-color-rgb: var(--status-success-04);
 }
 
-:host([variant="warning"]) {
+:host([variant='warning']) {
   --mds-input-date-icon-color: rgb(var(--status-warning-04));
   --mds-input-tip-background: rgb(var(--status-warning-05));
   --mds-input-date-variant-color-rgb: 0 0 0;
 }
 
-:host([variant="warning"]:focus) {
+:host([variant='warning']:focus) {
   --mds-input-date-icon-color: rgb(var(--status-warning-05));
   --mds-input-date-variant-color-rgb: var(--status-warning-04);
 }
 
-:host([variant="error"]) {
+:host([variant='error']) {
   --mds-input-date-icon-color: rgb(var(--status-error-04));
   --mds-input-tip-background: rgb(var(--status-error-05));
   --mds-input-date-variant-color-rgb: 0 0 0;
 }
 
-:host([variant="error"]:focus) {
+:host([variant='error']:focus) {
   --mds-input-date-icon-color: rgb(var(--status-error-05));
   --mds-input-date-variant-color-rgb: var(--status-error-04);
 }

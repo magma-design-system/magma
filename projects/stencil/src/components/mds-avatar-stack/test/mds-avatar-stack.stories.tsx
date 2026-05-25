@@ -1,5 +1,5 @@
-import { h } from '@stencil/core'
-import { sizesDictionary } from '../meta/dictionary'
+import { h } from '@stencil/core';
+import { sizesDictionary } from '../meta/dictionary';
 
 export default {
   title: 'UI / Avatar stack',
@@ -15,9 +15,9 @@ export default {
       description: '',
     },
   },
-}
+};
 
-const Template = args => (
+const Template = (args) => (
   <mds-avatar-stack {...args}>
     <mds-avatar-stack-item initials="mr" tone="weak"></mds-avatar-stack-item>
     <mds-avatar-stack-item initials="ac" tone="weak"></mds-avatar-stack-item>
@@ -25,11 +25,11 @@ const Template = args => (
     <mds-avatar-stack-item initials="mt" tone="weak"></mds-avatar-stack-item>
     <mds-avatar-stack-item initials="jb" tone="weak"></mds-avatar-stack-item>
   </mds-avatar-stack>
-)
+);
 
 export const Default = {
   render: Template,
-}
+};
 
 export const Size = {
   render: Template,
@@ -38,7 +38,7 @@ export const Size = {
     size: 'lg',
     total: 8,
   },
-}
+};
 
 export const Total = {
   render: Template,
@@ -46,4 +46,4 @@ export const Total = {
   args: {
     total: 8,
   },
-}
+};

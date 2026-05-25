@@ -1,23 +1,23 @@
-:host([direction="vertical"]) {
+:host([direction='vertical']) {
   grid-template-columns: var(--mds-tab-direction-vertical-columns);
   grid-template-rows: 1fr;
 }
 
-:host([direction="vertical"]) .tabs {
+:host([direction='vertical']) .tabs {
   align-self: start;
   flex-direction: column;
 }
 
-:host([direction="vertical"]) .tabs-wrapper {
+:host([direction='vertical']) .tabs-wrapper {
   align-self: start;
   max-width: none;
 }
 
-:host([direction="vertical"][fill]) .tabs-wrapper,
-:host([direction="vertical"][fill]) .tabs {
+:host([direction='vertical'][fill]) .tabs-wrapper,
+:host([direction='vertical'][fill]) .tabs {
   align-self: auto;
 }
 
-:host([direction="vertical"])::slotted(mds-tab-item) {
+:host([direction='vertical'])::slotted(mds-tab-item) {
   width: 100%;
 }

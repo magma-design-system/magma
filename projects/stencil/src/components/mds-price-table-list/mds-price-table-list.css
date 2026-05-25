@@ -7,14 +7,13 @@
 @property --mds-price-table-list-separator-color {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-03) / 0.5);
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 :host {
   --mds-price-table-list-separator-color: rgb(var(--tone-neutral-03) / 0.5);
 
-  @apply
-    duration-200
+  @apply duration-200
     ease-in-out
     gap-600
     p-600
@@ -25,16 +24,13 @@
   transition-property: background-color, color;
 }
 
-
 .separator {
-  @apply
-    duration-200
+  @apply duration-200
     ease-in-out;
 
   background-color: var(--mds-price-table-list-separator-color);
   transition-property: background-color;
 }
-
 
 .header {
   display: grid;

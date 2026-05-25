@@ -1,5 +1,5 @@
 /* @import "tailwindcss"; */
 
 /* @import "./dark-mode.css"; */
-@import "@maggioli-design-system/design-tokens/dist/css/tailwind-theme-color.css" layer(theme);
-@import "@maggioli-design-system/design-tokens/dist/css/tailwind-theme-typography.css";
+@import '@maggioli-design-system/design-tokens/dist/css/tailwind-theme-color.css' layer(theme);
+@import '@maggioli-design-system/design-tokens/dist/css/tailwind-theme-typography.css';

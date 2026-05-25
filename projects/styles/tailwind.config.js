@@ -1,9 +1,12 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 /** @type {import('tailwindcss').Config} */
 
-const { palette } = require('@maggioli-design-system/design-tokens')
-const { fontFamily } = require('@maggioli-design-system/design-tokens/dist/js/tailwind-font-family.js')
-const fontSizeMagma = require('@maggioli-design-system/design-tokens/dist/js/tailwind-font-size.js').fontSize
+const { palette } = require('@maggioli-design-system/design-tokens');
+const {
+  fontFamily,
+} = require('@maggioli-design-system/design-tokens/dist/js/tailwind-font-family.js');
+const fontSizeMagma =
+  require('@maggioli-design-system/design-tokens/dist/js/tailwind-font-size.js').fontSize;
 const {
   aspectRatio,
   border,
@@ -17,16 +20,14 @@ const {
   size,
   timingFunction,
   transitionProperty,
-} = require('@maggioli-design-system/design-tokens/dist/js/tailwind-props.js').properties
+} = require('@maggioli-design-system/design-tokens/dist/js/tailwind-props.js').properties;
 
-const { screens } = require('@maggioli-design-system/design-tokens/dist/js/tailwind-screens.js')
-const { leading } = require('@maggioli-design-system/design-tokens/dist/js/tailwind-leading.js')
+const { screens } = require('@maggioli-design-system/design-tokens/dist/js/tailwind-screens.js');
+const { leading } = require('@maggioli-design-system/design-tokens/dist/js/tailwind-leading.js');
 
 module.exports = {
   important: true,
-  content: [
-    './src/**/*.{js,jsx}',
-  ],
+  content: ['./src/**/*.{js,jsx}'],
   darkMode: [
     'variant',
     [
@@ -123,4 +124,4 @@ module.exports = {
       },
     },
   },
-}
+};

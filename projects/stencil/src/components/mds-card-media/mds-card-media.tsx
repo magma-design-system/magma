@@ -1,4 +1,4 @@
-import { Component, Host, h } from '@stencil/core'
+import { Component, Host, h } from '@stencil/core';
 
 /**
  * @slot default - Add `HTML elements` or `components` to this slot, it is **recommended** to add `mds-img` element or other component which represents media contents.
@@ -11,16 +11,14 @@ import { Component, Host, h } from '@stencil/core'
   shadow: true,
 })
 export class MdsCardMedia {
-
-  render () {
+  render() {
     return (
       <Host slot="media">
         <div class="content" part="content">
-          <slot name="content"/>
+          <slot name="content" />
         </div>
-        <slot/>
+        <slot />
       </Host>
-    )
+    );
   }
-
 }

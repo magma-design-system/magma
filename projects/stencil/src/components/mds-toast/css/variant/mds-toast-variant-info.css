@@ -1,16 +1,12 @@
-
-
-
-
-:host([variant="info"] ),
-:host([variant="info"][tone="strong"]) {
+:host([variant='info']),
+:host([variant='info'][tone='strong']) {
   --mds-toast-background: rgb(var(--status-info-09));
   --mds-toast-color: rgb(var(--status-info-02));
   --mds-toast-shadow: var(--shadow-lg-sharp);
   --mds-toast-icon-color: rgb(var(--status-info-05));
 }
 
-:host([variant="info"][tone="weak"]) {
+:host([variant='info'][tone='weak']) {
   --mds-toast-background: rgb(var(--status-info-10));
   --mds-toast-color: rgb(var(--status-info-03));
   --mds-toast-shadow: var(--shadow-sm-sharp);

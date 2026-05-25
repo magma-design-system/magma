@@ -1,7 +1,7 @@
-import { h } from '@stencil/core'
+import { h } from '@stencil/core';
 
-import { MdsInputOtpInterface } from '../mds-input-otp'
-import { useState } from 'react'
+import { MdsInputOtpInterface } from '../mds-input-otp';
+import { useState } from 'react';
 
 export default {
   title: 'Form / OTP',
@@ -12,19 +12,16 @@ export default {
     },
     autosubmit: {
       type: { name: 'boolean' },
-      description:
-        'Automatically submits the form when the OTP code is complete',
+      description: 'Automatically submits the form when the OTP code is complete',
     },
   },
-}
+};
 
-const Template = (args: MdsInputOtpInterface) => (
-  <mds-input-otp {...args}></mds-input-otp>
-)
+const Template = (args: MdsInputOtpInterface) => <mds-input-otp {...args}></mds-input-otp>;
 
 export const Default = {
   render: Template,
-}
+};
 
 const FormIntegrationTemplate = (args: MdsInputOtpInterface) => {
   return (
@@ -34,16 +31,12 @@ const FormIntegrationTemplate = (args: MdsInputOtpInterface) => {
         id="mds-icon-fi"
         name="mds-icon-fi"
         onSubmit={(e: SubmitEvent) => {
-          e.preventDefault()
-          console.info('Submitted', e)
-          const form = document.querySelector('form') as HTMLFormElement
-          const span = document.querySelector(
-            'span.input-value',
-          ) as HTMLSpanElement
+          e.preventDefault();
+          console.info('Submitted', e);
+          const form = document.querySelector('form') as HTMLFormElement;
+          const span = document.querySelector('span.input-value') as HTMLSpanElement;
           span.innerText =
-            form['mds-input-otp'].value !== ''
-              ? form['mds-input-otp'].value
-              : 'Empty'
+            form['mds-input-otp'].value !== '' ? form['mds-input-otp'].value : 'Empty';
         }}
       >
         <mds-input-otp {...args}></mds-input-otp>
@@ -51,7 +44,7 @@ const FormIntegrationTemplate = (args: MdsInputOtpInterface) => {
           class="w-min"
           type="submit"
           onClick={(e: MouseEvent) => {
-            e.preventDefault()
+            e.preventDefault();
           }}
           disabled={args.autosubmit}
         >
@@ -65,14 +58,14 @@ const FormIntegrationTemplate = (args: MdsInputOtpInterface) => {
         </mds-text>
       </form>
     </div>
-  )
-}
+  );
+};
 
 const FormAutoSubmitTemplate = (args: MdsInputOtpInterface) => {
-  const [isDisabled, setDisabled] = useState(true)
-  const [isAwaiting, setAwait] = useState(false)
-  const [isSubmitted, setSubmitted] = useState(false)
-  const [buttonLabel, setLabel] = useState('Submit OTP')
+  const [isDisabled, setDisabled] = useState(true);
+  const [isAwaiting, setAwait] = useState(false);
+  const [isSubmitted, setSubmitted] = useState(false);
+  const [buttonLabel, setLabel] = useState('Submit OTP');
   return (
     <div class="grid gap-600">
       <form
@@ -80,23 +73,19 @@ const FormAutoSubmitTemplate = (args: MdsInputOtpInterface) => {
         id="mds-icon-fi"
         name="mds-icon-fi"
         onSubmit={(e: SubmitEvent) => {
-          e.preventDefault()
-          setAwait(true)
-          setLabel('Submitting...')
-          setDisabled(false)
+          e.preventDefault();
+          setAwait(true);
+          setLabel('Submitting...');
+          setDisabled(false);
           setTimeout(() => {
-            setSubmitted(true)
-            setAwait(false)
-            setLabel('Submitted successfully')
-          }, 2000)
-          const form = document.querySelector('form') as HTMLFormElement
-          const span = document.querySelector(
-            'span.input-value',
-          ) as HTMLSpanElement
+            setSubmitted(true);
+            setAwait(false);
+            setLabel('Submitted successfully');
+          }, 2000);
+          const form = document.querySelector('form') as HTMLFormElement;
+          const span = document.querySelector('span.input-value') as HTMLSpanElement;
           span.innerText =
-            form['mds-input-otp'].value !== ''
-              ? form['mds-input-otp'].value
-              : 'Empty'
+            form['mds-input-otp'].value !== '' ? form['mds-input-otp'].value : 'Empty';
         }}
       >
         <mds-input-otp {...args} class="justify-center"></mds-input-otp>
@@ -108,7 +97,7 @@ const FormAutoSubmitTemplate = (args: MdsInputOtpInterface) => {
           size="lg"
           type="submit"
           onClick={(e: MouseEvent) => {
-            e.preventDefault()
+            e.preventDefault();
           }}
         >
           {buttonLabel}
@@ -121,8 +110,8 @@ const FormAutoSubmitTemplate = (args: MdsInputOtpInterface) => {
         </mds-text>
       </form>
     </div>
-  )
-}
+  );
+};
 
 export const FormIntegration = {
   render: FormIntegrationTemplate,
@@ -131,7 +120,7 @@ export const FormIntegration = {
     name: 'mds-input-otp',
     autosubmit: false,
   },
-}
+};
 
 export const AutoSubmit = {
   render: FormAutoSubmitTemplate,
@@ -140,4 +129,4 @@ export const AutoSubmit = {
     name: 'mds-input-otp',
     autosubmit: true,
   },
-}
+};

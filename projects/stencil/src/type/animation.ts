@@ -1,6 +1,3 @@
-export const horizontalActionsAnimationDictionary = [
-  'fade',
-  'slide',
-] as const
+export const horizontalActionsAnimationDictionary = ['fade', 'slide'] as const;
 
-export type HorizontalActionsAnimationType = (typeof horizontalActionsAnimationDictionary)[number]
+export type HorizontalActionsAnimationType = (typeof horizontalActionsAnimationDictionary)[number];

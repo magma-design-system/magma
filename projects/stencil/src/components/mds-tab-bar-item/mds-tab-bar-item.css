@@ -10,25 +10,25 @@
 @property --mds-tab-bar-item-background {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-10));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-tab-bar-item-background-selected {
   inherits: false;
   initial-value: transparent;
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-tab-bar-item-color {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-04));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-tab-bar-item-color-selected {
   inherits: false;
   initial-value: rgb(var(--variant-primary-03));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 :host {
@@ -37,8 +37,7 @@
   --mds-tab-bar-item-color: rgb(var(--tone-neutral-04));
   --mds-tab-bar-item-color-selected: rgb(var(--variant-primary-03));
 
-  @apply
-    duration-200
+  @apply duration-200
     ease-in-out
     gap-100
     p-200;
@@ -57,7 +56,7 @@
   transition-property: color, background-color, fill;
 }
 
-:host([selected]:not([selected="false"])) {
+:host([selected]:not([selected='false'])) {
   background-color: var(--mds-tab-bar-item-background-selected);
   color: var(--mds-tab-bar-item-color-selected);
   fill: var(--mds-tab-bar-item-color-selected);

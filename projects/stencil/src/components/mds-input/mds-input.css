@@ -22,85 +22,85 @@
 @property --mds-input-background {
   inherits: false;
   initial-value: rgb(var(--tone-neutral));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-input-placeholder-default-color {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-06));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-input-placeholder-focus-color {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-07));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-input-placeholder-hover-color {
   inherits: false;
   initial-value: var(--mds-input-placeholder-default-color);
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-input-tip-background {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-03));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-input-icon-color {
   inherits: false;
   initial-value: var(--mds-input-variant-color-rgb);
-  syntax: "<integer>+";
+  syntax: '<integer>+';
 }
 
 @property --mds-input-variant-color-rgb {
   inherits: false;
   initial-value: 0 0 0;
-  syntax: "<integer>+";
+  syntax: '<integer>+';
 }
 
 @property --mds-input-textarea-resize {
   inherits: false;
   initial-value: none;
-  syntax: "none | vertical";
+  syntax: 'none | vertical';
 }
 
 @property --mds-input-textarea-max-height {
   inherits: false;
   initial-value: --spacing(6400);
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-input-textarea-min-height {
   inherits: false;
   initial-value: --spacing(2400);
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-input-tip-horizontal-offset-focused {
   inherits: false;
   initial-value: --spacing(100);
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-input-tip-horizontal-offset {
   inherits: false;
   initial-value: --spacing(100);
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-input-tip-vertical-offset {
   inherits: false;
   initial-value: --spacing(100);
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-input-textarea-field-sizing {
   inherits: false;
   initial-value: content;
-  syntax: "content | fixed";
+  syntax: 'content | fixed';
 }
 
 /* ❌ Not supported: box-shadow cannot be expressed with @property syntax
@@ -126,7 +126,9 @@
   --mds-input-placeholder-focus-color: rgb(var(--tone-neutral-07));
   --mds-input-placeholder-hover-color: var(--mds-input-placeholder-default-color);
   --mds-input-ring: 0 0 0 1px rgb(var(--mds-input-variant-color-rgb) / 0.1);
-  --mds-input-shadow: 0 1px 3px 0 rgb(var(--mds-input-variant-color-rgb) / 0.1), 0 1px 2px 0 rgb(var(--mds-input-variant-color-rgb) / 0.06);
+  --mds-input-shadow:
+    0 1px 3px 0 rgb(var(--mds-input-variant-color-rgb) / 0.1),
+    0 1px 2px 0 rgb(var(--mds-input-variant-color-rgb) / 0.06);
   --mds-input-textarea-field-sizing: content;
   --mds-input-textarea-resize: none;
   --mds-input-textarea-max-height: --spacing(6400);
@@ -152,11 +154,11 @@
   @apply text-info-detail;
 }
 
-:host([typography="detail"]) .input {
+:host([typography='detail']) .input {
   @apply text-info-detail;
 }
 
-:host([typography="snippet"]) .input {
+:host([typography='snippet']) .input {
   @apply text-code-snippet;
 }
 
@@ -177,7 +179,8 @@
   padding: --spacing(300) --spacing(400);
   text-overflow: ellipsis;
   transition-duration: var(--duration-300);
-  transition-property: background-color, border-color, box-shadow, color, fill, margin, opacity, padding, transform;
+  transition-property:
+    background-color, border-color, box-shadow, color, fill, margin, opacity, padding, transform;
   transition-timing-function: var(--ease-out-expo);
   width: 100%;
 }
@@ -225,7 +228,8 @@
   @apply outline-hidden;
 
   --mds-input-ring: 0 0 0 3px rgb(var(--mds-input-variant-color-rgb) / 1);
-  --mds-input-shadow: 0 4px 6px 3px rgb(var(--mds-input-variant-color-rgb) / 0.1),
+  --mds-input-shadow:
+    0 4px 6px 3px rgb(var(--mds-input-variant-color-rgb) / 0.1),
     0 2px 4px -1px rgb(var(--mds-input-variant-color-rgb) / 0.06);
 }
 
@@ -342,8 +346,7 @@
   @apply animate-pulse;
 }
 
-:host([type="number"]) .input {
-
+:host([type='number']) .input {
   /* required to avoid input number buttons on firefox go be shown always */
 
   /* stylelint-disable-next-line property-no-vendor-prefix */
@@ -351,30 +354,30 @@
   padding-right: --spacing(800);
 }
 
-:host([type="number"][controls-layout="horizontal"]) .input {
+:host([type='number'][controls-layout='horizontal']) .input {
   padding-left: --spacing(1400);
   padding-right: --spacing(1400);
   text-align: center;
 }
 
-:host([type="number"][controls-layout="horizontal"][icon]) .input {
+:host([type='number'][controls-layout='horizontal'][icon]) .input {
   padding-left: --spacing(2400);
   text-align: left;
 }
 
-:host([type="number"][controls-layout="horizontal"]) .icon {
+:host([type='number'][controls-layout='horizontal']) .icon {
   left: --spacing(1500);
 }
 
-:host([type="password"]) .input {
+:host([type='password']) .input {
   padding-right: --spacing(1000);
 }
 
-:host([type="password"]) .input[type="text"]:not(:placeholder-shown) {
+:host([type='password']) .input[type='text']:not(:placeholder-shown) {
   @apply text-code-snippet;
 }
 
-:host([type="cf"]) .input {
+:host([type='cf']) .input {
   @apply text-code-snippet;
 
   text-transform: uppercase;

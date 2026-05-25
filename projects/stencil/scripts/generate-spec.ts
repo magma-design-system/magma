@@ -1,12 +1,19 @@
-import chalk from 'chalk'
-import { existsSync } from 'fs'
-import { readFile, writeFile } from 'fs/promises'
-import { join } from 'path'
-import { JsonDocsComponent, JsonDocsProp, JsonDocsEvent, JsonDocsMethod, JsonDocsStyle, JsonDocsSlot } from '@stencil/core/internal'
-import { COMPONENTS_DIR } from './meta'
-import { logFileSavedTo } from '../../../scripts/log'
+import chalk from 'chalk';
+import { existsSync } from 'fs';
+import { readFile, writeFile } from 'fs/promises';
+import { join } from 'path';
+import {
+  JsonDocsComponent,
+  JsonDocsProp,
+  JsonDocsEvent,
+  JsonDocsMethod,
+  JsonDocsStyle,
+  JsonDocsSlot,
+} from '@stencil/core/internal';
+import { COMPONENTS_DIR } from './meta';
+import { logFileSavedTo } from '../../../scripts/log';
 
-const SPEC_FILENAME = 'SPEC.md'
+const SPEC_FILENAME = 'SPEC.md';
 
 /**
  * Conventional usage/ keys read from component documentation.
@@ -21,12 +28,11 @@ const SPEC_FILENAME = 'SPEC.md'
  * Stencil reads these files at build time and injects them into documentation.json
  * under the component's "usage" object. This script reads them from there.
  */
-const USAGE_DESCRIPTION_KEY = 'description'
-const USAGE_PATTERNS_KEY = 'patterns'
-const USAGE_ANTIPATTERNS_KEY = 'antipatterns'
+const USAGE_DESCRIPTION_KEY = 'description';
+const USAGE_PATTERNS_KEY = 'patterns';
+const USAGE_ANTIPATTERNS_KEY = 'antipatterns';
 
-const TODO = (label: string): string =>
-  `> ✏️ **TODO**: ${label}\n`
+const TODO = (label: string): string => `> ✏️ **TODO**: ${label}\n`;
 
 /**
  * Returns true if a SPEC.md already exists and contains the
@@ -34,107 +40,83 @@ const TODO = (label: string): string =>
  * should not be overwritten by this script.
  */
 const isManualSpec = async (specPath: string): Promise<boolean> => {
-  if (!existsSync(specPath)) return false
-  const content = await readFile(specPath, { encoding: 'utf8' })
-  return content.includes('<!-- spec:manual -->')
-}
+  if (!existsSync(specPath)) return false;
+  const content = await readFile(specPath, { encoding: 'utf8' });
+  return content.includes('<!-- spec:manual -->');
+};
 
-const formatPropType = (prop: JsonDocsProp): string =>
-  prop.type.replace(/\s*\|\s*/g, ' | ')
+const formatPropType = (prop: JsonDocsProp): string => prop.type.replace(/\s*\|\s*/g, ' | ');
 
 const renderPropsTable = (props: JsonDocsProp[]): string => {
-  if (!props.length) return '_No props._\n'
-  const rows = props.map(p => {
-    const defaultVal = p.default !== undefined ? `\`${p.default}\`` : '—'
-    const required = p.required ? '✓' : ''
-    return `| \`${p.name}\` | \`${formatPropType(p)}\` | ${defaultVal} | ${required} | ${p.docs ?? ''} |`
-  })
-  return [
-    '| Prop | Type | Default | Required | Description |',
-    '|---|---|---|---|---|',
-    ...rows,
-  ].join('\n') + '\n'
-}
+  if (!props.length) return '_No props._\n';
+  const rows = props.map((p) => {
+    const defaultVal = p.default !== undefined ? `\`${p.default}\`` : '—';
+    const required = p.required ? '✓' : '';
+    return `| \`${p.name}\` | \`${formatPropType(p)}\` | ${defaultVal} | ${required} | ${p.docs ?? ''} |`;
+  });
+  return (
+    ['| Prop | Type | Default | Required | Description |', '|---|---|---|---|---|', ...rows].join(
+      '\n',
+    ) + '\n'
+  );
+};
 
 const renderEventsTable = (events: JsonDocsEvent[]): string => {
-  if (!events.length) return '_No events._\n'
-  const rows = events.map(e =>
-    `| \`${e.event}\` | \`${e.detail}\` | ${e.docs ?? ''} |`,
-  )
-  return [
-    '| Event | Payload | Description |',
-    '|---|---|---|',
-    ...rows,
-  ].join('\n') + '\n'
-}
+  if (!events.length) return '_No events._\n';
+  const rows = events.map((e) => `| \`${e.event}\` | \`${e.detail}\` | ${e.docs ?? ''} |`);
+  return ['| Event | Payload | Description |', '|---|---|---|', ...rows].join('\n') + '\n';
+};
 
 const renderMethodsTable = (methods: JsonDocsMethod[]): string => {
-  if (!methods.length) return '_No public methods._\n'
-  const rows = methods.map(m =>
-    `| \`${m.name}(${m.signature})\` | ${m.docs ?? ''} |`,
-  )
-  return [
-    '| Method | Description |',
-    '|---|---|',
-    ...rows,
-  ].join('\n') + '\n'
-}
+  if (!methods.length) return '_No public methods._\n';
+  const rows = methods.map((m) => `| \`${m.name}(${m.signature})\` | ${m.docs ?? ''} |`);
+  return ['| Method | Description |', '|---|---|', ...rows].join('\n') + '\n';
+};
 
 const renderStylesTable = (styles: JsonDocsStyle[]): string => {
-  if (!styles.length) return '_No CSS custom properties._\n'
-  const rows = styles.map(s =>
-    `| \`${s.name}\` | ${s.docs ?? ''} |`,
-  )
-  return [
-    '| Property | Description |',
-    '|---|---|',
-    ...rows,
-  ].join('\n') + '\n'
-}
+  if (!styles.length) return '_No CSS custom properties._\n';
+  const rows = styles.map((s) => `| \`${s.name}\` | ${s.docs ?? ''} |`);
+  return ['| Property | Description |', '|---|---|', ...rows].join('\n') + '\n';
+};
 
 const renderSlotsTable = (slots: JsonDocsSlot[]): string => {
-  if (!slots.length) return '_No slots._\n'
-  const rows = slots.map(s =>
-    `| \`"${s.name || 'default'}"\` | ${s.docs ?? ''} |`,
-  )
-  return [
-    '| Slot | Description |',
-    '|---|---|',
-    ...rows,
-  ].join('\n') + '\n'
-}
+  if (!slots.length) return '_No slots._\n';
+  const rows = slots.map((s) => `| \`"${s.name || 'default'}"\` | ${s.docs ?? ''} |`);
+  return ['| Slot | Description |', '|---|---|', ...rows].join('\n') + '\n';
+};
 
 const renderDepsSection = (component: JsonDocsComponent): string => {
-  const lines: string[] = []
+  const lines: string[] = [];
   if (component.dependencies?.length) {
-    lines.push('**Depends on:**')
-    component.dependencies.forEach(d => lines.push(`- \`${d}\``))
-    lines.push('')
+    lines.push('**Depends on:**');
+    component.dependencies.forEach((d) => lines.push(`- \`${d}\``));
+    lines.push('');
   }
   if (component.dependents?.length) {
-    lines.push('**Used by:**')
-    component.dependents.forEach(d => lines.push(`- \`${d}\``))
-    lines.push('')
+    lines.push('**Used by:**');
+    component.dependents.forEach((d) => lines.push(`- \`${d}\``));
+    lines.push('');
   }
-  if (!lines.length) return '_No dependencies._\n'
-  return lines.join('\n')
-}
+  if (!lines.length) return '_No dependencies._\n';
+  return lines.join('\n');
+};
 
 const usageValue = (usage: Record<string, string>, key: string): string | undefined => {
-  const val = usage?.[key]
-  return val && val.trim().length > 0 ? val.trim() : undefined
-}
+  const val = usage?.[key];
+  return val && val.trim().length > 0 ? val.trim() : undefined;
+};
 
 const generateSpec = (component: JsonDocsComponent): string => {
-  const { tag, encapsulation, props, events, methods, styles, slots, usage } = component
+  const { tag, encapsulation, props, events, methods, styles, slots, usage } = component;
 
-  const description = usageValue(usage, USAGE_DESCRIPTION_KEY)
-  const patterns = usageValue(usage, USAGE_PATTERNS_KEY)
-  const antipatterns = usageValue(usage, USAGE_ANTIPATTERNS_KEY)
+  const description = usageValue(usage, USAGE_DESCRIPTION_KEY);
+  const patterns = usageValue(usage, USAGE_PATTERNS_KEY);
+  const antipatterns = usageValue(usage, USAGE_ANTIPATTERNS_KEY);
 
-  const encapsulationNote = encapsulation === 'shadow'
-    ? '`shadow` — styles are fully encapsulated. Use CSS custom properties to customise from outside.'
-    : '`scoped` — participates natively in HTML form submission.'
+  const encapsulationNote =
+    encapsulation === 'shadow'
+      ? '`shadow` — styles are fully encapsulated. Use CSS custom properties to customise from outside.'
+      : '`scoped` — participates natively in HTML form submission.';
 
   return `# ${tag} SPEC.md
 
@@ -146,7 +128,7 @@ const generateSpec = (component: JsonDocsComponent): string => {
 
 ## Purpose
 
-${description ?? TODO('Describe the component\'s role and when to use it. Add a `usage/description.md` file in the component folder to populate this automatically.')}
+${description ?? TODO("Describe the component's role and when to use it. Add a `usage/description.md` file in the component folder to populate this automatically.")}
 
 ## Encapsulation
 
@@ -187,54 +169,58 @@ ${renderDepsSection(component)}
 ## Related components
 
 ${TODO('List components commonly used alongside this one, or that should be preferred in specific cases.')}
-`
-}
+`;
+};
 
 const main = async (): Promise<void> => {
-  const docsPath = join(COMPONENTS_DIR, '..', '..', 'dist', 'documentation.json')
+  const docsPath = join(COMPONENTS_DIR, '..', '..', 'dist', 'documentation.json');
 
-  let jsonDocs: { components: JsonDocsComponent[] }
+  let jsonDocs: { components: JsonDocsComponent[] };
   try {
-    const raw = await readFile(docsPath, { encoding: 'utf8' })
-    jsonDocs = JSON.parse(raw)
+    const raw = await readFile(docsPath, { encoding: 'utf8' });
+    jsonDocs = JSON.parse(raw);
   } catch {
-    console.error(chalk.red(`Cannot read documentation.json at ${docsPath}`))
-    console.error(chalk.yellow('Run `nx run stencil:build` first to generate the docs.'))
-    process.exit(1)
+    console.error(chalk.red(`Cannot read documentation.json at ${docsPath}`));
+    console.error(chalk.yellow('Run `nx run stencil:build` first to generate the docs.'));
+    process.exit(1);
   }
 
-  let generated = 0
-  let skippedManual = 0
-  let skippedExists = 0
+  let generated = 0;
+  let skippedManual = 0;
+  let skippedExists = 0;
 
   for (const component of jsonDocs.components) {
-    const specPath = join(COMPONENTS_DIR, component.tag, SPEC_FILENAME)
+    const specPath = join(COMPONENTS_DIR, component.tag, SPEC_FILENAME);
 
     if (await isManualSpec(specPath)) {
-      console.info(chalk.yellow(`⏭  ${component.tag} — skipped (<!-- spec:manual --> marker found)`))
-      skippedManual += 1
-      continue
+      console.info(
+        chalk.yellow(`⏭  ${component.tag} — skipped (<!-- spec:manual --> marker found)`),
+      );
+      skippedManual += 1;
+      continue;
     }
 
     if (existsSync(specPath)) {
-      console.info(chalk.gray(`⏭  ${component.tag} — skipped (file exists, no manual marker)`))
-      skippedExists += 1
-      continue
+      console.info(chalk.gray(`⏭  ${component.tag} — skipped (file exists, no manual marker)`));
+      skippedExists += 1;
+      continue;
     }
 
-    const content = generateSpec(component)
-    await writeFile(specPath, content, { encoding: 'utf8' })
-    logFileSavedTo(SPEC_FILENAME, join(COMPONENTS_DIR, component.tag))
-    generated += 1
+    const content = generateSpec(component);
+    await writeFile(specPath, content, { encoding: 'utf8' });
+    logFileSavedTo(SPEC_FILENAME, join(COMPONENTS_DIR, component.tag));
+    generated += 1;
   }
 
-  console.info('')
-  console.info(chalk.green(`✓  Generated:          ${generated}`))
-  console.info(chalk.yellow(`⏭  Skipped (manual):   ${skippedManual}`))
-  console.info(chalk.gray(`⏭  Skipped (exists):   ${skippedExists}`))
-  console.info('')
-  console.info('Next: search for "✏️ TODO" in generated files and fill in the missing sections,')
-  console.info('or add usage/description.md, usage/patterns.md, usage/antipatterns.md to each component.')
-}
+  console.info('');
+  console.info(chalk.green(`✓  Generated:          ${generated}`));
+  console.info(chalk.yellow(`⏭  Skipped (manual):   ${skippedManual}`));
+  console.info(chalk.gray(`⏭  Skipped (exists):   ${skippedExists}`));
+  console.info('');
+  console.info('Next: search for "✏️ TODO" in generated files and fill in the missing sections,');
+  console.info(
+    'or add usage/description.md, usage/patterns.md, usage/antipatterns.md to each component.',
+  );
+};
 
-main()
+main();

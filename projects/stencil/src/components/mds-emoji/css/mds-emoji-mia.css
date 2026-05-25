@@ -8,28 +8,28 @@
 @property --mds-emoji-mia-head {
   inherits: false;
   initial-value: rgb(var(--variant-ai-08));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-emoji-mia-eyes {
   inherits: false;
   initial-value: rgb(var(--variant-ai-03));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-emoji-mia-mouth {
   inherits: false;
   initial-value: rgb(var(--variant-ai-06));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-emoji-mia-hands {
   inherits: false;
   initial-value: rgb(var(--variant-ai-06));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
-:host([name="mia"]) {
+:host([name='mia']) {
   --mds-emoji-mia-eyes-color: rgb(var(--variant-ai-03));
   --mds-emoji-mia-hands-color: rgb(var(--variant-ai-04));
   --mds-emoji-mia-head-color: rgb(var(--variant-ai-08));

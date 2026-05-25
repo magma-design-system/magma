@@ -1,5 +1,5 @@
-import { typographySmallerDictionary } from '@type/typography'
-import { h } from '@stencil/core'
+import { typographySmallerDictionary } from '@type/typography';
+import { h } from '@stencil/core';
 
 export default {
   title: 'UI / Tab Bar / Tab Bar Item',
@@ -15,9 +15,9 @@ export default {
       control: { type: 'select' },
     },
   },
-}
+};
 
-const Template = args => (
+const Template = (args) => (
   <mds-tab-bar>
     <mds-tab-bar-item {...args} icon="mdi/barley" selected>
       First Blood
@@ -35,8 +35,8 @@ const Template = args => (
       The Fifth Element
     </mds-tab-bar-item>
   </mds-tab-bar>
-)
+);
 
 export const Default = {
   render: Template,
-}
+};

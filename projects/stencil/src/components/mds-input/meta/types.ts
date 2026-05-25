@@ -12,6 +12,4 @@ export type InputFieldType =
   | 'cc'
   | 'cf'
   | 'isbn'
-  | 'piva'
-
-
+  | 'piva';

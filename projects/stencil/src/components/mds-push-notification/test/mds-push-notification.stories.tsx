@@ -1,6 +1,6 @@
-import { h } from '@stencil/core'
-import { Fragment, useState, useEffect } from 'react'
-import { NotificationItemPreviewType } from 'src/components'
+import { h } from '@stencil/core';
+import { Fragment, useState, useEffect } from 'react';
+import { NotificationItemPreviewType } from 'src/components';
 
 export default {
   title: 'UI / Push Notification',
@@ -10,7 +10,7 @@ export default {
       description: 'Specifies the subject of the component',
     },
   },
-}
+};
 interface Notification {
   message: string;
 
@@ -42,7 +42,7 @@ const exampleNotifications: Notification[] = [
     message:
       'Domani ci sei alla riunione che ha organizzato Gigetto? Ho saputo che ci sarà anche Puppo.',
   },
-]
+];
 
 const PushNotificationElement = ({ index }) => {
   return (
@@ -51,8 +51,8 @@ const PushNotificationElement = ({ index }) => {
       subject={`Notification ${index + 1}`}
       message="Sto preparando il documento che mi hai richiesto, dovrei finire in giornata, fammi sapere se hai altri aggiornamenti al riguardo così non mi perdo pezzi per la strada."
     ></mds-push-notification-item>
-  )
-}
+  );
+};
 
 type GetNotificationsProps = {
   notifications: Notification[];
@@ -71,60 +71,49 @@ const GetNotifications = ({ notifications }: GetNotificationsProps) => {
               subject={n.subject}
               message={n.message}
             >
-              <mds-button
-                slot="actions"
-                variant="primary"
-                tone="weak"
-                size="sm"
-              >
+              <mds-button slot="actions" variant="primary" tone="weak" size="sm">
                 Rispondi
               </mds-button>
             </mds-push-notification-item>
-          )
+          );
         })}
       </Fragment>
-    )
+    );
   }
-}
+};
 
-const Template = args => {
-  const [notifications, setNotifications] =
-    useState<Notification[]>(exampleNotifications)
-  const [visible, setVisible] = useState(args.visible || false)
+const Template = (args) => {
+  const [notifications, setNotifications] = useState<Notification[]>(exampleNotifications);
+  const [visible, setVisible] = useState(args.visible || false);
 
   useEffect(() => {
-    const pushNotificationsElement = document.querySelector(
-      '.mds-push-notification',
-    )
+    const pushNotificationsElement = document.querySelector('.mds-push-notification');
     if (pushNotificationsElement === null) {
-      alert('Push notifications element not found')
-      return
+      alert('Push notifications element not found');
+      return;
     }
-    pushNotificationsElement.addEventListener(
-      'mdsPushNotificationChange',
-      (e: CustomEvent) => {
-        console.info('mdsPushNotificationChange', e.detail)
-        setVisible(e.detail)
-      },
-    )
+    pushNotificationsElement.addEventListener('mdsPushNotificationChange', (e: CustomEvent) => {
+      console.info('mdsPushNotificationChange', e.detail);
+      setVisible(e.detail);
+    });
 
     pushNotificationsElement.addEventListener('mdsPushNotificationShow', () => {
-      console.info('mdsPushNotificationShow')
-      setVisible(true)
-    })
+      console.info('mdsPushNotificationShow');
+      setVisible(true);
+    });
 
     pushNotificationsElement.addEventListener('mdsPushNotificationHide', () => {
-      console.info('mdsPushNotificationHide')
-      setVisible(false)
-    })
-  }, [])
+      console.info('mdsPushNotificationHide');
+      setVisible(false);
+    });
+  }, []);
 
-  function pushN () {
+  function pushN() {
     const n: Notification = {
       message:
         'Sto preparando il documento che mi hai richiesto, dovrei finire in giornata, fammi sapere se hai altri aggiornamenti al riguardo così non mi perdo pezzi per la strada.',
-    }
-    setNotifications([...notifications, n])
+    };
+    setNotifications([...notifications, n]);
     // console.log(notifications)
   }
   return (
@@ -149,11 +138,7 @@ const Template = args => {
             Show notifications
           </mds-button>
         )}
-        <mds-button
-          class="shadow-outline-50 shadow-tone-neutral"
-          variant="success"
-          onClick={pushN}
-        >
+        <mds-button class="shadow-outline-50 shadow-tone-neutral" variant="success" onClick={pushN}>
           Carica altre...
         </mds-button>
       </div>
@@ -176,41 +161,38 @@ const Template = args => {
                     This is a section title
                   </mds-text>
                   <mds-text>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                    Accusamus iure, ratione beatae quam optio cumque rerum modi
-                    consectetur odit eligendi omnis veniam fuga non ipsam
-                    voluptatum a ut neque illum.
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus iure,
+                    ratione beatae quam optio cumque rerum modi consectetur odit eligendi omnis
+                    veniam fuga non ipsam voluptatum a ut neque illum.
                   </mds-text>
                 </div>
-              )
+              );
             })}
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 const TemplateAddNotifications = () => {
-  const [items, setItem] = useState(0)
+  const [items, setItem] = useState(0);
   return (
     <div>
-      <mds-button onClick={() => setItem(items + 1)}>
-        Add notifications
-      </mds-button>
+      <mds-button onClick={() => setItem(items + 1)}>Add notifications</mds-button>
       <mds-push-notification>
         {Array.from(Array(items).keys()).map((_item, index) => (
           <PushNotificationElement index={index} />
         ))}
       </mds-push-notification>
     </div>
-  )
-}
+  );
+};
 
-const TemplateAddMultipleNotifications = args => {
-  const [items, setItem] = useState(0)
+const TemplateAddMultipleNotifications = (args) => {
+  const [items, setItem] = useState(0);
   const addItems = () => {
-    setItem(items + 3)
-  }
+    setItem(items + 3);
+  };
   return (
     <div>
       <mds-button onClick={addItems.bind(this)}>Carica notifiche...</mds-button>
@@ -226,12 +208,12 @@ const TemplateAddMultipleNotifications = args => {
         </mds-button>
       </mds-push-notification>
     </div>
-  )
-}
+  );
+};
 
 export const Default = {
   render: Template,
-}
+};
 
 export const AddNotifications = {
   render: TemplateAddNotifications,
@@ -239,7 +221,7 @@ export const AddNotifications = {
   args: {
     visible: true,
   },
-}
+};
 
 export const AddMultipleNotifications = {
   render: TemplateAddMultipleNotifications,
@@ -247,6 +229,6 @@ export const AddMultipleNotifications = {
   args: {
     visible: true,
   },
-}
+};
 
-export const ManualNotification = Template.bind({}, { behavior: 'manual' })
+export const ManualNotification = Template.bind({}, { behavior: 'manual' });

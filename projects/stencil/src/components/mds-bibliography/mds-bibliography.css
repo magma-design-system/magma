@@ -9,19 +9,19 @@
 @property --mds-bibliography-color {
   inherits: true;
   initial-value: rgb(var(--tone-neutral-03));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-bibliography-text-decoration-hover {
   inherits: true;
   initial-value: rgb(var(--tone-neutral-02));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-bibliography-text-decoration {
   inherits: true;
   initial-value: rgb(var(--tone-neutral-06));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 :host {
@@ -33,8 +33,7 @@
 }
 
 .link {
-  @apply
-    duration-200
+  @apply duration-200
     focus-bounce;
 
   border-radius: var(--radius-lg);
@@ -50,4 +49,3 @@
 .link:focus-visible {
   @apply focus-bounce--focused;
 }
-

@@ -10,10 +10,18 @@ governing permissions and limitations under the License.
 */
 
 import chroma from 'chroma-js';
-import {colorSpaces, createScale} from './utils.js';
+import { colorSpaces, createScale } from './utils.js';
 
 class Color {
-  constructor({name, colorKeys, colorspace = 'RGB', ratios, smooth = false, output = 'HEX', saturation = 100}) {
+  constructor({
+    name,
+    colorKeys,
+    colorspace = 'RGB',
+    ratios,
+    smooth = false,
+    output = 'HEX',
+    saturation = 100,
+  }) {
     this._name = name;
     this._colorKeys = colorKeys;
     this._modifiedKeys = colorKeys;
@@ -142,8 +150,8 @@ class Color {
       colorspace: this._colorspace,
       shift: 1,
       smooth: this._smooth,
-      asFun: true
+      asFun: true,
     });
   }
 }
-export {Color};
+export { Color };

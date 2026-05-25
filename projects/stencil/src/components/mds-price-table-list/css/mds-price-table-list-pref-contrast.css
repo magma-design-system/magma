@@ -1,8 +1,8 @@
 :host-context(:root.pref-contrast-more) {
   --mds-price-table-list-separator-color: rgb(var(--tone-neutral-01) / 0.5);
 
-    box-shadow: var(--shadow-outline-50) inset;
-    color: rgb(var(--tone-neutral-01));
+  box-shadow: var(--shadow-outline-50) inset;
+  color: rgb(var(--tone-neutral-01));
 }
 
 @media (prefers-contrast: more) {

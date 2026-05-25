@@ -1,25 +1,25 @@
-:host-context(:root.pref-contrast-more.pref-theme-dark):host([tone="strong"]),
-:host-context(:root.pref-contrast-more.pref-theme-dark):host([tone="weak"]) {
+:host-context(:root.pref-contrast-more.pref-theme-dark):host([tone='strong']),
+:host-context(:root.pref-contrast-more.pref-theme-dark):host([tone='weak']) {
   box-shadow: var(--shadow-outline-strong) inset;
 }
 
 @media (prefers-contrast: more) {
-  :host-context(:root.pref-contrast-system.pref-theme-dark):host([tone="strong"]),
-  :host-context(:root.pref-contrast-system.pref-theme-dark):host([tone="weak"]) {
+  :host-context(:root.pref-contrast-system.pref-theme-dark):host([tone='strong']),
+  :host-context(:root.pref-contrast-system.pref-theme-dark):host([tone='weak']) {
     box-shadow: var(--shadow-outline-strong) inset;
   }
 }
 
 @media (prefers-color-scheme: dark) {
-  :host-context(:root.pref-contrast-more.pref-theme-system):host([tone="strong"]),
-  :host-context(:root.pref-contrast-more.pref-theme-system):host([tone="weak"]) {
+  :host-context(:root.pref-contrast-more.pref-theme-system):host([tone='strong']),
+  :host-context(:root.pref-contrast-more.pref-theme-system):host([tone='weak']) {
     box-shadow: var(--shadow-outline-strong) inset;
   }
 }
 
 @media (prefers-contrast: more) and (prefers-color-scheme: dark) {
-  :host-context(:root.pref-contrast-system.pref-theme-system):host([tone="strong"]),
-  :host-context(:root.pref-contrast-system.pref-theme-system):host([tone="weak"]) {
+  :host-context(:root.pref-contrast-system.pref-theme-system):host([tone='strong']),
+  :host-context(:root.pref-contrast-system.pref-theme-system):host([tone='weak']) {
     box-shadow: var(--shadow-outline-strong) inset;
   }
 }

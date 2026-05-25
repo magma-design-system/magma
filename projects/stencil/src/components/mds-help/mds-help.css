@@ -18,29 +18,26 @@
 @property --mds-help-tooltip-max-width {
   inherits: false;
   initial-value: 300px;
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-help-tooltip-min-width {
   inherits: false;
   initial-value: 200px;
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-help-tooltip-delay {
   inherits: false;
   initial-value: 0.25s;
-  syntax: "<time>";
+  syntax: '<time>';
 }
-
-
 
 :host {
   --mds-help-tooltip-width: fit-content;
   --mds-help-tooltip-max-width: 300px;
   --mds-help-tooltip-min-width: 200px;
   --mds-help-tooltip-delay: 0.25s;
-
 
   color: rgb(var(--tone-neutral-03));
   cursor: help;

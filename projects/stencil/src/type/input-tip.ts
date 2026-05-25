@@ -9,5 +9,5 @@ export const inputTipItemVariantDictionary = [
   'required',
   'required-success',
   'text',
-] as const
-export type InputTipItemVariantType = (typeof inputTipItemVariantDictionary)[number]
+] as const;
+export type InputTipItemVariantType = (typeof inputTipItemVariantDictionary)[number];

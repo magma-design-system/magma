@@ -1,4 +1,1 @@
-export type StrategyType =
-  | 'absolute'
-  | 'fixed'
-  | 'disabled'
+export type StrategyType = 'absolute' | 'fixed' | 'disabled';

@@ -1,23 +1,21 @@
-import { h } from '@stencil/core'
-import { iconsDictionary } from '@type/icon'
-import { themeFullVariantAvatarDictionary } from '@type/variant'
-import { toneMinimalVariantDictionary } from '@type/tone'
+import { h } from '@stencil/core';
+import { iconsDictionary } from '@type/icon';
+import { themeFullVariantAvatarDictionary } from '@type/variant';
+import { toneMinimalVariantDictionary } from '@type/tone';
 
 import {
   notificationItemPreviewDictionary,
   notificationItemDateFormatDictionary,
-} from '../meta/dictionary'
+} from '../meta/dictionary';
 
-const timePadding = 45
-let itemsCreated = 10
+const timePadding = 45;
+let itemsCreated = 10;
 
 const getDatetime = (): string => {
-  const datetime = new Date(
-    new Date().getTime() - timePadding * itemsCreated * 1000,
-  )
-  itemsCreated += 1
-  return datetime.toString()
-}
+  const datetime = new Date(new Date().getTime() - timePadding * itemsCreated * 1000);
+  itemsCreated += 1;
+  return datetime.toString();
+};
 
 export default {
   title: 'UI / Push Notification / Push Notification Item',
@@ -37,12 +35,11 @@ export default {
     deletable: {
       type: { name: 'boolean' },
       description:
-        'Specifies if the component is dismissable or not, it should be set to true by default is used with it\'s parent component `mds-push-notification-items`',
+        "Specifies if the component is dismissable or not, it should be set to true by default is used with it's parent component `mds-push-notification-items`",
     },
     icon: {
       type: { name: 'string' },
-      description:
-        'Specifies the icon to be displayed if src propery is not used',
+      description: 'Specifies the icon to be displayed if src propery is not used',
       options: iconsDictionary,
       control: { type: 'select' },
     },
@@ -60,7 +57,7 @@ export default {
     initials: {
       type: { name: 'string' },
       description:
-        'The user\'s inizials displayed if there\'s no image available, initials will override tone and variant senttings to keep user recognizable from others',
+        "The user's inizials displayed if there's no image available, initials will override tone and variant senttings to keep user recognizable from others",
     },
     src: {
       type: { name: 'string' },
@@ -83,15 +80,15 @@ export default {
       control: { type: 'select' },
     },
   },
-}
+};
 
-const Template = args => (
+const Template = (args) => (
   <div>
     <mds-push-notification-item {...args}></mds-push-notification-item>
   </div>
-)
+);
 
-const TemplateWithAction = args => (
+const TemplateWithAction = (args) => (
   <div>
     <mds-push-notification-item {...args}>
       <mds-button slot="action" variant={args.variant} tone="weak" size="sm">
@@ -99,9 +96,9 @@ const TemplateWithAction = args => (
       </mds-button>
     </mds-push-notification-item>
   </div>
-)
+);
 
-const TemplateWithAttachment = args => (
+const TemplateWithAttachment = (args) => (
   <div>
     <mds-push-notification-item {...args}>
       <mds-button slot="action" tone="outline" size="sm">
@@ -109,9 +106,9 @@ const TemplateWithAttachment = args => (
       </mds-button>
     </mds-push-notification-item>
   </div>
-)
+);
 
-const TemplateWithAttachmentBadge = args => (
+const TemplateWithAttachmentBadge = (args) => (
   <div>
     <mds-push-notification-item {...args}>
       <mds-badge slot="badge" variant="amaranth" tone="weak">
@@ -122,9 +119,9 @@ const TemplateWithAttachmentBadge = args => (
       </mds-button>
     </mds-push-notification-item>
   </div>
-)
+);
 
-const TemplateContact = args => (
+const TemplateContact = (args) => (
   <div>
     <mds-push-notification-item {...args}>
       <mds-button slot="action" variant="success" tone="weak" size="sm">
@@ -135,7 +132,7 @@ const TemplateContact = args => (
       </mds-button>
     </mds-push-notification-item>
   </div>
-)
+);
 
 export const Default = {
   render: Template,
@@ -146,7 +143,7 @@ export const Default = {
     message: 'You have 3 new messages from different accounts',
     subject: 'New messages',
   },
-}
+};
 
 export const Deletable = {
   render: Template,
@@ -158,7 +155,7 @@ export const Deletable = {
     subject: 'New messages',
     deletable: false,
   },
-}
+};
 
 export const Thumb = {
   render: Template,
@@ -169,7 +166,7 @@ export const Thumb = {
     src: './book-cover-01.webp',
     subject: 'Preview image',
   },
-}
+};
 
 export const Variant = {
   render: TemplateWithAction,
@@ -181,7 +178,7 @@ export const Variant = {
     subject: 'Article',
     variant: 'success',
   },
-}
+};
 
 export const Attachment = {
   render: TemplateWithAttachment,
@@ -189,11 +186,11 @@ export const Attachment = {
   args: {
     datetime: getDatetime(),
     icon: 'mi/baseline/attach-file',
-    message: 'You\'ve got a new file attachment from Mark',
+    message: "You've got a new file attachment from Mark",
     subject: 'New attachment',
     variant: 'primary',
   },
-}
+};
 
 export const AttachmentBadge = {
   render: TemplateWithAttachmentBadge,
@@ -201,11 +198,11 @@ export const AttachmentBadge = {
   args: {
     datetime: getDatetime(),
     icon: 'mi/baseline/attach-file',
-    message: 'You\'ve got a new file attachment from Mark',
+    message: "You've got a new file attachment from Mark",
     subject: 'New attachment',
     variant: 'primary',
   },
-}
+};
 
 export const Contact = {
   render: TemplateContact,
@@ -218,7 +215,7 @@ export const Contact = {
     tone: 'strong',
     variant: 'primary',
   },
-}
+};
 
 export const ContactAvatar = {
   render: TemplateContact,
@@ -232,7 +229,7 @@ export const ContactAvatar = {
     tone: 'strong',
     variant: 'primary',
   },
-}
+};
 
 export const ContactAvatarInitials = {
   render: TemplateContact,
@@ -246,7 +243,7 @@ export const ContactAvatarInitials = {
     tone: 'strong',
     variant: 'primary',
   },
-}
+};
 
 export const DateTime = {
   render: Template,
@@ -260,7 +257,7 @@ export const DateTime = {
     tone: 'strong',
     variant: 'primary',
   },
-}
+};
 
 export const DateFormat = {
   render: Template,
@@ -275,4 +272,4 @@ export const DateFormat = {
     tone: 'strong',
     variant: 'primary',
   },
-}
+};

@@ -1,5 +1,1 @@
-export type UsageType =
-  | 'do'
-  | 'dont'
-  | 'info'
-  | 'warn'
+export type UsageType = 'do' | 'dont' | 'info' | 'warn';

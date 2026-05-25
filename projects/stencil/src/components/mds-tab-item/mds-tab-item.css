@@ -11,19 +11,19 @@
 @property --mds-tab-item-hover-background {
   inherits: false;
   initial-value: transparent;
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-tab-item-selected-background {
   inherits: false;
   initial-value: transparent;
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-tab-item-default-background {
   inherits: false;
   initial-value: transparent;
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-tab-item-corner-shape {
@@ -55,7 +55,7 @@
   display: flex;
 }
 
-:host-context(mds-tab[animation="slide"]) {
+:host-context(mds-tab[animation='slide']) {
   --mds-tab-item-hover-background: transparent;
   --mds-tab-item-selected-background: transparent;
   --mds-tab-item-selected-shadow: none;
@@ -92,11 +92,11 @@
   pointer-events: none;
 }
 
-:host-context(mds-tab[direction="vertical"]) {
+:host-context(mds-tab[direction='vertical']) {
   width: 100%;
 }
 
-:host-context(mds-tab[direction="vertical"]) .button {
+:host-context(mds-tab[direction='vertical']) .button {
   justify-content: start;
 }
 

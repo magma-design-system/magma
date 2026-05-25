@@ -4,7 +4,7 @@
   --mds-input-date-controls-border: 2px solid rgb(var(--tone-neutral-05));
 
   .input::placeholder {
-      color: rgb(var(--tone-neutral-03));
+    color: rgb(var(--tone-neutral-03));
   }
 }
 
@@ -16,7 +16,7 @@
     --mds-input-date-controls-border: 2px solid rgb(var(--tone-neutral-05));
 
     .input::placeholder {
-        color: rgb(var(--tone-neutral-03));
+      color: rgb(var(--tone-neutral-03));
     }
   }
 }

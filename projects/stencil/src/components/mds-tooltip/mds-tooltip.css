@@ -16,49 +16,49 @@
 @property --mds-tooltip-arrow-background {
   inherits: false;
   initial-value: var(--mds-tooltip-background);
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-tooltip-background {
   inherits: false;
   initial-value: rgb(var(--tone-neutral));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-tooltip-delay {
   inherits: false;
   initial-value: 1s;
-  syntax: "<time>";
+  syntax: '<time>';
 }
 
 @property --mds-tooltip-duration {
   inherits: false;
   initial-value: 0.5s;
-  syntax: "<time>";
+  syntax: '<time>';
 }
 
 @property --mds-tooltip-dot-padding {
   inherits: false;
   initial-value: --spacing(100);
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-tooltip-transform-from {
   inherits: false;
   initial-value: scale(0.9) translateY(-3%);
-  syntax: "<transform-function>";
+  syntax: '<transform-function>';
 }
 
 @property --mds-tooltip-transform-to {
   inherits: false;
   initial-value: scale(1) translate(0, 0);
-  syntax: "<transform-list>";
+  syntax: '<transform-list>';
 }
 
 @property --mds-tooltip-z-index {
   inherits: false;
   initial-value: var(--magma-tooltip-z-index, 4000);
-  syntax: "<integer>";
+  syntax: '<integer>';
 }
 
 /* ❌ Not supported
@@ -78,7 +78,8 @@
   --mds-tooltip-arrow-background: var(--mds-tooltip-background);
   --mds-tooltip-background: rgb(var(--tone-neutral));
   --mds-tooltip-delay: 1s;
-  --mds-tooltip-drop-shadow: drop-shadow(0 10px 8px rgb(0 0 0 / 0.04)) drop-shadow(0 4px 3px rgb(0 0 0 / 0.1)) drop-shadow(0 0 1px rgb(0 0 0 / 0.1));
+  --mds-tooltip-drop-shadow: drop-shadow(0 10px 8px rgb(0 0 0 / 0.04))
+    drop-shadow(0 4px 3px rgb(0 0 0 / 0.1)) drop-shadow(0 0 1px rgb(0 0 0 / 0.1));
   --mds-tooltip-duration: 0.5s;
   --mds-tooltip-ease: var(--ease-out-expo);
   --mds-tooltip-dot-padding: --spacing(100);
@@ -86,8 +87,7 @@
   --mds-tooltip-transform-to: scale(1) translate(0, 0);
   --mds-tooltip-z-index: var(--magma-tooltip-z-index, 4000);
 
-  @apply
-    gap-400
+  @apply gap-400
     px-200
     py-100
     rounded;
@@ -109,15 +109,15 @@
   z-index: var(--mds-tooltip-z-index);
 }
 
-:host([strategy="absolute"]) {
+:host([strategy='absolute']) {
   position: absolute;
 }
 
-:host([strategy="fixed"]) {
+:host([strategy='fixed']) {
   position: fixed;
 }
 
-:host([visible]:not([visible="false"])) {
+:host([visible]:not([visible='false'])) {
   opacity: 1;
   pointer-events: auto;
   transform: var(--mds-tooltip-transform-to);
@@ -130,8 +130,7 @@
 }
 
 .arrow {
-  @apply
-    duration-300
+  @apply duration-300
     ease-in-out;
 
   display: flex;

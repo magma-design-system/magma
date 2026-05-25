@@ -10,7 +10,8 @@
     animation-timing-function: theme('transitionTimingFunction.out');
     outline: var(--magma-outline-blur);
     transition-duration: 200ms;
-    transition-property: background-color, border-color, box-shadow, color, fill, outline, outline-offset, transform;
+    transition-property:
+      background-color, border-color, box-shadow, color, fill, outline, outline-offset, transform;
     transition-timing-function: ease-in-out;
   }
 
@@ -22,13 +23,13 @@
   }
 
   .focus-zoom {
-    @apply
-      duration-200
+    @apply duration-200
       ease-out;
 
     outline: var(--magma-outline-blur);
     outline-offset: var(--magma-outline-blur-offset);
-    transition-property: background-color, border-color, box-shadow, color, fill, outline, outline-offset, transform;
+    transition-property:
+      background-color, border-color, box-shadow, color, fill, outline, outline-offset, transform;
   }
 
   .focus-zoom--focused,

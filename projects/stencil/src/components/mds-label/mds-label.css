@@ -15,55 +15,55 @@
 @property --mds-label-background {
   inherits: false;
   initial-value: rgb(var(--label-yellow-09));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-label-color {
   inherits: false;
   initial-value: rgb(var(--label-yellow-02));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-label-icon-color {
   inherits: false;
   initial-value: var(--mds-label-color);
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-label-radius {
   inherits: false;
   initial-value: --spacing(150);
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-label-selection-background {
   inherits: false;
   initial-value: var(--magma-selection-background, rgb(var(--label-yellow-09)));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-label-selection-color {
   inherits: false;
   initial-value: var(--magma-selection-color, rgb(var(--label-yellow-02)));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-label-button-background {
   inherits: false;
   initial-value: rgb(var(--label-yellow-08));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-label-button-background-hover {
   inherits: false;
   initial-value: rgb(var(--label-yellow-07));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-label-button-icon-color {
   inherits: false;
   initial-value: rgb(var(--label-yellow-03));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 :host {
@@ -93,7 +93,6 @@
   padding: 0 --spacing(200);
   transition-duration: var(--duration-200);
   transition-property: color, background-color, fill;
-
 }
 
 @supports (corner-shape: bevel) {
@@ -113,7 +112,7 @@
   color: var(--mds-label-selection-color);
 }
 
-:host([truncate="word"]) {
+:host([truncate='word']) {
   .text {
     white-space: nowrap;
   }

@@ -8,27 +8,17 @@ const modalPositionDictionary = [
   'top',
   'top-left',
   'top-right',
-]
+];
 
-const modalOverflowDictionary = [
-  'auto',
-  'manual',
-]
+const modalOverflowDictionary = ['auto', 'manual'];
 
-const modalInteractionDictionary = [
-  'strict',
-  'relaxed',
-]
+const modalInteractionDictionary = ['strict', 'relaxed'];
 
-const modalAnimationStyleDictionary = [
-  'slide',
-  'custom',
-  '3d',
-]
+const modalAnimationStyleDictionary = ['slide', 'custom', '3d'];
 
 export {
   modalOverflowDictionary,
   modalPositionDictionary,
   modalInteractionDictionary,
   modalAnimationStyleDictionary,
-}
+};

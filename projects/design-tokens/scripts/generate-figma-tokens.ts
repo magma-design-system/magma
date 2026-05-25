@@ -1,18 +1,18 @@
 // this script generate a json file that can be imported to figma through 'Import/Export Variables' plugin only.
 // https://www.figma.com/plugin-docs/working-with-variables/#createvariable
-import chalk from 'chalk'
-import defaultTokens from '../tokens/color/generated/default.json'
-import primitive from '../tokens/sizing/primitive.json'
-import spacing from '../tokens/sizing/spacing.json'
-import gap from '../tokens/sizing/gap.json'
-import screen from '../tokens/screen/default.json'
-import radius from '../tokens/sizing/radius.json'
-import { readJSON, readdir, writeFile } from 'fs-extra'
-import { mkdir } from 'fs/promises'
-import { resolve } from 'path'
-import { DIST_DIR, TOKENS_DIR } from './meta'
+import chalk from 'chalk';
+import defaultTokens from '../tokens/color/generated/default.json';
+import primitive from '../tokens/sizing/primitive.json';
+import spacing from '../tokens/sizing/spacing.json';
+import gap from '../tokens/sizing/gap.json';
+import screen from '../tokens/screen/default.json';
+import radius from '../tokens/sizing/radius.json';
+import { readJSON, readdir, writeFile } from 'fs-extra';
+import { mkdir } from 'fs/promises';
+import { resolve } from 'path';
+import { DIST_DIR, TOKENS_DIR } from './meta';
 
-const COLOR_DIR = `${TOKENS_DIR}/color/generated`
+const COLOR_DIR = `${TOKENS_DIR}/color/generated`;
 
 enum VariableType {
   Color = 'COLOR',
@@ -27,10 +27,10 @@ enum Scope {
   Frame = 'FRAME_FILL',
   Shape = 'SHAPE_FILL',
   Text = 'TEXT_FILL',
-  WidthHeight = "WIDTH_HEIGHT",
+  WidthHeight = 'WIDTH_HEIGHT',
   Gap = 'GAP',
   CornerRadius = 'CORNER_RADIUS',
-  ParagraphSpacing= 'PARAGRAPH_SPACING',
+  ParagraphSpacing = 'PARAGRAPH_SPACING',
   Stroke = 'STROKE_COLOR',
 }
 
@@ -72,17 +72,23 @@ interface Variable {
   codeSyntax?: CodeSyntax;
 }
 
-type TokenValue = { value: string }
-type TokenTree = Record<string, Record<string, Record<string, TokenValue>>>
+type TokenValue = { value: string };
+type TokenTree = Record<string, Record<string, Record<string, TokenValue>>>;
 interface FigmaColorTokens {
-  color: Record<string, Record<string, {
-    light: Record<string, TokenValue>
-    dark: Record<string, TokenValue>
-  }>>
+  color: Record<
+    string,
+    Record<
+      string,
+      {
+        light: Record<string, TokenValue>;
+        dark: Record<string, TokenValue>;
+      }
+    >
+  >;
 }
 
 const capitalizeFirstLetter = (value: string): string =>
-  value.charAt(0).toUpperCase() + value.slice(1)
+  value.charAt(0).toUpperCase() + value.slice(1);
 
 const generateFigmaTokens = (nameCollection: string) => {
   const collection: Collection = {
@@ -91,28 +97,32 @@ const generateFigmaTokens = (nameCollection: string) => {
     modes: { value: 'Value' },
     variableIds: [],
     variables: [],
-  }
+  };
 
   const variables = new Map([
-    ...buildTokenVariables('Spacing', {'sizing': {'spacing': spacing.spacing}}, [Scope.WidthHeight]),
-    ...buildTokenVariables('Container', {'sizing': { 'container': spacing.container}}, [Scope.WidthHeight]),
+    ...buildTokenVariables('Spacing', { sizing: { spacing: spacing.spacing } }, [
+      Scope.WidthHeight,
+    ]),
+    ...buildTokenVariables('Container', { sizing: { container: spacing.container } }, [
+      Scope.WidthHeight,
+    ]),
     ...buildTokenVariables('Gap', gap, [Scope.Gap, Scope.ParagraphSpacing]),
-    ...buildTokenVariables('BorderRadius', {'borderRadius': radius}, [Scope.CornerRadius]),
+    ...buildTokenVariables('BorderRadius', { borderRadius: radius }, [Scope.CornerRadius]),
     ...buildScreenToken('Screen', screen, [Scope.WidthHeight]),
     ...buildTokenVariables('Primitive', primitive),
-  ])
+  ]);
 
   // console.log(variables)
-  collection.variableIds = Array.from(variables.keys())
-  collection.variables = Array.from(variables.values())
+  collection.variableIds = Array.from(variables.keys());
+  collection.variables = Array.from(variables.values());
 
   // collection.variables.forEach(console.log)
-  writeFigmaVariables(collection)
-}
+  writeFigmaVariables(collection);
+};
 
 const generateFigmaColors = (nameCollection: string, tokens: FigmaColorTokens) => {
-  const lightMode = 'light'
-  const darkMode = 'dark'
+  const lightMode = 'light';
+  const darkMode = 'dark';
 
   const collection: Collection = {
     id: 'VariableCollectionId:1',
@@ -120,28 +130,32 @@ const generateFigmaColors = (nameCollection: string, tokens: FigmaColorTokens) =
     modes: {},
     variableIds: [],
     variables: [],
-  }
-  collection.modes[lightMode] = 'Light'
-  collection.modes[darkMode] = 'Dark'
+  };
+  collection.modes[lightMode] = 'Light';
+  collection.modes[darkMode] = 'Dark';
 
-  const variables = buildColorVariables(tokens)
+  const variables = buildColorVariables(tokens);
 
-  collection.variableIds = Array.from(variables.keys())
-  collection.variables = Array.from(variables.values())
+  collection.variableIds = Array.from(variables.keys());
+  collection.variables = Array.from(variables.values());
 
-  writeFigmaVariables(collection)
-}
+  writeFigmaVariables(collection);
+};
 
-const buildScreenToken = (name: string, tokens: TokenTree, scopes?: Scope[]): Map<string, Variable> => {
-  const variables: Map<string, Variable> = new Map()
-  Object.entries(tokens).forEach(type => {
-    Object.entries(type[1]).forEach(subtype => {
-      Object.entries(subtype[1]).forEach(token => {
+const buildScreenToken = (
+  name: string,
+  tokens: TokenTree,
+  scopes?: Scope[],
+): Map<string, Variable> => {
+  const variables: Map<string, Variable> = new Map();
+  Object.entries(tokens).forEach((type) => {
+    Object.entries(type[1]).forEach((subtype) => {
+      Object.entries(subtype[1]).forEach((token) => {
         if (token[0] === 'min') {
-          const UID = `${name}:${subtype[0]}`
+          const UID = `${name}:${subtype[0]}`;
 
-          const value = getValue(token[1]['value'])
-          if(value) {
+          const value = getValue(token[1]['value']);
+          if (value) {
             variables.set(UID, {
               id: UID,
               name: UID.replace(/:/g, '/'),
@@ -158,23 +172,27 @@ const buildScreenToken = (name: string, tokens: TokenTree, scopes?: Scope[]): Ma
               },
               scopes: scopes ?? [Scope.All],
               hiddenFromPublishing: false,
-            })
+            });
           }
         }
-      })
-    })
-  })
-  return variables
-}
+      });
+    });
+  });
+  return variables;
+};
 
-const buildTokenVariables = (name: string, tokens: TokenTree, scopes?: Scope[]): Map<string, Variable> => {
-  const variables: Map<string, Variable> = new Map()
-  Object.entries(tokens).forEach(type => {
-    Object.entries(type[1]).forEach(subtype => {
-      Object.entries(subtype[1]).forEach(token => {
-        const UID = `${name}:${token[0]}`
-        const value = getValue(token[1]['value'] as string)
-        if(value && !isNaN(Number(value))) {
+const buildTokenVariables = (
+  name: string,
+  tokens: TokenTree,
+  scopes?: Scope[],
+): Map<string, Variable> => {
+  const variables: Map<string, Variable> = new Map();
+  Object.entries(tokens).forEach((type) => {
+    Object.entries(type[1]).forEach((subtype) => {
+      Object.entries(subtype[1]).forEach((token) => {
+        const UID = `${name}:${token[0]}`;
+        const value = getValue(token[1]['value'] as string);
+        if (value && !isNaN(Number(value))) {
           variables.set(UID, {
             id: UID,
             name: UID.replace(/:/g, '/'),
@@ -191,13 +209,13 @@ const buildTokenVariables = (name: string, tokens: TokenTree, scopes?: Scope[]):
             },
             scopes: scopes ?? [Scope.All],
             hiddenFromPublishing: false,
-          })
+          });
         }
-      })
-    })
-  })
-  return variables
-}
+      });
+    });
+  });
+  return variables;
+};
 
 /**
  * Get a number value resolving also reference value between spacing and gap
@@ -205,22 +223,22 @@ const buildTokenVariables = (name: string, tokens: TokenTree, scopes?: Scope[]):
  * @returns value as number
  */
 const getValue = (value: string): number | undefined => {
-  if(!value) return
+  if (!value) return;
   // tokens reference "{spacing.sizing.1000}"
   if (value.startsWith('{')) {
-    const ref = value.slice(1, -1).split('.')
+    const ref = value.slice(1, -1).split('.');
     if (ref[1] === 'gap') {
-      return getValue((gap as TokenTree)[ref[0]][ref[1]][ref[2]].value)
+      return getValue((gap as TokenTree)[ref[0]][ref[1]][ref[2]].value);
     }
-    return getValue((primitive as TokenTree)[ref[0]][ref[1]][ref[2]].value)
+    return getValue((primitive as TokenTree)[ref[0]][ref[1]][ref[2]].value);
   }
-// tokens where unit isn't px are ignored
-  if(!value.endsWith('px')) return
-  const digits = value.match(/\d+/)
-  return digits ? Number(digits[0]) : undefined
-}
+  // tokens where unit isn't px are ignored
+  if (!value.endsWith('px')) return;
+  const digits = value.match(/\d+/);
+  return digits ? Number(digits[0]) : undefined;
+};
 const buildColorVariables = (tokens: FigmaColorTokens): Map<string, Variable> => {
-  const variables: Map<string, Variable> = new Map()
+  const variables: Map<string, Variable> = new Map();
 
   /**
    * change structure from
@@ -243,17 +261,17 @@ const buildColorVariables = (tokens: FigmaColorTokens): Map<string, Variable> =>
    *  ...
    * }
    */
-  Object.entries(tokens.color).forEach(group => {
-    Object.entries(group[1]).forEach(name => {
-      Object.entries(name[1]).forEach(lightMode => {
-        Object.entries(lightMode[1]).forEach(palette => {
-          let paletteId = palette[0]
+  Object.entries(tokens.color).forEach((group) => {
+    Object.entries(group[1]).forEach((name) => {
+      Object.entries(name[1]).forEach((lightMode) => {
+        Object.entries(lightMode[1]).forEach((palette) => {
+          let paletteId = palette[0];
           if (!isNaN(parseInt(paletteId)) && parseInt(paletteId) < 10) {
-            paletteId = `0${paletteId}`
+            paletteId = `0${paletteId}`;
           }
-          const paletteUID = `${capitalizeFirstLetter(group[0])}:${capitalizeFirstLetter(name[0])}:${paletteId}`
+          const paletteUID = `${capitalizeFirstLetter(group[0])}:${capitalizeFirstLetter(name[0])}:${paletteId}`;
 
-          const colorRGB = hexToRgbA(palette[1].value)
+          const colorRGB = hexToRgbA(palette[1].value);
           if (!variables.get(paletteUID)) {
             variables.set(paletteUID, {
               id: paletteUID,
@@ -264,7 +282,7 @@ const buildColorVariables = (tokens: FigmaColorTokens): Map<string, Variable> =>
               resolvedValuesByMode: {},
               scopes: [Scope.All],
               hiddenFromPublishing: false,
-            })
+            });
           }
 
           /**
@@ -272,76 +290,81 @@ const buildColorVariables = (tokens: FigmaColorTokens): Map<string, Variable> =>
            * this permits to use as key of mode in valuesByMode and resolvedValuesByMode object
            * so it can be set the right light mode of that variable
            */
-          const variable = variables.get(paletteUID)!
-          variable.valuesByMode[lightMode[0]] = colorRGB
+          const variable = variables.get(paletteUID)!;
+          variable.valuesByMode[lightMode[0]] = colorRGB;
           variable.resolvedValuesByMode[lightMode[0]] = {
             resolvedValue: colorRGB,
             alias: null,
-          }
-        })
-      })
-    })
-  })
-  return variables
-}
+          };
+        });
+      });
+    });
+  });
+  return variables;
+};
 
 const writeFigmaVariables = (collection: Collection) => {
   mkdir(resolve(`${DIST_DIR}/json`), { recursive: true })
     .then(() => {
-      writeFile(`${DIST_DIR}/json/figma-${collection.name.toLocaleLowerCase().replace(/\s/g, '-')}.json`, JSON.stringify(collection))
+      writeFile(
+        `${DIST_DIR}/json/figma-${collection.name.toLocaleLowerCase().replace(/\s/g, '-')}.json`,
+        JSON.stringify(collection),
+      );
     })
-    .catch(error => {
-      throw Error(chalk.red(error))
-    })
-}
+    .catch((error) => {
+      throw Error(chalk.red(error));
+    });
+};
 
 const hexToRgbA = (hex: string): Color => {
   if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
-    let c = hex.substring(1).split('')
+    let c = hex.substring(1).split('');
     if (c.length === 3) {
-      c = [c[0], c[0], c[1], c[1], c[2], c[2]]
+      c = [c[0], c[0], c[1], c[1], c[2], c[2]];
     }
-    const h = parseInt('0x' + c.join(''), 16)
+    const h = parseInt('0x' + c.join(''), 16);
     return {
       r: ((h >> 16) & 255) / 255,
       g: ((h >> 8) & 255) / 255,
       b: (h & 255) / 255,
       a: 1,
-    }
+    };
   }
-  throw new Error('Bad Hex')
-}
+  throw new Error('Bad Hex');
+};
 
 const mergeTokens = async () => {
-  const brandColors = await readdir(COLOR_DIR).then(files => {
+  const brandColors = await readdir(COLOR_DIR).then((files) => {
     // read all brand json file and merge them
     return Promise.all(
       files
-        .filter(name => name.startsWith('brand'))
-        .map(brand => readJSON(`${COLOR_DIR}/${brand}`)),
-    ).then(brands =>
+        .filter((name) => name.startsWith('brand'))
+        .map((brand) => readJSON(`${COLOR_DIR}/${brand}`)),
+    ).then((brands) =>
       brands
-        .map(json => json.color.brand)
+        .map((json) => json.color.brand)
         .reduce((prev, current) => Object.assign(prev, { ...current })),
-    )
-  })
-  const tokens = defaultTokens as FigmaColorTokens
-  tokens.color.brand = sortJsonByKeys(brandColors, (a, b) => b.localeCompare(a)) as unknown as FigmaColorTokens['color'][string]
-  return tokens
+    );
+  });
+  const tokens = defaultTokens as FigmaColorTokens;
+  tokens.color.brand = sortJsonByKeys(brandColors, (a, b) =>
+    b.localeCompare(a),
+  ) as unknown as FigmaColorTokens['color'][string];
+  return tokens;
+};
+
+function sortJsonByKeys(
+  json: Record<string, unknown>,
+  compareFn: (a: string, b: string) => number,
+): Record<string, unknown> {
+  return Object.keys(json)
+    .sort(compareFn)
+    .reduce<Record<string, unknown>>((obj, key) => {
+      obj[key] = json[key];
+      return obj;
+    }, {});
 }
 
-function sortJsonByKeys (json: Record<string, unknown>, compareFn: (a: string, b: string) => number): Record<string, unknown> {
-  return Object.keys(json).sort(compareFn).reduce<Record<string, unknown>>(
-    (obj, key) => {
-      obj[key] = json[key]
-      return obj
-    },
-    {},
-  )
-}
+(async () => generateFigmaColors('Magma Colors', await mergeTokens()))();
 
-(async () =>
-  generateFigmaColors('Magma Colors', await mergeTokens())
-)()
-
-generateFigmaTokens('Magma Tokens')
+generateFigmaTokens('Magma Tokens');

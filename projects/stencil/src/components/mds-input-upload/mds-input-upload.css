@@ -11,19 +11,19 @@
 @property --mds-input-upload-drag-area-background-color-on-drag {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-10));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-input-upload-drag-area-background-color {
   inherits: false;
   initial-value: rgb(var(--tone-neutral));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-input-upload-min-cols {
   inherits: false;
   initial-value: 3;
-  syntax: "<integer>";
+  syntax: '<integer>';
 }
 
 /* ❌ Not supported
@@ -84,7 +84,9 @@
 }
 
 .drag-area--on-drag-enter {
-  --mds-input-upload-drag-area-background-color: var(--mds-input-upload-drag-area-background-color-on-drag);
+  --mds-input-upload-drag-area-background-color: var(
+    --mds-input-upload-drag-area-background-color-on-drag
+  );
   --mds-input-upload-drag-area-border: var(--mds-input-upload-drag-area-border-on-drag);
 }
 
@@ -210,4 +212,3 @@
     --template-cols: 1fr;
   }
 }
-

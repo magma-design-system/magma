@@ -11,19 +11,19 @@
 @property --mds-url-view-background {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-10));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-url-view-color {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-02));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-url-view-radius {
   inherits: false;
   initial-value: var(--radius-md);
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 /* ❌ Not supported
@@ -42,7 +42,6 @@
 */
 
 :host {
-
   /* stylelint-disable-next-line length-zero-no-unit */
   --mds-modal-custom-window-distance: 0px;
   --mds-url-view-background: rgb(var(--tone-neutral-10));

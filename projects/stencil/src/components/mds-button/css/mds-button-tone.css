@@ -1,40 +1,41 @@
-:host([tone="text"]),
-:host([tone="outline"]) {
+:host([tone='text']),
+:host([tone='outline']) {
   --mds-button-background: transparent;
 }
 
-:host([tone="box"]),
-:host([tone="strong"]),
-:host([tone="weak"]) {
+:host([tone='box']),
+:host([tone='strong']),
+:host([tone='weak']) {
   --mds-button-border-default-opacity: 1;
   --mds-button-border-width: 0;
   --mds-button-border-opacity: var(--mds-button-border-default-opacity);
 }
 
-:host([tone="strong"]:hover),
-:host([tone="strong"][active]) {
+:host([tone='strong']:hover),
+:host([tone='strong'][active]) {
   --mds-button-border-width: var(--mds-button-border-tone-strong-hover-width);
 }
 
-:host([tone="weak"]:hover),
-:host([tone="weak"][active]) {
+:host([tone='weak']:hover),
+:host([tone='weak'][active]) {
   --mds-button-border-width: var(--mds-button-border-tone-weak-hover-width);
 }
 
-:host([tone="outline"]) {
+:host([tone='outline']) {
   --mds-button-border-opacity: var(--mds-button-border-tone-outline-opacity);
 }
 
-:host([tone="outline"]:hover),
-:host([tone="outline"][active]) {
+:host([tone='outline']:hover),
+:host([tone='outline'][active]) {
   --mds-button-background: transparent;
   --mds-button-border-width: var(--mds-button-border-tone-outline-hover-width);
   --mds-button-border-opacity: var(--mds-button-border-hover-opacity);
 }
 
-:host([tone="box"]) {
+:host([tone='box']) {
   box-shadow: var(--shadow-box-solid-strong);
-  transition-property: background-color, border-color, box-shadow, color, outline, filter, outline-offset, transform;
+  transition-property:
+    background-color, border-color, box-shadow, color, outline, filter, outline-offset, transform;
 
   &:host(:hover) {
     filter: brightness(1.1);

@@ -1,9 +1,3 @@
-const strategyDictionary = [
-  'absolute',
-  'fixed',
-  'static',
-]
+const strategyDictionary = ['absolute', 'fixed', 'static'];
 
-export {
-  strategyDictionary,
-}
+export { strategyDictionary };

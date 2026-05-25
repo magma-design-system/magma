@@ -1,10 +1,20 @@
 :host-context(:root.pref-theme-dark:not(.pref-theme-scheme-light)) {
-  --mds-push-notification-background: linear-gradient(to right, rgb(0 0 0 / 0) 0%, rgb(0 0 0 / 0.5) 20%, rgb(0 0 0 / 0.85) 100%);
+  --mds-push-notification-background: linear-gradient(
+    to right,
+    rgb(0 0 0 / 0) 0%,
+    rgb(0 0 0 / 0.5) 20%,
+    rgb(0 0 0 / 0.85) 100%
+  );
 }
 
 @media (prefers-color-scheme: dark) {
   :host-context(:root.pref-theme-system:not(.pref-theme-scheme-light)),
   :host-context(:root:not([data-magma-pref])) {
-    --mds-push-notification-background: linear-gradient(to right, rgb(0 0 0 / 0) 0%, rgb(0 0 0 / 0.5) 20%, rgb(0 0 0 / 0.85) 100%);
+    --mds-push-notification-background: linear-gradient(
+      to right,
+      rgb(0 0 0 / 0) 0%,
+      rgb(0 0 0 / 0.5) 20%,
+      rgb(0 0 0 / 0.85) 100%
+    );
   }
 }

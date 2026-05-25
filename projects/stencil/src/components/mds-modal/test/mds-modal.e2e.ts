@@ -1,38 +1,38 @@
-import { newE2EPage } from '@stencil/core/testing'
+import { newE2EPage } from '@stencil/core/testing';
 
 describe('mds-modal', () => {
   it('renders', async () => {
-    const page = await newE2EPage()
-    await page.setContent('<mds-modal></mds-modal>')
+    const page = await newE2EPage();
+    await page.setContent('<mds-modal></mds-modal>');
 
-    const element = await page.find('mds-modal')
+    const element = await page.find('mds-modal');
 
-    expect(element).toHaveAttribute('hydrated')
-    expect(element).toHaveAttribute('position')
+    expect(element).toHaveAttribute('hydrated');
+    expect(element).toHaveAttribute('position');
 
-    expect(element.getAttribute('position')).toBe('center')
+    expect(element.getAttribute('position')).toBe('center');
 
-    expect(element).not.toHaveAttribute('opened')
-  })
+    expect(element).not.toHaveAttribute('opened');
+  });
 
   it('renders opened', async () => {
-    const page = await newE2EPage()
-    await page.setContent('<mds-modal opened="true"></mds-modal>')
+    const page = await newE2EPage();
+    await page.setContent('<mds-modal opened="true"></mds-modal>');
 
-    const element = await page.find('mds-modal')
+    const element = await page.find('mds-modal');
 
-    expect(element).toHaveAttribute('opened')
-  })
+    expect(element).toHaveAttribute('opened');
+  });
 
   it('can be closed', async () => {
-    const page = await newE2EPage()
-    await page.setContent('<mds-modal opened="true"></mds-modal>')
+    const page = await newE2EPage();
+    await page.setContent('<mds-modal opened="true"></mds-modal>');
 
-    const element = await page.find('mds-modal')
+    const element = await page.find('mds-modal');
 
-    expect(element.getAttribute('opened')).not.toBe('false')
+    expect(element.getAttribute('opened')).not.toBe('false');
 
-    await page.mouse.click(window.innerWidth / 2, window.innerHeight / 2)
+    await page.mouse.click(window.innerWidth / 2, window.innerHeight / 2);
 
     // const mdsIcon = element.shadowRoot.querySelector('mds-icon') as HTMLElement
 
@@ -44,8 +44,8 @@ describe('mds-modal', () => {
 
     // closeButton.click()
 
-    await page.waitForChanges()
+    await page.waitForChanges();
 
-    expect(element).not.toHaveAttribute('opened')
-  })
-})
+    expect(element).not.toHaveAttribute('opened');
+  });
+});

@@ -1,103 +1,122 @@
-import React, { useState, useEffect } from 'react'
-import { AddonPanel, Form } from 'storybook/internal/components'
-import { addons, types } from 'storybook/manager-api'
-import themeMaggioli from './theme'
-import clsx from 'clsx'
+import React, { useState, useEffect } from 'react';
+import { AddonPanel, Form } from 'storybook/internal/components';
+import { addons, types } from 'storybook/manager-api';
+import themeMaggioli from './theme';
+import clsx from 'clsx';
 
 const AccessibilityPanel = () => {
-
-  const capitalize = string => {
-    return string.charAt(0).toUpperCase() + string.slice(1)
-  }
+  const capitalize = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  };
 
   const setAccessibility = (preference, value, list) => {
-    const iframe = document.getElementById('storybook-preview-iframe')
+    const iframe = document.getElementById('storybook-preview-iframe');
     if (iframe) {
-      const iframeDocument = iframe.contentDocument || iframe.contentWindow.document
-      const htmlEl = iframeDocument.querySelector('html')
+      const iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
+      const htmlEl = iframeDocument.querySelector('html');
 
       if (value === 'unset') {
-        htmlEl.style.removeProperty(`--magma-pref-${preference}`)
+        htmlEl.style.removeProperty(`--magma-pref-${preference}`);
 
-        list.forEach(value => {
-          htmlEl.classList.remove(`pref-${preference}-${value}`)
-        })
+        list.forEach((value) => {
+          htmlEl.classList.remove(`pref-${preference}-${value}`);
+        });
         // window.localStorage.removeItem(`mdsPref${capitalize(preference)}`)
-        return
+        return;
       }
 
       for (const key in list) {
-        htmlEl.classList.remove(`pref-${preference}-${list[key]}`)
+        htmlEl.classList.remove(`pref-${preference}-${list[key]}`);
       }
-      htmlEl.style.setProperty(`--magma-pref-${preference}`, value)
-      htmlEl.classList.add(`pref-${preference}-${value}`)
-      window.localStorage.setItem(`mdsPref${capitalize(preference)}`, value)
+      htmlEl.style.setProperty(`--magma-pref-${preference}`, value);
+      htmlEl.classList.add(`pref-${preference}-${value}`);
+      window.localStorage.setItem(`mdsPref${capitalize(preference)}`, value);
     }
-  }
+  };
 
-  const setLanguage = lang => {
+  const setLanguage = (lang) => {
     if (window) {
-      window.localStorage.setItem('mdsPrefLanguage', lang)
+      window.localStorage.setItem('mdsPrefLanguage', lang);
     }
     if (document) {
-      const iframe = document.getElementById('storybook-preview-iframe')
-      const iframeDocument = iframe.contentDocument || iframe.contentWindow.document
+      const iframe = document.getElementById('storybook-preview-iframe');
+      const iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
       if (lang === 'unset') {
-        window.localStorage.removeItem('mdsPrefLanguage')
-        iframeDocument.querySelector('html').removeAttribute('lang')
-        return
+        window.localStorage.removeItem('mdsPrefLanguage');
+        iframeDocument.querySelector('html').removeAttribute('lang');
+        return;
       }
-      iframeDocument.querySelector('html').setAttribute('lang', window.localStorage.getItem('mdsPrefLanguage') ?? 'it')
+      iframeDocument
+        .querySelector('html')
+        .setAttribute('lang', window.localStorage.getItem('mdsPrefLanguage') ?? 'it');
     }
-  }
+  };
 
-  const checkAccessibilityUse = enabled => {
-    const iframe = document.getElementById('storybook-preview-iframe')
-    const iframeDocument = iframe.contentDocument || iframe.contentWindow.document
-    const html = iframeDocument.querySelector('html')
+  const checkAccessibilityUse = (enabled) => {
+    const iframe = document.getElementById('storybook-preview-iframe');
+    const iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
+    const html = iframeDocument.querySelector('html');
 
     if (!enabled) {
-      html.removeAttribute('data-magma-pref')
-      setAccessibility('theme', 'unset', ['light', 'system', 'dark'])
-      setAccessibility('contrast', 'unset', ['more', 'system', 'no-preference'])
-      setAccessibility('animation', 'unset', ['reduce', 'system', 'no-preference'])
-      setAccessibility('consumption', 'unset', ['low', 'medium', 'high'])
-      setLanguage('unset')
-      return
+      html.removeAttribute('data-magma-pref');
+      setAccessibility('theme', 'unset', ['light', 'system', 'dark']);
+      setAccessibility('contrast', 'unset', ['more', 'system', 'no-preference']);
+      setAccessibility('animation', 'unset', ['reduce', 'system', 'no-preference']);
+      setAccessibility('consumption', 'unset', ['low', 'medium', 'high']);
+      setLanguage('unset');
+      return;
     }
 
-    html.setAttribute('data-magma-pref', '')
-    setAccessibility('theme', window.localStorage.getItem('mdsPrefTheme') ?? 'light', ['light', 'system', 'dark'])
-    setAccessibility('contrast', window.localStorage.getItem('mdsPrefContrast') ?? 'no-preference', ['more', 'system', 'no-preference'])
-    setAccessibility('animation', window.localStorage.getItem('mdsPrefAnimation') ?? 'no-preference', ['reduce', 'system', 'no-preference'])
-    setAccessibility('consumption', window.localStorage.getItem('mdsPrefConsumption') ?? 'high', ['low', 'medium', 'high'])
-    setLanguage(window.localStorage.getItem('mdsPrefLanguage') ?? 'en')
-  }
+    html.setAttribute('data-magma-pref', '');
+    setAccessibility('theme', window.localStorage.getItem('mdsPrefTheme') ?? 'light', [
+      'light',
+      'system',
+      'dark',
+    ]);
+    setAccessibility(
+      'contrast',
+      window.localStorage.getItem('mdsPrefContrast') ?? 'no-preference',
+      ['more', 'system', 'no-preference'],
+    );
+    setAccessibility(
+      'animation',
+      window.localStorage.getItem('mdsPrefAnimation') ?? 'no-preference',
+      ['reduce', 'system', 'no-preference'],
+    );
+    setAccessibility('consumption', window.localStorage.getItem('mdsPrefConsumption') ?? 'high', [
+      'low',
+      'medium',
+      'high',
+    ]);
+    setLanguage(window.localStorage.getItem('mdsPrefLanguage') ?? 'en');
+  };
 
-  let usePrefs = false
+  let usePrefs = false;
   if (window.localStorage.getItem('mdsPrefStorybookPrefs') === 'enable') {
-    usePrefs = true
+    usePrefs = true;
   }
 
-  const [enabled, setEnabledPrefs] = useState(usePrefs)
+  const [enabled, setEnabledPrefs] = useState(usePrefs);
 
-  const togglePreferences = isEnabled => {
-    setEnabledPrefs(isEnabled === 'enable')
-    checkAccessibilityUse(isEnabled === 'enable')
-    window.localStorage.setItem('mdsPrefStorybookPrefs', isEnabled)
-  }
+  const togglePreferences = (isEnabled) => {
+    setEnabledPrefs(isEnabled === 'enable');
+    checkAccessibilityUse(isEnabled === 'enable');
+    window.localStorage.setItem('mdsPrefStorybookPrefs', isEnabled);
+  };
 
   useEffect(() => {
-    checkAccessibilityUse(window.localStorage.getItem('mdsPrefStorybookPrefs') === 'enable')
-  }, [])
+    checkAccessibilityUse(window.localStorage.getItem('mdsPrefStorybookPrefs') === 'enable');
+  }, []);
 
   return (
     <Form>
       <Form.Field label="Preferences">
         <Form.Select
           name="pref-disable"
-          defaultValue={ window.localStorage.getItem('mdsPrefStorybookPrefs') ?? 'disable' }
-          onChange={event => { togglePreferences(event.target.value) }}
+          defaultValue={window.localStorage.getItem('mdsPrefStorybookPrefs') ?? 'disable'}
+          onChange={(event) => {
+            togglePreferences(event.target.value);
+          }}
         >
           <option value="enable">Enabled</option>
           <option value="disable">Disabled</option>
@@ -108,8 +127,10 @@ const AccessibilityPanel = () => {
           disabled={!enabled}
           className={clsx(!enabled && 'opacity-30 pointer-events-none')}
           name="pref-theme"
-          defaultValue={ window.localStorage.getItem('mdsPrefTheme') ?? 'light' }
-          onChange={event => { setAccessibility('theme', event.target.value, ['light', 'system', 'dark']) }}
+          defaultValue={window.localStorage.getItem('mdsPrefTheme') ?? 'light'}
+          onChange={(event) => {
+            setAccessibility('theme', event.target.value, ['light', 'system', 'dark']);
+          }}
         >
           <option value="light">Light</option>
           <option value="system">System</option>
@@ -121,8 +142,10 @@ const AccessibilityPanel = () => {
           disabled={!enabled}
           className={clsx(!enabled && 'opacity-30 pointer-events-none')}
           name="pref-contrast"
-          defaultValue={ window.localStorage.getItem('mdsPrefContrast') ?? 'no-preference' }
-          onChange={event => { setAccessibility('contrast', event.target.value, ['more', 'system', 'no-preference']) }}
+          defaultValue={window.localStorage.getItem('mdsPrefContrast') ?? 'no-preference'}
+          onChange={(event) => {
+            setAccessibility('contrast', event.target.value, ['more', 'system', 'no-preference']);
+          }}
         >
           <option value="more">More</option>
           <option value="system">System</option>
@@ -135,8 +158,14 @@ const AccessibilityPanel = () => {
           disabled={!enabled}
           className={clsx(!enabled && 'opacity-30 pointer-events-none')}
           name="pref-animation"
-          defaultValue={ window.localStorage.getItem('mdsPrefAnimation') ?? 'no-preference' }
-          onChange={event => { setAccessibility('animation', event.target.value, ['reduce', 'system', 'no-preference']) }}
+          defaultValue={window.localStorage.getItem('mdsPrefAnimation') ?? 'no-preference'}
+          onChange={(event) => {
+            setAccessibility('animation', event.target.value, [
+              'reduce',
+              'system',
+              'no-preference',
+            ]);
+          }}
         >
           <option value="reduce">Reduce</option>
           <option value="system">System</option>
@@ -149,8 +178,10 @@ const AccessibilityPanel = () => {
           disabled={!enabled}
           className={clsx(!enabled && 'opacity-30 pointer-events-none')}
           name="pref-consumption"
-          defaultValue={ window.localStorage.getItem('mdsPrefConsumption') ?? 'high' }
-          onChange={event => { setAccessibility('consumption', event.target.value, ['low', 'medium', 'high']) }}
+          defaultValue={window.localStorage.getItem('mdsPrefConsumption') ?? 'high'}
+          onChange={(event) => {
+            setAccessibility('consumption', event.target.value, ['low', 'medium', 'high']);
+          }}
         >
           <option value="low">Low</option>
           <option value="medium">Medium</option>
@@ -163,8 +194,10 @@ const AccessibilityPanel = () => {
           disabled={!enabled}
           className={clsx(!enabled && 'opacity-30 pointer-events-none')}
           name="pref-language"
-          defaultValue={ window.localStorage.getItem('mdsPrefLanguage') ?? 'en' }
-          onChange={event => { setLanguage(event.target.value) }}
+          defaultValue={window.localStorage.getItem('mdsPrefLanguage') ?? 'en'}
+          onChange={(event) => {
+            setLanguage(event.target.value);
+          }}
         >
           <option value="it">Italiano</option>
           <option value="en">English</option>
@@ -173,8 +206,8 @@ const AccessibilityPanel = () => {
         </Form.Select>
       </Form.Field>
     </Form>
-  )
-}
+  );
+};
 
 addons.register('maggioli/panel', () => {
   addons.add('maggioli-addon/accessibility', {
@@ -184,15 +217,16 @@ addons.register('maggioli/panel', () => {
     render: ({ active }) => {
       return (
         <AddonPanel active={active}>
-          <AccessibilityPanel/>
+          <AccessibilityPanel />
         </AddonPanel>
-      )},
-  })
-})
+      );
+    },
+  });
+});
 
 addons.setConfig({
   /**
    * theme storybook, see link below
    */
   theme: themeMaggioli,
-})
+});

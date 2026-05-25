@@ -1,5 +1,3 @@
-
-
 .mini-card {
   @apply grid-cols-full;
 
@@ -12,9 +10,7 @@
 }
 
 .mini-card-icon {
-
-  @apply
-    -mt-400
+  @apply -mt-400
     rounded-2xl
     rounded-t-none
     p-100

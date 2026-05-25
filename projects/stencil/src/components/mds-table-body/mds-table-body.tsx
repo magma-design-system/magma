@@ -1,4 +1,4 @@
-import { Component, Host, h, Prop } from '@stencil/core'
+import { Component, Host, h, Prop } from '@stencil/core';
 
 /**
  * @slot default - Put `mds-table-row` element/s.
@@ -10,16 +10,14 @@ import { Component, Host, h, Prop } from '@stencil/core'
   shadow: true,
 })
 export class MdsTableBody {
+  @Prop({ reflect: true }) readonly interactive?: boolean;
+  @Prop({ reflect: true }) readonly selection?: boolean;
 
-  @Prop({ reflect: true }) readonly interactive?: boolean
-  @Prop({ reflect: true }) readonly selection?: boolean
-
-  render () {
+  render() {
     return (
       <Host role="rowgroup">
-        <slot/>
+        <slot />
       </Host>
-    )
+    );
   }
-
 }

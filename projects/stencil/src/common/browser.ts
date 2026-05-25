@@ -1,10 +1,8 @@
 const isSafari = (): boolean => {
   if (navigator) {
-    return /^((?!chrome|android).)*safari/i.test(navigator.userAgent)
+    return /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
   }
-  return false
-}
+  return false;
+};
 
-export {
-  isSafari,
-}
+export { isSafari };

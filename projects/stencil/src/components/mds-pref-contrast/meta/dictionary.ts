@@ -1,9 +1,3 @@
-const contrastDictionary = [
-  'more',
-  'no-preference',
-  'system',
-]
+const contrastDictionary = ['more', 'no-preference', 'system'];
 
-export {
-  contrastDictionary,
-}
+export { contrastDictionary };

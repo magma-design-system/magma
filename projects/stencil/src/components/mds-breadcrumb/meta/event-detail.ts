@@ -1,5 +1,5 @@
 export interface MdsBreadcrumbEventDetail {
-  caller: HTMLMdsBreadcrumbItemElement
-  id: string
-  selected?: boolean
+  caller: HTMLMdsBreadcrumbItemElement;
+  id: string;
+  selected?: boolean;
 }

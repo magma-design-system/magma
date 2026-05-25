@@ -1,7 +1,7 @@
 :host-context(:root.pref-contrast-more),
-:host-context(:root.pref-contrast-more):host([variant="do"]),
-:host-context(:root.pref-contrast-more):host([variant="dont"]),
-:host-context(:root.pref-contrast-more):host([variant="warn"]) {
+:host-context(:root.pref-contrast-more):host([variant='do']),
+:host-context(:root.pref-contrast-more):host([variant='dont']),
+:host-context(:root.pref-contrast-more):host([variant='warn']) {
   --mds-usage-badge-color: rgb(var(--tone-neutral-01));
   --mds-usage-color: rgb(var(--tone-neutral-01));
 }
@@ -9,9 +9,9 @@
 @media (prefers-contrast: more) {
   :host-context(:root.pref-contrast-system),
   :host-context(:root:not([data-magma-pref])),
-  :host-context(:root:not([data-magma-pref])):host([variant="do"]),
-  :host-context(:root:not([data-magma-pref])):host([variant="dont"]),
-  :host-context(:root:not([data-magma-pref])):host([variant="warn"]) {
+  :host-context(:root:not([data-magma-pref])):host([variant='do']),
+  :host-context(:root:not([data-magma-pref])):host([variant='dont']),
+  :host-context(:root:not([data-magma-pref])):host([variant='warn']) {
     --mds-usage-badge-color: rgb(var(--tone-neutral-01));
     --mds-usage-color: rgb(var(--tone-neutral-01));
   }

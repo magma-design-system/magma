@@ -1,4 +1,4 @@
 export interface MdsAccordionEventDetail {
-  children: NodeListOf<HTMLMdsAccordionItemElement>
-  selected: string
+  children: NodeListOf<HTMLMdsAccordionItemElement>;
+  selected: string;
 }

@@ -7,7 +7,7 @@
 @property --mds-list-item-icon-margin {
   inherits: false;
   initial-value: 0 --spacing(200) 0 0;
-  syntax: "<length>+";
+  syntax: '<length>+';
 }
 
 :host {

@@ -6,7 +6,7 @@
 @media (prefers-color-scheme: dark) {
   :host-context(:root.pref-theme-system:not(.pref-theme-scheme-light)),
   :host-context(:root:not([data-magma-pref])) {
-      .items {
+    .items {
       --mds-filter-items-background-active: rgb(var(--tone-neutral-10));
       --mds-filter-items-background: rgb(var(--tone-neutral-09));
     }

@@ -8,13 +8,13 @@
 @property --mds-paginator-background {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-09));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-paginator-scroll-behavior {
   inherits: false;
   initial-value: smooth;
-  syntax: "smooth | auto";
+  syntax: 'smooth | auto';
 }
 
 :host {
@@ -27,8 +27,7 @@
 }
 
 .pages {
-  @apply
-    duration-200
+  @apply duration-200
     hide-scrollbar
     ease-in-out
     mx-200

@@ -1,6 +1,5 @@
 @utility text-title-h1 {
-  @apply
-    antialiased
+  @apply antialiased
     font-black
     font-title
     text-box-vertical-margin
@@ -8,8 +7,7 @@
 }
 
 @utility text-title-h2 {
-  @apply
-    antialiased
+  @apply antialiased
     font-black
     font-title
     text-box-vertical-margin
@@ -17,8 +15,7 @@
 }
 
 @utility text-title-h3 {
-  @apply
-    antialiased
+  @apply antialiased
     font-black
     font-title
     text-box-vertical-margin
@@ -26,8 +23,7 @@
 }
 
 @utility text-title-h4 {
-  @apply
-    antialiased
+  @apply antialiased
     font-black
     font-title
     text-box-vertical-margin
@@ -35,8 +31,7 @@
 }
 
 @utility text-title-h5 {
-  @apply
-    antialiased
+  @apply antialiased
     font-black
     font-title
     text-box-vertical-margin
@@ -44,8 +39,7 @@
 }
 
 @utility text-title-h6 {
-  @apply
-    antialiased
+  @apply antialiased
     font-bold
     font-title
     text-box-vertical-margin
@@ -53,8 +47,7 @@
 }
 
 @utility text-title-action {
-  @apply
-    antialiased
+  @apply antialiased
     font-medium
     font-title
     text-box-vertical-margin
@@ -62,32 +55,28 @@
 }
 
 @utility text-info-paragraph {
-  @apply
-    antialiased
+  @apply antialiased
     font-info
     text-box-vertical-margin
     text-size-info-paragraph;
 }
 
 @utility text-info-detail {
-  @apply
-    antialiased
+  @apply antialiased
     font-info
     text-box-vertical-margin
     text-size-info-detail;
 }
 
 @utility text-info-caption {
-  @apply
-    antialiased
+  @apply antialiased
     font-info
     text-box-vertical-margin
     text-size-info-caption;
 }
 
 @utility text-info-label {
-  @apply
-    antialiased
+  @apply antialiased
     font-bold
     font-info
     text-size-info-label
@@ -96,8 +85,7 @@
 }
 
 @utility text-info-option {
-  @apply
-    antialiased
+  @apply antialiased
     font-bold
     font-info
     text-size-info-option
@@ -106,16 +94,14 @@
 }
 
 @utility text-info-tip {
-  @apply
-    antialiased
+  @apply antialiased
     font-info
     text-box-vertical-margin
     text-size-info-tip;
 }
 
 @utility text-read-paragraph {
-  @apply
-    antialiased
+  @apply antialiased
     font-light
     font-read
     text-box-vertical-margin
@@ -123,8 +109,7 @@
 }
 
 @utility text-read-detail {
-  @apply
-    antialiased
+  @apply antialiased
     font-light
     font-read
     text-box-vertical-margin
@@ -132,24 +117,21 @@
 }
 
 @utility text-read-caption {
-  @apply
-    antialiased
+  @apply antialiased
     font-read
     text-box-vertical-margin
     text-size-read-caption;
 }
 
 @utility text-code-snippet {
-  @apply
-    antialiased
+  @apply antialiased
     font-code
     text-box-vertical-margin
     text-size-code-snippet;
 }
 
 @utility text-code-hack {
-  @apply
-    antialiased
+  @apply antialiased
     font-code
     text-box-vertical-margin
     text-size-code-hack;

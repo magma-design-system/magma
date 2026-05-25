@@ -1,4 +1,1 @@
-export type ContrastModeType =
-  | 'more'
-  | 'no-preference'
-  | 'system'
+export type ContrastModeType = 'more' | 'no-preference' | 'system';

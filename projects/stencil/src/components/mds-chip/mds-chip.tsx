@@ -1,16 +1,27 @@
-import { Component, Element, Event, EventEmitter, Host, Method, Prop, State, Watch, h } from '@stencil/core'
-import miBaselineCancel from '@icon/mi/baseline/cancel.svg'
-import { setAttributeIfEmpty } from '@common/aria'
-import { MdsChipEvent } from './meta/interface'
-import { KeyboardManager } from '@common/keyboard-manager'
-import { ChipVariantType } from '@type/variant'
-import { ToneMinimalVariantType } from '@type/tone'
+import {
+  Component,
+  Element,
+  Event,
+  EventEmitter,
+  Host,
+  Method,
+  Prop,
+  State,
+  Watch,
+  h,
+} from '@stencil/core';
+import miBaselineCancel from '@icon/mi/baseline/cancel.svg';
+import { setAttributeIfEmpty } from '@common/aria';
+import { MdsChipEvent } from './meta/interface';
+import { KeyboardManager } from '@common/keyboard-manager';
+import { ChipVariantType } from '@type/variant';
+import { ToneMinimalVariantType } from '@type/tone';
 
-import { Locale } from '@common/locale'
-import localeEl from './meta/locale.el.json'
-import localeEn from './meta/locale.en.json'
-import localeEs from './meta/locale.es.json'
-import localeIt from './meta/locale.it.json'
+import { Locale } from '@common/locale';
+import localeEl from './meta/locale.el.json';
+import localeEn from './meta/locale.en.json';
+import localeEs from './meta/locale.es.json';
+import localeIt from './meta/locale.it.json';
 
 @Component({
   tag: 'mds-chip',
@@ -18,176 +29,191 @@ import localeIt from './meta/locale.it.json'
   shadow: true,
 })
 export class MdsChip {
-
-  @Element() host: HTMLMdsChipElement
-  private km = new KeyboardManager()
-  private t:Locale = new Locale({
+  @Element() host: HTMLMdsChipElement;
+  private km = new KeyboardManager();
+  private t: Locale = new Locale({
     el: localeEl,
     en: localeEn,
     es: localeEs,
     it: localeIt,
-  })
-  @State() language: string
+  });
+  @State() language: string;
   @Method()
-  async updateLang (): Promise<void> {
-    this.language = this.t.lang(this.host)
+  async updateLang(): Promise<void> {
+    this.language = this.t.lang(this.host);
   }
 
   /**
    * Adds ARIA support to the element if has interaction
    */
-  @Prop({ reflect: true, mutable: true }) clickable?: boolean
+  @Prop({ reflect: true, mutable: true }) clickable?: boolean;
 
   /**
    * Shows the cross icon to perform cancel/delete action on element
    */
-  @Prop() readonly deletable?: boolean
+  @Prop() readonly deletable?: boolean;
 
   /**
    * Sets the component disabled status
    */
-  @Prop() readonly disabled?: boolean = false
+  @Prop() readonly disabled?: boolean = false;
 
   /**
    * The icon displayed to the left of the component's label
    */
-  @Prop() readonly icon?: string
+  @Prop() readonly icon?: string;
 
   /**
    * The label displayed to the right of the component's icon
    */
-  @Prop({ reflect: true }) readonly label!: string
+  @Prop({ reflect: true }) readonly label!: string;
 
   /**
    * Sets the component selected
    */
-  @Prop({ reflect: true, mutable: true }) selected?: boolean
+  @Prop({ reflect: true, mutable: true }) selected?: boolean;
 
   /**
    * Sets if the component change is status to selected when is clicked
    */
-  @Prop({ reflect: true }) readonly selectable?: boolean = false
+  @Prop({ reflect: true }) readonly selectable?: boolean = false;
 
   /**
    * Sets the color variant of the component
    */
-  @Prop({ reflect: true }) readonly variant?: ChipVariantType = 'primary'
+  @Prop({ reflect: true }) readonly variant?: ChipVariantType = 'primary';
 
   /**
    * Sets the color variant tone of the component
    */
-  @Prop({ reflect: true }) readonly tone?: ToneMinimalVariantType = 'strong'
+  @Prop({ reflect: true }) readonly tone?: ToneMinimalVariantType = 'strong';
 
   /**
    * Emits when the component's label is clicked
    */
-  @Event({ eventName: 'mdsChipClickLabel' }) clickLabelEvent: EventEmitter<MdsChipEvent>
+  @Event({ eventName: 'mdsChipClickLabel' }) clickLabelEvent: EventEmitter<MdsChipEvent>;
 
   /**
    * Emits when the component's delete button is clicked
    */
-  @Event({ eventName: 'mdsChipDelete' }) deleteEvent: EventEmitter<MdsChipEvent>
+  @Event({ eventName: 'mdsChipDelete' }) deleteEvent: EventEmitter<MdsChipEvent>;
 
   /**
    * Emits when the component's label is clicked and when `selectable` attribute is set to `true`
    */
-  @Event({ eventName: 'mdsChipSelect' }) selectEvent: EventEmitter<MdsChipEvent>
+  @Event({ eventName: 'mdsChipSelect' }) selectEvent: EventEmitter<MdsChipEvent>;
 
   @Watch('selectable')
-  handleSelectableProp (newValue: boolean): void {
+  handleSelectableProp(newValue: boolean): void {
     if (newValue) {
-      this.clickable = true
+      this.clickable = true;
     }
   }
 
   @Watch('clickable')
-  handleClickableProp (newValue: boolean): void {
-    this.handleClickableElement(newValue)
-    this.handleClickableKeyboard(newValue)
+  handleClickableProp(newValue: boolean): void {
+    this.handleClickableElement(newValue);
+    this.handleClickableKeyboard(newValue);
   }
 
   @Watch('selected')
-  handleSelectedProp (newValue: boolean): void {
+  handleSelectedProp(newValue: boolean): void {
     if (newValue === false) {
-      this.selected = undefined
+      this.selected = undefined;
     }
   }
 
-  private onClickLabelHandler (event: Event): void {
+  private onClickLabelHandler(event: Event): void {
     if (this.selectable) {
-      this.selected = !this.selected
+      this.selected = !this.selected;
       if (this.selected === false) {
-        this.selected = undefined
+        this.selected = undefined;
       }
-      this.selectEvent.emit({ event, element: this.host, selected: this.selected })
-      return
+      this.selectEvent.emit({ event, element: this.host, selected: this.selected });
+      return;
     }
-    this.clickLabelEvent.emit({ event, element: this.host })
+    this.clickLabelEvent.emit({ event, element: this.host });
   }
 
-  private onDeleteHandler (event: Event): void {
-    this.deleteEvent.emit({ event, element: this.host })
+  private onDeleteHandler(event: Event): void {
+    this.deleteEvent.emit({ event, element: this.host });
   }
 
   private handleClickableKeyboard = (isClickable: boolean): void => {
     if (isClickable) {
-      const label = this.host.shadowRoot?.querySelector('.label') as HTMLElement
-      this.km.addElement(label, 'label')
-      this.km.attachClickBehavior('label')
-      return
+      const label = this.host.shadowRoot?.querySelector('.label') as HTMLElement;
+      this.km.addElement(label, 'label');
+      this.km.attachClickBehavior('label');
+      return;
     }
-    this.km.detachClickBehavior('label')
-  }
+    this.km.detachClickBehavior('label');
+  };
 
   private handleClickableElement = (isClickable: boolean): void => {
-    const label = this.host.shadowRoot?.querySelector('.label') as HTMLElement
+    const label = this.host.shadowRoot?.querySelector('.label') as HTMLElement;
     if (!label) {
-      return
+      return;
     }
     if (isClickable) {
-      setAttributeIfEmpty(label, 'role', 'button')
-      label.addEventListener('click', this.onClickLabelHandler.bind(this))
-      return
+      setAttributeIfEmpty(label, 'role', 'button');
+      label.addEventListener('click', this.onClickLabelHandler.bind(this));
+      return;
     }
-    label.removeAttribute('role')
-    label.removeEventListener('click', this.onClickLabelHandler.bind(this))
+    label.removeAttribute('role');
+    label.removeEventListener('click', this.onClickLabelHandler.bind(this));
+  };
+
+  componentWillLoad(): void {
+    this.t.lang(this.host);
   }
 
-  componentWillLoad (): void {
-    this.t.lang(this.host)
-  }
-
-  componentDidLoad (): void {
+  componentDidLoad(): void {
     if (this.clickable) {
-      this.handleClickableElement(true)
-      this.handleClickableKeyboard(true)
+      this.handleClickableElement(true);
+      this.handleClickableKeyboard(true);
     }
   }
 
-  disconnectedCallback ():void {
-    this.km.detachClickBehavior('label')
+  disconnectedCallback(): void {
+    this.km.detachClickBehavior('label');
   }
 
-  render () {
+  render() {
     return (
       <Host aria-disabled={this.disabled ? 'true' : 'false'}>
-        { this.icon &&
+        {this.icon && (
           <div aria-hidden="true" class="icon-area">
             <mds-icon class="icon" name={this.icon} />
           </div>
-        }
+        )}
         <div class="label-wrapper">
-          { this.clickable
-            ? <mds-text class="label label--interactive" tabindex="0" typography="caption" truncate="word">
-              { this.label }
+          {this.clickable ? (
+            <mds-text
+              class="label label--interactive"
+              tabindex="0"
+              typography="caption"
+              truncate="word"
+            >
+              {this.label}
             </mds-text>
-            : <mds-text class="label" typography="caption" truncate="word">
-              { this.label }
+          ) : (
+            <mds-text class="label" typography="caption" truncate="word">
+              {this.label}
             </mds-text>
-          }
+          )}
         </div>
-        { this.deletable && <mds-button class="button-delete" icon={miBaselineCancel} onClick={this.onDeleteHandler.bind(this)} title={ `${this.t.get('deleteLabel')} ${this.label}` } variant="dark" tone="text" size="sm"></mds-button> }
+        {this.deletable && (
+          <mds-button
+            class="button-delete"
+            icon={miBaselineCancel}
+            onClick={this.onDeleteHandler.bind(this)}
+            title={`${this.t.get('deleteLabel')} ${this.label}`}
+            variant="dark"
+            tone="text"
+            size="sm"
+          ></mds-button>
+        )}
       </Host>
-    )
+    );
   }
 }

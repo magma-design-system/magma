@@ -18,7 +18,7 @@
 
 @property --magma-pref-theme-name {
   inherits: false;
-  initial-value: "magma";
+  initial-value: 'magma';
   syntax: '<string>';
 }
 
@@ -205,7 +205,6 @@
 }
 
 :root {
-
   /*
     For browser compatibility reasons we add defaults
     to avoid issues with older browsers that do not support houdini @property

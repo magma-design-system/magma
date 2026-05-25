@@ -1,30 +1,28 @@
-
-
-
-:host(:not([navigation="scrollbar"])) .contents {
+:host(:not([navigation='scrollbar'])) .contents {
   @apply hide-scrollbar;
 }
 
-:host([navigation="scrollbar"]) .contents::-webkit-scrollbar {
+:host([navigation='scrollbar']) .contents::-webkit-scrollbar {
   height: var(--mds-horizontal-scroll-scrollbar-size);
   width: var(--mds-horizontal-scroll-scrollbar-size);
 }
 
-:host([navigation="scrollbar"]) .contents::-webkit-scrollbar-track {
+:host([navigation='scrollbar']) .contents::-webkit-scrollbar-track {
   background-color: var(--mds-horizontal-scroll-scrollbar-track-background);
   border-radius: var(--mds-horizontal-scroll-scrollbar-radius);
   margin-block: var(--mds-horizontal-scroll-scrollbar-margin);
   margin-inline: var(--mds-horizontal-scroll-scrollbar-margin);
 }
 
-:host([navigation="scrollbar"]) .contents::-webkit-scrollbar-thumb {
+:host([navigation='scrollbar']) .contents::-webkit-scrollbar-thumb {
   background-color: var(--mds-horizontal-scroll-scrollbar-thumb-background);
   border-radius: var(--mds-horizontal-scroll-scrollbar-radius);
 }
 
 @supports (scrollbar-color: transparent transparent) {
   .contents {
-    scrollbar-color: var(--mds-horizontal-scroll-scrollbar-thumb-background) var(--mds-horizontal-scroll-scrollbar-track-background);
+    scrollbar-color: var(--mds-horizontal-scroll-scrollbar-thumb-background)
+      var(--mds-horizontal-scroll-scrollbar-track-background);
     scrollbar-width: thin;
   }
 }

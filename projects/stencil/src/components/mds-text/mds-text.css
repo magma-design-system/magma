@@ -1,4 +1,4 @@
-@import "../../tailwind/fouc.css";
+@import '../../tailwind/fouc.css';
 
 /**
  * @prop --mds-text-selection-background: Background color used when text is selected.
@@ -8,35 +8,34 @@
  * @prop --mds-text-animation-placeholder-char: Placeholder character used during text animation.
  */
 
-
 @property --mds-text-selection-background {
   inherits: false;
   initial-value: rgb(var(--label-sky-09));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-text-selection-color {
   inherits: false;
   initial-value: rgb(var(--label-sky-01));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-text-line-clamp {
   inherits: false;
   initial-value: 3;
-  syntax: "<integer>";
+  syntax: '<integer>';
 }
 
 @property --mds-text-animation-speed {
   inherits: false;
   initial-value: 0.5;
-  syntax: "<number>";
+  syntax: '<number>';
 }
 
 @property --mds-text-animation-placeholder-char {
   inherits: false;
-  initial-value: " ";
-  syntax: "<string>";
+  initial-value: ' ';
+  syntax: '<string>';
 }
 
 :host {
@@ -44,7 +43,7 @@
   --mds-text-selection-color: rgb(var(--label-sky-01));
   --mds-text-line-clamp: 3;
   --mds-text-animation-speed: 0.5;
-  --mds-text-animation-placeholder-char: " ";
+  --mds-text-animation-placeholder-char: ' ';
 
   display: flex;
   min-width: 0;
@@ -60,149 +59,149 @@
   display: inherit;
 }
 
-:host([typography="snippet"]) {
+:host([typography='snippet']) {
   @apply text-code-snippet;
 }
 
-:host([typography="hack"]) {
+:host([typography='hack']) {
   @apply text-code-hack;
 }
 
-:host([typography="h1"]) {
+:host([typography='h1']) {
   @apply text-title-h1;
 }
 
-:host([typography="h2"]) {
+:host([typography='h2']) {
   @apply text-title-h2;
 }
 
-:host([typography="h3"]) {
+:host([typography='h3']) {
   @apply text-title-h3;
 }
 
-:host([typography="h4"]) {
+:host([typography='h4']) {
   @apply text-title-h4;
 }
 
-:host([typography="h5"]) {
+:host([typography='h5']) {
   @apply text-title-h5;
 }
 
-:host([typography="h6"]) {
+:host([typography='h6']) {
   @apply text-title-h6;
 }
 
-:host([typography="h1"]),
-:host([typography="h2"]),
-:host([typography="h3"]),
-:host([typography="h4"]),
-:host([typography="h5"]),
-:host([typography="h6"]) {
+:host([typography='h1']),
+:host([typography='h2']),
+:host([typography='h3']),
+:host([typography='h4']),
+:host([typography='h5']),
+:host([typography='h6']) {
   text-wrap: balance;
 }
 
-:host([typography="action"]) {
+:host([typography='action']) {
   @apply text-title-action;
 }
 
-:host([typography="paragraph"]) {
+:host([typography='paragraph']) {
   @apply text-info-paragraph;
 }
 
-:host([typography="detail"]) {
+:host([typography='detail']) {
   @apply text-info-detail;
 }
 
-:host([typography="caption"]) {
+:host([typography='caption']) {
   @apply text-info-caption;
 }
 
-:host([typography="paragraph"]),
-:host([typography="detail"]),
-:host([typography="caption"]) {
+:host([typography='paragraph']),
+:host([typography='detail']),
+:host([typography='caption']) {
   text-wrap: pretty;
 }
 
-:host([typography="label"]) {
+:host([typography='label']) {
   @apply text-info-label;
 }
 
-:host([typography="tip"]) {
+:host([typography='tip']) {
   @apply text-info-tip;
 }
 
-:host([typography="option"]) {
+:host([typography='option']) {
   @apply text-info-option;
 }
 
-:host([typography="paragraph"][variant="read"]) {
+:host([typography='paragraph'][variant='read']) {
   @apply text-read-paragraph;
 }
 
-:host([typography="detail"][variant="read"]) {
+:host([typography='detail'][variant='read']) {
   @apply text-read-detail;
 }
 
-:host([typography="caption"][variant="read"]) {
+:host([typography='caption'][variant='read']) {
   @apply text-read-caption;
 }
 
-:host([tag="article"]),
-:host([tag="blockquote"]),
-:host([tag="dd"]),
-:host([tag="details"]),
-:host([tag="div"]),
-:host([tag="dl"]),
-:host([tag="dt"]),
-:host([tag="figcaption"]),
-:host([tag="h1"]),
-:host([tag="h2"]),
-:host([tag="h3"]),
-:host([tag="h4"]),
-:host([tag="h5"]),
-:host([tag="h6"]),
-:host([tag="label"]),
-:host([tag="legend"]),
-:host([tag="li"]),
-:host([tag="ol"]),
-:host([tag="p"]),
-:host([tag="pre"]),
-:host([tag="summary"]),
-:host([tag="ul"]) {
+:host([tag='article']),
+:host([tag='blockquote']),
+:host([tag='dd']),
+:host([tag='details']),
+:host([tag='div']),
+:host([tag='dl']),
+:host([tag='dt']),
+:host([tag='figcaption']),
+:host([tag='h1']),
+:host([tag='h2']),
+:host([tag='h3']),
+:host([tag='h4']),
+:host([tag='h5']),
+:host([tag='h6']),
+:host([tag='label']),
+:host([tag='legend']),
+:host([tag='li']),
+:host([tag='ol']),
+:host([tag='p']),
+:host([tag='pre']),
+:host([tag='summary']),
+:host([tag='ul']) {
   display: block;
 }
 
-:host([tag="abbr"]),
-:host([tag="address"]),
-:host([tag="b"]),
-:host([tag="bdo"]),
-:host([tag="cite"]),
-:host([tag="code"]),
-:host([tag="del"]),
-:host([tag="dfn"]),
-:host([tag="em"]),
-:host([tag="i"]),
-:host([tag="ins"]),
-:host([tag="kbd"]),
-:host([tag="mark"]),
-:host([tag="q"]),
-:host([tag="rb"]),
-:host([tag="rt"]),
-:host([tag="ruby"]),
-:host([tag="s"]),
-:host([tag="samp"]),
-:host([tag="small"]),
-:host([tag="span"]),
-:host([tag="strong"]),
-:host([tag="sub"]),
-:host([tag="sup"]),
-:host([tag="time"]),
-:host([tag="u"]),
-:host([tag="var"]) {
+:host([tag='abbr']),
+:host([tag='address']),
+:host([tag='b']),
+:host([tag='bdo']),
+:host([tag='cite']),
+:host([tag='code']),
+:host([tag='del']),
+:host([tag='dfn']),
+:host([tag='em']),
+:host([tag='i']),
+:host([tag='ins']),
+:host([tag='kbd']),
+:host([tag='mark']),
+:host([tag='q']),
+:host([tag='rb']),
+:host([tag='rt']),
+:host([tag='ruby']),
+:host([tag='s']),
+:host([tag='samp']),
+:host([tag='small']),
+:host([tag='span']),
+:host([tag='strong']),
+:host([tag='sub']),
+:host([tag='sup']),
+:host([tag='time']),
+:host([tag='u']),
+:host([tag='var']) {
   display: inline;
 }
 
-:host([tag="code"]) {
+:host([tag='code']) {
   @apply ease-in-out
   px-100
   py-25
@@ -222,18 +221,18 @@
   text-overflow: ellipsis;
 }
 
-:host([truncate="word"]) .text {
+:host([truncate='word']) .text {
   white-space: nowrap;
 }
 
 @supports (line-clamp: 1) {
-  :host([truncate="all"]) .text {
+  :host([truncate='all']) .text {
     line-clamp: var(--mds-text-line-clamp, 1);
   }
 }
 
 @supports (display: -webkit-box) {
-  :host([truncate="all"]) .text {
+  :host([truncate='all']) .text {
     -webkit-box-orient: vertical;
 
     /* stylelint-disable-next-line value-no-vendor-prefix */
@@ -300,4 +299,3 @@ wbr {
   overflow: inherit;
   text-overflow: inherit;
 }
-

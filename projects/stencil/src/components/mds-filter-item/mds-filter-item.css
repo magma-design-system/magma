@@ -11,25 +11,25 @@
 @property --mds-filter-item-count-background-default {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-08));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-filter-item-count-color-default {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-02));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-filter-item-count-background-selected {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-05));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-filter-item-count-color-selected {
   inherits: false;
   initial-value: rgb(var(--tone-neutral));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 :host {
@@ -50,8 +50,7 @@
   justify-content: center;
   padding: --spacing(200) --spacing(400);
   transition-duration: var(--duration-200);
-  transition-property:
-    background-color, box-shadow, color, outline, outline-offset;
+  transition-property: background-color, box-shadow, color, outline, outline-offset;
   transition-timing-function: var(--ease-out);
   user-select: none;
   white-space: nowrap;

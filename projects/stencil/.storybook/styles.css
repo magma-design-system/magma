@@ -22,8 +22,7 @@
 
 @layer overrides {
   body {
-    @apply
-    bg-tone-neutral
+    @apply bg-tone-neutral
     text-tone-neutral-03
       transition-colors
       duration-300

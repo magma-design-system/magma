@@ -1,9 +1,6 @@
-import { iconsDictionary } from '@type/icon'
-import {
-  buttonSizeDictionary,
-  buttonIconPositionDictionary,
-} from '@type/button'
-import { h } from '@stencil/core'
+import { iconsDictionary } from '@type/icon';
+import { buttonSizeDictionary, buttonIconPositionDictionary } from '@type/button';
+import { h } from '@stencil/core';
 
 export default {
   title: 'UI / Tab / Tab Item',
@@ -21,8 +18,7 @@ export default {
     'icon-position': {
       type: { name: 'string' },
       control: { type: 'select' },
-      description:
-        'Specifies the horizontal position of the icon displayed in the tab item',
+      description: 'Specifies the horizontal position of the icon displayed in the tab item',
       options: buttonIconPositionDictionary,
     },
     selected: {
@@ -40,13 +36,13 @@ export default {
       options: buttonSizeDictionary,
     },
   },
-}
+};
 
-const Template = args => <mds-tab-item {...args} label="First Blood"></mds-tab-item>
+const Template = (args) => <mds-tab-item {...args} label="First Blood"></mds-tab-item>;
 
 export const Default = {
   render: Template,
-}
+};
 
 export const Selected = {
   render: Template,
@@ -54,7 +50,7 @@ export const Selected = {
   args: {
     selected: true,
   },
-}
+};
 
 export const Disabled = {
   render: Template,
@@ -62,4 +58,4 @@ export const Disabled = {
   args: {
     disabled: true,
   },
-}
+};

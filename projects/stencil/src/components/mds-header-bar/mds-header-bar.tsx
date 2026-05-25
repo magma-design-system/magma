@@ -1,6 +1,16 @@
-import miRoundMenu from '@icon/mi/round/menu.svg'
-import { Component, Element, Event, EventEmitter, Host, Method, Prop, State, h } from '@stencil/core'
-import { HeaderBarMenuType, HeaderBarNavType } from '@type/header-bar'
+import miRoundMenu from '@icon/mi/round/menu.svg';
+import {
+  Component,
+  Element,
+  Event,
+  EventEmitter,
+  Host,
+  Method,
+  Prop,
+  State,
+  h,
+} from '@stencil/core';
+import { HeaderBarMenuType, HeaderBarNavType } from '@type/header-bar';
 
 /**
  * @part actions - Selects the element which wraps `nav` and `hamburger` parts
@@ -16,42 +26,41 @@ import { HeaderBarMenuType, HeaderBarNavType } from '@type/header-bar'
   shadow: true,
 })
 export class MdsHeaderBar {
-
-  private hasNav: boolean
-  @Element() host: HTMLMdsHeaderBarElement
-  @State() isOpened: boolean
+  private hasNav: boolean;
+  @Element() host: HTMLMdsHeaderBarElement;
+  @State() isOpened: boolean;
 
   /**
    * Sets the visibility type of the hamburger menu
    */
-  @Prop({ reflect: true }) menu: HeaderBarMenuType = 'mobile'
+  @Prop({ reflect: true }) menu: HeaderBarMenuType = 'mobile';
 
   /**
    * Sets the visibility type of the navigation menu
    */
-  @Prop({ reflect: true }) nav: HeaderBarNavType = 'desktop'
+  @Prop({ reflect: true }) nav: HeaderBarNavType = 'desktop';
 
-  componentWillLoad (): void {
-    this.hasNav = this.host.querySelector(':scope > [slot="nav"]') !== null
+  componentWillLoad(): void {
+    this.hasNav = this.host.querySelector(':scope > [slot="nav"]') !== null;
   }
 
   /**
    * Emits when the component is opened
    */
-  @Event({ bubbles: true, eventName: 'mdsHeaderBarOpen' }) openedEvent: EventEmitter<void>
+  @Event({ bubbles: true, eventName: 'mdsHeaderBarOpen' }) openedEvent: EventEmitter<void>;
 
   private open = () => {
-    this.isOpened = true
-    this.openedEvent.emit()
-    this.host.closest('mds-header')?.setOpened(true)
-  }
+    this.isOpened = true;
+    this.openedEvent.emit();
+    this.host.closest('mds-header')?.setOpened(true);
+  };
 
   @Method()
-  async setOpened (isOpened: boolean = true): Promise<void> {
-    this.isOpened = isOpened
+  async setOpened(isOpened: boolean = true): Promise<void> {
+    this.isOpened = isOpened;
   }
 
-  render () {
+  render() {
     return (
       <Host>
         <div class="content" part="content">
@@ -59,18 +68,24 @@ export class MdsHeaderBar {
             <slot />
           </div>
           <div class="actions" part="actions">
-            {this.nav !== 'none' && this.hasNav &&
+            {this.nav !== 'none' && this.hasNav && (
               <nav class="nav" part="nav">
                 <slot name="nav" />
               </nav>
-            }
-            {this.menu !== 'none' &&
-              <mds-button class="menu" variant="dark" tone="text" icon={miRoundMenu} onClick={this.open} part="hamburger"></mds-button>
-            }
+            )}
+            {this.menu !== 'none' && (
+              <mds-button
+                class="menu"
+                variant="dark"
+                tone="text"
+                icon={miRoundMenu}
+                onClick={this.open}
+                part="hamburger"
+              ></mds-button>
+            )}
           </div>
         </div>
       </Host>
-    )
+    );
   }
-
 }

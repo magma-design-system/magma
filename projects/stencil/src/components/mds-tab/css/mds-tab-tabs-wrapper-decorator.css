@@ -1,7 +1,7 @@
 .tabs-wrapper::after {
   border-radius: var(--mds-tab-tabs-radius);
   box-shadow: var(--mds-tab-tabs-wrapper-shadow);
-  content: "";
+  content: '';
   inset: 0;
   opacity: var(--mds-tab-tabs-wrapper-outline-opacity);
   pointer-events: none;

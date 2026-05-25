@@ -7,7 +7,7 @@
 @property --mds-header-bar-hamburger-color {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-03));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 :host {
@@ -67,18 +67,18 @@
   width: --spacing(800);
 }
 
-:host([menu="desktop"]) .menu,
-:host([nav="desktop"]) .nav {
+:host([menu='desktop']) .menu,
+:host([nav='desktop']) .nav {
   @apply max-tablet:hidden;
 }
 
-:host([menu="mobile"]) .menu,
-:host([nav="mobile"]) .nav {
+:host([menu='mobile']) .menu,
+:host([nav='mobile']) .nav {
   @apply desktop:hidden;
 }
 
-:host([menu="none"]) .menu,
-:host([nav="none"]) .nav {
+:host([menu='none']) .menu,
+:host([nav='none']) .nav {
   display: none;
 }
 

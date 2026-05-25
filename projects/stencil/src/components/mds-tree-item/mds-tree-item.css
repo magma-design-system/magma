@@ -36,175 +36,175 @@
 @property --mds-tree-item-actions-border-radius {
   inherits: false;
   initial-value: var(--mds-tree-actions-border-radius);
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-tree-item-actions-gap {
   inherits: false;
   initial-value: var(--mds-tree-actions-gap);
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-tree-item-branch-border-color {
   inherits: false;
   initial-value: var(--mds-tree-branch-border-color);
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-tree-item-branch-border-radius {
   inherits: false;
   initial-value: var(--mds-tree-branch-border-radius, var(--radius-lg));
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-tree-item-branch-border-size {
   inherits: false;
   initial-value: var(--mds-tree-branch-border-size);
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-tree-item-branch-dot-default-color {
   inherits: false;
   initial-value: var(--mds-tree-branch-dot-default-color);
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-tree-item-branch-dot-expanded-color {
   inherits: false;
   initial-value: var(--mds-tree-branch-dot-expanded-color);
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-tree-item-label-default-background {
   inherits: false;
   initial-value: var(--mds-tree-label-default-background);
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-tree-item-label-hover-background {
   inherits: false;
   initial-value: var(--mds-tree-label-hover-background);
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-tree-item-label-icon-default-color {
   inherits: false;
   initial-value: var(--mds-tree-label-icon-default-color);
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-tree-item-label-icon-hover-color {
   inherits: false;
   initial-value: var(--mds-tree-label-icon-hover-color);
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-tree-item-line-clamp {
   inherits: false;
   initial-value: var(--mds-tree-line-clamp);
-  syntax: "<integer>";
+  syntax: '<integer>';
 }
 
 @property --mds-tree-item-toggle-gap {
   inherits: false;
   initial-value: var(--mds-tree-toggle-gap);
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-tree-item-toggle-icon-async-background {
   inherits: false;
   initial-value: var(--mds-tree-toggle-icon-async-background);
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-tree-item-toggle-icon-async-color {
   inherits: false;
   initial-value: var(--mds-tree-toggle-icon-async-color);
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-tree-item-toggle-icon-chevron-default-background {
   inherits: false;
   initial-value: var(--mds-tree-toggle-icon-chevron-default-background);
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-tree-item-toggle-icon-chevron-default-color {
   inherits: false;
   initial-value: var(--mds-tree-toggle-icon-chevron-default-color);
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-tree-item-toggle-icon-chevron-expanded-background {
   inherits: false;
   initial-value: var(--mds-tree-item-toggle-icon-chevron-default-background);
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-tree-item-toggle-icon-chevron-expanded-color {
   inherits: false;
   initial-value: var(--mds-tree-item-toggle-icon-default-color);
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-tree-item-toggle-icon-folder-default-background {
   inherits: false;
   initial-value: var(--mds-tree-toggle-icon-folder-default-background);
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-tree-item-toggle-icon-folder-default-color {
   inherits: false;
   initial-value: var(--mds-tree-toggle-icon-folder-default-color);
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-tree-item-toggle-icon-folder-expanded-background {
   inherits: false;
   initial-value: var(--mds-tree-item-toggle-icon-folder-default-background);
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-tree-item-toggle-icon-folder-expanded-color {
   inherits: false;
   initial-value: var(--mds-tree-item-toggle-icon-folder-default-color);
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-tree-item-toggle-icon-position-right-default-background {
   inherits: false;
   initial-value: var(--mds-tree-toggle-icon-position-right-default-background);
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-tree-item-toggle-icon-position-right-default-color {
   inherits: false;
   initial-value: var(--mds-tree-toggle-icon-position-right-default-color);
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-tree-item-toggle-icon-position-right-expanded-background {
   inherits: false;
   initial-value: var(--mds-tree-toggle-icon-position-right-expanded-background);
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-tree-item-toggle-icon-position-right-expanded-color {
   inherits: false;
   initial-value: var(--mds-tree-toggle-icon-position-right-expanded-color);
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-tree-item-toggle-size {
   inherits: false;
   initial-value: var(--mds-tree-toggle-size);
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-tree-item-transition-duration {
   inherits: false;
   initial-value: var(--mds-tree-transition-duration);
-  syntax: "<time>";
+  syntax: '<time>';
 }
 
 /*
@@ -215,7 +215,6 @@
 }
 */
 
-
 @container style(--mds-tree-branch-use-rounded-border: true) {
   :host-context(:not(.safari)) {
     --mds-tree-branch-border-radius: var(--radius-lg);
@@ -224,7 +223,6 @@
 
 @container style(--mds-tree-branch-use-rounded-border: false) {
   :host-context(:not(.safari)) {
-
     /* stylelint-disable-next-line length-zero-no-unit */
     --mds-tree-branch-border-radius: 0px;
   }
@@ -246,24 +244,50 @@
   --mds-tree-item-toggle-gap: var(--mds-tree-toggle-gap);
   --mds-tree-item-toggle-icon-async-background: var(--mds-tree-toggle-icon-async-background);
   --mds-tree-item-toggle-icon-async-color: var(--mds-tree-toggle-icon-async-color);
-  --mds-tree-item-toggle-icon-chevron-default-background: var(--mds-tree-toggle-icon-chevron-default-background);
-  --mds-tree-item-toggle-icon-chevron-default-color: var(--mds-tree-toggle-icon-chevron-default-color);
-  --mds-tree-item-toggle-icon-chevron-expanded-background: var(--mds-tree-item-toggle-icon-chevron-default-background);
-  --mds-tree-item-toggle-icon-chevron-expanded-color: var(--mds-tree-item-toggle-icon-chevron-default-color);
-  --mds-tree-item-toggle-icon-folder-default-background: var(--mds-tree-toggle-icon-folder-default-background);
-  --mds-tree-item-toggle-icon-folder-default-color: var(--mds-tree-toggle-icon-folder-default-color);
-  --mds-tree-item-toggle-icon-folder-expanded-background: var(--mds-tree-item-toggle-icon-folder-default-background);
-  --mds-tree-item-toggle-icon-folder-expanded-color: var(--mds-tree-item-toggle-icon-folder-default-color);
-  --mds-tree-item-toggle-icon-position-right-default-background: var(--mds-tree-toggle-icon-position-right-default-background);
-  --mds-tree-item-toggle-icon-position-right-default-color: var(--mds-tree-toggle-icon-position-right-default-color);
-  --mds-tree-item-toggle-icon-position-right-expanded-background: var(--mds-tree-toggle-icon-position-right-expanded-background);
-  --mds-tree-item-toggle-icon-position-right-expanded-color: var(--mds-tree-toggle-icon-position-right-expanded-color);
+  --mds-tree-item-toggle-icon-chevron-default-background: var(
+    --mds-tree-toggle-icon-chevron-default-background
+  );
+  --mds-tree-item-toggle-icon-chevron-default-color: var(
+    --mds-tree-toggle-icon-chevron-default-color
+  );
+  --mds-tree-item-toggle-icon-chevron-expanded-background: var(
+    --mds-tree-item-toggle-icon-chevron-default-background
+  );
+  --mds-tree-item-toggle-icon-chevron-expanded-color: var(
+    --mds-tree-item-toggle-icon-chevron-default-color
+  );
+  --mds-tree-item-toggle-icon-folder-default-background: var(
+    --mds-tree-toggle-icon-folder-default-background
+  );
+  --mds-tree-item-toggle-icon-folder-default-color: var(
+    --mds-tree-toggle-icon-folder-default-color
+  );
+  --mds-tree-item-toggle-icon-folder-expanded-background: var(
+    --mds-tree-item-toggle-icon-folder-default-background
+  );
+  --mds-tree-item-toggle-icon-folder-expanded-color: var(
+    --mds-tree-item-toggle-icon-folder-default-color
+  );
+  --mds-tree-item-toggle-icon-position-right-default-background: var(
+    --mds-tree-toggle-icon-position-right-default-background
+  );
+  --mds-tree-item-toggle-icon-position-right-default-color: var(
+    --mds-tree-toggle-icon-position-right-default-color
+  );
+  --mds-tree-item-toggle-icon-position-right-expanded-background: var(
+    --mds-tree-toggle-icon-position-right-expanded-background
+  );
+  --mds-tree-item-toggle-icon-position-right-expanded-color: var(
+    --mds-tree-toggle-icon-position-right-expanded-color
+  );
   --mds-tree-item-toggle-size: var(--mds-tree-toggle-size);
   --mds-tree-item-transition-duration: var(--mds-tree-transition-duration);
   --mds-tree-item-transition-timing-function: var(--mds-tree-transition-timing-function);
 
   /* internal */
-  --mds-tree-item-icon-background-color: var(--mds-tree-item-toggle-icon-chevron-default-background);
+  --mds-tree-item-icon-background-color: var(
+    --mds-tree-item-toggle-icon-chevron-default-background
+  );
   --mds-tree-item-icon-color: var(--mds-tree-item-toggle-icon-chevron-default-color);
   --header-gap: --spacing(100);
 

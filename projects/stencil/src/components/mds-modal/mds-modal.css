@@ -20,73 +20,73 @@
 @property --mds-modal-custom-closed-transform {
   inherits: false;
   initial-value: rotateX(10deg) rotateY(0) scale(1.25) translate(0, 10%);
-  syntax: "<transform-function>";
+  syntax: '<transform-function>';
 }
 
 @property --mds-modal-custom-window-distance {
   inherits: false;
   initial-value: --spacing(600);
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-modal-overlay-color {
   inherits: false;
   initial-value: var(--magma-overlay-color, 0 0 0);
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-modal-overlay-opacity {
   inherits: false;
   initial-value: var(--magma-overlay-opacity, 0.5);
-  syntax: "<number>";
+  syntax: '<number>';
 }
 
 @property --mds-modal-transition-duration {
   inherits: false;
   initial-value: 500ms;
-  syntax: "<time>";
+  syntax: '<time>';
 }
 
 @property --mds-modal-window-background {
   inherits: false;
   initial-value: rgb(var(--tone-neutral));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-modal-window-distance {
   inherits: false;
   initial-value: 0;
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-modal-window-max-width {
   inherits: false;
   initial-value: 33%;
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-modal-window-min-width {
   inherits: false;
   initial-value: 400px;
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-modal-window-overflow {
   inherits: false;
   initial-value: auto;
-  syntax: "<missing>";
+  syntax: '<missing>';
 }
 
 @property --mds-modal-window-radius {
   inherits: false;
   initial-value: 0;
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-modal-z-index {
   inherits: false;
   initial-value: var(--magma-modal-z-index);
-  syntax: "<integer>";
+  syntax: '<integer>';
 }
 
 /* ❌ Not supported

@@ -19,14 +19,14 @@
 }
 
 :host(:not([await])),
-:host([await="false"]) {
+:host([await='false']) {
   .spinner {
     transition-duration: var(--duration-200);
     transition-timing-function: var(--ease-out-quad);
   }
 }
 
-:host([await]:not([await="false"])) .await {
+:host([await]:not([await='false'])) .await {
   display: flex;
   margin-right: 0;
   opacity: 1;
@@ -39,6 +39,6 @@
   }
 }
 
-:host([await]:not([await="false"])) {
+:host([await]:not([await='false'])) {
   pointer-events: none;
 }

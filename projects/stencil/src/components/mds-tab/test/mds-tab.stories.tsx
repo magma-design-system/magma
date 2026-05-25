@@ -1,9 +1,9 @@
-import { h } from '@stencil/core'
-import { horizontalActionsAnimationDictionary } from '@type/animation'
-import { directionDictionary } from '../meta/dictionary'
-import { tabSizeDictionary } from '@type/button'
-import clsx from 'clsx'
-import { useEffect, useState } from 'react'
+import { h } from '@stencil/core';
+import { horizontalActionsAnimationDictionary } from '@type/animation';
+import { directionDictionary } from '../meta/dictionary';
+import { tabSizeDictionary } from '@type/button';
+import clsx from 'clsx';
+import { useEffect, useState } from 'react';
 
 export default {
   title: 'UI / Tab',
@@ -17,8 +17,7 @@ export default {
     },
     direction: {
       type: { name: 'string' },
-      description:
-        'Sets if the component distributes item vertically or horzontally',
+      description: 'Sets if the component distributes item vertically or horzontally',
       options: directionDictionary,
       control: { type: 'select' },
     },
@@ -34,7 +33,7 @@ export default {
     },
     overflow: {
       description:
-        'Sets if the tab area should show an inset shadow when the tabs overflows it\'s container',
+        "Sets if the tab area should show an inset shadow when the tabs overflows it's container",
       type: { name: 'boolean' },
     },
     scrollbar: {
@@ -42,19 +41,19 @@ export default {
       type: { name: 'boolean' },
     },
   },
-}
+};
 
-const TemplateEmpty = args => {
-  const [currentElement, setCurrentElement] = useState(0)
+const TemplateEmpty = (args) => {
+  const [currentElement, setCurrentElement] = useState(0);
 
   useEffect(() => {
-    const manualTabsEl = document.querySelector('#manual-tabs')
-    if (!manualTabsEl) return
+    const manualTabsEl = document.querySelector('#manual-tabs');
+    if (!manualTabsEl) return;
 
     manualTabsEl.addEventListener('mdsTabChange', (event: CustomEvent) => {
-      setCurrentElement(event.detail.id)
-    })
-  }, [])
+      setCurrentElement(event.detail.id);
+    });
+  }, []);
 
   return (
     <div class="grid gap-600">
@@ -79,31 +78,27 @@ const TemplateEmpty = args => {
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
 const SectionComponent = ({ id, className, title, slot = 'none' }) => {
   return (
     <div
       id={id}
       slot={slot !== 'none' ? slot : undefined}
-      class={clsx(
-        'grid gap-100 p-600 auto-rows-min scroll-mt-2000 rounded-2xl',
-        className,
-      )}
+      class={clsx('grid gap-100 p-600 auto-rows-min scroll-mt-2000 rounded-2xl', className)}
     >
       <mds-text typography="h3">{title}</mds-text>
       <mds-text>This content is outside the mds-tab component.</mds-text>
     </div>
-  )
-}
+  );
+};
 
 const TemplateScroll = () => (
   <div class="grid gap-600 pt-[60px]">
     <div class="fixed top-0 left-0 right-0 p-400 px-600 shadow-sm flex bg-tone-neutral">
       <mds-tab>
-        <mds-tab-item href="#section-1" selected label="Section 1">
-        </mds-tab-item>
+        <mds-tab-item href="#section-1" selected label="Section 1"></mds-tab-item>
         <mds-tab-item href="#section-2" label="Section 2"></mds-tab-item>
         <mds-tab-item href="#section-3" label="Section 3"></mds-tab-item>
       </mds-tab>
@@ -126,16 +121,16 @@ const TemplateScroll = () => (
       />
     </div>
   </div>
-)
+);
 
 const TemplateAsyncContent = () => {
-  const [tabContentLoaded, loadTabContent] = useState(false)
+  const [tabContentLoaded, loadTabContent] = useState(false);
   useEffect(() => {
     const interval = setTimeout(() => {
-      loadTabContent(true) // Correct way to update state
-    }, 1000)
-    return () => clearTimeout(interval) // Cleanup function
-  }, [])
+      loadTabContent(true); // Correct way to update state
+    }, 1000);
+    return () => clearTimeout(interval); // Cleanup function
+  }, []);
 
   return (
     <div class="grid gap-600 pt-[60px]">
@@ -165,10 +160,10 @@ const TemplateAsyncContent = () => {
         />
       </mds-tab>
     </div>
-  )
-}
+  );
+};
 
-const TemplateOverflow = args => (
+const TemplateOverflow = (args) => (
   <div class="grid gap-600 max-w-[480px]">
     <mds-tab {...args}>
       <mds-tab-item label="First Blood"></mds-tab-item>
@@ -183,37 +178,29 @@ const TemplateOverflow = args => (
       <mds-tab-item label="10 Things I Hate About You"></mds-tab-item>
     </mds-tab>
   </div>
-)
+);
 
-const Template = args => (
+const Template = (args) => (
   <div class="grid gap-600">
     <mds-tab {...args}>
       <mds-tab-item label="First Blood"></mds-tab-item>
       <mds-tab-item icon="mdi/alien" id="button" selected label="Double Impact"></mds-tab-item>
       <mds-tab-item label="The Third Man"></mds-tab-item>
-      <div
-        slot="content"
-        class="gap-600 grid px-200 py-600 tablet:grid-cols-[1fr_2fr]"
-      >
+      <div slot="content" class="gap-600 grid px-200 py-600 tablet:grid-cols-[1fr_2fr]">
         <mds-img class="rounded-lg" src="./movie-first-blood.jpg" />
         <div class="grid gap-100 auto-rows-min">
           <mds-text typography="h4">First Blood</mds-text>
           <mds-text>
-            Vietnam veteran and drifter John J. Rambo (Sylvester Stallone)
-            wanders into a small Washington town in search of an old friend, but
-            is met with intolerance and brutality by the local sheriff, Will
-            Teasle (Brian Dennehy). When Teasle and his deputies restrain and
-            shave Rambo, he flashes back to his time as a prisoner of war and
-            unleashes his fury on the officers. He narrowly escapes the manhunt,
-            but it will take his former commander (Richard Crenna) to save the
-            hunters from the hunted.
+            Vietnam veteran and drifter John J. Rambo (Sylvester Stallone) wanders into a small
+            Washington town in search of an old friend, but is met with intolerance and brutality by
+            the local sheriff, Will Teasle (Brian Dennehy). When Teasle and his deputies restrain
+            and shave Rambo, he flashes back to his time as a prisoner of war and unleashes his fury
+            on the officers. He narrowly escapes the manhunt, but it will take his former commander
+            (Richard Crenna) to save the hunters from the hunted.
           </mds-text>
         </div>
       </div>
-      <div
-        slot="content"
-        class="py-600 px-200 grid tablet:grid-cols-[1fr_2fr] gap-600"
-      >
+      <div slot="content" class="py-600 px-200 grid tablet:grid-cols-[1fr_2fr] gap-600">
         <div class="auto-rows-min grid gap-200">
           <mds-img class="rounded-lg" src="./movie-double-impact.jpg" />
           <mds-img class="rounded-lg" src="./movie-double-impact-shot-01.jpg" />
@@ -222,21 +209,16 @@ const Template = args => (
         <div class="grid gap-100 auto-rows-min">
           <mds-text typography="h4">Double Impact</mds-text>
           <mds-text>
-            Nearly 25 years after seeing his father killed by Hong Kong crime
-            boss Raymond Zhang (Philip Chan Yan Kin), Chad Wagner (Jean-Claude
-            Van Damme) is living in Los Angeles as a flourishing yet peaceful
-            martial arts trainer. But Chad has a twin brother, Alex (also Van
-            Damme), who suddenly reunites with his less-aggressive sibling and
-            wants to avenge their father's death. As the pair plan their payback
-            against Zhang, they also struggle to overcome their personal
-            differences.
+            Nearly 25 years after seeing his father killed by Hong Kong crime boss Raymond Zhang
+            (Philip Chan Yan Kin), Chad Wagner (Jean-Claude Van Damme) is living in Los Angeles as a
+            flourishing yet peaceful martial arts trainer. But Chad has a twin brother, Alex (also
+            Van Damme), who suddenly reunites with his less-aggressive sibling and wants to avenge
+            their father's death. As the pair plan their payback against Zhang, they also struggle
+            to overcome their personal differences.
           </mds-text>
         </div>
       </div>
-      <div
-        slot="content"
-        class="py-600 px-200 grid tablet:grid-cols-[1fr_2fr] gap-600"
-      >
+      <div slot="content" class="py-600 px-200 grid tablet:grid-cols-[1fr_2fr] gap-600">
         <div class="auto-rows-min grid gap-200">
           <mds-img class="rounded-lg" src="./movie-the-third-man.jpg" />
           <mds-img class="rounded-lg" src="./movie-the-third-man-shot.jpg" />
@@ -244,14 +226,12 @@ const Template = args => (
         <div class="grid gap-100 auto-rows-min">
           <mds-text typography="h4">The Third Man</mds-text>
           <mds-text>
-            Set in postwar Vienna, Austria, "The Third Man" stars Joseph Cotten
-            as Holly Martins, a writer of pulp Westerns, who arrives penniless
-            as a guest of his childhood chum Harry Lime (Orson Welles), only to
-            find him dead. Martins develops a conspiracy theory after learning
-            of a "third man" present at the time of Harry's death, running into
-            interference from British officer Maj. Calloway (Trevor Howard) and
-            falling head-over-heels for Harry's grief-stricken lover, Anna
-            (Alida Valli).
+            Set in postwar Vienna, Austria, "The Third Man" stars Joseph Cotten as Holly Martins, a
+            writer of pulp Westerns, who arrives penniless as a guest of his childhood chum Harry
+            Lime (Orson Welles), only to find him dead. Martins develops a conspiracy theory after
+            learning of a "third man" present at the time of Harry's death, running into
+            interference from British officer Maj. Calloway (Trevor Howard) and falling
+            head-over-heels for Harry's grief-stricken lover, Anna (Alida Valli).
           </mds-text>
         </div>
       </div>
@@ -262,9 +242,9 @@ const Template = args => (
       <mds-text>This content is outside the mds-tab component.</mds-text>
     </div>
   </div>
-)
+);
 
-const TemplateDirection = args => (
+const TemplateDirection = (args) => (
   <div class="grid gap-600">
     <mds-tab {...args}>
       <mds-tab-item label="First Blood"></mds-tab-item>
@@ -275,14 +255,12 @@ const TemplateDirection = args => (
         <div class="grid gap-100 auto-rows-min">
           <mds-text typography="h4">First Blood</mds-text>
           <mds-text>
-            Vietnam veteran and drifter John J. Rambo (Sylvester Stallone)
-            wanders into a small Washington town in search of an old friend, but
-            is met with intolerance and brutality by the local sheriff, Will
-            Teasle (Brian Dennehy). When Teasle and his deputies restrain and
-            shave Rambo, he flashes back to his time as a prisoner of war and
-            unleashes his fury on the officers. He narrowly escapes the manhunt,
-            but it will take his former commander (Richard Crenna) to save the
-            hunters from the hunted.
+            Vietnam veteran and drifter John J. Rambo (Sylvester Stallone) wanders into a small
+            Washington town in search of an old friend, but is met with intolerance and brutality by
+            the local sheriff, Will Teasle (Brian Dennehy). When Teasle and his deputies restrain
+            and shave Rambo, he flashes back to his time as a prisoner of war and unleashes his fury
+            on the officers. He narrowly escapes the manhunt, but it will take his former commander
+            (Richard Crenna) to save the hunters from the hunted.
           </mds-text>
         </div>
       </div>
@@ -295,14 +273,12 @@ const TemplateDirection = args => (
         <div class="grid gap-100 auto-rows-min">
           <mds-text typography="h4">Double Impact</mds-text>
           <mds-text>
-            Nearly 25 years after seeing his father killed by Hong Kong crime
-            boss Raymond Zhang (Philip Chan Yan Kin), Chad Wagner (Jean-Claude
-            Van Damme) is living in Los Angeles as a flourishing yet peaceful
-            martial arts trainer. But Chad has a twin brother, Alex (also Van
-            Damme), who suddenly reunites with his less-aggressive sibling and
-            wants to avenge their father's death. As the pair plan their payback
-            against Zhang, they also struggle to overcome their personal
-            differences.
+            Nearly 25 years after seeing his father killed by Hong Kong crime boss Raymond Zhang
+            (Philip Chan Yan Kin), Chad Wagner (Jean-Claude Van Damme) is living in Los Angeles as a
+            flourishing yet peaceful martial arts trainer. But Chad has a twin brother, Alex (also
+            Van Damme), who suddenly reunites with his less-aggressive sibling and wants to avenge
+            their father's death. As the pair plan their payback against Zhang, they also struggle
+            to overcome their personal differences.
           </mds-text>
         </div>
       </div>
@@ -314,14 +290,12 @@ const TemplateDirection = args => (
         <div class="grid gap-100 auto-rows-min">
           <mds-text typography="h4">The Third Man</mds-text>
           <mds-text>
-            Set in postwar Vienna, Austria, "The Third Man" stars Joseph Cotten
-            as Holly Martins, a writer of pulp Westerns, who arrives penniless
-            as a guest of his childhood chum Harry Lime (Orson Welles), only to
-            find him dead. Martins develops a conspiracy theory after learning
-            of a "third man" present at the time of Harry's death, running into
-            interference from British officer Maj. Calloway (Trevor Howard) and
-            falling head-over-heels for Harry's grief-stricken lover, Anna
-            (Alida Valli).
+            Set in postwar Vienna, Austria, "The Third Man" stars Joseph Cotten as Holly Martins, a
+            writer of pulp Westerns, who arrives penniless as a guest of his childhood chum Harry
+            Lime (Orson Welles), only to find him dead. Martins develops a conspiracy theory after
+            learning of a "third man" present at the time of Harry's death, running into
+            interference from British officer Maj. Calloway (Trevor Howard) and falling
+            head-over-heels for Harry's grief-stricken lover, Anna (Alida Valli).
           </mds-text>
         </div>
       </div>
@@ -332,37 +306,29 @@ const TemplateDirection = args => (
       <mds-text>This content is outside the mds-tab component.</mds-text>
     </div>
   </div>
-)
+);
 
-const TemplateNoSelected = args => (
+const TemplateNoSelected = (args) => (
   <div class="grid gap-600">
     <mds-tab {...args}>
       <mds-tab-item label="First Blood"></mds-tab-item>
       <mds-tab-item icon="mdi/alien" id="button" label="Double Impact"></mds-tab-item>
       <mds-tab-item label="The Third Man"></mds-tab-item>
-      <div
-        slot="content"
-        class="py-600 px-200 grid tablet:grid-cols-[1fr_2fr] gap-600"
-      >
+      <div slot="content" class="py-600 px-200 grid tablet:grid-cols-[1fr_2fr] gap-600">
         <mds-img class="rounded-lg" src="./movie-first-blood.jpg" />
         <div class="grid gap-100 auto-rows-min">
           <mds-text typography="h4">First Blood</mds-text>
           <mds-text>
-            Vietnam veteran and drifter John J. Rambo (Sylvester Stallone)
-            wanders into a small Washington town in search of an old friend, but
-            is met with intolerance and brutality by the local sheriff, Will
-            Teasle (Brian Dennehy). When Teasle and his deputies restrain and
-            shave Rambo, he flashes back to his time as a prisoner of war and
-            unleashes his fury on the officers. He narrowly escapes the manhunt,
-            but it will take his former commander (Richard Crenna) to save the
-            hunters from the hunted.
+            Vietnam veteran and drifter John J. Rambo (Sylvester Stallone) wanders into a small
+            Washington town in search of an old friend, but is met with intolerance and brutality by
+            the local sheriff, Will Teasle (Brian Dennehy). When Teasle and his deputies restrain
+            and shave Rambo, he flashes back to his time as a prisoner of war and unleashes his fury
+            on the officers. He narrowly escapes the manhunt, but it will take his former commander
+            (Richard Crenna) to save the hunters from the hunted.
           </mds-text>
         </div>
       </div>
-      <div
-        slot="content"
-        class="py-600 px-200 grid tablet:grid-cols-[1fr_2fr] gap-600"
-      >
+      <div slot="content" class="py-600 px-200 grid tablet:grid-cols-[1fr_2fr] gap-600">
         <div class="auto-rows-min grid gap-200">
           <mds-img class="rounded-lg" src="./movie-double-impact.jpg" />
           <mds-img class="rounded-lg" src="./movie-double-impact-shot-01.jpg" />
@@ -371,21 +337,16 @@ const TemplateNoSelected = args => (
         <div class="grid gap-100 auto-rows-min">
           <mds-text typography="h4">Double Impact</mds-text>
           <mds-text>
-            Nearly 25 years after seeing his father killed by Hong Kong crime
-            boss Raymond Zhang (Philip Chan Yan Kin), Chad Wagner (Jean-Claude
-            Van Damme) is living in Los Angeles as a flourishing yet peaceful
-            martial arts trainer. But Chad has a twin brother, Alex (also Van
-            Damme), who suddenly reunites with his less-aggressive sibling and
-            wants to avenge their father's death. As the pair plan their payback
-            against Zhang, they also struggle to overcome their personal
-            differences.
+            Nearly 25 years after seeing his father killed by Hong Kong crime boss Raymond Zhang
+            (Philip Chan Yan Kin), Chad Wagner (Jean-Claude Van Damme) is living in Los Angeles as a
+            flourishing yet peaceful martial arts trainer. But Chad has a twin brother, Alex (also
+            Van Damme), who suddenly reunites with his less-aggressive sibling and wants to avenge
+            their father's death. As the pair plan their payback against Zhang, they also struggle
+            to overcome their personal differences.
           </mds-text>
         </div>
       </div>
-      <div
-        slot="content"
-        class="py-600 px-200 grid tablet:grid-cols-[1fr_2fr] gap-600"
-      >
+      <div slot="content" class="py-600 px-200 grid tablet:grid-cols-[1fr_2fr] gap-600">
         <div class="auto-rows-min grid gap-200">
           <mds-img class="rounded-lg" src="./movie-the-third-man.jpg" />
           <mds-img class="rounded-lg" src="./movie-the-third-man-shot.jpg" />
@@ -393,14 +354,12 @@ const TemplateNoSelected = args => (
         <div class="grid gap-100 auto-rows-min">
           <mds-text typography="h4">The Third Man</mds-text>
           <mds-text>
-            Set in postwar Vienna, Austria, "The Third Man" stars Joseph Cotten
-            as Holly Martins, a writer of pulp Westerns, who arrives penniless
-            as a guest of his childhood chum Harry Lime (Orson Welles), only to
-            find him dead. Martins develops a conspiracy theory after learning
-            of a "third man" present at the time of Harry's death, running into
-            interference from British officer Maj. Calloway (Trevor Howard) and
-            falling head-over-heels for Harry's grief-stricken lover, Anna
-            (Alida Valli).
+            Set in postwar Vienna, Austria, "The Third Man" stars Joseph Cotten as Holly Martins, a
+            writer of pulp Westerns, who arrives penniless as a guest of his childhood chum Harry
+            Lime (Orson Welles), only to find him dead. Martins develops a conspiracy theory after
+            learning of a "third man" present at the time of Harry's death, running into
+            interference from British officer Maj. Calloway (Trevor Howard) and falling
+            head-over-heels for Harry's grief-stricken lover, Anna (Alida Valli).
           </mds-text>
         </div>
       </div>
@@ -411,28 +370,28 @@ const TemplateNoSelected = args => (
       <mds-text>This content is outside the mds-tab component.</mds-text>
     </div>
   </div>
-)
+);
 
-const TemplateAdd = args => {
+const TemplateAdd = (args) => {
   const [tabs, setTabs] = useState(
     Array(12)
       .fill(0)
       .map((_v, i) => {
-        return { id: i, v: (i + 1).toString() }
+        return { id: i, v: (i + 1).toString() };
       }),
-  )
-  const [currentTab, setCurrentTab] = useState<number | null>(1)
+  );
+  const [currentTab, setCurrentTab] = useState<number | null>(1);
 
   const addTab = () => {
-    const id = Number(tabs[tabs.length - 1].v)
-    setTabs([...tabs, { id, v: (id + 1).toString() }])
-  }
+    const id = Number(tabs[tabs.length - 1].v);
+    setTabs([...tabs, { id, v: (id + 1).toString() }]);
+  };
 
   const removeTab = () => {
-    const t = tabs.slice(1)
-    if (tabs[0].id === currentTab) setCurrentTab(null)
-    setTabs([...t])
-  }
+    const t = tabs.slice(1);
+    if (tabs[0].id === currentTab) setCurrentTab(null);
+    setTabs([...t]);
+  };
 
   return (
     <div class="grid gap-400">
@@ -448,50 +407,48 @@ const TemplateAdd = args => {
               onClick={() => setCurrentTab(t.id)}
               selected={currentTab === t.id}
               label={`Tab ${t.v}`}
-            >
-            </mds-tab-item>
-          )
+            ></mds-tab-item>
+          );
         })}
       </mds-tab>
     </div>
-  )
-}
+  );
+};
 
-const TemplateStretchHeight = args => {
-  return <div class="grid gap-600 max-w-[480px]">
-    <mds-tab {...args} class="h-[1000px]">
-      <mds-tab-item selected label="First Blood"></mds-tab-item>
-      <mds-tab-item label="Double Impact"></mds-tab-item>
-      <div slot='content'>
-        <mds-text>
-            Vietnam veteran and drifter John J. Rambo (Sylvester Stallone)
-            wanders into a small Washington town in search of an old friend, but
-            is met with intolerance and brutality by the local sheriff, Will
-            Teasle (Brian Dennehy). When Teasle and his deputies restrain and
-            shave Rambo, he flashes back to his time as a prisoner of war and
-            unleashes his fury on the officers. He narrowly escapes the manhunt,
-            but it will take his former commander (Richard Crenna) to save the
-            hunters from the hunted.
-        </mds-text></div>
-      <div slot='content'>
-        <mds-text>
-            Nearly 25 years after seeing his father killed by Hong Kong crime
-            boss Raymond Zhang (Philip Chan Yan Kin), Chad Wagner (Jean-Claude
-            Van Damme) is living in Los Angeles as a flourishing yet peaceful
-            martial arts trainer. But Chad has a twin brother, Alex (also Van
-            Damme), who suddenly reunites with his less-aggressive sibling and
-            wants to avenge their father's death. As the pair plan their payback
-            against Zhang, they also struggle to overcome their personal
-            differences.
-        </mds-text>
-      </div>
-    </mds-tab>
-  </div>
-}
+const TemplateStretchHeight = (args) => {
+  return (
+    <div class="grid gap-600 max-w-[480px]">
+      <mds-tab {...args} class="h-[1000px]">
+        <mds-tab-item selected label="First Blood"></mds-tab-item>
+        <mds-tab-item label="Double Impact"></mds-tab-item>
+        <div slot="content">
+          <mds-text>
+            Vietnam veteran and drifter John J. Rambo (Sylvester Stallone) wanders into a small
+            Washington town in search of an old friend, but is met with intolerance and brutality by
+            the local sheriff, Will Teasle (Brian Dennehy). When Teasle and his deputies restrain
+            and shave Rambo, he flashes back to his time as a prisoner of war and unleashes his fury
+            on the officers. He narrowly escapes the manhunt, but it will take his former commander
+            (Richard Crenna) to save the hunters from the hunted.
+          </mds-text>
+        </div>
+        <div slot="content">
+          <mds-text>
+            Nearly 25 years after seeing his father killed by Hong Kong crime boss Raymond Zhang
+            (Philip Chan Yan Kin), Chad Wagner (Jean-Claude Van Damme) is living in Los Angeles as a
+            flourishing yet peaceful martial arts trainer. But Chad has a twin brother, Alex (also
+            Van Damme), who suddenly reunites with his less-aggressive sibling and wants to avenge
+            their father's death. As the pair plan their payback against Zhang, they also struggle
+            to overcome their personal differences.
+          </mds-text>
+        </div>
+      </mds-tab>
+    </div>
+  );
+};
 
 export const Default = {
   render: Template,
-}
+};
 
 export const Animation = {
   render: Template,
@@ -499,7 +456,7 @@ export const Animation = {
   args: {
     animation: 'slide',
   },
-}
+};
 
 export const Fill = {
   render: Template,
@@ -507,7 +464,7 @@ export const Fill = {
   args: {
     fill: true,
   },
-}
+};
 
 export const Direction = {
   render: TemplateDirection,
@@ -515,11 +472,11 @@ export const Direction = {
   args: {
     direction: 'vertical',
   },
-}
+};
 
 export const ManualTabContents = {
   render: TemplateEmpty,
-}
+};
 
 export const Overflow = {
   render: TemplateOverflow,
@@ -527,7 +484,7 @@ export const Overflow = {
   args: {
     overflow: true,
   },
-}
+};
 
 export const Scrollbar = {
   render: TemplateOverflow,
@@ -535,15 +492,15 @@ export const Scrollbar = {
   args: {
     scrollbar: true,
   },
-}
+};
 
 export const NoSelectedItem = {
   render: TemplateNoSelected,
-}
+};
 
 export const Scroll = {
   render: TemplateScroll,
-}
+};
 
 export const Size = {
   render: TemplateOverflow,
@@ -551,16 +508,16 @@ export const Size = {
   args: {
     size: 'sm',
   },
-}
+};
 
 export const AsyncContent = {
   render: TemplateAsyncContent,
-}
+};
 
 export const AddTab = {
   render: TemplateAdd,
-}
+};
 
 export const StretchHeight = {
   render: TemplateStretchHeight,
-}
+};

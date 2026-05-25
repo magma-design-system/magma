@@ -1,7 +1,7 @@
-import { Component, Element, Event, EventEmitter, Host, h, Prop } from '@stencil/core'
-import miBaselineNavigateNext from '@icon/mi/baseline/navigate-next.svg'
-import { MdsBreadcrumbItemEventDetail } from './meta/event-detail'
-import { KeyboardManager } from '@common/keyboard-manager'
+import { Component, Element, Event, EventEmitter, Host, h, Prop } from '@stencil/core';
+import miBaselineNavigateNext from '@icon/mi/baseline/navigate-next.svg';
+import { MdsBreadcrumbItemEventDetail } from './meta/event-detail';
+import { KeyboardManager } from '@common/keyboard-manager';
 
 /**
  * @slot default - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
@@ -13,55 +13,54 @@ import { KeyboardManager } from '@common/keyboard-manager'
   shadow: true,
 })
 export class MdsBreadcrumbItem {
-
-  @Element() private element: HTMLMdsBreadcrumbItemElement
-  private km = new KeyboardManager()
+  @Element() private element: HTMLMdsBreadcrumbItemElement;
+  private km = new KeyboardManager();
 
   /**
    * Choose if the component is selected or not
    */
-  @Prop({ mutable: true, reflect: true }) selected?: boolean
+  @Prop({ mutable: true, reflect: true }) selected?: boolean;
 
   /**
    * Sets the label of the breadcrumb item
    */
-  @Prop({ reflect: true }) label?: string
+  @Prop({ reflect: true }) label?: string;
 
   /**
    * Emits when the breadcrumb is active
    */
-  @Event({ eventName: 'mdsBreadcrumbItemSelect' }) selectedEvent: EventEmitter<MdsBreadcrumbItemEventDetail>
+  @Event({ eventName: 'mdsBreadcrumbItemSelect' })
+  selectedEvent: EventEmitter<MdsBreadcrumbItemEventDetail>;
 
   private toggle = () => {
-    this.selected = !this.selected
-    this.selectedEvent.emit({ id: this.element.id, selected: this.selected })
+    this.selected = !this.selected;
+    this.selectedEvent.emit({ id: this.element.id, selected: this.selected });
+  };
+
+  componentDidLoad(): void {
+    const textElement = this.element.shadowRoot?.querySelector('.text') as HTMLElement;
+    this.km.addElement(textElement);
+    this.km.attachClickBehavior();
   }
 
-  componentDidLoad ():void {
-    const textElement = this.element.shadowRoot?.querySelector('.text') as HTMLElement
-    this.km.addElement(textElement)
-    this.km.attachClickBehavior()
-  }
-
-  componentDidUpdate ():void {
+  componentDidUpdate(): void {
     if (this.selected) {
-      this.km.detachClickBehavior()
-      return
+      this.km.detachClickBehavior();
+      return;
     }
-    this.km.attachClickBehavior()
+    this.km.attachClickBehavior();
   }
 
-  disconnectedCallback (): void {
-    this.km.detachClickBehavior()
+  disconnectedCallback(): void {
+    this.km.detachClickBehavior();
   }
 
-  render () {
+  render() {
     return (
       <Host>
-        <mds-button onClick={ this.toggle } part="button" label={this.label}></mds-button>
-        <i aria-hidden="true" class="icon" innerHTML={miBaselineNavigateNext}/>
+        <mds-button onClick={this.toggle} part="button" label={this.label}></mds-button>
+        <i aria-hidden="true" class="icon" innerHTML={miBaselineNavigateNext} />
       </Host>
-    )
+    );
   }
-
 }

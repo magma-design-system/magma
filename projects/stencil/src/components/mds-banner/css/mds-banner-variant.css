@@ -8,7 +8,7 @@
   --mds-banner-cockade-background: rgb(var(--variant-primary-09));
 }
 
-:host([variant="primary"]) {
+:host([variant='primary']) {
   --mds-banner-background: rgb(var(--tone-neutral));
   --mds-banner-close-icon-hover-background: rgb(var(--variant-primary-09));
   --mds-banner-color: rgb(var(--tone-neutral-02));
@@ -17,7 +17,7 @@
   --mds-banner-headline-color: rgb(var(--variant-primary-02));
   --mds-banner-cockade-background: rgb(var(--variant-primary-09));
 
-  &:host([tone="weak"]) {
+  &:host([tone='weak']) {
     --mds-banner-background: rgb(var(--tone-neutral));
     --mds-banner-close-icon-hover-background: rgb(var(--variant-primary-10));
     --mds-banner-color: rgb(var(--tone-neutral-02));
@@ -27,7 +27,7 @@
   }
 }
 
-:host([variant="ai"]) {
+:host([variant='ai']) {
   --mds-banner-background: rgb(var(--tone-neutral));
   --mds-banner-close-icon-hover-background: rgb(var(--variant-ai-09));
   --mds-banner-color: rgb(var(--tone-neutral-02));
@@ -36,7 +36,7 @@
   --mds-banner-headline-color: rgb(var(--variant-ai-02));
   --mds-banner-cockade-background: rgb(var(--variant-ai-09));
 
-  &:host([tone="weak"]) {
+  &:host([tone='weak']) {
     --mds-banner-background: rgb(var(--tone-neutral));
     --mds-banner-close-icon-hover-background: rgb(var(--variant-ai-10));
     --mds-banner-color: rgb(var(--tone-neutral-02));
@@ -45,4 +45,3 @@
     --mds-banner-cockade-background: rgb(var(--variant-ai-10));
   }
 }
-

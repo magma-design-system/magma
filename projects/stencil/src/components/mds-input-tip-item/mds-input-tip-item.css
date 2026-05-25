@@ -9,19 +9,19 @@
 @property --mds-input-tip-item-background {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-03));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-input-tip-item-color {
   inherits: false;
   initial-value: rgb(var(--tone-neutral));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-input-tip-item-icon-color {
   inherits: false;
   initial-value: rgb(var(--tone-neutral));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 :host {
@@ -43,7 +43,8 @@
   text-align: center;
   transform: translate(0, 0);
   transition-duration: var(--duration-300);
-  transition-property: background-color, border-radius, color, padding-left, padding-right, transform;
+  transition-property:
+    background-color, border-radius, color, padding-left, padding-right, transform;
   transition-timing-function: var(--ease-out-expo);
   user-select: none;
 }

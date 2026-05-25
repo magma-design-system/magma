@@ -11,31 +11,31 @@
 @property --mds-file-preview-background-color {
   inherits: false;
   initial-value: rgb(var(--tone-neutral));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-file-preview-border-radius {
   inherits: false;
   initial-value: var(--radius-lg);
-  syntax: "<length>";
+  syntax: '<length>';
 }
 
 @property --mds-file-preview-color {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-03));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-file-preview-icon-background {
   inherits: false;
   initial-value: inherit;
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-file-preview-icon-color {
   inherits: false;
   initial-value: var(--mds-file-preview-color);
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 :host {
@@ -68,15 +68,14 @@
 }
 
 .preview {
-
   @apply aspect-square;
 
   background-color: var(--mds-file-preview-icon-background);
   border-radius: calc(var(--mds-file-preview-border-radius) - --spacing(200));
   box-sizing: border-box;
-  color:  var(--mds-file-preview-color);
+  color: var(--mds-file-preview-color);
   corner-shape: inherit;
-  fill:  var(--mds-file-preview-icon-color);
+  fill: var(--mds-file-preview-icon-color);
   width: 100%;
 }
 

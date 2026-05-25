@@ -16,37 +16,37 @@
 @property --mds-chip-background {
   inherits: false;
   initial-value: rgb(var(--tone-neutral));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-chip-border {
   inherits: false;
   initial-value: transparent;
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-chip-color {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-03));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-chip-icon-background {
   inherits: false;
   initial-value: rgb(var(--variant-primary-06));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-chip-icon-color {
   inherits: false;
   initial-value: rgb(var(--tone-neutral));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-chip-opacity-disabled {
   inherits: false;
   initial-value: 0.5;
-  syntax: "<number>";
+  syntax: '<number>';
 }
 
 /* --mds-chip-shadow not supported by Houdini */
@@ -94,8 +94,7 @@
   }
 }
 
-
-:host([disabled]:not([disabled="false"])) {
+:host([disabled]:not([disabled='false'])) {
   opacity: var(--mds-chip-opacity-disabled);
   pointer-events: none;
 }
@@ -109,12 +108,12 @@
   transition-timing-function: var(--ease-out-quad);
 }
 
-:host([clickable]:not([clickable="false"]) ) .label {
+:host([clickable]:not([clickable='false'])) .label {
   cursor: pointer;
   text-decoration: underline;
 }
 
-:host([clickable]:not([clickable="false"]) ) .label:hover {
+:host([clickable]:not([clickable='false'])) .label:hover {
   text-decoration-color: unset;
 }
 

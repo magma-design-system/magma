@@ -10,25 +10,25 @@
 @property --mds-price-table-features-row-background {
   inherits: false;
   initial-value: transparent;
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-price-table-features-row-background-hover {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-10));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-price-table-features-row-color {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-04));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 @property --mds-price-table-features-row-color-hover {
   inherits: false;
   initial-value: rgb(var(--tone-neutral-01));
-  syntax: "<color>";
+  syntax: '<color>';
 }
 
 :host {
@@ -37,8 +37,7 @@
   --mds-price-table-features-row-color: rgb(var(--tone-neutral-04));
   --mds-price-table-features-row-color-hover: rgb(var(--tone-neutral-01));
 
-  @apply
-    duration-200
+  @apply duration-200
     ease-in-out;
 
   background-color: var(--mds-price-table-features-row-background);
@@ -53,19 +52,22 @@
 }
 
 :host-context(:not(.safari)):host(:hover) > ::slotted(mds-price-table-features-cell) {
-  --mds-price-table-features-cell-icon-supported-color: var(--mds-price-table-features-cell-icon-supported-color-hover);
-  --mds-price-table-features-cell-icon-unsupported-color: var(--mds-price-table-features-cell-icon-unsupported-color-hover);
+  --mds-price-table-features-cell-icon-supported-color: var(
+    --mds-price-table-features-cell-icon-supported-color-hover
+  );
+  --mds-price-table-features-cell-icon-unsupported-color: var(
+    --mds-price-table-features-cell-icon-unsupported-color-hover
+  );
 }
 
-:host > ::slotted([type="label"]) {
+:host > ::slotted([type='label']) {
   padding-left: 0;
 }
 
-:host-context(:not(.safari)):host(:hover) > ::slotted([type="label"]) {
+:host-context(:not(.safari)):host(:hover) > ::slotted([type='label']) {
   transform: translate(--spacing(200), 0);
 }
 
 @import './css/mds-price-table-features-pref-animation.css';
 @import './css/mds-price-table-features-pref-contrast.css';
 @import './css/mds-price-table-features-pref-theme.css';
-

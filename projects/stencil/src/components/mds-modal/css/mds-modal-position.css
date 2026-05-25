@@ -12,7 +12,7 @@
   - - -
 */
 
-:host([position="top-left"]) {
+:host([position='top-left']) {
   align-items: flex-start;
   justify-content: flex-start;
 }
@@ -23,12 +23,12 @@
   - - -
 */
 
-:host([position="top"]) {
+:host([position='top']) {
   align-items: flex-start;
   justify-content: center;
 }
 
-:host([position="top"]) .window {
+:host([position='top']) .window {
   --mds-modal-window-max-width: 100vw;
   --mds-modal-window-height: auto;
 }
@@ -39,7 +39,7 @@
   - - -
 */
 
-:host([position="top-right"]) {
+:host([position='top-right']) {
   align-items: flex-start;
   justify-content: flex-end;
 }
@@ -50,27 +50,27 @@
   - - -
 */
 
-:host([position="left"]) {
+:host([position='left']) {
   align-items: center;
   justify-content: flex-start;
 }
 
-:host([position="left"]) .action-close {
+:host([position='left']) .action-close {
   right: --spacing(300);
   top: --spacing(300);
 }
 
-:host([position="left"][opened]) .action-close {
+:host([position='left'][opened]) .action-close {
   opacity: 1;
   pointer-events: auto;
 }
 
-:host([position="left"]:not([opened])) .action-close {
+:host([position='left']:not([opened])) .action-close {
   transform: translateX(-120%) rotate(-45deg);
 }
 
-:host([position="left"]),
-:host([position="right"]) {
+:host([position='left']),
+:host([position='right']) {
   --mds-modal-window-height: 100%;
 }
 
@@ -80,7 +80,7 @@
   - - -
 */
 
-:host([position="center"]) {
+:host([position='center']) {
   align-items: center;
   justify-content: center;
 }
@@ -91,21 +91,21 @@
   - - -
 */
 
-:host([position="right"]) {
+:host([position='right']) {
   align-items: center;
   justify-content: flex-end;
 }
 
-:host([position="right"]) .action-close {
+:host([position='right']) .action-close {
   left: --spacing(300);
   top: --spacing(300);
 }
 
-:host([position="right"]:not([opened])) .action-close {
+:host([position='right']:not([opened])) .action-close {
   transform: translateX(120%) rotate(45deg);
 }
 
-:host([position="right"][opened]) .action-close {
+:host([position='right'][opened]) .action-close {
   opacity: 1;
   pointer-events: auto;
 }
@@ -115,35 +115,35 @@
     --mds-modal-window-min-width: 0px;
   }
 
-  :host([position="bottom"]),
-  :host([position="bottom-left"]),
-  :host([position="bottom-right"]),
-  :host([position="center"]),
-  :host([position="top"]),
-  :host([position="top-left"]),
-  :host([position="top-right"]) {
+  :host([position='bottom']),
+  :host([position='bottom-left']),
+  :host([position='bottom-right']),
+  :host([position='center']),
+  :host([position='top']),
+  :host([position='top-left']),
+  :host([position='top-right']) {
     --private-modal-width: 100vw;
   }
 
-  :host([position="left"]),
-  :host([position="right"]) {
+  :host([position='left']),
+  :host([position='right']) {
     --private-modal-width: calc(100% - var(--private-modal-window-close-margin));
   }
 }
 
 @media (width > 480px) {
-  :host([position="bottom"]),
-  :host([position="bottom-left"]),
-  :host([position="bottom-right"]),
-  :host([position="center"]),
-  :host([position="top"]),
-  :host([position="top-left"]),
-  :host([position="top-right"]) {
+  :host([position='bottom']),
+  :host([position='bottom-left']),
+  :host([position='bottom-right']),
+  :host([position='center']),
+  :host([position='top']),
+  :host([position='top-left']),
+  :host([position='top-right']) {
     --mds-modal-window-height: auto;
   }
 
-  :host([position="left"]),
-  :host([position="right"]) {
+  :host([position='left']),
+  :host([position='right']) {
     --private-modal-width: var(--mds-modal-window-max-width);
   }
 }
