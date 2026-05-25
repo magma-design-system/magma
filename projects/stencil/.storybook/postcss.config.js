@@ -1,11 +1,15 @@
-const path = require('path')
-module.exports = {
+import postcssImport from 'postcss-import'
+import iconsauce from 'postcss-iconsauce'
+import tailwindcss from '@tailwindcss/postcss'
+import autoprefixer from 'autoprefixer'
+
+export default {
   plugins: [
-    require('postcss-import'),
-    require('postcss-iconsauce')('./.storybook/iconsauce.config.js'),
-    require('@tailwindcss/postcss'),
-    require('autoprefixer')({
+    postcssImport(),
+    iconsauce('./.storybook/iconsauce.config.js'),
+    tailwindcss(),
+    autoprefixer({
       flexbox: 'no-2009',
     }),
-  ]
+  ],
 }
