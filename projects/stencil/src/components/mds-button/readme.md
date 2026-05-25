@@ -15,6 +15,22 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 Below are incorrect uses, anti-patterns, and bad practices for the `<mds-button>` component.
 
+## 1. Do not slot elements
+
+```html
+<!-- WRONG: this will strip tags -->
+<mds-button>
+  <div>Click here</div>
+</mds-button>
+
+<!-- Right: this will render text correctly -->
+<mds-button>
+  Click here
+</mds-button>
+```
+
+
+
 ## 1. Do Not Pass Boolean Attributes as Strings
 Never set `disabled="false"` or `await="false"`. In HTML/Stencil, a non-empty string is truthy, meaning the button will remain disabled/loading. Instead, completely remove the attribute.
 ```html
@@ -119,36 +135,25 @@ The `<mds-button>` web component represents an interactive button or hyperlink w
 - **`truncate`**: Handles long label text overflow truncation. Values: `all`, `none`, `word` (default: `word`).
 - **`animation`**: Text entry/rendering animation. Values: `none` (default), `yugop`.
 
-## Layout & Slots
-
-- **`default` Slot**: Main content slot. **Must contain only text strings.** Placing HTML markup inside the default slot is not supported. Use the `label` property as the preferred alternative.
-- **`notification` Slot**: Specifically designed for badges, counters, or status indicators. Placing `mds-notification` inside this slot is highly recommended.
-
-## Styling Hook System
-
-Styles are customized exclusively via exposed CSS custom properties such as:
-- `--mds-button-background`
-- `--mds-button-color`
-- `--mds-button-radius`
-- `--mds-button-gap`
-- `--mds-button-border-width`
-
 
 ### Pattern
 
 Here are correct and recommended usage patterns for the `<mds-button>` component.
 
 ## 1. Text Button (Preferred Approach)
+
 Use the `label` property to set the text content, rather than nesting text inside the slot.
+
 ```html
-<!-- Primary strong button -->
-<mds-button label="Salva modifiche" variant="primary" tone="strong"></mds-button>
+<mds-button label="Save preferences" variant="primary" tone="strong"></mds-button>
 ```
 
 ## 2. Text Button using Slot (Fallback)
+
 If using the default slot, supply **only** a plain text string. Do not embed nested HTML elements.
+
 ```html
-<mds-button variant="primary">Invia modulo</mds-button>
+<mds-button variant="primary">Invia modulo</mds-buttonu>
 ```
 
 ## 3. Button with Icon
