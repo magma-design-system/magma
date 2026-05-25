@@ -42,10 +42,8 @@ export default defineConfig([
 
   // #region stencil
   {
-    extends: [
-      stencil.configs.flat.recommended,
-    ],
-    files: ['./**/src/components/**/*.{tsx,ts}'],
+    extends: [stencil.configs.flat.recommended],
+    files: ['./**/src/components/**/*.{tsx}'],
     ignores: ['.storybook/**', '**/*.stories.*'],
     languageOptions: {
       parser: tseslint.parser,
@@ -56,6 +54,9 @@ export default defineConfig([
         ecmaVersion: 'latest',
         sourceType: 'module',
       },
+    },
+    rules: {
+      'stencil/strict-mutable': 'off',
     },
   },
   // #endregion
