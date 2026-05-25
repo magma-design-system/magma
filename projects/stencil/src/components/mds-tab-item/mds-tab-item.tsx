@@ -3,9 +3,6 @@ import { ButtonIconPositionType, ButtonSizeType, ButtonType } from '@type/button
 import { MdsTabItemEventDetail } from './meta/event-detail'
 import clsx from 'clsx'
 
-/**
- * @slot default - Put text string here, avoid elements
- */
 
 @Component({
   tag: 'mds-tab-item',

@@ -30,7 +30,7 @@ export class MdsIcon {
   }
 
   private convertBase64ToSvg = (): string => {
-    const svgBase64 = this.name.replace(BASE64_SVG_ICON, '').replace(/\=/i, '')
+    const svgBase64 = this.name.replace(BASE64_SVG_ICON, '').replace(/=/i, '')
     return atob(svgBase64)
   }
 

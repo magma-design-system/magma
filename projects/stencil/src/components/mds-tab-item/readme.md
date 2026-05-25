@@ -31,13 +31,6 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `mdsTabItemSelect` | Emits when the tab item is selected | `CustomEvent<MdsTabItemEventDetail>` |
 
 
-## Slots
-
-| Slot        | Description                          |
-| ----------- | ------------------------------------ |
-| `"default"` | Put text string here, avoid elements |
-
-
 ## Shadow Parts
 
 | Part       | Description |
