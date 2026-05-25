@@ -79,7 +79,7 @@ const TemplateForm = args => (
     onSubmit={event => {
       event.preventDefault()
 
-      // eslint-disable-next-line no-console
+       
       console.log('Form submitted via mds-button', event.target?.[0].value)
 
       return false

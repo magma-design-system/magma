@@ -97,7 +97,6 @@ const Template = args => {
       '.mds-push-notification',
     )
     if (pushNotificationsElement === null) {
-      // eslint-disable-next-line no-alert
       alert('Push notifications element not found')
       return
     }

@@ -224,7 +224,7 @@ const TemplateVariableDuration = args => (
 const TemplateClickPaused = args => {
   const startSecond = () => {
     const elements = document.querySelectorAll('mds-accordion-timer-item')
-    // eslint-disable-next-line prefer-destructuring
+     
     const elemSecond = elements[1]
     elemSecond.selected = true
   }

@@ -443,7 +443,7 @@ export const KeyboardPress = {
 
   args: {
     onClick: () => {
-      // eslint-disable-next-line no-alert
+       
       alert('Button clicked')
     },
   },

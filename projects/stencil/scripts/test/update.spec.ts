@@ -1,5 +1,4 @@
-/* eslint-disable no-console */
-import * as meta from '../meta'
+ import * as meta from '../meta'
 import { jest } from '@jest/globals'
 import { join } from 'path'
 

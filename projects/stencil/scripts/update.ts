@@ -1,7 +1,6 @@
 #!/usr/bin/env tsx
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable no-console */
 
 import { existsSync, readFile, readJSON, readdir, writeFileSync } from 'fs-extra'
 import { COMPONENTS_DIR, PROJECT_DIR } from './meta'

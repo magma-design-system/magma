@@ -127,7 +127,7 @@ const Template = args => {
     const modalElement = document.querySelector('#modal')
 
     if (actionElement === null || modalElement === null) {
-      // eslint-disable-next-line no-alert
+       
       alert('Element/s not found')
       return
     }
@@ -171,7 +171,7 @@ const TemplateHeaderAndFooter = args => {
     const modalElement = document.querySelector('#modal')
 
     if (actionElement === null || modalElement === null) {
-      // eslint-disable-next-line no-alert
+       
       alert('Element/s not found')
       return
     }
@@ -215,7 +215,7 @@ const TemplateSmallContent = args => {
     const modalElement = document.querySelector('#modal')
 
     if (actionElement === null || modalElement === null) {
-      // eslint-disable-next-line no-alert
+       
       alert('Element/s not found')
       return
     }
@@ -265,7 +265,7 @@ const TemplateCustomWindow = args => {
     const modalElement = document.querySelector('#modal')
 
     if (actionElement === null || modalElement === null) {
-      // eslint-disable-next-line no-alert
+       
       alert('Element/s not found')
       return
     }
@@ -314,7 +314,7 @@ const TemplateCustomWindowHeaderAndFooter = args => {
     const modalElement = document.querySelector('#modal')
 
     if (actionElement === null || modalElement === null) {
-      // eslint-disable-next-line no-alert
+       
       alert('Element/s not found')
       return
     }
@@ -363,7 +363,7 @@ const TemplateOverflow = args => {
     const modalElement = document.querySelector('#modal')
 
     if (actionElement === null || modalElement === null) {
-      // eslint-disable-next-line no-alert
+       
       alert('Element/s not found')
       return
     }
@@ -434,7 +434,7 @@ const CustomTemplate = args => {
       modalElement === null ||
       windowElement === null
     ) {
-      // eslint-disable-next-line no-alert
+       
       alert('Element/s not found')
       return
     }
@@ -504,7 +504,7 @@ const NestedModalTemplate = () => {
     const secondModalElement = document.querySelector('#modal-02')
 
     if (firstModalElement === null || secondModalElement === null) {
-      // eslint-disable-next-line no-alert
+       
       alert('Element/s not found')
       return
     }

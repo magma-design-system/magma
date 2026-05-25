@@ -55,7 +55,7 @@ const Template = args => {
       modalElement === null ||
       urlViewElement === null
     ) {
-      // eslint-disable-next-line no-alert
+       
       alert('Element/s not found')
       return
     }

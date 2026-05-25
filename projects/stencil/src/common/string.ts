@@ -1,6 +1,6 @@
 const levenshteinDistance = (a: string, b: string): number => {
   const dp: number[][] = Array.from({ length: a.length + 1 }, (_, i) =>
-    // eslint-disable-next-line no-nested-ternary
+     
     Array.from({ length: b.length + 1 }, (_, j) => (i === 0 ? j : j === 0 ? i : 0)),
   )
 

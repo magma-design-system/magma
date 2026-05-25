@@ -44,7 +44,7 @@ export class Locale {
     if (context) {
       context.querySelectorAll('*').forEach(el => {
         if (el.tagName.toLowerCase().startsWith('mds-')) {
-          // eslint-disable-next-line no-restricted-syntax
+           
           if (el && 'updateLang' in el) {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             (el as any).updateLang()
