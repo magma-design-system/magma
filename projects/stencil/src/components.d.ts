@@ -3479,7 +3479,10 @@ declare global {
     new (): HTMLMdsButtonGroupElement;
   };
   interface HTMLMdsCalendarElementEventMap {
-    mdsCalendarChange: { startDate: string; endDate?: string };
+    mdsCalendarChange: {
+      startDate: string;
+      endDate?: string;
+    };
     mdsCalendarPreselect: void;
   }
   interface HTMLMdsCalendarElement extends Components.MdsCalendar, HTMLStencilElement {
@@ -4279,8 +4282,14 @@ declare global {
     new (): HTMLMdsInputDateElement;
   };
   interface HTMLMdsInputDateRangeElementEventMap {
-    mdsInputDateRangeSelect: { startDate: string; endDate: string };
-    mdsInputDateRangeValueChange: { startDate: string; endDate: string };
+    mdsInputDateRangeSelect: {
+      startDate: string;
+      endDate: string;
+    };
+    mdsInputDateRangeValueChange: {
+      startDate: string;
+      endDate: string;
+    };
   }
   interface HTMLMdsInputDateRangeElement extends Components.MdsInputDateRange, HTMLStencilElement {
     addEventListener<K extends keyof HTMLMdsInputDateRangeElementEventMap>(
@@ -6729,7 +6738,10 @@ declare namespace LocalJSX {
      */
     min?: string | null;
     onMdsCalendarChange?: (
-      event: MdsCalendarCustomEvent<{ startDate: string; endDate?: string }>,
+      event: MdsCalendarCustomEvent<{
+        startDate: string;
+        endDate?: string;
+      }>,
     ) => void;
     onMdsCalendarPreselect?: (event: MdsCalendarCustomEvent<void>) => void;
     /**
@@ -7512,10 +7524,16 @@ declare namespace LocalJSX {
      */
     name?: string;
     onMdsInputDateRangeSelect?: (
-      event: MdsInputDateRangeCustomEvent<{ startDate: string; endDate: string }>,
+      event: MdsInputDateRangeCustomEvent<{
+        startDate: string;
+        endDate: string;
+      }>,
     ) => void;
     onMdsInputDateRangeValueChange?: (
-      event: MdsInputDateRangeCustomEvent<{ startDate: string; endDate: string }>,
+      event: MdsInputDateRangeCustomEvent<{
+        startDate: string;
+        endDate: string;
+      }>,
     ) => void;
     /**
      * Specifies the start date of the range
