@@ -12,11 +12,13 @@ defineCustomElements();
 ```
 
 For React:
+
 ```javascript
 import { defineCustomElements } from '@maggioli-design-system/magma-react/loader';
 ```
 
 For Angular, import `MagmaModule` in your `AppModule`:
+
 ```typescript
 import { MagmaModule } from '@maggioli-design-system/magma-angular';
 ```
@@ -65,7 +67,7 @@ document.querySelector('mds-input').addEventListener('mdsInputChange', (e) => {
 
 - The `default` slot accepts plain text strings only unless the component explicitly states otherwise
 - Named slots (e.g. `slot="header"`, `slot="footer"`) accept HTML elements and components
-- Add arbitrary HTML wrappers around slot content only when is not avoidable — it can break component layout and compound component communication
+- Add arbitrary HTML wrappers around slot content only when is not avoidable - it can break component layout and compound component communication
 
 ## Styling components from outside
 
@@ -82,7 +84,7 @@ mds-button::part(icon) {
   fill: rgb(var(--variant-primary-03));
 }
 
-/* incorrect — do not pierce shadow DOM */
+/* incorrect - do not pierce shadow DOM */
 mds-button >>> .internal-class {
   color: red;
 }
@@ -95,47 +97,46 @@ Many components accept both `variant` and `tone` props. These are independent ax
 - `variant` controls the **color role**: `primary`, `secondary`, `error`, `success`, `warning`, `info`, `ai`, `dark`, `light`
 - `tone` controls the **visual intensity**: `strong` (filled), `weak` (tinted), `outline` (bordered), `text` (no background)
 
-
 #### Variants
 
-| Variant name  | Semantic meaning | Description                                            |
-|---------------|------------------|--------------------------------------------------------|
-| `primary`     | Theme            | Should be used for most important actions, or messages |
-| `secondary`   | Theme            |  |
-| `error`       | Status           |  |
-| `success`     | Status           |  |
-| `warning`     | Status           |  |
-| `info`        | Status           |  |
-| `ai`          | Service          |  |
-| `dark`        | Neutral          |  |
-| `light`       | Neutral          |  |
-| `amaranth`    | Label            |  |
-| `red`         | Label            |  |
-| `aqua`        | Label            |  |
-| `blue`        | Label            |  |
-| `green`       | Label            |  |
-| `lime`        | Label            |  |
-| `orange`      | Label            |  |
-| `orchid`      | Label            |  |
-| `purple`      | Label            |  |
-| `sky`         | Label            |  |
-| `violet`      | Label            |  |
-| `yellow`      | Label            |  |
+| Variant name | Semantic meaning | Description                                            |
+| ------------ | ---------------- | ------------------------------------------------------ |
+| `primary`    | Theme            | Should be used for most important actions, or messages |
+| `secondary`  | Theme            |                                                        |
+| `error`      | Status           |                                                        |
+| `success`    | Status           |                                                        |
+| `warning`    | Status           |                                                        |
+| `info`       | Status           |                                                        |
+| `ai`         | Service          |                                                        |
+| `dark`       | Neutral          |                                                        |
+| `light`      | Neutral          |                                                        |
+| `amaranth`   | Label            |                                                        |
+| `red`        | Label            |                                                        |
+| `aqua`       | Label            |                                                        |
+| `blue`       | Label            |                                                        |
+| `green`      | Label            |                                                        |
+| `lime`       | Label            |                                                        |
+| `orange`     | Label            |                                                        |
+| `orchid`     | Label            |                                                        |
+| `purple`     | Label            |                                                        |
+| `sky`        | Label            |                                                        |
+| `violet`     | Label            |                                                        |
+| `yellow`     | Label            |                                                        |
 
 #### Tones
 
-| Tone name  | Description      | Additional note                                        |
-|------------|------------------|--------------------------------------------------------|
-| `strong`   | Theme            | Should be used for most important actions, or messages |
-| `weak`     | Theme            |  |
-| `outline`  | Theme            |  |
-| `text`     | Theme               |  |
+| Tone name | Description | Additional note                                        |
+| --------- | ----------- | ------------------------------------------------------ |
+| `strong`  | Theme       | Should be used for most important actions, or messages |
+| `weak`    | Theme       |                                                        |
+| `outline` | Theme       |                                                        |
+| `text`    | Theme       |                                                        |
 
 > ⚠️ Magma 2.0 breaking rename: `ghost` → `outline`, `quiet` → `text`
 
 ## Disabled state
 
-Set `disabled` as a boolean attribute. Never use `disabled="false"` — remove the attribute instead, or set the prop to `undefined`.
+Set `disabled` as a boolean attribute. Never use `disabled="false"` - remove the attribute instead, or set the prop to `undefined`.
 
 ```html
 <!-- correct -->
@@ -161,11 +162,11 @@ Remove `await` (set to `undefined`, not `false`) when the operation completes.
 Icons are referenced by their SVG filename slug (without `.svg` extension). The full icon list is in `projects/svg-icons/svg/`.
 
 ```html
-<mds-button icon="action-email-send">Send</mds-button>
-<mds-icon name="status-warning"></mds-icon>
+<mds-button icon="action-email-send">Send</mds-button> <mds-icon name="status-warning"></mds-icon>
 ```
 
 The icon path must be configured before components mount:
+
 ```javascript
 window.sessionStorage.setItem('mdsIconSvgPath', 'assets/img/svg/');
 ```
@@ -181,9 +182,47 @@ window.sessionStorage.setItem('mdsIconSvgPath', 'assets/img/svg/');
 
 Parent/child component pairs communicate via internal Stencil mechanisms. Rules:
 
-1. Child components must be **direct slot children** of the parent — no wrappers
+1. Child components must be **direct slot children** of the parent - no wrappers
 2. Never use a child component outside its parent (e.g. `mds-accordion-item` without `mds-accordion`)
 3. Never mix child types (e.g. do not put `mds-accordion-item` inside `mds-accordion-timer`)
+
+## Per-component usage docs
+
+Every component documents its **semantic intent** in a `usage/` folder containing three markdown files. These are the **canonical source of truth** - agents and developers should read these to understand how a component is meant to be used.
+
+```
+src/components/mds-component-name/
+└── usage/
+    ├── description.md   ← purpose, semantic behaviour, prop intent
+    ├── pattern.md       ← numbered list of correct usage patterns with code examples
+    └── antipattern.md   ← numbered list of incorrect uses with INCORRECT/CORRECT pairs
+```
+
+### What each file contains
+
+| File             | Owns                                                                                                                            |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| `description.md` | One-sentence purpose, runtime/semantic behaviour, the **intent** of each prop's values (when to pick `tone="strong"` vs `weak`) |
+| `pattern.md`     | 5-12 numbered patterns showing correct, idiomatic use. Each has a "use this when…" line and one code block                      |
+| `antipattern.md` | 3-8 numbered anti-patterns. Each pairs an INCORRECT example with the CORRECT alternative and a one-line "why"                   |
+
+### What `usage/` must NOT contain
+
+- The full props table - it is auto-generated into `readme.md` from JSDoc
+- The list of allowed string values for a prop - that lives in `meta/*.ts` dictionaries
+- Generic stencil rules that apply to every component - those live in this SPEC
+
+### Auto-generation flow
+
+`usage/*.md` files are bundled by the Stencil build into `documentation.json` and then injected into `readme.md`. As a consequence:
+
+- **Do not edit `readme.md` by hand** - it is regenerated on every build
+- **`documentation.json`** is a machine-readable mirror of the same content, suitable for AI tooling
+- **Agents reading components** should prefer `usage/*.md` (granular) or `documentation.json` (structured) over `readme.md`
+
+### Templates
+
+Authoring templates with inline rules and section prompts live in [`template/usage/`](../../projects/stencil/template/usage). Copy these when adding `usage/` docs to an existing component, or rely on the scaffolder for new ones.
 
 ## Scaffolding a new component
 
@@ -192,29 +231,31 @@ nx run stencil:generate mds-component-name
 ```
 
 This creates the component folder with the standard file structure:
+
 ```
 src/components/mds-component-name/
 ├── mds-component-name.tsx    ← component logic
 ├── mds-component-name.css    ← component styles
 ├── css/                      ← split CSS files (variants, sizes, etc.)
 ├── meta/                     ← TypeScript enums and dictionaries
+├── usage/                    ← description.md, pattern.md, antipattern.md (canonical docs)
 └── test/
     ├── mds-component-name.e2e.ts
     ├── mds-component-name.stories.tsx
     └── mds-component-name.mdx
 ```
 
-After scaffolding, add a `SPEC.md` to the component folder.
+After scaffolding, fill in the three `usage/*.md` files following the templates in [`template/usage/`](../../projects/stencil/template/usage).
 
 ## Regression tests
 
 Always run regression tests after visual changes:
 
 ```bash
-# Before starting work — create fresh references
+# Before starting work - create fresh references
 nx run stencil:test.regression.reference
 
-# After your changes — review differences
+# After your changes - review differences
 nx run stencil:test.regression.review
 ```
 
