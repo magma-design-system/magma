@@ -548,8 +548,8 @@ export class MdsInput {
         '.mic-toggle-button',
       ) as HTMLMdsButtonElement;
     }
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const SpeechRecognition =
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (window as any).SpeechRecognition ?? (window as any).webkitSpeechRecognition;
     this.value = '';
 
