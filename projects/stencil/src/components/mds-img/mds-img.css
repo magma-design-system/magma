@@ -54,15 +54,17 @@
   --mds-img-error-icon-color: rgb(var(--status-error-06));
 
   display: flex;
-  object-fit: cover;
+  height: auto;
+  object-fit: contain;
   overflow: hidden;
   position: relative;
+  width: 100%;
 }
 
 img {
-  height: 100%;
+  height: inherit;
   object-fit: inherit;
-  width: 100%;
+  width: inherit;
 }
 
 .alt-text-container {

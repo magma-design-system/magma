@@ -58,13 +58,13 @@ const TemplateBook = (args) => (
     <div class="grid gap-600 grid-cols-fit-sm">
       <mds-img {...args} />
       <mds-img
-        class="aspect-book rounded-md shadow"
+        class="aspect-book object-cover rounded-md shadow"
         src="./book-cover-11.webp"
         srcset-consumption="./book-cover-11.webp low"
         alt="Concorso regione Valle d'Aosta 86 assistenti amministrativo contabili"
       />
       <mds-img
-        class="aspect-book rounded-md shadow"
+        class="aspect-book object-cover rounded-md shadow"
         src="./book-cover-10.webp"
         srcset-consumption="./book-cover-10.webp low"
         alt="Il principio di rotazione e il regolamento degli appalti sotto soglia di lavori, forniture e servizi"
@@ -78,7 +78,6 @@ export const Default = {
 
   args: {
     src: URLs[0],
-    class: 'aspect-book',
   },
 };
 

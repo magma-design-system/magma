@@ -44,7 +44,7 @@
 @property --mds-push-notification-item-shadow {
   inherits: false;
   initial-value: var(--shadow);
-  syntax: "<missing>";
+  syntax: "<box-shadow>";
 }
 
 @property --mds-push-notification-item-timing-function {

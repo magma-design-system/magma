@@ -36,7 +36,7 @@
 @property --mds-tab-direction-vertical-columns {
   inherits: false;
   initial-value: auto auto;
-  syntax: '<length>+';
+  syntax: '<length>+ | auto+';
 }
 
 @property --mds-tab-item-default-background {
@@ -51,11 +51,15 @@
   syntax: '<color>';
 }
 
+/* ❌ Not supported
+
 @property --mds-tab-item-default-shadow {
   inherits: false;
   initial-value: transparent;
-  syntax: '<missing>';
+  syntax: '<box-shadow>';
 }
+
+*/
 
 @property --mds-tab-item-hover-background {
   inherits: false;
@@ -69,11 +73,13 @@
   syntax: '<color>';
 }
 
+/* ❌ Not supported
 @property --mds-tab-item-hover-shadow {
   inherits: false;
   initial-value: transparent;
-  syntax: '<missing>';
+  syntax: '<box-shadow>';
 }
+*/
 
 @property --mds-tab-item-radius {
   inherits: false;
@@ -93,17 +99,20 @@
   syntax: '<color>';
 }
 
+/* ❌ Not supported
+
 @property --mds-tab-item-selected-shadow {
   inherits: false;
   initial-value: var(--shadow);
-  syntax: '<missing>';
+  syntax: '<box-shadow>';
 }
 
 @property --mds-tab-scroll-behavior {
   inherits: false;
   initial-value: smooth;
-  syntax: '<missing>';
+  syntax: '<scroll-behavior>';
 }
+*/
 
 @property --mds-tab-scroll-scrollbar-margin {
   inherits: false;

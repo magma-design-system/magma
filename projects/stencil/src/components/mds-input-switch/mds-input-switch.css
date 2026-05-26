@@ -199,7 +199,7 @@
 @property --mds-input-switch-box-shadow {
   inherits: false;
   initial-value: <missing value>;
-  syntax: "<missing>";
+  syntax: "<box-shadow>";
 }
 */
 

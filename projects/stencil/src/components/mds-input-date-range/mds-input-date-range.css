@@ -44,13 +44,13 @@
 @property --mds-input-date-range-ring {
   inherits: false;
   initial-value: 0 0 0 1px rgb(var(--mds-input-date-range-variant-color-rgb) / 0.1);
-  syntax: "<missing>";
+  syntax: "<box-shadow>";
 }
 
 @property --mds-input-date-range-shadow {
   inherits: false;
   initial-value: 0 1px 3px 0 rgb(var(--mds-input-date-range-variant-color-rgb) / 0.1), 0 1px 2px 0 rgb(var(--mds-input-date-range-variant-color-rgb) / 0.06);
-  syntax: "<missing>";
+  syntax: "<box-shadow>";
 }
 */
 

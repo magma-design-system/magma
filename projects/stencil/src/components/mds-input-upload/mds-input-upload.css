@@ -30,13 +30,13 @@
 @property --mds-input-upload-drag-area-border-on-drag {
   inherits: false;
   initial-value: 3px dashed rgb(var(--tone-neutral-04));
-  syntax: "<missing>";
+  syntax: "<border>";
 }
 
 @property --mds-input-upload-drag-area-border {
   inherits: false;
   initial-value: 3px dashed rgb(var(--tone-neutral-07));
-  syntax: "<missing>";
+  syntax: "<border>";
 }
 */
 

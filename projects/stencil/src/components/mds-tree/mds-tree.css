@@ -200,31 +200,36 @@
   syntax: '<time>';
 }
 
-/* ❌ Not supported
 @property --mds-tree-actions-border-radius {
   inherits: false;
   initial-value: var(--radius-lg);
-  syntax: "<missing>";
+  syntax: '<length>';
 }
+
 @property --mds-tree-actions-gap {
   inherits: false;
   initial-value: --spacing(50);
-  syntax: "<missing>";
+  syntax: '<length>';
 }
+
 @property --mds-tree-branch-border-size {
   inherits: false;
   initial-value: --spacing(50);
-  syntax: "<missing>";
+  syntax: '<length>';
 }
+
 @property --mds-tree-toggle-gap {
   inherits: false;
   initial-value: --spacing(150);
-  syntax: "<missing>";
+  syntax: '<length>';
 }
+
+/* ❌ Not supported
+
 @property --mds-tree-transition-timing-function {
   inherits: false;
   initial-value: var(--ease-in-out-expo);
-  syntax: "<missing>";
+  syntax: "<timing-function>";
 }
 */
 
@@ -262,8 +267,10 @@
   --mds-tree-toggle-icon-position-right-expanded-color: rgb(var(--tone-neutral-07));
   --mds-tree-transition-duration: 300ms;
   --mds-tree-transition-timing-function: var(--ease-in-out-expo);
+
   /* private */
   --mds-tree-toggle-border-radius: var(--radius-lg);
+
   /* private */
   --mds-tree-toggle-size: --spacing(900);
 

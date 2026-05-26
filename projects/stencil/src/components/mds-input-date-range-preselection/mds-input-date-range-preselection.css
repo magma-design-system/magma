@@ -76,10 +76,13 @@
   --mds-date-range-preselection-hover-background: rgb(var(--tone-neutral));
   --mds-date-range-preselection-hover-border: var(--tone-neutral);
   --mds-date-range-preselection-hover-color: rgb(var(--tone-neutral-03));
+
   /* private */
   --mds-date-range-preselection-background: var(--mds-date-range-preselection-default-background);
+
   /* private */
   --mds-date-range-preselection-border: var(--mds-date-range-preselection-default-border);
+
   /* private */
   --mds-date-range-preselection-color: var(--mds-date-range-preselection-default-color);
 

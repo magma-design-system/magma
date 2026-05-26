@@ -73,13 +73,13 @@
 @property --mds-radial-menu-disc-filter {
   inherits: false;
   initial-value: blur(8px);
-  syntax: "<missing>";
+  syntax: "<filter-function>";
 }
 
 @property --mds-radial-menu-disc-shadow {
   inherits: false;
   initial-value: var(--shadow-lg-sharp);
-  syntax: "<missing>";
+  syntax: "<box-shadow>";
 }
 
 @property --mds-radial-menu-transition-timing-function {
@@ -105,14 +105,19 @@
 
   /* private */
   --mds-radial-menu-nth-siblings: 0;
+
   /* private */
   --mds-radial-menu-disc-delay: 0s;
+
   /* private */
   --mds-radial-menu-disc-scale: 0;
+
   /* private */
   --mds-radial-menu-radius-current: 0;
+
   /* private */
   --mds-radial-menu-is-full-circle: 1;
+
   /* private */
   --mds-radial-menu-is-start-greater-than-end: 1;
 

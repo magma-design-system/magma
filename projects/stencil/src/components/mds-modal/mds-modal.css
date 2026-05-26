@@ -20,7 +20,9 @@
 @property --mds-modal-custom-closed-transform {
   inherits: false;
   initial-value: rotateX(10deg) rotateY(0) scale(1.25) translate(0, 10%);
-  syntax: '<transform-function>';
+
+  /* allow one or more transform functions (e.g. "rotateX(...) translate(...) scale(...)") */
+  syntax: '<transform-function>+';
 }
 
 @property --mds-modal-custom-window-distance {
@@ -62,7 +64,7 @@
 @property --mds-modal-window-max-width {
   inherits: false;
   initial-value: 33%;
-  syntax: '<length>';
+  syntax: '<length> | <percentage>';
 }
 
 @property --mds-modal-window-min-width {
@@ -74,7 +76,7 @@
 @property --mds-modal-window-overflow {
   inherits: false;
   initial-value: auto;
-  syntax: '<missing>';
+  syntax: 'auto | clip | hidden | scroll | visible';
 }
 
 @property --mds-modal-window-radius {
