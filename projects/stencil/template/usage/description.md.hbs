@@ -1,0 +1,62 @@
+<!--
+================================================================================
+AUTHORING RULES — description.md
+================================================================================
+Purpose: explain WHAT this component is and what each prop MEANS.
+         The reader is an AI agent or a developer deciding whether to use it.
+
+MUST contain:
+  1. A one-sentence purpose statement (first paragraph, no heading).
+  2. A "Semantic Behavior" section: how the component behaves at runtime
+     (states, roles, form participation, focus, async, etc.).
+  3. A "Properties & Visual Configurations" section: the INTENT of each
+     prop's values — i.e. when to pick `tone="strong"` vs `tone="weak"`,
+     not the list of allowed strings.
+
+MUST NOT contain:
+  - The full props table (it lives in `readme.md`, auto-generated).
+  - The list of allowed string values (it lives in `meta/*.ts`).
+  - Code examples (those belong in `pattern.md`).
+  - Generic stencil rules (those live in `projects/stencil/SPEC.md`).
+
+STYLE:
+  - Prose, not bullet-only. Each prop entry: bold name, one-line intent,
+    then a sub-list ONLY if values have distinct semantics worth naming.
+  - Keep under ~80 lines. If longer, you're probably duplicating readme.md.
+  - Delete this comment block before committing.
+================================================================================
+-->
+
+The `<{{componentName}}>` web component <!-- one-sentence purpose: what role does this play in the system? -->.
+
+## Semantic Behavior
+
+<!--
+Describe runtime behavior that a developer can't infer from the props table.
+Examples of what belongs here:
+  - "Renders as button by default; becomes a link when `href` is set."
+  - "Form-associated; participates in native submit/reset."
+  - "Disabled state removes it from the tab sequence."
+  - "Await state maps to `aria-busy='true'` and intercepts clicks."
+Use a bullet list. One behavior per bullet. Bold the trigger condition.
+-->
+
+- **<!-- behavior name -->**: <!-- one-sentence description -->.
+- **<!-- behavior name -->**: <!-- one-sentence description -->.
+
+## Properties & Visual Configurations
+
+<!--
+Document the INTENT of each prop — when to pick which value, not the value list.
+For props with a fixed value set, use a sub-list only if each value has a
+distinct semantic role worth naming. For free-form props (strings, numbers),
+one line is enough.
+
+Do NOT list every prop — only the ones whose meaning isn't obvious from the
+name. `label`, `name`, `id` etc. usually don't need an entry.
+-->
+
+- **`<!-- propName -->`**: <!-- intent — one sentence. If values have distinct meanings, list them below. -->
+  - `<!-- value -->`: <!-- when to use it -->.
+  - `<!-- value -->`: <!-- when to use it -->.
+- **`<!-- propName -->`**: <!-- intent -->.

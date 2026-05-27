@@ -1,0 +1,66 @@
+<!--
+================================================================================
+AUTHORING RULES - pattern.md
+================================================================================
+Purpose: show CORRECT, idiomatic ways to use this component.
+         The reader is an AI agent generating code or a developer copy-pasting.
+
+MUST contain:
+  - A numbered list of patterns (use `## 1. Title`, `## 2. Title`, etc.).
+  - Each pattern: short title, 1-2 sentence "use this when…" intro, then
+    a single fenced code block (`html`, `tsx`, or `css`).
+  - At minimum: the "preferred approach" pattern as #1.
+
+MUST NOT contain:
+  - Anti-patterns (those live in `antipattern.md`).
+  - Prop reference tables.
+  - Multiple alternative ways to do the same thing without saying which is
+    preferred - agents will pick randomly. Always rank or label.
+
+STYLE:
+  - Numbered sections, sequential. Re-number when adding/removing.
+  - One code block per section. Keep examples minimal - only the attrs
+    needed to demonstrate the pattern.
+  - 5-12 patterns is the sweet spot. If you have <5, you're under-documenting;
+    if you have >12, split or move edge cases to `antipattern.md`.
+  - Delete this comment block before committing.
+================================================================================
+-->
+
+Here are correct and recommended usage patterns for the `<{{componentName}}>` component.
+
+## 1. <!-- preferred / canonical use case -->
+
+<!-- 1-2 sentences: when to reach for this pattern. -->
+
+```html
+<{{componentName}}></{{componentName}}>
+```
+
+## 2. <!-- next most common use case -->
+
+<!-- 1-2 sentences. -->
+
+```html
+<{{componentName}}></{{componentName}}>
+```
+
+<!--
+Continue with patterns 3, 4, 5… Cover at minimum:
+  - Each main visual/behavioral configuration
+  - Composition with related components (parent/child, slotted content)
+  - Accessibility requirements (e.g. icon-only buttons needing aria-label)
+  - State patterns (await/loading, disabled, active)
+  - Form integration if applicable
+  - External customisation via CSS Custom Properties (always last)
+-->
+
+## N. Styling Customization
+
+Always use the documented CSS Custom Properties to customise this component from outside.
+
+```css
+.my-{{componentNameWithNoPrefix}} {
+  /* --mds-… properties go here */
+}
+```

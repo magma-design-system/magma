@@ -25,6 +25,7 @@
     "generate": "stencil generate",
     "generate.spec": "tsx --tsconfig script.tsconfig.json ./scripts/generate-spec.ts",
     "generate.doc": "tsx --tsconfig script.tsconfig.json ./scripts/generate-doc.ts",
+    "generate.usage": "tsx --tsconfig script.tsconfig.json ./scripts/generate-usage.ts",
     "gitlab-ci-yml-regenerate": "tsx --tsconfig script.tsconfig.json ./scripts/gitlab-ci-yml-regenerate.ts",
     "lint": "npm run lint.ts && npm run lint.css",
     "lint:fix": "eslint . --fix",

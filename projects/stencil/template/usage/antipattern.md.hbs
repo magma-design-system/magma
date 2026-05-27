@@ -1,0 +1,65 @@
+<!--
+================================================================================
+AUTHORING RULES — antipattern.md
+================================================================================
+Purpose: show INCORRECT uses agents and developers commonly attempt,
+         paired with the correct alternative.
+
+MUST contain:
+  - A numbered list of anti-patterns (use `## 1. Title`, `## 2. Title`, etc.).
+  - Each entry: short imperative title ("Do Not …", "Avoid …"), one-sentence
+    explanation of WHY it's wrong, then a single fenced code block with both
+    an INCORRECT example and the CORRECT alternative.
+
+MUST NOT contain:
+  - Generic stencil rules already in `projects/stencil/SPEC.md`
+    (e.g. "never set disabled='false'" — that's a stencil-wide rule).
+    Only repeat it here if this component has a non-obvious specialisation.
+  - Vague warnings without a fix ("don't misuse this component").
+  - Anti-patterns whose root cause is a missing feature — file an issue
+    and add a stencil-level rule instead.
+
+STYLE:
+  - One code block per entry, containing both INCORRECT and CORRECT, clearly
+    labelled with comments.
+  - Each entry has a "why" line — agents need the reasoning to generalise.
+  - 3-8 anti-patterns is the sweet spot.
+  - Delete this comment block before committing.
+================================================================================
+-->
+
+Below are incorrect uses, anti-patterns, and bad practices for the `<{{componentName}}>` component.
+
+## 1. <!-- imperative title, e.g. "Do Not Slot HTML Elements" -->
+
+<!-- One sentence: WHY this is wrong (what breaks, accessibility issue, etc.). -->
+
+```html
+<!-- 🚫 INCORRECT -->
+<{{componentName}}><!-- the wrong usage --></{{componentName}}>
+
+<!-- ✅ CORRECT -->
+<{{componentName}}><!-- the right usage --></{{componentName}}>
+```
+
+## 2. <!-- imperative title -->
+
+<!-- One sentence: WHY this is wrong. -->
+
+```html
+<!-- 🚫 INCORRECT -->
+<{{componentName}}></{{componentName}}>
+
+<!-- ✅ CORRECT -->
+<{{componentName}}></{{componentName}}>
+```
+
+<!--
+Continue with anti-patterns 3, 4, 5… Common categories worth covering:
+  - Wrong content type in slot (HTML vs text)
+  - Wrong attribute usage (boolean-as-string, deprecated values)
+  - Nesting issues (interactive inside interactive, compound rules)
+  - Shadow DOM piercing or undocumented internal selectors
+  - Manual ARIA when the component already sets it
+  - Hard-coded colors/tokens instead of variants
+-->
