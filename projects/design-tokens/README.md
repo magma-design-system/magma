@@ -68,7 +68,7 @@ Basic config
 ```json
 {
   "colors": [
-    { "color": "#94a3b8", "name": "tone.slate" },
+    { "color": "#94a3b8", "name": "tone.porcelain" },
     { "color": "#EA3464", "name": "label.amaranth" }
   ]
 }
@@ -79,7 +79,7 @@ You can export different color in different output file defining export field
 ```json
 {
   "colors": [
-    { "color": "#94a3b8", "name": "tone.slate", "export": ["tones"] },
+    { "color": "#94a3b8", "name": "tone.porcelain", "export": ["tones"] },
     { "color": "#EA3464", "name": "label.amaranth", "export": ["label"] }
   ]
 }
@@ -90,7 +90,7 @@ You can choose the ratio with which to generate the color scale with `ratios` fi
 ```json
 {
   "colors": [
-    { "color": "#94a3b8", "name": "tone.slate", "ratios": "tone" },
+    { "color": "#94a3b8", "name": "tone.porcelain", "ratios": "tone" },
     { "color": "#EA3464", "name": "label.amaranth", "ratios": "v1" }
   ]
 }

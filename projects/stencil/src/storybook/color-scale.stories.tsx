@@ -19,11 +19,11 @@ type ColorGroupKey = (typeof colorGroups)[number];
 const capitalize = (value: string): string => value.charAt(0).toUpperCase() + value.slice(1);
 
 const colors = [
-  'tone-slate',
-  'tone-grey',
+  'tone-porcelain',
+  'tone-kaolin',
   'tone-neutral',
-  'tone-zinc',
-  'tone-stone',
+  'tone-fireclay',
+  'tone-bisque',
   'status-info',
   'status-success',
   'status-error',
@@ -48,7 +48,7 @@ const colors = [
 const colorScale = ['', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10'];
 
 const colorPalette: Record<ColorGroupKey, string[]> = {
-  tone: ['slate', 'grey', 'neutral', 'zinc', 'stone'],
+  tone: ['porcelain', 'kaolin', 'neutral', 'fireclay', 'bisque'],
   status: ['info', 'success', 'error', 'warning'],
   label: [
     'red',
@@ -186,39 +186,39 @@ const ComponentVariants = ({ variant = 'primary', tone = 'strong' }: ComponentVa
 };
 
 /*
-bg-tone-slate
-bg-tone-slate-01
-bg-tone-slate-02
-bg-tone-slate-03
-bg-tone-slate-04
-bg-tone-slate-05
-bg-tone-slate-06
-bg-tone-slate-07
-bg-tone-slate-08
-bg-tone-slate-09
-bg-tone-slate-10
-bg-tone-grey
-bg-tone-grey-01
-bg-tone-grey-02
-bg-tone-grey-03
-bg-tone-grey-04
-bg-tone-grey-05
-bg-tone-grey-06
-bg-tone-grey-07
-bg-tone-grey-08
-bg-tone-grey-09
-bg-tone-grey-10
-bg-tone-zinc
-bg-tone-zinc-01
-bg-tone-zinc-02
-bg-tone-zinc-03
-bg-tone-zinc-04
-bg-tone-zinc-05
-bg-tone-zinc-06
-bg-tone-zinc-07
-bg-tone-zinc-08
-bg-tone-zinc-09
-bg-tone-zinc-10
+bg-tone-porcelain
+bg-tone-porcelain-01
+bg-tone-porcelain-02
+bg-tone-porcelain-03
+bg-tone-porcelain-04
+bg-tone-porcelain-05
+bg-tone-porcelain-06
+bg-tone-porcelain-07
+bg-tone-porcelain-08
+bg-tone-porcelain-09
+bg-tone-porcelain-10
+bg-tone-kaolin
+bg-tone-kaolin-01
+bg-tone-kaolin-02
+bg-tone-kaolin-03
+bg-tone-kaolin-04
+bg-tone-kaolin-05
+bg-tone-kaolin-06
+bg-tone-kaolin-07
+bg-tone-kaolin-08
+bg-tone-kaolin-09
+bg-tone-kaolin-10
+bg-tone-fireclay
+bg-tone-fireclay-01
+bg-tone-fireclay-02
+bg-tone-fireclay-03
+bg-tone-fireclay-04
+bg-tone-fireclay-05
+bg-tone-fireclay-06
+bg-tone-fireclay-07
+bg-tone-fireclay-08
+bg-tone-fireclay-09
+bg-tone-fireclay-10
 bg-tone-neutral
 bg-tone-neutral-01
 bg-tone-neutral-02
@@ -230,17 +230,17 @@ bg-tone-neutral-07
 bg-tone-neutral-08
 bg-tone-neutral-09
 bg-tone-neutral-10
-bg-tone-stone
-bg-tone-stone-01
-bg-tone-stone-02
-bg-tone-stone-03
-bg-tone-stone-04
-bg-tone-stone-05
-bg-tone-stone-06
-bg-tone-stone-07
-bg-tone-stone-08
-bg-tone-stone-09
-bg-tone-stone-10
+bg-tone-bisque
+bg-tone-bisque-01
+bg-tone-bisque-02
+bg-tone-bisque-03
+bg-tone-bisque-04
+bg-tone-bisque-05
+bg-tone-bisque-06
+bg-tone-bisque-07
+bg-tone-bisque-08
+bg-tone-bisque-09
+bg-tone-bisque-10
 bg-status-info
 bg-status-info-01
 bg-status-info-02

@@ -1,4 +1,4 @@
-@property --color-tone-slate-01 {
+@property --color-tone-porcelain-01 {
   inherits: false;
   initial-value: rgb(28 34 42);
   syntax: '<color>';
@@ -23,24 +23,24 @@
 }
 
 :root[data-theme-name='solo-light'] {
-  --tone-slate-01: rgb(var(--tone-grey-01, 28 34 42));
-  --tone-slate-02: rgb(var(--tone-grey-02, 33 41 50));
-  --tone-slate-03: rgb(var(--tone-grey-03, 54 65 81));
-  --tone-slate-04: rgb(var(--tone-grey-04, 71 85 106));
+  --tone-porcelain-01: rgb(var(--tone-kaolin-01, 28 34 42));
+  --tone-porcelain-02: rgb(var(--tone-kaolin-02, 33 41 50));
+  --tone-porcelain-03: rgb(var(--tone-kaolin-03, 54 65 81));
+  --tone-porcelain-04: rgb(var(--tone-kaolin-04, 71 85 106));
 }
 
 :root[data-theme-name='solo-dark'] {
-  --tone-slate-01: rgb(var(--tone-grey-01, 28 34 42));
-  --tone-slate-02: rgb(var(--tone-grey-02, 33 41 50));
-  --tone-slate-03: rgb(var(--tone-grey-03, 54 65 81));
-  --tone-slate-04: rgb(var(--tone-grey-04, 71 85 106));
+  --tone-porcelain-01: rgb(var(--tone-kaolin-01, 28 34 42));
+  --tone-porcelain-02: rgb(var(--tone-kaolin-02, 33 41 50));
+  --tone-porcelain-03: rgb(var(--tone-kaolin-03, 54 65 81));
+  --tone-porcelain-04: rgb(var(--tone-kaolin-04, 71 85 106));
 }
 
-:root[data-theme-name='solo-both'] {
-  --tone-slate-01: rgb(var(--tone-grey-01, 28 34 42));
-  --tone-slate-02: rgb(var(--tone-grey-02, 33 41 50));
-  --tone-slate-03: rgb(var(--tone-grey-03, 54 65 81));
-  --tone-slate-04: rgb(var(--tone-grey-04, 71 85 106));
+:root[data-theme-name='both'] {
+  --tone-porcelain-01: rgb(var(--tone-kaolin-01, 28 34 42));
+  --tone-porcelain-02: rgb(var(--tone-kaolin-02, 33 41 50));
+  --tone-porcelain-03: rgb(var(--tone-kaolin-03, 54 65 81));
+  --tone-porcelain-04: rgb(var(--tone-kaolin-04, 71 85 106));
 }
 
 /* @media (prefers-color-scheme: dark) { &:is(.pref-theme-system *) } */
@@ -56,39 +56,39 @@
   --color-tint-base-lv2: var(--tint-base-lv2);
   --color-tint-base-lv3: var(--tint-base-lv3);
   --color-tint-base-content: var(--tint-base-content);
-  --color-tone-slate-01: rgb(var(--tone-slate-01, 28 34 42));
-  --color-tone-slate-02: rgb(var(--tone-slate-02, 33 41 50));
-  --color-tone-slate-03: rgb(var(--tone-slate-03, 54 65 81));
-  --color-tone-slate-04: rgb(var(--tone-slate-04, 71 85 106));
-  --color-tone-slate-05: rgb(var(--tone-slate-05, 95 115 143));
-  --color-tone-slate-06: rgb(var(--tone-slate-06, 149 164 184));
-  --color-tone-slate-07: rgb(var(--tone-slate-07, 207 213 223));
-  --color-tone-slate-08: rgb(var(--tone-slate-08, 226 230 236));
-  --color-tone-slate-09: rgb(var(--tone-slate-09, 241 243 246));
-  --color-tone-slate-10: rgb(var(--tone-slate-10, 247 248 250));
-  --color-tone-slate: rgb(var(--tone-slate, 255 255 255));
-  --color-tone-grey-01: rgb(var(--tone-grey-01, 31 33 38));
-  --color-tone-grey-02: rgb(var(--tone-grey-02, 37 40 46));
-  --color-tone-grey-03: rgb(var(--tone-grey-03, 59 64 73));
-  --color-tone-grey-04: rgb(var(--tone-grey-04, 78 85 96));
-  --color-tone-grey-05: rgb(var(--tone-grey-05, 105 114 130));
-  --color-tone-grey-06: rgb(var(--tone-grey-06, 156 163 175));
-  --color-tone-grey-07: rgb(var(--tone-grey-07, 210 213 218));
-  --color-tone-grey-08: rgb(var(--tone-grey-08, 230 231 234));
-  --color-tone-grey-09: rgb(var(--tone-grey-09, 242 243 245));
-  --color-tone-grey-10: rgb(var(--tone-grey-10, 248 248 249));
-  --color-tone-grey: rgb(var(--tone-grey, 255 255 255));
-  --color-tone-zinc-01: rgb(var(--tone-zinc-01, 33 33 37));
-  --color-tone-zinc-02: rgb(var(--tone-zinc-02, 40 40 44));
-  --color-tone-zinc-03: rgb(var(--tone-zinc-03, 64 64 70));
-  --color-tone-zinc-04: rgb(var(--tone-zinc-04, 84 84 92));
-  --color-tone-zinc-05: rgb(var(--tone-zinc-05, 112 112 124));
-  --color-tone-zinc-06: rgb(var(--tone-zinc-06, 161 161 170));
-  --color-tone-zinc-07: rgb(var(--tone-zinc-07, 212 212 216));
-  --color-tone-zinc-08: rgb(var(--tone-zinc-08, 230 230 232));
-  --color-tone-zinc-09: rgb(var(--tone-zinc-09, 243 243 244));
-  --color-tone-zinc-10: rgb(var(--tone-zinc-10, 248 248 249));
-  --color-tone-zinc: rgb(var(--tone-zinc, 255 255 255));
+  --color-tone-porcelain-01: rgb(var(--tone-porcelain-01, 28 34 42));
+  --color-tone-porcelain-02: rgb(var(--tone-porcelain-02, 33 41 50));
+  --color-tone-porcelain-03: rgb(var(--tone-porcelain-03, 54 65 81));
+  --color-tone-porcelain-04: rgb(var(--tone-porcelain-04, 71 85 106));
+  --color-tone-porcelain-05: rgb(var(--tone-porcelain-05, 95 115 143));
+  --color-tone-porcelain-06: rgb(var(--tone-porcelain-06, 149 164 184));
+  --color-tone-porcelain-07: rgb(var(--tone-porcelain-07, 207 213 223));
+  --color-tone-porcelain-08: rgb(var(--tone-porcelain-08, 226 230 236));
+  --color-tone-porcelain-09: rgb(var(--tone-porcelain-09, 241 243 246));
+  --color-tone-porcelain-10: rgb(var(--tone-porcelain-10, 247 248 250));
+  --color-tone-porcelain: rgb(var(--tone-porcelain, 255 255 255));
+  --color-tone-kaolin-01: rgb(var(--tone-kaolin-01, 31 33 38));
+  --color-tone-kaolin-02: rgb(var(--tone-kaolin-02, 37 40 46));
+  --color-tone-kaolin-03: rgb(var(--tone-kaolin-03, 59 64 73));
+  --color-tone-kaolin-04: rgb(var(--tone-kaolin-04, 78 85 96));
+  --color-tone-kaolin-05: rgb(var(--tone-kaolin-05, 105 114 130));
+  --color-tone-kaolin-06: rgb(var(--tone-kaolin-06, 156 163 175));
+  --color-tone-kaolin-07: rgb(var(--tone-kaolin-07, 210 213 218));
+  --color-tone-kaolin-08: rgb(var(--tone-kaolin-08, 230 231 234));
+  --color-tone-kaolin-09: rgb(var(--tone-kaolin-09, 242 243 245));
+  --color-tone-kaolin-10: rgb(var(--tone-kaolin-10, 248 248 249));
+  --color-tone-kaolin: rgb(var(--tone-kaolin, 255 255 255));
+  --color-tone-fireclay-01: rgb(var(--tone-fireclay-01, 33 33 37));
+  --color-tone-fireclay-02: rgb(var(--tone-fireclay-02, 40 40 44));
+  --color-tone-fireclay-03: rgb(var(--tone-fireclay-03, 64 64 70));
+  --color-tone-fireclay-04: rgb(var(--tone-fireclay-04, 84 84 92));
+  --color-tone-fireclay-05: rgb(var(--tone-fireclay-05, 112 112 124));
+  --color-tone-fireclay-06: rgb(var(--tone-fireclay-06, 161 161 170));
+  --color-tone-fireclay-07: rgb(var(--tone-fireclay-07, 212 212 216));
+  --color-tone-fireclay-08: rgb(var(--tone-fireclay-08, 230 230 232));
+  --color-tone-fireclay-09: rgb(var(--tone-fireclay-09, 243 243 244));
+  --color-tone-fireclay-10: rgb(var(--tone-fireclay-10, 248 248 249));
+  --color-tone-fireclay: rgb(var(--tone-fireclay, 255 255 255));
   --color-tone-neutral-01: rgb(var(--tone-neutral-01, 33 33 33));
   --color-tone-neutral-02: rgb(var(--tone-neutral-02, 40 40 40));
   --color-tone-neutral-03: rgb(var(--tone-neutral-03, 64 64 64));
@@ -100,17 +100,17 @@
   --color-tone-neutral-09: rgb(var(--tone-neutral-09, 243 243 243));
   --color-tone-neutral-10: rgb(var(--tone-neutral-10, 248 248 248));
   --color-tone-neutral: rgb(var(--tone-neutral, 255 255 255));
-  --color-tone-stone-01: rgb(var(--tone-stone-01, 35 33 32));
-  --color-tone-stone-02: rgb(var(--tone-stone-02, 42 40 38));
-  --color-tone-stone-03: rgb(var(--tone-stone-03, 68 64 61));
-  --color-tone-stone-04: rgb(var(--tone-stone-04, 89 83 79));
-  --color-tone-stone-05: rgb(var(--tone-stone-05, 120 112 108));
-  --color-tone-stone-06: rgb(var(--tone-stone-06, 167 161 157));
-  --color-tone-stone-07: rgb(var(--tone-stone-07, 215 212 210));
-  --color-tone-stone-08: rgb(var(--tone-stone-08, 232 230 229));
-  --color-tone-stone-09: rgb(var(--tone-stone-09, 244 243 242));
-  --color-tone-stone-10: rgb(var(--tone-stone-10, 249 248 248));
-  --color-tone-stone: rgb(var(--tone-stone, 255 255 255));
+  --color-tone-bisque-01: rgb(var(--tone-bisque-01, 35 33 32));
+  --color-tone-bisque-02: rgb(var(--tone-bisque-02, 42 40 38));
+  --color-tone-bisque-03: rgb(var(--tone-bisque-03, 68 64 61));
+  --color-tone-bisque-04: rgb(var(--tone-bisque-04, 89 83 79));
+  --color-tone-bisque-05: rgb(var(--tone-bisque-05, 120 112 108));
+  --color-tone-bisque-06: rgb(var(--tone-bisque-06, 167 161 157));
+  --color-tone-bisque-07: rgb(var(--tone-bisque-07, 215 212 210));
+  --color-tone-bisque-08: rgb(var(--tone-bisque-08, 232 230 229));
+  --color-tone-bisque-09: rgb(var(--tone-bisque-09, 244 243 242));
+  --color-tone-bisque-10: rgb(var(--tone-bisque-10, 249 248 248));
+  --color-tone-bisque: rgb(var(--tone-bisque, 255 255 255));
   --color-status-info-01: rgb(var(--status-info-01, 0 25 66));
   --color-status-info-02: rgb(var(--status-info-02, 0 68 109));
   --color-status-info-03: rgb(var(--status-info-03, 0 81 124));

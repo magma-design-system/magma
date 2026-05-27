@@ -45,7 +45,7 @@ Magma uses Tailwind 4 with a CSS-first config. To extend in a consumer project:
 module.exports = {
   content: ['./src/**/*.{ts,tsx,html}'],
   presets: [require('@maggioli-design-system/styles')],
-}
+};
 ```
 
 ## Color classes
@@ -53,16 +53,17 @@ module.exports = {
 Tailwind color classes are generated from RGB token vars. Always use Magma color classes instead of raw Tailwind primitives.
 
 ```html
-<!-- correct — semantic token, supports dark mode automatically -->
+<!-- correct - semantic token, supports dark mode automatically -->
 <div class="bg-tone-neutral text-tone-neutral-03">...</div>
 
-<!-- incorrect — bypasses the token system and breaks dark mode -->
+<!-- incorrect - bypasses the token system and breaks dark mode -->
 <div class="bg-white text-gray-700">...</div>
 ```
 
-Color class prefixes available: `tone-neutral`, `tone-slate`, `tone-grey`, `status-info`, `status-success`, `status-warning`, `status-error`, `label-*`, `variant-primary`, `variant-secondary`, `variant-ai`, `brand-maggioli`.
+Color class prefixes available: `tone-neutral`, `tone-porcelain`, `tone-kaolin`, `tone-fireclay`, `tone-bisque`, `status-info`, `status-success`, `status-warning`, `status-error`, `label-*`, `variant-primary`, `variant-secondary`, `variant-ai`, `brand-maggioli`.
 
 If you need a color outside Tailwind, always use the RGB wrapper:
+
 ```css
 .selector {
   color: rgb(var(--tone-neutral-03));
@@ -75,7 +76,7 @@ If you need a color outside Tailwind, always use the RGB wrapper:
 Typography utilities are semantic and map directly to Magma's type scale. Use these instead of composing `font-*` and `text-*` primitives manually.
 
 | Utility                           | Family        | Use case                              |
-|-----------------------------------|---------------|---------------------------------------|
+| --------------------------------- | ------------- | ------------------------------------- |
 | `text-title-h1` … `text-title-h6` | Karla (title) | Page and section headings             |
 | `text-title-action`               | Karla (title) | Buttons, labels, interactive elements |
 | `text-info-paragraph`             | Karla         | Body copy, UI paragraphs              |
@@ -95,10 +96,10 @@ Typography utilities are semantic and map directly to Magma's type scale. Use th
 Use these utilities instead of writing focus styles manually:
 
 ```html
-<!-- bounce animation on focus — preferred for interactive elements -->
+<!-- bounce animation on focus - preferred for interactive elements -->
 <button class="focus-bounce">...</button>
 
-<!-- zoom/outline focus — for elements that should not animate -->
+<!-- zoom/outline focus - for elements that should not animate -->
 <a class="focus-zoom">...</a>
 ```
 
@@ -107,23 +108,47 @@ Use these utilities instead of writing focus styles manually:
 Dark mode is handled at the palette level. No class changes are needed on individual elements. Activate via `<html>`:
 
 ```html
-<html class="pref-theme-system">   <!-- follows OS -->
-<html class="pref-theme-light">    <!-- always light -->
-<html class="pref-theme-dark">     <!-- always dark -->
+<html class="pref-theme-system">
+  <!-- follows OS -->
+</html>
+<html class="pref-theme-light">
+  <!-- always light -->
+</html>
+<html class="pref-theme-dark">
+  <!-- always dark -->
+</html>
 ```
 
 ## Other accessibility preferences
 
 ```html
-<html class="pref-contrast-system">           <!-- follows OS -->
-<html class="pref-contrast-more">             <!-- always high contrast -->
-<html class="pref-contrast-no-preference">    <!-- always default contrast -->
-<html class="pref-animation-system">          <!-- follows OS -->
-<html class="pref-animation-no-preference">   <!-- always reduced animation -->
-<html class="pref-animation-reduce">          <!-- always no animation -->
-<html class="pref-consumption-low">           <!-- always low consumption -->
-<html class="pref-consumption-medium">        <!-- always medium consumption -->
-<html class="pref-consumption-high">          <!-- always high consumption -->
+<html class="pref-contrast-system">
+  <!-- follows OS -->
+</html>
+<html class="pref-contrast-more">
+  <!-- always high contrast -->
+</html>
+<html class="pref-contrast-no-preference">
+  <!-- always default contrast -->
+</html>
+<html class="pref-animation-system">
+  <!-- follows OS -->
+</html>
+<html class="pref-animation-no-preference">
+  <!-- always reduced animation -->
+</html>
+<html class="pref-animation-reduce">
+  <!-- always no animation -->
+</html>
+<html class="pref-consumption-low">
+  <!-- always low consumption -->
+</html>
+<html class="pref-consumption-medium">
+  <!-- always medium consumption -->
+</html>
+<html class="pref-consumption-high">
+  <!-- always high consumption -->
+</html>
 ```
 
 For programmatic control, use the `mds-pref-theme` component.
@@ -133,13 +158,14 @@ For programmatic control, use the `mds-pref-theme` component.
 These CSS custom properties on `:root` control system-wide visual behaviour. Override them in your `overrides` layer only.
 
 | Property                   | Default                                      | Description                     |
-|----------------------------|----------------------------------------------|---------------------------------|
+| -------------------------- | -------------------------------------------- | ------------------------------- |
 | `--magma-corner-shape`     | `squircle`                                   | Corner shape for all components |
 | `--magma-disabled-opacity` | `0.5`                                        | Opacity of disabled components  |
 | `--magma-backdrop-opacity` | `0.1`                                        | Opacity of modal backdrops      |
 | `--magma-outline-focus`    | `2px solid var(--magma-outline-focus-color)` | Focus ring style                |
 
 Example override:
+
 ```css
 @layer overrides {
   :root {
@@ -150,8 +176,8 @@ Example override:
 
 ## Anti-patterns
 
-- ❌ Never use raw Tailwind color primitives (`bg-white`, `bg-gray-500`) — use Magma token classes
-- ❌ Never compose typography with raw `font-*` + `text-*` primitives — use semantic `text-*` utilities
+- ❌ Never use raw Tailwind color primitives (`bg-white`, `bg-gray-500`) - use Magma token classes
+- ❌ Never compose typography with raw `font-*` + `text-*` primitives - use semantic `text-*` utilities
 - ❌ Never override `--magma-*` vars outside the `overrides` cascade layer
-- ❌ Never import `colors-hex-*.css` files when using Tailwind or web components — they require RGB format
-- ❌ Never write `color-scheme` or dark mode media queries manually — use Magma's activation classes
+- ❌ Never import `colors-hex-*.css` files when using Tailwind or web components - they require RGB format
+- ❌ Never write `color-scheme` or dark mode media queries manually - use Magma's activation classes

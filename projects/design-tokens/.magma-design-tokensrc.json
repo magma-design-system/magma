@@ -1,14 +1,64 @@
 {
   "colors": [
-    { "color": "#94a3b8", "export": ["tones"], "name": "tone.slate", "ratios": "tone", "formula": "wcag3", "seed": { "light": "#FFFFFF", "dark": "#000000" } },
-    { "color": "#9ca3af", "export": ["tones"], "name": "tone.grey", "ratios": "tone", "formula": "wcag3", "seed": { "light": "#FFFFFF", "dark": "#000000" } },
-    { "color": "#a3a3a3", "export": ["tones", "default"], "name": "tone.neutral", "ratios": "tone", "formula": "wcag3", "seed": { "light": "#FFFFFF", "dark": "#000000" } },
-    { "color": "#A99F95", "export": ["tones"], "name": "tone.zinc", "ratios": "tone", "formula": "wcag3", "seed": { "light": "#FFFFFF", "dark": "#000000" } },
-    { "color": "#AC9C97", "export": ["tones"], "name": "tone.stone", "ratios": "tone", "formula": "wcag3", "seed": { "light": "#FFFFFF", "dark": "#000000" } },
+    {
+      "color": "#94a3b8",
+      "export": ["tones"],
+      "name": "tone.porcelain",
+      "ratios": "tone",
+      "formula": "wcag3",
+      "seed": { "light": "#FFFFFF", "dark": "#000000" }
+    },
+    {
+      "color": "#9ca3af",
+      "export": ["tones"],
+      "name": "tone.kaolin",
+      "ratios": "tone",
+      "formula": "wcag3",
+      "seed": { "light": "#FFFFFF", "dark": "#000000" }
+    },
+    {
+      "color": "#a3a3a3",
+      "export": ["tones", "default"],
+      "name": "tone.neutral",
+      "ratios": "tone",
+      "formula": "wcag3",
+      "seed": { "light": "#FFFFFF", "dark": "#000000" }
+    },
+    {
+      "color": "#A99F95",
+      "export": ["tones"],
+      "name": "tone.fireclay",
+      "ratios": "tone",
+      "formula": "wcag3",
+      "seed": { "light": "#FFFFFF", "dark": "#000000" }
+    },
+    {
+      "color": "#AC9C97",
+      "export": ["tones"],
+      "name": "tone.bisque",
+      "ratios": "tone",
+      "formula": "wcag3",
+      "seed": { "light": "#FFFFFF", "dark": "#000000" }
+    },
 
-    { "color": "#23B2E1", "export": ["status", "default"], "name": "status.info", "colorspace": "OKLCH" },
-    { "color": "#21BF73", "export": ["status", "default"], "name": "status.success", "colorspace": "OKLCH" },
-    { "color": "#ED6663", "export": ["status", "default"], "name": "status.error", "colorspace": "OKLCH" },
+    {
+      "color": "#23B2E1",
+      "export": ["status", "default"],
+      "name": "status.info",
+      "colorspace": "OKLCH"
+    },
+    {
+      "color": "#21BF73",
+      "export": ["status", "default"],
+      "name": "status.success",
+      "colorspace": "OKLCH"
+    },
+    {
+      "color": "#ED6663",
+      "export": ["status", "default"],
+      "name": "status.error",
+      "colorspace": "OKLCH"
+    },
     { "color": "#FFC107", "export": ["status", "default"], "name": "status.warning" },
 
     { "color": "#d01b1b", "export": ["label", "default"], "name": "label.red" },
@@ -28,9 +78,27 @@
     { "color": "#0f4ad5", "export": ["default"], "name": "variant.secondary" },
     { "color": "#782FF6", "export": ["default"], "name": "variant.ai" },
 
-    { "color": "#00379E", "export": ["brand", "default"], "name": "brand.maggioli", "colorspace": "HSL", "smooth": true },
-    { "color": "#0f4ad5", "export": ["brand", "default"], "name": "brand.maggioli-editore", "colorspace": "HSL", "smooth": true },
-    { "color": "#CBA26B", "export": ["brand-rnd"], "name": "brand.rnd", "colorspace": "HSL", "smooth": true }
+    {
+      "color": "#00379E",
+      "export": ["brand", "default"],
+      "name": "brand.maggioli",
+      "colorspace": "HSL",
+      "smooth": true
+    },
+    {
+      "color": "#0f4ad5",
+      "export": ["brand", "default"],
+      "name": "brand.maggioli-editore",
+      "colorspace": "HSL",
+      "smooth": true
+    },
+    {
+      "color": "#CBA26B",
+      "export": ["brand-rnd"],
+      "name": "brand.rnd",
+      "colorspace": "HSL",
+      "smooth": true
+    }
   ],
   "colorspace": "HSL",
   "smooth": false

@@ -25,7 +25,7 @@
 
 @property --mds-keyboard-background-default {
   inherits: false;
-  initial-value: rgb(var(--tone-slate-08));
+  initial-value: rgb(var(--tone-porcelain-08));
   syntax: '<color>';
 }
 
@@ -43,7 +43,7 @@
 
 @property --mds-keyboard-background {
   inherits: false;
-  initial-value: rgb(var(--tone-slate-08));
+  initial-value: rgb(var(--tone-porcelain-08));
   syntax: '<color>';
 }
 
@@ -91,7 +91,7 @@
 
 @property --mds-keyboard-key-background {
   inherits: false;
-  initial-value: rgb(var(--tone-slate-10));
+  initial-value: rgb(var(--tone-porcelain-10));
   syntax: '<color>';
 }
 
@@ -149,7 +149,7 @@
   --mds-keyboard-background-default: var(--mds-keyboard-background);
   --mds-keyboard-background-fail: rgb(var(--status-error-09));
   --mds-keyboard-background-pass: rgb(var(--status-success-09));
-  --mds-keyboard-background: rgb(var(--tone-slate-08));
+  --mds-keyboard-background: rgb(var(--tone-porcelain-08));
   --mds-keyboard-color: rgb(var(--tone-neutral-04));
   --mds-keyboard-fill-fail: rgb(var(--status-error-06));
   --mds-keyboard-fill-pass: rgb(var(--status-success-06));
@@ -162,7 +162,7 @@
   --mds-keyboard-illumination-light: 0 var(--mds-keyboard-illumination-light-size) 0 0
     rgb(255 255 255 / var(--mds-keyboard-illumination-light-opacity)) inset;
   --mds-keyboard-illumination-shadow: 0 0 1px 0 rgb(0 0 0 / 0);
-  --mds-keyboard-key-background: rgb(var(--tone-slate-10));
+  --mds-keyboard-key-background: rgb(var(--tone-porcelain-10));
   --mds-keyboard-key-illumination-dark-opacity: 0.075;
   --mds-keyboard-key-illumination-light-opacity: 0.5;
   --mds-keyboard-key-illumination-shadow: var(--shadow-sharp);
@@ -202,7 +202,7 @@
 }
 
 :host(:focus-within) {
-  --mds-keyboard-background: rgb(var(--tone-slate-07));
+  --mds-keyboard-background: rgb(var(--tone-porcelain-07));
 }
 
 mds-tooltip {

@@ -12,7 +12,7 @@ const randomDuration = () => durations[Math.floor(Math.random() * durations.leng
 const TemplateNavigationMenu = () => {
   const [isExpanded, setExpand] = useState(false);
   return (
-    <div class="grid gap-400 bg-tone-slate-10 rounded-lg p-600">
+    <div class="grid gap-400 bg-tone-porcelain-10 rounded-lg p-600">
       <div class="flex items-center justify-between gap-400">
         <mds-text typography="h5">Menu</mds-text>
         <mds-button

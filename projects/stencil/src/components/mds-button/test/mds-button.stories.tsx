@@ -152,7 +152,7 @@ const TemplateAwait = () => {
 };
 
 const TemplateKeyboard = (args) => (
-  <div class="bg-tone-grey-10 p-600 grid gap-600">
+  <div class="bg-tone-kaolin-10 p-600 grid gap-600">
     <mds-text>Focus this button with tab before press enter.</mds-text>
     <mds-button {...args} label="Click me from enter keyborad"></mds-button>
   </div>
