@@ -21,6 +21,7 @@
 }
 
 @media (prefers-contrast: more) {
+
   @media (prefers-color-scheme: dark) {
     :host-context(:root.pref-contrast-system.pref-theme-system) {
       --mds-kpi-item-info-background: rgb(var(--tone-neutral));

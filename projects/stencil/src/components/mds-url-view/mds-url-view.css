@@ -42,6 +42,7 @@
 */
 
 :host {
+
   /* stylelint-disable-next-line length-zero-no-unit */
   --mds-modal-custom-window-distance: 0px;
   --mds-url-view-background: rgb(var(--tone-neutral-10));
@@ -64,13 +65,13 @@
   w-full;
 
   background-color: var(--mds-url-view-background);
-  transition-duration: var(--duration-200);
   border-radius: var(--mds-url-view-radius);
   box-shadow: var(--mds-url-view-shadow);
   display: flex;
   flex-direction: column;
   flex-grow: 1;
   overflow: hidden;
+  transition-duration: var(--duration-200);
   transition-property: background-color, box-shadow;
 }
 
@@ -80,7 +81,6 @@
   p-200;
 
   align-items: center;
-  transition-duration: var(--duration-200);
   background-color: var(--mds-url-view-background);
   box-shadow: var(--mds-url-view-header-shadow);
   color: var(--mds-url-view-color);
@@ -88,6 +88,7 @@
   flex-shrink: 0;
   justify-content: space-between;
   position: relative;
+  transition-duration: var(--duration-200);
   transition-property: background-color, box-shadow;
 }
 

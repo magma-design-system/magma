@@ -125,7 +125,6 @@
   px-300;
 
   align-items: center;
-  transition-duration: var(--duration-200);
   background-color: var(--mds-paginator-item-background);
   border-radius: var(--mds-paginator-item-radius);
   box-shadow: var(--mds-paginator-item-shadow);
@@ -137,6 +136,7 @@
   height: var(--mds-paginator-item-size);
   justify-content: center;
   min-width: var(--mds-paginator-item-size);
+  transition-duration: var(--duration-200);
   transition-property: background-color, box-shadow, color, outline, outline-offset;
   user-select: none;
 }

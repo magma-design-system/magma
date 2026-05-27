@@ -85,6 +85,7 @@
 }
 
 :host(:not(:last-child)) .children--has-children::before {
+
   /* border-left-color: green; */
   border-left-color: var(--mds-tree-item-branch-border-color);
   border-left-style: solid;

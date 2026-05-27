@@ -110,6 +110,7 @@
 }
 
 :host {
+
   /* private */
   --mds-avatar-stack-item-background: var(--mds-avatar-stack-background, rgb(var(--tone-neutral)));
   --mds-avatar-stack-item-count-background-color: var(

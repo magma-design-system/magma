@@ -58,11 +58,11 @@
   rounded;
 
   background-color: var(--mds-note-background);
-  transition-duration: var(--duration-300);
   color: var(--mds-note-color);
   display: grid;
   overflow: hidden;
   position: relative;
+  transition-duration: var(--duration-300);
   transition-property: color, background-color;
 }
 
@@ -106,9 +106,9 @@
   rounded-full;
 
   background-color: transparent;
-  transition-duration: var(--duration-200);
   cursor: pointer;
   fill: var(--mds-note-color);
+  transition-duration: var(--duration-200);
   transition-property: background-color, fill, outline, outline-offset;
 }
 
