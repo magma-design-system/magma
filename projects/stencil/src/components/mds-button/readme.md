@@ -8,7 +8,6 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 <!-- Auto Generated Below -->
 
-
 ## Usage
 
 ### 1. Description
@@ -43,7 +42,6 @@ The `<mds-button>` web component is the primary interactive action control of th
 - **`animation`**: Text entry animation. `none` (default) renders immediately; `yugop` progressively reveals characters.
 - **`type`**: Native form button type. Defaults to `submit`; set to `button` for non-submitting actions inside a `<form>`, or `reset` for native form reset.
 - **`target`**: Effective only when `href` is set. `self` (default) navigates the current window; `blank` opens a new tab.
-
 
 ### 2. Pattern
 
@@ -181,7 +179,6 @@ Style the button only through its documented `--mds-button-*` CSS custom propert
 }
 ```
 
-
 ### 3. Antipattern
 
 Common incorrect uses of `<mds-button>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
@@ -284,8 +281,6 @@ mds-button::part(icon) {
 }
 ```
 
-
-
 ## Properties
 
 | Property       | Attribute       | Description                                                                | Type                                                                                                                                       | Default     |
@@ -306,7 +301,6 @@ mds-button::part(icon) {
 | `type`         | `type`          | The type of the button element                                             | `"a" \| "button" \| "reset" \| "submit" \| undefined`                                                                                      | `'submit'`  |
 | `variant`      | `variant`       | Specifies the color variant for the button                                 | `"ai" \| "apple" \| "dark" \| "error" \| "google" \| "info" \| "light" \| "primary" \| "secondary" \| "success" \| "warning" \| undefined` | `'primary'` |
 
-
 ## Slots
 
 | Slot             | Description                                                                                   |
@@ -314,14 +308,12 @@ mds-button::part(icon) {
 | `"default"`      | Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.        |
 | `"notification"` | Add `HTML elements` or `components`, it is **recommended** to use `mds-notification` element. |
 
-
 ## Shadow Parts
 
 | Part      | Description                   |
 | --------- | ----------------------------- |
 | `"icon"`  | The icon inside the component |
 | `"label"` |                               |
-
 
 ## CSS Custom Properties
 
@@ -343,43 +335,42 @@ mds-button::part(icon) {
 | `--mds-button-gap`                              | Sets the distance betwen element inside the components, use it instead of setting gap property directly.                      |
 | `--mds-button-radius`                           | Sets the border-radius of the component                                                                                       |
 
-
 ## Dependencies
 
 ### Used by
 
- - [mds-banner](../mds-banner)
- - [mds-breadcrumb](../mds-breadcrumb)
- - [mds-breadcrumb-item](../mds-breadcrumb-item)
- - [mds-button-dropdown](../mds-button-dropdown)
- - [mds-calendar](../mds-calendar)
- - [mds-calendar-cell](../mds-calendar-cell)
- - [mds-chip](../mds-chip)
- - [mds-file-preview](../mds-file-preview)
- - [mds-header-bar](../mds-header-bar)
- - [mds-horizontal-scroll](../mds-horizontal-scroll)
- - [mds-img](../mds-img)
- - [mds-input](../mds-input)
- - [mds-input-date](../mds-input-date)
- - [mds-input-date-range](../mds-input-date-range)
- - [mds-input-date-range-preselection](../mds-input-date-range-preselection)
- - [mds-input-upload](../mds-input-upload)
- - [mds-keyboard](../mds-keyboard)
- - [mds-label](../mds-label)
- - [mds-mention](../mds-mention)
- - [mds-modal](../mds-modal)
- - [mds-note](../mds-note)
- - [mds-policy-ai](../mds-policy-ai)
- - [mds-pref-language-item](../mds-pref-language-item)
- - [mds-pref-theme-variant-item](../mds-pref-theme-variant-item)
- - [mds-push-notification](../mds-push-notification)
- - [mds-push-notification-item](../mds-push-notification-item)
- - [mds-radial-menu](../mds-radial-menu)
- - [mds-radial-menu-item](../mds-radial-menu-item)
- - [mds-tab-item](../mds-tab-item)
- - [mds-table-header-cell](../mds-table-header-cell)
- - [mds-tree-item](../mds-tree-item)
- - [mds-url-view](../mds-url-view)
+- [mds-banner](../mds-banner)
+- [mds-breadcrumb](../mds-breadcrumb)
+- [mds-breadcrumb-item](../mds-breadcrumb-item)
+- [mds-button-dropdown](../mds-button-dropdown)
+- [mds-calendar](../mds-calendar)
+- [mds-calendar-cell](../mds-calendar-cell)
+- [mds-chip](../mds-chip)
+- [mds-file-preview](../mds-file-preview)
+- [mds-header-bar](../mds-header-bar)
+- [mds-horizontal-scroll](../mds-horizontal-scroll)
+- [mds-img](../mds-img)
+- [mds-input](../mds-input)
+- [mds-input-date](../mds-input-date)
+- [mds-input-date-range](../mds-input-date-range)
+- [mds-input-date-range-preselection](../mds-input-date-range-preselection)
+- [mds-input-upload](../mds-input-upload)
+- [mds-keyboard](../mds-keyboard)
+- [mds-label](../mds-label)
+- [mds-mention](../mds-mention)
+- [mds-modal](../mds-modal)
+- [mds-note](../mds-note)
+- [mds-policy-ai](../mds-policy-ai)
+- [mds-pref-language-item](../mds-pref-language-item)
+- [mds-pref-theme-variant-item](../mds-pref-theme-variant-item)
+- [mds-push-notification](../mds-push-notification)
+- [mds-push-notification-item](../mds-push-notification-item)
+- [mds-radial-menu](../mds-radial-menu)
+- [mds-radial-menu-item](../mds-radial-menu-item)
+- [mds-tab-item](../mds-tab-item)
+- [mds-table-header-cell](../mds-table-header-cell)
+- [mds-tree-item](../mds-tree-item)
+- [mds-url-view](../mds-url-view)
 
 ### Depends on
 
@@ -388,6 +379,7 @@ mds-button::part(icon) {
 - [mds-text](../mds-text)
 
 ### Graph
+
 ```mermaid
 graph TD;
   mds-button --> mds-spinner
@@ -428,6 +420,6 @@ graph TD;
   style mds-button fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
-----------------------------------------------
+---
 
 Built with love @ [Gruppo Maggioli](https://www.maggioli.com) from [R&D Department](https://www.maggioli.com/it-it/chi-siamo/ricerca-sviluppo)
