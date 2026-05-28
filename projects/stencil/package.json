@@ -17,7 +17,8 @@
   "scripts": {
     "build": "npm run clean && npm run build.icons && stencil build --prerender --docs-readme --docs-json dist/documentation.json && npm run publish.isolate.docs-json",
     "build.docs": "stencil docs",
-    "build.icons": "iconsauce --verbose --config ./.storybook/iconsauce.config.js --output-dictionary ./src/fixtures/icons.json --output-svg ./assets/svg --output-dump-dictionary ./src/fixtures/icons-dictionary.json",
+    "build.icons": "iconsauce --verbose --config ./.storybook/iconsauce.config.js --output-dictionary ./src/fixtures/icons.json --output-svg ./assets/svg --output-dump-dictionary ./src/fixtures/icons-dictionary.json && npm run sort.icons-dictionary",
+    "sort.icons-dictionary": "tsx --tsconfig script.tsconfig.json ./scripts/sort-icons-dictionary.ts",
     "build.no-cache": "stencil build --no-cache",
     "build.watch": "npm run build.icons && stencil build -c stencil.dev.config.ts --dev --watch",
     "build.watch-no-cache": "stencil build --no-cache --watch",
