@@ -1,26 +1,26 @@
 <!--
 ================================================================================
-AUTHORING RULES — description.md
+AUTHORING RULES - 1. Description.md
 ================================================================================
 Purpose: explain WHAT this component is and what each prop MEANS.
          The reader is an AI agent or a developer deciding whether to use it.
 
 Companion docs to read first (do not re-derive their content here):
-  - docs/COMPONENTS.md       — the usage/ contract and the cross-cutting
+  - docs/COMPONENTS.md       - the usage/ contract and the cross-cutting
                                variant/tone/size ladders shared across components.
-  - projects/stencil/SPEC.md — registration, naming, events, slots, dictionaries.
+  - projects/stencil/SPEC.md - registration, naming, events, slots, dictionaries.
 
 MUST contain (in this exact order):
-  1. ONE opening paragraph (1–2 sentences, no heading). Reference the tag
-     literally — e.g. `<{{componentName}}>` — and place the component in the
+  1. ONE opening paragraph (1-2 sentences, no heading). Reference the tag
+     literally - e.g. `<{{componentName}}>` - and place the component in the
      system: what role it plays, what HTML primitive it replaces or extends.
   2. A "## Semantic Behavior" section: intrinsic, runtime behavior the
-     component encapsulates — behaviors that survive across themes, sizes,
+     component encapsulates - behaviors that survive across themes, sizes,
      and variants. Bulleted, one behavior per bullet, **bold lead** + one
      sentence. Cover state (`active`, `disabled`, `await`), form association,
      role/ARIA defaults, focus, async handling, etc.
   3. A "## Properties & Visual Configurations" section: the INTENT of each
-     prop whose meaning isn't obvious from its name — when to pick
+     prop whose meaning isn't obvious from its name - when to pick
      `tone="strong"` vs `tone="weak"`, what `variant` families exist, what
      `size` controls. Group sub-options with nested bullets ONLY when each
      value carries a distinct semantic role worth naming.
@@ -29,10 +29,10 @@ MUST NOT contain:
   - The full props table or the raw type signature (lives in `readme.md`,
     auto-generated from `@Prop()` JSDoc).
   - Exhaustive lists of allowed string values (lives in `components.d.ts`
-    and `src/type/*.ts` — those are the source of truth).
-  - Code examples — those belong in `pattern.md`.
-  - Anti-patterns or "don't do X" — those belong in `antipattern.md`.
-  - Generic stencil rules that apply to every component — those live in
+    and `src/type/*.ts` - those are the source of truth).
+  - Code examples - those belong in `pattern.md`.
+  - Anti-patterns or "don't do X" - those belong in `antipattern.md`.
+  - Generic stencil rules that apply to every component - those live in
     `projects/stencil/SPEC.md` and `docs/COMPONENTS.md`.
   - Trivial props (`label`, `name`, `id`, `autoFocus`) whose meaning is
     obvious from the name.
@@ -41,8 +41,8 @@ STYLE & LENGTH:
   - Prose first, then bulleted lists. Each prop entry: `**propName**:` + a
     one-sentence intent, then a nested sub-list only if values diverge
     semantically.
-  - Target 20–40 lines total. Longer means you're describing implementation
-    rather than usage — trim.
+  - Target 20-40 lines total. Longer means you're describing implementation
+    rather than usage - trim.
   - Reference props by their camelCase TS name (`iconPosition`, not
     `icon-position`); values stay in backticks (`'strong'`, `'weak'`).
   - Delete this comment block before committing.
@@ -51,7 +51,7 @@ STYLE & LENGTH:
 
 The `<{{componentName}}>` web component <!-- one or two sentences: what is it, and what role does it play in the system? Mention the HTML primitive it replaces or extends, if any. -->.
 
-## Semantic Behavior
+#### Semantic Behavior
 
 <!--
 Describe runtime behavior that a developer can't infer from the props table.
@@ -67,15 +67,15 @@ Bullet list. One behavior per bullet. Bold lead naming the trigger / state.
 - **<!-- behavior name -->**: <!-- one-sentence description -->.
 - **<!-- behavior name -->**: <!-- one-sentence description -->.
 
-## Properties & Visual Configurations
+#### Properties & Visual Configurations
 
 <!--
-Document the INTENT of each prop — when to pick which value, not the value list.
+Document the INTENT of each prop - when to pick which value, not the value list.
 
 Group conventions to follow:
   - For `variant`, group values into semantic families (Brand / Status /
-    Luminance / Identity / Label) — see docs/COMPONENTS.md §variant.
-  - For `tone`, name each value's emphasis level — see docs/COMPONENTS.md §tone.
+    Luminance / Identity / Label) - see docs/COMPONENTS.md §variant.
+  - For `tone`, name each value's emphasis level - see docs/COMPONENTS.md §tone.
   - For free-form props (strings, numbers), one line is enough.
 
 Skip any prop whose meaning is obvious from its name (`label`, `name`, `id`,
@@ -84,7 +84,7 @@ Skip any prop whose meaning is obvious from its name (`label`, `name`, `id`,
 naming.
 -->
 
-- **`<!-- propName -->`**: <!-- intent — one sentence. If values have distinct meanings, list them below. -->
+- **`<!-- propName -->`**: <!-- intent - one sentence. If values have distinct meanings, list them below. -->
   - `<!-- value -->`: <!-- when to use it -->.
   - `<!-- value -->`: <!-- when to use it -->.
 - **`<!-- propName -->`**: <!-- intent -->.

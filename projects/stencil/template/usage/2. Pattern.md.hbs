@@ -1,6 +1,6 @@
 <!--
 ================================================================================
-AUTHORING RULES - pattern.md
+AUTHORING RULES - 2. Pattern.md
 ================================================================================
 Purpose: show CORRECT, idiomatic ways to use this component.
          The reader is an AI agent generating code or a developer copy-pasting
@@ -47,7 +47,7 @@ STYLE & LENGTH:
 
 Correct and idiomatic ways to use the `<{{componentName}}>` component, ordered from most common to most specialized.
 
-## 1. <!-- preferred / canonical use case, usually the `label` prop form -->
+#### <!-- preferred / canonical use case, usually the `label` prop form -->
 
 <!-- 1-2 sentences: when to reach for this pattern and why it is the canonical form. -->
 
@@ -55,7 +55,7 @@ Correct and idiomatic ways to use the `<{{componentName}}>` component, ordered f
 <{{componentName}}></{{componentName}}>
 ```
 
-## 2. <!-- next most common use case -->
+#### <!-- next most common use case -->
 
 <!-- 1-2 sentences. -->
 
@@ -74,7 +74,7 @@ Continue with patterns 3, 4, 5... Cover at minimum:
   - External customization via CSS Custom Properties (always LAST)
 -->
 
-## N. Styling Customization
+#### Styling Customization
 
 Style the component only through its documented `--mds-{{componentNameWithNoPrefix}}-*` CSS custom properties. Use the Magma color tokens via `rgb(var(--<token>))` so dark mode and high-contrast modes keep working - see [`docs/TOKENS.md`](../../../../../../docs/TOKENS.md).
 

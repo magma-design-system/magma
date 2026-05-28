@@ -230,18 +230,20 @@ Every component documents its **semantic intent** in a `usage/` folder containin
 ```
 src/components/mds-component-name/
 └── usage/
-    ├── description.md   ← purpose, semantic behaviour, prop intent
-    ├── pattern.md       ← numbered list of correct usage patterns with code examples
-    └── antipattern.md   ← numbered list of incorrect uses with INCORRECT/CORRECT pairs
+    ├── 1. Description.md   ← purpose, semantic behaviour, prop intent
+    ├── 2. Pattern.md       ← numbered list of correct usage patterns with code examples
+    └── 3. Antipattern.md   ← numbered list of incorrect uses with INCORRECT/CORRECT pairs
 ```
+
+The `1. ` / `2. ` / `3. ` numeric prefixes exist to control the order of sections in the auto-generated `readme.md` — Stencil sorts usage files alphabetically by filename, and the headings it emits (`### 1. Description`, etc.) double as a deterministic table of contents.
 
 ### What each file contains
 
-| File             | Owns                                                                                                                            |
-| ---------------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| `description.md` | One-sentence purpose, runtime/semantic behaviour, the **intent** of each prop's values (when to pick `tone="strong"` vs `weak`) |
-| `pattern.md`     | 5-12 numbered patterns showing correct, idiomatic use. Each has a "use this when…" line and one code block                      |
-| `antipattern.md` | 3-8 numbered anti-patterns. Each pairs an INCORRECT example with the CORRECT alternative and a one-line "why"                   |
+| File                | Owns                                                                                                                            |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| `1. Description.md` | One-sentence purpose, runtime/semantic behaviour, the **intent** of each prop's values (when to pick `tone="strong"` vs `weak`) |
+| `2. Pattern.md`     | 5-12 numbered patterns showing correct, idiomatic use. Each has a "use this when…" line and one code block                      |
+| `3. Antipattern.md` | 3-8 numbered anti-patterns. Each pairs an INCORRECT example with the CORRECT alternative and a one-line "why"                   |
 
 ### What `usage/` must NOT contain
 
@@ -279,7 +281,7 @@ src/components/mds-component-name/
 ├── mds-component-name.css    ← component styles
 ├── css/                      ← split CSS files (variants, sizes, etc.)
 ├── meta/                     ← TypeScript enums and dictionaries
-├── usage/                    ← description.md, pattern.md, antipattern.md (canonical docs)
+├── usage/                    ← 1. Description.md, 2. Pattern.md, 3. Antipattern.md (canonical docs)
 └── test/
     ├── mds-component-name.e2e.ts
     ├── mds-component-name.stories.tsx

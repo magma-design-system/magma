@@ -8,13 +8,13 @@ If you only need to look up the props of a known component, skip this and read i
 
 Every component under [`projects/stencil/src/components/<name>/`](../projects/stencil/src/components/) exposes documentation in five files. Different files answer different questions - grep the right one:
 
-| File                   | Owner          | Versioned         | Answers                                                                                       |
-| ---------------------- | -------------- | ----------------- | --------------------------------------------------------------------------------------------- |
-| `usage/description.md` | Authored       | ✅                | What the component **is**, its semantic behavior, why it exists                               |
-| `usage/pattern.md`     | Authored       | ✅                | How to use it **correctly** - recommended recipes with code                                   |
-| `usage/antipattern.md` | Authored       | ✅                | How **not** to use it - paired `INCORRECT` / `CORRECT` snippets                               |
-| `readme.md`            | Stencil (auto) | ✅                | What props, events, slots, methods, CSS vars exist (human-readable)                           |
-| `documentation.json`   | Stencil (auto) | ❌ (local-only)   | Structured JSON with full type metadata and cross-references; absent until `nx run stencil:build` |
+| File                   | Owner          | Versioned       | Answers                                                                                           |
+| ---------------------- | -------------- | --------------- | ------------------------------------------------------------------------------------------------- |
+| `usage/1. Description.md` | Authored       | ✅              | What the component **is**, its semantic behavior, why it exists                                |
+| `usage/2. Pattern.md`     | Authored       | ✅              | How to use it **correctly** - recommended recipes with code                                    |
+| `usage/3. Antipattern.md` | Authored       | ✅              | How **not** to use it - paired `INCORRECT` / `CORRECT` snippets                                |
+| `readme.md`            | Stencil (auto) | ✅              | What props, events, slots, methods, CSS vars exist (human-readable)                               |
+| `documentation.json`   | Stencil (auto) | ❌ (local-only) | Structured JSON with full type metadata and cross-references; absent until `nx run stencil:build` |
 
 **Build flow.** Only the three `usage/*.md` files are hand-authored. On build, Stencil bundles them into `documentation.json` and injects the content into `readme.md`. As a consequence: never hand-edit `readme.md` or `documentation.json` - both are regenerated and your edits will be lost. To change what a component's docs say, edit the matching `usage/*.md`. Note that `documentation.json` is gitignored (`projects/stencil/.gitignore`) and only exists after a local build - do not rely on it being present in a fresh clone or when browsing the repo on GitHub.
 
@@ -22,21 +22,21 @@ Every component under [`projects/stencil/src/components/<name>/`](../projects/st
 
 Pick by task, not by preference:
 
-| You need…                                                       | Read                                                                                 |
-| --------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
-| Semantic intent ("what is this for, when do I use it?")         | `usage/description.md` (smallest, always present, hand-authored)                     |
-| Idiomatic examples / common mistakes                            | `usage/pattern.md` and `usage/antipattern.md`                                        |
-| Props, events, slots, CSS custom properties                     | `readme.md` (always present, ~3-4× smaller than `documentation.json`)                |
+| You need…                                                       | Read                                                                                                                                        |
+| --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| Semantic intent ("what is this for, when do I use it?")         | `usage/1. Description.md` (smallest, always present, hand-authored)                                                                         |
+| Idiomatic examples / common mistakes                            | `usage/2. Pattern.md` and `usage/3. Antipattern.md`                                                                                         |
+| Props, events, slots, CSS custom properties                     | `readme.md` (always present, ~3-4× smaller than `documentation.json`)                                                                       |
 | Typed prop value sets (what `tone` / `variant` / `size` accept) | [`components.d.ts`](../projects/stencil/src/components.d.ts) + [`type/*.ts`](../projects/stencil/src/type/) - the versioned source of truth |
-| Full type metadata, cross-references (for codemods / tooling)   | `documentation.json` **if present**; otherwise build first or fall back to `components.d.ts` |
+| Full type metadata, cross-references (for codemods / tooling)   | `documentation.json` **if present**; otherwise build first or fall back to `components.d.ts`                                                |
 
-Avoid loading `documentation.json` as a default — it's ~3-4× larger than `readme.md` and frequently absent. Reach for it only when you specifically need the structured type metadata it carries.
+Avoid loading `documentation.json` as a default - it's ~3-4× larger than `readme.md` and frequently absent. Reach for it only when you specifically need the structured type metadata it carries.
 
 ## The `usage/` contract
 
 Every component's `usage/` folder follows the same shape. Adhere to it when authoring new ones - agents and humans rely on the consistency.
 
-### `description.md`
+### `1. Description.md`
 
 Plain prose. Sections in this order:
 
@@ -46,7 +46,7 @@ Plain prose. Sections in this order:
 
 Avoid: code snippets, anti-patterns, "how to use" instructions. Those belong in the other two files.
 
-### `pattern.md`
+### `2. Pattern.md`
 
 Numbered list (`## 1.`, `## 2.`, …) of correct usage recipes. Each entry:
 
@@ -56,7 +56,7 @@ Numbered list (`## 1.`, `## 2.`, …) of correct usage recipes. Each entry:
 
 Order patterns from most-common to most-specialized. Include at least one styling-customization pattern showing the `--mds-*` CSS custom properties. Always reach for `label` props before slots when both are available.
 
-### `antipattern.md`
+### `3. Antipattern.md`
 
 Numbered list (`## 1.`, `## 2.`, …) of mistakes. Each entry:
 
@@ -298,10 +298,10 @@ The five `tone` dictionaries (from [`projects/stencil/src/type/tone.ts`](../proj
 
 | Type                        | Allowed `tone` values                      | Example component |
 | --------------------------- | ------------------------------------------ | ----------------- |
-| `ToneMinimalVariantType`    | `strong`, `weak`                           | `mds-badge`       |
+| `ToneMinimalVariantType`    | `strong`, `weak`                           | `mds-chip`       |
 | `ToneMinimalBoxVariantType` | `strong`, `weak`, `box`                    | `mds-banner`      |
-| `ToneSmartVariantType`      | `strong`, `weak`, `outline`                | _grep to confirm_ |
-| `ToneVariantType`           | `outline`, `strong`, `text`, `weak`        | _grep to confirm_ |
+| `ToneSmartVariantType`      | `strong`, `weak`, `outline`                | `mds-badge` |
+| `ToneVariantType`           | `outline`, `strong`, `text`, `weak`        | `mds-radial-menu` |
 | `ToneBoxVariantType`        | `outline`, `strong`, `text`, `weak`, `box` | `mds-button`      |
 
 `variant`, `size`, and other constrained props follow the same pattern - look for the matching dictionary in [`projects/stencil/src/type/`](../projects/stencil/src/type/) (e.g. `ThemeVariantType`, `ThemeFullVariantType`, `ChipVariantType`, `ProgressBarSizeType`).
@@ -348,7 +348,7 @@ The component layer already handles these - **do not re-implement them in app co
 
 ## System-level anti-patterns
 
-These apply to **every** component. Per-component `antipattern.md` files address component-specific mistakes; the ones below are universal.
+These apply to **every** component. Per-component `3. Antipattern.md` files address component-specific mistakes; the ones below are universal.
 
 - ❌ Replacing a Magma component with a raw HTML element (`<button>`, `<input>`, `<a>` for an action) when an `mds-*` equivalent exists.
 - ❌ Wrapping an interactive `mds-*` component in another interactive element (`<a><mds-button></mds-button></a>` - use the `href` prop instead).
@@ -368,8 +368,8 @@ When creating `usage/` files for a component that doesn't yet have them:
 
 1. **Read the component first.** Open `<component>/readme.md` (props, events, slots, CSS vars) and the component's `.tsx` source. Note the prop names, the default slot's content rules, and what events fire.
 2. **Skim a sibling that already has `usage/`.** Mirror its file structure and headings exactly. [`mds-button`](../projects/stencil/src/components/mds-button/usage/) is the current reference.
-3. **Write `description.md` first.** It scopes the other two - once you know what the component _is_, the patterns and anti-patterns surface naturally.
-4. **Cap each file's length.** `description.md` ≈ 20-40 lines, `pattern.md` ≤ 12 recipes, `antipattern.md` ≤ 8 entries. Longer means you're describing implementation rather than usage.
+3. **Write `1. Description.md` first.** It scopes the other two - once you know what the component _is_, the patterns and anti-patterns surface naturally.
+4. **Cap each file's length.** `1. Description.md` ≈ 20-40 lines, `2. Pattern.md` ≤ 12 recipes, `3. Antipattern.md` ≤ 8 entries. Longer means you're describing implementation rather than usage.
 5. **Use real, runnable code blocks.** No pseudo-code. Use prop names exactly as they appear in `readme.md`.
 6. **Do not duplicate `readme.md`.** Don't restate the prop type table; explain _combinations_ and _intent_.
 7. **Validate against this guide's anti-patterns.** If a pattern you wrote violates a system-level anti-pattern, fix the pattern.

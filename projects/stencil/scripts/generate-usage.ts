@@ -11,7 +11,7 @@ dontUseWithNX();
 
 const componentNamePrefix = 'mds-';
 const usageDirName = 'usage';
-const usageStems = ['description', 'pattern', 'antipattern'];
+const usageFileStems = ['1. Description', '2. Pattern', '3. Antipattern'];
 
 const capitalizeWord = (componentName: string) =>
   componentName
@@ -77,7 +77,7 @@ const main = async () => {
     throw new Error(chalk.red(error));
   });
 
-  for (const stem of usageStems) {
+  for (const stem of usageFileStems) {
     await compileUsageFile(componentName, stem);
   }
 };

@@ -51,10 +51,13 @@ stencil        →  design-tokens, styles, svg-icons, identity
 | When to consult                                                                        | File                                             |
 |----------------------------------------------------------------------------------------|--------------------------------------------------|
 | Monorepo architecture, sub-project relationships, component composition patterns       | `docs/ARCHITECTURE.md`                           |
+| Lint rules for TypeScript/JS and CSS authoring (ESLint + Stylelint)                    | `docs/CODING_STANDARDS.md`                       |
+| Commit message convention: allowed types, scopes, special rules                        | `docs/COMMITS.md`                                |
+| Navigable catalogue of all 115 components                                              | `docs/COMPONENTS.md`                             |
+| Design token system: structure, naming convention, semantic levels                     | `docs/TOKENS.md`                                 |
 | Design tokens: structure, levels, semantics, naming convention                         | `projects/design-tokens/SPEC.md`                 |
 | CSS and Tailwind 4 styles: semantic classes, anti-patterns, dark mode                  | `projects/styles/SPEC.md`                        |
 | Web components: general Stencil conventions, composition patterns, accessibility rules | `projects/stencil/SPEC.md`                       |
 | Single component spec: props, slots, usage examples, anti-patterns                     | `projects/stencil/src/components/<name>/SPEC.md` |
-| Navigable catalogue of all 115 components                                              | `docs/COMPONENTS.md`                             |
 
 > ⚠️ **Rule**: when you modify a component, update its `SPEC.md` too. When you change tokens or styles with system-wide impact, update `docs/ARCHITECTURE.md`.

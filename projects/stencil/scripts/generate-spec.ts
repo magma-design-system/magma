@@ -21,16 +21,18 @@ const SPEC_FILENAME = 'SPEC.md';
  * To populate these, create markdown files inside the component's usage/ folder:
  *
  *   src/components/mds-button/usage/
- *   ├── description.md      → one-paragraph summary of the component's role and when to use it
- *   ├── patterns.md         → correct usage examples (html code blocks recommended)
- *   └── antipatterns.md     → known misuse patterns and what to use instead
+ *   ├── 1. Description.md   → one-paragraph summary of the component's role and when to use it
+ *   ├── 2. Pattern.md       → correct usage examples (html code blocks recommended)
+ *   └── 3. Antipattern.md   → known misuse patterns and what to use instead
  *
  * Stencil reads these files at build time and injects them into documentation.json
- * under the component's "usage" object. This script reads them from there.
+ * under the component's "usage" object, keyed by filename (without ".md"). The
+ * "N. " numeric prefix exists to control sort order in the generated readme.md,
+ * since Stencil sorts usage sections alphabetically by key.
  */
-const USAGE_DESCRIPTION_KEY = 'description';
-const USAGE_PATTERNS_KEY = 'patterns';
-const USAGE_ANTIPATTERNS_KEY = 'antipatterns';
+const USAGE_DESCRIPTION_KEY = '1. Description';
+const USAGE_PATTERNS_KEY = '2. Pattern';
+const USAGE_ANTIPATTERNS_KEY = '3. Antipattern';
 
 const TODO = (label: string): string => `> ✏️ **TODO**: ${label}\n`;
 
@@ -128,7 +130,7 @@ const generateSpec = (component: JsonDocsComponent): string => {
 
 ## Purpose
 
-${description ?? TODO("Describe the component's role and when to use it. Add a `usage/description.md` file in the component folder to populate this automatically.")}
+${description ?? TODO("Describe the component's role and when to use it. Add a `usage/1. Description.md` file in the component folder to populate this automatically.")}
 
 ## Encapsulation
 
@@ -156,11 +158,11 @@ ${renderStylesTable(styles)}
 
 ## Correct patterns
 
-${patterns ?? TODO('Add 2–4 representative usage examples. Add a `usage/patterns.md` file in the component folder to populate this automatically.')}
+${patterns ?? TODO('Add 2–4 representative usage examples. Add a `usage/2. Pattern.md` file in the component folder to populate this automatically.')}
 
 ## Anti-patterns
 
-${antipatterns ?? TODO('Add known misuse patterns and what to use instead. Add a `usage/antipatterns.md` file in the component folder to populate this automatically.')}
+${antipatterns ?? TODO('Add known misuse patterns and what to use instead. Add a `usage/3. Antipattern.md` file in the component folder to populate this automatically.')}
 
 ## Dependencies
 
@@ -219,7 +221,7 @@ const main = async (): Promise<void> => {
   console.info('');
   console.info('Next: search for "✏️ TODO" in generated files and fill in the missing sections,');
   console.info(
-    'or add usage/description.md, usage/patterns.md, usage/antipatterns.md to each component.',
+    'or add usage/1. Description.md, usage/2. Pattern.md, usage/3. Antipattern.md to each component.',
   );
 };
 
