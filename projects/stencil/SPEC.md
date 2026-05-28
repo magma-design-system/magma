@@ -99,38 +99,38 @@ Many components accept both `variant` and `tone` props. These are independent ax
 
 #### Variants
 
-| Variant name | Semantic meaning | Description                                            |
-| ------------ | ---------------- | ------------------------------------------------------ |
-| `primary`    | Theme            | Should be used for most important actions, or messages |
-| `secondary`  | Theme            |                                                        |
-| `error`      | Status           |                                                        |
-| `success`    | Status           |                                                        |
-| `warning`    | Status           |                                                        |
-| `info`       | Status           |                                                        |
-| `ai`         | Service          |                                                        |
-| `dark`       | Neutral          |                                                        |
-| `light`      | Neutral          |                                                        |
-| `amaranth`   | Label            |                                                        |
-| `red`        | Label            |                                                        |
-| `aqua`       | Label            |                                                        |
-| `blue`       | Label            |                                                        |
-| `green`      | Label            |                                                        |
-| `lime`       | Label            |                                                        |
-| `orange`     | Label            |                                                        |
-| `orchid`     | Label            |                                                        |
-| `purple`     | Label            |                                                        |
-| `sky`        | Label            |                                                        |
-| `violet`     | Label            |                                                        |
-| `yellow`     | Label            |                                                        |
+| Variant name | Semantic meaning | Description                                                        |
+| ------------ | ---------------- | ------------------------------------------------------------------ |
+| `primary`    | Theme            | Should be used for most important actions, or messages             |
+| `secondary`  | Theme            | Supporting actions or messages that complement the primary variant |
+| `error`      | Status           | Communicates failures, destructive actions, or validation issues   |
+| `success`    | Status           | Communicates successful operations or positive confirmation        |
+| `warning`    | Status           | Communicates caution or non-blocking issues that require attention |
+| `info`       | Status           | Communicates neutral informational content or guidance             |
+| `ai`         | Service          | Identifies AI-generated content or AI-powered features             |
+| `dark`       | Neutral          | Dark neutral coloring, typically for use over light backgrounds    |
+| `light`      | Neutral          | Light neutral coloring, typically for use over dark backgrounds    |
+| `amaranth`   | Label            | Decorative amaranth label for tags, categories, or visual grouping |
+| `red`        | Label            | Decorative red label for tags, categories, or visual grouping      |
+| `aqua`       | Label            | Decorative aqua label for tags, categories, or visual grouping     |
+| `blue`       | Label            | Decorative blue label for tags, categories, or visual grouping     |
+| `green`      | Label            | Decorative green label for tags, categories, or visual grouping    |
+| `lime`       | Label            | Decorative lime label for tags, categories, or visual grouping     |
+| `orange`     | Label            | Decorative orange label for tags, categories, or visual grouping   |
+| `orchid`     | Label            | Decorative orchid label for tags, categories, or visual grouping   |
+| `purple`     | Label            | Decorative purple label for tags, categories, or visual grouping   |
+| `sky`        | Label            | Decorative sky label for tags, categories, or visual grouping      |
+| `violet`     | Label            | Decorative violet label for tags, categories, or visual grouping   |
+| `yellow`     | Label            | Decorative yellow label for tags, categories, or visual grouping   |
 
 #### Tones
 
-| Tone name | Description | Additional note                                        |
-| --------- | ----------- | ------------------------------------------------------ |
-| `strong`  | Theme       | Should be used for most important actions, or messages |
-| `weak`    | Theme       |                                                        |
-| `outline` | Theme       |                                                        |
-| `text`    | Theme       |                                                        |
+| Tone name | Description | Additional note                                                       |
+| --------- | ----------- | --------------------------------------------------------------------- |
+| `strong`  | Theme       | Should be used for most important actions, or messages                |
+| `weak`    | Theme       | Subtle background tint for supporting context or medium emphasis      |
+| `outline` | Theme       | Bordered without background fill for medium-low emphasis              |
+| `text`    | Theme       | Borderless and background-less for lowest emphasis or in-text actions |
 
 > ⚠️ Magma 2.0 breaking rename: `ghost` → `outline`, `quiet` → `text`
 
@@ -162,7 +162,13 @@ Remove `await` (set to `undefined`, not `false`) when the operation completes.
 Icons are referenced by their SVG filename slug (without `.svg` extension). The full icon list is in `projects/svg-icons/svg/`.
 
 ```html
-<mds-button icon="action-email-send">Send</mds-button> <mds-icon name="status-warning"></mds-icon>
+<mds-button icon="action-email-send">Send</mds-button>
+```
+
+Component mds-icon example:
+
+```html
+<mds-icon name="status-warning"></mds-icon>
 ```
 
 The icon path must be configured before components mount:
@@ -217,8 +223,12 @@ src/components/mds-component-name/
 `usage/*.md` files are bundled by the Stencil build into `documentation.json` and then injected into `readme.md`. As a consequence:
 
 - **Do not edit `readme.md` by hand** - it is regenerated on every build
-- **`documentation.json`** is a machine-readable mirror of the same content, suitable for AI tooling
-- **Agents reading components** should prefer `usage/*.md` (granular) or `documentation.json` (structured) over `readme.md`
+- **`documentation.json`** is a structured JSON mirror of the same content plus full prop type metadata and cross-references. It is **gitignored** (`projects/stencil/.gitignore`) and only exists after a local build - do not assume it is present in a fresh clone or on GitHub
+- **Agents reading components** should pick by task:
+  - Semantic intent → `usage/*.md` (smallest, always present)
+  - Props / events / slots / CSS vars → `readme.md` (always present, ~3-4× smaller than `documentation.json`)
+  - Typed prop value sets → `components.d.ts` + `src/type/*.ts`
+  - Full type metadata / cross-references (codemods, tooling) → `documentation.json` **if present**; otherwise build first or fall back to `components.d.ts`
 
 ### Templates
 
