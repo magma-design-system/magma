@@ -1,10 +1,11 @@
-import { Component, Host, h, Prop } from '@stencil/core';
+import { Component, Host, Element, h, Prop, Watch } from '@stencil/core';
 import { TypographyLabelType } from '@type/typography';
 import { ThemeFullVariantType } from '@type/variant';
 import { ToneSmartVariantType } from '@type/tone';
+import { readSlottedLabel, sanitizeLabel } from '@common/slot';
 
 /**
- * @slot default - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
+ * @slot default - **Deprecated**, use the `label` property instead. Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
  */
 
 @Component({
@@ -13,6 +14,13 @@ import { ToneSmartVariantType } from '@type/tone';
   shadow: true,
 })
 export class MdsBadge {
+  @Element() host: HTMLMdsBadgeElement;
+
+  /**
+   * The label of the badge
+   */
+  @Prop({ reflect: true, mutable: true }) label?: string;
+
   /**
    * Sets the theme variant colors
    */
@@ -28,11 +36,22 @@ export class MdsBadge {
    */
   @Prop({ reflect: true }) readonly typography: TypographyLabelType = 'option';
 
+  @Watch('label')
+  labelChanged(newValue?: string): void {
+    this.label = sanitizeLabel(newValue);
+  }
+
+  private onSlotChangeHandler = (): void => {
+    /* this should be removed in the future once slotted text is no longer used, use the label property instead */
+    if (this.label) return;
+    this.label = readSlottedLabel(this.host);
+  };
+
   render() {
     return (
       <Host>
-        <mds-text tag="span" typography={this.typography} variant="info">
-          <slot />
+        <mds-text tag="span" typography={this.typography} variant="info" text={this.label}>
+          {this.label || <slot onSlotchange={this.onSlotChangeHandler} />}
         </mds-text>
       </Host>
     );

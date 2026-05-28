@@ -9,18 +9,19 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## Properties
 
-| Property     | Attribute    | Description                             | Type                                                                                                                                                                                                                 | Default    |
-| ------------ | ------------ | --------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- |
-| `tone`       | `tone`       | Sets the tone of the color variant      | `"outline" \| "strong" \| "weak" \| undefined`                                                                                                                                                                       | `'weak'`   |
-| `typography` | `typography` | Specifies the typography of the element | `"label" \| "option"`                                                                                                                                                                                                | `'option'` |
-| `variant`    | `variant`    | Sets the theme variant colors           | `"amaranth" \| "aqua" \| "blue" \| "dark" \| "error" \| "green" \| "info" \| "light" \| "lime" \| "orange" \| "orchid" \| "purple" \| "red" \| "sky" \| "success" \| "violet" \| "warning" \| "yellow" \| undefined` | `'green'`  |
+| Property     | Attribute    | Description                             | Type                                                                                                                                                                                                                 | Default     |
+| ------------ | ------------ | --------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| `label`      | `label`      | The label of the badge                  | `string \| undefined`                                                                                                                                                                                                | `undefined` |
+| `tone`       | `tone`       | Sets the tone of the color variant      | `"outline" \| "strong" \| "weak" \| undefined`                                                                                                                                                                       | `'weak'`    |
+| `typography` | `typography` | Specifies the typography of the element | `"label" \| "option"`                                                                                                                                                                                                | `'option'`  |
+| `variant`    | `variant`    | Sets the theme variant colors           | `"amaranth" \| "aqua" \| "blue" \| "dark" \| "error" \| "green" \| "info" \| "light" \| "lime" \| "orange" \| "orchid" \| "purple" \| "red" \| "sky" \| "success" \| "violet" \| "warning" \| "yellow" \| undefined` | `'green'`   |
 
 
 ## Slots
 
-| Slot        | Description                                                                            |
-| ----------- | -------------------------------------------------------------------------------------- |
-| `"default"` | Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here. |
+| Slot        | Description                                                                                                                              |
+| ----------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| `"default"` | **Deprecated**, use the `label` property instead. Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here. |
 
 
 ## CSS Custom Properties

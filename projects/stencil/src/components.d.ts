@@ -439,6 +439,10 @@ export namespace Components {
   }
   interface MdsBadge {
     /**
+     * The label of the badge
+     */
+    label?: string;
+    /**
      * Sets the tone of the color variant
      * @default 'weak'
      */
@@ -6437,6 +6441,10 @@ declare namespace LocalJSX {
     variant?: ThemeFullVariantAvatarType;
   }
   interface MdsBadge {
+    /**
+     * The label of the badge
+     */
+    label?: string;
     /**
      * Sets the tone of the color variant
      * @default 'weak'

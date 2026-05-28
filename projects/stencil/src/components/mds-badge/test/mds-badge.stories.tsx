@@ -6,6 +6,11 @@ import { toneSmartVariantDictionary } from '@type/tone';
 export default {
   title: 'UI / Badge',
   argTypes: {
+    label: {
+      type: { name: 'string' },
+      control: { type: 'text' },
+      description: 'The label of the badge',
+    },
     tone: {
       type: { name: 'string' },
       control: { type: 'select' },
@@ -27,7 +32,7 @@ export default {
   },
 };
 
-const Template = (args) => <mds-badge {...args}>bovaro del bernese</mds-badge>;
+const Template = (args) => <mds-badge {...args}></mds-badge>;
 const variantToneCombinations = themeFullVariantDictionary.flatMap((variant) =>
   toneSmartVariantDictionary.map((tone) => ({ tone, variant })),
 );
@@ -36,6 +41,7 @@ export const Default = {
   render: Template,
 
   args: {
+    label: 'bovaro del bernese',
     tone: 'strong',
     variant: 'violet',
   },
@@ -52,9 +58,7 @@ const VariantsTableTemplate = () => (
       {variantToneCombinations.map(({ tone, variant }) => (
         <mds-table-row key={`${variant}-${tone}`}>
           <mds-table-cell>
-            <mds-badge variant={variant} tone={tone}>
-              bovaro del bernese
-            </mds-badge>
+            <mds-badge variant={variant} tone={tone} label="bovaro del bernese"></mds-badge>
           </mds-table-cell>
           <mds-table-cell value={variant}>
             <mds-text typography="hack">{variant}</mds-text>
