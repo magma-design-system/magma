@@ -1,38 +1,58 @@
 <!--
 ================================================================================
-AUTHORING RULES — antipattern.md
+AUTHORING RULES - antipattern.md
 ================================================================================
-Purpose: show INCORRECT uses agents and developers commonly attempt,
-         paired with the correct alternative.
+Purpose: show INCORRECT uses agents and developers commonly attempt, paired
+         with the correct alternative. The reader is debugging or about to
+         write something that looks reasonable but breaks at runtime.
+
+Companion docs to read first (do not re-derive their content here):
+  - docs/COMPONENTS.md       - the system-level anti-patterns list. Do NOT
+                               duplicate those entries here; reference them.
+  - projects/stencil/SPEC.md - generic stencil rules (boolean attrs,
+                               disabled state, shadow DOM, event naming).
 
 MUST contain:
-  - A numbered list of anti-patterns (use `## 1. Title`, `## 2. Title`, etc.).
-  - Each entry: short imperative title ("Do Not …", "Avoid …"), one-sentence
-    explanation of WHY it's wrong, then a single fenced code block with both
-    an INCORRECT example and the CORRECT alternative.
+  - A numbered list of anti-patterns ('## 1. Title', '## 2. Title', ...).
+  - Each entry: short imperative title ("Do Not ...", "Avoid ..."), one
+    sentence explaining WHY it is wrong (what breaks, accessibility issue,
+    framework semantics), then a SINGLE fenced code block containing both
+    the INCORRECT and CORRECT forms, clearly labelled.
+  - A short opening paragraph that points readers at the system-level list
+    in `docs/COMPONENTS.md` so they know cross-cutting rules apply here too.
 
 MUST NOT contain:
-  - Generic stencil rules already in `projects/stencil/SPEC.md`
-    (e.g. "never set disabled='false'" — that's a stencil-wide rule).
-    Only repeat it here if this component has a non-obvious specialisation.
+  - Cross-cutting anti-patterns already in `docs/COMPONENTS.md`
+    (boolean-as-string, shadow piercing via `::part()` / `>>>`, raw
+    Tailwind colors, `prefers-color-scheme` overrides, native event
+    listening). Only repeat one if THIS component has a non-obvious
+    specialisation worth showing.
   - Vague warnings without a fix ("don't misuse this component").
-  - Anti-patterns whose root cause is a missing feature — file an issue
+  - Anti-patterns whose root cause is a missing feature - file an issue
     and add a stencil-level rule instead.
+  - Anti-patterns covered exclusively by the type system (e.g. invalid
+    `tone` values that fail to compile in TS) unless they commonly slip
+    through plain HTML usage.
 
-STYLE:
-  - One code block per entry, containing both INCORRECT and CORRECT, clearly
-    labelled with comments.
-  - Each entry has a "why" line — agents need the reasoning to generalise.
-  - 3-8 anti-patterns is the sweet spot.
+STYLE & LENGTH:
+  - One code block per entry, containing both INCORRECT and CORRECT forms.
+    Use the conventional comment markers: `<!-- 🚫 INCORRECT -->` and
+    `<!-- ✅ CORRECT -->` for HTML, `/* 🚫 INCORRECT */` and `/* ✅ CORRECT */`
+    for CSS / JS.
+  - Each entry has a "why" line - agents need the reasoning to generalize
+    to adjacent cases.
+  - 3-8 anti-patterns is the sweet spot. Prioritize mistakes a new
+    contributor or AI agent is statistically likely to commit.
+  - Order entries from most-frequent / most-impactful to least.
   - Delete this comment block before committing.
 ================================================================================
 -->
 
-Below are incorrect uses, anti-patterns, and bad practices for the `<{{componentName}}>` component.
+Common incorrect uses of `<{{componentName}}>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
 
 ## 1. <!-- imperative title, e.g. "Do Not Slot HTML Elements" -->
 
-<!-- One sentence: WHY this is wrong (what breaks, accessibility issue, etc.). -->
+<!-- One sentence: WHY this is wrong (what breaks, a11y, framework semantics). -->
 
 ```html
 <!-- 🚫 INCORRECT -->
@@ -55,11 +75,15 @@ Below are incorrect uses, anti-patterns, and bad practices for the `<{{component
 ```
 
 <!--
-Continue with anti-patterns 3, 4, 5… Common categories worth covering:
+Continue with anti-patterns 3, 4, 5... Categories worth covering when they
+apply to THIS component (skip when they don't, do not pad the list):
   - Wrong content type in slot (HTML vs text)
-  - Wrong attribute usage (boolean-as-string, deprecated values)
-  - Nesting issues (interactive inside interactive, compound rules)
-  - Shadow DOM piercing or undocumented internal selectors
-  - Manual ARIA when the component already sets it
-  - Hard-coded colors/tokens instead of variants
+  - Nesting issues (interactive inside interactive, compound-rule violations)
+  - Manual ARIA when the component already sets it - or missing ARIA on
+    icon-only / label-less configurations
+  - Legacy / renamed prop values that silently fall back to defaults
+    (e.g. Magma 1.x -> 2.x renames documented in `projects/stencil/SPEC.md`)
+  - Hard-coded colors / inline styles instead of variants and CSS vars
+  - Wrong native event vs. documented `mds*` event listener
+  - Documented shadow parts vs. undocumented internal selectors
 -->

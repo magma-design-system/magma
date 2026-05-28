@@ -159,23 +159,54 @@ Remove `await` (set to `undefined`, not `false`) when the operation completes.
 
 ## Icons
 
-Icons are referenced by their SVG filename slug (without `.svg` extension). The full icon list is in `projects/svg-icons/svg/`.
+Icons are managed by **iconsauce** ([wiki](https://github.com/iconsauce/docs/wiki)), our open-source build tool. The wiki is the source of truth for iconsauce's CLI, plugin API and per-plugin slug naming.
+
+### How it works
+
+Iconsauce works through **plugins**; each plugin wraps an icon set installed as a node module and defines how a slug resolves to a source SVG file inside that module. A slug like `mi/baseline/close` is resolved by [`@iconsauce/plugin-material-icons`](https://github.com/iconsauce/plugin-material-icons) to the matching SVG inside the `material-design-icons` node module; the equivalent for our internal set is [`@iconsauce/plugin-mgg-icons`](https://github.com/iconsauce/plugin-mgg-icons), which uses semantic slugs like `action-email-send`.
+
+Iconsauce is driven by an `iconsauce.config.js` (in magma, [`.storybook/iconsauce.config.js`](.storybook/iconsauce.config.js)) declaring `content` globs to scan and the active plugins. Source is scanned by both the iconsauce CLI and the [PostCSS plugin](https://github.com/iconsauce/docs/wiki/PostCSS-plugin) (`postcss-iconsauce`), so CSS references like `content: url(...)` are picked up alongside `.tsx` / `.ts` / `.json` slug references.
+
+At build time iconsauce emits the resolved icons through one of two output strategies:
+
+1. **Single icon font** bundling every referenced icon, or
+2. **Reorganised SVG files** mirroring the slug path - `mi/baseline/close` becomes `public/assets/mi/baseline/close.svg`
+
+**Magma uses strategy 2** (files). At runtime, `mds-icon` fetches each SVG by slug from a path the host app configures (recommended via `sessionStorage` - see [`src/components/mds-icon/readme.md`](src/components/mds-icon/readme.md) for the `setSvgPath` / `setSvgPathStatic` / `mdsIconSvgPathUpdate` alternatives).
+
+### Why iconsauce (not inline SVG or direct icon-lib imports)
+
+- **Tree-shaken at build time** - only slugs referenced in source ship; no full icon set in the bundle
+- **Multiple icon sets behind one component** - Material Icons, MDI, `mgg-icons` and any other plugin coexist. Each plugin owns its own slug convention (path-style like `mi/baseline/*` for Material, semantic like `action-email-send` for `mgg-icons`); iconsauce dispatches a slug to the right plugin at build time
+- **No SVG in component code** - components stay markup-free; host app controls path, caching and theming via `mdsIconSvgPath` and CSS custom properties
+
+Never inline `<svg>` literals in a component template, and never import from an icon-set package directly - always reference by slug.
+
+### Referencing an icon
 
 ```html
+<!-- mgg-icons: semantic slug -->
 <mds-button icon="action-email-send">Send</mds-button>
+
+<!-- material-icons: path slug -->
+<mds-icon name="mi/baseline/close"></mds-icon>
 ```
 
-Component mds-icon example:
-
-```html
-<mds-icon name="status-warning"></mds-icon>
-```
-
-The icon path must be configured before components mount:
+Minimum host-app setup:
 
 ```javascript
 window.sessionStorage.setItem('mdsIconSvgPath', 'assets/img/svg/');
 ```
+
+`mds-icon` also accepts a base64-encoded data URI or a raw `<svg>` string as `name`, for dynamic icons coming from an API.
+
+### Adding a new icon
+
+1. Reference the slug from source - iconsauce scans `.tsx` / `.ts` / `.json` and CSS (via `postcss-iconsauce`) per [`.storybook/iconsauce.config.js`](.storybook/iconsauce.config.js)
+2. Run `nx run stencil:build.icons` - regenerates `src/fixtures/icons.json` (slug dictionary) and `assets/svg/` (reorganised SVG files)
+3. Configured plugins live in [`.storybook/iconsauce.config.js`](.storybook/iconsauce.config.js) - currently [`@iconsauce/material-icons`](https://github.com/iconsauce/plugin-material-icons), `@iconsauce/mdi-svg`, [`@iconsauce/mgg-icons`](https://github.com/iconsauce/plugin-mgg-icons). To expose a new icon set, install its node module, add the corresponding iconsauce plugin in `content`, and follow its slug convention - each plugin's README lists its slug rules, and the [iconsauce wiki](https://github.com/iconsauce/docs/wiki) has the overall config schema
+
+If a referenced slug isn't resolvable by any configured plugin, iconsauce reports it on build.
 
 ## Accessibility
 
