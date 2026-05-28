@@ -14,7 +14,7 @@ import { buttonSizeTypographyVariant } from './meta/variants';
 import { setAttributeIfEmpty, unslugName } from '@common/aria';
 import { isIconFormatIsBase64, isIconFormatIsSVG } from '@common/icon';
 import { TypographyTruncateType } from '@type/text';
-// import { hasSlottedContent } from '@common/slot'
+import { readSlottedLabel, sanitizeLabel } from '@common/slot';
 import mdiApple from '@icon/mdi/apple.svg';
 import logoGoogle from './asset/logo-google.svg';
 import { TextAnimationType } from '@component/mds-text/meta/types';
@@ -133,16 +133,7 @@ export class MdsButton {
 
   @Watch('label')
   labelChanged(newValue?: string): void {
-    if (!newValue) {
-      this.label = undefined;
-      return;
-    }
-
-    if (newValue.trim() === '') {
-      this.label = undefined;
-      return;
-    }
-    this.label = newValue.trim();
+    this.label = sanitizeLabel(newValue);
   }
 
   @Watch('await')
@@ -291,7 +282,7 @@ export class MdsButton {
   private onSlotChangeHandler = (): void => {
     /* this should be removed in the future once slotted text is no longer used, use the label property instead */
     if (this.label) return;
-    this.label = this.host.innerHTML.trim() ?? undefined;
+    this.label = readSlottedLabel(this.host);
   };
 
   render() {

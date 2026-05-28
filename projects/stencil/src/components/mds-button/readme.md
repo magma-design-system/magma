@@ -8,6 +8,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 <!-- Auto Generated Below -->
 
+
 ## Usage
 
 ### 1. Description
@@ -16,32 +17,28 @@ The `<mds-button>` web component is the primary interactive action control of th
 
 #### Semantic Behavior
 
-- **Button vs. link**: Renders with `role="button"` by default. Providing `href` switches the element to anchor behavior and honors `target` (`self` | `blank`) for window context.
-- **Form association**: `formAssociated: true`. Inside a `<form>` the component natively triggers submission (`type="submit"`) or reset (`type="reset"`) with no extra wiring.
+- **Button vs. link**: Renders with `role="button"`. Providing `href` switches the element to anchor behavior; `target` then controls window context.
+- **Form association**: `formAssociated: true`. Inside a `<form>` the component natively triggers submission or reset with no extra wiring; use `type="button"` to opt out.
 - **Active state**: Mirrors a visual pressed state through the `active` attribute, safe to drive from CSS attribute selectors.
-- **Disabled state**: Setting `disabled` blocks pointer and keyboard activation and removes the host from the tab sequence.
-- **Await state**: Setting `await` renders an inline `<mds-spinner>`, intercepts click and key activation, and reflects `aria-busy="true"` for assistive tech.
+- **Disabled state**: Blocks pointer and keyboard activation and removes the host from the tab sequence.
+- **Await state**: Renders an inline `<mds-spinner>`, intercepts click and key activation, and reflects `aria-busy="true"` for assistive tech. Remove the attribute when done - do not set `await="false"`.
 - **Accessibility**: Derives `aria-label` and `title` from the `label` prop or slotted text. Icon-only buttons require an explicit `aria-label` because no text source is available.
+- **Sizing**: The `size` prop drives padding, font size, and minimum hit area. Do not override dimensions with inline `width` / `height`.
+- **Linking constraint**: `target` is effective only when `href` is set.
 
-#### Properties & Visual Configurations
+#### Component-specific variants and tones
 
-- **`variant`**: Color role the button communicates. Pick by meaning, not by aesthetic.
-  - Brand (`primary`, `secondary`, `ai`): main calls to action and AI-driven affordances.
-  - Status (`success`, `warning`, `error`, `info`): outcome and validation communication.
-  - Luminance (`dark`, `light`): neutral chrome for use over light or dark surfaces.
-  - Identity (`google`, `apple`): SSO entry points only.
-- **`tone`**: Visual weight, independent of `variant`. Express importance by combining the same `variant` with a different `tone` rather than overriding colors.
-  - `strong`: solid filled background - highest emphasis.
-  - `weak`: subtle tinted background - medium emphasis.
-  - `outline`: bordered, no fill - medium-low emphasis.
-  - `text`: no border, no background - lowest emphasis, fits inside running text.
-  - `box`: high-contrast boxed container for chrome-like placements.
-- **`size`**: Drives padding, font size, and minimum hit area. One of `sm`, `md` (default), `lg`, `xl`. Do not override sizing via inline `width` / `height`.
-- **`icon`** / **`iconPosition`**: `icon` is an SVG filename slug from the Magma icon library; `iconPosition` (`left` default, `right`) places the glyph relative to the label.
-- **`truncate`**: Long-label overflow strategy. `word` (default) breaks on word boundaries, `all` breaks on any character, `none` disables truncation and lets the label overflow.
-- **`animation`**: Text entry animation. `none` (default) renders immediately; `yugop` progressively reveals characters.
-- **`type`**: Native form button type. Defaults to `submit`; set to `button` for non-submitting actions inside a `<form>`, or `reset` for native form reset.
-- **`target`**: Effective only when `href` is set. `self` (default) navigates the current window; `blank` opens a new tab.
+The shared `variant` / `tone` ladders are defined in [`projects/stencil/SPEC.md`](../../../../SPEC.md#tone-and-variant-system). `<mds-button>` adds:
+
+- **`variant="google"` / `variant="apple"`**: brand-correct chrome for SSO entry points. Do not reuse them for non-SSO buttons.
+- **`tone="box"`**: high-contrast boxed container for chrome-like placements (e.g. dense toolbars where `strong` would dominate).
+
+#### Other behavioral props
+
+- **`icon`** is an SVG filename slug from the Magma icon library; **`iconPosition`** places the glyph relative to the label (use `right` for forward-motion CTAs).
+- **`truncate`**: `word` breaks on word boundaries, `all` breaks on any character, `none` lets the label overflow.
+- **`animation`**: `yugop` progressively reveals characters; otherwise text renders immediately.
+
 
 ### 2. Pattern
 
@@ -179,6 +176,7 @@ Style the button only through its documented `--mds-button-*` CSS custom propert
 }
 ```
 
+
 ### 3. Antipattern
 
 Common incorrect uses of `<mds-button>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
@@ -281,6 +279,8 @@ mds-button::part(icon) {
 }
 ```
 
+
+
 ## Properties
 
 | Property       | Attribute       | Description                                                                | Type                                                                                                                                       | Default     |
@@ -301,6 +301,7 @@ mds-button::part(icon) {
 | `type`         | `type`          | The type of the button element                                             | `"a" \| "button" \| "reset" \| "submit" \| undefined`                                                                                      | `'submit'`  |
 | `variant`      | `variant`       | Specifies the color variant for the button                                 | `"ai" \| "apple" \| "dark" \| "error" \| "google" \| "info" \| "light" \| "primary" \| "secondary" \| "success" \| "warning" \| undefined` | `'primary'` |
 
+
 ## Slots
 
 | Slot             | Description                                                                                   |
@@ -308,12 +309,14 @@ mds-button::part(icon) {
 | `"default"`      | Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.        |
 | `"notification"` | Add `HTML elements` or `components`, it is **recommended** to use `mds-notification` element. |
 
+
 ## Shadow Parts
 
 | Part      | Description                   |
 | --------- | ----------------------------- |
 | `"icon"`  | The icon inside the component |
 | `"label"` |                               |
+
 
 ## CSS Custom Properties
 
@@ -335,42 +338,43 @@ mds-button::part(icon) {
 | `--mds-button-gap`                              | Sets the distance betwen element inside the components, use it instead of setting gap property directly.                      |
 | `--mds-button-radius`                           | Sets the border-radius of the component                                                                                       |
 
+
 ## Dependencies
 
 ### Used by
 
-- [mds-banner](../mds-banner)
-- [mds-breadcrumb](../mds-breadcrumb)
-- [mds-breadcrumb-item](../mds-breadcrumb-item)
-- [mds-button-dropdown](../mds-button-dropdown)
-- [mds-calendar](../mds-calendar)
-- [mds-calendar-cell](../mds-calendar-cell)
-- [mds-chip](../mds-chip)
-- [mds-file-preview](../mds-file-preview)
-- [mds-header-bar](../mds-header-bar)
-- [mds-horizontal-scroll](../mds-horizontal-scroll)
-- [mds-img](../mds-img)
-- [mds-input](../mds-input)
-- [mds-input-date](../mds-input-date)
-- [mds-input-date-range](../mds-input-date-range)
-- [mds-input-date-range-preselection](../mds-input-date-range-preselection)
-- [mds-input-upload](../mds-input-upload)
-- [mds-keyboard](../mds-keyboard)
-- [mds-label](../mds-label)
-- [mds-mention](../mds-mention)
-- [mds-modal](../mds-modal)
-- [mds-note](../mds-note)
-- [mds-policy-ai](../mds-policy-ai)
-- [mds-pref-language-item](../mds-pref-language-item)
-- [mds-pref-theme-variant-item](../mds-pref-theme-variant-item)
-- [mds-push-notification](../mds-push-notification)
-- [mds-push-notification-item](../mds-push-notification-item)
-- [mds-radial-menu](../mds-radial-menu)
-- [mds-radial-menu-item](../mds-radial-menu-item)
-- [mds-tab-item](../mds-tab-item)
-- [mds-table-header-cell](../mds-table-header-cell)
-- [mds-tree-item](../mds-tree-item)
-- [mds-url-view](../mds-url-view)
+ - [mds-banner](../mds-banner)
+ - [mds-breadcrumb](../mds-breadcrumb)
+ - [mds-breadcrumb-item](../mds-breadcrumb-item)
+ - [mds-button-dropdown](../mds-button-dropdown)
+ - [mds-calendar](../mds-calendar)
+ - [mds-calendar-cell](../mds-calendar-cell)
+ - [mds-chip](../mds-chip)
+ - [mds-file-preview](../mds-file-preview)
+ - [mds-header-bar](../mds-header-bar)
+ - [mds-horizontal-scroll](../mds-horizontal-scroll)
+ - [mds-img](../mds-img)
+ - [mds-input](../mds-input)
+ - [mds-input-date](../mds-input-date)
+ - [mds-input-date-range](../mds-input-date-range)
+ - [mds-input-date-range-preselection](../mds-input-date-range-preselection)
+ - [mds-input-upload](../mds-input-upload)
+ - [mds-keyboard](../mds-keyboard)
+ - [mds-label](../mds-label)
+ - [mds-mention](../mds-mention)
+ - [mds-modal](../mds-modal)
+ - [mds-note](../mds-note)
+ - [mds-policy-ai](../mds-policy-ai)
+ - [mds-pref-language-item](../mds-pref-language-item)
+ - [mds-pref-theme-variant-item](../mds-pref-theme-variant-item)
+ - [mds-push-notification](../mds-push-notification)
+ - [mds-push-notification-item](../mds-push-notification-item)
+ - [mds-radial-menu](../mds-radial-menu)
+ - [mds-radial-menu-item](../mds-radial-menu-item)
+ - [mds-tab-item](../mds-tab-item)
+ - [mds-table-header-cell](../mds-table-header-cell)
+ - [mds-tree-item](../mds-tree-item)
+ - [mds-url-view](../mds-url-view)
 
 ### Depends on
 
@@ -379,7 +383,6 @@ mds-button::part(icon) {
 - [mds-text](../mds-text)
 
 ### Graph
-
 ```mermaid
 graph TD;
   mds-button --> mds-spinner
@@ -420,6 +423,6 @@ graph TD;
   style mds-button fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
----
+----------------------------------------------
 
 Built with love @ [Gruppo Maggioli](https://www.maggioli.com) from [R&D Department](https://www.maggioli.com/it-it/chi-siamo/ricerca-sviluppo)
