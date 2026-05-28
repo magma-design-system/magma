@@ -208,6 +208,8 @@ Do **not** confuse it with `src/fixtures/icons.json` - that one is gitignored an
 
 Both files are emitted by the same `build.icons` script: `iconsauce ... --output-dictionary ./src/fixtures/icons.json --output-dump-dictionary ./src/fixtures/icons-dictionary.json`. The first is the tree-shaken slug list (used icons only), the second is the full plugin dump (every available slug). Running `build.icons` keeps both in sync with the currently installed plugin versions.
 
+Iconsauce resolves slugs through async plugins, so the dump order is non-deterministic; `build.icons` chains `sort.icons-dictionary` ([`scripts/sort-icons-dictionary.ts`](scripts/sort-icons-dictionary.ts)) as a post-step to normalise the file to a stable lexicographic order. The script is idempotent - running it twice produces byte-identical output - so the committed dictionary will only diff when the underlying icon set actually changes.
+
 ### Adding a new icon
 
 1. Reference the slug from source - iconsauce scans `.tsx` / `.ts` / `.json` and CSS (via `postcss-iconsauce`) per [`.storybook/iconsauce.config.js`](.storybook/iconsauce.config.js)
