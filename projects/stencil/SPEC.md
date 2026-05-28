@@ -200,10 +200,18 @@ window.sessionStorage.setItem('mdsIconSvgPath', 'assets/img/svg/');
 
 `mds-icon` also accepts a base64-encoded data URI or a raw `<svg>` string as `name`, for dynamic icons coming from an API.
 
+### Discovering available slugs
+
+The full catalog of slugs exposed by every configured plugin is committed at [`src/fixtures/icons-dictionary.json`](src/fixtures/icons-dictionary.json) - a flat JSON array (~16.5k entries) covering all Material Icons variants (`mi/{baseline,outline,round,sharp}/*`), MDI (`mdi/*`) and `mgg-icons` (semantic slugs). Grep this file to confirm a slug exists before referencing it.
+
+Do **not** confuse it with `src/fixtures/icons.json` - that one is gitignored and contains only the tree-shaken subset of icons currently referenced in source.
+
+Both files are emitted by the same `build.icons` script: `iconsauce ... --output-dictionary ./src/fixtures/icons.json --output-dump-dictionary ./src/fixtures/icons-dictionary.json`. The first is the tree-shaken slug list (used icons only), the second is the full plugin dump (every available slug). Running `build.icons` keeps both in sync with the currently installed plugin versions.
+
 ### Adding a new icon
 
 1. Reference the slug from source - iconsauce scans `.tsx` / `.ts` / `.json` and CSS (via `postcss-iconsauce`) per [`.storybook/iconsauce.config.js`](.storybook/iconsauce.config.js)
-2. Run `nx run stencil:build.icons` - regenerates `src/fixtures/icons.json` (slug dictionary) and `assets/svg/` (reorganised SVG files)
+2. Run `nx run stencil:build.icons` - regenerates `src/fixtures/icons.json` (tree-shaken slugs), `src/fixtures/icons-dictionary.json` (full catalog) and `assets/svg/` (reorganised SVG files)
 3. Configured plugins live in [`.storybook/iconsauce.config.js`](.storybook/iconsauce.config.js) - currently [`@iconsauce/material-icons`](https://github.com/iconsauce/plugin-material-icons), `@iconsauce/mdi-svg`, [`@iconsauce/mgg-icons`](https://github.com/iconsauce/plugin-mgg-icons). To expose a new icon set, install its node module, add the corresponding iconsauce plugin in `content`, and follow its slug convention - each plugin's README lists its slug rules, and the [iconsauce wiki](https://github.com/iconsauce/docs/wiki) has the overall config schema
 
 If a referenced slug isn't resolvable by any configured plugin, iconsauce reports it on build.
