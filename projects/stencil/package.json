@@ -28,7 +28,7 @@
     "generate.usage": "tsx --tsconfig script.tsconfig.json ./scripts/generate-usage.ts",
     "gitlab-ci-yml-regenerate": "tsx --tsconfig script.tsconfig.json ./scripts/gitlab-ci-yml-regenerate.ts",
     "lint": "npm run lint.ts && npm run lint.css",
-    "lint:fix": "eslint . --fix",
+    "lint:fix": "npm run lint.css --fix && npm run lint.ts --fix",
     "lint.css": "stylelint -c ./stylelint.config.mjs  'src/**/*.css'",
     "lint.ts": "eslint .",
     "publish.isolate.all": "npm run publish.isolate.docs-json && tsx --tsconfig script.tsconfig.json ./scripts/isolate-all.ts",
