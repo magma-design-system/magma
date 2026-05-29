@@ -66,7 +66,8 @@ export class MdsEmoji {
   private earsEl: SVGElement | SVGGElement | NodeListOf<SVGElement | SVGGElement> | null;
   private mouthEl: SVGElement | SVGGElement | NodeListOf<SVGElement | SVGGElement> | null;
 
-  private eyesTimeline: gsap.core.Timeline;
+  private blinkTimeline: gsap.core.Timeline | null = null;
+  private blinkDelay: gsap.core.Tween | null = null;
 
   private svgLibrary = {
     mia: miaSvg,
@@ -83,8 +84,23 @@ export class MdsEmoji {
   }
 
   disconnectedCallback(): void {
-    if (!window) return;
+    if (typeof window === 'undefined') return;
     window.removeEventListener('mousemove', this.handleFollowMouse);
+    this.isThinking = false;
+    this.isBlinking = false;
+    this.isFollowingMouse = false;
+    this.blinkDelay?.kill();
+    this.blinkTimeline?.kill();
+    [
+      this.host,
+      this.eyesEl,
+      this.handEl,
+      this.headEl,
+      this.mouthEl,
+      this.gadgetEl,
+      this.eyebrowsEl,
+      this.earsEl,
+    ].forEach((target) => target && gsap.killTweensOf(target));
   }
 
   /**
@@ -159,6 +175,7 @@ export class MdsEmoji {
     this.restoreFollowMouse();
     this.moveHead(this.mouseX, this.mouseY);
     await this.setStopThinkingAnimation(duration);
+    this.scheduleBlink();
     return Promise.resolve();
   }
 
@@ -169,12 +186,11 @@ export class MdsEmoji {
 
   @Method()
   async startBlinking(): Promise<void> {
-    if (this.isBusy) return Promise.resolve();
-    if (!this.eyesTimeline) {
-      this.eyesTimeline = gsap.timeline();
-    }
-    this.randomBlink();
-    this.eyesTimeline.play();
+    this.isBlinking = true;
+    if (!this.blinkTimeline) this.blinkTimeline = this.buildBlinkTimeline();
+    // scheduleBlink is gated on isBusy, so blinking will start now if idle, or
+    // automatically resume once the current animation (think, smile, ...) ends.
+    this.scheduleBlink();
     return Promise.resolve();
   }
 
@@ -184,7 +200,11 @@ export class MdsEmoji {
    */
   @Method()
   async stopBlinking(): Promise<void> {
-    this.eyesTimeline.reverse(undefined, true);
+    this.isBlinking = false;
+    this.blinkDelay?.kill();
+    this.blinkDelay = null;
+    this.blinkTimeline?.pause(0);
+    this.resetEyesToDefault();
     return Promise.resolve();
   }
 
@@ -258,7 +278,37 @@ export class MdsEmoji {
     this.emojiOriginalSize = Number(tpl.content.firstElementChild?.getAttribute('width'));
     this.svgRootEl = tpl.content.firstElementChild as SVGElement;
     this.updateCSSCustomProps();
+    // The shadow DOM is fully replaced, so every cached node/setter/timeline now
+    // points at detached elements: drop them so they rebuild against the new SVG.
+    this.resetAnimationState();
     if (this.host.shadowRoot) this.host.shadowRoot.innerHTML = this.svgRootEl.outerHTML;
+    if (this.isBlinking) {
+      this.blinkTimeline = this.buildBlinkTimeline();
+      this.scheduleBlink();
+    }
+  };
+
+  private resetAnimationState = (): void => {
+    this.blinkDelay?.kill();
+    this.blinkDelay = null;
+    this.blinkTimeline?.kill();
+    this.blinkTimeline = null;
+    this.headEl = null;
+    this.eyesEl = null;
+    this.handEl = null;
+    this.mouthEl = null;
+    this.gadgetEl = null;
+    this.eyebrowsEl = null;
+    this.earsEl = null;
+  };
+
+  private queryPart = (id: string): SVGElement | null =>
+    (this.host.shadowRoot?.firstElementChild?.querySelector(`[id='${id}']`) as SVGElement) ?? null;
+
+  private resetEyesToDefault = (): void => {
+    this.svgPartState('eyes', 'default');
+    const eyesDefaultEl = this.queryPart('eyes-default');
+    if (eyesDefaultEl) gsap.set(eyesDefaultEl, { scaleY: 1 });
   };
 
   private svgPartState<K extends keyof SvgDictionary>(
@@ -301,6 +351,7 @@ export class MdsEmoji {
   private restoreReadyState = (): void => {
     this.isBusy = false;
     this.restoreFollowMouse();
+    this.scheduleBlink();
   };
 
   private restoreFollowMouse = (): void => {
@@ -320,6 +371,7 @@ export class MdsEmoji {
     if (this.isThinking) {
       this.stopThinking();
     }
+    this.pauseBlinking();
   };
 
   private setAgreeAnimation = (): Promise<void> => {
@@ -456,6 +508,7 @@ export class MdsEmoji {
           this.isBusy = false;
           this.restoreFollowMouse();
           this.svgPartState('mouth', 'default');
+          this.scheduleBlink();
         },
       })
       .to(this.host, {
@@ -609,41 +662,51 @@ export class MdsEmoji {
     return new Promise((resolve) => setTimeout(resolve, duration * 1000));
   };
 
-  private randomBlink = (): void => {
-    if (this.isBusy) return;
+  // A single, reusable blink sequence. Built once and replayed via restart(),
+  // it never grows over time and is fully controlled by play/pause, unlike the
+  // previous recursive chain that died permanently the moment isBusy was set.
+  private buildBlinkTimeline = (): gsap.core.Timeline | null => {
+    const eyesDefaultEl = this.queryPart('eyes-default');
+    const eyesClosedEl = this.queryPart('eyes-closed');
+    if (!eyesDefaultEl || !eyesClosedEl) return null;
 
-    const delay = gsap.utils.random(1, 3, 0.1, true)();
-    const animateIn = { ease: 'expo.in', duration: 0.2, overwrite: true };
-    const animateOut = { ease: 'expo.out', duration: 0.2, overwrite: true };
+    const animateIn = { ease: 'expo.in', duration: 0.2 };
+    const animateOut = { ease: 'expo.out', duration: 0.2 };
 
-    this.eyesTimeline.to(this.svgPartState('eyes', 'default'), {
-      delay,
-      scaleY: 0.5,
-      ...animateIn,
-      onComplete: () => {
-        gsap.fromTo(
-          this.svgPartState('eyes', 'closed'),
-          { scaleY: 1.5 },
-          {
-            scaleY: 1,
-            ...animateOut,
-            onComplete: () => {
-              gsap.fromTo(
-                this.svgPartState('eyes', 'default'),
-                { scaleY: 0.75, ...animateIn },
-                {
-                  scaleY: 1,
-                  ...animateOut,
-                  onComplete: () => {
-                    this.randomBlink();
-                  },
-                },
-              );
-            },
-          },
-        );
-      },
+    return gsap
+      .timeline({ paused: true, onComplete: this.scheduleBlink })
+      .to(eyesDefaultEl, { scaleY: 0.5, ...animateIn })
+      .add(() => {
+        this.svgPartState('eyes', 'closed');
+      })
+      .fromTo(eyesClosedEl, { scaleY: 0.5 }, { scaleY: 1, ...animateOut })
+      .add(() => {
+        this.svgPartState('eyes', 'default');
+      })
+      .fromTo(eyesDefaultEl, { scaleY: 0.75 }, { scaleY: 1, ...animateOut });
+  };
+
+  // Queues the next blink after a random idle delay. Gated on the blinking
+  // intent and isBusy, so it is a no-op while another animation owns the eyes
+  // and is simply called again once that animation finishes.
+  private scheduleBlink = (): void => {
+    if (!this.isBlinking || this.isBusy || !this.blinkTimeline) return;
+    this.blinkDelay?.kill();
+    this.blinkDelay = gsap.delayedCall(gsap.utils.random(1, 3, 0.1), () => {
+      if (!this.isBlinking || this.isBusy || !this.blinkTimeline) return;
+      this.resetEyesToDefault();
+      this.blinkTimeline.restart();
     });
+  };
+
+  private pauseBlinking = (): void => {
+    this.blinkDelay?.kill();
+    this.blinkDelay = null;
+    if (!this.blinkTimeline) return;
+    this.blinkTimeline.pause(0);
+    // pause(0) rewinds the tweens, but the visibility swaps are forward-only
+    // callbacks, so make sure the open eyes are the visible state again.
+    this.resetEyesToDefault();
   };
 
   private handleFollowMouse = (e: MouseEvent): void => {
@@ -689,96 +752,26 @@ export class MdsEmoji {
 
   private rotate = (percentX: number, percentY: number): void => {
     const ease = 'power1.out';
-    this.currentRotateX = gsap.utils.clamp(
-      -this.expressionAngleMax,
-      this.expressionAngleMax,
-      -percentY * this.expressionAngleMax,
-    ); // Y invertito
-    this.currentRotateY = gsap.utils.clamp(
-      -this.expressionAngleMax,
-      this.expressionAngleMax,
-      percentX * this.expressionAngleMax,
-    );
-    this.headOffsetX = gsap.utils.clamp(
-      -this.headOffset,
-      this.headOffset,
-      percentX * this.headOffset,
-    );
-    this.headOffsetY = gsap.utils.clamp(
-      -this.headOffset,
-      this.headOffset,
-      percentY * this.headOffset,
-    );
-    this.eyesOffsetX = gsap.utils.clamp(
-      -this.eyesOffset,
-      this.eyesOffset,
-      percentX * this.eyesOffset,
-    );
-    this.eyesOffsetY = gsap.utils.clamp(
-      -this.eyesOffset,
-      this.eyesOffset,
-      percentY * this.eyesOffset,
-    );
-    this.mouthOffsetX = gsap.utils.clamp(
-      -this.mouthOffset,
-      this.mouthOffset,
-      percentX * this.mouthOffset,
-    );
-    this.mouthOffsetY = gsap.utils.clamp(
-      -this.mouthOffset,
-      this.mouthOffset,
-      percentY * this.mouthOffset,
-    );
-    this.handOffsetX = gsap.utils.clamp(
-      -this.handOffset,
-      this.handOffset,
-      percentX * this.handOffset,
-    );
-    this.handOffsetY = gsap.utils.clamp(
-      -this.handOffset,
-      this.handOffset,
-      percentY * this.handOffset,
-    );
-    this.headOffsetX = gsap.utils.clamp(
-      -this.headOffset,
-      this.headOffset,
-      percentX * this.headOffset,
-    );
-    this.headOffsetY = gsap.utils.clamp(
-      -this.headOffset,
-      this.headOffset,
-      percentY * this.headOffset,
-    );
-    this.gadgetOffsetX = gsap.utils.clamp(
-      -this.gadgetOffset,
-      this.gadgetOffset,
-      percentX * this.gadgetOffset,
-    );
-    this.gadgetOffsetY = gsap.utils.clamp(
-      -this.gadgetOffset,
-      this.gadgetOffset,
-      percentY * this.gadgetOffset,
-    );
-    this.eyebrowsOffsetX = gsap.utils.clamp(
-      -this.eyebrowsOffset,
-      this.eyebrowsOffset,
-      percentX * this.eyebrowsOffset,
-    );
-    this.eyebrowsOffsetY = gsap.utils.clamp(
-      -this.eyebrowsOffset,
-      this.eyebrowsOffset,
-      percentY * this.eyebrowsOffset,
-    );
-    this.earsOffsetX = gsap.utils.clamp(
-      -this.earsOffset,
-      this.earsOffset,
-      percentX * this.earsOffset,
-    );
-    this.earsOffsetY = gsap.utils.clamp(
-      -this.earsOffset,
-      this.earsOffset,
-      percentY * this.earsOffset,
-    );
+    const traitsDuration = this.expressionFollowMouseTraitsDuration;
+    const clampOffset = (offset: number, percent: number): number =>
+      gsap.utils.clamp(-offset, offset, percent * offset);
+
+    this.currentRotateX = clampOffset(this.expressionAngleMax, -percentY); // Y invertito
+    this.currentRotateY = clampOffset(this.expressionAngleMax, percentX);
+    this.headOffsetX = clampOffset(this.headOffset, percentX);
+    this.headOffsetY = clampOffset(this.headOffset, percentY);
+    this.eyesOffsetX = clampOffset(this.eyesOffset, percentX);
+    this.eyesOffsetY = clampOffset(this.eyesOffset, percentY);
+    this.mouthOffsetX = clampOffset(this.mouthOffset, percentX);
+    this.mouthOffsetY = clampOffset(this.mouthOffset, percentY);
+    this.handOffsetX = clampOffset(this.handOffset, percentX);
+    this.handOffsetY = clampOffset(this.handOffset, percentY);
+    this.gadgetOffsetX = clampOffset(this.gadgetOffset, percentX);
+    this.gadgetOffsetY = clampOffset(this.gadgetOffset, percentY);
+    this.eyebrowsOffsetX = clampOffset(this.eyebrowsOffset, percentX);
+    this.eyebrowsOffsetY = clampOffset(this.eyebrowsOffset, percentY);
+    this.earsOffsetX = clampOffset(this.earsOffset, percentX);
+    this.earsOffsetY = clampOffset(this.earsOffset, percentY);
 
     if (!this.headEl) {
       this.headEl = this.svgPartState('head');
@@ -791,6 +784,8 @@ export class MdsEmoji {
       this.gadgetEl = this.svgPartState('gadget');
     }
 
+    // Each facial element is tweened independently with its own offset so they
+    // move by different amounts, giving the emoji a layered, parallax-like depth.
     gsap.to(this.host, {
       rotateX: this.currentRotateX,
       rotateY: this.currentRotateY,
@@ -804,7 +799,7 @@ export class MdsEmoji {
         translateX: this.eyesOffsetX,
         translateY: this.eyesOffsetY,
         transformOrigin: '50% 50%',
-        duration: this.expressionFollowMouseTraitsDuration,
+        duration: traitsDuration,
         ease,
         overwrite: false,
       });
@@ -815,7 +810,7 @@ export class MdsEmoji {
         translateX: this.handOffsetX,
         translateY: this.handOffsetY,
         transformOrigin: '50% 50%',
-        duration: this.expressionFollowMouseTraitsDuration,
+        duration: traitsDuration,
         ease,
         overwrite: false,
       });
@@ -826,7 +821,7 @@ export class MdsEmoji {
         translateX: this.headOffsetX,
         translateY: this.headOffsetY,
         transformOrigin: '0% 100%',
-        duration: this.expressionFollowMouseTraitsDuration,
+        duration: traitsDuration,
         ease,
         overwrite: false,
       });
@@ -837,7 +832,7 @@ export class MdsEmoji {
         translateX: this.mouthOffsetX,
         translateY: this.mouthOffsetY,
         transformOrigin: '50% 50%',
-        duration: this.expressionFollowMouseTraitsDuration,
+        duration: traitsDuration,
         ease,
         overwrite: false,
       });
@@ -848,7 +843,7 @@ export class MdsEmoji {
         translateX: this.gadgetOffsetX,
         translateY: this.gadgetOffsetY,
         transformOrigin: '50% 50%',
-        duration: this.expressionFollowMouseTraitsDuration,
+        duration: traitsDuration,
         ease,
         overwrite: false,
       });
@@ -859,7 +854,7 @@ export class MdsEmoji {
         translateX: this.eyebrowsOffsetX,
         translateY: this.eyebrowsOffsetY,
         transformOrigin: '50% 50%',
-        duration: this.expressionFollowMouseTraitsDuration,
+        duration: traitsDuration,
         ease,
         overwrite: false,
       });
@@ -870,7 +865,7 @@ export class MdsEmoji {
         translateX: this.earsOffsetX,
         translateY: this.earsOffsetY,
         transformOrigin: '50% 50%',
-        duration: this.expressionFollowMouseTraitsDuration,
+        duration: traitsDuration,
         ease,
         overwrite: false,
       });
