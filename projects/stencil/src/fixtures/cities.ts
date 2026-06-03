@@ -42,7 +42,7 @@ const citiesDictionary = [
   'Imperia',
   'Isernia',
   'La Spezia',
-  'L\'Aquila',
+  "L'Aquila",
   'Latina',
   'Lecce',
   'Lecco',
@@ -106,11 +106,6 @@ const citiesDictionary = [
   'Vibo Valentia',
   'Vicenza',
   'Viterbo',
-]
+];
 
-export {
-  citiesDictionary,
-}
-
-
-
+export { citiesDictionary };

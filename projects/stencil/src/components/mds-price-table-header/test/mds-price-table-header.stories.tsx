@@ -1,10 +1,10 @@
-import { h } from '@stencil/core'
+import { h } from '@stencil/core';
 
 export default {
   title: 'UI / Price table / Price table header',
-}
+};
 
-const Template = args => (
+const Template = (args) => (
   <mds-price-table-header
     {...args}
     class="max-mobile:grid-cols-1 tablet:grid-cols-3 desktop:grid-cols-4"
@@ -58,8 +58,8 @@ const Template = args => (
       </mds-button>
     </mds-price-table-list>
   </mds-price-table-header>
-)
+);
 
 export const Default = {
   render: Template,
-}
+};

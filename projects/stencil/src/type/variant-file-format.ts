@@ -1,20 +1,20 @@
-import baselineFolderZip from '@icon/mi/baseline/folder-zip.svg'
-import baselineAttachFile from '@icon/mi/baseline/attach-file.svg'
-import baselineAudiotrack from '@icon/mi/baseline/audiotrack.svg'
-import baselineTerminal from '@icon/mi/baseline/terminal.svg'
-import baselineInsertDriveFile from '@icon/mi/baseline/insert-drive-file.svg'
-import mdiLicense from '@icon/mdi/license.svg'
-import mdiHardDisk from '@icon/mdi/harddisk.svg'
-import baselineEmail from '@icon/mi/baseline/email.svg'
-import baselineWysiwyg from '@icon/mi/baseline/wysiwyg.svg'
-import baselinePanorama from '@icon/mi/baseline/panorama.svg'
-import baselineWeb from '@icon/mi/baseline/web.svg'
-import baselineTV from '@icon/mi/baseline/tv.svg'
-import baselineBorderAll from '@icon/mi/baseline/border-all.svg'
-import baselineDescription from '@icon/mi/baseline/description.svg'
-import mdiVectorCurve from '@icon/mdi/vector-curve.svg'
-import baselineVideocam from '@icon/mi/baseline/videocam.svg'
-import { ThemeFullVariantType } from '@type/variant'
+import baselineFolderZip from '@icon/mi/baseline/folder-zip.svg';
+import baselineAttachFile from '@icon/mi/baseline/attach-file.svg';
+import baselineAudiotrack from '@icon/mi/baseline/audiotrack.svg';
+import baselineTerminal from '@icon/mi/baseline/terminal.svg';
+import baselineInsertDriveFile from '@icon/mi/baseline/insert-drive-file.svg';
+import mdiLicense from '@icon/mdi/license.svg';
+import mdiHardDisk from '@icon/mdi/harddisk.svg';
+import baselineEmail from '@icon/mi/baseline/email.svg';
+import baselineWysiwyg from '@icon/mi/baseline/wysiwyg.svg';
+import baselinePanorama from '@icon/mi/baseline/panorama.svg';
+import baselineWeb from '@icon/mi/baseline/web.svg';
+import baselineTV from '@icon/mi/baseline/tv.svg';
+import baselineBorderAll from '@icon/mi/baseline/border-all.svg';
+import baselineDescription from '@icon/mi/baseline/description.svg';
+import mdiVectorCurve from '@icon/mdi/vector-curve.svg';
+import baselineVideocam from '@icon/mi/baseline/videocam.svg';
+import { ThemeFullVariantType } from '@type/variant';
 
 type FileFormat =
   | 'archive'
@@ -32,15 +32,15 @@ type FileFormat =
   | 'spreadsheet'
   | 'text'
   | 'vector'
-  | 'video'
+  | 'video';
 
 interface FileFormatVariant {
-  icon: string
-  variant: ThemeFullVariantType
+  icon: string;
+  variant: ThemeFullVariantType;
 }
 
 interface FileFormatVariants {
-  [key: string]: FileFormatVariant
+  [key: string]: FileFormatVariant;
 }
 
 const fileFormatsVariant: FileFormatVariants = {
@@ -116,11 +116,6 @@ const fileFormatsVariant: FileFormatVariants = {
     icon: baselineVideocam,
     variant: 'violet',
   },
-}
+};
 
-export {
-  fileFormatsVariant,
-  FileFormat,
-  FileFormatVariant,
-  FileFormatVariants,
-}
+export { fileFormatsVariant, FileFormat, FileFormatVariant, FileFormatVariants };

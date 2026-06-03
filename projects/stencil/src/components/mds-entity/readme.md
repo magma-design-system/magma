@@ -9,14 +9,14 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## Properties
 
-| Property   | Attribute  | Description                                                                     | Type                                                                                                                                                                                    | Default     |
-| ---------- | ---------- | ------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| `await`    | `await`    | Specifies if the component is awaiting a response from an external resource     | `boolean \| undefined`                                                                                                                                                                  | `undefined` |
-| `icon`     | `icon`     | Specifies the icon to be displayed if src propery is not used                   | `string \| undefined`                                                                                                                                                                   | `undefined` |
-| `initials` | `initials` | The user's inizials displayed if there's no image available and icon is not set | `string \| undefined`                                                                                                                                                                   | `undefined` |
-| `src`      | `src`      | Specifies the path to the image                                                 | `string \| undefined`                                                                                                                                                                   | `undefined` |
-| `tone`     | `tone`     | Specifies the color tone of the component                                       | `"strong" \| "weak" \| undefined`                                                                                                                                                       | `undefined` |
-| `variant`  | `variant`  | Specifies the color variant of the component                                    | `"amaranth" \| "aqua" \| "blue" \| "error" \| "green" \| "info" \| "lime" \| "orange" \| "orchid" \| "primary" \| "sky" \| "success" \| "violet" \| "warning" \| "yellow" \| undefined` | `undefined` |
+| Property   | Attribute  | Description                                                                     | Type                                                                                                                                                                                                         | Default     |
+| ---------- | ---------- | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------- |
+| `await`    | `await`    | Specifies if the component is awaiting a response from an external resource     | `boolean \| undefined`                                                                                                                                                                                       | `undefined` |
+| `icon`     | `icon`     | Specifies the icon to be displayed if src propery is not used                   | `string \| undefined`                                                                                                                                                                                        | `undefined` |
+| `initials` | `initials` | The user's inizials displayed if there's no image available and icon is not set | `string \| undefined`                                                                                                                                                                                        | `undefined` |
+| `src`      | `src`      | Specifies the path to the image                                                 | `string \| undefined`                                                                                                                                                                                        | `undefined` |
+| `tone`     | `tone`     | Specifies the color tone of the component                                       | `"strong" \| "weak" \| undefined`                                                                                                                                                                            | `undefined` |
+| `variant`  | `variant`  | Specifies the color variant of the component                                    | `"amaranth" \| "aqua" \| "blue" \| "error" \| "green" \| "info" \| "lime" \| "orange" \| "orchid" \| "primary" \| "purple" \| "red" \| "sky" \| "success" \| "violet" \| "warning" \| "yellow" \| undefined` | `undefined` |
 
 
 ## Slots
@@ -25,6 +25,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | ----------- | --------------------------------------------------------------------------------------- |
 | `"action"`  | Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element. |
 | `"default"` | Add `text string`, `HTML elements` or `components` to this slot.                        |
+| `"detail"`  | Add `HTML elements` or `components` to this slot.                                       |
 
 
 ## Shadow Parts
@@ -44,7 +45,6 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `--mds-entity-detail-color`    | The color of the text details      |
 | `--mds-entity-icon-background` | The background-color of the icon   |
 | `--mds-entity-icon-color`      | The color of the icon              |
-| `--mds-entity-shadow`          | The box-shadow od the component    |
 
 
 ## Dependencies

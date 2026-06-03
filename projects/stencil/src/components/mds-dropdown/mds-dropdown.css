@@ -1,41 +1,112 @@
+@import '../../tailwind/fouc.css';
+
 /**
  * @prop --mds-dropdown-arrow-background: Sets the fill color of the arrow.
- * @prop --mds-dropdown-background: Sets the background-color of the dropdown.
  * @prop --mds-dropdown-backdrop-duration: Sets the transition duration of the backdrop, used by component's code too.
  * @prop --mds-dropdown-backdrop-z-indx: Sets the backdrop z-index, used by component's code too.
+ * @prop --mds-dropdown-background: Sets the background-color of the dropdown.
+ * @prop --mds-dropdown-drop-shadow-color-rgb: Sets the color used for the dropdown shadow
  * @prop --mds-dropdown-drop-shadow: Sets the drop-shadow of the dropdown.
- * @prop --mds-dropdown-mouseover-delay: Sets the delay duration of the component when the caller trigger mouseover event, it's used by the javascript code.
  * @prop --mds-dropdown-duration: Sets the duration of the dropdown animation.
  * @prop --mds-dropdown-ease: Sets the easing of the dropdown animation.
+ * @prop --mds-dropdown-mouseover-delay: Sets the delay duration of the component when the caller trigger mouseover event, it's used by the javascript code.
  * @prop --mds-dropdown-transform-from: Sets the from animation transform of the dropdown.
  * @prop --mds-dropdown-transform-to: Sets the to animation transform of the dropdown.
  * @prop --mds-dropdown-z-index: Sets the z-index of the component.
  */
 
+@property --mds-dropdown-arrow-background {
+  inherits: false;
+  initial-value: var(--mds-dropdown-background);
+  syntax: '<color>';
+}
+
+@property --mds-dropdown-backdrop-duration {
+  inherits: false;
+  initial-value: 200ms;
+  syntax: '<time>';
+}
+
+@property --mds-dropdown-backdrop-z-index {
+  inherits: false;
+  initial-value: 3000;
+  syntax: '<integer>';
+}
+
+@property --mds-dropdown-background {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral));
+  syntax: '<color>';
+}
+
+@property --mds-dropdown-mouseover-delay {
+  inherits: false;
+  initial-value: 0.5s;
+  syntax: '<time>';
+}
+
+@property --mds-dropdown-drop-shadow-color-rgb {
+  inherits: false;
+  initial-value: 0 0 0;
+  syntax: '<number>+';
+}
+
+/* The following properties are not supported by Houdini:
+  --mds-dropdown-drop-shadow, --mds-dropdown-ease,
+  --mds-dropdown-transform-from, --mds-dropdown-transform-to
+*/
+
+@property --mds-dropdown-duration {
+  inherits: false;
+  initial-value: 0.5s;
+  syntax: '<time>';
+}
+
+@property --mds-dropdown-z-index {
+  inherits: false;
+  initial-value: 4000;
+  syntax: '<integer>';
+}
+
+@property --mds-dropdown-transform-from {
+  inherits: false;
+  initial-value: scale(0.9) translateY(-3%);
+  syntax: '<transform-list>';
+}
+
+@property --mds-dropdown-transform-to {
+  inherits: false;
+  initial-value: scale(0.9) translateY(-3%);
+  syntax: '<transform-list>';
+}
+
 :host {
   --mds-dropdown-arrow-background: var(--mds-dropdown-background);
   --mds-dropdown-backdrop-duration: 200ms;
   --mds-dropdown-backdrop-z-index: var(--magma-backdrop-z-index, 3000);
-  --mds-dropdown-background: theme('colors.tone-neutral');
-  --mds-dropdown-mouseover-delay: 0.5s;
-  --mds-dropdown-drop-shadow-color: var(--tone-neutral-01, 0 0 0);
-  --mds-dropdown-drop-shadow: drop-shadow(0 10px 8px rgb(var(--mds-dropdown-drop-shadow-color) / 0.05)) drop-shadow(0 4px 3px rgb(var(--mds-dropdown-drop-shadow-color) / 0.15)) drop-shadow(0 0 1px rgb(var(--mds-dropdown-drop-shadow-color) / 0.15));
+  --mds-dropdown-background: rgb(var(--tone-neutral));
+  --mds-dropdown-drop-shadow-color-rgb: var(--tone-neutral-01);
+  --mds-dropdown-drop-shadow: drop-shadow(
+      0 10px 8px rgb(var(--mds-dropdown-drop-shadow-color-rgb) / 0.05)
+    )
+    drop-shadow(0 4px 3px rgb(var(--mds-dropdown-drop-shadow-color-rgb) / 0.15))
+    drop-shadow(0 0 1px rgb(var(--mds-dropdown-drop-shadow-color-rgb) / 0.15));
   --mds-dropdown-duration: 0.5s;
-  --mds-dropdown-ease: theme('transitionTimingFunction.out-expo');
+  --mds-dropdown-ease: var(--ease-out-expo);
+  --mds-dropdown-mouseover-delay: 0.5s;
   --mds-dropdown-transform-from: scale(0.9) translateY(-3%);
   --mds-dropdown-transform-to: scale(1) translate(0, 0);
   --mds-dropdown-z-index: var(--magma-dropdown-z-index, 4000);
 
-  @apply
-    gap-400
-    opacity-0
-    p-600
-    rounded-lg;
-
   background-color: var(--mds-dropdown-background);
+  border-radius: var(--radius-md);
   box-sizing: border-box;
+  corner-shape: var(--magma-corner-shape, round);
   display: none;
   filter: var(--mds-dropdown-drop-shadow);
+  gap: --spacing(400);
+  opacity: 0;
+  padding: --spacing(600);
   pointer-events: none;
   position: fixed;
   transform: var(--mds-dropdown-transform-from);
@@ -46,10 +117,9 @@
   z-index: var(--mds-dropdown-z-index);
 }
 
-:host([visible]:not([visible="false"])) {
-  @apply opacity-100;
-
+:host([visible]:not([visible='false'])) {
   display: grid;
+  opacity: 1;
   pointer-events: auto;
   transform: var(--mds-dropdown-transform-to);
 
@@ -59,27 +129,24 @@
   }
 }
 
-:host([smooth]:not([smooth="false"])) {
+:host([smooth]:not([smooth='false'])) {
   transition-property: bottom, left, opacity, right, top, transform, transform-origin;
 }
 
 .arrow {
-  @apply -top-400;
-
   display: flex;
   fill: var(--mds-dropdown-arrow-background);
   pointer-events: none;
   position: fixed;
+  top: --spacing(-400);
 }
 
 ::slotted(*) {
-  @apply z-10;
-
   position: relative;
+  z-index: 10;
 }
 
 @import './css/mds-dropdown-pref-animation.css';
 @import './css/mds-dropdown-pref-theme.css';
 @import './css/mds-dropdown-pref-contrast.css';
 @import './css/mds-dropdown-pref-contrast-dark.css';
-@import '../../tailwind/fouc.css';

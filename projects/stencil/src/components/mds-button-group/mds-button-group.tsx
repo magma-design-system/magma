@@ -1,4 +1,4 @@
-import { Component, Host, h } from '@stencil/core'
+import { Component, Host, h } from '@stencil/core';
 
 @Component({
   tag: 'mds-button-group',
@@ -6,11 +6,11 @@ import { Component, Host, h } from '@stencil/core'
   shadow: true,
 })
 export class MdsButtonGroup {
-  render () {
+  render() {
     return (
       <Host>
         <slot></slot>
       </Host>
-    )
+    );
   }
 }

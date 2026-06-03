@@ -1,3 +1,5 @@
+@import './css/mds-kpi-item-fouc.css';
+
 /**
  * @prop --mds-kpi-item-icon-color: Set the fill color of the icon element
  * @prop --mds-kpi-item-info-background: Set the `background-color` of the text area element
@@ -6,31 +8,31 @@
  */
 
 :host {
-  --mds-kpi-item-icon-color: theme('colors.variant-primary-04');
-  --mds-kpi-item-info-background: theme('colors.tone-neutral');
-  --mds-kpi-item-text-animation-placeholder-char: var(--mds-kpi-text-animation-placeholder-char, " ");
+  --mds-kpi-item-icon-color: rgb(var(--variant-primary-04));
+  --mds-kpi-item-info-background: rgb(var(--tone-neutral));
+  --mds-kpi-item-text-animation-placeholder-char: var(
+    --mds-kpi-text-animation-placeholder-char,
+    ' '
+  );
   --mds-kpi-item-text-animation-speed: var(--mds-kpi-text-animation-speed, 0.15);
 
-  @apply
-    duration-300
+  @apply duration-300
     ease-out
     gap-0;
 
   aspect-ratio: 1;
-  background-color: theme('colors.variant-primary-10');
-  border-radius: theme('borderRadius.2xl');
-  box-shadow: theme('boxShadow.lg');
+  background-color: rgb(var(--variant-primary-10));
+  border-radius: var(--radius-4xl);
+  corner-shape: var(--magma-corner-shape, round);
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  padding: theme('spacing.400');
+  padding: --spacing(400);
   transition-property: background-color, box-shadow;
 }
 
 .icon-container {
-
-  @apply
-    duration-300
+  @apply duration-300
     ease-out;
 
   align-items: center;
@@ -41,8 +43,7 @@
 }
 
 .icon {
-  @apply
-    duration-300
+  @apply duration-300
     ease-out;
 
   fill: var(--mds-kpi-item-icon-color);
@@ -51,27 +52,25 @@
 }
 
 .info {
-  @apply
-    duration-300
+  @apply duration-300
     ease-out
     gap-0;
 
   background-color: var(--mds-kpi-item-info-background);
-  border-radius: theme('borderRadius.lg');
-  box-shadow: theme('boxShadow.sm');
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-sm);
+  corner-shape: inherit;
   display: grid;
   flex-shrink: 0;
   justify-content: center;
-  padding: theme('spacing.400');
+  padding: --spacing(400);
   text-align: center;
   transition-property: background-color, border-radius, box-shadow;
 }
 
 .label,
 .description {
-
-  @apply
-    duration-300
+  @apply duration-300
     ease-out;
 
   --mds-text-animation-speed: var(--mds-kpi-item-text-animation-speed);
@@ -84,4 +83,3 @@
 @import './css/mds-kpi-item-pref-theme.css';
 @import './css/mds-kpi-item-pref-contrast.css';
 @import './css/mds-kpi-item-pref-contrast-dark.css';
-@import '../../tailwind/fouc.css';

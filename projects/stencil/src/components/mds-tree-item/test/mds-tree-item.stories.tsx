@@ -1,8 +1,8 @@
-import { h } from '@stencil/core'
-import { treeIconDictionary } from '@dictionary/tree'
-import { iconsDictionary } from '@dictionary/icon'
-import { MdsTreeItemEventDetail } from 'src/components'
-import { useEffect } from 'react'
+import { h } from '@stencil/core';
+import { treeIconDictionary } from '@type/tree';
+import { iconsDictionary } from '@type/icon';
+import { MdsTreeItemEventDetail } from 'src/components';
+import { useEffect } from 'react';
 
 export default {
   title: 'UI / Tree / Tree Item',
@@ -30,7 +30,7 @@ export default {
       control: { type: 'select' },
     },
   },
-}
+};
 
 const Template = ({ ...args }) => (
   <mds-tree>
@@ -39,30 +39,24 @@ const Template = ({ ...args }) => (
         slot="action"
         icon="mi/baseline/attach-file"
         variant="primary"
-        tone="quiet"
+        tone="text"
         title="Schedule"
       ></mds-button>
       <mds-button
         slot="action"
         icon="mi/baseline/more-vert"
         variant="primary"
-        tone="quiet"
+        tone="text"
         title="Options"
       ></mds-button>
       <mds-tree-item {...args} label="First children element"></mds-tree-item>
       <mds-tree-item {...args} label="Second element"></mds-tree-item>
-      <mds-tree-item
-        {...args}
-        label="This is the third element children"
-      ></mds-tree-item>
+      <mds-tree-item {...args} label="This is the third element children"></mds-tree-item>
       <mds-tree-item {...args} label="The fourth and final children">
         <mds-tree-item {...args} label="Hello beautiful world"></mds-tree-item>
         <mds-tree-item {...args} label="Surpraaaaaise!"></mds-tree-item>
       </mds-tree-item>
-      <mds-tree-item
-        {...args}
-        label="Surprise! There is a fifth element"
-      ></mds-tree-item>
+      <mds-tree-item {...args} label="Surprise! There is a fifth element"></mds-tree-item>
       <mds-tree-item {...args} label="And probably a sixth"></mds-tree-item>
     </mds-tree-item>
     <mds-tree-item {...args} label="Second element used in this tree">
@@ -70,53 +64,47 @@ const Template = ({ ...args }) => (
         slot="action"
         icon="mi/baseline/attach-file"
         variant="primary"
-        tone="quiet"
+        tone="text"
         title="Schedule"
       ></mds-button>
       <mds-button
         slot="action"
         icon="mi/baseline/more-vert"
         variant="primary"
-        tone="quiet"
+        tone="text"
         title="Options"
       ></mds-button>
       <mds-tree-item {...args} label="First children element"></mds-tree-item>
       <mds-tree-item {...args} label="Second element"></mds-tree-item>
-      <mds-tree-item
-        {...args}
-        label="This is the third element children"
-      ></mds-tree-item>
+      <mds-tree-item {...args} label="This is the third element children"></mds-tree-item>
       <mds-tree-item {...args} label="The fourth and final children">
         <mds-tree-item {...args} label="Hello beautiful world"></mds-tree-item>
         <mds-tree-item {...args} label="Surpraaaaaise!"></mds-tree-item>
       </mds-tree-item>
-      <mds-tree-item
-        {...args}
-        label="Surprise! There is a fifth element"
-      ></mds-tree-item>
+      <mds-tree-item {...args} label="Surprise! There is a fifth element"></mds-tree-item>
       <mds-tree-item {...args} label="And probably a sixth"></mds-tree-item>
     </mds-tree-item>
   </mds-tree>
-)
+);
 
 const TemplateAsync = ({ ...args }) => {
   // Simulate async request
   useEffect(() => {
-    const treeItemElement = document.querySelectorAll('.mds-tree-item')?.[0]
+    const treeItemElement = document.querySelectorAll('.mds-tree-item')?.[0];
     if (treeItemElement) {
       treeItemElement.addEventListener(
         'mdsTreeItemExpand',
         (event: CustomEvent<MdsTreeItemEventDetail>) => {
-          const { element } = event.detail
-          if (!element.async) return
+          const { element } = event.detail;
+          if (!element.async) return;
           setTimeout(() => {
-            element.expand()
-            element.async = false
-          }, 3000)
+            element.expand();
+            element.async = false;
+          }, 3000);
         },
-      )
+      );
     }
-  }, [])
+  }, []);
 
   return (
     <mds-tree toggle="chevron" {...args}>
@@ -127,39 +115,27 @@ const TemplateAsync = ({ ...args }) => {
         label="Segreteria"
         icon="mi/baseline/desk"
       >
-        <mds-tree-item
-          {...args}
-          label="Genoveffo Baci"
-          icon="mi/baseline/person"
-        ></mds-tree-item>
+        <mds-tree-item {...args} label="Genoveffo Baci" icon="mi/baseline/person"></mds-tree-item>
         <mds-tree-item
           {...args}
           label="Donaldo Trombetta"
           icon="mi/baseline/person"
         ></mds-tree-item>
-        <mds-tree-item
-          {...args}
-          label="Elone Muschio"
-          icon="mi/baseline/person"
-        ></mds-tree-item>
+        <mds-tree-item {...args} label="Elone Muschio" icon="mi/baseline/person"></mds-tree-item>
         <mds-tree-item
           {...args}
           label="Andrew Mountflower"
           icon="mi/baseline/person"
         ></mds-tree-item>
-        <mds-tree-item
-          {...args}
-          label="Super Mauro Bros"
-          icon="mi/baseline/person"
-        ></mds-tree-item>
+        <mds-tree-item {...args} label="Super Mauro Bros" icon="mi/baseline/person"></mds-tree-item>
       </mds-tree-item>
     </mds-tree>
-  )
-}
+  );
+};
 
 export const Default = {
   render: Template,
-}
+};
 export const AsyncRequest = {
   render: TemplateAsync,
-}
+};

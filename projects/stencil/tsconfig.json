@@ -2,7 +2,6 @@
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "allowUnreachableCode": false,
-    "baseUrl": ".",
     "declaration": false,
     "experimentalDecorators": true,
     "lib": [
@@ -13,44 +12,46 @@
     "jsx": "react",
     "jsxFactory": "h",
     "module": "esnext",
-    "moduleResolution": "node",
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    "moduleResolution": "bundler",
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
     "resolveJsonModule": true,
+    "strict": false,
     "target": "es2017",
+    "types": ["node", "jest"],
     "paths": {
+      "src/*": [
+        "./src/*"
+      ],
       "@common/*": [
-        "src/common/*"
+        "./src/common/*"
       ],
       "@component/*": [
-        "src/components/*"
+        "./src/components/*"
       ],
       "@dictionary/*": [
-        "src/dictionary/*"
+        "./src/dictionary/*"
       ],
       "@event/*": [
-        "src/event-detail/*"
+        "./src/event-detail/*"
       ],
       "@fixture/*": [
-        "src/fixtures/*"
+        "./src/fixtures/*"
       ],
       "@meta/*": [
-        "src/meta/*"
+        "./src/meta/*"
       ],
       "@icon/*": [
-        "assets/svg/*"
-      ],
-      "@placeholder": [
-        "https://via.placeholder.com"
+        "./assets/svg/*"
       ],
       "@tailwind/*": [
-        "src/tailwind/*"
+        "./src/tailwind/*"
       ],
       "@test/*": [
-        "src/test/*"
+        "./src/test/*"
       ],
       "@type/*": [
-        "src/type/*"
+        "./src/type/*"
       ],
       "react": [
         "../../node_modules/react"

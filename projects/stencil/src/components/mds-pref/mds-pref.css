@@ -1,7 +1,8 @@
-:host {
-  @apply gap-400;
+@import './css/mds-pref-fouc.css';
 
+:host {
   display: grid;
+  gap: --spacing(400);
 }
 
 :host([controller]) {
@@ -13,9 +14,6 @@
 }
 
 .reload-required {
-  @apply gap-200;
-
   display: grid;
+  gap: --spacing(200);
 }
-
-@import '../../tailwind/fouc.css';

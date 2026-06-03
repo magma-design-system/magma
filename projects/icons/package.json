@@ -13,7 +13,9 @@
     "postbuild": "tsx ./scripts/setup-package-font.ts",
     "clean": "tsx scripts/clean.ts",
     "prebuild": "tsx ./scripts/clean.ts",
-    "start": "tsx ./scripts/font-icons.ts"
+    "start": "tsx ./scripts/font-icons.ts",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "dependencies": {
     "@maggioli-design-system/svg-icons": "4.4.0",

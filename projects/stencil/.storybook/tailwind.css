@@ -1,13 +1,6 @@
-@import '@maggioli-design-system/styles/dist/tailwind/base.css';
-@import '@maggioli-design-system/styles/dist/tailwind/typography.css';
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-body {
-  padding: 0 !important;
-}
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/utilities.css' layer(utilities);
+@import '@maggioli-design-system/styles/dist/tailwind/theme.css';
 
 /*
 :root,

@@ -1,11 +1,12 @@
+@import './css/mds-tab-bar-fouc.css';
+
 :host {
-  @apply
-    duration-200
+  @apply duration-200
     ease-out;
 
-  background-color: theme('colors.tone-neutral');
+  background-color: rgb(var(--tone-neutral));
   bottom: 0;
-  box-shadow: theme('boxShadow.outline-light-50');
+  box-shadow: var(--shadow-outline-light-50);
   display: flex;
   justify-content: space-around;
   left: 0;
@@ -17,4 +18,3 @@
 @import './css/mds-tab-bar-pref-animation.css';
 @import './css/mds-tab-bar-pref-theme.css';
 @import './css/mds-tab-bar-pref-contrast.css';
-@import '../../tailwind/fouc.css';

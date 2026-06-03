@@ -7,22 +7,12 @@ export type ModalPositionType =
   | 'right'
   | 'top'
   | 'top-left'
-  | 'top-right'
+  | 'top-right';
 
-export type ModalAnimationStateType =
-  | 'intro'
-  | 'none'
-  | 'outro'
+export type ModalAnimationStateType = 'intro' | 'none' | 'outro';
 
-export type ModalOverflowType =
-  | 'auto'
-  | 'manual'
+export type ModalOverflowType = 'auto' | 'manual';
 
-export type ModalInteractionType =
-  | 'strict'
-  | 'relaxed'
+export type ModalInteractionType = 'strict' | 'relaxed';
 
-export type ModalAnimationStyleType =
-  | 'slide'
-  | 'custom'
-  | '3d'
+export type ModalAnimationStyleType = 'slide' | 'custom' | '3d';

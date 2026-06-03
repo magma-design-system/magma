@@ -13,9 +13,9 @@ Generated at {{ date }}
           {{#ifEquals @key 'light'}}
             {{#each palettes as | palette |}}
               {{#ifEquals @key 'color'}}
-  --{{@../../../key}}-{{@../../key}}: {{palette.value}};
+  --hex-{{@../../../key}}-{{@../../key}}: {{palette.value}};
               {{else}}
-  --{{@../../../key}}-{{@../../key}}-{{leadZero @key}}: {{palette.value}};
+  --hex-{{@../../../key}}-{{@../../key}}-{{leadZero @key}}: {{palette.value}};
               {{/ifEquals}}
             {{/each}}
           {{/ifEquals}}
@@ -25,7 +25,8 @@ Generated at {{ date }}
   {{/each}}
 }
 
-:root.pref-theme-dark {
+:root:not(.pref-theme-scheme-light).pref-theme-dark,
+:root.pref-theme-scheme-dark {
   {{#each properties as | groups |}}
     {{#each groups as | names |}}
       {{#each names as | lightModes |}}
@@ -33,9 +34,9 @@ Generated at {{ date }}
           {{#ifEquals @key 'dark'}}
             {{#each palettes as | palette |}}
               {{#ifEquals @key 'color'}}
-  --{{@../../../key}}-{{@../../key}}: {{palette.value}};
+  --hex-{{@../../../key}}-{{@../../key}}: {{palette.value}};
               {{else}}
-  --{{@../../../key}}-{{@../../key}}-{{leadZero @key}}: {{palette.value}};
+  --hex-{{@../../../key}}-{{@../../key}}-{{leadZero @key}}: {{palette.value}};
               {{/ifEquals}}
             {{/each}}
           {{/ifEquals}}
@@ -46,7 +47,8 @@ Generated at {{ date }}
 }
 
 @media (prefers-color-scheme: dark) {
-  :root.pref-theme-system {
+  :root:not(.pref-theme-scheme-light).pref-theme-system,
+  :root:not([data-magma-pref]) {
     {{#each properties as | groups |}}
       {{#each groups as | names |}}
         {{#each names as | lightModes |}}
@@ -54,9 +56,9 @@ Generated at {{ date }}
             {{#ifEquals @key 'dark'}}
               {{#each palettes as | palette |}}
                 {{#ifEquals @key 'color'}}
-    --{{@../../../key}}-{{@../../key}}: {{palette.value}};
+    --hex-{{@../../../key}}-{{@../../key}}: {{palette.value}};
                 {{else}}
-    --{{@../../../key}}-{{@../../key}}-{{leadZero @key}}: {{palette.value}};
+    --hex-{{@../../../key}}-{{@../../key}}-{{leadZero @key}}: {{palette.value}};
                 {{/ifEquals}}
               {{/each}}
             {{/ifEquals}}

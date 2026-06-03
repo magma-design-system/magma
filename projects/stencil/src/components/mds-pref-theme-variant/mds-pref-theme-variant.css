@@ -1,0 +1,27 @@
+@import './css/mds-pref-theme-variant-fouc.css';
+
+mds-pref-language {
+  display: grid;
+  gap: --spacing(400);
+}
+
+.mds-pref-theme-variant-dropdown {
+  gap: --spacing(100);
+  padding: --spacing(400);
+}
+
+.item {
+  --mds-tab-item-default-color: rgb(var(--tone-neutral-05));
+
+  flex-basis: 0;
+  flex-grow: 1;
+}
+
+.item--custom-theme-variant {
+  cursor: pointer;
+}
+
+.item--auto,
+.item--custom-theme-variant {
+  --mds-tab-item-selected-color: rgb(var(--tone-neutral-03));
+}

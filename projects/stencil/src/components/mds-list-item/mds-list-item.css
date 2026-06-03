@@ -1,46 +1,49 @@
-@import '../../tailwind/components.css';
-@tailwind components;
+@import './css/mds-list-item-fouc.css';
 
 /**
  * @prop --mds-list-item-icon-margin: Sets the margin of the component's icon
  */
 
+@property --mds-list-item-icon-margin {
+  inherits: false;
+  initial-value: 0 --spacing(200) 0 0;
+  syntax: '<length>+';
+}
+
 :host {
-  --mds-list-item-icon-margin: 0 theme('spacing.200') 0 0;
+  --mds-list-item-icon-margin: 0 --spacing(200) 0 0;
 
   @apply w-full;
 
   align-items: flex-start;
-  color: theme('colors.tone-neutral-03');
+  color: rgb(var(--tone-neutral-03));
   display: flex;
   justify-content: flex-start;
 }
 
 .icon {
-  @apply
-    h-600
-    w-600;
+  @apply h-600
+  w-600;
 
   fill: currentcolor;
   margin: var(--mds-list-item-icon-margin);
 }
 
-:host([typography="paragraph"]) {
-  --mds-list-item-icon-margin: 0.25rem theme('spacing.200') 0 0;
+:host([typography='paragraph']) {
+  --mds-list-item-icon-margin: 0.25rem --spacing(200) 0 0;
 }
 
-:host([typography="caption"]) {
-  --mds-list-item-icon-margin: -0.125rem theme('spacing.200') 0 0;
+:host([typography='caption']) {
+  --mds-list-item-icon-margin: -0.125rem --spacing(200) 0 0;
 }
 
-:host([typography="label"]),
-:host([typography="tip"]) {
-  --mds-list-item-icon-margin: -0.25rem theme('spacing.200') 0 0;
+:host([typography='label']),
+:host([typography='tip']) {
+  --mds-list-item-icon-margin: -0.25rem --spacing(200) 0 0;
 }
 
-:host([typography="option"]) {
-  --mds-list-item-icon-margin: -0.5rem theme('spacing.200') 0 0;
+:host([typography='option']) {
+  --mds-list-item-icon-margin: -0.5rem --spacing(200) 0 0;
 }
 
 @import './css/mds-list-item-pref-contrast.css';
-@import '../../tailwind/fouc.css';

@@ -1,7 +1,6 @@
-/* eslint-disable no-console */
-import * as meta from '../meta'
-import { jest } from '@jest/globals'
-import { join } from 'path'
+import * as meta from '../meta';
+import { jest } from '@jest/globals';
+import { join } from 'path';
 
 import {
   main,
@@ -12,101 +11,90 @@ import {
   getComponents,
   componentPackagePath,
   buildMap,
-} from '../update'
-import { readJSON } from 'fs-extra'
+} from '../update';
+import { readJSON } from 'fs-extra';
 
 global.fetch = jest
   .fn<typeof global.fetch>()
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   .mockImplementation((_input: RequestInfo | URL, _init?: RequestInit | undefined) => {
+    const [component] = (_input as string).split('/').filter((p) => p.startsWith('mds'));
+    const newUrl = join(__dirname, './mocks/', component, 'npm.package.json');
+    return Promise.resolve({ status: 200, ok: true, json: () => readJSON(newUrl) } as Response);
+  });
 
-    const [component] = (_input as string).split('/').filter(p => p.startsWith('mds'))
-    const newUrl = join(__dirname, './mocks/', component, 'npm.package.json')
-    return Promise.resolve({ status: 200, ok: true, json: () => readJSON(newUrl) } as Response)
-  })
-
-jest.mocked(meta).COMPONENTS_DIR = join(__dirname, './mocks/')
-jest.mocked(meta).PROJECT_DIR = join(__dirname, './mocks/')
+jest.mocked(meta).COMPONENTS_DIR = join(__dirname, './mocks/');
+jest.mocked(meta).PROJECT_DIR = join(__dirname, './mocks/');
 
 describe('update.ts', () => {
   beforeEach(() => {
-    jest.clearAllMocks()
+    jest.clearAllMocks();
 
-    componentsMap.clear()
-    npmComponentMap.clear()
-    componentsUpdatedMap.clear()
-    componentsToBeUpdated.length = 0
-  })
+    componentsMap.clear();
+    npmComponentMap.clear();
+    componentsUpdatedMap.clear();
+    componentsToBeUpdated.length = 0;
+  });
 
   describe('buildMap', () => {
     it('should catch mocked package.json', () => {
       expect(componentPackagePath('mds-table-test')).toBe(
         join(__dirname, '/mocks/mds-table-test/package.json'),
-      )
-    })
+      );
+    });
     it('should get components correctly', async () => {
-      const components = await getComponents()
-      expect(components).toHaveLength(7)
-    })
+      const components = await getComponents();
+      expect(components).toHaveLength(7);
+    });
     it('should build map correctly', async () => {
-      expect(componentsMap).toEqual(new Map())
-      expect(npmComponentMap).toEqual(new Map())
-      expect(componentsUpdatedMap).toEqual(new Map())
+      expect(componentsMap).toEqual(new Map());
+      expect(npmComponentMap).toEqual(new Map());
+      expect(componentsUpdatedMap).toEqual(new Map());
 
-      await buildMap()
+      await buildMap();
 
-      expect(Array.from(componentsMap.keys())).toHaveLength(7)
-      expect(Array.from(npmComponentMap.keys())).toHaveLength(7)
-      expect(Array.from(componentsUpdatedMap.keys())).toHaveLength(7)
+      expect(Array.from(componentsMap.keys())).toHaveLength(7);
+      expect(Array.from(npmComponentMap.keys())).toHaveLength(7);
+      expect(Array.from(componentsUpdatedMap.keys())).toHaveLength(7);
 
-      expect(componentsMap.get('mds-table-test')).toEqual([])
-      expect(componentsMap.get('mds-table-footer-test')).toEqual([
-        'mds-table-test',
-      ])
+      expect(componentsMap.get('mds-table-test')).toEqual([]);
+      expect(componentsMap.get('mds-table-footer-test')).toEqual(['mds-table-test']);
 
       const checknpmDependencies = await readJSON(
         join(__dirname, '/mocks/mds-table-test/npm.package.json'),
-      )
+      );
       expect(npmComponentMap.get('mds-table-test')).toEqual({
         version: checknpmDependencies.version,
         dependencies: checknpmDependencies.dependencies,
-      })
+      });
 
       const checkcurrentDependencies = await readJSON(
         join(__dirname, '/mocks/mds-table-test/package.json'),
-      )
+      );
       expect(componentsUpdatedMap.get('mds-table-test')).toEqual({
         version: checkcurrentDependencies.version,
         dependencies: checkcurrentDependencies.dependencies,
-      })
-    })
-  })
+      });
+    });
+  });
 
   describe('main', () => {
-    const { log } = console // save original console.log function
+    const { log } = console; // save original console.log function
     beforeEach(() => {
-      console.log = jest.fn() // create a new mock function for each test
-    })
+      console.log = jest.fn(); // create a new mock function for each test
+    });
     afterAll(() => {
-      console.log = log // restore original console.log after all tests
-    })
+      console.log = log; // restore original console.log after all tests
+    });
 
     it('should execute main in dry run correctly', async () => {
-      const mdsTablePackage = await readJSON(
-        join(__dirname, '/mocks/mds-table-test/package.json'),
-      )
-      await main([
-        'node',
-        'update.ts',
-        'mds-table-test',
-        '--version=minor',
-        '--dry-run',
-      ])
+      const mdsTablePackage = await readJSON(join(__dirname, '/mocks/mds-table-test/package.json'));
+      await main(['node', 'update.ts', 'mds-table-test', '--version=minor', '--dry-run']);
       const mdsTablePackageAfterMain = await readJSON(
         join(__dirname, '/mocks/mds-table-test/package.json'),
-      )
-      await expect(mdsTablePackage).toEqual(mdsTablePackageAfterMain)
-    })
+      );
+      await expect(mdsTablePackage).toEqual(mdsTablePackageAfterMain);
+    });
 
     it('should update mds-table-test minor', async () => {
       const resultUpdate = {
@@ -122,18 +110,12 @@ describe('update.ts', () => {
             '@stencil/core': '4.21.0',
           },
         },
-      }
-      await main([
-        'node',
-        'update.ts',
-        'mds-table-test',
-        '--version=minor',
-        '--dry-run',
-      ])
+      };
+      await main(['node', 'update.ts', 'mds-table-test', '--version=minor', '--dry-run']);
 
-      expect(console.log).toHaveBeenCalled()
-      expect(console.log).toHaveBeenCalledWith(resultUpdate)
-    })
+      expect(console.log).toHaveBeenCalled();
+      expect(console.log).toHaveBeenCalledWith(resultUpdate);
+    });
 
     it('should update mds-table-body-test to patch and mds-table-header-test to minor, so mds-table should update to minor ', async () => {
       // simulate that the component is update manually to patch (see file mds-table-body-test/package.json)
@@ -148,8 +130,7 @@ describe('update.ts', () => {
             '@stencil/core': '4.21.0',
           },
         },
-
-      }
+      };
       const resultUpdateTable = {
         component: 'mds-table-test',
         package: {
@@ -163,20 +144,14 @@ describe('update.ts', () => {
             '@stencil/core': '4.21.0',
           },
         },
-      }
+      };
 
       // update only component mds-table-header-test to minor
-      await main([
-        'node',
-        'update.ts',
-        'mds-table-header-test',
-        '--version=minor',
-        '--dry-run',
-      ])
+      await main(['node', 'update.ts', 'mds-table-header-test', '--version=minor', '--dry-run']);
 
-      expect(console.log).toHaveBeenCalledWith(resultUpdateTable)
-      expect(console.log).toHaveBeenCalledWith(resultUpdateHeader)
-    })
+      expect(console.log).toHaveBeenCalledWith(resultUpdateTable);
+      expect(console.log).toHaveBeenCalledWith(resultUpdateHeader);
+    });
     it('should update mds-content and mds-container to patch', async () => {
       const resultUpdateContent = {
         component: 'mds-content',
@@ -188,7 +163,7 @@ describe('update.ts', () => {
             '@stencil/core': '4.21.0',
           },
         },
-      }
+      };
       const resultUpdateContainer = {
         component: 'mds-container',
         package: {
@@ -200,18 +175,11 @@ describe('update.ts', () => {
             '@stencil/core': '4.21.0',
           },
         },
-      }
-      await main([
-        'node',
-        'update.ts',
-        'mds-content',
-        '--version=patch',
-        '--dry-run',
-      ])
+      };
+      await main(['node', 'update.ts', 'mds-content', '--version=patch', '--dry-run']);
 
-      expect(console.log).toHaveBeenCalledWith(resultUpdateContainer)
-      expect(console.log).toHaveBeenCalledWith(resultUpdateContent)
-    })
-  })
-
-})
+      expect(console.log).toHaveBeenCalledWith(resultUpdateContainer);
+      expect(console.log).toHaveBeenCalledWith(resultUpdateContent);
+    });
+  });
+});

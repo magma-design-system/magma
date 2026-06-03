@@ -1,13 +1,16 @@
-:host-context(.pref-animation-reduce),
-:host-context(.pref-animation-reduce) .await,
-:host-context(.pref-animation-reduce) .icon {
-  transition-duration: 0s;
+:host-context(:root.pref-animation-reduce) {
+  .await,
+  .icon {
+    transition-duration: 0s;
+  }
 }
 
 @media (prefers-reduced-motion) {
-  :host-context(.pref-animation-system),
-  :host-context(.pref-animation-system) .await,
-  :host-context(.pref-animation-system) .icon {
-    transition-duration: 0s;
+  :host-context(:root.pref-animation-system),
+  :host-context(:root:not([data-magma-pref])) {
+    .await,
+    .icon {
+      transition-duration: 0s;
+    }
   }
 }

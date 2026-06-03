@@ -1,9 +1,10 @@
-:host-context(.pref-contrast-more) {
-  box-shadow: theme('boxShadow.outline-50') inset;
+:host-context(:root.pref-contrast-more) {
+  box-shadow: var(--shadow-outline-50) inset;
 }
 
 @media (prefers-contrast: more) {
-  :host-context(.pref-contrast-system) {
-    box-shadow: theme('boxShadow.outline-50') inset;
+  :host-context(:root.pref-contrast-system),
+  :host-context(:root:not([data-magma-pref])) {
+    box-shadow: var(--shadow-outline-50) inset;
   }
 }

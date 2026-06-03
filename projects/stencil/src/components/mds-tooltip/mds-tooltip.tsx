@@ -1,8 +1,8 @@
-import { Component, Element, Host, Prop, h, Watch } from '@stencil/core'
-import { FloatingUIPlacement, FloatingUIStrategy } from '@type/floating-ui'
-import { TypographyTooltipType } from '@type/typography'
-import arrowSvg from './assets/arrow.svg'
-import { FloatingController, FloatingElement } from '@common/floating-controller'
+import { Component, Element, Host, Prop, h, Watch } from '@stencil/core';
+import { FloatingUIPlacement, FloatingUIStrategy } from '@type/floating-ui';
+import { TypographyTooltipType } from '@type/typography';
+import arrowSvg from './assets/arrow.svg';
+import { FloatingController, FloatingElement } from '@common/floating-controller';
 
 /**
  * @slot default - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
@@ -14,153 +14,152 @@ import { FloatingController, FloatingElement } from '@common/floating-controller
   shadow: true,
 })
 export class MdsTooltip implements FloatingElement {
+  private caller: HTMLElement;
+  private floatingController: FloatingController;
 
-  private caller: HTMLElement
-  private floatingController: FloatingController
-
-  @Element() host!: HTMLMdsTooltipElement
-
-  /**
-   * @internal
-   */
-  @Prop() readonly arrow: boolean = true
+  @Element() host!: HTMLMdsTooltipElement;
 
   /**
    * @internal
    */
-  @Prop() arrowPadding: number = 4
+  @Prop() readonly arrow: boolean = true;
+
+  /**
+   * @internal
+   */
+  @Prop() arrowPadding: number = 4;
 
   /**
    * If set, the component will be placed automatically near it's caller.
    */
-  @Prop({ reflect: true }) readonly autoPlacement: boolean = true
+  @Prop({ reflect: true }) readonly autoPlacement: boolean = true;
 
   /**
    * Specifies the placement of the component if no space is available where it is placed.
    */
-  @Prop() readonly flip: boolean = false
+  @Prop() readonly flip: boolean = false;
 
   /**
    * Specifies the selector of the target element, this attribute is used with `querySelector` method.
    */
-  @Prop({ reflect: true }) readonly target!: string
+  @Prop({ reflect: true }) readonly target!: string;
 
   /**
    * Sets distance between the tooltip and the caller.
    */
-  @Prop() readonly offset: number = 12
+  @Prop() readonly offset: number = 12;
 
   /**
    * Specifies where the component should be placed relative to the caller.
    */
-  @Prop({ reflect: true }) readonly placement: FloatingUIPlacement = 'top'
+  @Prop({ reflect: true }) readonly placement: FloatingUIPlacement = 'top';
 
   /**
    * Specifies the font typography of the element
    */
-  @Prop() readonly typography: TypographyTooltipType = 'tip'
+  @Prop() readonly typography: TypographyTooltipType = 'tip';
 
   /**
    * If set, the component will be kept inside the viewport.
    */
-  @Prop() readonly shift: boolean = true
+  @Prop() readonly shift: boolean = true;
 
   /**
    * Sets a safe area distance between the tooltip and the viewport.
    */
-  @Prop() readonly shiftPadding: number = 12
+  @Prop() readonly shiftPadding: number = 12;
 
   /**
    * Sets the CSS position strategy of the component.
    */
-  @Prop({ reflect: true }) readonly strategy: FloatingUIStrategy = 'fixed'
+  @Prop({ reflect: true }) readonly strategy: FloatingUIStrategy = 'fixed';
 
   /**
    * Specifies the visibility of the component.
    */
-  @Prop({ mutable: true, reflect: true }) visible = false
+  @Prop({ mutable: true, reflect: true }) visible = false;
 
   private readonly handleVisibility = (visibility: boolean): void => {
-    this.visible = visibility
-  }
+    this.visible = visibility;
+  };
 
   @Watch('arrow')
-  arrowChanged (): void {
-    this.floatingController.updatePosition()
+  arrowChanged(): void {
+    this.floatingController.updatePosition();
   }
 
   @Watch('autoPlacement')
-  autoPlacementChanged (): void {
-    this.floatingController.updatePosition()
+  autoPlacementChanged(): void {
+    this.floatingController.updatePosition();
   }
 
   @Watch('flip')
-  flipChanged (): void {
-    this.floatingController.updatePosition()
+  flipChanged(): void {
+    this.floatingController.updatePosition();
   }
 
   @Watch('offset')
-  offsetChanged (): void {
-    this.floatingController.updatePosition()
+  offsetChanged(): void {
+    this.floatingController.updatePosition();
   }
 
   @Watch('placement')
-  placementChanged (): void {
-    this.floatingController.updatePosition()
+  placementChanged(): void {
+    this.floatingController.updatePosition();
   }
 
   @Watch('shift')
-  shiftChanged (): void {
-    this.floatingController.updatePosition()
+  shiftChanged(): void {
+    this.floatingController.updatePosition();
   }
 
   @Watch('shiftPadding')
-  shiftPaddingChanged (): void {
-    this.floatingController.updatePosition()
+  shiftPaddingChanged(): void {
+    this.floatingController.updatePosition();
   }
 
   @Watch('strategy')
-  strategyChanged (): void {
-    this.floatingController.updatePosition()
+  strategyChanged(): void {
+    this.floatingController.updatePosition();
   }
 
   @Watch('visible')
-  visibleChanged (newValue: boolean): void {
-    this.floatingController.updatePosition()
+  visibleChanged(newValue: boolean): void {
+    this.floatingController.updatePosition();
     if (newValue) {
-      this.floatingController.updatePosition()
-      return
+      this.floatingController.updatePosition();
+      return;
     }
-    this.floatingController.dismiss()
+    this.floatingController.dismiss();
   }
 
   @Watch('target')
-  targetChanged (): void {
-    if (!this.target) return
+  targetChanged(): void {
+    if (!this.target) return;
 
-    this.caller = this.floatingController?.updateCaller(this.target)
-    this.caller.addEventListener('mouseleave', this.handleVisibility.bind(this, false))
-    this.caller.addEventListener('mouseenter', this.handleVisibility.bind(this, true))
+    this.caller = this.floatingController?.updateCaller(this.target);
+    this.caller.addEventListener('mouseleave', this.handleVisibility.bind(this, false));
+    this.caller.addEventListener('mouseenter', this.handleVisibility.bind(this, true));
   }
 
-  componentDidLoad (): void {
-    const arrow = this.host.shadowRoot?.querySelector('.arrow') as HTMLElement
-    this.floatingController = new FloatingController(this.host, arrow)
-    this.targetChanged()
+  componentDidLoad(): void {
+    const arrow = this.host.shadowRoot?.querySelector('.arrow') as HTMLElement;
+    this.floatingController = new FloatingController(this.host, arrow);
+    this.targetChanged();
   }
 
-  disconnectedCallback (): void {
-    this.floatingController.dismiss()
+  disconnectedCallback(): void {
+    this.floatingController.dismiss();
   }
 
-  render () {
+  render() {
     return (
       <Host>
-        <div class="arrow" innerHTML={arrowSvg}/>
+        <div class="arrow" innerHTML={arrowSvg} />
         <mds-text class="text" typography={this.typography} part="text">
-          <slot/>
+          <slot />
         </mds-text>
       </Host>
-    )
+    );
   }
 }

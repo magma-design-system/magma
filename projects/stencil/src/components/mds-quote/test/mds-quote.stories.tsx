@@ -1,6 +1,6 @@
-import { typographyReadDictionary } from '@dictionary/typography'
-import { typographyHeadingTagDictionary } from '@dictionary/text'
-import { h } from '@stencil/core'
+import { typographyReadDictionary } from '@type/typography';
+import { typographyHeadingTagDictionary } from '@type/text';
+import { h } from '@stencil/core';
 
 export default {
   title: 'UI / Quote',
@@ -16,12 +16,11 @@ export default {
       control: { type: 'select' },
     },
   },
-}
+};
 
-const Template = args => (
+const Template = (args) => (
   <mds-quote {...args}>
-    What one programmer can do in one month, two programmers can do in two
-    months
+    What one programmer can do in one month, two programmers can do in two months
     <mds-author class="text-tone-neutral-04" slot="author">
       <mds-avatar
         initials="fb"
@@ -35,7 +34,7 @@ const Template = args => (
       <mds-text typography="caption">Software engineer</mds-text>
     </mds-author>
   </mds-quote>
-)
+);
 
 export const Default = {
   render: Template,
@@ -44,7 +43,7 @@ export const Default = {
     tag: 'h5',
     typography: 'h5',
   },
-}
+};
 
 export const Typography = {
   render: Template,
@@ -53,4 +52,4 @@ export const Typography = {
     tag: 'h5',
     typography: 'h5',
   },
-}
+};

@@ -1,14 +1,36 @@
+@import './css/mds-radial-menu-item-fouc.css';
+
 /**
- * @prop --mds-radial-menu-item-transition-duration: Set the transition duration of the menu items
- * @prop --mds-radial-menu-item-transition-timing-function: Set the transition timing function of the menu items
+ * @prop --mds-radial-menu-item-transition-duration: Duration of individual radial menu item transitions.
+ * @prop --mds-radial-menu-item-transition-timing-function: Timing function for individual radial menu item transitions.
  */
 
-:host {
-  --mds-radial-menu-item-transition-duration: var(--mds-radial-menu-transition-duration, theme('transitionDuration.500'));
-  --mds-radial-menu-item-transition-timing-function: var(--mds-radial-menu-transition-timing-function, theme('transitionTimingFunction.out-expo'));
+@property --mds-radial-menu-item-transition-duration {
+  inherits: false;
+  initial-value: var(--mds-radial-menu-transition-duration, 500ms);
+  syntax: '<time>';
+}
 
-  /* private */ --mds-radial-menu-item-delay: 0;
-  /* private */ --mds-radial-menu-item-index: 0;
+/* ❌ Not supported
+@property --mds-radial-menu-item-transition-timing-function {
+  inherits: false;
+  initial-value: var(--mds-radial-menu-transition-timing-function, var(--ease-out-expo));
+  syntax: "<timing-function>";
+}
+*/
+
+:host {
+  --mds-radial-menu-item-transition-duration: var(--mds-radial-menu-transition-duration, 500ms);
+  --mds-radial-menu-item-transition-timing-function: var(
+    --mds-radial-menu-transition-timing-function,
+    var(--ease-out-expo)
+  );
+
+  /* private */
+  --mds-radial-menu-item-delay: 0;
+
+  /* private */
+  --mds-radial-menu-item-index: 0;
 
   display: inline-flex;
   inset: 0;
@@ -35,7 +57,4 @@
 
   min-width: max-content;
   width: min-content;
-
 }
-
-@import '../../tailwind/fouc.css';

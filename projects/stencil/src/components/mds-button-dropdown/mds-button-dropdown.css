@@ -1,18 +1,36 @@
-:host {
-  --mds-button-dropdown-radius: theme('borderRadius.lg');
+@import './css/mds-button-dropdown-fouc.css';
 
-  @apply
-    duration-200
-    ease-out;
+/**
+ * @prop --mds-button-dropdown-radius: Sets the border-radius of the component
+ */
+
+@property --mds-button-dropdown-radius {
+  inherits: true;
+  initial-value: var(--radius-2xl);
+  syntax: '<length>';
+}
+
+@property --mds-button-dropdown-window-radius {
+  inherits: true;
+  initial-value: var(--radius-2xl);
+  syntax: '<length>';
+}
+
+:host {
+  --mds-button-dropdown-radius: var(--radius-2xl);
+  --mds-button-dropdown-window-radius: var(--radius-2xl);
 
   border-radius: var(--mds-button-dropdown-radius);
   display: inline-flex;
+  transition-duration: var(--duration-200);
   transition-property: background-color, box-shadow;
+  transition-timing-function: var(--ease-out-quad);
 }
 
 mds-dropdown {
-  gap: theme('spacing.50');
-  padding: theme('padding.400');
+  border-radius: var(--mds-button-dropdown-window-radius);
+  gap: --spacing(50);
+  padding: --spacing(200);
 }
 
 mds-button {
@@ -39,4 +57,3 @@ mds-button:first-child {
 
 @import './css/mds-button-dropdown-size.css';
 @import './css/mds-button-dropdown-variant.css';
-@import '../../tailwind/fouc.css';

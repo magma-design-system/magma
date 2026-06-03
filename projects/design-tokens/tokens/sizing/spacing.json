@@ -1,0 +1,88 @@
+{
+  "spacing-scale": { "value": "0.0025rem" },
+  "spacing": {
+    "none": {
+      "value": "0px"
+    },
+    "xs": {
+      "value": "{sizing.primitive.100}"
+    },
+    "sm": {
+      "value": "{sizing.primitive.200}"
+    },
+    "md": {
+      "value": "{sizing.primitive.400}"
+    },
+    "lg": {
+      "value": "{sizing.primitive.600}"
+    },
+    "xl": {
+      "value": "{sizing.primitive.800}"
+    },
+    "2xl": {
+      "value": "{sizing.primitive.1200}"
+    },
+    "3xl": {
+      "value": "{sizing.primitive.1600}"
+    },
+    "4xl": {
+      "value": "{sizing.primitive.2400}"
+    },
+    "phrase": {
+      "value": "50ch"
+    },
+    "prose": {
+      "value": "65ch"
+    },
+    "text": {
+      "value": "75ch"
+    },
+    "title": {
+      "value": "30ch"
+    }
+  },
+  "container": {
+    "4xs": {
+      "value": "{sizing.primitive.3200}"
+    },
+    "3xs": {
+      "value": "{sizing.primitive.4800}"
+    },
+    "2xs": {
+      "value": "{sizing.primitive.6000}"
+    },
+    "xs": {
+      "value": "{sizing.primitive.8000}"
+    },
+    "sm": {
+      "value": "{sizing.primitive.9600}"
+    },
+    "md": {
+      "value": "{sizing.primitive.11200}"
+    },
+    "lg": {
+      "value": "{sizing.primitive.12800}"
+    },
+    "xl": {
+      "value": "{sizing.primitive.14200}"
+    },
+    "2xl": {
+      "value": "{sizing.primitive.16000}"
+    },
+    "3xl": {
+      "value": "{sizing.primitive.19200}"
+    },
+    "4xl": {
+      "value": "{sizing.primitive.24000}"
+    },
+    "5xl": {
+      "value": "{sizing.primitive.25600}"
+    },
+    "6xl": {
+      "value": "{sizing.primitive.28800}"
+    },
+    "7xl": {
+      "value": "{sizing.primitive.32000}"
+    }
+  }
+}

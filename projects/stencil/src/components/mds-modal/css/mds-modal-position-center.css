@@ -1,5 +1,5 @@
-:host([position="right"]),
-:host([position="left"]) {
+:host([position='right']),
+:host([position='left']) {
   --mds-modal-window-height: 100%;
   --mds-modal-window-max-height: calc(100dvh - calc(var(--mds-modal-window-distance) * 2));
 }
@@ -10,22 +10,22 @@
   - - -
 */
 
-:host([position="left"]) {
+:host([position='left']) {
   align-items: center;
   justify-content: flex-start;
 }
 
-:host([position="left"]) .action-close {
-  right: theme('spacing.300');
-  top: theme('spacing.300');
+:host([position='left']) .action-close {
+  right: --spacing(300);
+  top: --spacing(300);
 }
 
-:host([position="left"][opened]) .action-close {
+:host([position='left'][opened]) .action-close {
   opacity: 1;
   pointer-events: auto;
 }
 
-:host([position="left"]:not([opened])) .action-close {
+:host([position='left']:not([opened])) .action-close {
   transform: translateX(-120%) rotate(-45deg);
 }
 
@@ -35,7 +35,7 @@
   - - -
 */
 
-:host([position="center"]) {
+:host([position='center']) {
   align-items: center;
   justify-content: center;
 }
@@ -46,21 +46,21 @@
   - - -
 */
 
-:host([position="right"]) {
+:host([position='right']) {
   align-items: center;
   justify-content: flex-end;
 }
 
-:host([position="right"]) .action-close {
-  left: theme('spacing.300');
-  top: theme('spacing.300');
+:host([position='right']) .action-close {
+  left: --spacing(300);
+  top: --spacing(300);
 }
 
-:host([position="right"]:not([opened])) .action-close {
+:host([position='right']:not([opened])) .action-close {
   transform: translateX(120%) rotate(45deg);
 }
 
-:host([position="right"][opened]) .action-close {
+:host([position='right'][opened]) .action-close {
   opacity: 1;
   pointer-events: auto;
 }

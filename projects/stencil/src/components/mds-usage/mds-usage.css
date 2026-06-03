@@ -1,15 +1,35 @@
+@import './css/mds-usage-fouc.css';
+
 /**
- * @prop --mds-usage-border-color: Sets the border color of the component.
- * @prop --mds-usage-badge-color: Sets the badge text color of the component.
+ * @prop --mds-usage-border-color: The border-color applied to the usage container or indicator.
+ * @prop --mds-usage-header-background: The background-color of the usage header.
+ * @prop --mds-usage-header-color: The text/icon color of the usage header.
  */
 
-:host {
-  --mds-usage-border-color: theme('colors.status-info-06');
-  --mds-usage-badge-background: theme('colors.status-info-05');
-  --mds-usage-badge-color: theme('colors.status-info-10');
+@property --mds-usage-border-color {
+  inherits: false;
+  initial-value: rgb(var(--status-info-06));
+  syntax: '<color>';
+}
 
-  @apply
-    duration-200
+@property --mds-usage-header-background {
+  inherits: false;
+  initial-value: rgb(var(--status-info-05));
+  syntax: '<color>';
+}
+
+@property --mds-usage-header-color {
+  inherits: false;
+  initial-value: rgb(var(--status-info-10));
+  syntax: '<color>';
+}
+
+:host {
+  --mds-usage-border-color: rgb(var(--status-info-06));
+  --mds-usage-header-background: var(--mds-usage-border-color);
+  --mds-usage-header-color: rgb(var(--tone-neutral));
+
+  @apply duration-200
     ease-out
     gap-200
     p-400
@@ -18,7 +38,7 @@
 
   border-color: var(--mds-usage-border-color);
   border-style: solid;
-  border-width: theme('borderWidth.DEFAULT');
+  border-width: --spacing(50);
 
   /* is seems it's not working on web components, due of a bug
   container-name: mds-usage;
@@ -32,15 +52,8 @@
   width: 100%;
 }
 
-/* @container mds-usage (min-width: 500px) {
-  :host {
-    background-color: rgb(var(--status-error-10));
-  }
-} */
-
-@import './css/mds-usage-badge.css';
+@import './css/mds-usage-header.css';
 @import './css/mds-usage-pref-animation.css';
 @import './css/mds-usage-pref-contrast.css';
 @import './css/mds-usage-pref-theme.css';
 @import './css/mds-usage-variant.css';
-@import '../../tailwind/fouc.css';

@@ -1,4 +1,4 @@
 declare module '.json' {
-  const value: Record<string, string>
-  export default value
+  const value: Record<string, string>;
+  export default value;
 }

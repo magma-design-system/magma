@@ -1,17 +1,17 @@
-import Handlebars from 'handlebars'
-import StyleDictionary from 'style-dictionary'
-import fs from 'fs'
-import path from 'path'
-import { version } from '../../../package.json'
-import { FormatterArguments } from 'style-dictionary/types/Format'
-import { ifEquals, leadZero, humanCase } from '../helpers'
+import Handlebars from 'handlebars';
+import StyleDictionary from 'style-dictionary';
+import fs from 'fs';
+import path from 'path';
+import { version } from '../../../package.json';
+import { FormatterArguments } from 'style-dictionary/types/Format';
+import { ifEquals, leadZero, humanCase } from '../helpers';
 
-const templatePath = path.resolve(__dirname, './template.hbs')
-const template = Handlebars.compile(fs.readFileSync(templatePath).toString())
+const templatePath = path.resolve(__dirname, './template.hbs');
+const template = Handlebars.compile(fs.readFileSync(templatePath).toString());
 
-Handlebars.registerHelper('coolorizeName', humanCase)
-Handlebars.registerHelper('leadZero', leadZero)
-Handlebars.registerHelper('ifEquals', ifEquals)
+Handlebars.registerHelper('coolorizeName', humanCase);
+Handlebars.registerHelper('leadZero', leadZero);
+Handlebars.registerHelper('ifEquals', ifEquals);
 export const jsonCoolorsFormat: StyleDictionary.Format = {
   name: 'json/coolors',
   formatter: ({ dictionary, platform }: FormatterArguments) => {
@@ -20,6 +20,6 @@ export const jsonCoolorsFormat: StyleDictionary.Format = {
       date: new Date().toUTCString(),
       options: platform,
       version,
-    })
+    });
   },
-}
+};

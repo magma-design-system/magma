@@ -1,28 +1,77 @@
+@import './css/mds-keyboard-key-fouc.css';
+
 /**
  * @prop --mds-keyboard-key-illumination-dark-size: Set the size of the dark illumination of the keyboard key.
  * @prop --mds-keyboard-key-illumination-light-size: Set the size of the light illumination of the keyboard key.
  * @prop --mds-keyboard-key-illumination-dark: Set the dark illumination of the keyboard key.
  * @prop --mds-keyboard-key-illumination-light: Set the light illumination of the keyboard key.
- * @prop --mds-keyboard-key-color: Set the color of the keyboard key.
- * @prop --mds-keyboard-key-direction-color: Set the color of the direction key.
  * @prop --mds-keyboard-key-padding: Set the padding of the keyboard key.
  * @prop --mds-keyboard-key-transition-duration: Set the transition duration of the keyboard key.
  */
 
+@property --mds-keyboard-key-illumination-dark-size {
+  inherits: false;
+  initial-value: --spacing(150);
+  syntax: '<length>';
+}
+
+@property --mds-keyboard-key-illumination-light-size {
+  inherits: false;
+  initial-value: --spacing(50);
+  syntax: '<length>';
+}
+
+@property --mds-keyboard-key-padding {
+  inherits: false;
+  initial-value: --spacing(100);
+  syntax: '<length>';
+}
+
+@property --mds-keyboard-key-transition-duration {
+  inherits: false;
+  initial-value: 300ms;
+  syntax: '<time>';
+}
+
+/* ❌ Not supported
+
+@property --mds-keyboard-key-illumination-dark {
+  inherits: false;
+  initial-value: 0 calc(var(--mds-keyboard-key-illumination-dark-size) * -1) 0 0 rgb(0 0 0 / var(--mds-keyboard-key-illumination-dark-opacity, 0.05)) inset;
+  syntax: "<box-shadow>";
+}
+
+@property --mds-keyboard-key-illumination-light {
+  inherits: false;
+  initial-value: 0 var(--mds-keyboard-key-illumination-light-size) 0 0 rgb(255 255 255 / var(--mds-keyboard-key-illumination-light-opacity, 0.5)) inset;
+  syntax: "<box-shadow>";
+}
+*/
+
 :host {
-  --mds-keyboard-key-illumination-dark-size: theme('spacing.150');
-  --mds-keyboard-key-illumination-light-size: theme('spacing.50');
-  --mds-keyboard-key-illumination-dark: 0 calc(var(--mds-keyboard-key-illumination-dark-size) * -1) 0 0 rgb(0 0 0 / var(--mds-keyboard-key-illumination-dark-opacity, 0.05)) inset;
-  --mds-keyboard-key-illumination-light: 0 var(--mds-keyboard-key-illumination-light-size) 0 0 rgb(255 255 255 / var(--mds-keyboard-key-illumination-light-opacity, 0.5)) inset;
-  --mds-keyboard-key-padding: theme('spacing.100');
-  --mds-keyboard-key-transition-duration: theme('transitionDuration.300');
+  --mds-keyboard-key-illumination-dark-size: --spacing(150);
+  --mds-keyboard-key-illumination-light-size: --spacing(50);
+  --mds-keyboard-key-illumination-dark: 0 calc(var(--mds-keyboard-key-illumination-dark-size) * -1)
+    0 0 rgb(0 0 0 / var(--mds-keyboard-key-illumination-dark-opacity, 0.05)) inset;
+  --mds-keyboard-key-illumination-light: 0 var(--mds-keyboard-key-illumination-light-size) 0 0
+    rgb(255 255 255 / var(--mds-keyboard-key-illumination-light-opacity, 0.5)) inset;
+  --mds-keyboard-key-padding: --spacing(100);
+  --mds-keyboard-key-transition-duration: 300ms;
 
   /* internal */
-  --icon-size: theme('size.600');
-  --key-size-default: calc(var(--icon-size) + calc(var(--mds-keyboard-key-padding) * 2) + var(--mds-keyboard-key-illumination-dark-size) + var(--mds-keyboard-key-illumination-light-size));
-  --key-size-pressed: calc(var(--icon-size) + calc(var(--mds-keyboard-key-padding) * 2) + calc(var(--mds-keyboard-key-illumination-light-size) * 2));
+  --icon-size: --spacing(600);
+  --key-size-default: calc(
+    var(--icon-size) + calc(var(--mds-keyboard-key-padding) * 2) +
+      var(--mds-keyboard-key-illumination-dark-size) +
+      var(--mds-keyboard-key-illumination-light-size)
+  );
+  --key-size-pressed: calc(
+    var(--icon-size) + calc(var(--mds-keyboard-key-padding) * 2) +
+      calc(var(--mds-keyboard-key-illumination-light-size) * 2)
+  );
 
   align-items: flex-end;
+  corner-shape: var(--magma-corner-shape, round);
   display: inline-flex;
   min-height: var(--key-size-default);
   min-width: var(--key-size-default);
@@ -30,42 +79,54 @@
 
 .physical-key {
   align-items: baseline;
-  background-color: var(--mds-keyboard-key-background, theme('colors.tone-stone-08'));
-  border-radius: theme('borderRadius.md');
-  box-shadow: var(--mds-keyboard-key-illumination-light), var(--mds-keyboard-key-illumination-dark), var(--mds-keyboard-key-illumination-shadow);
+  background-color: var(--mds-keyboard-key-background, rgb(var(--tone-bisque-08)));
+  border-radius: var(--radius-lg);
+  box-shadow:
+    var(--mds-keyboard-key-illumination-light), var(--mds-keyboard-key-illumination-dark),
+    var(--mds-keyboard-key-illumination-shadow);
   box-sizing: border-box;
+  corner-shape: inherit;
   display: inline-flex;
   flex-grow: 1;
   flex-shrink: 0;
   height: var(--key-size-default);
   justify-content: center;
-  min-width: theme('size.1000');
-  padding: calc(var(--mds-keyboard-key-illumination-light-size) + var(--mds-keyboard-key-padding)) var(--mds-keyboard-key-padding) calc(var(--mds-keyboard-key-illumination-dark-size) + var(--mds-keyboard-key-padding)) var(--mds-keyboard-key-padding);
+  min-width: --spacing(1000);
+  padding: calc(var(--mds-keyboard-key-illumination-light-size) + var(--mds-keyboard-key-padding))
+    var(--mds-keyboard-key-padding)
+    calc(var(--mds-keyboard-key-illumination-dark-size) + var(--mds-keyboard-key-padding))
+    var(--mds-keyboard-key-padding);
   position: relative;
   text-align: center;
   transition-duration: var(--mds-keyboard-key-transition-duration);
   transition-property: box-shadow, padding, height;
-  transition-timing-function: theme('transitionTimingFunction.out-expo');
+  transition-timing-function: var(--ease-out-expo);
   user-select: none;
 }
 
 :host(:active) .physical-key,
-:host([pressed]:not([pressed="false"])) .physical-key {
-  --mds-keyboard-key-illumination-dark: 0 calc(var(--mds-keyboard-key-illumination-light-size) * -1) 0 0 rgb(0 0 0 / var(--mds-keyboard-key-illumination-dark-opacity)) inset;
+:host([pressed]:not([pressed='false'])) .physical-key {
+  --mds-keyboard-key-illumination-dark: 0 calc(var(--mds-keyboard-key-illumination-light-size) * -1)
+    0 0 rgb(0 0 0 / var(--mds-keyboard-key-illumination-dark-opacity)) inset;
 
-  box-shadow: var(--mds-keyboard-key-illumination-light), var(--mds-keyboard-key-illumination-dark), var(--mds-keyboard-key-illumination-shadow);
+  box-shadow:
+    var(--mds-keyboard-key-illumination-light), var(--mds-keyboard-key-illumination-dark),
+    var(--mds-keyboard-key-illumination-shadow);
   height: var(--key-size-pressed);
-  padding: calc(var(--mds-keyboard-key-illumination-light-size) + var(--mds-keyboard-key-padding)) var(--mds-keyboard-key-padding) calc(var(--mds-keyboard-key-illumination-light-size) + var(--mds-keyboard-key-padding)) var(--mds-keyboard-key-padding);
+  padding: calc(var(--mds-keyboard-key-illumination-light-size) + var(--mds-keyboard-key-padding))
+    var(--mds-keyboard-key-padding)
+    calc(var(--mds-keyboard-key-illumination-light-size) + var(--mds-keyboard-key-padding))
+    var(--mds-keyboard-key-padding);
 }
 
-:host([code="space"]) .physical-key {
+:host([code='space']) .physical-key {
   min-width: calc(var(--key-size-default) * 2);
 }
 
 mds-badge {
   background-color: transparent;
   color: currentcolor;
-  margin-left: theme('margin.50');
+  margin-left: --spacing(50);
   padding: 0;
   white-space: nowrap;
 }
@@ -79,5 +140,3 @@ mds-badge {
   text-transform: capitalize;
   white-space: nowrap;
 }
-
-@import '../../tailwind/fouc.css';

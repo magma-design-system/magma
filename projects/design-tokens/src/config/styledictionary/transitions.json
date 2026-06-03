@@ -1,0 +1,19 @@
+{
+  "source": [
+    "tokens/css/transitions/duration.json",
+    "tokens/css/transitions/timing-functions.json",
+    "tokens/css/transitions/default.json"
+  ],
+  "platforms": {
+    "css": {
+      "transformGroup": "css",
+      "buildPath": "dist/css/",
+      "files": [
+        {
+          "destination": "transitions.css",
+          "format": "css/vars-transitions"
+        }
+      ]
+    }
+  }
+}

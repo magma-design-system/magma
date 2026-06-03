@@ -1,17 +1,18 @@
-:host-context(.pref-contrast-more) {
-  --mds-input-select-ring: theme('boxShadow.outline-strong-50');
-}
+:host-context(:root.pref-contrast-more) {
+  --mds-input-select-ring: var(--shadow-outline-strong-50);
 
-:host-context(.pref-contrast-more) .input {
-  color: theme('colors.tone-neutral-01');
+  .input {
+    color: rgb(var(--tone-neutral-01));
+  }
 }
 
 @media (prefers-contrast: more) {
-  :host-context(.pref-contrast-system) {
-    --mds-input-select-ring: theme('boxShadow.outline-strong-50');
-  }
+  :host-context(:root.pref-contrast-system),
+  :host-context(:root:not([data-magma-pref])) {
+    --mds-input-select-ring: var(--shadow-outline-strong-50);
 
-  :host-context(.pref-contrast-system) .input {
-    color: theme('colors.tone-neutral-01');
+    .input {
+      color: rgb(var(--tone-neutral-01));
+    }
   }
 }

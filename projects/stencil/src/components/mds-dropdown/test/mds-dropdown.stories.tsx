@@ -1,18 +1,14 @@
-import {
-  floatingUIPlacementDictionary,
-  floatingUIStrategyDictionary,
-} from '@dictionary/floating-ui'
-import { dropdownInteractionDictionary } from '../meta/dictionary'
-import { h } from '@stencil/core'
-import { useState, useEffect } from 'react'
+import { floatingUIPlacementDictionary, floatingUIStrategyDictionary } from '@type/floating-ui';
+import { dropdownInteractionDictionary } from '../meta/dictionary';
+import { h } from '@stencil/core';
+import { useState, useEffect } from 'react';
 
 export default {
   title: 'UI / Dropdown',
   argTypes: {
     arrow: {
       type: { name: 'boolean' },
-      description:
-        'If set, the component will have an arrow pointing to the caller',
+      description: 'If set, the component will have an arrow pointing to the caller',
     },
     'arrow-padding': {
       type: { name: 'number' },
@@ -20,8 +16,7 @@ export default {
     },
     'auto-placement': {
       type: { name: 'boolean' },
-      description:
-        'If set, the component will be placed automatically near it’s caller',
+      description: 'If set, the component will be placed automatically near it’s caller',
     },
     backdrop: {
       type: { name: 'boolean' },
@@ -45,8 +40,7 @@ export default {
     },
     placement: {
       type: { name: 'string' },
-      description:
-        'Specifies where the component should be placed relative to the caller',
+      description: 'Specifies where the component should be placed relative to the caller',
       options: floatingUIPlacementDictionary,
       control: { type: 'select' },
     },
@@ -56,8 +50,7 @@ export default {
     },
     'shift-padding': {
       type: { name: 'number' },
-      description:
-        'Sets a safe area distance between the dropdown and the body',
+      description: 'Sets a safe area distance between the dropdown and the body',
     },
     smooth: {
       type: { name: 'boolean' },
@@ -75,7 +68,7 @@ export default {
       description: 'Specifies if the component is visible',
     },
   },
-}
+};
 
 const Template = ({ layout, ...args }) => (
   <div class={layout}>
@@ -96,37 +89,22 @@ const Template = ({ layout, ...args }) => (
         <mds-text typography="caption">IT</mds-text>
       </mds-author>
       <mds-text typography="detail" class="text-tone-neutral-04">
-        Frederick Phillips "Fred" Brooks Jr. (born April 19, 1931) is an
-        American computer architect, software engineer, and computer scientist.
+        Frederick Phillips "Fred" Brooks Jr. (born April 19, 1931) is an American computer
+        architect, software engineer, and computer scientist.
       </mds-text>
       <mds-hr class="h-[2px] bg-tone-neutral-08" />
-      <mds-button
-        class="justify-start px-0"
-        icon="mi/baseline/info"
-        variant="dark"
-        tone="quiet"
-      >
+      <mds-button class="justify-start px-0" icon="mi/baseline/info" variant="dark" tone="text">
         User infos
       </mds-button>
-      <mds-button
-        class="justify-start px-0"
-        icon="mi/baseline/settings"
-        variant="dark"
-        tone="quiet"
-      >
+      <mds-button class="justify-start px-0" icon="mi/baseline/settings" variant="dark" tone="text">
         Account
       </mds-button>
-      <mds-button
-        class="justify-start px-0"
-        icon="mi/baseline/logout"
-        variant="dark"
-        tone="quiet"
-      >
+      <mds-button class="justify-start px-0" icon="mi/baseline/logout" variant="dark" tone="text">
         Exit
       </mds-button>
     </mds-dropdown>
   </div>
-)
+);
 
 const TemplatePlacement = ({ ...args }) => (
   <div class="min-h-dvh flex items-center justify-center">
@@ -147,37 +125,22 @@ const TemplatePlacement = ({ ...args }) => (
         <mds-text typography="caption">IT</mds-text>
       </mds-author>
       <mds-text typography="detail" class="text-tone-neutral-04">
-        Frederick Phillips "Fred" Brooks Jr. (born April 19, 1931) is an
-        American computer architect, software engineer, and computer scientist.
+        Frederick Phillips "Fred" Brooks Jr. (born April 19, 1931) is an American computer
+        architect, software engineer, and computer scientist.
       </mds-text>
       <mds-hr class="h-[2px] bg-tone-neutral-08" />
-      <mds-button
-        class="justify-start px-0"
-        icon="mi/baseline/info"
-        variant="dark"
-        tone="quiet"
-      >
+      <mds-button class="justify-start px-0" icon="mi/baseline/info" variant="dark" tone="text">
         User infos
       </mds-button>
-      <mds-button
-        class="justify-start px-0"
-        icon="mi/baseline/settings"
-        variant="dark"
-        tone="quiet"
-      >
+      <mds-button class="justify-start px-0" icon="mi/baseline/settings" variant="dark" tone="text">
         Account
       </mds-button>
-      <mds-button
-        class="justify-start px-0"
-        icon="mi/baseline/logout"
-        variant="dark"
-        tone="quiet"
-      >
+      <mds-button class="justify-start px-0" icon="mi/baseline/logout" variant="dark" tone="text">
         Exit
       </mds-button>
     </mds-dropdown>
   </div>
-)
+);
 
 export const NoTarget = () => (
   <div>
@@ -187,7 +150,7 @@ export const NoTarget = () => (
       <mds-text>Ciao</mds-text>
     </mds-dropdown>
   </div>
-)
+);
 
 const TemplateNested = ({ ...args }) => (
   <div class="min-h-[200vh]">
@@ -223,37 +186,22 @@ const TemplateNested = ({ ...args }) => (
         <mds-text typography="caption">IT</mds-text>
       </mds-author>
       <mds-text typography="detail" class="text-tone-neutral-04">
-        Frederick Phillips "Fred" Brooks Jr. (born April 19, 1931) is an
-        American computer architect, software engineer, and computer scientist.
+        Frederick Phillips "Fred" Brooks Jr. (born April 19, 1931) is an American computer
+        architect, software engineer, and computer scientist.
       </mds-text>
       <mds-hr class="h-[2px] bg-tone-neutral-08" />
-      <mds-button
-        class="justify-start px-0"
-        icon="mi/baseline/info"
-        variant="dark"
-        tone="quiet"
-      >
+      <mds-button class="justify-start px-0" icon="mi/baseline/info" variant="dark" tone="text">
         User infos
       </mds-button>
-      <mds-button
-        class="justify-start px-0"
-        icon="mi/baseline/settings"
-        variant="dark"
-        tone="quiet"
-      >
+      <mds-button class="justify-start px-0" icon="mi/baseline/settings" variant="dark" tone="text">
         Account
       </mds-button>
-      <mds-button
-        class="justify-start px-0"
-        icon="mi/baseline/logout"
-        variant="dark"
-        tone="quiet"
-      >
+      <mds-button class="justify-start px-0" icon="mi/baseline/logout" variant="dark" tone="text">
         Exit
       </mds-button>
     </mds-dropdown>
   </div>
-)
+);
 
 const TemplatePerformance = ({ ...args }) => (
   <div class="grid">
@@ -276,16 +224,16 @@ const TemplatePerformance = ({ ...args }) => (
         </div>
       ))}
   </div>
-)
+);
 
 const TemplateModalNested = () => {
-  const [isModalOpened, setModalOpen] = useState(true)
+  const [isModalOpened, setModalOpen] = useState(true);
 
   useEffect(() => {
     document.querySelector('mds-modal')?.addEventListener('mdsModalClose', () => {
-      setModalOpen(false)
-    })
-  })
+      setModalOpen(false);
+    });
+  });
 
   return (
     <div class="grid">
@@ -294,10 +242,7 @@ const TemplateModalNested = () => {
           Open modal
         </mds-button>
       </div>
-      <mds-modal
-        position="right"
-        opened={isModalOpened}
-      >
+      <mds-modal position="right" opened={isModalOpened}>
         <header
           slot="top"
           class="p-800 flex gap-400 items-center border-b border-solid border-0 border-tone-neutral-09 max-w-[400px]"
@@ -316,11 +261,7 @@ const TemplateModalNested = () => {
           <mds-button variant="primary" id="open-dropdown">
             Show dropdown
           </mds-button>
-          <mds-dropdown
-            target="#open-dropdown"
-            backdrop={false}
-            strategy="fixed"
-          >
+          <mds-dropdown target="#open-dropdown" backdrop={false} strategy="fixed">
             <mds-button variant="light" class="justify-start">
               Dropdown action
             </mds-button>
@@ -343,8 +284,8 @@ const TemplateModalNested = () => {
         </div>
       </mds-modal>
     </div>
-  )
-}
+  );
+};
 
 const TemplateStrategy = ({ ...args }) => (
   <div class="min-h-[200vh]">
@@ -362,12 +303,7 @@ const TemplateStrategy = ({ ...args }) => (
         <mds-button slot="nav" id="my-dropdown">
           Strategy fixed
         </mds-button>
-        <mds-dropdown
-          target="#my-dropdown"
-          class="max-w-[350px]"
-          {...args}
-          strategy="fixed"
-        >
+        <mds-dropdown target="#my-dropdown" class="max-w-[350px]" {...args} strategy="fixed">
           <mds-author class="text-tone-neutral-04">
             <mds-avatar
               aria-describedby="A protrait of Frederick Phillips Brooks Jr."
@@ -383,24 +319,18 @@ const TemplateStrategy = ({ ...args }) => (
             <mds-text typography="caption">IT</mds-text>
           </mds-author>
           <mds-text typography="detail" class="text-tone-neutral-04">
-            Frederick Phillips "Fred" Brooks Jr. (born April 19, 1931) is an
-            American computer architect, software engineer, and computer
-            scientist.
+            Frederick Phillips "Fred" Brooks Jr. (born April 19, 1931) is an American computer
+            architect, software engineer, and computer scientist.
           </mds-text>
           <mds-hr class="h-[2px] bg-tone-neutral-08" />
-          <mds-button
-            class="justify-start px-0"
-            icon="mi/baseline/info"
-            variant="dark"
-            tone="quiet"
-          >
+          <mds-button class="justify-start px-0" icon="mi/baseline/info" variant="dark" tone="text">
             User infos
           </mds-button>
           <mds-button
             class="justify-start px-0"
             icon="mi/baseline/settings"
             variant="dark"
-            tone="quiet"
+            tone="text"
           >
             Account
           </mds-button>
@@ -408,7 +338,7 @@ const TemplateStrategy = ({ ...args }) => (
             class="justify-start px-0"
             icon="mi/baseline/logout"
             variant="dark"
-            tone="quiet"
+            tone="text"
           >
             Exit
           </mds-button>
@@ -442,41 +372,30 @@ const TemplateStrategy = ({ ...args }) => (
           <mds-text typography="caption">IT</mds-text>
         </mds-author>
         <mds-text typography="detail" class="text-tone-neutral-04">
-          Frederick Phillips "Fred" Brooks Jr. (born April 19, 1931) is an
-          American computer architect, software engineer, and computer
-          scientist.
+          Frederick Phillips "Fred" Brooks Jr. (born April 19, 1931) is an American computer
+          architect, software engineer, and computer scientist.
         </mds-text>
         <mds-hr class="h-[2px] bg-tone-neutral-08" />
-        <mds-button
-          class="justify-start px-0"
-          icon="mi/baseline/info"
-          variant="dark"
-          tone="quiet"
-        >
+        <mds-button class="justify-start px-0" icon="mi/baseline/info" variant="dark" tone="text">
           User infos
         </mds-button>
         <mds-button
           class="justify-start px-0"
           icon="mi/baseline/settings"
           variant="dark"
-          tone="quiet"
+          tone="text"
         >
           Account
         </mds-button>
-        <mds-button
-          class="justify-start px-0"
-          icon="mi/baseline/logout"
-          variant="dark"
-          tone="quiet"
-        >
+        <mds-button class="justify-start px-0" icon="mi/baseline/logout" variant="dark" tone="text">
           Exit
         </mds-button>
       </mds-dropdown>
     </div>
   </div>
-)
+);
 
-const TemplateTarget = args => {
+const TemplateTarget = (args) => {
   return (
     <div class="grid gap-400 p-600 rounded-xl bg-tone-neutral-09">
       <mds-entity icon="mi/baseline/info" id="opendropdown">
@@ -493,12 +412,12 @@ const TemplateTarget = args => {
         Dropdown
       </mds-dropdown>
       <mds-text typography="paragraph">
-        Do not use other click actions inside a element designed as dropdown
-        target because its never been executed
+        Do not use other click actions inside a element designed as dropdown target because its
+        never been executed
       </mds-text>
     </div>
-  )
-}
+  );
+};
 
 export const Default = {
   render: Template,
@@ -507,7 +426,7 @@ export const Default = {
     class: 'max-w-[350px] w-full',
     layout: 'flex justify-center',
   },
-}
+};
 
 export const Arrow = {
   render: Template,
@@ -520,7 +439,7 @@ export const Arrow = {
     layout: 'flex justify-start',
     visible: false,
   },
-}
+};
 
 export const ArrowPadding = {
   render: Template,
@@ -534,7 +453,7 @@ export const ArrowPadding = {
     layout: 'flex justify-start',
     visible: false,
   },
-}
+};
 
 export const AutoPlacement = {
   render: Template,
@@ -545,7 +464,7 @@ export const AutoPlacement = {
     layout: 'flex justify-end',
     visible: false,
   },
-}
+};
 
 export const Backdrop = {
   render: Template,
@@ -556,7 +475,7 @@ export const Backdrop = {
     layout: 'flex justify-center',
     visible: false,
   },
-}
+};
 
 export const Flip = {
   render: Template,
@@ -567,7 +486,7 @@ export const Flip = {
     flip: true,
     visible: false,
   },
-}
+};
 
 export const Interaction = {
   render: Template,
@@ -579,7 +498,7 @@ export const Interaction = {
     layout: 'flex justify-center',
     visible: false,
   },
-}
+};
 
 export const Offset = {
   render: Template,
@@ -591,7 +510,7 @@ export const Offset = {
     backdrop: true,
     visible: false,
   },
-}
+};
 
 export const Placement = {
   render: TemplatePlacement,
@@ -603,7 +522,7 @@ export const Placement = {
     backdrop: true,
     visible: false,
   },
-}
+};
 
 export const Shift = {
   render: Template,
@@ -614,7 +533,7 @@ export const Shift = {
     shift: true,
     visible: false,
   },
-}
+};
 
 export const ShiftPadding = {
   render: Template,
@@ -626,7 +545,7 @@ export const ShiftPadding = {
     'shift-padding': 50,
     visible: false,
   },
-}
+};
 
 export const Smooth = {
   render: Template,
@@ -637,7 +556,7 @@ export const Smooth = {
     smooth: true,
     visible: false,
   },
-}
+};
 
 export const Strategy = {
   render: TemplateStrategy,
@@ -647,7 +566,7 @@ export const Strategy = {
     layout: 'flex justify-start',
     visible: false,
   },
-}
+};
 
 export const NestedBestPractice = {
   render: TemplateNested,
@@ -656,18 +575,18 @@ export const NestedBestPractice = {
     backdrop: true,
     strategy: 'fixed',
   },
-}
+};
 
 export const Performance = TemplatePerformance.bind({
   backdrop: true,
-})
+});
 
 export const ModalNested = {
   render: TemplateModalNested,
   args: {},
-}
+};
 
 export const Target = {
   render: TemplateTarget,
   args: {},
-}
+};

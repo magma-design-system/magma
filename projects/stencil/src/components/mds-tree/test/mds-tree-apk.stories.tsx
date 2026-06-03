@@ -1,28 +1,25 @@
-import { h } from '@stencil/core'
-import { MdsTreeItemEventDetail } from 'src/components'
-import { useEffect, useState } from 'react'
+import { h } from '@stencil/core';
+import { MdsTreeItemEventDetail } from 'src/components';
+import { useEffect, useState } from 'react';
 
 export default {
   title: 'UI / Tree / Usecase hyperSIC',
-}
+};
 
-const durations = [500, 750, 1000, 1250, 1500, 1750, 2000]
-const randomDuration = () =>
-  durations[Math.floor(Math.random() * durations.length)]
+const durations = [500, 750, 1000, 1250, 1500, 1750, 2000];
+const randomDuration = () => durations[Math.floor(Math.random() * durations.length)];
 
 const TemplateNavigationMenu = () => {
-  const [isExpanded, setExpand] = useState(false)
+  const [isExpanded, setExpand] = useState(false);
   return (
-    <div class="grid gap-400 bg-tone-slate-10 rounded-lg p-600">
+    <div class="grid gap-400 bg-tone-porcelain-10 rounded-lg p-600">
       <div class="flex items-center justify-between gap-400">
         <mds-text typography="h5">Menu</mds-text>
         <mds-button
           onClick={() => {
-            setExpand(!isExpanded)
+            setExpand(!isExpanded);
           }}
-          icon={
-            isExpanded ? 'mi/baseline/unfold-less' : 'mi/baseline/unfold-more'
-          }
+          icon={isExpanded ? 'mi/baseline/unfold-less' : 'mi/baseline/unfold-more'}
           title={isExpanded ? 'Close' : 'Open'}
           variant="light"
         ></mds-button>
@@ -38,8 +35,7 @@ const TemplateNavigationMenu = () => {
         <mds-tree-item
           label="Protocollazione documenti"
           style={{
-            '--mds-tree-label-hover-background':
-              'rgb(var(--variant-primary-10))',
+            '--mds-tree-label-hover-background': 'rgb(var(--variant-primary-10))',
           }}
         >
           <mds-tree-item label="Attività protocollo generale">
@@ -49,7 +45,7 @@ const TemplateNavigationMenu = () => {
                 icon="mi/baseline/favorite"
                 class="fill-tone-neutral-04"
                 variant="dark"
-                tone="quiet"
+                tone="text"
               ></mds-button>
             </mds-tree-item>
             <mds-tree-item label="Nuovo protocollo in partenza">
@@ -58,7 +54,7 @@ const TemplateNavigationMenu = () => {
                 icon="mi/baseline/favorite-border"
                 class="fill-tone-neutral-07"
                 variant="dark"
-                tone="quiet"
+                tone="text"
               ></mds-button>
             </mds-tree-item>
           </mds-tree-item>
@@ -69,7 +65,7 @@ const TemplateNavigationMenu = () => {
                 icon="mi/baseline/favorite-border"
                 class="fill-tone-neutral-07"
                 variant="dark"
-                tone="quiet"
+                tone="text"
               ></mds-button>
             </mds-tree-item>
             <mds-tree-item label="Gestione Allegati">
@@ -78,7 +74,7 @@ const TemplateNavigationMenu = () => {
                 icon="mi/baseline/favorite-border"
                 class="fill-tone-neutral-07"
                 variant="dark"
-                tone="quiet"
+                tone="text"
               ></mds-button>
             </mds-tree-item>
             <mds-tree-item label="Autenticazione Documenti" actions="visible">
@@ -87,7 +83,7 @@ const TemplateNavigationMenu = () => {
                 icon="mi/baseline/favorite"
                 class="fill-tone-neutral-04"
                 variant="dark"
-                tone="quiet"
+                tone="text"
               ></mds-button>
             </mds-tree-item>
           </mds-tree-item>
@@ -98,7 +94,7 @@ const TemplateNavigationMenu = () => {
                 icon="mi/baseline/favorite-border"
                 class="fill-tone-neutral-07"
                 variant="dark"
-                tone="quiet"
+                tone="text"
               ></mds-button>
             </mds-tree-item>
             <mds-tree-item label="Fascicoli">
@@ -107,7 +103,7 @@ const TemplateNavigationMenu = () => {
                 icon="mi/baseline/favorite-border"
                 class="fill-tone-neutral-07"
                 variant="dark"
-                tone="quiet"
+                tone="text"
               ></mds-button>
             </mds-tree-item>
             <mds-tree-item label="Iter Documentale" actions="visible">
@@ -116,7 +112,7 @@ const TemplateNavigationMenu = () => {
                 icon="mi/baseline/favorite"
                 class="fill-tone-neutral-04"
                 variant="dark"
-                tone="quiet"
+                tone="text"
               ></mds-button>
             </mds-tree-item>
             <mds-tree-item label="Pratiche">
@@ -125,67 +121,55 @@ const TemplateNavigationMenu = () => {
                 icon="mi/baseline/favorite-border"
                 class="fill-tone-neutral-07"
                 variant="dark"
-                tone="quiet"
+                tone="text"
               ></mds-button>
             </mds-tree-item>
           </mds-tree-item>
         </mds-tree-item>
       </mds-tree>
     </div>
-  )
-}
+  );
+};
 
 const TemplateOrganizationalChart = () => {
   useEffect(() => {
-    const treeItemElement = document.querySelectorAll('.mds-tree-item')?.[0]
+    const treeItemElement = document.querySelectorAll('.mds-tree-item')?.[0];
     if (treeItemElement) {
       treeItemElement.addEventListener(
         'mdsTreeItemExpand',
         (event: CustomEvent<MdsTreeItemEventDetail>) => {
-          const { element } = event.detail
-          if (!element.async) return
+          const { element } = event.detail;
+          if (!element.async) return;
           setTimeout(() => {
-            element.expand()
+            element.expand();
             // element.async = false
-          }, randomDuration())
+          }, randomDuration());
         },
-      )
+      );
     }
-  }, [])
+  }, []);
 
   return (
     <mds-tree toggle="chevron" toggle-position="right">
       <mds-tree-item label="Comune di Rimini" icon="mgg/historic-building">
         <mds-tree-item label="Sindaco" icon="mdi/handshake">
           <mds-tree-item label="Segretario generale" icon="mi/baseline/draw">
-            <mds-tree-item
-              label="Assessorato"
-              icon="mi/baseline/account-balance"
-            >
+            <mds-tree-item label="Assessorato" icon="mi/baseline/account-balance">
               <mds-tree-item label="Settore" icon="mi/baseline/location-city">
                 <mds-tree-item label="Sezione" icon="mi/baseline/meeting-room">
-                  <mds-tree-item
-                    label="Elone Muschio"
-                    icon="mi/baseline/person"
-                  ></mds-tree-item>
+                  <mds-tree-item label="Elone Muschio" icon="mi/baseline/person"></mds-tree-item>
                   <mds-tree-item
                     label="Ufficio"
                     icon="mi/baseline/desk"
                     async
                     class="mds-tree-item"
                   >
-                    <mds-tree-item
-                      label="Andrea Rossi"
-                      icon="mi/baseline/person"
-                    ></mds-tree-item>
+                    <mds-tree-item label="Andrea Rossi" icon="mi/baseline/person"></mds-tree-item>
                     <mds-tree-item
                       label="Mirco Romanelli"
                       icon="mi/baseline/person"
                     ></mds-tree-item>
-                    <mds-tree-item
-                      label="Elone Muschio"
-                      icon="mi/baseline/person"
-                    ></mds-tree-item>
+                    <mds-tree-item label="Elone Muschio" icon="mi/baseline/person"></mds-tree-item>
                   </mds-tree-item>
                 </mds-tree-item>
               </mds-tree-item>
@@ -194,8 +178,8 @@ const TemplateOrganizationalChart = () => {
         </mds-tree-item>
       </mds-tree-item>
     </mds-tree>
-  )
-}
+  );
+};
 
 const TemplateWorkflow = () => (
   <mds-tree
@@ -203,8 +187,7 @@ const TemplateWorkflow = () => (
     toggle-position="left"
     actions="visible"
     style={{
-      '--mds-tree-toggle-icon-folder-default-color':
-        'rgb(var(--tone-neutral-04))',
+      '--mds-tree-toggle-icon-folder-default-color': 'rgb(var(--tone-neutral-04))',
     }}
   >
     <mds-tree-item label="Nr: 144 Data: 29/01/2025 (DIREZIONE GENERALE)">
@@ -238,25 +221,25 @@ const TemplateWorkflow = () => (
       </mds-tree-item>
     </mds-tree-item>
   </mds-tree>
-)
+);
 
 const TemplateClassification = () => {
   useEffect(() => {
-    const treeItemElement = document.querySelectorAll('.mds-tree-item')?.[0]
+    const treeItemElement = document.querySelectorAll('.mds-tree-item')?.[0];
     if (treeItemElement) {
       treeItemElement.addEventListener(
         'mdsTreeItemExpand',
         (event: CustomEvent<MdsTreeItemEventDetail>) => {
-          const { element } = event.detail
-          if (!element.async) return
+          const { element } = event.detail;
+          if (!element.async) return;
           setTimeout(() => {
-            element.expand()
+            element.expand();
             // element.async = false
-          }, randomDuration())
+          }, randomDuration());
         },
-      )
+      );
     }
-  }, [])
+  }, []);
   return (
     <mds-tree toggle="chevron" toggle-position="left">
       <mds-tree-item label="Titolario">
@@ -278,18 +261,18 @@ const TemplateClassification = () => {
         </mds-tree-item>
       </mds-tree-item>
     </mds-tree>
-  )
-}
+  );
+};
 
 export const NavigationMenu = {
   render: TemplateNavigationMenu,
-}
+};
 export const OrganizationalChart = {
   render: TemplateOrganizationalChart,
-}
+};
 export const Workflow = {
   render: TemplateWorkflow,
-}
+};
 export const Classification = {
   render: TemplateClassification,
-}
+};

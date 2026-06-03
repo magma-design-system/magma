@@ -1,9 +1,3 @@
-const inputSwitchSizeDictionary = [
-  'sm',
-  'md',
-  'lg',
-]
+const inputSwitchSizeDictionary = ['sm', 'md', 'lg'];
 
-export {
-  inputSwitchSizeDictionary,
-}
+export { inputSwitchSizeDictionary };

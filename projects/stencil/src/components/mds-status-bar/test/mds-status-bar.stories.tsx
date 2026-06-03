@@ -1,6 +1,6 @@
-import { h } from '@stencil/core'
-import { useState } from 'react'
-import { statusBarPositionDictionary } from '../meta/dictionary'
+import { h } from '@stencil/core';
+import { useState } from 'react';
+import { statusBarPositionDictionary } from '../meta/dictionary';
 
 export default {
   title: 'UI / Status bar',
@@ -20,66 +20,64 @@ export default {
       description: 'Specifies if the component is visible',
     },
   },
-}
+};
 
-const Template = args => {
+const Template = (args) => {
   let statusBar: HTMLMdsStatusBarElement | null = document.querySelector(
     'mds-status-bar',
-  ) as HTMLMdsStatusBarElement
+  ) as HTMLMdsStatusBarElement;
   let cancel: HTMLMdsButtonElement | null = document.querySelector(
     '#cancel',
-  ) as HTMLMdsButtonElement
+  ) as HTMLMdsButtonElement;
   let confirm: HTMLMdsButtonElement | null = document.querySelector(
     '#confirm',
-  ) as HTMLMdsButtonElement
+  ) as HTMLMdsButtonElement;
 
-  const [buttonState, setButtonState] = useState(0)
+  const [buttonState, setButtonState] = useState(0);
 
   const iconMap = {
     0: 'mi/baseline/done',
     1: undefined,
     2: 'mi/baseline/done-all',
-  }
+  };
 
   const variantsMap = {
     0: 'primary',
     1: 'primary',
     2: 'success',
-  }
+  };
 
   const tonesMap = {
     0: 'strong',
     1: 'weak',
     2: 'strong',
-  }
+  };
 
-  function setLoadingState () {
-    setButtonState(1)
-    cancel = document.querySelector('#cancel') as HTMLMdsButtonElement
-    cancel.disabled = true
+  function setLoadingState() {
+    setButtonState(1);
+    cancel = document.querySelector('#cancel') as HTMLMdsButtonElement;
+    cancel.disabled = true;
     setTimeout(() => {
-      confirm = document.querySelector('#confirm') as HTMLMdsButtonElement
-      setButtonState(2)
-      confirm.disabled = true
+      confirm = document.querySelector('#confirm') as HTMLMdsButtonElement;
+      setButtonState(2);
+      confirm.disabled = true;
       setTimeout(() => {
-        statusBar?.hide()
-      }, 1000)
+        statusBar?.hide();
+      }, 1000);
       setTimeout(() => {
-        setButtonState(0)
-      }, 1500)
-    }, 2000)
+        setButtonState(0);
+      }, 1500);
+    }, 2000);
   }
 
   return (
     <div>
       <mds-button
         onClick={() => {
-          statusBar = document.querySelector(
-            'mds-status-bar',
-          ) as HTMLMdsStatusBarElement
-          if (statusBar) statusBar.visible = true
-          if (cancel) cancel.disabled = undefined
-          if (confirm) confirm.disabled = undefined
+          statusBar = document.querySelector('mds-status-bar') as HTMLMdsStatusBarElement;
+          if (statusBar) statusBar.visible = true;
+          if (cancel) cancel.disabled = undefined;
+          if (confirm) confirm.disabled = undefined;
         }}
       >
         Edit stuff
@@ -90,7 +88,7 @@ const Template = args => {
           variant="dark"
           tone="weak"
           onClick={(e: MouseEvent) => {
-            (e.target as HTMLElement).closest('mds-status-bar')?.hide()
+            (e.target as HTMLElement).closest('mds-status-bar')?.hide();
           }}
         >
           Annulla
@@ -102,7 +100,7 @@ const Template = args => {
           tone={tonesMap[buttonState]}
           await={buttonState === 1}
           onClick={() => {
-            if (buttonState === 0) setLoadingState()
+            if (buttonState === 0) setLoadingState();
           }}
         >
           {buttonState === 0 && 'Conferma azione'}
@@ -111,8 +109,8 @@ const Template = args => {
         </mds-button>
       </mds-status-bar>
     </div>
-  )
-}
+  );
+};
 
 export const Default = {
   render: Template,
@@ -120,4 +118,4 @@ export const Default = {
   args: {
     description: 'Stai modificando 4 elementi',
   },
-}
+};

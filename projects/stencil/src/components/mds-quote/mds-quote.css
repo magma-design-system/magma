@@ -1,5 +1,7 @@
+@import './css/mds-quote-fouc.css';
+
 :host {
-  display: inline-flex
+  display: inline-flex;
 }
 
 .open-quote {
@@ -18,4 +20,3 @@ span {
 }
 
 @import './css/mds-quote-pref-contrast.css';
-@import '../../tailwind/fouc.css';

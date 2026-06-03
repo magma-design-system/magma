@@ -1,22 +1,17 @@
-import {
-  floatingUIPlacementDictionary,
-  floatingUIStrategyDictionary,
-} from '@dictionary/floating-ui'
-import { h } from '@stencil/core'
-import { typographyTooltipDictionary } from '@dictionary/typography'
+import { floatingUIPlacementDictionary, floatingUIStrategyDictionary } from '@type/floating-ui';
+import { h } from '@stencil/core';
+import { typographyTooltipDictionary } from '@type/typography';
 
 export default {
   title: 'UI / Tooltip',
   argTypes: {
     arrow: {
       type: { name: 'boolean' },
-      description:
-        'If set, the component will have an arrow pointing to the caller',
+      description: 'If set, the component will have an arrow pointing to the caller',
     },
     'auto-placement': {
       type: { name: 'boolean' },
-      description:
-        'If set, the component will be placed automatically near it’s caller',
+      description: 'If set, the component will be placed automatically near it’s caller',
     },
     delay: {
       type: { name: 'number' },
@@ -33,8 +28,7 @@ export default {
     },
     placement: {
       type: { name: 'string' },
-      description:
-        'Specifies where the component should be placed relative to the caller',
+      description: 'Specifies where the component should be placed relative to the caller',
       options: floatingUIPlacementDictionary,
       control: { type: 'select' },
     },
@@ -62,7 +56,7 @@ export default {
       description: 'Specifies if the component is visible',
     },
   },
-}
+};
 
 const Template = ({ layout, ...args }) => (
   <div class={layout}>
@@ -71,16 +65,12 @@ const Template = ({ layout, ...args }) => (
       This is a tooltip comment.
     </mds-tooltip>
   </div>
-)
+);
 
 const TemplateCustomContents = ({ layout, ...args }) => (
   <div class={layout}>
     <mds-button id="my-tooltip">Show Fred</mds-button>
-    <mds-tooltip
-      target="#my-tooltip"
-      {...args}
-      style={{ '--mds-tooltip-delay': '0.25s' }}
-    >
+    <mds-tooltip target="#my-tooltip" {...args} style={{ '--mds-tooltip-delay': '0.25s' }}>
       <mds-author class="text-tone-neutral-04 p-200">
         <mds-avatar
           initials="fb"
@@ -96,7 +86,7 @@ const TemplateCustomContents = ({ layout, ...args }) => (
       </mds-author>
     </mds-tooltip>
   </div>
-)
+);
 
 export const NoTarget = () => (
   <div>
@@ -104,7 +94,7 @@ export const NoTarget = () => (
     {/* Intended the error here */}
     <mds-tooltip target="tooltip-trigger">Follow mouse?</mds-tooltip>
   </div>
-)
+);
 
 export const Default = {
   render: Template,
@@ -112,7 +102,7 @@ export const Default = {
   args: {
     layout: 'flex justify-center',
   },
-}
+};
 
 export const CustomContents = {
   render: TemplateCustomContents,
@@ -120,7 +110,7 @@ export const CustomContents = {
   args: {
     layout: 'flex justify-center',
   },
-}
+};
 
 export const Arrow = {
   render: Template,
@@ -130,7 +120,7 @@ export const Arrow = {
     'shift-padding': 32,
     layout: 'flex justify-start',
   },
-}
+};
 
 export const AutoPlacement = {
   render: Template,
@@ -139,7 +129,7 @@ export const AutoPlacement = {
     'auto-placement': true,
     layout: 'flex justify-end',
   },
-}
+};
 
 export const Flip = {
   render: Template,
@@ -148,7 +138,7 @@ export const Flip = {
     layout: 'flex h-[200vh] justify-center items-center',
     flip: true,
   },
-}
+};
 
 export const Offset = {
   render: Template,
@@ -157,7 +147,7 @@ export const Offset = {
     layout: 'flex justify-center items-center',
     offset: 50,
   },
-}
+};
 
 export const Placement = {
   render: Template,
@@ -167,7 +157,7 @@ export const Placement = {
     layout: 'flex justify-center items-center',
     placement: 'right-start',
   },
-}
+};
 
 export const Shift = {
   render: Template,
@@ -176,7 +166,7 @@ export const Shift = {
     layout: 'flex justify-end',
     shift: true,
   },
-}
+};
 
 export const ShiftPadding = {
   render: Template,
@@ -186,7 +176,7 @@ export const ShiftPadding = {
     shift: true,
     'shift-padding': 50,
   },
-}
+};
 
 export const Strategy = {
   render: Template,
@@ -195,7 +185,7 @@ export const Strategy = {
     layout: 'flex justify-start',
     strategy: 'absolute',
   },
-}
+};
 
 export const Visible = {
   render: Template,
@@ -203,4 +193,4 @@ export const Visible = {
   args: {
     layout: 'flex justify-start',
   },
-}
+};

@@ -48,14 +48,8 @@ const tagsDictionary = [
   'u',
   'ul',
   'var',
-]
+];
 
-const textAnimateDictionary = [
-  'none',
-  'yugop',
-]
+const textAnimateDictionary = ['none', 'yugop'];
 
-export {
-  tagsDictionary,
-  textAnimateDictionary,
-}
+export { tagsDictionary, textAnimateDictionary };

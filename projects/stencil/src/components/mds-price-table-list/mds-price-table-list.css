@@ -1,28 +1,36 @@
+@import './css/mds-price-table-list-fouc.css';
+
+/**
+ * @prop --mds-price-table-list-separator-color: Color of the separator line in the price table list.
+ */
+
+@property --mds-price-table-list-separator-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-03) / 0.5);
+  syntax: '<color>';
+}
+
 :host {
   --mds-price-table-list-separator-color: rgb(var(--tone-neutral-03) / 0.5);
 
-  @apply
-    duration-200
+  @apply duration-200
     ease-in-out
     gap-600
     p-600
     rounded-xl;
 
-  background-color: theme('colors.label-green-10');
+  background-color: rgb(var(--label-green-10));
   display: grid;
   transition-property: background-color, color;
 }
 
-
 .separator {
-  @apply
-    duration-200
+  @apply duration-200
     ease-in-out;
 
   background-color: var(--mds-price-table-list-separator-color);
   transition-property: background-color;
 }
-
 
 .header {
   display: grid;
@@ -43,4 +51,3 @@
 @import './css/mds-price-table-list-pref-animation.css';
 @import './css/mds-price-table-list-pref-theme.css';
 @import './css/mds-price-table-list-pref-contrast.css';
-@import '../../tailwind/fouc.css';

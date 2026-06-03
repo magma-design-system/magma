@@ -1,0 +1,9 @@
+@import '../../../tailwind/fouc.css';
+
+mds-table-body,
+mds-table-footer,
+mds-table-header {
+  &:not(:is([hydrated], .hydrated)) {
+    @apply not-hydrated;
+  }
+}

@@ -1,8 +1,24 @@
-import clsx from 'clsx'
-import { Component, Method, Element, Event, EventEmitter, Host, h, Prop, Watch } from '@stencil/core'
-import { ModalPositionType, ModalAnimationStateType, ModalOverflowType, ModalAnimationStyleType, ModalInteractionType } from './meta/types'
-import { cssDurationToMilliseconds } from '@common/unit'
-import miBaselineClose from '@icon/mi/baseline/close.svg'
+import clsx from 'clsx';
+import {
+  Component,
+  Method,
+  Element,
+  Event,
+  EventEmitter,
+  Host,
+  h,
+  Prop,
+  Watch,
+} from '@stencil/core';
+import {
+  ModalPositionType,
+  ModalAnimationStateType,
+  ModalOverflowType,
+  ModalAnimationStyleType,
+  ModalInteractionType,
+} from './meta/types';
+import { cssDurationToMilliseconds } from '@common/unit';
+import miBaselineClose from '@icon/mi/baseline/close.svg';
 
 /**
  * @part action-close - Selects the close button of the modal.
@@ -19,264 +35,294 @@ import miBaselineClose from '@icon/mi/baseline/close.svg'
   shadow: true,
 })
 export class MdsModal {
+  private animationDelayTimeout: NodeJS.Timeout;
+  private window = false;
+  private top = false;
+  private bodyOverflow: string;
+  private bottom = false;
+  private cssTransitionDuration: string = '500';
+  private windowElement: HTMLElement;
+  private windowHeaderElement: HTMLElement;
+  private windowFooterElement: HTMLElement;
+  private windowHeaderHeight: number;
+  private windowFooterHeight: number;
+  private touchStartX: number;
+  private touchStartY: number;
+  private touchMargin: number = 50;
 
-  private animationDelayTimeout: NodeJS.Timeout
-  private window = false
-  private top = false
-  private bodyOverflow: string
-  private bottom = false
-  private cssTransitionDuration: string = '500'
-  private windowElement: HTMLElement
-  private windowHeaderElement: HTMLElement
-  private windowFooterElement: HTMLElement
-  private windowHeaderHeight: number
-  private windowFooterHeight: number
-  private touchStartX: number
-  private touchStartY: number
-  private touchMargin: number = 50
-
-  @Element() host: HTMLMdsModalElement
+  @Element() host: HTMLMdsModalElement;
 
   /**
    * Specifies if the modal is opened or not
    */
-  @Prop({ reflect: true, mutable: true }) opened?: boolean = false
+  @Prop({ reflect: true, mutable: true }) opened?: boolean = false;
 
   /**
    * Specifies if the modal shows the backdrop
    */
-  @Prop({ reflect: true, mutable: true }) backdrop?: boolean = true
+  @Prop({ reflect: true, mutable: true }) backdrop?: boolean = true;
 
   /**
    * Specifies the animation position of the modal window
    */
-  @Prop({ reflect: true, mutable: true }) position?: ModalPositionType = 'center'
+  @Prop({ reflect: true, mutable: true }) position?: ModalPositionType = 'center';
 
   /**
    * Specifies if the component is animating itself or not
    */
-  @Prop({ reflect: true, mutable: true }) animating?: ModalAnimationStateType = 'none'
+  @Prop({ reflect: true, mutable: true }) animating?: ModalAnimationStateType = 'none';
 
   /**
    * Specifies if the component is animating itself or not
    */
-  @Prop({ reflect: true }) readonly animation?: ModalAnimationStyleType = 'slide'
+  @Prop({ reflect: true }) readonly animation?: ModalAnimationStyleType = 'slide';
 
   /**
    * Specifies if the component prevents the body from scrolling when modal window is opened
    */
-  @Prop({ reflect: true }) readonly overflow: ModalOverflowType = 'auto'
+  @Prop({ reflect: true }) readonly overflow: ModalOverflowType = 'auto';
 
   /**
    * Specifies if the component can be closed with close button, or also if the backdrop background is cliccked.
    * If `strict` is selected only the close button can dismiss the component via UI.
    * If `relaxed` is selected the component can be dismissed also by cliccking the backdrop area.
    */
-  @Prop({ reflect: true }) readonly interaction: ModalInteractionType = 'relaxed'
+  @Prop({ reflect: true }) readonly interaction: ModalInteractionType = 'relaxed';
 
   /**
    * Emits when a modal is closed
    */
-  @Event({ eventName: 'mdsModalOpen' }) openEvent: EventEmitter<void>
+  @Event({ eventName: 'mdsModalOpen' }) openEvent: EventEmitter<void>;
 
   /**
    * Emits when a modal is totally visible, when the modal intro animation is finished
    */
-  @Event({ eventName: 'mdsModalShow' }) showEvent: EventEmitter<void>
+  @Event({ eventName: 'mdsModalShow' }) showEvent: EventEmitter<void>;
 
   /**
    * Emits when a modal is closed
    */
-  @Event({ eventName: 'mdsModalClose' }) closeEvent: EventEmitter<void>
+  @Event({ eventName: 'mdsModalClose' }) closeEvent: EventEmitter<void>;
 
   /**
    * Emits when a modal is totally invisible, can be useful to detach the component when it's hidden and gain memory
    */
-  @Event({ eventName: 'mdsModalHide' }) hideEvent: EventEmitter<void>
+  @Event({ eventName: 'mdsModalHide' }) hideEvent: EventEmitter<void>;
 
   private updateCSSCustomProps = (): void => {
-    if (typeof window === 'undefined') return
-    const elementStyles = window.getComputedStyle(this.host)
-    this.cssTransitionDuration = elementStyles.getPropertyValue('--mds-modal-transition-duration') ?? '500'
-  }
+    if (typeof window === 'undefined') return;
+    const elementStyles = window.getComputedStyle(this.host);
+    this.cssTransitionDuration =
+      elementStyles.getPropertyValue('--mds-modal-transition-duration') ?? '500';
+  };
 
   private stopIntroAnimationWindow = (): void => {
-    this.animating = 'none'
-    this.host.setAttribute('animating', 'none') // wtf?
-    this.showEvent.emit()
-    clearTimeout(this.animationDelayTimeout)
-  }
+    this.animating = 'none';
+    this.host.setAttribute('animating', 'none'); // wtf?
+    this.showEvent.emit();
+    clearTimeout(this.animationDelayTimeout);
+  };
 
   private stopOutroAnimationWindow = (): void => {
-    this.animating = 'none'
-    this.host.setAttribute('animating', 'none')
-    this.hideEvent.emit()
-    clearTimeout(this.animationDelayTimeout)
-  }
+    this.animating = 'none';
+    this.host.setAttribute('animating', 'none');
+    this.hideEvent.emit();
+    clearTimeout(this.animationDelayTimeout);
+  };
 
   private disableOverflow = (): void => {
     if (document) {
       if (document.body.style.overflow) {
-        this.bodyOverflow = document.body.style.overflow
+        this.bodyOverflow = document.body.style.overflow;
       }
-      document.body.style.overflow = 'hidden'
+      document.body.style.overflow = 'hidden';
     }
-  }
+  };
 
   private enableOverflow = (): void => {
     if (document) {
       if (this.bodyOverflow) {
-        document.body.style.overflow = this.bodyOverflow
+        document.body.style.overflow = this.bodyOverflow;
       } else {
-        document.body.style.removeProperty('overflow')
+        document.body.style.removeProperty('overflow');
       }
     }
-  }
+  };
 
   private animateOpenWindow = (): void => {
-    this.animating = 'intro'
-    clearTimeout(this.animationDelayTimeout)
-    this.animationDelayTimeout = setTimeout(this.stopIntroAnimationWindow.bind(this), cssDurationToMilliseconds(this.cssTransitionDuration))
-  }
+    this.animating = 'intro';
+    clearTimeout(this.animationDelayTimeout);
+    this.animationDelayTimeout = setTimeout(
+      this.stopIntroAnimationWindow.bind(this),
+      cssDurationToMilliseconds(this.cssTransitionDuration),
+    );
+  };
 
   private animateCloseWindow = (): void => {
-    this.animating = 'outro'
-    clearTimeout(this.animationDelayTimeout)
-    this.animationDelayTimeout = setTimeout(this.stopOutroAnimationWindow.bind(this), cssDurationToMilliseconds(this.cssTransitionDuration))
-  }
+    this.animating = 'outro';
+    clearTimeout(this.animationDelayTimeout);
+    this.animationDelayTimeout = setTimeout(
+      this.stopOutroAnimationWindow.bind(this),
+      cssDurationToMilliseconds(this.cssTransitionDuration),
+    );
+  };
 
   private setTouchStart = (event: TouchEvent): void => {
-    this.touchStartX = event.touches[0].clientX
-    this.touchStartY = event.touches[0].clientY
-  }
+    this.touchStartX = event.touches[0].clientX;
+    this.touchStartY = event.touches[0].clientY;
+  };
   private setTouchEnd = (event: TouchEvent): void => {
-    const endX = event.changedTouches[0].clientX
-    const endY = event.changedTouches[0].clientY
-    const diffX = this.touchStartX - endX
-    const diffY = this.touchStartY - endY
+    const endX = event.changedTouches[0].clientX;
+    const endY = event.changedTouches[0].clientY;
+    const diffX = this.touchStartX - endX;
+    const diffY = this.touchStartY - endY;
 
     // if is NOT a diagonal swipe
     if (Math.abs(diffX) > Math.abs(diffY)) {
-      if (this.position === 'right' && diffX > 0) return
-      if (this.position === 'left' && diffX < 0) return
+      if (this.position === 'right' && diffX > 0) return;
+      if (this.position === 'left' && diffX < 0) return;
       if (Math.abs(diffX) > Math.abs(this.touchMargin)) {
-        this.opened = undefined
+        this.opened = undefined;
       }
     }
-  }
+  };
 
   private addMobileEvents = (): void => {
-    this.windowElement.addEventListener('touchstart', this.setTouchStart)
-    this.windowElement.addEventListener('touchend', this.setTouchEnd)
-  }
+    this.windowElement.addEventListener('touchstart', this.setTouchStart);
+    this.windowElement.addEventListener('touchend', this.setTouchEnd);
+  };
 
-  componentWillLoad (): void {
-    this.bottom = this.host.querySelector(':scope > [slot="bottom"]') !== null
-    this.top = this.host.querySelector(':scope > [slot="top"]') !== null
-    this.window = this.host.querySelector(':scope > [slot="window"]') !== null
+  componentWillLoad(): void {
+    this.bottom = this.host.querySelector(':scope > [slot="bottom"]') !== null;
+    this.top = this.host.querySelector(':scope > [slot="top"]') !== null;
+    this.window = this.host.querySelector(':scope > [slot="window"]') !== null;
 
     if (this.overflow === 'auto' && this.opened) {
-      this.disableOverflow()
+      this.disableOverflow();
     }
 
     if (this.window) {
-      this.host.querySelector(':scope > [slot="window"]')?.setAttribute('role', 'dialog')
+      this.host.querySelector(':scope > [slot="window"]')?.setAttribute('role', 'dialog');
     }
   }
 
-  componentWillRender (): void {
-    this.animating = this.opened ? 'intro' : 'outro'
+  componentWillRender(): void {
+    this.animating = this.opened ? 'intro' : 'outro';
   }
 
-  componentDidLoad (): void {
-    this.windowElement = this.host.shadowRoot?.querySelector('.window') as HTMLElement
-    this.windowHeaderElement = this.host.shadowRoot?.querySelector('.window-header') as HTMLElement
-    this.windowFooterElement = this.host.shadowRoot?.querySelector('.window-footer') as HTMLElement
+  componentDidLoad(): void {
+    this.windowElement = this.host.shadowRoot?.querySelector('.window') as HTMLElement;
+    this.windowHeaderElement = this.host.shadowRoot?.querySelector('.window-header') as HTMLElement;
+    this.windowFooterElement = this.host.shadowRoot?.querySelector('.window-footer') as HTMLElement;
 
     if (this.windowHeaderElement) {
-      this.windowHeaderHeight = this.windowHeaderElement.offsetHeight
+      this.windowHeaderHeight = this.windowHeaderElement.offsetHeight;
     }
     if (this.windowFooterElement) {
-      this.windowFooterHeight = this.windowFooterElement.offsetHeight
+      this.windowFooterHeight = this.windowFooterElement.offsetHeight;
     }
     if (this.windowElement) {
-      this.addMobileEvents()
+      this.addMobileEvents();
     }
-    this.updateCSSCustomProps()
+    this.updateCSSCustomProps();
   }
 
-  disconnectedCallback (): void {
-    this.enableOverflow()
+  disconnectedCallback(): void {
+    this.enableOverflow();
     if (this.windowElement) {
-      this.windowElement.removeEventListener('touchstart', this.setTouchStart)
-      this.windowElement.removeEventListener('touchend', this.setTouchEnd)
+      this.windowElement.removeEventListener('touchstart', this.setTouchStart);
+      this.windowElement.removeEventListener('touchend', this.setTouchEnd);
     }
-    this.enableOverflow()
+    this.enableOverflow();
   }
 
-  private closeModal = (e:Event, force?: boolean): void => {
+  private closeModal = (e: Event, force?: boolean): void => {
     if (!force) {
-      if (this.interaction === 'strict') return
+      if (this.interaction === 'strict') return;
       if ((e.target as HTMLElement)?.localName !== 'mds-modal') {
-        return
+        return;
       }
     }
-    this.opened = e.target !== e.currentTarget
+    this.opened = e.target !== e.currentTarget;
     if (!this.opened) {
-      this.closeEvent.emit()
+      this.closeEvent.emit();
     }
-  }
+  };
 
   @Watch('opened')
-  handleOpenProp (newValue: boolean): void {
+  handleOpenProp(newValue: boolean): void {
     if (newValue) {
       if (this.overflow === 'auto') {
-        this.disableOverflow()
+        this.disableOverflow();
       }
-      this.animateOpenWindow()
-      this.openEvent.emit()
-      return
+      this.animateOpenWindow();
+      this.openEvent.emit();
+      return;
     }
-    this.opened = undefined
+    this.opened = undefined;
     if (this.overflow === 'auto') {
-      this.enableOverflow()
+      this.enableOverflow();
     }
-    this.animateCloseWindow()
+    this.animateCloseWindow();
   }
 
   @Watch('backdrop')
-  handleBackdropProp (newValue?: boolean): void {
+  handleBackdropProp(newValue?: boolean): void {
     if (newValue === false) {
-      this.backdrop = undefined
+      this.backdrop = undefined;
     }
   }
 
   @Method()
-  async close (): Promise<void> {
-    this.opened = undefined
+  async close(): Promise<void> {
+    this.opened = undefined;
   }
 
-  render () {
+  render() {
     return (
-      <Host aria-modal={clsx(this.opened ? 'true' : 'false' )} onMouseDown={(e: Event) => { this.closeModal(e) }}>
-        { this.window
-          ? <slot name="window"/>
-          : <div class="window" part="window">
+      <Host
+        aria-modal={clsx(this.opened ? 'true' : 'false')}
+        onMouseDown={(e: Event) => {
+          this.closeModal(e);
+        }}
+      >
+        {this.window ? (
+          <slot name="window" />
+        ) : (
+          <div class="window" part="window">
             <div class={clsx('window-header', this.top ? '' : 'window-content--empty')}>
-              <slot name="top"/>
+              <slot name="top" />
             </div>
             <div class="window-content-wrapper">
-              <div class="window-content" style={{ paddingTop: `${this.windowHeaderHeight}px`, paddingBottom: `${this.windowFooterHeight}px` }}>
-                <slot/>
+              <div
+                class="window-content"
+                style={{
+                  paddingTop: `${this.windowHeaderHeight}px`,
+                  paddingBottom: `${this.windowFooterHeight}px`,
+                }}
+              >
+                <slot />
               </div>
             </div>
             <div class={clsx('window-footer', this.bottom ? '' : 'window-content--empty')}>
-              <slot name="bottom"/>
+              <slot name="bottom" />
             </div>
           </div>
-        }
-        { !this.window && <mds-button class="action-close" icon={miBaselineClose} variant="light" tone="quiet" size="xl" onClick={(e: Event) => { this.closeModal(e, true) }} part="action-close"></mds-button> }
+        )}
+        {!this.window && (
+          <mds-button
+            class="action-close"
+            icon={miBaselineClose}
+            variant="light"
+            tone="text"
+            size="xl"
+            onClick={(e: Event) => {
+              this.closeModal(e, true);
+            }}
+            part="action-close"
+          ></mds-button>
+        )}
       </Host>
-    )
+    );
   }
 }

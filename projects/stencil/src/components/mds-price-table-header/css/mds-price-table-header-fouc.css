@@ -1,0 +1,7 @@
+@import '../../../tailwind/fouc.css';
+
+mds-price-table-list {
+  &:not(:is([hydrated], .hydrated)) {
+    @apply not-hydrated;
+  }
+}

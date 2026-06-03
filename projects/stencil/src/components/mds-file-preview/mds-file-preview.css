@@ -1,40 +1,81 @@
+@import './css/mds-file-preview-fouc.css';
+
+/**
+ * @prop --mds-file-preview-background-color: Sets the background color of the file preview container
+ * @prop --mds-file-preview-border-radius: Sets the border-radius of the file preview container
+ * @prop --mds-file-preview-color: Sets the text color used inside the file preview
+ * @prop --mds-file-preview-icon-background: Sets the background color of the file preview icon
+ * @prop --mds-file-preview-icon-color: Sets the color of the file preview icon
+ */
+
+@property --mds-file-preview-background-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral));
+  syntax: '<color>';
+}
+
+@property --mds-file-preview-border-radius {
+  inherits: false;
+  initial-value: var(--radius-lg);
+  syntax: '<length>';
+}
+
+@property --mds-file-preview-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-03));
+  syntax: '<color>';
+}
+
+@property --mds-file-preview-icon-background {
+  inherits: false;
+  initial-value: inherit;
+  syntax: '<color>';
+}
+
+@property --mds-file-preview-icon-color {
+  inherits: false;
+  initial-value: var(--mds-file-preview-color);
+  syntax: '<color>';
+}
+
 :host {
-  --mds-file-preview-background-color: theme('colors.tone-neutral');
-  --mds-file-preview-border-radius: theme('borderRadius.lg');
-  --mds-file-preview-color: theme('colors.tone-neutral-03');
+  --mds-file-preview-background-color: rgb(var(--tone-neutral));
+  --mds-file-preview-border-radius: var(--radius-2xl);
+  --mds-file-preview-color: rgb(var(--tone-neutral-03));
   --mds-file-preview-icon-background: inherit;
   --mds-file-preview-icon-color: var(--mds-file-preview-color);
 
   align-items: stretch;
   background-color: var(--mds-file-preview-background-color);
   border-radius: var(--mds-file-preview-border-radius);
-  box-shadow: theme('boxShadow.DEFAULT');
+  box-shadow: var(--shadow-box-md);
+  corner-shape: var(--magma-corner-shape, round);
   display: flex;
   fill: var(--mds-file-preview-color);
   justify-content: stretch;
+  overflow: hidden;
   position: relative;
 }
 
 .card {
-  @apply
-    gap-200
-    grid-cols-full
-    p-400;
+  @apply grid-cols-full;
 
-  border-radius: var(--mds-file-preview-border-radius);
+  corner-shape: inherit;
   display: grid;
+  gap: --spacing(200);
+  padding: --spacing(400);
   width: 100%;
 }
 
 .preview {
-
   @apply aspect-square;
 
   background-color: var(--mds-file-preview-icon-background);
-  border-radius: theme('borderRadius.DEFAULT');
+  border-radius: calc(var(--mds-file-preview-border-radius) - --spacing(200));
   box-sizing: border-box;
-  color:  var(--mds-file-preview-color);
-  fill:  var(--mds-file-preview-icon-color);
+  color: var(--mds-file-preview-color);
+  corner-shape: inherit;
+  fill: var(--mds-file-preview-icon-color);
   width: 100%;
 }
 
@@ -52,16 +93,13 @@
 }
 
 .preview--status {
-
-  @apply
-    gap-200
-    p-400;
+  gap: --spacing(200);
+  padding: --spacing(400);
 }
 
 .icon {
-  @apply
-    h-1200
-    w-1200;
+  height: --spacing(1200);
+  width: --spacing(1200);
 }
 
 .message {
@@ -73,15 +111,13 @@
   position: absolute;
   right: 0;
   top: 0;
-  z-index: theme('zIndex.10');
+  z-index: 10;
 }
 
 .infos {
-
-  @apply gap-200;
-
-  align-items: center;
+  align-items: baseline;
   display: flex;
+  gap: --spacing(200);
 }
 
 .suffix {
@@ -101,4 +137,3 @@
 @import './css/mds-file-preview-pref-animation.css';
 @import './css/mds-file-preview-pref-theme.css';
 @import './css/mds-file-preview-pref-contrast.css';
-@import '../../tailwind/fouc.css';

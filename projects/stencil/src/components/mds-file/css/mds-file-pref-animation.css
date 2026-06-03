@@ -1,11 +1,18 @@
-:host-context(.pref-animation-reduce),
-:host-context(.pref-animation-reduce) .preview {
+:host-context(:root.pref-animation-reduce) {
   transition-duration: 0s;
+
+  .preview {
+    transition-duration: 0s;
+  }
 }
 
 @media (prefers-reduced-motion) {
-  :host-context(.pref-animation-system),
-  :host-context(.pref-animation-system) .preview {
+  :host-context(:root.pref-animation-system),
+  :host-context(:root:not([data-magma-pref])) {
     transition-duration: 0s;
+
+    .preview {
+      transition-duration: 0s;
+    }
   }
 }

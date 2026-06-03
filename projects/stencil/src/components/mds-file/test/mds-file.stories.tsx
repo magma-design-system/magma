@@ -1,8 +1,8 @@
-import { h } from '@stencil/core'
-import { fileExtensionsDictionary } from '@dictionary/file-extensions'
-import { filesList, namedFilesList } from '@fixture/filenames'
+import { h } from '@stencil/core';
+import { fileExtensionsDictionary } from '@type/file-types';
+import { filesList, namedFilesList } from '@fixture/filenames';
 
-const extensionsList = Object.keys(fileExtensionsDictionary).sort()
+const extensionsList = Object.keys(fileExtensionsDictionary).sort();
 
 export default {
   title: 'UI / File',
@@ -39,9 +39,9 @@ export default {
       control: { type: 'select' },
     },
   },
-}
+};
 
-const Template = args => <mds-file {...args} />
+const Template = (args) => <mds-file {...args} />;
 
 export const Default = {
   render: Template,
@@ -49,7 +49,7 @@ export const Default = {
   args: {
     filename: filesList[1],
   },
-}
+};
 
 export const Description = {
   render: Template,
@@ -58,7 +58,7 @@ export const Description = {
     description: 'This is a custom description',
     filename: filesList[2],
   },
-}
+};
 
 export const FilesWithoutExtension = {
   render: Template,
@@ -67,7 +67,7 @@ export const FilesWithoutExtension = {
     filename: filesList[0],
     suffix: 'pdf',
   },
-}
+};
 
 export const Preview = {
   render: Template,
@@ -76,7 +76,7 @@ export const Preview = {
     filename: filesList[5],
     preview: './icon-newspaper-02.png',
   },
-}
+};
 
 export const DownlaodedLabel = {
   render: Template,
@@ -86,4 +86,4 @@ export const DownlaodedLabel = {
     filename: filesList[5],
     preview: './icon-newspaper-02.png',
   },
-}
+};

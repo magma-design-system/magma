@@ -20,7 +20,9 @@
 
 :host(:not([opened][disc])) {
   --mds-radial-menu-disc-scale: 0;
-  --mds-radial-menu-disc-delay: calc((var(--mds-radial-menu-nth-siblings) + 1) * var(--mds-radial-menu-delay));
+  --mds-radial-menu-disc-delay: calc(
+    (var(--mds-radial-menu-nth-siblings) + 1) * var(--mds-radial-menu-delay)
+  );
 }
 
 :host([opened][disc]) {

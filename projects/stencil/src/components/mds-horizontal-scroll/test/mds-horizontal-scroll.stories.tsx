@@ -1,17 +1,12 @@
-import { h } from '@stencil/core'
-import {
-  snapDictionary,
-  viewportDictionary,
-  navigationDictionary,
-} from '../meta/dictionary'
+import { h } from '@stencil/core';
+import { snapDictionary, viewportDictionary, navigationDictionary } from '../meta/dictionary';
 
 export default {
   title: 'Layout / Horizontal Scroll',
   argTypes: {
     controls: {
       type: { name: 'string' },
-      description:
-        'Specifies the viewport which will display navigation controls',
+      description: 'Specifies the viewport which will display navigation controls',
       options: viewportDictionary,
       control: { type: 'select' },
     },
@@ -23,13 +18,12 @@ export default {
     },
     snap: {
       type: { name: 'string' },
-      description:
-        'Specifies the box’s snap position as an alignment of its snap area',
+      description: 'Specifies the box’s snap position as an alignment of its snap area',
       options: snapDictionary,
       control: { type: 'select' },
     },
   },
-}
+};
 
 const CardTemplate = ({ title, initials }) => (
   <mds-card class="min-w-[320px]">
@@ -44,24 +38,24 @@ const CardTemplate = ({ title, initials }) => (
       <mds-button
         id="action-example"
         icon="mi/round/more-vert"
-        variant="light"
+        variant="dark"
+        tone="text"
       ></mds-button>
     </mds-card-header>
     <mds-card-media>
-      <mds-img
-        src="https://placehold.co/600x400"
-        class="object-cover"
-      ></mds-img>
+      <mds-img src="https://placehold.co/600x400" class="object-cover"></mds-img>
     </mds-card-media>
     <mds-card-content>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin quis
-      elementum lorem. Phasellus vel quam leo. Ut eget finibus libero. Integer
-      sed odio hendrerit diam maximus blandit ac malesuada odio.
+      <mds-text>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin quis elementum lorem.
+        Phasellus vel quam leo. Ut eget finibus libero. Integer sed odio hendrerit diam maximus
+        blandit ac malesuada odio.
+      </mds-text>
     </mds-card-content>
   </mds-card>
-)
+);
 
-const Template = args => (
+const Template = (args) => (
   <div class="-m-600 -bg-tone-neutral-10 border-b-2 border-solid border-tone-neutral-09 border-x-0 border-t-0">
     <mds-horizontal-scroll {...args}>
       <CardTemplate initials="01" title="Card" />
@@ -76,11 +70,11 @@ const Template = args => (
       <CardTemplate initials="10" title="Card" />
     </mds-horizontal-scroll>
   </div>
-)
+);
 
 export const Default = {
   render: Template,
-}
+};
 
 export const Snap = {
   render: Template,
@@ -88,7 +82,7 @@ export const Snap = {
   args: {
     snap: 'end',
   },
-}
+};
 
 export const Navigation = {
   render: Template,
@@ -96,7 +90,7 @@ export const Navigation = {
   args: {
     navigation: 'navigation',
   },
-}
+};
 
 export const TailwindStyled = {
   render: Template,
@@ -104,4 +98,4 @@ export const TailwindStyled = {
   args: {
     class: 'bg-tone-neutral-04 gap-400 p-400 snap-px-400',
   },
-}
+};

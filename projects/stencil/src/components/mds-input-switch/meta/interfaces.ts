@@ -1,5 +1,5 @@
-import { InputValueType } from '@type/input'
+import { InputValueType } from '@type/input';
 
 export interface InputValue {
-  value: InputValueType
+  value: InputValueType;
 }

@@ -1,10 +1,3 @@
-const usageDictionary = [
-  'do',
-  'dont',
-  'info',
-  'warn',
-]
+const usageDictionary = ['do', 'dont', 'info', 'warn'];
 
-export {
-  usageDictionary,
-}
+export { usageDictionary };

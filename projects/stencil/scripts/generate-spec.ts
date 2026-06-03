@@ -1,0 +1,228 @@
+import chalk from 'chalk';
+import { existsSync } from 'fs';
+import { readFile, writeFile } from 'fs/promises';
+import { join } from 'path';
+import {
+  JsonDocsComponent,
+  JsonDocsProp,
+  JsonDocsEvent,
+  JsonDocsMethod,
+  JsonDocsStyle,
+  JsonDocsSlot,
+} from '@stencil/core/internal';
+import { COMPONENTS_DIR } from './meta';
+import { logFileSavedTo } from '../../../scripts/log';
+
+const SPEC_FILENAME = 'SPEC.md';
+
+/**
+ * Conventional usage/ keys read from component documentation.
+ *
+ * To populate these, create markdown files inside the component's usage/ folder:
+ *
+ *   src/components/mds-button/usage/
+ *   ├── 1. Description.md   → one-paragraph summary of the component's role and when to use it
+ *   ├── 2. Pattern.md       → correct usage examples (html code blocks recommended)
+ *   └── 3. Antipattern.md   → known misuse patterns and what to use instead
+ *
+ * Stencil reads these files at build time and injects them into documentation.json
+ * under the component's "usage" object, keyed by filename (without ".md"). The
+ * "N. " numeric prefix exists to control sort order in the generated readme.md,
+ * since Stencil sorts usage sections alphabetically by key.
+ */
+const USAGE_DESCRIPTION_KEY = '1. Description';
+const USAGE_PATTERNS_KEY = '2. Pattern';
+const USAGE_ANTIPATTERNS_KEY = '3. Antipattern';
+
+const TODO = (label: string): string => `> ✏️ **TODO**: ${label}\n`;
+
+/**
+ * Returns true if a SPEC.md already exists and contains the
+ * <!-- spec:manual --> marker, meaning it was hand-edited and
+ * should not be overwritten by this script.
+ */
+const isManualSpec = async (specPath: string): Promise<boolean> => {
+  if (!existsSync(specPath)) return false;
+  const content = await readFile(specPath, { encoding: 'utf8' });
+  return content.includes('<!-- spec:manual -->');
+};
+
+const formatPropType = (prop: JsonDocsProp): string => prop.type.replace(/\s*\|\s*/g, ' | ');
+
+const renderPropsTable = (props: JsonDocsProp[]): string => {
+  if (!props.length) return '_No props._\n';
+  const rows = props.map((p) => {
+    const defaultVal = p.default !== undefined ? `\`${p.default}\`` : '—';
+    const required = p.required ? '✓' : '';
+    return `| \`${p.name}\` | \`${formatPropType(p)}\` | ${defaultVal} | ${required} | ${p.docs ?? ''} |`;
+  });
+  return (
+    ['| Prop | Type | Default | Required | Description |', '|---|---|---|---|---|', ...rows].join(
+      '\n',
+    ) + '\n'
+  );
+};
+
+const renderEventsTable = (events: JsonDocsEvent[]): string => {
+  if (!events.length) return '_No events._\n';
+  const rows = events.map((e) => `| \`${e.event}\` | \`${e.detail}\` | ${e.docs ?? ''} |`);
+  return ['| Event | Payload | Description |', '|---|---|---|', ...rows].join('\n') + '\n';
+};
+
+const renderMethodsTable = (methods: JsonDocsMethod[]): string => {
+  if (!methods.length) return '_No public methods._\n';
+  const rows = methods.map((m) => `| \`${m.name}(${m.signature})\` | ${m.docs ?? ''} |`);
+  return ['| Method | Description |', '|---|---|', ...rows].join('\n') + '\n';
+};
+
+const renderStylesTable = (styles: JsonDocsStyle[]): string => {
+  if (!styles.length) return '_No CSS custom properties._\n';
+  const rows = styles.map((s) => `| \`${s.name}\` | ${s.docs ?? ''} |`);
+  return ['| Property | Description |', '|---|---|', ...rows].join('\n') + '\n';
+};
+
+const renderSlotsTable = (slots: JsonDocsSlot[]): string => {
+  if (!slots.length) return '_No slots._\n';
+  const rows = slots.map((s) => `| \`"${s.name || 'default'}"\` | ${s.docs ?? ''} |`);
+  return ['| Slot | Description |', '|---|---|', ...rows].join('\n') + '\n';
+};
+
+const renderDepsSection = (component: JsonDocsComponent): string => {
+  const lines: string[] = [];
+  if (component.dependencies?.length) {
+    lines.push('**Depends on:**');
+    component.dependencies.forEach((d) => lines.push(`- \`${d}\``));
+    lines.push('');
+  }
+  if (component.dependents?.length) {
+    lines.push('**Used by:**');
+    component.dependents.forEach((d) => lines.push(`- \`${d}\``));
+    lines.push('');
+  }
+  if (!lines.length) return '_No dependencies._\n';
+  return lines.join('\n');
+};
+
+const usageValue = (usage: Record<string, string>, key: string): string | undefined => {
+  const val = usage?.[key];
+  return val && val.trim().length > 0 ? val.trim() : undefined;
+};
+
+const generateSpec = (component: JsonDocsComponent): string => {
+  const { tag, encapsulation, props, events, methods, styles, slots, usage } = component;
+
+  const description = usageValue(usage, USAGE_DESCRIPTION_KEY);
+  const patterns = usageValue(usage, USAGE_PATTERNS_KEY);
+  const antipatterns = usageValue(usage, USAGE_ANTIPATTERNS_KEY);
+
+  const encapsulationNote =
+    encapsulation === 'shadow'
+      ? '`shadow` — styles are fully encapsulated. Use CSS custom properties to customise from outside.'
+      : '`scoped` — participates natively in HTML form submission.';
+
+  return `# ${tag} SPEC.md
+
+<!-- ──────────────────────────────────────────────────────────────────────── -->
+<!-- AUTO-GENERATED by scripts/generate-spec.ts — do not edit manually.      -->
+<!-- To write a hand-crafted spec, add the line below anywhere in this file  -->
+<!-- and re-run the script — it will be skipped:  <!-- spec:manual -->        -->
+<!-- ──────────────────────────────────────────────────────────────────────── -->
+
+## Purpose
+
+${description ?? TODO("Describe the component's role and when to use it. Add a `usage/1. Description.md` file in the component folder to populate this automatically.")}
+
+## Encapsulation
+
+${encapsulationNote}
+
+## Props
+
+${renderPropsTable(props)}
+
+## Events
+
+${renderEventsTable(events)}
+
+## Methods
+
+${renderMethodsTable(methods)}
+
+## Slots
+
+${renderSlotsTable(slots)}
+
+## CSS custom properties
+
+${renderStylesTable(styles)}
+
+## Correct patterns
+
+${patterns ?? TODO('Add 2–4 representative usage examples. Add a `usage/2. Pattern.md` file in the component folder to populate this automatically.')}
+
+## Anti-patterns
+
+${antipatterns ?? TODO('Add known misuse patterns and what to use instead. Add a `usage/3. Antipattern.md` file in the component folder to populate this automatically.')}
+
+## Dependencies
+
+${renderDepsSection(component)}
+
+## Related components
+
+${TODO('List components commonly used alongside this one, or that should be preferred in specific cases.')}
+`;
+};
+
+const main = async (): Promise<void> => {
+  const docsPath = join(COMPONENTS_DIR, '..', '..', 'dist', 'documentation.json');
+
+  let jsonDocs: { components: JsonDocsComponent[] };
+  try {
+    const raw = await readFile(docsPath, { encoding: 'utf8' });
+    jsonDocs = JSON.parse(raw);
+  } catch {
+    console.error(chalk.red(`Cannot read documentation.json at ${docsPath}`));
+    console.error(chalk.yellow('Run `nx run stencil:build` first to generate the docs.'));
+    process.exit(1);
+  }
+
+  let generated = 0;
+  let skippedManual = 0;
+  let skippedExists = 0;
+
+  for (const component of jsonDocs.components) {
+    const specPath = join(COMPONENTS_DIR, component.tag, SPEC_FILENAME);
+
+    if (await isManualSpec(specPath)) {
+      console.info(
+        chalk.yellow(`⏭  ${component.tag} — skipped (<!-- spec:manual --> marker found)`),
+      );
+      skippedManual += 1;
+      continue;
+    }
+
+    if (existsSync(specPath)) {
+      console.info(chalk.gray(`⏭  ${component.tag} — skipped (file exists, no manual marker)`));
+      skippedExists += 1;
+      continue;
+    }
+
+    const content = generateSpec(component);
+    await writeFile(specPath, content, { encoding: 'utf8' });
+    logFileSavedTo(SPEC_FILENAME, join(COMPONENTS_DIR, component.tag));
+    generated += 1;
+  }
+
+  console.info('');
+  console.info(chalk.green(`✓  Generated:          ${generated}`));
+  console.info(chalk.yellow(`⏭  Skipped (manual):   ${skippedManual}`));
+  console.info(chalk.gray(`⏭  Skipped (exists):   ${skippedExists}`));
+  console.info('');
+  console.info('Next: search for "✏️ TODO" in generated files and fill in the missing sections,');
+  console.info(
+    'or add usage/1. Description.md, usage/2. Pattern.md, usage/3. Antipattern.md to each component.',
+  );
+};
+
+main();

@@ -1,14 +1,9 @@
-@tailwind utilities;
+@import '../../tailwind/fouc.css';
 
 :host {
-
-  @apply
-    gap-400
-    p-400;
-
   display: grid;
+  gap: --spacing(400);
   grid-template-columns: repeat(auto-fit, minmax(1px, 100%));
   min-width: 0;
+  padding: --spacing(400);
 }
-
-@import '../../tailwind/fouc.css';

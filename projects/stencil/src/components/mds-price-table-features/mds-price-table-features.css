@@ -1,14 +1,25 @@
 /**
- * @prop --mds-price-table-features-padding: Sets the cell padding of the children components
  * @prop --mds-price-table-features-border-color: Sets the border-color of the children components
+ * @prop --mds-price-table-features-padding: Sets the cell padding of the children components
  */
 
-:host {
-  --mds-price-table-features-border-color: theme('colors.tone-neutral-06');
-  --mds-price-table-features-padding: theme('spacing.300');
+@property --mds-price-table-features-border-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-06));
+  syntax: '<color>';
+}
 
-  @apply
-    duration-200
+@property --mds-price-table-features-padding {
+  inherits: false;
+  initial-value: --spacing(300);
+  syntax: '<length>';
+}
+
+:host {
+  --mds-price-table-features-border-color: rgb(var(--tone-neutral-06));
+  --mds-price-table-features-padding: --spacing(300);
+
+  @apply duration-200
     ease-in-out;
 
   display: flex;
@@ -30,10 +41,11 @@ table {
 
 header {
   border-bottom: 1px solid var(--mds-price-table-features-border-color);
-  padding: var(--mds-price-table-features-padding) var(--mds-price-table-features-padding) var(--mds-price-table-features-padding) 0;
+  padding: var(--mds-price-table-features-padding) var(--mds-price-table-features-padding)
+    var(--mds-price-table-features-padding) 0;
 }
 
 @import './css/mds-price-table-features-pref-animation.css';
 @import './css/mds-price-table-features-pref-theme.css';
 @import './css/mds-price-table-features-pref-contrast.css';
-@import '../../tailwind/fouc.css';
+@import './css/mds-price-table-features-fouc.css';

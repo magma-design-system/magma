@@ -1,4 +1,4 @@
-@import '../../tailwind/components.css';
+@import './css/mds-breadcrumb-fouc.css';
 
 /**
  * @prop --mds-breadcrumb-arrow-depth-color: Sets the color of the arrow icon that separates buttons
@@ -13,30 +13,88 @@
  * @prop --mds-breadcrumb-current-button-color: Sets the text color of the current depth button
  */
 
-:host {
-  --mds-breadcrumb-arrow-depth-color: theme('colors.tone-neutral-04');
-  --mds-breadcrumb-button-background-current: theme('colors.tone-neutral-09');
-  --mds-breadcrumb-button-background-disabled: transparent;
-  --mds-breadcrumb-button-background-hover: theme('colors.tone-neutral-10');
-  --mds-breadcrumb-button-background: transparent;
-  --mds-breadcrumb-button-color-current: theme('colors.tone-neutral-01');
-  --mds-breadcrumb-button-color-disabled: theme('colors.tone-neutral-06');
-  --mds-breadcrumb-button-color-hover: theme('colors.tone-neutral-02');
-  --mds-breadcrumb-button-color: theme('colors.tone-neutral-02');
-  --mds-breadcrumb-current-button-color: theme('colors.tone-neutral-05');
+@property --mds-breadcrumb-arrow-depth-color {
+  inherits: true;
+  initial-value: rgb(var(--tone-neutral-04));
+  syntax: '<color>';
+}
 
-  @apply
-    gap-0
-    hide-scrollbar
-    p-200;
+@property --mds-breadcrumb-button-background-current {
+  inherits: true;
+  initial-value: rgb(var(--tone-neutral-09));
+  syntax: '<color>';
+}
+
+@property --mds-breadcrumb-button-background-disabled {
+  inherits: true;
+  initial-value: transparent;
+  syntax: '<color>';
+}
+
+@property --mds-breadcrumb-button-background-hover {
+  inherits: true;
+  initial-value: rgb(var(--tone-neutral-10));
+  syntax: '<color>';
+}
+
+@property --mds-breadcrumb-button-background {
+  inherits: true;
+  initial-value: transparent;
+  syntax: '<color>';
+}
+
+@property --mds-breadcrumb-button-color-current {
+  inherits: true;
+  initial-value: rgb(var(--tone-neutral-01));
+  syntax: '<color>';
+}
+
+@property --mds-breadcrumb-button-color-disabled {
+  inherits: true;
+  initial-value: rgb(var(--tone-neutral-06));
+  syntax: '<color>';
+}
+
+@property --mds-breadcrumb-button-color-hover {
+  inherits: true;
+  initial-value: rgb(var(--tone-neutral-02));
+  syntax: '<color>';
+}
+
+@property --mds-breadcrumb-button-color {
+  inherits: true;
+  initial-value: rgb(var(--tone-neutral-02));
+  syntax: '<color>';
+}
+
+@property --mds-breadcrumb-current-button-color {
+  inherits: true;
+  initial-value: rgb(var(--tone-neutral-05));
+  syntax: '<color>';
+}
+
+:host {
+  --mds-breadcrumb-arrow-depth-color: rgb(var(--tone-neutral-04));
+  --mds-breadcrumb-button-background-current: rgb(var(--tone-neutral-09));
+  --mds-breadcrumb-button-background-disabled: transparent;
+  --mds-breadcrumb-button-background-hover: rgb(var(--tone-neutral-10));
+  --mds-breadcrumb-button-background: transparent;
+  --mds-breadcrumb-button-color-current: rgb(var(--tone-neutral-01));
+  --mds-breadcrumb-button-color-disabled: rgb(var(--tone-neutral-06));
+  --mds-breadcrumb-button-color-hover: rgb(var(--tone-neutral-02));
+  --mds-breadcrumb-button-color: rgb(var(--tone-neutral-02));
+  --mds-breadcrumb-current-button-color: rgb(var(--tone-neutral-05));
+
+  @apply hide-scrollbar;
 
   align-items: center;
   display: flex;
+  gap: 0;
   overflow: auto;
+  padding: --spacing(200);
   scroll-behavior: smooth;
   scroll-snap-type: x mandatory;
   width: 100%;
-
 }
 
 :host::-webkit-scrollbar {
@@ -44,12 +102,11 @@
 }
 
 .back {
-  @apply mr-100;
-
   --mds-button-background: var(--mds-breadcrumb-button-background);
 
   fill: var(--mds-breadcrumb-button-color);
   flex-shrink: 0;
+  margin-right: --spacing(100);
 }
 
 .back:hover {
@@ -66,4 +123,3 @@
 }
 
 @import './css/mds-breadcrumb-pref-animation.css';
-@import '../../tailwind/fouc.css';

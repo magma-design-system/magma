@@ -4,6 +4,6 @@
   }
 
   :host(:not([slot])) .input {
-    @apply pr-400;
+    padding-right: --spacing(400);
   }
 }

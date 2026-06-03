@@ -1,35 +1,72 @@
-@import '~@maggioli-design-system/styles/dist/css/animations.css'; /* included for focus effect */
-@import '../../tailwind/components.css';
+@import './css/mds-accordion-timer-item-fouc.css';
 
 /**
- * @prop --mds-accordion-timer-item-progress-bar-color: Sets the color of the progress bar when the item is selected
- * @prop --mds-accordion-timer-item-progress-bar-background: Sets the background-color of the progress bar when the item is selected
  * @prop --mds-accordion-timer-item-color: Sets the text color of the component
- * @prop --mds-accordion-timer-item-progress-bar-thickness: Sets thickness of the progress bar
  * @prop --mds-accordion-timer-item-duration: Sets the transition duration of open/close animation
+ * @prop --mds-accordion-timer-item-progress-bar-background: Sets the background-color of the progress bar when the item is selected
+ * @prop --mds-accordion-timer-item-progress-bar-color: Sets the color of the progress bar when the item is selected
+ * @prop --mds-accordion-timer-item-progress-bar-thickness: Sets thickness of the progress bar
  */
 
+@property --mds-accordion-timer-item-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-02));
+  syntax: '<color>';
+}
+
+@property --mds-accordion-timer-item-progress-bar-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-03));
+  syntax: '<color>';
+}
+
+@property --mds-accordion-timer-item-progress-bar-background {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-08));
+  syntax: '<color>';
+}
+
+@property --mds-accordion-timer-item-progress-bar-thickness {
+  inherits: false;
+  initial-value: --spacing(100);
+  syntax: '<length>';
+}
+
+@property --mds-accordion-timer-item-duration {
+  inherits: false;
+  initial-value: 500ms;
+  syntax: '<time>';
+}
+
 :host {
-  --mds-accordion-timer-item-progress-bar-color: var(--mds-accordion-timer-progress-bar-color, theme('colors.tone-neutral-03'));
-  --mds-accordion-timer-item-progress-bar-background: var(--mds-accordion-timer-progress-bar-background, theme('colors.tone-neutral-08'));
-  --mds-accordion-timer-item-progress-bar-thickness: var(--mds-accordion-timer-progress-bar-thickness, theme('width.100'));
+  --mds-accordion-timer-item-color: var(--mds-accordion-timer-color, rgb(var(--tone-neutral-02)));
+  --mds-accordion-timer-item-progress-bar-color: var(
+    --mds-accordion-timer-progress-bar-color,
+    rgb(var(--tone-neutral-03))
+  );
+  --mds-accordion-timer-item-progress-bar-background: var(
+    --mds-accordion-timer-progress-bar-background,
+    rgb(var(--tone-neutral-08))
+  );
+  --mds-accordion-timer-item-progress-bar-thickness: var(
+    --mds-accordion-timer-progress-bar-thickness,
+    --spacing(100)
+  );
   --mds-accordion-timer-item-duration: var(--mds-accordion-timer-duration, 500ms);
 
-  @apply
-    ease-out-expo
-    py-400;
-
-  color: var(--mds-accordion-timer-item-color, theme('colors.tone-neutral-02'));
+  color: var(--mds-accordion-timer-item-color);
   display: grid;
+  padding-bottom: --spacing(400);
+  padding-top: --spacing(400);
   position: relative;
   transition-duration: var(--mds-accordion-timer-item-duration);
   transition-property: color;
+  transition-timing-function: var(--ease-out-expo);
 }
 
 .row {
-  @apply gap-400;
-
   display: flex;
+  gap: --spacing(400);
 }
 
 .accordion {
@@ -45,26 +82,21 @@
 }
 
 .action {
-  @apply
-    gap-400
-    rounded-xl;
-
   background-color: transparent;
   border: 0;
+  border-radius: var(--radius-xs);
   color: inherit;
   cursor: pointer;
   display: flex;
+  gap: --spacing(400);
   justify-content: space-between;
   padding: 0;
   text-align: left;
 }
 
 .content {
-  @apply
-    ease-in-out-expo
-    gap-400;
-
   display: grid;
+  gap: --spacing(400);
   grid-template-rows: 0fr;
   min-height: 0;
   opacity: 0;
@@ -72,6 +104,7 @@
   padding-top: 0;
   transition-duration: var(--mds-accordion-timer-item-duration);
   transition-property: grid-template-rows, opacity, padding;
+  transition-timing-function: var(--ease-in-out-expo);
 }
 
 .content-expander {
@@ -79,31 +112,27 @@
 }
 
 .icon {
-  @apply
-    duration-500
-    ease-out-expo
-    svg;
+  @apply svg;
 
   fill: currentcolor;
-  transform: rotate(180deg);
+  transform: rotate(0deg);
+  transition-duration: var(--duration-500);
   transition-property: transform;
+  transition-timing-function: var(--ease-out-expo);
 }
 
-:host([selected]:not([selected="false"])) .action {
+:host([selected]:not([selected='false'])) .action {
   cursor: auto;
 }
 
-:host([selected]:not([selected="false"])) .icon {
-  transform: rotate(0deg);
+:host([selected]:not([selected='false'])) .icon {
+  transform: rotate(90deg);
 }
 
-:host([selected]:not([selected="false"])) .content {
-  @apply
-    opacity-100
-    pt-400;
-
+:host([selected]:not([selected='false'])) .content {
   grid-template-rows: 1fr;
+  opacity: 1;
+  padding-top: --spacing(400);
 }
 
 @import './css/mds-accordion-timer-item-pref-animation.css';
-@import '../../tailwind/fouc.css';

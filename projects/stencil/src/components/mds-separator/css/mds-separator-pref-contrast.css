@@ -1,9 +1,10 @@
-:host-context(.pref-contrast-more) {
-  --mds-separator-background: theme('colors.tone-neutral-06');
+:host-context(:root.pref-contrast-more) {
+  --mds-separator-background: rgb(var(--tone-neutral-06));
 }
 
 @media (prefers-contrast: more) {
-  :host-context(.pref-contrast-system) {
-    --mds-separator-background: theme('colors.tone-neutral-06');
+  :host-context(:root.pref-contrast-system),
+  :host-context(:root:not([data-magma-pref])) {
+    --mds-separator-background: rgb(var(--tone-neutral-06));
   }
 }

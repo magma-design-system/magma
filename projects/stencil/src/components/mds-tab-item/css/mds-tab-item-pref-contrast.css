@@ -1,11 +1,12 @@
-:host-context(.pref-contrast-more) {
-  --mds-tab-item-selected-color: theme('colors.tone-neutral-01');
-  --mds-tab-item-selected-shadow: theme('boxShadow.outline-strong-50');
+:host-context(:root.pref-contrast-more) {
+  --mds-tab-item-selected-color: rgb(var(--tone-neutral-01));
+  --mds-tab-item-selected-shadow: var(--shadow-outline-strong-50);
 }
 
 @media (prefers-contrast: more) {
-  :host-context(.pref-contrast-system) {
-    --mds-tab-item-selected-color: theme('colors.tone-neutral-01');
-    --mds-tab-item-selected-shadow: theme('boxShadow.outline-strong-50');
+  :host-context(:root.pref-contrast-system),
+  :host-context(:root:not([data-magma-pref])) {
+    --mds-tab-item-selected-color: rgb(var(--tone-neutral-01));
+    --mds-tab-item-selected-shadow: var(--shadow-outline-strong-50);
   }
 }

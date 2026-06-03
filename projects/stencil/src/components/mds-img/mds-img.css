@@ -1,39 +1,81 @@
-@import '../../tailwind/components.css';
+@import './css/mds-img-fouc.css';
 
-@tailwind components;
-@tailwind utilities;
+/**
+ * @prop --mds-img-background: The background color of the image container.
+ * @prop --mds-img-color: The foreground/text color used inside the image component.
+ * @prop --mds-img-icon-color: The color applied to icons displayed within the image element.
+ * @prop --mds-img-error-background: The background color shown when the image fails to load.
+ * @prop --mds-img-error-color: The text or foreground color shown in the error state.
+ * @prop --mds-img-error-icon-color: The icon color used in the error state.
+ */
+
+@property --mds-img-background {
+  inherits: false;
+  initial-value: rgb(var(--variant-primary-03));
+  syntax: '<color>';
+}
+
+@property --mds-img-color {
+  inherits: false;
+  initial-value: rgb(var(--variant-primary-09));
+  syntax: '<color>';
+}
+
+@property --mds-img-icon-color {
+  inherits: false;
+  initial-value: rgb(var(--variant-primary-07));
+  syntax: '<color>';
+}
+
+@property --mds-img-error-background {
+  inherits: false;
+  initial-value: rgb(var(--status-error-09));
+  syntax: '<color>';
+}
+
+@property --mds-img-error-color {
+  inherits: false;
+  initial-value: rgb(var(--status-error-04));
+  syntax: '<color>';
+}
+
+@property --mds-img-error-icon-color {
+  inherits: false;
+  initial-value: rgb(var(--status-error-06));
+  syntax: '<color>';
+}
 
 :host {
-  --mds-img-background: theme('colors.variant-primary-03');
-  --mds-img-color: theme('colors.variant-primary-09');
-  --mds-img-icon-color: theme('colors.variant-primary-07');
-  --mds-img-error-background: theme('colors.status-error-09');
-  --mds-img-error-color: theme('colors.status-error-04');
-  --mds-img-error-icon-color: theme('colors.status-error-06');
+  --mds-img-background: rgb(var(--variant-primary-03));
+  --mds-img-color: rgb(var(--variant-primary-09));
+  --mds-img-icon-color: rgb(var(--variant-primary-07));
+  --mds-img-error-background: rgb(var(--status-error-09));
+  --mds-img-error-color: rgb(var(--status-error-04));
+  --mds-img-error-icon-color: rgb(var(--status-error-06));
 
   display: flex;
-  object-fit: cover;
+  height: auto;
+  object-fit: contain;
   overflow: hidden;
   position: relative;
+  width: 100%;
 }
 
 img {
-  @apply w-full;
-
+  height: inherit;
   object-fit: inherit;
+  width: inherit;
 }
 
 .alt-text-container {
-  @apply
-    gap-600
-    p-600;
-
   align-items: center;
   background-color: var(--mds-img-background);
   color: var(--mds-img-color);
   display: flex;
   flex-direction: column;
+  gap: --spacing(600);
   justify-content: center;
+  padding: --spacing(600);
   text-align: center;
 }
 
@@ -61,10 +103,6 @@ img {
 }
 
 .icon {
-
-  @apply w-900;
-
   fill: var(--mds-img-icon-color);
+  width: --spacing(900);
 }
-
-@import '../../tailwind/fouc.css';

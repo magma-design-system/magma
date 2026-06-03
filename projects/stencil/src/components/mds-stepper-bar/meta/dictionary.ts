@@ -1,8 +1,3 @@
-const stepperBarNavigationDictionary = [
-  'none',
-  'scrollbar',
-]
+const stepperBarNavigationDictionary = ['none', 'scrollbar'];
 
-export {
-  stepperBarNavigationDictionary,
-}
+export { stepperBarNavigationDictionary };

@@ -1,17 +1,25 @@
 {
   "cosmetic": {
     "boxShadow": {
-      "sm": {
+      "xs": {
         "value": "0 1px 2px 0 rgb(0 0 0 / 0.05)"
       },
-      "sm-sharp": {
+      "xs-sharp": {
         "value": "0 0 1px 1px rgb(0 0 0 / 0.06), 0 1px 2px 0 rgb(0 0 0 / 0.05)"
       },
-      "DEFAULT": {
+      "sm": {
         "value": "0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)"
       },
-      "sharp": {
+      "DEFAULT": {
+        "description": "For tailwind 3 compatibility",
+        "value": "{cosmetic.boxShadow.sm}"
+      },
+      "sm-sharp": {
         "value": "0 0 1px 1px rgb(0 0 0 / 0.06), 0 1px 3px 0 rgb(0 0 0 / 0.1)"
+      },
+      "sharp": {
+        "description": "For tailwind 3 compatibility",
+        "value": "{cosmetic.boxShadow.sm-sharp}"
       },
       "md": {
         "value": "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)"
@@ -28,50 +36,74 @@
       "xl": {
         "value": "0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)"
       },
+      "xl-sharp": {
+        "value": "0 0 1px 1px rgb(0 0 0 / 0.06), 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)"
+      },
       "2xl": {
         "value": "0 25px 50px -12px rgb(0 0 0 / 0.25)"
       },
-      "inner": {
-        "value": "inset 0 2px 4px 0 rgb(0 0 0 / 0.05)"
+      "2xl-sharp": {
+        "value": "0 0 1px 1px rgb(0 0 0 / 0.06), 0 25px 50px -12px rgb(0 0 0 / 0.25)"
       },
-      "none": {
-        "value": "0 0 rgb(0 0 0 / 0)"
+      "inset-sm": {
+        "value": "inset 0 2px 4px 0 rgb(0 0 0 / 0.05), inset 0 0 0 1px rgb(0 0 0 / 0.01)"
       },
-      "outline": {
-        "value": "0 0 0 1px rgb(var(--tone-neutral-01) / 0.3)"
+      "inset-md": {
+        "value": "inset 0 4px 6px -1px rgb(0 0 0 / 0.1), inset 0 0 0 1px rgb(0 0 0 / 0.02)"
       },
-      "outline-50": {
-        "value": "0 0 0 2px rgb(var(--tone-neutral-01) / 0.3)"
+      "inset-lg": {
+        "value": "inset 0 10px 15px -3px rgb(0 0 0 / 0.1), inset 0 0 0 1px rgb(0 0 0 / 0.04)"
       },
-      "outline-75": {
-        "value": "0 0 0 3px rgb(var(--tone-neutral-01) / 0.3)"
+      "inset-xl": {
+        "value": "inset 0 20px 25px -5px rgb(0 0 0 / 0.1), inset 0 0 0 1px rgb(0 0 0 / 0.04)"
       },
-      "outline-100": {
-        "value": "0 0 0 4px rgb(var(--tone-neutral-01) / 0.3)"
+      "glow-near-strong": {
+        "value": "rgb(0 0 0 / 0.2) 0px 12px 28px 0px, rgb(0 0 0 / 0.1) 0px 2px 4px 0px"
       },
-      "outline-light": {
-        "value": "0 0 0 1px rgb(var(--tone-neutral-01) / 0.15)"
+      "glow-distant-weak": {
+        "value": "rgb(0 0 0 / 0.2) 0px 60px 40px -7px"
       },
-      "outline-light-50": {
-        "value": "0 0 0 2px rgb(var(--tone-neutral-01) / 0.15)"
+      "glow-distant-strong": {
+        "value": "rgb(0 0 0 / 0.25) 0px 50px 100px -20px, rgb(0 0 0 / 0.3) 0px 30px 60px -30px"
       },
-      "outline-light-75": {
-        "value": "0 0 0 3px rgb(var(--tone-neutral-01) / 0.15)"
+      "box-md": {
+        "value": "rgb(0 0 0 / 0.06) 0px 0px 0px 1px, rgb(0 0 0 / 0.03) 0px 1px 1px -0.5px, rgb(0 0 0 / 0.04) 0px 2px 2px -1px, rgb(0 0 0 / 0.04) 0px 3px 3px -1.5px, rgb(0 0 0 / 0.03) 0px 5px 5px -2.5px, rgb(0 0 0 / 0.03) 0px 10px 10px -5px, rgb(0 0 0 / 0.03) 0px 24px 24px -8px"
       },
-      "outline-light-100": {
-        "value": "0 0 0 4px rgb(var(--tone-neutral-01) / 0.15)"
+      "box-lg": {
+        "value": "rgb(0 0 0 / 0.25) 0px 4px 8px -2px, rgb(0 0 0 / 0.08) 0px 0px 0px 1px"
+      },
+      "box-xl": {
+        "value": "rgb(0 0 0 / 0.05) 0px 0px 0px 1px, rgb(0 0 0 / 0.1) 0px 1px 1px -0.5px, rgb(0 0 0 / 0.1) 0px 3px 3px -1.5px, rgb(0 0 0 / 0.1) 0px 6px 6px -3px, rgb(0 0 0 / 0.1) 0px 12px 12px -6px, rgb(0 0 0 / 0.1) 0px 24px 24px -12px"
+      },
+      "box-solid-weak": {
+        "value": "rgb(0 0 0 / 0.3) 0px 2px 4px, rgb(0 0 0 / 0.03) 0px 0px 0px 1px, rgb(0 0 0 / 0.1) 0px 7px 13px -3px, rgb(0 0 0 / 0.2) 0px -3px 0px inset, rgb(255 255 255 / 0.1) 0px -8px 10px inset, rgb(255 255 255 / 0.15) 0px -4px 0px inset"
+      },
+      "box-solid-strong": {
+        "value": "rgb(0 0 0 / 0.4) 0px 2px 4px, rgb(0 0 0 / 0.3) 0px 7px 13px -3px, rgb(0 0 0 / 0.35) 0px -3px 0px inset, rgb(255 255 255 / 0.1) 0px -8px 10px inset, rgb(255 255 255 / 0.15) 0px -4px 0px inset"
+      },
+      "outline-weak": {
+        "value": "0 0 0 1px rgb(0 0 0 / 0.05), 0 1px 2px 0 rgb(0 0 0 / 0.05)"
+      },
+      "outline-md": {
+        "value": "0 0 0 1px rgb(0 0 0 / 0.1)"
+      },
+      "outline-glow-weak": {
+        "value": "rgb(0 0 0 / 0.05) 0px 6px 24px 0px, rgb(0 0 0 / 0.08) 0px 0px 0px 1px"
+      },
+      "outline-glow-strong": {
+        "value": "rgb(0 0 0 / 0.16) 0px 10px 36px 0px, rgb(0 0 0 / 0.06) 0px 0px 0px 1px"
       },
       "outline-strong": {
-        "value": "0 0 0 1px rgb(var(--tone-neutral-01) / 0.6)"
+        "value": "rgb(0 0 0 / 0.25) 0px 1px 1px, rgb(0 0 0 / 0.13) 0px 0px 1px 1px"
       },
-      "outline-strong-50": {
-        "value": "0 0 0 2px rgb(var(--tone-neutral-01) / 0.6)"
+      "highlight-weak": {
+        "value": "rgb(0 0 0 / 0.3) 0px 0px 0px 1px"
       },
-      "outline-strong-75": {
-        "value": "0 0 0 3px rgb(var(--tone-neutral-01) / 0.6)"
+      "highlight-md": {
+        "value": "rgb(0 0 0 / 0.5) 0px 0px 0px 1px, rgb(0 0 0 / 0.3) 0px 4px 6px -1px"
       },
-      "outline-strong-100": {
-        "value": "0 0 0 4px rgb(var(--tone-neutral-01) / 0.6)"
+      "highlight-strong": {
+        "value": "rgb(0 0 0 / 0.4) 0px 0px 0px 2px, rgb(0 0 0 / 0.65) 0px 4px 6px -1px"
       }
     }
   }

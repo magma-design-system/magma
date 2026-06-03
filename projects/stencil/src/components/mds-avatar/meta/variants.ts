@@ -7,15 +7,15 @@ const avatarVariant = [
   'bg-label-lime-05',
   'bg-label-orange-05',
   'bg-label-orchid-05',
+  'bg-label-purple-05',
+  'bg-label-red-05',
   'bg-label-sky-05',
-  'bg-label-yellow-05',
   'bg-label-violet-05',
+  'bg-label-yellow-05',
   'bg-status-error-05',
   'bg-status-info-05',
   'bg-status-success-05',
   'bg-status-warning-05',
-]
+];
 
-export {
-  avatarVariant,
-}
+export { avatarVariant };

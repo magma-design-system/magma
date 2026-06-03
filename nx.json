@@ -1,26 +1,31 @@
 {
-  "implicitDependencies": {
-    "workspace.json": "*",
-    "package.json": {
-      "dependencies": "*",
-      "devDependencies": "*"
-    },
-    "nx.json": "*"
+  "namedInputs": {
+    "default": ["{projectRoot}/**/*", "sharedGlobals"],
+    "sharedGlobals": [
+      "{workspaceRoot}/workspace.json",
+      "{workspaceRoot}/package.json",
+      "{workspaceRoot}/nx.json"
+    ],
+    "production": ["default"]
   },
   "targetDefaults": {
     "build": {
       "cache": true,
-      "dependsOn": ["^build"]
+      "dependsOn": ["^build"],
+      "inputs": ["default", "^default"]
     },
     "test": {
       "cache": true,
-      "dependsOn": ["build"]
+      "dependsOn": ["build"],
+      "inputs": ["default", "^default"]
     },
     "lint": {
-      "cache": true
+      "cache": true,
+      "inputs": ["default", "^default"]
     },
     "package": {
-      "cache": true
+      "cache": true,
+      "inputs": ["default", "^default"]
     }
   },
   "defaultBase": "dev"

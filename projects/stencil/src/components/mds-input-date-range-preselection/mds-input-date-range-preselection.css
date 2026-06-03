@@ -1,16 +1,90 @@
+@import './css/mds-input-date-range-preselection-fouc.css';
+
+/**
+ * @prop --mds-date-range-preselection-default-background: Background used for the default (unselected) preselection state
+ * @prop --mds-date-range-preselection-default-border: Border color used for the default preselection state
+ * @prop --mds-date-range-preselection-default-color: Text color used in the default preselection state
+ * @prop --mds-date-range-preselection-selected-background: Background used for the selected preselection state
+ * @prop --mds-date-range-preselection-selected-border: Border color used for the selected preselection state
+ * @prop --mds-date-range-preselection-selected-color: Text color used in the selected preselection state
+ * @prop --mds-date-range-preselection-hover-background: Background used when a preselection item is hovered
+ * @prop --mds-date-range-preselection-hover-border: Border color used on hover state
+ * @prop --mds-date-range-preselection-hover-color: Text color used on hover state
+ */
+
+@property --mds-date-range-preselection-default-background {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-08) / 0);
+  syntax: '<color>';
+}
+
+@property --mds-date-range-preselection-default-border {
+  inherits: false;
+  initial-value: var(--tone-neutral-08);
+  syntax: '<color>';
+}
+
+@property --mds-date-range-preselection-default-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-03));
+  syntax: '<color>';
+}
+
+@property --mds-date-range-preselection-selected-background {
+  inherits: false;
+  initial-value: rgb(var(--variant-primary-03));
+  syntax: '<color>';
+}
+
+@property --mds-date-range-preselection-selected-border {
+  inherits: false;
+  initial-value: var(--variant-primary-03);
+  syntax: '<color>';
+}
+
+@property --mds-date-range-preselection-selected-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral));
+  syntax: '<color>';
+}
+
+@property --mds-date-range-preselection-hover-background {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral));
+  syntax: '<color>';
+}
+
+@property --mds-date-range-preselection-hover-border {
+  inherits: false;
+  initial-value: var(--tone-neutral);
+  syntax: '<color>';
+}
+
+@property --mds-date-range-preselection-hover-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-03));
+  syntax: '<color>';
+}
+
 :host {
   --mds-date-range-preselection-default-background: rgb(var(--tone-neutral-08) / 0);
   --mds-date-range-preselection-default-border: var(--tone-neutral-08);
-  --mds-date-range-preselection-default-color: theme('colors.tone-neutral-03');
-  --mds-date-range-preselection-selected-background: theme('colors.variant-primary-03');
+  --mds-date-range-preselection-default-color: rgb(var(--tone-neutral-03));
+  --mds-date-range-preselection-selected-background: rgb(var(--variant-primary-03));
   --mds-date-range-preselection-selected-border: var(--variant-primary-03);
-  --mds-date-range-preselection-selected-color: theme('colors.tone-neutral');
-  --mds-date-range-preselection-hover-background: theme('colors.tone-neutral');
+  --mds-date-range-preselection-selected-color: rgb(var(--tone-neutral));
+  --mds-date-range-preselection-hover-background: rgb(var(--tone-neutral));
   --mds-date-range-preselection-hover-border: var(--tone-neutral);
-  --mds-date-range-preselection-hover-color: theme('colors.tone-neutral-03');
-  /* private */ --mds-date-range-preselection-background: var(--mds-date-range-preselection-default-background);
-  /* private */ --mds-date-range-preselection-border: var(--mds-date-range-preselection-default-border);
-  /* private */ --mds-date-range-preselection-color: var(--mds-date-range-preselection-default-color);
+  --mds-date-range-preselection-hover-color: rgb(var(--tone-neutral-03));
+
+  /* private */
+  --mds-date-range-preselection-background: var(--mds-date-range-preselection-default-background);
+
+  /* private */
+  --mds-date-range-preselection-border: var(--mds-date-range-preselection-default-border);
+
+  /* private */
+  --mds-date-range-preselection-color: var(--mds-date-range-preselection-default-color);
 
   display: inline-flex;
   justify-self: start;

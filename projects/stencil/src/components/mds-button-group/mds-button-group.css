@@ -1,6 +1,6 @@
+@import './css/mds-button-group-fouc.css';
+
 :host {
   display: inline-flex;
-  gap: theme('spacing.50');
+  gap: --spacing(50);
 }
-
-@import '../../tailwind/fouc.css';

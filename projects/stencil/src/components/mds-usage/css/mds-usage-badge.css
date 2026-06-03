@@ -1,8 +1,0 @@
-.badge {
-  background-color: var(--mds-usage-badge-background);
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-  color: var(--mds-usage-badge-color);
-  justify-self: flex-start;
-  transition-property: background-color, color;
-}

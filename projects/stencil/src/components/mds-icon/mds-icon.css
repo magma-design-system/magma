@@ -1,11 +1,11 @@
-:host {
-  @apply
-    aspect-square
-    w-600;
+@import '../../tailwind/fouc.css';
 
+:host {
   align-items: center;
+  aspect-ratio: var(--aspect-square);
   display: inline-flex;
   justify-content: center;
+  width: --spacing(600);
 }
 
 .icon {
@@ -14,12 +14,9 @@
   font-style: normal;
   justify-content: center;
   width: 100%;
-
 }
 
 .icon svg {
   height: auto;
   width: 100%;
 }
-
-@import '../../tailwind/fouc.css';

@@ -1,9 +1,3 @@
-const mentionSizeDictionary = [
-  'sm',
-  'md',
-  'lg',
-]
+const mentionSizeDictionary = ['sm', 'md', 'lg'];
 
-export {
-  mentionSizeDictionary,
-}
+export { mentionSizeDictionary };

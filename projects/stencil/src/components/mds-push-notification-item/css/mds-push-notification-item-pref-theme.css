@@ -1,13 +1,14 @@
-:host-context(.pref-theme-dark) {
-  --mds-push-notifications-shadow: theme('boxShadow.outline') inset;
+:host-context(:root.pref-theme-dark:not(.pref-theme-scheme-light)) {
+  --mds-push-notifications-shadow: var(--shadow-outline) inset;
 
-  background-color: theme('colors.tone-neutral-09');
+  background-color: rgb(var(--tone-neutral-09));
 }
 
 @media (prefers-color-scheme: dark) {
-  :host-context(.pref-theme-system) {
-    --mds-push-notifications-shadow: theme('boxShadow.outline') inset;
+  :host-context(:root.pref-theme-system:not(.pref-theme-scheme-light)),
+  :host-context(:root:not([data-magma-pref])) {
+    --mds-push-notifications-shadow: var(--shadow-outline) inset;
 
-    background-color: theme('colors.tone-neutral-09');
+    background-color: rgb(var(--tone-neutral-09));
   }
 }

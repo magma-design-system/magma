@@ -4,8 +4,6 @@ const inputTipItemVariantDictionary = [
   'disabled',
   'readonly',
   'text',
-]
+];
 
-export {
-  inputTipItemVariantDictionary,
-}
+export { inputTipItemVariantDictionary };

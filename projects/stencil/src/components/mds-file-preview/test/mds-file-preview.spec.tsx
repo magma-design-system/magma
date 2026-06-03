@@ -1,12 +1,12 @@
-import { newSpecPage } from '@stencil/core/testing'
-import { MdsFilePreview } from '../mds-file-preview'
+import { newSpecPage } from '@stencil/core/testing';
+import { MdsFilePreview } from '../mds-file-preview';
 
 describe('mds-file-preview', () => {
   it('renders', async () => {
     const page = await newSpecPage({
       components: [MdsFilePreview],
       html: '<mds-file-preview lang="it" filename=""></mds-file-preview>',
-    })
+    });
     expect(page.root).toEqualHtml(`
       <mds-file-preview lang="it" filename="" format="attachment" truncate="word">
         <mock:shadow-root>
@@ -26,6 +26,6 @@ describe('mds-file-preview', () => {
           </div>
         </mock:shadow-root>
       </mds-file-preview>
-    `)
-  })
-})
+    `);
+  });
+});

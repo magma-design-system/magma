@@ -1,61 +1,64 @@
-export type ExtensionSuffixType =
-  | '7z'
-  | 'ace'
-  | 'ai'
-  | 'db'
-  | 'default'
-  | 'dmg'
-  | 'doc'
-  | 'docm'
-  | 'docx'
-  | 'eml'
-  | 'eps'
-  | 'exe'
-  | 'flac'
-  | 'gif'
-  | 'heic'
-  | 'htm'
-  | 'html'
-  | 'jpe'
-  | 'jpeg'
-  | 'jpg'
-  | 'js'
-  | 'json'
-  | 'jsx'
-  | 'm2v'
-  | 'mp2'
-  | 'mp3'
-  | 'mp4'
-  | 'mp4v'
-  | 'mpeg'
-  | 'mpg'
-  | 'mpg4'
-  | 'mpga'
-  | 'odf'
-  | 'odp'
-  | 'ods'
-  | 'odt'
-  | 'odt'
-  | 'ole'
-  | 'p7m'
-  | 'pdf'
-  | 'php'
-  | 'png'
-  | 'ppt'
-  | 'rar'
-  | 'rtf'
-  | 'sass'
-  | 'shtml'
-  | 'svg'
-  | 'tar'
-  | 'tiff'
-  | 'ts'
-  | 'tsd'
-  | 'txt'
-  | 'wav'
-  | 'webp'
-  | 'xar'
-  | 'xls'
-  | 'xlsx'
-  | 'xml'
-  | 'zip'
+export const extensionSuffixDictionary = [
+  '7z',
+  'ace',
+  'ai',
+  'db',
+  'default',
+  'dmg',
+  'doc',
+  'docm',
+  'docx',
+  'eml',
+  'eps',
+  'exe',
+  'flac',
+  'gif',
+  'heic',
+  'htm',
+  'html',
+  'jpe',
+  'jpeg',
+  'jpg',
+  'js',
+  'json',
+  'jsx',
+  'm2v',
+  'mp2',
+  'mp3',
+  'mp4',
+  'mp4v',
+  'mpeg',
+  'mpg',
+  'mpg4',
+  'mpga',
+  'odf',
+  'odp',
+  'ods',
+  'odt',
+  'ole',
+  'p7m',
+  'pdf',
+  'php',
+  'png',
+  'ppt',
+  'rar',
+  'rtf',
+  'sass',
+  'shtml',
+  'svg',
+  'tar',
+  'tiff',
+  'ts',
+  'tsd',
+  'txt',
+  'wav',
+  'webp',
+  'xar',
+  'xls',
+  'xlsx',
+  'xml',
+  'zip',
+] as const;
+export type ExtensionSuffixType = (typeof extensionSuffixDictionary)[number];
+
+export * from '@dictionary/file-extensions';

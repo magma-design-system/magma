@@ -9,12 +9,14 @@
     "lib": [
       "es2017"
     ],
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "module": "esnext",
     "target": "es2017",
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "resolveJsonModule": false
+    "resolveJsonModule": false,
+    "strict": false,
+    "types": ["node"]
   },
   "include": [
     "scripts"

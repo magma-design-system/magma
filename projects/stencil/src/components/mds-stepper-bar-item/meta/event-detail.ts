@@ -1,3 +1,3 @@
 export interface MdsStepperBarItemEventDetail {
-  value: string
+  value: string;
 }

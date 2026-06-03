@@ -108,10 +108,6 @@ const typographyDefaultsVariant = {
       info: 'text-info-tip',
     },
   },
-}
+};
 
-export {
-  typographyDefaultsVariant,
-}
-
-
+export { typographyDefaultsVariant };

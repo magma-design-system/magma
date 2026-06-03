@@ -1,29 +1,7 @@
-const snapDictionary = [
-  'center',
-  'end',
-  'none',
-  'start',
-]
+const snapDictionary = ['center', 'end', 'none', 'start'];
 
-const navigationDictionary = [
-  'none',
-  'scrollbar',
-  'position',
-]
+const navigationDictionary = ['none', 'scrollbar', 'position'];
 
-const viewportDictionary = [
-  'all',
-  'tv',
-  'xlarge',
-  'large',
-  'wide',
-  'desktop',
-  'tablet',
-  'none',
-]
+const viewportDictionary = ['all', 'tv', 'xlarge', 'large', 'wide', 'desktop', 'tablet', 'none'];
 
-export {
-  snapDictionary,
-  navigationDictionary,
-  viewportDictionary,
-}
+export { snapDictionary, navigationDictionary, viewportDictionary };

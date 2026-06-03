@@ -1,9 +1,3 @@
-export type InputSwitchType =
-  | 'checkbox'
-  | 'radio'
-  | 'switch'
+export type InputSwitchType = 'checkbox' | 'radio' | 'switch';
 
-export type InputSwitchSizeType =
-  | 'sm'
-  | 'md'
-  | 'lg'
+export type InputSwitchSizeType = 'sm' | 'md' | 'lg';

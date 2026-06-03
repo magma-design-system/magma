@@ -1,41 +1,46 @@
-:host-context(.pref-contrast-more):host([variant="count-empty"]) {
-  --mds-input-tip-item-color: theme('colors.status-info-10');
-  --mds-input-tip-item-background: theme('colors.status-info-05');
-}
+:host-context(:root.pref-contrast-more) {
+  &:host([variant='count-empty']) {
+    --mds-input-tip-item-color: rgb(var(--status-info-10));
+    --mds-input-tip-item-background: rgb(var(--status-info-05));
+  }
 
-:host-context(.pref-contrast-more):host([variant="count-incomplete"]) {
-  --mds-input-tip-item-color: theme('colors.status-success-10');
-  --mds-input-tip-item-background: theme('colors.status-success-05');
-}
+  &:host([variant='count-incomplete']) {
+    --mds-input-tip-item-color: rgb(var(--status-success-10));
+    --mds-input-tip-item-background: rgb(var(--status-success-05));
+  }
 
-:host-context(.pref-contrast-more):host([variant="count-almost"]) {
-  --mds-input-tip-item-color: theme('colors.status-warning-10');
-  --mds-input-tip-item-background: theme('colors.status-warning-05');
-}
+  &:host([variant='count-almost']) {
+    --mds-input-tip-item-color: rgb(var(--status-warning-10));
+    --mds-input-tip-item-background: rgb(var(--status-warning-05));
+  }
 
-:host-context(.pref-contrast-more):host([variant="count-almost-full"]) {
-  --mds-input-tip-item-color: theme('colors.status-error-10');
-  --mds-input-tip-item-background: theme('colors.status-error-05');
+  &:host([variant='count-almost-full']) {
+    --mds-input-tip-item-color: rgb(var(--status-error-10));
+    --mds-input-tip-item-background: rgb(var(--status-error-05));
+  }
 }
 
 @media (prefers-contrast: more) {
-  :host-context(.pref-contrast-system):host([variant="count-empty"]) {
-    --mds-input-tip-item-color: theme('colors.status-info-10');
-    --mds-input-tip-item-background: theme('colors.status-info-05');
-  }
+  :host-context(:root.pref-contrast-system),
+  :host-context(:root:not([data-magma-pref])) {
+    &:host([variant='count-empty']) {
+      --mds-input-tip-item-color: rgb(var(--status-info-10));
+      --mds-input-tip-item-background: rgb(var(--status-info-05));
+    }
 
-  :host-context(.pref-contrast-system):host([variant="count-incomplete"]) {
-    --mds-input-tip-item-color: theme('colors.status-success-10');
-    --mds-input-tip-item-background: theme('colors.status-success-05');
-  }
+    &:host([variant='count-incomplete']) {
+      --mds-input-tip-item-color: rgb(var(--status-success-10));
+      --mds-input-tip-item-background: rgb(var(--status-success-05));
+    }
 
-  :host-context(.pref-contrast-system):host([variant="count-almost"]) {
-    --mds-input-tip-item-color: theme('colors.status-warning-10');
-    --mds-input-tip-item-background: theme('colors.status-warning-05');
-  }
+    &:host([variant='count-almost']) {
+      --mds-input-tip-item-color: rgb(var(--status-warning-10));
+      --mds-input-tip-item-background: rgb(var(--status-warning-05));
+    }
 
-  :host-context(.pref-contrast-system):host([variant="count-almost-full"]) {
-    --mds-input-tip-item-color: theme('colors.status-error-10');
-    --mds-input-tip-item-background: theme('colors.status-error-05');
+    &:host([variant='count-almost-full']) {
+      --mds-input-tip-item-color: rgb(var(--status-error-10));
+      --mds-input-tip-item-background: rgb(var(--status-error-05));
+    }
   }
 }

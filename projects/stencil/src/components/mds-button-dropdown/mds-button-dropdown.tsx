@@ -1,8 +1,14 @@
-import { Component, Host, h, Prop } from '@stencil/core'
-import miBaselineKeyboardArrowDown from '@icon/mi/baseline/keyboard-arrow-down.svg'
-import { ButtonSizeType, ButtonTargetType, ButtonType, ButtonDropdownVariantType } from '@type/button'
-import { ToneMinimalVariantType } from '@type/variant'
-import { TypographyTruncateType } from '@type/text'
+import { Component, Host, h, Prop } from '@stencil/core';
+import miBaselineKeyboardArrowDown from '@icon/mi/baseline/keyboard-arrow-down.svg';
+import {
+  ButtonSizeType,
+  ButtonTargetType,
+  ButtonType,
+  ButtonDropdownVariantType,
+} from '@type/button';
+import { ToneMinimalVariantType } from '@type/tone';
+
+import { TypographyTruncateType } from '@type/text';
 
 @Component({
   tag: 'mds-button-dropdown',
@@ -10,73 +16,72 @@ import { TypographyTruncateType } from '@type/text'
   shadow: true,
 })
 export class MdsButtonDropdown {
-
   /**
    * Specifies le text label of the component
    */
-  @Prop() readonly label: string
+  @Prop() readonly label: string;
 
   /**
    * Specifies if the component is focused when is loaded on the viewport
    */
-  @Prop() readonly autoFocus: boolean
+  @Prop() readonly autoFocus: boolean;
 
   /**
    * The icon displayed in the button
    */
-  @Prop({ reflect: true, mutable: true }) icon?: string
+  @Prop({ reflect: true, mutable: true }) icon?: string;
 
   /**
    * The type of the button element
    */
-  @Prop({ reflect: true }) readonly type?: ButtonType = 'submit'
+  @Prop({ reflect: true }) readonly type?: ButtonType = 'submit';
 
   /**
    * Specifies the color variant for the button
    */
-  @Prop({ reflect: true }) readonly variant?: ButtonDropdownVariantType = 'primary'
+  @Prop({ reflect: true }) readonly variant?: ButtonDropdownVariantType = 'primary';
 
   /**
    * Specifies the tone variant for the button
    */
-  @Prop({ reflect: true }) readonly tone?: ToneMinimalVariantType = 'strong'
+  @Prop({ reflect: true }) readonly tone?: ToneMinimalVariantType = 'strong';
 
   /**
    * Specifies the size for the button
    */
-  @Prop({ reflect: true }) readonly size: ButtonSizeType = 'md'
+  @Prop({ reflect: true }) readonly size: ButtonSizeType = 'md';
 
   /**
    * Specifies if the button is active or not
    */
-  @Prop({ mutable: true, reflect: true }) active: boolean
+  @Prop({ mutable: true, reflect: true }) active: boolean;
 
   /**
    * Specifies if the component is disabled or not
    */
-  @Prop({ mutable: true, reflect: true }) disabled?: boolean
+  @Prop({ mutable: true, reflect: true }) disabled?: boolean;
 
   /**
    * Specifies if the button is awaiting for a response
    */
-  @Prop({ reflect: true, mutable: true }) await?: boolean
+  @Prop({ reflect: true, mutable: true }) await?: boolean;
 
   /**
    * Specifies the URL target of the button
    */
-  @Prop({ reflect: true }) readonly href?: string
+  @Prop({ reflect: true }) readonly href?: string;
 
   /**
    * Specifies the target of the URL, if self or blank
    */
-  @Prop() readonly target: ButtonTargetType = 'self'
+  @Prop() readonly target: ButtonTargetType = 'self';
 
   /**
    * Specifies if the text shoud be truncated or should behave as a normal text
    */
-  @Prop({ reflect: true }) readonly truncate?: TypographyTruncateType = 'word'
+  @Prop({ reflect: true }) readonly truncate?: TypographyTruncateType = 'word';
 
-  render () {
+  render() {
     return (
       <Host>
         <mds-button
@@ -91,7 +96,8 @@ export class MdsButtonDropdown {
           tone={this.tone}
           type={this.type}
           variant={this.variant}
-        >{ this.label }</mds-button>
+          label={this.label}
+        ></mds-button>
         <mds-button
           active={this.active}
           autoFocus={this.autoFocus}
@@ -106,10 +112,10 @@ export class MdsButtonDropdown {
           type={this.type}
           variant={this.variant}
         ></mds-button>
-        <mds-dropdown target='.dropdown-action' part="dropdown">
+        <mds-dropdown target=".dropdown-action" part="dropdown">
           <slot></slot>
         </mds-dropdown>
       </Host>
-    )
+    );
   }
 }

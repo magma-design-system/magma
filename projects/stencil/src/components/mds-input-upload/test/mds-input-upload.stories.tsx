@@ -1,5 +1,5 @@
-import { h } from '@stencil/core'
-import { attachmentSortDictionary } from '../meta/dictionary'
+import { h } from '@stencil/core';
+import { attachmentSortDictionary } from '../meta/dictionary';
 
 export default {
   title: 'Form / Input Upload',
@@ -10,8 +10,7 @@ export default {
     },
     'max-file-size': {
       type: { name: 'number' },
-      description:
-        'Specifies the max size of a single file that can be uploaded in MB',
+      description: 'Specifies the max size of a single file that can be uploaded in MB',
     },
     'max-files': {
       type: { name: 'number' },
@@ -25,13 +24,13 @@ export default {
       control: { type: 'select' },
     },
   },
-}
+};
 
-const Template = args => (
+const Template = (args) => (
   <div>
     <mds-input-upload {...args}></mds-input-upload>
   </div>
-)
+);
 
 export const Default = {
   render: Template,
@@ -40,7 +39,7 @@ export const Default = {
     // icon: 'mi/baseline/email',
     accept: '',
   },
-}
+};
 
 export const CustomAccept = {
   render: Template,
@@ -49,7 +48,7 @@ export const CustomAccept = {
     accept: '.pdf, image/jpeg',
     'max-file-size': 70,
   },
-}
+};
 
 export const Multiple = {
   render: Template,
@@ -59,4 +58,4 @@ export const Multiple = {
     'max-file-size': 70,
     'max-files': 3,
   },
-}
+};

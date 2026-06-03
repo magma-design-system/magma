@@ -1,4 +1,4 @@
-import { Component, Host, h } from '@stencil/core'
+import { Component, Host, h } from '@stencil/core';
 
 @Component({
   tag: 'mds-separator',
@@ -6,10 +6,7 @@ import { Component, Host, h } from '@stencil/core'
   shadow: true,
 })
 export class MdsSeparator {
-
-  render () {
-    return (
-      <Host />
-    )
+  render() {
+    return <Host />;
   }
 }

@@ -1,17 +1,18 @@
-:host-context(.pref-contrast-more) {
-  --mds-filter-items-background-active: theme('colors.tone-neutral-09');
-  --mds-filter-items-background: theme('colors.tone-neutral-10');
-  --mds-filter-wrapper-shadow-opacity: theme('opacity.30');
-  --mds-filter-wrapper-shadow-color: theme('colors.tone-neutral-07');
-  --mds-filter-wrapper-shadow: 0 0 0 theme('size.50') var(--mds-filter-wrapper-shadow-color) inset;
+:host-context(:root.pref-contrast-more) {
+  --mds-filter-items-background-active: rgb(var(--tone-neutral-09));
+  --mds-filter-items-background: rgb(var(--tone-neutral-10));
+  --mds-filter-wrapper-shadow-opacity: 30%;
+  --mds-filter-wrapper-shadow-color: rgb(var(--tone-neutral-07));
+  --mds-filter-wrapper-shadow: 0 0 0 --spacing(50) var(--mds-filter-wrapper-shadow-color) inset;
 }
 
 @media (prefers-contrast: more) {
-  :host-context(.pref-contrast-system) {
-    --mds-filter-items-background-active: theme('colors.tone-neutral-09');
-    --mds-filter-items-background: theme('colors.tone-neutral-10');
-    --mds-filter-wrapper-shadow-opacity: theme('opacity.30');
-    --mds-filter-wrapper-shadow-color: theme('colors.tone-neutral-07');
-    --mds-filter-wrapper-shadow: 0 0 0 theme('size.50') var(--mds-filter-wrapper-shadow-color) inset;
+  :host-context(:root.pref-contrast-system),
+  :host-context(:root:not([data-magma-pref])) {
+    --mds-filter-items-background-active: rgb(var(--tone-neutral-09));
+    --mds-filter-items-background: rgb(var(--tone-neutral-10));
+    --mds-filter-wrapper-shadow-opacity: 30%;
+    --mds-filter-wrapper-shadow-color: rgb(var(--tone-neutral-07));
+    --mds-filter-wrapper-shadow: 0 0 0 --spacing(50) var(--mds-filter-wrapper-shadow-color) inset;
   }
 }

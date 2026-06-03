@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 module.exports = {
   content: [
-    './src/**/*.{js,json,ts,tsx}',
+    './src/components/**/*.{js,json,ts,tsx}',
+    './src/type/**/*.ts',
     require.resolve('@maggioli-design-system/svg-icons/dist/iconsauce.json'),
   ],
   plugin: [
@@ -8,4 +10,4 @@ module.exports = {
     require('@iconsauce/mdi-svg'),
     require('@iconsauce/mgg-icons'),
   ],
-}
+};

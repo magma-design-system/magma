@@ -1,14 +1,14 @@
-import { h } from '@stencil/core'
-import { argTypes, URLs } from '../meta/storybook'
+import { h } from '@stencil/core';
+import { argTypes, URLs } from '../meta/storybook';
 
 export default {
   title: 'UI / Image',
   argTypes,
-}
+};
 
-const Template = args => <mds-img {...args} />
+const Template = (args) => <mds-img {...args} />;
 
-const TemplateConsumption = args => (
+const TemplateConsumption = (args) => (
   <div class="grid gap-600 tablet:grid-cols-2 auto-rows-min">
     <div>
       <mds-img {...args} />
@@ -17,12 +17,12 @@ const TemplateConsumption = args => (
       <div class="grid gap-100 auto-rows-min">
         <mds-text typography="h6">Consumption Low</mds-text>
         <mds-text typography="detail">
-          Image is not loaded by default, alt text attribute is displayed as
-          content, if element is clicked the image is loaded.{' '}
+          Image is not loaded by default, alt text attribute is displayed as content, if element is
+          clicked the image is loaded.{' '}
         </mds-text>
         <mds-text typography="detail">
-          It's recommended to load black and white image at 1X resolution to
-          decrease CPU consumption and data bandwidth.
+          It's recommended to load black and white image at 1X resolution to decrease CPU
+          consumption and data bandwidth.
         </mds-text>
       </div>
       <div class="grid gap-100 auto-rows-min">
@@ -31,8 +31,8 @@ const TemplateConsumption = args => (
           Image is loaded by default, loading attribute will be applied.
         </mds-text>
         <mds-text typography="detail">
-          It's recommended to load an image at 1X resolution to decrease CPU
-          consumption and data bandwidth.
+          It's recommended to load an image at 1X resolution to decrease CPU consumption and data
+          bandwidth.
         </mds-text>
       </div>
       <div class="grid gap-100 auto-rows-min">
@@ -43,45 +43,43 @@ const TemplateConsumption = args => (
       </div>
     </div>
   </div>
-)
+);
 
-const TemplateBook = args => (
+const TemplateBook = (args) => (
   <div class="grid gap-600">
     <div class="grid gap-600 max-mobile:grid-cols-1 tablet:grid-cols-1 grid-cols-3 auto-rows-min">
       <div class="grid gap-100 auto-rows-min">
         <mds-text typography="h6">Consumption Low</mds-text>
         <mds-text typography="detail">
-          Set consumption to <b>low</b> in <b>Magma accessibility</b> tab in
-          storybook.
+          Set consumption to <b>low</b> in <b>Magma accessibility</b> tab in storybook.
         </mds-text>
       </div>
     </div>
     <div class="grid gap-600 grid-cols-fit-sm">
       <mds-img {...args} />
       <mds-img
-        class="aspect-book rounded-md shadow"
+        class="aspect-book object-cover rounded-md shadow"
         src="./book-cover-11.webp"
         srcset-consumption="./book-cover-11.webp low"
         alt="Concorso regione Valle d'Aosta 86 assistenti amministrativo contabili"
       />
       <mds-img
-        class="aspect-book rounded-md shadow"
+        class="aspect-book object-cover rounded-md shadow"
         src="./book-cover-10.webp"
         srcset-consumption="./book-cover-10.webp low"
         alt="Il principio di rotazione e il regolamento degli appalti sotto soglia di lavori, forniture e servizi"
       />
     </div>
   </div>
-)
+);
 
 export const Default = {
   render: Template,
 
   args: {
     src: URLs[0],
-    class: 'aspect-book',
   },
-}
+};
 
 export const AltText = {
   render: Template,
@@ -90,7 +88,7 @@ export const AltText = {
     alt: 'This is an alternative text',
     src: URLs[0],
   },
-}
+};
 
 export const AspectRatio = {
   render: Template,
@@ -99,7 +97,7 @@ export const AspectRatio = {
     class: 'aspect-square',
     src: URLs[2],
   },
-}
+};
 
 export const SrcsetConsumption = {
   render: TemplateConsumption,
@@ -109,7 +107,7 @@ export const SrcsetConsumption = {
     'srcset-consumption':
       'https://placehold.co/600x400?text=Consumption+LOW low, https://placehold.co/300x200?text=Consumption+MEDIUM medium, https://placehold.co/1200x800/orange/green/?text=Consumption+HIGH high',
   },
-}
+};
 
 export const SrcsetConsumptionAlternative = {
   render: TemplateConsumption,
@@ -120,7 +118,7 @@ export const SrcsetConsumptionAlternative = {
     'srcset-consumption':
       'https://placehold.co/600x400?text=Consumption+LOW low, https://placehold.co/300x200?text=Consumption+MEDIUM medium',
   },
-}
+};
 
 export const SrcsetConsumptionBookExample = {
   render: TemplateBook,
@@ -131,7 +129,7 @@ export const SrcsetConsumptionBookExample = {
     src: './book-cover-12.webp',
     'srcset-consumption': './book-cover-12.webp low',
   },
-}
+};
 
 export const BrokenImage = {
   render: TemplateBook,
@@ -142,4 +140,4 @@ export const BrokenImage = {
     src: './broken-image-path.jpg',
     'srcset-consumption': './broken-image-path.jpg low',
   },
-}
+};

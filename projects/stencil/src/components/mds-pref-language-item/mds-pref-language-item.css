@@ -1,5 +1,5 @@
+@import './css/mds-pref-language-item-fouc.css';
+
 :host {
   display: block;
 }
-
-@import '../../tailwind/fouc.css';

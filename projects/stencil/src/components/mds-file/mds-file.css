@@ -1,23 +1,50 @@
-@import '~@maggioli-design-system/styles/dist/css/animations.css'; /* included for focus effect */
-@import '../../tailwind/components.css';
-@tailwind components;
+@import '~@maggioli-design-system/styles/dist/css/animations.css';
+@import './css/mds-file-fouc.css';
+
+/**
+ * @prop --mds-file-preview-icon-color: Sets the color of the file preview icon
+ * @prop --mds-file-preview-color: Sets the text color used in the file preview
+ * @prop --mds-file-preview-icon-bacground: Sets the background color of the file preview icon
+ */
+
+@property --mds-file-preview-icon-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-04));
+  syntax: '<color>';
+}
+
+@property --mds-file-preview-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-04));
+  syntax: '<color>';
+}
+
+@property --mds-file-preview-icon-bacground {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-10));
+  syntax: '<color>';
+}
 
 :host {
+  --mds-file-preview-icon-color: rgb(var(--tone-neutral-04));
+  --mds-file-preview-color: rgb(var(--tone-neutral-04));
+  --mds-file-preview-icon-bacground: rgb(var(--tone-neutral-10));
+  --private-icon-download-offset: 10%;
 
-  @apply
-    duration-200
-    ease-out
-    focus-bounce
-    rounded-md;
+  @apply focus-bounce;
 
   align-items: stretch;
-  background-color: theme('colors.tone-neutral');
-  box-shadow: theme('boxShadow.sharp');
-  color: theme('colors.tone-neutral-04');
+  background-color: rgb(var(--tone-neutral));
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-outline-weak);
+  color: rgb(var(--tone-neutral-04));
+  corner-shape: var(--magma-corner-shape, round);
   cursor: pointer;
   display: inline-flex;
   overflow: hidden;
+  transition-duration: var(--duration-200);
   transition-property: box-shadow, outline, outline-offset;
+  transition-timing-function: var(--ease-out);
   width: 100%;
 }
 
@@ -26,15 +53,34 @@
 }
 
 :host(:hover) {
-  box-shadow: theme('boxShadow.md-sharp');
+  box-shadow: var(--shadow-box-md);
+
+  & .download-icon {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  & .image-preview,
+  & .icon-preview {
+    opacity: 0;
+    transform: translateY(var(--private-icon-download-offset));
+  }
+}
+
+.download-icon {
+  align-items: center;
+  display: flex;
+  inset: 0;
+  justify-content: center;
+  opacity: 0;
+  position: absolute;
+  transform: translateY(calc(var(--private-icon-download-offset) * -1));
+  transition-duration: inherit;
+  transition-property: opacity, transform;
+  transition-timing-function: inherit;
 }
 
 .preview {
-  @apply
-    duration-300
-    ease-in-out
-    w-1400;
-
   align-items: center;
   background-color: var(--mds-file-preview-icon-bacground);
   color: var(--mds-file-preview-color);
@@ -43,44 +89,47 @@
   flex-shrink: 0;
   justify-content: center;
   position: relative;
+  transition-duration: inherit;
   transition-property: color, background-color, fill;
-
+  transition-timing-function: var(--ease-in-out);
+  width: --spacing(1400);
 }
 
 .image-preview {
-  @apply
-    bottom-300
-    left-300
-    right-300
-    top-300;
-
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
+  inset: --spacing(300);
   position: absolute;
 }
 
-.info {
-  @apply
-    min-w-0
-    px-300
-    py-200;
+.image-preview,
+.icon-preview {
+  transition-duration: inherit;
+  transition-property: opacity, transform;
+  transition-timing-function: inherit;
+}
 
+.info {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
+  gap: --spacing(100);
+  height: --spacing(1400);
+  justify-content: center;
+  min-width: 0px;
+  padding: 0 --spacing(300);
 }
 
 .filename {
-  @apply min-w-0;
-
   display: flex;
+  min-width: 0px;
 }
 
 .name {
-  @apply
-    min-w-0
-    truncate;
+  @apply truncate;
+
+  min-width: 0px;
 }
 
 .extension {
@@ -88,12 +137,10 @@
 }
 
 .detail {
-  @apply
-    gap-200
-    min-w-0;
-
-  align-items: center;
+  align-items: baseline;
   display: flex;
+  gap: --spacing(200);
+  min-width: 0px;
 }
 
 .suffix {
@@ -102,29 +149,26 @@
 }
 
 .description {
-  @apply
-    min-w-0
-    truncate;
+  @apply truncate;
 
-  color: theme('colors.tone-neutral-05');
+  color: rgb(var(--tone-neutral-05));
+  min-width: 0px;
 }
 
 .indicator {
-  @apply pr-400;
-
   align-items: center;
   display: flex;
   justify-content: center;
+  padding-right: --spacing(400);
 }
 
 .downloaded {
   @apply svg;
 
-  fill: theme('colors.status-success-06');
+  fill: rgb(var(--status-success-06));
 }
 
 @import './css/mds-file-format.css';
 @import './css/mds-file-pref-animation.css';
 @import './css/mds-file-pref-theme.css';
 @import './css/mds-file-pref-contrast.css';
-@import '../../tailwind/fouc.css';

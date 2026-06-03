@@ -1,9 +1,6 @@
-import { h } from '@stencil/core'
-import { iconsDictionary } from '@dictionary/icon'
-import {
-  buttonVariantDictionary,
-  buttonToneVariantDictionary,
-} from '@dictionary/button'
+import { h } from '@stencil/core';
+import { iconsDictionary } from '@type/icon';
+import { buttonVariantDictionary, buttonToneVariantDictionary } from '@type/button';
 
 export default {
   title: 'UI / Radial Menu / Radial Menu Item',
@@ -31,15 +28,15 @@ export default {
       control: { type: 'select' },
     },
   },
-}
+};
 
-const Template = args => (
+const Template = (args) => (
   <div class="h-dvh min-h-[600px] flex items-center justify-center">
     <mds-radial-menu opened size="lg">
       <mds-radial-menu-item {...args}></mds-radial-menu-item>
     </mds-radial-menu>
   </div>
-)
+);
 
 export const Default = {
   render: Template,
@@ -47,4 +44,4 @@ export const Default = {
   args: {
     icon: 'mi/round/email',
   },
-}
+};

@@ -15,8 +15,6 @@ const usageVariant = {
     alias: 'Warning',
     icon: 'mi/baseline/warning-amber',
   },
-}
+};
 
-export {
-  usageVariant,
-}
+export { usageVariant };

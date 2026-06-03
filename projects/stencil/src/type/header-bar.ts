@@ -1,11 +1,5 @@
-export type HeaderBarMenuType =
-  | 'all'
-  | 'desktop'
-  | 'mobile'
-  | 'none'
+export const headerBarMenuDictionary = ['all', 'desktop', 'mobile', 'none'] as const;
+export type HeaderBarMenuType = (typeof headerBarMenuDictionary)[number];
 
-export type HeaderBarNavType =
-  | 'all'
-  | 'desktop'
-  | 'mobile'
-  | 'none'
+export const headerBarNavDictionary = ['all', 'desktop', 'mobile', 'none'] as const;
+export type HeaderBarNavType = (typeof headerBarNavDictionary)[number];

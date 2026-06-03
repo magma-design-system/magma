@@ -1,0 +1,121 @@
+/**
+ * @prop --mds-emoji-simi-eye: Sets the color of Simi's eyes
+ * @prop --mds-emoji-simi-eye-light: Sets the light color of Simi's eyes
+ * @prop --mds-emoji-simi-eyebrow: Sets the color of Simi's eyebrows
+ * @prop --mds-emoji-simi-gadget: Sets the color of Simi's gadget
+ * @prop --mds-emoji-simi-mouth: Sets the color of Simi's mouth
+ * @prop --mds-emoji-simi-nose-light: Sets the light color of Simi's nose
+ * @prop --mds-emoji-simi-nose: Sets the color of Simi's nose
+ * @prop --mds-emoji-simi-outline: Sets the color of Simi's outline
+ * @prop --mds-emoji-simi-skin-dark: Sets the dark shade of Simi's skin
+ * @prop --mds-emoji-simi-skin-light: Sets the light shade of Simi's skin
+ * @prop --mds-emoji-simi-skin: Sets the base color of Simi's skin
+ * @prop --mds-emoji-offset-hand: Sets the positional offset for the hands
+ * @prop --mds-emoji-offset-mouth: Sets the positional offset for the mouth
+ * @prop --mds-emoji-offset-gadget: Sets the positional offset for gadgets
+ * @prop --mds-emoji-offset-eyebrows: Sets the positional offset for eyebrows
+ * @prop --mds-emoji-offset-eyes: Sets the positional offset for eyes
+ * @prop --mds-emoji-offset-head: Sets the positional offset for the head
+ * @prop --mds-emoji-offset-ears: Sets the positional offset for the ears
+ */
+
+@property --mds-emoji-simi-eye {
+  inherits: false;
+  initial-value: #40281b;
+  syntax: '<color>';
+}
+
+@property --mds-emoji-simi-eye-light {
+  inherits: false;
+  initial-value: #ffffff;
+  syntax: '<color>';
+}
+
+@property --mds-emoji-simi-eyebrow {
+  inherits: false;
+  initial-value: #feefd8;
+  syntax: '<color>';
+}
+
+@property --mds-emoji-simi-gadget {
+  inherits: false;
+  initial-value: #2b1c15;
+  syntax: '<color>';
+}
+
+@property --mds-emoji-simi-mouth {
+  inherits: false;
+  initial-value: #2b1c15;
+  syntax: '<color>';
+}
+
+@property --mds-emoji-simi-nose-light {
+  inherits: false;
+  initial-value: #7e695f;
+  syntax: '<color>';
+}
+
+@property --mds-emoji-simi-nose {
+  inherits: false;
+  initial-value: #2b1c15;
+  syntax: '<color>';
+}
+
+@property --mds-emoji-simi-outline {
+  inherits: false;
+  initial-value: #2b1c15;
+  syntax: '<color>';
+}
+
+@property --mds-emoji-simi-skin-dark {
+  inherits: false;
+  initial-value: #c3481b;
+  syntax: '<color>';
+}
+
+@property --mds-emoji-simi-skin-light {
+  inherits: false;
+  initial-value: #feefd8;
+  syntax: '<color>';
+}
+
+@property --mds-emoji-simi-skin {
+  inherits: false;
+  initial-value: #f36320;
+  syntax: '<color>';
+}
+
+@property --mds-emoji-simi-mouth-teeth {
+  inherits: false;
+  initial-value: #ffffff;
+  syntax: '<color>';
+}
+
+@property --mds-emoji-simi-mouth-throat {
+  inherits: false;
+  initial-value: #c3481b;
+  syntax: '<color>';
+}
+
+:host([name='simi']) {
+  --mds-emoji-offset-ears: 0;
+  --mds-emoji-offset-eyebrows: 10px;
+  --mds-emoji-offset-eyes: 7px;
+  --mds-emoji-offset-gadget: 14px;
+  --mds-emoji-offset-hand: 18px;
+  --mds-emoji-offset-head: 5px;
+  --mds-emoji-offset-mouth: 16px;
+  --mds-emoji-simi-eye-light: #ffffff;
+  --mds-emoji-simi-eye: #40281b;
+  --mds-emoji-simi-eyebrow: #feefd8;
+  --mds-emoji-simi-gadget: #2b1c15;
+  --mds-emoji-simi-mouth-teeth: #ffffff;
+  --mds-emoji-simi-mouth-throat: #c3481b;
+  --mds-emoji-simi-mouth: #2b1c15;
+  --mds-emoji-simi-nose-light: #7e695f;
+  --mds-emoji-simi-nose: #2b1c15;
+  --mds-emoji-simi-outline: #2b1c15;
+  --mds-emoji-simi-skin-dark: #c3481b;
+  --mds-emoji-simi-skin-light: #feefd8;
+  --mds-emoji-simi-skin: #f36320;
+}

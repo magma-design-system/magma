@@ -1,15 +1,5 @@
-const bibliographyFormatDictionary = [
-  'apa',
-  'mla',
-  'turabian',
-]
+const bibliographyFormatDictionary = ['apa', 'mla', 'turabian'];
 
-const bibliographyRelationshipDictionary = [
-  'author',
-  'external',
-]
+const bibliographyRelationshipDictionary = ['author', 'external'];
 
-export {
-  bibliographyFormatDictionary,
-  bibliographyRelationshipDictionary,
-}
+export { bibliographyFormatDictionary, bibliographyRelationshipDictionary };

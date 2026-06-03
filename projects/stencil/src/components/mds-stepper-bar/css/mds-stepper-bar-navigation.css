@@ -1,27 +1,28 @@
-:host(:not([navigation="scrollbar"])) .items {
+:host(:not([navigation='scrollbar'])) .items {
   @apply hide-scrollbar;
 }
 
-:host([navigation="scrollbar"]) .items::-webkit-scrollbar {
+:host([navigation='scrollbar']) .items::-webkit-scrollbar {
   height: var(--mds-stepper-bar-scrollbar-size);
   width: var(--mds-stepper-bar-scrollbar-size);
 }
 
-:host([navigation="scrollbar"]) .items::-webkit-scrollbar-track {
+:host([navigation='scrollbar']) .items::-webkit-scrollbar-track {
   background-color: var(--mds-stepper-bar-scrollbar-track-background);
   border-radius: var(--mds-stepper-bar-scrollbar-radius);
   margin-block: var(--mds-stepper-bar-scrollbar-margin);
   margin-inline: var(--mds-stepper-bar-scrollbar-margin);
 }
 
-:host([navigation="scrollbar"]) .items::-webkit-scrollbar-thumb {
+:host([navigation='scrollbar']) .items::-webkit-scrollbar-thumb {
   background-color: var(--mds-stepper-bar-scrollbar-thumb-background);
   border-radius: var(--mds-stepper-bar-scrollbar-radius);
 }
 
 @supports (scrollbar-color: transparent transparent) {
   .items {
-    scrollbar-color: var(--mds-stepper-bar-scrollbar-thumb-background) var(--mds-stepper-bar-scrollbar-track-background);
+    scrollbar-color: var(--mds-stepper-bar-scrollbar-thumb-background)
+      var(--mds-stepper-bar-scrollbar-track-background);
     scrollbar-width: thin;
   }
 }

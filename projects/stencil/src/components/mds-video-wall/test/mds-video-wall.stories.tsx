@@ -1,24 +1,21 @@
-import { noiseDictionary, preloadDictionary } from '../meta/dictionary'
-import { lokiDisabled } from '@test/loki-disabled'
-import { h } from '@stencil/core'
+import { noiseDictionary, preloadDictionary } from '../meta/dictionary';
+import { lokiDisabled } from '@test/loki-disabled';
+import { h } from '@stencil/core';
 
 export default {
   title: 'UI / Video wall',
   argTypes: {
     autoplay: {
       type: { name: 'boolean' },
-      description:
-        'Specifies that the video will start playing as soon as it is ready',
+      description: 'Specifies that the video will start playing as soon as it is ready',
     },
     loop: {
       type: { name: 'boolean' },
-      description:
-        'Specifies that the video will start over again, every time it is finished',
+      description: 'Specifies that the video will start over again, every time it is finished',
     },
     muted: {
       type: { name: 'boolean' },
-      description:
-        'Specifies that the audio output of the video should be muted',
+      description: 'Specifies that the audio output of the video should be muted',
     },
     noise: {
       type: { name: 'string' },
@@ -28,8 +25,7 @@ export default {
     },
     poster: {
       type: { name: 'string' },
-      description:
-        'Specifies an image to be shown while the video is downloading',
+      description: 'Specifies an image to be shown while the video is downloading',
     },
     preload: {
       type: { name: 'string' },
@@ -43,21 +39,21 @@ export default {
       description: 'Specifies the URL of the video file',
     },
   },
-}
+};
 
-const Template = args => (
+const Template = (args) => (
   <mds-video-wall {...args} style={{ '--aspect-ratio': '16/9' }}>
     Your browser doesn't support videos.
   </mds-video-wall>
-)
+);
 
-const TemplateContents = args => (
+const TemplateContents = (args) => (
   <mds-video-wall {...args} style={{ '--aspect-ratio': '16/9' }}>
     <div slot="content" class="text-tone-neutral text-center p-200">
       <mds-text typography="h1">This is a text</mds-text>
     </div>
   </mds-video-wall>
-)
+);
 
 export const Default = {
   render: Template,
@@ -68,7 +64,7 @@ export const Default = {
   },
 
   story: lokiDisabled,
-}
+};
 
 export const Autoplay = {
   render: Template,
@@ -80,7 +76,7 @@ export const Autoplay = {
   },
 
   story: lokiDisabled,
-}
+};
 
 export const Loop = {
   render: Template,
@@ -92,7 +88,7 @@ export const Loop = {
   },
 
   story: lokiDisabled,
-}
+};
 
 export const Muted = {
   render: Template,
@@ -104,7 +100,7 @@ export const Muted = {
   },
 
   story: lokiDisabled,
-}
+};
 
 export const Noise = {
   render: Template,
@@ -116,7 +112,7 @@ export const Noise = {
   },
 
   story: lokiDisabled,
-}
+};
 
 export const Poster = {
   render: Template,
@@ -127,7 +123,7 @@ export const Poster = {
     poster: './video-nature-preview.webp',
     src: './video-nature.mp4',
   },
-}
+};
 
 export const Preload = {
   render: Template,
@@ -139,7 +135,7 @@ export const Preload = {
   },
 
   story: lokiDisabled,
-}
+};
 
 export const Content = {
   render: TemplateContents,
@@ -150,4 +146,4 @@ export const Content = {
   },
 
   story: lokiDisabled,
-}
+};

@@ -1,15 +1,15 @@
-:host([cockade]:not([cockade="false"])) .icon {
-  @apply rounded-b-lg;
-
+:host([cockade]:not([cockade='false'])) .icon {
   background-color: var(--mds-banner-cockade-background);
+  border-bottom-left-radius: var(--radius-lg);
+  border-bottom-right-radius: var(--radius-lg);
   margin-top: calc(-1 * var(--mds-banner-cockade-distance));
-  padding: theme('padding.200');
+  padding: --spacing(200);
   padding-top: var(--mds-banner-cockade-distance);
 }
 
 @container mds-banner (max-width: 300px) {
-  :host([cockade]:not([cockade="false"])) .icon {
-    padding-top: theme('padding.200');
+  :host([cockade]:not([cockade='false'])) .icon {
+    padding-top: --spacing(200);
   }
 
   .body {
@@ -18,7 +18,7 @@
 
   .close-button {
     position: absolute;
-    right: var(--mds-banner-cockade-distance);
-    top: var(--mds-banner-cockade-distance);
+    right: calc(var(--mds-banner-cockade-distance) / 2);
+    top: calc(var(--mds-banner-cockade-distance) / 2);
   }
 }

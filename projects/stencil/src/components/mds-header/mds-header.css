@@ -1,6 +1,8 @@
+@import './css/mds-header-fouc.css';
+
 /**
  * @prop --mds-header-backdrop-background-image: Sets the background-image of the backdrop element visibile when the component attribute `appearance` is set to `inline`, by default is shown when mds-pref-consumtion is set to `medium`
- * @prop --mds-header-backdrop-filter: Sets the backdrop-filter of the backdrop element visibile when the component attribute `appearance` is set to `inline`, by default is shown when mds-pref-consumtion is set to `high`
+ * @prop --mds-header-backdrop-blur-strength: Sets the blur strength of the backdrop element visibile when the component attribute `appearance` is set to `inline`, by default is shown when mds-pref-consumtion is set to `high`
  * @prop --mds-header-backdrop-height: Sets the height of the backdrop element visibile when the component attribute `appearance` is set to `inline`
  * @prop --mds-header-backdrop-show: Sets if the backdrop element is visible or not, only visible when the component attribute `appearance` is set to `inline`
  * @prop --mds-header-color: Sets the text color of the header and the mobile toggler icon
@@ -12,19 +14,102 @@
  * @prop --mds-header-z-index: Sets the z-index of the modal
  */
 
+@property --mds-header-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-02));
+  syntax: '<color>';
+}
+
+@property --mds-header-icon-color {
+  inherits: false;
+  initial-value: var(--mds-header-color);
+  syntax: '<color>';
+}
+
+@property --mds-header-modal-icon-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral));
+  syntax: '<color>';
+}
+
+@property --mds-header-backdrop-height {
+  inherits: false;
+  initial-value: --spacing(1600);
+  syntax: '<length>';
+}
+
+@property --mds-header-inline-margin-mobile {
+  inherits: false;
+  initial-value: --spacing(400);
+  syntax: '<length>';
+}
+
+@property --mds-header-inline-margin {
+  inherits: false;
+  initial-value: --spacing(600);
+  syntax: '<length>';
+}
+
+@property --mds-header-z-index {
+  inherits: false;
+  initial-value: var(--magma-header-z-index, 1000);
+  syntax: '<integer>';
+}
+
+@property --mds-header-backdrop-show {
+  inherits: false;
+  initial-value: true;
+  syntax: 'true | false';
+}
+
+@property --mds-header-backdrop-blur-strength {
+  inherits: false;
+  initial-value: 2px;
+  syntax: '<length>';
+}
+
+/* ❌ Not supported: transform values cannot be validated by @property
+@property --mds-header-hidden-bar-translate-inline {
+  inherits: false;
+  syntax: "<transform-function>";
+  initial-value: translateY(-150%);
+}
+
+@property --mds-header-hidden-bar-translate-stripe {
+  inherits: false;
+  syntax: "<transform-function>";
+  initial-value: translateY(-110%);
+}
+*/
+
+/* ❌ Not supported: gradients are not supported in @property
+@property --mds-header-backdrop-background-image {
+  inherits: false;
+  syntax: "<image>";
+  initial-value: linear-gradient(to top, rgb(0 0 0 / 0), rgb(0 0 0 / 0.15));
+}
+*/
+
 :host {
-  --mds-header-color: theme('colors.tone-neutral-02');
+  --mds-header-color: rgb(var(--tone-neutral-02));
   --mds-header-hidden-bar-translate-inline: translateY(-150%);
   --mds-header-hidden-bar-translate-stripe: translateY(-110%);
-  --mds-header-icon-color: var(--mds-header-color, theme('colors.tone-neutral-02'));
-  --mds-header-modal-icon-color: theme('colors.tone-neutral');
-  --mds-header-backdrop-filter: blur(10px);
-  --mds-header-backdrop-background-image: linear-gradient(to top, rgb(0 0 0 / 0), rgb(0 0 0 / 0.15));
-  --mds-header-backdrop-height: theme('size.1600');
+  --mds-header-icon-color: var(--mds-header-color, rgb(var(--tone-neutral-02)));
+  --mds-header-modal-icon-color: rgb(var(--tone-neutral));
+  --mds-header-backdrop-blur-strength: 2px;
+  --mds-header-backdrop-height: --spacing(1600);
   --mds-header-backdrop-show: true;
   --mds-header-z-index: var(--magma-header-z-index, 1000);
-  --mds-header-inline-margin-mobile: theme('spacing.400');
-  --mds-header-inline-margin: theme('spacing.600');
+  --mds-header-inline-margin-mobile: --spacing(400);
+  --mds-header-inline-margin: --spacing(600);
+  --mds-header-backdrop-background-image: linear-gradient(
+    to top,
+    rgb(0 0 0 / 0),
+    rgb(0 0 0 / 0.15)
+  );
+
+  /* private custom properties */
+  --private-mask-opacity: 1;
 
   color: var(--mds-header-color);
   fill: var(--mds-header-icon-color);
@@ -38,45 +123,42 @@
   z-index: var(--mds-header-z-index);
 }
 
-:host([appearance="inline"]) ::slotted(mds-header-bar) {
+:host([appearance='inline']) ::slotted(mds-header-bar) {
   --mds-header-inline-margin-current: var(--mds-header-inline-margin);
 
-  @apply
-    max-w-screen-wide
-    rounded-lg;
-
+  border-radius: var(--radius-lg);
   margin-bottom: var(--mds-header-inline-margin-current);
   margin-top: var(--mds-header-inline-margin-current);
+  max-width: var(--breakpoint-wide);
   width: calc(100% - calc(var(--mds-header-inline-margin-current) * 2));
 }
 
 @media (width <= 767px) {
-  :host([appearance="inline"]) ::slotted(mds-header-bar) {
+  :host([appearance='inline']) ::slotted(mds-header-bar) {
     --mds-header-inline-margin-current: var(--mds-header-inline-margin-mobile);
   }
 }
 
-:host([menu="desktop"]) .menu {
-  @apply tablet-max:hidden;
+:host([menu='desktop']) .menu {
+  @apply max-tablet:hidden;
 }
 
-:host([menu="mobile"]) .menu {
+:host([menu='mobile']) .menu {
   @apply desktop:hidden;
 }
 
-:host([menu="none"]) .menu {
+:host([menu='none']) .menu {
   display: none;
 }
 
-:host([visibility="hidden"][appearance="stripe"]) ::slotted(mds-header-bar) {
+:host([visibility='hidden'][appearance='stripe']) ::slotted(mds-header-bar) {
   transform: var(--mds-header-hidden-bar-translate-stripe);
 }
 
-:host([visibility="hidden"][appearance="inline"]) ::slotted(mds-header-bar) {
+:host([visibility='hidden'][appearance='inline']) ::slotted(mds-header-bar) {
   transform: var(--mds-header-hidden-bar-translate-inline);
 }
 
 @import './css/mds-header-backdrop.css';
 @import './css/mds-header-pref-theme.css';
 @import './css/mds-header-pref-consumption.css';
-@import '../../tailwind/fouc.css';

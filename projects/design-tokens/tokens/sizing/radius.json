@@ -1,0 +1,43 @@
+{
+  "radius": {
+    "none": {
+      "value": "0px"
+    },
+    "3xs": {
+      "value": "{sizing.primitive.100}"
+    },
+    "2xs": {
+      "value": "{sizing.primitive.150}"
+    },
+    "xs": {
+      "value": "{sizing.primitive.200}"
+    },
+    "sm": {
+      "value": "{sizing.primitive.250}"
+    },
+    "md": {
+      "value": "{sizing.primitive.300}"
+    },
+    "lg": {
+      "value": "{sizing.primitive.400}"
+    },
+    "xl": {
+      "value": "{sizing.primitive.500}"
+    },
+    "2xl": {
+      "value": "{sizing.primitive.600}"
+    },
+    "3xl": {
+      "value": "{sizing.primitive.800}"
+    },
+    "4xl": {
+      "value": "{sizing.primitive.1200}"
+    },
+    "5xl": {
+      "value": "{sizing.primitive.1600}"
+    },
+    "full": {
+      "value": "1000px"
+    }
+  }
+}

@@ -1,27 +1,78 @@
-@import '../../tailwind/components.css';
-@tailwind utilities;
-@tailwind components;
+@import './css/mds-push-notification-item-fouc.css';
+
+/**
+ * @prop --mds-push-notification-item-duration: Duration of the individual push notification item animation.
+ * @prop --mds-push-notification-item-icon-background-color: Background color of the item's icon.
+ * @prop --mds-push-notification-item-icon-color: Color of the item's icon.
+ * @prop --mds-push-notification-item-message-line-clamp: Number of lines to clamp the message text.
+ * @prop --mds-push-notification-item-shadow: Shadow applied to the push notification item.
+ * @prop --mds-push-notification-item-subject-line-clamp: Number of lines to clamp the subject text.
+ * @prop --mds-push-notification-item-timing-function: Timing function used for the item animation.
+ */
+
+@property --mds-push-notification-item-duration {
+  inherits: false;
+  initial-value: 300ms;
+  syntax: '<time>';
+}
+
+@property --mds-push-notification-item-icon-background-color {
+  inherits: false;
+  initial-value: transparent;
+  syntax: '<color>';
+}
+
+@property --mds-push-notification-item-icon-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-04));
+  syntax: '<color>';
+}
+
+@property --mds-push-notification-item-message-line-clamp {
+  inherits: false;
+  initial-value: 2;
+  syntax: '<integer>';
+}
+
+@property --mds-push-notification-item-subject-line-clamp {
+  inherits: false;
+  initial-value: 1;
+  syntax: '<integer>';
+}
+
+/* ❌ Not supported
+@property --mds-push-notification-item-shadow {
+  inherits: false;
+  initial-value: var(--shadow);
+  syntax: "<box-shadow>";
+}
+
+@property --mds-push-notification-item-timing-function {
+  inherits: false;
+  initial-value: var(--ease-in-out-quint);
+  syntax: "<timing-function>";
+}
+*/
 
 :host {
   --mds-push-notification-item-duration: 300ms;
   --mds-push-notification-item-icon-background-color: transparent;
-  --mds-push-notification-item-icon-color: theme('colors.tone-neutral-04');
+  --mds-push-notification-item-icon-color: rgb(var(--tone-neutral-04));
   --mds-push-notification-item-message-line-clamp: 2;
-  --mds-push-notification-item-shadow: theme('boxShadow.DEFAULT');
+  --mds-push-notification-item-shadow: var(--shadow-sm-sharp);
   --mds-push-notification-item-subject-line-clamp: 1;
-  --mds-push-notification-item-timing-function: theme('transitionTimingFunction.in-out-quint');
+  --mds-push-notification-item-timing-function: var(--ease-in-out-quint);
 
-  @apply
-    gap-400
-    max-w-8000
-    min-w-7200
-    p-400
-    rounded-lg;
+  @apply gap-400
+  max-w-8000
+  min-w-7200
+  p-400
+  rounded-lg;
 
   align-items: flex-start;
-  background-color: theme('colors.tone-neutral');
+  background-color: rgb(var(--tone-neutral));
   box-shadow: var(--mds-push-notification-item-shadow);
-  color: theme('colors.tone-neutral-02');
+  color: rgb(var(--tone-neutral-02));
   display: flex;
   pointer-events: auto;
   position: relative;
@@ -40,9 +91,8 @@
 }
 
 .actions {
-  @apply
-    gap-200
-    pt-200;
+  @apply gap-200
+  pt-200;
 
   display: flex;
   flex-wrap: wrap;
@@ -55,19 +105,16 @@
 }
 
 .picture {
-  @apply
-    max-w-1200
-    rounded;
+  @apply max-w-1200
+  rounded;
 
-  box-shadow: theme('boxShadow.sm-sharp');
+  box-shadow: var(--shadow-sm-sharp);
   width: 100%;
 }
 
 .close-button {
-
-  @apply
-    p-150
-    transition-cosmetic;
+  @apply p-150
+  transition-cosmetic;
 
   opacity: 0;
   position: absolute;
@@ -81,12 +128,11 @@
 
 .close-button:focus-visible,
 .close-button:hover {
-  fill: theme('colors.tone-neutral-03');
+  fill: rgb(var(--tone-neutral-03));
   opacity: 1;
 }
 
 .header {
-
   @apply gap-100;
 
   align-items: baseline;
@@ -103,7 +149,6 @@
 }
 
 .time {
-
   @apply mr-100;
 
   flex-shrink: 0;
@@ -113,21 +158,19 @@
 .subject {
   --mds-text-line-clamp: var(--mds-push-notification-item-subject-line-clamp);
 
-  line-height: theme('lineHeight.sm');
+  line-height: var(--leading-sm);
   text-overflow: ellipsis;
 }
 
 .message {
   --mds-text-line-clamp: var(--mds-push-notification-item-message-line-clamp);
 
-  line-height: theme('lineHeight.md');
   text-overflow: ellipsis;
 }
 
 .avatar {
-  @apply
-    h-900
-    w-900;
+  @apply h-900
+  w-900;
 
   background-color: var(--mds-push-notification-item-icon-background-color);
   border-radius: 1000px;
@@ -152,4 +195,3 @@
 @import './css/mds-push-notification-item-variant-primary.css';
 @import './css/mds-push-notification-item-variant-label.css';
 @import './css/mds-push-notification-item-variant-state.css';
-@import '../../tailwind/fouc.css';

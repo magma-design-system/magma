@@ -1,17 +1,16 @@
-@import '~@maggioli-design-system/styles/dist/tailwind/typography.css';
 @import '~@maggioli-design-system/styles/dist/css/animations.css';
-@import '../../tailwind/components.css';
+@import './css/mds-button-fouc.css';
 
 /**
  * @prop --mds-button-await-duration: Sets the duration of the rotation of the spinner await component
  * @prop --mds-button-background: Sets the background-color of the component
- * @prop --mds-button-border-color: Sets the color of the border of the component (based on box-shadow declaration)
+ * @prop --mds-button-border-color-rgb: Sets the color of the border of the component (based on box-shadow declaration)
  * @prop --mds-button-border-default-opacity: Sets the default opacity of the border color of the component (based on box-shadow declaration)
  * @prop --mds-button-border-high-contrast-hover-width: Sets the width of the border when the component is hovered and the contrast is high (based on box-shadow declaration)
  * @prop --mds-button-border-high-contrast-width: Sets the width of the border of the component and the contrast is high (based on box-shadow declaration)
  * @prop --mds-button-border-hover-opacity: Sets the opacity of the border color when the component is hovered (based on box-shadow declaration)
  * @prop --mds-button-border-opacity: Sets the border opacity of the component (based on box-shadow declaration)
- * @prop --mds-button-border-tone-ghost-hover-width: Sets the width of the border when the component is hovered when the tone is set to `ghost` (based on box-shadow declaration)
+ * @prop --mds-button-border-tone-outline-hover-width: Sets the width of the border when the component is hovered when the tone is set to `ghost` (based on box-shadow declaration)
  * @prop --mds-button-border-tone-strong-hover-width: Sets the width of the border when the component is hovered when the tone is set to `strong` (based on box-shadow declaration)
  * @prop --mds-button-border-tone-weak-hover-width: Sets the width of the border when the component is hovered when the tone is set to `weak` (based on box-shadow declaration)
  * @prop --mds-button-border-width: Sets the border width of the component (based on box-shadow declaration)
@@ -20,51 +19,149 @@
  * @prop --mds-button-radius: Sets the border-radius of the component
  */
 
+@property --mds-button-await-duration {
+  inherits: true;
+  initial-value: 0.725s;
+  syntax: '<time>';
+}
+
+@property --mds-button-background {
+  inherits: true;
+  initial-value: rgb(var(--variant-primary-02));
+  syntax: '<color>';
+}
+
+@property --mds-button-border-color-rgb {
+  inherits: true;
+  initial-value: 0 0 0;
+  syntax: '<number>+';
+}
+
+@property --mds-button-border-hover-opacity {
+  inherits: true;
+  initial-value: 0.75;
+  syntax: '<number>';
+}
+
+@property --mds-button-border-tone-strong-hover-width {
+  inherits: true;
+  initial-value: 0.0625rem;
+  syntax: '<length>';
+}
+
+@property --mds-button-border-tone-outline-hover-width {
+  inherits: true;
+  initial-value: 3px;
+  syntax: '<length>';
+}
+
+@property --mds-button-border-tone-weak-hover-width {
+  inherits: true;
+  initial-value: 0.0625rem;
+  syntax: '<length>';
+}
+
+@property --mds-button-border-high-contrast-width {
+  inherits: true;
+  initial-value: 0.125rem;
+  syntax: '<length>';
+}
+
+@property --mds-button-border-high-contrast-hover-width {
+  inherits: true;
+  initial-value: 3px;
+  syntax: '<length>';
+}
+
+@property --mds-button-border-default-opacity {
+  inherits: true;
+  initial-value: 0;
+  syntax: '<number>';
+}
+
+@property --mds-button-border-opacity {
+  inherits: true;
+  initial-value: 0;
+  syntax: '<number>';
+}
+
+@property --mds-button-border-width {
+  inherits: true;
+  initial-value: 0.125rem;
+  syntax: '<length>';
+}
+
+@property --mds-button-color {
+  inherits: true;
+  initial-value: rgb(var(--tone-neutral));
+  syntax: '<color>';
+}
+
+@property --mds-button-gap {
+  inherits: true;
+  initial-value: 0.5rem;
+  syntax: '<length>';
+}
+
+@property --mds-button-line-clamp {
+  inherits: true;
+  initial-value: 1;
+  syntax: '<integer>';
+}
+
+@property --mds-button-radius {
+  inherits: true;
+  initial-value: var(--radius-xs);
+  syntax: '<length>';
+}
+
 :host {
   --mds-button-await-duration: 0.725s;
-  --mds-button-background: theme('colors.variant-primary-02');
-  --mds-button-border-color: 0 0 0;
-  --mds-button-border-hover-opacity: theme('opacity.75');
-  --mds-button-border-default-opacity: theme('opacity.50');
-  --mds-button-border-tone-strong-hover-width: theme('borderWidth.25');
-  --mds-button-border-tone-ghost-hover-width: 3px;
-  --mds-button-border-tone-weak-hover-width: theme('borderWidth.25');
-  --mds-button-border-high-contrast-width: theme('borderWidth.50');
+  --mds-button-background: rgb(var(--mds-button-border-color-rgb));
+  --mds-button-border-color-rgb: var(--variant-primary-02);
+  --mds-button-border-hover-opacity: 0.75;
   --mds-button-border-high-contrast-hover-width: 3px;
+  --mds-button-border-high-contrast-width: --spacing(50);
+  --mds-button-border-tone-outline-hover-width: 3px;
+  --mds-button-border-tone-outline-opacity: 0.3;
+  --mds-button-border-tone-strong-hover-width: --spacing(50);
+  --mds-button-border-tone-weak-hover-width: --spacing(50);
+  --mds-button-border-default-opacity: 0;
   --mds-button-border-opacity: 0;
-  --mds-button-border-width: theme('borderWidth.50');
-  --mds-button-color: theme('colors.tone-neutral');
-  --mds-button-gap: theme('spacing.200');
+  --mds-button-border-width: --spacing(50);
+  --mds-button-color: rgb(var(--tone-neutral));
+  --mds-button-gap: --spacing(200);
   --mds-button-line-clamp: 1;
-  --mds-button-radius: theme('borderRadius.lg');
+  --mds-button-radius: var(--radius-2xl);
 
-  @apply
-    duration-200
-    ease-out
-    focus-bounce
-    px-300
-    py-200;
+  @apply duration-200
+    focus-bounce;
 
   align-items: center;
   background-color: var(--mds-button-background);
   border-radius: var(--mds-button-radius);
-  box-shadow: 0 0 0 var(--mds-button-border-width) rgb(var(--mds-button-border-color) / var(--mds-button-border-opacity));
+  box-shadow: 0 0 0 var(--mds-button-border-width)
+    rgb(var(--mds-button-border-color-rgb) / var(--mds-button-border-opacity));
   box-sizing: border-box;
   color: var(--mds-button-color);
+  corner-shape: var(--magma-corner-shape, round);
   cursor: pointer;
   display: inline-flex;
   fill: currentcolor;
   gap: var(--mds-button-gap);
   justify-content: center;
+  padding: 0 --spacing(400);
   position: relative;
-  transition-property: background-color, border-color, box-shadow, color, outline, outline-offset, padding-left, padding-right, transform;
+  transition-property:
+    background-color, border-color, box-shadow, color, outline, outline-offset, transform;
+  transition-timing-function: var(--ease-out-quad);
   user-select: none;
 }
 
 :host(:focus-visible) {
-  @apply
-    focus-bounce--focused
-    z-10;
+  @apply focus-bounce--focused;
+
+  z-index: 10;
 }
 
 .text {
@@ -76,17 +173,15 @@
 }
 
 .icon {
-  @apply
-    duration-300
-    ease-in-out;
-
   align-items: center;
   display: inline-flex;
   fill: inherit;
   flex-shrink: 0;
   justify-content: center;
   pointer-events: none;
+  transition-duration: var(--duration-300);
   transition-property: fill;
+  transition-timing-function: var(--ease-in-out-quad);
 }
 
 @import './css/mds-button-button-group.css';
@@ -94,23 +189,10 @@
 @import './css/mds-button-disabled.css';
 @import './css/mds-button-size.css';
 @import './css/mds-button-no-text.css';
-@import './css/mds-button-variant-dark.css';
-@import './css/mds-button-variant-ai-contrast.css';
-@import './css/mds-button-variant-ai.css';
-@import './css/mds-button-variant-error-contrast.css';
-@import './css/mds-button-variant-error.css';
-@import './css/mds-button-variant-info-contrast.css';
-@import './css/mds-button-variant-info.css';
-@import './css/mds-button-variant-light.css';
-@import './css/mds-button-variant-primary-contrast.css';
-@import './css/mds-button-variant-primary.css';
-@import './css/mds-button-variant-secondary-contrast.css';
-@import './css/mds-button-variant-secondary.css';
-@import './css/mds-button-variant-success-contrast.css';
-@import './css/mds-button-variant-success.css';
-@import './css/mds-button-variant-warning-contrast.css';
-@import './css/mds-button-variant-warning.css';
-@import './css/mds-button-tone.css';
+
+@import './css/mds-button-variant.css';
+@import './css/mds-button-variant-status.css';
+@import './css/mds-button-variant-tone.css';
 @import './css/mds-button-variant-service.css';
+@import './css/mds-button-tone.css';
 @import './css/mds-button-pref-animation.css';
-@import '../../tailwind/fouc.css';

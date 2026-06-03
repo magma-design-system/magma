@@ -85,6 +85,7 @@ graph TD;
   mds-stepper-bar-item --> mds-text
   mds-badge --> mds-text
   mds-progress --> mds-radial-progress
+  mds-radial-progress --> mds-icon
   mds-radial-progress --> mds-text
   style mds-stepper-bar-item fill:#f9f,stroke:#333,stroke-width:4px
 ```

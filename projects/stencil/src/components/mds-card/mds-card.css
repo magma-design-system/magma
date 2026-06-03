@@ -1,42 +1,54 @@
+@import './css/mds-card-fouc.css';
+
 /**
  * @prop --mds-card-gap: Sets the spacing between card elements
  * @prop --mds-card-padding: Sets the spacing around card elements
  */
 
+@property --mds-card-gap {
+  inherits: false;
+  initial-value: 0;
+  syntax: '<length>';
+}
+
+@property --mds-card-padding {
+  inherits: false;
+  initial-value: 0;
+  syntax: '<length>';
+}
+
 :host {
   --mds-card-gap: 0;
   --mds-card-padding: 0;
 
-  @apply rounded-2xl;
-
-  background-color: theme('colors.tone-neutral');
-  box-shadow: theme('boxShadow.md-sharp');
+  background-color: rgb(var(--tone-neutral));
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-md-sharp);
   container-name: mds-card;
   container-type: inline-size;
+  corner-shape: var(--magma-corner-shape, round);
   display: grid;
-  min-height: theme('spacing.400');
+  min-height: --spacing(400);
   overflow: hidden;
 }
 
-.layout:not(.layout--disabled) ::slotted([slot="media"]) {
+.layout:not(.layout--disabled) ::slotted([slot='media']) {
   grid-area: media;
 }
 
-.layout:not(.layout--disabled) ::slotted([slot="header"]) {
+.layout:not(.layout--disabled) ::slotted([slot='header']) {
   grid-area: header;
 }
 
-.layout:not(.layout--disabled) ::slotted([slot="content"]) {
+.layout:not(.layout--disabled) ::slotted([slot='content']) {
   grid-area: content;
 }
 
-.layout:not(.layout--disabled) ::slotted([slot="footer"]) {
+.layout:not(.layout--disabled) ::slotted([slot='footer']) {
   grid-area: footer;
 }
 
 .layout {
-  @apply p-400;
-
   display: grid;
   gap: var(--mds-card-gap);
   grid-template-columns: repeat(auto-fit, minmax(1px, 100%));
@@ -45,10 +57,10 @@
 
 .layout--cfhm:not(.layout--disabled) {
   grid-template-areas:
-    "header"
-    "media"
-    "content"
-    "footer";
+    'header'
+    'media'
+    'content'
+    'footer';
   grid-template-rows:
     min-content
     min-content
@@ -58,9 +70,9 @@
 
 .layout--chm:not(.layout--disabled) {
   grid-template-areas:
-    "header"
-    "media"
-    "content";
+    'header'
+    'media'
+    'content';
   grid-template-rows:
     min-content
     min-content
@@ -69,9 +81,9 @@
 
 .layout--cfm:not(.layout--disabled) {
   grid-template-areas:
-    "media"
-    "content"
-    "footer";
+    'media'
+    'content'
+    'footer';
   grid-template-rows:
     min-content
     1fr
@@ -80,9 +92,9 @@
 
 .layout--fhm:not(.layout--disabled) {
   grid-template-areas:
-    "header"
-    "media"
-    "footer";
+    'header'
+    'media'
+    'footer';
   grid-template-rows:
     min-content
     1fr
@@ -91,9 +103,9 @@
 
 .layout--cfh:not(.layout--disabled) {
   grid-template-areas:
-    "header"
-    "content"
-    "footer";
+    'header'
+    'content'
+    'footer';
   grid-template-rows:
     min-content
     1fr
@@ -102,8 +114,8 @@
 
 .layout--hm:not(.layout--disabled) {
   grid-template-areas:
-    "header"
-    "media";
+    'header'
+    'media';
   grid-template-rows:
     min-content
     1fr;
@@ -111,8 +123,8 @@
 
 .layout--fm:not(.layout--disabled) {
   grid-template-areas:
-    "media"
-    "footer";
+    'media'
+    'footer';
   grid-template-rows:
     1fr
     min-content;
@@ -120,8 +132,8 @@
 
 .layout--cm:not(.layout--disabled) {
   grid-template-areas:
-    "media"
-    "content";
+    'media'
+    'content';
   grid-template-rows:
     min-content
     1fr;
@@ -129,8 +141,8 @@
 
 .layout--fh:not(.layout--disabled) {
   grid-template-areas:
-    "header"
-    "footer";
+    'header'
+    'footer';
   grid-template-rows:
     min-content
     1fr;
@@ -138,8 +150,8 @@
 
 .layout--ch:not(.layout--disabled) {
   grid-template-areas:
-    "header"
-    "content";
+    'header'
+    'content';
   grid-template-rows:
     min-content
     1fr;
@@ -147,39 +159,39 @@
 
 .layout--cf:not(.layout--disabled) {
   grid-template-areas:
-    "content"
-    "footer";
+    'content'
+    'footer';
   grid-template-rows:
     1fr
     min-content;
 }
 
 .layout--h:not(.layout--disabled) {
-  grid-template-areas: "header";
+  grid-template-areas: 'header';
   grid-template-rows: 1fr;
 }
 
 .layout--m:not(.layout--disabled) {
-  grid-template-areas: "media";
+  grid-template-areas: 'media';
   grid-template-rows: 1fr;
 }
 
 .layout--c:not(.layout--disabled) {
-  grid-template-areas: "content";
+  grid-template-areas: 'content';
   grid-template-rows: 1fr;
 }
 
 .layout--f:not(.layout--disabled) {
-  grid-template-areas: "footer";
+  grid-template-areas: 'footer';
   grid-template-rows: 1fr;
 }
 
 @container mds-card (width > 30em) {
   .layout--cfhm:not(.layout--disabled) {
     grid-template-areas:
-      "media header"
-      "media content"
-      "media footer";
+      'media header'
+      'media content'
+      'media footer';
     grid-template-columns: minmax(240px, 1fr) 2fr;
     grid-template-rows:
       min-content
@@ -189,9 +201,9 @@
 
   .layout--chm:not(.layout--disabled) {
     grid-template-areas:
-      "media header"
-      "media content"
-      "media content";
+      'media header'
+      'media content'
+      'media content';
     grid-template-columns: minmax(240px, 1fr) 2fr;
     grid-template-rows:
       min-content
@@ -201,8 +213,8 @@
 
   .layout--fhm:not(.layout--disabled) {
     grid-template-areas:
-      "media header"
-      "media footer";
+      'media header'
+      'media footer';
     grid-template-columns: minmax(240px, 1fr) 2fr;
     grid-template-rows:
       min-content
@@ -211,8 +223,8 @@
 
   .layout--cfm:not(.layout--disabled) {
     grid-template-areas:
-      "media content"
-      "media footer";
+      'media content'
+      'media footer';
     grid-template-columns: minmax(240px, 1fr) 2fr;
     grid-template-rows:
       1fr
@@ -220,8 +232,7 @@
   }
 
   .layout--cm:not(.layout--disabled) {
-    grid-template-areas:
-      "media content";
+    grid-template-areas: 'media content';
     grid-template-columns: minmax(240px, 1fr) 2fr;
     grid-template-rows:
       1fr
@@ -231,4 +242,3 @@
 
 @import './css/mds-card-pref-theme.css';
 @import './css/mds-card-pref-contrast.css';
-@import '../../tailwind/fouc.css';

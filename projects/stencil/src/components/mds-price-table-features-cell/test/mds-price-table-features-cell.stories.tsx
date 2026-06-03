@@ -1,10 +1,10 @@
-import { h } from '@stencil/core'
+import { h } from '@stencil/core';
 
 export default {
   title: 'UI / Price table / Price table features cell',
-}
+};
 
-const Template = args => (
+const Template = (args) => (
   <mds-price-table>
     <mds-price-table-features {...args}>
       <mds-price-table-features-row>
@@ -23,9 +23,7 @@ const Template = args => (
         <mds-price-table-features-cell type="supported"></mds-price-table-features-cell>
       </mds-price-table-features-row>
       <mds-price-table-features-row>
-        <mds-price-table-features-cell type="label">
-          Users
-        </mds-price-table-features-cell>
+        <mds-price-table-features-cell type="label">Users</mds-price-table-features-cell>
         <mds-price-table-features-cell type="unsupported"></mds-price-table-features-cell>
         <mds-price-table-features-cell type="unsupported">
           <mds-help auto-placement="false" placement="top">
@@ -51,9 +49,7 @@ const Template = args => (
         </mds-price-table-features-cell>
       </mds-price-table-features-row>
       <mds-price-table-features-row>
-        <mds-price-table-features-cell type="label">
-          Customer support
-        </mds-price-table-features-cell>
+        <mds-price-table-features-cell type="label">Customer support</mds-price-table-features-cell>
         <mds-price-table-features-cell class="px-300" type="custom">
           <span>Uno</span>
           <mds-help auto-placement="false" placement="top">
@@ -69,7 +65,7 @@ const Template = args => (
       </mds-price-table-features-row>
     </mds-price-table-features>
   </mds-price-table>
-)
+);
 
 export const Default = {
   render: Template,
@@ -77,4 +73,4 @@ export const Default = {
   args: {
     label: 'Report e analisi',
   },
-}
+};

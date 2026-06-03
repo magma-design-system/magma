@@ -53,17 +53,18 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## CSS Custom Properties
 
-| Name                             | Description                                       |
-| -------------------------------- | ------------------------------------------------- |
-| `--mds-tooltip-arrow-background` | Sets the fill color of the arrow.                 |
-| `--mds-tooltip-background`       | Sets the background-color of the tooltip.         |
-| `--mds-tooltip-delay`            | Sets the delay of the tooltip.                    |
-| `--mds-tooltip-drop-shadow`      | Sets the drop-shadow of the tooltip.              |
-| `--mds-tooltip-duration`         | Sets the duration of the tooltip animation.       |
-| `--mds-tooltip-ease`             | Sets the easing of the tooltip animation.         |
-| `--mds-tooltip-transform-from`   | Sets the from animation transform of the tooltip. |
-| `--mds-tooltip-transform-to`     | Sets the to animation transform of the tooltip.   |
-| `--mds-tooltip-z-index`          | Sets the z-index of the component.                |
+| Name                             | Description                                              |
+| -------------------------------- | -------------------------------------------------------- |
+| `--mds-tooltip-arrow-background` | Background color of the tooltip arrow.                   |
+| `--mds-tooltip-background`       | Background color of the tooltip body.                    |
+| `--mds-tooltip-delay`            | Delay before showing the tooltip.                        |
+| `--mds-tooltip-dot-padding`      | Padding around the tooltip dot (if present).             |
+| `--mds-tooltip-drop-shadow`      | Drop shadow applied to the tooltip.                      |
+| `--mds-tooltip-duration`         | Duration of the tooltip animation.                       |
+| `--mds-tooltip-ease`             | Timing function for the tooltip animation.               |
+| `--mds-tooltip-transform-from`   | Transform applied at the start of the tooltip animation. |
+| `--mds-tooltip-transform-to`     | Transform applied at the end of the tooltip animation.   |
+| `--mds-tooltip-z-index`          | z-index of the tooltip container.                        |
 
 
 ## Dependencies

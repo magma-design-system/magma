@@ -1,11 +1,16 @@
-:host-context(.pref-theme-dark) [tone="strong"],
-:host-context(.pref-theme-dark) [tone="weak"] {
-  box-shadow: theme('boxShadow.outline') inset;
+:host-context(:root.pref-theme-dark:not(.pref-theme-scheme-light)) {
+  &:host([tone='strong']),
+  &:host([tone='weak']) {
+    box-shadow: var(--shadow-outline) inset;
+  }
 }
 
 @media (prefers-color-scheme: dark) {
-  :host-context(.pref-theme-stystem) [tone="strong"],
-  :host-context(.pref-theme-stystem) [tone="weak"] {
-    box-shadow: theme('boxShadow.outline') inset;
+  :host-context(:root.pref-theme-system:not(.pref-theme-scheme-light)),
+  :host-context(:root:not([data-magma-pref])) {
+    &:host([tone='strong']),
+    &:host([tone='weak']) {
+      box-shadow: var(--shadow-outline) inset;
+    }
   }
 }

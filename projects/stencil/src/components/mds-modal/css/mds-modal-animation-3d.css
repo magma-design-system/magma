@@ -4,8 +4,9 @@
   - - -
 */
 
-:host([position="top-left"][animation="3d"]:not([opened])) {
-  --mds-modal-transition-window-transform: rotateX(22deg) rotateY(22deg) scale(0.5) translate(-80%, 80%);
+:host([position='top-left'][animation='3d']:not([opened])) {
+  --private-modal-transition-window-transform: rotateX(22deg) rotateY(22deg) scale(0.5)
+    translate(-80%, 80%);
 }
 
 /*
@@ -14,8 +15,9 @@
   - - -
 */
 
-:host([position="top"][animation="3d"]:not([opened])) {
-  --mds-modal-transition-window-transform: rotateX(-22deg) rotateY(0) scale(0.5) translate(0, -80%);
+:host([position='top'][animation='3d']:not([opened])) {
+  --private-modal-transition-window-transform: rotateX(-22deg) rotateY(0) scale(0.5)
+    translate(0, -80%);
 }
 
 /*
@@ -24,8 +26,9 @@
   - - -
 */
 
-:host([position="top-right"][animation="3d"]:not([opened])) {
-  --mds-modal-transition-window-transform: rotateX(-22deg) rotateY(-22deg) scale(0.5) translate(80%, 80%);
+:host([position='top-right'][animation='3d']:not([opened])) {
+  --private-modal-transition-window-transform: rotateX(-22deg) rotateY(-22deg) scale(0.5)
+    translate(80%, 80%);
 }
 
 /*
@@ -34,8 +37,9 @@
   - - -
 */
 
-:host([position="left"][animation="3d"]:not([opened])) {
-  --mds-modal-transition-window-transform: rotateX(0) rotateY(22deg) rotateZ(0) scale(0.5) translate(-100%, 0%);
+:host([position='left'][animation='3d']:not([opened])) {
+  --private-modal-transition-window-transform: rotateX(0) rotateY(22deg) rotateZ(0) scale(0.5)
+    translate(-100%, 0%);
 }
 
 /*
@@ -44,8 +48,9 @@
   - - -
 */
 
-:host([position="center"][animation="3d"]:not([opened])) {
-  --mds-modal-transition-window-transform: rotateX(0) rotateY(22deg) scale(0.5) translate(0, 40%);
+:host([position='center'][animation='3d']:not([opened])) {
+  --private-modal-transition-window-transform: rotateX(0) rotateY(22deg) scale(0.5)
+    translate(0, 40%);
 }
 
 /*
@@ -54,8 +59,9 @@
   - - -
 */
 
-:host([position="right"][animation="3d"]:not([opened])) {
-  --mds-modal-transition-window-transform: rotateX(0) rotateY(-22deg) rotateZ(0) scale(0.5) translate(100%, 0%);
+:host([position='right'][animation='3d']:not([opened])) {
+  --private-modal-transition-window-transform: rotateX(0) rotateY(-22deg) rotateZ(0) scale(0.5)
+    translate(100%, 0%);
 }
 
 /*
@@ -64,8 +70,9 @@
   x - -
 */
 
-:host([position="bottom-left"][animation="3d"]:not([opened])) {
-  --mds-modal-transition-window-transform: rotateX(22deg) rotateY(22deg) scale(0.5) translate(-80%, 80%);
+:host([position='bottom-left'][animation='3d']:not([opened])) {
+  --private-modal-transition-window-transform: rotateX(22deg) rotateY(22deg) scale(0.5)
+    translate(-80%, 80%);
 }
 
 /*
@@ -74,8 +81,9 @@
   - x -
 */
 
-:host([position="bottom"][animation="3d"]:not([opened])) {
-  --mds-modal-transition-window-transform: rotateX(22deg) rotateY(0) scale(0.5) translate(0, 80%);
+:host([position='bottom'][animation='3d']:not([opened])) {
+  --private-modal-transition-window-transform: rotateX(22deg) rotateY(0) scale(0.5)
+    translate(0, 80%);
 }
 
 /*
@@ -84,6 +92,7 @@
   - - x
 */
 
-:host([position="bottom-right"][animation="3d"]:not([opened])) {
-  --mds-modal-transition-window-transform: rotateX(-22deg) rotateY(-22deg) scale(0.5) translate(80%, 80%);
+:host([position='bottom-right'][animation='3d']:not([opened])) {
+  --private-modal-transition-window-transform: rotateX(-22deg) rotateY(-22deg) scale(0.5)
+    translate(80%, 80%);
 }

@@ -53,7 +53,7 @@ const filesList = [
   'upgradable_gold.docx',
   'wisconsin_bypassing_small.xar',
   'wooden.jsx',
-]
+];
 
 const namedFilesList = {
   '7z': 'frozen_haptic.7z',
@@ -115,9 +115,6 @@ const namedFilesList = {
   xlsx: 'hdd_navigate_panama.xlsx',
   xml: 'Markup language.xml',
   zip: 'tuna_table_fall.zip',
-}
+};
 
-export {
-  filesList,
-  namedFilesList,
-}
+export { filesList, namedFilesList };

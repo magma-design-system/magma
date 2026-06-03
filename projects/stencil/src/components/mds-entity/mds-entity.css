@@ -1,41 +1,73 @@
+@import './css/mds-entity-fouc.css';
+
 /**
  * @prop --mds-entity-background: The background-color of the entity
  * @prop --mds-entity-color: The color of the entity name
  * @prop --mds-entity-detail-color: The color of the text details
  * @prop --mds-entity-icon-background: The background-color of the icon
  * @prop --mds-entity-icon-color: The color of the icon
- * @prop --mds-entity-shadow: The box-shadow od the component
  */
 
-:host {
-  --mds-entity-background: theme('colors.tone-neutral');
-  --mds-entity-color: theme('colors.tone-neutral-02');
-  --mds-entity-detail-color: theme('colors.tone-neutral-03');
-  --mds-entity-icon-background: theme('colors.label-blue-09');
-  --mds-entity-icon-radius: theme('borderRadius.DEFAULT');
-  --mds-entity-icon-color: theme('colors.label-blue-04');
-  --mds-entity-shadow: theme('boxShadow.DEFAULT');
+@property --mds-entity-background {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral));
+  syntax: '<color>';
+}
 
-  @apply
-    gap-200
-    p-200
-    rounded-lg;
+@property --mds-entity-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-02));
+  syntax: '<color>';
+}
+
+@property --mds-entity-detail-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-03));
+  syntax: '<color>';
+}
+
+@property --mds-entity-icon-background {
+  inherits: false;
+  initial-value: rgb(var(--label-blue-09));
+  syntax: '<color>';
+}
+
+@property --mds-entity-icon-radius {
+  inherits: false;
+  initial-value: var(--radius-md);
+  syntax: '<length>';
+}
+
+@property --mds-entity-icon-color {
+  inherits: false;
+  initial-value: rgb(var(--label-blue-04));
+  syntax: '<color>';
+}
+
+:host {
+  --mds-entity-background: rgb(var(--tone-neutral));
+  --mds-entity-color: rgb(var(--tone-neutral-02));
+  --mds-entity-detail-color: rgb(var(--tone-neutral-03));
+  --mds-entity-icon-background: rgb(var(--label-blue-09));
+  --mds-entity-icon-radius: var(--radius-md);
+  --mds-entity-icon-color: rgb(var(--label-blue-04));
 
   align-items: stretch;
   background-color: var(--mds-entity-background);
-  box-shadow: var(--mds-entity-shadow);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-outline-weak);
   color: var(--mds-entity-color);
   display: flex;
+  gap: --spacing(200);
+  padding: --spacing(200);
 }
 
 .spinner,
 .preview,
 .delete {
-  @apply
-    rounded
-    w-1100;
-
+  border-radius: var(--radius-md);
   flex-shrink: 0;
+  width: --spacing(1100);
 }
 
 .preview {
@@ -49,7 +81,6 @@
 
 .spinner,
 .preview {
-
   @apply aspect-square;
 
   align-items: center;
@@ -63,65 +94,57 @@
   fill: var(--mds-entity-icon-color);
 }
 
-:host([await]:not([await="false"])) .spinner {
+:host([await]:not([await='false'])) .spinner {
   display: inline-flex;
 }
 
 mds-spinner {
-  @apply
-    h-900
-    w-900;
+  height: --spacing(900);
+  width: --spacing(900);
 }
 
 .infos {
-  @apply
-    gap-0
-    min-w-0;
-
   display: flex;
   flex-direction: column;
   flex-grow: 1;
+  gap: --spacing(0);
   justify-content: center;
+  min-width: 0;
   white-space: nowrap;
 }
 
 .details {
-  @apply gap-100;
-
-  align-items: center;
+  align-items: baseline;
   color: var(--mds-entity-detail-color);
   display: flex;
+  gap: --spacing(100);
 }
 
 .actions {
-  @apply gap-200;
-
   align-items: center;
   display: flex;
+  gap: --spacing(200);
 }
 
-::slotted( [slot="action"]) {
-  @apply
-    aspect-square
-    w-1100;
+::slotted([slot='action']) {
+  @apply aspect-square;
 
   height: auto;
+  width: --spacing(1100);
 }
 
-::slotted( *) {
+::slotted(*) {
   @apply truncate;
 
   white-space: nowrap;
 }
 
 .title {
-  @apply
-    min-w-0
-    truncate;
+  @apply truncate;
 
   display: flex;
+  min-width: 0px;
 }
 
 @import './css/mds-entity-pref-contrast.css';
 @import './css/mds-entity-pref-theme.css';
-@import '../../tailwind/fouc.css';

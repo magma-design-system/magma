@@ -2,9 +2,7 @@ const buttonSizeTypographyVariant = {
   sm: 'action',
   md: 'action',
   lg: 'h6',
-  xl: 'h4',
-}
+  xl: 'h5',
+};
 
-export {
-  buttonSizeTypographyVariant,
-}
+export { buttonSizeTypographyVariant };

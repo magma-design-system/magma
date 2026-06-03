@@ -11,6 +11,7 @@
   background-color: var(--mds-tab-item-selected-background);
   border-radius: var(--mds-tab-item-radius);
   box-shadow: var(--mds-tab-item-selected-shadow);
+  corner-shape: var(--mds-tab-corner-shape);
   height: var(--mds-tab-slider-height);
   inset: 0 auto auto 0;
   pointer-events: none;

@@ -1,24 +1,54 @@
-@import '../../tailwind/components.css';
-@tailwind components;
+@import './css/mds-help-fouc.css';
+
+/**
+ * @prop --mds-help-tooltip-width: The width of the tooltip element.
+ * @prop --mds-help-tooltip-max-width: The maximum allowed width of the tooltip.
+ * @prop --mds-help-tooltip-min-width: The minimum allowed width of the tooltip.
+ * @prop --mds-help-tooltip-delay: The delay before the tooltip becomes visible.
+ */
+
+/* ❌ Not supported: 'fit-content' is not allowed in <length>. Requires <size> syntax, which @property does not support.
+@property --mds-help-tooltip-width {
+  inherits: false;
+  syntax: "<length>";
+  initial-value: fit-content;
+}
+*/
+
+@property --mds-help-tooltip-max-width {
+  inherits: false;
+  initial-value: 300px;
+  syntax: '<length>';
+}
+
+@property --mds-help-tooltip-min-width {
+  inherits: false;
+  initial-value: 200px;
+  syntax: '<length>';
+}
+
+@property --mds-help-tooltip-delay {
+  inherits: false;
+  initial-value: 0.25s;
+  syntax: '<time>';
+}
 
 :host {
   --mds-help-tooltip-width: fit-content;
-  --mds-help-tooltip-max-width: 280px;
+  --mds-help-tooltip-max-width: 300px;
   --mds-help-tooltip-min-width: 200px;
   --mds-help-tooltip-delay: 0.25s;
 
-  @apply
-    h-400
-    ml-100
-    w-400;
-
-  color: theme('colors.tone-neutral-03');
+  color: rgb(var(--tone-neutral-03));
   cursor: help;
   display: inline-flex;
   fill: currentcolor;
+  height: --spacing(400);
   justify-content: flex-start;
+  margin-left: --spacing(100);
   overflow: visible;
   position: relative;
+  width: --spacing(400);
 }
 
 i {
@@ -44,5 +74,3 @@ i {
   height: inherit;
   width: inherit;
 }
-
-@import '../../tailwind/fouc.css';

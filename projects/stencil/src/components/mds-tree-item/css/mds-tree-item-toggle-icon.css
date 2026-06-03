@@ -16,7 +16,7 @@
 }
 
 .toggle-icon mds-button {
-  --size: theme('size.600');
+  --size: --spacing(600);
 
   background-color: var(--mds-tree-item-icon-background-color);
   border: 0;
@@ -35,48 +35,58 @@
   color: var(--mds-tree-item-toggle-icon-async-color);
 }
 
-:host-context([toggle="chevron"]) .toggle-icon {
-  --mds-tree-item-icon-background-color: var(--mds-tree-item-toggle-icon-chevron-default-background);
+:host-context([toggle='chevron']) .toggle-icon {
+  --mds-tree-item-icon-background-color: var(
+    --mds-tree-item-toggle-icon-chevron-default-background
+  );
   --mds-tree-item-icon-color: var(--mds-tree-item-toggle-icon-chevron-default-color);
 }
 
-:host([expanded]):host-context([toggle="chevron"]) .toggle-icon {
-  --mds-tree-item-icon-background-color: var(--mds-tree-item-toggle-icon-chevron-expanded-background);
+:host([expanded]):host-context([toggle='chevron']) .toggle-icon {
+  --mds-tree-item-icon-background-color: var(
+    --mds-tree-item-toggle-icon-chevron-expanded-background
+  );
   --mds-tree-item-icon-color: var(--mds-tree-item-toggle-icon-chevron-expanded-color);
 }
 
-:host-context([toggle="folder"][toggle-position="left"]) .toggle-icon mds-button {
-  box-shadow: 0 theme('spacing.25') 0 0 var(--mds-tree-item-branch-border-color);
+:host-context([toggle='folder'][toggle-position='left']) .toggle-icon mds-button {
+  box-shadow: 0 --spacing(25) 0 0 var(--mds-tree-item-branch-border-color);
 }
 
-:host-context([toggle="folder"]) .toggle-icon mds-button {
+:host-context([toggle='folder']) .toggle-icon mds-button {
   --size: auto;
 
-  border-radius: theme('borderRadius.DEFAULT');
-  padding: theme('spacing.25') theme('spacing.50');
+  border-radius: var(--radius);
+  padding: --spacing(25) --spacing(50);
 }
 
-:host-context([toggle="folder"]) .toggle-icon {
+:host-context([toggle='folder']) .toggle-icon {
   --mds-tree-item-icon-background-color: var(--mds-tree-item-toggle-icon-folder-default-background);
   --mds-tree-item-icon-color: var(--mds-tree-item-toggle-icon-folder-default-color);
 }
 
-:host-context(mds-tree[toggle="folder"]):host([expanded]) .toggle-icon {
-  --mds-tree-item-icon-background-color: var(--mds-tree-item-toggle-icon-folder-expanded-background);
+:host-context(mds-tree[toggle='folder']):host([expanded]) .toggle-icon {
+  --mds-tree-item-icon-background-color: var(
+    --mds-tree-item-toggle-icon-folder-expanded-background
+  );
   --mds-tree-item-icon-color: var(--mds-tree-item-toggle-icon-folder-expanded-color);
 }
 
-:host-context(mds-tree[toggle-position="right"]) .toggle-icon {
-  --mds-tree-item-icon-background-color: var(--mds-tree-item-toggle-icon-position-right-default-background);
+:host-context(mds-tree[toggle-position='right']) .toggle-icon {
+  --mds-tree-item-icon-background-color: var(
+    --mds-tree-item-toggle-icon-position-right-default-background
+  );
   --mds-tree-item-icon-color: var(--mds-tree-item-toggle-icon-position-right-default-color);
 }
 
-:host([expanded]):host-context(mds-tree[toggle-position="right"]) .toggle-icon {
-  --mds-tree-item-icon-background-color: var(--mds-tree-item-toggle-icon-position-right-expanded-background);
+:host([expanded]):host-context(mds-tree[toggle-position='right']) .toggle-icon {
+  --mds-tree-item-icon-background-color: var(
+    --mds-tree-item-toggle-icon-position-right-expanded-background
+  );
   --mds-tree-item-icon-color: var(--mds-tree-item-toggle-icon-position-right-expanded-color);
 }
 
-:host([expanded]):host-context(mds-tree[toggle-position="left"][toggle="chevron"]) .toggle-icon {
+:host([expanded]):host-context(mds-tree[toggle-position='left'][toggle='chevron']) .toggle-icon {
   transform: rotate(90deg);
 }
 
@@ -87,12 +97,16 @@
 /* Safari fixes used to sobstitute missing host-context support */
 
 .toggle-icon--chevron {
-  --mds-tree-item-icon-background-color: var(--mds-tree-item-toggle-icon-chevron-default-background);
+  --mds-tree-item-icon-background-color: var(
+    --mds-tree-item-toggle-icon-chevron-default-background
+  );
   --mds-tree-item-icon-color: var(--mds-tree-item-toggle-icon-chevron-default-color);
 }
 
 :host([expanded]) .toggle-icon--chevron {
-  --mds-tree-item-icon-background-color: var(--mds-tree-item-toggle-icon-chevron-expanded-background);
+  --mds-tree-item-icon-background-color: var(
+    --mds-tree-item-toggle-icon-chevron-expanded-background
+  );
   --mds-tree-item-icon-color: var(--mds-tree-item-toggle-icon-chevron-expanded-color);
 
   transform: rotate(90deg);
@@ -101,9 +115,9 @@
 .toggle-icon--folder mds-button {
   --size: auto;
 
-  border-radius: theme('borderRadius.DEFAULT');
-  box-shadow: 0 theme('spacing.25') 0 0 var(--mds-tree-item-branch-border-color);
-  padding: theme('spacing.25') theme('spacing.50');
+  border-radius: var(--radius);
+  box-shadow: 0 --spacing(25) 0 0 var(--mds-tree-item-branch-border-color);
+  padding: --spacing(25) --spacing(50);
 }
 
 .toggle-icon--folder {
@@ -112,6 +126,8 @@
 }
 
 :host([expanded]) .toggle-icon--folder {
-  --mds-tree-item-icon-background-color: var(--mds-tree-item-toggle-icon-folder-expanded-background);
+  --mds-tree-item-icon-background-color: var(
+    --mds-tree-item-toggle-icon-folder-expanded-background
+  );
   --mds-tree-item-icon-color: var(--mds-tree-item-toggle-icon-folder-expanded-color);
 }

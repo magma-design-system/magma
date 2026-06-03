@@ -1,9 +1,9 @@
-:host([variant="light"]) {
+:host([variant='light']) {
   --mds-radial-progress-color: rgb(var(--tone-neutral-03));
   --mds-radial-progress-background: rgb(var(--tone-neutral-09));
 }
 
-:host([variant="dark"]) {
+:host([variant='dark']) {
   --mds-radial-progress-color: rgb(var(--tone-neutral-09));
   --mds-radial-progress-background: rgb(var(--tone-neutral-02));
   --mds-radial-progress-text-background: rgb(var(--tone-neutral-04));

@@ -1,5 +1,4 @@
-@import '../../tailwind/components.css';
-@tailwind components;
+@import './css/mds-input-tip-item-fouc.css';
 
 /**
  * @prop --mds-input-tip-item-background: Sets the background color of the tip item.
@@ -7,61 +6,75 @@
  * @prop --mds-input-tip-item-icon-color: Sets the icon color fill of the tip item.
  */
 
-:host {
-  --mds-input-tip-item-background: theme('colors.tone-neutral-01');
-  --mds-input-tip-item-color: theme('colors.tone-neutral');
-  --mds-input-tip-item-icon-color: theme('colors.tone-neutral');
+@property --mds-input-tip-item-background {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-03));
+  syntax: '<color>';
+}
 
-  @apply
-    duration-300
-    ease-out-expo
-    h-300
-    rounded-md;
+@property --mds-input-tip-item-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral));
+  syntax: '<color>';
+}
+
+@property --mds-input-tip-item-icon-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral));
+  syntax: '<color>';
+}
+
+:host {
+  --mds-input-tip-item-background: var(--mds-input-tip-background, rgb(var(--tone-neutral-03)));
+  --mds-input-tip-item-color: rgb(var(--tone-neutral));
+  --mds-input-tip-item-icon-color: rgb(var(--tone-neutral));
 
   align-items: center;
   background-color: var(--mds-input-tip-item-background);
+  border-radius: var(--radius-2xs);
   color: var(--mds-input-tip-item-color);
   display: flex;
+  height: --spacing(300);
   justify-content: center;
-  min-width: theme('spacing.300');
+  min-width: --spacing(300);
   padding: 0;
   pointer-events: none;
   position: static;
   text-align: center;
   transform: translate(0, 0);
-  transition-property: background-color, border-radius, color, padding-left, padding-right, transform;
+  transition-duration: var(--duration-300);
+  transition-property:
+    background-color, border-radius, color, padding-left, padding-right, transform;
+  transition-timing-function: var(--ease-out-expo);
   user-select: none;
 }
 
-.content {
-  @apply
-    duration-200
-    ease-out-expo
-    h-300;
-
-  display: grid;
-  grid-template-columns: 0fr;
-  opacity: 0;
-  overflow: hidden;
-  transition-property: grid-template-columns, opacity;
+mds-text {
+  display: flex;
+  place-self: center;
 }
 
-.text {
-  line-height: theme('spacing.300');
+.content {
+  display: grid;
+  grid-template-columns: 0fr;
+  height: --spacing(300);
+  opacity: 0;
+  overflow: hidden;
+  transition-duration: var(--duration-200);
+  transition-property: grid-template-columns, opacity;
+  transition-timing-function: var(--ease-out-expo);
 }
 
 .icon {
-  @apply
-    h-300
-    svg
-    w-300;
+  @apply svg;
 
   fill: var(--mds-input-tip-item-icon-color);
+  height: --spacing(300);
   transform: translateY(-1px);
+  width: --spacing(300);
 }
 
 @import './css/mds-input-tip-item-expanded.css';
 @import './css/mds-input-tip-item-variant.css';
 @import './css/mds-input-tip-item-pref-animation.css';
 @import './css/mds-input-tip-item-pref-contrast.css';
-@import '../../tailwind/fouc.css';

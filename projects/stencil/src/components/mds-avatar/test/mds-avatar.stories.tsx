@@ -1,10 +1,8 @@
-import { h } from '@stencil/core'
-import { lokiDisabled } from '@test/loki-disabled'
-import { iconsDictionary, mggIconsDictionary } from '@dictionary/icon'
-import {
-  themeFullVariantAvatarDictionary,
-  toneMinimalVariantDictionary,
-} from '@dictionary/variant'
+import { h } from '@stencil/core';
+import { lokiDisabled } from '@test/loki-disabled';
+import { iconsDictionary, mggIconsDictionary } from '@type/icon';
+import { themeFullVariantAvatarDictionary } from '@type/variant';
+import { toneMinimalVariantDictionary } from '@type/tone';
 
 export default {
   title: 'UI / Avatar',
@@ -18,8 +16,7 @@ export default {
     },
     initials: {
       type: { name: 'string' },
-      description:
-        'The user\'s inizials displayed if there\'s no image available',
+      description: "The user's inizials displayed if there's no image available",
     },
     src: {
       type: { name: 'string' },
@@ -38,11 +35,11 @@ export default {
       control: { type: 'select' },
     },
   },
-}
+};
 
-const Template = args => <mds-avatar {...args} class="w-2400" />
+const Template = (args) => <mds-avatar {...args} class="w-2400" />;
 
-const TemplateSmall = args => <mds-avatar {...args} class="w-600" />
+const TemplateSmall = (args) => <mds-avatar {...args} class="w-600" />;
 
 export const Default = {
   render: Template,
@@ -50,12 +47,12 @@ export const Default = {
   args: {
     src: './avatar-06-200x200.jpeg',
   },
-}
+};
 
 export const NoImage = {
   render: Template,
   args: {},
-}
+};
 
 export const Initials = {
   render: Template,
@@ -63,7 +60,7 @@ export const Initials = {
   args: {
     initials: 'ts',
   },
-}
+};
 
 export const InitialsSmall = {
   render: TemplateSmall,
@@ -71,7 +68,7 @@ export const InitialsSmall = {
   args: {
     initials: 'ts',
   },
-}
+};
 
 export const Icon = {
   render: Template,
@@ -79,7 +76,7 @@ export const Icon = {
   args: {
     icon: 'mi/baseline/pets',
   },
-}
+};
 
 export const BrokenSrc = {
   render: Template,
@@ -89,4 +86,4 @@ export const BrokenSrc = {
   },
 
   story: lokiDisabled,
-}
+};

@@ -1,11 +1,12 @@
-:host-context(.pref-theme-dark) {
-  --mds-tab-tabs-background: theme('colors.tone-neutral-08');
-  --mds-tab-item-selected-background: theme('colors.tone-neutral-07');
+:host-context(:root.pref-theme-dark:not(.pref-theme-scheme-light)) {
+  --mds-tab-tabs-background: rgb(var(--tone-neutral-10));
+  --mds-tab-item-selected-background: rgb(var(--tone-neutral-08));
 }
 
 @media (prefers-color-scheme: dark) {
-  :host-context(.pref-theme-system) {
-    --mds-tab-tabs-background: theme('colors.tone-neutral-08');
-    --mds-tab-item-selected-background: theme('colors.tone-neutral-07');
+  :host-context(:root.pref-theme-system:not(.pref-theme-scheme-light)),
+  :host-context(:root:not([data-magma-pref])) {
+    --mds-tab-tabs-background: rgb(var(--tone-neutral-10));
+    --mds-tab-item-selected-background: rgb(var(--tone-neutral-08));
   }
 }

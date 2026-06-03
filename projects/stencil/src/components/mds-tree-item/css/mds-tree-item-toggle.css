@@ -18,27 +18,32 @@
   z-index: 2;
 }
 
-:host([toggle="chevron"]) .toggle-icon {
-  --mds-tree-item-icon-background-color: var(--mds-tree-item-toggle-icon-chevron-default-background);
+:host([toggle='chevron']) .toggle-icon {
+  --mds-tree-item-icon-background-color: var(
+    --mds-tree-item-toggle-icon-chevron-default-background
+  );
   --mds-tree-item-icon-color: var(--mds-tree-item-toggle-icon-chevron-default-color);
 }
 
-:host([toggle="chevron"][expanded]) .toggle-icon {
-  --mds-tree-item-icon-background-color: var(--mds-tree-item-toggle-icon-chevron-expanded-background);
+:host([toggle='chevron'][expanded]) .toggle-icon {
+  --mds-tree-item-icon-background-color: var(
+    --mds-tree-item-toggle-icon-chevron-expanded-background
+  );
   --mds-tree-item-icon-color: var(--mds-tree-item-toggle-icon-chevron-expanded-color);
 }
 
-:host([toggle="folder"]) .toggle-icon {
+:host([toggle='folder']) .toggle-icon {
   --mds-tree-item-icon-background-color: var(--mds-tree-item-toggle-icon-folder-default-background);
   --mds-tree-item-icon-color: var(--mds-tree-item-toggle-icon-folder-default-color);
   --size: auto;
 
-  border-radius: theme('borderRadius.md');
-  padding: theme('spacing.25') theme('spacing.50');
+  border-radius: var(--radius-md);
+  padding: --spacing(25) --spacing(50);
 }
 
-:host([toggle="folder"][expanded]) .toggle-icon {
-  --mds-tree-item-icon-background-color: var(--mds-tree-item-toggle-icon-folder-expanded-background);
+:host([toggle='folder'][expanded]) .toggle-icon {
+  --mds-tree-item-icon-background-color: var(
+    --mds-tree-item-toggle-icon-folder-expanded-background
+  );
   --mds-tree-item-icon-color: var(--mds-tree-item-toggle-icon-folder-expanded-color);
 }
-

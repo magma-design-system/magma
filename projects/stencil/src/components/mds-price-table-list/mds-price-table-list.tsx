@@ -1,4 +1,4 @@
-import { Component, Host, h, Element, State } from '@stencil/core'
+import { Component, Host, h, Element, State } from '@stencil/core';
 
 /**
  * @part content - Selects the element which wraps elements added via `default slot`
@@ -16,32 +16,31 @@ import { Component, Host, h, Element, State } from '@stencil/core'
   shadow: true,
 })
 export class MdsPriceTableList {
+  @State() hasItems: boolean;
+  @Element() hostElement: HTMLMdsPriceTableListElement;
 
-  @State() hasItems: boolean
-  @Element() hostElement: HTMLMdsPriceTableListElement
-
-  componentWillLoad (): void {
-    this.hasItems = this.hostElement.querySelectorAll('[slot="item"], mds-price-table-list-item').length > 0
+  componentWillLoad(): void {
+    this.hasItems =
+      this.hostElement.querySelectorAll('[slot="item"], mds-price-table-list-item').length > 0;
   }
 
-  render () {
+  render() {
     return (
       <Host>
         <div class="header" part="header">
-          <slot name="header"/>
+          <slot name="header" />
         </div>
-        { this.hasItems && <mds-separator class="separator"></mds-separator> }
-        { this.hasItems &&
+        {this.hasItems && <mds-separator class="separator"></mds-separator>}
+        {this.hasItems && (
           <main class="main" part="content">
-            <slot name="item"/>
+            <slot name="item" />
           </main>
-        }
+        )}
         <div class="footer" part="footer">
-          <slot name="price"/>
-          <slot name="action"/>
+          <slot name="price" />
+          <slot name="action" />
         </div>
       </Host>
-    )
+    );
   }
-
 }

@@ -1,13 +1,20 @@
-:host-context(.pref-animation-reduce),
-:host-context(.pref-animation-reduce) .label,
-:host-context(.pref-animation-reduce) .icon {
+:host-context(:root.pref-animation-reduce) {
   transition-duration: 0s;
+
+  .label,
+  .icon {
+    transition-duration: 0s;
+  }
 }
 
 @media (prefers-reduced-motion) {
-  :host-context(.pref-animation-system),
-  :host-context(.pref-animation-system) .label,
-  :host-context(.pref-animation-system) .icon {
+  :host-context(:root.pref-animation-system),
+  :host-context(:root:not([data-magma-pref])) {
     transition-duration: 0s;
+
+    .label,
+    .icon {
+      transition-duration: 0s;
+    }
   }
 }

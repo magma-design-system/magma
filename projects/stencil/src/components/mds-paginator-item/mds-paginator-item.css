@@ -1,6 +1,4 @@
-@import '~@maggioli-design-system/styles/dist/css/animations.css'; /* included for focus effect */
-@import '../../tailwind/components.css';
-@tailwind components;
+@import './css/mds-paginator-item-fouc.css';
 
 /**
  * @prop --mds-paginator-item-background-disabled: Sets the background-color of the item when is disabled
@@ -19,27 +17,112 @@
  * @prop --mds-paginator-item-size: Sets the height and the min-width of the paginator item
  */
 
+@property --mds-paginator-item-background-disabled {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-09));
+  syntax: '<color>';
+}
+
+@property --mds-paginator-item-background-hover {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-08));
+  syntax: '<color>';
+}
+
+@property --mds-paginator-item-background-selected {
+  inherits: false;
+  initial-value: rgb(var(--variant-primary-03));
+  syntax: '<color>';
+}
+
+@property --mds-paginator-item-background {
+  inherits: false;
+  initial-value: transparent;
+  syntax: '<color>';
+}
+
+@property --mds-paginator-item-color-disabled {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-06));
+  syntax: '<color>';
+}
+
+@property --mds-paginator-item-color-hover {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-02));
+  syntax: '<color>';
+}
+
+@property --mds-paginator-item-color-selected {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral));
+  syntax: '<color>';
+}
+
+@property --mds-paginator-item-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-02));
+  syntax: '<color>';
+}
+
+@property --mds-paginator-item-radius {
+  inherits: false;
+  initial-value: 200px;
+  syntax: '<length>';
+}
+
+@property --mds-paginator-item-size {
+  inherits: false;
+  initial-value: --spacing(900);
+  syntax: '<length>';
+}
+
+/* ❌ Not supported
+@property --mds-paginator-item-shadow-disabled {
+  inherits: false;
+  initial-value: none;
+  syntax: "<box-shadow>";
+}
+
+@property --mds-paginator-item-shadow-hover {
+  inherits: false;
+  initial-value: none;
+  syntax: "<box-shadow>";
+}
+
+@property --mds-paginator-item-shadow-selected {
+  inherits: false;
+  initial-value: var(--shadow-md-sharp);
+  syntax: "<box-shadow>";
+}
+
+
+@property --mds-paginator-item-shadow {
+  inherits: false;
+  initial-value: none;
+  syntax: "<box-shadow>";
+}
+*/
+
 :host {
-  --mds-paginator-item-background-disabled: theme('colors.tone-neutral-09');
-  --mds-paginator-item-background-hover: theme('colors.tone-neutral-08');
-  --mds-paginator-item-background-selected: theme('colors.variant-primary-03');
+  --mds-paginator-item-background-disabled: rgb(var(--tone-neutral-09));
+  --mds-paginator-item-background-hover: rgb(var(--tone-neutral-08));
+  --mds-paginator-item-background-selected: rgb(var(--variant-primary-03));
   --mds-paginator-item-background: transparent;
-  --mds-paginator-item-color-disabled: theme('colors.tone-neutral-06');
-  --mds-paginator-item-color-hover: theme('colors.tone-neutral-02');
-  --mds-paginator-item-color-selected: theme('colors.tone-neutral');
-  --mds-paginator-item-color: theme('colors.tone-neutral-02');
+  --mds-paginator-item-color-disabled: rgb(var(--tone-neutral-06));
+  --mds-paginator-item-color-hover: rgb(var(--tone-neutral-02));
+  --mds-paginator-item-color-selected: rgb(var(--tone-neutral));
+  --mds-paginator-item-color: rgb(var(--tone-neutral-02));
   --mds-paginator-item-radius: 200px;
   --mds-paginator-item-shadow-disabled: none;
   --mds-paginator-item-shadow-hover: none;
-  --mds-paginator-item-shadow-selected: theme('boxShadow.md-sharp');
+  --mds-paginator-item-shadow-selected: var(--shadow-md-sharp);
   --mds-paginator-item-shadow: none;
-  --mds-paginator-item-size: theme('spacing.900');
+  --mds-paginator-item-size: --spacing(900);
 
-  @apply
-    duration-200
-    ease-out
-    focus-bounce
-    px-300;
+  @apply ease-out
+  focus-bounce
+  px-300;
 
   align-items: center;
   background-color: var(--mds-paginator-item-background);
@@ -53,6 +136,7 @@
   height: var(--mds-paginator-item-size);
   justify-content: center;
   min-width: var(--mds-paginator-item-size);
+  transition-duration: var(--duration-200);
   transition-property: background-color, box-shadow, color, outline, outline-offset;
   user-select: none;
 }
@@ -96,4 +180,3 @@
 
 @import './css/mds-paginator-item-pref-animation.css';
 @import './css/mds-paginator-item-pref-theme.css';
-@import '../../tailwind/fouc.css';

@@ -1,25 +1,65 @@
-@import './css/animate/components.css';
-@tailwind utilities;
+@reference './css/animate/utilities.css';
+@import './css/mds-toast-fouc.css';
 
 /**
- * @prop --mds-toast-background: Sets the background-color of the component
- * @prop --mds-toast-color: Sets the text color of the component
- * @prop --mds-toast-duration: Sets the animation duration of the component, used also by component's logic
- * @prop --mds-toast-icon-color: Sets the text color of the component
- * @prop --mds-toast-shadow: Sets the box-shadow of the component
+ * @prop --mds-toast-background: Background color of the toast component.
+ * @prop --mds-toast-color: Text color inside the toast.
+ * @prop --mds-toast-duration: Duration of the toast display.
+ * @prop --mds-toast-icon-color: Color of the icon inside the toast.
+ * @prop --mds-toast-shadow: Shadow applied to the toast container.
+ * @prop --mds-toast-width: Width of the toast component.
  */
 
+@property --mds-toast-background {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-02));
+  syntax: '<color>';
+}
+
+@property --mds-toast-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral));
+  syntax: '<color>';
+}
+
+@property --mds-toast-duration {
+  inherits: false;
+  initial-value: 300ms;
+  syntax: '<time>';
+}
+
+@property --mds-toast-icon-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral));
+  syntax: '<color>';
+}
+
+@property --mds-toast-width {
+  inherits: false;
+  initial-value: auto;
+  syntax: '<length> | auto';
+}
+
+/* ❌ Not supported
+
+@property --mds-toast-shadow {
+  inherits: false;
+  initial-value: var(--shadow-xl);
+  syntax: "<box-shadow>";
+}
+
+*/
+
 :host {
-  --mds-toast-background: theme('colors.tone-neutral-02');
-  --mds-toast-color: theme('colors.tone-neutral');
+  --mds-toast-background: rgb(var(--tone-neutral-02));
+  --mds-toast-color: rgb(var(--tone-neutral));
   --mds-toast-duration: 300ms;
-  --mds-toast-icon-color: theme('colors.tone-neutral');
-  --mds-toast-shadow: theme('boxShadow.xl');
+  --mds-toast-icon-color: rgb(var(--tone-neutral));
+  --mds-toast-shadow: var(--shadow-xl);
   --mds-toast-width: auto;
 
-  @apply
-    left-0
-    right-0;
+  @apply left-0
+  right-0;
 
   color: var(--mds-toast-color);
   display: flex;
@@ -28,8 +68,7 @@
 }
 
 .dialog {
-  @apply
-    ease-in-cubic
+  @apply ease-in-cubic
     gap-400
     max-w-full
     mx-400
@@ -46,41 +85,39 @@
   width: var(--mds-toast-width);
 }
 
-:host([visible]:not([visible="false"])) .dialog {
+:host([visible]:not([visible='false'])) .dialog {
   pointer-events: auto;
 }
 
-
-:host([position^="top"]) {
+:host([position^='top']) {
   @apply top-0;
 }
 
-:host([position="top-left"]) {
+:host([position='top-left']) {
   justify-content: flex-start;
 }
 
-:host([position="top-center"]) {
+:host([position='top-center']) {
   justify-content: center;
 }
 
-:host([position="top-right"]) {
+:host([position='top-right']) {
   justify-content: flex-end;
 }
 
-
-:host([position^="bottom"]) {
+:host([position^='bottom']) {
   @apply bottom-0;
 }
 
-:host([position="bottom-left"]) {
-  justify-content: flex-start
+:host([position='bottom-left']) {
+  justify-content: flex-start;
 }
 
-:host([position="bottom-center"]) {
+:host([position='bottom-center']) {
   justify-content: center;
 }
 
-:host([position="bottom-right"]) {
+:host([position='bottom-right']) {
   justify-content: flex-end;
 }
 
@@ -90,13 +127,12 @@
   display: flex;
 }
 
-::slotted( [slot="icon"]) {
-  @apply
-    duration-200
-    ease-out;
+::slotted([slot='icon']) {
+  @apply ease-out;
 
   fill: var(--mds-toast-icon-color);
   flex-shrink: 0;
+  transition-duration: var(--duration-200);
   transition-property: fill;
 }
 
@@ -111,4 +147,3 @@
 @import './css/mds-toast-pref-animation.css';
 @import './css/mds-toast-pref-theme.css';
 @import './css/mds-toast-pref-contrast.css';
-@import '../../tailwind/fouc.css';

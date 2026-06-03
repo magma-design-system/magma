@@ -1,21 +1,49 @@
+@import './css/mds-badge-fouc.css';
+
 /**
  * @prop --mds-badge-background: Sets the background-color of the component
  * @prop --mds-badge-radius: Sets the border-radius of the component
  * @prop --mds-badge-color: Sets the text color of the component
+ * @prop --mds-badge-border-color: Sets the border color of the component when tone is "outline"
+ * @prop --mds-badge-border-width: Sets the border width of the component when tone is "outline"
  */
 
-:host {
-  --mds-badge-background: theme('colors.label-sky-09');
-  --mds-badge-border-color: theme('colors.label-sky-06');;
-  --mds-badge-border-width: 1px;
-  --mds-badge-color: theme('colors.label-sky-03');
-  --mds-badge-radius: theme('borderRadius.DEFAULT');
+@property --mds-badge-background {
+  inherits: false;
+  initial-value: rgb(var(--label-sky-09));
+  syntax: '<color>';
+}
 
-  @apply
-    duration-200
-    ease-out
-    px-200
-    py-100;
+@property --mds-badge-border-color {
+  inherits: false;
+  initial-value: rgb(var(--label-sky-06));
+  syntax: '<color>';
+}
+
+@property --mds-badge-color {
+  inherits: false;
+  initial-value: rgb(var(--label-sky-03));
+  syntax: '<color>';
+}
+
+@property --mds-badge-border-width {
+  inherits: true;
+  initial-value: 1px;
+  syntax: '<length>';
+}
+
+@property --mds-badge-radius {
+  inherits: true;
+  initial-value: 10px;
+  syntax: '<length>';
+}
+
+:host {
+  --mds-badge-background: rgb(var(--label-sky-09));
+  --mds-badge-border-color: rgb(var(--label-sky-06));
+  --mds-badge-border-width: 1px;
+  --mds-badge-color: rgb(var(--label-sky-03));
+  --mds-badge-radius: var(--radius-lg, 10px);
 
   align-items: center;
   background-color: var(--mds-badge-background);
@@ -23,51 +51,28 @@
   color: var(--mds-badge-color);
   display: inline-flex;
   min-width: min-content;
+  padding: --spacing(100) --spacing(200);
+  transition-duration: var(--duration-200);
   transition-property: background-color, border-color, border-width, color;
+  transition-timing-function: var(--ease-out-quad);
 }
 
-:host([tone="ghost"]) {
+:host([tone='outline']) {
   border-color: var(--mds-badge-border-color);
   border-style: solid;
   border-width: var(--mds-badge-border-width);
 }
 
-:host([tone="quiet"]) {
-  --mds-badge-background: theme('colors.tone-neutral');
+:host([tone='text']) {
+  --mds-badge-background: rgb(var(--tone-neutral));
 }
 
-@import './css/mds-badge-variant-amaranth.css';
-@import './css/mds-badge-variant-amaranth-contrast.css';
-@import './css/mds-badge-variant-aqua.css';
-@import './css/mds-badge-variant-aqua-contrast.css';
-@import './css/mds-badge-variant-blue.css';
-@import './css/mds-badge-variant-blue-contrast.css';
-@import './css/mds-badge-variant-dark.css';
-@import './css/mds-badge-variant-error.css';
-@import './css/mds-badge-variant-error-contrast.css';
-@import './css/mds-badge-variant-green.css';
-@import './css/mds-badge-variant-green-contrast.css';
-@import './css/mds-badge-variant-info.css';
-@import './css/mds-badge-variant-info-contrast.css';
-@import './css/mds-badge-variant-light.css';
-@import './css/mds-badge-variant-lime.css';
-@import './css/mds-badge-variant-lime-contrast.css';
-@import './css/mds-badge-variant-orange.css';
-@import './css/mds-badge-variant-orange-contrast.css';
-@import './css/mds-badge-variant-orchid.css';
-@import './css/mds-badge-variant-orchid-contrast.css';
-@import './css/mds-badge-variant-sky.css';
-@import './css/mds-badge-variant-sky-contrast.css';
-@import './css/mds-badge-variant-success.css';
-@import './css/mds-badge-variant-success-contrast.css';
-@import './css/mds-badge-variant-violet.css';
-@import './css/mds-badge-variant-violet-contrast.css';
-@import './css/mds-badge-variant-warning.css';
-@import './css/mds-badge-variant-warning-contrast.css';
-@import './css/mds-badge-variant-yellow.css';
-@import './css/mds-badge-variant-yellow-contrast.css';
+@import './css/mds-badge-variant-label.css';
+@import './css/mds-badge-variant-status.css';
+@import './css/mds-badge-variant-tone.css';
+@import './css/mds-badge-variant.css';
+
 @import './css/mds-badge-pref-animation.css';
 @import './css/mds-badge-pref-theme.css';
 @import './css/mds-badge-pref-contrast.css';
 @import './css/mds-badge-pref-contrast-dark.css';
-@import '../../tailwind/fouc.css';

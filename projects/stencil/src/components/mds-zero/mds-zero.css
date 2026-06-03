@@ -2,22 +2,29 @@
  * @prop --mds-zero-contents-max-width: Set if the contents has a max width to be centered in the component
  */
 
+@property --mds-zero-contents-max-width {
+  inherits: false;
+  initial-value: none;
+  syntax: '<length> | none';
+}
+
 :host {
   --mds-zero-contents-max-width: 400px;
 
-  @apply
-    gap-600
-    p-1200
-    duration-200
+  @apply duration-200
     ease-out
     mobile:px-600
     rounded-xl;
 
   align-items: center;
-  background-color: theme('colors.tone-neutral-10');
+  background-color: rgb(var(--tone-neutral-10));
   display: flex;
   flex-direction: column;
+  gap: --spacing(600);
   justify-items: center;
+  padding: --spacing(1200);
+
+  /* transition-duration: var(--transition-duration-200); */
   transition-property: box-shadow, background-color;
 }
 
@@ -39,7 +46,7 @@
   width: 100%;
 }
 
-:host ::slotted([slot="action"]) {
+:host ::slotted([slot='action']) {
   margin: auto;
 }
 

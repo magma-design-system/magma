@@ -1,12 +1,6 @@
-import { h } from '@stencil/core'
-import {
-  menuDictionary,
-  navDictionary,
-} from '../../mds-header-bar/meta/dictionary'
-import {
-  appearanceDictionary,
-  appearanceSetDictionary,
-} from '../meta/dictionary'
+import { h } from '@stencil/core';
+import { menuDictionary, navDictionary } from '../../mds-header-bar/meta/dictionary';
+import { appearanceDictionary, appearanceSetDictionary } from '../meta/dictionary';
 
 export default {
   title: 'UI / Header',
@@ -17,8 +11,7 @@ export default {
       control: { type: 'select' },
     },
     'appearance-set': {
-      description:
-        'Sets the appearance of the header bar element depending on the scroll position',
+      description: 'Sets the appearance of the header bar element depending on the scroll position',
       options: appearanceSetDictionary,
       control: { type: 'select' },
     },
@@ -30,24 +23,22 @@ export default {
     'auto-hide': {
       type: 'number',
       description:
-        'When the page is scrolled down, the component mds-header-bar is hidden starting from the `autoHide` attribute\'s value, then if the page is scrolled up it is shown again',
+        "When the page is scrolled down, the component mds-header-bar is hidden starting from the `autoHide` attribute's value, then if the page is scrolled up it is shown again",
     },
     menu: {
-      description:
-        'Sets the visibility type of the hamburger menu of mds-header-bar',
+      description: 'Sets the visibility type of the hamburger menu of mds-header-bar',
       options: menuDictionary,
       control: { type: 'select' },
     },
     nav: {
-      description:
-        'Sets the visibility type of the navigation menu of mds-header-bar',
+      description: 'Sets the visibility type of the navigation menu of mds-header-bar',
       options: navDictionary,
       control: { type: 'select' },
     },
   },
-}
+};
 
-const Template = args => (
+const Template = (args) => (
   <div>
     <div class="grid">
       {Array(40)
@@ -71,14 +62,14 @@ const Template = args => (
       <mds-header-bar>
         <div class="flex gap-400 items-center">
           <mds-img class="w-1000" src="/logo-gruppo-maggioli.svg" />
-          <div class="mb-100">
-            <mds-text typography="h6">Mobile menu</mds-text>
+          <div class="mb-100 grid grid-cols-full gap-100">
+            <mds-text typography="h5">Mobile menu</mds-text>
             <mds-text typography="option" class="text-tone-neutral-04">
               Shows up under 1024px
             </mds-text>
           </div>
         </div>
-        <mds-button slot="nav" variant="dark" tone="ghost">
+        <mds-button slot="nav" variant="dark" tone="outline">
           Accedi
         </mds-button>
         <mds-button slot="nav" icon="mi/round/person">
@@ -96,7 +87,7 @@ const Template = args => (
           </div>
         </div>
         <div class="grid gap-200 p-600">
-          <mds-button variant="dark" tone="ghost">
+          <mds-button variant="dark" tone="outline">
             Accedi
           </mds-button>
           <mds-button icon="mi/round/person">Registrati</mds-button>
@@ -104,9 +95,9 @@ const Template = args => (
       </div>
     </mds-header>
   </div>
-)
+);
 
-const TemplateAutoHide = args => (
+const TemplateAutoHide = (args) => (
   <div>
     <div class="grid">
       {Array(40)
@@ -130,14 +121,14 @@ const TemplateAutoHide = args => (
       <mds-header-bar>
         <div class="flex gap-400 items-center">
           <mds-img class="w-1000" src="/logo-gruppo-maggioli.svg" />
-          <div class="mb-100">
-            <mds-text typography="h6">Mobile menu</mds-text>
+          <div class="mb-100 grid grid-cols-full gap-100">
+            <mds-text typography="h5">Mobile menu</mds-text>
             <mds-text typography="option" class="text-tone-neutral-04">
               Shows up under 1024px
             </mds-text>
           </div>
         </div>
-        <mds-button slot="nav" variant="dark" tone="ghost">
+        <mds-button slot="nav" variant="dark" tone="outline">
           Accedi
         </mds-button>
         <mds-button slot="nav" icon="mi/round/person">
@@ -155,7 +146,7 @@ const TemplateAutoHide = args => (
           </div>
         </div>
         <div class="grid gap-200 p-600">
-          <mds-button variant="dark" tone="ghost">
+          <mds-button variant="dark" tone="outline">
             Accedi
           </mds-button>
           <mds-button icon="mi/round/person">Registrati</mds-button>
@@ -163,9 +154,9 @@ const TemplateAutoHide = args => (
       </div>
     </mds-header>
   </div>
-)
+);
 
-const TemplateLandingPage = args => (
+const TemplateLandingPage = (args) => (
   <div class="-m-600">
     <div class="bg-label-amaranth-06 text-tone-neutral flex text-center items-center justify-center h-[600px] flex-col pt-2000 select-none">
       <mds-text typography="h1">Hey</mds-text>
@@ -187,10 +178,9 @@ const TemplateLandingPage = args => (
                 This is a section title
               </mds-text>
               <mds-text>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                Accusamus iure, ratione beatae quam optio cumque rerum modi
-                consectetur odit eligendi omnis veniam fuga non ipsam voluptatum
-                a ut neque illum.
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus iure, ratione
+                beatae quam optio cumque rerum modi consectetur odit eligendi omnis veniam fuga non
+                ipsam voluptatum a ut neque illum.
               </mds-text>
             </div>
           ))}
@@ -200,14 +190,14 @@ const TemplateLandingPage = args => (
       <mds-header-bar>
         <div class="flex gap-400 items-center">
           <mds-img class="w-1000" src="/logo-gruppo-maggioli.svg" />
-          <div class="mb-100">
-            <mds-text typography="h6">Mobile menu</mds-text>
+          <div class="mb-100 grid grid-cols-full gap-100">
+            <mds-text typography="h5">Mobile menu</mds-text>
             <mds-text typography="option" class="text-tone-neutral-04">
               Shows up under 1024px
             </mds-text>
           </div>
         </div>
-        <mds-button slot="nav" variant="dark" tone="ghost">
+        <mds-button slot="nav" variant="dark" tone="outline">
           Accedi
         </mds-button>
         <mds-button slot="nav" icon="mi/round/person">
@@ -225,7 +215,7 @@ const TemplateLandingPage = args => (
           </div>
         </div>
         <div class="grid gap-200 p-600">
-          <mds-button variant="dark" tone="ghost">
+          <mds-button variant="dark" tone="outline">
             Accedi
           </mds-button>
           <mds-button icon="mi/round/person">Registrati</mds-button>
@@ -233,11 +223,11 @@ const TemplateLandingPage = args => (
       </div>
     </mds-header>
   </div>
-)
+);
 
 export const Default = {
   render: Template,
-}
+};
 
 export const AutoHide = {
   render: TemplateAutoHide,
@@ -246,7 +236,7 @@ export const AutoHide = {
     'auto-hide': 300,
     threshold: 10,
   },
-}
+};
 
 export const Appearance = {
   render: TemplateAutoHide,
@@ -254,7 +244,7 @@ export const Appearance = {
   args: {
     appearance: 'inline',
   },
-}
+};
 
 export const AppearanceSet = {
   render: TemplateLandingPage,
@@ -266,4 +256,4 @@ export const AppearanceSet = {
     menu: 'all',
     threshold: 10,
   },
-}
+};

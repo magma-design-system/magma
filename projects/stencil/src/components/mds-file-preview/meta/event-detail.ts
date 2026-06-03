@@ -1,5 +1,5 @@
 export interface MdsFilePreviewEventDetail {
-  extension: string
-  filename: string
-  target: HTMLMdsFilePreviewElement
+  extension: string;
+  filename: string;
+  target: HTMLMdsFilePreviewElement;
 }

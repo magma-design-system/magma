@@ -1,19 +1,57 @@
-:host {
-  --mds-table-row-color-hover: var(--mds-table-color, theme('colors.tone-neutral-02'));
-  --mds-table-row-color-alt: var(--mds-table-color-alt, theme('colors.tone-neutral-02'));
-  --mds-table-row-background-hover: var(--mds-table-background, theme('colors.tone-neutral'));
-  --mds-table-row-background-alt: var(--mds-table-background-alt, theme('colors.tone-neutral'));
-  --mds-table-row-actions-gap: var(--mds-table-actions-gap, theme('spacing.400'));
+@import './css/mds-table-row-fouc.css';
 
-  @apply
-    duration-200
+/**
+ * @prop --mds-table-row-color-hover: Text color for table row on hover.
+ * @prop --mds-table-row-color-alt: Text color for alternate table rows.
+ * @prop --mds-table-row-background-hover: Background color for table row on hover.
+ * @prop --mds-table-row-background-alt: Background color for alternate table rows.
+ * @prop --mds-table-row-actions-gap: Gap spacing for actions inside table rows.
+ */
+
+@property --mds-table-row-color-hover {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-02));
+  syntax: '<color>';
+}
+
+@property --mds-table-row-color-alt {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-02));
+  syntax: '<color>';
+}
+
+@property --mds-table-row-background-hover {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral));
+  syntax: '<color>';
+}
+
+@property --mds-table-row-background-alt {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral));
+  syntax: '<color>';
+}
+
+@property --mds-table-row-actions-gap {
+  inherits: false;
+  initial-value: --spacing(400);
+  syntax: '<length>';
+}
+
+:host {
+  --mds-table-row-color-hover: var(--mds-table-color, rgb(var(--tone-neutral-02)));
+  --mds-table-row-color-alt: var(--mds-table-color-alt, rgb(var(--tone-neutral-02)));
+  --mds-table-row-background-hover: var(--mds-table-background, rgb(var(--tone-neutral)));
+  --mds-table-row-background-alt: var(--mds-table-background-alt, rgb(var(--tone-neutral)));
+  --mds-table-row-actions-gap: var(--mds-table-actions-gap, --spacing(400));
+
+  @apply duration-200
     ease-out;
 
   color: var(--mds-table-row-color);
   display: table-row;
   position: relative;
   transition-property: color;
-
 }
 
 .selection-cell {
@@ -29,4 +67,3 @@
 @import './css/mds-table-row-sorted.css';
 @import './css/mds-table-row-actions.css';
 @import './css/mds-table-row-pref-animation.css';
-@import '../../tailwind/fouc.css';

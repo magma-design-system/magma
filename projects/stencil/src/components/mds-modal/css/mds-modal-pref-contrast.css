@@ -1,10 +1,10 @@
-:host-context(.pref-contrast-more) {
-  --mds-modal-window-shadow: theme('boxShadow.outline-strong-50'), theme('boxShadow.2xl');
+:host-context(:root.pref-contrast-more) {
+  --mds-modal-window-shadow: var(--shadow-outline-strong-50), var(--shadow-2xl);
 }
 
-
 @media (prefers-contrast: more) {
-  :host-context(.pref-contrast-system) {
-    --mds-modal-window-shadow: theme('boxShadow.outline-strong-50'), theme('boxShadow.2xl');
+  :host-context(:root.pref-contrast-system),
+  :host-context(:root:not([data-magma-pref])) {
+    --mds-modal-window-shadow: var(--shadow-outline-strong-50), var(--shadow-2xl);
   }
 }

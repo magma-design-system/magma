@@ -1,0 +1,85 @@
+<!--
+================================================================================
+AUTHORING RULES - 2. Pattern.md
+================================================================================
+Purpose: show CORRECT, idiomatic ways to use this component.
+         The reader is an AI agent generating code or a developer copy-pasting
+         a snippet, not someone reading documentation linearly.
+
+Companion docs to read first (do not re-derive their content here):
+  - docs/COMPONENTS.md       - the usage/ contract and the cross-cutting
+                               variant / tone / size ladders shared across components.
+  - projects/stencil/SPEC.md - registration, naming, events, slots, dictionaries.
+
+MUST contain:
+  - A numbered list of patterns ('## 1. Title', '## 2. Title', ...), ordered
+    from most common to most specialized.
+  - Each pattern: short title, 1-2 sentence "use this when..." intro, then
+    a SINGLE fenced code block (`html`, `tsx`, or `css`).
+  - The canonical / preferred form as #1 (typically: text via the `label`
+    prop rather than the default slot).
+  - A styling-customization pattern as the LAST entry, demonstrating the
+    component's `--mds-<name>-*` CSS custom properties.
+
+MUST NOT contain:
+  - Anti-patterns (those live in `antipattern.md`).
+  - Prop reference tables or full type signatures (those live in `readme.md`
+    and `components.d.ts`).
+  - Multiple alternative ways to do the same thing without ranking - agents
+    pick whichever appears first. Always label which is preferred.
+  - Pseudo-code or invented prop / icon names. Every snippet must be
+    runnable; verify prop names against the component's `.tsx` source and
+    icon slugs against `projects/svg-icons/svg/` or the configured icon set.
+
+STYLE & LENGTH:
+  - Numbered sections, sequential. Re-number when adding / removing.
+  - One code block per section. Keep examples minimal - only the attributes
+    needed to demonstrate the pattern.
+  - 5-12 patterns is the sweet spot. <5 means you're under-documenting;
+    >12 means edge cases that probably belong in `antipattern.md` or are
+    out of scope.
+  - Reference props by their HTML attribute form inside code blocks
+    (`icon-position`, not `iconPosition`); prose can use either, but stay
+    consistent within a file.
+  - Delete this comment block before committing.
+================================================================================
+-->
+
+Correct and idiomatic ways to use the `<{{componentName}}>` component, ordered from most common to most specialized.
+
+#### <!-- preferred / canonical use case, usually the `label` prop form -->
+
+<!-- 1-2 sentences: when to reach for this pattern and why it is the canonical form. -->
+
+```html
+<{{componentName}}></{{componentName}}>
+```
+
+#### <!-- next most common use case -->
+
+<!-- 1-2 sentences. -->
+
+```html
+<{{componentName}}></{{componentName}}>
+```
+
+<!--
+Continue with patterns 3, 4, 5... Cover at minimum:
+  - Each main visual configuration (variant, tone, size if applicable)
+  - Composition with related components (parent/child, named slots)
+  - Accessibility requirements (e.g. icon-only buttons needing aria-label)
+  - State patterns (await / loading, disabled, active) - only if the
+    component has them; otherwise skip
+  - Form integration if the component is form-associated
+  - External customization via CSS Custom Properties (always LAST)
+-->
+
+#### Styling Customization
+
+Style the component only through its documented `--mds-{{componentNameWithNoPrefix}}-*` CSS custom properties. Use the Magma color tokens via `rgb(var(--<token>))` so dark mode and high-contrast modes keep working - see [`docs/TOKENS.md`](../../../../../../docs/TOKENS.md).
+
+```css
+.my-{{componentNameWithNoPrefix}} {
+  /* --mds-{{componentNameWithNoPrefix}}-... properties go here */
+}
+```

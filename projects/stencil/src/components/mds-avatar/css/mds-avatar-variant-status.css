@@ -1,0 +1,39 @@
+:host([variant='error']) {
+  --mds-avatar-background-color: rgb(var(--status-error-05));
+  --mds-avatar-color: rgb(var(--status-error-10));
+
+  &:host([tone='weak']) {
+    --mds-avatar-background-color: rgb(var(--status-error-09));
+    --mds-avatar-color: rgb(var(--status-error-05));
+  }
+}
+
+:host([variant='warning']) {
+  --mds-avatar-background-color: rgb(var(--status-warning-05));
+  --mds-avatar-color: rgb(var(--status-warning-10));
+
+  &:host([tone='weak']) {
+    --mds-avatar-background-color: rgb(var(--status-warning-09));
+    --mds-avatar-color: rgb(var(--status-warning-05));
+  }
+}
+
+:host([variant='info']) {
+  --mds-avatar-background-color: rgb(var(--status-info-05));
+  --mds-avatar-color: rgb(var(--status-info-10));
+
+  &:host([tone='weak']) {
+    --mds-avatar-background-color: rgb(var(--status-info-09));
+    --mds-avatar-color: rgb(var(--status-info-05));
+  }
+}
+
+:host([variant='success']) {
+  --mds-avatar-background-color: rgb(var(--status-success-05));
+  --mds-avatar-color: rgb(var(--status-success-10));
+
+  &:host([tone='weak']) {
+    --mds-avatar-background-color: rgb(var(--status-success-09));
+    --mds-avatar-color: rgb(var(--status-success-05));
+  }
+}

@@ -1,8 +1,8 @@
-import miBaselineCheckbox from '@icon/mi/baseline/check-box.svg'
-import miBaselineIndeterminateCheckbox from '@icon/mi/baseline/indeterminate-check-box.svg'
-import miBaselineCheckboxOutlineBlank from '@icon/mi/baseline/check-box-outline-blank.svg'
-import miBaselineRadioButtonChecked from '@icon/mi/baseline/radio-button-checked.svg'
-import miBaselineRadioButtonUnchecked from '@icon/mi/baseline/radio-button-unchecked.svg'
+import miBaselineCheckbox from '@icon/mi/baseline/check-box.svg';
+import miBaselineIndeterminateCheckbox from '@icon/mi/baseline/indeterminate-check-box.svg';
+import miBaselineCheckboxOutlineBlank from '@icon/mi/baseline/check-box-outline-blank.svg';
+import miBaselineRadioButtonChecked from '@icon/mi/baseline/radio-button-checked.svg';
+import miBaselineRadioButtonUnchecked from '@icon/mi/baseline/radio-button-unchecked.svg';
 
 const inputSwitchIconVariant = {
   switch: {
@@ -20,8 +20,6 @@ const inputSwitchIconVariant = {
     iconIndeterminate: '',
     iconUnchecked: miBaselineRadioButtonUnchecked,
   },
-}
+};
 
-export {
-  inputSwitchIconVariant,
-}
+export { inputSwitchIconVariant };

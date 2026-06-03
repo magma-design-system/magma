@@ -1,4 +1,4 @@
-import StyleDictionary from 'style-dictionary'
+import StyleDictionary, { DesignTokens } from 'style-dictionary'
 
 import {
   flutterColorFormat,
@@ -17,8 +17,12 @@ import {
   jsTailwindScreensFormat,
   tailwindcssAspetctRationTransform,
   tailwindPxToRemTransform,
+  cssTailwindThemeTypography,
+  tailwindCss4Filter,
+  cssTailwindThemeColor,
+  cssVarsTransitionsFormat,
 } from '../formats/index.js'
-import { getBrandColorConfig } from '../config/sd-brand-color.config.js'
+import { getBrandColorConfig } from '../config/styledictionary/sd-brand-color.config.js'
 import chalk from 'chalk'
 import pkg from 'fs-extra'
 import { resolve } from 'path'
@@ -32,19 +36,22 @@ export async function getColorsConfig (path?: string) {
   return lilconfig('magma-design-tokens', {}).search()
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function writeJsonTokens (tokens: any, name: string, dirPath: string) {
+export async function writeJsonTokens (tokens: unknown, name: string, dirPath?: string): Promise<void> {
+  if (!dirPath) {
+    throw new Error('dirPath is required')
+  }
+
   const jsonTokens = JSON.stringify(tokens, null, 2)
 
-  mkdir(dirPath, { recursive: true })
-  writeFile(resolve(`${dirPath}/${name}.json`), jsonTokens, 'utf8', err => {
-    if (err) {
-      console.error(
-        chalk.red('An error occured while writing JSON Object to File.'),
-      )
-      console.error(chalk.red(err))
-    }
-  })
+  await mkdir(dirPath, { recursive: true })
+  try {
+    await writeFile(resolve(`${dirPath}/${name}.json`), jsonTokens, 'utf8')
+  } catch (err) {
+    console.error(
+      chalk.red('An error occured while writing JSON Object to File.'),
+    )
+    console.error(chalk.red(err))
+  }
 }
 
 /**
@@ -54,8 +61,9 @@ export function writeJsonTokens (tokens: any, name: string, dirPath: string) {
  * @param outputDir output directory
  * @param platform array of platform that needs to build, if undefined build all platform for colors (css, dart, js)
  */
+
 export function exportColors (
-  tokens,
+  tokens: DesignTokens,
   fileName: string,
   outputDir?: string,
   platform?: string[],
@@ -81,6 +89,7 @@ export function getStyleDictionaryWithAllCustomTransform (): StyleDictionary.Cor
       .registerFormat(flutterColorFormat)
       .registerFormat(cssHexFormat)
       .registerFormat(cssRgbFormat)
+      .registerFormat(cssTailwindThemeColor)
       .registerFormat(jsonCoolorsFormat)
       // FONT
       .registerFormat(flutterFontFormat)
@@ -89,11 +98,43 @@ export function getStyleDictionaryWithAllCustomTransform (): StyleDictionary.Cor
       .registerFormat(jsTailwindLeadingFormat)
       .registerFormat(jsTailwindScreensFormat)
       .registerFormat(jsTailwindPropsFormat)
+      .registerFormat(cssTailwindThemeTypography)
+      // TRANSITIONS
+      .registerFormat(cssVarsTransitionsFormat)
       // transform for flutter font
       .registerTransform(flutterFontWeightTransform)
       .registerTransform(flutterToDoubleTransform)
       // transform for tailwind props
       .registerTransform(tailwindcssAspetctRationTransform)
       .registerTransform(tailwindPxToRemTransform)
+      // filter for tailwind4 props
+      .registerFilter(tailwindCss4Filter)
   )
+}
+
+
+/**
+ * Deep merge of two object
+ *
+ * @param {object} target
+ * @param {object} source
+ * @returns {object} object merged
+ */
+export function deepMerge (target: Record<string, unknown>, source: Record<string, unknown>): Record<string, unknown> {
+  const isObject = (obj: unknown): obj is Record<string, unknown> => obj !== null && typeof obj === 'object' && !Array.isArray(obj)
+
+  if (isObject(target) && isObject(source)) {
+    for (const key in source) {
+      if (isObject(source[key])) {
+        if (!target[key]) {
+          target[key] = {}
+        }
+        deepMerge(target[key] as Record<string, unknown>, source[key] as Record<string, unknown>)
+      } else {
+        target[key] = source[key]
+      }
+    }
+  }
+
+  return target
 }

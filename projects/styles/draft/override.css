@@ -1,0 +1,34 @@
+/*
+:root,
+:root.pref-theme-dark {
+
+  --variant-base-01: var(--tone-fireclay-01);
+  --variant-base-02: var(--tone-fireclay-02);
+  --variant-base-03: var(--tone-fireclay-03);
+  --variant-base-04: var(--tone-fireclay-04);
+  --variant-base-05: var(--tone-fireclay-05);
+  --variant-base-06: var(--tone-fireclay-06);
+  --variant-base-07: var(--tone-fireclay-07);
+  --variant-base-08: var(--tone-fireclay-08);
+  --variant-base-09: var(--tone-fireclay-09);
+  --variant-base-10: var(--tone-fireclay-10);
+  --variant-base: var(--tone-fireclay);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root.pref-theme-system {
+
+    --variant-base-01: var(--tone-fireclay-01);
+    --variant-base-02: var(--tone-fireclay-02);
+    --variant-base-03: var(--tone-fireclay-03);
+    --variant-base-04: var(--tone-fireclay-04);
+    --variant-base-05: var(--tone-fireclay-05);
+    --variant-base-06: var(--tone-fireclay-06);
+    --variant-base-07: var(--tone-fireclay-07);
+    --variant-base-08: var(--tone-fireclay-08);
+    --variant-base-09: var(--tone-fireclay-09);
+    --variant-base-10: var(--tone-fireclay-10);
+    --variant-base: var(--tone-fireclay);
+  }
+}
+*/

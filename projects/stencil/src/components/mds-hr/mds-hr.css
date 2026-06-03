@@ -1,13 +1,12 @@
-:host {
-  @apply
-    h-100
-    rounded
-    w-full;
+@import '../../tailwind/fouc.css';
 
-  background-color: theme('colors.tone-neutral-08');
+:host {
+  background-color: rgb(var(--tone-neutral-08));
   border: 0;
+  border-radius: 1000px;
   display: flex;
+  height: 1px;
+  width: 100%;
 }
 
 @import './css/mds-hr-pref-theme.css';
-@import '../../tailwind/fouc.css';

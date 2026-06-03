@@ -1,1 +1,1 @@
-export const noop: (...rest: unknown[]) => unknown = () => {}
+export const noop: (...rest: unknown[]) => unknown = () => {};

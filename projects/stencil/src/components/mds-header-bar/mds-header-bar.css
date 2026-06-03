@@ -1,13 +1,20 @@
+@import './css/mds-header-bar-fouc.css';
+
+/**
+ * @prop --mds-header-bar-hamburger-color: The color of the hamburger icon used in the header bar.
+ */
+
+@property --mds-header-bar-hamburger-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-03));
+  syntax: '<color>';
+}
+
 :host {
-  --mds-header-bar-hamburger-color: theme('colors.tone-neutral-03');
+  --mds-header-bar-hamburger-color: rgb(var(--tone-neutral-03));
 
-  @apply
-    ease-out-expo
-    px-600
-    py-400;
-
-  background-color: theme('colors.tone-neutral');
-  box-shadow: theme('boxShadow.md-sharp');
+  background-color: rgb(var(--tone-neutral));
+  box-shadow: var(--shadow-md-sharp);
   display: flex;
   inset: 0 0 auto;
   interpolate-size: allow-keywords; /* not supported yet https://youtu.be/JN-nme9oF10 */
@@ -15,9 +22,11 @@
   margin-left: auto;
   margin-right: auto;
   max-width: 100%;
+  padding: --spacing(400) --spacing(600);
   position: fixed;
-  transition-duration: theme('transitionDuration.500');
+  transition-duration: 500ms;
   transition-property: background-color, border-radius, margin, max-width, transform, width;
+  transition-timing-function: var(--ease-out-expo);
   width: auto;
   z-index: var(--mds-header-z-index, 1000);
 }
@@ -28,27 +37,23 @@
 }
 
 .content {
-  @apply
-    gap-400
-    max-w-screen-wide;
-
   align-items: center;
   display: flex;
   flex-grow: 1;
+  gap: --spacing(400);
   justify-content: space-between;
+  max-width: var(--breakpoint-wide);
 }
 
 .actions {
-  @apply gap-600;
-
   display: flex;
+  gap: --spacing(600);
 }
 
 .nav {
-  @apply gap-400;
-
   display: inline-flex;
   flex-shrink: 0;
+  gap: --spacing(400);
 }
 
 .menu {
@@ -59,25 +64,24 @@
 }
 
 .menu::part(icon) {
-  @apply w-800;
+  width: --spacing(800);
 }
 
-:host([menu="desktop"]) .menu,
-:host([nav="desktop"]) .nav {
-  @apply tablet-max:hidden;
+:host([menu='desktop']) .menu,
+:host([nav='desktop']) .nav {
+  @apply max-tablet:hidden;
 }
 
-:host([menu="mobile"]) .menu,
-:host([nav="mobile"]) .nav {
+:host([menu='mobile']) .menu,
+:host([nav='mobile']) .nav {
   @apply desktop:hidden;
 }
 
-:host([menu="none"]) .menu,
-:host([nav="none"]) .nav {
+:host([menu='none']) .menu,
+:host([nav='none']) .nav {
   display: none;
 }
 
 @import './css/mds-header-bar-pref-animation.css';
 @import './css/mds-header-bar-pref-theme.css';
 @import './css/mds-header-bar-pref-contrast.css';
-@import '../../tailwind/fouc.css';

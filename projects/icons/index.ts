@@ -1,1 +1,1 @@
-export * from './dist/mgg-icons'
+export * from './dist/mgg-icons';

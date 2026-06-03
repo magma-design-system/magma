@@ -1,9 +1,12 @@
-:host-context(.pref-animation-reduce) .status-bar-area {
-  transition-duration: 0;
+:host-context(:root.pref-animation-reduce) .status-bar-area {
+  transition-duration: 0s;
 }
 
 @media (prefers-reduced-motion) {
-  :host-context(.pref-animation-system) .status-bar-area {
-    transition-duration: 0;
+  :host-context(:root.pref-animation-system),
+  :host-context(:root:not([data-magma-pref])) {
+    .status-bar-area {
+      transition-duration: 0s;
+    }
   }
 }

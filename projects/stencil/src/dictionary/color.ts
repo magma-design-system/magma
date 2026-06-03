@@ -9,16 +9,8 @@ const colorLabelDictionary = [
   'sky',
   'violet',
   'yellow',
-]
+];
 
-const colorStatusDictionary = [
-  'error',
-  'info',
-  'success',
-  'warning',
-]
+const colorStatusDictionary = ['error', 'info', 'success', 'warning'];
 
-export {
-  colorLabelDictionary,
-  colorStatusDictionary,
-}
+export { colorLabelDictionary, colorStatusDictionary };

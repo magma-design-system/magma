@@ -1,10 +1,11 @@
-:host {
-  @apply gap-400;
+@import './css/mds-author-fouc.css';
 
+:host {
   align-items: center;
   container-name: mds-author;
   container-type: inline-size;
   display: flex;
+  gap: --spacing(400);
   width: 100%;
 }
 
@@ -27,5 +28,3 @@
     text-align: center;
   }
 }
-
-@import '../../tailwind/fouc.css';

@@ -1,6 +1,6 @@
-import { h } from '@stencil/core'
+import { h } from '@stencil/core';
 
-import { consumptionDictionary } from '../meta/dictionary'
+import { consumptionDictionary } from '../meta/dictionary';
 
 export default {
   title: 'UI / Preferences / Consumption',
@@ -12,11 +12,11 @@ export default {
       description: 'Specifies the preference mode',
     },
   },
-}
-const Template = args => <mds-pref-consumption {...args} />
+};
+const Template = (args) => <mds-pref-consumption {...args} />;
 
 export const Default = {
   render: Template,
 
   args: {},
-}
+};

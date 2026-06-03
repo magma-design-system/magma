@@ -1,3 +1,5 @@
 {
-  "testKeyCombination": "Click to test the combination by typing on the keyboard"
+  "testKeyCombination": "Click to test the combination by typing on the keyboard",
+  "testPassed": "The combination is correct",
+  "wrongKeysCombination": "The combination you entered does not seem to be correct. Please try again."
 }

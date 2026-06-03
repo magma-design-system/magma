@@ -11,6 +11,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 | Property   | Attribute  | Description                                | Type                   | Default     |
 | ---------- | ---------- | ------------------------------------------ | ---------------------- | ----------- |
+| `label`    | `label`    | Sets the label of the breadcrumb item      | `string \| undefined`  | `undefined` |
 | `selected` | `selected` | Choose if the component is selected or not | `boolean \| undefined` | `undefined` |
 
 
@@ -26,6 +27,13 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | Slot        | Description                                                                            |
 | ----------- | -------------------------------------------------------------------------------------- |
 | `"default"` | Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here. |
+
+
+## Shadow Parts
+
+| Part       | Description |
+| ---------- | ----------- |
+| `"button"` |             |
 
 
 ## CSS Custom Properties
@@ -49,12 +57,15 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ### Depends on
 
-- [mds-text](../mds-text)
+- [mds-button](../mds-button)
 
 ### Graph
 ```mermaid
 graph TD;
-  mds-breadcrumb-item --> mds-text
+  mds-breadcrumb-item --> mds-button
+  mds-button --> mds-spinner
+  mds-button --> mds-icon
+  mds-button --> mds-text
   style mds-breadcrumb-item fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

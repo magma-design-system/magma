@@ -1,0 +1,119 @@
+:host([variant='red']) {
+  --mds-avatar-background-color: rgb(var(--label-red-05));
+  --mds-avatar-color: rgb(var(--label-red-10));
+
+  &:host([tone='weak']) {
+    --mds-avatar-background-color: rgb(var(--label-red-09));
+    --mds-avatar-color: rgb(var(--label-red-05));
+  }
+}
+
+:host([variant='amaranth']) {
+  --mds-avatar-background-color: rgb(var(--label-amaranth-05));
+  --mds-avatar-color: rgb(var(--label-amaranth-10));
+
+  &:host([tone='weak']) {
+    --mds-avatar-background-color: rgb(var(--label-amaranth-09));
+    --mds-avatar-color: rgb(var(--label-amaranth-05));
+  }
+}
+
+:host([variant='orchid']) {
+  --mds-avatar-background-color: rgb(var(--label-orchid-05));
+  --mds-avatar-color: rgb(var(--label-orchid-10));
+
+  &:host([tone='weak']) {
+    --mds-avatar-background-color: rgb(var(--label-orchid-09));
+    --mds-avatar-color: rgb(var(--label-orchid-05));
+  }
+}
+
+:host([variant='violet']) {
+  --mds-avatar-background-color: rgb(var(--label-violet-05));
+  --mds-avatar-color: rgb(var(--label-violet-10));
+
+  &:host([tone='weak']) {
+    --mds-avatar-background-color: rgb(var(--label-violet-09));
+    --mds-avatar-color: rgb(var(--label-violet-05));
+  }
+}
+
+:host([variant='purple']) {
+  --mds-avatar-background-color: rgb(var(--label-purple-05));
+  --mds-avatar-color: rgb(var(--label-purple-10));
+
+  &:host([tone='weak']) {
+    --mds-avatar-background-color: rgb(var(--label-purple-09));
+    --mds-avatar-color: rgb(var(--label-purple-05));
+  }
+}
+
+:host([variant='blue']) {
+  --mds-avatar-background-color: rgb(var(--label-blue-05));
+  --mds-avatar-color: rgb(var(--label-blue-10));
+
+  &:host([tone='weak']) {
+    --mds-avatar-background-color: rgb(var(--label-blue-09));
+    --mds-avatar-color: rgb(var(--label-blue-05));
+  }
+}
+
+:host([variant='sky']) {
+  --mds-avatar-background-color: rgb(var(--label-sky-05));
+  --mds-avatar-color: rgb(var(--label-sky-10));
+
+  &:host([tone='weak']) {
+    --mds-avatar-background-color: rgb(var(--label-sky-09));
+    --mds-avatar-color: rgb(var(--label-sky-05));
+  }
+}
+
+:host([variant='aqua']) {
+  --mds-avatar-background-color: rgb(var(--label-aqua-05));
+  --mds-avatar-color: rgb(var(--label-aqua-10));
+
+  &:host([tone='weak']) {
+    --mds-avatar-background-color: rgb(var(--label-aqua-09));
+    --mds-avatar-color: rgb(var(--label-aqua-05));
+  }
+}
+
+:host([variant='green']) {
+  --mds-avatar-background-color: rgb(var(--label-green-05));
+  --mds-avatar-color: rgb(var(--label-green-10));
+
+  &:host([tone='weak']) {
+    --mds-avatar-background-color: rgb(var(--label-green-09));
+    --mds-avatar-color: rgb(var(--label-green-05));
+  }
+}
+
+:host([variant='lime']) {
+  --mds-avatar-background-color: rgb(var(--label-lime-05));
+  --mds-avatar-color: rgb(var(--label-lime-10));
+
+  &:host([tone='weak']) {
+    --mds-avatar-background-color: rgb(var(--label-lime-09));
+    --mds-avatar-color: rgb(var(--label-lime-05));
+  }
+}
+
+:host([variant='yellow']) {
+  --mds-avatar-background-color: rgb(var(--label-yellow-05));
+  --mds-avatar-color: rgb(var(--label-yellow-10));
+
+  &:host([tone='weak']) {
+    --mds-avatar-background-color: rgb(var(--label-yellow-09));
+    --mds-avatar-color: rgb(var(--label-yellow-05));
+  }
+}
+
+:host([variant='orange']) {
+  --mds-avatar-background-color: rgb(var(--label-orange-05));
+  --mds-avatar-color: rgb(var(--label-orange-10));
+
+  &:host([tone='weak']) {
+    --mds-avatar-background-color: rgb(var(--label-orange-09));
+    --mds-avatar-color: rgb(var(--label-orange-05));
+  }
+}

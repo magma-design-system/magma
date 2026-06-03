@@ -1,15 +1,16 @@
-:host-context(.pref-theme-dark) {
+:host-context(:root.pref-theme-dark:not(.pref-theme-scheme-light)) {
   --mds-price-table-list-separator-color: rgb(var(--tone-neutral-01) / 0.5);
 
-  background-color: theme('colors.label-green-09');
-  box-shadow: theme('boxShadow.outline');
+  background-color: rgb(var(--label-green-09));
+  box-shadow: var(--shadow-outline);
 }
 
 @media (prefers-color-scheme: dark) {
-  :host-context(.pref-theme-system) {
+  :host-context(:root.pref-theme-system:not(.pref-theme-scheme-light)),
+  :host-context(:root:not([data-magma-pref])) {
     --mds-price-table-list-separator-color: rgb(var(--tone-neutral-01) / 0.5);
 
-    background-color: theme('colors.label-green-09');
-    box-shadow: theme('boxShadow.outline');
+    background-color: rgb(var(--label-green-09));
+    box-shadow: var(--shadow-outline);
   }
 }

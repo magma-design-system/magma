@@ -1,4 +1,4 @@
 export interface MdsPaginatorEventDetail {
-  caller?: HTMLMdsPaginatorItemElement
-  page: number
+  caller?: HTMLMdsPaginatorItemElement;
+  page: number;
 }

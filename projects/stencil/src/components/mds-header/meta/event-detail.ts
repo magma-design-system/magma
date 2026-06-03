@@ -1,7 +1,7 @@
 export interface MdsHeaderEventDetail {
-  bar: HTMLMdsHeaderBarElement
+  bar: HTMLMdsHeaderBarElement;
 }
 
 export interface MdsHeaderVisibilityEventDetail {
-  visibility: boolean
+  visibility: boolean;
 }

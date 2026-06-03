@@ -1,11 +1,7 @@
-import { h } from '@stencil/core'
-import { buttonIconPositionDictionary } from '@dictionary/button'
-import {
-  treeIconDictionary,
-  treeAppearanceDictionary,
-  treeActionsDictionary,
-} from '@dictionary/tree'
-import { truncateDictionary } from '@dictionary/text'
+import { h } from '@stencil/core';
+import { buttonIconPositionDictionary } from '@type/button';
+import { treeIconDictionary, treeAppearanceDictionary, treeActionsDictionary } from '@type/tree';
+import { truncateDictionary } from '@type/text';
 
 export default {
   title: 'UI / Tree',
@@ -18,8 +14,7 @@ export default {
     },
     appearance: {
       type: { name: 'string' },
-      description:
-        'Specifies the horizontal position of the icon displayed in the component',
+      description: 'Specifies the horizontal position of the icon displayed in the component',
       options: treeAppearanceDictionary,
       control: { type: 'select' },
     },
@@ -43,12 +38,11 @@ export default {
     },
     truncate: {
       control: { type: 'select' },
-      description:
-        'Specifies if the text shoud be truncated or should behave as a normal text',
+      description: 'Specifies if the text shoud be truncated or should behave as a normal text',
       options: truncateDictionary,
     },
   },
-}
+};
 
 const Template = ({ ...args }) => (
   <mds-tree {...args}>
@@ -57,14 +51,14 @@ const Template = ({ ...args }) => (
         slot="action"
         icon="mi/baseline/attach-file"
         variant="primary"
-        tone="quiet"
+        tone="text"
         title="Schedule"
       ></mds-button>
       <mds-button
         slot="action"
         icon="mi/baseline/more-vert"
         variant="primary"
-        tone="quiet"
+        tone="text"
         title="Options"
       ></mds-button>
       <mds-tree-item label="First children element"></mds-tree-item>
@@ -82,14 +76,14 @@ const Template = ({ ...args }) => (
         slot="action"
         icon="mi/baseline/attach-file"
         variant="primary"
-        tone="quiet"
+        tone="text"
         title="Schedule"
       ></mds-button>
       <mds-button
         slot="action"
         icon="mi/baseline/more-vert"
         variant="primary"
-        tone="quiet"
+        tone="text"
         title="Options"
       ></mds-button>
       <mds-tree-item label="First children element"></mds-tree-item>
@@ -103,124 +97,52 @@ const Template = ({ ...args }) => (
       <mds-tree-item label="And probably a sixth"></mds-tree-item>
     </mds-tree-item>
   </mds-tree>
-)
+);
 
 const TemplateFolder = ({ ...args }) => (
   <mds-tree {...args}>
     <mds-tree-item label="First element of the tree">
-      <mds-icon
-        slot="action"
-        name="mi/baseline/attach-file"
-        title="Schedule"
-      ></mds-icon>
-      <mds-icon
-        slot="action"
-        name="mi/baseline/more-vert"
-        title="Options"
-      ></mds-icon>
+      <mds-icon slot="action" name="mi/baseline/attach-file" title="Schedule"></mds-icon>
+      <mds-icon slot="action" name="mi/baseline/more-vert" title="Options"></mds-icon>
       <mds-tree-item label="First children element">
-        <mds-icon
-          slot="action"
-          name="mi/baseline/attach-file"
-          title="Schedule"
-        ></mds-icon>
-        <mds-icon
-          slot="action"
-          name="mi/baseline/more-vert"
-          title="Options"
-        ></mds-icon>
+        <mds-icon slot="action" name="mi/baseline/attach-file" title="Schedule"></mds-icon>
+        <mds-icon slot="action" name="mi/baseline/more-vert" title="Options"></mds-icon>
       </mds-tree-item>
       <mds-tree-item label="Second element">
-        <mds-icon
-          slot="action"
-          name="mi/baseline/attach-file"
-          title="Schedule"
-        ></mds-icon>
-        <mds-icon
-          slot="action"
-          name="mi/baseline/more-vert"
-          title="Options"
-        ></mds-icon>
+        <mds-icon slot="action" name="mi/baseline/attach-file" title="Schedule"></mds-icon>
+        <mds-icon slot="action" name="mi/baseline/more-vert" title="Options"></mds-icon>
       </mds-tree-item>
       <mds-tree-item label="This is the third element children">
-        <mds-icon
-          slot="action"
-          name="mi/baseline/attach-file"
-          title="Schedule"
-        ></mds-icon>
-        <mds-icon
-          slot="action"
-          name="mi/baseline/more-vert"
-          title="Options"
-        ></mds-icon>
+        <mds-icon slot="action" name="mi/baseline/attach-file" title="Schedule"></mds-icon>
+        <mds-icon slot="action" name="mi/baseline/more-vert" title="Options"></mds-icon>
       </mds-tree-item>
       <mds-tree-item label="The fourth and final children">
-        <mds-icon
-          slot="action"
-          name="mi/baseline/attach-file"
-          title="Schedule"
-        ></mds-icon>
-        <mds-icon
-          slot="action"
-          name="mi/baseline/more-vert"
-          title="Options"
-        ></mds-icon>
+        <mds-icon slot="action" name="mi/baseline/attach-file" title="Schedule"></mds-icon>
+        <mds-icon slot="action" name="mi/baseline/more-vert" title="Options"></mds-icon>
         <mds-tree-item label="Hello beautiful world">
-          <mds-icon
-            slot="action"
-            name="mi/baseline/attach-file"
-            title="Schedule"
-          ></mds-icon>
-          <mds-icon
-            slot="action"
-            name="mi/baseline/more-vert"
-            title="Options"
-          ></mds-icon>
+          <mds-icon slot="action" name="mi/baseline/attach-file" title="Schedule"></mds-icon>
+          <mds-icon slot="action" name="mi/baseline/more-vert" title="Options"></mds-icon>
         </mds-tree-item>
         <mds-tree-item label="Surpraaaaaise!">
-          <mds-icon
-            slot="action"
-            name="mi/baseline/attach-file"
-            title="Schedule"
-          ></mds-icon>
-          <mds-icon
-            slot="action"
-            name="mi/baseline/more-vert"
-            title="Options"
-          ></mds-icon>
+          <mds-icon slot="action" name="mi/baseline/attach-file" title="Schedule"></mds-icon>
+          <mds-icon slot="action" name="mi/baseline/more-vert" title="Options"></mds-icon>
         </mds-tree-item>
       </mds-tree-item>
       <mds-tree-item label="Surprise! There is a fifth element">
-        <mds-icon
-          slot="action"
-          name="mi/baseline/attach-file"
-          title="Schedule"
-        ></mds-icon>
-        <mds-icon
-          slot="action"
-          name="mi/baseline/more-vert"
-          title="Options"
-        ></mds-icon>
+        <mds-icon slot="action" name="mi/baseline/attach-file" title="Schedule"></mds-icon>
+        <mds-icon slot="action" name="mi/baseline/more-vert" title="Options"></mds-icon>
       </mds-tree-item>
       <mds-tree-item label="And probably a sixth">
-        <mds-icon
-          slot="action"
-          name="mi/baseline/attach-file"
-          title="Schedule"
-        ></mds-icon>
-        <mds-icon
-          slot="action"
-          name="mi/baseline/more-vert"
-          title="Options"
-        ></mds-icon>
+        <mds-icon slot="action" name="mi/baseline/attach-file" title="Schedule"></mds-icon>
+        <mds-icon slot="action" name="mi/baseline/more-vert" title="Options"></mds-icon>
       </mds-tree-item>
     </mds-tree-item>
   </mds-tree>
-)
+);
 
 export const Default = {
   render: Template,
-}
+};
 
 export const ComplexMenu = {
   render: Template,
@@ -233,7 +155,7 @@ export const ComplexMenu = {
       '--mds-tree-label-hover-background': 'rgb(var(--tone-neutral-09))',
     },
   },
-}
+};
 
 export const FolderMenu = {
   render: TemplateFolder,
@@ -242,4 +164,4 @@ export const FolderMenu = {
     actions: 'visible',
     toggle: 'folder',
   },
-}
+};

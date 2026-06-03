@@ -40,9 +40,16 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## CSS Custom Properties
 
-| Name                                | Description                        |
-| ----------------------------------- | ---------------------------------- |
-| `--mds-stepper-bar-scroll-behavior` | Sets the scroll-behavior animation |
+| Name                                           | Description                                       |
+| ---------------------------------------------- | ------------------------------------------------- |
+| `--mds-stepper-bar-gap`                        | Sets the gap between the stepper bar items.       |
+| `--mds-stepper-bar-offset-margin`              | Sets the offset margin of the stepper bar.        |
+| `--mds-stepper-bar-scroll-behavior`            | Sets the scroll behavior of the stepper bar.      |
+| `--mds-stepper-bar-scrollbar-margin`           | Sets the margin of the scrollbar.                 |
+| `--mds-stepper-bar-scrollbar-radius`           | Sets the radius of the scrollbar.                 |
+| `--mds-stepper-bar-scrollbar-size`             | Sets the size of the scrollbar.                   |
+| `--mds-stepper-bar-scrollbar-thumb-background` | Sets the background color of the scrollbar thumb. |
+| `--mds-stepper-bar-scrollbar-track-background` | Sets the background color of the scrollbar track. |
 
 
 ----------------------------------------------

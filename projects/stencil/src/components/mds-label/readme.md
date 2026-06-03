@@ -9,14 +9,14 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## Properties
 
-| Property      | Attribute      | Description                                                           | Type                                                                                                                                                                               | Default     |
-| ------------- | -------------- | --------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| `deletable`   | `deletable`    | Enables the cross icon to perform cancel/delete action on element     | `boolean`                                                                                                                                                                          | `false`     |
-| `labelAction` | `label-action` | Specifies the ARIA label for remove element                           | `string \| undefined`                                                                                                                                                              | `'Rimuovi'` |
-| `tone`        | `tone`         | Sets the tone of the color variant                                    | `"quiet" \| "strong" \| "weak"`                                                                                                                                                    | `'quiet'`   |
-| `truncate`    | `truncate`     | Truncates text inside the label or displays it in multiline if needed | `"all" \| "none" \| "word" \| undefined`                                                                                                                                           | `undefined` |
-| `typography`  | `typography`   | Specifies the typography of the element                               | `"action" \| "caption" \| "detail" \| "h1" \| "h2" \| "h3" \| "h4" \| "h5" \| "h6" \| "hack" \| "label" \| "option" \| "paragraph" \| "snippet" \| "tip"`                          | `'caption'` |
-| `variant`     | `variant`      | Sets the theme variant colors                                         | `"amaranth" \| "aqua" \| "blue" \| "dark" \| "error" \| "green" \| "info" \| "light" \| "lime" \| "orange" \| "orchid" \| "sky" \| "success" \| "violet" \| "warning" \| "yellow"` | `'sky'`     |
+| Property     | Attribute    | Description                                                           | Type                                                                                                                                                                               | Default     |
+| ------------ | ------------ | --------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| `deletable`  | `deletable`  | Enables the cross icon to perform cancel/delete action on element     | `boolean`                                                                                                                                                                          | `false`     |
+| `label`      | `label`      | The label of the component                                            | `string \| undefined`                                                                                                                                                              | `undefined` |
+| `tone`       | `tone`       | Sets the tone of the color variant                                    | `"strong" \| "weak"`                                                                                                                                                               | `'weak'`    |
+| `truncate`   | `truncate`   | Truncates text inside the label or displays it in multiline if needed | `"all" \| "none" \| "word" \| undefined`                                                                                                                                           | `'word'`    |
+| `typography` | `typography` | Specifies the typography of the element                               | `"caption" \| "detail" \| "tip"`                                                                                                                                                   | `'caption'` |
+| `variant`    | `variant`    | Sets the theme variant colors                                         | `"amaranth" \| "aqua" \| "blue" \| "error" \| "green" \| "info" \| "lime" \| "orange" \| "orchid" \| "purple" \| "red" \| "sky" \| "success" \| "violet" \| "warning" \| "yellow"` | `'sky'`     |
 
 
 ## Events
@@ -39,22 +39,19 @@ Type: `Promise<void>`
 
 
 
-## Slots
-
-| Slot        | Description                                                                            |
-| ----------- | -------------------------------------------------------------------------------------- |
-| `"default"` | Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here. |
-
-
 ## CSS Custom Properties
 
-| Name                               | Description                                     |
-| ---------------------------------- | ----------------------------------------------- |
-| `--mds-label-background`           | Sets the background-color of the component      |
-| `--mds-label-color`                | Sets the text color of the component            |
-| `--mds-label-icon-color`           | Sets the color of the icon                      |
-| `--mds-label-selection-background` | Sets the selection background color of the text |
-| `--mds-label-selection-color`      | Sets the selection color of the text            |
+| Name                                  | Description                                              |
+| ------------------------------------- | -------------------------------------------------------- |
+| `--mds-label-background`              | The background color of the label component.             |
+| `--mds-label-button-background`       | The background color of a button inside the label.       |
+| `--mds-label-button-background-hover` | The background color of the button when hovered.         |
+| `--mds-label-button-icon-color`       | The color of the icon inside the button.                 |
+| `--mds-label-color`                   | The text color of the label.                             |
+| `--mds-label-icon-color`              | The color applied to any icon inside the label.          |
+| `--mds-label-radius`                  | The border-radius of the label.                          |
+| `--mds-label-selection-background`    | The background color applied when the label is selected. |
+| `--mds-label-selection-color`         | The text color applied when the label is selected.       |
 
 
 ## Dependencies

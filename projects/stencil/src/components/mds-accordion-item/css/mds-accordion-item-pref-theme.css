@@ -1,9 +1,13 @@
-:host-context(.pref-theme-dark) {
-  --mds-accordion-item-border-color: var(--mds-accordion-border-color, theme('colors.tone-neutral-06'));
+:host-context(:root.pref-theme-dark:not(.pref-theme-scheme-light)) {
+  --mds-accordion-item-border-color: var(--mds-accordion-border-color, rgb(var(--tone-neutral-06)));
 }
 
 @media (prefers-color-scheme: dark) {
-  :host-context(.pref-theme-system) {
-    --mds-accordion-item-border-color: var(--mds-accordion-border-color, theme('colors.tone-neutral-06'));
+  :host-context(:root.pref-theme-system:not(.pref-theme-scheme-light)),
+  :host-context(:root:not([data-magma-pref])) {
+    --mds-accordion-item-border-color: var(
+      --mds-accordion-border-color,
+      rgb(var(--tone-neutral-06))
+    );
   }
 }

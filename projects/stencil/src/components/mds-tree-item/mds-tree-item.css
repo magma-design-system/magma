@@ -1,8 +1,223 @@
-@tailwind utilities;
+@import './css/mds-tree-item-fouc.css';
+
+/**
+ * @prop --mds-tree-item-actions-border-radius: Inherits the border-radius used for tree action containers.
+ * @prop --mds-tree-item-actions-gap: Spacing between tree item action elements.
+ * @prop --mds-tree-item-branch-border-color: The border color of the branch connector for the item.
+ * @prop --mds-tree-item-branch-border-radius: The border-radius applied to the branch connector.
+ * @prop --mds-tree-item-branch-border-size: The thickness of the branch connector line.
+ * @prop --mds-tree-item-branch-dot-default-color: Default color of the branch dot indicator.
+ * @prop --mds-tree-item-branch-dot-expanded-color: Color of the branch dot when expanded.
+ * @prop --mds-tree-item-label-default-background: Background color of the label in default state.
+ * @prop --mds-tree-item-label-hover-background: Background color of the label in hover state.
+ * @prop --mds-tree-item-label-icon-default-color: Default icon color inside the label.
+ * @prop --mds-tree-item-label-icon-hover-color: Icon color inside the label when hovering.
+ * @prop --mds-tree-item-line-clamp: Defines the number of lines before text is truncated.
+ * @prop --mds-tree-item-toggle-gap: Spacing between the label and the toggle control.
+ * @prop --mds-tree-item-toggle-icon-async-background: Background color for async-loading toggle icons.
+ * @prop --mds-tree-item-toggle-icon-async-color: Icon color for async-loading toggles.
+ * @prop --mds-tree-item-toggle-icon-chevron-default-background: Background for the default chevron toggle.
+ * @prop --mds-tree-item-toggle-icon-chevron-default-color: Icon color for the default chevron toggle.
+ * @prop --mds-tree-item-toggle-icon-chevron-expanded-background: Background for the expanded chevron toggle.
+ * @prop --mds-tree-item-toggle-icon-chevron-expanded-color: Icon color for the expanded chevron toggle.
+ * @prop --mds-tree-item-toggle-icon-folder-default-background: Background for the default folder toggle.
+ * @prop --mds-tree-item-toggle-icon-folder-default-color: Icon color for the default folder toggle.
+ * @prop --mds-tree-item-toggle-icon-folder-expanded-background: Background for the expanded folder toggle.
+ * @prop --mds-tree-item-toggle-icon-folder-expanded-color: Icon color for the expanded folder toggle.
+ * @prop --mds-tree-item-toggle-icon-position-right-default-background: Background for right-positioned toggle in default state.
+ * @prop --mds-tree-item-toggle-icon-position-right-default-color: Icon color for right-positioned toggle in default state.
+ * @prop --mds-tree-item-toggle-icon-position-right-expanded-background: Background for right-positioned toggle in expanded state.
+ * @prop --mds-tree-item-toggle-icon-position-right-expanded-color: Icon color for right-positioned toggle in expanded state.
+ * @prop --mds-tree-item-toggle-size: Size of the toggle control.
+ * @prop --mds-tree-item-transition-duration: Transition duration for tree item animation.
+ * @prop --mds-tree-item-transition-timing-function: Transition easing function for tree item animation.
+ */
+
+@property --mds-tree-item-actions-border-radius {
+  inherits: false;
+  initial-value: var(--mds-tree-actions-border-radius);
+  syntax: '<length>';
+}
+
+@property --mds-tree-item-actions-gap {
+  inherits: false;
+  initial-value: var(--mds-tree-actions-gap);
+  syntax: '<length>';
+}
+
+@property --mds-tree-item-branch-border-color {
+  inherits: false;
+  initial-value: var(--mds-tree-branch-border-color);
+  syntax: '<color>';
+}
+
+@property --mds-tree-item-branch-border-radius {
+  inherits: false;
+  initial-value: var(--mds-tree-branch-border-radius, var(--radius-lg));
+  syntax: '<length>';
+}
+
+@property --mds-tree-item-branch-border-size {
+  inherits: false;
+  initial-value: var(--mds-tree-branch-border-size);
+  syntax: '<length>';
+}
+
+@property --mds-tree-item-branch-dot-default-color {
+  inherits: false;
+  initial-value: var(--mds-tree-branch-dot-default-color);
+  syntax: '<color>';
+}
+
+@property --mds-tree-item-branch-dot-expanded-color {
+  inherits: false;
+  initial-value: var(--mds-tree-branch-dot-expanded-color);
+  syntax: '<color>';
+}
+
+@property --mds-tree-item-label-default-background {
+  inherits: false;
+  initial-value: var(--mds-tree-label-default-background);
+  syntax: '<color>';
+}
+
+@property --mds-tree-item-label-hover-background {
+  inherits: false;
+  initial-value: var(--mds-tree-label-hover-background);
+  syntax: '<color>';
+}
+
+@property --mds-tree-item-label-icon-default-color {
+  inherits: false;
+  initial-value: var(--mds-tree-label-icon-default-color);
+  syntax: '<color>';
+}
+
+@property --mds-tree-item-label-icon-hover-color {
+  inherits: false;
+  initial-value: var(--mds-tree-label-icon-hover-color);
+  syntax: '<color>';
+}
+
+@property --mds-tree-item-line-clamp {
+  inherits: false;
+  initial-value: var(--mds-tree-line-clamp);
+  syntax: '<integer>';
+}
+
+@property --mds-tree-item-toggle-gap {
+  inherits: false;
+  initial-value: var(--mds-tree-toggle-gap);
+  syntax: '<length>';
+}
+
+@property --mds-tree-item-toggle-icon-async-background {
+  inherits: false;
+  initial-value: var(--mds-tree-toggle-icon-async-background);
+  syntax: '<color>';
+}
+
+@property --mds-tree-item-toggle-icon-async-color {
+  inherits: false;
+  initial-value: var(--mds-tree-toggle-icon-async-color);
+  syntax: '<color>';
+}
+
+@property --mds-tree-item-toggle-icon-chevron-default-background {
+  inherits: false;
+  initial-value: var(--mds-tree-toggle-icon-chevron-default-background);
+  syntax: '<color>';
+}
+
+@property --mds-tree-item-toggle-icon-chevron-default-color {
+  inherits: false;
+  initial-value: var(--mds-tree-toggle-icon-chevron-default-color);
+  syntax: '<color>';
+}
+
+@property --mds-tree-item-toggle-icon-chevron-expanded-background {
+  inherits: false;
+  initial-value: var(--mds-tree-item-toggle-icon-chevron-default-background);
+  syntax: '<color>';
+}
+
+@property --mds-tree-item-toggle-icon-chevron-expanded-color {
+  inherits: false;
+  initial-value: var(--mds-tree-item-toggle-icon-default-color);
+  syntax: '<color>';
+}
+
+@property --mds-tree-item-toggle-icon-folder-default-background {
+  inherits: false;
+  initial-value: var(--mds-tree-toggle-icon-folder-default-background);
+  syntax: '<color>';
+}
+
+@property --mds-tree-item-toggle-icon-folder-default-color {
+  inherits: false;
+  initial-value: var(--mds-tree-toggle-icon-folder-default-color);
+  syntax: '<color>';
+}
+
+@property --mds-tree-item-toggle-icon-folder-expanded-background {
+  inherits: false;
+  initial-value: var(--mds-tree-item-toggle-icon-folder-default-background);
+  syntax: '<color>';
+}
+
+@property --mds-tree-item-toggle-icon-folder-expanded-color {
+  inherits: false;
+  initial-value: var(--mds-tree-item-toggle-icon-folder-default-color);
+  syntax: '<color>';
+}
+
+@property --mds-tree-item-toggle-icon-position-right-default-background {
+  inherits: false;
+  initial-value: var(--mds-tree-toggle-icon-position-right-default-background);
+  syntax: '<color>';
+}
+
+@property --mds-tree-item-toggle-icon-position-right-default-color {
+  inherits: false;
+  initial-value: var(--mds-tree-toggle-icon-position-right-default-color);
+  syntax: '<color>';
+}
+
+@property --mds-tree-item-toggle-icon-position-right-expanded-background {
+  inherits: false;
+  initial-value: var(--mds-tree-toggle-icon-position-right-expanded-background);
+  syntax: '<color>';
+}
+
+@property --mds-tree-item-toggle-icon-position-right-expanded-color {
+  inherits: false;
+  initial-value: var(--mds-tree-toggle-icon-position-right-expanded-color);
+  syntax: '<color>';
+}
+
+@property --mds-tree-item-toggle-size {
+  inherits: false;
+  initial-value: var(--mds-tree-toggle-size);
+  syntax: '<length>';
+}
+
+@property --mds-tree-item-transition-duration {
+  inherits: false;
+  initial-value: var(--mds-tree-transition-duration);
+  syntax: '<time>';
+}
+
+/*
+@property --mds-tree-item-transition-timing-function {
+  inherits: false;
+  initial-value: var(--mds-tree-transition-timing-function);
+  syntax: "<timing-function>";
+}
+*/
 
 @container style(--mds-tree-branch-use-rounded-border: true) {
   :host-context(:not(.safari)) {
-    --mds-tree-branch-border-radius: theme('borderRadius.lg');
+    --mds-tree-branch-border-radius: var(--radius-lg);
   }
 }
 
@@ -18,7 +233,7 @@
   --mds-tree-item-actions-border-radius: var(--mds-tree-actions-border-radius);
   --mds-tree-item-actions-gap: var(--mds-tree-actions-gap);
   --mds-tree-item-branch-border-color: var(--mds-tree-branch-border-color);
-  --mds-tree-item-branch-border-radius: var(--mds-tree-branch-border-radius, theme('borderRadius.lg'));
+  --mds-tree-item-branch-border-radius: var(--mds-tree-branch-border-radius, var(--radius-lg));
   --mds-tree-item-branch-border-size: var(--mds-tree-branch-border-size);
   --mds-tree-item-branch-dot-default-color: var(--mds-tree-branch-dot-default-color);
   --mds-tree-item-branch-dot-expanded-color: var(--mds-tree-branch-dot-expanded-color);
@@ -30,26 +245,52 @@
   --mds-tree-item-toggle-gap: var(--mds-tree-toggle-gap);
   --mds-tree-item-toggle-icon-async-background: var(--mds-tree-toggle-icon-async-background);
   --mds-tree-item-toggle-icon-async-color: var(--mds-tree-toggle-icon-async-color);
-  --mds-tree-item-toggle-icon-chevron-default-background: var(--mds-tree-toggle-icon-chevron-default-background);
-  --mds-tree-item-toggle-icon-chevron-default-color: var(--mds-tree-toggle-icon-chevron-default-color);
-  --mds-tree-item-toggle-icon-chevron-expanded-background: var(--mds-tree-item-toggle-icon-chevron-default-background);
-  --mds-tree-item-toggle-icon-chevron-expanded-color: var(--mds-tree-item-toggle-icon-chevron-default-color);
-  --mds-tree-item-toggle-icon-folder-default-background: var(--mds-tree-toggle-icon-folder-default-background);
-  --mds-tree-item-toggle-icon-folder-default-color: var(--mds-tree-toggle-icon-folder-default-color);
-  --mds-tree-item-toggle-icon-folder-expanded-background: var(--mds-tree-item-toggle-icon-folder-default-background);
-  --mds-tree-item-toggle-icon-folder-expanded-color: var(--mds-tree-item-toggle-icon-folder-default-color);
-  --mds-tree-item-toggle-icon-position-right-default-background: var(--mds-tree-toggle-icon-position-right-default-background);
-  --mds-tree-item-toggle-icon-position-right-default-color: var(--mds-tree-toggle-icon-position-right-default-color);
-  --mds-tree-item-toggle-icon-position-right-expanded-background: var(--mds-tree-toggle-icon-position-right-expanded-background);
-  --mds-tree-item-toggle-icon-position-right-expanded-color: var(--mds-tree-toggle-icon-position-right-expanded-color);
+  --mds-tree-item-toggle-icon-chevron-default-background: var(
+    --mds-tree-toggle-icon-chevron-default-background
+  );
+  --mds-tree-item-toggle-icon-chevron-default-color: var(
+    --mds-tree-toggle-icon-chevron-default-color
+  );
+  --mds-tree-item-toggle-icon-chevron-expanded-background: var(
+    --mds-tree-item-toggle-icon-chevron-default-background
+  );
+  --mds-tree-item-toggle-icon-chevron-expanded-color: var(
+    --mds-tree-item-toggle-icon-chevron-default-color
+  );
+  --mds-tree-item-toggle-icon-folder-default-background: var(
+    --mds-tree-toggle-icon-folder-default-background
+  );
+  --mds-tree-item-toggle-icon-folder-default-color: var(
+    --mds-tree-toggle-icon-folder-default-color
+  );
+  --mds-tree-item-toggle-icon-folder-expanded-background: var(
+    --mds-tree-item-toggle-icon-folder-default-background
+  );
+  --mds-tree-item-toggle-icon-folder-expanded-color: var(
+    --mds-tree-item-toggle-icon-folder-default-color
+  );
+  --mds-tree-item-toggle-icon-position-right-default-background: var(
+    --mds-tree-toggle-icon-position-right-default-background
+  );
+  --mds-tree-item-toggle-icon-position-right-default-color: var(
+    --mds-tree-toggle-icon-position-right-default-color
+  );
+  --mds-tree-item-toggle-icon-position-right-expanded-background: var(
+    --mds-tree-toggle-icon-position-right-expanded-background
+  );
+  --mds-tree-item-toggle-icon-position-right-expanded-color: var(
+    --mds-tree-toggle-icon-position-right-expanded-color
+  );
   --mds-tree-item-toggle-size: var(--mds-tree-toggle-size);
   --mds-tree-item-transition-duration: var(--mds-tree-transition-duration);
   --mds-tree-item-transition-timing-function: var(--mds-tree-transition-timing-function);
 
   /* internal */
-  --mds-tree-item-icon-background-color: var(--mds-tree-item-toggle-icon-chevron-default-background);
+  --mds-tree-item-icon-background-color: var(
+    --mds-tree-item-toggle-icon-chevron-default-background
+  );
   --mds-tree-item-icon-color: var(--mds-tree-item-toggle-icon-chevron-default-color);
-  --header-gap: theme('spacing.100');
+  --header-gap: --spacing(100);
 
   display: grid;
   transition-duration: var(--mds-tree-item-transition-duration);
@@ -71,17 +312,17 @@
   align-items: stretch;
   display: flex;
   flex-grow: 1;
-  gap: theme('spacing.200');
+  gap: --spacing(200);
   justify-content: space-between;
   min-width: 0;
 }
 
 .label-action {
   --mds-button-line-clamp: var(--mds-tree-item-line-clamp);
-  --padding: theme('padding.100');
+  --padding: --spacing(100);
 
   background-color: var(--mds-tree-item-label-default-background);
-  border-radius: theme('borderRadius.lg');
+  border-radius: var(--radius-lg);
   fill: var(--mds-tree-item-label-icon-default-color);
   flex-grow: 1;
   justify-content: flex-start;
@@ -101,4 +342,3 @@
 @import './css/mds-tree-item-toggle-icon.css';
 @import './css/mds-tree-item-toggle-position.css';
 @import './css/mds-tree-item-appearance.css';
-@import '../../tailwind/fouc.css';

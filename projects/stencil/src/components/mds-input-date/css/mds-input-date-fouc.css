@@ -1,0 +1,11 @@
+@import '../../../tailwind/fouc.css';
+
+mds-button,
+mds-calendar,
+mds-dropdown,
+mds-input-tip,
+mds-input-tip-item {
+  &:not(:is([hydrated], .hydrated)) {
+    @apply not-hydrated;
+  }
+}

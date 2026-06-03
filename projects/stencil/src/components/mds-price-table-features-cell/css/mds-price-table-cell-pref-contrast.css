@@ -1,17 +1,18 @@
-:host-context(.pref-contrast-more) {
-  --mds-price-table-features-cell-icon-supported-color-hover: theme('colors.label-green-01');
-  --mds-price-table-features-cell-icon-supported-color: theme('colors.label-green-02');
-  --mds-price-table-features-cell-icon-unsupported-color-hover: theme('colors.tone-neutral-02');
-  --mds-price-table-features-cell-icon-unsupported-color: theme('colors.tone-neutral-02');
-  --mds-price-table-features-cell-border-color: theme('colors.tone-neutral-04');
+:host-context(:root.pref-contrast-more) {
+  --mds-price-table-features-cell-icon-supported-color-hover: rgb(var(--label-green-01));
+  --mds-price-table-features-cell-icon-supported-color: rgb(var(--label-green-02));
+  --mds-price-table-features-cell-icon-unsupported-color-hover: rgb(var(--tone-neutral-02));
+  --mds-price-table-features-cell-icon-unsupported-color: rgb(var(--tone-neutral-02));
+  --mds-price-table-features-cell-border-color: rgb(var(--tone-neutral-04));
 }
 
 @media (prefers-contrast: more) {
-  :host-context(.pref-contrast-system) {
-    --mds-price-table-features-cell-icon-supported-color-hover: theme('colors.label-green-01');
-    --mds-price-table-features-cell-icon-supported-color: theme('colors.label-green-02');
-    --mds-price-table-features-cell-icon-unsupported-color-hover: theme('colors.tone-neutral-02');
-    --mds-price-table-features-cell-icon-unsupported-color: theme('colors.tone-neutral-02');
-    --mds-price-table-features-cell-border-color: theme('colors.tone-neutral-04');
+  :host-context(:root.pref-contrast-system),
+  :host-context(:root:not([data-magma-pref])) {
+    --mds-price-table-features-cell-icon-supported-color-hover: rgb(var(--label-green-01));
+    --mds-price-table-features-cell-icon-supported-color: rgb(var(--label-green-02));
+    --mds-price-table-features-cell-icon-unsupported-color-hover: rgb(var(--tone-neutral-02));
+    --mds-price-table-features-cell-icon-unsupported-color: rgb(var(--tone-neutral-02));
+    --mds-price-table-features-cell-border-color: rgb(var(--tone-neutral-04));
   }
 }

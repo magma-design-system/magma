@@ -1,54 +1,97 @@
+@import './css/mds-input-tip-fouc.css';
+
 /**
- * @prop --mds-input-tip-active-translate: Set the translate of the tip when it is active.
+ * @prop --mds-input-tip-active-translate: Transform applied to the tip when active
+ * @prop --mds-input-tip-background: Background color of the input tip
+ * @prop --mds-input-tip-horizontal-offset-focused: Horizontal offset applied when the input is focused
+ * @prop --mds-input-tip-horizontal-offset: Default horizontal offset of the input tip
+ * @prop --mds-input-tip-vertical-offset: Vertical offset of the input tip
  */
+
+@property --mds-input-tip-active-translate {
+  inherits: false;
+  initial-value: translate(0, 0);
+  syntax: '<transform-function>';
+}
+
+@property --mds-input-tip-background {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-03));
+  syntax: '<color>';
+}
+
+@property --mds-input-tip-horizontal-offset-focused {
+  inherits: false;
+  initial-value: 0px;
+  syntax: '<length>';
+}
+
+@property --mds-input-tip-horizontal-offset {
+  inherits: false;
+  initial-value: --spacing(400);
+  syntax: '<length>';
+}
+
+@property --mds-input-tip-vertical-offset {
+  inherits: false;
+  initial-value: --spacing(100);
+  syntax: '<length>';
+}
 
 :host {
   --mds-input-tip-active-translate: translate(0, 0);
-
-  @apply
-    duration-300
-    ease-out-expo
-    gap-100
-    left-100
-    right-100;
+  --mds-input-tip-background: rgb(var(--tone-neutral-03));
+  --mds-input-tip-horizontal-offset-focused: 0px;
+  --mds-input-tip-horizontal-offset: --spacing(400);
+  --mds-input-tip-vertical-offset: --spacing(100);
 
   display: flex;
+  gap: --spacing(100);
   justify-content: flex-end;
+  left: var(--mds-input-tip-horizontal-offset);
   pointer-events: none;
   position: absolute;
+  right: var(--mds-input-tip-horizontal-offset);
   transform: var(--mds-input-tip-active-translate);
+  transition-duration: var(--duration-300);
   transition-property: transform;
+  transition-timing-function: var(--ease-out-expo);
 }
 
 :host(:empty) {
   display: none;
 }
 
-:host([position="top"]) {
-  top: theme('spacing.100');
+:host([position='top']) {
+  top: var(--mds-input-tip-vertical-offset);
 }
 
-:host([position="bottom"]) {
-  bottom: theme('spacing.100');
+:host([position='bottom']) {
+  bottom: var(--mds-input-tip-vertical-offset);
 }
 
-:host([position="top"][active]:not([active="false"])) {
-  --mds-input-tip-active-translate: translate(calc(theme('translate.100') * -1), calc(theme('translate.100') * -1));
+:host([position='top'][active]:not([active='false'])) {
+  --mds-input-tip-active-translate: translate(
+    calc(var(--mds-input-tip-horizontal-offset-focused) * -1),
+    calc(var(--mds-input-tip-vertical-offset) * -1)
+  );
 }
 
-:host([position="top"][active]:not([active="false"])) ::slotted( mds-input-tip-item) {
+:host([position='top'][active]:not([active='false'])) ::slotted(mds-input-tip-item) {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
 
-:host([position="bottom"][active]:not([active="false"])) {
-  --mds-input-tip-active-translate: translate(calc(theme('translate.100') * -1), theme('translate.100'));
+:host([position='bottom'][active]:not([active='false'])) {
+  --mds-input-tip-active-translate: translate(
+    calc(var(--mds-input-tip-horizontal-offset-focused) * -1),
+    var(--mds-input-tip-vertical-offset)
+  );
 }
 
-:host([position="bottom"][active]:not([active="false"])) ::slotted( mds-input-tip-item) {
+:host([position='bottom'][active]:not([active='false'])) ::slotted(mds-input-tip-item) {
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
 }
 
 @import './css/mds-input-tip-pref-animation.css';
-@import '../../tailwind/fouc.css';

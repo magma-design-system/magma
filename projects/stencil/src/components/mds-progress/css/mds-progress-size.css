@@ -1,0 +1,15 @@
+:host([size='sm']) {
+  --mds-progress-thickness: --spacing(200);
+}
+
+:host([size='md']) {
+  --mds-progress-thickness: --spacing(300);
+}
+
+:host([size='lg']) {
+  --mds-progress-thickness: --spacing(400);
+}
+
+:host([size='xl']) {
+  --mds-progress-thickness: --spacing(600);
+}

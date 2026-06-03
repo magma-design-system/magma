@@ -1,8 +1,8 @@
-import { h } from '@stencil/core'
+import { h } from '@stencil/core';
 
 export default {
   title: 'Common tests',
-}
+};
 
 const Template = () => (
   <div class="-m-600">
@@ -20,24 +20,23 @@ const Template = () => (
       <div class="grid gap-600 desktop:grid-cols-3 tablet:grid-cols-2 max-w-screen-desktop">
         {Array(18)
           .fill(null)
-          .map(() => (
-            <div class="grid gap-25">
+          .map((_, index) => (
+            <div class="grid gap-25" key={index}>
               <mds-text typography="h5" tag="h2">
                 This is a section title
               </mds-text>
               <mds-text>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                Accusamus iure, ratione beatae quam optio cumque rerum modi
-                consectetur odit eligendi omnis veniam fuga non ipsam voluptatum
-                a ut neque illum.
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus iure, ratione
+                beatae quam optio cumque rerum modi consectetur odit eligendi omnis veniam fuga non
+                ipsam voluptatum a ut neque illum.
               </mds-text>
             </div>
           ))}
       </div>
     </div>
   </div>
-)
+);
 
 export const ExamplePage = {
   render: Template,
-}
+};

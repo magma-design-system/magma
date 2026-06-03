@@ -1,32 +1,27 @@
-import { h } from '@stencil/core'
-import {
-  typographyInfoDictionary,
-  typographyVariationsDictionary,
-} from '@dictionary/typography'
-import {
-  themeFullVariantDictionary,
-  toneVariantDictionary,
-} from '@dictionary/variant'
+import { h } from '@stencil/core';
+import { typographyLabelDictionary } from '@type/typography';
+import { themeFullVariantDictionary } from '@type/variant';
+import { toneSmartVariantDictionary } from '@type/tone';
 
 export default {
   title: 'UI / Badge',
   argTypes: {
+    label: {
+      type: { name: 'string' },
+      control: { type: 'text' },
+      description: 'The label of the badge',
+    },
     tone: {
       type: { name: 'string' },
       control: { type: 'select' },
       description: 'Sets the tone of the color variant',
-      options: toneVariantDictionary,
+      options: toneSmartVariantDictionary,
     },
     typography: {
       type: { name: 'string' },
       control: { type: 'select' },
       description: 'Specifies the font typography of the element',
-      options: typographyInfoDictionary,
-    },
-    'typography-variant': {
-      description: 'Specifies the variant for `typography`',
-      options: typographyVariationsDictionary,
-      control: { type: 'select' },
+      options: typographyLabelDictionary,
     },
     variant: {
       type: { name: 'string' },
@@ -35,15 +30,48 @@ export default {
       options: themeFullVariantDictionary,
     },
   },
-}
+};
 
-const Template = args => <mds-badge {...args}>bovaro del bernese</mds-badge>
+const Template = (args) => <mds-badge {...args}></mds-badge>;
+const variantToneCombinations = themeFullVariantDictionary.flatMap((variant) =>
+  toneSmartVariantDictionary.map((tone) => ({ tone, variant })),
+);
 
 export const Default = {
   render: Template,
 
   args: {
+    label: 'bovaro del bernese',
     tone: 'strong',
     variant: 'violet',
   },
-}
+};
+
+const VariantsTableTemplate = () => (
+  <mds-table interactive>
+    <mds-table-header>
+      <mds-table-header-cell label="Preview"></mds-table-header-cell>
+      <mds-table-header-cell label="Variant" sortable></mds-table-header-cell>
+      <mds-table-header-cell label="Tone" sortable></mds-table-header-cell>
+    </mds-table-header>
+    <mds-table-body>
+      {variantToneCombinations.map(({ tone, variant }) => (
+        <mds-table-row key={`${variant}-${tone}`}>
+          <mds-table-cell>
+            <mds-badge variant={variant} tone={tone} label="bovaro del bernese"></mds-badge>
+          </mds-table-cell>
+          <mds-table-cell value={variant}>
+            <mds-text typography="hack">{variant}</mds-text>
+          </mds-table-cell>
+          <mds-table-cell value={tone}>
+            <mds-text typography="hack">{tone}</mds-text>
+          </mds-table-cell>
+        </mds-table-row>
+      ))}
+    </mds-table-body>
+  </mds-table>
+);
+
+export const VariantsTable = {
+  render: VariantsTableTemplate,
+};

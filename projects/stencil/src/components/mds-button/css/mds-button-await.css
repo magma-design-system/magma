@@ -1,49 +1,44 @@
 .await {
-  @apply
-    duration-300
-    ease-in-out
-    h-600
-    w-600;
-
   display: none;
-  margin-right: calc(calc(-1 * var(--mds-button-gap)) - theme('spacing.600'));
+  height: --spacing(600);
+  margin-right: calc(calc(-1 * var(--mds-button-gap)) - --spacing(600));
   transform: scale(0);
   transition-behavior: allow-discrete;
+  transition-duration: var(--duration-300);
   transition-property: display, margin-right, opacity, transform, width;
+  transition-timing-function: var(--ease-in-out-quad);
+  width: --spacing(600);
 }
 
 .spinner {
-  @apply
-    h-600
-    w-600;
-
   --mds-spinner-duration: var(--mds-button-await-duration);
 
   color: currentcolor;
+  height: --spacing(600);
+  width: --spacing(600);
 }
 
-:host(:not([await])) .spinner,
-:host([await="false"]) .spinner {
-  @apply
-    duration-200
-    ease-out;
+:host(:not([await])),
+:host([await='false']) {
+  .spinner {
+    transition-duration: var(--duration-200);
+    transition-timing-function: var(--ease-out-quad);
+  }
 }
 
-:host([await]:not([await="false"])) .await {
-  @apply
-    mr-0
-    opacity-100;
-
+:host([await]:not([await='false'])) .await {
   display: flex;
+  margin-right: 0;
+  opacity: 1;
   transform: scale(1);
 
   @starting-style {
-    margin-right: calc(calc(-1 * var(--mds-button-gap)) - theme('spacing.600'));
+    margin-right: calc(calc(-1 * var(--mds-button-gap)) - --spacing(600));
     opacity: 0;
     transform: scale(0);
   }
 }
 
-:host([await]:not([await="false"])) {
+:host([await]:not([await='false'])) {
   pointer-events: none;
 }

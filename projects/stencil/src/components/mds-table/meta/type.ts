@@ -1,4 +1,4 @@
 export type MdsTableRowSelection = {
-  index: number
-  value?: string | number
-}
+  index: number;
+  value?: string | number;
+};

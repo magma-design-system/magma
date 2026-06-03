@@ -1,4 +1,4 @@
-import { Component, Host, h } from '@stencil/core'
+import { Component, Host, h } from '@stencil/core';
 
 /**
  * @slot default - Add `HTML elements` or `components` to this slot, it is **recommended** to use `mds-img` or `img` element.
@@ -14,19 +14,17 @@ import { Component, Host, h } from '@stencil/core'
   shadow: true,
 })
 export class MdsZero {
-
-  render () {
+  render() {
     return (
       <Host>
-        <slot/>
+        <slot />
         <div class="contents" part="contents">
-          <slot name="content"/>
+          <slot name="content" />
         </div>
         <footer class="actions" part="actions">
-          <slot name="action"/>
+          <slot name="action" />
         </footer>
       </Host>
-    )
+    );
   }
-
 }

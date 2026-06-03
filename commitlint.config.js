@@ -1,12 +1,12 @@
-const { readdirSync } = require('fs')
-const path = require('path')
+const { readdirSync } = require('fs');
+const path = require('path');
 
-const getDirs = source =>
+const getDirs = (source) =>
   readdirSync(source, { withFileTypes: true })
-    .filter(dirent => dirent.isDirectory())
-    .map(dirent => dirent.name)
+    .filter((dirent) => dirent.isDirectory())
+    .map((dirent) => dirent.name);
 
-const webComponents = getDirs(path.resolve(__dirname, 'projects/stencil/src/components'))
+const webComponents = getDirs(path.resolve(__dirname, 'projects/stencil/src/components'));
 
 module.exports = {
   extends: ['@commitlint/config-conventional'],
@@ -19,19 +19,20 @@ module.exports = {
         'change',
         'chore',
         'ci',
-        'doc',
+        'docs',
         'feat',
         'fix',
         'hotfix',
         'merge',
         'perf',
-        'refact',
+        'refactor',
         'revert',
         'style',
         'test',
       ],
     ],
-    'custom-scope-enum': [2,
+    'custom-scope-enum': [
+      2,
       'always',
       [
         'design-tokens',
@@ -51,32 +52,44 @@ module.exports = {
     {
       rules: {
         'custom-scope-enum': (parsed, when, value) => {
-          const defaultScopeEnum = require('@commitlint/rules/lib/scope-enum')
+          const defaultScopeEnum = require('@commitlint/rules/lib/scope-enum');
 
-          const r = defaultScopeEnum.scopeEnum(parsed, when, value)
+          const r = defaultScopeEnum.scopeEnum(parsed, when, value);
 
-          const { scope } = parsed
-          const { type } = parsed
+          const { scope } = parsed;
+          const { type } = parsed;
 
           if (type === 'revert') {
-            return scope ? [false, 'Your scope should be empty when type is revert'] : [true, '']
+            return scope ? [false, 'Your scope should be empty when type is revert'] : [true, ''];
           }
 
           if (type === 'style' && scope === 'styles') {
-            return [false, 'Scope styles shouldn\'t use style type for CSS styles, it\'s better to use fix or change']
+            return [
+              false,
+              "Scope styles shouldn't use style type for CSS styles, it's better to use fix or change",
+            ];
           }
 
-          if (type === 'style' && (scope === 'icons' || scope === 'identity' || scope === 'magma' || scope === 'svg-icons')) {
-            return [false, `Type style should be used in projects designed to support CSS, are you sure there is CSS inside scope ${scope}?`]
+          if (
+            type === 'style' &&
+            (scope === 'icons' ||
+              scope === 'identity' ||
+              scope === 'magma' ||
+              scope === 'svg-icons')
+          ) {
+            return [
+              false,
+              `Type style should be used in projects designed to support CSS, are you sure there is CSS inside scope ${scope}?`,
+            ];
           }
 
           if (!scope) {
-            return [false, 'scope may not be empty']
+            return [false, 'scope may not be empty'];
           }
 
-          return r
+          return r;
         },
       },
     },
   ],
-}
+};

@@ -1,9 +1,11 @@
-import { Component, Element, Host, h, Prop } from '@stencil/core'
-import { ThemeFullVariantAvatarType, ToneMinimalVariantType } from '@type/variant'
+import { Component, Element, Host, h, Prop } from '@stencil/core';
+import { ThemeFullVariantAvatarType } from '@type/variant';
+import { ToneMinimalVariantType } from '@type/tone';
 
 /**
  * @slot default - Add `text string`, `HTML elements` or `components` to this slot.
  * @slot action - Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element.
+ * @slot detail - Add `HTML elements` or `components` to this slot.
  * @part spinner - The spinner element
  * @part avatar - The avatar element
  */
@@ -14,86 +16,92 @@ import { ThemeFullVariantAvatarType, ToneMinimalVariantType } from '@type/varian
   shadow: true,
 })
 export class MdsEntity {
-
-  @Element() private hostElement: HTMLMdsEntityElement
-  private details: boolean
-  private actions: boolean
+  @Element() private hostElement: HTMLMdsEntityElement;
+  private details: boolean;
+  private actions: boolean;
 
   /**
    * Specifies if the component is awaiting a response from an external resource
    */
-  @Prop({ reflect: true }) readonly await?: boolean
+  @Prop({ reflect: true }) readonly await?: boolean;
 
   /**
    * Specifies the icon to be displayed if src propery is not used
    */
-  @Prop({ reflect: true }) readonly icon?: string
+  @Prop({ reflect: true }) readonly icon?: string;
 
   /**
    * Specifies the path to the image
    */
-  @Prop({ reflect: true }) readonly src?: string
+  @Prop({ reflect: true }) readonly src?: string;
 
   /**
    * The user's inizials displayed if there's no image available and icon is not set
    */
-  @Prop({ reflect: true }) readonly initials?: string
+  @Prop({ reflect: true }) readonly initials?: string;
 
   /**
    * Specifies the color tone of the component
    */
-  @Prop({ reflect: true }) readonly tone?: ToneMinimalVariantType
+  @Prop({ reflect: true }) readonly tone?: ToneMinimalVariantType;
 
   /**
    * Specifies the color variant of the component
    */
-  @Prop({ reflect: true }) readonly variant?: ThemeFullVariantAvatarType
+  @Prop({ reflect: true }) readonly variant?: ThemeFullVariantAvatarType;
 
-  private checkAvatar (): boolean {
-    let hasAvatar = false
+  private checkAvatar(): boolean {
+    let hasAvatar = false;
     if (this.src !== undefined) {
-      hasAvatar = true
+      hasAvatar = true;
     }
     if (this.icon !== undefined) {
-      hasAvatar = true
+      hasAvatar = true;
     }
     if (this.initials !== undefined) {
-      hasAvatar = true
+      hasAvatar = true;
     }
     if (this.await) {
-      return false
+      return false;
     }
-    return hasAvatar
+    return hasAvatar;
   }
-  componentWillLoad (): void {
-    this.details = this.hostElement.querySelector(':scope > [slot="detail"]') !== null
-    this.actions = this.hostElement.querySelector(':scope > [slot="action"]') !== null
+  componentWillLoad(): void {
+    this.details = this.hostElement.querySelector(':scope > [slot="detail"]') !== null;
+    this.actions = this.hostElement.querySelector(':scope > [slot="action"]') !== null;
   }
 
-  render () {
+  render() {
     return (
       <Host>
         <div class="spinner" part="spinner">
           <mds-spinner running></mds-spinner>
         </div>
-        { this.checkAvatar() &&
-          <mds-avatar class="preview" icon={this.icon} initials={this.initials} src={this.src} tone={this.tone} variant={this.variant} part="avatar" />
-        }
+        {this.checkAvatar() && (
+          <mds-avatar
+            class="preview"
+            icon={this.icon}
+            initials={this.initials}
+            src={this.src}
+            tone={this.tone}
+            variant={this.variant}
+            part="avatar"
+          />
+        )}
         <div class="infos">
-          <slot/>
-          { this.details &&
+          <slot />
+          {this.details && (
             <div class="details">
-              <slot name="detail"/>
+              <slot name="detail" />
             </div>
-          }
+          )}
         </div>
-        { this.actions &&
+        {this.actions && (
           <div class="actions">
-            <slot name="action"/>
+            <slot name="action" />
           </div>
-        }
+        )}
       </Host>
-    )
+    );
   }
-
 }

@@ -1,27 +1,58 @@
-@import '~@maggioli-design-system/styles/dist/css/animations.css'; /* included for focus effect */
-@import '../../tailwind/components.css';
-@tailwind components;
+@import './css/mds-url-view-fouc.css';
 
 /**
- * @prop --mds-url-view-background: Sets the background-color of the component
- * @prop --mds-url-view-color: Sets the text color of the component
- * @prop --mds-url-view-radius: Sets the border-radius of the component
- * @prop --mds-url-view-shadow: Sets the box-shadow of the component
+ * @prop --mds-url-view-background: Background color of the URL view container.
+ * @prop --mds-url-view-color: Text color used inside the URL view.
+ * @prop --mds-url-view-radius: Border-radius applied to the URL view container.
+ * @prop --mds-url-view-header-shadow: Box-shadow applied to the header area of the URL view.
+ * @prop --mds-url-view-shadow: Box-shadow applied to the entire URL view container.
  */
+
+@property --mds-url-view-background {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-10));
+  syntax: '<color>';
+}
+
+@property --mds-url-view-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-02));
+  syntax: '<color>';
+}
+
+@property --mds-url-view-radius {
+  inherits: false;
+  initial-value: var(--radius-md);
+  syntax: '<length>';
+}
+
+/* ❌ Not supported
+
+@property --mds-url-view-header-shadow {
+  inherits: false;
+  initial-value: var(--shadow-sm-sharp);
+  syntax: "<box-shadow>";
+}
+
+@property --mds-url-view-shadow {
+  inherits: false;
+  initial-value: var(--shadow-lg);
+  syntax: "<box-shadow>";
+}
+*/
 
 :host {
 
   /* stylelint-disable-next-line length-zero-no-unit */
   --mds-modal-custom-window-distance: 0px;
-  --mds-url-view-background: theme('colors.tone-neutral-10');
-  --mds-url-view-color: theme('colors.tone-neutral-02');
-  --mds-url-view-radius: theme('borderRadius.md');
-  --mds-url-view-header-shadow: theme('boxShadow.sm-sharp');
-  --mds-url-view-shadow: theme('boxShadow.lg');
+  --mds-url-view-background: rgb(var(--tone-neutral-10));
+  --mds-url-view-color: rgb(var(--tone-neutral-02));
+  --mds-url-view-radius: var(--radius-md);
+  --mds-url-view-header-shadow: var(--shadow-sm-sharp);
+  --mds-url-view-shadow: var(--shadow-lg);
 
-  @apply
-    h-screen
-    p-400;
+  @apply h-screen
+  p-400;
 
   box-sizing: border-box;
   display: flex;
@@ -30,10 +61,8 @@
 }
 
 .window {
-  @apply
-    duration-200
-    ease-out
-    w-full;
+  @apply ease-out
+  w-full;
 
   background-color: var(--mds-url-view-background);
   border-radius: var(--mds-url-view-radius);
@@ -42,15 +71,14 @@
   flex-direction: column;
   flex-grow: 1;
   overflow: hidden;
+  transition-duration: var(--duration-200);
   transition-property: background-color, box-shadow;
 }
 
 .header {
-  @apply
-    duration-200
-    ease-out
-    gap-200
-    p-200;
+  @apply ease-out
+  gap-200
+  p-200;
 
   align-items: center;
   background-color: var(--mds-url-view-background);
@@ -60,13 +88,13 @@
   flex-shrink: 0;
   justify-content: space-between;
   position: relative;
+  transition-duration: var(--duration-200);
   transition-property: background-color, box-shadow;
 }
 
 .title {
-  @apply
-    min-w-0
-    truncate;
+  @apply min-w-0
+  truncate;
 
   flex-grow: 1;
   text-align: center;
@@ -93,4 +121,3 @@
 @import './css/mds-url-view-pref-animation.css';
 @import './css/mds-url-view-pref-theme.css';
 @import './css/mds-url-view-pref-contrast.css';
-@import '../../tailwind/fouc.css';

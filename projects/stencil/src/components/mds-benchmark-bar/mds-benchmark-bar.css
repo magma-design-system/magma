@@ -1,15 +1,15 @@
+@import './css/mds-benchmark-bar-fouc.css';
+
 :host {
-  @apply
-    gap-100
-    grid-cols-full;
+  @apply grid-cols-full;
 
   display: grid;
+  gap: --spacing(100);
 }
 
 .infos {
-  @apply gap-100;
-
   display: flex;
+  gap: --spacing(200);
   justify-content: space-between;
   width: 100%;
 }
@@ -19,9 +19,7 @@
 }
 
 .label {
-  @apply truncate;
-
   min-width: 0;
 }
 
-@import '../../tailwind/fouc.css';
+@import './css/mds-benchmark-bar-size.css';

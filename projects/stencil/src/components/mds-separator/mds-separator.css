@@ -1,9 +1,19 @@
+@import '../../tailwind/fouc.css';
+
+/**
+ * @prop --mds-separator-background: Background color of the separator element.
+ */
+
+@property --mds-separator-background {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-08));
+  syntax: '<color>';
+}
 
 :host {
-  --mds-separator-background: theme('colors.tone-neutral-08');
+  --mds-separator-background: rgb(var(--tone-neutral-08));
 
-  @apply
-    rounded-full
+  @apply rounded-full
     h-[1px];
 
   background-color: var(--mds-separator-background);
@@ -12,4 +22,3 @@
 
 @import './css/mds-separator-pref-theme.css';
 @import './css/mds-separator-pref-contrast.css';
-@import '../../tailwind/fouc.css';

@@ -1,6 +1,4 @@
-@import '~@maggioli-design-system/styles/dist/css/animations.css'; /* included for focus effect */
-@import '../../tailwind/components.css';
-@tailwind components;
+@import './css/mds-note-fouc.css';
 
 /**
  * @prop --mds-note-background: Sets the background-color of the component
@@ -10,51 +8,84 @@
  * @prop --mds-note-selection-color: Sets the selection text color of the component
  */
 
-:host {
-  --mds-note-background: theme('colors.label-yellow-10');
-  --mds-note-color: theme('colors.label-yellow-02');
-  --mds-note-fold-color: theme('colors.tone-neutral-10');
-  --mds-note-fold-size: 40px;
-  --mds-note-selection-background: var(--magma-selection-background, theme('colors.label-yellow-09'));
-  --mds-note-selection-color: var(--magma-selection-color, theme('colors.label-yellow-02'));
+@property --mds-note-background {
+  inherits: false;
+  initial-value: rgb(var(--label-yellow-10));
+  syntax: '<color>';
+}
 
-  @apply
-    duration-300
-    ease-in-out
-    gap-200
-    p-600
-    rounded;
+@property --mds-note-color {
+  inherits: false;
+  initial-value: rgb(var(--label-yellow-02));
+  syntax: '<color>';
+}
+
+@property --mds-note-fold-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-10));
+  syntax: '<color>';
+}
+
+@property --mds-note-fold-size {
+  inherits: false;
+  initial-value: 40px;
+  syntax: '<length>';
+}
+
+@property --mds-note-selection-background {
+  inherits: false;
+  initial-value: var(--magma-selection-background, rgb(var(--label-yellow-09)));
+  syntax: '<color>';
+}
+
+@property --mds-note-selection-color {
+  inherits: false;
+  initial-value: var(--magma-selection-color, rgb(var(--label-yellow-02)));
+  syntax: '<color>';
+}
+
+:host {
+  --mds-note-background: rgb(var(--label-yellow-10));
+  --mds-note-color: rgb(var(--label-yellow-02));
+  --mds-note-fold-color: rgb(var(--tone-neutral-10));
+  --mds-note-fold-size: 40px;
+  --mds-note-selection-background: var(--magma-selection-background, rgb(var(--label-yellow-09)));
+  --mds-note-selection-color: var(--magma-selection-color, rgb(var(--label-yellow-02)));
+
+  @apply ease-in-out
+  gap-200
+  p-600
+  rounded;
 
   background-color: var(--mds-note-background);
   color: var(--mds-note-color);
   display: grid;
   overflow: hidden;
   position: relative;
+  transition-duration: var(--duration-300);
   transition-property: color, background-color;
 }
 
-:host ::slotted( mds-text) {
+:host ::slotted(mds-text) {
   --mds-text-selection-background: var(--mds-note-selection-background);
   --mds-text-selection-color: var(--mds-note-selection-color);
 }
 
-:host([deletable]:not([deletable="false"])) {
+:host([deletable]:not([deletable='false'])) {
   @apply pr-1600;
 }
 
-:host([deletable]:not([deletable="false"]) ) .button-close {
-  @apply
-    right-400
-    top-400;
+:host([deletable]:not([deletable='false'])) .button-close {
+  @apply right-400
+  top-400;
 
   position: absolute;
 }
 
 .fold {
-  @apply
-    h-0
-    opacity-40
-    w-0;
+  @apply h-0
+  opacity-40
+  w-0;
 
   border-color: transparent transparent var(--mds-note-fold-color) transparent;
   border-style: solid;
@@ -70,15 +101,14 @@
 }
 
 .button-close {
-  @apply
-    duration-200
-    ease-out
-    p-100
-    rounded-full;
+  @apply ease-out
+  p-100
+  rounded-full;
 
   background-color: transparent;
   cursor: pointer;
   fill: var(--mds-note-color);
+  transition-duration: var(--duration-200);
   transition-property: background-color, fill, outline, outline-offset;
 }
 
@@ -101,4 +131,3 @@
 @import './css/mds-note-pref-animation.css';
 @import './css/mds-note-pref-theme.css';
 @import './css/mds-note-pref-contrast.css';
-@import '../../tailwind/fouc.css';

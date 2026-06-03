@@ -1,19 +1,5 @@
-const noiseDictionary = [
-  'classic',
-  'none',
-  'sharp',
-  'soft',
-  'tv',
-]
+const noiseDictionary = ['classic', 'none', 'sharp', 'soft', 'tv'];
 
-const preloadDictionary = [
-  'auto',
-  'metadata',
-  'none',
-]
+const preloadDictionary = ['auto', 'metadata', 'none'];
 
-export {
-  noiseDictionary,
-  preloadDictionary,
-}
-
+export { noiseDictionary, preloadDictionary };

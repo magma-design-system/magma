@@ -1,20 +1,66 @@
-:host {
-  --mds-tab-item-hover-background: transparent;
-  --mds-tab-item-selected-background: theme('colors.tone-neutral');
-  --mds-tab-item-selected-shadow: theme('boxShadow.DEFAULT');
-  --mds-tab-item-default-background: transparent;
-  --mds-tab-item-default-shadow: transparent;
+@import './css/mds-tab-item-fouc.css';
 
+/**
+ * @prop --mds-tab-item-hover-background: Background color when hovering a tab item.
+ * @prop --mds-tab-item-selected-background: Background color of a selected tab item.
+ * @prop --mds-tab-item-selected-shadow: Shadow of a selected tab item.
+ * @prop --mds-tab-item-default-background: Default background color of a tab item.
+ * @prop --mds-tab-item-default-shadow: Default shadow of a tab item.
+ */
+
+@property --mds-tab-item-hover-background {
+  inherits: false;
+  initial-value: transparent;
+  syntax: '<color>';
+}
+
+@property --mds-tab-item-selected-background {
+  inherits: false;
+  initial-value: transparent;
+  syntax: '<color>';
+}
+
+@property --mds-tab-item-default-background {
+  inherits: false;
+  initial-value: transparent;
+  syntax: '<color>';
+}
+
+@property --mds-tab-item-corner-shape {
+  inherits: false;
+  initial-value: round;
+  syntax: 'bevel | notch | round | scoop | square | squircle';
+}
+
+/* Not supported
+@property --mds-tab-item-selected-shadow {
+  inherits: false;
+  initial-value: none;
+  syntax: "<box-shadow>";
+}
+
+@property --mds-tab-item-default-shadow {
+  inherits: false;
+  initial-value: none;
+  syntax: "<box-shadow>";
+}
+*/
+
+:host {
+  --mds-tab-item-selected-shadow: inherit;
+  --mds-tab-item-radius: inherit;
+
+  corner-shape: var(--magma-corner-shape, round);
   cursor: pointer;
   display: flex;
 }
 
-:host-context(mds-tab[animation="slide"]) {
+:host-context(mds-tab[animation='slide']) {
   --mds-tab-item-hover-background: transparent;
   --mds-tab-item-selected-background: transparent;
-  --mds-tab-item-selected-shadow: transparent;
+  --mds-tab-item-selected-shadow: none;
   --mds-tab-item-default-background: transparent;
-  --mds-tab-item-default-shadow: transparent;
+  --mds-tab-item-default-shadow: none;
 }
 
 .button {
@@ -22,7 +68,9 @@
   --mds-button-color: var(--mds-tab-item-default-color);
   --mds-button-radius: var(--mds-tab-item-radius);
   --mds-button-border-default-opacity: 0;
+  --mds-button-corner-shape: var(--mds-tab-item-corner-shape, round);
 
+  aspect-ratio: initial;
   flex-grow: 1;
 }
 
@@ -44,14 +92,13 @@
   pointer-events: none;
 }
 
-:host-context(mds-tab[direction="vertical"]) {
+:host-context(mds-tab[direction='vertical']) {
   width: 100%;
 }
 
-:host-context(mds-tab[direction="vertical"]) .button {
+:host-context(mds-tab[direction='vertical']) .button {
   justify-content: start;
 }
 
-@import './css/mds-tab-item-pref-theme.css';
+/* @import './css/mds-tab-item-pref-theme.css'; */
 @import './css/mds-tab-item-pref-contrast.css';
-@import '../../tailwind/fouc.css';

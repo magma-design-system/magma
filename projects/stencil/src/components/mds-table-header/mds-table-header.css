@@ -1,10 +1,10 @@
-:host {
+@import './css/mds-table-header-fouc.css';
 
-  @apply
-    duration-200
+:host {
+  @apply duration-200
     ease-out;
 
-  border-bottom: var(--mds-table-cell-border-width) solid var(--mds-table-cell-border-color);
+  border-bottom: var(--private-cell-border-width) solid var(--private-cell-border-color);
   display: table-row;
   overflow: hidden;
   transition-property: border-color;
@@ -23,4 +23,3 @@
 }
 
 @import './css/mds-table-header-pref-animation.css';
-@import '../../tailwind/fouc.css';

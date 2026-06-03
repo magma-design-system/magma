@@ -1,0 +1,40 @@
+.batch-actions-wrapper {
+  corner-shape: inherit;
+  display: flex;
+  flex-shrink: 0;
+  max-width: 0px;
+  transition-duration: var(--duration-300);
+  transition-property: max-width;
+  transition-timing-function: var(--ease-in-out-circ);
+  width: 100%;
+}
+
+.batch-actions-wrapper--has-selected-rows {
+  max-width: var(--mds-table-batch-actions-width);
+}
+
+.batch-actions-header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  padding: --spacing(300);
+}
+
+.batch-actions {
+  @apply grid-cols-full auto-rows-min;
+
+  background-color: var(--mds-table-background);
+  border-left: var(--mds-table-border-width) solid var(--mds-table-border-color);
+  box-sizing: border-box;
+  display: grid;
+  flex-grow: 1;
+  gap: --spacing(50);
+  min-width: var(--mds-table-batch-actions-width);
+  padding: calc(var(--mds-table-cell-padding) / 2);
+  width: 100%;
+}
+
+::slotted([slot='batch-action']) {
+  justify-content: start;
+  width: 100%;
+}

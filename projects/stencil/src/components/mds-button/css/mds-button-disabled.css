@@ -1,5 +1,4 @@
-:host([disabled]:not([disabled="false"])) {
-  @apply opacity-50;
-
+:host([disabled]:not([disabled='false'])) {
+  opacity: 0.5;
   pointer-events: none;
 }

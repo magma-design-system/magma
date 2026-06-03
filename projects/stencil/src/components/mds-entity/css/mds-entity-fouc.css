@@ -1,0 +1,8 @@
+@import '../../../tailwind/fouc.css';
+
+mds-avatar,
+mds-spinner {
+  &:not(:is([hydrated], .hydrated)) {
+    @apply not-hydrated;
+  }
+}

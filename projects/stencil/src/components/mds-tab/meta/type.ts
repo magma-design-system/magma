@@ -1,7 +1,3 @@
-export type DirectionType =
-  | 'horizontal'
-  | 'vertical'
+export type DirectionType = 'horizontal' | 'vertical';
 
-export type StrategyType =
-  | 'default'
-  | 'scroll'
+export type StrategyType = 'default' | 'scroll';

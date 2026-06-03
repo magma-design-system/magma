@@ -1,19 +1,74 @@
-@import '../../tailwind/components.css';
-@tailwind components;
+@import './css/mds-push-notification-fouc.css';
+
+/**
+ * @prop --mds-push-notification-fadeout-delay: Delay before the push notification starts fading out.
+ * @prop --mds-push-notification-gap: Gap between multiple push notifications.
+ * @prop --mds-push-notification-items-intro-delay: Delay before items inside the notification animate in.
+ * @prop --mds-push-notification-items-outro-delay: Delay before items inside the notification animate out.
+ * @prop --mds-push-notification-items-duration: Duration of the item animation inside the notification.
+ * @prop --mds-push-notification-items-gap: Gap between items inside the notification.
+ * @prop --mds-push-notification-items-timing-function: Timing function used for item animations inside the notification.
+ * @prop --mds-push-notification-background: Background of the push notification, supports gradients.
+ */
+
+@property --mds-push-notification-fadeout-delay {
+  inherits: false;
+  initial-value: 0s;
+  syntax: '<time>';
+}
+
+@property --mds-push-notification-gap {
+  inherits: false;
+  initial-value: --spacing(200);
+  syntax: '<length>';
+}
+
+@property --mds-push-notification-items-intro-delay {
+  inherits: false;
+  initial-value: 300ms;
+  syntax: '<time>';
+}
+
+@property --mds-push-notification-items-outro-delay {
+  inherits: false;
+  initial-value: 0ms;
+  syntax: '<time>';
+}
+
+@property --mds-push-notification-items-duration {
+  inherits: false;
+  initial-value: 300ms;
+  syntax: '<time>';
+}
+
+/* ❌ Not supported
+@property --mds-push-notification-items-timing-function {
+  inherits: false;
+  initial-value: var(--ease-in-out-quint);
+  syntax: "<timing-function>";
+}
+@property --mds-push-notification-background {
+  inherits: false;
+  initial-value: linear-gradient(to right, rgb(220 220 220 / 0) 0%, rgb(220 220 220 / 0.85) 100%);
+  syntax: "<background>";
+}
+*/
 
 :host {
   --mds-push-notification-fadeout-delay: 0s;
-  --mds-push-notification-gap: theme('spacing.200');
+  --mds-push-notification-gap: --spacing(200);
   --mds-push-notification-items-intro-delay: 300ms;
   --mds-push-notification-items-outro-delay: 0ms;
   --mds-push-notification-items-duration: 300ms;
   --mds-push-notification-items-gap: var(--mds-push-notification-gap);
-  --mds-push-notification-items-timing-function: theme('transitionTimingFunction.in-out-quint');
-  --mds-push-notification-background: linear-gradient(to right, rgb(220 220 220 / 0) 0%, rgb(220 220 220 / 0.85) 100%);
+  --mds-push-notification-items-timing-function: var(--ease-in-out-quint);
+  --mds-push-notification-background: linear-gradient(
+    to right,
+    rgb(220 220 220 / 0) 0%,
+    rgb(220 220 220 / 0.85) 100%
+  );
 
-  @apply
-    duration-500
-    ease-in-out-expo
+  @apply ease-in-out-expo
     gap-200
     max-w-[360px]
     min-w-7200
@@ -33,6 +88,7 @@
   top: 0;
   transform: translate(100%, 0);
   transition-delay: var(--mds-push-notification-fadeout-delay);
+  transition-duration: var(--duration-500);
   transition-property: transform;
   z-index: var(--magma-notification-z-index, 3000);
 }
@@ -48,11 +104,12 @@
   --mds-push-notification-timing-function: var(--mds-push-notification-items-timing-function);
 
   position: absolute;
-  transform: translate(calc(100% + calc(var(--mds-push-notification-gap) + var(--mds-push-notification-gap))), 0);
+  transform: translate(
+    calc(100% + calc(var(--mds-push-notification-gap) + var(--mds-push-notification-gap))),
+    0
+  );
   visibility: hidden;
-
 }
 
 @import './css/mds-push-notification-pref-theme.css';
 @import './css/mds-push-notification-visible.css';
-@import '../../tailwind/fouc.css';

@@ -1,6 +1,6 @@
-import { h } from '@stencil/core'
+import { h } from '@stencil/core';
 
-import { languageDictionary } from '../meta/dictionary'
+import { languageDictionary } from '../meta/dictionary';
 
 export default {
   title: 'UI / Preferences / Language',
@@ -12,17 +12,17 @@ export default {
       description: 'Specifies the preference mode',
     },
   },
-}
-const Template = args => (
+};
+const Template = (args) => (
   <mds-pref-language {...args}>
     <mds-pref-language-item code="it"></mds-pref-language-item>
     <mds-pref-language-item code="en"></mds-pref-language-item>
     <mds-pref-language-item code="el"></mds-pref-language-item>
   </mds-pref-language>
-)
+);
 
 export const Default = {
   render: Template,
 
   args: {},
-}
+};

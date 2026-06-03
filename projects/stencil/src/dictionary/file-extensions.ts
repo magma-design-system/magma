@@ -1,13 +1,13 @@
-import { FileFormat } from '@type/variant-file-format'
+import { FileFormat } from '@type/variant-file-format';
 
 interface FileExtenstion {
-  [key: string]: ExtensionInfo
+  [key: string]: ExtensionInfo;
 }
 
 interface ExtensionInfo {
-  preview?: boolean
-  format: FileFormat
-  description: string
+  preview?: boolean;
+  format: FileFormat;
+  description: string;
 }
 
 const fileExtensionsDictionary: FileExtenstion = {
@@ -72,17 +72,12 @@ const fileExtensionsDictionary: FileExtenstion = {
   xlsx: { format: 'spreadsheet', description: 'spreadsheetMS' },
   xml: { format: 'markup', description: 'extensibleMarkupLanguage' },
   zip: { format: 'archive', description: 'compressedArchive' },
-}
+};
 
 const genericMimeToExt: Map<string, string[]> = new Map([
   ['image', ['.png', '.jpg', '.jpeg', '.tiff', '.webp', '.jpe', '.gif', '.heic']],
   ['audio', ['.mp2', '.mp3', '.mpga', '.wav', '.flac']],
   ['video', ['.mv2', '.mp4', '.mp4v', '.mpeg', '.mpg4', '.mpg']],
-])
+]);
 
-export {
-  FileExtenstion,
-  ExtensionInfo,
-  fileExtensionsDictionary,
-  genericMimeToExt,
-}
+export { FileExtenstion, ExtensionInfo, fileExtensionsDictionary, genericMimeToExt };

@@ -15,9 +15,13 @@
 
 ## CSS Custom Properties
 
-| Name                               | Description                                     |
-| ---------------------------------- | ----------------------------------------------- |
-| `--mds-input-tip-active-translate` | Set the translate of the tip when it is active. |
+| Name                                        | Description                                         |
+| ------------------------------------------- | --------------------------------------------------- |
+| `--mds-input-tip-active-translate`          | Transform applied to the tip when active            |
+| `--mds-input-tip-background`                | Background color of the input tip                   |
+| `--mds-input-tip-horizontal-offset`         | Default horizontal offset of the input tip          |
+| `--mds-input-tip-horizontal-offset-focused` | Horizontal offset applied when the input is focused |
+| `--mds-input-tip-vertical-offset`           | Vertical offset of the input tip                    |
 
 
 ## Dependencies

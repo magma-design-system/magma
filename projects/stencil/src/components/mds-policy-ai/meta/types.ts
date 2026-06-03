@@ -1,5 +1,1 @@
-export type PolicyAiVariant =
-  | 'icon'
-  | 'chip'
-  | 'card'
-  | 'banner'
+export type PolicyAiVariant = 'icon' | 'chip' | 'card' | 'banner';

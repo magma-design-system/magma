@@ -1,8 +1,9 @@
-import { Component, Element, Host, h, Prop, Watch, State } from '@stencil/core'
-import { DirectionType } from './meta/types'
-import { ThemeVariantType } from '@type/variant'
-import { removeAttributesIf, ifAttribute } from '@common/aria'
-import { TypographyTechnicalType } from '@type/typography'
+import { Component, Element, Host, h, Prop, Watch, State } from '@stencil/core';
+import { DirectionType } from './meta/types';
+import { ThemeVariantType } from '@type/variant';
+import { removeAttributesIf, ifAttribute } from '@common/aria';
+import { TypographyTechnicalType } from '@type/typography';
+import { ProgressBarSizeType } from '@type/progress';
 
 /**
  * @part progress - Selects the `div` element that contains the progress bar
@@ -15,75 +16,101 @@ import { TypographyTechnicalType } from '@type/typography'
   shadow: true,
 })
 export class MdsProgress {
-  @Element() private element: HTMLMdsAccordionTimerElement
-  @State() currentStep: string
-  private stepsList = new Array<string>()
+  @Element() private element: HTMLMdsAccordionTimerElement;
+  @State() currentStep: string;
+  private stepsList = new Array<string>();
 
   /**
    * A value between 0 and 1 that rapresents the status progress
    */
-  @Prop() readonly progress: number = 0
+  @Prop() readonly progress: number = 0;
 
   /**
    * Specifies the direction of the progress bar, if horizonatl or vertical
    */
-  @Prop({ reflect: true }) readonly direction?: DirectionType = 'horizontal'
+  @Prop({ reflect: true }) readonly direction?: DirectionType = 'horizontal';
 
   /**
    * Sets the theme variant colors
    */
-  @Prop({ reflect: true }) readonly variant?: ThemeVariantType = 'primary'
+  @Prop({ reflect: true }) readonly variant?: ThemeVariantType = 'primary';
 
   /**
    * The typography of the component
    */
-  @Prop() readonly typography?: TypographyTechnicalType = 'option'
+  @Prop() readonly typography?: TypographyTechnicalType = 'option';
+
+  /**
+   * Sets the size of the component
+   */
+  @Prop({ reflect: true }) readonly size?: ProgressBarSizeType = 'sm';
 
   /**
    * Sets the steps that can be pronounced by accessibility technologies
    */
-  @Prop() readonly steps: string = 'Inizio,Un quarto,Metà,Tre quarti,Fine'
+  @Prop() readonly steps: string = 'Inizio,Un quarto,Metà,Tre quarti,Fine';
 
-  componentWillLoad (): void {
-    this.stepsList = this.steps.split(',')
-    this.setProgress(this.progress)
+  componentWillLoad(): void {
+    this.stepsList = this.steps.split(',');
+    this.setProgress(this.progress);
   }
 
-  componentDidLoad (): void {
-    removeAttributesIf(this.element, 'aria-hidden', 'true', ['aria-valuemax', 'aria-valuemin', 'aria-valuenow', 'aria-valuetext', 'role'])
+  componentDidLoad(): void {
+    removeAttributesIf(this.element, 'aria-hidden', 'true', [
+      'aria-valuemax',
+      'aria-valuemin',
+      'aria-valuenow',
+      'aria-valuetext',
+      'role',
+    ]);
   }
 
-  private setProgress (progress: number): void {
+  private setProgress(progress: number): void {
     if (this.steps) {
-      this.currentStep = this.stepsList[Math.round(progress * (this.stepsList.length - 1))]
+      this.currentStep = this.stepsList[Math.round(progress * (this.stepsList.length - 1))];
       if (!ifAttribute(this.element, 'aria-hidden')) {
-        this.element.setAttribute('aria-valuetext', this.currentStep)
+        this.element.setAttribute('aria-valuetext', this.currentStep);
       }
     }
   }
 
   @Watch('progress')
-  progressChanged (progress: number): void {
-    this.setProgress(progress)
+  progressChanged(progress: number): void {
+    this.setProgress(progress);
   }
 
   @Watch('steps')
-  stepsChanged (steps: string): void {
-    this.stepsList = steps.split(',')
+  stepsChanged(steps: string): void {
+    this.stepsList = steps.split(',');
   }
 
-  render () {
+  render() {
     return (
-      <Host aria-valuemax="100" aria-valuemin="0" aria-valuenow={ !ifAttribute(this.element, 'aria-hidden') && Math.round(this.progress * 100) } role="progressbar">
-        { this.direction === 'radial'
-          ? <mds-radial-progress progress={this.progress} part="radial-progress" typography={this.typography} variant={this.variant}></mds-radial-progress>
-          : <div class="progress" part="progress" style={
-            this.direction === 'horizontal'
-              ? { flexGrow: `${this.progress}` }
-              : { flexGrow: `${this.progress}`, width: '100%' }
-          }></div>
-        }
+      <Host
+        aria-valuemax="100"
+        aria-valuemin="0"
+        aria-valuenow={!ifAttribute(this.element, 'aria-hidden') && Math.round(this.progress * 100)}
+        role="progressbar"
+      >
+        {this.direction === 'radial' ? (
+          <mds-radial-progress
+            progress={this.progress}
+            part="radial-progress"
+            typography={this.typography}
+            variant={this.variant}
+          ></mds-radial-progress>
+        ) : (
+          <div
+            class="progress"
+            part="progress"
+            style={
+              this.direction === 'horizontal'
+                ? { flexGrow: `${this.progress}` }
+                : { flexGrow: `${this.progress}`, width: '100%' }
+            }
+          ></div>
+        )}
       </Host>
-    )
+    );
   }
 }

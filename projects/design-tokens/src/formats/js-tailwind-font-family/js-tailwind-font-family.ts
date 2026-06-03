@@ -1,15 +1,15 @@
-import Handlebars from 'handlebars'
-import StyleDictionary from 'style-dictionary'
-import fs from 'fs'
-import path from 'path'
-import { version } from '../../../package.json'
-import { FormatterArguments } from 'style-dictionary/types/Format'
-import { safeString } from '../helpers'
+import Handlebars from 'handlebars';
+import StyleDictionary from 'style-dictionary';
+import fs from 'fs';
+import path from 'path';
+import { version } from '../../../package.json';
+import { FormatterArguments } from 'style-dictionary/types/Format';
+import { safeString } from '../helpers';
 
-const templatePath = path.resolve(__dirname, './template.hbs')
-const template = Handlebars.compile(fs.readFileSync(templatePath).toString())
+const templatePath = path.resolve(__dirname, './template.hbs');
+const template = Handlebars.compile(fs.readFileSync(templatePath).toString());
 
-Handlebars.registerHelper('safeString', safeString)
+Handlebars.registerHelper('safeString', safeString);
 
 export const jsTailwindFontFamilyFormat: StyleDictionary.Format = {
   name: 'js/tailwind-font-family',
@@ -19,6 +19,6 @@ export const jsTailwindFontFamilyFormat: StyleDictionary.Format = {
       date: new Date().toUTCString(),
       options: platform,
       version,
-    })
+    });
   },
-}
+};

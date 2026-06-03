@@ -1,25 +1,26 @@
-:host-context(.pref-theme-dark) {
-  --mds-input-select-ring: theme('boxShadow.outline-50');
+:host-context(:root.pref-theme-dark:not(.pref-theme-scheme-light)) {
+  --mds-input-select-ring: var(--shadow-outline-50);
   --mds-input-select-arrow-icon-blur-background-color: rgb(var(--variant-primary-05));
   --mds-input-select-arrow-icon-blur-color: rgb(var(--mds-input-select-variant-color));
   --mds-input-select-arrow-icon-hover-background-color: rgb(var(--variant-primary-04));
   --mds-input-select-arrow-icon-hover-color: rgb(var(--variant-primary-08));
-}
 
-:host-context(.pref-theme-dark) .input {
-  color: theme('colors.tone-neutral-03');
+  .input {
+    color: rgb(var(--tone-neutral-03));
+  }
 }
 
 @media (prefers-color-scheme: dark) {
-  :host-context(.pref-theme-system) {
-    --mds-input-select-ring: theme('boxShadow.outline-50');
+  :host-context(:root.pref-theme-system:not(.pref-theme-scheme-light)),
+  :host-context(:root:not([data-magma-pref])) {
+    --mds-input-select-ring: var(--shadow-outline-50);
     --mds-input-select-arrow-icon-blur-background-color: rgb(var(--variant-primary-05));
     --mds-input-select-arrow-icon-blur-color: rgb(var(--mds-input-select-variant-color));
     --mds-input-select-arrow-icon-hover-background-color: rgb(var(--variant-primary-04));
     --mds-input-select-arrow-icon-hover-color: rgb(var(--variant-primary-08));
-  }
 
-  :host-context(.pref-theme-system) .input {
-    color: theme('colors.tone-neutral-03');
+    .input {
+      color: rgb(var(--tone-neutral-03));
+    }
   }
 }

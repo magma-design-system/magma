@@ -1,3 +1,1 @@
-export type InputTipPositionType =
-  | 'top'
-  | 'bottom'
+export type InputTipPositionType = 'top' | 'bottom';

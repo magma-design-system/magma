@@ -1,18 +1,35 @@
-import dayjs from 'dayjs'
-import localeEl from './meta/locale.el.json'
-import localeEn from './meta/locale.en.json'
-import localeEs from './meta/locale.es.json'
-import localeIt from './meta/locale.it.json'
-import miBaselineCancel from '@icon/mi/baseline/cancel.svg'
-import relativeTime from 'dayjs/plugin/relativeTime'
-import { Component, Element, Event, EventEmitter, Host, h, Prop, Method, State, Watch } from '@stencil/core'
-import { Locale } from '@common/locale'
-import { MdsPushNotificationItemEventDetail } from './meta/event-detail'
-import { NotificationItemPreviewType, NotificationItemDateFormatType, RelativeTimeType } from './meta/types'
-import { ThemeFullVariantAvatarType, ToneMinimalVariantType } from '@type/variant'
-import { sanitizeISO8601Date } from '@common/date'
+import dayjs from 'dayjs';
+import localeEl from './meta/locale.el.json';
+import localeEn from './meta/locale.en.json';
+import localeEs from './meta/locale.es.json';
+import localeIt from './meta/locale.it.json';
+import miBaselineCancel from '@icon/mi/baseline/cancel.svg';
+import relativeTime from 'dayjs/plugin/relativeTime';
+import {
+  Component,
+  Element,
+  Event,
+  EventEmitter,
+  Host,
+  h,
+  Prop,
+  Method,
+  State,
+  Watch,
+} from '@stencil/core';
+import { Locale } from '@common/locale';
+import { MdsPushNotificationItemEventDetail } from './meta/event-detail';
+import {
+  NotificationItemPreviewType,
+  NotificationItemDateFormatType,
+  RelativeTimeType,
+} from './meta/types';
+import { ThemeFullVariantAvatarType } from '@type/variant';
+import { ToneMinimalVariantType } from '@type/tone';
 
-dayjs.extend(relativeTime)
+import { sanitizeISO8601Date } from '@common/date';
+
+dayjs.extend(relativeTime);
 
 /**
  * @part actions - The actions wrapper
@@ -29,100 +46,100 @@ dayjs.extend(relativeTime)
   shadow: true,
 })
 export class MdsPushNotificationItem {
-
-  private hasActions?: boolean
-  private hasBadge?: boolean
-  @Element() host: HTMLMdsPushNotificationItemElement
-  private t:Locale = new Locale({
+  private hasActions?: boolean;
+  private hasBadge?: boolean;
+  @Element() host: HTMLMdsPushNotificationItemElement;
+  private t: Locale = new Locale({
     el: localeEl,
     en: localeEn,
     es: localeEs,
     it: localeIt,
-  })
-  @State() language: string
+  });
+  @State() language: string;
   @Method()
-  async updateLang (): Promise<void> {
-    this.language = this.t.lang(this.host)
+  async updateLang(): Promise<void> {
+    this.language = this.t.lang(this.host);
   }
 
   /**
    * Specifies the notification date based on [standard ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html).
    */
-  @Prop({ reflect: true, mutable: true }) datetime?: string
+  @Prop({ reflect: true, mutable: true }) datetime?: string;
 
   /**
    * Specifies if the notification date format shows time passed or displays date as a static string
    */
-  @Prop({ reflect: true }) readonly dateFormat: NotificationItemDateFormatType = 'timeago'
+  @Prop({ reflect: true }) readonly dateFormat: NotificationItemDateFormatType = 'timeago';
 
   /**
    * Specifies if the component is dismissable or not, it should be set to true by default is used with it's parent component `mds-push-notification-items`
    */
-  @Prop({ reflect: true, mutable: true }) deletable?: boolean = true
+  @Prop({ reflect: true, mutable: true }) deletable?: boolean = true;
 
   /**
    * Specifies the icon to be displayed
    */
-  @Prop({ reflect: true }) readonly icon?: string
+  @Prop({ reflect: true }) readonly icon?: string;
 
   /**
    * The user's inizials displayed if there's no image available, initials will override tone and variant senttings to keep user recognizable from others
    */
-  @Prop({ mutable:true, reflect: true }) readonly initials?: string
+  @Prop({ mutable: true, reflect: true }) readonly initials?: string;
 
   /**
    * Specifies the message of the component
    */
-  @Prop({ reflect: true }) readonly message: string = 'Nessun messaggio disponibile'
+  @Prop({ reflect: true }) readonly message: string = 'Nessun messaggio disponibile';
 
   /**
    * Specifies if the `src` attribute is used to show a the image as avatar or full image
    */
-  @Prop({ reflect: true }) readonly preview?: NotificationItemPreviewType = 'image'
+  @Prop({ reflect: true }) readonly preview?: NotificationItemPreviewType = 'image';
 
   /**
    * Specifies the path to the image
    */
-  @Prop({ reflect: true }) readonly src?: string
+  @Prop({ reflect: true }) readonly src?: string;
 
   /**
    * Specifies the subject of the component
    */
-  @Prop({ reflect: true }) readonly subject?: string
+  @Prop({ reflect: true }) readonly subject?: string;
 
   /**
    * Specifies the color tone of the component
    */
-  @Prop({ reflect: true }) readonly tone?: ToneMinimalVariantType = 'weak'
+  @Prop({ reflect: true }) readonly tone?: ToneMinimalVariantType = 'weak';
 
   /**
    * Specifies the color variant of the component
    */
-  @Prop({ reflect: true }) readonly variant?: ThemeFullVariantAvatarType
+  @Prop({ reflect: true }) readonly variant?: ThemeFullVariantAvatarType;
 
   /**
    * Emits when the component is closed
    */
-  @Event({ eventName: 'mdsPushNotificationItemClose' }) closedEvent: EventEmitter<MdsPushNotificationItemEventDetail>
+  @Event({ eventName: 'mdsPushNotificationItemClose' })
+  closedEvent: EventEmitter<MdsPushNotificationItemEventDetail>;
 
   private onClickClose = (e: Event) => {
-    e.stopPropagation()
-    this.closedEvent.emit()
+    e.stopPropagation();
+    this.closedEvent.emit();
+  };
+
+  componentDidLoad(): void {
+    this.handleDeletableChange(this.deletable);
   }
 
-  componentDidLoad (): void {
-    this.handleDeletableChange(this.deletable)
-  }
-
-  componentWillLoad ():void {
-    this.hasActions = this.host.querySelector(':scope > [slot="action"]') !== null
-    this.hasBadge = this.host.querySelector(':scope > [slot="badge"]') !== null
+  componentWillLoad(): void {
+    this.hasActions = this.host.querySelector(':scope > [slot="action"]') !== null;
+    this.hasBadge = this.host.querySelector(':scope > [slot="badge"]') !== null;
 
     if (this.datetime) {
-      this.datetime = sanitizeISO8601Date(this.datetime?.toString())
+      this.datetime = sanitizeISO8601Date(this.datetime?.toString());
     }
 
-    this.t.lang(this.host)
+    this.t.lang(this.host);
     const relativeTimeCustom = {
       future: this.t.get('future'),
       past: this.t.get('past'),
@@ -137,43 +154,77 @@ export class MdsPushNotificationItem {
       MM: this.t.get('MM'),
       y: this.t.get('y'),
       yy: this.t.get('yy'),
-    }
+    };
 
-    dayjs.locale('custom-locale', { relativeTime: relativeTimeCustom as RelativeTimeType })
+    dayjs.locale('custom-locale', { relativeTime: relativeTimeCustom as RelativeTimeType });
   }
 
   @Watch('deletable')
-  handleDeletableChange (newValue?: boolean): void {
+  handleDeletableChange(newValue?: boolean): void {
     if (newValue === false) {
-      this.deletable = undefined
+      this.deletable = undefined;
     }
   }
 
-  render () {
+  render() {
     return (
       <Host>
-        { (this.icon ?? this.preview === 'avatar') && <mds-avatar class="avatar" icon={this.icon} initials={this.initials} part="avatar" src={this.src} tone={this.tone} variant={this.variant}></mds-avatar> }
-        { this.src && this.preview !== 'avatar' && <mds-img class="picture" part="picture" src={this.src}></mds-img> }
+        {(this.icon ?? this.preview === 'avatar') && (
+          <mds-avatar
+            class="avatar"
+            icon={this.icon}
+            initials={this.initials}
+            part="avatar"
+            src={this.src}
+            tone={this.tone}
+            variant={this.variant}
+          ></mds-avatar>
+        )}
+        {this.src && this.preview !== 'avatar' && (
+          <mds-img class="picture" part="picture" src={this.src}></mds-img>
+        )}
         <div class="content" part="content">
           <div class="header">
             <div class="infos">
-              { this.hasBadge && <div><slot name="badge"></slot></div> }
-              { this.subject && <mds-text class="subject" typography="h6" variant="title" truncate="all">{ this.subject }</mds-text> }
+              {this.hasBadge && (
+                <div>
+                  <slot name="badge"></slot>
+                </div>
+              )}
+              {this.subject && (
+                <mds-text class="subject" typography="h6" variant="title" truncate="all">
+                  {this.subject}
+                </mds-text>
+              )}
             </div>
-            { this.datetime && <mds-text class="time" typography="option">
-              { this.dateFormat === 'timeago'
-                ? dayjs(this.datetime).fromNow()
-                : dayjs(this.datetime).format(this.dateFormat)
-              }
-            </mds-text> }
+            {this.datetime && (
+              <mds-text class="time" typography="option">
+                {this.dateFormat === 'timeago'
+                  ? dayjs(this.datetime).fromNow()
+                  : dayjs(this.datetime).format(this.dateFormat)}
+              </mds-text>
+            )}
           </div>
-          <mds-text class="message" truncate="all" typography="caption" variant="info">{ this.message }</mds-text>
-          { this.hasActions && <div class="actions" part="actions">
-            <slot name="action"></slot>
-          </div> }
+          <mds-text class="message" truncate="all" typography="caption" variant="info">
+            {this.message}
+          </mds-text>
+          {this.hasActions && (
+            <div class="actions" part="actions">
+              <slot name="action"></slot>
+            </div>
+          )}
         </div>
-        { this.deletable && <mds-button class="close-button" variant="dark" tone="quiet" title={this.t.get('dismiss')} icon={miBaselineCancel} onClick={this.onClickClose.bind(this)}></mds-button> }
+        {this.deletable && (
+          <mds-button
+            class="close-button"
+            variant="dark"
+            tone="text"
+            title={this.t.get('dismiss')}
+            icon={miBaselineCancel}
+            onClick={this.onClickClose.bind(this)}
+          ></mds-button>
+        )}
       </Host>
-    )
+    );
   }
 }

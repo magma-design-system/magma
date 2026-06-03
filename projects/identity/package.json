@@ -9,7 +9,9 @@
     "assets": "tsx scripts/build.ts",
     "build": "npm run clean && npm run assets && npm run dir-tree",
     "clean": "tsx scripts/clean.ts",
-    "dir-tree": "tsx scripts/dir-tree.ts"
+    "dir-tree": "tsx scripts/dir-tree.ts",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "keywords": [
     "asset",

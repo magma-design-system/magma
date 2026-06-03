@@ -1,6 +1,6 @@
-import { iconsDictionary, mggIconsDictionary } from '@dictionary/icon'
-import { typographyInfoDictionary } from '@dictionary/typography'
-import { h } from '@stencil/core'
+import { iconsDictionary, mggIconsDictionary } from '@type/icon';
+import { typographyInfoDictionary } from '@type/typography';
+import { h } from '@stencil/core';
 
 export default {
   title: 'UI / Stepper Bar / Stepper Bar Item',
@@ -22,8 +22,7 @@ export default {
     },
     'icon-checked': {
       type: { name: 'string' },
-      description:
-        'Specifies the icon displayed of the component when is checked',
+      description: 'Specifies the icon displayed of the component when is checked',
       options: mggIconsDictionary.concat(iconsDictionary),
       control: { type: 'select' },
     },
@@ -38,35 +37,23 @@ export default {
       control: { type: 'select' },
     },
   },
-}
+};
 
-const Template = args => (
+const Template = (args) => (
   <mds-stepper-bar items-done={0}>
     <mds-stepper-bar-item
       icon-checked="mi/baseline/done"
       icon="mi/baseline/agriculture"
       label="First"
     />
-    <mds-stepper-bar-item
-      icon-checked="mi/baseline/done"
-      icon="mi/baseline/adobe"
-      label="Second"
-    />
+    <mds-stepper-bar-item icon-checked="mi/baseline/done" icon="mi/baseline/adobe" label="Second" />
     <mds-stepper-bar-item icon-checked="mi/baseline/done" {...args} />
-    <mds-stepper-bar-item
-      icon-checked="mi/baseline/done"
-      icon="mi/baseline/css"
-      label="Forth"
-    />
-    <mds-stepper-bar-item
-      icon-checked="mi/baseline/done"
-      icon="mdi/baseball"
-      label="Fifth"
-    />
+    <mds-stepper-bar-item icon-checked="mi/baseline/done" icon="mi/baseline/css" label="Forth" />
+    <mds-stepper-bar-item icon-checked="mi/baseline/done" icon="mdi/baseball" label="Fifth" />
   </mds-stepper-bar>
-)
+);
 
-const TemplateDone = args => (
+const TemplateDone = (args) => (
   <mds-stepper-bar items-done={3}>
     <mds-stepper-bar-item
       done
@@ -84,7 +71,7 @@ const TemplateDone = args => (
     <mds-stepper-bar-item icon="mi/baseline/css" label="Forth" />
     <mds-stepper-bar-item icon="mi/baseline/local-activity" label="Fifth" />
   </mds-stepper-bar>
-)
+);
 
 // mi_baseline_local-activity
 // mi_baseline_bluetooth
@@ -92,7 +79,7 @@ const TemplateDone = args => (
 const defaultArgs = {
   icon: 'mi/baseline/book',
   label: 'Third',
-}
+};
 
 export const Default = {
   render: Template,
@@ -100,7 +87,7 @@ export const Default = {
   args: {
     ...defaultArgs,
   },
-}
+};
 
 export const Done = {
   render: TemplateDone,
@@ -109,7 +96,7 @@ export const Done = {
     ...defaultArgs,
     done: true,
   },
-}
+};
 
 export const Current = {
   render: TemplateDone,
@@ -118,7 +105,7 @@ export const Current = {
     ...defaultArgs,
     current: true,
   },
-}
+};
 
 export const IconChecked = {
   render: TemplateDone,
@@ -128,7 +115,7 @@ export const IconChecked = {
     done: true,
     'icon-checked': 'mi/baseline/done',
   },
-}
+};
 
 export const Text = {
   render: Template,
@@ -137,7 +124,7 @@ export const Text = {
     ...defaultArgs,
     text: 'Item text',
   },
-}
+};
 
 export const Typography = {
   render: Template,
@@ -146,4 +133,4 @@ export const Typography = {
     ...defaultArgs,
     typography: 'paragraph',
   },
-}
+};

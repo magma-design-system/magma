@@ -1,5 +1,5 @@
-import { h } from '@stencil/core'
-import { menuDictionary, navDictionary } from '../meta/dictionary'
+import { h } from '@stencil/core';
+import { menuDictionary, navDictionary } from '../meta/dictionary';
 
 export default {
   title: 'UI / Header / Header bar',
@@ -15,9 +15,9 @@ export default {
       control: { type: 'select' },
     },
   },
-}
+};
 
-const Template = args => (
+const Template = (args) => (
   <mds-header-bar {...args}>
     <div class="flex gap-200 items-center">
       <mds-img class="w-100000" src="./logo-gruppo-maggioli.svg" />
@@ -28,15 +28,15 @@ const Template = args => (
         </mds-text>
       </div>
     </div>
-    <mds-button slot="nav" variant="dark" tone="ghost">
+    <mds-button slot="nav" variant="dark" tone="outline">
       Accedi
     </mds-button>
     <mds-button slot="nav" icon="mi/round/person">
       Registrati
     </mds-button>
   </mds-header-bar>
-)
+);
 
 export const Default = {
   render: Template,
-}
+};

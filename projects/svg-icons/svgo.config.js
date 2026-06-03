@@ -3,6 +3,4 @@ module.exports = {
     indent: 2,
     pretty: true,
   },
-}
-
-
+};

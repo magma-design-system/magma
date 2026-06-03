@@ -1,0 +1,36 @@
+{
+  "source": [
+    "tokens/sizing/spacing.json",
+    "tokens/sizing/aspect-ratio.json",
+    "tokens/sizing/radius.json",
+    "tokens/typography/default.json",
+    "tokens/typography/leading.json",
+    "tokens/typography/size.json",
+    "tokens/css/**/*.json",
+    "tokens/cosmetic/border.json",
+    "tokens/cosmetic/box-shadow.json",
+    "tokens/screen/default.json"
+  ],
+  "include": [
+    "tokens/sizing/primitive.json",
+    "tokens/typography/sizing.json"
+  ],
+  "platforms": {
+    "css": {
+      "transformGroup": "css",
+      "buildPath": "dist/css/",
+      "transforms": [
+        "tailwind/cssAspectRatio",
+        "attribute/cti",
+        "name/cti/kebab"
+      ],
+      "files": [
+        {
+          "destination": "tailwind-theme-typography.css",
+          "format": "css/tailwind-theme-typography",
+          "filter": "tailwind/cssTailwind4Filter"
+        }
+      ]
+    }
+  }
+}

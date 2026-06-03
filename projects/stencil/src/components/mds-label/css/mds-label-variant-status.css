@@ -1,0 +1,87 @@
+:host([variant='error']) {
+  --mds-label-background: rgb(var(--status-error-04));
+  --mds-label-button-background: rgb(var(--status-error-04));
+  --mds-label-button-background-hover: rgb(var(--status-error-05));
+  --mds-label-button-icon-color: rgb(var(--status-error-10));
+  --mds-label-color: rgb(var(--status-error-10));
+  --mds-label-icon-color: rgb(var(--status-error-10));
+  --mds-label-selection-background: rgb(var(--status-error-08));
+  --mds-label-selection-color: rgb(var(--status-error-02));
+
+  &:host([tone='weak']) {
+    --mds-label-background: rgb(var(--status-error-08));
+    --mds-label-button-background: rgb(var(--status-error-09));
+    --mds-label-button-background-hover: rgb(var(--status-error-08));
+    --mds-label-button-icon-color: rgb(var(--status-error-04));
+    --mds-label-color: rgb(var(--status-error-02));
+    --mds-label-icon-color: rgb(var(--status-error-02));
+    --mds-label-selection-background: rgb(var(--status-error-06));
+    --mds-label-selection-color: rgb(var(--status-error-10));
+  }
+}
+
+:host([variant='warning']) {
+  --mds-label-background: rgb(var(--status-warning-04));
+  --mds-label-button-background: rgb(var(--status-warning-04));
+  --mds-label-button-background-hover: rgb(var(--status-warning-05));
+  --mds-label-button-icon-color: rgb(var(--status-warning-10));
+  --mds-label-color: rgb(var(--status-warning-10));
+  --mds-label-icon-color: rgb(var(--status-warning-10));
+  --mds-label-selection-background: rgb(var(--status-warning-08));
+  --mds-label-selection-color: rgb(var(--status-warning-02));
+
+  &:host([tone='weak']) {
+    --mds-label-background: rgb(var(--status-warning-08));
+    --mds-label-button-background: rgb(var(--status-warning-09));
+    --mds-label-button-background-hover: rgb(var(--status-warning-08));
+    --mds-label-button-icon-color: rgb(var(--status-warning-04));
+    --mds-label-color: rgb(var(--status-warning-02));
+    --mds-label-icon-color: rgb(var(--status-warning-02));
+    --mds-label-selection-background: rgb(var(--status-warning-06));
+    --mds-label-selection-color: rgb(var(--status-warning-10));
+  }
+}
+
+:host([variant='success']) {
+  --mds-label-background: rgb(var(--status-success-04));
+  --mds-label-button-background: rgb(var(--status-success-04));
+  --mds-label-button-background-hover: rgb(var(--status-success-05));
+  --mds-label-button-icon-color: rgb(var(--status-success-10));
+  --mds-label-color: rgb(var(--status-success-10));
+  --mds-label-icon-color: rgb(var(--status-success-10));
+  --mds-label-selection-background: rgb(var(--status-success-08));
+  --mds-label-selection-color: rgb(var(--status-success-02));
+
+  &:host([tone='weak']) {
+    --mds-label-background: rgb(var(--status-success-08));
+    --mds-label-button-background: rgb(var(--status-success-09));
+    --mds-label-button-background-hover: rgb(var(--status-success-08));
+    --mds-label-button-icon-color: rgb(var(--status-success-04));
+    --mds-label-color: rgb(var(--status-success-02));
+    --mds-label-icon-color: rgb(var(--status-success-02));
+    --mds-label-selection-background: rgb(var(--status-success-06));
+    --mds-label-selection-color: rgb(var(--status-success-10));
+  }
+}
+
+:host([variant='info']) {
+  --mds-label-background: rgb(var(--status-info-04));
+  --mds-label-button-background: rgb(var(--status-info-04));
+  --mds-label-button-background-hover: rgb(var(--status-info-05));
+  --mds-label-button-icon-color: rgb(var(--status-info-10));
+  --mds-label-color: rgb(var(--status-info-10));
+  --mds-label-icon-color: rgb(var(--status-info-10));
+  --mds-label-selection-background: rgb(var(--status-info-08));
+  --mds-label-selection-color: rgb(var(--status-info-02));
+
+  &:host([tone='weak']) {
+    --mds-label-background: rgb(var(--status-info-08));
+    --mds-label-button-background: rgb(var(--status-info-09));
+    --mds-label-button-background-hover: rgb(var(--status-info-08));
+    --mds-label-button-icon-color: rgb(var(--status-info-04));
+    --mds-label-color: rgb(var(--status-info-02));
+    --mds-label-icon-color: rgb(var(--status-info-02));
+    --mds-label-selection-background: rgb(var(--status-info-06));
+    --mds-label-selection-color: rgb(var(--status-info-10));
+  }
+}

@@ -1,10 +1,221 @@
+/*
+  Accessibility features
+  They are used by Magma web-components to adapt to user preferences
+  regarding theme, animation, contrast, and consumption.
+*/
+
+@property --magma-pref-theme {
+  inherits: false;
+  initial-value: light;
+  syntax: 'light | dark | system';
+}
+
+@property --magma-pref-theme-scheme {
+  inherits: false;
+  initial-value: light;
+  syntax: 'light | dark | all';
+}
+
+@property --magma-pref-theme-name {
+  inherits: false;
+  initial-value: 'magma';
+  syntax: '<string>';
+}
+
+@property --magma-pref-consumption {
+  inherits: false;
+  initial-value: high;
+  syntax: 'high | medium | low';
+}
+
+@property --magma-pref-animation {
+  inherits: false;
+  initial-value: no-preference;
+  syntax: 'reduce | no-preference | system';
+}
+
+@property --magma-pref-contrast {
+  inherits: false;
+  initial-value: no-preference;
+  syntax: 'more | no-preference | system';
+}
+
+/* Animations */
+
+@property --magma-backdrop-animation-duration {
+  inherits: false;
+  initial-value: 300ms;
+  syntax: '<time>';
+}
+
+@property --magma-outline-animation-duration {
+  inherits: false;
+  initial-value: 1.5s;
+  syntax: '<time>';
+}
+
+/* Opacity */
+
+@property --magma-backdrop-opacity {
+  inherits: true;
+  initial-value: 0.1;
+  syntax: '<number>';
+}
+
+@property --magma-disabled-opacity {
+  inherits: true;
+  initial-value: 0.5;
+  syntax: '<number>';
+}
+
+@property --magma-overlay-opacity {
+  inherits: true;
+  initial-value: 0.5;
+  syntax: '<number>';
+}
+
+/* Blur */
+
+@property --magma-backdrop-blur {
+  inherits: false;
+  initial-value: 4px;
+  syntax: '<length>';
+}
+
+@property --magma-outline-blur-offset {
+  inherits: false;
+  initial-value: 6px;
+  syntax: '<length>';
+}
+
+@property --magma-outline-focus-offset {
+  inherits: false;
+  initial-value: 2px;
+  syntax: '<length>';
+}
+
+/* Colors */
+
+@property --magma-backdrop-color {
+  inherits: true;
+  initial-value: 0 0 0;
+  syntax: '<integer>+';
+}
+
+@property --magma-outline-blur-color {
+  inherits: true;
+  initial-value: transparent;
+  syntax: '<color>';
+}
+
+@property --magma-outline-focus-color {
+  inherits: true;
+  initial-value: rgb(0 0 0);
+  syntax: '<color>';
+}
+
+@property --magma-overlay-color {
+  inherits: true;
+  initial-value: 0 0 0;
+  syntax: '<integer>+';
+}
+
+@property --magma-selection-background {
+  inherits: true;
+  initial-value: rgb(0 120 255);
+  syntax: '<color>';
+}
+
+@property --magma-selection-color {
+  inherits: true;
+  initial-value: rgb(255 255 255);
+  syntax: '<color>';
+}
+
+/*
+ * corner-shape
+ * https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/corner-shape
+ * also supports superellipse(-1.0 to 1.0) method
+ */
+
+@property --magma-corner-shape {
+  inherits: false;
+  initial-value: squircle;
+  syntax: 'bevel | notch | round | scoop | square | squircle';
+}
+
+/* z-index */
+
+@property --magma-header-z-index {
+  inherits: false;
+  initial-value: 1000;
+  syntax: '<integer>';
+}
+
+@property --magma-notification-z-index {
+  inherits: false;
+  initial-value: 2000;
+  syntax: '<integer>';
+}
+
+@property --magma-modal-z-index {
+  inherits: false;
+  initial-value: 3000;
+  syntax: '<integer>';
+}
+
+@property --magma-backdrop-z-index {
+  inherits: false;
+  initial-value: 4000;
+  syntax: '<integer>';
+}
+
+@property --magma-dropdown-z-index {
+  inherits: false;
+  initial-value: 5000;
+  syntax: '<integer>';
+}
+
+@property --magma-tooltip-z-index {
+  inherits: false;
+  initial-value: 6000;
+  syntax: '<integer>';
+}
+
+@property --magma-theme-overlay-z-index {
+  inherits: false;
+  initial-value: 7000;
+  syntax: '<integer>';
+}
+
+@property --magma-context-menu-z-index {
+  inherits: false;
+  initial-value: 8000;
+  syntax: '<integer>';
+}
+
+/* @view-transition
+ * https://developer.chrome.com/docs/web-platform/view-transitions/cross-document?hl=it
+ */
+
+@property --magma-view-transition-navigation {
+  inherits: false;
+  initial-value: auto;
+  syntax: 'auto | traverse | push | replace';
+}
+
 :root {
+  /*
+    For browser compatibility reasons we add defaults
+    to avoid issues with older browsers that do not support houdini @property
+    (can be removed once support is more widespread)
+  */
   --magma-backdrop-animation-duration: 300ms;
+  --magma-corner-shape: squircle;
   --magma-backdrop-blur: 4px;
   --magma-backdrop-color: 0 0 0;
   --magma-backdrop-opacity: 0.1;
   --magma-backdrop-z-index: 4000;
-  --magma-backdrop: rgb(var(--magma-backdrop-color) / var(--magma-backdrop-opacity));
   --magma-context-menu-z-index: 8000;
   --magma-disabled-opacity: 0.5;
   --magma-dropdown-z-index: 5000;
@@ -14,16 +225,20 @@
   --magma-outline-animation-duration: 1.5s;
   --magma-outline-blur-color: transparent;
   --magma-outline-blur-offset: 6px;
-  --magma-outline-blur: 2px solid var(--magma-outline-blur-color);
-  --magma-outline-focus-color: rgb(var(--tone-neutral-04, 0 0 0));
+  --magma-outline-focus-color: rgb(var(--tone-neutral-05, 0 0 0));
   --magma-outline-focus-offset: 2px;
-  --magma-outline-focus: 2px solid var(--magma-outline-focus-color);
-  --magma-overlay-blur: var(--magma-backdrop-blur);
-  --magma-overlay-color: var(--magma-backdrop-color);
   --magma-overlay-opacity: 0.5;
-  --magma-overlay: rgb(var(--magma-overlay-color) / var(--magma-overlay-opacity));
   --magma-selection-background: rgb(var(--label-sky-09));
   --magma-selection-color: rgb(var(--label-sky-01));
   --magma-theme-overlay-z-index: 7000;
   --magma-tooltip-z-index: 6000;
+  --magma-view-transition-navigation: auto;
+
+  /* Derived properties */
+  --magma-backdrop: rgb(var(--magma-backdrop-color) / var(--magma-backdrop-opacity));
+  --magma-outline-blur: 2px solid var(--magma-outline-blur-color);
+  --magma-outline-focus: 2px solid var(--magma-outline-focus-color);
+  --magma-overlay-blur: var(--magma-backdrop-blur);
+  --magma-overlay-color: var(--magma-backdrop-color);
+  --magma-overlay: rgb(var(--magma-overlay-color) / var(--magma-overlay-opacity));
 }

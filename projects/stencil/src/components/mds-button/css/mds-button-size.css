@@ -1,67 +1,67 @@
-:host([size="sm"]) {
-  @apply
-    px-300
-    py-0;
+:host([size='sm']) {
+  --mds-button-radius: var(--radius-md);
 
-  --mds-button-radius: theme('borderRadius.md');
+  min-height: --spacing(700);
+  min-width: --spacing(700);
+  padding: 0 --spacing(300);
 
-  min-height: theme('size.700');
-  min-width: theme('size.700');
+  .icon {
+    height: --spacing(400);
+    width: --spacing(400);
+  }
+
+  .text {
+    @apply font-medium;
+  }
+
+  &:host([await]:not([await='false'])) .await {
+    transform: scale(75);
+  }
 }
 
-:host([size="sm"]:not([has-text])) {
-  @apply p-0;
+:host([size='md']) {
+  min-height: --spacing(900);
+  min-width: --spacing(900);
+  padding-left: --spacing(400);
+  padding-right: --spacing(400);
+
+  &:host([icon][icon-position='left']) {
+    padding-left: --spacing(300);
+  }
+
+  &:host([icon][icon-position='right']) {
+    padding-right: --spacing(300);
+  }
 }
 
-:host([size="sm"]) .text {
-  @apply font-medium;
+:host([size='lg']) {
+  min-height: --spacing(1200);
+  min-width: --spacing(1200);
+  padding-left: --spacing(500);
+  padding-right: --spacing(500);
+
+  &:host([icon][icon-position='left']) {
+    padding-left: --spacing(400);
+  }
+
+  &:host([icon][icon-position='right']) {
+    padding-right: --spacing(400);
+  }
 }
 
-:host([size="sm"]) .icon {
-  @apply
-    h-400
-    w-400;
+:host([size='xl']) {
+  min-height: --spacing(1300);
+  min-width: --spacing(1300);
+  padding-left: --spacing(600);
+  padding-right: --spacing(600);
+
+  .icon {
+    height: --spacing(800);
+    width: --spacing(800);
+  }
 }
 
-:host([size="sm"][await]:not([await="false"]) ) .await {
-  transform: scale(theme('scale.75'));
-}
-
-:host([size="md"]) {
-  @apply
-    px-300
-    py-100;
-
-  min-height: theme('size.900');
-  min-width: theme('size.900');
-}
-
-:host([size="md"]:not([has-text])) {
-  @apply p-100;
-}
-
-:host([size="lg"]) {
-  @apply
-    px-600
-    py-200;
-
-  min-height: theme('size.1200');
-  min-width: theme('size.1200');
-}
-
-:host([size="lg"]:not([has-text])) {
-  @apply p-200;
-}
-
-:host([size="xl"]) {
-  @apply
-    px-800
-    py-200;
-
-  min-height: theme('size.1300');
-  min-width: theme('size.1300');
-}
-
-:host([size="xl"]:not([has-text])) {
-  @apply p-200;
+:host([size][icon][icon-position]:not([label])) {
+  aspect-ratio: 1;
+  padding: 0;
 }

@@ -1,4 +1,4 @@
-import { Component, Host, h } from '@stencil/core'
+import { Component, Host, h } from '@stencil/core';
 
 /**
  * @slot default - Add `text string`, `HTML elements` or `components` to this slot.
@@ -10,13 +10,11 @@ import { Component, Host, h } from '@stencil/core'
   shadow: true,
 })
 export class MdsCardFooter {
-
-  render () {
+  render() {
     return (
       <Host slot="footer">
         <slot></slot>
       </Host>
-    )
+    );
   }
-
 }

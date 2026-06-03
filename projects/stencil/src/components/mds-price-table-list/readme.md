@@ -26,6 +26,13 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `"header"`  | Selects the element which wraps elements added via `slot="header"`                    |
 
 
+## CSS Custom Properties
+
+| Name                                     | Description                                          |
+| ---------------------------------------- | ---------------------------------------------------- |
+| `--mds-price-table-list-separator-color` | Color of the separator line in the price table list. |
+
+
 ## Dependencies
 
 ### Depends on

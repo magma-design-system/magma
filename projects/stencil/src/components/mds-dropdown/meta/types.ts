@@ -1,4 +1,1 @@
-export type DropdownInteractionType =
-  | 'click'
-  | 'none'
-  | 'mouseover'
+export type DropdownInteractionType = 'click' | 'none' | 'mouseover';

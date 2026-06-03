@@ -16,6 +16,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `href`         | `href`          | Specifies the URL target of the button                                  | `string \| undefined`                                 | `undefined` |
 | `icon`         | `icon`          | The icon displayed in the tab item                                      | `string \| undefined`                                 | `undefined` |
 | `iconPosition` | `icon-position` | Specifies the horizontal position of the icon displayed in the tab item | `"left" \| "right" \| undefined`                      | `'left'`    |
+| `label`        | `label`         | The label of the tab item                                               | `string \| undefined`                                 | `undefined` |
 | `selected`     | `selected`      | Specifies if the tab item is selected or not                            | `boolean \| undefined`                                | `undefined` |
 | `size`         | `size`          | Specifies the size for the tab item                                     | `"lg" \| "md" \| "sm" \| "xl" \| undefined`           | `'md'`      |
 | `type`         | `type`          | The type of the tab item element                                        | `"a" \| "button" \| "reset" \| "submit" \| undefined` | `'submit'`  |
@@ -30,18 +31,22 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `mdsTabItemSelect` | Emits when the tab item is selected | `CustomEvent<MdsTabItemEventDetail>` |
 
 
-## Slots
-
-| Slot        | Description                          |
-| ----------- | ------------------------------------ |
-| `"default"` | Put text string here, avoid elements |
-
-
 ## Shadow Parts
 
 | Part       | Description |
 | ---------- | ----------- |
 | `"button"` |             |
+
+
+## CSS Custom Properties
+
+| Name                                 | Description                                |
+| ------------------------------------ | ------------------------------------------ |
+| `--mds-tab-item-default-background`  | Default background color of a tab item.    |
+| `--mds-tab-item-default-shadow`      | Default shadow of a tab item.              |
+| `--mds-tab-item-hover-background`    | Background color when hovering a tab item. |
+| `--mds-tab-item-selected-background` | Background color of a selected tab item.   |
+| `--mds-tab-item-selected-shadow`     | Shadow of a selected tab item.             |
 
 
 ## Dependencies
@@ -54,6 +59,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
  - [mds-pref-contrast](../mds-pref-contrast)
  - [mds-pref-language](../mds-pref-language)
  - [mds-pref-theme](../mds-pref-theme)
+ - [mds-pref-theme-variant](../mds-pref-theme-variant)
 
 ### Depends on
 
@@ -72,6 +78,7 @@ graph TD;
   mds-pref-contrast --> mds-tab-item
   mds-pref-language --> mds-tab-item
   mds-pref-theme --> mds-tab-item
+  mds-pref-theme-variant --> mds-tab-item
   style mds-tab-item fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

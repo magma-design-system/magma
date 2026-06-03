@@ -1,68 +1,72 @@
-export type AutocompleteType =
-  | 'additional-name'
-  | 'address'
-  | 'address-level1'
-  | 'address-level2'
-  | 'address-level3'
-  | 'address-level4'
-  | 'address-line1'
-  | 'address-line2'
-  | 'address-line3'
-  | 'bday'
-  | 'bday-day'
-  | 'bday-month'
-  | 'bday-year'
-  | 'cc-additional-name'
-  | 'cc-csc'
-  | 'cc-exp'
-  | 'cc-exp-month'
-  | 'cc-exp-year'
-  | 'cc-family-name'
-  | 'cc-given-name'
-  | 'cc-name'
-  | 'cc-number'
-  | 'cc-type'
-  | 'country'
-  | 'country-name'
-  | 'current-password'
-  | 'email'
-  | 'family-name'
-  | 'given-name'
-  | 'honorific-prefix'
-  | 'honorific-suffix'
-  | 'impp'
-  | 'language'
-  | 'name'
-  | 'new-password'
-  | 'nickname'
-  | 'off'
-  | 'on'
-  | 'one-time-code'
-  | 'organization'
-  | 'organization-title'
-  | 'photo'
-  | 'postal-code'
-  | 'sex'
-  | 'street-address'
-  | 'tel'
-  | 'tel-area-code'
-  | 'tel-country-code'
-  | 'tel-extension'
-  | 'tel-local'
-  | 'tel-national'
-  | 'transaction-amount'
-  | 'transaction-currency'
-  | 'url'
-  | 'username'
+export const autoCompleteDictionary = [
+  'additional-name',
+  'address',
+  'address-level1',
+  'address-level2',
+  'address-level3',
+  'address-level4',
+  'address-line1',
+  'address-line2',
+  'address-line3',
+  'bday',
+  'bday-day',
+  'bday-month',
+  'bday-year',
+  'cc-additional-name',
+  'cc-csc',
+  'cc-exp',
+  'cc-exp-month',
+  'cc-exp-year',
+  'cc-family-name',
+  'cc-given-name',
+  'cc-name',
+  'cc-number',
+  'cc-type',
+  'country',
+  'country-name',
+  'current-password',
+  'email',
+  'family-name',
+  'given-name',
+  'honorific-prefix',
+  'honorific-suffix',
+  'impp',
+  'language',
+  'name',
+  'new-password',
+  'nickname',
+  'off',
+  'on',
+  'one-time-code',
+  'organization',
+  'organization-title',
+  'photo',
+  'postal-code',
+  'sex',
+  'street-address',
+  'tel',
+  'tel-area-code',
+  'tel-country-code',
+  'tel-extension',
+  'tel-local',
+  'tel-national',
+  'transaction-amount',
+  'transaction-currency',
+  'url',
+  'username',
+] as const;
+export type AutocompleteType = (typeof autoCompleteDictionary)[number];
 
-export type InputTextType =
-  | 'date'
-  | 'email'
-  | 'number'
-  | 'password'
-  | 'search'
-  | 'tel'
-  | 'text'
-  | 'textarea'
-  | 'time'
-  | 'url'
+export const inputTextTypeDictionary = [
+  'date',
+  'email',
+  'number',
+  'password',
+  'search',
+  'tel',
+  'text',
+  'textarea',
+  'time',
+  'url',
+] as const;
+export type InputTextType = (typeof inputTextTypeDictionary)[number];

@@ -1,7 +1,4 @@
-/* stylelint-disable media-query-no-invalid */
-@import '../../tailwind/components.css';
-@tailwind components;
-@tailwind utilities;
+@import './css/mds-horizontal-scroll-fouc.css';
 
 /**
  * @prop --mds-horizontal-scroll-background: Sets the background-color of the component
@@ -17,27 +14,130 @@
  * @prop --mds-horizontal-scroll-scrollbar-track-background: Sets the background-color of the browser scroll bar track (if supported)
  */
 
+/* ❌ Not supported: scroll-behavior cannot be expressed in @property syntax
+@property --mds-horizontal-scroll-behavior {
+  inherits: false;
+  syntax: "auto | smooth";
+  initial-value: smooth;
+}
+*/
+
+@property --mds-horizontal-scroll-dots-gap {
+  inherits: false;
+  initial-value: --spacing(100);
+  syntax: '<length>';
+}
+
+@property --mds-horizontal-scroll-dot-size {
+  inherits: false;
+  initial-value: --spacing(200);
+  syntax: '<length>';
+}
+
+/* ❌ Not supported: 'auto' is not a <length>
+
+@property --mds-horizontal-scroll-dot-max-width {
+  inherits: false;
+  initial-value: auto;
+  syntax: "<custom-ident>";
+}
+*/
+
+@property --mds-horizontal-scroll-contents-padding {
+  inherits: false;
+  initial-value: --spacing(600);
+  syntax: '<length>';
+}
+
+@property --mds-horizontal-scroll-contents-scroll-padding {
+  inherits: false;
+  initial-value: 0 --spacing(600);
+  syntax: '<length>+';
+}
+
+@property --mds-horizontal-scroll-controls-margin {
+  inherits: false;
+  initial-value: --spacing(1200);
+  syntax: '<length>';
+}
+
+@property --mds-horizontal-scroll-gap {
+  inherits: false;
+  initial-value: --spacing(600);
+  syntax: '<length>';
+}
+
+@property --mds-horizontal-scroll-max-width {
+  inherits: false;
+  initial-value: var(--breakpoint-wide);
+  syntax: '<length>';
+}
+
+@property --mds-horizontal-scroll-scrollbar-margin {
+  inherits: false;
+  initial-value: 0;
+  syntax: '<length>';
+}
+
+@property --mds-horizontal-scroll-scrollbar-radius {
+  inherits: false;
+  initial-value: 0;
+  syntax: '<length>';
+}
+
+@property --mds-horizontal-scroll-scrollbar-size {
+  inherits: false;
+  initial-value: --spacing(200);
+  syntax: '<length>';
+}
+
+@property --mds-horizontal-scroll-dot-background {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral));
+  syntax: '<color>';
+}
+
+@property --mds-horizontal-scroll-dot-area-background {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-08));
+  syntax: '<color>';
+}
+
+@property --mds-horizontal-scroll-scrollbar-thumb-background {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-02) / 0.3);
+  syntax: '<color>';
+}
+
+@property --mds-horizontal-scroll-scrollbar-track-background {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-06) / 0.3);
+  syntax: '<color>';
+}
+
 :host {
   --mds-horizontal-scroll-behavior: smooth;
-  --mds-horizontal-scroll-dots-gap: theme('size.100');
-  --mds-horizontal-scroll-dot-size: theme('size.200');
+  --mds-horizontal-scroll-dots-gap: --spacing(100);
+  --mds-horizontal-scroll-dot-size: --spacing(200);
   --mds-horizontal-scroll-dot-max-width: auto;
-  --mds-horizontal-scroll-dot-background: theme('colors.tone-neutral');
-  --mds-horizontal-scroll-dot-area-background: theme('colors.tone-neutral-08');
-  --mds-horizontal-scroll-contents-padding: theme('spacing.600');
-  --mds-horizontal-scroll-contents-scroll-padding: 0 theme('spacing.600');
-  --mds-horizontal-scroll-controls-margin: theme('size.1200');
-  --mds-horizontal-scroll-gap: theme('spacing.600');
-  --mds-horizontal-scroll-max-width: theme('screens.wide');
+  --mds-horizontal-scroll-dot-background: rgb(var(--tone-neutral));
+  --mds-horizontal-scroll-dot-area-background: rgb(var(--tone-neutral-08));
+  --mds-horizontal-scroll-contents-padding: --spacing(600);
+  --mds-horizontal-scroll-contents-scroll-padding: 0 --spacing(600);
+  --mds-horizontal-scroll-controls-margin: --spacing(1200);
+  --mds-horizontal-scroll-gap: --spacing(600);
+  --mds-horizontal-scroll-max-width: var(--breakpoint-wide);
   --mds-horizontal-scroll-scrollbar-margin: 0;
   --mds-horizontal-scroll-scrollbar-radius: 0;
-  --mds-horizontal-scroll-scrollbar-size: theme('spacing.200');
-  --mds-horizontal-scroll-scrollbar-thumb-background: rgb(var(--tone-neutral-02) theme('opacity.30'));
-  --mds-horizontal-scroll-scrollbar-track-background: rgb(var(--tone-neutral-06) theme('opacity.30'));
+  --mds-horizontal-scroll-scrollbar-size: --spacing(200);
+  --mds-horizontal-scroll-scrollbar-thumb-background: rgb(var(--tone-neutral-02) / 0.3);
+  --mds-horizontal-scroll-scrollbar-track-background: rgb(var(--tone-neutral-06) / 0.3);
 
   /* private custom props, DO NOT OVERRIDE from outside */
-  --max-width: var(--mds-horizontal-scroll-max-width); /* remember @media (width <= theme('screens.wide')) at the bottom */
-  --scroll-margin: calc(((100svw - var(--max-width)) / 2) + (var(--mds-horizontal-scroll-controls-margin) * 2));
+  --max-width: var(--mds-horizontal-scroll-max-width);
+  --scroll-margin: calc(
+    ((100svw - var(--max-width)) / 2) + (var(--mds-horizontal-scroll-controls-margin) * 2)
+  );
 
   align-items: center;
   container-name: mds-horizontal-scroll;
@@ -56,11 +156,9 @@
   position: absolute;
   top: 50%;
   transform: translate(0, -50%);
-  transition-duration: theme('transitionDuration.200');
+  transition-duration: 200ms;
   transition-property: opacity, scale, transform;
 }
-
-
 
 .contents {
   box-sizing: border-box;
@@ -78,19 +176,19 @@
 
 /*
 .contents::after {
-  --width: calc(var(--scroll-margin) - var(--mds-horizontal-scroll-gap));
-  --position: calc(var(--scroll-margin) - var(--mds-horizontal-scroll-gap) - var(--mds-horizontal-scroll-controls-margin) + 48px);
+--width: calc(var(--scroll-margin) - var(--mds-horizontal-scroll-gap));
+--position: calc(var(--scroll-margin) - var(--mds-horizontal-scroll-gap) - var(--mds-horizontal-scroll-controls-margin) + 48px);
 
-  background-color: rgb(255 0 255 / 0.1);
-  content: "";
-  display: flex;
-  height: 100%;
-  left: clamp(1px, var(--width), var(--width));
-  pointer-events: none;
-  position: fixed;
-  right: clamp(calc(var(--mds-horizontal-scroll-gap) / 2), var(--position), var(--position));
+background-color: rgb(255 0 255 / 0.1);
+content: "";
+display: flex;
+height: 100%;
+left: clamp(1px, var(--width), var(--width));
+pointer-events: none;
+position: fixed;
+right: clamp(calc(var(--mds-horizontal-scroll-gap) / 2), var(--position), var(--position));
 }
-  */
+*/
 
 .contents > ::slotted(*) {
   flex-basis: 0;
@@ -102,7 +200,7 @@
 .spacer {
   --width: calc(var(--scroll-margin) - var(--mds-horizontal-scroll-gap));
 
-  content: "";
+  content: '';
   display: block;
   flex-basis: 0;
   flex-grow: 0;
@@ -130,4 +228,3 @@
 @import './css/mds-horizontal-scroll-dot-navigation.css';
 @import './css/mds-horizontal-scroll-navigation.css';
 @import './css/mds-horizontal-scroll-snap.css';
-@import '../../tailwind/fouc.css';

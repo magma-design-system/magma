@@ -1,12 +1,12 @@
-import { h } from '@stencil/core'
-import { iconsDictionary } from '@dictionary/icon'
+import { h } from '@stencil/core';
+import { iconsDictionary } from '@type/icon';
 import {
   buttonDropdownVariantDictionary,
   buttonSizeDictionary,
   buttonToneMinimalVariantDictionary,
   buttonTargetDictionary,
   buttonTypeDictionary,
-} from '@dictionary/button'
+} from '@type/button';
 
 export default {
   title: 'UI / Button dropdown',
@@ -17,8 +17,7 @@ export default {
     },
     'auto-focus': {
       type: { name: 'boolean' },
-      description:
-        'Specifies if the component is focused when is loaded on the viewport',
+      description: 'Specifies if the component is focused when is loaded on the viewport',
     },
     await: {
       type: { name: 'boolean' },
@@ -70,18 +69,19 @@ export default {
       control: { type: 'select' },
     },
   },
-}
+};
 
-const Template = args => (
+const Template = (args) => (
   <mds-button-dropdown {...args}>
-    <mds-button variant="dark" tone="quiet" size="sm">
-      Invia subito
-    </mds-button>
-    <mds-button variant="dark" tone="quiet" size="sm">
-      Elimina
-    </mds-button>
+    <mds-button
+      icon="mi/baseline/send"
+      variant="dark"
+      tone="text"
+      label="Invia subito"
+    ></mds-button>
+    <mds-button icon="mi/baseline/delete" variant="dark" tone="text" label="Elimina"></mds-button>
   </mds-button-dropdown>
-)
+);
 
 export const Default = {
   render: Template,
@@ -91,4 +91,4 @@ export const Default = {
     variant: 'success',
     tone: 'weak',
   },
-}
+};

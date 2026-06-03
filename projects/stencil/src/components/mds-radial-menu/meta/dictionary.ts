@@ -1,8 +1,3 @@
-const directionDictionary = [
-  'clockwise',
-  'counterclockwise',
-]
+const directionDictionary = ['clockwise', 'counterclockwise'];
 
-export {
-  directionDictionary,
-}
+export { directionDictionary };

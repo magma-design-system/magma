@@ -1,6 +1,6 @@
-import { h } from '@stencil/core'
-import { iconsDictionary } from '@dictionary/icon'
-import { mentionSizeDictionary } from '../meta/dictionary'
+import { h } from '@stencil/core';
+import { iconsDictionary } from '@type/icon';
+import { mentionSizeDictionary } from '../meta/dictionary';
 
 export default {
   title: 'UI / Mention',
@@ -23,14 +23,13 @@ export default {
       control: { type: 'select' },
     },
   },
-}
+};
 
-const Template = args => (
+const Template = (args) => (
   <mds-text>
-    Ciao <mds-mention {...args}></mds-mention>, sei riuscito poi a inviare il
-    messaggio?
+    Ciao <mds-mention {...args}></mds-mention>, sei riuscito poi a inviare il messaggio?
   </mds-text>
-)
+);
 
 export const Default = {
   render: Template,
@@ -38,4 +37,4 @@ export const Default = {
   args: {
     label: 'mario.rossi',
   },
-}
+};

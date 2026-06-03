@@ -1,5 +1,5 @@
-import { h } from '@stencil/core'
-import { stepperBarNavigationDictionary } from '../meta/dictionary'
+import { h } from '@stencil/core';
+import { stepperBarNavigationDictionary } from '../meta/dictionary';
 
 export default {
   title: 'UI / Stepper Bar',
@@ -16,9 +16,9 @@ export default {
       description: 'Sets the navigation type',
     },
   },
-}
+};
 
-const Template = args => (
+const Template = (args) => (
   <mds-stepper-bar {...args}>
     <mds-stepper-bar-item
       badge
@@ -71,9 +71,7 @@ const Template = args => (
         variant="dark"
         class="absolute bottom-600 right-600"
         onClick={() => {
-          document
-            .querySelector('mds-stepper-bar')
-            ?.setAttribute('items-done', '2')
+          document.querySelector('mds-stepper-bar')?.setAttribute('items-done', '2');
         }}
       >
         Prossimo step
@@ -87,11 +85,9 @@ const Template = args => (
       <mds-button
         variant="dark"
         class="absolute bottom-600 left-600"
-        tone="ghost"
+        tone="outline"
         onClick={() => {
-          document
-            .querySelector('mds-stepper-bar')
-            ?.setAttribute('items-done', '1')
+          document.querySelector('mds-stepper-bar')?.setAttribute('items-done', '1');
         }}
       >
         Indietro
@@ -100,9 +96,7 @@ const Template = args => (
         variant="dark"
         class="absolute bottom-600 right-600"
         onClick={() => {
-          document
-            .querySelector('mds-stepper-bar')
-            ?.setAttribute('items-done', '3')
+          document.querySelector('mds-stepper-bar')?.setAttribute('items-done', '3');
         }}
       >
         Prossimo step
@@ -116,11 +110,9 @@ const Template = args => (
       <mds-button
         variant="dark"
         class="absolute bottom-600 left-600"
-        tone="ghost"
+        tone="outline"
         onClick={() => {
-          document
-            .querySelector('mds-stepper-bar')
-            ?.setAttribute('items-done', '2')
+          document.querySelector('mds-stepper-bar')?.setAttribute('items-done', '2');
         }}
       >
         Indietro
@@ -129,9 +121,7 @@ const Template = args => (
         variant="dark"
         class="absolute bottom-600 right-600"
         onClick={() => {
-          document
-            .querySelector('mds-stepper-bar')
-            ?.setAttribute('items-done', '4')
+          document.querySelector('mds-stepper-bar')?.setAttribute('items-done', '4');
         }}
       >
         Prossimo step
@@ -145,11 +135,9 @@ const Template = args => (
       <mds-button
         variant="dark"
         class="absolute bottom-600 left-600"
-        tone="ghost"
+        tone="outline"
         onClick={() => {
-          document
-            .querySelector('mds-stepper-bar')
-            ?.setAttribute('items-done', '3')
+          document.querySelector('mds-stepper-bar')?.setAttribute('items-done', '3');
         }}
       >
         Indietro
@@ -158,9 +146,7 @@ const Template = args => (
         variant="dark"
         class="absolute bottom-600 right-600"
         onClick={() => {
-          document
-            .querySelector('mds-stepper-bar')
-            ?.setAttribute('items-done', '5')
+          document.querySelector('mds-stepper-bar')?.setAttribute('items-done', '5');
         }}
       >
         Prossimo step
@@ -174,11 +160,9 @@ const Template = args => (
       <mds-button
         variant="dark"
         class="absolute bottom-600 left-600"
-        tone="ghost"
+        tone="outline"
         onClick={() => {
-          document
-            .querySelector('mds-stepper-bar')
-            ?.setAttribute('items-done', '4')
+          document.querySelector('mds-stepper-bar')?.setAttribute('items-done', '4');
         }}
       >
         Indietro
@@ -187,9 +171,7 @@ const Template = args => (
         variant="dark"
         class="absolute bottom-600 right-600"
         onClick={() => {
-          document
-            .querySelector('mds-stepper-bar')
-            ?.setAttribute('items-done', '6')
+          document.querySelector('mds-stepper-bar')?.setAttribute('items-done', '6');
         }}
       >
         Prossimo step
@@ -203,20 +185,18 @@ const Template = args => (
       <mds-button
         variant="dark"
         class="absolute bottom-600 left-600"
-        tone="ghost"
+        tone="outline"
         onClick={() => {
-          document
-            .querySelector('mds-stepper-bar')
-            ?.setAttribute('items-done', '5')
+          document.querySelector('mds-stepper-bar')?.setAttribute('items-done', '5');
         }}
       >
         Indietro
       </mds-button>
     </div>
   </mds-stepper-bar>
-)
+);
 
-const TemplateOffsetMargin = args => (
+const TemplateOffsetMargin = (args) => (
   <div class="w-full p-600 bg-tone-neutral shadow-sharp rounded-2xl">
     <mds-stepper-bar {...args}>
       <mds-stepper-bar-item
@@ -270,9 +250,7 @@ const TemplateOffsetMargin = args => (
           variant="dark"
           class="absolute bottom-600 right-600"
           onClick={() => {
-            document
-              .querySelector('mds-stepper-bar')
-              ?.setAttribute('items-done', '2')
+            document.querySelector('mds-stepper-bar')?.setAttribute('items-done', '2');
           }}
         >
           Prossimo step
@@ -286,11 +264,9 @@ const TemplateOffsetMargin = args => (
         <mds-button
           variant="dark"
           class="absolute bottom-600 left-600"
-          tone="ghost"
+          tone="outline"
           onClick={() => {
-            document
-              .querySelector('mds-stepper-bar')
-              ?.setAttribute('items-done', '1')
+            document.querySelector('mds-stepper-bar')?.setAttribute('items-done', '1');
           }}
         >
           Indietro
@@ -299,9 +275,7 @@ const TemplateOffsetMargin = args => (
           variant="dark"
           class="absolute bottom-600 right-600"
           onClick={() => {
-            document
-              .querySelector('mds-stepper-bar')
-              ?.setAttribute('items-done', '3')
+            document.querySelector('mds-stepper-bar')?.setAttribute('items-done', '3');
           }}
         >
           Prossimo step
@@ -315,11 +289,9 @@ const TemplateOffsetMargin = args => (
         <mds-button
           variant="dark"
           class="absolute bottom-600 left-600"
-          tone="ghost"
+          tone="outline"
           onClick={() => {
-            document
-              .querySelector('mds-stepper-bar')
-              ?.setAttribute('items-done', '2')
+            document.querySelector('mds-stepper-bar')?.setAttribute('items-done', '2');
           }}
         >
           Indietro
@@ -328,9 +300,7 @@ const TemplateOffsetMargin = args => (
           variant="dark"
           class="absolute bottom-600 right-600"
           onClick={() => {
-            document
-              .querySelector('mds-stepper-bar')
-              ?.setAttribute('items-done', '4')
+            document.querySelector('mds-stepper-bar')?.setAttribute('items-done', '4');
           }}
         >
           Prossimo step
@@ -344,11 +314,9 @@ const TemplateOffsetMargin = args => (
         <mds-button
           variant="dark"
           class="absolute bottom-600 left-600"
-          tone="ghost"
+          tone="outline"
           onClick={() => {
-            document
-              .querySelector('mds-stepper-bar')
-              ?.setAttribute('items-done', '3')
+            document.querySelector('mds-stepper-bar')?.setAttribute('items-done', '3');
           }}
         >
           Indietro
@@ -357,9 +325,7 @@ const TemplateOffsetMargin = args => (
           variant="dark"
           class="absolute bottom-600 right-600"
           onClick={() => {
-            document
-              .querySelector('mds-stepper-bar')
-              ?.setAttribute('items-done', '5')
+            document.querySelector('mds-stepper-bar')?.setAttribute('items-done', '5');
           }}
         >
           Prossimo step
@@ -373,11 +339,9 @@ const TemplateOffsetMargin = args => (
         <mds-button
           variant="dark"
           class="absolute bottom-600 left-600"
-          tone="ghost"
+          tone="outline"
           onClick={() => {
-            document
-              .querySelector('mds-stepper-bar')
-              ?.setAttribute('items-done', '4')
+            document.querySelector('mds-stepper-bar')?.setAttribute('items-done', '4');
           }}
         >
           Indietro
@@ -386,9 +350,7 @@ const TemplateOffsetMargin = args => (
           variant="dark"
           class="absolute bottom-600 right-600"
           onClick={() => {
-            document
-              .querySelector('mds-stepper-bar')
-              ?.setAttribute('items-done', '6')
+            document.querySelector('mds-stepper-bar')?.setAttribute('items-done', '6');
           }}
         >
           Prossimo step
@@ -402,11 +364,9 @@ const TemplateOffsetMargin = args => (
         <mds-button
           variant="dark"
           class="absolute bottom-600 left-600"
-          tone="ghost"
+          tone="outline"
           onClick={() => {
-            document
-              .querySelector('mds-stepper-bar')
-              ?.setAttribute('items-done', '5')
+            document.querySelector('mds-stepper-bar')?.setAttribute('items-done', '5');
           }}
         >
           Indietro
@@ -414,11 +374,11 @@ const TemplateOffsetMargin = args => (
       </div>
     </mds-stepper-bar>
   </div>
-)
+);
 
 export const Default = {
   render: Template,
-}
+};
 
 export const OffsetMargin = {
   render: TemplateOffsetMargin,
@@ -426,7 +386,7 @@ export const OffsetMargin = {
   args: {
     style: { '--mds-stepper-bar-offset-margin': '24px' },
   },
-}
+};
 
 export const ScrollbarNavigation = {
   render: Template,
@@ -434,7 +394,7 @@ export const ScrollbarNavigation = {
   args: {
     navigation: 'scrollbar',
   },
-}
+};
 
 export const Select = {
   render: Template,
@@ -442,4 +402,4 @@ export const Select = {
   args: {
     'items-done': 3,
   },
-}
+};

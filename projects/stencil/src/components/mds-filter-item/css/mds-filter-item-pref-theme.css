@@ -1,27 +1,28 @@
-:host-context(.pref-theme-dark) {
-  background-color: theme('colors.tone-neutral-10');
-}
+:host-context(:root.pref-theme-dark:not(.pref-theme-scheme-light)) {
+  background-color: rgb(var(--tone-neutral-10));
 
-:host-context(.pref-theme-dark):host([selected]:not([selected="false"])) {
-  background-color: theme('colors.tone-neutral-08');
-  box-shadow: theme('boxShadow.outline');
-}
+  &:host([selected]:not([selected='false'])) {
+    background-color: rgb(var(--tone-neutral-08));
+    box-shadow: var(--shadow-outline);
+  }
 
-:host-context(.pref-theme-dark):host(:hover) {
-  box-shadow: theme('boxShadow.outline');
+  &:host(:hover) {
+    box-shadow: var(--shadow-outline);
+  }
 }
 
 @media (prefers-color-scheme: dark) {
-  :host-context(.pref-theme-system) {
-    background-color: theme('colors.tone-neutral-10');
-  }
+  :host-context(:root.pref-theme-system:not(.pref-theme-scheme-light)),
+  :host-context(:root:not([data-magma-pref])) {
+    background-color: rgb(var(--tone-neutral-10));
 
-  :host-context(.pref-theme-system):host([selected]:not([selected="false"])) {
-    background-color: theme('colors.tone-neutral-08');
-    box-shadow: theme('boxShadow.outline');
-  }
+    &:host([selected]:not([selected='false'])) {
+      background-color: rgb(var(--tone-neutral-08));
+      box-shadow: var(--shadow-outline);
+    }
 
-  :host-context(.pref-theme-system):host(:hover) {
-    box-shadow: theme('boxShadow.outline');
+    &:host(:hover) {
+      box-shadow: var(--shadow-outline);
+    }
   }
 }

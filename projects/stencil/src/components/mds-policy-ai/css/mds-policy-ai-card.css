@@ -1,27 +1,25 @@
 .mini-card {
   @apply grid-cols-full;
 
-  background-color: theme('colors.tone-neutral');
-  border-radius: theme('borderRadius.lg');
-  box-shadow: theme('boxShadow.sm-sharp');
+  background-color: rgb(var(--tone-neutral));
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm-sharp);
   display: inline-flex;
-  gap: theme('spacing.300');
-  padding: theme('size.400');
+  gap: --spacing(300);
+  padding: --spacing(400);
 }
 
 .mini-card-icon {
-
-  @apply
-    -mt-400
+  @apply -mt-400
     rounded-2xl
     rounded-t-none
     p-100
     pt-400;
 
-  background-color: theme('colors.variant-ai-05');
-  fill: theme('colors.variant-ai-10');
-  height: theme('size.600');
-  width: theme('size.600');
+  background-color: rgb(var(--variant-ai-05));
+  fill: rgb(var(--variant-ai-10));
+  height: --spacing(600);
+  width: --spacing(600);
 }
 
 .link-label-short {
@@ -32,7 +30,7 @@
   @apply grid-cols-full;
 
   display: grid;
-  gap: theme('spacing.300');
+  gap: --spacing(300);
 }
 
 .mini-card-button {

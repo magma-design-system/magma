@@ -1,3 +1,31 @@
+@import './css/mds-status-bar-fouc.css';
+
+/**
+ * @prop --mds-status-bar-max-width: Maximum width of the status bar.
+ * @prop --mds-status-bar-backdrop: Background color of the status bar backdrop.
+ * @prop --mds-status-bar-backdrop-filter: Filter applied to the status bar backdrop.
+ */
+
+@property --mds-status-bar-max-width {
+  inherits: false;
+  initial-value: 500px;
+  syntax: '<length>';
+}
+
+@property --mds-status-bar-backdrop {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-01) / 0.1);
+  syntax: '<color>';
+}
+
+/* ❌ Not supported
+@property --mds-status-bar-backdrop-filter {
+  inherits: false;
+  initial-value: blur(10px);
+  syntax: "<filter-function>";
+}
+*/
+
 :host {
   --mds-status-bar-max-width: 500px;
   --mds-status-bar-backdrop: rgb(var(--tone-neutral-01) / 0.1);
@@ -12,30 +40,30 @@ mds-modal {
 .status-bar-area {
   backdrop-filter: var(--mds-status-bar-backdrop-filter);
   background-color: var(--mds-status-bar-backdrop);
-  border-radius: theme('borderRadius.xl') theme('borderRadius.xl') 0 0;
-  margin-left: theme('padding.600');
-  margin-right: theme('padding.600');
-  padding: theme('padding.200') theme('padding.200') theme('padding.600') theme('padding.200');
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  margin-left: --spacing(600);
+  margin-right: --spacing(600);
+  padding: --spacing(200) --spacing(200) --spacing(600);
   transition-property: background-color, transform, opacity;
 }
 
 .status-bar {
   align-items: flex-start;
-  background-color: theme('colors.tone-neutral');
-  border-radius: theme('borderRadius.lg');
-  box-shadow: theme('boxShadow.DEFAULT');
+  background-color: rgb(var(--tone-neutral));
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
   display: inline-flex;
   flex-wrap: wrap;
-  gap: theme('spacing.400');
+  gap: --spacing(400);
   max-width: var(--mds-status-bar-max-width);
-  padding: theme('spacing.600');
+  padding: --spacing(600);
 }
 
 .actions {
   display: inline-flex;
   flex-grow: 1;
   flex-wrap: wrap;
-  gap: theme('spacing.400');
+  gap: --spacing(400);
 }
 
 @media (width <= 480px) {
@@ -43,11 +71,16 @@ mds-modal {
     border-radius: 0;
     margin-left: 0;
     margin-right: 0;
-    padding: theme('padding.400');
+    padding: --spacing(400);
+    width: 100%;
+  }
+
+  .status-bar {
+    width: 100%;
   }
 
   .actions {
-    gap: theme('spacing.200');
+    gap: --spacing(200);
   }
 
   ::slotted(*) {
@@ -55,7 +88,6 @@ mds-modal {
   }
 }
 
-@import '../../tailwind/fouc.css';
 @import './css/mds-status-bar-pref-animation.css';
 @import './css/mds-status-bar-pref-consumption.css';
 @import './css/mds-status-bar-pref-contrast.css';

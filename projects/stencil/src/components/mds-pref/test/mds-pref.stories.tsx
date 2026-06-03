@@ -1,6 +1,6 @@
-import { h } from '@stencil/core'
+import { h } from '@stencil/core';
 
-import { tabSizeDictionary } from '@dictionary/button'
+import { tabSizeDictionary } from '@type/button';
 
 export default {
   title: 'UI / Preferences',
@@ -17,11 +17,16 @@ export default {
       control: { type: 'select' },
     },
   },
-}
+};
 
-const Template = args => (
+const Template = (args) => (
   <mds-pref {...args}>
     <mds-pref-theme></mds-pref-theme>
+    <mds-pref-theme-variant>
+      <mds-pref-theme-variant-item name="default"></mds-pref-theme-variant-item>
+      <mds-pref-theme-variant-item name="magma"></mds-pref-theme-variant-item>
+      <mds-pref-theme-variant-item name="maggioli-editore"></mds-pref-theme-variant-item>
+    </mds-pref-theme-variant>
     <mds-pref-contrast></mds-pref-contrast>
     <mds-pref-animation></mds-pref-animation>
     <mds-pref-consumption></mds-pref-consumption>
@@ -33,16 +38,15 @@ const Template = args => (
       <mds-pref-language-item code="ja"></mds-pref-language-item>
     </mds-pref-language>
   </mds-pref>
-)
+);
 
 const TemplateController = () => (
   <div>
     <mds-text>
-      When attribute <mds-text typography="snippet">controller</mds-text> is
-      set, <mds-text typography="snippet">mds-pref</mds-text> acts as ad hidden
-      element which retrives user preferences from localStorage, it's useful
-      when you dont' need to render the component but you need it sets used
-      preferences based on localStorage method.
+      When attribute <mds-text typography="snippet">controller</mds-text> is set,{' '}
+      <mds-text typography="snippet">mds-pref</mds-text> acts as ad hidden element which retrives
+      user preferences from localStorage, it's useful when you dont' need to render the component
+      but you need it sets used preferences based on localStorage method.
     </mds-text>
     <mds-pref controller>
       <mds-pref-theme></mds-pref-theme>
@@ -58,13 +62,13 @@ const TemplateController = () => (
       </mds-pref-language>
     </mds-pref>
   </div>
-)
+);
 
 export const Default = {
   render: Template,
   args: {},
-}
+};
 
 export const Controller = {
   render: TemplateController,
-}
+};

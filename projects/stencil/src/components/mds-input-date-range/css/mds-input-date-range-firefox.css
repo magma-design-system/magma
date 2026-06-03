@@ -4,8 +4,7 @@
   }
 
   .inputs {
-    @apply pr-400;
-
     justify-content: var(--mds-input-date-range-fields-firefox-justify-content);
+    padding-right: --spacing(400);
   }
 }

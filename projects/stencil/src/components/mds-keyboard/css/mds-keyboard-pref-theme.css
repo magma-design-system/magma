@@ -1,23 +1,24 @@
-:host-context(.pref-theme-dark) {
-  --mds-keyboard-color: theme('colors.tone-slate-01');
-  --mds-keyboard-background: theme('colors.tone-slate-07');
+:host-context(:root.pref-theme-dark:not(.pref-theme-scheme-light)) {
+  --mds-keyboard-color: rgb(var(--tone-porcelain-01));
+  --mds-keyboard-background: rgb(var(--tone-porcelain-07));
   --mds-keyboard-illumination-dark-opacity: 0.5;
   --mds-keyboard-illumination-light-opacity: 0.15;
   --mds-keyboard-illumination-shadow: 0 0 3px 0 rgb(255 255 255 / 0.5);
-  --mds-keyboard-key-background: theme('colors.tone-slate-06');
+  --mds-keyboard-key-background: rgb(var(--tone-porcelain-06));
   --mds-keyboard-key-illumination-dark-opacity: 0.5;
   --mds-keyboard-key-illumination-light-opacity: 0.15;
   --mds-keyboard-key-illumination-shadow: 0 0 1px 0 rgb(255 255 255 / 0.5);
 }
 
 @media (prefers-color-scheme: dark) {
-  :host-context(.pref-theme-system) {
-    --mds-keyboard-color: theme('colors.tone-slate-01');
-    --mds-keyboard-background: theme('colors.tone-slate-07');
+  :host-context(:root.pref-theme-system:not(.pref-theme-scheme-light)),
+  :host-context(:root:not([data-magma-pref])) {
+    --mds-keyboard-color: rgb(var(--tone-porcelain-01));
+    --mds-keyboard-background: rgb(var(--tone-porcelain-07));
     --mds-keyboard-illumination-dark-opacity: 0.5;
     --mds-keyboard-illumination-light-opacity: 0.15;
     --mds-keyboard-illumination-shadow: 0 0 3px 0 rgb(255 255 255 / 0.5);
-    --mds-keyboard-key-background: theme('colors.tone-slate-06');
+    --mds-keyboard-key-background: rgb(var(--tone-porcelain-06));
     --mds-keyboard-key-illumination-dark-opacity: 0.5;
     --mds-keyboard-key-illumination-light-opacity: 0.15;
     --mds-keyboard-key-illumination-shadow: 0 0 1px 0 rgb(255 255 255 / 0.5);

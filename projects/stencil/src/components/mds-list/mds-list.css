@@ -1,17 +1,13 @@
-@tailwind utilities;
+@import './css/mds-list-fouc.css';
 
 :host {
-  @apply
-    gap-400
-    pl-400;
+  @apply gap-400
+  pl-400;
 
   display: grid;
 }
 
 ul {
-  @apply
-    m-0
-    p-0;
+  @apply m-0
+  p-0;
 }
-
-@import '../../tailwind/fouc.css';

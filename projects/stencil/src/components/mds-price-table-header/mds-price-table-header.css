@@ -1,8 +1,7 @@
-:host {
-  @apply gap-600;
+@import './css/mds-price-table-header-fouc.css';
 
+:host {
   display: grid;
+  gap: --spacing(600);
   grid-template-columns: repeat(auto-fit, minmax(1px, 1fr));
 }
-
-@import '../../tailwind/fouc.css';

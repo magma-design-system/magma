@@ -1,53 +1,63 @@
+@import './css/mds-input-field-fouc.css';
+
 /**
  * @prop --mds-input-field-message-color: Sets the message text color of the component
  * @prop --mds-input-field-message-background: Sets the message background color of the component, will be visible only if there is a text defined by `tip` component attribute
  */
 
+@property --mds-input-field-message-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-03));
+  syntax: '<color>';
+}
+
+@property --mds-input-field-message-background {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-10));
+  syntax: '<color>';
+}
+
 :host {
-  --mds-input-field-message-color: theme('colors.tone-neutral-03');
-  --mds-input-field-message-background: theme('colors.tone-neutral-10');
+  --mds-input-field-message-color: rgb(var(--tone-neutral-03));
+  --mds-input-field-message-background: rgb(var(--tone-neutral-10));
 
-  @apply gap-200;
-
-  color: theme('colors.tone-neutral-02');
+  color: rgb(var(--tone-neutral-02));
+  corner-shape: var(--magma-corner-shape, round);
   display: grid;
+  gap: --spacing(300);
 }
 
 .message-window {
-  @apply
-    duration-300
-    ease-out-expo
-    gap-0
-    p-0
-    rounded-xl;
-
   background-color: transparent;
+  border-radius: var(--radius-2xl);
   color: var(--mds-input-field-message-color);
+  corner-shape: inherit;
   display: grid;
+  gap: 0;
+  padding: 0;
+  transition-duration: var(--duration-300);
   transition-property: background-color, color, gap, padding;
+  transition-timing-function: var(--ease-out-expo);
 }
 
 .message-window:has(.message:not(:empty)) {
-  @apply
-    gap-200
-    p-200;
-
   background-color: var(--mds-input-field-message-background);
+  gap: --spacing(200);
+  padding: --spacing(200);
 }
 
 .message {
-  @apply
-    duration-300
-    ease-out-expo
-    pb-200
-    pt-100
-    px-200;
-
   display: flex;
   flex-direction: column;
   height: auto;
   interpolate-size: allow-keywords;
+  padding-bottom: --spacing(200);
+  padding-left: --spacing(200);
+  padding-right: --spacing(200);
+  padding-top: --spacing(100);
+  transition-duration: var(--duration-300);
   transition-property: height, margin-top, opacity, padding;
+  transition-timing-function: var(--ease-out-expo);
 }
 
 .message:empty {
@@ -66,7 +76,7 @@
   container-type: inline-size;
   display: flex;
   flex-wrap: wrap;
-  gap: theme('gap.200');
+  gap: --spacing(200);
 }
 
 ::slotted(*:first-child) {
@@ -85,4 +95,3 @@
 }
 
 @import './css/mds-input-field-variant.css';
-@import '../../tailwind/fouc.css';

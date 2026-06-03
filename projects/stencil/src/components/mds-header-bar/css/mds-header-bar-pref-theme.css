@@ -1,11 +1,12 @@
-:host-context(.pref-theme-dark) {
-  background-color: theme('colors.tone-neutral-10');
-  box-shadow: theme('boxShadow.outline'), theme('boxShadow.lg');
+:host-context(:root.pref-theme-dark:not(.pref-theme-scheme-light)) {
+  background-color: rgb(var(--tone-neutral-10));
+  box-shadow: var(--shadow-outline), var(--shadow-lg);
 }
 
 @media (prefers-color-scheme: dark) {
-  :host-context(.pref-theme-system) {
-    background-color: theme('colors.tone-neutral-10');
-    box-shadow: theme('boxShadow.outline'), theme('boxShadow.lg');
+  :host-context(:root.pref-theme-system:not(.pref-theme-scheme-light)),
+  :host-context(:root:not([data-magma-pref])) {
+    background-color: rgb(var(--tone-neutral-10));
+    box-shadow: var(--shadow-outline), var(--shadow-lg);
   }
 }

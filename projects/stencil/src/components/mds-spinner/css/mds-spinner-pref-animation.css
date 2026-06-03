@@ -1,9 +1,10 @@
-:host-context(.pref-animation-reduce) {
+:host-context(:root.pref-animation-reduce) {
   --mds-spinner-duration: 8s;
 }
 
 @media (prefers-reduced-motion) {
-  :host-context(.pref-animation-system) {
+  :host-context(:root.pref-animation-system),
+  :host-context(:root:not([data-magma-pref])) {
     --mds-spinner-duration: 8s;
   }
 }

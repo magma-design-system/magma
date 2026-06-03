@@ -1,24 +1,33 @@
-@import '../../tailwind/components.css';
-@tailwind components;
+@import './css/mds-paginator-fouc.css';
 
 /**
  * @prop --mds-paginator-background: Sets the background-color of the pages area and the item
  * @prop --mds-paginator-scroll-behavior: Sets the scroll-behavior animation
  */
 
-:host {
-  --mds-paginator-background: theme('colors.tone-neutral-09');
-  --mds-paginator-scroll-behavior: smooth;
+@property --mds-paginator-background {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-09));
+  syntax: '<color>';
+}
 
-  @apply gap-100;
+@property --mds-paginator-scroll-behavior {
+  inherits: false;
+  initial-value: smooth;
+  syntax: 'smooth | auto';
+}
+
+:host {
+  --mds-paginator-background: rgb(var(--tone-neutral-09));
+  --mds-paginator-scroll-behavior: smooth;
 
   align-items: center;
   display: flex;
+  gap: --spacing(100);
 }
 
 .pages {
-  @apply
-    duration-200
+  @apply duration-200
     hide-scrollbar
     ease-in-out
     mx-200
@@ -42,4 +51,3 @@
 @import './css/mds-paginator-pref-animation.css';
 @import './css/mds-paginator-pref-theme.css';
 @import './css/mds-paginator-pref-contrast.css';
-@import '../../tailwind/fouc.css';

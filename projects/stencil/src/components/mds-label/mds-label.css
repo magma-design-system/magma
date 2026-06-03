@@ -1,35 +1,110 @@
+@import './css/mds-label-fouc.css';
+
 /**
- * @prop --mds-label-background: Sets the background-color of the component
- * @prop --mds-label-color: Sets the text color of the component
- * @prop --mds-label-icon-color: Sets the color of the icon
- * @prop --mds-label-selection-background: Sets the selection background color of the text
- * @prop --mds-label-selection-color: Sets the selection color of the text
+ * @prop --mds-label-background: The background color of the label component.
+ * @prop --mds-label-color: The text color of the label.
+ * @prop --mds-label-icon-color: The color applied to any icon inside the label.
+ * @prop --mds-label-radius: The border-radius of the label.
+ * @prop --mds-label-selection-background: The background color applied when the label is selected.
+ * @prop --mds-label-selection-color: The text color applied when the label is selected.
+ * @prop --mds-label-button-background: The background color of a button inside the label.
+ * @prop --mds-label-button-background-hover: The background color of the button when hovered.
+ * @prop --mds-label-button-icon-color: The color of the icon inside the button.
  */
 
+@property --mds-label-background {
+  inherits: false;
+  initial-value: rgb(var(--label-yellow-09));
+  syntax: '<color>';
+}
+
+@property --mds-label-color {
+  inherits: false;
+  initial-value: rgb(var(--label-yellow-02));
+  syntax: '<color>';
+}
+
+@property --mds-label-icon-color {
+  inherits: false;
+  initial-value: var(--mds-label-color);
+  syntax: '<color>';
+}
+
+@property --mds-label-radius {
+  inherits: false;
+  initial-value: --spacing(150);
+  syntax: '<length>';
+}
+
+@property --mds-label-selection-background {
+  inherits: false;
+  initial-value: var(--magma-selection-background, rgb(var(--label-yellow-09)));
+  syntax: '<color>';
+}
+
+@property --mds-label-selection-color {
+  inherits: false;
+  initial-value: var(--magma-selection-color, rgb(var(--label-yellow-02)));
+  syntax: '<color>';
+}
+
+@property --mds-label-button-background {
+  inherits: false;
+  initial-value: rgb(var(--label-yellow-08));
+  syntax: '<color>';
+}
+
+@property --mds-label-button-background-hover {
+  inherits: false;
+  initial-value: rgb(var(--label-yellow-07));
+  syntax: '<color>';
+}
+
+@property --mds-label-button-icon-color {
+  inherits: false;
+  initial-value: rgb(var(--label-yellow-03));
+  syntax: '<color>';
+}
+
 :host {
-  --mds-label-background: theme('colors.label-yellow-09');
-  --mds-label-color: theme('colors.label-yellow-02');
+  --mds-label-background: rgb(var(--label-yellow-09));
+  --mds-label-color: rgb(var(--label-yellow-02));
   --mds-label-icon-color: var(--mds-label-color);
-  --mds-label-radius: theme('spacing.150');
-  --mds-label-selection-background: var(--magma-selection-background, theme('colors.label-yellow-09'));
-  --mds-label-selection-color: var(--magma-selection-color, theme('colors.label-yellow-02'));
-  --mds-label-button-background: theme('colors.label-yellow-08');
-  --mds-label-button-background-hover: theme('colors.label-yellow-07');
-  --mds-label-button-icon-color: theme('colors.label-yellow-03');
+  --mds-label-selection-background: var(--magma-selection-background, rgb(var(--label-yellow-09)));
+  --mds-label-selection-color: var(--magma-selection-color, rgb(var(--label-yellow-02)));
+  --mds-label-button-background: rgb(var(--label-yellow-08));
+  --mds-label-button-background-hover: rgb(var(--label-yellow-07));
+  --mds-label-button-icon-color: rgb(var(--label-yellow-03));
+  --private-bevel-size: --spacing(900);
 
-  @apply
-    min-h-900
-    pl-300
-    ease-in-out
-    duration-200;
+  @apply ease-in-out;
 
-  align-items: stretch;
+  align-items: center;
   background-color: var(--mds-label-background);
-  border-radius: var(--mds-label-radius);
+  border-radius: 100px;
   color: var(--mds-label-color);
+  corner-shape: round;
   display: flex;
   fill: var(--mds-label-icon-color);
+  flex: 1;
+  gap: --spacing(50);
+  max-width: min-content;
+  min-height: --spacing(700);
+  padding: 0 --spacing(200);
+  transition-duration: var(--duration-200);
   transition-property: color, background-color, fill;
+}
+
+@supports (corner-shape: bevel) {
+  :host {
+    align-items: stretch;
+    border-bottom-left-radius: 100px;
+    border-top-left-radius: 100px;
+    corner-left-shape: superellipse(0.25);
+    corner-right-shape: var(--magma-corner-shape, round);
+    padding-left: calc(var(--private-bevel-size) / 2);
+    padding-right: 0;
+  }
 }
 
 :host::selection {
@@ -37,59 +112,43 @@
   color: var(--mds-label-selection-color);
 }
 
-.text {
-  @apply
-    min-w-0
-    py-100;
+:host([truncate='word']) {
+  .text {
+    white-space: nowrap;
+  }
+}
 
+.text {
   --mds-text-selection-background: var(--mds-label-selection-background);
   --mds-text-selection-color: var(--mds-label-selection-color);
 
   align-self: center;
   display: block;
   flex-grow: 1;
-}
 
-.text:last-child {
-  @apply pr-300;
+  &:last-child {
+    padding-right: --spacing(200);
+  }
 }
 
 .button-close {
-
-  @apply
-    px-150
-    rounded-r-md;
-
   --mds-button-background: var(--mds-label-button-background);
   --mds-button-border-opacity: 0;
 
-  border-radius: 0 var(--mds-label-radius) var(--mds-label-radius) 0;
+  align-self: center;
+
+  /* border-radius: 100px; */
+
+  /* corner-shape: round; */
   fill: var(--mds-label-button-icon-color);
   flex-shrink: 0;
-  height: auto;
-  transition-duration: inherit;
 }
 
 .button-close:hover {
   --mds-button-background: var(--mds-label-button-background-hover);
 }
 
-@import './css/mds-label-variant-amaranth.css';
-@import './css/mds-label-variant-aqua.css';
-@import './css/mds-label-variant-blue.css';
-@import './css/mds-label-variant-dark.css';
-@import './css/mds-label-variant-error.css';
-@import './css/mds-label-variant-green.css';
-@import './css/mds-label-variant-info.css';
-@import './css/mds-label-variant-light.css';
-@import './css/mds-label-variant-lime.css';
-@import './css/mds-label-variant-orange.css';
-@import './css/mds-label-variant-orchid.css';
-@import './css/mds-label-variant-sky.css';
-@import './css/mds-label-variant-success.css';
-@import './css/mds-label-variant-violet.css';
-@import './css/mds-label-variant-warning.css';
-@import './css/mds-label-variant-yellow.css';
+@import './css/mds-label-variant-label.css';
+@import './css/mds-label-variant-status.css';
 @import './css/mds-label-pref-theme.css';
 @import './css/mds-label-pref-contrast.css';
-@import '../../tailwind/fouc.css';

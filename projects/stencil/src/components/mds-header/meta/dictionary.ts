@@ -1,7 +1,4 @@
-const appearanceDictionary = [
-  'stripe',
-  'inline',
-]
+const appearanceDictionary = ['stripe', 'inline'];
 
 const appearanceSetDictionary = [
   'stripe',
@@ -9,9 +6,6 @@ const appearanceSetDictionary = [
   'inline, stripe 300',
   'stripe, inline 300',
   'stripe, inline',
-]
+];
 
-export {
-  appearanceDictionary,
-  appearanceSetDictionary,
-}
+export { appearanceDictionary, appearanceSetDictionary };

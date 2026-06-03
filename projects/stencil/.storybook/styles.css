@@ -1,0 +1,31 @@
+@layer reset, vendor, theme, base, components, utilities, overrides;
+
+@import 'normalize.css' layer(reset);
+
+/* @import '@fontsource/karla/400.css' layer(vendor);
+@import '@fontsource/karla/700.css' layer(vendor);
+@import '@fontsource/merriweather/300.css' layer(vendor);
+@import '@fontsource/merriweather/400.css' layer(vendor);
+@import '@fontsource/merriweather/700.css' layer(vendor);
+@import '@fontsource/roboto-mono/400.css' layer(vendor);
+@import '@fontsource/roboto/500.css' layer(vendor);
+@import '@fontsource/roboto/700.css' layer(vendor);
+@import '@fontsource/roboto/900.css' layer(vendor); */
+@import './iconsauce.css' layer(vendor);
+@import '@maggioli-design-system/styles/dist/css/reset.css' layer(reset);
+@import '@maggioli-design-system/styles/dist/css/globals.css' layer(theme);
+@import '@maggioli-design-system/styles/dist/css/colors-rgb.css' layer(theme);
+@import '@maggioli-design-system/styles/dist/css/hydrated.css' layer(base);
+@import '@maggioli-design-system/styles/dist/css/animations.css' layer(base);
+@import '@maggioli-design-system/styles/dist/css/base.css' layer(base);
+@import './tailwind.css';
+
+@layer overrides {
+  body {
+    @apply bg-tone-neutral
+    text-tone-neutral-03
+      transition-colors
+      duration-300
+      ease-in-out;
+  }
+}

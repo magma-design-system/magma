@@ -1,11 +1,12 @@
-:host {
-  @apply gap-100;
+@import './css/mds-pref-contrast-fouc.css';
 
+:host {
   display: grid;
+  gap: --spacing(100);
 }
 
 .item {
-  --mds-tab-item-default-color: theme('colors.tone-neutral-05');
+  --mds-tab-item-default-color: rgb(var(--tone-neutral-05));
 
   flex-basis: 0;
   flex-grow: 1;
@@ -14,8 +15,7 @@
 .item--default,
 .item--more,
 .item--system {
-  --mds-tab-item-selected-color: theme('colors.tone-neutral-03');
+  --mds-tab-item-selected-color: rgb(var(--tone-neutral-03));
 }
 
 @import './css/mds-pref-contrast-pref-contrast.css';
-@import '../../tailwind/fouc.css';

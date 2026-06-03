@@ -6,14 +6,14 @@
   background-color: var(--mds-tab-tabs-background);
   border-radius: 100%;
   box-shadow: var(--mds-tab-tabs-overflow-shadow);
-  content: "";
+  content: '';
   display: inline-flex;
   height: auto;
   pointer-events: none;
   position: absolute;
-  transition-duration: theme('transitionDuration.500');
+  transition-duration: 500ms;
   transition-property: transform;
-  transition-timing-function: theme('transitionTimingFunction.out-expo');
+  transition-timing-function: var(--ease-out-expo);
   width: var(--size);
   z-index: 2;
 }

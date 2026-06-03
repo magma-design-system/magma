@@ -1,21 +1,22 @@
-:host-context(.pref-animation-reduce) {
+:host-context(:root.pref-animation-reduce) {
   --mds-accordion-item-duration: var(--mds-accordion-duration, 0s);
 
   transition-duration: 0s;
 }
 
-:host-context(.pref-animation-reduce) .icon {
+:host-context(:root.pref-animation-reduce) .icon {
   transition-duration: 0s;
 }
 
 @media (prefers-reduced-motion) {
-  :host-context(.pref-animation-system) {
+  :host-context(:root.pref-animation-system),
+  :host-context(:root:not([data-magma-pref])) {
     --mds-accordion-item-duration: var(--mds-accordion-duration, 0s);
 
     transition-duration: 0s;
-  }
 
-  :host-context(.pref-animation-reduce) .icon {
-    transition-duration: 0s;
+    .icon {
+      transition-duration: 0s;
+    }
   }
 }

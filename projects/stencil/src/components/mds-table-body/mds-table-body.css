@@ -1,22 +1,54 @@
-@import '../../tailwind/fouc.css';
+@import './css/mds-table-body-fouc.css';
 
 /**
- * @prop --mds-table-body-background-hover: The background-color of the table body when the mouse is over it
- * @prop --mds-table-body-background: The background-color of the table body
+ * @prop --mds-table-body-background-hover: Background color for table body rows on hover.
+ * @prop --mds-table-body-background: Default background color of table body rows.
+ * @prop --mds-table-body-background-alt: Alternate background color for table body rows.
+ * @prop --mds-table-body-color-alt: Text color for alternate table body rows.
+ * @prop --mds-table-body-color: Default text color for table body rows.
  */
 
+@property --mds-table-body-background-hover {
+  inherits: false;
+  initial-value: var(--mds-table-background-alt, rgb(var(--tone-neutral-10)));
+  syntax: '<color>';
+}
+
+@property --mds-table-body-background {
+  inherits: false;
+  initial-value: var(--mds-table-background, rgb(var(--tone-neutral)));
+  syntax: '<color>';
+}
+
+@property --mds-table-body-background-alt {
+  inherits: false;
+  initial-value: var(--mds-table-body-background-hover);
+  syntax: '<color>';
+}
+
+@property --mds-table-body-color-alt {
+  inherits: false;
+  initial-value: var(--mds-table-color-alt, rgb(var(--tone-neutral-05)));
+  syntax: '<color>';
+}
+
+@property --mds-table-body-color {
+  inherits: false;
+  initial-value: var(--mds-table-color, rgb(var(--tone-neutral-02)));
+  syntax: '<color>';
+}
+
 :host {
-  --mds-table-body-background-hover: var(--mds-table-background-alt, theme('colors.tone-neutral-10'));
-  --mds-table-body-background: var(--mds-table-background, theme('colors.tone-neutral'));
+  --mds-table-body-background-hover: var(--mds-table-background-alt, rgb(var(--tone-neutral-10)));
+  --mds-table-body-background: var(--mds-table-background, rgb(var(--tone-neutral)));
   --mds-table-body-background-alt: var(--mds-table-body-background-hover);
-  --mds-table-body-color-alt: var(--mds-table-color-alt, theme('colors.tone-neutral-05'));
-  --mds-table-body-color: var(--mds-table-color, theme('colors.tone-neutral-02'));
+  --mds-table-body-color-alt: var(--mds-table-color-alt, rgb(var(--tone-neutral-05)));
+  --mds-table-body-color: var(--mds-table-color, rgb(var(--tone-neutral-02)));
 
   /* internal */
   --mds-table-row-color: var(--mds-table-body-color);
 
-  @apply
-    duration-200
+  @apply duration-200
     ease-out;
 
   background-color: var(--mds-table-body-background);
@@ -25,8 +57,8 @@
   transition-property: background-color;
 }
 
-:host(:last-child) ::slotted(*:last-child) {
-  --mds-table-cell-border-color: transparent;
+:host(:last-of-type) ::slotted(*:last-of-type) {
+  --private-cell-border-color: transparent;
 }
 
 @import './css/mds-table-body-interactive.css';

@@ -1,127 +1,232 @@
-@import '~@maggioli-design-system/styles/dist/tailwind/typography.css';
-@import '../../tailwind/components.css';
-@tailwind components;
-@tailwind utilities;
+@import './css/mds-input-select-fouc.css';
 
+/**
+ * @prop --mds-input-select-variant-color-rgb: Base color used to derive all select component visual states
+ * @prop --mds-input-select-ring: Focus ring applied around the select component
+ * @prop --mds-input-select-shadow: Shadow applied to the select component
+ * @prop --mds-input-select-arrow-icon-background-color: Background color behind the arrow icon
+ * @prop --mds-input-select-arrow-icon-blur-background-color: Transparent background used for blurred states of the arrow icon
+ * @prop --mds-input-select-arrow-icon-blur-color: Color applied to the arrow icon in blurred states
+ * @prop --mds-input-select-arrow-icon-color: Default arrow icon color
+ * @prop --mds-input-select-arrow-icon-hover-background-color: Background color of the arrow icon when hovered
+ * @prop --mds-input-select-arrow-icon-hover-color: Color of the arrow icon when hovered
+ */
+
+@property --mds-input-select-variant-color-rgb {
+  inherits: false;
+  initial-value: var(--tone-neutral-01);
+  syntax: '<integer>+';
+}
+
+@property --mds-input-select-arrow-icon-background-color {
+  inherits: false;
+  initial-value: var(--mds-input-select-arrow-icon-blur-background-color);
+  syntax: '<color>';
+}
+
+@property --mds-input-select-arrow-icon-blur-background-color {
+  inherits: false;
+  initial-value: rgb(var(--mds-input-select-variant-color-rgb) / 0);
+  syntax: '<color>';
+}
+
+@property --mds-input-select-arrow-icon-blur-color {
+  inherits: false;
+  initial-value: rgb(var(--mds-input-select-variant-color-rgb) / 0.5);
+  syntax: '<color>';
+}
+
+@property --mds-input-select-arrow-icon-color {
+  inherits: false;
+  initial-value: var(--mds-input-select-arrow-icon-blur-color);
+  syntax: '<color>';
+}
+
+@property --mds-input-select-arrow-icon-hover-background-color {
+  inherits: false;
+  initial-value: rgb(var(--mds-input-select-variant-color-rgb) / 0.5);
+  syntax: '<color>';
+}
+
+@property --mds-input-select-arrow-icon-hover-color {
+  inherits: false;
+  initial-value: rgb(var(--mds-input-select-variant-color-rgb));
+  syntax: '<color>';
+}
+
+@property --mds-input-tip-horizontal-offset {
+  inherits: false;
+  initial-value: --spacing(100);
+  syntax: '<length>';
+}
+
+@property --mds-input-tip-horizontal-offset-focused {
+  inherits: false;
+  initial-value: --spacing(1000);
+  syntax: '<length>';
+}
+
+@property --mds-input-tip-vertical-offset {
+  inherits: false;
+  initial-value: --spacing(100);
+  syntax: '<length>';
+}
+
+@property --mds-input-tip-background {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-03));
+  syntax: '<color>';
+}
+
+/* ❌ Not supported
+@property --mds-input-select-ring {
+  inherits: false;
+  initial-value: 0 0 0 1px rgb(var(--mds-input-select-variant-color-rgb) / 0.1);
+  syntax: "<box-shadow>";
+}
+
+@property --mds-input-select-shadow {
+  inherits: false;
+  initial-value: 0 1px 3px 0 rgb(var(--mds-input-select-variant-color-rgb) / 0.1), 0 1px 2px 0 rgb(var(--mds-input-select-variant-color-rgb) / 0.06);
+  syntax: "<box-shadow>";
+}
+*/
 
 :host {
+  --mds-input-select-variant-color-rgb: var(--tone-neutral-01);
+  --mds-input-select-ring: 0 0 0 1px rgb(var(--mds-input-select-variant-color-rgb) / 0.1);
+  --mds-input-select-shadow:
+    0 1px 3px 0 rgb(var(--mds-input-select-variant-color-rgb) / 0.1),
+    0 1px 2px 0 rgb(var(--mds-input-select-variant-color-rgb) / 0.06);
+  --mds-input-select-arrow-icon-background-color: var(
+    --mds-input-select-arrow-icon-blur-background-color
+  );
+  --mds-input-select-arrow-icon-blur-background-color: rgb(
+    var(--mds-input-select-variant-color-rgb) / 0
+  );
+  --mds-input-select-arrow-icon-blur-color: rgb(var(--mds-input-select-variant-color-rgb) / 0.5);
+  --mds-input-select-arrow-icon-color: var(--mds-input-select-arrow-icon-blur-color);
+  --mds-input-select-arrow-icon-hover-background-color: rgb(
+    var(--mds-input-select-variant-color-rgb) / 0.5
+  );
+  --mds-input-select-arrow-icon-hover-color: rgb(var(--mds-input-select-variant-color-rgb));
+  --mds-input-tip-horizontal-offset: --spacing(100);
+  --mds-input-tip-horizontal-offset-focused: --spacing(1000);
+  --mds-input-tip-vertical-offset: --spacing(100);
+  --mds-input-tip-background: rgb(var(--tone-neutral-03));
+
   @apply text-info-detail;
 
-  --mds-input-select-variant-color: var(--tone-neutral-01);
-  --mds-input-select-ring: 0 0 0 1px rgb(var(--mds-input-select-variant-color) / 0.1);
-  --mds-input-select-shadow: 0 1px 3px 0 rgb(var(--mds-input-select-variant-color) / 0.1), 0 1px 2px 0 rgb(var(--mds-input-select-variant-color) / 0.06);
-  --mds-input-select-arrow-icon-background-color: var(--mds-input-select-arrow-icon-blur-background-color);
-  --mds-input-select-arrow-icon-blur-background-color: transparent;
-  --mds-input-select-arrow-icon-blur-color: rgb(var(--mds-input-select-variant-color) / 0.5);
-  --mds-input-select-arrow-icon-color: var(--mds-input-select-arrow-icon-blur-color);
-  --mds-input-select-arrow-icon-hover-background-color: rgb(var(--mds-input-select-variant-color) / 0.5);
-  --mds-input-select-arrow-icon-hover-color: rgb(var(--mds-input-select-variant-color));
-
-  color: theme('colors.tone-neutral-02');
+  color: rgb(var(--tone-neutral-02));
   display: flex;
   position: relative;
   user-select: none;
 }
 
-:host([required]:not([required="false"]):focus-within) .icon {
-  transform: translate(theme('spacing.150'), theme('spacing.150'));
+:host([required]:not([required='false']):focus-within) .icon {
+  transform: translate(--spacing(150), --spacing(150));
 }
 
 :host(:hover),
 :host(:focus-within) {
-  --mds-input-select-variant-color: var(--variant-primary-03);
-  --mds-input-select-ring: 0 0 0 3px rgb(var(--mds-input-select-variant-color) / 1);
-  --mds-input-select-shadow: 0 4px 6px -1px rgb(var(--mds-input-select-variant-color) / 0.1), 0 2px 4px -1px rgb(var(--mds-input-select-variant-color) / 0.06);
-  --mds-input-select-arrow-icon-background-color: var(--mds-input-select-arrow-icon-hover-background-color);
+  --mds-input-select-variant-color-rgb: var(--variant-primary-03);
+  --mds-input-select-ring: 0 0 0 3px rgb(var(--mds-input-select-variant-color-rgb) / 1);
+  --mds-input-select-shadow:
+    0 4px 6px -1px rgb(var(--mds-input-select-variant-color-rgb) / 0.1),
+    0 2px 4px -1px rgb(var(--mds-input-select-variant-color-rgb) / 0.06);
+  --mds-input-select-arrow-icon-background-color: var(
+    --mds-input-select-arrow-icon-hover-background-color
+  );
   --mds-input-select-arrow-icon-color: var(--mds-input-select-arrow-icon-hover-color);
 }
 
 .input {
-  @apply
-    duration-300
-    ease-out-expo
-    m-0
-    min-h-1200
-    pl-400
-    pr-1200
-    py-300
-    rounded-lg
-    text-info-detail
-    w-full;
+  @apply text-info-detail;
 
   appearance: none;
-  background-color: theme('colors.tone-neutral');
+  background-color: rgb(var(--tone-neutral));
   border: 0;
+  border-radius: var(--radius-xs);
   box-shadow: var(--mds-input-select-ring), var(--mds-input-select-shadow);
   box-sizing: border-box;
-  color: theme('colors.tone-neutral-02');
+  color: rgb(var(--tone-neutral-02));
   cursor: pointer;
+  margin: 0;
+  min-height: --spacing(1200);
   overflow: hidden;
+  padding-left: --spacing(400);
+  padding-right: --spacing(1200);
   text-overflow: ellipsis;
+  transition-duration: var(--duration-300);
   transition-property: background-color, border-color, box-shadow, color, fill;
+  transition-timing-function: var(--ease-out-expo);
+  width: 100%;
 }
 
 .input:hover,
 .input:focus {
-  @apply
-    duration-300
-    ease-out-expo
-    outline-none;
+  @apply outline-hidden;
 
-  color: theme('colors.tone-neutral-03');
+  color: rgb(var(--tone-neutral-03));
+  transition-duration: var(--duration-300);
+  transition-timing-function: var(--ease-out-expo);
 }
 
-:host([value]:not([value=""])) .input {
-  color: theme('colors.tone-neutral-03');
+:host([value]:not([value=''])) .input {
+  color: rgb(var(--tone-neutral-03));
 }
 
-:host([required]:not([required="false"])) .input {
-  color: theme('colors.tone-neutral-05');
+:host([required]:not([required='false'])) .input {
+  color: rgb(var(--tone-neutral-05));
 }
 
 .input:disabled {
-  background-color: theme('colors.tone-neutral-09');
+  background-color: rgb(var(--tone-neutral-09));
   opacity: 1;
 }
 
-:host([disabled]:not([disabled="false"])) {
+:host([disabled]:not([disabled='false'])) {
   pointer-events: none;
 }
 
-:host([disabled]:not([disabled="false"])) .input {
+:host([disabled]:not([disabled='false'])) .input {
   pointer-events: none;
 }
 
-:host([disabled]:not([disabled="false"])) .icon {
-  fill: theme('colors.tone-neutral-06');
-  transform: translate(theme('spacing.250'), theme('spacing.200'));
+:host([disabled]:not([disabled='false'])) .icon {
+  fill: rgb(var(--tone-neutral-06));
+  transform: translate(--spacing(250), --spacing(200));
 }
 
 .icon-container {
-  @apply
-    h-1200
-    right-400;
-
   align-items: center;
   color: inherit;
   display: flex;
+  height: --spacing(1200);
   pointer-events: none;
   position: absolute;
+  right: --spacing(400);
 }
 
 .icon {
-  @apply
-    duration-200
-    rounded-full
-    svg;
+  @apply svg;
 
-  background-color: var(--mds-input-select-arrow-icon-background-color, theme('colors.variant-primary-09'));
-  fill: var(--mds-input-select-arrow-icon-color, theme('colors.variant-primary-04'));
+  background-color: var(--mds-input-select-arrow-icon-background-color);
+  border-radius: var(--radius-full);
+  fill: var(--mds-input-select-arrow-icon-color);
+  transition-duration: var(--duration-200);
   transition-property: background-color, fill;
 }
 
 .option-container {
   display: none;
+}
+
+mds-input-tip {
+  --mds-input-tip-horizontal-offset: inherit;
+  --mds-input-tip-horizontal-offset-focused: inherit;
+  --mds-input-tip-vertical-offset: inherit;
+  --mds-input-tip-background: inherit;
 }
 
 @container (max-width: 210px) {
@@ -137,7 +242,7 @@
   }
 
   :host {
-    --mds-input-select-background: theme('colors.variant-primary-07');
+    --mds-input-select-background: rgb(var(--variant-primary-07));
   }
 }
 
@@ -145,4 +250,3 @@
 @import './css/mds-input-select-pref-animation.css';
 @import './css/mds-input-select-pref-theme.css';
 @import './css/mds-input-select-pref-contrast.css';
-@import '../../tailwind/fouc.css';

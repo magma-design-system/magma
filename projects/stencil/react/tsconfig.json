@@ -9,7 +9,9 @@
     "jsx": "react",
     "allowSyntheticDefaultImports": true,
     "declaration": true,
-    "declarationDir": "./dist/types"
+    "declarationDir": "./dist/types",
+    "strict": false,
+    "types": ["node"]
   },
   "include": ["src"],
   "exclude": ["node_modules"]

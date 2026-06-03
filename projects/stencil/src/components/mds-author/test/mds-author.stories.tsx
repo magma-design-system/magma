@@ -1,10 +1,10 @@
-import { h } from '@stencil/core'
+import { h } from '@stencil/core';
 
 export default {
   title: 'UI / Author',
-}
+};
 
-const Template = args => (
+const Template = (args) => (
   <mds-author {...args}>
     <mds-avatar
       initials="fb"
@@ -16,19 +16,19 @@ const Template = args => (
     <mds-text typography="caption">Software engineer</mds-text>
     <mds-text typography="caption">IT</mds-text>
   </mds-author>
-)
+);
 
-const TemplateNoAvatar = args => (
+const TemplateNoAvatar = (args) => (
   <mds-author {...args}>
     <mds-text typography="h6">Fred Brooks</mds-text>
     <mds-text typography="caption">Software engineer</mds-text>
     <mds-text typography="caption">IT</mds-text>
   </mds-author>
-)
+);
 
 export const Default = {
   render: Template,
-}
+};
 export const NoAvatar = {
   render: TemplateNoAvatar,
-}
+};

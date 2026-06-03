@@ -1,35 +1,116 @@
-/* stylelint-disable property-no-vendor-prefix */
-
-@import '~@maggioli-design-system/styles/dist/tailwind/typography.css';
-@tailwind components;
-@tailwind utilities;
-
 /**
- * @prop --mds-input-date-background: Sets the background-color of the component
- * @prop --mds-input-date-field-background-empty: Sets the color of the component when the value is empty or not valid
- * @prop --mds-input-date-field-color-empty: Sets the color of the component when the value is empty or not valid
- * @prop --mds-input-date-icon-color: Sets the icon color of the component
- * @prop --mds-input-date-ring: Sets the box-shadow of the component's input to perform the ring effect
- * @prop --mds-input-date-shadow: Sets the box-shadow of the component's input
- * @prop --mds-input-date-variant-color: Sets the variant colors of the component
+ * @prop --mds-input-date-icon-color: The color of the date input icon
+ * @prop --mds-input-date-background: The background of the date input
+ * @prop --mds-input-date-field-background-empty: The background when the date field is empty
+ * @prop --mds-input-date-field-color-empty: The text/icon color when the date field is empty
+ * @prop --mds-input-date-icon-color-rgb: The RGB channels used for the icon color
+ * @prop --mds-input-date-ring: The focus ring of the date input
+ * @prop --mds-input-date-shadow: The shadow applied to the date input
+ * @prop --mds-input-date-variant-color-rgb: The base RGB value for the date input variant
+ * @prop --mds-input-tip-horizontal-offset: The horizontal offset for the input tip
+ * @prop --mds-input-tip-horizontal-offset-focused: The horizontal offset when the input tip is focused
+ * @prop --mds-input-tip-vertical-offset: The vertical offset for the input tip
+ * @prop --mds-input-tip-background: The background of the input tip
  */
 
+@property --mds-input-date-icon-color {
+  inherits: false;
+  initial-value: rgb(var(--variant-primary-03));
+  syntax: '<color>';
+}
+
+@property --mds-input-date-background {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral));
+  syntax: '<color>';
+}
+
+@property --mds-input-date-field-background-empty {
+  inherits: false;
+  initial-value: rgb(var(--status-error-10));
+  syntax: '<color>';
+}
+
+@property --mds-input-date-field-color-empty {
+  inherits: false;
+  initial-value: rgb(var(--status-error-06));
+  syntax: '<color>';
+}
+
+@property --mds-input-date-icon-color-rgb {
+  inherits: false;
+  initial-value: var(--mds-input-date-variant-color-rgb);
+  syntax: '<integer>+'; /* RGB channels */
+}
+
+@property --mds-input-date-variant-color-rgb {
+  inherits: false;
+  initial-value: 0 0 0;
+  syntax: '<integer>+';
+}
+
+@property --mds-input-tip-horizontal-offset {
+  inherits: false;
+  initial-value: --spacing(100);
+  syntax: '<length>';
+}
+
+@property --mds-input-tip-horizontal-offset-focused {
+  inherits: false;
+  initial-value: --spacing(1000);
+  syntax: '<length>';
+}
+
+@property --mds-input-tip-vertical-offset {
+  inherits: false;
+  initial-value: --spacing(100);
+  syntax: '<length>';
+}
+
+@property --mds-input-tip-background {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-03));
+  syntax: '<color>';
+}
+
+/* ❌ Not supported
+@property --mds-input-date-ring {
+  inherits: false;
+  initial-value: 0 0 0 1px rgb(var(--mds-input-date-variant-color-rgb) / 0.1);
+  syntax: "<box-shadow>";
+}
+
+@property --mds-input-date-shadow {
+  inherits: false;
+  initial-value: 0 1px 3px 0 rgb(var(--mds-input-date-variant-color-rgb) / 0.1), 0 1px 2px 0 rgb(var(--mds-input-date-variant-color-rgb) / 0.06);
+  syntax: "<box-shadow>";
+}
+*/
+
 :host {
-  --mds-input-date-background: theme('colors.tone-neutral');
-  --mds-input-date-field-background-empty: theme('colors.status-error-10');
-  --mds-input-date-field-color-empty: theme('colors.status-error-06');
-  --mds-input-date-icon-color: var(--mds-input-date-variant-color);
-  --mds-input-date-ring: 0 0 0 1px rgb(var(--mds-input-date-variant-color) / 0.1);
-  --mds-input-date-shadow: 0 1px 3px 0 rgb(var(--mds-input-date-variant-color) / 0.1), 0 1px 2px 0 rgb(var(--mds-input-date-variant-color) / 0.06);
-  --mds-input-date-variant-color: 0 0 0;
+  --mds-input-date-icon-color: rgb(var(--variant-primary-03));
+  --mds-input-date-background: rgb(var(--tone-neutral));
+  --mds-input-date-field-background-empty: rgb(var(--status-error-10));
+  --mds-input-date-field-color-empty: rgb(var(--status-error-06));
+  --mds-input-date-icon-color-rgb: var(--mds-input-date-variant-color-rgb);
+  --mds-input-date-ring: 0 0 0 1px rgb(var(--mds-input-date-variant-color-rgb) / 0.1);
+  --mds-input-date-shadow:
+    0 1px 3px 0 rgb(var(--mds-input-date-variant-color-rgb) / 0.1),
+    0 1px 2px 0 rgb(var(--mds-input-date-variant-color-rgb) / 0.06);
+  --mds-input-date-variant-color-rgb: 0 0 0;
+  --mds-input-tip-horizontal-offset: --spacing(100);
+  --mds-input-tip-horizontal-offset-focused: --spacing(1000);
+  --mds-input-tip-vertical-offset: --spacing(100);
+  --mds-input-tip-background: rgb(var(--tone-neutral-03));
 
-  @apply
-    gap-200
-    text-info-detail;
+  @apply text-info-detail;
 
-  color: theme('colors.tone-neutral-02');
+  border-radius: var(--radius-2xl);
+  color: rgb(var(--tone-neutral-02));
   container-type: inline-size;
+  corner-shape: var(--magma-corner-shape, round);
   display: flex;
+  gap: --spacing(200);
   overflow: visible;
   position: relative;
 }
@@ -38,25 +119,26 @@
   appearance: none;
 
   /* stylelint-disable-next-line order/properties-alphabetical-order */
-  -moz-appearance: textfield; /* hide it Firefox */
+  appearance: textfield; /* hide it Firefox */
   display: none;
 }
 
 .input {
-  @apply
-    duration-300
-    ease-out-expo
-    m-0
-    text-code-hack;
+  @apply text-code-hack;
 
   background-color: transparent;
   border: 0;
-  border-radius: theme('borderRadius.lg');
+  border-radius: inherit;
   box-sizing: border-box;
   color: inherit;
+  corner-shape: inherit;
+  margin: 0;
   overflow: hidden;
   text-overflow: ellipsis;
-  transition-property: background-color, border-color, box-shadow, color, fill, margin, opacity, padding, transform;
+  transition-duration: var(--duration-300);
+  transition-property:
+    background-color, border-color, box-shadow, color, fill, margin, opacity, padding, transform;
+  transition-timing-function: var(--ease-out-expo);
   width: min-content;
 }
 
@@ -76,42 +158,31 @@
 }
 
 :host(:not([slot])) .input {
-  @apply
-    pl-400
-    pr-1200
-    py-300
-    rounded-lg;
+  background-color: var(--mds-input-date-background);
 
-    background-color: var(--mds-input-date-background);
-    box-shadow: var(--mds-input-date-ring), var(--mds-input-date-shadow);
-    min-height: 3rem;
-    width: 100%;
+  /* border-radius: var(--radius-xs); */
+  box-shadow: var(--mds-input-date-ring), var(--mds-input-date-shadow);
+  min-height: 3rem;
+  padding-left: --spacing(400);
+  padding-right: --spacing(1200);
+  padding-top: --spacing(300);
+  width: 100%;
 }
 
 :host(:focus-within) .input {
-  @apply
-    outline-none
-    transition-cosmetic
-    duration-300
-    ease-out-expo;
+  @apply outline-hidden transition-cosmetic;
 
-  --mds-input-date-ring: 0 0 0 3px rgb(var(--mds-input-date-variant-color) / 1);
-  --mds-input-date-shadow: 0 4px 6px 3px rgb(var(--mds-input-date-variant-color) / 0.1), 0 2px 4px -1px rgb(var(--mds-input-date-variant-color) / 0.06);
-}
+  --mds-input-date-ring: 0 0 0 3px rgb(var(--mds-input-date-variant-color-rgb) / 1);
+  --mds-input-date-shadow:
+    0 4px 6px 3px rgb(var(--mds-input-date-variant-color-rgb) / 0.1),
+    0 2px 4px -1px rgb(var(--mds-input-date-variant-color-rgb) / 0.06);
 
-.input:focus {
-  @apply
-    outline-none
-    duration-300
-    ease-out-expo;
-
-  --mds-input-date-ring: 0 0 0 3px rgb(var(--mds-input-date-variant-color) / 1);
-  --mds-input-date-shadow: 0 4px 6px 3px rgb(var(--mds-input-date-variant-color) / 0.1), 0 2px 4px -1px rgb(var(--mds-input-date-variant-color) / 0.06);
-
+  transition-duration: var(--duration-300);
+  transition-timing-function: var(--ease-out-expo);
 }
 
 .input::placeholder {
-  color: theme('colors.tone-neutral-04');
+  color: rgb(var(--tone-neutral-04));
 }
 
 .input::-webkit-outer-spin-button,
@@ -122,26 +193,31 @@
 }
 
 .input:disabled {
-  background-color: theme('colors.tone-neutral-10');
+  background-color: rgb(var(--tone-neutral-10));
 }
 
 .input:disabled,
 .input:disabled::placeholder {
-  color: theme('colors.tone-neutral-05');
+  color: rgb(var(--tone-neutral-05));
 }
 
-.action-open-calendar {
-  --mds-button-color: rgb(var(--mds-input-date-icon-color));
-
+.action-open-calendar-wrapper {
+  align-items: center;
   aspect-ratio: 1;
   bottom: 0;
+  display: flex;
+  justify-content: center;
   position: absolute;
   right: 0;
   top: 0;
 }
 
-:host([disabled]:not([disabled="false"])) .action-open-calendar {
-  transform: translate(theme('spacing.250'), theme('spacing.200'));
+.action-open-calendar {
+  --mds-button-color: var(--mds-input-date-icon-color);
+}
+
+:host([disabled]:not([disabled='false'])) .action-open-calendar {
+  transform: translate(--spacing(250), --spacing(200));
 }
 
 mds-calendar {
@@ -152,7 +228,14 @@ mds-dropdown {
   padding: 0;
 }
 
-@import '../../tailwind/fouc.css';
+mds-input-tip {
+  --mds-input-tip-horizontal-offset: inherit;
+  --mds-input-tip-horizontal-offset-focused: inherit;
+  --mds-input-tip-vertical-offset: inherit;
+  --mds-input-tip-background: inherit;
+}
+
+@import './css/mds-input-date-fouc.css';
 @import './css/mds-input-date-pref-animation.css';
 @import './css/mds-input-date-pref-theme.css';
 @import './css/mds-input-date-pref-contrast.css';

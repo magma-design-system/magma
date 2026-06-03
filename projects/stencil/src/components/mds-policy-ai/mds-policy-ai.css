@@ -1,8 +1,10 @@
+@import './css/mds-policy-ai-fouc.css';
+
 :host {
   display: inline-flex;
 }
 
-:host(:not([variant="icon"])) {
+:host(:not([variant='icon'])) {
   container-name: mds-policy-ai;
   container-type: inline-size;
   width: 100%;
@@ -16,4 +18,3 @@ mds-button {
 @import './css/mds-policy-ai-card.css';
 @import './css/mds-policy-ai-chip.css';
 @import './css/mds-policy-ai-icon.css';
-@import '../../tailwind/fouc.css';

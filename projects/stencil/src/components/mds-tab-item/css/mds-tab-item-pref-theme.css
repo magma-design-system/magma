@@ -1,9 +1,10 @@
-:host-context(.pref-theme-dark) {
-  --mds-tab-item-selected-background: theme('colors.tone-neutral-08');
+:host-context(:root.pref-theme-dark:not(.pref-theme-scheme-light)) {
+  --mds-tab-item-selected-background: rgb(var(--tone-neutral-07));
 }
 
 @media (prefers-color-scheme: dark) {
-  :host-context(.pref-theme-system) {
-    --mds-tab-item-selected-background: theme('colors.tone-neutral-08');
+  :host-context(:root.pref-theme-system:not(.pref-theme-scheme-light)),
+  :host-context(:root:not([data-magma-pref])) {
+    --mds-tab-item-selected-background: rgb(var(--tone-neutral-07));
   }
 }

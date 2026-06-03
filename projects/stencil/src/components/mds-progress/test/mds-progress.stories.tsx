@@ -1,7 +1,8 @@
-import { directionDictionary } from '../meta/dictionary'
-import { themeVariantDictionary } from '@dictionary/variant'
-import { h } from '@stencil/core'
-import { typographyTechnicalDictionary } from '@dictionary/typography'
+import { directionDictionary } from '../meta/dictionary';
+import { themeVariantDictionary } from '@type/variant';
+import { h } from '@stencil/core';
+import { typographyTechnicalDictionary } from '@type/typography';
+import { progressBarSizeDictionary } from '@type/progress';
 
 export default {
   title: 'UI / Progress',
@@ -9,15 +10,19 @@ export default {
     direction: {
       type: { name: 'string', required: false },
       control: { type: 'select' },
-      description:
-        'Specifies the direction of the progress bar, if horizonatl or vertical',
+      description: 'Specifies the direction of the progress bar, if horizonatl or vertical',
       options: directionDictionary,
     },
     progress: {
       control: { type: 'range', step: 0.01, min: 0, max: 1 },
       type: { name: 'number', required: false },
-      description:
-        'A value between 0 and 1 that rapresents the status progress',
+      description: 'A value between 0 and 1 that rapresents the status progress',
+    },
+    size: {
+      type: { name: 'string', required: false },
+      description: 'Sets the size of the component',
+      options: progressBarSizeDictionary,
+      control: { type: 'select' },
     },
     typography: {
       type: { name: 'string', required: false },
@@ -32,11 +37,9 @@ export default {
       control: { type: 'select' },
     },
   },
-}
+};
 
-const Template = args => (
-  <mds-progress aria-label="Progress bar title" {...args} />
-)
+const Template = (args) => <mds-progress aria-label="Progress bar title" {...args} />;
 
 export const Default = {
   render: Template,
@@ -44,7 +47,7 @@ export const Default = {
   args: {
     progress: 0.35,
   },
-}
+};
 
 export const Vertical = {
   render: Template,
@@ -56,7 +59,7 @@ export const Vertical = {
       height: '200px',
     },
   },
-}
+};
 
 export const Radial = {
   render: Template,
@@ -68,4 +71,4 @@ export const Radial = {
       width: '64px',
     },
   },
-}
+};

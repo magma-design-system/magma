@@ -1,10 +1,10 @@
-import { Component, Host, Prop, h } from '@stencil/core'
-import miOutlineHelp from '@icon/mi/outline/help-outline.svg'
-import { FloatingUIPlacement } from '@type/floating-ui'
+import { Component, Host, Prop, h } from '@stencil/core';
+import miOutlineHelp from '@icon/mi/outline/help-outline.svg';
+import { FloatingUIPlacement } from '@type/floating-ui';
 
 /**
-  * @slot default - Add `text string` to this slot, **avoid** `HTML elements` or `components`.
-  */
+ * @slot default - Add `text string` to this slot, **avoid** `HTML elements` or `components`.
+ */
 
 @Component({
   tag: 'mds-help',
@@ -12,31 +12,34 @@ import { FloatingUIPlacement } from '@type/floating-ui'
   shadow: true,
 })
 export class MdsHelp {
-
   /**
    * Set the name of the icon.
    */
-  @Prop() readonly icon?: string
+  @Prop() readonly icon?: string;
 
   /**
    * If set, the component will be placed automatically near it's caller.
    */
-  @Prop({ reflect: true }) readonly autoPlacement?: boolean = true
+  @Prop({ reflect: true }) readonly autoPlacement?: boolean = true;
 
   /**
    * Specifies where the component should be placed relative to the caller.
    */
-  @Prop({ reflect: true }) readonly placement?: FloatingUIPlacement = 'top'
+  @Prop({ reflect: true }) readonly placement?: FloatingUIPlacement = 'top';
 
-  render () {
+  render() {
     return (
       <Host>
-        <mds-icon class="icon" name={ this.icon ?? miOutlineHelp } part="icon"></mds-icon>
-        <mds-tooltip placement={this.placement} autoPlacement={this.autoPlacement} strategy="absolute" target=".icon">
-          <slot/>
+        <mds-icon class="icon" name={this.icon ?? miOutlineHelp} part="icon"></mds-icon>
+        <mds-tooltip
+          placement={this.placement}
+          autoPlacement={this.autoPlacement}
+          strategy="absolute"
+          target=".icon"
+        >
+          <slot />
         </mds-tooltip>
       </Host>
-    )
+    );
   }
-
 }

@@ -31,11 +31,14 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## CSS Custom Properties
 
-| Name                                                     | Description                                              |
-| -------------------------------------------------------- | -------------------------------------------------------- |
-| `--mds-price-table-features-cell-icon-supported-color`   | Sets the border-color of the component                   |
-| `--mds-price-table-features-cell-icon-unsupported-color` | Sets the border-width of the separators of the component |
-| `--mds-price-table-features-cell-padding`                | Sets the cell padding of the component                   |
+| Name                                                           | Description                                                            |
+| -------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| `--mds-price-table-features-cell-border-color`                 | Border color of individual feature cells.                              |
+| `--mds-price-table-features-cell-icon-supported-color`         | Default color of the supported feature icon.                           |
+| `--mds-price-table-features-cell-icon-supported-color-hover`   | Color of the supported feature icon on hover.                          |
+| `--mds-price-table-features-cell-icon-unsupported-color`       | Default color of the unsupported feature icon.                         |
+| `--mds-price-table-features-cell-icon-unsupported-color-hover` | Color of the unsupported feature icon on hover.                        |
+| `--mds-price-table-features-cell-padding`                      | Padding applied to each feature cell, defaults to the section padding. |
 
 
 ## Dependencies

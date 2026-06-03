@@ -1,0 +1,9 @@
+@import '../../../tailwind/fouc.css';
+
+mds-badge,
+mds-icon,
+mds-text {
+  &:not(:is([hydrated], .hydrated)) {
+    @apply not-hydrated;
+  }
+}

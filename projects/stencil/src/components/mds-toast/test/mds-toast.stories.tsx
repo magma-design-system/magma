@@ -1,9 +1,8 @@
-import {
-  themeVariantDictionary,
-  toneMinimalVariantDictionary,
-} from '@dictionary/variant'
-import { h } from '@stencil/core'
-import { toastPositionDictionary } from '../meta/dictionary'
+import { themeVariantDictionary } from '@type/variant';
+import { toneMinimalVariantDictionary } from '@type/tone';
+
+import { h } from '@stencil/core';
+import { toastPositionDictionary } from '../meta/dictionary';
 
 export default {
   title: 'UI / Toast',
@@ -36,36 +35,31 @@ export default {
       type: { name: 'boolean', required: false },
     },
   },
-}
+};
 
 const checkVariant = (variant: 'dark' | 'light') => {
   if (variant === 'dark') {
-    return 'light'
+    return 'light';
   }
 
   if (variant === 'light') {
-    return 'dark'
+    return 'dark';
   }
 
-  return variant
-}
+  return variant;
+};
 
-const Template = args => (
+const Template = (args) => (
   <mds-toast {...args}>
     <mds-icon slot="icon" name="mi/baseline/warning" />
     Elemento spidiguddato a sinistra con successo
-    <mds-button
-      slot="action"
-      size="sm"
-      variant={checkVariant(args.variant)}
-      tone={args.tone}
-    >
+    <mds-button slot="action" size="sm" variant={checkVariant(args.variant)} tone={args.tone}>
       Annulla
     </mds-button>
   </mds-toast>
-)
+);
 
-const TemplateSpinner = args => (
+const TemplateSpinner = (args) => (
   <mds-toast {...args}>
     <mds-spinner running slot="icon" class="w-600 h-600" />
     Invio messaggio in corso...
@@ -73,12 +67,12 @@ const TemplateSpinner = args => (
       Annulla
     </mds-button>
   </mds-toast>
-)
+);
 
 export const Default = {
   render: Template,
-}
+};
 
 export const Spinner = {
   render: TemplateSpinner,
-}
+};

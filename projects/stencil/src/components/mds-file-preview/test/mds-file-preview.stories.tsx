@@ -1,23 +1,18 @@
-import { h } from '@stencil/core'
-import { fileExtensionsDictionary } from '@dictionary/file-extensions'
-import { filesList } from '@fixture/filenames'
-import { truncateDictionary } from '@dictionary/text'
-import {
-  iconsDictionary,
-  mggIconsDictionary,
-  svgIconsDictionary,
-} from '@dictionary/icon'
-import { themeFullVariantAvatarDictionary } from '@dictionary/variant'
+import { h } from '@stencil/core';
+import { fileExtensionsDictionary } from '@type/file-types';
+import { filesList } from '@fixture/filenames';
+import { truncateDictionary } from '@type/text';
+import { iconsDictionary, mggIconsDictionary, svgIconsDictionary } from '@type/icon';
+import { themeFullVariantAvatarDictionary } from '@type/variant';
 
-const extensionsList = Object.keys(fileExtensionsDictionary).sort()
+const extensionsList = Object.keys(fileExtensionsDictionary).sort();
 
 export default {
   title: 'UI / File Preview',
   argTypes: {
     deletable: {
       type: 'boolean',
-      description:
-        'Enables the cross icon to perform cancel/delete action on element',
+      description: 'Enables the cross icon to perform cancel/delete action on element',
     },
     description: {
       type: 'string',
@@ -37,11 +32,8 @@ export default {
     },
     icon: {
       type: 'string',
-      description:
-        'The name of the icon or a base64 string to render it as an svg',
-      options: mggIconsDictionary
-        .concat(iconsDictionary)
-        .concat(svgIconsDictionary),
+      description: 'The name of the icon or a base64 string to render it as an svg',
+      options: mggIconsDictionary.concat(iconsDictionary).concat(svgIconsDictionary),
       control: { type: 'select' },
     },
     message: {
@@ -51,8 +43,7 @@ export default {
     },
     truncate: {
       control: { type: 'select' },
-      description:
-        'Specifies if the text shoud be truncated or should behave as a normal text',
+      description: 'Specifies if the text shoud be truncated or should behave as a normal text',
       options: truncateDictionary,
     },
     src: {
@@ -74,11 +65,9 @@ export default {
       options: themeFullVariantAvatarDictionary,
     },
   },
-}
+};
 
-const Template = args => (
-  <mds-file-preview class="w-full max-w-5600" {...args} />
-)
+const Template = (args) => <mds-file-preview class="w-full max-w-5600" {...args} />;
 
 export const Default = {
   render: Template,
@@ -87,7 +76,7 @@ export const Default = {
     filename: filesList[15],
     filesize: 10248594,
   },
-}
+};
 
 export const Deletable = {
   render: Template,
@@ -98,7 +87,7 @@ export const Deletable = {
     filesize: 10248594,
     src: './fred-brooks-zoom.webp',
   },
-}
+};
 
 export const Description = {
   render: Template,
@@ -108,7 +97,7 @@ export const Description = {
     description: 'Incredible format',
     src: './fred-brooks-zoom.webp',
   },
-}
+};
 
 export const Filename = {
   render: Template,
@@ -116,7 +105,7 @@ export const Filename = {
   args: {
     filename: filesList[1],
   },
-}
+};
 
 export const Filesize = {
   render: Template,
@@ -125,7 +114,7 @@ export const Filesize = {
     filename: filesList[20],
     filesize: '12 MB',
   },
-}
+};
 
 export const Icon = {
   render: Template,
@@ -135,7 +124,7 @@ export const Icon = {
     filesize: '12 MB',
     icon: mggIconsDictionary[150],
   },
-}
+};
 
 export const Message = {
   render: Template,
@@ -147,18 +136,17 @@ export const Message = {
     variant: 'error',
     icon: 'mi/baseline/warning',
   },
-}
+};
 
 export const Truncate = {
   render: Template,
 
   args: {
-    filename:
-      'This is one of the most lenght filename humanity have ever seen.doc',
+    filename: 'This is one of the most lenght filename humanity have ever seen.doc',
     filesize: 84791746,
     truncate: 'all',
   },
-}
+};
 
 export const Src = {
   render: Template,
@@ -168,7 +156,7 @@ export const Src = {
     filesize: 84791746,
     src: './fred-brooks-zoom.webp',
   },
-}
+};
 
 export const Suffix = {
   render: Template,
@@ -179,7 +167,7 @@ export const Suffix = {
     suffix: 'pdf',
     src: './fred-brooks-zoom.webp',
   },
-}
+};
 
 export const Variant = {
   render: Template,
@@ -193,4 +181,4 @@ export const Variant = {
     message: 'Works only with message attribute',
     variant: 'success',
   },
-}
+};

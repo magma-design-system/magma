@@ -24,10 +24,13 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## CSS Custom Properties
 
-| Name                                | Description                                                      |
-| ----------------------------------- | ---------------------------------------------------------------- |
-| `--mds-table-body-background`       | The background-color of the table body                           |
-| `--mds-table-body-background-hover` | The background-color of the table body when the mouse is over it |
+| Name                                | Description                                     |
+| ----------------------------------- | ----------------------------------------------- |
+| `--mds-table-body-background`       | Default background color of table body rows.    |
+| `--mds-table-body-background-alt`   | Alternate background color for table body rows. |
+| `--mds-table-body-background-hover` | Background color for table body rows on hover.  |
+| `--mds-table-body-color`            | Default text color for table body rows.         |
+| `--mds-table-body-color-alt`        | Text color for alternate table body rows.       |
 
 
 ----------------------------------------------

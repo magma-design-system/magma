@@ -1,4 +1,4 @@
-import { loadingDictionary } from '@dictionary/loading'
+import { loadingDictionary } from '@type/loading';
 
 const URLs = [
   '1920x1024.png',
@@ -7,7 +7,7 @@ const URLs = [
   '640x480.png',
   '480x640.png',
   '300x800.png',
-]
+];
 
 const argTypes = {
   alt: {
@@ -20,7 +20,8 @@ const argTypes = {
   },
   loading: {
     control: { type: 'select' },
-    description: 'Specifies whether a browser should load an image immediately or to defer loading of images until some conditions are met',
+    description:
+      'Specifies whether a browser should load an image immediately or to defer loading of images until some conditions are met',
     options: loadingDictionary,
     type: { name: 'string', required: false },
   },
@@ -46,9 +47,6 @@ const argTypes = {
     description: 'The width attribute specifies the width of an image, in pixels',
     type: { name: 'string', required: false },
   },
-}
+};
 
-export {
-  argTypes,
-  URLs,
-}
+export { argTypes, URLs };

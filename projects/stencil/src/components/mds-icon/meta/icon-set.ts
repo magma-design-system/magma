@@ -1,12 +1,12 @@
-export type IconNameResolverFn = (iconName: string, name: string, path: string) => string
+export type IconNameResolverFn = (iconName: string, name: string, path: string) => string;
 
 export class MdsIconSet {
   /**
    * Run the icon set's name resolver to turn an icon name into an icon path, id, etc.
    */
-  resolveIconName (iconName: string): string {
+  resolveIconName(iconName: string): string {
     // console.log(`resolveIconName - iconName: ${iconName} | name: ${this.name} | path: ${this.path}`)
-    return this._resolveIconName(iconName, this.name, this.path)
+    return this._resolveIconName(iconName, this.name, this.path);
   }
 
   /**
@@ -20,13 +20,13 @@ export class MdsIconSet {
    * @param  resolveIconName an optional function to combine the path and an icon name into a final path.  The function will be passed the namespaced icon name (for example, "rh-api" where rh is the namespace and api is the individual icon's name)
    * @returns  an object with the status of the icon set installation, such as `{ result: true, text: 'icon set installed' }` or `{ result: false, text: 'icon set is already installed' }`
    */
-  constructor (
+  constructor(
     public name: string,
     public path: string,
     private _resolveIconName: IconNameResolverFn,
   ) {}
 
-  get resolver (): IconNameResolverFn {
-    return this._resolveIconName
+  get resolver(): IconNameResolverFn {
+    return this._resolveIconName;
   }
 }

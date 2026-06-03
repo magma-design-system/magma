@@ -1,11 +1,12 @@
-:host-context(.pref-animation-reduce),
-:host-context(.pref-animation-reduce) .badge {
+:host-context(:root.pref-animation-reduce),
+:host-context(:root.pref-animation-reduce) .badge {
   transition-duration: 0s;
 }
 
 @media (prefers-reduced-motion) {
-  :host-context(.pref-animation-system),
-  :host-context(.pref-animation-system) .badge {
+  :host-context(:root.pref-animation-system),
+  :host-context(:root:not([data-magma-pref])),
+  :host-context(:root:not([data-magma-pref])) .badge {
     transition-duration: 0s;
   }
 }

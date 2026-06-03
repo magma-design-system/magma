@@ -79,14 +79,14 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## Properties
 
-| Property   | Attribute  | Description                                                                                                                                          | Type                                                                                                                                                                                    | Default     |
-| ---------- | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| `count`    | `count`    | The user's inizials displayed if there's no image available, initials will override tone and variant senttings to keep user recognizable from others | `number \| undefined`                                                                                                                                                                   | `undefined` |
-| `icon`     | `icon`     | Specifies the path to the icon                                                                                                                       | `string \| undefined`                                                                                                                                                                   | `undefined` |
-| `initials` | `initials` | The user's inizials displayed if there's no image available, initials will override tone and variant senttings to keep user recognizable from others | `string \| undefined`                                                                                                                                                                   | `undefined` |
-| `src`      | `src`      | Specifies the path to the image                                                                                                                      | `string \| undefined`                                                                                                                                                                   | `undefined` |
-| `tone`     | `tone`     | Specifies the color tone of the component                                                                                                            | `"strong" \| "weak" \| undefined`                                                                                                                                                       | `undefined` |
-| `variant`  | `variant`  | Specifies the color variant of the component                                                                                                         | `"amaranth" \| "aqua" \| "blue" \| "error" \| "green" \| "info" \| "lime" \| "orange" \| "orchid" \| "primary" \| "sky" \| "success" \| "violet" \| "warning" \| "yellow" \| undefined` | `undefined` |
+| Property   | Attribute  | Description                                                                                                                                          | Type                                                                                                                                                                                                         | Default     |
+| ---------- | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------- |
+| `count`    | `count`    | The user's inizials displayed if there's no image available, initials will override tone and variant senttings to keep user recognizable from others | `number \| undefined`                                                                                                                                                                                        | `undefined` |
+| `icon`     | `icon`     | Specifies the path to the icon                                                                                                                       | `string \| undefined`                                                                                                                                                                                        | `undefined` |
+| `initials` | `initials` | The user's inizials displayed if there's no image available, initials will override tone and variant senttings to keep user recognizable from others | `string \| undefined`                                                                                                                                                                                        | `undefined` |
+| `src`      | `src`      | Specifies the path to the image                                                                                                                      | `string \| undefined`                                                                                                                                                                                        | `undefined` |
+| `tone`     | `tone`     | Specifies the color tone of the component                                                                                                            | `"strong" \| "weak" \| undefined`                                                                                                                                                                            | `undefined` |
+| `variant`  | `variant`  | Specifies the color variant of the component                                                                                                         | `"amaranth" \| "aqua" \| "blue" \| "error" \| "green" \| "info" \| "lime" \| "orange" \| "orchid" \| "primary" \| "purple" \| "red" \| "sky" \| "success" \| "violet" \| "warning" \| "yellow" \| undefined` | `undefined` |
 
 
 ## Shadow Parts
@@ -94,17 +94,19 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | Part        | Description                                |
 | ----------- | ------------------------------------------ |
 | `"icon"`    | The selected icon of the avatar            |
+| `"media"`   | The media displayed                        |
 | `"wrapper"` | The wrapper which contains media displayed |
 
 
 ## CSS Custom Properties
 
-| Name                                    | Description                                   |
-| --------------------------------------- | --------------------------------------------- |
-| `--mds-avatar-background-color`         | The background-color of the component         |
-| `--mds-avatar-background-color-pending` | The background-color when an image is loading |
-| `--mds-avatar-color`                    | The color of the placeholder icon             |
-| `--mds-avatar-radius`                   | The border-radius of the element              |
+| Name                                    | Description                                        |
+| --------------------------------------- | -------------------------------------------------- |
+| `--mds-avatar-background-color`         | The background-color of the component              |
+| `--mds-avatar-background-color-pending` | The background-color when an image is loading      |
+| `--mds-avatar-color`                    | The color of the placeholder icon                  |
+| `--mds-avatar-initials-padding`         | Sets the padding of the initials inside the avatar |
+| `--mds-avatar-radius`                   | The border-radius of the element                   |
 
 
 ## Dependencies

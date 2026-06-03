@@ -1,6 +1,6 @@
 {
-  "darkMode": "Σκούρη λειτουργία",
-  "label": "Θέμα",
-  "lightMode": "Φωτεινή λειτουργία{{#forced}} (εξαναγκασμένη στο Safari){{/forced}}",
-  "systemSettings": "Λειτουργικό σύστημα"
+  "darkMode": "Σκούρο",
+  "label": "Λειτουργία θέματος",
+  "lightMode": "Ανοιχτό{{#forced}} (επιβεβλημένο στο Safari){{/forced}}",
+  "systemSettings": "Με βάση το λειτουργικό σύστημα"
 }

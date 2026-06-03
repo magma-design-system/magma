@@ -1,9 +1,9 @@
-import { h } from '@stencil/core'
-import { useEffect, useState } from 'react'
+import { h } from '@stencil/core';
+import { useEffect, useState } from 'react';
 
 export default {
   title: 'Form',
-}
+};
 
 /*
 not supported name attribute
@@ -14,32 +14,28 @@ mds-input-range cannot be required
 */
 
 const Template = () => {
-  const [haveBeenJapan, setInJapan] = useState(false)
+  const [haveBeenJapan, setInJapan] = useState(false);
   useEffect(() => {
-    const elEmail = document.querySelector('#email') as HTMLMdsInputElement
-    const elInputEmail = document.querySelector(
-      '#email mds-input',
-    ) as HTMLMdsInputElement
+    const elEmail = document.querySelector('#email') as HTMLMdsInputElement;
+    const elInputEmail = document.querySelector('#email mds-input') as HTMLMdsInputElement;
     elEmail.addEventListener('mdsInputBlur', (e: CustomEvent) => {
-      const elementValue = (e.target as HTMLMdsInputElement).value
+      const elementValue = (e.target as HTMLMdsInputElement).value;
       if (elementValue.length < 3) {
-        return
+        return;
       }
-      elInputEmail.setAttribute('await', 'true')
-      elEmail.setAttribute('variant', 'primary')
+      elInputEmail.setAttribute('await', 'true');
+      elEmail.setAttribute('variant', 'primary');
       setTimeout(() => {
-        elEmail.setAttribute('variant', 'error')
-        elEmail.setAttribute('message', 'Email already present in database')
-        elInputEmail.setAttribute('await', 'false')
-      }, 2000)
-    })
-    const elSwitch = document.querySelector(
-      '#japan-switch',
-    ) as HTMLMdsInputSwitchElement
+        elEmail.setAttribute('variant', 'error');
+        elEmail.setAttribute('message', 'Email already present in database');
+        elInputEmail.setAttribute('await', 'false');
+      }, 2000);
+    });
+    const elSwitch = document.querySelector('#japan-switch') as HTMLMdsInputSwitchElement;
     elSwitch.addEventListener('mdsInputSwitchChange', (e: CustomEvent) => {
-      setInJapan(e.detail.checked)
-    })
-  }, [])
+      setInJapan(e.detail.checked);
+    });
+  }, []);
   return (
     <form class="grid gap-600 max-w-screen-tablet m-auto">
       <div class="grid">
@@ -60,20 +56,10 @@ const Template = () => {
           ></mds-input>
         </mds-input-field>
         <mds-input-field label="email" id="email">
-          <mds-input
-            type="email"
-            placeholder="Es: used@email.com"
-            name="mail"
-            required
-          ></mds-input>
+          <mds-input type="email" placeholder="Es: used@email.com" name="mail" required></mds-input>
         </mds-input-field>
         <mds-input-field label="Fiscal code">
-          <mds-input
-            type="cf"
-            placeholder="Es: MROBRS86R14D788J"
-            name="cf"
-            required
-          ></mds-input>
+          <mds-input type="cf" placeholder="Es: MROBRS86R14D788J" name="cf" required></mds-input>
         </mds-input-field>
         <div class="grid gap-x-600 gap-y-300 grid-cols-fit-md">
           <mds-input-field label="temporary code">
@@ -149,9 +135,9 @@ const Template = () => {
         </div>
       </div>
     </form>
-  )
-}
+  );
+};
 
 export const MainExample = {
   render: Template,
-}
+};

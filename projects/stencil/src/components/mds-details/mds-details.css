@@ -1,20 +1,38 @@
-@import '~@maggioli-design-system/styles/dist/css/animations.css'; /* included for focus effect */
-@import '../../tailwind/components.css';
+@import '~@maggioli-design-system/styles/dist/css/animations.css';
+@import '../../tailwind/fouc.css';
 
 /**
- * @prop --mds-details-icon-color: Sets the icon color the component
- * @prop --mds-details-helper-icon-color: Sets icon color of the helper icon of the component
+ * @prop --mds-details-duration: Sets the transition duration for details component
+ * @prop --mds-details-icon-color: Sets the color of the details icon
+ * @prop --mds-details-helper-icon-color: Sets the color of the helper icon in the details component
  */
+
+@property --mds-details-duration {
+  inherits: false;
+  initial-value: 300ms;
+  syntax: '<time>';
+}
+
+@property --mds-details-icon-color {
+  inherits: false;
+  initial-value: rgb(var(--variant-primary-04));
+  syntax: '<color>';
+}
+
+@property --mds-details-helper-icon-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-03));
+  syntax: '<color>';
+}
 
 :host {
   --mds-details-duration: 300ms;
-  --mds-details-icon-color: theme('colors.variant-primary-04');
-  --mds-details-helper-icon-color: theme('colors.tone-neutral-03');
-
-  @apply gap-200;
+  --mds-details-icon-color: rgb(var(--variant-primary-04));
+  --mds-details-helper-icon-color: rgb(var(--tone-neutral-03));
 
   align-items: flex-start;
   display: flex;
+  gap: --spacing(200);
 }
 
 .content {
@@ -24,40 +42,42 @@
 }
 
 .details {
-  @apply
-    gap-400
-    opacity-0
-    pt-0;
-
   display: grid;
+  gap: --spacing(400);
   grid-template-rows: 0fr;
+  opacity: 0;
   overflow: hidden;
+  padding-top: 0;
   pointer-events: none;
   transition-duration: var(--mds-details-duration);
   transition-property: grid-template-rows, opacity, padding;
 }
 
 .content-expander {
-  @apply gap-400;
-
   display: grid;
+  gap: --spacing(500);
   min-height: 0;
 }
 
 .details.opened {
-  @apply pt-400;
-
   grid-template-rows: 1fr;
   opacity: 1;
   overflow: visible;
+  padding-top: --spacing(300);
   pointer-events: auto;
 }
 
 .header {
-  @apply gap-200;
+  @apply focus-bounce;
 
   align-items: center;
+  border-radius: var(--radius-xs);
   display: inline-flex;
+  gap: --spacing(200);
+}
+
+.header:focus-visible {
+  @apply focus-bounce--focused;
 }
 
 .icon {
@@ -74,28 +94,25 @@
 }
 
 .helper-icon {
-  @apply
-    duration-300
-    ease-in-out-expo
-    svg;
+  @apply svg;
 
   cursor: pointer;
   fill: var(--mds-details-helper-icon-color);
   flex-shrink: 0;
   rotate: 0deg;
-  transition-property: transform;
+  transition-duration: var(--duration-300);
+  transition-property: rotate;
+  transition-timing-function: var(--ease-in-out-expo);
 }
 
 .helper-icon.opened {
-  rotate: 180deg;
+  rotate: 90deg;
 }
 
 .actions {
-  @apply gap-400;
-
   display: flex;
+  gap: --spacing(400);
 }
 
 @import './css/mds-details-pref-animation.css';
 @import './css/mds-details-pref-contrast.css';
-@import '../../tailwind/fouc.css';

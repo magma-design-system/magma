@@ -1,3 +1,1 @@
-export type KeyboardTest =
-  | 'pass'
-  | 'fail'
+export type KeyboardTest = 'pass' | 'fail';

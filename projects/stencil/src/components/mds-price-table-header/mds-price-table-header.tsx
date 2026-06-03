@@ -1,4 +1,4 @@
-import { Component, Host, h } from '@stencil/core'
+import { Component, Host, h } from '@stencil/core';
 
 @Component({
   tag: 'mds-price-table-header',
@@ -6,13 +6,11 @@ import { Component, Host, h } from '@stencil/core'
   shadow: true,
 })
 export class MdsPriceTableHeader {
-
-  render () {
+  render() {
     return (
       <Host>
-        <slot/>
+        <slot />
       </Host>
-    )
+    );
   }
-
 }

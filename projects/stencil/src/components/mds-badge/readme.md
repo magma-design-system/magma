@@ -9,28 +9,30 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## Properties
 
-| Property            | Attribute            | Description                             | Type                                                                                                                                                                                            | Default     |
-| ------------------- | -------------------- | --------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| `tone`              | `tone`               | Sets the tone of the color variant      | `"ghost" \| "quiet" \| "strong" \| "weak" \| undefined`                                                                                                                                         | `'weak'`    |
-| `typography`        | `typography`         | Specifies the typography of the element | `"caption" \| "detail" \| "label" \| "option" \| "paragraph" \| "tip"`                                                                                                                          | `'option'`  |
-| `typographyVariant` | `typography-variant` | Specifies the variant for `typography`  | `"code" \| "info" \| "read" \| "title" \| undefined`                                                                                                                                            | `undefined` |
-| `variant`           | `variant`            | Sets the theme variant colors           | `"amaranth" \| "aqua" \| "blue" \| "dark" \| "error" \| "green" \| "info" \| "light" \| "lime" \| "orange" \| "orchid" \| "sky" \| "success" \| "violet" \| "warning" \| "yellow" \| undefined` | `'green'`   |
+| Property     | Attribute    | Description                             | Type                                                                                                                                                                                                                 | Default     |
+| ------------ | ------------ | --------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| `label`      | `label`      | The label of the badge                  | `string \| undefined`                                                                                                                                                                                                | `undefined` |
+| `tone`       | `tone`       | Sets the tone of the color variant      | `"outline" \| "strong" \| "weak" \| undefined`                                                                                                                                                                       | `'weak'`    |
+| `typography` | `typography` | Specifies the typography of the element | `"label" \| "option"`                                                                                                                                                                                                | `'option'`  |
+| `variant`    | `variant`    | Sets the theme variant colors           | `"amaranth" \| "aqua" \| "blue" \| "dark" \| "error" \| "green" \| "info" \| "light" \| "lime" \| "orange" \| "orchid" \| "purple" \| "red" \| "sky" \| "success" \| "violet" \| "warning" \| "yellow" \| undefined` | `'green'`   |
 
 
 ## Slots
 
-| Slot        | Description                                                                            |
-| ----------- | -------------------------------------------------------------------------------------- |
-| `"default"` | Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here. |
+| Slot        | Description                                                                                                                              |
+| ----------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| `"default"` | **Deprecated**, use the `label` property instead. Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here. |
 
 
 ## CSS Custom Properties
 
-| Name                     | Description                                |
-| ------------------------ | ------------------------------------------ |
-| `--mds-badge-background` | Sets the background-color of the component |
-| `--mds-badge-color`      | Sets the text color of the component       |
-| `--mds-badge-radius`     | Sets the border-radius of the component    |
+| Name                       | Description                                                   |
+| -------------------------- | ------------------------------------------------------------- |
+| `--mds-badge-background`   | Sets the background-color of the component                    |
+| `--mds-badge-border-color` | Sets the border color of the component when tone is "outline" |
+| `--mds-badge-border-width` | Sets the border width of the component when tone is "outline" |
+| `--mds-badge-color`        | Sets the text color of the component                          |
+| `--mds-badge-radius`       | Sets the border-radius of the component                       |
 
 
 ## Dependencies
@@ -40,7 +42,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
  - [mds-file](../mds-file)
  - [mds-file-preview](../mds-file-preview)
  - [mds-stepper-bar-item](../mds-stepper-bar-item)
- - [mds-usage](../mds-usage)
+ - [mds-table](../mds-table)
 
 ### Depends on
 
@@ -53,7 +55,7 @@ graph TD;
   mds-file --> mds-badge
   mds-file-preview --> mds-badge
   mds-stepper-bar-item --> mds-badge
-  mds-usage --> mds-badge
+  mds-table --> mds-badge
   style mds-badge fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

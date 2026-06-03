@@ -1,21 +1,73 @@
-/* stylelint-disable media-query-no-invalid */
-@import '../../tailwind/components.css';
-@tailwind components;
-@tailwind utilities;
+@import './css/mds-stepper-bar-fouc.css';
 
 /**
- * @prop --mds-stepper-bar-scroll-behavior: Sets the scroll-behavior animation
+ * @prop --mds-stepper-bar-gap: Sets the gap between the stepper bar items.
+ * @prop --mds-stepper-bar-offset-margin: Sets the offset margin of the stepper bar.
+ * @prop --mds-stepper-bar-scroll-behavior: Sets the scroll behavior of the stepper bar.
+ * @prop --mds-stepper-bar-scrollbar-margin: Sets the margin of the scrollbar.
+ * @prop --mds-stepper-bar-scrollbar-radius: Sets the radius of the scrollbar.
+ * @prop --mds-stepper-bar-scrollbar-size: Sets the size of the scrollbar.
+ * @prop --mds-stepper-bar-scrollbar-thumb-background: Sets the background color of the scrollbar thumb.
+ * @prop --mds-stepper-bar-scrollbar-track-background: Sets the background color of the scrollbar track.
  */
 
+@property --mds-stepper-bar-gap {
+  inherits: false;
+  initial-value: --spacing(500);
+  syntax: '<length>';
+}
+
+@property --mds-stepper-bar-offset-margin {
+  inherits: false;
+  initial-value: 0;
+  syntax: '<length>';
+}
+
+@property --mds-stepper-bar-scroll-behavior {
+  inherits: false;
+  initial-value: smooth;
+  syntax: 'smooth | auto';
+}
+
+@property --mds-stepper-bar-scrollbar-margin {
+  inherits: false;
+  initial-value: 0;
+  syntax: '<length>';
+}
+
+@property --mds-stepper-bar-scrollbar-radius {
+  inherits: false;
+  initial-value: 0;
+  syntax: '<length>';
+}
+
+@property --mds-stepper-bar-scrollbar-size {
+  inherits: false;
+  initial-value: --spacing(200);
+  syntax: '<length>';
+}
+
+@property --mds-stepper-bar-scrollbar-thumb-background {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-06));
+  syntax: '<color>';
+}
+
+@property --mds-stepper-bar-scrollbar-track-background {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-08));
+  syntax: '<color>';
+}
+
 :host {
+  --mds-stepper-bar-gap: --spacing(500);
+  --mds-stepper-bar-offset-margin: 0;
   --mds-stepper-bar-scroll-behavior: smooth;
-  --mds-stepper-bar-gap: theme('spacing.50');
   --mds-stepper-bar-scrollbar-margin: 0;
   --mds-stepper-bar-scrollbar-radius: 0;
-  --mds-stepper-bar-scrollbar-size: theme('spacing.200');
-  --mds-stepper-bar-scrollbar-thumb-background: theme('colors.tone-neutral-06');
-  --mds-stepper-bar-scrollbar-track-background: theme('colors.tone-neutral-08');
-  --mds-stepper-bar-offset-margin: 0;
+  --mds-stepper-bar-scrollbar-size: --spacing(200);
+  --mds-stepper-bar-scrollbar-thumb-background: rgb(var(--tone-neutral-06));
+  --mds-stepper-bar-scrollbar-track-background: rgb(var(--tone-neutral-08));
 
   @apply gap-600;
 
@@ -24,8 +76,7 @@
 }
 
 .items {
-  @apply
-    w-full
+  @apply w-full
     z-10;
 
   align-items: start;
@@ -40,12 +91,12 @@
   scroll-snap-type: x mandatory;
 }
 
-:host([linear="true"] ) ::slotted( mds-stepper-bar-item ),
-:host([linear] ) ::slotted( mds-stepper-bar-item) {
+:host([linear='true']) ::slotted(mds-stepper-bar-item),
+:host([linear]) ::slotted(mds-stepper-bar-item) {
   pointer-events: none;
 }
 
-:host([linear="false"] ) ::slotted( mds-stepper-bar-item) {
+:host([linear='false']) ::slotted(mds-stepper-bar-item) {
   pointer-events: auto;
 }
 
@@ -58,4 +109,3 @@
 
 @import './css/mds-stepper-bar-pref-animation.css';
 @import './css/mds-stepper-bar-navigation.css';
-@import '../../tailwind/fouc.css';

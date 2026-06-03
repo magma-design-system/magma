@@ -121,15 +121,18 @@ Type: `Promise<void>`
  - [mds-img](../mds-img)
  - [mds-input](../mds-input)
  - [mds-input-switch](../mds-input-switch)
+ - [mds-input-upload](../mds-input-upload)
  - [mds-keyboard-key](../mds-keyboard-key)
  - [mds-kpi-item](../mds-kpi-item)
  - [mds-list-item](../mds-list-item)
  - [mds-mention](../mds-mention)
  - [mds-paginator-item](../mds-paginator-item)
  - [mds-policy-ai](../mds-policy-ai)
+ - [mds-radial-progress](../mds-radial-progress)
  - [mds-stepper-bar-item](../mds-stepper-bar-item)
  - [mds-tab-bar-item](../mds-tab-bar-item)
  - [mds-url-view](../mds-url-view)
+ - [mds-usage](../mds-usage)
 
 ### Graph
 ```mermaid
@@ -145,15 +148,18 @@ graph TD;
   mds-img --> mds-icon
   mds-input --> mds-icon
   mds-input-switch --> mds-icon
+  mds-input-upload --> mds-icon
   mds-keyboard-key --> mds-icon
   mds-kpi-item --> mds-icon
   mds-list-item --> mds-icon
   mds-mention --> mds-icon
   mds-paginator-item --> mds-icon
   mds-policy-ai --> mds-icon
+  mds-radial-progress --> mds-icon
   mds-stepper-bar-item --> mds-icon
   mds-tab-bar-item --> mds-icon
   mds-url-view --> mds-icon
+  mds-usage --> mds-icon
   style mds-icon fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

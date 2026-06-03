@@ -6,6 +6,6 @@ describe('mds-kpi-item', () => {
     // await page.setContent('<mds-kpi-item></mds-kpi-item>')
     // const element = await page.find('mds-kpi-item')
     // expect(element).toHaveAttribute('hydrated')
-    expect(true).toBe(true)
-  })
-})
+    expect(true).toBe(true);
+  });
+});

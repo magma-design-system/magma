@@ -45,34 +45,38 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## CSS Custom Properties
 
-| Name                                          | Description                                                                                                                           |
-| --------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| `--mds-tab-item-default-background`           | Sets the `background-color` of `mds-tab-item` or `mds-tab::part(slider)` depending on attribute `animation`                           |
-| `--mds-tab-item-default-color`                | Sets the `color` of `mds-tab-item` or `mds-tab::part(slider)` depending on attribute `animation`                                      |
-| `--mds-tab-item-default-shadow`               | Sets the `box-shadow` of `mds-tab-item` or `mds-tab::part(slider)` depending on attribute `animation`                                 |
-| `--mds-tab-item-hover-background`             | Sets the `background-color` when the mouse is over of `mds-tab-item` or `mds-tab::part(slider)` depending on attribute `animation`    |
-| `--mds-tab-item-hover-color`                  | Sets the `color` when the mouse is over of `mds-tab-item` or `mds-tab::part(slider)` depending on attribute `animation`               |
-| `--mds-tab-item-hover-shadow`                 | Sets the `box-shadow` when the mouse is over of `mds-tab-item` or `mds-tab::part(slider)` depending on attribute `animation`          |
-| `--mds-tab-item-radius`                       | Sets the `border-radius` of `mds-tab-item` or `mds-tab::part(slider)` depending on attribute `animation`.                             |
-| `--mds-tab-item-selected-background`          | Sets the `background-color` when the item is selected of `mds-tab-item` or `mds-tab::part(slider)` depending on attribute `animation` |
-| `--mds-tab-item-selected-color`               | Sets the `color` when the item is selected of `mds-tab-item` or `mds-tab::part(slider)` depending on attribute `animation`            |
-| `--mds-tab-item-selected-shadow`              | Sets the `box-shadow` when the item is selected of `mds-tab-item` or `mds-tab::part(slider)` depending on attribute `animation`       |
-| `--mds-tab-item-transition-duration`          | Sets the animation duration on how the contents height is resized when the component switch from a content to another one             |
-| `--mds-tab-item-transition-timing-function`   | Sets the animation timing function on how the contents height is resized when the component switch from a content to another one      |
-| `--mds-tab-scroll-scrollbar-margin`           | Sets the margin of the browser scroll bar (if supported)                                                                              |
-| `--mds-tab-scroll-scrollbar-radius`           | Sets the border-radius of the browser scroll bar (if supported)                                                                       |
-| `--mds-tab-scroll-scrollbar-size`             | Sets the height and width of the browser scroll bar (if supported)                                                                    |
-| `--mds-tab-scroll-scrollbar-thumb-background` | Sets the background-color of the browser scroll bar thumb (if supported)                                                              |
-| `--mds-tab-scroll-scrollbar-track-background` | Sets the background-color of the browser scroll bar track (if supported)                                                              |
-| `--mds-tab-slide-delay`                       | Sets the sliding delay of the tabs                                                                                                    |
-| `--mds-tab-tabs-background`                   | Sets the `background-color` of `mds-tab::part(tabs)`                                                                                  |
-| `--mds-tab-tabs-gap`                          | Sets the `gap` of `mds-tab::part(tabs)`                                                                                               |
-| `--mds-tab-tabs-overflow-shadow`              | Sets the overflow shadow effect                                                                                                       |
-| `--mds-tab-tabs-overflow-shadow-size`         | Sets overflow shadow size                                                                                                             |
-| `--mds-tab-tabs-padding`                      | Sets the `padding` of `mds-tab::part(tabs)`                                                                                           |
-| `--mds-tab-tabs-radius`                       | Sets the `border-radius` of `mds-tab::part(tabs)`                                                                                     |
-| `--mds-tab-tabs-wrapper-margin`               | Sets the `margin` of tabs wrapper                                                                                                     |
-| `--mds-tab-tabs-wrapper-outline-opacity`      | Sets the `opacity` of outline border which holds                                                                                      |
+| Name                                          | Description                                   |
+| --------------------------------------------- | --------------------------------------------- |
+| `--mds-tab-direction-vertical-columns`        | Defines the column layout for vertical tabs.  |
+| `--mds-tab-item-default-background`           | Background color for default tab items.       |
+| `--mds-tab-item-default-color`                | Text color for default tab items.             |
+| `--mds-tab-item-default-shadow`               | Shadow for default tab items.                 |
+| `--mds-tab-item-hover-background`             | Background color for hovered tab items.       |
+| `--mds-tab-item-hover-color`                  | Text color for hovered tab items.             |
+| `--mds-tab-item-hover-shadow`                 | Shadow for hovered tab items.                 |
+| `--mds-tab-item-radius`                       | Border radius for tab items.                  |
+| `--mds-tab-item-selected-background`          | Background color for selected tab items.      |
+| `--mds-tab-item-selected-color`               | Text color for selected tab items.            |
+| `--mds-tab-item-selected-shadow`              | Shadow for selected tab items.                |
+| `--mds-tab-scroll-behavior`                   | Scroll behavior for tab container.            |
+| `--mds-tab-scroll-scrollbar-margin`           | Margin for scrollbar.                         |
+| `--mds-tab-scroll-scrollbar-radius`           | Radius of scrollbar.                          |
+| `--mds-tab-scroll-scrollbar-size`             | Size of scrollbar.                            |
+| `--mds-tab-scroll-scrollbar-thumb-background` | Background color of scrollbar thumb.          |
+| `--mds-tab-scroll-scrollbar-track-background` | Background color of scrollbar track.          |
+| `--mds-tab-slide-delay`                       | Delay before tab slide animation.             |
+| `--mds-tab-tabs-background`                   | Background color of the tabs container.       |
+| `--mds-tab-tabs-gap`                          | Gap between tabs.                             |
+| `--mds-tab-tabs-overflow-shadow`              | Shadow applied to overflowed tabs.            |
+| `--mds-tab-tabs-overflow-shadow-size`         | Size of the overflow shadow.                  |
+| `--mds-tab-tabs-padding`                      | Padding inside the tabs container.            |
+| `--mds-tab-tabs-radius`                       | Border radius of the tabs container.          |
+| `--mds-tab-tabs-wrapper-margin`               | Margin for the tabs wrapper.                  |
+| `--mds-tab-tabs-wrapper-outline-opacity`      | Opacity of the wrapper outline.               |
+| `--mds-tab-tabs-wrapper-shadow`               | Shadow for the tabs wrapper.                  |
+| `--mds-tab-tabs-wrapper-shadow-color`         | Color of the wrapper shadow.                  |
+| `--mds-tab-transition-duration`               | Duration of tab transition animation.         |
+| `--mds-tab-transition-timing-function`        | Timing function for tab transition animation. |
 
 
 ## Dependencies
@@ -85,6 +89,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
  - [mds-pref-contrast](../mds-pref-contrast)
  - [mds-pref-language](../mds-pref-language)
  - [mds-pref-theme](../mds-pref-theme)
+ - [mds-pref-theme-variant](../mds-pref-theme-variant)
 
 ### Graph
 ```mermaid
@@ -95,6 +100,7 @@ graph TD;
   mds-pref-contrast --> mds-tab
   mds-pref-language --> mds-tab
   mds-pref-theme --> mds-tab
+  mds-pref-theme-variant --> mds-tab
   style mds-tab fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

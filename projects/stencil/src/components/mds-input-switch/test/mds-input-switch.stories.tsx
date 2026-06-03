@@ -1,10 +1,7 @@
-import {
-  typographyInfoDictionary,
-  typographyVariationsDictionary,
-} from '@dictionary/typography'
-import { inputSwitchSizeDictionary } from '../meta/dictionary'
-import { iconsDictionary } from '@dictionary/icon'
-import { h } from '@stencil/core'
+import { typographyInfoDictionary, typographyVariationsDictionary } from '@type/typography';
+import { inputSwitchSizeDictionary } from '../meta/dictionary';
+import { iconsDictionary } from '@type/icon';
+import { h } from '@stencil/core';
 
 export default {
   title: 'Form / Switch',
@@ -71,13 +68,11 @@ export default {
       description: 'Specifies the value of the input element',
     },
   },
-}
+};
 
-const Template = args => (
-  <mds-input-switch {...args}>Notifiche via e-mail</mds-input-switch>
-)
+const Template = (args) => <mds-input-switch {...args}>Notifiche via e-mail</mds-input-switch>;
 
-const TemplateMultiple = args => (
+const TemplateMultiple = (args) => (
   <form name="form-name" class="grid grid-cols-1 gap-400">
     <mds-input-switch {...args} value="1">
       Choice A
@@ -92,7 +87,7 @@ const TemplateMultiple = args => (
       Choice D
     </mds-input-switch>
   </form>
-)
+);
 
 const TemplateList = () => (
   <div class="grid grid-cols-1 gap-400">
@@ -119,7 +114,7 @@ const TemplateList = () => (
       Choice D
     </mds-input-switch>
   </div>
-)
+);
 
 export const Default = {
   render: Template,
@@ -129,7 +124,7 @@ export const Default = {
     type: 'switch',
     value: '1',
   },
-}
+};
 
 export const ListExample = {
   render: TemplateList,
@@ -139,7 +134,7 @@ export const ListExample = {
     type: 'switch',
     value: '1',
   },
-}
+};
 
 export const Checked = {
   render: Template,
@@ -150,7 +145,7 @@ export const Checked = {
     type: 'switch',
     value: '1',
   },
-}
+};
 
 export const Disabled = {
   render: Template,
@@ -162,7 +157,7 @@ export const Disabled = {
     type: 'switch',
     value: '1',
   },
-}
+};
 
 export const Explicit = {
   render: Template,
@@ -173,7 +168,7 @@ export const Explicit = {
     type: 'switch',
     value: '1',
   },
-}
+};
 
 export const Icon = {
   render: Template,
@@ -185,7 +180,7 @@ export const Icon = {
     type: 'checkbox',
     value: '1',
   },
-}
+};
 
 export const Indeterminate = {
   render: Template,
@@ -197,7 +192,7 @@ export const Indeterminate = {
     type: 'checkbox',
     value: '1',
   },
-}
+};
 
 export const Size = {
   render: Template,
@@ -209,7 +204,7 @@ export const Size = {
     type: 'switch',
     value: '1',
   },
-}
+};
 
 export const Typography = {
   render: Template,
@@ -222,7 +217,7 @@ export const Typography = {
     type: 'switch',
     value: '1',
   },
-}
+};
 
 export const Checkbox = {
   render: Template,
@@ -232,7 +227,7 @@ export const Checkbox = {
     type: 'checkbox',
     value: '1',
   },
-}
+};
 
 export const Radio = {
   render: TemplateMultiple,
@@ -241,4 +236,4 @@ export const Radio = {
     name: 'radio-name',
     type: 'radio',
   },
-}
+};

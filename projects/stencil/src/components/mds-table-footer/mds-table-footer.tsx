@@ -1,4 +1,4 @@
-import { Component, Host, h } from '@stencil/core'
+import { Component, Host, h } from '@stencil/core';
 
 /**
  * @slot default - Add `mds-table-row` element/s.
@@ -10,13 +10,11 @@ import { Component, Host, h } from '@stencil/core'
   shadow: true,
 })
 export class MdsTableFooter {
-
-  render () {
+  render() {
     return (
       <Host role="row">
-        <slot/>
+        <slot />
       </Host>
-    )
+    );
   }
-
 }

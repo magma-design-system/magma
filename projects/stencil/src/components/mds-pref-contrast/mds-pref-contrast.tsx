@@ -1,16 +1,27 @@
-import { Component, Host, Element, Event, EventEmitter, h, Prop, Watch, Method, State } from '@stencil/core'
-import miBaselineContrast from '@icon/mi/baseline/contrast.svg'
-import miOutlineAutoAwesome from '@icon/mi/outline/auto-awesome.svg'
-import miBaselineAutoAwesome from '@icon/mi/baseline/auto-awesome.svg'
-import miBaselineSettings from '@icon/mi/baseline/settings.svg'
-import { Locale } from '@common/locale'
-import localeEl from './meta/locale.el.json'
-import localeEn from './meta/locale.en.json'
-import localeEs from './meta/locale.es.json'
-import localeIt from './meta/locale.it.json'
-import { ContrastModeType } from './meta/types'
-import { MdsPrefChangeEventDetail } from '@event/preference'
-import { TabSizeType } from '@type/button'
+import {
+  Component,
+  Host,
+  Element,
+  Event,
+  EventEmitter,
+  h,
+  Prop,
+  Watch,
+  Method,
+  State,
+} from '@stencil/core';
+import miBaselineContrast from '@icon/mi/baseline/contrast.svg';
+import miOutlineAutoAwesome from '@icon/mi/outline/auto-awesome.svg';
+import miBaselineAutoAwesome from '@icon/mi/baseline/auto-awesome.svg';
+import miBaselineSettings from '@icon/mi/baseline/settings.svg';
+import { Locale } from '@common/locale';
+import localeEl from './meta/locale.el.json';
+import localeEn from './meta/locale.en.json';
+import localeEs from './meta/locale.es.json';
+import localeIt from './meta/locale.it.json';
+import { ContrastModeType } from './meta/types';
+import { MdsPrefChangeEventDetail } from '@event/preference';
+import { TabSizeType } from '@type/button';
 
 @Component({
   tag: 'mds-pref-contrast',
@@ -18,20 +29,20 @@ import { TabSizeType } from '@type/button'
   shadow: true,
 })
 export class MdsPrefContrast {
-  @Element() private element: HTMLMdsPrefContrastElement
-  private readonly localStorageAlias: string = 'mdsPrefContrast'
-  private readonly customPropertyAlias: string = '--magma-pref-contrast'
-  private readonly defaultMode: ContrastModeType = 'system'
+  @Element() private element: HTMLMdsPrefContrastElement;
+  private readonly localStorageAlias: string = 'mdsPrefContrast';
+  private readonly customPropertyAlias: string = '--magma-pref-contrast';
+  private readonly defaultMode: ContrastModeType = 'system';
   private readonly t: Locale = new Locale({
     el: localeEl,
     en: localeEn,
     es: localeEs,
     it: localeIt,
-  })
-  @State() language: string
+  });
+  @State() language: string;
   @Method()
-  async updateLang (): Promise<void> {
-    this.language = this.t.lang(this.element)
+  async updateLang(): Promise<void> {
+    this.language = this.t.lang(this.element);
   }
 
   private readonly prefersDefaults = {
@@ -39,22 +50,22 @@ export class MdsPrefContrast {
     less: 'no-preference',
     more: 'more',
     'no-preference': 'no-preference',
-  }
+  };
 
   /**
    * Sets the size of the component items nested inside it
    */
-  @Prop({ reflect: true }) readonly size?: TabSizeType
+  @Prop({ reflect: true }) readonly size?: TabSizeType;
 
   /**
    * Specifies the preference mode
    */
-  @Prop({ mutable: true, reflect: true }) mode?: ContrastModeType
+  @Prop({ mutable: true, reflect: true }) mode?: ContrastModeType;
 
   /**
    * Emits when the component is triggered
    */
-  @Event({ eventName: 'mdsPrefChange' }) prefChangeEvent: EventEmitter<MdsPrefChangeEventDetail>
+  @Event({ eventName: 'mdsPrefChange' }) prefChangeEvent: EventEmitter<MdsPrefChangeEventDetail>;
 
   private readonly contrast = {
     more: {
@@ -69,64 +80,92 @@ export class MdsPrefContrast {
       selector: 'pref-contrast-no-preference',
       label: 'contrastDefault',
     },
-  }
+  };
 
-  componentWillRender (): void {
-    this.t.lang(this.element)
-    this.setContrast(this.mode ?? localStorage.getItem(this.localStorageAlias) as ContrastModeType ?? this.defaultMode)
+  componentWillRender(): void {
+    this.t.lang(this.element);
+    this.setContrast(
+      this.mode ??
+        (localStorage.getItem(this.localStorageAlias) as ContrastModeType) ??
+        this.defaultMode,
+    );
   }
 
   private readonly rollbackContrast = (): ContrastModeType => {
     if (!window) {
-      return this.defaultMode
+      return this.defaultMode;
     }
 
     for (const key in this.prefersDefaults) {
       if ({}.hasOwnProperty.call(this.prefersDefaults, key)) {
         if (window.matchMedia(`(prefers-contrast: ${key})`).matches) {
-          return this.prefersDefaults[key]
+          return this.prefersDefaults[key];
         }
       }
     }
 
-    throw Error('No prefers-contrast value found.')
-  }
+    throw Error('No prefers-contrast value found.');
+  };
 
   private readonly setContrast = (mode: ContrastModeType): void => {
-    this.prefChangeEvent.emit({ preference: 'contrast' })
-    this.rollbackContrast()
-    this.mode = mode
-    localStorage.setItem(this.localStorageAlias, this.mode)
+    this.prefChangeEvent.emit({ preference: 'contrast' });
+    this.rollbackContrast();
+    this.mode = mode;
+    localStorage.setItem(this.localStorageAlias, this.mode);
     if (document) {
-      const element = document.querySelector('html')
+      const element = document.querySelector('html');
       for (const key in this.contrast) {
         if ({}.hasOwnProperty.call(this.contrast, key)) {
-          element?.classList.remove(this.contrast[key].selector)
+          element?.classList.remove(this.contrast[key].selector);
         }
       }
-      element?.classList.add(this.contrast[mode].selector)
-      element?.style.setProperty(this.customPropertyAlias, this.mode)
+      element?.classList.add(this.contrast[mode].selector);
+      element?.style.setProperty(this.customPropertyAlias, this.mode);
     }
-  }
+  };
 
   @Watch('mode')
-  modeChanged (newValue: ContrastModeType, oldValue: ContrastModeType): void {
+  modeChanged(newValue: ContrastModeType, oldValue: ContrastModeType): void {
     if (newValue !== oldValue) {
-      this.setContrast(newValue)
+      this.setContrast(newValue);
     }
   }
 
-  render () {
+  render() {
     return (
       <Host>
-        <mds-text class="info" typography="caption"><b>{this.t.get('label')}</b> {this.t.get(this.contrast[this.mode ?? this.defaultMode].label)}</mds-text>
+        <mds-text class="info" typography="caption">
+          <b>{this.t.get('label')}</b>{' '}
+          {this.t.get(this.contrast[this.mode ?? this.defaultMode].label)}
+        </mds-text>
         <mds-tab fill size={this.size}>
-          <mds-tab-item selected={this.mode === 'more'} onClick={() => { this.setContrast('more') }} class="item item--more" icon={miBaselineContrast}></mds-tab-item>
-          <mds-tab-item selected={this.mode === 'system'} onClick={() => { this.setContrast('system') }} class="item item--system" icon={miBaselineSettings}></mds-tab-item>
-          <mds-tab-item selected={this.mode === 'no-preference'} onClick={() => { this.setContrast('no-preference') }} class="item item--default" icon={this.mode === 'no-preference' ? miBaselineAutoAwesome : miOutlineAutoAwesome}></mds-tab-item>
+          <mds-tab-item
+            selected={this.mode === 'more'}
+            onClick={() => {
+              this.setContrast('more');
+            }}
+            class="item item--more"
+            icon={miBaselineContrast}
+          ></mds-tab-item>
+          <mds-tab-item
+            selected={this.mode === 'system'}
+            onClick={() => {
+              this.setContrast('system');
+            }}
+            class="item item--system"
+            icon={miBaselineSettings}
+          ></mds-tab-item>
+          <mds-tab-item
+            selected={this.mode === 'no-preference'}
+            onClick={() => {
+              this.setContrast('no-preference');
+            }}
+            class="item item--default"
+            icon={this.mode === 'no-preference' ? miBaselineAutoAwesome : miOutlineAutoAwesome}
+          ></mds-tab-item>
           {/* <mds-tab-item selected={this.mode === 'sensor'} onClick={() => { this.setContrast('sensor') }} class="item item--sensor" icon={this.mode === 'sensor' ? miBaselineAutoAwesome : miOutlineAutoAwesome}></mds-tab-item> */}
         </mds-tab>
       </Host>
-    )
+    );
   }
 }

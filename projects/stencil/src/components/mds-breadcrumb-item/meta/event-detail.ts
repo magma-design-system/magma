@@ -1,4 +1,4 @@
 export interface MdsBreadcrumbItemEventDetail {
-  id: string
-  selected: boolean
+  id: string;
+  selected: boolean;
 }

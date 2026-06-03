@@ -1,11 +1,20 @@
-:host-context(.pref-theme-dark) {
-  --mds-modal-window-background: theme('colors.tone-neutral-09');
-  --mds-modal-window-shadow: theme('boxShadow.outline'), theme('boxShadow.xl');
+:host-context(:root.pref-theme-dark:not(.pref-theme-scheme-light)) {
+  --mds-modal-window-background: rgb(var(--tone-neutral-10));
+  --mds-modal-window-shadow: var(--shadow-outline), var(--shadow-xl);
+
+  .action-close {
+    --mds-button-color: rgb(var(--tone-neutral-01));
+  }
 }
 
 @media (prefers-color-scheme: dark) {
-  :host-context(.pref-theme-system) {
-    --mds-modal-window-background: theme('colors.tone-neutral-09');
-    --mds-modal-window-shadow: theme('boxShadow.outline'), theme('boxShadow.xl');
+  :host-context(:root.pref-theme-system:not(.pref-theme-scheme-light)),
+  :host-context(:root:not([data-magma-pref])) {
+    --mds-modal-window-background: rgb(var(--tone-neutral-10));
+    --mds-modal-window-shadow: var(--shadow-outline), var(--shadow-xl);
+
+    .action-close {
+      --mds-button-color: rgb(var(--tone-neutral-01));
+    }
   }
 }

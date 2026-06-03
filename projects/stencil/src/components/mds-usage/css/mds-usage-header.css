@@ -1,0 +1,22 @@
+.label {
+  color: var(--mds-usage-header-color);
+}
+
+mds-icon {
+  fill: var(--mds-usage-header-color);
+  height: --spacing(400);
+  width: --spacing(400);
+}
+
+.header {
+  align-items: center;
+  background-color: var(--mds-usage-border-color);
+  border-bottom-left-radius: --spacing(200);
+  border-bottom-right-radius: --spacing(200);
+  display: inline-flex;
+  gap: --spacing(200);
+  height: --spacing(600);
+  justify-self: start;
+  padding-left: --spacing(200);
+  padding-right: --spacing(200);
+}

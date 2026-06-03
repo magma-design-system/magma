@@ -1,5 +1,5 @@
 export interface MdsInputSwitchEventDetail {
-  name: string
-  checked: boolean
-  value: string
+  name: string;
+  checked: boolean;
+  value: string;
 }

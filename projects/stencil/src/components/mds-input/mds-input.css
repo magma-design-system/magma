@@ -1,85 +1,195 @@
-@import '~@maggioli-design-system/styles/dist/tailwind/typography.css';
-@tailwind components;
+@import './css/mds-input-fouc.css';
 
 /**
- * @prop --mds-input-background: Sets the background-color of the component
- * @prop --mds-input-icon-color: Sets the icon color of the component
- * @prop --mds-input-placeholder-default-color: Sets the color of the placeholder
- * @prop --mds-input-placeholder-focus-color: Sets the color of the placeholder when the input is focused
- * @prop --mds-input-placeholder-hover-color: Sets the color of the placeholder when the input is hovered
- * @prop --mds-input-ring: Sets the box-shadow of the component's input
- * @prop --mds-input-shadow: Sets the box-shadow of the component's input
- * @prop --mds-input-textarea-field-sizing: Sets the height of the textarea automatically, this is an EXPERIMENTAL css property, so it couldn't work in every browser
- * @prop --mds-input-textarea-max-height: Sets the `max-height` of the component when attribute `type` is set to `textarea`
- * @prop --mds-input-textarea-min-height: Sets the `min-height` of the component when attribute `type` is set to `textarea`
- * @prop --mds-input-tip-background: Sets the background color of the tip message at the bottom right of the component
- * @prop --mds-input-variant-color: Sets the variant colors of the component
+ * @prop --mds-input-background: The background color of the input field.
+ * @prop --mds-input-icon-color: The RGB channels used to color icons inside the input.
+ * @prop --mds-input-placeholder-default-color: The placeholder color in the default state.
+ * @prop --mds-input-placeholder-focus-color: The placeholder color when the input is focused.
+ * @prop --mds-input-placeholder-hover-color: The placeholder color when the input is hovered.
+ * @prop --mds-input-ring: The outline ring applied to the input on interactive states.
+ * @prop --mds-input-shadow: The box-shadow applied to the input component.
+ * @prop --mds-input-textarea-field-sizing: The field-sizing behavior of the textarea.
+ * @prop --mds-input-textarea-max-height: The max-height applied to the textarea.
+ * @prop --mds-input-textarea-min-height: The min-height applied to the textarea.
+ * @prop --mds-input-textarea-resize: Controls whether the textarea is resizable.
+ * @prop --mds-input-tip-background: The background color of the input tip/inline help.
+ * @prop --mds-input-tip-horizontal-offset-focused: The horizontal offset applied when the input tip is focused
+ * @prop --mds-input-tip-horizontal-offset: The default horizontal offset applied to the input tip
+ * @prop --mds-input-tip-vertical-offset: The vertical offset applied to the input tip
+ * @prop --mds-input-variant-color-rgb: The raw RGB channels used for variant-driven styling.
  */
 
-:host {
-  --mds-input-background: theme('colors.tone-neutral');
-  --mds-input-icon-color: var(--mds-input-variant-color);
-  --mds-input-placeholder-default-color: theme('colors.tone-neutral-06');
-  --mds-input-placeholder-focus-color: theme('colors.tone-neutral-07');
-  --mds-input-placeholder-hover-color: var(--mds-input-placeholder-default-color);
-  --mds-input-ring: 0 0 0 1px rgb(var(--mds-input-variant-color) / 0.1);
-  --mds-input-shadow: 0 1px 3px 0 rgb(var(--mds-input-variant-color) / 0.1), 0 1px 2px 0 rgb(var(--mds-input-variant-color) / 0.06);
-  --mds-input-textarea-field-sizing: content;
-  --mds-input-textarea-resize: none;
-  --mds-input-textarea-max-height: theme('size.6400');
-  --mds-input-textarea-min-height: theme('size.2400');
-  --mds-input-tip-background: 84 84 84;
-  --mds-input-variant-color: 0 0 0;
-  /* private */ --mds-input-controls-border: 2px solid theme('colors.tone-neutral-09');
-  /* private */ --mds-input-controls-color: theme('colors.tone-neutral-03');
-
-  @apply
-    gap-200
-    text-info-detail;
-
-  container-type: inline-size;
-  display: flex;
-  position: relative;
+@property --mds-input-background {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral));
+  syntax: '<color>';
 }
 
-:host([typography="detail"]) .input {
+@property --mds-input-placeholder-default-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-06));
+  syntax: '<color>';
+}
+
+@property --mds-input-placeholder-focus-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-07));
+  syntax: '<color>';
+}
+
+@property --mds-input-placeholder-hover-color {
+  inherits: false;
+  initial-value: var(--mds-input-placeholder-default-color);
+  syntax: '<color>';
+}
+
+@property --mds-input-tip-background {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-03));
+  syntax: '<color>';
+}
+
+@property --mds-input-icon-color {
+  inherits: false;
+  initial-value: var(--mds-input-variant-color-rgb);
+  syntax: '<integer>+';
+}
+
+@property --mds-input-variant-color-rgb {
+  inherits: false;
+  initial-value: 0 0 0;
+  syntax: '<integer>+';
+}
+
+@property --mds-input-textarea-resize {
+  inherits: false;
+  initial-value: none;
+  syntax: 'none | vertical';
+}
+
+@property --mds-input-textarea-max-height {
+  inherits: false;
+  initial-value: --spacing(6400);
+  syntax: '<length>';
+}
+
+@property --mds-input-textarea-min-height {
+  inherits: false;
+  initial-value: --spacing(2400);
+  syntax: '<length>';
+}
+
+@property --mds-input-tip-horizontal-offset-focused {
+  inherits: false;
+  initial-value: --spacing(100);
+  syntax: '<length>';
+}
+
+@property --mds-input-tip-horizontal-offset {
+  inherits: false;
+  initial-value: --spacing(100);
+  syntax: '<length>';
+}
+
+@property --mds-input-tip-vertical-offset {
+  inherits: false;
+  initial-value: --spacing(100);
+  syntax: '<length>';
+}
+
+@property --mds-input-textarea-field-sizing {
+  inherits: false;
+  initial-value: content;
+  syntax: 'content | fixed';
+}
+
+/* ❌ Not supported: box-shadow cannot be expressed with @property syntax
+@property --mds-input-shadow {
+  inherits: false;
+  syntax: "<shadow>";
+  initial-value: 0 1px 3px 0 rgb(var(--mds-input-variant-color-rgb) / 0.1), 0 1px 2px 0 rgb(var(--mds-input-variant-color-rgb) / 0.06);
+}
+*/
+
+/* ❌ Not supported: outline/ring values do not match any allowed syntax category
+@property --mds-input-ring {
+  inherits: false;
+  syntax: "<shadow>";
+  initial-value: 0 0 0 1px rgb(var(--mds-input-variant-color-rgb) / 0.1);
+}
+*/
+
+:host {
+  --mds-input-background: rgb(var(--tone-neutral));
+  --mds-input-icon-color: rgb(var(--variant-primary-03));
+  --mds-input-placeholder-default-color: rgb(var(--tone-neutral-06));
+  --mds-input-placeholder-focus-color: rgb(var(--tone-neutral-07));
+  --mds-input-placeholder-hover-color: var(--mds-input-placeholder-default-color);
+  --mds-input-ring: 0 0 0 1px rgb(var(--mds-input-variant-color-rgb) / 0.1);
+  --mds-input-shadow:
+    0 1px 3px 0 rgb(var(--mds-input-variant-color-rgb) / 0.1),
+    0 1px 2px 0 rgb(var(--mds-input-variant-color-rgb) / 0.06);
+  --mds-input-textarea-field-sizing: content;
+  --mds-input-textarea-resize: none;
+  --mds-input-textarea-max-height: --spacing(6400);
+  --mds-input-textarea-min-height: --spacing(2400);
+  --mds-input-tip-background: rgb(var(--tone-neutral-03));
+  --mds-input-tip-horizontal-offset-focused: --spacing(100);
+  --mds-input-tip-horizontal-offset: --spacing(100);
+  --mds-input-tip-vertical-offset: --spacing(100);
+  --mds-input-variant-color-rgb: var(--variant-primary-03);
+  --mds-input-border-radius: var(--radius-xl);
+
+  /* private */
+  --mds-input-controls-border: 2px solid rgb(var(--tone-neutral-09));
+  --mds-input-controls-color: rgb(var(--tone-neutral-03));
+
+  border-radius: var(--mds-input-border-radius);
+  container-type: inline-size;
+  corner-shape: var(--magma-corner-shape, round);
+  display: flex;
+  gap: --spacing(200);
+  position: relative;
+
   @apply text-info-detail;
 }
 
-:host([typography="snippet"]) .input {
+:host([typography='detail']) .input {
+  @apply text-info-detail;
+}
+
+:host([typography='snippet']) .input {
   @apply text-code-snippet;
 }
 
 .input {
-  @apply
-    duration-300
-    ease-out-expo
-    m-0
-    px-400
-    py-300
-    rounded-lg
-    text-info-detail;
+  @apply text-info-detail;
 
-    background-color: var(--mds-input-background);
-    border: 0;
-    box-shadow: var(--mds-input-ring), var(--mds-input-shadow);
-    box-sizing: border-box;
-    color: theme('colors.tone-neutral-02');
-    max-width: 100%;
-    min-height: 3rem;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    transition-property: background-color, border-color, box-shadow, color, fill, margin, opacity, padding, transform;
-    width: 100%;
+  background-color: var(--mds-input-background);
+  border: 0;
+  border-radius: inherit;
+  box-shadow: var(--mds-input-ring), var(--mds-input-shadow);
+  box-sizing: border-box;
+  color: rgb(var(--tone-neutral-02));
+  corner-shape: inherit;
+  margin: 0;
+  max-width: 100%;
+  min-height: 3rem;
+  overflow: hidden;
+  padding: --spacing(300) --spacing(400);
+  text-overflow: ellipsis;
+  transition-duration: var(--duration-300);
+  transition-property:
+    background-color, border-color, box-shadow, color, fill, margin, opacity, padding, transform;
+  transition-timing-function: var(--ease-out-expo);
+  width: 100%;
 }
 
 .input::placeholder {
-  @apply
-    duration-300
-    ease-out-expo;
-
   color: var(--mds-input-placeholder-default-color);
+  transition-duration: var(--duration-300);
   transition-property: color;
+  transition-timing-function: var(--ease-out-expo);
 }
 
 .input:hover::placeholder {
@@ -99,8 +209,7 @@
 
 :host textarea.input,
 :host([typography]) textarea.input {
-  @apply rounded-br-none;
-
+  border-radius: var(--radius-xs);
   field-sizing: var(--mds-input-textarea-field-sizing);
   max-height: var(--mds-input-textarea-max-height);
   min-height: var(--mds-input-textarea-min-height);
@@ -108,44 +217,49 @@
   resize: var(--mds-input-textarea-resize);
 }
 
+@container style(--mds-input-textarea-resize: none) {
+  :host textarea.input,
+  :host([typography]) textarea.input {
+    border-bottom-right-radius: 0;
+  }
+}
+
 .input:focus {
-  @apply outline-none;
+  @apply outline-hidden;
 
-  --mds-input-ring: 0 0 0 3px rgb(var(--mds-input-variant-color) / 1);
-  --mds-input-shadow: 0 4px 6px 3px rgb(var(--mds-input-variant-color) / 0.1), 0 2px 4px -1px rgb(var(--mds-input-variant-color) / 0.06);
-
+  --mds-input-ring: 0 0 0 3px rgb(var(--mds-input-variant-color-rgb) / 1);
+  --mds-input-shadow:
+    0 4px 6px 3px rgb(var(--mds-input-variant-color-rgb) / 0.1),
+    0 2px 4px -1px rgb(var(--mds-input-variant-color-rgb) / 0.06);
 }
 
 .input:disabled {
-  background-color: theme('colors.tone-neutral-10');
+  background-color: rgb(var(--tone-neutral-10));
 }
 
 .input:disabled,
 .input:disabled::placeholder {
-  color: theme('colors.tone-neutral-05');
+  color: rgb(var(--tone-neutral-05));
 }
 
 .input.has-icon {
-  @apply pl-1100;
+  padding-left: --spacing(1100);
 }
 
 .input.has-right-icon {
-  @apply pr-1100;
+  padding-right: --spacing(1100);
 }
-
 
 .await,
 .icon {
-  @apply
-    left-300
-    top-300;
-
-  fill: rgb(var(--mds-input-icon-color));
+  fill: var(--mds-input-icon-color);
+  left: --spacing(300);
   position: absolute;
+  top: --spacing(300);
 }
 
 .await {
-  color: rgb(var(--mds-input-icon-color));
+  color: var(--mds-input-icon-color);
   height: 24px;
   width: 24px;
 }
@@ -160,43 +274,39 @@
 }
 
 .counter-button {
-  @apply
-    h-600
-    rounded-lg
-    w-700;
-
-  --mds-button-background: transparent;
-
+  aspect-ratio: unset;
   border: 0;
+  border-radius: var(--mds-input-border-radius);
   fill: var(--mds-input-controls-color);
+  height: --spacing(600);
   min-height: 0;
-  padding: 0;
+  width: --spacing(700);
 }
 
-.counter-button:hover {
-  --mds-button-background: theme('colors.tone-neutral-09');
-}
+/* .counter-button:hover {
+  --mds-button-background: rgb(var(--tone-neutral-09));
+} */
 
 .counter .counter-button:first-child {
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
   border-top-left-radius: 0;
+  border-top-right-radius: var(--mds-input-border-radius);
 }
 
 .counter .counter-button:last-child {
   border-bottom-left-radius: 0;
+  border-bottom-right-radius: var(--mds-input-border-radius);
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
 
 .counter-button--horizontal {
-  @apply
-    h-1200
-    w-1200;
-
   bottom: 0;
+  height: --spacing(1200);
   position: absolute;
   top: 0;
+  width: --spacing(1200);
 }
 
 .counter-button--decrease {
@@ -214,73 +324,71 @@
 }
 
 .password-toggle-button {
-  @apply
-    top-150
-    right-150;
-
   fill: var(--mds-input-controls-color);
   position: absolute;
+  right: --spacing(150);
+  top: --spacing(150);
 }
 
 .mic-toggle-button {
-  @apply
-    top-150
-    right-150;
-
   fill: var(--mds-input-controls-color);
   position: absolute;
+  right: --spacing(150);
+  top: --spacing(150);
 }
 
 .toggle-button--error {
   cursor: help;
-  fill: theme('colors.tone-neutral-06');
+  fill: rgb(var(--tone-neutral-06));
 }
 
 .mic-toggle-button--recording {
   @apply animate-pulse;
 }
 
-:host([type="number"]) .input {
+:host([type='number']) .input {
 
   /* required to avoid input number buttons on firefox go be shown always */
 
   /* stylelint-disable-next-line property-no-vendor-prefix */
   -moz-appearance: textfield;
-  @apply pr-800;
+  padding-right: --spacing(800);
 }
 
-:host([type="number"][controls-layout="horizontal"]) .input {
-  @apply px-1400;
-
+:host([type='number'][controls-layout='horizontal']) .input {
+  padding-left: --spacing(1400);
+  padding-right: --spacing(1400);
   text-align: center;
 }
 
-:host([type="number"][controls-layout="horizontal"][icon]) .input {
-  @apply pl-2400;
-
+:host([type='number'][controls-layout='horizontal'][icon]) .input {
+  padding-left: --spacing(2400);
   text-align: left;
 }
 
-
-:host([type="number"][controls-layout="horizontal"]) .icon {
-  @apply left-1500;
+:host([type='number'][controls-layout='horizontal']) .icon {
+  left: --spacing(1500);
 }
 
-:host([type="password"]) .input {
-  @apply pr-1000;
+:host([type='password']) .input {
+  padding-right: --spacing(1000);
 }
 
-:host([type="password"]) .input[type="password"]:not(:placeholder-shown) {
-  font-size: theme('fontSize.4xl');
-  max-height: 3rem;
-}
-
-:host([type="password"]) .input[type="text"]:not(:placeholder-shown) {
+:host([type='password']) .input[type='text']:not(:placeholder-shown) {
   @apply text-code-snippet;
 }
 
-:host([type="cf"]) .input {
-  @apply text-code-snippet uppercase;
+:host([type='cf']) .input {
+  @apply text-code-snippet;
+
+  text-transform: uppercase;
+}
+
+mds-input-tip {
+  --mds-input-tip-horizontal-offset: inherit;
+  --mds-input-tip-horizontal-offset-focused: inherit;
+  --mds-input-tip-vertical-offset: inherit;
+  --mds-input-tip-background: inherit;
 }
 
 /* @container (max-width: 210px) {
@@ -296,12 +404,12 @@
   }
 
   :host {
-    --mds-input-background: theme('colors.variant-primary-07');
+    --mds-input-background: var(--variant-primary-07');
   }
 } */
 
 @import './css/mds-input-variant.css';
 @import './css/mds-input-pref-animation.css';
-@import './css/mds-input-pref-theme.css';
 @import './css/mds-input-pref-contrast.css';
-@import '../../tailwind/fouc.css';
+@import './css/mds-input-pref-theme.css';
+@import './css/mds-input-type-password.css';

@@ -1,3 +1,1 @@
-export type StepperBarNavigationType =
-  | 'none'
-  | 'scrollbar'
+export type StepperBarNavigationType = 'none' | 'scrollbar';

@@ -1,4 +1,4 @@
 export interface MdsTabItemEventDetail {
-  target: HTMLMdsTabItemElement
-  value?: string
+  target: HTMLMdsTabItemElement;
+  value?: string;
 }

@@ -1,73 +1,73 @@
-:host([variant="error"][tone="strong"]) {
-  background-color: theme('colors.status-error-04');
+:host([variant='error'][tone='strong']) {
+  background-color: rgb(var(--status-error-04));
 }
 
-:host([variant="error"][tone="weak"]) {
-  background-color: theme('colors.status-error-08');
+:host([variant='error'][tone='weak']) {
+  background-color: rgb(var(--status-error-08));
 }
 
-:host([variant="success"][tone="strong"]) {
-  background-color: theme('colors.status-success-04');
+:host([variant='success'][tone='strong']) {
+  background-color: rgb(var(--status-success-04));
 }
 
-:host([variant="success"][tone="weak"]) {
-  background-color: theme('colors.status-success-08');
+:host([variant='success'][tone='weak']) {
+  background-color: rgb(var(--status-success-08));
 }
 
-:host([variant="warning"][tone="strong"]) {
-  background-color: theme('colors.status-warning-04');
+:host([variant='warning'][tone='strong']) {
+  background-color: rgb(var(--status-warning-04));
 }
 
-:host([variant="warning"][tone="weak"]) {
-  background-color: theme('colors.status-warning-08');
+:host([variant='warning'][tone='weak']) {
+  background-color: rgb(var(--status-warning-08));
 }
 
-:host([variant="info"][tone="strong"]) {
-  background-color: theme('colors.status-info-04');
+:host([variant='info'][tone='strong']) {
+  background-color: rgb(var(--status-info-04));
 }
 
-:host([variant="info"][tone="weak"]) {
-  background-color: theme('colors.status-info-08');
+:host([variant='info'][tone='weak']) {
+  background-color: rgb(var(--status-info-08));
 }
 
-:host([variant="ai"][tone="strong"]) {
-  background-color: theme('colors.variant-ai-04');
+:host([variant='ai'][tone='strong']) {
+  background-color: rgb(var(--variant-ai-04));
 }
 
-:host([variant="ai"][tone="weak"]) {
-  background-color: theme('colors.variant-ai-08');
+:host([variant='ai'][tone='weak']) {
+  background-color: rgb(var(--variant-ai-08));
 }
 
-:host([variant="primary"][tone="strong"]) {
-  background-color: theme('colors.variant-primary-03');
+:host([variant='primary'][tone='strong']) {
+  background-color: rgb(var(--variant-primary-03));
 }
 
-:host([variant="primary"][tone="weak"]) {
-  background-color: theme('colors.variant-primary-08');
+:host([variant='primary'][tone='weak']) {
+  background-color: rgb(var(--variant-primary-08));
 }
 
-:host([variant="secondary"][tone="strong"]) {
-  background-color: theme('colors.variant-secondary-04');
+:host([variant='secondary'][tone='strong']) {
+  background-color: rgb(var(--variant-secondary-04));
 }
 
-:host([variant="secondary"][tone="weak"]) {
-  background-color: theme('colors.variant-secondary-08');
+:host([variant='secondary'][tone='weak']) {
+  background-color: rgb(var(--variant-secondary-08));
 }
 
-:host([variant="dark"][tone="strong"]) {
-  background-color: theme('colors.tone-neutral-05');
+:host([variant='dark'][tone='strong']) {
+  background-color: rgb(var(--tone-neutral-05));
 }
 
-:host([variant="dark"][tone="weak"]) {
-  background-color: theme('colors.tone-neutral-07');
+:host([variant='dark'][tone='weak']) {
+  background-color: rgb(var(--tone-neutral-07));
 }
 
-:host([variant="light"][tone="strong"]) {
-  background-color: theme('colors.tone-neutral-08');
-  box-shadow: theme('boxShadow.outline-50');
+:host([variant='light'][tone='strong']) {
+  background-color: rgb(var(--tone-neutral-08));
+  box-shadow: var(--shadow-outline-50);
 }
 
-:host([variant="light"][tone="weak"]) {
-  background-color: theme('colors.tone-neutral-08');
-  box-shadow: theme('boxShadow.outline-light-50');
+:host([variant='light'][tone='weak']) {
+  background-color: rgb(var(--tone-neutral-08));
+  box-shadow: var(--shadow-outline-light-50);
 }

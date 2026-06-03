@@ -1,37 +1,57 @@
-@import '~@maggioli-design-system/styles/dist/css/animations.css'; /* included for focus effect */
-@import '../../tailwind/components.css';
-@tailwind components;
-@tailwind utilities;
+@import '~@maggioli-design-system/styles/dist/css/animations.css';
+@import './css/mds-filter-item-fouc.css';
 
 /**
- * @prop --mds-filter-item-count-background-default: Sets tge default `background-color` of the count element
- * @prop ---mds-filter-item-count-color-default: Sets tge default text `color` of the count element
- * @prop ---mds-filter-item-count-background-selected: Sets the z-index of the component.
- * @prop ---mds-filter-item-count-color-selected: Sets the z-index of the component.
+ * @prop --mds-filter-item-count-background-default: Sets the default `background-color` of the count element
+ * @prop --mds-filter-item-count-color-default: Sets the default text `color` of the count element
+ * @prop --mds-filter-item-count-background-selected: Sets the `background-color` of the count element when it's selected
+ * @prop --mds-filter-item-count-color-selected: Sets the `color` of the count element when it's selected
  */
 
-:host {
-  --mds-filter-item-count-background-default: theme('colors.tone-neutral-08');
-  --mds-filter-item-count-color-default: theme('colors.tone-neutral-02');
-  --mds-filter-item-count-background-selected: theme('colors.tone-neutral-05');
-  --mds-filter-item-count-color-selected: theme('colors.tone-neutral');
+@property --mds-filter-item-count-background-default {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-08));
+  syntax: '<color>';
+}
 
-  @apply
-    duration-200
-    ease-out
-    focus-bounce
-    gap-100
-    px-400
-    py-200
-    rounded-full;
+@property --mds-filter-item-count-color-default {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-02));
+  syntax: '<color>';
+}
+
+@property --mds-filter-item-count-background-selected {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-05));
+  syntax: '<color>';
+}
+
+@property --mds-filter-item-count-color-selected {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral));
+  syntax: '<color>';
+}
+
+:host {
+  --mds-filter-item-count-background-default: rgb(var(--tone-neutral-08));
+  --mds-filter-item-count-color-default: rgb(var(--tone-neutral-02));
+  --mds-filter-item-count-background-selected: rgb(var(--tone-neutral-05));
+  --mds-filter-item-count-color-selected: rgb(var(--tone-neutral));
+
+  @apply focus-bounce;
 
   align-items: center;
-  color: theme('colors.tone-neutral-03');
+  border-radius: 1000px;
+  color: rgb(var(--tone-neutral-03));
   cursor: pointer;
   display: flex;
   fill: currentcolor;
+  gap: --spacing(100);
   justify-content: center;
+  padding: --spacing(200) --spacing(400);
+  transition-duration: var(--duration-200);
   transition-property: background-color, box-shadow, color, outline, outline-offset;
+  transition-timing-function: var(--ease-out);
   user-select: none;
   white-space: nowrap;
 }
@@ -41,24 +61,22 @@ mds-text {
 }
 
 .count {
-  @apply
-    duration-200
-    ease-out;
-
   align-items: center;
   background-color: var(--mds-filter-item-count-background-default);
-  border-radius: theme('size.400');
+  border-radius: --spacing(400);
   box-sizing: border-box;
   color: currentcolor;
   color: var(--mds-filter-item-count-color-default);
   display: inline-flex;
   flex-shrink: 0;
-  height: theme('size.400');
+  height: --spacing(400);
   justify-content: center;
-  min-width: theme('size.400');
-  padding-left: theme('padding.150');
-  padding-right: theme('padding.150');
+  min-width: --spacing(400);
+  padding-left: --spacing(150);
+  padding-right: --spacing(150);
+  transition-duration: var(--duration-200);
   transition-property: background-color, color;
+  transition-timing-function: var(--ease-out);
   user-select: none;
 }
 
@@ -67,26 +85,25 @@ mds-text {
 }
 
 :host([icon]:not([label])) {
-  @apply
-    h-900
-    p-0
-    w-900;
+  height: --spacing(900);
+  padding: 0;
+  width: --spacing(900);
 }
 
-:host([selected]:not([selected="false"]) ),
+:host([selected]:not([selected='false'])),
 :host(:hover) {
-  background-color: theme('colors.tone-neutral');
+  background-color: rgb(var(--tone-neutral));
 }
 
 :host(:hover) {
-  box-shadow: theme('boxShadow.sm');
+  box-shadow: var(--shadow-sm);
 }
 
-:host([selected]:not([selected="false"])) {
-  color: theme('colors.tone-neutral-01');
+:host([selected]:not([selected='false'])) {
+  color: rgb(var(--tone-neutral-01));
 }
 
-:host([selected]:not([selected="false"]) ) .count {
+:host([selected]:not([selected='false'])) .count {
   background-color: var(--mds-filter-item-count-background-selected);
   color: var(--mds-filter-item-count-color-selected);
 }
@@ -94,4 +111,3 @@ mds-text {
 @import './css/mds-filter-item-pref-animation.css';
 @import './css/mds-filter-item-pref-theme.css';
 @import './css/mds-filter-item-pref-contrast.css';
-@import '../../tailwind/fouc.css';

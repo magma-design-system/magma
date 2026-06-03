@@ -1,7 +1,3 @@
-@import '~@maggioli-design-system/styles/dist/css/animations.css'; /* included for focus effect */
-@import '../../tailwind/components.css';
-@tailwind components;
-
 /**
  * @prop --mds-stepper-bar-item-color: Sets the color of the text
  * @prop --mds-stepper-bar-item-duaration: Sets the duration of the animation
@@ -17,25 +13,124 @@
  * @prop --mds-stepper-bar-item-progress-thickness: Sets the thickness of the progress bar
  */
 
+@property --mds-stepper-bar-item-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-03));
+  syntax: '<color>';
+}
+
+@property --mds-stepper-bar-item-duaration {
+  inherits: false;
+  initial-value: 250ms;
+  syntax: '<time>';
+}
+
+@property --mds-stepper-bar-item-icon-background-done {
+  inherits: false;
+  initial-value: rgb(var(--status-success-05));
+  syntax: '<color>';
+}
+
+@property --mds-stepper-bar-item-icon-background-current {
+  inherits: false;
+  initial-value: rgb(var(--variant-primary-04));
+  syntax: '<color>';
+}
+
+@property --mds-stepper-bar-item-icon-background {
+  inherits: false;
+  initial-value: var(--mds-stepper-bar-item-progress-background, rgb(var(--tone-neutral-08)));
+  syntax: '<color>';
+}
+
+@property --mds-stepper-bar-item-icon-color-done {
+  inherits: false;
+  initial-value: rgb(var(--status-success-10));
+  syntax: '<color>';
+}
+
+@property --mds-stepper-bar-item-icon-color-current {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral));
+  syntax: '<color>';
+}
+
+@property --mds-stepper-bar-item-icon-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-04));
+  syntax: '<color>';
+}
+
+@property --mds-stepper-bar-item-icon-ring-color {
+  inherits: false;
+  initial-value: var(--mds-stepper-bar-item-icon-background-current);
+  syntax: '<color>';
+}
+
+@property --mds-stepper-bar-item-icon-ring-separator-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral));
+  syntax: '<color>';
+}
+
+@property --mds-stepper-bar-item-icon-ring-separator-size {
+  inherits: false;
+  initial-value: 0.375rem;
+  syntax: '<length>';
+}
+
+@property --mds-stepper-bar-item-icon-ring-size {
+  inherits: false;
+  initial-value: var(--height-100);
+  syntax: '<length>';
+}
+
+@property --mds-stepper-bar-item-min-width {
+  inherits: false;
+  initial-value: 180px;
+  syntax: '<length>';
+}
+
+@property --mds-stepper-bar-item-progress-background {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-08));
+  syntax: '<color>';
+}
+
+@property --mds-stepper-bar-item-progress-color {
+  inherits: false;
+  initial-value: rgb(var(--status-success-04));
+  syntax: '<color>';
+}
+
+@property --mds-stepper-bar-item-progress-thickness {
+  inherits: false;
+  initial-value: var(--height-200);
+  syntax: '<length>';
+}
+
 :host {
-  --mds-stepper-bar-item-header-gap: var(--mds-stepper-bar-gap, theme('spacing.50'));
-  --mds-stepper-bar-item-color: theme('colors.tone-neutral-03');
+  --mds-stepper-bar-item-header-gap: var(--mds-stepper-bar-gap, --spacing(50));
+  --mds-stepper-bar-item-color: rgb(var(--tone-neutral-03));
   --mds-stepper-bar-item-duaration: 250ms;
-  --mds-stepper-bar-item-icon-background-done: theme('colors.status-success-05');
-  --mds-stepper-bar-item-icon-background-current: theme('colors.variant-primary-04');
-  --mds-stepper-bar-item-icon-background: var(--mds-stepper-bar-item-progress-background, theme('colors.tone-neutral-08'));
-  --mds-stepper-bar-item-icon-color-done: theme('colors.status-success-10');
-  --mds-stepper-bar-item-icon-color-current: theme('colors.tone-neutral');
-  --mds-stepper-bar-item-icon-color: theme('colors.tone-neutral-04');
+  --mds-stepper-bar-item-icon-background-done: rgb(var(--status-success-05));
+  --mds-stepper-bar-item-icon-background-current: rgb(var(--variant-primary-04));
+  --mds-stepper-bar-item-icon-background: var(
+    --mds-stepper-bar-item-progress-background,
+    rgb(var(--tone-neutral-08))
+  );
+  --mds-stepper-bar-item-icon-color-done: rgb(var(--status-success-10));
+  --mds-stepper-bar-item-icon-color-current: rgb(var(--tone-neutral));
+  --mds-stepper-bar-item-icon-color: rgb(var(--tone-neutral-04));
   --mds-stepper-bar-item-min-width: 180px;
-  --mds-stepper-bar-item-progress-background: theme('colors.tone-neutral-08');
-  --mds-stepper-bar-item-progress-color: theme('colors.status-success-04');
-  --mds-stepper-bar-item-progress-thickness: theme('height.200');
+  --mds-stepper-bar-item-progress-background: rgb(var(--tone-neutral-08));
+  --mds-stepper-bar-item-progress-color: rgb(var(--status-success-04));
+  --mds-stepper-bar-item-progress-thickness: var(--height-200);
 
   @apply gap-400;
 
   align-items: flex-start;
-  border-radius: theme('borderRadius.xl');
+  border-radius: var(--radius-xl);
   display: grid;
   flex-basis: 0;
   flex-direction: column;
@@ -91,29 +186,27 @@
 }
 
 .header {
-  @apply
-    duration-200
-    ease-out
-    rounded-md
-    w-full;
+  @apply ease-out
+  rounded-md
+  w-full;
 
   align-items: center;
   display: flex;
   gap: var(--mds-stepper-bar-item-header-gap);
+  transition-duration: var(--duration-200);
   transition-property: outline, outline-offset;
 }
 
 .icon {
-  @apply
-    p-200
-    ease-in-out
-    duration-150
-    rounded-full;
+  @apply ease-in-out
+  duration-150
+  rounded-full;
 
   background-color: var(--mds-stepper-bar-item-icon-background);
   display: flex;
   fill: var(--mds-stepper-bar-item-icon-color);
   flex-shrink: 0;
+  padding: --spacing(200);
   position: relative;
   transition-duration: var(--mds-stepper-bar-item-duaration);
   transition-property: background-color, fill;
@@ -129,17 +222,15 @@
 }
 
 .infos {
-  @apply
-    gap-100
-    pl-100;
+  @apply gap-100
+  pl-100;
 
   display: grid;
 }
 
 .text {
-  @apply
-    ease-in-out
-    duration-150;
+  @apply ease-in-out
+  duration-150;
 
   color: var(--mds-stepper-bar-item-color);
   pointer-events: none;
@@ -156,9 +247,8 @@
 .step {
   @apply rounded-full;
 
-  color: theme('colors.tone-neutral-04');
+  color: rgb(var(--tone-neutral-04));
   pointer-events: none;
 }
 
 @import './css/mds-stepper-bar-item-pref-animation.css';
-@import '../../tailwind/fouc.css';

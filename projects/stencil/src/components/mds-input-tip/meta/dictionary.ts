@@ -1,8 +1,3 @@
-const inputTipPositionDictionary = [
-  'top',
-  'bottom',
-]
+const inputTipPositionDictionary = ['top', 'bottom'];
 
-export {
-  inputTipPositionDictionary,
-}
+export { inputTipPositionDictionary };

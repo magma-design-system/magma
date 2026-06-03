@@ -1,31 +1,109 @@
+@import './css/mds-banner-fouc.css';
+
 /**
  * @prop --mds-banner-background: Sets the background-color of the component
  * @prop --mds-banner-close-icon-hover-background: Sets the background color of the close icon when the mouse is over it
  * @prop --mds-banner-cockade-background: When cockade attribute is set, the icon will be wrapper with a colored area, this is it's background
  * @prop --mds-banner-cockade-distance: When cockade attribute is set, the icon will be wrapper with a colored area, this is it's icon color
  * @prop --mds-banner-color: Sets the text color of the component
- * @prop --mds-banner-gap: Sets gap between banner elements
+ * @prop --mds-banner-content-gap: Sets gap between banner elements
  * @prop --mds-banner-headline-color: The text color of the headline
  * @prop --mds-banner-icon-color: Sets the close icon fill color of the component
  * @prop --mds-banner-radius: Sets the border-radius of the component
  * @prop --mds-banner-shadow: Sets the box-shadow of the component
+ * @prop --mds-banner-transition-duration: Sets the transition duration
+ * @prop --mds-banner-transition-timing-function: Sets the transition timing function
  */
 
-  :host {
-  --mds-banner-background: theme('colors.tone-neutral-10');
-  --mds-banner-close-icon-hover-background: theme('colors.tone-neutral-09');
-  --mds-banner-cockade-background: theme('colors.tone-neutral-09');
-  --mds-banner-cockade-distance: theme('spacing.600');
-  --mds-banner-color: theme('colors.tone-neutral-02');
-  --mds-banner-gap: theme('spacing.200') theme('spacing.400');
-  --mds-banner-headline-color: var(--mds-banner-color);
-  --mds-banner-icon-color: theme('colors.tone-neutral-04');
-  --mds-banner-radius: theme('borderRadius.lg');
-  --mds-banner-shadow: none;
-  --mds-banner-transition-duration: theme('transitionDuration.300');
-  --mds-banner-transition-timing-function: theme('transitionTimingFunction.in-out-expo');
+@property --mds-banner-background {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-10));
+  syntax: '<color>';
+}
 
-  @apply p-600 grid-cols-full;
+@property --mds-banner-close-icon-hover-background {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-09));
+  syntax: '<color>';
+}
+
+@property --mds-banner-cockade-background {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-09));
+  syntax: '<color>';
+}
+
+@property --mds-banner-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-02));
+  syntax: '<color>';
+}
+
+@property --mds-banner-headline-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-02));
+  syntax: '<color>';
+}
+
+@property --mds-banner-icon-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-04));
+  syntax: '<color>';
+}
+
+@property --mds-banner-cockade-distance {
+  inherits: true;
+  initial-value: --spacing(600);
+  syntax: '<length>';
+}
+
+@property --mds-banner-content-gap {
+  inherits: true;
+  initial-value: --spacing(200) --spacing(400);
+  syntax: '<length>+';
+}
+
+@property --mds-banner-radius {
+  inherits: true;
+  initial-value: var(--radius-lg);
+  syntax: '<length>';
+}
+
+@property --mds-banner-transition-duration {
+  inherits: true;
+  initial-value: 300ms;
+  syntax: '<time>';
+}
+
+/*
+@property --mds-banner-shadow {
+  inherits: true;
+  initial-value: none;
+  syntax: "<box-shadow>";
+}
+
+@property --mds-banner-transition-timing-function {
+  inherits: true;
+  initial-value: var(--ease-in-out-expo, cubic-bezier(1, 0, 0, 1));
+  syntax: "<timing-function>";
+}
+*/
+
+:host {
+  --mds-banner-background: rgb(var(--tone-neutral-10));
+  --mds-banner-close-icon-hover-background: rgb(var(--tone-neutral-09));
+  --mds-banner-cockade-background: rgb(var(--tone-neutral-09));
+  --mds-banner-cockade-distance: --spacing(600);
+  --mds-banner-color: rgb(var(--tone-neutral-02));
+  --mds-banner-content-gap: --spacing(400);
+  --mds-banner-headline-color: var(--mds-banner-color);
+  --mds-banner-icon-color: rgb(var(--tone-neutral-04));
+  --mds-banner-radius: var(--radius-2xl, 24px);
+  --mds-banner-shadow: none;
+  --mds-banner-transition-duration: 300ms;
+  --mds-banner-transition-timing-function: var(--ease-in-out-expo, cubic-bezier(1, 0, 0, 1));
+
+  @apply grid-cols-full;
 
   background-color: var(--mds-banner-background);
   border-radius: var(--mds-banner-radius);
@@ -33,8 +111,10 @@
   color: var(--mds-banner-color);
   container-name: mds-banner;
   container-type: inline-size;
+  corner-shape: var(--magma-corner-shape, round);
   display: grid;
-  gap: theme('spacing.400');
+  gap: --spacing(600);
+  padding: --spacing(600);
   position: relative;
   transition-duration: var(--mds-banner-transition-duration);
   transition-property: background-color, box-shadow, color;
@@ -45,7 +125,7 @@
 .body {
   align-items: flex-start;
   display: flex;
-  gap: var(--mds-banner-gap);
+  gap: var(--mds-banner-content-gap);
   justify-content: space-between;
 }
 
@@ -58,27 +138,15 @@
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  gap: var(--mds-banner-gap);
+  gap: var(--mds-banner-content-gap);
   justify-content: center;
 }
 
 .actions {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--mds-banner-gap);
+  gap: var(--mds-banner-content-gap);
   justify-content: flex-end;
-}
-
-.close-button {
-  --mds-button-background: transparent;
-  --mds-button-border-color: 0 0 0;
-  --mds-button-border-default-opacity: 0;
-
-  fill: var(--mds-banner-color);
-}
-
-.close-button:hover {
-  --mds-button-background: var(--mds-banner-close-icon-hover-background);
 }
 
 .icon {
@@ -92,27 +160,32 @@
 .text {
   display: grid;
   flex-grow: 1;
-  gap: var(--mds-banner-gap);
+  gap: var(--mds-banner-content-gap);
 }
 
 @container mds-banner (max-width: 300px) {
-  ::slotted([slot="action"]) {
+  :host([deletable]:not([deletable='false'])) {
+    & .headline {
+      padding-right: --spacing(800);
+    }
+
+    &:host(:not([headline])) {
+      & .content {
+        padding-right: --spacing(800);
+      }
+    }
+  }
+
+  ::slotted([slot='action']) {
     flex-basis: 100%;
     flex-grow: 1;
   }
 }
 
-
 @import './css/mds-banner-cockade.css';
-@import './css/mds-banner-variant-ai.css';
-@import './css/mds-banner-variant-dark.css';
-@import './css/mds-banner-variant-error.css';
-@import './css/mds-banner-variant-info.css';
-@import './css/mds-banner-variant-light.css';
-@import './css/mds-banner-variant-primary.css';
-@import './css/mds-banner-variant-success.css';
-@import './css/mds-banner-variant-warning.css';
+@import './css/mds-banner-variant.css';
+@import './css/mds-banner-variant-status.css';
+@import './css/mds-banner-variant-tone.css';
 @import './css/mds-banner-pref-animation.css';
 @import './css/mds-banner-pref-theme.css';
 @import './css/mds-banner-pref-contrast.css';
-@import '../../tailwind/fouc.css';

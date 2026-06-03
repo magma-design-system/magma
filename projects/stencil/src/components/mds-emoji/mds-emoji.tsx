@@ -1,7 +1,10 @@
-import { Component, Host, h, Method, Prop, Element } from '@stencil/core'
-import { gsap } from 'gsap'
-import { cssRotationToNumber, cssDurationToSeconds } from '@common/unit'
-import { randomNumber } from '@common/number'
+import { Component, Host, h, Method, Prop, Element, Watch } from '@stencil/core';
+import { cssRotationToNumber, cssDurationToSeconds, cssSizeToNumber } from '@common/unit';
+import type { EmojiNames, SvgDictionary, SvgPart } from './meta/types';
+import { gsap } from 'gsap';
+
+import miaSvg from './asset/mia.svg';
+import simiSvg from './asset/simi.svg';
 
 @Component({
   tag: 'mds-emoji',
@@ -9,92 +12,95 @@ import { randomNumber } from '@common/number'
   shadow: true,
 })
 export class MdsEmoji {
-  @Element() host: HTMLMdsEmojiElement
-  @Prop({ reflect: true }) readonly name: string = 'hexabot'
+  @Element() host: HTMLMdsEmojiElement;
+  @Prop({ reflect: true }) readonly name: EmojiNames = 'mia';
 
-  // private hostSize: number = 24
+  private emojiOriginalSize: number = 0;
+  private isFollowingMouse: boolean = false;
+  private isBusy: boolean = false;
 
-  /*
-    startReading()
-    stopReading()
-    startThinking()
-    stopThinking()
-    somethingWrong(cb)
+  private isSmiling: boolean = false;
+  private isAgreeing: boolean = false;
+  private isThinking: boolean = false;
+  private isBlinking: boolean = false;
+  private isDisagreeing: boolean = false;
 
-    component.agree((el) => { el.startThinking() })
-  */
+  private wasFollowingMouse: boolean = false;
+  private wasBlinking: boolean = false;
+  private headOffsetX: number = 0;
+  private headOffsetY: number = 0;
+  private headOffset: number = 0;
+  private eyesOffsetX: number = 0;
+  private eyesOffsetY: number = 0;
+  private eyesOffset: number = 1;
+  private mouthOffsetX: number = 0;
+  private mouthOffsetY: number = 0;
+  private mouthOffset: number = 1;
+  private handOffsetX: number = 0;
+  private handOffsetY: number = 0;
+  private handOffset: number = 2;
+  private gadgetOffsetX: number = 0;
+  private gadgetOffsetY: number = 0;
+  private gadgetOffset: number = 2;
+  private eyebrowsOffsetX: number = 0;
+  private eyebrowsOffsetY: number = 0;
+  private eyebrowsOffset: number = 2;
+  private earsOffsetX: number = 0;
+  private earsOffsetY: number = 0;
+  private earsOffset: number = 2;
 
-  // private persistentAnimations = {
-  //   followMouse: false,
-  //   blink: false,
-  // }
+  private mouseX: number = 0;
+  private mouseY: number = 0;
 
-  private isFollowingMouse: boolean = false
-  private isBlinking: boolean = false
-  private isThinking: boolean = false
-  private faceOffsetX: number = 0
-  private faceOffsetY: number = 0
+  private currentRotateX: number = 0;
+  private currentRotateY: number = 0;
+  private expressionAngleMax: number = 16; // massimo angolo di rotazione della emoji
+  private expressionFollowMouseHeadDuration: number = 0.3; // durata dell'animazione di rotazione della testa quando segue il mouse
+  private expressionFollowMouseTraitsDuration: number = 0.2; // durata dell'animazione di rotazione degli occhi e della bocca quando segue il mouse
 
-  private mouseX: number = 0
-  private mouseY: number = 0
-  private blinkTimeout: NodeJS.Timeout
+  private eyesEl: SVGElement | SVGGElement | NodeListOf<SVGElement | SVGGElement> | null;
+  private gadgetEl: SVGElement | SVGGElement | NodeListOf<SVGElement | SVGGElement> | null;
+  private handEl: SVGElement | SVGGElement | NodeListOf<SVGElement | SVGGElement> | null;
+  private eyebrowsEl: SVGElement | SVGGElement | NodeListOf<SVGElement | SVGGElement> | null;
+  private headEl: SVGElement | SVGGElement | NodeListOf<SVGElement | SVGGElement> | null;
+  private earsEl: SVGElement | SVGGElement | NodeListOf<SVGElement | SVGGElement> | null;
+  private mouthEl: SVGElement | SVGGElement | NodeListOf<SVGElement | SVGGElement> | null;
 
-  private currentRotateX: number = 0
-  private currentRotateY: number = 0
-  private expressionAngleMax: number = 16 // massimo angolo di rotazione della emoji
-  private expressionFollowMouseHeadDuration: number = 0.3 // durata dell'animazione di rotazione della testa quando segue il mouse
-  private expressionFollowMouseTraitsDuration: number = 0.2 // durata dell'animazione di rotazione degli occhi e della bocca quando segue il mouse
+  private blinkTimeline: gsap.core.Timeline | null = null;
+  private blinkDelay: gsap.core.Tween | null = null;
 
-  private emojiEl: SVGElement
-  private eyeLeftEl: SVGElement
-  private eyeRightEl: SVGElement
-  private mouthEl: SVGElement
-  private headEl: SVGElement
-  private handLeftEl: SVGElement
+  private svgLibrary = {
+    mia: miaSvg,
+    simi: simiSvg,
+  };
 
-  private handLeftGeometry = {
-    think: 'M6 15C6.55228 15 7 15.4477 7 16V17H13C13.5523 17 14 17.4477 14 18C14 18.5523 13.5523 19 13 19H10.3818C11.1252 19 11.6088 19.7824 11.2764 20.4473L10.2764 22.4473C10.107 22.786 9.76059 23 9.38184 23H6V22.9541L5.85742 23H4V19L5 17V15H6Z',
+  private svgRootEl: SVGElement;
+
+  componentDidLoad(): void {
+    if (typeof window === 'undefined') return;
+    this.updateCSSCustomProps();
+    window.addEventListener('mousemove', this.handleFollowMouse);
+    this.checkNameChanged(this.name);
   }
 
-  private eyeLeftGeometry = {
-    open: 'M8 8H10V11H8V8Z',
-    close: 'M7 10H10V11H7V10Z',
-  }
-
-  private eyeRightGeometry = {
-    open: 'M14 8H16V11H14V8Z',
-    close: 'M14 10H17V11H14V10Z',
-  }
-
-  private headGeometry = {
-    hexagon: 'M7 3L1.5 12L7 21H17L22.5 12L17 3H7Z',
-    hexagonRounded: 'M6.12266 4.43565L2.45599 10.4356C1.86912 11.396 1.86912 12.604 2.45599 13.5643L6.12266 19.5644C6.66763 20.4561 7.6374 21 8.6825 21H15.3175C16.3626 21 17.3324 20.4561 17.8773 19.5644L21.544 13.5644C22.1309 12.604 22.1309 11.396 21.544 10.4357L17.8773 4.43565C17.3324 3.54389 16.3626 3 15.3175 3H8.6825C7.6374 3 6.66763 3.54389 6.12266 4.43565Z',
-  }
-
-  private mouthGeometry = {
-    open: 'M12 18C10.8954 18 10 16.8807 10 15.5C10 14.1193 10.8954 13 12 13C13.1046 13 14 14.1193 14 15.5C14 16.8807 13.1046 18 12 18Z',
-    quiet: 'M16 15H8C8 17 7.5 17 12 17C16.5 17 16 17 16 15Z',
-    sad: 'M8 17C8 15.3431 9.79086 14 12 14C14.1402 14 15.8881 15.2605 15.9951 16.8457L16 17L8 17Z',
-    serious: 'M9 15H15V17H9V15Z',
-    think: 'M8 14H16V16H8V14Z',
-    happy: 'M16 14H8C8.33333 15.3333 9 18 12 18C15 18 15.6667 15.3333 16 14Z',
-    smile: 'M16.707 15.707C15.4771 16.937 13.6985 17.5 12 17.5C10.3015 17.5 8.52294 16.937 7.29297 15.707L8.70703 14.293C9.47706 15.063 10.6985 15.5 12 15.5C13.3015 15.5 14.5229 15.063 15.293 14.293L16.707 15.707Z',
-    smileLeft: 'M10 14C10 15.1046 10.8954 16 12 16H14V18H12C9.79086 18 8 16.2091 8 14H10Z',
-    smileRight: 'M14 14C14 15.1046 13.1046 16 12 16H10V18H12C14.2091 18 16 16.2091 16 14H14Z',
-  }
-
-  private getEmojiCenter = (): { centerX: number, centerY: number } => {
-    const rect = this.host.getBoundingClientRect()
-    return {
-      centerX: rect.left + rect.width / 2,
-      centerY: rect.top + rect.height / 2,
-    }
-  }
-
-  private stopConcurrentAnimations = (): void => {
-    if (this.isThinking) {
-      this.stopThinking()
-    }
+  disconnectedCallback(): void {
+    if (typeof window === 'undefined') return;
+    window.removeEventListener('mousemove', this.handleFollowMouse);
+    this.isThinking = false;
+    this.isBlinking = false;
+    this.isFollowingMouse = false;
+    this.blinkDelay?.kill();
+    this.blinkTimeline?.kill();
+    [
+      this.host,
+      this.eyesEl,
+      this.handEl,
+      this.headEl,
+      this.mouthEl,
+      this.gadgetEl,
+      this.eyebrowsEl,
+      this.earsEl,
+    ].forEach((target) => target && gsap.killTweensOf(target));
   }
 
   /**
@@ -103,60 +109,29 @@ export class MdsEmoji {
    */
 
   @Method()
-  async agree (): Promise<void> {
-    this.stopConcurrentAnimations()
-    this.setAgreeAnimation()
-    return Promise.resolve()
+  async agree(): Promise<void> {
+    // console.log('agree')
+    if (this.isBusy) return;
+    this.isBusy = true;
+    this.stopConcurrentAnimations();
+    await this.setAgreeAnimation();
+    return Promise.resolve();
   }
 
-  private setAgreeAnimation = (): void => {
-  // Interrompi temporaneamente le rotazioni automatiche
-    this.isFollowingMouse = false
-    gsap.killTweensOf(this.emojiEl)
+  /**
+   * @returns Promise<void>
+   * Emoji smiles, useful for confirm actions.
+   */
 
-    const baseX = this.currentRotateX
-
-    const tl = gsap.timeline({
-      onComplete: () => {
-      // Torna alla posizione seguita dal mouse
-        gsap.to(this.emojiEl, {
-          rotateX: this.currentRotateX,
-          rotateY: this.currentRotateY,
-          duration: 0.3,
-          ease: 'power2.out',
-          onComplete: () => {
-            this.isFollowingMouse = true
-          },
-        })
-      },
-    })
-
-    tl.to(this.emojiEl, { rotateX: baseX - 40, duration: 0.15, ease: 'power2.out' })
-      .to(this.emojiEl, { rotateX: baseX + 20, duration: 0.2, ease: 'power1.inOut' })
-      .to(this.emojiEl, { rotateX: baseX - 20, duration: 0.15, ease: 'power2.inOut' })
-      .to(this.emojiEl, { rotateX: baseX + 5, duration: 0.2, ease: 'power1.out' })
-      .to(this.emojiEl, { rotateX: baseX, duration: 0.3, ease: 'power3.out' })
-
-    gsap.fromTo(this.mouthEl,
-      {
-        attr: { d: this.mouthGeometry.happy },
-      }, {
-        scaleY: 0.5, transformOrigin: '50% 50%',
-        onComplete: () => {
-          gsap.fromTo(this.mouthEl,
-            {
-              attr: { d: this.mouthGeometry.smile },
-            }, {
-              scaleY: 1, transformOrigin: '50% 50%',
-              duration: 0.2,
-              ease: 'expo.inOut',
-            },
-          )
-        },
-        duration: 0.75,
-        ease: 'expo.inOut',
-      },
-    )
+  @Method()
+  async smile(): Promise<void> {
+    // console.log('smile')
+    if (this.isBusy) return;
+    this.isBusy = true;
+    // this.checkPauseBlinking()
+    this.stopConcurrentAnimations();
+    await this.setSmileAnimation();
+    return Promise.resolve();
   }
 
   /**
@@ -165,51 +140,13 @@ export class MdsEmoji {
    */
 
   @Method()
-  async disagree (turnHappyDelay: number = 0): Promise<void> {
-    this.stopConcurrentAnimations()
-    this.setDisagreeAnimation(turnHappyDelay)
-    return Promise.resolve()
-  }
-
-  private setDisagreeAnimation = (turnHappyDelay: number = 0): void => {
-  // Interrompi temporaneamente le rotazioni automatiche
-    this.isFollowingMouse = false
-    gsap.killTweensOf(this.emojiEl)
-
-    const tl = gsap.timeline({
-      onComplete: () => {
-      // Torna alla posizione seguita dal mouse
-        gsap.to(this.emojiEl, {
-          rotateX: this.currentRotateX,
-          rotateY: this.currentRotateY,
-          duration: 0.3,
-          ease: 'power2.out',
-          onComplete: () => {
-            this.isFollowingMouse = true
-          },
-        })
-      },
-    })
-
-    const rotationEase = 'power2.inOut'
-
-    tl.to(this.emojiEl, { rotateY: this.currentRotateY - 40, duration: 0.25, ease: rotationEase })
-      .to(this.emojiEl, { rotateY: this.currentRotateY + 30, duration: 0.2, ease: rotationEase })
-      .to(this.emojiEl, { rotateY: this.currentRotateY - 20, duration: 0.15, ease: rotationEase })
-      .to(this.emojiEl, { rotateY: this.currentRotateY + 10, duration: 0.1, ease: rotationEase })
-      .to(this.emojiEl, { rotateY: this.currentRotateY, duration: 0.3, ease: rotationEase })
-
-    gsap.to(this.mouthEl, { attr: { d: this.mouthGeometry.serious }, duration: 0, ease: 'none', onComplete: () => {
-      setTimeout(() => {
-        gsap.to(this.mouthEl, { attr: { d: this.mouthGeometry.serious }, duration: 0, ease: 'none', onComplete: () => {
-          if (turnHappyDelay > 0) {
-            setTimeout(() => {
-              gsap.to(this.mouthEl, { attr: { d: this.mouthGeometry.smile }, duration: 0, ease: 'none' })
-            }, turnHappyDelay)
-          }
-        } })
-      }, 1000)
-    } })
+  async disagree(turnHappyDelay: number = 0): Promise<void> {
+    if (this.isBusy) return;
+    this.isBusy = true;
+    this.stopConcurrentAnimations();
+    this.moveHead(this.getEmojiCenter().centerX, this.getEmojiCenter().centerY);
+    await this.setDisagreeAnimation(turnHappyDelay);
+    return Promise.resolve();
   }
 
   /**
@@ -218,58 +155,28 @@ export class MdsEmoji {
    */
 
   @Method()
-  async startThinking (): Promise<void> {
-    this.isThinking = true
-    this.setStartThinkingAnimation()
-    return Promise.resolve()
+  async startThinking(duration: number = 0.5): Promise<void> {
+    if (this.isBusy) return;
+    // await this.stopFollowMouse()
+    this.stopConcurrentAnimations();
+    this.moveHead(this.getEmojiCenter().centerX, this.getEmojiCenter().centerY);
+    this.isBusy = true;
+    this.isThinking = true;
+    // this.checkPauseBlinking()
+    await this.setStartThinkingAnimation(duration);
+    return Promise.resolve();
   }
 
   @Method()
-  async stopThinking (): Promise<void> {
-    this.isThinking = false
-    this.setStopThinkingAnimation()
-    return Promise.resolve()
-  }
-
-  private moveEyesThinkAnimation = (): void => {
-    const duration = randomNumber(0.25, 0.75) // Random duration between 0.5 and 1
-    const ease = 'expo.Out'
-
-    const maxJitter = 1 // max +-2 px jitter
-    const randomOffsetX = randomNumber(-1, 1, true) * maxJitter
-    // const randomOffsetY = randomNumber(-0.5, 1) * maxJitter
-
-    const finalX = (this.faceOffsetX ?? 0) + randomOffsetX
-    // const finalY = (this.faceOffsetY ?? 0) + randomOffsetY
-
-    gsap.to(this.eyeLeftEl, { x: finalX, ease, duration })
-    gsap.to(this.eyeRightEl, { x: finalX, ease, duration, onComplete: () => {
-      if (this.isThinking) {
-        this.moveEyesThinkAnimation()
-      } else {
-        // Reset eyes position when not thinking
-        gsap.to(this.eyeLeftEl, { x: 0, ease: 'expo.inOut', duration: 0.5 })
-        gsap.to(this.eyeRightEl, { x: 0, ease: 'expo.inOut', duration: 0.5 })
-      }
-    } })
-  }
-
-  private setStartThinkingAnimation = (): void => {
-    const duration = 0.5
-    const ease = 'expo.inOut'
-    this.handLeftEl.style.visibility = 'visible'
-    gsap.fromTo(this.handLeftEl, { scale: 0, rotateZ: 45 }, { scale: 1, rotateZ: 0, ease, duration })
-    this.moveEyesThinkAnimation()
-    gsap.to(this.mouthEl, { attr: { d: this.mouthGeometry.think }, duration: 0, ease: 'none' })
-  }
-
-  private setStopThinkingAnimation = (): void => {
-    const duration = 0.5
-    const ease = 'expo.inOut'
-    gsap.to(this.handLeftEl, { scale: 0, y: 0, rotateZ: 45, ease, duration })
-    gsap.to(this.eyeLeftEl, { x: 0, ease: 'expo.inOut', duration })
-    gsap.to(this.eyeRightEl, { x: 0, ease: 'expo.inOut', duration })
-    gsap.to(this.mouthEl, { attr: { d: this.mouthGeometry.smile }, duration: 0, ease: 'none' })
+  async stopThinking(duration: number = 0.5): Promise<void> {
+    if (!this.isBusy) return;
+    this.isBusy = false;
+    this.isThinking = false;
+    this.restoreFollowMouse();
+    this.moveHead(this.mouseX, this.mouseY);
+    await this.setStopThinkingAnimation(duration);
+    this.scheduleBlink();
+    return Promise.resolve();
   }
 
   /**
@@ -278,52 +185,41 @@ export class MdsEmoji {
    */
 
   @Method()
-  async startBlinking (): Promise<void> {
-    if (this.isBlinking) return
-    this.isBlinking = true
-    this.queueNextBlink()
-    return Promise.resolve()
+  async startBlinking(): Promise<void> {
+    this.isBlinking = true;
+    if (!this.blinkTimeline) this.blinkTimeline = this.buildBlinkTimeline();
+    // scheduleBlink is gated on isBusy, so blinking will start now if idle, or
+    // automatically resume once the current animation (think, smile, ...) ends.
+    this.scheduleBlink();
+    return Promise.resolve();
   }
 
   /**
    * @returns Promise<void>
    * Eyes stop blinking.
    */
-
   @Method()
-  async stopBlinking (): Promise<void> {
-    this.isBlinking = false
-    clearTimeout(this.blinkTimeout)
-    return Promise.resolve()
-  }
-
-  private loopBlink = (): void => {
-    this.blinkOnce()
-    this.queueNextBlink()
-  }
-
-  private queueNextBlink = (): void => {
-    if (!this.isBlinking) return
-    this.blinkTimeout = setTimeout(this.loopBlink.bind(this), randomNumber(2000, 5000))
-  }
-
-  private blinkOnce = (): void => {
-    const durationClose = 0.15
-    const durationOpen = 0.15
-    gsap.to(this.eyeLeftEl, { attr: { d: this.eyeLeftGeometry.close }, duration: durationClose, onComplete: () => { gsap.to(this.eyeLeftEl, { attr: { d: this.eyeLeftGeometry.open }, duration: durationOpen }) } })
-    gsap.to(this.eyeRightEl, { attr: { d: this.eyeRightGeometry.close }, duration: durationClose, onComplete: () => { gsap.to(this.eyeRightEl, { attr: { d: this.eyeRightGeometry.open }, duration: durationOpen }) } })
+  async stopBlinking(): Promise<void> {
+    this.isBlinking = false;
+    this.blinkDelay?.kill();
+    this.blinkDelay = null;
+    this.blinkTimeline?.pause(0);
+    this.resetEyesToDefault();
+    return Promise.resolve();
   }
 
   /**
    * @returns Promise<void>
    * Stops following mouse with CSS 3D transform.
    */
-
   @Method()
-  async stopFollowMouse (): Promise<void> {
-    this.isFollowingMouse = false
-    this.followMouse()
-    return Promise.resolve()
+  async stopFollowMouse(): Promise<void> {
+    if (!this.isFollowingMouse) return Promise.resolve();
+    this.isFollowingMouse = false;
+    this.rotate(0, 0);
+    return new Promise((resolve) =>
+      setTimeout(resolve, this.expressionFollowMouseTraitsDuration * 1000),
+    );
   }
 
   /**
@@ -331,117 +227,652 @@ export class MdsEmoji {
    * Starts following mouse with CSS 3D transform.
    */
   @Method()
-  async startFollowMouse (): Promise<void> {
-    this.isFollowingMouse = true
-    this.followMouse()
-    return Promise.resolve()
+  async startFollowMouse(): Promise<void> {
+    if (this.isFollowingMouse) return Promise.resolve();
+    this.isFollowingMouse = true;
+    this.wasFollowingMouse = true;
+    this.followMouse();
+    return Promise.resolve();
   }
 
-  private handleFollowMouse = (e: MouseEvent): void => {
-    if (!this.isFollowingMouse) return
-    this.mouseX = e.clientX
-    this.mouseY = e.clientY
-    this.followMouse()
-  }
-
-  private followMouse = (): void => {
-
-    const { centerX } = this.getEmojiCenter()
-    const { centerY } = this.getEmojiCenter()
-    let currentMouseX = this.getEmojiCenter().centerX
-    let currentMouseY = this.getEmojiCenter().centerY
-    const ease = 'power1.out'
-
-    if (this.isFollowingMouse) {
-      currentMouseX = this.mouseX
-      currentMouseY = this.mouseY
-    }
-
-    const rect = this.host.getBoundingClientRect()
-
-    const deltaX = currentMouseX - centerX
-    const deltaY = currentMouseY - centerY
-
-    const percentX = deltaX / (rect.width / 2)
-    const percentY = deltaY / (rect.height / 2)
-
-    this.currentRotateY = gsap.utils.clamp(- this.expressionAngleMax, this.expressionAngleMax, percentX * this.expressionAngleMax)
-    this.currentRotateX = gsap.utils.clamp(- this.expressionAngleMax, this.expressionAngleMax, - percentY * this.expressionAngleMax) // Y invertito
-
-    gsap.to(this.emojiEl, {
-      rotateX: this.currentRotateX,
-      rotateY: this.currentRotateY,
-      duration: this.expressionFollowMouseHeadDuration,
-      ease,
-    })
-
-    const maxOffset = 1
-
-    this.faceOffsetX = gsap.utils.clamp(-maxOffset, maxOffset, percentX * maxOffset)
-    this.faceOffsetY = gsap.utils.clamp(-maxOffset, maxOffset, percentY * maxOffset)
-
-    gsap.to(this.eyeLeftEl, {
-      x: this.faceOffsetX,
-      y: this.faceOffsetY,
-      duration: this.expressionFollowMouseTraitsDuration,
-      ease,
-    })
-    gsap.to(this.eyeRightEl, {
-      x: this.faceOffsetX,
-      y: this.faceOffsetY,
-      duration: this.expressionFollowMouseTraitsDuration,
-      ease,
-    })
-    gsap.to(this.handLeftEl, {
-      x: this.faceOffsetX,
-      y: this.faceOffsetY,
-      duration: this.expressionFollowMouseTraitsDuration,
-      ease,
-    })
-
-    const mouthOffsetX = gsap.utils.clamp(-maxOffset, maxOffset, percentX * maxOffset)
-    const mouthOffsetY = gsap.utils.clamp(-maxOffset, maxOffset, percentY * maxOffset)
-
-    gsap.to(this.mouthEl, {
-      x: mouthOffsetX,
-      y: mouthOffsetY,
-      duration: this.expressionFollowMouseTraitsDuration,
-      ease,
-    })
+  @Watch('name')
+  checkNameChanged(emojiName: EmojiNames): void {
+    this.updateSvgDictionary(emojiName);
   }
 
   private readonly updateCSSCustomProps = (): void => {
-    if (typeof window === 'undefined') return
-    const elementStyles = window.getComputedStyle(this.host)
-    this.expressionAngleMax = cssRotationToNumber(elementStyles.getPropertyValue('--mds-emoji-expression-max-rotation'))
-    this.expressionFollowMouseHeadDuration = cssDurationToSeconds(elementStyles.getPropertyValue('--mds-emoji-expression-follow-mouse-head-duration'))
-    this.expressionFollowMouseTraitsDuration = cssDurationToSeconds(elementStyles.getPropertyValue('--mds-emoji-expression-follow-mouse-traits-duration'))
-  }
+    if (typeof window === 'undefined') return;
+    const elementStyles = window.getComputedStyle(this.host);
+    this.expressionAngleMax = cssRotationToNumber(
+      elementStyles.getPropertyValue('--mds-emoji-expression-max-rotation'),
+      16,
+    );
+    this.expressionFollowMouseHeadDuration = cssDurationToSeconds(
+      elementStyles.getPropertyValue('--mds-emoji-expression-follow-mouse-head-duration'),
+    );
+    this.expressionFollowMouseTraitsDuration = cssDurationToSeconds(
+      elementStyles.getPropertyValue('--mds-emoji-expression-follow-mouse-traits-duration'),
+    );
+    this.headOffset = cssSizeToNumber(elementStyles.getPropertyValue('--mds-emoji-offset-head'), 1);
+    this.eyesOffset = cssSizeToNumber(elementStyles.getPropertyValue('--mds-emoji-offset-eyes'), 1);
+    this.mouthOffset = cssSizeToNumber(
+      elementStyles.getPropertyValue('--mds-emoji-offset-mouth'),
+      1,
+    );
+    this.handOffset = cssSizeToNumber(elementStyles.getPropertyValue('--mds-emoji-offset-hand'), 1);
+    this.gadgetOffset = cssSizeToNumber(
+      elementStyles.getPropertyValue('--mds-emoji-offset-gadget'),
+      1,
+    );
+    this.eyebrowsOffset = cssSizeToNumber(
+      elementStyles.getPropertyValue('--mds-emoji-offset-eyebrows'),
+      1,
+    );
+    this.earsOffset = cssSizeToNumber(elementStyles.getPropertyValue('--mds-emoji-offset-ears'), 1);
+  };
 
-  componentDidLoad (): void {
-    if (!window) return
-    this.updateCSSCustomProps()
-    window.addEventListener('mousemove', this.handleFollowMouse)
-    // useless
-    this.headEl.setAttribute('d', this.headGeometry.hexagonRounded)
-  }
+  private updateSvgDictionary = (emoji: EmojiNames) => {
+    if (typeof window === 'undefined') return;
+    const tpl = document.createElement('template');
+    tpl.innerHTML = this.svgLibrary[emoji].trim();
+    this.emojiOriginalSize = Number(tpl.content.firstElementChild?.getAttribute('width'));
+    this.svgRootEl = tpl.content.firstElementChild as SVGElement;
+    this.updateCSSCustomProps();
+    // The shadow DOM is fully replaced, so every cached node/setter/timeline now
+    // points at detached elements: drop them so they rebuild against the new SVG.
+    this.resetAnimationState();
+    if (this.host.shadowRoot) this.host.shadowRoot.innerHTML = this.svgRootEl.outerHTML;
+    if (this.isBlinking) {
+      this.blinkTimeline = this.buildBlinkTimeline();
+      this.scheduleBlink();
+    }
+  };
 
-  disconnectedCallback (): void {
-    if (!window) return
-    window.removeEventListener('mousemove', this.handleFollowMouse)
-  }
+  private resetAnimationState = (): void => {
+    this.blinkDelay?.kill();
+    this.blinkDelay = null;
+    this.blinkTimeline?.kill();
+    this.blinkTimeline = null;
+    this.headEl = null;
+    this.eyesEl = null;
+    this.handEl = null;
+    this.mouthEl = null;
+    this.gadgetEl = null;
+    this.eyebrowsEl = null;
+    this.earsEl = null;
+  };
 
-  render () {
-    return <Host>
-      { this.name === 'hexabot' && (
-        <svg ref={el => (this.emojiEl = el as SVGElement)} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path class="head" ref={el => (this.headEl = el as SVGElement)} d={this.headGeometry.hexagonRounded} fill="black"/>
-          <path class="eye" ref={el => (this.eyeLeftEl = el as SVGElement)} d={this.eyeLeftGeometry.open} fill="white"/>
-          <path class="eye" ref={el => (this.eyeRightEl = el as SVGElement)} d={this.eyeRightGeometry.open} fill="white"/>
-          <path class="mouth" ref={el => (this.mouthEl = el as SVGElement)} d={this.mouthGeometry.smile} fill="white"/>
-          <path class="hand" ref={el => (this.handLeftEl = el as SVGElement)} d={this.handLeftGeometry.think} fill="white"/>
-        </svg>)
+  private queryPart = (id: string): SVGElement | null =>
+    (this.host.shadowRoot?.firstElementChild?.querySelector(`[id='${id}']`) as SVGElement) ?? null;
+
+  private resetEyesToDefault = (): void => {
+    this.svgPartState('eyes', 'default');
+    const eyesDefaultEl = this.queryPart('eyes-default');
+    if (eyesDefaultEl) gsap.set(eyesDefaultEl, { scaleY: 1 });
+  };
+
+  private svgPartState<K extends keyof SvgDictionary>(
+    part: K,
+    state?: keyof SvgPart,
+  ): SVGElement | SVGGElement | NodeListOf<SVGElement | SVGGElement> | null {
+    const group = this.host.shadowRoot?.firstElementChild?.querySelectorAll(
+      `[id^='${part}-']`,
+    ) as NodeListOf<SVGElement | SVGGElement>;
+    if (group.length === 0) return null;
+    if (!state && group) {
+      group?.forEach((el: SVGElement | SVGGElement) => {
+        // const currentState = el.id.split('-')[1]
+        el.style.visibility = 'hidden';
+        if (el.id.split('-')[1] === 'default') el.style.visibility = 'visible';
+      });
+      return group;
+    }
+    let element: SVGElement | SVGGElement = this.host.shadowRoot?.firstElementChild?.querySelector(
+      `[id='${part}-default']`,
+    ) as SVGElement | SVGGElement;
+    group?.forEach((el: SVGElement | SVGGElement) => {
+      el.style.visibility = 'hidden';
+      if (el.id.split('-')[1] === state) {
+        element = el;
       }
-    </Host>
+    });
+    element.style.visibility = 'visible';
+    return element as SVGElement | SVGGElement;
+  }
+
+  private getEmojiCenter = (): { centerX: number; centerY: number } => {
+    const rect = this.host.getBoundingClientRect();
+    return {
+      centerX: rect.left + rect.width / 2,
+      centerY: rect.top + rect.height / 2,
+    };
+  };
+
+  private restoreReadyState = (): void => {
+    this.isBusy = false;
+    this.restoreFollowMouse();
+    this.scheduleBlink();
+  };
+
+  private restoreFollowMouse = (): void => {
+    // console.log('restoreConcurrentAnimations', this.wasFollowingMouse)
+    if (this.wasFollowingMouse) {
+      this.moveHead(this.mouseX, this.mouseY);
+      this.startFollowMouse();
+    }
+    this.moveHead(this.getEmojiCenter().centerX, this.getEmojiCenter().centerY);
+  };
+
+  private stopConcurrentAnimations = (): void => {
+    // console.log('stopConcurrentAnimations', this.isFollowingMouse)
+    if (this.wasFollowingMouse) {
+      this.stopFollowMouse();
+    }
+    if (this.isThinking) {
+      this.stopThinking();
+    }
+    this.pauseBlinking();
+  };
+
+  private setAgreeAnimation = (): Promise<void> => {
+    const duration = 1780;
+    const ease = 'expo.out';
+    const overwrite = 'auto';
+    const state = { value: 0 };
+
+    // head movement
+    gsap
+      .timeline({
+        defaults: { ease, overwrite },
+        onComplete: () => {
+          this.restoreReadyState();
+        },
+      })
+      .to(state, {
+        value: 0,
+        duration: 0.08,
+        onUpdate: () => {
+          this.rotate(0, state.value);
+        },
+      })
+      .to(state, {
+        value: -100,
+        duration: 0.24,
+        onUpdate: () => {
+          this.rotate(0, state.value);
+        },
+      })
+      .to(state, {
+        value: 50,
+        duration: 0.18,
+        onUpdate: () => {
+          this.rotate(0, state.value);
+        },
+      })
+      .to(state, {
+        value: -25,
+        duration: 0.12,
+        onUpdate: () => {
+          this.rotate(0, state.value);
+        },
+      })
+      .to(state, {
+        value: 0,
+        duration: 0.16,
+        onUpdate: () => {
+          this.rotate(0, state.value);
+        },
+      });
+
+    // eyebrows
+    if (this.eyebrowsEl) {
+      const eyebrowsTween = gsap
+        .timeline({
+          defaults: { ease: 'expo.out', overwrite: true },
+          onComplete: () => {
+            eyebrowsTween.reverse();
+          },
+        })
+        .to(this.eyebrowsEl, { yPercent: -40, duration: 0.4 });
+    }
+
+    // mouth
+    this.svgPartState('mouth', 'smile');
+    gsap
+      .timeline({
+        defaults: { ease, overwrite },
+        onComplete: () => {
+          this.svgPartState('mouth', 'default');
+        },
+      })
+      .to(this.mouthEl, { scaleY: 1.2, duration: 0.2 })
+      .to(this.mouthEl, { scaleY: 1, duration: 0.2 });
+
+    return new Promise((resolve) => setTimeout(resolve, duration));
+  };
+
+  private setSmileAnimation = (): Promise<void> => {
+    // console.log('setSmileAnimation')
+    const duration = 750;
+    this.moveHead(this.getEmojiCenter().centerX, this.getEmojiCenter().centerY);
+    const ease = 'expo.out';
+    const overwrite = 'auto';
+
+    // mouth
+    this.svgPartState('mouth', 'smile');
+    gsap
+      .timeline({
+        defaults: { ease, overwrite },
+        onComplete: () => {
+          this.svgPartState('mouth', 'default');
+        },
+      })
+      .to(this.mouthEl, { scaleY: 1, duration: 0.15 })
+      .to(this.mouthEl, { scaleY: 0.75, duration: 0.15 })
+      .to(this.mouthEl, { scaleY: 1, duration: 0.15 })
+      .to(this.mouthEl, { scaleY: 0.75, duration: 0.15 })
+      .to(this.mouthEl, { scaleY: 1, duration: 0.15 });
+
+    // eyes
+    this.svgPartState('eyes', 'closed');
+    const eyesSmileTween = gsap
+      .timeline({
+        defaults: { ease, duration: 0.25, overwrite },
+        onComplete: () => {
+          eyesSmileTween.to(this.eyesEl, {
+            yPercent: 0,
+            onComplete: () => {
+              this.svgPartState('eyes');
+            },
+          });
+        },
+      })
+      .to(this.eyesEl, { yPercent: -20 })
+      .to(this.eyesEl, { yPercent: 10 });
+
+    // eyebrows
+    if (this.eyebrowsEl) {
+      gsap
+        .timeline({
+          defaults: { ease, overwrite },
+        })
+        .to(this.eyebrowsEl, { yPercent: '-=15', duration: 0.15 })
+        .to(this.eyebrowsEl, { yPercent: '+=10', duration: 0.15 });
+    }
+
+    // emoji
+    gsap
+      .timeline({
+        defaults: { overwrite },
+        onComplete: () => {
+          this.isBusy = false;
+          this.restoreFollowMouse();
+          this.svgPartState('mouth', 'default');
+          this.scheduleBlink();
+        },
+      })
+      .to(this.host, {
+        yPercent: `-=${this.host.getBoundingClientRect().height / 10}`,
+        scaleX: 0.95,
+        duration: 1,
+        ease: 'elastic.out',
+      })
+      .to(this.host, {
+        yPercent: `+=${this.host.getBoundingClientRect().height / 10}`,
+        scaleX: 1,
+        duration: 0.75,
+        ease: 'expo.out',
+      });
+    return new Promise((resolve) => setTimeout(resolve, duration));
+  };
+
+  private setDisagreeAnimation = (turnHappyDelay: number = 0): Promise<void> => {
+    const state = { value: 0 };
+
+    gsap
+      .timeline({
+        ease: 'power2.inOut',
+        onStart: () => {
+          this.svgPartState('mouth', 'serious');
+        },
+        onComplete: () => {
+          if (turnHappyDelay > 0) {
+            gsap.delayedCall(turnHappyDelay / 1000, () => {
+              this.svgPartState('mouth', 'default');
+              this.restoreReadyState();
+            });
+            return;
+          }
+          this.svgPartState('mouth', 'default');
+          this.restoreReadyState();
+        },
+      })
+      .to(state, {
+        value: 0,
+        duration: 0.08,
+        onUpdate: () => {
+          this.rotate(state.value, 0);
+        },
+      })
+      .to(state, {
+        value: -100,
+        duration: 0.24,
+        onUpdate: () => {
+          this.rotate(state.value, 0);
+        },
+      })
+      .to(state, {
+        value: 50,
+        duration: 0.18,
+        onUpdate: () => {
+          this.rotate(state.value, 0);
+        },
+      })
+      .to(state, {
+        value: -25,
+        duration: 0.12,
+        onUpdate: () => {
+          this.rotate(state.value, 0);
+        },
+      })
+      .to(state, {
+        value: 0,
+        duration: 0.16,
+        onUpdate: () => {
+          this.rotate(state.value, 0);
+        },
+      });
+
+    return new Promise((resolve) => setTimeout(resolve, 780 + turnHappyDelay));
+  };
+
+  private scaleSize = (value: number): number => {
+    return (value * this.emojiOriginalSize) / 24;
+  };
+
+  private setStartThinkingAnimation = (duration: number = 0.5): Promise<void> => {
+    if (!this.handEl || this.handEl instanceof NodeList) return new Promise(() => {});
+    const ease = 'expo.inOut';
+    this.handEl.style.visibility = 'visible';
+    gsap.fromTo(
+      this.handEl,
+      {
+        scale: 0,
+        rotateZ: 45,
+        xPercent: this.scaleSize(-4),
+        yPercent: this.scaleSize(4),
+        overwrite: true,
+      },
+      {
+        xPercent: this.handOffsetX,
+        yPercent: this.handOffsetY,
+        scale: 1,
+        rotateZ: 0,
+        overwrite: true,
+        ease,
+        duration,
+      },
+    );
+    this.moveEyesThinkAnimation();
+    this.svgPartState('mouth', 'serious');
+    this.svgPartState('eyes', 'focused');
+    return new Promise((resolve) => setTimeout(resolve, duration * 1000));
+  };
+
+  private moveEyesThinkAnimation = (): void => {
+    const duration = gsap.utils.random(0.15, 0.3, 0.01, true)();
+    const ease = 'expo.out';
+
+    const animation = { duration, ease, overwrite: true };
+    const eyesMargin = 5;
+    const randomEyesOffsetX = gsap.utils.random(eyesMargin * -1, eyesMargin, 0.1);
+    const randomEyesOffsetY = gsap.utils.random(eyesMargin * -1, eyesMargin, 0.1);
+
+    gsap.to(this.eyesEl, {
+      xPercent: randomEyesOffsetX,
+      yPercent: randomEyesOffsetY,
+      ...animation,
+      onComplete: () => {
+        if (this.isThinking) {
+          const nextDelay = gsap.utils.random(0.2, 0.7, 0.1);
+          gsap.delayedCall(nextDelay, this.moveEyesThinkAnimation);
+        } else {
+          // Reset eyes position when not thinking
+          gsap.to(this.eyesEl, { xPercent: 0, yPercent: 0, ease: 'expo.out', duration: 0.5 });
+        }
+      },
+    });
+  };
+
+  private setStopThinkingAnimation = (duration: number = 0.5): Promise<void> => {
+    const ease = 'expo.inOut';
+    gsap.to(this.handEl, {
+      scale: 0,
+      rotateZ: 45,
+      translateX: this.scaleSize(-4),
+      translateY: this.scaleSize(4),
+      ease,
+      duration,
+      overwrite: true,
+    });
+    gsap.to(this.eyesEl, { xPercent: 0, yPercent: 0, ease: 'expo.out', duration, overwrite: true });
+    this.svgPartState('mouth', 'default');
+    this.svgPartState('eyes', 'default');
+    this.isBusy = false;
+    return new Promise((resolve) => setTimeout(resolve, duration * 1000));
+  };
+
+  // A single, reusable blink sequence. Built once and replayed via restart(),
+  // it never grows over time and is fully controlled by play/pause, unlike the
+  // previous recursive chain that died permanently the moment isBusy was set.
+  private buildBlinkTimeline = (): gsap.core.Timeline | null => {
+    const eyesDefaultEl = this.queryPart('eyes-default');
+    const eyesClosedEl = this.queryPart('eyes-closed');
+    if (!eyesDefaultEl || !eyesClosedEl) return null;
+
+    const animateIn = { ease: 'expo.in', duration: 0.2 };
+    const animateOut = { ease: 'expo.out', duration: 0.2 };
+
+    return gsap
+      .timeline({ paused: true, onComplete: this.scheduleBlink })
+      .to(eyesDefaultEl, { scaleY: 0.5, ...animateIn })
+      .add(() => {
+        this.svgPartState('eyes', 'closed');
+      })
+      .fromTo(eyesClosedEl, { scaleY: 0.5 }, { scaleY: 1, ...animateOut })
+      .add(() => {
+        this.svgPartState('eyes', 'default');
+      })
+      .fromTo(eyesDefaultEl, { scaleY: 0.75 }, { scaleY: 1, ...animateOut });
+  };
+
+  // Queues the next blink after a random idle delay. Gated on the blinking
+  // intent and isBusy, so it is a no-op while another animation owns the eyes
+  // and is simply called again once that animation finishes.
+  private scheduleBlink = (): void => {
+    if (!this.isBlinking || this.isBusy || !this.blinkTimeline) return;
+    this.blinkDelay?.kill();
+    this.blinkDelay = gsap.delayedCall(gsap.utils.random(1, 3, 0.1), () => {
+      if (!this.isBlinking || this.isBusy || !this.blinkTimeline) return;
+      this.resetEyesToDefault();
+      this.blinkTimeline.restart();
+    });
+  };
+
+  private pauseBlinking = (): void => {
+    this.blinkDelay?.kill();
+    this.blinkDelay = null;
+    if (!this.blinkTimeline) return;
+    this.blinkTimeline.pause(0);
+    // pause(0) rewinds the tweens, but the visibility swaps are forward-only
+    // callbacks, so make sure the open eyes are the visible state again.
+    this.resetEyesToDefault();
+  };
+
+  private handleFollowMouse = (e: MouseEvent): void => {
+    if (!this.isFollowingMouse) return;
+    this.mouseX = e.clientX;
+    this.mouseY = e.clientY;
+    this.followMouse();
+  };
+
+  private followMouse = (): void => {
+    const { centerX, centerY } = this.getEmojiCenter();
+    let currentMouseX = centerX;
+    let currentMouseY = centerY;
+
+    if (this.isFollowingMouse) {
+      currentMouseX = this.mouseX;
+      currentMouseY = this.mouseY;
+    }
+
+    const rect = this.host.getBoundingClientRect();
+
+    const deltaX = currentMouseX - centerX;
+    const deltaY = currentMouseY - centerY;
+
+    const percentX = deltaX / (rect.width / 2);
+    const percentY = deltaY / (rect.height / 2);
+
+    this.rotate(percentX, percentY);
+  };
+
+  private moveHead = (x: number, y: number): void => {
+    const { centerX, centerY } = this.getEmojiCenter();
+    const rect = this.host.getBoundingClientRect();
+
+    const deltaX = x - centerX;
+    const deltaY = y - centerY;
+
+    const percentX = deltaX / (rect.width / 2);
+    const percentY = deltaY / (rect.height / 2);
+
+    this.rotate(percentX, percentY);
+  };
+
+  private rotate = (percentX: number, percentY: number): void => {
+    const ease = 'power1.out';
+    const traitsDuration = this.expressionFollowMouseTraitsDuration;
+    const clampOffset = (offset: number, percent: number): number =>
+      gsap.utils.clamp(-offset, offset, percent * offset);
+
+    this.currentRotateX = clampOffset(this.expressionAngleMax, -percentY); // Y invertito
+    this.currentRotateY = clampOffset(this.expressionAngleMax, percentX);
+    this.headOffsetX = clampOffset(this.headOffset, percentX);
+    this.headOffsetY = clampOffset(this.headOffset, percentY);
+    this.eyesOffsetX = clampOffset(this.eyesOffset, percentX);
+    this.eyesOffsetY = clampOffset(this.eyesOffset, percentY);
+    this.mouthOffsetX = clampOffset(this.mouthOffset, percentX);
+    this.mouthOffsetY = clampOffset(this.mouthOffset, percentY);
+    this.handOffsetX = clampOffset(this.handOffset, percentX);
+    this.handOffsetY = clampOffset(this.handOffset, percentY);
+    this.gadgetOffsetX = clampOffset(this.gadgetOffset, percentX);
+    this.gadgetOffsetY = clampOffset(this.gadgetOffset, percentY);
+    this.eyebrowsOffsetX = clampOffset(this.eyebrowsOffset, percentX);
+    this.eyebrowsOffsetY = clampOffset(this.eyebrowsOffset, percentY);
+    this.earsOffsetX = clampOffset(this.earsOffset, percentX);
+    this.earsOffsetY = clampOffset(this.earsOffset, percentY);
+
+    if (!this.headEl) {
+      this.headEl = this.svgPartState('head');
+      this.eyebrowsEl = this.svgPartState('eyebrows');
+      this.earsEl = this.svgPartState('ears');
+      this.eyesEl = this.svgPartState('eyes');
+      this.handEl = this.svgPartState('hand', 'think');
+      if (this.handEl) (this.handEl as SVGElement).style.visibility = 'hidden';
+      this.mouthEl = this.svgPartState('mouth');
+      this.gadgetEl = this.svgPartState('gadget');
+    }
+
+    // Each facial element is tweened independently with its own offset so they
+    // move by different amounts, giving the emoji a layered, parallax-like depth.
+    gsap.to(this.host, {
+      rotateX: this.currentRotateX,
+      rotateY: this.currentRotateY,
+      transformOrigin: '50% 50%',
+      duration: this.expressionFollowMouseHeadDuration,
+      ease,
+    });
+
+    if (this.eyesEl) {
+      gsap.to(this.eyesEl, {
+        translateX: this.eyesOffsetX,
+        translateY: this.eyesOffsetY,
+        transformOrigin: '50% 50%',
+        duration: traitsDuration,
+        ease,
+        overwrite: false,
+      });
+    }
+
+    if (this.handEl) {
+      gsap.to(this.handEl, {
+        translateX: this.handOffsetX,
+        translateY: this.handOffsetY,
+        transformOrigin: '50% 50%',
+        duration: traitsDuration,
+        ease,
+        overwrite: false,
+      });
+    }
+
+    if (this.headEl) {
+      gsap.to(this.headEl, {
+        translateX: this.headOffsetX,
+        translateY: this.headOffsetY,
+        transformOrigin: '0% 100%',
+        duration: traitsDuration,
+        ease,
+        overwrite: false,
+      });
+    }
+
+    if (this.mouthEl) {
+      gsap.to(this.mouthEl, {
+        translateX: this.mouthOffsetX,
+        translateY: this.mouthOffsetY,
+        transformOrigin: '50% 50%',
+        duration: traitsDuration,
+        ease,
+        overwrite: false,
+      });
+    }
+
+    if (this.gadgetEl) {
+      gsap.to(this.gadgetEl, {
+        translateX: this.gadgetOffsetX,
+        translateY: this.gadgetOffsetY,
+        transformOrigin: '50% 50%',
+        duration: traitsDuration,
+        ease,
+        overwrite: false,
+      });
+    }
+
+    if (this.eyebrowsEl) {
+      gsap.to(this.eyebrowsEl, {
+        translateX: this.eyebrowsOffsetX,
+        translateY: this.eyebrowsOffsetY,
+        transformOrigin: '50% 50%',
+        duration: traitsDuration,
+        ease,
+        overwrite: false,
+      });
+    }
+
+    if (this.earsEl) {
+      gsap.to(this.earsEl, {
+        translateX: this.earsOffsetX,
+        translateY: this.earsOffsetY,
+        transformOrigin: '50% 50%',
+        duration: traitsDuration,
+        ease,
+        overwrite: false,
+      });
+    }
+  };
+
+  render() {
+    return <Host></Host>;
   }
 }

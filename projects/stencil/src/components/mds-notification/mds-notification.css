@@ -1,30 +1,115 @@
+@import './css/mds-notification-fouc.css';
+
 /**
- * @prop --mds-notification-color: Sets the text color of the component
- * @prop --mds-notification-dot-background: Sets the background-color of the component
- * @prop --mds-notification-dot-padding: Sets the size of the component
- * @prop --mds-notification-size: Sets the size of the component
- * @prop --mds-notification-ring-size: Sets the border size of ring around the notification
- * @prop --mds-notification-ring-color: Sets the border color of ring around the notification
- * @prop --mds-notification-translate-offset-x: Sets offset x positioning of the notification
- * @prop --mds-notification-translate-offset-y: Sets offset y positioning of the notification
+ * @prop --mds-notification-color: The text/icon color of the notification component.
+ * @prop --mds-notification-dot-background: The background color of the notification dot.
+ * @prop --mds-notification-dot-padding: The padding around the notification dot.
+ * @prop --mds-notification-min-width: The minimum width of the notification component.
+ * @prop --mds-notification-ring-color: The color of the notification ring.
+ * @prop --mds-notification-ring-size: The thickness of the notification ring.
+ * @prop --mds-notification-size: The base size of the notification element.
+ * @prop --mds-notification-transition-duration: Duration of notification transitions.
+ * @prop --mds-notification-transition-timing-function: Timing function for notification transitions.
+ * @prop --mds-notification-translate-offset-x: X-axis offset factor for notification translation.
+ * @prop --mds-notification-translate-offset-y: Y-axis offset factor for notification translation.
+ * @prop --mds-notification-translate: The CSS transform applied for notification positioning.
  */
 
+@property --mds-notification-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral));
+  syntax: '<color>';
+}
+
+@property --mds-notification-dot-background {
+  inherits: false;
+  initial-value: rgb(var(--status-error-05));
+  syntax: '<color>';
+}
+
+@property --mds-notification-dot-padding {
+  inherits: false;
+  initial-value: 6px;
+  syntax: '<length>';
+}
+
+@property --mds-notification-min-width {
+  inherits: false;
+  initial-value: var(--mds-notification-size);
+  syntax: '<length>';
+}
+
+@property --mds-notification-ring-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral));
+  syntax: '<color>';
+}
+
+@property --mds-notification-ring-size {
+  inherits: false;
+  initial-value: 2px;
+  syntax: '<length>';
+}
+
+@property --mds-notification-size {
+  inherits: false;
+  initial-value: 20px;
+  syntax: '<length>';
+}
+
+@property --mds-notification-transition-duration {
+  inherits: false;
+  initial-value: 200ms;
+  syntax: '<time>';
+}
+
+@property --mds-notification-translate-offset-x {
+  inherits: false;
+  initial-value: -1.75;
+  syntax: '<number>';
+}
+
+@property --mds-notification-translate-offset-y {
+  inherits: false;
+  initial-value: -2;
+  syntax: '<number>';
+}
+
+@property --mds-notification-translate {
+  inherits: false;
+  initial-value: translate(
+    calc(var(--mds-notification-size) / var(--mds-notification-translate-offset-x)),
+    calc(var(--mds-notification-size) / var(--mds-notification-translate-offset-y))
+  );
+  syntax: '<transform-function>';
+}
+
+/* ❌ Not supported
+@property --mds-notification-transition-timing-function {
+  inherits: false;
+  initial-value: var(--ease-out-cubic);
+  syntax: "<timing-function>";
+}
+*/
+
 :host {
-  --mds-notification-color: theme('colors.tone-neutral');
-  --mds-notification-dot-background: theme('colors.status-error-05');
+  --mds-notification-color: rgb(var(--tone-neutral));
+  --mds-notification-dot-background: rgb(var(--status-error-05));
   --mds-notification-dot-padding: 6px;
-  --mds-notification-size: 20px;
+  --mds-notification-min-width: var(--mds-notification-size);
+  --mds-notification-ring-color: rgb(var(--tone-neutral));
   --mds-notification-ring-size: 2px;
-  --mds-notification-transition-timing-function: theme('transitionTimingFunction.out-cubic');
-  --mds-notification-transition-duration: theme('transitionDuration.200');
-  --mds-notification-ring-color: theme('colors.tone-neutral');
+  --mds-notification-size: 20px;
+  --mds-notification-transition-duration: 200ms;
+  --mds-notification-transition-timing-function: var(--ease-out-cubic);
   --mds-notification-translate-offset-x: -1.75;
   --mds-notification-translate-offset-y: -2;
-  --mds-notification-translate: translate(calc(var(--mds-notification-size) / var(--mds-notification-translate-offset-x)), calc(var(--mds-notification-size) / var(--mds-notification-translate-offset-y)));
-  --mds-notification-min-width: var(--mds-notification-size);
+  --mds-notification-translate: translate(
+    calc(var(--mds-notification-size) / var(--mds-notification-translate-offset-x)),
+    calc(var(--mds-notification-size) / var(--mds-notification-translate-offset-y))
+  );
 
-  @apply
-    rounded-full
+  @apply rounded-full
     z-10;
 
   align-items: center;
@@ -38,8 +123,8 @@
   width: var(--mds-notification-size);
 }
 
-:host([strategy="absolute"]),
-:host([strategy="fixed"]) {
+:host([strategy='absolute']),
+:host([strategy='fixed']) {
   opacity: 0;
   right: 100%;
   transform: var(--mds-notification-translate) scale(0);
@@ -49,17 +134,16 @@
   transition-timing-function: var(--mds-notification-transition-timing-function);
 }
 
-:host([strategy="absolute"]) {
+:host([strategy='absolute']) {
   position: absolute;
 }
 
-:host([strategy="fixed"]) {
+:host([strategy='fixed']) {
   position: fixed;
 }
 
 .dot {
-  @apply
-    duration-300
+  @apply duration-300
     ease-in-out
     rounded-full;
 
@@ -78,8 +162,8 @@
   white-space: nowrap;
 }
 
-:host([strategy="absolute"]) .dot,
-:host([strategy="fixed"]) .dot {
+:host([strategy='absolute']) .dot,
+:host([strategy='fixed']) .dot {
   position: absolute;
 }
 
@@ -90,42 +174,37 @@
   width: var(--mds-notification-min-width);
 }
 
-:host([visible="false"][strategy="absolute"] ),
-:host([visible="false"][strategy="fixed"]) {
-  @apply
-    ease-in-cubic
+:host([visible='false'][strategy='absolute']),
+:host([visible='false'][strategy='fixed']) {
+  @apply ease-in-cubic
     opacity-100;
 
   transform: var(--mds-notification-translate) scale(0);
 }
 
-:host([visible="true"][strategy="absolute"] ),
-:host([visible="true"][strategy="fixed"] ),
-:host([strategy="absolute"]:not([visible="false"]) ),
-:host([strategy="fixed"]:not([visible="false"])) {
-  @apply
-    ease-out-cubic
+:host([visible='true'][strategy='absolute']),
+:host([visible='true'][strategy='fixed']),
+:host([strategy='absolute']:not([visible='false'])),
+:host([strategy='fixed']:not([visible='false'])) {
+  @apply ease-out-cubic
     opacity-100;
 
   transform: var(--mds-notification-translate) scale(1);
 }
 
-
-
-:host([strategy="disabled"] ),
+:host([strategy='disabled']),
 :host(:not([target])) {
   @apply opacity-100;
 
   position: static;
   transform: scale(1);
   transform-origin: unset;
-  transition-duration: 0ms
+  transition-duration: 0ms;
 }
 
-:host([strategy="disabled"] ) .dot,
-:host(:not([target]) ) .dot {
+:host([strategy='disabled']) .dot,
+:host(:not([target])) .dot {
   position: static;
 }
 
 @import './css/mds-notification-pref-animation.css';
-@import '../../tailwind/fouc.css';

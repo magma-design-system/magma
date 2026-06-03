@@ -1,0 +1,7 @@
+@import '../../../tailwind/fouc.css';
+
+mds-modal {
+  &:not(:is([hydrated], .hydrated)) {
+    @apply not-hydrated;
+  }
+}

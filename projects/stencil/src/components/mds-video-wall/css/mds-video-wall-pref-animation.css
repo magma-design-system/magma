@@ -1,9 +1,10 @@
-:host-context(.pref-animation-reduce) video {
+:host-context(:root.pref-animation-reduce) video {
   display: none;
 }
 
 @media (prefers-reduced-motion) {
-  :host-context(.pref-animation-system) video {
+  :host-context(:root.pref-animation-system),
+  :host-context(:root:not([data-magma-pref])) video {
     display: none;
   }
 }

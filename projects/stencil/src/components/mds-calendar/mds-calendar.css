@@ -1,20 +1,74 @@
-@tailwind utilities;
+@import './css/mds-calendar-fouc.css';
+
+/**
+ * @prop --mds-calendar-day-number-other-month-color: The color of the day numbers belonging to previous/next months.
+ * @prop --mds-calendar-day-number-color: The color of the day numbers of the current month.
+ * @prop --mds-calendar-cell-gap: The spacing between calendar day cells.
+ * @prop --mds-calendar-cell-other-month-visibility: Controls visibility of days from other months (e.g. "visible", "hidden").
+ * @prop --mds-calendar-border-radius: The border-radius of the calendar container.
+ * @prop --mds-calendar-background: The background color of the calendar container.
+ * @prop --mds-calendar-padding: The internal padding of the calendar container.
+ */
+
+@property --mds-calendar-day-number-other-month-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-07));
+  syntax: '<color>';
+}
+
+@property --mds-calendar-day-number-color {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral-01));
+  syntax: '<color>';
+}
+
+@property --mds-calendar-cell-gap {
+  inherits: false;
+  initial-value: var(--gap-50);
+  syntax: '<length>';
+}
+
+@property --mds-calendar-cell-other-month-visibility {
+  inherits: false;
+  initial-value: visible;
+  syntax: 'visible | hidden';
+}
+
+@property --mds-calendar-border-radius {
+  inherits: false;
+  initial-value: var(--radius-lg);
+  syntax: '<length>';
+}
+
+@property --mds-calendar-background {
+  inherits: false;
+  initial-value: rgb(var(--tone-neutral));
+  syntax: '<color>';
+}
+
+@property --mds-calendar-padding {
+  inherits: false;
+  initial-value: --spacing(400);
+  syntax: '<length>';
+}
 
 :host {
-  --mds-calendar-day-number-other-month-color: theme('colors.tone-neutral-07');
-  --mds-calendar-day-number-color: theme('colors.tone-neutral-01');
-  --mds-calendar-cell-gap: theme('gap.50');
+  --mds-calendar-day-number-other-month-color: rgb(var(--tone-neutral-07));
+  --mds-calendar-day-number-color: rgb(var(--tone-neutral-01));
+  --mds-calendar-cell-gap: --spacing(50);
   --mds-calendar-cell-other-month-visibility: visible;
-  --mds-calendar-border-radius: theme('borderRadius.lg');
-  --mds-calendar-background: theme('colors.tone-neutral');
-  --mds-calendar-padding: theme('padding.400');
+  --mds-calendar-border-radius: var(--radius-lg);
+  --mds-calendar-background: rgb(var(--tone-neutral));
+  --mds-calendar-padding: --spacing(400);
+  --mds-calendar-max-width: 480px;
+  --mds-calendar-min-width: 280px;
 
-  background-color: theme('colors.tone-neutral-09');
+  background-color: rgb(var(--tone-neutral-09));
   border-radius: var(--mds-calendar-border-radius);
   cursor: auto;
   display: inline-flex;
-  max-width: 380px;
-  min-width: min-content;
+  max-width: var(--mds-calendar-max-width);
+  min-width: max-content;
   overflow: hidden;
 }
 
@@ -23,11 +77,14 @@
   border-radius: inherit;
   display: grid;
   padding: var(--mds-calendar-padding);
+
+  /* width: clamp(var(--mds-calendar-min-width), calc((var(--mds-calendar-max-width) + var(--mds-calendar-min-width)) / 2), var(--mds-calendar-max-width)); */
+  width: 100%;
 }
 
 .calendar-preselection {
   display: none;
-  gap: theme('spacing.50');
+  gap: --spacing(50);
   grid-auto-rows: min-content;
   padding: var(--mds-calendar-padding);
 }
@@ -38,15 +95,15 @@
 
 nav {
   display: flex;
-  gap: theme('spacing.200');
+  gap: --spacing(200);
   justify-content: space-between;
 }
 
 .action {
-  @apply px-200;
-
   justify-content: left;
   min-width: min-content;
+  padding-left: --spacing(200);
+  padding-right: --spacing(200);
 }
 
 .action-back,
@@ -55,8 +112,8 @@ nav {
 }
 
 .select-month-or-year {
-  background-color: theme('colors.tone-neutral-09');
-  border-radius: theme('borderRadius.lg');
+  background-color: rgb(var(--tone-neutral-09));
+  border-radius: var(--radius-lg);
   display: flex;
   flex-grow: 1;
   justify-content: space-evenly;
@@ -77,5 +134,3 @@ nav {
 
 @import './css/mds-calendar-view-month.css';
 @import './css/mds-calendar-view-month-names.css';
-
-

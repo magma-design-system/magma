@@ -1,59 +1,77 @@
-:host([variant="google"]),
-:host([variant="google"][tone]) {
-  --mds-button-background: theme('colors.tone-neutral');
-  --mds-button-border-hover-opacity: theme('opacity.50');
-  --mds-button-border-hover-width: theme('borderWidth.50');
-  --mds-button-border-opacity: theme('opacity.20');
-  --mds-button-border-width: theme('borderWidth.25');
-  --mds-button-color: theme('colors.tone-neutral-03');
-  --mds-button-border-color: var(--tone-neutral-01);
+:host([variant='google']),
+:host([variant='google'][tone]) {
+  --mds-button-background: rgb(var(--tone-neutral));
+  --mds-button-border-hover-opacity: 50%;
+  --mds-button-border-hover-width: --spacing(50);
+  --mds-button-border-opacity: 20%;
+  --mds-button-border-width: --spacing(25);
+  --mds-button-color: rgb(var(--tone-neutral-03));
+  --mds-button-border-color-rgb: var(--tone-neutral-01);
 
-  box-shadow: 0 0 0 var(--mds-button-border-width) rgb(var(--mds-button-border-color) / var(--mds-button-border-opacity));
+  box-shadow: 0 0 0 var(--mds-button-border-width)
+    rgb(var(--mds-button-border-color-rgb) / var(--mds-button-border-opacity));
 }
 
-:host([variant="google"]:hover),
-:host([variant="google"][tone]:hover) {
+:host([variant='google']:hover),
+:host([variant='google'][tone]:hover) {
+  --mds-button-background: rgb(var(--tone-neutral));
   --mds-button-border-width: var(--mds-button-border-hover-width);
   --mds-button-border-opacity: var(--mds-button-border-hover-opacity);
 }
 
-:host([variant="apple"]),
-:host([variant="apple"][tone]) {
-  --mds-button-background: theme('colors.tone-neutral-02');
-  --mds-button-color: theme('colors.tone-neutral');
+:host([variant='apple']) .icon {
+  transform: translateY(-5%);
+}
+
+:host([variant='apple']),
+:host([variant='apple'][tone]) {
+  --mds-button-background: rgb(var(--tone-neutral-02));
+  --mds-button-color: rgb(var(--tone-neutral));
   --mds-button-border-width: 0;
+  --mds-button-border-color-rgb: var(--tone-neutral-02);
 }
 
-:host-context(.pref-theme-dark):host([variant="google"]),
-:host-context(.pref-theme-dark):host([variant="google"][tone]) {
-  --mds-button-border-width: theme('borderWidth.50');
-  --mds-button-border-opacity: theme('opacity.30');
+:host([variant='apple']:hover),
+:host([variant='apple'][tone]:hover) {
+  --mds-button-background: rgb(var(--tone-neutral-02));
+  --mds-button-border-opacity: 100%;
 }
 
-:host-context(.pref-theme-dark):host([variant="google"]:hover),
-:host-context(.pref-theme-dark):host([variant="google"][tone]:hover) {
-  --mds-button-border-opacity: theme('opacity.50');
-}
+:host-context(:root.pref-theme-dark:not(.pref-theme-scheme-light)) {
+  &:host([variant='google']),
+  &:host([variant='google'][tone]) {
+    --mds-button-border-width: --spacing(50);
+    --mds-button-border-opacity: 30%;
+  }
 
-:host-context(.pref-theme-dark):host([variant="apple"]),
-:host-context(.pref-theme-dark):host([variant="apple"][tone]) {
-  --mds-button-background: theme('colors.tone-neutral-01');
+  &:host([variant='google']:hover),
+  &:host([variant='google'][tone]:hover) {
+    --mds-button-border-opacity: 50%;
+  }
+
+  &:host([variant='apple']),
+  &:host([variant='apple'][tone]) {
+    --mds-button-background: rgb(var(--tone-neutral-01));
+  }
 }
 
 @media (prefers-color-scheme: dark) {
-  :host-context(.pref-theme-system):host([variant="apple"]),
-  :host-context(.pref-theme-system):host([variant="apple"][tone]) {
-    --mds-button-background: theme('colors.tone-neutral-01');
-  }
+  :host-context(:root.pref-theme-system:not(.pref-theme-scheme-light)),
+  :host-context(:root:not([data-magma-pref])) {
+    &:host([variant='apple']),
+    &:host([variant='apple'][tone]) {
+      --mds-button-background: rgb(var(--tone-neutral-01));
+    }
 
-  :host-context(.pref-theme-system):host([variant="google"]),
-  :host-context(.pref-theme-system):host([variant="google"][tone]) {
-    --mds-button-border-width: theme('borderWidth.50');
-    --mds-button-border-opacity: theme('opacity.30');
-  }
+    &:host([variant='google']),
+    &:host([variant='google'][tone]) {
+      --mds-button-border-width: --spacing(50);
+      --mds-button-border-opacity: 30%;
+    }
 
-  :host-context(.pref-theme-system):host([variant="google"]:hover),
-  :host-context(.pref-theme-system):host([variant="google"][tone]:hover) {
-    --mds-button-border-opacity: theme('opacity.50');
+    &:host([variant='google']:hover),
+    &:host([variant='google'][tone]:hover) {
+      --mds-button-border-opacity: 50%;
+    }
   }
 }

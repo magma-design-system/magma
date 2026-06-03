@@ -1,0 +1,19 @@
+@import '../../../tailwind/fouc.css';
+
+:host {
+  --mds-button-background: rgb(var(--variant-primary-04));
+  --mds-button-border-color-rgb: var(--variant-primary-04);
+  --mds-button-color: rgb(var(--tone-neutral));
+
+  min-height: --spacing(900);
+  min-width: --spacing(900);
+  padding: --spacing(100) --spacing(400);
+}
+
+mds-icon,
+mds-spinner,
+mds-text {
+  &:not(:is([hydrated], .hydrated)) {
+    @apply not-hydrated;
+  }
+}

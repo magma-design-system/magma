@@ -1,5 +1,5 @@
-import { h } from '@stencil/core'
-import { lokiDisabled } from '@test/loki-disabled'
+import { h } from '@stencil/core';
+import { lokiDisabled } from '@test/loki-disabled';
 
 export default {
   title: 'UI / Paginator',
@@ -13,8 +13,8 @@ export default {
       description: 'Specifies the current page selected in the paginator',
     },
   },
-}
-const Template = args => <mds-paginator {...args} />
+};
+const Template = (args) => <mds-paginator {...args} />;
 
 export const Default = {
   render: Template,
@@ -22,7 +22,7 @@ export const Default = {
   args: {
     pages: 32,
   },
-}
+};
 
 export const CurrentPage = {
   render: Template,
@@ -33,4 +33,4 @@ export const CurrentPage = {
   },
 
   story: lokiDisabled,
-}
+};

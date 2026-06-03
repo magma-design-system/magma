@@ -1,4 +1,4 @@
 export interface MdsStepperBarEventDetail {
-  step: number
-  value: string
+  step: number;
+  value: string;
 }

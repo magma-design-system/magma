@@ -37,14 +37,16 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | ----------- | -------------------------------------------------------- |
 | `"content"` | The content wrapper of the `default` and `content` slots |
 | `"header"`  | The header of the component                              |
+| `"title"`   | The title of the component                               |
 
 
 ## CSS Custom Properties
 
-| Name                              | Description                                         |
-| --------------------------------- | --------------------------------------------------- |
-| `--mds-details-helper-icon-color` | Sets icon color of the helper icon of the component |
-| `--mds-details-icon-color`        | Sets the icon color the component                   |
+| Name                              | Description                                                |
+| --------------------------------- | ---------------------------------------------------------- |
+| `--mds-details-duration`          | Sets the transition duration for details component         |
+| `--mds-details-helper-icon-color` | Sets the color of the helper icon in the details component |
+| `--mds-details-icon-color`        | Sets the color of the details icon                         |
 
 
 ----------------------------------------------

@@ -1,6 +1,6 @@
-import { h } from '@stencil/core'
+import { h } from '@stencil/core';
 
-import { contrastDictionary } from '../meta/dictionary'
+import { contrastDictionary } from '../meta/dictionary';
 
 export default {
   title: 'UI / Preferences / Contrast',
@@ -12,11 +12,11 @@ export default {
       description: 'Specifies the preference mode',
     },
   },
-}
-const Template = args => <mds-pref-contrast {...args} />
+};
+const Template = (args) => <mds-pref-contrast {...args} />;
 
 export const Default = {
   render: Template,
 
   args: {},
-}
+};
