@@ -53,10 +53,6 @@
     "style-dictionary": "3.9.0"
   },
   "devDependencies": {
-    "cli-testing-library": "^3.0.1",
-    "js-beautify": "1.14.11",
-    "json-to-scss": "1.6.2",
-    "run-for-every-file": "1.1.0",
     "vitest": "3.2.4"
   },
   "repository": {
