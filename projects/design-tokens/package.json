@@ -23,8 +23,6 @@
   "license": "ISC",
   "scripts": {
     "build": "npm run clean && npm run build-style-dictionary && npm run build-figma-tokens && npm run build-cli",
-    "build-css-tokens": "run-for-every-file --src ./tokens/css/ --dest dist/scss/ --file '**/*.json' --not-file '**/*.scss' --run 'json-to-scss {{src-file}} {{dest}}{{file-name-ext}}'",
-    "build-palette": "node leonardo.mjs",
     "build-figma-tokens": "tsx scripts/generate-figma-tokens.ts",
     "build-cli": "tsc --project tsconfig.cli.json",
     "build-style-dictionary": "tsx scripts/build.ts",
