@@ -5,6 +5,8 @@ on:
     branches: [main]
     paths:
       - 'projects/svg-icons/**'
+  # manual publish (run it on the main branch)
+  workflow_dispatch:
 
 jobs:
   pipeline:

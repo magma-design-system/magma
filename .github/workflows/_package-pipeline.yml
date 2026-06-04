@@ -105,6 +105,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Detect package.json changes
+        if: ${{ github.event_name == 'push' }}
         uses: dorny/paths-filter@v3
         id: filter
         with:
@@ -113,20 +114,24 @@ jobs:
           filters: |
             pkg:
               - '${{ inputs.package-json-filter || format('{0}/package.json', inputs.publish-working-directory) }}'
-      - if: ${{ steps.filter.outputs.pkg == 'true' }}
+      - name: Decide whether to publish
+        id: gate
+        # manual dispatch always publishes (the version check still guards against republishing)
+        run: echo "publish=${{ github.event_name == 'workflow_dispatch' || steps.filter.outputs.pkg == 'true' }}" >> "$GITHUB_OUTPUT"
+      - if: ${{ steps.gate.outputs.publish == 'true' }}
         uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc
           cache: yarn
-      - if: ${{ steps.filter.outputs.pkg == 'true' }}
+      - if: ${{ steps.gate.outputs.publish == 'true' }}
         run: yarn install --frozen-lockfile --prefer-offline
-      - if: ${{ steps.filter.outputs.pkg == 'true' && (inputs.nx-project != '' || inputs.build-artifact-name != '') }}
+      - if: ${{ steps.gate.outputs.publish == 'true' && (inputs.nx-project != '' || inputs.build-artifact-name != '') }}
         uses: actions/download-artifact@v4
         with:
           name: ${{ inputs.build-artifact-name || format('{0}-build', inputs.nx-project) }}
           path: ${{ inputs.artifact-download-path }}
       - name: Check version and dry-run publish
-        if: ${{ steps.filter.outputs.pkg == 'true' }}
+        if: ${{ steps.gate.outputs.publish == 'true' }}
         working-directory: ${{ inputs.publish-working-directory }}
         run: |
           LATEST_PUBLISHED_V="$(npm view @maggioli-design-system/${{ inputs.component }} dist-tags.latest)"
@@ -139,7 +144,7 @@ jobs:
           fi
           npm publish --access public --dry-run
       - name: Publish to npm
-        if: ${{ steps.filter.outputs.pkg == 'true' }}
+        if: ${{ steps.gate.outputs.publish == 'true' }}
         working-directory: ${{ inputs.publish-working-directory }}
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
