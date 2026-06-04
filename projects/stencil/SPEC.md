@@ -299,17 +299,3 @@ src/components/mds-component-name/
 ```
 
 After scaffolding, fill in the three `usage/*.md` files following the templates in [`template/usage/`](../../projects/stencil/template/usage).
-
-## Regression tests
-
-Always run regression tests after visual changes:
-
-```bash
-# Before starting work - create fresh references
-nx run stencil:test.regression.reference
-
-# After your changes - review differences
-nx run stencil:test.regression.review
-```
-
-Tests require Docker to ensure consistent Chrome rendering across machines.

@@ -4,7 +4,7 @@ import { ask } from 'stdio';
 import { mkdir, readFile, stat, writeFile } from 'fs/promises';
 import { join } from 'path';
 import { COMPONENTS_DIR, TEMPLATES_DIR } from './meta';
-import { checkComponentExistance } from './lib';
+import { checkComponentExistence } from './lib';
 import { dontUseWithNX, logFileSavedTo, logStatus } from '../../../scripts/log';
 
 dontUseWithNX();
@@ -58,7 +58,7 @@ const main = async () => {
   const inputName = await ask(`Component name ${componentNamePrefix}`);
   const componentName = `${componentNamePrefix}${inputName}`;
 
-  const exist = await checkComponentExistance(componentName);
+  const exist = await checkComponentExistence(componentName);
 
   if (!exist) {
     console.info(
