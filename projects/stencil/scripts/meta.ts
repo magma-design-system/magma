@@ -16,7 +16,6 @@ const LOADER_DIR = resolve(PROJECT_DIR, 'loader');
 const SRC_DIR = resolve(PROJECT_DIR, 'src');
 const SRC_REACT_DIR = resolve(PROJECT_DIR, 'react', 'src');
 const COMPONENTS_DIR = resolve(SRC_DIR, 'components');
-const TEST_REGRESSION_DIR = resolve(PROJECT_DIR, '.loki');
 const WWW_DIR = resolve(PROJECT_DIR, 'www');
 
 const TEMPLATES_DIR = join(PROJECT_DIR, 'template');
@@ -41,7 +40,6 @@ export {
   SRC_REACT_DIR,
   TEMPLATES_DIR,
   TEMP_PROJECT_DIR,
-  TEST_REGRESSION_DIR,
   TOKENS_DIR,
   WWW_DIR,
 };

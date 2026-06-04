@@ -1,5 +1,4 @@
 import { noiseDictionary, preloadDictionary } from '../meta/dictionary';
-import { lokiDisabled } from '@test/loki-disabled';
 import { h } from '@stencil/core';
 
 export default {
@@ -62,8 +61,6 @@ export const Default = {
     class: 'max-w-full',
     src: './video-nature.mp4',
   },
-
-  story: lokiDisabled,
 };
 
 export const Autoplay = {
@@ -74,8 +71,6 @@ export const Autoplay = {
     autoplay: false,
     src: './video-nature.mp4',
   },
-
-  story: lokiDisabled,
 };
 
 export const Loop = {
@@ -86,8 +81,6 @@ export const Loop = {
     loop: false,
     src: './video-nature.mp4',
   },
-
-  story: lokiDisabled,
 };
 
 export const Muted = {
@@ -98,8 +91,6 @@ export const Muted = {
     muted: false,
     src: './video-nature.mp4',
   },
-
-  story: lokiDisabled,
 };
 
 export const Noise = {
@@ -110,8 +101,6 @@ export const Noise = {
     noise: 'classic',
     src: './video-nature.mp4',
   },
-
-  story: lokiDisabled,
 };
 
 export const Poster = {
@@ -133,8 +122,6 @@ export const Preload = {
     preload: 'metadata',
     src: './video-nature.mp4',
   },
-
-  story: lokiDisabled,
 };
 
 export const Content = {
@@ -144,6 +131,4 @@ export const Content = {
     class: 'max-w-full',
     src: './video-nature.mp4',
   },
-
-  story: lokiDisabled,
 };

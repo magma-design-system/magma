@@ -1,6 +1,5 @@
 import { typographyReadDictionary } from '@type/typography';
 import { h } from '@stencil/core';
-import { lokiDisabled } from '@test/loki-disabled';
 
 export default {
   title: 'UI / Accordion Timer / Accordion Timer Item',
@@ -58,8 +57,6 @@ export const Default = {
   args: {
     description: 'Blipbug',
   },
-
-  story: lokiDisabled,
 };
 
 export const Selected = {
@@ -69,8 +66,6 @@ export const Selected = {
     selected: true,
     description: 'Blipbug',
   },
-
-  story: lokiDisabled,
 };
 
 export const Progress = {
@@ -81,6 +76,4 @@ export const Progress = {
     description: 'Blipbug',
     progress: 0.5,
   },
-
-  story: lokiDisabled,
 };
