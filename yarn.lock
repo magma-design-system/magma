@@ -12,17 +12,6 @@
   resolved "https://registry.npmjs.org/@adobe/css-tools/-/css-tools-4.5.0.tgz#b5b71a25a4d16afa2482592ddfa62fccc60bc7d1"
   integrity sha512-6OzddxPio9UiWTCemp4N8cYLV2ZN1ncRnV1cVGtve7dhPOtRkleRyx32GQCYSwDYgaHU3USMm84tNsvKzRCa1Q==
 
-"@adobe/leonardo-contrast-colors@1.0.0":
-  version "1.0.0"
-  resolved "https://registry.npmjs.org/@adobe/leonardo-contrast-colors/-/leonardo-contrast-colors-1.0.0.tgz#97d69877160f10e63667d0639ded2c19b994a133"
-  integrity sha512-a4mD0JZ1zNu2wIem/vWJqdaiuQZgxwOph/gpHA75mlXcs6iiIQx9G+W0jtssRFgdYYAi/ceQYOlYwiSQj1AUCw==
-  dependencies:
-    apca-w3 "^0.1.9"
-    chroma-js "^2.4.2"
-    ciebase "^0.1.1"
-    ciecam02 "^0.4.6"
-    hsluv "^0.1.0"
-
 "@alloc/quick-lru@^5.2.0":
   version "5.2.0"
   resolved "https://registry.npmjs.org/@alloc/quick-lru/-/quick-lru-5.2.0.tgz#7bf68b20c0a350f936915fcae06f58e32007ce30"
@@ -3451,51 +3440,6 @@
   resolved "https://registry.npmjs.org/@lmdb/lmdb-win32-x64/-/lmdb-win32-x64-3.0.13.tgz#93bcd6dc24afd1cc60dd88a65b9e4fab32dcf397"
   integrity sha512-UCrMJQY/gJnOl3XgbWRZZUvGGBuKy6i0YNSptgMzHBjs+QYDYR1Mt/RLTOPy4fzzves65O1EDmlL//OzEqoLlA==
 
-"@maggioli-design-system/design-tokens@13.7.2":
-  version "13.7.2"
-  resolved "https://registry.npmjs.org/@maggioli-design-system/design-tokens/-/design-tokens-13.7.2.tgz#9a871b277cb825b581a0d601823be2f61fc0dd63"
-  integrity sha512-5PfDnL+2bmbnkZS4FX+6XzZGLxdatb57qwIexDURCD1epmpciBG4cq0PpGzA7/oCCOZZDmeeiJiFK50UJDCFXQ==
-  dependencies:
-    "@adobe/leonardo-contrast-colors" "1.0.0"
-    arg "5.0.2"
-    chalk "5.4.1"
-    handlebars "4.7.9"
-    hex-rgb "4.3.0"
-    lilconfig "3.1.3"
-    style-dictionary "3.9.0"
-
-"@maggioli-design-system/magma@1.11.8":
-  version "1.11.8"
-  resolved "https://registry.npmjs.org/@maggioli-design-system/magma/-/magma-1.11.8.tgz#29051e84aea6e362fb5485e961e51e37617e0251"
-  integrity sha512-RIuWCKUHrVWpoBiC0Xvn9652AuQ7eLnC1TM9nHzaGpuJ104WSY2Mtwyp2BLNn8V0Rl9xMYURY/wKuP8pksOEfg==
-  dependencies:
-    "@floating-ui/dom" "1.6.12"
-    "@maggioli-design-system/design-tokens" "13.7.2"
-    "@maggioli-design-system/styles" "15.11.1"
-    "@stencil/core" "4.27.2"
-    clsx "2.1.0"
-    crypto-js "4.2.0"
-    dayjs "1.11.13"
-    filesize "10.1.0"
-    fitty "2.4.2"
-    gsap "3.13.0"
-    idb-keyval "6.2.1"
-    luxon "3.6.1"
-    mime "4.0.4"
-    mustache "4.2.0"
-
-"@maggioli-design-system/styles@15.11.1":
-  version "15.11.1"
-  resolved "https://registry.npmjs.org/@maggioli-design-system/styles/-/styles-15.11.1.tgz#76cca7cfb28912b7dfec00cd8901a89c9617ffe4"
-  integrity sha512-M+Z7LWFp3vzd1KpCUFG/RSVYUzNS7nXPtfCjQTAN6/Y05NtWzc3E+RlGkiPqXOt0qdhvCYrGyRyEkMZwMHoGQw==
-  dependencies:
-    "@fontsource/karla" "5.1.0"
-    "@fontsource/merriweather" "5.1.0"
-    "@fontsource/roboto" "5.1.0"
-    "@fontsource/roboto-mono" "5.1.0"
-    "@maggioli-design-system/design-tokens" "13.7.2"
-    normalize.css "8.0.1"
-
 "@maggioli-design-system/svg-icons@4.0.1":
   version "4.0.1"
   resolved "https://registry.npmjs.org/@maggioli-design-system/svg-icons/-/svg-icons-4.0.1.tgz#161d87d84a618f5a3486461dba14f79cc9447109"
@@ -4393,11 +4337,6 @@
   version "1.1.1"
   resolved "https://registry.npmjs.org/@stencil/angular-output-target/-/angular-output-target-1.1.1.tgz#8b0eea00d938c28b4f1cc224fed5a48dd890bf55"
   integrity sha512-NMZjnbNi+gfUjlLRAWPLzwUuX1dGzkaIi/OqoVbElmZfxNI+kihZTW2EvDsA3SJx6bSJBsFNrIMx3tW9TQ3v6Q==
-
-"@stencil/core@4.27.2":
-  version "4.27.2"
-  resolved "https://registry.npmjs.org/@stencil/core/-/core-4.27.2.tgz#1efaaaaff969f45d4ef73c955329073988113957"
-  integrity sha512-phsgSxWYumdjVhNHZ0pPTXhrM8CgajWidRuoxBfVl76+sVLu3+O2gTuIKd+bZEjixGFb1bHvQeMmlNuwKgxf8Q==
 
 "@stencil/core@4.38.3":
   version "4.38.3"
@@ -5872,7 +5811,7 @@ anymatch@^3.0.3, anymatch@~3.1.2:
     normalize-path "^3.0.0"
     picomatch "^2.0.4"
 
-apca-w3@0.1.9, apca-w3@^0.1.9:
+apca-w3@0.1.9:
   version "0.1.9"
   resolved "https://registry.npmjs.org/apca-w3/-/apca-w3-0.1.9.tgz#5fe32d4a0bc6295f89532a856dbb81a4d6818fc5"
   integrity sha512-Zrf6AeBeQjNe/fxK7U1jCo5zfdjDl6T4/kdw5Xlky3G7u+EJTZkyItjMYQGtwf9pkftsINxcYyOpuLkzKf1ITQ==
@@ -6879,11 +6818,6 @@ chroma-js@3.1.2:
   resolved "https://registry.npmjs.org/chroma-js/-/chroma-js-3.1.2.tgz#cfb807045182228574eae5380587cdb830e985d6"
   integrity sha512-IJnETTalXbsLx1eKEgx19d5L6SRM7cH4vINw/99p/M11HCuXGRWL+6YmCm7FWFGIo6dtWuQoQi1dc5yQ7ESIHg==
 
-chroma-js@^2.4.2:
-  version "2.6.0"
-  resolved "https://registry.npmjs.org/chroma-js/-/chroma-js-2.6.0.tgz#578743dd359698a75067a19fa5571dec54d0b70b"
-  integrity sha512-BLHvCB9s8Z1EV4ethr6xnkl/P2YRFOGqfgvuMG/MyCbZPrTA+NeiByY6XvgF0zP4/2deU2CXnWyMa3zu1LqQ3A==
-
 chrome-trace-event@^1.0.2:
   version "1.0.4"
   resolved "https://registry.npmjs.org/chrome-trace-event/-/chrome-trace-event-1.0.4.tgz#05bffd7ff928465093314708c93bdfa9bd1f0f5b"
@@ -6909,21 +6843,6 @@ ci-info@^3.2.0:
   version "3.9.0"
   resolved "https://registry.npmjs.org/ci-info/-/ci-info-3.9.0.tgz#4279a62028a7b1f262f3473fc9605f5e218c59b4"
   integrity sha512-NIxF55hv4nSqQswkAeiOi1r83xy8JldOFDTWiug55KBu9Jnblncd2U6ViHmYgHf01TPZS77NJBhBMKdWj9HQMQ==
-
-ciebase@^0.1.1:
-  version "0.1.1"
-  resolved "https://registry.npmjs.org/ciebase/-/ciebase-0.1.1.tgz#986648bd24d2cecebe51c5e18d6cc1fbf664e9f5"
-  integrity sha512-KEnf/WVT5E+Gn+LsfMHGJFATltSOeW0qm7dpzQYL/Qe5PEpyTM+UI5bMoBo16FE81zMpu+U6032USTP6Cz1XNA==
-  dependencies:
-    mout "^0.11.1"
-
-ciecam02@^0.4.6:
-  version "0.4.6"
-  resolved "https://registry.npmjs.org/ciecam02/-/ciecam02-0.4.6.tgz#371bb587f565aebb72ab747625b3a47c61d79ac7"
-  integrity sha512-nh/Kl8s5lgtyEl7lA381JFinLhgUwDhJaAVgbVx2BaiiJIzJLumQvuFXwdS76tSch7jDjWejP+MtKYCCEk/brg==
-  dependencies:
-    ciebase "^0.1.1"
-    mout "^0.11.1"
 
 cjs-module-lexer@^1.0.0, cjs-module-lexer@^1.2.3:
   version "1.4.3"
@@ -10137,11 +10056,6 @@ hsluv@1.0.1:
   resolved "https://registry.npmjs.org/hsluv/-/hsluv-1.0.1.tgz#8f957afd3f928d2de7f7569db7687f811bb2baed"
   integrity sha512-zCaFTiDqBLQjCCFBu0qg7z9ASYPd+Bxx2GDCVZJsnehjK80S+jByqhuFz0pCd2Aw3FSKr18AWbRlwnKR0YdizQ==
 
-hsluv@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.npmjs.org/hsluv/-/hsluv-0.1.0.tgz#29f40d49642bd56dd0c192122abcc723bb5c2d6c"
-  integrity sha512-ERcanKLAszD2XN3Vh5r5Szkrv9q0oSTudmP0rkiKAGM/3NMc9FLmMZBB7TSqTaXJfSDBOreYTfjezCOYbRKqlw==
-
 html-dom-parser@5.1.8:
   version "5.1.8"
   resolved "https://registry.npmjs.org/html-dom-parser/-/html-dom-parser-5.1.8.tgz#3bdce534dfe4872909dfa6000a7dbc09a7610b56"
@@ -12656,11 +12570,6 @@ mkdirp@^3.0.1:
   version "3.0.1"
   resolved "https://registry.npmjs.org/mkdirp/-/mkdirp-3.0.1.tgz#e44e4c5607fb279c168241713cc6e0fea9adcb50"
   integrity sha512-+NsyUUAZDmo6YVHzL/stxSu3t9YS1iljliy3BSDrXJ/dkn1KYdmtZODGGjLcc9XLgVVpH4KshHB8XmZgMhaBXg==
-
-mout@^0.11.1:
-  version "0.11.1"
-  resolved "https://registry.npmjs.org/mout/-/mout-0.11.1.tgz#ba3611df5f0e5b1ffbfd01166b8f02d1f5fa2b99"
-  integrity sha512-pK9VNiLE3QgGBrC/3ICAscwOLU7oTNeK2l32uqNAioBYtB2tQAfSsGDNChUlk7CP23126mc5lUt6+na9FlN8JA==
 
 move-file@2.1.0:
   version "2.1.0"
