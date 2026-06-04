@@ -51,13 +51,13 @@ jobs:
     if: ${{ inputs.nx-project != '' }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
           node-version-file: .nvmrc
           cache: yarn
       - name: Restore Nx cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: .nx
           key: nx-${{ hashFiles('yarn.lock') }}-${{ github.sha }}
@@ -65,7 +65,7 @@ jobs:
             nx-${{ hashFiles('yarn.lock') }}-
       - run: yarn install --frozen-lockfile --prefer-offline
       - run: yarn nx run ${{ inputs.nx-project }}:build
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: ${{ inputs.build-artifact-name || format('{0}-build', inputs.nx-project) }}
           path: ${{ inputs.artifact-paths }}
@@ -79,14 +79,14 @@ jobs:
           (needs.build.result == 'success' || needs.build.result == 'skipped') }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
           node-version-file: .nvmrc
           cache: yarn
       - run: yarn install --frozen-lockfile --prefer-offline
       - if: ${{ inputs.nx-project != '' || inputs.build-artifact-name != '' }}
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: ${{ inputs.build-artifact-name || format('{0}-build', inputs.nx-project) }}
           path: ${{ inputs.artifact-download-path }}
@@ -103,10 +103,10 @@ jobs:
     runs-on: ubuntu-latest
     concurrency: publish-${{ inputs.component }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Detect package.json changes
         if: ${{ github.event_name == 'push' }}
-        uses: dorny/paths-filter@v3
+        uses: dorny/paths-filter@v4
         id: filter
         with:
           # compares against the commit before the push
@@ -119,14 +119,14 @@ jobs:
         # manual dispatch always publishes (the version check still guards against republishing)
         run: echo "publish=${{ github.event_name == 'workflow_dispatch' || steps.filter.outputs.pkg == 'true' }}" >> "$GITHUB_OUTPUT"
       - if: ${{ steps.gate.outputs.publish == 'true' }}
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version-file: .nvmrc
           cache: yarn
       - if: ${{ steps.gate.outputs.publish == 'true' }}
         run: yarn install --frozen-lockfile --prefer-offline
       - if: ${{ steps.gate.outputs.publish == 'true' && (inputs.nx-project != '' || inputs.build-artifact-name != '') }}
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: ${{ inputs.build-artifact-name || format('{0}-build', inputs.nx-project) }}
           path: ${{ inputs.artifact-download-path }}

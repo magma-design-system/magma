@@ -16,13 +16,13 @@ jobs:
     env:
       PUPPETEER_SKIP_DOWNLOAD: 'true'
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
           node-version-file: .nvmrc
           cache: yarn
       - name: Restore Nx cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: .nx
           key: nx-${{ hashFiles('yarn.lock') }}-${{ github.sha }}
@@ -30,7 +30,7 @@ jobs:
             nx-${{ hashFiles('yarn.lock') }}-
       - run: yarn install --frozen-lockfile --prefer-offline
       - run: yarn nx run stencil:build
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: stencil-build
           path: |
@@ -52,19 +52,19 @@ jobs:
     needs: [stencil-build]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
           node-version-file: .nvmrc
           cache: yarn
       - name: Restore Puppeteer Chrome cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: .cache/puppeteer
           key: puppeteer-${{ hashFiles('yarn.lock') }}
       # postinstall downloads Chrome into .cache/puppeteer (see .puppeteerrc.cjs) unless cached
       - run: yarn install --frozen-lockfile --prefer-offline
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           name: stencil-build
           path: projects
@@ -77,25 +77,25 @@ jobs:
     env:
       PUPPETEER_SKIP_DOWNLOAD: 'true'
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
           node-version-file: .nvmrc
           cache: yarn
       - name: Restore Nx cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: .nx
           key: nx-${{ hashFiles('yarn.lock') }}-${{ github.sha }}
           restore-keys: |
             nx-${{ hashFiles('yarn.lock') }}-
       - run: yarn install --frozen-lockfile --prefer-offline
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           name: stencil-build
           path: projects
       - run: yarn nx run stencil-react:build
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: stencil-react-build
           path: projects/stencil/react/dist
@@ -108,25 +108,25 @@ jobs:
     env:
       PUPPETEER_SKIP_DOWNLOAD: 'true'
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
           node-version-file: .nvmrc
           cache: yarn
       - name: Restore Nx cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: .nx
           key: nx-${{ hashFiles('yarn.lock') }}-${{ github.sha }}
           restore-keys: |
             nx-${{ hashFiles('yarn.lock') }}-
       - run: yarn install --frozen-lockfile --prefer-offline
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           name: stencil-build
           path: projects
       - run: yarn nx run stencil-angular:build
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: stencil-angular-build
           path: projects/stencil/angular/dist
