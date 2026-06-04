@@ -5,7 +5,7 @@ on:
     branches: [main]
     paths:
       - 'projects/svg-icons/**'
-  # manual publish (run it on the main branch)
+  # manual publish, can be run from any branch (e.g. dev)
   workflow_dispatch:
 
 jobs:

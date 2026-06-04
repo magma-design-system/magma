@@ -99,7 +99,7 @@ jobs:
       ${{ !cancelled() &&
           (needs.build.result == 'success' || needs.build.result == 'skipped') &&
           (needs.test.result == 'success' || needs.test.result == 'skipped') &&
-          github.ref == 'refs/heads/main' }}
+          (github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch') }}
     runs-on: ubuntu-latest
     concurrency: publish-${{ inputs.component }}
     steps:
