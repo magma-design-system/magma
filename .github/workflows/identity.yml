@@ -18,7 +18,5 @@ jobs:
       publish-working-directory: projects/identity
       artifact-paths: projects/identity/dist
       artifact-download-path: projects/identity/dist
-      package-json-filter: projects/identity/package.json
-      pack-name: maggioli-design-system-identity-*.tgz
     secrets:
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

@@ -21,7 +21,5 @@ jobs:
         projects/icons/dist
         projects/svg-icons/dist
       artifact-download-path: projects
-      package-json-filter: projects/icons/package.json
-      pack-name: maggioli-design-system-icons-*.tgz
     secrets:
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

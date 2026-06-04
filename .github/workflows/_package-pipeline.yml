@@ -1,5 +1,6 @@
-# Reusable pipeline for publishing a workspace package to npm.
-# Replicates the GitLab CI `.base-*` templates: build -> test -> publish-test -> publish -> install-test.
+# Reusable pipeline for publishing a workspace package to npm: build -> test -> publish.
+# The publish job runs on main pushes only when the package.json changed, fails if the
+# version was not bumped, dry-runs and then publishes to npm.
 name: package-pipeline
 
 on:
@@ -14,7 +15,7 @@ on:
         type: string
         required: true
       publish-working-directory:
-        description: Directory where npm publish / pack runs
+        description: Directory where tests and npm publish run
         type: string
         required: true
       artifact-paths:
@@ -26,31 +27,19 @@ on:
         type: string
         default: '.'
       package-json-filter:
-        description: package.json path that gates publish jobs when changed
-        type: string
-        required: true
-      pack-name:
-        description: Glob of the tarball produced by npm pack
-        type: string
-        required: true
-      run-tests:
-        description: Run `npm run test` in test-working-directory
-        type: boolean
-        default: false
-      test-working-directory:
-        description: Directory where tests run
+        description: package.json path that gates the publish job when changed (default <publish-working-directory>/package.json)
         type: string
         default: ''
-      has-build:
-        description: Whether this package has a build job
+      run-tests:
+        description: Run `npm run test` in publish-working-directory
         type: boolean
-        default: true
+        default: false
       publish-test-on-pr:
-        description: Also run publish-test on pull requests
+        description: Also run the publish dry-run on pull requests
         type: boolean
         default: false
       build-artifact-name:
-        description: Artifact name to download (set with has-build=false to reuse an artifact built by the caller)
+        description: Artifact name to download (set without nx-project to reuse an artifact built by the caller)
         type: string
         default: ''
     secrets:
@@ -63,7 +52,7 @@ env:
 
 jobs:
   build:
-    if: ${{ inputs.has-build }}
+    if: ${{ inputs.nx-project != '' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -100,24 +89,24 @@ jobs:
           node-version-file: .nvmrc
           cache: yarn
       - run: yarn install --frozen-lockfile --prefer-offline
-      - if: ${{ inputs.has-build || inputs.build-artifact-name != '' }}
+      - if: ${{ inputs.nx-project != '' || inputs.build-artifact-name != '' }}
         uses: actions/download-artifact@v4
         with:
           name: ${{ inputs.build-artifact-name || format('{0}-build', inputs.nx-project) }}
           path: ${{ inputs.artifact-download-path }}
-      - working-directory: ${{ inputs.test-working-directory }}
+      - working-directory: ${{ inputs.publish-working-directory }}
         run: npm run test
 
-  publish-test:
-    needs: [build]
+  publish:
+    needs: [build, test]
     if: >-
       ${{ !cancelled() &&
           (needs.build.result == 'success' || needs.build.result == 'skipped') &&
+          (needs.test.result == 'success' || needs.test.result == 'skipped') &&
           (github.ref == 'refs/heads/main' ||
            (inputs.publish-test-on-pr && github.event_name == 'pull_request')) }}
     runs-on: ubuntu-latest
-    outputs:
-      pkg-changed: ${{ steps.filter.outputs.pkg }}
+    concurrency: publish-${{ inputs.component }}
     steps:
       - uses: actions/checkout@v4
       - name: Detect package.json changes
@@ -128,7 +117,7 @@ jobs:
           base: ${{ github.ref_name }}
           filters: |
             pkg:
-              - '${{ inputs.package-json-filter }}'
+              - '${{ inputs.package-json-filter || format('{0}/package.json', inputs.publish-working-directory) }}'
       - if: ${{ steps.filter.outputs.pkg == 'true' }}
         uses: actions/setup-node@v4
         with:
@@ -136,7 +125,7 @@ jobs:
           cache: yarn
       - if: ${{ steps.filter.outputs.pkg == 'true' }}
         run: yarn install --frozen-lockfile --prefer-offline
-      - if: ${{ steps.filter.outputs.pkg == 'true' && (inputs.has-build || inputs.build-artifact-name != '') }}
+      - if: ${{ steps.filter.outputs.pkg == 'true' && (inputs.nx-project != '' || inputs.build-artifact-name != '') }}
         uses: actions/download-artifact@v4
         with:
           name: ${{ inputs.build-artifact-name || format('{0}-build', inputs.nx-project) }}
@@ -154,51 +143,11 @@ jobs:
             exit 1
           fi
           npm publish --access public --dry-run
-
-  publish:
-    needs: [build, publish-test]
-    if: >-
-      ${{ !cancelled() &&
-          github.ref == 'refs/heads/main' &&
-          needs.publish-test.result == 'success' &&
-          needs.publish-test.outputs.pkg-changed == 'true' &&
-          (needs.build.result == 'success' || needs.build.result == 'skipped') }}
-    runs-on: ubuntu-latest
-    concurrency: publish-${{ inputs.component }}
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version-file: .nvmrc
-          cache: yarn
-      - run: yarn install --frozen-lockfile --prefer-offline
-      - if: ${{ inputs.has-build || inputs.build-artifact-name != '' }}
-        uses: actions/download-artifact@v4
-        with:
-          name: ${{ inputs.build-artifact-name || format('{0}-build', inputs.nx-project) }}
-          path: ${{ inputs.artifact-download-path }}
       - name: Publish to npm
+        if: ${{ steps.filter.outputs.pkg == 'true' && github.event_name == 'push' }}
         working-directory: ${{ inputs.publish-working-directory }}
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           npm config set //registry.npmjs.org/:_authToken "$NPM_TOKEN"
           npm publish --access public
-
-  install-test:
-    needs: [publish]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version-file: .nvmrc
-          cache: yarn
-      - run: yarn install --frozen-lockfile --prefer-offline
-      - if: ${{ inputs.has-build || inputs.build-artifact-name != '' }}
-        uses: actions/download-artifact@v4
-        with:
-          name: ${{ inputs.build-artifact-name || format('{0}-build', inputs.nx-project) }}
-          path: ${{ inputs.artifact-download-path }}
-      - working-directory: ${{ inputs.publish-working-directory }}
-        run: npm pack && npm install --prefix ./ ${{ inputs.pack-name }}

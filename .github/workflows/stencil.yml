@@ -139,12 +139,9 @@ jobs:
     uses: ./.github/workflows/_package-pipeline.yml
     with:
       component: magma
-      has-build: false
       build-artifact-name: stencil-build
       artifact-download-path: projects
       publish-working-directory: projects/stencil
-      package-json-filter: projects/stencil/package.json
-      pack-name: maggioli-design-system-magma-*.tgz
     secrets:
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
@@ -153,12 +150,9 @@ jobs:
     uses: ./.github/workflows/_package-pipeline.yml
     with:
       component: magma-react
-      has-build: false
       build-artifact-name: stencil-react-build
       artifact-download-path: projects/stencil/react/dist
       publish-working-directory: projects/stencil/react
-      package-json-filter: projects/stencil/react/package.json
-      pack-name: maggioli-design-system-magma-react-*.tgz
     secrets:
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
@@ -167,12 +161,11 @@ jobs:
     uses: ./.github/workflows/_package-pipeline.yml
     with:
       component: magma-angular
-      has-build: false
       build-artifact-name: stencil-angular-build
       artifact-download-path: projects/stencil/angular/dist
-      # angular publishes from the build output (ng-packagr layout)
+      # angular publishes from the build output (ng-packagr layout),
+      # but the publish gate watches the source package.json
       publish-working-directory: projects/stencil/angular/dist/magma-angular
       package-json-filter: projects/stencil/angular/magma-angular/package.json
-      pack-name: maggioli-design-system-magma-angular-*.tgz
     secrets:
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

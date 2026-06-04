@@ -18,9 +18,6 @@ jobs:
       publish-working-directory: projects/design-tokens
       artifact-paths: projects/design-tokens/dist
       artifact-download-path: projects/design-tokens/dist
-      package-json-filter: projects/design-tokens/package.json
-      pack-name: maggioli-design-system-design-tokens-*.tgz
       run-tests: true
-      test-working-directory: projects/design-tokens
     secrets:
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
