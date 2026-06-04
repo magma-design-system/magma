@@ -30,8 +30,7 @@ nx run stencil:build                                 # build web components
 nx run stencil:storybook.start                       # start Storybook
 
 nx run stencil:generate mds-component-name           # scaffold a new component
-nx run stencil:test.regression.reference             # create regression test references
-nx run stencil:test.regression.review                # run regression tests
+nx run stencil:test                                  # run spec and e2e tests
 ```
 
 ## Sub-projects and build order
