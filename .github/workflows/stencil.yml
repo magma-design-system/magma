@@ -1,0 +1,178 @@
+name: stencil
+
+on:
+  push:
+    branches: [dev, main]
+    paths:
+      - 'projects/stencil/**'
+  pull_request:
+    paths:
+      - 'projects/stencil/**'
+
+jobs:
+  # Shared build: its artifact feeds the e2e tests and the react/angular builds
+  stencil-build:
+    runs-on: ubuntu-latest
+    env:
+      PUPPETEER_SKIP_DOWNLOAD: 'true'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: yarn
+      - name: Restore Nx cache
+        uses: actions/cache@v4
+        with:
+          path: .nx
+          key: nx-${{ hashFiles('yarn.lock') }}-${{ github.sha }}
+          restore-keys: |
+            nx-${{ hashFiles('yarn.lock') }}-
+      - run: yarn install --frozen-lockfile --prefer-offline
+      - run: yarn nx run stencil:build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: stencil-build
+          path: |
+            projects/design-tokens/dist
+            projects/styles/dist
+            projects/svg-icons/dist
+            projects/stencil/dist
+            projects/stencil/src/components.d.ts
+            projects/stencil/src/fixtures
+            projects/stencil/www
+            projects/stencil/assets
+            projects/stencil/react/src
+            projects/stencil/loader
+            projects/stencil/angular/magma-angular/src/stencil-generated
+          retention-days: 1
+          include-hidden-files: true
+
+  stencil-test:
+    needs: [stencil-build]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: yarn
+      - name: Restore Puppeteer Chrome cache
+        uses: actions/cache@v4
+        with:
+          path: .cache/puppeteer
+          key: puppeteer-${{ hashFiles('yarn.lock') }}
+      # postinstall downloads Chrome into .cache/puppeteer (see .puppeteerrc.cjs) unless cached
+      - run: yarn install --frozen-lockfile --prefer-offline
+      - uses: actions/download-artifact@v4
+        with:
+          name: stencil-build
+          path: projects
+      - working-directory: projects/stencil
+        run: npm run test
+
+  react-build:
+    needs: [stencil-build]
+    runs-on: ubuntu-latest
+    env:
+      PUPPETEER_SKIP_DOWNLOAD: 'true'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: yarn
+      - name: Restore Nx cache
+        uses: actions/cache@v4
+        with:
+          path: .nx
+          key: nx-${{ hashFiles('yarn.lock') }}-${{ github.sha }}
+          restore-keys: |
+            nx-${{ hashFiles('yarn.lock') }}-
+      - run: yarn install --frozen-lockfile --prefer-offline
+      - uses: actions/download-artifact@v4
+        with:
+          name: stencil-build
+          path: projects
+      - run: yarn nx run stencil-react:build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: stencil-react-build
+          path: projects/stencil/react/dist
+          retention-days: 1
+          include-hidden-files: true
+
+  angular-build:
+    needs: [stencil-build]
+    runs-on: ubuntu-latest
+    env:
+      PUPPETEER_SKIP_DOWNLOAD: 'true'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: yarn
+      - name: Restore Nx cache
+        uses: actions/cache@v4
+        with:
+          path: .nx
+          key: nx-${{ hashFiles('yarn.lock') }}-${{ github.sha }}
+          restore-keys: |
+            nx-${{ hashFiles('yarn.lock') }}-
+      - run: yarn install --frozen-lockfile --prefer-offline
+      - uses: actions/download-artifact@v4
+        with:
+          name: stencil-build
+          path: projects
+      - run: yarn nx run stencil-angular:build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: stencil-angular-build
+          path: projects/stencil/angular/dist
+          retention-days: 1
+          include-hidden-files: true
+
+  # Publish pipelines: build already done above, the reusable workflow downloads the artifacts
+  magma:
+    needs: [stencil-build, stencil-test]
+    uses: ./.github/workflows/_package-pipeline.yml
+    with:
+      component: magma
+      has-build: false
+      build-artifact-name: stencil-build
+      artifact-download-path: projects
+      publish-working-directory: projects/stencil
+      package-json-filter: projects/stencil/package.json
+      pack-name: maggioli-design-system-magma-*.tgz
+    secrets:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  magma-react:
+    needs: [stencil-test, react-build]
+    uses: ./.github/workflows/_package-pipeline.yml
+    with:
+      component: magma-react
+      has-build: false
+      build-artifact-name: stencil-react-build
+      artifact-download-path: projects/stencil/react/dist
+      publish-working-directory: projects/stencil/react
+      package-json-filter: projects/stencil/react/package.json
+      pack-name: maggioli-design-system-magma-react-*.tgz
+    secrets:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  magma-angular:
+    needs: [stencil-test, angular-build]
+    uses: ./.github/workflows/_package-pipeline.yml
+    with:
+      component: magma-angular
+      has-build: false
+      build-artifact-name: stencil-angular-build
+      artifact-download-path: projects/stencil/angular/dist
+      # angular publishes from the build output (ng-packagr layout)
+      publish-working-directory: projects/stencil/angular/dist/magma-angular
+      package-json-filter: projects/stencil/angular/magma-angular/package.json
+      pack-name: maggioli-design-system-magma-angular-*.tgz
+    secrets:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

@@ -1,0 +1,24 @@
+name: svg-icons
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'projects/svg-icons/**'
+  pull_request:
+    paths:
+      - 'projects/svg-icons/**'
+
+jobs:
+  pipeline:
+    uses: ./.github/workflows/_package-pipeline.yml
+    with:
+      component: svg-icons
+      has-build: false
+      # like on GitLab, the publish dry-run also runs on merge/pull requests
+      publish-test-on-pr: true
+      publish-working-directory: projects/svg-icons
+      package-json-filter: projects/svg-icons/package.json
+      pack-name: maggioli-design-system-svg-icons-*.tgz
+    secrets:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

@@ -1,0 +1,24 @@
+name: identity
+
+on:
+  push:
+    branches: [dev, main]
+    paths:
+      - 'projects/identity/**'
+  pull_request:
+    paths:
+      - 'projects/identity/**'
+
+jobs:
+  pipeline:
+    uses: ./.github/workflows/_package-pipeline.yml
+    with:
+      nx-project: identity
+      component: identity
+      publish-working-directory: projects/identity
+      artifact-paths: projects/identity/dist
+      artifact-download-path: projects/identity/dist
+      package-json-filter: projects/identity/package.json
+      pack-name: maggioli-design-system-identity-*.tgz
+    secrets:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

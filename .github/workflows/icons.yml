@@ -1,0 +1,27 @@
+name: icons
+
+on:
+  push:
+    branches: [dev, main]
+    paths:
+      - 'projects/icons/**'
+  pull_request:
+    paths:
+      - 'projects/icons/**'
+
+jobs:
+  pipeline:
+    uses: ./.github/workflows/_package-pipeline.yml
+    with:
+      nx-project: icons
+      component: icons
+      publish-working-directory: projects/icons
+      # icons build also produces svg-icons dist (nx implicit dependency)
+      artifact-paths: |
+        projects/icons/dist
+        projects/svg-icons/dist
+      artifact-download-path: projects
+      package-json-filter: projects/icons/package.json
+      pack-name: maggioli-design-system-icons-*.tgz
+    secrets:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
