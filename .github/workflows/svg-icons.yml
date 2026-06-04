@@ -5,17 +5,12 @@ on:
     branches: [main]
     paths:
       - 'projects/svg-icons/**'
-  pull_request:
-    paths:
-      - 'projects/svg-icons/**'
 
 jobs:
   pipeline:
     uses: ./.github/workflows/_package-pipeline.yml
     with:
       component: svg-icons
-      # like on GitLab, the publish dry-run also runs on merge/pull requests
-      publish-test-on-pr: true
       publish-working-directory: projects/svg-icons
     secrets:
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

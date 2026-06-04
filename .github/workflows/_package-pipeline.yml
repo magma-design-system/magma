@@ -34,10 +34,6 @@ on:
         description: Run `npm run test` in publish-working-directory
         type: boolean
         default: false
-      publish-test-on-pr:
-        description: Also run the publish dry-run on pull requests
-        type: boolean
-        default: false
       build-artifact-name:
         description: Artifact name to download (set without nx-project to reuse an artifact built by the caller)
         type: string
@@ -103,8 +99,7 @@ jobs:
       ${{ !cancelled() &&
           (needs.build.result == 'success' || needs.build.result == 'skipped') &&
           (needs.test.result == 'success' || needs.test.result == 'skipped') &&
-          (github.ref == 'refs/heads/main' ||
-           (inputs.publish-test-on-pr && github.event_name == 'pull_request')) }}
+          github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     concurrency: publish-${{ inputs.component }}
     steps:
@@ -113,7 +108,7 @@ jobs:
         uses: dorny/paths-filter@v3
         id: filter
         with:
-          # ignored on pull_request events; on push compares against the commit before the push
+          # compares against the commit before the push
           base: ${{ github.ref_name }}
           filters: |
             pkg:
@@ -144,7 +139,7 @@ jobs:
           fi
           npm publish --access public --dry-run
       - name: Publish to npm
-        if: ${{ steps.filter.outputs.pkg == 'true' && github.event_name == 'push' }}
+        if: ${{ steps.filter.outputs.pkg == 'true' }}
         working-directory: ${{ inputs.publish-working-directory }}
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
