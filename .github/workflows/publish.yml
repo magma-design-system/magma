@@ -2,6 +2,11 @@
 # of the commit has succeeded (fan-in via workflow_run), or manually
 # via workflow dispatch. A package is published only when its version
 # differs from the latest one on the npm registry.
+#
+# Authentication uses npm trusted publishing (OIDC): no NPM_TOKEN secret,
+# the npm CLI exchanges the GitHub Actions OIDC token for short-lived
+# credentials and attaches provenance automatically. Each package must
+# have this repo + workflow registered as trusted publisher on npmjs.com.
 name: publish
 
 on:
@@ -82,6 +87,10 @@ jobs:
     needs: [gate]
     if: ${{ needs.gate.outputs.ready == 'true' }}
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write # OIDC token for npm trusted publishing
+      contents: read # checkout
+      actions: read # download build artifacts from the CI runs
     strategy:
       fail-fast: false
       matrix:
@@ -172,8 +181,4 @@ jobs:
       - name: Publish to npm
         if: ${{ steps.ver.outputs.proceed == 'true' }}
         working-directory: ${{ matrix.directory }}
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: |
-          npm config set //registry.npmjs.org/:_authToken "$NPM_TOKEN"
-          npm publish --access public
+        run: npm publish --access public
