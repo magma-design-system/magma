@@ -10,69 +10,35 @@ on:
       - 'projects/stencil/**'
 
 jobs:
-  # Shared build: its artifact feeds the e2e tests and the react/angular builds
-  stencil-build:
-    runs-on: ubuntu-latest
-    env:
-      PUPPETEER_SKIP_DOWNLOAD: 'true'
-    steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
-        with:
-          node-version-file: .nvmrc
-          cache: yarn
-      - name: Restore Nx cache
-        uses: actions/cache@v5
-        with:
-          path: .nx
-          key: nx-${{ hashFiles('yarn.lock') }}-${{ github.sha }}
-          restore-keys: |
-            nx-${{ hashFiles('yarn.lock') }}-
-      - run: yarn install --frozen-lockfile --prefer-offline
-      - run: yarn nx run stencil:build
-      - uses: actions/upload-artifact@v7
-        with:
-          name: stencil-build
-          path: |
-            projects/design-tokens/dist
-            projects/styles/dist
-            projects/svg-icons/dist
-            projects/stencil/dist
-            projects/stencil/src/components.d.ts
-            projects/stencil/src/fixtures
-            projects/stencil/www
-            projects/stencil/assets
-            projects/stencil/react/src
-            projects/stencil/loader
-            projects/stencil/angular/magma-angular/src/stencil-generated
-          retention-days: 1
-          include-hidden-files: true
-
-  stencil-test:
-    needs: [stencil-build]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
-        with:
-          node-version-file: .nvmrc
-          cache: yarn
-      - name: Restore Puppeteer Chrome cache
-        uses: actions/cache@v5
-        with:
-          path: .cache/puppeteer
-          key: puppeteer-${{ hashFiles('yarn.lock') }}
-      # postinstall downloads Chrome into .cache/puppeteer (see .puppeteerrc.cjs) unless cached
-      - run: yarn install --frozen-lockfile --prefer-offline
-      - uses: actions/download-artifact@v8
-        with:
-          name: stencil-build
-          path: projects
-      - working-directory: projects/stencil
-        run: npm run test
+  # Builds stencil, runs the e2e tests and publishes @maggioli-design-system/magma;
+  # its build artifact also feeds the react/angular builds below
+  magma:
+    uses: ./.github/workflows/_package-pipeline.yml
+    with:
+      nx-project: stencil
+      component: magma
+      publish-working-directory: projects/stencil
+      artifact-paths: |
+        projects/design-tokens/dist
+        projects/styles/dist
+        projects/svg-icons/dist
+        projects/stencil/dist
+        projects/stencil/src/components.d.ts
+        projects/stencil/src/fixtures
+        projects/stencil/www
+        projects/stencil/assets
+        projects/stencil/react/src
+        projects/stencil/loader
+        projects/stencil/angular/magma-angular/src/stencil-generated
+      artifact-download-path: projects
+      run-tests: true
+      # the e2e tests need Chrome
+      install-chrome: true
+    secrets:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   react-build:
-    needs: [stencil-build]
+    needs: [magma]
     runs-on: ubuntu-latest
     env:
       PUPPETEER_SKIP_DOWNLOAD: 'true'
@@ -103,7 +69,7 @@ jobs:
           include-hidden-files: true
 
   angular-build:
-    needs: [stencil-build]
+    needs: [magma]
     runs-on: ubuntu-latest
     env:
       PUPPETEER_SKIP_DOWNLOAD: 'true'
@@ -133,20 +99,8 @@ jobs:
           retention-days: 1
           include-hidden-files: true
 
-  # Publish pipelines: build already done above, the reusable workflow downloads the artifacts
-  magma:
-    needs: [stencil-build, stencil-test]
-    uses: ./.github/workflows/_package-pipeline.yml
-    with:
-      component: magma
-      build-artifact-name: stencil-build
-      artifact-download-path: projects
-      publish-working-directory: projects/stencil
-    secrets:
-      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
   magma-react:
-    needs: [stencil-test, react-build]
+    needs: [react-build]
     uses: ./.github/workflows/_package-pipeline.yml
     with:
       component: magma-react
@@ -157,7 +111,7 @@ jobs:
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   magma-angular:
-    needs: [stencil-test, angular-build]
+    needs: [angular-build]
     uses: ./.github/workflows/_package-pipeline.yml
     with:
       component: magma-angular

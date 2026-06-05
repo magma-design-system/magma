@@ -34,6 +34,10 @@ on:
         description: Run `npm run test` in publish-working-directory
         type: boolean
         default: false
+      install-chrome:
+        description: Install (and cache) Chrome for puppeteer-based tests
+        type: boolean
+        default: false
       build-artifact-name:
         description: Artifact name to download (set without nx-project to reuse an artifact built by the caller)
         type: string
@@ -42,14 +46,13 @@ on:
       NPM_TOKEN:
         required: true
 
-env:
-  # Chrome is only needed by the stencil e2e job (defined in stencil.yml)
-  PUPPETEER_SKIP_DOWNLOAD: 'true'
-
 jobs:
   build:
     if: ${{ inputs.nx-project != '' }}
     runs-on: ubuntu-latest
+    env:
+      # Chrome is only needed by the test job (stencil e2e)
+      PUPPETEER_SKIP_DOWNLOAD: 'true'
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
@@ -78,12 +81,22 @@ jobs:
       ${{ !cancelled() && inputs.run-tests &&
           (needs.build.result == 'success' || needs.build.result == 'skipped') }}
     runs-on: ubuntu-latest
+    env:
+      # puppeteer treats 'false' as falsy: Chrome is downloaded only when install-chrome is set
+      PUPPETEER_SKIP_DOWNLOAD: ${{ !inputs.install-chrome }}
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
           node-version-file: .nvmrc
           cache: yarn
+      - name: Restore Puppeteer Chrome cache
+        if: ${{ inputs.install-chrome }}
+        uses: actions/cache@v5
+        with:
+          path: .cache/puppeteer
+          key: puppeteer-${{ hashFiles('yarn.lock') }}
+      # postinstall downloads Chrome into .cache/puppeteer (see .puppeteerrc.cjs) unless cached
       - run: yarn install --frozen-lockfile --prefer-offline
       - if: ${{ inputs.nx-project != '' || inputs.build-artifact-name != '' }}
         uses: actions/download-artifact@v8
@@ -102,6 +115,8 @@ jobs:
           (github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch') }}
     runs-on: ubuntu-latest
     concurrency: publish-${{ inputs.component }}
+    env:
+      PUPPETEER_SKIP_DOWNLOAD: 'true'
     steps:
       - uses: actions/checkout@v6
       - name: Detect package.json changes
