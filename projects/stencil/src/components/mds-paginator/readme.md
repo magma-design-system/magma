@@ -242,14 +242,6 @@ mds-paginator {
 | `mdsPaginatorChange` | Emits when a page is changed | `CustomEvent<MdsPaginatorEventDetail>` |
 
 
-## CSS Custom Properties
-
-| Name                              | Description                                              |
-| --------------------------------- | -------------------------------------------------------- |
-| `--mds-paginator-background`      | Sets the background-color of the pages area and the item |
-| `--mds-paginator-scroll-behavior` | Sets the scroll-behavior animation                       |
-
-
 ## Dependencies
 
 ### Depends on

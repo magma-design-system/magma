@@ -388,24 +388,6 @@ Type: `Promise<void>`
 | `"text"` | The text wrapper of the `default` and `content` slots |
 
 
-## CSS Custom Properties
-
-| Name                                       | Description                                                                                          |
-| ------------------------------------------ | ---------------------------------------------------------------------------------------------------- |
-| `--mds-banner-background`                  | Sets the background-color of the component                                                           |
-| `--mds-banner-close-icon-hover-background` | Sets the background color of the close icon when the mouse is over it                                |
-| `--mds-banner-cockade-background`          | When cockade attribute is set, the icon will be wrapper with a colored area, this is it's background |
-| `--mds-banner-cockade-distance`            | When cockade attribute is set, the icon will be wrapper with a colored area, this is it's icon color |
-| `--mds-banner-color`                       | Sets the text color of the component                                                                 |
-| `--mds-banner-content-gap`                 | Sets gap between banner elements                                                                     |
-| `--mds-banner-headline-color`              | The text color of the headline                                                                       |
-| `--mds-banner-icon-color`                  | Sets the close icon fill color of the component                                                      |
-| `--mds-banner-radius`                      | Sets the border-radius of the component                                                              |
-| `--mds-banner-shadow`                      | Sets the box-shadow of the component                                                                 |
-| `--mds-banner-transition-duration`         | Sets the transition duration                                                                         |
-| `--mds-banner-transition-timing-function`  | Sets the transition timing function                                                                  |
-
-
 ## Dependencies
 
 ### Used by

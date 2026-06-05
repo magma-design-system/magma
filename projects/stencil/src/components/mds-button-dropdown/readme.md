@@ -301,13 +301,6 @@ Inside a `<form>`, both internal buttons share the same `type`. If you set `type
 | `"dropdown"` |             |
 
 
-## CSS Custom Properties
-
-| Name                           | Description                             |
-| ------------------------------ | --------------------------------------- |
-| `--mds-button-dropdown-radius` | Sets the border-radius of the component |
-
-
 ## Dependencies
 
 ### Depends on

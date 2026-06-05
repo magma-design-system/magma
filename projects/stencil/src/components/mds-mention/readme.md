@@ -182,13 +182,6 @@ The internal remove button lives inside the shadow DOM and its click does not bu
 | `size`   | `size`    | Sets the label of the component              | `"lg" \| "md" \| "sm" \| undefined` | `'sm'`      |
 
 
-## CSS Custom Properties
-
-| Name                      | Description                                           |
-| ------------------------- | ----------------------------------------------------- |
-| `--mds-mention-icon-size` | Sets the size (width and height) of the mention icon. |
-
-
 ## Dependencies
 
 ### Depends on

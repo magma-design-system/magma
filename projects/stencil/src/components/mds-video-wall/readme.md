@@ -243,16 +243,6 @@ The browser ignores the `preload` hint entirely when `autoplay` is set (which is
 | `"default"` | Write browser support missing message here.                                                      |
 
 
-## CSS Custom Properties
-
-| Name                                      | Description                                                                             |
-| ----------------------------------------- | --------------------------------------------------------------------------------------- |
-| `--mds-video-wall-noise-background-color` | The background color applied to the noise layer of the video wall.                      |
-| `--mds-video-wall-noise-background-size`  | The background-size used for the noise texture.                                         |
-| `--mds-video-wall-noise-fitler`           | The CSS filter applied to the noise layer (e.g., blur, brightness).                     |
-| `--mds-video-wall-video-fit`              | Defines how the video content should scale to fit its container (e.g., cover, contain). |
-
-
 ----------------------------------------------
 
 Built with love @ [Gruppo Maggioli](https://www.maggioli.com) from [R&D Department](https://www.maggioli.com/it-it/chi-siamo/ricerca-sviluppo)

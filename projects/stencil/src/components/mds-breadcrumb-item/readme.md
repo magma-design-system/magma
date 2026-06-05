@@ -25,9 +25,8 @@ The `<mds-breadcrumb-item>` web component represents a single navigable depth in
 
 This child exposes essentially no visual configuration of its own - appearance is inherited from `<mds-breadcrumb>` and the shared button system, and styling overrides are done through the `--mds-breadcrumb-item-*` CSS custom properties listed in the readme.
 
+- **`label`**: The item's visible text. This is the only way to set the text - the component renders it through an internal `<mds-button>` and exposes no default slot. It matches the `label` prop convention used across Magma components.
 - **`selected`**: Marks this item as the current depth. In normal use you set it on at most one item as the initial state; thereafter the parent manages it in response to navigation. Use it only to seed which depth is active on first render.
-
-The `label` provides the visible text. Per the slot contract, the default slot should receive a plain text string only - do not place HTML elements or other components inside it, as that breaks the breadcrumb layout.
 
 
 ### 2. Pattern
@@ -145,15 +144,14 @@ Common incorrect uses of `<mds-breadcrumb-item>`. Each entry pairs the wrong for
 </mds-breadcrumb>
 ```
 
-#### Do Not Put HTML in the Default Slot
+#### Do Not Pass Text or HTML as Children
 
-The default slot accepts plain text strings only; nested elements break the button layout. Use the `label` prop for the step text.
+`<mds-breadcrumb-item>` has no default slot - it renders its text through an internal `<mds-button>` driven by the `label` prop. Anything placed between the tags (plain text or HTML) is ignored and never rendered. Always use the `label` prop.
 
 ```html
 <!-- 🚫 INCORRECT -->
-<mds-breadcrumb-item>
-  <strong>Dettaglio</strong>
-</mds-breadcrumb-item>
+<mds-breadcrumb-item>Dettaglio</mds-breadcrumb-item>
+<mds-breadcrumb-item><strong>Dettaglio</strong></mds-breadcrumb-item>
 
 <!-- ✅ CORRECT -->
 <mds-breadcrumb-item label="Dettaglio"></mds-breadcrumb-item>
@@ -242,13 +240,6 @@ mds-breadcrumb-item {
 | Event                     | Description                         | Type                                        |
 | ------------------------- | ----------------------------------- | ------------------------------------------- |
 | `mdsBreadcrumbItemSelect` | Emits when the breadcrumb is active | `CustomEvent<MdsBreadcrumbItemEventDetail>` |
-
-
-## Slots
-
-| Slot        | Description                                                                            |
-| ----------- | -------------------------------------------------------------------------------------- |
-| `"default"` | Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here. |
 
 
 ## Shadow Parts

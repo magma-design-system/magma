@@ -239,21 +239,6 @@ mds-input-date-range-preselection {
 | `start` _(required)_ | `start`    | Sets the start date of the preselection | `string`               | `undefined` |
 
 
-## CSS Custom Properties
-
-| Name                                                | Description                                                     |
-| --------------------------------------------------- | --------------------------------------------------------------- |
-| `--mds-date-range-preselection-default-background`  | Background used for the default (unselected) preselection state |
-| `--mds-date-range-preselection-default-border`      | Border color used for the default preselection state            |
-| `--mds-date-range-preselection-default-color`       | Text color used in the default preselection state               |
-| `--mds-date-range-preselection-hover-background`    | Background used when a preselection item is hovered             |
-| `--mds-date-range-preselection-hover-border`        | Border color used on hover state                                |
-| `--mds-date-range-preselection-hover-color`         | Text color used on hover state                                  |
-| `--mds-date-range-preselection-selected-background` | Background used for the selected preselection state             |
-| `--mds-date-range-preselection-selected-border`     | Border color used for the selected preselection state           |
-| `--mds-date-range-preselection-selected-color`      | Text color used in the selected preselection state              |
-
-
 ## Dependencies
 
 ### Depends on

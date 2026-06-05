@@ -369,17 +369,6 @@ Type: `Promise<void>`
 | `"card"` |             |
 
 
-## CSS Custom Properties
-
-| Name                                  | Description                                             |
-| ------------------------------------- | ------------------------------------------------------- |
-| `--mds-file-preview-background-color` | Sets the background color of the file preview container |
-| `--mds-file-preview-border-radius`    | Sets the border-radius of the file preview container    |
-| `--mds-file-preview-color`            | Sets the text color used inside the file preview        |
-| `--mds-file-preview-icon-background`  | Sets the background color of the file preview icon      |
-| `--mds-file-preview-icon-color`       | Sets the color of the file preview icon                 |
-
-
 ## Dependencies
 
 ### Used by

@@ -240,15 +240,6 @@ Type: `Promise<void>`
 
 
 
-## CSS Custom Properties
-
-| Name                              | Description                                |
-| --------------------------------- | ------------------------------------------ |
-| `--mds-input-tip-item-background` | Sets the background color of the tip item. |
-| `--mds-input-tip-item-color`      | Sets the text color of the tip item.       |
-| `--mds-input-tip-item-icon-color` | Sets the icon color fill of the tip item.  |
-
-
 ## Dependencies
 
 ### Used by

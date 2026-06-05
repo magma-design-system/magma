@@ -350,17 +350,6 @@ Type: `Promise<void>`
 | `"default"` | Put `mds-table-cell` element/s.                                                       |
 
 
-## CSS Custom Properties
-
-| Name                               | Description                                |
-| ---------------------------------- | ------------------------------------------ |
-| `--mds-table-row-actions-gap`      | Gap spacing for actions inside table rows. |
-| `--mds-table-row-background-alt`   | Background color for alternate table rows. |
-| `--mds-table-row-background-hover` | Background color for table row on hover.   |
-| `--mds-table-row-color-alt`        | Text color for alternate table rows.       |
-| `--mds-table-row-color-hover`      | Text color for table row on hover.         |
-
-
 ## Dependencies
 
 ### Depends on

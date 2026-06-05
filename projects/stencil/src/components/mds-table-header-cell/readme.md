@@ -294,13 +294,6 @@ mds-table-header-cell {
 | `"label"`  |             |
 
 
-## CSS Custom Properties
-
-| Name                              | Description                   |
-| --------------------------------- | ----------------------------- |
-| `--mds-table-header-cell-padding` | The padding of the table cell |
-
-
 ## Dependencies
 
 ### Used by

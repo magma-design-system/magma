@@ -329,24 +329,6 @@ The arc geometry is driven by `angle-start`, `angle-end`, `radius`, and `directi
 | `"radial-menu"` |             |
 
 
-## CSS Custom Properties
-
-| Name                                           | Description                                        |
-| ---------------------------------------------- | -------------------------------------------------- |
-| `--mds-radial-menu-angle-end`                  | Ending angle of the radial menu.                   |
-| `--mds-radial-menu-angle-start`                | Starting angle of the radial menu.                 |
-| `--mds-radial-menu-context-menu-z-index`       | Z-index of the radial menu context.                |
-| `--mds-radial-menu-delay`                      | Delay before the radial menu opens.                |
-| `--mds-radial-menu-direction`                  | Direction multiplier for menu expansion (-1 or 1). |
-| `--mds-radial-menu-disc-background`            | Background color of the radial menu disc.          |
-| `--mds-radial-menu-disc-filter`                | Filter applied to the radial menu disc.            |
-| `--mds-radial-menu-disc-shadow`                | Shadow applied to the radial menu disc.            |
-| `--mds-radial-menu-disc-size`                  | Size of the radial menu disc.                      |
-| `--mds-radial-menu-radius`                     | Radius of the radial menu.                         |
-| `--mds-radial-menu-transition-duration`        | Duration of the radial menu open/close transition. |
-| `--mds-radial-menu-transition-timing-function` | Timing function of the radial menu transition.     |
-
-
 ## Dependencies
 
 ### Depends on

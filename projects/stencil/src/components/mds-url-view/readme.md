@@ -265,17 +265,6 @@ Type: `Promise<void>`
 
 
 
-## CSS Custom Properties
-
-| Name                           | Description                                            |
-| ------------------------------ | ------------------------------------------------------ |
-| `--mds-url-view-background`    | Background color of the URL view container.            |
-| `--mds-url-view-color`         | Text color used inside the URL view.                   |
-| `--mds-url-view-header-shadow` | Box-shadow applied to the header area of the URL view. |
-| `--mds-url-view-radius`        | Border-radius applied to the URL view container.       |
-| `--mds-url-view-shadow`        | Box-shadow applied to the entire URL view container.   |
-
-
 ## Dependencies
 
 ### Depends on

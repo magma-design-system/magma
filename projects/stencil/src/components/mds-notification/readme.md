@@ -314,24 +314,6 @@ mds-notification {
 | `visible`  | `visible`  | Specifies if the notification is visible                                                                                                           | `boolean`                             | `true`      |
 
 
-## CSS Custom Properties
-
-| Name                                            | Description                                             |
-| ----------------------------------------------- | ------------------------------------------------------- |
-| `--mds-notification-color`                      | The text/icon color of the notification component.      |
-| `--mds-notification-dot-background`             | The background color of the notification dot.           |
-| `--mds-notification-dot-padding`                | The padding around the notification dot.                |
-| `--mds-notification-min-width`                  | The minimum width of the notification component.        |
-| `--mds-notification-ring-color`                 | The color of the notification ring.                     |
-| `--mds-notification-ring-size`                  | The thickness of the notification ring.                 |
-| `--mds-notification-size`                       | The base size of the notification element.              |
-| `--mds-notification-transition-duration`        | Duration of notification transitions.                   |
-| `--mds-notification-transition-timing-function` | Timing function for notification transitions.           |
-| `--mds-notification-translate`                  | The CSS transform applied for notification positioning. |
-| `--mds-notification-translate-offset-x`         | X-axis offset factor for notification translation.      |
-| `--mds-notification-translate-offset-y`         | Y-axis offset factor for notification translation.      |
-
-
 ## Dependencies
 
 ### Depends on

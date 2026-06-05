@@ -337,14 +337,6 @@ The `header` slot is intended for title and action controls. Placing an `<mds-im
 | `"layout"` | The layout element that wraps the slotted content |
 
 
-## CSS Custom Properties
-
-| Name                 | Description                            |
-| -------------------- | -------------------------------------- |
-| `--mds-card-gap`     | Sets the spacing between card elements |
-| `--mds-card-padding` | Sets the spacing around card elements  |
-
-
 ----------------------------------------------
 
 Built with love @ [Gruppo Maggioli](https://www.maggioli.com) from [R&D Department](https://www.maggioli.com/it-it/chi-siamo/ricerca-sviluppo)

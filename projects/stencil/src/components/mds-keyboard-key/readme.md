@@ -255,18 +255,6 @@ Type: `Promise<void>`
 
 
 
-## CSS Custom Properties
-
-| Name                                         | Description                                                 |
-| -------------------------------------------- | ----------------------------------------------------------- |
-| `--mds-keyboard-key-illumination-dark`       | Set the dark illumination of the keyboard key.              |
-| `--mds-keyboard-key-illumination-dark-size`  | Set the size of the dark illumination of the keyboard key.  |
-| `--mds-keyboard-key-illumination-light`      | Set the light illumination of the keyboard key.             |
-| `--mds-keyboard-key-illumination-light-size` | Set the size of the light illumination of the keyboard key. |
-| `--mds-keyboard-key-padding`                 | Set the padding of the keyboard key.                        |
-| `--mds-keyboard-key-transition-duration`     | Set the transition duration of the keyboard key.            |
-
-
 ## Dependencies
 
 ### Depends on

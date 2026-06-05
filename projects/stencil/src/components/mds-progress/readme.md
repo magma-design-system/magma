@@ -288,17 +288,6 @@ mds-progress::part(progress) {
 | `"radial-progress"` | Selects the `mds-radial-progress` element that contains the radial progress bar |
 
 
-## CSS Custom Properties
-
-| Name                        | Description                                 |
-| --------------------------- | ------------------------------------------- |
-| `--mds-progress-background` | Background color of the progress bar.       |
-| `--mds-progress-color`      | Foreground color of the progress indicator. |
-| `--mds-progress-duration`   | Duration of the progress animation.         |
-| `--mds-progress-radius`     | Border-radius of the progress bar.          |
-| `--mds-progress-thickness`  | Thickness (height) of the progress bar.     |
-
-
 ## Dependencies
 
 ### Used by

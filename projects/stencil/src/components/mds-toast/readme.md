@@ -343,18 +343,6 @@ mds-toast {
 | `"icon"`    | Insert an icon image, it can be `HTML elements` or `components`, it is **recommended** to add `mds-icon` element. |
 
 
-## CSS Custom Properties
-
-| Name                     | Description                              |
-| ------------------------ | ---------------------------------------- |
-| `--mds-toast-background` | Background color of the toast component. |
-| `--mds-toast-color`      | Text color inside the toast.             |
-| `--mds-toast-duration`   | Duration of the toast display.           |
-| `--mds-toast-icon-color` | Color of the icon inside the toast.      |
-| `--mds-toast-shadow`     | Shadow applied to the toast container.   |
-| `--mds-toast-width`      | Width of the toast component.            |
-
-
 ## Dependencies
 
 ### Depends on

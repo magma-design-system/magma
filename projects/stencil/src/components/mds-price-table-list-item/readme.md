@@ -230,16 +230,6 @@ The default slot is for the feature label - plain text plus inline helpers such 
 | `"icon"` |             |
 
 
-## CSS Custom Properties
-
-| Name                                                       | Description                                            |
-| ---------------------------------------------------------- | ------------------------------------------------------ |
-| `--mds-price-table-list-item-supported-icon-color`         | Default color of the supported icon in a list item.    |
-| `--mds-price-table-list-item-supported-icon-color-hover`   | Color of the supported icon in a list item on hover.   |
-| `--mds-price-table-list-item-unsupported-icon-color`       | Default color of the unsupported icon in a list item.  |
-| `--mds-price-table-list-item-unsupported-icon-color-hover` | Color of the unsupported icon in a list item on hover. |
-
-
 ## Dependencies
 
 ### Depends on

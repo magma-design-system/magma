@@ -37,14 +37,14 @@ Correct and idiomatic ways to use the `<mds-tab-bar>` component, ordered from mo
 
 #### Basic Navigation Bar
 
-The canonical form. Place one `<mds-tab-bar-item>` per destination. Provide `icon` as a slug from the Magma icon library and plain text in the default slot as the label. Mark the initially active item with `selected`.
+The canonical form. Place one `<mds-tab-bar-item>` per destination. Provide `icon` as a slug from the Magma icon library and the text via the `label` prop. Mark the initially active item with `selected`.
 
 ```html
 <mds-tab-bar>
-  <mds-tab-bar-item icon="mi/baseline/home" selected>Home</mds-tab-bar-item>
-  <mds-tab-bar-item icon="mi/baseline/search">Cerca</mds-tab-bar-item>
-  <mds-tab-bar-item icon="mi/baseline/notifications">Notifiche</mds-tab-bar-item>
-  <mds-tab-bar-item icon="mi/baseline/person">Profilo</mds-tab-bar-item>
+  <mds-tab-bar-item icon="mi/baseline/home" label="Home" selected></mds-tab-bar-item>
+  <mds-tab-bar-item icon="mi/baseline/search" label="Cerca"></mds-tab-bar-item>
+  <mds-tab-bar-item icon="mi/baseline/notifications" label="Notifiche"></mds-tab-bar-item>
+  <mds-tab-bar-item icon="mi/baseline/person" label="Profilo"></mds-tab-bar-item>
 </mds-tab-bar>
 ```
 
@@ -54,9 +54,9 @@ Listen for `mdsTabBarChange` on the host. The event detail carries `index` - the
 
 ```html
 <mds-tab-bar id="app-nav">
-  <mds-tab-bar-item icon="mi/baseline/home" selected>Home</mds-tab-bar-item>
-  <mds-tab-bar-item icon="mi/baseline/inbox">Messaggi</mds-tab-bar-item>
-  <mds-tab-bar-item icon="mi/baseline/settings">Impostazioni</mds-tab-bar-item>
+  <mds-tab-bar-item icon="mi/baseline/home" label="Home" selected></mds-tab-bar-item>
+  <mds-tab-bar-item icon="mi/baseline/inbox" label="Messaggi"></mds-tab-bar-item>
+  <mds-tab-bar-item icon="mi/baseline/settings" label="Impostazioni"></mds-tab-bar-item>
 </mds-tab-bar>
 
 <script>
@@ -74,9 +74,9 @@ Set `selected` on exactly one child to control the starting state. If you later 
 ```html
 <!-- Second item active on load -->
 <mds-tab-bar>
-  <mds-tab-bar-item icon="mi/baseline/home">Home</mds-tab-bar-item>
-  <mds-tab-bar-item icon="mi/baseline/explore" selected>Scopri</mds-tab-bar-item>
-  <mds-tab-bar-item icon="mi/baseline/favorite">Preferiti</mds-tab-bar-item>
+  <mds-tab-bar-item icon="mi/baseline/home" label="Home"></mds-tab-bar-item>
+  <mds-tab-bar-item icon="mi/baseline/explore" label="Scopri" selected></mds-tab-bar-item>
+  <mds-tab-bar-item icon="mi/baseline/favorite" label="Preferiti"></mds-tab-bar-item>
 </mds-tab-bar>
 ```
 
@@ -86,9 +86,13 @@ Use `typography` on individual items to match the text density to the surroundin
 
 ```html
 <mds-tab-bar>
-  <mds-tab-bar-item icon="mi/baseline/home" typography="option" selected>Home</mds-tab-bar-item>
-  <mds-tab-bar-item icon="mi/baseline/inbox" typography="option">Posta</mds-tab-bar-item>
-  <mds-tab-bar-item icon="mi/baseline/settings" typography="option">Impostazioni</mds-tab-bar-item>
+  <mds-tab-bar-item icon="mi/baseline/home" label="Home" typography="option" selected></mds-tab-bar-item>
+  <mds-tab-bar-item icon="mi/baseline/inbox" label="Posta" typography="option"></mds-tab-bar-item>
+  <mds-tab-bar-item
+    icon="mi/baseline/settings"
+    label="Impostazioni"
+    typography="option"
+  ></mds-tab-bar-item>
 </mds-tab-bar>
 ```
 
@@ -126,29 +130,30 @@ Common incorrect uses of `<mds-tab-bar>`. Each entry pairs the wrong form with t
 
 <!-- ✅ CORRECT -->
 <mds-tab-bar>
-  <mds-tab-bar-item icon="mi/baseline/home" selected>Home</mds-tab-bar-item>
-  <mds-tab-bar-item icon="mi/baseline/search">Cerca</mds-tab-bar-item>
+  <mds-tab-bar-item icon="mi/baseline/home" label="Home" selected></mds-tab-bar-item>
+  <mds-tab-bar-item icon="mi/baseline/search" label="Cerca"></mds-tab-bar-item>
 </mds-tab-bar>
 ```
 
-#### Do Not Put HTML Elements in an Item's Default Slot
+#### Do Not Use the Deprecated Default Slot for an Item's Text
 
-`<mds-tab-bar-item>` accepts plain text only in its default slot. Nested elements are stripped or break the layout - use the `icon` prop for the glyph and slot text for the label.
+Setting an item's text via the default slot is deprecated. Slotted text is read into `label` with a console warning, and nested HTML is stripped - use the `label` prop for the text and the `icon` prop for the glyph.
 
 ```html
 <!-- 🚫 INCORRECT -->
+<mds-tab-bar-item icon="mi/baseline/inbox">Messaggi</mds-tab-bar-item>
 <mds-tab-bar-item>
   <span class="bold">Messaggi</span>
   <small>(3)</small>
 </mds-tab-bar-item>
 
 <!-- ✅ CORRECT -->
-<mds-tab-bar-item icon="mi/baseline/inbox">Messaggi</mds-tab-bar-item>
+<mds-tab-bar-item icon="mi/baseline/inbox" label="Messaggi"></mds-tab-bar-item>
 ```
 
 #### Do Not Slot `<mds-icon>` to Add an Icon
 
-The item's `icon` prop renders the glyph through the shared icon service and positions it correctly above the label. Slotting `<mds-icon>` puts it in the text-only default slot, where it is misaligned or stripped.
+The item's `icon` prop renders the glyph through the shared icon service and positions it correctly above the label. Slotting `<mds-icon>` puts it in the deprecated default slot, where it is misaligned or stripped.
 
 ```html
 <!-- 🚫 INCORRECT -->
@@ -158,7 +163,7 @@ The item's `icon` prop renders the glyph through the shared icon service and pos
 </mds-tab-bar-item>
 
 <!-- ✅ CORRECT -->
-<mds-tab-bar-item icon="mi/baseline/home">Home</mds-tab-bar-item>
+<mds-tab-bar-item icon="mi/baseline/home" label="Home"></mds-tab-bar-item>
 ```
 
 #### Do Not Set `selected="false"` to Deselect an Item
@@ -167,10 +172,10 @@ The item's `icon` prop renders the glyph through the shared icon service and pos
 
 ```html
 <!-- 🚫 INCORRECT -->
-<mds-tab-bar-item icon="mi/baseline/home" selected="false">Home</mds-tab-bar-item>
+<mds-tab-bar-item icon="mi/baseline/home" label="Home" selected="false"></mds-tab-bar-item>
 
 <!-- ✅ CORRECT -->
-<mds-tab-bar-item icon="mi/baseline/home">Home</mds-tab-bar-item>
+<mds-tab-bar-item icon="mi/baseline/home" label="Home"></mds-tab-bar-item>
 ```
 
 #### Do Not Listen for the Item's Internal Event on the Bar's Children

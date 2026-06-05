@@ -243,17 +243,6 @@ Type: `Promise<void>`
 
 
 
-## CSS Custom Properties
-
-| Name                                                  | Description                                             |
-| ----------------------------------------------------- | ------------------------------------------------------- |
-| `--mds-pref-theme-variant-item-color-background`      | Background color of a theme variant item.               |
-| `--mds-pref-theme-variant-item-color-status-error`    | Color representing an error status for a variant item.  |
-| `--mds-pref-theme-variant-item-color-status-success`  | Color representing a success status for a variant item. |
-| `--mds-pref-theme-variant-item-color-status-warning`  | Color representing a warning status for a variant item. |
-| `--mds-pref-theme-variant-item-color-variant-primary` | Color for the primary variant item.                     |
-
-
 ## Dependencies
 
 ### Depends on

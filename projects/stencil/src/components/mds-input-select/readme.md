@@ -399,21 +399,6 @@ Type: `Promise<void>`
 | `"tip-top"` | Selects the verbose status of input on top of element |
 
 
-## CSS Custom Properties
-
-| Name                                                   | Description                                                      |
-| ------------------------------------------------------ | ---------------------------------------------------------------- |
-| `--mds-input-select-arrow-icon-background-color`       | Background color behind the arrow icon                           |
-| `--mds-input-select-arrow-icon-blur-background-color`  | Transparent background used for blurred states of the arrow icon |
-| `--mds-input-select-arrow-icon-blur-color`             | Color applied to the arrow icon in blurred states                |
-| `--mds-input-select-arrow-icon-color`                  | Default arrow icon color                                         |
-| `--mds-input-select-arrow-icon-hover-background-color` | Background color of the arrow icon when hovered                  |
-| `--mds-input-select-arrow-icon-hover-color`            | Color of the arrow icon when hovered                             |
-| `--mds-input-select-ring`                              | Focus ring applied around the select component                   |
-| `--mds-input-select-shadow`                            | Shadow applied to the select component                           |
-| `--mds-input-select-variant-color-rgb`                 | Base color used to derive all select component visual states     |
-
-
 ## Dependencies
 
 ### Depends on

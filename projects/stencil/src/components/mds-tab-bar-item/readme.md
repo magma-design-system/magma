@@ -18,11 +18,12 @@ The `<mds-tab-bar-item>` web component is a single selectable tab within the [`<
 - **Compound child only**: Must be placed as a direct default-slot child of `<mds-tab-bar>`; it is not used standalone or mixed with other child types.
 - **Parent-coordinated selection**: Clicking the item, when becoming selected, emits `mdsTabBarItemSelect` carrying its own `id`. The parent re-drives every sibling's `selected` so exactly one item is active at a time - items do not deselect each other on their own.
 - **Whole-host click target**: The entire item (icon + label) is the click surface, not just the text.
-- **Text-only default slot**: The default slot is intended for a plain text string; avoid placing HTML elements or other components inside it.
+- **Label is text**: Set the visible text with the `label` prop. The default slot is a **deprecated** fallback kept for backward compatibility - slotted text is read into `label` and a console warning is emitted; avoid placing HTML elements or other components there.
 
 #### Properties & Visual Configurations
 
 - **`icon`**: Icon name shown above the label; use it to give the tab a recognizable glyph. Optional - defaults to empty.
+- **`label`**: The tab's visible text. This is the preferred and idiomatic way to set the text, matching the `label` prop on [`mds-button`](../../mds-button) and other Magma components.
 - **`selected`**: Marks this item as the active tab. You typically do not toggle it manually at runtime - the parent manages it - but you can set it on one item as the initial active tab.
 - **`typography`**: Controls the label's text style, constrained to the smaller typography set (`tip` by default, or `option`). Pick `option` for a slightly more prominent label.
 
@@ -35,14 +36,14 @@ Correct and idiomatic ways to use the `<mds-tab-bar-item>` component, ordered fr
 
 #### Basic Tab Bar
 
-The canonical form. Place all items directly inside `<mds-tab-bar>`. Give each item an `icon` and a plain-text label in the default slot. The parent assigns `id`s automatically and coordinates selection.
+The canonical form. Place all items directly inside `<mds-tab-bar>`. Give each item an `icon` and set its text with the `label` prop. The parent assigns `id`s automatically and coordinates selection.
 
 ```html
 <mds-tab-bar>
-  <mds-tab-bar-item icon="mi/baseline/home">Home</mds-tab-bar-item>
-  <mds-tab-bar-item icon="mi/baseline/search">Cerca</mds-tab-bar-item>
-  <mds-tab-bar-item icon="mi/baseline/notifications">Notifiche</mds-tab-bar-item>
-  <mds-tab-bar-item icon="mi/baseline/person">Profilo</mds-tab-bar-item>
+  <mds-tab-bar-item icon="mi/baseline/home" label="Home"></mds-tab-bar-item>
+  <mds-tab-bar-item icon="mi/baseline/search" label="Cerca"></mds-tab-bar-item>
+  <mds-tab-bar-item icon="mi/baseline/notifications" label="Notifiche"></mds-tab-bar-item>
+  <mds-tab-bar-item icon="mi/baseline/person" label="Profilo"></mds-tab-bar-item>
 </mds-tab-bar>
 ```
 
@@ -52,9 +53,9 @@ Mark one item as pre-selected on first render with the `selected` boolean attrib
 
 ```html
 <mds-tab-bar>
-  <mds-tab-bar-item icon="mi/baseline/home" selected>Home</mds-tab-bar-item>
-  <mds-tab-bar-item icon="mi/baseline/search">Cerca</mds-tab-bar-item>
-  <mds-tab-bar-item icon="mi/baseline/notifications">Notifiche</mds-tab-bar-item>
+  <mds-tab-bar-item icon="mi/baseline/home" label="Home" selected></mds-tab-bar-item>
+  <mds-tab-bar-item icon="mi/baseline/search" label="Cerca"></mds-tab-bar-item>
+  <mds-tab-bar-item icon="mi/baseline/notifications" label="Notifiche"></mds-tab-bar-item>
 </mds-tab-bar>
 ```
 
@@ -64,9 +65,9 @@ Listen to `mdsTabBarItemSelect` on the item to react when a specific tab becomes
 
 ```html
 <mds-tab-bar id="main-nav">
-  <mds-tab-bar-item icon="mi/baseline/home">Home</mds-tab-bar-item>
-  <mds-tab-bar-item icon="mi/baseline/search">Cerca</mds-tab-bar-item>
-  <mds-tab-bar-item icon="mi/baseline/person">Profilo</mds-tab-bar-item>
+  <mds-tab-bar-item icon="mi/baseline/home" label="Home"></mds-tab-bar-item>
+  <mds-tab-bar-item icon="mi/baseline/search" label="Cerca"></mds-tab-bar-item>
+  <mds-tab-bar-item icon="mi/baseline/person" label="Profilo"></mds-tab-bar-item>
 </mds-tab-bar>
 
 <script>
@@ -82,9 +83,13 @@ Set the `selected` prop on the desired item from JavaScript. The `@Watch('select
 
 ```html
 <mds-tab-bar id="wizard-nav">
-  <mds-tab-bar-item id="step-profilo" icon="mi/baseline/person">Profilo</mds-tab-bar-item>
-  <mds-tab-bar-item id="step-sicurezza" icon="mi/baseline/lock">Sicurezza</mds-tab-bar-item>
-  <mds-tab-bar-item id="step-notifiche" icon="mi/baseline/notifications">Notifiche</mds-tab-bar-item>
+  <mds-tab-bar-item id="step-profilo" icon="mi/baseline/person" label="Profilo"></mds-tab-bar-item>
+  <mds-tab-bar-item id="step-sicurezza" icon="mi/baseline/lock" label="Sicurezza"></mds-tab-bar-item>
+  <mds-tab-bar-item
+    id="step-notifiche"
+    icon="mi/baseline/notifications"
+    label="Notifiche"
+  ></mds-tab-bar-item>
 </mds-tab-bar>
 
 <script>
@@ -98,9 +103,22 @@ Use `typography="option"` for a slightly more prominent label when the tab bar s
 
 ```html
 <mds-tab-bar>
-  <mds-tab-bar-item icon="mi/baseline/dashboard" typography="option" selected>Dashboard</mds-tab-bar-item>
-  <mds-tab-bar-item icon="mi/baseline/bar-chart" typography="option">Statistiche</mds-tab-bar-item>
-  <mds-tab-bar-item icon="mi/baseline/settings" typography="option">Impostazioni</mds-tab-bar-item>
+  <mds-tab-bar-item
+    icon="mi/baseline/dashboard"
+    label="Dashboard"
+    typography="option"
+    selected
+  ></mds-tab-bar-item>
+  <mds-tab-bar-item
+    icon="mi/baseline/bar-chart"
+    label="Statistiche"
+    typography="option"
+  ></mds-tab-bar-item>
+  <mds-tab-bar-item
+    icon="mi/baseline/settings"
+    label="Impostazioni"
+    typography="option"
+  ></mds-tab-bar-item>
 </mds-tab-bar>
 ```
 
@@ -128,36 +146,36 @@ Common incorrect uses of `<mds-tab-bar-item>`. Each entry pairs the wrong form w
 
 ```html
 <!-- 🚫 INCORRECT -->
-<mds-tab-bar-item icon="mi/baseline/home" selected>Home</mds-tab-bar-item>
+<mds-tab-bar-item icon="mi/baseline/home" label="Home" selected></mds-tab-bar-item>
 
 <!-- ✅ CORRECT -->
 <mds-tab-bar>
-  <mds-tab-bar-item icon="mi/baseline/home" selected>Home</mds-tab-bar-item>
-  <mds-tab-bar-item icon="mi/baseline/search">Cerca</mds-tab-bar-item>
+  <mds-tab-bar-item icon="mi/baseline/home" label="Home" selected></mds-tab-bar-item>
+  <mds-tab-bar-item icon="mi/baseline/search" label="Cerca"></mds-tab-bar-item>
 </mds-tab-bar>
 ```
 
-#### Do Not Put HTML Elements in the Default Slot
+#### Do Not Use the Deprecated Default Slot for Text
 
-The default slot is for a plain text string only. Nested elements break the inner `<mds-text>` layout and may not render as expected.
+Setting the text via the default slot is deprecated. Slotted text is read into `label` with a console warning, and any nested HTML is stripped. Use the `label` prop instead.
 
 ```html
 <!-- 🚫 INCORRECT -->
 <mds-tab-bar>
-  <mds-tab-bar-item icon="mi/baseline/home">
-    <strong>Home</strong>
-  </mds-tab-bar-item>
+  <mds-tab-bar-item icon="mi/baseline/home">Home</mds-tab-bar-item>
+  <mds-tab-bar-item icon="mi/baseline/search"><strong>Cerca</strong></mds-tab-bar-item>
 </mds-tab-bar>
 
 <!-- ✅ CORRECT -->
 <mds-tab-bar>
-  <mds-tab-bar-item icon="mi/baseline/home">Home</mds-tab-bar-item>
+  <mds-tab-bar-item icon="mi/baseline/home" label="Home"></mds-tab-bar-item>
+  <mds-tab-bar-item icon="mi/baseline/search" label="Cerca"></mds-tab-bar-item>
 </mds-tab-bar>
 ```
 
 #### Do Not Slot `<mds-icon>` to Add an Icon
 
-The `icon` prop renders the glyph through the shared icon service and positions it above the label automatically. Slotting `<mds-icon>` puts it in the text-only default slot, where it lands inside `<mds-text>` and misaligns.
+The `icon` prop renders the glyph through the shared icon service and positions it above the label automatically. Slotting `<mds-icon>` puts it in the deprecated default slot, where it is stripped and misaligns.
 
 ```html
 <!-- 🚫 INCORRECT -->
@@ -170,7 +188,7 @@ The `icon` prop renders the glyph through the shared icon service and positions 
 
 <!-- ✅ CORRECT -->
 <mds-tab-bar>
-  <mds-tab-bar-item icon="mi/baseline/home">Home</mds-tab-bar-item>
+  <mds-tab-bar-item icon="mi/baseline/home" label="Home"></mds-tab-bar-item>
 </mds-tab-bar>
 ```
 
@@ -181,12 +199,12 @@ The `icon` prop renders the glyph through the shared icon service and positions 
 ```html
 <!-- 🚫 INCORRECT -->
 <mds-tab-bar>
-  <mds-tab-bar-item icon="mi/baseline/home" selected="false">Home</mds-tab-bar-item>
+  <mds-tab-bar-item icon="mi/baseline/home" label="Home" selected="false"></mds-tab-bar-item>
 </mds-tab-bar>
 
 <!-- ✅ CORRECT -->
 <mds-tab-bar>
-  <mds-tab-bar-item icon="mi/baseline/home">Home</mds-tab-bar-item>
+  <mds-tab-bar-item icon="mi/baseline/home" label="Home"></mds-tab-bar-item>
 </mds-tab-bar>
 ```
 
@@ -197,7 +215,7 @@ The `icon` prop renders the glyph through the shared icon service and positions 
 ```html
 <!-- 🚫 INCORRECT -->
 <mds-tab-bar id="nav">
-  <mds-tab-bar-item icon="mi/baseline/home">Home</mds-tab-bar-item>
+  <mds-tab-bar-item icon="mi/baseline/home" label="Home"></mds-tab-bar-item>
 </mds-tab-bar>
 <script>
   document.querySelector('mds-tab-bar-item').addEventListener('click', handler);
@@ -205,7 +223,7 @@ The `icon` prop renders the glyph through the shared icon service and positions 
 
 <!-- ✅ CORRECT -->
 <mds-tab-bar id="nav">
-  <mds-tab-bar-item icon="mi/baseline/home">Home</mds-tab-bar-item>
+  <mds-tab-bar-item icon="mi/baseline/home" label="Home"></mds-tab-bar-item>
 </mds-tab-bar>
 <script>
   document.querySelector('#nav').addEventListener('mdsTabBarChange', handler);
@@ -219,12 +237,12 @@ The `icon` prop renders the glyph through the shared icon service and positions 
 ```html
 <!-- 🚫 INCORRECT -->
 <mds-tab-bar>
-  <mds-tab-bar-item icon="mi/baseline/home" typography="caption">Home</mds-tab-bar-item>
+  <mds-tab-bar-item icon="mi/baseline/home" label="Home" typography="caption"></mds-tab-bar-item>
 </mds-tab-bar>
 
 <!-- ✅ CORRECT -->
 <mds-tab-bar>
-  <mds-tab-bar-item icon="mi/baseline/home" typography="option">Home</mds-tab-bar-item>
+  <mds-tab-bar-item icon="mi/baseline/home" label="Home" typography="option"></mds-tab-bar-item>
 </mds-tab-bar>
 ```
 
@@ -235,6 +253,7 @@ The `icon` prop renders the glyph through the shared icon service and positions 
 | Property     | Attribute    | Description                                   | Type                             | Default     |
 | ------------ | ------------ | --------------------------------------------- | -------------------------------- | ----------- |
 | `icon`       | `icon`       |                                               | `string`                         | `''`        |
+| `label`      | `label`      | Sets the label of the tab bar item            | `string \| undefined`            | `undefined` |
 | `selected`   | `selected`   | Specifies if the component is selected or not | `boolean`                        | `undefined` |
 | `typography` | `typography` | Specifies the typography of the element       | `"option" \| "tip" \| undefined` | `'tip'`     |
 
@@ -248,19 +267,9 @@ The `icon` prop renders the glyph through the shared icon service and positions 
 
 ## Slots
 
-| Slot        | Description                                                                            |
-| ----------- | -------------------------------------------------------------------------------------- |
-| `"default"` | Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here. |
-
-
-## CSS Custom Properties
-
-| Name                                     | Description                                                   |
-| ---------------------------------------- | ------------------------------------------------------------- |
-| `--mds-tab-bar-item-background`          | Sets the background-color of the component                    |
-| `--mds-tab-bar-item-background-selected` | Sets the background-color of the component when it's selected |
-| `--mds-tab-bar-item-color`               | Sets the text color of the component                          |
-| `--mds-tab-bar-item-color-selected`      | Sets the text color of the component when it's selected       |
+| Slot        | Description                                                                                                                              |
+| ----------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| `"default"` | **Deprecated**, use the `label` property instead. Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here. |
 
 
 ## Dependencies
