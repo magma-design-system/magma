@@ -3,16 +3,13 @@ name: styles
 on:
   push:
     branches: [dev, main]
-    paths:
-      - 'projects/styles/**'
   pull_request:
-    paths:
-      - 'projects/styles/**'
 
 jobs:
   pipeline:
     uses: ./.github/workflows/_package-pipeline.yml
     with:
+      path: projects/styles/**
       nx-project: styles
       # styles build also produces design-tokens dist (nx implicit dependency)
       artifact-paths: |

@@ -3,16 +3,13 @@ name: svg-icons
 on:
   push:
     branches: [dev, main]
-    paths:
-      - 'projects/svg-icons/**'
   pull_request:
-    paths:
-      - 'projects/svg-icons/**'
 
 jobs:
   pipeline:
     uses: ./.github/workflows/_package-pipeline.yml
     with:
+      path: projects/svg-icons/**
       nx-project: svg-icons
       artifact-paths: projects/svg-icons/dist
       artifact-download-path: projects/svg-icons/dist

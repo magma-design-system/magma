@@ -1,11 +1,19 @@
-# Reusable CI pipeline for a workspace package: build -> test.
+# Reusable CI pipeline for a workspace package: change detection -> build -> test.
 # Publishing to npm is handled by the dedicated publish workflow (publish.yml),
 # which runs on main once every CI workflow of the commit has succeeded.
+#
+# Path filtering happens in the `changes` job instead of the caller's trigger:
+# GitHub evaluates trigger `paths` only on the first 300 files of the diff, so
+# big merges (e.g. dev -> main release PRs) silently skip workflows.
 name: package-pipeline
 
 on:
   workflow_call:
     inputs:
+      path:
+        description: Glob of the project files; build/test run only when they changed
+        type: string
+        required: true
       nx-project:
         description: Nx project name to build (empty = no build job)
         type: string
@@ -30,10 +38,28 @@ on:
         description: Install (and cache) Chrome for puppeteer-based tests
         type: boolean
         default: false
+    outputs:
+      changed:
+        description: Whether files matching `path` changed in this event
+        value: ${{ jobs.changes.outputs.changed }}
 
 jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.filter.outputs.project }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            project:
+              - '${{ inputs.path }}'
+
   build:
-    if: ${{ inputs.nx-project != '' }}
+    needs: [changes]
+    if: ${{ needs.changes.outputs.changed == 'true' && inputs.nx-project != '' }}
     runs-on: ubuntu-latest
     env:
       # Chrome is only needed by the test job (stencil e2e)
@@ -61,9 +87,10 @@ jobs:
           include-hidden-files: true
 
   test:
-    needs: [build]
+    needs: [changes, build]
     if: >-
       ${{ !cancelled() && inputs.run-tests &&
+          needs.changes.outputs.changed == 'true' &&
           (needs.build.result == 'success' || needs.build.result == 'skipped') }}
     runs-on: ubuntu-latest
     env:

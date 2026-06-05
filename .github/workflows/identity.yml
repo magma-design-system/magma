@@ -3,16 +3,13 @@ name: identity
 on:
   push:
     branches: [dev, main]
-    paths:
-      - 'projects/identity/**'
   pull_request:
-    paths:
-      - 'projects/identity/**'
 
 jobs:
   pipeline:
     uses: ./.github/workflows/_package-pipeline.yml
     with:
+      path: projects/identity/**
       nx-project: identity
       artifact-paths: projects/identity/dist
       artifact-download-path: projects/identity/dist

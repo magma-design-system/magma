@@ -3,11 +3,7 @@ name: stencil
 on:
   push:
     branches: [dev, main]
-    paths:
-      - 'projects/stencil/**'
   pull_request:
-    paths:
-      - 'projects/stencil/**'
 
 jobs:
   # Builds stencil and runs the e2e tests; its build artifact
@@ -15,6 +11,7 @@ jobs:
   magma:
     uses: ./.github/workflows/_package-pipeline.yml
     with:
+      path: projects/stencil/**
       nx-project: stencil
       artifact-paths: |
         projects/design-tokens/dist
@@ -36,6 +33,7 @@ jobs:
 
   magma-react:
     needs: [magma]
+    if: ${{ needs.magma.outputs.changed == 'true' }}
     runs-on: ubuntu-latest
     env:
       PUPPETEER_SKIP_DOWNLOAD: 'true'
@@ -67,6 +65,7 @@ jobs:
 
   magma-angular:
     needs: [magma]
+    if: ${{ needs.magma.outputs.changed == 'true' }}
     runs-on: ubuntu-latest
     env:
       PUPPETEER_SKIP_DOWNLOAD: 'true'
