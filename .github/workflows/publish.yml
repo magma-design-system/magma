@@ -154,15 +154,26 @@ jobs:
             echo "::notice::${{ matrix.component }} not selected, skipping"
             exit 0
           fi
-          LATEST_PUBLISHED_V="$(npm view @maggioli-design-system/${{ matrix.component }} dist-tags.latest)"
           TO_BE_PUBLISHED_V="$(jq -r '.version' "${{ matrix.version-file || format('{0}/package.json', matrix.directory) }}")"
           echo "VERSION TO BE PUBLISHED ${TO_BE_PUBLISHED_V}"
-          echo "LATEST PUBLISHED VERSION ${LATEST_PUBLISHED_V}"
-          if [ "$LATEST_PUBLISHED_V" = "$TO_BE_PUBLISHED_V" ]; then
+          # npm view of a missing version exits 0 with empty output, so test the output
+          PUBLISHED="$(npm view "@maggioli-design-system/${{ matrix.component }}@${TO_BE_PUBLISHED_V}" version 2>/dev/null || true)"
+          if [ -n "$PUBLISHED" ]; then
             echo "::notice::@maggioli-design-system/${{ matrix.component }}@${TO_BE_PUBLISHED_V} already published, skipping"
-          else
-            echo "proceed=true" >> "$GITHUB_OUTPUT"
+            exit 0
           fi
+          # dist-tag from the semver prerelease identifier: 2.0.0-alpha.0 -> alpha,
+          # non-alphabetic identifier -> next, stable -> latest
+          case "$TO_BE_PUBLISHED_V" in
+            *-*)
+              TAG="${TO_BE_PUBLISHED_V#*-}"
+              TAG="${TAG%%.*}"
+              case "$TAG" in ''|*[!a-zA-Z]*) TAG=next ;; esac
+              ;;
+            *) TAG=latest ;;
+          esac
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          echo "proceed=true" >> "$GITHUB_OUTPUT"
       - if: ${{ steps.ver.outputs.proceed == 'true' }}
         uses: actions/setup-node@v6
         with:
@@ -181,4 +192,4 @@ jobs:
       - name: Publish to npm
         if: ${{ steps.ver.outputs.proceed == 'true' }}
         working-directory: ${{ matrix.directory }}
-        run: npm publish --access public
+        run: npm publish --access public --tag "${{ steps.ver.outputs.tag }}"
