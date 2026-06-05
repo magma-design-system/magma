@@ -7,6 +7,32 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 <!-- Auto Generated Below -->
 
 
+## Usage
+
+### 1. Description
+
+The `<mds-accordion-timer-item>` web component is the single collapsible panel of a timed, auto-advancing accordion, designed to live exclusively inside its parent [`<mds-accordion-timer>`](../../mds-accordion-timer). It renders a header button paired with a progress bar and a region that reveals the slotted content while the item is selected, replacing a hand-rolled `<button>` + disclosure `<div>` pairing.
+
+#### Semantic Behavior
+
+- **Compound child only**: Must be placed as a direct default-slot child of `<mds-accordion-timer>`, alongside other `<mds-accordion-timer-item>` siblings. It is never used standalone or mixed with other child types, since the parent indexes the items, assigns each a `uuid`, and drives the rotating timer.
+- **Disclosure semantics**: The header renders a `<button role="button">` with `aria-expanded` bound to `selected` and `aria-controls` pointing at the content region; the revealed content is wrapped in a `role="region"` labelled by `description`.
+- **Selection is parent-orchestrated**: `selected` reflects to an attribute and represents the open state, but only one sibling is open at a time — the parent flips `selected` on every item when the timer advances or a user clicks, and resets `progress` to `0` on each transition.
+- **Click toggles and reports up**: Clicking the header toggles `selected` locally, zeroes `progress`, and (when opening) emits `mdsAccordionTimerItemClickSelect` so the parent can pause and re-anchor its timer on this item.
+- **Programmatic vs. user changes**: A `@Watch` on `selected` zeroes `progress` and, when opening, emits `mdsAccordionTimerItemSelect` — this is the channel for code-driven selection, distinct from the click event so the parent can restart (rather than pause) the countdown.
+- **Hover pauses the countdown**: While selected, pointer enter/leave on the host emit `mdsAccordionTimerItemMouseEnterSelect` / `mdsAccordionTimerItemMouseLeaveSelect`, which the parent uses to pause and resume the timer. These fire only when the item is currently selected.
+- **Progress is externally fed**: The parent continuously writes `progress` (0–100) onto the selected item from its interval loop; the item only renders it through the vertical `mds-progress` bar and does not advance it on its own.
+
+#### Properties & Visual Configurations
+
+- **`description`** (required): the title text shown on the header in both open and closed states; it also supplies the accessible label of the content region.
+- **`typography`**: picks the heading scale for the header text — defaults to `h5`; choose a larger title token only to match surrounding hierarchy.
+- **`selected`**: marks this item as the open one. You normally set it on a single item to define the initial open panel; thereafter the parent owns it.
+- **`duration`**: an optional per-item override (in ms) for how long this item stays open before the parent auto-advances, overriding the parent's global `duration` for this item only.
+- **`progress`** and **`uuid`** are managed by the parent at runtime (`uuid` is assigned automatically on load); do not set them manually.
+
+
+
 ## Properties
 
 | Property                   | Attribute     | Description                                                                                                   | Type                                                       | Default     |

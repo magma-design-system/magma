@@ -71,6 +71,30 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 <!-- Auto Generated Below -->
 
 
+## Usage
+
+### 1. Description
+
+The `<mds-author>` web component is the layout primitive of the Magma Design System for presenting a person's identity: it pairs an avatar with author information (name, role, or any related details). It exposes no props and acts purely as a slotted container, arranging an optional `avatar` slot beside a default content slot.
+
+#### Semantic Behavior
+
+- **Conditional avatar rendering**: On load the component inspects the host for a direct child assigned to `slot="avatar"`; the avatar wrapper is rendered only when one is present, so omitting it produces no empty column.
+- **Default slot is content, not text**: The default slot is meant to hold structured author information (typically stacked `mds-text` elements for name and role) rather than a single inline label.
+- **Responsive collapse**: The host is a `inline-size` container; below 200px it stacks the avatar above the info and centers them (except under Safari, which is excluded via host-context), so the same markup adapts from a horizontal row to a compact vertical card.
+- **Compound usage**: It is designed to wrap an `mds-avatar` in the `avatar` slot; the avatar element itself owns initials/image fallback logic, while `<mds-author>` only positions it.
+
+#### Properties & Visual Configurations
+
+This component has no properties. All configuration is expressed through its two slots:
+
+- **`avatar` slot**: the leading element, recommended to be an `mds-avatar`. Its presence is what toggles the two-column layout.
+- **default slot**: the trailing block holding the author's textual details, laid out as a vertical grid so multiple lines stack cleanly and truncate within the available width.
+
+See [`projects/stencil/SPEC.md`](../../../../SPEC.md) for the shared compound-component conventions and [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) for the usage contract.
+
+
+
 ## Slots
 
 | Slot        | Description                                                                                                                          |

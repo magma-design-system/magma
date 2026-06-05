@@ -5,6 +5,28 @@
 <!-- Auto Generated Below -->
 
 
+## Usage
+
+### 1. Description
+
+The `<mds-avatar-stack>` web component groups a set of overlapping `<mds-avatar-stack-item>` children into a single horizontal cluster, the Magma Design System pattern for showing the people associated with an entity (assignees, participants, collaborators) in a compact, space-saving row.
+
+#### Semantic Behavior
+
+- **Compound parent**: It is the container half of a compound component; its visible content is the default slot of `<mds-avatar-stack-item>` children, each of which wraps an `<mds-avatar>`.
+- **Size propagation**: `size` is reflected to the host and drives, through CSS custom properties, the dimensions, border and horizontal overlap offset of every slotted item, so the whole stack stays visually consistent without sizing each avatar individually.
+- **Overflow counter**: At load the component counts its direct `mds-avatar-stack-item` children; when `total` is set and exceeds that count it appends one extra item rendering the remainder (e.g. "+3"), so the stack can represent a larger group than it physically shows.
+- **Static composition**: Children are read once in `componentWillLoad` and `total` is resolved against that initial count, so the overflow indicator reflects the markup present at first render rather than reacting to later DOM mutations.
+
+#### Properties & Visual Configurations
+
+- **`size`** selects the avatar scale (`'sm'`, `'md'`, `'lg'`) for the entire stack; pick it to match the surrounding density, since it governs not just avatar diameter but also the overlap offset and ring border between stacked avatars.
+- **`total`** is the logical headcount of the represented group. Set it higher than the number of slotted avatars to surface a trailing count item for the hidden members; leave it unset (or equal to the child count) to show only the avatars in the markup with no counter.
+
+This component does not use the shared `variant` / `tone` ladders; per-avatar appearance (tone, variant, initials, image source) is configured on each `<mds-avatar-stack-item>` instead.
+
+
+
 ## Properties
 
 | Property | Attribute | Description                                        | Type                                | Default     |
