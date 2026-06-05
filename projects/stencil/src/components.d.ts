@@ -2341,6 +2341,10 @@ export namespace Components {
          */
         "icon": string;
         /**
+          * Sets the label of the tab bar item
+         */
+        "label"?: string;
+        /**
           * Specifies if the component is selected or not
          */
         "selected": boolean;
@@ -6638,6 +6642,10 @@ declare namespace LocalJSX {
           * @default ''
          */
         "icon"?: string;
+        /**
+          * Sets the label of the tab bar item
+         */
+        "label"?: string;
         /**
           * Emits when the component is selected
          */
