@@ -355,6 +355,10 @@ export namespace Components {
          */
         "alias"?: string;
         /**
+          * The label of the benchmark bar
+         */
+        "label"?: string;
+        /**
           * Sets the size of the component
           * @default 'md'
          */
@@ -648,16 +652,6 @@ export namespace Components {
          */
         "today"?: boolean | undefined;
     }
-    /**
-     * @name Button
-     * @description Buttons are used to initialize an action. Button labels express what action will occur when the user interacts with it.
-     * @overview  <p>Buttons are clickable elements that are used to trigger actions. They communicate calls to action to the user and allow users to interact with pages in a variety of ways. Button labels express what action will occur when the user interacts with it.</p>
-     * @category General
-     * @tags controls
-     * @example <mds-button>
-     * Button CTA
-     * </mds-button>
-     */
     interface MdsCard {
         /**
           * Enables automatic responsive behavior based on container queries
@@ -3126,16 +3120,6 @@ declare global {
         prototype: HTMLMdsCalendarCellElement;
         new (): HTMLMdsCalendarCellElement;
     };
-    /**
-     * @name Button
-     * @description Buttons are used to initialize an action. Button labels express what action will occur when the user interacts with it.
-     * @overview  <p>Buttons are clickable elements that are used to trigger actions. They communicate calls to action to the user and allow users to interact with pages in a variety of ways. Button labels express what action will occur when the user interacts with it.</p>
-     * @category General
-     * @tags controls
-     * @example <mds-button>
-     * Button CTA
-     * </mds-button>
-     */
     interface HTMLMdsCardElement extends Components.MdsCard, HTMLStencilElement {
     }
     var HTMLMdsCardElement: {
@@ -4547,6 +4531,10 @@ declare namespace LocalJSX {
          */
         "alias"?: string;
         /**
+          * The label of the benchmark bar
+         */
+        "label"?: string;
+        /**
           * Sets the size of the component
           * @default 'md'
          */
@@ -4850,16 +4838,6 @@ declare namespace LocalJSX {
          */
         "today"?: boolean | undefined;
     }
-    /**
-     * @name Button
-     * @description Buttons are used to initialize an action. Button labels express what action will occur when the user interacts with it.
-     * @overview  <p>Buttons are clickable elements that are used to trigger actions. They communicate calls to action to the user and allow users to interact with pages in a variety of ways. Button labels express what action will occur when the user interacts with it.</p>
-     * @category General
-     * @tags controls
-     * @example <mds-button>
-     * Button CTA
-     * </mds-button>
-     */
     interface MdsCard {
         /**
           * Enables automatic responsive behavior based on container queries
@@ -7188,16 +7166,6 @@ declare module "@stencil/core" {
             "mds-button-group": LocalJSX.MdsButtonGroup & JSXBase.HTMLAttributes<HTMLMdsButtonGroupElement>;
             "mds-calendar": LocalJSX.MdsCalendar & JSXBase.HTMLAttributes<HTMLMdsCalendarElement>;
             "mds-calendar-cell": LocalJSX.MdsCalendarCell & JSXBase.HTMLAttributes<HTMLMdsCalendarCellElement>;
-            /**
-             * @name Button
-             * @description Buttons are used to initialize an action. Button labels express what action will occur when the user interacts with it.
-             * @overview  <p>Buttons are clickable elements that are used to trigger actions. They communicate calls to action to the user and allow users to interact with pages in a variety of ways. Button labels express what action will occur when the user interacts with it.</p>
-             * @category General
-             * @tags controls
-             * @example <mds-button>
-             * Button CTA
-             * </mds-button>
-             */
             "mds-card": LocalJSX.MdsCard & JSXBase.HTMLAttributes<HTMLMdsCardElement>;
             "mds-card-content": LocalJSX.MdsCardContent & JSXBase.HTMLAttributes<HTMLMdsCardContentElement>;
             "mds-card-footer": LocalJSX.MdsCardFooter & JSXBase.HTMLAttributes<HTMLMdsCardFooterElement>;
