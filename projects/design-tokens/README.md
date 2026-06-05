@@ -4,6 +4,15 @@ Generates design tokens for colors and other type of agnostic tokens targeted on
 
 This library is based on [Adobe Leonardo][adobe-leonardo] and [Amazon Style Dictionary][style-dictionary].
 
+# Compatibility
+
+Use the version of this package matching the major version of [`@maggioli-design-system/magma`](https://www.npmjs.com/package/@maggioli-design-system/magma) you are using:
+
+| magma | design-tokens | styles |
+| :--- | :--- | :--- |
+| `1.x` (before Magma 2) | `13.x` (latest `13.7.2`) | `15.x` (latest `15.11.1`) |
+| `2.x` and later | `>= 14` | `>= 16` |
+
 # Installation
 
 Install the component via `npm` by running the following command:

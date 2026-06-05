@@ -3,6 +3,14 @@
 # Magma 2
 ---
 
+#### Required versions
+
+Use the versions of `@maggioli-design-system/design-tokens` and `@maggioli-design-system/styles` matching your magma major version:
+
+| magma | design-tokens | styles |
+| :--- | :--- | :--- |
+| `1.x` (before Magma 2) | `13.x` (latest `13.7.2`) | `15.x` (latest `15.11.1`) |
+| `2.x` and later | `>= 14` | `>= 16` |
 
 #### Tones name changes
 
