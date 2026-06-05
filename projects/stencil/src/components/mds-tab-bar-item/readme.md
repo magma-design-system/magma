@@ -272,6 +272,16 @@ The `icon` prop renders the glyph through the shared icon service and positions 
 | `"default"` | **Deprecated**, use the `label` property instead. Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here. |
 
 
+## CSS Custom Properties
+
+| Name                                     | Description                                                   |
+| ---------------------------------------- | ------------------------------------------------------------- |
+| `--mds-tab-bar-item-background`          | Sets the background-color of the component                    |
+| `--mds-tab-bar-item-background-selected` | Sets the background-color of the component when it's selected |
+| `--mds-tab-bar-item-color`               | Sets the text color of the component                          |
+| `--mds-tab-bar-item-color-selected`      | Sets the text color of the component when it's selected       |
+
+
 ## Dependencies
 
 ### Depends on

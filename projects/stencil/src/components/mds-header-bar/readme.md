@@ -320,6 +320,13 @@ Type: `Promise<void>`
 | `"nav"`       | Selects the `nav` element that contains the horizontal menu |
 
 
+## CSS Custom Properties
+
+| Name                               | Description                                             |
+| ---------------------------------- | ------------------------------------------------------- |
+| `--mds-header-bar-hamburger-color` | The color of the hamburger icon used in the header bar. |
+
+
 ## Dependencies
 
 ### Depends on

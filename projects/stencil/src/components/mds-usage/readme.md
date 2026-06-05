@@ -267,6 +267,15 @@ Type: `Promise<void>`
 | `"label"`  |             |
 
 
+## CSS Custom Properties
+
+| Name                            | Description                                                   |
+| ------------------------------- | ------------------------------------------------------------- |
+| `--mds-usage-border-color`      | The border-color applied to the usage container or indicator. |
+| `--mds-usage-header-background` | The background-color of the usage header.                     |
+| `--mds-usage-header-color`      | The text/icon color of the usage header.                      |
+
+
 ## Dependencies
 
 ### Depends on

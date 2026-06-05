@@ -290,6 +290,17 @@ mds-entity {
 | `"spinner"` | The spinner element |
 
 
+## CSS Custom Properties
+
+| Name                           | Description                        |
+| ------------------------------ | ---------------------------------- |
+| `--mds-entity-background`      | The background-color of the entity |
+| `--mds-entity-color`           | The color of the entity name       |
+| `--mds-entity-detail-color`    | The color of the text details      |
+| `--mds-entity-icon-background` | The background-color of the icon   |
+| `--mds-entity-icon-color`      | The color of the icon              |
+
+
 ## Dependencies
 
 ### Depends on

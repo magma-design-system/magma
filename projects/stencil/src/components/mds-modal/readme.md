@@ -432,6 +432,26 @@ Type: `Promise<void>`
 | `"window"`       | Selects the default window element of the modal when used. |
 
 
+## CSS Custom Properties
+
+| Name                                     | Description                                                                                                                                        |
+| ---------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--mds-modal-custom-closed-transform`    | Sets the transform position of the custom window when it's outside the viewport, to it's default position                                          |
+| `--mds-modal-custom-window-distance`     | Set the distance between the slotted modal window and the screen bounds                                                                            |
+| `--mds-modal-overlay-color`              | Set the overlay color of the background when the component is opened, this property can be inherited from `globals.css` in `styles^8.0.0`.         |
+| `--mds-modal-overlay-opacity`            | Set the overlay color opacity of the background when the component is opened, this property can be inherited from `globals.css` in `styles^8.0.0`. |
+| `--mds-modal-transition-duration`        | Sets the `transition-duration` of the modal elements                                                                                               |
+| `--mds-modal-transition-timing-funciton` | Sets the `transition-timing-funciton` of the modal elements                                                                                        |
+| `--mds-modal-window-background`          | Set the background color of the window                                                                                                             |
+| `--mds-modal-window-distance`            | Set the distance between the modal window and the screen bounds                                                                                    |
+| `--mds-modal-window-max-width`           | If the viewport is greather than mobile, max-width will be considered with this value;                                                             |
+| `--mds-modal-window-min-width`           | If the viewport is greather than mobile, min-width will be considered with this value;                                                             |
+| `--mds-modal-window-overflow`            | Set the overflow of the window                                                                                                                     |
+| `--mds-modal-window-radius`              | Set the border radius of the window                                                                                                                |
+| `--mds-modal-window-shadow`              | Set the box shadow of the window                                                                                                                   |
+| `--mds-modal-z-index`                    | Set the z-index of the window when the component is opened                                                                                         |
+
+
 ## Dependencies
 
 ### Used by

@@ -292,6 +292,17 @@ mds-text {
 | `"default"` | Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here. |
 
 
+## CSS Custom Properties
+
+| Name                                    | Description                                       |
+| --------------------------------------- | ------------------------------------------------- |
+| `--mds-text-animation-placeholder-char` | Placeholder character used during text animation. |
+| `--mds-text-animation-speed`            | Speed of text animation.                          |
+| `--mds-text-line-clamp`                 | Number of lines to clamp text to (line-clamp).    |
+| `--mds-text-selection-background`       | Background color used when text is selected.      |
+| `--mds-text-selection-color`            | Text color used when text is selected.            |
+
+
 ## Dependencies
 
 ### Used by

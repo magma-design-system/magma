@@ -307,6 +307,16 @@ Inserting a `<div>` or `<span>` wrapper around `<mds-table-cell>` inside `<mds-t
 | `"default"` | Add `text string`, `HTML elements` or `components` to this slot. |
 
 
+## CSS Custom Properties
+
+| Name                              | Description                                 |
+| --------------------------------- | ------------------------------------------- |
+| `--mds-table-cell-background`     | Default background color of table cells.    |
+| `--mds-table-cell-background-alt` | Alternate background color for table cells. |
+| `--mds-table-cell-color`          | Default text color of table cells.          |
+| `--mds-table-cell-color-alt`      | Text color for alternate table cells.       |
+
+
 ## Dependencies
 
 ### Used by

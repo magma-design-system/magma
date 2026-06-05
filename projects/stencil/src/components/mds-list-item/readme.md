@@ -256,6 +256,13 @@ When a Magma list is needed, use the component pair - not raw HTML. Raw elements
 | `"text"` |             |
 
 
+## CSS Custom Properties
+
+| Name                          | Description                             |
+| ----------------------------- | --------------------------------------- |
+| `--mds-list-item-icon-margin` | Sets the margin of the component's icon |
+
+
 ## Dependencies
 
 ### Depends on

@@ -427,6 +427,42 @@ mds-tab::part(tabs) {
 | `"tabs"`     | Selects the container of `mds-tab-item` list elements.                                    |
 
 
+## CSS Custom Properties
+
+| Name                                          | Description                                   |
+| --------------------------------------------- | --------------------------------------------- |
+| `--mds-tab-direction-vertical-columns`        | Defines the column layout for vertical tabs.  |
+| `--mds-tab-item-default-background`           | Background color for default tab items.       |
+| `--mds-tab-item-default-color`                | Text color for default tab items.             |
+| `--mds-tab-item-default-shadow`               | Shadow for default tab items.                 |
+| `--mds-tab-item-hover-background`             | Background color for hovered tab items.       |
+| `--mds-tab-item-hover-color`                  | Text color for hovered tab items.             |
+| `--mds-tab-item-hover-shadow`                 | Shadow for hovered tab items.                 |
+| `--mds-tab-item-radius`                       | Border radius for tab items.                  |
+| `--mds-tab-item-selected-background`          | Background color for selected tab items.      |
+| `--mds-tab-item-selected-color`               | Text color for selected tab items.            |
+| `--mds-tab-item-selected-shadow`              | Shadow for selected tab items.                |
+| `--mds-tab-scroll-behavior`                   | Scroll behavior for tab container.            |
+| `--mds-tab-scroll-scrollbar-margin`           | Margin for scrollbar.                         |
+| `--mds-tab-scroll-scrollbar-radius`           | Radius of scrollbar.                          |
+| `--mds-tab-scroll-scrollbar-size`             | Size of scrollbar.                            |
+| `--mds-tab-scroll-scrollbar-thumb-background` | Background color of scrollbar thumb.          |
+| `--mds-tab-scroll-scrollbar-track-background` | Background color of scrollbar track.          |
+| `--mds-tab-slide-delay`                       | Delay before tab slide animation.             |
+| `--mds-tab-tabs-background`                   | Background color of the tabs container.       |
+| `--mds-tab-tabs-gap`                          | Gap between tabs.                             |
+| `--mds-tab-tabs-overflow-shadow`              | Shadow applied to overflowed tabs.            |
+| `--mds-tab-tabs-overflow-shadow-size`         | Size of the overflow shadow.                  |
+| `--mds-tab-tabs-padding`                      | Padding inside the tabs container.            |
+| `--mds-tab-tabs-radius`                       | Border radius of the tabs container.          |
+| `--mds-tab-tabs-wrapper-margin`               | Margin for the tabs wrapper.                  |
+| `--mds-tab-tabs-wrapper-outline-opacity`      | Opacity of the wrapper outline.               |
+| `--mds-tab-tabs-wrapper-shadow`               | Shadow for the tabs wrapper.                  |
+| `--mds-tab-tabs-wrapper-shadow-color`         | Color of the wrapper shadow.                  |
+| `--mds-tab-transition-duration`               | Duration of tab transition animation.         |
+| `--mds-tab-transition-timing-function`        | Timing function for tab transition animation. |
+
+
 ## Dependencies
 
 ### Used by

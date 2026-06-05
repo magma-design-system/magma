@@ -231,6 +231,14 @@ mds-radial-menu-item {
 | `variant` | `variant` | Specifies the color variant for the button          | `"ai" \| "apple" \| "dark" \| "error" \| "google" \| "info" \| "light" \| "primary" \| "secondary" \| "success" \| "warning" \| undefined` | `'dark'`    |
 
 
+## CSS Custom Properties
+
+| Name                                                | Description                                                  |
+| --------------------------------------------------- | ------------------------------------------------------------ |
+| `--mds-radial-menu-item-transition-duration`        | Duration of individual radial menu item transitions.         |
+| `--mds-radial-menu-item-transition-timing-function` | Timing function for individual radial menu item transitions. |
+
+
 ## Dependencies
 
 ### Depends on

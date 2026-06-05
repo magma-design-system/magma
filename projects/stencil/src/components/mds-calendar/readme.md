@@ -317,6 +317,19 @@ Type: `Promise<void>`
 
 
 
+## CSS Custom Properties
+
+| Name                                          | Description                                                               |
+| --------------------------------------------- | ------------------------------------------------------------------------- |
+| `--mds-calendar-background`                   | The background color of the calendar container.                           |
+| `--mds-calendar-border-radius`                | The border-radius of the calendar container.                              |
+| `--mds-calendar-cell-gap`                     | The spacing between calendar day cells.                                   |
+| `--mds-calendar-cell-other-month-visibility`  | Controls visibility of days from other months (e.g. "visible", "hidden"). |
+| `--mds-calendar-day-number-color`             | The color of the day numbers of the current month.                        |
+| `--mds-calendar-day-number-other-month-color` | The color of the day numbers belonging to previous/next months.           |
+| `--mds-calendar-padding`                      | The internal padding of the calendar container.                           |
+
+
 ## Dependencies
 
 ### Used by

@@ -237,6 +237,16 @@ Setting `style="width: ..."` on the host bypasses the component's layout contrac
 | `"icon"` |             |
 
 
+## CSS Custom Properties
+
+| Name                           | Description                                   |
+| ------------------------------ | --------------------------------------------- |
+| `--mds-help-tooltip-delay`     | The delay before the tooltip becomes visible. |
+| `--mds-help-tooltip-max-width` | The maximum allowed width of the tooltip.     |
+| `--mds-help-tooltip-min-width` | The minimum allowed width of the tooltip.     |
+| `--mds-help-tooltip-width`     | The width of the tooltip element.             |
+
+
 ## Dependencies
 
 ### Used by

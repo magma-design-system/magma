@@ -248,6 +248,28 @@ The parent queries `:scope > mds-avatar-stack-item` to count children and comput
 | `variant`  | `variant`  | Specifies the color variant of the component                                                                                                         | `"amaranth" \| "aqua" \| "blue" \| "error" \| "green" \| "info" \| "lime" \| "orange" \| "orchid" \| "primary" \| "purple" \| "red" \| "sky" \| "success" \| "violet" \| "warning" \| "yellow" \| undefined` | `undefined` |
 
 
+## CSS Custom Properties
+
+| Name                                             | Description                                              |
+| ------------------------------------------------ | -------------------------------------------------------- |
+| `--mds-avatar-stack-item-background`             | The background color of each avatar in the stack         |
+| `--mds-avatar-stack-item-border`                 | Computed active border (based on selected size)          |
+| `--mds-avatar-stack-item-count-background-color` | Background color of the count badge in the stack         |
+| `--mds-avatar-stack-item-count-color`            | Text color for the count badge in the stack              |
+| `--mds-avatar-stack-item-lg-border`              | Border width for large avatars                           |
+| `--mds-avatar-stack-item-lg-offset`              | Overlap factor for large avatars (higher = more overlap) |
+| `--mds-avatar-stack-item-lg-size`                | Size of large avatars in the stack                       |
+| `--mds-avatar-stack-item-md-border`              | Border width for medium avatars                          |
+| `--mds-avatar-stack-item-md-offset`              | Overlap factor for medium avatars                        |
+| `--mds-avatar-stack-item-md-size`                | Size of medium avatars in the stack                      |
+| `--mds-avatar-stack-item-offset`                 | Computed active offset (based on selected size)          |
+| `--mds-avatar-stack-item-offset-margin`          | Computed margin for overlapping avatars                  |
+| `--mds-avatar-stack-item-size`                   | Computed active size (based on selected size)            |
+| `--mds-avatar-stack-item-sm-border`              | Border width for small avatars                           |
+| `--mds-avatar-stack-item-sm-offset`              | Overlap factor for small avatars                         |
+| `--mds-avatar-stack-item-sm-size`                | Size of small avatars in the stack                       |
+
+
 ## Dependencies
 
 ### Used by

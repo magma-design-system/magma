@@ -223,6 +223,13 @@ mds-spinner {
 | `running` | `running` | Specifies if the animation is running or not, it's required for performance reasons | `boolean \| undefined` | `false` |
 
 
+## CSS Custom Properties
+
+| Name                     | Description                        |
+| ------------------------ | ---------------------------------- |
+| `--mds-spinner-duration` | Duration of the spinner animation. |
+
+
 ## Dependencies
 
 ### Used by

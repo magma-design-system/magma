@@ -546,6 +546,28 @@ Type: `Promise<void>`
 | `"tip-top"`                 |             |
 
 
+## CSS Custom Properties
+
+| Name                                        | Description                                                  |
+| ------------------------------------------- | ------------------------------------------------------------ |
+| `--mds-input-background`                    | The background color of the input field.                     |
+| `--mds-input-icon-color`                    | The RGB channels used to color icons inside the input.       |
+| `--mds-input-placeholder-default-color`     | The placeholder color in the default state.                  |
+| `--mds-input-placeholder-focus-color`       | The placeholder color when the input is focused.             |
+| `--mds-input-placeholder-hover-color`       | The placeholder color when the input is hovered.             |
+| `--mds-input-ring`                          | The outline ring applied to the input on interactive states. |
+| `--mds-input-shadow`                        | The box-shadow applied to the input component.               |
+| `--mds-input-textarea-field-sizing`         | The field-sizing behavior of the textarea.                   |
+| `--mds-input-textarea-max-height`           | The max-height applied to the textarea.                      |
+| `--mds-input-textarea-min-height`           | The min-height applied to the textarea.                      |
+| `--mds-input-textarea-resize`               | Controls whether the textarea is resizable.                  |
+| `--mds-input-tip-background`                | The background color of the input tip/inline help.           |
+| `--mds-input-tip-horizontal-offset`         | The default horizontal offset applied to the input tip       |
+| `--mds-input-tip-horizontal-offset-focused` | The horizontal offset applied when the input tip is focused  |
+| `--mds-input-tip-vertical-offset`           | The vertical offset applied to the input tip                 |
+| `--mds-input-variant-color-rgb`             | The raw RGB channels used for variant-driven styling.        |
+
+
 ## Dependencies
 
 ### Used by

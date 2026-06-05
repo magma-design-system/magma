@@ -310,6 +310,13 @@ mds-price-table-list::part(content) {
 | `"header"`  | Selects the element which wraps elements added via `slot="header"`                    |
 
 
+## CSS Custom Properties
+
+| Name                                     | Description                                          |
+| ---------------------------------------- | ---------------------------------------------------- |
+| `--mds-price-table-list-separator-color` | Color of the separator line in the price table list. |
+
+
 ## Dependencies
 
 ### Depends on

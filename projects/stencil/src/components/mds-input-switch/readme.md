@@ -323,6 +323,39 @@ Type: `Promise<void>`
 | `"default"` | Put text string or elements here |
 
 
+## CSS Custom Properties
+
+| Name                                                   | Description                                                    |
+| ------------------------------------------------------ | -------------------------------------------------------------- |
+| `--mds-input-switch-animation-timing-adjust`           | Multiplier used to fine-tune animation timing                  |
+| `--mds-input-switch-animation-timing-function`         | Easing function applied to switch animations                   |
+| `--mds-input-switch-box-color-disabled-checked`        | Background color of the switch box when disabled and checked   |
+| `--mds-input-switch-box-color-disabled-unchecked`      | Background color of the switch box when disabled and unchecked |
+| `--mds-input-switch-box-color-enabled-checked`         | Background color of the switch box when enabled and checked    |
+| `--mds-input-switch-box-color-enabled-unchecked`       | Background color of the switch box when enabled and unchecked  |
+| `--mds-input-switch-box-padding`                       | Effective padding used for the switch box                      |
+| `--mds-input-switch-box-padding-lg`                    | Padding of the switch container (large size)                   |
+| `--mds-input-switch-box-padding-md`                    | Padding of the switch container (medium size)                  |
+| `--mds-input-switch-box-padding-sm`                    | Padding of the switch container (small size)                   |
+| `--mds-input-switch-duration`                          | Duration of switch state transitions                           |
+| `--mds-input-switch-icon-color-checked`                | Icon color when checked                                        |
+| `--mds-input-switch-icon-color-checked-disabled`       | Icon color when checked and disabled                           |
+| `--mds-input-switch-icon-color-indeterminate`          | Icon color for indeterminate state                             |
+| `--mds-input-switch-icon-color-indeterminate-disabled` | Icon color for indeterminate state when disabled               |
+| `--mds-input-switch-icon-color-unchecked`              | Icon color when unchecked                                      |
+| `--mds-input-switch-icon-color-unchecked-disabled`     | Icon color when unchecked and disabled                         |
+| `--mds-input-switch-icon-explicit-color`               | Explicitly forced icon color                                   |
+| `--mds-input-switch-toggle-color-disabled-checked`     | Toggle color when disabled and checked                         |
+| `--mds-input-switch-toggle-color-disabled-unchecked`   | Toggle color when disabled and unchecked                       |
+| `--mds-input-switch-toggle-color-enabled-checked`      | Toggle color when enabled and checked                          |
+| `--mds-input-switch-toggle-color-enabled-unchecked`    | Toggle color when enabled and unchecked                        |
+| `--mds-input-switch-toggle-container-size`             | Computed size of the toggle container                          |
+| `--mds-input-switch-toggle-size`                       | Effective toggle size currently in use                         |
+| `--mds-input-switch-toggle-size-lg`                    | Toggle size for large variant                                  |
+| `--mds-input-switch-toggle-size-md`                    | Toggle size for medium variant                                 |
+| `--mds-input-switch-toggle-size-sm`                    | Toggle size for small variant                                  |
+
+
 ## Dependencies
 
 ### Used by

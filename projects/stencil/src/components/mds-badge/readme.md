@@ -272,6 +272,17 @@ mds-badge {
 | `"default"` | **Deprecated**, use the `label` property instead. Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here. |
 
 
+## CSS Custom Properties
+
+| Name                       | Description                                                   |
+| -------------------------- | ------------------------------------------------------------- |
+| `--mds-badge-background`   | Sets the background-color of the component                    |
+| `--mds-badge-border-color` | Sets the border color of the component when tone is "outline" |
+| `--mds-badge-border-width` | Sets the border width of the component when tone is "outline" |
+| `--mds-badge-color`        | Sets the text color of the component                          |
+| `--mds-badge-radius`       | Sets the border-radius of the component                       |
+
+
 ## Dependencies
 
 ### Used by

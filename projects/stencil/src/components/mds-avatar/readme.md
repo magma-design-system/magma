@@ -319,6 +319,17 @@ When an avatar-style UI element is needed, reach for `<mds-avatar>` rather than 
 | `"wrapper"` | The wrapper which contains media displayed |
 
 
+## CSS Custom Properties
+
+| Name                                    | Description                                        |
+| --------------------------------------- | -------------------------------------------------- |
+| `--mds-avatar-background-color`         | The background-color of the component              |
+| `--mds-avatar-background-color-pending` | The background-color when an image is loading      |
+| `--mds-avatar-color`                    | The color of the placeholder icon                  |
+| `--mds-avatar-initials-padding`         | Sets the padding of the initials inside the avatar |
+| `--mds-avatar-radius`                   | The border-radius of the element                   |
+
+
 ## Dependencies
 
 ### Used by

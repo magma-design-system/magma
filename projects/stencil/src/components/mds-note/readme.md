@@ -265,6 +265,17 @@ Type: `Promise<void>`
 | `"title"`   | Add `text string`, `HTML elements` or `components` to this slot. |
 
 
+## CSS Custom Properties
+
+| Name                              | Description                                                               |
+| --------------------------------- | ------------------------------------------------------------------------- |
+| `--mds-note-background`           | Sets the background-color of the component                                |
+| `--mds-note-color`                | Sets the text color of the component                                      |
+| `--mds-note-fold-size`            | Sets the size of the fold decoration at the bottom right of the component |
+| `--mds-note-selection-background` | Sets the selection text background-color of the component                 |
+| `--mds-note-selection-color`      | Sets the selection text color of the component                            |
+
+
 ## Dependencies
 
 ### Depends on

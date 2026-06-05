@@ -263,6 +263,13 @@ mds-zero::part(contents) {
 | `"contents"` | Selects the wrapper of the elements with attribute `slot="content"`. |
 
 
+## CSS Custom Properties
+
+| Name                            | Description                                                         |
+| ------------------------------- | ------------------------------------------------------------------- |
+| `--mds-zero-contents-max-width` | Set if the contents has a max width to be centered in the component |
+
+
 ----------------------------------------------
 
 Built with love @ [Gruppo Maggioli](https://www.maggioli.com) from [R&D Department](https://www.maggioli.com/it-it/chi-siamo/ricerca-sviluppo)

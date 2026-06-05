@@ -198,6 +198,13 @@ mds-separator {
 
 
 
+## CSS Custom Properties
+
+| Name                         | Description                                |
+| ---------------------------- | ------------------------------------------ |
+| `--mds-separator-background` | Background color of the separator element. |
+
+
 ## Dependencies
 
 ### Used by
