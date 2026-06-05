@@ -1,0 +1,92 @@
+# Reusable CI pipeline for a workspace package: build -> test.
+# Publishing to npm is handled by the dedicated publish workflow (publish.yml),
+# which runs on main once every CI workflow of the commit has succeeded.
+name: package-pipeline
+
+on:
+  workflow_call:
+    inputs:
+      nx-project:
+        description: Nx project name to build (empty = no build job)
+        type: string
+        default: ''
+      artifact-paths:
+        description: Paths uploaded as build artifact (multiline)
+        type: string
+        default: ''
+      artifact-download-path:
+        description: Destination path when downloading the build artifact (least common ancestor of artifact-paths)
+        type: string
+        default: '.'
+      run-tests:
+        description: Run `npm run test` in test-working-directory
+        type: boolean
+        default: false
+      test-working-directory:
+        description: Directory where tests run
+        type: string
+        default: ''
+      install-chrome:
+        description: Install (and cache) Chrome for puppeteer-based tests
+        type: boolean
+        default: false
+
+jobs:
+  build:
+    if: ${{ inputs.nx-project != '' }}
+    runs-on: ubuntu-latest
+    env:
+      # Chrome is only needed by the test job (stencil e2e)
+      PUPPETEER_SKIP_DOWNLOAD: 'true'
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          cache: yarn
+      - name: Restore Nx cache
+        uses: actions/cache@v5
+        with:
+          path: .nx
+          key: nx-${{ hashFiles('yarn.lock') }}-${{ github.sha }}
+          restore-keys: |
+            nx-${{ hashFiles('yarn.lock') }}-
+      - run: yarn install --frozen-lockfile --prefer-offline
+      - run: yarn nx run ${{ inputs.nx-project }}:build
+      - uses: actions/upload-artifact@v7
+        with:
+          name: ${{ format('{0}-build', inputs.nx-project) }}
+          path: ${{ inputs.artifact-paths }}
+          retention-days: 1
+          include-hidden-files: true
+
+  test:
+    needs: [build]
+    if: >-
+      ${{ !cancelled() && inputs.run-tests &&
+          (needs.build.result == 'success' || needs.build.result == 'skipped') }}
+    runs-on: ubuntu-latest
+    env:
+      # puppeteer treats 'false' as falsy: Chrome is downloaded only when install-chrome is set
+      PUPPETEER_SKIP_DOWNLOAD: ${{ !inputs.install-chrome }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          cache: yarn
+      - name: Restore Puppeteer Chrome cache
+        if: ${{ inputs.install-chrome }}
+        uses: actions/cache@v5
+        with:
+          path: .cache/puppeteer
+          key: puppeteer-${{ hashFiles('yarn.lock') }}
+      # postinstall downloads Chrome into .cache/puppeteer (see .puppeteerrc.cjs) unless cached
+      - run: yarn install --frozen-lockfile --prefer-offline
+      - if: ${{ inputs.nx-project != '' }}
+        uses: actions/download-artifact@v8
+        with:
+          name: ${{ format('{0}-build', inputs.nx-project) }}
+          path: ${{ inputs.artifact-download-path }}
+      - working-directory: ${{ inputs.test-working-directory }}
+        run: npm run test

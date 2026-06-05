@@ -1,0 +1,20 @@
+name: design-tokens
+
+on:
+  push:
+    branches: [dev, main]
+    paths:
+      - 'projects/design-tokens/**'
+  pull_request:
+    paths:
+      - 'projects/design-tokens/**'
+
+jobs:
+  pipeline:
+    uses: ./.github/workflows/_package-pipeline.yml
+    with:
+      nx-project: design-tokens
+      artifact-paths: projects/design-tokens/dist
+      artifact-download-path: projects/design-tokens/dist
+      run-tests: true
+      test-working-directory: projects/design-tokens
