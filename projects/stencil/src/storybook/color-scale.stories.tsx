@@ -557,7 +557,7 @@ const ColorScaleCanvas = () => {
 
   return (
     <div class="grid-cols-full grid desktop:grid-cols-[3fr_2fr] gap-600">
-      <mds-accordion class="auto-rows-min" closable={false}>
+      <mds-accordion class="auto-rows-min" closable={false} multiple>
         {colorGroups.map((group) => (
           <ColorGrid group={group} selected={group === 'tone'} />
         ))}
