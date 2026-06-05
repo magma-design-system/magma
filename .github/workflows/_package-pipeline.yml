@@ -53,6 +53,10 @@ jobs:
       - uses: dorny/paths-filter@v3
         id: filter
         with:
+          # diff push events against the commit before the push instead of the
+          # default branch (ignored on pull_request events, which diff against
+          # the PR base)
+          base: ${{ github.ref_name }}
           filters: |
             project:
               - '${{ inputs.path }}'
