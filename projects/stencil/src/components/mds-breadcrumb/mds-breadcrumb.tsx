@@ -61,11 +61,11 @@ export class MdsBreadcrumb {
     if (!this.back) return;
     const backElement = this.element.shadowRoot?.querySelector('.back') as HTMLElement;
     if (id === 0) {
-      backElement.classList.add('disabled');
+      backElement.setAttribute('disabled', '');
       this.kb.detachClickBehavior();
       return;
     }
-    backElement.classList.remove('disabled');
+    backElement.removeAttribute('disabled');
     this.kb.attachClickBehavior();
   };
 
@@ -151,6 +151,8 @@ export class MdsBreadcrumb {
           <mds-button
             title={this.t.get('back')}
             class="back"
+            tone="text"
+            variant="dark"
             icon={miBaselineArrowBack}
             onClick={this.togglePrevious}
           ></mds-button>
