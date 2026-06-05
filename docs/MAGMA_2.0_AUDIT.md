@@ -114,7 +114,7 @@ The findings below group component behaviors by the modern baseline native featu
 
 ### CSS @property transition (replacing RAF)
 
-- `mds-radial-progress` - runs a requestAnimationFrame loop (easeOutExpo, ~500ms) to drive a registered @property custom property that already lists itself in transition-property with a 500ms ease-out; recommendation: the RAF loop is redundant - remove animateTo/animatedProgress/rafId/easeOutExpo, write the custom property directly from `progress` in render(), and add @media (prefers-reduced-motion: reduce) { :host { transition: none } }; now-baseline pattern for animated custom properties.
+- `mds-radial-progress` - runs a requestAnimationFrame loop (easeOutExpo, ~500ms) to drive a registered @property custom property. NOT a defect: the RAF loop is intentional, giving a frame-accurate easeOutExpo curve on progress change that the CSS `transition` on `--mds-radial-progress` alone does not reproduce. Left as-is by design; no change recommended.
 
 ### KeyboardManager cleanup (native button equivalence)
 
@@ -124,7 +124,7 @@ The findings below group component behaviors by the modern baseline native featu
 
 1. `<dialog>` + `::backdrop` (mds-modal, mds-header, mds-radial-menu) - highest impact: mds-modal is depended on by other components, and native dialog removes the most hand-rolled accessibility code (focus-trap, Escape, scroll-lock) at moderate effort.
 2. Popover + CSS anchor positioning (mds-dropdown and its dependents) - high impact: mds-dropdown underpins button-dropdown, input-date, input-date-range, pref-language, and pref-theme-variant, so modernizing it cascades broadly and removes Floating UI; effort is moderate but anchor-positioning baseline timing should be confirmed.
-3. Quick correctness/dead-code fixes (mds-url-view loading passthrough, mds-breadcrumb-item KeyboardManager removal, mds-radial-progress RAF removal) - low effort, immediate wins that also fix real bugs/no-ops.
+3. Quick correctness/dead-code fixes (mds-url-view loading passthrough, mds-breadcrumb-item KeyboardManager removal) - low effort, immediate wins that also fix real bugs/no-ops. (mds-radial-progress RAF was reviewed and kept - intentional eased animation, not a defect.)
 4. Scroll-driven animations and @starting-style (mds-kpi, mds-horizontal-scroll, mds-input-field, mds-push-notification) - medium impact, low-to-moderate effort: removes IntersectionObservers, scroll listeners, and setTimeout hacks with localized CSS changes.
 5. Native input semantics (mds-input-switch, mds-input-otp, mds-file, mds-input spin buttons) - mixed: mds-file is a low-effort a11y fix; otp/switch/spin-buttons are larger API changes deferred unless design signs off.
 6. View Transitions, container query units, table layout, prefers-reduced-motion, radiogroup, anchor-only refactors (mds-pref-theme, mds-avatar, mds-price-table-features-row, mds-table-footer/row, mds-table-row, mds-input-tip, mds-notification, mds-radial-menu-item, mds-pref-consumption) - localized, lower-priority cleanups to schedule opportunistically.
