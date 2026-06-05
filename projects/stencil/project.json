@@ -2,5 +2,19 @@
   "name": "stencil",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "type": "library",
-  "tags": ["type:lib"]
+  "tags": ["type:lib"],
+  "targets": {
+    "build": {
+      "outputs": [
+        "{projectRoot}/dist",
+        "{projectRoot}/www",
+        "{projectRoot}/loader",
+        "{projectRoot}/assets/svg",
+        "{projectRoot}/src/fixtures",
+        "{projectRoot}/src/components.d.ts",
+        "{projectRoot}/react/src",
+        "{projectRoot}/angular/magma-angular/src/stencil-generated"
+      ]
+    }
+  }
 }
