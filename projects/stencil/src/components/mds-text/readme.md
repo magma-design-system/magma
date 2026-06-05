@@ -30,6 +30,248 @@ The `<mds-text>` web component is the foundational typography primitive of the M
 - **`truncate`** governs overflow clipping: `'word'` forces single-line truncation (no wrapping), `'all'` clamps to a multi-line block whose line count is controlled by `--mds-text-line-clamp`, and `'none'` lets text flow normally.
 
 
+### 2. Pattern
+
+Correct and idiomatic ways to use the `<mds-text>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the typography ramp documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+
+#### Body Text via Default Slot
+
+The canonical form for body copy. Slot a plain text string; `typography` defaults to `'detail'`, which renders a `<p>` element with the detail style.
+
+```html
+<mds-text>Inserisci il testo del messaggio nel campo sottostante.</mds-text>
+```
+
+#### Choosing a Typography Role
+
+Set `typography` to match the semantic role. The component resolves the correct HTML element automatically - `h1`-`h6` emit heading elements, `paragraph`/`detail` emit `<p>`, `label`/`option` emit `<label>`, `snippet`/`hack` emit `<code>`, `tip` and `action` emit `<div>` and `<span>` respectively.
+
+```html
+<mds-text typography="h1">Benvenuto nel portale</mds-text>
+<mds-text typography="h2">Impostazioni account</mds-text>
+<mds-text typography="paragraph">Questo e' il corpo principale della pagina.</mds-text>
+<mds-text typography="caption">Nota: i campi obbligatori sono contrassegnati con *</mds-text>
+<mds-text typography="label">Nome utente</mds-text>
+<mds-text typography="tip">Usa almeno 8 caratteri</mds-text>
+```
+
+#### Text via `text` Prop
+
+Use the `text` prop when the string comes from a JavaScript expression or data binding. This is also required for the `yugop` animation (see below) since the animation watches the prop value.
+
+```html
+<mds-text typography="detail" text="Ultimo accesso: 3 giugno 2026"></mds-text>
+```
+
+#### Reading Variant
+
+Apply `variant="read"` to `paragraph`, `detail`, or `caption` when rendering long-form editorial content. The reading variant uses a slightly larger, more spacious type scale optimized for sustained reading.
+
+```html
+<mds-text typography="paragraph" variant="read">
+  Il regolamento definisce le modalita' di accesso ai servizi digitali
+  dell'amministrazione pubblica, in conformita' con le vigenti normative europee.
+</mds-text>
+
+<mds-text typography="detail" variant="read">
+  Fonte: Gazzetta Ufficiale, serie generale n. 128 del 4 giugno 2026.
+</mds-text>
+```
+
+#### Monospaced Code Styles
+
+Use `typography="snippet"` for inline code values or short terminal output. Use `typography="hack"` for a heavier monospaced weight suited to code-dense interfaces.
+
+```html
+<mds-text typography="snippet">SELECT * FROM utenti WHERE attivo = true;</mds-text>
+<mds-text typography="hack">npm install @maggioli-design-system/magma</mds-text>
+```
+
+#### Overriding the Rendered Tag
+
+`tag` is an escape hatch to pin a specific HTML element when the `typography` default is semantically wrong - for example, rendering a visually large heading as a `<span>` for a non-heading context, or marking inline text as `<strong>` or `<em>` without changing the visual scale.
+
+```html
+<!-- Visually h2 scale but not a landmark heading -->
+<mds-text typography="h2" tag="span">Sezione in evidenza</mds-text>
+
+<!-- Emphasized inline detail without changing scale -->
+<mds-text typography="detail" tag="strong">Attenzione: questa operazione e' irreversibile.</mds-text>
+
+<!-- Marked text using caption scale -->
+<mds-text typography="caption" tag="mark">Modificato il 3 giugno 2026</mds-text>
+```
+
+#### Single-Line Truncation
+
+Use `truncate="word"` to clamp text to a single line with an ellipsis when layout space is constrained, for example inside a table cell or card header.
+
+```html
+<div style="width: 200px;">
+  <mds-text typography="detail" truncate="word">
+    Titolo molto lungo che supera la larghezza disponibile del contenitore
+  </mds-text>
+</div>
+```
+
+#### Multi-Line Clamp
+
+Use `truncate="all"` to clamp text to a fixed number of lines. Control the number of visible lines via `--mds-text-line-clamp` (default 3).
+
+```html
+<mds-text typography="paragraph" truncate="all" style="--mds-text-line-clamp: 2;">
+  Questo paragrafo mostra solo le prime due righe di testo, troncando il resto
+  con i puntini di sospensione indipendentemente dai caratteri di confine.
+</mds-text>
+```
+
+#### Animated Character Reveal
+
+Set `animation="yugop"` together with the `text` prop to run a randomized character-decode reveal on load. When `text` changes, the animation re-runs automatically. Tune speed and placeholder glyph via the CSS custom properties.
+
+```html
+<mds-text
+  typography="h3"
+  animation="yugop"
+  text="Benvenuto nel sistema"
+  style="--mds-text-animation-speed: 1; --mds-text-animation-placeholder-char: '_';"
+></mds-text>
+```
+
+#### Custom Text Selection Colors
+
+Override the default selection highlight via `--mds-text-selection-background` and `--mds-text-selection-color`. Use Magma color tokens inside `rgb()` so dark mode keeps working.
+
+```css
+.articolo-in-evidenza mds-text {
+  --mds-text-selection-background: rgb(var(--label-orange-09));
+  --mds-text-selection-color: rgb(var(--label-orange-01));
+}
+```
+
+#### Custom Line-Clamp Count
+
+Set `--mds-text-line-clamp` on the component host (or a parent selector) to vary the clamp depth per context without duplicating attributes.
+
+```css
+.abstract mds-text {
+  --mds-text-line-clamp: 4;
+}
+
+.anteprima mds-text {
+  --mds-text-line-clamp: 2;
+}
+```
+
+
+### 3. Antipattern
+
+Common incorrect uses of `<mds-text>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+
+#### Do Not Slot HTML Elements in the Default Slot
+
+The default slot accepts plain text strings only. HTML elements or components slotted inside are not rendered correctly and will break layout or be stripped.
+
+```html
+<!-- 🚫 INCORRECT -->
+<mds-text typography="paragraph">
+  <strong>Attenzione:</strong> questa operazione e' <em>irreversibile</em>.
+</mds-text>
+
+<!-- ✅ CORRECT -->
+<mds-text typography="paragraph">Attenzione: questa operazione e' irreversibile.</mds-text>
+<mds-text typography="paragraph" tag="strong">Attenzione:</mds-text>
+```
+
+#### Do Not Mix `text` Prop and Slotted Content
+
+When `text` is set, the component renders that string and ignores the slot entirely. Do not provide both - the slotted content is silently discarded.
+
+```html
+<!-- 🚫 INCORRECT -->
+<mds-text text="Titolo dal prop">Titolo dallo slot</mds-text>
+
+<!-- ✅ CORRECT -->
+<!-- Use either the prop (preferred for dynamic / animated content) -->
+<mds-text text="Titolo dal prop"></mds-text>
+<!-- or the slot (convenient for static markup) -->
+<mds-text>Titolo dallo slot</mds-text>
+```
+
+#### Do Not Use `animation="yugop"` Without the `text` Prop
+
+The yugop animation requires the `text` prop because it watches prop changes to retrigger. Slotted content is not observed; changing it will not re-run the animation.
+
+```html
+<!-- 🚫 INCORRECT -->
+<mds-text animation="yugop">Testo animato dallo slot</mds-text>
+
+<!-- ✅ CORRECT -->
+<mds-text animation="yugop" text="Testo animato dal prop"></mds-text>
+```
+
+#### Do Not Apply an Invalid `variant` for the Chosen `typography`
+
+`variant` is specific to the typography role: only `paragraph`, `detail`, and `caption` accept `variant="read"`. Applying `variant="read"` to heading or label roles silently has no visual effect and adds misleading markup.
+
+```html
+<!-- 🚫 INCORRECT -->
+<mds-text typography="h2" variant="read">Impostazioni</mds-text>
+<mds-text typography="label" variant="read">Nome</mds-text>
+
+<!-- ✅ CORRECT -->
+<mds-text typography="h2">Impostazioni</mds-text>
+<mds-text typography="paragraph" variant="read">Testo editoriale lungo.</mds-text>
+```
+
+#### Do Not Use Raw HTML Headings Instead of `<mds-text>`
+
+Replace raw `<h1>`-`<h6>`, `<p>`, `<span>`, `<label>`, and `<code>` with `<mds-text>` in Magma-managed views. Raw elements bypass the design-token typography ramp, causing visual inconsistency across themes and sizes.
+
+```html
+<!-- 🚫 INCORRECT -->
+<h2 class="text-2xl font-bold">Riepilogo ordine</h2>
+<p class="text-sm text-gray-600">Totale: 128,00 EUR</p>
+
+<!-- ✅ CORRECT -->
+<mds-text typography="h2">Riepilogo ordine</mds-text>
+<mds-text typography="caption">Totale: 128,00 EUR</mds-text>
+```
+
+#### Do Not Reach Into Shadow DOM to Style Internal Elements
+
+The component exposes five `--mds-text-*` CSS custom properties for customization. Do not pierce the shadow DOM via `::part()` or `>>>` selectors targeting the internal `.text` element - that implementation detail is not a documented part and may change.
+
+```css
+/* 🚫 INCORRECT */
+mds-text >>> .text {
+  letter-spacing: 0.1em;
+}
+
+/* ✅ CORRECT - set via host; the host styles cascade into the shadow text node */
+mds-text {
+  letter-spacing: 0.1em;
+  --mds-text-selection-background: rgb(var(--label-sky-09));
+}
+```
+
+#### Do Not Confuse `truncate="word"` and `truncate="all"`
+
+`truncate="word"` forces **single-line** truncation. `truncate="all"` enables **multi-line** clamping controlled by `--mds-text-line-clamp`. Using `"word"` when you want multi-line clamp will collapse the text to one line unexpectedly.
+
+```html
+<!-- 🚫 INCORRECT - collapses to one line when two lines were intended -->
+<mds-text typography="paragraph" truncate="word" style="--mds-text-line-clamp: 2;">
+  Testo lungo che dovrebbe mostrare due righe prima del troncamento.
+</mds-text>
+
+<!-- ✅ CORRECT -->
+<mds-text typography="paragraph" truncate="all" style="--mds-text-line-clamp: 2;">
+  Testo lungo che dovrebbe mostrare due righe prima del troncamento.
+</mds-text>
+```
+
+
 
 ## Properties
 

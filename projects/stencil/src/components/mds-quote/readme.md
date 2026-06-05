@@ -159,7 +159,7 @@ Hand-rolling a blockquote loses the decorative quotation marks, the decoupled ty
 
 #### Do Not Put Attribution in the Default Slot
 
-The default slot is the quote body; attribution placed there renders as quoted text and is wrapped between the `❝ … ❞` glyphs. Use the `author` named slot for attribution.
+The default slot is the quote body; attribution placed there renders as quoted text and is wrapped between the opening and closing quotation glyphs. Use the `author` named slot for attribution.
 
 ```html
 <!-- 🚫 INCORRECT -->

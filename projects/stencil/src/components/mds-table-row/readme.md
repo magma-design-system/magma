@@ -180,6 +180,143 @@ Override the documented `--mds-table-row-*` CSS custom properties on the row hos
 ```
 
 
+### 3. Antipattern
+
+Common incorrect uses of `<mds-table-row>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+
+#### Do Not Use `<mds-table-row>` Standalone
+
+`<mds-table-row>` is a compound child component and must be slotted inside [`mds-table-body`](../../mds-table-body), `mds-table-header`, or `mds-table-footer` inside an [`mds-table`](../../mds-table). Using it outside the table subtree breaks layout and the internal parent-child communication that drives selection and interactive state.
+
+```html
+<!-- 🚫 INCORRECT -->
+<div class="my-list">
+  <mds-table-row>
+    <mds-table-cell>Mario Rossi</mds-table-cell>
+  </mds-table-row>
+</div>
+
+<!-- ✅ CORRECT -->
+<mds-table>
+  <mds-table-body>
+    <mds-table-row>
+      <mds-table-cell><mds-text typography="detail">Mario Rossi</mds-text></mds-table-cell>
+    </mds-table-row>
+  </mds-table-body>
+</mds-table>
+```
+
+#### Do Not Put Arbitrary HTML in the Default Slot
+
+The default slot of `<mds-table-row>` accepts only [`mds-table-cell`](../../mds-table-cell) elements. Slotting raw `<td>`, `<div>`, or other markup breaks the table layout model and the sort/selection logic that relies on `mds-table-cell` identity.
+
+```html
+<!-- 🚫 INCORRECT -->
+<mds-table-row>
+  <td>Mario Rossi</td>
+  <div>mario.rossi@example.com</div>
+</mds-table-row>
+
+<!-- ✅ CORRECT -->
+<mds-table-row>
+  <mds-table-cell><mds-text typography="detail">Mario Rossi</mds-text></mds-table-cell>
+  <mds-table-cell><mds-text typography="detail">mario.rossi@example.com</mds-text></mds-table-cell>
+</mds-table-row>
+```
+
+#### Do Not Set `interactive` or `selectable` Directly on Individual Rows
+
+Both props are orchestrated by the parent `<mds-table>` and propagated to every row automatically. Setting them per-row creates a desynchronized state where some rows behave differently from others, and the table's own state machine does not know about the override.
+
+```html
+<!-- 🚫 INCORRECT -->
+<mds-table>
+  <mds-table-body>
+    <mds-table-row interactive selectable>
+      <mds-table-cell><mds-text typography="detail">Pratica 01</mds-text></mds-table-cell>
+    </mds-table-row>
+  </mds-table-body>
+</mds-table>
+
+<!-- ✅ CORRECT -->
+<mds-table interactive selectable>
+  <mds-table-body>
+    <mds-table-row value="p-01">
+      <mds-table-cell><mds-text typography="detail">Pratica 01</mds-text></mds-table-cell>
+    </mds-table-row>
+  </mds-table-body>
+</mds-table>
+```
+
+#### Do Not Listen for Row Events to Track Selection - Use the Table Event
+
+`<mds-table-row>` does not emit a public selection event. The table-level `mdsTableSelectionChange` event is the single aggregated source of truth for which rows are selected. Polling each row's `selected` attribute via MutationObserver or querying the DOM on every click is fragile and bypasses the table's own selection bookkeeping.
+
+```html
+<!-- 🚫 INCORRECT -->
+<script>
+  document.querySelectorAll('mds-table-row').forEach((row) => {
+    row.addEventListener('click', () => {
+      console.log('selezionato:', row.selected);
+    });
+  });
+</script>
+
+<!-- ✅ CORRECT -->
+<script>
+  document.querySelector('mds-table').addEventListener('mdsTableSelectionChange', (e) => {
+    console.log('Righe selezionate:', e.detail.rows);
+  });
+</script>
+```
+
+#### Do Not Slot Icon-Only Action Buttons Without an Accessible Name
+
+Buttons in the `action` slot render without visible labels. A screen reader cannot announce the purpose of an `<mds-button>` that has neither `label` nor `aria-label` / `title`. Always provide `title` or `aria-label` on every action button.
+
+```html
+<!-- 🚫 INCORRECT -->
+<mds-table-row>
+  <mds-table-cell><mds-text typography="detail">Documento.pdf</mds-text></mds-table-cell>
+  <mds-button slot="action" icon="mi/baseline/delete" variant="error" tone="text"></mds-button>
+</mds-table-row>
+
+<!-- ✅ CORRECT -->
+<mds-table-row>
+  <mds-table-cell><mds-text typography="detail">Documento.pdf</mds-text></mds-table-cell>
+  <mds-button
+    slot="action"
+    icon="mi/baseline/delete"
+    title="Elimina documento"
+    variant="error"
+    tone="text"
+  ></mds-button>
+</mds-table-row>
+```
+
+#### Do Not Override Row Appearance with Inline Styles or Undocumented Selectors
+
+The only supported customization surface is the five `--mds-table-row-*` CSS custom properties. Targeting internal shadow parts or setting `background-color` / `color` directly on the host element bypasses the interactive and selected state logic and will break on minor releases.
+
+```css
+/* 🚫 INCORRECT */
+mds-table-row {
+  background-color: #fafafa;
+  color: #333;
+}
+mds-table-row::part(actions) {
+  gap: 4px;
+}
+
+/* ✅ CORRECT */
+mds-table-row {
+  --mds-table-row-background-alt: rgb(var(--tone-neutral-01));
+  --mds-table-row-color-alt: rgb(var(--tone-neutral-08));
+  --mds-table-row-actions-gap: var(--spacing-200);
+}
+```
+
+
 
 ## Properties
 
