@@ -1,6 +1,6 @@
-# Reusable pipeline for publishing a workspace package to npm: build -> test -> publish.
-# The publish job runs on main pushes only when the package.json changed, fails if the
-# version was not bumped, dry-runs and then publishes to npm.
+# Reusable CI pipeline for a workspace package: build -> test.
+# Publishing to npm is handled by the dedicated publish workflow (publish.yml),
+# which runs on main once every CI workflow of the commit has succeeded.
 name: package-pipeline
 
 on:
@@ -10,14 +10,6 @@ on:
         description: Nx project name to build (empty = no build job)
         type: string
         default: ''
-      component:
-        description: npm package name suffix (@maggioli-design-system/<component>)
-        type: string
-        required: true
-      publish-working-directory:
-        description: Directory where tests and npm publish run
-        type: string
-        required: true
       artifact-paths:
         description: Paths uploaded as build artifact (multiline)
         type: string
@@ -26,25 +18,18 @@ on:
         description: Destination path when downloading the build artifact (least common ancestor of artifact-paths)
         type: string
         default: '.'
-      package-json-filter:
-        description: package.json path that gates the publish job when changed (default <publish-working-directory>/package.json)
-        type: string
-        default: ''
       run-tests:
-        description: Run `npm run test` in publish-working-directory
+        description: Run `npm run test` in test-working-directory
         type: boolean
         default: false
+      test-working-directory:
+        description: Directory where tests run
+        type: string
+        default: ''
       install-chrome:
         description: Install (and cache) Chrome for puppeteer-based tests
         type: boolean
         default: false
-      build-artifact-name:
-        description: Artifact name to download (set without nx-project to reuse an artifact built by the caller)
-        type: string
-        default: ''
-    secrets:
-      NPM_TOKEN:
-        required: true
 
 jobs:
   build:
@@ -70,7 +55,7 @@ jobs:
       - run: yarn nx run ${{ inputs.nx-project }}:build
       - uses: actions/upload-artifact@v7
         with:
-          name: ${{ inputs.build-artifact-name || format('{0}-build', inputs.nx-project) }}
+          name: ${{ format('{0}-build', inputs.nx-project) }}
           path: ${{ inputs.artifact-paths }}
           retention-days: 1
           include-hidden-files: true
@@ -98,71 +83,10 @@ jobs:
           key: puppeteer-${{ hashFiles('yarn.lock') }}
       # postinstall downloads Chrome into .cache/puppeteer (see .puppeteerrc.cjs) unless cached
       - run: yarn install --frozen-lockfile --prefer-offline
-      - if: ${{ inputs.nx-project != '' || inputs.build-artifact-name != '' }}
+      - if: ${{ inputs.nx-project != '' }}
         uses: actions/download-artifact@v8
         with:
-          name: ${{ inputs.build-artifact-name || format('{0}-build', inputs.nx-project) }}
+          name: ${{ format('{0}-build', inputs.nx-project) }}
           path: ${{ inputs.artifact-download-path }}
-      - working-directory: ${{ inputs.publish-working-directory }}
+      - working-directory: ${{ inputs.test-working-directory }}
         run: npm run test
-
-  publish:
-    needs: [build, test]
-    if: >-
-      ${{ !cancelled() &&
-          (needs.build.result == 'success' || needs.build.result == 'skipped') &&
-          (needs.test.result == 'success' || needs.test.result == 'skipped') &&
-          (github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch') }}
-    runs-on: ubuntu-latest
-    concurrency: publish-${{ inputs.component }}
-    env:
-      PUPPETEER_SKIP_DOWNLOAD: 'true'
-    steps:
-      - uses: actions/checkout@v6
-      - name: Detect package.json changes
-        if: ${{ github.event_name == 'push' }}
-        uses: dorny/paths-filter@v4
-        id: filter
-        with:
-          # compares against the commit before the push
-          base: ${{ github.ref_name }}
-          filters: |
-            pkg:
-              - '${{ inputs.package-json-filter || format('{0}/package.json', inputs.publish-working-directory) }}'
-      - name: Decide whether to publish
-        id: gate
-        # manual dispatch always publishes (the version check still guards against republishing)
-        run: echo "publish=${{ github.event_name == 'workflow_dispatch' || steps.filter.outputs.pkg == 'true' }}" >> "$GITHUB_OUTPUT"
-      - if: ${{ steps.gate.outputs.publish == 'true' }}
-        uses: actions/setup-node@v6
-        with:
-          node-version-file: .nvmrc
-          cache: yarn
-      - if: ${{ steps.gate.outputs.publish == 'true' }}
-        run: yarn install --frozen-lockfile --prefer-offline
-      - if: ${{ steps.gate.outputs.publish == 'true' && (inputs.nx-project != '' || inputs.build-artifact-name != '') }}
-        uses: actions/download-artifact@v8
-        with:
-          name: ${{ inputs.build-artifact-name || format('{0}-build', inputs.nx-project) }}
-          path: ${{ inputs.artifact-download-path }}
-      - name: Check version and dry-run publish
-        if: ${{ steps.gate.outputs.publish == 'true' }}
-        working-directory: ${{ inputs.publish-working-directory }}
-        run: |
-          LATEST_PUBLISHED_V="$(npm view @maggioli-design-system/${{ inputs.component }} dist-tags.latest)"
-          TO_BE_PUBLISHED_V="$(jq -r '.version' package.json)"
-          echo "VERSION TO BE PUBLISHED ${TO_BE_PUBLISHED_V}"
-          echo "LATEST PUBLISHED VERSION ${LATEST_PUBLISHED_V}"
-          if [ "$LATEST_PUBLISHED_V" = "$TO_BE_PUBLISHED_V" ]; then
-            echo "${LATEST_PUBLISHED_V} == ${TO_BE_PUBLISHED_V} : cannot publish!"
-            exit 1
-          fi
-          npm publish --access public --dry-run
-      - name: Publish to npm
-        if: ${{ steps.gate.outputs.publish == 'true' }}
-        working-directory: ${{ inputs.publish-working-directory }}
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: |
-          npm config set //registry.npmjs.org/:_authToken "$NPM_TOKEN"
-          npm publish --access public

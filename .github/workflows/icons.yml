@@ -14,12 +14,8 @@ jobs:
     uses: ./.github/workflows/_package-pipeline.yml
     with:
       nx-project: icons
-      component: icons
-      publish-working-directory: projects/icons
       # icons build also produces svg-icons dist (nx implicit dependency)
       artifact-paths: |
         projects/icons/dist
         projects/svg-icons/dist
       artifact-download-path: projects
-    secrets:
-      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

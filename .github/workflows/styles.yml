@@ -14,12 +14,8 @@ jobs:
     uses: ./.github/workflows/_package-pipeline.yml
     with:
       nx-project: styles
-      component: styles
-      publish-working-directory: projects/styles
       # styles build also produces design-tokens dist (nx implicit dependency)
       artifact-paths: |
         projects/design-tokens/dist
         projects/styles/dist
       artifact-download-path: projects
-    secrets:
-      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

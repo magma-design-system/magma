@@ -14,10 +14,7 @@ jobs:
     uses: ./.github/workflows/_package-pipeline.yml
     with:
       nx-project: design-tokens
-      component: design-tokens
-      publish-working-directory: projects/design-tokens
       artifact-paths: projects/design-tokens/dist
       artifact-download-path: projects/design-tokens/dist
       run-tests: true
-    secrets:
-      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      test-working-directory: projects/design-tokens

@@ -10,14 +10,12 @@ on:
       - 'projects/stencil/**'
 
 jobs:
-  # Builds stencil, runs the e2e tests and publishes @maggioli-design-system/magma;
-  # its build artifact also feeds the react/angular builds below
+  # Builds stencil and runs the e2e tests; its build artifact
+  # also feeds the react/angular builds below
   magma:
     uses: ./.github/workflows/_package-pipeline.yml
     with:
       nx-project: stencil
-      component: magma
-      publish-working-directory: projects/stencil
       artifact-paths: |
         projects/design-tokens/dist
         projects/styles/dist
@@ -34,10 +32,9 @@ jobs:
       run-tests: true
       # the e2e tests need Chrome
       install-chrome: true
-    secrets:
-      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      test-working-directory: projects/stencil
 
-  react-build:
+  magma-react:
     needs: [magma]
     runs-on: ubuntu-latest
     env:
@@ -68,7 +65,7 @@ jobs:
           retention-days: 1
           include-hidden-files: true
 
-  angular-build:
+  magma-angular:
     needs: [magma]
     runs-on: ubuntu-latest
     env:
@@ -98,28 +95,3 @@ jobs:
           path: projects/stencil/angular/dist
           retention-days: 1
           include-hidden-files: true
-
-  magma-react:
-    needs: [react-build]
-    uses: ./.github/workflows/_package-pipeline.yml
-    with:
-      component: magma-react
-      build-artifact-name: stencil-react-build
-      artifact-download-path: projects/stencil/react/dist
-      publish-working-directory: projects/stencil/react
-    secrets:
-      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-  magma-angular:
-    needs: [angular-build]
-    uses: ./.github/workflows/_package-pipeline.yml
-    with:
-      component: magma-angular
-      build-artifact-name: stencil-angular-build
-      artifact-download-path: projects/stencil/angular/dist
-      # angular publishes from the build output (ng-packagr layout),
-      # but the publish gate watches the source package.json
-      publish-working-directory: projects/stencil/angular/dist/magma-angular
-      package-json-filter: projects/stencil/angular/magma-angular/package.json
-    secrets:
-      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
