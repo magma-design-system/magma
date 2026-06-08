@@ -1,5 +1,4 @@
 import { h } from '@stencil/core';
-import { lokiDisabled } from '@test/loki-disabled';
 import { iconsDictionary, mggIconsDictionary } from '@type/icon';
 import { themeFullVariantAvatarDictionary } from '@type/variant';
 import { toneMinimalVariantDictionary } from '@type/tone';
@@ -84,6 +83,4 @@ export const BrokenSrc = {
   args: {
     src: 'http://broken-link',
   },
-
-  story: lokiDisabled,
 };

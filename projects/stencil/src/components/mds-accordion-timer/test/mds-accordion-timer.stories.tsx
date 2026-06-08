@@ -1,5 +1,4 @@
 import { h } from '@stencil/core';
-import { lokiDisabled } from '@test/loki-disabled';
 
 export default {
   title: 'UI / Accordion Timer',
@@ -285,7 +284,6 @@ const TemplateClickPaused = (args) => {
 
 export const Default = {
   render: Template,
-  story: lokiDisabled,
 };
 
 export const Duration = {
@@ -294,8 +292,6 @@ export const Duration = {
   args: {
     duration: 1000,
   },
-
-  story: lokiDisabled,
 };
 
 export const VariableDuration = {
@@ -319,13 +315,5 @@ export const Programmatic = {
 
   args: {
     paused: true,
-  },
-};
-
-export const LokiTest = {
-  render: Template,
-
-  args: {
-    duration: 0,
   },
 };

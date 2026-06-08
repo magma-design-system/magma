@@ -101,25 +101,4 @@
   display: none;
 }
 
-.back {
-  --mds-button-background: var(--mds-breadcrumb-button-background);
-
-  fill: var(--mds-breadcrumb-button-color);
-  flex-shrink: 0;
-  margin-right: --spacing(100);
-}
-
-.back:hover {
-  --mds-button-background: var(--mds-breadcrumb-button-background-hover);
-
-  fill: var(--mds-breadcrumb-button-color-hover);
-}
-
-.disabled {
-  --mds-button-background: var(--mds-breadcrumb-button-background-disabled);
-
-  fill: var(--mds-breadcrumb-button-color-disabled);
-  pointer-events: none;
-}
-
 @import './css/mds-breadcrumb-pref-animation.css';

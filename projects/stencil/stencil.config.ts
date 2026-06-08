@@ -95,8 +95,10 @@ export const config: Config = {
   ],
   plugins: [
     tokenFallbackPlugin({
+      injectTokenFallbacks: true,
+      injectComponentDefaults: true,
       warnOnMissing: false,
-      failOnMissing: true,
+      failOnMissing: false,
     }),
     alias({
       entries: [

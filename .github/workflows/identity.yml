@@ -1,0 +1,15 @@
+name: identity
+
+on:
+  push:
+    branches: [dev, main]
+  pull_request:
+
+jobs:
+  pipeline:
+    uses: ./.github/workflows/_package-pipeline.yml
+    with:
+      path: projects/identity/**
+      nx-project: identity
+      artifact-paths: projects/identity/dist
+      artifact-download-path: projects/identity/dist

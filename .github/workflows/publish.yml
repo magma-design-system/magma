@@ -1,0 +1,195 @@
+# Publishes the packages to npm. Runs on main once every CI workflow
+# of the commit has succeeded (fan-in via workflow_run), or manually
+# via workflow dispatch. A package is published only when its version
+# differs from the latest one on the npm registry.
+#
+# Authentication uses npm trusted publishing (OIDC): no NPM_TOKEN secret,
+# the npm CLI exchanges the GitHub Actions OIDC token for short-lived
+# credentials and attaches provenance automatically. Each package must
+# have this repo + workflow registered as trusted publisher on npmjs.com.
+name: publish
+
+on:
+  workflow_run:
+    workflows: [design-tokens, icons, identity, styles, svg-icons, stencil]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      package:
+        description: Package to publish
+        type: choice
+        default: all
+        options:
+          - all
+          - design-tokens
+          - icons
+          - identity
+          - styles
+          - svg-icons
+          - magma
+          - magma-react
+          - magma-angular
+
+concurrency:
+  group: publish-${{ github.event.workflow_run.head_sha || github.sha }}
+  cancel-in-progress: false
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    outputs:
+      ready: ${{ steps.check.outputs.ready }}
+      sha: ${{ steps.check.outputs.sha }}
+      run-ids: ${{ steps.check.outputs.run-ids }}
+    steps:
+      - name: Check that all CI workflows of the commit are green
+        id: check
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          echo "ready=false" >> "$GITHUB_OUTPUT"
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            SHA="${{ github.sha }}"
+            if [ "${{ github.ref }}" != "refs/heads/main" ] && [ "${{ inputs.package }}" = "all" ]; then
+              echo "::error::manual publish from a branch other than main requires a specific package"
+              exit 1
+            fi
+          else
+            SHA="${{ github.event.workflow_run.head_sha }}"
+            if [ "${{ github.event.workflow_run.conclusion }}" != "success" ]; then
+              echo "::warning::workflow '${{ github.event.workflow_run.name }}' did not succeed, skipping publish"
+              echo "sha=$SHA" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+          fi
+          echo "sha=$SHA" >> "$GITHUB_OUTPUT"
+          # latest run of each CI workflow for this commit
+          RUNS=$(gh api "repos/${{ github.repository }}/actions/runs?head_sha=$SHA&per_page=100" \
+            --jq '[.workflow_runs[] | select(.name != "publish")] | group_by(.name) | map(max_by(.id))')
+          echo "$RUNS" | jq -r '.[] | "\(.name): \(.status) (\(.conclusion))"'
+          if [ "${{ github.event_name }}" = "workflow_run" ]; then
+            PENDING=$(echo "$RUNS" | jq '[.[] | select(.status != "completed")] | length')
+            FAILED=$(echo "$RUNS" | jq '[.[] | select(.status == "completed" and .conclusion != "success")] | length')
+            if [ "$PENDING" -gt 0 ]; then
+              echo "::notice::$PENDING CI workflow(s) still running, the last one to finish will re-run this check"
+              exit 0
+            fi
+            if [ "$FAILED" -gt 0 ]; then
+              echo "::warning::$FAILED CI workflow(s) did not succeed, skipping publish"
+              exit 0
+            fi
+          fi
+          echo "run-ids=$(echo "$RUNS" | jq -c 'map({(.name): .id}) | add // {}')" >> "$GITHUB_OUTPUT"
+          echo "ready=true" >> "$GITHUB_OUTPUT"
+
+  publish:
+    needs: [gate]
+    if: ${{ needs.gate.outputs.ready == 'true' }}
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write # OIDC token for npm trusted publishing
+      contents: read # checkout
+      actions: read # download build artifacts from the CI runs
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - component: design-tokens
+            directory: projects/design-tokens
+            workflow: design-tokens
+            artifact: design-tokens-build
+            artifact-path: projects/design-tokens/dist
+          - component: icons
+            directory: projects/icons
+            workflow: icons
+            artifact: icons-build
+            artifact-path: projects
+          - component: identity
+            directory: projects/identity
+            workflow: identity
+            artifact: identity-build
+            artifact-path: projects/identity/dist
+          - component: styles
+            directory: projects/styles
+            workflow: styles
+            artifact: styles-build
+            artifact-path: projects
+          - component: svg-icons
+            directory: projects/svg-icons
+            workflow: svg-icons
+            artifact: svg-icons-build
+            artifact-path: projects/svg-icons/dist
+          - component: magma
+            directory: projects/stencil
+            workflow: stencil
+            artifact: stencil-build
+            artifact-path: projects
+          - component: magma-react
+            directory: projects/stencil/react
+            workflow: stencil
+            artifact: stencil-react-build
+            artifact-path: projects/stencil/react/dist
+          - component: magma-angular
+            # publishes from the build output (ng-packagr layout), so the
+            # version is read from the source package.json
+            directory: projects/stencil/angular/dist/magma-angular
+            version-file: projects/stencil/angular/magma-angular/package.json
+            workflow: stencil
+            artifact: stencil-angular-build
+            artifact-path: projects/stencil/angular/dist
+    concurrency: publish-${{ matrix.component }}
+    env:
+      PUPPETEER_SKIP_DOWNLOAD: 'true'
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ needs.gate.outputs.sha }}
+      - name: Check whether a new version needs publishing
+        id: ver
+        run: |
+          echo "proceed=false" >> "$GITHUB_OUTPUT"
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && \
+             [ "${{ inputs.package }}" != "all" ] && [ "${{ inputs.package }}" != "${{ matrix.component }}" ]; then
+            echo "::notice::${{ matrix.component }} not selected, skipping"
+            exit 0
+          fi
+          TO_BE_PUBLISHED_V="$(jq -r '.version' "${{ matrix.version-file || format('{0}/package.json', matrix.directory) }}")"
+          echo "VERSION TO BE PUBLISHED ${TO_BE_PUBLISHED_V}"
+          # npm view of a missing version exits 0 with empty output, so test the output
+          PUBLISHED="$(npm view "@maggioli-design-system/${{ matrix.component }}@${TO_BE_PUBLISHED_V}" version 2>/dev/null || true)"
+          if [ -n "$PUBLISHED" ]; then
+            echo "::notice::@maggioli-design-system/${{ matrix.component }}@${TO_BE_PUBLISHED_V} already published, skipping"
+            exit 0
+          fi
+          # dist-tag from the semver prerelease identifier: 2.0.0-alpha.0 -> alpha,
+          # non-alphabetic identifier -> next, stable -> latest
+          case "$TO_BE_PUBLISHED_V" in
+            *-*)
+              TAG="${TO_BE_PUBLISHED_V#*-}"
+              TAG="${TAG%%.*}"
+              case "$TAG" in ''|*[!a-zA-Z]*) TAG=next ;; esac
+              ;;
+            *) TAG=latest ;;
+          esac
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          echo "proceed=true" >> "$GITHUB_OUTPUT"
+      - if: ${{ steps.ver.outputs.proceed == 'true' }}
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          cache: yarn
+      - if: ${{ steps.ver.outputs.proceed == 'true' }}
+        run: yarn install --frozen-lockfile --prefer-offline
+      - name: Download the build artifact from the CI run
+        if: ${{ steps.ver.outputs.proceed == 'true' }}
+        uses: actions/download-artifact@v8
+        with:
+          name: ${{ matrix.artifact }}
+          path: ${{ matrix.artifact-path }}
+          run-id: ${{ fromJSON(needs.gate.outputs.run-ids)[matrix.workflow] }}
+          github-token: ${{ github.token }}
+      - name: Publish to npm
+        if: ${{ steps.ver.outputs.proceed == 'true' }}
+        working-directory: ${{ matrix.directory }}
+        run: npm publish --access public --tag "${{ steps.ver.outputs.tag }}"

@@ -1,0 +1,96 @@
+name: stencil
+
+on:
+  push:
+    branches: [dev, main]
+  pull_request:
+
+jobs:
+  # Builds stencil and runs the e2e tests; its build artifact
+  # also feeds the react/angular builds below
+  magma:
+    uses: ./.github/workflows/_package-pipeline.yml
+    with:
+      path: projects/stencil/**
+      nx-project: stencil
+      artifact-paths: |
+        projects/design-tokens/dist
+        projects/styles/dist
+        projects/svg-icons/dist
+        projects/stencil/dist
+        projects/stencil/src/components.d.ts
+        projects/stencil/src/fixtures
+        projects/stencil/www
+        projects/stencil/assets
+        projects/stencil/react/src
+        projects/stencil/loader
+        projects/stencil/angular/magma-angular/src/stencil-generated
+      artifact-download-path: projects
+      run-tests: true
+      # the e2e tests need Chrome
+      install-chrome: true
+      test-working-directory: projects/stencil
+
+  magma-react:
+    needs: [magma]
+    if: ${{ needs.magma.outputs.changed == 'true' }}
+    runs-on: ubuntu-latest
+    env:
+      PUPPETEER_SKIP_DOWNLOAD: 'true'
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          cache: yarn
+      - name: Restore Nx cache
+        uses: actions/cache@v5
+        with:
+          path: .nx
+          key: nx-${{ hashFiles('yarn.lock') }}-${{ github.sha }}
+          restore-keys: |
+            nx-${{ hashFiles('yarn.lock') }}-
+      - run: yarn install --frozen-lockfile --prefer-offline
+      - uses: actions/download-artifact@v8
+        with:
+          name: stencil-build
+          path: projects
+      - run: yarn nx run stencil-react:build
+      - uses: actions/upload-artifact@v7
+        with:
+          name: stencil-react-build
+          path: projects/stencil/react/dist
+          retention-days: 1
+          include-hidden-files: true
+
+  magma-angular:
+    needs: [magma]
+    if: ${{ needs.magma.outputs.changed == 'true' }}
+    runs-on: ubuntu-latest
+    env:
+      PUPPETEER_SKIP_DOWNLOAD: 'true'
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          cache: yarn
+      - name: Restore Nx cache
+        uses: actions/cache@v5
+        with:
+          path: .nx
+          key: nx-${{ hashFiles('yarn.lock') }}-${{ github.sha }}
+          restore-keys: |
+            nx-${{ hashFiles('yarn.lock') }}-
+      - run: yarn install --frozen-lockfile --prefer-offline
+      - uses: actions/download-artifact@v8
+        with:
+          name: stencil-build
+          path: projects
+      - run: yarn nx run stencil-angular:build
+      - uses: actions/upload-artifact@v7
+        with:
+          name: stencil-angular-build
+          path: projects/stencil/angular/dist
+          retention-days: 1
+          include-hidden-files: true

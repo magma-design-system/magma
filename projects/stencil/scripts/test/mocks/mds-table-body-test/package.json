@@ -1,8 +1,0 @@
-{
-  "name": "@maggioli-design-system/mds-table-body-test",
-  "version": "4.7.1",
-  "dependencies": {
-    "@maggioli-design-system/styles": "15.3.2",
-    "@stencil/core": "4.21.0"
-  }
-}

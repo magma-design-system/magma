@@ -111,6 +111,7 @@ export class MdsUrlView {
             class="iframe"
             aria-label={this.t.get('iframeURL', { url: this.urlDomain(this.src) })}
             src={this.src}
+            loading={this.loading}
           />
         </div>
       </Host>

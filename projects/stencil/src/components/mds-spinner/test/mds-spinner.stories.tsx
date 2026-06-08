@@ -1,5 +1,4 @@
 import { h } from '@stencil/core';
-import { lokiDisabled } from '@test/loki-disabled';
 
 export default {
   title: 'UI / Spinner',
@@ -15,12 +14,10 @@ const Template = (args) => <mds-spinner {...args} />;
 
 export const Default = {
   render: Template,
-  story: lokiDisabled,
 };
 
 export const Running = {
   render: Template,
-  story: lokiDisabled,
 
   args: {
     running: true,

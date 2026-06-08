@@ -1,5 +1,4 @@
 import { h } from '@stencil/core';
-import { lokiDisabled } from '@test/loki-disabled';
 
 export default {
   title: 'UI / Paginator',
@@ -31,6 +30,4 @@ export const CurrentPage = {
     'current-page': 16,
     pages: 32,
   },
-
-  story: lokiDisabled,
 };

@@ -1,11 +1,6 @@
 import { Component, Element, Event, EventEmitter, Host, h, Prop } from '@stencil/core';
 import miBaselineNavigateNext from '@icon/mi/baseline/navigate-next.svg';
 import { MdsBreadcrumbItemEventDetail } from './meta/event-detail';
-import { KeyboardManager } from '@common/keyboard-manager';
-
-/**
- * @slot default - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
- */
 
 @Component({
   tag: 'mds-breadcrumb-item',
@@ -14,7 +9,6 @@ import { KeyboardManager } from '@common/keyboard-manager';
 })
 export class MdsBreadcrumbItem {
   @Element() private element: HTMLMdsBreadcrumbItemElement;
-  private km = new KeyboardManager();
 
   /**
    * Choose if the component is selected or not
@@ -36,24 +30,6 @@ export class MdsBreadcrumbItem {
     this.selected = !this.selected;
     this.selectedEvent.emit({ id: this.element.id, selected: this.selected });
   };
-
-  componentDidLoad(): void {
-    const textElement = this.element.shadowRoot?.querySelector('.text') as HTMLElement;
-    this.km.addElement(textElement);
-    this.km.attachClickBehavior();
-  }
-
-  componentDidUpdate(): void {
-    if (this.selected) {
-      this.km.detachClickBehavior();
-      return;
-    }
-    this.km.attachClickBehavior();
-  }
-
-  disconnectedCallback(): void {
-    this.km.detachClickBehavior();
-  }
 
   render() {
     return (

@@ -1,10 +1,11 @@
-import { Component, Host, h, Prop } from '@stencil/core';
+import { Component, Host, Element, h, Prop, Watch } from '@stencil/core';
 import { ThemeVariantType } from '@type/variant';
 import { BenchmarkBarTypographyType } from './meta/types';
 import { ProgressBarSizeType } from '@type/progress';
+import { readSlottedLabel, sanitizeLabel } from '@common/slot';
 
 /**
- * @slot default - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
+ * @slot default - **Deprecated**, use the `label` property instead. Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
  * @part progress-bar - The progress bar element
  */
 
@@ -14,6 +15,13 @@ import { ProgressBarSizeType } from '@type/progress';
   shadow: true,
 })
 export class MdsBenchmarkBar {
+  @Element() host: HTMLMdsBenchmarkBarElement;
+
+  /**
+   * The label of the benchmark bar
+   */
+  @Prop({ reflect: true, mutable: true }) label?: string;
+
   /**
    * An alias to custom how value is represented
    */
@@ -39,12 +47,23 @@ export class MdsBenchmarkBar {
    */
   @Prop({ reflect: true }) readonly size?: ProgressBarSizeType = 'md';
 
+  @Watch('label')
+  labelChanged(newValue?: string): void {
+    this.label = sanitizeLabel(newValue);
+  }
+
+  private onSlotChangeHandler = (): void => {
+    /* this should be removed in the future once slotted text is no longer used, use the label property instead */
+    if (this.label) return;
+    this.label = readSlottedLabel(this.host);
+  };
+
   render() {
     return (
       <Host>
         <div class="infos">
           <mds-text typography={this.typography} class="label" id="label" truncate="word">
-            <slot />
+            {this.label || <slot onSlotchange={this.onSlotChangeHandler} />}
           </mds-text>
           <mds-text typography={this.typography} class="value" truncate="word">
             {this.alias ?? this.value}

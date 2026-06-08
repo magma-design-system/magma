@@ -6,6 +6,11 @@ import { progressBarSizeDictionary } from '@type/progress';
 export default {
   title: 'UI / Benchmark Bar',
   argTypes: {
+    label: {
+      type: { name: 'string' },
+      control: { type: 'text' },
+      description: 'The label of the benchmark bar',
+    },
     alias: {
       type: { name: 'string' },
       description: 'An alias to custom how value is represented',
@@ -36,16 +41,13 @@ export default {
   },
 };
 
-const Template = (args) => (
-  <mds-benchmark-bar {...args}>
-    This is a benchmark bar that will be cropped if the text is too long
-  </mds-benchmark-bar>
-);
+const Template = (args) => <mds-benchmark-bar {...args}></mds-benchmark-bar>;
 
 export const Default = {
   render: Template,
 
   args: {
+    label: 'This is a benchmark bar that will be cropped if the text is too long',
     value: 30,
   },
 };
@@ -54,6 +56,7 @@ export const Alias = {
   render: Template,
 
   args: {
+    label: 'This is a benchmark bar that will be cropped if the text is too long',
     value: 33,
     alias: '1 of 3 tasks',
   },
@@ -63,6 +66,7 @@ export const Typography = {
   render: Template,
 
   args: {
+    label: 'This is a benchmark bar that will be cropped if the text is too long',
     typography: 'option',
   },
 };

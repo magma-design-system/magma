@@ -1,6 +1,6 @@
 {
   "name": "@maggioli-design-system/design-tokens",
-  "version": "15.1.0",
+  "version": "14.0.0",
   "description": "This is the Design Token library of Maggioli Design System, here you'll find all the visual data used around the libraries.",
   "author": "Vittorio Vittori",
   "contributors": [
@@ -23,8 +23,6 @@
   "license": "ISC",
   "scripts": {
     "build": "npm run clean && npm run build-style-dictionary && npm run build-figma-tokens && npm run build-cli",
-    "build-css-tokens": "run-for-every-file --src ./tokens/css/ --dest dist/scss/ --file '**/*.json' --not-file '**/*.scss' --run 'json-to-scss {{src-file}} {{dest}}{{file-name-ext}}'",
-    "build-palette": "node leonardo.mjs",
     "build-figma-tokens": "tsx scripts/generate-figma-tokens.ts",
     "build-cli": "tsc --project tsconfig.cli.json",
     "build-style-dictionary": "tsx scripts/build.ts",
@@ -55,10 +53,6 @@
     "style-dictionary": "3.9.0"
   },
   "devDependencies": {
-    "cli-testing-library": "^3.0.1",
-    "js-beautify": "1.14.11",
-    "json-to-scss": "1.6.2",
-    "run-for-every-file": "1.1.0",
     "vitest": "3.2.4"
   },
   "repository": {
