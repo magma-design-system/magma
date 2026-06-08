@@ -111,6 +111,11 @@
     "ts-loader": "9.5.0",
     "tsconfig-paths-webpack-plugin": "4.1.0"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/magma-design-system/magma.git",
+    "directory": "projects/stencil"
+  },
   "author": {
     "name": "Vittorio Vittori",
     "email": "vittorio.vittori@maggioli.it",

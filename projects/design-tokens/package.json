@@ -57,7 +57,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://git.maggioli.it/ricerca-sviluppo-new-media/design-system.git"
+    "url": "git+https://github.com/magma-design-system/magma.git",
+    "directory": "projects/design-tokens"
   },
   "keywords": [
     "amazon",

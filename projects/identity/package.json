@@ -29,7 +29,8 @@
   ],
   "repository": {
     "type": "git",
-    "url": "http://git.maggioli.it/ricerca-sviluppo-new-media/design-system.git"
+    "url": "git+https://github.com/magma-design-system/magma.git",
+    "directory": "projects/identity"
   },
   "license": "ISC",
   "devDependencies": {

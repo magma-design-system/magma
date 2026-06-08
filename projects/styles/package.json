@@ -23,7 +23,8 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/magma-design-system/magma.git"
+    "url": "git+https://github.com/magma-design-system/magma.git",
+    "directory": "projects/styles"
   },
   "keywords": [
     "scss",
