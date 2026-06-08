@@ -210,11 +210,11 @@ The `dist` folder contains the following files:
 | `css` | both | `reset.css` |
 | `css` | plain css | `base.css` |
 | `css` | plain css | `colors-hex-*.css` |
+| `css` | plain css | `utility-typography.css` |
 | `css` | plain css | `typography.css` |
 | `css` | tailwind or web components | `colors-rgb-*.css` |
 | `tailwind` | tailwind | `base.css` |
 | `tailwind` | tailwind components | `components.css` |
-| `tailwind` | tailwind typography components | `typography.css` |
 
 [mds]: https://magma.maggiolicloud.it/
 [fontsource-var-fonts]: https://fontsource.org/docs/variable-fonts
