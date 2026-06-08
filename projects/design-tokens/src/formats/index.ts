@@ -3,6 +3,7 @@ export * from './css-tailwind-theme-typography/css-tailwind-theme-typography.js'
 export * from './css-vars-hex/css-vars-hex.js';
 export * from './css-vars-rgb/css-vars-rgb.js';
 export * from './css-vars-transitions/css-vars-transitions.js';
+export * from './css-vars-typography/css-vars-typography.js';
 export * from './flutter-color/flutter-color.js';
 export * from './flutter-font/flutter-font.js';
 export * from './js-tailwind-colors/js-tailwind-colors.js';

@@ -29,6 +29,11 @@
           "destination": "tailwind-theme-typography.css",
           "format": "css/tailwind-theme-typography",
           "filter": "tailwind/cssTailwind4Filter"
+        },
+        {
+          "destination": "typography.css",
+          "format": "css/vars-typography",
+          "filter": "tailwind/cssTailwind4Filter"
         }
       ]
     }

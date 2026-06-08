@@ -18,6 +18,7 @@ import {
   tailwindcssAspetctRationTransform,
   tailwindPxToRemTransform,
   cssTailwindThemeTypography,
+  cssVarsTypographyFormat,
   tailwindCss4Filter,
   cssTailwindThemeColor,
   cssVarsTransitionsFormat,
@@ -99,6 +100,7 @@ export function getStyleDictionaryWithAllCustomTransform (): StyleDictionary.Cor
       .registerFormat(jsTailwindScreensFormat)
       .registerFormat(jsTailwindPropsFormat)
       .registerFormat(cssTailwindThemeTypography)
+      .registerFormat(cssVarsTypographyFormat)
       // TRANSITIONS
       .registerFormat(cssVarsTransitionsFormat)
       // transform for flutter font
