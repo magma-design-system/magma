@@ -35,12 +35,11 @@
   "license": "ISC",
   "devDependencies": {
     "@types/pdfkit": "0.13.5",
-    "@types/sharp": "0.32.0",
     "@types/svg-to-pdfkit": "0.1.3",
     "chalk": "4.1.1",
     "directory-tree": "3.5.1",
     "pdfkit": "0.15.1",
-    "sharp": "0.32.6",
+    "sharp": "0.34.5",
     "svg-dimensions": "1.0.2",
     "svg-to-pdfkit": "0.1.8"
   }
