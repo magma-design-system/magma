@@ -6,7 +6,7 @@ on:
   pull_request:
 
 jobs:
-  pipeline:
+  design-tokens:
     uses: ./.github/workflows/_package-pipeline.yml
     with:
       path: projects/design-tokens/**

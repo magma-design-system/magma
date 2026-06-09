@@ -6,7 +6,7 @@ on:
   pull_request:
 
 jobs:
-  pipeline:
+  identity:
     uses: ./.github/workflows/_package-pipeline.yml
     with:
       path: projects/identity/**
