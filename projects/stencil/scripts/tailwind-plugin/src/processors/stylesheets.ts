@@ -1,6 +1,6 @@
-import ts, { SourceFile, StringLiteral, SyntaxKind } from 'typescript';
+import ts, { SourceFile, StringLiteralLike } from 'typescript';
 import { debug } from '../debug/logger';
-import { loadTypescriptCodeFromMemory, makeMatcher, walkTo } from '../helpers/tsFiles';
+import { loadTypescriptCodeFromMemory } from '../helpers/tsFiles';
 import {
   processSourceTextForTailwindInlineClasses,
   reduceDuplicatedClassesFromFunctionalComponentInjection,
@@ -8,48 +8,80 @@ import {
 import { getAllExternalCssDependencies } from '../store/store';
 import { PluginConfigurationOptions } from '..';
 
+// Stencil emits the component stylesheet as the first variable statement in the module. The exact
+// shape has changed across Stencil versions: older versions assigned the css to a plain string
+// literal (`const xCss = "...";`) while newer versions wrap it in a getter returning a template
+// literal (`const xCss = () => `...`;`). Rather than match a rigid AST path, descend into the first
+// variable statement and grab the first string/template literal we find - that is always the css.
+function findCssLiteral(sourceFile: SourceFile): StringLiteralLike | undefined {
+  const firstVariableStatement = sourceFile.statements.find(ts.isVariableStatement);
+  if (!firstVariableStatement) {
+    return undefined;
+  }
+
+  let cssNode: StringLiteralLike | undefined;
+  const visit = (node: ts.Node) => {
+    if (cssNode) {
+      return;
+    }
+    if (ts.isStringLiteralLike(node)) {
+      cssNode = node;
+      return;
+    }
+    ts.forEachChild(node, visit);
+  };
+  ts.forEachChild(firstVariableStatement, visit);
+
+  return cssNode;
+}
+
 async function transformStyleStatement(
   opts: PluginConfigurationOptions,
   sourceFile: SourceFile,
-  sourceText: string,
   filename: string,
 ) {
-  // Stencil produces stylesheet in esm, so need to read and emit back. Stencil outputs the css in the first
-  // variable statement in the file. As such there is no clean way of detecting this, so just go grab the
-  // first statement
-  const stringLiteralPath = [
-    makeMatcher(SyntaxKind.SourceFile),
-    makeMatcher(SyntaxKind.FirstStatement),
-    makeMatcher(SyntaxKind.VariableDeclarationList),
-    makeMatcher(SyntaxKind.VariableDeclaration),
-    makeMatcher(SyntaxKind.StringLiteral),
-  ];
+  const cssNode = findCssLiteral(sourceFile);
+  if (!cssNode) {
+    debug('[Stylesheets]', 'No css literal found in source, skipping:', filename);
+    return sourceFile.text;
+  }
 
   // Grab any css that needs to be injected by functional components that this component imported
   const injectedCss = getAllExternalCssDependencies(filename).css;
-  const stringStyleRewriter = async (cssNode: StringLiteral) => {
-    const originalCss = cssNode.text;
+  const originalCss = cssNode.text;
 
-    const tailwindClasses = await processSourceTextForTailwindInlineClasses(
-      opts,
-      filename,
-      originalCss,
-    );
-    const reducedClasses = await reduceDuplicatedClassesFromFunctionalComponentInjection(
-      opts,
-      filename,
-      tailwindClasses,
-      injectedCss,
-    );
+  const tailwindClasses = await processSourceTextForTailwindInlineClasses(
+    opts,
+    filename,
+    originalCss,
+  );
+  const reducedClasses = await reduceDuplicatedClassesFromFunctionalComponentInjection(
+    opts,
+    filename,
+    tailwindClasses,
+    injectedCss,
+  );
 
-    cssNode.text = reducedClasses;
+  // The css literal has to be swapped for a freshly synthesized node rather than mutating its
+  // `.text`: the TypeScript printer re-emits parsed template literals verbatim from the original
+  // source and ignores in-place `.text` mutations, which would silently drop the Tailwind output.
+  // A synthesized node has no source range, so the printer emits (and escapes) the new text.
+  const replacement = ts.isNoSubstitutionTemplateLiteral(cssNode)
+    ? ts.factory.createNoSubstitutionTemplateLiteral(reducedClasses)
+    : ts.factory.createStringLiteral(reducedClasses);
+
+  const replaceCssLiteral = (context: ts.TransformationContext) => (root: ts.Node) => {
+    const visit = (node: ts.Node): ts.Node =>
+      node === cssNode ? replacement : ts.visitEachChild(node, visit, context);
+    return ts.visitNode(root, visit);
   };
 
-  const cssNode = walkTo(sourceFile, stringLiteralPath);
-  await stringStyleRewriter(cssNode as StringLiteral);
-
+  const result = ts.transform(sourceFile, [replaceCssLiteral]);
   const printer = ts.createPrinter();
-  return printer.printFile(sourceFile);
+  const output = printer.printFile(result.transformed[0] as SourceFile);
+  result.dispose();
+
+  return output;
 }
 
 // This function processes css that is contained as a string in a typescript file
@@ -60,7 +92,7 @@ export function transformCssFromTsxFileFormat(opts: PluginConfigurationOptions) 
     debug('[Stylesheets]', 'Processing css from tsx source file:', filename);
 
     const sourceFile = loadTypescriptCodeFromMemory(sourceText);
-    const transformed = await transformStyleStatement(opts, sourceFile, sourceText, filename);
+    const transformed = await transformStyleStatement(opts, sourceFile, filename);
 
     return transformed;
   };
