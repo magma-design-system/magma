@@ -10,6 +10,32 @@
   "collection": "dist/collection/collection-manifest.json",
   "collection:main": "dist/collection/index.js",
   "unpkg": "dist/mds-components/mds-components.esm.js",
+  "exports": {
+    ".": {
+      "types": "./dist/types/components.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs.js",
+      "default": "./dist/index.js"
+    },
+    "./dist/components/*.js": {
+      "types": "./dist/components/*.d.ts",
+      "import": "./dist/components/*.js"
+    },
+    "./dist/components": {
+      "types": "./dist/types/components.d.ts",
+      "import": "./dist/components/index.js"
+    },
+    "./components/*.js": {
+      "types": "./dist/types/components/*.d.ts",
+      "import": "./components/*.js"
+    },
+    "./components": {
+      "types": "./dist/types/components.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs.js",
+      "default": "./dist/index.js"
+    }
+  },
   "files": [
     "dist/",
     "loader/"
@@ -114,7 +140,7 @@
     "stencil-inline-svg": "1.1.0",
     "storybook": "9.0.15",
     "style-loader": "3.3.3",
-    "tailwindcss": "4.1.11",
+    "tailwindcss": "4.3.0",
     "ts-loader": "9.5.0",
     "tsconfig-paths-webpack-plugin": "4.1.0",
     "typescript": "5.8.3"

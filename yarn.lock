@@ -3420,7 +3420,7 @@
   dependencies:
     "@inquirer/type" "^1.5.1"
 
-"@lit/react@^1.0.4", "@lit/react@^1.0.7":
+"@lit/react@^1.0.7":
   version "1.0.8"
   resolved "https://registry.npmjs.org/@lit/react/-/react-1.0.8.tgz#b3e229173b7b57d550909bf95d8f3da1a9510557"
   integrity sha512-p2+YcF+JE67SRX3mMlJ1TKCSTsgyOVdAwd/nxp3NuV1+Cb6MWALbN6nT7Ld4tpmYofcE5kcaSY1YBB9erY+6fw==
@@ -4369,16 +4369,6 @@
     jsdom "^27.0.1"
     tsutils "^3.21.0"
 
-"@stencil/react-output-target@1.0.2":
-  version "1.0.2"
-  resolved "https://registry.npmjs.org/@stencil/react-output-target/-/react-output-target-1.0.2.tgz#125f3d56ae3dc49d0f00ceb24406b953e2682c68"
-  integrity sha512-9IcYOP5aQLZxtEIumXyQ3qWyzvU3/wohoxwFfd9uTsvn3tO+O0FOg6A00+XiCwRpB9tENGMHHvqTQ1BjWpDUbQ==
-  dependencies:
-    "@lit/react" "^1.0.4"
-    html-react-parser "^5.2.2"
-    style-object-to-css-string "^1.1.3"
-    ts-morph "^22.0.0"
-
 "@stencil/react-output-target@1.5.3":
   version "1.5.3"
   resolved "https://registry.npmjs.org/@stencil/react-output-target/-/react-output-target-1.5.3.tgz#33b111c6ec7a5926f760f8f261e805bd92d2da9d"
@@ -4691,16 +4681,6 @@
   version "0.2.0"
   resolved "https://registry.npmjs.org/@trysound/sax/-/sax-0.2.0.tgz#cccaab758af56761eb7bf37af6f03f326dd798ad"
   integrity sha512-L7z9BgrNEcYyUYtF+HaEfiS5ebkh9jXqbszz7pC0hRBPaatV0XjSD3+eHrpqFemQfgwiFF0QPIarnIihIDn7OA==
-
-"@ts-morph/common@~0.23.0":
-  version "0.23.0"
-  resolved "https://registry.npmjs.org/@ts-morph/common/-/common-0.23.0.tgz#bd4ddbd3f484f29476c8bd985491592ae5fc147e"
-  integrity sha512-m7Lllj9n/S6sOkCkRftpM7L24uvmfXQFedlW/4hENcuJH1HHm9u5EgxZb9uVjQSCGrbBWBkOGgcTxNg36r6ywA==
-  dependencies:
-    fast-glob "^3.3.2"
-    minimatch "^9.0.3"
-    mkdirp "^3.0.1"
-    path-browserify "^1.0.1"
 
 "@ts-morph/common@~0.29.0":
   version "0.29.0"
@@ -6991,7 +6971,7 @@ co@^4.6.0:
   resolved "https://registry.npmjs.org/co/-/co-4.6.0.tgz#6ea6bdf3d853ae54ccb8e47bfa0bf3f9031fb184"
   integrity sha512-QVb0dM5HvG+uaxitm8wONl7jltx8dqhfU33DcqtOZcLSVIKSDDLDi7+0LbAKiyI8hD9u42m2YxXSkMGWThaecQ==
 
-code-block-writer@^13.0.1, code-block-writer@^13.0.3:
+code-block-writer@^13.0.3:
   version "13.0.3"
   resolved "https://registry.npmjs.org/code-block-writer/-/code-block-writer-13.0.3.tgz#90f8a84763a5012da7af61319dd638655ae90b5b"
   integrity sha512-Oofo0pq3IKnsFtuHqSF7TqBfr71aeyZDVJ0HpmqB7FBM2qEigL0iPONSCZSO9pE9dZTAxANe5XHG9Uy0YMv8cg==
@@ -12418,7 +12398,7 @@ minimatch@^5.0.1:
   dependencies:
     brace-expansion "^2.0.1"
 
-minimatch@^9.0.0, minimatch@^9.0.3, minimatch@^9.0.4:
+minimatch@^9.0.0, minimatch@^9.0.4:
   version "9.0.9"
   resolved "https://registry.npmjs.org/minimatch/-/minimatch-9.0.9.tgz#9b0cb9fcb78087f6fd7eababe2511c4d3d60574e"
   integrity sha512-OBwBN9AL4dqmETlpS2zasx+vTeWclWzkblfZk7KTA5j3jeOONz/tRCnZomUyvNg83wL5Zv9Ss6HMJXAgL8R2Yg==
@@ -12536,11 +12516,6 @@ mkdirp@^1.0.3, mkdirp@^1.0.4:
   version "1.0.4"
   resolved "https://registry.npmjs.org/mkdirp/-/mkdirp-1.0.4.tgz#3eb5ed62622756d79a5f0e2a221dfebad75c2f7e"
   integrity sha512-vVqVZQyf3WLx2Shd0qJ9xuvqgAyKPLAiqITEtqW0oIUjzo3PePDd6fW9iFz30ef7Ysp/oiWqbhszeGWW2T6Gzw==
-
-mkdirp@^3.0.1:
-  version "3.0.1"
-  resolved "https://registry.npmjs.org/mkdirp/-/mkdirp-3.0.1.tgz#e44e4c5607fb279c168241713cc6e0fea9adcb50"
-  integrity sha512-+NsyUUAZDmo6YVHzL/stxSu3t9YS1iljliy3BSDrXJ/dkn1KYdmtZODGGjLcc9XLgVVpH4KshHB8XmZgMhaBXg==
 
 move-file@2.1.0:
   version "2.1.0"
@@ -15917,11 +15892,6 @@ style-loader@^3.3.1:
   resolved "https://registry.npmjs.org/style-loader/-/style-loader-3.3.4.tgz#f30f786c36db03a45cbd55b6a70d930c479090e7"
   integrity sha512-0WqXzrsMTyb8yjZJHDqwmnwRJvhALK9LfRtRc6B4UTWe8AijYLZYZ9thuJTZc2VfQWINADW/j+LiJnfy2RoC1w==
 
-style-object-to-css-string@^1.1.3:
-  version "1.1.3"
-  resolved "https://registry.npmjs.org/style-object-to-css-string/-/style-object-to-css-string-1.1.3.tgz#9427c3387c701a7c5860de4027f11c8fbec55caf"
-  integrity sha512-bISQoUsir/qGfo7vY8rw00ia9nnyE1jvYt3zZ2jhdkcXZ6dAEi74inMzQ6On57vFI+I4Fck6wOv5UI9BEwJDgw==
-
 style-to-js@1.1.21:
   version "1.1.21"
   resolved "https://registry.npmjs.org/style-to-js/-/style-to-js-1.1.21.tgz#2908941187f857e79e28e9cd78008b9a0b3e0e8d"
@@ -16229,16 +16199,6 @@ table@^6.9.0:
     slice-ansi "^4.0.0"
     string-width "^4.2.3"
     strip-ansi "^6.0.1"
-
-tailwindcss@4.1.11:
-  version "4.1.11"
-  resolved "https://registry.npmjs.org/tailwindcss/-/tailwindcss-4.1.11.tgz#799af3e98c19c5baaefafc6e0c16304a0e684854"
-  integrity sha512-2E9TBm6MDD/xKYe+dvJZAmg3yxIEDNRc0jwlNyDg/4Fil2QcSLjFKGVff0lAf1jjeaArlG/M75Ey/EYr/OJtBA==
-
-tailwindcss@4.2.2:
-  version "4.2.2"
-  resolved "https://registry.npmjs.org/tailwindcss/-/tailwindcss-4.2.2.tgz#688fb0751c8ca9044e890546510a2ee817308e87"
-  integrity sha512-KWBIxs1Xb6NoLdMVqhbhgwZf2PGBpPEiwOqgI4pFIYbNTfBXiKYyWoTsXgBQ9WFg/OlhnvHaY+AEpW7wSmFo2Q==
 
 tailwindcss@4.3.0:
   version "4.3.0"
@@ -16575,14 +16535,6 @@ ts-loader@9.5.0:
     micromatch "^4.0.0"
     semver "^7.3.4"
     source-map "^0.7.4"
-
-ts-morph@^22.0.0:
-  version "22.0.0"
-  resolved "https://registry.npmjs.org/ts-morph/-/ts-morph-22.0.0.tgz#5532c592fb6dddae08846f12c9ab0fc590b1d42e"
-  integrity sha512-M9MqFGZREyeb5fTl6gNHKZLqBQA0TjA1lea+CR48R8EBTDuWrNqW6ccC5QvjNR4s6wDumD3LTCjOFSp9iwlzaw==
-  dependencies:
-    "@ts-morph/common" "~0.23.0"
-    code-block-writer "^13.0.1"
 
 ts-morph@^28.0.0:
   version "28.0.0"
