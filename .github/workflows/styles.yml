@@ -6,7 +6,7 @@ on:
   pull_request:
 
 jobs:
-  pipeline:
+  styles:
     uses: ./.github/workflows/_package-pipeline.yml
     with:
       path: projects/styles/**
