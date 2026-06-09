@@ -25,6 +25,12 @@
       "types": "./dist/types/components.d.ts",
       "import": "./dist/components/index.js"
     },
+    "./loader": {
+      "types": "./loader/index.d.ts",
+      "import": "./loader/index.js",
+      "require": "./loader/index.cjs.js",
+      "default": "./loader/index.js"
+    },
     "./components/*.js": {
       "types": "./dist/types/components/*.d.ts",
       "import": "./components/*.js"
