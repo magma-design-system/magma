@@ -43,7 +43,7 @@ export default defineConfig([
   // #region stencil
   {
     extends: [stencil.configs.flat.recommended],
-    files: ['./**/src/components/**/*.{tsx}'],
+    files: ['src/components/**/*.tsx'],
     ignores: ['.storybook/**', '**/*.stories.*'],
     languageOptions: {
       parser: tseslint.parser,
