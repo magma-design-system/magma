@@ -94,7 +94,10 @@ export interface MdsInputInterface {
   tag: 'mds-input',
   styleUrl: 'mds-input.css',
   formAssociated: true,
-  shadow: true,
+  // Scoped (light DOM) instead of Shadow DOM so the native <input> is reachable by
+  // password managers / browser autofill: it can now be discovered, grouped with its
+  // sibling field, and associated with the consumer's <form>. See issue #519.
+  scoped: true,
 })
 export class MdsInput {
   private nativeInput?: HTMLInputElement | HTMLTextAreaElement;
