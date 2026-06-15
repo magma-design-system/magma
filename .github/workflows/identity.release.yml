@@ -1,0 +1,21 @@
+# Release pipeline for @maggioli-design-system/identity.
+# Detects the next version from conventional commits scoped `identity`,
+# bumps projects/identity/package.json, tags it and creates the GitHub release.
+# The version bump commit then triggers CI -> publish.yml (npm).
+name: identity release
+
+on:
+  push:
+    branches: [main]
+
+concurrency:
+  group: release-identity
+  cancel-in-progress: false
+
+jobs:
+  release:
+    uses: ./.github/workflows/semantic-release.yml
+    with:
+      working-directory: projects/identity
+      tag-format: 'identity@${version}'
+      commit-scope: identity

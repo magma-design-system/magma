@@ -1,0 +1,21 @@
+# Release pipeline for @maggioli-design-system/svg-icons.
+# Detects the next version from conventional commits scoped `svg-icons`,
+# bumps projects/svg-icons/package.json, tags it and creates the GitHub release.
+# The version bump commit then triggers CI -> publish.yml (npm).
+name: svg-icons release
+
+on:
+  push:
+    branches: [main]
+
+concurrency:
+  group: release-svg-icons
+  cancel-in-progress: false
+
+jobs:
+  release:
+    uses: ./.github/workflows/semantic-release.yml
+    with:
+      working-directory: projects/svg-icons
+      tag-format: 'svg-icons@${version}'
+      commit-scope: svg-icons
