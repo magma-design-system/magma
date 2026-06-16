@@ -536,16 +536,19 @@ export class MdsInputDateRange {
       .toISODate()
   }
 
-  private renderCalendarPreselection () {
+  private renderCalendarPreselectionPanel () {
+    if (!this.hasPreselection) return null
+
     return (
-      <div
-        slot="preselection"
-        class={clsx(
-          'date-preselection',
-          this.hasPreselection && 'date-preselection--has-preselection',
-        )}
-      >
-        <slot name="calendar-preselection"></slot>
+      <div class="calendar-preselection-panel">
+        <div
+          class={clsx(
+            'date-preselection',
+            this.hasPreselection && 'date-preselection--has-preselection',
+          )}
+        >
+          <slot name="calendar-preselection"></slot>
+        </div>
       </div>
     )
   }
@@ -553,6 +556,7 @@ export class MdsInputDateRange {
   private renderSingleCalendar () {
     return (
       <div class="calendar-single">
+        {this.renderCalendarPreselectionPanel()}
         <mds-calendar
           lang={this.language}
           key={this.calendarKey}
@@ -565,9 +569,7 @@ export class MdsInputDateRange {
           endDate={this.internalEndDate}
           {...(this.min ? { min: this.min } : {})}
           {...(this.max ? { max: this.max } : {})}
-        >
-          {this.renderCalendarPreselection()}
-        </mds-calendar>
+        ></mds-calendar>
       </div>
     )
   }
@@ -575,6 +577,7 @@ export class MdsInputDateRange {
   private renderDualCalendars () {
     return (
       <div class="calendars">
+        {this.renderCalendarPreselectionPanel()}
         <mds-calendar
           lang={this.language}
           key={`${this.calendarKey}-start`}
@@ -591,9 +594,7 @@ export class MdsInputDateRange {
           endDate={this.internalEndDate}
           {...(this.min ? { min: this.min } : {})}
           {...(this.max ? { max: this.max } : {})}
-        >
-          {this.renderCalendarPreselection()}
-        </mds-calendar>
+        ></mds-calendar>
         <mds-calendar
           lang={this.language}
           key={`${this.calendarKey}-end`}

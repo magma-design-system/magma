@@ -108,9 +108,20 @@
   min-width: max-content;
 }
 
+.calendar-preselection-panel {
+  background-color: theme('colors.tone-neutral-09');
+  border-radius: theme('borderRadius.lg');
+  box-sizing: border-box;
+  display: grid;
+  align-content: start;
+  min-inline-size: max-content;
+  padding: theme('padding.400');
+}
+
 .calendar-single {
   display: flex;
   flex-wrap: nowrap;
+  gap: --spacing(200);
   min-width: max-content;
 }
 
