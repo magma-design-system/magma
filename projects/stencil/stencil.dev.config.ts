@@ -1,6 +1,6 @@
 import alias from '@rollup/plugin-alias';
 import path from 'path';
-import tailwind from 'stencil-tailwind-plugin';
+import tailwind from './scripts/tailwind-plugin/src';
 import { Config } from '@stencil/core';
 import { inlineSvg } from 'stencil-inline-svg';
 import tokenFallbackPlugin from './scripts/postcss-token-fallbacks';
