@@ -186,12 +186,12 @@ export class MdsInputDateRange {
   }
 
   @Event({ eventName: 'mdsInputDateRangeSelect' }) dateRangeSelected: EventEmitter<{
-    startDate: string
-    endDate: string
+    startDate: string;
+    endDate: string;
   }>
   @Event({ eventName: 'mdsInputDateRangeValueChange' }) valueChanged: EventEmitter<{
-    startDate: string
-    endDate: string
+    startDate: string;
+    endDate: string;
   }>
 
   @Watch('startDate')
