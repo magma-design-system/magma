@@ -67,6 +67,11 @@ export class MdsCalendar {
   @Prop() readonly disableMonthYearSelection: boolean = false
 
   /**
+   * Shows the preselection area above the calendar view.
+   */
+  @Prop() readonly showPreselection: boolean = false
+
+  /**
    * Specifies the date used to determine the visible month without changing the selection.
    * @description It's in ISO format (YYYY-MM-DD).
    * @example '2023-10-01'
@@ -660,7 +665,8 @@ export class MdsCalendar {
         <div
           class={clsx(
             'calendar-preselection',
-            this.hasPreselection && 'calendar-preselection--has-preselection',
+            (this.showPreselection || this.hasPreselection) &&
+              'calendar-preselection--has-preselection',
           )}
         >
           <slot name="preselection"></slot>
