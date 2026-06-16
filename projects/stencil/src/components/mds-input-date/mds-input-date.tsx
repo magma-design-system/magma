@@ -1,4 +1,18 @@
-import { Component, Element, Host, h, Method, Prop, State, Event, EventEmitter, Watch, AttachInternals } from '@stencil/core'
+/* global HTMLMdsInputDateElement, HTMLMdsDropdownElement */
+import {
+  Component,
+  Element,
+  Host,
+   
+  h,
+  Method,
+  Prop,
+  State,
+  Event,
+  EventEmitter,
+  Watch,
+  AttachInternals,
+} from '@stencil/core'
 import miBaselineCalendarToday from '@icon/mi/baseline/calendar-today.svg'
 import { DateTime } from 'luxon'
 import { Locale } from '@common/locale'
@@ -16,8 +30,9 @@ export class MdsInputDate {
   @Element() host: HTMLMdsInputDateElement
   @AttachInternals() internals: ElementInternals
   private isSlotted: boolean = false
+  @State() empty: boolean | undefined = undefined
   @State() isValid: boolean
-  private t:Locale = new Locale({
+  private t: Locale = new Locale({
     el: {},
     en: {},
     es: {},
@@ -87,7 +102,8 @@ export class MdsInputDate {
   @State() calendarKey: number = 0
   @State() dropdownRef?: HTMLMdsDropdownElement
   @State() hasFocus = false
-  @Event({ eventName: 'mdsInputDateSelect', bubbles: true, composed: true }) valueChange: EventEmitter<string>
+  @Event({ eventName: 'mdsInputDateSelect', bubbles: true, composed: true })
+    valueChange: EventEmitter<string>
 
   @Watch('value')
   handleValue (): void {
@@ -95,21 +111,27 @@ export class MdsInputDate {
     this.validateValue()
   }
 
-  private validateValue (): void {
+  private validateValue (hasBadInput: boolean = false): void {
     const date = DateTime.fromISO(this.value)
 
-    const isInvalidDate = date.invalid
-    const outOfRange = (this.max && DateTime.fromISO(this.max) < date) ||
-                     (this.min && DateTime.fromISO(this.min) > date)
+    const hasValue = Boolean(this.value)
+    const hasInvalidValue = hasValue && !date.isValid
+    const isMissingRequiredValue = this.required && !hasValue
+    const outOfRange =
+      date.isValid &&
+      ((this.max && DateTime.fromISO(this.max) < date) ||
+        (this.min && DateTime.fromISO(this.min) > date))
 
-    if ((isInvalidDate && this.required) || outOfRange) {
+    if (hasBadInput || hasInvalidValue || isMissingRequiredValue || outOfRange) {
       this.isValid = false
       this.variant = 'error'
       this.internals.setFormValue(null)
+      this.empty = hasBadInput || hasInvalidValue ? true : undefined
     } else {
       this.isValid = true
       this.variant = 'primary'
       this.internals.setFormValue(this.value)
+      this.empty = undefined
     }
 
     this.validationEvent.emit(this.isValid)
@@ -117,7 +139,9 @@ export class MdsInputDate {
 
   @Method()
   async focusInput (): Promise<void> {
-    const input: HTMLInputElement = this.host.shadowRoot?.querySelector('.input') as HTMLInputElement
+    const input: HTMLInputElement = this.host.shadowRoot?.querySelector(
+      '.input',
+    ) as HTMLInputElement
     input.focus()
   }
 
@@ -157,13 +181,14 @@ export class MdsInputDate {
     this.touched = true
     // manage case when i insert 0 on date and default input behavior change in 01 instead of resetting all date
     if (input.value) this.value = input.value
-    this.validateValue()
+    this.validateValue(input.validity.badInput)
   }
 
   private onBlur = (ev: Event) => {
     const input = ev.target as HTMLInputElement
     this.hasFocus = false
     this.value = input.value
+    this.validateValue(input.validity.badInput)
   }
 
   private onFocus = (ev: Event) => {
@@ -179,7 +204,7 @@ export class MdsInputDate {
   }
   render () {
     return (
-      <Host>
+      <Host empty={this.empty}>
         <input
           value={this.value}
           id="dateInput"
@@ -193,38 +218,59 @@ export class MdsInputDate {
           onInput={this.handleChange}
           onChange={this.handleChange}
         />
-        {!this.isSlotted && <mds-button id="calendar-dropdown" class="action-open-calendar" disabled={this.disabled} variant="dark" tone="quiet" icon={miBaselineCalendarToday} onClick={() => {
-          this.calendarKey += 1
-        }}></mds-button>}
+        {!this.isSlotted && (
+          <div class="action-open-calendar-wrapper">
+            <mds-button
+              id="calendar-dropdown"
+              class="action-open-calendar"
+              disabled={this.disabled}
+              variant="dark"
+              tone="quiet"
+              icon={miBaselineCalendarToday}
+              onClick={() => {
+                this.calendarKey += 1
+              }}
+            ></mds-button>
+          </div>
+        )}
         <mds-input-tip lang={this.language} position="top" active={this.hasFocus}>
-          { this.disabled && <mds-input-tip-item expanded variant="disabled"></mds-input-tip-item> }
-          { this.readonly && <mds-input-tip-item expanded variant="readonly"></mds-input-tip-item> }
-          { this.required &&
-            <mds-input-tip-item expanded={this.hasFocus} variant={this.isValid ? 'required-success' : 'required'}></mds-input-tip-item>
-          }
+          {this.disabled && <mds-input-tip-item expanded variant="disabled"></mds-input-tip-item>}
+          {this.readonly && <mds-input-tip-item expanded variant="readonly"></mds-input-tip-item>}
+          {this.required && (
+            <mds-input-tip-item
+              expanded={this.hasFocus}
+              variant={this.isValid ? 'required-success' : 'required'}
+            ></mds-input-tip-item>
+          )}
         </mds-input-tip>
-        {!this.isSlotted && <mds-dropdown placement="bottom-end" auto-placement={false} ref={el => this.dropdownRef = el as HTMLMdsDropdownElement} target="#calendar-dropdown">
-          <mds-calendar
-            key={this.calendarKey}
-            rangePicker={false}
-            lang={this.language}
-            onMdsCalendarChange={ev => {
-              this.value = ev.detail.startDate
-
-              if (this.delay === 0) return
-              const { dropdownRef } = this
-              if (dropdownRef) {
-                setTimeout(() => {
-                  dropdownRef.visible = false
-                }, this.delay)
-              }
-            }}
-            startDate={this.value}
-            {...this.min ? { min: this.min } : {}}
-            {...this.max ? { max: this.max } : {}}
+        {!this.isSlotted && (
+          <mds-dropdown
+            placement="bottom-end"
+            auto-placement={false}
+            ref={el => (this.dropdownRef = el as HTMLMdsDropdownElement)}
+            target="#calendar-dropdown"
           >
-          </mds-calendar>
-        </mds-dropdown>}
+            <mds-calendar
+              key={this.calendarKey}
+              rangePicker={false}
+              lang={this.language}
+              onMdsCalendarChange={ev => {
+                this.value = ev.detail.startDate
+
+                if (this.delay === 0) return
+                const { dropdownRef } = this
+                if (dropdownRef) {
+                  setTimeout(() => {
+                    dropdownRef.visible = false
+                  }, this.delay)
+                }
+              }}
+              startDate={this.value}
+              {...(this.min ? { min: this.min } : {})}
+              {...(this.max ? { max: this.max } : {})}
+            ></mds-calendar>
+          </mds-dropdown>
+        )}
       </Host>
     )
   }
