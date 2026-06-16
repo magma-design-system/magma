@@ -546,6 +546,10 @@ export namespace Components {
          */
         "showNextButton": boolean;
         /**
+          * Shows the preselection area above the calendar view.
+         */
+        "showPreselection": boolean;
+        /**
           * Shows the previous navigation button in the calendar header.
          */
         "showPreviousButton": boolean;
@@ -3116,12 +3120,12 @@ declare global {
     };
     interface HTMLMdsInputDateRangeElementEventMap {
         "mdsInputDateRangeSelect": {
-    startDate: string
-    endDate: string
+    startDate: string;
+    endDate: string;
   };
         "mdsInputDateRangeValueChange": {
-    startDate: string
-    endDate: string
+    startDate: string;
+    endDate: string;
   };
     }
     interface HTMLMdsInputDateRangeElement extends Components.MdsInputDateRange, HTMLStencilElement {
@@ -4425,6 +4429,10 @@ declare namespace LocalJSX {
          */
         "showNextButton"?: boolean;
         /**
+          * Shows the preselection area above the calendar view.
+         */
+        "showPreselection"?: boolean;
+        /**
           * Shows the previous navigation button in the calendar header.
          */
         "showPreviousButton"?: boolean;
@@ -5150,12 +5158,12 @@ declare namespace LocalJSX {
          */
         "name"?: string;
         "onMdsInputDateRangeSelect"?: (event: MdsInputDateRangeCustomEvent<{
-    startDate: string
-    endDate: string
+    startDate: string;
+    endDate: string;
   }>) => void;
         "onMdsInputDateRangeValueChange"?: (event: MdsInputDateRangeCustomEvent<{
-    startDate: string
-    endDate: string
+    startDate: string;
+    endDate: string;
   }>) => void;
         /**
           * Specifies the start date of the range
