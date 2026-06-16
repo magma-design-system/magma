@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Stackoverflow questions
+    url: https://stackoverflowteams.com/c/magma-design-system/questions
+    about: Please ask and answer questions here.
+  - name: Report a security vulnerability
+    url: https://github.com/magma-design-system/magma/security/advisories/new
+    about: Please report security vulnerabilities privately, not as public issues.
