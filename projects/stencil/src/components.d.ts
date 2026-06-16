@@ -513,11 +513,21 @@ export namespace Components {
     }
     interface MdsCalendar {
         /**
+          * Disables switching to month or year selection views from the calendar header.
+         */
+        "disableMonthYearSelection": boolean;
+        /**
           * Specifies the end date of the selection
           * @description It's in ISO format (YYYY-MM-DD).
           * @example '2023-10-01'
          */
         "endDate": string | null;
+        /**
+          * Specifies the date used to preview the range selection across multiple visible calendars.
+          * @description It's in ISO format (YYYY-MM-DD).
+          * @example '2023-10-15'
+         */
+        "hoverDate": string | null;
         /**
           * Specifies the minimum date of the selection
           * @description It's in ISO format (YYYY-MM-DD).
@@ -532,6 +542,14 @@ export namespace Components {
         "min": string | null;
         "rangePicker": boolean;
         /**
+          * Shows the next navigation button in the calendar header.
+         */
+        "showNextButton": boolean;
+        /**
+          * Shows the previous navigation button in the calendar header.
+         */
+        "showPreviousButton": boolean;
+        /**
           * Specifies the start date of the selection
           * @description It's in ISO format (YYYY-MM-DD).
           * @example '2023-10-01'
@@ -539,6 +557,12 @@ export namespace Components {
         "startDate": string | null;
         "updateCurrentDate": (date: string) => Promise<void>;
         "updateLang": () => Promise<void>;
+        /**
+          * Specifies the date used to determine the visible month without changing the selection.
+          * @description It's in ISO format (YYYY-MM-DD).
+          * @example '2023-10-01'
+         */
+        "viewDate": string | null;
     }
     interface MdsCalendarCell {
         /**
@@ -1190,6 +1214,10 @@ export namespace Components {
           * @description Default is 500
          */
         "delay": number;
+        /**
+          * Enables the linked dual-calendar range picker behavior.
+         */
+        "dualCalendar": boolean;
         /**
           * Specifies the end date of the range
           * @description It's in ISO format (YYYY-MM-DD).
@@ -2760,7 +2788,17 @@ declare global {
         new (): HTMLMdsButtonGroupElement;
     };
     interface HTMLMdsCalendarElementEventMap {
-        "mdsCalendarChange": {startDate: string, endDate?: string};
+        "mdsCalendarChange": {
+    startDate: string,
+    endDate?: string
+  };
+        "mdsCalendarNavigate": {
+    currentDate: string,
+    delta: number
+  };
+        "mdsCalendarHover": {
+    hoverDate: string | null
+  };
         "mdsCalendarPreselect": void;
     }
     interface HTMLMdsCalendarElement extends Components.MdsCalendar, HTMLStencilElement {
@@ -3077,8 +3115,14 @@ declare global {
         new (): HTMLMdsInputDateElement;
     };
     interface HTMLMdsInputDateRangeElementEventMap {
-        "mdsInputDateRangeSelect": { startDate: string, endDate: string };
-        "mdsInputDateRangeValueChange": { startDate: string, endDate: string };
+        "mdsInputDateRangeSelect": {
+    startDate: string
+    endDate: string
+  };
+        "mdsInputDateRangeValueChange": {
+    startDate: string
+    endDate: string
+  };
     }
     interface HTMLMdsInputDateRangeElement extends Components.MdsInputDateRange, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsInputDateRangeElementEventMap>(type: K, listener: (this: HTMLMdsInputDateRangeElement, ev: MdsInputDateRangeCustomEvent<HTMLMdsInputDateRangeElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -4336,11 +4380,21 @@ declare namespace LocalJSX {
     }
     interface MdsCalendar {
         /**
+          * Disables switching to month or year selection views from the calendar header.
+         */
+        "disableMonthYearSelection"?: boolean;
+        /**
           * Specifies the end date of the selection
           * @description It's in ISO format (YYYY-MM-DD).
           * @example '2023-10-01'
          */
         "endDate"?: string | null;
+        /**
+          * Specifies the date used to preview the range selection across multiple visible calendars.
+          * @description It's in ISO format (YYYY-MM-DD).
+          * @example '2023-10-15'
+         */
+        "hoverDate"?: string | null;
         /**
           * Specifies the minimum date of the selection
           * @description It's in ISO format (YYYY-MM-DD).
@@ -4353,15 +4407,39 @@ declare namespace LocalJSX {
           * @example '2023-10-01'
          */
         "min"?: string | null;
-        "onMdsCalendarChange"?: (event: MdsCalendarCustomEvent<{startDate: string, endDate?: string}>) => void;
+        "onMdsCalendarChange"?: (event: MdsCalendarCustomEvent<{
+    startDate: string,
+    endDate?: string
+  }>) => void;
+        "onMdsCalendarHover"?: (event: MdsCalendarCustomEvent<{
+    hoverDate: string | null
+  }>) => void;
+        "onMdsCalendarNavigate"?: (event: MdsCalendarCustomEvent<{
+    currentDate: string,
+    delta: number
+  }>) => void;
         "onMdsCalendarPreselect"?: (event: MdsCalendarCustomEvent<void>) => void;
         "rangePicker"?: boolean;
+        /**
+          * Shows the next navigation button in the calendar header.
+         */
+        "showNextButton"?: boolean;
+        /**
+          * Shows the previous navigation button in the calendar header.
+         */
+        "showPreviousButton"?: boolean;
         /**
           * Specifies the start date of the selection
           * @description It's in ISO format (YYYY-MM-DD).
           * @example '2023-10-01'
          */
         "startDate"?: string | null;
+        /**
+          * Specifies the date used to determine the visible month without changing the selection.
+          * @description It's in ISO format (YYYY-MM-DD).
+          * @example '2023-10-01'
+         */
+        "viewDate"?: string | null;
     }
     interface MdsCalendarCell {
         /**
@@ -5049,6 +5127,10 @@ declare namespace LocalJSX {
          */
         "delay"?: number;
         /**
+          * Enables the linked dual-calendar range picker behavior.
+         */
+        "dualCalendar"?: boolean;
+        /**
           * Specifies the end date of the range
           * @description It's in ISO format (YYYY-MM-DD).
          */
@@ -5067,8 +5149,14 @@ declare namespace LocalJSX {
           * Is needed to reference the form data after the form is submitted
          */
         "name"?: string;
-        "onMdsInputDateRangeSelect"?: (event: MdsInputDateRangeCustomEvent<{ startDate: string, endDate: string }>) => void;
-        "onMdsInputDateRangeValueChange"?: (event: MdsInputDateRangeCustomEvent<{ startDate: string, endDate: string }>) => void;
+        "onMdsInputDateRangeSelect"?: (event: MdsInputDateRangeCustomEvent<{
+    startDate: string
+    endDate: string
+  }>) => void;
+        "onMdsInputDateRangeValueChange"?: (event: MdsInputDateRangeCustomEvent<{
+    startDate: string
+    endDate: string
+  }>) => void;
         /**
           * Specifies the start date of the range
           * @description It's in ISO format (YYYY-MM-DD).
