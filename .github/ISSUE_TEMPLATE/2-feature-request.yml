@@ -1,0 +1,66 @@
+name: Feature Request
+description: Suggest a new component, token, or improvement.
+title: '[Feature]: '
+labels: ['type: feature', 'status: triage']
+projects: ['magma-design-system/magma']
+type: feature
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the suggestion! Please search
+        [existing issues](https://github.com/magma-design-system/magma/issues)
+        first to avoid duplicates.
+  - type: dropdown
+    id: package
+    attributes:
+      label: Package
+      description: Which package would this affect?
+      multiple: true
+      options:
+        - '@maggioli-design-system/magma (stencil components)'
+        - '@maggioli-design-system/styles'
+        - '@maggioli-design-system/design-tokens'
+        - '@maggioli-design-system/icons'
+        - '@maggioli-design-system/svg-icons'
+        - '@maggioli-design-system/identity'
+        - Documentation / Storybook
+        - New / cross-cutting
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve?
+      description: Describe the use case or the limitation you are running into.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: Describe the component, token, API, or behavior you would like.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Any workarounds or other approaches you have evaluated.
+    validations:
+      required: false
+  - type: textarea
+    id: references
+    attributes:
+      label: References
+      description: Links to designs ([Figma](https://figma.com)), similar implementations, or mockups.
+    validations:
+      required: false
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our [Code of Conduct](https://github.com/magma-design-system/magma/blob/main/.github/CODE_OF_CONDUCT.md).
+      options:
+        - label: I agree to follow this project's Code of Conduct
+          required: true
