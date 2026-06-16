@@ -66,17 +66,6 @@ Type: `Promise<void>`
 
 
 
-## CSS Custom Properties
-
-| Name                                                    | Description                                                               |
-| ------------------------------------------------------- | ------------------------------------------------------------------------- |
-| `--mds-input-upload-drag-area-background-color`         | Sets the background-color of the drag area.                               |
-| `--mds-input-upload-drag-area-background-color-on-drag` | Set the background color of the drag area when a file is dragged over it. |
-| `--mds-input-upload-drag-area-border`                   | Sets the border of the drag area.                                         |
-| `--mds-input-upload-drag-area-border-on-drag`           | Set the border of the drag area when a file is dragged over it.           |
-| `--mds-input-upload-min-cols`                           | Set the minimum number of columns for the file list.                      |
-
-
 ## Dependencies
 
 ### Depends on

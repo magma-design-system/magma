@@ -13,13 +13,6 @@
 | `position` | `position` | Specifies the position of the element relative to its container         | `"bottom" \| "top" \| undefined` | `'top'` |
 
 
-## CSS Custom Properties
-
-| Name                               | Description                                     |
-| ---------------------------------- | ----------------------------------------------- |
-| `--mds-input-tip-active-translate` | Set the translate of the tip when it is active. |
-
-
 ## Dependencies
 
 ### Used by

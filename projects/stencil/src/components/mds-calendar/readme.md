@@ -16,6 +16,7 @@
 | `min`                       | `min`                          | Specifies the minimum date of the selection                                               | `null \| string` | `null`  |
 | `rangePicker`               | `range-picker`                 |                                                                                           | `boolean`        | `true`  |
 | `showNextButton`            | `show-next-button`             | Shows the next navigation button in the calendar header.                                  | `boolean`        | `true`  |
+| `showPreselection`          | `show-preselection`            | Shows the preselection area above the calendar view.                                      | `boolean`        | `false` |
 | `showPreviousButton`        | `show-previous-button`         | Shows the previous navigation button in the calendar header.                              | `boolean`        | `true`  |
 | `startDate`                 | `start-date`                   | Specifies the start date of the selection                                                 | `null \| string` | `null`  |
 | `viewDate`                  | `view-date`                    | Specifies the date used to determine the visible month without changing the selection.    | `null \| string` | `null`  |

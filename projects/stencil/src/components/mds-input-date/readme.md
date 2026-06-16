@@ -84,19 +84,6 @@ Type: `Promise<void>`
 | `"input-date"` |             |
 
 
-## CSS Custom Properties
-
-| Name                                      | Description                                                             |
-| ----------------------------------------- | ----------------------------------------------------------------------- |
-| `--mds-input-date-background`             | Sets the background-color of the component                              |
-| `--mds-input-date-field-background-empty` | Sets the color of the component when the value is empty or not valid    |
-| `--mds-input-date-field-color-empty`      | Sets the color of the component when the value is empty or not valid    |
-| `--mds-input-date-icon-color`             | Sets the icon color of the component                                    |
-| `--mds-input-date-ring`                   | Sets the box-shadow of the component's input to perform the ring effect |
-| `--mds-input-date-shadow`                 | Sets the box-shadow of the component's input                            |
-| `--mds-input-date-variant-color`          | Sets the variant colors of the component                                |
-
-
 ## Dependencies
 
 ### Depends on

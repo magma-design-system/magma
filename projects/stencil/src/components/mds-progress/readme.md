@@ -26,17 +26,6 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `"radial-progress"` | Selects the `mds-radial-progress` element that contains the radial progress bar |
 
 
-## CSS Custom Properties
-
-| Name                        | Description                                     |
-| --------------------------- | ----------------------------------------------- |
-| `--mds-progress-background` | Sets the background-color of the component      |
-| `--mds-progress-color`      | Sets the background-color of the progress       |
-| `--mds-progress-duration`   | Sets the duration of the progress bar animation |
-| `--mds-progress-radius`     | Sets the border-radius of the component         |
-| `--mds-progress-thickness`  | Sets the thickness of the progress bar          |
-
-
 ## Dependencies
 
 ### Used by
