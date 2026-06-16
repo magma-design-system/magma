@@ -14,6 +14,7 @@
 
 :host {
   --mds-input-date-range-background: theme('colors.tone-neutral');
+  --mds-input-date-range-calendar-width: 22rem;
   --mds-input-date-range-fields-firefox-justify-content: start;
   --mds-input-date-range-fields-gap: 0 theme('spacing.200');
   --mds-input-date-range-icon-color: var(--mds-input-date-range-variant-color);
@@ -100,9 +101,27 @@
   margin-left: 0;
 }
 
-mds-calendar {
+.calendars {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: --spacing(200);
   min-width: max-content;
 }
+
+.calendar-single {
+  display: flex;
+  flex-wrap: nowrap;
+  min-width: max-content;
+}
+
+.calendar-single mds-calendar,
+.calendars mds-calendar {
+  flex: 0 0 var(--mds-input-date-range-calendar-width);
+  inline-size: var(--mds-input-date-range-calendar-width);
+  max-inline-size: var(--mds-input-date-range-calendar-width);
+  min-inline-size: var(--mds-input-date-range-calendar-width);
+}
+
 
 .action-open-calendar {
   --mds-button-color: rgb(var(--mds-input-date-range-icon-color));
