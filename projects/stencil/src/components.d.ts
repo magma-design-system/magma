@@ -3119,10 +3119,6 @@ declare global {
         new (): HTMLMdsInputDateElement;
     };
     interface HTMLMdsInputDateRangeElementEventMap {
-        "mdsInputDateRangeSelect": {
-    startDate: string;
-    endDate: string;
-  };
         "mdsInputDateRangeValueChange": {
     startDate: string;
     endDate: string;
@@ -5157,10 +5153,6 @@ declare namespace LocalJSX {
           * Is needed to reference the form data after the form is submitted
          */
         "name"?: string;
-        "onMdsInputDateRangeSelect"?: (event: MdsInputDateRangeCustomEvent<{
-    startDate: string;
-    endDate: string;
-  }>) => void;
         "onMdsInputDateRangeValueChange"?: (event: MdsInputDateRangeCustomEvent<{
     startDate: string;
     endDate: string;
