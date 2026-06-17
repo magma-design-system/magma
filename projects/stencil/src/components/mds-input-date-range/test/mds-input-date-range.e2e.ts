@@ -1,5 +1,20 @@
 import { newE2EPage } from '@stencil/core/testing'
 
+type DateRangeDetail = {
+  startDate: string
+  endDate: string
+}
+
+type DateRangeEvents = {
+  valueChange: DateRangeDetail[]
+}
+
+declare global {
+  interface Window {
+    __dateRangeEvents?: DateRangeEvents
+  }
+}
+
 describe('mds-input-date-range', () => {
   it('renders', async () => {
     const page = await newE2EPage()
@@ -266,8 +281,7 @@ describe('mds-input-date-range', () => {
 
     const selection = await page.$eval('mds-input-date-range', element => {
       const calendars = Array.from(element.shadowRoot?.querySelectorAll('mds-calendar') ?? [])
-      const firstCalendar = calendars[0]
-      const secondCalendar = calendars[1]
+      const [firstCalendar, secondCalendar] = calendars
       const startCell = firstCalendar?.shadowRoot?.querySelector(
         'mds-calendar-cell[date="2026-06-02"]',
       )
@@ -289,5 +303,180 @@ describe('mds-input-date-range', () => {
       endSelection: 'end',
       endPreview: true,
     })
+  })
+
+  it('does not emit selected range when a preselection contains invalid dates', async () => {
+    const page = await newE2EPage()
+    await page.setContent(`
+      <mds-input-date-range>
+        <mds-input-date slot="start"></mds-input-date>
+        <mds-input-date slot="end"></mds-input-date>
+        <mds-input-date-range-preselection start="invalid-date" end="2026-06-08">
+          Intervallo non valido
+        </mds-input-date-range-preselection>
+      </mds-input-date-range>
+    `)
+    await page.waitForChanges()
+
+    await page.$eval('mds-input-date-range', element => {
+      const dateRangeEvents: DateRangeEvents = { valueChange: [] }
+      window.__dateRangeEvents = dateRangeEvents
+
+      element.addEventListener('mdsInputDateRangeValueChange', event => {
+        dateRangeEvents.valueChange.push((event as CustomEvent<DateRangeDetail>).detail)
+      })
+    })
+
+    const openCalendar = await page.find('mds-input-date-range >>> .action-open-calendar')
+    await openCalendar.click()
+    await page.waitForChanges()
+
+    await page.$eval('mds-input-date-range-preselection', element => {
+      const button = element.shadowRoot?.querySelector('.action') as HTMLElement | null
+      button?.click()
+    })
+    await page.waitForChanges()
+
+    const emittedEvents = await page.evaluate(() => {
+      return window.__dateRangeEvents ?? { valueChange: [] }
+    })
+
+    expect(emittedEvents).toEqual({
+      valueChange: [],
+    })
+  })
+
+  it('does not emit value change when the calendar change contains invalid dates', async () => {
+    const page = await newE2EPage()
+    await page.setContent(`
+      <mds-input-date-range>
+        <mds-input-date slot="start"></mds-input-date>
+        <mds-input-date slot="end"></mds-input-date>
+      </mds-input-date-range>
+    `)
+    await page.waitForChanges()
+
+    await page.$eval('mds-input-date-range', element => {
+      const dateRangeEvents: DateRangeEvents = { valueChange: [] }
+      window.__dateRangeEvents = dateRangeEvents
+
+      element.addEventListener('mdsInputDateRangeValueChange', event => {
+        dateRangeEvents.valueChange.push((event as CustomEvent<DateRangeDetail>).detail)
+      })
+    })
+
+    const openCalendar = await page.find('mds-input-date-range >>> .action-open-calendar')
+    await openCalendar.click()
+    await page.waitForChanges()
+
+    await page.$eval('mds-input-date-range', element => {
+      const calendar = element.shadowRoot?.querySelector('mds-calendar')
+
+      calendar?.dispatchEvent(
+        new CustomEvent('mdsCalendarChange', {
+          bubbles: true,
+          composed: true,
+          detail: { startDate: 'invalid-date', endDate: '2026-06-08' },
+        }),
+      )
+    })
+    await page.waitForChanges()
+
+    const emittedEvents = await page.evaluate(() => {
+      return window.__dateRangeEvents ?? { valueChange: [] }
+    })
+    expect(emittedEvents).toEqual({ valueChange: [] })
+  })
+
+  it('does not emit value change on focusout when the range is invalid', async () => {
+    const page = await newE2EPage()
+    await page.setContent(`
+      <mds-input-date-range start-date="invalid-date" end-date="2026-06-08">
+        <mds-input-date slot="start"></mds-input-date>
+        <mds-input-date slot="end"></mds-input-date>
+      </mds-input-date-range>
+    `)
+    await page.waitForChanges()
+
+    await page.$eval('mds-input-date-range', element => {
+      const dateRangeEvents: DateRangeEvents = { valueChange: [] }
+      window.__dateRangeEvents = dateRangeEvents
+
+      element.addEventListener('mdsInputDateRangeValueChange', event => {
+        dateRangeEvents.valueChange.push((event as CustomEvent<DateRangeDetail>).detail)
+      })
+
+      element.dispatchEvent(
+        new FocusEvent('focusout', {
+          bubbles: true,
+          composed: true,
+          relatedTarget: document.body,
+        }),
+      )
+    })
+    await page.waitForChanges()
+
+    const emittedEvents = await page.evaluate(() => {
+      return window.__dateRangeEvents ?? { valueChange: [] }
+    })
+
+    expect(emittedEvents).toEqual({
+      valueChange: [],
+    })
+  })
+
+  it('emits mdsInputDateRangeValueChange only once for the same range after selection and focusout', async () => {
+    const page = await newE2EPage()
+    await page.setContent(`
+      <mds-input-date-range>
+        <mds-input-date slot="start"></mds-input-date>
+        <mds-input-date slot="end"></mds-input-date>
+        <mds-input-date-range-preselection start="2026-06-02" end="2026-06-08">
+          Questa settimana
+        </mds-input-date-range-preselection>
+      </mds-input-date-range>
+    `)
+    await page.waitForChanges()
+
+    await page.$eval('mds-input-date-range', element => {
+      const dateRangeEvents: DateRangeEvents = { valueChange: [] }
+      window.__dateRangeEvents = dateRangeEvents
+
+      element.addEventListener('mdsInputDateRangeValueChange', event => {
+        dateRangeEvents.valueChange.push((event as CustomEvent<DateRangeDetail>).detail)
+      })
+    })
+
+    const openCalendar = await page.find('mds-input-date-range >>> .action-open-calendar')
+    await openCalendar.click()
+    await page.waitForChanges()
+
+    await page.$eval('mds-input-date-range-preselection', element => {
+      const button = element.shadowRoot?.querySelector('.action') as HTMLElement | null
+      button?.click()
+    })
+    await page.waitForChanges()
+
+    await page.$eval('mds-input-date-range', element => {
+      element.dispatchEvent(
+        new FocusEvent('focusout', {
+          bubbles: true,
+          composed: true,
+          relatedTarget: document.body,
+        }),
+      )
+    })
+    await page.waitForChanges()
+
+    const emittedEvents = await page.evaluate(() => {
+      return window.__dateRangeEvents ?? { valueChange: [] }
+    })
+
+    expect(emittedEvents.valueChange).toEqual([
+      {
+        startDate: '2026-06-02',
+        endDate: '2026-06-08',
+      },
+    ])
   })
 })

@@ -3,7 +3,7 @@ import {
   Component,
   Element,
   Host,
-   
+
   h,
   Prop,
   State,
@@ -185,14 +185,42 @@ export class MdsInputDateRange {
     this.syncCalendarsHoverAttributes()
   }
 
-  @Event({ eventName: 'mdsInputDateRangeSelect' }) dateRangeSelected: EventEmitter<{
-    startDate: string;
-    endDate: string;
-  }>
   @Event({ eventName: 'mdsInputDateRangeValueChange' }) valueChanged: EventEmitter<{
     startDate: string;
     endDate: string;
   }>
+
+  private getEmittableDateRangeDetail (): { startDate: string; endDate: string } | null {
+    const startDate = DateTime.fromISO(this.internalStartDate)
+    const endDate = DateTime.fromISO(this.internalEndDate)
+
+    if (!startDate.isValid || !endDate.isValid) {
+      return null
+    }
+
+    return {
+      startDate: this.internalStartDate,
+      endDate: this.internalEndDate,
+    }
+  }
+
+  private emitValueChanged (): boolean {
+    const detail = this.getEmittableDateRangeDetail()
+
+    if (!detail) return false
+
+    if (
+      detail.startDate === this.lastEmittedStartDate &&
+      detail.endDate === this.lastEmittedEndDate
+    ) {
+      return false
+    }
+
+    this.valueChanged.emit(detail)
+    this.lastEmittedStartDate = detail.startDate
+    this.lastEmittedEndDate = detail.endDate
+    return true
+  }
 
   @Watch('startDate')
   handleStartDateChange (newValue: string): void {
@@ -278,10 +306,7 @@ export class MdsInputDateRange {
       this.closeDropdownAfterSelection()
     }
 
-    this.dateRangeSelected.emit({
-      startDate: this.internalStartDate,
-      endDate: this.internalEndDate,
-    })
+    this.emitValueChanged()
     return Promise.resolve()
   }
 
@@ -293,25 +318,8 @@ export class MdsInputDateRange {
       if (startValid && endValid) {
         this.validateDateRange()
         this.syncFormValue()
-
-        this.dateRangeSelected.emit({
-          startDate: this.internalStartDate,
-          endDate: this.internalEndDate,
-        })
-
         this.checkPreselections()
-      }
-
-      if (
-        this.internalStartDate !== this.lastEmittedStartDate ||
-        this.internalEndDate !== this.lastEmittedEndDate
-      ) {
-        this.valueChanged.emit({
-          startDate: this.internalStartDate,
-          endDate: this.internalEndDate,
-        })
-        this.lastEmittedStartDate = this.internalStartDate
-        this.lastEmittedEndDate = this.internalEndDate
+        this.emitValueChanged()
       }
     }
   }
@@ -513,10 +521,7 @@ export class MdsInputDateRange {
     this.syncCalendarsSelectionAttributes()
 
     if (this.internalStartDate && this.internalEndDate) {
-      this.dateRangeSelected.emit({
-        startDate: this.internalStartDate,
-        endDate: this.internalEndDate,
-      })
+      this.emitValueChanged()
       this.closeDropdownAfterSelection()
     }
   }
