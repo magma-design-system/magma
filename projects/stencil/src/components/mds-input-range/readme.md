@@ -35,6 +35,21 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `"track"`  | The element containing the track of the input range                |
 
 
+## CSS Custom Properties
+
+| Name                                                   | Description                                                             |
+| ------------------------------------------------------ | ----------------------------------------------------------------------- |
+| `--mds-input-range-thumb-background`                   | Sets the thumb background color                                         |
+| `--mds-input-range-thumb-background-disabled`          | Sets the thumb background color when the component is disabled          |
+| `--mds-input-range-thumb-cursor`                       | Sets the thumb cursor                                                   |
+| `--mds-input-range-thumb-size`                         | Sets the thumb width and height of the component                        |
+| `--mds-input-range-track-background`                   | Sets the track background color                                         |
+| `--mds-input-range-track-background-disabled`          | Sets the track background color when the component is disabled          |
+| `--mds-input-range-track-progress-background`          | Sets the track progress background color                                |
+| `--mds-input-range-track-progress-background-disabled` | Sets the track progress background color when the component is disabled |
+| `--mds-input-range-track-size`                         | Sets the track width and height                                         |
+
+
 ## Dependencies
 
 ### Depends on

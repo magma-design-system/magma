@@ -30,6 +30,23 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `"content"` |             |
 
 
+## CSS Custom Properties
+
+| Name                                                 | Description                                                                                              |
+| ---------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| `--mds-horizontal-scroll-background`                 | Sets the background-color of the component                                                               |
+| `--mds-horizontal-scroll-behavior`                   | Sets the scroll-behavior animation                                                                       |
+| `--mds-horizontal-scroll-dot-area-background`        | Sets the dot container area color                                                                        |
+| `--mds-horizontal-scroll-dot-background`             | Sets the navigation dot color                                                                            |
+| `--mds-horizontal-scroll-dot-max-width`              | Sets the navigation dot max-width, if you want to avoid is scales in proportion of the container         |
+| `--mds-horizontal-scroll-max-width`                  | Sets the max-width of the slotted elements container, to keep layout limited as the rest of the sections |
+| `--mds-horizontal-scroll-scrollbar-margin`           | Sets the margin of the browser scroll bar (if supported)                                                 |
+| `--mds-horizontal-scroll-scrollbar-radius`           | Sets the border-radius of the browser scroll bar (if supported)                                          |
+| `--mds-horizontal-scroll-scrollbar-size`             | Sets the height and width of the browser scroll bar (if supported)                                       |
+| `--mds-horizontal-scroll-scrollbar-thumb-background` | Sets the background-color of the browser scroll bar thumb (if supported)                                 |
+| `--mds-horizontal-scroll-scrollbar-track-background` | Sets the background-color of the browser scroll bar track (if supported)                                 |
+
+
 ## Dependencies
 
 ### Depends on

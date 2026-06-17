@@ -16,6 +16,14 @@
 | `variant` | `variant` | Specifies the color variant for the button          | `"ai" \| "apple" \| "dark" \| "error" \| "google" \| "info" \| "light" \| "primary" \| "secondary" \| "success" \| "warning" \| undefined` | `'dark'`    |
 
 
+## CSS Custom Properties
+
+| Name                                                | Description                                          |
+| --------------------------------------------------- | ---------------------------------------------------- |
+| `--mds-radial-menu-item-transition-duration`        | Set the transition duration of the menu items        |
+| `--mds-radial-menu-item-transition-timing-function` | Set the transition timing function of the menu items |
+
+
 ## Dependencies
 
 ### Depends on

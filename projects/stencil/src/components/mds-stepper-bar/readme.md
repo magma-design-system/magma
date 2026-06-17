@@ -38,6 +38,13 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `"items"`    | Selects the `items` container element wrapped in shadowDOM.    |
 
 
+## CSS Custom Properties
+
+| Name                                | Description                        |
+| ----------------------------------- | ---------------------------------- |
+| `--mds-stepper-bar-scroll-behavior` | Sets the scroll-behavior animation |
+
+
 ----------------------------------------------
 
 Built with love @ [Gruppo Maggioli](https://www.maggioli.com) from [R&D Department](https://www.maggioli.com/it-it/chi-siamo/ricerca-sviluppo)
