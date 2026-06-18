@@ -3,9 +3,12 @@
 # Called once per package (see <pkg>.release.yml). For the package in
 # `working-directory` it detects the next version from conventional commits
 # (semantic-release dry-run, scoped by `commit-scope`), bumps its package.json
-# (plus any `version-sync-paths`), generates release notes with git-cliff, then
-# tags `<tag-format>`, pushes the bump back to the triggering branch, and creates
-# a GitHub release. Publishing to npm is handled separately by publish.yml.
+# (plus any `version-sync-paths`), pins every internal @maggioli-design-system/*
+# dependency reference to the version currently in the workspace (so e.g. the
+# magma-react/magma-angular -> magma reference and magma -> design-tokens/styles
+# stay consistent without manual edits), generates release notes with git-cliff,
+# then tags `<tag-format>`, pushes the bump back to the triggering branch, and
+# creates a GitHub release. Publishing to npm is handled separately by publish.yml.
 #
 # Uses the automatic GITHUB_TOKEN via `github.token`, so callers do NOT need
 # `secrets: inherit`.
@@ -208,7 +211,7 @@ jobs:
           fi
           echo "----- cliff.toml -----"; cat cliff.toml
 
-      - name: Update version manifest
+      - name: Update version manifest (and pin internal dependency versions)
         if: steps.set-release.outputs.release_version != ''
         env:
           V: ${{ steps.set-release.outputs.release_version }}
@@ -216,15 +219,40 @@ jobs:
           SYNC_PATHS: ${{ inputs.version-sync-paths }}
         run: |
           set -euo pipefail
-          jq --arg v "$V" '.version = $v' "$WD/package.json" > "$WD/package.json.tmp" && mv "$WD/package.json.tmp" "$WD/package.json"
+          setver() { jq --arg v "$V" '.version = $v' "$1" > "$1.tmp" && mv "$1.tmp" "$1"; }
+          MANIFESTS=("$WD/package.json")
+          setver "$WD/package.json"
           echo "Updated $WD/package.json -> $V"
           if [ -n "$SYNC_PATHS" ]; then
             while IFS= read -r f; do
               [ -n "$f" ] || continue
-              jq --arg v "$V" '.version = $v' "$f" > "$f.tmp" && mv "$f.tmp" "$f"
+              setver "$f"
+              MANIFESTS+=("$f")
               echo "Synced $f -> $V"
             done <<< "$SYNC_PATHS"
           fi
+          # Pin internal @maggioli-design-system/* references to the versions currently
+          # in the workspace, so published metadata stays consistent (no manual lockstep,
+          # no leftover prerelease references). The map is built AFTER the bumps above, so
+          # the released package and its companions resolve to $V; everything else resolves
+          # to its current source version. Covers: magma-react/magma-angular -> magma@$V,
+          # magma -> design-tokens/styles, styles -> design-tokens, icons -> svg-icons.
+          # No cascade: a dependency release does not re-release its dependents; they pick
+          # up the new version on their own next release.
+          MAP=$(find projects -name package.json \
+                  -not -path '*/node_modules/*' -not -path '*/dist/*' -not -path '*/deprecated/*' \
+                  -exec jq -c '{(.name): .version}' {} \; | jq -s 'add // {}')
+          echo "internal package map: $MAP"
+          for m in "${MANIFESTS[@]}"; do
+            jq --argjson map "$MAP" '
+              def pin(section):
+                if .[section]
+                then .[section] |= with_entries(if $map[.key] then .value = $map[.key] else . end)
+                else . end;
+              pin("dependencies") | pin("peerDependencies") | pin("optionalDependencies")
+            ' "$m" > "$m.tmp" && mv "$m.tmp" "$m"
+            echo "Pinned internal deps in $m"
+          done
 
       - name: Generate RELEASE_NOTES.md
         if: steps.set-release.outputs.release_version != ''
