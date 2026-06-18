@@ -3,7 +3,7 @@ import alias from '@rollup/plugin-alias';
 import path from 'path';
 import { Config } from '@stencil/core';
 import { inlineSvg } from 'stencil-inline-svg';
-import tailwind, { PluginConfigurationOptions } from 'stencil-tailwind-plugin';
+import tailwind, { PluginConfigurationOptions } from './scripts/tailwind-plugin/src';
 import { reactOutputTarget } from '@stencil/react-output-target';
 import { angularOutputTarget } from '@stencil/angular-output-target';
 import tokenFallbackPlugin from './scripts/postcss-token-fallbacks';
@@ -110,7 +110,7 @@ export const config: Config = {
         { find: /^@meta\/(.*)$/, replacement: path.resolve('.', './src/meta/$1') },
         {
           find: /^@icon\/([a-zA-Z-/]+)\.svg$/,
-          replacement: path.resolve(__dirname, './assets/svg/$1.svg'),
+          replacement: path.resolve('.', './assets/svg/$1.svg'),
         },
         { find: /^@tailwind\/(.*)$/, replacement: path.resolve('.', './src/tailwind/$1') },
         { find: /^@test\/(.+)$/, replacement: path.resolve('.', './src/test/$1') },

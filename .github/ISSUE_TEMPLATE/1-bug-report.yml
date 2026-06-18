@@ -1,0 +1,98 @@
+name: Bug Report
+description: Report a bug in the Maggioli Design System.
+title: '[Bug]: '
+labels: ['type: bug', 'status: triage']
+projects: ['magma-design-system/magma']
+type: bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to file a bug report! Please search
+        [existing issues](https://github.com/magma-design-system/magma/issues)
+        first to avoid duplicates.
+  - type: dropdown
+    id: package
+    attributes:
+      label: Package
+      description: Which package is affected?
+      multiple: true
+      options:
+        - '@maggioli-design-system/magma (stencil components)'
+        - '@maggioli-design-system/styles'
+        - '@maggioli-design-system/design-tokens'
+        - '@maggioli-design-system/icons'
+        - '@maggioli-design-system/svg-icons'
+        - '@maggioli-design-system/identity'
+        - Documentation / Storybook
+        - I am not sure
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Package version
+      description: Which version of the affected package are you running?
+      placeholder: ex. 14.1.0
+    validations:
+      required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: A clear description of the bug.
+      placeholder: Tell us what you see.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: What did you expect to happen instead?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+      description: How can we reproduce the issue? A link to a minimal reproduction ([CodeSandbox](https://codesandbox.io/), [StackBlitz](https://stackblitz.com/), repo) is the fastest way to get this fixed.
+      value: |
+        1.
+        2.
+        3.
+    validations:
+      required: true
+  - type: dropdown
+    id: browsers
+    attributes:
+      label: What browsers are you seeing the problem on?
+      multiple: true
+      options:
+        - Chrome
+        - Firefox
+        - Safari
+        - Microsoft Edge
+        - Not browser related
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant log output
+      description: Copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks.
+      render: shell
+    validations:
+      required: false
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots
+      description: If applicable, add screenshots or a recording to help explain the problem.
+    validations:
+      required: false
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our [Code of Conduct](https://github.com/magma-design-system/magma/blob/main/.github/CODE_OF_CONDUCT.md).
+      options:
+        - label: I agree to follow this project's Code of Conduct
+          required: true
