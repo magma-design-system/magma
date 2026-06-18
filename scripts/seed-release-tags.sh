@@ -23,9 +23,10 @@
 # lockstep by the stencil release workflow and intentionally get no own tag.
 #
 # magma (projects/stencil) is special-cased: it is mid-prerelease (2.0.0-alpha.x), so instead
-# of that version it seeds the last STABLE baseline @maggioli-design-system/magma@1.11.8 at the
-# v1.11.8 commit, giving the `beta` prerelease channel a base to build on. Reaching 2.0.0-beta.N
-# additionally requires a breaking `feat(magma)!:` / `BREAKING CHANGE:` commit on the beta branch.
+# of that version it seeds the last STABLE baseline magma@1.11.8 at TARGET_COMMIT, giving the
+# `beta` prerelease channel a base to build on (and avoiding a stale stable release on main).
+# Reaching 2.0.0-beta.N additionally requires a breaking `feat(magma)!:` / `BREAKING CHANGE:`
+# commit on the beta branch.
 set -euo pipefail
 
 PUSH=false
@@ -65,12 +66,9 @@ for dir in "${PACKAGES[@]}"; do
   version=$(printf '%s' "$json" | jq -r '.version')
   tag_commit="$TARGET_COMMIT"
   if [ "$dir" = "projects/stencil" ]; then
-    # seed the last STABLE magma baseline (see header note), not its 2.0.0-alpha version
+    # seed the last STABLE magma baseline (see header note) at TARGET_COMMIT, not its
+    # 2.0.0-alpha version (prereleases are ignored on main and would restart at 1.0.0)
     version="1.11.8"
-    if ! tag_commit=$(git rev-parse -q --verify "v${version}^{commit}"); then
-      echo "::warning:: v${version} not found, cannot seed magma stable baseline, skipping"
-      continue
-    fi
   fi
   pkg="${name##*/}"   # short name: @maggioli-design-system/design-tokens -> design-tokens
   tag="${pkg}@${version}"
