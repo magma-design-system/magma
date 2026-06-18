@@ -138,6 +138,12 @@ jobs:
           if [ -f release-version.txt ]; then
             VERSION=$(cat release-version.txt)
             TAG=$(printf '%s' "$TAG_FORMAT" | sed "s|\${version}|$VERSION|")
+            # Already-released version (tag exists): graceful no-op, never fail/clean up.
+            if git ls-remote --tags origin "refs/tags/${TAG}" | grep -q .; then
+              echo "Tag ${TAG} already exists on remote -> nothing to release (no-op)"
+              echo "release_version=" >> $GITHUB_OUTPUT
+              exit 0
+            fi
             echo "Detected version: $VERSION -> tag: $TAG"
             echo "release_version=$VERSION" >> $GITHUB_OUTPUT
             echo "release_tag=$TAG" >> $GITHUB_OUTPUT
@@ -245,11 +251,16 @@ jobs:
     needs: release-check
     runs-on: ubuntu-latest
     if: needs.release-check.outputs.release_version != ''
+    outputs:
+      tag_created: ${{ steps.tag.outputs.created }}
     steps:
       - name: Checkout (full)
         uses: actions/checkout@v5
         with:
           fetch-depth: 0
+          # Push with a PAT/App token when provided, so the chore(release) commit triggers
+          # CI -> publish (the default GITHUB_TOKEN does not trigger downstream workflows).
+          token: ${{ secrets.RELEASE_PUSH_TOKEN || github.token }}
 
       - name: Download artifacts from check
         uses: actions/download-artifact@v4
@@ -310,11 +321,14 @@ jobs:
           echo "::error::could not push release commit after 5 attempts"; exit 1
 
       - name: Create and push tag
+        id: tag
         env:
           TAG: ${{ needs.release-check.outputs.release_tag }}
         run: |
           git tag -a "$TAG" -m "Release ${TAG}"
           git push origin "$TAG"
+          # mark that THIS run created the tag, so cleanup only rolls back its own tag
+          echo "created=true" >> "$GITHUB_OUTPUT"
 
       - name: Record release channel (git notes for prerelease continuation)
         env:
@@ -349,12 +363,15 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           GITHUB_TOKEN: ${{ github.token }}
           TAG: ${{ needs.release-check.outputs.release_tag }}
+          VERSION: ${{ needs.release-check.outputs.release_version }}
         run: |
-          gh release create "$TAG" --title "$TAG" --notes-file RELEASE_NOTES.md || {
+          # mark prereleases (versions with a -identifier) as GitHub prereleases
+          case "$VERSION" in *-*) PRE=--prerelease; PREJSON=true ;; *) PRE=; PREJSON=false ;; esac
+          gh release create "$TAG" $PRE --title "$TAG" --notes-file RELEASE_NOTES.md || {
             BODY=$(jq -Rs . RELEASE_NOTES.md)
             curl -s -X POST -H "Authorization: token $GITHUB_TOKEN" \
               -H "Content-Type: application/json" \
-              -d "{\"tag_name\":\"${TAG}\",\"name\":\"${TAG}\",\"body\":$BODY}" \
+              -d "{\"tag_name\":\"${TAG}\",\"name\":\"${TAG}\",\"body\":$BODY,\"prerelease\":$PREJSON}" \
               "https://api.github.com/repos/${{ github.repository }}/releases"
           }
 
@@ -362,7 +379,8 @@ jobs:
     name: Release Cleanup (rollback on failure)
     needs: [release-check, release-finalize]
     runs-on: ubuntu-latest
-    if: ${{ failure() && needs.release-check.outputs.release_version != '' }}
+    # only roll back when THIS run actually created the tag (never delete a pre-existing release)
+    if: ${{ failure() && needs.release-finalize.outputs.tag_created == 'true' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v5

@@ -18,6 +18,7 @@ permissions:
 jobs:
   release:
     uses: ./.github/workflows/semantic-release.yml
+    secrets: inherit
     with:
       working-directory: projects/identity
       tag-format: 'identity@${version}'
