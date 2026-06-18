@@ -1,0 +1,384 @@
+# Reusable semantic-release pipeline for the Magma npm monorepo.
+#
+# Called once per package (see <pkg>.release.yml). For the package in
+# `working-directory` it detects the next version from conventional commits
+# (semantic-release dry-run, scoped by `commit-scope`), bumps its package.json
+# (plus any `version-sync-paths`), generates release notes with git-cliff, then
+# tags `<tag-format>`, pushes the bump back to the triggering branch, and creates
+# a GitHub release. Publishing to npm is handled separately by publish.yml.
+#
+# Uses the automatic GITHUB_TOKEN via `github.token`, so callers do NOT need
+# `secrets: inherit`.
+#
+# Inputs:
+#   - working-directory: dir holding the package's package.json.
+#   - tag-format: semantic-release tagFormat AND the git tag created
+#     (e.g. 'design-tokens@${version}'); must contain ${version} exactly once.
+#   - commit-scope: '|'-separated conventional-commit scope tokens (globs
+#     allowed, e.g. 'magma|stencil|mds-*'); only commits whose scope matches
+#     drive the bump and appear in the release notes. Empty = no filtering.
+#   - version-sync-paths: extra package.json files bumped to the same version
+#     (e.g. companion packages kept in lockstep).
+#   - branches: semantic-release branches config (JSON); stable + prerelease channels.
+name: Reusable Semantic Release Pipeline
+
+on:
+  workflow_call:
+    inputs:
+      semantic-release-version:
+        type: string
+        required: false
+        default: '25.0.3'
+      sr-commit-analyzer-version:
+        type: string
+        required: false
+        default: '13.0.1'
+      conventional-changelog-version:
+        type: string
+        required: false
+        default: '9.1.0'
+      sr-exec-version:
+        type: string
+        required: false
+        default: '7.1.0'
+      git-cliff-version:
+        type: string
+        required: false
+        default: '2.13.1'
+      branches:
+        description: semantic-release branches config as a JSON array (stable branch + prerelease channels)
+        type: string
+        required: false
+        default: '["main", {"name": "beta", "prerelease": true}]'
+      working-directory:
+        description: Directory holding the package manifest (version is read/written here)
+        type: string
+        required: false
+        default: '.'
+      tag-format:
+        description: semantic-release tagFormat and the git tag to create; must contain ${version} once
+        type: string
+        required: false
+        default: 'v${version}'
+      commit-scope:
+        description: "'|'-separated conventional-commit scope tokens (globs allowed); empty = no scope filtering"
+        type: string
+        required: false
+        default: ''
+      version-sync-paths:
+        description: Extra package.json files (one per line) bumped to the same version
+        type: string
+        required: false
+        default: ''
+
+permissions:
+  contents: write
+
+jobs:
+  release-check:
+    name: Release Check (detect version & changelog)
+    runs-on: ubuntu-latest
+    outputs:
+      release_version: ${{ steps.set-release.outputs.release_version }}
+      release_tag: ${{ steps.set-release.outputs.release_tag }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Fetch release-channel notes
+        # semantic-release tracks which channel (default/beta/…) each tag was released
+        # to in refs/notes/semantic-release; fetch them so the dry-run sees them.
+        run: git fetch origin "refs/notes/semantic-release:refs/notes/semantic-release" 2>/dev/null || true
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+
+      - name: Install semantic-release (local, no-save)
+        run: |
+          npm install --no-save \
+            semantic-release@${{ inputs.semantic-release-version }} \
+            @semantic-release/commit-analyzer@${{ inputs.sr-commit-analyzer-version }} \
+            @semantic-release/exec@${{ inputs.sr-exec-version }} \
+            conventional-changelog-conventionalcommits@${{ inputs.conventional-changelog-version }}
+
+      - name: Generate semantic-release dry-run config
+        env:
+          SR_BRANCHES: ${{ inputs.branches }}
+          SR_TAG_FORMAT: ${{ inputs.tag-format }}
+          SR_COMMIT_SCOPE: ${{ inputs.commit-scope }}
+        run: |
+          cat > release-version.config.cjs <<'EOF'
+          // Values come from the environment so the file needs no shell/Actions
+          // interpolation (keeps ${version}/${nextRelease.version} intact).
+          const scope = process.env.SR_COMMIT_SCOPE;
+          // A single negated catch-all marks every out-of-scope commit as
+          // non-releasing; in-scope commits fall through to the preset defaults
+          // (feat -> minor, fix/perf -> patch, breaking -> major).
+          const releaseRules = scope ? [{ scope: `!(${scope})`, release: false }] : [];
+          module.exports = {
+            branches: JSON.parse(process.env.SR_BRANCHES),
+            tagFormat: process.env.SR_TAG_FORMAT,
+            plugins: [
+              ['@semantic-release/commit-analyzer', { preset: 'conventionalcommits', releaseRules }],
+              ['@semantic-release/exec', {
+                verifyReleaseCmd: 'echo "${nextRelease.version}" > release-version.txt'
+              }]
+            ]
+          };
+          EOF
+
+      - name: Run semantic-release --dry-run to detect next version
+        run: |
+          set -o pipefail
+          npx semantic-release -e ./release-version.config.cjs --dry-run || true
+
+      - name: Read detected version
+        id: set-release
+        env:
+          TAG_FORMAT: ${{ inputs.tag-format }}
+        run: |
+          if [ -f release-version.txt ]; then
+            VERSION=$(cat release-version.txt)
+            TAG=$(printf '%s' "$TAG_FORMAT" | sed "s|\${version}|$VERSION|")
+            echo "Detected version: $VERSION -> tag: $TAG"
+            echo "release_version=$VERSION" >> $GITHUB_OUTPUT
+            echo "release_tag=$TAG" >> $GITHUB_OUTPUT
+          else
+            echo "No release detected, exiting"
+            echo "release_version=" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+      - name: Install git-cliff
+        if: steps.set-release.outputs.release_version != ''
+        run: |
+          curl -sL "https://github.com/orhun/git-cliff/releases/download/v${{ inputs.git-cliff-version }}/git-cliff-${{ inputs.git-cliff-version }}-x86_64-unknown-linux-musl.tar.gz" | tar xz
+          mv git-cliff-*/git-cliff /usr/local/bin/
+          git-cliff --version
+
+      - name: Generate cliff.toml
+        if: steps.set-release.outputs.release_version != ''
+        env:
+          TAG_FORMAT: ${{ inputs.tag-format }}
+          COMMIT_SCOPE: ${{ inputs.commit-scope }}
+        run: |
+          # tag_pattern bounds the changelog to this package's own tags.
+          PREFIX="${TAG_FORMAT%'${version}'}"
+          TAG_PATTERN="${PREFIX}[0-9].*"
+          if [ -n "$COMMIT_SCOPE" ]; then
+            # Rust regex has no lookahead, so keep in-scope commits per type and
+            # skip the rest. Glob '*' -> regex '[^)]*' for the scope alternation.
+            CLIFF_SCOPE=$(printf '%s' "$COMMIT_SCOPE" | sed 's/\*/[^)]*/g')
+            cat > cliff.toml <<'CLIFF'
+          [changelog]
+          trim = true
+          [git]
+          conventional_commits = true
+          filter_unconventional = true
+          filter_commits = true
+          tag_pattern = "__TAGPATTERN__"
+          commit_parsers = [
+            { message = "^feat\\((__SCOPES__)\\)", group = "Features" },
+            { message = "^fix\\((__SCOPES__)\\)", group = "Bug Fixes" },
+            { message = "^hotfix\\((__SCOPES__)\\)", group = "Bug Fixes" },
+            { message = "^perf\\((__SCOPES__)\\)", group = "Performance" },
+            { message = "^refactor\\((__SCOPES__)\\)", group = "Refactor" },
+            { message = "^change\\((__SCOPES__)\\)", group = "Changes" },
+            { message = "^docs\\((__SCOPES__)\\)", group = "Documentation" },
+            { message = "^build\\((__SCOPES__)\\)", group = "Build" },
+            { message = "^style\\((__SCOPES__)\\)", group = "Styling" },
+            { message = ".*", skip = true },
+          ]
+          CLIFF
+            sed -i "s|__TAGPATTERN__|$TAG_PATTERN|g; s/__SCOPES__/$CLIFF_SCOPE/g" cliff.toml
+          else
+            cat > cliff.toml <<'CLIFF'
+          [changelog]
+          trim = true
+          [git]
+          conventional_commits = true
+          filter_unconventional = true
+          tag_pattern = "__TAGPATTERN__"
+          CLIFF
+            sed -i "s|__TAGPATTERN__|$TAG_PATTERN|g" cliff.toml
+          fi
+          echo "----- cliff.toml -----"; cat cliff.toml
+
+      - name: Update version manifest
+        if: steps.set-release.outputs.release_version != ''
+        env:
+          V: ${{ steps.set-release.outputs.release_version }}
+          WD: ${{ inputs.working-directory }}
+          SYNC_PATHS: ${{ inputs.version-sync-paths }}
+        run: |
+          set -euo pipefail
+          jq --arg v "$V" '.version = $v' "$WD/package.json" > "$WD/package.json.tmp" && mv "$WD/package.json.tmp" "$WD/package.json"
+          echo "Updated $WD/package.json -> $V"
+          if [ -n "$SYNC_PATHS" ]; then
+            while IFS= read -r f; do
+              [ -n "$f" ] || continue
+              jq --arg v "$V" '.version = $v' "$f" > "$f.tmp" && mv "$f.tmp" "$f"
+              echo "Synced $f -> $V"
+            done <<< "$SYNC_PATHS"
+          fi
+
+      - name: Generate RELEASE_NOTES.md
+        if: steps.set-release.outputs.release_version != ''
+        env:
+          TAG: ${{ steps.set-release.outputs.release_tag }}
+        run: |
+          git-cliff --offline --tag "$TAG" --unreleased --strip header > RELEASE_NOTES.md || true
+          echo "RELEASE_NOTES generated"
+
+      - name: Upload artifacts (manifests & release notes)
+        if: steps.set-release.outputs.release_version != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-artifacts
+          if-no-files-found: ignore
+          path: |
+            ${{ inputs.working-directory }}/package.json
+            ${{ inputs.version-sync-paths }}
+            RELEASE_NOTES.md
+            release-version.txt
+
+  release-finalize:
+    name: Release Finalize (tag, push, create release)
+    needs: release-check
+    runs-on: ubuntu-latest
+    if: needs.release-check.outputs.release_version != ''
+    steps:
+      - name: Checkout (full)
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Download artifacts from check
+        uses: actions/download-artifact@v4
+        with:
+          name: release-artifacts
+          path: .
+
+      - name: Configure git user
+        run: |
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+
+      - name: Preflight checks
+        env:
+          TAG: ${{ needs.release-check.outputs.release_tag }}
+        run: |
+          if git ls-remote --tags origin "refs/tags/${TAG}" | grep -q .; then
+            echo "::error::Tag ${TAG} already exists on remote"; exit 1
+          fi
+
+      - name: Stage updated manifests
+        env:
+          WD: ${{ inputs.working-directory }}
+          SYNC_PATHS: ${{ inputs.version-sync-paths }}
+        run: |
+          [ -f "$WD/package.json" ] && git add "$WD/package.json"
+          if [ -n "$SYNC_PATHS" ]; then
+            while IFS= read -r f; do
+              [ -n "$f" ] || continue
+              [ -f "$f" ] && git add "$f" || true
+            done <<< "$SYNC_PATHS"
+          fi
+
+      - name: Commit release changes if any
+        env:
+          TAG: ${{ needs.release-check.outputs.release_tag }}
+        run: |
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore(release): ${TAG}"
+          fi
+
+      - name: Push release commit (rebase-retry for concurrent monorepo releases)
+        env:
+          BRANCH: ${{ github.ref_name }}
+        run: |
+          # Concurrent package releases each touch only their own manifest, so
+          # rebasing onto the latest branch tip never conflicts.
+          for i in 1 2 3 4 5; do
+            if git push origin "HEAD:${BRANCH}"; then
+              echo "Pushed on attempt $i"; exit 0
+            fi
+            echo "::warning::push rejected, fetching & rebasing onto origin/${BRANCH} (attempt $i)"
+            git fetch origin "$BRANCH"
+            git rebase "origin/${BRANCH}"
+          done
+          echo "::error::could not push release commit after 5 attempts"; exit 1
+
+      - name: Create and push tag
+        env:
+          TAG: ${{ needs.release-check.outputs.release_tag }}
+        run: |
+          git tag -a "$TAG" -m "Release ${TAG}"
+          git push origin "$TAG"
+
+      - name: Record release channel (git notes for prerelease continuation)
+        env:
+          TAG: ${{ needs.release-check.outputs.release_tag }}
+          VERSION: ${{ needs.release-check.outputs.release_version }}
+        run: |
+          # Only prereleases need a channel note; stable releases use default-channel
+          # inference. semantic-release maps the channel to the prerelease identifier
+          # (e.g. 2.0.0-beta.1 -> "beta"); without the note it cannot continue the
+          # prerelease counter and would recompute the same version (tag collision).
+          case "$VERSION" in
+            *-*) ID="${VERSION#*-}"; ID="${ID%%.*}" ;;
+            *) echo "stable release, no channel note needed"; exit 0 ;;
+          esac
+          NOTE="{\"channels\":[\"${ID}\"]}"
+          git fetch origin "refs/notes/semantic-release:refs/notes/semantic-release" 2>/dev/null || true
+          git notes --ref=semantic-release add -f -m "$NOTE" "${TAG}^{commit}"
+          # the notes ref is shared across packages/channels: fetch-merge-retry on reject
+          for i in 1 2 3 4 5; do
+            if git push origin "refs/notes/semantic-release"; then
+              echo "notes pushed on attempt $i"; exit 0
+            fi
+            echo "::warning::notes push rejected, merging remote notes (attempt $i)"
+            git fetch origin "refs/notes/semantic-release:refs/notes/semantic-release-remote" 2>/dev/null || true
+            git notes --ref=semantic-release merge -s cat_sort_uniq refs/notes/semantic-release-remote 2>/dev/null || true
+            git update-ref -d refs/notes/semantic-release-remote 2>/dev/null || true
+          done
+          echo "::error::could not push semantic-release notes after retries"; exit 1
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ github.token }}
+          TAG: ${{ needs.release-check.outputs.release_tag }}
+        run: |
+          gh release create "$TAG" --title "$TAG" --notes-file RELEASE_NOTES.md || {
+            BODY=$(jq -Rs . RELEASE_NOTES.md)
+            curl -s -X POST -H "Authorization: token $GITHUB_TOKEN" \
+              -H "Content-Type: application/json" \
+              -d "{\"tag_name\":\"${TAG}\",\"name\":\"${TAG}\",\"body\":$BODY}" \
+              "https://api.github.com/repos/${{ github.repository }}/releases"
+          }
+
+  release-cleanup:
+    name: Release Cleanup (rollback on failure)
+    needs: [release-check, release-finalize]
+    runs-on: ubuntu-latest
+    if: ${{ failure() && needs.release-check.outputs.release_version != '' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Remove tag and release if present
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ needs.release-check.outputs.release_tag }}
+        run: |
+          git push --delete origin "$TAG" || echo "Tag $TAG not found on remote"
+          gh release delete "$TAG" --yes || echo "Release $TAG not found"
