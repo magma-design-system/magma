@@ -4,7 +4,7 @@
   "peerDependencies": {
     "@angular/common": "^18.2.0",
     "@angular/core": "^18.2.0",
-    "@maggioli-design-system/magma": "2.0.0-alpha.1"
+    "@maggioli-design-system/magma": "2.0.0-beta.1"
   },
   "dependencies": {
     "tslib": "^2.3.0"
