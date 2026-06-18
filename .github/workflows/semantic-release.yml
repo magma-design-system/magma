@@ -19,7 +19,7 @@
 #     drive the bump and appear in the release notes. Empty = no filtering.
 #   - version-sync-paths: extra package.json files bumped to the same version
 #     (e.g. companion packages kept in lockstep).
-#   - branches: semantic-release branches config (JSON); stable + prerelease channels.
+# Release branches are fixed: main (stable) + beta (prerelease channel).
 name: Reusable Semantic Release Pipeline
 
 on:
@@ -45,11 +45,6 @@ on:
         type: string
         required: false
         default: '2.13.1'
-      branches:
-        description: semantic-release branches config as a JSON array (stable branch + prerelease channels)
-        type: string
-        required: false
-        default: '["main", {"name": "beta", "prerelease": true}]'
       working-directory:
         description: Directory holding the package manifest (version is read/written here)
         type: string
@@ -107,7 +102,6 @@ jobs:
 
       - name: Generate semantic-release dry-run config
         env:
-          SR_BRANCHES: ${{ inputs.branches }}
           SR_TAG_FORMAT: ${{ inputs.tag-format }}
           SR_COMMIT_SCOPE: ${{ inputs.commit-scope }}
         run: |
@@ -120,7 +114,7 @@ jobs:
           // (feat -> minor, fix/perf -> patch, breaking -> major).
           const releaseRules = scope ? [{ scope: `!(${scope})`, release: false }] : [];
           module.exports = {
-            branches: JSON.parse(process.env.SR_BRANCHES),
+            branches: ['main', { name: 'beta', prerelease: true }],
             tagFormat: process.env.SR_TAG_FORMAT,
             plugins: [
               ['@semantic-release/commit-analyzer', { preset: 'conventionalcommits', releaseRules }],
@@ -134,7 +128,7 @@ jobs:
       - name: Run semantic-release --dry-run to detect next version
         run: |
           set -o pipefail
-          npx semantic-release -e ./release-version.config.cjs --dry-run || true
+          npx semantic-release -e ./release-version.config.cjs --dry-run
 
       - name: Read detected version
         id: set-release
