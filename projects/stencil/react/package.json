@@ -1,6 +1,6 @@
 {
   "name": "@maggioli-design-system/magma-react",
-  "version": "2.0.0-alpha.1",
+  "version": "2.0.0-beta.1",
   "main": "dist/components.js",
   "module": "dist/components.js",
   "types": "dist/types/components.d.ts",
