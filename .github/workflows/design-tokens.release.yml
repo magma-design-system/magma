@@ -1,0 +1,25 @@
+# Release pipeline for @maggioli-design-system/design-tokens.
+# Detects the next version from conventional commits scoped `design-tokens`,
+# bumps projects/design-tokens/package.json, tags it and creates the GitHub
+# release. The version bump commit then triggers CI -> publish.yml (npm).
+name: design-tokens release
+
+on:
+  push:
+    branches: [main]
+
+concurrency:
+  group: release-design-tokens
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    uses: ./.github/workflows/semantic-release.yml
+    secrets: inherit
+    with:
+      working-directory: projects/design-tokens
+      tag-format: 'design-tokens@${version}'
+      commit-scope: design-tokens

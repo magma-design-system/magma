@@ -2,7 +2,7 @@ name: stencil
 
 on:
   push:
-    branches: [dev, main]
+    branches: [dev, main, beta]
   pull_request:
 
 jobs:

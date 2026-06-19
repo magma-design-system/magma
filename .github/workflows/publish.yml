@@ -13,7 +13,8 @@ on:
   workflow_run:
     workflows: [design-tokens, icons, identity, styles, svg-icons, stencil]
     types: [completed]
-    branches: [main]
+    # main = stable releases; beta = magma prerelease channel (2.0.0-beta.N -> npm dist-tag 'beta')
+    branches: [main, beta]
   workflow_dispatch:
     inputs:
       package:

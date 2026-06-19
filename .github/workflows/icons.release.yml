@@ -1,0 +1,25 @@
+# Release pipeline for @maggioli-design-system/icons.
+# Detects the next version from conventional commits scoped `icons`,
+# bumps projects/icons/package.json, tags it and creates the GitHub release.
+# The version bump commit then triggers CI -> publish.yml (npm).
+name: icons release
+
+on:
+  push:
+    branches: [main]
+
+concurrency:
+  group: release-icons
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    uses: ./.github/workflows/semantic-release.yml
+    secrets: inherit
+    with:
+      working-directory: projects/icons
+      tag-format: 'icons@${version}'
+      commit-scope: icons

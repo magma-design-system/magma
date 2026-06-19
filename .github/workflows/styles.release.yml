@@ -1,0 +1,25 @@
+# Release pipeline for @maggioli-design-system/styles.
+# Detects the next version from conventional commits scoped `styles`,
+# bumps projects/styles/package.json, tags it and creates the GitHub release.
+# The version bump commit then triggers CI -> publish.yml (npm).
+name: styles release
+
+on:
+  push:
+    branches: [main]
+
+concurrency:
+  group: release-styles
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    uses: ./.github/workflows/semantic-release.yml
+    secrets: inherit
+    with:
+      working-directory: projects/styles
+      tag-format: 'styles@${version}'
+      commit-scope: styles
