@@ -27,6 +27,7 @@ jest.spyOn(global, 'fetch').mockImplementation((src: string) => {
 
 import { newSpecPage, SpecPage } from '@stencil/core/testing';
 import { MdsIcon } from '../mds-icon';
+import { IconsSetService } from '../services/icons-set.service';
 
 describe('mds-icon', () => {
   let page: SpecPage;
@@ -57,6 +58,18 @@ describe('mds-icon', () => {
     expect(mdsicon).not.toBeNull();
 
     const svg = mdsicon?.shadowRoot?.querySelector('svg');
+    expect(svg).not.toBeNull();
+  });
+
+  it('renders when the path is set via IconsSetService.setSvgPath (no sessionStorage)', async () => {
+    // IconsSetService is the same singleton every <mds-icon> uses; setting the path on it
+    // drives rendering entirely in memory, without touching sessionStorage.
+    IconsSetService.setSvgPath('/assets/svg/');
+
+    await page.setContent('<mds-icon name="mdi/alien"></mds-icon>');
+    await page.waitForChanges();
+
+    const svg = page.body.querySelector('mds-icon')?.shadowRoot?.querySelector('svg');
     expect(svg).not.toBeNull();
   });
 
