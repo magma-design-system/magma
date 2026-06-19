@@ -429,6 +429,7 @@ Type: `Promise<void>`
 | Part             | Description                                                |
 | ---------------- | ---------------------------------------------------------- |
 | `"action-close"` | Selects the close button of the modal.                     |
+| `"dialog"`       |                                                            |
 | `"window"`       | Selects the default window element of the modal when used. |
 
 

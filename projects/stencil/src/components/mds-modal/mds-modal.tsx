@@ -36,6 +36,7 @@ import miBaselineClose from '@icon/mi/baseline/close.svg';
 })
 export class MdsModal {
   private animationDelayTimeout: NodeJS.Timeout;
+  private dialogEl?: HTMLDialogElement;
   private window = false;
   private top = false;
   private bodyOverflow: string;
@@ -225,6 +226,14 @@ export class MdsModal {
       this.addMobileEvents();
     }
     this.updateCSSCustomProps();
+
+    // The `opened` watcher does not fire for the initial value, so open the
+    // native dialog here when the component mounts already open.
+    if (this.opened) {
+      this.showDialog();
+      this.animateOpenWindow();
+      this.openEvent.emit();
+    }
   }
 
   disconnectedCallback(): void {
@@ -236,34 +245,68 @@ export class MdsModal {
     this.enableOverflow();
   }
 
-  private closeModal = (e: Event, force?: boolean): void => {
-    if (!force) {
-      if (this.interaction === 'strict') return;
-      if ((e.target as HTMLElement)?.localName !== 'mds-modal') {
-        return;
-      }
+  private showDialog = (): void => {
+    if (!this.dialogEl || this.dialogEl.open) {
+      return;
     }
-    this.opened = e.target !== e.currentTarget;
-    if (!this.opened) {
-      this.closeEvent.emit();
+    // `showModal()` promotes the dialog to the top layer, traps focus and inerts
+    // the page. `show()` keeps it non-modal so the page behind stays interactive,
+    // preserving the legacy `backdrop=false` click-through behaviour.
+    if (this.backdrop) {
+      this.dialogEl.showModal();
+    } else {
+      this.dialogEl.show();
     }
   };
 
+  private closeDialog = (): void => {
+    if (this.dialogEl?.open) {
+      this.dialogEl.close();
+    }
+  };
+
+  private handleBackdropClick = (e: Event): void => {
+    if (this.interaction === 'strict') {
+      return;
+    }
+    // A click whose target is the dialog itself (not its window contents) is a
+    // click on the backdrop area.
+    if (e.target === this.dialogEl) {
+      this.opened = undefined;
+    }
+  };
+
+  private handleCancel = (e: Event): void => {
+    // Take over the native Esc dismissal so `strict` can veto it (and, later, so
+    // the outro animation can play).
+    e.preventDefault();
+    if (this.interaction === 'strict') {
+      return;
+    }
+    this.opened = undefined;
+  };
+
   @Watch('opened')
-  handleOpenProp(newValue: boolean): void {
+  handleOpenProp(newValue: boolean, oldValue?: boolean): void {
     if (newValue) {
       if (this.overflow === 'auto') {
         this.disableOverflow();
       }
+      this.showDialog();
       this.animateOpenWindow();
       this.openEvent.emit();
       return;
     }
+    if (!oldValue) {
+      return;
+    }
     this.opened = undefined;
+    this.closeDialog();
     if (this.overflow === 'auto') {
       this.enableOverflow();
     }
     this.animateCloseWindow();
+    this.closeEvent.emit();
   }
 
   @Watch('backdrop')
@@ -280,48 +323,55 @@ export class MdsModal {
 
   render() {
     return (
-      <Host
-        aria-modal={clsx(this.opened ? 'true' : 'false')}
-        onMouseDown={(e: Event) => {
-          this.closeModal(e);
-        }}
-      >
-        {this.window ? (
-          <slot name="window" />
-        ) : (
-          <div class="window" part="window">
-            <div class={clsx('window-header', this.top ? '' : 'window-content--empty')}>
-              <slot name="top" />
-            </div>
-            <div class="window-content-wrapper">
-              <div
-                class="window-content"
-                style={{
-                  paddingTop: `${this.windowHeaderHeight}px`,
-                  paddingBottom: `${this.windowFooterHeight}px`,
-                }}
-              >
-                <slot />
+      <Host>
+        <dialog
+          class="dialog"
+          part="dialog"
+          ref={(el?: HTMLElement) => (this.dialogEl = el as HTMLDialogElement)}
+          onClick={(e: Event) => {
+            this.handleBackdropClick(e);
+          }}
+          onCancel={(e: Event) => {
+            this.handleCancel(e);
+          }}
+        >
+          {this.window ? (
+            <slot name="window" />
+          ) : (
+            <div class="window" part="window">
+              <div class={clsx('window-header', this.top ? '' : 'window-content--empty')}>
+                <slot name="top" />
+              </div>
+              <div class="window-content-wrapper">
+                <div
+                  class="window-content"
+                  style={{
+                    paddingTop: `${this.windowHeaderHeight}px`,
+                    paddingBottom: `${this.windowFooterHeight}px`,
+                  }}
+                >
+                  <slot />
+                </div>
+              </div>
+              <div class={clsx('window-footer', this.bottom ? '' : 'window-content--empty')}>
+                <slot name="bottom" />
               </div>
             </div>
-            <div class={clsx('window-footer', this.bottom ? '' : 'window-content--empty')}>
-              <slot name="bottom" />
-            </div>
-          </div>
-        )}
-        {!this.window && (
-          <mds-button
-            class="action-close"
-            icon={miBaselineClose}
-            variant="light"
-            tone="text"
-            size="xl"
-            onClick={(e: Event) => {
-              this.closeModal(e, true);
-            }}
-            part="action-close"
-          ></mds-button>
-        )}
+          )}
+          {!this.window && (
+            <mds-button
+              class="action-close"
+              icon={miBaselineClose}
+              variant="light"
+              tone="text"
+              size="xl"
+              onClick={() => {
+                this.opened = undefined;
+              }}
+              part="action-close"
+            ></mds-button>
+          )}
+        </dialog>
       </Host>
     );
   }

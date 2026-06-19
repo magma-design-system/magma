@@ -129,21 +129,51 @@
   --private-modal-transition-window-transform: translate(0);
   --private-modal-window-close-margin: --spacing(2000);
 
-  @apply ease-in-out-quint;
+  /* The host is a layout-neutral wrapper; the native <dialog> is the overlay. */
+  display: contents;
+}
 
+/*
+ * The native dialog is the overlay: full-viewport flex container that centers
+ * the window and (for now) carries the dim backdrop. Promoted to the top layer
+ * by showModal(). Step 1.1 has NO transitions on purpose - the window appears
+ * and disappears instantly; animation is added in step 1.2.
+ */
+
+.dialog {
   align-items: center;
-  background-color: rgb(var(--mds-modal-overlay-color) / 0);
-  display: flex;
+  background-color: transparent;
+  border: 0;
+  box-sizing: border-box;
+  display: none;
   fill: rgb(var(--tone-neutral));
+  height: auto;
   inset: 0;
   justify-content: center;
+  margin: 0;
+  max-height: none;
+  max-width: none;
+  padding: 0;
   perspective: 600px;
-  pointer-events: none;
   position: fixed;
-  transition-duration: var(--mds-modal-transition-duration);
-  transition-property: background-color;
-  transition-timing-function: var(--mds-modal-transition-timing-funciton);
+  width: auto;
   z-index: var(--mds-modal-z-index, 1000);
+}
+
+.dialog[open] {
+  display: flex;
+}
+
+/* Suppress the user-agent backdrop; the dim is painted on the dialog itself. */
+
+.dialog::backdrop {
+  background-color: transparent;
+}
+
+/* backdrop=false: keep the page behind interactive (legacy click-through). */
+
+:host(:not([backdrop])) .dialog {
+  pointer-events: none;
 }
 
 @import './css/mds-modal-action-close.css';

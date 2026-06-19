@@ -1,6 +1,6 @@
-:host([opened][backdrop]) {
-  --private-modal-transition-window-transform: none;
+/* Dim painted on the dialog background while open with [backdrop] set.
+ * (Moves to the native ::backdrop in phase 2.) */
 
+:host([backdrop]) .dialog[open] {
   background-color: rgb(var(--mds-modal-overlay-color) / var(--mds-modal-overlay-opacity));
-  pointer-events: auto;
 }

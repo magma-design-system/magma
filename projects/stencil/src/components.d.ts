@@ -4309,8 +4309,6 @@ declare global {
     }
 }
 declare namespace LocalJSX {
-    type OneOf<K extends string, PropT, AttrT = PropT> = { [P in K]: PropT } & { [P in `attr:${K}` | `prop:${K}`]?: never } | { [P in `attr:${K}`]: AttrT } & { [P in K | `prop:${K}`]?: never } | { [P in `prop:${K}`]: PropT } & { [P in K | `attr:${K}`]?: never };
-
     interface MdsAccordion {
         /**
           * Specifies if an item can be closed by user
@@ -4654,10 +4652,6 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
-          * The `id` of a `<form>` element to associate this element with.
-         */
-        "form"?: string;
-        /**
           * Specifies the URL target of the button
          */
         "href"?: string;
@@ -4674,10 +4668,6 @@ declare namespace LocalJSX {
           * The label of the button
          */
         "label"?: string;
-        /**
-          * The name of the element, used when submitting an HTML form.
-         */
-        "name"?: string;
         /**
           * Specifies the size for the button
           * @default 'md'
@@ -5388,10 +5378,6 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
-          * The `id` of a `<form>` element to associate this element with.
-         */
-        "form"?: string;
-        /**
           * An icon displayed at the right of the input
          */
         "icon"?: string;
@@ -5503,10 +5489,6 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
-          * The `id` of a `<form>` element to associate this element with.
-         */
-        "form"?: string;
-        /**
           * Specifies the max date of the range, user cannot set dates after this date
           * @description It's in ISO format (YYYY-MM-DD).
           * @default null
@@ -5557,19 +5539,11 @@ declare namespace LocalJSX {
          */
         "delay"?: number;
         /**
-          * If `true`, the user cannot interact with the element.
-         */
-        "disabled"?: boolean;
-        /**
           * Specifies the end date of the range
           * @description It's in ISO format (YYYY-MM-DD).
           * @default ''
          */
         "endDate"?: string;
-        /**
-          * The `id` of a `<form>` element to associate this element with.
-         */
-        "form"?: string;
         /**
           * Specifies the max date of the range, user cannot set dates after this date
           * @description It's in ISO format (YYYY-MM-DD).
@@ -5617,14 +5591,6 @@ declare namespace LocalJSX {
     }
     interface MdsInputField {
         /**
-          * If `true`, the user cannot interact with the element.
-         */
-        "disabled"?: boolean;
-        /**
-          * The `id` of a `<form>` element to associate this element with.
-         */
-        "form"?: string;
-        /**
           * Display a text on the top of the input text field
          */
         "label"?: string;
@@ -5632,10 +5598,6 @@ declare namespace LocalJSX {
           * Display a message at the bottom of the input text field
          */
         "message"?: string;
-        /**
-          * The name of the element, used when submitting an HTML form.
-         */
-        "name"?: string;
         /**
           * Display the variant of a message at the bottom of the input text field
           * @default 'primary'
@@ -5649,22 +5611,10 @@ declare namespace LocalJSX {
          */
         "autosubmit"?: boolean;
         /**
-          * If `true`, the user cannot interact with the element.
-         */
-        "disabled"?: boolean;
-        /**
-          * The `id` of a `<form>` element to associate this element with.
-         */
-        "form"?: string;
-        /**
           * Number of digits in the OTP code
           * @default 6
          */
         "length"?: number;
-        /**
-          * The name of the element, used when submitting an HTML form.
-         */
-        "name"?: string;
         /**
           * The current value of the OTP code
           * @default ''
@@ -5676,10 +5626,6 @@ declare namespace LocalJSX {
           * Sets if the component is disabled
          */
         "disabled"?: boolean;
-        /**
-          * The `id` of a `<form>` element to associate this element with.
-         */
-        "form"?: string;
         /**
           * A function to custom how value is represented
          */
@@ -5730,10 +5676,6 @@ declare namespace LocalJSX {
           * @default false
          */
         "disabled"?: boolean;
-        /**
-          * The `id` of a `<form>` element to associate this element with.
-         */
-        "form"?: string;
         /**
           * Specifies if the select should allow multiple options to be selected in the list
           * @default false
@@ -5788,10 +5730,6 @@ declare namespace LocalJSX {
           * Sets if the type switch mode shows explicit icons
          */
         "explicit"?: boolean;
-        /**
-          * The `id` of a `<form>` element to associate this element with.
-         */
-        "form"?: string;
         /**
           * The checked icon displayed
           * @default ''
@@ -5865,14 +5803,6 @@ declare namespace LocalJSX {
          */
         "accept"?: string;
         /**
-          * If `true`, the user cannot interact with the element.
-         */
-        "disabled"?: boolean;
-        /**
-          * The `id` of a `<form>` element to associate this element with.
-         */
-        "form"?: string;
-        /**
           * Specifies initial files uploaded
          */
         "initialValue"?: FileList | File[];
@@ -5886,10 +5816,6 @@ declare namespace LocalJSX {
           * @default 1
          */
         "maxFiles"?: number;
-        /**
-          * The name of the element, used when submitting an HTML form.
-         */
-        "name"?: string;
         /**
           * Emits when the component files are changed
          */
@@ -7108,798 +7034,120 @@ declare namespace LocalJSX {
     }
     interface MdsZero {
     }
-
-    interface MdsAccordionAttributes {
-        "multiple": boolean;
-        "closable": boolean;
-    }
-    interface MdsAccordionItemAttributes {
-        "typography": TypographyTitleType;
-        "selected": boolean;
-        "label": string;
-    }
-    interface MdsAccordionTimerAttributes {
-        "duration": number;
-        "paused": boolean;
-    }
-    interface MdsAccordionTimerItemAttributes {
-        "typography": TypographyTitleType;
-        "selected": boolean;
-        "description": string;
-        "duration": number;
-        "progress": number;
-        "uuid": number;
-    }
-    interface MdsAvatarAttributes {
-        "icon": string | undefined;
-        "initials": string;
-        "count": number;
-        "src": string;
-        "tone": ToneMinimalVariantType;
-        "variant": ThemeFullVariantAvatarType;
-    }
-    interface MdsAvatarStackAttributes {
-        "size": AvatarSizeType;
-        "total": number;
-    }
-    interface MdsAvatarStackItemAttributes {
-        "count": number;
-        "initials": string;
-        "src": string;
-        "tone": ToneMinimalVariantType;
-        "variant": ThemeFullVariantAvatarType;
-    }
-    interface MdsBadgeAttributes {
-        "label": string;
-        "variant": ThemeFullVariantType;
-        "tone": ToneSmartVariantType;
-        "typography": TypographyLabelType;
-    }
-    interface MdsBannerAttributes {
-        "variant": ThemeVariantType;
-        "tone": ToneMinimalBoxVariantType;
-        "cockade": boolean;
-        "deletable": boolean;
-        "headline": string;
-        "icon": string;
-    }
-    interface MdsBenchmarkBarAttributes {
-        "label": string;
-        "alias": string;
-        "typography": BenchmarkBarTypographyType;
-        "value": number;
-        "variant": ThemeVariantType;
-        "size": ProgressBarSizeType;
-    }
-    interface MdsBibliographyAttributes {
-        "format": BibliographyFormatType;
-        "author": string;
-        "name": string;
-        "publisher": string;
-        "date": string;
-        "location": string;
-        "rel": BibliographyRelationshipType;
-        "typography": TypographyInfoType | TypographyReadType;
-        "variant": TypographyVariants;
-        "url": string;
-    }
-    interface MdsBreadcrumbAttributes {
-        "back": boolean;
-    }
-    interface MdsBreadcrumbItemAttributes {
-        "selected": boolean;
-        "label": string;
-    }
-    interface MdsButtonAttributes {
-        "autoFocus": boolean;
-        "label": string;
-        "animation": TextAnimationType;
-        "icon": string;
-        "iconPosition": ButtonIconPositionType;
-        "type": ButtonType;
-        "variant": ButtonVariantType;
-        "tone": ToneBoxVariantType;
-        "size": ButtonSizeType;
-        "active": boolean;
-        "disabled": boolean;
-        "await": boolean;
-        "href": string;
-        "target": ButtonTargetType;
-        "truncate": TypographyTruncateType;
-    }
-    interface MdsButtonDropdownAttributes {
-        "label": string;
-        "autoFocus": boolean;
-        "icon": string;
-        "type": ButtonType;
-        "variant": ButtonDropdownVariantType;
-        "tone": ToneMinimalVariantType;
-        "size": ButtonSizeType;
-        "active": boolean;
-        "disabled": boolean;
-        "await": boolean;
-        "href": string;
-        "target": ButtonTargetType;
-        "truncate": TypographyTruncateType;
-    }
-    interface MdsCalendarAttributes {
-        "rangePicker": boolean;
-        "startDate": string | null;
-        "endDate": string | null;
-        "min": string | null;
-        "max": string | null;
-    }
-    interface MdsCalendarCellAttributes {
-        "month": CalendarCellType;
-        "label": string;
-        "date": string;
-        "orientation": CalendarCellSelectionOrieintationType;
-        "preview": boolean;
-        "selection": CalendarCellSelectionPositionType;
-        "disabled": boolean | undefined;
-        "today": boolean | undefined;
-    }
-    interface MdsCardAttributes {
-        "autoGrid": boolean;
-    }
-    interface MdsChipAttributes {
-        "clickable": boolean;
-        "deletable": boolean;
-        "disabled": boolean;
-        "icon": string;
-        "label": string;
-        "selected": boolean;
-        "selectable": boolean;
-        "variant": ChipVariantType;
-        "tone": ToneMinimalVariantType;
-    }
-    interface MdsDetailsAttributes {
-        "opened": boolean;
-    }
-    interface MdsDropdownAttributes {
-        "arrow": boolean;
-        "arrowPadding": number;
-        "autoPlacement": boolean;
-        "backdrop": boolean;
-        "flip": boolean;
-        "interaction": DropdownInteractionType;
-        "target": string;
-        "offset": number;
-        "placement": FloatingUIPlacement;
-        "shift": boolean;
-        "shiftPadding": number;
-        "smooth": boolean;
-        "strategy": FloatingUIStrategy;
-        "visible": boolean;
-        "zIndex": number;
-    }
-    interface MdsEmojiAttributes {
-        "name": EmojiNames;
-    }
-    interface MdsEntityAttributes {
-        "await": boolean;
-        "icon": string;
-        "src": string;
-        "initials": string;
-        "tone": ToneMinimalVariantType;
-        "variant": ThemeFullVariantAvatarType;
-    }
-    interface MdsFileAttributes {
-        "suffix": ExtensionSuffixType;
-        "description": string;
-        "filename": string;
-        "preview": string;
-        "showDownloadedIcon": boolean;
-        "format": string;
-    }
-    interface MdsFilePreviewAttributes {
-        "deletable": boolean;
-        "downloadable": boolean;
-        "description": string;
-        "filename": string;
-        "filesize": string;
-        "message": string;
-        "truncate": TypographyTruncateType;
-        "src": string;
-        "suffix": ExtensionSuffixType;
-        "icon": string;
-        "variant": ThemeFullVariantAvatarType;
-        "format": string;
-    }
-    interface MdsFilterAttributes {
-        "autoReset": boolean;
-        "label": string;
-        "multiple": boolean;
-        "reset": boolean;
-    }
-    interface MdsFilterItemAttributes {
-        "selected": boolean;
-        "label": string;
-        "icon": string;
-        "value": string;
-        "count": string;
-        "disabled": boolean;
-    }
-    interface MdsHeaderAttributes {
-        "appearance": string;
-        "appearanceSet": string;
-        "autoHide": number;
-        "backdrop": boolean;
-        "menu": HeaderBarMenuType;
-        "nav": HeaderBarNavType;
-        "threshold": number;
-        "visibility": 'hidden' | 'visible';
-    }
-    interface MdsHeaderBarAttributes {
-        "menu": HeaderBarMenuType;
-        "nav": HeaderBarNavType;
-    }
-    interface MdsHelpAttributes {
-        "icon": string;
-        "autoPlacement": boolean;
-        "placement": FloatingUIPlacement;
-    }
-    interface MdsHorizontalScrollAttributes {
-        "controls": ViewportType;
-        "navigation": NavigationType;
-        "snap": SnapType;
-    }
-    interface MdsIconAttributes {
-        "name": string;
-    }
-    interface MdsImgAttributes {
-        "alt": string;
-        "crossorigin": CrossoriginType;
-        "height": string;
-        "loading": LoadingType;
-        "referrerpolicy": ReferrerpolicyType;
-        "sizes": string;
-        "src": string;
-        "srcset": string;
-        "srcsetConsumption": string;
-        "width": string;
-    }
-    interface MdsInputAttributes {
-        "autocomplete": AutocompleteType;
-        "autofocus": boolean;
-        "await": boolean;
-        "controlsLayout": InputControlsLayoutType;
-        "controlsIcon": InputControlsIconType;
-        "disabled": boolean;
-        "icon": string;
-        "max": string;
-        "maxlength": number;
-        "mic": boolean;
-        "min": string;
-        "minlength": number;
-        "name": string;
-        "pattern": string;
-        "placeholder": string;
-        "readonly": boolean;
-        "required": boolean;
-        "variant": ThemeInputVariantType;
-        "tip": string;
-        "step": string;
-        "type": InputTextType;
-        "typography": TypographyInputType;
-        "value": string;
-    }
-    interface MdsInputDateAttributes {
-        "value": string;
-        "name": string;
-        "variant": ThemeInputVariantType;
-        "min": string | null;
-        "max": string | null;
-        "delay": number;
-        "disabled": boolean;
-        "readonly": boolean;
-        "required": boolean;
-    }
-    interface MdsInputDateRangeAttributes {
-        "startDate": string;
-        "endDate": string;
-        "min": string | null;
-        "max": string | null;
-        "delay": number;
-        "name": string;
-    }
-    interface MdsInputDateRangePreselectionAttributes {
-        "selected": boolean;
-        "start": string;
-        "end": string;
-    }
-    interface MdsInputFieldAttributes {
-        "label": string;
-        "message": string;
-        "variant": ThemeInputVariantType;
-    }
-    interface MdsInputOtpAttributes {
-        "length": number;
-        "autosubmit": boolean;
-        "value": string;
-    }
-    interface MdsInputRangeAttributes {
-        "name": string;
-        "max": number;
-        "min": number;
-        "step": number;
-        "disabled": boolean;
-        "value": number;
-    }
-    interface MdsInputSelectAttributes {
-        "autocomplete": 'on';
-        "autoFocus": boolean;
-        "placeholder": string;
-        "name": string;
-        "disabled": boolean;
-        "required": boolean;
-        "multiple": boolean;
-        "size": number;
-        "value": string;
-        "defaultValue": string;
-        "variant": ThemeStatusVariantType;
-    }
-    interface MdsInputSwitchAttributes {
-        "autofocus": boolean;
-        "checked": boolean;
-        "disabled": boolean;
-        "explicit": boolean;
-        "icon": string;
-        "indeterminate": boolean;
-        "name": string;
-        "size": InputSwitchSizeType;
-        "type": InputSwitchType;
-        "typography": TypographyInfoType | TypographyReadType;
-        "variant": TypographyVariants;
-        "value": string;
-    }
-    interface MdsInputTipAttributes {
-        "active": boolean;
-        "position": InputTipPositionType;
-    }
-    interface MdsInputTipItemAttributes {
-        "variant": InputTipItemVariantType;
-        "expanded": boolean;
-    }
-    interface MdsInputUploadAttributes {
-        "accept": string;
-        "maxFileSize": number;
-        "maxFiles": number;
-        "sort": AttachmentSort;
-    }
-    interface MdsKeyboardAttributes {
-        "test": KeyboardTest;
-        "try": boolean;
-    }
-    interface MdsKeyboardKeyAttributes {
-        "name": KeyboardKeyName;
-        "pressed": boolean;
-    }
-    interface MdsKpiItemAttributes {
-        "label": string;
-        "description": string;
-        "threshold": number;
-        "icon": string;
-    }
-    interface MdsLabelAttributes {
-        "label": string;
-        "variant": MdsLabelVariantType;
-        "tone": ToneMinimalVariantType;
-        "truncate": TypographyTruncateType;
-        "typography": TypographyTooltipType;
-        "deletable": boolean;
-    }
-    interface MdsListItemAttributes {
-        "typography": TypographyInfoType | TypographyReadType;
-        "variant": TypographyReadingVariants;
-        "icon": string;
-    }
-    interface MdsMentionAttributes {
-        "icon": string;
-        "label": string;
-        "size": MentionSize;
-    }
-    interface MdsModalAttributes {
-        "opened": boolean;
-        "backdrop": boolean;
-        "position": ModalPositionType;
-        "animating": ModalAnimationStateType;
-        "animation": ModalAnimationStyleType;
-        "overflow": ModalOverflowType;
-        "interaction": ModalInteractionType;
-    }
-    interface MdsNoteAttributes {
-        "deletable": boolean;
-        "variant": ThemeLabelVariantType;
-    }
-    interface MdsNotificationAttributes {
-        "target": string;
-        "value": number;
-        "visible": boolean;
-        "strategy": StrategyType;
-        "max": number;
-    }
-    interface MdsPaginatorAttributes {
-        "pages": number;
-        "currentPage": number;
-    }
-    interface MdsPaginatorItemAttributes {
-        "icon": string;
-        "selected": boolean;
-        "disabled": boolean;
-    }
-    interface MdsPolicyAiAttributes {
-        "headline": string;
-        "description": string;
-        "variant": PolicyAiVariant;
-        "href": string;
-    }
-    interface MdsPrefAttributes {
-        "size": TabSizeType;
-        "controller": boolean;
-    }
-    interface MdsPrefAnimationAttributes {
-        "size": TabSizeType;
-        "mode": AnimationModeType;
-    }
-    interface MdsPrefConsumptionAttributes {
-        "size": TabSizeType;
-        "mode": ConsumptionModeType;
-    }
-    interface MdsPrefContrastAttributes {
-        "size": TabSizeType;
-        "mode": ContrastModeType;
-    }
-    interface MdsPrefLanguageAttributes {
-        "size": TabSizeType;
-        "set": string;
-    }
-    interface MdsPrefLanguageItemAttributes {
-        "code": string;
-        "selected": boolean;
-    }
-    interface MdsPrefThemeAttributes {
-        "size": TabSizeType;
-        "mode": PreferenceThemeModeType;
-        "transition": PreferenceThemeTransitionType;
-    }
-    interface MdsPrefThemeVariantAttributes {
-        "size": TabSizeType;
-        "name": string;
-        "scheme": PreferenceThemeSchemeType;
-    }
-    interface MdsPrefThemeVariantItemAttributes {
-        "label": string;
-        "name": string;
-        "scheme": PreferenceThemeSchemeType;
-        "selected": boolean;
-    }
-    interface MdsPriceTableFeaturesAttributes {
-        "label": string;
-    }
-    interface MdsPriceTableFeaturesCellAttributes {
-        "type": PriceTableFeaturesCellType;
-    }
-    interface MdsPriceTableListItemAttributes {
-        "supported": boolean;
-        "typography": TypographyReadType;
-    }
-    interface MdsProgressAttributes {
-        "progress": number;
-        "direction": DirectionType;
-        "variant": ThemeVariantType;
-        "typography": TypographyTechnicalType;
-        "size": ProgressBarSizeType;
-        "steps": string;
-    }
-    interface MdsPushNotificationAttributes {
-        "visible": boolean;
-        "behavior": 'auto' | 'manual';
-    }
-    interface MdsPushNotificationItemAttributes {
-        "datetime": string;
-        "dateFormat": NotificationItemDateFormatType;
-        "deletable": boolean;
-        "icon": string;
-        "initials": string;
-        "message": string;
-        "preview": NotificationItemPreviewType;
-        "src": string;
-        "subject": string;
-        "tone": ToneMinimalVariantType;
-        "variant": ThemeFullVariantAvatarType;
-    }
-    interface MdsQuoteAttributes {
-        "typography": TypographyTitleType;
-        "tag": TypographyHeadingTagType;
-    }
-    interface MdsRadialMenuAttributes {
-        "angleStart": number;
-        "angleEnd": number;
-        "radius": number;
-        "direction": Direction;
-        "opened": boolean;
-        "disc": boolean;
-        "backdrop": boolean;
-        "interaction": Interaction;
-        "icon": string;
-        "variant": ButtonVariantType;
-        "tone": ToneVariantType;
-        "size": ButtonSizeType;
-    }
-    interface MdsRadialMenuItemAttributes {
-        "tooltip": string;
-        "icon": string;
-        "tone": ToneVariantType;
-        "variant": ButtonVariantType;
-        "size": ButtonSizeType;
-    }
-    interface MdsRadialProgressAttributes {
-        "progress": number;
-        "icon": string | undefined;
-        "typography": TypographyTechnicalType;
-        "variant": ThemeVariantType;
-    }
-    interface MdsSpinnerAttributes {
-        "running": boolean;
-    }
-    interface MdsStatusBarAttributes {
-        "description": string;
-        "overflow": ModalOverflowType;
-        "position": StatusBarPositionType;
-        "visible": boolean;
-    }
-    interface MdsStepperBarAttributes {
-        "itemsDone": number;
-        "navigation": StepperBarNavigationType;
-    }
-    interface MdsStepperBarItemAttributes {
-        "label": string;
-        "step": boolean;
-        "badge": boolean;
-        "icon": string;
-        "iconChecked": string | undefined;
-        "done": boolean;
-        "current": boolean;
-        "value": string;
-        "typography": TypographyType;
-    }
-    interface MdsTabAttributes {
-        "direction": DirectionType;
-        "scrollbar": boolean;
-        "animation": HorizontalActionsAnimationType;
-        "fill": boolean;
-        "overflow": boolean;
-        "size": TabSizeType;
-    }
-    interface MdsTabBarItemAttributes {
-        "icon": string;
-        "label": string;
-        "selected": boolean;
-        "typography": TypographySmallerType;
-    }
-    interface MdsTabItemAttributes {
-        "await": boolean;
-        "selected": boolean;
-        "disabled": boolean;
-        "icon": string;
-        "label": string;
-        "iconPosition": ButtonIconPositionType;
-        "type": ButtonType;
-        "size": ButtonSizeType;
-        "value": string;
-        "href": string;
-    }
-    interface MdsTableAttributes {
-        "interactive": boolean;
-        "selectable": boolean;
-        "selection": boolean;
-    }
-    interface MdsTableBodyAttributes {
-        "interactive": boolean;
-        "selection": boolean;
-    }
-    interface MdsTableCellAttributes {
-        "value": string;
-    }
-    interface MdsTableHeaderAttributes {
-        "selectable": boolean;
-    }
-    interface MdsTableHeaderCellAttributes {
-        "sortable": boolean;
-        "label": string;
-        "direction": SortDirectionType;
-    }
-    interface MdsTableRowAttributes {
-        "interactive": boolean;
-        "overlayActions": boolean;
-        "selectable": boolean;
-        "selected": boolean;
-        "value": string;
-    }
-    interface MdsTextAttributes {
-        "animation": TextAnimationType;
-        "tag": TypographyTagType;
-        "text": string;
-        "truncate": TypographyTruncateType;
-        "typography": TypographyType;
-        "variant": TypographyVariants;
-    }
-    interface MdsToastAttributes {
-        "duration": number;
-        "visible": boolean;
-        "variant": ThemeVariantType;
-        "tone": ToneMinimalVariantType;
-        "position": ToastPosition;
-    }
-    interface MdsTooltipAttributes {
-        "arrow": boolean;
-        "arrowPadding": number;
-        "autoPlacement": boolean;
-        "flip": boolean;
-        "target": string;
-        "offset": number;
-        "placement": FloatingUIPlacement;
-        "typography": TypographyTooltipType;
-        "shift": boolean;
-        "shiftPadding": number;
-        "strategy": FloatingUIStrategy;
-        "visible": boolean;
-    }
-    interface MdsTreeAttributes {
-        "appearance": TreeAppearance;
-        "async": boolean;
-        "label": string;
-        "toggle": TreeIcon;
-        "togglePosition": ButtonIconPositionType;
-        "expanded": boolean;
-        "truncate": TypographyTruncateType;
-        "actions": TreeActions;
-    }
-    interface MdsTreeItemAttributes {
-        "actions": TreeActions;
-        "async": boolean;
-        "depth": number;
-        "label": string;
-        "toggle": TreeIcon;
-        "expanded": boolean;
-        "truncate": TypographyTruncateType;
-        "icon": string;
-    }
-    interface MdsUrlViewAttributes {
-        "icon": string;
-        "label": string;
-        "src": string;
-        "loading": LoadingType;
-    }
-    interface MdsUsageAttributes {
-        "variant": UsageType;
-        "alias": string;
-    }
-    interface MdsVideoWallAttributes {
-        "autoplay": true;
-        "loop": true;
-        "muted": true;
-        "noise": NoiseType;
-        "poster": string;
-        "preload": PreloadType;
-        "src": string;
-    }
-
     interface IntrinsicElements {
-        "mds-accordion": Omit<MdsAccordion, keyof MdsAccordionAttributes> & { [K in keyof MdsAccordion & keyof MdsAccordionAttributes]?: MdsAccordion[K] } & { [K in keyof MdsAccordion & keyof MdsAccordionAttributes as `attr:${K}`]?: MdsAccordionAttributes[K] } & { [K in keyof MdsAccordion & keyof MdsAccordionAttributes as `prop:${K}`]?: MdsAccordion[K] };
-        "mds-accordion-item": Omit<MdsAccordionItem, keyof MdsAccordionItemAttributes> & { [K in keyof MdsAccordionItem & keyof MdsAccordionItemAttributes]?: MdsAccordionItem[K] } & { [K in keyof MdsAccordionItem & keyof MdsAccordionItemAttributes as `attr:${K}`]?: MdsAccordionItemAttributes[K] } & { [K in keyof MdsAccordionItem & keyof MdsAccordionItemAttributes as `prop:${K}`]?: MdsAccordionItem[K] } & OneOf<"label", MdsAccordionItem["label"], MdsAccordionItemAttributes["label"]>;
-        "mds-accordion-timer": Omit<MdsAccordionTimer, keyof MdsAccordionTimerAttributes> & { [K in keyof MdsAccordionTimer & keyof MdsAccordionTimerAttributes]?: MdsAccordionTimer[K] } & { [K in keyof MdsAccordionTimer & keyof MdsAccordionTimerAttributes as `attr:${K}`]?: MdsAccordionTimerAttributes[K] } & { [K in keyof MdsAccordionTimer & keyof MdsAccordionTimerAttributes as `prop:${K}`]?: MdsAccordionTimer[K] };
-        "mds-accordion-timer-item": Omit<MdsAccordionTimerItem, keyof MdsAccordionTimerItemAttributes> & { [K in keyof MdsAccordionTimerItem & keyof MdsAccordionTimerItemAttributes]?: MdsAccordionTimerItem[K] } & { [K in keyof MdsAccordionTimerItem & keyof MdsAccordionTimerItemAttributes as `attr:${K}`]?: MdsAccordionTimerItemAttributes[K] } & { [K in keyof MdsAccordionTimerItem & keyof MdsAccordionTimerItemAttributes as `prop:${K}`]?: MdsAccordionTimerItem[K] } & OneOf<"description", MdsAccordionTimerItem["description"], MdsAccordionTimerItemAttributes["description"]>;
+        "mds-accordion": MdsAccordion;
+        "mds-accordion-item": MdsAccordionItem;
+        "mds-accordion-timer": MdsAccordionTimer;
+        "mds-accordion-timer-item": MdsAccordionTimerItem;
         "mds-author": MdsAuthor;
-        "mds-avatar": Omit<MdsAvatar, keyof MdsAvatarAttributes> & { [K in keyof MdsAvatar & keyof MdsAvatarAttributes]?: MdsAvatar[K] } & { [K in keyof MdsAvatar & keyof MdsAvatarAttributes as `attr:${K}`]?: MdsAvatarAttributes[K] } & { [K in keyof MdsAvatar & keyof MdsAvatarAttributes as `prop:${K}`]?: MdsAvatar[K] };
-        "mds-avatar-stack": Omit<MdsAvatarStack, keyof MdsAvatarStackAttributes> & { [K in keyof MdsAvatarStack & keyof MdsAvatarStackAttributes]?: MdsAvatarStack[K] } & { [K in keyof MdsAvatarStack & keyof MdsAvatarStackAttributes as `attr:${K}`]?: MdsAvatarStackAttributes[K] } & { [K in keyof MdsAvatarStack & keyof MdsAvatarStackAttributes as `prop:${K}`]?: MdsAvatarStack[K] };
-        "mds-avatar-stack-item": Omit<MdsAvatarStackItem, keyof MdsAvatarStackItemAttributes> & { [K in keyof MdsAvatarStackItem & keyof MdsAvatarStackItemAttributes]?: MdsAvatarStackItem[K] } & { [K in keyof MdsAvatarStackItem & keyof MdsAvatarStackItemAttributes as `attr:${K}`]?: MdsAvatarStackItemAttributes[K] } & { [K in keyof MdsAvatarStackItem & keyof MdsAvatarStackItemAttributes as `prop:${K}`]?: MdsAvatarStackItem[K] };
-        "mds-badge": Omit<MdsBadge, keyof MdsBadgeAttributes> & { [K in keyof MdsBadge & keyof MdsBadgeAttributes]?: MdsBadge[K] } & { [K in keyof MdsBadge & keyof MdsBadgeAttributes as `attr:${K}`]?: MdsBadgeAttributes[K] } & { [K in keyof MdsBadge & keyof MdsBadgeAttributes as `prop:${K}`]?: MdsBadge[K] };
-        "mds-banner": Omit<MdsBanner, keyof MdsBannerAttributes> & { [K in keyof MdsBanner & keyof MdsBannerAttributes]?: MdsBanner[K] } & { [K in keyof MdsBanner & keyof MdsBannerAttributes as `attr:${K}`]?: MdsBannerAttributes[K] } & { [K in keyof MdsBanner & keyof MdsBannerAttributes as `prop:${K}`]?: MdsBanner[K] };
-        "mds-benchmark-bar": Omit<MdsBenchmarkBar, keyof MdsBenchmarkBarAttributes> & { [K in keyof MdsBenchmarkBar & keyof MdsBenchmarkBarAttributes]?: MdsBenchmarkBar[K] } & { [K in keyof MdsBenchmarkBar & keyof MdsBenchmarkBarAttributes as `attr:${K}`]?: MdsBenchmarkBarAttributes[K] } & { [K in keyof MdsBenchmarkBar & keyof MdsBenchmarkBarAttributes as `prop:${K}`]?: MdsBenchmarkBar[K] };
-        "mds-bibliography": Omit<MdsBibliography, keyof MdsBibliographyAttributes> & { [K in keyof MdsBibliography & keyof MdsBibliographyAttributes]?: MdsBibliography[K] } & { [K in keyof MdsBibliography & keyof MdsBibliographyAttributes as `attr:${K}`]?: MdsBibliographyAttributes[K] } & { [K in keyof MdsBibliography & keyof MdsBibliographyAttributes as `prop:${K}`]?: MdsBibliography[K] };
-        "mds-breadcrumb": Omit<MdsBreadcrumb, keyof MdsBreadcrumbAttributes> & { [K in keyof MdsBreadcrumb & keyof MdsBreadcrumbAttributes]?: MdsBreadcrumb[K] } & { [K in keyof MdsBreadcrumb & keyof MdsBreadcrumbAttributes as `attr:${K}`]?: MdsBreadcrumbAttributes[K] } & { [K in keyof MdsBreadcrumb & keyof MdsBreadcrumbAttributes as `prop:${K}`]?: MdsBreadcrumb[K] };
-        "mds-breadcrumb-item": Omit<MdsBreadcrumbItem, keyof MdsBreadcrumbItemAttributes> & { [K in keyof MdsBreadcrumbItem & keyof MdsBreadcrumbItemAttributes]?: MdsBreadcrumbItem[K] } & { [K in keyof MdsBreadcrumbItem & keyof MdsBreadcrumbItemAttributes as `attr:${K}`]?: MdsBreadcrumbItemAttributes[K] } & { [K in keyof MdsBreadcrumbItem & keyof MdsBreadcrumbItemAttributes as `prop:${K}`]?: MdsBreadcrumbItem[K] };
-        "mds-button": Omit<MdsButton, keyof MdsButtonAttributes> & { [K in keyof MdsButton & keyof MdsButtonAttributes]?: MdsButton[K] } & { [K in keyof MdsButton & keyof MdsButtonAttributes as `attr:${K}`]?: MdsButtonAttributes[K] } & { [K in keyof MdsButton & keyof MdsButtonAttributes as `prop:${K}`]?: MdsButton[K] };
-        "mds-button-dropdown": Omit<MdsButtonDropdown, keyof MdsButtonDropdownAttributes> & { [K in keyof MdsButtonDropdown & keyof MdsButtonDropdownAttributes]?: MdsButtonDropdown[K] } & { [K in keyof MdsButtonDropdown & keyof MdsButtonDropdownAttributes as `attr:${K}`]?: MdsButtonDropdownAttributes[K] } & { [K in keyof MdsButtonDropdown & keyof MdsButtonDropdownAttributes as `prop:${K}`]?: MdsButtonDropdown[K] };
+        "mds-avatar": MdsAvatar;
+        "mds-avatar-stack": MdsAvatarStack;
+        "mds-avatar-stack-item": MdsAvatarStackItem;
+        "mds-badge": MdsBadge;
+        "mds-banner": MdsBanner;
+        "mds-benchmark-bar": MdsBenchmarkBar;
+        "mds-bibliography": MdsBibliography;
+        "mds-breadcrumb": MdsBreadcrumb;
+        "mds-breadcrumb-item": MdsBreadcrumbItem;
+        "mds-button": MdsButton;
+        "mds-button-dropdown": MdsButtonDropdown;
         "mds-button-group": MdsButtonGroup;
-        "mds-calendar": Omit<MdsCalendar, keyof MdsCalendarAttributes> & { [K in keyof MdsCalendar & keyof MdsCalendarAttributes]?: MdsCalendar[K] } & { [K in keyof MdsCalendar & keyof MdsCalendarAttributes as `attr:${K}`]?: MdsCalendarAttributes[K] } & { [K in keyof MdsCalendar & keyof MdsCalendarAttributes as `prop:${K}`]?: MdsCalendar[K] };
-        "mds-calendar-cell": Omit<MdsCalendarCell, keyof MdsCalendarCellAttributes> & { [K in keyof MdsCalendarCell & keyof MdsCalendarCellAttributes]?: MdsCalendarCell[K] } & { [K in keyof MdsCalendarCell & keyof MdsCalendarCellAttributes as `attr:${K}`]?: MdsCalendarCellAttributes[K] } & { [K in keyof MdsCalendarCell & keyof MdsCalendarCellAttributes as `prop:${K}`]?: MdsCalendarCell[K] };
-        "mds-card": Omit<MdsCard, keyof MdsCardAttributes> & { [K in keyof MdsCard & keyof MdsCardAttributes]?: MdsCard[K] } & { [K in keyof MdsCard & keyof MdsCardAttributes as `attr:${K}`]?: MdsCardAttributes[K] } & { [K in keyof MdsCard & keyof MdsCardAttributes as `prop:${K}`]?: MdsCard[K] };
+        "mds-calendar": MdsCalendar;
+        "mds-calendar-cell": MdsCalendarCell;
+        "mds-card": MdsCard;
         "mds-card-content": MdsCardContent;
         "mds-card-footer": MdsCardFooter;
         "mds-card-header": MdsCardHeader;
         "mds-card-media": MdsCardMedia;
-        "mds-chip": Omit<MdsChip, keyof MdsChipAttributes> & { [K in keyof MdsChip & keyof MdsChipAttributes]?: MdsChip[K] } & { [K in keyof MdsChip & keyof MdsChipAttributes as `attr:${K}`]?: MdsChipAttributes[K] } & { [K in keyof MdsChip & keyof MdsChipAttributes as `prop:${K}`]?: MdsChip[K] } & OneOf<"label", MdsChip["label"], MdsChipAttributes["label"]>;
-        "mds-details": Omit<MdsDetails, keyof MdsDetailsAttributes> & { [K in keyof MdsDetails & keyof MdsDetailsAttributes]?: MdsDetails[K] } & { [K in keyof MdsDetails & keyof MdsDetailsAttributes as `attr:${K}`]?: MdsDetailsAttributes[K] } & { [K in keyof MdsDetails & keyof MdsDetailsAttributes as `prop:${K}`]?: MdsDetails[K] };
-        "mds-dropdown": Omit<MdsDropdown, keyof MdsDropdownAttributes> & { [K in keyof MdsDropdown & keyof MdsDropdownAttributes]?: MdsDropdown[K] } & { [K in keyof MdsDropdown & keyof MdsDropdownAttributes as `attr:${K}`]?: MdsDropdownAttributes[K] } & { [K in keyof MdsDropdown & keyof MdsDropdownAttributes as `prop:${K}`]?: MdsDropdown[K] } & OneOf<"target", MdsDropdown["target"], MdsDropdownAttributes["target"]>;
-        "mds-emoji": Omit<MdsEmoji, keyof MdsEmojiAttributes> & { [K in keyof MdsEmoji & keyof MdsEmojiAttributes]?: MdsEmoji[K] } & { [K in keyof MdsEmoji & keyof MdsEmojiAttributes as `attr:${K}`]?: MdsEmojiAttributes[K] } & { [K in keyof MdsEmoji & keyof MdsEmojiAttributes as `prop:${K}`]?: MdsEmoji[K] };
-        "mds-entity": Omit<MdsEntity, keyof MdsEntityAttributes> & { [K in keyof MdsEntity & keyof MdsEntityAttributes]?: MdsEntity[K] } & { [K in keyof MdsEntity & keyof MdsEntityAttributes as `attr:${K}`]?: MdsEntityAttributes[K] } & { [K in keyof MdsEntity & keyof MdsEntityAttributes as `prop:${K}`]?: MdsEntity[K] };
-        "mds-file": Omit<MdsFile, keyof MdsFileAttributes> & { [K in keyof MdsFile & keyof MdsFileAttributes]?: MdsFile[K] } & { [K in keyof MdsFile & keyof MdsFileAttributes as `attr:${K}`]?: MdsFileAttributes[K] } & { [K in keyof MdsFile & keyof MdsFileAttributes as `prop:${K}`]?: MdsFile[K] };
-        "mds-file-preview": Omit<MdsFilePreview, keyof MdsFilePreviewAttributes> & { [K in keyof MdsFilePreview & keyof MdsFilePreviewAttributes]?: MdsFilePreview[K] } & { [K in keyof MdsFilePreview & keyof MdsFilePreviewAttributes as `attr:${K}`]?: MdsFilePreviewAttributes[K] } & { [K in keyof MdsFilePreview & keyof MdsFilePreviewAttributes as `prop:${K}`]?: MdsFilePreview[K] } & OneOf<"filename", MdsFilePreview["filename"], MdsFilePreviewAttributes["filename"]>;
-        "mds-filter": Omit<MdsFilter, keyof MdsFilterAttributes> & { [K in keyof MdsFilter & keyof MdsFilterAttributes]?: MdsFilter[K] } & { [K in keyof MdsFilter & keyof MdsFilterAttributes as `attr:${K}`]?: MdsFilterAttributes[K] } & { [K in keyof MdsFilter & keyof MdsFilterAttributes as `prop:${K}`]?: MdsFilter[K] };
-        "mds-filter-item": Omit<MdsFilterItem, keyof MdsFilterItemAttributes> & { [K in keyof MdsFilterItem & keyof MdsFilterItemAttributes]?: MdsFilterItem[K] } & { [K in keyof MdsFilterItem & keyof MdsFilterItemAttributes as `attr:${K}`]?: MdsFilterItemAttributes[K] } & { [K in keyof MdsFilterItem & keyof MdsFilterItemAttributes as `prop:${K}`]?: MdsFilterItem[K] };
-        "mds-header": Omit<MdsHeader, keyof MdsHeaderAttributes> & { [K in keyof MdsHeader & keyof MdsHeaderAttributes]?: MdsHeader[K] } & { [K in keyof MdsHeader & keyof MdsHeaderAttributes as `attr:${K}`]?: MdsHeaderAttributes[K] } & { [K in keyof MdsHeader & keyof MdsHeaderAttributes as `prop:${K}`]?: MdsHeader[K] };
-        "mds-header-bar": Omit<MdsHeaderBar, keyof MdsHeaderBarAttributes> & { [K in keyof MdsHeaderBar & keyof MdsHeaderBarAttributes]?: MdsHeaderBar[K] } & { [K in keyof MdsHeaderBar & keyof MdsHeaderBarAttributes as `attr:${K}`]?: MdsHeaderBarAttributes[K] } & { [K in keyof MdsHeaderBar & keyof MdsHeaderBarAttributes as `prop:${K}`]?: MdsHeaderBar[K] };
-        "mds-help": Omit<MdsHelp, keyof MdsHelpAttributes> & { [K in keyof MdsHelp & keyof MdsHelpAttributes]?: MdsHelp[K] } & { [K in keyof MdsHelp & keyof MdsHelpAttributes as `attr:${K}`]?: MdsHelpAttributes[K] } & { [K in keyof MdsHelp & keyof MdsHelpAttributes as `prop:${K}`]?: MdsHelp[K] };
-        "mds-horizontal-scroll": Omit<MdsHorizontalScroll, keyof MdsHorizontalScrollAttributes> & { [K in keyof MdsHorizontalScroll & keyof MdsHorizontalScrollAttributes]?: MdsHorizontalScroll[K] } & { [K in keyof MdsHorizontalScroll & keyof MdsHorizontalScrollAttributes as `attr:${K}`]?: MdsHorizontalScrollAttributes[K] } & { [K in keyof MdsHorizontalScroll & keyof MdsHorizontalScrollAttributes as `prop:${K}`]?: MdsHorizontalScroll[K] };
+        "mds-chip": MdsChip;
+        "mds-details": MdsDetails;
+        "mds-dropdown": MdsDropdown;
+        "mds-emoji": MdsEmoji;
+        "mds-entity": MdsEntity;
+        "mds-file": MdsFile;
+        "mds-file-preview": MdsFilePreview;
+        "mds-filter": MdsFilter;
+        "mds-filter-item": MdsFilterItem;
+        "mds-header": MdsHeader;
+        "mds-header-bar": MdsHeaderBar;
+        "mds-help": MdsHelp;
+        "mds-horizontal-scroll": MdsHorizontalScroll;
         "mds-hr": MdsHr;
-        "mds-icon": Omit<MdsIcon, keyof MdsIconAttributes> & { [K in keyof MdsIcon & keyof MdsIconAttributes]?: MdsIcon[K] } & { [K in keyof MdsIcon & keyof MdsIconAttributes as `attr:${K}`]?: MdsIconAttributes[K] } & { [K in keyof MdsIcon & keyof MdsIconAttributes as `prop:${K}`]?: MdsIcon[K] } & OneOf<"name", MdsIcon["name"], MdsIconAttributes["name"]>;
-        "mds-img": Omit<MdsImg, keyof MdsImgAttributes> & { [K in keyof MdsImg & keyof MdsImgAttributes]?: MdsImg[K] } & { [K in keyof MdsImg & keyof MdsImgAttributes as `attr:${K}`]?: MdsImgAttributes[K] } & { [K in keyof MdsImg & keyof MdsImgAttributes as `prop:${K}`]?: MdsImg[K] };
-        "mds-input": Omit<MdsInput, keyof MdsInputAttributes> & { [K in keyof MdsInput & keyof MdsInputAttributes]?: MdsInput[K] } & { [K in keyof MdsInput & keyof MdsInputAttributes as `attr:${K}`]?: MdsInputAttributes[K] } & { [K in keyof MdsInput & keyof MdsInputAttributes as `prop:${K}`]?: MdsInput[K] };
-        "mds-input-date": Omit<MdsInputDate, keyof MdsInputDateAttributes> & { [K in keyof MdsInputDate & keyof MdsInputDateAttributes]?: MdsInputDate[K] } & { [K in keyof MdsInputDate & keyof MdsInputDateAttributes as `attr:${K}`]?: MdsInputDateAttributes[K] } & { [K in keyof MdsInputDate & keyof MdsInputDateAttributes as `prop:${K}`]?: MdsInputDate[K] };
-        "mds-input-date-range": Omit<MdsInputDateRange, keyof MdsInputDateRangeAttributes> & { [K in keyof MdsInputDateRange & keyof MdsInputDateRangeAttributes]?: MdsInputDateRange[K] } & { [K in keyof MdsInputDateRange & keyof MdsInputDateRangeAttributes as `attr:${K}`]?: MdsInputDateRangeAttributes[K] } & { [K in keyof MdsInputDateRange & keyof MdsInputDateRangeAttributes as `prop:${K}`]?: MdsInputDateRange[K] };
-        "mds-input-date-range-preselection": Omit<MdsInputDateRangePreselection, keyof MdsInputDateRangePreselectionAttributes> & { [K in keyof MdsInputDateRangePreselection & keyof MdsInputDateRangePreselectionAttributes]?: MdsInputDateRangePreselection[K] } & { [K in keyof MdsInputDateRangePreselection & keyof MdsInputDateRangePreselectionAttributes as `attr:${K}`]?: MdsInputDateRangePreselectionAttributes[K] } & { [K in keyof MdsInputDateRangePreselection & keyof MdsInputDateRangePreselectionAttributes as `prop:${K}`]?: MdsInputDateRangePreselection[K] } & OneOf<"start", MdsInputDateRangePreselection["start"], MdsInputDateRangePreselectionAttributes["start"]>;
-        "mds-input-field": Omit<MdsInputField, keyof MdsInputFieldAttributes> & { [K in keyof MdsInputField & keyof MdsInputFieldAttributes]?: MdsInputField[K] } & { [K in keyof MdsInputField & keyof MdsInputFieldAttributes as `attr:${K}`]?: MdsInputFieldAttributes[K] } & { [K in keyof MdsInputField & keyof MdsInputFieldAttributes as `prop:${K}`]?: MdsInputField[K] };
-        "mds-input-otp": Omit<MdsInputOtp, keyof MdsInputOtpAttributes> & { [K in keyof MdsInputOtp & keyof MdsInputOtpAttributes]?: MdsInputOtp[K] } & { [K in keyof MdsInputOtp & keyof MdsInputOtpAttributes as `attr:${K}`]?: MdsInputOtpAttributes[K] } & { [K in keyof MdsInputOtp & keyof MdsInputOtpAttributes as `prop:${K}`]?: MdsInputOtp[K] };
-        "mds-input-range": Omit<MdsInputRange, keyof MdsInputRangeAttributes> & { [K in keyof MdsInputRange & keyof MdsInputRangeAttributes]?: MdsInputRange[K] } & { [K in keyof MdsInputRange & keyof MdsInputRangeAttributes as `attr:${K}`]?: MdsInputRangeAttributes[K] } & { [K in keyof MdsInputRange & keyof MdsInputRangeAttributes as `prop:${K}`]?: MdsInputRange[K] };
-        "mds-input-select": Omit<MdsInputSelect, keyof MdsInputSelectAttributes> & { [K in keyof MdsInputSelect & keyof MdsInputSelectAttributes]?: MdsInputSelect[K] } & { [K in keyof MdsInputSelect & keyof MdsInputSelectAttributes as `attr:${K}`]?: MdsInputSelectAttributes[K] } & { [K in keyof MdsInputSelect & keyof MdsInputSelectAttributes as `prop:${K}`]?: MdsInputSelect[K] };
-        "mds-input-switch": Omit<MdsInputSwitch, keyof MdsInputSwitchAttributes> & { [K in keyof MdsInputSwitch & keyof MdsInputSwitchAttributes]?: MdsInputSwitch[K] } & { [K in keyof MdsInputSwitch & keyof MdsInputSwitchAttributes as `attr:${K}`]?: MdsInputSwitchAttributes[K] } & { [K in keyof MdsInputSwitch & keyof MdsInputSwitchAttributes as `prop:${K}`]?: MdsInputSwitch[K] };
-        "mds-input-tip": Omit<MdsInputTip, keyof MdsInputTipAttributes> & { [K in keyof MdsInputTip & keyof MdsInputTipAttributes]?: MdsInputTip[K] } & { [K in keyof MdsInputTip & keyof MdsInputTipAttributes as `attr:${K}`]?: MdsInputTipAttributes[K] } & { [K in keyof MdsInputTip & keyof MdsInputTipAttributes as `prop:${K}`]?: MdsInputTip[K] };
-        "mds-input-tip-item": Omit<MdsInputTipItem, keyof MdsInputTipItemAttributes> & { [K in keyof MdsInputTipItem & keyof MdsInputTipItemAttributes]?: MdsInputTipItem[K] } & { [K in keyof MdsInputTipItem & keyof MdsInputTipItemAttributes as `attr:${K}`]?: MdsInputTipItemAttributes[K] } & { [K in keyof MdsInputTipItem & keyof MdsInputTipItemAttributes as `prop:${K}`]?: MdsInputTipItem[K] };
-        "mds-input-upload": Omit<MdsInputUpload, keyof MdsInputUploadAttributes> & { [K in keyof MdsInputUpload & keyof MdsInputUploadAttributes]?: MdsInputUpload[K] } & { [K in keyof MdsInputUpload & keyof MdsInputUploadAttributes as `attr:${K}`]?: MdsInputUploadAttributes[K] } & { [K in keyof MdsInputUpload & keyof MdsInputUploadAttributes as `prop:${K}`]?: MdsInputUpload[K] };
-        "mds-keyboard": Omit<MdsKeyboard, keyof MdsKeyboardAttributes> & { [K in keyof MdsKeyboard & keyof MdsKeyboardAttributes]?: MdsKeyboard[K] } & { [K in keyof MdsKeyboard & keyof MdsKeyboardAttributes as `attr:${K}`]?: MdsKeyboardAttributes[K] } & { [K in keyof MdsKeyboard & keyof MdsKeyboardAttributes as `prop:${K}`]?: MdsKeyboard[K] };
-        "mds-keyboard-key": Omit<MdsKeyboardKey, keyof MdsKeyboardKeyAttributes> & { [K in keyof MdsKeyboardKey & keyof MdsKeyboardKeyAttributes]?: MdsKeyboardKey[K] } & { [K in keyof MdsKeyboardKey & keyof MdsKeyboardKeyAttributes as `attr:${K}`]?: MdsKeyboardKeyAttributes[K] } & { [K in keyof MdsKeyboardKey & keyof MdsKeyboardKeyAttributes as `prop:${K}`]?: MdsKeyboardKey[K] };
+        "mds-icon": MdsIcon;
+        "mds-img": MdsImg;
+        "mds-input": MdsInput;
+        "mds-input-date": MdsInputDate;
+        "mds-input-date-range": MdsInputDateRange;
+        "mds-input-date-range-preselection": MdsInputDateRangePreselection;
+        "mds-input-field": MdsInputField;
+        "mds-input-otp": MdsInputOtp;
+        "mds-input-range": MdsInputRange;
+        "mds-input-select": MdsInputSelect;
+        "mds-input-switch": MdsInputSwitch;
+        "mds-input-tip": MdsInputTip;
+        "mds-input-tip-item": MdsInputTipItem;
+        "mds-input-upload": MdsInputUpload;
+        "mds-keyboard": MdsKeyboard;
+        "mds-keyboard-key": MdsKeyboardKey;
         "mds-kpi": MdsKpi;
-        "mds-kpi-item": Omit<MdsKpiItem, keyof MdsKpiItemAttributes> & { [K in keyof MdsKpiItem & keyof MdsKpiItemAttributes]?: MdsKpiItem[K] } & { [K in keyof MdsKpiItem & keyof MdsKpiItemAttributes as `attr:${K}`]?: MdsKpiItemAttributes[K] } & { [K in keyof MdsKpiItem & keyof MdsKpiItemAttributes as `prop:${K}`]?: MdsKpiItem[K] };
-        "mds-label": Omit<MdsLabel, keyof MdsLabelAttributes> & { [K in keyof MdsLabel & keyof MdsLabelAttributes]?: MdsLabel[K] } & { [K in keyof MdsLabel & keyof MdsLabelAttributes as `attr:${K}`]?: MdsLabelAttributes[K] } & { [K in keyof MdsLabel & keyof MdsLabelAttributes as `prop:${K}`]?: MdsLabel[K] };
+        "mds-kpi-item": MdsKpiItem;
+        "mds-label": MdsLabel;
         "mds-list": MdsList;
-        "mds-list-item": Omit<MdsListItem, keyof MdsListItemAttributes> & { [K in keyof MdsListItem & keyof MdsListItemAttributes]?: MdsListItem[K] } & { [K in keyof MdsListItem & keyof MdsListItemAttributes as `attr:${K}`]?: MdsListItemAttributes[K] } & { [K in keyof MdsListItem & keyof MdsListItemAttributes as `prop:${K}`]?: MdsListItem[K] };
-        "mds-mention": Omit<MdsMention, keyof MdsMentionAttributes> & { [K in keyof MdsMention & keyof MdsMentionAttributes]?: MdsMention[K] } & { [K in keyof MdsMention & keyof MdsMentionAttributes as `attr:${K}`]?: MdsMentionAttributes[K] } & { [K in keyof MdsMention & keyof MdsMentionAttributes as `prop:${K}`]?: MdsMention[K] };
-        "mds-modal": Omit<MdsModal, keyof MdsModalAttributes> & { [K in keyof MdsModal & keyof MdsModalAttributes]?: MdsModal[K] } & { [K in keyof MdsModal & keyof MdsModalAttributes as `attr:${K}`]?: MdsModalAttributes[K] } & { [K in keyof MdsModal & keyof MdsModalAttributes as `prop:${K}`]?: MdsModal[K] };
-        "mds-note": Omit<MdsNote, keyof MdsNoteAttributes> & { [K in keyof MdsNote & keyof MdsNoteAttributes]?: MdsNote[K] } & { [K in keyof MdsNote & keyof MdsNoteAttributes as `attr:${K}`]?: MdsNoteAttributes[K] } & { [K in keyof MdsNote & keyof MdsNoteAttributes as `prop:${K}`]?: MdsNote[K] };
-        "mds-notification": Omit<MdsNotification, keyof MdsNotificationAttributes> & { [K in keyof MdsNotification & keyof MdsNotificationAttributes]?: MdsNotification[K] } & { [K in keyof MdsNotification & keyof MdsNotificationAttributes as `attr:${K}`]?: MdsNotificationAttributes[K] } & { [K in keyof MdsNotification & keyof MdsNotificationAttributes as `prop:${K}`]?: MdsNotification[K] };
-        "mds-paginator": Omit<MdsPaginator, keyof MdsPaginatorAttributes> & { [K in keyof MdsPaginator & keyof MdsPaginatorAttributes]?: MdsPaginator[K] } & { [K in keyof MdsPaginator & keyof MdsPaginatorAttributes as `attr:${K}`]?: MdsPaginatorAttributes[K] } & { [K in keyof MdsPaginator & keyof MdsPaginatorAttributes as `prop:${K}`]?: MdsPaginator[K] };
-        "mds-paginator-item": Omit<MdsPaginatorItem, keyof MdsPaginatorItemAttributes> & { [K in keyof MdsPaginatorItem & keyof MdsPaginatorItemAttributes]?: MdsPaginatorItem[K] } & { [K in keyof MdsPaginatorItem & keyof MdsPaginatorItemAttributes as `attr:${K}`]?: MdsPaginatorItemAttributes[K] } & { [K in keyof MdsPaginatorItem & keyof MdsPaginatorItemAttributes as `prop:${K}`]?: MdsPaginatorItem[K] };
-        "mds-policy-ai": Omit<MdsPolicyAi, keyof MdsPolicyAiAttributes> & { [K in keyof MdsPolicyAi & keyof MdsPolicyAiAttributes]?: MdsPolicyAi[K] } & { [K in keyof MdsPolicyAi & keyof MdsPolicyAiAttributes as `attr:${K}`]?: MdsPolicyAiAttributes[K] } & { [K in keyof MdsPolicyAi & keyof MdsPolicyAiAttributes as `prop:${K}`]?: MdsPolicyAi[K] };
-        "mds-pref": Omit<MdsPref, keyof MdsPrefAttributes> & { [K in keyof MdsPref & keyof MdsPrefAttributes]?: MdsPref[K] } & { [K in keyof MdsPref & keyof MdsPrefAttributes as `attr:${K}`]?: MdsPrefAttributes[K] } & { [K in keyof MdsPref & keyof MdsPrefAttributes as `prop:${K}`]?: MdsPref[K] };
-        "mds-pref-animation": Omit<MdsPrefAnimation, keyof MdsPrefAnimationAttributes> & { [K in keyof MdsPrefAnimation & keyof MdsPrefAnimationAttributes]?: MdsPrefAnimation[K] } & { [K in keyof MdsPrefAnimation & keyof MdsPrefAnimationAttributes as `attr:${K}`]?: MdsPrefAnimationAttributes[K] } & { [K in keyof MdsPrefAnimation & keyof MdsPrefAnimationAttributes as `prop:${K}`]?: MdsPrefAnimation[K] };
-        "mds-pref-consumption": Omit<MdsPrefConsumption, keyof MdsPrefConsumptionAttributes> & { [K in keyof MdsPrefConsumption & keyof MdsPrefConsumptionAttributes]?: MdsPrefConsumption[K] } & { [K in keyof MdsPrefConsumption & keyof MdsPrefConsumptionAttributes as `attr:${K}`]?: MdsPrefConsumptionAttributes[K] } & { [K in keyof MdsPrefConsumption & keyof MdsPrefConsumptionAttributes as `prop:${K}`]?: MdsPrefConsumption[K] };
-        "mds-pref-contrast": Omit<MdsPrefContrast, keyof MdsPrefContrastAttributes> & { [K in keyof MdsPrefContrast & keyof MdsPrefContrastAttributes]?: MdsPrefContrast[K] } & { [K in keyof MdsPrefContrast & keyof MdsPrefContrastAttributes as `attr:${K}`]?: MdsPrefContrastAttributes[K] } & { [K in keyof MdsPrefContrast & keyof MdsPrefContrastAttributes as `prop:${K}`]?: MdsPrefContrast[K] };
-        "mds-pref-language": Omit<MdsPrefLanguage, keyof MdsPrefLanguageAttributes> & { [K in keyof MdsPrefLanguage & keyof MdsPrefLanguageAttributes]?: MdsPrefLanguage[K] } & { [K in keyof MdsPrefLanguage & keyof MdsPrefLanguageAttributes as `attr:${K}`]?: MdsPrefLanguageAttributes[K] } & { [K in keyof MdsPrefLanguage & keyof MdsPrefLanguageAttributes as `prop:${K}`]?: MdsPrefLanguage[K] };
-        "mds-pref-language-item": Omit<MdsPrefLanguageItem, keyof MdsPrefLanguageItemAttributes> & { [K in keyof MdsPrefLanguageItem & keyof MdsPrefLanguageItemAttributes]?: MdsPrefLanguageItem[K] } & { [K in keyof MdsPrefLanguageItem & keyof MdsPrefLanguageItemAttributes as `attr:${K}`]?: MdsPrefLanguageItemAttributes[K] } & { [K in keyof MdsPrefLanguageItem & keyof MdsPrefLanguageItemAttributes as `prop:${K}`]?: MdsPrefLanguageItem[K] };
-        "mds-pref-theme": Omit<MdsPrefTheme, keyof MdsPrefThemeAttributes> & { [K in keyof MdsPrefTheme & keyof MdsPrefThemeAttributes]?: MdsPrefTheme[K] } & { [K in keyof MdsPrefTheme & keyof MdsPrefThemeAttributes as `attr:${K}`]?: MdsPrefThemeAttributes[K] } & { [K in keyof MdsPrefTheme & keyof MdsPrefThemeAttributes as `prop:${K}`]?: MdsPrefTheme[K] };
-        "mds-pref-theme-variant": Omit<MdsPrefThemeVariant, keyof MdsPrefThemeVariantAttributes> & { [K in keyof MdsPrefThemeVariant & keyof MdsPrefThemeVariantAttributes]?: MdsPrefThemeVariant[K] } & { [K in keyof MdsPrefThemeVariant & keyof MdsPrefThemeVariantAttributes as `attr:${K}`]?: MdsPrefThemeVariantAttributes[K] } & { [K in keyof MdsPrefThemeVariant & keyof MdsPrefThemeVariantAttributes as `prop:${K}`]?: MdsPrefThemeVariant[K] };
-        "mds-pref-theme-variant-item": Omit<MdsPrefThemeVariantItem, keyof MdsPrefThemeVariantItemAttributes> & { [K in keyof MdsPrefThemeVariantItem & keyof MdsPrefThemeVariantItemAttributes]?: MdsPrefThemeVariantItem[K] } & { [K in keyof MdsPrefThemeVariantItem & keyof MdsPrefThemeVariantItemAttributes as `attr:${K}`]?: MdsPrefThemeVariantItemAttributes[K] } & { [K in keyof MdsPrefThemeVariantItem & keyof MdsPrefThemeVariantItemAttributes as `prop:${K}`]?: MdsPrefThemeVariantItem[K] };
+        "mds-list-item": MdsListItem;
+        "mds-mention": MdsMention;
+        "mds-modal": MdsModal;
+        "mds-note": MdsNote;
+        "mds-notification": MdsNotification;
+        "mds-paginator": MdsPaginator;
+        "mds-paginator-item": MdsPaginatorItem;
+        "mds-policy-ai": MdsPolicyAi;
+        "mds-pref": MdsPref;
+        "mds-pref-animation": MdsPrefAnimation;
+        "mds-pref-consumption": MdsPrefConsumption;
+        "mds-pref-contrast": MdsPrefContrast;
+        "mds-pref-language": MdsPrefLanguage;
+        "mds-pref-language-item": MdsPrefLanguageItem;
+        "mds-pref-theme": MdsPrefTheme;
+        "mds-pref-theme-variant": MdsPrefThemeVariant;
+        "mds-pref-theme-variant-item": MdsPrefThemeVariantItem;
         "mds-price-table": MdsPriceTable;
-        "mds-price-table-features": Omit<MdsPriceTableFeatures, keyof MdsPriceTableFeaturesAttributes> & { [K in keyof MdsPriceTableFeatures & keyof MdsPriceTableFeaturesAttributes]?: MdsPriceTableFeatures[K] } & { [K in keyof MdsPriceTableFeatures & keyof MdsPriceTableFeaturesAttributes as `attr:${K}`]?: MdsPriceTableFeaturesAttributes[K] } & { [K in keyof MdsPriceTableFeatures & keyof MdsPriceTableFeaturesAttributes as `prop:${K}`]?: MdsPriceTableFeatures[K] };
-        "mds-price-table-features-cell": Omit<MdsPriceTableFeaturesCell, keyof MdsPriceTableFeaturesCellAttributes> & { [K in keyof MdsPriceTableFeaturesCell & keyof MdsPriceTableFeaturesCellAttributes]?: MdsPriceTableFeaturesCell[K] } & { [K in keyof MdsPriceTableFeaturesCell & keyof MdsPriceTableFeaturesCellAttributes as `attr:${K}`]?: MdsPriceTableFeaturesCellAttributes[K] } & { [K in keyof MdsPriceTableFeaturesCell & keyof MdsPriceTableFeaturesCellAttributes as `prop:${K}`]?: MdsPriceTableFeaturesCell[K] };
+        "mds-price-table-features": MdsPriceTableFeatures;
+        "mds-price-table-features-cell": MdsPriceTableFeaturesCell;
         "mds-price-table-features-row": MdsPriceTableFeaturesRow;
         "mds-price-table-header": MdsPriceTableHeader;
         "mds-price-table-list": MdsPriceTableList;
-        "mds-price-table-list-item": Omit<MdsPriceTableListItem, keyof MdsPriceTableListItemAttributes> & { [K in keyof MdsPriceTableListItem & keyof MdsPriceTableListItemAttributes]?: MdsPriceTableListItem[K] } & { [K in keyof MdsPriceTableListItem & keyof MdsPriceTableListItemAttributes as `attr:${K}`]?: MdsPriceTableListItemAttributes[K] } & { [K in keyof MdsPriceTableListItem & keyof MdsPriceTableListItemAttributes as `prop:${K}`]?: MdsPriceTableListItem[K] };
-        "mds-progress": Omit<MdsProgress, keyof MdsProgressAttributes> & { [K in keyof MdsProgress & keyof MdsProgressAttributes]?: MdsProgress[K] } & { [K in keyof MdsProgress & keyof MdsProgressAttributes as `attr:${K}`]?: MdsProgressAttributes[K] } & { [K in keyof MdsProgress & keyof MdsProgressAttributes as `prop:${K}`]?: MdsProgress[K] };
-        "mds-push-notification": Omit<MdsPushNotification, keyof MdsPushNotificationAttributes> & { [K in keyof MdsPushNotification & keyof MdsPushNotificationAttributes]?: MdsPushNotification[K] } & { [K in keyof MdsPushNotification & keyof MdsPushNotificationAttributes as `attr:${K}`]?: MdsPushNotificationAttributes[K] } & { [K in keyof MdsPushNotification & keyof MdsPushNotificationAttributes as `prop:${K}`]?: MdsPushNotification[K] };
-        "mds-push-notification-item": Omit<MdsPushNotificationItem, keyof MdsPushNotificationItemAttributes> & { [K in keyof MdsPushNotificationItem & keyof MdsPushNotificationItemAttributes]?: MdsPushNotificationItem[K] } & { [K in keyof MdsPushNotificationItem & keyof MdsPushNotificationItemAttributes as `attr:${K}`]?: MdsPushNotificationItemAttributes[K] } & { [K in keyof MdsPushNotificationItem & keyof MdsPushNotificationItemAttributes as `prop:${K}`]?: MdsPushNotificationItem[K] };
-        "mds-quote": Omit<MdsQuote, keyof MdsQuoteAttributes> & { [K in keyof MdsQuote & keyof MdsQuoteAttributes]?: MdsQuote[K] } & { [K in keyof MdsQuote & keyof MdsQuoteAttributes as `attr:${K}`]?: MdsQuoteAttributes[K] } & { [K in keyof MdsQuote & keyof MdsQuoteAttributes as `prop:${K}`]?: MdsQuote[K] };
-        "mds-radial-menu": Omit<MdsRadialMenu, keyof MdsRadialMenuAttributes> & { [K in keyof MdsRadialMenu & keyof MdsRadialMenuAttributes]?: MdsRadialMenu[K] } & { [K in keyof MdsRadialMenu & keyof MdsRadialMenuAttributes as `attr:${K}`]?: MdsRadialMenuAttributes[K] } & { [K in keyof MdsRadialMenu & keyof MdsRadialMenuAttributes as `prop:${K}`]?: MdsRadialMenu[K] };
-        "mds-radial-menu-item": Omit<MdsRadialMenuItem, keyof MdsRadialMenuItemAttributes> & { [K in keyof MdsRadialMenuItem & keyof MdsRadialMenuItemAttributes]?: MdsRadialMenuItem[K] } & { [K in keyof MdsRadialMenuItem & keyof MdsRadialMenuItemAttributes as `attr:${K}`]?: MdsRadialMenuItemAttributes[K] } & { [K in keyof MdsRadialMenuItem & keyof MdsRadialMenuItemAttributes as `prop:${K}`]?: MdsRadialMenuItem[K] };
-        "mds-radial-progress": Omit<MdsRadialProgress, keyof MdsRadialProgressAttributes> & { [K in keyof MdsRadialProgress & keyof MdsRadialProgressAttributes]?: MdsRadialProgress[K] } & { [K in keyof MdsRadialProgress & keyof MdsRadialProgressAttributes as `attr:${K}`]?: MdsRadialProgressAttributes[K] } & { [K in keyof MdsRadialProgress & keyof MdsRadialProgressAttributes as `prop:${K}`]?: MdsRadialProgress[K] };
+        "mds-price-table-list-item": MdsPriceTableListItem;
+        "mds-progress": MdsProgress;
+        "mds-push-notification": MdsPushNotification;
+        "mds-push-notification-item": MdsPushNotificationItem;
+        "mds-quote": MdsQuote;
+        "mds-radial-menu": MdsRadialMenu;
+        "mds-radial-menu-item": MdsRadialMenuItem;
+        "mds-radial-progress": MdsRadialProgress;
         "mds-separator": MdsSeparator;
-        "mds-spinner": Omit<MdsSpinner, keyof MdsSpinnerAttributes> & { [K in keyof MdsSpinner & keyof MdsSpinnerAttributes]?: MdsSpinner[K] } & { [K in keyof MdsSpinner & keyof MdsSpinnerAttributes as `attr:${K}`]?: MdsSpinnerAttributes[K] } & { [K in keyof MdsSpinner & keyof MdsSpinnerAttributes as `prop:${K}`]?: MdsSpinner[K] };
-        "mds-status-bar": Omit<MdsStatusBar, keyof MdsStatusBarAttributes> & { [K in keyof MdsStatusBar & keyof MdsStatusBarAttributes]?: MdsStatusBar[K] } & { [K in keyof MdsStatusBar & keyof MdsStatusBarAttributes as `attr:${K}`]?: MdsStatusBarAttributes[K] } & { [K in keyof MdsStatusBar & keyof MdsStatusBarAttributes as `prop:${K}`]?: MdsStatusBar[K] };
-        "mds-stepper-bar": Omit<MdsStepperBar, keyof MdsStepperBarAttributes> & { [K in keyof MdsStepperBar & keyof MdsStepperBarAttributes]?: MdsStepperBar[K] } & { [K in keyof MdsStepperBar & keyof MdsStepperBarAttributes as `attr:${K}`]?: MdsStepperBarAttributes[K] } & { [K in keyof MdsStepperBar & keyof MdsStepperBarAttributes as `prop:${K}`]?: MdsStepperBar[K] };
-        "mds-stepper-bar-item": Omit<MdsStepperBarItem, keyof MdsStepperBarItemAttributes> & { [K in keyof MdsStepperBarItem & keyof MdsStepperBarItemAttributes]?: MdsStepperBarItem[K] } & { [K in keyof MdsStepperBarItem & keyof MdsStepperBarItemAttributes as `attr:${K}`]?: MdsStepperBarItemAttributes[K] } & { [K in keyof MdsStepperBarItem & keyof MdsStepperBarItemAttributes as `prop:${K}`]?: MdsStepperBarItem[K] } & OneOf<"label", MdsStepperBarItem["label"], MdsStepperBarItemAttributes["label"]> & OneOf<"icon", MdsStepperBarItem["icon"], MdsStepperBarItemAttributes["icon"]>;
-        "mds-tab": Omit<MdsTab, keyof MdsTabAttributes> & { [K in keyof MdsTab & keyof MdsTabAttributes]?: MdsTab[K] } & { [K in keyof MdsTab & keyof MdsTabAttributes as `attr:${K}`]?: MdsTabAttributes[K] } & { [K in keyof MdsTab & keyof MdsTabAttributes as `prop:${K}`]?: MdsTab[K] };
+        "mds-spinner": MdsSpinner;
+        "mds-status-bar": MdsStatusBar;
+        "mds-stepper-bar": MdsStepperBar;
+        "mds-stepper-bar-item": MdsStepperBarItem;
+        "mds-tab": MdsTab;
         "mds-tab-bar": MdsTabBar;
-        "mds-tab-bar-item": Omit<MdsTabBarItem, keyof MdsTabBarItemAttributes> & { [K in keyof MdsTabBarItem & keyof MdsTabBarItemAttributes]?: MdsTabBarItem[K] } & { [K in keyof MdsTabBarItem & keyof MdsTabBarItemAttributes as `attr:${K}`]?: MdsTabBarItemAttributes[K] } & { [K in keyof MdsTabBarItem & keyof MdsTabBarItemAttributes as `prop:${K}`]?: MdsTabBarItem[K] };
-        "mds-tab-item": Omit<MdsTabItem, keyof MdsTabItemAttributes> & { [K in keyof MdsTabItem & keyof MdsTabItemAttributes]?: MdsTabItem[K] } & { [K in keyof MdsTabItem & keyof MdsTabItemAttributes as `attr:${K}`]?: MdsTabItemAttributes[K] } & { [K in keyof MdsTabItem & keyof MdsTabItemAttributes as `prop:${K}`]?: MdsTabItem[K] };
-        "mds-table": Omit<MdsTable, keyof MdsTableAttributes> & { [K in keyof MdsTable & keyof MdsTableAttributes]?: MdsTable[K] } & { [K in keyof MdsTable & keyof MdsTableAttributes as `attr:${K}`]?: MdsTableAttributes[K] } & { [K in keyof MdsTable & keyof MdsTableAttributes as `prop:${K}`]?: MdsTable[K] };
-        "mds-table-body": Omit<MdsTableBody, keyof MdsTableBodyAttributes> & { [K in keyof MdsTableBody & keyof MdsTableBodyAttributes]?: MdsTableBody[K] } & { [K in keyof MdsTableBody & keyof MdsTableBodyAttributes as `attr:${K}`]?: MdsTableBodyAttributes[K] } & { [K in keyof MdsTableBody & keyof MdsTableBodyAttributes as `prop:${K}`]?: MdsTableBody[K] };
-        "mds-table-cell": Omit<MdsTableCell, keyof MdsTableCellAttributes> & { [K in keyof MdsTableCell & keyof MdsTableCellAttributes]?: MdsTableCell[K] } & { [K in keyof MdsTableCell & keyof MdsTableCellAttributes as `attr:${K}`]?: MdsTableCellAttributes[K] } & { [K in keyof MdsTableCell & keyof MdsTableCellAttributes as `prop:${K}`]?: MdsTableCell[K] };
+        "mds-tab-bar-item": MdsTabBarItem;
+        "mds-tab-item": MdsTabItem;
+        "mds-table": MdsTable;
+        "mds-table-body": MdsTableBody;
+        "mds-table-cell": MdsTableCell;
         "mds-table-footer": MdsTableFooter;
-        "mds-table-header": Omit<MdsTableHeader, keyof MdsTableHeaderAttributes> & { [K in keyof MdsTableHeader & keyof MdsTableHeaderAttributes]?: MdsTableHeader[K] } & { [K in keyof MdsTableHeader & keyof MdsTableHeaderAttributes as `attr:${K}`]?: MdsTableHeaderAttributes[K] } & { [K in keyof MdsTableHeader & keyof MdsTableHeaderAttributes as `prop:${K}`]?: MdsTableHeader[K] };
-        "mds-table-header-cell": Omit<MdsTableHeaderCell, keyof MdsTableHeaderCellAttributes> & { [K in keyof MdsTableHeaderCell & keyof MdsTableHeaderCellAttributes]?: MdsTableHeaderCell[K] } & { [K in keyof MdsTableHeaderCell & keyof MdsTableHeaderCellAttributes as `attr:${K}`]?: MdsTableHeaderCellAttributes[K] } & { [K in keyof MdsTableHeaderCell & keyof MdsTableHeaderCellAttributes as `prop:${K}`]?: MdsTableHeaderCell[K] };
-        "mds-table-row": Omit<MdsTableRow, keyof MdsTableRowAttributes> & { [K in keyof MdsTableRow & keyof MdsTableRowAttributes]?: MdsTableRow[K] } & { [K in keyof MdsTableRow & keyof MdsTableRowAttributes as `attr:${K}`]?: MdsTableRowAttributes[K] } & { [K in keyof MdsTableRow & keyof MdsTableRowAttributes as `prop:${K}`]?: MdsTableRow[K] };
-        "mds-text": Omit<MdsText, keyof MdsTextAttributes> & { [K in keyof MdsText & keyof MdsTextAttributes]?: MdsText[K] } & { [K in keyof MdsText & keyof MdsTextAttributes as `attr:${K}`]?: MdsTextAttributes[K] } & { [K in keyof MdsText & keyof MdsTextAttributes as `prop:${K}`]?: MdsText[K] };
-        "mds-toast": Omit<MdsToast, keyof MdsToastAttributes> & { [K in keyof MdsToast & keyof MdsToastAttributes]?: MdsToast[K] } & { [K in keyof MdsToast & keyof MdsToastAttributes as `attr:${K}`]?: MdsToastAttributes[K] } & { [K in keyof MdsToast & keyof MdsToastAttributes as `prop:${K}`]?: MdsToast[K] };
-        "mds-tooltip": Omit<MdsTooltip, keyof MdsTooltipAttributes> & { [K in keyof MdsTooltip & keyof MdsTooltipAttributes]?: MdsTooltip[K] } & { [K in keyof MdsTooltip & keyof MdsTooltipAttributes as `attr:${K}`]?: MdsTooltipAttributes[K] } & { [K in keyof MdsTooltip & keyof MdsTooltipAttributes as `prop:${K}`]?: MdsTooltip[K] } & OneOf<"target", MdsTooltip["target"], MdsTooltipAttributes["target"]>;
-        "mds-tree": Omit<MdsTree, keyof MdsTreeAttributes> & { [K in keyof MdsTree & keyof MdsTreeAttributes]?: MdsTree[K] } & { [K in keyof MdsTree & keyof MdsTreeAttributes as `attr:${K}`]?: MdsTreeAttributes[K] } & { [K in keyof MdsTree & keyof MdsTreeAttributes as `prop:${K}`]?: MdsTree[K] };
-        "mds-tree-item": Omit<MdsTreeItem, keyof MdsTreeItemAttributes> & { [K in keyof MdsTreeItem & keyof MdsTreeItemAttributes]?: MdsTreeItem[K] } & { [K in keyof MdsTreeItem & keyof MdsTreeItemAttributes as `attr:${K}`]?: MdsTreeItemAttributes[K] } & { [K in keyof MdsTreeItem & keyof MdsTreeItemAttributes as `prop:${K}`]?: MdsTreeItem[K] };
-        "mds-url-view": Omit<MdsUrlView, keyof MdsUrlViewAttributes> & { [K in keyof MdsUrlView & keyof MdsUrlViewAttributes]?: MdsUrlView[K] } & { [K in keyof MdsUrlView & keyof MdsUrlViewAttributes as `attr:${K}`]?: MdsUrlViewAttributes[K] } & { [K in keyof MdsUrlView & keyof MdsUrlViewAttributes as `prop:${K}`]?: MdsUrlView[K] } & OneOf<"src", MdsUrlView["src"], MdsUrlViewAttributes["src"]>;
-        "mds-usage": Omit<MdsUsage, keyof MdsUsageAttributes> & { [K in keyof MdsUsage & keyof MdsUsageAttributes]?: MdsUsage[K] } & { [K in keyof MdsUsage & keyof MdsUsageAttributes as `attr:${K}`]?: MdsUsageAttributes[K] } & { [K in keyof MdsUsage & keyof MdsUsageAttributes as `prop:${K}`]?: MdsUsage[K] };
-        "mds-video-wall": Omit<MdsVideoWall, keyof MdsVideoWallAttributes> & { [K in keyof MdsVideoWall & keyof MdsVideoWallAttributes]?: MdsVideoWall[K] } & { [K in keyof MdsVideoWall & keyof MdsVideoWallAttributes as `attr:${K}`]?: MdsVideoWallAttributes[K] } & { [K in keyof MdsVideoWall & keyof MdsVideoWallAttributes as `prop:${K}`]?: MdsVideoWall[K] };
+        "mds-table-header": MdsTableHeader;
+        "mds-table-header-cell": MdsTableHeaderCell;
+        "mds-table-row": MdsTableRow;
+        "mds-text": MdsText;
+        "mds-toast": MdsToast;
+        "mds-tooltip": MdsTooltip;
+        "mds-tree": MdsTree;
+        "mds-tree-item": MdsTreeItem;
+        "mds-url-view": MdsUrlView;
+        "mds-usage": MdsUsage;
+        "mds-video-wall": MdsVideoWall;
         "mds-zero": MdsZero;
     }
 }
@@ -7907,72 +7155,72 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
-            "mds-accordion": LocalJSX.IntrinsicElements["mds-accordion"] & JSXBase.HTMLAttributes<HTMLMdsAccordionElement>;
-            "mds-accordion-item": LocalJSX.IntrinsicElements["mds-accordion-item"] & JSXBase.HTMLAttributes<HTMLMdsAccordionItemElement>;
-            "mds-accordion-timer": LocalJSX.IntrinsicElements["mds-accordion-timer"] & JSXBase.HTMLAttributes<HTMLMdsAccordionTimerElement>;
-            "mds-accordion-timer-item": LocalJSX.IntrinsicElements["mds-accordion-timer-item"] & JSXBase.HTMLAttributes<HTMLMdsAccordionTimerItemElement>;
-            "mds-author": LocalJSX.IntrinsicElements["mds-author"] & JSXBase.HTMLAttributes<HTMLMdsAuthorElement>;
-            "mds-avatar": LocalJSX.IntrinsicElements["mds-avatar"] & JSXBase.HTMLAttributes<HTMLMdsAvatarElement>;
-            "mds-avatar-stack": LocalJSX.IntrinsicElements["mds-avatar-stack"] & JSXBase.HTMLAttributes<HTMLMdsAvatarStackElement>;
-            "mds-avatar-stack-item": LocalJSX.IntrinsicElements["mds-avatar-stack-item"] & JSXBase.HTMLAttributes<HTMLMdsAvatarStackItemElement>;
-            "mds-badge": LocalJSX.IntrinsicElements["mds-badge"] & JSXBase.HTMLAttributes<HTMLMdsBadgeElement>;
-            "mds-banner": LocalJSX.IntrinsicElements["mds-banner"] & JSXBase.HTMLAttributes<HTMLMdsBannerElement>;
-            "mds-benchmark-bar": LocalJSX.IntrinsicElements["mds-benchmark-bar"] & JSXBase.HTMLAttributes<HTMLMdsBenchmarkBarElement>;
-            "mds-bibliography": LocalJSX.IntrinsicElements["mds-bibliography"] & JSXBase.HTMLAttributes<HTMLMdsBibliographyElement>;
-            "mds-breadcrumb": LocalJSX.IntrinsicElements["mds-breadcrumb"] & JSXBase.HTMLAttributes<HTMLMdsBreadcrumbElement>;
-            "mds-breadcrumb-item": LocalJSX.IntrinsicElements["mds-breadcrumb-item"] & JSXBase.HTMLAttributes<HTMLMdsBreadcrumbItemElement>;
-            "mds-button": LocalJSX.IntrinsicElements["mds-button"] & JSXBase.HTMLAttributes<HTMLMdsButtonElement>;
-            "mds-button-dropdown": LocalJSX.IntrinsicElements["mds-button-dropdown"] & JSXBase.HTMLAttributes<HTMLMdsButtonDropdownElement>;
-            "mds-button-group": LocalJSX.IntrinsicElements["mds-button-group"] & JSXBase.HTMLAttributes<HTMLMdsButtonGroupElement>;
-            "mds-calendar": LocalJSX.IntrinsicElements["mds-calendar"] & JSXBase.HTMLAttributes<HTMLMdsCalendarElement>;
-            "mds-calendar-cell": LocalJSX.IntrinsicElements["mds-calendar-cell"] & JSXBase.HTMLAttributes<HTMLMdsCalendarCellElement>;
-            "mds-card": LocalJSX.IntrinsicElements["mds-card"] & JSXBase.HTMLAttributes<HTMLMdsCardElement>;
-            "mds-card-content": LocalJSX.IntrinsicElements["mds-card-content"] & JSXBase.HTMLAttributes<HTMLMdsCardContentElement>;
-            "mds-card-footer": LocalJSX.IntrinsicElements["mds-card-footer"] & JSXBase.HTMLAttributes<HTMLMdsCardFooterElement>;
-            "mds-card-header": LocalJSX.IntrinsicElements["mds-card-header"] & JSXBase.HTMLAttributes<HTMLMdsCardHeaderElement>;
-            "mds-card-media": LocalJSX.IntrinsicElements["mds-card-media"] & JSXBase.HTMLAttributes<HTMLMdsCardMediaElement>;
-            "mds-chip": LocalJSX.IntrinsicElements["mds-chip"] & JSXBase.HTMLAttributes<HTMLMdsChipElement>;
-            "mds-details": LocalJSX.IntrinsicElements["mds-details"] & JSXBase.HTMLAttributes<HTMLMdsDetailsElement>;
-            "mds-dropdown": LocalJSX.IntrinsicElements["mds-dropdown"] & JSXBase.HTMLAttributes<HTMLMdsDropdownElement>;
-            "mds-emoji": LocalJSX.IntrinsicElements["mds-emoji"] & JSXBase.HTMLAttributes<HTMLMdsEmojiElement>;
-            "mds-entity": LocalJSX.IntrinsicElements["mds-entity"] & JSXBase.HTMLAttributes<HTMLMdsEntityElement>;
-            "mds-file": LocalJSX.IntrinsicElements["mds-file"] & JSXBase.HTMLAttributes<HTMLMdsFileElement>;
-            "mds-file-preview": LocalJSX.IntrinsicElements["mds-file-preview"] & JSXBase.HTMLAttributes<HTMLMdsFilePreviewElement>;
-            "mds-filter": LocalJSX.IntrinsicElements["mds-filter"] & JSXBase.HTMLAttributes<HTMLMdsFilterElement>;
-            "mds-filter-item": LocalJSX.IntrinsicElements["mds-filter-item"] & JSXBase.HTMLAttributes<HTMLMdsFilterItemElement>;
-            "mds-header": LocalJSX.IntrinsicElements["mds-header"] & JSXBase.HTMLAttributes<HTMLMdsHeaderElement>;
-            "mds-header-bar": LocalJSX.IntrinsicElements["mds-header-bar"] & JSXBase.HTMLAttributes<HTMLMdsHeaderBarElement>;
-            "mds-help": LocalJSX.IntrinsicElements["mds-help"] & JSXBase.HTMLAttributes<HTMLMdsHelpElement>;
-            "mds-horizontal-scroll": LocalJSX.IntrinsicElements["mds-horizontal-scroll"] & JSXBase.HTMLAttributes<HTMLMdsHorizontalScrollElement>;
-            "mds-hr": LocalJSX.IntrinsicElements["mds-hr"] & JSXBase.HTMLAttributes<HTMLMdsHrElement>;
-            "mds-icon": LocalJSX.IntrinsicElements["mds-icon"] & JSXBase.HTMLAttributes<HTMLMdsIconElement>;
-            "mds-img": LocalJSX.IntrinsicElements["mds-img"] & JSXBase.HTMLAttributes<HTMLMdsImgElement>;
-            "mds-input": LocalJSX.IntrinsicElements["mds-input"] & JSXBase.HTMLAttributes<HTMLMdsInputElement>;
-            "mds-input-date": LocalJSX.IntrinsicElements["mds-input-date"] & JSXBase.HTMLAttributes<HTMLMdsInputDateElement>;
-            "mds-input-date-range": LocalJSX.IntrinsicElements["mds-input-date-range"] & JSXBase.HTMLAttributes<HTMLMdsInputDateRangeElement>;
-            "mds-input-date-range-preselection": LocalJSX.IntrinsicElements["mds-input-date-range-preselection"] & JSXBase.HTMLAttributes<HTMLMdsInputDateRangePreselectionElement>;
-            "mds-input-field": LocalJSX.IntrinsicElements["mds-input-field"] & JSXBase.HTMLAttributes<HTMLMdsInputFieldElement>;
-            "mds-input-otp": LocalJSX.IntrinsicElements["mds-input-otp"] & JSXBase.HTMLAttributes<HTMLMdsInputOtpElement>;
-            "mds-input-range": LocalJSX.IntrinsicElements["mds-input-range"] & JSXBase.HTMLAttributes<HTMLMdsInputRangeElement>;
-            "mds-input-select": LocalJSX.IntrinsicElements["mds-input-select"] & JSXBase.HTMLAttributes<HTMLMdsInputSelectElement>;
-            "mds-input-switch": LocalJSX.IntrinsicElements["mds-input-switch"] & JSXBase.HTMLAttributes<HTMLMdsInputSwitchElement>;
-            "mds-input-tip": LocalJSX.IntrinsicElements["mds-input-tip"] & JSXBase.HTMLAttributes<HTMLMdsInputTipElement>;
-            "mds-input-tip-item": LocalJSX.IntrinsicElements["mds-input-tip-item"] & JSXBase.HTMLAttributes<HTMLMdsInputTipItemElement>;
-            "mds-input-upload": LocalJSX.IntrinsicElements["mds-input-upload"] & JSXBase.HTMLAttributes<HTMLMdsInputUploadElement>;
-            "mds-keyboard": LocalJSX.IntrinsicElements["mds-keyboard"] & JSXBase.HTMLAttributes<HTMLMdsKeyboardElement>;
-            "mds-keyboard-key": LocalJSX.IntrinsicElements["mds-keyboard-key"] & JSXBase.HTMLAttributes<HTMLMdsKeyboardKeyElement>;
-            "mds-kpi": LocalJSX.IntrinsicElements["mds-kpi"] & JSXBase.HTMLAttributes<HTMLMdsKpiElement>;
-            "mds-kpi-item": LocalJSX.IntrinsicElements["mds-kpi-item"] & JSXBase.HTMLAttributes<HTMLMdsKpiItemElement>;
-            "mds-label": LocalJSX.IntrinsicElements["mds-label"] & JSXBase.HTMLAttributes<HTMLMdsLabelElement>;
-            "mds-list": LocalJSX.IntrinsicElements["mds-list"] & JSXBase.HTMLAttributes<HTMLMdsListElement>;
-            "mds-list-item": LocalJSX.IntrinsicElements["mds-list-item"] & JSXBase.HTMLAttributes<HTMLMdsListItemElement>;
-            "mds-mention": LocalJSX.IntrinsicElements["mds-mention"] & JSXBase.HTMLAttributes<HTMLMdsMentionElement>;
-            "mds-modal": LocalJSX.IntrinsicElements["mds-modal"] & JSXBase.HTMLAttributes<HTMLMdsModalElement>;
-            "mds-note": LocalJSX.IntrinsicElements["mds-note"] & JSXBase.HTMLAttributes<HTMLMdsNoteElement>;
-            "mds-notification": LocalJSX.IntrinsicElements["mds-notification"] & JSXBase.HTMLAttributes<HTMLMdsNotificationElement>;
-            "mds-paginator": LocalJSX.IntrinsicElements["mds-paginator"] & JSXBase.HTMLAttributes<HTMLMdsPaginatorElement>;
-            "mds-paginator-item": LocalJSX.IntrinsicElements["mds-paginator-item"] & JSXBase.HTMLAttributes<HTMLMdsPaginatorItemElement>;
-            "mds-policy-ai": LocalJSX.IntrinsicElements["mds-policy-ai"] & JSXBase.HTMLAttributes<HTMLMdsPolicyAiElement>;
+            "mds-accordion": LocalJSX.MdsAccordion & JSXBase.HTMLAttributes<HTMLMdsAccordionElement>;
+            "mds-accordion-item": LocalJSX.MdsAccordionItem & JSXBase.HTMLAttributes<HTMLMdsAccordionItemElement>;
+            "mds-accordion-timer": LocalJSX.MdsAccordionTimer & JSXBase.HTMLAttributes<HTMLMdsAccordionTimerElement>;
+            "mds-accordion-timer-item": LocalJSX.MdsAccordionTimerItem & JSXBase.HTMLAttributes<HTMLMdsAccordionTimerItemElement>;
+            "mds-author": LocalJSX.MdsAuthor & JSXBase.HTMLAttributes<HTMLMdsAuthorElement>;
+            "mds-avatar": LocalJSX.MdsAvatar & JSXBase.HTMLAttributes<HTMLMdsAvatarElement>;
+            "mds-avatar-stack": LocalJSX.MdsAvatarStack & JSXBase.HTMLAttributes<HTMLMdsAvatarStackElement>;
+            "mds-avatar-stack-item": LocalJSX.MdsAvatarStackItem & JSXBase.HTMLAttributes<HTMLMdsAvatarStackItemElement>;
+            "mds-badge": LocalJSX.MdsBadge & JSXBase.HTMLAttributes<HTMLMdsBadgeElement>;
+            "mds-banner": LocalJSX.MdsBanner & JSXBase.HTMLAttributes<HTMLMdsBannerElement>;
+            "mds-benchmark-bar": LocalJSX.MdsBenchmarkBar & JSXBase.HTMLAttributes<HTMLMdsBenchmarkBarElement>;
+            "mds-bibliography": LocalJSX.MdsBibliography & JSXBase.HTMLAttributes<HTMLMdsBibliographyElement>;
+            "mds-breadcrumb": LocalJSX.MdsBreadcrumb & JSXBase.HTMLAttributes<HTMLMdsBreadcrumbElement>;
+            "mds-breadcrumb-item": LocalJSX.MdsBreadcrumbItem & JSXBase.HTMLAttributes<HTMLMdsBreadcrumbItemElement>;
+            "mds-button": LocalJSX.MdsButton & JSXBase.HTMLAttributes<HTMLMdsButtonElement>;
+            "mds-button-dropdown": LocalJSX.MdsButtonDropdown & JSXBase.HTMLAttributes<HTMLMdsButtonDropdownElement>;
+            "mds-button-group": LocalJSX.MdsButtonGroup & JSXBase.HTMLAttributes<HTMLMdsButtonGroupElement>;
+            "mds-calendar": LocalJSX.MdsCalendar & JSXBase.HTMLAttributes<HTMLMdsCalendarElement>;
+            "mds-calendar-cell": LocalJSX.MdsCalendarCell & JSXBase.HTMLAttributes<HTMLMdsCalendarCellElement>;
+            "mds-card": LocalJSX.MdsCard & JSXBase.HTMLAttributes<HTMLMdsCardElement>;
+            "mds-card-content": LocalJSX.MdsCardContent & JSXBase.HTMLAttributes<HTMLMdsCardContentElement>;
+            "mds-card-footer": LocalJSX.MdsCardFooter & JSXBase.HTMLAttributes<HTMLMdsCardFooterElement>;
+            "mds-card-header": LocalJSX.MdsCardHeader & JSXBase.HTMLAttributes<HTMLMdsCardHeaderElement>;
+            "mds-card-media": LocalJSX.MdsCardMedia & JSXBase.HTMLAttributes<HTMLMdsCardMediaElement>;
+            "mds-chip": LocalJSX.MdsChip & JSXBase.HTMLAttributes<HTMLMdsChipElement>;
+            "mds-details": LocalJSX.MdsDetails & JSXBase.HTMLAttributes<HTMLMdsDetailsElement>;
+            "mds-dropdown": LocalJSX.MdsDropdown & JSXBase.HTMLAttributes<HTMLMdsDropdownElement>;
+            "mds-emoji": LocalJSX.MdsEmoji & JSXBase.HTMLAttributes<HTMLMdsEmojiElement>;
+            "mds-entity": LocalJSX.MdsEntity & JSXBase.HTMLAttributes<HTMLMdsEntityElement>;
+            "mds-file": LocalJSX.MdsFile & JSXBase.HTMLAttributes<HTMLMdsFileElement>;
+            "mds-file-preview": LocalJSX.MdsFilePreview & JSXBase.HTMLAttributes<HTMLMdsFilePreviewElement>;
+            "mds-filter": LocalJSX.MdsFilter & JSXBase.HTMLAttributes<HTMLMdsFilterElement>;
+            "mds-filter-item": LocalJSX.MdsFilterItem & JSXBase.HTMLAttributes<HTMLMdsFilterItemElement>;
+            "mds-header": LocalJSX.MdsHeader & JSXBase.HTMLAttributes<HTMLMdsHeaderElement>;
+            "mds-header-bar": LocalJSX.MdsHeaderBar & JSXBase.HTMLAttributes<HTMLMdsHeaderBarElement>;
+            "mds-help": LocalJSX.MdsHelp & JSXBase.HTMLAttributes<HTMLMdsHelpElement>;
+            "mds-horizontal-scroll": LocalJSX.MdsHorizontalScroll & JSXBase.HTMLAttributes<HTMLMdsHorizontalScrollElement>;
+            "mds-hr": LocalJSX.MdsHr & JSXBase.HTMLAttributes<HTMLMdsHrElement>;
+            "mds-icon": LocalJSX.MdsIcon & JSXBase.HTMLAttributes<HTMLMdsIconElement>;
+            "mds-img": LocalJSX.MdsImg & JSXBase.HTMLAttributes<HTMLMdsImgElement>;
+            "mds-input": LocalJSX.MdsInput & JSXBase.HTMLAttributes<HTMLMdsInputElement>;
+            "mds-input-date": LocalJSX.MdsInputDate & JSXBase.HTMLAttributes<HTMLMdsInputDateElement>;
+            "mds-input-date-range": LocalJSX.MdsInputDateRange & JSXBase.HTMLAttributes<HTMLMdsInputDateRangeElement>;
+            "mds-input-date-range-preselection": LocalJSX.MdsInputDateRangePreselection & JSXBase.HTMLAttributes<HTMLMdsInputDateRangePreselectionElement>;
+            "mds-input-field": LocalJSX.MdsInputField & JSXBase.HTMLAttributes<HTMLMdsInputFieldElement>;
+            "mds-input-otp": LocalJSX.MdsInputOtp & JSXBase.HTMLAttributes<HTMLMdsInputOtpElement>;
+            "mds-input-range": LocalJSX.MdsInputRange & JSXBase.HTMLAttributes<HTMLMdsInputRangeElement>;
+            "mds-input-select": LocalJSX.MdsInputSelect & JSXBase.HTMLAttributes<HTMLMdsInputSelectElement>;
+            "mds-input-switch": LocalJSX.MdsInputSwitch & JSXBase.HTMLAttributes<HTMLMdsInputSwitchElement>;
+            "mds-input-tip": LocalJSX.MdsInputTip & JSXBase.HTMLAttributes<HTMLMdsInputTipElement>;
+            "mds-input-tip-item": LocalJSX.MdsInputTipItem & JSXBase.HTMLAttributes<HTMLMdsInputTipItemElement>;
+            "mds-input-upload": LocalJSX.MdsInputUpload & JSXBase.HTMLAttributes<HTMLMdsInputUploadElement>;
+            "mds-keyboard": LocalJSX.MdsKeyboard & JSXBase.HTMLAttributes<HTMLMdsKeyboardElement>;
+            "mds-keyboard-key": LocalJSX.MdsKeyboardKey & JSXBase.HTMLAttributes<HTMLMdsKeyboardKeyElement>;
+            "mds-kpi": LocalJSX.MdsKpi & JSXBase.HTMLAttributes<HTMLMdsKpiElement>;
+            "mds-kpi-item": LocalJSX.MdsKpiItem & JSXBase.HTMLAttributes<HTMLMdsKpiItemElement>;
+            "mds-label": LocalJSX.MdsLabel & JSXBase.HTMLAttributes<HTMLMdsLabelElement>;
+            "mds-list": LocalJSX.MdsList & JSXBase.HTMLAttributes<HTMLMdsListElement>;
+            "mds-list-item": LocalJSX.MdsListItem & JSXBase.HTMLAttributes<HTMLMdsListItemElement>;
+            "mds-mention": LocalJSX.MdsMention & JSXBase.HTMLAttributes<HTMLMdsMentionElement>;
+            "mds-modal": LocalJSX.MdsModal & JSXBase.HTMLAttributes<HTMLMdsModalElement>;
+            "mds-note": LocalJSX.MdsNote & JSXBase.HTMLAttributes<HTMLMdsNoteElement>;
+            "mds-notification": LocalJSX.MdsNotification & JSXBase.HTMLAttributes<HTMLMdsNotificationElement>;
+            "mds-paginator": LocalJSX.MdsPaginator & JSXBase.HTMLAttributes<HTMLMdsPaginatorElement>;
+            "mds-paginator-item": LocalJSX.MdsPaginatorItem & JSXBase.HTMLAttributes<HTMLMdsPaginatorItemElement>;
+            "mds-policy-ai": LocalJSX.MdsPolicyAi & JSXBase.HTMLAttributes<HTMLMdsPolicyAiElement>;
             /**
              * @name Pref
              * @description This component is based on MdsTab component pattern
@@ -7990,54 +7238,54 @@ declare module "@stencil/core" {
              * </mds-pref-language>
              * </mds-pref>
              */
-            "mds-pref": LocalJSX.IntrinsicElements["mds-pref"] & JSXBase.HTMLAttributes<HTMLMdsPrefElement>;
-            "mds-pref-animation": LocalJSX.IntrinsicElements["mds-pref-animation"] & JSXBase.HTMLAttributes<HTMLMdsPrefAnimationElement>;
-            "mds-pref-consumption": LocalJSX.IntrinsicElements["mds-pref-consumption"] & JSXBase.HTMLAttributes<HTMLMdsPrefConsumptionElement>;
-            "mds-pref-contrast": LocalJSX.IntrinsicElements["mds-pref-contrast"] & JSXBase.HTMLAttributes<HTMLMdsPrefContrastElement>;
-            "mds-pref-language": LocalJSX.IntrinsicElements["mds-pref-language"] & JSXBase.HTMLAttributes<HTMLMdsPrefLanguageElement>;
-            "mds-pref-language-item": LocalJSX.IntrinsicElements["mds-pref-language-item"] & JSXBase.HTMLAttributes<HTMLMdsPrefLanguageItemElement>;
-            "mds-pref-theme": LocalJSX.IntrinsicElements["mds-pref-theme"] & JSXBase.HTMLAttributes<HTMLMdsPrefThemeElement>;
-            "mds-pref-theme-variant": LocalJSX.IntrinsicElements["mds-pref-theme-variant"] & JSXBase.HTMLAttributes<HTMLMdsPrefThemeVariantElement>;
-            "mds-pref-theme-variant-item": LocalJSX.IntrinsicElements["mds-pref-theme-variant-item"] & JSXBase.HTMLAttributes<HTMLMdsPrefThemeVariantItemElement>;
-            "mds-price-table": LocalJSX.IntrinsicElements["mds-price-table"] & JSXBase.HTMLAttributes<HTMLMdsPriceTableElement>;
-            "mds-price-table-features": LocalJSX.IntrinsicElements["mds-price-table-features"] & JSXBase.HTMLAttributes<HTMLMdsPriceTableFeaturesElement>;
-            "mds-price-table-features-cell": LocalJSX.IntrinsicElements["mds-price-table-features-cell"] & JSXBase.HTMLAttributes<HTMLMdsPriceTableFeaturesCellElement>;
-            "mds-price-table-features-row": LocalJSX.IntrinsicElements["mds-price-table-features-row"] & JSXBase.HTMLAttributes<HTMLMdsPriceTableFeaturesRowElement>;
-            "mds-price-table-header": LocalJSX.IntrinsicElements["mds-price-table-header"] & JSXBase.HTMLAttributes<HTMLMdsPriceTableHeaderElement>;
-            "mds-price-table-list": LocalJSX.IntrinsicElements["mds-price-table-list"] & JSXBase.HTMLAttributes<HTMLMdsPriceTableListElement>;
-            "mds-price-table-list-item": LocalJSX.IntrinsicElements["mds-price-table-list-item"] & JSXBase.HTMLAttributes<HTMLMdsPriceTableListItemElement>;
-            "mds-progress": LocalJSX.IntrinsicElements["mds-progress"] & JSXBase.HTMLAttributes<HTMLMdsProgressElement>;
-            "mds-push-notification": LocalJSX.IntrinsicElements["mds-push-notification"] & JSXBase.HTMLAttributes<HTMLMdsPushNotificationElement>;
-            "mds-push-notification-item": LocalJSX.IntrinsicElements["mds-push-notification-item"] & JSXBase.HTMLAttributes<HTMLMdsPushNotificationItemElement>;
-            "mds-quote": LocalJSX.IntrinsicElements["mds-quote"] & JSXBase.HTMLAttributes<HTMLMdsQuoteElement>;
-            "mds-radial-menu": LocalJSX.IntrinsicElements["mds-radial-menu"] & JSXBase.HTMLAttributes<HTMLMdsRadialMenuElement>;
-            "mds-radial-menu-item": LocalJSX.IntrinsicElements["mds-radial-menu-item"] & JSXBase.HTMLAttributes<HTMLMdsRadialMenuItemElement>;
-            "mds-radial-progress": LocalJSX.IntrinsicElements["mds-radial-progress"] & JSXBase.HTMLAttributes<HTMLMdsRadialProgressElement>;
-            "mds-separator": LocalJSX.IntrinsicElements["mds-separator"] & JSXBase.HTMLAttributes<HTMLMdsSeparatorElement>;
-            "mds-spinner": LocalJSX.IntrinsicElements["mds-spinner"] & JSXBase.HTMLAttributes<HTMLMdsSpinnerElement>;
-            "mds-status-bar": LocalJSX.IntrinsicElements["mds-status-bar"] & JSXBase.HTMLAttributes<HTMLMdsStatusBarElement>;
-            "mds-stepper-bar": LocalJSX.IntrinsicElements["mds-stepper-bar"] & JSXBase.HTMLAttributes<HTMLMdsStepperBarElement>;
-            "mds-stepper-bar-item": LocalJSX.IntrinsicElements["mds-stepper-bar-item"] & JSXBase.HTMLAttributes<HTMLMdsStepperBarItemElement>;
-            "mds-tab": LocalJSX.IntrinsicElements["mds-tab"] & JSXBase.HTMLAttributes<HTMLMdsTabElement>;
-            "mds-tab-bar": LocalJSX.IntrinsicElements["mds-tab-bar"] & JSXBase.HTMLAttributes<HTMLMdsTabBarElement>;
-            "mds-tab-bar-item": LocalJSX.IntrinsicElements["mds-tab-bar-item"] & JSXBase.HTMLAttributes<HTMLMdsTabBarItemElement>;
-            "mds-tab-item": LocalJSX.IntrinsicElements["mds-tab-item"] & JSXBase.HTMLAttributes<HTMLMdsTabItemElement>;
-            "mds-table": LocalJSX.IntrinsicElements["mds-table"] & JSXBase.HTMLAttributes<HTMLMdsTableElement>;
-            "mds-table-body": LocalJSX.IntrinsicElements["mds-table-body"] & JSXBase.HTMLAttributes<HTMLMdsTableBodyElement>;
-            "mds-table-cell": LocalJSX.IntrinsicElements["mds-table-cell"] & JSXBase.HTMLAttributes<HTMLMdsTableCellElement>;
-            "mds-table-footer": LocalJSX.IntrinsicElements["mds-table-footer"] & JSXBase.HTMLAttributes<HTMLMdsTableFooterElement>;
-            "mds-table-header": LocalJSX.IntrinsicElements["mds-table-header"] & JSXBase.HTMLAttributes<HTMLMdsTableHeaderElement>;
-            "mds-table-header-cell": LocalJSX.IntrinsicElements["mds-table-header-cell"] & JSXBase.HTMLAttributes<HTMLMdsTableHeaderCellElement>;
-            "mds-table-row": LocalJSX.IntrinsicElements["mds-table-row"] & JSXBase.HTMLAttributes<HTMLMdsTableRowElement>;
-            "mds-text": LocalJSX.IntrinsicElements["mds-text"] & JSXBase.HTMLAttributes<HTMLMdsTextElement>;
-            "mds-toast": LocalJSX.IntrinsicElements["mds-toast"] & JSXBase.HTMLAttributes<HTMLMdsToastElement>;
-            "mds-tooltip": LocalJSX.IntrinsicElements["mds-tooltip"] & JSXBase.HTMLAttributes<HTMLMdsTooltipElement>;
-            "mds-tree": LocalJSX.IntrinsicElements["mds-tree"] & JSXBase.HTMLAttributes<HTMLMdsTreeElement>;
-            "mds-tree-item": LocalJSX.IntrinsicElements["mds-tree-item"] & JSXBase.HTMLAttributes<HTMLMdsTreeItemElement>;
-            "mds-url-view": LocalJSX.IntrinsicElements["mds-url-view"] & JSXBase.HTMLAttributes<HTMLMdsUrlViewElement>;
-            "mds-usage": LocalJSX.IntrinsicElements["mds-usage"] & JSXBase.HTMLAttributes<HTMLMdsUsageElement>;
-            "mds-video-wall": LocalJSX.IntrinsicElements["mds-video-wall"] & JSXBase.HTMLAttributes<HTMLMdsVideoWallElement>;
-            "mds-zero": LocalJSX.IntrinsicElements["mds-zero"] & JSXBase.HTMLAttributes<HTMLMdsZeroElement>;
+            "mds-pref": LocalJSX.MdsPref & JSXBase.HTMLAttributes<HTMLMdsPrefElement>;
+            "mds-pref-animation": LocalJSX.MdsPrefAnimation & JSXBase.HTMLAttributes<HTMLMdsPrefAnimationElement>;
+            "mds-pref-consumption": LocalJSX.MdsPrefConsumption & JSXBase.HTMLAttributes<HTMLMdsPrefConsumptionElement>;
+            "mds-pref-contrast": LocalJSX.MdsPrefContrast & JSXBase.HTMLAttributes<HTMLMdsPrefContrastElement>;
+            "mds-pref-language": LocalJSX.MdsPrefLanguage & JSXBase.HTMLAttributes<HTMLMdsPrefLanguageElement>;
+            "mds-pref-language-item": LocalJSX.MdsPrefLanguageItem & JSXBase.HTMLAttributes<HTMLMdsPrefLanguageItemElement>;
+            "mds-pref-theme": LocalJSX.MdsPrefTheme & JSXBase.HTMLAttributes<HTMLMdsPrefThemeElement>;
+            "mds-pref-theme-variant": LocalJSX.MdsPrefThemeVariant & JSXBase.HTMLAttributes<HTMLMdsPrefThemeVariantElement>;
+            "mds-pref-theme-variant-item": LocalJSX.MdsPrefThemeVariantItem & JSXBase.HTMLAttributes<HTMLMdsPrefThemeVariantItemElement>;
+            "mds-price-table": LocalJSX.MdsPriceTable & JSXBase.HTMLAttributes<HTMLMdsPriceTableElement>;
+            "mds-price-table-features": LocalJSX.MdsPriceTableFeatures & JSXBase.HTMLAttributes<HTMLMdsPriceTableFeaturesElement>;
+            "mds-price-table-features-cell": LocalJSX.MdsPriceTableFeaturesCell & JSXBase.HTMLAttributes<HTMLMdsPriceTableFeaturesCellElement>;
+            "mds-price-table-features-row": LocalJSX.MdsPriceTableFeaturesRow & JSXBase.HTMLAttributes<HTMLMdsPriceTableFeaturesRowElement>;
+            "mds-price-table-header": LocalJSX.MdsPriceTableHeader & JSXBase.HTMLAttributes<HTMLMdsPriceTableHeaderElement>;
+            "mds-price-table-list": LocalJSX.MdsPriceTableList & JSXBase.HTMLAttributes<HTMLMdsPriceTableListElement>;
+            "mds-price-table-list-item": LocalJSX.MdsPriceTableListItem & JSXBase.HTMLAttributes<HTMLMdsPriceTableListItemElement>;
+            "mds-progress": LocalJSX.MdsProgress & JSXBase.HTMLAttributes<HTMLMdsProgressElement>;
+            "mds-push-notification": LocalJSX.MdsPushNotification & JSXBase.HTMLAttributes<HTMLMdsPushNotificationElement>;
+            "mds-push-notification-item": LocalJSX.MdsPushNotificationItem & JSXBase.HTMLAttributes<HTMLMdsPushNotificationItemElement>;
+            "mds-quote": LocalJSX.MdsQuote & JSXBase.HTMLAttributes<HTMLMdsQuoteElement>;
+            "mds-radial-menu": LocalJSX.MdsRadialMenu & JSXBase.HTMLAttributes<HTMLMdsRadialMenuElement>;
+            "mds-radial-menu-item": LocalJSX.MdsRadialMenuItem & JSXBase.HTMLAttributes<HTMLMdsRadialMenuItemElement>;
+            "mds-radial-progress": LocalJSX.MdsRadialProgress & JSXBase.HTMLAttributes<HTMLMdsRadialProgressElement>;
+            "mds-separator": LocalJSX.MdsSeparator & JSXBase.HTMLAttributes<HTMLMdsSeparatorElement>;
+            "mds-spinner": LocalJSX.MdsSpinner & JSXBase.HTMLAttributes<HTMLMdsSpinnerElement>;
+            "mds-status-bar": LocalJSX.MdsStatusBar & JSXBase.HTMLAttributes<HTMLMdsStatusBarElement>;
+            "mds-stepper-bar": LocalJSX.MdsStepperBar & JSXBase.HTMLAttributes<HTMLMdsStepperBarElement>;
+            "mds-stepper-bar-item": LocalJSX.MdsStepperBarItem & JSXBase.HTMLAttributes<HTMLMdsStepperBarItemElement>;
+            "mds-tab": LocalJSX.MdsTab & JSXBase.HTMLAttributes<HTMLMdsTabElement>;
+            "mds-tab-bar": LocalJSX.MdsTabBar & JSXBase.HTMLAttributes<HTMLMdsTabBarElement>;
+            "mds-tab-bar-item": LocalJSX.MdsTabBarItem & JSXBase.HTMLAttributes<HTMLMdsTabBarItemElement>;
+            "mds-tab-item": LocalJSX.MdsTabItem & JSXBase.HTMLAttributes<HTMLMdsTabItemElement>;
+            "mds-table": LocalJSX.MdsTable & JSXBase.HTMLAttributes<HTMLMdsTableElement>;
+            "mds-table-body": LocalJSX.MdsTableBody & JSXBase.HTMLAttributes<HTMLMdsTableBodyElement>;
+            "mds-table-cell": LocalJSX.MdsTableCell & JSXBase.HTMLAttributes<HTMLMdsTableCellElement>;
+            "mds-table-footer": LocalJSX.MdsTableFooter & JSXBase.HTMLAttributes<HTMLMdsTableFooterElement>;
+            "mds-table-header": LocalJSX.MdsTableHeader & JSXBase.HTMLAttributes<HTMLMdsTableHeaderElement>;
+            "mds-table-header-cell": LocalJSX.MdsTableHeaderCell & JSXBase.HTMLAttributes<HTMLMdsTableHeaderCellElement>;
+            "mds-table-row": LocalJSX.MdsTableRow & JSXBase.HTMLAttributes<HTMLMdsTableRowElement>;
+            "mds-text": LocalJSX.MdsText & JSXBase.HTMLAttributes<HTMLMdsTextElement>;
+            "mds-toast": LocalJSX.MdsToast & JSXBase.HTMLAttributes<HTMLMdsToastElement>;
+            "mds-tooltip": LocalJSX.MdsTooltip & JSXBase.HTMLAttributes<HTMLMdsTooltipElement>;
+            "mds-tree": LocalJSX.MdsTree & JSXBase.HTMLAttributes<HTMLMdsTreeElement>;
+            "mds-tree-item": LocalJSX.MdsTreeItem & JSXBase.HTMLAttributes<HTMLMdsTreeItemElement>;
+            "mds-url-view": LocalJSX.MdsUrlView & JSXBase.HTMLAttributes<HTMLMdsUrlViewElement>;
+            "mds-usage": LocalJSX.MdsUsage & JSXBase.HTMLAttributes<HTMLMdsUsageElement>;
+            "mds-video-wall": LocalJSX.MdsVideoWall & JSXBase.HTMLAttributes<HTMLMdsVideoWallElement>;
+            "mds-zero": LocalJSX.MdsZero & JSXBase.HTMLAttributes<HTMLMdsZeroElement>;
         }
     }
 }

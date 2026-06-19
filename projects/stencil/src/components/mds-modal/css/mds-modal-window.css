@@ -51,18 +51,21 @@
   grid-template-rows: auto 1fr auto;
 } */
 
-:host .window,
-:host > ::slotted([slot='window']) {
+/*
+ * Step 1.1: window shows at rest, instantly, when the dialog is open. No
+ * transform offset and no transition yet - the slide/3d/custom animation and
+ * @starting-style are added in step 1.2. Keyed on the native `.dialog[open]`
+ * (synchronous) rather than the reflected `:host([opened])`.
+ */
+
+.dialog .window,
+.dialog ::slotted([slot='window']) {
   opacity: 0;
-  transform: var(--private-modal-transition-window-transform);
-  transition-duration: var(--mds-modal-transition-duration);
-  transition-property: transform, opacity;
-  transition-timing-function: var(--mds-modal-transition-timing-funciton);
+  transition: none;
 }
 
-:host([opened]) .window,
-:host([opened]) > ::slotted([slot='window']) {
+.dialog[open] .window,
+.dialog[open] ::slotted([slot='window']) {
   opacity: 1;
   pointer-events: auto;
-  transition-timing-function: var(--mds-modal-transition-timing-funciton);
 }
