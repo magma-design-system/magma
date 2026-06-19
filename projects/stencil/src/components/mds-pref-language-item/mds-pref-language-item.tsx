@@ -67,7 +67,7 @@ export class MdsPrefLanguageItem {
   render() {
     return (
       <Host onClick={this.handleClick}>
-        {this.code ? (
+        {this.code !== '' ? (
           <mds-button
             icon={this.selected ? miBaselineCheckCircle : miOutlineCircle}
             variant="dark"

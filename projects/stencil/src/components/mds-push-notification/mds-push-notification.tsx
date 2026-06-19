@@ -124,7 +124,7 @@ export class MdsPushNotification {
     const elements = this.slotNotifications
       .assignedElements()
       .map((e) => e as HTMLElement)
-      .filter((e) => !e.style.visibility);
+      .filter((e) => e.style.visibility === '');
     if (elements.length === 0) return;
 
     elements.forEach(async (e) => {

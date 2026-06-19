@@ -106,7 +106,7 @@ export class MdsKeyboard {
 
   private updateElements = (): void => {
     this.filteredNodes.forEach((node: HTMLMdsKeyboardKeyElement) => {
-      if (node.name) {
+      if (node.name !== undefined) {
         this.keyEls.push(node);
         this.keyCombination.add(this.keyCodes(node.name.toLowerCase()).toString());
       }
@@ -167,7 +167,7 @@ export class MdsKeyboard {
   };
 
   private addKeyboardShortcut = (event: KeyboardEvent): void => {
-    if (!document) {
+    if (typeof document === 'undefined') {
       return;
     }
     event.stopPropagation();

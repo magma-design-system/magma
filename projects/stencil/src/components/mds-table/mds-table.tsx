@@ -130,7 +130,7 @@ export class MdsTable {
     const cellSelection: HTMLMdsTableCellElement = this.rows[0].shadowRoot?.querySelector(
       '.selection-cell',
     ) as HTMLMdsTableCellElement;
-    this.cellsWidth = cellSelection ? cellSelection.offsetWidth : 0;
+    this.cellsWidth = cellSelection != null ? cellSelection.offsetWidth : 0;
     cells.forEach((cell: HTMLMdsTableCellElement) => {
       this.cellsWidth += cell.offsetWidth;
     });

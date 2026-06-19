@@ -114,7 +114,7 @@ export class MdsHeader {
   };
 
   private handleVisibility = (): void => {
-    if (!this.autoHide) {
+    if (this.autoHide === undefined || this.autoHide === 0 || Number.isNaN(this.autoHide)) {
       return;
     }
     // reset var if the page is scrolled to top
@@ -152,7 +152,7 @@ export class MdsHeader {
   };
 
   private sanitizeAppearance = (): AppearanceType => {
-    if (!this.appearanceSet) {
+    if (this.appearanceSet === undefined || this.appearanceSet === '') {
       return [this.appearance];
     }
     const regex = /\b(\w+)\b/g;
@@ -173,7 +173,7 @@ export class MdsHeader {
 
   private handleScroll = (): void => {
     if (typeof window === 'undefined') return;
-    if (this.autoHide) {
+    if (this.autoHide !== undefined && this.autoHide !== 0 && !Number.isNaN(this.autoHide)) {
       this.handleVisibility();
     }
     if (this.sanitizedAppearance.length > 1) {
@@ -183,14 +183,18 @@ export class MdsHeader {
 
   private setAppearanceSetData = (): void => {
     this.sanitizedAppearance = this.sanitizeAppearance();
-    if (this.sanitizedAppearance[2]) {
+    if (
+      this.sanitizedAppearance[2] !== undefined &&
+      this.sanitizedAppearance[2] !== 0 &&
+      !Number.isNaN(this.sanitizedAppearance[2])
+    ) {
       this.appearanceThreshold = this.sanitizedAppearance[2];
     }
     this.relativeTresholdDown = this.threshold;
   };
 
   private initScrollListener = (): void => {
-    if (!window) {
+    if (typeof window === 'undefined') {
       return;
     }
     this.setAppearanceSetData();
@@ -198,7 +202,7 @@ export class MdsHeader {
   };
 
   disconnectedCallback(): void {
-    if (!window) {
+    if (typeof window === 'undefined') {
       return;
     }
     window.removeEventListener('scroll', this.handleScroll);
@@ -229,7 +233,7 @@ export class MdsHeader {
     if (newValue === oldValue) {
       return;
     }
-    if (this.headerBar) {
+    if (this.headerBar != null) {
       this.headerBar.menu = newValue;
     }
   }
@@ -239,7 +243,7 @@ export class MdsHeader {
     if (newValue === oldValue) {
       return;
     }
-    if (this.headerBar) {
+    if (this.headerBar != null) {
       this.headerBar.nav = newValue;
     }
   }

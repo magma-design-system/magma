@@ -53,7 +53,7 @@ export class MdsTableHeader {
   async setSelection(selectedItems: number, totalItems: number): Promise<void> {
     this.indeterminate = selectedItems !== 0 && selectedItems !== totalItems;
     if (this.indeterminate) {
-      if (!this.checkboxEl) {
+      if (this.checkboxEl == null) {
         this.checkboxEl = this.host.shadowRoot?.querySelector(
           '.checkbox',
         ) as HTMLMdsInputSwitchElement;

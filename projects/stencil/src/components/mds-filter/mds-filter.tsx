@@ -114,7 +114,9 @@ export class MdsFilter {
 
   @Listen('mdsFilterItemSelect')
   activeEventHandler(event: CustomEvent<MdsFilterItemEventDetail>): void {
-    this.lastSelectedItem = Number(event.detail.id ? event.detail.id.replace('item-', '') : 0);
+    this.lastSelectedItem = Number(
+      event.detail.id !== '' ? event.detail.id.replace('item-', '') : 0,
+    );
     this.scrollTabs();
 
     const items = this.queryItems();

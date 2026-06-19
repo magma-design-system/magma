@@ -326,7 +326,7 @@ export class MdsEmoji {
       `[id^='${part}-']`,
     ) as NodeListOf<SVGElement | SVGGElement>;
     if (group.length === 0) return null;
-    if (!state && group) {
+    if ((state === undefined || state === '') && group) {
       group?.forEach((el: SVGElement | SVGGElement) => {
         // const currentState = el.id.split('-')[1]
         el.style.visibility = 'hidden';

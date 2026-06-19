@@ -158,13 +158,13 @@ export class MdsInputDateRange {
 
   private syncCalendarsSelectionAttributes(): void {
     this.host.shadowRoot?.querySelectorAll('mds-calendar').forEach((calendar) => {
-      if (this.internalStartDate) {
+      if (this.internalStartDate !== '') {
         calendar.setAttribute('start-date', this.internalStartDate);
       } else {
         calendar.removeAttribute('start-date');
       }
 
-      if (this.internalEndDate) {
+      if (this.internalEndDate !== '') {
         calendar.setAttribute('end-date', this.internalEndDate);
       } else {
         calendar.removeAttribute('end-date');
@@ -176,7 +176,7 @@ export class MdsInputDateRange {
 
   private syncCalendarsHoverAttributes(): void {
     this.host.shadowRoot?.querySelectorAll('mds-calendar').forEach((calendar) => {
-      if (this.hoveredCalendarDate) {
+      if (this.hoveredCalendarDate !== null && this.hoveredCalendarDate !== '') {
         calendar.setAttribute('hover-date', this.hoveredCalendarDate);
       } else {
         calendar.removeAttribute('hover-date');
@@ -253,7 +253,7 @@ export class MdsInputDateRange {
     );
 
     // Se max è precedente a min, imposto max uguale a min
-    if (this.min && this.max) {
+    if (this.min !== null && this.min !== '' && this.max !== null && this.max !== '') {
       const minDate = DateTime.fromISO(this.min);
       const maxDate = DateTime.fromISO(this.max);
       if (maxDate < minDate) {
@@ -276,7 +276,7 @@ export class MdsInputDateRange {
    * @param event the preselection range to apply
    */
   @Method() async preselect(event: EventDate): Promise<void> {
-    if (!this.togglePreselection) {
+    if (this.togglePreselection == null) {
       this.togglePreselection = Array.from(
         this.host.querySelectorAll('mds-input-date-range-preselection'),
       );
@@ -310,7 +310,7 @@ export class MdsInputDateRange {
 
     const calendars = this.getCalendars();
 
-    if (calendars.length) {
+    if (calendars.length !== 0) {
       await Promise.all(
         calendars.map((calendar, index) =>
           calendar.updateCurrentDate(this.getCalendarViewDate(index)),
@@ -413,7 +413,7 @@ export class MdsInputDateRange {
   private updateInputValue(slotName: 'start' | 'end', newValue: string): void {
     const slot = this.host.shadowRoot?.querySelector(`slot[name="${slotName}"]`) as HTMLSlotElement;
     const input = slot?.assignedElements()[0] as HTMLMdsInputDateElement;
-    if (input) {
+    if (input != null) {
       this.syncingInputSlots.add(slotName);
       input.setValue(newValue).finally(() => {
         requestAnimationFrame(() => {
@@ -428,7 +428,7 @@ export class MdsInputDateRange {
     const endSlot = this.host.shadowRoot?.querySelector('slot[name="end"]') as HTMLSlotElement;
     this.hasPreselection = this.host.querySelector('mds-input-date-range-preselection') !== null;
 
-    if (startSlot) {
+    if (startSlot != null) {
       const input = startSlot.assignedElements()[0] as HTMLMdsInputDateElement;
       input.addEventListener(
         'mdsInputDateSelect',
@@ -436,7 +436,7 @@ export class MdsInputDateRange {
       );
     }
 
-    if (endSlot) {
+    if (endSlot != null) {
       const input = endSlot.assignedElements()[0] as HTMLMdsInputDateElement;
       input.addEventListener(
         'mdsInputDateSelect',
@@ -465,7 +465,7 @@ export class MdsInputDateRange {
   }
 
   private validateDateRange(): void {
-    if (this.internalStartDate && this.internalEndDate) {
+    if (this.internalStartDate !== '' && this.internalEndDate !== '') {
       const start = DateTime.fromISO(this.internalStartDate);
       const end = DateTime.fromISO(this.internalEndDate);
 
@@ -481,7 +481,7 @@ export class MdsInputDateRange {
       this.host.querySelectorAll('mds-input-date-range-preselection'),
     );
 
-    if (preselections) {
+    if (preselections != null) {
       preselections.forEach((element) => {
         const preselection = element;
 
@@ -504,7 +504,7 @@ export class MdsInputDateRange {
   }
 
   private handleCalendarHover = (ev: CustomEvent<{ hoverDate: string | null }>): void => {
-    if (!this.internalStartDate || this.internalEndDate) {
+    if (this.internalStartDate === '' || this.internalEndDate !== '') {
       this.clearHoverPreview();
       return;
     }
@@ -522,7 +522,7 @@ export class MdsInputDateRange {
     this.internalStartDate = ev.detail.startDate;
     this.updateInputValue('start', this.internalStartDate);
 
-    if (ev.detail.endDate) {
+    if (ev.detail.endDate !== undefined && ev.detail.endDate !== '') {
       this.internalEndDate = ev.detail.endDate;
       this.updateInputValue('end', this.internalEndDate);
     } else {
@@ -533,7 +533,7 @@ export class MdsInputDateRange {
     this.syncFormValue();
     this.syncCalendarsSelectionAttributes();
 
-    if (this.internalStartDate && this.internalEndDate) {
+    if (this.internalStartDate !== '' && this.internalEndDate !== '') {
       this.emitValueChanged();
       this.closeDropdownAfterSelection();
     }
@@ -585,8 +585,8 @@ export class MdsInputDateRange {
           }}
           startDate={this.internalStartDate}
           endDate={this.internalEndDate}
-          {...(this.min ? { min: this.min } : {})}
-          {...(this.max ? { max: this.max } : {})}
+          {...(this.min !== null && this.min !== '' ? { min: this.min } : {})}
+          {...(this.max !== null && this.max !== '' ? { max: this.max } : {})}
         ></mds-calendar>
       </div>
     );
@@ -610,8 +610,8 @@ export class MdsInputDateRange {
           }}
           startDate={this.internalStartDate}
           endDate={this.internalEndDate}
-          {...(this.min ? { min: this.min } : {})}
-          {...(this.max ? { max: this.max } : {})}
+          {...(this.min !== null && this.min !== '' ? { min: this.min } : {})}
+          {...(this.max !== null && this.max !== '' ? { max: this.max } : {})}
         ></mds-calendar>
         <mds-calendar
           lang={this.language}
@@ -627,8 +627,8 @@ export class MdsInputDateRange {
           }}
           startDate={this.internalStartDate}
           endDate={this.internalEndDate}
-          {...(this.min ? { min: this.min } : {})}
-          {...(this.max ? { max: this.max } : {})}
+          {...(this.min !== null && this.min !== '' ? { min: this.min } : {})}
+          {...(this.max !== null && this.max !== '' ? { max: this.max } : {})}
         ></mds-calendar>
       </div>
     );
@@ -684,7 +684,7 @@ export class MdsInputDateRange {
     const startDate = this.internalStartDate?.trim() ?? '';
     const endDate = this.internalEndDate?.trim() ?? '';
 
-    if (!startDate && !endDate) {
+    if (startDate === '' && endDate === '') {
       this.internals.setFormValue(null);
       return;
     }

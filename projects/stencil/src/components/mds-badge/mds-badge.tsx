@@ -43,7 +43,7 @@ export class MdsBadge {
 
   private onSlotChangeHandler = (): void => {
     /* this should be removed in the future once slotted text is no longer used, use the label property instead */
-    if (this.label) return;
+    if (this.label !== undefined && this.label !== '') return;
     this.label = readSlottedLabel(this.host);
   };
 

@@ -154,7 +154,7 @@ export class MdsChip {
 
   private handleClickableElement = (isClickable: boolean): void => {
     const label = this.host.shadowRoot?.querySelector('.label') as HTMLElement;
-    if (!label) {
+    if (label == null) {
       return;
     }
     if (isClickable) {

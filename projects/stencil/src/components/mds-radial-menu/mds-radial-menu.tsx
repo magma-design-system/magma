@@ -143,7 +143,7 @@ export class MdsRadialMenu {
   }
 
   disconnectedCallback(): void {
-    if (!document) return;
+    if (typeof document === 'undefined') return;
     document.removeEventListener('contextmenu', this.toggleRightClickMenu);
   }
 
@@ -183,7 +183,7 @@ export class MdsRadialMenu {
 
   @Watch('interaction')
   onInteractionChange(newValue?: Interaction): void {
-    if (!document) return;
+    if (typeof document === 'undefined') return;
     if (newValue === 'rightclick') {
       document.addEventListener('contextmenu', this.toggleRightClickMenu);
       return;

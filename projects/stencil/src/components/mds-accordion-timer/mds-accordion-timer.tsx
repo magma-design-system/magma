@@ -156,7 +156,7 @@ export class MdsAccordionTimer {
   @Listen('mdsAccordionTimerItemClickSelect')
   onClickSelect(event: CustomEvent<MdsAccordionTimerItemEventDetail>): void {
     this.clearIntervals();
-    if (this.selectedItem) {
+    if (this.selectedItem != null) {
       this.selectedItem.progress = 0;
     }
     this.setSelectedItem(event.detail.uuid);
@@ -168,7 +168,7 @@ export class MdsAccordionTimer {
   onSelect(event: CustomEvent<MdsAccordionTimerItemEventDetail>): void {
     this.clearIntervals();
     this.paused = false;
-    if (this.selectedItem) {
+    if (this.selectedItem != null) {
       this.selectedItem.progress = 0;
     }
     this.setSelectedItem(event.detail.uuid);

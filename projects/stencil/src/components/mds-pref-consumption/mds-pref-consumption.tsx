@@ -90,7 +90,7 @@ export class MdsPrefContrast {
     this.prefChangeEvent.emit({ preference: 'consumption' });
     this.mode = mode;
     localStorage.setItem(this.localStorageAlias, this.mode);
-    if (document) {
+    if (typeof document !== 'undefined') {
       const element = document.querySelector('html');
       for (const key in this.consumption) {
         if ({}.hasOwnProperty.call(this.consumption, key)) {

@@ -166,7 +166,7 @@ export class MdsImg {
   };
 
   private autoAltName = (): string => {
-    if (this.src) {
+    if (this.src !== '') {
       const index = this.src.lastIndexOf('/') + 1;
       return this.src.substring(index);
     }
@@ -180,12 +180,12 @@ export class MdsImg {
   componentWillLoad(): void {
     this.consumptionMode =
       (localStorage.getItem('mdsPrefConsumption') as ConsumptionModeType) ?? 'high';
-    if (this.srcsetConsumption) {
+    if (this.srcsetConsumption !== undefined && this.srcsetConsumption !== '') {
       this.srcsetConsumptionData = this.formatConsumptionData(this.srcsetConsumption);
     }
 
     this.image = this.host.querySelector<HTMLImageElement>('img') as HTMLImageElement;
-    if (!this.alt) {
+    if (this.alt === '') {
       this.alt = this.autoAltName();
     }
   }

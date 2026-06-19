@@ -131,8 +131,8 @@ export class MdsModal {
   };
 
   private disableOverflow = (): void => {
-    if (document) {
-      if (document.body.style.overflow) {
+    if (typeof document !== 'undefined') {
+      if (document.body.style.overflow !== '') {
         this.bodyOverflow = document.body.style.overflow;
       }
       document.body.style.overflow = 'hidden';
@@ -140,8 +140,8 @@ export class MdsModal {
   };
 
   private enableOverflow = (): void => {
-    if (document) {
-      if (this.bodyOverflow) {
+    if (typeof document !== 'undefined') {
+      if (this.bodyOverflow !== '') {
         document.body.style.overflow = this.bodyOverflow;
       } else {
         document.body.style.removeProperty('overflow');
@@ -215,13 +215,13 @@ export class MdsModal {
     this.windowHeaderElement = this.host.shadowRoot?.querySelector('.window-header') as HTMLElement;
     this.windowFooterElement = this.host.shadowRoot?.querySelector('.window-footer') as HTMLElement;
 
-    if (this.windowHeaderElement) {
+    if (this.windowHeaderElement != null) {
       this.windowHeaderHeight = this.windowHeaderElement.offsetHeight;
     }
-    if (this.windowFooterElement) {
+    if (this.windowFooterElement != null) {
       this.windowFooterHeight = this.windowFooterElement.offsetHeight;
     }
-    if (this.windowElement) {
+    if (this.windowElement != null) {
       this.addMobileEvents();
     }
     this.updateCSSCustomProps();
@@ -229,7 +229,7 @@ export class MdsModal {
 
   disconnectedCallback(): void {
     this.enableOverflow();
-    if (this.windowElement) {
+    if (this.windowElement != null) {
       this.windowElement.removeEventListener('touchstart', this.setTouchStart);
       this.windowElement.removeEventListener('touchend', this.setTouchEnd);
     }

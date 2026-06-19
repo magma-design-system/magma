@@ -81,7 +81,7 @@ export class MdsPref {
   }
 
   componentDidLoad(): void {
-    if (window) {
+    if (typeof window !== 'undefined') {
       document.documentElement?.setAttribute('data-magma-pref', '');
     }
     if (this.controller) {
@@ -90,7 +90,7 @@ export class MdsPref {
   }
 
   disconnectedCallback(): void {
-    if (window) {
+    if (typeof window !== 'undefined') {
       document.documentElement?.removeAttribute('data-magma-pref');
     }
     this.removePerfEvents();

@@ -65,7 +65,7 @@ export class MdsPrefThemeVariantItem {
 
   componentWillRender(): void {
     this.t.lang(this.element);
-    if (!this.label) {
+    if (this.label === undefined || this.label === '') {
       this.label = this.name.charAt(0).toUpperCase() + this.name.slice(1).replace(/-/g, ' ');
     }
   }

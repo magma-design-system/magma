@@ -176,12 +176,14 @@ export class MdsInputDate {
   }
 
   componentWillLoad(): void {
-    this.isSlotted = !!this.host.getAttribute('slot');
+    this.isSlotted = !(
+      this.host.getAttribute('slot') === null || this.host.getAttribute('slot') === ''
+    );
     this.value = this.value || '';
     this.language = this.t.lang(this.host);
 
     // Se max è precedente a min, imposto max uguale a min
-    if (this.min && this.max) {
+    if (this.min !== null && this.min !== '' && this.max !== null && this.max !== '') {
       const minDate = DateTime.fromISO(this.min);
       const maxDate = DateTime.fromISO(this.max);
       if (maxDate < minDate) {
@@ -195,7 +197,7 @@ export class MdsInputDate {
     const input = event.target as HTMLInputElement;
     this.touched = true;
     // manage case when i insert 0 on date and default input behavior change in 01 instead of resetting all date
-    if (input.value) this.value = input.value;
+    if (input.value !== '') this.value = input.value;
     this.validateValue(input.validity.badInput);
   };
 
@@ -281,8 +283,8 @@ export class MdsInputDate {
                 }
               }}
               startDate={this.value}
-              {...(this.min ? { min: this.min } : {})}
-              {...(this.max ? { max: this.max } : {})}
+              {...(this.min !== null && this.min !== '' ? { min: this.min } : {})}
+              {...(this.max !== null && this.max !== '' ? { max: this.max } : {})}
             ></mds-calendar>
           </mds-dropdown>
         )}

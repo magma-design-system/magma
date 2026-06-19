@@ -178,7 +178,7 @@ export class MdsDropdown implements FloatingElement {
 
   @Watch('target')
   targetChanged(): void {
-    if (!this.target || !this.floatingController) return;
+    if (this.target === '' || this.floatingController == null) return;
     this.caller = this.floatingController.updateCaller(this.target);
     this.setInteractionBehaviour();
     this.km.addElement(this.host);

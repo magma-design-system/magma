@@ -152,7 +152,7 @@ export class MdsPrefThemeVariant {
     localStorage.setItem(this.localStorageAliasThemeName, this.name);
     localStorage.setItem(this.localStorageAliasThemeScheme, this.scheme);
 
-    if (document) {
+    if (typeof document !== 'undefined') {
       const element = document.querySelector('html');
       // cleanup previeous selection
       for (const key in this.schemeSet) {
@@ -160,7 +160,7 @@ export class MdsPrefThemeVariant {
           element?.classList.remove(this.schemeSet[key]);
         }
       }
-      if (this.previousName) {
+      if (this.previousName !== null && this.previousName !== '') {
         element?.classList.remove(this.clasNameThemeNamePrefix + this.previousName);
       }
       // set new selection

@@ -130,7 +130,7 @@ export class MdsTab {
     });
 
     this.tabItems.forEach((item, key) => {
-      if (!item.id) {
+      if (item.id === '') {
         setAttributeIfEmpty(item, 'id', hashRandomValue('mds-tab-item'));
       }
       if (item.selected) {
@@ -163,7 +163,7 @@ export class MdsTab {
   };
 
   private updateOverflowState = (): void => {
-    if (!this.tabs || !this.tabsContainer) return;
+    if (this.tabs == null || this.tabsContainer == null) return;
 
     const containerWidth = this.tabsContainer.offsetWidth;
     const tabsWidth = this.tabs.scrollWidth;

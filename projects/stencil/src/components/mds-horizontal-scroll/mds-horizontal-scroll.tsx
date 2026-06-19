@@ -63,7 +63,7 @@ export class MdsHorizontalScroll {
   };
 
   private isInViewport = (element: HTMLElement): boolean => {
-    if (!this.contents) {
+    if (this.contents == null) {
       return false;
     }
     const spacerWidth = this.spacer.offsetWidth + this.scrollGap;
@@ -93,7 +93,7 @@ export class MdsHorizontalScroll {
   // }
 
   private checkNavigationButtons = (): void => {
-    if (!this.elements) {
+    if (this.elements == null) {
       throw Error('No elements slotted to the component');
     }
     this.showBack = true;
@@ -110,7 +110,7 @@ export class MdsHorizontalScroll {
   };
 
   private moveBack = (): void => {
-    if (!this.elements) {
+    if (this.elements == null) {
       throw Error('No elements slotted to the component');
     }
 
@@ -149,7 +149,7 @@ export class MdsHorizontalScroll {
   };
 
   private moveForward = (): void => {
-    if (!this.elements) {
+    if (this.elements == null) {
       throw Error('No elements slotted to the component');
     }
 
@@ -169,7 +169,12 @@ export class MdsHorizontalScroll {
   };
 
   private translateNavigationDot = (): void => {
-    if (!this.elements || !this.contents || !this.navigationDot || !this.navigationDots) {
+    if (
+      this.elements == null ||
+      this.contents == null ||
+      this.navigationDot == null ||
+      this.navigationDots == null
+    ) {
       console.error(
         'mds-horizontal-scroll.translateNavigationDot: One of the shadowRoot elements is missing.',
       );
@@ -203,7 +208,7 @@ export class MdsHorizontalScroll {
   };
 
   private updateNavigationDotSize = (): void => {
-    if (!this.contents || !this.navigationDot || !this.navigationDots) {
+    if (this.contents == null || this.navigationDot == null || this.navigationDots == null) {
       console.error(
         'mds-horizontal-scroll.updateNavigationDotSize: One of the shadowRoot elements is missing.',
       );
@@ -226,7 +231,7 @@ export class MdsHorizontalScroll {
     this.navigationDot = this.host.shadowRoot?.querySelector('.dot') as HTMLElement;
     this.navigationDots = this.host.shadowRoot?.querySelector('.dot-navigation') as HTMLElement;
     this.updateNavigationDotSize();
-    if (!this.navigationDot) return;
+    if (this.navigationDot == null) return;
     this.contents.addEventListener('scroll', this.translateNavigationDot);
   };
 
@@ -242,7 +247,7 @@ export class MdsHorizontalScroll {
     if (window && typeof (window as any).onscrollend !== 'undefined') {
       this.contents.addEventListener('scrollend', this.checkNavigationButtons);
     } else {
-      if (this.controls) this.controls = undefined;
+      if (this.controls !== undefined) this.controls = undefined;
     }
   }
 

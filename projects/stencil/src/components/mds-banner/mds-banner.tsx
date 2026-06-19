@@ -153,7 +153,7 @@ export class MdsBanner {
   private closeBanner = (): void => {
     this.closeEvent.emit();
     const modalEL = this.host?.closest('mds-modal') as HTMLMdsModalElement;
-    if (modalEL) {
+    if (modalEL != null) {
       modalEL.opened = false;
     }
   };

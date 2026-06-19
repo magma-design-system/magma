@@ -226,7 +226,7 @@ export class MdsInputUpload {
   }
 
   private readonly onChangeTab = (event: MdsTabEventDetail): void => {
-    if (event.value) {
+    if (event.value !== undefined && event.value !== '') {
       this.sortFiles(this.files, event.value as AttachmentSort);
       this.userSort = event.value as AttachmentSort;
       localStorage.setItem(LOCALSTORAGE_KEY_USER_SORT, this.userSort);
@@ -254,7 +254,7 @@ export class MdsInputUpload {
           this.files.splice(index, 1);
         }
         const { errorMessage, type } = this.checkError(file);
-        if (!errorMessage) {
+        if (errorMessage === '') {
           this.files.push({ key: file.name, file, id: this.idFile, status: Status.SUCCESS });
           this.fileUploaded += 1;
         } else {
@@ -396,7 +396,7 @@ export class MdsInputUpload {
   }
 
   private isSortTabShown(): boolean {
-    return !!this.sort && this.files.length > 1;
+    return this.sort !== undefined && this.files.length > 1;
   }
 
   render() {
@@ -424,7 +424,7 @@ export class MdsInputUpload {
           <div class="main-actions">
             <mds-button variant="primary" onClick={() => this.nativeInput?.click()}>
               {' '}
-              {this.files
+              {this.files != null
                 ? this.t.get('addFile', { maxFiles: this.maxFiles })
                 : this.t.get('selectFile')}
             </mds-button>
@@ -446,7 +446,7 @@ export class MdsInputUpload {
               </mds-text>
             ) : (
               <mds-text variant="info" typography="caption">
-                {this.maxFiles
+                {this.maxFiles !== 0 && !Number.isNaN(this.maxFiles)
                   ? this.t.get('currentFilesWithMax', {
                       currentFiles: this.files.length,
                       maxFiles: this.maxFiles,
@@ -467,7 +467,7 @@ export class MdsInputUpload {
         <div class="additional-infos">
           <div class={clsx('file-specs', this.isSortTabShown() && 'file-specs-sort')}>
             <mds-text variant="info" typography="caption">
-              {this.extensions
+              {this.extensions !== ''
                 ? `${this.t.get('canUpload')} ${this.extensions}`
                 : this.t.get('canUploadAll')}
             </mds-text>

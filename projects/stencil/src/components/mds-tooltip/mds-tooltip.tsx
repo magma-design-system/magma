@@ -135,7 +135,7 @@ export class MdsTooltip implements FloatingElement {
 
   @Watch('target')
   targetChanged(): void {
-    if (!this.target) return;
+    if (this.target === '') return;
 
     this.caller = this.floatingController?.updateCaller(this.target);
     this.caller.addEventListener('mouseleave', this.handleVisibility.bind(this, false));

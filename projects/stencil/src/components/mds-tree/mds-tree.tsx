@@ -108,7 +108,7 @@ export class MdsTree {
     this.updateChildrenToggle(this.toggle);
     const firstLevelElements = this.host.querySelectorAll(':scope > mds-tree-item');
 
-    if (firstLevelElements) {
+    if (firstLevelElements != null) {
       firstLevelElements.forEach((element: HTMLMdsTreeItemElement) => {
         element.depth = 0;
       });

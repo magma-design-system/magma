@@ -46,7 +46,7 @@ export class MdsKeyboardKey {
   @Prop({ reflect: true }) readonly pressed?: boolean;
 
   private getTitle = (): string | undefined => {
-    if (this.name) {
+    if (this.name !== undefined) {
       return this.t.get(this.keyboardKeys[this.name.toLowerCase()].description, {
         character: this.keyboardKeys[this.name.toLowerCase()].alias,
         keyboardPosition: this.keyboardKeys[this.name.toLowerCase()].keyboardPosition,

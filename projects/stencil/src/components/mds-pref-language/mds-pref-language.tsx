@@ -144,7 +144,7 @@ export class MdsPrefLanguage {
     this.prefChangeEvent.emit({ preference: 'language' });
 
     localStorage.setItem(this.localStorageAlias, this.set);
-    if (document) {
+    if (typeof document !== 'undefined') {
       const element = document.querySelector('html');
       element?.setAttribute('lang', this.set);
     }
