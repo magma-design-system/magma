@@ -25,7 +25,7 @@ import { MdsPushNotificationEventDetail } from './meta/event-detail';
 })
 export class MdsPushNotification {
   @Element() host: HTMLMdsPushNotificationElement;
-  slotNotifications!: HTMLSlotElement;
+  private slotNotifications!: HTMLSlotElement;
   private cssItemsIntroDuration: string;
   private cssItemsOutroDuration: string;
   private cssItemsGap: string;

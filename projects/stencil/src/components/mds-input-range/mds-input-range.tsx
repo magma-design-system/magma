@@ -70,7 +70,7 @@ export class MdsInputRange {
    */
   @Event({ eventName: 'mdsInputRangeChange' }) changeEvent: EventEmitter<number>;
 
-  calculateProgress(): void {
+  private calculateProgress(): void {
     // validate value
     let v = Number(this.inputElement.value);
     // multiplier is needed to manage decimal value and step, so we can work with integer value and avoid decimal division

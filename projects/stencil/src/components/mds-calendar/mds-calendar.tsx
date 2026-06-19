@@ -202,11 +202,11 @@ export class MdsCalendar {
     requestAnimationFrame(() => this.setDates());
   }
 
-  startDateTime: DateTime;
-  endDateTime: DateTime;
+  private startDateTime: DateTime;
+  private endDateTime: DateTime;
 
   @State() currentMonth: string = '';
-  currentMonthNumber!: number;
+  private currentMonthNumber!: number;
   @State() currentYear: string = '';
 
   componentWillLoad(): void {
@@ -295,7 +295,7 @@ export class MdsCalendar {
     });
   }
 
-  async updateCalendar(): Promise<void> {
+  private async updateCalendar(): Promise<void> {
     try {
       const startOfWeek = this.currentDate.startOf('week');
       this.weekdays = Array.from({ length: 7 }).map((_, index) =>
@@ -310,7 +310,7 @@ export class MdsCalendar {
     }
   }
 
-  setDates(): void {
+  private setDates(): void {
     const calendar: HTMLMdsCalendarElement = this.host;
     if (!calendar) return;
 
@@ -467,7 +467,7 @@ export class MdsCalendar {
     }
   }
 
-  changeMonth(delta: number): void {
+  private changeMonth(delta: number): void {
     this.currentDate = this.currentDate.plus({ months: delta });
     this.updateCalendar().then(() => {
       requestAnimationFrame(() => this.setDates());
@@ -506,7 +506,7 @@ export class MdsCalendar {
     });
   };
 
-  calculateWeekDaysInMonth(): void {
+  private calculateWeekDaysInMonth(): void {
     const startOfMonth = this.currentDate.startOf('month');
     const endOfMonth = this.currentDate.endOf('month');
     const allDays: { date: DateTime; isCurrentMonth: boolean }[] = [];
