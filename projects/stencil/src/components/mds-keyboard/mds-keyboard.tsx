@@ -230,7 +230,7 @@ export class MdsKeyboard {
             class="combination-checker"
             variant="dark"
             tone="text"
-            onClick={this.startKeyboardShortcutTest.bind(this)}
+            onClick={this.startKeyboardShortcutTest}
           ></mds-button>
         )}
         {this.try && (
