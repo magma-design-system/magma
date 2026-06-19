@@ -405,7 +405,7 @@ Using a raw `<dialog>` element bypasses the system's managed animation, body-scr
 
 ### `close() => Promise<void>`
 
-
+Closes the modal.
 
 #### Returns
 
@@ -416,12 +416,12 @@ Type: `Promise<void>`
 
 ## Slots
 
-| Slot        | Description                                                                                                                |
-| ----------- | -------------------------------------------------------------------------------------------------------------------------- |
-| `"bottom"`  | Contents that will be placed on bottom of the window. Add `text string`, `HTML elements` or `components` to this slot.     |
-| `"default"` | Contents that will be placed in the center of the window. Add `text string`, `HTML elements` or `components` to this slot. |
-| `"top"`     | Contents that will be placed on top of the window. Add `text string`, `HTML elements` or `components` to this slot.        |
-| `"window"`  | Use directly a window component if you need it. Add `text string`, `HTML elements` or `components` to this slot.           |
+| Slot       | Description                                                                                                                |
+| ---------- | -------------------------------------------------------------------------------------------------------------------------- |
+|            | Contents that will be placed in the center of the window. Add `text string`, `HTML elements` or `components` to this slot. |
+| `"bottom"` | Contents that will be placed on bottom of the window. Add `text string`, `HTML elements` or `components` to this slot.     |
+| `"top"`    | Contents that will be placed on top of the window. Add `text string`, `HTML elements` or `components` to this slot.        |
+| `"window"` | Use directly a window component if you need it. Add `text string`, `HTML elements` or `components` to this slot.           |
 
 
 ## Shadow Parts

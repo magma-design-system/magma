@@ -309,22 +309,22 @@ Without `name` the component is form-associated but submits no named field, so t
 
 ## Events
 
-| Event                          | Description | Type                                                   |
-| ------------------------------ | ----------- | ------------------------------------------------------ |
-| `mdsInputDateRangeValueChange` |             | `CustomEvent<{ startDate: string; endDate: string; }>` |
+| Event                          | Description                                          | Type                                                   |
+| ------------------------------ | ---------------------------------------------------- | ------------------------------------------------------ |
+| `mdsInputDateRangeValueChange` | Emitted when the selected start or end date changes. | `CustomEvent<{ startDate: string; endDate: string; }>` |
 
 
 ## Methods
 
 ### `preselect(event: EventDate) => Promise<void>`
 
-
+Applies the given preselection range to the input.
 
 #### Parameters
 
-| Name    | Type        | Description |
-| ------- | ----------- | ----------- |
-| `event` | `EventDate` |             |
+| Name    | Type        | Description                     |
+| ------- | ----------- | ------------------------------- |
+| `event` | `EventDate` | the preselection range to apply |
 
 #### Returns
 
@@ -334,13 +334,22 @@ Type: `Promise<void>`
 
 ### `updateLang() => Promise<void>`
 
-
+Updates the component's texts to the locale currently set on the host element.
 
 #### Returns
 
 Type: `Promise<void>`
 
 
+
+
+## Slots
+
+| Slot                      | Description                                       |
+| ------------------------- | ------------------------------------------------- |
+| `"calendar-preselection"` | Add `HTML elements` or `components` to this slot. |
+| `"end"`                   | Add `HTML elements` or `components` to this slot. |
+| `"start"`                 | Add `HTML elements` or `components` to this slot. |
 
 
 ## CSS Custom Properties

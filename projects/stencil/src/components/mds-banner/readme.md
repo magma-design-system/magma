@@ -364,7 +364,7 @@ The component fires `mdsBannerClose` when the close button is activated (both po
 
 ### `updateLang() => Promise<void>`
 
-
+Updates the component's texts to the locale currently set on the host element.
 
 #### Returns
 
@@ -375,10 +375,10 @@ Type: `Promise<void>`
 
 ## Slots
 
-| Slot        | Description                                                                             |
-| ----------- | --------------------------------------------------------------------------------------- |
-| `"action"`  | Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element. |
-| `"default"` | Add `text string`, `HTML elements` or `components` to this slot.                        |
+| Slot       | Description                                                                             |
+| ---------- | --------------------------------------------------------------------------------------- |
+|            | Add `text string`, `HTML elements` or `components` to this slot.                        |
+| `"action"` | Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element. |
 
 
 ## Shadow Parts

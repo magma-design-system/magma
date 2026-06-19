@@ -256,7 +256,7 @@ The component calls `new URL(src)` to extract the hostname for the fallback titl
 
 ### `updateLang() => Promise<void>`
 
-
+Updates the component's texts to the locale currently set on the host element.
 
 #### Returns
 

@@ -441,13 +441,13 @@ mds-input::part(field) {
 
 ### `addValidator(validator: MdsValidatorFn) => Promise<void>`
 
-
+Adds a validator to the input.
 
 #### Parameters
 
-| Name        | Type                                             | Description |
-| ----------- | ------------------------------------------------ | ----------- |
-| `validator` | `(input: string) => MdsValidationErrors \| null` |             |
+| Name        | Type                                             | Description                   |
+| ----------- | ------------------------------------------------ | ----------------------------- |
+| `validator` | `(input: string) => MdsValidationErrors \| null` | the validator function to add |
 
 #### Returns
 
@@ -457,13 +457,13 @@ Type: `Promise<void>`
 
 ### `getErrors() => Promise<MdsValidationErrors | null>`
 
-
+Returns the current validation errors, or `null` if the value is valid.
 
 #### Returns
 
 Type: `Promise<MdsValidationErrors | null>`
 
-
+the validation errors, or `null` when valid
 
 ### `getInputElement() => Promise<HTMLInputElement | HTMLTextAreaElement>`
 
@@ -493,13 +493,13 @@ if a validator is present or not, if no validator given, return if there are at 
 
 ### `removeValidator(validator: MdsValidatorFn) => Promise<void>`
 
-
+Removes a previously added validator from the input.
 
 #### Parameters
 
-| Name        | Type                                             | Description |
-| ----------- | ------------------------------------------------ | ----------- |
-| `validator` | `(input: string) => MdsValidationErrors \| null` |             |
+| Name        | Type                                             | Description                      |
+| ----------- | ------------------------------------------------ | -------------------------------- |
+| `validator` | `(input: string) => MdsValidationErrors \| null` | the validator function to remove |
 
 #### Returns
 
@@ -521,7 +521,7 @@ Type: `Promise<void>`
 
 ### `updateLang() => Promise<void>`
 
-
+Updates the component's texts to the locale currently set on the host element.
 
 #### Returns
 

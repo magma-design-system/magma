@@ -281,7 +281,7 @@ mds-pref-language mds-tab-item {
 
 ### `updateLang() => Promise<void>`
 
-
+Updates the component's texts to the locale currently set on the host element.
 
 #### Returns
 
@@ -292,9 +292,9 @@ Type: `Promise<void>`
 
 ## Slots
 
-| Slot        | Description                             |
-| ----------- | --------------------------------------- |
-| `"default"` | Add `mds-pref-language-item` element/s. |
+| Slot | Description                             |
+| ---- | --------------------------------------- |
+|      | Add `mds-pref-language-item` element/s. |
 
 
 ## Dependencies

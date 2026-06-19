@@ -220,7 +220,7 @@ html.pref-animation-reduce .my-widget {
 
 ### `updateLang() => Promise<void>`
 
-
+Updates the component's texts to the locale currently set on the host element.
 
 #### Returns
 

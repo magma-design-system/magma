@@ -394,7 +394,7 @@ Action buttons belong in the `action` slot of `mds-push-notification-item`, not 
 
 ### `hide() => Promise<void>`
 
-
+Hides the notification container.
 
 #### Returns
 
@@ -404,13 +404,13 @@ Type: `Promise<void>`
 
 ### `removeNotification(notification: HTMLMdsPushNotificationItemElement | HTMLMdsPushNotificationItemElement[]) => Promise<void>`
 
-
+Removes the given notification item(s) from the stack.
 
 #### Parameters
 
-| Name           | Type                                                                         | Description |
-| -------------- | ---------------------------------------------------------------------------- | ----------- |
-| `notification` | `HTMLMdsPushNotificationItemElement \| HTMLMdsPushNotificationItemElement[]` |             |
+| Name           | Type                                                                         | Description                              |
+| -------------- | ---------------------------------------------------------------------------- | ---------------------------------------- |
+| `notification` | `HTMLMdsPushNotificationItemElement \| HTMLMdsPushNotificationItemElement[]` | the notification item or items to remove |
 
 #### Returns
 
@@ -420,7 +420,7 @@ Type: `Promise<void>`
 
 ### `show() => Promise<void>`
 
-
+Shows the notification container.
 
 #### Returns
 
@@ -431,11 +431,9 @@ Type: `Promise<void>`
 
 ## Slots
 
-| Slot        | Description                                                                                        |
-| ----------- | -------------------------------------------------------------------------------------------------- |
-| `"bottom"`  | Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element.            |
-| `"default"` | Add `HTML elements` or `components`, it is **recommended** to use `mds-push-notification` element. |
-| `"top"`     | Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element.            |
+| Slot | Description                                                                                        |
+| ---- | -------------------------------------------------------------------------------------------------- |
+|      | Add `HTML elements` or `components`, it is **recommended** to use `mds-push-notification` element. |
 
 
 ## Shadow Parts

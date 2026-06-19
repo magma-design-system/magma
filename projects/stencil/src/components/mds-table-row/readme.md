@@ -320,20 +320,20 @@ mds-table-row {
 
 ## Properties
 
-| Property         | Attribute         | Description | Type                            | Default     |
-| ---------------- | ----------------- | ----------- | ------------------------------- | ----------- |
-| `interactive`    | `interactive`     |             | `boolean \| undefined`          | `undefined` |
-| `overlayActions` | `overlay-actions` |             | `boolean`                       | `undefined` |
-| `selectable`     | `selectable`      |             | `boolean \| undefined`          | `undefined` |
-| `selected`       | `selected`        |             | `boolean \| undefined`          | `undefined` |
-| `value`          | `value`           |             | `number \| string \| undefined` | `undefined` |
+| Property         | Attribute         | Description                                                          | Type                            | Default     |
+| ---------------- | ----------------- | -------------------------------------------------------------------- | ------------------------------- | ----------- |
+| `interactive`    | `interactive`     | Specifies whether the row reacts to user interaction (hover/focus).  | `boolean \| undefined`          | `undefined` |
+| `overlayActions` | `overlay-actions` | Specifies whether the row's actions are shown as an overlay.         | `boolean`                       | `undefined` |
+| `selectable`     | `selectable`      | Specifies whether the row can be selected via a checkbox.            | `boolean \| undefined`          | `undefined` |
+| `selected`       | `selected`        | Specifies whether the row is currently selected.                     | `boolean \| undefined`          | `undefined` |
+| `value`          | `value`           | The value associated with the row, emitted when the row is selected. | `number \| string \| undefined` | `undefined` |
 
 
 ## Methods
 
 ### `updateLang() => Promise<void>`
 
-
+Updates the component's texts to the locale currently set on the host element.
 
 #### Returns
 
@@ -344,10 +344,10 @@ Type: `Promise<void>`
 
 ## Slots
 
-| Slot        | Description                                                                           |
-| ----------- | ------------------------------------------------------------------------------------- |
-| `"action"`  | Put `mds-button` element/s or other kind of actions as aside menu for the single row. |
-| `"default"` | Put `mds-table-cell` element/s.                                                       |
+| Slot       | Description                                                                           |
+| ---------- | ------------------------------------------------------------------------------------- |
+|            | Put `mds-table-cell` element/s.                                                       |
+| `"action"` | Put `mds-button` element/s or other kind of actions as aside menu for the single row. |
 
 
 ## CSS Custom Properties

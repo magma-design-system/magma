@@ -307,7 +307,7 @@ mds-input-switch {
 
 ### `updateLang() => Promise<void>`
 
-
+Updates the component's texts to the locale currently set on the host element.
 
 #### Returns
 
@@ -318,9 +318,9 @@ Type: `Promise<void>`
 
 ## Slots
 
-| Slot        | Description                      |
-| ----------- | -------------------------------- |
-| `"default"` | Put text string or elements here |
+| Slot | Description                      |
+| ---- | -------------------------------- |
+|      | Put text string or elements here |
 
 
 ## CSS Custom Properties

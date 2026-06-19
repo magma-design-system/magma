@@ -280,6 +280,13 @@ mds-input-range::part(track) { /* "track" is a documented part */
 | `mdsInputRangeChange` | Emits when the input range is changed | `CustomEvent<number>` |
 
 
+## Slots
+
+| Slot | Description                                                      |
+| ---- | ---------------------------------------------------------------- |
+|      | Add `text string`, `HTML elements` or `components` to this slot. |
+
+
 ## Shadow Parts
 
 | Part       | Description                                                        |

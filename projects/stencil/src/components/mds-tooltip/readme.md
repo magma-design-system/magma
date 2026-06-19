@@ -289,9 +289,9 @@ The native `title` tooltip is not keyboard-accessible, not styleable, and not an
 
 ## Slots
 
-| Slot        | Description                                                                            |
-| ----------- | -------------------------------------------------------------------------------------- |
-| `"default"` | Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here. |
+| Slot | Description                                                                            |
+| ---- | -------------------------------------------------------------------------------------- |
+|      | Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here. |
 
 
 ## Shadow Parts

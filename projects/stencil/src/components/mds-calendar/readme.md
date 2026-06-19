@@ -278,7 +278,7 @@ mds-calendar {
 | `hoverDate`                 | `hover-date`                   | Specifies the date used to preview the range selection across multiple visible calendars. | `null \| string` | `null`  |
 | `max`                       | `max`                          | Specifies the minimum date of the selection                                               | `null \| string` | `null`  |
 | `min`                       | `min`                          | Specifies the minimum date of the selection                                               | `null \| string` | `null`  |
-| `rangePicker`               | `range-picker`                 |                                                                                           | `boolean`        | `true`  |
+| `rangePicker`               | `range-picker`                 | Enables selecting a date range (start and end date) instead of a single date.             | `boolean`        | `true`  |
 | `showNextButton`            | `show-next-button`             | Shows the next navigation button in the calendar header.                                  | `boolean`        | `true`  |
 | `showPreselection`          | `show-preselection`            | Shows the preselection area above the calendar view.                                      | `boolean`        | `false` |
 | `showPreviousButton`        | `show-previous-button`         | Shows the previous navigation button in the calendar header.                              | `boolean`        | `true`  |
@@ -288,25 +288,25 @@ mds-calendar {
 
 ## Events
 
-| Event                  | Description | Type                                                                 |
-| ---------------------- | ----------- | -------------------------------------------------------------------- |
-| `mdsCalendarChange`    |             | `CustomEvent<{ startDate: string; endDate?: string \| undefined; }>` |
-| `mdsCalendarHover`     |             | `CustomEvent<{ hoverDate: string \| null; }>`                        |
-| `mdsCalendarNavigate`  |             | `CustomEvent<{ currentDate: string; delta: number; }>`               |
-| `mdsCalendarPreselect` |             | `CustomEvent<void>`                                                  |
+| Event                  | Description                                                                 | Type                                                                 |
+| ---------------------- | --------------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| `mdsCalendarChange`    | Emitted when the selected date or date range changes.                       | `CustomEvent<{ startDate: string; endDate?: string \| undefined; }>` |
+| `mdsCalendarHover`     | Emitted when the user hovers over a day, used to preview a range selection. | `CustomEvent<{ hoverDate: string \| null; }>`                        |
+| `mdsCalendarNavigate`  | Emitted when the user navigates to a different month or year.               | `CustomEvent<{ currentDate: string; delta: number; }>`               |
+| `mdsCalendarPreselect` | Emitted when the calendar's preselection options need to be re-evaluated.   | `CustomEvent<void>`                                                  |
 
 
 ## Methods
 
 ### `updateCurrentDate(date: string) => Promise<void>`
 
-
+Sets the calendar's current date and re-renders the calendar accordingly.
 
 #### Parameters
 
-| Name   | Type     | Description |
-| ------ | -------- | ----------- |
-| `date` | `string` |             |
+| Name   | Type     | Description                                     |
+| ------ | -------- | ----------------------------------------------- |
+| `date` | `string` | the date to display, in ISO format (YYYY-MM-DD) |
 
 #### Returns
 
@@ -316,13 +316,20 @@ Type: `Promise<void>`
 
 ### `updateLang() => Promise<void>`
 
-
+Updates the component's texts to the locale currently set on the host element.
 
 #### Returns
 
 Type: `Promise<void>`
 
 
+
+
+## Slots
+
+| Slot             | Description                                                                  |
+| ---------------- | ---------------------------------------------------------------------------- |
+| `"preselection"` | Add `HTML elements` or `components` shown in the calendar preselection area. |
 
 
 ## CSS Custom Properties
