@@ -57,9 +57,63 @@ export const config: Config = {
     },
     angularOutputTarget({
       componentCorePackage: '@maggioli-design-system/magma',
-      outputType: 'component',
+      outputType: 'standalone',
+      // I proxy standalone importano i custom element da
+      // `<corePackage>/<customElementsDir>/<tag>.js`: deve puntare a
+      // `dist/components` (come il react output target) per matchare l'export
+      // `./dist/components/*.js`; il default `components` non esiste.
+      customElementsDir: 'dist/components',
+      // Emette le proprietà dei componenti inline sui proxy generati (con JSDoc)
+      // invece che solo via interface merge: abilita type-check, tooltip e
+      // navigazione degli attributi (es. variant, placeholder) dall'Angular
+      // Language Service nei template. NB: opzione sperimentale.
+      inlineProperties: true,
       directivesProxyFile: './angular/magma-angular/src/stencil-generated/components.ts',
       directivesArrayFile: './angular/magma-angular/src/stencil-generated/index.ts',
+      // Genera un ControlValueAccessor per i componenti input, così sono
+      // usabili con formControlName/[formControl] nei Reactive Form Angular:
+      // writeValue imposta la prop di valore (`value`, o `checked` per i
+      // boolean), l'`event` propaga il valore letto da `event.target[targetAttr]`
+      // al controllo e il `focusout` marca il touched.
+      // NB: i componenti restano fuori da qui finché non emettono un @Event con
+      // valore singolo: mds-input-otp (nessun evento), mds-input-date-range
+      // (valore composito) e mds-input-upload (FileList) richiedono un CVA custom.
+      valueAccessorConfigs: [
+        // text: writeValue -> el.value ; legge event.target.value
+        {
+          elementSelectors: ['mds-input'],
+          event: 'mdsInputChange',
+          targetAttr: 'value',
+          type: 'text',
+        },
+        {
+          elementSelectors: ['mds-input-date'],
+          event: 'mdsInputDateSelect',
+          targetAttr: 'value',
+          type: 'text',
+        },
+        // select: writeValue -> el.value
+        {
+          elementSelectors: ['mds-input-select'],
+          event: 'mdsInputSelectChange',
+          targetAttr: 'value',
+          type: 'select',
+        },
+        // number: writeValue -> el.value, parsing numerico in registerOnChange
+        {
+          elementSelectors: ['mds-input-range'],
+          event: 'mdsInputRangeChange',
+          targetAttr: 'value',
+          type: 'number',
+        },
+        // boolean: writeValue -> el.checked
+        {
+          elementSelectors: ['mds-input-switch'],
+          event: 'mdsInputSwitchChange',
+          targetAttr: 'checked',
+          type: 'boolean',
+        },
+      ],
     }),
     reactOutputTarget({
       // Relative path to where the React components will be generated
@@ -69,7 +123,7 @@ export const config: Config = {
     }),
     {
       type: 'dist-custom-elements',
-      // customElementsExportBehavior: 'auto-define-custom-elements',
+      customElementsExportBehavior: 'default',
     },
     // {
     //   type: 'dist-hydrate-script',

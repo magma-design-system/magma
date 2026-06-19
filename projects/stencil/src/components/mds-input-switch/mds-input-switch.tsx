@@ -27,7 +27,7 @@ import localeEs from './meta/locale.es.json';
 import localeIt from './meta/locale.it.json';
 
 /**
- * @slot default - Put text string or elements here
+ * @slot - Put text string or elements here
  */
 
 @Component({
@@ -51,6 +51,9 @@ export class MdsInputSwitch {
     it: localeIt,
   });
   @State() language: string;
+  /**
+   * Updates the component's texts to the locale currently set on the host element.
+   */
   @Method()
   async updateLang(): Promise<void> {
     this.language = this.t.lang(this.host);

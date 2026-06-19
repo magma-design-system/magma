@@ -42,6 +42,9 @@ export class MdsImg {
     it: localeIt,
   });
   @State() language: string;
+  /**
+   * Updates the component's texts to the locale currently set on the host element.
+   */
   @Method()
   async updateLang(): Promise<void> {
     this.language = this.t.lang(this.host);
@@ -163,7 +166,7 @@ export class MdsImg {
   };
 
   private autoAltName = (): string => {
-    if (this.src) {
+    if (this.src !== '') {
       const index = this.src.lastIndexOf('/') + 1;
       return this.src.substring(index);
     }
@@ -177,12 +180,12 @@ export class MdsImg {
   componentWillLoad(): void {
     this.consumptionMode =
       (localStorage.getItem('mdsPrefConsumption') as ConsumptionModeType) ?? 'high';
-    if (this.srcsetConsumption) {
+    if (this.srcsetConsumption !== undefined && this.srcsetConsumption !== '') {
       this.srcsetConsumptionData = this.formatConsumptionData(this.srcsetConsumption);
     }
 
     this.image = this.host.querySelector<HTMLImageElement>('img') as HTMLImageElement;
-    if (!this.alt) {
+    if (this.alt === '') {
       this.alt = this.autoAltName();
     }
   }

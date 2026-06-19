@@ -7,7 +7,7 @@ import clsx from 'clsx';
 import { ToastPosition } from './meta/types';
 
 /**
- * @slot default - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
+ * @slot - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
  * @slot icon - Insert an icon image, it can be `HTML elements` or `components`, it is **recommended** to add `mds-icon` element.
  * @slot action - Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element.
  */
@@ -65,7 +65,7 @@ export class MdsToast {
 
   private reloadTimeListeners = (visible: boolean): void => {
     if (typeof window === 'undefined') return;
-    if (!this.duration) {
+    if (this.duration === undefined || this.duration === 0 || Number.isNaN(this.duration)) {
       return;
     }
     if (!visible) {
@@ -95,7 +95,7 @@ export class MdsToast {
   componentWillLoad(): void {
     this.hasText = this.hostElement.innerHTML !== '';
     this.actions = this.hostElement.querySelector(':scope > [slot="action"]') !== null;
-    if (!this.duration) {
+    if (this.duration === undefined || this.duration === 0 || Number.isNaN(this.duration)) {
       return;
     }
     if (this.visible) {

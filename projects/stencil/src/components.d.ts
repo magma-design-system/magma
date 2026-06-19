@@ -342,6 +342,9 @@ export namespace Components {
           * @default 'weak'
          */
         "tone"?: ToneMinimalBoxVariantType;
+        /**
+          * Updates the component's texts to the locale currently set on the host element.
+         */
         "updateLang": () => Promise<void>;
         /**
           * Sets the theme variant colors
@@ -430,6 +433,9 @@ export namespace Components {
           * @default true
          */
         "back"?: boolean;
+        /**
+          * Updates the component's texts to the locale currently set on the host element.
+         */
         "updateLang": () => Promise<void>;
     }
     interface MdsBreadcrumbItem {
@@ -576,12 +582,24 @@ export namespace Components {
     }
     interface MdsCalendar {
         /**
+          * Disables switching to month or year selection views from the calendar header.
+          * @default false
+         */
+        "disableMonthYearSelection": boolean;
+        /**
           * Specifies the end date of the selection
           * @description It's in ISO format (YYYY-MM-DD).
           * @example '2023-10-01'
           * @default null
          */
         "endDate": string | null;
+        /**
+          * Specifies the date used to preview the range selection across multiple visible calendars.
+          * @description It's in ISO format (YYYY-MM-DD).
+          * @example '2023-10-15'
+          * @default null
+         */
+        "hoverDate": string | null;
         /**
           * Specifies the minimum date of the selection
           * @description It's in ISO format (YYYY-MM-DD).
@@ -597,9 +615,25 @@ export namespace Components {
          */
         "min": string | null;
         /**
+          * Enables selecting a date range (start and end date) instead of a single date.
           * @default true
          */
         "rangePicker": boolean;
+        /**
+          * Shows the next navigation button in the calendar header.
+          * @default true
+         */
+        "showNextButton": boolean;
+        /**
+          * Shows the preselection area above the calendar view.
+          * @default false
+         */
+        "showPreselection": boolean;
+        /**
+          * Shows the previous navigation button in the calendar header.
+          * @default true
+         */
+        "showPreviousButton": boolean;
         /**
           * Specifies the start date of the selection
           * @description It's in ISO format (YYYY-MM-DD).
@@ -607,8 +641,22 @@ export namespace Components {
           * @default null
          */
         "startDate": string | null;
+        /**
+          * Sets the calendar's current date and re-renders the calendar accordingly.
+          * @param date the date to display, in ISO format (YYYY-MM-DD)
+         */
         "updateCurrentDate": (date: string) => Promise<void>;
+        /**
+          * Updates the component's texts to the locale currently set on the host element.
+         */
         "updateLang": () => Promise<void>;
+        /**
+          * Specifies the date used to determine the visible month without changing the selection.
+          * @description It's in ISO format (YYYY-MM-DD).
+          * @example '2023-10-01'
+          * @default null
+         */
+        "viewDate": string | null;
     }
     interface MdsCalendarCell {
         /**
@@ -703,6 +751,9 @@ export namespace Components {
           * @default 'strong'
          */
         "tone"?: ToneMinimalVariantType;
+        /**
+          * Updates the component's texts to the locale currently set on the host element.
+         */
         "updateLang": () => Promise<void>;
         /**
           * Sets the color variant of the component
@@ -802,6 +853,7 @@ export namespace Components {
          */
         "disagree": (turnHappyDelay?: number) => Promise<void>;
         /**
+          * Specifies which emoji to display.
           * @default 'mia'
          */
         "name": EmojiNames;
@@ -829,6 +881,10 @@ export namespace Components {
           * @returns Promise<void> Stops following mouse with CSS 3D transform.
          */
         "stopFollowMouse": () => Promise<void>;
+        /**
+          * Stops the "thinking" animation after the given duration.
+          * @param duration the animation duration, in seconds
+         */
         "stopThinking": (duration?: number) => Promise<void>;
     }
     interface MdsEntity {
@@ -883,6 +939,9 @@ export namespace Components {
           * Overrides the automatic filetype recongition by forcing the suffix to one of the available formats choosen
          */
         "suffix"?: ExtensionSuffixType;
+        /**
+          * Updates the component's texts to the locale currently set on the host element.
+         */
         "updateLang": () => Promise<void>;
     }
     interface MdsFilePreview {
@@ -931,6 +990,9 @@ export namespace Components {
           * @default 'word'
          */
         "truncate"?: TypographyTruncateType;
+        /**
+          * Updates the component's texts to the locale currently set on the host element.
+         */
         "updateLang": () => Promise<void>;
         /**
           * The variant of the component, is shown only if the message attribute is defined
@@ -1010,6 +1072,10 @@ export namespace Components {
           * @default 'desktop'
          */
         "nav": HeaderBarNavType;
+        /**
+          * Opens or closes the header.
+          * @param isOpened whether the header should be opened
+         */
         "setOpened": (isOpened?: boolean) => Promise<void>;
         /**
           * Sets the threshold margin to trigger hide or show status of the `mds-header-bar` when the page is scrolled
@@ -1033,6 +1099,10 @@ export namespace Components {
           * @default 'desktop'
          */
         "nav": HeaderBarNavType;
+        /**
+          * Opens or closes the header bar.
+          * @param isOpened whether the header bar should be opened
+         */
         "setOpened": (isOpened?: boolean) => Promise<void>;
     }
     interface MdsHelp {
@@ -1122,6 +1192,9 @@ export namespace Components {
           * Specifies a list of image files to use in different situations. Defines multiple sizes of the same image, allowing the browser to select the appropriate image source based on consumption configuration. ``` <mds-img srcset-consumption="image-black-n-white-1x.jpg low, image-1x.jpg medium, image-2x.jpg high"></mds-img> ```
          */
         "srcsetConsumption"?: string;
+        /**
+          * Updates the component's texts to the locale currently set on the host element.
+         */
         "updateLang": () => Promise<void>;
         /**
           * The width attribute specifies the width of an image, in pixels.
@@ -1129,6 +1202,10 @@ export namespace Components {
         "width"?: string;
     }
     interface MdsInput {
+        /**
+          * Adds a validator to the input.
+          * @param validator the validator function to add
+         */
         "addValidator": (validator: MdsValidatorFn) => Promise<void>;
         /**
           * Specifies whether the element should have autocomplete enabled
@@ -1164,6 +1241,10 @@ export namespace Components {
           * @default false
          */
         "disabled"?: boolean;
+        /**
+          * Returns the current validation errors, or `null` if the value is valid.
+          * @returns the validation errors, or `null` when valid
+         */
         "getErrors": () => Promise<MdsValidationErrors | null>;
         /**
           * Returns the native `<input>` element used under the hood.
@@ -1216,6 +1297,10 @@ export namespace Components {
           * @default false
          */
         "readonly"?: boolean;
+        /**
+          * Removes a previously added validator from the input.
+          * @param validator the validator function to remove
+         */
         "removeValidator": (validator: MdsValidatorFn) => Promise<void>;
         /**
           * Specifies that the element must be filled out before submitting the form
@@ -1244,6 +1329,9 @@ export namespace Components {
           * @default 'detail'
          */
         "typography": TypographyInputType;
+        /**
+          * Updates the component's texts to the locale currently set on the host element.
+         */
         "updateLang": () => Promise<void>;
         /**
           * Specifies the value of the input element
@@ -1268,7 +1356,14 @@ export namespace Components {
           * @default false
          */
         "disabled"?: boolean;
+        /**
+          * Sets focus on the underlying input element.
+         */
         "focusInput": () => Promise<void>;
+        /**
+          * Returns the current validation errors, or `null` if the value is valid.
+          * @returns the validation errors, or `null` when valid
+         */
         "getErrors": () => Promise<MdsValidationErrors | null>;
         /**
           * Specifies the max date of the range, user cannot set dates after this date
@@ -1296,7 +1391,14 @@ export namespace Components {
           * @default false
          */
         "required"?: boolean;
+        /**
+          * Sets the input value.
+          * @param value the value to set, in ISO format (YYYY-MM-DD)
+         */
         "setValue": (value: string) => Promise<void>;
+        /**
+          * Updates the component's texts to the locale currently set on the host element.
+         */
         "updateLang": () => Promise<void>;
         /**
           * Specifies the value of the input
@@ -1317,6 +1419,11 @@ export namespace Components {
           * @default 500
          */
         "delay": number;
+        /**
+          * Enables the linked dual-calendar range picker behavior.
+          * @default false
+         */
+        "dualCalendar": boolean;
         /**
           * Specifies the end date of the range
           * @description It's in ISO format (YYYY-MM-DD).
@@ -1339,6 +1446,10 @@ export namespace Components {
           * Is needed to reference the form data after the form is submitted
          */
         "name"?: string;
+        /**
+          * Applies the given preselection range to the input.
+          * @param event the preselection range to apply
+         */
         "preselect": (event: EventDate) => Promise<void>;
         /**
           * Specifies the start date of the range
@@ -1346,6 +1457,9 @@ export namespace Components {
           * @default ''
          */
         "startDate": string;
+        /**
+          * Updates the component's texts to the locale currently set on the host element.
+         */
         "updateLang": () => Promise<void>;
     }
     interface MdsInputDateRangePreselection {
@@ -1472,6 +1586,9 @@ export namespace Components {
           * @default 0
          */
         "size"?: number;
+        /**
+          * Updates the component's texts to the locale currently set on the host element.
+         */
         "updateLang": () => Promise<void>;
         /**
           * Specifies the value of the component
@@ -1529,6 +1646,9 @@ export namespace Components {
           * @default 'detail'
          */
         "typography"?: TypographyInfoType | TypographyReadType;
+        /**
+          * Updates the component's texts to the locale currently set on the host element.
+         */
         "updateLang": () => Promise<void>;
         /**
           * Specifies the value of the input element
@@ -1557,6 +1677,9 @@ export namespace Components {
           * Specifies if the element is expanded
          */
         "expanded"?: boolean;
+        /**
+          * Updates the component's texts to the locale currently set on the host element.
+         */
         "updateLang": () => Promise<void>;
         /**
           * Specifies the variant of the element
@@ -1600,6 +1723,9 @@ export namespace Components {
           * Specifies if the component should show a sort widget by status or date of upload, if not defined let user choose
          */
         "sort"?: AttachmentSort;
+        /**
+          * Updates the component's texts to the locale currently set on the host element.
+         */
         "updateLang": () => Promise<void>;
     }
     interface MdsKeyboard {
@@ -1611,6 +1737,9 @@ export namespace Components {
           * Sets if the keyboard key combination test is enabled
          */
         "try"?: boolean;
+        /**
+          * Updates the component's texts to the locale currently set on the host element.
+         */
         "updateLang": () => Promise<void>;
     }
     interface MdsKeyboardKey {
@@ -1622,6 +1751,9 @@ export namespace Components {
           * Sets if the key is pressed or not
          */
         "pressed"?: boolean;
+        /**
+          * Updates the component's texts to the locale currently set on the host element.
+         */
         "updateLang": () => Promise<void>;
     }
     interface MdsKpi {
@@ -1670,6 +1802,9 @@ export namespace Components {
           * @default 'caption'
          */
         "typography": TypographyTooltipType;
+        /**
+          * Updates the component's texts to the locale currently set on the host element.
+         */
         "updateLang": () => Promise<void>;
         /**
           * Sets the theme variant colors
@@ -1726,6 +1861,9 @@ export namespace Components {
           * @default true
          */
         "backdrop"?: boolean;
+        /**
+          * Closes the modal.
+         */
         "close": () => Promise<void>;
         /**
           * Specifies if the component can be closed with close button, or also if the backdrop background is cliccked. If `strict` is selected only the close button can dismiss the component via UI. If `relaxed` is selected the component can be dismissed also by cliccking the backdrop area.
@@ -1754,6 +1892,9 @@ export namespace Components {
           * @default false
          */
         "deletable"?: boolean;
+        /**
+          * Updates the component's texts to the locale currently set on the host element.
+         */
         "updateLang": () => Promise<void>;
         /**
           * Specifies the color variant for the element
@@ -1826,6 +1967,9 @@ export namespace Components {
           * @default 'https://www.maggiolieditore.it/il-regolamento-europeo-sull-intelligenza-artificiale.html'
          */
         "href"?: string;
+        /**
+          * Updates the component's texts to the locale currently set on the host element.
+         */
         "updateLang": () => Promise<void>;
         /**
           * Sets the variant type of the component
@@ -1859,6 +2003,9 @@ export namespace Components {
           * Sets the size of the component items nested inside it
          */
         "size"?: TabSizeType;
+        /**
+          * Updates the component's texts to the locale currently set on the host element.
+         */
         "updateLang": () => Promise<void>;
     }
     interface MdsPrefAnimation {
@@ -1870,6 +2017,9 @@ export namespace Components {
           * Sets the size of the component items nested inside it
          */
         "size"?: TabSizeType;
+        /**
+          * Updates the component's texts to the locale currently set on the host element.
+         */
         "updateLang": () => Promise<void>;
     }
     interface MdsPrefConsumption {
@@ -1881,6 +2031,9 @@ export namespace Components {
           * Sets the size of the component items nested inside it
          */
         "size"?: TabSizeType;
+        /**
+          * Updates the component's texts to the locale currently set on the host element.
+         */
         "updateLang": () => Promise<void>;
     }
     interface MdsPrefContrast {
@@ -1892,6 +2045,9 @@ export namespace Components {
           * Sets the size of the component items nested inside it
          */
         "size"?: TabSizeType;
+        /**
+          * Updates the component's texts to the locale currently set on the host element.
+         */
         "updateLang": () => Promise<void>;
     }
     interface MdsPrefLanguage {
@@ -1904,6 +2060,9 @@ export namespace Components {
           * Sets the size of the component items nested inside it
          */
         "size"?: TabSizeType;
+        /**
+          * Updates the component's texts to the locale currently set on the host element.
+         */
         "updateLang": () => Promise<void>;
     }
     interface MdsPrefLanguageItem {
@@ -1916,6 +2075,9 @@ export namespace Components {
           * @default false
          */
         "selected"?: boolean;
+        /**
+          * Updates the component's texts to the locale currently set on the host element.
+         */
         "updateLang": () => Promise<void>;
     }
     interface MdsPrefTheme {
@@ -1932,6 +2094,9 @@ export namespace Components {
           * @default 'smooth'
          */
         "transition": PreferenceThemeTransitionType;
+        /**
+          * Updates the component's texts to the locale currently set on the host element.
+         */
         "updateLang": () => Promise<void>;
     }
     interface MdsPrefThemeVariant {
@@ -1949,6 +2114,9 @@ export namespace Components {
           * Sets the size of the component items nested inside it
          */
         "size"?: TabSizeType;
+        /**
+          * Updates the component's texts to the locale currently set on the host element.
+         */
         "updateLang": () => Promise<void>;
     }
     interface MdsPrefThemeVariantItem {
@@ -1971,6 +2139,9 @@ export namespace Components {
           * @default false
          */
         "selected"?: boolean;
+        /**
+          * Updates the component's texts to the locale currently set on the host element.
+         */
         "updateLang": () => Promise<void>;
     }
     interface MdsPriceTable {
@@ -2044,8 +2215,18 @@ export namespace Components {
           * @default 'auto'
          */
         "behavior"?: 'auto' | 'manual';
+        /**
+          * Hides the notification container.
+         */
         "hide": () => Promise<void>;
+        /**
+          * Removes the given notification item(s) from the stack.
+          * @param notification the notification item or items to remove
+         */
         "removeNotification": (notification: HTMLMdsPushNotificationItemElement | HTMLMdsPushNotificationItemElement[]) => Promise<void>;
+        /**
+          * Shows the notification container.
+         */
         "show": () => Promise<void>;
         /**
           * Specifies if the component is visible or not.
@@ -2098,6 +2279,9 @@ export namespace Components {
           * @default 'weak'
          */
         "tone"?: ToneMinimalVariantType;
+        /**
+          * Updates the component's texts to the locale currently set on the host element.
+         */
         "updateLang": () => Promise<void>;
         /**
           * Specifies the color variant of the component
@@ -2181,6 +2365,7 @@ export namespace Components {
          */
         "icon"?: string;
         /**
+          * Specifies the size of the menu item.
           * @default 'lg'
          */
         "size": ButtonSizeType;
@@ -2234,6 +2419,9 @@ export namespace Components {
           * Specifies the description near the slotted actions
          */
         "description"?: string;
+        /**
+          * Hides the status bar.
+         */
         "hide": () => Promise<void>;
         /**
           * Specifies if the component prevents the body from scrolling when modal window is opened
@@ -2299,6 +2487,9 @@ export namespace Components {
           * @default 'h6'
          */
         "typography"?: TypographyType;
+        /**
+          * Updates the component's texts to the locale currently set on the host element.
+         */
         "updateLang": () => Promise<void>;
         /**
           * Specifies the value the component will return mdsStepperBarItemSelect event
@@ -2337,6 +2528,7 @@ export namespace Components {
     }
     interface MdsTabBarItem {
         /**
+          * The icon displayed in the tab bar item.
           * @default ''
          */
         "icon": string;
@@ -2412,6 +2604,9 @@ export namespace Components {
           * Specifies if the table rows are selectable by a checkbox
          */
         "selectable"?: boolean;
+        /**
+          * Indicates whether row selection is currently active in the table.
+         */
         "selection"?: boolean;
         /**
           * `internal` Updates the selection data event and emits it, it's used to avoid add event listener to the dom and lower performance, works only if `selectable` is true.
@@ -2419,7 +2614,13 @@ export namespace Components {
         "updateSelection": () => Promise<void>;
     }
     interface MdsTableBody {
+        /**
+          * Specifies whether the rows react to user interaction (hover/focus).
+         */
         "interactive"?: boolean;
+        /**
+          * Enables the selection column for the rows in this table body.
+         */
         "selection"?: boolean;
     }
     interface MdsTableCell {
@@ -2431,12 +2632,24 @@ export namespace Components {
     interface MdsTableFooter {
     }
     interface MdsTableHeader {
+        /**
+          * Enables the select-all checkbox in the header.
+         */
         "selectable"?: boolean;
+        /**
+          * Updates the header's select-all state from the number of selected rows.
+          * @param selectedItems the number of currently selected rows
+          * @param totalItems the total number of selectable rows
+         */
         "setSelection": (selectedItems: number, totalItems: number) => Promise<void>;
+        /**
+          * Updates the component's texts to the locale currently set on the host element.
+         */
         "updateLang": () => Promise<void>;
     }
     interface MdsTableHeaderCell {
         /**
+          * Specifies the current sort direction of the column.
           * @default 'none'
          */
         "direction": SortDirectionType;
@@ -2450,14 +2663,30 @@ export namespace Components {
         "sortable"?: boolean;
     }
     interface MdsTableRow {
+        /**
+          * Specifies whether the row reacts to user interaction (hover/focus).
+         */
         "interactive"?: boolean;
+        /**
+          * Specifies whether the row's actions are shown as an overlay.
+         */
         "overlayActions": boolean;
         /**
+          * Specifies whether the row can be selected via a checkbox.
           * @default undefined
          */
         "selectable"?: boolean;
+        /**
+          * Specifies whether the row is currently selected.
+         */
         "selected"?: boolean;
+        /**
+          * Updates the component's texts to the locale currently set on the host element.
+         */
         "updateLang": () => Promise<void>;
+        /**
+          * The value associated with the row, emitted when the row is selected.
+         */
         "value"?: string | number;
     }
     interface MdsText {
@@ -2621,7 +2850,13 @@ export namespace Components {
           * Specifies the tree should be opened asynchronously when after the click.
          */
         "async"?: boolean;
+        /**
+          * Specifies the tree branch depth. Internal: used by CSS to remove branch lines on first-level elements.
+         */
         "depth"?: number;
+        /**
+          * Expands the tree item, revealing its children.
+         */
         "expand": () => Promise<void>;
         /**
           * Specifies if the tree is expanded.
@@ -2644,6 +2879,9 @@ export namespace Components {
           * @default 'word'
          */
         "truncate"?: TypographyTruncateType;
+        /**
+          * Updates the component's texts to the locale currently set on the host element.
+         */
         "updateLang": () => Promise<void>;
     }
     interface MdsUrlView {
@@ -2664,6 +2902,9 @@ export namespace Components {
           * Specifies the URL to the web page
          */
         "src": string;
+        /**
+          * Updates the component's texts to the locale currently set on the host element.
+         */
         "updateLang": () => Promise<void>;
     }
     interface MdsUsage {
@@ -2671,6 +2912,9 @@ export namespace Components {
           * Specifies the alias of the usage phrase on the top of the component
          */
         "alias"?: string;
+        /**
+          * Updates the component's texts to the locale currently set on the host element.
+         */
         "updateLang": () => Promise<void>;
         /**
           * Specifies the delay when the tooltip will trigger
@@ -3102,6 +3346,13 @@ declare global {
     startDate: string;
     endDate?: string;
   };
+        "mdsCalendarNavigate": {
+    currentDate: string;
+    delta: number;
+  };
+        "mdsCalendarHover": {
+    hoverDate: string | null;
+  };
         "mdsCalendarPreselect": void;
     }
     interface HTMLMdsCalendarElement extends Components.MdsCalendar, HTMLStencilElement {
@@ -3408,10 +3659,6 @@ declare global {
         new (): HTMLMdsInputDateElement;
     };
     interface HTMLMdsInputDateRangeElementEventMap {
-        "mdsInputDateRangeSelect": {
-    startDate: string;
-    endDate: string;
-  };
         "mdsInputDateRangeValueChange": {
     startDate: string;
     endDate: string;
@@ -4773,12 +5020,24 @@ declare namespace LocalJSX {
     }
     interface MdsCalendar {
         /**
+          * Disables switching to month or year selection views from the calendar header.
+          * @default false
+         */
+        "disableMonthYearSelection"?: boolean;
+        /**
           * Specifies the end date of the selection
           * @description It's in ISO format (YYYY-MM-DD).
           * @example '2023-10-01'
           * @default null
          */
         "endDate"?: string | null;
+        /**
+          * Specifies the date used to preview the range selection across multiple visible calendars.
+          * @description It's in ISO format (YYYY-MM-DD).
+          * @example '2023-10-15'
+          * @default null
+         */
+        "hoverDate"?: string | null;
         /**
           * Specifies the minimum date of the selection
           * @description It's in ISO format (YYYY-MM-DD).
@@ -4793,15 +5052,50 @@ declare namespace LocalJSX {
           * @default null
          */
         "min"?: string | null;
+        /**
+          * Emitted when the selected date or date range changes.
+         */
         "onMdsCalendarChange"?: (event: MdsCalendarCustomEvent<{
     startDate: string;
     endDate?: string;
   }>) => void;
+        /**
+          * Emitted when the user hovers over a day, used to preview a range selection.
+         */
+        "onMdsCalendarHover"?: (event: MdsCalendarCustomEvent<{
+    hoverDate: string | null;
+  }>) => void;
+        /**
+          * Emitted when the user navigates to a different month or year.
+         */
+        "onMdsCalendarNavigate"?: (event: MdsCalendarCustomEvent<{
+    currentDate: string;
+    delta: number;
+  }>) => void;
+        /**
+          * Emitted when the calendar's preselection options need to be re-evaluated.
+         */
         "onMdsCalendarPreselect"?: (event: MdsCalendarCustomEvent<void>) => void;
         /**
+          * Enables selecting a date range (start and end date) instead of a single date.
           * @default true
          */
         "rangePicker"?: boolean;
+        /**
+          * Shows the next navigation button in the calendar header.
+          * @default true
+         */
+        "showNextButton"?: boolean;
+        /**
+          * Shows the preselection area above the calendar view.
+          * @default false
+         */
+        "showPreselection"?: boolean;
+        /**
+          * Shows the previous navigation button in the calendar header.
+          * @default true
+         */
+        "showPreviousButton"?: boolean;
         /**
           * Specifies the start date of the selection
           * @description It's in ISO format (YYYY-MM-DD).
@@ -4809,6 +5103,13 @@ declare namespace LocalJSX {
           * @default null
          */
         "startDate"?: string | null;
+        /**
+          * Specifies the date used to determine the visible month without changing the selection.
+          * @description It's in ISO format (YYYY-MM-DD).
+          * @example '2023-10-01'
+          * @default null
+         */
+        "viewDate"?: string | null;
     }
     interface MdsCalendarCell {
         /**
@@ -5021,6 +5322,7 @@ declare namespace LocalJSX {
     }
     interface MdsEmoji {
         /**
+          * Specifies which emoji to display.
           * @default 'mia'
          */
         "name"?: EmojiNames;
@@ -5522,6 +5824,9 @@ declare namespace LocalJSX {
           * Is needed to reference the form data after the form is submitted
          */
         "name"?: string;
+        /**
+          * Emitted when the selected date value changes.
+         */
         "onMdsInputDateSelect"?: (event: MdsInputDateCustomEvent<string>) => void;
         /**
           * Emits a boolean event when a input execute validation
@@ -5561,6 +5866,11 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
+          * Enables the linked dual-calendar range picker behavior.
+          * @default false
+         */
+        "dualCalendar"?: boolean;
+        /**
           * Specifies the end date of the range
           * @description It's in ISO format (YYYY-MM-DD).
           * @default ''
@@ -5586,10 +5896,9 @@ declare namespace LocalJSX {
           * Is needed to reference the form data after the form is submitted
          */
         "name"?: string;
-        "onMdsInputDateRangeSelect"?: (event: MdsInputDateRangeCustomEvent<{
-    startDate: string;
-    endDate: string;
-  }>) => void;
+        /**
+          * Emitted when the selected start or end date changes.
+         */
         "onMdsInputDateRangeValueChange"?: (event: MdsInputDateRangeCustomEvent<{
     startDate: string;
     endDate: string;
@@ -6543,6 +6852,7 @@ declare namespace LocalJSX {
          */
         "icon"?: string;
         /**
+          * Specifies the size of the menu item.
           * @default 'lg'
          */
         "size"?: ButtonSizeType;
@@ -6713,6 +7023,7 @@ declare namespace LocalJSX {
     }
     interface MdsTabBarItem {
         /**
+          * The icon displayed in the tab bar item.
           * @default ''
          */
         "icon"?: string;
@@ -6800,10 +7111,19 @@ declare namespace LocalJSX {
           * Specifies if the table rows are selectable by a checkbox
          */
         "selectable"?: boolean;
+        /**
+          * Indicates whether row selection is currently active in the table.
+         */
         "selection"?: boolean;
     }
     interface MdsTableBody {
+        /**
+          * Specifies whether the rows react to user interaction (hover/focus).
+         */
         "interactive"?: boolean;
+        /**
+          * Enables the selection column for the rows in this table body.
+         */
         "selection"?: boolean;
     }
     interface MdsTableCell {
@@ -6815,10 +7135,14 @@ declare namespace LocalJSX {
     interface MdsTableFooter {
     }
     interface MdsTableHeader {
+        /**
+          * Enables the select-all checkbox in the header.
+         */
         "selectable"?: boolean;
     }
     interface MdsTableHeaderCell {
         /**
+          * Specifies the current sort direction of the column.
           * @default 'none'
          */
         "direction"?: SortDirectionType;
@@ -6832,13 +7156,26 @@ declare namespace LocalJSX {
         "sortable"?: boolean;
     }
     interface MdsTableRow {
+        /**
+          * Specifies whether the row reacts to user interaction (hover/focus).
+         */
         "interactive"?: boolean;
+        /**
+          * Specifies whether the row's actions are shown as an overlay.
+         */
         "overlayActions"?: boolean;
         /**
+          * Specifies whether the row can be selected via a checkbox.
           * @default undefined
          */
         "selectable"?: boolean;
+        /**
+          * Specifies whether the row is currently selected.
+         */
         "selected"?: boolean;
+        /**
+          * The value associated with the row, emitted when the row is selected.
+         */
         "value"?: string | number;
     }
     interface MdsText {
@@ -7006,6 +7343,9 @@ declare namespace LocalJSX {
           * Specifies the tree should be opened asynchronously when after the click.
          */
         "async"?: boolean;
+        /**
+          * Specifies the tree branch depth. Internal: used by CSS to remove branch lines on first-level elements.
+         */
         "depth"?: number;
         /**
           * Specifies if the tree is expanded.
@@ -7224,6 +7564,12 @@ declare namespace LocalJSX {
     }
     interface MdsCalendarAttributes {
         "rangePicker": boolean;
+        "showPreviousButton": boolean;
+        "showNextButton": boolean;
+        "disableMonthYearSelection": boolean;
+        "showPreselection": boolean;
+        "viewDate": string | null;
+        "hoverDate": string | null;
         "startDate": string | null;
         "endDate": string | null;
         "min": string | null;
@@ -7401,6 +7747,7 @@ declare namespace LocalJSX {
         "min": string | null;
         "max": string | null;
         "delay": number;
+        "dualCalendar": boolean;
         "name": string;
     }
     interface MdsInputDateRangePreselectionAttributes {

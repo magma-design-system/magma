@@ -7,7 +7,7 @@ import { typographyDefaultsVariant } from './meta/variants';
 import RandomText from '@common/yugop';
 
 /**
- * @slot default - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
+ * @slot - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
  */
 
 @Component({
@@ -103,10 +103,10 @@ export class MdsText {
     if (this.animation === 'none') {
       return;
     }
-    if (this.randomText) {
+    if (this.randomText != null) {
       this.randomText.stop();
     }
-    if (newValue) {
+    if (newValue !== undefined && newValue !== '') {
       this.animateText(newValue);
     }
   }
@@ -114,7 +114,9 @@ export class MdsText {
   render() {
     return (
       <Host>
-        <this.tag class="text">{!this.text ? <slot></slot> : this.text}</this.tag>
+        <this.tag class="text">
+          {this.text === undefined || this.text === '' ? <slot></slot> : this.text}
+        </this.tag>
       </Host>
     );
   }

@@ -24,7 +24,7 @@ import miBaselineClose from '@icon/mi/baseline/close.svg';
  * @part action-close - Selects the close button of the modal.
  * @part window - Selects the default window element of the modal when used.
  * @slot bottom - Contents that will be placed on bottom of the window. Add `text string`, `HTML elements` or `components` to this slot.
- * @slot default - Contents that will be placed in the center of the window. Add `text string`, `HTML elements` or `components` to this slot.
+ * @slot - Contents that will be placed in the center of the window. Add `text string`, `HTML elements` or `components` to this slot.
  * @slot top - Contents that will be placed on top of the window. Add `text string`, `HTML elements` or `components` to this slot.
  * @slot window - Use directly a window component if you need it. Add `text string`, `HTML elements` or `components` to this slot.
  */
@@ -131,8 +131,8 @@ export class MdsModal {
   };
 
   private disableOverflow = (): void => {
-    if (document) {
-      if (document.body.style.overflow) {
+    if (typeof document !== 'undefined') {
+      if (document.body.style.overflow !== '') {
         this.bodyOverflow = document.body.style.overflow;
       }
       document.body.style.overflow = 'hidden';
@@ -140,8 +140,8 @@ export class MdsModal {
   };
 
   private enableOverflow = (): void => {
-    if (document) {
-      if (this.bodyOverflow) {
+    if (typeof document !== 'undefined') {
+      if (this.bodyOverflow !== '') {
         document.body.style.overflow = this.bodyOverflow;
       } else {
         document.body.style.removeProperty('overflow');
@@ -215,13 +215,13 @@ export class MdsModal {
     this.windowHeaderElement = this.host.shadowRoot?.querySelector('.window-header') as HTMLElement;
     this.windowFooterElement = this.host.shadowRoot?.querySelector('.window-footer') as HTMLElement;
 
-    if (this.windowHeaderElement) {
+    if (this.windowHeaderElement != null) {
       this.windowHeaderHeight = this.windowHeaderElement.offsetHeight;
     }
-    if (this.windowFooterElement) {
+    if (this.windowFooterElement != null) {
       this.windowFooterHeight = this.windowFooterElement.offsetHeight;
     }
-    if (this.windowElement) {
+    if (this.windowElement != null) {
       this.addMobileEvents();
     }
     this.updateCSSCustomProps();
@@ -229,7 +229,7 @@ export class MdsModal {
 
   disconnectedCallback(): void {
     this.enableOverflow();
-    if (this.windowElement) {
+    if (this.windowElement != null) {
       this.windowElement.removeEventListener('touchstart', this.setTouchStart);
       this.windowElement.removeEventListener('touchend', this.setTouchEnd);
     }
@@ -273,6 +273,9 @@ export class MdsModal {
     }
   }
 
+  /**
+   * Closes the modal.
+   */
   @Method()
   async close(): Promise<void> {
     this.opened = undefined;

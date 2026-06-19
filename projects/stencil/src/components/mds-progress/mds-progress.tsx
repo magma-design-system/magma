@@ -66,7 +66,7 @@ export class MdsProgress {
   }
 
   private setProgress(progress: number): void {
-    if (this.steps) {
+    if (this.steps !== '') {
       this.currentStep = this.stepsList[Math.round(progress * (this.stepsList.length - 1))];
       if (!ifAttribute(this.element, 'aria-hidden')) {
         this.element.setAttribute('aria-valuetext', this.currentStep);

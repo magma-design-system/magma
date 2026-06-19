@@ -124,6 +124,9 @@ export class MdsInput {
     es: localeEs,
     it: localeIt,
   });
+  /**
+   * Updates the component's texts to the locale currently set on the host element.
+   */
   @Method()
   async updateLang(): Promise<void> {
     this.language = this.t.lang(this.el);
@@ -313,7 +316,7 @@ export class MdsInput {
     }
     this.internals.setFormValue(this.value ?? null);
     this.maxLengthChanged(this.maxlength);
-    this.isValid = !(this.required && !this.value);
+    this.isValid = !(this.required && this.value === '');
   }
 
   componentDidLoad(): void {
@@ -328,13 +331,13 @@ export class MdsInput {
 
   private setValidators() {
     if (this.required) this.inputValidation.validator.addValidator(requiredValidor);
-    if (this.max !== '' && Number(this.max))
+    if (this.max !== '' && Number(this.max) !== 0 && !Number.isNaN(Number(this.max)))
       this.inputValidation.validator.addValidator(maxValidator(Number(this.max)));
-    if (this.min !== '' && Number(this.min))
+    if (this.min !== '' && Number(this.min) !== 0 && !Number.isNaN(Number(this.min)))
       this.inputValidation.validator.addValidator(minValidator(Number(this.max)));
-    if (this.maxlength)
+    if (this.maxlength !== undefined && this.maxlength !== 0 && !Number.isNaN(this.maxlength))
       this.inputValidation.validator.addValidator(maxLenghtValidator(this.maxlength));
-    if (this.minlength)
+    if (this.minlength !== undefined && this.minlength !== 0 && !Number.isNaN(this.minlength))
       this.inputValidation.validator.addValidator(minLenghtValidator(this.minlength));
   }
 
@@ -370,12 +373,20 @@ export class MdsInput {
     this.countMaxLength();
   }
 
+  /**
+   * Adds a validator to the input.
+   * @param validator the validator function to add
+   */
   @Method()
   async addValidator(validator: MdsValidatorFn): Promise<void> {
     this.inputValidation.validator.addValidator(validator);
     return Promise.resolve();
   }
 
+  /**
+   * Removes a previously added validator from the input.
+   * @param validator the validator function to remove
+   */
   @Method()
   async removeValidator(validator: MdsValidatorFn): Promise<void> {
     this.inputValidation.validator.removeValidator(validator);
@@ -391,6 +402,10 @@ export class MdsInput {
     return this.inputValidation.validator.hasValidator(validator);
   }
 
+  /**
+   * Returns the current validation errors, or `null` if the value is valid.
+   * @returns the validation errors, or `null` when valid
+   */
   @Method()
   async getErrors(): Promise<MdsValidationErrors | null> {
     return Promise.resolve(this.inputValidation.validator.errors);
@@ -411,7 +426,8 @@ export class MdsInput {
   }
 
   private countMaxLength = (): void => {
-    if (!this.maxlength) return;
+    if (this.maxlength === undefined || this.maxlength === 0 || Number.isNaN(this.maxlength))
+      return;
     if (this.value === undefined) return;
 
     this.currentLengthLabel = `${this.value?.length ?? 0} / ${this.maxlength}`;
@@ -543,7 +559,7 @@ export class MdsInput {
   };
 
   private startRecognition = (): void => {
-    if (!this.speechButton) {
+    if (this.speechButton == null) {
       this.speechButton = this.el?.shadowRoot?.querySelector(
         '.mic-toggle-button',
       ) as HTMLMdsButtonElement;

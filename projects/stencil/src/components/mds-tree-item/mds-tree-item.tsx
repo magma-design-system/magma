@@ -25,7 +25,7 @@ import { TypographyTruncateType } from '@type/text';
 import { cssDurationToMilliseconds } from '@common/unit';
 
 /**
- * @slot default - Add `mds-tree-item` element/s.
+ * @slot - Add `mds-tree-item` element/s.
  * @slot action - Add `mds-button`, `mds-icon` or other types component and HTML element/s.
  * @part actions-container - Selects the wrapper of the container of the actions.
  * @part actions-list - Selects the container of the actions.
@@ -52,6 +52,9 @@ export class MdsTreeItem {
     it: localeIt,
   });
   @State() language: string;
+  /**
+   * Updates the component's texts to the locale currently set on the host element.
+   */
   @Method()
   async updateLang(): Promise<void> {
     this.language = this.t.lang(this.host);
@@ -67,9 +70,9 @@ export class MdsTreeItem {
    */
   @Prop({ reflect: true }) readonly async?: boolean;
 
-  //
-  // Specifies the tree branch depth, it's internal and it's used by css to remove fitst level elements branch lines.
-  //
+  /**
+   * Specifies the tree branch depth. Internal: used by CSS to remove branch lines on first-level elements.
+   */
   @Prop({ reflect: true }) readonly depth?: number;
 
   /**
@@ -164,6 +167,9 @@ export class MdsTreeItem {
     );
   };
 
+  /**
+   * Expands the tree item, revealing its children.
+   */
   @Method()
   async expand(): Promise<void> {
     this.expanded = true;
@@ -201,7 +207,7 @@ export class MdsTreeItem {
           <div class={clsx('toggle-icon', `toggle-icon--${this.toggle}`)}>
             <mds-button
               await={this.await}
-              onClick={this.onClick.bind(this)}
+              onClick={this.onClick}
               icon={!this.await ? this.currentToggleIcon : undefined}
               title={this.t.get(this.expanded ? 'collapse' : 'expand', { label: this.label })}
               variant="dark"
@@ -214,7 +220,7 @@ export class MdsTreeItem {
               class={clsx('label-action', this.await && 'label-action--await')}
               disabled={this.await}
               icon={this.icon}
-              onClick={this.onClick.bind(this)}
+              onClick={this.onClick}
               variant="dark"
               tone="text"
               truncate={this.truncate}

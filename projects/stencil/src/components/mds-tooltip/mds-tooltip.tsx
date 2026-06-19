@@ -5,7 +5,7 @@ import arrowSvg from './assets/arrow.svg';
 import { FloatingController, FloatingElement } from '@common/floating-controller';
 
 /**
- * @slot default - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
+ * @slot - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
  */
 
 @Component({
@@ -135,7 +135,7 @@ export class MdsTooltip implements FloatingElement {
 
   @Watch('target')
   targetChanged(): void {
-    if (!this.target) return;
+    if (this.target === '') return;
 
     this.caller = this.floatingController?.updateCaller(this.target);
     this.caller.addEventListener('mouseleave', this.handleVisibility.bind(this, false));

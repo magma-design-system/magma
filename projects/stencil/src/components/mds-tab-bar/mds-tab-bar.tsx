@@ -2,7 +2,7 @@ import { Component, Event, EventEmitter, Element, Host, h, Listen } from '@stenc
 import { MdsTabBarEventDetail } from './meta/event-detail';
 
 /**
- * @slot default - Add `mds-tab-bar-item` element/s.
+ * @slot - Add `mds-tab-bar-item` element/s.
  */
 
 @Component({

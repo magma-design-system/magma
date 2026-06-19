@@ -25,6 +25,9 @@ export class MdsKeyboardKey {
     it: localeIt,
   });
   @State() language: string;
+  /**
+   * Updates the component's texts to the locale currently set on the host element.
+   */
   @Method()
   async updateLang(): Promise<void> {
     this.language = this.t.lang(this.host);
@@ -43,7 +46,7 @@ export class MdsKeyboardKey {
   @Prop({ reflect: true }) readonly pressed?: boolean;
 
   private getTitle = (): string | undefined => {
-    if (this.name) {
+    if (this.name !== undefined) {
       return this.t.get(this.keyboardKeys[this.name.toLowerCase()].description, {
         character: this.keyboardKeys[this.name.toLowerCase()].alias,
         keyboardPosition: this.keyboardKeys[this.name.toLowerCase()].keyboardPosition,

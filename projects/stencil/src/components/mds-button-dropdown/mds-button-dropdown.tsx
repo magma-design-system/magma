@@ -10,6 +10,9 @@ import { ToneMinimalVariantType } from '@type/tone';
 
 import { TypographyTruncateType } from '@type/text';
 
+/**
+ * @slot - Add `text string`, `HTML elements` or `components` to this slot.
+ */
 @Component({
   tag: 'mds-button-dropdown',
   styleUrl: 'mds-button-dropdown.css',

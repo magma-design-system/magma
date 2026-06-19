@@ -11,6 +11,9 @@ import localeIt from './meta/locale.it.json';
 import keyboardKeys from '@meta/keyboard/keys.json';
 import { KeyboardTest } from './meta/type';
 
+/**
+ * @slot - Add `mds-keyboard-key` elements or `components` to this slot.
+ */
 @Component({
   tag: 'mds-keyboard',
   styleUrl: 'mds-keyboard.css',
@@ -34,6 +37,9 @@ export class MdsKeyboard {
     it: localeIt,
   });
   @State() language: string;
+  /**
+   * Updates the component's texts to the locale currently set on the host element.
+   */
   @Method()
   async updateLang(): Promise<void> {
     this.language = this.t.lang(this.host);
@@ -100,7 +106,7 @@ export class MdsKeyboard {
 
   private updateElements = (): void => {
     this.filteredNodes.forEach((node: HTMLMdsKeyboardKeyElement) => {
-      if (node.name) {
+      if (node.name !== undefined) {
         this.keyEls.push(node);
         this.keyCombination.add(this.keyCodes(node.name.toLowerCase()).toString());
       }
@@ -161,7 +167,7 @@ export class MdsKeyboard {
   };
 
   private addKeyboardShortcut = (event: KeyboardEvent): void => {
-    if (!document) {
+    if (typeof document === 'undefined') {
       return;
     }
     event.stopPropagation();
@@ -207,7 +213,7 @@ export class MdsKeyboard {
     return miBaselineKeyboard;
   };
 
-  discottectedCallback(): void {
+  disconnectedCallback(): void {
     this.stopKeyboardShortcutTest();
   }
 
@@ -224,7 +230,7 @@ export class MdsKeyboard {
             class="combination-checker"
             variant="dark"
             tone="text"
-            onClick={this.startKeyboardShortcutTest.bind(this)}
+            onClick={this.startKeyboardShortcutTest}
           ></mds-button>
         )}
         {this.try && (

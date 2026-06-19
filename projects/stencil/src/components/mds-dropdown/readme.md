@@ -420,9 +420,9 @@ mds-dropdown {
 
 ## Slots
 
-| Slot        | Description                                                                                                              |
-| ----------- | ------------------------------------------------------------------------------------------------------------------------ |
-| `"default"` | Add `text string`, `HTML elements` or `components` to this slot, elements will be shown when the component is triggered. |
+| Slot | Description                                                                                                              |
+| ---- | ------------------------------------------------------------------------------------------------------------------------ |
+|      | Add `text string`, `HTML elements` or `components` to this slot, elements will be shown when the component is triggered. |
 
 
 ## CSS Custom Properties

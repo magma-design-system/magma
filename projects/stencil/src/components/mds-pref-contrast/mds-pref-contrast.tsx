@@ -40,6 +40,9 @@ export class MdsPrefContrast {
     it: localeIt,
   });
   @State() language: string;
+  /**
+   * Updates the component's texts to the locale currently set on the host element.
+   */
   @Method()
   async updateLang(): Promise<void> {
     this.language = this.t.lang(this.element);
@@ -92,7 +95,7 @@ export class MdsPrefContrast {
   }
 
   private readonly rollbackContrast = (): ContrastModeType => {
-    if (!window) {
+    if (typeof window === 'undefined') {
       return this.defaultMode;
     }
 
@@ -112,7 +115,7 @@ export class MdsPrefContrast {
     this.rollbackContrast();
     this.mode = mode;
     localStorage.setItem(this.localStorageAlias, this.mode);
-    if (document) {
+    if (typeof document !== 'undefined') {
       const element = document.querySelector('html');
       for (const key in this.contrast) {
         if ({}.hasOwnProperty.call(this.contrast, key)) {

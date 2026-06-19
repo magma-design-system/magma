@@ -338,9 +338,9 @@ mds-accordion-item::part(label) {
 
 ## Slots
 
-| Slot        | Description                         |
-| ----------- | ----------------------------------- |
-| `"default"` | Add `mds-accordion-item` element/s. |
+| Slot | Description                         |
+| ---- | ----------------------------------- |
+|      | Add `mds-accordion-item` element/s. |
 
 
 ## CSS Custom Properties

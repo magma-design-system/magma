@@ -285,7 +285,7 @@ The default slot is designed for action controls. Placing only decorative or sta
 
 ### `hide() => Promise<void>`
 
-
+Hides the status bar.
 
 #### Returns
 
@@ -296,9 +296,9 @@ Type: `Promise<void>`
 
 ## Slots
 
-| Slot        | Description                                                                             |
-| ----------- | --------------------------------------------------------------------------------------- |
-| `"default"` | Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element. |
+| Slot | Description                                                                             |
+| ---- | --------------------------------------------------------------------------------------- |
+|      | Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element. |
 
 
 ## Shadow Parts

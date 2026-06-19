@@ -40,6 +40,9 @@ export class MdsPrefTheme {
     it: localeIt,
   });
   @State() language: string;
+  /**
+   * Updates the component's texts to the locale currently set on the host element.
+   */
   @Method()
   async updateLang(): Promise<void> {
     this.language = this.t.lang(this.element);
@@ -136,7 +139,7 @@ export class MdsPrefTheme {
     this.prefChangeEvent.emit({ preference: 'theme-mode' });
     this.mode = mode;
     localStorage.setItem(this.localStorageAlias, this.mode);
-    if (document) {
+    if (typeof document !== 'undefined') {
       const element = document.querySelector('html');
       for (const key in this.theme) {
         if ({}.hasOwnProperty.call(this.theme, key)) {
@@ -153,7 +156,7 @@ export class MdsPrefTheme {
   };
 
   private readonly getColorScheme = (mode?: PreferenceThemeModeType): PreferenceThemeModeType => {
-    if (mode) {
+    if (mode !== undefined) {
       if (mode === 'system') {
         return this.isDarkMode() ? 'dark' : 'light';
       }
@@ -167,7 +170,7 @@ export class MdsPrefTheme {
   };
 
   private instanceOverlay = (): void => {
-    if (!this.overlayEl) {
+    if (this.overlayEl == null) {
       this.overlayEl = document.createElement('div');
       this.overlayEl.className = this.overlayId;
       this.overlayEl.style.inset = '0';
@@ -180,7 +183,7 @@ export class MdsPrefTheme {
   };
 
   private detachOverlayTransition(): void {
-    if (!this.overlayEl) {
+    if (this.overlayEl == null) {
       return;
     }
     this.overlayEl.style.backgroundColor = this.overlayBackgroundHidden;

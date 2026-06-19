@@ -1,7 +1,7 @@
 import { Component, Host, h } from '@stencil/core';
 
 /**
- * @slot default - Add `mds-table-row` element/s.
+ * @slot - Add `mds-table-row` element/s.
  */
 
 @Component({

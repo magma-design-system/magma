@@ -56,6 +56,9 @@ export class MdsPushNotificationItem {
     it: localeIt,
   });
   @State() language: string;
+  /**
+   * Updates the component's texts to the locale currently set on the host element.
+   */
   @Method()
   async updateLang(): Promise<void> {
     this.language = this.t.lang(this.host);
@@ -135,7 +138,7 @@ export class MdsPushNotificationItem {
     this.hasActions = this.host.querySelector(':scope > [slot="action"]') !== null;
     this.hasBadge = this.host.querySelector(':scope > [slot="badge"]') !== null;
 
-    if (this.datetime) {
+    if (this.datetime !== undefined && this.datetime !== '') {
       this.datetime = sanitizeISO8601Date(this.datetime?.toString());
     }
 
@@ -221,7 +224,7 @@ export class MdsPushNotificationItem {
             tone="text"
             title={this.t.get('dismiss')}
             icon={miBaselineCancel}
-            onClick={this.onClickClose.bind(this)}
+            onClick={this.onClickClose}
           ></mds-button>
         )}
       </Host>

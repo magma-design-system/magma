@@ -2,7 +2,7 @@ import { Component, Host, h, Prop } from '@stencil/core';
 
 /**
  * @part header - Selects the HTML element wrapper of label text
- * @slot default - Expects to slot `mds-price-table-features-row` component
+ * @slot - Expects to slot `mds-price-table-features-row` component
  */
 
 @Component({

@@ -38,6 +38,9 @@ export class MdsChip {
     it: localeIt,
   });
   @State() language: string;
+  /**
+   * Updates the component's texts to the locale currently set on the host element.
+   */
   @Method()
   async updateLang(): Promise<void> {
     this.language = this.t.lang(this.host);
@@ -135,9 +138,9 @@ export class MdsChip {
     this.clickLabelEvent.emit({ event, element: this.host });
   }
 
-  private onDeleteHandler(event: Event): void {
+  private onDeleteHandler = (event: Event): void => {
     this.deleteEvent.emit({ event, element: this.host });
-  }
+  };
 
   private handleClickableKeyboard = (isClickable: boolean): void => {
     if (isClickable) {
@@ -151,7 +154,7 @@ export class MdsChip {
 
   private handleClickableElement = (isClickable: boolean): void => {
     const label = this.host.shadowRoot?.querySelector('.label') as HTMLElement;
-    if (!label) {
+    if (label == null) {
       return;
     }
     if (isClickable) {
@@ -206,7 +209,7 @@ export class MdsChip {
           <mds-button
             class="button-delete"
             icon={miBaselineCancel}
-            onClick={this.onDeleteHandler.bind(this)}
+            onClick={this.onDeleteHandler}
             title={`${this.t.get('deleteLabel')} ${this.label}`}
             variant="dark"
             tone="text"

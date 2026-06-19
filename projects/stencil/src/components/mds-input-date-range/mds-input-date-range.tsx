@@ -26,6 +26,11 @@ export interface EventDate {
   end?: string;
 }
 
+/**
+ * @slot calendar-preselection - Add `HTML elements` or `components` to this slot.
+ * @slot start - Add `HTML elements` or `components` to this slot.
+ * @slot end - Add `HTML elements` or `components` to this slot.
+ */
 @Component({
   tag: 'mds-input-date-range',
   styleUrl: 'mds-input-date-range.css',
@@ -39,6 +44,7 @@ export class MdsInputDateRange {
   @State() calendarKey: number = 0;
   @State() internalStartDate: string = '';
   @State() internalEndDate: string = '';
+  @State() visibleCalendarDate: string = '';
   @State() dropdownRef?: HTMLMdsDropdownElement;
   @State() hasPreselection: boolean = false;
   private t: Locale = new Locale({
@@ -48,6 +54,9 @@ export class MdsInputDateRange {
     it: localeIt,
   });
   @State() language: string;
+  /**
+   * Updates the component's texts to the locale currently set on the host element.
+   */
   @Method()
   async updateLang(): Promise<void> {
     this.language = this.t.lang(this.host);
@@ -82,6 +91,12 @@ export class MdsInputDateRange {
    * @description Default is 500
    */
   @Prop({ reflect: true }) readonly delay: number = 500;
+
+  /**
+   * Enables the linked dual-calendar range picker behavior.
+   */
+  @Prop({ reflect: true }) readonly dualCalendar: boolean = false;
+
   /**
    * Is needed to reference the form data after the form is submitted
    */
@@ -92,15 +107,129 @@ export class MdsInputDateRange {
   private lastEmittedEndDate: string | null = null;
   private initialStartDate: string = '';
   private initialEndDate: string = '';
+  private hoveredCalendarDate: string | null = null;
+  private syncingInputSlots: Set<'start' | 'end'> = new Set();
 
-  @Event({ eventName: 'mdsInputDateRangeSelect' }) dateRangeSelected: EventEmitter<{
-    startDate: string;
-    endDate: string;
-  }>;
+  private getCalendars(): HTMLMdsCalendarElement[] {
+    return Array.from(this.host.shadowRoot?.querySelectorAll('mds-calendar') ?? []);
+  }
+
+  private resolveVisibleCalendarDate(startDate?: string, endDate?: string): string {
+    const initialDates = [startDate, endDate]
+      .map((value) => DateTime.fromISO(value ?? ''))
+      .filter((date) => date.isValid);
+
+    const initialVisibleDate = initialDates[0] ?? DateTime.now();
+    return initialVisibleDate.startOf('month').toISODate();
+  }
+
+  private getCalendarViewDate(monthOffset: number = 0): string {
+    const visibleCalendarDate = DateTime.fromISO(this.visibleCalendarDate);
+    const startDate = DateTime.fromISO(this.internalStartDate);
+    let baseDate = DateTime.now();
+
+    if (visibleCalendarDate.isValid) {
+      baseDate = visibleCalendarDate;
+    } else if (startDate.isValid) {
+      baseDate = startDate;
+    }
+
+    return baseDate.startOf('month').plus({ months: monthOffset }).toISODate();
+  }
+
+  private setVisibleCalendarDate(date: string): void {
+    const visibleCalendarDate = DateTime.fromISO(date);
+
+    if (visibleCalendarDate.isValid) {
+      this.visibleCalendarDate = visibleCalendarDate.startOf('month').toISODate();
+    }
+  }
+
+  private closeDropdownAfterSelection(): void {
+    if (this.delay === 0) return;
+    const { dropdownRef } = this;
+
+    if (dropdownRef) {
+      setTimeout(() => {
+        dropdownRef.visible = false;
+      }, this.delay);
+    }
+  }
+
+  private syncCalendarsSelectionAttributes(): void {
+    this.host.shadowRoot?.querySelectorAll('mds-calendar').forEach((calendar) => {
+      if (this.internalStartDate !== '') {
+        calendar.setAttribute('start-date', this.internalStartDate);
+      } else {
+        calendar.removeAttribute('start-date');
+      }
+
+      if (this.internalEndDate !== '') {
+        calendar.setAttribute('end-date', this.internalEndDate);
+      } else {
+        calendar.removeAttribute('end-date');
+      }
+    });
+
+    this.syncCalendarsHoverAttributes();
+  }
+
+  private syncCalendarsHoverAttributes(): void {
+    this.host.shadowRoot?.querySelectorAll('mds-calendar').forEach((calendar) => {
+      if (this.hoveredCalendarDate !== null && this.hoveredCalendarDate !== '') {
+        calendar.setAttribute('hover-date', this.hoveredCalendarDate);
+      } else {
+        calendar.removeAttribute('hover-date');
+      }
+    });
+  }
+
+  private clearHoverPreview(): void {
+    if (this.hoveredCalendarDate === null) return;
+
+    this.hoveredCalendarDate = null;
+    this.syncCalendarsHoverAttributes();
+  }
+
+  /**
+   * Emitted when the selected start or end date changes.
+   */
   @Event({ eventName: 'mdsInputDateRangeValueChange' }) valueChanged: EventEmitter<{
     startDate: string;
     endDate: string;
   }>;
+
+  private getEmittableDateRangeDetail(): { startDate: string; endDate: string } | null {
+    const startDate = DateTime.fromISO(this.internalStartDate);
+    const endDate = DateTime.fromISO(this.internalEndDate);
+
+    if (!startDate.isValid || !endDate.isValid) {
+      return null;
+    }
+
+    return {
+      startDate: this.internalStartDate,
+      endDate: this.internalEndDate,
+    };
+  }
+
+  private emitValueChanged(): boolean {
+    const detail = this.getEmittableDateRangeDetail();
+
+    if (!detail) return false;
+
+    if (
+      detail.startDate === this.lastEmittedStartDate &&
+      detail.endDate === this.lastEmittedEndDate
+    ) {
+      return false;
+    }
+
+    this.valueChanged.emit(detail);
+    this.lastEmittedStartDate = detail.startDate;
+    this.lastEmittedEndDate = detail.endDate;
+    return true;
+  }
 
   @Watch('startDate')
   handleStartDateChange(newValue: string): void {
@@ -118,9 +247,13 @@ export class MdsInputDateRange {
     this.internalEndDate = this.endDate;
     this.initialStartDate = this.startDate;
     this.initialEndDate = this.endDate;
+    this.visibleCalendarDate = this.resolveVisibleCalendarDate(
+      this.internalStartDate,
+      this.internalEndDate,
+    );
 
     // Se max è precedente a min, imposto max uguale a min
-    if (this.min && this.max) {
+    if (this.min !== null && this.min !== '' && this.max !== null && this.max !== '') {
       const minDate = DateTime.fromISO(this.min);
       const maxDate = DateTime.fromISO(this.max);
       if (maxDate < minDate) {
@@ -132,10 +265,18 @@ export class MdsInputDateRange {
 
   disconnectedCallback(): void {
     this.host.removeEventListener('focusout', this.handleFocusOut);
+    this.host.shadowRoot?.removeEventListener(
+      'mdsCalendarHover',
+      this.handleCalendarHover as EventListener,
+    );
   }
 
+  /**
+   * Applies the given preselection range to the input.
+   * @param event the preselection range to apply
+   */
   @Method() async preselect(event: EventDate): Promise<void> {
-    if (!this.togglePreselection) {
+    if (this.togglePreselection == null) {
       this.togglePreselection = Array.from(
         this.host.querySelectorAll('mds-input-date-range-preselection'),
       );
@@ -146,11 +287,13 @@ export class MdsInputDateRange {
     });
 
     event.caller.selected = true;
+    this.clearHoverPreview();
 
     const startDate = DateTime.fromISO(event.start);
 
     if (startDate.isValid) {
       this.internalStartDate = event.start;
+      this.setVisibleCalendarDate(this.internalStartDate);
       this.updateInputValue('start', this.internalStartDate);
     }
 
@@ -165,23 +308,18 @@ export class MdsInputDateRange {
     this.updateInputValue('end', this.internalEndDate);
     this.syncFormValue();
 
-    const calendar = this.host?.shadowRoot?.querySelector('mds-calendar');
+    const calendars = this.getCalendars();
 
-    if (calendar) {
-      await calendar.updateCurrentDate(this.internalStartDate);
-      if (this.delay === 0) return;
-      const { dropdownRef } = this;
-      if (dropdownRef) {
-        setTimeout(() => {
-          dropdownRef.visible = false;
-        }, this.delay);
-      }
+    if (calendars.length !== 0) {
+      await Promise.all(
+        calendars.map((calendar, index) =>
+          calendar.updateCurrentDate(this.getCalendarViewDate(index)),
+        ),
+      );
+      this.closeDropdownAfterSelection();
     }
 
-    this.dateRangeSelected.emit({
-      startDate: this.internalStartDate,
-      endDate: this.internalEndDate,
-    });
+    this.emitValueChanged();
     return Promise.resolve();
   }
 
@@ -193,25 +331,8 @@ export class MdsInputDateRange {
       if (startValid && endValid) {
         this.validateDateRange();
         this.syncFormValue();
-
-        this.dateRangeSelected.emit({
-          startDate: this.internalStartDate,
-          endDate: this.internalEndDate,
-        });
-
         this.checkPreselections();
-      }
-
-      if (
-        this.internalStartDate !== this.lastEmittedStartDate ||
-        this.internalEndDate !== this.lastEmittedEndDate
-      ) {
-        this.valueChanged.emit({
-          startDate: this.internalStartDate,
-          endDate: this.internalEndDate,
-        });
-        this.lastEmittedStartDate = this.internalStartDate;
-        this.lastEmittedEndDate = this.internalEndDate;
+        this.emitValueChanged();
       }
     }
   };
@@ -249,11 +370,20 @@ export class MdsInputDateRange {
     this.updateInputValue('end', this.internalEndDate);
     this.syncFormValue();
     this.host.addEventListener('focusout', this.handleFocusOut);
+    this.host.shadowRoot?.addEventListener(
+      'mdsCalendarHover',
+      this.handleCalendarHover as EventListener,
+    );
   }
 
   formResetCallback(): void {
+    this.clearHoverPreview();
     this.internalStartDate = this.initialStartDate;
     this.internalEndDate = this.initialEndDate;
+    this.visibleCalendarDate = this.resolveVisibleCalendarDate(
+      this.initialStartDate,
+      this.initialEndDate,
+    );
     this.updateInputValue('start', this.internalStartDate);
     this.updateInputValue('end', this.internalEndDate);
     this.checkPreselections();
@@ -262,10 +392,12 @@ export class MdsInputDateRange {
 
   private syncExternalDate(slotName: 'start' | 'end', newValue: string): void {
     const normalizedValue = newValue ?? '';
+    this.clearHoverPreview();
 
     if (slotName === 'start') {
       if (normalizedValue === this.internalStartDate) return;
       this.internalStartDate = normalizedValue;
+      this.setVisibleCalendarDate(this.internalStartDate);
     } else {
       if (normalizedValue === this.internalEndDate) return;
       this.internalEndDate = normalizedValue;
@@ -278,11 +410,16 @@ export class MdsInputDateRange {
     this.syncFormValue();
   }
 
-  private updateInputValue(slotName: string, newValue: string): void {
+  private updateInputValue(slotName: 'start' | 'end', newValue: string): void {
     const slot = this.host.shadowRoot?.querySelector(`slot[name="${slotName}"]`) as HTMLSlotElement;
     const input = slot?.assignedElements()[0] as HTMLMdsInputDateElement;
-    if (input) {
-      input.setValue(newValue);
+    if (input != null) {
+      this.syncingInputSlots.add(slotName);
+      input.setValue(newValue).finally(() => {
+        requestAnimationFrame(() => {
+          this.syncingInputSlots.delete(slotName);
+        });
+      });
     }
   }
 
@@ -291,7 +428,7 @@ export class MdsInputDateRange {
     const endSlot = this.host.shadowRoot?.querySelector('slot[name="end"]') as HTMLSlotElement;
     this.hasPreselection = this.host.querySelector('mds-input-date-range-preselection') !== null;
 
-    if (startSlot) {
+    if (startSlot != null) {
       const input = startSlot.assignedElements()[0] as HTMLMdsInputDateElement;
       input.addEventListener(
         'mdsInputDateSelect',
@@ -299,7 +436,7 @@ export class MdsInputDateRange {
       );
     }
 
-    if (endSlot) {
+    if (endSlot != null) {
       const input = endSlot.assignedElements()[0] as HTMLMdsInputDateElement;
       input.addEventListener(
         'mdsInputDateSelect',
@@ -310,10 +447,16 @@ export class MdsInputDateRange {
 
   private createFocusoutListener(slotName: 'start' | 'end'): EventListener {
     return (ev: CustomEvent) => {
+      if (this.syncingInputSlots.has(slotName)) {
+        return;
+      }
+
       const event = ev;
+      this.clearHoverPreview();
 
       if (slotName === 'start') {
         this.internalStartDate = event.detail;
+        this.setVisibleCalendarDate(this.internalStartDate);
       } else {
         this.internalEndDate = event.detail;
       }
@@ -322,7 +465,7 @@ export class MdsInputDateRange {
   }
 
   private validateDateRange(): void {
-    if (this.internalStartDate && this.internalEndDate) {
+    if (this.internalStartDate !== '' && this.internalEndDate !== '') {
       const start = DateTime.fromISO(this.internalStartDate);
       const end = DateTime.fromISO(this.internalEndDate);
 
@@ -338,7 +481,7 @@ export class MdsInputDateRange {
       this.host.querySelectorAll('mds-input-date-range-preselection'),
     );
 
-    if (preselections) {
+    if (preselections != null) {
       preselections.forEach((element) => {
         const preselection = element;
 
@@ -358,6 +501,137 @@ export class MdsInputDateRange {
         }
       });
     }
+  }
+
+  private handleCalendarHover = (ev: CustomEvent<{ hoverDate: string | null }>): void => {
+    if (this.internalStartDate === '' || this.internalEndDate !== '') {
+      this.clearHoverPreview();
+      return;
+    }
+
+    const nextHoverDate = ev.detail.hoverDate;
+
+    if (this.hoveredCalendarDate === nextHoverDate) return;
+
+    this.hoveredCalendarDate = nextHoverDate;
+    this.syncCalendarsHoverAttributes();
+  };
+
+  private handleCalendarChange = (ev: CustomEvent<{ startDate: string; endDate?: string }>) => {
+    this.clearHoverPreview();
+    this.internalStartDate = ev.detail.startDate;
+    this.updateInputValue('start', this.internalStartDate);
+
+    if (ev.detail.endDate !== undefined && ev.detail.endDate !== '') {
+      this.internalEndDate = ev.detail.endDate;
+      this.updateInputValue('end', this.internalEndDate);
+    } else {
+      this.internalEndDate = '';
+      this.updateInputValue('end', this.internalEndDate);
+    }
+
+    this.syncFormValue();
+    this.syncCalendarsSelectionAttributes();
+
+    if (this.internalStartDate !== '' && this.internalEndDate !== '') {
+      this.emitValueChanged();
+      this.closeDropdownAfterSelection();
+    }
+  };
+
+  private handleCalendarNavigate = (ev: CustomEvent<{ currentDate: string }>) => {
+    if (!this.dualCalendar) return;
+
+    const calendars = this.getCalendars();
+    const calendarIndex = calendars.indexOf(ev.target as HTMLMdsCalendarElement);
+    const currentDate = DateTime.fromISO(ev.detail.currentDate);
+
+    if (!currentDate.isValid) return;
+
+    this.visibleCalendarDate = currentDate
+      .minus({ months: calendarIndex === 1 ? 1 : 0 })
+      .startOf('month')
+      .toISODate();
+  };
+
+  private renderCalendarPreselectionPanel() {
+    if (!this.hasPreselection) return null;
+
+    return (
+      <div class="calendar-preselection-panel">
+        <div
+          class={clsx(
+            'date-preselection',
+            this.hasPreselection && 'date-preselection--has-preselection',
+          )}
+        >
+          <slot name="calendar-preselection"></slot>
+        </div>
+      </div>
+    );
+  }
+
+  private renderSingleCalendar() {
+    return (
+      <div class="calendar-single">
+        {this.renderCalendarPreselectionPanel()}
+        <mds-calendar
+          lang={this.language}
+          key={this.calendarKey}
+          rangePicker={true}
+          onMdsCalendarChange={this.handleCalendarChange}
+          onMdsCalendarPreselect={() => {
+            this.checkPreselections();
+          }}
+          startDate={this.internalStartDate}
+          endDate={this.internalEndDate}
+          {...(this.min !== null && this.min !== '' ? { min: this.min } : {})}
+          {...(this.max !== null && this.max !== '' ? { max: this.max } : {})}
+        ></mds-calendar>
+      </div>
+    );
+  }
+
+  private renderDualCalendars() {
+    return (
+      <div class="calendars">
+        {this.renderCalendarPreselectionPanel()}
+        <mds-calendar
+          lang={this.language}
+          key={`${this.calendarKey}-start`}
+          rangePicker={true}
+          showNextButton={false}
+          disableMonthYearSelection={true}
+          viewDate={this.getCalendarViewDate()}
+          onMdsCalendarNavigate={this.handleCalendarNavigate}
+          onMdsCalendarChange={this.handleCalendarChange}
+          onMdsCalendarPreselect={() => {
+            this.checkPreselections();
+          }}
+          startDate={this.internalStartDate}
+          endDate={this.internalEndDate}
+          {...(this.min !== null && this.min !== '' ? { min: this.min } : {})}
+          {...(this.max !== null && this.max !== '' ? { max: this.max } : {})}
+        ></mds-calendar>
+        <mds-calendar
+          lang={this.language}
+          key={`${this.calendarKey}-end`}
+          rangePicker={true}
+          showPreviousButton={false}
+          disableMonthYearSelection={true}
+          viewDate={this.getCalendarViewDate(1)}
+          onMdsCalendarNavigate={this.handleCalendarNavigate}
+          onMdsCalendarChange={this.handleCalendarChange}
+          onMdsCalendarPreselect={() => {
+            this.checkPreselections();
+          }}
+          startDate={this.internalStartDate}
+          endDate={this.internalEndDate}
+          {...(this.min !== null && this.min !== '' ? { min: this.min } : {})}
+          {...(this.max !== null && this.max !== '' ? { max: this.max } : {})}
+        ></mds-calendar>
+      </div>
+    );
   }
 
   render() {
@@ -400,51 +674,7 @@ export class MdsInputDateRange {
           auto-placement={false}
           placement="bottom-end"
         >
-          <mds-calendar
-            lang={this.language}
-            key={this.calendarKey}
-            rangePicker={true}
-            onMdsCalendarChange={(ev) => {
-              this.internalStartDate = ev.detail.startDate;
-              this.updateInputValue('start', this.internalStartDate);
-              if (ev.detail.endDate) {
-                this.internalEndDate = ev.detail.endDate;
-                this.updateInputValue('end', this.internalEndDate);
-              }
-              this.syncFormValue();
-
-              if (this.internalStartDate && this.internalEndDate) {
-                this.dateRangeSelected.emit({
-                  startDate: this.internalStartDate,
-                  endDate: this.internalEndDate,
-                });
-                if (this.delay === 0) return;
-                const { dropdownRef } = this;
-                if (dropdownRef) {
-                  setTimeout(() => {
-                    dropdownRef.visible = false;
-                  }, this.delay);
-                }
-              }
-            }}
-            onMdsCalendarPreselect={() => {
-              this.checkPreselections();
-            }}
-            startDate={this.internalStartDate}
-            endDate={this.internalEndDate}
-            {...(this.min ? { min: this.min } : {})}
-            {...(this.max ? { max: this.max } : {})}
-          >
-            <div
-              slot="preselection"
-              class={clsx(
-                'date-preselection',
-                this.hasPreselection && 'date-preselection--has-preselection',
-              )}
-            >
-              <slot name="calendar-preselection"></slot>
-            </div>
-          </mds-calendar>
+          {this.dualCalendar ? this.renderDualCalendars() : this.renderSingleCalendar()}
         </mds-dropdown>
       </Host>
     );
@@ -454,7 +684,7 @@ export class MdsInputDateRange {
     const startDate = this.internalStartDate?.trim() ?? '';
     const endDate = this.internalEndDate?.trim() ?? '';
 
-    if (!startDate && !endDate) {
+    if (startDate === '' && endDate === '') {
       this.internals.setFormValue(null);
       return;
     }

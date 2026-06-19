@@ -24,7 +24,7 @@ import { DirectionType } from './meta/type';
  * @part slider - Selects the slider element which is visible when attribute `animation` is set to `slide`.
  * @part tabs - Selects the container of `mds-tab-item` list elements.
  * @slot content - Add `HTML elements` or `components`, one per mds-tab-item added.
- * @slot default - Add `mds-tab-item` element/s.
+ * @slot - Add `mds-tab-item` element/s.
  */
 
 @Component({
@@ -130,7 +130,7 @@ export class MdsTab {
     });
 
     this.tabItems.forEach((item, key) => {
-      if (!item.id) {
+      if (item.id === '') {
         setAttributeIfEmpty(item, 'id', hashRandomValue('mds-tab-item'));
       }
       if (item.selected) {
@@ -163,7 +163,7 @@ export class MdsTab {
   };
 
   private updateOverflowState = (): void => {
-    if (!this.tabs || !this.tabsContainer) return;
+    if (this.tabs == null || this.tabsContainer == null) return;
 
     const containerWidth = this.tabsContainer.offsetWidth;
     const tabsWidth = this.tabs.scrollWidth;

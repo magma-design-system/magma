@@ -7,6 +7,9 @@ import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.es.json';
 import localeIt from './meta/locale.it.json';
 
+/**
+ * @slot - Add `text string`, `HTML elements` or `components` to this slot.
+ */
 @Component({
   tag: 'mds-input-tip-item',
   styleUrl: 'mds-input-tip-item.css',
@@ -22,6 +25,9 @@ export class MdsInputTipItem {
     it: localeIt,
   });
   @State() language: string;
+  /**
+   * Updates the component's texts to the locale currently set on the host element.
+   */
   @Method()
   async updateLang(): Promise<void> {
     this.language = this.t.lang(this.element);

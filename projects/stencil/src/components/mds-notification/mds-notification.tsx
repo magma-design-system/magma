@@ -64,7 +64,7 @@ export class MdsNotification {
   };
 
   private clean = (value: number): string => {
-    if (this.max) {
+    if (this.max !== undefined && this.max !== 0 && !Number.isNaN(this.max)) {
       if (value > this.max) {
         return `+${Number(this.max).toLocaleString()}`;
       }
@@ -74,12 +74,12 @@ export class MdsNotification {
   };
 
   componentDidRender(): void {
-    if (!this.target) {
+    if (this.target === '') {
       this.strategy = 'disabled';
       return;
     }
     const c = document.querySelector(this.target) as HTMLElement;
-    if (!c) throw new Error('No valid target found');
+    if (c == null) throw new Error('No valid target found');
     this.caller = c;
   }
 
@@ -88,7 +88,7 @@ export class MdsNotification {
       return;
     }
 
-    if (this.target && !this.cleanupAutoUpdate) {
+    if (this.target !== '' && this.cleanupAutoUpdate == null) {
       setTimeout(() => {
         this.cleanupAutoUpdate = autoUpdate(this.caller, this.host, this.updatePosition);
       }, 100);
@@ -110,7 +110,7 @@ export class MdsNotification {
     return (
       <Host aria-labelledby={this.target} aria-label={this.value ?? '0'}>
         <mds-text typography="caption" class="dot" aria-hidden="true">
-          {this.value ? this.clean(this.value) : ''}
+          {this.value !== 0 && !Number.isNaN(this.value) ? this.clean(this.value) : ''}
         </mds-text>
       </Host>
     );

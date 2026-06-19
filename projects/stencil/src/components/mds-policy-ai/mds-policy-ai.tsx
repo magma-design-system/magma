@@ -31,6 +31,9 @@ export class MdsPolicyAi {
     es: localeEs,
     it: localeIt,
   });
+  /**
+   * Updates the component's texts to the locale currently set on the host element.
+   */
   @Method()
   async updateLang(): Promise<void> {
     this.language = this.t.lang(this.host);

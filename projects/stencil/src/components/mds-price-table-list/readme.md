@@ -293,12 +293,12 @@ mds-price-table-list::part(content) {
 
 ## Slots
 
-| Slot        | Description                                                                                    |
-| ----------- | ---------------------------------------------------------------------------------------------- |
-| `"action"`  | Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element.        |
-| `"default"` | Add `mds-price-table-list-item` component, `HTML elements` or other `components` to this slot. |
-| `"header"`  | Add `text string`, `HTML elements` or `components` to this slot.                               |
-| `"price"`   | Add `text string`, `HTML elements` or `components` to this slot.                               |
+| Slot       | Description                                                                                    |
+| ---------- | ---------------------------------------------------------------------------------------------- |
+| `"action"` | Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element.        |
+| `"header"` | Add `text string`, `HTML elements` or `components` to this slot.                               |
+| `"item"`   | Add `mds-price-table-list-item` component, `HTML elements` or other `components` to this slot. |
+| `"price"`  | Add `text string`, `HTML elements` or `components` to this slot.                               |
 
 
 ## Shadow Parts

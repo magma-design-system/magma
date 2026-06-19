@@ -276,7 +276,7 @@ mds-breadcrumb {
 
 ### `updateLang() => Promise<void>`
 
-
+Updates the component's texts to the locale currently set on the host element.
 
 #### Returns
 
@@ -287,9 +287,9 @@ Type: `Promise<void>`
 
 ## Slots
 
-| Slot        | Description                          |
-| ----------- | ------------------------------------ |
-| `"default"` | Add `mds-breadcrumb-item` element/s. |
+| Slot | Description                          |
+| ---- | ------------------------------------ |
+|      | Add `mds-breadcrumb-item` element/s. |
 
 
 ## CSS Custom Properties

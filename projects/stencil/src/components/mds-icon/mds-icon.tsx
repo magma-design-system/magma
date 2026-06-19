@@ -48,7 +48,7 @@ export class MdsIcon {
 
   @Watch('name')
   async updateIcon(): Promise<void> {
-    if (!this.name) return Promise.resolve();
+    if (this.name === '') return Promise.resolve();
 
     if (isIconFormatIsBase64(this.name)) {
       this.svgHTML = this.convertBase64ToSvg();

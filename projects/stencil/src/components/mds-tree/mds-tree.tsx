@@ -4,7 +4,7 @@ import { TypographyTruncateType } from '@type/text';
 import { ButtonIconPositionType } from '@type/button';
 
 /**
- * @slot default - Add `mds-tree-item` element/s.
+ * @slot - Add `mds-tree-item` element/s.
  */
 
 @Component({
@@ -108,7 +108,7 @@ export class MdsTree {
     this.updateChildrenToggle(this.toggle);
     const firstLevelElements = this.host.querySelectorAll(':scope > mds-tree-item');
 
-    if (firstLevelElements) {
+    if (firstLevelElements != null) {
       firstLevelElements.forEach((element: HTMLMdsTreeItemElement) => {
         element.depth = 0;
       });

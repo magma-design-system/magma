@@ -7,7 +7,7 @@ import localeIt from './meta/locale.it.json';
 import { isSafari } from '@common/browser';
 
 /**
- * @slot default - Put `mds-table-cell` element/s.
+ * @slot - Put `mds-table-cell` element/s.
  * @slot action - Put `mds-button` element/s or other kind of actions as aside menu for the single row.
  */
 
@@ -31,20 +31,38 @@ export class MdsTableRow {
     it: localeIt,
   });
   @State() language: string;
+  /**
+   * Updates the component's texts to the locale currently set on the host element.
+   */
   @Method()
   async updateLang(): Promise<void> {
     this.language = this.t.lang(this.host);
     this.t.update();
   }
 
+  /**
+   * Specifies whether the row reacts to user interaction (hover/focus).
+   */
   @Prop({ reflect: true }) readonly interactive?: boolean;
 
+  /**
+   * Specifies whether the row's actions are shown as an overlay.
+   */
   @Prop({ reflect: true }) readonly overlayActions: boolean;
 
+  /**
+   * Specifies whether the row can be selected via a checkbox.
+   */
   @Prop({ reflect: true }) readonly selectable?: boolean = undefined;
 
+  /**
+   * Specifies whether the row is currently selected.
+   */
   @Prop({ mutable: true, reflect: true }) selected?: boolean;
 
+  /**
+   * The value associated with the row, emitted when the row is selected.
+   */
   @Prop({ reflect: true }) readonly value?: string | number;
 
   componentWillLoad(): void {

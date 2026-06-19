@@ -239,8 +239,8 @@ The browser ignores the `preload` hint entirely when `autoplay` is set (which is
 
 | Slot        | Description                                                                                      |
 | ----------- | ------------------------------------------------------------------------------------------------ |
+|             | Write browser support missing message here.                                                      |
 | `"content"` | Add video content overlay here, add `text string`, `HTML elements` or `components` to this slot. |
-| `"default"` | Write browser support missing message here.                                                      |
 
 
 ## CSS Custom Properties

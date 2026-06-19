@@ -220,7 +220,7 @@ The component emits `mdsPrefLanguageItemSelect` (or the parent emits `mdsPrefLan
 
 ### `updateLang() => Promise<void>`
 
-
+Updates the component's texts to the locale currently set on the host element.
 
 #### Returns
 

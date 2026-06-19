@@ -20,7 +20,7 @@ The `<mds-input-date-range>` web component is the Magma Design System control fo
 - **Commit on blur**: Leaving the component validates the range, syncs the form value, and - when both dates are valid - emits selection.
 - **Calendar selection**: Picking a complete range in the pop-up calendar emits selection and, unless `delay` is `0`, auto-closes the dropdown after the delay.
 - **Preselection sync**: Slotted `mds-input-date-range-preselection` children act as quick-picks; activating one applies its range, and any external/calendar change re-evaluates which preset (if any) is marked selected.
-- **Emitted events**: `mdsInputDateRangeSelect` fires when a full, valid range is committed; `mdsInputDateRangeValueChange` fires on blur only when either bound actually changed since the last emit.
+- **Emitted events**: `mdsInputDateRangeValueChange` fires when a full, valid range is committed (calendar pick or focus-out with two valid dates) and either bound actually changed since the last emit.
 - **Focus management**: Clicking the host or either field label focuses the corresponding date input; a built-in calendar icon button toggles the calendar dropdown.
 - **Localization**: The "from"/"to" field labels and the calendar honor the resolved language (el/en/es/it).
 
@@ -70,7 +70,7 @@ Use `min` and `max` to block out-of-window dates in both the text inputs and the
 
 #### Listening to Range Events
 
-`mdsInputDateRangeSelect` fires when a full, valid range is committed (calendar pick or focus-out with two valid dates). `mdsInputDateRangeValueChange` fires on blur only when either bound actually changed since the last emit. Both deliver `{ startDate, endDate }` in `event.detail`.
+`mdsInputDateRangeValueChange` fires when a full, valid range is committed (calendar pick or focus-out with two valid dates) and either bound actually changed since the last emit. It delivers `{ startDate, endDate }` in `event.detail`.
 
 ```html
 <mds-input-date-range id="periodo">
@@ -79,11 +79,8 @@ Use `min` and `max` to block out-of-window dates in both the text inputs and the
 </mds-input-date-range>
 
 <script>
-  document.querySelector('#periodo').addEventListener('mdsInputDateRangeSelect', (e) => {
-    console.log('Intervallo selezionato:', e.detail.startDate, '-', e.detail.endDate);
-  });
   document.querySelector('#periodo').addEventListener('mdsInputDateRangeValueChange', (e) => {
-    console.log('Valore cambiato:', e.detail.startDate, '-', e.detail.endDate);
+    console.log('Intervallo selezionato:', e.detail.startDate, '-', e.detail.endDate);
   });
 </script>
 ```
@@ -209,7 +206,7 @@ The `start` and `end` slots expect [`mds-input-date`](../../mds-input-date) chil
 
 #### Do Not Listen to Native `change` or `input` Events
 
-The component emits `mdsInputDateRangeSelect` and `mdsInputDateRangeValueChange` as documented custom events. Native `change` / `input` events originate from inside the shadow DOM and do not bubble out reliably.
+The component emits `mdsInputDateRangeValueChange` as a documented custom event. Native `change` / `input` events originate from inside the shadow DOM and do not bubble out reliably.
 
 ```html
 <!-- 🚫 INCORRECT -->
@@ -227,7 +224,7 @@ The component emits `mdsInputDateRangeSelect` and `mdsInputDateRangeValueChange`
   <mds-input-date slot="end"></mds-input-date>
 </mds-input-date-range>
 <script>
-  document.querySelector('#range').addEventListener('mdsInputDateRangeSelect', handler);
+  document.querySelector('#range').addEventListener('mdsInputDateRangeValueChange', handler);
 </script>
 ```
 
@@ -299,35 +296,35 @@ Without `name` the component is form-associated but submits no named field, so t
 
 ## Properties
 
-| Property    | Attribute    | Description                                                                                                             | Type                  | Default     |
-| ----------- | ------------ | ----------------------------------------------------------------------------------------------------------------------- | --------------------- | ----------- |
-| `delay`     | `delay`      | Specifies the delay in milliseconds before closing the calendar dropdown, if the value is 0 the dropdown will not close | `number`              | `500`       |
-| `endDate`   | `end-date`   | Specifies the end date of the range                                                                                     | `string`              | `''`        |
-| `max`       | `max`        | Specifies the max date of the range, user cannot set dates after this date                                              | `null \| string`      | `null`      |
-| `min`       | `min`        | Specifies the min date of the range, user cannot set dates before this date                                             | `null \| string`      | `null`      |
-| `name`      | `name`       | Is needed to reference the form data after the form is submitted                                                        | `string \| undefined` | `undefined` |
-| `startDate` | `start-date` | Specifies the start date of the range                                                                                   | `string`              | `''`        |
+| Property       | Attribute       | Description                                                                                                             | Type                  | Default     |
+| -------------- | --------------- | ----------------------------------------------------------------------------------------------------------------------- | --------------------- | ----------- |
+| `delay`        | `delay`         | Specifies the delay in milliseconds before closing the calendar dropdown, if the value is 0 the dropdown will not close | `number`              | `500`       |
+| `dualCalendar` | `dual-calendar` | Enables the linked dual-calendar range picker behavior.                                                                 | `boolean`             | `false`     |
+| `endDate`      | `end-date`      | Specifies the end date of the range                                                                                     | `string`              | `''`        |
+| `max`          | `max`           | Specifies the max date of the range, user cannot set dates after this date                                              | `null \| string`      | `null`      |
+| `min`          | `min`           | Specifies the min date of the range, user cannot set dates before this date                                             | `null \| string`      | `null`      |
+| `name`         | `name`          | Is needed to reference the form data after the form is submitted                                                        | `string \| undefined` | `undefined` |
+| `startDate`    | `start-date`    | Specifies the start date of the range                                                                                   | `string`              | `''`        |
 
 
 ## Events
 
-| Event                          | Description | Type                                                   |
-| ------------------------------ | ----------- | ------------------------------------------------------ |
-| `mdsInputDateRangeSelect`      |             | `CustomEvent<{ startDate: string; endDate: string; }>` |
-| `mdsInputDateRangeValueChange` |             | `CustomEvent<{ startDate: string; endDate: string; }>` |
+| Event                          | Description                                          | Type                                                   |
+| ------------------------------ | ---------------------------------------------------- | ------------------------------------------------------ |
+| `mdsInputDateRangeValueChange` | Emitted when the selected start or end date changes. | `CustomEvent<{ startDate: string; endDate: string; }>` |
 
 
 ## Methods
 
 ### `preselect(event: EventDate) => Promise<void>`
 
-
+Applies the given preselection range to the input.
 
 #### Parameters
 
-| Name    | Type        | Description |
-| ------- | ----------- | ----------- |
-| `event` | `EventDate` |             |
+| Name    | Type        | Description                     |
+| ------- | ----------- | ------------------------------- |
+| `event` | `EventDate` | the preselection range to apply |
 
 #### Returns
 
@@ -337,7 +334,7 @@ Type: `Promise<void>`
 
 ### `updateLang() => Promise<void>`
 
-
+Updates the component's texts to the locale currently set on the host element.
 
 #### Returns
 
@@ -346,11 +343,21 @@ Type: `Promise<void>`
 
 
 
+## Slots
+
+| Slot                      | Description                                       |
+| ------------------------- | ------------------------------------------------- |
+| `"calendar-preselection"` | Add `HTML elements` or `components` to this slot. |
+| `"end"`                   | Add `HTML elements` or `components` to this slot. |
+| `"start"`                 | Add `HTML elements` or `components` to this slot. |
+
+
 ## CSS Custom Properties
 
 | Name                                                    | Description                                                             |
 | ------------------------------------------------------- | ----------------------------------------------------------------------- |
 | `--mds-input-date-range-background`                     | Sets the background-color of the component                              |
+| `--mds-input-date-range-calendar-width`                 | Sets the width of each calendar shown in the dropdown                   |
 | `--mds-input-date-range-fields-firefox-justify-content` | Sets the justify-content of the component in Firefox                    |
 | `--mds-input-date-range-fields-gap`                     | Sets the gap between the fields of the component                        |
 | `--mds-input-date-range-icon-color`                     | Sets the icon color of the component                                    |
@@ -363,23 +370,23 @@ Type: `Promise<void>`
 
 ### Depends on
 
+- [mds-calendar](../mds-calendar)
 - [mds-text](../mds-text)
 - [mds-button](../mds-button)
 - [mds-dropdown](../mds-dropdown)
-- [mds-calendar](../mds-calendar)
 
 ### Graph
 ```mermaid
 graph TD;
+  mds-input-date-range --> mds-calendar
   mds-input-date-range --> mds-text
   mds-input-date-range --> mds-button
   mds-input-date-range --> mds-dropdown
-  mds-input-date-range --> mds-calendar
+  mds-calendar --> mds-button
+  mds-calendar --> mds-calendar-cell
   mds-button --> mds-spinner
   mds-button --> mds-icon
   mds-button --> mds-text
-  mds-calendar --> mds-button
-  mds-calendar --> mds-calendar-cell
   mds-calendar-cell --> mds-button
   style mds-input-date-range fill:#f9f,stroke:#333,stroke-width:4px
 ```

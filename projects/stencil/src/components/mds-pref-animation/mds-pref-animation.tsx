@@ -40,6 +40,9 @@ export class MdsPrefAnimation {
     it: localeIt,
   });
   @State() language: string;
+  /**
+   * Updates the component's texts to the locale currently set on the host element.
+   */
   @Method()
   async updateLang(): Promise<void> {
     this.language = this.t.lang(this.element);
@@ -88,7 +91,7 @@ export class MdsPrefAnimation {
     this.prefChangeEvent.emit({ preference: 'animation' });
     this.mode = mode;
     localStorage.setItem(this.localStorageAlias, this.mode);
-    if (document) {
+    if (typeof document !== 'undefined') {
       const element = document.querySelector('html');
 
       for (const key in this.animation) {

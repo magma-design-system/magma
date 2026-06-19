@@ -73,7 +73,7 @@ export class MdsInputOtp {
 
     const nextInput = currentInput.nextElementSibling as HTMLMdsInputElement;
 
-    if (nextInput) {
+    if (nextInput != null) {
       nextInput.setFocus();
     } else {
       this.submit(currentInput);
@@ -96,7 +96,7 @@ export class MdsInputOtp {
 
       currentInput = currentInput.nextElementSibling as HTMLMdsInputElement;
 
-      if (currentInput) {
+      if (currentInput != null) {
         currentInput.setFocus();
       } else {
         this.submit(currentInput);

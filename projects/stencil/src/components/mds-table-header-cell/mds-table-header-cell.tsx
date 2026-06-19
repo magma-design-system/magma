@@ -37,6 +37,9 @@ export class MdsTableHeaderCell {
    */
   @Prop({ reflect: true }) readonly label?: string;
 
+  /**
+   * Specifies the current sort direction of the column.
+   */
   @Prop({ reflect: true, mutable: true }) direction: SortDirectionType = 'none';
 
   componentDidLoad(): void {
@@ -44,7 +47,13 @@ export class MdsTableHeaderCell {
   }
 
   private prepareSorter = (): void => {
-    if (!this.sortable || (this.sortable && this.tableHeaderCellSiblings?.length)) return;
+    if (
+      !this.sortable ||
+      (this.sortable &&
+        this.tableHeaderCellSiblings?.length !== undefined &&
+        this.tableHeaderCellSiblings?.length !== 0)
+    )
+      return;
     this.tableBody = this.element
       .closest('mds-table')
       ?.querySelector('mds-table-body') as HTMLMdsTableBodyElement;
@@ -58,10 +67,17 @@ export class MdsTableHeaderCell {
   };
 
   private getValue = (element: HTMLMdsTableCellElement): string | number => {
-    if (element.value) {
+    if (
+      element.value !== undefined &&
+      element.value !== '' &&
+      element.value !== 0 &&
+      !Number.isNaN(element.value)
+    ) {
       return element.value;
     }
-    return element.textContent ? element.textContent.trim() : '';
+    return element.textContent !== null && element.textContent !== ''
+      ? element.textContent.trim()
+      : '';
   };
 
   private resetSortAttribute = (): void => {

@@ -1,7 +1,7 @@
 import { Component, Host, h, Prop, Element } from '@stencil/core';
 import { setAttributeIfEmpty } from '@common/aria';
 /**
- * @slot default - Add `text string`, `HTML elements` or `components` to this slot.
+ * @slot - Add `text string`, `HTML elements` or `components` to this slot.
  */
 
 @Component({
