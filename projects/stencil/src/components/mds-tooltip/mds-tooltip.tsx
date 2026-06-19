@@ -5,7 +5,7 @@ import arrowSvg from './assets/arrow.svg';
 import { FloatingController, FloatingElement } from '@common/floating-controller';
 
 /**
- * @slot default - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
+ * @slot - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
  */
 
 @Component({

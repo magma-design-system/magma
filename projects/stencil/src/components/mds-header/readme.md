@@ -368,13 +368,13 @@ mds-header::part(menu) {
 
 ### `setOpened(isOpened?: boolean) => Promise<void>`
 
-
+Opens or closes the header.
 
 #### Parameters
 
-| Name       | Type      | Description |
-| ---------- | --------- | ----------- |
-| `isOpened` | `boolean` |             |
+| Name       | Type      | Description                         |
+| ---------- | --------- | ----------------------------------- |
+| `isOpened` | `boolean` | whether the header should be opened |
 
 #### Returns
 
@@ -385,10 +385,10 @@ Type: `Promise<void>`
 
 ## Slots
 
-| Slot        | Description                                                                                                                        |
-| ----------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| `"default"` | Add `mds-header-bar` element/s.                                                                                                    |
-| `"menu"`    | Put actions and other contents that will be shown as mobile menu. Add `text string`, `HTML elements` or `components` to this slot. |
+| Slot     | Description                                                                                                                        |
+| -------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+|          | Add `mds-header-bar` element/s.                                                                                                    |
+| `"menu"` | Put actions and other contents that will be shown as mobile menu. Add `text string`, `HTML elements` or `components` to this slot. |
 
 
 ## Shadow Parts

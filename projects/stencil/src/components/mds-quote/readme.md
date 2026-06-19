@@ -261,10 +261,10 @@ Adding a `<figure>` / `<figcaption>` or `<cite>` wrapper around or inside the co
 
 ## Slots
 
-| Slot        | Description                                                      |
-| ----------- | ---------------------------------------------------------------- |
-| `"author"`  | Add `text string`, `HTML elements` or `components` to this slot. |
-| `"default"` | Add `text string`, `HTML elements` or `components` to this slot. |
+| Slot       | Description                                                      |
+| ---------- | ---------------------------------------------------------------- |
+|            | Add `text string`, `HTML elements` or `components` to this slot. |
+| `"author"` | Add `text string`, `HTML elements` or `components` to this slot. |
 
 
 ## Dependencies

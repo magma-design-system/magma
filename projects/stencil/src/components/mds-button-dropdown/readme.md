@@ -294,6 +294,13 @@ Inside a `<form>`, both internal buttons share the same `type`. If you set `type
 | `variant`   | `variant`    | Specifies the color variant for the button                                 | `"ai" \| "dark" \| "error" \| "info" \| "light" \| "primary" \| "secondary" \| "success" \| "warning" \| undefined` | `'primary'` |
 
 
+## Slots
+
+| Slot | Description                                                      |
+| ---- | ---------------------------------------------------------------- |
+|      | Add `text string`, `HTML elements` or `components` to this slot. |
+
+
 ## Shadow Parts
 
 | Part         | Description |

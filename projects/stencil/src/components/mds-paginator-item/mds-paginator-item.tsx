@@ -2,7 +2,7 @@ import { Component, Host, h, Prop, Element } from '@stencil/core';
 import { KeyboardManager } from '@common/keyboard-manager';
 
 /**
- * @slot default - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
+ * @slot - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
  */
 
 @Component({
@@ -43,9 +43,9 @@ export class MdsPaginatorItem {
     this.km.detachClickBehavior();
   }
 
-  disconnectedCallback = (): void => {
+  disconnectedCallback(): void {
     this.km.detachClickBehavior();
-  };
+  }
 
   render() {
     return (

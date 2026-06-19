@@ -9,7 +9,7 @@ import { cssSizeToNumber } from '@common/unit';
 // TODO [fix] scrollbar not showing anymore
 
 /**
- * @slot default - Add `text string`, `HTML elements` or `components` to this slot.
+ * @slot - Add `text string`, `HTML elements` or `components` to this slot.
  */
 
 @Component({

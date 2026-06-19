@@ -414,8 +414,8 @@ mds-tab::part(tabs) {
 
 | Slot        | Description                                                      |
 | ----------- | ---------------------------------------------------------------- |
+|             | Add `mds-tab-item` element/s.                                    |
 | `"content"` | Add `HTML elements` or `components`, one per mds-tab-item added. |
-| `"default"` | Add `mds-tab-item` element/s.                                    |
 
 
 ## Shadow Parts

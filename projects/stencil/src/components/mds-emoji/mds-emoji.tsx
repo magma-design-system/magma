@@ -13,6 +13,9 @@ import simiSvg from './asset/simi.svg';
 })
 export class MdsEmoji {
   @Element() host: HTMLMdsEmojiElement;
+  /**
+   * Specifies which emoji to display.
+   */
   @Prop({ reflect: true }) readonly name: EmojiNames = 'mia';
 
   private emojiOriginalSize: number = 0;
@@ -167,6 +170,10 @@ export class MdsEmoji {
     return Promise.resolve();
   }
 
+  /**
+   * Stops the "thinking" animation after the given duration.
+   * @param duration the animation duration, in seconds
+   */
   @Method()
   async stopThinking(duration: number = 0.5): Promise<void> {
     if (!this.isBusy) return;

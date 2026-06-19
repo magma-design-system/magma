@@ -7,7 +7,7 @@ import {
 import mggListDot from '@icon/mgg/list-dot.svg';
 
 /**
- * @slot default - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
+ * @slot - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
  */
 
 @Component({

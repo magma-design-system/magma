@@ -339,9 +339,9 @@ The item already is a styled disclosure widget. Nesting a native `<details>` ins
 
 ## Slots
 
-| Slot        | Description                                                                    |
-| ----------- | ------------------------------------------------------------------------------ |
-| `"default"` | Add contents like `text string`, `HTML elements` or `components` to this slot. |
+| Slot | Description                                                                    |
+| ---- | ------------------------------------------------------------------------------ |
+|      | Add contents like `text string`, `HTML elements` or `components` to this slot. |
 
 
 ## Shadow Parts

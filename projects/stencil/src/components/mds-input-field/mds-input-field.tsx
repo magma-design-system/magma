@@ -2,6 +2,9 @@ import { Component, Element, Host, Prop, h } from '@stencil/core';
 import { MdsValidationErrors } from '@component/mds-input/meta/validators';
 import { ThemeInputVariantType } from '@type/variant';
 
+/**
+ * @slot - Add the native input `HTML element` to this slot.
+ */
 @Component({
   tag: 'mds-input-field',
   styleUrl: 'mds-input-field.css',

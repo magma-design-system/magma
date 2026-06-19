@@ -4,7 +4,7 @@ import { MdsAccordionTimerItemEventDetail } from './meta/event-detail';
 import { TypographyTitleType } from '@type/typography';
 
 /**
- * @slot default - Add content like `text string`, `HTML elements` or `components` to this slot
+ * @slot - Add content like `text string`, `HTML elements` or `components` to this slot
  * @part content - the content wrapper of the `default` slot
  * @part icon - The arrow icon of the component
  * @part label - The text label of the component

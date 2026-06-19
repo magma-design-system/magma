@@ -258,7 +258,7 @@ The host is already focusable, keyboard-accessible, and emits its own interactio
 
 ### `updateLang() => Promise<void>`
 
-
+Updates the component's texts to the locale currently set on the host element.
 
 #### Returns
 

@@ -369,7 +369,7 @@ Both are required props. An item without `label` has no accessible or visual des
 
 ### `updateLang() => Promise<void>`
 
-
+Updates the component's texts to the locale currently set on the host element.
 
 #### Returns
 

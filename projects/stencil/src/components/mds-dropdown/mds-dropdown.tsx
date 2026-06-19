@@ -8,7 +8,7 @@ import { DropdownInteractionType } from './meta/types';
 import { Backdrop, FloatingController, FloatingElement } from '@common/floating-controller';
 
 /**
- * @slot default - Add `text string`, `HTML elements` or `components` to this slot, elements will be shown when the component is triggered.
+ * @slot - Add `text string`, `HTML elements` or `components` to this slot, elements will be shown when the component is triggered.
  */
 
 @Component({
@@ -204,7 +204,7 @@ export class MdsDropdown implements FloatingElement {
     this.hiddenEvent.emit({ caller: this.caller, visible: false });
   }
 
-  onClickTarget(ev: Event): void {
+  private onClickTarget(ev: Event): void {
     // stop propagation event for when target is a element cointainer
     ev.stopPropagation();
     // trigger a body click to execute handleCloseDropdown on other dropdowns
@@ -212,14 +212,14 @@ export class MdsDropdown implements FloatingElement {
     this.visible = !this.visible;
   }
 
-  onMouseOverTarget(): void {
+  private onMouseOverTarget(): void {
     this.mouseoverTimer = setTimeout(() => {
       clearTimeout(this.mouseoverTimer);
       this.visible = true;
     }, cssDurationToMilliseconds(this.cssMouseOverDelayDuration));
   }
 
-  onMouseOutTarget(): void {
+  private onMouseOutTarget(): void {
     clearTimeout(this.mouseoverTimer);
     this.mouseoverTimer = setTimeout(() => {
       clearTimeout(this.mouseoverTimer);

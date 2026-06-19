@@ -14,7 +14,7 @@ import {
 import { MdsAccordionTimerEventDetail } from './meta/event-detail';
 
 /**
- * @slot default - Add `mds-accordion-timer-item` element/s.
+ * @slot - Add `mds-accordion-timer-item` element/s.
  */
 
 @Component({

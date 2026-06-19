@@ -24,7 +24,7 @@ import { DirectionType } from './meta/type';
  * @part slider - Selects the slider element which is visible when attribute `animation` is set to `slide`.
  * @part tabs - Selects the container of `mds-tab-item` list elements.
  * @slot content - Add `HTML elements` or `components`, one per mds-tab-item added.
- * @slot default - Add `mds-tab-item` element/s.
+ * @slot - Add `mds-tab-item` element/s.
  */
 
 @Component({

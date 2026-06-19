@@ -322,6 +322,13 @@ The arc geometry is driven by `angle-start`, `angle-end`, `radius`, and `directi
 | `variant`     | `variant`     | Specifies the color variant for the button           | `"ai" \| "apple" \| "dark" \| "error" \| "google" \| "info" \| "light" \| "primary" \| "secondary" \| "success" \| "warning" \| undefined` | `'dark'`      |
 
 
+## Slots
+
+| Slot     | Description                                                       |
+| -------- | ----------------------------------------------------------------- |
+| `"item"` | Add `mds-radial-menu-item` elements or `components` to this slot. |
+
+
 ## Shadow Parts
 
 | Part            | Description |

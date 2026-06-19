@@ -17,7 +17,7 @@ import { AppearanceType } from './meta/types';
 
 /**
  * @part menu - The container element of the modal
- * @slot default - Add `mds-header-bar` element/s.
+ * @slot - Add `mds-header-bar` element/s.
  * @slot menu - Put actions and other contents that will be shown as mobile menu. Add `text string`, `HTML elements` or `components` to this slot.
  */
 
@@ -94,6 +94,10 @@ export class MdsHeader {
   @Event({ eventName: 'mdsHeaderVisibilityChange' })
   visibleEvent: EventEmitter<MdsHeaderVisibilityEventDetail>;
 
+  /**
+   * Opens or closes the header.
+   * @param isOpened whether the header should be opened
+   */
   @Method()
   async setOpened(isOpened: boolean = true): Promise<void> {
     this.isOpened = isOpened;

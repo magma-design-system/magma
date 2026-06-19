@@ -1,6 +1,9 @@
 import { Component, Host, h, Prop } from '@stencil/core';
 import { InputTipPositionType } from './meta/types';
 
+/**
+ * @slot - Add `mds-input-tip-item` elements or `components` to this slot.
+ */
 @Component({
   tag: 'mds-input-tip',
   styleUrl: 'mds-input-tip.css',

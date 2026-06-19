@@ -338,23 +338,23 @@ Mixing raw HTML table elements with the Magma compound disrupts the internal Res
 
 ## Properties
 
-| Property     | Attribute    | Description | Type                   | Default     |
-| ------------ | ------------ | ----------- | ---------------------- | ----------- |
-| `selectable` | `selectable` |             | `boolean \| undefined` | `undefined` |
+| Property     | Attribute    | Description                                    | Type                   | Default     |
+| ------------ | ------------ | ---------------------------------------------- | ---------------------- | ----------- |
+| `selectable` | `selectable` | Enables the select-all checkbox in the header. | `boolean \| undefined` | `undefined` |
 
 
 ## Methods
 
 ### `setSelection(selectedItems: number, totalItems: number) => Promise<void>`
 
-
+Updates the header's select-all state from the number of selected rows.
 
 #### Parameters
 
-| Name            | Type     | Description |
-| --------------- | -------- | ----------- |
-| `selectedItems` | `number` |             |
-| `totalItems`    | `number` |             |
+| Name            | Type     | Description                           |
+| --------------- | -------- | ------------------------------------- |
+| `selectedItems` | `number` | the number of currently selected rows |
+| `totalItems`    | `number` | the total number of selectable rows   |
 
 #### Returns
 
@@ -364,7 +364,7 @@ Type: `Promise<void>`
 
 ### `updateLang() => Promise<void>`
 
-
+Updates the component's texts to the locale currently set on the host element.
 
 #### Returns
 
@@ -375,9 +375,9 @@ Type: `Promise<void>`
 
 ## Slots
 
-| Slot        | Description                    |
-| ----------- | ------------------------------ |
-| `"default"` | Add `mds-table-row` element/s. |
+| Slot | Description                    |
+| ---- | ------------------------------ |
+|      | Add `mds-table-row` element/s. |
 
 
 ## Shadow Parts

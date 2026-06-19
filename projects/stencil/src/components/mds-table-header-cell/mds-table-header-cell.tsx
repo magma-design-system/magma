@@ -37,6 +37,9 @@ export class MdsTableHeaderCell {
    */
   @Prop({ reflect: true }) readonly label?: string;
 
+  /**
+   * Specifies the current sort direction of the column.
+   */
   @Prop({ reflect: true, mutable: true }) direction: SortDirectionType = 'none';
 
   componentDidLoad(): void {

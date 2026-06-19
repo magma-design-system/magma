@@ -3,7 +3,7 @@ import { TypographyTitleType } from '@type/typography';
 import { TypographyHeadingTagType } from '@type/text';
 
 /**
- * @slot default - Add `text string`, `HTML elements` or `components` to this slot.
+ * @slot - Add `text string`, `HTML elements` or `components` to this slot.
  * @slot author - Add `text string`, `HTML elements` or `components` to this slot.
  */
 

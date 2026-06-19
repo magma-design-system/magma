@@ -8,6 +8,9 @@ import { ToneVariantType } from '@type/tone';
 
 import { Backdrop } from '@common/floating-controller';
 
+/**
+ * @slot item - Add `mds-radial-menu-item` elements or `components` to this slot.
+ */
 @Component({
   tag: 'mds-radial-menu',
   styleUrl: 'mds-radial-menu.css',

@@ -225,9 +225,9 @@ Setting `style="width: ..."` on the host bypasses the component's layout contrac
 
 ## Slots
 
-| Slot        | Description                                                                |
-| ----------- | -------------------------------------------------------------------------- |
-| `"default"` | Add `text string` to this slot, **avoid** `HTML elements` or `components`. |
+| Slot | Description                                                                |
+| ---- | -------------------------------------------------------------------------- |
+|      | Add `text string` to this slot, **avoid** `HTML elements` or `components`. |
 
 
 ## Shadow Parts

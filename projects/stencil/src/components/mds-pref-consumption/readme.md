@@ -188,7 +188,7 @@ The `size` prop controls the dimensions of the nested tab items. Overriding them
 
 ### `updateLang() => Promise<void>`
 
-
+Updates the component's texts to the locale currently set on the host element.
 
 #### Returns
 

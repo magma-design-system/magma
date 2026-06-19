@@ -3,7 +3,7 @@ import miOutlineHelp from '@icon/mi/outline/help-outline.svg';
 import { FloatingUIPlacement } from '@type/floating-ui';
 
 /**
- * @slot default - Add `text string` to this slot, **avoid** `HTML elements` or `components`.
+ * @slot - Add `text string` to this slot, **avoid** `HTML elements` or `components`.
  */
 
 @Component({

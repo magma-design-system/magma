@@ -306,7 +306,7 @@ mds-button::part(icon) {
 
 | Slot             | Description                                                                                   |
 | ---------------- | --------------------------------------------------------------------------------------------- |
-| `"default"`      | Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.        |
+|                  | Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.        |
 | `"notification"` | Add `HTML elements` or `components`, it is **recommended** to use `mds-notification` element. |
 
 

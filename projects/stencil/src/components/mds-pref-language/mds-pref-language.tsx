@@ -21,7 +21,7 @@ import miBaselineKeyboardArrowUp from '@icon/mi/baseline/keyboard-arrow-up.svg';
 import { TabSizeType } from '@type/button';
 
 /**
- * @slot default - Add `mds-pref-language-item` element/s.
+ * @slot - Add `mds-pref-language-item` element/s.
  */
 
 @Component({
@@ -46,6 +46,9 @@ export class MdsPrefLanguage {
     it: localeIt,
   });
   @State() language: string;
+  /**
+   * Updates the component's texts to the locale currently set on the host element.
+   */
   @Method()
   async updateLang(): Promise<void> {
     this.language = this.t.lang(this.element);

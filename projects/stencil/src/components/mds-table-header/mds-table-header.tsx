@@ -7,7 +7,7 @@ import localeIt from './meta/locale.it.json';
 import { MdsInputSwitchEventDetail } from '@component/mds-input-switch/meta/event-detail';
 
 /**
- * @slot default - Add `mds-table-row` element/s.
+ * @slot - Add `mds-table-row` element/s.
  */
 
 @Component({
@@ -30,14 +30,25 @@ export class MdsTableHeader {
     it: localeIt,
   });
   @State() language: string;
+  /**
+   * Updates the component's texts to the locale currently set on the host element.
+   */
   @Method()
   async updateLang(): Promise<void> {
     this.language = this.t.lang(this.host);
     this.t.update();
   }
 
+  /**
+   * Enables the select-all checkbox in the header.
+   */
   @Prop() readonly selectable?: boolean;
 
+  /**
+   * Updates the header's select-all state from the number of selected rows.
+   * @param selectedItems the number of currently selected rows
+   * @param totalItems the total number of selectable rows
+   */
   @Method()
   async setSelection(selectedItems: number, totalItems: number): Promise<void> {
     this.indeterminate = selectedItems !== 0 && selectedItems !== totalItems;

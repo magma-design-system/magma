@@ -15,7 +15,7 @@ import { MdsFilterItemEventDetail } from '@component/mds-filter-item/meta/event-
 import miBaselineClose from '@icon/mi/baseline/close.svg';
 
 /**
- * @slot default - Add `mds-filter-item` element/s.
+ * @slot - Add `mds-filter-item` element/s.
  */
 
 @Component({

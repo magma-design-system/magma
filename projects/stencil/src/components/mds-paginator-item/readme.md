@@ -210,9 +210,9 @@ mds-paginator {
 
 ## Slots
 
-| Slot        | Description                                                                            |
-| ----------- | -------------------------------------------------------------------------------------- |
-| `"default"` | Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here. |
+| Slot | Description                                                                            |
+| ---- | -------------------------------------------------------------------------------------- |
+|      | Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here. |
 
 
 ## CSS Custom Properties
