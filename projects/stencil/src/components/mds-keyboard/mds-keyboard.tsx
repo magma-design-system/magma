@@ -207,7 +207,7 @@ export class MdsKeyboard {
     return miBaselineKeyboard;
   };
 
-  discottectedCallback(): void {
+  disconnectedCallback(): void {
     this.stopKeyboardShortcutTest();
   }
 

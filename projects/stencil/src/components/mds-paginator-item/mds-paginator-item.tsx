@@ -43,9 +43,9 @@ export class MdsPaginatorItem {
     this.km.detachClickBehavior();
   }
 
-  disconnectedCallback = (): void => {
+  disconnectedCallback(): void {
     this.km.detachClickBehavior();
-  };
+  }
 
   render() {
     return (
