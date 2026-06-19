@@ -20,7 +20,7 @@ import logoGoogle from './asset/logo-google.svg';
 import { TextAnimationType } from '@component/mds-text/meta/types';
 
 /**
- * @slot default - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
+ * @slot - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
  * @slot notification - Add `HTML elements` or `components`, it is **recommended** to use `mds-notification` element.
  * @part icon - The icon inside the component
  */

@@ -23,7 +23,7 @@ import localeEs from './meta/locale.en.json';
 import localeIt from './meta/locale.it.json';
 
 /**
- * @slot default - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
+ * @slot - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
  */
 
 export type MdsLabelVariantType = ThemeLabelVariantType | ThemeStatusVariantType;
@@ -43,6 +43,9 @@ export class MdsLabel {
     it: localeIt,
   });
   @State() language: string;
+  /**
+   * Updates the component's texts to the locale currently set on the host element.
+   */
   @Method()
   async updateLang(): Promise<void> {
     this.language = this.t.lang(this.host);

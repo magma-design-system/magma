@@ -18,6 +18,9 @@ import { ISO8601Date } from '@type/date';
 import { sanitizeISO8601Date } from '@common/date';
 import clsx from 'clsx';
 
+/**
+ * @slot preselection - Add `HTML elements` or `components` shown in the calendar preselection area.
+ */
 @Component({
   tag: 'mds-calendar',
   styleUrl: 'mds-calendar.css',
@@ -43,11 +46,17 @@ export class MdsCalendar {
     el: {},
   });
   @State() language: string;
+  /**
+   * Updates the component's texts to the locale currently set on the host element.
+   */
   @Method()
   async updateLang(): Promise<void> {
     this.language = this.t.lang(this.host);
   }
 
+  /**
+   * Enables selecting a date range (start and end date) instead of a single date.
+   */
   @Prop() readonly rangePicker: boolean = true;
 
   /**
@@ -114,17 +123,29 @@ export class MdsCalendar {
   @State() internalStartDate: string | null = this.startDate;
   @State() internalEndDate: string | null = this.endDate;
 
+  /**
+   * Emitted when the selected date or date range changes.
+   */
   @Event({ eventName: 'mdsCalendarChange' }) datesEmitter: EventEmitter<{
     startDate: string;
     endDate?: string;
   }>;
+  /**
+   * Emitted when the user navigates to a different month or year.
+   */
   @Event({ eventName: 'mdsCalendarNavigate' }) navigationEmitter: EventEmitter<{
     currentDate: string;
     delta: number;
   }>;
+  /**
+   * Emitted when the user hovers over a day, used to preview a range selection.
+   */
   @Event({ eventName: 'mdsCalendarHover' }) hoverEmitter: EventEmitter<{
     hoverDate: string | null;
   }>;
+  /**
+   * Emitted when the calendar's preselection options need to be re-evaluated.
+   */
   @Event({ eventName: 'mdsCalendarPreselect' }) checkPreselectionsEmitter: EventEmitter<void>;
 
   @Watch('startDate')
@@ -251,6 +272,10 @@ export class MdsCalendar {
     this.host?.shadowRoot?.removeEventListener('mouseleave', this.handleMouseLeave);
   }
 
+  /**
+   * Sets the calendar's current date and re-renders the calendar accordingly.
+   * @param date the date to display, in ISO format (YYYY-MM-DD)
+   */
   @Method() async updateCurrentDate(date: string): Promise<void> {
     this.currentDate = DateTime.fromISO(date);
     await this.updateCalendar();

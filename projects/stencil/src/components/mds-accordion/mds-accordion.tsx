@@ -3,7 +3,7 @@ import { Component, Element, Event, EventEmitter, Host, Listen, Prop, h } from '
 import { MdsAccordionEventDetail } from './meta/event-detail';
 
 /**
- * @slot default - Add `mds-accordion-item` element/s.
+ * @slot - Add `mds-accordion-item` element/s.
  */
 
 @Component({

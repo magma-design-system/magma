@@ -5,7 +5,7 @@ import { ProgressBarSizeType } from '@type/progress';
 import { readSlottedLabel, sanitizeLabel } from '@common/slot';
 
 /**
- * @slot default - **Deprecated**, use the `label` property instead. Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
+ * @slot - **Deprecated**, use the `label` property instead. Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
  * @part progress-bar - The progress bar element
  */
 

@@ -13,7 +13,7 @@ import {
 import { MdsStepperBarEventDetail } from './meta/event-detail';
 import { StepperBarNavigationType } from './meta/meta';
 /**
- * @slot default - Add `mds-tepper-bar-item` element/s.
+ * @slot - Add `mds-tepper-bar-item` element/s.
  * @slot content - Add `HTML elements` or `components`, one per mds-stepper-bar-item added
  * @part items - Selects the `items` container element wrapped in shadowDOM.
  * @part contents - Selects the `contents` container element wrapped in shadowDOM.

@@ -26,6 +26,11 @@ export interface EventDate {
   end?: string;
 }
 
+/**
+ * @slot calendar-preselection - Add `HTML elements` or `components` to this slot.
+ * @slot start - Add `HTML elements` or `components` to this slot.
+ * @slot end - Add `HTML elements` or `components` to this slot.
+ */
 @Component({
   tag: 'mds-input-date-range',
   styleUrl: 'mds-input-date-range.css',
@@ -49,6 +54,9 @@ export class MdsInputDateRange {
     it: localeIt,
   });
   @State() language: string;
+  /**
+   * Updates the component's texts to the locale currently set on the host element.
+   */
   @Method()
   async updateLang(): Promise<void> {
     this.language = this.t.lang(this.host);
@@ -183,6 +191,9 @@ export class MdsInputDateRange {
     this.syncCalendarsHoverAttributes();
   }
 
+  /**
+   * Emitted when the selected start or end date changes.
+   */
   @Event({ eventName: 'mdsInputDateRangeValueChange' }) valueChanged: EventEmitter<{
     startDate: string;
     endDate: string;
@@ -260,6 +271,10 @@ export class MdsInputDateRange {
     );
   }
 
+  /**
+   * Applies the given preselection range to the input.
+   * @param event the preselection range to apply
+   */
   @Method() async preselect(event: EventDate): Promise<void> {
     if (!this.togglePreselection) {
       this.togglePreselection = Array.from(

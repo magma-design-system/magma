@@ -124,6 +124,9 @@ export class MdsInput {
     es: localeEs,
     it: localeIt,
   });
+  /**
+   * Updates the component's texts to the locale currently set on the host element.
+   */
   @Method()
   async updateLang(): Promise<void> {
     this.language = this.t.lang(this.el);
@@ -370,12 +373,20 @@ export class MdsInput {
     this.countMaxLength();
   }
 
+  /**
+   * Adds a validator to the input.
+   * @param validator the validator function to add
+   */
   @Method()
   async addValidator(validator: MdsValidatorFn): Promise<void> {
     this.inputValidation.validator.addValidator(validator);
     return Promise.resolve();
   }
 
+  /**
+   * Removes a previously added validator from the input.
+   * @param validator the validator function to remove
+   */
   @Method()
   async removeValidator(validator: MdsValidatorFn): Promise<void> {
     this.inputValidation.validator.removeValidator(validator);
@@ -391,6 +402,10 @@ export class MdsInput {
     return this.inputValidation.validator.hasValidator(validator);
   }
 
+  /**
+   * Returns the current validation errors, or `null` if the value is valid.
+   * @returns the validation errors, or `null` when valid
+   */
   @Method()
   async getErrors(): Promise<MdsValidationErrors | null> {
     return Promise.resolve(this.inputValidation.validator.errors);

@@ -4,7 +4,7 @@ import { TypographyTruncateType } from '@type/text';
 import { ButtonIconPositionType } from '@type/button';
 
 /**
- * @slot default - Add `mds-tree-item` element/s.
+ * @slot - Add `mds-tree-item` element/s.
  */
 
 @Component({

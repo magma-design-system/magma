@@ -19,6 +19,7 @@ import { ThemeStatusVariantType } from '@type/variant';
 /**
  * @part select - The select HTML element
  * @part tip-top - Selects the verbose status of input on top of element
+ * @slot - Add `option` `HTML elements` or `components` to this slot.
  */
 
 @Component({
@@ -37,6 +38,9 @@ export class MdsInputSelect {
 
   private t: Locale = new Locale();
 
+  /**
+   * Updates the component's texts to the locale currently set on the host element.
+   */
   @Method()
   async updateLang(): Promise<void> {
     this.language = this.t.lang(this.host);

@@ -38,6 +38,9 @@ export class MdsInputDate {
   });
   @State() language: string;
   @State() touched: boolean = false;
+  /**
+   * Updates the component's texts to the locale currently set on the host element.
+   */
   @Method()
   async updateLang(): Promise<void> {
     this.language = this.t.lang(this.host);
@@ -100,6 +103,9 @@ export class MdsInputDate {
   @State() calendarKey: number = 0;
   @State() dropdownRef?: HTMLMdsDropdownElement;
   @State() hasFocus = false;
+  /**
+   * Emitted when the selected date value changes.
+   */
   @Event({ eventName: 'mdsInputDateSelect', bubbles: true, composed: true })
   valueChange: EventEmitter<string>;
 
@@ -135,6 +141,9 @@ export class MdsInputDate {
     this.validationEvent.emit(this.isValid);
   }
 
+  /**
+   * Sets focus on the underlying input element.
+   */
   @Method()
   async focusInput(): Promise<void> {
     const input: HTMLInputElement = this.host.shadowRoot?.querySelector(
@@ -143,12 +152,20 @@ export class MdsInputDate {
     input.focus();
   }
 
+  /**
+   * Sets the input value.
+   * @param value the value to set, in ISO format (YYYY-MM-DD)
+   */
   @Method()
   async setValue(value: string): Promise<void> {
     this.value = value;
     this.validateValue();
     return Promise.resolve();
   }
+  /**
+   * Returns the current validation errors, or `null` if the value is valid.
+   * @returns the validation errors, or `null` when valid
+   */
   @Method()
   async getErrors(): Promise<MdsValidationErrors | null> {
     return Promise.resolve(this.isValid ? null : { error: '' });

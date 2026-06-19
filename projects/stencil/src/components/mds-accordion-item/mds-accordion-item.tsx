@@ -4,7 +4,7 @@ import { TypographyTitleType } from '@type/typography';
 import { MdsAccordionItemEventDetail } from './meta/event-detail';
 
 /**
- * @slot default - Add contents like `text string`, `HTML elements` or `components` to this slot.
+ * @slot - Add contents like `text string`, `HTML elements` or `components` to this slot.
  * @part content - the content wrapper of the `default` slot
  * @part icon - The arrow icon of the component
  * @part label - The text label of the component

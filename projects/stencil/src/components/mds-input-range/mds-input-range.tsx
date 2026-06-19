@@ -14,6 +14,7 @@ import {
 /**
  * @part header - The element containing the labels displayed over the input element
  * @part track - The element containing the track of the input range
+ * @slot - Add `text string`, `HTML elements` or `components` to this slot.
  */
 @Component({
   tag: 'mds-input-range',

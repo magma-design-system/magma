@@ -7,7 +7,7 @@ import { typographyDefaultsVariant } from './meta/variants';
 import RandomText from '@common/yugop';
 
 /**
- * @slot default - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
+ * @slot - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
  */
 
 @Component({

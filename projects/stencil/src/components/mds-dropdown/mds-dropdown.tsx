@@ -8,7 +8,7 @@ import { DropdownInteractionType } from './meta/types';
 import { Backdrop, FloatingController, FloatingElement } from '@common/floating-controller';
 
 /**
- * @slot default - Add `text string`, `HTML elements` or `components` to this slot, elements will be shown when the component is triggered.
+ * @slot - Add `text string`, `HTML elements` or `components` to this slot, elements will be shown when the component is triggered.
  */
 
 @Component({

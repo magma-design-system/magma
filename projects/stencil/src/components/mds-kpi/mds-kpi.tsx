@@ -1,7 +1,7 @@
 import { Component, Host, h } from '@stencil/core';
 
 /**
- * @slot default - Add `mds-kpi-item` element/s.
+ * @slot - Add `mds-kpi-item` element/s.
  */
 
 @Component({

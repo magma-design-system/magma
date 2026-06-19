@@ -28,6 +28,9 @@ export class MdsRadialMenuItem {
    */
   @Prop({ reflect: true }) readonly variant?: ButtonVariantType = 'dark';
 
+  /**
+   * Specifies the size of the menu item.
+   */
   @Prop({ reflect: true }) readonly size: ButtonSizeType = 'lg';
 
   render() {

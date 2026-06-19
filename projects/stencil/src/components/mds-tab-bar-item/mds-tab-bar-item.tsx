@@ -13,7 +13,7 @@ import { TypographySmallerType } from '@type/typography';
 import { readSlottedLabel, sanitizeLabel } from '@common/slot';
 
 /**
- * @slot default - **Deprecated**, use the `label` property instead. Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
+ * @slot - **Deprecated**, use the `label` property instead. Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
  */
 
 @Component({
@@ -25,6 +25,9 @@ export class MdsTabBarItem {
   @Element() private element: HTMLMdsTabItemElement;
   @State() isSelected: boolean;
 
+  /**
+   * The icon displayed in the tab bar item.
+   */
   @Prop() readonly icon: string = '';
 
   /**

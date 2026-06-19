@@ -25,6 +25,9 @@ export class MdsKeyboardKey {
     it: localeIt,
   });
   @State() language: string;
+  /**
+   * Updates the component's texts to the locale currently set on the host element.
+   */
   @Method()
   async updateLang(): Promise<void> {
     this.language = this.t.lang(this.host);

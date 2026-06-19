@@ -13,7 +13,7 @@ import { TabSizeType } from '@type/button';
  *  <mds-text>Accessibility preferences in web browsers allow users to customize their navigation to improve readability, interaction, and usability. Common options include dark mode, text resizing, screen reader support, keyboard navigation, and blocking animated content. These settings help people with visual, hearing, motor, or cognitive disabilities experience the web more effectively and inclusively.</mds-text>
  * @category Patterns
  * @tags pattern, user, tab
- * @slot default - Add `mds-pref-animation`, `mds-pref-consumption`, `mds-pref-contrast`, `mds-pref-language`, or `mds-pref-theme` element/s.
+ * @slot - Add `mds-pref-animation`, `mds-pref-consumption`, `mds-pref-contrast`, `mds-pref-language`, or `mds-pref-theme` element/s.
  * @example <mds-pref>
  *    <mds-pref-animation></mds-pref-animation>
  *    <mds-pref-consumption></mds-pref-consumption>
@@ -47,6 +47,9 @@ export class MdsPref {
     it: localeIt,
   });
   @State() language: string;
+  /**
+   * Updates the component's texts to the locale currently set on the host element.
+   */
   @Method()
   async updateLang(): Promise<void> {
     this.language = this.t.lang(this.host);

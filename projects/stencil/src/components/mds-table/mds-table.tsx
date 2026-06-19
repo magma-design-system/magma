@@ -20,8 +20,8 @@ import localeEs from './meta/locale.es.json';
 import localeIt from './meta/locale.it.json';
 
 /**
- * @slot default - Put `mds-table-header`, `mds-table-body`, `mds-table-footer` element/s.
- * @slot batch-actions - Put `mds-button` element/s.
+ * @slot - Put `mds-table-header`, `mds-table-body`, `mds-table-footer` element/s.
+ * @slot batch-action - Put `mds-button` element/s.
  * @part table-wrapper - Selects the element which wraps the table
  * @part table - Selects the table element
  * @part batch-actions - Selects the element which wraps the batch actions
@@ -61,6 +61,9 @@ export class MdsTable {
    */
   @Prop() readonly selectable?: boolean;
 
+  /**
+   * Indicates whether row selection is currently active in the table.
+   */
   @Prop({ mutable: true, reflect: true }) selection?: boolean;
 
   /**
