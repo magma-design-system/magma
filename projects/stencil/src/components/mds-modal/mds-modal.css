@@ -126,6 +126,7 @@
   /* private */
   --private-modal-width: calc(100vw - var(--private-modal-window-close-margin));
   --private-modal-custom-opened-transform: translate(0, 0);
+  --private-modal-opened-transform: none;
   --private-modal-transition-window-transform: translate(0);
   --private-modal-window-close-margin: --spacing(2000);
 
@@ -136,8 +137,9 @@
 /*
  * The native dialog is the overlay: full-viewport flex container that centers
  * the window and (for now) carries the dim backdrop. Promoted to the top layer
- * by showModal(). Step 1.1 has NO transitions on purpose - the window appears
- * and disappears instantly; animation is added in step 1.2.
+ * by showModal(). `overlay` and `display` are transitioned with
+ * `allow-discrete` so the dialog stays painted in the top layer while the outro
+ * animation plays.
  */
 
 .dialog {
@@ -153,9 +155,18 @@
   margin: 0;
   max-height: none;
   max-width: none;
+
+  /* Clip the window while it sits off-screen at translate(100%): without this
+   * the dialog (a scroll container) shows a transient scrollbar during the
+   * slide, shifting the layout - the "jump" seen with tall content. */
+  overflow: hidden;
   padding: 0;
   perspective: 600px;
   position: fixed;
+  transition-behavior: allow-discrete;
+  transition-duration: var(--mds-modal-transition-duration);
+  transition-property: background-color, overlay, display;
+  transition-timing-function: var(--mds-modal-transition-timing-funciton);
   width: auto;
   z-index: var(--mds-modal-z-index, 1000);
 }

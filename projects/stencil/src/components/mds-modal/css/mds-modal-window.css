@@ -52,20 +52,39 @@
 } */
 
 /*
- * Step 1.1: window shows at rest, instantly, when the dialog is open. No
- * transform offset and no transition yet - the slide/3d/custom animation and
- * @starting-style are added in step 1.2. Keyed on the native `.dialog[open]`
- * (synchronous) rather than the reflected `:host([opened])`.
+ * Closed / outro state (also the value the entry transition starts from).
+ * Keyed on the native `.dialog[open]` (synchronous) rather than the reflected
+ * `:host([opened])` (one tick late), so `@starting-style` matches the frame the
+ * window first renders and the slide actually plays instead of popping.
  */
 
 .dialog .window,
 .dialog ::slotted([slot='window']) {
   opacity: 0;
-  transition: none;
+  transform: var(--private-modal-transition-window-transform);
+  transition-duration: var(--mds-modal-transition-duration);
+  transition-property: transform, opacity;
+  transition-timing-function: var(--mds-modal-transition-timing-funciton);
 }
+
+/* Open / resting state. Resting transform comes from a variable (`none` by
+ * default, a caller-defined transform for the custom animation) so the custom
+ * override can stay a `:host()`-only rule and avoid a `:host(...) .descendant`
+ * selector list, which the CSS compiler mangles. */
 
 .dialog[open] .window,
 .dialog[open] ::slotted([slot='window']) {
   opacity: 1;
   pointer-events: auto;
+  transform: var(--private-modal-opened-transform);
+}
+
+/* Entry: start from the closed transform when the dialog enters the top layer. */
+
+@starting-style {
+  .dialog[open] .window,
+  .dialog[open] ::slotted([slot='window']) {
+    opacity: 0;
+    transform: var(--private-modal-transition-window-transform);
+  }
 }
