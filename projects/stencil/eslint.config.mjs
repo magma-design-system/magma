@@ -57,6 +57,7 @@ export default defineConfig([
     },
     rules: {
       'stencil/strict-mutable': 'off',
+      'stencil/decorators-style': 'off',
     },
   },
   // #endregion
