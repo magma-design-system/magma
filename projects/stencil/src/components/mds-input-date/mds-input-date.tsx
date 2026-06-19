@@ -28,6 +28,7 @@ export class MdsInputDate {
   @Element() host: HTMLMdsInputDateElement;
   @AttachInternals() internals: ElementInternals;
   private isSlotted: boolean = false;
+  @State() empty: boolean | undefined = undefined;
   @State() isValid: boolean;
   private t: Locale = new Locale({
     el: {},
@@ -108,22 +109,27 @@ export class MdsInputDate {
     this.validateValue();
   }
 
-  private validateValue(): void {
+  private validateValue(hasBadInput: boolean = false): void {
     const date = DateTime.fromISO(this.value);
 
-    const isInvalidDate = date.invalid;
+    const hasValue = Boolean(this.value);
+    const hasInvalidValue = hasValue && !date.isValid;
+    const isMissingRequiredValue = this.required && !hasValue;
     const outOfRange =
-      (this.max && DateTime.fromISO(this.max) < date) ||
-      (this.min && DateTime.fromISO(this.min) > date);
+      date.isValid &&
+      ((this.max && DateTime.fromISO(this.max) < date) ||
+        (this.min && DateTime.fromISO(this.min) > date));
 
-    if ((isInvalidDate && this.required) || outOfRange) {
+    if (hasBadInput || hasInvalidValue || isMissingRequiredValue || outOfRange) {
       this.isValid = false;
       this.variant = 'error';
       this.internals.setFormValue(null);
+      this.empty = hasBadInput || hasInvalidValue ? true : undefined;
     } else {
       this.isValid = true;
       this.variant = 'primary';
       this.internals.setFormValue(this.value);
+      this.empty = undefined;
     }
 
     this.validationEvent.emit(this.isValid);
@@ -173,13 +179,14 @@ export class MdsInputDate {
     this.touched = true;
     // manage case when i insert 0 on date and default input behavior change in 01 instead of resetting all date
     if (input.value) this.value = input.value;
-    this.validateValue();
+    this.validateValue(input.validity.badInput);
   };
 
   private onBlur = (ev: Event) => {
     const input = ev.target as HTMLInputElement;
     this.hasFocus = false;
     this.value = input.value;
+    this.validateValue(input.validity.badInput);
   };
 
   private onFocus = (ev: Event) => {
@@ -195,7 +202,7 @@ export class MdsInputDate {
   };
   render() {
     return (
-      <Host>
+      <Host empty={this.empty}>
         <input
           value={this.value}
           id="dateInput"

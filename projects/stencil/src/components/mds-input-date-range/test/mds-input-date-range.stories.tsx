@@ -23,6 +23,10 @@ export default {
       type: { name: 'string' },
       description: 'Specifies the max date of the range, user cannot set dates after this date',
     },
+    'dual-calendar': {
+      type: { name: 'boolean' },
+      description: 'Enables the linked dual-calendar range picker behavior',
+    },
   },
 };
 
@@ -148,4 +152,12 @@ export const MinMax = {
 
 export const Preselection = {
   render: TemplatePreselection,
+};
+
+export const DualCalendar = {
+  render: Template,
+
+  args: {
+    'dual-calendar': true,
+  },
 };

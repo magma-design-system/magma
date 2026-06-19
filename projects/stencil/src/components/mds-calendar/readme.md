@@ -271,13 +271,19 @@ mds-calendar {
 
 ## Properties
 
-| Property      | Attribute      | Description                                 | Type             | Default |
-| ------------- | -------------- | ------------------------------------------- | ---------------- | ------- |
-| `endDate`     | `end-date`     | Specifies the end date of the selection     | `null \| string` | `null`  |
-| `max`         | `max`          | Specifies the minimum date of the selection | `null \| string` | `null`  |
-| `min`         | `min`          | Specifies the minimum date of the selection | `null \| string` | `null`  |
-| `rangePicker` | `range-picker` |                                             | `boolean`        | `true`  |
-| `startDate`   | `start-date`   | Specifies the start date of the selection   | `null \| string` | `null`  |
+| Property                    | Attribute                      | Description                                                                               | Type             | Default |
+| --------------------------- | ------------------------------ | ----------------------------------------------------------------------------------------- | ---------------- | ------- |
+| `disableMonthYearSelection` | `disable-month-year-selection` | Disables switching to month or year selection views from the calendar header.             | `boolean`        | `false` |
+| `endDate`                   | `end-date`                     | Specifies the end date of the selection                                                   | `null \| string` | `null`  |
+| `hoverDate`                 | `hover-date`                   | Specifies the date used to preview the range selection across multiple visible calendars. | `null \| string` | `null`  |
+| `max`                       | `max`                          | Specifies the minimum date of the selection                                               | `null \| string` | `null`  |
+| `min`                       | `min`                          | Specifies the minimum date of the selection                                               | `null \| string` | `null`  |
+| `rangePicker`               | `range-picker`                 |                                                                                           | `boolean`        | `true`  |
+| `showNextButton`            | `show-next-button`             | Shows the next navigation button in the calendar header.                                  | `boolean`        | `true`  |
+| `showPreselection`          | `show-preselection`            | Shows the preselection area above the calendar view.                                      | `boolean`        | `false` |
+| `showPreviousButton`        | `show-previous-button`         | Shows the previous navigation button in the calendar header.                              | `boolean`        | `true`  |
+| `startDate`                 | `start-date`                   | Specifies the start date of the selection                                                 | `null \| string` | `null`  |
+| `viewDate`                  | `view-date`                    | Specifies the date used to determine the visible month without changing the selection.    | `null \| string` | `null`  |
 
 
 ## Events
@@ -285,6 +291,8 @@ mds-calendar {
 | Event                  | Description | Type                                                                 |
 | ---------------------- | ----------- | -------------------------------------------------------------------- |
 | `mdsCalendarChange`    |             | `CustomEvent<{ startDate: string; endDate?: string \| undefined; }>` |
+| `mdsCalendarHover`     |             | `CustomEvent<{ hoverDate: string \| null; }>`                        |
+| `mdsCalendarNavigate`  |             | `CustomEvent<{ currentDate: string; delta: number; }>`               |
 | `mdsCalendarPreselect` |             | `CustomEvent<void>`                                                  |
 
 
@@ -328,6 +336,8 @@ Type: `Promise<void>`
 | `--mds-calendar-day-number-color`             | The color of the day numbers of the current month.                        |
 | `--mds-calendar-day-number-other-month-color` | The color of the day numbers belonging to previous/next months.           |
 | `--mds-calendar-padding`                      | The internal padding of the calendar container.                           |
+| `--mds-calendar-select-month-or-year-height`  | The height of the month/year selector in the calendar header.             |
+| `--mds-calendar-select-month-or-year-width`   | The width of the month/year selector in the calendar header.              |
 
 
 ## Dependencies
