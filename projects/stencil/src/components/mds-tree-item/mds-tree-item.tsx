@@ -207,7 +207,7 @@ export class MdsTreeItem {
           <div class={clsx('toggle-icon', `toggle-icon--${this.toggle}`)}>
             <mds-button
               await={this.await}
-              onClick={this.onClick.bind(this)}
+              onClick={this.onClick}
               icon={!this.await ? this.currentToggleIcon : undefined}
               title={this.t.get(this.expanded ? 'collapse' : 'expand', { label: this.label })}
               variant="dark"
@@ -220,7 +220,7 @@ export class MdsTreeItem {
               class={clsx('label-action', this.await && 'label-action--await')}
               disabled={this.await}
               icon={this.icon}
-              onClick={this.onClick.bind(this)}
+              onClick={this.onClick}
               variant="dark"
               tone="text"
               truncate={this.truncate}

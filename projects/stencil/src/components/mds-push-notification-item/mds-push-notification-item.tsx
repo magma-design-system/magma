@@ -224,7 +224,7 @@ export class MdsPushNotificationItem {
             tone="text"
             title={this.t.get('dismiss')}
             icon={miBaselineCancel}
-            onClick={this.onClickClose.bind(this)}
+            onClick={this.onClickClose}
           ></mds-button>
         )}
       </Host>

@@ -144,10 +144,10 @@ export class MdsPushNotification {
       elementStyles.getPropertyValue('--mds-push-notification-items-outro-delay') ?? '0ms';
   };
 
-  private clear(): void {
+  private clear = (): void => {
     this.slotNotifications.assignedElements().forEach((e) => this.outroItem(e as HTMLElement));
     this.hide();
-  }
+  };
 
   /**
    * Shows the notification container.
@@ -209,7 +209,7 @@ export class MdsPushNotification {
     return (
       <Host>
         {/* <slot name="top"></slot> */}
-        <mds-button variant="dark" onClick={this.clear.bind(this)}>
+        <mds-button variant="dark" onClick={this.clear}>
           Cancella notifiche
         </mds-button>
         <div class="notifications" part="notifications">

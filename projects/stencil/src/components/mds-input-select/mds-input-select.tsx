@@ -253,7 +253,7 @@ export class MdsInputSelect {
       <Host>
         <select
           class="input"
-          onInput={this.onInput.bind(this)}
+          onInput={this.onInput}
           onBlur={this.onBlur}
           onFocus={this.onFocus}
           name={this.name}

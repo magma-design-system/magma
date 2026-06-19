@@ -125,7 +125,7 @@ export class MdsLabel {
           <mds-button
             class="button-close"
             icon={miBaselineCancel}
-            onClick={this.onClickDelete.bind(this)}
+            onClick={this.onClickDelete}
             title={this.t.get('remove')}
             size="sm"
           ></mds-button>

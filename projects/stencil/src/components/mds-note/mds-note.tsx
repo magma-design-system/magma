@@ -98,7 +98,7 @@ export class MdsNote {
             class="button-close"
             variant="dark"
             tone="text"
-            onClick={this.onClickClose.bind(this)}
+            onClick={this.onClickClose}
           ></mds-button>
         )}
         <slot name="title" />

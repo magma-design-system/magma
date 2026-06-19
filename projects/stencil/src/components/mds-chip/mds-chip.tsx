@@ -138,9 +138,9 @@ export class MdsChip {
     this.clickLabelEvent.emit({ event, element: this.host });
   }
 
-  private onDeleteHandler(event: Event): void {
+  private onDeleteHandler = (event: Event): void => {
     this.deleteEvent.emit({ event, element: this.host });
-  }
+  };
 
   private handleClickableKeyboard = (isClickable: boolean): void => {
     if (isClickable) {
@@ -209,7 +209,7 @@ export class MdsChip {
           <mds-button
             class="button-delete"
             icon={miBaselineCancel}
-            onClick={this.onDeleteHandler.bind(this)}
+            onClick={this.onDeleteHandler}
             title={`${this.t.get('deleteLabel')} ${this.label}`}
             variant="dark"
             tone="text"
