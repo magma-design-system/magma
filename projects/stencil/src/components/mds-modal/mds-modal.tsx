@@ -12,7 +12,6 @@ import {
 } from '@stencil/core';
 import {
   ModalPositionType,
-  ModalAnimationStateType,
   ModalOverflowType,
   ModalAnimationStyleType,
   ModalInteractionType,
@@ -43,6 +42,7 @@ export class MdsModal {
   private bottom = false;
   private cssTransitionDuration: string = '500';
   private windowElement: HTMLElement;
+  private windowContentWrapper?: HTMLElement;
   private windowHeaderElement: HTMLElement;
   private windowFooterElement: HTMLElement;
   private windowHeaderHeight: number;
@@ -69,12 +69,7 @@ export class MdsModal {
   @Prop({ reflect: true, mutable: true }) position?: ModalPositionType = 'center';
 
   /**
-   * Specifies if the component is animating itself or not
-   */
-  @Prop({ reflect: true, mutable: true }) animating?: ModalAnimationStateType = 'none';
-
-  /**
-   * Specifies if the component is animating itself or not
+   * Specifies the animation style of the modal window
    */
   @Prop({ reflect: true }) readonly animation?: ModalAnimationStyleType = 'slide';
 
@@ -118,15 +113,12 @@ export class MdsModal {
   };
 
   private stopIntroAnimationWindow = (): void => {
-    this.animating = 'none';
-    this.host.setAttribute('animating', 'none'); // wtf?
+    this.setContentOverflow('auto');
     this.showEvent.emit();
     clearTimeout(this.animationDelayTimeout);
   };
 
   private stopOutroAnimationWindow = (): void => {
-    this.animating = 'none';
-    this.host.setAttribute('animating', 'none');
     this.hideEvent.emit();
     clearTimeout(this.animationDelayTimeout);
   };
@@ -150,21 +142,46 @@ export class MdsModal {
     }
   };
 
+  // Freeze the content scroll container (overflow:hidden) for the whole slide,
+  // re-enabling it only once the window's transform transition has finished. A
+  // live overflow:auto with overflowing content janks the transform. Applied
+  // inline on the element on purpose: toggling it via a host attribute + CSS
+  // selector triggers a shadow-wide style recalc at the settle frame, which is
+  // what caused the visible jump.
+  private setContentOverflow = (value: 'auto' | 'hidden'): void => {
+    if (this.windowContentWrapper) {
+      this.windowContentWrapper.style.overflow = value;
+    }
+  };
+
+  private handleWindowTransitionEnd = (e: TransitionEvent): void => {
+    if (e.propertyName !== 'transform') {
+      return;
+    }
+    if (this.opened) {
+      this.stopIntroAnimationWindow();
+    } else {
+      this.stopOutroAnimationWindow();
+    }
+  };
+
   private animateOpenWindow = (): void => {
-    this.animating = 'intro';
+    this.setContentOverflow('hidden');
     clearTimeout(this.animationDelayTimeout);
+    // Fallback only: `handleWindowTransitionEnd` is the primary settle. The
+    // buffer keeps this from firing before the transition actually ends.
     this.animationDelayTimeout = setTimeout(
       this.stopIntroAnimationWindow.bind(this),
-      cssDurationToMilliseconds(this.cssTransitionDuration),
+      cssDurationToMilliseconds(this.cssTransitionDuration) + 100,
     );
   };
 
   private animateCloseWindow = (): void => {
-    this.animating = 'outro';
+    this.setContentOverflow('hidden');
     clearTimeout(this.animationDelayTimeout);
     this.animationDelayTimeout = setTimeout(
       this.stopOutroAnimationWindow.bind(this),
-      cssDurationToMilliseconds(this.cssTransitionDuration),
+      cssDurationToMilliseconds(this.cssTransitionDuration) + 100,
     );
   };
 
@@ -207,12 +224,11 @@ export class MdsModal {
     }
   }
 
-  componentWillRender(): void {
-    this.animating = this.opened ? 'intro' : 'outro';
-  }
-
   componentDidLoad(): void {
     this.windowElement = this.host.shadowRoot?.querySelector('.window') as HTMLElement;
+    this.windowContentWrapper = this.host.shadowRoot?.querySelector(
+      '.window-content-wrapper',
+    ) as HTMLElement;
     this.windowHeaderElement = this.host.shadowRoot?.querySelector('.window-header') as HTMLElement;
     this.windowFooterElement = this.host.shadowRoot?.querySelector('.window-footer') as HTMLElement;
 
@@ -224,6 +240,7 @@ export class MdsModal {
     }
     if (this.windowElement) {
       this.addMobileEvents();
+      this.windowElement.addEventListener('transitionend', this.handleWindowTransitionEnd);
     }
     this.updateCSSCustomProps();
 
@@ -238,9 +255,11 @@ export class MdsModal {
 
   disconnectedCallback(): void {
     this.enableOverflow();
+    clearTimeout(this.animationDelayTimeout);
     if (this.windowElement) {
       this.windowElement.removeEventListener('touchstart', this.setTouchStart);
       this.windowElement.removeEventListener('touchend', this.setTouchEnd);
+      this.windowElement.removeEventListener('transitionend', this.handleWindowTransitionEnd);
     }
     this.enableOverflow();
   }

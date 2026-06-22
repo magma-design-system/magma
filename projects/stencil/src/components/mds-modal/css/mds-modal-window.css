@@ -20,9 +20,14 @@
   display: none;
 }
 
+/* `overflow` here is the closed/initial state. While the window's transform is
+ * animating, the component freezes this to `hidden` inline and restores it on
+ * the transform's `transitionend` (a live overflow:auto with overflowing
+ * content janks the transform). See setContentOverflow in the component. */
+
 .window-content-wrapper {
   max-height: calc(100dvh - calc(var(--mds-modal-window-distance) * 2));
-  overflow: auto;
+  overflow: hidden;
 }
 
 .window-header,
@@ -86,5 +91,9 @@
   .dialog[open] ::slotted([slot='window']) {
     opacity: 0;
     transform: var(--private-modal-transition-window-transform);
+  }
+
+  .window-content-wrapper {
+    overflow: hidden;
   }
 }

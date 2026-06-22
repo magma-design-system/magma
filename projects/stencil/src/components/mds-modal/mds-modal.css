@@ -136,8 +136,8 @@
 
 /*
  * The native dialog is the overlay: full-viewport flex container that centers
- * the window and (for now) carries the dim backdrop. Promoted to the top layer
- * by showModal(). `overlay` and `display` are transitioned with
+ * the window. The dim is rendered on its ::backdrop (below). Promoted to the
+ * top layer by showModal(). `overlay` and `display` are transitioned with
  * `allow-discrete` so the dialog stays painted in the top layer while the outro
  * animation plays.
  */
@@ -165,7 +165,7 @@
   position: fixed;
   transition-behavior: allow-discrete;
   transition-duration: var(--mds-modal-transition-duration);
-  transition-property: background-color, overlay, display;
+  transition-property: overlay, display;
   transition-timing-function: var(--mds-modal-transition-timing-funciton);
   width: auto;
   z-index: var(--mds-modal-z-index, 1000);
@@ -175,10 +175,18 @@
   display: flex;
 }
 
-/* Suppress the user-agent backdrop; the dim is painted on the dialog itself. */
+/*
+ * The dim lives on the native ::backdrop (it exists only for modal dialogs, so
+ * only when [backdrop] is set / showModal). This is its closed/outro state and
+ * the value the entry transition starts from; the open value is in opened.css.
+ */
 
 .dialog::backdrop {
-  background-color: transparent;
+  background-color: rgb(var(--mds-modal-overlay-color) / 0);
+  transition-behavior: allow-discrete;
+  transition-duration: var(--mds-modal-transition-duration);
+  transition-property: background-color, overlay, display;
+  transition-timing-function: var(--mds-modal-transition-timing-funciton);
 }
 
 /* backdrop=false: keep the page behind interactive (legacy click-through). */

@@ -52,7 +52,7 @@ import { KeyboardTest } from "./components/mds-keyboard/meta/type";
 import { KeyboardKeyName } from "./type/keyboard";
 import { MdsLabelVariantType } from "./components/mds-label/mds-label";
 import { MentionSize } from "./components/mds-mention/meta/type";
-import { ModalAnimationStateType, ModalAnimationStyleType, ModalInteractionType, ModalOverflowType, ModalPositionType } from "./components/mds-modal/meta/types";
+import { ModalAnimationStyleType, ModalInteractionType, ModalOverflowType, ModalPositionType } from "./components/mds-modal/meta/types";
 import { StrategyType } from "./components/mds-notification/meta/types";
 import { MdsPaginatorEventDetail } from "./components/mds-paginator/meta/event-detail";
 import { PolicyAiVariant } from "./components/mds-policy-ai/meta/types";
@@ -133,7 +133,7 @@ export { KeyboardTest } from "./components/mds-keyboard/meta/type";
 export { KeyboardKeyName } from "./type/keyboard";
 export { MdsLabelVariantType } from "./components/mds-label/mds-label";
 export { MentionSize } from "./components/mds-mention/meta/type";
-export { ModalAnimationStateType, ModalAnimationStyleType, ModalInteractionType, ModalOverflowType, ModalPositionType } from "./components/mds-modal/meta/types";
+export { ModalAnimationStyleType, ModalInteractionType, ModalOverflowType, ModalPositionType } from "./components/mds-modal/meta/types";
 export { StrategyType } from "./components/mds-notification/meta/types";
 export { MdsPaginatorEventDetail } from "./components/mds-paginator/meta/event-detail";
 export { PolicyAiVariant } from "./components/mds-policy-ai/meta/types";
@@ -1712,12 +1712,7 @@ export namespace Components {
     }
     interface MdsModal {
         /**
-          * Specifies if the component is animating itself or not
-          * @default 'none'
-         */
-        "animating"?: ModalAnimationStateType;
-        /**
-          * Specifies if the component is animating itself or not
+          * Specifies the animation style of the modal window
           * @default 'slide'
          */
         "animation"?: ModalAnimationStyleType;
@@ -5936,12 +5931,7 @@ declare namespace LocalJSX {
     }
     interface MdsModal {
         /**
-          * Specifies if the component is animating itself or not
-          * @default 'none'
-         */
-        "animating"?: ModalAnimationStateType;
-        /**
-          * Specifies if the component is animating itself or not
+          * Specifies the animation style of the modal window
           * @default 'slide'
          */
         "animation"?: ModalAnimationStyleType;

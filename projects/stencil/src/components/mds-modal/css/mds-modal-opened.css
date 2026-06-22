@@ -1,14 +1,14 @@
-/* Dim painted on the dialog background while open with [backdrop] set.
- * (Moves to the native ::backdrop in phase 2.) */
+/* Open state of the native backdrop dim. ::backdrop only renders for modal
+ * dialogs (showModal), i.e. when [backdrop] is set, so no extra guard needed. */
 
-:host([backdrop]) .dialog[open] {
+.dialog[open]::backdrop {
   background-color: rgb(var(--mds-modal-overlay-color) / var(--mds-modal-overlay-opacity));
 }
 
 /* Fade the dim in when the dialog enters the top layer. */
 
 @starting-style {
-  :host([backdrop]) .dialog[open] {
+  .dialog[open]::backdrop {
     background-color: rgb(var(--mds-modal-overlay-color) / 0);
   }
 }
