@@ -249,6 +249,14 @@ export class MdsModal {
     }
   };
 
+  private readonly handleHostMouseDown = (event: MouseEvent): void => {
+    this.closeModal(event);
+  };
+
+  private readonly handleCloseClick = (event: MouseEvent): void => {
+    this.closeModal(event, true);
+  };
+
   @Watch('opened')
   handleOpenProp(newValue: boolean): void {
     if (newValue) {
@@ -285,9 +293,7 @@ export class MdsModal {
     return (
       <Host
         aria-modal={clsx(this.opened ? 'true' : 'false')}
-        onMouseDown={(e: Event) => {
-          this.closeModal(e);
-        }}
+        onMouseDown={this.handleHostMouseDown}
       >
         {this.window ? (
           <slot name="window" />
@@ -319,9 +325,7 @@ export class MdsModal {
             variant="light"
             tone="text"
             size="xl"
-            onClick={(e: Event) => {
-              this.closeModal(e, true);
-            }}
+            onClick={this.handleCloseClick}
             part="action-close"
           ></mds-button>
         )}

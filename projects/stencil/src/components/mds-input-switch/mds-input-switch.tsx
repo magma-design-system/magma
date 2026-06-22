@@ -234,7 +234,7 @@ export class MdsInputSwitch {
           id="field"
           indeterminate={this.indeterminate}
           name={this.name}
-          onChange={(event) => this.handleInputOnChange(event)}
+          onChange={this.handleInputOnChange}
           type={this.type === 'switch' ? 'checkbox' : this.type}
           value={this.value ?? undefined}
         />

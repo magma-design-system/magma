@@ -259,6 +259,13 @@ export class MdsPrefTheme {
     }
   };
 
+  private readonly handleModeClick = (mode: PreferenceThemeModeType) => (): void => {
+    if (this.overlayShow) {
+      return;
+    }
+    this.changeTheme(mode);
+  };
+
   render() {
     return (
       <Host>
@@ -272,36 +279,21 @@ export class MdsPrefTheme {
           <mds-tab-item
             disabled={this.disabled}
             selected={this.mode === 'light'}
-            onClick={() => {
-              if (this.overlayShow) {
-                return;
-              }
-              this.changeTheme('light');
-            }}
+            onClick={this.handleModeClick('light')}
             class="item item--light"
             icon={miBaselineLightMode}
           ></mds-tab-item>
           <mds-tab-item
             disabled={this.disabled}
             selected={this.mode === 'system'}
-            onClick={() => {
-              if (this.overlayShow) {
-                return;
-              }
-              this.changeTheme('system');
-            }}
+            onClick={this.handleModeClick('system')}
             class="item item--system"
             icon={miBaselineSettings}
           ></mds-tab-item>
           <mds-tab-item
             disabled={this.disabled}
             selected={this.mode === 'dark'}
-            onClick={() => {
-              if (this.overlayShow) {
-                return;
-              }
-              this.changeTheme('dark');
-            }}
+            onClick={this.handleModeClick('dark')}
             class="item item--dark"
             icon={this.mode === 'dark' ? miBaselineDarkMode : miOutlineDarkMode}
           ></mds-tab-item>

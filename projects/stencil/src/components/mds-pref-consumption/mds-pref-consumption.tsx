@@ -107,6 +107,10 @@ export class MdsPrefContrast {
     this.setConsumption(newValue);
   }
 
+  private readonly handleModeClick = (mode: ConsumptionModeType) => (): void => {
+    this.setConsumption(mode);
+  };
+
   render() {
     return (
       <Host>
@@ -117,25 +121,19 @@ export class MdsPrefContrast {
         <mds-tab fill size={this.size}>
           <mds-tab-item
             selected={this.mode === 'low'}
-            onClick={() => {
-              this.setConsumption('low');
-            }}
+            onClick={this.handleModeClick('low')}
             class="item item--low"
             icon={mggConsumptionLow}
           ></mds-tab-item>
           <mds-tab-item
             selected={this.mode === 'medium'}
-            onClick={() => {
-              this.setConsumption('medium');
-            }}
+            onClick={this.handleModeClick('medium')}
             class="item item--medium"
             icon={mggConsumptionMedium}
           ></mds-tab-item>
           <mds-tab-item
             selected={this.mode === 'high'}
-            onClick={() => {
-              this.setConsumption('high');
-            }}
+            onClick={this.handleModeClick('high')}
             class="item item--high"
             icon={mggConsumptionHigh}
           ></mds-tab-item>

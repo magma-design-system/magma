@@ -177,6 +177,10 @@ export class MdsImg {
     setAttributeIfEmpty(this.host, 'aria-label', this.alt);
   };
 
+  private readonly handleConsumptionLoadClick = (): void => {
+    this.imageConsumptionLoaded = true;
+  };
+
   componentWillLoad(): void {
     this.consumptionMode =
       (localStorage.getItem('mdsPrefConsumption') as ConsumptionModeType) ?? 'high';
@@ -216,13 +220,7 @@ export class MdsImg {
     if (this.srcsetConsumptionData) {
       if (this.consumptionMode === 'low') {
         return (
-          <Host
-            aria-label={this.alt}
-            role="img"
-            onClick={() => {
-              this.imageConsumptionLoaded = true;
-            }}
-          >
+          <Host aria-label={this.alt} role="img" onClick={this.handleConsumptionLoadClick}>
             <div class="contrast-area-50"></div>
             {!this.imageConsumptionLoaded ? (
               <div

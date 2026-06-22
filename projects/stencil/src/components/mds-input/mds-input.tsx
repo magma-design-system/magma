@@ -549,6 +549,10 @@ export class MdsInput {
     this.startRecognition();
   };
 
+  private readonly handlePasswordToggleClick = (): void => {
+    this.isPasswordVisible = !this.isPasswordVisible;
+  };
+
   private onSpeechRecognitionError = (): void => {
     console.error('SpeechRecognition API may not work properly on Chrome based browsers.');
     this.speechButton.classList.remove('mic-toggle-button--recording');
@@ -728,7 +732,7 @@ export class MdsInput {
             variant="dark"
             tone="text"
             icon={this.isPasswordVisible ? miBaselineVisibleOff : miBaselineVisible}
-            onClick={() => (this.isPasswordVisible = !this.isPasswordVisible)}
+            onClick={this.handlePasswordToggleClick}
             tabindex="0"
             title={this.isPasswordVisible ? this.t.get('hidePassword') : this.t.get('showPassword')}
             part="password-toggle-button"
@@ -747,7 +751,7 @@ export class MdsInput {
           <mds-button
             class={clsx('mic-toggle-button', this.isRecording && 'mic-toggle-button--recording')}
             icon={this.speechToTextIcon}
-            onClick={() => this.toggleTextRecognition()}
+            onClick={this.toggleTextRecognition}
             tabindex="0"
             title={this.speechToTextLabel}
             variant="dark"

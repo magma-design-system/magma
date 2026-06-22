@@ -712,6 +712,73 @@ export class MdsCalendar {
     }
   }
 
+  private handlePrev = (event: PointerEvent) => {
+    if (this.currentView === 'calendar') {
+      event.stopPropagation();
+      this.changeMonth(-1);
+    } else if (this.currentView === 'years') {
+      event.stopPropagation();
+      this.selectedYear -= 10;
+    } else {
+      event.stopPropagation();
+    }
+  };
+
+  private handleNext = (event: PointerEvent) => {
+    if (this.currentView === 'calendar') {
+      event.stopPropagation();
+      this.changeMonth(1);
+    } else if (this.currentView === 'years') {
+      event.stopPropagation();
+      this.selectedYear += 10;
+    } else {
+      event.stopPropagation();
+    }
+  };
+
+  private isDateDisabled(date: DateTime): boolean | undefined {
+    if (this.min !== null && this.min !== '' && date < DateTime.fromISO(this.min)) {
+      return true;
+    }
+    if (this.max !== null && this.max !== '' && date > DateTime.fromISO(this.max)) {
+      return true;
+    }
+    return undefined;
+  }
+
+  private readonly handleCellClick =
+    (dayInfo: DateTime) =>
+    (event: MouseEvent): void => {
+      event.stopPropagation();
+      const target = event.currentTarget as HTMLElement;
+      if (this.rangePicker) this.handleRange(target, dayInfo);
+      else this.handleSingleSelection(target, dayInfo);
+    };
+
+  private readonly handleMonthSelect =
+    (month: number) =>
+    (event: MouseEvent): void => {
+      event.stopPropagation();
+      this.currentDate = this.currentDate.set({ month });
+      this.currentMonth = this.currentDate.toFormat('MMMM');
+      this.currentView = 'calendar';
+      this.updateCalendar().then(() => {
+        requestAnimationFrame(() => this.setDates());
+      });
+    };
+
+  private readonly handleYearSelect =
+    (year: number) =>
+    (event: MouseEvent): void => {
+      event.stopPropagation();
+      this.currentDate = this.currentDate.set({ year });
+      this.currentYear = year.toString();
+      this.currentView = 'calendar';
+      this.updateCalendar().then(() => {
+        requestAnimationFrame(() => this.setDates());
+      });
+    };
+
   render() {
     return (
       <Host>
@@ -732,17 +799,7 @@ export class MdsCalendar {
                 icon={miBaselineBackIosNew}
                 variant="dark"
                 tone="text"
-                onClick={(event) => {
-                  if (this.currentView === 'calendar') {
-                    event.stopPropagation();
-                    this.changeMonth(-1);
-                  } else if (this.currentView === 'years') {
-                    event.stopPropagation();
-                    this.selectedYear -= 10;
-                  } else {
-                    event.stopPropagation();
-                  }
-                }}
+                onClick={this.handlePrev}
               ></mds-button>
             )}
             <div class="select-month-or-year">
@@ -773,17 +830,7 @@ export class MdsCalendar {
                 icon={miBaselineForwardIos}
                 variant="dark"
                 tone="text"
-                onClick={(event) => {
-                  if (this.currentView === 'calendar') {
-                    event.stopPropagation();
-                    this.changeMonth(1);
-                  } else if (this.currentView === 'years') {
-                    event.stopPropagation();
-                    this.selectedYear += 10;
-                  } else {
-                    event.stopPropagation();
-                  }
-                }}
+                onClick={this.handleNext}
               ></mds-button>
             )}
           </nav>
@@ -808,29 +855,8 @@ export class MdsCalendar {
                     }
                     date={dayInfo.date.toFormat('yyyy-MM-dd')}
                     month={dayInfo.isCurrentMonth ? 'current' : 'other'}
-                    disabled={(() => {
-                      if (
-                        this.min !== null &&
-                        this.min !== '' &&
-                        dayInfo.date < DateTime.fromISO(this.min)
-                      ) {
-                        return true;
-                      }
-                      if (
-                        this.max !== null &&
-                        this.max !== '' &&
-                        dayInfo.date > DateTime.fromISO(this.max)
-                      ) {
-                        return true;
-                      }
-                      return undefined;
-                    })()}
-                    onClick={(event) => {
-                      event.stopPropagation();
-                      const target = event.currentTarget as HTMLElement;
-                      if (this.rangePicker) this.handleRange(target, dayInfo.date);
-                      else this.handleSingleSelection(target, dayInfo.date);
-                    }}
+                    disabled={this.isDateDisabled(dayInfo.date)}
+                    onClick={this.handleCellClick(dayInfo.date)}
                     title={dayInfo.date
                       .setLocale(this.language)
                       .toFormat('cccc d LLLL')
@@ -856,15 +882,7 @@ export class MdsCalendar {
                       variant="dark"
                       tone="text"
                       label={monthName}
-                      onClick={(event) => {
-                        event.stopPropagation();
-                        this.currentDate = this.currentDate.set({ month: index + 1 });
-                        this.currentMonth = this.currentDate.toFormat('MMMM');
-                        this.currentView = 'calendar';
-                        this.updateCalendar().then(() => {
-                          requestAnimationFrame(() => this.setDates());
-                        });
-                      }}
+                      onClick={this.handleMonthSelect(index + 1)}
                     ></mds-button>
                   );
                 })}
@@ -883,15 +901,7 @@ export class MdsCalendar {
                       variant="dark"
                       tone="text"
                       label={`${year}`}
-                      onClick={(event) => {
-                        event.stopPropagation();
-                        this.currentDate = this.currentDate.set({ year });
-                        this.currentYear = year.toString();
-                        this.currentView = 'calendar';
-                        this.updateCalendar().then(() => {
-                          requestAnimationFrame(() => this.setDates());
-                        });
-                      }}
+                      onClick={this.handleYearSelect(year)}
                     ></mds-button>
                   );
                 })}

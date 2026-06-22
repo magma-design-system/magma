@@ -219,6 +219,25 @@ export class MdsInputDate {
       }, 10);
     }
   };
+
+  private readonly handleOpenCalendarClick = (): void => {
+    this.calendarKey += 1;
+  };
+
+  private readonly handleCalendarChange = (
+    ev: CustomEvent<{ startDate: string; endDate?: string }>,
+  ): void => {
+    this.value = ev.detail.startDate;
+
+    if (this.delay === 0) return;
+    const { dropdownRef } = this;
+    if (dropdownRef) {
+      setTimeout(() => {
+        dropdownRef.visible = false;
+      }, this.delay);
+    }
+  };
+
   render() {
     return (
       <Host empty={this.empty}>
@@ -244,9 +263,7 @@ export class MdsInputDate {
               variant="dark"
               tone="text"
               icon={miBaselineCalendarToday}
-              onClick={() => {
-                this.calendarKey += 1;
-              }}
+              onClick={this.handleOpenCalendarClick}
             ></mds-button>
           </div>
         )}
@@ -271,17 +288,7 @@ export class MdsInputDate {
               key={this.calendarKey}
               rangePicker={false}
               lang={this.language}
-              onMdsCalendarChange={(ev) => {
-                this.value = ev.detail.startDate;
-
-                if (this.delay === 0) return;
-                const { dropdownRef } = this;
-                if (dropdownRef) {
-                  setTimeout(() => {
-                    dropdownRef.visible = false;
-                  }, this.delay);
-                }
-              }}
+              onMdsCalendarChange={this.handleCalendarChange}
               startDate={this.value}
               {...(this.min !== null && this.min !== '' ? { min: this.min } : {})}
               {...(this.max !== null && this.max !== '' ? { max: this.max } : {})}

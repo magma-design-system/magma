@@ -65,6 +65,10 @@ export class MdsPolicyAi {
     this.language = this.t.lang(this.host);
   }
 
+  private readonly handleIconClick = (): void => {
+    window.open(this.href, '_blank');
+  };
+
   render() {
     return (
       <Host>
@@ -72,7 +76,7 @@ export class MdsPolicyAi {
           <mds-help
             icon={mggAiChatbot}
             class="icon-help"
-            onClick={() => window.open(this.href, '_blank')}
+            onClick={this.handleIconClick}
             part="icon"
           >
             <div class="icon-tip-content">

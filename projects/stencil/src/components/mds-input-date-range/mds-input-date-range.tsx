@@ -554,6 +554,14 @@ export class MdsInputDateRange {
       .toISODate();
   };
 
+  private readonly handleCalendarPreselect = (): void => {
+    this.checkPreselections();
+  };
+
+  private readonly handleOpenCalendarClick = (): void => {
+    this.calendarKey += 1;
+  };
+
   private renderCalendarPreselectionPanel() {
     if (!this.hasPreselection) return null;
 
@@ -580,9 +588,7 @@ export class MdsInputDateRange {
           key={this.calendarKey}
           rangePicker={true}
           onMdsCalendarChange={this.handleCalendarChange}
-          onMdsCalendarPreselect={() => {
-            this.checkPreselections();
-          }}
+          onMdsCalendarPreselect={this.handleCalendarPreselect}
           startDate={this.internalStartDate}
           endDate={this.internalEndDate}
           {...(this.min !== null && this.min !== '' ? { min: this.min } : {})}
@@ -605,9 +611,7 @@ export class MdsInputDateRange {
           viewDate={this.getCalendarViewDate()}
           onMdsCalendarNavigate={this.handleCalendarNavigate}
           onMdsCalendarChange={this.handleCalendarChange}
-          onMdsCalendarPreselect={() => {
-            this.checkPreselections();
-          }}
+          onMdsCalendarPreselect={this.handleCalendarPreselect}
           startDate={this.internalStartDate}
           endDate={this.internalEndDate}
           {...(this.min !== null && this.min !== '' ? { min: this.min } : {})}
@@ -622,9 +626,7 @@ export class MdsInputDateRange {
           viewDate={this.getCalendarViewDate(1)}
           onMdsCalendarNavigate={this.handleCalendarNavigate}
           onMdsCalendarChange={this.handleCalendarChange}
-          onMdsCalendarPreselect={() => {
-            this.checkPreselections();
-          }}
+          onMdsCalendarPreselect={this.handleCalendarPreselect}
           startDate={this.internalStartDate}
           endDate={this.internalEndDate}
           {...(this.min !== null && this.min !== '' ? { min: this.min } : {})}
@@ -662,9 +664,7 @@ export class MdsInputDateRange {
             tone="text"
             icon={miBaselineCalendarToday}
             id="calendar-dropdown"
-            onClick={() => {
-              this.calendarKey += 1;
-            }}
+            onClick={this.handleOpenCalendarClick}
           ></mds-button>
         </div>
 

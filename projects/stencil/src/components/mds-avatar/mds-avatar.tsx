@@ -111,6 +111,15 @@ export class MdsAvatar {
     if (this.fittyInitialized) this.removeFontResize();
   };
 
+  private readonly handleImgLoadError = (): void => {
+    this.loaded = true;
+    this.fallback = true;
+  };
+
+  private readonly handleImgLoadSuccess = (): void => {
+    this.loaded = true;
+  };
+
   private checkInitialsVariant = (): void => {
     if (this.initials !== undefined && this.initials !== '') {
       let cleanedInitials = this.initials
@@ -222,13 +231,8 @@ export class MdsAvatar {
               <mds-img
                 class="image"
                 loading="lazy"
-                onMdsImgLoadError={() => {
-                  this.loaded = true;
-                  this.fallback = true;
-                }}
-                onMdsImgLoadSuccess={() => {
-                  this.loaded = true;
-                }}
+                onMdsImgLoadError={this.handleImgLoadError}
+                onMdsImgLoadSuccess={this.handleImgLoadSuccess}
                 part="media"
                 src={this.src}
               />
