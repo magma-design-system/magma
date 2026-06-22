@@ -29,8 +29,6 @@ import { ToneMinimalVariantType } from '@type/tone';
 
 import { sanitizeISO8601Date } from '@common/date';
 
-dayjs.extend(relativeTime);
-
 /**
  * @part actions - The actions wrapper
  * @part content - The content wrapper of the message
@@ -135,6 +133,7 @@ export class MdsPushNotificationItem {
   }
 
   componentWillLoad(): void {
+    dayjs.extend(relativeTime);
     this.hasActions = this.host.querySelector(':scope > [slot="action"]') !== null;
     this.hasBadge = this.host.querySelector(':scope > [slot="badge"]') !== null;
 
