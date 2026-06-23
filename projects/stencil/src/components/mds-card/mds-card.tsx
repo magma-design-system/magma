@@ -19,9 +19,9 @@ export class MdsCard {
   @State() layout: string;
 
   /**
-   * Enables automatic responsive behavior based on container queries
+   * Disables the automatic responsive behavior based on container queries
    */
-  @Prop({ reflect: true }) readonly autoGrid: boolean = true;
+  @Prop({ reflect: true }) readonly disableAutoGrid: boolean = false;
 
   componentWillLoad(): void {
     this.layout = Array.from(this.host.children)
@@ -49,7 +49,7 @@ export class MdsCard {
           class={clsx(
             'layout',
             this.layout && `layout--${this.layout}`,
-            !this.autoGrid ? 'layout--disabled' : '',
+            this.disableAutoGrid ? 'layout--disabled' : '',
           )}
           part="layout"
         >
