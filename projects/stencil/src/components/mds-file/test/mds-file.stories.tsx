@@ -15,9 +15,9 @@ export default {
       type: { name: 'string' },
       description: 'Sets a label which is shown when the file is downloaded',
     },
-    'show-downloaded-icon': {
+    'hide-downloaded-icon': {
       type: { name: 'boolean' },
-      description: 'Sets if shows an icon when the file is downloaded',
+      description: 'Hides the icon shown when the file is downloaded',
     },
     filename: {
       type: { name: 'string' },
