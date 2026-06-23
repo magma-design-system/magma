@@ -73,9 +73,9 @@ export class MdsPushNotificationItem {
   @Prop({ reflect: true }) readonly dateFormat: NotificationItemDateFormatType = 'timeago';
 
   /**
-   * Specifies if the component is dismissable or not, it should be set to true by default is used with it's parent component `mds-push-notification-items`
+   * Specifies if the component is dismissable; when set, a dismiss button is shown.
    */
-  @Prop({ reflect: true, mutable: true }) deletable?: boolean = true;
+  @Prop({ reflect: true, mutable: true }) deletable?: boolean = false;
 
   /**
    * Specifies the icon to be displayed

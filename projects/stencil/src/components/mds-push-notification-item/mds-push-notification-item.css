@@ -81,7 +81,7 @@
   transition-timing-function: var(--mds-push-notification-item-timing-function);
 }
 
-:host([deletable]) {
+:host([deletable]:not([deletable='false'])) {
   @apply pr-800;
 }
 
