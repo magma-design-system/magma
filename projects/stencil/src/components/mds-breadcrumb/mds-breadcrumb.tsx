@@ -48,9 +48,9 @@ export class MdsBreadcrumb {
   }
 
   /**
-   * Choose to display or not the back arrow button
+   * Hides the back arrow button
    */
-  @Prop() readonly back?: boolean = true;
+  @Prop() readonly hideBack?: boolean = false;
 
   /**
    * Emits when the breadcrumb is changed
@@ -61,7 +61,7 @@ export class MdsBreadcrumb {
     this.element.querySelectorAll<HTMLMdsBreadcrumbItemElement>('mds-breadcrumb-item');
 
   private updateBackButton = (id: number): void => {
-    if (!this.back) return;
+    if (this.hideBack) return;
     const backElement = this.element.shadowRoot?.querySelector('.back') as HTMLElement;
     if (id === 0) {
       backElement.setAttribute('disabled', '');
@@ -83,7 +83,7 @@ export class MdsBreadcrumb {
       this.updateBackButton(0);
     }
 
-    if (this.back) {
+    if (!this.hideBack) {
       const backElement = this.element.shadowRoot?.querySelector('.back') as HTMLElement;
       this.kb.addElement(backElement);
       this.kb.attachClickBehavior();
@@ -91,7 +91,7 @@ export class MdsBreadcrumb {
   }
 
   componentDidUpdate(): void {
-    if (this.back) {
+    if (!this.hideBack) {
       const backElement = this.element.shadowRoot?.querySelector('.back') as HTMLElement;
       this.kb.addElement(backElement);
       this.kb.attachClickBehavior();
@@ -150,7 +150,7 @@ export class MdsBreadcrumb {
   render() {
     return (
       <Host>
-        {this.back && (
+        {!this.hideBack && (
           <mds-button
             title={this.t.get('back')}
             class="back"
