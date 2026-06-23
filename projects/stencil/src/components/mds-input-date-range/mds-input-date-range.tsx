@@ -671,7 +671,7 @@ export class MdsInputDateRange {
         <mds-dropdown
           ref={(el) => (this.dropdownRef = el as HTMLMdsDropdownElement)}
           target="#calendar-dropdown"
-          auto-placement={false}
+          disable-auto-placement
           placement="bottom-end"
         >
           {this.dualCalendar ? this.renderDualCalendars() : this.renderSingleCalendar()}
