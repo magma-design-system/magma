@@ -1,4 +1,5 @@
-:host([opened][backdrop]) {
+:host([opened]:not([hide-backdrop])),
+:host([opened][hide-backdrop='false']) {
   --private-modal-transition-window-transform: none;
 
   background-color: rgb(var(--mds-modal-overlay-color) / var(--mds-modal-overlay-opacity));
