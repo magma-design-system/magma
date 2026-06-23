@@ -58,9 +58,9 @@ export class MdsHeader {
   @Prop({ reflect: true }) readonly autoHide?: number;
 
   /**
-   * Sets if the backdrop is shown when the mds-header-bar attribute appearace is set to `inline`
+   * Hides the backdrop shown when the mds-header-bar attribute appearace is set to `inline`
    */
-  @Prop({ reflect: true }) readonly backdrop?: boolean = true;
+  @Prop({ reflect: true }) readonly hideBackdrop?: boolean = false;
 
   /**
    * Sets the visibility type of the hamburger menu of mds-header-bar
@@ -263,7 +263,7 @@ export class MdsHeader {
   render() {
     return (
       <Host>
-        {this.backdrop && (
+        {!this.hideBackdrop && (
           <div class="backdrop">
             <div class="backdrop-blur-item"></div>
             <div class="backdrop-blur-item"></div>
