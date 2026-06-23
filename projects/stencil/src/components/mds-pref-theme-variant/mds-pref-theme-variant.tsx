@@ -199,7 +199,6 @@ export class MdsPrefThemeVariant {
           interaction="none"
           visible={this.showDropdown}
           onMdsDropdownHide={this.hideThemeVariantDropdownSelect}
-          autoPlacement
         >
           <slot></slot>
         </mds-dropdown>
