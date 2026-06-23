@@ -3,13 +3,12 @@
 }
 
 .window {
-  @apply gap-0;
-
   background-color: var(--mds-modal-window-background);
   border-radius: var(--mds-modal-window-radius);
   box-shadow: var(--mds-modal-window-shadow);
   box-sizing: border-box;
   display: grid;
+  gap: 0;
   grid-template-columns: repeat(1, minmax(0, 100%));
   margin: var(--mds-modal-window-distance);
   overflow: var(--mds-modal-window-overflow);
