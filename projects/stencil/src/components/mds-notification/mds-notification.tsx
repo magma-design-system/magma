@@ -27,9 +27,9 @@ export class MdsNotification {
   @Prop({ mutable: true, reflect: true }) value = 0;
 
   /**
-   * Specifies if the notification is visible
+   * Specifies if the notification is dismissed
    */
-  @Prop({ mutable: true, reflect: true }) visible = true;
+  @Prop({ mutable: true, reflect: true }) dismissed = false;
 
   /**
    * Specifies the position strategy of the notification
@@ -64,6 +64,7 @@ export class MdsNotification {
   };
 
   private clean = (value: number): string => {
+    if (value === 0 || isNaN(value)) return '';
     if (this.max !== undefined && this.max !== 0 && !Number.isNaN(this.max)) {
       if (value > this.max) {
         return `+${Number(this.max).toLocaleString()}`;
@@ -110,7 +111,7 @@ export class MdsNotification {
     return (
       <Host aria-labelledby={this.target} aria-label={this.value ?? '0'}>
         <mds-text typography="caption" class="dot" aria-hidden="true">
-          {this.value !== 0 && !Number.isNaN(this.value) ? this.clean(this.value) : ''}
+          {this.clean(this.value)}
         </mds-text>
       </Host>
     );
