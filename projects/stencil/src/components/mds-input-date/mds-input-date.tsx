@@ -280,7 +280,7 @@ export class MdsInputDate {
         {!this.isSlotted && (
           <mds-dropdown
             placement="bottom-end"
-            auto-placement={false}
+            disable-auto-placement
             ref={(el) => (this.dropdownRef = el as HTMLMdsDropdownElement)}
             target="#calendar-dropdown"
           >
