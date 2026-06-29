@@ -9,7 +9,9 @@
     "tsc": "tsc -p . --outDir ./dist"
   },
   "files": [
-    "dist"
+    "dist",
+    "AGENTS.md",
+    "agents/"
   ],
   "publishConfig": {
     "access": "public"

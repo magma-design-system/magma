@@ -186,28 +186,13 @@ color: var(--tone-neutral-03);
 
 ## 5. Consumer Application Setup
 
-Minimum required imports for a consumer application:
+Installing Magma into a consumer application (styles, fonts, icons, and component
+registration for plain web components / React / Angular) is documented in its own
+canonical set of specs:
 
-```css
-/* 1. Color tokens — RGB format required */
-@import '@maggioli-design-system/styles/dist/css/colors-rgb-tones.css';
-@import '@maggioli-design-system/styles/dist/css/colors-rgb-status.css';
-@import '@maggioli-design-system/styles/dist/css/colors-rgb-label.css';
-@import '@maggioli-design-system/styles/dist/css/colors-rgb-brand.css';
+- `docs/install/SPEC.md` - entry point: pick a target, version compatibility matrix
+- `docs/install/assets.md` - shared asset setup (styles import order, fonts, icons, identity)
+- `docs/install/web-components.md`, `docs/install/react.md`, `docs/install/angular.md` - per-target install tracks
 
-/* 2. Global design decisions and resets */
-@import '@maggioli-design-system/styles/dist/css/globals.css';
-@import '@maggioli-design-system/styles/dist/css/reset.css';
-
-/* 3. FOUC prevention — must load before components render */
-@import '@maggioli-design-system/styles/dist/css/hydrated.css';
-```
-
-```javascript
-// Register all web components
-import { defineCustomElements } from '@maggioli-design-system/magma/loader';
-defineCustomElements();
-
-// Set icon path — required for mds-icon to work
-window.sessionStorage.setItem('mdsIconSvgPath', 'assets/img/svg/');
-```
+Do not duplicate import lists here - `docs/install/assets.md` is the single source of
+truth for the required CSS imports and cascade-layer order.
