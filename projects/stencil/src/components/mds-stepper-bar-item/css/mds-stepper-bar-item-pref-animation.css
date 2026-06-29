@@ -1,26 +1,23 @@
-:host-context(:root.pref-animation-reduce) {
-  transition-delay: 0s !important;
-  transition-duration: 0s;
+/* Animation preference. Resolves the component's private durations by the flag
+ * --magma-pref-animation-enabled (1 = on, 0 = reduced) published on <html> by
+ * mds-pref-animation. Two duration contexts, both via private mirrors the base
+ * CSS reads:
+ *  - --mds-stepper-bar-item-duaration: host + .icon + .text transitions, and
+ *    the [current] .icon transition-delay (calc(.../2)), so the delay reduces
+ *    to 0 with the duration (no transition-delay !important needed).
+ *  - --mds-stepper-bar-item-transition-duration: the .header transition,
+ *    hoisted from --duration-200 so it can be reduced.
+ * When the flag is absent (mode `system` / no controller) the @media block
+ * follows the OS. */
 
-  .header,
-  .icon,
-  .text {
-    transition-delay: 0s !important;
-    transition-duration: 0s;
-  }
+:host {
+  --private-stepper-bar-item-duaration: calc(var(--mds-stepper-bar-item-duaration) * var(--magma-pref-animation-enabled, 1));
+  --private-stepper-bar-item-transition-duration: calc(var(--mds-stepper-bar-item-transition-duration) * var(--magma-pref-animation-enabled, 1));
 }
 
-@media (prefers-reduced-motion) {
-  :host-context(:root.pref-animation-system),
-  :host-context(:root:not([data-magma-pref])) {
-    transition-delay: 0s !important;
-    transition-duration: 0s;
-
-    .header,
-    .icon,
-    .text {
-      transition-delay: 0s !important;
-      transition-duration: 0s;
-    }
+@media (prefers-reduced-motion: reduce) {
+  :host {
+    --private-stepper-bar-item-duaration: calc(var(--mds-stepper-bar-item-duaration) * var(--magma-pref-animation-enabled, 0));
+    --private-stepper-bar-item-transition-duration: calc(var(--mds-stepper-bar-item-transition-duration) * var(--magma-pref-animation-enabled, 0));
   }
 }

@@ -124,6 +124,7 @@
   --mds-modal-z-index: var(--magma-modal-z-index);
 
   /* private */
+  --private-modal-transition-duration: var(--mds-modal-transition-duration);
   --private-modal-width: calc(100vw - var(--private-modal-window-close-margin));
   --private-modal-custom-opened-transform: translate(0, 0);
   --private-modal-opened-transform: none;
@@ -164,7 +165,7 @@
   perspective: 600px;
   position: fixed;
   transition-behavior: allow-discrete;
-  transition-duration: var(--mds-modal-transition-duration);
+  transition-duration: var(--private-modal-transition-duration);
   transition-property: overlay, display;
   transition-timing-function: var(--mds-modal-transition-timing-funciton);
   width: auto;
@@ -184,7 +185,7 @@
 .dialog::backdrop {
   background-color: rgb(var(--mds-modal-overlay-color) / 0);
   transition-behavior: allow-discrete;
-  transition-duration: var(--mds-modal-transition-duration);
+  transition-duration: var(--private-modal-transition-duration);
   transition-property: background-color, overlay, display;
   transition-timing-function: var(--mds-modal-transition-timing-funciton);
 }

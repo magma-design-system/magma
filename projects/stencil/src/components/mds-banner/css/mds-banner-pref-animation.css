@@ -1,10 +1,18 @@
-:host-context(:root.pref-animation-reduce) {
-  transition-duration: 0s;
+/* Animation preference. Resolves the component's private duration by the flag
+ * --magma-pref-animation-enabled (1 = on, 0 = reduced) published on <html> by
+ * mds-pref-animation. The base CSS reads the inherited private var, so
+ * overriding it on :host is enough (no !important). When the flag is absent
+ * (mode `system` / no controller) the @media block follows the OS.
+ * Note: the original rule only reduced the host transition (the .icon, which
+ * reads the same --mds-banner-transition-duration, was not reduced); that
+ * behaviour is preserved here. */
+
+:host {
+  --private-banner-transition-duration: calc(var(--mds-banner-transition-duration) * var(--magma-pref-animation-enabled, 1));
 }
 
-@media (prefers-reduced-motion) {
-  :host-context(:root.pref-animation-system),
-  :host-context(:root:not([data-magma-pref])) {
-    transition-duration: 0s;
+@media (prefers-reduced-motion: reduce) {
+  :host {
+    --private-banner-transition-duration: calc(var(--mds-banner-transition-duration) * var(--magma-pref-animation-enabled, 0));
   }
 }

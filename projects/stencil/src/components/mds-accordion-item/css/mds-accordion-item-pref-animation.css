@@ -1,22 +1,22 @@
-:host-context(:root.pref-animation-reduce) {
-  --mds-accordion-item-duration: var(--mds-accordion-duration, 0s);
+/* Animation preference, resolved by --magma-pref-animation-enabled (1 = on,
+ * 0 = reduced; published on <html> by mds-pref-animation) with an @media
+ * fallback for `system` / no controller. Two duration contexts, both via
+ * private mirrors the base CSS reads:
+ *  - --mds-accordion-item-duration: the collapsible content (.content / .content-expander).
+ *  - --mds-accordion-item-transition-duration: the host + .icon transitions,
+ *    hoisted from the global --duration-500 so they can be reduced.
+ * Note: the previous rule set the content duration to
+ * var(--mds-accordion-duration, 0s) under reduce (it kept the parent duration
+ * when set); it now resolves to 0 under reduce, the intended behaviour. */
 
-  transition-duration: 0s;
+:host {
+  --private-accordion-item-duration: calc(var(--mds-accordion-item-duration) * var(--magma-pref-animation-enabled, 1));
+  --private-accordion-item-transition-duration: calc(var(--mds-accordion-item-transition-duration) * var(--magma-pref-animation-enabled, 1));
 }
 
-:host-context(:root.pref-animation-reduce) .icon {
-  transition-duration: 0s;
-}
-
-@media (prefers-reduced-motion) {
-  :host-context(:root.pref-animation-system),
-  :host-context(:root:not([data-magma-pref])) {
-    --mds-accordion-item-duration: var(--mds-accordion-duration, 0s);
-
-    transition-duration: 0s;
-
-    .icon {
-      transition-duration: 0s;
-    }
+@media (prefers-reduced-motion: reduce) {
+  :host {
+    --private-accordion-item-duration: calc(var(--mds-accordion-item-duration) * var(--magma-pref-animation-enabled, 0));
+    --private-accordion-item-transition-duration: calc(var(--mds-accordion-item-transition-duration) * var(--magma-pref-animation-enabled, 0));
   }
 }

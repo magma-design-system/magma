@@ -1,12 +1,17 @@
-:host-context(:root.pref-animation-reduce),
-:host-context(:root.pref-animation-reduce) .badge {
-  transition-duration: 0s;
+/* Animation preference. Resolves the component's private duration by the flag
+ * --magma-pref-animation-enabled (1 = on, 0 = reduced) published on <html> by
+ * mds-pref-animation. The base CSS reads the inherited private var, so
+ * overriding it on :host is enough (no !important). When the flag is absent
+ * (mode `system` / no controller) the @media block follows the OS.
+ * Note: the original rule also zeroed a `.badge` element that does not exist in
+ * this component's CSS (a no-op), so it is not carried over. */
+
+:host {
+  --private-usage-transition-duration: calc(var(--mds-usage-transition-duration) * var(--magma-pref-animation-enabled, 1));
 }
 
-@media (prefers-reduced-motion) {
-  :host-context(:root.pref-animation-system),
-  :host-context(:root:not([data-magma-pref])),
-  :host-context(:root:not([data-magma-pref])) .badge {
-    transition-duration: 0s;
+@media (prefers-reduced-motion: reduce) {
+  :host {
+    --private-usage-transition-duration: calc(var(--mds-usage-transition-duration) * var(--magma-pref-animation-enabled, 0));
   }
 }

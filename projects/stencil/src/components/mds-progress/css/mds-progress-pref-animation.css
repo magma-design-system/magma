@@ -1,15 +1,19 @@
-:host-context(:root.pref-animation-reduce),
-:host-context(:root.pref-animation-reduce) .progress {
-  transition-duration: 0s;
+/* Animation preference, resolved by --magma-pref-animation-enabled (1 = on,
+ * 0 = reduced; published on <html> by mds-pref-animation) with an @media
+ * fallback for `system` / no controller. Two duration contexts, both via
+ * private mirrors the base CSS reads:
+ *  - --mds-progress-duration: the .progress bar.
+ *  - --mds-progress-transition-duration: the host transition, hoisted from the
+ *    global --duration-300 so it can be reduced. */
+
+:host {
+  --private-progress-duration: calc(var(--mds-progress-duration) * var(--magma-pref-animation-enabled, 1));
+  --private-progress-transition-duration: calc(var(--mds-progress-transition-duration) * var(--magma-pref-animation-enabled, 1));
 }
 
-@media (prefers-reduced-motion) {
-  :host-context(:root.pref-animation-system),
-  :host-context(:root:not([data-magma-pref])) {
-    transition-duration: 0s;
-
-    .progress {
-      transition-duration: 0s;
-    }
+@media (prefers-reduced-motion: reduce) {
+  :host {
+    --private-progress-duration: calc(var(--mds-progress-duration) * var(--magma-pref-animation-enabled, 0));
+    --private-progress-transition-duration: calc(var(--mds-progress-transition-duration) * var(--magma-pref-animation-enabled, 0));
   }
 }

@@ -10,9 +10,10 @@
 
 :host {
   --mds-zero-contents-max-width: 400px;
+  --mds-zero-transition-duration: var(--duration-200);
+  --private-zero-transition-duration: var(--mds-zero-transition-duration);
 
-  @apply duration-200
-    ease-out
+  @apply ease-out
     mobile:px-600
     rounded-xl;
 
@@ -23,8 +24,7 @@
   gap: --spacing(600);
   justify-items: center;
   padding: --spacing(1200);
-
-  /* transition-duration: var(--transition-duration-200); */
+  transition-duration: var(--private-zero-transition-duration);
   transition-property: box-shadow, background-color;
 }
 

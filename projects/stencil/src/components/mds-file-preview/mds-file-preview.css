@@ -44,6 +44,8 @@
   --mds-file-preview-color: rgb(var(--tone-neutral-03));
   --mds-file-preview-icon-background: inherit;
   --mds-file-preview-icon-color: var(--mds-file-preview-color);
+  --mds-file-preview-transition-duration: 0s;
+  --private-file-preview-transition-duration: var(--mds-file-preview-transition-duration);
 
   align-items: stretch;
   background-color: var(--mds-file-preview-background-color);
@@ -55,6 +57,7 @@
   justify-content: stretch;
   overflow: hidden;
   position: relative;
+  transition-duration: var(--private-file-preview-transition-duration);
 }
 
 .card {
@@ -76,6 +79,7 @@
   color: var(--mds-file-preview-color);
   corner-shape: inherit;
   fill: var(--mds-file-preview-icon-color);
+  transition-duration: inherit;
   width: 100%;
 }
 

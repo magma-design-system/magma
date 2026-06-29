@@ -1,24 +1,19 @@
-:host-context(:root.pref-animation-reduce) {
-  --mds-filter-items-scroll-behavior: auto;
+/* Animation preference. Resolves the component's private duration by the flag
+ * --magma-pref-animation-enabled (1 = on, 0 = reduced) published on <html> by
+ * mds-pref-animation. Only the .items transition has a real duration to reduce
+ * (the old :host / .reset-button gates targeted elements with no transition).
+ * Overriding the inherited private var on :host is enough (no !important).
+ * scroll-behavior is a keyword and cannot be derived from the numeric flag, so
+ * its reduced-motion state lives in a @media block in mds-filter.css. When the
+ * flag is absent (mode `system` / no controller) the @media block follows the
+ * OS. */
 
-  transition-duration: 0s;
-
-  .reset-button,
-  .items {
-    transition-duration: 0s;
-  }
+:host {
+  --private-filter-items-transition-duration: calc(var(--mds-filter-items-transition-duration) * var(--magma-pref-animation-enabled, 1));
 }
 
-@media (prefers-reduced-motion) {
-  :host-context(:root.pref-animation-system),
-  :host-context(:root:not([data-magma-pref])) {
-    --mds-filter-items-scroll-behavior: auto;
-
-    transition-duration: 0s;
-
-    .reset-button,
-    .items {
-      transition-duration: 0s;
-    }
+@media (prefers-reduced-motion: reduce) {
+  :host {
+    --private-filter-items-transition-duration: calc(var(--mds-filter-items-transition-duration) * var(--magma-pref-animation-enabled, 0));
   }
 }

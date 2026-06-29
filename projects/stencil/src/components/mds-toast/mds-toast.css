@@ -58,6 +58,11 @@
   --mds-toast-shadow: var(--shadow-xl);
   --mds-toast-width: auto;
 
+  /* private */
+  --private-toast-transition-duration: var(--mds-toast-duration);
+  --private-toast-transition-duration-intro: var(--duration-500);
+  --private-toast-transition-duration-icon: var(--duration-200);
+
   @apply left-0
   right-0;
 
@@ -80,7 +85,7 @@
   box-shadow: var(--mds-toast-shadow);
   display: inline-flex;
   pointer-events: none;
-  transition-duration: var(--mds-toast-duration);
+  transition-duration: var(--private-toast-transition-duration);
   transition-property: box-shadow, background-color, color, transform;
   width: var(--mds-toast-width);
 }
@@ -132,7 +137,7 @@
 
   fill: var(--mds-toast-icon-color);
   flex-shrink: 0;
-  transition-duration: var(--duration-200);
+  transition-duration: var(--private-toast-transition-duration-icon);
   transition-property: fill;
 }
 

@@ -64,6 +64,10 @@
     0 1px 3px 0 rgb(var(--mds-input-date-range-variant-color-rgb) / 0.1),
     0 1px 2px 0 rgb(var(--mds-input-date-range-variant-color-rgb) / 0.06);
   --mds-input-date-range-variant-color-rgb: 0 0 0;
+  --mds-input-date-range-transition-duration: var(--duration-300);
+
+  /* private */
+  --private-input-date-range-transition-duration: var(--mds-input-date-range-transition-duration);
 
   @apply text-info-detail;
 
@@ -103,7 +107,7 @@
   padding-left: --spacing(400);
   padding-right: --spacing(1200);
   text-overflow: ellipsis;
-  transition-duration: var(--duration-300);
+  transition-duration: var(--private-input-date-range-transition-duration);
   transition-property:
     background-color, border-color, box-shadow, color, fill, margin, opacity, padding, transform;
   transition-timing-function: var(--ease-out-expo);

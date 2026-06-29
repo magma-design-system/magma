@@ -52,26 +52,28 @@
   --mds-price-table-features-cell-icon-unsupported-color-hover: rgb(var(--tone-neutral-06));
   --mds-price-table-features-cell-icon-unsupported-color: rgb(var(--tone-neutral-06));
   --mds-price-table-features-cell-border-color: rgb(var(--tone-neutral-08));
+  --mds-price-table-features-cell-transition-duration: var(--duration-200);
+  --private-price-table-features-cell-transition-duration: var(--mds-price-table-features-cell-transition-duration);
 
-  @apply duration-200
-    ease-out;
+  @apply ease-out;
 
   border-bottom: 1px solid var(--mds-price-table-features-cell-border-color);
   display: table-cell;
   padding: var(--mds-price-table-features-cell-padding);
+  transition-duration: var(--private-price-table-features-cell-transition-duration);
   transition-property: border-color, border-color, transform;
   vertical-align: top;
 }
 
 .icon {
   @apply h-600
-    duration-200
     ease-out
     svg
     w-600;
 
   display: flex;
   fill: var(--icon-fill-color, currentColor);
+  transition-duration: var(--private-price-table-features-cell-transition-duration);
   transition-property: fill;
 }
 

@@ -1,21 +1,18 @@
-:host-context(:root.pref-animation-reduce),
-:host-context(:root.pref-animation-reduce) .pages {
-  --mds-paginator-scroll-behavior: auto;
+/* Animation preference. Resolves the component's private duration by the flag
+ * --magma-pref-animation-enabled (1 = on, 0 = reduced) published on <html> by
+ * mds-pref-animation. The .pages transition (background-color, box-shadow) is
+ * reduced this way; overriding the inherited private var on :host is enough (no
+ * !important). scroll-behavior is a keyword and cannot be derived from the
+ * numeric flag, so its reduced-motion state lives in a @media block in
+ * mds-paginator.css. When the flag is absent (mode `system` / no controller)
+ * the @media block follows the OS. */
 
-  transition-duration: 0s;
+:host {
+  --private-paginator-transition-duration: calc(var(--mds-paginator-transition-duration) * var(--magma-pref-animation-enabled, 1));
 }
 
-@media (prefers-reduced-motion) {
-  :host-context(:root.pref-animation-system),
-  :host-context(:root:not([data-magma-pref])) {
-    --mds-paginator-scroll-behavior: auto;
-
-    transition-duration: 0s;
-
-    .pages {
-      --mds-paginator-scroll-behavior: auto;
-
-      transition-duration: 0s;
-    }
+@media (prefers-reduced-motion: reduce) {
+  :host {
+    --private-paginator-transition-duration: calc(var(--mds-paginator-transition-duration) * var(--magma-pref-animation-enabled, 0));
   }
 }

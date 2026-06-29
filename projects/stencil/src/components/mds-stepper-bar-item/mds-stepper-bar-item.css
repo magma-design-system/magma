@@ -113,6 +113,9 @@
   --mds-stepper-bar-item-header-gap: var(--mds-stepper-bar-gap, --spacing(50));
   --mds-stepper-bar-item-color: rgb(var(--tone-neutral-03));
   --mds-stepper-bar-item-duaration: 250ms;
+  --private-stepper-bar-item-duaration: var(--mds-stepper-bar-item-duaration);
+  --mds-stepper-bar-item-transition-duration: var(--duration-200);
+  --private-stepper-bar-item-transition-duration: var(--mds-stepper-bar-item-transition-duration);
   --mds-stepper-bar-item-icon-background-done: rgb(var(--status-success-05));
   --mds-stepper-bar-item-icon-background-current: rgb(var(--variant-primary-04));
   --mds-stepper-bar-item-icon-background: var(
@@ -139,7 +142,7 @@
   min-width: var(--mds-stepper-bar-item-min-width);
   position: relative;
   scroll-snap-align: center;
-  transition-duration: var(--mds-stepper-bar-item-duaration);
+  transition-duration: var(--private-stepper-bar-item-duaration);
   transition-property: outline, outline-offset, background-color;
 }
 
@@ -182,7 +185,7 @@
   --mds-stepper-bar-item-icon-background: var(--mds-stepper-bar-item-icon-background-current);
   --mds-stepper-bar-item-icon-color: var(--mds-stepper-bar-item-icon-color-current);
 
-  transition-delay: calc(var(--mds-stepper-bar-item-duaration) / 2);
+  transition-delay: calc(var(--private-stepper-bar-item-duaration) / 2);
 }
 
 .header {
@@ -193,7 +196,7 @@
   align-items: center;
   display: flex;
   gap: var(--mds-stepper-bar-item-header-gap);
-  transition-duration: var(--duration-200);
+  transition-duration: var(--private-stepper-bar-item-transition-duration);
   transition-property: outline, outline-offset;
 }
 
@@ -208,7 +211,7 @@
   flex-shrink: 0;
   padding: --spacing(200);
   position: relative;
-  transition-duration: var(--mds-stepper-bar-item-duaration);
+  transition-duration: var(--private-stepper-bar-item-duaration);
   transition-property: background-color, fill;
 }
 
@@ -234,7 +237,7 @@
 
   color: var(--mds-stepper-bar-item-color);
   pointer-events: none;
-  transition-duration: var(--mds-stepper-bar-item-duaration);
+  transition-duration: var(--private-stepper-bar-item-duaration);
   transition-property: color;
 }
 

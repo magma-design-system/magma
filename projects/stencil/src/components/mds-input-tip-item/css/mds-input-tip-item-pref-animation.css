@@ -1,15 +1,16 @@
-:host-context(:root.pref-animation-reduce),
-:host-context(:root.pref-animation-reduce) .content {
-  transition-duration: 0s;
+/* Animation preference, resolved by --magma-pref-animation-enabled (1 = on,
+ * 0 = reduced; published on <html> by mds-pref-animation) with an @media
+ * fallback for `system` / no controller. Two duration contexts (host and
+ * .content), both via private mirrors the base CSS reads. */
+
+:host {
+  --private-input-tip-item-transition-duration: calc(var(--mds-input-tip-item-transition-duration) * var(--magma-pref-animation-enabled, 1));
+  --private-input-tip-item-content-transition-duration: calc(var(--mds-input-tip-item-content-transition-duration) * var(--magma-pref-animation-enabled, 1));
 }
 
-@media (prefers-reduced-motion) {
-  :host-context(:root.pref-animation-system),
-  :host-context(:root:not([data-magma-pref])) {
-    transition-duration: 0s;
-
-    .content {
-      transition-duration: 0s;
-    }
+@media (prefers-reduced-motion: reduce) {
+  :host {
+    --private-input-tip-item-transition-duration: calc(var(--mds-input-tip-item-transition-duration) * var(--magma-pref-animation-enabled, 0));
+    --private-input-tip-item-content-transition-duration: calc(var(--mds-input-tip-item-content-transition-duration) * var(--magma-pref-animation-enabled, 0));
   }
 }

@@ -51,6 +51,8 @@
   --mds-note-fold-size: 40px;
   --mds-note-selection-background: var(--magma-selection-background, rgb(var(--label-yellow-09)));
   --mds-note-selection-color: var(--magma-selection-color, rgb(var(--label-yellow-02)));
+  --mds-note-transition-duration: var(--duration-300);
+  --private-note-transition-duration: var(--mds-note-transition-duration);
 
   @apply ease-in-out
   gap-200
@@ -62,7 +64,7 @@
   display: grid;
   overflow: hidden;
   position: relative;
-  transition-duration: var(--duration-300);
+  transition-duration: var(--private-note-transition-duration);
   transition-property: color, background-color;
 }
 

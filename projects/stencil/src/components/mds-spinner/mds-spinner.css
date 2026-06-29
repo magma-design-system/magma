@@ -26,6 +26,18 @@
   transition-property: opacity, transform;
 }
 
+/* Animation preference: the spinner must keep turning to signal progress, so
+ * reduced motion slows it (8s) rather than freezing it (a 0 duration would). A
+ * floor like this cannot be derived from the numeric --magma-pref-animation-
+ * enabled flag, so it is handled here, cross-browser, via @media following the
+ * OS preference. */
+
+@media (prefers-reduced-motion: reduce) {
+  :host {
+    --mds-spinner-duration: 8s;
+  }
+}
+
 :host([running]) {
   @apply duration-700
     ease-in-out-expo;
@@ -57,6 +69,5 @@
   animation-play-state: running;
 }
 
-@import './css/mds-spinner-pref-animation.css';
 @import './css/mds-spinner-pref-contrast.css';
 @import '../../tailwind/fouc.css';

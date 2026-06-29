@@ -14,13 +14,11 @@
  * @prop --mds-horizontal-scroll-scrollbar-track-background: Sets the background-color of the browser scroll bar track (if supported)
  */
 
-/* ❌ Not supported: scroll-behavior cannot be expressed in @property syntax
 @property --mds-horizontal-scroll-behavior {
   inherits: false;
-  syntax: "auto | smooth";
   initial-value: smooth;
+  syntax: "auto | smooth";
 }
-*/
 
 @property --mds-horizontal-scroll-dots-gap {
   inherits: false;
@@ -149,6 +147,16 @@
   width: 100%;
 }
 
+/* Animation preference: scroll-behavior is a keyword and cannot be derived from
+ * the numeric --magma-pref-animation-enabled flag, so its reduced-motion state
+ * is handled here, cross-browser, via @media following the OS preference. */
+
+@media (prefers-reduced-motion: reduce) {
+  :host {
+    --mds-horizontal-scroll-behavior: auto;
+  }
+}
+
 .navigation {
   border-radius: 1000px;
   display: none;
@@ -223,7 +231,6 @@ right: clamp(calc(var(--mds-horizontal-scroll-gap) / 2), var(--position), var(--
   }
 }
 
-@import './css/mds-horizontal-scroll-pref-animation.css';
 @import './css/mds-horizontal-scroll-controls.css';
 @import './css/mds-horizontal-scroll-dot-navigation.css';
 @import './css/mds-horizontal-scroll-navigation.css';

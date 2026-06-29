@@ -82,7 +82,8 @@
 
 :host {
   --mds-dropdown-arrow-background: var(--mds-dropdown-background);
-  --mds-dropdown-backdrop-duration: 200ms;
+  --private-dropdown-backdrop-duration: 200ms;
+  --mds-dropdown-backdrop-duration: var(--private-dropdown-backdrop-duration);
   --mds-dropdown-backdrop-z-index: var(--magma-backdrop-z-index, 3000);
   --mds-dropdown-background: rgb(var(--tone-neutral));
   --mds-dropdown-drop-shadow-color-rgb: var(--tone-neutral-01);
@@ -92,6 +93,7 @@
     drop-shadow(0 4px 3px rgb(var(--mds-dropdown-drop-shadow-color-rgb) / 0.15))
     drop-shadow(0 0 1px rgb(var(--mds-dropdown-drop-shadow-color-rgb) / 0.15));
   --mds-dropdown-duration: 0.5s;
+  --private-dropdown-duration: var(--mds-dropdown-duration);
   --mds-dropdown-ease: var(--ease-out-expo);
   --mds-dropdown-mouseover-delay: 0.5s;
   --mds-dropdown-transform-from: scale(0.9) translateY(-3%);
@@ -111,7 +113,7 @@
   position: fixed;
   transform: var(--mds-dropdown-transform-from);
   transition-behavior: allow-discrete;
-  transition-duration: var(--mds-dropdown-duration);
+  transition-duration: var(--private-dropdown-duration);
   transition-property: opacity, transform, transform-origin, display;
   transition-timing-function: var(--mds-dropdown-ease);
   z-index: var(--mds-dropdown-z-index);

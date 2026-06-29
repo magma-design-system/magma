@@ -1,12 +1,20 @@
-:host-context(:root.pref-animation-reduce) {
-  --mds-dropdown-backdrop-duration: 0s;
-  --mds-dropdown-duration: 0s;
+/* Animation preference, resolved by --magma-pref-animation-enabled (1 = on,
+ * 0 = reduced; published on <html> by mds-pref-animation) with an @media
+ * fallback for `system` / no controller. Two durations, two shapes:
+ *  - --mds-dropdown-duration is read by CSS, so it stays the public knob and we
+ *    override the private mirror the CSS now reads.
+ *  - --mds-dropdown-backdrop-duration is read by component code (getComputedStyle),
+ *    so the public token itself must hold the resolved value (its source is the
+ *    private --private-dropdown-backdrop-duration). */
+
+:host {
+  --private-dropdown-duration: calc(var(--mds-dropdown-duration) * var(--magma-pref-animation-enabled, 1));
+  --mds-dropdown-backdrop-duration: calc(var(--private-dropdown-backdrop-duration) * var(--magma-pref-animation-enabled, 1));
 }
 
-@media (prefers-reduced-motion) {
-  :host-context(:root.pref-animation-system),
-  :host-context(:root:not([data-magma-pref])) {
-    --mds-dropdown-backdrop-duration: 0s;
-    --mds-dropdown-duration: 0s;
+@media (prefers-reduced-motion: reduce) {
+  :host {
+    --private-dropdown-duration: calc(var(--mds-dropdown-duration) * var(--magma-pref-animation-enabled, 0));
+    --mds-dropdown-backdrop-duration: calc(var(--private-dropdown-backdrop-duration) * var(--magma-pref-animation-enabled, 0));
   }
 }

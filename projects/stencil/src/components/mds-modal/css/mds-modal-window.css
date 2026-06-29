@@ -66,7 +66,7 @@
 .dialog ::slotted([slot='window']) {
   opacity: 0;
   transform: var(--private-modal-transition-window-transform);
-  transition-duration: var(--mds-modal-transition-duration);
+  transition-duration: var(--private-modal-transition-duration);
   transition-property: transform, opacity;
   transition-timing-function: var(--mds-modal-transition-timing-funciton);
 }

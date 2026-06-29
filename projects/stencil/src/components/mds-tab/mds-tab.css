@@ -255,6 +255,7 @@
   --mds-tab-tabs-wrapper-shadow-color: var(--mds-tab-tabs-background);
   --mds-tab-tabs-wrapper-shadow: 0 0 0 2px var(--mds-tab-tabs-wrapper-shadow-color) inset;
   --mds-tab-transition-duration: 0.5s;
+  --private-tab-transition-duration: var(--mds-tab-transition-duration);
   --mds-tab-transition-timing-function: var(--ease-out-expo);
   --mds-tab-corner-shape: var(--magma-corner-shape, round);
 
@@ -264,6 +265,19 @@
   gap: 0 --spacing(600);
   grid-template-rows: min-content auto;
   position: relative;
+}
+
+/* Animation preference: scroll-behavior is a keyword and cannot be derived from
+ * the numeric --magma-pref-animation-enabled flag, so its reduced-motion state
+ * is handled here, cross-browser, via @media. This follows the OS preference
+ * (the in-app explicit override does not reach a keyword). The transition
+ * durations are reduced separately through the flag in
+ * css/mds-tab-pref-animation.css. */
+
+@media (prefers-reduced-motion: reduce) {
+  :host {
+    --mds-tab-scroll-behavior: auto;
+  }
 }
 
 @container style(--mds-tab-corner-shape: round) {
@@ -298,7 +312,7 @@
   padding: var(--mds-tab-tabs-padding);
   scroll-behavior: var(--mds-tab-scroll-behavior);
   scroll-snap-type: x mandatory;
-  transition-duration: var(--mds-tab-transition-duration);
+  transition-duration: var(--private-tab-transition-duration);
   transition-property: background-color;
   transition-timing-function: var(--mds-tab-transition-timing-function);
   z-index: 0;
@@ -328,7 +342,7 @@
   opacity: var(--mds-tab-tabs-wrapper-outline-opacity);
   pointer-events: none;
   position: absolute;
-  transition-duration: var(--mds-tab-transition-duration);
+  transition-duration: var(--private-tab-transition-duration);
   transition-property: box-shadow, opacity;
   transition-timing-function: var(--mds-tab-transition-timing-function);
 }
@@ -348,7 +362,7 @@
   position: relative;
   scroll-behavior: var(--mds-tab-scroll-behavior);
   scroll-snap-type: x mandatory;
-  transition-duration: var(--mds-tab-transition-duration);
+  transition-duration: var(--private-tab-transition-duration);
   transition-property: height;
   transition-timing-function: var(--mds-tab-transition-timing-function);
 }

@@ -5,6 +5,9 @@
  */
 
 :host {
+  --mds-table-header-cell-transition-duration: var(--duration-200);
+  --private-table-header-cell-transition-duration: var(--mds-table-header-cell-transition-duration);
+
   @apply ease-out;
 
   background-color: var(--mds-table-background);
@@ -12,7 +15,7 @@
   border-top: var(--private-cell-border-width) solid transparent !important;
   display: table-cell;
   padding: var(--mds-table-cell-padding);
-  transition-duration: var(--duration-200);
+  transition-duration: var(--private-table-header-cell-transition-duration);
   transition-property: background-color, border-color, color;
   vertical-align: top;
   white-space: nowrap;

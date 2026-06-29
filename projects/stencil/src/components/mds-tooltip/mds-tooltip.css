@@ -81,6 +81,7 @@
   --mds-tooltip-drop-shadow: drop-shadow(0 10px 8px rgb(0 0 0 / 0.04))
     drop-shadow(0 4px 3px rgb(0 0 0 / 0.1)) drop-shadow(0 0 1px rgb(0 0 0 / 0.1));
   --mds-tooltip-duration: 0.5s;
+  --private-tooltip-duration: var(--mds-tooltip-duration);
   --mds-tooltip-ease: var(--ease-out-expo);
   --mds-tooltip-dot-padding: --spacing(100);
   --mds-tooltip-transform-from: scale(0.9) translateY(calc(--spacing(400) * -1));
@@ -102,7 +103,7 @@
   position: fixed;
   transform: var(--mds-tooltip-transform-from);
   transition-delay: 0s;
-  transition-duration: var(--mds-tooltip-duration);
+  transition-duration: var(--private-tooltip-duration);
   transition-property: opacity, transform, transform-origin;
   transition-timing-function: var(--mds-tooltip-ease);
   width: fit-content;

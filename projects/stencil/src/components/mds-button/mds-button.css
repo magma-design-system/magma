@@ -117,6 +117,8 @@
 
 :host {
   --mds-button-await-duration: 0.725s;
+  --mds-button-transition-duration: var(--duration-300);
+  --private-button-transition-duration: var(--mds-button-transition-duration);
   --mds-button-background: rgb(var(--mds-button-border-color-rgb));
   --mds-button-border-color-rgb: var(--variant-primary-02);
   --mds-button-border-hover-opacity: 0.75;
@@ -179,7 +181,7 @@
   flex-shrink: 0;
   justify-content: center;
   pointer-events: none;
-  transition-duration: var(--duration-300);
+  transition-duration: var(--private-button-transition-duration);
   transition-property: fill;
   transition-timing-function: var(--ease-in-out-quad);
 }

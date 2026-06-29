@@ -20,15 +20,28 @@
 :host {
   --mds-paginator-background: rgb(var(--tone-neutral-09));
   --mds-paginator-scroll-behavior: smooth;
+  --mds-paginator-transition-duration: var(--duration-200);
+  --private-paginator-transition-duration: var(--mds-paginator-transition-duration);
 
   align-items: center;
   display: flex;
   gap: --spacing(100);
 }
 
+/* Animation preference: scroll-behavior is a keyword and cannot be derived from
+ * the numeric --magma-pref-animation-enabled flag, so its reduced-motion state
+ * is handled here, cross-browser, via @media (it follows the OS preference).
+ * The .pages transition-duration is reduced separately through the flag in
+ * css/mds-paginator-pref-animation.css. */
+
+@media (prefers-reduced-motion: reduce) {
+  :host {
+    --mds-paginator-scroll-behavior: auto;
+  }
+}
+
 .pages {
-  @apply duration-200
-    hide-scrollbar
+  @apply hide-scrollbar
     ease-in-out
     mx-200
     p-200
@@ -41,6 +54,7 @@
   gap: 2px;
   overflow: auto;
   scroll-behavior: var(--mds-paginator-scroll-behavior);
+  transition-duration: var(--private-paginator-transition-duration);
   transition-property: background-color, box-shadow;
 }
 

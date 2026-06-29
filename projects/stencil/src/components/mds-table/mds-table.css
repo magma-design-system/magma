@@ -60,6 +60,8 @@
 }
 
 :host {
+  --mds-table-transition-duration: var(--duration-300);
+  --private-table-transition-duration: var(--mds-table-transition-duration);
   --mds-table-actions-gap: --spacing(200);
   --mds-table-background-alt: rgb(var(--tone-neutral-10));
   --mds-table-background: rgb(var(--tone-neutral));

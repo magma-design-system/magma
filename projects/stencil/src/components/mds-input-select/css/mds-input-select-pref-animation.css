@@ -1,24 +1,17 @@
-:host-context(:root.pref-animation-reduce) {
-  transition-duration: 0s;
+/* Animation preference. Resolves the component's private durations by the flag
+ * --magma-pref-animation-enabled (1 = on, 0 = reduced) published on <html> by
+ * mds-pref-animation. The base CSS reads the inherited private vars, so
+ * overriding them on :host is enough (no !important). When the flag is absent
+ * (mode `system` / no controller) the @media block follows the OS. */
 
-  .input,
-  .input:hover,
-  .input:focus,
-  .icon {
-    transition-duration: 0s;
-  }
+:host {
+  --private-input-select-transition-duration: calc(var(--mds-input-select-transition-duration) * var(--magma-pref-animation-enabled, 1));
+  --private-input-select-icon-transition-duration: calc(var(--mds-input-select-icon-transition-duration) * var(--magma-pref-animation-enabled, 1));
 }
 
-@media (prefers-reduced-motion) {
-  :host-context(:root.pref-animation-system),
-  :host-context(:root:not([data-magma-pref])) {
-    transition-duration: 0s;
-
-    .input,
-    .input:hover,
-    .input:focus,
-    .icon {
-      transition-duration: 0s;
-    }
+@media (prefers-reduced-motion: reduce) {
+  :host {
+    --private-input-select-transition-duration: calc(var(--mds-input-select-transition-duration) * var(--magma-pref-animation-enabled, 0));
+    --private-input-select-icon-transition-duration: calc(var(--mds-input-select-icon-transition-duration) * var(--magma-pref-animation-enabled, 0));
   }
 }
