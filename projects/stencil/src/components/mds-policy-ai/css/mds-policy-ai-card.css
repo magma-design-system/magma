@@ -10,15 +10,15 @@
 }
 
 .mini-card-icon {
-  @apply -mt-400
-    rounded-2xl
-    rounded-t-none
-    p-100
-    pt-400;
-
   background-color: rgb(var(--variant-ai-05));
+  border-radius: var(--radius-2xl);
+  border-top-left-radius: var(--radius-none);
+  border-top-right-radius: var(--radius-none);
   fill: rgb(var(--variant-ai-10));
   height: --spacing(600);
+  margin-top: --spacing(-400);
+  padding: --spacing(100);
+  padding-top: --spacing(400);
   width: --spacing(600);
 }
 
@@ -45,7 +45,10 @@
   }
 
   .mini-card-icon {
-    @apply -mt-400 rounded-t-none pt-200;
+    border-top-left-radius: var(--radius-none);
+    border-top-right-radius: var(--radius-none);
+    margin-top: --spacing(-400);
+    padding-top: --spacing(200);
   }
 
   .mini-card-button {

@@ -15,13 +15,13 @@
   --mds-price-table-list-transition-duration: var(--duration-200);
   --private-price-table-list-transition-duration: var(--mds-price-table-list-transition-duration);
 
-  @apply ease-in-out
-    gap-600
-    p-600
-    rounded-xl;
+  @apply ease-in-out;
 
   background-color: rgb(var(--label-green-10));
+  border-radius: var(--radius-xl);
   display: grid;
+  gap: --spacing(600);
+  padding: --spacing(600);
   transition-duration: var(--private-price-table-list-transition-duration);
   transition-property: background-color, color;
 }
@@ -39,15 +39,13 @@
 }
 
 .main {
-  @apply gap-300;
-
   display: grid;
+  gap: --spacing(300);
 }
 
 .footer {
-  @apply gap-400;
-
   display: grid;
+  gap: --spacing(400);
 }
 
 @import './css/mds-price-table-list-pref-animation.css';

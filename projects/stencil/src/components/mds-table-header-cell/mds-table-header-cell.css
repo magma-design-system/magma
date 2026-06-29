@@ -22,7 +22,8 @@
 }
 
 .action {
-  @apply px-200 -mx-200;
+  margin-inline: --spacing(-200);
+  padding-inline: --spacing(200);
 }
 
 :host([direction='ascending']) .action,
@@ -37,10 +38,9 @@
 }
 
 .label {
-  @apply h-700;
-
   align-items: center;
   display: inline-flex;
+  height: --spacing(700);
 }
 
 @import './css/mds-table-header-cell-pref-animation.css';

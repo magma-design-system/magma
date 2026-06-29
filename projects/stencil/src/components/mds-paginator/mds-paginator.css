@@ -42,17 +42,17 @@
 
 .pages {
   @apply hide-scrollbar
-    ease-in-out
-    mx-200
-    p-200
-    rounded-full;
+    ease-in-out;
 
   align-items: center;
   background-color: var(--mds-paginator-background);
+  border-radius: var(--radius-full);
   display: flex;
   flex-shrink: 1;
   gap: 2px;
+  margin-inline: --spacing(200);
   overflow: auto;
+  padding: --spacing(200);
   scroll-behavior: var(--mds-paginator-scroll-behavior);
   transition-duration: var(--private-paginator-transition-duration);
   transition-property: background-color, box-shadow;

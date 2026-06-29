@@ -30,8 +30,7 @@
 }
 
 .table-wrapper {
-  @apply scroll-mx-600;
-
+  scroll-margin-inline: --spacing(600);
   width: 100%;
 }
 

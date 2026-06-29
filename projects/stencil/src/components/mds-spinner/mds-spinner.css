@@ -11,19 +11,19 @@
 :host {
   --mds-spinner-duration: 0.725s;
 
-  @apply duration-300
-    ease-in-out-quart
-    h-1200
-    w-1200;
+  @apply ease-in-out-quart;
 
   align-items: center;
   color: rgb(var(--variant-primary-03));
   display: inline-flex;
+  height: --spacing(1200);
   justify-content: center;
   opacity: 0;
   overflow: hidden;
   transform: scale(0);
+  transition-duration: var(--duration-300);
   transition-property: opacity, transform;
+  width: --spacing(1200);
 }
 
 /* Animation preference: the spinner must keep turning to signal progress, so
@@ -39,26 +39,26 @@
 }
 
 :host([running]) {
-  @apply duration-700
-    ease-in-out-expo;
+  @apply ease-in-out-expo;
 
   opacity: 1;
   transform: scale(1);
+  transition-duration: var(--duration-700);
 }
 
 .await-icon {
   @apply animate-spin
-    aspect-square
-    duration-300
-    ease-out
-    w-full;
+    ease-out;
 
   animation-duration: var(--mds-spinner-duration);
   animation-play-state: paused;
+  aspect-ratio: var(--aspect-square);
   display: flex;
   flex-shrink: 0;
   stroke: currentcolor;
+  transition-duration: var(--duration-300);
   transition-property: stroke;
+  width: 100%;
 }
 
 .await-icon svg {

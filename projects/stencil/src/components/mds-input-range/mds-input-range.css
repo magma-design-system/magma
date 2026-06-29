@@ -61,15 +61,13 @@
 }
 
 .track {
-  @apply w-full;
-
   box-sizing: border-box;
   position: absolute;
   width: 100%;
 }
 
 .field {
-  @apply focus-bounce z-20;
+  @apply focus-bounce;
 
   appearance: none;
   background-color: transparent;
@@ -77,6 +75,7 @@
   flex-grow: 1;
   height: --spacing(400);
   margin: 0;
+  z-index: 20;
 }
 
 .field:focus-visible {

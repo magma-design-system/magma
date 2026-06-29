@@ -112,10 +112,8 @@
     calc(var(--mds-notification-size) / var(--mds-notification-translate-offset-y))
   );
 
-  @apply rounded-full
-    z-10;
-
   align-items: center;
+  border-radius: var(--radius-full);
   bottom: 100%;
   color: var(--mds-notification-color);
   display: inline-flex;
@@ -124,6 +122,7 @@
   min-width: max-content;
   pointer-events: none;
   width: var(--mds-notification-size);
+  z-index: 10;
 }
 
 :host([strategy='absolute']),
@@ -146,11 +145,11 @@
 }
 
 .dot {
-  @apply ease-in-out
-    rounded-full;
+  @apply ease-in-out;
 
   align-items: center;
   background-color: var(--mds-notification-dot-background);
+  border-radius: var(--radius-full);
   box-shadow: 0 0 0 var(--mds-notification-ring-size) var(--mds-notification-ring-color);
   box-sizing: border-box;
   display: inline-flex;
@@ -179,9 +178,9 @@
 
 :host([visible='false'][strategy='absolute']),
 :host([visible='false'][strategy='fixed']) {
-  @apply ease-in-cubic
-    opacity-100;
+  @apply ease-in-cubic;
 
+  opacity: 1;
   transform: var(--mds-notification-translate) scale(0);
 }
 
@@ -189,16 +188,15 @@
 :host([visible='true'][strategy='fixed']),
 :host([strategy='absolute']:not([visible='false'])),
 :host([strategy='fixed']:not([visible='false'])) {
-  @apply ease-out-cubic
-    opacity-100;
+  @apply ease-out-cubic;
 
+  opacity: 1;
   transform: var(--mds-notification-translate) scale(1);
 }
 
 :host([strategy='disabled']),
 :host(:not([target])) {
-  @apply opacity-100;
-
+  opacity: 1;
   position: static;
   transform: scale(1);
   transform-origin: unset;

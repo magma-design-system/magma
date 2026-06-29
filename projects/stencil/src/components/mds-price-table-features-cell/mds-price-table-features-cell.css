@@ -66,15 +66,15 @@
 }
 
 .icon {
-  @apply h-600
-    ease-out
-    svg
-    w-600;
+  @apply ease-out
+    svg;
 
   display: flex;
   fill: var(--icon-fill-color, currentColor);
+  height: --spacing(600);
   transition-duration: var(--private-price-table-features-cell-transition-duration);
   transition-property: fill;
+  width: --spacing(600);
 }
 
 .icon--supported {

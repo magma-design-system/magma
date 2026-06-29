@@ -13,12 +13,11 @@
   --mds-zero-transition-duration: var(--duration-200);
   --private-zero-transition-duration: var(--mds-zero-transition-duration);
 
-  @apply ease-out
-    mobile:px-600
-    rounded-xl;
+  @apply ease-out mobile:px-600;
 
   align-items: center;
   background-color: rgb(var(--tone-neutral-10));
+  border-radius: var(--radius-xl);
   display: flex;
   flex-direction: column;
   gap: --spacing(600);
@@ -38,10 +37,9 @@
 }
 
 :host .actions {
-  @apply gap-200;
-
   align-items: center;
   display: flex;
+  gap: --spacing(200);
   justify-items: center;
   width: 100%;
 }

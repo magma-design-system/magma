@@ -123,8 +123,7 @@
   --mds-paginator-item-size: --spacing(900);
 
   @apply ease-out
-  focus-bounce
-  px-300;
+    focus-bounce;
 
   align-items: center;
   background-color: var(--mds-paginator-item-background);
@@ -138,6 +137,7 @@
   height: var(--mds-paginator-item-size);
   justify-content: center;
   min-width: var(--mds-paginator-item-size);
+  padding-inline: --spacing(300);
   transition-duration: var(--private-paginator-item-transition-duration);
   transition-property: background-color, box-shadow, color, outline, outline-offset;
   user-select: none;
@@ -155,7 +155,7 @@
 }
 
 :host([icon]) {
-  @apply p-0;
+  padding: 0;
 }
 
 :host([selected]) {
@@ -175,9 +175,8 @@
 }
 
 .icon {
-  @apply px-0;
-
   fill: currentcolor;
+  padding-inline: 0;
 }
 
 @import './css/mds-paginator-item-pref-animation.css';

@@ -274,11 +274,11 @@
   /* private */
   --mds-tree-toggle-size: --spacing(900);
 
-  @apply duration-200
-    ease-out;
+  @apply ease-out;
 
   border-radius: --spacing(250);
   display: grid;
   padding: --spacing(50);
+  transition-duration: var(--duration-200);
   transition-property: background-color;
 }

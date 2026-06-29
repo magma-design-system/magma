@@ -69,9 +69,8 @@
   --mds-stepper-bar-scrollbar-thumb-background: rgb(var(--tone-neutral-06));
   --mds-stepper-bar-scrollbar-track-background: rgb(var(--tone-neutral-08));
 
-  @apply gap-600;
-
   display: grid;
+  gap: --spacing(600);
   position: relative;
 }
 
@@ -86,9 +85,6 @@
 }
 
 .items {
-  @apply w-full
-    z-10;
-
   align-items: start;
   display: flex;
   flex-grow: 1;
@@ -99,6 +95,8 @@
   position: relative;
   scroll-behavior: var(--mds-stepper-bar-scroll-behavior);
   scroll-snap-type: x mandatory;
+  width: 100%;
+  z-index: 10;
 }
 
 :host([linear='true']) ::slotted(mds-stepper-bar-item),
@@ -111,10 +109,9 @@
 }
 
 .contents {
-  @apply w-full;
-
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 
 @import './css/mds-stepper-bar-navigation.css';

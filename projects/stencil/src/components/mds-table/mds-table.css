@@ -76,8 +76,7 @@
   --private-cell-border-color: var(--mds-table-border-color);
   --private-cell-border-width: var(--mds-table-border-width);
 
-  @apply duration-200
-    ease-out;
+  @apply ease-out;
 
   background-color: var(--mds-table-background-alt);
   border: var(--mds-table-border-width) solid var(--mds-table-border-color) !important;
@@ -86,6 +85,7 @@
   corner-shape: var(--magma-corner-shape, round);
   display: flex;
   overflow: hidden;
+  transition-duration: var(--duration-200);
   transition-property: background-color, border-color, color;
 }
 

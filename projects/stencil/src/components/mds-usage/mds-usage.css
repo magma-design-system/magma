@@ -31,13 +31,10 @@
   --mds-usage-transition-duration: var(--duration-200);
   --private-usage-transition-duration: var(--mds-usage-transition-duration);
 
-  @apply ease-out
-    gap-200
-    p-400
-    pt-0
-    rounded-lg;
+  @apply ease-out;
 
   border-color: var(--mds-usage-border-color);
+  border-radius: var(--radius-lg);
   border-style: solid;
   border-width: --spacing(50);
 
@@ -46,8 +43,11 @@
   container-type: inline-size;
   */
   display: grid;
+  gap: --spacing(200);
   grid-auto-rows: min-content;
   grid-template-columns: minmax(0, 100%);
+  padding: --spacing(400);
+  padding-top: 0;
   position: relative;
   transition-duration: var(--private-usage-transition-duration);
   transition-property: background-color, box-shadow, color;

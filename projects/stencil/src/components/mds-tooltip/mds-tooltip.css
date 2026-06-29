@@ -88,17 +88,16 @@
   --mds-tooltip-transform-to: scale(1) translate(0, 0);
   --mds-tooltip-z-index: var(--magma-tooltip-z-index, 4000);
 
-  @apply gap-400
-    px-200
-    py-100
-    rounded;
-
   background-color: var(--mds-tooltip-background);
+  border-radius: 0.25rem;
   box-sizing: border-box;
   display: grid;
   filter: var(--mds-tooltip-drop-shadow);
+  gap: --spacing(400);
   max-width: --spacing(6400);
   opacity: 0;
+  padding-block: --spacing(100);
+  padding-inline: --spacing(200);
   pointer-events: none;
   position: fixed;
   transform: var(--mds-tooltip-transform-from);
@@ -131,22 +130,21 @@
 }
 
 .arrow {
-  @apply duration-300
-    ease-in-out;
+  @apply ease-in-out;
 
   display: flex;
   fill: var(--mds-tooltip-arrow-background);
   pointer-events: none;
   position: fixed;
   top: -9px;
+  transition-duration: var(--duration-300);
   transition-property: fill;
   z-index: -1;
 }
 
 ::slotted(*) {
-  @apply z-10;
-
   position: relative;
+  z-index: 10;
 }
 
 @import './css/mds-tooltip-pref-animation.css';

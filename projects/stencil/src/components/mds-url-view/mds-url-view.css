@@ -53,18 +53,16 @@
   --mds-url-view-header-shadow: var(--shadow-sm-sharp);
   --mds-url-view-shadow: var(--shadow-lg);
 
-  @apply h-screen
-  p-400;
-
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
+  height: 100vh;
   margin: 0;
+  padding: --spacing(400);
 }
 
 .window {
-  @apply ease-out
-  w-full;
+  @apply ease-out;
 
   background-color: var(--mds-url-view-background);
   border-radius: var(--mds-url-view-radius);
@@ -75,12 +73,11 @@
   overflow: hidden;
   transition-duration: var(--private-url-view-transition-duration);
   transition-property: background-color, box-shadow;
+  width: 100%;
 }
 
 .header {
-  @apply ease-out
-  gap-200
-  p-200;
+  @apply ease-out;
 
   align-items: center;
   background-color: var(--mds-url-view-background);
@@ -88,17 +85,19 @@
   color: var(--mds-url-view-color);
   display: flex;
   flex-shrink: 0;
+  gap: --spacing(200);
   justify-content: space-between;
+  padding: --spacing(200);
   position: relative;
   transition-duration: var(--private-url-view-transition-duration);
   transition-property: background-color, box-shadow;
 }
 
 .title {
-  @apply min-w-0
-  truncate;
+  @apply truncate;
 
   flex-grow: 1;
+  min-width: 0;
   text-align: center;
 }
 

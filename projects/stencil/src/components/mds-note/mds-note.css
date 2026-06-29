@@ -54,15 +54,15 @@
   --mds-note-transition-duration: var(--duration-300);
   --private-note-transition-duration: var(--mds-note-transition-duration);
 
-  @apply ease-in-out
-  gap-200
-  p-600
-  rounded;
+  @apply ease-in-out;
 
   background-color: var(--mds-note-background);
+  border-radius: 0.25rem;
   color: var(--mds-note-color);
   display: grid;
+  gap: --spacing(200);
   overflow: hidden;
+  padding: --spacing(600);
   position: relative;
   transition-duration: var(--private-note-transition-duration);
   transition-property: color, background-color;
@@ -74,42 +74,40 @@
 }
 
 :host([deletable]:not([deletable='false'])) {
-  @apply pr-1600;
+  padding-right: --spacing(1600);
 }
 
 :host([deletable]:not([deletable='false'])) .button-close {
-  @apply right-400
-  top-400;
-
   position: absolute;
+  right: --spacing(400);
+  top: --spacing(400);
 }
 
 .fold {
-  @apply h-0
-  opacity-40
-  w-0;
-
   border-color: transparent transparent var(--mds-note-fold-color) transparent;
   border-style: solid;
   border-width: 0 0 var(--mds-note-fold-size) var(--mds-note-fold-size);
   bottom: 0;
   display: block;
   filter: drop-shadow(0 0 var(--mds-note-fold-size) var(--mds-note-color));
+  height: 0;
+  opacity: 0.4;
   pointer-events: none;
   position: absolute;
   right: 0;
   transition-duration: inherit;
   transition-property: border;
+  width: 0;
 }
 
 .button-close {
-  @apply ease-out
-  p-100
-  rounded-full;
+  @apply ease-out;
 
   background-color: transparent;
+  border-radius: var(--radius-full);
   cursor: pointer;
   fill: var(--mds-note-color);
+  padding: --spacing(100);
   transition-duration: var(--duration-200);
   transition-property: background-color, fill, outline, outline-offset;
 }
@@ -119,10 +117,9 @@
 }
 
 .title {
-  @apply gap-400;
-
   align-items: flex-start;
   display: flex;
+  gap: --spacing(400);
 }
 
 .title .button-close {

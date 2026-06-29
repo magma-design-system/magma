@@ -130,8 +130,6 @@
   --mds-stepper-bar-item-progress-color: rgb(var(--status-success-04));
   --mds-stepper-bar-item-progress-thickness: var(--height-200);
 
-  @apply gap-400;
-
   align-items: flex-start;
   border-radius: var(--radius-xl);
   display: grid;
@@ -139,6 +137,7 @@
   flex-direction: column;
   flex-grow: 1;
   flex-shrink: 0;
+  gap: --spacing(400);
   min-width: var(--mds-stepper-bar-item-min-width);
   position: relative;
   scroll-snap-align: center;
@@ -157,7 +156,7 @@
 } */
 
 :host(:last-of-type) {
-  @apply basis-100;
+  flex-basis: --spacing(100);
 }
 
 :host(:last-of-type) .progress {
@@ -189,23 +188,22 @@
 }
 
 .header {
-  @apply ease-out
-  rounded-md
-  w-full;
+  @apply ease-out;
 
   align-items: center;
+  border-radius: var(--radius-md);
   display: flex;
   gap: var(--mds-stepper-bar-item-header-gap);
   transition-duration: var(--private-stepper-bar-item-transition-duration);
   transition-property: outline, outline-offset;
+  width: 100%;
 }
 
 .icon {
-  @apply ease-in-out
-  duration-150
-  rounded-full;
+  @apply ease-in-out;
 
   background-color: var(--mds-stepper-bar-item-icon-background);
+  border-radius: var(--radius-full);
   display: flex;
   fill: var(--mds-stepper-bar-item-icon-color);
   flex-shrink: 0;
@@ -225,15 +223,13 @@
 }
 
 .infos {
-  @apply gap-100
-  pl-100;
-
   display: grid;
+  gap: --spacing(100);
+  padding-left: --spacing(100);
 }
 
 .text {
-  @apply ease-in-out
-  duration-150;
+  @apply ease-in-out;
 
   color: var(--mds-stepper-bar-item-color);
   pointer-events: none;
@@ -242,14 +238,12 @@
 }
 
 .badge {
-  @apply rounded-full;
-
+  border-radius: var(--radius-full);
   pointer-events: none;
 }
 
 .step {
-  @apply rounded-full;
-
+  border-radius: var(--radius-full);
   color: rgb(var(--tone-neutral-04));
   pointer-events: none;
 }
