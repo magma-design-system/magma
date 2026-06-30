@@ -1,4 +1,5 @@
 import { Locale } from '@common/locale';
+import { subscribePreference } from '@common/preference';
 import miBaselineKeyboardArrowDown from '@icon/mi/baseline/keyboard-arrow-down.svg';
 import {
   AttachInternals,
@@ -30,6 +31,14 @@ import { ThemeStatusVariantType } from '@type/variant';
 export class MdsInputSelect {
   private selectEl: HTMLSelectElement;
   @Element() host: HTMLMdsInputSelectElement;
+  @State() prefAnimation?: string;
+  private unsubscribePrefAnimation?: () => void;
+  @State() prefContrast?: string;
+  private unsubscribePrefContrast?: () => void;
+  @State() prefTheme?: string;
+  private unsubscribePrefTheme?: () => void;
+  @State() prefThemeScheme?: string;
+  private unsubscribePrefThemeScheme?: () => void;
   // @State() selected: boolean
   @State() hasFocus = false;
   @State() language: string;
@@ -162,6 +171,28 @@ export class MdsInputSelect {
     this.internals.setFormValue('');
   }
 
+  connectedCallback(): void {
+    this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
+      this.prefAnimation = value;
+    });
+    this.unsubscribePrefContrast = subscribePreference('contrast', (value) => {
+      this.prefContrast = value;
+    });
+    this.unsubscribePrefTheme = subscribePreference('theme', (value) => {
+      this.prefTheme = value;
+    });
+    this.unsubscribePrefThemeScheme = subscribePreference('theme-scheme', (value) => {
+      this.prefThemeScheme = value;
+    });
+  }
+
+  disconnectedCallback(): void {
+    this.unsubscribePrefAnimation?.();
+    this.unsubscribePrefContrast?.();
+    this.unsubscribePrefTheme?.();
+    this.unsubscribePrefThemeScheme?.();
+  }
+
   componentWillLoad(): void {
     this.language = this.t.lang(this.host);
     // needed for react component, this prop should be used as default-value html attributo instead of defaultValue prop
@@ -246,7 +277,12 @@ export class MdsInputSelect {
 
   render() {
     return (
-      <Host>
+      <Host
+        pref-animation={this.prefAnimation}
+        pref-contrast={this.prefContrast}
+        pref-theme={this.prefTheme}
+        pref-theme-scheme={this.prefThemeScheme}
+      >
         <select
           class="input"
           onInput={this.onInput.bind(this)}

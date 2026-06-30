@@ -1,4 +1,5 @@
 import { Component, Element, Host, h, State, Prop } from '@stencil/core';
+import { subscribePreference } from '@common/preference';
 import clsx from 'clsx';
 
 /**
@@ -16,12 +17,36 @@ import clsx from 'clsx';
 })
 export class MdsCard {
   @Element() private host: HTMLMdsCardElement;
+  @State() prefContrast?: string;
+  private unsubscribePrefContrast?: () => void;
+  @State() prefTheme?: string;
+  private unsubscribePrefTheme?: () => void;
+  @State() prefThemeScheme?: string;
+  private unsubscribePrefThemeScheme?: () => void;
   @State() layout: string;
 
   /**
    * Enables automatic responsive behavior based on container queries
    */
   @Prop({ reflect: true }) readonly autoGrid: boolean = true;
+
+  connectedCallback(): void {
+    this.unsubscribePrefContrast = subscribePreference('contrast', (value) => {
+      this.prefContrast = value;
+    });
+    this.unsubscribePrefTheme = subscribePreference('theme', (value) => {
+      this.prefTheme = value;
+    });
+    this.unsubscribePrefThemeScheme = subscribePreference('theme-scheme', (value) => {
+      this.prefThemeScheme = value;
+    });
+  }
+
+  disconnectedCallback(): void {
+    this.unsubscribePrefContrast?.();
+    this.unsubscribePrefTheme?.();
+    this.unsubscribePrefThemeScheme?.();
+  }
 
   componentWillLoad(): void {
     this.layout = Array.from(this.host.children)
@@ -41,7 +66,11 @@ export class MdsCard {
 
   render() {
     return (
-      <Host>
+      <Host
+        pref-contrast={this.prefContrast}
+        pref-theme={this.prefTheme}
+        pref-theme-scheme={this.prefThemeScheme}
+      >
         <div
           class={clsx(
             'layout',

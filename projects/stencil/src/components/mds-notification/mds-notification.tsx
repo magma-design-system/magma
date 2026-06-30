@@ -1,4 +1,5 @@
-import { Component, Element, Host, h, Prop, Watch } from '@stencil/core';
+import { Component, Element, Host, h, Prop, State, Watch } from '@stencil/core';
+import { subscribePreference } from '@common/preference';
 import { autoUpdate, computePosition, Middleware, offset, shift } from '@floating-ui/dom';
 import { FloatingUIPlacement, FloatingUIStrategy } from '@type/floating-ui';
 import { StrategyType } from './meta/types';
@@ -11,6 +12,8 @@ import { StrategyType } from './meta/types';
 export class MdsNotification {
   private caller: HTMLElement;
   @Element() private host: HTMLMdsNotificationElement;
+  @State() prefAnimation?: string;
+  private unsubscribePrefAnimation?: () => void;
   private cleanupAutoUpdate: () => void;
 
   // We should change in the future this approach when it will be fully supported by main browsers
@@ -73,6 +76,12 @@ export class MdsNotification {
     return Number(value).toLocaleString();
   };
 
+  connectedCallback(): void {
+    this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
+      this.prefAnimation = value;
+    });
+  }
+
   componentDidRender(): void {
     if (!this.target) {
       this.strategy = 'disabled';
@@ -96,6 +105,7 @@ export class MdsNotification {
   }
 
   disconnectedCallback(): void {
+    this.unsubscribePrefAnimation?.();
     this.cleanupAutoUpdate = (): void => {};
   }
 
@@ -108,7 +118,11 @@ export class MdsNotification {
 
   render() {
     return (
-      <Host aria-labelledby={this.target} aria-label={this.value ?? '0'}>
+      <Host
+        aria-labelledby={this.target}
+        aria-label={this.value ?? '0'}
+        pref-animation={this.prefAnimation}
+      >
         <mds-text typography="caption" class="dot" aria-hidden="true">
           {this.value ? this.clean(this.value) : ''}
         </mds-text>

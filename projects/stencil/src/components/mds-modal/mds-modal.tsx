@@ -9,6 +9,7 @@ import {
   h,
   Prop,
   Watch,
+  State,
 } from '@stencil/core';
 import {
   ModalPositionType,
@@ -17,6 +18,7 @@ import {
   ModalInteractionType,
 } from './meta/types';
 import { cssDurationToMilliseconds } from '@common/unit';
+import { subscribePreference } from '@common/preference';
 import miBaselineClose from '@icon/mi/baseline/close.svg';
 
 /**
@@ -52,6 +54,14 @@ export class MdsModal {
   private touchMargin: number = 50;
 
   @Element() host: HTMLMdsModalElement;
+  @State() prefAnimation?: string;
+  private unsubscribePrefAnimation?: () => void;
+  @State() prefContrast?: string;
+  private unsubscribePrefContrast?: () => void;
+  @State() prefTheme?: string;
+  private unsubscribePrefTheme?: () => void;
+  @State() prefThemeScheme?: string;
+  private unsubscribePrefThemeScheme?: () => void;
 
   /**
    * Specifies if the modal is opened or not
@@ -253,7 +263,26 @@ export class MdsModal {
     }
   }
 
+  connectedCallback(): void {
+    this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
+      this.prefAnimation = value;
+    });
+    this.unsubscribePrefContrast = subscribePreference('contrast', (value) => {
+      this.prefContrast = value;
+    });
+    this.unsubscribePrefTheme = subscribePreference('theme', (value) => {
+      this.prefTheme = value;
+    });
+    this.unsubscribePrefThemeScheme = subscribePreference('theme-scheme', (value) => {
+      this.prefThemeScheme = value;
+    });
+  }
+
   disconnectedCallback(): void {
+    this.unsubscribePrefAnimation?.();
+    this.unsubscribePrefContrast?.();
+    this.unsubscribePrefTheme?.();
+    this.unsubscribePrefThemeScheme?.();
     this.enableOverflow();
     clearTimeout(this.animationDelayTimeout);
     if (this.windowElement) {
@@ -342,7 +371,12 @@ export class MdsModal {
 
   render() {
     return (
-      <Host>
+      <Host
+        pref-animation={this.prefAnimation}
+        pref-contrast={this.prefContrast}
+        pref-theme={this.prefTheme}
+        pref-theme-scheme={this.prefThemeScheme}
+      >
         <dialog
           class="dialog"
           part="dialog"

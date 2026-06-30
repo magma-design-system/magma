@@ -21,6 +21,7 @@ import { TypographyInfoType, TypographyReadType, TypographyVariants } from '@typ
 import { inputSwitchIconVariant } from './meta/variants';
 import { hasSlotted } from '@common/slot';
 import { Locale } from '@common/locale';
+import { subscribePreference } from '@common/preference';
 import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.es.json';
@@ -39,6 +40,10 @@ import localeIt from './meta/locale.it.json';
 export class MdsInputSwitch {
   @AttachInternals() internals: ElementInternals;
   @Element() host: HTMLMdsInputSwitchElement;
+  @State() prefTheme?: string;
+  private unsubscribePrefTheme?: () => void;
+  @State() prefThemeScheme?: string;
+  private unsubscribePrefThemeScheme?: () => void;
   private km = new KeyboardManager();
   private label: string;
   @State() dirty = false;
@@ -209,6 +214,20 @@ export class MdsInputSwitch {
     this.internals.setFormValue('');
   }
 
+  connectedCallback(): void {
+    this.unsubscribePrefTheme = subscribePreference('theme', (value) => {
+      this.prefTheme = value;
+    });
+    this.unsubscribePrefThemeScheme = subscribePreference('theme-scheme', (value) => {
+      this.prefThemeScheme = value;
+    });
+  }
+
+  disconnectedCallback(): void {
+    this.unsubscribePrefTheme?.();
+    this.unsubscribePrefThemeScheme?.();
+  }
+
   componentDidLoad(): void {
     this.language = this.t.lang(this.host);
     this.label = this.host.textContent ?? '';
@@ -222,7 +241,11 @@ export class MdsInputSwitch {
     const iconCheckedUser = this.icon !== '' ? this.icon : iconChecked;
 
     return (
-      <Host onClick={this.handleDirty}>
+      <Host
+        onClick={this.handleDirty}
+        pref-theme={this.prefTheme}
+        pref-theme-scheme={this.prefThemeScheme}
+      >
         <input
           autoFocus={this.autofocus}
           checked={this.checked}

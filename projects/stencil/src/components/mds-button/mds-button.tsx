@@ -5,7 +5,7 @@ import {
   ButtonType,
   ButtonVariantType,
 } from '@type/button';
-import { Component, Host, Element, h, Prop, Watch, AttachInternals } from '@stencil/core';
+import { Component, Host, Element, h, Prop, State, Watch, AttachInternals } from '@stencil/core';
 import { KeyboardManager } from '@common/keyboard-manager';
 import { ToneBoxVariantType } from '@type/tone';
 
@@ -15,6 +15,7 @@ import { setAttributeIfEmpty, unslugName } from '@common/aria';
 import { isIconFormatIsBase64, isIconFormatIsSVG } from '@common/icon';
 import { TypographyTruncateType } from '@type/text';
 import { readSlottedLabel, sanitizeLabel } from '@common/slot';
+import { subscribePreference } from '@common/preference';
 import mdiApple from '@icon/mdi/apple.svg';
 import logoGoogle from './asset/logo-google.svg';
 import { TextAnimationType } from '@component/mds-text/meta/types';
@@ -37,6 +38,8 @@ export class MdsButton {
   private km = new KeyboardManager();
 
   @Element() host: HTMLMdsButtonElement;
+  @State() prefAnimation?: string;
+  private unsubscribePrefAnimation?: () => void;
 
   @AttachInternals() internals: ElementInternals;
 
@@ -272,10 +275,14 @@ export class MdsButton {
   }
 
   connectedCallback(): void {
+    this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
+      this.prefAnimation = value;
+    });
     if (!this.disabled) this.host.removeAttribute('disabled');
   }
 
   disconnectedCallback(): void {
+    this.unsubscribePrefAnimation?.();
     this.km.detachClickBehavior();
   }
 
@@ -293,6 +300,7 @@ export class MdsButton {
         onMouseUp={this.mouseUp}
         onMouseOut={this.mouseUp}
         tabindex="0"
+        pref-animation={this.prefAnimation}
       >
         <div class="await">
           <mds-spinner class="spinner" running={this.await} />

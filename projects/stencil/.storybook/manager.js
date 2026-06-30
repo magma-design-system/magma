@@ -17,9 +17,6 @@ const AccessibilityPanel = () => {
 
       if (value === 'unset') {
         htmlEl.style.removeProperty(`--magma-pref-${preference}`);
-        if (preference === 'animation') {
-          htmlEl.style.removeProperty('--magma-pref-animation-enabled');
-        }
 
         list.forEach((value) => {
           htmlEl.classList.remove(`pref-${preference}-${value}`);
@@ -32,18 +29,6 @@ const AccessibilityPanel = () => {
         htmlEl.classList.remove(`pref-${preference}-${list[key]}`);
       }
       htmlEl.style.setProperty(`--magma-pref-${preference}`, value);
-      // Resolved 0/1 flag, mirroring mds-pref-animation: removed on `system`
-      // so the @media (prefers-reduced-motion) fallback decides.
-      if (preference === 'animation') {
-        if (value === 'system') {
-          htmlEl.style.removeProperty('--magma-pref-animation-enabled');
-        } else {
-          htmlEl.style.setProperty(
-            '--magma-pref-animation-enabled',
-            value === 'reduce' ? '0' : '1',
-          );
-        }
-      }
       htmlEl.classList.add(`pref-${preference}-${value}`);
       window.localStorage.setItem(`mdsPref${capitalize(preference)}`, value);
     }

@@ -1,16 +1,17 @@
-/* Animation preference. Resolves the component's private duration by the flag
- * --magma-pref-animation-enabled (1 = on, 0 = reduced) published on <html> by
- * mds-pref-animation. Overriding the inherited private var on :host is enough:
- * every transition-duration in the component reads it, so no !important is
- * needed. When the flag is absent (mode `system` or no controller) the @media
- * block makes the component follow the OS. */
+/* Animation preference. The component mirrors the resolved mode from <html>
+ * onto its host as pref-animation (see subscribePreference in @common/preference);
+ * these plain shadow selectors then zero the private duration(s) the base CSS
+ * reads. `reduce` always stops; `system` and no controller follow the OS via
+ * @media; `no-preference` keeps the base value. Customization composes (the base
+ * sets --private from the public token, this only overrides it when reduced). */
 
-:host {
-  --private-modal-transition-duration: calc(var(--mds-modal-transition-duration) * var(--magma-pref-animation-enabled, 1));
+:host([pref-animation='reduce']) {
+  --private-modal-transition-duration: 0s;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  :host {
-    --private-modal-transition-duration: calc(var(--mds-modal-transition-duration) * var(--magma-pref-animation-enabled, 0));
+  :host([pref-animation='system']),
+  :host(:not([pref-animation])) {
+    --private-modal-transition-duration: 0s;
   }
 }

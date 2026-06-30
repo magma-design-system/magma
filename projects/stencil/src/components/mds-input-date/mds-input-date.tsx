@@ -14,6 +14,7 @@ import {
 import miBaselineCalendarToday from '@icon/mi/baseline/calendar-today.svg';
 import { DateTime } from 'luxon';
 import { Locale } from '@common/locale';
+import { subscribePreference } from '@common/preference';
 import { ThemeInputVariantType } from '@type/variant';
 import { MdsValidationErrors } from 'src/components';
 
@@ -26,6 +27,14 @@ import { MdsValidationErrors } from 'src/components';
 })
 export class MdsInputDate {
   @Element() host: HTMLMdsInputDateElement;
+  @State() prefAnimation?: string;
+  private unsubscribePrefAnimation?: () => void;
+  @State() prefContrast?: string;
+  private unsubscribePrefContrast?: () => void;
+  @State() prefTheme?: string;
+  private unsubscribePrefTheme?: () => void;
+  @State() prefThemeScheme?: string;
+  private unsubscribePrefThemeScheme?: () => void;
   @AttachInternals() internals: ElementInternals;
   private isSlotted: boolean = false;
   @State() isValid: boolean;
@@ -152,6 +161,28 @@ export class MdsInputDate {
     this.internals.setFormValue('');
   }
 
+  connectedCallback(): void {
+    this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
+      this.prefAnimation = value;
+    });
+    this.unsubscribePrefContrast = subscribePreference('contrast', (value) => {
+      this.prefContrast = value;
+    });
+    this.unsubscribePrefTheme = subscribePreference('theme', (value) => {
+      this.prefTheme = value;
+    });
+    this.unsubscribePrefThemeScheme = subscribePreference('theme-scheme', (value) => {
+      this.prefThemeScheme = value;
+    });
+  }
+
+  disconnectedCallback(): void {
+    this.unsubscribePrefAnimation?.();
+    this.unsubscribePrefContrast?.();
+    this.unsubscribePrefTheme?.();
+    this.unsubscribePrefThemeScheme?.();
+  }
+
   componentWillLoad(): void {
     this.isSlotted = !!this.host.getAttribute('slot');
     this.value = this.value || '';
@@ -195,7 +226,12 @@ export class MdsInputDate {
   };
   render() {
     return (
-      <Host>
+      <Host
+        pref-animation={this.prefAnimation}
+        pref-contrast={this.prefContrast}
+        pref-theme={this.prefTheme}
+        pref-theme-scheme={this.prefThemeScheme}
+      >
         <input
           value={this.value}
           id="dateInput"

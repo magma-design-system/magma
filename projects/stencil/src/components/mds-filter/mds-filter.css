@@ -95,9 +95,8 @@
 }
 
 /* Animation preference: scroll-behavior is a keyword and cannot be derived from
- * the numeric --magma-pref-animation-enabled flag, so its reduced-motion state
  * is handled here, cross-browser, via @media (it follows the OS preference).
- * The .items transition-duration is reduced separately through the flag in
+ * The .items transition-duration is reduced separately in
  * css/mds-filter-pref-animation.css. */
 
 @media (prefers-reduced-motion: reduce) {

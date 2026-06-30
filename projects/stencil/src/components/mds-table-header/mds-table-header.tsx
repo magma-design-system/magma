@@ -1,5 +1,6 @@
 import { Component, Host, h, Element, State, Method, Prop } from '@stencil/core';
 import { Locale } from '@common/locale';
+import { subscribePreference } from '@common/preference';
 import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.es.json';
@@ -17,6 +18,8 @@ import { MdsInputSwitchEventDetail } from '@component/mds-input-switch/meta/even
 })
 export class MdsTableHeader {
   @Element() host: HTMLMdsTableHeaderElement;
+  @State() prefAnimation?: string;
+  private unsubscribePrefAnimation?: () => void;
   private table: HTMLMdsTableElement;
   private checkboxEl: HTMLMdsInputSwitchElement;
   @State() selectAll: boolean = false;
@@ -51,6 +54,16 @@ export class MdsTableHeader {
     this.checkboxEl.checked = selectedItems === totalItems;
   }
 
+  connectedCallback(): void {
+    this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
+      this.prefAnimation = value;
+    });
+  }
+
+  disconnectedCallback(): void {
+    this.unsubscribePrefAnimation?.();
+  }
+
   componentWillLoad(): void {
     this.language = this.t.lang(this.host);
     this.table = this.host.closest('mds-table') as HTMLMdsTableElement;
@@ -69,7 +82,7 @@ export class MdsTableHeader {
 
   render() {
     return (
-      <Host role="row">
+      <Host role="row" pref-animation={this.prefAnimation}>
         {this.selectable && (
           <mds-table-cell class="selection" role="columnheader">
             <div class="checkbox-wrapper">

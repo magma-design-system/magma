@@ -70,8 +70,8 @@ video {
 
 /* Animation preference: an autoplaying video is motion that cannot be reduced
  * by scaling a duration, so reduced motion hides it. This is handled here,
- * cross-browser, via @media following the OS preference (the numeric
- * --magma-pref-animation-enabled flag cannot toggle display). */
+ * cross-browser, via @media following the OS preference (a custom property
+ * cannot toggle display). */
 
 @media (prefers-reduced-motion: reduce) {
   video {

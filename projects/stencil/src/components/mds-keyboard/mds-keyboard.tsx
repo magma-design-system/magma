@@ -4,6 +4,7 @@ import miBaselineKeyboard from '@icon/mi/baseline/keyboard.svg';
 import miBaselineDone from '@icon/mi/baseline/done.svg';
 import miBaselineClose from '@icon/mi/baseline/close.svg';
 import { Locale } from '@common/locale';
+import { subscribePreference } from '@common/preference';
 import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.es.json';
@@ -18,6 +19,10 @@ import { KeyboardTest } from './meta/type';
 })
 export class MdsKeyboard {
   @Element() private host: HTMLMdsKeyboardElement;
+  @State() prefTheme?: string;
+  private unsubscribePrefTheme?: () => void;
+  @State() prefThemeScheme?: string;
+  private unsubscribePrefThemeScheme?: () => void;
   private nodes: Node[];
   private errors: Set<string> = new Set();
   private filteredNodes: Element[];
@@ -51,6 +56,26 @@ export class MdsKeyboard {
    */
   @Prop({ reflect: true }) readonly try?: boolean;
 
+  connectedCallback(): void {
+    this.unsubscribePrefTheme = subscribePreference('theme', (value) => {
+      this.prefTheme = value;
+    });
+    this.unsubscribePrefThemeScheme = subscribePreference('theme-scheme', (value) => {
+      this.prefThemeScheme = value;
+    });
+  }
+
+  disconnectedCallback(): void {
+    this.unsubscribePrefTheme?.();
+    this.unsubscribePrefThemeScheme?.();
+    // Tear down the keyboard test only if it was initialized; otherwise
+    // buttonTrigger/shortcutsEl are undefined and this would throw. (This used
+    // to live in a misspelled `discottectedCallback`, so it never ran.)
+    if (this.testInit) {
+      this.stopKeyboardShortcutTest();
+    }
+  }
+
   componentWillLoad(): void {
     this.t.lang(this.host);
   }
@@ -73,9 +98,6 @@ export class MdsKeyboard {
       '.combination-checker',
     ) as HTMLMdsButtonElement;
     this.buttonTrigger.removeAttribute('title');
-    this.shortcutsEl.addEventListener('blur', this.stopKeyboardShortcutTest.bind(this));
-    this.shortcutsEl.addEventListener('keydown', this.addKeyboardShortcut.bind(this));
-    this.shortcutsEl.addEventListener('keyup', this.checkKeyboardShortcut.bind(this));
   };
 
   componentDidLoad(): void {
@@ -184,15 +206,20 @@ export class MdsKeyboard {
     this.buttonTrigger.removeAttribute('tabindex');
     this.shortcutsEl.setAttribute('tabindex', '0');
     this.shortcutsEl.focus();
+    // Attach for this run; stopKeyboardShortcutTest detaches. The handlers are
+    // stable arrow refs, so re-adding is idempotent and removal matches.
+    this.shortcutsEl.addEventListener('blur', this.stopKeyboardShortcutTest);
+    this.shortcutsEl.addEventListener('keydown', this.addKeyboardShortcut);
+    this.shortcutsEl.addEventListener('keyup', this.checkKeyboardShortcut);
   };
 
   private stopKeyboardShortcutTest = (): void => {
     this.buttonTrigger.await = false;
     this.buttonTrigger.setAttribute('tabindex', '0');
     this.shortcutsEl.removeAttribute('tabindex');
-    this.shortcutsEl.removeEventListener('blur', this.stopKeyboardShortcutTest.bind(this));
-    this.shortcutsEl.removeEventListener('keydown', this.addKeyboardShortcut.bind(this));
-    this.shortcutsEl.removeEventListener('keyup', this.checkKeyboardShortcut.bind(this));
+    this.shortcutsEl.removeEventListener('blur', this.stopKeyboardShortcutTest);
+    this.shortcutsEl.removeEventListener('keydown', this.addKeyboardShortcut);
+    this.shortcutsEl.removeEventListener('keyup', this.checkKeyboardShortcut);
   };
 
   private getButtonIcon = (): string => {
@@ -207,13 +234,9 @@ export class MdsKeyboard {
     return miBaselineKeyboard;
   };
 
-  discottectedCallback(): void {
-    this.stopKeyboardShortcutTest();
-  }
-
   render() {
     return (
-      <Host>
+      <Host pref-theme={this.prefTheme} pref-theme-scheme={this.prefThemeScheme}>
         <div class="shortcuts">
           <slot></slot>
         </div>

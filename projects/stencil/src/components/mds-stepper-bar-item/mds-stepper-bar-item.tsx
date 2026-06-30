@@ -20,6 +20,7 @@ import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.es.json';
 import localeIt from './meta/locale.it.json';
+import { subscribePreference } from '@common/preference';
 
 /**
  * @part badge - The badge wrapper
@@ -32,6 +33,8 @@ import localeIt from './meta/locale.it.json';
 })
 export class MdsStepperBarItem {
   @Element() private host: HTMLMdsStepperBarItemElement;
+  @State() prefAnimation?: string;
+  private unsubscribePrefAnimation?: () => void;
 
   @State() isDone: boolean;
   @State() isCurrent: boolean;
@@ -110,7 +113,14 @@ export class MdsStepperBarItem {
     this.t.lang(this.host);
   }
 
+  connectedCallback(): void {
+    this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
+      this.prefAnimation = value;
+    });
+  }
+
   disconnectedCallback(): void {
+    this.unsubscribePrefAnimation?.();
     this.km.detachClickBehavior();
   }
 
@@ -154,7 +164,7 @@ export class MdsStepperBarItem {
 
   render() {
     return (
-      <Host>
+      <Host pref-animation={this.prefAnimation}>
         <div class="header">
           <mds-icon
             class="icon"

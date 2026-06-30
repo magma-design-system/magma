@@ -17,6 +17,7 @@ import miBaselineDarkMode from '@icon/mi/baseline/dark-mode.svg';
 import miBaselineSettings from '@icon/mi/baseline/settings.svg';
 import { Locale } from '@common/locale';
 import { isSafari } from '@common/browser';
+import { subscribePreference } from '@common/preference';
 import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.es.json';
@@ -32,6 +33,12 @@ import { TabSizeType } from '@type/button';
 })
 export class MdsPrefTheme {
   @Element() private element: HTMLMdsPrefThemeElement;
+  @State() prefContrast?: string;
+  private unsubscribePrefContrast?: () => void;
+  @State() prefTheme?: string;
+  private unsubscribePrefTheme?: () => void;
+  @State() prefThemeScheme?: string;
+  private unsubscribePrefThemeScheme?: () => void;
   private readonly defaultMode: PreferenceThemeModeType = 'system';
   private readonly t: Locale = new Locale({
     el: localeEl,
@@ -256,9 +263,31 @@ export class MdsPrefTheme {
     }
   };
 
+  connectedCallback(): void {
+    this.unsubscribePrefContrast = subscribePreference('contrast', (value) => {
+      this.prefContrast = value;
+    });
+    this.unsubscribePrefTheme = subscribePreference('theme', (value) => {
+      this.prefTheme = value;
+    });
+    this.unsubscribePrefThemeScheme = subscribePreference('theme-scheme', (value) => {
+      this.prefThemeScheme = value;
+    });
+  }
+
+  disconnectedCallback(): void {
+    this.unsubscribePrefContrast?.();
+    this.unsubscribePrefTheme?.();
+    this.unsubscribePrefThemeScheme?.();
+  }
+
   render() {
     return (
-      <Host>
+      <Host
+        pref-contrast={this.prefContrast}
+        pref-theme={this.prefTheme}
+        pref-theme-scheme={this.prefThemeScheme}
+      >
         <mds-text class="info" typography="caption">
           <b>{this.t.get('label')}</b>{' '}
           {this.disabled

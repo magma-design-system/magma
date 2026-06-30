@@ -15,6 +15,7 @@ import miOutlineAutoAwesome from '@icon/mi/outline/auto-awesome.svg';
 import miBaselineAutoAwesome from '@icon/mi/baseline/auto-awesome.svg';
 import miBaselineSettings from '@icon/mi/baseline/settings.svg';
 import { Locale } from '@common/locale';
+import { subscribePreference } from '@common/preference';
 import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.es.json';
@@ -30,6 +31,8 @@ import { TabSizeType } from '@type/button';
 })
 export class MdsPrefContrast {
   @Element() private element: HTMLMdsPrefContrastElement;
+  @State() prefContrast?: string;
+  private unsubscribePrefContrast?: () => void;
   private readonly localStorageAlias: string = 'mdsPrefContrast';
   private readonly customPropertyAlias: string = '--magma-pref-contrast';
   private readonly defaultMode: ContrastModeType = 'system';
@@ -82,6 +85,16 @@ export class MdsPrefContrast {
     },
   };
 
+  connectedCallback(): void {
+    this.unsubscribePrefContrast = subscribePreference('contrast', (value) => {
+      this.prefContrast = value;
+    });
+  }
+
+  disconnectedCallback(): void {
+    this.unsubscribePrefContrast?.();
+  }
+
   componentWillRender(): void {
     this.t.lang(this.element);
     this.setContrast(
@@ -133,7 +146,7 @@ export class MdsPrefContrast {
 
   render() {
     return (
-      <Host>
+      <Host pref-contrast={this.prefContrast}>
         <mds-text class="info" typography="caption">
           <b>{this.t.get('label')}</b>{' '}
           {this.t.get(this.contrast[this.mode ?? this.defaultMode].label)}

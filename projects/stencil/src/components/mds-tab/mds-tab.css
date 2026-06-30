@@ -267,8 +267,7 @@
   position: relative;
 }
 
-/* Animation preference: scroll-behavior is a keyword and cannot be derived from
- * the numeric --magma-pref-animation-enabled flag, so its reduced-motion state
+/* Animation preference: scroll-behavior is a keyword, so its reduced-motion state
  * is handled here, cross-browser, via @media. This follows the OS preference
  * (the in-app explicit override does not reach a keyword). The transition
  * durations are reduced separately through the flag in

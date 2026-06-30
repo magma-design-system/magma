@@ -28,6 +28,7 @@ import { ThemeFullVariantAvatarType } from '@type/variant';
 import { ToneMinimalVariantType } from '@type/tone';
 
 import { sanitizeISO8601Date } from '@common/date';
+import { subscribePreference } from '@common/preference';
 
 dayjs.extend(relativeTime);
 
@@ -49,6 +50,14 @@ export class MdsPushNotificationItem {
   private hasActions?: boolean;
   private hasBadge?: boolean;
   @Element() host: HTMLMdsPushNotificationItemElement;
+  @State() prefAnimation?: string;
+  private unsubscribePrefAnimation?: () => void;
+  @State() prefContrast?: string;
+  private unsubscribePrefContrast?: () => void;
+  @State() prefTheme?: string;
+  private unsubscribePrefTheme?: () => void;
+  @State() prefThemeScheme?: string;
+  private unsubscribePrefThemeScheme?: () => void;
   private t: Locale = new Locale({
     el: localeEl,
     en: localeEn,
@@ -127,6 +136,28 @@ export class MdsPushNotificationItem {
     this.closedEvent.emit();
   };
 
+  connectedCallback(): void {
+    this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
+      this.prefAnimation = value;
+    });
+    this.unsubscribePrefContrast = subscribePreference('contrast', (value) => {
+      this.prefContrast = value;
+    });
+    this.unsubscribePrefTheme = subscribePreference('theme', (value) => {
+      this.prefTheme = value;
+    });
+    this.unsubscribePrefThemeScheme = subscribePreference('theme-scheme', (value) => {
+      this.prefThemeScheme = value;
+    });
+  }
+
+  disconnectedCallback(): void {
+    this.unsubscribePrefAnimation?.();
+    this.unsubscribePrefContrast?.();
+    this.unsubscribePrefTheme?.();
+    this.unsubscribePrefThemeScheme?.();
+  }
+
   componentDidLoad(): void {
     this.handleDeletableChange(this.deletable);
   }
@@ -168,7 +199,12 @@ export class MdsPushNotificationItem {
 
   render() {
     return (
-      <Host>
+      <Host
+        pref-animation={this.prefAnimation}
+        pref-contrast={this.prefContrast}
+        pref-theme={this.prefTheme}
+        pref-theme-scheme={this.prefThemeScheme}
+      >
         {(this.icon ?? this.preview === 'avatar') && (
           <mds-avatar
             class="avatar"

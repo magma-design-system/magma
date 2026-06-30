@@ -1,4 +1,5 @@
 import { Component, Element, Host, Prop, h, State } from '@stencil/core';
+import { subscribePreference } from '@common/preference';
 
 /**
  * @part content - Selects the label and description wrapper element
@@ -13,6 +14,14 @@ import { Component, Element, Host, Prop, h, State } from '@stencil/core';
 })
 export class MdsKpiItem {
   @Element() hostElement: HTMLMdsKpiItemElement;
+  @State() prefAnimation?: string;
+  private unsubscribePrefAnimation?: () => void;
+  @State() prefContrast?: string;
+  private unsubscribePrefContrast?: () => void;
+  @State() prefTheme?: string;
+  private unsubscribePrefTheme?: () => void;
+  @State() prefThemeScheme?: string;
+  private unsubscribePrefThemeScheme?: () => void;
   @State() isIntersecting: boolean;
   private observer: IntersectionObserver;
 
@@ -50,6 +59,28 @@ export class MdsKpiItem {
     this.observer.observe(this.hostElement);
   };
 
+  connectedCallback(): void {
+    this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
+      this.prefAnimation = value;
+    });
+    this.unsubscribePrefContrast = subscribePreference('contrast', (value) => {
+      this.prefContrast = value;
+    });
+    this.unsubscribePrefTheme = subscribePreference('theme', (value) => {
+      this.prefTheme = value;
+    });
+    this.unsubscribePrefThemeScheme = subscribePreference('theme-scheme', (value) => {
+      this.prefThemeScheme = value;
+    });
+  }
+
+  disconnectedCallback(): void {
+    this.unsubscribePrefAnimation?.();
+    this.unsubscribePrefContrast?.();
+    this.unsubscribePrefTheme?.();
+    this.unsubscribePrefThemeScheme?.();
+  }
+
   componentWillLoad(): void {
     if (this.threshold !== 0) {
       this.setObserver();
@@ -58,7 +89,14 @@ export class MdsKpiItem {
 
   render() {
     return (
-      <Host aria-label={`${this.label}: ${this.description}`} role="listitem">
+      <Host
+        aria-label={`${this.label}: ${this.description}`}
+        role="listitem"
+        pref-animation={this.prefAnimation}
+        pref-contrast={this.prefContrast}
+        pref-theme={this.prefTheme}
+        pref-theme-scheme={this.prefThemeScheme}
+      >
         {this.icon && (
           <div class="icon-container" part="icon-container">
             <mds-icon class="icon" name={this.icon} part="icon"></mds-icon>

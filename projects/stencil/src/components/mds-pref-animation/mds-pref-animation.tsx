@@ -15,6 +15,7 @@ import miBaselineAnimation from '@icon/mi/baseline/animation.svg';
 import miBaselineSettings from '@icon/mi/baseline/settings.svg';
 import { MdsPrefChangeEventDetail } from '@event/preference';
 import { Locale } from '@common/locale';
+import { subscribePreference } from '@common/preference';
 import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.es.json';
@@ -29,12 +30,10 @@ import { TabSizeType } from '@type/button';
 })
 export class MdsPrefAnimation {
   @Element() private element: HTMLMdsPrefAnimationElement;
+  @State() prefContrast?: string;
+  private unsubscribePrefContrast?: () => void;
   private readonly localStorageAlias: string = 'mdsPrefAnimation';
   private readonly customPropertyAlias: string = '--magma-pref-animation';
-  // Resolved 0/1 flag for CSS consumption: components use it as a multiplier
-  // (calc(duration * var(--magma-pref-animation-enabled, 1))). Removed on
-  // `system` so the @media (prefers-reduced-motion) fallback decides.
-  private readonly customPropertyEnabledAlias: string = '--magma-pref-animation-enabled';
   private readonly defaultMode: AnimationModeType = 'system';
 
   private readonly t: Locale = new Locale({
@@ -79,6 +78,16 @@ export class MdsPrefAnimation {
     },
   };
 
+  connectedCallback(): void {
+    this.unsubscribePrefContrast = subscribePreference('contrast', (value) => {
+      this.prefContrast = value;
+    });
+  }
+
+  disconnectedCallback(): void {
+    this.unsubscribePrefContrast?.();
+  }
+
   componentWillRender(): void {
     this.t.lang(this.element);
     this.setAnimation(
@@ -102,16 +111,6 @@ export class MdsPrefAnimation {
       }
       element?.classList.add(this.animation[this.mode].selector);
       element?.style.setProperty(this.customPropertyAlias, this.mode);
-
-      // `system` -> remove so CSS @media decides; explicit modes force 0/1.
-      if (this.mode === 'system') {
-        element?.style.removeProperty(this.customPropertyEnabledAlias);
-      } else {
-        element?.style.setProperty(
-          this.customPropertyEnabledAlias,
-          this.mode === 'reduce' ? '0' : '1',
-        );
-      }
     }
   };
 
@@ -122,7 +121,7 @@ export class MdsPrefAnimation {
 
   render() {
     return (
-      <Host>
+      <Host pref-contrast={this.prefContrast}>
         <mds-text class="info" typography="caption">
           <b>{this.t.get('label')}</b>{' '}
           {this.t.get(this.animation[this.mode ?? this.defaultMode].label)}

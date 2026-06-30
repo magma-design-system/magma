@@ -1,19 +1,19 @@
-/* Animation preference, resolved by --magma-pref-animation-enabled (1 = on,
- * 0 = reduced; published on <html> by mds-pref-animation) with an @media
- * fallback for `system` / no controller. Two duration contexts, both via
- * private mirrors the base CSS reads:
- *  - --mds-progress-duration: the .progress bar.
- *  - --mds-progress-transition-duration: the host transition, hoisted from the
- *    global --duration-300 so it can be reduced. */
+/* Animation preference. The component mirrors the resolved mode from <html>
+ * onto its host as pref-animation (see subscribePreference in @common/preference);
+ * these plain shadow selectors then zero the private duration(s) the base CSS
+ * reads. `reduce` always stops; `system` and no controller follow the OS via
+ * @media; `no-preference` keeps the base value. Customization composes (the base
+ * sets --private from the public token, this only overrides it when reduced). */
 
-:host {
-  --private-progress-duration: calc(var(--mds-progress-duration) * var(--magma-pref-animation-enabled, 1));
-  --private-progress-transition-duration: calc(var(--mds-progress-transition-duration) * var(--magma-pref-animation-enabled, 1));
+:host([pref-animation='reduce']) {
+  --private-progress-duration: 0s;
+  --private-progress-transition-duration: 0s;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  :host {
-    --private-progress-duration: calc(var(--mds-progress-duration) * var(--magma-pref-animation-enabled, 0));
-    --private-progress-transition-duration: calc(var(--mds-progress-transition-duration) * var(--magma-pref-animation-enabled, 0));
+  :host([pref-animation='system']),
+  :host(:not([pref-animation])) {
+    --private-progress-duration: 0s;
+    --private-progress-transition-duration: 0s;
   }
 }

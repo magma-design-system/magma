@@ -1,4 +1,5 @@
-import { Component, Host, h } from '@stencil/core';
+import { Component, Host, h, State } from '@stencil/core';
+import { subscribePreference } from '@common/preference';
 
 /**
  * @slot default - Add `mds-table-row` element/s.
@@ -10,9 +11,22 @@ import { Component, Host, h } from '@stencil/core';
   shadow: true,
 })
 export class MdsTableFooter {
+  @State() prefAnimation?: string;
+  private unsubscribePrefAnimation?: () => void;
+
+  connectedCallback(): void {
+    this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
+      this.prefAnimation = value;
+    });
+  }
+
+  disconnectedCallback(): void {
+    this.unsubscribePrefAnimation?.();
+  }
+
   render() {
     return (
-      <Host role="row">
+      <Host role="row" pref-animation={this.prefAnimation}>
         <slot />
       </Host>
     );

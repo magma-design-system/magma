@@ -1,3 +1,8 @@
-:host-context(:root.pref-consumption-medium) {
+/* Consumption preference. The component mirrors the resolved level from <html>
+ * onto its host as pref-consumption (see subscribePreference in @common/preference);
+ * this plain shadow selector then drops the backdrop filter. Cross-browser, no
+ * :host-context. */
+
+:host([pref-consumption='medium']) {
   --mds-status-bar-backdrop-filter: none;
 }

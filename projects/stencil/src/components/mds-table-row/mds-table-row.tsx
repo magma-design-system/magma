@@ -5,6 +5,7 @@ import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.es.json';
 import localeIt from './meta/locale.it.json';
 import { isSafari } from '@common/browser';
+import { subscribePreference } from '@common/preference';
 
 /**
  * @slot default - Put `mds-table-cell` element/s.
@@ -20,6 +21,8 @@ import { isSafari } from '@common/browser';
 })
 export class MdsTableRow {
   @Element() host: HTMLMdsTableRowElement;
+  @State() prefAnimation?: string;
+  private unsubscribePrefAnimation?: () => void;
   private actions: HTMLDivElement;
   private hasActions: boolean = true;
   private observer?: ResizeObserver;
@@ -47,6 +50,12 @@ export class MdsTableRow {
 
   @Prop({ reflect: true }) readonly value?: string | number;
 
+  connectedCallback(): void {
+    this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
+      this.prefAnimation = value;
+    });
+  }
+
   componentWillLoad(): void {
     this.language = this.t.lang(this.host);
     this.hasActions = this.host.querySelector(':scope > [slot="action"]') !== null;
@@ -65,6 +74,7 @@ export class MdsTableRow {
   }
 
   disconnectedCallback() {
+    this.unsubscribePrefAnimation?.();
     if (this.observer) this.observer.disconnect();
   }
 
@@ -75,7 +85,7 @@ export class MdsTableRow {
 
   render() {
     return (
-      <Host role="row">
+      <Host role="row" pref-animation={this.prefAnimation}>
         {this.selectable && (
           <mds-table-cell class="selection-cell">
             <div class="checkbox-wrapper">
