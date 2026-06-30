@@ -40,6 +40,10 @@ export class MdsButton {
   @Element() host: HTMLMdsButtonElement;
   @State() prefAnimation?: string;
   private unsubscribePrefAnimation?: () => void;
+  @State() prefTheme?: string;
+  private unsubscribePrefTheme?: () => void;
+  @State() prefThemeScheme?: string;
+  private unsubscribePrefThemeScheme?: () => void;
 
   @AttachInternals() internals: ElementInternals;
 
@@ -278,11 +282,19 @@ export class MdsButton {
     this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
       this.prefAnimation = value;
     });
+    this.unsubscribePrefTheme = subscribePreference('theme', (value) => {
+      this.prefTheme = value;
+    });
+    this.unsubscribePrefThemeScheme = subscribePreference('theme-scheme', (value) => {
+      this.prefThemeScheme = value;
+    });
     if (!this.disabled) this.host.removeAttribute('disabled');
   }
 
   disconnectedCallback(): void {
     this.unsubscribePrefAnimation?.();
+    this.unsubscribePrefTheme?.();
+    this.unsubscribePrefThemeScheme?.();
     this.km.detachClickBehavior();
   }
 
@@ -301,6 +313,8 @@ export class MdsButton {
         onMouseOut={this.mouseUp}
         tabindex="0"
         pref-animation={this.prefAnimation}
+        pref-theme={this.prefTheme}
+        pref-theme-scheme={this.prefThemeScheme}
       >
         <div class="await">
           <mds-spinner class="spinner" running={this.await} />
