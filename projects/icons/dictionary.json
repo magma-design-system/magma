@@ -306,6 +306,7 @@
   "file-stack-alt": "maggioli/file-stack-alt",
   "file-stack": "maggioli/file-stack",
   "file-sub": "maggioli/file-sub",
+  "file-trash": "maggioli/file-trash",
   "file-type-calc": "mdi/file-table",
   "file-type-chart": "mdi/file-chart",
   "file-type-code": "mdi/file-code",
@@ -695,7 +696,10 @@
   "vehicle-excavator": "mdi/excavator",
   "vehicle-moped": "material/moped",
   "vehicle-motorcycle": "material/two_wheeler",
+  "vehicle-scooter": "mdi/scooter",
+  "vehicle-taxi": "mdi/taxi",
   "vehicle-trailer": "material/rv_hookup",
+  "vehicle-truck": "mdi/truck",
   "view-comfy": "material/view_comfy",
   "view-side-by-side": "maggioli/view-side-by-side",
   "vote": "maggioli/vote",
@@ -712,6 +716,5 @@
   "workspace": "material/workspaces",
   "write-only": "material/drive_file_rename_outline",
   "zen-mode": "material/self_improvement"
-
 
 }
