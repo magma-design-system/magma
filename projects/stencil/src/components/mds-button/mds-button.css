@@ -186,7 +186,6 @@
   transition-timing-function: var(--ease-in-out-quad);
 }
 
-@import './css/mds-button-button-group.css';
 @import './css/mds-button-await.css';
 @import './css/mds-button-disabled.css';
 @import './css/mds-button-size.css';
