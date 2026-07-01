@@ -2,13 +2,14 @@
  * Generates the agent-facing install docs shipped inside the three Magma
  * entry-point packages (magma, magma-react, magma-angular).
  *
- * Single source of truth: docs/install/ in the monorepo. This script copies the
- * relevant track plus the shared assets core into each package, rewrites the
- * repo-internal links so they resolve (or degrade to plain text) inside
- * node_modules, and emits a version-stamped AGENTS.md entry point carrying the
- * detect-then-ask install procedure.
+ * Single source of truth: docs/agents/ in the monorepo. This script copies the
+ * relevant install track plus the shared assets core and usage guide into each
+ * package, rewrites the repo-internal links so they resolve (or degrade to plain
+ * text) inside node_modules, generates a component catalogue from
+ * dist/documentation.json, and emits a version-stamped AGENTS.md entry point carrying
+ * the detect-then-ask install procedure.
  *
- * Do not hand-edit the generated files; edit docs/install/ and re-run this.
+ * Do not hand-edit the generated files; edit docs/agents/ and re-run this.
  *
  * Run from the stencil package dir:  npm run sync.agent-docs
  */
@@ -17,12 +18,13 @@ import path from 'path';
 
 // cwd is the stencil package dir when run via npm script.
 const STENCIL_DIR = process.cwd();
-const SOURCE_DIR = path.resolve(STENCIL_DIR, '../../docs/install');
+const SOURCE_DIR = path.resolve(STENCIL_DIR, '../../docs/agents');
+const DOC_JSON = path.resolve(STENCIL_DIR, 'dist/documentation.json');
 
 interface Target {
   /** package dir relative to the stencil package */
   pkgDir: string;
-  /** track file in docs/install to ship as agents/install.md */
+  /** track file in docs/agents to ship as agents/install.md */
   track: string;
   /** human label for the detected framework */
   framework: string;
@@ -60,7 +62,7 @@ const TARGETS: Target[] = [
 const BANNER = [
   '<!--',
   '  GENERATED FILE - do not edit by hand.',
-  '  Source of truth: docs/install/ in the magma monorepo.',
+  '  Source of truth: docs/agents/ in the magma monorepo.',
   '  Regenerate with: npm run sync.agent-docs (from the stencil package).',
   '-->',
   '',
@@ -140,6 +142,79 @@ Ask the user only what detection left undecided. Typical questions:
 
 Build the app and confirm an \`mds-*\` component renders and at least one icon loads from
 the configured path. Report what was installed, the cascade order used, and the icon path.
+
+## Using the components
+
+Once installed, do not guess component APIs - read what ships with the package:
+
+- [\`agents/usage.md\`](agents/usage.md) - conventions (tone/variant, events, slots,
+  compound, icons, a11y) and app-level styling (token classes, typography, dark mode).
+- [\`agents/components.md\`](agents/components.md) - the catalogue: which component to reach for.
+- \`@maggioli-design-system/magma/dist/documentation.json\` - full per-component props,
+  events, slots, CSS vars and usage. \`dist/types/components.d.ts\` drives editor IntelliSense.
+`;
+}
+
+interface DocComponent {
+  tag: string;
+  usage?: Record<string, string>;
+}
+
+/** Collapses common non-ASCII punctuation to ASCII, then drops anything left. */
+function toAscii(text: string): string {
+  return text
+    .replace(/[–—]/g, '-')
+    .replace(/[‘’]/g, "'")
+    .replace(/[“”]/g, '"')
+    .replace(/…/g, '...')
+    .replace(/ /g, ' ')
+    .replace(/[^\x00-\x7F]/g, '');
+}
+
+/** First sentence of a component's "1. Description" usage, for the catalogue. */
+function summarise(component: DocComponent): string {
+  const desc = component.usage?.['1. Description'] ?? '';
+  let line = '';
+  for (const raw of desc.split('\n')) {
+    const s = raw.trim();
+    if (s && !s.startsWith('#') && !s.startsWith('|') && !s.startsWith('\`\`\`')) {
+      line = s;
+      break;
+    }
+  }
+  // strip inline markdown links (repo-relative, broken in node_modules), keep their text
+  line = line.replace(/\[([^\]]+)\]\([^)]*\)/g, '$1');
+  // first sentence only, kept on one table row
+  const sentence = (line.split('. ')[0] || line).replace(/\s+/g, ' ').trim();
+  return toAscii(sentence).replace(/\|/g, '\\|');
+}
+
+/** Builds agents/components.md from dist/documentation.json, or a pointer if absent. */
+function buildComponentsMd(): string {
+  if (!fs.existsSync(DOC_JSON)) {
+    return `${BANNER}# Magma components catalogue
+
+documentation.json was not present at generation time (run the stencil build first).
+Read the full per-component reference from
+\`@maggioli-design-system/magma/dist/documentation.json\` once built.
+`;
+  }
+  const doc = JSON.parse(fs.readFileSync(DOC_JSON, 'utf8'));
+  const rows = (doc.components as DocComponent[])
+    .slice()
+    .sort((a, b) => a.tag.localeCompare(b.tag))
+    .map((c) => `| \`${c.tag}\` | ${summarise(c)} |`)
+    .join('\n');
+
+  return `${BANNER}# Magma components catalogue (${doc.components.length} components)
+
+> Generated from documentation.json. For a component's full props / events / slots /
+> CSS vars read \`@maggioli-design-system/magma/dist/documentation.json\` or the types in
+> \`dist/types/components.d.ts\`; for conventions and styling read [\`usage.md\`](usage.md).
+
+| Component | What it is |
+| --------- | ---------- |
+${rows}
 `;
 }
 
@@ -154,6 +229,8 @@ function readVersion(pkgRoot: string): string {
 
 function main(): void {
   const assetsSrc = fs.readFileSync(path.join(SOURCE_DIR, 'assets.md'), 'utf8');
+  const usageSrc = fs.readFileSync(path.join(SOURCE_DIR, 'usage.md'), 'utf8');
+  const componentsMd = buildComponentsMd();
 
   for (const target of TARGETS) {
     const pkgRoot = path.resolve(STENCIL_DIR, target.pkgDir);
@@ -166,6 +243,8 @@ function main(): void {
     fs.writeFileSync(path.join(pkgRoot, 'AGENTS.md'), buildAgentsMd(target, version));
     fs.writeFileSync(path.join(agentsDir, 'install.md'), BANNER + rewriteLinks(trackSrc));
     fs.writeFileSync(path.join(agentsDir, 'assets.md'), BANNER + rewriteLinks(assetsSrc));
+    fs.writeFileSync(path.join(agentsDir, 'usage.md'), BANNER + rewriteLinks(usageSrc));
+    fs.writeFileSync(path.join(agentsDir, 'components.md'), componentsMd);
 
     // eslint-disable-next-line no-console
     console.log(

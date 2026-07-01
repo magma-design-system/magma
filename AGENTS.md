@@ -49,9 +49,10 @@ stencil        →  design-tokens, styles, svg-icons, identity
 
 | When to consult                                                                        | File                                             |
 |----------------------------------------------------------------------------------------|--------------------------------------------------|
-| Installing Magma into a consumer app: pick a target, version matrix                    | `docs/install/SPEC.md`                           |
-| Consumer asset setup (styles, fonts, icons, identity) shared by all targets            | `docs/install/assets.md`                         |
-| Install track: plain web components / React / Angular                                  | `docs/install/{web-components,react,angular}.md` |
+| Installing Magma into a consumer app: pick a target, version matrix                    | `docs/agents/SPEC.md`                            |
+| Consumer asset setup (styles, fonts, icons, identity) shared by all targets            | `docs/agents/assets.md`                          |
+| Install track: plain web components / React / Angular                                  | `docs/agents/{web-components,react,angular}.md`  |
+| Using components after install: conventions + app styling (shipped as agents/usage.md) | `docs/agents/usage.md`                           |
 | Monorepo architecture, sub-project relationships, component composition patterns       | `docs/ARCHITECTURE.md`                           |
 | Lint rules for TypeScript/JS and CSS authoring (ESLint + Stylelint)                    | `docs/CODING_STANDARDS.md`                       |
 | Commit message convention: allowed types, scopes, special rules                        | `docs/COMMITS.md`                                |

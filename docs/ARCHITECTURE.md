@@ -190,9 +190,10 @@ Installing Magma into a consumer application (styles, fonts, icons, and componen
 registration for plain web components / React / Angular) is documented in its own
 canonical set of specs:
 
-- `docs/install/SPEC.md` - entry point: pick a target, version compatibility matrix
-- `docs/install/assets.md` - shared asset setup (styles import order, fonts, icons, identity)
-- `docs/install/web-components.md`, `docs/install/react.md`, `docs/install/angular.md` - per-target install tracks
+- `docs/agents/SPEC.md` - entry point: pick a target, version compatibility matrix
+- `docs/agents/assets.md` - shared asset setup (styles import order, fonts, icons, identity)
+- `docs/agents/web-components.md`, `docs/agents/react.md`, `docs/agents/angular.md` - per-target install tracks
+- `docs/agents/usage.md` - using components after install: conventions + app-level styling
 
-Do not duplicate import lists here - `docs/install/assets.md` is the single source of
+Do not duplicate import lists here - `docs/agents/assets.md` is the single source of
 truth for the required CSS imports and cascade-layer order.
