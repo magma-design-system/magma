@@ -49,7 +49,7 @@
     "agents/"
   ],
   "scripts": {
-    "build": "npm run clean && npm run build.icons && stencil build --prerender --docs-readme --docs-json dist/documentation.json && npm run sync.agent-docs",
+    "build": "npm run clean && npm run build.icons && npm run sync.agent-docs && stencil build --prerender --docs-readme --docs-json dist/documentation.json",
     "sync.agent-docs": "tsx --tsconfig script.tsconfig.json ./scripts/sync-agent-docs.ts",
     "build.docs": "stencil docs",
     "build.icons": "iconsauce --verbose --config ./.storybook/iconsauce.config.js --output-dictionary ./src/fixtures/icons.json --output-svg ./assets/svg --output-dump-dictionary ./src/fixtures/icons-dictionary.json && npm run sort.icons-dictionary",

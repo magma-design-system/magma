@@ -19,7 +19,7 @@ import path from 'path';
 // cwd is the stencil package dir when run via npm script.
 const STENCIL_DIR = process.cwd();
 const SOURCE_DIR = path.resolve(STENCIL_DIR, '../../docs/agents');
-const DOC_JSON = path.resolve(STENCIL_DIR, 'dist/documentation.json');
+const COMPONENTS_DIR = path.resolve(STENCIL_DIR, 'src/components');
 
 interface Target {
   /** package dir relative to the stencil package */
@@ -155,11 +155,6 @@ Once installed, do not guess component APIs - read what ships with the package:
 `;
 }
 
-interface DocComponent {
-  tag: string;
-  usage?: Record<string, string>;
-}
-
 /** Collapses common non-ASCII punctuation to ASCII, then drops anything left. */
 function toAscii(text: string): string {
   return text
@@ -171,9 +166,9 @@ function toAscii(text: string): string {
     .replace(/[^\x00-\x7F]/g, '');
 }
 
-/** First sentence of a component's "1. Description" usage, for the catalogue. */
-function summarise(component: DocComponent): string {
-  const desc = component.usage?.['1. Description'] ?? '';
+/** First sentence of a component's "1. Description" usage markdown, for the catalogue. */
+function summarise(description: string): string {
+  const desc = description;
   let line = '';
   for (const raw of desc.split('\n')) {
     const s = raw.trim();
@@ -189,28 +184,30 @@ function summarise(component: DocComponent): string {
   return toAscii(sentence).replace(/\|/g, '\\|');
 }
 
-/** Builds agents/components.md from dist/documentation.json, or a pointer if absent. */
+/**
+ * Builds agents/components.md from each component's committed usage description
+ * (src/components/<tag>/usage/1. Description.md). Reading source - not the build's
+ * dist/documentation.json - keeps generation independent of the stencil build, so it
+ * can run before it (Stencil validates the package.json "files" array during build).
+ */
 function buildComponentsMd(): string {
-  if (!fs.existsSync(DOC_JSON)) {
-    return `${BANNER}# Magma components catalogue
-
-documentation.json was not present at generation time (run the stencil build first).
-Read the full per-component reference from
-\`@maggioli-design-system/magma/dist/documentation.json\` once built.
-`;
+  const entries: { tag: string; summary: string }[] = [];
+  for (const dirent of fs.readdirSync(COMPONENTS_DIR, { withFileTypes: true })) {
+    if (!dirent.isDirectory() || !dirent.name.startsWith('mds-')) continue;
+    const descPath = path.join(COMPONENTS_DIR, dirent.name, 'usage', '1. Description.md');
+    if (!fs.existsSync(descPath)) continue;
+    const summary = summarise(fs.readFileSync(descPath, 'utf8'));
+    if (summary) entries.push({ tag: dirent.name, summary });
   }
-  const doc = JSON.parse(fs.readFileSync(DOC_JSON, 'utf8'));
-  const rows = (doc.components as DocComponent[])
-    .slice()
-    .sort((a, b) => a.tag.localeCompare(b.tag))
-    .map((c) => `| \`${c.tag}\` | ${summarise(c)} |`)
-    .join('\n');
+  entries.sort((a, b) => a.tag.localeCompare(b.tag));
+  const rows = entries.map((e) => `| \`${e.tag}\` | ${e.summary} |`).join('\n');
 
-  return `${BANNER}# Magma components catalogue (${doc.components.length} components)
+  return `${BANNER}# Magma components catalogue (${entries.length} components)
 
-> Generated from documentation.json. For a component's full props / events / slots /
-> CSS vars read \`@maggioli-design-system/magma/dist/documentation.json\` or the types in
-> \`dist/types/components.d.ts\`; for conventions and styling read [\`usage.md\`](usage.md).
+> Generated from each component's usage description. For a component's full props /
+> events / slots / CSS vars read \`@maggioli-design-system/magma/dist/documentation.json\`
+> or the types in \`dist/types/components.d.ts\`; for conventions and styling read
+> [\`usage.md\`](usage.md).
 
 | Component | What it is |
 | --------- | ---------- |
