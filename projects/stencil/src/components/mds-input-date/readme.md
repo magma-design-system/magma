@@ -302,7 +302,7 @@ Setting `value=""` is the correct way to clear; do not set `value` to a non-ISO 
 
 | Event                | Description                                           | Type                   |
 | -------------------- | ----------------------------------------------------- | ---------------------- |
-| `mdsInputDateSelect` |                                                       | `CustomEvent<string>`  |
+| `mdsInputDateSelect` | Emitted when the selected date value changes.         | `CustomEvent<string>`  |
 | `mdsInputValidation` | Emits a boolean event when a input execute validation | `CustomEvent<boolean>` |
 
 
@@ -310,7 +310,7 @@ Setting `value=""` is the correct way to clear; do not set `value` to a non-ISO 
 
 ### `focusInput() => Promise<void>`
 
-
+Sets focus on the underlying input element.
 
 #### Returns
 
@@ -320,23 +320,23 @@ Type: `Promise<void>`
 
 ### `getErrors() => Promise<MdsValidationErrors | null>`
 
-
+Returns the current validation errors, or `null` if the value is valid.
 
 #### Returns
 
 Type: `Promise<MdsValidationErrors | null>`
 
-
+the validation errors, or `null` when valid
 
 ### `setValue(value: string) => Promise<void>`
 
-
+Sets the input value.
 
 #### Parameters
 
-| Name    | Type     | Description |
-| ------- | -------- | ----------- |
-| `value` | `string` |             |
+| Name    | Type     | Description                                  |
+| ------- | -------- | -------------------------------------------- |
+| `value` | `string` | the value to set, in ISO format (YYYY-MM-DD) |
 
 #### Returns
 
@@ -346,7 +346,7 @@ Type: `Promise<void>`
 
 ### `updateLang() => Promise<void>`
 
-
+Updates the component's texts to the locale currently set on the host element.
 
 #### Returns
 

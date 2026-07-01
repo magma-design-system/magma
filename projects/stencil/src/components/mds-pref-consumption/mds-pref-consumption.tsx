@@ -42,6 +42,9 @@ export class MdsPrefContrast {
     it: localeIt,
   });
   @State() language: string;
+  /**
+   * Updates the component's texts to the locale currently set on the host element.
+   */
   @Method()
   async updateLang(): Promise<void> {
     this.language = this.t.lang(this.element);
@@ -100,7 +103,7 @@ export class MdsPrefContrast {
     this.prefChangeEvent.emit({ preference: 'consumption' });
     this.mode = mode;
     localStorage.setItem(this.localStorageAlias, this.mode);
-    if (document) {
+    if (typeof document !== 'undefined') {
       const element = document.querySelector('html');
       for (const key in this.consumption) {
         if ({}.hasOwnProperty.call(this.consumption, key)) {
@@ -117,6 +120,10 @@ export class MdsPrefContrast {
     this.setConsumption(newValue);
   }
 
+  private readonly handleModeClick = (mode: ConsumptionModeType) => (): void => {
+    this.setConsumption(mode);
+  };
+
   render() {
     return (
       <Host pref-contrast={this.prefContrast}>
@@ -127,25 +134,19 @@ export class MdsPrefContrast {
         <mds-tab fill size={this.size}>
           <mds-tab-item
             selected={this.mode === 'low'}
-            onClick={() => {
-              this.setConsumption('low');
-            }}
+            onClick={this.handleModeClick('low')}
             class="item item--low"
             icon={mggConsumptionLow}
           ></mds-tab-item>
           <mds-tab-item
             selected={this.mode === 'medium'}
-            onClick={() => {
-              this.setConsumption('medium');
-            }}
+            onClick={this.handleModeClick('medium')}
             class="item item--medium"
             icon={mggConsumptionMedium}
           ></mds-tab-item>
           <mds-tab-item
             selected={this.mode === 'high'}
-            onClick={() => {
-              this.setConsumption('high');
-            }}
+            onClick={this.handleModeClick('high')}
             class="item item--high"
             icon={mggConsumptionHigh}
           ></mds-tab-item>

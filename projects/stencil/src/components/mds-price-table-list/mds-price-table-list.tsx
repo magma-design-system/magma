@@ -6,7 +6,7 @@ import { subscribePreference } from '@common/preference';
  * @part footer - Selects the element which wraps elements added via `slot="price"` and `slot="action"`
  * @part header - Selects the element which wraps elements added via `slot="header"`
  * @slot action - Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element.
- * @slot default - Add `mds-price-table-list-item` component, `HTML elements` or other `components` to this slot.
+ * @slot item - Add `mds-price-table-list-item` component, `HTML elements` or other `components` to this slot.
  * @slot header - Add `text string`, `HTML elements` or `components` to this slot.
  * @slot price - Add `text string`, `HTML elements` or `components` to this slot.
  */

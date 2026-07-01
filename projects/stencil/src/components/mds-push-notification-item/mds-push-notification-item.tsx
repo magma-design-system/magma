@@ -30,8 +30,6 @@ import { ToneMinimalVariantType } from '@type/tone';
 import { sanitizeISO8601Date } from '@common/date';
 import { subscribePreference } from '@common/preference';
 
-dayjs.extend(relativeTime);
-
 /**
  * @part actions - The actions wrapper
  * @part content - The content wrapper of the message
@@ -65,6 +63,9 @@ export class MdsPushNotificationItem {
     it: localeIt,
   });
   @State() language: string;
+  /**
+   * Updates the component's texts to the locale currently set on the host element.
+   */
   @Method()
   async updateLang(): Promise<void> {
     this.language = this.t.lang(this.host);
@@ -81,9 +82,9 @@ export class MdsPushNotificationItem {
   @Prop({ reflect: true }) readonly dateFormat: NotificationItemDateFormatType = 'timeago';
 
   /**
-   * Specifies if the component is dismissable or not, it should be set to true by default is used with it's parent component `mds-push-notification-items`
+   * Specifies if the component is dismissable; when set, a dismiss button is shown.
    */
-  @Prop({ reflect: true, mutable: true }) deletable?: boolean = true;
+  @Prop({ reflect: true, mutable: true }) deletable?: boolean = false;
 
   /**
    * Specifies the icon to be displayed
@@ -163,10 +164,11 @@ export class MdsPushNotificationItem {
   }
 
   componentWillLoad(): void {
+    dayjs.extend(relativeTime);
     this.hasActions = this.host.querySelector(':scope > [slot="action"]') !== null;
     this.hasBadge = this.host.querySelector(':scope > [slot="badge"]') !== null;
 
-    if (this.datetime) {
+    if (this.datetime !== undefined && this.datetime !== '') {
       this.datetime = sanitizeISO8601Date(this.datetime?.toString());
     }
 
@@ -257,7 +259,7 @@ export class MdsPushNotificationItem {
             tone="text"
             title={this.t.get('dismiss')}
             icon={miBaselineCancel}
-            onClick={this.onClickClose.bind(this)}
+            onClick={this.onClickClose}
           ></mds-button>
         )}
       </Host>

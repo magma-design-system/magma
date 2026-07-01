@@ -2,7 +2,7 @@ import { Component, Host, h, Prop, State } from '@stencil/core';
 import { subscribePreference } from '@common/preference';
 
 /**
- * @slot default - Put `mds-table-row` element/s.
+ * @slot - Put `mds-table-row` element/s.
  */
 
 @Component({
@@ -13,7 +13,13 @@ import { subscribePreference } from '@common/preference';
 export class MdsTableBody {
   @State() prefAnimation?: string;
   private unsubscribePrefAnimation?: () => void;
+  /**
+   * Specifies whether the rows react to user interaction (hover/focus).
+   */
   @Prop({ reflect: true }) readonly interactive?: boolean;
+  /**
+   * Enables the selection column for the rows in this table body.
+   */
   @Prop({ reflect: true }) readonly selection?: boolean;
 
   connectedCallback(): void {

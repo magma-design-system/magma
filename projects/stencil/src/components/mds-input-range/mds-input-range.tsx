@@ -15,6 +15,7 @@ import { subscribePreference } from '@common/preference';
 /**
  * @part header - The element containing the labels displayed over the input element
  * @part track - The element containing the track of the input range
+ * @slot - Add `text string`, `HTML elements` or `components` to this slot.
  */
 @Component({
   tag: 'mds-input-range',
@@ -79,7 +80,7 @@ export class MdsInputRange {
    */
   @Event({ eventName: 'mdsInputRangeChange' }) changeEvent: EventEmitter<number>;
 
-  calculateProgress(): void {
+  private calculateProgress(): void {
     // validate value
     let v = Number(this.inputElement.value);
     // multiplier is needed to manage decimal value and step, so we can work with integer value and avoid decimal division

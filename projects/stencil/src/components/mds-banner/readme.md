@@ -27,7 +27,7 @@ This component uses the shared `variant` / `tone` ladders defined in [`projects/
 
 #### Other behavioral props
 
-- **`cockade`** (default `true`) wraps the leading `icon` in a colored decorative badge; disable it for a flatter icon presentation.
+- **`hideCockade`** (default `false`) removes the colored decorative badge wrapping the leading `icon`; set it for a flatter icon presentation.
 - **`icon`** is a Magma icon library slug shown at the top-left, surfaced as decorative.
 - **`deletable`** opts the banner into being dismissible - choose it for transient or user-acknowledged messages rather than persistent context.
 - The **default slot** carries the body text/markup; the **`action` slot** holds inline controls, with `mds-button` the recommended element.
@@ -84,7 +84,7 @@ Use the `headline` prop to add a title above the body text. The headline is also
 
 #### Banner with Icon
 
-Set `icon` to a Magma icon slug. The icon is decorative (`aria-hidden="true"`). `cockade` is `true` by default, wrapping the icon in a colored badge; set `cockade="false"` for a flatter look.
+Set `icon` to a Magma icon slug. The icon is decorative (`aria-hidden="true"`). The colored badge wrapping the icon is shown by default; add `hide-cockade` for a flatter look.
 
 ```html
 <!-- Con cockade (default) -->
@@ -93,7 +93,7 @@ Set `icon` to a Magma icon slug. The icon is decorative (`aria-hidden="true"`). 
 </mds-banner>
 
 <!-- Senza cockade -->
-<mds-banner variant="success" icon="mi/baseline/check-circle" cockade="false">
+<mds-banner variant="success" icon="mi/baseline/check-circle" hide-cockade>
   <mds-text typography="detail">Operazione completata.</mds-text>
 </mds-banner>
 ```
@@ -343,14 +343,14 @@ The component fires `mdsBannerClose` when the close button is activated (both po
 
 ## Properties
 
-| Property    | Attribute   | Description                                                     | Type                                                                                                 | Default     |
-| ----------- | ----------- | --------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ----------- |
-| `cockade`   | `cockade`   | Shows a decoration around the banner icon                       | `boolean \| undefined`                                                                               | `true`      |
-| `deletable` | `deletable` | Shows the cross icon to perform cancel/delete action on element | `boolean \| undefined`                                                                               | `undefined` |
-| `headline`  | `headline`  | The title on the top of the banner                              | `string \| undefined`                                                                                | `undefined` |
-| `icon`      | `icon`      | An icon displayed at the top left of the banner                 | `string \| undefined`                                                                                | `undefined` |
-| `tone`      | `tone`      | Sets the tone of the color variant                              | `"box" \| "strong" \| "weak" \| undefined`                                                           | `'weak'`    |
-| `variant`   | `variant`   | Sets the theme variant colors                                   | `"ai" \| "dark" \| "error" \| "info" \| "light" \| "primary" \| "success" \| "warning" \| undefined` | `'primary'` |
+| Property      | Attribute      | Description                                                     | Type                                                                                                 | Default     |
+| ------------- | -------------- | --------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ----------- |
+| `deletable`   | `deletable`    | Shows the cross icon to perform cancel/delete action on element | `boolean \| undefined`                                                                               | `undefined` |
+| `headline`    | `headline`     | The title on the top of the banner                              | `string \| undefined`                                                                                | `undefined` |
+| `hideCockade` | `hide-cockade` | Hides the decoration around the banner icon                     | `boolean \| undefined`                                                                               | `false`     |
+| `icon`        | `icon`         | An icon displayed at the top left of the banner                 | `string \| undefined`                                                                                | `undefined` |
+| `tone`        | `tone`         | Sets the tone of the color variant                              | `"box" \| "strong" \| "weak" \| undefined`                                                           | `'weak'`    |
+| `variant`     | `variant`      | Sets the theme variant colors                                   | `"ai" \| "dark" \| "error" \| "info" \| "light" \| "primary" \| "success" \| "warning" \| undefined` | `'primary'` |
 
 
 ## Events
@@ -364,7 +364,7 @@ The component fires `mdsBannerClose` when the close button is activated (both po
 
 ### `updateLang() => Promise<void>`
 
-
+Updates the component's texts to the locale currently set on the host element.
 
 #### Returns
 
@@ -375,10 +375,10 @@ Type: `Promise<void>`
 
 ## Slots
 
-| Slot        | Description                                                                             |
-| ----------- | --------------------------------------------------------------------------------------- |
-| `"action"`  | Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element. |
-| `"default"` | Add `text string`, `HTML elements` or `components` to this slot.                        |
+| Slot       | Description                                                                             |
+| ---------- | --------------------------------------------------------------------------------------- |
+|            | Add `text string`, `HTML elements` or `components` to this slot.                        |
+| `"action"` | Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element. |
 
 
 ## Shadow Parts

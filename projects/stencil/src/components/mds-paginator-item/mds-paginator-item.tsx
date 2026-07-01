@@ -3,7 +3,7 @@ import { KeyboardManager } from '@common/keyboard-manager';
 import { subscribePreference } from '@common/preference';
 
 /**
- * @slot default - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
+ * @slot - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
  */
 
 @Component({
@@ -62,12 +62,12 @@ export class MdsPaginatorItem {
     this.km.detachClickBehavior();
   }
 
-  disconnectedCallback = (): void => {
+  disconnectedCallback(): void {
     this.unsubscribePrefAnimation?.();
     this.unsubscribePrefTheme?.();
     this.unsubscribePrefThemeScheme?.();
     this.km.detachClickBehavior();
-  };
+  }
 
   render() {
     return (

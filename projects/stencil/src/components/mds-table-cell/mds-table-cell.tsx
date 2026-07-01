@@ -2,7 +2,7 @@ import { Component, Host, h, Prop, Element, State } from '@stencil/core';
 import { setAttributeIfEmpty } from '@common/aria';
 import { subscribePreference } from '@common/preference';
 /**
- * @slot default - Add `text string`, `HTML elements` or `components` to this slot.
+ * @slot - Add `text string`, `HTML elements` or `components` to this slot.
  */
 
 @Component({

@@ -131,7 +131,8 @@
   }
 }
 
-:host([smooth]:not([smooth='false'])) {
+:host(:not([disable-smooth])),
+:host([disable-smooth='false']) {
   transition-property: bottom, left, opacity, right, top, transform, transform-origin;
 }
 

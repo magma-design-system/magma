@@ -18,7 +18,7 @@ import { subscribePreference } from '@common/preference';
 
 /**
  * @part menu - The container element of the modal
- * @slot default - Add `mds-header-bar` element/s.
+ * @slot - Add `mds-header-bar` element/s.
  * @slot menu - Put actions and other contents that will be shown as mobile menu. Add `text string`, `HTML elements` or `components` to this slot.
  */
 
@@ -65,9 +65,9 @@ export class MdsHeader {
   @Prop({ reflect: true }) readonly autoHide?: number;
 
   /**
-   * Sets if the backdrop is shown when the mds-header-bar attribute appearace is set to `inline`
+   * Hides the backdrop shown when the mds-header-bar attribute appearace is set to `inline`
    */
-  @Prop({ reflect: true }) readonly backdrop?: boolean = true;
+  @Prop({ reflect: true }) readonly hideBackdrop?: boolean = false;
 
   /**
    * Sets the visibility type of the hamburger menu of mds-header-bar
@@ -101,6 +101,10 @@ export class MdsHeader {
   @Event({ eventName: 'mdsHeaderVisibilityChange' })
   visibleEvent: EventEmitter<MdsHeaderVisibilityEventDetail>;
 
+  /**
+   * Opens or closes the header.
+   * @param isOpened whether the header should be opened
+   */
   @Method()
   async setOpened(isOpened: boolean = true): Promise<void> {
     this.isOpened = isOpened;
@@ -117,7 +121,7 @@ export class MdsHeader {
   };
 
   private handleVisibility = (): void => {
-    if (!this.autoHide) {
+    if (this.autoHide === undefined || this.autoHide === 0 || Number.isNaN(this.autoHide)) {
       return;
     }
     // reset var if the page is scrolled to top
@@ -155,7 +159,7 @@ export class MdsHeader {
   };
 
   private sanitizeAppearance = (): AppearanceType => {
-    if (!this.appearanceSet) {
+    if (this.appearanceSet === undefined || this.appearanceSet === '') {
       return [this.appearance];
     }
     const regex = /\b(\w+)\b/g;
@@ -176,7 +180,7 @@ export class MdsHeader {
 
   private handleScroll = (): void => {
     if (typeof window === 'undefined') return;
-    if (this.autoHide) {
+    if (this.autoHide !== undefined && this.autoHide !== 0 && !Number.isNaN(this.autoHide)) {
       this.handleVisibility();
     }
     if (this.sanitizedAppearance.length > 1) {
@@ -186,14 +190,18 @@ export class MdsHeader {
 
   private setAppearanceSetData = (): void => {
     this.sanitizedAppearance = this.sanitizeAppearance();
-    if (this.sanitizedAppearance[2]) {
+    if (
+      this.sanitizedAppearance[2] !== undefined &&
+      this.sanitizedAppearance[2] !== 0 &&
+      !Number.isNaN(this.sanitizedAppearance[2])
+    ) {
       this.appearanceThreshold = this.sanitizedAppearance[2];
     }
     this.relativeTresholdDown = this.threshold;
   };
 
   private initScrollListener = (): void => {
-    if (!window) {
+    if (typeof window === 'undefined') {
       return;
     }
     this.setAppearanceSetData();
@@ -216,7 +224,7 @@ export class MdsHeader {
     this.unsubscribeConsumption?.();
     this.unsubscribePrefTheme?.();
     this.unsubscribePrefThemeScheme?.();
-    if (!window) {
+    if (typeof window === 'undefined') {
       return;
     }
     window.removeEventListener('scroll', this.handleScroll);
@@ -247,7 +255,7 @@ export class MdsHeader {
     if (newValue === oldValue) {
       return;
     }
-    if (this.headerBar) {
+    if (this.headerBar != null) {
       this.headerBar.menu = newValue;
     }
   }
@@ -257,7 +265,7 @@ export class MdsHeader {
     if (newValue === oldValue) {
       return;
     }
-    if (this.headerBar) {
+    if (this.headerBar != null) {
       this.headerBar.nav = newValue;
     }
   }
@@ -281,7 +289,7 @@ export class MdsHeader {
         pref-theme={this.prefTheme}
         pref-theme-scheme={this.prefThemeScheme}
       >
-        {this.backdrop && (
+        {!this.hideBackdrop && (
           <div class="backdrop">
             <div class="backdrop-blur-item"></div>
             <div class="backdrop-blur-item"></div>

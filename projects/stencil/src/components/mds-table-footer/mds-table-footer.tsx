@@ -2,7 +2,7 @@ import { Component, Host, h, State } from '@stencil/core';
 import { subscribePreference } from '@common/preference';
 
 /**
- * @slot default - Add `mds-table-row` element/s.
+ * @slot - Add `mds-table-row` element/s.
  */
 
 @Component({

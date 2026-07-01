@@ -241,7 +241,7 @@ The `name` prop must match the pattern `^[a-z]+(-[a-z]+)*$` (lowercase letters a
 
 ### `updateLang() => Promise<void>`
 
-
+Updates the component's texts to the locale currently set on the host element.
 
 #### Returns
 
@@ -252,9 +252,9 @@ Type: `Promise<void>`
 
 ## Slots
 
-| Slot        | Description                                  |
-| ----------- | -------------------------------------------- |
-| `"default"` | Add `mds-pref-theme-variant-item` element/s. |
+| Slot | Description                                  |
+| ---- | -------------------------------------------- |
+|      | Add `mds-pref-theme-variant-item` element/s. |
 
 
 ## Dependencies

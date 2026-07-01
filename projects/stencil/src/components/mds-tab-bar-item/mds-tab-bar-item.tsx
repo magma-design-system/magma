@@ -14,7 +14,7 @@ import { readSlottedLabel, sanitizeLabel } from '@common/slot';
 import { subscribePreference } from '@common/preference';
 
 /**
- * @slot default - **Deprecated**, use the `label` property instead. Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
+ * @slot - **Deprecated**, use the `label` property instead. Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
  */
 
 @Component({
@@ -34,6 +34,9 @@ export class MdsTabBarItem {
   private unsubscribePrefThemeScheme?: () => void;
   @State() isSelected: boolean;
 
+  /**
+   * The icon displayed in the tab bar item.
+   */
   @Prop() readonly icon: string = '';
 
   /**
@@ -101,7 +104,7 @@ export class MdsTabBarItem {
 
   private onSlotChangeHandler = (): void => {
     /* this should be removed in the future once slotted text is no longer used, use the label property instead */
-    if (this.label) return;
+    if (this.label !== undefined && this.label !== '') return;
     this.label = readSlottedLabel(this.element);
   };
 

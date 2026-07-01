@@ -30,9 +30,9 @@ export class MdsNotification {
   @Prop({ mutable: true, reflect: true }) value = 0;
 
   /**
-   * Specifies if the notification is visible
+   * Specifies if the notification is dismissed
    */
-  @Prop({ mutable: true, reflect: true }) visible = true;
+  @Prop({ mutable: true, reflect: true }) dismissed = false;
 
   /**
    * Specifies the position strategy of the notification
@@ -67,7 +67,8 @@ export class MdsNotification {
   };
 
   private clean = (value: number): string => {
-    if (this.max) {
+    if (value === 0 || isNaN(value)) return '';
+    if (this.max !== undefined && this.max !== 0 && !Number.isNaN(this.max)) {
       if (value > this.max) {
         return `+${Number(this.max).toLocaleString()}`;
       }
@@ -83,12 +84,12 @@ export class MdsNotification {
   }
 
   componentDidRender(): void {
-    if (!this.target) {
+    if (this.target === '') {
       this.strategy = 'disabled';
       return;
     }
     const c = document.querySelector(this.target) as HTMLElement;
-    if (!c) throw new Error('No valid target found');
+    if (c == null) throw new Error('No valid target found');
     this.caller = c;
   }
 
@@ -97,7 +98,7 @@ export class MdsNotification {
       return;
     }
 
-    if (this.target && !this.cleanupAutoUpdate) {
+    if (this.target !== '' && this.cleanupAutoUpdate == null) {
       setTimeout(() => {
         this.cleanupAutoUpdate = autoUpdate(this.caller, this.host, this.updatePosition);
       }, 100);
@@ -124,7 +125,7 @@ export class MdsNotification {
         pref-animation={this.prefAnimation}
       >
         <mds-text typography="caption" class="dot" aria-hidden="true">
-          {this.value ? this.clean(this.value) : ''}
+          {this.clean(this.value)}
         </mds-text>
       </Host>
     );

@@ -3,7 +3,7 @@ import miOutlineHelp from '@icon/mi/outline/help-outline.svg';
 import { FloatingUIPlacement } from '@type/floating-ui';
 
 /**
- * @slot default - Add `text string` to this slot, **avoid** `HTML elements` or `components`.
+ * @slot - Add `text string` to this slot, **avoid** `HTML elements` or `components`.
  */
 
 @Component({
@@ -18,9 +18,9 @@ export class MdsHelp {
   @Prop() readonly icon?: string;
 
   /**
-   * If set, the component will be placed automatically near it's caller.
+   * If set, the component will not be placed automatically near it's caller.
    */
-  @Prop({ reflect: true }) readonly autoPlacement?: boolean = true;
+  @Prop({ reflect: true }) readonly disableAutoPlacement?: boolean = false;
 
   /**
    * Specifies where the component should be placed relative to the caller.
@@ -33,7 +33,7 @@ export class MdsHelp {
         <mds-icon class="icon" name={this.icon ?? miOutlineHelp} part="icon"></mds-icon>
         <mds-tooltip
           placement={this.placement}
-          autoPlacement={this.autoPlacement}
+          disableAutoPlacement={this.disableAutoPlacement}
           strategy="absolute"
           target=".icon"
         >

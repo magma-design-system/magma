@@ -23,7 +23,7 @@ import localeEs from './meta/locale.es.json';
 import localeIt from './meta/locale.it.json';
 
 /**
- * @slot default - Add `text string`, `HTML elements` or `components` to this slot.
+ * @slot - Add `text string`, `HTML elements` or `components` to this slot.
  * @slot action - Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element.
  * @part text - The text wrapper of the `default` and `content` slots
  */
@@ -52,6 +52,9 @@ export class MdsBanner {
     it: localeIt,
   });
   @State() language: string;
+  /**
+   * Updates the component's texts to the locale currently set on the host element.
+   */
   @Method()
   async updateLang(): Promise<void> {
     this.language = this.t.lang(this.host);
@@ -70,9 +73,9 @@ export class MdsBanner {
   @Prop({ reflect: true }) readonly tone?: ToneMinimalBoxVariantType = 'weak';
 
   /**
-   * Shows a decoration around the banner icon
+   * Hides the decoration around the banner icon
    */
-  @Prop({ reflect: true }) readonly cockade?: boolean = true;
+  @Prop({ reflect: true }) readonly hideCockade?: boolean = false;
 
   /**
    * Shows the cross icon to perform cancel/delete action on element
@@ -178,7 +181,7 @@ export class MdsBanner {
   private closeBanner = (): void => {
     this.closeEvent.emit();
     const modalEL = this.host?.closest('mds-modal') as HTMLMdsModalElement;
-    if (modalEL) {
+    if (modalEL != null) {
       modalEL.opened = false;
     }
   };

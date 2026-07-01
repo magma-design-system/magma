@@ -43,6 +43,9 @@ export class MdsPrefContrast {
     it: localeIt,
   });
   @State() language: string;
+  /**
+   * Updates the component's texts to the locale currently set on the host element.
+   */
   @Method()
   async updateLang(): Promise<void> {
     this.language = this.t.lang(this.element);
@@ -105,7 +108,7 @@ export class MdsPrefContrast {
   }
 
   private readonly rollbackContrast = (): ContrastModeType => {
-    if (!window) {
+    if (typeof window === 'undefined') {
       return this.defaultMode;
     }
 
@@ -125,7 +128,7 @@ export class MdsPrefContrast {
     this.rollbackContrast();
     this.mode = mode;
     localStorage.setItem(this.localStorageAlias, this.mode);
-    if (document) {
+    if (typeof document !== 'undefined') {
       const element = document.querySelector('html');
       for (const key in this.contrast) {
         if ({}.hasOwnProperty.call(this.contrast, key)) {
@@ -144,6 +147,10 @@ export class MdsPrefContrast {
     }
   }
 
+  private readonly handleModeClick = (mode: ContrastModeType) => (): void => {
+    this.setContrast(mode);
+  };
+
   render() {
     return (
       <Host pref-contrast={this.prefContrast}>
@@ -154,25 +161,19 @@ export class MdsPrefContrast {
         <mds-tab fill size={this.size}>
           <mds-tab-item
             selected={this.mode === 'more'}
-            onClick={() => {
-              this.setContrast('more');
-            }}
+            onClick={this.handleModeClick('more')}
             class="item item--more"
             icon={miBaselineContrast}
           ></mds-tab-item>
           <mds-tab-item
             selected={this.mode === 'system'}
-            onClick={() => {
-              this.setContrast('system');
-            }}
+            onClick={this.handleModeClick('system')}
             class="item item--system"
             icon={miBaselineSettings}
           ></mds-tab-item>
           <mds-tab-item
             selected={this.mode === 'no-preference'}
-            onClick={() => {
-              this.setContrast('no-preference');
-            }}
+            onClick={this.handleModeClick('no-preference')}
             class="item item--default"
             icon={this.mode === 'no-preference' ? miBaselineAutoAwesome : miOutlineAutoAwesome}
           ></mds-tab-item>

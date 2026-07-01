@@ -256,7 +256,7 @@ Native events may not bubble out of shadow DOM as expected. Use the documented `
 
 ### `updateLang() => Promise<void>`
 
-
+Updates the component's texts to the locale currently set on the host element.
 
 #### Returns
 
@@ -267,9 +267,9 @@ Type: `Promise<void>`
 
 ## Slots
 
-| Slot        | Description                                                                                                                |
-| ----------- | -------------------------------------------------------------------------------------------------------------------------- |
-| `"default"` | Add `mds-pref-animation`, `mds-pref-consumption`, `mds-pref-contrast`, `mds-pref-language`, or `mds-pref-theme` element/s. |
+| Slot | Description                                                                                                                |
+| ---- | -------------------------------------------------------------------------------------------------------------------------- |
+|      | Add `mds-pref-animation`, `mds-pref-consumption`, `mds-pref-contrast`, `mds-pref-language`, or `mds-pref-theme` element/s. |
 
 
 ## Dependencies

@@ -14,7 +14,7 @@ import { MdsAccordionEventDetail } from './meta/event-detail';
 import { subscribePreference } from '@common/preference';
 
 /**
- * @slot default - Add `mds-accordion-item` element/s.
+ * @slot - Add `mds-accordion-item` element/s.
  */
 
 @Component({
@@ -37,9 +37,9 @@ export class MdsAccordion {
   @Prop() readonly multiple?: boolean = false;
 
   /**
-   * Specifies if an item can be closed by user
+   * Prevents the user from closing the currently open item, forcing at least one panel to stay expanded
    */
-  @Prop() readonly closable?: boolean = true;
+  @Prop() readonly disableClose?: boolean = false;
 
   /**
    * Emits when the component attribute selected is changed
@@ -89,13 +89,24 @@ export class MdsAccordion {
     const items = this.queryItems();
 
     if (this.multiple) {
+      if (this.disableClose && !event.detail.selected) {
+        const isLastOpenItem = !Array.from(items).some(
+          (item) => item.id !== event.detail.id && item.selected,
+        );
+        if (isLastOpenItem) {
+          const target = Array.from(items).find((item) => item.id === event.detail.id);
+          if (target) {
+            target.selected = true;
+          }
+        }
+      }
       this.selectMultipleItems();
       return;
     }
 
     items.forEach((item, key) => {
       item.selected =
-        `item-${key}` === event.detail.id && (event.detail.selected || !this.closable);
+        `item-${key}` === event.detail.id && (event.detail.selected || this.disableClose);
       if (item.selected) {
         this.changedEvent.emit({ children: items, selected: key.toString() });
       }

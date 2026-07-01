@@ -43,6 +43,9 @@ export class MdsPrefAnimation {
     it: localeIt,
   });
   @State() language: string;
+  /**
+   * Updates the component's texts to the locale currently set on the host element.
+   */
   @Method()
   async updateLang(): Promise<void> {
     this.language = this.t.lang(this.element);
@@ -101,7 +104,7 @@ export class MdsPrefAnimation {
     this.prefChangeEvent.emit({ preference: 'animation' });
     this.mode = mode;
     localStorage.setItem(this.localStorageAlias, this.mode);
-    if (document) {
+    if (typeof document !== 'undefined') {
       const element = document.querySelector('html');
 
       for (const key in this.animation) {
@@ -119,6 +122,10 @@ export class MdsPrefAnimation {
     this.setAnimation(newValue);
   }
 
+  private readonly handleModeClick = (mode: AnimationModeType) => (): void => {
+    this.setAnimation(mode);
+  };
+
   render() {
     return (
       <Host pref-contrast={this.prefContrast}>
@@ -129,25 +136,19 @@ export class MdsPrefAnimation {
         <mds-tab fill size={this.size}>
           <mds-tab-item
             selected={this.mode === 'reduce'}
-            onClick={() => {
-              this.setAnimation('reduce');
-            }}
+            onClick={this.handleModeClick('reduce')}
             class="item item--reduce"
             icon={miOutlineCircle}
           ></mds-tab-item>
           <mds-tab-item
             selected={this.mode === 'system'}
-            onClick={() => {
-              this.setAnimation('system');
-            }}
+            onClick={this.handleModeClick('system')}
             class="item item--system"
             icon={miBaselineSettings}
           ></mds-tab-item>
           <mds-tab-item
             selected={this.mode === 'no-preference'}
-            onClick={() => {
-              this.setAnimation('no-preference');
-            }}
+            onClick={this.handleModeClick('no-preference')}
             class="item item--no-preference"
             icon={miBaselineAnimation}
           ></mds-tab-item>

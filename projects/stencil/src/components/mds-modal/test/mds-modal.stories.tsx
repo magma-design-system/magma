@@ -16,8 +16,8 @@ export default {
       options: modalAnimationStyleDictionary,
       type: { name: 'string' },
     },
-    backdrop: {
-      description: 'Specifies if the modal shows the backdrop',
+    'hide-backdrop': {
+      description: 'Hides the modal backdrop',
       type: { name: 'boolean' },
     },
     interaction: {
@@ -589,7 +589,7 @@ const QAMatrixTemplate = (args) => {
         position={position}
         animation={animation}
         interaction={args.interaction}
-        backdrop={args.backdrop ? true : undefined}
+        hideBackdrop={args['hide-backdrop'] ? true : undefined}
         opened={opened === true ? true : undefined}
       >
         <div class="p-400 grid gap-400 grid-cols-full">
@@ -665,7 +665,7 @@ export const Backdrop = {
   args: {
     position: 'right',
     opened: true,
-    backdrop: undefined,
+    'hide-backdrop': true,
   },
 };
 

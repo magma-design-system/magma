@@ -130,8 +130,17 @@ export class MdsAvatar {
     if (this.fittyInitialized) this.removeFontResize();
   };
 
+  private readonly handleImgLoadError = (): void => {
+    this.loaded = true;
+    this.fallback = true;
+  };
+
+  private readonly handleImgLoadSuccess = (): void => {
+    this.loaded = true;
+  };
+
   private checkInitialsVariant = (): void => {
-    if (this.initials) {
+    if (this.initials !== undefined && this.initials !== '') {
       let cleanedInitials = this.initials
         .toLowerCase()
         .replace(/[^a-zA-Z0-9]+/g, '')
@@ -156,10 +165,10 @@ export class MdsAvatar {
     if (this.src !== undefined) {
       this.loaded = false;
     }
-    if (this.initials) {
+    if (this.initials !== undefined && this.initials !== '') {
       this.checkText(this.initials);
     }
-    if (this.count) {
+    if (this.count !== undefined && this.count !== 0 && !Number.isNaN(this.count)) {
       this.checkText(this.count.toString());
     }
   }
@@ -168,8 +177,9 @@ export class MdsAvatar {
     if (this.textChanged) {
       // placed here becase @Watch('initials') is fired
       // BEFORE the element .fit is attached on shDOM
-      if (this.initials) this.checkText(this.initials);
-      if (this.count) this.checkText(this.count.toString());
+      if (this.initials !== undefined && this.initials !== '') this.checkText(this.initials);
+      if (this.count !== undefined && this.count !== 0 && !Number.isNaN(this.count))
+        this.checkText(this.count.toString());
       this.textChanged = false;
     }
   }
@@ -206,42 +216,56 @@ export class MdsAvatar {
         <div
           class={clsx(
             'avatar',
-            this.initials && !this.fallback && !this.src && 'avatar--initials',
-            (this.fallback || (!this.icon && !this.initials && !this.src)) && 'avatar--fallback',
+            this.initials &&
+              !this.fallback &&
+              (this.src === undefined || this.src === '') &&
+              'avatar--initials',
+            (this.fallback ||
+              ((this.icon === undefined || this.icon === '') &&
+                (this.initials === undefined || this.initials === '') &&
+                (this.src === undefined || this.src === ''))) &&
+              'avatar--fallback',
             this.icon && 'avatar--icon',
             this.loaded ? 'avatar--loaded' : 'avatar--pending',
           )}
           part="wrapper"
         >
-          {this.initials && !this.count && !this.fallback && !this.src && (
-            <div class="initials-text">
-              <span class="fit">{this.initials.substring(0, 2)}</span>
-            </div>
-          )}
-          {this.count && !this.fallback && !this.src && (
+          {this.initials &&
+            (this.count === undefined || this.count === 0 || Number.isNaN(this.count)) &&
+            !this.fallback &&
+            (this.src === undefined || this.src === '') && (
+              <div class="initials-text">
+                <span class="fit">{this.initials.substring(0, 2)}</span>
+              </div>
+            )}
+          {this.count && !this.fallback && (this.src === undefined || this.src === '') && (
             <div class="initials-text">
               <span class="fit">+{this.count}</span>
             </div>
           )}
-          {this.src && !this.count && !this.fallback && !this.icon && (
-            <mds-img
-              class="image"
-              loading="lazy"
-              onMdsImgLoadError={() => {
-                this.loaded = true;
-                this.fallback = true;
-              }}
-              onMdsImgLoadSuccess={() => {
-                this.loaded = true;
-              }}
-              part="media"
-              src={this.src}
-            />
-          )}
-          {this.icon && !this.initials && !this.count && (
-            <mds-icon class="icon" part="icon" name={this.icon}></mds-icon>
-          )}
-          {(this.fallback || (!this.icon && !this.initials && !this.count && !this.src)) && (
+          {this.src &&
+            (this.count === undefined || this.count === 0 || Number.isNaN(this.count)) &&
+            !this.fallback &&
+            (this.icon === undefined || this.icon === '') && (
+              <mds-img
+                class="image"
+                loading="lazy"
+                onMdsImgLoadError={this.handleImgLoadError}
+                onMdsImgLoadSuccess={this.handleImgLoadSuccess}
+                part="media"
+                src={this.src}
+              />
+            )}
+          {this.icon &&
+            (this.initials === undefined || this.initials === '') &&
+            (this.count === undefined || this.count === 0 || Number.isNaN(this.count)) && (
+              <mds-icon class="icon" part="icon" name={this.icon}></mds-icon>
+            )}
+          {(this.fallback ||
+            ((this.icon === undefined || this.icon === '') &&
+              (this.initials === undefined || this.initials === '') &&
+              (this.count === undefined || this.count === 0 || Number.isNaN(this.count)) &&
+              (this.src === undefined || this.src === ''))) && (
             <i class="fallback-icon" innerHTML={miBaselinePerson} />
           )}
         </div>

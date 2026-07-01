@@ -129,13 +129,23 @@ For more details see the [library](https://www.npmjs.com/package/@maggioli-desig
 
 
 ## Icon
-Set the path where the `mds-icon` component will get the svg icons
+Tell the `mds-icon` component where to load the SVG icons from. The recommended way is the shared `IconsSetService` singleton, imported from the package's `services` entry point. It sets the path in memory (no `sessionStorage`) and makes every mounted icon (re)load - so it works even where storage is blocked (incognito, sandboxed iframes, storage partitioning).
+
+```js
+import { IconsSetService } from '@maggioli-design-system/magma/services';
+
+IconsSetService.setSvgPath('/assets/img/svg/');
+```
+
+Pass an absolute path (starting with `/`, resolved against the origin) or a full URL. It can be called before or after the icons mount.
+
+Alternatively, set the `mdsIconSvgPath` key in `sessionStorage` before any icon mounts. This is optional and **may be blocked** by some browsers/contexts - prefer `IconsSetService` above.
 
 ```js
 window.sessionStorage.setItem('mdsIconSvgPath', 'assets/img/svg/');
 ```
 
-If you are using React set this inside `UseEffet` otherwise window is not defined
+If you are using React, set either inside `useEffect`, otherwise `window` is not defined.
 
 
 For greater interoperability between components and frameworks, see the specific libraries for [Angular](https://www.npmjs.com/package/@maggioli-design-system/magma-angular) and [React](https://www.npmjs.com/package/@maggioli-design-system/magma-react)

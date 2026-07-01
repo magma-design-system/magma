@@ -51,6 +51,9 @@ export class MdsFilePreview {
     it: { ...localeIt, ...fileDescriptionLocaleIt },
   });
   @State() language: string;
+  /**
+   * Updates the component's texts to the locale currently set on the host element.
+   */
   @Method()
   async updateLang(): Promise<void> {
     this.language = this.t.lang(this.host);
@@ -212,11 +215,21 @@ export class MdsFilePreview {
           ></mds-button>
         )}
         <div class="card" part="card" onClick={this.onClickDownloadEvent}>
-          {this.src && !this.message && getExtensionInfos(this.filename, this.suffix).preview ? (
+          {this.src !== undefined &&
+          this.src !== '' &&
+          (this.message === undefined || this.message === '') &&
+          getExtensionInfos(this.filename, this.suffix).preview ? (
             <mds-img src={this.src} class="preview preview--image" aspect-ratio="1/1"></mds-img>
           ) : (
-            <div class={clsx('preview', !this.message ? 'preview--icon' : 'preview--status')}>
-              {this.icon ? (
+            <div
+              class={clsx(
+                'preview',
+                this.message === undefined || this.message === ''
+                  ? 'preview--icon'
+                  : 'preview--status',
+              )}
+            >
+              {this.icon !== '' ? (
                 <mds-icon class="icon" name={this.icon}></mds-icon>
               ) : (
                 <mds-icon class="icon" name={getFormatsVariant(this.filename, this.suffix).icon} />
@@ -260,7 +273,7 @@ export class MdsFilePreview {
                 {getSuffix(this.filename, this.suffix)}
               </mds-badge>
             )}
-            {!this.filesize && (
+            {(this.filesize === undefined || this.filesize === '') && (
               <mds-text
                 class="description"
                 truncate="word"

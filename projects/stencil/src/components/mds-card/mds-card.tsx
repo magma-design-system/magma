@@ -26,9 +26,9 @@ export class MdsCard {
   @State() layout: string;
 
   /**
-   * Enables automatic responsive behavior based on container queries
+   * Disables the automatic responsive behavior based on container queries
    */
-  @Prop({ reflect: true }) readonly autoGrid: boolean = true;
+  @Prop({ reflect: true }) readonly disableAutoGrid: boolean = false;
 
   connectedCallback(): void {
     this.unsubscribePrefContrast = subscribePreference('contrast', (value) => {
@@ -52,9 +52,12 @@ export class MdsCard {
     this.layout = Array.from(this.host.children)
       // check custom slot
       .map((c) =>
-        (c.getAttribute('slot') ??
-        // if no custom slot find mds-card-{component}
-        c.tagName.startsWith('MDS-CARD-'))
+        (
+          c.getAttribute('slot') != null
+            ? c.getAttribute('slot') !== ''
+            : // if no custom slot find mds-card-{component}
+              c.tagName.startsWith('MDS-CARD-')
+        )
           ? // replace mds-card-header with header (for all mds-card-{component})
             c.tagName.toLocaleLowerCase().replace('mds-card-', '')
           : // if find other tag do nothing
@@ -75,7 +78,7 @@ export class MdsCard {
           class={clsx(
             'layout',
             this.layout && `layout--${this.layout}`,
-            !this.autoGrid ? 'layout--disabled' : '',
+            this.disableAutoGrid ? 'layout--disabled' : '',
           )}
           part="layout"
         >

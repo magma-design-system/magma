@@ -52,6 +52,9 @@ export class MdsFile {
     it: { ...localeIt, ...fileDescriptionLocaleIt },
   });
   @State() language: string;
+  /**
+   * Updates the component's texts to the locale currently set on the host element.
+   */
   @Method()
   async updateLang(): Promise<void> {
     this.language = this.t.lang(this.host);
@@ -80,9 +83,9 @@ export class MdsFile {
   @Prop() readonly preview?: string;
 
   /**
-   * Sets if the download icon must be shown or not
+   * Hides the download icon
    */
-  @Prop() readonly showDownloadedIcon?: boolean = true;
+  @Prop() readonly hideDownloadedIcon?: boolean = false;
 
   /**
    * Sets if the download icon must be shown or not
@@ -208,7 +211,7 @@ export class MdsFile {
             </mds-text>
           </div>
         </div>
-        {this.wasDownloaded && this.showDownloadedIcon && (
+        {this.wasDownloaded && !this.hideDownloadedIcon && (
           <div class="indicator">
             <i
               class="downloaded"

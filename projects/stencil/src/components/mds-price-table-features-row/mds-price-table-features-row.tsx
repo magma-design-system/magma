@@ -2,7 +2,7 @@ import { Component, Host, h, Element, State } from '@stencil/core';
 import { subscribePreference } from '@common/preference';
 
 /**
- * @slot default - Expects to slot `mds-price-table-features-cell` component
+ * @slot - Expects to slot `mds-price-table-features-cell` component
  */
 
 @Component({

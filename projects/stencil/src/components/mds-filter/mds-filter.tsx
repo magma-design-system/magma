@@ -16,7 +16,7 @@ import { MdsFilterItemEventDetail } from '@component/mds-filter-item/meta/event-
 import miBaselineClose from '@icon/mi/baseline/close.svg';
 
 /**
- * @slot default - Add `mds-filter-item` element/s.
+ * @slot - Add `mds-filter-item` element/s.
  */
 
 @Component({
@@ -145,7 +145,9 @@ export class MdsFilter {
 
   @Listen('mdsFilterItemSelect')
   activeEventHandler(event: CustomEvent<MdsFilterItemEventDetail>): void {
-    this.lastSelectedItem = Number(event.detail.id ? event.detail.id.replace('item-', '') : 0);
+    this.lastSelectedItem = Number(
+      event.detail.id !== '' ? event.detail.id.replace('item-', '') : 0,
+    );
     this.scrollTabs();
 
     const items = this.queryItems();

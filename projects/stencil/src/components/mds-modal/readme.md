@@ -33,7 +33,7 @@ This component does not use the shared `variant` / `tone` ladders; its configura
 - **`animation`** selects the motion style of the window: `'slide'` (default), `'3d'`, or `'custom'` (driven entirely by CSS custom properties).
 - **`interaction`** governs how forgiving dismissal is - `'relaxed'` allows backdrop clicks, `'strict'` requires the close button.
 - **`overflow`** chooses whether the component manages body scroll locking (`'auto'`) or leaves it to the consumer (`'manual'`).
-- **`backdrop`** toggles the dimmed overlay behind the window.
+- **`hideBackdrop`** removes the dimmed overlay behind the window (shown by default).
 
 
 ### 2. Pattern
@@ -214,10 +214,10 @@ Slot any element with `slot="window"` to completely replace the built-in chrome 
 
 #### Disabling the Backdrop
 
-Set `backdrop` to absent (or `undefined`) to render the modal without the dimmed overlay - useful for non-blocking side panels that coexist with interactive page content.
+Add `hide-backdrop` to render the modal without the dimmed overlay - useful for non-blocking side panels that coexist with interactive page content.
 
 ```html
-<mds-modal id="pannello-info" position="right">
+<mds-modal id="pannello-info" position="right" hide-backdrop>
   <div class="p-400">
     <mds-text>Informazioni contestuali</mds-text>
   </div>
@@ -226,7 +226,7 @@ Set `backdrop` to absent (or `undefined`) to render the modal without the dimmed
 
 ```javascript
 // Remove the backdrop at runtime
-document.getElementById('pannello-info').backdrop = undefined;
+document.getElementById('pannello-info').hideBackdrop = true;
 ```
 
 #### CSS Customization
@@ -344,18 +344,6 @@ document.getElementById('modal-strict').opened = undefined;
 await document.getElementById('modal-strict').close();
 ```
 
-#### Do Not Use `backdrop` to Toggle the Backdrop at Runtime via String
-
-`backdrop` is a boolean prop. Passing the string `"false"` is truthy and leaves the backdrop visible. To hide the backdrop, set the prop to `undefined` (remove the attribute in HTML).
-
-```html
-<!-- 🚫 INCORRECT -->
-<mds-modal backdrop="false"></mds-modal>
-
-<!-- ✅ CORRECT (no attribute = no backdrop) -->
-<mds-modal></mds-modal>
-```
-
 #### Do Not Use `<dialog>` Directly When `<mds-modal>` Is Available
 
 Using a raw `<dialog>` element bypasses the system's managed animation, body-scroll locking, touch-swipe dismissal, and design-token theming. Always use `<mds-modal>` for overlays in a Magma application.
@@ -379,14 +367,14 @@ Using a raw `<dialog>` element bypasses the system's managed animation, body-scr
 
 ## Properties
 
-| Property      | Attribute     | Description                                                                                                                                                                                                                                                                              | Type                                                                                                                              | Default     |
-| ------------- | ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| `animation`   | `animation`   | Specifies the animation style of the modal window                                                                                                                                                                                                                                        | `"3d" \| "custom" \| "slide" \| undefined`                                                                                        | `'slide'`   |
-| `backdrop`    | `backdrop`    | Specifies if the modal shows the backdrop                                                                                                                                                                                                                                                | `boolean \| undefined`                                                                                                            | `true`      |
-| `interaction` | `interaction` | Specifies if the component can be closed with close button, or also if the backdrop background is cliccked. If `strict` is selected only the close button can dismiss the component via UI. If `relaxed` is selected the component can be dismissed also by cliccking the backdrop area. | `"relaxed" \| "strict"`                                                                                                           | `'relaxed'` |
-| `opened`      | `opened`      | Specifies if the modal is opened or not                                                                                                                                                                                                                                                  | `boolean \| undefined`                                                                                                            | `false`     |
-| `overflow`    | `overflow`    | Specifies if the component prevents the body from scrolling when modal window is opened                                                                                                                                                                                                  | `"auto" \| "manual"`                                                                                                              | `'auto'`    |
-| `position`    | `position`    | Specifies the animation position of the modal window                                                                                                                                                                                                                                     | `"bottom" \| "bottom-left" \| "bottom-right" \| "center" \| "left" \| "right" \| "top" \| "top-left" \| "top-right" \| undefined` | `'center'`  |
+| Property       | Attribute       | Description                                                                                                                                                                                                                                                                              | Type                                                                                                                              | Default     |
+| -------------- | --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| `animation`    | `animation`     | Specifies the animation style of the modal window                                                                                                                                                                                                                                        | `"3d" \| "custom" \| "slide" \| undefined`                                                                                        | `'slide'`   |
+| `hideBackdrop` | `hide-backdrop` | Hides the modal backdrop                                                                                                                                                                                                                                                                 | `boolean \| undefined`                                                                                                            | `false`     |
+| `interaction`  | `interaction`   | Specifies if the component can be closed with close button, or also if the backdrop background is cliccked. If `strict` is selected only the close button can dismiss the component via UI. If `relaxed` is selected the component can be dismissed also by cliccking the backdrop area. | `"relaxed" \| "strict"`                                                                                                           | `'relaxed'` |
+| `opened`       | `opened`        | Specifies if the modal is opened or not                                                                                                                                                                                                                                                  | `boolean \| undefined`                                                                                                            | `false`     |
+| `overflow`     | `overflow`      | Specifies if the component prevents the body from scrolling when modal window is opened                                                                                                                                                                                                  | `"auto" \| "manual"`                                                                                                              | `'auto'`    |
+| `position`     | `position`      | Specifies the animation position of the modal window                                                                                                                                                                                                                                     | `"bottom" \| "bottom-left" \| "bottom-right" \| "center" \| "left" \| "right" \| "top" \| "top-left" \| "top-right" \| undefined` | `'center'`  |
 
 
 ## Events
@@ -403,7 +391,7 @@ Using a raw `<dialog>` element bypasses the system's managed animation, body-scr
 
 ### `close() => Promise<void>`
 
-
+Closes the modal.
 
 #### Returns
 
@@ -414,12 +402,12 @@ Type: `Promise<void>`
 
 ## Slots
 
-| Slot        | Description                                                                                                                |
-| ----------- | -------------------------------------------------------------------------------------------------------------------------- |
-| `"bottom"`  | Contents that will be placed on bottom of the window. Add `text string`, `HTML elements` or `components` to this slot.     |
-| `"default"` | Contents that will be placed in the center of the window. Add `text string`, `HTML elements` or `components` to this slot. |
-| `"top"`     | Contents that will be placed on top of the window. Add `text string`, `HTML elements` or `components` to this slot.        |
-| `"window"`  | Use directly a window component if you need it. Add `text string`, `HTML elements` or `components` to this slot.           |
+| Slot       | Description                                                                                                                |
+| ---------- | -------------------------------------------------------------------------------------------------------------------------- |
+|            | Contents that will be placed in the center of the window. Add `text string`, `HTML elements` or `components` to this slot. |
+| `"bottom"` | Contents that will be placed on bottom of the window. Add `text string`, `HTML elements` or `components` to this slot.     |
+| `"top"`    | Contents that will be placed on top of the window. Add `text string`, `HTML elements` or `components` to this slot.        |
+| `"window"` | Use directly a window component if you need it. Add `text string`, `HTML elements` or `components` to this slot.           |
 
 
 ## Shadow Parts

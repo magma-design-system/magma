@@ -2,7 +2,7 @@ import { Component, Host, State, h } from '@stencil/core';
 import { subscribePreference } from '@common/preference';
 
 /**
- * @slot default - Add `HTML elements` or `components` to this slot, it is **recommended** to use `mds-img` or `img` element.
+ * @slot - Add `HTML elements` or `components` to this slot, it is **recommended** to use `mds-img` or `img` element.
  * @slot content - Put text elements here,
  * @slot action - Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element.
  * @part contents - Selects the wrapper of the elements with attribute `slot="content"`.

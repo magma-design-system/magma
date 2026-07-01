@@ -81,13 +81,13 @@ export class MdsFilterItem {
     this.km.attachClickBehavior();
   }
 
-  disconnectedCallback = (): void => {
+  disconnectedCallback(): void {
     this.unsubscribePrefAnimation?.();
     this.unsubscribePrefContrast?.();
     this.unsubscribePrefTheme?.();
     this.unsubscribePrefThemeScheme?.();
     this.km.detachClickBehavior();
-  };
+  }
 
   render() {
     return (

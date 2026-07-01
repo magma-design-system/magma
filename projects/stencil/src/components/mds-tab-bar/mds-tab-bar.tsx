@@ -3,7 +3,7 @@ import { MdsTabBarEventDetail } from './meta/event-detail';
 import { subscribePreference } from '@common/preference';
 
 /**
- * @slot default - Add `mds-tab-bar-item` element/s.
+ * @slot - Add `mds-tab-bar-item` element/s.
  */
 
 @Component({
