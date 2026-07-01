@@ -155,6 +155,8 @@ export class MdsTab {
     this.currentItemIndex = -1;
     this.tabItems.forEach((item) => {
       item.size = this.size;
+      item.direction = this.direction;
+      item.animation = this.animation;
     });
 
     this.tabItems.forEach((item, key) => {
@@ -285,8 +287,18 @@ export class MdsTab {
   }
 
   @Watch('animation')
-  handleAnimationChange(): void {
+  handleAnimationChange(newValue?: HorizontalActionsAnimationType): void {
+    this.tabItems.forEach((element: HTMLMdsTabItemElement) => {
+      element.animation = newValue;
+    });
     this.updateSliderPosition();
+  }
+
+  @Watch('direction')
+  handleDirectionChange(newValue?: DirectionType): void {
+    this.tabItems.forEach((element: HTMLMdsTabItemElement) => {
+      element.direction = newValue;
+    });
   }
 
   @Watch('scrollbar')

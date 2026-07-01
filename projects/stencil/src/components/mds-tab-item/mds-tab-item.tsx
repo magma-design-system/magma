@@ -11,6 +11,8 @@ import {
 } from '@stencil/core';
 import { subscribePreference } from '@common/preference';
 import { ButtonIconPositionType, ButtonSizeType, ButtonType } from '@type/button';
+import { HorizontalActionsAnimationType } from '@type/animation';
+import { DirectionType } from '@component/mds-tab/meta/type';
 import { MdsTabItemEventDetail } from './meta/event-detail';
 import clsx from 'clsx';
 
@@ -69,6 +71,18 @@ export class MdsTabItem {
    * Specifies the size for the tab item
    */
   @Prop({ reflect: true }) readonly size?: ButtonSizeType = 'md';
+
+  /**
+   * Reflects the parent tab layout direction (set by mds-tab); drives the
+   * vertical layout without :host-context
+   */
+  @Prop({ reflect: true }) readonly direction?: DirectionType;
+
+  /**
+   * Reflects the parent tab selection animation (set by mds-tab); drives the
+   * slide-variant styling without :host-context
+   */
+  @Prop({ reflect: true }) readonly animation?: HorizontalActionsAnimationType;
 
   /**
    * Specifies an optional value to get from mdsTabItemSelect event
