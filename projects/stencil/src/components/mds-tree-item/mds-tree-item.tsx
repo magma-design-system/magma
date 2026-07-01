@@ -7,7 +7,8 @@ import miBaselineChevronRight from '@icon/mi/baseline/chevron-right.svg';
 import mdiFolderOpen from '@icon/mdi/folder-open.svg';
 import miBaselineFolderClosed from '@icon/mi/baseline/folder.svg';
 import { MdsTreeItemEventDetail } from './meta/event-detail';
-import { TreeActions, TreeIcon } from '@type/tree';
+import { TreeActions, TreeAppearance, TreeIcon } from '@type/tree';
+import { ButtonIconPositionType } from '@type/button';
 import {
   Component,
   Host,
@@ -81,6 +82,18 @@ export class MdsTreeItem {
    * Specifies the icon of the element
    */
   @Prop({ reflect: true }) toggle?: TreeIcon;
+
+  /**
+   * Reflects the parent tree toggle icon position (set by mds-tree); drives the
+   * toggle-icon layout without :host-context
+   */
+  @Prop({ reflect: true }) togglePosition?: ButtonIconPositionType;
+
+  /**
+   * Reflects the parent tree appearance (set by mds-tree); drives the depth/none
+   * layout without :host-context
+   */
+  @Prop({ reflect: true }) appearance?: TreeAppearance;
 
   /**
    * Specifies if the tree is expanded.
@@ -198,7 +211,7 @@ export class MdsTreeItem {
             <div class="tree-branch"></div>
             <div class="tree-dot"></div>
           </div>
-          <div class={clsx('toggle-icon', `toggle-icon--${this.toggle}`)}>
+          <div class="toggle-icon">
             <mds-button
               await={this.await}
               onClick={this.onClick.bind(this)}

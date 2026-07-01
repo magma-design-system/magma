@@ -80,6 +80,28 @@ export class MdsTree {
     this.updateChildrenToggle(newValue);
   }
 
+  private updateChildrenTogglePosition = (newValue: ButtonIconPositionType): void => {
+    this.childrenElements.forEach((element: HTMLMdsTreeItemElement) => {
+      element.togglePosition = newValue;
+    });
+  };
+
+  @Watch('togglePosition')
+  handleTogglePositionChange(newValue: ButtonIconPositionType): void {
+    this.updateChildrenTogglePosition(newValue);
+  }
+
+  private updateChildrenAppearance = (newValue: TreeAppearance): void => {
+    this.childrenElements.forEach((element: HTMLMdsTreeItemElement) => {
+      element.appearance = newValue;
+    });
+  };
+
+  @Watch('appearance')
+  handleAppearanceChange(newValue: TreeAppearance): void {
+    this.updateChildrenAppearance(newValue);
+  }
+
   private updateChildrenTruncate = (newValue: TypographyTruncateType): void => {
     this.childrenElements.forEach((element: HTMLMdsTreeItemElement) => {
       element.truncate = newValue;
@@ -106,6 +128,8 @@ export class MdsTree {
     this.childrenElements = this.host.querySelectorAll('mds-tree-item');
     this.updateChildrenTruncate(this.truncate);
     this.updateChildrenToggle(this.toggle);
+    this.updateChildrenTogglePosition(this.togglePosition);
+    this.updateChildrenAppearance(this.appearance);
     const firstLevelElements = this.host.querySelectorAll(':scope > mds-tree-item');
 
     if (firstLevelElements) {
