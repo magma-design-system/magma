@@ -13,7 +13,13 @@
         "{projectRoot}/src/fixtures",
         "{projectRoot}/src/components.d.ts",
         "{projectRoot}/react/src",
-        "{projectRoot}/angular/magma-angular/src/stencil-generated"
+        "{projectRoot}/angular/magma-angular/src/stencil-generated",
+        "{projectRoot}/AGENTS.md",
+        "{projectRoot}/agents",
+        "{projectRoot}/react/AGENTS.md",
+        "{projectRoot}/react/agents",
+        "{projectRoot}/angular/magma-angular/AGENTS.md",
+        "{projectRoot}/angular/magma-angular/agents"
       ]
     }
   }
