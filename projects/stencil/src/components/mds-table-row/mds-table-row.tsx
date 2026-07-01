@@ -48,6 +48,12 @@ export class MdsTableRow {
 
   @Prop({ mutable: true, reflect: true }) selected?: boolean;
 
+  /**
+   * Reflects the parent table selection state (set by mds-table); drives the
+   * row action background without :host-context
+   */
+  @Prop({ reflect: true }) readonly selection?: boolean;
+
   @Prop({ reflect: true }) readonly value?: string | number;
 
   connectedCallback(): void {

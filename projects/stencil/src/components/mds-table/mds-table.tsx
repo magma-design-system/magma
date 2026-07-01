@@ -107,6 +107,9 @@ export class MdsTable {
     this.header.setSelection(this.selectedRows.length, this.rows.length);
     this.selection = this.selectedRows.length > 0;
     this.body.selection = this.selection;
+    this.rows.forEach((row: HTMLMdsTableRowElement) => {
+      row.selection = this.selection;
+    });
   }
 
   /**
