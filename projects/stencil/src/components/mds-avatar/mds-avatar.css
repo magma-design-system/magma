@@ -140,11 +140,11 @@
 }
 
 @container (max-width: 24px) {
-  :host-context(:not(.safari)) .avatar--initials {
+  .avatar--initials {
     padding: 0 var(--mds-avatar-initials-padding);
   }
 
-  :host-context(:not(.safari)) .initials-text {
+  .initials-text {
     @apply font-black;
   }
 }
