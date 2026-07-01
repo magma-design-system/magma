@@ -102,6 +102,13 @@ export class MdsTree {
     this.updateChildrenAppearance(newValue);
   }
 
+  @Watch('actions')
+  handleActionsChange(): void {
+    this.childrenElements.forEach((element: HTMLMdsTreeItemElement) => {
+      void element.refreshActions();
+    });
+  }
+
   private updateChildrenTruncate = (newValue: TypographyTruncateType): void => {
     this.childrenElements.forEach((element: HTMLMdsTreeItemElement) => {
       element.truncate = newValue;
