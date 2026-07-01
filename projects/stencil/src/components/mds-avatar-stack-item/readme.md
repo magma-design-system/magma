@@ -250,15 +250,15 @@ The parent queries `:scope > mds-avatar-stack-item` to count children and comput
 
 ## CSS Custom Properties
 
-| Name                                             | Description                                              |
-| ------------------------------------------------ | -------------------------------------------------------- |
-| `--mds-avatar-stack-item-background`             | The background color of each avatar in the stack         |
-| `--mds-avatar-stack-item-border`                 | Computed active border (based on selected size)          |
-| `--mds-avatar-stack-item-count-background-color` | Background color of the count badge in the stack         |
-| `--mds-avatar-stack-item-count-color`            | Text color for the count badge in the stack              |
-| `--mds-avatar-stack-item-offset`                 | Computed active offset (based on selected size)          |
-| `--mds-avatar-stack-item-offset-margin`          | Computed margin for overlapping avatars                  |
-| `--mds-avatar-stack-item-size`                   | Computed active size (based on selected size)            |
+| Name                                             | Description                                      |
+| ------------------------------------------------ | ------------------------------------------------ |
+| `--mds-avatar-stack-item-background`             | The background color of each avatar in the stack |
+| `--mds-avatar-stack-item-border`                 | Computed active border (based on selected size)  |
+| `--mds-avatar-stack-item-count-background-color` | Background color of the count badge in the stack |
+| `--mds-avatar-stack-item-count-color`            | Text color for the count badge in the stack      |
+| `--mds-avatar-stack-item-offset`                 | Computed active offset (based on selected size)  |
+| `--mds-avatar-stack-item-offset-margin`          | Computed margin for overlapping avatars          |
+| `--mds-avatar-stack-item-size`                   | Computed active size (based on selected size)    |
 
 
 ## Dependencies
