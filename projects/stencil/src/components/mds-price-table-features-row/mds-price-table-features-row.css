@@ -48,12 +48,12 @@
   transition-property: background-color, color;
 }
 
-:host-context(:not(.safari)):host(:hover) {
+:host(:hover) {
   --mds-price-table-features-row-background: var(--mds-price-table-features-row-background-hover);
   --mds-price-table-features-row-color: var(--mds-price-table-features-row-color-hover);
 }
 
-:host-context(:not(.safari)):host(:hover) > ::slotted(mds-price-table-features-cell) {
+:host(:hover) > ::slotted(mds-price-table-features-cell) {
   --mds-price-table-features-cell-icon-supported-color: var(
     --mds-price-table-features-cell-icon-supported-color-hover
   );
@@ -66,7 +66,7 @@
   padding-left: 0;
 }
 
-:host-context(:not(.safari)):host(:hover) > ::slotted([type='label']) {
+:host(:hover) > ::slotted([type='label']) {
   transform: translate(--spacing(200), 0);
 }
 

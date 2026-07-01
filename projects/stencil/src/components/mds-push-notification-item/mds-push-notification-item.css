@@ -120,7 +120,7 @@
   top: 0;
 }
 
-:host-context(:not(.safari)):host(:hover) .close-button {
+:host(:hover) .close-button {
   opacity: 1;
 }
 

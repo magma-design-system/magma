@@ -216,13 +216,13 @@
 */
 
 @container style(--mds-tree-branch-use-rounded-border: true) {
-  :host-context(:not(.safari)) {
+  :host {
     --mds-tree-branch-border-radius: var(--radius-lg);
   }
 }
 
 @container style(--mds-tree-branch-use-rounded-border: false) {
-  :host-context(:not(.safari)) {
+  :host {
 
     /* stylelint-disable-next-line length-zero-no-unit */
     --mds-tree-branch-border-radius: 0px;
