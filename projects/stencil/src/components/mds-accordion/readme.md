@@ -16,7 +16,7 @@ The `<mds-accordion>` web component is the compound container of the Magma Desig
 
 - **Compound parent/child**: The default slot accepts only `<mds-accordion-item>` elements.
 - **Single vs. multiple selection**: By default opening one item collapses the others. With `multiple` set, any number of children may stay open at once and selection state is reported as a comma-separated list of indices.
-- **Mandatory selection**: When `closable` is `false`, the user cannot collapse the currently open item by clicking it again - one panel always remains open.
+- **Mandatory selection**: When `disable-close` is set, the user cannot collapse the currently open item by clicking it again - one panel always remains open.
 - **Emitted event**: `mdsAccordionChange` whenever the selected child set changes, carrying the live `children` NodeList and the `selected` index/indices as a string.
 
 #### Properties & Visual Configurations
@@ -26,7 +26,7 @@ This component has no shared `variant` / `tone` / `size` props; its two booleans
 #### Other behavioral props
 
 - **`multiple`** switches the group from accordion behavior (one panel at a time) to independent toggles, allowing several panels open simultaneously.
-- **`closable`** governs whether the active panel can be dismissed; set it to `false` to force at least one panel to stay expanded at all times.
+- **`disableClose`** prevents the active panel from being dismissed; set it to force at least one panel to stay expanded at all times.
 
 Per-panel presentation - the visible `label`, heading `typography`, and the slotted body content - is configured on each `<mds-accordion-item>` child, not on the accordion itself.
 
@@ -88,10 +88,10 @@ Set `multiple` to allow any number of panels to be open at the same time. The `m
 
 #### Mandatory Selection (Non-closable)
 
-Set `closable="false"` to prevent the open panel from being collapsed. The currently expanded item stays open even when the user clicks its header again - exactly one panel is always visible.
+Set `disable-close` to prevent the open panel from being collapsed. The currently expanded item stays open even when the user clicks its header again - exactly one panel is always visible.
 
 ```html
-<mds-accordion closable="false">
+<mds-accordion disable-close>
   <mds-accordion-item label="Passaggio 1 - Dati anagrafici" selected>
     <mds-text>Inserisci nome, cognome e codice fiscale.</mds-text>
   </mds-accordion-item>
@@ -220,31 +220,6 @@ The default slot of `<mds-accordion>` is designed exclusively for `<mds-accordio
 </mds-accordion>
 ```
 
-#### Do Not Set `closable` to the String `"false"`
-
-`closable` is a boolean prop. In HTML, any non-empty attribute value - including the string `"false"` - is truthy, so `closable="false"` does NOT disable the closable behavior; it is identical to `closable="true"`. Remove the attribute entirely to let the default (`true`) apply, or omit it on purpose when you want `closable` enforced.
-
-```html
-<!-- 🚫 INCORRECT - still closable, this is a no-op -->
-<mds-accordion closable="false">
-  <mds-accordion-item label="Passaggio obbligatorio" selected>
-    <mds-text>Questo pannello dovrebbe restare sempre aperto.</mds-text>
-  </mds-accordion-item>
-</mds-accordion>
-
-<!-- ✅ CORRECT - use the attribute without a value (boolean form) -->
-<!-- Note: to DISABLE closable, set the prop to false in JS, or use a framework binding -->
-<!-- In plain HTML there is no boolean "false" form; control it via JS: -->
-<mds-accordion id="mandatory-accordion">
-  <mds-accordion-item label="Passaggio obbligatorio" selected>
-    <mds-text>Questo pannello resta sempre aperto.</mds-text>
-  </mds-accordion-item>
-</mds-accordion>
-<script>
-  document.getElementById('mandatory-accordion').closable = false;
-</script>
-```
-
 #### Do Not Listen to Native `click` or `toggle` Instead of `mdsAccordionChange`
 
 The selection logic lives inside shadow DOM. Native `click` events from inside the shadow root may not propagate as expected, and there is no native `toggle` event on this component. Always listen for `mdsAccordionChange` to react to open/close changes.
@@ -323,10 +298,10 @@ mds-accordion-item::part(label) {
 
 ## Properties
 
-| Property   | Attribute  | Description                                                | Type                   | Default |
-| ---------- | ---------- | ---------------------------------------------------------- | ---------------------- | ------- |
-| `closable` | `closable` | Specifies if an item can be closed by user                 | `boolean \| undefined` | `true`  |
-| `multiple` | `multiple` | Choose if multiple siblings can be selected simultaneously | `boolean \| undefined` | `false` |
+| Property       | Attribute       | Description                                                                                         | Type                   | Default |
+| -------------- | --------------- | --------------------------------------------------------------------------------------------------- | ---------------------- | ------- |
+| `disableClose` | `disable-close` | Prevents the user from closing the currently open item, forcing at least one panel to stay expanded | `boolean \| undefined` | `false` |
+| `multiple`     | `multiple`      | Choose if multiple siblings can be selected simultaneously                                          | `boolean \| undefined` | `false` |
 
 
 ## Events

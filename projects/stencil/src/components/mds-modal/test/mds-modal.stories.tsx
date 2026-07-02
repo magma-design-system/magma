@@ -16,8 +16,8 @@ export default {
       options: modalAnimationStyleDictionary,
       type: { name: 'string' },
     },
-    backdrop: {
-      description: 'Specifies if the modal shows the backdrop',
+    'hide-backdrop': {
+      description: 'Hides the modal backdrop',
       type: { name: 'boolean' },
     },
     interaction: {
@@ -576,7 +576,7 @@ export const Backdrop = {
   args: {
     position: 'right',
     opened: true,
-    backdrop: undefined,
+    'hide-backdrop': true,
   },
 };
 

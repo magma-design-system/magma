@@ -40,7 +40,7 @@ export class MdsStatusBar {
 
   componentDidLoad(): void {
     this.modal = this.host.shadowRoot?.querySelector('.modal') as HTMLMdsModalElement;
-    this.modal.backdrop = undefined;
+    this.modal.hideBackdrop = true;
   }
 
   @Watch('visible')

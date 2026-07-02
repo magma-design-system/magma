@@ -27,9 +27,9 @@ export class MdsDropdown implements FloatingElement {
   @Element() readonly host!: HTMLMdsDropdownElement;
 
   /**
-   * If set, the component will have an arrow pointing to the caller.
+   * If set, the component will not have an arrow pointing to the caller.
    */
-  @Prop({ reflect: true }) readonly arrow: boolean = true;
+  @Prop({ reflect: true }) readonly hideArrow: boolean = false;
 
   /**
    * Sets the distance between arrow and dropdown margins.
@@ -37,9 +37,9 @@ export class MdsDropdown implements FloatingElement {
   @Prop() readonly arrowPadding: number = 24;
 
   /**
-   * If set, the component will be placed automatically near it's caller.
+   * If set, the component will not be placed automatically near it's caller.
    */
-  @Prop() readonly autoPlacement: boolean = false;
+  @Prop() readonly disableAutoPlacement: boolean = false;
 
   /**
    * Specifies if the component has a backdrop background
@@ -72,9 +72,9 @@ export class MdsDropdown implements FloatingElement {
   @Prop() readonly placement: FloatingUIPlacement = 'bottom';
 
   /**
-   * If set, the component will be kept inside the viewport.
+   * If set, the component will not be kept inside the viewport.
    */
-  @Prop() readonly shift: boolean = true;
+  @Prop() readonly disableShift: boolean = false;
 
   /**
    * Sets a safe area distance between the dropdown and the viewport.
@@ -82,9 +82,9 @@ export class MdsDropdown implements FloatingElement {
   @Prop() readonly shiftPadding: number = 24;
 
   /**
-   * If set, the component will follow the caller smoothly, visible when the page scrolls.
+   * If set, the component will not follow the caller smoothly when the page scrolls.
    */
-  @Prop() readonly smooth: boolean = true;
+  @Prop() readonly disableSmooth: boolean = false;
 
   /**
    * Sets the CSS position strategy of the component.
@@ -116,8 +116,8 @@ export class MdsDropdown implements FloatingElement {
    */
   @Event({ eventName: 'mdsDropdownChange' }) changedEvent: EventEmitter<MdsDropdownEventDetail>;
 
-  @Watch('arrow')
-  arrowChanged(): void {
+  @Watch('hideArrow')
+  hideArrowChanged(): void {
     this.floatingController.updatePosition();
   }
 
@@ -126,8 +126,8 @@ export class MdsDropdown implements FloatingElement {
     this.floatingController.updatePosition();
   }
 
-  @Watch('autoPlacement')
-  autoPlacementChanged(): void {
+  @Watch('disableAutoPlacement')
+  disableAutoPlacementChanged(): void {
     this.floatingController.updatePosition();
   }
 
@@ -161,8 +161,8 @@ export class MdsDropdown implements FloatingElement {
     this.floatingController.updatePosition();
   }
 
-  @Watch('shift')
-  shiftChanged(): void {
+  @Watch('disableShift')
+  disableShiftChanged(): void {
     this.floatingController.updatePosition();
   }
 

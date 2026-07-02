@@ -58,9 +58,9 @@ export class MdsModal {
   @Prop({ reflect: true, mutable: true }) opened?: boolean = false;
 
   /**
-   * Specifies if the modal shows the backdrop
+   * Hides the modal backdrop
    */
-  @Prop({ reflect: true, mutable: true }) backdrop?: boolean = true;
+  @Prop({ reflect: true, mutable: true }) hideBackdrop?: boolean = false;
 
   /**
    * Specifies the animation position of the modal window
@@ -274,10 +274,10 @@ export class MdsModal {
     this.animateCloseWindow();
   }
 
-  @Watch('backdrop')
-  handleBackdropProp(newValue?: boolean): void {
+  @Watch('hideBackdrop')
+  handleHideBackdropProp(newValue?: boolean): void {
     if (newValue === false) {
-      this.backdrop = undefined;
+      this.hideBackdrop = undefined;
     }
   }
 

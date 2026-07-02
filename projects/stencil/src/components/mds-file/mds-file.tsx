@@ -74,9 +74,9 @@ export class MdsFile {
   @Prop() readonly preview?: string;
 
   /**
-   * Sets if the download icon must be shown or not
+   * Hides the download icon
    */
-  @Prop() readonly showDownloadedIcon?: boolean = true;
+  @Prop() readonly hideDownloadedIcon?: boolean = false;
 
   /**
    * Sets if the download icon must be shown or not
@@ -173,7 +173,7 @@ export class MdsFile {
             </mds-text>
           </div>
         </div>
-        {this.wasDownloaded && this.showDownloadedIcon && (
+        {this.wasDownloaded && !this.hideDownloadedIcon && (
           <div class="indicator">
             <i
               class="downloaded"

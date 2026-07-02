@@ -64,9 +64,9 @@ export class MdsBanner {
   @Prop({ reflect: true }) readonly tone?: ToneMinimalBoxVariantType = 'weak';
 
   /**
-   * Shows a decoration around the banner icon
+   * Hides the decoration around the banner icon
    */
-  @Prop({ reflect: true }) readonly cockade?: boolean = true;
+  @Prop({ reflect: true }) readonly hideCockade?: boolean = false;
 
   /**
    * Shows the cross icon to perform cancel/delete action on element

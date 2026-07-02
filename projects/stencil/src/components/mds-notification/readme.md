@@ -70,11 +70,11 @@ You can check how browser support works at [this page][stencil-browser-support].
 
 The component accepts the following attributes:
 - `target`: (mandatory) specifies the id of the element to which is attached
-- `value`: specifies the number of notification to display (if set to the element will be hidden)
-- `visible`: specifies if the notification should be visible or not
+- `value`: specifies the number of notification to display (if set to `0` the badge is hidden)
+- `dismissed`: specifies if the notification is dismissed (hidden); the badge is shown by default
 
 ```html
-<mds-notification target='my-button' value=22 visible=true></mds-notification>
+<mds-notification target='my-button' value=22></mds-notification>
 <button id='my-button'>Click here!</button>
 ```
 
@@ -109,7 +109,7 @@ The `<mds-notification>` web component is a numeric badge/dot indicator of the M
 - **`target`** is the CSS selector of the element the badge anchors to; it is effectively mandatory for positioned rendering.
 - **`value`** is the count shown in the badge and also the source of the accessible label; `0` hides the badge.
 - **`max`** caps the visible number - pick it when raw counts could grow large and you want a compact `+N` ceiling.
-- **`visible`** toggles whether the badge is shown independently of its value.
+- **`dismissed`** hides the badge independently of its value (the badge is shown by default).
 
 #### Other behavioral props
 
@@ -150,11 +150,11 @@ When raw counts can grow large, set `max` to cap the visible number. Values abov
 
 #### Hiding and Showing the Badge
 
-Use the `visible` prop to show or hide the badge independently of its count. This is useful when the notification state is known but should not be displayed yet - for example while a panel is already open.
+Add the `dismissed` prop to hide the badge independently of its count. This is useful when the notification state is known but should not be displayed yet - for example while a panel is already open.
 
 ```html
 <!-- Badge nascosto anche se ha un valore -->
-<mds-notification target="#avatar-utente" value="3" visible="false"></mds-notification>
+<mds-notification target="#avatar-utente" value="3" dismissed></mds-notification>
 
 <!-- Badge visibile (valore predefinito) -->
 <mds-notification target="#avatar-utente" value="3"></mds-notification>
@@ -243,18 +243,6 @@ Without `target`, the component cannot locate its anchor, automatically falls ba
 <mds-icon id="icona-posta" name="mi/baseline/mail"></mds-icon>
 ```
 
-#### Do Not Set `visible="false"` to Hide the Badge When the Count Is Zero
-
-Setting `value="0"` already collapses the visible dot. Mixing `visible="false"` (a string, not a boolean) with a non-zero value also triggers the boolean-as-string system anti-pattern: the string `"false"` is truthy in HTML and the component will not treat it as `false`.
-
-```html
-<!-- 🚫 INCORRECT - boolean passed as string -->
-<mds-notification target="#elemento" value="0" visible="false"></mds-notification>
-
-<!-- ✅ CORRECT - remove the attribute or let value=0 do the work -->
-<mds-notification target="#elemento" value="0"></mds-notification>
-```
-
 #### Do Not Use `<mds-notification>` as a Status Dot Without a Count
 
 `<mds-notification>` is a numeric counter badge. For a purely visual status indicator with no count, use [`mds-badge`](../../mds-badge) instead, which is designed for dot, icon, and label status scenarios.
@@ -305,13 +293,13 @@ mds-notification {
 
 ## Properties
 
-| Property   | Attribute  | Description                                                                                                                                        | Type                                  | Default     |
-| ---------- | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------- | ----------- |
-| `max`      | `max`      | Specifies the maximum number that can be seen, assuming that the number is for example 9 and that this is exceeded with 15, the component shows +9 | `number \| undefined`                 | `undefined` |
-| `strategy` | `strategy` | Specifies the position strategy of the notification                                                                                                | `"absolute" \| "disabled" \| "fixed"` | `'fixed'`   |
-| `target`   | `target`   | Specifies the selector of the target element, this attribute is used with `querySelector` method.                                                  | `string`                              | `undefined` |
-| `value`    | `value`    | Specifies number of notifications to display, if it set to 0, the element will be hidden                                                           | `number`                              | `0`         |
-| `visible`  | `visible`  | Specifies if the notification is visible                                                                                                           | `boolean`                             | `true`      |
+| Property    | Attribute   | Description                                                                                                                                        | Type                                  | Default     |
+| ----------- | ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------- | ----------- |
+| `dismissed` | `dismissed` | Specifies if the notification is dismissed                                                                                                         | `boolean`                             | `false`     |
+| `max`       | `max`       | Specifies the maximum number that can be seen, assuming that the number is for example 9 and that this is exceeded with 15, the component shows +9 | `number \| undefined`                 | `undefined` |
+| `strategy`  | `strategy`  | Specifies the position strategy of the notification                                                                                                | `"absolute" \| "disabled" \| "fixed"` | `'fixed'`   |
+| `target`    | `target`    | Specifies the selector of the target element, this attribute is used with `querySelector` method.                                                  | `string`                              | `undefined` |
+| `value`     | `value`     | Specifies number of notifications to display, if it set to 0, the element will be hidden                                                           | `number`                              | `0`         |
 
 
 ## CSS Custom Properties
