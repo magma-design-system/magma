@@ -1,0 +1,100 @@
+name: 🛠️ Contribution Proposal
+description: You want to build a contribution yourself (code and/or design). The core team will pair you with a mentor.
+title: '[Contribution]: '
+labels: ['type: feature', 'status: triage', 'needs mentor']
+projects: ['magma-design-system/magma']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for stepping up to contribute! 🎉
+
+        This template is for when you are willing to do the work. A core team
+        member will be assigned to support you through the
+        [contribution flow](https://github.com/magma-design-system/magma/wiki/Flusso-di-contributo)
+        (Dev → Doc → Release). Please search
+        [existing issues](https://github.com/magma-design-system/magma/issues) first.
+  - type: dropdown
+    id: type
+    attributes:
+      label: Contribution type
+      description: This maps to our contribution model and helps plan the review path.
+      options:
+        - Bug fix
+        - Small enhancement
+        - Large enhancement / refactor
+        - New component or feature
+        - Feature across multiple components
+        - Major initiative (tokens, architecture, global styles)
+    validations:
+      required: true
+  - type: dropdown
+    id: package
+    attributes:
+      label: Package
+      description: Which package(s) will this touch?
+      multiple: true
+      options:
+        - '@maggioli-design-system/magma (stencil components)'
+        - '@maggioli-design-system/styles'
+        - '@maggioli-design-system/design-tokens'
+        - '@maggioli-design-system/icons'
+        - '@maggioli-design-system/svg-icons'
+        - '@maggioli-design-system/identity'
+        - Documentation / Storybook
+        - New / cross-cutting
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve?
+      description: The use case or gap you want to fill.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: What do you plan to build?
+      description: Describe the component, API, tokens, or behavior you intend to implement.
+    validations:
+      required: true
+  - type: dropdown
+    id: breaking
+    attributes:
+      label: Does this introduce a breaking change?
+      description: A change to an existing component API is a breaking change (semver major 🔴).
+      options:
+        - 'No'
+        - 'Yes'
+        - Not sure
+    validations:
+      required: true
+  - type: input
+    id: design
+    attributes:
+      label: Design assets
+      description: Link to the Figma file or designs, if any.
+      placeholder: https://figma.com/...
+    validations:
+      required: false
+  - type: checkboxes
+    id: help
+    attributes:
+      label: What support do you need?
+      description: Select all that apply. The core team will help with the rest.
+      options:
+        - label: A core team mentor to guide me
+        - label: Design review (system designer)
+        - label: Accessibility review (a11y expert)
+        - label: Development review (system developer)
+        - label: Help with documentation
+  - type: checkboxes
+    id: commitment
+    attributes:
+      label: Contribution flow
+      options:
+        - label: I have read the contribution flow and I am willing to follow it (Dev → Doc → Release)
+          required: true
+        - label: I agree to follow this project's [Code of Conduct](https://github.com/magma-design-system/magma/blob/main/.github/CODE_OF_CONDUCT.md)
+          required: true

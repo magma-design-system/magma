@@ -1,4 +1,4 @@
-name: Bug Report
+name: 🐞 Bug Report
 description: Report a bug in the Maggioli Design System.
 title: '[Bug]: '
 labels: ['type: bug', 'status: triage']
@@ -34,6 +34,20 @@ body:
       label: Package version
       description: Which version of the affected package are you running?
       placeholder: ex. 14.1.0
+    validations:
+      required: true
+  - type: dropdown
+    id: integration
+    attributes:
+      label: Integration
+      description: How are you using the components?
+      options:
+        - Plain HTML / vanilla JS
+        - React
+        - Angular
+        - Vue
+        - Storybook
+        - Other / not applicable
     validations:
       required: true
   - type: textarea
