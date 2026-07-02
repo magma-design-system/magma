@@ -70,14 +70,23 @@ These are the **canonical source of truth**. The component's `readme.md` is auto
 
 Format: `type(scope): subject`. Enforced by `commitlint.config.js` via `.husky/commit-msg`.
 
-- Custom type spellings: use **`refact`** (not `refactor`) and **`doc`** (not `docs`).
-- Allowed types: `build`, `change`, `chore`, `ci`, `doc`, `feat`, `fix`, `hotfix`, `merge`, `perf`, `refact`, `revert`, `style`, `test`.
+- Allowed types: `build`, `change`, `chore`, `ci`, `docs`, `feat`, `fix`, `hotfix`, `merge`, `perf`, `refactor`, `revert`, `style`, `test`. Use the standard spellings **`docs`** and **`refactor`** (not `doc` / `refact`).
 - Scope is **required**. Use a project name (`design-tokens`, `icons`, `identity`, `lit`, `magma`, `react`, `stencil`, `storybook`, `styles`, `svg-icons`) or a component directory name (`mds-button`, `mds-input`, …).
 - `revert` must have an empty scope.
 - `style` type cannot be used with `magma`, `icons`, `identity`, `svg-icons` (no CSS in those projects), or `styles` (use `fix(styles)` / `change(styles)` instead).
 - Subject is short, imperative, lowercase first word, no trailing period, ≤ 72 characters.
 
 Full rules and examples: [`docs/COMMITS.md`](../docs/COMMITS.md).
+
+## Git governance
+
+The `dev` and `main` branches are protected governance targets integrated **manually** by a maintainer. When generating or automating git actions:
+
+- **Never** merge into `dev` or `main`, push to them directly, or auto-merge a pull request into them.
+- Do every unit of work (feature, fix, etc.) on its own dedicated branch, branched off `dev` - never work directly on `dev` or `main`.
+- Before pushing, check whether `dev` has new commits; if so, merge `dev` into your branch, run the tests, and only then push to the branch's own remote.
+
+Full rules: [`docs/WORKFLOW.md`](../docs/WORKFLOW.md).
 
 ## Where to look for deeper context
 
@@ -87,6 +96,7 @@ Full rules and examples: [`docs/COMMITS.md`](../docs/COMMITS.md).
 | Monorepo architecture and sub-project relationships                      | [`docs/ARCHITECTURE.md`](../docs/ARCHITECTURE.md)                     |
 | Full lint rule reference (TypeScript + CSS)                              | [`docs/CODING_STANDARDS.md`](../docs/CODING_STANDARDS.md)             |
 | Full commit message rules                                                | [`docs/COMMITS.md`](../docs/COMMITS.md)                               |
+| Contribution workflow and git governance (branch, merge, push)          | [`docs/WORKFLOW.md`](../docs/WORKFLOW.md)                             |
 | Design tokens (structure, levels, semantics, naming)                     | [`projects/design-tokens/SPEC.md`](../projects/design-tokens/SPEC.md) |
 | CSS and Tailwind 4 conventions, semantic classes, dark mode, layer order | [`projects/styles/SPEC.md`](../projects/styles/SPEC.md)               |
 | Stencil component conventions, composition, accessibility                | [`projects/stencil/SPEC.md`](../projects/stencil/SPEC.md)             |
