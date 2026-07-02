@@ -49,7 +49,7 @@ const sync = (): void => {
 };
 
 const ensureObserver = (): void => {
-  if (observer) {
+  if (observer || typeof MutationObserver === 'undefined') {
     return;
   }
   observer = new MutationObserver(sync);
