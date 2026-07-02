@@ -1,7 +1,14 @@
-:host([opened]:not([hide-backdrop])),
-:host([opened][hide-backdrop='false']) {
-  --private-modal-transition-window-transform: none;
+/* Open state of the native backdrop dim. ::backdrop only renders for modal
+ * dialogs (showModal), i.e. when [backdrop] is set, so no extra guard needed. */
 
+.dialog[open]::backdrop {
   background-color: rgb(var(--mds-modal-overlay-color) / var(--mds-modal-overlay-opacity));
-  pointer-events: auto;
+}
+
+/* Fade the dim in when the dialog enters the top layer. */
+
+@starting-style {
+  .dialog[open]::backdrop {
+    background-color: rgb(var(--mds-modal-overlay-color) / 0);
+  }
 }

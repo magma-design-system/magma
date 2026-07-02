@@ -27,6 +27,7 @@
 
 :host {
   --mds-details-duration: 300ms;
+  --private-details-duration: var(--mds-details-duration);
   --mds-details-icon-color: rgb(var(--variant-primary-04));
   --mds-details-helper-icon-color: rgb(var(--tone-neutral-03));
 
@@ -49,7 +50,7 @@
   overflow: hidden;
   padding-top: 0;
   pointer-events: none;
-  transition-duration: var(--mds-details-duration);
+  transition-duration: var(--private-details-duration);
   transition-property: grid-template-rows, opacity, padding;
 }
 

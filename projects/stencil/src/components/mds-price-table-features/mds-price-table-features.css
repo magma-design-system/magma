@@ -18,18 +18,19 @@
 :host {
   --mds-price-table-features-border-color: rgb(var(--tone-neutral-06));
   --mds-price-table-features-padding: --spacing(300);
+  --mds-price-table-features-transition-duration: var(--duration-200);
+  --private-price-table-features-transition-duration: var(--mds-price-table-features-transition-duration);
 
-  @apply duration-200
-    ease-in-out;
+  @apply ease-in-out;
 
   display: flex;
+  transition-duration: var(--private-price-table-features-transition-duration);
   transition-property: border-color;
   width: 100%;
 }
 
 .table-wrapper {
-  @apply scroll-mx-600;
-
+  scroll-margin-inline: --spacing(600);
   width: 100%;
 }
 

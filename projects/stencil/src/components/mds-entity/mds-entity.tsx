@@ -1,6 +1,7 @@
-import { Component, Element, Host, h, Prop } from '@stencil/core';
+import { Component, Element, Host, h, Prop, State } from '@stencil/core';
 import { ThemeFullVariantAvatarType } from '@type/variant';
 import { ToneMinimalVariantType } from '@type/tone';
+import { subscribePreference } from '@common/preference';
 
 /**
  * @slot - Add `text string`, `HTML elements` or `components` to this slot.
@@ -17,6 +18,12 @@ import { ToneMinimalVariantType } from '@type/tone';
 })
 export class MdsEntity {
   @Element() private hostElement: HTMLMdsEntityElement;
+  @State() prefContrast?: string;
+  private unsubscribePrefContrast?: () => void;
+  @State() prefTheme?: string;
+  private unsubscribePrefTheme?: () => void;
+  @State() prefThemeScheme?: string;
+  private unsubscribePrefThemeScheme?: () => void;
   private details: boolean;
   private actions: boolean;
 
@@ -66,6 +73,24 @@ export class MdsEntity {
     }
     return hasAvatar;
   }
+  connectedCallback(): void {
+    this.unsubscribePrefContrast = subscribePreference('contrast', (value) => {
+      this.prefContrast = value;
+    });
+    this.unsubscribePrefTheme = subscribePreference('theme', (value) => {
+      this.prefTheme = value;
+    });
+    this.unsubscribePrefThemeScheme = subscribePreference('theme-scheme', (value) => {
+      this.prefThemeScheme = value;
+    });
+  }
+
+  disconnectedCallback(): void {
+    this.unsubscribePrefContrast?.();
+    this.unsubscribePrefTheme?.();
+    this.unsubscribePrefThemeScheme?.();
+  }
+
   componentWillLoad(): void {
     this.details = this.hostElement.querySelector(':scope > [slot="detail"]') !== null;
     this.actions = this.hostElement.querySelector(':scope > [slot="action"]') !== null;
@@ -73,7 +98,11 @@ export class MdsEntity {
 
   render() {
     return (
-      <Host>
+      <Host
+        pref-contrast={this.prefContrast}
+        pref-theme={this.prefTheme}
+        pref-theme-scheme={this.prefThemeScheme}
+      >
         <div class="spinner" part="spinner">
           <mds-spinner running></mds-spinner>
         </div>

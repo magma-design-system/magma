@@ -28,15 +28,13 @@
   --mds-usage-border-color: rgb(var(--status-info-06));
   --mds-usage-header-background: var(--mds-usage-border-color);
   --mds-usage-header-color: rgb(var(--tone-neutral));
+  --mds-usage-transition-duration: var(--duration-200);
+  --private-usage-transition-duration: var(--mds-usage-transition-duration);
 
-  @apply duration-200
-    ease-out
-    gap-200
-    p-400
-    pt-0
-    rounded-lg;
+  @apply ease-out;
 
   border-color: var(--mds-usage-border-color);
+  border-radius: var(--radius-lg);
   border-style: solid;
   border-width: --spacing(50);
 
@@ -45,9 +43,13 @@
   container-type: inline-size;
   */
   display: grid;
+  gap: --spacing(200);
   grid-auto-rows: min-content;
   grid-template-columns: minmax(0, 100%);
+  padding: --spacing(400);
+  padding-top: 0;
   position: relative;
+  transition-duration: var(--private-usage-transition-duration);
   transition-property: background-color, box-shadow, color;
   width: 100%;
 }

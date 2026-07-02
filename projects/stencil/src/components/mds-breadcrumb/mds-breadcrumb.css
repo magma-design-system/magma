@@ -100,5 +100,3 @@
 :host::-webkit-scrollbar {
   display: none;
 }
-
-@import './css/mds-breadcrumb-pref-animation.css';

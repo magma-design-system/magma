@@ -32,17 +32,10 @@ describe('mds-modal', () => {
 
     expect(element.getAttribute('opened')).not.toBe('false');
 
-    await page.mouse.click(window.innerWidth / 2, window.innerHeight / 2);
-
-    // const mdsIcon = element.shadowRoot.querySelector('mds-icon') as HTMLElement
-
-    // console.info('mdsIcon', mdsIcon)
-
-    // const closeButton = mdsIcon.shadowRoot.querySelector('i') as HTMLElement
-
-    // console.info('closeButton', closeButton)
-
-    // closeButton.click()
+    // The native <dialog> fills the viewport and centers the window, so a click
+    // on a corner lands on the backdrop area (target === dialog), which dismisses
+    // the modal under the default `relaxed` interaction.
+    await page.mouse.click(5, 5);
 
     await page.waitForChanges();
 

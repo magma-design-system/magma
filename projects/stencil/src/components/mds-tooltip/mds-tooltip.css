@@ -81,28 +81,28 @@
   --mds-tooltip-drop-shadow: drop-shadow(0 10px 8px rgb(0 0 0 / 0.04))
     drop-shadow(0 4px 3px rgb(0 0 0 / 0.1)) drop-shadow(0 0 1px rgb(0 0 0 / 0.1));
   --mds-tooltip-duration: 0.5s;
+  --private-tooltip-duration: var(--mds-tooltip-duration);
   --mds-tooltip-ease: var(--ease-out-expo);
   --mds-tooltip-dot-padding: --spacing(100);
   --mds-tooltip-transform-from: scale(0.9) translateY(calc(--spacing(400) * -1));
   --mds-tooltip-transform-to: scale(1) translate(0, 0);
   --mds-tooltip-z-index: var(--magma-tooltip-z-index, 4000);
 
-  @apply gap-400
-    px-200
-    py-100
-    rounded;
-
   background-color: var(--mds-tooltip-background);
+  border-radius: 0.25rem;
   box-sizing: border-box;
   display: grid;
   filter: var(--mds-tooltip-drop-shadow);
+  gap: --spacing(400);
   max-width: --spacing(6400);
   opacity: 0;
+  padding-block: --spacing(100);
+  padding-inline: --spacing(200);
   pointer-events: none;
   position: fixed;
   transform: var(--mds-tooltip-transform-from);
   transition-delay: 0s;
-  transition-duration: var(--mds-tooltip-duration);
+  transition-duration: var(--private-tooltip-duration);
   transition-property: opacity, transform, transform-origin;
   transition-timing-function: var(--mds-tooltip-ease);
   width: fit-content;
@@ -130,22 +130,21 @@
 }
 
 .arrow {
-  @apply duration-300
-    ease-in-out;
+  @apply ease-in-out;
 
   display: flex;
   fill: var(--mds-tooltip-arrow-background);
   pointer-events: none;
   position: fixed;
   top: -9px;
+  transition-duration: var(--duration-300);
   transition-property: fill;
   z-index: -1;
 }
 
 ::slotted(*) {
-  @apply z-10;
-
   position: relative;
+  z-index: 10;
 }
 
 @import './css/mds-tooltip-pref-animation.css';

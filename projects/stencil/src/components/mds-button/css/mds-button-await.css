@@ -4,7 +4,7 @@
   margin-right: calc(calc(-1 * var(--mds-button-gap)) - --spacing(600));
   transform: scale(0);
   transition-behavior: allow-discrete;
-  transition-duration: var(--duration-300);
+  transition-duration: var(--private-button-transition-duration);
   transition-property: display, margin-right, opacity, transform, width;
   transition-timing-function: var(--ease-in-out-quad);
   width: --spacing(600);

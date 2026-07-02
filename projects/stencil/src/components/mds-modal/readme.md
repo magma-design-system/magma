@@ -34,7 +34,6 @@ This component does not use the shared `variant` / `tone` ladders; its configura
 - **`interaction`** governs how forgiving dismissal is - `'relaxed'` allows backdrop clicks, `'strict'` requires the close button.
 - **`overflow`** chooses whether the component manages body scroll locking (`'auto'`) or leaves it to the consumer (`'manual'`).
 - **`hideBackdrop`** removes the dimmed overlay behind the window (shown by default).
-- **`animating`** is a read-only runtime state used for transition styling, not a configuration knob.
 
 
 ### 2. Pattern
@@ -370,8 +369,7 @@ Using a raw `<dialog>` element bypasses the system's managed animation, body-scr
 
 | Property       | Attribute       | Description                                                                                                                                                                                                                                                                              | Type                                                                                                                              | Default     |
 | -------------- | --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| `animating`    | `animating`     | Specifies if the component is animating itself or not                                                                                                                                                                                                                                    | `"intro" \| "none" \| "outro" \| undefined`                                                                                       | `'none'`    |
-| `animation`    | `animation`     | Specifies if the component is animating itself or not                                                                                                                                                                                                                                    | `"3d" \| "custom" \| "slide" \| undefined`                                                                                        | `'slide'`   |
+| `animation`    | `animation`     | Specifies the animation style of the modal window                                                                                                                                                                                                                                        | `"3d" \| "custom" \| "slide" \| undefined`                                                                                        | `'slide'`   |
 | `hideBackdrop` | `hide-backdrop` | Hides the modal backdrop                                                                                                                                                                                                                                                                 | `boolean \| undefined`                                                                                                            | `false`     |
 | `interaction`  | `interaction`   | Specifies if the component can be closed with close button, or also if the backdrop background is cliccked. If `strict` is selected only the close button can dismiss the component via UI. If `relaxed` is selected the component can be dismissed also by cliccking the backdrop area. | `"relaxed" \| "strict"`                                                                                                           | `'relaxed'` |
 | `opened`       | `opened`        | Specifies if the modal is opened or not                                                                                                                                                                                                                                                  | `boolean \| undefined`                                                                                                            | `false`     |
@@ -417,6 +415,7 @@ Type: `Promise<void>`
 | Part             | Description                                                |
 | ---------------- | ---------------------------------------------------------- |
 | `"action-close"` | Selects the close button of the modal.                     |
+| `"dialog"`       |                                                            |
 | `"window"`       | Selects the default window element of the modal when used. |
 
 

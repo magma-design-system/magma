@@ -22,3 +22,51 @@
   --mds-input-field-message-color: rgb(var(--status-error-02));
   --mds-input-field-message-background: rgb(var(--status-error-09));
 }
+
+/* Propagate the field variant to the slotted input from the parent via
+ * ::slotted, instead of the input reading its field. Cross-browser (no
+ * :host-context); ::slotted (outer tree) wins over the input's own variant. */
+
+:host([variant='info']) ::slotted(mds-input) {
+  --mds-input-icon-color: rgb(var(--status-info-04));
+  --mds-input-tip-background: rgb(var(--status-info-05));
+  --mds-input-variant-color-rgb: 0 0 0;
+}
+
+:host([variant='info']) ::slotted(mds-input:focus) {
+  --mds-input-icon-color: rgb(var(--status-info-05));
+  --mds-input-variant-color-rgb: var(--status-info-04);
+}
+
+:host([variant='warning']) ::slotted(mds-input) {
+  --mds-input-icon-color: rgb(var(--status-warning-04));
+  --mds-input-tip-background: rgb(var(--status-warning-05));
+  --mds-input-variant-color-rgb: 0 0 0;
+}
+
+:host([variant='warning']) ::slotted(mds-input:focus) {
+  --mds-input-icon-color: rgb(var(--status-warning-05));
+  --mds-input-variant-color-rgb: var(--status-warning-04);
+}
+
+:host([variant='success']) ::slotted(mds-input) {
+  --mds-input-icon-color: rgb(var(--status-success-04));
+  --mds-input-tip-background: rgb(var(--status-success-05));
+  --mds-input-variant-color-rgb: 0 0 0;
+}
+
+:host([variant='success']) ::slotted(mds-input:focus) {
+  --mds-input-icon-color: rgb(var(--status-success-05));
+  --mds-input-variant-color-rgb: var(--status-success-04);
+}
+
+:host([variant='error']) ::slotted(mds-input) {
+  --mds-input-icon-color: rgb(var(--status-error-04));
+  --mds-input-tip-background: rgb(var(--status-error-05));
+  --mds-input-variant-color-rgb: 0 0 0;
+}
+
+:host([variant='error']) ::slotted(mds-input:focus) {
+  --mds-input-icon-color: rgb(var(--status-error-05));
+  --mds-input-variant-color-rgb: var(--status-error-04);
+}

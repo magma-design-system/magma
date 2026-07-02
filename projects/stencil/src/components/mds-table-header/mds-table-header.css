@@ -1,12 +1,15 @@
 @import './css/mds-table-header-fouc.css';
 
 :host {
-  @apply duration-200
-    ease-out;
+  --mds-table-header-transition-duration: var(--duration-200);
+  --private-table-header-transition-duration: var(--mds-table-header-transition-duration);
+
+  @apply ease-out;
 
   border-bottom: var(--private-cell-border-width) solid var(--private-cell-border-color);
   display: table-row;
   overflow: hidden;
+  transition-duration: var(--private-table-header-transition-duration);
   transition-property: border-color;
 }
 

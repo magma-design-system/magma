@@ -1,4 +1,5 @@
-import { Component, Element, Event, EventEmitter, Host, h, Prop } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Prop, State } from '@stencil/core';
+import { subscribePreference } from '@common/preference';
 import { MdsPaginatorEventDetail } from './meta/event-detail';
 import miBaselineArrowBack from '@icon/mi/baseline/arrow-back.svg';
 import miBaselineArrowForward from '@icon/mi/baseline/arrow-forward.svg';
@@ -10,6 +11,14 @@ import miBaselineArrowForward from '@icon/mi/baseline/arrow-forward.svg';
 })
 export class MdsPaginator {
   @Element() private element: HTMLMdsPaginatorElement;
+  @State() prefAnimation?: string;
+  private unsubscribePrefAnimation?: () => void;
+  @State() prefContrast?: string;
+  private unsubscribePrefContrast?: () => void;
+  @State() prefTheme?: string;
+  private unsubscribePrefTheme?: () => void;
+  @State() prefThemeScheme?: string;
+  private unsubscribePrefThemeScheme?: () => void;
 
   /**
    * Specifies the number of total pages to be handled
@@ -20,6 +29,28 @@ export class MdsPaginator {
    * Specifies the current page selected in the paginator
    */
   @Prop({ mutable: true, reflect: true }) currentPage = 1;
+
+  connectedCallback(): void {
+    this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
+      this.prefAnimation = value;
+    });
+    this.unsubscribePrefContrast = subscribePreference('contrast', (value) => {
+      this.prefContrast = value;
+    });
+    this.unsubscribePrefTheme = subscribePreference('theme', (value) => {
+      this.prefTheme = value;
+    });
+    this.unsubscribePrefThemeScheme = subscribePreference('theme-scheme', (value) => {
+      this.prefThemeScheme = value;
+    });
+  }
+
+  disconnectedCallback(): void {
+    this.unsubscribePrefAnimation?.();
+    this.unsubscribePrefContrast?.();
+    this.unsubscribePrefTheme?.();
+    this.unsubscribePrefThemeScheme?.();
+  }
 
   componentDidLoad(): void {
     setTimeout(() => {
@@ -106,7 +137,12 @@ export class MdsPaginator {
 
   render() {
     return (
-      <Host>
+      <Host
+        pref-animation={this.prefAnimation}
+        pref-contrast={this.prefContrast}
+        pref-theme={this.prefTheme}
+        pref-theme-scheme={this.prefThemeScheme}
+      >
         <mds-paginator-item
           class="item-icon"
           icon={miBaselineArrowBack}

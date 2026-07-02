@@ -3,13 +3,12 @@
 }
 
 .window {
-  @apply gap-0;
-
   background-color: var(--mds-modal-window-background);
   border-radius: var(--mds-modal-window-radius);
   box-shadow: var(--mds-modal-window-shadow);
   box-sizing: border-box;
   display: grid;
+  gap: 0;
   grid-template-columns: repeat(1, minmax(0, 100%));
   margin: var(--mds-modal-window-distance);
   overflow: var(--mds-modal-window-overflow);
@@ -20,9 +19,14 @@
   display: none;
 }
 
+/* `overflow` here is the closed/initial state. While the window's transform is
+ * animating, the component freezes this to `hidden` inline and restores it on
+ * the transform's `transitionend` (a live overflow:auto with overflowing
+ * content janks the transform). See setContentOverflow in the component. */
+
 .window-content-wrapper {
   max-height: calc(100dvh - calc(var(--mds-modal-window-distance) * 2));
-  overflow: auto;
+  overflow: hidden;
 }
 
 .window-header,
@@ -51,18 +55,44 @@
   grid-template-rows: auto 1fr auto;
 } */
 
-:host .window,
-:host > ::slotted([slot='window']) {
+/*
+ * Closed / outro state (also the value the entry transition starts from).
+ * Keyed on the native `.dialog[open]` (synchronous) rather than the reflected
+ * `:host([opened])` (one tick late), so `@starting-style` matches the frame the
+ * window first renders and the slide actually plays instead of popping.
+ */
+
+.dialog .window,
+.dialog ::slotted([slot='window']) {
   opacity: 0;
   transform: var(--private-modal-transition-window-transform);
-  transition-duration: var(--mds-modal-transition-duration);
+  transition-duration: var(--private-modal-transition-duration);
   transition-property: transform, opacity;
   transition-timing-function: var(--mds-modal-transition-timing-funciton);
 }
 
-:host([opened]) .window,
-:host([opened]) > ::slotted([slot='window']) {
+/* Open / resting state. Resting transform comes from a variable (`none` by
+ * default, a caller-defined transform for the custom animation) so the custom
+ * override can stay a `:host()`-only rule and avoid a `:host(...) .descendant`
+ * selector list, which the CSS compiler mangles. */
+
+.dialog[open] .window,
+.dialog[open] ::slotted([slot='window']) {
   opacity: 1;
   pointer-events: auto;
-  transition-timing-function: var(--mds-modal-transition-timing-funciton);
+  transform: var(--private-modal-opened-transform);
+}
+
+/* Entry: start from the closed transform when the dialog enters the top layer. */
+
+@starting-style {
+  .dialog[open] .window,
+  .dialog[open] ::slotted([slot='window']) {
+    opacity: 0;
+    transform: var(--private-modal-transition-window-transform);
+  }
+
+  .window-content-wrapper {
+    overflow: hidden;
+  }
 }

@@ -108,6 +108,7 @@ Available ratio presets: `default` or `tint` (10 steps optimised for tint based 
 | `dist/css/tailwind-theme-color.css`      | Tailwind 4 `@theme` | `styles` sub-project     |
 | `dist/css/tailwind-theme-typography.css` | Tailwind 4 `@theme` | `styles` sub-project     |
 | `dist/dart/*.dart`                       | Flutter/Dart        | Mobile apps              |
+| `dist/gimp/colors.gpl`                   | GIMP palette        | GIMP, Inkscape (light)   |
 
 ## Anti-patterns
 

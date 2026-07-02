@@ -124,26 +124,76 @@
   --mds-modal-z-index: var(--magma-modal-z-index);
 
   /* private */
+  --private-modal-transition-duration: var(--mds-modal-transition-duration);
   --private-modal-width: calc(100vw - var(--private-modal-window-close-margin));
   --private-modal-custom-opened-transform: translate(0, 0);
+  --private-modal-opened-transform: none;
   --private-modal-transition-window-transform: translate(0);
   --private-modal-window-close-margin: --spacing(2000);
 
-  @apply ease-in-out-quint;
+  /* The host is a layout-neutral wrapper; the native <dialog> is the overlay. */
+  display: contents;
+}
 
+/*
+ * The native dialog is the overlay: full-viewport flex container that centers
+ * the window. The dim is rendered on its ::backdrop (below). Promoted to the
+ * top layer by showModal(). `overlay` and `display` are transitioned with
+ * `allow-discrete` so the dialog stays painted in the top layer while the outro
+ * animation plays.
+ */
+
+.dialog {
   align-items: center;
-  background-color: rgb(var(--mds-modal-overlay-color) / 0);
-  display: flex;
+  background-color: transparent;
+  border: 0;
+  box-sizing: border-box;
+  display: none;
   fill: rgb(var(--tone-neutral));
+  height: auto;
   inset: 0;
   justify-content: center;
+  margin: 0;
+  max-height: none;
+  max-width: none;
+
+  /* Clip the window while it sits off-screen at translate(100%): without this
+   * the dialog (a scroll container) shows a transient scrollbar during the
+   * slide, shifting the layout - the "jump" seen with tall content. */
+  overflow: hidden;
+  padding: 0;
   perspective: 600px;
-  pointer-events: none;
   position: fixed;
-  transition-duration: var(--mds-modal-transition-duration);
-  transition-property: background-color;
+  transition-behavior: allow-discrete;
+  transition-duration: var(--private-modal-transition-duration);
+  transition-property: overlay, display;
   transition-timing-function: var(--mds-modal-transition-timing-funciton);
+  width: auto;
   z-index: var(--mds-modal-z-index, 1000);
+}
+
+.dialog[open] {
+  display: flex;
+}
+
+/*
+ * The dim lives on the native ::backdrop (it exists only for modal dialogs, so
+ * only when [backdrop] is set / showModal). This is its closed/outro state and
+ * the value the entry transition starts from; the open value is in opened.css.
+ */
+
+.dialog::backdrop {
+  background-color: rgb(var(--mds-modal-overlay-color) / 0);
+  transition-behavior: allow-discrete;
+  transition-duration: var(--private-modal-transition-duration);
+  transition-property: background-color, overlay, display;
+  transition-timing-function: var(--mds-modal-transition-timing-funciton);
+}
+
+/* hide-backdrop: keep the page behind interactive (legacy click-through). */
+
+:host([hide-backdrop]) .dialog {
+  pointer-events: none;
 }
 
 @import './css/mds-modal-action-close.css';

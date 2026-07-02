@@ -13,6 +13,7 @@ import {
 import { MdsHeaderEventDetail, MdsHeaderVisibilityEventDetail } from './meta/event-detail';
 import { HeaderBarMenuType, HeaderBarNavType } from '@type/header-bar';
 import { AppearanceType } from './meta/types';
+import { subscribePreference } from '@common/preference';
 // import clsx from 'clsx'
 
 /**
@@ -36,6 +37,12 @@ export class MdsHeader {
   private sanitizedAppearance: AppearanceType = ['stripe'];
   private appearanceThreshold = 300;
   private headerBar: HTMLMdsHeaderBarElement;
+  @State() consumption?: string;
+  private unsubscribeConsumption?: () => void;
+  @State() prefTheme?: string;
+  private unsubscribePrefTheme?: () => void;
+  @State() prefThemeScheme?: string;
+  private unsubscribePrefThemeScheme?: () => void;
 
   /**
    * Sets the appearance of the header bar element when loaded,
@@ -201,7 +208,22 @@ export class MdsHeader {
     window.addEventListener('scroll', this.handleScroll);
   };
 
+  connectedCallback(): void {
+    this.unsubscribeConsumption = subscribePreference('consumption', (value) => {
+      this.consumption = value;
+    });
+    this.unsubscribePrefTheme = subscribePreference('theme', (value) => {
+      this.prefTheme = value;
+    });
+    this.unsubscribePrefThemeScheme = subscribePreference('theme-scheme', (value) => {
+      this.prefThemeScheme = value;
+    });
+  }
+
   disconnectedCallback(): void {
+    this.unsubscribeConsumption?.();
+    this.unsubscribePrefTheme?.();
+    this.unsubscribePrefThemeScheme?.();
     if (typeof window === 'undefined') {
       return;
     }
@@ -262,7 +284,11 @@ export class MdsHeader {
 
   render() {
     return (
-      <Host>
+      <Host
+        pref-consumption={this.consumption}
+        pref-theme={this.prefTheme}
+        pref-theme-scheme={this.prefThemeScheme}
+      >
         {!this.hideBackdrop && (
           <div class="backdrop">
             <div class="backdrop-blur-item"></div>

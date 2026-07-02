@@ -1,8 +1,10 @@
 @import './css/mds-tab-bar-fouc.css';
 
 :host {
-  @apply duration-200
-    ease-out;
+  --mds-tab-bar-transition-duration: var(--duration-200);
+  --private-tab-bar-transition-duration: var(--mds-tab-bar-transition-duration);
+
+  @apply ease-out;
 
   background-color: rgb(var(--tone-neutral));
   bottom: 0;
@@ -12,6 +14,7 @@
   left: 0;
   position: fixed;
   right: 0;
+  transition-duration: var(--private-tab-bar-transition-duration);
   transition-property: background-color, color, box-shadow;
 }
 

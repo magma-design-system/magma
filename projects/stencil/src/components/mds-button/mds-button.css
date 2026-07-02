@@ -117,6 +117,8 @@
 
 :host {
   --mds-button-await-duration: 0.725s;
+  --mds-button-transition-duration: var(--duration-300);
+  --private-button-transition-duration: var(--mds-button-transition-duration);
   --mds-button-background: rgb(var(--mds-button-border-color-rgb));
   --mds-button-border-color-rgb: var(--variant-primary-02);
   --mds-button-border-hover-opacity: 0.75;
@@ -134,8 +136,7 @@
   --mds-button-line-clamp: 1;
   --mds-button-radius: var(--radius-2xl);
 
-  @apply duration-200
-    focus-bounce;
+  @apply focus-bounce;
 
   align-items: center;
   background-color: var(--mds-button-background);
@@ -152,6 +153,7 @@
   justify-content: center;
   padding: 0 --spacing(400);
   position: relative;
+  transition-duration: var(--duration-200);
   transition-property:
     background-color, border-color, box-shadow, color, outline, outline-offset, transform;
   transition-timing-function: var(--ease-out-quad);
@@ -179,12 +181,11 @@
   flex-shrink: 0;
   justify-content: center;
   pointer-events: none;
-  transition-duration: var(--duration-300);
+  transition-duration: var(--private-button-transition-duration);
   transition-property: fill;
   transition-timing-function: var(--ease-in-out-quad);
 }
 
-@import './css/mds-button-button-group.css';
 @import './css/mds-button-await.css';
 @import './css/mds-button-disabled.css';
 @import './css/mds-button-size.css';

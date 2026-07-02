@@ -52,7 +52,7 @@ import { KeyboardTest } from "./components/mds-keyboard/meta/type";
 import { KeyboardKeyName } from "./type/keyboard";
 import { MdsLabelVariantType } from "./components/mds-label/mds-label";
 import { MentionSize } from "./components/mds-mention/meta/type";
-import { ModalAnimationStateType, ModalAnimationStyleType, ModalInteractionType, ModalOverflowType, ModalPositionType } from "./components/mds-modal/meta/types";
+import { ModalAnimationStyleType, ModalInteractionType, ModalOverflowType, ModalPositionType } from "./components/mds-modal/meta/types";
 import { StrategyType } from "./components/mds-notification/meta/types";
 import { MdsPaginatorEventDetail } from "./components/mds-paginator/meta/event-detail";
 import { PolicyAiVariant } from "./components/mds-policy-ai/meta/types";
@@ -76,6 +76,7 @@ import { DirectionType as DirectionType1 } from "./components/mds-tab/meta/type"
 import { HorizontalActionsAnimationType } from "./type/animation";
 import { MdsTabEventDetail } from "./components/mds-tab/meta/event-detail";
 import { MdsTabBarEventDetail } from "./components/mds-tab-bar/meta/event-detail";
+import { DirectionType as DirectionType2 } from "./components/mds-tab/meta/type";
 import { MdsTabItemEventDetail } from "./components/mds-tab-item/meta/event-detail";
 import { MdsTableSelectionEventDetail } from "./components/mds-table/meta/event-detail";
 import { MdsTableRowSelection } from "./components/mds-table/meta/type";
@@ -133,7 +134,7 @@ export { KeyboardTest } from "./components/mds-keyboard/meta/type";
 export { KeyboardKeyName } from "./type/keyboard";
 export { MdsLabelVariantType } from "./components/mds-label/mds-label";
 export { MentionSize } from "./components/mds-mention/meta/type";
-export { ModalAnimationStateType, ModalAnimationStyleType, ModalInteractionType, ModalOverflowType, ModalPositionType } from "./components/mds-modal/meta/types";
+export { ModalAnimationStyleType, ModalInteractionType, ModalOverflowType, ModalPositionType } from "./components/mds-modal/meta/types";
 export { StrategyType } from "./components/mds-notification/meta/types";
 export { MdsPaginatorEventDetail } from "./components/mds-paginator/meta/event-detail";
 export { PolicyAiVariant } from "./components/mds-policy-ai/meta/types";
@@ -157,6 +158,7 @@ export { DirectionType as DirectionType1 } from "./components/mds-tab/meta/type"
 export { HorizontalActionsAnimationType } from "./type/animation";
 export { MdsTabEventDetail } from "./components/mds-tab/meta/event-detail";
 export { MdsTabBarEventDetail } from "./components/mds-tab-bar/meta/event-detail";
+export { DirectionType as DirectionType2 } from "./components/mds-tab/meta/type";
 export { MdsTabItemEventDetail } from "./components/mds-tab-item/meta/event-detail";
 export { MdsTableSelectionEventDetail } from "./components/mds-table/meta/event-detail";
 export { MdsTableRowSelection } from "./components/mds-table/meta/type";
@@ -1847,12 +1849,7 @@ export namespace Components {
     }
     interface MdsModal {
         /**
-          * Specifies if the component is animating itself or not
-          * @default 'none'
-         */
-        "animating"?: ModalAnimationStateType;
-        /**
-          * Specifies if the component is animating itself or not
+          * Specifies the animation style of the modal window
           * @default 'slide'
          */
         "animation"?: ModalAnimationStyleType;
@@ -2548,9 +2545,17 @@ export namespace Components {
     }
     interface MdsTabItem {
         /**
+          * Reflects the parent tab selection animation (set by mds-tab); drives the slide-variant styling without :host-context
+         */
+        "animation"?: HorizontalActionsAnimationType;
+        /**
           * Specifies if the button is awaiting for a response
          */
         "await": boolean;
+        /**
+          * Reflects the parent tab layout direction (set by mds-tab); drives the vertical layout without :host-context
+         */
+        "direction"?: DirectionType;
         /**
           * Specifies if the tab item is disabled or not
          */
@@ -2680,6 +2685,10 @@ export namespace Components {
           * Specifies whether the row is currently selected.
          */
         "selected"?: boolean;
+        /**
+          * Reflects the parent table selection state (set by mds-table); drives the row action background without :host-context
+         */
+        "selection"?: boolean;
         /**
           * Updates the component's texts to the locale currently set on the host element.
          */
@@ -2847,6 +2856,10 @@ export namespace Components {
          */
         "actions"?: TreeActions;
         /**
+          * Reflects the parent tree appearance (set by mds-tree); drives the depth/none layout without :host-context
+         */
+        "appearance"?: TreeAppearance;
+        /**
           * Specifies the tree should be opened asynchronously when after the click.
          */
         "async"?: boolean;
@@ -2871,9 +2884,17 @@ export namespace Components {
          */
         "label": string;
         /**
+          * `internal` Re-resolves the effective actions; called by mds-tree when its own actions changes so items that inherit it stay in sync.
+         */
+        "refreshActions": () => Promise<void>;
+        /**
           * Specifies the icon of the element
          */
         "toggle"?: TreeIcon;
+        /**
+          * Reflects the parent tree toggle icon position (set by mds-tree); drives the toggle-icon layout without :host-context
+         */
+        "togglePosition"?: ButtonIconPositionType;
         /**
           * Truncate the text of the element on one single line.
           * @default 'word'
@@ -6319,12 +6340,7 @@ declare namespace LocalJSX {
     }
     interface MdsModal {
         /**
-          * Specifies if the component is animating itself or not
-          * @default 'none'
-         */
-        "animating"?: ModalAnimationStateType;
-        /**
-          * Specifies if the component is animating itself or not
+          * Specifies the animation style of the modal window
           * @default 'slide'
          */
         "animation"?: ModalAnimationStyleType;
@@ -7047,9 +7063,17 @@ declare namespace LocalJSX {
     }
     interface MdsTabItem {
         /**
+          * Reflects the parent tab selection animation (set by mds-tab); drives the slide-variant styling without :host-context
+         */
+        "animation"?: HorizontalActionsAnimationType;
+        /**
           * Specifies if the button is awaiting for a response
          */
         "await"?: boolean;
+        /**
+          * Reflects the parent tab layout direction (set by mds-tab); drives the vertical layout without :host-context
+         */
+        "direction"?: DirectionType;
         /**
           * Specifies if the tab item is disabled or not
          */
@@ -7173,6 +7197,10 @@ declare namespace LocalJSX {
           * Specifies whether the row is currently selected.
          */
         "selected"?: boolean;
+        /**
+          * Reflects the parent table selection state (set by mds-table); drives the row action background without :host-context
+         */
+        "selection"?: boolean;
         /**
           * The value associated with the row, emitted when the row is selected.
          */
@@ -7340,6 +7368,10 @@ declare namespace LocalJSX {
          */
         "actions"?: TreeActions;
         /**
+          * Reflects the parent tree appearance (set by mds-tree); drives the depth/none layout without :host-context
+         */
+        "appearance"?: TreeAppearance;
+        /**
           * Specifies the tree should be opened asynchronously when after the click.
          */
         "async"?: boolean;
@@ -7371,6 +7403,10 @@ declare namespace LocalJSX {
           * Specifies the icon of the element
          */
         "toggle"?: TreeIcon;
+        /**
+          * Reflects the parent tree toggle icon position (set by mds-tree); drives the toggle-icon layout without :host-context
+         */
+        "togglePosition"?: ButtonIconPositionType;
         /**
           * Truncate the text of the element on one single line.
           * @default 'word'
@@ -7850,7 +7886,6 @@ declare namespace LocalJSX {
         "opened": boolean;
         "hideBackdrop": boolean;
         "position": ModalPositionType;
-        "animating": ModalAnimationStateType;
         "animation": ModalAnimationStyleType;
         "overflow": ModalOverflowType;
         "interaction": ModalInteractionType;
@@ -8034,6 +8069,8 @@ declare namespace LocalJSX {
         "iconPosition": ButtonIconPositionType;
         "type": ButtonType;
         "size": ButtonSizeType;
+        "direction": DirectionType;
+        "animation": HorizontalActionsAnimationType;
         "value": string;
         "href": string;
     }
@@ -8062,6 +8099,7 @@ declare namespace LocalJSX {
         "overlayActions": boolean;
         "selectable": boolean;
         "selected": boolean;
+        "selection": boolean;
         "value": string;
     }
     interface MdsTextAttributes {
@@ -8109,6 +8147,8 @@ declare namespace LocalJSX {
         "depth": number;
         "label": string;
         "toggle": TreeIcon;
+        "togglePosition": ButtonIconPositionType;
+        "appearance": TreeAppearance;
         "expanded": boolean;
         "truncate": TypographyTruncateType;
         "icon": string;

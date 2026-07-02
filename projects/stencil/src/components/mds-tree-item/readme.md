@@ -377,16 +377,18 @@ mds-tree-item::part(actions-list) {
 
 ## Properties
 
-| Property   | Attribute  | Description                                                                                            | Type                                     | Default     |
-| ---------- | ---------- | ------------------------------------------------------------------------------------------------------ | ---------------------------------------- | ----------- |
-| `actions`  | `actions`  | Show actions on the tree item on hover or by default.                                                  | `"auto" \| "visible" \| undefined`       | `undefined` |
-| `async`    | `async`    | Specifies the tree should be opened asynchronously when after the click.                               | `boolean \| undefined`                   | `undefined` |
-| `depth`    | `depth`    | Specifies the tree branch depth. Internal: used by CSS to remove branch lines on first-level elements. | `number \| undefined`                    | `undefined` |
-| `expanded` | `expanded` | Specifies if the tree is expanded.                                                                     | `boolean \| undefined`                   | `undefined` |
-| `icon`     | `icon`     | The icon displayed in the button                                                                       | `string \| undefined`                    | `undefined` |
-| `label`    | `label`    | Specifies the label of the tree item                                                                   | `string`                                 | `undefined` |
-| `toggle`   | `toggle`   | Specifies the icon of the element                                                                      | `"chevron" \| "folder" \| undefined`     | `undefined` |
-| `truncate` | `truncate` | Truncate the text of the element on one single line.                                                   | `"all" \| "none" \| "word" \| undefined` | `'word'`    |
+| Property         | Attribute         | Description                                                                                                          | Type                                     | Default     |
+| ---------------- | ----------------- | -------------------------------------------------------------------------------------------------------------------- | ---------------------------------------- | ----------- |
+| `actions`        | `actions`         | Show actions on the tree item on hover or by default.                                                                | `"auto" \| "visible" \| undefined`       | `undefined` |
+| `appearance`     | `appearance`      | Reflects the parent tree appearance (set by mds-tree); drives the depth/none layout without :host-context            | `"depth" \| "none" \| undefined`         | `undefined` |
+| `async`          | `async`           | Specifies the tree should be opened asynchronously when after the click.                                             | `boolean \| undefined`                   | `undefined` |
+| `depth`          | `depth`           | Specifies the tree branch depth. Internal: used by CSS to remove branch lines on first-level elements.               | `number \| undefined`                    | `undefined` |
+| `expanded`       | `expanded`        | Specifies if the tree is expanded.                                                                                   | `boolean \| undefined`                   | `undefined` |
+| `icon`           | `icon`            | The icon displayed in the button                                                                                     | `string \| undefined`                    | `undefined` |
+| `label`          | `label`           | Specifies the label of the tree item                                                                                 | `string`                                 | `undefined` |
+| `toggle`         | `toggle`          | Specifies the icon of the element                                                                                    | `"chevron" \| "folder" \| undefined`     | `undefined` |
+| `togglePosition` | `toggle-position` | Reflects the parent tree toggle icon position (set by mds-tree); drives the toggle-icon layout without :host-context | `"left" \| "right" \| undefined`         | `undefined` |
+| `truncate`       | `truncate`        | Truncate the text of the element on one single line.                                                                 | `"all" \| "none" \| "word" \| undefined` | `'word'`    |
 
 
 ## Events
@@ -402,6 +404,17 @@ mds-tree-item::part(actions-list) {
 ### `expand() => Promise<void>`
 
 Expands the tree item, revealing its children.
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
+### `refreshActions() => Promise<void>`
+
+`internal` Re-resolves the effective actions; called by mds-tree when its own
+actions changes so items that inherit it stay in sync.
 
 #### Returns
 

@@ -55,7 +55,7 @@
   display: flex;
 }
 
-:host-context(mds-tab[animation='slide']) {
+:host([animation='slide']) {
   --mds-tab-item-hover-background: transparent;
   --mds-tab-item-selected-background: transparent;
   --mds-tab-item-selected-shadow: none;
@@ -92,11 +92,11 @@
   pointer-events: none;
 }
 
-:host-context(mds-tab[direction='vertical']) {
+:host([direction='vertical']) {
   width: 100%;
 }
 
-:host-context(mds-tab[direction='vertical']) .button {
+:host([direction='vertical']) .button {
   justify-content: start;
 }
 

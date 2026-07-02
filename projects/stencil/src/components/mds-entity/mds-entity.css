@@ -81,9 +81,8 @@
 
 .spinner,
 .preview {
-  @apply aspect-square;
-
   align-items: center;
+  aspect-ratio: var(--aspect-square);
   display: inline-flex;
   justify-content: center;
 }
@@ -127,8 +126,7 @@ mds-spinner {
 }
 
 ::slotted([slot='action']) {
-  @apply aspect-square;
-
+  aspect-ratio: var(--aspect-square);
   height: auto;
   width: --spacing(1100);
 }

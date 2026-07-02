@@ -1,24 +1,17 @@
-:host-context(:root.pref-animation-reduce) {
-  --mds-filter-items-scroll-behavior: auto;
+/* Animation preference. The component mirrors the resolved mode from <html>
+ * onto its host as pref-animation (see subscribePreference in @common/preference);
+ * these plain shadow selectors then zero the private duration(s) the base CSS
+ * reads. `reduce` always stops; `system` and no controller follow the OS via
+ * @media; `no-preference` keeps the base value. Customization composes (the base
+ * sets --private from the public token, this only overrides it when reduced). */
 
-  transition-duration: 0s;
-
-  .reset-button,
-  .items {
-    transition-duration: 0s;
-  }
+:host([pref-animation='reduce']) {
+  --private-filter-items-transition-duration: 0s;
 }
 
-@media (prefers-reduced-motion) {
-  :host-context(:root.pref-animation-system),
-  :host-context(:root:not([data-magma-pref])) {
-    --mds-filter-items-scroll-behavior: auto;
-
-    transition-duration: 0s;
-
-    .reset-button,
-    .items {
-      transition-duration: 0s;
-    }
+@media (prefers-reduced-motion: reduce) {
+  :host([pref-animation='system']),
+  :host(:not([pref-animation])) {
+    --private-filter-items-transition-duration: 0s;
   }
 }

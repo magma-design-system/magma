@@ -9,8 +9,6 @@ export type ModalPositionType =
   | 'top-left'
   | 'top-right';
 
-export type ModalAnimationStateType = 'intro' | 'none' | 'outro';
-
 export type ModalOverflowType = 'auto' | 'manual';
 
 export type ModalInteractionType = 'strict' | 'relaxed';

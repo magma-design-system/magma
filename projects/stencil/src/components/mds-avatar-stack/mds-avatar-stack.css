@@ -1,4 +1,5 @@
 @import './css/mds-avatar-stack-fouc.css';
+@import './css/mds-avatar-stack-slotted-size.css';
 
 /**
  * @prop --mds-avatar-stack-background: Background color for the avatar stack container

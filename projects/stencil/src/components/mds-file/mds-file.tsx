@@ -18,6 +18,7 @@ import { getFormatsVariant, getName, getSuffix, getExtensionInfos } from '@commo
 import miBaselineFileDownloadDone from '@icon/mi/baseline/file-download-done.svg';
 import miOutlineFileDownload from '@icon/mi/outline/file-download.svg';
 import { Locale } from '@common/locale';
+import { subscribePreference } from '@common/preference';
 import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.es.json';
@@ -36,6 +37,14 @@ import fileDescriptionLocaleIt from '@meta/file-format/locale.it.json';
 })
 export class MdsFile {
   @Element() private host: HTMLMdsFileElement;
+  @State() prefAnimation?: string;
+  private unsubscribePrefAnimation?: () => void;
+  @State() prefContrast?: string;
+  private unsubscribePrefContrast?: () => void;
+  @State() prefTheme?: string;
+  private unsubscribePrefTheme?: () => void;
+  @State() prefThemeScheme?: string;
+  private unsubscribePrefThemeScheme?: () => void;
   private t: Locale = new Locale({
     el: { ...localeEl, ...fileDescriptionLocaleEl },
     en: { ...localeEn, ...fileDescriptionLocaleEn },
@@ -109,6 +118,28 @@ export class MdsFile {
   private getDefaultDescription = (): string =>
     getExtensionInfos(this.filename, this.suffix).description;
 
+  connectedCallback(): void {
+    this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
+      this.prefAnimation = value;
+    });
+    this.unsubscribePrefContrast = subscribePreference('contrast', (value) => {
+      this.prefContrast = value;
+    });
+    this.unsubscribePrefTheme = subscribePreference('theme', (value) => {
+      this.prefTheme = value;
+    });
+    this.unsubscribePrefThemeScheme = subscribePreference('theme-scheme', (value) => {
+      this.prefThemeScheme = value;
+    });
+  }
+
+  disconnectedCallback(): void {
+    this.unsubscribePrefAnimation?.();
+    this.unsubscribePrefContrast?.();
+    this.unsubscribePrefTheme?.();
+    this.unsubscribePrefThemeScheme?.();
+  }
+
   componentWillLoad(): void {
     this.checkWasDownloaded();
     this.t.lang(this.host);
@@ -126,7 +157,14 @@ export class MdsFile {
 
   render() {
     return (
-      <Host tabindex="0" onClick={this.handleOnClick}>
+      <Host
+        tabindex="0"
+        onClick={this.handleOnClick}
+        pref-animation={this.prefAnimation}
+        pref-contrast={this.prefContrast}
+        pref-theme={this.prefTheme}
+        pref-theme-scheme={this.prefThemeScheme}
+      >
         <div class="preview">
           {this.preview !== undefined ? (
             <div class="image-preview" style={{ backgroundImage: `url(${this.preview})` }}></div>

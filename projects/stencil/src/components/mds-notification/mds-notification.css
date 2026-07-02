@@ -101,6 +101,9 @@
   --mds-notification-ring-size: 2px;
   --mds-notification-size: 20px;
   --mds-notification-transition-duration: 200ms;
+  --private-notification-transition-duration: var(--mds-notification-transition-duration);
+  --mds-notification-dot-transition-duration: var(--duration-300);
+  --private-notification-dot-transition-duration: var(--mds-notification-dot-transition-duration);
   --mds-notification-transition-timing-function: var(--ease-out-cubic);
   --mds-notification-translate-offset-x: -1.75;
   --mds-notification-translate-offset-y: -2;
@@ -109,10 +112,8 @@
     calc(var(--mds-notification-size) / var(--mds-notification-translate-offset-y))
   );
 
-  @apply rounded-full
-    z-10;
-
   align-items: center;
+  border-radius: var(--radius-full);
   bottom: 100%;
   color: var(--mds-notification-color);
   display: inline-flex;
@@ -121,6 +122,7 @@
   min-width: max-content;
   pointer-events: none;
   width: var(--mds-notification-size);
+  z-index: 10;
 }
 
 :host([strategy='absolute']),
@@ -129,7 +131,7 @@
   right: 100%;
   transform: var(--mds-notification-translate) scale(0);
   transform-origin: calc(100% - calc(var(--mds-notification-size) / 2)) 50%;
-  transition-duration: var(--mds-notification-transition-duration);
+  transition-duration: var(--private-notification-transition-duration);
   transition-property: color, height, opacity, transform, width;
   transition-timing-function: var(--mds-notification-transition-timing-function);
 }
@@ -143,12 +145,11 @@
 }
 
 .dot {
-  @apply duration-300
-    ease-in-out
-    rounded-full;
+  @apply ease-in-out;
 
   align-items: center;
   background-color: var(--mds-notification-dot-background);
+  border-radius: var(--radius-full);
   box-shadow: 0 0 0 var(--mds-notification-ring-size) var(--mds-notification-ring-color);
   box-sizing: border-box;
   display: inline-flex;
@@ -159,6 +160,7 @@
   padding-left: var(--mds-notification-dot-padding);
   padding-right: var(--mds-notification-dot-padding);
   position: static;
+  transition-duration: var(--private-notification-dot-transition-duration);
   transition-property: background-color, color, box-shadow;
   white-space: nowrap;
 }
@@ -180,6 +182,7 @@
   @apply ease-in-cubic
     opacity-100;
 
+  opacity: 1;
   transform: var(--mds-notification-translate) scale(0);
 }
 
@@ -190,13 +193,13 @@
   @apply ease-out-cubic
     opacity-100;
 
+  opacity: 1;
   transform: var(--mds-notification-translate) scale(1);
 }
 
 :host([strategy='disabled']),
 :host(:not([target])) {
-  @apply opacity-100;
-
+  opacity: 1;
   position: static;
   transform: scale(1);
   transform-origin: unset;

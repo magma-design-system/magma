@@ -35,99 +35,64 @@
   color: var(--mds-tree-item-toggle-icon-async-color);
 }
 
-:host-context([toggle='chevron']) .toggle-icon {
+/* toggle and toggle-position are propagated from mds-tree onto every item
+ * (reflected props), so these read the item's own host (no :host-context). */
+
+:host([toggle='chevron']) .toggle-icon {
   --mds-tree-item-icon-background-color: var(
     --mds-tree-item-toggle-icon-chevron-default-background
   );
   --mds-tree-item-icon-color: var(--mds-tree-item-toggle-icon-chevron-default-color);
 }
 
-:host([expanded]):host-context([toggle='chevron']) .toggle-icon {
+:host([expanded][toggle='chevron']) .toggle-icon {
   --mds-tree-item-icon-background-color: var(
     --mds-tree-item-toggle-icon-chevron-expanded-background
   );
   --mds-tree-item-icon-color: var(--mds-tree-item-toggle-icon-chevron-expanded-color);
 }
 
-:host-context([toggle='folder'][toggle-position='left']) .toggle-icon mds-button {
+:host([toggle='folder'][toggle-position='left']) .toggle-icon mds-button {
   box-shadow: 0 --spacing(25) 0 0 var(--mds-tree-item-branch-border-color);
 }
 
-:host-context([toggle='folder']) .toggle-icon mds-button {
+:host([toggle='folder']) .toggle-icon mds-button {
   --size: auto;
 
   border-radius: var(--radius);
   padding: --spacing(25) --spacing(50);
 }
 
-:host-context([toggle='folder']) .toggle-icon {
+:host([toggle='folder']) .toggle-icon {
   --mds-tree-item-icon-background-color: var(--mds-tree-item-toggle-icon-folder-default-background);
   --mds-tree-item-icon-color: var(--mds-tree-item-toggle-icon-folder-default-color);
 }
 
-:host-context(mds-tree[toggle='folder']):host([expanded]) .toggle-icon {
+:host([toggle='folder'][expanded]) .toggle-icon {
   --mds-tree-item-icon-background-color: var(
     --mds-tree-item-toggle-icon-folder-expanded-background
   );
   --mds-tree-item-icon-color: var(--mds-tree-item-toggle-icon-folder-expanded-color);
 }
 
-:host-context(mds-tree[toggle-position='right']) .toggle-icon {
+:host([toggle-position='right']) .toggle-icon {
   --mds-tree-item-icon-background-color: var(
     --mds-tree-item-toggle-icon-position-right-default-background
   );
   --mds-tree-item-icon-color: var(--mds-tree-item-toggle-icon-position-right-default-color);
 }
 
-:host([expanded]):host-context(mds-tree[toggle-position='right']) .toggle-icon {
+:host([expanded][toggle-position='right']) .toggle-icon {
   --mds-tree-item-icon-background-color: var(
     --mds-tree-item-toggle-icon-position-right-expanded-background
   );
   --mds-tree-item-icon-color: var(--mds-tree-item-toggle-icon-position-right-expanded-color);
 }
 
-:host([expanded]):host-context(mds-tree[toggle-position='left'][toggle='chevron']) .toggle-icon {
+:host([expanded][toggle-position='left'][toggle='chevron']) .toggle-icon {
   transform: rotate(90deg);
 }
 
 .header:not(.header--has-children) .toggle-icon {
   display: none;
-}
-
-/* Safari fixes used to sobstitute missing host-context support */
-
-.toggle-icon--chevron {
-  --mds-tree-item-icon-background-color: var(
-    --mds-tree-item-toggle-icon-chevron-default-background
-  );
-  --mds-tree-item-icon-color: var(--mds-tree-item-toggle-icon-chevron-default-color);
-}
-
-:host([expanded]) .toggle-icon--chevron {
-  --mds-tree-item-icon-background-color: var(
-    --mds-tree-item-toggle-icon-chevron-expanded-background
-  );
-  --mds-tree-item-icon-color: var(--mds-tree-item-toggle-icon-chevron-expanded-color);
-
-  transform: rotate(90deg);
-}
-
-.toggle-icon--folder mds-button {
-  --size: auto;
-
-  border-radius: var(--radius);
-  box-shadow: 0 --spacing(25) 0 0 var(--mds-tree-item-branch-border-color);
-  padding: --spacing(25) --spacing(50);
-}
-
-.toggle-icon--folder {
-  --mds-tree-item-icon-background-color: var(--mds-tree-item-toggle-icon-folder-default-background);
-  --mds-tree-item-icon-color: var(--mds-tree-item-toggle-icon-folder-default-color);
-}
-
-:host([expanded]) .toggle-icon--folder {
-  --mds-tree-item-icon-background-color: var(
-    --mds-tree-item-toggle-icon-folder-expanded-background
-  );
-  --mds-tree-item-icon-color: var(--mds-tree-item-toggle-icon-folder-expanded-color);
 }

@@ -1,7 +1,7 @@
 @utility animate-intro {
   @apply ease-in-out-expo;
 
-  transition-duration: var(--duration-500);
+  transition-duration: var(--private-toast-transition-duration-intro, var(--duration-500));
   transition-property:
     background-color, border-color, box-shadow, color, fill, height, margin, opacity, padding,
     transform, width;
@@ -10,7 +10,7 @@
 @utility animate-outro {
   @apply ease-in-cubic;
 
-  transition-duration: var(--mds-toast-duration, 300ms);
+  transition-duration: var(--private-toast-transition-duration, var(--mds-toast-duration, 300ms));
   transition-property:
     background-color, border-color, box-shadow, color, fill, height, margin, opacity, padding,
     transform, width;
