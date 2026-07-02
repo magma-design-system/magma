@@ -1,4 +1,5 @@
-import { Component, Host, h, Prop } from '@stencil/core';
+import { Component, Host, h, Prop, State } from '@stencil/core';
+import { subscribePreference } from '@common/preference';
 import { PriceTableFeaturesCellType } from './meta/types';
 import miBaselineCheckCircle from '@icon/mi/baseline/check-circle.svg';
 import miBaselineHorizontalRule from '@icon/mi/baseline/horizontal-rule.svg';
@@ -6,7 +7,7 @@ import miBaselineHorizontalRule from '@icon/mi/baseline/horizontal-rule.svg';
 /**
  * @part icon - Selects the HTML element of the icon when `type` attribute when is `supported` or `unsupported`.
  * @part text - Selects the HTML element wrapper of text when `type` attribute when is `text`.
- * @slot default - Add `text string`, `HTML elements` or `components` to this slot.
+ * @slot - Add `text string`, `HTML elements` or `components` to this slot.
  */
 
 @Component({
@@ -15,14 +16,50 @@ import miBaselineHorizontalRule from '@icon/mi/baseline/horizontal-rule.svg';
   shadow: true,
 })
 export class MdsPriceTableFeaturesCell {
+  @State() prefAnimation?: string;
+  private unsubscribePrefAnimation?: () => void;
+  @State() prefContrast?: string;
+  private unsubscribePrefContrast?: () => void;
+  @State() prefTheme?: string;
+  private unsubscribePrefTheme?: () => void;
+  @State() prefThemeScheme?: string;
+  private unsubscribePrefThemeScheme?: () => void;
+
   /**
    * Specifies the support type which is represented
    */
   @Prop({ reflect: true }) type?: PriceTableFeaturesCellType = 'text';
 
+  connectedCallback(): void {
+    this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
+      this.prefAnimation = value;
+    });
+    this.unsubscribePrefContrast = subscribePreference('contrast', (value) => {
+      this.prefContrast = value;
+    });
+    this.unsubscribePrefTheme = subscribePreference('theme', (value) => {
+      this.prefTheme = value;
+    });
+    this.unsubscribePrefThemeScheme = subscribePreference('theme-scheme', (value) => {
+      this.prefThemeScheme = value;
+    });
+  }
+
+  disconnectedCallback(): void {
+    this.unsubscribePrefAnimation?.();
+    this.unsubscribePrefContrast?.();
+    this.unsubscribePrefTheme?.();
+    this.unsubscribePrefThemeScheme?.();
+  }
+
   render() {
     return (
-      <Host>
+      <Host
+        pref-animation={this.prefAnimation}
+        pref-contrast={this.prefContrast}
+        pref-theme={this.prefTheme}
+        pref-theme-scheme={this.prefThemeScheme}
+      >
         {this.type === 'supported' && (
           <i class="icon icon--supported" innerHTML={miBaselineCheckCircle} part="icon" />
         )}

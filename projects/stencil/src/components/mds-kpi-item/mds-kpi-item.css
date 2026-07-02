@@ -15,10 +15,10 @@
     ' '
   );
   --mds-kpi-item-text-animation-speed: var(--mds-kpi-text-animation-speed, 0.15);
+  --mds-kpi-item-transition-duration: var(--duration-300);
+  --private-kpi-item-transition-duration: var(--mds-kpi-item-transition-duration);
 
-  @apply duration-300
-    ease-out
-    gap-0;
+  @apply ease-out;
 
   aspect-ratio: 1;
   background-color: rgb(var(--variant-primary-10));
@@ -26,35 +26,35 @@
   corner-shape: var(--magma-corner-shape, round);
   display: flex;
   flex-direction: column;
+  gap: 0;
   overflow: hidden;
   padding: --spacing(400);
+  transition-duration: var(--private-kpi-item-transition-duration);
   transition-property: background-color, box-shadow;
 }
 
 .icon-container {
-  @apply duration-300
-    ease-out;
+  @apply ease-out;
 
   align-items: center;
   display: flex;
   flex-grow: 1;
   justify-content: center;
+  transition-duration: var(--private-kpi-item-transition-duration);
   transition-property: background-color;
 }
 
 .icon {
-  @apply duration-300
-    ease-out;
+  @apply ease-out;
 
   fill: var(--mds-kpi-item-icon-color);
+  transition-duration: var(--private-kpi-item-transition-duration);
   transition-property: fill;
   width: 40%;
 }
 
 .info {
-  @apply duration-300
-    ease-out
-    gap-0;
+  @apply ease-out;
 
   background-color: var(--mds-kpi-item-info-background);
   border-radius: var(--radius-xl);
@@ -62,20 +62,22 @@
   corner-shape: inherit;
   display: grid;
   flex-shrink: 0;
+  gap: 0;
   justify-content: center;
   padding: --spacing(400);
   text-align: center;
+  transition-duration: var(--private-kpi-item-transition-duration);
   transition-property: background-color, border-radius, box-shadow;
 }
 
 .label,
 .description {
-  @apply duration-300
-    ease-out;
+  @apply ease-out;
 
   --mds-text-animation-speed: var(--mds-kpi-item-text-animation-speed);
   --mds-text-animation-placeholder-char: var(--mds-kpi-item-text-animation-placeholder-char);
 
+  transition-duration: var(--private-kpi-item-transition-duration);
   transition-property: fill;
 }
 

@@ -53,6 +53,9 @@ export class MdsInputUpload {
     it: localeIt,
   });
   @State() language: string;
+  /**
+   * Updates the component's texts to the locale currently set on the host element.
+   */
   @Method()
   async updateLang(): Promise<void> {
     this.language = this.t.lang(this.host);
@@ -223,7 +226,7 @@ export class MdsInputUpload {
   }
 
   private readonly onChangeTab = (event: MdsTabEventDetail): void => {
-    if (event.value) {
+    if (event.value !== undefined && event.value !== '') {
       this.sortFiles(this.files, event.value as AttachmentSort);
       this.userSort = event.value as AttachmentSort;
       localStorage.setItem(LOCALSTORAGE_KEY_USER_SORT, this.userSort);
@@ -251,7 +254,7 @@ export class MdsInputUpload {
           this.files.splice(index, 1);
         }
         const { errorMessage, type } = this.checkError(file);
-        if (!errorMessage) {
+        if (errorMessage === '') {
           this.files.push({ key: file.name, file, id: this.idFile, status: Status.SUCCESS });
           this.fileUploaded += 1;
         } else {
@@ -393,8 +396,20 @@ export class MdsInputUpload {
   }
 
   private isSortTabShown(): boolean {
-    return !!this.sort && this.files.length > 1;
+    return this.sort !== undefined && this.files.length > 1;
   }
+
+  private readonly handleAddFileClick = (): void => {
+    this.nativeInput?.click();
+  };
+
+  private readonly handleTabChange = (event: CustomEvent<MdsTabEventDetail>): void => {
+    this.onChangeTab(event.detail);
+  };
+
+  private readonly handleFileDelete = (filekey: string) => (): void => {
+    this.onCancel(filekey);
+  };
 
   render() {
     return (
@@ -419,9 +434,9 @@ export class MdsInputUpload {
             ></mds-text>
           </div>
           <div class="main-actions">
-            <mds-button variant="primary" onClick={() => this.nativeInput?.click()}>
+            <mds-button variant="primary" onClick={this.handleAddFileClick}>
               {' '}
-              {this.files
+              {this.files != null
                 ? this.t.get('addFile', { maxFiles: this.maxFiles })
                 : this.t.get('selectFile')}
             </mds-button>
@@ -443,7 +458,7 @@ export class MdsInputUpload {
               </mds-text>
             ) : (
               <mds-text variant="info" typography="caption">
-                {this.maxFiles
+                {this.maxFiles !== 0 && !Number.isNaN(this.maxFiles)
                   ? this.t.get('currentFilesWithMax', {
                       currentFiles: this.files.length,
                       maxFiles: this.maxFiles,
@@ -464,7 +479,7 @@ export class MdsInputUpload {
         <div class="additional-infos">
           <div class={clsx('file-specs', this.isSortTabShown() && 'file-specs-sort')}>
             <mds-text variant="info" typography="caption">
-              {this.extensions
+              {this.extensions !== ''
                 ? `${this.t.get('canUpload')} ${this.extensions}`
                 : this.t.get('canUploadAll')}
             </mds-text>
@@ -473,7 +488,7 @@ export class MdsInputUpload {
             </mds-text>
           </div>
           {this.isSortTabShown() && (
-            <mds-tab class="action-sort" onMdsTabChange={(event) => this.onChangeTab(event.detail)}>
+            <mds-tab class="action-sort" onMdsTabChange={this.handleTabChange}>
               <mds-tab-item
                 icon={iconSortById}
                 selected={this.userSort === 'date'}
@@ -501,7 +516,7 @@ export class MdsInputUpload {
                     variant="error"
                     filename={file.file.name}
                     filesize={file.file.size.toString()}
-                    onMdsFileDelete={() => this.onCancel(file.key)}
+                    onMdsFileDelete={this.handleFileDelete(file.key)}
                     message={file.errorMessage}
                   ></mds-file-preview>
                 );
@@ -511,7 +526,7 @@ export class MdsInputUpload {
                     deletable
                     filename={file.file.name}
                     filesize={file.file.size.toString()}
-                    onMdsFileDelete={() => this.onCancel(file.key)}
+                    onMdsFileDelete={this.handleFileDelete(file.key)}
                     src={URL.createObjectURL(file.file)}
                   ></mds-file-preview>
                 );

@@ -8,6 +8,8 @@
  * @prop --mds-calendar-border-radius: The border-radius of the calendar container.
  * @prop --mds-calendar-background: The background color of the calendar container.
  * @prop --mds-calendar-padding: The internal padding of the calendar container.
+ * @prop --mds-calendar-select-month-or-year-height: The height of the month/year selector in the calendar header.
+ * @prop --mds-calendar-select-month-or-year-width: The width of the month/year selector in the calendar header.
  */
 
 @property --mds-calendar-day-number-other-month-color {
@@ -52,6 +54,18 @@
   syntax: '<length>';
 }
 
+@property --mds-calendar-select-month-or-year-height {
+  inherits: false;
+  initial-value: --spacing(900);
+  syntax: '<length>';
+}
+
+@property --mds-calendar-select-month-or-year-width {
+  inherits: false;
+  initial-value: 14rem;
+  syntax: '<length>';
+}
+
 :host {
   --mds-calendar-day-number-other-month-color: rgb(var(--tone-neutral-07));
   --mds-calendar-day-number-color: rgb(var(--tone-neutral-01));
@@ -60,6 +74,8 @@
   --mds-calendar-border-radius: var(--radius-lg);
   --mds-calendar-background: rgb(var(--tone-neutral));
   --mds-calendar-padding: --spacing(400);
+  --mds-calendar-select-month-or-year-height: --spacing(900);
+  --mds-calendar-select-month-or-year-width: 14rem;
   --mds-calendar-max-width: 480px;
   --mds-calendar-min-width: 280px;
 
@@ -75,7 +91,9 @@
 .calendar-view {
   background-color: var(--mds-calendar-background);
   border-radius: inherit;
+  box-sizing: border-box;
   display: grid;
+  flex: 1 1 auto;
   padding: var(--mds-calendar-padding);
 
   /* width: clamp(var(--mds-calendar-min-width), calc((var(--mds-calendar-max-width) + var(--mds-calendar-min-width)) / 2), var(--mds-calendar-max-width)); */
@@ -97,6 +115,7 @@ nav {
   display: flex;
   gap: --spacing(200);
   justify-content: space-between;
+  min-width: 0;
 }
 
 .action {
@@ -112,17 +131,56 @@ nav {
 }
 
 .select-month-or-year {
+  align-items: stretch;
   background-color: rgb(var(--tone-neutral-09));
-  border-radius: var(--radius-lg);
+  block-size: var(--mds-calendar-select-month-or-year-height);
+  border-radius: var(--mds-calendar-border-radius);
+  box-sizing: border-box;
   display: flex;
-  flex-grow: 1;
-  justify-content: space-evenly;
+  flex: 0 0 var(--mds-calendar-select-month-or-year-width);
+  height: var(--mds-calendar-select-month-or-year-height);
+  inline-size: var(--mds-calendar-select-month-or-year-width);
+  justify-content: flex-start;
+  max-block-size: var(--mds-calendar-select-month-or-year-height);
+  max-height: var(--mds-calendar-select-month-or-year-height);
+  max-inline-size: var(--mds-calendar-select-month-or-year-width);
+  min-block-size: var(--mds-calendar-select-month-or-year-height);
+  min-height: var(--mds-calendar-select-month-or-year-height);
+  min-inline-size: var(--mds-calendar-select-month-or-year-width);
+  overflow: hidden;
 }
 
 .action-month,
 .action-year {
-  flex-basis: 0;
-  flex-grow: 1;
+  --mds-button-radius: 0;
+
+  align-self: stretch;
+  block-size: 100%;
+  box-sizing: border-box;
+  cursor: default;
+  height: 100%;
+  max-block-size: 100%;
+  max-height: 100%;
+  min-block-size: 0;
+  min-height: 0;
+  padding-left: --spacing(200);
+  padding-right: --spacing(200);
+}
+
+.action-month {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.action-year {
+  flex: 0 0 4.5rem;
+}
+
+.action-month::part(label),
+.action-year::part(label) {
+  overflow: visible;
+  text-overflow: clip;
+  white-space: nowrap;
 }
 
 .week-day-name {

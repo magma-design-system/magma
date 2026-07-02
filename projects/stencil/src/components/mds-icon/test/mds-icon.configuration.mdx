@@ -1,0 +1,56 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+
+<Meta title="Design / Icon / Configuration" />
+
+# Configuring the icon SVG path
+
+`<mds-icon>` resolves an icon slug (e.g. `name="mdi/alien"`) by fetching `<base-path>/<slug>.svg`. Before any slug-based icon can render, the component needs to know the **base path** of your SVG directory. Inline `data:` URIs and raw `<svg>` strings passed to `name` are rendered as-is and need no configuration.
+
+Every `<mds-icon>` shares a single in-memory service, so you configure the path **once** for the whole app and all mounted icons react to it.
+
+## Recommended: `IconsSetService.setSvgPath()`
+
+Import the shared singleton from the package's `services` entry point and set the path. This happens entirely in memory — **no `sessionStorage`** — and notifies every mounted icon to (re)load, so it works even where storage is blocked (incognito, sandboxed iframes, storage partitioning).
+
+```ts
+import { IconsSetService } from '@maggioli-design-system/magma/services';
+
+IconsSetService.setSvgPath('/assets/svg/');
+```
+
+- Call it at any time: icons mounted **before** the call re-fetch automatically once the path is set.
+- The path is shared across every bundled copy of the service (it lives on `globalThis`), so you don't need to worry about which entry point you imported it from. Always use the exported `IconsSetService` rather than constructing your own controller (a new one would keep a separate icon cache and listener list).
+
+## Path format
+
+The value must be an **absolute path** (starting with `/`, resolved against `window.location.origin`) or a **full URL**:
+
+```ts
+IconsSetService.setSvgPath('/assets/svg/');                 // → <origin>/assets/svg/
+IconsSetService.setSvgPath('https://cdn.example.com/svg/'); // CDN / external host
+```
+
+A bare relative value (`assets/svg/`) is accepted but resolved against the **current page URL**, so it breaks on nested routes — avoid it. An empty value throws.
+
+## Optional fallback: `sessionStorage`
+
+When no path has been set programmatically, the service falls back to the `mdsIconSvgPath` key. Set it before any `<mds-icon>` mounts. Convenient, but it **may be blocked** by some browsers or contexts — prefer `IconsSetService` when in doubt.
+
+```ts
+window.sessionStorage.setItem('mdsIconSvgPath', 'assets/svg/');
+```
+
+## Forcing a reload
+
+Setting the path through `IconsSetService.setSvgPath()` already notifies mounted icons. If you configure the path another way (for example, writing `sessionStorage` *after* icons mounted), dispatch the update event to force a re-fetch:
+
+```ts
+window.dispatchEvent(new CustomEvent('mdsIconSvgPathUpdate'));
+```
+
+## Other methods
+
+Still available, but not recommended for new code:
+
+- **`element.setSvgPath(path)`** — an `@Method()` on an `<mds-icon>` element; delegates to the same singleton but requires a mounted element just to set global config.
+- **`MdsIcon.setSvgPathStatic(path)`** — a static method reachable only through a deep import whose path is not a stable public API.

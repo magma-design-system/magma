@@ -1,4 +1,5 @@
 import { Component, Element, Host, h, State, Prop } from '@stencil/core';
+import { subscribePreference } from '@common/preference';
 import clsx from 'clsx';
 
 /**
@@ -16,20 +17,47 @@ import clsx from 'clsx';
 })
 export class MdsCard {
   @Element() private host: HTMLMdsCardElement;
+  @State() prefContrast?: string;
+  private unsubscribePrefContrast?: () => void;
+  @State() prefTheme?: string;
+  private unsubscribePrefTheme?: () => void;
+  @State() prefThemeScheme?: string;
+  private unsubscribePrefThemeScheme?: () => void;
   @State() layout: string;
 
   /**
-   * Enables automatic responsive behavior based on container queries
+   * Disables the automatic responsive behavior based on container queries
    */
-  @Prop({ reflect: true }) readonly autoGrid: boolean = true;
+  @Prop({ reflect: true }) readonly disableAutoGrid: boolean = false;
+
+  connectedCallback(): void {
+    this.unsubscribePrefContrast = subscribePreference('contrast', (value) => {
+      this.prefContrast = value;
+    });
+    this.unsubscribePrefTheme = subscribePreference('theme', (value) => {
+      this.prefTheme = value;
+    });
+    this.unsubscribePrefThemeScheme = subscribePreference('theme-scheme', (value) => {
+      this.prefThemeScheme = value;
+    });
+  }
+
+  disconnectedCallback(): void {
+    this.unsubscribePrefContrast?.();
+    this.unsubscribePrefTheme?.();
+    this.unsubscribePrefThemeScheme?.();
+  }
 
   componentWillLoad(): void {
     this.layout = Array.from(this.host.children)
       // check custom slot
       .map((c) =>
-        (c.getAttribute('slot') ??
-        // if no custom slot find mds-card-{component}
-        c.tagName.startsWith('MDS-CARD-'))
+        (
+          c.getAttribute('slot') != null
+            ? c.getAttribute('slot') !== ''
+            : // if no custom slot find mds-card-{component}
+              c.tagName.startsWith('MDS-CARD-')
+        )
           ? // replace mds-card-header with header (for all mds-card-{component})
             c.tagName.toLocaleLowerCase().replace('mds-card-', '')
           : // if find other tag do nothing
@@ -41,12 +69,16 @@ export class MdsCard {
 
   render() {
     return (
-      <Host>
+      <Host
+        pref-contrast={this.prefContrast}
+        pref-theme={this.prefTheme}
+        pref-theme-scheme={this.prefThemeScheme}
+      >
         <div
           class={clsx(
             'layout',
             this.layout && `layout--${this.layout}`,
-            !this.autoGrid ? 'layout--disabled' : '',
+            this.disableAutoGrid ? 'layout--disabled' : '',
           )}
           part="layout"
         >

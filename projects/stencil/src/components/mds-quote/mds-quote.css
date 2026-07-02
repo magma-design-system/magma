@@ -9,9 +9,8 @@
 }
 
 .quote {
-  @apply gap-400;
-
   display: grid;
+  gap: --spacing(400);
   user-select: all;
 }
 

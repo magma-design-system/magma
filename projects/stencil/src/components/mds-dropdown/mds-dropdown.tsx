@@ -1,14 +1,25 @@
 import { KeyboardManager } from '@common/keyboard-manager';
 import { cssDurationToMilliseconds } from '@common/unit';
-import { Component, Element, Event, EventEmitter, Host, Prop, Watch, h } from '@stencil/core';
+import {
+  Component,
+  Element,
+  Event,
+  EventEmitter,
+  Host,
+  Prop,
+  State,
+  Watch,
+  h,
+} from '@stencil/core';
 import { FloatingUIPlacement, FloatingUIStrategy } from '@type/floating-ui';
 import arrowSvg from './assets/arrow.svg';
 import { MdsDropdownEventDetail } from './meta/event-detail';
 import { DropdownInteractionType } from './meta/types';
 import { Backdrop, FloatingController, FloatingElement } from '@common/floating-controller';
+import { subscribePreference } from '@common/preference';
 
 /**
- * @slot default - Add `text string`, `HTML elements` or `components` to this slot, elements will be shown when the component is triggered.
+ * @slot - Add `text string`, `HTML elements` or `components` to this slot, elements will be shown when the component is triggered.
  */
 
 @Component({
@@ -25,11 +36,19 @@ export class MdsDropdown implements FloatingElement {
   private floatingController: FloatingController;
 
   @Element() readonly host!: HTMLMdsDropdownElement;
+  @State() prefAnimation?: string;
+  private unsubscribePrefAnimation?: () => void;
+  @State() prefContrast?: string;
+  private unsubscribePrefContrast?: () => void;
+  @State() prefTheme?: string;
+  private unsubscribePrefTheme?: () => void;
+  @State() prefThemeScheme?: string;
+  private unsubscribePrefThemeScheme?: () => void;
 
   /**
-   * If set, the component will have an arrow pointing to the caller.
+   * If set, the component will not have an arrow pointing to the caller.
    */
-  @Prop({ reflect: true }) readonly arrow: boolean = true;
+  @Prop({ reflect: true }) readonly hideArrow: boolean = false;
 
   /**
    * Sets the distance between arrow and dropdown margins.
@@ -37,9 +56,9 @@ export class MdsDropdown implements FloatingElement {
   @Prop() readonly arrowPadding: number = 24;
 
   /**
-   * If set, the component will be placed automatically near it's caller.
+   * If set, the component will not be placed automatically near it's caller.
    */
-  @Prop() readonly autoPlacement: boolean = false;
+  @Prop() readonly disableAutoPlacement: boolean = false;
 
   /**
    * Specifies if the component has a backdrop background
@@ -72,9 +91,9 @@ export class MdsDropdown implements FloatingElement {
   @Prop() readonly placement: FloatingUIPlacement = 'bottom';
 
   /**
-   * If set, the component will be kept inside the viewport.
+   * If set, the component will not be kept inside the viewport.
    */
-  @Prop() readonly shift: boolean = true;
+  @Prop() readonly disableShift: boolean = false;
 
   /**
    * Sets a safe area distance between the dropdown and the viewport.
@@ -82,9 +101,9 @@ export class MdsDropdown implements FloatingElement {
   @Prop() readonly shiftPadding: number = 24;
 
   /**
-   * If set, the component will follow the caller smoothly, visible when the page scrolls.
+   * If set, the component will not follow the caller smoothly when the page scrolls.
    */
-  @Prop() readonly smooth: boolean = true;
+  @Prop() readonly disableSmooth: boolean = false;
 
   /**
    * Sets the CSS position strategy of the component.
@@ -116,8 +135,8 @@ export class MdsDropdown implements FloatingElement {
    */
   @Event({ eventName: 'mdsDropdownChange' }) changedEvent: EventEmitter<MdsDropdownEventDetail>;
 
-  @Watch('arrow')
-  arrowChanged(): void {
+  @Watch('hideArrow')
+  hideArrowChanged(): void {
     this.floatingController.updatePosition();
   }
 
@@ -126,8 +145,8 @@ export class MdsDropdown implements FloatingElement {
     this.floatingController.updatePosition();
   }
 
-  @Watch('autoPlacement')
-  autoPlacementChanged(): void {
+  @Watch('disableAutoPlacement')
+  disableAutoPlacementChanged(): void {
     this.floatingController.updatePosition();
   }
 
@@ -161,8 +180,8 @@ export class MdsDropdown implements FloatingElement {
     this.floatingController.updatePosition();
   }
 
-  @Watch('shift')
-  shiftChanged(): void {
+  @Watch('disableShift')
+  disableShiftChanged(): void {
     this.floatingController.updatePosition();
   }
 
@@ -178,7 +197,7 @@ export class MdsDropdown implements FloatingElement {
 
   @Watch('target')
   targetChanged(): void {
-    if (!this.target || !this.floatingController) return;
+    if (this.target === '' || this.floatingController == null) return;
     this.caller = this.floatingController.updateCaller(this.target);
     this.setInteractionBehaviour();
     this.km.addElement(this.host);
@@ -204,7 +223,7 @@ export class MdsDropdown implements FloatingElement {
     this.hiddenEvent.emit({ caller: this.caller, visible: false });
   }
 
-  onClickTarget(ev: Event): void {
+  private onClickTarget(ev: Event): void {
     // stop propagation event for when target is a element cointainer
     ev.stopPropagation();
     // trigger a body click to execute handleCloseDropdown on other dropdowns
@@ -212,14 +231,14 @@ export class MdsDropdown implements FloatingElement {
     this.visible = !this.visible;
   }
 
-  onMouseOverTarget(): void {
+  private onMouseOverTarget(): void {
     this.mouseoverTimer = setTimeout(() => {
       clearTimeout(this.mouseoverTimer);
       this.visible = true;
     }, cssDurationToMilliseconds(this.cssMouseOverDelayDuration));
   }
 
-  onMouseOutTarget(): void {
+  private onMouseOutTarget(): void {
     clearTimeout(this.mouseoverTimer);
     this.mouseoverTimer = setTimeout(() => {
       clearTimeout(this.mouseoverTimer);
@@ -286,7 +305,26 @@ export class MdsDropdown implements FloatingElement {
     this.targetChanged();
   }
 
+  connectedCallback(): void {
+    this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
+      this.prefAnimation = value;
+    });
+    this.unsubscribePrefContrast = subscribePreference('contrast', (value) => {
+      this.prefContrast = value;
+    });
+    this.unsubscribePrefTheme = subscribePreference('theme', (value) => {
+      this.prefTheme = value;
+    });
+    this.unsubscribePrefThemeScheme = subscribePreference('theme-scheme', (value) => {
+      this.prefThemeScheme = value;
+    });
+  }
+
   disconnectedCallback(): void {
+    this.unsubscribePrefAnimation?.();
+    this.unsubscribePrefContrast?.();
+    this.unsubscribePrefTheme?.();
+    this.unsubscribePrefThemeScheme?.();
     this.floatingController.dismiss();
     this.backdropController.detachBackdrop();
     this.km.detachEscapeBehavior();
@@ -298,6 +336,10 @@ export class MdsDropdown implements FloatingElement {
         style={{
           zIndex: `${this.zIndex}`,
         }}
+        pref-animation={this.prefAnimation}
+        pref-contrast={this.prefContrast}
+        pref-theme={this.prefTheme}
+        pref-theme-scheme={this.prefThemeScheme}
       >
         <div class="arrow" innerHTML={arrowSvg} />
         <slot />

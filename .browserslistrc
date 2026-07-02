@@ -1,0 +1,30 @@
+# Current support baseline (~ Baseline "widely available", browsers from 2023+).
+# Floors are driven by the modern CSS actually used in the codebase, so each
+# version below is "the oldest browser where that feature is guaranteed":
+#   CSS Nesting        -> Chrome/Edge 112, Safari 16.5, Firefox 117
+#   :has()             -> Safari 15.4, Firefox 121  (Firefox is the binding floor)
+#   Container queries  -> Chrome 105, Safari 16, Firefox 110
+#   dvh/svh units      -> Chrome 108, Safari 15.4, Firefox 101
+# NOT included: container style queries (Safari 18 / Firefox 128) - intentionally avoided.
+Chrome >= 112
+Edge >= 112
+Firefox >= 121
+Safari >= 16.5
+iOS >= 16.5
+Firefox ESR
+last 2 years
+not dead
+
+# # aligned with Bootstrap Italia / Bootstrap 5 (official PA kit) - wider/legacy
+# last 2 major versions
+# Firefox ESR
+# Chrome >= 60
+# Firefox >= 60
+# Safari >= 12
+# iOS >= 12
+# not dead
+# not op_mini all
+# # IE is out
+# not ie <= 11
+# # legacy Android stock browser is dead and covered by Chrome for Android (and_chr)
+# not android > 0

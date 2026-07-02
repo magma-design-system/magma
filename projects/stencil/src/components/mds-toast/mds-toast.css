@@ -58,29 +58,33 @@
   --mds-toast-shadow: var(--shadow-xl);
   --mds-toast-width: auto;
 
-  @apply left-0
-  right-0;
+  /* private */
+  --private-toast-transition-duration: var(--mds-toast-duration);
+  --private-toast-transition-duration-intro: var(--duration-500);
+  --private-toast-transition-duration-icon: var(--duration-200);
 
   color: var(--mds-toast-color);
   display: flex;
+  left: 0;
   pointer-events: none;
   position: fixed;
+  right: 0;
 }
 
 .dialog {
-  @apply ease-in-cubic
-    gap-400
-    max-w-full
-    mx-400
-    p-400
-    rounded-xl;
+  @apply ease-in-cubic;
 
   align-items: center;
   background-color: var(--mds-toast-background);
+  border-radius: var(--radius-xl);
   box-shadow: var(--mds-toast-shadow);
   display: inline-flex;
+  gap: --spacing(400);
+  margin-inline: --spacing(400);
+  max-width: 100%;
+  padding: --spacing(400);
   pointer-events: none;
-  transition-duration: var(--mds-toast-duration);
+  transition-duration: var(--private-toast-transition-duration);
   transition-property: box-shadow, background-color, color, transform;
   width: var(--mds-toast-width);
 }
@@ -90,7 +94,7 @@
 }
 
 :host([position^='top']) {
-  @apply top-0;
+  top: 0;
 }
 
 :host([position='top-left']) {
@@ -106,7 +110,7 @@
 }
 
 :host([position^='bottom']) {
-  @apply bottom-0;
+  bottom: 0;
 }
 
 :host([position='bottom-left']) {
@@ -122,9 +126,8 @@
 }
 
 .actions {
-  @apply gap-200;
-
   display: flex;
+  gap: --spacing(200);
 }
 
 ::slotted([slot='icon']) {
@@ -132,7 +135,7 @@
 
   fill: var(--mds-toast-icon-color);
   flex-shrink: 0;
-  transition-duration: var(--duration-200);
+  transition-duration: var(--private-toast-transition-duration-icon);
   transition-property: fill;
 }
 

@@ -37,10 +37,9 @@
   --mds-price-table-list-item-unsupported-icon-color-hover: rgb(var(--tone-neutral-04));
   --mds-price-table-list-item-unsupported-icon-color: rgb(var(--tone-neutral-05));
 
-  @apply gap-100;
-
   align-items: flex-start;
   display: flex;
+  gap: --spacing(100);
 }
 
 .text {
@@ -53,13 +52,13 @@
 
 .icon {
   @apply ease-out-expo
-  h-600
-  svg
-  w-600;
+    svg;
 
   fill: var(--mds-price-table-list-item-unsupported-icon-color);
+  height: --spacing(600);
   transition-duration: var(--duration-500);
   transition-property: fill;
+  width: --spacing(600);
 }
 
 :host([supported]:not([supported='false'])) .icon {

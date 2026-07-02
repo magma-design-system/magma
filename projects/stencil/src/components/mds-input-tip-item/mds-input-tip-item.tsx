@@ -2,11 +2,15 @@ import { Component, Element, Host, h, Prop, State, Method, Watch } from '@stenci
 import { InputTipItemVariantType } from '@type/input-tip';
 import miBaselineDone from '@icon/mi/baseline/done.svg';
 import { Locale } from '@common/locale';
+import { subscribePreference } from '@common/preference';
 import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.es.json';
 import localeIt from './meta/locale.it.json';
 
+/**
+ * @slot - Add `text string`, `HTML elements` or `components` to this slot.
+ */
 @Component({
   tag: 'mds-input-tip-item',
   styleUrl: 'mds-input-tip-item.css',
@@ -14,6 +18,10 @@ import localeIt from './meta/locale.it.json';
 })
 export class MdsInputTipItem {
   @Element() private element: HTMLMdsInputTipItemElement;
+  @State() prefAnimation?: string;
+  private unsubscribePrefAnimation?: () => void;
+  @State() prefContrast?: string;
+  private unsubscribePrefContrast?: () => void;
 
   private t: Locale = new Locale({
     en: localeEn,
@@ -22,9 +30,26 @@ export class MdsInputTipItem {
     it: localeIt,
   });
   @State() language: string;
+  /**
+   * Updates the component's texts to the locale currently set on the host element.
+   */
   @Method()
   async updateLang(): Promise<void> {
     this.language = this.t.lang(this.element);
+  }
+
+  connectedCallback(): void {
+    this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
+      this.prefAnimation = value;
+    });
+    this.unsubscribePrefContrast = subscribePreference('contrast', (value) => {
+      this.prefContrast = value;
+    });
+  }
+
+  disconnectedCallback(): void {
+    this.unsubscribePrefAnimation?.();
+    this.unsubscribePrefContrast?.();
   }
 
   componentWillRender(): void {
@@ -50,7 +75,7 @@ export class MdsInputTipItem {
 
   render() {
     return (
-      <Host>
+      <Host pref-animation={this.prefAnimation} pref-contrast={this.prefContrast}>
         <div class="content">
           {this.variant === 'text' && (
             <mds-text typography="option" truncate="word">

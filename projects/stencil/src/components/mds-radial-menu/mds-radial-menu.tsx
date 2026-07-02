@@ -8,6 +8,9 @@ import { ToneVariantType } from '@type/tone';
 
 import { Backdrop } from '@common/floating-controller';
 
+/**
+ * @slot item - Add `mds-radial-menu-item` elements or `components` to this slot.
+ */
 @Component({
   tag: 'mds-radial-menu',
   styleUrl: 'mds-radial-menu.css',
@@ -140,7 +143,7 @@ export class MdsRadialMenu {
   }
 
   disconnectedCallback(): void {
-    if (!document) return;
+    if (typeof document === 'undefined') return;
     document.removeEventListener('contextmenu', this.toggleRightClickMenu);
   }
 
@@ -180,7 +183,7 @@ export class MdsRadialMenu {
 
   @Watch('interaction')
   onInteractionChange(newValue?: Interaction): void {
-    if (!document) return;
+    if (typeof document === 'undefined') return;
     if (newValue === 'rightclick') {
       document.addEventListener('contextmenu', this.toggleRightClickMenu);
       return;

@@ -13,11 +13,12 @@ import {
 import { MdsHeaderEventDetail, MdsHeaderVisibilityEventDetail } from './meta/event-detail';
 import { HeaderBarMenuType, HeaderBarNavType } from '@type/header-bar';
 import { AppearanceType } from './meta/types';
+import { subscribePreference } from '@common/preference';
 // import clsx from 'clsx'
 
 /**
  * @part menu - The container element of the modal
- * @slot default - Add `mds-header-bar` element/s.
+ * @slot - Add `mds-header-bar` element/s.
  * @slot menu - Put actions and other contents that will be shown as mobile menu. Add `text string`, `HTML elements` or `components` to this slot.
  */
 
@@ -36,6 +37,12 @@ export class MdsHeader {
   private sanitizedAppearance: AppearanceType = ['stripe'];
   private appearanceThreshold = 300;
   private headerBar: HTMLMdsHeaderBarElement;
+  @State() consumption?: string;
+  private unsubscribeConsumption?: () => void;
+  @State() prefTheme?: string;
+  private unsubscribePrefTheme?: () => void;
+  @State() prefThemeScheme?: string;
+  private unsubscribePrefThemeScheme?: () => void;
 
   /**
    * Sets the appearance of the header bar element when loaded,
@@ -58,9 +65,9 @@ export class MdsHeader {
   @Prop({ reflect: true }) readonly autoHide?: number;
 
   /**
-   * Sets if the backdrop is shown when the mds-header-bar attribute appearace is set to `inline`
+   * Hides the backdrop shown when the mds-header-bar attribute appearace is set to `inline`
    */
-  @Prop({ reflect: true }) readonly backdrop?: boolean = true;
+  @Prop({ reflect: true }) readonly hideBackdrop?: boolean = false;
 
   /**
    * Sets the visibility type of the hamburger menu of mds-header-bar
@@ -94,6 +101,10 @@ export class MdsHeader {
   @Event({ eventName: 'mdsHeaderVisibilityChange' })
   visibleEvent: EventEmitter<MdsHeaderVisibilityEventDetail>;
 
+  /**
+   * Opens or closes the header.
+   * @param isOpened whether the header should be opened
+   */
   @Method()
   async setOpened(isOpened: boolean = true): Promise<void> {
     this.isOpened = isOpened;
@@ -110,7 +121,7 @@ export class MdsHeader {
   };
 
   private handleVisibility = (): void => {
-    if (!this.autoHide) {
+    if (this.autoHide === undefined || this.autoHide === 0 || Number.isNaN(this.autoHide)) {
       return;
     }
     // reset var if the page is scrolled to top
@@ -148,7 +159,7 @@ export class MdsHeader {
   };
 
   private sanitizeAppearance = (): AppearanceType => {
-    if (!this.appearanceSet) {
+    if (this.appearanceSet === undefined || this.appearanceSet === '') {
       return [this.appearance];
     }
     const regex = /\b(\w+)\b/g;
@@ -169,7 +180,7 @@ export class MdsHeader {
 
   private handleScroll = (): void => {
     if (typeof window === 'undefined') return;
-    if (this.autoHide) {
+    if (this.autoHide !== undefined && this.autoHide !== 0 && !Number.isNaN(this.autoHide)) {
       this.handleVisibility();
     }
     if (this.sanitizedAppearance.length > 1) {
@@ -179,22 +190,41 @@ export class MdsHeader {
 
   private setAppearanceSetData = (): void => {
     this.sanitizedAppearance = this.sanitizeAppearance();
-    if (this.sanitizedAppearance[2]) {
+    if (
+      this.sanitizedAppearance[2] !== undefined &&
+      this.sanitizedAppearance[2] !== 0 &&
+      !Number.isNaN(this.sanitizedAppearance[2])
+    ) {
       this.appearanceThreshold = this.sanitizedAppearance[2];
     }
     this.relativeTresholdDown = this.threshold;
   };
 
   private initScrollListener = (): void => {
-    if (!window) {
+    if (typeof window === 'undefined') {
       return;
     }
     this.setAppearanceSetData();
     window.addEventListener('scroll', this.handleScroll);
   };
 
+  connectedCallback(): void {
+    this.unsubscribeConsumption = subscribePreference('consumption', (value) => {
+      this.consumption = value;
+    });
+    this.unsubscribePrefTheme = subscribePreference('theme', (value) => {
+      this.prefTheme = value;
+    });
+    this.unsubscribePrefThemeScheme = subscribePreference('theme-scheme', (value) => {
+      this.prefThemeScheme = value;
+    });
+  }
+
   disconnectedCallback(): void {
-    if (!window) {
+    this.unsubscribeConsumption?.();
+    this.unsubscribePrefTheme?.();
+    this.unsubscribePrefThemeScheme?.();
+    if (typeof window === 'undefined') {
       return;
     }
     window.removeEventListener('scroll', this.handleScroll);
@@ -225,7 +255,7 @@ export class MdsHeader {
     if (newValue === oldValue) {
       return;
     }
-    if (this.headerBar) {
+    if (this.headerBar != null) {
       this.headerBar.menu = newValue;
     }
   }
@@ -235,7 +265,7 @@ export class MdsHeader {
     if (newValue === oldValue) {
       return;
     }
-    if (this.headerBar) {
+    if (this.headerBar != null) {
       this.headerBar.nav = newValue;
     }
   }
@@ -254,8 +284,12 @@ export class MdsHeader {
 
   render() {
     return (
-      <Host>
-        {this.backdrop && (
+      <Host
+        pref-consumption={this.consumption}
+        pref-theme={this.prefTheme}
+        pref-theme-scheme={this.prefThemeScheme}
+      >
+        {!this.hideBackdrop && (
           <div class="backdrop">
             <div class="backdrop-blur-item"></div>
             <div class="backdrop-blur-item"></div>

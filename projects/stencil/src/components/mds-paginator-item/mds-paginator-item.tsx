@@ -1,8 +1,9 @@
-import { Component, Host, h, Prop, Element } from '@stencil/core';
+import { Component, Host, h, Prop, Element, State } from '@stencil/core';
 import { KeyboardManager } from '@common/keyboard-manager';
+import { subscribePreference } from '@common/preference';
 
 /**
- * @slot default - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
+ * @slot - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
  */
 
 @Component({
@@ -12,6 +13,12 @@ import { KeyboardManager } from '@common/keyboard-manager';
 })
 export class MdsPaginatorItem {
   @Element() host: HTMLMdsPaginatorItemElement;
+  @State() prefAnimation?: string;
+  private unsubscribePrefAnimation?: () => void;
+  @State() prefTheme?: string;
+  private unsubscribePrefTheme?: () => void;
+  @State() prefThemeScheme?: string;
+  private unsubscribePrefThemeScheme?: () => void;
   private km = new KeyboardManager();
 
   /**
@@ -29,6 +36,18 @@ export class MdsPaginatorItem {
    */
   @Prop({ reflect: true }) readonly disabled?: boolean;
 
+  connectedCallback(): void {
+    this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
+      this.prefAnimation = value;
+    });
+    this.unsubscribePrefTheme = subscribePreference('theme', (value) => {
+      this.prefTheme = value;
+    });
+    this.unsubscribePrefThemeScheme = subscribePreference('theme-scheme', (value) => {
+      this.prefThemeScheme = value;
+    });
+  }
+
   componentDidLoad(): void {
     this.km.addElement(this.host);
     this.km.attachClickBehavior();
@@ -43,13 +62,21 @@ export class MdsPaginatorItem {
     this.km.detachClickBehavior();
   }
 
-  disconnectedCallback = (): void => {
+  disconnectedCallback(): void {
+    this.unsubscribePrefAnimation?.();
+    this.unsubscribePrefTheme?.();
+    this.unsubscribePrefThemeScheme?.();
     this.km.detachClickBehavior();
-  };
+  }
 
   render() {
     return (
-      <Host tabindex="0">
+      <Host
+        tabindex="0"
+        pref-animation={this.prefAnimation}
+        pref-theme={this.prefTheme}
+        pref-theme-scheme={this.prefThemeScheme}
+      >
         {this.icon !== undefined ? (
           <mds-icon class="icon" name={this.icon} />
         ) : (

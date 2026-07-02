@@ -2,6 +2,7 @@ import { Component, Element, Host, h, Prop, Watch, State } from '@stencil/core';
 import { DirectionType } from './meta/types';
 import { ThemeVariantType } from '@type/variant';
 import { removeAttributesIf, ifAttribute } from '@common/aria';
+import { subscribePreference } from '@common/preference';
 import { TypographyTechnicalType } from '@type/typography';
 import { ProgressBarSizeType } from '@type/progress';
 
@@ -17,6 +18,14 @@ import { ProgressBarSizeType } from '@type/progress';
 })
 export class MdsProgress {
   @Element() private element: HTMLMdsAccordionTimerElement;
+  @State() prefAnimation?: string;
+  private unsubscribePrefAnimation?: () => void;
+  @State() prefContrast?: string;
+  private unsubscribePrefContrast?: () => void;
+  @State() prefTheme?: string;
+  private unsubscribePrefTheme?: () => void;
+  @State() prefThemeScheme?: string;
+  private unsubscribePrefThemeScheme?: () => void;
   @State() currentStep: string;
   private stepsList = new Array<string>();
 
@@ -50,6 +59,28 @@ export class MdsProgress {
    */
   @Prop() readonly steps: string = 'Inizio,Un quarto,Metà,Tre quarti,Fine';
 
+  connectedCallback(): void {
+    this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
+      this.prefAnimation = value;
+    });
+    this.unsubscribePrefContrast = subscribePreference('contrast', (value) => {
+      this.prefContrast = value;
+    });
+    this.unsubscribePrefTheme = subscribePreference('theme', (value) => {
+      this.prefTheme = value;
+    });
+    this.unsubscribePrefThemeScheme = subscribePreference('theme-scheme', (value) => {
+      this.prefThemeScheme = value;
+    });
+  }
+
+  disconnectedCallback(): void {
+    this.unsubscribePrefAnimation?.();
+    this.unsubscribePrefContrast?.();
+    this.unsubscribePrefTheme?.();
+    this.unsubscribePrefThemeScheme?.();
+  }
+
   componentWillLoad(): void {
     this.stepsList = this.steps.split(',');
     this.setProgress(this.progress);
@@ -66,7 +97,7 @@ export class MdsProgress {
   }
 
   private setProgress(progress: number): void {
-    if (this.steps) {
+    if (this.steps !== '') {
       this.currentStep = this.stepsList[Math.round(progress * (this.stepsList.length - 1))];
       if (!ifAttribute(this.element, 'aria-hidden')) {
         this.element.setAttribute('aria-valuetext', this.currentStep);
@@ -91,6 +122,10 @@ export class MdsProgress {
         aria-valuemin="0"
         aria-valuenow={!ifAttribute(this.element, 'aria-hidden') && Math.round(this.progress * 100)}
         role="progressbar"
+        pref-animation={this.prefAnimation}
+        pref-contrast={this.prefContrast}
+        pref-theme={this.prefTheme}
+        pref-theme-scheme={this.prefThemeScheme}
       >
         {this.direction === 'radial' ? (
           <mds-radial-progress

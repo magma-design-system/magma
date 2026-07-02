@@ -15,6 +15,7 @@ import mggConsumptionLow from '@icon/mgg/consumption-low.svg';
 import mggConsumptionMedium from '@icon/mgg/consumption-medium.svg';
 import mggConsumptionHigh from '@icon/mgg/consumption-high.svg';
 import { Locale } from '@common/locale';
+import { subscribePreference } from '@common/preference';
 import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.es.json';
@@ -29,6 +30,8 @@ import { TabSizeType } from '@type/button';
 })
 export class MdsPrefContrast {
   @Element() private element: HTMLMdsPrefContrastElement;
+  @State() prefContrast?: string;
+  private unsubscribePrefContrast?: () => void;
   private readonly localStorageAlias: string = 'mdsPrefConsumption';
   private readonly customPropertyAlias: string = '--magma-pref-consumption';
   private readonly defaultMode: ConsumptionModeType = 'high';
@@ -39,6 +42,9 @@ export class MdsPrefContrast {
     it: localeIt,
   });
   @State() language: string;
+  /**
+   * Updates the component's texts to the locale currently set on the host element.
+   */
   @Method()
   async updateLang(): Promise<void> {
     this.language = this.t.lang(this.element);
@@ -74,6 +80,16 @@ export class MdsPrefContrast {
     },
   };
 
+  connectedCallback(): void {
+    this.unsubscribePrefContrast = subscribePreference('contrast', (value) => {
+      this.prefContrast = value;
+    });
+  }
+
+  disconnectedCallback(): void {
+    this.unsubscribePrefContrast?.();
+  }
+
   componentWillRender(): void {
     this.t.lang(this.element);
     this.setConsumption(
@@ -87,7 +103,7 @@ export class MdsPrefContrast {
     this.prefChangeEvent.emit({ preference: 'consumption' });
     this.mode = mode;
     localStorage.setItem(this.localStorageAlias, this.mode);
-    if (document) {
+    if (typeof document !== 'undefined') {
       const element = document.querySelector('html');
       for (const key in this.consumption) {
         if ({}.hasOwnProperty.call(this.consumption, key)) {
@@ -104,9 +120,13 @@ export class MdsPrefContrast {
     this.setConsumption(newValue);
   }
 
+  private readonly handleModeClick = (mode: ConsumptionModeType) => (): void => {
+    this.setConsumption(mode);
+  };
+
   render() {
     return (
-      <Host>
+      <Host pref-contrast={this.prefContrast}>
         <mds-text class="info" typography="caption">
           <b>{this.t.get('label')}</b>{' '}
           {this.t.get(this.consumption[this.mode ?? this.defaultMode].label)}
@@ -114,25 +134,19 @@ export class MdsPrefContrast {
         <mds-tab fill size={this.size}>
           <mds-tab-item
             selected={this.mode === 'low'}
-            onClick={() => {
-              this.setConsumption('low');
-            }}
+            onClick={this.handleModeClick('low')}
             class="item item--low"
             icon={mggConsumptionLow}
           ></mds-tab-item>
           <mds-tab-item
             selected={this.mode === 'medium'}
-            onClick={() => {
-              this.setConsumption('medium');
-            }}
+            onClick={this.handleModeClick('medium')}
             class="item item--medium"
             icon={mggConsumptionMedium}
           ></mds-tab-item>
           <mds-tab-item
             selected={this.mode === 'high'}
-            onClick={() => {
-              this.setConsumption('high');
-            }}
+            onClick={this.handleModeClick('high')}
             class="item item--high"
             icon={mggConsumptionHigh}
           ></mds-tab-item>

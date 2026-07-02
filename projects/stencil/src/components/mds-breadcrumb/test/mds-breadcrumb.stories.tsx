@@ -3,9 +3,9 @@ import { h } from '@stencil/core';
 export default {
   title: 'UI / Breadcrumb',
   argTypes: {
-    back: {
+    'hide-back': {
       type: { name: 'boolean', required: false },
-      description: 'Choose to display or not the back arrow button',
+      description: 'Hides the back arrow button',
     },
   },
 };

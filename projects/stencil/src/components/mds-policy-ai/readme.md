@@ -235,7 +235,7 @@ The `card` variant does not render a headline - only `description` is shown. Pas
 
 ### `updateLang() => Promise<void>`
 
-
+Updates the component's texts to the locale currently set on the host element.
 
 #### Returns
 

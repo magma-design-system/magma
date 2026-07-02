@@ -1,4 +1,5 @@
-import { Component, Element, Event, EventEmitter, Host, h, Prop } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Prop, State } from '@stencil/core';
+import { subscribePreference } from '@common/preference';
 import { MdsPaginatorEventDetail } from './meta/event-detail';
 import miBaselineArrowBack from '@icon/mi/baseline/arrow-back.svg';
 import miBaselineArrowForward from '@icon/mi/baseline/arrow-forward.svg';
@@ -10,6 +11,14 @@ import miBaselineArrowForward from '@icon/mi/baseline/arrow-forward.svg';
 })
 export class MdsPaginator {
   @Element() private element: HTMLMdsPaginatorElement;
+  @State() prefAnimation?: string;
+  private unsubscribePrefAnimation?: () => void;
+  @State() prefContrast?: string;
+  private unsubscribePrefContrast?: () => void;
+  @State() prefTheme?: string;
+  private unsubscribePrefTheme?: () => void;
+  @State() prefThemeScheme?: string;
+  private unsubscribePrefThemeScheme?: () => void;
 
   /**
    * Specifies the number of total pages to be handled
@@ -20,6 +29,28 @@ export class MdsPaginator {
    * Specifies the current page selected in the paginator
    */
   @Prop({ mutable: true, reflect: true }) currentPage = 1;
+
+  connectedCallback(): void {
+    this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
+      this.prefAnimation = value;
+    });
+    this.unsubscribePrefContrast = subscribePreference('contrast', (value) => {
+      this.prefContrast = value;
+    });
+    this.unsubscribePrefTheme = subscribePreference('theme', (value) => {
+      this.prefTheme = value;
+    });
+    this.unsubscribePrefThemeScheme = subscribePreference('theme-scheme', (value) => {
+      this.prefThemeScheme = value;
+    });
+  }
+
+  disconnectedCallback(): void {
+    this.unsubscribePrefAnimation?.();
+    this.unsubscribePrefContrast?.();
+    this.unsubscribePrefTheme?.();
+    this.unsubscribePrefThemeScheme?.();
+  }
 
   componentDidLoad(): void {
     setTimeout(() => {
@@ -82,22 +113,47 @@ export class MdsPaginator {
     this.pageChangedEvent.emit({ page: this.currentPage, caller });
   };
 
+  private readonly handlePrevClick = (event: MouseEvent): void => {
+    this.goToPage(this.currentPage - 1, event.target as HTMLMdsPaginatorItemElement);
+  };
+
+  private readonly handleFirstClick = (event: MouseEvent): void => {
+    this.goToPage(1, event.target as HTMLMdsPaginatorItemElement);
+  };
+
+  private readonly handlePageClick =
+    (page: number) =>
+    (event: MouseEvent): void => {
+      this.goToPage(page, event.target as HTMLMdsPaginatorItemElement);
+    };
+
+  private readonly handleLastClick = (event: MouseEvent): void => {
+    this.goToPage(this.pages, event.target as HTMLMdsPaginatorItemElement);
+  };
+
+  private readonly handleNextClick = (event: MouseEvent): void => {
+    this.goToPage(this.currentPage + 1, event.target as HTMLMdsPaginatorItemElement);
+  };
+
   render() {
     return (
-      <Host>
+      <Host
+        pref-animation={this.prefAnimation}
+        pref-contrast={this.prefContrast}
+        pref-theme={this.prefTheme}
+        pref-theme-scheme={this.prefThemeScheme}
+      >
         <mds-paginator-item
           class="item-icon"
           icon={miBaselineArrowBack}
           disabled={this.currentPage === 1}
-          onClick={(ev) =>
-            this.goToPage(this.currentPage - 1, ev.target as HTMLMdsPaginatorItemElement)
-          }
+          onClick={this.handlePrevClick}
         />
         {this.pages > 0 && (
           <mds-paginator-item
             class="item-first"
             selected={this.currentPage === 1}
-            onClick={(ev) => this.goToPage(1, ev.target as HTMLMdsPaginatorItemElement)}
+            onClick={this.handleFirstClick}
           >
             1
           </mds-paginator-item>
@@ -109,7 +165,7 @@ export class MdsPaginator {
                 key={i}
                 class="item"
                 selected={this.currentPage === i + 2}
-                onClick={(ev) => this.goToPage(i + 2, ev.target as HTMLMdsPaginatorItemElement)}
+                onClick={this.handlePageClick(i + 2)}
                 onFocus={this.focus}
               >
                 {i + 2}
@@ -121,7 +177,7 @@ export class MdsPaginator {
           <mds-paginator-item
             class="item-last"
             selected={this.currentPage === this.pages}
-            onClick={(ev) => this.goToPage(this.pages, ev.target as HTMLMdsPaginatorItemElement)}
+            onClick={this.handleLastClick}
           >
             {this.pages}
           </mds-paginator-item>
@@ -130,9 +186,7 @@ export class MdsPaginator {
           class="item-icon"
           icon={miBaselineArrowForward}
           disabled={this.currentPage === this.pages}
-          onClick={(ev) =>
-            this.goToPage(this.currentPage + 1, ev.target as HTMLMdsPaginatorItemElement)
-          }
+          onClick={this.handleNextClick}
         />
       </Host>
     );

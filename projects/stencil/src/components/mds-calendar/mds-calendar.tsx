@@ -18,6 +18,9 @@ import { ISO8601Date } from '@type/date';
 import { sanitizeISO8601Date } from '@common/date';
 import clsx from 'clsx';
 
+/**
+ * @slot preselection - Add `HTML elements` or `components` shown in the calendar preselection area.
+ */
 @Component({
   tag: 'mds-calendar',
   styleUrl: 'mds-calendar.css',
@@ -43,12 +46,52 @@ export class MdsCalendar {
     el: {},
   });
   @State() language: string;
+  /**
+   * Updates the component's texts to the locale currently set on the host element.
+   */
   @Method()
   async updateLang(): Promise<void> {
     this.language = this.t.lang(this.host);
   }
 
+  /**
+   * Enables selecting a date range (start and end date) instead of a single date.
+   */
   @Prop() readonly rangePicker: boolean = true;
+
+  /**
+   * Shows the previous navigation button in the calendar header.
+   */
+  @Prop() readonly showPreviousButton: boolean = true;
+
+  /**
+   * Shows the next navigation button in the calendar header.
+   */
+  @Prop() readonly showNextButton: boolean = true;
+
+  /**
+   * Disables switching to month or year selection views from the calendar header.
+   */
+  @Prop() readonly disableMonthYearSelection: boolean = false;
+
+  /**
+   * Shows the preselection area above the calendar view.
+   */
+  @Prop() readonly showPreselection: boolean = false;
+
+  /**
+   * Specifies the date used to determine the visible month without changing the selection.
+   * @description It's in ISO format (YYYY-MM-DD).
+   * @example '2023-10-01'
+   */
+  @Prop({ reflect: true }) readonly viewDate: string | null = null;
+
+  /**
+   * Specifies the date used to preview the range selection across multiple visible calendars.
+   * @description It's in ISO format (YYYY-MM-DD).
+   * @example '2023-10-15'
+   */
+  @Prop({ reflect: true }) readonly hoverDate: string | null = null;
 
   /**
    * Specifies the start date of the selection
@@ -77,30 +120,58 @@ export class MdsCalendar {
    * @example '2023-10-01'
    */
   @Prop({ reflect: true }) readonly max: string | null = null;
-
   @State() internalStartDate: string | null = this.startDate;
   @State() internalEndDate: string | null = this.endDate;
 
+  /**
+   * Emitted when the selected date or date range changes.
+   */
   @Event({ eventName: 'mdsCalendarChange' }) datesEmitter: EventEmitter<{
     startDate: string;
     endDate?: string;
   }>;
+  /**
+   * Emitted when the user navigates to a different month or year.
+   */
+  @Event({ eventName: 'mdsCalendarNavigate' }) navigationEmitter: EventEmitter<{
+    currentDate: string;
+    delta: number;
+  }>;
+  /**
+   * Emitted when the user hovers over a day, used to preview a range selection.
+   */
+  @Event({ eventName: 'mdsCalendarHover' }) hoverEmitter: EventEmitter<{
+    hoverDate: string | null;
+  }>;
+  /**
+   * Emitted when the calendar's preselection options need to be re-evaluated.
+   */
   @Event({ eventName: 'mdsCalendarPreselect' }) checkPreselectionsEmitter: EventEmitter<void>;
 
   @Watch('startDate')
   handleStartDate(newValue: ISO8601Date | null): void {
     if (newValue !== null && newValue !== '') {
       this.internalStartDate = sanitizeISO8601Date(newValue?.toString()) as ISO8601Date;
-      if (this.internalEndDate) {
-        const startDateTime = DateTime.fromISO(this.internalStartDate);
+      this.startDateTime = DateTime.fromISO(this.internalStartDate);
+      this.startDateIdentifier = this.startDateTime.toISODate();
+
+      if (this.internalEndDate !== null && this.internalEndDate !== '') {
         const endDateTime = DateTime.fromISO(this.internalEndDate);
 
-        if (startDateTime > endDateTime) {
+        if (this.startDateTime > endDateTime) {
           console.warn('startDate is after endDate, swapping values');
           return;
         }
+      } else if (this.rangePicker) {
+        this.isFirstClick = false;
       }
 
+      this.updateDates();
+    } else if (newValue === null || newValue === '') {
+      this.internalStartDate = null;
+      this.startDateIdentifier = null;
+      this.startDateTime = null;
+      this.isFirstClick = true;
       this.updateDates();
     }
   }
@@ -112,32 +183,63 @@ export class MdsCalendar {
       this.internalEndDate = null;
     } else if (newValue !== null && newValue !== '') {
       this.internalEndDate = sanitizeISO8601Date(newValue?.toString()) as ISO8601Date;
+      this.endDateTime = DateTime.fromISO(this.internalEndDate);
+      this.endDateIdentifier = this.endDateTime.toISODate();
 
-      if (this.internalStartDate) {
+      if (this.internalStartDate !== null && this.internalStartDate !== '') {
         const startDateTime = DateTime.fromISO(this.internalStartDate);
-        const endDateTime = DateTime.fromISO(this.internalEndDate);
 
-        if (startDateTime > endDateTime) {
+        if (startDateTime > this.endDateTime) {
           console.warn('startDate is after endDate, swapping values');
           return;
         }
       }
 
       this.updateDates();
+    } else if (newValue === null || newValue === '') {
+      this.internalEndDate = null;
+      this.endDateIdentifier = null;
+      this.endDateTime = null;
+      this.updateDates();
     }
   }
 
-  startDateTime: DateTime;
-  endDateTime: DateTime;
+  @Watch('viewDate')
+  handleViewDate(newValue: ISO8601Date | null): void {
+    if (newValue !== null && newValue !== '') {
+      const viewDate = DateTime.fromISO(newValue.toString());
 
-  currentMonth: string = '';
-  currentMonthNumber!: number;
-  currentYear: string = '';
+      if (viewDate.isValid) {
+        this.currentDate = viewDate;
+        this.updateCalendar().then(() => {
+          requestAnimationFrame(() => this.setDates());
+        });
+      }
+    }
+  }
+
+  @Watch('hoverDate')
+  handleHoverDate(): void {
+    requestAnimationFrame(() => this.setDates());
+  }
+
+  private startDateTime: DateTime;
+  private endDateTime: DateTime;
+
+  @State() currentMonth: string = '';
+  private currentMonthNumber!: number;
+  @State() currentYear: string = '';
 
   componentWillLoad(): void {
     this.language = this.t.lang(this.host);
 
-    if (this.internalStartDate) {
+    if (this.viewDate !== null && this.viewDate !== '') {
+      const viewDate = DateTime.fromISO(this.viewDate.toString());
+
+      if (viewDate.isValid) {
+        this.currentDate = viewDate;
+      }
+    } else if (this.internalStartDate !== null && this.internalStartDate !== '') {
       this.internalStartDate = sanitizeISO8601Date(
         this.internalStartDate?.toString(),
       ) as ISO8601Date;
@@ -147,7 +249,7 @@ export class MdsCalendar {
       }
     }
 
-    if (this.internalEndDate) {
+    if (this.internalEndDate !== null && this.internalEndDate !== '') {
       this.internalEndDate = sanitizeISO8601Date(this.internalEndDate?.toString()) as ISO8601Date;
       this.endDateTime = DateTime.fromISO(this.internalEndDate);
     }
@@ -159,43 +261,74 @@ export class MdsCalendar {
     this.hasPreselection =
       this.host?.querySelector('.date-preselection--has-preselection') !== null;
 
-    this.host?.shadowRoot?.addEventListener('mouseover', (event) => {
-      const target = event.target as HTMLElement;
-      if (target.matches('mds-calendar-cell') && this.startDateIdentifier && this.rangePicker) {
-        this.handleHover(target);
-      }
-    });
+    this.host?.shadowRoot?.addEventListener('mouseover', this.handleMouseOver);
+    this.host?.shadowRoot?.addEventListener('mouseleave', this.handleMouseLeave);
 
     this.setDates();
   }
 
   disconnectedCallback(): void {
-    this.host?.shadowRoot?.removeEventListener('mouseover', (event) => {
-      const target = event.target as HTMLElement;
-      if (target.matches('mds-calendar-cell') && this.startDateIdentifier && this.rangePicker) {
-        this.handleHover(target);
-      }
-    });
+    this.host?.shadowRoot?.removeEventListener('mouseover', this.handleMouseOver);
+    this.host?.shadowRoot?.removeEventListener('mouseleave', this.handleMouseLeave);
   }
 
+  /**
+   * Sets the calendar's current date and re-renders the calendar accordingly.
+   * @param date the date to display, in ISO format (YYYY-MM-DD)
+   */
   @Method() async updateCurrentDate(date: string): Promise<void> {
     this.currentDate = DateTime.fromISO(date);
+    await this.updateCalendar();
+    await new Promise<void>((resolve) => {
+      requestAnimationFrame(() => {
+        this.setDates();
+        resolve();
+      });
+    });
     return Promise.resolve();
   }
 
-  private updateDates(): void {
-    if (this.internalStartDate && this.internalEndDate && this.rangePicker) {
-      this.updateCalendar().then(() => {
-        requestAnimationFrame(() => this.setDates());
-      });
-    } else if (this.internalStartDate && !this.rangePicker) {
-      this.updateCalendar().then(() => {
-        requestAnimationFrame(() => this.setDates());
-      });
+  private readonly handleMouseOver = (event: Event): void => {
+    const target = event.target as HTMLElement;
+
+    if (
+      !target.matches('mds-calendar-cell') ||
+      !this.rangePicker ||
+      this.internalStartDate === null ||
+      this.internalStartDate === '' ||
+      (this.internalEndDate !== null && this.internalEndDate !== '')
+    ) {
+      return;
     }
+
+    const hoverDate = target.getAttribute('date');
+    if (hoverDate !== null && hoverDate !== '') {
+      this.hoverEmitter.emit({ hoverDate });
+    }
+  };
+
+  private readonly handleMouseLeave = (): void => {
+    if (
+      !this.rangePicker ||
+      this.internalStartDate === null ||
+      this.internalStartDate === '' ||
+      (this.internalEndDate !== null && this.internalEndDate !== '') ||
+      this.hoverDate === null ||
+      this.hoverDate === ''
+    ) {
+      return;
+    }
+
+    this.hoverEmitter.emit({ hoverDate: null });
+  };
+
+  private updateDates(): void {
+    this.updateCalendar().then(() => {
+      requestAnimationFrame(() => this.setDates());
+    });
   }
 
-  async updateCalendar(): Promise<void> {
+  private async updateCalendar(): Promise<void> {
     try {
       const startOfWeek = this.currentDate.startOf('week');
       this.weekdays = Array.from({ length: 7 }).map((_, index) =>
@@ -210,43 +343,72 @@ export class MdsCalendar {
     }
   }
 
-  setDates(): void {
+  private setDates(): void {
     const calendar: HTMLMdsCalendarElement = this.host;
-    if (!calendar) return;
+    if (calendar == null) return;
 
     const { shadowRoot } = calendar;
 
     if (!shadowRoot) return;
 
-    const calendarCells = shadowRoot.querySelectorAll('mds-calendar-cell[selection]');
+    const calendarCells = shadowRoot.querySelectorAll(
+      'mds-calendar-cell[selection], mds-calendar-cell[preview]',
+    );
 
-    if (this.isFirstClick) {
-      if (this.rangePicker) {
-        this.setRangeSelection(calendarCells, shadowRoot);
+    if (this.rangePicker) {
+      if (
+        this.hoverDate !== null &&
+        this.hoverDate !== '' &&
+        (this.internalEndDate === null || this.internalEndDate === '')
+      ) {
+        this.setHoverSelection(calendarCells, shadowRoot);
       } else {
-        this.setSingleSelection(calendarCells, shadowRoot);
+        this.setRangeSelection(calendarCells, shadowRoot);
       }
+    } else {
+      this.setSingleSelection(calendarCells, shadowRoot);
     }
   }
-  private setRangeSelection(calendarCells: NodeListOf<Element>, shadowRoot: ShadowRoot): void {
+  private clearSelectionState(calendarCells: NodeListOf<Element>): void {
     calendarCells.forEach((day) => {
       day.removeAttribute('selection');
       day.removeAttribute('preview');
     });
+  }
 
-    if (!this.internalStartDate || !this.internalEndDate) return;
+  private setRangeSelection(calendarCells: NodeListOf<Element>, shadowRoot: ShadowRoot): void {
+    this.clearSelectionState(calendarCells);
+
+    if (this.internalStartDate === null || this.internalStartDate === '') return;
 
     this.startDateTime = DateTime.fromISO(this.internalStartDate.toString());
+
+    if (this.internalEndDate === null || this.internalEndDate === '') {
+      this.startDateIdentifier = this.startDateTime.toISODate();
+      this.isFirstClick = false;
+
+      const cells = shadowRoot.querySelectorAll('mds-calendar-cell');
+      cells.forEach((cell) => {
+        if (cell.getAttribute('date') === this.startDateTime.toFormat('yyyy-MM-dd')) {
+          cell.setAttribute('selection', 'single');
+          cell.setAttribute('preview', 'true');
+        }
+      });
+      return;
+    }
+
     this.endDateTime = DateTime.fromISO(this.internalEndDate.toString());
+    this.startDateIdentifier = this.startDateTime.toISODate();
+    this.endDateIdentifier = this.endDateTime.toISODate();
 
     const cells = shadowRoot.querySelectorAll('mds-calendar-cell');
-    if (cells) {
+    if (cells != null) {
       let isBetweenDates: boolean;
 
       for (let i = 0; i < cells.length; i++) {
         const cellDate = cells[i].getAttribute('date');
 
-        if (cellDate) {
+        if (cellDate !== null && cellDate !== '') {
           const currentDate = DateTime.fromISO(cellDate);
 
           if (currentDate.toFormat('yyyy-MM-dd') === this.startDateTime.toFormat('yyyy-MM-dd')) {
@@ -270,21 +432,73 @@ export class MdsCalendar {
     }
   }
 
-  private setSingleSelection(calendarCells: NodeListOf<Element>, shadowRoot: ShadowRoot) {
-    calendarCells.forEach((cell) => {
-      cell.removeAttribute('selection');
-    });
+  private setHoverSelection(calendarCells: NodeListOf<Element>, shadowRoot: ShadowRoot): void {
+    this.clearSelectionState(calendarCells);
 
-    if (!this.internalStartDate) return;
+    if (
+      this.internalStartDate === null ||
+      this.internalStartDate === '' ||
+      this.hoverDate === null ||
+      this.hoverDate === ''
+    ) {
+      this.setRangeSelection(calendarCells, shadowRoot);
+      return;
+    }
+
+    const startDate = DateTime.fromISO(this.internalStartDate);
+    const hoverDate = DateTime.fromISO(this.hoverDate);
+
+    if (!startDate.isValid || !hoverDate.isValid) {
+      this.setRangeSelection(calendarCells, shadowRoot);
+      return;
+    }
+
+    const isForwardSelection = startDate <= hoverDate;
+    const cells = Array.from(
+      shadowRoot.querySelectorAll('mds-calendar-cell'),
+    ) as HTMLMdsCalendarCellElement[];
+
+    cells.forEach((cell) => {
+      const cellDateString = cell.getAttribute('date');
+      if (cellDateString === null || cellDateString === '') return;
+
+      const cellDate = DateTime.fromISO(cellDateString);
+      if (!cellDate.isValid) return;
+
+      const isInRange = isForwardSelection
+        ? cellDate >= startDate && cellDate <= hoverDate
+        : cellDate >= hoverDate && cellDate <= startDate;
+
+      if (!isInRange) return;
+
+      cell.setAttribute('preview', 'true');
+
+      let selectionType = 'middle';
+      if (startDate.equals(hoverDate) && cellDate.equals(startDate)) {
+        selectionType = 'single';
+      } else if (cellDate.equals(startDate)) {
+        selectionType = isForwardSelection ? 'start' : 'end';
+      } else if (cellDate.equals(hoverDate)) {
+        selectionType = isForwardSelection ? 'end' : 'start';
+      }
+
+      cell.setAttribute('selection', selectionType);
+    });
+  }
+
+  private setSingleSelection(calendarCells: NodeListOf<Element>, shadowRoot: ShadowRoot) {
+    this.clearSelectionState(calendarCells);
+
+    if (this.internalStartDate === null || this.internalStartDate === '') return;
 
     this.startDateTime = DateTime.fromISO(this.internalStartDate.toString());
     const cells = shadowRoot.querySelectorAll('mds-calendar-cell');
 
-    if (cells) {
+    if (cells != null) {
       for (let i = 0; i < cells.length; i++) {
         const cellDate = cells[i].getAttribute('date');
 
-        if (cellDate) {
+        if (cellDate !== null && cellDate !== '') {
           const currentDate = DateTime.fromISO(cellDate);
 
           if (currentDate.toFormat('yyyy-MM-dd') === this.startDateTime.toFormat('yyyy-MM-dd')) {
@@ -295,14 +509,46 @@ export class MdsCalendar {
     }
   }
 
-  changeMonth(delta: number): void {
+  private changeMonth(delta: number): void {
     this.currentDate = this.currentDate.plus({ months: delta });
     this.updateCalendar().then(() => {
       requestAnimationFrame(() => this.setDates());
     });
+    this.navigationEmitter.emit({
+      currentDate: this.currentDate.toISODate(),
+      delta,
+    });
   }
 
-  calculateWeekDaysInMonth(): void {
+  private readonly handleMonthActionClick = (event: MouseEvent): void => {
+    event.stopPropagation();
+
+    if (this.disableMonthYearSelection) {
+      event.preventDefault();
+      return;
+    }
+
+    this.currentView = this.currentView === 'months' ? 'calendar' : 'months';
+    requestAnimationFrame(() => {
+      this.updateCalendar().then(() => this.setDates());
+    });
+  };
+
+  private readonly handleYearActionClick = (event: MouseEvent): void => {
+    event.stopPropagation();
+
+    if (this.disableMonthYearSelection) {
+      event.preventDefault();
+      return;
+    }
+
+    this.currentView = this.currentView === 'years' ? 'calendar' : 'years';
+    requestAnimationFrame(() => {
+      this.updateCalendar().then(() => this.setDates());
+    });
+  };
+
+  private calculateWeekDaysInMonth(): void {
     const startOfMonth = this.currentDate.startOf('month');
     const endOfMonth = this.currentDate.endOf('month');
     const allDays: { date: DateTime; isCurrentMonth: boolean }[] = [];
@@ -335,6 +581,22 @@ export class MdsCalendar {
   }
 
   private handleRange(element: HTMLElement, dayInfo: DateTime): void {
+    const pendingStartDate = this.startDate || this.host.getAttribute('start-date');
+
+    if (
+      this.rangePicker &&
+      pendingStartDate !== null &&
+      pendingStartDate !== '' &&
+      (this.endDate === null || this.endDate === '') &&
+      (this.internalEndDate === null || this.internalEndDate === '') &&
+      this.isFirstClick
+    ) {
+      this.internalStartDate = sanitizeISO8601Date(pendingStartDate.toString()) as ISO8601Date;
+      this.startDateTime = DateTime.fromISO(this.internalStartDate);
+      this.startDateIdentifier = this.startDateTime.toISODate();
+      this.isFirstClick = false;
+    }
+
     const resetSelection = (): void => {
       this.internalStartDate = null;
       this.internalEndDate = null;
@@ -353,7 +615,12 @@ export class MdsCalendar {
       });
     };
 
-    if (this.startDateIdentifier && this.endDateIdentifier) {
+    if (
+      this.startDateIdentifier !== null &&
+      this.startDateIdentifier !== '' &&
+      this.endDateIdentifier !== null &&
+      this.endDateIdentifier !== ''
+    ) {
       resetSelection();
     }
 
@@ -375,6 +642,8 @@ export class MdsCalendar {
         element.setAttribute('preview', 'true');
       });
 
+      this.datesEmitter.emit({ startDate: this.internalStartDate as string });
+
       return;
     }
 
@@ -388,7 +657,8 @@ export class MdsCalendar {
     );
 
     if (
-      this.startDateIdentifier &&
+      this.startDateIdentifier !== null &&
+      this.startDateIdentifier !== '' &&
       DateTime.fromISO(this.startDateIdentifier) <
         DateTime.fromISO(element.getAttribute('date') as string)
     ) {
@@ -414,76 +684,14 @@ export class MdsCalendar {
       }
     }
 
-    if (this.internalStartDate && this.internalEndDate) {
+    if (
+      this.internalStartDate !== null &&
+      this.internalStartDate !== '' &&
+      this.internalEndDate !== null &&
+      this.internalEndDate !== ''
+    ) {
       this.datesEmitter.emit({ startDate: this.internalStartDate, endDate: this.internalEndDate });
       this.checkPreselectionsEmitter.emit();
-    }
-  }
-
-  private handleHover(element: HTMLElement): void {
-    const typedElement = element as HTMLMdsCalendarCellElement;
-    const startDate = DateTime.fromISO(this.internalStartDate);
-
-    if (!startDate.isValid || this.endDateIdentifier !== null) return;
-
-    const calendar = this.host as HTMLMdsCalendarElement;
-    const mdsCalendarCellElements = Array.from(
-      calendar?.shadowRoot?.querySelectorAll('mds-calendar-cell') ?? [],
-    );
-    const hoveredDateStr = typedElement.getAttribute('date');
-
-    if (!hoveredDateStr) return;
-    const hoveredDate = DateTime.fromISO(hoveredDateStr);
-    if (!hoveredDate.isValid) return;
-
-    const startTypedElement = mdsCalendarCellElements.find(
-      (cell) => cell.getAttribute('date') === this.internalStartDate,
-    );
-
-    mdsCalendarCellElements.forEach((cell) => {
-      cell.removeAttribute('preview');
-      cell.removeAttribute('selection');
-    });
-
-    typedElement.setAttribute('preview', 'true');
-
-    const typedDateStr = typedElement.getAttribute('date');
-    if (typedDateStr) {
-      const typedDate = DateTime.fromISO(typedDateStr);
-      if (typedDate.isValid && startTypedElement) {
-        if (startDate < typedDate) {
-          startTypedElement.setAttribute('selection', 'start');
-        } else if (startDate > typedDate) {
-          startTypedElement.setAttribute('selection', 'end');
-          typedElement.setAttribute('selection', 'start');
-        } else {
-          typedElement.setAttribute('selection', 'single');
-        }
-      }
-    }
-    if (startDate.equals(hoveredDate)) {
-      typedElement.setAttribute('selection', 'single');
-    } else {
-      const [start, end] =
-        startDate < hoveredDate ? [startDate, hoveredDate] : [hoveredDate, startDate];
-
-      mdsCalendarCellElements.forEach((cell) => {
-        const cellDateStr = cell.getAttribute('date');
-        if (!cellDateStr) return;
-
-        const cellDate = DateTime.fromISO(cellDateStr);
-        if (!cellDate.isValid) return;
-
-        if (cellDate >= start && cellDate <= end) {
-          cell.setAttribute('preview', 'true');
-
-          let selectionType = 'middle';
-          if (cellDate.equals(start)) selectionType = 'start';
-          if (cellDate.equals(end)) selectionType = 'end';
-
-          cell.setAttribute('selection', selectionType);
-        }
-      });
     }
   }
 
@@ -499,10 +707,77 @@ export class MdsCalendar {
     this.isFirstClick = false;
     element.setAttribute('selection', 'single');
 
-    if (this.internalStartDate) {
+    if (this.internalStartDate !== null && this.internalStartDate !== '') {
       this.datesEmitter.emit({ startDate: this.internalStartDate });
     }
   }
+
+  private handlePrev = (event: PointerEvent) => {
+    if (this.currentView === 'calendar') {
+      event.stopPropagation();
+      this.changeMonth(-1);
+    } else if (this.currentView === 'years') {
+      event.stopPropagation();
+      this.selectedYear -= 10;
+    } else {
+      event.stopPropagation();
+    }
+  };
+
+  private handleNext = (event: PointerEvent) => {
+    if (this.currentView === 'calendar') {
+      event.stopPropagation();
+      this.changeMonth(1);
+    } else if (this.currentView === 'years') {
+      event.stopPropagation();
+      this.selectedYear += 10;
+    } else {
+      event.stopPropagation();
+    }
+  };
+
+  private isDateDisabled(date: DateTime): boolean | undefined {
+    if (this.min !== null && this.min !== '' && date < DateTime.fromISO(this.min)) {
+      return true;
+    }
+    if (this.max !== null && this.max !== '' && date > DateTime.fromISO(this.max)) {
+      return true;
+    }
+    return undefined;
+  }
+
+  private readonly handleCellClick =
+    (dayInfo: DateTime) =>
+    (event: MouseEvent): void => {
+      event.stopPropagation();
+      const target = event.currentTarget as HTMLElement;
+      if (this.rangePicker) this.handleRange(target, dayInfo);
+      else this.handleSingleSelection(target, dayInfo);
+    };
+
+  private readonly handleMonthSelect =
+    (month: number) =>
+    (event: MouseEvent): void => {
+      event.stopPropagation();
+      this.currentDate = this.currentDate.set({ month });
+      this.currentMonth = this.currentDate.toFormat('MMMM');
+      this.currentView = 'calendar';
+      this.updateCalendar().then(() => {
+        requestAnimationFrame(() => this.setDates());
+      });
+    };
+
+  private readonly handleYearSelect =
+    (year: number) =>
+    (event: MouseEvent): void => {
+      event.stopPropagation();
+      this.currentDate = this.currentDate.set({ year });
+      this.currentYear = year.toString();
+      this.currentView = 'calendar';
+      this.updateCalendar().then(() => {
+        requestAnimationFrame(() => this.setDates());
+      });
+    };
 
   render() {
     return (
@@ -510,89 +785,65 @@ export class MdsCalendar {
         <div
           class={clsx(
             'calendar-preselection',
-            this.hasPreselection && 'calendar-preselection--has-preselection',
+            (this.showPreselection || this.hasPreselection) &&
+              'calendar-preselection--has-preselection',
           )}
         >
           <slot name="preselection"></slot>
         </div>
         <div class="calendar-view">
           <nav>
-            <mds-button
-              class="action-back"
-              icon={miBaselineBackIosNew}
-              variant="dark"
-              tone="text"
-              onClick={(event) => {
-                if (this.currentView === 'calendar') {
-                  event.stopPropagation();
-                  this.changeMonth(-1);
-                } else if (this.currentView === 'years') {
-                  event.stopPropagation();
-                  this.selectedYear -= 10;
-                } else {
-                  event.stopPropagation();
-                }
-              }}
-            ></mds-button>
+            {this.showPreviousButton && (
+              <mds-button
+                class="action-back"
+                icon={miBaselineBackIosNew}
+                variant="dark"
+                tone="text"
+                onClick={this.handlePrev}
+              ></mds-button>
+            )}
             <div class="select-month-or-year">
               {(this.currentView === 'calendar' || this.currentView === 'months') && (
                 <mds-button
                   class="action-month"
+                  truncate="none"
                   variant="dark"
                   tone="text"
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    this.currentView = this.currentView === 'months' ? 'calendar' : 'months';
-                    requestAnimationFrame(() => {
-                      this.updateCalendar().then(() => this.setDates());
-                    });
-                  }}
-                >
-                  {this.currentMonth}
-                </mds-button>
+                  label={this.currentMonth}
+                  onClick={this.handleMonthActionClick}
+                ></mds-button>
               )}
               {(this.currentView === 'calendar' || this.currentView === 'years') && (
                 <mds-button
                   class="action-year"
+                  truncate="none"
                   variant="dark"
                   tone="text"
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    this.currentView = this.currentView === 'years' ? 'calendar' : 'years';
-                    requestAnimationFrame(() => {
-                      this.updateCalendar().then(() => this.setDates());
-                    });
-                  }}
-                >
-                  {this.currentYear}
-                </mds-button>
+                  label={this.currentYear}
+                  onClick={this.handleYearActionClick}
+                ></mds-button>
               )}
             </div>
-            <mds-button
-              class="action-forward"
-              icon={miBaselineForwardIos}
-              variant="dark"
-              tone="text"
-              onClick={(event) => {
-                if (this.currentView === 'calendar') {
-                  event.stopPropagation();
-                  this.changeMonth(1);
-                } else if (this.currentView === 'years') {
-                  event.stopPropagation();
-                  this.selectedYear += 10;
-                } else {
-                  event.stopPropagation();
-                }
-              }}
-            ></mds-button>
+            {this.showNextButton && (
+              <mds-button
+                class="action-forward"
+                icon={miBaselineForwardIos}
+                variant="dark"
+                tone="text"
+                onClick={this.handleNext}
+              ></mds-button>
+            )}
           </nav>
           {this.currentView === 'calendar' && (
             <section class="month-view">
               <header class="month-view__days-names">
                 {this.weekdays.map((day) => (
-                  <mds-button class="week-day-name" variant="dark" tone="text">
-                    {day}
-                  </mds-button>
+                  <mds-button
+                    class="week-day-name"
+                    variant="dark"
+                    tone="text"
+                    label={day}
+                  ></mds-button>
                 ))}
               </header>
               <div class="month-view__cells">
@@ -604,29 +855,8 @@ export class MdsCalendar {
                     }
                     date={dayInfo.date.toFormat('yyyy-MM-dd')}
                     month={dayInfo.isCurrentMonth ? 'current' : 'other'}
-                    disabled={(() => {
-                      if (
-                        this.min &&
-                        this.min !== '' &&
-                        dayInfo.date < DateTime.fromISO(this.min)
-                      ) {
-                        return true;
-                      }
-                      if (
-                        this.max &&
-                        this.max !== '' &&
-                        dayInfo.date > DateTime.fromISO(this.max)
-                      ) {
-                        return true;
-                      }
-                      return undefined;
-                    })()}
-                    onClick={(event) => {
-                      event.stopPropagation();
-                      const target = event.currentTarget as HTMLElement;
-                      if (this.rangePicker) this.handleRange(target, dayInfo.date);
-                      else this.handleSingleSelection(target, dayInfo.date);
-                    }}
+                    disabled={this.isDateDisabled(dayInfo.date)}
+                    onClick={this.handleCellClick(dayInfo.date)}
                     title={dayInfo.date
                       .setLocale(this.language)
                       .toFormat('cccc d LLLL')
@@ -651,18 +881,9 @@ export class MdsCalendar {
                       class="action"
                       variant="dark"
                       tone="text"
-                      onClick={(event) => {
-                        event.stopPropagation();
-                        this.currentDate = this.currentDate.set({ month: index + 1 });
-                        this.currentMonth = this.currentDate.toFormat('MMMM');
-                        this.currentView = 'calendar';
-                        this.updateCalendar().then(() => {
-                          requestAnimationFrame(() => this.setDates());
-                        });
-                      }}
-                    >
-                      {monthName}
-                    </mds-button>
+                      label={monthName}
+                      onClick={this.handleMonthSelect(index + 1)}
+                    ></mds-button>
                   );
                 })}
               </header>
@@ -679,18 +900,9 @@ export class MdsCalendar {
                       class="action"
                       variant="dark"
                       tone="text"
-                      onClick={(event) => {
-                        event.stopPropagation();
-                        this.currentDate = this.currentDate.set({ year });
-                        this.currentYear = year.toString();
-                        this.currentView = 'calendar';
-                        this.updateCalendar().then(() => {
-                          requestAnimationFrame(() => this.setDates());
-                        });
-                      }}
-                    >
-                      {year}
-                    </mds-button>
+                      label={`${year}`}
+                      onClick={this.handleYearSelect(year)}
+                    ></mds-button>
                   );
                 })}
               </header>

@@ -20,27 +20,40 @@
 :host {
   --mds-paginator-background: rgb(var(--tone-neutral-09));
   --mds-paginator-scroll-behavior: smooth;
+  --mds-paginator-transition-duration: var(--duration-200);
+  --private-paginator-transition-duration: var(--mds-paginator-transition-duration);
 
   align-items: center;
   display: flex;
   gap: --spacing(100);
 }
 
+/* Animation preference: scroll-behavior is a keyword and cannot be derived from
+ * is handled here, cross-browser, via @media (it follows the OS preference).
+ * The .pages transition-duration is reduced separately in
+ * css/mds-paginator-pref-animation.css. */
+
+@media (prefers-reduced-motion: reduce) {
+  :host {
+    --mds-paginator-scroll-behavior: auto;
+  }
+}
+
 .pages {
-  @apply duration-200
-    hide-scrollbar
-    ease-in-out
-    mx-200
-    p-200
-    rounded-full;
+  @apply hide-scrollbar
+    ease-in-out;
 
   align-items: center;
   background-color: var(--mds-paginator-background);
+  border-radius: var(--radius-full);
   display: flex;
   flex-shrink: 1;
   gap: 2px;
+  margin-inline: --spacing(200);
   overflow: auto;
+  padding: --spacing(200);
   scroll-behavior: var(--mds-paginator-scroll-behavior);
+  transition-duration: var(--private-paginator-transition-duration);
   transition-property: background-color, box-shadow;
 }
 

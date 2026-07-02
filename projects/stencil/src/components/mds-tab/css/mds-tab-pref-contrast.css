@@ -1,4 +1,9 @@
-:host-context(:root.pref-contrast-more) {
+/* Contrast preference. The component reflects the resolved mode from <html> onto
+ * its host as pref-contrast (see subscribePreference in @common/preference); these
+ * plain shadow selectors refine for high contrast. `more` is the explicit choice;
+ * `system` and no controller follow the OS via @media. Cross-browser, no :host-context. */
+
+:host([pref-contrast='more']) {
   --mds-tab-item-selected-shadow: var(--shadow-outline-50);
   --mds-tab-tabs-wrapper-shadow: 0 0 0 --spacing(50) var(--mds-tab-tabs-wrapper-shadow-color) inset;
   --mds-tab-tabs-wrapper-shadow-color: rgb(var(--tone-neutral-07));
@@ -6,8 +11,8 @@
 }
 
 @media (prefers-contrast: more) {
-  :host-context(:root.pref-contrast-system),
-  :host-context(:root:not([data-magma-pref])) {
+  :host([pref-contrast='system']),
+  :host(:not([pref-contrast])) {
     --mds-tab-item-selected-shadow: var(--shadow-outline-50);
     --mds-tab-tabs-wrapper-shadow: 0 0 0 --spacing(50) var(--mds-tab-tabs-wrapper-shadow-color)
       inset;

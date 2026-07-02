@@ -19,6 +19,7 @@ import { filesize } from 'filesize';
 import { ThemeFullVariantAvatarType, ThemeFullVariantType } from '@type/variant';
 import { getFormatsVariant, getSuffix, getExtensionInfos } from '@common/file';
 import { Locale } from '@common/locale';
+import { subscribePreference } from '@common/preference';
 import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.es.json';
@@ -35,6 +36,14 @@ import fileDescriptionLocaleIt from '@meta/file-format/locale.it.json';
 })
 export class MdsFilePreview {
   @Element() host: HTMLMdsFilePreviewElement;
+  @State() prefAnimation?: string;
+  private unsubscribePrefAnimation?: () => void;
+  @State() prefContrast?: string;
+  private unsubscribePrefContrast?: () => void;
+  @State() prefTheme?: string;
+  private unsubscribePrefTheme?: () => void;
+  @State() prefThemeScheme?: string;
+  private unsubscribePrefThemeScheme?: () => void;
   private t: Locale = new Locale({
     el: { ...localeEl, ...fileDescriptionLocaleEl },
     en: { ...localeEn, ...fileDescriptionLocaleEn },
@@ -42,6 +51,9 @@ export class MdsFilePreview {
     it: { ...localeIt, ...fileDescriptionLocaleIt },
   });
   @State() language: string;
+  /**
+   * Updates the component's texts to the locale currently set on the host element.
+   */
   @Method()
   async updateLang(): Promise<void> {
     this.language = this.t.lang(this.host);
@@ -138,6 +150,28 @@ export class MdsFilePreview {
     });
   };
 
+  connectedCallback(): void {
+    this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
+      this.prefAnimation = value;
+    });
+    this.unsubscribePrefContrast = subscribePreference('contrast', (value) => {
+      this.prefContrast = value;
+    });
+    this.unsubscribePrefTheme = subscribePreference('theme', (value) => {
+      this.prefTheme = value;
+    });
+    this.unsubscribePrefThemeScheme = subscribePreference('theme-scheme', (value) => {
+      this.prefThemeScheme = value;
+    });
+  }
+
+  disconnectedCallback(): void {
+    this.unsubscribePrefAnimation?.();
+    this.unsubscribePrefContrast?.();
+    this.unsubscribePrefTheme?.();
+    this.unsubscribePrefThemeScheme?.();
+  }
+
   componentWillLoad(): void {
     this.t.lang(this.host);
     this.format = getExtensionInfos(this.filename, this.suffix).format;
@@ -165,7 +199,12 @@ export class MdsFilePreview {
 
   render() {
     return (
-      <Host>
+      <Host
+        pref-animation={this.prefAnimation}
+        pref-contrast={this.prefContrast}
+        pref-theme={this.prefTheme}
+        pref-theme-scheme={this.prefThemeScheme}
+      >
         {this.deletable && (
           <mds-button
             title={this.t.get('remove')}
@@ -176,11 +215,21 @@ export class MdsFilePreview {
           ></mds-button>
         )}
         <div class="card" part="card" onClick={this.onClickDownloadEvent}>
-          {this.src && !this.message && getExtensionInfos(this.filename, this.suffix).preview ? (
+          {this.src !== undefined &&
+          this.src !== '' &&
+          (this.message === undefined || this.message === '') &&
+          getExtensionInfos(this.filename, this.suffix).preview ? (
             <mds-img src={this.src} class="preview preview--image" aspect-ratio="1/1"></mds-img>
           ) : (
-            <div class={clsx('preview', !this.message ? 'preview--icon' : 'preview--status')}>
-              {this.icon ? (
+            <div
+              class={clsx(
+                'preview',
+                this.message === undefined || this.message === ''
+                  ? 'preview--icon'
+                  : 'preview--status',
+              )}
+            >
+              {this.icon !== '' ? (
                 <mds-icon class="icon" name={this.icon}></mds-icon>
               ) : (
                 <mds-icon class="icon" name={getFormatsVariant(this.filename, this.suffix).icon} />
@@ -224,7 +273,7 @@ export class MdsFilePreview {
                 {getSuffix(this.filename, this.suffix)}
               </mds-badge>
             )}
-            {!this.filesize && (
+            {(this.filesize === undefined || this.filesize === '') && (
               <mds-text
                 class="description"
                 truncate="word"

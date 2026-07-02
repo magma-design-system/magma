@@ -1,12 +1,29 @@
-import { Component, Host, h, Prop } from '@stencil/core';
+import { Component, Host, h, Prop, State } from '@stencil/core';
+import { subscribePreference } from '@common/preference';
 import { InputTipPositionType } from './meta/types';
 
+/**
+ * @slot - Add `mds-input-tip-item` elements or `components` to this slot.
+ */
 @Component({
   tag: 'mds-input-tip',
   styleUrl: 'mds-input-tip.css',
   shadow: true,
 })
 export class MdsInputTip {
+  @State() prefAnimation?: string;
+  private unsubscribePrefAnimation?: () => void;
+
+  connectedCallback(): void {
+    this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
+      this.prefAnimation = value;
+    });
+  }
+
+  disconnectedCallback(): void {
+    this.unsubscribePrefAnimation?.();
+  }
+
   /**
    * Specifies if the component is active and shows expanded children or not
    */
@@ -19,7 +36,7 @@ export class MdsInputTip {
 
   render() {
     return (
-      <Host>
+      <Host pref-animation={this.prefAnimation}>
         <slot></slot>
       </Host>
     );

@@ -33,12 +33,12 @@
 }
 
 .link {
-  @apply duration-200
-    focus-bounce;
+  @apply focus-bounce;
 
   border-radius: var(--radius-lg);
   color: var(--mds-bibliography-color);
   text-decoration-color: var(--mds-bibliography-text-decoration);
+  transition-duration: var(--duration-200);
   transition-property: text-decoration, color, outline, outline-offset;
 }
 

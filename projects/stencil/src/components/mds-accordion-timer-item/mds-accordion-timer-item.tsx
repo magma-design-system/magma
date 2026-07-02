@@ -1,10 +1,11 @@
 import miBaselineKeyboardArrowRight from '@icon/mi/baseline/keyboard-arrow-right.svg';
-import { Component, Event, EventEmitter, Host, Prop, h, Watch } from '@stencil/core';
+import { Component, Event, EventEmitter, Host, Prop, State, h, Watch } from '@stencil/core';
 import { MdsAccordionTimerItemEventDetail } from './meta/event-detail';
 import { TypographyTitleType } from '@type/typography';
+import { subscribePreference } from '@common/preference';
 
 /**
- * @slot default - Add content like `text string`, `HTML elements` or `components` to this slot
+ * @slot - Add content like `text string`, `HTML elements` or `components` to this slot
  * @part content - the content wrapper of the `default` slot
  * @part icon - The arrow icon of the component
  * @part label - The text label of the component
@@ -17,6 +18,19 @@ import { TypographyTitleType } from '@type/typography';
   shadow: true,
 })
 export class MdsAccordionTimerItem {
+  @State() prefAnimation?: string;
+  private unsubscribePrefAnimation?: () => void;
+
+  connectedCallback(): void {
+    this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
+      this.prefAnimation = value;
+    });
+  }
+
+  disconnectedCallback(): void {
+    this.unsubscribePrefAnimation?.();
+  }
+
   /**
    * Specifies the typography of the element
    */
@@ -105,7 +119,11 @@ export class MdsAccordionTimerItem {
 
   render() {
     return (
-      <Host onMouseEnter={this.mouseEnter} onMouseLeave={this.mouseLeave}>
+      <Host
+        onMouseEnter={this.mouseEnter}
+        onMouseLeave={this.mouseLeave}
+        pref-animation={this.prefAnimation}
+      >
         <div class="row">
           <mds-progress
             aria-hidden="true"

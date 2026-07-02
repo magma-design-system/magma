@@ -44,15 +44,15 @@
   transform: translateX(0);
 }
 
-:host-context(mds-table[interactive='false']):host(:hover) .actions,
-:host-context(mds-table:not([interactive])):host(:hover) .actions {
+/* interactive and selection are propagated from mds-table onto each row as
+ * reflected boolean props, so these read the row's own host (no :host-context).
+ * A non-interactive table means the row simply lacks the [interactive] attribute. */
+
+:host(:not([interactive]):hover) .actions {
   --mds-table-row-actions-background: var(--mds-table-row-background-hover);
 }
 
-:host-context(mds-table[selection]:not([interactive])):host(:not([selected]):hover) .actions,
-:host-context(mds-table[selection][interactive='false']):host(:not([selected]):hover) .actions,
-:host-context(mds-table[selection]:not([interactive])):host([selected='false']:hover) .actions,
-:host-context(mds-table[selection][interactive='false']):host([selected='false']:hover) .actions {
+:host([selection]:not([interactive]):not([selected]):hover) .actions {
   --mds-table-row-actions-background: var(--mds-table-row-background-alt);
 }
 

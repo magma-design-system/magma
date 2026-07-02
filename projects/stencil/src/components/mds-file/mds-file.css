@@ -29,6 +29,8 @@
   --mds-file-preview-icon-color: rgb(var(--tone-neutral-04));
   --mds-file-preview-color: rgb(var(--tone-neutral-04));
   --mds-file-preview-icon-bacground: rgb(var(--tone-neutral-10));
+  --mds-file-transition-duration: var(--duration-200);
+  --private-file-transition-duration: var(--mds-file-transition-duration);
   --private-icon-download-offset: 10%;
 
   @apply focus-bounce;
@@ -42,7 +44,7 @@
   cursor: pointer;
   display: inline-flex;
   overflow: hidden;
-  transition-duration: var(--duration-200);
+  transition-duration: var(--private-file-transition-duration);
   transition-property: box-shadow, outline, outline-offset;
   transition-timing-function: var(--ease-out);
   width: 100%;

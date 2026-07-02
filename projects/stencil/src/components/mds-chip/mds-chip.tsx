@@ -18,6 +18,7 @@ import { ChipVariantType } from '@type/variant';
 import { ToneMinimalVariantType } from '@type/tone';
 
 import { Locale } from '@common/locale';
+import { subscribePreference } from '@common/preference';
 import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.es.json';
@@ -30,6 +31,14 @@ import localeIt from './meta/locale.it.json';
 })
 export class MdsChip {
   @Element() host: HTMLMdsChipElement;
+  @State() prefAnimation?: string;
+  private unsubscribePrefAnimation?: () => void;
+  @State() prefContrast?: string;
+  private unsubscribePrefContrast?: () => void;
+  @State() prefTheme?: string;
+  private unsubscribePrefTheme?: () => void;
+  @State() prefThemeScheme?: string;
+  private unsubscribePrefThemeScheme?: () => void;
   private km = new KeyboardManager();
   private t: Locale = new Locale({
     el: localeEl,
@@ -38,6 +47,9 @@ export class MdsChip {
     it: localeIt,
   });
   @State() language: string;
+  /**
+   * Updates the component's texts to the locale currently set on the host element.
+   */
   @Method()
   async updateLang(): Promise<void> {
     this.language = this.t.lang(this.host);
@@ -135,9 +147,9 @@ export class MdsChip {
     this.clickLabelEvent.emit({ event, element: this.host });
   }
 
-  private onDeleteHandler(event: Event): void {
+  private onDeleteHandler = (event: Event): void => {
     this.deleteEvent.emit({ event, element: this.host });
-  }
+  };
 
   private handleClickableKeyboard = (isClickable: boolean): void => {
     if (isClickable) {
@@ -151,7 +163,7 @@ export class MdsChip {
 
   private handleClickableElement = (isClickable: boolean): void => {
     const label = this.host.shadowRoot?.querySelector('.label') as HTMLElement;
-    if (!label) {
+    if (label == null) {
       return;
     }
     if (isClickable) {
@@ -174,13 +186,38 @@ export class MdsChip {
     }
   }
 
+  connectedCallback(): void {
+    this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
+      this.prefAnimation = value;
+    });
+    this.unsubscribePrefContrast = subscribePreference('contrast', (value) => {
+      this.prefContrast = value;
+    });
+    this.unsubscribePrefTheme = subscribePreference('theme', (value) => {
+      this.prefTheme = value;
+    });
+    this.unsubscribePrefThemeScheme = subscribePreference('theme-scheme', (value) => {
+      this.prefThemeScheme = value;
+    });
+  }
+
   disconnectedCallback(): void {
+    this.unsubscribePrefAnimation?.();
+    this.unsubscribePrefContrast?.();
+    this.unsubscribePrefTheme?.();
+    this.unsubscribePrefThemeScheme?.();
     this.km.detachClickBehavior('label');
   }
 
   render() {
     return (
-      <Host aria-disabled={this.disabled ? 'true' : 'false'}>
+      <Host
+        aria-disabled={this.disabled ? 'true' : 'false'}
+        pref-animation={this.prefAnimation}
+        pref-contrast={this.prefContrast}
+        pref-theme={this.prefTheme}
+        pref-theme-scheme={this.prefThemeScheme}
+      >
         {this.icon && (
           <div aria-hidden="true" class="icon-area">
             <mds-icon class="icon" name={this.icon} />
@@ -206,7 +243,7 @@ export class MdsChip {
           <mds-button
             class="button-delete"
             icon={miBaselineCancel}
-            onClick={this.onDeleteHandler.bind(this)}
+            onClick={this.onDeleteHandler}
             title={`${this.t.get('deleteLabel')} ${this.label}`}
             variant="dark"
             tone="text"

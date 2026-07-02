@@ -1,5 +1,8 @@
 import { Component, Host, Prop, h, Element } from '@stencil/core';
 
+/**
+ * @slot - Add `text string`, `HTML elements` or `components` to this slot.
+ */
 @Component({
   tag: 'mds-input-date-range-preselection',
   styleUrl: 'mds-input-date-range-preselection.css',

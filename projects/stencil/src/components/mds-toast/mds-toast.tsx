@@ -1,5 +1,16 @@
 import { cssDurationToMilliseconds } from '@common/unit';
-import { Component, Element, Event, EventEmitter, Host, Prop, Watch, h } from '@stencil/core';
+import { subscribePreference } from '@common/preference';
+import {
+  Component,
+  Element,
+  Event,
+  EventEmitter,
+  Host,
+  Prop,
+  State,
+  Watch,
+  h,
+} from '@stencil/core';
 import { ThemeVariantType } from '@type/variant';
 import { ToneMinimalVariantType } from '@type/tone';
 
@@ -7,7 +18,7 @@ import clsx from 'clsx';
 import { ToastPosition } from './meta/types';
 
 /**
- * @slot default - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
+ * @slot - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
  * @slot icon - Insert an icon image, it can be `HTML elements` or `components`, it is **recommended** to add `mds-icon` element.
  * @slot action - Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element.
  */
@@ -25,6 +36,14 @@ export class MdsToast {
   private hasText?: boolean;
 
   @Element() hostElement: HTMLMdsToastElement;
+  @State() prefAnimation?: string;
+  private unsubscribePrefAnimation?: () => void;
+  @State() prefContrast?: string;
+  private unsubscribePrefContrast?: () => void;
+  @State() prefTheme?: string;
+  private unsubscribePrefTheme?: () => void;
+  @State() prefThemeScheme?: string;
+  private unsubscribePrefThemeScheme?: () => void;
 
   /**
    * If set, specifies the visibility duration in milliseconds of the element inside the viewport, when the time is up the visible property will be set to false. If the duration is set to 0 the component will still visible until intentionally closed by user.
@@ -65,7 +84,7 @@ export class MdsToast {
 
   private reloadTimeListeners = (visible: boolean): void => {
     if (typeof window === 'undefined') return;
-    if (!this.duration) {
+    if (this.duration === undefined || this.duration === 0 || Number.isNaN(this.duration)) {
       return;
     }
     if (!visible) {
@@ -92,10 +111,32 @@ export class MdsToast {
     }, this.duration);
   };
 
+  connectedCallback(): void {
+    this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
+      this.prefAnimation = value;
+    });
+    this.unsubscribePrefContrast = subscribePreference('contrast', (value) => {
+      this.prefContrast = value;
+    });
+    this.unsubscribePrefTheme = subscribePreference('theme', (value) => {
+      this.prefTheme = value;
+    });
+    this.unsubscribePrefThemeScheme = subscribePreference('theme-scheme', (value) => {
+      this.prefThemeScheme = value;
+    });
+  }
+
+  disconnectedCallback(): void {
+    this.unsubscribePrefAnimation?.();
+    this.unsubscribePrefContrast?.();
+    this.unsubscribePrefTheme?.();
+    this.unsubscribePrefThemeScheme?.();
+  }
+
   componentWillLoad(): void {
     this.hasText = this.hostElement.innerHTML !== '';
     this.actions = this.hostElement.querySelector(':scope > [slot="action"]') !== null;
-    if (!this.duration) {
+    if (this.duration === undefined || this.duration === 0 || Number.isNaN(this.duration)) {
       return;
     }
     if (this.visible) {
@@ -119,7 +160,12 @@ export class MdsToast {
 
   render() {
     return (
-      <Host>
+      <Host
+        pref-animation={this.prefAnimation}
+        pref-contrast={this.prefContrast}
+        pref-theme={this.prefTheme}
+        pref-theme-scheme={this.prefThemeScheme}
+      >
         <div
           class={clsx(
             'dialog',

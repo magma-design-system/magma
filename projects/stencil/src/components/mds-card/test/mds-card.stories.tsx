@@ -4,9 +4,9 @@ import { URLs } from '../../mds-img/meta/storybook';
 export default {
   title: 'Layout / Card',
   argTypes: {
-    'auto-grid': {
+    'disable-auto-grid': {
       type: { name: 'boolean' },
-      description: 'Enables automatic responsive behavior based on container queries',
+      description: 'Disables the automatic responsive behavior based on container queries',
     },
   },
 };
@@ -418,7 +418,7 @@ export const FullCardCustomSlots = {
   render: CustomSlotsTemplate,
 
   args: {
-    'auto-grid': false,
+    'disable-auto-grid': true,
   },
 };
 

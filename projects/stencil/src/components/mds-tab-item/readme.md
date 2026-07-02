@@ -319,18 +319,20 @@ The parent resolves each content panel by index, matching it to the `mds-tab-ite
 
 ## Properties
 
-| Property       | Attribute       | Description                                                             | Type                                                  | Default     |
-| -------------- | --------------- | ----------------------------------------------------------------------- | ----------------------------------------------------- | ----------- |
-| `await`        | `await`         | Specifies if the button is awaiting for a response                      | `boolean`                                             | `undefined` |
-| `disabled`     | `disabled`      | Specifies if the tab item is disabled or not                            | `boolean \| undefined`                                | `undefined` |
-| `href`         | `href`          | Specifies the URL target of the button                                  | `string \| undefined`                                 | `undefined` |
-| `icon`         | `icon`          | The icon displayed in the tab item                                      | `string \| undefined`                                 | `undefined` |
-| `iconPosition` | `icon-position` | Specifies the horizontal position of the icon displayed in the tab item | `"left" \| "right" \| undefined`                      | `'left'`    |
-| `label`        | `label`         | The label of the tab item                                               | `string \| undefined`                                 | `undefined` |
-| `selected`     | `selected`      | Specifies if the tab item is selected or not                            | `boolean \| undefined`                                | `undefined` |
-| `size`         | `size`          | Specifies the size for the tab item                                     | `"lg" \| "md" \| "sm" \| "xl" \| undefined`           | `'md'`      |
-| `type`         | `type`          | The type of the tab item element                                        | `"a" \| "button" \| "reset" \| "submit" \| undefined` | `'submit'`  |
-| `value`        | `value`         | Specifies an optional value to get from mdsTabItemSelect event          | `string \| undefined`                                 | `undefined` |
+| Property       | Attribute       | Description                                                                                                          | Type                                                  | Default     |
+| -------------- | --------------- | -------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------- | ----------- |
+| `animation`    | `animation`     | Reflects the parent tab selection animation (set by mds-tab); drives the slide-variant styling without :host-context | `"fade" \| "slide" \| undefined`                      | `undefined` |
+| `await`        | `await`         | Specifies if the button is awaiting for a response                                                                   | `boolean`                                             | `undefined` |
+| `direction`    | `direction`     | Reflects the parent tab layout direction (set by mds-tab); drives the vertical layout without :host-context          | `"horizontal" \| "vertical" \| undefined`             | `undefined` |
+| `disabled`     | `disabled`      | Specifies if the tab item is disabled or not                                                                         | `boolean \| undefined`                                | `undefined` |
+| `href`         | `href`          | Specifies the URL target of the button                                                                               | `string \| undefined`                                 | `undefined` |
+| `icon`         | `icon`          | The icon displayed in the tab item                                                                                   | `string \| undefined`                                 | `undefined` |
+| `iconPosition` | `icon-position` | Specifies the horizontal position of the icon displayed in the tab item                                              | `"left" \| "right" \| undefined`                      | `'left'`    |
+| `label`        | `label`         | The label of the tab item                                                                                            | `string \| undefined`                                 | `undefined` |
+| `selected`     | `selected`      | Specifies if the tab item is selected or not                                                                         | `boolean \| undefined`                                | `undefined` |
+| `size`         | `size`          | Specifies the size for the tab item                                                                                  | `"lg" \| "md" \| "sm" \| "xl" \| undefined`           | `'md'`      |
+| `type`         | `type`          | The type of the tab item element                                                                                     | `"a" \| "button" \| "reset" \| "submit" \| undefined` | `'submit'`  |
+| `value`        | `value`         | Specifies an optional value to get from mdsTabItemSelect event                                                       | `string \| undefined`                                 | `undefined` |
 
 
 ## Events

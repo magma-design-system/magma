@@ -29,7 +29,7 @@ The `<mds-header>` web component is the top-level page header container of the M
 - **`autoHide`** is the pixel offset past which the bar starts hiding on downward scroll; leave it unset to keep the bar always present.
 - **`threshold`** tunes how many pixels of opposite-direction scroll are required to flip the auto-hide state - raise it to make hide/show less twitchy.
 - **`menu`** and **`nav`** select on which viewports the hamburger menu and the navigation are shown (`'all'`, `'desktop'`, `'mobile'`, `'none'`); they are relayed to the child bar.
-- **`backdrop`** toggles the blurred backdrop layer shown behind the bar when its appearance is `'inline'`.
+- **`hideBackdrop`** removes the blurred backdrop layer shown behind the bar when its appearance is `'inline'`.
 - **`visibility`** reflects the current shown/hidden state of the bar and can be set to force it.
 
 
@@ -73,7 +73,7 @@ Provide a `[slot="menu"]` child to enable the hamburger-triggered side modal. Wh
 
 #### Inline Appearance (Floating Bar)
 
-Set `appearance="inline"` to detach the bar from the top edge and give it a rounded, floating look. A blurred backdrop is shown by default; set `backdrop` to `false` to remove it.
+Set `appearance="inline"` to detach the bar from the top edge and give it a rounded, floating look. A blurred backdrop is shown by default; add `hide-backdrop` to remove it.
 
 ```html
 <mds-header appearance="inline">
@@ -232,22 +232,6 @@ Common incorrect uses of `<mds-header>`. Each entry pairs the wrong form with th
 </mds-header>
 ```
 
-#### Do Not Set `backdrop="false"` to Disable the Backdrop
-
-`backdrop` is a boolean prop. Setting it to the string `"false"` is truthy in HTML and keeps the backdrop visible. Remove the attribute entirely to disable it.
-
-```html
-<!-- 🚫 INCORRECT -->
-<mds-header appearance="inline" backdrop="false">
-  <mds-header-bar>...</mds-header-bar>
-</mds-header>
-
-<!-- ✅ CORRECT -->
-<mds-header appearance="inline">
-  <mds-header-bar>...</mds-header-bar>
-</mds-header>
-```
-
 #### Do Not Drive Scroll Appearance with JavaScript When `appearance-set` Is Available
 
 Manually toggling `appearance` on a scroll listener duplicates what `appearance-set` already handles declaratively and risks conflicts with the component's own watcher.
@@ -349,7 +333,7 @@ mds-header::part(menu) {
 | `appearance`    | `appearance`     | Sets the appearance of the header bar element when loaded, it can be changed depending on how `appearance-set` attribute is set                                                                                                                                                                                                                                 | `string`                                   | `'stripe'`  |
 | `appearanceSet` | `appearance-set` | Sets the appearance of the header bar element depending on the scroll position you should set three different values: initial appearance, changed appearance and `window.scrollY` threshold Es: appearance-set="stripe, inline 200" means the component will start with stripe appearance that will change to inline if the page is scrolled more of 199 pixels | `string \| undefined`                      | `undefined` |
 | `autoHide`      | `auto-hide`      | When the page is scrolled down, the component mds-header-bar is hidden starting from the `autoHide` attribute's value, then if the page is scrolled up it is shown again                                                                                                                                                                                        | `number \| undefined`                      | `undefined` |
-| `backdrop`      | `backdrop`       | Sets if the backdrop is shown when the mds-header-bar attribute appearace is set to `inline`                                                                                                                                                                                                                                                                    | `boolean \| undefined`                     | `true`      |
+| `hideBackdrop`  | `hide-backdrop`  | Hides the backdrop shown when the mds-header-bar attribute appearace is set to `inline`                                                                                                                                                                                                                                                                         | `boolean \| undefined`                     | `false`     |
 | `menu`          | `menu`           | Sets the visibility type of the hamburger menu of mds-header-bar                                                                                                                                                                                                                                                                                                | `"all" \| "desktop" \| "mobile" \| "none"` | `'mobile'`  |
 | `nav`           | `nav`            | Sets the visibility type of the navigation menu of mds-header-bar                                                                                                                                                                                                                                                                                               | `"all" \| "desktop" \| "mobile" \| "none"` | `'desktop'` |
 | `threshold`     | `threshold`      | Sets the threshold margin to trigger hide or show status of the `mds-header-bar` when the page is scrolled                                                                                                                                                                                                                                                      | `number`                                   | `1`         |
@@ -368,13 +352,13 @@ mds-header::part(menu) {
 
 ### `setOpened(isOpened?: boolean) => Promise<void>`
 
-
+Opens or closes the header.
 
 #### Parameters
 
-| Name       | Type      | Description |
-| ---------- | --------- | ----------- |
-| `isOpened` | `boolean` |             |
+| Name       | Type      | Description                         |
+| ---------- | --------- | ----------------------------------- |
+| `isOpened` | `boolean` | whether the header should be opened |
 
 #### Returns
 
@@ -385,10 +369,10 @@ Type: `Promise<void>`
 
 ## Slots
 
-| Slot        | Description                                                                                                                        |
-| ----------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| `"default"` | Add `mds-header-bar` element/s.                                                                                                    |
-| `"menu"`    | Put actions and other contents that will be shown as mobile menu. Add `text string`, `HTML elements` or `components` to this slot. |
+| Slot     | Description                                                                                                                        |
+| -------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+|          | Add `mds-header-bar` element/s.                                                                                                    |
+| `"menu"` | Put actions and other contents that will be shown as mobile menu. Add `text string`, `HTML elements` or `components` to this slot. |
 
 
 ## Shadow Parts

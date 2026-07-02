@@ -11,9 +11,10 @@ import {
 } from '@stencil/core';
 import { TypographySmallerType } from '@type/typography';
 import { readSlottedLabel, sanitizeLabel } from '@common/slot';
+import { subscribePreference } from '@common/preference';
 
 /**
- * @slot default - **Deprecated**, use the `label` property instead. Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
+ * @slot - **Deprecated**, use the `label` property instead. Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
  */
 
 @Component({
@@ -23,8 +24,19 @@ import { readSlottedLabel, sanitizeLabel } from '@common/slot';
 })
 export class MdsTabBarItem {
   @Element() private element: HTMLMdsTabItemElement;
+  @State() prefAnimation?: string;
+  private unsubscribePrefAnimation?: () => void;
+  @State() prefContrast?: string;
+  private unsubscribePrefContrast?: () => void;
+  @State() prefTheme?: string;
+  private unsubscribePrefTheme?: () => void;
+  @State() prefThemeScheme?: string;
+  private unsubscribePrefThemeScheme?: () => void;
   @State() isSelected: boolean;
 
+  /**
+   * The icon displayed in the tab bar item.
+   */
   @Prop() readonly icon: string = '';
 
   /**
@@ -44,6 +56,28 @@ export class MdsTabBarItem {
 
   componentWillLoad(): void {
     this.isSelected = this.selected;
+  }
+
+  connectedCallback(): void {
+    this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
+      this.prefAnimation = value;
+    });
+    this.unsubscribePrefContrast = subscribePreference('contrast', (value) => {
+      this.prefContrast = value;
+    });
+    this.unsubscribePrefTheme = subscribePreference('theme', (value) => {
+      this.prefTheme = value;
+    });
+    this.unsubscribePrefThemeScheme = subscribePreference('theme-scheme', (value) => {
+      this.prefThemeScheme = value;
+    });
+  }
+
+  disconnectedCallback(): void {
+    this.unsubscribePrefAnimation?.();
+    this.unsubscribePrefContrast?.();
+    this.unsubscribePrefTheme?.();
+    this.unsubscribePrefThemeScheme?.();
   }
 
   private select = () => {
@@ -70,13 +104,19 @@ export class MdsTabBarItem {
 
   private onSlotChangeHandler = (): void => {
     /* this should be removed in the future once slotted text is no longer used, use the label property instead */
-    if (this.label) return;
+    if (this.label !== undefined && this.label !== '') return;
     this.label = readSlottedLabel(this.element);
   };
 
   render() {
     return (
-      <Host onClick={this.select}>
+      <Host
+        onClick={this.select}
+        pref-animation={this.prefAnimation}
+        pref-contrast={this.prefContrast}
+        pref-theme={this.prefTheme}
+        pref-theme-scheme={this.prefThemeScheme}
+      >
         <mds-icon name={this.icon} />
         <mds-text typography={this.typography}>
           {this.label || <slot onSlotchange={this.onSlotChangeHandler} />}

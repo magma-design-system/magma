@@ -12,9 +12,10 @@ import {
 import clsx from 'clsx';
 import miBaselineKeyboardArrowRight from '@icon/mi/baseline/keyboard-arrow-right.svg';
 import { KeyboardManager } from '@common/keyboard-manager';
+import { subscribePreference } from '@common/preference';
 
 /**
- * @slot default - Add `text string`, `HTML elements` or `components` to this slot.
+ * @slot - Add `text string`, `HTML elements` or `components` to this slot.
  * @slot action - Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element.
  * @slot icon - Insert an icon image, it can be `HTML elements` or `components`, it is **recommended** to add `mds-icon` element.
  * @slot title - Add a `text string`, `HTML elements` or `components`, it is **recommended** to use `mds-text` element.
@@ -30,6 +31,10 @@ import { KeyboardManager } from '@common/keyboard-manager';
 })
 export class MdsDetails {
   @Element() private host: HTMLMdsDetailsElement;
+  @State() prefAnimation?: string;
+  private unsubscribePrefAnimation?: () => void;
+  @State() prefContrast?: string;
+  private unsubscribePrefContrast?: () => void;
   @State() isOpened: boolean;
   @State() hasIcon: boolean = true;
   private km = new KeyboardManager();
@@ -59,7 +64,18 @@ export class MdsDetails {
     this.km.attachClickBehavior();
   }
 
+  connectedCallback(): void {
+    this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
+      this.prefAnimation = value;
+    });
+    this.unsubscribePrefContrast = subscribePreference('contrast', (value) => {
+      this.prefContrast = value;
+    });
+  }
+
   disconnectedCallback(): void {
+    this.unsubscribePrefAnimation?.();
+    this.unsubscribePrefContrast?.();
     this.km.detachClickBehavior();
   }
 
@@ -78,7 +94,7 @@ export class MdsDetails {
 
   render() {
     return (
-      <Host>
+      <Host pref-animation={this.prefAnimation} pref-contrast={this.prefContrast}>
         <div class={clsx('icon', this.hasIcon ? '' : 'icon--hidden')} onClick={this.toggle}>
           <slot name="icon" onSlotchange={this.onSlotChangeHandler} />
         </div>

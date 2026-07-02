@@ -82,6 +82,8 @@
   --mds-filter-items-padding: --spacing(200);
   --mds-filter-items-radius: var(--radius-full);
   --mds-filter-items-scroll-behavior: smooth;
+  --mds-filter-items-transition-duration: var(--duration-300);
+  --private-filter-items-transition-duration: var(--mds-filter-items-transition-duration);
   --mds-filter-label-padding: 0 --spacing(600);
   --mds-filter-wrapper-shadow-color: rgb(var(--tone-neutral-06));
   --mds-filter-wrapper-shadow: 0 0 0 2px var(--mds-filter-wrapper-shadow-color) inset;
@@ -90,6 +92,17 @@
   display: grid;
   gap: --spacing(100);
   grid-auto-rows: min-content;
+}
+
+/* Animation preference: scroll-behavior is a keyword and cannot be derived from
+ * is handled here, cross-browser, via @media (it follows the OS preference).
+ * The .items transition-duration is reduced separately in
+ * css/mds-filter-pref-animation.css. */
+
+@media (prefers-reduced-motion: reduce) {
+  :host {
+    --mds-filter-items-scroll-behavior: auto;
+  }
 }
 
 .items {
@@ -104,7 +117,7 @@
   position: relative;
   scroll-behavior: var(--mds-filter-items-scroll-behavior);
   scroll-snap-type: x mandatory;
-  transition-duration: var(--duration-300);
+  transition-duration: var(--private-filter-items-transition-duration);
   transition-property: background-color;
   transition-timing-function: var(--ease-in-out-expo);
 }

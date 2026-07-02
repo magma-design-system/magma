@@ -1,12 +1,17 @@
-:host-context(:root.pref-consumption-high) .backdrop {
+/* Consumption preference. The component mirrors the resolved level from <html>
+ * onto its host as pref-consumption (see subscribePreference in @common/preference);
+ * these plain shadow selectors then trim the backdrop cost. Cross-browser, no
+ * :host-context. */
+
+:host([pref-consumption='high']) .backdrop {
   --mds-header-backdrop-background-image: none;
 }
 
-:host-context(:root.pref-consumption-medium) .backdrop {
+:host([pref-consumption='medium']) .backdrop {
   --mds-header-backdrop-blur-strength: 1px;
 }
 
-:host-context(:root.pref-consumption-low) .backdrop {
+:host([pref-consumption='low']) .backdrop {
   --mds-header-backdrop-blur-strength: 0px;
 
   display: none;

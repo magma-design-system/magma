@@ -1,4 +1,5 @@
 import { Component, Element, Host, h, Prop, State, Watch } from '@stencil/core';
+import { subscribePreference } from '@common/preference';
 import miBaselineKeyboardArrowUp from '@icon/mi/baseline/keyboard-arrow-up.svg';
 import miBaselineKeyboardArrowDown from '@icon/mi/baseline/keyboard-arrow-down.svg';
 import miBaselineUnfoldMore from '@icon/mi/baseline/unfold-more.svg';
@@ -19,6 +20,8 @@ enum Sort {
 export class MdsTableHeaderCell {
   @State() isAscending: boolean = true;
   @Element() element: HTMLMdsTableHeaderCellElement;
+  @State() prefAnimation?: string;
+  private unsubscribePrefAnimation?: () => void;
   private currentDirection = Sort.NONE;
   private index: number = 0;
   private tableBody: HTMLMdsTableBodyElement;
@@ -37,14 +40,33 @@ export class MdsTableHeaderCell {
    */
   @Prop({ reflect: true }) readonly label?: string;
 
+  /**
+   * Specifies the current sort direction of the column.
+   */
   @Prop({ reflect: true, mutable: true }) direction: SortDirectionType = 'none';
+
+  connectedCallback(): void {
+    this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
+      this.prefAnimation = value;
+    });
+  }
+
+  disconnectedCallback(): void {
+    this.unsubscribePrefAnimation?.();
+  }
 
   componentDidLoad(): void {
     this.prepareSorter();
   }
 
   private prepareSorter = (): void => {
-    if (!this.sortable || (this.sortable && this.tableHeaderCellSiblings?.length)) return;
+    if (
+      !this.sortable ||
+      (this.sortable &&
+        this.tableHeaderCellSiblings?.length !== undefined &&
+        this.tableHeaderCellSiblings?.length !== 0)
+    )
+      return;
     this.tableBody = this.element
       .closest('mds-table')
       ?.querySelector('mds-table-body') as HTMLMdsTableBodyElement;
@@ -58,10 +80,17 @@ export class MdsTableHeaderCell {
   };
 
   private getValue = (element: HTMLMdsTableCellElement): string | number => {
-    if (element.value) {
+    if (
+      element.value !== undefined &&
+      element.value !== '' &&
+      element.value !== 0 &&
+      !Number.isNaN(element.value)
+    ) {
       return element.value;
     }
-    return element.textContent ? element.textContent.trim() : '';
+    return element.textContent !== null && element.textContent !== ''
+      ? element.textContent.trim()
+      : '';
   };
 
   private resetSortAttribute = (): void => {
@@ -153,7 +182,7 @@ export class MdsTableHeaderCell {
 
   render() {
     return (
-      <Host role="columnheader" aria-sort={this.direction}>
+      <Host role="columnheader" aria-sort={this.direction} pref-animation={this.prefAnimation}>
         {this.sortable ? (
           <mds-button
             class="action"

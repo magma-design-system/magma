@@ -28,8 +28,7 @@ import { ThemeFullVariantAvatarType } from '@type/variant';
 import { ToneMinimalVariantType } from '@type/tone';
 
 import { sanitizeISO8601Date } from '@common/date';
-
-dayjs.extend(relativeTime);
+import { subscribePreference } from '@common/preference';
 
 /**
  * @part actions - The actions wrapper
@@ -49,6 +48,14 @@ export class MdsPushNotificationItem {
   private hasActions?: boolean;
   private hasBadge?: boolean;
   @Element() host: HTMLMdsPushNotificationItemElement;
+  @State() prefAnimation?: string;
+  private unsubscribePrefAnimation?: () => void;
+  @State() prefContrast?: string;
+  private unsubscribePrefContrast?: () => void;
+  @State() prefTheme?: string;
+  private unsubscribePrefTheme?: () => void;
+  @State() prefThemeScheme?: string;
+  private unsubscribePrefThemeScheme?: () => void;
   private t: Locale = new Locale({
     el: localeEl,
     en: localeEn,
@@ -56,6 +63,9 @@ export class MdsPushNotificationItem {
     it: localeIt,
   });
   @State() language: string;
+  /**
+   * Updates the component's texts to the locale currently set on the host element.
+   */
   @Method()
   async updateLang(): Promise<void> {
     this.language = this.t.lang(this.host);
@@ -72,9 +82,9 @@ export class MdsPushNotificationItem {
   @Prop({ reflect: true }) readonly dateFormat: NotificationItemDateFormatType = 'timeago';
 
   /**
-   * Specifies if the component is dismissable or not, it should be set to true by default is used with it's parent component `mds-push-notification-items`
+   * Specifies if the component is dismissable; when set, a dismiss button is shown.
    */
-  @Prop({ reflect: true, mutable: true }) deletable?: boolean = true;
+  @Prop({ reflect: true, mutable: true }) deletable?: boolean = false;
 
   /**
    * Specifies the icon to be displayed
@@ -127,15 +137,38 @@ export class MdsPushNotificationItem {
     this.closedEvent.emit();
   };
 
+  connectedCallback(): void {
+    this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
+      this.prefAnimation = value;
+    });
+    this.unsubscribePrefContrast = subscribePreference('contrast', (value) => {
+      this.prefContrast = value;
+    });
+    this.unsubscribePrefTheme = subscribePreference('theme', (value) => {
+      this.prefTheme = value;
+    });
+    this.unsubscribePrefThemeScheme = subscribePreference('theme-scheme', (value) => {
+      this.prefThemeScheme = value;
+    });
+  }
+
+  disconnectedCallback(): void {
+    this.unsubscribePrefAnimation?.();
+    this.unsubscribePrefContrast?.();
+    this.unsubscribePrefTheme?.();
+    this.unsubscribePrefThemeScheme?.();
+  }
+
   componentDidLoad(): void {
     this.handleDeletableChange(this.deletable);
   }
 
   componentWillLoad(): void {
+    dayjs.extend(relativeTime);
     this.hasActions = this.host.querySelector(':scope > [slot="action"]') !== null;
     this.hasBadge = this.host.querySelector(':scope > [slot="badge"]') !== null;
 
-    if (this.datetime) {
+    if (this.datetime !== undefined && this.datetime !== '') {
       this.datetime = sanitizeISO8601Date(this.datetime?.toString());
     }
 
@@ -168,7 +201,12 @@ export class MdsPushNotificationItem {
 
   render() {
     return (
-      <Host>
+      <Host
+        pref-animation={this.prefAnimation}
+        pref-contrast={this.prefContrast}
+        pref-theme={this.prefTheme}
+        pref-theme-scheme={this.prefThemeScheme}
+      >
         {(this.icon ?? this.preview === 'avatar') && (
           <mds-avatar
             class="avatar"
@@ -221,7 +259,7 @@ export class MdsPushNotificationItem {
             tone="text"
             title={this.t.get('dismiss')}
             icon={miBaselineCancel}
-            onClick={this.onClickClose.bind(this)}
+            onClick={this.onClickClose}
           ></mds-button>
         )}
       </Host>

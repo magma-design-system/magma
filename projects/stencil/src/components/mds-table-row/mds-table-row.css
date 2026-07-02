@@ -44,13 +44,17 @@
   --mds-table-row-background-hover: var(--mds-table-background, rgb(var(--tone-neutral)));
   --mds-table-row-background-alt: var(--mds-table-background-alt, rgb(var(--tone-neutral)));
   --mds-table-row-actions-gap: var(--mds-table-actions-gap, --spacing(400));
+  --mds-table-row-transition-duration: var(--duration-200);
 
-  @apply duration-200
-    ease-out;
+  /* private */
+  --private-table-row-transition-duration: var(--mds-table-row-transition-duration);
+
+  @apply ease-out;
 
   color: var(--mds-table-row-color);
   display: table-row;
   position: relative;
+  transition-duration: var(--private-table-row-transition-duration);
   transition-property: color;
 }
 

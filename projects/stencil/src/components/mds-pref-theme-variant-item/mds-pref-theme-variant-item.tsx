@@ -29,6 +29,9 @@ export class MdsPrefThemeVariantItem {
     it: localeIt,
   });
   @State() language: string;
+  /**
+   * Updates the component's texts to the locale currently set on the host element.
+   */
   @Method()
   async updateLang(): Promise<void> {
     this.language = this.t.lang(this.element);
@@ -62,7 +65,7 @@ export class MdsPrefThemeVariantItem {
 
   componentWillRender(): void {
     this.t.lang(this.element);
-    if (!this.label) {
+    if (this.label === undefined || this.label === '') {
       this.label = this.name.charAt(0).toUpperCase() + this.name.slice(1).replace(/-/g, ' ');
     }
   }

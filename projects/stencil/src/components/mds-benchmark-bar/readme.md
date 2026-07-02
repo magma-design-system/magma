@@ -213,9 +213,9 @@ mds-benchmark-bar >>> mds-progress {
 
 ## Slots
 
-| Slot        | Description                                                                                                                              |
-| ----------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| `"default"` | **Deprecated**, use the `label` property instead. Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here. |
+| Slot | Description                                                                                                                              |
+| ---- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+|      | **Deprecated**, use the `label` property instead. Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here. |
 
 
 ## Shadow Parts

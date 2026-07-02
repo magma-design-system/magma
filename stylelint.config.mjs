@@ -5,6 +5,7 @@ export default {
     'stylelint-config-recess-order',
     'stylelint-order',
   ],
+  plugins: ['stylelint-no-unsupported-browser-features'],
   ignoreFiles: [
     '**/*.js',
     '**/*.jsx',
@@ -33,6 +34,20 @@ export default {
       },
     ],
     'no-irregular-whitespace': true,
+    'plugin/no-unsupported-browser-features': [
+      true,
+      {
+        // reads .browserslistrc automatically; heads-up only, does not block builds
+        severity: 'warning',
+        ignorePartialSupport: true,
+        ignore: [
+          // Baseline since ~2019, flagged only for near-extinct browsers, and
+          // degrade gracefully. Also the foundation of the preference system.
+          'prefers-color-scheme',
+          'prefers-reduced-motion',
+        ],
+      },
+    ],
     'at-rule-no-deprecated': [true, { ignoreAtRules: ['apply', 'reference'] }],
     'at-rule-no-unknown': [
       true,

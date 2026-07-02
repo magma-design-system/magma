@@ -23,7 +23,7 @@ The `<mds-push-notification-item>` web component is a single notification card r
 
 #### Properties & Visual Configurations
 
-- **`deletable`** (default `true`): Controls whether the dismiss button is shown. Keep it on for user-removable notifications; set `false` for items the user should not close manually.
+- **`deletable`** (default `false`): Controls whether the dismiss button is shown. Add it to let the user close the notification manually; leave it off for items the user should not close.
 - **`preview`**: Pick `avatar` to show the `src` image (or `initials`/`icon` fallback) as a compact round avatar, or `image` (default) to show `src` as a larger inline picture preview.
 - **`initials`**: Provided as the avatar fallback when no image is available; it overrides `tone`/`variant` styling so the user stays visually recognizable.
 - **`dateFormat`**: Use `timeago` for a live relative timestamp, or any date-format token string for a fixed display date.
@@ -76,28 +76,21 @@ Use `variant` to communicate meaning - success, warning, error, info - and `tone
 </mds-push-notification>
 ```
 
-#### Non-Dismissable Notification
+#### Dismissable Notification
 
-Bind `deletable` to `false` via a framework or JavaScript property to hide the dismiss button for system notifications the user must not close manually.
+Add the `deletable` attribute to show the dismiss button, letting the user close the notification manually. Without it the notification cannot be dismissed by the user - keep it off for system notifications the user must not close.
 
 ```html
-<!-- Framework binding (React / Angular / Vue) -->
 <mds-push-notification>
   <mds-push-notification-item
-    icon="mi/baseline/info"
-    subject="Aggiornamento di sistema"
-    message="Il sistema verra' riavviato alle 23:00"
+    deletable
+    icon="mi/baseline/email"
+    subject="Nuovo messaggio"
+    message="Hai ricevuto un nuovo messaggio"
     datetime="2024-06-01T09:00:00"
     variant="info"
-    :deletable="false"
   ></mds-push-notification-item>
 </mds-push-notification>
-```
-
-```javascript
-// Vanilla JS property assignment
-const item = document.querySelector('mds-push-notification-item');
-item.deletable = false;
 ```
 
 #### Action Buttons via the `action` Slot
@@ -260,34 +253,6 @@ Common incorrect uses of `<mds-push-notification-item>`. Each entry pairs the wr
 </mds-push-notification>
 ```
 
-#### Do Not Rely on `deletable="false"` in Plain HTML to Hide the Dismiss Button
-
-The `deletable` prop defaults to `true`, so omitting the attribute still shows the dismiss button. To hide it, set the prop to `false` via a framework binding or a JavaScript property assignment - do not try to unset it by omitting the attribute.
-
-```html
-<!-- 🚫 INCORRECT - attribute absent but default is true, so dismiss button still shows -->
-<mds-push-notification-item
-  subject="Aggiornamento di sistema"
-  message="Il sistema verra' riavviato alle 23:00"
-></mds-push-notification-item>
-
-<!-- ✅ CORRECT - JavaScript property set to false -->
-```
-
-```javascript
-// Vanilla JS
-document.querySelector('mds-push-notification-item').deletable = false;
-```
-
-```html
-<!-- ✅ CORRECT - framework binding -->
-<mds-push-notification-item
-  subject="Aggiornamento di sistema"
-  message="Il sistema verra' riavviato alle 23:00"
-  :deletable="false"
-></mds-push-notification-item>
-```
-
 #### Do Not Put Content in the Default Slot
 
 `<mds-push-notification-item>` has no default slot. All text content goes through the `message` and `subject` props; interactive content goes into the named `action` or `badge` slots.
@@ -389,19 +354,19 @@ mds-push-notification-item::part(content) {
 
 ## Properties
 
-| Property     | Attribute     | Description                                                                                                                                            | Type                                                                                                                                                                                                         | Default                          |
-| ------------ | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------- |
-| `dateFormat` | `date-format` | Specifies if the notification date format shows time passed or displays date as a static string                                                        | `string`                                                                                                                                                                                                     | `'timeago'`                      |
-| `datetime`   | `datetime`    | Specifies the notification date based on [standard ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html).                                  | `string \| undefined`                                                                                                                                                                                        | `undefined`                      |
-| `deletable`  | `deletable`   | Specifies if the component is dismissable or not, it should be set to true by default is used with it's parent component `mds-push-notification-items` | `boolean \| undefined`                                                                                                                                                                                       | `true`                           |
-| `icon`       | `icon`        | Specifies the icon to be displayed                                                                                                                     | `string \| undefined`                                                                                                                                                                                        | `undefined`                      |
-| `initials`   | `initials`    | The user's inizials displayed if there's no image available, initials will override tone and variant senttings to keep user recognizable from others   | `string \| undefined`                                                                                                                                                                                        | `undefined`                      |
-| `message`    | `message`     | Specifies the message of the component                                                                                                                 | `string`                                                                                                                                                                                                     | `'Nessun messaggio disponibile'` |
-| `preview`    | `preview`     | Specifies if the `src` attribute is used to show a the image as avatar or full image                                                                   | `"avatar" \| "image" \| undefined`                                                                                                                                                                           | `'image'`                        |
-| `src`        | `src`         | Specifies the path to the image                                                                                                                        | `string \| undefined`                                                                                                                                                                                        | `undefined`                      |
-| `subject`    | `subject`     | Specifies the subject of the component                                                                                                                 | `string \| undefined`                                                                                                                                                                                        | `undefined`                      |
-| `tone`       | `tone`        | Specifies the color tone of the component                                                                                                              | `"strong" \| "weak" \| undefined`                                                                                                                                                                            | `'weak'`                         |
-| `variant`    | `variant`     | Specifies the color variant of the component                                                                                                           | `"amaranth" \| "aqua" \| "blue" \| "error" \| "green" \| "info" \| "lime" \| "orange" \| "orchid" \| "primary" \| "purple" \| "red" \| "sky" \| "success" \| "violet" \| "warning" \| "yellow" \| undefined` | `undefined`                      |
+| Property     | Attribute     | Description                                                                                                                                          | Type                                                                                                                                                                                                         | Default                          |
+| ------------ | ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------- |
+| `dateFormat` | `date-format` | Specifies if the notification date format shows time passed or displays date as a static string                                                      | `string`                                                                                                                                                                                                     | `'timeago'`                      |
+| `datetime`   | `datetime`    | Specifies the notification date based on [standard ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html).                                | `string \| undefined`                                                                                                                                                                                        | `undefined`                      |
+| `deletable`  | `deletable`   | Specifies if the component is dismissable; when set, a dismiss button is shown.                                                                      | `boolean \| undefined`                                                                                                                                                                                       | `false`                          |
+| `icon`       | `icon`        | Specifies the icon to be displayed                                                                                                                   | `string \| undefined`                                                                                                                                                                                        | `undefined`                      |
+| `initials`   | `initials`    | The user's inizials displayed if there's no image available, initials will override tone and variant senttings to keep user recognizable from others | `string \| undefined`                                                                                                                                                                                        | `undefined`                      |
+| `message`    | `message`     | Specifies the message of the component                                                                                                               | `string`                                                                                                                                                                                                     | `'Nessun messaggio disponibile'` |
+| `preview`    | `preview`     | Specifies if the `src` attribute is used to show a the image as avatar or full image                                                                 | `"avatar" \| "image" \| undefined`                                                                                                                                                                           | `'image'`                        |
+| `src`        | `src`         | Specifies the path to the image                                                                                                                      | `string \| undefined`                                                                                                                                                                                        | `undefined`                      |
+| `subject`    | `subject`     | Specifies the subject of the component                                                                                                               | `string \| undefined`                                                                                                                                                                                        | `undefined`                      |
+| `tone`       | `tone`        | Specifies the color tone of the component                                                                                                            | `"strong" \| "weak" \| undefined`                                                                                                                                                                            | `'weak'`                         |
+| `variant`    | `variant`     | Specifies the color variant of the component                                                                                                         | `"amaranth" \| "aqua" \| "blue" \| "error" \| "green" \| "info" \| "lime" \| "orange" \| "orchid" \| "primary" \| "purple" \| "red" \| "sky" \| "success" \| "violet" \| "warning" \| "yellow" \| undefined` | `undefined`                      |
 
 
 ## Events
@@ -415,7 +380,7 @@ mds-push-notification-item::part(content) {
 
 ### `updateLang() => Promise<void>`
 
-
+Updates the component's texts to the locale currently set on the host element.
 
 #### Returns
 

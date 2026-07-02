@@ -1,11 +1,12 @@
-import { Component, Element, Host, Prop, h, Watch } from '@stencil/core';
+import { Component, Element, Host, Prop, State, h, Watch } from '@stencil/core';
 import { FloatingUIPlacement, FloatingUIStrategy } from '@type/floating-ui';
 import { TypographyTooltipType } from '@type/typography';
 import arrowSvg from './assets/arrow.svg';
 import { FloatingController, FloatingElement } from '@common/floating-controller';
+import { subscribePreference } from '@common/preference';
 
 /**
- * @slot default - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
+ * @slot - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
  */
 
 @Component({
@@ -18,11 +19,19 @@ export class MdsTooltip implements FloatingElement {
   private floatingController: FloatingController;
 
   @Element() host!: HTMLMdsTooltipElement;
+  @State() prefAnimation?: string;
+  private unsubscribePrefAnimation?: () => void;
+  @State() prefContrast?: string;
+  private unsubscribePrefContrast?: () => void;
+  @State() prefTheme?: string;
+  private unsubscribePrefTheme?: () => void;
+  @State() prefThemeScheme?: string;
+  private unsubscribePrefThemeScheme?: () => void;
 
   /**
    * @internal
    */
-  @Prop() readonly arrow: boolean = true;
+  @Prop() readonly hideArrow: boolean = false;
 
   /**
    * @internal
@@ -30,9 +39,9 @@ export class MdsTooltip implements FloatingElement {
   @Prop() arrowPadding: number = 4;
 
   /**
-   * If set, the component will be placed automatically near it's caller.
+   * If set, the component will not be placed automatically near it's caller.
    */
-  @Prop({ reflect: true }) readonly autoPlacement: boolean = true;
+  @Prop({ reflect: true }) readonly disableAutoPlacement: boolean = false;
 
   /**
    * Specifies the placement of the component if no space is available where it is placed.
@@ -60,9 +69,9 @@ export class MdsTooltip implements FloatingElement {
   @Prop() readonly typography: TypographyTooltipType = 'tip';
 
   /**
-   * If set, the component will be kept inside the viewport.
+   * If set, the component will not be kept inside the viewport.
    */
-  @Prop() readonly shift: boolean = true;
+  @Prop() readonly disableShift: boolean = false;
 
   /**
    * Sets a safe area distance between the tooltip and the viewport.
@@ -83,13 +92,13 @@ export class MdsTooltip implements FloatingElement {
     this.visible = visibility;
   };
 
-  @Watch('arrow')
-  arrowChanged(): void {
+  @Watch('hideArrow')
+  hideArrowChanged(): void {
     this.floatingController.updatePosition();
   }
 
-  @Watch('autoPlacement')
-  autoPlacementChanged(): void {
+  @Watch('disableAutoPlacement')
+  disableAutoPlacementChanged(): void {
     this.floatingController.updatePosition();
   }
 
@@ -108,8 +117,8 @@ export class MdsTooltip implements FloatingElement {
     this.floatingController.updatePosition();
   }
 
-  @Watch('shift')
-  shiftChanged(): void {
+  @Watch('disableShift')
+  disableShiftChanged(): void {
     this.floatingController.updatePosition();
   }
 
@@ -135,11 +144,26 @@ export class MdsTooltip implements FloatingElement {
 
   @Watch('target')
   targetChanged(): void {
-    if (!this.target) return;
+    if (this.target === '') return;
 
     this.caller = this.floatingController?.updateCaller(this.target);
     this.caller.addEventListener('mouseleave', this.handleVisibility.bind(this, false));
     this.caller.addEventListener('mouseenter', this.handleVisibility.bind(this, true));
+  }
+
+  connectedCallback(): void {
+    this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
+      this.prefAnimation = value;
+    });
+    this.unsubscribePrefContrast = subscribePreference('contrast', (value) => {
+      this.prefContrast = value;
+    });
+    this.unsubscribePrefTheme = subscribePreference('theme', (value) => {
+      this.prefTheme = value;
+    });
+    this.unsubscribePrefThemeScheme = subscribePreference('theme-scheme', (value) => {
+      this.prefThemeScheme = value;
+    });
   }
 
   componentDidLoad(): void {
@@ -149,12 +173,21 @@ export class MdsTooltip implements FloatingElement {
   }
 
   disconnectedCallback(): void {
+    this.unsubscribePrefAnimation?.();
+    this.unsubscribePrefContrast?.();
+    this.unsubscribePrefTheme?.();
+    this.unsubscribePrefThemeScheme?.();
     this.floatingController.dismiss();
   }
 
   render() {
     return (
-      <Host>
+      <Host
+        pref-animation={this.prefAnimation}
+        pref-contrast={this.prefContrast}
+        pref-theme={this.prefTheme}
+        pref-theme-scheme={this.prefThemeScheme}
+      >
         <div class="arrow" innerHTML={arrowSvg} />
         <mds-text class="text" typography={this.typography} part="text">
           <slot />

@@ -17,13 +17,14 @@ import { ToneMinimalVariantType } from '@type/tone';
 import { TypographyTooltipType } from '@type/typography';
 import { TypographyTruncateType } from '@type/text';
 import { Locale } from '@common/locale';
+import { subscribePreference } from '@common/preference';
 import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.en.json';
 import localeIt from './meta/locale.it.json';
 
 /**
- * @slot default - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
+ * @slot - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
  */
 
 export type MdsLabelVariantType = ThemeLabelVariantType | ThemeStatusVariantType;
@@ -35,6 +36,12 @@ export type MdsLabelVariantType = ThemeLabelVariantType | ThemeStatusVariantType
 })
 export class MdsLabel {
   @Element() private host: HTMLMdsLabelElement;
+  @State() prefContrast?: string;
+  private unsubscribePrefContrast?: () => void;
+  @State() prefTheme?: string;
+  private unsubscribePrefTheme?: () => void;
+  @State() prefThemeScheme?: string;
+  private unsubscribePrefThemeScheme?: () => void;
   private km = new KeyboardManager();
   private t: Locale = new Locale({
     el: localeEl,
@@ -43,6 +50,9 @@ export class MdsLabel {
     it: localeIt,
   });
   @State() language: string;
+  /**
+   * Updates the component's texts to the locale currently set on the host element.
+   */
   @Method()
   async updateLang(): Promise<void> {
     this.language = this.t.lang(this.host);
@@ -99,6 +109,18 @@ export class MdsLabel {
     this.km.detachClickBehavior();
   };
 
+  connectedCallback(): void {
+    this.unsubscribePrefContrast = subscribePreference('contrast', (value) => {
+      this.prefContrast = value;
+    });
+    this.unsubscribePrefTheme = subscribePreference('theme', (value) => {
+      this.prefTheme = value;
+    });
+    this.unsubscribePrefThemeScheme = subscribePreference('theme-scheme', (value) => {
+      this.prefThemeScheme = value;
+    });
+  }
+
   componentDidLoad(): void {
     this.t.lang(this.host);
     this.handleKeyboard();
@@ -109,12 +131,19 @@ export class MdsLabel {
   }
 
   disconnectedCallback(): void {
+    this.unsubscribePrefContrast?.();
+    this.unsubscribePrefTheme?.();
+    this.unsubscribePrefThemeScheme?.();
     this.km.detachClickBehavior();
   }
 
   render() {
     return (
-      <Host>
+      <Host
+        pref-contrast={this.prefContrast}
+        pref-theme={this.prefTheme}
+        pref-theme-scheme={this.prefThemeScheme}
+      >
         <mds-text class="text" truncate={this.truncate} typography={this.typography}>
           {this.label}
         </mds-text>
@@ -122,7 +151,7 @@ export class MdsLabel {
           <mds-button
             class="button-close"
             icon={miBaselineCancel}
-            onClick={this.onClickDelete.bind(this)}
+            onClick={this.onClickDelete}
             title={this.t.get('remove')}
             size="sm"
           ></mds-button>

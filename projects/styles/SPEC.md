@@ -119,6 +119,17 @@ Dark mode is handled at the palette level. No class changes are needed on indivi
 </html>
 ```
 
+### How preferences are applied
+
+Every preference (`theme`, `contrast`, `animation`, `consumption`) is driven by the `mds-pref` controller and its children (`mds-pref-theme`, `mds-pref-contrast`, ...). Each child writes its state to the `<html>` element in two redundant forms, on purpose, so future changes stay cheap:
+
+- a **class** (e.g. `pref-theme-dark`, `pref-contrast-more`) - consumed by selectors
+- a **custom property** (e.g. `--magma-pref-user-theme`, `--magma-pref-animation`) - readable as an inherited value, including across shadow boundaries
+
+`mds-pref` also toggles the `data-magma-pref` attribute on `<html>` while a controller is mounted; selectors use `:root:not([data-magma-pref])` to fall back to the OS preference (`@media`) when no controller is present.
+
+The visible effect is produced **globally, at the palette level**: the published color CSS (`colors-rgb-*.css`) redefines the `--tone-*` (and related) tokens on `:root` for the dark and high-contrast states, with plain selectors plus `@media (prefers-color-scheme)` / `(prefers-contrast)`. This is light-DOM CSS, so it works in every browser and the tokens inherit into every component shadow DOM. Activating dark mode does not depend on any component-level rule. Per-component `*-pref-*.css` files only refine on top of this (see `projects/stencil/SPEC.md`).
+
 ## Other accessibility preferences
 
 ```html

@@ -22,6 +22,7 @@ import {
   tailwindCss4Filter,
   cssTailwindThemeColor,
   cssVarsTransitionsFormat,
+  gimpPaletteFormat,
 } from '../formats/index.js'
 import { getBrandColorConfig } from '../config/styledictionary/sd-brand-color.config.js'
 import chalk from 'chalk'
@@ -92,6 +93,7 @@ export function getStyleDictionaryWithAllCustomTransform (): StyleDictionary.Cor
       .registerFormat(cssRgbFormat)
       .registerFormat(cssTailwindThemeColor)
       .registerFormat(jsonCoolorsFormat)
+      .registerFormat(gimpPaletteFormat)
       // FONT
       .registerFormat(flutterFontFormat)
       .registerFormat(jsTailwindFontFamilyFormat)

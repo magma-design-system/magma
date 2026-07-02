@@ -16,8 +16,8 @@ export default {
       options: modalAnimationStyleDictionary,
       type: { name: 'string' },
     },
-    backdrop: {
-      description: 'Specifies if the modal shows the backdrop',
+    'hide-backdrop': {
+      description: 'Hides the modal backdrop',
       type: { name: 'boolean' },
     },
     interaction: {
@@ -42,6 +42,10 @@ export default {
       description: 'Specifies the animation position of the modal window',
       options: modalPositionDictionary,
       type: { name: 'string' },
+    },
+    tallContent: {
+      description: 'QA Matrix only: render tall content to exercise large-window sliding',
+      type: { name: 'boolean' },
     },
   },
 };
@@ -534,6 +538,91 @@ const ShowTemplate = () => {
   );
 };
 
+/**
+ * QA Matrix: one trigger per position x animation, so the enter/exit animation
+ * can be eyeballed across the whole grid in a single place. Use the Controls
+ * panel to toggle `backdrop`, `interaction` (strict/relaxed) and `tallContent`
+ * (small vs large window, which reveals percentage-based slide distances).
+ */
+const QAMatrixTemplate = (args) => {
+  const [opened, setOpened] = useState(false);
+  const [position, setPosition] = useState('center');
+  const [animation, setAnimation] = useState('slide');
+
+  useEffect(() => {
+    const modalElement = document.querySelector('#qa-modal');
+    const reset = () => setOpened(false);
+    modalElement?.addEventListener('mdsModalClose', reset);
+    modalElement?.addEventListener('mdsModalHide', reset);
+    return () => {
+      modalElement?.removeEventListener('mdsModalClose', reset);
+      modalElement?.removeEventListener('mdsModalHide', reset);
+    };
+  }, []);
+
+  const open = (nextPosition: string, nextAnimation: string) => {
+    setPosition(nextPosition);
+    setAnimation(nextAnimation);
+    setOpened(true);
+  };
+
+  return (
+    <div class="p-400 grid gap-600">
+      <mds-text typography="caption">
+        Click a cell to open that position / animation. backdrop, interaction and tallContent are in
+        the Controls panel.
+      </mds-text>
+      {modalAnimationStyleDictionary.map((anim) => (
+        <div key={anim} class="grid gap-200">
+          <mds-text typography="h6">{anim}</mds-text>
+          <div class="grid grid-cols-3 gap-200 max-w-[480px]">
+            {modalPositionDictionary.map((pos) => (
+              <mds-button key={`${anim}-${pos}`} onClick={() => open(pos, anim)}>
+                {pos}
+              </mds-button>
+            ))}
+          </div>
+        </div>
+      ))}
+      <mds-modal
+        id="qa-modal"
+        position={position}
+        animation={animation}
+        interaction={args.interaction}
+        hideBackdrop={args['hide-backdrop'] ? true : undefined}
+        opened={opened === true ? true : undefined}
+      >
+        <div class="p-400 grid gap-400 grid-cols-full">
+          <mds-text typography="h5">
+            {position} / {animation}
+          </mds-text>
+          {args.tallContent ? (
+            Array(14)
+              .fill(null)
+              .map((_value, index) => (
+                <mds-text key={index}>
+                  Line {index + 1} - tall content to exercise large-window sliding.
+                </mds-text>
+              ))
+          ) : (
+            <mds-text>Small content.</mds-text>
+          )}
+        </div>
+      </mds-modal>
+    </div>
+  );
+};
+
+export const QAMatrix = {
+  render: QAMatrixTemplate,
+
+  args: {
+    backdrop: true,
+    interaction: 'relaxed',
+    tallContent: false,
+  },
+};
+
 export const Default = {
   render: Template,
 
@@ -576,7 +665,7 @@ export const Backdrop = {
   args: {
     position: 'right',
     opened: true,
-    backdrop: undefined,
+    'hide-backdrop': true,
   },
 };
 

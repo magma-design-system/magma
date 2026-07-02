@@ -129,6 +129,13 @@ jobs:
           EOF
 
       - name: Run semantic-release --dry-run to detect next version
+        # release-version.config.cjs reads tagFormat/scope from these at require time,
+        # so they must be present in THIS step's env (not just the generation step);
+        # without them tagFormat falls back to the default v${version} (wrong tags) and
+        # scope filtering is disabled.
+        env:
+          SR_TAG_FORMAT: ${{ inputs.tag-format }}
+          SR_COMMIT_SCOPE: ${{ inputs.commit-scope }}
         run: |
           set -o pipefail
           npx semantic-release -e ./release-version.config.cjs --dry-run

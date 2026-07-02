@@ -1,9 +1,10 @@
-import { Component, Host, h, Prop } from '@stencil/core';
+import { Component, Host, h, Prop, State } from '@stencil/core';
+import { subscribePreference } from '@common/preference';
 import { TypographyTitleType } from '@type/typography';
 import { TypographyHeadingTagType } from '@type/text';
 
 /**
- * @slot default - Add `text string`, `HTML elements` or `components` to this slot.
+ * @slot - Add `text string`, `HTML elements` or `components` to this slot.
  * @slot author - Add `text string`, `HTML elements` or `components` to this slot.
  */
 
@@ -13,6 +14,19 @@ import { TypographyHeadingTagType } from '@type/text';
   shadow: true,
 })
 export class MdsQuote {
+  @State() prefContrast?: string;
+  private unsubscribePrefContrast?: () => void;
+
+  connectedCallback(): void {
+    this.unsubscribePrefContrast = subscribePreference('contrast', (value) => {
+      this.prefContrast = value;
+    });
+  }
+
+  disconnectedCallback(): void {
+    this.unsubscribePrefContrast?.();
+  }
+
   /**
    * Specifies the font typography of the element
    */
@@ -25,7 +39,7 @@ export class MdsQuote {
 
   render() {
     return (
-      <Host>
+      <Host pref-contrast={this.prefContrast}>
         <mds-text class="open-quote" tag="div" typography={this.typography}>
           <span>
             <i>❝&nbsp;</i>

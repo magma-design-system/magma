@@ -4,10 +4,27 @@
 
 This component is intented to be used only with svg files. In order to properly work, you need  to tell the component the path to the svg file directory.
 
-### Via `sessionStorage` (recommended)
+### Via `IconsSetService` (recommended)
 
-The simplest way to instruct the component is using `window.sessionStorage.setItem('mdsIconSvgPath', <path-to-svg-directory>)`.
-For example, if your svg directory is located in `assets/img/svg`, you should put the following code in your application
+Import the `IconsSetService` singleton from the package's `services` entry point and call
+`setSvgPath()`. It updates the shared, in-memory icon path (kept on `globalThis`, so every
+bundled copy of the service agrees) and notifies all mounted icons to (re)load — **no
+`sessionStorage` involved**.
+
+```javascript
+import { IconsSetService } from '@maggioli-design-system/magma/services';
+
+IconsSetService.setSvgPath('/assets/img/svg/');
+```
+
+The path must be an absolute path starting with `/`, or a full URL.
+It can be called before or after the icons are mounted.
+
+### Via `sessionStorage` (optional)
+
+You can also point the component to the svg directory by setting a `sessionStorage` key.
+Note this is **optional and may be blocked** by some browsers, privacy/incognito modes,
+storage partitioning, or sandboxed iframes — when blocked, prefer `IconsSetService` above.
 
 ```javascript
 window.sessionStorage.setItem('mdsIconSvgPath', 'assets/img/svg/');
@@ -40,10 +57,12 @@ mdsIconGet()
 
 ### Via `setSvgPathStatic` static class function
 
-Last way to set it is by calling the static function present in the class. This is done after the `defineCustomElements()` call
+Last way to set it is by calling the static function present in the class, after the
+`defineCustomElements()` call. This relies on a deep import whose path is not a stable
+public API (it changes between builds), so prefer `IconsSetService` above.
 
 ```javascript
-import { mds_icon } from '@maggioli-design-system/mds-icon/dist/esm/mds-icon.entry'
+import { mds_icon } from '@maggioli-design-system/magma/dist/esm/mds-icon.entry'
 
 const mdsIconGet = async () => {
   await customElements.whenDefined('mds-icon')
@@ -84,7 +103,7 @@ The `<mds-icon>` web component is the single glyph primitive of the Magma Design
 - **Decorative by default**: The icon contributes no accessible name; meaning must come from the surrounding labelled control or text.
 - **Source resolution**: `name` is interpreted three ways - a base64 `data:` SVG string is decoded inline, a raw `<svg>`/`<?xml>` markup string is used verbatim, and anything else is treated as an icon filename slug fetched from the configured SVG directory.
 - **Async load**: When `name` is a slug the icon paints once the SVG arrives; a failed fetch renders empty rather than throwing.
-- **Path configuration**: The SVG directory can be set imperatively via the `setSvgPath` instance method or the `setSvgPathStatic` static method; icons that mounted before the path was configured reload themselves once it is set.
+- **Path configuration**: The SVG directory is set programmatically via the shared `IconsSetService.setSvgPath()` singleton (imported from `@maggioli-design-system/magma/services`), with the `mdsIconSvgPath` `sessionStorage` key as an optional fallback and the `setSvgPath` instance / `setSvgPathStatic` static methods as alternatives; icons that mounted before the path was configured reload themselves once it is set.
 
 #### Properties & Visual Configurations
 
@@ -112,9 +131,21 @@ The canonical form. Pass a slug string as `name`; the component fetches the matc
 <mds-icon name="action-email-send"></mds-icon>
 ```
 
-#### Configuring the SVG Base Path via sessionStorage
+#### Configuring the SVG Base Path via `IconsSetService` (recommended)
 
-Set `mdsIconSvgPath` in `sessionStorage` before any `<mds-icon>` mounts. This is the recommended one-liner: every icon instance reads it on init and falls back to this key when no path has been set programmatically.
+Import the shared `IconsSetService` singleton from the package's `services` entry point and call `setSvgPath()`. It updates the shared, in-memory icon path - kept on `globalThis` so every bundled copy of the service (lazy chunks, `esm`/`esm-es5` variants, `dist/components`) agrees on it - and notifies all mounted icons to (re)load immediately. **No `sessionStorage` is involved**, which makes it the safest option when storage is blocked (incognito, sandboxed iframes, storage partitioning). Pass an absolute path (starting with `/`) or a full URL.
+
+```javascript
+import { IconsSetService } from '@maggioli-design-system/magma/services';
+
+IconsSetService.setSvgPath('/assets/img/svg/');
+```
+
+It can be called before or after the icons mount: instances mounted earlier re-fetch automatically once the path is set. Always use the exported `IconsSetService`; do not construct your own controller, which would keep a separate icon cache and listener list.
+
+#### Configuring the SVG Base Path via sessionStorage (optional)
+
+Set `mdsIconSvgPath` in `sessionStorage` before any `<mds-icon>` mounts; every icon instance falls back to this key when no path has been set programmatically. This one-liner is convenient but **may be blocked** by some browsers, privacy/incognito modes, storage partitioning, or sandboxed iframes - when that happens, use `IconsSetService.setSvgPath()` above instead.
 
 ```javascript
 window.sessionStorage.setItem('mdsIconSvgPath', 'assets/img/svg/');
@@ -131,7 +162,7 @@ window.dispatchEvent(new CustomEvent('mdsIconSvgPathUpdate'));
 
 #### Configuring the SVG Base Path via the Instance Method
 
-Use `setSvgPath` when the path is only known at runtime and the `sessionStorage` approach is not possible (for example, in isolated web workers or testing environments).
+An alternative to `IconsSetService` when you already hold an `<mds-icon>` element: call its `setSvgPath` `@Method`. It delegates to the same singleton, so the effect is identical - prefer `IconsSetService` unless creating an element is more convenient (for example, in isolated testing environments).
 
 ```javascript
 await customElements.whenDefined('mds-icon');
@@ -243,19 +274,19 @@ Using a raw `<img src="...svg">` or a hardcoded `<svg>` literal bypasses the ico
 <mds-button label="Aggiungi" icon="mi/baseline/add" variant="secondary" tone="weak"></mds-button>
 ```
 
-#### Do Not Use a Relative Path Without a Leading Slash in `setSvgPath`
+#### Do Not Configure the Path with a Bare Relative Value
 
-`setSvgPath` validates the path with a regex that requires an absolute path (starting with `/`) or a full URL. A bare relative path like `assets/svg/` throws an error. Use `sessionStorage` with a relative value or pass an absolute path.
+`setSvgPath` (on `IconsSetService`, the element, or the static method) treats an absolute path (starting with `/`) as relative to `window.location.origin`, and accepts full URLs. A bare relative value like `assets/svg/` is *accepted* but resolved against the **current page URL**, so it silently breaks on nested routes (e.g. `/users/42/`). Always pass an absolute path or a full URL. Only an empty/whitespace value actually throws (`Svg path not recognize …`).
 
 ```javascript
-// 🚫 INCORRECT - throws: "Svg path not recognize assets/svg/"
-element.setSvgPath('assets/svg/');
+// 🚫 FRAGILE - resolved relative to the current page, breaks on nested routes
+IconsSetService.setSvgPath('assets/svg/');
 
-// ✅ CORRECT - absolute path
-element.setSvgPath('/assets/svg/');
+// ✅ CORRECT - absolute path (prefixed with the origin)
+IconsSetService.setSvgPath('/assets/svg/');
 
-// ✅ CORRECT - sessionStorage accepts relative values
-window.sessionStorage.setItem('mdsIconSvgPath', 'assets/svg/');
+// ✅ CORRECT - full URL (for example a CDN)
+IconsSetService.setSvgPath('https://cdn.example.com/svg/');
 ```
 
 #### Do Not Rely on `<mds-icon>` for an Accessible Label

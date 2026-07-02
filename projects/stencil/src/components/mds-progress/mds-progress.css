@@ -42,6 +42,9 @@
   --mds-progress-background: rgb(var(--tone-neutral-08));
   --mds-progress-color: rgb(var(--variant-primary-03));
   --mds-progress-duration: 750ms;
+  --private-progress-duration: var(--mds-progress-duration);
+  --mds-progress-transition-duration: var(--duration-300);
+  --private-progress-transition-duration: var(--mds-progress-transition-duration);
   --mds-progress-thickness: var(--height-200);
 
   @apply ease-in-out;
@@ -55,7 +58,7 @@
   min-width: var(--mds-progress-thickness);
   overflow: hidden;
   position: relative;
-  transition-duration: var(--duration-300);
+  transition-duration: var(--private-progress-transition-duration);
   transition-property: background-color;
   width: 100%;
 }
@@ -83,7 +86,7 @@
   background-color: var(--mds-progress-color);
   border-radius: inherit;
   corner-shape: inherit;
-  transition-duration: var(--mds-progress-duration);
+  transition-duration: var(--private-progress-duration);
   transition-property: background-color, flex-grow;
 }
 
