@@ -9,7 +9,10 @@ import {
   Watch,
   h,
 } from '@stencil/core';
+import { subscribePreference } from '@common/preference';
 import { ButtonIconPositionType, ButtonSizeType, ButtonType } from '@type/button';
+import { HorizontalActionsAnimationType } from '@type/animation';
+import { DirectionType } from '@component/mds-tab/meta/type';
 import { MdsTabItemEventDetail } from './meta/event-detail';
 import clsx from 'clsx';
 
@@ -20,6 +23,12 @@ import clsx from 'clsx';
 })
 export class MdsTabItem {
   @Element() private element: HTMLMdsTabItemElement;
+  @State() prefContrast?: string;
+  private unsubscribePrefContrast?: () => void;
+  @State() prefTheme?: string;
+  private unsubscribePrefTheme?: () => void;
+  @State() prefThemeScheme?: string;
+  private unsubscribePrefThemeScheme?: () => void;
   @State() isSelected?: boolean;
   @State() hasText: boolean;
 
@@ -64,6 +73,18 @@ export class MdsTabItem {
   @Prop({ reflect: true }) readonly size?: ButtonSizeType = 'md';
 
   /**
+   * Reflects the parent tab layout direction (set by mds-tab); drives the
+   * vertical layout without :host-context
+   */
+  @Prop({ reflect: true }) readonly direction?: DirectionType;
+
+  /**
+   * Reflects the parent tab selection animation (set by mds-tab); drives the
+   * slide-variant styling without :host-context
+   */
+  @Prop({ reflect: true }) readonly animation?: HorizontalActionsAnimationType;
+
+  /**
    * Specifies an optional value to get from mdsTabItemSelect event
    */
   @Prop({ reflect: true }) readonly value?: string;
@@ -105,13 +126,35 @@ export class MdsTabItem {
     }
   }
 
+  connectedCallback(): void {
+    this.unsubscribePrefContrast = subscribePreference('contrast', (value) => {
+      this.prefContrast = value;
+    });
+    this.unsubscribePrefTheme = subscribePreference('theme', (value) => {
+      this.prefTheme = value;
+    });
+    this.unsubscribePrefThemeScheme = subscribePreference('theme-scheme', (value) => {
+      this.prefThemeScheme = value;
+    });
+  }
+
+  disconnectedCallback(): void {
+    this.unsubscribePrefContrast?.();
+    this.unsubscribePrefTheme?.();
+    this.unsubscribePrefThemeScheme?.();
+  }
+
   componentWillLoad(): void {
     this.hasText = this.element.innerHTML !== '';
   }
 
   render() {
     return (
-      <Host>
+      <Host
+        pref-contrast={this.prefContrast}
+        pref-theme={this.prefTheme}
+        pref-theme-scheme={this.prefThemeScheme}
+      >
         <mds-button
           class={clsx('button', this.selected ? 'selected' : '')}
           await={this.await}

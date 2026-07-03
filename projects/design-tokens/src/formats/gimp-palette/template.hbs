@@ -1,0 +1,18 @@
+GIMP Palette
+#
+# by Magma Design System
+#
+{{#each properties as | groups |~}}
+{{#each groups as | names |~}}
+{{#each names as | lightModes |~}}
+{{#each lightModes as | palettes |~}}
+{{#ifEquals @key 'light'~}}
+{{#each palettes as | palette |~}}
+{{#ifEquals @key 'color'}}{{else}}{{gimpRgbChannel palette.value}}	{{@../../../key}}-{{@../../key}}-{{leadZero @key}}
+{{/ifEquals~}}
+{{/each~}}
+{{/ifEquals~}}
+{{/each~}}
+{{/each~}}
+{{/each~}}
+{{/each}}

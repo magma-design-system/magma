@@ -102,6 +102,10 @@
   --mds-input-tip-horizontal-offset-focused: --spacing(1000);
   --mds-input-tip-vertical-offset: --spacing(100);
   --mds-input-tip-background: rgb(var(--tone-neutral-03));
+  --mds-input-date-transition-duration: var(--duration-300);
+
+  /* private */
+  --private-input-date-transition-duration: var(--mds-input-date-transition-duration);
 
   @apply text-info-detail;
 
@@ -135,7 +139,7 @@
   margin: 0;
   overflow: hidden;
   text-overflow: ellipsis;
-  transition-duration: var(--duration-300);
+  transition-duration: var(--private-input-date-transition-duration);
   transition-property:
     background-color, border-color, box-shadow, color, fill, margin, opacity, padding, transform;
   transition-timing-function: var(--ease-out-expo);
@@ -165,7 +169,6 @@
   min-height: 3rem;
   padding-left: --spacing(400);
   padding-right: --spacing(1200);
-  padding-top: --spacing(300);
   width: 100%;
 }
 

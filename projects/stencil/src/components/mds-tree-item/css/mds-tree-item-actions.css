@@ -33,15 +33,18 @@
   transition-timing-function: var(--ease);
 }
 
-:host-context([actions='visible']) .actions-container,
-:host([actions='visible']):host-context([actions='auto']) .actions-container,
+/* Effective actions mode is resolved in JS (own value wins, else inherited from
+ * the nearest ancestor tree/tree-item) and reflected as resolved-actions on the
+ * host, so these read the item's own host instead of :host-context. 'auto' keeps
+ * the default hidden .actions (scale 0) revealed on hover/focus below. */
+
+:host([resolved-actions='visible']) .actions-container,
 .header:focus-within .actions,
 .header:hover .actions {
   pointer-events: auto;
 }
 
-:host-context([actions='visible']) .actions-container,
-:host([actions='visible']):host-context([actions='auto']) .actions-container,
+:host([resolved-actions='visible']) .actions-container,
 .header:focus-within .actions-container,
 .header:hover .actions-container {
   animation: toggleOverflow var(--duration-300) forwards;
@@ -49,16 +52,8 @@
   width: fit-content;
 }
 
-:host([actions='visible']):host-context([actions='auto']) .header:focus-within .actions,
-:host([actions='visible']):host-context([actions='auto']) .header:hover .actions,
-:host(:not([actions='auto'])):host-context([actions='visible']) .actions,
-:host(:not([actions='visible'])):host-context([actions='auto']) .header:focus-within .actions,
-:host(:not([actions='visible'])):host-context([actions='auto']) .header:hover .actions,
+:host([resolved-actions='visible']) .actions,
 .header:focus-within .actions,
 .header:hover .actions {
   transform: scale(1);
-}
-
-:host(:not([actions='visible'])):host-context([actions='auto']) .actions {
-  transform: scale(0);
 }

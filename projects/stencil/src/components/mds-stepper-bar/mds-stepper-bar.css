@@ -69,16 +69,21 @@
   --mds-stepper-bar-scrollbar-thumb-background: rgb(var(--tone-neutral-06));
   --mds-stepper-bar-scrollbar-track-background: rgb(var(--tone-neutral-08));
 
-  @apply gap-600;
-
   display: grid;
+  gap: --spacing(600);
   position: relative;
 }
 
-.items {
-  @apply w-full
-    z-10;
+/* Animation preference: scroll-behavior is a keyword, so its reduced-motion state
+ * is handled here, cross-browser, via @media following the OS preference. */
 
+@media (prefers-reduced-motion: reduce) {
+  :host {
+    --mds-stepper-bar-scroll-behavior: auto;
+  }
+}
+
+.items {
   align-items: start;
   display: flex;
   flex-grow: 1;
@@ -89,6 +94,8 @@
   position: relative;
   scroll-behavior: var(--mds-stepper-bar-scroll-behavior);
   scroll-snap-type: x mandatory;
+  width: 100%;
+  z-index: 10;
 }
 
 :host([linear='true']) ::slotted(mds-stepper-bar-item),
@@ -101,11 +108,9 @@
 }
 
 .contents {
-  @apply w-full;
-
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 
-@import './css/mds-stepper-bar-pref-animation.css';
 @import './css/mds-stepper-bar-navigation.css';

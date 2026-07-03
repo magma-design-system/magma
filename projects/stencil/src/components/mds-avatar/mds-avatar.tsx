@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 import fitty from 'fitty/dist/fitty.min.js';
 import { Component, Element, Host, h, State, Prop, Watch } from '@stencil/core';
+import { subscribePreference } from '@common/preference';
 import { ThemeFullVariantAvatarType } from '@type/variant';
 import { ToneMinimalVariantType } from '@type/tone';
 
@@ -22,8 +23,26 @@ export class MdsAvatar {
   // BUG: when user switch from initials to other and turn back to initials fitty breaks
 
   @Element() private element: HTMLMdsAvatarElement;
+  @State() prefAnimation?: string;
+  private unsubscribePrefAnimation?: () => void;
+  @State() prefContrast?: string;
+  private unsubscribePrefContrast?: () => void;
   @State() fallback = false;
   @State() loaded = true;
+
+  connectedCallback(): void {
+    this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
+      this.prefAnimation = value;
+    });
+    this.unsubscribePrefContrast = subscribePreference('contrast', (value) => {
+      this.prefContrast = value;
+    });
+  }
+
+  disconnectedCallback(): void {
+    this.unsubscribePrefAnimation?.();
+    this.unsubscribePrefContrast?.();
+  }
 
   private observer: ResizeObserver;
   private fittyElements;
@@ -111,6 +130,15 @@ export class MdsAvatar {
     if (this.fittyInitialized) this.removeFontResize();
   };
 
+  private readonly handleImgLoadError = (): void => {
+    this.loaded = true;
+    this.fallback = true;
+  };
+
+  private readonly handleImgLoadSuccess = (): void => {
+    this.loaded = true;
+  };
+
   private checkInitialsVariant = (): void => {
     if (this.initials !== undefined && this.initials !== '') {
       let cleanedInitials = this.initials
@@ -184,7 +212,7 @@ export class MdsAvatar {
 
   render() {
     return (
-      <Host>
+      <Host pref-animation={this.prefAnimation} pref-contrast={this.prefContrast}>
         <div
           class={clsx(
             'avatar',
@@ -222,13 +250,8 @@ export class MdsAvatar {
               <mds-img
                 class="image"
                 loading="lazy"
-                onMdsImgLoadError={() => {
-                  this.loaded = true;
-                  this.fallback = true;
-                }}
-                onMdsImgLoadSuccess={() => {
-                  this.loaded = true;
-                }}
+                onMdsImgLoadError={this.handleImgLoadError}
+                onMdsImgLoadSuccess={this.handleImgLoadSuccess}
                 part="media"
                 src={this.src}
               />

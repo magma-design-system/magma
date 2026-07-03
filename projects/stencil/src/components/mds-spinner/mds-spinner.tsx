@@ -1,4 +1,5 @@
-import { Component, Host, h, Prop, Watch } from '@stencil/core';
+import { Component, Host, h, Prop, State, Watch } from '@stencil/core';
+import { subscribePreference } from '@common/preference';
 import awaitIcon from './assets/await-rounded.svg';
 
 @Component({
@@ -7,6 +8,19 @@ import awaitIcon from './assets/await-rounded.svg';
   shadow: true,
 })
 export class MdsSpinner {
+  @State() prefContrast?: string;
+  private unsubscribePrefContrast?: () => void;
+
+  connectedCallback(): void {
+    this.unsubscribePrefContrast = subscribePreference('contrast', (value) => {
+      this.prefContrast = value;
+    });
+  }
+
+  disconnectedCallback(): void {
+    this.unsubscribePrefContrast?.();
+  }
+
   /**
    * Specifies if the animation is running or not, it's required for performance reasons
    */
@@ -21,7 +35,7 @@ export class MdsSpinner {
 
   render() {
     return (
-      <Host>
+      <Host pref-contrast={this.prefContrast}>
         <i class="await-icon" innerHTML={awaitIcon} />
       </Host>
     );

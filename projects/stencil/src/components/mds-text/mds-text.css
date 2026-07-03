@@ -44,6 +44,8 @@
   --mds-text-line-clamp: 3;
   --mds-text-animation-speed: 0.5;
   --mds-text-animation-placeholder-char: ' ';
+  --mds-text-transition-duration: var(--duration-200);
+  --private-text-transition-duration: var(--mds-text-transition-duration);
 
   display: flex;
   min-width: 0;
@@ -202,15 +204,15 @@
 }
 
 :host([tag='code']) {
-  @apply ease-in-out
-  px-100
-  py-25
-  rounded;
+  @apply ease-in-out;
 
   background-color: rgb(var(--tone-neutral-09));
+  border-radius: 0.25rem;
   box-shadow: rgb(var(--tone-neutral-08)) 0 0 0 1px;
   color: rgb(var(--tone-neutral-03));
-  transition-duration: var(--duration-200);
+  padding-block: --spacing(25);
+  padding-inline: --spacing(100);
+  transition-duration: var(--private-text-transition-duration);
   transition-property: color, background-color;
 }
 

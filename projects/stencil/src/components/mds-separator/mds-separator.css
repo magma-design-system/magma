@@ -13,11 +13,10 @@
 :host {
   --mds-separator-background: rgb(var(--tone-neutral-08));
 
-  @apply rounded-full
-    h-[1px];
-
   background-color: var(--mds-separator-background);
+  border-radius: var(--radius-full);
   display: flex;
+  height: 1px;
 }
 
 @import './css/mds-separator-pref-theme.css';

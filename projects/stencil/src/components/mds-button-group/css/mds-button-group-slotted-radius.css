@@ -1,0 +1,14 @@
+/* Joined-group radii are driven from the parent: mds-button-group flattens the
+ * inner edges of its slotted buttons via ::slotted, instead of each button
+ * reading its parent. Cross-browser (no :host-context); ::slotted (outer tree)
+ * wins over the button's own host radius. */
+
+::slotted(mds-button:not(:first-child)) {
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+}
+
+::slotted(mds-button:not(:last-child)) {
+  border-bottom-right-radius: 0;
+  border-top-right-radius: 0;
+}

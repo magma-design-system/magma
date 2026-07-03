@@ -24,13 +24,13 @@ export interface HTMLFloatingElement extends HTMLStencilElement, PositionOptions
 }
 
 export interface PositionOptions {
-  arrow: boolean;
+  hideArrow: boolean;
   arrowPadding: number;
-  autoPlacement: boolean;
+  disableAutoPlacement: boolean;
   flip: boolean;
   offset: number;
   placement: FloatingUIPlacement;
-  shift: boolean;
+  disableShift: boolean;
   shiftPadding: number;
   strategy: FloatingUIStrategy;
 }
@@ -101,7 +101,7 @@ export class FloatingController {
   };
 
   private readonly arrowTransform = (arrowPosition: string): { transform: string } => {
-    let transformProps = this._host.arrow && this._host.visible ? 'scale(1)' : 'scale(0)';
+    let transformProps = !this._host.hideArrow && this._host.visible ? 'scale(1)' : 'scale(0)';
     switch (arrowPosition) {
       case 'bottom':
         transformProps = `rotate(180deg) ${transformProps} translate(0, -100%)`;
@@ -164,7 +164,7 @@ export class FloatingController {
       config.padding = this._host.shiftPadding;
     }
 
-    if (this._host.autoPlacement) {
+    if (!this._host.disableAutoPlacement) {
       middleware.push(autoPlacement());
     }
 
@@ -172,15 +172,15 @@ export class FloatingController {
       middleware.push(offset(this._host.offset));
     }
 
-    if (!this._host.autoPlacement && this._host.flip) {
+    if (this._host.disableAutoPlacement && this._host.flip) {
       middleware.push(flip(config));
     }
 
-    if (this._host.shift) {
+    if (!this._host.disableShift) {
       middleware.push(shift(config));
     }
 
-    if (this.arrowEl && this._host.arrow) {
+    if (this.arrowEl && !this._host.hideArrow) {
       middleware.push(
         arrow({
           element: this.arrowEl,

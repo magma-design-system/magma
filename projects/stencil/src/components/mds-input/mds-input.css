@@ -139,10 +139,12 @@
   --mds-input-tip-vertical-offset: --spacing(100);
   --mds-input-variant-color-rgb: var(--variant-primary-03);
   --mds-input-border-radius: var(--radius-xl);
+  --mds-input-transition-duration: var(--duration-300);
 
   /* private */
   --mds-input-controls-border: 2px solid rgb(var(--tone-neutral-09));
   --mds-input-controls-color: rgb(var(--tone-neutral-03));
+  --private-input-transition-duration: var(--mds-input-transition-duration);
 
   border-radius: var(--mds-input-border-radius);
   container-type: inline-size;
@@ -178,7 +180,7 @@
   overflow: hidden;
   padding: --spacing(300) --spacing(400);
   text-overflow: ellipsis;
-  transition-duration: var(--duration-300);
+  transition-duration: var(--private-input-transition-duration);
   transition-property:
     background-color, border-color, box-shadow, color, fill, margin, opacity, padding, transform;
   transition-timing-function: var(--ease-out-expo);
@@ -209,7 +211,7 @@
 
 :host textarea.input,
 :host([typography]) textarea.input {
-  border-radius: var(--radius-xs);
+  border-radius: var(--mds-input-border-radius);
   field-sizing: var(--mds-input-textarea-field-sizing);
   max-height: var(--mds-input-textarea-max-height);
   min-height: var(--mds-input-textarea-min-height);

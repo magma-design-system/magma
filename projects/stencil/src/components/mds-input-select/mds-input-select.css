@@ -114,6 +114,12 @@
   --mds-input-tip-horizontal-offset-focused: --spacing(1000);
   --mds-input-tip-vertical-offset: --spacing(100);
   --mds-input-tip-background: rgb(var(--tone-neutral-03));
+  --mds-input-select-transition-duration: var(--duration-300);
+  --mds-input-select-icon-transition-duration: var(--duration-200);
+
+  /* private */
+  --private-input-select-transition-duration: var(--mds-input-select-transition-duration);
+  --private-input-select-icon-transition-duration: var(--mds-input-select-icon-transition-duration);
 
   @apply text-info-detail;
 
@@ -157,7 +163,7 @@
   padding-left: --spacing(400);
   padding-right: --spacing(1200);
   text-overflow: ellipsis;
-  transition-duration: var(--duration-300);
+  transition-duration: var(--private-input-select-transition-duration);
   transition-property: background-color, border-color, box-shadow, color, fill;
   transition-timing-function: var(--ease-out-expo);
   width: 100%;
@@ -168,7 +174,7 @@
   @apply outline-hidden;
 
   color: rgb(var(--tone-neutral-03));
-  transition-duration: var(--duration-300);
+  transition-duration: var(--private-input-select-transition-duration);
   transition-timing-function: var(--ease-out-expo);
 }
 
@@ -214,7 +220,7 @@
   background-color: var(--mds-input-select-arrow-icon-background-color);
   border-radius: var(--radius-full);
   fill: var(--mds-input-select-arrow-icon-color);
-  transition-duration: var(--duration-200);
+  transition-duration: var(--private-input-select-icon-transition-duration);
   transition-property: background-color, fill;
 }
 

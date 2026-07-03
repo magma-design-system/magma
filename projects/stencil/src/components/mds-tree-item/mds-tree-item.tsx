@@ -7,7 +7,8 @@ import miBaselineChevronRight from '@icon/mi/baseline/chevron-right.svg';
 import mdiFolderOpen from '@icon/mdi/folder-open.svg';
 import miBaselineFolderClosed from '@icon/mi/baseline/folder.svg';
 import { MdsTreeItemEventDetail } from './meta/event-detail';
-import { TreeActions, TreeIcon } from '@type/tree';
+import { TreeActions, TreeAppearance, TreeIcon } from '@type/tree';
+import { ButtonIconPositionType } from '@type/button';
 import {
   Component,
   Host,
@@ -44,6 +45,7 @@ export class MdsTreeItem {
   @State() hasChildren: boolean = false;
   @State() currentToggleIcon: string;
   @State() await: boolean;
+  @State() private resolvedActions?: TreeActions;
   @Element() private readonly host: HTMLMdsTreeItemElement;
   private readonly t: Locale = new Locale({
     el: localeEl,
@@ -84,6 +86,18 @@ export class MdsTreeItem {
    * Specifies the icon of the element
    */
   @Prop({ reflect: true }) toggle?: TreeIcon;
+
+  /**
+   * Reflects the parent tree toggle icon position (set by mds-tree); drives the
+   * toggle-icon layout without :host-context
+   */
+  @Prop({ reflect: true }) togglePosition?: ButtonIconPositionType;
+
+  /**
+   * Reflects the parent tree appearance (set by mds-tree); drives the depth/none
+   * layout without :host-context
+   */
+  @Prop({ reflect: true }) appearance?: TreeAppearance;
 
   /**
    * Specifies if the tree is expanded.
@@ -177,10 +191,35 @@ export class MdsTreeItem {
     this.updateToggleIcon();
   }
 
+  /**
+   * Resolves the effective actions mode: the item's own value wins, otherwise it
+   * inherits the nearest ancestor (tree-item or tree) that sets one. Replaces the
+   * :host-context own-vs-ancestor cascade with a value reflected on the host.
+   */
+  private resolveActions = (): void => {
+    const source = this.host.closest('mds-tree-item[actions], mds-tree[actions]');
+    this.resolvedActions = (source?.getAttribute('actions') as TreeActions) ?? 'auto';
+  };
+
+  @Watch('actions')
+  handleActionsChange(): void {
+    this.resolveActions();
+  }
+
+  /**
+   * `internal` Re-resolves the effective actions; called by mds-tree when its own
+   * actions changes so items that inherit it stay in sync.
+   */
+  @Method()
+  async refreshActions(): Promise<void> {
+    this.resolveActions();
+  }
+
   componentWillLoad(): void {
     this.language = this.t.lang(this.host);
 
     this.updateToggleIcon();
+    this.resolveActions();
 
     this.hasActions = !!this.host.querySelector(':scope > [slot="action"]');
     this.hasChildren = !!this.host.querySelector('mds-tree-item');
@@ -198,13 +237,13 @@ export class MdsTreeItem {
 
   render() {
     return (
-      <Host>
+      <Host resolved-actions={this.resolvedActions}>
         <div class={clsx('header', this.hasChildren && 'header--has-children')}>
           <div class="tree-node">
             <div class="tree-branch"></div>
             <div class="tree-dot"></div>
           </div>
-          <div class={clsx('toggle-icon', `toggle-icon--${this.toggle}`)}>
+          <div class="toggle-icon">
             <mds-button
               await={this.await}
               onClick={this.onClick}

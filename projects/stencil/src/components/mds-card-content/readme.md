@@ -22,7 +22,7 @@ The `<mds-card-content>` web component is the body region of a [`<mds-card>`](..
 
 #### Slot semantics and layout role
 
-This component is intentionally prop-free. Its only API is the **default slot**, which accepts text strings, HTML elements, or other components that make up the card's main content. All visual configuration (responsive behavior, grid layout) is governed by the parent `<mds-card>` through its `autoGrid` prop and the `--mds-card-gap` / `--mds-card-padding` custom properties; see the compound-component and slot rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+This component is intentionally prop-free. Its only API is the **default slot**, which accepts text strings, HTML elements, or other components that make up the card's main content. All visual configuration (responsive behavior, grid layout) is governed by the parent `<mds-card>` through its `disableAutoGrid` prop and the `--mds-card-gap` / `--mds-card-padding` custom properties; see the compound-component and slot rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
 
 
 ### 2. Pattern
@@ -44,7 +44,7 @@ The most common use: a card with only a content region. Place `<mds-card-content
 
 #### Full Card Composition
 
-Use `<mds-card-content>` alongside [`<mds-card-header>`](../../mds-card-header), [`<mds-card-media>`](../../mds-card-media), and [`<mds-card-footer>`](../../mds-card-footer) to build a complete card. The parent arranges them in a responsive grid automatically when `auto-grid` is enabled (the default).
+Use `<mds-card-content>` alongside [`<mds-card-header>`](../../mds-card-header), [`<mds-card-media>`](../../mds-card-media), and [`<mds-card-footer>`](../../mds-card-footer) to build a complete card. The parent arranges them in a responsive grid automatically by default (unless `disable-auto-grid` is set on the parent).
 
 ```html
 <mds-card>

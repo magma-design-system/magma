@@ -87,9 +87,11 @@
   --mds-file-preview-color: rgb(var(--label-yellow-03));
 }
 
-/* contrast + variant */
+/* contrast + variant. The component reflects the resolved contrast mode from
+ * <html> onto its host as pref-contrast (see subscribePreference); `more` is
+ * explicit, `system` and no controller follow the OS via @media. Cross-browser. */
 
-:host-context(:root.pref-contrast-more) {
+:host([pref-contrast='more']) {
   &:host([variant='primary'][message]) {
     --mds-file-preview-icon-background: rgb(var(--variant-primary-10));
     --mds-file-preview-icon-color: rgb(var(--variant-primary-02));
@@ -182,8 +184,8 @@
 }
 
 @media (prefers-contrast: more) {
-  :host-context(:root.pref-contrast-system),
-  :host-context(:root:not([data-magma-pref])) {
+  :host([pref-contrast='system']),
+  :host(:not([pref-contrast])) {
     &:host([variant='primary'][message]) {
       --mds-file-preview-icon-background: rgb(var(--variant-primary-10));
       --mds-file-preview-icon-color: rgb(var(--variant-primary-02));

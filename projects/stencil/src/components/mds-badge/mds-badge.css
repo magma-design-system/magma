@@ -44,6 +44,8 @@
   --mds-badge-border-width: 1px;
   --mds-badge-color: rgb(var(--label-sky-03));
   --mds-badge-radius: var(--radius-lg, 10px);
+  --mds-badge-transition-duration: var(--duration-200);
+  --private-badge-transition-duration: var(--mds-badge-transition-duration);
 
   align-items: center;
   background-color: var(--mds-badge-background);
@@ -52,7 +54,7 @@
   display: inline-flex;
   min-width: min-content;
   padding: --spacing(100) --spacing(200);
-  transition-duration: var(--duration-200);
+  transition-duration: var(--private-badge-transition-duration);
   transition-property: background-color, border-color, border-width, color;
   transition-timing-function: var(--ease-out-quad);
 }

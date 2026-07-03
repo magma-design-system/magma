@@ -1,0 +1,1 @@
+<MdsButton tone="ghost">{label}</MdsButton>

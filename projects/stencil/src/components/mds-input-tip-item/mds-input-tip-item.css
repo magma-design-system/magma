@@ -25,6 +25,10 @@
 }
 
 :host {
+  --mds-input-tip-item-transition-duration: var(--duration-300);
+  --private-input-tip-item-transition-duration: var(--mds-input-tip-item-transition-duration);
+  --mds-input-tip-item-content-transition-duration: var(--duration-200);
+  --private-input-tip-item-content-transition-duration: var(--mds-input-tip-item-content-transition-duration);
   --mds-input-tip-item-background: var(--mds-input-tip-background, rgb(var(--tone-neutral-03)));
   --mds-input-tip-item-color: rgb(var(--tone-neutral));
   --mds-input-tip-item-icon-color: rgb(var(--tone-neutral));
@@ -42,7 +46,7 @@
   position: static;
   text-align: center;
   transform: translate(0, 0);
-  transition-duration: var(--duration-300);
+  transition-duration: var(--private-input-tip-item-transition-duration);
   transition-property:
     background-color, border-radius, color, padding-left, padding-right, transform;
   transition-timing-function: var(--ease-out-expo);
@@ -60,7 +64,7 @@ mds-text {
   height: --spacing(300);
   opacity: 0;
   overflow: hidden;
-  transition-duration: var(--duration-200);
+  transition-duration: var(--private-input-tip-item-content-transition-duration);
   transition-property: grid-template-columns, opacity;
   transition-timing-function: var(--ease-out-expo);
 }

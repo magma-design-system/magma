@@ -15,6 +15,7 @@ import miBaselineAnimation from '@icon/mi/baseline/animation.svg';
 import miBaselineSettings from '@icon/mi/baseline/settings.svg';
 import { MdsPrefChangeEventDetail } from '@event/preference';
 import { Locale } from '@common/locale';
+import { subscribePreference } from '@common/preference';
 import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.es.json';
@@ -29,6 +30,8 @@ import { TabSizeType } from '@type/button';
 })
 export class MdsPrefAnimation {
   @Element() private element: HTMLMdsPrefAnimationElement;
+  @State() prefContrast?: string;
+  private unsubscribePrefContrast?: () => void;
   private readonly localStorageAlias: string = 'mdsPrefAnimation';
   private readonly customPropertyAlias: string = '--magma-pref-animation';
   private readonly defaultMode: AnimationModeType = 'system';
@@ -78,6 +81,16 @@ export class MdsPrefAnimation {
     },
   };
 
+  connectedCallback(): void {
+    this.unsubscribePrefContrast = subscribePreference('contrast', (value) => {
+      this.prefContrast = value;
+    });
+  }
+
+  disconnectedCallback(): void {
+    this.unsubscribePrefContrast?.();
+  }
+
   componentWillRender(): void {
     this.t.lang(this.element);
     this.setAnimation(
@@ -109,9 +122,13 @@ export class MdsPrefAnimation {
     this.setAnimation(newValue);
   }
 
+  private readonly handleModeClick = (mode: AnimationModeType) => (): void => {
+    this.setAnimation(mode);
+  };
+
   render() {
     return (
-      <Host>
+      <Host pref-contrast={this.prefContrast}>
         <mds-text class="info" typography="caption">
           <b>{this.t.get('label')}</b>{' '}
           {this.t.get(this.animation[this.mode ?? this.defaultMode].label)}
@@ -119,25 +136,19 @@ export class MdsPrefAnimation {
         <mds-tab fill size={this.size}>
           <mds-tab-item
             selected={this.mode === 'reduce'}
-            onClick={() => {
-              this.setAnimation('reduce');
-            }}
+            onClick={this.handleModeClick('reduce')}
             class="item item--reduce"
             icon={miOutlineCircle}
           ></mds-tab-item>
           <mds-tab-item
             selected={this.mode === 'system'}
-            onClick={() => {
-              this.setAnimation('system');
-            }}
+            onClick={this.handleModeClick('system')}
             class="item item--system"
             icon={miBaselineSettings}
           ></mds-tab-item>
           <mds-tab-item
             selected={this.mode === 'no-preference'}
-            onClick={() => {
-              this.setAnimation('no-preference');
-            }}
+            onClick={this.handleModeClick('no-preference')}
             class="item item--no-preference"
             icon={miBaselineAnimation}
           ></mds-tab-item>

@@ -1,0 +1,47 @@
+name: 📖 Documentation
+description: Report something wrong, outdated, or missing in the documentation.
+title: '[Docs]: '
+labels: ['type: docs', 'status: triage', 'area: docs-site']
+projects: ['magma-design-system/magma']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Help us keep the docs accurate. Please search
+        [existing issues](https://github.com/magma-design-system/magma/issues) first.
+  - type: input
+    id: location
+    attributes:
+      label: Where?
+      description: Link to the page or component documentation affected.
+      placeholder: https://magma.maggiolicloud.it/...
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What kind of problem?
+      options:
+        - Incorrect information
+        - Outdated information
+        - Missing example
+        - Missing accessibility guidance
+        - Typo / wording
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: What is wrong or missing?
+      description: Describe the problem and, if you can, suggest a fix.
+    validations:
+      required: true
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our [Code of Conduct](https://github.com/magma-design-system/magma/blob/main/.github/CODE_OF_CONDUCT.md).
+      options:
+        - label: I agree to follow this project's Code of Conduct
+          required: true

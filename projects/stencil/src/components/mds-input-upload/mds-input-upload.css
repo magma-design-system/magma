@@ -151,10 +151,6 @@
 .file-list {
   @apply grid-cols-fit-sm;
 
-  gap: --spacing(400);
-}
-
-:host-context(:not(.safari)) .file-list {
   --cols: var(--mds-input-upload-min-cols);
   --perc-w: calc(100% / var(--cols));
   --gap: --spacing(400);
@@ -162,10 +158,11 @@
   --max-w: calc(var(--perc-w) - var(--gap-w));
   --template-cols: repeat(auto-fit, minmax(--spacing(4000), var(--max-w)));
 
+  gap: --spacing(400);
   grid-template-columns: var(--template-cols);
 }
 
-:host-context(:not(.safari)) .file-list--more-items {
+.file-list--more-items {
   --template-cols: repeat(auto-fit, minmax(--spacing(4000), 1fr));
 }
 

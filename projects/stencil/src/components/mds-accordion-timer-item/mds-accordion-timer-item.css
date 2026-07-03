@@ -53,13 +53,14 @@
     --spacing(100)
   );
   --mds-accordion-timer-item-duration: var(--mds-accordion-timer-duration, 500ms);
+  --private-accordion-timer-item-duration: var(--mds-accordion-timer-item-duration);
 
   color: var(--mds-accordion-timer-item-color);
   display: grid;
   padding-bottom: --spacing(400);
   padding-top: --spacing(400);
   position: relative;
-  transition-duration: var(--mds-accordion-timer-item-duration);
+  transition-duration: var(--private-accordion-timer-item-duration);
   transition-property: color;
   transition-timing-function: var(--ease-out-expo);
 }
@@ -102,7 +103,7 @@
   opacity: 0;
   overflow: hidden;
   padding-top: 0;
-  transition-duration: var(--mds-accordion-timer-item-duration);
+  transition-duration: var(--private-accordion-timer-item-duration);
   transition-property: grid-template-rows, opacity, padding;
   transition-timing-function: var(--ease-in-out-expo);
 }

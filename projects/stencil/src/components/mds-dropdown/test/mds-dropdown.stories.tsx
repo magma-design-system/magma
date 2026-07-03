@@ -6,17 +6,17 @@ import { useState, useEffect } from 'react';
 export default {
   title: 'UI / Dropdown',
   argTypes: {
-    arrow: {
+    'hide-arrow': {
       type: { name: 'boolean' },
-      description: 'If set, the component will have an arrow pointing to the caller',
+      description: 'If set, the component will not have an arrow pointing to the caller',
     },
     'arrow-padding': {
       type: { name: 'number' },
       description: 'Sets the distance between the arrow and dropdown margins',
     },
-    'auto-placement': {
+    'disable-auto-placement': {
       type: { name: 'boolean' },
-      description: 'If set, the component will be placed automatically near it’s caller',
+      description: 'If set, the component will not be placed automatically near it’s caller',
     },
     backdrop: {
       type: { name: 'boolean' },
@@ -44,18 +44,18 @@ export default {
       options: floatingUIPlacementDictionary,
       control: { type: 'select' },
     },
-    shift: {
+    'disable-shift': {
       type: { name: 'boolean' },
-      description: 'If set, the component will be kept inside the viewport',
+      description: 'If set, the component will not be kept inside the viewport',
     },
     'shift-padding': {
       type: { name: 'number' },
       description: 'Sets a safe area distance between the dropdown and the body',
     },
-    smooth: {
+    'disable-smooth': {
       type: { name: 'boolean' },
       description:
-        'If set, the component will follow the caller smoothly, visible when the page scrolls',
+        'If set, the component will not follow the caller smoothly when the page scrolls',
     },
     strategy: {
       type: { name: 'string' },
@@ -354,7 +354,6 @@ const TemplateStrategy = ({ ...args }) => (
         {...args}
         strategy="absolute"
         z-index={10}
-        shift
         shiftPadding={50}
       >
         <mds-author class="text-tone-neutral-04">
@@ -433,7 +432,7 @@ export const Arrow = {
 
   args: {
     class: 'max-w-[350px] w-full',
-    arrow: true,
+    'hide-arrow': false,
     backdrop: true,
     'shift-padding': 32,
     layout: 'flex justify-start',
@@ -446,7 +445,7 @@ export const ArrowPadding = {
 
   args: {
     class: 'max-w-[350px] w-full',
-    arrow: true,
+    'hide-arrow': false,
     backdrop: true,
     'arrow-padding': 50,
     'shift-padding': 32,
@@ -460,7 +459,7 @@ export const AutoPlacement = {
 
   args: {
     class: 'max-w-[350px] w-full',
-    'auto-placement': true,
+    'disable-auto-placement': false,
     layout: 'flex justify-end',
     visible: false,
   },
@@ -530,7 +529,7 @@ export const Shift = {
   args: {
     class: 'max-w-[350px] w-full',
     layout: 'flex justify-end',
-    shift: true,
+    'disable-shift': false,
     visible: false,
   },
 };
@@ -541,7 +540,7 @@ export const ShiftPadding = {
   args: {
     class: 'max-w-[350px] w-full',
     layout: 'flex justify-end',
-    shift: true,
+    'disable-shift': false,
     'shift-padding': 50,
     visible: false,
   },
@@ -553,7 +552,7 @@ export const Smooth = {
   args: {
     class: 'max-w-[350px] w-full',
     layout: 'flex justify-start h-[100vh] mt-[25vh]',
-    smooth: true,
+    'disable-smooth': false,
     visible: false,
   },
 };

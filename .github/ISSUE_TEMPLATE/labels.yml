@@ -1,0 +1,112 @@
+# Label definitions for the Magma repository.
+# Sync with EndBug/label-sync or github-label-sync so labels stay versioned.
+# Colors are 6-digit hex without the leading '#'.
+
+# --- Type (omit these if you use native GitHub Issue Types) ---
+- name: 'type: bug'
+  color: d73a4a
+  description: Something is not working
+- name: 'type: feature'
+  color: a2eeef
+  description: New feature or request
+- name: 'type: docs'
+  color: 0075ca
+  description: Documentation change
+- name: 'type: training'
+  color: c5def5
+  description: Training or onboarding request
+
+# --- Status ---
+- name: 'status: triage'
+  color: ededed
+  description: Needs classification by the core team
+- name: 'status: needs-info'
+  color: fbca04
+  description: Waiting for more information from the author
+- name: 'status: accepted'
+  color: 0e8a16
+  description: Validated and ready to be picked up
+- name: 'status: in-progress'
+  color: 1d76db
+  description: Someone is working on it
+- name: 'status: needs-review'
+  color: 5319e7
+  description: Waiting for review
+- name: 'status: blocked'
+  color: b60205
+  description: Blocked by an external dependency
+- name: 'status: wontfix'
+  color: ffffff
+  description: This will not be worked on
+- name: 'status: duplicate'
+  color: cfd3d7
+  description: Already tracked elsewhere
+
+# --- Area (aligned to the monorepo packages) ---
+- name: 'area: components'
+  color: bfd4f2
+  description: Stencil components
+- name: 'area: tokens'
+  color: bfd4f2
+  description: Design tokens
+- name: 'area: styles'
+  color: bfd4f2
+  description: Styles package
+- name: 'area: icons'
+  color: bfd4f2
+  description: Icons / svg-icons
+- name: 'area: identity'
+  color: bfd4f2
+  description: Brand identity assets
+- name: 'area: docs-site'
+  color: bfd4f2
+  description: Documentation site
+- name: 'area: storybook'
+  color: bfd4f2
+  description: Storybook
+- name: 'area: build-ci'
+  color: bfd4f2
+  description: Build scripts and CI
+
+# --- Semver impact (maps to the 🟢🟡🔴 versioning model) ---
+- name: 'semver: patch'
+  color: 0e8a16
+  description: Backwards-compatible bug fix
+- name: 'semver: minor'
+  color: fbca04
+  description: Backwards-compatible new functionality
+- name: 'semver: major'
+  color: d93f0b
+  description: Breaking API change
+
+# --- Review needed ---
+- name: 'review: needs-design'
+  color: d4c5f9
+  description: Needs a system designer review
+- name: 'review: needs-a11y'
+  color: d4c5f9
+  description: Needs an accessibility review
+- name: 'review: needs-dev'
+  color: d4c5f9
+  description: Needs a system developer review
+
+# --- Community ---
+- name: 'good first issue'
+  color: 7057ff
+  description: Good for newcomers
+- name: 'help wanted'
+  color: 008672
+  description: The core team is looking for a contributor
+- name: 'needs mentor'
+  color: 006b75
+  description: A core team mentor is needed to proceed
+
+# --- Priority (assigned by the core team) ---
+- name: 'priority: low'
+  color: c2e0c6
+- name: 'priority: medium'
+  color: fef2c0
+- name: 'priority: high'
+  color: f9d0c4
+- name: 'priority: critical'
+  color: b60205

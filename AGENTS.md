@@ -15,6 +15,14 @@ Magma is the Maggioli Group Design System: a library of ~115 web components (Ste
 
 Always use **Yarn**, never npm.
 
+## Git governance (read before committing or pushing)
+
+Full rules: `docs/WORKFLOW.md`. Critical constraints for agents:
+
+1. **Never auto-merge `dev` or `main`** - merging or pushing into these branches is a manual governance step. Never open or auto-merge a pull request into them either.
+2. **One branch per unit of work** - every feature, fix, refactor, etc. lives on its own dedicated branch, branched off `dev`. Never work directly on `dev` or `main`.
+3. **Sync with `dev` before pushing** - when committing with intent to push, first check for new commits on `dev`; if present, merge `dev` into your branch, run the tests, and only then push (always to your branch's own remote, never to `dev` or `main`).
+
 ## Commands
 
 ```bash
@@ -49,9 +57,14 @@ stencil        →  design-tokens, styles, svg-icons, identity
 
 | When to consult                                                                        | File                                             |
 |----------------------------------------------------------------------------------------|--------------------------------------------------|
+| Installing Magma into a consumer app: pick a target, version matrix                    | `docs/agents/SPEC.md`                            |
+| Consumer asset setup (styles, fonts, icons, identity) shared by all targets            | `docs/agents/assets.md`                          |
+| Install track: plain web components / React / Angular                                  | `docs/agents/{web-components,react,angular}.md`  |
+| Using components after install: conventions + app styling (shipped as agents/usage.md) | `docs/agents/usage.md`                           |
 | Monorepo architecture, sub-project relationships, component composition patterns       | `docs/ARCHITECTURE.md`                           |
 | Lint rules for TypeScript/JS and CSS authoring (ESLint + Stylelint)                    | `docs/CODING_STANDARDS.md`                       |
 | Commit message convention: allowed types, scopes, special rules                        | `docs/COMMITS.md`                                |
+| Contribution workflow and git governance: branching, merge, push rules                  | `docs/WORKFLOW.md`                               |
 | Navigable catalogue of all 115 components                                              | `docs/COMPONENTS.md`                             |
 | Design token system: structure, naming convention, semantic levels                     | `docs/TOKENS.md`                                 |
 | Design tokens: structure, levels, semantics, naming convention                         | `projects/design-tokens/SPEC.md`                 |

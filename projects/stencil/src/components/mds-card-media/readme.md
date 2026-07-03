@@ -74,7 +74,7 @@ The `content` slot accepts any element or component. Use it to place a badge, ch
 
 #### Card with All Regions Composed Together
 
-`<mds-card-media>` composes alongside `mds-card-header`, `mds-card-content`, and `mds-card-footer` inside `mds-card`. Each region self-assigns its slot; the card's `auto-grid` prop drives the responsive layout automatically.
+`<mds-card-media>` composes alongside `mds-card-header`, `mds-card-content`, and `mds-card-footer` inside `mds-card`. Each region self-assigns its slot; the card drives the responsive layout automatically unless `disable-auto-grid` is set.
 
 ```html
 <mds-card>

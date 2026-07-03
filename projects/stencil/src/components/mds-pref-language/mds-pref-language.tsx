@@ -177,7 +177,6 @@ export class MdsPrefLanguage {
           interaction="none"
           visible={this.showDropdown}
           onMdsDropdownHide={this.hideLanguageSelectDropdown}
-          autoPlacement
         >
           <slot></slot>
         </mds-dropdown>

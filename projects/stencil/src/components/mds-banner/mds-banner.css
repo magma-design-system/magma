@@ -101,6 +101,7 @@
   --mds-banner-radius: var(--radius-2xl, 24px);
   --mds-banner-shadow: none;
   --mds-banner-transition-duration: 300ms;
+  --private-banner-transition-duration: var(--mds-banner-transition-duration);
   --mds-banner-transition-timing-function: var(--ease-in-out-expo, cubic-bezier(1, 0, 0, 1));
 
   @apply grid-cols-full;
@@ -116,7 +117,7 @@
   gap: --spacing(600);
   padding: --spacing(600);
   position: relative;
-  transition-duration: var(--mds-banner-transition-duration);
+  transition-duration: var(--private-banner-transition-duration);
   transition-property: background-color, box-shadow, color;
   transition-timing-function: var(--mds-banner-transition-timing-function);
   width: 100%;

@@ -52,7 +52,7 @@ import { KeyboardTest } from "./components/mds-keyboard/meta/type";
 import { KeyboardKeyName } from "./type/keyboard";
 import { MdsLabelVariantType } from "./components/mds-label/mds-label";
 import { MentionSize } from "./components/mds-mention/meta/type";
-import { ModalAnimationStateType, ModalAnimationStyleType, ModalInteractionType, ModalOverflowType, ModalPositionType } from "./components/mds-modal/meta/types";
+import { ModalAnimationStyleType, ModalInteractionType, ModalOverflowType, ModalPositionType } from "./components/mds-modal/meta/types";
 import { StrategyType } from "./components/mds-notification/meta/types";
 import { MdsPaginatorEventDetail } from "./components/mds-paginator/meta/event-detail";
 import { PolicyAiVariant } from "./components/mds-policy-ai/meta/types";
@@ -76,6 +76,7 @@ import { DirectionType as DirectionType1 } from "./components/mds-tab/meta/type"
 import { HorizontalActionsAnimationType } from "./type/animation";
 import { MdsTabEventDetail } from "./components/mds-tab/meta/event-detail";
 import { MdsTabBarEventDetail } from "./components/mds-tab-bar/meta/event-detail";
+import { DirectionType as DirectionType2 } from "./components/mds-tab/meta/type";
 import { MdsTabItemEventDetail } from "./components/mds-tab-item/meta/event-detail";
 import { MdsTableSelectionEventDetail } from "./components/mds-table/meta/event-detail";
 import { MdsTableRowSelection } from "./components/mds-table/meta/type";
@@ -133,7 +134,7 @@ export { KeyboardTest } from "./components/mds-keyboard/meta/type";
 export { KeyboardKeyName } from "./type/keyboard";
 export { MdsLabelVariantType } from "./components/mds-label/mds-label";
 export { MentionSize } from "./components/mds-mention/meta/type";
-export { ModalAnimationStateType, ModalAnimationStyleType, ModalInteractionType, ModalOverflowType, ModalPositionType } from "./components/mds-modal/meta/types";
+export { ModalAnimationStyleType, ModalInteractionType, ModalOverflowType, ModalPositionType } from "./components/mds-modal/meta/types";
 export { StrategyType } from "./components/mds-notification/meta/types";
 export { MdsPaginatorEventDetail } from "./components/mds-paginator/meta/event-detail";
 export { PolicyAiVariant } from "./components/mds-policy-ai/meta/types";
@@ -157,6 +158,7 @@ export { DirectionType as DirectionType1 } from "./components/mds-tab/meta/type"
 export { HorizontalActionsAnimationType } from "./type/animation";
 export { MdsTabEventDetail } from "./components/mds-tab/meta/event-detail";
 export { MdsTabBarEventDetail } from "./components/mds-tab-bar/meta/event-detail";
+export { DirectionType as DirectionType2 } from "./components/mds-tab/meta/type";
 export { MdsTabItemEventDetail } from "./components/mds-tab-item/meta/event-detail";
 export { MdsTableSelectionEventDetail } from "./components/mds-table/meta/event-detail";
 export { MdsTableRowSelection } from "./components/mds-table/meta/type";
@@ -170,10 +172,10 @@ export { NoiseType, PreloadType } from "./components/mds-video-wall/meta/types";
 export namespace Components {
     interface MdsAccordion {
         /**
-          * Specifies if an item can be closed by user
-          * @default true
+          * Prevents the user from closing the currently open item, forcing at least one panel to stay expanded
+          * @default false
          */
-        "closable"?: boolean;
+        "disableClose"?: boolean;
         /**
           * Choose if multiple siblings can be selected simultaneously
           * @default false
@@ -321,11 +323,6 @@ export namespace Components {
     }
     interface MdsBanner {
         /**
-          * Shows a decoration around the banner icon
-          * @default true
-         */
-        "cockade"?: boolean;
-        /**
           * Shows the cross icon to perform cancel/delete action on element
          */
         "deletable"?: boolean;
@@ -333,6 +330,11 @@ export namespace Components {
           * The title on the top of the banner
          */
         "headline"?: string;
+        /**
+          * Hides the decoration around the banner icon
+          * @default false
+         */
+        "hideCockade"?: boolean;
         /**
           * An icon displayed at the top left of the banner
          */
@@ -429,10 +431,10 @@ export namespace Components {
     }
     interface MdsBreadcrumb {
         /**
-          * Choose to display or not the back arrow button
-          * @default true
+          * Hides the back arrow button
+          * @default false
          */
-        "back"?: boolean;
+        "hideBack"?: boolean;
         /**
           * Updates the component's texts to the locale currently set on the host element.
          */
@@ -702,10 +704,10 @@ export namespace Components {
     }
     interface MdsCard {
         /**
-          * Enables automatic responsive behavior based on container queries
-          * @default true
+          * Disables the automatic responsive behavior based on container queries
+          * @default false
          */
-        "autoGrid": boolean;
+        "disableAutoGrid": boolean;
     }
     interface MdsCardContent {
     }
@@ -770,30 +772,40 @@ export namespace Components {
     }
     interface MdsDropdown {
         /**
-          * If set, the component will have an arrow pointing to the caller.
-          * @default true
-         */
-        "arrow": boolean;
-        /**
           * Sets the distance between arrow and dropdown margins.
           * @default 24
          */
         "arrowPadding": number;
-        /**
-          * If set, the component will be placed automatically near it's caller.
-          * @default false
-         */
-        "autoPlacement": boolean;
         /**
           * Specifies if the component has a backdrop background
           * @default false
          */
         "backdrop"?: boolean;
         /**
+          * If set, the component will not be placed automatically near it's caller.
+          * @default false
+         */
+        "disableAutoPlacement": boolean;
+        /**
+          * If set, the component will not be kept inside the viewport.
+          * @default false
+         */
+        "disableShift": boolean;
+        /**
+          * If set, the component will not follow the caller smoothly when the page scrolls.
+          * @default false
+         */
+        "disableSmooth": boolean;
+        /**
           * Specifies the placement of the component if no space is available where it is placed.
           * @default false
          */
         "flip": boolean;
+        /**
+          * If set, the component will not have an arrow pointing to the caller.
+          * @default false
+         */
+        "hideArrow": boolean;
         /**
           * Specifies if the component is triggered from the caller on mouseover or click event
           * @default 'click'
@@ -810,20 +822,10 @@ export namespace Components {
          */
         "placement": FloatingUIPlacement;
         /**
-          * If set, the component will be kept inside the viewport.
-          * @default true
-         */
-        "shift": boolean;
-        /**
           * Sets a safe area distance between the dropdown and the viewport.
           * @default 24
          */
         "shiftPadding": number;
-        /**
-          * If set, the component will follow the caller smoothly, visible when the page scrolls.
-          * @default true
-         */
-        "smooth": boolean;
         /**
           * Sets the CSS position strategy of the component.
           * @default 'absolute'
@@ -927,14 +929,14 @@ export namespace Components {
          */
         "format"?: string;
         /**
+          * Hides the download icon
+          * @default false
+         */
+        "hideDownloadedIcon"?: boolean;
+        /**
           * The image preview src if available of a file, useful if you have a logo to display, or a smaller version of a bigger image
          */
         "preview"?: string;
-        /**
-          * Sets if the download icon must be shown or not
-          * @default true
-         */
-        "showDownloadedIcon"?: boolean;
         /**
           * Overrides the automatic filetype recongition by forcing the suffix to one of the available formats choosen
          */
@@ -1058,10 +1060,10 @@ export namespace Components {
          */
         "autoHide"?: number;
         /**
-          * Sets if the backdrop is shown when the mds-header-bar attribute appearace is set to `inline`
-          * @default true
+          * Hides the backdrop shown when the mds-header-bar attribute appearace is set to `inline`
+          * @default false
          */
-        "backdrop"?: boolean;
+        "hideBackdrop"?: boolean;
         /**
           * Sets the visibility type of the hamburger menu of mds-header-bar
           * @default 'mobile'
@@ -1107,10 +1109,10 @@ export namespace Components {
     }
     interface MdsHelp {
         /**
-          * If set, the component will be placed automatically near it's caller.
-          * @default true
+          * If set, the component will not be placed automatically near it's caller.
+          * @default false
          */
-        "autoPlacement"?: boolean;
+        "disableAutoPlacement"?: boolean;
         /**
           * Set the name of the icon.
          */
@@ -1847,24 +1849,19 @@ export namespace Components {
     }
     interface MdsModal {
         /**
-          * Specifies if the component is animating itself or not
-          * @default 'none'
-         */
-        "animating"?: ModalAnimationStateType;
-        /**
-          * Specifies if the component is animating itself or not
+          * Specifies the animation style of the modal window
           * @default 'slide'
          */
         "animation"?: ModalAnimationStyleType;
         /**
-          * Specifies if the modal shows the backdrop
-          * @default true
-         */
-        "backdrop"?: boolean;
-        /**
           * Closes the modal.
          */
         "close": () => Promise<void>;
+        /**
+          * Hides the modal backdrop
+          * @default false
+         */
+        "hideBackdrop"?: boolean;
         /**
           * Specifies if the component can be closed with close button, or also if the backdrop background is cliccked. If `strict` is selected only the close button can dismiss the component via UI. If `relaxed` is selected the component can be dismissed also by cliccking the backdrop area.
           * @default 'relaxed'
@@ -1904,6 +1901,11 @@ export namespace Components {
     }
     interface MdsNotification {
         /**
+          * Specifies if the notification is dismissed
+          * @default false
+         */
+        "dismissed": boolean;
+        /**
           * Specifies the maximum number that can be seen, assuming that the number is for example 9 and that this is exceeded with 15, the component shows +9
          */
         "max"?: number;
@@ -1921,11 +1923,6 @@ export namespace Components {
           * @default 0
          */
         "value": number;
-        /**
-          * Specifies if the notification is visible
-          * @default true
-         */
-        "visible": boolean;
     }
     interface MdsPaginator {
         /**
@@ -2244,8 +2241,8 @@ export namespace Components {
          */
         "datetime"?: string;
         /**
-          * Specifies if the component is dismissable or not, it should be set to true by default is used with it's parent component `mds-push-notification-items`
-          * @default true
+          * Specifies if the component is dismissable; when set, a dismiss button is shown.
+          * @default false
          */
         "deletable"?: boolean;
         /**
@@ -2548,9 +2545,17 @@ export namespace Components {
     }
     interface MdsTabItem {
         /**
+          * Reflects the parent tab selection animation (set by mds-tab); drives the slide-variant styling without :host-context
+         */
+        "animation"?: HorizontalActionsAnimationType;
+        /**
           * Specifies if the button is awaiting for a response
          */
         "await": boolean;
+        /**
+          * Reflects the parent tab layout direction (set by mds-tab); drives the vertical layout without :host-context
+         */
+        "direction"?: DirectionType;
         /**
           * Specifies if the tab item is disabled or not
          */
@@ -2681,6 +2686,10 @@ export namespace Components {
          */
         "selected"?: boolean;
         /**
+          * Reflects the parent table selection state (set by mds-table); drives the row action background without :host-context
+         */
+        "selection"?: boolean;
+        /**
           * Updates the component's texts to the locale currently set on the host element.
          */
         "updateLang": () => Promise<void>;
@@ -2745,23 +2754,28 @@ export namespace Components {
     }
     interface MdsTooltip {
         /**
-          * @default true
-         */
-        "arrow": boolean;
-        /**
           * @default 4
          */
         "arrowPadding": number;
         /**
-          * If set, the component will be placed automatically near it's caller.
-          * @default true
+          * If set, the component will not be placed automatically near it's caller.
+          * @default false
          */
-        "autoPlacement": boolean;
+        "disableAutoPlacement": boolean;
+        /**
+          * If set, the component will not be kept inside the viewport.
+          * @default false
+         */
+        "disableShift": boolean;
         /**
           * Specifies the placement of the component if no space is available where it is placed.
           * @default false
          */
         "flip": boolean;
+        /**
+          * @default false
+         */
+        "hideArrow": boolean;
         /**
           * Sets distance between the tooltip and the caller.
           * @default 12
@@ -2772,11 +2786,6 @@ export namespace Components {
           * @default 'top'
          */
         "placement": FloatingUIPlacement;
-        /**
-          * If set, the component will be kept inside the viewport.
-          * @default true
-         */
-        "shift": boolean;
         /**
           * Sets a safe area distance between the tooltip and the viewport.
           * @default 12
@@ -2847,6 +2856,10 @@ export namespace Components {
          */
         "actions"?: TreeActions;
         /**
+          * Reflects the parent tree appearance (set by mds-tree); drives the depth/none layout without :host-context
+         */
+        "appearance"?: TreeAppearance;
+        /**
           * Specifies the tree should be opened asynchronously when after the click.
          */
         "async"?: boolean;
@@ -2871,9 +2884,17 @@ export namespace Components {
          */
         "label": string;
         /**
+          * `internal` Re-resolves the effective actions; called by mds-tree when its own actions changes so items that inherit it stay in sync.
+         */
+        "refreshActions": () => Promise<void>;
+        /**
           * Specifies the icon of the element
          */
         "toggle"?: TreeIcon;
+        /**
+          * Reflects the parent tree toggle icon position (set by mds-tree); drives the toggle-icon layout without :host-context
+         */
+        "togglePosition"?: ButtonIconPositionType;
         /**
           * Truncate the text of the element on one single line.
           * @default 'word'
@@ -4560,10 +4581,10 @@ declare namespace LocalJSX {
 
     interface MdsAccordion {
         /**
-          * Specifies if an item can be closed by user
-          * @default true
+          * Prevents the user from closing the currently open item, forcing at least one panel to stay expanded
+          * @default false
          */
-        "closable"?: boolean;
+        "disableClose"?: boolean;
         /**
           * Choose if multiple siblings can be selected simultaneously
           * @default false
@@ -4747,11 +4768,6 @@ declare namespace LocalJSX {
     }
     interface MdsBanner {
         /**
-          * Shows a decoration around the banner icon
-          * @default true
-         */
-        "cockade"?: boolean;
-        /**
           * Shows the cross icon to perform cancel/delete action on element
          */
         "deletable"?: boolean;
@@ -4759,6 +4775,11 @@ declare namespace LocalJSX {
           * The title on the top of the banner
          */
         "headline"?: string;
+        /**
+          * Hides the decoration around the banner icon
+          * @default false
+         */
+        "hideCockade"?: boolean;
         /**
           * An icon displayed at the top left of the banner
          */
@@ -4855,10 +4876,10 @@ declare namespace LocalJSX {
     }
     interface MdsBreadcrumb {
         /**
-          * Choose to display or not the back arrow button
-          * @default true
+          * Hides the back arrow button
+          * @default false
          */
-        "back"?: boolean;
+        "hideBack"?: boolean;
         /**
           * Emits when the breadcrumb is changed
          */
@@ -5155,10 +5176,10 @@ declare namespace LocalJSX {
     }
     interface MdsCard {
         /**
-          * Enables automatic responsive behavior based on container queries
-          * @default true
+          * Disables the automatic responsive behavior based on container queries
+          * @default false
          */
-        "autoGrid"?: boolean;
+        "disableAutoGrid"?: boolean;
     }
     interface MdsCardContent {
     }
@@ -5235,30 +5256,40 @@ declare namespace LocalJSX {
     }
     interface MdsDropdown {
         /**
-          * If set, the component will have an arrow pointing to the caller.
-          * @default true
-         */
-        "arrow"?: boolean;
-        /**
           * Sets the distance between arrow and dropdown margins.
           * @default 24
          */
         "arrowPadding"?: number;
-        /**
-          * If set, the component will be placed automatically near it's caller.
-          * @default false
-         */
-        "autoPlacement"?: boolean;
         /**
           * Specifies if the component has a backdrop background
           * @default false
          */
         "backdrop"?: boolean;
         /**
+          * If set, the component will not be placed automatically near it's caller.
+          * @default false
+         */
+        "disableAutoPlacement"?: boolean;
+        /**
+          * If set, the component will not be kept inside the viewport.
+          * @default false
+         */
+        "disableShift"?: boolean;
+        /**
+          * If set, the component will not follow the caller smoothly when the page scrolls.
+          * @default false
+         */
+        "disableSmooth"?: boolean;
+        /**
           * Specifies the placement of the component if no space is available where it is placed.
           * @default false
          */
         "flip"?: boolean;
+        /**
+          * If set, the component will not have an arrow pointing to the caller.
+          * @default false
+         */
+        "hideArrow"?: boolean;
         /**
           * Specifies if the component is triggered from the caller on mouseover or click event
           * @default 'click'
@@ -5287,20 +5318,10 @@ declare namespace LocalJSX {
          */
         "placement"?: FloatingUIPlacement;
         /**
-          * If set, the component will be kept inside the viewport.
-          * @default true
-         */
-        "shift"?: boolean;
-        /**
           * Sets a safe area distance between the dropdown and the viewport.
           * @default 24
          */
         "shiftPadding"?: number;
-        /**
-          * If set, the component will follow the caller smoothly, visible when the page scrolls.
-          * @default true
-         */
-        "smooth"?: boolean;
         /**
           * Sets the CSS position strategy of the component.
           * @default 'absolute'
@@ -5367,6 +5388,11 @@ declare namespace LocalJSX {
          */
         "format"?: string;
         /**
+          * Hides the download icon
+          * @default false
+         */
+        "hideDownloadedIcon"?: boolean;
+        /**
           * Emits when the component is clicked, returning file infos
          */
         "onMdsFileDownload"?: (event: MdsFileCustomEvent<MdsFileEventDetail>) => void;
@@ -5374,11 +5400,6 @@ declare namespace LocalJSX {
           * The image preview src if available of a file, useful if you have a logo to display, or a smaller version of a bigger image
          */
         "preview"?: string;
-        /**
-          * Sets if the download icon must be shown or not
-          * @default true
-         */
-        "showDownloadedIcon"?: boolean;
         /**
           * Overrides the automatic filetype recongition by forcing the suffix to one of the available formats choosen
          */
@@ -5510,10 +5531,10 @@ declare namespace LocalJSX {
          */
         "autoHide"?: number;
         /**
-          * Sets if the backdrop is shown when the mds-header-bar attribute appearace is set to `inline`
-          * @default true
+          * Hides the backdrop shown when the mds-header-bar attribute appearace is set to `inline`
+          * @default false
          */
-        "backdrop"?: boolean;
+        "hideBackdrop"?: boolean;
         /**
           * Sets the visibility type of the hamburger menu of mds-header-bar
           * @default 'mobile'
@@ -5561,10 +5582,10 @@ declare namespace LocalJSX {
     }
     interface MdsHelp {
         /**
-          * If set, the component will be placed automatically near it's caller.
-          * @default true
+          * If set, the component will not be placed automatically near it's caller.
+          * @default false
          */
-        "autoPlacement"?: boolean;
+        "disableAutoPlacement"?: boolean;
         /**
           * Set the name of the icon.
          */
@@ -6319,20 +6340,15 @@ declare namespace LocalJSX {
     }
     interface MdsModal {
         /**
-          * Specifies if the component is animating itself or not
-          * @default 'none'
-         */
-        "animating"?: ModalAnimationStateType;
-        /**
-          * Specifies if the component is animating itself or not
+          * Specifies the animation style of the modal window
           * @default 'slide'
          */
         "animation"?: ModalAnimationStyleType;
         /**
-          * Specifies if the modal shows the backdrop
-          * @default true
+          * Hides the modal backdrop
+          * @default false
          */
-        "backdrop"?: boolean;
+        "hideBackdrop"?: boolean;
         /**
           * Specifies if the component can be closed with close button, or also if the backdrop background is cliccked. If `strict` is selected only the close button can dismiss the component via UI. If `relaxed` is selected the component can be dismissed also by cliccking the backdrop area.
           * @default 'relaxed'
@@ -6388,6 +6404,11 @@ declare namespace LocalJSX {
     }
     interface MdsNotification {
         /**
+          * Specifies if the notification is dismissed
+          * @default false
+         */
+        "dismissed"?: boolean;
+        /**
           * Specifies the maximum number that can be seen, assuming that the number is for example 9 and that this is exceeded with 15, the component shows +9
          */
         "max"?: number;
@@ -6405,11 +6426,6 @@ declare namespace LocalJSX {
           * @default 0
          */
         "value"?: number;
-        /**
-          * Specifies if the notification is visible
-          * @default true
-         */
-        "visible"?: boolean;
     }
     interface MdsPaginator {
         /**
@@ -6731,8 +6747,8 @@ declare namespace LocalJSX {
          */
         "datetime"?: string;
         /**
-          * Specifies if the component is dismissable or not, it should be set to true by default is used with it's parent component `mds-push-notification-items`
-          * @default true
+          * Specifies if the component is dismissable; when set, a dismiss button is shown.
+          * @default false
          */
         "deletable"?: boolean;
         /**
@@ -7047,9 +7063,17 @@ declare namespace LocalJSX {
     }
     interface MdsTabItem {
         /**
+          * Reflects the parent tab selection animation (set by mds-tab); drives the slide-variant styling without :host-context
+         */
+        "animation"?: HorizontalActionsAnimationType;
+        /**
           * Specifies if the button is awaiting for a response
          */
         "await"?: boolean;
+        /**
+          * Reflects the parent tab layout direction (set by mds-tab); drives the vertical layout without :host-context
+         */
+        "direction"?: DirectionType;
         /**
           * Specifies if the tab item is disabled or not
          */
@@ -7174,6 +7198,10 @@ declare namespace LocalJSX {
          */
         "selected"?: boolean;
         /**
+          * Reflects the parent table selection state (set by mds-table); drives the row action background without :host-context
+         */
+        "selection"?: boolean;
+        /**
           * The value associated with the row, emitted when the row is selected.
          */
         "value"?: string | number;
@@ -7238,23 +7266,28 @@ declare namespace LocalJSX {
     }
     interface MdsTooltip {
         /**
-          * @default true
-         */
-        "arrow"?: boolean;
-        /**
           * @default 4
          */
         "arrowPadding"?: number;
         /**
-          * If set, the component will be placed automatically near it's caller.
-          * @default true
+          * If set, the component will not be placed automatically near it's caller.
+          * @default false
          */
-        "autoPlacement"?: boolean;
+        "disableAutoPlacement"?: boolean;
+        /**
+          * If set, the component will not be kept inside the viewport.
+          * @default false
+         */
+        "disableShift"?: boolean;
         /**
           * Specifies the placement of the component if no space is available where it is placed.
           * @default false
          */
         "flip"?: boolean;
+        /**
+          * @default false
+         */
+        "hideArrow"?: boolean;
         /**
           * Sets distance between the tooltip and the caller.
           * @default 12
@@ -7265,11 +7298,6 @@ declare namespace LocalJSX {
           * @default 'top'
          */
         "placement"?: FloatingUIPlacement;
-        /**
-          * If set, the component will be kept inside the viewport.
-          * @default true
-         */
-        "shift"?: boolean;
         /**
           * Sets a safe area distance between the tooltip and the viewport.
           * @default 12
@@ -7340,6 +7368,10 @@ declare namespace LocalJSX {
          */
         "actions"?: TreeActions;
         /**
+          * Reflects the parent tree appearance (set by mds-tree); drives the depth/none layout without :host-context
+         */
+        "appearance"?: TreeAppearance;
+        /**
           * Specifies the tree should be opened asynchronously when after the click.
          */
         "async"?: boolean;
@@ -7371,6 +7403,10 @@ declare namespace LocalJSX {
           * Specifies the icon of the element
          */
         "toggle"?: TreeIcon;
+        /**
+          * Reflects the parent tree toggle icon position (set by mds-tree); drives the toggle-icon layout without :host-context
+         */
+        "togglePosition"?: ButtonIconPositionType;
         /**
           * Truncate the text of the element on one single line.
           * @default 'word'
@@ -7451,7 +7487,7 @@ declare namespace LocalJSX {
 
     interface MdsAccordionAttributes {
         "multiple": boolean;
-        "closable": boolean;
+        "disableClose": boolean;
     }
     interface MdsAccordionItemAttributes {
         "typography": TypographyTitleType;
@@ -7498,7 +7534,7 @@ declare namespace LocalJSX {
     interface MdsBannerAttributes {
         "variant": ThemeVariantType;
         "tone": ToneMinimalBoxVariantType;
-        "cockade": boolean;
+        "hideCockade": boolean;
         "deletable": boolean;
         "headline": string;
         "icon": string;
@@ -7524,7 +7560,7 @@ declare namespace LocalJSX {
         "url": string;
     }
     interface MdsBreadcrumbAttributes {
-        "back": boolean;
+        "hideBack": boolean;
     }
     interface MdsBreadcrumbItemAttributes {
         "selected": boolean;
@@ -7586,7 +7622,7 @@ declare namespace LocalJSX {
         "today": boolean | undefined;
     }
     interface MdsCardAttributes {
-        "autoGrid": boolean;
+        "disableAutoGrid": boolean;
     }
     interface MdsChipAttributes {
         "clickable": boolean;
@@ -7603,18 +7639,18 @@ declare namespace LocalJSX {
         "opened": boolean;
     }
     interface MdsDropdownAttributes {
-        "arrow": boolean;
+        "hideArrow": boolean;
         "arrowPadding": number;
-        "autoPlacement": boolean;
+        "disableAutoPlacement": boolean;
         "backdrop": boolean;
         "flip": boolean;
         "interaction": DropdownInteractionType;
         "target": string;
         "offset": number;
         "placement": FloatingUIPlacement;
-        "shift": boolean;
+        "disableShift": boolean;
         "shiftPadding": number;
-        "smooth": boolean;
+        "disableSmooth": boolean;
         "strategy": FloatingUIStrategy;
         "visible": boolean;
         "zIndex": number;
@@ -7635,7 +7671,7 @@ declare namespace LocalJSX {
         "description": string;
         "filename": string;
         "preview": string;
-        "showDownloadedIcon": boolean;
+        "hideDownloadedIcon": boolean;
         "format": string;
     }
     interface MdsFilePreviewAttributes {
@@ -7670,7 +7706,7 @@ declare namespace LocalJSX {
         "appearance": string;
         "appearanceSet": string;
         "autoHide": number;
-        "backdrop": boolean;
+        "hideBackdrop": boolean;
         "menu": HeaderBarMenuType;
         "nav": HeaderBarNavType;
         "threshold": number;
@@ -7682,7 +7718,7 @@ declare namespace LocalJSX {
     }
     interface MdsHelpAttributes {
         "icon": string;
-        "autoPlacement": boolean;
+        "disableAutoPlacement": boolean;
         "placement": FloatingUIPlacement;
     }
     interface MdsHorizontalScrollAttributes {
@@ -7848,9 +7884,8 @@ declare namespace LocalJSX {
     }
     interface MdsModalAttributes {
         "opened": boolean;
-        "backdrop": boolean;
+        "hideBackdrop": boolean;
         "position": ModalPositionType;
-        "animating": ModalAnimationStateType;
         "animation": ModalAnimationStyleType;
         "overflow": ModalOverflowType;
         "interaction": ModalInteractionType;
@@ -7862,7 +7897,7 @@ declare namespace LocalJSX {
     interface MdsNotificationAttributes {
         "target": string;
         "value": number;
-        "visible": boolean;
+        "dismissed": boolean;
         "strategy": StrategyType;
         "max": number;
     }
@@ -8034,6 +8069,8 @@ declare namespace LocalJSX {
         "iconPosition": ButtonIconPositionType;
         "type": ButtonType;
         "size": ButtonSizeType;
+        "direction": DirectionType;
+        "animation": HorizontalActionsAnimationType;
         "value": string;
         "href": string;
     }
@@ -8062,6 +8099,7 @@ declare namespace LocalJSX {
         "overlayActions": boolean;
         "selectable": boolean;
         "selected": boolean;
+        "selection": boolean;
         "value": string;
     }
     interface MdsTextAttributes {
@@ -8080,15 +8118,15 @@ declare namespace LocalJSX {
         "position": ToastPosition;
     }
     interface MdsTooltipAttributes {
-        "arrow": boolean;
+        "hideArrow": boolean;
         "arrowPadding": number;
-        "autoPlacement": boolean;
+        "disableAutoPlacement": boolean;
         "flip": boolean;
         "target": string;
         "offset": number;
         "placement": FloatingUIPlacement;
         "typography": TypographyTooltipType;
-        "shift": boolean;
+        "disableShift": boolean;
         "shiftPadding": number;
         "strategy": FloatingUIStrategy;
         "visible": boolean;
@@ -8109,6 +8147,8 @@ declare namespace LocalJSX {
         "depth": number;
         "label": string;
         "toggle": TreeIcon;
+        "togglePosition": ButtonIconPositionType;
+        "appearance": TreeAppearance;
         "expanded": boolean;
         "truncate": TypographyTruncateType;
         "icon": string;

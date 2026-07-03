@@ -14,8 +14,8 @@ export default {
       description: 'Specifies the number of notifications to display',
       type: { name: 'number' },
     },
-    visible: {
-      description: 'Specifies if the notification is displayed',
+    dismissed: {
+      description: 'Specifies if the notification is dismissed',
       type: { name: 'boolean' },
     },
   },
@@ -65,7 +65,7 @@ export const Value = {
 
   args: {
     value: 7,
-    visible: true,
+    dismissed: false,
   },
 };
 
@@ -73,7 +73,7 @@ export const NoValue = {
   render: Template,
 
   args: {
-    visible: true,
+    dismissed: false,
   },
 };
 
@@ -83,7 +83,7 @@ export const Static = {
   args: {
     strategy: 'disabled',
     value: 7,
-    visible: true,
+    dismissed: false,
   },
 };
 
@@ -93,7 +93,7 @@ export const StaticPositioning = {
   args: {
     strategy: 'disabled',
     value: 31,
-    visible: true,
+    dismissed: false,
   },
 };
 
@@ -103,6 +103,6 @@ export const Max = {
   args: {
     value: 15,
     max: 9,
-    visible: true,
+    dismissed: false,
   },
 };

@@ -113,6 +113,9 @@
   --mds-stepper-bar-item-header-gap: var(--mds-stepper-bar-gap, --spacing(50));
   --mds-stepper-bar-item-color: rgb(var(--tone-neutral-03));
   --mds-stepper-bar-item-duaration: 250ms;
+  --private-stepper-bar-item-duaration: var(--mds-stepper-bar-item-duaration);
+  --mds-stepper-bar-item-transition-duration: var(--duration-200);
+  --private-stepper-bar-item-transition-duration: var(--mds-stepper-bar-item-transition-duration);
   --mds-stepper-bar-item-icon-background-done: rgb(var(--status-success-05));
   --mds-stepper-bar-item-icon-background-current: rgb(var(--variant-primary-04));
   --mds-stepper-bar-item-icon-background: var(
@@ -127,8 +130,6 @@
   --mds-stepper-bar-item-progress-color: rgb(var(--status-success-04));
   --mds-stepper-bar-item-progress-thickness: var(--height-200);
 
-  @apply gap-400;
-
   align-items: flex-start;
   border-radius: var(--radius-xl);
   display: grid;
@@ -136,10 +137,11 @@
   flex-direction: column;
   flex-grow: 1;
   flex-shrink: 0;
+  gap: --spacing(400);
   min-width: var(--mds-stepper-bar-item-min-width);
   position: relative;
   scroll-snap-align: center;
-  transition-duration: var(--mds-stepper-bar-item-duaration);
+  transition-duration: var(--private-stepper-bar-item-duaration);
   transition-property: outline, outline-offset, background-color;
 }
 
@@ -154,7 +156,7 @@
 } */
 
 :host(:last-of-type) {
-  @apply basis-100;
+  flex-basis: --spacing(100);
 }
 
 :host(:last-of-type) .progress {
@@ -182,33 +184,32 @@
   --mds-stepper-bar-item-icon-background: var(--mds-stepper-bar-item-icon-background-current);
   --mds-stepper-bar-item-icon-color: var(--mds-stepper-bar-item-icon-color-current);
 
-  transition-delay: calc(var(--mds-stepper-bar-item-duaration) / 2);
+  transition-delay: calc(var(--private-stepper-bar-item-duaration) / 2);
 }
 
 .header {
-  @apply ease-out
-  rounded-md
-  w-full;
+  @apply ease-out;
 
   align-items: center;
+  border-radius: var(--radius-md);
   display: flex;
   gap: var(--mds-stepper-bar-item-header-gap);
-  transition-duration: var(--duration-200);
+  transition-duration: var(--private-stepper-bar-item-transition-duration);
   transition-property: outline, outline-offset;
+  width: 100%;
 }
 
 .icon {
-  @apply ease-in-out
-  duration-150
-  rounded-full;
+  @apply ease-in-out;
 
   background-color: var(--mds-stepper-bar-item-icon-background);
+  border-radius: var(--radius-full);
   display: flex;
   fill: var(--mds-stepper-bar-item-icon-color);
   flex-shrink: 0;
   padding: --spacing(200);
   position: relative;
-  transition-duration: var(--mds-stepper-bar-item-duaration);
+  transition-duration: var(--private-stepper-bar-item-duaration);
   transition-property: background-color, fill;
 }
 
@@ -222,31 +223,27 @@
 }
 
 .infos {
-  @apply gap-100
-  pl-100;
-
   display: grid;
+  gap: --spacing(100);
+  padding-left: --spacing(100);
 }
 
 .text {
-  @apply ease-in-out
-  duration-150;
+  @apply ease-in-out;
 
   color: var(--mds-stepper-bar-item-color);
   pointer-events: none;
-  transition-duration: var(--mds-stepper-bar-item-duaration);
+  transition-duration: var(--private-stepper-bar-item-duaration);
   transition-property: color;
 }
 
 .badge {
-  @apply rounded-full;
-
+  border-radius: var(--radius-full);
   pointer-events: none;
 }
 
 .step {
-  @apply rounded-full;
-
+  border-radius: var(--radius-full);
   color: rgb(var(--tone-neutral-04));
   pointer-events: none;
 }

@@ -16,7 +16,7 @@ A blank line followed by a longer body is supported but not required.
 
 ## Types
 
-The full list is enforced by the `type-enum` rule in [`commitlint.config.js`](../commitlint.config.js). Several of these are **custom** and differ from the Conventional Commits defaults - pay attention to `refact` (not `refactor`) and `doc` (not `docs`).
+The full list is enforced by the `type-enum` rule in [`commitlint.config.js`](../commitlint.config.js). Use the standard Conventional Commits spellings - a common mistake is writing `refact` instead of `refactor`, or `doc` instead of `docs`.
 
 | Type       | Use for                                                                                    |
 | ---------- | ------------------------------------------------------------------------------------------ |
@@ -86,7 +86,7 @@ From recent history - these are the canonical shape and tone:
 ```
 feat(mds-button): add notification slot
 fix(mds-input): resolve eslint error
-refact(stencil): lint syntax for CSS properties across multiple components
+refactor(stencil): lint syntax for CSS properties across multiple components
 docs(stencil): improve formatting and clarify component usage documentation
 chore(magma): update husky, lint and format on pre-commit
 chore(stencil): replace require with import
@@ -97,7 +97,7 @@ chore(mds-button): update readme
 
 ```
 🚫 feat: add new button             ← missing scope
-🚫 refactor(stencil): tidy imports  ← "refact" is not allowed; use "refactor"
+🚫 refact(stencil): tidy imports    ← "refact" is not allowed; use "refactor"
 🚫 doc(stencil): fix typo          ← "doc" is not allowed; use "docs"
 🚫 style(magma): format code        ← style type forbidden on magma scope; use "chore"
 🚫 revert(stencil): undo X          ← revert must have empty scope
@@ -127,7 +127,7 @@ When in doubt, run `git log --oneline -30` and follow the style of recent commit
 Before writing a commit message:
 
 1. Identify the **scope** first. If only one component changed, use the component name (`mds-button`, `mds-input`, …). If multiple components in the same project changed, use the project scope (`stencil`, `styles`, …).
-2. Pick the **type** using the decision tree above. Remember the custom spellings: `refact` (not `refactor`), `docs` (not `doc`).
+2. Pick the **type** using the decision tree above. Remember the standard spellings: `refactor` (not `refact`), `docs` (not `doc`).
 3. Write the **subject** as a short imperative phrase, lowercase, no trailing period, ideally under 72 characters.
 4. If the commit cannot fit the format, the hook will reject it - fix the message and create a **new commit** rather than amending blind.
 

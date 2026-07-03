@@ -24,7 +24,7 @@ The `<mds-card>` web component is the surface container of the Magma Design Syst
 
 `<mds-card>` does not use the shared `variant` / `tone` ladders defined in [`projects/stencil/SPEC.md`](../../../../SPEC.md#tone-and-variant-system); it exposes a single behavioral prop.
 
-- **`autoGrid`** (default `true`) toggles the intrinsic responsive grid. Leave it enabled to let the card own the placement and reflow of its regions; set it to `false` to opt out of the managed grid and lay the slotted content out yourself.
+- **`disableAutoGrid`** (default `false`) toggles the intrinsic responsive grid. Leave it off to let the card own the placement and reflow of its regions; set it to opt out of the managed grid and lay the slotted content out yourself.
 
 Spacing is tuned through the `--mds-card-gap` and `--mds-card-padding` CSS custom properties rather than props.
 
@@ -149,10 +149,10 @@ When the compound children (`mds-card-*`) do not fit the use case, assign the `s
 
 #### Disabling the Auto-Grid
 
-Set `auto-grid="false"` to opt out of the managed responsive grid. All four regions stack in document order and you own all layout decisions.
+Set `disable-auto-grid` to opt out of the managed responsive grid. All four regions stack in document order and you own all layout decisions.
 
 ```html
-<mds-card auto-grid="false">
+<mds-card disable-auto-grid>
   <mds-card-header>
     <mds-text typography="h6">Layout personalizzato</mds-text>
   </mds-card-header>
@@ -315,9 +315,9 @@ The `header` slot is intended for title and action controls. Placing an `<mds-im
 
 ## Properties
 
-| Property   | Attribute   | Description                                                      | Type      | Default |
-| ---------- | ----------- | ---------------------------------------------------------------- | --------- | ------- |
-| `autoGrid` | `auto-grid` | Enables automatic responsive behavior based on container queries | `boolean` | `true`  |
+| Property          | Attribute           | Description                                                           | Type      | Default |
+| ----------------- | ------------------- | --------------------------------------------------------------------- | --------- | ------- |
+| `disableAutoGrid` | `disable-auto-grid` | Disables the automatic responsive behavior based on container queries | `boolean` | `false` |
 
 
 ## Slots

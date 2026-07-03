@@ -1,10 +1,15 @@
-:host-context(:root.pref-contrast-more) {
+/* Contrast preference. The component reflects the resolved mode from <html> onto
+ * its host as pref-contrast (see subscribePreference in @common/preference); these
+ * plain shadow selectors refine for high contrast. `more` is the explicit choice;
+ * `system` and no controller follow the OS via @media. Cross-browser, no :host-context. */
+
+:host([pref-contrast='more']) {
   box-shadow: var(--shadow-outline-50), var(--shadow-lg);
 }
 
 @media (prefers-contrast: more) {
-  :host-context(:root.pref-contrast-system),
-  :host-context(:root:not([data-magma-pref])) {
+  :host([pref-contrast='system']),
+  :host(:not([pref-contrast])) {
     box-shadow: var(--shadow-outline-50), var(--shadow-lg);
   }
 }

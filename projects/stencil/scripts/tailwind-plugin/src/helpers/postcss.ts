@@ -3,6 +3,7 @@ import cssnano from 'cssnano';
 import combine from 'postcss-combine-duplicated-selectors';
 import mediaCombine from 'postcss-combine-media-query';
 import discardComments from 'postcss-discard-comments';
+import type { Plugin, Root } from 'postcss';
 
 async function loadPlugins() {
   const ctx = {};
@@ -47,8 +48,37 @@ export function stripCommentsPlugin() {
   });
 }
 
+// Le dichiarazioni d'ordine `@layer a, b, c;` vengono iniettate per-componente e poi
+// concatenate insieme al CSS dei componenti funzionali importati (vedi
+// store.getAllExternalCssDependencies). Ripetere una statement identica è innocuo ma
+// gonfia ogni bundle: teniamo solo la prima occorrenza per ogni set di layer.
+export function dedupeLayerStatementsPlugin(): Plugin {
+  return {
+    postcssPlugin: 'dedupe-layer-statements',
+    OnceExit(root: Root) {
+      const seen = new Set<string>();
+      root.walkAtRules('layer', (rule) => {
+        if (rule.nodes) {
+          return; // solo statement bare `@layer a,b;`, non blocchi `@layer x { }`
+        }
+        const key = rule.params.replace(/\s+/g, '');
+        if (seen.has(key)) {
+          rule.remove();
+        } else {
+          seen.add(key);
+        }
+      });
+    },
+  };
+}
+
 export function getMinifyPlugins() {
-  return [mediaCombine(), combine({ removeDuplicatedValues: true }), cssnano()];
+  return [
+    mediaCombine(),
+    combine({ removeDuplicatedValues: true }),
+    cssnano(),
+    dedupeLayerStatementsPlugin(),
+  ];
 }
 
 export async function getPostcssPlugins(): Promise<PostcssPlugins> {

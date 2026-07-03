@@ -14,6 +14,7 @@ import {
 import { KeyboardManager } from '@common/keyboard-manager';
 import { LoadingType } from '@type/loading';
 import { Locale } from '@common/locale';
+import { subscribePreference } from '@common/preference';
 import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.es.json';
@@ -26,6 +27,14 @@ import localeIt from './meta/locale.it.json';
 })
 export class MdsUrlView {
   @Element() host: HTMLMdsUrlViewElement;
+  @State() prefAnimation?: string;
+  private unsubscribePrefAnimation?: () => void;
+  @State() prefContrast?: string;
+  private unsubscribePrefContrast?: () => void;
+  @State() prefTheme?: string;
+  private unsubscribePrefTheme?: () => void;
+  @State() prefThemeScheme?: string;
+  private unsubscribePrefThemeScheme?: () => void;
   private km = new KeyboardManager();
   private t: Locale = new Locale({
     el: localeEl,
@@ -78,6 +87,21 @@ export class MdsUrlView {
     this.host.closest('mds-modal')?.close();
   };
 
+  connectedCallback(): void {
+    this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
+      this.prefAnimation = value;
+    });
+    this.unsubscribePrefContrast = subscribePreference('contrast', (value) => {
+      this.prefContrast = value;
+    });
+    this.unsubscribePrefTheme = subscribePreference('theme', (value) => {
+      this.prefTheme = value;
+    });
+    this.unsubscribePrefThemeScheme = subscribePreference('theme-scheme', (value) => {
+      this.prefThemeScheme = value;
+    });
+  }
+
   componentWillLoad(): void {
     this.t.lang(this.host);
   }
@@ -89,12 +113,22 @@ export class MdsUrlView {
   }
 
   disconnectedCallback(): void {
+    this.unsubscribePrefAnimation?.();
+    this.unsubscribePrefContrast?.();
+    this.unsubscribePrefTheme?.();
+    this.unsubscribePrefThemeScheme?.();
     this.km.detachClickBehavior();
   }
 
   render() {
     return (
-      <Host aria-label={this.t.get('previewURL', { url: this.urlDomain(this.src) })}>
+      <Host
+        aria-label={this.t.get('previewURL', { url: this.urlDomain(this.src) })}
+        pref-animation={this.prefAnimation}
+        pref-contrast={this.prefContrast}
+        pref-theme={this.prefTheme}
+        pref-theme-scheme={this.prefThemeScheme}
+      >
         <div class="window">
           <div class="header">
             <mds-icon class="window-icon" name={this.icon ?? miBaselineExplore}></mds-icon>

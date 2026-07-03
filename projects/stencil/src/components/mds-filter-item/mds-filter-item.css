@@ -33,6 +33,8 @@
 }
 
 :host {
+  --mds-filter-item-transition-duration: var(--duration-200);
+  --private-filter-item-transition-duration: var(--mds-filter-item-transition-duration);
   --mds-filter-item-count-background-default: rgb(var(--tone-neutral-08));
   --mds-filter-item-count-color-default: rgb(var(--tone-neutral-02));
   --mds-filter-item-count-background-selected: rgb(var(--tone-neutral-05));
@@ -49,7 +51,7 @@
   gap: --spacing(100);
   justify-content: center;
   padding: --spacing(200) --spacing(400);
-  transition-duration: var(--duration-200);
+  transition-duration: var(--private-filter-item-transition-duration);
   transition-property: background-color, box-shadow, color, outline, outline-offset;
   transition-timing-function: var(--ease-out);
   user-select: none;

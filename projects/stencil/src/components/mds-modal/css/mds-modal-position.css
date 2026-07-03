@@ -7,6 +7,48 @@
 }
 
 /*
+ * Flex alignment of the window inside the overlay. The host is `display: contents`,
+ * so the alignment lives on the native dialog (the flex container). The existing
+ * `:host([position=...])` align rules below become inert on a display:contents host.
+ */
+
+:host([position='top-left']) .dialog,
+:host([position='top']) .dialog,
+:host([position='top-right']) .dialog {
+  align-items: flex-start;
+}
+
+:host([position='left']) .dialog,
+:host([position='center']) .dialog,
+:host([position='right']) .dialog {
+  align-items: center;
+}
+
+:host([position='bottom-left']) .dialog,
+:host([position='bottom']) .dialog,
+:host([position='bottom-right']) .dialog {
+  align-items: flex-end;
+}
+
+:host([position='top-left']) .dialog,
+:host([position='left']) .dialog,
+:host([position='bottom-left']) .dialog {
+  justify-content: flex-start;
+}
+
+:host([position='top']) .dialog,
+:host([position='center']) .dialog,
+:host([position='bottom']) .dialog {
+  justify-content: center;
+}
+
+:host([position='top-right']) .dialog,
+:host([position='right']) .dialog,
+:host([position='bottom-right']) .dialog {
+  justify-content: flex-end;
+}
+
+/*
   x - -
   - - -
   - - -

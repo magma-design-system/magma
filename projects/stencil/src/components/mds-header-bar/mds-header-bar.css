@@ -12,6 +12,8 @@
 
 :host {
   --mds-header-bar-hamburger-color: rgb(var(--tone-neutral-03));
+  --mds-header-bar-transition-duration: 500ms;
+  --private-header-bar-transition-duration: var(--mds-header-bar-transition-duration);
 
   background-color: rgb(var(--tone-neutral));
   box-shadow: var(--shadow-md-sharp);
@@ -24,7 +26,7 @@
   max-width: 100%;
   padding: --spacing(400) --spacing(600);
   position: fixed;
-  transition-duration: 500ms;
+  transition-duration: var(--private-header-bar-transition-duration);
   transition-property: background-color, border-radius, margin, max-width, transform, width;
   transition-timing-function: var(--ease-out-expo);
   width: auto;

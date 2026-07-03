@@ -13,20 +13,18 @@
 :host {
   --mds-list-item-icon-margin: 0 --spacing(200) 0 0;
 
-  @apply w-full;
-
   align-items: flex-start;
   color: rgb(var(--tone-neutral-03));
   display: flex;
   justify-content: flex-start;
+  width: 100%;
 }
 
 .icon {
-  @apply h-600
-  w-600;
-
   fill: currentcolor;
+  height: --spacing(600);
   margin: var(--mds-list-item-icon-margin);
+  width: --spacing(600);
 }
 
 :host([typography='paragraph']) {

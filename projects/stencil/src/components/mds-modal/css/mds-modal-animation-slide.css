@@ -4,7 +4,7 @@
   - - -
 */
 
-:host([position='top-left'][animation='slide']:not([opened])) {
+:host([position='top-left'][animation='slide']) {
   --private-modal-transition-window-transform: translate(-50%, -100%);
 }
 
@@ -14,7 +14,7 @@
   - - -
 */
 
-:host([position='top'][animation='slide']:not([opened])) {
+:host([position='top'][animation='slide']) {
   --private-modal-transition-window-transform: translate(0, -100%);
 }
 
@@ -24,7 +24,7 @@
   - - -
 */
 
-:host([position='top-right'][animation='slide']:not([opened])) {
+:host([position='top-right'][animation='slide']) {
   --private-modal-transition-window-transform: translate(50%, -100%);
 }
 
@@ -34,7 +34,7 @@
   - - -
 */
 
-:host([position='left'][animation='slide']:not([opened])) {
+:host([position='left'][animation='slide']) {
   --private-modal-transition-window-transform: translate(-100%, 0%);
 }
 
@@ -44,7 +44,7 @@
   - - -
 */
 
-:host([position='center'][animation='slide']:not([opened])) {
+:host([position='center'][animation='slide']) {
   --private-modal-transition-window-transform: translate(0, 25%);
 }
 
@@ -54,7 +54,7 @@
   - - -
 */
 
-:host([position='right'][animation='slide']:not([opened])) {
+:host([position='right'][animation='slide']) {
   --private-modal-transition-window-transform: translate(100%, 0%);
 }
 
@@ -64,7 +64,7 @@
   x - -
 */
 
-:host([position='bottom-left'][animation='slide']:not([opened])) {
+:host([position='bottom-left'][animation='slide']) {
   --private-modal-transition-window-transform: translate(-50%, 100%);
 }
 
@@ -74,7 +74,7 @@
   - x -
 */
 
-:host([position='bottom'][animation='slide']:not([opened])) {
+:host([position='bottom'][animation='slide']) {
   --private-modal-transition-window-transform: translateY(50%);
 }
 
@@ -84,6 +84,6 @@
   - - x
 */
 
-:host([position='bottom-right'][animation='slide']:not([opened])) {
+:host([position='bottom-right'][animation='slide']) {
   --private-modal-transition-window-transform: translate(50%, 100%);
 }

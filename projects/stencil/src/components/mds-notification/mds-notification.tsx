@@ -1,4 +1,5 @@
-import { Component, Element, Host, h, Prop, Watch } from '@stencil/core';
+import { Component, Element, Host, h, Prop, State, Watch } from '@stencil/core';
+import { subscribePreference } from '@common/preference';
 import { autoUpdate, computePosition, Middleware, offset, shift } from '@floating-ui/dom';
 import { FloatingUIPlacement, FloatingUIStrategy } from '@type/floating-ui';
 import { StrategyType } from './meta/types';
@@ -11,6 +12,8 @@ import { StrategyType } from './meta/types';
 export class MdsNotification {
   private caller: HTMLElement;
   @Element() private host: HTMLMdsNotificationElement;
+  @State() prefAnimation?: string;
+  private unsubscribePrefAnimation?: () => void;
   private cleanupAutoUpdate: () => void;
 
   // We should change in the future this approach when it will be fully supported by main browsers
@@ -27,9 +30,9 @@ export class MdsNotification {
   @Prop({ mutable: true, reflect: true }) value = 0;
 
   /**
-   * Specifies if the notification is visible
+   * Specifies if the notification is dismissed
    */
-  @Prop({ mutable: true, reflect: true }) visible = true;
+  @Prop({ mutable: true, reflect: true }) dismissed = false;
 
   /**
    * Specifies the position strategy of the notification
@@ -64,6 +67,7 @@ export class MdsNotification {
   };
 
   private clean = (value: number): string => {
+    if (value === 0 || isNaN(value)) return '';
     if (this.max !== undefined && this.max !== 0 && !Number.isNaN(this.max)) {
       if (value > this.max) {
         return `+${Number(this.max).toLocaleString()}`;
@@ -72,6 +76,12 @@ export class MdsNotification {
 
     return Number(value).toLocaleString();
   };
+
+  connectedCallback(): void {
+    this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
+      this.prefAnimation = value;
+    });
+  }
 
   componentDidRender(): void {
     if (this.target === '') {
@@ -96,6 +106,7 @@ export class MdsNotification {
   }
 
   disconnectedCallback(): void {
+    this.unsubscribePrefAnimation?.();
     this.cleanupAutoUpdate = (): void => {};
   }
 
@@ -108,9 +119,13 @@ export class MdsNotification {
 
   render() {
     return (
-      <Host aria-labelledby={this.target} aria-label={this.value ?? '0'}>
+      <Host
+        aria-labelledby={this.target}
+        aria-label={this.value ?? '0'}
+        pref-animation={this.prefAnimation}
+      >
         <mds-text typography="caption" class="dot" aria-hidden="true">
-          {this.value !== 0 && !Number.isNaN(this.value) ? this.clean(this.value) : ''}
+          {this.clean(this.value)}
         </mds-text>
       </Host>
     );

@@ -47,13 +47,15 @@
 
   /* internal */
   --mds-table-row-color: var(--mds-table-body-color);
+  --mds-table-body-transition-duration: var(--duration-200);
+  --private-table-body-transition-duration: var(--mds-table-body-transition-duration);
 
-  @apply duration-200
-    ease-out;
+  @apply ease-out;
 
   background-color: var(--mds-table-body-background);
   display: table-row-group;
   overflow: hidden;
+  transition-duration: var(--private-table-body-transition-duration);
   transition-property: background-color;
 }
 

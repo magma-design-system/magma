@@ -1,4 +1,5 @@
-:host([cockade]:not([cockade='false'])) .icon {
+:host(:not([hide-cockade])) .icon,
+:host([hide-cockade='false']) .icon {
   background-color: var(--mds-banner-cockade-background);
   border-bottom-left-radius: var(--radius-lg);
   border-bottom-right-radius: var(--radius-lg);
@@ -8,7 +9,8 @@
 }
 
 @container mds-banner (max-width: 300px) {
-  :host([cockade]:not([cockade='false'])) .icon {
+  :host(:not([hide-cockade])) .icon,
+  :host([hide-cockade='false']) .icon {
     padding-top: --spacing(200);
   }
 

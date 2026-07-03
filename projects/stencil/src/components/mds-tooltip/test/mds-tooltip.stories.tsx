@@ -5,13 +5,13 @@ import { typographyTooltipDictionary } from '@type/typography';
 export default {
   title: 'UI / Tooltip',
   argTypes: {
-    arrow: {
+    'hide-arrow': {
       type: { name: 'boolean' },
-      description: 'If set, the component will have an arrow pointing to the caller',
+      description: 'If set, the component will not have an arrow pointing to the caller',
     },
-    'auto-placement': {
+    'disable-auto-placement': {
       type: { name: 'boolean' },
-      description: 'If set, the component will be placed automatically near it’s caller',
+      description: 'If set, the component will not be placed automatically near it’s caller',
     },
     delay: {
       type: { name: 'number' },
@@ -37,9 +37,9 @@ export default {
       options: typographyTooltipDictionary,
       control: { type: 'select' },
     },
-    shift: {
+    'disable-shift': {
       type: { name: 'boolean' },
-      description: 'If set, the component will be kept inside the viewport',
+      description: 'If set, the component will not be kept inside the viewport',
     },
     'shift-padding': {
       type: { name: 'number' },
@@ -116,7 +116,7 @@ export const Arrow = {
   render: Template,
 
   args: {
-    arrow: true,
+    'hide-arrow': false,
     'shift-padding': 32,
     layout: 'flex justify-start',
   },
@@ -126,7 +126,7 @@ export const AutoPlacement = {
   render: Template,
 
   args: {
-    'auto-placement': true,
+    'disable-auto-placement': false,
     layout: 'flex justify-end',
   },
 };
@@ -153,7 +153,7 @@ export const Placement = {
   render: Template,
 
   args: {
-    'auto-placement': false,
+    'disable-auto-placement': true,
     layout: 'flex justify-center items-center',
     placement: 'right-start',
   },
@@ -164,7 +164,7 @@ export const Shift = {
 
   args: {
     layout: 'flex justify-end',
-    shift: true,
+    'disable-shift': false,
   },
 };
 
@@ -173,7 +173,7 @@ export const ShiftPadding = {
 
   args: {
     layout: 'flex justify-end',
-    shift: true,
+    'disable-shift': false,
     'shift-padding': 50,
   },
 };

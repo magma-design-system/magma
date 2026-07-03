@@ -39,6 +39,8 @@
 }
 
 :host {
+  --mds-input-tip-transition-duration: var(--duration-300);
+  --private-input-tip-transition-duration: var(--mds-input-tip-transition-duration);
   --mds-input-tip-active-translate: translate(0, 0);
   --mds-input-tip-background: rgb(var(--tone-neutral-03));
   --mds-input-tip-horizontal-offset-focused: 0px;
@@ -53,7 +55,7 @@
   position: absolute;
   right: var(--mds-input-tip-horizontal-offset);
   transform: var(--mds-input-tip-active-translate);
-  transition-duration: var(--duration-300);
+  transition-duration: var(--private-input-tip-transition-duration);
   transition-property: transform;
   transition-timing-function: var(--ease-out-expo);
 }

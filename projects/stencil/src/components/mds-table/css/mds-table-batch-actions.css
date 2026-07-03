@@ -3,7 +3,7 @@
   display: flex;
   flex-shrink: 0;
   max-width: 0px;
-  transition-duration: var(--duration-300);
+  transition-duration: var(--private-table-transition-duration);
   transition-property: max-width;
   transition-timing-function: var(--ease-in-out-circ);
   width: 100%;

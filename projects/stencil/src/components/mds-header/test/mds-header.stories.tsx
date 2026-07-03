@@ -15,9 +15,9 @@ export default {
       options: appearanceSetDictionary,
       control: { type: 'select' },
     },
-    backdrop: {
+    'hide-backdrop': {
       description:
-        'Sets if the backdrop is shown when the mds-header-bar attribute appearace is set to `inline`',
+        'Hides the backdrop shown when the mds-header-bar attribute appearace is set to `inline`',
       type: 'boolean',
     },
     'auto-hide': {

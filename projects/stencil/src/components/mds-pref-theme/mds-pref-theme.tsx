@@ -17,6 +17,7 @@ import miBaselineDarkMode from '@icon/mi/baseline/dark-mode.svg';
 import miBaselineSettings from '@icon/mi/baseline/settings.svg';
 import { Locale } from '@common/locale';
 import { isSafari } from '@common/browser';
+import { subscribePreference } from '@common/preference';
 import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.es.json';
@@ -32,6 +33,12 @@ import { TabSizeType } from '@type/button';
 })
 export class MdsPrefTheme {
   @Element() private element: HTMLMdsPrefThemeElement;
+  @State() prefContrast?: string;
+  private unsubscribePrefContrast?: () => void;
+  @State() prefTheme?: string;
+  private unsubscribePrefTheme?: () => void;
+  @State() prefThemeScheme?: string;
+  private unsubscribePrefThemeScheme?: () => void;
   private readonly defaultMode: PreferenceThemeModeType = 'system';
   private readonly t: Locale = new Locale({
     el: localeEl,
@@ -259,9 +266,38 @@ export class MdsPrefTheme {
     }
   };
 
+  connectedCallback(): void {
+    this.unsubscribePrefContrast = subscribePreference('contrast', (value) => {
+      this.prefContrast = value;
+    });
+    this.unsubscribePrefTheme = subscribePreference('theme', (value) => {
+      this.prefTheme = value;
+    });
+    this.unsubscribePrefThemeScheme = subscribePreference('theme-scheme', (value) => {
+      this.prefThemeScheme = value;
+    });
+  }
+
+  disconnectedCallback(): void {
+    this.unsubscribePrefContrast?.();
+    this.unsubscribePrefTheme?.();
+    this.unsubscribePrefThemeScheme?.();
+  }
+
+  private readonly handleModeClick = (mode: PreferenceThemeModeType) => (): void => {
+    if (this.overlayShow) {
+      return;
+    }
+    this.changeTheme(mode);
+  };
+
   render() {
     return (
-      <Host>
+      <Host
+        pref-contrast={this.prefContrast}
+        pref-theme={this.prefTheme}
+        pref-theme-scheme={this.prefThemeScheme}
+      >
         <mds-text class="info" typography="caption">
           <b>{this.t.get('label')}</b>{' '}
           {this.disabled
@@ -272,36 +308,21 @@ export class MdsPrefTheme {
           <mds-tab-item
             disabled={this.disabled}
             selected={this.mode === 'light'}
-            onClick={() => {
-              if (this.overlayShow) {
-                return;
-              }
-              this.changeTheme('light');
-            }}
+            onClick={this.handleModeClick('light')}
             class="item item--light"
             icon={miBaselineLightMode}
           ></mds-tab-item>
           <mds-tab-item
             disabled={this.disabled}
             selected={this.mode === 'system'}
-            onClick={() => {
-              if (this.overlayShow) {
-                return;
-              }
-              this.changeTheme('system');
-            }}
+            onClick={this.handleModeClick('system')}
             class="item item--system"
             icon={miBaselineSettings}
           ></mds-tab-item>
           <mds-tab-item
             disabled={this.disabled}
             selected={this.mode === 'dark'}
-            onClick={() => {
-              if (this.overlayShow) {
-                return;
-              }
-              this.changeTheme('dark');
-            }}
+            onClick={this.handleModeClick('dark')}
             class="item item--dark"
             icon={this.mode === 'dark' ? miBaselineDarkMode : miOutlineDarkMode}
           ></mds-tab-item>

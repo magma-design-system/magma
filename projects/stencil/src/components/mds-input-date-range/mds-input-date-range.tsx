@@ -15,6 +15,7 @@ import miBaselineCalendarToday from '@icon/mi/baseline/calendar-today.svg';
 import { DateTime } from 'luxon';
 import clsx from 'clsx';
 import { Locale } from '@common/locale';
+import { subscribePreference } from '@common/preference';
 import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.es.json';
@@ -39,6 +40,14 @@ export interface EventDate {
 })
 export class MdsInputDateRange {
   @Element() host: HTMLMdsInputDateRangeElement;
+  @State() prefAnimation?: string;
+  private unsubscribePrefAnimation?: () => void;
+  @State() prefContrast?: string;
+  private unsubscribePrefContrast?: () => void;
+  @State() prefTheme?: string;
+  private unsubscribePrefTheme?: () => void;
+  @State() prefThemeScheme?: string;
+  private unsubscribePrefThemeScheme?: () => void;
   @AttachInternals() internals: ElementInternals;
 
   @State() calendarKey: number = 0;
@@ -263,7 +272,26 @@ export class MdsInputDateRange {
     this.syncFormValue();
   }
 
+  connectedCallback(): void {
+    this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
+      this.prefAnimation = value;
+    });
+    this.unsubscribePrefContrast = subscribePreference('contrast', (value) => {
+      this.prefContrast = value;
+    });
+    this.unsubscribePrefTheme = subscribePreference('theme', (value) => {
+      this.prefTheme = value;
+    });
+    this.unsubscribePrefThemeScheme = subscribePreference('theme-scheme', (value) => {
+      this.prefThemeScheme = value;
+    });
+  }
+
   disconnectedCallback(): void {
+    this.unsubscribePrefAnimation?.();
+    this.unsubscribePrefContrast?.();
+    this.unsubscribePrefTheme?.();
+    this.unsubscribePrefThemeScheme?.();
     this.host.removeEventListener('focusout', this.handleFocusOut);
     this.host.shadowRoot?.removeEventListener(
       'mdsCalendarHover',
@@ -554,6 +582,14 @@ export class MdsInputDateRange {
       .toISODate();
   };
 
+  private readonly handleCalendarPreselect = (): void => {
+    this.checkPreselections();
+  };
+
+  private readonly handleOpenCalendarClick = (): void => {
+    this.calendarKey += 1;
+  };
+
   private renderCalendarPreselectionPanel() {
     if (!this.hasPreselection) return null;
 
@@ -580,9 +616,7 @@ export class MdsInputDateRange {
           key={this.calendarKey}
           rangePicker={true}
           onMdsCalendarChange={this.handleCalendarChange}
-          onMdsCalendarPreselect={() => {
-            this.checkPreselections();
-          }}
+          onMdsCalendarPreselect={this.handleCalendarPreselect}
           startDate={this.internalStartDate}
           endDate={this.internalEndDate}
           {...(this.min !== null && this.min !== '' ? { min: this.min } : {})}
@@ -605,9 +639,7 @@ export class MdsInputDateRange {
           viewDate={this.getCalendarViewDate()}
           onMdsCalendarNavigate={this.handleCalendarNavigate}
           onMdsCalendarChange={this.handleCalendarChange}
-          onMdsCalendarPreselect={() => {
-            this.checkPreselections();
-          }}
+          onMdsCalendarPreselect={this.handleCalendarPreselect}
           startDate={this.internalStartDate}
           endDate={this.internalEndDate}
           {...(this.min !== null && this.min !== '' ? { min: this.min } : {})}
@@ -622,9 +654,7 @@ export class MdsInputDateRange {
           viewDate={this.getCalendarViewDate(1)}
           onMdsCalendarNavigate={this.handleCalendarNavigate}
           onMdsCalendarChange={this.handleCalendarChange}
-          onMdsCalendarPreselect={() => {
-            this.checkPreselections();
-          }}
+          onMdsCalendarPreselect={this.handleCalendarPreselect}
           startDate={this.internalStartDate}
           endDate={this.internalEndDate}
           {...(this.min !== null && this.min !== '' ? { min: this.min } : {})}
@@ -636,7 +666,13 @@ export class MdsInputDateRange {
 
   render() {
     return (
-      <Host onClick={this.focusDateInput}>
+      <Host
+        onClick={this.focusDateInput}
+        pref-animation={this.prefAnimation}
+        pref-contrast={this.prefContrast}
+        pref-theme={this.prefTheme}
+        pref-theme-scheme={this.prefThemeScheme}
+      >
         <div class="inputs">
           <div class="input-element">
             <mds-text class="date-label" typography="detail" onClick={this.focusStartDateInput}>
@@ -662,16 +698,14 @@ export class MdsInputDateRange {
             tone="text"
             icon={miBaselineCalendarToday}
             id="calendar-dropdown"
-            onClick={() => {
-              this.calendarKey += 1;
-            }}
+            onClick={this.handleOpenCalendarClick}
           ></mds-button>
         </div>
 
         <mds-dropdown
           ref={(el) => (this.dropdownRef = el as HTMLMdsDropdownElement)}
           target="#calendar-dropdown"
-          auto-placement={false}
+          disable-auto-placement
           placement="bottom-end"
         >
           {this.dualCalendar ? this.renderDualCalendars() : this.renderSingleCalendar()}

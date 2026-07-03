@@ -14,6 +14,7 @@ import {
 import miBaselineCalendarToday from '@icon/mi/baseline/calendar-today.svg';
 import { DateTime } from 'luxon';
 import { Locale } from '@common/locale';
+import { subscribePreference } from '@common/preference';
 import { ThemeInputVariantType } from '@type/variant';
 import { MdsValidationErrors } from 'src/components';
 
@@ -26,6 +27,14 @@ import { MdsValidationErrors } from 'src/components';
 })
 export class MdsInputDate {
   @Element() host: HTMLMdsInputDateElement;
+  @State() prefAnimation?: string;
+  private unsubscribePrefAnimation?: () => void;
+  @State() prefContrast?: string;
+  private unsubscribePrefContrast?: () => void;
+  @State() prefTheme?: string;
+  private unsubscribePrefTheme?: () => void;
+  @State() prefThemeScheme?: string;
+  private unsubscribePrefThemeScheme?: () => void;
   @AttachInternals() internals: ElementInternals;
   private isSlotted: boolean = false;
   @State() empty: boolean | undefined = undefined;
@@ -175,6 +184,28 @@ export class MdsInputDate {
     this.internals.setFormValue('');
   }
 
+  connectedCallback(): void {
+    this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
+      this.prefAnimation = value;
+    });
+    this.unsubscribePrefContrast = subscribePreference('contrast', (value) => {
+      this.prefContrast = value;
+    });
+    this.unsubscribePrefTheme = subscribePreference('theme', (value) => {
+      this.prefTheme = value;
+    });
+    this.unsubscribePrefThemeScheme = subscribePreference('theme-scheme', (value) => {
+      this.prefThemeScheme = value;
+    });
+  }
+
+  disconnectedCallback(): void {
+    this.unsubscribePrefAnimation?.();
+    this.unsubscribePrefContrast?.();
+    this.unsubscribePrefTheme?.();
+    this.unsubscribePrefThemeScheme?.();
+  }
+
   componentWillLoad(): void {
     this.isSlotted = !(
       this.host.getAttribute('slot') === null || this.host.getAttribute('slot') === ''
@@ -219,9 +250,35 @@ export class MdsInputDate {
       }, 10);
     }
   };
+
+  private readonly handleOpenCalendarClick = (): void => {
+    this.calendarKey += 1;
+  };
+
+  private readonly handleCalendarChange = (
+    ev: CustomEvent<{ startDate: string; endDate?: string }>,
+  ): void => {
+    this.value = ev.detail.startDate;
+
+    if (this.delay === 0) return;
+    const { dropdownRef } = this;
+    if (dropdownRef) {
+      setTimeout(() => {
+        dropdownRef.visible = false;
+      }, this.delay);
+    }
+  };
+
   render() {
     return (
-      <Host empty={this.empty}>
+      <Host
+        empty={this.empty}
+        pref-animation={this.prefAnimation}
+        pref-contrast={this.prefContrast}
+        pref-theme={this.prefTheme}
+        pref-theme-scheme={this.prefThemeScheme}
+      >
+
         <input
           value={this.value}
           id="dateInput"
@@ -244,9 +301,7 @@ export class MdsInputDate {
               variant="dark"
               tone="text"
               icon={miBaselineCalendarToday}
-              onClick={() => {
-                this.calendarKey += 1;
-              }}
+              onClick={this.handleOpenCalendarClick}
             ></mds-button>
           </div>
         )}
@@ -263,7 +318,7 @@ export class MdsInputDate {
         {!this.isSlotted && (
           <mds-dropdown
             placement="bottom-end"
-            auto-placement={false}
+            disable-auto-placement
             ref={(el) => (this.dropdownRef = el as HTMLMdsDropdownElement)}
             target="#calendar-dropdown"
           >
@@ -271,17 +326,7 @@ export class MdsInputDate {
               key={this.calendarKey}
               rangePicker={false}
               lang={this.language}
-              onMdsCalendarChange={(ev) => {
-                this.value = ev.detail.startDate;
-
-                if (this.delay === 0) return;
-                const { dropdownRef } = this;
-                if (dropdownRef) {
-                  setTimeout(() => {
-                    dropdownRef.visible = false;
-                  }, this.delay);
-                }
-              }}
+              onMdsCalendarChange={this.handleCalendarChange}
               startDate={this.value}
               {...(this.min !== null && this.min !== '' ? { min: this.min } : {})}
               {...(this.max !== null && this.max !== '' ? { max: this.max } : {})}

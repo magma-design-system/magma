@@ -1,41 +1,41 @@
-:host-context(:root.pref-theme-dark:not(.pref-theme-scheme-light).pref-contrast-more) {
+:host([pref-theme='dark']:not([pref-theme-scheme='light'])[pref-contrast='more']) {
   --mds-tooltip-drop-shadow: drop-shadow(0 0 4px rgb(var(--tone-neutral-01) / 0.075))
     drop-shadow(0 0 4px rgb(var(--tone-neutral-01) / 0.45))
     drop-shadow(0 0 4px rgb(var(--tone-neutral-01) / 0.45));
 }
 
 @media (prefers-contrast: more) {
-  :host-context(:root.pref-contrast-system.pref-theme-dark:not(.pref-theme-scheme-light)) {
+  :host([pref-contrast='system'][pref-theme='dark']:not([pref-theme-scheme='light'])) {
     --mds-tooltip-drop-shadow: drop-shadow(0 0 4px rgb(var(--tone-neutral-01) / 0.075))
       drop-shadow(0 0 4px rgb(var(--tone-neutral-01) / 0.45))
       drop-shadow(0 0 4px rgb(var(--tone-neutral-01) / 0.45));
   }
 
-  :host-context(:root:not([data-magma-pref])) {
+  :host(:not([pref-contrast])) {
     --mds-toast-shadow: var(--shadow-outline) !important;
   }
 }
 
 @media (prefers-color-scheme: dark) {
-  :host-context(:root.pref-contrast-more.pref-theme-system:not(.pref-theme-scheme-light)) {
+  :host([pref-contrast='more'][pref-theme='system']:not([pref-theme-scheme='light'])) {
     --mds-tooltip-drop-shadow: drop-shadow(0 0 4px rgb(var(--tone-neutral-01) / 0.075))
       drop-shadow(0 0 4px rgb(var(--tone-neutral-01) / 0.45))
       drop-shadow(0 0 4px rgb(var(--tone-neutral-01) / 0.45));
   }
 
-  :host-context(:root:not([data-magma-pref])) {
+  :host(:not([pref-contrast])) {
     --mds-toast-shadow: var(--shadow-outline) !important;
   }
 }
 
 @media (prefers-contrast: more) and (prefers-color-scheme: dark) {
-  :host-context(:root.pref-contrast-system.pref-theme-system:not(.pref-theme-scheme-light)) {
+  :host([pref-contrast='system'][pref-theme='system']:not([pref-theme-scheme='light'])) {
     --mds-tooltip-drop-shadow: drop-shadow(0 0 4px rgb(var(--tone-neutral-01) / 0.075))
       drop-shadow(0 0 4px rgb(var(--tone-neutral-01) / 0.45))
       drop-shadow(0 0 4px rgb(var(--tone-neutral-01) / 0.45));
   }
 
-  :host-context(:root:not([data-magma-pref])) {
+  :host(:not([pref-contrast])) {
     --mds-toast-shadow: var(--shadow-outline) !important;
   }
 }

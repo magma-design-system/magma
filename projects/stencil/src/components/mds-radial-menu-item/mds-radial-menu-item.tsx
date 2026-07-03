@@ -45,7 +45,7 @@ export class MdsRadialMenuItem {
           size={this.size}
         ></mds-button>
         {this.tooltip && (
-          <mds-tooltip class="tooltip" target=".button" placement="top" autoPlacement={false}>
+          <mds-tooltip class="tooltip" target=".button" placement="top" disableAutoPlacement>
             {this.tooltip}
           </mds-tooltip>
         )}

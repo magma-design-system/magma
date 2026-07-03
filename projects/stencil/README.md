@@ -3,6 +3,17 @@
 # Magma 2
 ---
 
+## Install with an AI agent
+
+This package ships an agent-readable install guide, versioned with the package. Point
+your coding agent (Claude Code, etc.) at it and let it wire up styles, fonts, icons and
+component registration, asking you only for what it cannot detect from your project:
+
+> Read `node_modules/@maggioli-design-system/magma/AGENTS.md` and follow it to install
+> Magma into this project.
+
+The detailed steps live under `agents/` in this package.
+
 #### Required versions
 
 Use the versions of `@maggioli-design-system/design-tokens` and `@maggioli-design-system/styles` matching your magma major version:

@@ -8,8 +8,10 @@ import {
   EventEmitter,
   Watch,
   Method,
+  State,
 } from '@stencil/core';
 import { cssDurationToMilliseconds, cssSizeToNumber } from '@common/unit';
+import { subscribePreference } from '@common/preference';
 import { MdsPushNotificationEventDetail } from './meta/event-detail';
 /**
  * @part notifications - The container wrapper of the notifications.
@@ -23,6 +25,10 @@ import { MdsPushNotificationEventDetail } from './meta/event-detail';
 })
 export class MdsPushNotification {
   @Element() host: HTMLMdsPushNotificationElement;
+  @State() prefTheme?: string;
+  private unsubscribePrefTheme?: () => void;
+  @State() prefThemeScheme?: string;
+  private unsubscribePrefThemeScheme?: () => void;
   private slotNotifications!: HTMLSlotElement;
   private cssItemsIntroDuration: string;
   private cssItemsOutroDuration: string;
@@ -183,6 +189,20 @@ export class MdsPushNotification {
     return Promise.resolve();
   }
 
+  connectedCallback(): void {
+    this.unsubscribePrefTheme = subscribePreference('theme', (value) => {
+      this.prefTheme = value;
+    });
+    this.unsubscribePrefThemeScheme = subscribePreference('theme-scheme', (value) => {
+      this.prefThemeScheme = value;
+    });
+  }
+
+  disconnectedCallback(): void {
+    this.unsubscribePrefTheme?.();
+    this.unsubscribePrefThemeScheme?.();
+  }
+
   componentDidLoad(): void {
     this.updateCSSCustomProps();
 
@@ -207,7 +227,7 @@ export class MdsPushNotification {
 
   render() {
     return (
-      <Host>
+      <Host pref-theme={this.prefTheme} pref-theme-scheme={this.prefThemeScheme}>
         {/* <slot name="top"></slot> */}
         <mds-button variant="dark" onClick={this.clear}>
           Cancella notifiche

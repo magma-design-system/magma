@@ -59,6 +59,10 @@
   --mds-chip-icon-color: rgb(var(--tone-neutral));
   --mds-chip-opacity-disabled: 0.5;
   --mds-chip-shadow: var(--shadow-sm-sharp);
+  --mds-chip-transition-duration: var(--duration-150);
+  --mds-chip-label-transition-duration: var(--duration-200);
+  --private-chip-transition-duration: var(--mds-chip-transition-duration);
+  --private-chip-label-transition-duration: var(--mds-chip-label-transition-duration);
 
   align-items: center;
   background-color: var(--mds-chip-background);
@@ -74,7 +78,7 @@
   max-width: min-content;
   min-width: min-content;
   padding: 0 --spacing(50);
-  transition-duration: var(--duration-150);
+  transition-duration: var(--private-chip-transition-duration);
   transition-property: background-color, border-color, box-shadow, color, opacity;
   transition-timing-function: var(--ease-in-out-quad);
 }
@@ -103,7 +107,7 @@
   border-radius: 1000px;
   flex-grow: 1;
   text-decoration-color: transparent;
-  transition-duration: var(--duration-200);
+  transition-duration: var(--private-chip-label-transition-duration);
   transition-property: color, text-decoration-color, outline, outline-offset;
   transition-timing-function: var(--ease-out-quad);
 }
@@ -144,7 +148,7 @@
   fill: var(--mds-chip-icon-color);
   height: --spacing(400);
   transition: fill;
-  transition-duration: var(--duration-200);
+  transition-duration: var(--private-chip-label-transition-duration);
   width: --spacing(400);
 }
 

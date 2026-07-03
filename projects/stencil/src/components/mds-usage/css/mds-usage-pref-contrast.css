@@ -1,17 +1,22 @@
-:host-context(:root.pref-contrast-more),
-:host-context(:root.pref-contrast-more):host([variant='do']),
-:host-context(:root.pref-contrast-more):host([variant='dont']),
-:host-context(:root.pref-contrast-more):host([variant='warn']) {
+/* Contrast preference. The component reflects the resolved mode from <html> onto
+ * its host as pref-contrast (see subscribePreference in @common/preference); these
+ * plain shadow selectors refine for high contrast. `more` is the explicit choice;
+ * `system` and no controller follow the OS via @media. Cross-browser, no :host-context. */
+
+:host([pref-contrast='more']),
+:host([pref-contrast='more']):host([variant='do']),
+:host([pref-contrast='more']):host([variant='dont']),
+:host([pref-contrast='more']):host([variant='warn']) {
   --mds-usage-badge-color: rgb(var(--tone-neutral-01));
   --mds-usage-color: rgb(var(--tone-neutral-01));
 }
 
 @media (prefers-contrast: more) {
-  :host-context(:root.pref-contrast-system),
-  :host-context(:root:not([data-magma-pref])),
-  :host-context(:root:not([data-magma-pref])):host([variant='do']),
-  :host-context(:root:not([data-magma-pref])):host([variant='dont']),
-  :host-context(:root:not([data-magma-pref])):host([variant='warn']) {
+  :host([pref-contrast='system']),
+  :host(:not([pref-contrast])),
+  :host(:not([pref-contrast])):host([variant='do']),
+  :host(:not([pref-contrast])):host([variant='dont']),
+  :host(:not([pref-contrast])):host([variant='warn']) {
     --mds-usage-badge-color: rgb(var(--tone-neutral-01));
     --mds-usage-color: rgb(var(--tone-neutral-01));
   }

@@ -5,6 +5,9 @@
  */
 
 :host {
+  --mds-table-header-cell-transition-duration: var(--duration-200);
+  --private-table-header-cell-transition-duration: var(--mds-table-header-cell-transition-duration);
+
   @apply ease-out;
 
   background-color: var(--mds-table-background);
@@ -12,14 +15,15 @@
   border-top: var(--private-cell-border-width) solid transparent !important;
   display: table-cell;
   padding: var(--mds-table-cell-padding);
-  transition-duration: var(--duration-200);
+  transition-duration: var(--private-table-header-cell-transition-duration);
   transition-property: background-color, border-color, color;
   vertical-align: top;
   white-space: nowrap;
 }
 
 .action {
-  @apply px-200 -mx-200;
+  margin-inline: --spacing(-200);
+  padding-inline: --spacing(200);
 }
 
 :host([direction='ascending']) .action,
@@ -34,10 +38,9 @@
 }
 
 .label {
-  @apply h-700;
-
   align-items: center;
   display: inline-flex;
+  height: --spacing(700);
 }
 
 @import './css/mds-table-header-cell-pref-animation.css';

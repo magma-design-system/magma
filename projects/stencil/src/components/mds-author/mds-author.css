@@ -22,7 +22,7 @@
 }
 
 @container (max-width: 200px) {
-  :host-context(:not(.safari)) {
+  :host {
     flex-direction: column;
     justify-content: center;
     text-align: center;
