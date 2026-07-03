@@ -15,6 +15,14 @@ Magma is the Maggioli Group Design System: a library of ~115 web components (Ste
 
 Always use **Yarn**, never npm.
 
+## Git governance (read before committing or pushing)
+
+Full rules: `docs/WORKFLOW.md`. Critical constraints for agents:
+
+1. **Never auto-merge `dev` or `main`** - merging or pushing into these branches is a manual governance step. Never open or auto-merge a pull request into them either.
+2. **One branch per unit of work** - every feature, fix, refactor, etc. lives on its own dedicated branch, branched off `dev`. Never work directly on `dev` or `main`.
+3. **Sync with `dev` before pushing** - when committing with intent to push, first check for new commits on `dev`; if present, merge `dev` into your branch, run the tests, and only then push (always to your branch's own remote, never to `dev` or `main`).
+
 ## Commands
 
 ```bash
@@ -56,6 +64,7 @@ stencil        →  design-tokens, styles, svg-icons, identity
 | Monorepo architecture, sub-project relationships, component composition patterns       | `docs/ARCHITECTURE.md`                           |
 | Lint rules for TypeScript/JS and CSS authoring (ESLint + Stylelint)                    | `docs/CODING_STANDARDS.md`                       |
 | Commit message convention: allowed types, scopes, special rules                        | `docs/COMMITS.md`                                |
+| Contribution workflow and git governance: branching, merge, push rules                  | `docs/WORKFLOW.md`                               |
 | Navigable catalogue of all 115 components                                              | `docs/COMPONENTS.md`                             |
 | Design token system: structure, naming convention, semantic levels                     | `docs/TOKENS.md`                                 |
 | Design tokens: structure, levels, semantics, naming convention                         | `projects/design-tokens/SPEC.md`                 |

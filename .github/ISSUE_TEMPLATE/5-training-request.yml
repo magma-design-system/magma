@@ -1,0 +1,50 @@
+name: 🎓 Training / Onboarding
+description: Request training or onboarding for an individual, a team, or a larger group.
+title: '[Training]: '
+labels: ['type: training', 'status: triage']
+projects: ['magma-design-system/magma']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this to request help getting started with Magma — for yourself or
+        your team.
+  - type: dropdown
+    id: audience
+    attributes:
+      label: Who is this for?
+      options:
+        - An individual
+        - A team
+        - A large group
+    validations:
+      required: true
+  - type: dropdown
+    id: topic
+    attributes:
+      label: Topic
+      description: What would you like the session to cover?
+      multiple: true
+      options:
+        - Getting started with the components
+        - Contributing to the Design System
+        - Design tokens
+        - Accessibility
+        - Design workflow (Figma)
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: Tell us about your goals, your current level, and anything that would help us tailor the session.
+    validations:
+      required: true
+  - type: input
+    id: timing
+    attributes:
+      label: Preferred timing
+      description: Any deadline or preferred timeframe?
+    validations:
+      required: false

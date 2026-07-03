@@ -1,5 +1,5 @@
-name: Feature Request
-description: Suggest a new component, token, or improvement.
+name: 💡 Feature Request
+description: Suggest a new component, token, or improvement. You are asking the core team to consider it - not committing to build it yourself.
 title: '[Feature]: '
 labels: ['type: feature', 'status: triage']
 projects: ['magma-design-system/magma']
@@ -11,6 +11,9 @@ body:
         Thanks for the suggestion! Please search
         [existing issues](https://github.com/magma-design-system/magma/issues)
         first to avoid duplicates.
+
+        > If you intend to build this yourself, please open a
+        > **Contribution Proposal** instead - it starts the mentoring flow.
   - type: dropdown
     id: package
     attributes:
@@ -28,11 +31,25 @@ body:
         - New / cross-cutting
     validations:
       required: true
+  - type: dropdown
+    id: scope
+    attributes:
+      label: Expected scope
+      description: How large do you think this change is? This helps us estimate the effort and the versioning impact - the core team will confirm it.
+      options:
+        - Small enhancement (e.g. a new variant or prop) - likely minor
+        - Large enhancement / refactor of an existing component - minor or major
+        - New component or feature - likely minor
+        - Feature across multiple components - likely major
+        - Major initiative (tokens, architecture, global styles) - likely major
+        - Not sure
+    validations:
+      required: true
   - type: textarea
     id: problem
     attributes:
       label: What problem does this solve?
-      description: Describe the use case or the limitation you are running into.
+      description: Describe the use case or the limitation you are running into. Focus on the problem before the solution.
     validations:
       required: true
   - type: textarea
