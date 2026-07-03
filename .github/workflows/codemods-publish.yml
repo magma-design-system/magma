@@ -1,0 +1,95 @@
+name: codemods-publish
+
+# Manual publish for @maggioli-design-system/magma-codemods, independent of the
+# shared semantic-release flow. Builds + tests, bumps the version per the chosen
+# input, publishes to npm via OIDC trusted publishing, and pushes a tag only
+# (no commit to the protected `main` branch).
+on:
+  workflow_dispatch:
+    inputs:
+      bump:
+        description: 'Version bump'
+        type: choice
+        required: true
+        default: prerelease
+        options:
+          - patch
+          - minor
+          - major
+          - premajor
+          - preminor
+          - prepatch
+          - prerelease
+      preid:
+        description: 'Prerelease identifier (used only for pre* bumps)'
+        type: choice
+        default: beta
+        options:
+          - alpha
+          - beta
+          - rc
+      dry-run:
+        description: 'Build, test and npm publish --dry-run only (no publish, no tag)'
+        type: boolean
+        default: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write # OIDC token for npm trusted publishing
+      contents: write # push the release tag
+    env:
+      PUPPETEER_SKIP_DOWNLOAD: 'true'
+      PKG: '@maggioli-design-system/magma-codemods'
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          registry-url: 'https://registry.npmjs.org'
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile --prefer-offline
+
+      - name: Build & test
+        run: |
+          yarn nx run codemod:build
+          yarn nx run codemod:test
+
+      - name: Compute next version & dist-tag
+        id: ver
+        working-directory: projects/codemod
+        run: |
+          CURRENT=$(npm view "$PKG" version 2>/dev/null || node -p "require('./package.json').version")
+          echo "Current published/baseline version: $CURRENT"
+          npm version "$CURRENT" --no-git-tag-version --allow-same-version >/dev/null
+          NEXT=$(npm version "${{ inputs.bump }}" --preid "${{ inputs.preid }}" --no-git-tag-version)
+          NEXT=${NEXT#v}
+          echo "Next version: $NEXT"
+          if [[ "$NEXT" == *-* ]]; then
+            TAG=$(echo "$NEXT" | sed -E 's/.*-([a-zA-Z]+).*/\1/')
+            [[ "$TAG" =~ ^[a-zA-Z]+$ ]] || TAG=next
+          else
+            TAG=latest
+          fi
+          echo "Dist-tag: $TAG"
+          echo "version=$NEXT" >> "$GITHUB_OUTPUT"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+
+      - name: Publish (dry-run)
+        if: ${{ inputs.dry-run }}
+        working-directory: projects/codemod
+        run: npm publish --access public --tag "${{ steps.ver.outputs.tag }}" --dry-run
+
+      - name: Publish
+        if: ${{ !inputs.dry-run }}
+        working-directory: projects/codemod
+        run: npm publish --access public --tag "${{ steps.ver.outputs.tag }}"
+
+      - name: Push release tag
+        if: ${{ !inputs.dry-run }}
+        run: |
+          git tag "magma-codemods@${{ steps.ver.outputs.version }}"
+          git push origin "magma-codemods@${{ steps.ver.outputs.version }}"
