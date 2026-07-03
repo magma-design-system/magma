@@ -1,0 +1,32 @@
+name: codemods-ci
+
+# Dedicated CI for @maggioli-design-system/magma-codemods, independent of the
+# shared package pipeline. Runs only when the package changes.
+on:
+  push:
+    branches: [dev]
+    paths:
+      - 'projects/codemod/**'
+      - '.github/workflows/codemods-ci.yml'
+  pull_request:
+    paths:
+      - 'projects/codemod/**'
+      - '.github/workflows/codemods-ci.yml'
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    env:
+      PUPPETEER_SKIP_DOWNLOAD: 'true'
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          cache: yarn
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile --prefer-offline
+      - name: Build
+        run: yarn nx run codemod:build
+      - name: Test
+        run: yarn nx run codemod:test
