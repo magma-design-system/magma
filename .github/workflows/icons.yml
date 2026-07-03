@@ -5,8 +5,18 @@ on:
     branches: [dev, main]
   pull_request:
 
+concurrency:
+  # one run per ref: a newer push cancels the superseded run. On main each push
+  # gets its own group (no cancel, no queued-run replacement): chained
+  # chore(release) pushes must each complete their CI to provide the build
+  # artifact for their own publish run
+  group: ${{ github.workflow }}-${{ github.ref == 'refs/heads/main' && github.sha || github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
 jobs:
   icons:
+    # PRs from dev (release PRs) duplicate the CI already run on every push to dev
+    if: ${{ github.event_name != 'pull_request' || github.head_ref != 'dev' }}
     uses: ./.github/workflows/_package-pipeline.yml
     with:
       path: projects/icons/**
