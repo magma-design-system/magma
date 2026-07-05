@@ -9,7 +9,7 @@ import {
   rotateHue,
 } from '../src/lib/hue-shift.mjs'
 import { createColorTokens, MagmaConfig } from '../src/lib/color.mjs'
-import { contrast } from '@/leonardo/index.js'
+import { contrast } from '../src/lib/leonardo/index.js'
 
 test('smooth preset fades the shift in from both ends', () => {
   expect(resolveCurveWeights('smooth', 10)).toEqual([100, 67, 33, 0, 0, 0, 0, 33, 67, 100])

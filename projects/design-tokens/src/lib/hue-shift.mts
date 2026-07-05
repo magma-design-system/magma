@@ -1,5 +1,5 @@
 import chroma from "chroma-js";
-import type { RgbHexColor } from "@/leonardo/index.js";
+import type { RgbHexColor } from "./leonardo/index.js";
 
 export type HueShiftEasing = "linear" | "step";
 

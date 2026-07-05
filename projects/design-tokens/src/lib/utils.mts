@@ -1,6 +1,28 @@
 import StyleDictionary, { DesignTokens } from 'style-dictionary'
 
-import {
+import * as formatsModule from '../formats/index.js'
+import * as sdBrandColorConfigModule from '../config/styledictionary/sd-brand-color.config.js'
+import chalk from 'chalk'
+import pkg from 'fs-extra'
+import { resolve } from 'path'
+import { lilconfig } from 'lilconfig'
+
+// importing for esm
+const { mkdir, writeFile } = pkg
+
+// The formats barrel and the style-dictionary configs are CommonJS .ts
+// files consumed here from ESM. Their named exports are not statically
+// visible to every loader (native node on the compiled dist, tsx on the
+// sources, vite in the tests), so unwrap the namespace: CJS pipelines
+// expose module.exports as `default`, ESM pipelines expose real named
+// exports and no default.
+function interopDefault<T> (mod: T): T {
+  return ((mod as { default?: T }).default ?? mod)
+}
+
+const formats = interopDefault(formatsModule)
+const { getBrandColorConfig } = interopDefault(sdBrandColorConfigModule)
+const {
   flutterColorFormat,
   cssHexFormat,
   cssRgbFormat,
@@ -23,15 +45,7 @@ import {
   cssTailwindThemeColor,
   cssVarsTransitionsFormat,
   gimpPaletteFormat,
-} from '../formats/index.js'
-import { getBrandColorConfig } from '../config/styledictionary/sd-brand-color.config.js'
-import chalk from 'chalk'
-import pkg from 'fs-extra'
-import { resolve } from 'path'
-import { lilconfig } from 'lilconfig'
-
-// importing for esm
-const { mkdir, writeFile } = pkg
+} = formats
 
 export async function getColorsConfig (path?: string) {
   if (path) return lilconfig('magma-design-tokens').load(path)
