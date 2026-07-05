@@ -119,6 +119,37 @@ NOTE: there are four different ratios as follow value contrast
 }
 ```
 
+### Hue shifting
+
+You can rotate the hue of the darkest and lightest steps of a scale with the `hueShift` field, producing richer palettes in the classic hue shifting style (shadows toward one hue, highlights toward another). The shift is applied to the seed color before scale generation, one Leonardo scale per distinct angle, so every step is still contrast-solved on its own scale and the target ratios are preserved by construction.
+
+```json
+{
+  "colors": [
+    {
+      "color": "#0da2e7",
+      "name": "brand.blue",
+      "hueShift": { "dark": -18, "light": 10, "curve": "smooth" }
+    }
+  ]
+}
+```
+
+- `dark` and `light` are rotations in OKLCH degrees (range -60 to 60) applied at full intensity to the physically darkest and lightest steps of the scale, in both light and dark theme mode.
+- `curve` controls the intensity of the shift across the scale. Each step gets a weight from 0 (no shift) to 100 (full angle). It accepts:
+  - a preset: `"smooth"` (default, the shift fades in linearly outside the central third of the scale) or `"hard"` (full shift outside the central third);
+  - parameters: `{ "deadZone": 0.5, "easing": "linear" }` where `deadZone` is the fraction of the center-to-edge distance left untouched and `easing` is `"linear"` or `"step"`;
+  - an explicit array of weights, resampled to the scale length when needed, for example `[100, 66, 33, 0, 0, 0, 0, 33, 66, 100]`.
+
+With 10 steps the presets resolve to:
+
+```
+smooth: [100, 67, 33, 0, 0, 0, 0, 33, 67, 100]
+hard:   [100, 100, 100, 0, 0, 0, 0, 100, 100, 100]
+```
+
+`hueShift` can also be set at the root of the configuration as a default for all colors; a per-color `hueShift` overrides it. Colors without `hueShift` are generated exactly as before.
+
 ### Cli example
 
 - takes `./color.js` as configuration file
