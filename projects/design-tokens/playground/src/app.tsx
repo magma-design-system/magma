@@ -153,8 +153,8 @@ function HueShiftEditor({ value, onChange, allowInherit, globalActive }: HueShif
             </span>
             <input
               type="range"
-              min={-60}
-              max={60}
+              min={-180}
+              max={180}
               step={1}
               value={dark}
               onInput={(e) => patch({ dark: Number((e.target as HTMLInputElement).value) })}
@@ -166,8 +166,8 @@ function HueShiftEditor({ value, onChange, allowInherit, globalActive }: HueShif
             </span>
             <input
               type="range"
-              min={-60}
-              max={60}
+              min={-180}
+              max={180}
               step={1}
               value={light}
               onInput={(e) => patch({ light: Number((e.target as HTMLInputElement).value) })}

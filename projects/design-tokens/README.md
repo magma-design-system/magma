@@ -184,7 +184,7 @@ You can rotate the hue of the darkest and lightest steps of a scale with the `hu
 }
 ```
 
-- `dark` and `light` are rotations in OKLCH degrees (range -60 to 60) applied at full intensity to the physically darkest and lightest steps of the scale, in both light and dark theme mode.
+- `dark` and `light` are rotations in OKLCH degrees (range -180 to 180) applied at full intensity to the physically darkest and lightest steps of the scale, in both light and dark theme mode. Small angles (10-45) refine the shades in the classic hue shifting style; large ones deliberately bend the ends of the scale toward another color family.
 - `curve` controls the intensity of the shift across the scale. Each step gets a weight from 0 (no shift) to 100 (full angle). It accepts:
   - a preset: `"smooth"` (default, the shift fades in linearly outside the central third of the scale) or `"hard"` (full shift outside the central third);
   - parameters: `{ "deadZone": 0.5, "easing": "linear" }` where `deadZone` is the fraction of the center-to-edge distance left untouched and `easing` is `"linear"` or `"step"`;

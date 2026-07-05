@@ -46,7 +46,9 @@ export interface HueShiftGroup {
 
 export type ThemeMode = "light" | "dark";
 
-const MAX_ANGLE = 60;
+// half a turn each way covers every reachable hue; beyond that a rotation
+// just wraps around to the other direction
+const MAX_ANGLE = 180;
 
 const CURVE_PRESETS: Record<string, Required<HueShiftCurveParams>> = {
   smooth: { deadZone: 1 / 3, easing: "linear" },
