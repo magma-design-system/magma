@@ -207,7 +207,9 @@ A local UI to explore and tune the configuration with live palette previews:
 yarn --cwd projects/design-tokens playground
 ```
 
-It opens a Vite dev server (port 5177) that loads `.magma-design-tokensrc.json` and runs the real token generator in the browser, so every preview matches the build output exactly. You can edit colors, ratio scales, colorspaces and hue shifting (with per-step intensity feedback), inspect the achieved contrast of every step in light and dark mode, browse the whole palette in a grid, and copy the resulting JSON back into the config file. Editing is in-memory only: nothing is written to disk.
+It opens a Vite dev server (port 5177) that loads `.magma-design-tokensrc.json` and runs the real token generator in the browser, so every preview matches the build output exactly. You can edit colors, ratio scales, colorspaces and hue shifting (with per-step intensity feedback), inspect the achieved contrast of every step in light and dark mode, and browse the whole palette in a grid.
+
+The playground works with any configuration, not just the repo one: **load config** opens a `.magma-design-tokensrc.json` from disk, **download config** saves the edited configuration back as a JSON file (**copy JSON** copies it to the clipboard instead). Editing is in-memory only: nothing touches the repo files.
 
 ### Cli example
 

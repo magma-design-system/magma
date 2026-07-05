@@ -374,6 +374,7 @@ export function App() {
   );
   const [view, setView] = useState<'editor' | 'grid'>('editor');
   const [copied, setCopied] = useState(false);
+  const [loadError, setLoadError] = useState<string | null>(null);
 
   const selectedIndex = config.colors.findIndex((c) => c.name === selectedName);
   const selected = selectedIndex >= 0 ? config.colors[selectedIndex] : undefined;
@@ -428,6 +429,33 @@ export function App() {
     setTimeout(() => setCopied(false), 1500);
   };
 
+  const loadConfigFile = async (file: File) => {
+    try {
+      const parsed = JSON.parse(await file.text()) as CloneableConfig;
+      if (!Array.isArray(parsed.colors) || parsed.colors.length === 0) {
+        throw new Error('the file has no "colors" array');
+      }
+      setConfig(parsed);
+      setSelectedName(parsed.colors[0].name);
+      setView('editor');
+      setLoadError(null);
+    } catch (error) {
+      setLoadError(
+        `Could not load ${file.name}: ${error instanceof Error ? error.message : String(error)}`,
+      );
+    }
+  };
+
+  const downloadJson = () => {
+    const blob = new Blob([JSON.stringify(config, null, 2) + '\n'], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.download = 'magma-design-tokensrc.json';
+    anchor.click();
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div class="layout">
       <header class="topbar">
@@ -446,15 +474,32 @@ export function App() {
           <button
             onClick={() => {
               setConfig(clone(initialConfigJson as unknown as CloneableConfig));
+              setLoadError(null);
             }}
           >
             reset
           </button>
-          <button class="primary" onClick={copyJson}>
-            {copied ? 'copied!' : 'copy config JSON'}
+          <label class="file-button">
+            load config
+            <input
+              type="file"
+              accept=".json,application/json"
+              onChange={(e) => {
+                const input = e.target as HTMLInputElement;
+                const file = input.files?.[0];
+                if (file) loadConfigFile(file);
+                input.value = '';
+              }}
+            />
+          </label>
+          <button onClick={copyJson}>{copied ? 'copied!' : 'copy JSON'}</button>
+          <button class="primary" onClick={downloadJson}>
+            download config
           </button>
         </div>
       </header>
+
+      {loadError && <div class="load-error">{loadError}</div>}
 
       <aside class="sidebar">
         {[...groups.entries()].map(([group, colors]) => (

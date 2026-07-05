@@ -17,9 +17,33 @@ body { background: var(--bg); }
 
 .layout {
   display: grid;
-  grid-template: "topbar topbar" auto "sidebar content" 1fr / 240px 1fr;
+  grid-template: "topbar topbar" auto "error error" auto "sidebar content" 1fr / 240px 1fr;
   height: 100vh;
 }
+
+.load-error {
+  grid-area: error;
+  background: #fdf0ee;
+  border-bottom: 1px solid #eccfc9;
+  color: #8d2f16;
+  padding: 8px 20px;
+  font-size: 13px;
+}
+
+.file-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  font: inherit;
+  color: var(--ink);
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 5px 12px;
+  cursor: pointer;
+}
+.file-button:hover { border-color: var(--ink-soft); }
+.file-button input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
 
 .topbar {
   grid-area: topbar;
