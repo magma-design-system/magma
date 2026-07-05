@@ -5,7 +5,7 @@ import baseColorResult from './fixtures/base-color-result.json'
 import baseColor from './fixtures/base-color.json'
 import baseColorExport from './fixtures/base-color-export.json'
 import baseColorExportResult from './fixtures/base-color-export-result.json'
-import { ContrastColor } from '@/leonardo/index.js'
+import { ContrastColor } from '../src/lib/leonardo/index.js'
 
 test('should create tokens', () => {
   const result = createColorTokens(baseColor as MagmaConfig)
