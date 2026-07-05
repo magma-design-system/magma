@@ -16,7 +16,17 @@ Every unit of work (feature, fix, refactor, chore, etc.) must be carried out on 
 - Use a descriptive branch name that reflects the work (for example `537-feat-governance-rules`).
 - Keep unrelated changes on separate branches.
 
-## 3. Sync with `dev` before pushing
+## 3. Every branch starts from an issue and is linked to it
+
+Every unit of work must be tracked by a GitHub issue, and its branch must be linked to that issue so the work is discoverable from the issue's Development section.
+
+- Create the branch **from the issue itself**: the "Create a branch" button in the issue's Development section, or `gh issue develop <issue-number> --base dev`. Both produce a branch named `<issue-number>-<slug>` that GitHub links automatically.
+- A matching branch name alone does **not** create the link: `123-my-feature` created by hand is not connected to issue #123.
+- If a branch was created manually anyway, establish the link at PR time at the latest: the PR body must contain a closing keyword referencing the issue (`Closes #123`).
+- PR bodies always reference their issue with a closing keyword, even when the branch is already linked.
+- One issue, one branch: if a linked branch already exists for the issue, work on that branch instead of creating a second one; delete empty leftover branches.
+
+## 4. Sync with `dev` before pushing
 
 When you commit with the intention of pushing, follow this order before the push:
 
@@ -31,7 +41,7 @@ If the tests fail after merging `dev`, stop and resolve the failures before push
 
 | Action                                          | Allowed for an agent?                          |
 | ----------------------------------------------- | ---------------------------------------------- |
-| Create a dedicated branch off `dev`             | Yes                                            |
+| Create a dedicated branch off `dev`             | Yes, linked to its issue (see rule 3)          |
 | Commit and push to that branch's own remote     | Yes, after syncing with `dev` and passing tests |
 | Merge `dev` into your feature branch            | Yes (to stay current before a push)            |
 | Merge a branch into `dev` or `main`             | No - manual governance step                    |
