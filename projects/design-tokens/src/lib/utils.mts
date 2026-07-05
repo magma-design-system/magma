@@ -131,28 +131,4 @@ export function getStyleDictionaryWithAllCustomTransform (): StyleDictionary.Cor
 }
 
 
-/**
- * Deep merge of two object
- *
- * @param {object} target
- * @param {object} source
- * @returns {object} object merged
- */
-export function deepMerge (target: Record<string, unknown>, source: Record<string, unknown>): Record<string, unknown> {
-  const isObject = (obj: unknown): obj is Record<string, unknown> => obj !== null && typeof obj === 'object' && !Array.isArray(obj)
-
-  if (isObject(target) && isObject(source)) {
-    for (const key in source) {
-      if (isObject(source[key])) {
-        if (!target[key]) {
-          target[key] = {}
-        }
-        deepMerge(target[key] as Record<string, unknown>, source[key] as Record<string, unknown>)
-      } else {
-        target[key] = source[key]
-      }
-    }
-  }
-
-  return target
-}
+export { deepMerge } from './deep-merge.mjs'

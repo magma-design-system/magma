@@ -1,0 +1,591 @@
+import { useMemo, useState } from 'preact/hooks';
+import initialConfigJson from '../../.magma-design-tokensrc.json';
+import type { ColorConfig, MagmaConfig } from '../../src/lib/color.mjs';
+import { resolveCurveWeights, type HueShiftConfig } from '../../src/lib/hue-shift.mjs';
+import { generateScales, singleColorConfig, type ColorScales, type Step } from './generator.js';
+
+const RATIO_PRESETS = ['default', 'tint', 'tone', 'v1', 'v2'];
+const COLORSPACES = [
+  'HSL',
+  'OKLCH',
+  'LCH',
+  'LAB',
+  'OKLAB',
+  'CAM02',
+  'CAM02p',
+  'HSLuv',
+  'RGB',
+  'HSV',
+];
+const CURVE_PRESETS = ['smooth', 'hard', 'custom'] as const;
+
+type CloneableConfig = MagmaConfig & Record<string, unknown>;
+
+function clone<T>(value: T): T {
+  return JSON.parse(JSON.stringify(value)) as T;
+}
+
+function textColorFor(hex: string): string {
+  try {
+    const [r, g, b] = hex.match(/\w\w/g)!.map((c) => parseInt(c, 16) / 255);
+    const lum = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+    return lum > 0.45 ? '#00000099' : '#ffffff99';
+  } catch {
+    return '#00000099';
+  }
+}
+
+function ScaleRow({ label, steps, seed }: { label: string; steps: Step[]; seed?: string }) {
+  return (
+    <div class="scale-row">
+      <span class="scale-label">{label}</span>
+      <div class="scale-cells">
+        {steps.map((step) => (
+          <div
+            class="scale-cell"
+            style={{ background: step.value }}
+            title={`${step.value} - contrast ${step.contrast.toFixed(2)}:1`}
+          >
+            <span class="cell-contrast" style={{ color: textColorFor(step.value) }}>
+              {step.contrast.toFixed(1)}
+            </span>
+            <span class="cell-hex" style={{ color: textColorFor(step.value) }}>
+              {step.value.replace('#', '')}
+            </span>
+          </div>
+        ))}
+        {seed !== undefined && (
+          <div class="scale-cell seed" style={{ background: seed }} title={`color token: ${seed}`}>
+            <span class="cell-hex" style={{ color: textColorFor(seed) }}>
+              seed
+            </span>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function Preview({ scales, error }: { scales: ColorScales | null; error: string | null }) {
+  if (error) return <div class="preview-error">{error}</div>;
+  if (!scales) return null;
+  return (
+    <div class="preview">
+      <div class="preview-card light">
+        <ScaleRow label="light" steps={scales.light} seed={scales.lightColor} />
+      </div>
+      <div class="preview-card dark">
+        <ScaleRow label="dark" steps={scales.dark} seed={scales.darkColor} />
+      </div>
+    </div>
+  );
+}
+
+interface HueShiftEditorProps {
+  value: HueShiftConfig | undefined;
+  onChange: (value: HueShiftConfig | undefined) => void;
+  inheritedLabel?: string;
+}
+
+function HueShiftEditor({ value, onChange, inheritedLabel }: HueShiftEditorProps) {
+  const enabled = value !== undefined;
+  const dark = value?.dark ?? 0;
+  const light = value?.light ?? 0;
+  const curve = value?.curve ?? 'smooth';
+  const curveKind: (typeof CURVE_PRESETS)[number] =
+    curve === 'smooth' || curve === 'hard' ? curve : 'custom';
+  const deadZone =
+    typeof curve === 'object' && !Array.isArray(curve) ? (curve.deadZone ?? 1 / 3) : 1 / 3;
+  const easing =
+    typeof curve === 'object' && !Array.isArray(curve) ? (curve.easing ?? 'linear') : 'linear';
+
+  const weights = useMemo(() => {
+    try {
+      return resolveCurveWeights(curve as never, 10);
+    } catch {
+      return null;
+    }
+  }, [JSON.stringify(curve)]);
+
+  const patch = (partial: Partial<HueShiftConfig>) => onChange({ dark, light, curve, ...partial });
+
+  return (
+    <fieldset class="hue-shift">
+      <legend>
+        <label>
+          <input
+            type="checkbox"
+            checked={enabled}
+            onChange={(e) =>
+              onChange(
+                (e.target as HTMLInputElement).checked
+                  ? { dark: -18, light: 10, curve: 'smooth' }
+                  : undefined,
+              )
+            }
+          />
+          hue shifting{!enabled && inheritedLabel ? ` (${inheritedLabel})` : ''}
+        </label>
+      </legend>
+      {enabled && (
+        <>
+          <label class="slider-row">
+            <span>
+              dark <code>{dark}deg</code>
+            </span>
+            <input
+              type="range"
+              min={-60}
+              max={60}
+              step={1}
+              value={dark}
+              onInput={(e) => patch({ dark: Number((e.target as HTMLInputElement).value) })}
+            />
+          </label>
+          <label class="slider-row">
+            <span>
+              light <code>{light}deg</code>
+            </span>
+            <input
+              type="range"
+              min={-60}
+              max={60}
+              step={1}
+              value={light}
+              onInput={(e) => patch({ light: Number((e.target as HTMLInputElement).value) })}
+            />
+          </label>
+          <div class="curve-controls">
+            <label>
+              curve
+              <select
+                value={curveKind}
+                onChange={(e) => {
+                  const kind = (e.target as HTMLSelectElement).value;
+                  patch({
+                    curve: kind === 'custom' ? { deadZone, easing } : (kind as 'smooth' | 'hard'),
+                  });
+                }}
+              >
+                {CURVE_PRESETS.map((preset) => (
+                  <option value={preset}>{preset}</option>
+                ))}
+              </select>
+            </label>
+            {curveKind === 'custom' && (
+              <>
+                <label class="slider-row">
+                  <span>
+                    dead zone <code>{deadZone.toFixed(2)}</code>
+                  </span>
+                  <input
+                    type="range"
+                    min={0}
+                    max={0.95}
+                    step={0.05}
+                    value={deadZone}
+                    onInput={(e) =>
+                      patch({
+                        curve: { deadZone: Number((e.target as HTMLInputElement).value), easing },
+                      })
+                    }
+                  />
+                </label>
+                <label>
+                  easing
+                  <select
+                    value={easing}
+                    onChange={(e) =>
+                      patch({
+                        curve: {
+                          deadZone,
+                          easing: (e.target as HTMLSelectElement).value as 'linear' | 'step',
+                        },
+                      })
+                    }
+                  >
+                    <option value="linear">linear</option>
+                    <option value="step">step</option>
+                  </select>
+                </label>
+              </>
+            )}
+          </div>
+          {weights && (
+            <div class="weights" title="shift intensity per step (10-step scale)">
+              {weights.map((weight) => (
+                <div class="weight-bar">
+                  <div class="weight-fill" style={{ height: `${Math.max(weight, 2)}%` }} />
+                </div>
+              ))}
+            </div>
+          )}
+        </>
+      )}
+    </fieldset>
+  );
+}
+
+interface ColorEditorProps {
+  color: ColorConfig;
+  hasGlobalShift: boolean;
+  onChange: (patch: Partial<ColorConfig> | { hueShift: undefined }) => void;
+}
+
+function ColorEditor({ color, hasGlobalShift, onChange }: ColorEditorProps) {
+  return (
+    <div class="editor">
+      <div class="editor-grid">
+        <label>
+          name
+          <input
+            type="text"
+            value={color.name}
+            onChange={(e) => onChange({ name: (e.target as HTMLInputElement).value })}
+          />
+        </label>
+        <label>
+          base color
+          <span class="color-input">
+            <input
+              type="color"
+              value={color.color}
+              onInput={(e) =>
+                onChange({ color: (e.target as HTMLInputElement).value as ColorConfig['color'] })
+              }
+            />
+            <code>{color.color}</code>
+          </span>
+        </label>
+        <label>
+          ratios
+          <select
+            value={color.ratios ?? 'default'}
+            onChange={(e) => onChange({ ratios: (e.target as HTMLSelectElement).value })}
+          >
+            {RATIO_PRESETS.map((preset) => (
+              <option value={preset}>{preset}</option>
+            ))}
+          </select>
+        </label>
+        <label>
+          formula
+          <select
+            value={color.formula ?? ''}
+            onChange={(e) =>
+              onChange({
+                formula: ((e.target as HTMLSelectElement).value ||
+                  undefined) as ColorConfig['formula'],
+              })
+            }
+          >
+            <option value="">inherit</option>
+            <option value="wcag2">wcag2</option>
+            <option value="wcag3">wcag3</option>
+          </select>
+        </label>
+        <label>
+          colorspace
+          <select
+            value={color.colorspace ?? ''}
+            onChange={(e) =>
+              onChange({
+                colorspace: ((e.target as HTMLSelectElement).value ||
+                  undefined) as ColorConfig['colorspace'],
+              })
+            }
+          >
+            <option value="">inherit</option>
+            {COLORSPACES.map((space) => (
+              <option value={space}>{space}</option>
+            ))}
+          </select>
+        </label>
+        <label>
+          export groups
+          <input
+            type="text"
+            value={(color.export ?? []).join(', ')}
+            placeholder="e.g. tones, default"
+            onChange={(e) => {
+              const raw = (e.target as HTMLInputElement).value
+                .split(',')
+                .map((s) => s.trim())
+                .filter(Boolean);
+              onChange({ export: raw.length ? raw : undefined });
+            }}
+          />
+        </label>
+        <label class="checkbox">
+          <input
+            type="checkbox"
+            checked={color.smooth ?? false}
+            onChange={(e) =>
+              onChange({ smooth: (e.target as HTMLInputElement).checked || undefined })
+            }
+          />
+          smooth
+        </label>
+        <label class="checkbox">
+          <input
+            type="checkbox"
+            checked={color.disabled ?? false}
+            onChange={(e) =>
+              onChange({ disabled: (e.target as HTMLInputElement).checked || undefined })
+            }
+          />
+          disabled
+        </label>
+      </div>
+      <HueShiftEditor
+        value={color.hueShift}
+        onChange={(hueShift) => onChange({ hueShift })}
+        inheritedLabel={hasGlobalShift ? 'inheriting global' : 'off'}
+      />
+    </div>
+  );
+}
+
+export function App() {
+  const [config, setConfig] = useState<CloneableConfig>(() =>
+    clone(initialConfigJson as unknown as CloneableConfig),
+  );
+  const [selectedName, setSelectedName] = useState<string>(
+    (initialConfigJson as unknown as MagmaConfig).colors[0]?.name ?? '',
+  );
+  const [view, setView] = useState<'editor' | 'grid'>('editor');
+  const [copied, setCopied] = useState(false);
+
+  const selectedIndex = config.colors.findIndex((c) => c.name === selectedName);
+  const selected = selectedIndex >= 0 ? config.colors[selectedIndex] : undefined;
+
+  const updateConfig = (mutate: (draft: CloneableConfig) => void) => {
+    setConfig((prev) => {
+      const draft = clone(prev);
+      mutate(draft);
+      return draft;
+    });
+  };
+
+  const [selectedScales, selectedError] = useMemo((): [ColorScales | null, string | null] => {
+    if (!selected || view !== 'editor') return [null, null];
+    try {
+      const scales = generateScales(singleColorConfig(config, selected));
+      return [scales.get(selected.name) ?? null, null];
+    } catch (error) {
+      return [null, String(error)];
+    }
+  }, [
+    JSON.stringify(selected),
+    JSON.stringify(config.hueShift),
+    config.colorspace,
+    config.smooth,
+    config.formula,
+    view,
+  ]);
+
+  const [gridScales, gridError] = useMemo((): [Map<string, ColorScales> | null, string | null] => {
+    if (view !== 'grid') return [null, null];
+    try {
+      return [generateScales(config), null];
+    } catch (error) {
+      return [null, String(error)];
+    }
+  }, [view, JSON.stringify(config)]);
+
+  const groups = useMemo(() => {
+    const map = new Map<string, ColorConfig[]>();
+    config.colors.forEach((color) => {
+      const group = color.name.split('.')[0];
+      if (!map.has(group)) map.set(group, []);
+      map.get(group)!.push(color);
+    });
+    return map;
+  }, [config]);
+
+  const copyJson = async () => {
+    await navigator.clipboard.writeText(JSON.stringify(config, null, 2) + '\n');
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  };
+
+  return (
+    <div class="layout">
+      <header class="topbar">
+        <h1>
+          magma design tokens <span>playground</span>
+        </h1>
+        <nav>
+          <button class={view === 'editor' ? 'active' : ''} onClick={() => setView('editor')}>
+            editor
+          </button>
+          <button class={view === 'grid' ? 'active' : ''} onClick={() => setView('grid')}>
+            palette grid
+          </button>
+        </nav>
+        <div class="topbar-actions">
+          <button
+            onClick={() => {
+              setConfig(clone(initialConfigJson as unknown as CloneableConfig));
+            }}
+          >
+            reset
+          </button>
+          <button class="primary" onClick={copyJson}>
+            {copied ? 'copied!' : 'copy config JSON'}
+          </button>
+        </div>
+      </header>
+
+      <aside class="sidebar">
+        {[...groups.entries()].map(([group, colors]) => (
+          <div class="group">
+            <h2>{group}</h2>
+            {colors.map((color) => (
+              <button
+                class={`color-item ${color.name === selectedName ? 'active' : ''} ${color.disabled ? 'disabled' : ''}`}
+                onClick={() => {
+                  setSelectedName(color.name);
+                  setView('editor');
+                }}
+              >
+                <span class="swatch" style={{ background: color.color }} />
+                {color.name.split('.')[1]}
+                {(color.hueShift ?? config.hueShift) && (
+                  <span class="badge" title="hue shifting active">
+                    hs
+                  </span>
+                )}
+              </button>
+            ))}
+          </div>
+        ))}
+        <div class="sidebar-actions">
+          <button
+            onClick={() =>
+              updateConfig((draft) => {
+                let index = 1;
+                while (draft.colors.some((c) => c.name === `label.new-${index}`)) index += 1;
+                draft.colors.push({ color: '#888888', name: `label.new-${index}` } as ColorConfig);
+                setSelectedName(`label.new-${index}`);
+              })
+            }
+          >
+            + add color
+          </button>
+        </div>
+      </aside>
+
+      <main class="content">
+        {view === 'editor' && selected && (
+          <>
+            <div class="content-head">
+              <h2>{selected.name}</h2>
+              <div class="content-head-actions">
+                <button
+                  onClick={() =>
+                    updateConfig((draft) => {
+                      const source = draft.colors[selectedIndex];
+                      const copy = clone(source);
+                      copy.name = `${source.name}-copy`;
+                      draft.colors.splice(selectedIndex + 1, 0, copy);
+                      setSelectedName(copy.name);
+                    })
+                  }
+                >
+                  duplicate
+                </button>
+                <button
+                  class="danger"
+                  onClick={() =>
+                    updateConfig((draft) => {
+                      draft.colors.splice(selectedIndex, 1);
+                      setSelectedName(draft.colors[0]?.name ?? '');
+                    })
+                  }
+                >
+                  delete
+                </button>
+              </div>
+            </div>
+            <Preview scales={selectedScales} error={selectedError} />
+            <ColorEditor
+              color={selected}
+              hasGlobalShift={config.hueShift !== undefined}
+              onChange={(patch) =>
+                updateConfig((draft) => {
+                  const target = draft.colors[selectedIndex] as Record<string, unknown>;
+                  Object.entries(patch).forEach(([key, value]) => {
+                    if (value === undefined) delete target[key];
+                    else target[key] = value;
+                  });
+                  if ('name' in patch && typeof patch.name === 'string')
+                    setSelectedName(patch.name);
+                })
+              }
+            />
+            <details class="global-settings" open>
+              <summary>global settings</summary>
+              <div class="editor-grid">
+                <label>
+                  colorspace
+                  <select
+                    value={config.colorspace ?? 'HSL'}
+                    onChange={(e) =>
+                      updateConfig((draft) => {
+                        draft.colorspace = (e.target as HTMLSelectElement).value;
+                      })
+                    }
+                  >
+                    {COLORSPACES.map((space) => (
+                      <option value={space}>{space}</option>
+                    ))}
+                  </select>
+                </label>
+                <label class="checkbox">
+                  <input
+                    type="checkbox"
+                    checked={config.smooth ?? false}
+                    onChange={(e) =>
+                      updateConfig((draft) => {
+                        draft.smooth = (e.target as HTMLInputElement).checked;
+                      })
+                    }
+                  />
+                  smooth
+                </label>
+              </div>
+              <HueShiftEditor
+                value={config.hueShift}
+                onChange={(hueShift) =>
+                  updateConfig((draft) => {
+                    if (hueShift === undefined) delete (draft as Record<string, unknown>).hueShift;
+                    else draft.hueShift = hueShift;
+                  })
+                }
+                inheritedLabel="off"
+              />
+            </details>
+          </>
+        )}
+        {view === 'grid' && (
+          <div class="grid">
+            {gridError && <div class="preview-error">{gridError}</div>}
+            {gridScales &&
+              [...gridScales.entries()].map(([name, scales]) => (
+                <div class="grid-item">
+                  <h3>{name}</h3>
+                  <div class="preview-card light compact">
+                    <ScaleRow label="light" steps={scales.light} />
+                  </div>
+                  <div class="preview-card dark compact">
+                    <ScaleRow label="dark" steps={scales.dark} />
+                  </div>
+                </div>
+              ))}
+          </div>
+        )}
+      </main>
+    </div>
+  );
+}

@@ -199,6 +199,16 @@ hard:   [100, 100, 100, 0, 0, 0, 0, 100, 100, 100]
 
 `hueShift` can also be set at the root of the configuration as a default for all colors; a per-color `hueShift` overrides it. Colors without `hueShift` are generated exactly as before.
 
+### Playground
+
+A local UI to explore and tune the configuration with live palette previews:
+
+```bash
+yarn --cwd projects/design-tokens playground
+```
+
+It opens a Vite dev server (port 5177) that loads `.magma-design-tokensrc.json` and runs the real token generator in the browser, so every preview matches the build output exactly. You can edit colors, ratio scales, colorspaces and hue shifting (with per-step intensity feedback), inspect the achieved contrast of every step in light and dark mode, browse the whole palette in a grid, and copy the resulting JSON back into the config file. Editing is in-memory only: nothing is written to disk.
+
 ### Cli example
 
 - takes `./color.js` as configuration file
