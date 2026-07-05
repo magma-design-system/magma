@@ -119,6 +119,86 @@ NOTE: there are four different ratios as follow value contrast
 }
 ```
 
+### How generation works
+
+For every entry in `colors`, [Adobe Leonardo](https://leonardocolor.io/) builds a full lightness scale from the base `color` (interpolating from black to white through it in the chosen `colorspace`) and then picks one swatch per target contrast ratio, measured against the theme background: white for the light theme, black for the dark theme. The steps of a palette are therefore defined by their contrast, not by fixed lightness values: step `1` is always the highest-contrast step (the darkest in light mode, the lightest in dark mode) and the last step is the closest to the background.
+
+Each color produces this token structure (here with the 10-step `default` scale):
+
+```
+color.<group>.<name>.light.1 .. 10   contrast-picked values against white
+color.<group>.<name>.dark.1  .. 10   contrast-picked values against black
+color.<group>.<name>.light.color     the base color itself (or seed.light)
+color.<group>.<name>.dark.color      the base color itself (or seed.dark)
+```
+
+### Configuration reference
+
+Root fields:
+
+| Field        | Type                     | Default  | Description                                                                                              |
+| :----------- | :----------------------- | :------- | :-------------------------------------------------------------------------------------------------------- |
+| `colors`     | `ColorConfig[]`          | required | The palette definitions, one per generated color scale                                                    |
+| `colorspace` | `string`                 | `"HSL"`  | Interpolation colorspace used by Leonardo to build the scales (`HSL`, `OKLCH`, `LCH`, `CAM02`, ...)        |
+| `smooth`     | `boolean`                | `false`  | Applies bezier smoothing to the scale interpolation                                                       |
+| `formula`    | `"wcag2"` \| `"wcag3"`   | `"wcag3"` | Contrast formula used to pick the steps: WCAG 2.x contrast ratios or WCAG 3 (APCA) Lc values             |
+| `ratios`     | `object`                 | built-in | Named ratio scales per formula; merged over the built-in ones shown above                                 |
+| `hueShift`   | `object`                 | none     | Default hue shifting applied to all colors (see the Hue shifting section)                                 |
+
+Fields of each entry in `colors` (per-color values override the root defaults):
+
+| Field        | Type              | Default        | Description                                                                                                    |
+| :----------- | :---------------- | :------------- | :--------------------------------------------------------------------------------------------------------------- |
+| `color`      | `#RRGGBB`         | required       | Base (key) color the scale is generated from                                                                     |
+| `name`       | `string`          | required       | Dot-separated token path in the form `<group>.<name>`, e.g. `tone.neutral` or `brand.maggioli`                   |
+| `export`     | `string[]`        | none           | Output groups this color belongs to; each group becomes a separate file (e.g. `tones`, `status`, `default`)      |
+| `ratios`     | `string`          | `"default"`    | Name of the ratio scale to use, resolved against the `ratios` of the active `formula`                            |
+| `formula`    | `string`          | root `formula` | Contrast formula for this color only                                                                             |
+| `colorspace` | `string`          | root value     | Interpolation colorspace for this color only                                                                     |
+| `smooth`     | `boolean`         | root value     | Bezier smoothing for this color only                                                                             |
+| `seed`       | `object`          | none           | `{ "light": "#RRGGBB", "dark": "#RRGGBB" }`: overrides the value of the extra `color` token per theme mode. Used by tones to expose the pure surface color (white in light mode, black in dark mode) |
+| `hueShift`   | `object`          | root value     | Hue shifting for this color only; set angles to `0` to opt a color out of a root-level default                   |
+| `disabled`   | `boolean`         | `false`        | Skips the color entirely: no tokens are generated for it                                                          |
+| `title`      | `string`          | none           | Reserved for exporters; not used by the generator                                                                 |
+| `alias`      | `string`          | none           | Reserved for exporters; not used by the generator                                                                 |
+
+Notes:
+
+- Root options and each color are merged with the built-in defaults, so you only declare what differs.
+- The `formula` decides how the numbers in the ratio scales are interpreted: as WCAG 2.x contrast ratios (`1.05`-`21`) or as WCAG 3 APCA Lc values (`0`-`106`). Do not mix scales across formulas: a `wcag3` color must reference a ratio scale defined under `wcag3`.
+- Every step keeps its target contrast against the theme background by construction, whatever `colorspace`, `smooth` or `hueShift` you set.
+
+### Hue shifting
+
+You can rotate the hue of the darkest and lightest steps of a scale with the `hueShift` field, producing richer palettes in the classic hue shifting style (shadows toward one hue, highlights toward another). The shift is applied to the seed color before scale generation, one Leonardo scale per distinct angle, so every step is still contrast-solved on its own scale and the target ratios are preserved by construction.
+
+```json
+{
+  "colors": [
+    {
+      "color": "#0da2e7",
+      "name": "brand.blue",
+      "hueShift": { "dark": -18, "light": 10, "curve": "smooth" }
+    }
+  ]
+}
+```
+
+- `dark` and `light` are rotations in OKLCH degrees (range -60 to 60) applied at full intensity to the physically darkest and lightest steps of the scale, in both light and dark theme mode.
+- `curve` controls the intensity of the shift across the scale. Each step gets a weight from 0 (no shift) to 100 (full angle). It accepts:
+  - a preset: `"smooth"` (default, the shift fades in linearly outside the central third of the scale) or `"hard"` (full shift outside the central third);
+  - parameters: `{ "deadZone": 0.5, "easing": "linear" }` where `deadZone` is the fraction of the center-to-edge distance left untouched and `easing` is `"linear"` or `"step"`;
+  - an explicit array of weights, resampled to the scale length when needed, for example `[100, 66, 33, 0, 0, 0, 0, 33, 66, 100]`.
+
+With 10 steps the presets resolve to:
+
+```
+smooth: [100, 67, 33, 0, 0, 0, 0, 33, 67, 100]
+hard:   [100, 100, 100, 0, 0, 0, 0, 100, 100, 100]
+```
+
+`hueShift` can also be set at the root of the configuration as a default for all colors; a per-color `hueShift` overrides it. Colors without `hueShift` are generated exactly as before.
+
 ### Cli example
 
 - takes `./color.js` as configuration file
