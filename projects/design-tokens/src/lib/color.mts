@@ -72,13 +72,16 @@ export interface ColorTokens {
   [key: string]: DesignTokens | DesignToken;
 }
 
-function getBackgroundColor(formula: Formula = "wcag3"): BackgroundColor {
+function getBackgroundColor(
+  config: MagmaConfig,
+  formula: Formula = "wcag3",
+): BackgroundColor {
   return new BackgroundColor({
     colorKeys: ["#000000"],
-    colorspace: DEFAULTS.colorspace as InterpolationColorspace,
+    colorspace: config.colorspace as InterpolationColorspace,
     name: "backgroud",
-    ratios: DEFAULTS.ratios[formula].tone,
-    smooth: DEFAULTS.smooth,
+    ratios: config.ratios![formula].tone,
+    smooth: config.smooth,
   });
 }
 
@@ -226,8 +229,10 @@ export function assembleContrastColor(
  * @returns
  */
 export function createColorTokens(magmaConfig: MagmaConfig) {
+  // deepMerge mutates its target: merge into a clone so the module-level
+  // DEFAULTS are never contaminated and repeated calls stay independent
   const config = deepMerge(
-    DEFAULTS as unknown as Record<string, unknown>,
+    structuredClone(DEFAULTS) as unknown as Record<string, unknown>,
     magmaConfig as unknown as Record<string, unknown>,
   ) as unknown as MagmaConfig;
 
@@ -253,8 +258,8 @@ export function createColorTokens(magmaConfig: MagmaConfig) {
     variants[element.name] = { light, dark };
   });
 
-  const backgroundColor = getBackgroundColor();
-  const backgroundColorWcag2 = getBackgroundColor("wcag2");
+  const backgroundColor = getBackgroundColor(config);
+  const backgroundColorWcag2 = getBackgroundColor(config, "wcag2");
 
   // it doesnt matter backgroundColor color in this case because the lightness is 100 or 0
   // so the background color is basically #ffffff for light theme and #000000 for dark theme

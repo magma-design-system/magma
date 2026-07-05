@@ -162,6 +162,19 @@ test('hueShift anchors the dark angle to the dark end in both modes', () => {
   expect(hueDelta(darkBase[9], darkShifted[9])).toBeLessThan(0)
 })
 
+test('a root-level hueShift does not leak into subsequent generations', () => {
+  const pristine = createColorTokens(BASE_CONFIG)
+  // root-level hueShift used to be deep-merged into the module-level
+  // DEFAULTS, contaminating every later call in the same process
+  createColorTokens({
+    colors: [{ color: '#00379E', name: 'variant.primary' }],
+    formula: 'wcag2',
+    hueShift: { dark: -20, light: 15 },
+  })
+  const afterShiftedRun = createColorTokens(BASE_CONFIG)
+  expect(afterShiftedRun.tokens).toEqual(pristine.tokens)
+})
+
 test('hueShift preserves the contrast of every step', () => {
   const base = createColorTokens(BASE_CONFIG)
   const shifted = createColorTokens(SHIFTED_CONFIG)
