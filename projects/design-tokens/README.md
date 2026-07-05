@@ -204,6 +204,8 @@ hard:   [100, 100, 100, 0, 0, 0, 0, 100, 100, 100]
 A local UI to explore and tune the configuration with live palette previews:
 
 ```bash
+nx run design-tokens:playground
+# or, without nx:
 yarn --cwd projects/design-tokens playground
 ```
 
