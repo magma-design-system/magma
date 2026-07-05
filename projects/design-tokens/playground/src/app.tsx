@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'preact/hooks';
 import initialConfigJson from '../../.magma-design-tokensrc.json';
 import type { ColorConfig, MagmaConfig } from '../../src/lib/color.mjs';
-import { resolveCurveWeights, type HueShiftConfig } from '../../src/lib/hue-shift.mjs';
+import { hasHueShift, resolveCurveWeights, type HueShiftConfig } from '../../src/lib/hue-shift.mjs';
 import { generateScales, singleColorConfig, type ColorScales, type Step } from './generator.js';
 
 const RATIO_PRESETS = ['default', 'tint', 'tone', 'v1', 'v2'];
@@ -81,14 +81,29 @@ function Preview({ scales, error }: { scales: ColorScales | null; error: string 
   );
 }
 
+type HueShiftMode = 'inherit' | 'custom' | 'off';
+
 interface HueShiftEditorProps {
   value: HueShiftConfig | undefined;
   onChange: (value: HueShiftConfig | undefined) => void;
-  inheritedLabel?: string;
+  /**
+   * Per-color editors allow inheriting the global hueShift; the global
+   * editor itself only toggles between custom and off.
+   */
+  allowInherit?: boolean;
+  globalActive?: boolean;
 }
 
-function HueShiftEditor({ value, onChange, inheritedLabel }: HueShiftEditorProps) {
-  const enabled = value !== undefined;
+function HueShiftEditor({ value, onChange, allowInherit, globalActive }: HueShiftEditorProps) {
+  const mode: HueShiftMode =
+    value === undefined
+      ? allowInherit
+        ? 'inherit'
+        : 'off'
+      : (value.dark ?? 0) === 0 && (value.light ?? 0) === 0
+        ? 'off'
+        : 'custom';
+  const enabled = mode === 'custom';
   const dark = value?.dark ?? 0;
   const light = value?.light ?? 0;
   const curve = value?.curve ?? 'smooth';
@@ -109,23 +124,26 @@ function HueShiftEditor({ value, onChange, inheritedLabel }: HueShiftEditorProps
 
   const patch = (partial: Partial<HueShiftConfig>) => onChange({ dark, light, curve, ...partial });
 
+  const setMode = (next: HueShiftMode) => {
+    if (next === 'custom') onChange({ dark: -18, light: 10, curve: 'smooth' });
+    else if (next === 'off') onChange(allowInherit ? { dark: 0, light: 0 } : undefined);
+    else onChange(undefined);
+  };
+
   return (
     <fieldset class="hue-shift">
       <legend>
-        <label>
-          <input
-            type="checkbox"
-            checked={enabled}
-            onChange={(e) =>
-              onChange(
-                (e.target as HTMLInputElement).checked
-                  ? { dark: -18, light: 10, curve: 'smooth' }
-                  : undefined,
-              )
-            }
-          />
-          hue shifting{!enabled && inheritedLabel ? ` (${inheritedLabel})` : ''}
-        </label>
+        hue shifting
+        <select
+          value={mode}
+          onChange={(e) => setMode((e.target as HTMLSelectElement).value as HueShiftMode)}
+        >
+          {allowInherit && (
+            <option value="inherit">inherit global ({globalActive ? 'active' : 'off'})</option>
+          )}
+          <option value="custom">custom</option>
+          <option value="off">off</option>
+        </select>
       </legend>
       {enabled && (
         <>
@@ -340,7 +358,8 @@ function ColorEditor({ color, hasGlobalShift, onChange }: ColorEditorProps) {
       <HueShiftEditor
         value={color.hueShift}
         onChange={(hueShift) => onChange({ hueShift })}
-        inheritedLabel={hasGlobalShift ? 'inheriting global' : 'off'}
+        allowInherit
+        globalActive={hasGlobalShift}
       />
     </div>
   );
@@ -451,7 +470,7 @@ export function App() {
               >
                 <span class="swatch" style={{ background: color.color }} />
                 {color.name.split('.')[1]}
-                {(color.hueShift ?? config.hueShift) && (
+                {hasHueShift(color.hueShift ?? config.hueShift) && (
                   <span class="badge" title="hue shifting active">
                     hs
                   </span>
@@ -563,7 +582,6 @@ export function App() {
                     else draft.hueShift = hueShift;
                   })
                 }
-                inheritedLabel="off"
               />
             </details>
           </>

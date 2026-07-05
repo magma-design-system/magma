@@ -157,8 +157,22 @@ button.danger:hover { border-color: #c0392b; color: #c0392b; }
 .color-input input[type='color'] { width: 42px; height: 30px; padding: 0; border: 1px solid var(--line); border-radius: 6px; background: #fff; }
 
 .hue-shift { border: 1px dashed var(--line); border-radius: var(--radius); padding: 10px 14px 14px; margin-top: 10px; }
-.hue-shift legend { font-size: 12px; color: var(--ink-soft); padding: 0 6px; }
-.hue-shift legend label { display: flex; align-items: center; gap: 6px; }
+.hue-shift legend {
+  font-size: 12px;
+  color: var(--ink-soft);
+  padding: 0 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.hue-shift legend select {
+  font: inherit;
+  color: var(--ink);
+  padding: 3px 6px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #fff;
+}
 .slider-row { display: grid; grid-template-columns: 130px 1fr; align-items: center; gap: 10px; margin: 6px 0; font-size: 12px; color: var(--ink-soft); }
 .slider-row code { color: var(--ink); }
 .curve-controls { display: flex; gap: 18px; align-items: end; margin: 8px 0; flex-wrap: wrap; }
