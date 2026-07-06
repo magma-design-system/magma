@@ -243,7 +243,9 @@ button.danger:hover { border-color: #c0392b; color: #c0392b; }
 .scale-name:not(:disabled):hover, .scale-name:focus { border-color: var(--line); background: #fff; }
 .scale-usage { font-size: 12px; color: var(--ink-soft); }
 .scale-card-actions { margin-left: auto; display: flex; gap: 8px; }
+.scale-card-actions button { display: inline-flex; align-items: center; gap: 5px; }
 .scale-card-actions button:disabled { opacity: 0.4; cursor: not-allowed; }
+.warn-icon { width: 13px; height: 13px; color: var(--accent); }
 
 .strip { position: relative; height: 56px; margin: 18px 6px 4px; touch-action: none; }
 .strip-axis { position: absolute; left: 0; right: 0; top: 26px; height: 4px; background: var(--bg); border-radius: 2px; }

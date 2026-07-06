@@ -29,14 +29,29 @@ function roundTo(value: number, precision: number): number {
 // 0 sits on the background, the maximum is the strongest contrast (dark in
 // light mode, light in dark mode). Distributions are expressed as easing
 // functions over that axis; dragging or typing a stop switches to manual.
-const EASINGS: Record<string, (t: number) => number> = {
-  linear: (t) => t,
-  'ease-in': (t) => t * t,
-  'ease-out': (t) => 1 - (1 - t) ** 2,
-  'ease-in-out': (t) => t * t * (3 - 2 * t),
+type EasingFn = (t: number) => number;
+
+const EASE_IN: Record<string, EasingFn> = {
+  sine: (t) => 1 - Math.cos((t * Math.PI) / 2),
+  quad: (t) => t * t,
+  cubic: (t) => t ** 3,
+  quart: (t) => t ** 4,
+  quint: (t) => t ** 5,
+  expo: (t) => (t === 0 ? 0 : 2 ** (10 * t - 10)),
+  circ: (t) => 1 - Math.sqrt(1 - t * t),
 };
 
-export type EasingName = keyof typeof EASINGS | 'manual';
+// every family expands to in / out / in-out (Penner-style)
+const EASINGS: Record<string, EasingFn> = { linear: (t) => t };
+const EASING_FAMILIES: Record<string, string[]> = { linear: ['linear'] };
+Object.entries(EASE_IN).forEach(([family, easeIn]) => {
+  EASINGS[`${family}-in`] = easeIn;
+  EASINGS[`${family}-out`] = (t) => 1 - easeIn(1 - t);
+  EASINGS[`${family}-in-out`] = (t) => (t < 0.5 ? easeIn(2 * t) / 2 : 1 - easeIn(2 * (1 - t)) / 2);
+  EASING_FAMILIES[family] = [`${family}-in`, `${family}-out`, `${family}-in-out`];
+});
+
+export type EasingName = string;
 
 interface DistributionStripProps {
   values: number[];
@@ -163,9 +178,17 @@ function DistributionControls({
           }}
         >
           <option value="manual">manual</option>
-          {Object.keys(EASINGS).map((name) => (
-            <option value={name}>{name}</option>
-          ))}
+          {Object.entries(EASING_FAMILIES).map(([family, names]) =>
+            names.length === 1 ? (
+              <option value={names[0]}>{names[0]}</option>
+            ) : (
+              <optgroup label={family}>
+                {names.map((name) => (
+                  <option value={name}>{name}</option>
+                ))}
+              </optgroup>
+            ),
+          )}
         </select>
       </label>
       {easing !== 'manual' && (
@@ -198,7 +221,11 @@ interface ScalesManagerProps {
   config: MagmaConfig;
   formula: Formula;
   ratioSet: RatioSet;
-  /** scales shipped with the generator: editable but not removable */
+  /**
+   * Scales shipped with the generator: deleting one writes a null entry in
+   * the config (the generator would merge it back from its defaults) and
+   * renaming is not allowed.
+   */
   builtinScales: string[];
   sampleScales: Map<string, string[]>;
   onFormulaChange: (formula: Formula) => void;
@@ -294,18 +321,38 @@ export function ScalesManager({
                 <button onClick={() => onAddScale(name)}>duplicate</button>
                 <button
                   class="danger"
-                  disabled={builtin || usedBy > 0}
+                  disabled={name === 'default'}
                   title={
                     name === 'default'
                       ? 'the default scale is mandatory'
-                      : builtin
-                        ? 'built-in scales cannot be deleted'
-                        : usedBy > 0
-                          ? 'reassign the colors using this scale first'
-                          : 'delete scale'
+                      : usedBy > 0
+                        ? `used by ${usedBy} color${usedBy === 1 ? '' : 's'}: deleting reassigns them to the default scale`
+                        : 'delete scale'
                   }
-                  onClick={() => onDeleteScale(name)}
+                  onClick={() => {
+                    if (
+                      usedBy > 0 &&
+                      !window.confirm(
+                        `The scale "${name}" is used by ${usedBy} color${usedBy === 1 ? '' : 's'}.\n` +
+                          'Deleting it will reassign them to the "default" scale. Continue?',
+                      )
+                    ) {
+                      return;
+                    }
+                    onDeleteScale(name);
+                  }}
                 >
+                  {usedBy > 0 && name !== 'default' && (
+                    <svg class="warn-icon" viewBox="0 0 16 16" aria-hidden="true">
+                      <path d="M8 1.5 15 14H1L8 1.5z" fill="currentColor" opacity="0.25" />
+                      <path
+                        d="M8 5.5v4M8 11.6v1.4"
+                        stroke="currentColor"
+                        stroke-width="1.6"
+                        fill="none"
+                      />
+                    </svg>
+                  )}
                   delete
                 </button>
               </div>

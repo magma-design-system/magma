@@ -427,11 +427,15 @@ export function App() {
   }, [config]);
 
   // effective ratio scales: config entries layered over the built-in ones,
-  // exactly like the generator merges them
-  const ratioSetFor = (formula: Formula): RatioSet => ({
-    ...(DEFAULT_COLOR_CONFIG.ratios as Record<Formula, RatioSet>)[formula],
-    ...(config.ratios?.[formula] ?? {}),
-  });
+  // exactly like the generator merges them. A null entry in the config is
+  // the sentinel for a deleted built-in scale and is filtered out.
+  const ratioSetFor = (formula: Formula): RatioSet =>
+    Object.fromEntries(
+      Object.entries({
+        ...(DEFAULT_COLOR_CONFIG.ratios as Record<Formula, RatioSet>)[formula],
+        ...(config.ratios?.[formula] ?? {}),
+      }).filter(([, values]) => Array.isArray(values)),
+    );
   const ratioSet = ratioSetFor(scalesFormula);
   const builtinScales = Object.keys(
     (DEFAULT_COLOR_CONFIG.ratios as Record<Formula, RatioSet>)[scalesFormula],
@@ -738,11 +742,26 @@ export function App() {
                 draftSet[`custom-${index}`] = [...(draftSet[copyFrom] ?? draftSet.default)];
               });
             }}
-            onDeleteScale={(name) =>
+            onDeleteScale={(name) => {
+              // colors using the deleted scale fall back to the mandatory default
+              updateConfig((draft) => {
+                draft.colors.forEach((color) => {
+                  const colorFormula = color.formula ?? draft.formula ?? 'wcag3';
+                  if (colorFormula === scalesFormula && color.ratios === name) {
+                    delete color.ratios;
+                  }
+                });
+              });
               writeScale((draftSet) => {
-                delete draftSet[name];
-              })
-            }
+                if (builtinScales.includes(name)) {
+                  // built-ins are merged back by the generator: a null entry
+                  // in the config marks them as deleted
+                  (draftSet as Record<string, unknown>)[name] = null;
+                } else {
+                  delete draftSet[name];
+                }
+              });
+            }}
           />
         )}
       </main>
