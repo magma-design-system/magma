@@ -213,6 +213,8 @@ It opens a Vite dev server (port 5177) that loads `.magma-design-tokensrc.json` 
 
 The playground works with any configuration, not just the repo one: **load config** opens a `.magma-design-tokensrc.json` from disk, **download config** saves the edited configuration back as a JSON file (**copy JSON** copies it to the clipboard instead). Editing is in-memory only: nothing touches the repo files.
 
+New colors are named automatically: when the color picker is released, a color still carrying a system-assigned name gets one from a perceptual vocabulary (nearest match by deltaE, e.g. `label.teal`), made unique with a numeric suffix when needed. Typing a custom name stops the auto-renaming for that color; picking a value already used by another color raises a warning.
+
 The **contrast scales** view manages the ratio scales of the configuration: add, duplicate, rename or delete custom scales (the built-in ones, `default` first of all, are always available) and inspect the distribution of the stops on a horizontal axis. Each scale has a distribution mode: pick an easing (`linear`, `ease-in`, `ease-out`, `ease-in-out`) and the stops regenerate live from steps/min/max, or go `manual` by dragging a marker or editing a stop directly. Scale values are contrast against the theme background (0 = on the background, max = strongest contrast), so the same scale yields dark-on-light in light mode and light-on-dark in dark mode. Every color picks its scale with the `ratios` field in the editor.
 
 ### Cli example

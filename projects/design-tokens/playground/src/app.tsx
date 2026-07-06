@@ -5,6 +5,7 @@ import type { ColorConfig, Formula, MagmaConfig } from '../../src/lib/color.mjs'
 import { hasHueShift, resolveCurveWeights, type HueShiftConfig } from '../../src/lib/hue-shift.mjs';
 import { generateScales, singleColorConfig, type ColorScales, type Step } from './generator.js';
 import { ScalesManager, type RatioSet } from './scales.js';
+import { isAutoName, nearestColorName } from './color-names.js';
 const COLORSPACES = [
   'HSL',
   'OKLCH',
@@ -249,9 +250,17 @@ interface ColorEditorProps {
   hasGlobalShift: boolean;
   scaleNames: string[];
   onChange: (patch: Partial<ColorConfig> | { hueShift: undefined }) => void;
+  /** fired when the color picker is released (change, not live input) */
+  onColorCommit: (hex: string) => void;
 }
 
-function ColorEditor({ color, hasGlobalShift, scaleNames, onChange }: ColorEditorProps) {
+function ColorEditor({
+  color,
+  hasGlobalShift,
+  scaleNames,
+  onChange,
+  onColorCommit,
+}: ColorEditorProps) {
   return (
     <div class="editor">
       <div class="editor-grid">
@@ -272,6 +281,7 @@ function ColorEditor({ color, hasGlobalShift, scaleNames, onChange }: ColorEdito
               onInput={(e) =>
                 onChange({ color: (e.target as HTMLInputElement).value as ColorConfig['color'] })
               }
+              onChange={(e) => onColorCommit((e.target as HTMLInputElement).value)}
             />
             <code>{color.color}</code>
           </span>
@@ -504,6 +514,36 @@ export function App() {
     }
   };
 
+  // when the color picker is released, colors still carrying an
+  // auto-assigned name get renamed after the picked value, unique within
+  // the config; a duplicate hex only raises a warning
+  const autoNameColor = (index: number, hex: string) => {
+    const color = config.colors[index];
+    if (!color) return;
+    const duplicate = config.colors.find(
+      (other, i) => i !== index && other.color.toLowerCase() === hex.toLowerCase(),
+    );
+    setLoadError(duplicate ? `Warning: ${hex} is already used by "${duplicate.name}"` : null);
+
+    const [group, baseName] = color.name.split('.');
+    if (!isAutoName(baseName ?? '')) return;
+    const vocabularyName = nearestColorName(hex);
+    let candidate = vocabularyName;
+    let suffix = 2;
+    while (
+      config.colors.some((other, i) => i !== index && other.name === `${group}.${candidate}`)
+    ) {
+      candidate = `${vocabularyName}-${suffix}`;
+      suffix += 1;
+    }
+    const nextName = `${group}.${candidate}`;
+    if (nextName === color.name) return;
+    updateConfig((draft) => {
+      draft.colors[index].name = nextName;
+    });
+    setSelectedName(nextName);
+  };
+
   const downloadJson = () => {
     const blob = new Blob([JSON.stringify(config, null, 2) + '\n'], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
@@ -638,6 +678,7 @@ export function App() {
               color={selected}
               hasGlobalShift={config.hueShift !== undefined}
               scaleNames={scaleNamesFor(selected)}
+              onColorCommit={(hex) => autoNameColor(selectedIndex, hex)}
               onChange={(patch) =>
                 updateConfig((draft) => {
                   const target = draft.colors[selectedIndex] as Record<string, unknown>;
