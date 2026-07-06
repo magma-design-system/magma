@@ -95,6 +95,24 @@ export function GroupsManager({
                     ))}
                   </select>
                 </label>
+                <label>
+                  export
+                  <input
+                    type="text"
+                    value={(groupConfig.export ?? []).join(', ')}
+                    placeholder="e.g. palette, default"
+                    onChange={(e) => {
+                      const groups = (e.target as HTMLInputElement).value
+                        .split(',')
+                        .map((entry) => entry.trim())
+                        .filter(Boolean);
+                      onUpdateGroup(groupName, {
+                        ...groupConfig,
+                        export: groups.length ? groups : undefined,
+                      });
+                    }}
+                  />
+                </label>
               </div>
             </div>
             <div class="group-members">
@@ -102,7 +120,9 @@ export function GroupsManager({
                 const overrides = [
                   color.ratios !== undefined ? `ratios: ${color.ratios}` : null,
                   color.formula !== undefined ? `formula: ${color.formula}` : null,
+                  color.export !== undefined ? `export: ${color.export.join(', ')}` : null,
                 ].filter(Boolean);
+                const resolvedExport = color.export ?? groupConfig.export ?? [];
                 const scales = preview?.get(color.name);
                 return (
                   <div class="group-member">
@@ -117,6 +137,7 @@ export function GroupsManager({
                     </span>
                     <span class="group-member-meta">
                       {resolveRatiosName(color, config)} - {resolveFormula(color, config)}
+                      {resolvedExport.length > 0 && ` - ${resolvedExport.join(', ')}`}
                     </span>
                     {scales && <CompactRow steps={scales.light} />}
                   </div>

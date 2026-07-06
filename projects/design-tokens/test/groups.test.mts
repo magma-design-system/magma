@@ -35,6 +35,38 @@ test('per-color settings win over the group settings', () => {
   expect(resolveFormula(config.colors[0], config)).toBe('wcag3')
 })
 
+test('group-level export applies to all colors of the group', () => {
+  const perColor = createColorTokens({
+    colors: [
+      { color: '#00379E', name: 'base.a', export: ['palette'] },
+      { color: '#0f4ad5', name: 'base.b', export: ['palette'] },
+    ],
+  } as MagmaConfig)
+  const viaGroup = createColorTokens({
+    groups: { base: { export: ['palette'] } },
+    colors: [
+      { color: '#00379E', name: 'base.a' },
+      { color: '#0f4ad5', name: 'base.b' },
+    ],
+  } as MagmaConfig)
+  expect(Object.keys(viaGroup.exportGroups)).toEqual(['palette'])
+  expect(viaGroup.exportGroups).toEqual(perColor.exportGroups)
+})
+
+test('a per-color export overrides the group export entirely', () => {
+  const result = createColorTokens({
+    groups: { base: { export: ['palette'] } },
+    colors: [
+      { color: '#00379E', name: 'base.a' },
+      { color: '#0f4ad5', name: 'base.b', export: ['special'] },
+    ],
+  } as MagmaConfig)
+  // base.a goes to the group's "palette", base.b only to its own "special"
+  expect(Object.keys(result.exportGroups).sort()).toEqual(['palette', 'special'])
+  expect(Object.keys(result.exportGroups.palette.color.base)).toEqual(['a'])
+  expect(Object.keys(result.exportGroups.special.color.base)).toEqual(['b'])
+})
+
 test('colors of other groups are not affected', () => {
   const config: MagmaConfig = {
     groups: { tone: { ratios: 'tone' } },

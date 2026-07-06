@@ -259,6 +259,8 @@ interface ColorEditorProps {
   inheritedRatios: string;
   /** formula the color resolves to when it does not override (group or root) */
   inheritedFormula: string;
+  /** export groups inherited from the group when the color does not set its own */
+  inheritedExport: string[];
   onChange: (patch: Partial<ColorConfig> | { hueShift: undefined }) => void;
   /** fired when the color picker is released (change, not live input) */
   onColorCommit: (hex: string) => void;
@@ -271,6 +273,7 @@ function ColorEditor({
   labelFor,
   inheritedRatios,
   inheritedFormula,
+  inheritedExport,
   onChange,
   onColorCommit,
 }: ColorEditorProps) {
@@ -351,7 +354,11 @@ function ColorEditor({
           <input
             type="text"
             value={(color.export ?? []).join(', ')}
-            placeholder="e.g. tones, default"
+            placeholder={
+              inheritedExport.length
+                ? `inherit (${inheritedExport.join(', ')})`
+                : 'e.g. tones, default'
+            }
             onChange={(e) => {
               const raw = (e.target as HTMLInputElement).value
                 .split(',')
@@ -927,6 +934,7 @@ export function App() {
               labelFor={(name) => scaleLabel(resolveFormula(selected, config), name)}
               inheritedRatios={resolveRatiosName({ ...selected, ratios: undefined }, config)}
               inheritedFormula={resolveFormula({ ...selected, formula: undefined }, config)}
+              inheritedExport={config.groups?.[selected.name.split('.')[0]]?.export ?? []}
               onColorCommit={(hex) => autoNameColor(selectedIndex, hex)}
               onChange={(patch) => {
                 // a name typed by the user opts the color out of auto-naming
@@ -1062,6 +1070,7 @@ export function App() {
                 const cleaned: GroupConfig = {};
                 if (patch.ratios !== undefined) cleaned.ratios = patch.ratios;
                 if (patch.formula !== undefined) cleaned.formula = patch.formula;
+                if (patch.export !== undefined) cleaned.export = patch.export;
                 const nextGroups = { ...(draft.groups ?? {}) };
                 if (Object.keys(cleaned).length === 0) delete nextGroups[groupName];
                 else nextGroups[groupName] = cleaned;

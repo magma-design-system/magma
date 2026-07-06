@@ -62,6 +62,7 @@ export type RatioData = { [key: string]: number[] };
 export interface GroupConfig {
   ratios?: string;
   formula?: Formula;
+  export?: string[];
 }
 
 export interface MagmaConfig {
@@ -154,6 +155,18 @@ export function resolveRatiosName(
   config: MagmaConfig,
 ): string {
   return colorItem.ratios ?? groupOf(colorItem, config).ratios ?? "default";
+}
+
+/**
+ * Export groups a color belongs to. A per-color `export` overrides the
+ * group default entirely (it is not merged), matching how ratios/formula
+ * resolve; undefined means the color is not exported to any group file.
+ */
+export function resolveExport(
+  colorItem: ColorConfig,
+  config: MagmaConfig,
+): string[] | undefined {
+  return colorItem.export ?? groupOf(colorItem, config).export;
 }
 
 export function resolveRatios(
@@ -402,8 +415,9 @@ export function createColorTokens(magmaConfig: MagmaConfig) {
         };
       }
 
-      if (element.export !== undefined) {
-        element.export.forEach((exportElement) => {
+      const exportTargets = resolveExport(element, config);
+      if (exportTargets !== undefined) {
+        exportTargets.forEach((exportElement) => {
           if (exportGroups[exportElement] === undefined) {
             exportGroups[exportElement] = { color: {} };
           }
