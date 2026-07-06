@@ -316,7 +316,18 @@ export function ScalesManager({
             scale
             <select
               value={inspected}
-              onChange={(e) => setInspected((e.target as HTMLSelectElement).value)}
+              onChange={(e) => {
+                const next = (e.target as HTMLSelectElement).value;
+                setInspected(next);
+                // sample the first color resolving to the scale; an unused
+                // scale keeps the current sample color
+                const first = config.colors.find(
+                  (color) =>
+                    resolveFormula(color, config) === formula &&
+                    resolveRatiosName(color, config) === next,
+                );
+                if (first) onSelectColor(first.name);
+              }}
             >
               {Object.keys(ratioSet).map((name) => (
                 <option value={name}>{name}</option>
