@@ -486,6 +486,7 @@ button.danger:hover { border-color: #c0392b; color: #c0392b; }
   top: 0;
   z-index: 2;
 }
+.batch-toggle { align-items: center; color: var(--ink-soft); cursor: pointer; display: flex; font-size: 12px; gap: 6px; }
 .batch-select-export { align-items: center; color: var(--ink-soft); display: flex; font-size: 12px; gap: 6px; margin-left: auto; }
 .batch-select-export select {
   background: #fff;

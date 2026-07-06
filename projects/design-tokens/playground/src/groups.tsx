@@ -1,3 +1,4 @@
+import { useState } from 'preact/hooks';
 import type { ColorConfig, Formula, GroupConfig, MagmaConfig } from '../../src/lib/color.mjs';
 import { resolveFormula, resolveRatiosName } from '../../src/lib/color.mjs';
 import type { ColorScales, Step } from './generator.js';
@@ -53,6 +54,8 @@ export function GroupsManager({
   onSelectByExport,
   onOpenBatch,
 }: GroupsManagerProps) {
+  // when on, only selected colors show their scale, to compare them side by side
+  const [onlySelectedScales, setOnlySelectedScales] = useState(false);
   return (
     <div class="groups-manager">
       <p class="scales-hint">
@@ -65,6 +68,14 @@ export function GroupsManager({
         <button disabled={selected.size === 0} onClick={onOpenBatch}>
           batch export
         </button>
+        <label class="batch-toggle" title="hide the scales of unselected colors">
+          <input
+            type="checkbox"
+            checked={onlySelectedScales}
+            onChange={(e) => setOnlySelectedScales((e.target as HTMLInputElement).checked)}
+          />
+          only selected scales
+        </label>
         <label class="batch-select-export">
           select by export
           <select
@@ -193,7 +204,9 @@ export function GroupsManager({
                       {resolveRatiosName(color, config)} - {resolveFormula(color, config)}
                       {resolvedExport.length > 0 && ` - ${resolvedExport.join(', ')}`}
                     </span>
-                    {scales && <CompactRow steps={scales.light} />}
+                    {scales && (!onlySelectedScales || selected.has(color.name)) && (
+                      <CompactRow steps={scales.light} />
+                    )}
                   </div>
                 );
               })}
