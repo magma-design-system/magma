@@ -1,0 +1,69 @@
+import { expect, test } from 'vitest'
+
+import { createColorTokens, MagmaConfig } from '../src/lib/color.mjs'
+import realConfig from '../.magma-design-tokensrc.json'
+
+const CONFIG = realConfig as MagmaConfig
+
+// Deeply collect the key order of an object tree, so two results can be
+// compared for identical structure independently of their values.
+function keyShape(value: unknown): unknown {
+  if (Array.isArray(value)) return value.map(keyShape)
+  if (value && typeof value === 'object') {
+    return Object.keys(value).map((key) => [key, keyShape((value as Record<string, unknown>)[key])])
+  }
+  return null
+}
+
+test('the same config exported twice is byte-for-byte identical', () => {
+  const a = createColorTokens(CONFIG)
+  const b = createColorTokens(CONFIG)
+  // full serialization compares both values and key order in one shot
+  expect(JSON.stringify(b.tokens)).toBe(JSON.stringify(a.tokens))
+  expect(JSON.stringify(b.exportGroups)).toBe(JSON.stringify(a.exportGroups))
+})
+
+test('color and step order follows the config, run after run', () => {
+  const first = createColorTokens(CONFIG)
+  const second = createColorTokens(CONFIG)
+  const orderOf = (tokens: typeof first.tokens) => {
+    const root = tokens.color as Record<string, Record<string, { light: object }>>
+    return Object.keys(root).flatMap((group) =>
+      Object.keys(root[group]).flatMap((name) => [
+        `${group}.${name}`,
+        ...Object.keys(root[group][name].light).map((step) => `${group}.${name}.${step}`),
+      ]),
+    )
+  }
+  const configOrder = CONFIG.colors
+    .filter((color) => !color.disabled)
+    .map((color) => color.name)
+  const producedGroupsAndNames = orderOf(first.tokens).filter((entry) => !/\.\w+$/.test(entry.replace(/^[^.]+\./, '')) )
+  // the group.name entries appear in the exact order of the config colors
+  expect(orderOf(first.tokens).filter((e) => e.split('.').length === 2)).toEqual(configOrder)
+  // and the whole flattened order is stable between runs
+  expect(orderOf(second.tokens)).toEqual(orderOf(first.tokens))
+  void producedGroupsAndNames
+})
+
+test('a hue-shifted map has the exact same structure as the master, only values differ', () => {
+  const master = createColorTokens(CONFIG)
+  const shifted = createColorTokens({
+    ...CONFIG,
+    hueShift: { dark: -30, light: 15, curve: 'smooth' },
+  } as MagmaConfig)
+  // identical key structure (groups, names, steps, light/dark) in identical order
+  expect(keyShape(shifted.tokens)).toEqual(keyShape(master.tokens))
+  expect(keyShape(shifted.exportGroups)).toEqual(keyShape(master.exportGroups))
+  // shifting actually changed some values (otherwise the test proves nothing)
+  expect(JSON.stringify(shifted.tokens)).not.toBe(JSON.stringify(master.tokens))
+})
+
+test('export group key order is stable and follows the config', () => {
+  const a = createColorTokens(CONFIG)
+  const b = createColorTokens(CONFIG)
+  expect(Object.keys(b.exportGroups)).toEqual(Object.keys(a.exportGroups))
+  Object.keys(a.exportGroups).forEach((group) => {
+    expect(keyShape(b.exportGroups[group])).toEqual(keyShape(a.exportGroups[group]))
+  })
+})

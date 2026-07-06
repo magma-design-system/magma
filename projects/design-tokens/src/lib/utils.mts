@@ -63,10 +63,10 @@ export async function writeJsonTokens (tokens: unknown, name: string, dirPath?: 
   try {
     await writeFile(resolve(`${dirPath}/${name}.json`), jsonTokens, 'utf8')
   } catch (err) {
-    console.error(
-      chalk.red('An error occured while writing JSON Object to File.'),
-    )
-    console.error(chalk.red(err))
+    // rethrow: a silently skipped write would leave a partial/stale export,
+    // which breaks reproducibility for consumers diffing generated tokens
+    console.error(chalk.red(`An error occured while writing ${name}.json`))
+    throw err
   }
 }
 
