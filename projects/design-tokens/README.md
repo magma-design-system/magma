@@ -213,6 +213,8 @@ It opens a Vite dev server (port 5177) that loads `.magma-design-tokensrc.json` 
 
 The playground works with any configuration, not just the repo one: **load config** opens a `.magma-design-tokensrc.json` from disk, **download config** saves the edited configuration back as a JSON file (**copy JSON** copies it to the clipboard instead). Editing is in-memory only: nothing touches the repo files.
 
+The **contrast scales** view manages the ratio scales of the configuration: add, duplicate, rename or delete custom scales (the built-in ones, `default` first of all, are always available), inspect the distribution of the stops on a horizontal axis with draggable markers, edit each stop manually, or regenerate the whole distribution from a parametric curve (min, max, steps, gamma). Every color then picks its scale with the `ratios` field in the editor.
+
 ### Cli example
 
 - takes `./color.js` as configuration file

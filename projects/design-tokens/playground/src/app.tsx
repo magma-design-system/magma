@@ -1,10 +1,10 @@
 import { useMemo, useState } from 'preact/hooks';
 import initialConfigJson from '../../.magma-design-tokensrc.json';
-import type { ColorConfig, MagmaConfig } from '../../src/lib/color.mjs';
+import DEFAULT_COLOR_CONFIG from '../../src/config/default-color.json';
+import type { ColorConfig, Formula, MagmaConfig } from '../../src/lib/color.mjs';
 import { hasHueShift, resolveCurveWeights, type HueShiftConfig } from '../../src/lib/hue-shift.mjs';
 import { generateScales, singleColorConfig, type ColorScales, type Step } from './generator.js';
-
-const RATIO_PRESETS = ['default', 'tint', 'tone', 'v1', 'v2'];
+import { ScalesManager, type RatioSet } from './scales.js';
 const COLORSPACES = [
   'HSL',
   'OKLCH',
@@ -247,10 +247,11 @@ function HueShiftEditor({ value, onChange, allowInherit, globalActive }: HueShif
 interface ColorEditorProps {
   color: ColorConfig;
   hasGlobalShift: boolean;
+  scaleNames: string[];
   onChange: (patch: Partial<ColorConfig> | { hueShift: undefined }) => void;
 }
 
-function ColorEditor({ color, hasGlobalShift, onChange }: ColorEditorProps) {
+function ColorEditor({ color, hasGlobalShift, scaleNames, onChange }: ColorEditorProps) {
   return (
     <div class="editor">
       <div class="editor-grid">
@@ -281,7 +282,7 @@ function ColorEditor({ color, hasGlobalShift, onChange }: ColorEditorProps) {
             value={color.ratios ?? 'default'}
             onChange={(e) => onChange({ ratios: (e.target as HTMLSelectElement).value })}
           >
-            {RATIO_PRESETS.map((preset) => (
+            {scaleNames.map((preset) => (
               <option value={preset}>{preset}</option>
             ))}
           </select>
@@ -372,9 +373,10 @@ export function App() {
   const [selectedName, setSelectedName] = useState<string>(
     (initialConfigJson as unknown as MagmaConfig).colors[0]?.name ?? '',
   );
-  const [view, setView] = useState<'editor' | 'grid'>('editor');
+  const [view, setView] = useState<'editor' | 'grid' | 'scales'>('editor');
   const [copied, setCopied] = useState(false);
   const [loadError, setLoadError] = useState<string | null>(null);
+  const [scalesFormula, setScalesFormula] = useState<Formula>('wcag3');
 
   const selectedIndex = config.colors.findIndex((c) => c.name === selectedName);
   const selected = selectedIndex >= 0 ? config.colors[selectedIndex] : undefined;
@@ -398,6 +400,7 @@ export function App() {
   }, [
     JSON.stringify(selected),
     JSON.stringify(config.hueShift),
+    JSON.stringify(config.ratios),
     config.colorspace,
     config.smooth,
     config.formula,
@@ -422,6 +425,57 @@ export function App() {
     });
     return map;
   }, [config]);
+
+  // effective ratio scales: config entries layered over the built-in ones,
+  // exactly like the generator merges them
+  const ratioSetFor = (formula: Formula): RatioSet => ({
+    ...(DEFAULT_COLOR_CONFIG.ratios as Record<Formula, RatioSet>)[formula],
+    ...(config.ratios?.[formula] ?? {}),
+  });
+  const ratioSet = ratioSetFor(scalesFormula);
+  const builtinScales = Object.keys(
+    (DEFAULT_COLOR_CONFIG.ratios as Record<Formula, RatioSet>)[scalesFormula],
+  );
+
+  const scaleNamesFor = (color: ColorConfig): string[] =>
+    Object.keys(ratioSetFor((color.formula ?? config.formula ?? 'wcag3') as Formula));
+
+  const writeScale = (mutate: (draftSet: RatioSet) => void) => {
+    updateConfig((draft) => {
+      const materialized = {
+        ...(DEFAULT_COLOR_CONFIG.ratios as Record<Formula, RatioSet>)[scalesFormula],
+        ...(draft.ratios?.[scalesFormula] ?? {}),
+      };
+      mutate(materialized);
+      draft.ratios = {
+        ...(draft.ratios ?? {}),
+        [scalesFormula]: materialized,
+      } as MagmaConfig['ratios'];
+    });
+  };
+
+  const sampleScales = useMemo(() => {
+    const map = new Map<string, string[]>();
+    if (view !== 'scales' || !selected) return map;
+    Object.keys(ratioSet).forEach((name) => {
+      try {
+        const sampleColor: ColorConfig = {
+          ...selected,
+          ratios: name,
+          formula: scalesFormula,
+          hueShift: undefined,
+        };
+        const scales = generateScales(singleColorConfig(config, sampleColor));
+        map.set(
+          name,
+          (scales.get(selected.name)?.light ?? []).map((step) => step.value),
+        );
+      } catch {
+        // an inconsistent scale under edit should not break the view
+      }
+    });
+    return map;
+  }, [view, scalesFormula, JSON.stringify(config), selectedName]);
 
   const copyJson = async () => {
     await navigator.clipboard.writeText(JSON.stringify(config, null, 2) + '\n');
@@ -468,6 +522,9 @@ export function App() {
           </button>
           <button class={view === 'grid' ? 'active' : ''} onClick={() => setView('grid')}>
             palette grid
+          </button>
+          <button class={view === 'scales' ? 'active' : ''} onClick={() => setView('scales')}>
+            contrast scales
           </button>
         </nav>
         <div class="topbar-actions">
@@ -576,6 +633,7 @@ export function App() {
             <ColorEditor
               color={selected}
               hasGlobalShift={config.hueShift !== undefined}
+              scaleNames={scaleNamesFor(selected)}
               onChange={(patch) =>
                 updateConfig((draft) => {
                   const target = draft.colors[selectedIndex] as Record<string, unknown>;
@@ -647,6 +705,45 @@ export function App() {
                 </div>
               ))}
           </div>
+        )}
+        {view === 'scales' && (
+          <ScalesManager
+            config={config}
+            formula={scalesFormula}
+            ratioSet={ratioSet}
+            builtinScales={builtinScales}
+            sampleScales={sampleScales}
+            onFormulaChange={setScalesFormula}
+            onChangeScale={(name, values) =>
+              writeScale((draftSet) => {
+                draftSet[name] = values;
+              })
+            }
+            onRenameScale={(name, nextName) => {
+              if (!nextName || nextName === name || ratioSet[nextName]) return;
+              writeScale((draftSet) => {
+                draftSet[nextName] = draftSet[name];
+                delete draftSet[name];
+              });
+              updateConfig((draft) => {
+                draft.colors.forEach((color) => {
+                  if ((color.ratios ?? 'default') === name) color.ratios = nextName;
+                });
+              });
+            }}
+            onAddScale={(copyFrom) => {
+              let index = 1;
+              while (ratioSet[`custom-${index}`]) index += 1;
+              writeScale((draftSet) => {
+                draftSet[`custom-${index}`] = [...(draftSet[copyFrom] ?? draftSet.default)];
+              });
+            }}
+            onDeleteScale={(name) =>
+              writeScale((draftSet) => {
+                delete draftSet[name];
+              })
+            }
+          />
         )}
       </main>
     </div>

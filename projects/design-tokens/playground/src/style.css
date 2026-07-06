@@ -13,7 +13,7 @@
   color: var(--ink);
 }
 
-body { background: var(--bg); }
+body { background: var(--bg); min-width: 960px; }
 
 .layout {
   display: grid;
@@ -213,3 +213,107 @@ button.danger:hover { border-color: #c0392b; color: #c0392b; }
 .grid { display: flex; flex-direction: column; gap: 14px; }
 .grid-item h3 { font-size: 13px; margin-bottom: 4px; }
 .grid-item .preview-card { margin-bottom: 4px; }
+
+.scales-manager { display: flex; flex-direction: column; gap: 16px; max-width: 980px; }
+.scales-head { display: flex; align-items: start; gap: 24px; }
+.scales-hint { font-size: 13px; color: var(--ink-soft); max-width: 560px; line-height: 1.5; }
+.scales-hint code { background: #eceef1; padding: 1px 5px; border-radius: 3px; }
+.scales-head label { display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: var(--ink-soft); margin-left: auto; }
+.scales-head select {
+  font: inherit;
+  color: var(--ink);
+  padding: 5px 8px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #fff;
+}
+
+.scale-card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 18px 16px; }
+.scale-card-head { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+.scale-name {
+  font: inherit;
+  font-weight: 650;
+  color: var(--ink);
+  border: 1px solid transparent;
+  border-radius: 6px;
+  padding: 3px 6px;
+  width: 130px;
+  background: transparent;
+}
+.scale-name:not(:disabled):hover, .scale-name:focus { border-color: var(--line); background: #fff; }
+.scale-usage { font-size: 12px; color: var(--ink-soft); }
+.scale-card-actions { margin-left: auto; display: flex; gap: 8px; }
+.scale-card-actions button:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.strip { position: relative; height: 56px; margin: 18px 6px 4px; touch-action: none; }
+.strip-axis { position: absolute; left: 0; right: 0; top: 26px; height: 4px; background: var(--bg); border-radius: 2px; }
+.strip-tick { position: absolute; top: 30px; width: 1px; height: 8px; background: var(--line); }
+.strip-tick span { position: absolute; top: 10px; left: -8px; width: 20px; text-align: center; font-size: 9px; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+.strip-marker {
+  position: absolute;
+  top: 20px;
+  width: 16px;
+  height: 16px;
+  margin-left: -8px;
+  background: var(--accent);
+  border: 2px solid #fff;
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.25);
+  cursor: ew-resize;
+}
+.strip-marker:hover { transform: scale(1.15); }
+.strip-value {
+  position: absolute;
+  top: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 10px;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.scale-stops { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 10px 0 4px; }
+.stop-field { position: relative; display: inline-flex; }
+.scale-stops input {
+  width: 52px;
+  font: inherit;
+  font-size: 12px;
+  padding: 3px 4px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+.stop-remove {
+  position: absolute;
+  top: -7px;
+  right: -6px;
+  width: 15px;
+  height: 15px;
+  line-height: 1;
+  padding: 0;
+  font-size: 9px;
+  border-radius: 50%;
+  opacity: 0;
+}
+.stop-field:hover .stop-remove:not(:disabled) { opacity: 1; }
+.scale-stops > button { font-size: 12px; padding: 3px 10px; }
+
+.curve-generator { display: flex; align-items: end; gap: 14px; flex-wrap: wrap; margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--line); }
+.curve-generator label { display: flex; flex-direction: column; gap: 3px; font-size: 11px; color: var(--ink-soft); }
+.curve-generator input[type='number'] {
+  width: 60px;
+  font: inherit;
+  font-size: 12px;
+  padding: 3px 6px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}
+.curve-generator .gamma { min-width: 180px; }
+.curve-generator button { font-size: 12px; }
+
+.scale-sample { display: flex; border-radius: 5px; overflow: hidden; margin-top: 10px; }
+.scale-sample-cell { flex: 1; height: 18px; }
+
+.add-scale { align-self: start; }
