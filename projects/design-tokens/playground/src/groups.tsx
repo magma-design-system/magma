@@ -151,10 +151,23 @@ export function GroupsManager({
             </div>
             <div class="group-members">
               {colors.map((color) => {
+                // what the color would get from the group/root if it set nothing
+                const inheritedRatios = groupConfig.ratios ?? 'default';
+                const inheritedFormula = groupConfig.formula ?? config.formula ?? 'wcag3';
+                const inheritedExport = groupConfig.export ?? [];
+                // flag only real overrides: a per-color field whose value
+                // differs from what it would inherit (a redundant field that
+                // just restates the inherited value is not an override)
                 const overrides = [
-                  color.ratios !== undefined ? `ratios: ${color.ratios}` : null,
-                  color.formula !== undefined ? `formula: ${color.formula}` : null,
-                  color.export !== undefined ? `export: ${color.export.join(', ')}` : null,
+                  color.ratios !== undefined && color.ratios !== inheritedRatios
+                    ? `ratios: ${color.ratios}`
+                    : null,
+                  color.formula !== undefined && color.formula !== inheritedFormula
+                    ? `formula: ${color.formula}`
+                    : null,
+                  color.export !== undefined && color.export.join(',') !== inheritedExport.join(',')
+                    ? `export: ${color.export.join(', ')}`
+                    : null,
                 ].filter(Boolean);
                 const resolvedExport = color.export ?? groupConfig.export ?? [];
                 const scales = preview?.get(color.name);
