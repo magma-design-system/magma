@@ -471,6 +471,55 @@ button.danger:hover { border-color: #c0392b; color: #c0392b; }
 .group-member-meta { color: var(--ink-soft); flex-shrink: 0; font-size: 11px; font-variant-numeric: tabular-nums; width: 130px; }
 .group-row-cells { border-radius: 4px; display: flex; flex: 1; overflow: hidden; }
 .group-row-cell { flex: 1; height: 20px; }
+.group-member-check { flex-shrink: 0; }
+
+.batch-toolbar {
+  align-items: center;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  display: flex;
+  gap: 14px;
+  margin-bottom: 4px;
+  padding: 8px 14px;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+.batch-select-export { align-items: center; color: var(--ink-soft); display: flex; font-size: 12px; gap: 6px; margin-left: auto; }
+.batch-select-export select {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  color: var(--ink);
+  font: inherit;
+  padding: 4px 8px;
+}
+
+.batch-modal { width: 460px; }
+.batch-list { display: flex; flex-direction: column; gap: 4px; max-height: 320px; overflow-y: auto; }
+.batch-row { align-items: center; border-radius: 6px; cursor: pointer; display: flex; gap: 10px; padding: 4px 6px; }
+.batch-row:hover { background: var(--bg); }
+.batch-row.dropped { opacity: 0.4; }
+.batch-row .swatch {
+  border-radius: 4px;
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.12);
+  flex-shrink: 0;
+  height: 14px;
+  width: 14px;
+}
+.batch-row-name { flex-shrink: 0; font-size: 13px; width: 150px; }
+.batch-row-scale { border-radius: 4px; display: flex; flex: 1; overflow: hidden; }
+.batch-swatch { flex: 1; height: 16px; }
+.batch-export-field { color: var(--ink-soft); display: flex; flex-direction: column; font-size: 12px; gap: 4px; }
+.batch-export-field input {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  color: var(--ink);
+  font: inherit;
+  padding: 5px 8px;
+}
 
 .usage-panel { background: #fbfbfc; }
 .usage-select { align-items: center; color: var(--ink-soft); display: flex; font-size: 12px; gap: 8px; }

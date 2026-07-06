@@ -11,6 +11,13 @@ interface GroupsManagerProps {
   preview: Map<string, ColorScales> | null;
   previewError: string | null;
   onUpdateGroup: (group: string, patch: GroupConfig) => void;
+  /** color names picked for the batch-export selection */
+  selected: Set<string>;
+  onToggleSelect: (name: string) => void;
+  /** existing export group names, to select a whole export at once */
+  exportNames: string[];
+  onSelectByExport: (exportName: string) => void;
+  onOpenBatch: () => void;
 }
 
 function CompactRow({ steps }: { steps: Step[] }) {
@@ -40,14 +47,41 @@ export function GroupsManager({
   preview,
   previewError,
   onUpdateGroup,
+  selected,
+  onToggleSelect,
+  exportNames,
+  onSelectByExport,
+  onOpenBatch,
 }: GroupsManagerProps) {
   return (
     <div class="groups-manager">
       <p class="scales-hint">
-        Ratios and formula are managed per token group here (the <code>groups</code> section of the
-        configuration) and apply to every color of the group. A color can still override them
-        individually from its editor; overriding colors are marked below.
+        Ratios, formula and export are managed per token group here (the <code>groups</code> section
+        of the configuration). Tick colors across groups to set their export together, or pick an
+        existing export to load every color that uses it.
       </p>
+      <div class="batch-toolbar">
+        <span class="scale-usage">{selected.size} selected</span>
+        <button disabled={selected.size === 0} onClick={onOpenBatch}>
+          batch export
+        </button>
+        <label class="batch-select-export">
+          select by export
+          <select
+            value=""
+            onChange={(e) => {
+              const value = (e.target as HTMLSelectElement).value;
+              if (value) onSelectByExport(value);
+              (e.target as HTMLSelectElement).value = '';
+            }}
+          >
+            <option value="">choose...</option>
+            {exportNames.map((name) => (
+              <option value={name}>{name}</option>
+            ))}
+          </select>
+        </label>
+      </div>
       {previewError && <div class="preview-error">{previewError}</div>}
       {[...groups.entries()].map(([groupName, colors]) => {
         const groupConfig = config.groups?.[groupName] ?? {};
@@ -126,6 +160,13 @@ export function GroupsManager({
                 const scales = preview?.get(color.name);
                 return (
                   <div class="group-member">
+                    <input
+                      type="checkbox"
+                      class="group-member-check"
+                      checked={selected.has(color.name)}
+                      title="select for batch export"
+                      onChange={() => onToggleSelect(color.name)}
+                    />
                     <span class="swatch" style={{ background: color.color }} />
                     <span class="group-member-name">
                       {color.name.split('.')[1]}

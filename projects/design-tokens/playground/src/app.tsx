@@ -3,9 +3,15 @@ import initialConfigJson from '../../.magma-design-tokensrc.json';
 import DEFAULT_COLOR_CONFIG from '../../src/config/default-color.json';
 import { zipSync } from 'fflate';
 import type { ColorConfig, Formula, GroupConfig, MagmaConfig } from '../../src/lib/color.mjs';
-import { createColorTokens, resolveFormula, resolveRatiosName } from '../../src/lib/color.mjs';
+import {
+  createColorTokens,
+  resolveExport,
+  resolveFormula,
+  resolveRatiosName,
+} from '../../src/lib/color.mjs';
 import { cssHex, cssRgb, gimpPalette } from './formats.js';
 import { GroupsManager } from './groups.js';
+import { BatchExportModal } from './batch.js';
 import { hasHueShift, resolveCurveWeights, type HueShiftConfig } from '../../src/lib/hue-shift.mjs';
 import { generateScales, singleColorConfig, type ColorScales, type Step } from './generator.js';
 import { ScalesManager, type RatioSet } from './scales.js';
@@ -421,6 +427,10 @@ export function App() {
     group: string;
     manual: boolean;
   } | null>(null);
+  const [batchSelection, setBatchSelection] = useState<Set<string>>(() => new Set());
+  const [batchModal, setBatchModal] = useState<{ names: string[]; initialExport: string } | null>(
+    null,
+  );
 
   const selectedIndex = config.colors.findIndex((c) => c.name === selectedName);
   const selected = selectedIndex >= 0 ? config.colors[selectedIndex] : undefined;
@@ -730,6 +740,79 @@ export function App() {
       );
     }
   };
+
+  const toggleBatch = (name: string) =>
+    setBatchSelection((prev) => {
+      const next = new Set(prev);
+      if (next.has(name)) next.delete(name);
+      else next.add(name);
+      return next;
+    });
+
+  // color names in config order, for a stable modal list
+  const namesInOrder = (predicate: (color: ColorConfig) => boolean): string[] =>
+    config.colors.filter(predicate).map((color) => color.name);
+
+  const openBatch = () =>
+    setBatchModal({
+      names: namesInOrder((color) => batchSelection.has(color.name)),
+      initialExport: '',
+    });
+
+  const selectByExport = (exportName: string) => {
+    const names = namesInOrder((color) =>
+      (resolveExport(color, config) ?? []).includes(exportName),
+    );
+    setBatchSelection(new Set(names));
+    setBatchModal({ names, initialExport: exportName });
+  };
+
+  const saveBatch = (names: string[], exportList: string[] | undefined) => {
+    const target = new Set(names);
+    updateConfig((draft) => {
+      draft.colors.forEach((color) => {
+        if (!target.has(color.name)) return;
+        if (exportList) color.export = exportList;
+        else delete color.export;
+      });
+    });
+    setBatchModal(null);
+    setBatchSelection(new Set());
+  };
+
+  // download a zip with the generated tokens of only the selected colors
+  const exportSelection = (names: string[]) => {
+    try {
+      const target = new Set(names);
+      const subset: CloneableConfig = {
+        ...clone(config),
+        colors: config.colors.filter((color) => target.has(color.name)),
+      };
+      const { tokens, exportGroups } = createColorTokens(subset);
+      const date = new Date().toUTCString();
+      const files: Record<string, Uint8Array> = {};
+      const encoder = new TextEncoder();
+      const add = (path: string, text: string) => {
+        files[path] = encoder.encode(text);
+      };
+      add('tokens/color/generated/base.json', JSON.stringify(tokens, null, 2));
+      const css = cssFiles(tokens as ColorTree, exportGroups, date);
+      Object.keys(css).forEach((name) => add(`css/${name}`, css[name]));
+      const gimp = gimpFiles(tokens as ColorTree, exportGroups);
+      Object.keys(gimp).forEach((name) => add(`gimp/${name}`, gimp[name]));
+      triggerDownload(zipSync(files), 'magma-selection.zip', 'application/zip');
+      setLoadError(null);
+    } catch (error) {
+      setLoadError(
+        `Could not export the selection: ${error instanceof Error ? error.message : String(error)}`,
+      );
+    }
+  };
+
+  // every export name referenced by the config, for the select-by-export control
+  const allExportNames = [
+    ...new Set(config.colors.flatMap((color) => resolveExport(color, config) ?? [])),
+  ].sort();
 
   return (
     <div class="layout">
@@ -1129,9 +1212,25 @@ export function App() {
                 else draft.groups = nextGroups;
               })
             }
+            selected={batchSelection}
+            onToggleSelect={toggleBatch}
+            exportNames={allExportNames}
+            onSelectByExport={selectByExport}
+            onOpenBatch={openBatch}
           />
         )}
       </main>
+
+      {batchModal && (
+        <BatchExportModal
+          names={batchModal.names}
+          config={config}
+          initialExport={batchModal.initialExport}
+          onSave={saveBatch}
+          onExport={exportSelection}
+          onClose={() => setBatchModal(null)}
+        />
+      )}
     </div>
   );
 }
