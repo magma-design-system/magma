@@ -59,6 +59,40 @@ test('a hue-shifted map has the exact same structure as the master, only values 
   expect(JSON.stringify(shifted.tokens)).not.toBe(JSON.stringify(master.tokens))
 })
 
+test('master and shifted flatten to the same ordered list, so indexes are interchangeable', () => {
+  // flat, ordered list of every emitted swatch path (the sequence a consumer
+  // would index into to swap a master swatch for its shifted counterpart)
+  const flatten = (tokens: ReturnType<typeof createColorTokens>['tokens']) => {
+    const root = tokens.color as Record<
+      string,
+      Record<string, { light: Record<string, { value: string }>; dark: Record<string, { value: string }> }>
+    >
+    const paths: string[] = []
+    const values: string[] = []
+    Object.keys(root).forEach((group) =>
+      Object.keys(root[group]).forEach((name) =>
+        (['light', 'dark'] as const).forEach((mode) =>
+          Object.keys(root[group][name][mode]).forEach((step) => {
+            paths.push(`${group}.${name}.${mode}.${step}`)
+            values.push(root[group][name][mode][step].value)
+          }),
+        ),
+      ),
+    )
+    return { paths, values }
+  }
+
+  const master = flatten(createColorTokens(CONFIG).tokens)
+  const shifted = flatten(
+    createColorTokens({ ...CONFIG, hueShift: { dark: -30, light: 15 } } as MagmaConfig).tokens,
+  )
+
+  // same length and same path at every index: index i is the same swatch
+  expect(shifted.paths).toEqual(master.paths)
+  // at least one index actually differs in value (the shift is real)
+  expect(shifted.values.some((value, i) => value !== master.values[i])).toBe(true)
+})
+
 test('export group key order is stable and follows the config', () => {
   const a = createColorTokens(CONFIG)
   const b = createColorTokens(CONFIG)
