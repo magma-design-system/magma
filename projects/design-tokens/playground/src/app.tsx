@@ -616,13 +616,70 @@ export function App() {
   const downloadFigmaNotice = () =>
     setLoadError('Figma export is coming with the DTCG format (#543); use the zip for now');
 
+  type ColorTree = Parameters<typeof cssHex>[0];
+
+  // The whole palette plus one entry per export group; formats that respect
+  // export diversification (CSS, GIMP) emit one file per entry. The whole
+  // palette carries an empty suffix, groups carry "-<group>".
+  const exportTrees = (
+    tokens: ColorTree,
+    exportGroups: Record<string, unknown>,
+  ): Array<{ suffix: string; tree: ColorTree }> => [
+    { suffix: '', tree: tokens },
+    ...Object.keys(exportGroups).map((group) => ({
+      suffix: `-${group}`,
+      tree: exportGroups[group] as ColorTree,
+    })),
+  ];
+
+  const cssFiles = (
+    tokens: ColorTree,
+    exportGroups: Record<string, unknown>,
+    date: string,
+  ): Record<string, string> => {
+    const files: Record<string, string> = {};
+    exportTrees(tokens, exportGroups).forEach(({ suffix, tree }) => {
+      files[`colors-hex${suffix}.css`] = cssHex(tree, date);
+      files[`colors-rgb${suffix}.css`] = cssRgb(tree, date);
+    });
+    return files;
+  };
+
+  const gimpFiles = (
+    tokens: ColorTree,
+    exportGroups: Record<string, unknown>,
+  ): Record<string, string> => {
+    const files: Record<string, string> = {};
+    exportTrees(tokens, exportGroups).forEach(({ suffix, tree }) => {
+      // the whole palette keeps the classic name, groups take the group name
+      files[`${suffix ? suffix.slice(1) : 'colors'}.gpl`] = gimpPalette(tree);
+    });
+    return files;
+  };
+
+  // download a set of text files: a single file directly, several as a zip
+  const downloadFiles = (files: Record<string, string>, zipName: string, singleType: string) => {
+    const names = Object.keys(files);
+    if (names.length === 1) {
+      triggerDownload(files[names[0]], names[0], singleType);
+      return;
+    }
+    const encoder = new TextEncoder();
+    const zipped: Record<string, Uint8Array> = {};
+    names.forEach((name) => {
+      zipped[name] = encoder.encode(files[name]);
+    });
+    triggerDownload(zipSync(zipped), zipName, 'application/zip');
+  };
+
   const downloadCss = () => {
     try {
-      const { tokens } = createColorTokens(clone(config));
-      const date = new Date().toUTCString();
-      const tree = tokens as Parameters<typeof cssHex>[0];
-      triggerDownload(cssHex(tree, date), 'colors-hex.css', 'text/css');
-      triggerDownload(cssRgb(tree, date), 'colors-rgb.css', 'text/css');
+      const { tokens, exportGroups } = createColorTokens(clone(config));
+      downloadFiles(
+        cssFiles(tokens as ColorTree, exportGroups, new Date().toUTCString()),
+        'magma-css.zip',
+        'text/css',
+      );
       setLoadError(null);
     } catch (error) {
       setLoadError(
@@ -633,12 +690,8 @@ export function App() {
 
   const downloadGimp = () => {
     try {
-      const { tokens } = createColorTokens(clone(config));
-      triggerDownload(
-        gimpPalette(tokens as Parameters<typeof gimpPalette>[0]),
-        'colors.gpl',
-        'text/plain',
-      );
+      const { tokens, exportGroups } = createColorTokens(clone(config));
+      downloadFiles(gimpFiles(tokens as ColorTree, exportGroups), 'magma-gimp.zip', 'text/plain');
       setLoadError(null);
     } catch (error) {
       setLoadError(
@@ -649,7 +702,7 @@ export function App() {
 
   // zip mirroring the dist output: the config, the generated JSON tokens
   // (whole palette + one file per export group, byte-for-byte the CLI files)
-  // and the CSS / GIMP renders
+  // and the CSS / GIMP renders, both diversified per export group
   const downloadZip = () => {
     try {
       const { tokens, exportGroups } = createColorTokens(clone(config));
@@ -662,16 +715,13 @@ export function App() {
       add('magma-design-tokensrc.json', JSON.stringify(config, null, 2) + '\n');
       // token JSON files match the generator output byte-for-byte (no newline)
       add('tokens/color/generated/base.json', JSON.stringify(tokens, null, 2));
-      const wholeTree = tokens as Parameters<typeof cssHex>[0];
-      add('css/colors-hex.css', cssHex(wholeTree, date));
-      add('css/colors-rgb.css', cssRgb(wholeTree, date));
-      add('gimp/colors.gpl', gimpPalette(wholeTree));
       Object.keys(exportGroups).forEach((group) => {
         add(`tokens/color/generated/${group}.json`, JSON.stringify(exportGroups[group], null, 2));
-        const groupTree = exportGroups[group] as Parameters<typeof cssHex>[0];
-        add(`css/colors-hex-${group}.css`, cssHex(groupTree, date));
-        add(`css/colors-rgb-${group}.css`, cssRgb(groupTree, date));
       });
+      const css = cssFiles(tokens as ColorTree, exportGroups, date);
+      Object.keys(css).forEach((name) => add(`css/${name}`, css[name]));
+      const gimp = gimpFiles(tokens as ColorTree, exportGroups);
+      Object.keys(gimp).forEach((name) => add(`gimp/${name}`, gimp[name]));
       triggerDownload(zipSync(files), 'magma-design-tokens.zip', 'application/zip');
       setLoadError(null);
     } catch (error) {

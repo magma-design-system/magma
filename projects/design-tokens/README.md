@@ -234,10 +234,10 @@ The playground works with any configuration, not just the repo one: **load confi
 - **All tokens (zip)** — the configuration, the generated JSON tokens (whole palette + one file per export group) and the CSS and GIMP renders, mirroring the `dist` layout;
 - **Figma tokens (json)** — coming with the DTCG format (see below);
 - **Config (json)** — just the `.magma-design-tokensrc.json`;
-- **CSS tokens** — `colors-hex.css` and `colors-rgb.css`;
-- **GIMP palette** — `colors.gpl`.
+- **CSS tokens** — `colors-hex.css` / `colors-rgb.css` for the whole palette plus one pair per export group;
+- **GIMP palette** — `colors.gpl` for the whole palette plus one `.gpl` per export group.
 
-The CSS and GIMP outputs are produced in the browser from the same Handlebars templates the build uses, so they match the CLI output. Editing is in-memory only: nothing touches the repo files.
+CSS and GIMP respect export diversification: they emit the whole palette and one file per export group. When that yields more than one file the download is a zip (`magma-css.zip`, `magma-gimp.zip`); a single file downloads directly. The outputs are produced in the browser from the same Handlebars templates the build uses, so they match the CLI output. Editing is in-memory only: nothing touches the repo files.
 
 New colors are created from a dialog: pick the value and the name auto-completes underneath from the "Name That Color" vocabulary (via [color-namer](https://github.com/colorjs/color-namer), ~1500 names, kebab-cased: e.g. `persian-green`); choose the token group, confirm, and the playground lands on the new color already selected. Names are made unique with a numeric suffix when needed. Auto-naming keeps following the picker in the editor too, but only for names assigned by the playground itself: a name typed by the user, or any name coming from a loaded configuration, is never touched. Picking a value already used by another color raises a warning.
 
