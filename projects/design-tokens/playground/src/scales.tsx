@@ -25,6 +25,19 @@ function roundTo(value: number, precision: number): number {
   return Math.round(value * factor) / factor;
 }
 
+// The values are contrast against the theme background, not lightness:
+// 0 sits on the background, the maximum is the strongest contrast (dark in
+// light mode, light in dark mode). Distributions are expressed as easing
+// functions over that axis; dragging or typing a stop switches to manual.
+const EASINGS: Record<string, (t: number) => number> = {
+  linear: (t) => t,
+  'ease-in': (t) => t * t,
+  'ease-out': (t) => 1 - (1 - t) ** 2,
+  'ease-in-out': (t) => t * t * (3 - 2 * t),
+};
+
+export type EasingName = keyof typeof EASINGS | 'manual';
+
 interface DistributionStripProps {
   values: number[];
   axis: AxisConfig;
@@ -90,71 +103,93 @@ function DistributionStrip({ values, axis, onChange }: DistributionStripProps) {
   );
 }
 
-interface CurveGeneratorProps {
+interface DistributionControlsProps {
   axis: AxisConfig;
-  count: number;
+  values: number[];
+  easing: EasingName;
+  onEasingChange: (easing: EasingName) => void;
   onApply: (values: number[]) => void;
 }
 
 /**
- * Regenerates the stops of a scale from a parametric distribution:
- * value(t) = min + (max - min) * t^gamma. Gamma below 1 packs the stops
- * toward the high end, above 1 toward the low end.
+ * Distribution mode of a scale: one of the named easings (stops are
+ * regenerated live from steps/min/max) or "manual" (stops are whatever
+ * the user dragged or typed).
  */
-function CurveGenerator({ axis, count, onApply }: CurveGeneratorProps) {
-  const [steps, setSteps] = useState(count);
-  const [min, setMin] = useState(axis.min);
-  const [max, setMax] = useState(axis.precision === 0 ? Math.min(110, axis.max) : axis.max);
-  const [gamma, setGamma] = useState(1);
+function DistributionControls({
+  axis,
+  values,
+  easing,
+  onEasingChange,
+  onApply,
+}: DistributionControlsProps) {
+  const [steps, setSteps] = useState(values.length);
+  const [min, setMin] = useState(values[0] ?? axis.min);
+  const [max, setMax] = useState(values[values.length - 1] ?? axis.max);
 
-  const generate = () => {
-    const values = Array.from({ length: steps }, (_, i) => {
-      const t = steps === 1 ? 1 : i / (steps - 1);
-      return roundTo(min + (max - min) * t ** gamma, axis.precision);
+  const apply = (easingName: EasingName, s = steps, lo = min, hi = max) => {
+    const fn = EASINGS[easingName];
+    if (!fn) return;
+    const generated = Array.from({ length: s }, (_, i) => {
+      const t = s === 1 ? 1 : i / (s - 1);
+      return roundTo(lo + (hi - lo) * fn(t), axis.precision);
     });
-    onApply(values);
+    onApply(generated);
+  };
+
+  const update = (setter: (v: number) => void, key: 'steps' | 'min' | 'max') => (e: Event) => {
+    const value = Number((e.target as HTMLInputElement).value);
+    setter(value);
+    if (easing !== 'manual') {
+      apply(
+        easing,
+        key === 'steps' ? value : steps,
+        key === 'min' ? value : min,
+        key === 'max' ? value : max,
+      );
+    }
   };
 
   return (
     <div class="curve-generator">
       <label>
-        steps
-        <input
-          type="number"
-          min={2}
-          max={24}
-          value={steps}
-          onChange={(e) => setSteps(Number((e.target as HTMLInputElement).value))}
-        />
+        distribution
+        <select
+          value={easing}
+          onChange={(e) => {
+            const next = (e.target as HTMLSelectElement).value as EasingName;
+            onEasingChange(next);
+            if (next !== 'manual') apply(next);
+          }}
+        >
+          <option value="manual">manual</option>
+          {Object.keys(EASINGS).map((name) => (
+            <option value={name}>{name}</option>
+          ))}
+        </select>
       </label>
-      <label>
-        min
-        <input
-          type="number"
-          value={min}
-          onChange={(e) => setMin(Number((e.target as HTMLInputElement).value))}
-        />
-      </label>
-      <label>
-        max
-        <input
-          type="number"
-          value={max}
-          onChange={(e) => setMax(Number((e.target as HTMLInputElement).value))}
-        />
-      </label>
-      <label class="gamma">
-        curve <code>{gamma.toFixed(2)}</code>
-        <input
-          type="range"
-          min={0.25}
-          max={4}
-          step={0.05}
-          value={gamma}
-          onInput={(e) => setGamma(Number((e.target as HTMLInputElement).value))}
-        />
-      </label>
-      <button onClick={generate}>distribute</button>
+      {easing !== 'manual' && (
+        <>
+          <label>
+            steps
+            <input
+              type="number"
+              min={2}
+              max={24}
+              value={steps}
+              onChange={update(setSteps, 'steps')}
+            />
+          </label>
+          <label>
+            min
+            <input type="number" value={min} onChange={update(setMin, 'min')} />
+          </label>
+          <label>
+            max
+            <input type="number" value={max} onChange={update(setMax, 'max')} />
+          </label>
+        </>
+      )}
     </div>
   );
 }
@@ -185,6 +220,17 @@ export function ScalesManager({
   onAddScale,
   onDeleteScale,
 }: ScalesManagerProps) {
+  // distribution mode per scale; anything not chosen explicitly is manual
+  const [easings, setEasings] = useState<Record<string, EasingName>>({});
+
+  const setEasing = (name: string, easing: EasingName) =>
+    setEasings((prev) => ({ ...prev, [name]: easing }));
+
+  const manualChange = (name: string, values: number[]) => {
+    onChangeScale(name, values);
+    setEasing(name, 'manual');
+  };
+
   const usage = useMemo(() => {
     const map = new Map<string, number>();
     config.colors.forEach((color) => {
@@ -200,10 +246,11 @@ export function ScalesManager({
     <div class="scales-manager">
       <div class="scales-head">
         <p class="scales-hint">
-          Contrast scales define the target contrast of every step against the theme background.
-          Colors pick a scale with their <code>ratios</code> field; the <code>default</code> scale
-          is mandatory. Drag the markers, edit the numbers, or regenerate the distribution with a
-          curve.
+          Contrast scales define the target contrast of every step{' '}
+          <em>against the theme background</em>: 0 sits on the background, the maximum is the
+          strongest contrast (dark in light mode, light in dark mode). Colors pick a scale with
+          their <code>ratios</code> field; the <code>default</code> scale is mandatory. Pick a
+          distribution easing, or drag the markers / edit the numbers to go manual.
         </p>
         <label>
           formula
@@ -267,7 +314,7 @@ export function ScalesManager({
             <DistributionStrip
               values={values}
               axis={axis}
-              onChange={(next) => onChangeScale(name, next)}
+              onChange={(next) => manualChange(name, next)}
             />
 
             <div class="scale-stops">
@@ -282,7 +329,7 @@ export function ScalesManager({
                       const clamped = Math.min(axis.max, Math.max(axis.min, raw));
                       const next = [...values];
                       next[index] = roundTo(clamped, axis.precision);
-                      onChangeScale(
+                      manualChange(
                         name,
                         next.sort((a, b) => a - b),
                       );
@@ -293,7 +340,7 @@ export function ScalesManager({
                     title="remove step"
                     disabled={values.length <= 2}
                     onClick={() =>
-                      onChangeScale(
+                      manualChange(
                         name,
                         values.filter((_, i) => i !== index),
                       )
@@ -320,25 +367,27 @@ export function ScalesManager({
                   );
                   const next = [...values];
                   next.splice(gapIndex + 1, 0, inserted);
-                  onChangeScale(name, next);
+                  manualChange(name, next);
                 }}
               >
                 + step
               </button>
             </div>
 
-            <CurveGenerator
+            <DistributionControls
               axis={axis}
-              count={values.length}
+              values={values}
+              easing={easings[name] ?? 'manual'}
+              onEasingChange={(easing) => setEasing(name, easing)}
               onApply={(next) => onChangeScale(name, next)}
             />
 
             {sample && (
               <div
                 class="scale-sample"
-                title="selected color rendered with this scale (light mode)"
+                title="selected color rendered with this scale, ordered like the axis: 0 (background side) to max contrast"
               >
-                {sample.map((value) => (
+                {[...sample].reverse().map((value) => (
                   <div class="scale-sample-cell" style={{ background: value }} />
                 ))}
               </div>
