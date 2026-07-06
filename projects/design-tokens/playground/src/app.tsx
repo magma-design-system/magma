@@ -1,8 +1,9 @@
 import { useMemo, useRef, useState } from 'preact/hooks';
 import initialConfigJson from '../../.magma-design-tokensrc.json';
 import DEFAULT_COLOR_CONFIG from '../../src/config/default-color.json';
+import { zipSync } from 'fflate';
 import type { ColorConfig, Formula, GroupConfig, MagmaConfig } from '../../src/lib/color.mjs';
-import { resolveFormula, resolveRatiosName } from '../../src/lib/color.mjs';
+import { createColorTokens, resolveFormula, resolveRatiosName } from '../../src/lib/color.mjs';
 import { GroupsManager } from './groups.js';
 import { hasHueShift, resolveCurveWeights, type HueShiftConfig } from '../../src/lib/hue-shift.mjs';
 import { generateScales, singleColorConfig, type ColorScales, type Step } from './generator.js';
@@ -577,14 +578,48 @@ export function App() {
     setSelectedName(nextName);
   };
 
-  const downloadJson = () => {
-    const blob = new Blob([JSON.stringify(config, null, 2) + '\n'], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
+  const triggerDownload = (data: BlobPart, filename: string, type: string) => {
+    const url = URL.createObjectURL(new Blob([data], { type }));
     const anchor = document.createElement('a');
     anchor.href = url;
-    anchor.download = 'magma-design-tokensrc.json';
+    anchor.download = filename;
     anchor.click();
     URL.revokeObjectURL(url);
+  };
+
+  const downloadJson = () =>
+    triggerDownload(
+      JSON.stringify(config, null, 2) + '\n',
+      'magma-design-tokensrc.json',
+      'application/json',
+    );
+
+  // zip mirroring the generator output: the config plus the generated JSON
+  // tokens (whole palette + one file per export group), the same files the
+  // CLI writes to tokens/color/generated
+  const downloadZip = () => {
+    try {
+      const { tokens, exportGroups } = createColorTokens(clone(config));
+      const files: Record<string, Uint8Array> = {};
+      const encoder = new TextEncoder();
+      const addJson = (path: string, value: unknown, trailingNewline: boolean) => {
+        files[path] = encoder.encode(
+          JSON.stringify(value, null, 2) + (trailingNewline ? '\n' : ''),
+        );
+      };
+      addJson('magma-design-tokensrc.json', config, true);
+      // token files match the generator output byte-for-byte (no trailing newline)
+      addJson('tokens/color/generated/base.json', tokens, false);
+      Object.keys(exportGroups).forEach((group) => {
+        addJson(`tokens/color/generated/${group}.json`, exportGroups[group], false);
+      });
+      triggerDownload(zipSync(files), 'magma-design-tokens.zip', 'application/zip');
+      setLoadError(null);
+    } catch (error) {
+      setLoadError(
+        `Could not build the zip: ${error instanceof Error ? error.message : String(error)}`,
+      );
+    }
   };
 
   return (
@@ -627,8 +662,9 @@ export function App() {
             />
           </label>
           <button onClick={copyJson}>{copied ? 'copied!' : 'copy JSON'}</button>
-          <button class="primary" onClick={downloadJson}>
-            download config
+          <button onClick={downloadJson}>download config</button>
+          <button class="primary" onClick={downloadZip}>
+            download tokens (zip)
           </button>
         </div>
       </header>
