@@ -373,3 +373,37 @@ button.danger:hover { border-color: #c0392b; color: #c0392b; }
 }
 .modal-preview code { background: #f2f2f2; padding: 2px 6px; border-radius: 4px; }
 .modal-actions { display: flex; justify-content: end; gap: 8px; }
+
+.groups-manager { display: flex; flex-direction: column; gap: 16px; max-width: 980px; }
+.group-title { font-size: 14px; font-weight: 650; }
+.group-selects { margin-left: auto; display: flex; gap: 14px; }
+.group-selects label { display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: var(--ink-soft); }
+.group-selects select {
+  font: inherit;
+  color: var(--ink);
+  padding: 5px 8px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #fff;
+  min-width: 150px;
+}
+.group-members { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
+.group-member { display: flex; align-items: center; gap: 10px; }
+.group-member .swatch {
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+  flex-shrink: 0;
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.12);
+}
+.group-member-name { width: 150px; font-size: 13px; display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+.group-member-name .badge {
+  font-size: 9px;
+  padding: 1px 5px;
+  border-radius: 99px;
+  background: var(--accent);
+  color: #fff;
+}
+.group-member-meta { width: 130px; font-size: 11px; color: var(--ink-soft); flex-shrink: 0; font-variant-numeric: tabular-nums; }
+.group-row-cells { display: flex; flex: 1; border-radius: 4px; overflow: hidden; }
+.group-row-cell { flex: 1; height: 20px; }

@@ -143,6 +143,7 @@ Root fields:
 | `smooth`     | `boolean`                | `false`  | Applies bezier smoothing to the scale interpolation                                                       |
 | `formula`    | `"wcag2"` \| `"wcag3"`   | `"wcag3"` | Contrast formula used to pick the steps: WCAG 2.x contrast ratios or WCAG 3 (APCA) Lc values             |
 | `ratios`     | `object`                 | built-in | Named ratio scales per formula; merged over the built-in ones shown above                                 |
+| `groups`     | `object`                 | none     | Per-group defaults for `ratios` and `formula`, keyed by token group (see below)                            |
 | `hueShift`   | `object`                 | none     | Default hue shifting applied to all colors (see the Hue shifting section)                                 |
 
 Fields of each entry in `colors` (per-color values override the root defaults):
@@ -161,6 +162,23 @@ Fields of each entry in `colors` (per-color values override the root defaults):
 | `disabled`   | `boolean`         | `false`        | Skips the color entirely: no tokens are generated for it                                                          |
 | `title`      | `string`          | none           | Reserved for exporters; not used by the generator                                                                 |
 | `alias`      | `string`          | none           | Reserved for exporters; not used by the generator                                                                 |
+
+Ratios and formula can also be set once per token group instead of repeating them on every color:
+
+```json
+{
+  "groups": {
+    "tone": { "ratios": "tone" },
+    "brand": { "formula": "wcag3" }
+  },
+  "colors": [
+    { "color": "#94a3b8", "name": "tone.porcelain" },
+    { "color": "#9ca3af", "name": "tone.kaolin" }
+  ]
+}
+```
+
+The resolution order is: the color's own field, then its group entry, then the root default.
 
 Notes:
 
@@ -214,6 +232,8 @@ It opens a Vite dev server (port 5177) that loads `.magma-design-tokensrc.json` 
 The playground works with any configuration, not just the repo one: **load config** opens a `.magma-design-tokensrc.json` from disk, **download config** saves the edited configuration back as a JSON file (**copy JSON** copies it to the clipboard instead). Editing is in-memory only: nothing touches the repo files.
 
 New colors are created from a dialog: pick the value and the name auto-completes underneath from the "Name That Color" vocabulary (via [color-namer](https://github.com/colorjs/color-namer), ~1500 names, kebab-cased: e.g. `persian-green`); choose the token group, confirm, and the playground lands on the new color already selected. Names are made unique with a numeric suffix when needed. Auto-naming keeps following the picker in the editor too, but only for names assigned by the playground itself: a name typed by the user, or any name coming from a loaded configuration, is never touched. Picking a value already used by another color raises a warning.
+
+The **groups** view manages `ratios` and `formula` per token group (writing the `groups` section of the configuration), with a compact preview of every member color; colors overriding the group individually are flagged. The per-color selects in the editor default to inheriting from the group.
 
 The **contrast scales** view manages the ratio scales of the configuration: add, duplicate, rename or delete custom scales (the built-in ones, `default` first of all, are always available) and inspect the distribution of the stops on a horizontal axis. Each scale has a distribution mode: pick an easing (`linear`, `ease-in`, `ease-out`, `ease-in-out`) and the stops regenerate live from steps/min/max, or go `manual` by dragging a marker or editing a stop directly. Scale values are contrast against the theme background (0 = on the background, max = strongest contrast), so the same scale yields dark-on-light in light mode and light-on-dark in dark mode. Every color picks its scale with the `ratios` field in the editor.
 

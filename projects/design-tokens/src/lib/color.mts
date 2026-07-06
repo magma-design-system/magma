@@ -55,12 +55,22 @@ export type ExportGroups = Record<string, ExportGroupTokens>;
 export type Formula = "wcag2" | "wcag3";
 export type RatioData = { [key: string]: number[] };
 
+/**
+ * Settings shared by every color of a token group (the part before the
+ * dot in a color name). Per-color fields still win over these.
+ */
+export interface GroupConfig {
+  ratios?: string;
+  formula?: Formula;
+}
+
 export interface MagmaConfig {
   colorspace?: string;
   smooth?: boolean;
   formula?: Formula;
   hueShift?: HueShiftConfig;
   ratios?: { [K in Formula]: RatioData };
+  groups?: Record<string, GroupConfig>;
   colors: ColorConfig[];
 }
 
@@ -117,14 +127,41 @@ export function formatColortoTokens(
   return palette;
 }
 
+function groupOf(colorItem: ColorConfig, config: MagmaConfig): GroupConfig {
+  return config.groups?.[colorItem.name.split(".")[0]] ?? {};
+}
+
+/**
+ * Resolution order: color, then its group, then the config root, falling
+ * back to the built-in default so the helper also works on raw (unmerged)
+ * configurations.
+ */
+export function resolveFormula(
+  colorItem: ColorConfig,
+  config: MagmaConfig,
+): Formula {
+  return (
+    colorItem.formula ??
+    groupOf(colorItem, config).formula ??
+    config.formula ??
+    (DEFAULTS.formula as Formula)
+  );
+}
+
+/** Resolution order: color, then its group, then the default scale. */
+export function resolveRatiosName(
+  colorItem: ColorConfig,
+  config: MagmaConfig,
+): string {
+  return colorItem.ratios ?? groupOf(colorItem, config).ratios ?? "default";
+}
+
 export function resolveRatios(
   colorItem: ColorConfig,
   config: MagmaConfig,
 ): number[] {
-  const formula = (colorItem.formula ?? config.formula)!;
-  return colorItem.ratios !== undefined
-    ? config.ratios![formula][colorItem.ratios]
-    : config.ratios![formula].default;
+  const formula = resolveFormula(colorItem, config);
+  return config.ratios![formula][resolveRatiosName(colorItem, config)];
 }
 
 export function createColor(
@@ -245,7 +282,7 @@ export function createColorTokens(magmaConfig: MagmaConfig) {
     [key: string]: { light: ColorVariant[]; dark: ColorVariant[] };
   } = {};
   config.colors.forEach((element) => {
-    const formula = element.formula ?? config.formula!;
+    const formula = resolveFormula(element, config);
     const light = createColorVariants(element, config, "light");
     // hue shift sides are anchored to physical lightness, so the two theme
     // modes need different groupings; without hue shift the same Leonardo
@@ -322,7 +359,7 @@ export function createColorTokens(magmaConfig: MagmaConfig) {
       }
       if (!Object.hasOwn(tokens.color[group], name)) {
         console.info(`Creating ${chalk.blue("color")} ${name}`);
-        const formula = element.formula ?? config.formula!;
+        const formula = resolveFormula(element, config);
         tokens.color[group][name] = {
           light: formatColortoTokens(
             [

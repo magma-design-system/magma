@@ -1,7 +1,9 @@
 import { useMemo, useRef, useState } from 'preact/hooks';
 import initialConfigJson from '../../.magma-design-tokensrc.json';
 import DEFAULT_COLOR_CONFIG from '../../src/config/default-color.json';
-import type { ColorConfig, Formula, MagmaConfig } from '../../src/lib/color.mjs';
+import type { ColorConfig, Formula, GroupConfig, MagmaConfig } from '../../src/lib/color.mjs';
+import { resolveFormula, resolveRatiosName } from '../../src/lib/color.mjs';
+import { GroupsManager } from './groups.js';
 import { hasHueShift, resolveCurveWeights, type HueShiftConfig } from '../../src/lib/hue-shift.mjs';
 import { generateScales, singleColorConfig, type ColorScales, type Step } from './generator.js';
 import { ScalesManager, type RatioSet } from './scales.js';
@@ -249,6 +251,10 @@ interface ColorEditorProps {
   color: ColorConfig;
   hasGlobalShift: boolean;
   scaleNames: string[];
+  /** ratios scale the color resolves to when it does not override (group or default) */
+  inheritedRatios: string;
+  /** formula the color resolves to when it does not override (group or root) */
+  inheritedFormula: string;
   onChange: (patch: Partial<ColorConfig> | { hueShift: undefined }) => void;
   /** fired when the color picker is released (change, not live input) */
   onColorCommit: (hex: string) => void;
@@ -258,6 +264,8 @@ function ColorEditor({
   color,
   hasGlobalShift,
   scaleNames,
+  inheritedRatios,
+  inheritedFormula,
   onChange,
   onColorCommit,
 }: ColorEditorProps) {
@@ -289,9 +297,12 @@ function ColorEditor({
         <label>
           ratios
           <select
-            value={color.ratios ?? 'default'}
-            onChange={(e) => onChange({ ratios: (e.target as HTMLSelectElement).value })}
+            value={color.ratios ?? ''}
+            onChange={(e) =>
+              onChange({ ratios: (e.target as HTMLSelectElement).value || undefined })
+            }
           >
+            <option value="">inherit ({inheritedRatios})</option>
             {scaleNames.map((preset) => (
               <option value={preset}>{preset}</option>
             ))}
@@ -308,7 +319,7 @@ function ColorEditor({
               })
             }
           >
-            <option value="">inherit</option>
+            <option value="">inherit ({inheritedFormula})</option>
             <option value="wcag2">wcag2</option>
             <option value="wcag3">wcag3</option>
           </select>
@@ -383,7 +394,7 @@ export function App() {
   const [selectedName, setSelectedName] = useState<string>(
     (initialConfigJson as unknown as MagmaConfig).colors[0]?.name ?? '',
   );
-  const [view, setView] = useState<'editor' | 'grid' | 'scales'>('editor');
+  const [view, setView] = useState<'editor' | 'grid' | 'scales' | 'groups'>('editor');
   const [copied, setCopied] = useState(false);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [scalesFormula, setScalesFormula] = useState<Formula>('wcag3');
@@ -424,7 +435,7 @@ export function App() {
   ]);
 
   const [gridScales, gridError] = useMemo((): [Map<string, ColorScales> | null, string | null] => {
-    if (view !== 'grid') return [null, null];
+    if (view !== 'grid' && view !== 'groups') return [null, null];
     try {
       return [generateScales(config), null];
     } catch (error) {
@@ -458,7 +469,7 @@ export function App() {
   );
 
   const scaleNamesFor = (color: ColorConfig): string[] =>
-    Object.keys(ratioSetFor((color.formula ?? config.formula ?? 'wcag3') as Formula));
+    Object.keys(ratioSetFor(resolveFormula(color, config)));
 
   const writeScale = (mutate: (draftSet: RatioSet) => void) => {
     updateConfig((draft) => {
@@ -584,6 +595,9 @@ export function App() {
           </button>
           <button class={view === 'scales' ? 'active' : ''} onClick={() => setView('scales')}>
             contrast scales
+          </button>
+          <button class={view === 'groups' ? 'active' : ''} onClick={() => setView('groups')}>
+            groups
           </button>
         </nav>
         <div class="topbar-actions">
@@ -789,6 +803,8 @@ export function App() {
               color={selected}
               hasGlobalShift={config.hueShift !== undefined}
               scaleNames={scaleNamesFor(selected)}
+              inheritedRatios={resolveRatiosName({ ...selected, ratios: undefined }, config)}
+              inheritedFormula={resolveFormula({ ...selected, formula: undefined }, config)}
               onColorCommit={(hex) => autoNameColor(selectedIndex, hex)}
               onChange={(patch) => {
                 // a name typed by the user opts the color out of auto-naming
@@ -885,7 +901,10 @@ export function App() {
               });
               updateConfig((draft) => {
                 draft.colors.forEach((color) => {
-                  if ((color.ratios ?? 'default') === name) color.ratios = nextName;
+                  if (color.ratios === name) color.ratios = nextName;
+                });
+                Object.values(draft.groups ?? {}).forEach((group) => {
+                  if (group.ratios === name) group.ratios = nextName;
                 });
               });
             }}
@@ -897,13 +916,17 @@ export function App() {
               });
             }}
             onDeleteScale={(name) => {
-              // colors using the deleted scale fall back to the mandatory default
+              // colors and groups using the deleted scale fall back to the
+              // mandatory default
               updateConfig((draft) => {
                 draft.colors.forEach((color) => {
                   const colorFormula = color.formula ?? draft.formula ?? 'wcag3';
                   if (colorFormula === scalesFormula && color.ratios === name) {
                     delete color.ratios;
                   }
+                });
+                Object.values(draft.groups ?? {}).forEach((group) => {
+                  if (group.ratios === name) delete group.ratios;
                 });
               });
               writeScale((draftSet) => {
@@ -916,6 +939,28 @@ export function App() {
                 }
               });
             }}
+          />
+        )}
+        {view === 'groups' && (
+          <GroupsManager
+            config={config}
+            groups={groups}
+            scaleNamesFor={(formula) => Object.keys(ratioSetFor(formula))}
+            preview={gridScales}
+            previewError={gridError}
+            onUpdateGroup={(groupName, patch) =>
+              updateConfig((draft) => {
+                const cleaned: GroupConfig = {};
+                if (patch.ratios !== undefined) cleaned.ratios = patch.ratios;
+                if (patch.formula !== undefined) cleaned.formula = patch.formula;
+                const nextGroups = { ...(draft.groups ?? {}) };
+                if (Object.keys(cleaned).length === 0) delete nextGroups[groupName];
+                else nextGroups[groupName] = cleaned;
+                if (Object.keys(nextGroups).length === 0)
+                  delete (draft as Record<string, unknown>).groups;
+                else draft.groups = nextGroups;
+              })
+            }
           />
         )}
       </main>

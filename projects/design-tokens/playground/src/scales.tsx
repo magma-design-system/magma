@@ -1,5 +1,6 @@
 import { useMemo, useRef, useState } from 'preact/hooks';
 import type { Formula, MagmaConfig } from '../../src/lib/color.mjs';
+import { resolveFormula, resolveRatiosName } from '../../src/lib/color.mjs';
 
 export interface RatioSet {
   [scaleName: string]: number[];
@@ -261,9 +262,8 @@ export function ScalesManager({
   const usage = useMemo(() => {
     const map = new Map<string, number>();
     config.colors.forEach((color) => {
-      const colorFormula = color.formula ?? config.formula ?? 'wcag3';
-      if (colorFormula !== formula) return;
-      const scale = color.ratios ?? 'default';
+      if (resolveFormula(color, config) !== formula) return;
+      const scale = resolveRatiosName(color, config);
       map.set(scale, (map.get(scale) ?? 0) + 1);
     });
     return map;
