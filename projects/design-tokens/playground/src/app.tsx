@@ -391,10 +391,14 @@ export function App() {
   const [config, setConfig] = useState<CloneableConfig>(() =>
     clone(initialConfigJson as unknown as CloneableConfig),
   );
-  const [selectedName, setSelectedName] = useState<string>(
-    (initialConfigJson as unknown as MagmaConfig).colors[0]?.name ?? '',
-  );
-  const [view, setView] = useState<'editor' | 'grid' | 'scales' | 'groups'>('editor');
+  const [selectedName, setSelectedName] = useState<string>(() => {
+    const colors = (initialConfigJson as unknown as MagmaConfig).colors;
+    // neutral is the reference color of the system: select it when present
+    return (
+      colors.find((color) => color.name.split('.')[1] === 'neutral')?.name ?? colors[0]?.name ?? ''
+    );
+  });
+  const [view, setView] = useState<'colors' | 'scales' | 'groups'>('colors');
   const [copied, setCopied] = useState(false);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [scalesFormula, setScalesFormula] = useState<Formula>('wcag3');
@@ -417,7 +421,7 @@ export function App() {
   };
 
   const [selectedScales, selectedError] = useMemo((): [ColorScales | null, string | null] => {
-    if (!selected || view !== 'editor') return [null, null];
+    if (!selected || view !== 'colors') return [null, null];
     try {
       const scales = generateScales(singleColorConfig(config, selected));
       return [scales.get(selected.name) ?? null, null];
@@ -434,8 +438,11 @@ export function App() {
     view,
   ]);
 
-  const [gridScales, gridError] = useMemo((): [Map<string, ColorScales> | null, string | null] => {
-    if (view !== 'grid' && view !== 'groups') return [null, null];
+  const [fullScales, fullScalesError] = useMemo((): [
+    Map<string, ColorScales> | null,
+    string | null,
+  ] => {
+    if (view !== 'groups') return [null, null];
     try {
       return [generateScales(config), null];
     } catch (error) {
@@ -522,7 +529,7 @@ export function App() {
       }
       setConfig(parsed);
       setSelectedName(parsed.colors[0].name);
-      setView('editor');
+      setView('colors');
       setLoadError(null);
     } catch (error) {
       setLoadError(
@@ -587,11 +594,8 @@ export function App() {
           magma design tokens <span>playground</span>
         </h1>
         <nav>
-          <button class={view === 'editor' ? 'active' : ''} onClick={() => setView('editor')}>
-            editor
-          </button>
-          <button class={view === 'grid' ? 'active' : ''} onClick={() => setView('grid')}>
-            palette grid
+          <button class={view === 'colors' ? 'active' : ''} onClick={() => setView('colors')}>
+            colors
           </button>
           <button class={view === 'scales' ? 'active' : ''} onClick={() => setView('scales')}>
             contrast scales
@@ -640,7 +644,9 @@ export function App() {
                 class={`color-item ${color.name === selectedName ? 'active' : ''} ${color.disabled ? 'disabled' : ''}`}
                 onClick={() => {
                   setSelectedName(color.name);
-                  setView('editor');
+                  // the scales view works on the selected color: switching
+                  // color must not leave it
+                  if (view !== 'scales') setView('colors');
                 }}
               >
                 <span class="swatch" style={{ background: color.color }} />
@@ -755,7 +761,7 @@ export function App() {
                     } as ColorConfig);
                   });
                   setSelectedName(fullName);
-                  setView('editor');
+                  setView('colors');
                   setAddModal(null);
                 }}
               >
@@ -767,7 +773,7 @@ export function App() {
       )}
 
       <main class="content">
-        {view === 'editor' && selected && (
+        {view === 'colors' && selected && (
           <>
             <div class="content-head">
               <h2>{selected.name}</h2>
@@ -863,23 +869,6 @@ export function App() {
             </details>
           </>
         )}
-        {view === 'grid' && (
-          <div class="grid">
-            {gridError && <div class="preview-error">{gridError}</div>}
-            {gridScales &&
-              [...gridScales.entries()].map(([name, scales]) => (
-                <div class="grid-item">
-                  <h3>{name}</h3>
-                  <div class="preview-card light compact">
-                    <ScaleRow label="light" steps={scales.light} />
-                  </div>
-                  <div class="preview-card dark compact">
-                    <ScaleRow label="dark" steps={scales.dark} />
-                  </div>
-                </div>
-              ))}
-          </div>
-        )}
         {view === 'scales' && (
           <ScalesManager
             config={config}
@@ -887,6 +876,8 @@ export function App() {
             ratioSet={ratioSet}
             builtinScales={builtinScales}
             sampleScales={sampleScales}
+            selectedName={selectedName}
+            onSelectColor={setSelectedName}
             onFormulaChange={setScalesFormula}
             onChangeScale={(name, values) =>
               writeScale((draftSet) => {
@@ -946,8 +937,8 @@ export function App() {
             config={config}
             groups={groups}
             scaleNamesFor={(formula) => Object.keys(ratioSetFor(formula))}
-            preview={gridScales}
-            previewError={gridError}
+            preview={fullScales}
+            previewError={fullScalesError}
             onUpdateGroup={(groupName, patch) =>
               updateConfig((draft) => {
                 const cleaned: GroupConfig = {};

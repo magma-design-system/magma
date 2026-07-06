@@ -229,6 +229,8 @@ interface ScalesManagerProps {
    */
   builtinScales: string[];
   sampleScales: Map<string, string[]>;
+  selectedName: string;
+  onSelectColor: (name: string) => void;
   onFormulaChange: (formula: Formula) => void;
   onChangeScale: (name: string, values: number[]) => void;
   onRenameScale: (name: string, nextName: string) => void;
@@ -242,12 +244,29 @@ export function ScalesManager({
   ratioSet,
   builtinScales,
   sampleScales,
+  selectedName,
+  onSelectColor,
   onFormulaChange,
   onChangeScale,
   onRenameScale,
   onAddScale,
   onDeleteScale,
 }: ScalesManagerProps) {
+  // scale under inspection in the usage panel
+  const [inspectedState, setInspected] = useState('default');
+  const inspected = ratioSet[inspectedState] ? inspectedState : 'default';
+
+  const involved = useMemo(() => {
+    const byGroup = new Map<string, typeof config.colors>();
+    config.colors.forEach((color) => {
+      if (resolveFormula(color, config) !== formula) return;
+      if (resolveRatiosName(color, config) !== inspected) return;
+      const group = color.name.split('.')[0];
+      if (!byGroup.has(group)) byGroup.set(group, []);
+      byGroup.get(group)!.push(color);
+    });
+    return byGroup;
+  }, [config, formula, inspected]);
   // distribution mode per scale; anything not chosen explicitly is manual
   const [easings, setEasings] = useState<Record<string, EasingName>>({});
 
@@ -289,6 +308,45 @@ export function ScalesManager({
             <option value="wcag2">wcag2 (ratio, 1-21)</option>
           </select>
         </label>
+      </div>
+
+      <div class="scale-card usage-panel">
+        <div class="scale-card-head">
+          <label class="usage-select">
+            scale
+            <select
+              value={inspected}
+              onChange={(e) => setInspected((e.target as HTMLSelectElement).value)}
+            >
+              {Object.keys(ratioSet).map((name) => (
+                <option value={name}>{name}</option>
+              ))}
+            </select>
+          </label>
+          <span class="scale-usage">
+            colors resolving to <code>{inspected}</code>, by group
+          </span>
+        </div>
+        {involved.size === 0 && <p class="scales-hint">no color uses this scale right now</p>}
+        <div class="usage-groups">
+          {[...involved.entries()].map(([group, colors]) => (
+            <div class="usage-group">
+              <h4>{group}</h4>
+              <div class="usage-chips">
+                {colors.map((color) => (
+                  <button
+                    class={`usage-chip ${color.name === selectedName ? 'active' : ''}`}
+                    title={`${color.name} (${color.color}) - click to use it as the sample color`}
+                    onClick={() => onSelectColor(color.name)}
+                  >
+                    <span class="swatch" style={{ background: color.color }} />
+                    {color.name.split('.')[1]}
+                  </button>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
 
       {Object.keys(ratioSet).map((name) => {
