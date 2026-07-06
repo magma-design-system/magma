@@ -60,6 +60,46 @@ body { background: var(--bg); min-width: 960px; }
 .topbar nav { display: flex; gap: 4px; }
 .topbar-actions { display: flex; gap: 8px; margin-left: auto; }
 
+.download-menu { position: relative; }
+.download-backdrop { position: fixed; inset: 0; z-index: 5; }
+.download-list {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 4px);
+  z-index: 6;
+  min-width: 180px;
+  list-style: none;
+  padding: 4px;
+  margin: 0;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.14);
+}
+.download-list li { display: block; }
+.download-list button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  border: none;
+  background: none;
+  border-radius: 6px;
+  padding: 7px 10px;
+  text-align: left;
+}
+.download-list button:hover { background: var(--bg); }
+.download-list .badge {
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 1px 5px;
+  border-radius: 99px;
+  background: var(--line);
+  color: var(--ink-soft);
+}
+
 button {
   background: var(--panel);
   border: 1px solid var(--line);

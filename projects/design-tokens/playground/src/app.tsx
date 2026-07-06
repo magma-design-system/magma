@@ -4,6 +4,7 @@ import DEFAULT_COLOR_CONFIG from '../../src/config/default-color.json';
 import { zipSync } from 'fflate';
 import type { ColorConfig, Formula, GroupConfig, MagmaConfig } from '../../src/lib/color.mjs';
 import { createColorTokens, resolveFormula, resolveRatiosName } from '../../src/lib/color.mjs';
+import { cssHex, cssRgb, gimpPalette } from './formats.js';
 import { GroupsManager } from './groups.js';
 import { hasHueShift, resolveCurveWeights, type HueShiftConfig } from '../../src/lib/hue-shift.mjs';
 import { generateScales, singleColorConfig, type ColorScales, type Step } from './generator.js';
@@ -401,6 +402,7 @@ export function App() {
   });
   const [view, setView] = useState<'colors' | 'scales' | 'groups'>('colors');
   const [copied, setCopied] = useState(false);
+  const [downloadOpen, setDownloadOpen] = useState(false);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [scalesFormula, setScalesFormula] = useState<Formula>('wcag3');
   const [addModal, setAddModal] = useState<{
@@ -594,24 +596,64 @@ export function App() {
       'application/json',
     );
 
-  // zip mirroring the generator output: the config plus the generated JSON
-  // tokens (whole palette + one file per export group), the same files the
-  // CLI writes to tokens/color/generated
+  const downloadFigmaNotice = () =>
+    setLoadError('Figma export is coming with the DTCG format (#543); use the zip for now');
+
+  const downloadCss = () => {
+    try {
+      const { tokens } = createColorTokens(clone(config));
+      const date = new Date().toUTCString();
+      const tree = tokens as Parameters<typeof cssHex>[0];
+      triggerDownload(cssHex(tree, date), 'colors-hex.css', 'text/css');
+      triggerDownload(cssRgb(tree, date), 'colors-rgb.css', 'text/css');
+      setLoadError(null);
+    } catch (error) {
+      setLoadError(
+        `Could not build the CSS: ${error instanceof Error ? error.message : String(error)}`,
+      );
+    }
+  };
+
+  const downloadGimp = () => {
+    try {
+      const { tokens } = createColorTokens(clone(config));
+      triggerDownload(
+        gimpPalette(tokens as Parameters<typeof gimpPalette>[0]),
+        'colors.gpl',
+        'text/plain',
+      );
+      setLoadError(null);
+    } catch (error) {
+      setLoadError(
+        `Could not build the palette: ${error instanceof Error ? error.message : String(error)}`,
+      );
+    }
+  };
+
+  // zip mirroring the dist output: the config, the generated JSON tokens
+  // (whole palette + one file per export group, byte-for-byte the CLI files)
+  // and the CSS / GIMP renders
   const downloadZip = () => {
     try {
       const { tokens, exportGroups } = createColorTokens(clone(config));
+      const date = new Date().toUTCString();
       const files: Record<string, Uint8Array> = {};
       const encoder = new TextEncoder();
-      const addJson = (path: string, value: unknown, trailingNewline: boolean) => {
-        files[path] = encoder.encode(
-          JSON.stringify(value, null, 2) + (trailingNewline ? '\n' : ''),
-        );
+      const add = (path: string, text: string) => {
+        files[path] = encoder.encode(text);
       };
-      addJson('magma-design-tokensrc.json', config, true);
-      // token files match the generator output byte-for-byte (no trailing newline)
-      addJson('tokens/color/generated/base.json', tokens, false);
+      add('magma-design-tokensrc.json', JSON.stringify(config, null, 2) + '\n');
+      // token JSON files match the generator output byte-for-byte (no newline)
+      add('tokens/color/generated/base.json', JSON.stringify(tokens, null, 2));
+      const wholeTree = tokens as Parameters<typeof cssHex>[0];
+      add('css/colors-hex.css', cssHex(wholeTree, date));
+      add('css/colors-rgb.css', cssRgb(wholeTree, date));
+      add('gimp/colors.gpl', gimpPalette(wholeTree));
       Object.keys(exportGroups).forEach((group) => {
-        addJson(`tokens/color/generated/${group}.json`, exportGroups[group], false);
+        add(`tokens/color/generated/${group}.json`, JSON.stringify(exportGroups[group], null, 2));
+        const groupTree = exportGroups[group] as Parameters<typeof cssHex>[0];
+        add(`css/colors-hex-${group}.css`, cssHex(groupTree, date));
+        add(`css/colors-rgb-${group}.css`, cssRgb(groupTree, date));
       });
       triggerDownload(zipSync(files), 'magma-design-tokens.zip', 'application/zip');
       setLoadError(null);
@@ -662,10 +704,37 @@ export function App() {
             />
           </label>
           <button onClick={copyJson}>{copied ? 'copied!' : 'copy JSON'}</button>
-          <button onClick={downloadJson}>download config</button>
-          <button class="primary" onClick={downloadZip}>
-            download tokens (zip)
-          </button>
+          <div class="download-menu">
+            <button class="primary" onClick={() => setDownloadOpen((open) => !open)}>
+              download {'▾'}
+            </button>
+            {downloadOpen && (
+              <>
+                <div class="download-backdrop" onClick={() => setDownloadOpen(false)} />
+                <ul class="download-list">
+                  {[
+                    { label: 'All tokens (zip)', run: downloadZip },
+                    { label: 'Figma tokens (json)', run: downloadFigmaNotice, soon: true },
+                    { label: 'Config (json)', run: downloadJson },
+                    { label: 'CSS tokens', run: downloadCss },
+                    { label: 'GIMP palette', run: downloadGimp },
+                  ].map((item) => (
+                    <li>
+                      <button
+                        onClick={() => {
+                          setDownloadOpen(false);
+                          item.run();
+                        }}
+                      >
+                        {item.label}
+                        {item.soon && <span class="badge">soon</span>}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
+          </div>
         </div>
       </header>
 

@@ -229,7 +229,15 @@ yarn --cwd projects/design-tokens playground
 
 It opens a Vite dev server (port 5177) that loads `.magma-design-tokensrc.json` and runs the real token generator in the browser, so every preview matches the build output exactly. The UI has three views: **colors** (the two-column editor: color list on the left, editing and live light/dark scale previews with achieved contrast on the right; `neutral` is selected by default when present), **contrast scales** and **groups**. Selecting a color from the sidebar while in contrast scales keeps you there, since the scale samples follow the selected color.
 
-The playground works with any configuration, not just the repo one: **load config** opens a `.magma-design-tokensrc.json` from disk, **download config** saves the edited configuration back as a JSON file (**copy JSON** copies it to the clipboard instead), and **download tokens (zip)** produces a zip with the configuration plus the generated JSON tokens (the whole palette in `tokens/color/generated/base.json` and one file per export group), the same JSON the CLI writes. Editing is in-memory only: nothing touches the repo files.
+The playground works with any configuration, not just the repo one: **load config** opens a `.magma-design-tokensrc.json` from disk and **copy JSON** copies the edited configuration to the clipboard. The **download** menu offers:
+
+- **All tokens (zip)** — the configuration, the generated JSON tokens (whole palette + one file per export group) and the CSS and GIMP renders, mirroring the `dist` layout;
+- **Figma tokens (json)** — coming with the DTCG format (see below);
+- **Config (json)** — just the `.magma-design-tokensrc.json`;
+- **CSS tokens** — `colors-hex.css` and `colors-rgb.css`;
+- **GIMP palette** — `colors.gpl`.
+
+The CSS and GIMP outputs are produced in the browser from the same Handlebars templates the build uses, so they match the CLI output. Editing is in-memory only: nothing touches the repo files.
 
 New colors are created from a dialog: pick the value and the name auto-completes underneath from the "Name That Color" vocabulary (via [color-namer](https://github.com/colorjs/color-namer), ~1500 names, kebab-cased: e.g. `persian-green`); choose the token group, confirm, and the playground lands on the new color already selected. Names are made unique with a numeric suffix when needed. Auto-naming keeps following the picker in the editor too, but only for names assigned by the playground itself: a name typed by the user, or any name coming from a loaded configuration, is never touched. Picking a value already used by another color raises a warning.
 
