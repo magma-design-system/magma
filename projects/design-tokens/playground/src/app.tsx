@@ -656,9 +656,10 @@ export function App() {
         </div>
       </aside>
 
+      {/* the dialog has no click-outside dismissal: an accidental click must not lose the input */}
       {addModal && (
-        <div class="modal-overlay" onClick={() => setAddModal(null)}>
-          <div class="modal" onClick={(e) => e.stopPropagation()}>
+        <div class="modal-overlay">
+          <div class="modal">
             <h2>New color</h2>
             <input
               class="modal-picker"
