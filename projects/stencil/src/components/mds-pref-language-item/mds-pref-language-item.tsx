@@ -54,7 +54,12 @@ export class MdsPrefLanguageItem {
   selectLanguageEvent: EventEmitter<MdsPrefLanguageEventDetail>;
 
   componentWillRender(): void {
-    if (!localeDefault[this.code]) {
+    // `code` is assigned asynchronously by framework wrappers (e.g. @lit/react sets it
+    // as a property after the element connects), so it is briefly undefined on the first
+    // render pass and the component re-renders once it lands. Only a non-empty,
+    // unrecognized code is a real error; empty codes fall back to the `noCode` branch
+    // already handled in render().
+    if (this.code && !localeDefault[this.code]) {
       throw Error(`Language code not found: ${this.code}`);
     }
     this.t.lang(this.element);
