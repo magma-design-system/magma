@@ -230,6 +230,8 @@ interface ScalesManagerProps {
   builtinScales: string[];
   sampleScales: Map<string, string[]>;
   selectedName: string;
+  /** display label for a scale name (tags built-in-only scales) */
+  labelFor: (name: string) => string;
   onSelectColor: (name: string) => void;
   onFormulaChange: (formula: Formula) => void;
   onChangeScale: (name: string, values: number[]) => void;
@@ -245,6 +247,7 @@ export function ScalesManager({
   builtinScales,
   sampleScales,
   selectedName,
+  labelFor,
   onSelectColor,
   onFormulaChange,
   onChangeScale,
@@ -330,7 +333,7 @@ export function ScalesManager({
               }}
             >
               {Object.keys(ratioSet).map((name) => (
-                <option value={name}>{name}</option>
+                <option value={name}>{labelFor(name)}</option>
               ))}
             </select>
           </label>

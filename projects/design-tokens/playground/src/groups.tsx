@@ -6,6 +6,8 @@ interface GroupsManagerProps {
   config: MagmaConfig;
   groups: Map<string, ColorConfig[]>;
   scaleNamesFor: (formula: Formula) => string[];
+  /** display label for a scale name (tags built-in-only scales) */
+  labelFor: (formula: Formula, name: string) => string;
   preview: Map<string, ColorScales> | null;
   previewError: string | null;
   onUpdateGroup: (group: string, patch: GroupConfig) => void;
@@ -34,6 +36,7 @@ export function GroupsManager({
   config,
   groups,
   scaleNamesFor,
+  labelFor,
   preview,
   previewError,
   onUpdateGroup,
@@ -88,7 +91,7 @@ export function GroupsManager({
                   >
                     <option value="">inherit (default)</option>
                     {scaleNamesFor(effectiveFormula).map((name) => (
-                      <option value={name}>{name}</option>
+                      <option value={name}>{labelFor(effectiveFormula, name)}</option>
                     ))}
                   </select>
                 </label>

@@ -253,6 +253,8 @@ interface ColorEditorProps {
   color: ColorConfig;
   hasGlobalShift: boolean;
   scaleNames: string[];
+  /** display label for a scale name (tags built-in-only scales) */
+  labelFor: (name: string) => string;
   /** ratios scale the color resolves to when it does not override (group or default) */
   inheritedRatios: string;
   /** formula the color resolves to when it does not override (group or root) */
@@ -266,6 +268,7 @@ function ColorEditor({
   color,
   hasGlobalShift,
   scaleNames,
+  labelFor,
   inheritedRatios,
   inheritedFormula,
   onChange,
@@ -306,7 +309,7 @@ function ColorEditor({
           >
             <option value="">inherit ({inheritedRatios})</option>
             {scaleNames.map((preset) => (
-              <option value={preset}>{preset}</option>
+              <option value={preset}>{labelFor(preset)}</option>
             ))}
           </select>
         </label>
@@ -480,6 +483,13 @@ export function App() {
 
   const scaleNamesFor = (color: ColorConfig): string[] =>
     Object.keys(ratioSetFor(resolveFormula(color, config)));
+
+  // a scale declared in the config vs one only inherited from the built-in
+  // defaults; the latter is tagged in the selects so its origin is explicit
+  const isConfigScale = (formula: Formula, name: string): boolean =>
+    Object.prototype.hasOwnProperty.call(config.ratios?.[formula] ?? {}, name);
+  const scaleLabel = (formula: Formula, name: string): string =>
+    isConfigScale(formula, name) ? name : `${name} (built-in)`;
 
   const writeScale = (mutate: (draftSet: RatioSet) => void) => {
     updateConfig((draft) => {
@@ -914,6 +924,7 @@ export function App() {
               color={selected}
               hasGlobalShift={config.hueShift !== undefined}
               scaleNames={scaleNamesFor(selected)}
+              labelFor={(name) => scaleLabel(resolveFormula(selected, config), name)}
               inheritedRatios={resolveRatiosName({ ...selected, ratios: undefined }, config)}
               inheritedFormula={resolveFormula({ ...selected, formula: undefined }, config)}
               onColorCommit={(hex) => autoNameColor(selectedIndex, hex)}
@@ -982,6 +993,7 @@ export function App() {
             builtinScales={builtinScales}
             sampleScales={sampleScales}
             selectedName={selectedName}
+            labelFor={(name) => scaleLabel(scalesFormula, name)}
             onSelectColor={setSelectedName}
             onFormulaChange={setScalesFormula}
             onChangeScale={(name, values) =>
@@ -1042,6 +1054,7 @@ export function App() {
             config={config}
             groups={groups}
             scaleNamesFor={(formula) => Object.keys(ratioSetFor(formula))}
+            labelFor={scaleLabel}
             preview={fullScales}
             previewError={fullScalesError}
             onUpdateGroup={(groupName, patch) =>
