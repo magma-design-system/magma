@@ -387,6 +387,12 @@ export function App() {
   const [copied, setCopied] = useState(false);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [scalesFormula, setScalesFormula] = useState<Formula>('wcag3');
+  const [addModal, setAddModal] = useState<{
+    color: string;
+    name: string;
+    group: string;
+    manual: boolean;
+  } | null>(null);
 
   const selectedIndex = config.colors.findIndex((c) => c.name === selectedName);
   const selected = selectedIndex >= 0 ? config.colors[selectedIndex] : undefined;
@@ -637,11 +643,11 @@ export function App() {
         <div class="sidebar-actions">
           <button
             onClick={() =>
-              updateConfig((draft) => {
-                let index = 1;
-                while (draft.colors.some((c) => c.name === `label.new-${index}`)) index += 1;
-                draft.colors.push({ color: '#888888', name: `label.new-${index}` } as ColorConfig);
-                setSelectedName(`label.new-${index}`);
+              setAddModal({
+                color: '#4f8fd9',
+                name: nearestColorName('#4f8fd9'),
+                group: 'label',
+                manual: false,
               })
             }
           >
@@ -649,6 +655,101 @@ export function App() {
           </button>
         </div>
       </aside>
+
+      {addModal && (
+        <div class="modal-overlay" onClick={() => setAddModal(null)}>
+          <div class="modal" onClick={(e) => e.stopPropagation()}>
+            <h2>New color</h2>
+            <input
+              class="modal-picker"
+              type="color"
+              value={addModal.color}
+              onInput={(e) => {
+                const hex = (e.target as HTMLInputElement).value;
+                setAddModal(
+                  (state) =>
+                    state && {
+                      ...state,
+                      color: hex,
+                      name: state.manual ? state.name : nearestColorName(hex),
+                    },
+                );
+              }}
+            />
+            <div class="modal-fields">
+              <label>
+                group
+                <select
+                  value={addModal.group}
+                  onChange={(e) =>
+                    setAddModal(
+                      (state) =>
+                        state && { ...state, group: (e.target as HTMLSelectElement).value },
+                    )
+                  }
+                >
+                  {[...new Set([...groups.keys(), 'label'])].map((group) => (
+                    <option value={group}>{group}</option>
+                  ))}
+                </select>
+              </label>
+              <label>
+                name
+                <input
+                  type="text"
+                  value={addModal.name}
+                  onInput={(e) =>
+                    setAddModal(
+                      (state) =>
+                        state && {
+                          ...state,
+                          name: (e.target as HTMLInputElement).value,
+                          manual: true,
+                        },
+                    )
+                  }
+                />
+              </label>
+            </div>
+            <p class="modal-preview">
+              <span class="swatch" style={{ background: addModal.color }} />
+              <code>
+                {addModal.group}.{addModal.name}
+              </code>
+              <code>{addModal.color}</code>
+            </p>
+            <div class="modal-actions">
+              <button onClick={() => setAddModal(null)}>cancel</button>
+              <button
+                class="primary"
+                disabled={!addModal.name.trim()}
+                onClick={() => {
+                  const base = addModal.name.trim();
+                  let candidate = base;
+                  let suffix = 2;
+                  while (config.colors.some((c) => c.name === `${addModal.group}.${candidate}`)) {
+                    candidate = `${base}-${suffix}`;
+                    suffix += 1;
+                  }
+                  const fullName = `${addModal.group}.${candidate}`;
+                  if (!addModal.manual) autoNamedRef.current.add(fullName);
+                  updateConfig((draft) => {
+                    draft.colors.push({
+                      color: addModal.color,
+                      name: fullName,
+                    } as ColorConfig);
+                  });
+                  setSelectedName(fullName);
+                  setView('editor');
+                  setAddModal(null);
+                }}
+              >
+                add color
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <main class="content">
         {view === 'editor' && selected && (
