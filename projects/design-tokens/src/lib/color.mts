@@ -161,7 +161,15 @@ export function resolveRatios(
   config: MagmaConfig,
 ): number[] {
   const formula = resolveFormula(colorItem, config);
-  return config.ratios![formula][resolveRatiosName(colorItem, config)];
+  const scaleName = resolveRatiosName(colorItem, config);
+  const scale = config.ratios?.[formula]?.[scaleName];
+  if (scale === undefined) {
+    const available = Object.keys(config.ratios?.[formula] ?? {}).join(", ") || "none";
+    throw new Error(
+      `Color "${colorItem.name}" references the ratios scale "${scaleName}" for formula "${formula}", which is not defined. Available scales: ${available}.`,
+    );
+  }
+  return scale;
 }
 
 export function createColor(
