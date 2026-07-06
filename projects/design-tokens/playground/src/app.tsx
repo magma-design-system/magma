@@ -1,11 +1,11 @@
-import { useMemo, useState } from 'preact/hooks';
+import { useMemo, useRef, useState } from 'preact/hooks';
 import initialConfigJson from '../../.magma-design-tokensrc.json';
 import DEFAULT_COLOR_CONFIG from '../../src/config/default-color.json';
 import type { ColorConfig, Formula, MagmaConfig } from '../../src/lib/color.mjs';
 import { hasHueShift, resolveCurveWeights, type HueShiftConfig } from '../../src/lib/hue-shift.mjs';
 import { generateScales, singleColorConfig, type ColorScales, type Step } from './generator.js';
 import { ScalesManager, type RatioSet } from './scales.js';
-import { isAutoName, nearestColorName } from './color-names.js';
+import { nearestColorName } from './color-names.js';
 const COLORSPACES = [
   'HSL',
   'OKLCH',
@@ -514,6 +514,11 @@ export function App() {
     }
   };
 
+  // names assigned by the system during this session: only these (and the
+  // new-N placeholders) keep following the picker; a name typed by the
+  // user is never touched
+  const autoNamedRef = useRef(new Set<string>());
+
   // when the color picker is released, colors still carrying an
   // auto-assigned name get renamed after the picked value, unique within
   // the config; a duplicate hex only raises a warning
@@ -526,7 +531,9 @@ export function App() {
     setLoadError(duplicate ? `Warning: ${hex} is already used by "${duplicate.name}"` : null);
 
     const [group, baseName] = color.name.split('.');
-    if (!isAutoName(baseName ?? '')) return;
+    const autoAssigned =
+      /^new(-\d+)?$/.test(baseName ?? '') || autoNamedRef.current.has(color.name);
+    if (!autoAssigned) return;
     const vocabularyName = nearestColorName(hex);
     let candidate = vocabularyName;
     let suffix = 2;
@@ -538,6 +545,8 @@ export function App() {
     }
     const nextName = `${group}.${candidate}`;
     if (nextName === color.name) return;
+    autoNamedRef.current.delete(color.name);
+    autoNamedRef.current.add(nextName);
     updateConfig((draft) => {
       draft.colors[index].name = nextName;
     });
@@ -679,7 +688,9 @@ export function App() {
               hasGlobalShift={config.hueShift !== undefined}
               scaleNames={scaleNamesFor(selected)}
               onColorCommit={(hex) => autoNameColor(selectedIndex, hex)}
-              onChange={(patch) =>
+              onChange={(patch) => {
+                // a name typed by the user opts the color out of auto-naming
+                if ('name' in patch) autoNamedRef.current.delete(selected.name);
                 updateConfig((draft) => {
                   const target = draft.colors[selectedIndex] as Record<string, unknown>;
                   Object.entries(patch).forEach(([key, value]) => {
@@ -688,8 +699,8 @@ export function App() {
                   });
                   if ('name' in patch && typeof patch.name === 'string')
                     setSelectedName(patch.name);
-                })
-              }
+                });
+              }}
             />
             <details class="global-settings" open>
               <summary>global settings</summary>
