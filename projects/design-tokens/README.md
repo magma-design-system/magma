@@ -244,7 +244,7 @@ New colors are created from a dialog: pick the value and the name auto-completes
 
 The **groups** view manages `ratios`, `formula` and `export` per token group (writing the `groups` section of the configuration), with a compact preview of every member color; colors overriding the group individually are flagged. The per-color fields in the editor default to inheriting from the group.
 
-A *only selected scales* toggle hides the scale of every unticked color, so the picked colors line up next to each other for quick comparison.
+A *group selected* toggle lifts the ticked colors into a dedicated **Selected** section at the top, lining their scales up next to each other for quick comparison; the rest stay in their group cards below. Nothing is hidden, only reorganized.
 
 It also supports batch export editing across groups: tick colors (or pick an existing export from *select by export* to load every color that uses it) and open **batch export**. The dialog previews the picked colors, lets you untick any to drop them, and then either saves an export value onto the selection or downloads a zip of just that selection's tokens.
 

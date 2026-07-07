@@ -54,8 +54,64 @@ export function GroupsManager({
   onSelectByExport,
   onOpenBatch,
 }: GroupsManagerProps) {
-  // when on, only selected colors show their scale, to compare them side by side
-  const [onlySelectedScales, setOnlySelectedScales] = useState(false);
+  // when on, selected colors are lifted into a dedicated section on top so
+  // they can be compared side by side; the rest stay grouped below
+  const [groupSelected, setGroupSelected] = useState(false);
+
+  // one color row: checkbox, swatch, name (+ override badge), meta and its
+  // light scale. Shared by the group cards and the Selected section.
+  const renderMember = (color: ColorConfig) => {
+    const memberGroup = color.name.split('.')[0];
+    const groupConfig = config.groups?.[memberGroup] ?? {};
+    // what the color would get from the group/root if it set nothing
+    const inheritedRatios = groupConfig.ratios ?? 'default';
+    const inheritedFormula = groupConfig.formula ?? config.formula ?? 'wcag3';
+    const inheritedExport = groupConfig.export ?? [];
+    // flag only real overrides: a per-color field whose value differs from
+    // what it would inherit (a redundant field restating it is not an override)
+    const overrides = [
+      color.ratios !== undefined && color.ratios !== inheritedRatios
+        ? `ratios: ${color.ratios}`
+        : null,
+      color.formula !== undefined && color.formula !== inheritedFormula
+        ? `formula: ${color.formula}`
+        : null,
+      color.export !== undefined && color.export.join(',') !== inheritedExport.join(',')
+        ? `export: ${color.export.join(', ')}`
+        : null,
+    ].filter(Boolean);
+    const resolvedExport = color.export ?? groupConfig.export ?? [];
+    const scales = preview?.get(color.name);
+    return (
+      <div class="group-member">
+        <input
+          type="checkbox"
+          class="group-member-check"
+          checked={selected.has(color.name)}
+          title="select for batch export"
+          onChange={() => onToggleSelect(color.name)}
+        />
+        <span class="swatch" style={{ background: color.color }} />
+        <span class="group-member-name">
+          {color.name.split('.')[1]}
+          {overrides.length > 0 && (
+            <span class="badge" title={`overrides the group: ${overrides.join(', ')}`}>
+              override
+            </span>
+          )}
+        </span>
+        <span class="group-member-meta">
+          {resolveRatiosName(color, config)} - {resolveFormula(color, config)}
+          {resolvedExport.length > 0 && ` - ${resolvedExport.join(', ')}`}
+        </span>
+        {scales && <CompactRow steps={scales.light} />}
+      </div>
+    );
+  };
+
+  // selected colors across every group, in group then config order
+  const selectedColors = [...groups.values()].flat().filter((color) => selected.has(color.name));
+
   return (
     <div class="groups-manager">
       <p class="scales-hint">
@@ -68,13 +124,16 @@ export function GroupsManager({
         <button disabled={selected.size === 0} onClick={onOpenBatch}>
           batch export
         </button>
-        <label class="batch-toggle" title="hide the scales of unselected colors">
+        <label
+          class="batch-toggle"
+          title="lift selected colors into a section on top to compare them"
+        >
           <input
             type="checkbox"
-            checked={onlySelectedScales}
-            onChange={(e) => setOnlySelectedScales((e.target as HTMLInputElement).checked)}
+            checked={groupSelected}
+            onChange={(e) => setGroupSelected((e.target as HTMLInputElement).checked)}
           />
-          only selected scales
+          group selected
         </label>
         <label class="batch-select-export">
           select by export
@@ -94,9 +153,22 @@ export function GroupsManager({
         </label>
       </div>
       {previewError && <div class="preview-error">{previewError}</div>}
+      {groupSelected && selectedColors.length > 0 && (
+        <div class="scale-card selected-card">
+          <div class="scale-card-head">
+            <h3 class="group-title">Selected</h3>
+            <span class="scale-usage">
+              {selectedColors.length} color{selectedColors.length === 1 ? '' : 's'}
+            </span>
+          </div>
+          <div class="group-members">{selectedColors.map(renderMember)}</div>
+        </div>
+      )}
       {[...groups.entries()].map(([groupName, colors]) => {
         const groupConfig = config.groups?.[groupName] ?? {};
         const effectiveFormula = groupConfig.formula ?? ((config.formula ?? 'wcag3') as Formula);
+        // when grouping, the selected colors are shown in the section above
+        const members = groupSelected ? colors.filter((c) => !selected.has(c.name)) : colors;
         return (
           <div class="scale-card">
             <div class="scale-card-head">
@@ -161,55 +233,11 @@ export function GroupsManager({
               </div>
             </div>
             <div class="group-members">
-              {colors.map((color) => {
-                // what the color would get from the group/root if it set nothing
-                const inheritedRatios = groupConfig.ratios ?? 'default';
-                const inheritedFormula = groupConfig.formula ?? config.formula ?? 'wcag3';
-                const inheritedExport = groupConfig.export ?? [];
-                // flag only real overrides: a per-color field whose value
-                // differs from what it would inherit (a redundant field that
-                // just restates the inherited value is not an override)
-                const overrides = [
-                  color.ratios !== undefined && color.ratios !== inheritedRatios
-                    ? `ratios: ${color.ratios}`
-                    : null,
-                  color.formula !== undefined && color.formula !== inheritedFormula
-                    ? `formula: ${color.formula}`
-                    : null,
-                  color.export !== undefined && color.export.join(',') !== inheritedExport.join(',')
-                    ? `export: ${color.export.join(', ')}`
-                    : null,
-                ].filter(Boolean);
-                const resolvedExport = color.export ?? groupConfig.export ?? [];
-                const scales = preview?.get(color.name);
-                return (
-                  <div class="group-member">
-                    <input
-                      type="checkbox"
-                      class="group-member-check"
-                      checked={selected.has(color.name)}
-                      title="select for batch export"
-                      onChange={() => onToggleSelect(color.name)}
-                    />
-                    <span class="swatch" style={{ background: color.color }} />
-                    <span class="group-member-name">
-                      {color.name.split('.')[1]}
-                      {overrides.length > 0 && (
-                        <span class="badge" title={`overrides the group: ${overrides.join(', ')}`}>
-                          override
-                        </span>
-                      )}
-                    </span>
-                    <span class="group-member-meta">
-                      {resolveRatiosName(color, config)} - {resolveFormula(color, config)}
-                      {resolvedExport.length > 0 && ` - ${resolvedExport.join(', ')}`}
-                    </span>
-                    {scales && (!onlySelectedScales || selected.has(color.name)) && (
-                      <CompactRow steps={scales.light} />
-                    )}
-                  </div>
-                );
-              })}
+              {members.length > 0 ? (
+                members.map(renderMember)
+              ) : (
+                <p class="group-empty">all colors moved to the Selected section</p>
+              )}
             </div>
           </div>
         );
