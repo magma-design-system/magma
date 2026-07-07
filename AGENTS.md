@@ -37,6 +37,7 @@ nx run styles:build                                  # build styles only
 nx run icons:build                                   # build icons only
 nx run stencil:build                                 # build web components
 nx run stencil:storybook.start                       # start Storybook
+nx run design-tokens:playground                      # start the tokens config playground (port 5177)
 
 nx run stencil:generate mds-component-name           # scaffold a new component
 nx run stencil:test                                  # run spec and e2e tests

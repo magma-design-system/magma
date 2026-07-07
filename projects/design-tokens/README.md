@@ -143,6 +143,7 @@ Root fields:
 | `smooth`     | `boolean`                | `false`  | Applies bezier smoothing to the scale interpolation                                                       |
 | `formula`    | `"wcag2"` \| `"wcag3"`   | `"wcag3"` | Contrast formula used to pick the steps: WCAG 2.x contrast ratios or WCAG 3 (APCA) Lc values             |
 | `ratios`     | `object`                 | built-in | Named ratio scales per formula; merged over the built-in ones shown above                                 |
+| `groups`     | `object`                 | none     | Per-group defaults for `ratios` and `formula`, keyed by token group (see below)                            |
 | `hueShift`   | `object`                 | none     | Default hue shifting applied to all colors (see the Hue shifting section)                                 |
 
 Fields of each entry in `colors` (per-color values override the root defaults):
@@ -161,6 +162,23 @@ Fields of each entry in `colors` (per-color values override the root defaults):
 | `disabled`   | `boolean`         | `false`        | Skips the color entirely: no tokens are generated for it                                                          |
 | `title`      | `string`          | none           | Reserved for exporters; not used by the generator                                                                 |
 | `alias`      | `string`          | none           | Reserved for exporters; not used by the generator                                                                 |
+
+Ratios, formula and export targets can also be set once per token group instead of repeating them on every color:
+
+```json
+{
+  "groups": {
+    "tone": { "ratios": "tone", "export": ["tones", "default"] },
+    "brand": { "formula": "wcag3" }
+  },
+  "colors": [
+    { "color": "#94a3b8", "name": "tone.porcelain" },
+    { "color": "#9ca3af", "name": "tone.kaolin" }
+  ]
+}
+```
+
+The resolution order is: the color's own field, then its group entry, then the root default. A per-color `export` (like `ratios` and `formula`) replaces the group's value entirely, it is not merged. This makes master-palette / sub-palette setups easy: give a whole group a default export and override only the colors that differ.
 
 Notes:
 
@@ -184,7 +202,7 @@ You can rotate the hue of the darkest and lightest steps of a scale with the `hu
 }
 ```
 
-- `dark` and `light` are rotations in OKLCH degrees (range -60 to 60) applied at full intensity to the physically darkest and lightest steps of the scale, in both light and dark theme mode.
+- `dark` and `light` are rotations in OKLCH degrees (range -180 to 180) applied at full intensity to the physically darkest and lightest steps of the scale, in both light and dark theme mode. Small angles (10-45) refine the shades in the classic hue shifting style; large ones deliberately bend the ends of the scale toward another color family.
 - `curve` controls the intensity of the shift across the scale. Each step gets a weight from 0 (no shift) to 100 (full angle). It accepts:
   - a preset: `"smooth"` (default, the shift fades in linearly outside the central third of the scale) or `"hard"` (full shift outside the central third);
   - parameters: `{ "deadZone": 0.5, "easing": "linear" }` where `deadZone` is the fraction of the center-to-edge distance left untouched and `easing` is `"linear"` or `"step"`;
@@ -198,6 +216,38 @@ hard:   [100, 100, 100, 0, 0, 0, 0, 100, 100, 100]
 ```
 
 `hueShift` can also be set at the root of the configuration as a default for all colors; a per-color `hueShift` overrides it. Colors without `hueShift` are generated exactly as before.
+
+### Playground
+
+A local UI to explore and tune the configuration with live palette previews:
+
+```bash
+nx run design-tokens:playground
+# or, without nx:
+yarn --cwd projects/design-tokens playground
+```
+
+It opens a Vite dev server (port 5177) that loads `.magma-design-tokensrc.json` and runs the real token generator in the browser, so every preview matches the build output exactly. The UI has three views: **colors** (the two-column editor: color list on the left, editing and live light/dark scale previews with achieved contrast on the right; `neutral` is selected by default when present), **contrast scales** and **groups**. Selecting a color from the sidebar while in contrast scales keeps you there, since the scale samples follow the selected color.
+
+The playground works with any configuration, not just the repo one: **load config** opens a `.magma-design-tokensrc.json` from disk and **copy JSON** copies the edited configuration to the clipboard. The **download** menu offers:
+
+- **All tokens (zip)** — the configuration, the generated JSON tokens (whole palette + one file per export group) and the CSS and GIMP renders, mirroring the `dist` layout;
+- **Figma tokens (json)** — coming with the DTCG format (see below);
+- **Config (json)** — just the `.magma-design-tokensrc.json`;
+- **CSS tokens** — `colors-hex.css` / `colors-rgb.css` for the whole palette plus one pair per export group;
+- **GIMP palette** — `colors.gpl` for the whole palette plus one `.gpl` per export group.
+
+CSS and GIMP respect export diversification: they emit the whole palette and one file per export group. When that yields more than one file the download is a zip (`magma-css.zip`, `magma-gimp.zip`); a single file downloads directly. The outputs are produced in the browser from the same Handlebars templates the build uses, so they match the CLI output. Editing is in-memory only: nothing touches the repo files.
+
+New colors are created from a dialog: pick the value and the name auto-completes underneath from the "Name That Color" vocabulary (via [color-namer](https://github.com/colorjs/color-namer), ~1500 names, kebab-cased: e.g. `persian-green`); choose the token group, confirm, and the playground lands on the new color already selected. Names are made unique with a numeric suffix when needed. Auto-naming keeps following the picker in the editor too, but only for names assigned by the playground itself: a name typed by the user, or any name coming from a loaded configuration, is never touched. Picking a value already used by another color raises a warning.
+
+The **groups** view manages `ratios`, `formula` and `export` per token group (writing the `groups` section of the configuration), with a compact preview of every member color; colors overriding the group individually are flagged. The per-color fields in the editor default to inheriting from the group.
+
+A *only selected scales* toggle hides the scale of every unticked color, so the picked colors line up next to each other for quick comparison.
+
+It also supports batch export editing across groups: tick colors (or pick an existing export from *select by export* to load every color that uses it) and open **batch export**. The dialog previews the picked colors, lets you untick any to drop them, and then either saves an export value onto the selection or downloads a zip of just that selection's tokens.
+
+The **contrast scales** view manages the ratio scales of the configuration: add, duplicate, rename or delete custom scales (the built-in ones, `default` first of all, are always available) and inspect the distribution of the stops on a horizontal axis. A usage panel at the top picks a scale and lists every color resolving to it, ordered by group; clicking a color makes it the sample for all the scale previews. Each scale has a distribution mode: pick an easing (`linear`, `ease-in`, `ease-out`, `ease-in-out`) and the stops regenerate live from steps/min/max, or go `manual` by dragging a marker or editing a stop directly. Scale values are contrast against the theme background (0 = on the background, max = strongest contrast), so the same scale yields dark-on-light in light mode and light-on-dark in dark mode. Every color picks its scale with the `ratios` field in the editor.
 
 ### Cli example
 

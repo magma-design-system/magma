@@ -4,40 +4,30 @@
       "color": "#94a3b8",
       "export": ["tones"],
       "name": "tone.porcelain",
-      "ratios": "tone",
-      "formula": "wcag3",
       "seed": { "light": "#FFFFFF", "dark": "#000000" }
     },
     {
       "color": "#9ca3af",
       "export": ["tones"],
       "name": "tone.kaolin",
-      "ratios": "tone",
-      "formula": "wcag3",
       "seed": { "light": "#FFFFFF", "dark": "#000000" }
     },
     {
       "color": "#a3a3a3",
       "export": ["tones", "default"],
       "name": "tone.neutral",
-      "ratios": "tone",
-      "formula": "wcag3",
       "seed": { "light": "#FFFFFF", "dark": "#000000" }
     },
     {
       "color": "#A99F95",
       "export": ["tones"],
       "name": "tone.fireclay",
-      "ratios": "tone",
-      "formula": "wcag3",
       "seed": { "light": "#FFFFFF", "dark": "#000000" }
     },
     {
       "color": "#AC9C97",
       "export": ["tones"],
       "name": "tone.bisque",
-      "ratios": "tone",
-      "formula": "wcag3",
       "seed": { "light": "#FFFFFF", "dark": "#000000" }
     },
 
@@ -101,5 +91,8 @@
     }
   ],
   "colorspace": "HSL",
-  "smooth": false
+  "smooth": false,
+  "groups": {
+    "tone": { "ratios": "tone" }
+  }
 }

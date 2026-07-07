@@ -9,7 +9,7 @@ import {
 } from "./leonardo/index.js";
 import chalk from "chalk";
 import DEFAULTS from "../config/default-color.json" with { type: "json" };
-import { deepMerge } from "./utils.mjs";
+import { deepMerge } from "./deep-merge.mjs";
 import {
   groupStepsByAngle,
   hasHueShift,
@@ -55,12 +55,23 @@ export type ExportGroups = Record<string, ExportGroupTokens>;
 export type Formula = "wcag2" | "wcag3";
 export type RatioData = { [key: string]: number[] };
 
+/**
+ * Settings shared by every color of a token group (the part before the
+ * dot in a color name). Per-color fields still win over these.
+ */
+export interface GroupConfig {
+  ratios?: string;
+  formula?: Formula;
+  export?: string[];
+}
+
 export interface MagmaConfig {
   colorspace?: string;
   smooth?: boolean;
   formula?: Formula;
   hueShift?: HueShiftConfig;
   ratios?: { [K in Formula]: RatioData };
+  groups?: Record<string, GroupConfig>;
   colors: ColorConfig[];
 }
 
@@ -117,14 +128,61 @@ export function formatColortoTokens(
   return palette;
 }
 
+function groupOf(colorItem: ColorConfig, config: MagmaConfig): GroupConfig {
+  return config.groups?.[colorItem.name.split(".")[0]] ?? {};
+}
+
+/**
+ * Resolution order: color, then its group, then the config root, falling
+ * back to the built-in default so the helper also works on raw (unmerged)
+ * configurations.
+ */
+export function resolveFormula(
+  colorItem: ColorConfig,
+  config: MagmaConfig,
+): Formula {
+  return (
+    colorItem.formula ??
+    groupOf(colorItem, config).formula ??
+    config.formula ??
+    (DEFAULTS.formula as Formula)
+  );
+}
+
+/** Resolution order: color, then its group, then the default scale. */
+export function resolveRatiosName(
+  colorItem: ColorConfig,
+  config: MagmaConfig,
+): string {
+  return colorItem.ratios ?? groupOf(colorItem, config).ratios ?? "default";
+}
+
+/**
+ * Export groups a color belongs to. A per-color `export` overrides the
+ * group default entirely (it is not merged), matching how ratios/formula
+ * resolve; undefined means the color is not exported to any group file.
+ */
+export function resolveExport(
+  colorItem: ColorConfig,
+  config: MagmaConfig,
+): string[] | undefined {
+  return colorItem.export ?? groupOf(colorItem, config).export;
+}
+
 export function resolveRatios(
   colorItem: ColorConfig,
   config: MagmaConfig,
 ): number[] {
-  const formula = (colorItem.formula ?? config.formula)!;
-  return colorItem.ratios !== undefined
-    ? config.ratios![formula][colorItem.ratios]
-    : config.ratios![formula].default;
+  const formula = resolveFormula(colorItem, config);
+  const scaleName = resolveRatiosName(colorItem, config);
+  const scale = config.ratios?.[formula]?.[scaleName];
+  if (scale === undefined) {
+    const available = Object.keys(config.ratios?.[formula] ?? {}).join(", ") || "none";
+    throw new Error(
+      `Color "${colorItem.name}" references the ratios scale "${scaleName}" for formula "${formula}", which is not defined. Available scales: ${available}.`,
+    );
+  }
+  return scale;
 }
 
 export function createColor(
@@ -245,7 +303,7 @@ export function createColorTokens(magmaConfig: MagmaConfig) {
     [key: string]: { light: ColorVariant[]; dark: ColorVariant[] };
   } = {};
   config.colors.forEach((element) => {
-    const formula = element.formula ?? config.formula!;
+    const formula = resolveFormula(element, config);
     const light = createColorVariants(element, config, "light");
     // hue shift sides are anchored to physical lightness, so the two theme
     // modes need different groupings; without hue shift the same Leonardo
@@ -322,7 +380,7 @@ export function createColorTokens(magmaConfig: MagmaConfig) {
       }
       if (!Object.hasOwn(tokens.color[group], name)) {
         console.info(`Creating ${chalk.blue("color")} ${name}`);
-        const formula = element.formula ?? config.formula!;
+        const formula = resolveFormula(element, config);
         tokens.color[group][name] = {
           light: formatColortoTokens(
             [
@@ -357,8 +415,9 @@ export function createColorTokens(magmaConfig: MagmaConfig) {
         };
       }
 
-      if (element.export !== undefined) {
-        element.export.forEach((exportElement) => {
+      const exportTargets = resolveExport(element, config);
+      if (exportTargets !== undefined) {
+        exportTargets.forEach((exportElement) => {
           if (exportGroups[exportElement] === undefined) {
             exportGroups[exportElement] = { color: {} };
           }
