@@ -72,7 +72,9 @@ test('angles are anchored to physical lightness, not to step index', () => {
 })
 
 test('angles above the safety limit are rejected', () => {
-  expect(() => resolveStepAngles({ dark: -75 }, 10, 'light')).toThrow(/-60, 60/)
+  expect(() => resolveStepAngles({ dark: -200 }, 10, 'light')).toThrow(/-180, 180/)
+  // anything within half a turn is legal: it is a palette-design choice
+  expect(resolveStepAngles({ dark: -120, curve: 'hard' }, 10, 'light').at(-1)).toBe(-120)
 })
 
 test('steps sharing an angle are grouped on a single scale', () => {
