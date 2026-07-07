@@ -284,6 +284,10 @@ button.danger:hover { border-color: #c0392b; color: #c0392b; }
 
 .scale-card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 18px 16px; }
 .scale-card-head { align-items: center; display: flex; gap: 12px; margin-bottom: 6px; }
+/* the pinned selection sits on top and reads as distinct from the group cards */
+.selected-card { border-color: var(--accent); }
+.selected-card .group-title { color: var(--accent); }
+.group-empty { color: var(--ink-soft); font-size: 13px; font-style: italic; margin: 4px 0 0; }
 
 /* diff view */
 .diff-summary { color: var(--ink-soft); font-size: 13px; margin-bottom: 14px; }

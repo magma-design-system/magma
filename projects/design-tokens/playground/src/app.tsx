@@ -11,6 +11,7 @@ import {
 } from '../../src/lib/color.mjs';
 import { cssHex, cssRgb, gimpPalette } from './formats.js';
 import { validateConfig } from '../../src/lib/schema.mjs';
+import { colorsToDtcg, type ColorTokenTree } from '../../src/lib/dtcg.mjs';
 import { GroupsManager } from './groups.js';
 import { DiffView } from './diff.js';
 import { BatchExportModal } from './batch.js';
@@ -768,9 +769,6 @@ export function App() {
       'application/json',
     );
 
-  const downloadFigmaNotice = () =>
-    setLoadError('Figma export is coming with the DTCG format (#543); use the zip for now');
-
   type ColorTree = Parameters<typeof cssHex>[0];
 
   // The whole palette plus one entry per export group; formats that respect
@@ -851,6 +849,30 @@ export function App() {
     } catch (error) {
       setLoadError(
         `Could not build the palette: ${error instanceof Error ? error.message : String(error)}`,
+      );
+    }
+  };
+
+  // DTCG color tokens for Figma: one file per theme mode, zipped together.
+  // Matches the package build output (dist/json/figma-magma-colors-*.tokens.json).
+  const downloadFigmaDtcg = () => {
+    try {
+      const { tokens } = createColorTokens(clone(config));
+      const color = (tokens as ColorTree).color as unknown as ColorTokenTree;
+      downloadFiles(
+        {
+          'figma-magma-colors-light.tokens.json':
+            JSON.stringify(colorsToDtcg(color, 'light'), null, 2) + '\n',
+          'figma-magma-colors-dark.tokens.json':
+            JSON.stringify(colorsToDtcg(color, 'dark'), null, 2) + '\n',
+        },
+        'magma-figma-dtcg.zip',
+        'application/json',
+      );
+      setLoadError(null);
+    } catch (error) {
+      setLoadError(
+        `Could not build the Figma tokens: ${error instanceof Error ? error.message : String(error)}`,
       );
     }
   };
@@ -1028,7 +1050,7 @@ export function App() {
                 <ul class="download-list">
                   {[
                     { label: 'All tokens (zip)', run: downloadZip },
-                    { label: 'Figma tokens (json)', run: downloadFigmaNotice, soon: true },
+                    { label: 'Figma tokens (DTCG)', run: downloadFigmaDtcg },
                     { label: 'Config (json)', run: downloadJson },
                     { label: 'CSS tokens', run: downloadCss },
                     { label: 'GIMP palette', run: downloadGimp },
