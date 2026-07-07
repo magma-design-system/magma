@@ -71,6 +71,19 @@ Naming standard for configuration file:
 
 If you change configuration file name you need to set with `--config` option
 
+### Editor autocomplete and validation
+
+The package ships a JSON Schema for the configuration at `dist/config/magma-design-tokensrc.schema.json`. Point your config at it with a `$schema` key to get autocomplete and inline validation in editors like VS Code:
+
+```json
+{
+  "$schema": "./node_modules/@maggioli-design-system/design-tokens/dist/config/magma-design-tokensrc.schema.json",
+  "colors": [{ "color": "#94a3b8", "name": "tone.porcelain" }]
+}
+```
+
+The same schema is the single source of truth for runtime validation: the `ui` command rejects an invalid `PUT /api/config`, and the playground refuses to load a config that does not match it.
+
 ### Configuration
 
 Basic config
@@ -228,7 +241,9 @@ nx run design-tokens:playground
 yarn --cwd projects/design-tokens playground
 ```
 
-It opens a Vite dev server (port 5177) that loads `.magma-design-tokensrc.json` and runs the real token generator in the browser, so every preview matches the build output exactly. The UI has three views: **colors** (the two-column editor: color list on the left, editing and live light/dark scale previews with achieved contrast on the right; `neutral` is selected by default when present), **contrast scales** and **groups**. Selecting a color from the sidebar while in contrast scales keeps you there, since the scale samples follow the selected color.
+It opens a Vite dev server (port 5177) that loads `.magma-design-tokensrc.json` and runs the real token generator in the browser, so every preview matches the build output exactly. The UI has four views: **colors** (the two-column editor: color list on the left, editing and live light/dark scale previews with achieved contrast on the right; `neutral` is selected by default when present), **contrast scales**, **groups** and **diff**. Selecting a color from the sidebar while in contrast scales keeps you there, since the scale samples follow the selected color.
+
+The **diff** view compares the current palette against the one generated from the committed configuration (the bundled `.magma-design-tokensrc.json`): it lists the colors whose steps changed - outlining each changed step and badging the color with the largest perceptual distance (deltaE) - plus any colors added or removed. The generated token files under `tokens/color/generated/` are build artifacts and not committed, so the committed config is the baseline.
 
 The playground works with any configuration, not just the repo one: **load config** opens a `.magma-design-tokensrc.json` from disk and **copy JSON** copies the edited configuration to the clipboard. The **download** menu offers:
 
