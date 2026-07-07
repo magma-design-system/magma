@@ -10,8 +10,10 @@ import {
   resolveRatiosName,
 } from '../../src/lib/color.mjs';
 import { cssHex, cssRgb, gimpPalette } from './formats.js';
+import { validateConfig } from '../../src/lib/schema.mjs';
 import { colorsToDtcg, type ColorTokenTree } from '../../src/lib/dtcg.mjs';
 import { GroupsManager } from './groups.js';
+import { DiffView } from './diff.js';
 import { BatchExportModal } from './batch.js';
 import { hasHueShift, resolveCurveWeights, type HueShiftConfig } from '../../src/lib/hue-shift.mjs';
 import { generateScales, singleColorConfig, type ColorScales, type Step } from './generator.js';
@@ -32,7 +34,7 @@ const COLORSPACES = [
 const CURVE_PRESETS = ['smooth', 'hard', 'custom'] as const;
 
 type CloneableConfig = MagmaConfig & Record<string, unknown>;
-type View = 'colors' | 'scales' | 'groups';
+type View = 'colors' | 'scales' | 'groups' | 'diff';
 
 function clone<T>(value: T): T {
   return JSON.parse(JSON.stringify(value)) as T;
@@ -697,8 +699,9 @@ export function App() {
   const loadConfigFile = async (file: File) => {
     try {
       const parsed = JSON.parse(await file.text()) as CloneableConfig;
-      if (!Array.isArray(parsed.colors) || parsed.colors.length === 0) {
-        throw new Error('the file has no "colors" array');
+      const { valid, errors } = validateConfig(parsed);
+      if (!valid) {
+        throw new Error(errors.slice(0, 3).join('; ') || 'it does not match the schema');
       }
       setConfig(parsed);
       setSelectedName(defaultSelected(parsed.colors));
@@ -993,6 +996,9 @@ export function App() {
           </button>
           <button class={view === 'groups' ? 'active' : ''} onClick={() => setView('groups')}>
             groups
+          </button>
+          <button class={view === 'diff' ? 'active' : ''} onClick={() => setView('diff')}>
+            diff
           </button>
         </nav>
         <div class="topbar-actions">
@@ -1400,6 +1406,7 @@ export function App() {
             onOpenBatch={openBatch}
           />
         )}
+        {view === 'diff' && <DiffView config={config} />}
       </main>
 
       {batchModal && (
