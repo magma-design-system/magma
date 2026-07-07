@@ -218,6 +218,19 @@ hard:   [100, 100, 100, 0, 0, 0, 0, 100, 100, 100]
 
 `hueShift` can also be set at the root of the configuration as a default for all colors; a per-color `hueShift` overrides it. Colors without `hueShift` are generated exactly as before.
 
+### Figma export (DTCG)
+
+The build emits the color palette in the [W3C DTCG](https://tr.designtokens.org/format/) standard format (`$type` / `$value` / `$description`), ready to import as Figma Variables. Since DTCG has no concept of modes, light and dark are written as separate files under `dist/json/`:
+
+```
+figma-magma-colors-light.tokens.json
+figma-magma-colors-dark.tokens.json
+```
+
+In Figma, create a variable collection and import each file into its own mode (Light / Dark). Steps keep their numeric keys (`1`..`10`) and the base color is exposed as `seed`. The playground offers the same pair as a zip via **download > Figma tokens (DTCG)**, generated in the browser from the same mapping so it matches the build output.
+
+The non-color sizing/number tokens are still exported in the legacy Figma "Import/Export Variables" plugin format (`dist/json/figma-magma-tokens.json`); moving them to DTCG is tracked separately.
+
 ### Playground
 
 A local UI to explore and tune the configuration with live palette previews:
@@ -233,7 +246,7 @@ It opens a Vite dev server (port 5177) that loads `.magma-design-tokensrc.json` 
 The playground works with any configuration, not just the repo one: **load config** opens a `.magma-design-tokensrc.json` from disk and **copy JSON** copies the edited configuration to the clipboard. The **download** menu offers:
 
 - **All tokens (zip)** — the configuration, the generated JSON tokens (whole palette + one file per export group) and the CSS and GIMP renders, mirroring the `dist` layout;
-- **Figma tokens (json)** — coming with the DTCG format (see below);
+- **Figma tokens (DTCG)** — the color palette in the W3C DTCG format, one file per theme mode, zipped together (see [Figma export](#figma-export-dtcg));
 - **Config (json)** — just the `.magma-design-tokensrc.json`;
 - **CSS tokens** — `colors-hex.css` / `colors-rgb.css` for the whole palette plus one pair per export group;
 - **GIMP palette** — `colors.gpl` for the whole palette plus one `.gpl` per export group.
