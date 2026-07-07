@@ -58,7 +58,9 @@ body { background: var(--bg); min-width: 960px; }
 .topbar h1 { font-size: 15px; font-weight: 650; letter-spacing: 0.01em; }
 .topbar h1 span { color: var(--ink-soft); font-weight: 400; }
 .topbar nav { display: flex; gap: 4px; }
-.topbar-actions { display: flex; gap: 8px; margin-left: auto; }
+.topbar-actions { align-items: center; display: flex; gap: 8px; margin-left: auto; }
+
+.save-status { color: var(--ink-soft); font-size: 12px; }
 
 .download-menu { position: relative; }
 .download-backdrop { inset: 0; position: fixed; z-index: 5; }
@@ -113,6 +115,8 @@ button {
   padding: 5px 12px;
 }
 button:hover { border-color: var(--ink-soft); }
+button:disabled { cursor: not-allowed; opacity: 0.45; }
+button:disabled:hover { border-color: var(--line); }
 button.active { background: var(--ink); border-color: var(--ink); color: #ffffff; }
 button.primary { background: var(--accent); border-color: var(--accent); color: #ffffff; }
 button.danger:hover { border-color: #c0392b; color: #c0392b; }

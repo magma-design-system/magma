@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'preact/hooks';
+import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import initialConfigJson from '../../.magma-design-tokensrc.json';
 import DEFAULT_COLOR_CONFIG from '../../src/config/default-color.json';
 import { zipSync } from 'fflate';
@@ -31,9 +31,57 @@ const COLORSPACES = [
 const CURVE_PRESETS = ['smooth', 'hard', 'custom'] as const;
 
 type CloneableConfig = MagmaConfig & Record<string, unknown>;
+type View = 'colors' | 'scales' | 'groups';
 
 function clone<T>(value: T): T {
   return JSON.parse(JSON.stringify(value)) as T;
+}
+
+// the working state is mirrored to localStorage so a reload keeps the edited
+// or loaded configuration instead of falling back to the defaults
+const DRAFT_STORAGE_KEY = 'magma-design-tokens:playground:draft';
+
+interface PlaygroundDraft {
+  config: CloneableConfig;
+  selectedName: string;
+  view: View;
+}
+
+function readDraft(): PlaygroundDraft | null {
+  try {
+    const raw = localStorage.getItem(DRAFT_STORAGE_KEY);
+    if (!raw) return null;
+    const draft = JSON.parse(raw) as PlaygroundDraft;
+    if (!draft.config || !Array.isArray(draft.config.colors) || draft.config.colors.length === 0) {
+      return null;
+    }
+    return draft;
+  } catch {
+    return null;
+  }
+}
+
+function writeDraft(draft: PlaygroundDraft): void {
+  try {
+    localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(draft));
+  } catch {
+    // storage disabled or full: persistence is best-effort
+  }
+}
+
+function clearDraft(): void {
+  try {
+    localStorage.removeItem(DRAFT_STORAGE_KEY);
+  } catch {
+    // ignore
+  }
+}
+
+// neutral is the reference color of the system: select it when present
+function defaultSelected(colors: MagmaConfig['colors']): string {
+  return (
+    colors.find((color) => color.name.split('.')[1] === 'neutral')?.name ?? colors[0]?.name ?? ''
+  );
 }
 
 function textColorFor(hex: string): string {
@@ -406,20 +454,29 @@ function ColorEditor({
 }
 
 export function App() {
+  // a persisted working state, restored once at mount, takes precedence over
+  // the bundled defaults
+  const bootDraft = useMemo(() => readDraft(), []);
   const [config, setConfig] = useState<CloneableConfig>(() =>
-    clone(initialConfigJson as unknown as CloneableConfig),
+    bootDraft ? bootDraft.config : clone(initialConfigJson as unknown as CloneableConfig),
   );
-  const [selectedName, setSelectedName] = useState<string>(() => {
-    const colors = (initialConfigJson as unknown as MagmaConfig).colors;
-    // neutral is the reference color of the system: select it when present
-    return (
-      colors.find((color) => color.name.split('.')[1] === 'neutral')?.name ?? colors[0]?.name ?? ''
-    );
-  });
-  const [view, setView] = useState<'colors' | 'scales' | 'groups'>('colors');
+  const [selectedName, setSelectedName] = useState<string>(() =>
+    bootDraft
+      ? bootDraft.selectedName
+      : defaultSelected((initialConfigJson as unknown as MagmaConfig).colors),
+  );
+  const [view, setView] = useState<View>(() => bootDraft?.view ?? 'colors');
   const [copied, setCopied] = useState(false);
   const [downloadOpen, setDownloadOpen] = useState(false);
   const [loadError, setLoadError] = useState<string | null>(null);
+  // server mode: the config is served by the `ui` command and can be saved
+  // back to disk. When the playground runs standalone these stay inert.
+  const [serverMode, setServerMode] = useState(false);
+  const [savePath, setSavePath] = useState<string | null>(null);
+  // JSON of the last-persisted config; null means nothing has been saved yet
+  const [savedConfig, setSavedConfig] = useState<string | null>(null);
+  const [saving, setSaving] = useState(false);
+  const [statusMsg, setStatusMsg] = useState<string | null>(null);
   const [scalesFormula, setScalesFormula] = useState<Formula>('wcag3');
   const [addModal, setAddModal] = useState<{
     color: string;
@@ -545,6 +602,91 @@ export function App() {
     return map;
   }, [view, scalesFormula, JSON.stringify(config), selectedName]);
 
+  // mirror the working state to localStorage on every change
+  useEffect(() => {
+    writeDraft({ config, selectedName, view });
+  }, [JSON.stringify(config), selectedName, view]);
+
+  // when served by the `ui` command, adopt the on-disk config and enable saving
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch('/api/config');
+        if (!res.ok) return;
+        const data = (await res.json()) as { path: string; config: CloneableConfig | null };
+        if (cancelled) return;
+        setServerMode(true);
+        setSavePath(data.path);
+        if (data.config && Array.isArray(data.config.colors) && data.config.colors.length > 0) {
+          const loaded = data.config;
+          // the on-disk file is always the save baseline; only adopt it as the
+          // working config when there is no restored draft to keep
+          setSavedConfig(JSON.stringify(loaded));
+          if (!bootDraft) {
+            setConfig(loaded);
+            setSelectedName(defaultSelected(loaded.colors));
+          }
+        } else {
+          // no config file on disk yet: the bundled default is unsaved
+          setSavedConfig(null);
+        }
+      } catch {
+        // not served by the ui command; the standalone playground keeps defaults
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const dirty = serverMode && JSON.stringify(config) !== savedConfig;
+
+  // reset returns to the built-in default: it only does something when the
+  // current config differs from it (edited or loaded), so disable it otherwise
+  const defaultConfigString = useMemo(() => JSON.stringify(initialConfigJson), []);
+  const canReset = JSON.stringify(config) !== defaultConfigString;
+
+  const saveConfig = async () => {
+    if (!serverMode || saving) return;
+    setSaving(true);
+    setStatusMsg(null);
+    try {
+      const res = await fetch('/api/config', {
+        method: 'PUT',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(config, null, 2) + '\n',
+      });
+      if (!res.ok) {
+        const err = (await res.json().catch(() => ({}))) as { error?: string };
+        throw new Error(err.error ?? `save failed (${res.status})`);
+      }
+      setSavedConfig(JSON.stringify(config));
+      setStatusMsg('saved');
+      setTimeout(() => setStatusMsg((msg) => (msg === 'saved' ? null : msg)), 1500);
+    } catch (error) {
+      setStatusMsg(error instanceof Error ? error.message : 'save failed');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const buildTokens = async () => {
+    setStatusMsg('building...');
+    try {
+      const res = await fetch('/api/build', { method: 'POST' });
+      const data = (await res.json().catch(() => ({}))) as { error?: string };
+      if (!res.ok) throw new Error(data.error ?? `build failed (${res.status})`);
+      setStatusMsg('tokens generated on disk');
+      setTimeout(
+        () => setStatusMsg((msg) => (msg === 'tokens generated on disk' ? null : msg)),
+        2000,
+      );
+    } catch (error) {
+      setStatusMsg(error instanceof Error ? error.message : 'build failed');
+    }
+  };
+
   const copyJson = async () => {
     await navigator.clipboard.writeText(JSON.stringify(config, null, 2) + '\n');
     setCopied(true);
@@ -558,7 +700,7 @@ export function App() {
         throw new Error('the file has no "colors" array');
       }
       setConfig(parsed);
-      setSelectedName(parsed.colors[0].name);
+      setSelectedName(defaultSelected(parsed.colors));
       setView('colors');
       setLoadError(null);
     } catch (error) {
@@ -833,8 +975,14 @@ export function App() {
         </nav>
         <div class="topbar-actions">
           <button
+            title="discard the loaded config and any local changes, back to the built-in default"
+            disabled={!canReset}
             onClick={() => {
-              setConfig(clone(initialConfigJson as unknown as CloneableConfig));
+              clearDraft();
+              const base = clone(initialConfigJson as unknown as CloneableConfig);
+              setConfig(base);
+              setSelectedName(defaultSelected(base.colors));
+              setView('colors');
               setLoadError(null);
             }}
           >
@@ -853,11 +1001,21 @@ export function App() {
               }}
             />
           </label>
-          <button onClick={copyJson}>{copied ? 'copied!' : 'copy JSON'}</button>
-          <div class="download-menu">
-            <button class="primary" onClick={() => setDownloadOpen((open) => !open)}>
-              download {'▾'}
+          {statusMsg && <span class="save-status">{statusMsg}</span>}
+          {serverMode ? (
+            <button
+              class="primary"
+              onClick={saveConfig}
+              disabled={saving || !dirty}
+              title={savePath ?? undefined}
+            >
+              {saving ? 'saving...' : dirty ? 'save *' : 'saved'}
             </button>
+          ) : (
+            <button onClick={copyJson}>{copied ? 'copied!' : 'copy JSON'}</button>
+          )}
+          <div class="download-menu">
+            <button onClick={() => setDownloadOpen((open) => !open)}>download {'▾'}</button>
             {downloadOpen && (
               <>
                 <div class="download-backdrop" onClick={() => setDownloadOpen(false)} />
@@ -868,6 +1026,7 @@ export function App() {
                     { label: 'Config (json)', run: downloadJson },
                     { label: 'CSS tokens', run: downloadCss },
                     { label: 'GIMP palette', run: downloadGimp },
+                    ...(serverMode ? [{ label: 'Build tokens on disk', run: buildTokens }] : []),
                   ].map((item) => (
                     <li>
                       <button
