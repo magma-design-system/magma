@@ -46,6 +46,7 @@ npx magma-design-tokens
 | `--generate [platform]`      | `-g`  | Output format for palette, choose one or more between `css`, `tailwind`, `dart` |
 | `--export-tokens`            | `-t`  | export palette as JSON design tokens format                                     |
 | `--outTokensDir [tokensDir]` |       | Directory path for JSON tokens, required if `--export-tokens` is presents       |
+| `--port [port]`              | `-p`  | Port for the `ui` command playground server (default `5178`)                    |
 
 ## Configuration file
 
@@ -248,6 +249,24 @@ A *only selected scales* toggle hides the scale of every unticked color, so the 
 It also supports batch export editing across groups: tick colors (or pick an existing export from *select by export* to load every color that uses it) and open **batch export**. The dialog previews the picked colors, lets you untick any to drop them, and then either saves an export value onto the selection or downloads a zip of just that selection's tokens.
 
 The **contrast scales** view manages the ratio scales of the configuration: add, duplicate, rename or delete custom scales (the built-in ones, `default` first of all, are always available) and inspect the distribution of the stops on a horizontal axis. A usage panel at the top picks a scale and lists every color resolving to it, ordered by group; clicking a color makes it the sample for all the scale previews. Each scale has a distribution mode: pick an easing (`linear`, `ease-in`, `ease-out`, `ease-in-out`) and the stops regenerate live from steps/min/max, or go `manual` by dragging a marker or editing a stop directly. Scale values are contrast against the theme background (0 = on the background, max = strongest contrast), so the same scale yields dark-on-light in light mode and light-on-dark in dark mode. Every color picks its scale with the `ratios` field in the editor.
+
+### UI command
+
+The `ui` command serves the built playground from the published package and wires it to the local configuration on disk, so editing and persisting no longer needs a checkout of this repo:
+
+```sh
+npx magma-design-tokens ui
+# custom port and configuration path
+npx magma-design-tokens ui --port 4000 --config ./tokens/color.json
+```
+
+It starts a small server (default port `5178`) that both serves the playground and exposes a local API:
+
+- `GET /api/config` reads the configuration via the same lookup as the CLI (respecting `--config`);
+- `PUT /api/config` writes it back with a stable key order, ASCII-only output and a trailing newline, so saves produce clean git diffs;
+- `POST /api/build` runs the full token generation on disk, honouring the `--outDir` / `--generate` / `--export-tokens` flags passed to `ui`.
+
+In this mode the playground loads the on-disk configuration on start and swaps **copy JSON** for a **save** button that persists to the resolved file; a `*` marks unsaved changes. The **download** menu gains **Build tokens on disk** to trigger the build endpoint. Run standalone (`nx run design-tokens:playground` or `yarn --cwd projects/design-tokens playground`) the API is absent and the playground keeps its in-memory, copy/download-only behaviour.
 
 ### Cli example
 

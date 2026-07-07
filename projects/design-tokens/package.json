@@ -22,9 +22,10 @@
   ],
   "license": "ISC",
   "scripts": {
-    "build": "npm run clean && npm run build-style-dictionary && npm run build-figma-tokens && npm run build-cli",
+    "build": "npm run clean && npm run build-style-dictionary && npm run build-figma-tokens && npm run build-cli && npm run build-playground",
     "build-figma-tokens": "tsx scripts/generate-figma-tokens.ts",
     "build-cli": "tsc --project tsconfig.cli.json",
+    "build-playground": "vite build --config playground/vite.config.ts",
     "build-style-dictionary": "tsx scripts/build.ts",
     "clean": "tsx scripts/clean.ts",
     "postbuild": "tsx scripts/postbuild.ts",
