@@ -7,6 +7,7 @@ import chalk from 'chalk'
 import { lilconfig } from 'lilconfig'
 import type { MagmaConfig } from './color.mjs'
 import { runGeneration, type GenerateOptions } from './generate.mjs'
+import { validateConfig } from './schema.mjs'
 
 export interface UiServerOptions extends GenerateOptions {
   port?: number,
@@ -126,8 +127,9 @@ async function handleApi (
       sendJson(res, 400, { error: 'Request body is not valid JSON' })
       return
     }
-    if (config === null || typeof config !== 'object' || !Array.isArray((config as MagmaConfig).colors)) {
-      sendJson(res, 400, { error: 'Config must be an object with a "colors" array' })
+    const { valid, errors } = validateConfig(config)
+    if (!valid) {
+      sendJson(res, 400, { error: 'Config does not match the schema', details: errors })
       return
     }
     const found = await loadConfig(opts.config)
