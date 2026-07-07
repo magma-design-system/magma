@@ -32,6 +32,13 @@ export default defineConfig({
       chalk: chalkStub,
     },
   },
+  // relative asset paths so the built bundle works wherever the `ui` command
+  // mounts it; output lands in dist/playground and ships with the package
+  base: './',
+  build: {
+    outDir: fileURLToPath(new URL('../dist/playground', import.meta.url)),
+    emptyOutDir: true,
+  },
   server: {
     port: 5177,
   },
