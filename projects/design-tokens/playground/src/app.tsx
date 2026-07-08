@@ -17,7 +17,7 @@ import { DiffView } from './diff.js';
 import { BatchExportModal } from './batch.js';
 import { hasHueShift, resolveCurveWeights, type HueShiftConfig } from '../../src/lib/hue-shift.mjs';
 import { generateScales, singleColorConfig, type ColorScales, type Step } from './generator.js';
-import { ScalesManager, type RatioSet } from './scales.js';
+import { ScalesManager, type RatioSet, type ScaleOrigin } from './scales.js';
 import { nearestColorName } from './color-names.js';
 const COLORSPACES = [
   'HSL',
@@ -561,12 +561,24 @@ export function App() {
   const scaleNamesFor = (color: ColorConfig): string[] =>
     Object.keys(ratioSetFor(resolveFormula(color, config)));
 
-  // a scale declared in the config vs one only inherited from the built-in
-  // defaults; the latter is tagged in the selects so its origin is explicit
-  const isConfigScale = (formula: Formula, name: string): boolean =>
-    Object.prototype.hasOwnProperty.call(config.ratios?.[formula] ?? {}, name);
-  const scaleLabel = (formula: Formula, name: string): string =>
-    isConfigScale(formula, name) ? name : `${name} (built-in)`;
+  // origin of a scale relative to the built-in defaults. Comparing stops
+  // (rather than mere presence in config.ratios) keeps the tag correct even
+  // though writeScale materializes untouched built-ins back into the config.
+  const scaleOrigin = (formula: Formula, name: string): ScaleOrigin => {
+    const builtin = (DEFAULT_COLOR_CONFIG.ratios as Record<Formula, RatioSet>)[formula]?.[name];
+    if (!Array.isArray(builtin)) return 'custom';
+    const current = ratioSetFor(formula)[name];
+    const overridden =
+      !!current &&
+      (current.length !== builtin.length || current.some((value, i) => value !== builtin[i]));
+    return overridden ? 'builtin-overridden' : 'builtin';
+  };
+  const scaleLabel = (formula: Formula, name: string): string => {
+    const origin = scaleOrigin(formula, name);
+    if (origin === 'builtin') return `${name} (built-in)`;
+    if (origin === 'builtin-overridden') return `${name} (built-in, overridden)`;
+    return name;
+  };
 
   const writeScale = (mutate: (draftSet: RatioSet) => void) => {
     updateConfig((draft) => {
@@ -1322,6 +1334,7 @@ export function App() {
             sampleScales={sampleScales}
             selectedName={selectedName}
             labelFor={(name) => scaleLabel(scalesFormula, name)}
+            originFor={(name) => scaleOrigin(scalesFormula, name)}
             onSelectColor={setSelectedName}
             onFormulaChange={setScalesFormula}
             onChangeScale={(name, values) =>
