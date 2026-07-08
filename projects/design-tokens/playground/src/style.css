@@ -313,6 +313,18 @@ button.danger:hover { border-color: #c0392b; color: #c0392b; }
 }
 .scale-name:not(:disabled):hover, .scale-name:focus { background: #ffffff; border-color: var(--line); }
 .scale-usage { color: var(--ink-soft); font-size: 12px; }
+.scale-origin {
+  background: var(--line);
+  border-radius: 99px;
+  color: var(--ink-soft);
+  cursor: help;
+  font-size: 9px;
+  letter-spacing: 0.04em;
+  padding: 2px 7px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.scale-origin.overridden { background: #fdf0ee; color: var(--accent); }
 .scale-card-actions { display: flex; gap: 8px; margin-left: auto; }
 .scale-card-actions button { align-items: center; display: inline-flex; gap: 5px; }
 .scale-card-actions button:disabled { cursor: not-allowed; opacity: 0.4; }
