@@ -1,7 +1,7 @@
 name: 🐞 Bug Report
 description: Report a bug in the Maggioli Design System.
 title: '[Bug]: '
-labels: ['type: bug', 'status: triage']
+labels: ['bug']
 projects: ['magma-design-system/magma']
 type: bug
 body:
