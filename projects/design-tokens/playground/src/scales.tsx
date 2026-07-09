@@ -6,6 +6,14 @@ export interface RatioSet {
   [scaleName: string]: number[];
 }
 
+/**
+ * Origin of a scale relative to the generator's built-in defaults:
+ * - 'custom': defined entirely by the config, not shipped with magma
+ * - 'builtin': shipped with magma and shown as-is (the config leaves it alone)
+ * - 'builtin-overridden': shipped with magma but redefined by the config
+ */
+export type ScaleOrigin = 'custom' | 'builtin' | 'builtin-overridden';
+
 interface AxisConfig {
   min: number;
   max: number;
@@ -230,8 +238,10 @@ interface ScalesManagerProps {
   builtinScales: string[];
   sampleScales: Map<string, string[]>;
   selectedName: string;
-  /** display label for a scale name (tags built-in-only scales) */
+  /** display label for a scale name (tags built-in scales in selects) */
   labelFor: (name: string) => string;
+  /** origin of a scale, used to render its badge on the card */
+  originFor: (name: string) => ScaleOrigin;
   onSelectColor: (name: string) => void;
   onFormulaChange: (formula: Formula) => void;
   onChangeScale: (name: string, values: number[]) => void;
@@ -248,6 +258,7 @@ export function ScalesManager({
   sampleScales,
   selectedName,
   labelFor,
+  originFor,
   onSelectColor,
   onFormulaChange,
   onChangeScale,
@@ -368,6 +379,7 @@ export function ScalesManager({
         const axis = axisFor(formula, values);
         const usedBy = usage.get(name) ?? 0;
         const builtin = builtinScales.includes(name);
+        const origin = originFor(name);
         const sample = sampleScales.get(name);
         return (
           <div class="scale-card">
@@ -386,6 +398,18 @@ export function ScalesManager({
                 }
                 onChange={(e) => onRenameScale(name, (e.target as HTMLInputElement).value.trim())}
               />
+              {origin !== 'custom' && (
+                <span
+                  class={`scale-origin${origin === 'builtin-overridden' ? ' overridden' : ''}`}
+                  title={
+                    origin === 'builtin-overridden'
+                      ? 'shipped with magma; shown here because your config overrides its stops'
+                      : 'shipped with magma; shown even though it is not in your config'
+                  }
+                >
+                  {origin === 'builtin-overridden' ? 'built-in - overridden' : 'built-in'}
+                </span>
+              )}
               <span class="scale-usage">
                 {values.length} steps - used by {usedBy} color{usedBy === 1 ? '' : 's'}
               </span>
