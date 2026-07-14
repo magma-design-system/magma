@@ -1,0 +1,28 @@
+# Release pipeline for @maggioli-design-system/slides.
+# Detects the next version from conventional commits scoped `slides`,
+# bumps projects/slides/package.json, tags it and creates the GitHub
+# release. The version bump commit then triggers CI -> publish.yml (npm).
+name: slides release
+
+on:
+  push:
+    branches: [main]
+
+concurrency:
+  group: release-slides
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    # chore(release) pushes come from release-finalize itself: their version is
+    # already tagged, so re-running would only be a wasted no-op dry-run
+    if: ${{ !startsWith(github.event.head_commit.message, 'chore(release):') }}
+    uses: ./.github/workflows/semantic-release.yml
+    secrets: inherit
+    with:
+      working-directory: projects/slides
+      tag-format: 'slides@${version}'
+      commit-scope: slides

@@ -1,0 +1,79 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://maggioli-design-system.github.io/slides/deck.schema.json",
+  "title": "Magma slides deck",
+  "description": "Frontmatter contract for a Magma slide deck (Markdown + frontmatter). Validates the deck-wide frontmatter and each slide's frontmatter.",
+  "type": "object",
+  "$defs": {
+    "layout": {
+      "type": "string",
+      "description": "Built-in slide layout.",
+      "enum": [
+        "title",
+        "section",
+        "content",
+        "two-column",
+        "quote",
+        "image-full",
+        "code"
+      ]
+    },
+    "tokens": {
+      "type": "object",
+      "description": "Per-deck overrides of --mds-slide-* custom properties (theming cascade level 3).",
+      "propertyNames": {
+        "pattern": "^--[a-z0-9-]+$"
+      },
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "footer": {
+      "type": "object",
+      "description": "Persistent footer shown on every slide.",
+      "properties": {
+        "logo": { "type": "string" },
+        "group": { "type": "string" },
+        "groupDetail": { "type": "string" },
+        "subject": { "type": "string" },
+        "section": { "type": "string" },
+        "pageNumbers": { "type": "boolean" }
+      },
+      "additionalProperties": false
+    },
+    "deckConfig": {
+      "type": "object",
+      "description": "Deck-wide frontmatter (the leading --- block).",
+      "properties": {
+        "title": { "type": "string" },
+        "author": { "type": "string" },
+        "theme": {
+          "type": "string",
+          "description": "Built-in theme name.",
+          "enum": ["maggioli", "maggioli-dark"]
+        },
+        "layout": { "$ref": "#/$defs/layout" },
+        "tokens": { "$ref": "#/$defs/tokens" },
+        "footer": { "$ref": "#/$defs/footer" }
+      },
+      "additionalProperties": false
+    },
+    "slideConfig": {
+      "type": "object",
+      "description": "Per-slide frontmatter.",
+      "properties": {
+        "layout": { "$ref": "#/$defs/layout" },
+        "title": { "type": "string" },
+        "image": { "type": "string" },
+        "lang": { "type": "string" },
+        "section": { "type": "string" },
+        "footer": {
+          "description": "false hides the footer on this slide; an object overrides footer fields.",
+          "oneOf": [{ "type": "boolean" }, { "$ref": "#/$defs/footer" }]
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "allOf": [{ "$ref": "#/$defs/deckConfig" }]
+}

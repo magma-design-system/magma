@@ -43,6 +43,7 @@ module.exports = {
         'magma',
         'magma-react',
         'magma-angular',
+        'slides',
         'stencil',
         'storybook',
         'styles',

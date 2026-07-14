@@ -52,6 +52,7 @@
     "changelog.icons": "conventional-changelog -p conventionalcommits -i projects/icons/CHANGELOG.md -s --commit-path projects/icons",
     "changelog.identity": "conventional-changelog -p conventionalcommits -i projects/identity/CHANGELOG.md -s --commit-path projects/identity",
     "changelog.stencil": "conventional-changelog -p conventionalcommits -i projects/stencil/CHANGELOG.md -s --commit-path projects/stencil",
+    "changelog.slides": "conventional-changelog -p conventionalcommits -i projects/slides/CHANGELOG.md -s --commit-path projects/slides",
     "changelog.styles": "conventional-changelog -p conventionalcommits -i projects/styles/CHANGELOG.md -s --commit-path projects/styles",
     "changelog.svg-icons": "conventional-changelog -p conventionalcommits -i projects/svg-icons/CHANGELOG.md -s --commit-path projects/svg-icons",
     "clean-modules": "rm -rf node_modules || true && rm -rf projects/**/node_modules || true && rm yarn.lock",
@@ -69,7 +70,7 @@
     "projects/stencil/src/**/*.{js,jsx,ts,tsx}": [
       "eslint --config projects/stencil/eslint.config.mjs --fix"
     ],
-    "projects/{design-tokens,styles,icons,svg-icons,identity}/src/**/*.{js,jsx,ts,tsx}": [
+    "projects/{design-tokens,slides,styles,icons,svg-icons,identity}/src/**/*.{js,jsx,ts,tsx}": [
       "eslint --fix"
     ]
   },

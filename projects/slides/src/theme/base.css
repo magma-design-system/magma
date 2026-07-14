@@ -1,0 +1,15 @@
+/**
+ * Magma base styles recipe, for the Vite playground (which resolves these
+ * @import specifiers from node_modules). The published renderer does NOT use
+ * this file: export/collect-css.ts reads the same files from the resolved
+ * @maggioli-design-system/styles package and inlines them, so a built deck is
+ * self-contained. Keep the two in sync.
+ */
+@layer reset, vendor, theme, base, components, utilities, overrides;
+
+@import '@maggioli-design-system/styles/dist/css/reset.css' layer(reset);
+@import '@maggioli-design-system/styles/dist/css/globals.css' layer(theme);
+@import '@maggioli-design-system/styles/dist/css/colors-rgb.css' layer(theme);
+@import '@maggioli-design-system/styles/dist/css/hydrated.css' layer(base);
+@import '@maggioli-design-system/styles/dist/css/animations.css' layer(base);
+@import '@maggioli-design-system/styles/dist/css/base.css' layer(base);

@@ -27,6 +27,7 @@ export default {
           'include',
           'layer',
           'return',
+          'source',
           'tailwind',
           'use',
           'reference',
@@ -45,6 +46,8 @@ export default {
           // degrade gracefully. Also the foundation of the preference system.
           'prefers-color-scheme',
           'prefers-reduced-motion',
+          // @page is used intentionally for one-slide-per-page PDF export.
+          'css-paged-media',
         ],
       },
     ],
@@ -71,6 +74,7 @@ export default {
           'responsive',
           'return',
           'screen',
+          'source',
           'starting-style',
           'tailwind',
           'theme',
@@ -96,6 +100,9 @@ export default {
     'comment-no-empty': true,
     'comment-whitespace-inside': 'always',
     'comment-word-disallowed-list': ['/A-Z/', 'todo:'],
+    // Allow the design-system `--group--modifier` double-dash tokens (e.g.
+    // --text-size-title-h1--letter-spacing) that source files reference.
+    'custom-property-pattern': '^-{0,2}[a-z][a-z0-9]*(-{1,2}[a-z0-9]+)*$',
     'custom-property-empty-line-before': [
       'always',
       {

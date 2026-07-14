@@ -1,0 +1,262 @@
+/**
+ * Structural CSS for the deck and the built-in layouts.
+ *
+ * Compiled at package build to a static dist/theme/slides.css that is inlined
+ * on every export (core exportHtml/exportPdf too - no runtime Tailwind needed).
+ *
+ * Two mechanisms, both build-time:
+ *   1. `@apply` styles the content elements the author cannot class (h1, p,
+ *      pre, code, blockquote from Markdown) and the per-layout wrappers.
+ *   2. `@source "../render"` scans the built-in template markup (footer.ts and
+ *      the layout renderers) and EMITS the exact Tailwind utilities used there,
+ *      so chrome we render can carry utilities inline instead of a hand-kept CSS
+ *      layer. Importing theme.css + utilities.css (NOT the full "tailwindcss")
+ *      keeps preflight out and limits scanning to the explicit @source.
+ *
+ * The Magma token theme is imported so utilities resolve to design-system
+ * values. Note: Magma's `--spacing` base is 0.0025rem, so numeric spacing
+ * utilities (gap-4) are unusable - spacing in markup uses arbitrary values bound
+ * to tokens, e.g. `gap-[var(--mds-slide-gap)]`. Colors, fonts and sizes stay as
+ * `var(--mds-slide-*)` so the theming cascade and per-deck `tokens:` overrides
+ * keep working.
+ */
+@import "tailwindcss/theme.css";
+@import "tailwindcss/utilities.css";
+@import "@maggioli-design-system/design-tokens/dist/css/tailwind-theme-color.css";
+@import "@maggioli-design-system/design-tokens/dist/css/tailwind-theme-typography.css";
+
+@source "../render";
+
+.mds-deck {
+  background-color: rgb(var(--tone-neutral-01));
+  color: var(--mds-slide-fg);
+  font-family: var(--mds-slide-font-body);
+  margin: 0;
+}
+
+.mds-slide {
+  @apply relative box-border overflow-hidden;
+
+  background-color: var(--mds-slide-bg);
+  color: var(--mds-slide-fg);
+  font-size: var(--mds-slide-body-size);
+  height: var(--mds-slide-height);
+  line-height: 1.5;
+  padding: var(--mds-slide-padding);
+  width: var(--mds-slide-width);
+}
+
+.mds-slide.has-footer {
+  padding-bottom: calc(var(--mds-slide-padding) + var(--mds-slide-footer-height));
+}
+
+.mds-slide h1,
+.mds-slide h2,
+.mds-slide h3 {
+  color: var(--mds-slide-heading-fg);
+  font-family: var(--mds-slide-font-heading);
+  font-weight: 700;
+  line-height: 1.1;
+  margin: 0 0 --spacing(200);
+}
+
+.mds-slide h1 {
+  font-size: var(--mds-slide-heading-size);
+}
+
+.mds-slide p,
+.mds-slide ul,
+.mds-slide ol {
+  margin: 0 0 --spacing(300);
+}
+
+.mds-slide a {
+  color: var(--mds-slide-accent);
+}
+
+.mds-slide strong {
+  color: var(--mds-slide-heading-fg);
+}
+
+.mds-slide pre,
+.mds-slide code {
+  font-family: var(--mds-slide-font-code);
+}
+
+.mds-slide :not(pre) > code {
+  background-color: var(--mds-slide-code-bg);
+  border-radius: var(--radius-2xs, 0.375rem);
+  font-size: var(--mds-slide-code-size);
+  padding: --spacing(40) --spacing(160);
+}
+
+.mds-slide pre {
+  @apply overflow-auto;
+
+  background-color: var(--mds-slide-code-bg);
+  border-radius: var(--mds-slide-radius);
+  color: var(--mds-slide-code-fg);
+  font-size: var(--mds-slide-code-size);
+  line-height: 1.5;
+  margin: 0;
+  padding: --spacing(500) --spacing(600);
+}
+
+.mds-slide img {
+  max-width: 100%;
+}
+
+/* --- title ------------------------------------------------------------- */
+
+.mds-slide[data-layout='title'] {
+  @apply flex flex-col justify-center;
+}
+
+.mds-slide[data-layout='title'] .mds-slide__title {
+  color: var(--mds-slide-heading-fg);
+  font-family: var(--mds-slide-font-heading);
+  font-size: var(--mds-slide-title-size);
+  font-weight: 800;
+  line-height: 1.05;
+  margin: 0;
+}
+
+.mds-slide[data-layout='title'] .mds-slide__subtitle {
+  color: var(--mds-slide-fg);
+  font-family: var(--mds-slide-font-heading);
+  font-size: var(--mds-slide-heading-size);
+  font-weight: 400;
+  line-height: 1.2;
+  margin-top: --spacing(500);
+  max-width: 80%;
+}
+
+.mds-slide[data-layout='title'] .mds-slide__subtitle p {
+  margin: 0;
+}
+
+.mds-slide[data-layout='title'] .mds-slide__author {
+  color: var(--mds-slide-muted-fg);
+  font-family: var(--mds-slide-font-heading);
+  font-size: var(--mds-slide-body-size);
+  margin-top: --spacing(600);
+}
+
+.mds-slide[data-layout='title']::before {
+  @apply absolute;
+
+  background-color: var(--mds-slide-accent);
+  content: '';
+  height: --spacing(160);
+  inset: auto auto var(--mds-slide-padding) var(--mds-slide-padding);
+  width: --spacing(2000);
+}
+
+/* --- section ----------------------------------------------------------- */
+
+.mds-slide[data-layout='section'] {
+  @apply flex flex-col justify-center;
+
+  background-color: var(--mds-slide-accent);
+  color: var(--mds-slide-on-accent);
+}
+
+.mds-slide[data-layout='section'] h1,
+.mds-slide[data-layout='section'] .mds-slide__title {
+  color: var(--mds-slide-on-accent);
+  font-family: var(--mds-slide-font-heading);
+  font-size: var(--mds-slide-title-size);
+}
+
+/* --- content ----------------------------------------------------------- */
+
+.mds-slide[data-layout='content'] {
+  @apply flex flex-col;
+}
+
+/* --- two-column -------------------------------------------------------- */
+
+.mds-slide[data-layout='two-column'] {
+  @apply flex flex-col;
+}
+
+.mds-slide[data-layout='two-column'] .mds-slide__columns {
+  @apply grid flex-1 min-h-0;
+
+  gap: var(--mds-slide-gap);
+  grid-template-columns: 1fr 1fr;
+}
+
+.mds-slide[data-layout='two-column'] .mds-slide__aside {
+  @apply min-h-0 overflow-hidden;
+
+  border-radius: var(--mds-slide-radius);
+}
+
+.mds-slide[data-layout='two-column'] .mds-slide__aside img {
+  @apply h-full w-full object-cover;
+
+  border-radius: var(--mds-slide-radius);
+}
+
+.mds-slide[data-layout='two-column'] .mds-slide__body--cols {
+  column-count: 2;
+  column-gap: var(--mds-slide-gap);
+}
+
+/* --- quote ------------------------------------------------------------- */
+
+.mds-slide[data-layout='quote'] {
+  @apply flex flex-col justify-center;
+}
+
+.mds-slide[data-layout='quote'] blockquote {
+  border-left: --spacing(160) solid var(--mds-slide-accent);
+  color: var(--mds-slide-heading-fg);
+  font-family: var(--mds-slide-font-heading);
+  font-size: var(--mds-slide-heading-size);
+  font-weight: 600;
+  line-height: 1.25;
+  margin: 0;
+  padding-left: --spacing(800);
+}
+
+/* footer: styled with inline Tailwind utilities in src/render/footer.ts,
+   emitted into this file via @source above (no hand-kept CSS layer here). */
+
+/* --- image-full -------------------------------------------------------- */
+
+.mds-slide[data-layout='image-full'] {
+  padding: 0;
+}
+
+/* Keep image-full bleeding to the edges even with a footer. */
+
+.mds-slide[data-layout='image-full'].has-footer {
+  padding-bottom: 0;
+}
+
+.mds-slide[data-layout='image-full'] .mds-slide__image {
+  @apply h-full w-full object-cover;
+}
+
+.mds-slide[data-layout='image-full'] .mds-slide__caption {
+  @apply absolute;
+
+  background-image: linear-gradient(transparent, rgb(var(--tone-neutral-01) / 0.85));
+  color: rgb(var(--tone-neutral-05));
+  font-family: var(--mds-slide-font-heading);
+  font-size: var(--mds-slide-heading-size);
+  inset: auto 0 0;
+  padding: var(--mds-slide-padding);
+}
+
+/* --- code -------------------------------------------------------------- */
+
+.mds-slide[data-layout='code'] {
+  @apply flex flex-col;
+}
+
+.mds-slide[data-layout='code'] pre {
+  @apply flex-1;
+}

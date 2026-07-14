@@ -1,0 +1,54 @@
+/**
+ * Default `--mds-slide-*` component tokens (theming cascade level 2 base).
+ *
+ * Every value is sourced from Magma design tokens published by
+ * @maggioli-design-system/styles (inlined at export): colors from `--tone-*` /
+ * `--variant-*`, fonts from `--font-*`, spacing/shape from `--spacing(-*)` /
+ * `--radius-*`. Nothing here is a magic literal - so a deck inherits the
+ * Maggioli identity, follows the light/dark flip, and tracks the design system.
+ *
+ * The presentation type scale is larger than the web `--text-size-*` scale, so
+ * it is derived from the spacing base: `calc(var(--spacing) * N)` is the
+ * plain-CSS form of Tailwind's `--spacing(N)`.
+ *
+ * Consumers override any of these per-deck via the frontmatter `tokens:` map
+ * (cascade level 3), which is injected after this block.
+ */
+
+:root {
+
+  /* Slide canvas (presentation geometry, not a design-system scale). */
+  --mds-slide-width: 1280px;
+  --mds-slide-height: 720px;
+
+  /* Spacing and shape from the Magma scale. */
+  --mds-slide-padding: var(--spacing-3xl, 4rem);
+  --mds-slide-gap: var(--spacing-xl, 2rem);
+  --mds-slide-radius: var(--radius-lg, 1rem);
+
+  /* Surfaces and text (Magma color tokens; flip light/dark automatically). */
+  --mds-slide-bg: rgb(var(--tone-neutral));
+  --mds-slide-fg: rgb(var(--tone-neutral-03));
+  --mds-slide-heading-fg: rgb(var(--tone-neutral-05));
+  --mds-slide-muted-fg: rgb(var(--tone-neutral-02));
+  --mds-slide-accent: rgb(var(--variant-primary));
+  --mds-slide-on-accent: rgb(var(--tone-neutral));
+  --mds-slide-code-bg: rgb(var(--tone-neutral-01));
+  --mds-slide-code-fg: rgb(var(--tone-neutral-04));
+  --mds-slide-rule: rgb(var(--tone-neutral-01));
+
+  /* Fonts from Magma tokens. */
+  --mds-slide-font-heading: var(--font-info, Karla, system-ui, sans-serif);
+  --mds-slide-font-body: var(--font-read, Merriweather, Georgia, serif);
+  --mds-slide-font-code: var(--font-code, 'Roboto Mono', ui-monospace, monospace);
+
+  /* Presentation type scale, derived from the Magma spacing base. */
+  --mds-slide-title-size: calc(var(--spacing, 0.0025rem) * 2200); /* 5.5rem */
+  --mds-slide-heading-size: calc(var(--spacing, 0.0025rem) * 1300); /* 3.25rem */
+  --mds-slide-body-size: calc(var(--spacing, 0.0025rem) * 700); /* 1.75rem */
+  --mds-slide-code-size: calc(var(--spacing, 0.0025rem) * 550); /* 1.375rem */
+
+  /* Footer. */
+  --mds-slide-footer-height: calc(var(--spacing, 0.0025rem) * 1400); /* 3.5rem */
+  --mds-slide-footer-size: calc(var(--spacing, 0.0025rem) * 380); /* 0.95rem */
+}
