@@ -87,7 +87,7 @@ export const rulesForComponent = (manifest: Manifest, component: ComponentManife
     const toneRule: EnumRemapRule = {
       kind: 'enumRemap',
       prop: tone.prop,
-      map: tone.map,
+      map: tone.overrides?.[component.tag] ?? tone.map,
       v2set: tone.toneSet,
       confidence: 'review',
     };
