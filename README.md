@@ -6,15 +6,10 @@ This repo contains [Maggioli Design System][docs].
 
 ---
 
-## Installation
+## Requirements
 
-Clone the private repository form Git:
-
-```
-git clone git@gitlab.com:maggiolispa/ricerca-sviluppo-new-media/design-system.git
-```
-
-Install needed node dependencies:
+- Node.js `>= 22.15.0` (see `engines` in `package.json`)
+- Yarn (classic)
 
 ```
 npm install -g eslint nx yarn
@@ -22,17 +17,35 @@ npm install -g eslint nx yarn
 
 > Note: if you are using NVM and you change the node version, you must reinstall global packages for the current version you are using.
 
-Then run `yarn install` from project root:
+## Setup from a fresh clone
+
+Clone the repository:
+
+```
+git clone git@github.com:magma-design-system/magma.git
+```
+
+Install the dependencies from the project root:
 
 ```
 yarn install
 ```
 
-### Build all
+Build all the projects **before** starting anything else:
 
 ```
-nx run-many --target=build --all --skip-nx-cache
+nx run-many --target=build --all
 ```
+
+> ⚠️ This step is mandatory on a fresh clone. The `stencil` project imports the build outputs (`dist/`) of its sibling workspace packages (`design-tokens`, `styles`, `icons`, `svg-icons`). If you skip it, Storybook fails to compile with errors like `Can't resolve '@maggioli-design-system/styles/dist/css/reset.css'` or `Can't resolve '../dist/esm/loader'` — and since the `storybook.start` script backgrounds Storybook, the errors are easy to miss: the symptom is just an empty `http://localhost:6006/`.
+
+Then start the development environment (Storybook + Stencil watch build):
+
+```
+nx run stencil:storybook.start
+```
+
+Storybook is served at [http://localhost:6006](http://localhost:6006).
 
 ### Build single project
 
@@ -45,11 +58,10 @@ nx run stencil:build --skip-nx-cache
 
 If you want to test your nx build without cache, use `--skip-nx-cache` to avoid it. Be aware this command will SLOW build time.
 
-Then you can run for every project:
+### Troubleshooting
 
-```
-nx run stencil:storybook.start --skip-nx-cache
-```
+- **`http://localhost:6006/` is empty / connection refused** — the workspace packages are probably not built. Stop the dev server, run `nx run-many --target=build --all`, then start again.
+- **Stencil build fails with a missing `assets/svg/...` file** — the generated icon assets are stale or missing. Regenerate them from `projects/stencil` with `npm run build.icons` (also run automatically by `storybook.start`).
 
 ## Development
 
