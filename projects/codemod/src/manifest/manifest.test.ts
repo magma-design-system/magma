@@ -105,6 +105,29 @@ describe('curated manifest', () => {
       }),
     );
   });
+
+  it("renames the typo'd CSS custom properties corrected in v2 (#566)", () => {
+    expect(rulesOf('mds-video-wall')).toContainEqual({
+      kind: 'cssVarRename',
+      from: 'mds-video-wall-noise-fitler',
+      to: 'mds-video-wall-noise-filter',
+    });
+    expect(rulesOf('mds-file')).toContainEqual({
+      kind: 'cssVarRename',
+      from: 'mds-file-preview-icon-bacground',
+      to: 'mds-file-preview-icon-background',
+    });
+    // The generated removal is stale: the correctly-spelled name exists in v2
+    // now that the typo is fixed.
+    for (const tag of ['mds-video-wall', 'mds-file']) {
+      expect(
+        rulesOf(tag).some((r) => r.kind === 'cssVarRemove' && r.name.includes('noise-fi')),
+      ).toBe(false);
+      expect(
+        rulesOf(tag).some((r) => r.kind === 'cssVarRemove' && r.name.includes('preview-icon-ba')),
+      ).toBe(false);
+    }
+  });
 });
 
 describe('generated manifest alignment (v1.12 tip vs dev tip)', () => {
@@ -150,6 +173,6 @@ describe('generated manifest alignment (v1.12 tip vs dev tip)', () => {
     const removals = Object.values(manifest.components).flatMap((c) =>
       c.rules.filter((r) => r.kind === 'cssVarRemove'),
     );
-    expect(removals.length).toBeGreaterThanOrEqual(20);
+    expect(removals.length).toBeGreaterThanOrEqual(19);
   });
 });
