@@ -168,6 +168,34 @@ const curate = (base: Manifest): Manifest => {
     });
   }
 
+  // Typo'd CSS custom properties corrected in v2 (#566). The docs diff cannot
+  // pair them: v1 shipped (and for mds-file also documented) the misspelled
+  // name, so the working v1 name must be renamed to the corrected v2 one. The
+  // generated removals for the affected properties are dropped — the v1
+  // documented `--mds-video-wall-noise-filter` now exists in v2 (it only
+  // looked removed while v2 shipped the typo), and `mds-file`'s misspelled
+  // name will surface as a removal at the next regeneration.
+  const typoRenames = [
+    {
+      tag: 'mds-video-wall',
+      from: 'mds-video-wall-noise-fitler',
+      to: 'mds-video-wall-noise-filter',
+    },
+    {
+      tag: 'mds-file',
+      from: 'mds-file-preview-icon-bacground',
+      to: 'mds-file-preview-icon-background',
+    },
+  ] as const;
+  for (const { tag, from, to } of typoRenames) {
+    const component = m.components[tag];
+    if (!component) continue;
+    component.rules = component.rules.filter(
+      (r) => !(r.kind === 'cssVarRemove' && (r.name === from || r.name === to)),
+    );
+    component.rules.unshift({ kind: 'cssVarRename', from, to });
+  }
+
   return m;
 };
 
