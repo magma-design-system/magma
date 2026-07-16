@@ -93,6 +93,12 @@ Out of scope entirely (all surfaces work on markup/templates only):
 
 - **Imperative code**: `el.backdrop = false`, `setAttribute('cockade', …)`, `addEventListener('mdsX', …)`
   in plain JS/TS is never rewritten or reported.
+- **`updateLang()` removal**: v2 removed the public `updateLang()` method from every localized component —
+  components now react automatically when `<html lang>` changes (or via `mds-pref-language`). Calls like
+  `el.updateLang()` live in imperative code, which these codemods do not scan: delete them by hand, no
+  replacement is needed. Likewise, per-element `lang` overrides on `mds-*` hosts are no longer honored
+  (the language is page-wide, driven by `<html lang>`), but flagging every `lang` attribute in templates
+  would be noise, so no rule reports it.
 - **`eventRename`** exists in the manifest schema but no surface implements it — no event was renamed
   between v1.12 and v2.0.0-beta, so no rule exists today. Implement it before the first real event rename.
 
