@@ -8,6 +8,8 @@ The `dev` and `main` branches are protected governance targets. **Agents must ne
 
 An agent may prepare work up to (and including) a feature branch pushed to its own remote, but the promotion of that work into `dev` or `main` is a human decision.
 
+When a maintainer promotes `dev` into `main`, the promotion must use a **merge commit** (never squash or rebase): release tags created on `dev` (e.g. `icons@*`, `svg-icons@*`) must stay reachable from `main`, otherwise the release workflows on `main` would keep recomputing already-released versions.
+
 ## 2. One branch per unit of work
 
 Every unit of work (feature, fix, refactor, chore, etc.) must be carried out on its own dedicated branch, never directly on `dev` or `main`.
