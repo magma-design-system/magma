@@ -7,7 +7,6 @@ import {
   EventEmitter,
   Host,
   Prop,
-  State,
   Watch,
   h,
 } from '@stencil/core';
@@ -16,7 +15,7 @@ import arrowSvg from './assets/arrow.svg';
 import { MdsDropdownEventDetail } from './meta/event-detail';
 import { DropdownInteractionType } from './meta/types';
 import { Backdrop, FloatingController, FloatingElement } from '@common/floating-controller';
-import { subscribePreference } from '@common/preference';
+import { preferenceStore } from '@common/preference';
 
 /**
  * @slot - Add `text string`, `HTML elements` or `components` to this slot, elements will be shown when the component is triggered.
@@ -36,14 +35,6 @@ export class MdsDropdown implements FloatingElement {
   private floatingController: FloatingController;
 
   @Element() readonly host!: HTMLMdsDropdownElement;
-  @State() prefAnimation?: string;
-  private unsubscribePrefAnimation?: () => void;
-  @State() prefContrast?: string;
-  private unsubscribePrefContrast?: () => void;
-  @State() prefTheme?: string;
-  private unsubscribePrefTheme?: () => void;
-  @State() prefThemeScheme?: string;
-  private unsubscribePrefThemeScheme?: () => void;
 
   /**
    * If set, the component will not have an arrow pointing to the caller.
@@ -305,26 +296,7 @@ export class MdsDropdown implements FloatingElement {
     this.targetChanged();
   }
 
-  connectedCallback(): void {
-    this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
-      this.prefAnimation = value;
-    });
-    this.unsubscribePrefContrast = subscribePreference('contrast', (value) => {
-      this.prefContrast = value;
-    });
-    this.unsubscribePrefTheme = subscribePreference('theme', (value) => {
-      this.prefTheme = value;
-    });
-    this.unsubscribePrefThemeScheme = subscribePreference('theme-scheme', (value) => {
-      this.prefThemeScheme = value;
-    });
-  }
-
   disconnectedCallback(): void {
-    this.unsubscribePrefAnimation?.();
-    this.unsubscribePrefContrast?.();
-    this.unsubscribePrefTheme?.();
-    this.unsubscribePrefThemeScheme?.();
     this.floatingController.dismiss();
     this.backdropController.detachBackdrop();
     this.km.detachEscapeBehavior();
@@ -336,10 +308,10 @@ export class MdsDropdown implements FloatingElement {
         style={{
           zIndex: `${this.zIndex}`,
         }}
-        pref-animation={this.prefAnimation}
-        pref-contrast={this.prefContrast}
-        pref-theme={this.prefTheme}
-        pref-theme-scheme={this.prefThemeScheme}
+        pref-animation={preferenceStore.state.animation}
+        pref-contrast={preferenceStore.state.contrast}
+        pref-theme={preferenceStore.state.theme}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
         <div class="arrow" innerHTML={arrowSvg} />
         <slot />

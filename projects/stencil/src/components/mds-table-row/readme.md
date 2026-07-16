@@ -330,19 +330,6 @@ mds-table-row {
 | `value`          | `value`           | The value associated with the row, emitted when the row is selected.                                                 | `number \| string \| undefined` | `undefined` |
 
 
-## Methods
-
-### `updateLang() => Promise<void>`
-
-Updates the component's texts to the locale currently set on the host element.
-
-#### Returns
-
-Type: `Promise<void>`
-
-
-
-
 ## Slots
 
 | Slot       | Description                                                                           |

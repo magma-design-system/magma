@@ -53,14 +53,6 @@ export class MdsTreeItem {
     es: localeEs,
     it: localeIt,
   });
-  @State() language: string;
-  /**
-   * Updates the component's texts to the locale currently set on the host element.
-   */
-  @Method()
-  async updateLang(): Promise<void> {
-    this.language = this.t.lang(this.host);
-  }
 
   /**
    * Show actions on the tree item on hover or by default.
@@ -216,8 +208,6 @@ export class MdsTreeItem {
   }
 
   componentWillLoad(): void {
-    this.language = this.t.lang(this.host);
-
     this.updateToggleIcon();
     this.resolveActions();
 
@@ -263,9 +253,8 @@ export class MdsTreeItem {
               variant="dark"
               tone="text"
               truncate={this.truncate}
-            >
-              {this.label}
-            </mds-button>
+              label={this.label}
+            ></mds-button>
             <div
               class={clsx('actions-container', this.hasActions && 'actions-container--has-actions')}
               part="actions-container"

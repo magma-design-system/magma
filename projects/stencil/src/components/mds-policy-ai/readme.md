@@ -231,19 +231,6 @@ The `card` variant does not render a headline - only `description` is shown. Pas
 | `variant`     | `variant`     | Sets the variant type of the component             | `"banner" \| "card" \| "chip" \| "icon" \| undefined` | `'chip'`                                                                                     |
 
 
-## Methods
-
-### `updateLang() => Promise<void>`
-
-Updates the component's texts to the locale currently set on the host element.
-
-#### Returns
-
-Type: `Promise<void>`
-
-
-
-
 ## Shadow Parts
 
 | Part       | Description                                                                                                        |

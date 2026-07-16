@@ -52,18 +52,10 @@ export class MdsInputUpload {
     es: localeEs,
     it: localeIt,
   });
-  @State() language: string;
-  /**
-   * Updates the component's texts to the locale currently set on the host element.
-   */
-  @Method()
-  async updateLang(): Promise<void> {
-    this.language = this.t.lang(this.host);
-  }
 
   @Element() private host: HTMLMdsInputUploadElement;
   @AttachInternals() internals: ElementInternals;
-  @State() actionTitle: string = '';
+  @State() dragging: boolean = false;
   @State() files: FileStatus[] = [];
   @State() progress = 0;
   @State() animateText: boolean = false;
@@ -104,8 +96,6 @@ export class MdsInputUpload {
 
   componentWillLoad(): void {
     this.extensions = this.getExtension();
-    this.t.lang(this.host);
-    this.actionTitle = this.t.get('clickOrDrag', { maxFiles: this.maxFiles });
     this.userSort = (localStorage.getItem(LOCALSTORAGE_KEY_USER_SORT) as AttachmentSort) ?? 'date';
     this.updateInitialValue(this.initialValue);
   }
@@ -136,15 +126,14 @@ export class MdsInputUpload {
   getFilesError(): Promise<FileError[] | null> {
     const err = this.files
       .filter((file) => file.status === Status.ERROR)
-      .map((file) => ({ filename: file.key, errorMessage: file.errorMessage! }));
+      .map((file) => ({ filename: file.key, errorMessage: this.t.get(file.errorKey!) }));
     return err.length > 0 ? Promise.resolve(err) : Promise.resolve(null);
   }
 
   @Watch('maxFiles')
-  updateActionTitle(newValue: number, oldValue: number): void {
+  handleMaxFilesChange(newValue: number, oldValue: number): void {
     if (newValue !== oldValue) {
       this.animateText = false;
-      this.actionTitle = this.t.get('clickOrDrag', { maxFiles: newValue });
     }
   }
 
@@ -166,14 +155,14 @@ export class MdsInputUpload {
   };
 
   private readonly onDragEnterHandler = (event: DragEvent) => {
-    this.actionTitle = this.t.get('dragEnter');
+    this.dragging = true;
     this.animateText = true;
     this.elDragArea?.classList.add('drag-area--on-drag-enter');
     event.preventDefault();
   };
 
   private readonly onDragLeaveHandler = (event: DragEvent) => {
-    this.actionTitle = this.t.get('clickOrDrag', { maxFiles: this.maxFiles });
+    this.dragging = false;
     this.elDragArea?.classList.remove('drag-area--on-drag-enter');
     event.preventDefault();
   };
@@ -253,8 +242,8 @@ export class MdsInputUpload {
         if (index !== -1) {
           this.files.splice(index, 1);
         }
-        const { errorMessage, type } = this.checkError(file);
-        if (errorMessage === '') {
+        const { errorKey, type } = this.checkError(file);
+        if (errorKey === undefined) {
           this.files.push({ key: file.name, file, id: this.idFile, status: Status.SUCCESS });
           this.fileUploaded += 1;
         } else {
@@ -264,7 +253,7 @@ export class MdsInputUpload {
             id: this.idFile,
             status: Status.ERROR,
             errorType: type,
-            errorMessage,
+            errorKey,
           });
         }
       }
@@ -276,21 +265,24 @@ export class MdsInputUpload {
     return data.files;
   }
 
-  private checkError(file: File): { errorMessage: string; type: ErrorType } {
-    let errorMessage, type;
+  // Stores the locale key, not the translated message: consumers translate at
+  // read time so the texts follow the current language
+  private checkError(file: File): { errorKey?: string; type?: ErrorType } {
+    let errorKey: string | undefined;
+    let type: ErrorType | undefined;
     if (this.fileUploaded >= this.maxFiles) {
-      errorMessage = this.t.get('maxFilesExceed');
+      errorKey = 'maxFilesExceed';
       type = ErrorType.MAX;
     }
     if (!this.checkFileSize(file)) {
-      errorMessage = this.t.get('fileTooLarge');
+      errorKey = 'fileTooLarge';
       type = ErrorType.SIZE;
     }
     if (!this.checkFileType(file)) {
-      errorMessage = this.t.get('formatNotAlowed');
+      errorKey = 'formatNotAlowed';
       type = ErrorType.TYPE;
     }
-    return { errorMessage, type };
+    return { errorKey, type };
   }
 
   private update(input: HTMLInputElement | undefined, files: FileList | null): void {
@@ -313,7 +305,7 @@ export class MdsInputUpload {
             validity.typeMismatch = true;
             break;
         }
-        errorMessage.add(error.errorMessage!);
+        errorMessage.add(this.t.get(error.errorKey!));
       });
     this.internals.setFormValue(input.value);
     this.internals.setValidity(validity, Array.from(errorMessage).join(', '));
@@ -430,20 +422,29 @@ export class MdsInputUpload {
               animation={this.animateText ? 'yugop' : 'none'}
               variant="title"
               typography="action"
-              text={this.actionTitle}
+              text={
+                this.dragging
+                  ? this.t.get('dragEnter')
+                  : this.t.get('clickOrDrag', { maxFiles: this.maxFiles })
+              }
             ></mds-text>
           </div>
           <div class="main-actions">
-            <mds-button variant="primary" onClick={this.handleAddFileClick}>
-              {' '}
-              {this.files != null
-                ? this.t.get('addFile', { maxFiles: this.maxFiles })
-                : this.t.get('selectFile')}
-            </mds-button>
+            <mds-button
+              variant="primary"
+              onClick={this.handleAddFileClick}
+              label={
+                this.files != null
+                  ? this.t.get('addFile', { maxFiles: this.maxFiles })
+                  : this.t.get('selectFile')
+              }
+            ></mds-button>
             {this.files.length > 0 && (
-              <mds-button variant="error" onClick={this.onReset}>
-                {this.t.get('cancel')}
-              </mds-button>
+              <mds-button
+                variant="error"
+                onClick={this.onReset}
+                label={this.t.get('cancel')}
+              ></mds-button>
             )}
           </div>
           <div class="main-infos">
@@ -517,7 +518,7 @@ export class MdsInputUpload {
                     filename={file.file.name}
                     filesize={file.file.size.toString()}
                     onMdsFileDelete={this.handleFileDelete(file.key)}
-                    message={file.errorMessage}
+                    message={this.t.get(file.errorKey!)}
                   ></mds-file-preview>
                 );
               case Status.SUCCESS:

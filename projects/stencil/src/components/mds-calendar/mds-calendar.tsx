@@ -13,7 +13,7 @@ import {
 import miBaselineForwardIos from '@icon/mi/baseline/arrow-forward-ios.svg';
 import miBaselineBackIosNew from '@icon/mi/baseline/arrow-back-ios-new.svg';
 import { DateTime } from 'luxon';
-import { Locale } from '@common/locale';
+import { preferenceStore } from '@common/preference';
 import { ISO8601Date } from '@type/date';
 import { sanitizeISO8601Date } from '@common/date';
 import clsx from 'clsx';
@@ -38,21 +38,6 @@ export class MdsCalendar {
   @State() isFirstClick: boolean = true;
   @State() currentView: 'calendar' | 'years' | 'months' = 'calendar';
   @State() selectedYear: number = this.currentDate.year;
-
-  private readonly t: Locale = new Locale({
-    it: {},
-    en: {},
-    es: {},
-    el: {},
-  });
-  @State() language: string;
-  /**
-   * Updates the component's texts to the locale currently set on the host element.
-   */
-  @Method()
-  async updateLang(): Promise<void> {
-    this.language = this.t.lang(this.host);
-  }
 
   /**
    * Enables selecting a date range (start and end date) instead of a single date.
@@ -231,8 +216,6 @@ export class MdsCalendar {
   @State() currentYear: string = '';
 
   componentWillLoad(): void {
-    this.language = this.t.lang(this.host);
-
     if (this.viewDate !== null && this.viewDate !== '') {
       const viewDate = DateTime.fromISO(this.viewDate.toString());
 
@@ -332,10 +315,12 @@ export class MdsCalendar {
     try {
       const startOfWeek = this.currentDate.startOf('week');
       this.weekdays = Array.from({ length: 7 }).map((_, index) =>
-        startOfWeek.setLocale(this.language).plus({ days: index }).toFormat('ccc'),
+        startOfWeek.setLocale(preferenceStore.state.language).plus({ days: index }).toFormat('ccc'),
       );
       this.calculateWeekDaysInMonth();
-      this.currentMonth = this.currentDate.setLocale(this.language).toFormat('MMMM');
+      this.currentMonth = this.currentDate
+        .setLocale(preferenceStore.state.language)
+        .toFormat('MMMM');
       this.currentMonthNumber = this.currentDate.month;
       this.currentYear = this.currentDate.toFormat('yyyy');
     } catch (error) {
@@ -858,7 +843,7 @@ export class MdsCalendar {
                     disabled={this.isDateDisabled(dayInfo.date)}
                     onClick={this.handleCellClick(dayInfo.date)}
                     title={dayInfo.date
-                      .setLocale(this.language)
+                      .setLocale(preferenceStore.state.language)
                       .toFormat('cccc d LLLL')
                       .replace(/^./, (char) => char.toUpperCase())}
                     label={dayInfo.date.toFormat('dd')}
@@ -874,7 +859,7 @@ export class MdsCalendar {
                 {Array.from({ length: 12 }).map((_, index) => {
                   const monthName = DateTime.local()
                     .set({ month: index + 1 })
-                    .setLocale(this.language)
+                    .setLocale(preferenceStore.state.language)
                     .toFormat('MMMM');
                   return (
                     <mds-button

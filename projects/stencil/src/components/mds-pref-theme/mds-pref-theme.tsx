@@ -7,7 +7,6 @@ import {
   h,
   Prop,
   Watch,
-  Method,
   State,
 } from '@stencil/core';
 import { cssDurationToMilliseconds } from '@common/unit';
@@ -17,7 +16,7 @@ import miBaselineDarkMode from '@icon/mi/baseline/dark-mode.svg';
 import miBaselineSettings from '@icon/mi/baseline/settings.svg';
 import { Locale } from '@common/locale';
 import { isSafari } from '@common/browser';
-import { subscribePreference } from '@common/preference';
+import { preferenceStore } from '@common/preference';
 import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.es.json';
@@ -33,12 +32,6 @@ import { TabSizeType } from '@type/button';
 })
 export class MdsPrefTheme {
   @Element() private element: HTMLMdsPrefThemeElement;
-  @State() prefContrast?: string;
-  private unsubscribePrefContrast?: () => void;
-  @State() prefTheme?: string;
-  private unsubscribePrefTheme?: () => void;
-  @State() prefThemeScheme?: string;
-  private unsubscribePrefThemeScheme?: () => void;
   private readonly defaultMode: PreferenceThemeModeType = 'system';
   private readonly t: Locale = new Locale({
     el: localeEl,
@@ -46,14 +39,6 @@ export class MdsPrefTheme {
     es: localeEs,
     it: localeIt,
   });
-  @State() language: string;
-  /**
-   * Updates the component's texts to the locale currently set on the host element.
-   */
-  @Method()
-  async updateLang(): Promise<void> {
-    this.language = this.t.lang(this.element);
-  }
 
   private readonly localStorageAlias: string = 'mdsPrefTheme';
   private readonly customPropertyAlias: string = '--magma-pref-user-theme';
@@ -117,7 +102,6 @@ export class MdsPrefTheme {
   };
 
   componentWillRender(): void {
-    this.t.lang(this.element);
     if (!isSafari()) {
       this.setTheme(
         this.mode ??
@@ -156,6 +140,7 @@ export class MdsPrefTheme {
       element?.classList.add(this.theme[mode].selector);
       element?.style.setProperty(this.customPropertyAlias, this.mode);
     }
+    preferenceStore.state.theme = mode;
   };
 
   private readonly isDarkMode = (): boolean => {
@@ -266,24 +251,6 @@ export class MdsPrefTheme {
     }
   };
 
-  connectedCallback(): void {
-    this.unsubscribePrefContrast = subscribePreference('contrast', (value) => {
-      this.prefContrast = value;
-    });
-    this.unsubscribePrefTheme = subscribePreference('theme', (value) => {
-      this.prefTheme = value;
-    });
-    this.unsubscribePrefThemeScheme = subscribePreference('theme-scheme', (value) => {
-      this.prefThemeScheme = value;
-    });
-  }
-
-  disconnectedCallback(): void {
-    this.unsubscribePrefContrast?.();
-    this.unsubscribePrefTheme?.();
-    this.unsubscribePrefThemeScheme?.();
-  }
-
   private readonly handleModeClick = (mode: PreferenceThemeModeType) => (): void => {
     if (this.overlayShow) {
       return;
@@ -294,9 +261,9 @@ export class MdsPrefTheme {
   render() {
     return (
       <Host
-        pref-contrast={this.prefContrast}
-        pref-theme={this.prefTheme}
-        pref-theme-scheme={this.prefThemeScheme}
+        pref-contrast={preferenceStore.state.contrast}
+        pref-theme={preferenceStore.state.theme}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
         <mds-text class="info" typography="caption">
           <b>{this.t.get('label')}</b>{' '}

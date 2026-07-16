@@ -1,18 +1,9 @@
-import {
-  Component,
-  Element,
-  Event,
-  EventEmitter,
-  Host,
-  h,
-  Prop,
-  State,
-  Method,
-} from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Prop, State } from '@stencil/core';
 import { MdsPrefThemeVariantEventDetail } from '@event/theme-variant';
 import { MdsPrefChangeEventDetail } from '@event/preference';
 import { PreferenceThemeSchemeType } from '@type/preference';
 import { Locale } from '@common/locale';
+import { preferenceStore } from '@common/preference';
 import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.es.json';
@@ -46,14 +37,6 @@ export class MdsPrefThemeVariant {
     es: localeEs,
     it: localeIt,
   });
-  @State() language: string;
-  /**
-   * Updates the component's texts to the locale currently set on the host element.
-   */
-  @Method()
-  async updateLang(): Promise<void> {
-    this.language = this.t.lang(this.element);
-  }
   private readonly clasNameThemeNamePrefix: string = 'pref-theme-name-';
   private previousName: string | null = null;
   private readonly customPropertyAliasThemeScheme: string = '--magma-pref-theme-scheme';
@@ -104,7 +87,6 @@ export class MdsPrefThemeVariant {
       | PreferenceThemeSchemeType
       | 'all';
     this.setThemeVariant(this.userThemeName ?? this.name, this.userThemeScheme ?? this.scheme);
-    this.t.lang(this.element);
   }
 
   private readonly toggleDropdown = (): void => {
@@ -133,7 +115,6 @@ export class MdsPrefThemeVariant {
         this.themeChangeEvent.emit({ name, scheme });
         this.showDropdown = false;
         this.setThemeVariant(name, scheme);
-        this.t.update(document);
       });
     });
 
@@ -171,6 +152,7 @@ export class MdsPrefThemeVariant {
       element?.style.setProperty(this.customPropertyAliasThemeScheme, this.scheme);
       this.previousName = this.name;
     }
+    preferenceStore.state['theme-scheme'] = this.scheme;
   };
 
   render() {
@@ -188,9 +170,8 @@ export class MdsPrefThemeVariant {
               class="item item--custom-theme-variant"
               icon-position="right"
               icon={this.showDropdown ? miBaselineKeyboardArrowUp : miBaselineKeyboardArrowDown}
-            >
-              {this.name}
-            </mds-tab-item>
+              label={this.name}
+            ></mds-tab-item>
           </mds-tab>
         </div>
         <mds-dropdown

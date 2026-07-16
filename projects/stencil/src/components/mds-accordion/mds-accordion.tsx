@@ -7,11 +7,10 @@ import {
   Host,
   Listen,
   Prop,
-  State,
   h,
 } from '@stencil/core';
 import { MdsAccordionEventDetail } from './meta/event-detail';
-import { subscribePreference } from '@common/preference';
+import { preferenceStore } from '@common/preference';
 
 /**
  * @slot - Add `mds-accordion-item` element/s.
@@ -24,12 +23,6 @@ import { subscribePreference } from '@common/preference';
 })
 export class MdsAccordion {
   @Element() private element: HTMLMdsAccordionElement;
-  @State() prefContrast?: string;
-  private unsubscribePrefContrast?: () => void;
-  @State() prefTheme?: string;
-  private unsubscribePrefTheme?: () => void;
-  @State() prefThemeScheme?: string;
-  private unsubscribePrefThemeScheme?: () => void;
 
   /**
    * Choose if multiple siblings can be selected simultaneously
@@ -48,24 +41,6 @@ export class MdsAccordion {
 
   private queryItems = (): NodeListOf<HTMLMdsAccordionItemElement> =>
     this.element.querySelectorAll<HTMLMdsAccordionItemElement>('mds-accordion-item');
-
-  connectedCallback(): void {
-    this.unsubscribePrefContrast = subscribePreference('contrast', (value) => {
-      this.prefContrast = value;
-    });
-    this.unsubscribePrefTheme = subscribePreference('theme', (value) => {
-      this.prefTheme = value;
-    });
-    this.unsubscribePrefThemeScheme = subscribePreference('theme-scheme', (value) => {
-      this.prefThemeScheme = value;
-    });
-  }
-
-  disconnectedCallback(): void {
-    this.unsubscribePrefContrast?.();
-    this.unsubscribePrefTheme?.();
-    this.unsubscribePrefThemeScheme?.();
-  }
 
   componentWillLoad(): void {
     const items = this.queryItems();
@@ -126,9 +101,9 @@ export class MdsAccordion {
   render() {
     return (
       <Host
-        pref-contrast={this.prefContrast}
-        pref-theme={this.prefTheme}
-        pref-theme-scheme={this.prefThemeScheme}
+        pref-contrast={preferenceStore.state.contrast}
+        pref-theme={preferenceStore.state.theme}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
         <slot />
       </Host>

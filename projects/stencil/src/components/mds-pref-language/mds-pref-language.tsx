@@ -7,11 +7,12 @@ import {
   h,
   Prop,
   State,
-  Method,
+  Watch,
 } from '@stencil/core';
 import { MdsPrefLanguageEventDetail } from '@event/language';
 import { MdsPrefChangeEventDetail } from '@event/preference';
 import { Locale } from '@common/locale';
+import { preferenceStore } from '@common/preference';
 import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.es.json';
@@ -34,9 +35,7 @@ export class MdsPrefLanguage {
   @Element() element: HTMLMdsPrefLanguageElement;
   private readonly localStorageAlias: string = 'mdsPrefLanguage';
   private readonly defaultLanguage: string = 'en';
-  private pageLanguage: string | null;
-  private systemLanguage: string;
-  private userLanguage: string | null;
+  private appliedLanguage?: string;
   private currentSelectedItem: HTMLMdsPrefLanguageItemElement;
   private elPreferLanguageItems: NodeListOf<HTMLMdsPrefLanguageItemElement>;
   private readonly t: Locale = new Locale({
@@ -45,14 +44,6 @@ export class MdsPrefLanguage {
     es: localeEs,
     it: localeIt,
   });
-  @State() language: string;
-  /**
-   * Updates the component's texts to the locale currently set on the host element.
-   */
-  @Method()
-  async updateLang(): Promise<void> {
-    this.language = this.t.lang(this.element);
-  }
 
   /**
    * Sets the size of the component items nested inside it
@@ -81,16 +72,17 @@ export class MdsPrefLanguage {
    */
   @Event({ eventName: 'mdsPrefChange' }) prefChangeEvent: EventEmitter<MdsPrefChangeEventDetail>;
 
+  componentWillLoad(): void {
+    this.setLanguage(this.set);
+  }
+
   componentDidLoad(): void {
     this.checkLanguageSelect();
   }
 
-  componentWillRender(): void {
-    this.systemLanguage = this.sanitizeLanguage(navigator.language);
-    this.userLanguage = localStorage.getItem(this.localStorageAlias);
-    this.pageLanguage = document.querySelector('html')?.getAttribute('lang') ?? null;
-    this.setLanguage(this.set);
-    this.t.lang(this.element);
+  @Watch('set')
+  handleSetChange(newValue: string): void {
+    this.setLanguage(newValue);
   }
 
   private readonly toggleDropdown = (): void => {
@@ -117,7 +109,6 @@ export class MdsPrefLanguage {
         this.languageChangeEvent.emit({ language: this.currentSelectedItem.code });
         this.showDropdown = false;
         this.setLanguage(e.detail.language);
-        this.t.update(document);
       });
     });
 
@@ -137,16 +128,30 @@ export class MdsPrefLanguage {
     if (!/(auto)|^[a-z]{2}(-[A-Z]{2})?$/gm.exec(set)) {
       throw Error(`Language code set not reconized: ${set}`);
     }
-    this.set =
-      set === 'auto'
-        ? (this.userLanguage ?? this.pageLanguage ?? this.systemLanguage)
-        : this.sanitizeLanguage(set);
-    this.prefChangeEvent.emit({ preference: 'language' });
 
-    localStorage.setItem(this.localStorageAlias, this.set);
+    const systemLanguage = this.sanitizeLanguage(navigator.language);
+    const userLanguage = localStorage.getItem(this.localStorageAlias);
+    const pageLanguage = document.querySelector('html')?.getAttribute('lang') ?? null;
+    const language =
+      set === 'auto' ? (userLanguage ?? pageLanguage ?? systemLanguage) : this.sanitizeLanguage(set);
+
+    this.set = language;
+    // Re-applying the same language must not emit or write again (the `set`
+    // watcher re-fires once after the normalization above)
+    if (language === this.appliedLanguage) {
+      return;
+    }
+    const isFirstApplication = this.appliedLanguage === undefined;
+    this.appliedLanguage = language;
+
+    localStorage.setItem(this.localStorageAlias, language);
     if (typeof document !== 'undefined') {
-      const element = document.querySelector('html');
-      element?.setAttribute('lang', this.set);
+      document.querySelector('html')?.setAttribute('lang', language);
+    }
+    preferenceStore.state.language = language;
+
+    if (!isFirstApplication) {
+      this.prefChangeEvent.emit({ preference: 'language' });
     }
   };
 
@@ -165,9 +170,8 @@ export class MdsPrefLanguage {
               class="item item--custom-language"
               icon-position="right"
               icon={this.showDropdown ? miBaselineKeyboardArrowUp : miBaselineKeyboardArrowDown}
-            >
-              {this.t.get(this.set ?? 'auto')}
-            </mds-tab-item>
+              label={this.t.get(this.set ?? 'auto')}
+            ></mds-tab-item>
           </mds-tab>
         </div>
 

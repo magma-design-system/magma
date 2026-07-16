@@ -1,16 +1,5 @@
 import miBaselineCancel from '@icon/mi/baseline/cancel.svg';
-import {
-  Component,
-  Element,
-  Event,
-  EventEmitter,
-  Host,
-  h,
-  Prop,
-  Watch,
-  State,
-  Method,
-} from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Prop, Watch } from '@stencil/core';
 import { ExtensionSuffixType } from '@type/file-types';
 import { MdsFilePreviewEventDetail } from './meta/event-detail';
 import { TypographyTruncateType } from '@type/text';
@@ -19,7 +8,7 @@ import { filesize } from 'filesize';
 import { ThemeFullVariantAvatarType, ThemeFullVariantType } from '@type/variant';
 import { getFormatsVariant, getSuffix, getExtensionInfos } from '@common/file';
 import { Locale } from '@common/locale';
-import { subscribePreference } from '@common/preference';
+import { preferenceStore } from '@common/preference';
 import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.es.json';
@@ -36,28 +25,12 @@ import fileDescriptionLocaleIt from '@meta/file-format/locale.it.json';
 })
 export class MdsFilePreview {
   @Element() host: HTMLMdsFilePreviewElement;
-  @State() prefAnimation?: string;
-  private unsubscribePrefAnimation?: () => void;
-  @State() prefContrast?: string;
-  private unsubscribePrefContrast?: () => void;
-  @State() prefTheme?: string;
-  private unsubscribePrefTheme?: () => void;
-  @State() prefThemeScheme?: string;
-  private unsubscribePrefThemeScheme?: () => void;
   private t: Locale = new Locale({
     el: { ...localeEl, ...fileDescriptionLocaleEl },
     en: { ...localeEn, ...fileDescriptionLocaleEn },
     es: { ...localeEs, ...fileDescriptionLocaleEs },
     it: { ...localeIt, ...fileDescriptionLocaleIt },
   });
-  @State() language: string;
-  /**
-   * Updates the component's texts to the locale currently set on the host element.
-   */
-  @Method()
-  async updateLang(): Promise<void> {
-    this.language = this.t.lang(this.host);
-  }
 
   // ciaone
 
@@ -150,30 +123,7 @@ export class MdsFilePreview {
     });
   };
 
-  connectedCallback(): void {
-    this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
-      this.prefAnimation = value;
-    });
-    this.unsubscribePrefContrast = subscribePreference('contrast', (value) => {
-      this.prefContrast = value;
-    });
-    this.unsubscribePrefTheme = subscribePreference('theme', (value) => {
-      this.prefTheme = value;
-    });
-    this.unsubscribePrefThemeScheme = subscribePreference('theme-scheme', (value) => {
-      this.prefThemeScheme = value;
-    });
-  }
-
-  disconnectedCallback(): void {
-    this.unsubscribePrefAnimation?.();
-    this.unsubscribePrefContrast?.();
-    this.unsubscribePrefTheme?.();
-    this.unsubscribePrefThemeScheme?.();
-  }
-
   componentWillLoad(): void {
-    this.t.lang(this.host);
     this.format = getExtensionInfos(this.filename, this.suffix).format;
   }
 
@@ -200,10 +150,10 @@ export class MdsFilePreview {
   render() {
     return (
       <Host
-        pref-animation={this.prefAnimation}
-        pref-contrast={this.prefContrast}
-        pref-theme={this.prefTheme}
-        pref-theme-scheme={this.prefThemeScheme}
+        pref-animation={preferenceStore.state.animation}
+        pref-contrast={preferenceStore.state.contrast}
+        pref-theme={preferenceStore.state.theme}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
         {this.deletable && (
           <mds-button

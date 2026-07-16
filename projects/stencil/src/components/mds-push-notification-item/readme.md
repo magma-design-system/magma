@@ -376,19 +376,6 @@ mds-push-notification-item::part(content) {
 | `mdsPushNotificationItemClose` | Emits when the component is closed | `CustomEvent<MdsPushNotificationItemEventDetail>` |
 
 
-## Methods
-
-### `updateLang() => Promise<void>`
-
-Updates the component's texts to the locale currently set on the host element.
-
-#### Returns
-
-Type: `Promise<void>`
-
-
-
-
 ## Slots
 
 | Slot       | Description                                                                             |

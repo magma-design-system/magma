@@ -250,19 +250,6 @@ mds-label {
 | `mdsLabelDelete` | Emits when the label has to be cancelled | `CustomEvent<void>` |
 
 
-## Methods
-
-### `updateLang() => Promise<void>`
-
-Updates the component's texts to the locale currently set on the host element.
-
-#### Returns
-
-Type: `Promise<void>`
-
-
-
-
 ## CSS Custom Properties
 
 | Name                                  | Description                                              |

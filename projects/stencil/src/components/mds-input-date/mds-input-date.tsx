@@ -13,8 +13,7 @@ import {
 } from '@stencil/core';
 import miBaselineCalendarToday from '@icon/mi/baseline/calendar-today.svg';
 import { DateTime } from 'luxon';
-import { Locale } from '@common/locale';
-import { subscribePreference } from '@common/preference';
+import { preferenceStore } from '@common/preference';
 import { ThemeInputVariantType } from '@type/variant';
 import { MdsValidationErrors } from 'src/components';
 
@@ -27,33 +26,11 @@ import { MdsValidationErrors } from 'src/components';
 })
 export class MdsInputDate {
   @Element() host: HTMLMdsInputDateElement;
-  @State() prefAnimation?: string;
-  private unsubscribePrefAnimation?: () => void;
-  @State() prefContrast?: string;
-  private unsubscribePrefContrast?: () => void;
-  @State() prefTheme?: string;
-  private unsubscribePrefTheme?: () => void;
-  @State() prefThemeScheme?: string;
-  private unsubscribePrefThemeScheme?: () => void;
   @AttachInternals() internals: ElementInternals;
   private isSlotted: boolean = false;
   @State() empty: boolean | undefined = undefined;
   @State() isValid: boolean;
-  private t: Locale = new Locale({
-    el: {},
-    en: {},
-    es: {},
-    it: {},
-  });
-  @State() language: string;
   @State() touched: boolean = false;
-  /**
-   * Updates the component's texts to the locale currently set on the host element.
-   */
-  @Method()
-  async updateLang(): Promise<void> {
-    this.language = this.t.lang(this.host);
-  }
 
   /**
    * Specifies the value of the input
@@ -184,34 +161,11 @@ export class MdsInputDate {
     this.internals.setFormValue('');
   }
 
-  connectedCallback(): void {
-    this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
-      this.prefAnimation = value;
-    });
-    this.unsubscribePrefContrast = subscribePreference('contrast', (value) => {
-      this.prefContrast = value;
-    });
-    this.unsubscribePrefTheme = subscribePreference('theme', (value) => {
-      this.prefTheme = value;
-    });
-    this.unsubscribePrefThemeScheme = subscribePreference('theme-scheme', (value) => {
-      this.prefThemeScheme = value;
-    });
-  }
-
-  disconnectedCallback(): void {
-    this.unsubscribePrefAnimation?.();
-    this.unsubscribePrefContrast?.();
-    this.unsubscribePrefTheme?.();
-    this.unsubscribePrefThemeScheme?.();
-  }
-
   componentWillLoad(): void {
     this.isSlotted = !(
       this.host.getAttribute('slot') === null || this.host.getAttribute('slot') === ''
     );
     this.value = this.value || '';
-    this.language = this.t.lang(this.host);
 
     // Se max è precedente a min, imposto max uguale a min
     if (this.min !== null && this.min !== '' && this.max !== null && this.max !== '') {
@@ -273,10 +227,10 @@ export class MdsInputDate {
     return (
       <Host
         empty={this.empty}
-        pref-animation={this.prefAnimation}
-        pref-contrast={this.prefContrast}
-        pref-theme={this.prefTheme}
-        pref-theme-scheme={this.prefThemeScheme}
+        pref-animation={preferenceStore.state.animation}
+        pref-contrast={preferenceStore.state.contrast}
+        pref-theme={preferenceStore.state.theme}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
 
         <input
@@ -305,7 +259,7 @@ export class MdsInputDate {
             ></mds-button>
           </div>
         )}
-        <mds-input-tip lang={this.language} position="top" active={this.hasFocus}>
+        <mds-input-tip position="top" active={this.hasFocus}>
           {this.disabled && <mds-input-tip-item expanded variant="disabled"></mds-input-tip-item>}
           {this.readonly && <mds-input-tip-item expanded variant="readonly"></mds-input-tip-item>}
           {this.required && (
@@ -325,7 +279,6 @@ export class MdsInputDate {
             <mds-calendar
               key={this.calendarKey}
               rangePicker={false}
-              lang={this.language}
               onMdsCalendarChange={this.handleCalendarChange}
               startDate={this.value}
               {...(this.min !== null && this.min !== '' ? { min: this.min } : {})}
