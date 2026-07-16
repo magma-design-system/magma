@@ -58,7 +58,9 @@ body { background: var(--bg); min-width: 960px; }
 .topbar h1 { font-size: 15px; font-weight: 650; letter-spacing: 0.01em; }
 .topbar h1 span { color: var(--ink-soft); font-weight: 400; }
 .topbar nav { display: flex; gap: 4px; }
-.topbar-actions { display: flex; gap: 8px; margin-left: auto; }
+.topbar-actions { align-items: center; display: flex; gap: 8px; margin-left: auto; }
+
+.save-status { color: var(--ink-soft); font-size: 12px; }
 
 .download-menu { position: relative; }
 .download-backdrop { inset: 0; position: fixed; z-index: 5; }
@@ -113,6 +115,8 @@ button {
   padding: 5px 12px;
 }
 button:hover { border-color: var(--ink-soft); }
+button:disabled { cursor: not-allowed; opacity: 0.45; }
+button:disabled:hover { border-color: var(--line); }
 button.active { background: var(--ink); border-color: var(--ink); color: #ffffff; }
 button.primary { background: var(--accent); border-color: var(--accent); color: #ffffff; }
 button.danger:hover { border-color: #c0392b; color: #c0392b; }
@@ -280,6 +284,22 @@ button.danger:hover { border-color: #c0392b; color: #c0392b; }
 
 .scale-card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 18px 16px; }
 .scale-card-head { align-items: center; display: flex; gap: 12px; margin-bottom: 6px; }
+/* the pinned selection sits on top and reads as distinct from the group cards */
+.selected-card { border-color: var(--accent); }
+.selected-card .group-title { color: var(--accent); }
+.group-empty { color: var(--ink-soft); font-size: 13px; font-style: italic; margin: 4px 0 0; }
+
+/* diff view */
+.diff-summary { color: var(--ink-soft); font-size: 13px; margin-bottom: 14px; }
+.diff-card { display: flex; flex-direction: column; gap: 4px; margin-bottom: 12px; }
+.diff-row { align-items: center; display: flex; gap: 10px; }
+.diff-cells { border-radius: 6px; display: flex; flex: 1; gap: 2px; }
+.diff-cell { border-radius: 3px; flex: 1; height: 26px; min-width: 0; }
+.diff-cell.changed { box-shadow: inset 0 0 0 2px var(--accent), inset 0 0 0 3px #ffffff; }
+.diff-badge { border-radius: 99px; font-size: 11px; margin-left: auto; padding: 2px 8px; }
+.diff-changed { background: #fdf0ee; color: var(--accent); }
+.diff-new { background: #e7f4ec; color: #1b7a43; }
+.diff-removed { background: var(--line); color: var(--ink-soft); }
 
 .scale-name {
   background: transparent;
@@ -293,6 +313,18 @@ button.danger:hover { border-color: #c0392b; color: #c0392b; }
 }
 .scale-name:not(:disabled):hover, .scale-name:focus { background: #ffffff; border-color: var(--line); }
 .scale-usage { color: var(--ink-soft); font-size: 12px; }
+.scale-origin {
+  background: var(--line);
+  border-radius: 99px;
+  color: var(--ink-soft);
+  cursor: help;
+  font-size: 9px;
+  letter-spacing: 0.04em;
+  padding: 2px 7px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.scale-origin.overridden { background: #fdf0ee; color: var(--accent); }
 .scale-card-actions { display: flex; gap: 8px; margin-left: auto; }
 .scale-card-actions button { align-items: center; display: inline-flex; gap: 5px; }
 .scale-card-actions button:disabled { cursor: not-allowed; opacity: 0.4; }

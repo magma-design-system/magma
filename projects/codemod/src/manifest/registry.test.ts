@@ -36,6 +36,20 @@ describe('rulesForComponent (global resolution)', () => {
     expect(rules.some((r) => r.kind === 'enumRemap')).toBe(false);
   });
 
+  it('prefers a per-tag tone override over the global map', () => {
+    const withOverride = structuredClone(manifest);
+    withOverride.global.tone!.overrides = { 'mds-button': { ghost: 'outline', quiet: 'weak' } };
+    const button = withOverride.components['mds-button']!;
+    expect(
+      rulesForComponent(withOverride, button).find((r) => r.kind === 'enumRemap'),
+    ).toMatchObject({ map: { ghost: 'outline', quiet: 'weak' } });
+    // Components not listed in the overrides keep the global map.
+    const banner = withOverride.components['mds-banner']!;
+    expect(
+      rulesForComponent(withOverride, banner).find((r) => r.kind === 'enumRemap'),
+    ).toMatchObject({ map: { ghost: 'outline', quiet: 'text' } });
+  });
+
   it('does not inject the default-slot removal (handled globally by surfaces)', () => {
     const banner = manifest.components['mds-banner']!;
     const rules = rulesForComponent(manifest, banner);

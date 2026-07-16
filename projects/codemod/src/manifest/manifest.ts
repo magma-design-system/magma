@@ -8,10 +8,14 @@
  *
  *  - `tone` is migrated by the single global rule (with per-component
  *    validation), so the generated per-component `tone` remaps are dropped to
- *    avoid transforming the same attribute twice.
+ *    avoid transforming the same attribute twice; the three text-capable
+ *    components override `quiet → text`.
  *  - semantic prop renames the generator can only see as removals
- *    (`mds-label labelAction → label`).
- *  - the preferred slot → attribute lift for `mds-button` (`label`).
+ *    (`mds-label labelAction → label`) or missed entirely (`mds-tooltip arrow`).
+ *  - slot → attribute lifts for `label` (`mds-button` preferred;
+ *    `mds-breadcrumb-item` / `mds-tab-item` mandatory — v2 dropped their slot).
+ *  - CSS custom properties the docs diff recorded as removals but that are
+ *    renames in the shipped CSS.
  *
  * Re-run the generator on each alpha/beta and review the diff; keep the
  * corrections here.
@@ -24,9 +28,17 @@ const curate = (base: Manifest): Manifest => {
 
   // Curated tone mapping. `weak` exists in every component's v2 tone set, so
   // `quiet → weak` validates everywhere (including mds-banner / mds-label, which
-  // dropped `text`); `ghost → outline` applies where `outline` exists.
+  // dropped `text`); `ghost → outline` applies where `outline` exists. The three
+  // components whose v2 tone set gained `text` follow the documented design
+  // intent (`quiet → text`) via per-tag overrides.
   if (m.global.tone) {
     m.global.tone.map = { ghost: 'outline', quiet: 'weak' };
+    const quietToText = { ghost: 'outline', quiet: 'text' };
+    m.global.tone.overrides = {
+      'mds-button': { ...quietToText },
+      'mds-radial-menu': { ...quietToText },
+      'mds-radial-menu-item': { ...quietToText },
+    };
   }
 
   for (const component of Object.values(m.components)) {
@@ -52,8 +64,9 @@ const curate = (base: Manifest): Manifest => {
     });
   }
 
-  // B — boolean inversions the name heuristic cannot pair (the diff only shows
-  // removals): the v2 prop shares no stem with the v1 name.
+  // B — boolean inversions the docs diff could not pair: either the v2 prop
+  // shares no stem with the v1 name (the diff only shows removals), or the pair
+  // is missing from the diff entirely (mds-tooltip `arrow`).
   const curatedInversions = [
     {
       tag: 'mds-accordion',
@@ -64,6 +77,11 @@ const curate = (base: Manifest): Manifest => {
       tag: 'mds-notification',
       from: { attr: 'visible', prop: 'visible' },
       to: { attr: 'dismissed', prop: 'dismissed' },
+    },
+    {
+      tag: 'mds-tooltip',
+      from: { attr: 'arrow', prop: 'arrow' },
+      to: { attr: 'hide-arrow', prop: 'hideArrow' },
     },
   ] as const;
   for (const { tag, from, to } of curatedInversions) {
@@ -82,14 +100,119 @@ const curate = (base: Manifest): Manifest => {
     });
   }
 
-  // F2 — preferred: lift mds-button slotted text into `label` (not derivable from the docs diff).
-  const button = m.components['mds-button'];
-  if (button && !button.rules.some((r) => r.kind === 'slotToAttr')) {
-    button.rules.unshift({
+  // F2 — lift slotted text into `label` (not derivable from the docs diff).
+  // mds-button keeps reading slotted text in v2, so the lift is the preferred
+  // form; mds-breadcrumb-item and mds-tab-item no longer render a slot at all,
+  // so there the lift is mandatory — v2 silently drops slotted content.
+  const slotLifts = [
+    { tag: 'mds-breadcrumb-item', react: 'MdsBreadcrumbItem' },
+    { tag: 'mds-button', react: 'MdsButton' },
+    { tag: 'mds-tab-item', react: 'MdsTabItem' },
+  ] as const;
+  for (const { tag, react } of slotLifts) {
+    const component = (m.components[tag] ??= { tag, react, rules: [] });
+    if (component.rules.some((r) => r.kind === 'slotToAttr')) continue;
+    component.rules.unshift({
       kind: 'slotToAttr',
       slot: 'default',
       to: { attr: 'label', prop: 'label' },
       confidence: 'review',
+    });
+  }
+
+  // G — CSS custom properties the docs diff saw as removals (or could not see
+  // at all) but that are really renames, verified against the shipped component
+  // CSS on both branches. Three flavours:
+  //  - real renames (banner gap, header backdrop, filter `shodow → shadow`);
+  //  - "doc-only v1 name" cases where the shipped v1 CSS already used the v2
+  //    name, so overrides written against the documented name were silently
+  //    inert — the rename activates them (explanatory note attached);
+  //  - typo'd v1 names corrected in v2 (#566): v1 shipped the misspelled name,
+  //    so the working v1 name is renamed to the corrected v2 one.
+  const docOnlyNote = (shipped: string): string =>
+    `the v1 name was documented but never shipped (the CSS always read \`--${shipped}\`); this override was inert in v1 and becomes effective after the rename`;
+  const cssVarRenames: Array<{
+    tag: string;
+    from: string;
+    to: string;
+    valueFormatChanged?: boolean;
+    note?: string;
+  }> = [
+    {
+      tag: 'mds-banner',
+      from: 'mds-banner-gap',
+      to: 'mds-banner-content-gap',
+      valueFormatChanged: true,
+      note: 'v1 accepted a "row column" gap shorthand; v2 takes a single gap value',
+    },
+    {
+      tag: 'mds-file',
+      from: 'mds-file-preview-icon-bacground',
+      to: 'mds-file-preview-icon-background',
+    },
+    {
+      tag: 'mds-filter',
+      from: 'mds-filter-wrapper-shodow-opacity',
+      to: 'mds-filter-wrapper-shadow-opacity',
+    },
+    {
+      tag: 'mds-filter-item',
+      from: '-mds-filter-item-count-background-selected',
+      to: 'mds-filter-item-count-background-selected',
+      note: docOnlyNote('mds-filter-item-count-background-selected'),
+    },
+    {
+      tag: 'mds-filter-item',
+      from: '-mds-filter-item-count-color-default',
+      to: 'mds-filter-item-count-color-default',
+      note: docOnlyNote('mds-filter-item-count-color-default'),
+    },
+    {
+      tag: 'mds-filter-item',
+      from: '-mds-filter-item-count-color-selected',
+      to: 'mds-filter-item-count-color-selected',
+      note: docOnlyNote('mds-filter-item-count-color-selected'),
+    },
+    {
+      tag: 'mds-header',
+      from: 'mds-header-backdrop-filter',
+      to: 'mds-header-backdrop-blur-strength',
+      valueFormatChanged: true,
+      note: 'v1 took a full backdrop-filter value (e.g. blur(10px)); v2 takes the blur length only',
+    },
+    {
+      tag: 'mds-tab',
+      from: 'mds-tab-item-transition-duration',
+      to: 'mds-tab-transition-duration',
+      note: docOnlyNote('mds-tab-transition-duration'),
+    },
+    {
+      tag: 'mds-tab',
+      from: 'mds-tab-item-transition-timing-function',
+      to: 'mds-tab-transition-timing-function',
+      note: docOnlyNote('mds-tab-transition-timing-function'),
+    },
+    {
+      tag: 'mds-video-wall',
+      from: 'mds-video-wall-noise-fitler',
+      to: 'mds-video-wall-noise-filter',
+    },
+  ];
+  for (const { tag, from, to, valueFormatChanged, note } of cssVarRenames) {
+    const component = m.components[tag];
+    if (!component) continue;
+    // Drop the stale generated removal for either spelling: the docs diff
+    // recorded `--mds-video-wall-noise-filter` (the rename target) as removed
+    // while v2 still shipped the typo.
+    component.rules = component.rules.filter(
+      (r) => !(r.kind === 'cssVarRemove' && (r.name === from || r.name === to)),
+    );
+    component.rules.push({
+      kind: 'cssVarRename',
+      from,
+      to,
+      ...(valueFormatChanged ? { valueFormatChanged } : {}),
+      ...(note ? { note } : {}),
     });
   }
 
