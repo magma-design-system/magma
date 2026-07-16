@@ -1,3 +1,5 @@
+import { addons } from 'storybook/preview-api';
+
 import { defineCustomElements } from '../dist/esm/loader';
 
 import '@fontsource/karla/400.css';
@@ -14,6 +16,16 @@ import './styles.css';
 import devices from './devices.json';
 // import media from '@maggioli-design-system/design-tokens/dist/js/tailwind-screens'
 
+import {
+  LANGUAGE,
+  PREF_CHANNEL_EVENTS,
+  PREFERENCES,
+  PREFS_ENABLED_KEY,
+  UNSET,
+  storageKey,
+  storedValue,
+} from './preferences';
+
 defineCustomElements();
 
 const pathName = window.location.pathname.replace('/iframe.html', '');
@@ -22,41 +34,72 @@ const svgPath =
 
 window.sessionStorage.setItem('mdsIconSvgPath', svgPath);
 
-const capitalize = (string) => {
-  return string.charAt(0).toUpperCase() + string.slice(1);
+/**
+ * The preview is the only writer of the preview `<html>`: the manager panel
+ * emits channel events and the handlers below publish the same contract the
+ * mds-pref-* controllers use, so the preferenceStore syncs the components.
+ */
+const htmlEl = document.documentElement;
+
+const clearPreference = ({ name, options }) => {
+  options.forEach(({ value }) => htmlEl.classList.remove(`pref-${name}-${value}`));
+  htmlEl.style.removeProperty(`--magma-pref-${name}`);
 };
 
-const setAccessibility = (preference, value) => {
-  const htmlEl = document.querySelector('html');
-  htmlEl.style.setProperty(`--magma-pref-${preference}`, value);
-  htmlEl.classList.add(`pref-${preference}-${value}`);
-  window.localStorage.setItem(`mdsPref${capitalize(preference)}`, value);
-};
-
-const checkAccessibility = (pref, defaultValue) => {
-  if (window.localStorage.getItem(`mdsPref${capitalize(pref)}`)) {
-    const prefValue = window.localStorage.getItem(`mdsPref${capitalize(pref)}`);
-    setAccessibility(pref, prefValue);
+const applyPreference = (preference, value) => {
+  clearPreference(preference);
+  if (value === UNSET) {
+    window.localStorage.removeItem(storageKey(preference.name));
     return;
   }
-  setAccessibility(pref, defaultValue);
+  htmlEl.classList.add(`pref-${preference.name}-${value}`);
+  htmlEl.style.setProperty(`--magma-pref-${preference.name}`, value);
+  window.localStorage.setItem(storageKey(preference.name), value);
 };
 
-if (
-  window.localStorage.getItem('mdsPrefStorybookPrefs') &&
-  window.localStorage.getItem('mdsPrefStorybookPrefs') === 'enabled'
-) {
-  checkAccessibility('theme', 'system');
-  checkAccessibility('contrast', 'system');
-  checkAccessibility('animation', 'system');
-  checkAccessibility('consumption', 'high');
-}
+const applyLanguage = (value) => {
+  if (value === UNSET) {
+    htmlEl.removeAttribute('lang');
+    window.localStorage.removeItem(storageKey(LANGUAGE.name));
+    return;
+  }
+  htmlEl.setAttribute('lang', value);
+  window.localStorage.setItem(storageKey(LANGUAGE.name), value);
+};
 
-if (window.localStorage.getItem('mdsPrefLanguage')) {
-  document
-    .querySelector('html')
-    .setAttribute('lang', window.localStorage.getItem('mdsPrefLanguage'));
-}
+// Disabling only suspends the emulation: `<html>` is cleaned up but the
+// stored choices are kept, so re-enabling restores them.
+const applyStoredPreferences = (enabled) => {
+  if (!enabled) {
+    htmlEl.removeAttribute('data-magma-pref');
+    htmlEl.removeAttribute('lang');
+    PREFERENCES.forEach((preference) => clearPreference(preference));
+    return;
+  }
+  htmlEl.setAttribute('data-magma-pref', '');
+  PREFERENCES.forEach((preference) => applyPreference(preference, storedValue(preference)));
+  applyLanguage(storedValue(LANGUAGE));
+};
+
+applyStoredPreferences(window.localStorage.getItem(PREFS_ENABLED_KEY) === 'enable');
+
+const channel = addons.getChannel();
+
+channel.on(PREF_CHANNEL_EVENTS.toggle, (enabled) => {
+  window.localStorage.setItem(PREFS_ENABLED_KEY, enabled ? 'enable' : 'disable');
+  applyStoredPreferences(enabled);
+});
+
+channel.on(PREF_CHANNEL_EVENTS.set, ({ name, value }) => {
+  if (name === LANGUAGE.name) {
+    applyLanguage(value);
+    return;
+  }
+  const preference = PREFERENCES.find((item) => item.name === name);
+  if (preference) {
+    applyPreference(preference, value);
+  }
+});
 
 const parameters = {
   options: {
