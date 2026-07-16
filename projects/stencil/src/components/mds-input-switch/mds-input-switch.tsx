@@ -11,7 +11,6 @@ import {
   Event,
   EventEmitter,
   State,
-  Method,
   Watch,
 } from '@stencil/core';
 import { InputSwitchType, InputSwitchSizeType } from './meta/types';
@@ -21,7 +20,7 @@ import { TypographyInfoType, TypographyReadType, TypographyVariants } from '@typ
 import { inputSwitchIconVariant } from './meta/variants';
 import { hasSlotted } from '@common/slot';
 import { Locale } from '@common/locale';
-import { subscribePreference } from '@common/preference';
+import { preferenceStore } from '@common/preference';
 import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.es.json';
@@ -40,10 +39,6 @@ import localeIt from './meta/locale.it.json';
 export class MdsInputSwitch {
   @AttachInternals() internals: ElementInternals;
   @Element() host: HTMLMdsInputSwitchElement;
-  @State() prefTheme?: string;
-  private unsubscribePrefTheme?: () => void;
-  @State() prefThemeScheme?: string;
-  private unsubscribePrefThemeScheme?: () => void;
   private km = new KeyboardManager();
   private label: string;
   @State() dirty = false;
@@ -55,14 +50,6 @@ export class MdsInputSwitch {
     es: localeEs,
     it: localeIt,
   });
-  @State() language: string;
-  /**
-   * Updates the component's texts to the locale currently set on the host element.
-   */
-  @Method()
-  async updateLang(): Promise<void> {
-    this.language = this.t.lang(this.host);
-  }
 
   /**
    * Sets or returns whether a checkbox should automatically
@@ -217,22 +204,7 @@ export class MdsInputSwitch {
     this.internals.setFormValue('');
   }
 
-  connectedCallback(): void {
-    this.unsubscribePrefTheme = subscribePreference('theme', (value) => {
-      this.prefTheme = value;
-    });
-    this.unsubscribePrefThemeScheme = subscribePreference('theme-scheme', (value) => {
-      this.prefThemeScheme = value;
-    });
-  }
-
-  disconnectedCallback(): void {
-    this.unsubscribePrefTheme?.();
-    this.unsubscribePrefThemeScheme?.();
-  }
-
   componentDidLoad(): void {
-    this.language = this.t.lang(this.host);
     this.label = this.host.textContent ?? '';
     this.internals.setFormValue(this.checked ? (this.value ?? null) : null);
     this.checkFocusElement();
@@ -246,8 +218,8 @@ export class MdsInputSwitch {
     return (
       <Host
         onClick={this.handleDirty}
-        pref-theme={this.prefTheme}
-        pref-theme-scheme={this.prefThemeScheme}
+        pref-theme={preferenceStore.state.theme}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
         <input
           autoFocus={this.autofocus}

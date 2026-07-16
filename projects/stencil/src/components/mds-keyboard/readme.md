@@ -268,19 +268,6 @@ mds-keyboard {
 | `try`    | `try`     | Sets if the keyboard key combination test is enabled | `boolean \| undefined`          | `undefined` |
 
 
-## Methods
-
-### `updateLang() => Promise<void>`
-
-Updates the component's texts to the locale currently set on the host element.
-
-#### Returns
-
-Type: `Promise<void>`
-
-
-
-
 ## Slots
 
 | Slot | Description                                                   |

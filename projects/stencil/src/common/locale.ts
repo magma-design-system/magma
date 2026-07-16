@@ -1,4 +1,5 @@
 import mustache from 'mustache';
+import { preferenceStore } from './preference';
 
 type LocaleConfig = {
   el?: Record<string, string | string[]>;
@@ -9,10 +10,7 @@ type LocaleConfig = {
 
 export class Locale {
   rollbackLanguage: string = 'en';
-  language: string;
   config: LocaleConfig;
-  closestElement: HTMLElement;
-  element: HTMLElement;
 
   constructor(configData?: LocaleConfig) {
     if (configData) {
@@ -24,41 +22,13 @@ export class Locale {
     this.config = configData;
   };
 
-  lang = (el: HTMLElement): string => {
-    this.element = el;
-    this.closestElement = this.element.closest('[lang]') as HTMLElement;
-
-    if (this.closestElement) {
-      if (this.closestElement.lang) {
-        this.language = this.closestElement.lang;
-        return this.language;
-      }
-    }
-
-    this.language = this.rollbackLanguage;
-    return this.language;
-  };
-
-  update = (doc?: Document | ShadowRoot): void => {
-    const context = doc ?? this.element.shadowRoot;
-    if (context) {
-      context.querySelectorAll('*').forEach((el) => {
-        if (el.tagName.toLowerCase().startsWith('mds-')) {
-          if (el && 'updateLang' in el) {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            (el as any).updateLang();
-          }
-        }
-      });
-    }
-  };
-
   private pluralize = (
     tag: string | string[],
     context: Record<string, string | number | boolean>,
+    language: string,
   ): string => {
-    const languagePhrase: string | string[] = this.config[this.language]
-      ? this.config[this.language][tag]
+    const languagePhrase: string | string[] = this.config[language]
+      ? this.config[language][tag]
       : this.config[this.rollbackLanguage][tag];
     const phrases: string[] = [];
 
@@ -87,11 +57,13 @@ export class Locale {
   };
 
   get = (tag: string | string[], context?: Record<string, string | number | boolean>): string => {
+    // Reading the store during render auto-subscribes the component to language changes
+    const { language } = preferenceStore.state;
     if (context) {
-      return this.pluralize(tag, context);
+      return this.pluralize(tag, context, language);
     }
-    return this.config[this.language]
-      ? this.config[this.language][tag]
+    return this.config[language]
+      ? this.config[language][tag]
       : this.config[this.rollbackLanguage][tag];
   };
 }

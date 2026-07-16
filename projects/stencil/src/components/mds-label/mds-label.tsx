@@ -1,15 +1,5 @@
 import miBaselineCancel from '@icon/mi/baseline/cancel.svg';
-import {
-  Component,
-  Element,
-  Event,
-  EventEmitter,
-  Host,
-  h,
-  Prop,
-  State,
-  Method,
-} from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Prop } from '@stencil/core';
 import { KeyboardManager } from '@common/keyboard-manager';
 import { ThemeLabelVariantType, ThemeStatusVariantType } from '@type/variant';
 import { ToneMinimalVariantType } from '@type/tone';
@@ -17,7 +7,7 @@ import { ToneMinimalVariantType } from '@type/tone';
 import { TypographyTooltipType } from '@type/typography';
 import { TypographyTruncateType } from '@type/text';
 import { Locale } from '@common/locale';
-import { subscribePreference } from '@common/preference';
+import { preferenceStore } from '@common/preference';
 import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.en.json';
@@ -36,12 +26,6 @@ export type MdsLabelVariantType = ThemeLabelVariantType | ThemeStatusVariantType
 })
 export class MdsLabel {
   @Element() private host: HTMLMdsLabelElement;
-  @State() prefContrast?: string;
-  private unsubscribePrefContrast?: () => void;
-  @State() prefTheme?: string;
-  private unsubscribePrefTheme?: () => void;
-  @State() prefThemeScheme?: string;
-  private unsubscribePrefThemeScheme?: () => void;
   private km = new KeyboardManager();
   private t: Locale = new Locale({
     el: localeEl,
@@ -49,14 +33,6 @@ export class MdsLabel {
     es: localeEs,
     it: localeIt,
   });
-  @State() language: string;
-  /**
-   * Updates the component's texts to the locale currently set on the host element.
-   */
-  @Method()
-  async updateLang(): Promise<void> {
-    this.language = this.t.lang(this.host);
-  }
 
   /**
    * The label of the component
@@ -109,20 +85,7 @@ export class MdsLabel {
     this.km.detachClickBehavior();
   };
 
-  connectedCallback(): void {
-    this.unsubscribePrefContrast = subscribePreference('contrast', (value) => {
-      this.prefContrast = value;
-    });
-    this.unsubscribePrefTheme = subscribePreference('theme', (value) => {
-      this.prefTheme = value;
-    });
-    this.unsubscribePrefThemeScheme = subscribePreference('theme-scheme', (value) => {
-      this.prefThemeScheme = value;
-    });
-  }
-
   componentDidLoad(): void {
-    this.t.lang(this.host);
     this.handleKeyboard();
   }
 
@@ -131,18 +94,15 @@ export class MdsLabel {
   }
 
   disconnectedCallback(): void {
-    this.unsubscribePrefContrast?.();
-    this.unsubscribePrefTheme?.();
-    this.unsubscribePrefThemeScheme?.();
     this.km.detachClickBehavior();
   }
 
   render() {
     return (
       <Host
-        pref-contrast={this.prefContrast}
-        pref-theme={this.prefTheme}
-        pref-theme-scheme={this.prefThemeScheme}
+        pref-contrast={preferenceStore.state.contrast}
+        pref-theme={preferenceStore.state.theme}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
         <mds-text class="text" truncate={this.truncate} typography={this.typography}>
           {this.label}

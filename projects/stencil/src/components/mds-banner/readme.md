@@ -360,19 +360,6 @@ The component fires `mdsBannerClose` when the close button is activated (both po
 | `mdsBannerClose` | Emits when the url view is closed | `CustomEvent<void>` |
 
 
-## Methods
-
-### `updateLang() => Promise<void>`
-
-Updates the component's texts to the locale currently set on the host element.
-
-#### Returns
-
-Type: `Promise<void>`
-
-
-
-
 ## Slots
 
 | Slot       | Description                                                                             |

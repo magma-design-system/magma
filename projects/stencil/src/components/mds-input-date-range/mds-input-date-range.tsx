@@ -15,7 +15,7 @@ import miBaselineCalendarToday from '@icon/mi/baseline/calendar-today.svg';
 import { DateTime } from 'luxon';
 import clsx from 'clsx';
 import { Locale } from '@common/locale';
-import { subscribePreference } from '@common/preference';
+import { preferenceStore } from '@common/preference';
 import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.es.json';
@@ -40,14 +40,6 @@ export interface EventDate {
 })
 export class MdsInputDateRange {
   @Element() host: HTMLMdsInputDateRangeElement;
-  @State() prefAnimation?: string;
-  private unsubscribePrefAnimation?: () => void;
-  @State() prefContrast?: string;
-  private unsubscribePrefContrast?: () => void;
-  @State() prefTheme?: string;
-  private unsubscribePrefTheme?: () => void;
-  @State() prefThemeScheme?: string;
-  private unsubscribePrefThemeScheme?: () => void;
   @AttachInternals() internals: ElementInternals;
 
   @State() calendarKey: number = 0;
@@ -62,14 +54,6 @@ export class MdsInputDateRange {
     es: localeEs,
     it: localeIt,
   });
-  @State() language: string;
-  /**
-   * Updates the component's texts to the locale currently set on the host element.
-   */
-  @Method()
-  async updateLang(): Promise<void> {
-    this.language = this.t.lang(this.host);
-  }
 
   /**
    * Specifies the start date of the range
@@ -251,7 +235,6 @@ export class MdsInputDateRange {
   }
 
   componentWillLoad(): void {
-    this.language = this.t.lang(this.host);
     this.internalStartDate = this.startDate;
     this.internalEndDate = this.endDate;
     this.initialStartDate = this.startDate;
@@ -272,26 +255,7 @@ export class MdsInputDateRange {
     this.syncFormValue();
   }
 
-  connectedCallback(): void {
-    this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
-      this.prefAnimation = value;
-    });
-    this.unsubscribePrefContrast = subscribePreference('contrast', (value) => {
-      this.prefContrast = value;
-    });
-    this.unsubscribePrefTheme = subscribePreference('theme', (value) => {
-      this.prefTheme = value;
-    });
-    this.unsubscribePrefThemeScheme = subscribePreference('theme-scheme', (value) => {
-      this.prefThemeScheme = value;
-    });
-  }
-
   disconnectedCallback(): void {
-    this.unsubscribePrefAnimation?.();
-    this.unsubscribePrefContrast?.();
-    this.unsubscribePrefTheme?.();
-    this.unsubscribePrefThemeScheme?.();
     this.host.removeEventListener('focusout', this.handleFocusOut);
     this.host.shadowRoot?.removeEventListener(
       'mdsCalendarHover',
@@ -612,7 +576,6 @@ export class MdsInputDateRange {
       <div class="calendar-single">
         {this.renderCalendarPreselectionPanel()}
         <mds-calendar
-          lang={this.language}
           key={this.calendarKey}
           rangePicker={true}
           onMdsCalendarChange={this.handleCalendarChange}
@@ -631,7 +594,6 @@ export class MdsInputDateRange {
       <div class="calendars">
         {this.renderCalendarPreselectionPanel()}
         <mds-calendar
-          lang={this.language}
           key={`${this.calendarKey}-start`}
           rangePicker={true}
           showNextButton={false}
@@ -646,7 +608,6 @@ export class MdsInputDateRange {
           {...(this.max !== null && this.max !== '' ? { max: this.max } : {})}
         ></mds-calendar>
         <mds-calendar
-          lang={this.language}
           key={`${this.calendarKey}-end`}
           rangePicker={true}
           showPreviousButton={false}
@@ -668,10 +629,10 @@ export class MdsInputDateRange {
     return (
       <Host
         onClick={this.focusDateInput}
-        pref-animation={this.prefAnimation}
-        pref-contrast={this.prefContrast}
-        pref-theme={this.prefTheme}
-        pref-theme-scheme={this.prefThemeScheme}
+        pref-animation={preferenceStore.state.animation}
+        pref-contrast={preferenceStore.state.contrast}
+        pref-theme={preferenceStore.state.theme}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
         <div class="inputs">
           <div class="input-element">

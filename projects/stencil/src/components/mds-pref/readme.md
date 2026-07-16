@@ -252,19 +252,6 @@ Native events may not bubble out of shadow DOM as expected. Use the documented `
 | `size`       | `size`       | Sets the size of the component items nested inside it                                              | `"md" \| "sm" \| undefined` | `undefined` |
 
 
-## Methods
-
-### `updateLang() => Promise<void>`
-
-Updates the component's texts to the locale currently set on the host element.
-
-#### Returns
-
-Type: `Promise<void>`
-
-
-
-
 ## Slots
 
 | Slot | Description                                                                                                                |

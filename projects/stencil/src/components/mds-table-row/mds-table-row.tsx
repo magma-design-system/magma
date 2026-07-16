@@ -1,11 +1,11 @@
-import { Component, Host, h, Prop, Element, State, Method } from '@stencil/core';
+import { Component, Host, h, Prop, Element, State } from '@stencil/core';
 import { Locale } from '@common/locale';
 import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.es.json';
 import localeIt from './meta/locale.it.json';
 import { isSafari } from '@common/browser';
-import { subscribePreference } from '@common/preference';
+import { preferenceStore } from '@common/preference';
 
 /**
  * @slot - Put `mds-table-cell` element/s.
@@ -21,8 +21,6 @@ import { subscribePreference } from '@common/preference';
 })
 export class MdsTableRow {
   @Element() host: HTMLMdsTableRowElement;
-  @State() prefAnimation?: string;
-  private unsubscribePrefAnimation?: () => void;
   private actions: HTMLDivElement;
   private hasActions: boolean = true;
   private observer?: ResizeObserver;
@@ -33,15 +31,6 @@ export class MdsTableRow {
     es: localeEs,
     it: localeIt,
   });
-  @State() language: string;
-  /**
-   * Updates the component's texts to the locale currently set on the host element.
-   */
-  @Method()
-  async updateLang(): Promise<void> {
-    this.language = this.t.lang(this.host);
-    this.t.update();
-  }
 
   /**
    * Specifies whether the row reacts to user interaction (hover/focus).
@@ -74,14 +63,7 @@ export class MdsTableRow {
    */
   @Prop({ reflect: true }) readonly value?: string | number;
 
-  connectedCallback(): void {
-    this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
-      this.prefAnimation = value;
-    });
-  }
-
   componentWillLoad(): void {
-    this.language = this.t.lang(this.host);
     this.hasActions = this.host.querySelector(':scope > [slot="action"]') !== null;
   }
 
@@ -98,7 +80,6 @@ export class MdsTableRow {
   }
 
   disconnectedCallback() {
-    this.unsubscribePrefAnimation?.();
     if (this.observer) this.observer.disconnect();
   }
 
@@ -109,13 +90,12 @@ export class MdsTableRow {
 
   render() {
     return (
-      <Host role="row" pref-animation={this.prefAnimation}>
+      <Host role="row" pref-animation={preferenceStore.state.animation}>
         {this.selectable && (
           <mds-table-cell class="selection-cell">
             <div class="checkbox-wrapper">
               <mds-input-switch
                 title={this.t.get(this.selected ? 'unselectRow' : 'selectRow')}
-                lang={this.language}
                 type="checkbox"
                 checked={this.selected}
                 onMdsInputSwitchChange={this.handleSelectionChange}

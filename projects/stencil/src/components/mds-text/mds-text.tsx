@@ -1,11 +1,11 @@
-import { Component, Element, Host, Prop, State, h, Watch } from '@stencil/core';
+import { Component, Element, Host, Prop, h, Watch } from '@stencil/core';
 import { TextAnimationType } from './meta/types';
 import { TypographyTagType } from '@type/text';
 import { TypographyTruncateType } from '@type/text';
 import { TypographyType, TypographyVariants } from '@type/typography';
 import { typographyDefaultsVariant } from './meta/variants';
 import RandomText from '@common/yugop';
-import { subscribePreference } from '@common/preference';
+import { preferenceStore } from '@common/preference';
 
 /**
  * @slot - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
@@ -30,8 +30,6 @@ export class MdsText {
   private randomText: RandomText;
 
   @Element() host: HTMLMdsTextElement;
-  @State() prefAnimation?: string;
-  private unsubscribePrefAnimation?: () => void;
 
   /**
    * Specifies if the text is animated when it is rendered
@@ -92,16 +90,6 @@ export class MdsText {
     this.cssTextAnimationPlaceholderChar = placeholderChar;
   };
 
-  connectedCallback(): void {
-    this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
-      this.prefAnimation = value;
-    });
-  }
-
-  disconnectedCallback(): void {
-    this.unsubscribePrefAnimation?.();
-  }
-
   componentWillRender(): void {
     const { tag } = typographyDefaultsVariant[this.typography];
     this.tag = this.tag ?? (tag as TypographyTagType);
@@ -126,7 +114,7 @@ export class MdsText {
 
   render() {
     return (
-      <Host pref-animation={this.prefAnimation}>
+      <Host pref-animation={preferenceStore.state.animation}>
         <this.tag class="text">
           {this.text === undefined || this.text === '' ? <slot></slot> : this.text}
         </this.tag>

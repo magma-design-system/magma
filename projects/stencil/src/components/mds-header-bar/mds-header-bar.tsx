@@ -10,7 +10,7 @@ import {
   State,
   h,
 } from '@stencil/core';
-import { subscribePreference } from '@common/preference';
+import { preferenceStore } from '@common/preference';
 import { HeaderBarMenuType, HeaderBarNavType } from '@type/header-bar';
 
 /**
@@ -29,14 +29,6 @@ import { HeaderBarMenuType, HeaderBarNavType } from '@type/header-bar';
 export class MdsHeaderBar {
   private hasNav: boolean;
   @Element() host: HTMLMdsHeaderBarElement;
-  @State() prefAnimation?: string;
-  private unsubscribePrefAnimation?: () => void;
-  @State() prefContrast?: string;
-  private unsubscribePrefContrast?: () => void;
-  @State() prefTheme?: string;
-  private unsubscribePrefTheme?: () => void;
-  @State() prefThemeScheme?: string;
-  private unsubscribePrefThemeScheme?: () => void;
   @State() isOpened: boolean;
 
   /**
@@ -48,28 +40,6 @@ export class MdsHeaderBar {
    * Sets the visibility type of the navigation menu
    */
   @Prop({ reflect: true }) nav: HeaderBarNavType = 'desktop';
-
-  connectedCallback(): void {
-    this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
-      this.prefAnimation = value;
-    });
-    this.unsubscribePrefContrast = subscribePreference('contrast', (value) => {
-      this.prefContrast = value;
-    });
-    this.unsubscribePrefTheme = subscribePreference('theme', (value) => {
-      this.prefTheme = value;
-    });
-    this.unsubscribePrefThemeScheme = subscribePreference('theme-scheme', (value) => {
-      this.prefThemeScheme = value;
-    });
-  }
-
-  disconnectedCallback(): void {
-    this.unsubscribePrefAnimation?.();
-    this.unsubscribePrefContrast?.();
-    this.unsubscribePrefTheme?.();
-    this.unsubscribePrefThemeScheme?.();
-  }
 
   componentWillLoad(): void {
     this.hasNav = this.host.querySelector(':scope > [slot="nav"]') !== null;
@@ -98,10 +68,10 @@ export class MdsHeaderBar {
   render() {
     return (
       <Host
-        pref-animation={this.prefAnimation}
-        pref-contrast={this.prefContrast}
-        pref-theme={this.prefTheme}
-        pref-theme-scheme={this.prefThemeScheme}
+        pref-animation={preferenceStore.state.animation}
+        pref-contrast={preferenceStore.state.contrast}
+        pref-theme={preferenceStore.state.theme}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
         <div class="content" part="content">
           <div class="logo">

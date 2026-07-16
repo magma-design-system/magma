@@ -341,19 +341,6 @@ chipEl.selected = undefined;
 | `mdsChipSelect`     | Emits when the component's label is clicked and when `selectable` attribute is set to `true` | `CustomEvent<MdsChipEvent>` |
 
 
-## Methods
-
-### `updateLang() => Promise<void>`
-
-Updates the component's texts to the locale currently set on the host element.
-
-#### Returns
-
-Type: `Promise<void>`
-
-
-
-
 ## CSS Custom Properties
 
 | Name                                  | Description                                                                  |

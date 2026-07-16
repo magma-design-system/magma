@@ -1,6 +1,6 @@
-import { Component, Event, EventEmitter, Element, Host, h, Listen, State } from '@stencil/core';
+import { Component, Event, EventEmitter, Element, Host, h, Listen } from '@stencil/core';
 import { MdsTabBarEventDetail } from './meta/event-detail';
-import { subscribePreference } from '@common/preference';
+import { preferenceStore } from '@common/preference';
 
 /**
  * @slot - Add `mds-tab-bar-item` element/s.
@@ -13,14 +13,6 @@ import { subscribePreference } from '@common/preference';
 })
 export class MdsTabBar {
   @Element() private element: HTMLMdsTabBarElement;
-  @State() prefAnimation?: string;
-  private unsubscribePrefAnimation?: () => void;
-  @State() prefContrast?: string;
-  private unsubscribePrefContrast?: () => void;
-  @State() prefTheme?: string;
-  private unsubscribePrefTheme?: () => void;
-  @State() prefThemeScheme?: string;
-  private unsubscribePrefThemeScheme?: () => void;
 
   /**
    * Emits when a step is changed
@@ -33,28 +25,6 @@ export class MdsTabBar {
   componentWillLoad(): void {
     const items = this.queryItems();
     items.forEach((item, key) => (item.id = `mds-tab-bar-item-${key}`));
-  }
-
-  connectedCallback(): void {
-    this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
-      this.prefAnimation = value;
-    });
-    this.unsubscribePrefContrast = subscribePreference('contrast', (value) => {
-      this.prefContrast = value;
-    });
-    this.unsubscribePrefTheme = subscribePreference('theme', (value) => {
-      this.prefTheme = value;
-    });
-    this.unsubscribePrefThemeScheme = subscribePreference('theme-scheme', (value) => {
-      this.prefThemeScheme = value;
-    });
-  }
-
-  disconnectedCallback(): void {
-    this.unsubscribePrefAnimation?.();
-    this.unsubscribePrefContrast?.();
-    this.unsubscribePrefTheme?.();
-    this.unsubscribePrefThemeScheme?.();
   }
 
   @Listen('mdsTabBarItemSelect')
@@ -71,10 +41,10 @@ export class MdsTabBar {
   render() {
     return (
       <Host
-        pref-animation={this.prefAnimation}
-        pref-contrast={this.prefContrast}
-        pref-theme={this.prefTheme}
-        pref-theme-scheme={this.prefThemeScheme}
+        pref-animation={preferenceStore.state.animation}
+        pref-contrast={preferenceStore.state.contrast}
+        pref-theme={preferenceStore.state.theme}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
         <slot />
       </Host>

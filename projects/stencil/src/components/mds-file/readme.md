@@ -242,19 +242,6 @@ The host is already focusable, keyboard-accessible, and emits its own interactio
 | `mdsFileDownload` | Emits when the component is clicked, returning file infos | `CustomEvent<MdsFileEventDetail>` |
 
 
-## Methods
-
-### `updateLang() => Promise<void>`
-
-Updates the component's texts to the locale currently set on the host element.
-
-#### Returns
-
-Type: `Promise<void>`
-
-
-
-
 ## CSS Custom Properties
 
 | Name                                 | Description                                        |

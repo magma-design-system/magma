@@ -237,19 +237,6 @@ The `name` prop must match the pattern `^[a-z]+(-[a-z]+)*$` (lowercase letters a
 | `mdsPrefThemeVariantChange` | Emits when the component changes the language selected from the click event of the dropdown list item | `CustomEvent<MdsPrefThemeVariantEventDetail>` |
 
 
-## Methods
-
-### `updateLang() => Promise<void>`
-
-Updates the component's texts to the locale currently set on the host element.
-
-#### Returns
-
-Type: `Promise<void>`
-
-
-
-
 ## Slots
 
 | Slot | Description                                  |

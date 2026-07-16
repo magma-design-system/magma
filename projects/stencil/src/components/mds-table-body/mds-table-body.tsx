@@ -1,5 +1,5 @@
-import { Component, Host, h, Prop, State } from '@stencil/core';
-import { subscribePreference } from '@common/preference';
+import { Component, Host, h, Prop } from '@stencil/core';
+import { preferenceStore } from '@common/preference';
 
 /**
  * @slot - Put `mds-table-row` element/s.
@@ -11,8 +11,6 @@ import { subscribePreference } from '@common/preference';
   shadow: true,
 })
 export class MdsTableBody {
-  @State() prefAnimation?: string;
-  private unsubscribePrefAnimation?: () => void;
   /**
    * Specifies whether the rows react to user interaction (hover/focus).
    */
@@ -22,19 +20,9 @@ export class MdsTableBody {
    */
   @Prop({ reflect: true }) readonly selection?: boolean;
 
-  connectedCallback(): void {
-    this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
-      this.prefAnimation = value;
-    });
-  }
-
-  disconnectedCallback(): void {
-    this.unsubscribePrefAnimation?.();
-  }
-
   render() {
     return (
-      <Host role="rowgroup" pref-animation={this.prefAnimation}>
+      <Host role="rowgroup" pref-animation={preferenceStore.state.animation}>
         <slot />
       </Host>
     );

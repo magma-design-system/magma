@@ -16,8 +16,8 @@ The `<mds-pref-language>` web component is the language-preference control of th
 - **Compound child constraint**: Must be placed as a direct slot child of `<mds-pref>`. In turn it acts as the host for its own `<mds-pref-language-item>` children, supplied via its default slot.
 - **Default slot hosts the items**: The default slot accepts one or more `<mds-pref-language-item>` elements; the item whose `code` matches `set` is marked selected.
 - **Selection orchestration**: Selecting an item clears the others, closes the dropdown, and resolves the new language - the children report up to this component, which centralizes the single-selection state.
-- **Language resolution & persistence**: When `set` is `auto` the active language is resolved in priority order from the persisted value, then the `<html lang>` attribute, then `navigator.language`. The resolved value is persisted and applied to the document, and locale-aware strings on the page are refreshed.
-- **Events bubbled to the parent**: Emits `mdsPrefLanguageChange` (detail carries the selected `language` code) and `mdsPrefChange` (detail `{ preference: 'language' }`). The latter is consumed by `<mds-pref>` to show its "reload required" notice, since language is a reload-sensitive preference.
+- **Language resolution & persistence**: When `set` is `auto` the active language is resolved in priority order from the persisted value, then the `<html lang>` attribute, then `navigator.language`. The resolved value is persisted and written to `<html lang>` — the single page-wide source of truth for the language. Every localized Magma component (including ones nested in shadow DOM) reacts automatically through a shared reactive store; there is no per-element `lang` override and no imperative refresh method. Applications that manage the language themselves can simply set `<html lang>`: the store observes it.
+- **Events bubbled to the parent**: Emits `mdsPrefLanguageChange` (detail carries the selected `language` code) and `mdsPrefChange` (detail `{ preference: 'language' }`), fired only when the resolved language actually changes (the initial application on load does not emit). The latter is consumed by `<mds-pref>` to show its "reload required" notice, since application-level content may still need a reload.
 - **Invalid codes throw**: A `set` value that is neither `auto` nor a valid `xx` / `xx-XX` BCP 47 short form raises an error rather than failing silently.
 - **Default-language hint**: When the resolved language differs from the built-in default (`en`), a caption noting the default language is rendered.
 
@@ -275,19 +275,6 @@ mds-pref-language mds-tab-item {
 | ----------------------- | ----------------------------------------------------------------------------------------------------- | ----------------------------------------- |
 | `mdsPrefChange`         | Emits when the component is triggered                                                                 | `CustomEvent<MdsPrefChangeEventDetail>`   |
 | `mdsPrefLanguageChange` | Emits when the component changes the language selected from the click event of the dropdown list item | `CustomEvent<MdsPrefLanguageEventDetail>` |
-
-
-## Methods
-
-### `updateLang() => Promise<void>`
-
-Updates the component's texts to the locale currently set on the host element.
-
-#### Returns
-
-Type: `Promise<void>`
-
-
 
 
 ## Slots

@@ -1,7 +1,7 @@
-import { Component, Element, Event, EventEmitter, Host, h, Prop, State } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Prop } from '@stencil/core';
 import { MdsFilterItemEventDetail } from './meta/event-detail';
 import { KeyboardManager } from '@common/keyboard-manager';
-import { subscribePreference } from '@common/preference';
+import { preferenceStore } from '@common/preference';
 
 @Component({
   tag: 'mds-filter-item',
@@ -10,14 +10,6 @@ import { subscribePreference } from '@common/preference';
 })
 export class MdsFilterItem {
   @Element() private element: HTMLMdsFilterItemElement;
-  @State() prefAnimation?: string;
-  private unsubscribePrefAnimation?: () => void;
-  @State() prefContrast?: string;
-  private unsubscribePrefContrast?: () => void;
-  @State() prefTheme?: string;
-  private unsubscribePrefTheme?: () => void;
-  @State() prefThemeScheme?: string;
-  private unsubscribePrefThemeScheme?: () => void;
   private km = new KeyboardManager();
 
   /**
@@ -61,31 +53,12 @@ export class MdsFilterItem {
   @Event({ eventName: 'mdsFilterItemSelect' })
   selectedEvent: EventEmitter<MdsFilterItemEventDetail>;
 
-  connectedCallback(): void {
-    this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
-      this.prefAnimation = value;
-    });
-    this.unsubscribePrefContrast = subscribePreference('contrast', (value) => {
-      this.prefContrast = value;
-    });
-    this.unsubscribePrefTheme = subscribePreference('theme', (value) => {
-      this.prefTheme = value;
-    });
-    this.unsubscribePrefThemeScheme = subscribePreference('theme-scheme', (value) => {
-      this.prefThemeScheme = value;
-    });
-  }
-
   componentDidLoad(): void {
     this.km.addElement(this.element);
     this.km.attachClickBehavior();
   }
 
   disconnectedCallback(): void {
-    this.unsubscribePrefAnimation?.();
-    this.unsubscribePrefContrast?.();
-    this.unsubscribePrefTheme?.();
-    this.unsubscribePrefThemeScheme?.();
     this.km.detachClickBehavior();
   }
 
@@ -96,10 +69,10 @@ export class MdsFilterItem {
         role="menuitem"
         aria-label={this.label ?? this.icon}
         onClick={this.toggle}
-        pref-animation={this.prefAnimation}
-        pref-contrast={this.prefContrast}
-        pref-theme={this.prefTheme}
-        pref-theme-scheme={this.prefThemeScheme}
+        pref-animation={preferenceStore.state.animation}
+        pref-contrast={preferenceStore.state.contrast}
+        pref-theme={preferenceStore.state.theme}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
         {this.icon && <mds-icon aria-hidden="true" name={this.icon} />}
         {this.label && (

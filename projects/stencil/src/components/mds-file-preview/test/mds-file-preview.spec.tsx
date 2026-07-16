@@ -1,14 +1,20 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { MdsFilePreview } from '../mds-file-preview';
+import { preferenceStore } from '@common/preference';
 
 describe('mds-file-preview', () => {
+  afterEach(() => {
+    preferenceStore.state.language = 'en';
+  });
+
   it('renders', async () => {
+    preferenceStore.state.language = 'it';
     const page = await newSpecPage({
       components: [MdsFilePreview],
-      html: '<mds-file-preview lang="it" filename=""></mds-file-preview>',
+      html: '<mds-file-preview filename=""></mds-file-preview>',
     });
     expect(page.root).toEqualHtml(`
-      <mds-file-preview lang="it" filename="" format="attachment" truncate="word">
+      <mds-file-preview filename="" format="attachment" truncate="word">
         <mock:shadow-root>
           <div class="card" part="card">
             <div class="preview preview--icon">

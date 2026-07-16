@@ -4410,6 +4410,11 @@
     react-style-stringify "^1.2.0"
     ts-morph "^28.0.0"
 
+"@stencil/store@^2.2.2":
+  version "2.2.2"
+  resolved "https://registry.npmjs.org/@stencil/store/-/store-2.2.2.tgz#2886e413be48fbe07863897c75534a750caf0157"
+  integrity sha512-6BxJblhIkSxflEft8eayYwEApTmsIaGeXsRDLI1AAM2BPPFPfrcsG1fBOcA61oMBaXmCGKt0AGTLbxSHnYazxQ==
+
 "@storybook/addon-a11y@9.0.15":
   version "9.0.15"
   resolved "https://registry.npmjs.org/@storybook/addon-a11y/-/addon-a11y-9.0.15.tgz#4f51c92c5d0366381dffaf8f9c91fd7892fbc1a4"
@@ -6746,10 +6751,15 @@ caniuse-api@^3.0.0:
     lodash.memoize "^4.1.2"
     lodash.uniq "^4.5.0"
 
-caniuse-lite@1.0.30001799, caniuse-lite@^1.0.0, caniuse-lite@^1.0.30001646, caniuse-lite@^1.0.30001702, caniuse-lite@^1.0.30001760, caniuse-lite@^1.0.30001774, caniuse-lite@^1.0.30001803, caniuse-lite@^1.0.30001805:
+caniuse-lite@^1.0.0, caniuse-lite@^1.0.30001646, caniuse-lite@^1.0.30001702, caniuse-lite@^1.0.30001760, caniuse-lite@^1.0.30001774:
   version "1.0.30001799"
   resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001799.tgz#5c909138c27f1a61219d3e092071c1cc7d32dc55"
   integrity sha512-hG1bReV+OUU+MOqK4t/ZWI0tZOyz3rqS9XuhOUz1cIcbwBKjOyJEJuw9ER5JuNyqxNk8u/JUVbGibBOL1yrjFw==
+
+caniuse-lite@^1.0.30001803, caniuse-lite@^1.0.30001805:
+  version "1.0.30001806"
+  resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001806.tgz#1bc8e502b723fa393455dfbedd5ccec0c29bb74e"
+  integrity sha512-72Cuvd95zbSYPKq6Fhg8eDJRlzgWDf7/mtoZv6Qe/DYNCEBdNxoA3+rZAU2ZhGCpZlns3EssFavaZomckT5Uuw==
 
 capital-case@^1.0.4:
   version "1.0.4"

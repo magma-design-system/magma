@@ -1,10 +1,10 @@
-import { Component, Host, h, Element, Method, State, Prop, Watch } from '@stencil/core';
+import { Component, Host, h, Element, State, Prop, Watch } from '@stencil/core';
 import { KeyboardKeyName } from '@type/keyboard';
 import miBaselineKeyboard from '@icon/mi/baseline/keyboard.svg';
 import miBaselineDone from '@icon/mi/baseline/done.svg';
 import miBaselineClose from '@icon/mi/baseline/close.svg';
 import { Locale } from '@common/locale';
-import { subscribePreference } from '@common/preference';
+import { preferenceStore } from '@common/preference';
 import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.es.json';
@@ -22,10 +22,6 @@ import { KeyboardTest } from './meta/type';
 })
 export class MdsKeyboard {
   @Element() private host: HTMLMdsKeyboardElement;
-  @State() prefTheme?: string;
-  private unsubscribePrefTheme?: () => void;
-  @State() prefThemeScheme?: string;
-  private unsubscribePrefThemeScheme?: () => void;
   private nodes: Node[];
   private errors: Set<string> = new Set();
   private filteredNodes: Element[];
@@ -41,14 +37,6 @@ export class MdsKeyboard {
     es: localeEs,
     it: localeIt,
   });
-  @State() language: string;
-  /**
-   * Updates the component's texts to the locale currently set on the host element.
-   */
-  @Method()
-  async updateLang(): Promise<void> {
-    this.language = this.t.lang(this.host);
-  }
 
   @State() testPassed?: boolean = undefined;
 
@@ -62,28 +50,13 @@ export class MdsKeyboard {
    */
   @Prop({ reflect: true }) readonly try?: boolean;
 
-  connectedCallback(): void {
-    this.unsubscribePrefTheme = subscribePreference('theme', (value) => {
-      this.prefTheme = value;
-    });
-    this.unsubscribePrefThemeScheme = subscribePreference('theme-scheme', (value) => {
-      this.prefThemeScheme = value;
-    });
-  }
-
   disconnectedCallback(): void {
-    this.unsubscribePrefTheme?.();
-    this.unsubscribePrefThemeScheme?.();
     // Tear down the keyboard test only if it was initialized; otherwise
     // buttonTrigger/shortcutsEl are undefined and this would throw. (This used
     // to live in a misspelled `discottectedCallback`, so it never ran.)
     if (this.testInit) {
       this.stopKeyboardShortcutTest();
     }
-  }
-
-  componentWillLoad(): void {
-    this.t.lang(this.host);
   }
 
   @Watch('try')
@@ -242,7 +215,10 @@ export class MdsKeyboard {
 
   render() {
     return (
-      <Host pref-theme={this.prefTheme} pref-theme-scheme={this.prefThemeScheme}>
+      <Host
+        pref-theme={preferenceStore.state.theme}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
+      >
         <div class="shortcuts">
           <slot></slot>
         </div>
