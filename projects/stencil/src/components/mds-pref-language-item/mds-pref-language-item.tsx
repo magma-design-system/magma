@@ -48,8 +48,8 @@ export class MdsPrefLanguageItem {
   // render pass and the watcher re-validates once it lands. Only a non-empty,
   // unrecognized code is a real error; empty codes fall back to the `noCode` branch
   // already handled in render().
-  private readonly validateCode = (code: string): void => {
-    if (code && !localeDefault[code]) {
+  private readonly validateCode = (code: string | undefined): void => {
+    if (code !== undefined && code !== '' && localeDefault[code] === undefined) {
       throw Error(`Language code not found: ${code}`);
     }
   };
