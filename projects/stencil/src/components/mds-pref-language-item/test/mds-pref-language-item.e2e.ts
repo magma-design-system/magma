@@ -16,9 +16,10 @@ describe('mds-pref-language-item', () => {
     const element = await page.find('mds-pref-language-item');
     expect(element).toHaveAttribute('hydrated');
 
+    // v2 passes the language name through the reflected label prop instead of slotted text
     const button = await page.find('mds-pref-language-item >>> mds-button');
     expect(button).not.toBeNull();
-    expect(button.textContent).toContain('Italiano');
+    expect(button).toEqualAttribute('label', 'Italiano');
   });
 
   it('does not throw and still hydrates when no code is set', async () => {
