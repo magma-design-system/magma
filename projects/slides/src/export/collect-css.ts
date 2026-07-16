@@ -2,6 +2,8 @@ import { createRequire } from 'node:module';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
+import { DEFAULT_THEME, themeBase } from '../render/theme.js';
+
 const require = createRequire(import.meta.url);
 
 /**
@@ -41,13 +43,12 @@ const magmaCss = (file: string): string => {
   return readFileSync(resolved, 'utf8');
 };
 
-/** Map a theme name (e.g. `maggioli-dark`) to its theme CSS file. */
+/** Theme CSS for a deck: themes/<base>/theme.css, falling back to the default. */
 function themeFile(theme: string | undefined): string {
-  const base = (theme ?? 'maggioli').replace(/-dark$/, '') || 'maggioli';
   try {
-    return localCss(`theme-${base}.css`);
+    return localCss(`themes/${themeBase(theme)}/theme.css`);
   } catch {
-    return localCss('theme-maggioli.css');
+    return localCss(`themes/${DEFAULT_THEME}/theme.css`);
   }
 }
 

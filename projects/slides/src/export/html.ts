@@ -84,5 +84,6 @@ ${body}
 </html>
 `;
 
-  return options.baseDir ? embedImages(doc, options.baseDir) : doc;
+  // Always run: embeds absolute paths (theme assets) even without a deck baseDir.
+  return embedImages(doc, options.baseDir);
 }

@@ -1,4 +1,33 @@
+import { existsSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+
+import { themeBase } from './theme.js';
 import type { Deck, FooterConfig, Slide } from '../model/types.js';
+
+const LOGO_EXTS = ['svg', 'png', 'webp', 'jpg'];
+const themeLogoCache = new Map<string, string | null>();
+
+/**
+ * Absolute path to the selected theme's default logo, if it ships one under
+ * theme/themes/<theme>/logo.* (resolved from the package, so it works from src
+ * in dev and from dist when built). Returned as an absolute path that
+ * `embedImages` inlines as a data URI on export. Per-deck `footer.logo` wins.
+ */
+function themeLogo(theme: string | undefined): string | undefined {
+  const base = themeBase(theme);
+  if (!themeLogoCache.has(base)) {
+    let found: string | null = null;
+    for (const ext of LOGO_EXTS) {
+      const path = fileURLToPath(new URL(`../theme/themes/${base}/logo.${ext}`, import.meta.url));
+      if (existsSync(path)) {
+        found = path;
+        break;
+      }
+    }
+    themeLogoCache.set(base, found);
+  }
+  return themeLogoCache.get(base) ?? undefined;
+}
 
 const escapeHtml = (value: string): string =>
   value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -45,8 +74,9 @@ export function renderFooter(slide: Slide, deck: Deck): string {
   const footer = resolveFooter(slide, deck);
   if (!footer) return '';
 
-  const logo = footer.logo
-    ? `<img class="w-auto h-[calc(var(--mds-slide-footer-height)_-_var(--spacing-lg))]" src="${escapeAttr(footer.logo)}" alt="${escapeAttr(footer.group ?? '')}">`
+  const logoSrc = footer.logo ?? themeLogo(deck.config.theme);
+  const logo = logoSrc
+    ? `<img class="w-auto h-[calc(var(--mds-slide-footer-height)_-_var(--spacing-lg))]" src="${escapeAttr(logoSrc)}" alt="${escapeAttr(footer.group ?? '')}">`
     : '';
   const page =
     footer.pageNumbers === false

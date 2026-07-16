@@ -1,0 +1,15 @@
+/**
+ * The `maggioli` theme (the default). One folder per theme under themes/; its
+ * theme.css layers brand-specific refinements on top of the default
+ * `--mds-slide-*` tokens (../../tokens.css). Add a sibling folder
+ * themes/<name>/theme.css to introduce a new theme (see ../README.md).
+ *
+ * Light/dark is not handled here: it is the global `--tone-*` flip driven by the
+ * `pref-theme-*` class the renderer sets on the root element, so this theme is
+ * automatically correct in both schemes. A `<name>-dark` theme forces dark.
+ */
+
+.mds-slide h1,
+.mds-slide[data-layout='title'] .mds-slide__title {
+  letter-spacing: var(--text-size-title-h1--letter-spacing);
+}

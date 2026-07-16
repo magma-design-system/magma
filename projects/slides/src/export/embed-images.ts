@@ -17,14 +17,16 @@ const isRemote = (src: string): boolean => /^(https?:)?\/\//.test(src) || src.st
 
 /**
  * Inline local images as `data:` URIs so an exported deck is self-contained.
- * Paths are resolved relative to `baseDir` (the deck file's directory); remote
- * and `data:` sources pass through. A missing or unknown-type file is left as-is
- * with a warning rather than failing the export.
+ * Absolute paths (e.g. a theme's default logo, resolved from the package) are
+ * always embedded; relative paths need `baseDir` (the deck file's directory) and
+ * are left as-is without it. Remote and `data:` sources pass through. A missing
+ * or unknown-type file is left as-is with a warning rather than failing.
  */
-export function embedImages(html: string, baseDir: string): string {
+export function embedImages(html: string, baseDir?: string): string {
   return html.replace(/src="([^"]+)"/g, (whole, src: string) => {
     if (isRemote(src)) return whole;
-    const path = isAbsolute(src) ? src : resolve(baseDir, src);
+    const path = isAbsolute(src) ? src : baseDir ? resolve(baseDir, src) : null;
+    if (!path) return whole; // relative source with no baseDir: cannot resolve
     const ext = path.slice(path.lastIndexOf('.')).toLowerCase();
     const mime = MIME[ext];
     if (!mime) return whole;
