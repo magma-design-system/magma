@@ -1,6 +1,7 @@
 import { useMemo, useRef, useState } from 'preact/hooks';
 import type { Formula, MagmaConfig } from '../../src/lib/color.mjs';
 import { resolveFormula, resolveRatiosName } from '../../src/lib/color.mjs';
+import { CONTRAST_RANGE, classifyRatioTarget } from '../../src/lib/contrast-range.js';
 
 export interface RatioSet {
   [scaleName: string]: number[];
@@ -16,17 +17,33 @@ export type ScaleOrigin = 'custom' | 'builtin' | 'builtin-overridden';
 
 interface AxisConfig {
   min: number;
+  /** render extent; may exceed the ceiling so out-of-band stops stay visible */
   max: number;
+  /** the formula's highest reachable target (band edge); beyond it clamps */
+  ceiling: number;
+  /** APCA dead-zone edge: below this Lc the formula reports 0 (wcag3 only) */
+  lowClamp?: number;
   precision: number;
   tick: number;
 }
 
 function axisFor(formula: Formula, values: number[]): AxisConfig {
+  const bounds = CONTRAST_RANGE[formula];
+  // extend the render range past the ceiling when a stop is out of band, so it
+  // is shown sitting in the shaded "unreachable" zone rather than clipped
+  const max = Math.max(bounds.max, ...values);
   if (formula === 'wcag2') {
-    return { min: 1, max: Math.max(21, ...values), precision: 2, tick: 2 };
+    return { min: bounds.min, max, ceiling: bounds.max, precision: 2, tick: 2 };
   }
-  // wcag3 (APCA Lc): 0..110 requested range, existing presets reach 115
-  return { min: 0, max: Math.max(110, ...values), precision: 0, tick: 10 };
+  // wcag3 (APCA Lc): usable band is lowClamp..ceiling (issue #578)
+  return {
+    min: bounds.min,
+    max,
+    ceiling: bounds.max,
+    lowClamp: bounds.lowClamp,
+    precision: 0,
+    tick: 10,
+  };
 }
 
 function roundTo(value: number, precision: number): number {
@@ -65,15 +82,18 @@ export type EasingName = string;
 interface DistributionStripProps {
   values: number[];
   axis: AxisConfig;
+  formula: Formula;
   onChange: (values: number[]) => void;
 }
 
 /**
  * Horizontal axis showing where every contrast stop of a scale sits.
  * Markers are draggable; neighbors act as bounds so the order of the
- * stops is preserved while dragging.
+ * stops is preserved while dragging. The usable band is shaded: a dead
+ * zone below the APCA low-contrast clamp and an unreachable zone above the
+ * ceiling (issue #578), and out-of-band stops are flagged.
  */
-function DistributionStrip({ values, axis, onChange }: DistributionStripProps) {
+function DistributionStrip({ values, axis, formula, onChange }: DistributionStripProps) {
   const stripRef = useRef<HTMLDivElement>(null);
   const position = (value: number) => ((value - axis.min) / (axis.max - axis.min)) * 100;
 
@@ -108,21 +128,41 @@ function DistributionStrip({ values, axis, onChange }: DistributionStripProps) {
   return (
     <div class="strip" ref={stripRef}>
       <div class="strip-axis" />
+      {axis.lowClamp !== undefined && position(axis.lowClamp) > 0 && (
+        <div
+          class="strip-band strip-band-dead"
+          style={{ left: 0, width: `${position(axis.lowClamp)}%` }}
+          title={`dead zone: below Lc ${axis.lowClamp} APCA reports 0 and the step collapses toward the background`}
+        />
+      )}
+      <div
+        class="strip-band strip-band-unreachable"
+        style={{ left: `${position(axis.ceiling)}%`, right: 0 }}
+        title={`unreachable: above the ${formula} ceiling (${axis.ceiling}) the step clamps to the pure extreme`}
+      />
+      <div class="strip-band-edge" style={{ left: `${position(axis.ceiling)}%` }} />
       {ticks.map((tick) => (
         <div class="strip-tick" style={{ left: `${position(tick)}%` }}>
           <span>{tick}</span>
         </div>
       ))}
-      {values.map((value, index) => (
-        <div
-          class="strip-marker"
-          style={{ left: `${position(value)}%` }}
-          title={`step ${index + 1}: ${value}`}
-          onPointerDown={startDrag(index)}
-        >
-          <span class="strip-value">{value}</span>
-        </div>
-      ))}
+      {values.map((value, index) => {
+        const issue = classifyRatioTarget(value, formula);
+        return (
+          <div
+            class={`strip-marker${issue ? ` out-of-band ${issue.severity}` : ''}`}
+            style={{ left: `${position(value)}%` }}
+            title={
+              issue
+                ? `step ${index + 1}: ${value} - ${issue.message}`
+                : `step ${index + 1}: ${value}`
+            }
+            onPointerDown={startDrag(index)}
+          >
+            <span class="strip-value">{value}</span>
+          </div>
+        );
+      })}
     </div>
   );
 }
@@ -318,7 +358,7 @@ export function ScalesManager({
             value={formula}
             onChange={(e) => onFormulaChange((e.target as HTMLSelectElement).value as Formula)}
           >
-            <option value="wcag3">wcag3 (APCA Lc, 0-110)</option>
+            <option value="wcag3">wcag3 (APCA Lc, 0-106)</option>
             <option value="wcag2">wcag2 (ratio, 1-21)</option>
           </select>
         </label>
@@ -457,6 +497,7 @@ export function ScalesManager({
             <DistributionStrip
               values={values}
               axis={axis}
+              formula={formula}
               onChange={(next) => manualChange(name, next)}
             />
 
