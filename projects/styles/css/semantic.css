@@ -21,12 +21,27 @@
 */
 
 :root {
+  /*
+    Active surface tint (spec section 8). Surfaces and borders resolve from
+    these pointers instead of a family directly, so a named theme retints the
+    whole neutral scaffolding with ONE swap (repoint --mds-tint-*), daisyUI
+    style. Default tint = the neutral family. See css/theme.css for the axis.
+  */
+  --mds-tint-sunken: var(--surface-neutral-sunken);
+  --mds-tint-muted: var(--surface-neutral-muted);
+  --mds-tint-default: var(--surface-neutral-default);
+  --mds-tint-raised: var(--surface-neutral-raised);
+  --mds-tint-overlay: var(--surface-neutral-overlay);
+  --mds-tint-border-muted: var(--border-neutral-muted);
+  --mds-tint-border-default: var(--border-neutral-default);
+  --mds-tint-border-strong: var(--border-neutral-strong);
+
   /* Surfaces - neutral backgrounds (elevation + same-plane prominence), 6.1 */
-  --mds-surface-sunken: var(--surface-neutral-sunken);
-  --mds-surface-muted: var(--surface-neutral-muted);
-  --mds-surface-default: var(--surface-neutral-default);
-  --mds-surface-raised: var(--surface-neutral-raised);
-  --mds-surface-overlay: var(--surface-neutral-overlay);
+  --mds-surface-sunken: var(--mds-tint-sunken);
+  --mds-surface-muted: var(--mds-tint-muted);
+  --mds-surface-default: var(--mds-tint-default);
+  --mds-surface-raised: var(--mds-tint-raised);
+  --mds-surface-overlay: var(--mds-tint-overlay);
 
   /* Text - prominence, 6.2 (tone-neutral, APCA; flips per mode automatically) */
   --mds-text-default: var(--tone-neutral-03);
@@ -37,9 +52,9 @@
   --mds-text-on-emphasis: var(--tone-neutral);
 
   /* Border - prominence, 6.3 (opaque OKLCH levels beyond the surface band) */
-  --mds-border-muted: var(--border-neutral-muted);
-  --mds-border-default: var(--border-neutral-default);
-  --mds-border-strong: var(--border-neutral-strong);
+  --mds-border-muted: var(--mds-tint-border-muted);
+  --mds-border-default: var(--mds-tint-border-default);
+  --mds-border-strong: var(--mds-tint-border-strong);
   /* focus is an accent, not a neutral level */
   --mds-border-focus: var(--variant-primary);
 
