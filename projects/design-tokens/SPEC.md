@@ -13,6 +13,8 @@ Generates and distributes design tokens for all Magma platforms. It is the singl
 | `label`   | `--label-*`   | Accent colors for tagging and categorisation (red, sky, green, etc.) |
 | `variant` | `--variant-*` | Brand interaction colors (primary, secondary, ai)                    |
 | `brand`   | `--brand-*`   | Product brand colors (maggioli, maggioli-editore, rnd)               |
+| `surface` | `--surface-*` | Neutral backgrounds by elevation/prominence (lightness engine)       |
+| `border`  | `--border-*`  | Neutral border levels by prominence (lightness engine)               |
 
 ## Token levels
 
@@ -50,6 +52,61 @@ Only for `--tone-*` based colors, if you want a pure white color, use `--tone-ne
 --tone-neutral-03    /* default text color on neutral surface */
 --tone-neutral-05    /* strong text / focus ring */
 ```
+
+## Surface and border tokens (lightness engine)
+
+Owns the generative half of the semantic color system (see
+`projects/styles/SEMANTIC_COLOR_SPEC.md`, sections 4.3 and 5, for the full
+rationale). Unlike `tone`/`status`/`label` - which are contrast-solved by
+Leonardo (APCA) - surfaces and borders are placed by a DIRECT perceptual
+lightness in OKLCH, per mode and per role:
+
+```
+surface(family, mode, role) = oklch( L[mode][role], C_family * taper(L), H_family )
+```
+
+APCA is the right tool for foreground (high contrast, cross-mode parity) and the
+wrong tool for near-background colors, where it clamps low contrast and collapses
+the usable band - the mechanism behind the "too black" dark mode (dark had
+nothing between `#000` and `#3c3c3c`). Lightness placement gives a controlled
+elevation ladder with a fixed perceptual step between roles in both modes, and
+the dark base is lifted off pure black (`default` ~= OKLCH 20% L = `#161616`).
+
+The engine (`src/lib/surface.mts`) uses `chroma-js` directly, bypassing
+Leonardo's `searchColors`. Chroma and hue come from the family key color
+(neutral ~= 0 chroma = grayscale; porcelain/bisque carry a cool/warm tint);
+`taper(L)` reduces chroma near the extremes so near-white/near-black surfaces do
+not carry an unnatural cast (ininfluent for neutral). Output is deterministic.
+
+### Opting in
+
+A family opts in with the `surface` flag; the shared ramp lives in a global
+`theme` block (surfaces and borders together, so they are tuned in relation):
+
+```jsonc
+// per color: opt in; the tint comes from the existing `color`
+{ "color": "#a3a3a3", "name": "tone.neutral", "seed": { ... }, "surface": true }
+
+// global ramp (OKLCH); levels accept "96%", "96", or 0.96
+"theme": {
+  "colorspace": "OKLCH",
+  "surfaces": {
+    "light": { "sunken": "92%", "muted": "94%", "default": "96%", "raised": "99%", "overlay": "99%" },
+    "dark":  { "sunken": "15%", "muted": "22%", "default": "20%", "raised": "24%", "overlay": "28%" }
+  },
+  "borders": {
+    "light": { "muted": "87%", "default": "82%", "strong": "72%" },
+    "dark":  { "muted": "30%", "default": "36%", "strong": "44%" }
+  }
+}
+```
+
+`surface: true` uses the global ramp; `surface: { surfaces: {...}, borders: {...} }`
+overrides levels for one family. One opted-in family yields `--surface-<family>-<role>`
+(5 roles: sunken, muted, default, raised, overlay) and `--border-<family>-<role>`
+(3 roles: muted, default, strong), each flipping per mode like the tones. They
+ship in the `theme` export group (`colors-rgb-theme.css`) and in the aggregate
+`colors-rgb.css`. The L values are a starting point, tuned in the playground.
 
 ## Typography tokens
 
@@ -106,6 +163,7 @@ Colors can also declare an optional `hueShift` field (`{ "dark": -18, "light": 1
 | `dist/css/colors-rgb-status.css`         | CSS RGB vars        | Web components, Tailwind |
 | `dist/css/colors-rgb-label.css`          | CSS RGB vars        | Web components, Tailwind |
 | `dist/css/colors-rgb-brand.css`          | CSS RGB vars        | Web components, Tailwind |
+| `dist/css/colors-rgb-theme.css`          | CSS RGB vars        | Surfaces + borders (semantic layer source) |
 | `dist/css/colors-hex-*.css`              | CSS HEX vars        | Plain CSS only           |
 | `dist/css/tailwind-theme-color.css`      | Tailwind 4 `@theme` | `styles` sub-project     |
 | `dist/css/tailwind-theme-typography.css` | Tailwind 4 `@theme` | `styles` sub-project     |

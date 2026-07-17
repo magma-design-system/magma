@@ -4,7 +4,8 @@
       "color": "#94a3b8",
       "export": ["tones"],
       "name": "tone.porcelain",
-      "seed": { "light": "#FFFFFF", "dark": "#000000" }
+      "seed": { "light": "#FFFFFF", "dark": "#000000" },
+      "surface": true
     },
     {
       "color": "#9ca3af",
@@ -16,7 +17,8 @@
       "color": "#a3a3a3",
       "export": ["tones", "default"],
       "name": "tone.neutral",
-      "seed": { "light": "#FFFFFF", "dark": "#000000" }
+      "seed": { "light": "#FFFFFF", "dark": "#000000" },
+      "surface": true
     },
     {
       "color": "#A99F95",
@@ -28,7 +30,8 @@
       "color": "#AC9C97",
       "export": ["tones"],
       "name": "tone.bisque",
-      "seed": { "light": "#FFFFFF", "dark": "#000000" }
+      "seed": { "light": "#FFFFFF", "dark": "#000000" },
+      "surface": true
     },
 
     {
@@ -94,5 +97,16 @@
   "smooth": false,
   "groups": {
     "tone": { "ratios": "tone" }
+  },
+  "theme": {
+    "colorspace": "OKLCH",
+    "surfaces": {
+      "light": { "sunken": "92%", "muted": "94%", "default": "96%", "raised": "99%", "overlay": "99%" },
+      "dark": { "sunken": "15%", "muted": "22%", "default": "20%", "raised": "24%", "overlay": "28%" }
+    },
+    "borders": {
+      "light": { "muted": "87%", "default": "82%", "strong": "72%" },
+      "dark": { "muted": "30%", "default": "36%", "strong": "44%" }
+    }
   }
 }
