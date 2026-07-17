@@ -18,6 +18,7 @@ import {
   type ThemeMode,
 } from "./hue-shift.mjs";
 import { DesignToken, DesignTokens } from "style-dictionary";
+import { validateRatioScale } from "./contrast-range.js";
 export interface SeedConfig {
   light: RgbHexColor;
   dark: RgbHexColor;
@@ -169,6 +170,10 @@ export function resolveExport(
   return colorItem.export ?? groupOf(colorItem, config).export;
 }
 
+// resolveRatios runs once per color per mode; warn about a given scale only
+// once per process so out-of-range targets surface without spamming the log
+const warnedRatioScales = new Set<string>();
+
 export function resolveRatios(
   colorItem: ColorConfig,
   config: MagmaConfig,
@@ -182,6 +187,29 @@ export function resolveRatios(
       `Color "${colorItem.name}" references the ratios scale "${scaleName}" for formula "${formula}", which is not defined. Available scales: ${available}.`,
     );
   }
+
+  // Flag targets outside the formula's usable band (issue #578) so they are
+  // caught instead of silently clamping to a pure extreme.
+  const warnKey = `${formula}:${scaleName}`;
+  if (!warnedRatioScales.has(warnKey)) {
+    // only truly out-of-range targets are logged; near-ceiling (info) is left
+    // to the playground band so normal scales (top step ~102) do not spam
+    const issues = validateRatioScale(scale, formula).filter(
+      (issue) => issue.severity === "warn",
+    );
+    if (issues.length > 0) {
+      warnedRatioScales.add(warnKey);
+      console.warn(
+        chalk.yellow(
+          `Ratio scale "${scaleName}" (${formula}) has out-of-range targets:\n` +
+            issues
+              .map((issue) => `  step ${issue.index + 1} (${issue.value}): ${issue.message}`)
+              .join("\n"),
+        ),
+      );
+    }
+  }
+
   return scale;
 }
 
