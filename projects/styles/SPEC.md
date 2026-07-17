@@ -31,6 +31,7 @@ Consumer applications must import styles in this exact cascade layer order to av
 @import '@maggioli-design-system/styles/dist/css/animations.css' layer(base);
 @import '@maggioli-design-system/styles/dist/css/globals.css' layer(theme);
 @import '@maggioli-design-system/styles/dist/css/semantic.css' layer(theme);
+@import '@maggioli-design-system/styles/dist/css/theme.css' layer(theme);
 @import '@maggioli-design-system/styles/dist/css/base.css' layer(base);
 
 /* your Tailwind entry point */
@@ -103,6 +104,27 @@ Hues: `accent`, `info`, `success`, `warning`, `danger` (full quintet) and
 `neutral` (`fg`/`border`/`emphasis`/`on-emphasis` only - its backgrounds are the
 `surface` family). Interaction states (hover/active/selected) are DERIVED (an
 elevation step or `color-mix`), not authored as tokens.
+
+## Theming axes (`css/theme.css`)
+
+Three independent axes on `<html>`, on top of the semantic layer:
+
+- **mode** `pref-theme-{light,dark,system}` - the global `--tone-*` flip; the
+  semantic tokens follow it automatically (see Dark mode below).
+- **`data-theme-name`** - a named theme overrides the semantic layer. The common
+  case is retinting the neutral scaffolding with ONE swap: a theme repoints
+  `--mds-tint-*` at another generated family (`porcelain` for a cool cast,
+  `bisque` for warm) and every surface + border role follows. Shipped examples:
+  `cool`, `warm`. Add your own the same way (an override map of `--mds-*`).
+- **`--depth`** (number 0..1) - shadow/elevation intensity, multiplied into every
+  term of `--mds-elevation-{raised,overlay}` via `calc()`. `--depth: 0` is
+  perfectly flat, `1` is full. Set it directly, or use `data-theme-depth="flat"`.
+  It is a scalar, NOT a `true|false` style query, so it is cross-browser and
+  inherits across shadow boundaries.
+
+```html
+<html class="pref-theme-dark" data-theme-name="cool" data-theme-depth="flat">
+```
 
 ## Typography utilities
 
