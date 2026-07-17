@@ -51,7 +51,7 @@
 
 @property --mds-modal-window-background {
   inherits: false;
-  initial-value: rgb(var(--tone-neutral));
+  initial-value: rgb(var(--tone-neutral-seed));
   syntax: '<color>';
 }
 
@@ -112,7 +112,7 @@
   --mds-modal-overlay-opacity: var(--magma-overlay-opacity, 0.5);
   --mds-modal-transition-duration: 500ms;
   --mds-modal-transition-timing-funciton: var(--ease-in-out-quint);
-  --mds-modal-window-background: rgb(var(--tone-neutral));
+  --mds-modal-window-background: rgb(var(--tone-neutral-seed));
   --mds-modal-window-distance: 0;
   --mds-modal-window-height: calc(100dvh - calc(var(--mds-modal-window-distance) * 2));
   --mds-modal-window-max-height: calc(100dvh - calc(var(--mds-modal-window-distance) * 2));
@@ -149,7 +149,7 @@
   border: 0;
   box-sizing: border-box;
   display: none;
-  fill: rgb(var(--tone-neutral));
+  fill: rgb(var(--tone-neutral-seed));
   height: auto;
   inset: 0;
   justify-content: center;

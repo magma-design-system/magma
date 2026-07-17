@@ -1,6 +1,6 @@
 .icon-help {
   background-color: rgb(var(--variant-ai-05));
-  border: 1px solid rgb(var(--tone-neutral));
+  border: 1px solid rgb(var(--tone-neutral-seed));
   border-radius: --spacing(600);
   cursor: pointer;
   fill: rgb(var(--variant-ai-10));

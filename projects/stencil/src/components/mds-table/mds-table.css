@@ -25,7 +25,7 @@
 
 @property --mds-table-background {
   inherits: false;
-  initial-value: rgb(var(--tone-neutral));
+  initial-value: rgb(var(--tone-neutral-seed));
   syntax: '<color>';
 }
 
@@ -64,7 +64,7 @@
   --private-table-transition-duration: var(--mds-table-transition-duration);
   --mds-table-actions-gap: --spacing(200);
   --mds-table-background-alt: rgb(var(--tone-neutral-10));
-  --mds-table-background: rgb(var(--tone-neutral));
+  --mds-table-background: rgb(var(--tone-neutral-seed));
   --mds-table-border-color: rgb(var(--tone-neutral-08));
   --mds-table-border-width: 2px;
   --mds-table-cell-padding: --spacing(400);

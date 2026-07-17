@@ -47,7 +47,7 @@
 
 @property --mds-radial-menu-disc-background {
   inherits: false;
-  initial-value: rgb(var(--tone-neutral) / 0.5);
+  initial-value: rgb(var(--tone-neutral-seed) / 0.5);
   syntax: '<color>';
 }
 
@@ -95,7 +95,7 @@
   --mds-radial-menu-context-menu-z-index: var(--magma-context-menu-z-index, 8000);
   --mds-radial-menu-delay: 0.01s;
   --mds-radial-menu-direction: -1;
-  --mds-radial-menu-disc-background: rgb(var(--tone-neutral) / 0.5);
+  --mds-radial-menu-disc-background: rgb(var(--tone-neutral-seed) / 0.5);
   --mds-radial-menu-disc-filter: blur(8px);
   --mds-radial-menu-disc-shadow: var(--shadow-lg-sharp);
   --mds-radial-menu-disc-size: calc(var(--mds-radial-menu-radius) * 2);

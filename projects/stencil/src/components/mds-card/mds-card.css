@@ -21,7 +21,7 @@
   --mds-card-gap: 0;
   --mds-card-padding: 0;
 
-  background-color: rgb(var(--tone-neutral));
+  background-color: rgb(var(--tone-neutral-seed));
   border-radius: var(--radius-2xl);
   box-shadow: var(--shadow-md-sharp);
   container-name: mds-card;

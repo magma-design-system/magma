@@ -17,7 +17,7 @@
 
 @property --mds-notification-color {
   inherits: false;
-  initial-value: rgb(var(--tone-neutral));
+  initial-value: rgb(var(--tone-neutral-seed));
   syntax: '<color>';
 }
 
@@ -41,7 +41,7 @@
 
 @property --mds-notification-ring-color {
   inherits: false;
-  initial-value: rgb(var(--tone-neutral));
+  initial-value: rgb(var(--tone-neutral-seed));
   syntax: '<color>';
 }
 
@@ -93,11 +93,11 @@
 */
 
 :host {
-  --mds-notification-color: rgb(var(--tone-neutral));
+  --mds-notification-color: rgb(var(--tone-neutral-seed));
   --mds-notification-dot-background: rgb(var(--status-error-05));
   --mds-notification-dot-padding: 6px;
   --mds-notification-min-width: var(--mds-notification-size);
-  --mds-notification-ring-color: rgb(var(--tone-neutral));
+  --mds-notification-ring-color: rgb(var(--tone-neutral-seed));
   --mds-notification-ring-size: 2px;
   --mds-notification-size: 20px;
   --mds-notification-transition-duration: 200ms;

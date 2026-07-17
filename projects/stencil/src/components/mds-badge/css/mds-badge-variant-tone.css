@@ -1,5 +1,5 @@
 :host([variant='light']) {
-  --mds-badge-background: rgb(var(--tone-neutral));
+  --mds-badge-background: rgb(var(--tone-neutral-seed));
   --mds-badge-color: rgb(var(--tone-neutral-03));
 
   &:host([tone='weak']) {
@@ -8,7 +8,7 @@
   }
 
   &:host([tone='outline']) {
-    --mds-badge-background: rgb(var(--tone-neutral));
+    --mds-badge-background: rgb(var(--tone-neutral-seed));
     --mds-badge-color: rgb(var(--tone-neutral-02));
     --mds-badge-border-color: rgb(var(--tone-neutral-06));
   }
@@ -16,7 +16,7 @@
 
 :host([variant='dark']) {
   --mds-badge-background: rgb(var(--tone-neutral-03));
-  --mds-badge-color: rgb(var(--tone-neutral));
+  --mds-badge-color: rgb(var(--tone-neutral-seed));
 
   &:host([tone='weak']) {
     --mds-badge-background: rgb(var(--tone-neutral-10));
@@ -24,7 +24,7 @@
   }
 
   &:host([tone='outline']) {
-    --mds-badge-background: rgb(var(--tone-neutral));
+    --mds-badge-background: rgb(var(--tone-neutral-seed));
     --mds-badge-color: rgb(var(--tone-neutral-02));
     --mds-badge-border-color: rgb(var(--tone-neutral-06));
   }

@@ -150,7 +150,7 @@
   @apply text-info-detail;
 
   appearance: none;
-  background-color: rgb(var(--tone-neutral));
+  background-color: rgb(var(--tone-neutral-seed));
   border: 0;
   border-radius: var(--radius-xs);
   box-shadow: var(--mds-input-select-ring), var(--mds-input-select-shadow);

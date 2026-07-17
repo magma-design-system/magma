@@ -55,7 +55,7 @@
 
 @property --mds-paginator-item-color-selected {
   inherits: false;
-  initial-value: rgb(var(--tone-neutral));
+  initial-value: rgb(var(--tone-neutral-seed));
   syntax: '<color>';
 }
 
@@ -113,7 +113,7 @@
   --mds-paginator-item-background: transparent;
   --mds-paginator-item-color-disabled: rgb(var(--tone-neutral-06));
   --mds-paginator-item-color-hover: rgb(var(--tone-neutral-02));
-  --mds-paginator-item-color-selected: rgb(var(--tone-neutral));
+  --mds-paginator-item-color-selected: rgb(var(--tone-neutral-seed));
   --mds-paginator-item-color: rgb(var(--tone-neutral-02));
   --mds-paginator-item-radius: 200px;
   --mds-paginator-item-shadow-disabled: none;

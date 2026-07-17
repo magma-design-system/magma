@@ -21,7 +21,7 @@
 
 @property --mds-tooltip-background {
   inherits: false;
-  initial-value: rgb(var(--tone-neutral));
+  initial-value: rgb(var(--tone-neutral-seed));
   syntax: '<color>';
 }
 
@@ -76,7 +76,7 @@
 
 :host {
   --mds-tooltip-arrow-background: var(--mds-tooltip-background);
-  --mds-tooltip-background: rgb(var(--tone-neutral));
+  --mds-tooltip-background: rgb(var(--tone-neutral-seed));
   --mds-tooltip-delay: 1s;
   --mds-tooltip-drop-shadow: drop-shadow(0 10px 8px rgb(0 0 0 / 0.04))
     drop-shadow(0 4px 3px rgb(0 0 0 / 0.1)) drop-shadow(0 0 1px rgb(0 0 0 / 0.1));

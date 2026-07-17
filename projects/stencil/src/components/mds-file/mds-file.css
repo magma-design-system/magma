@@ -36,7 +36,7 @@
   @apply focus-bounce;
 
   align-items: stretch;
-  background-color: rgb(var(--tone-neutral));
+  background-color: rgb(var(--tone-neutral-seed));
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-outline-weak);
   color: rgb(var(--tone-neutral-04));

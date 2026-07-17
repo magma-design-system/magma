@@ -91,7 +91,7 @@
 
 @property --mds-horizontal-scroll-dot-background {
   inherits: false;
-  initial-value: rgb(var(--tone-neutral));
+  initial-value: rgb(var(--tone-neutral-seed));
   syntax: '<color>';
 }
 
@@ -118,7 +118,7 @@
   --mds-horizontal-scroll-dots-gap: --spacing(100);
   --mds-horizontal-scroll-dot-size: --spacing(200);
   --mds-horizontal-scroll-dot-max-width: auto;
-  --mds-horizontal-scroll-dot-background: rgb(var(--tone-neutral));
+  --mds-horizontal-scroll-dot-background: rgb(var(--tone-neutral-seed));
   --mds-horizontal-scroll-dot-area-background: rgb(var(--tone-neutral-08));
   --mds-horizontal-scroll-contents-padding: --spacing(600);
   --mds-horizontal-scroll-contents-scroll-padding: 0 --spacing(600);
