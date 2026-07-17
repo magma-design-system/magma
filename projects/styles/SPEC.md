@@ -30,6 +30,7 @@ Consumer applications must import styles in this exact cascade layer order to av
 @import '@maggioli-design-system/styles/dist/css/transitions.css' layer(base);
 @import '@maggioli-design-system/styles/dist/css/animations.css' layer(base);
 @import '@maggioli-design-system/styles/dist/css/globals.css' layer(theme);
+@import '@maggioli-design-system/styles/dist/css/semantic.css' layer(theme);
 @import '@maggioli-design-system/styles/dist/css/base.css' layer(base);
 
 /* your Tailwind entry point */
@@ -70,6 +71,38 @@ If you need a color outside Tailwind, always use the RGB wrapper:
   background: rgb(var(--tone-neutral-03) / 0.15);
 }
 ```
+
+## Semantic color layer (`--mds-*`)
+
+The classes above are PRIMITIVES (a specific tone/status step). Prefer the
+SEMANTIC layer for anything role-based: it maps a role (surface, text, border,
+a hue) to the right primitive and flips per mode automatically. Defined in
+`css/semantic.css`, bridged to Tailwind in `tailwind/semantic.css`. Full
+contract and rationale: `SEMANTIC_COLOR_SPEC.md`.
+
+One source, two faces - the same token in plain CSS or as a Tailwind utility:
+
+```css
+/* plain CSS - always the rgb() wrapper (tokens are channel triplets) */
+.card { background: rgb(var(--mds-surface-raised)); color: rgb(var(--mds-text-default)); }
+```
+
+```html
+<!-- Tailwind - same token, no dark: variant needed -->
+<div class="bg-surface-raised text-fg-default border-border-muted">...</div>
+```
+
+| Role | Token | Tailwind |
+| ---- | ----- | -------- |
+| Surfaces (5) | `--mds-surface-{sunken,muted,default,raised,overlay}` | `bg-surface-*` |
+| Text (5) | `--mds-text-{default,muted,subtle,disabled,on-emphasis}` | `text-fg-*` |
+| Border (4) | `--mds-border-{muted,default,strong,focus}` | `border-border-*` |
+| Hues | `--mds-<hue>-{surface,fg,border,emphasis,on-emphasis}` | `bg-<hue>-surface`, `text-<hue>-fg`, ... |
+
+Hues: `accent`, `info`, `success`, `warning`, `danger` (full quintet) and
+`neutral` (`fg`/`border`/`emphasis`/`on-emphasis` only - its backgrounds are the
+`surface` family). Interaction states (hover/active/selected) are DERIVED (an
+elevation step or `color-mix`), not authored as tokens.
 
 ## Typography utilities
 
