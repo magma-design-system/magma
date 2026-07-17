@@ -645,7 +645,10 @@ button.danger:hover { border-color: #c0392b; color: #c0392b; }
 .level-table th,
 .level-table td { padding: 3px 8px; text-align: left; }
 .level-table th { color: var(--ink-soft); font-size: 11px; font-weight: 600; }
-.level-table td:first-child { color: var(--ink-soft); }
+.level-table td { vertical-align: top; }
+.level-table td:first-child { display: flex; flex-direction: column; gap: 1px; }
+.role-name { color: var(--ink); font-weight: 500; }
+.role-purpose { color: var(--ink-soft); font-size: 10px; max-width: 230px; }
 .level-table input { border: 1px solid var(--line); border-radius: 4px; padding: 3px 6px; width: 60px; }
 
 .surface-preview { display: grid; gap: 12px; grid-template-columns: 1fr 1fr; margin-top: 8px; }

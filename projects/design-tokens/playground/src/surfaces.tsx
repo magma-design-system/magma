@@ -26,6 +26,20 @@ function toPercent(level: string | number): number {
   return Number.isNaN(n) ? 0 : n <= 1 ? n * 100 : n;
 }
 
+// what each semantic role is for (SEMANTIC_COLOR_SPEC sections 6.1 and 6.3)
+const SURFACE_PURPOSE: Record<string, string> = {
+  sunken: 'wells, insets, code blocks, tracks (recessed)',
+  muted: 'same-plane grouping: zebra rows, subtle sections',
+  default: 'the canvas / page background',
+  raised: 'cards, panels, sticky headers (lifted)',
+  overlay: 'modal, dropdown, popover, tooltip, sheet (top)',
+};
+const BORDER_PURPOSE: Record<string, string> = {
+  muted: 'decorative: grid, dividers, cell/row borders (softest)',
+  default: 'functional outlines: inputs, buttons',
+  strong: 'assertive / state: selected, focus, error',
+};
+
 /** The family segment of a color name (tone.neutral -> neutral). */
 function familyOf(color: ColorConfig): string {
   return color.name.split('.')[1];
@@ -126,12 +140,14 @@ export function SurfaceManager({ config, onToggleSurface, onUpdateTheme }: Surfa
             title="surfaces"
             roles={SURFACE_ROLES as readonly string[]}
             table={theme.surfaces as Record<Mode, Record<string, string | number>>}
+            purpose={SURFACE_PURPOSE}
             onChange={(mode, role, pct) => setLevel('surfaces', mode, role, pct)}
           />
           <LevelTable
             title="borders"
             roles={BORDER_ROLES as readonly string[]}
             table={theme.borders as Record<Mode, Record<string, string | number>>}
+            purpose={BORDER_PURPOSE}
             onChange={(mode, role, pct) => setLevel('borders', mode, role, pct)}
           />
         </div>
@@ -156,21 +172,41 @@ export function SurfaceManager({ config, onToggleSurface, onUpdateTheme }: Surfa
               const textStrong = hex(tones.neutral?.[mode], '3');
               const textSubtle = hex(tones.neutral?.[mode], '5');
               return (
-                <div class="sf-canvas" style={{ background: hex(s, 'default'), color: textStrong }}>
+                <div
+                  class="sf-canvas"
+                  style={{ background: hex(s, 'default'), color: textStrong }}
+                  title={SURFACE_PURPOSE.default}
+                >
                   <div class="sf-canvas-label">
                     {mode} - canvas <code>{hex(s, 'default')}</code>
                   </div>
                   <div class="sf-row">
-                    <div class="sf-box" style={{ background: hex(s, 'sunken') }}>
+                    <div
+                      class="sf-box"
+                      style={{ background: hex(s, 'sunken') }}
+                      title={SURFACE_PURPOSE.sunken}
+                    >
                       sunken <code>{hex(s, 'sunken')}</code>
                     </div>
-                    <div class="sf-box" style={{ background: hex(s, 'muted') }}>
+                    <div
+                      class="sf-box"
+                      style={{ background: hex(s, 'muted') }}
+                      title={SURFACE_PURPOSE.muted}
+                    >
                       muted <code>{hex(s, 'muted')}</code>
                     </div>
                   </div>
-                  <div class="sf-box sf-raised" style={{ background: hex(s, 'raised') }}>
+                  <div
+                    class="sf-box sf-raised"
+                    style={{ background: hex(s, 'raised') }}
+                    title={SURFACE_PURPOSE.raised}
+                  >
                     raised <code>{hex(s, 'raised')}</code>
-                    <div class="sf-box sf-overlay" style={{ background: hex(s, 'overlay') }}>
+                    <div
+                      class="sf-box sf-overlay"
+                      style={{ background: hex(s, 'overlay') }}
+                      title={SURFACE_PURPOSE.overlay}
+                    >
                       overlay <code>{hex(s, 'overlay')}</code>
                       <p class="sf-text" style={{ color: textStrong }}>
                         Text default
@@ -185,6 +221,7 @@ export function SurfaceManager({ config, onToggleSurface, onUpdateTheme }: Surfa
                       <span
                         class="sf-border-chip"
                         style={{ borderColor: hex(b, role), background: hex(s, 'default') }}
+                        title={BORDER_PURPOSE[role]}
                       >
                         border {role}
                       </span>
@@ -204,10 +241,11 @@ interface LevelTableProps {
   title: string;
   roles: readonly string[];
   table: Record<Mode, Record<string, string | number>>;
+  purpose: Record<string, string>;
   onChange: (mode: Mode, role: string, percent: number) => void;
 }
 
-function LevelTable({ title, roles, table, onChange }: LevelTableProps) {
+function LevelTable({ title, roles, table, purpose, onChange }: LevelTableProps) {
   return (
     <table class="level-table">
       <thead>
@@ -221,7 +259,10 @@ function LevelTable({ title, roles, table, onChange }: LevelTableProps) {
       <tbody>
         {roles.map((role) => (
           <tr>
-            <td>{role}</td>
+            <td>
+              <span class="role-name">{role}</span>
+              <span class="role-purpose">{purpose[role]}</span>
+            </td>
             {MODES.map((mode) => (
               <td>
                 <input
