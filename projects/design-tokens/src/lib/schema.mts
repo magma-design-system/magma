@@ -12,6 +12,40 @@ const hexColor = {
 
 const formula = { enum: ['wcag2', 'wcag3'] }
 
+// A per-mode table of role -> lightness. Levels accept a percentage ("96%"),
+// a bare 0..100 string, or a 0..1 number (see surface.mts parseLightness).
+const lightness = { type: ['string', 'number'] }
+const surfaceModeLevels = {
+  type: 'object',
+  additionalProperties: false,
+  required: ['sunken', 'muted', 'default', 'raised', 'overlay'],
+  properties: {
+    sunken: lightness,
+    muted: lightness,
+    default: lightness,
+    raised: lightness,
+    overlay: lightness,
+  },
+}
+const borderModeLevels = {
+  type: 'object',
+  additionalProperties: false,
+  required: ['muted', 'default', 'strong'],
+  properties: { muted: lightness, default: lightness, strong: lightness },
+}
+const surfaceLevels = {
+  type: 'object',
+  additionalProperties: false,
+  required: ['light', 'dark'],
+  properties: { light: surfaceModeLevels, dark: surfaceModeLevels },
+}
+const borderLevels = {
+  type: 'object',
+  additionalProperties: false,
+  required: ['light', 'dark'],
+  properties: { light: borderModeLevels, dark: borderModeLevels },
+}
+
 const hueShift = {
   type: 'object',
   additionalProperties: false,
@@ -63,6 +97,16 @@ export const CONFIG_SCHEMA = {
       type: 'object',
       additionalProperties: { $ref: '#/definitions/group' },
     },
+    theme: {
+      type: 'object',
+      additionalProperties: false,
+      required: ['surfaces', 'borders'],
+      properties: {
+        colorspace: { type: 'string', enum: COLORSPACES },
+        surfaces: surfaceLevels,
+        borders: borderLevels,
+      },
+    },
     colors: {
       type: 'array',
       minItems: 1,
@@ -106,6 +150,18 @@ export const CONFIG_SCHEMA = {
         colorspace: { type: 'string', enum: COLORSPACES },
         smooth: { type: 'boolean' },
         hueShift,
+        // opt into lightness-based surface + border generation: `true` uses the
+        // global `theme` ramp, an object overrides levels for this family
+        surface: {
+          oneOf: [
+            { type: 'boolean' },
+            {
+              type: 'object',
+              additionalProperties: false,
+              properties: { surfaces: surfaceLevels, borders: borderLevels },
+            },
+          ],
+        },
       },
     },
   },
