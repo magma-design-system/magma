@@ -77,7 +77,7 @@ export class MdsImg {
   /**
    * Specifies the path to the image
    */
-  @Prop() readonly src: string;
+  @Prop() readonly src?: string;
 
   /**
    * Specifies a list of image files to use in different situations.
@@ -157,7 +157,7 @@ export class MdsImg {
   };
 
   private autoAltName = (): string => {
-    if (this.src !== '') {
+    if (this.src !== undefined && this.src !== '') {
       const index = this.src.lastIndexOf('/') + 1;
       return this.src.substring(index);
     }
