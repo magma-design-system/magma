@@ -3,3 +3,6 @@
 /* @import "./dark-mode.css"; */
 @import '@maggioli-design-system/design-tokens/dist/css/tailwind-theme-color.css' layer(theme);
 @import '@maggioli-design-system/design-tokens/dist/css/tailwind-theme-typography.css';
+
+/* semantic color layer bridge (--mds-* -> Tailwind --color-*) */
+@import './semantic.css';
