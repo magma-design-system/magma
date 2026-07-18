@@ -93,7 +93,7 @@
 
 @property --mds-button-color {
   inherits: true;
-  initial-value: rgb(var(--tone-neutral));
+  initial-value: rgb(var(--tone-neutral-seed));
   syntax: '<color>';
 }
 
@@ -131,7 +131,7 @@
   --mds-button-border-default-opacity: 0;
   --mds-button-border-opacity: 0;
   --mds-button-border-width: --spacing(50);
-  --mds-button-color: rgb(var(--tone-neutral));
+  --mds-button-color: rgb(var(--tone-neutral-seed));
   --mds-button-gap: --spacing(200);
   --mds-button-line-clamp: 1;
   --mds-button-radius: var(--radius-2xl);

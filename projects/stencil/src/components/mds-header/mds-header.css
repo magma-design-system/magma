@@ -28,7 +28,7 @@
 
 @property --mds-header-modal-icon-color {
   inherits: false;
-  initial-value: rgb(var(--tone-neutral));
+  initial-value: rgb(var(--tone-neutral-seed));
   syntax: '<color>';
 }
 
@@ -95,7 +95,7 @@
   --mds-header-hidden-bar-translate-inline: translateY(-150%);
   --mds-header-hidden-bar-translate-stripe: translateY(-110%);
   --mds-header-icon-color: var(--mds-header-color, rgb(var(--tone-neutral-02)));
-  --mds-header-modal-icon-color: rgb(var(--tone-neutral));
+  --mds-header-modal-icon-color: rgb(var(--tone-neutral-seed));
   --mds-header-backdrop-blur-strength: 2px;
   --mds-header-backdrop-height: --spacing(1600);
   --mds-header-backdrop-show: true;

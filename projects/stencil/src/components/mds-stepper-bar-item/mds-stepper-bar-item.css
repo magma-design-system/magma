@@ -51,7 +51,7 @@
 
 @property --mds-stepper-bar-item-icon-color-current {
   inherits: false;
-  initial-value: rgb(var(--tone-neutral));
+  initial-value: rgb(var(--tone-neutral-seed));
   syntax: '<color>';
 }
 
@@ -69,7 +69,7 @@
 
 @property --mds-stepper-bar-item-icon-ring-separator-color {
   inherits: false;
-  initial-value: rgb(var(--tone-neutral));
+  initial-value: rgb(var(--tone-neutral-seed));
   syntax: '<color>';
 }
 
@@ -123,7 +123,7 @@
     rgb(var(--tone-neutral-08))
   );
   --mds-stepper-bar-item-icon-color-done: rgb(var(--status-success-10));
-  --mds-stepper-bar-item-icon-color-current: rgb(var(--tone-neutral));
+  --mds-stepper-bar-item-icon-color-current: rgb(var(--tone-neutral-seed));
   --mds-stepper-bar-item-icon-color: rgb(var(--tone-neutral-04));
   --mds-stepper-bar-item-min-width: 180px;
   --mds-stepper-bar-item-progress-background: rgb(var(--tone-neutral-08));

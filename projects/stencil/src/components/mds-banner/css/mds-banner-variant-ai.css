@@ -1,6 +1,6 @@
 :host([variant='ai']),
 :host([variant='ai'][tone='strong']) {
-  --mds-banner-background: rgb(var(--tone-neutral));
+  --mds-banner-background: rgb(var(--tone-neutral-seed));
   --mds-banner-close-icon-hover-background: rgb(var(--variant-ai-09));
   --mds-banner-color: rgb(var(--tone-neutral-02));
   --mds-banner-icon-color: rgb(var(--variant-ai-05));
@@ -10,7 +10,7 @@
 }
 
 :host([variant='ai'][tone='weak']) {
-  --mds-banner-background: rgb(var(--tone-neutral));
+  --mds-banner-background: rgb(var(--tone-neutral-seed));
   --mds-banner-close-icon-hover-background: rgb(var(--variant-ai-10));
   --mds-banner-color: rgb(var(--tone-neutral-02));
   --mds-banner-icon-color: rgb(var(--variant-ai-05));

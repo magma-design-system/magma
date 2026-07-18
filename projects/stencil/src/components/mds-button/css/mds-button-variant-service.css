@@ -1,6 +1,6 @@
 :host([variant='google']),
 :host([variant='google'][tone]) {
-  --mds-button-background: rgb(var(--tone-neutral));
+  --mds-button-background: rgb(var(--tone-neutral-seed));
   --mds-button-border-hover-opacity: 50%;
   --mds-button-border-hover-width: --spacing(50);
   --mds-button-border-opacity: 20%;
@@ -14,7 +14,7 @@
 
 :host([variant='google']:hover),
 :host([variant='google'][tone]:hover) {
-  --mds-button-background: rgb(var(--tone-neutral));
+  --mds-button-background: rgb(var(--tone-neutral-seed));
   --mds-button-border-width: var(--mds-button-border-hover-width);
   --mds-button-border-opacity: var(--mds-button-border-hover-opacity);
 }
@@ -26,7 +26,7 @@
 :host([variant='apple']),
 :host([variant='apple'][tone]) {
   --mds-button-background: rgb(var(--tone-neutral-02));
-  --mds-button-color: rgb(var(--tone-neutral));
+  --mds-button-color: rgb(var(--tone-neutral-seed));
   --mds-button-border-width: 0;
   --mds-button-border-color-rgb: var(--tone-neutral-02);
 }

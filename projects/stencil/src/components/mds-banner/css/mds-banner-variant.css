@@ -1,5 +1,5 @@
 :host {
-  --mds-banner-background: rgb(var(--tone-neutral));
+  --mds-banner-background: rgb(var(--tone-neutral-seed));
   --mds-banner-close-icon-hover-background: rgb(var(--variant-primary-09));
   --mds-banner-color: rgb(var(--tone-neutral-02));
   --mds-banner-icon-color: rgb(var(--variant-primary-05));
@@ -9,7 +9,7 @@
 }
 
 :host([variant='primary']) {
-  --mds-banner-background: rgb(var(--tone-neutral));
+  --mds-banner-background: rgb(var(--tone-neutral-seed));
   --mds-banner-close-icon-hover-background: rgb(var(--variant-primary-09));
   --mds-banner-color: rgb(var(--tone-neutral-02));
   --mds-banner-icon-color: rgb(var(--variant-primary-05));
@@ -18,7 +18,7 @@
   --mds-banner-cockade-background: rgb(var(--variant-primary-09));
 
   &:host([tone='weak']) {
-    --mds-banner-background: rgb(var(--tone-neutral));
+    --mds-banner-background: rgb(var(--tone-neutral-seed));
     --mds-banner-close-icon-hover-background: rgb(var(--variant-primary-10));
     --mds-banner-color: rgb(var(--tone-neutral-02));
     --mds-banner-icon-color: rgb(var(--variant-primary-05));
@@ -28,7 +28,7 @@
 }
 
 :host([variant='ai']) {
-  --mds-banner-background: rgb(var(--tone-neutral));
+  --mds-banner-background: rgb(var(--tone-neutral-seed));
   --mds-banner-close-icon-hover-background: rgb(var(--variant-ai-09));
   --mds-banner-color: rgb(var(--tone-neutral-02));
   --mds-banner-icon-color: rgb(var(--variant-ai-05));
@@ -37,7 +37,7 @@
   --mds-banner-cockade-background: rgb(var(--variant-ai-09));
 
   &:host([tone='weak']) {
-    --mds-banner-background: rgb(var(--tone-neutral));
+    --mds-banner-background: rgb(var(--tone-neutral-seed));
     --mds-banner-close-icon-hover-background: rgb(var(--variant-ai-10));
     --mds-banner-color: rgb(var(--tone-neutral-02));
     --mds-banner-icon-color: rgb(var(--variant-ai-05));

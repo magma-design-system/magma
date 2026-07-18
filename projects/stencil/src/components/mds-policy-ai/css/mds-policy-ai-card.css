@@ -1,7 +1,7 @@
 .mini-card {
   @apply grid-cols-full;
 
-  background-color: rgb(var(--tone-neutral));
+  background-color: rgb(var(--tone-neutral-seed));
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-sm-sharp);
   display: inline-flex;

@@ -66,7 +66,7 @@
 }
 
 :host([tone='text']) {
-  --mds-badge-background: rgb(var(--tone-neutral));
+  --mds-badge-background: rgb(var(--tone-neutral-seed));
 }
 
 @import './css/mds-badge-variant-label.css';

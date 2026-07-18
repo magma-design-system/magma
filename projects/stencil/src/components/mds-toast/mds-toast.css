@@ -18,7 +18,7 @@
 
 @property --mds-toast-color {
   inherits: false;
-  initial-value: rgb(var(--tone-neutral));
+  initial-value: rgb(var(--tone-neutral-seed));
   syntax: '<color>';
 }
 
@@ -30,7 +30,7 @@
 
 @property --mds-toast-icon-color {
   inherits: false;
-  initial-value: rgb(var(--tone-neutral));
+  initial-value: rgb(var(--tone-neutral-seed));
   syntax: '<color>';
 }
 
@@ -52,9 +52,9 @@
 
 :host {
   --mds-toast-background: rgb(var(--tone-neutral-02));
-  --mds-toast-color: rgb(var(--tone-neutral));
+  --mds-toast-color: rgb(var(--tone-neutral-seed));
   --mds-toast-duration: 300ms;
-  --mds-toast-icon-color: rgb(var(--tone-neutral));
+  --mds-toast-icon-color: rgb(var(--tone-neutral-seed));
   --mds-toast-shadow: var(--shadow-xl);
   --mds-toast-width: auto;
 

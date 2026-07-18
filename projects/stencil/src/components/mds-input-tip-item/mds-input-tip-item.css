@@ -14,13 +14,13 @@
 
 @property --mds-input-tip-item-color {
   inherits: false;
-  initial-value: rgb(var(--tone-neutral));
+  initial-value: rgb(var(--tone-neutral-seed));
   syntax: '<color>';
 }
 
 @property --mds-input-tip-item-icon-color {
   inherits: false;
-  initial-value: rgb(var(--tone-neutral));
+  initial-value: rgb(var(--tone-neutral-seed));
   syntax: '<color>';
 }
 
@@ -30,8 +30,8 @@
   --mds-input-tip-item-content-transition-duration: var(--duration-200);
   --private-input-tip-item-content-transition-duration: var(--mds-input-tip-item-content-transition-duration);
   --mds-input-tip-item-background: var(--mds-input-tip-background, rgb(var(--tone-neutral-03)));
-  --mds-input-tip-item-color: rgb(var(--tone-neutral));
-  --mds-input-tip-item-icon-color: rgb(var(--tone-neutral));
+  --mds-input-tip-item-color: rgb(var(--tone-neutral-seed));
+  --mds-input-tip-item-icon-color: rgb(var(--tone-neutral-seed));
 
   align-items: center;
   background-color: var(--mds-input-tip-item-background);

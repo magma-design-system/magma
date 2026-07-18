@@ -9,7 +9,7 @@
 
 :host {
   --mds-kpi-item-icon-color: rgb(var(--variant-primary-04));
-  --mds-kpi-item-info-background: rgb(var(--tone-neutral));
+  --mds-kpi-item-info-background: rgb(var(--tone-neutral-seed));
   --mds-kpi-item-text-animation-placeholder-char: var(
     --mds-kpi-text-animation-placeholder-char,
     ' '

@@ -1,7 +1,7 @@
 :host([variant='primary']) {
   --mds-button-background: rgb(var(--variant-primary-04));
   --mds-button-border-color-rgb: var(--variant-primary-04);
-  --mds-button-color: rgb(var(--tone-neutral));
+  --mds-button-color: rgb(var(--tone-neutral-seed));
 
   &:host([tone='strong']:hover) {
     --mds-button-background: rgb(var(--variant-primary-03));
@@ -48,7 +48,7 @@
 :host([variant='secondary']) {
   --mds-button-background: rgb(var(--variant-secondary-04));
   --mds-button-border-color-rgb: var(--variant-secondary-04);
-  --mds-button-color: rgb(var(--tone-neutral));
+  --mds-button-color: rgb(var(--tone-neutral-seed));
 
   &:host([tone='strong']:hover) {
     --mds-button-background: rgb(var(--variant-secondary-03));
@@ -95,7 +95,7 @@
 :host([variant='ai']) {
   --mds-button-background: rgb(var(--variant-ai-04));
   --mds-button-border-color-rgb: var(--variant-ai-04);
-  --mds-button-color: rgb(var(--tone-neutral));
+  --mds-button-color: rgb(var(--tone-neutral-seed));
 
   &:host([tone='strong']:hover) {
     --mds-button-background: rgb(var(--variant-ai-03));

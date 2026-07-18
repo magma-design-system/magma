@@ -22,13 +22,13 @@
 
 @property --mds-table-row-background-hover {
   inherits: false;
-  initial-value: rgb(var(--tone-neutral));
+  initial-value: rgb(var(--tone-neutral-seed));
   syntax: '<color>';
 }
 
 @property --mds-table-row-background-alt {
   inherits: false;
-  initial-value: rgb(var(--tone-neutral));
+  initial-value: rgb(var(--tone-neutral-seed));
   syntax: '<color>';
 }
 
@@ -41,8 +41,8 @@
 :host {
   --mds-table-row-color-hover: var(--mds-table-color, rgb(var(--tone-neutral-02)));
   --mds-table-row-color-alt: var(--mds-table-color-alt, rgb(var(--tone-neutral-02)));
-  --mds-table-row-background-hover: var(--mds-table-background, rgb(var(--tone-neutral)));
-  --mds-table-row-background-alt: var(--mds-table-background-alt, rgb(var(--tone-neutral)));
+  --mds-table-row-background-hover: var(--mds-table-background, rgb(var(--tone-neutral-seed)));
+  --mds-table-row-background-alt: var(--mds-table-background-alt, rgb(var(--tone-neutral-seed)));
   --mds-table-row-actions-gap: var(--mds-table-actions-gap, --spacing(400));
   --mds-table-row-transition-duration: var(--duration-200);
 

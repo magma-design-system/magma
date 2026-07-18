@@ -1,39 +1,39 @@
 :host([variant='light']) {
-  --mds-button-background: rgb(var(--tone-neutral));
-  --mds-button-border-color-rgb: var(--tone-neutral);
+  --mds-button-background: rgb(var(--tone-neutral-seed));
+  --mds-button-border-color-rgb: var(--tone-neutral-seed);
   --mds-button-color: rgb(var(--tone-neutral-03));
 
   &:host([tone='strong']:hover) {
-    --mds-button-background: rgb(var(--tone-neutral));
-    --mds-button-border-color-rgb: var(--tone-neutral);
+    --mds-button-background: rgb(var(--tone-neutral-seed));
+    --mds-button-border-color-rgb: var(--tone-neutral-seed);
   }
 
   &:host([tone='weak']) {
-    --mds-button-background: rgb(var(--tone-neutral));
-    --mds-button-border-color-rgb: var(--tone-neutral);
+    --mds-button-background: rgb(var(--tone-neutral-seed));
+    --mds-button-border-color-rgb: var(--tone-neutral-seed);
     --mds-button-color: rgb(var(--tone-neutral-03));
 
     fill: rgb(var(--tone-neutral-03));
   }
 
   &:host([tone='weak']:hover) {
-    --mds-button-background: rgb(var(--tone-neutral));
-    --mds-button-border-color-rgb: var(--tone-neutral);
+    --mds-button-background: rgb(var(--tone-neutral-seed));
+    --mds-button-border-color-rgb: var(--tone-neutral-seed);
     --mds-button-color: rgb(var(--tone-neutral-02));
   }
 
   &:host([tone='outline']) {
-    --mds-button-border-color-rgb: var(--tone-neutral);
-    --mds-button-color: rgb(var(--tone-neutral));
+    --mds-button-border-color-rgb: var(--tone-neutral-seed);
+    --mds-button-color: rgb(var(--tone-neutral-seed));
   }
 
   &:host([tone='outline']:hover) {
-    --mds-button-border-color-rgb: var(--tone-neutral);
-    --mds-button-color: rgb(var(--tone-neutral));
+    --mds-button-border-color-rgb: var(--tone-neutral-seed);
+    --mds-button-color: rgb(var(--tone-neutral-seed));
   }
 
   &:host([tone='text']) {
-    --mds-button-color: rgb(var(--tone-neutral));
+    --mds-button-color: rgb(var(--tone-neutral-seed));
   }
 
   &:host([tone='text']:hover) {
@@ -42,14 +42,14 @@
   }
 
   &:host([tone='text'][active]) {
-    --mds-button-color: rgb(var(--tone-neutral));
+    --mds-button-color: rgb(var(--tone-neutral-seed));
   }
 }
 
 :host([variant='dark']) {
   --mds-button-background: rgb(var(--tone-neutral-04));
   --mds-button-border-color-rgb: var(--tone-neutral-04);
-  --mds-button-color: rgb(var(--tone-neutral));
+  --mds-button-color: rgb(var(--tone-neutral-seed));
 
   &:host([tone='strong']:hover) {
     --mds-button-background: rgb(var(--tone-neutral-05));

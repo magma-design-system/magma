@@ -1,5 +1,5 @@
 :host {
-  --mds-chip-background: rgb(var(--tone-neutral));
+  --mds-chip-background: rgb(var(--tone-neutral-seed));
   --mds-chip-border: transparent;
   --mds-chip-color: rgb(var(--tone-neutral-04));
   --mds-chip-shadow: var(--shadow-sm-sharp);
@@ -9,7 +9,7 @@
 
 :host([variant='primary'][tone='strong']) {
   --mds-chip-icon-background: rgb(var(--variant-primary-05));
-  --mds-chip-icon-color: rgb(var(--tone-neutral));
+  --mds-chip-icon-color: rgb(var(--tone-neutral-seed));
 }
 
 :host([variant='primary'][tone='weak']) {
@@ -27,7 +27,7 @@
 
 :host([variant='secondary'][tone='strong']) {
   --mds-chip-icon-background: rgb(var(--variant-secondary-05));
-  --mds-chip-icon-color: rgb(var(--tone-neutral));
+  --mds-chip-icon-color: rgb(var(--tone-neutral-seed));
 }
 
 :host([variant='secondary'][tone='weak']) {
@@ -45,7 +45,7 @@
 
 :host([variant='ai'][tone='strong']) {
   --mds-chip-icon-background: rgb(var(--variant-ai-05));
-  --mds-chip-icon-color: rgb(var(--tone-neutral));
+  --mds-chip-icon-color: rgb(var(--tone-neutral-seed));
 }
 
 :host([variant='ai'][tone='weak']) {
@@ -65,7 +65,7 @@
 
 :host([variant='success'][tone='strong']) {
   --mds-chip-icon-background: rgb(var(--status-success-05));
-  --mds-chip-icon-color: rgb(var(--tone-neutral));
+  --mds-chip-icon-color: rgb(var(--tone-neutral-seed));
 }
 
 :host([variant='success'][tone='weak']) {
@@ -83,7 +83,7 @@
 
 :host([variant='warning'][tone='strong']) {
   --mds-chip-icon-background: rgb(var(--status-warning-05));
-  --mds-chip-icon-color: rgb(var(--tone-neutral));
+  --mds-chip-icon-color: rgb(var(--tone-neutral-seed));
 }
 
 :host([variant='warning'][tone='weak']) {
@@ -101,7 +101,7 @@
 
 :host([variant='error'][tone='strong']) {
   --mds-chip-icon-background: rgb(var(--status-error-05));
-  --mds-chip-icon-color: rgb(var(--tone-neutral));
+  --mds-chip-icon-color: rgb(var(--tone-neutral-seed));
 }
 
 :host([variant='error'][tone='weak']) {
@@ -119,7 +119,7 @@
 
 :host([variant='info'][tone='strong']) {
   --mds-chip-icon-background: rgb(var(--status-info-05));
-  --mds-chip-icon-color: rgb(var(--tone-neutral));
+  --mds-chip-icon-color: rgb(var(--tone-neutral-seed));
 }
 
 :host([variant='info'][tone='weak']) {
@@ -139,7 +139,7 @@
 
 :host([variant='amaranth'][tone='strong']) {
   --mds-chip-icon-background: rgb(var(--label-amaranth-05));
-  --mds-chip-icon-color: rgb(var(--tone-neutral));
+  --mds-chip-icon-color: rgb(var(--tone-neutral-seed));
 }
 
 :host([variant='amaranth'][tone='weak']) {
@@ -157,7 +157,7 @@
 
 :host([variant='aqua'][tone='strong']) {
   --mds-chip-icon-background: rgb(var(--label-aqua-05));
-  --mds-chip-icon-color: rgb(var(--tone-neutral));
+  --mds-chip-icon-color: rgb(var(--tone-neutral-seed));
 }
 
 :host([variant='aqua'][tone='weak']) {
@@ -175,7 +175,7 @@
 
 :host([variant='blue'][tone='strong']) {
   --mds-chip-icon-background: rgb(var(--label-blue-05));
-  --mds-chip-icon-color: rgb(var(--tone-neutral));
+  --mds-chip-icon-color: rgb(var(--tone-neutral-seed));
 }
 
 :host([variant='blue'][tone='weak']) {
@@ -193,7 +193,7 @@
 
 :host([variant='green'][tone='strong']) {
   --mds-chip-icon-background: rgb(var(--label-green-05));
-  --mds-chip-icon-color: rgb(var(--tone-neutral));
+  --mds-chip-icon-color: rgb(var(--tone-neutral-seed));
 }
 
 :host([variant='green'][tone='weak']) {
@@ -211,7 +211,7 @@
 
 :host([variant='lime'][tone='strong']) {
   --mds-chip-icon-background: rgb(var(--label-lime-05));
-  --mds-chip-icon-color: rgb(var(--tone-neutral));
+  --mds-chip-icon-color: rgb(var(--tone-neutral-seed));
 }
 
 :host([variant='lime'][tone='weak']) {
@@ -229,7 +229,7 @@
 
 :host([variant='orange'][tone='strong']) {
   --mds-chip-icon-background: rgb(var(--label-orange-05));
-  --mds-chip-icon-color: rgb(var(--tone-neutral));
+  --mds-chip-icon-color: rgb(var(--tone-neutral-seed));
 }
 
 :host([variant='orange'][tone='weak']) {
@@ -247,7 +247,7 @@
 
 :host([variant='orchid'][tone='strong']) {
   --mds-chip-icon-background: rgb(var(--label-orchid-05));
-  --mds-chip-icon-color: rgb(var(--tone-neutral));
+  --mds-chip-icon-color: rgb(var(--tone-neutral-seed));
 }
 
 :host([variant='orchid'][tone='weak']) {
@@ -265,7 +265,7 @@
 
 :host([variant='sky'][tone='strong']) {
   --mds-chip-icon-background: rgb(var(--label-sky-05));
-  --mds-chip-icon-color: rgb(var(--tone-neutral));
+  --mds-chip-icon-color: rgb(var(--tone-neutral-seed));
 }
 
 :host([variant='sky'][tone='weak']) {
@@ -283,7 +283,7 @@
 
 :host([variant='violet'][tone='strong']) {
   --mds-chip-icon-background: rgb(var(--label-violet-05));
-  --mds-chip-icon-color: rgb(var(--tone-neutral));
+  --mds-chip-icon-color: rgb(var(--tone-neutral-seed));
 }
 
 :host([variant='violet'][tone='weak']) {
@@ -301,7 +301,7 @@
 
 :host([variant='yellow'][tone='strong']) {
   --mds-chip-icon-background: rgb(var(--label-yellow-05));
-  --mds-chip-icon-color: rgb(var(--tone-neutral));
+  --mds-chip-icon-color: rgb(var(--tone-neutral-seed));
 }
 
 :host([variant='yellow'][tone='weak']) {

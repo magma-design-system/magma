@@ -8,5 +8,5 @@
   --mds-radial-progress-background: rgb(var(--tone-neutral-02));
   --mds-radial-progress-text-background: rgb(var(--tone-neutral-04));
 
-  color: rgb(var(--tone-neutral));
+  color: rgb(var(--tone-neutral-seed));
 }

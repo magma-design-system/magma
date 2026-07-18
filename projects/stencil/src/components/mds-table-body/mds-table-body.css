@@ -16,7 +16,7 @@
 
 @property --mds-table-body-background {
   inherits: false;
-  initial-value: var(--mds-table-background, rgb(var(--tone-neutral)));
+  initial-value: var(--mds-table-background, rgb(var(--tone-neutral-seed)));
   syntax: '<color>';
 }
 
@@ -40,7 +40,7 @@
 
 :host {
   --mds-table-body-background-hover: var(--mds-table-background-alt, rgb(var(--tone-neutral-10)));
-  --mds-table-body-background: var(--mds-table-background, rgb(var(--tone-neutral)));
+  --mds-table-body-background: var(--mds-table-background, rgb(var(--tone-neutral-seed)));
   --mds-table-body-background-alt: var(--mds-table-body-background-hover);
   --mds-table-body-color-alt: var(--mds-table-color-alt, rgb(var(--tone-neutral-05)));
   --mds-table-body-color: var(--mds-table-color, rgb(var(--tone-neutral-02)));
