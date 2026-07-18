@@ -18,6 +18,8 @@ import { BatchExportModal } from './batch.js';
 import { hasHueShift, resolveCurveWeights, type HueShiftConfig } from '../../src/lib/hue-shift.mjs';
 import { generateScales, singleColorConfig, type ColorScales, type Step } from './generator.js';
 import { ScalesManager, type RatioSet, type ScaleOrigin } from './scales.js';
+import { SurfaceManager, DEFAULT_THEME } from './surfaces.js';
+import type { ThemeConfig } from '../../src/lib/surface.mjs';
 import { nearestColorName } from './color-names.js';
 const COLORSPACES = [
   'HSL',
@@ -34,7 +36,7 @@ const COLORSPACES = [
 const CURVE_PRESETS = ['smooth', 'hard', 'custom'] as const;
 
 type CloneableConfig = MagmaConfig & Record<string, unknown>;
-type View = 'colors' | 'scales' | 'groups' | 'diff';
+type View = 'colors' | 'scales' | 'surface' | 'groups' | 'diff';
 
 function clone<T>(value: T): T {
   return JSON.parse(JSON.stringify(value)) as T;
@@ -1006,6 +1008,9 @@ export function App() {
           <button class={view === 'scales' ? 'active' : ''} onClick={() => setView('scales')}>
             contrast scales
           </button>
+          <button class={view === 'surface' ? 'active' : ''} onClick={() => setView('surface')}>
+            surfaces
+          </button>
           <button class={view === 'groups' ? 'active' : ''} onClick={() => setView('groups')}>
             groups
           </button>
@@ -1388,6 +1393,27 @@ export function App() {
                 }
               });
             }}
+          />
+        )}
+        {view === 'surface' && (
+          <SurfaceManager
+            config={config}
+            onToggleSurface={(colorName, on) =>
+              updateConfig((draft) => {
+                const color = draft.colors.find((c) => c.name === colorName);
+                if (!color) return;
+                if (on) (color as ColorConfig).surface = true;
+                else delete (color as Record<string, unknown>).surface;
+              })
+            }
+            onUpdateTheme={(mutate) =>
+              updateConfig((draft) => {
+                if (!draft.theme) {
+                  draft.theme = JSON.parse(JSON.stringify(DEFAULT_THEME)) as ThemeConfig;
+                }
+                mutate(draft.theme);
+              })
+            }
           />
         )}
         {view === 'groups' && (
