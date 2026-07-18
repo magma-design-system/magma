@@ -39,16 +39,16 @@ Notes:
 
 | # | Category | What it does | Confidence |
 |---|----------|--------------|------------|
-| A | Enum remap (`tone`) | `ghost → outline`, `quiet → weak`; validated against each component's v2 set | safe with validation |
-| B | Boolean inversion | rename + negate value: `arrow → hideArrow`, `autoPlacement → disableAutoPlacement`, `backdrop → hideBackdrop`, `cockade → hideCockade`, `showDownloadedIcon → hideDownloadedIcon`, … plus the curated pairs the name heuristic cannot see: `closable → disableClose`, `visible → dismissed` | safe |
+| A | Enum remap (`tone`) | `ghost → outline`, `quiet → weak`; on the three components whose v2 tone set gained `text` (`mds-button`, `mds-radial-menu`, `mds-radial-menu-item`) the documented intent applies instead: `quiet → text`. Validated against each component's v2 set | safe with validation |
+| B | Boolean inversion | rename + negate value: `arrow → hideArrow` (dropdown **and tooltip**), `autoPlacement → disableAutoPlacement`, `backdrop → hideBackdrop`, `cockade → hideCockade`, `showDownloadedIcon → hideDownloadedIcon`, … plus the curated pairs the name heuristic cannot see: `closable → disableClose`, `visible → dismissed` | safe |
 | C | Prop removal | warn + inline comment (HTML) / report (JSX, Angular): e.g. `mds-button hasText`, `mds-modal animating` | report |
 | D | Prop rename | `mds-label labelAction → label` | curated |
 | E | Misc enum shifts | remap or flag | mixed |
 | F | `slot="default"` removal | drop the attribute (v2 uses the unnamed default slot) | safe |
-| F2 | Slot → attribute (preferred) | lift slotted text into an attribute: `mds-button` `Save` → `label="Save"` (`label={expr}` / `[label]="expr"` for dynamic). Element/mixed content → reported | text: safe · markup: manual |
+| F2 | Slot → attribute | lift slotted text into an attribute: `Save` → `label="Save"` (`label={expr}` / `[label]="expr"` for dynamic). Preferred form on `mds-button` (v2 still reads slotted text); **mandatory** on `mds-breadcrumb-item` and `mds-tab-item`, whose v2 render dropped the slot entirely. Element/mixed content → reported | text: safe · markup: manual |
 | F3 | Removed named slot | report children using a slot dropped in v2: `mds-push-notification` `slot="top"` / `slot="bottom"` | report |
-| G | CSS custom property rename | `--mds-*-ghost-* → --mds-*-outline-*`, `--mds-*-color → --mds-*-color-rgb` (value hex → `R G B` flagged) | name: safe · value: manual |
-| G2 | CSS custom property removal | warn on definitions/`var()` references of the ~20 properties removed with no replacement (e.g. `--mds-banner-gap`, `--mds-table-cell-*`) | report |
+| G | CSS custom property rename | `--mds-*-ghost-* → --mds-*-outline-*`, `--mds-*-color → --mds-*-color-rgb` (value hex → `R G B` flagged), plus the curated renames the docs diff saw as removals: `--mds-banner-gap → --mds-banner-content-gap`, `--mds-header-backdrop-filter → --mds-header-backdrop-blur-strength` (both value-flagged), the `shodow → shadow` / triple-dash typo fixes on `mds-filter(-item)`, `--mds-tab-item-transition-* → --mds-tab-transition-*`, and the v1 typo'd names corrected in v2 (#566): `--mds-video-wall-noise-fitler → --mds-video-wall-noise-filter`, `--mds-file-preview-icon-bacground → --mds-file-preview-icon-background` | name: safe · value: manual |
+| G2 | CSS custom property removal | warn on definitions/`var()` references of the ~11 properties removed with no replacement (e.g. `--mds-entity-shadow`, `--mds-table-cell-*`) | report |
 | H | Shadow part rename | rename in `::part()` selectors | safe |
 | I | Event rename | declared in the manifest schema, but **not implemented by any surface yet** — no event was renamed between v1.12 and v2.0.0-beta, so no rule currently exists | n/a |
 
@@ -93,6 +93,12 @@ Out of scope entirely (all surfaces work on markup/templates only):
 
 - **Imperative code**: `el.backdrop = false`, `setAttribute('cockade', …)`, `addEventListener('mdsX', …)`
   in plain JS/TS is never rewritten or reported.
+- **`updateLang()` removal**: v2 removed the public `updateLang()` method from every localized component —
+  components now react automatically when `<html lang>` changes (or via `mds-pref-language`). Calls like
+  `el.updateLang()` live in imperative code, which these codemods do not scan: delete them by hand, no
+  replacement is needed. Likewise, per-element `lang` overrides on `mds-*` hosts are no longer honored
+  (the language is page-wide, driven by `<html lang>`), but flagging every `lang` attribute in templates
+  would be noise, so no rule reports it.
 - **`eventRename`** exists in the manifest schema but no surface implements it — no event was renamed
   between v1.12 and v2.0.0-beta, so no rule exists today. Implement it before the first real event rename.
 

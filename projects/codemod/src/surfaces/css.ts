@@ -117,7 +117,16 @@ export const transformCss = (
             file: ctx.file,
             line,
             ruleId: entry.id,
-            message: `value format changed (e.g. hex → "R G B" channels): convert the value of \`${decl.prop}\` by hand`,
+            message: `value format changed (${entry.rule.note ?? 'e.g. hex → "R G B" channels'}): convert the value of \`${decl.prop}\` by hand`,
+          });
+        } else if (entry.rule.note) {
+          findings.push({
+            kind: 'flag',
+            surface: 'css',
+            file: ctx.file,
+            line,
+            ruleId: entry.id,
+            message: entry.rule.note,
           });
         }
       }

@@ -1,14 +1,4 @@
-import {
-  Component,
-  Host,
-  Element,
-  Event,
-  EventEmitter,
-  h,
-  Prop,
-  Method,
-  State,
-} from '@stencil/core';
+import { Component, Host, Event, EventEmitter, h, Prop, Watch } from '@stencil/core';
 import { Locale } from '@common/locale';
 import localeDefault from './meta/locale.json';
 import localeIt from './meta/locale.it.json';
@@ -23,19 +13,10 @@ import { MdsPrefLanguageEventDetail } from '@event/language';
   shadow: true,
 })
 export class MdsPrefLanguageItem {
-  @Element() private element: HTMLMdsPrefLanguageItemElement;
   private readonly t: Locale = new Locale({
     en: localeEn,
     it: localeIt,
   });
-  @State() language: string;
-  /**
-   * Updates the component's texts to the locale currently set on the host element.
-   */
-  @Method()
-  async updateLang(): Promise<void> {
-    this.language = this.t.lang(this.element);
-  }
 
   /**
    * Specifies the language code based on HTML `lang` attribute
@@ -53,12 +34,25 @@ export class MdsPrefLanguageItem {
   @Event({ eventName: 'mdsPrefLanguageItemSelect' })
   selectLanguageEvent: EventEmitter<MdsPrefLanguageEventDetail>;
 
-  componentWillRender(): void {
-    if (!localeDefault[this.code]) {
-      throw Error(`Language code not found: ${this.code}`);
-    }
-    this.t.lang(this.element);
+  componentWillLoad(): void {
+    this.validateCode(this.code);
   }
+
+  @Watch('code')
+  handleCodeChange(newValue: string): void {
+    this.validateCode(newValue);
+  }
+
+  // `code` is assigned asynchronously by framework wrappers (e.g. @lit/react sets it
+  // as a property after the element connects), so it is briefly undefined on the first
+  // render pass and the watcher re-validates once it lands. Only a non-empty,
+  // unrecognized code is a real error; empty codes fall back to the `noCode` branch
+  // already handled in render().
+  private readonly validateCode = (code: string | undefined): void => {
+    if (code !== undefined && code !== '' && localeDefault[code] === undefined) {
+      throw Error(`Language code not found: ${code}`);
+    }
+  };
 
   private handleClick = (): void => {
     this.selectLanguageEvent.emit({ language: this.code });
@@ -72,13 +66,15 @@ export class MdsPrefLanguageItem {
             icon={this.selected ? miBaselineCheckCircle : miOutlineCircle}
             variant="dark"
             tone="text"
-          >
-            {localeDefault[this.code]}
-          </mds-button>
+            label={localeDefault[this.code]}
+          ></mds-button>
         ) : (
-          <mds-button icon={miBaselineCheckCircle} variant="error" tone="text">
-            {this.t.get('noCode')}
-          </mds-button>
+          <mds-button
+            icon={miBaselineCheckCircle}
+            variant="error"
+            tone="text"
+            label={this.t.get('noCode')}
+          ></mds-button>
         )}
       </Host>
     );

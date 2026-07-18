@@ -26,6 +26,19 @@ describe('transformCss', () => {
     expect(findings.some((f) => f.kind === 'flag')).toBe(true);
   });
 
+  it('flags a rename that carries a note, on the definition site only', () => {
+    const source = [
+      '.a {',
+      '  --mds-button-ghost-background-color: red;',
+      '  background: var(--mds-button-ghost-background-color);',
+      '}',
+    ].join('\n');
+    const { findings } = transformCss(source, manifest, ctx);
+    const flags = findings.filter((f) => f.kind === 'flag');
+    expect(flags.length).toBe(1);
+    expect(flags[0]!.message).toContain('never shipped');
+  });
+
   it('renames shadow parts in ::part() selectors', () => {
     const source = 'mds-button::part(label) { color: red; }';
     const { output } = transformCss(source, manifest, ctx);

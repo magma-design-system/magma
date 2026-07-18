@@ -1,5 +1,5 @@
 import { cssDurationToMilliseconds } from '@common/unit';
-import { subscribePreference } from '@common/preference';
+import { preferenceStore } from '@common/preference';
 import {
   Component,
   Element,
@@ -7,7 +7,6 @@ import {
   EventEmitter,
   Host,
   Prop,
-  State,
   Watch,
   h,
 } from '@stencil/core';
@@ -36,14 +35,6 @@ export class MdsToast {
   private hasText?: boolean;
 
   @Element() hostElement: HTMLMdsToastElement;
-  @State() prefAnimation?: string;
-  private unsubscribePrefAnimation?: () => void;
-  @State() prefContrast?: string;
-  private unsubscribePrefContrast?: () => void;
-  @State() prefTheme?: string;
-  private unsubscribePrefTheme?: () => void;
-  @State() prefThemeScheme?: string;
-  private unsubscribePrefThemeScheme?: () => void;
 
   /**
    * If set, specifies the visibility duration in milliseconds of the element inside the viewport, when the time is up the visible property will be set to false. If the duration is set to 0 the component will still visible until intentionally closed by user.
@@ -111,28 +102,6 @@ export class MdsToast {
     }, this.duration);
   };
 
-  connectedCallback(): void {
-    this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
-      this.prefAnimation = value;
-    });
-    this.unsubscribePrefContrast = subscribePreference('contrast', (value) => {
-      this.prefContrast = value;
-    });
-    this.unsubscribePrefTheme = subscribePreference('theme', (value) => {
-      this.prefTheme = value;
-    });
-    this.unsubscribePrefThemeScheme = subscribePreference('theme-scheme', (value) => {
-      this.prefThemeScheme = value;
-    });
-  }
-
-  disconnectedCallback(): void {
-    this.unsubscribePrefAnimation?.();
-    this.unsubscribePrefContrast?.();
-    this.unsubscribePrefTheme?.();
-    this.unsubscribePrefThemeScheme?.();
-  }
-
   componentWillLoad(): void {
     this.hasText = this.hostElement.innerHTML !== '';
     this.actions = this.hostElement.querySelector(':scope > [slot="action"]') !== null;
@@ -161,10 +130,10 @@ export class MdsToast {
   render() {
     return (
       <Host
-        pref-animation={this.prefAnimation}
-        pref-contrast={this.prefContrast}
-        pref-theme={this.prefTheme}
-        pref-theme-scheme={this.prefThemeScheme}
+        pref-animation={preferenceStore.state.animation}
+        pref-contrast={preferenceStore.state.contrast}
+        pref-theme={preferenceStore.state.theme}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
         <div
           class={clsx(

@@ -9,7 +9,7 @@ import {
   Watch,
   h,
 } from '@stencil/core';
-import { subscribePreference } from '@common/preference';
+import { preferenceStore } from '@common/preference';
 import { ButtonIconPositionType, ButtonSizeType, ButtonType } from '@type/button';
 import { HorizontalActionsAnimationType } from '@type/animation';
 import { DirectionType } from '@component/mds-tab/meta/type';
@@ -23,12 +23,6 @@ import clsx from 'clsx';
 })
 export class MdsTabItem {
   @Element() private element: HTMLMdsTabItemElement;
-  @State() prefContrast?: string;
-  private unsubscribePrefContrast?: () => void;
-  @State() prefTheme?: string;
-  private unsubscribePrefTheme?: () => void;
-  @State() prefThemeScheme?: string;
-  private unsubscribePrefThemeScheme?: () => void;
   @State() isSelected?: boolean;
   @State() hasText: boolean;
 
@@ -126,24 +120,6 @@ export class MdsTabItem {
     }
   }
 
-  connectedCallback(): void {
-    this.unsubscribePrefContrast = subscribePreference('contrast', (value) => {
-      this.prefContrast = value;
-    });
-    this.unsubscribePrefTheme = subscribePreference('theme', (value) => {
-      this.prefTheme = value;
-    });
-    this.unsubscribePrefThemeScheme = subscribePreference('theme-scheme', (value) => {
-      this.prefThemeScheme = value;
-    });
-  }
-
-  disconnectedCallback(): void {
-    this.unsubscribePrefContrast?.();
-    this.unsubscribePrefTheme?.();
-    this.unsubscribePrefThemeScheme?.();
-  }
-
   componentWillLoad(): void {
     this.hasText = this.element.innerHTML !== '';
   }
@@ -151,9 +127,9 @@ export class MdsTabItem {
   render() {
     return (
       <Host
-        pref-contrast={this.prefContrast}
-        pref-theme={this.prefTheme}
-        pref-theme-scheme={this.prefThemeScheme}
+        pref-contrast={preferenceStore.state.contrast}
+        pref-theme={preferenceStore.state.theme}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
         <mds-button
           class={clsx('button', this.selected ? 'selected' : '')}

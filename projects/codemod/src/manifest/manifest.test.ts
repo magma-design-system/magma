@@ -17,6 +17,18 @@ describe('curated manifest', () => {
     }
   });
 
+  it('overrides `quiet → text` on the three components whose v2 tone set has `text`', () => {
+    const quietToText = { ghost: 'outline', quiet: 'text' };
+    expect(manifest.global.tone?.overrides).toEqual({
+      'mds-button': quietToText,
+      'mds-radial-menu': quietToText,
+      'mds-radial-menu-item': quietToText,
+    });
+    for (const tag of Object.keys(manifest.global.tone?.overrides ?? {})) {
+      expect(manifest.components[tag]?.v2EnumSets?.tone).toContain('text');
+    }
+  });
+
   it('renames mds-label `labelAction` to `label` instead of removing it', () => {
     expect(rulesOf('mds-label')).toContainEqual(
       expect.objectContaining({
@@ -60,6 +72,18 @@ describe('curated manifest', () => {
     ).toBe(false);
   });
 
+  it('inverts mds-tooltip `arrow` into `hideArrow` (missing from the docs diff)', () => {
+    expect(rulesOf('mds-tooltip')).toContainEqual(
+      expect.objectContaining({
+        kind: 'booleanInvert',
+        from: { attr: 'arrow', prop: 'arrow' },
+        to: { attr: 'hide-arrow', prop: 'hideArrow' },
+        oldDefault: true,
+        newDefault: false,
+      }),
+    );
+  });
+
   it('guards the mds-dropdown auto-placement default flip', () => {
     expect(rulesOf('mds-dropdown')).toContainEqual(
       expect.objectContaining({
@@ -96,14 +120,85 @@ describe('curated manifest', () => {
     );
   });
 
-  it('lifts mds-button slotted text into `label`', () => {
-    expect(rulesOf('mds-button')).toContainEqual(
+  it('lifts slotted text into `label` (button preferred; breadcrumb-item and tab-item lost their slot)', () => {
+    for (const tag of ['mds-breadcrumb-item', 'mds-button', 'mds-tab-item']) {
+      expect(rulesOf(tag)).toContainEqual(
+        expect.objectContaining({
+          kind: 'slotToAttr',
+          slot: 'default',
+          to: { attr: 'label', prop: 'label' },
+        }),
+      );
+    }
+  });
+
+  it('rewrites the CSS custom properties the docs diff recorded as removals but that are renames', () => {
+    const expected: Array<[string, string, string]> = [
+      ['mds-banner', 'mds-banner-gap', 'mds-banner-content-gap'],
+      ['mds-filter', 'mds-filter-wrapper-shodow-opacity', 'mds-filter-wrapper-shadow-opacity'],
+      [
+        'mds-filter-item',
+        '-mds-filter-item-count-background-selected',
+        'mds-filter-item-count-background-selected',
+      ],
+      [
+        'mds-filter-item',
+        '-mds-filter-item-count-color-default',
+        'mds-filter-item-count-color-default',
+      ],
+      [
+        'mds-filter-item',
+        '-mds-filter-item-count-color-selected',
+        'mds-filter-item-count-color-selected',
+      ],
+      ['mds-header', 'mds-header-backdrop-filter', 'mds-header-backdrop-blur-strength'],
+      ['mds-tab', 'mds-tab-item-transition-duration', 'mds-tab-transition-duration'],
+      ['mds-tab', 'mds-tab-item-transition-timing-function', 'mds-tab-transition-timing-function'],
+    ];
+    for (const [tag, from, to] of expected) {
+      expect(rulesOf(tag)).toContainEqual(
+        expect.objectContaining({ kind: 'cssVarRename', from, to }),
+      );
+      expect(rulesOf(tag).some((r) => r.kind === 'cssVarRemove' && r.name === from)).toBe(false);
+    }
+    // The value cannot be carried over verbatim for these two.
+    expect(rulesOf('mds-banner')).toContainEqual(
       expect.objectContaining({
-        kind: 'slotToAttr',
-        slot: 'default',
-        to: { attr: 'label', prop: 'label' },
+        kind: 'cssVarRename',
+        from: 'mds-banner-gap',
+        valueFormatChanged: true,
       }),
     );
+    expect(rulesOf('mds-header')).toContainEqual(
+      expect.objectContaining({
+        kind: 'cssVarRename',
+        from: 'mds-header-backdrop-filter',
+        valueFormatChanged: true,
+      }),
+    );
+  });
+
+  it("renames the typo'd CSS custom properties corrected in v2 (#566)", () => {
+    expect(rulesOf('mds-video-wall')).toContainEqual({
+      kind: 'cssVarRename',
+      from: 'mds-video-wall-noise-fitler',
+      to: 'mds-video-wall-noise-filter',
+    });
+    expect(rulesOf('mds-file')).toContainEqual({
+      kind: 'cssVarRename',
+      from: 'mds-file-preview-icon-bacground',
+      to: 'mds-file-preview-icon-background',
+    });
+    // The generated removal is stale: the correctly-spelled name exists in v2
+    // now that the typo is fixed.
+    for (const tag of ['mds-video-wall', 'mds-file']) {
+      expect(
+        rulesOf(tag).some((r) => r.kind === 'cssVarRemove' && r.name.includes('noise-fi')),
+      ).toBe(false);
+      expect(
+        rulesOf(tag).some((r) => r.kind === 'cssVarRemove' && r.name.includes('preview-icon-ba')),
+      ).toBe(false);
+    }
   });
 });
 
@@ -144,12 +239,13 @@ describe('generated manifest alignment (v1.12 tip vs dev tip)', () => {
   });
 
   it('reports the CSS custom properties removed with no replacement', () => {
-    expect(rulesOf('mds-banner')).toContainEqual(
-      expect.objectContaining({ kind: 'cssVarRemove', name: 'mds-banner-gap' }),
+    expect(rulesOf('mds-entity')).toContainEqual(
+      expect.objectContaining({ kind: 'cssVarRemove', name: 'mds-entity-shadow' }),
     );
     const removals = Object.values(manifest.components).flatMap((c) =>
       c.rules.filter((r) => r.kind === 'cssVarRemove'),
     );
-    expect(removals.length).toBeGreaterThanOrEqual(20);
+    // 20 in the generated manifest, minus the 9 the curation converts to renames.
+    expect(removals.length).toBeGreaterThanOrEqual(11);
   });
 });

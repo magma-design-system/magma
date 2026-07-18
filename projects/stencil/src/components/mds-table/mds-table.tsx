@@ -14,7 +14,7 @@ import {
 import { MdsTableSelectionEventDetail } from './meta/event-detail';
 import { MdsTableRowSelection } from './meta/type';
 import { Locale } from '@common/locale';
-import { subscribePreference } from '@common/preference';
+import { preferenceStore } from '@common/preference';
 import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.es.json';
@@ -35,14 +35,6 @@ import localeIt from './meta/locale.it.json';
 })
 export class MdsTable {
   @Element() host: HTMLMdsTableElement;
-  @State() prefAnimation?: string;
-  private unsubscribePrefAnimation?: () => void;
-  @State() prefContrast?: string;
-  private unsubscribePrefContrast?: () => void;
-  @State() prefTheme?: string;
-  private unsubscribePrefTheme?: () => void;
-  @State() prefThemeScheme?: string;
-  private unsubscribePrefThemeScheme?: () => void;
   private rows: NodeListOf<HTMLMdsTableRowElement>;
   private body: HTMLMdsTableBodyElement;
   private header: HTMLMdsTableHeaderElement;
@@ -58,7 +50,6 @@ export class MdsTable {
     es: localeEs,
     it: localeIt,
   });
-  @State() language: string;
 
   /**
    * Specifies if the table rows are higlighted on mouseover event
@@ -169,7 +160,6 @@ export class MdsTable {
   };
 
   componentWillLoad(): void {
-    this.language = this.t.lang(this.host);
     this.body = this.host.querySelector('mds-table-body')!;
     this.header = this.host.querySelector('mds-table-header')!;
     this.rows = this.host.querySelectorAll('mds-table-row');
@@ -201,26 +191,7 @@ export class MdsTable {
     this.handleSelection();
   };
 
-  connectedCallback(): void {
-    this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
-      this.prefAnimation = value;
-    });
-    this.unsubscribePrefContrast = subscribePreference('contrast', (value) => {
-      this.prefContrast = value;
-    });
-    this.unsubscribePrefTheme = subscribePreference('theme', (value) => {
-      this.prefTheme = value;
-    });
-    this.unsubscribePrefThemeScheme = subscribePreference('theme-scheme', (value) => {
-      this.prefThemeScheme = value;
-    });
-  }
-
   disconnectedCallback(): void {
-    this.unsubscribePrefAnimation?.();
-    this.unsubscribePrefContrast?.();
-    this.unsubscribePrefTheme?.();
-    this.unsubscribePrefThemeScheme?.();
     this.host.removeEventListener('scroll', this.handleActions);
     this.resizeObserver?.disconnect();
     this.tableBodyObserver.disconnect();
@@ -229,10 +200,10 @@ export class MdsTable {
   render() {
     return (
       <Host
-        pref-animation={this.prefAnimation}
-        pref-contrast={this.prefContrast}
-        pref-theme={this.prefTheme}
-        pref-theme-scheme={this.prefThemeScheme}
+        pref-animation={preferenceStore.state.animation}
+        pref-contrast={preferenceStore.state.contrast}
+        pref-theme={preferenceStore.state.theme}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
         <div class="table-wrapper" part="table-wrapper">
           <table

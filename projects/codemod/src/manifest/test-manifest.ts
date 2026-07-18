@@ -83,6 +83,7 @@ export const testManifest: Manifest = {
           kind: 'cssVarRename',
           from: 'mds-button-ghost-background-color',
           to: 'mds-button-outline-background-color',
+          note: 'the v1 name was documented but never shipped; the override becomes effective after the rename',
         },
         { kind: 'partRename', from: 'label', to: 'content' },
       ],

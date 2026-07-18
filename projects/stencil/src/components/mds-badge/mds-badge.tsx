@@ -1,9 +1,9 @@
-import { Component, Host, Element, h, Prop, State, Watch } from '@stencil/core';
+import { Component, Host, Element, h, Prop, Watch } from '@stencil/core';
 import { TypographyLabelType } from '@type/typography';
 import { ThemeFullVariantType } from '@type/variant';
 import { ToneSmartVariantType } from '@type/tone';
 import { readSlottedLabel, sanitizeLabel } from '@common/slot';
-import { subscribePreference } from '@common/preference';
+import { preferenceStore } from '@common/preference';
 
 /**
  * @slot - **Deprecated**, use the `label` property instead. Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
@@ -16,36 +16,6 @@ import { subscribePreference } from '@common/preference';
 })
 export class MdsBadge {
   @Element() host: HTMLMdsBadgeElement;
-  @State() prefAnimation?: string;
-  private unsubscribePrefAnimation?: () => void;
-  @State() prefContrast?: string;
-  private unsubscribePrefContrast?: () => void;
-  @State() prefTheme?: string;
-  private unsubscribePrefTheme?: () => void;
-  @State() prefThemeScheme?: string;
-  private unsubscribePrefThemeScheme?: () => void;
-
-  connectedCallback(): void {
-    this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
-      this.prefAnimation = value;
-    });
-    this.unsubscribePrefContrast = subscribePreference('contrast', (value) => {
-      this.prefContrast = value;
-    });
-    this.unsubscribePrefTheme = subscribePreference('theme', (value) => {
-      this.prefTheme = value;
-    });
-    this.unsubscribePrefThemeScheme = subscribePreference('theme-scheme', (value) => {
-      this.prefThemeScheme = value;
-    });
-  }
-
-  disconnectedCallback(): void {
-    this.unsubscribePrefAnimation?.();
-    this.unsubscribePrefContrast?.();
-    this.unsubscribePrefTheme?.();
-    this.unsubscribePrefThemeScheme?.();
-  }
 
   /**
    * The label of the badge
@@ -81,10 +51,10 @@ export class MdsBadge {
   render() {
     return (
       <Host
-        pref-animation={this.prefAnimation}
-        pref-contrast={this.prefContrast}
-        pref-theme={this.prefTheme}
-        pref-theme-scheme={this.prefThemeScheme}
+        pref-animation={preferenceStore.state.animation}
+        pref-contrast={preferenceStore.state.contrast}
+        pref-theme={preferenceStore.state.theme}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
         <mds-text tag="span" typography={this.typography} variant="info" text={this.label}>
           {this.label || <slot onSlotchange={this.onSlotChangeHandler} />}

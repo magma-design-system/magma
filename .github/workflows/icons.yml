@@ -6,12 +6,12 @@ on:
   pull_request:
 
 concurrency:
-  # one run per ref: a newer push cancels the superseded run. On main each push
-  # gets its own group (no cancel, no queued-run replacement): chained
-  # chore(release) pushes must each complete their CI to provide the build
-  # artifact for their own publish run
-  group: ${{ github.workflow }}-${{ github.ref == 'refs/heads/main' && github.sha || github.ref }}
-  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+  # one run per ref: a newer push cancels the superseded run. On main, and for
+  # chore(release) pushes on any branch, each push gets its own group (no
+  # cancel, no queued-run replacement): chained chore(release) pushes must each
+  # complete their CI to provide the build artifact for their own publish run
+  group: ${{ github.workflow }}-${{ (github.ref == 'refs/heads/main' || startsWith(github.event.head_commit.message, 'chore(release):')) && github.sha || github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' && !startsWith(github.event.head_commit.message, 'chore(release):') }}
 
 jobs:
   icons:

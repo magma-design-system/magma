@@ -51,7 +51,7 @@ import {
   requiredValidor,
 } from './meta/validators';
 import { hashRandomValue } from '@common/aria';
-import { subscribePreference } from '@common/preference';
+import { preferenceStore } from '@common/preference';
 
 /*
  * @part counter-button-decrease - Selects the button used to decrese the input value
@@ -103,7 +103,7 @@ export class MdsInput {
 
   private inputValidation: InputValidationManager;
   private isValid: boolean;
-  private speechToTextLabel: string;
+  private speechToTextLabelKey: string = 'speechToTextOn';
   private speechToTextIcon: string = miOutlineMic;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private recognition: any;
@@ -111,16 +111,7 @@ export class MdsInput {
 
   private datalistId: string;
   @Element() el: HTMLMdsInputElement;
-  @State() prefAnimation?: string;
-  private unsubscribePrefAnimation?: () => void;
-  @State() prefContrast?: string;
-  private unsubscribePrefContrast?: () => void;
-  @State() prefTheme?: string;
-  private unsubscribePrefTheme?: () => void;
-  @State() prefThemeScheme?: string;
-  private unsubscribePrefThemeScheme?: () => void;
   @State() hasFocus = false;
-  @State() language: string;
   @State() isRecording: boolean = false;
   @State() currentLengthLabel: string;
   @State() countVariant: InputTipItemVariantType = 'count-empty';
@@ -133,14 +124,6 @@ export class MdsInput {
     es: localeEs,
     it: localeIt,
   });
-  /**
-   * Updates the component's texts to the locale currently set on the host element.
-   */
-  @Method()
-  async updateLang(): Promise<void> {
-    this.language = this.t.lang(this.el);
-    this.t.update();
-  }
 
   @AttachInternals() internals: ElementInternals;
 
@@ -307,32 +290,11 @@ export class MdsInput {
   }
 
   connectedCallback(): void {
-    this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
-      this.prefAnimation = value;
-    });
-    this.unsubscribePrefContrast = subscribePreference('contrast', (value) => {
-      this.prefContrast = value;
-    });
-    this.unsubscribePrefTheme = subscribePreference('theme', (value) => {
-      this.prefTheme = value;
-    });
-    this.unsubscribePrefThemeScheme = subscribePreference('theme-scheme', (value) => {
-      this.prefThemeScheme = value;
-    });
     this.datalistId = `datalist-${hashRandomValue()}`;
   }
 
-  disconnectedCallback(): void {
-    this.unsubscribePrefAnimation?.();
-    this.unsubscribePrefContrast?.();
-    this.unsubscribePrefTheme?.();
-    this.unsubscribePrefThemeScheme?.();
-  }
-
   componentWillLoad(): void {
-    this.language = this.t.lang(this.el);
     // this.valuePristine = this.value
-    this.speechToTextLabel = this.t.get('speechToTextOn');
 
     // If the mds-input has a tabindex attribute we get the value
     // and pass it down to the native input, then remove it from the
@@ -566,13 +528,13 @@ export class MdsInput {
     this.isRecording = !this.isRecording;
 
     if (!this.isRecording) {
-      this.speechToTextLabel = this.t.get('speechToTextOn');
+      this.speechToTextLabelKey = 'speechToTextOn';
       this.speechToTextIcon = miOutlineMic;
       this.stopRecognition();
       return;
     }
 
-    this.speechToTextLabel = this.t.get('speechToTextOff');
+    this.speechToTextLabelKey = 'speechToTextOff';
     this.speechToTextIcon = miBaselineDone;
     this.startRecognition();
   };
@@ -586,7 +548,7 @@ export class MdsInput {
     this.speechButton.classList.remove('mic-toggle-button--recording');
     this.speechButton.classList.add('toggle-button--error');
     this.isRecording = false;
-    this.speechToTextLabel = this.t.get('speechToTextError');
+    this.speechToTextLabelKey = 'speechToTextError';
     this.speechToTextIcon = miOutlineMicOff;
   };
 
@@ -643,17 +605,13 @@ export class MdsInput {
     }
   };
 
-  componentWillRender(): void {
-    this.t.lang(this.el);
-  }
-
   render() {
     return (
       <Host
-        pref-animation={this.prefAnimation}
-        pref-contrast={this.prefContrast}
-        pref-theme={this.prefTheme}
-        pref-theme-scheme={this.prefThemeScheme}
+        pref-animation={preferenceStore.state.animation}
+        pref-contrast={preferenceStore.state.contrast}
+        pref-theme={preferenceStore.state.theme}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
         {this.type === 'number' && this.controlsLayout === 'horizontal' && (
           <mds-button
@@ -786,13 +744,13 @@ export class MdsInput {
             icon={this.speechToTextIcon}
             onClick={this.toggleTextRecognition}
             tabindex="0"
-            title={this.speechToTextLabel}
+            title={this.t.get(this.speechToTextLabelKey)}
             variant="dark"
             tone="text"
             part="mic-toggle-button"
           ></mds-button>
         )}
-        <mds-input-tip lang={this.language} position="top" active={this.hasFocus} part="tip-top">
+        <mds-input-tip position="top" active={this.hasFocus} part="tip-top">
           {this.disabled && <mds-input-tip-item expanded variant="disabled"></mds-input-tip-item>}
           {this.readonly && <mds-input-tip-item expanded variant="readonly"></mds-input-tip-item>}
           {this.required && (
@@ -802,12 +760,7 @@ export class MdsInput {
             ></mds-input-tip-item>
           )}
         </mds-input-tip>
-        <mds-input-tip
-          lang={this.language}
-          position="bottom"
-          active={this.hasFocus}
-          part="tip-bottom"
-        >
+        <mds-input-tip position="bottom" active={this.hasFocus} part="tip-bottom">
           {this.tip && (
             <mds-input-tip-item expanded variant="text">
               {this.tip}

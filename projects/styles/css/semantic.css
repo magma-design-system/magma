@@ -1,0 +1,113 @@
+/*
+  Semantic color layer (--mds-*) - the contract components consume.
+  Spec: projects/styles/SEMANTIC_COLOR_SPEC.md (section 6) + issue #573 (B1).
+
+  Each token is a flat ALIAS of a primitive on :root. The primitives
+  (--surface-*, --tone-*, --status-*, --label-*, --variant-*) already carry
+  their per-mode value and flip under .pref-theme-dark / @media
+  (prefers-color-scheme) in the published colors-rgb-*.css. Because these are
+  live var() references in light-DOM CSS, the semantic tokens inherit that flip
+  automatically - into every component shadow DOM, with NO :host-context and NO
+  Tailwind `dark:` variants.
+
+  Values are channel triplets ("R G B"), never closed colors, so both plain CSS
+  (`rgb(var(--mds-surface-raised))`) and Tailwind opacity modifiers
+  (`bg-surface-raised/50`) work. Consume with the rgb() wrapper.
+
+  The primitive STEP each role points at is a first cut from the spec's source
+  mapping (6.5); the exact steps are verified and tuned by the APCA gate (A3,
+  issue #575). The active surface tint is `neutral` by default; the theming
+  layer (B2, issue #574) repoints it per named theme.
+*/
+
+:root {
+  /*
+    Active surface tint (spec section 8). Surfaces and borders resolve from
+    these pointers instead of a family directly, so a named theme retints the
+    whole neutral scaffolding with ONE swap (repoint --mds-tint-*), daisyUI
+    style. Default tint = the neutral family. See css/theme.css for the axis.
+  */
+  --mds-tint-sunken: var(--surface-neutral-sunken);
+  --mds-tint-muted: var(--surface-neutral-muted);
+  --mds-tint-default: var(--surface-neutral-default);
+  --mds-tint-raised: var(--surface-neutral-raised);
+  --mds-tint-overlay: var(--surface-neutral-overlay);
+  --mds-tint-border-muted: var(--border-neutral-muted);
+  --mds-tint-border-default: var(--border-neutral-default);
+  --mds-tint-border-strong: var(--border-neutral-strong);
+
+  /* Surfaces - neutral backgrounds (elevation + same-plane prominence), 6.1 */
+  --mds-surface-sunken: var(--mds-tint-sunken);
+  --mds-surface-muted: var(--mds-tint-muted);
+  --mds-surface-default: var(--mds-tint-default);
+  --mds-surface-raised: var(--mds-tint-raised);
+  --mds-surface-overlay: var(--mds-tint-overlay);
+
+  /* Text - prominence, 6.2 (tone-neutral, APCA; flips per mode automatically) */
+  --mds-text-default: var(--tone-neutral-03);
+  --mds-text-muted: var(--tone-neutral-04);
+  --mds-text-subtle: var(--tone-neutral-05);
+  --mds-text-disabled: var(--tone-neutral-06);
+  /* near-extreme, verified on the emphasis fill (6.5) */
+  --mds-text-on-emphasis: var(--tone-neutral);
+
+  /* Border - prominence, 6.3 (opaque OKLCH levels beyond the surface band) */
+  --mds-border-muted: var(--mds-tint-border-muted);
+  --mds-border-default: var(--mds-tint-border-default);
+  --mds-border-strong: var(--mds-tint-border-strong);
+  /* focus is an accent, not a neutral level */
+  --mds-border-focus: var(--variant-primary);
+
+  /*
+    Hues - cross-cutting quintet (6.4). Colored families carry the full set;
+    `neutral` contributes only fg/border/emphasis/on-emphasis because its
+    background needs are already covered by the surface family (no duplicate
+    neutral-surface token).
+      -surface    subtle tinted fill      -> step 09 of the family
+      -fg         colored text/icon       -> step 05
+      -border     colored border          -> step 06
+      -emphasis   solid fill              -> step 04
+      -on-emphasis text on the solid fill -> near-white neutral seed
+  */
+
+  /* accent (variant-primary) */
+  --mds-accent-surface: var(--variant-primary-09);
+  --mds-accent-fg: var(--variant-primary-05);
+  --mds-accent-border: var(--variant-primary-06);
+  --mds-accent-emphasis: var(--variant-primary-04);
+  --mds-accent-on-emphasis: var(--tone-neutral);
+
+  /* info (status-info) */
+  --mds-info-surface: var(--status-info-09);
+  --mds-info-fg: var(--status-info-05);
+  --mds-info-border: var(--status-info-06);
+  --mds-info-emphasis: var(--status-info-04);
+  --mds-info-on-emphasis: var(--tone-neutral);
+
+  /* success (status-success) */
+  --mds-success-surface: var(--status-success-09);
+  --mds-success-fg: var(--status-success-05);
+  --mds-success-border: var(--status-success-06);
+  --mds-success-emphasis: var(--status-success-04);
+  --mds-success-on-emphasis: var(--tone-neutral);
+
+  /* warning (status-warning) */
+  --mds-warning-surface: var(--status-warning-09);
+  --mds-warning-fg: var(--status-warning-05);
+  --mds-warning-border: var(--status-warning-06);
+  --mds-warning-emphasis: var(--status-warning-04);
+  --mds-warning-on-emphasis: var(--tone-neutral);
+
+  /* danger (status-error) */
+  --mds-danger-surface: var(--status-error-09);
+  --mds-danger-fg: var(--status-error-05);
+  --mds-danger-border: var(--status-error-06);
+  --mds-danger-emphasis: var(--status-error-04);
+  --mds-danger-on-emphasis: var(--tone-neutral);
+
+  /* neutral hue - fg/border/emphasis/on-emphasis only (6.4) */
+  --mds-neutral-fg: var(--tone-neutral-03);
+  --mds-neutral-border: var(--tone-neutral-06);
+  --mds-neutral-emphasis: var(--tone-neutral-02);
+  --mds-neutral-on-emphasis: var(--tone-neutral);
+}

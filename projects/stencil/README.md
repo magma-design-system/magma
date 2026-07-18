@@ -25,14 +25,19 @@ Use the versions of `@maggioli-design-system/design-tokens` and `@maggioli-desig
 
 #### Tones name changes
 
-Now tones have new names to make them more consistent with the rest of the system and to be more semantiaclly correct.
+Now tones have new names to make them more consistent with the rest of the system and to be more semantically correct.
 
 | V1 | V2 | V1 compatibility |
 |---------|---------|-------------|
 | `strong`  | `strong`  | ✅ |
 | `weak`    | `weak`    | ✅ |
 | `ghost`   | `outline` | ⚠️ |
-| `quiet`   | `text`    | ⚠️ |
+| `quiet`   | `text` or `weak` (see below) | ⚠️ |
+
+`quiet → text` only applies to the components whose v2 tone set includes `text`: `mds-button`,
+`mds-radial-menu` and `mds-radial-menu-item`. Every other component dropped `quiet` without
+gaining `text` (e.g. `mds-banner`, `mds-label`), so there the closest replacement is `weak`.
+The [migration codemod](../codemod/README.md) applies exactly this mapping.
 
 #### Design tokens
 

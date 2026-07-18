@@ -249,7 +249,7 @@ The browser ignores the `preload` hint entirely when `autoplay` is set (which is
 | ----------------------------------------- | --------------------------------------------------------------------------------------- |
 | `--mds-video-wall-noise-background-color` | The background color applied to the noise layer of the video wall.                      |
 | `--mds-video-wall-noise-background-size`  | The background-size used for the noise texture.                                         |
-| `--mds-video-wall-noise-fitler`           | The CSS filter applied to the noise layer (e.g., blur, brightness).                     |
+| `--mds-video-wall-noise-filter`           | The CSS filter applied to the noise layer (e.g., blur, brightness).                     |
 | `--mds-video-wall-video-fit`              | Defines how the video content should scale to fit its container (e.g., cover, contain). |
 
 

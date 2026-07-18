@@ -345,10 +345,6 @@ export namespace Components {
          */
         "tone"?: ToneMinimalBoxVariantType;
         /**
-          * Updates the component's texts to the locale currently set on the host element.
-         */
-        "updateLang": () => Promise<void>;
-        /**
           * Sets the theme variant colors
           * @default 'primary'
          */
@@ -435,10 +431,6 @@ export namespace Components {
           * @default false
          */
         "hideBack"?: boolean;
-        /**
-          * Updates the component's texts to the locale currently set on the host element.
-         */
-        "updateLang": () => Promise<void>;
     }
     interface MdsBreadcrumbItem {
         /**
@@ -649,10 +641,6 @@ export namespace Components {
          */
         "updateCurrentDate": (date: string) => Promise<void>;
         /**
-          * Updates the component's texts to the locale currently set on the host element.
-         */
-        "updateLang": () => Promise<void>;
-        /**
           * Specifies the date used to determine the visible month without changing the selection.
           * @description It's in ISO format (YYYY-MM-DD).
           * @example '2023-10-01'
@@ -753,10 +741,6 @@ export namespace Components {
           * @default 'strong'
          */
         "tone"?: ToneMinimalVariantType;
-        /**
-          * Updates the component's texts to the locale currently set on the host element.
-         */
-        "updateLang": () => Promise<void>;
         /**
           * Sets the color variant of the component
           * @default 'primary'
@@ -941,10 +925,6 @@ export namespace Components {
           * Overrides the automatic filetype recongition by forcing the suffix to one of the available formats choosen
          */
         "suffix"?: ExtensionSuffixType;
-        /**
-          * Updates the component's texts to the locale currently set on the host element.
-         */
-        "updateLang": () => Promise<void>;
     }
     interface MdsFilePreview {
         /**
@@ -992,10 +972,6 @@ export namespace Components {
           * @default 'word'
          */
         "truncate"?: TypographyTruncateType;
-        /**
-          * Updates the component's texts to the locale currently set on the host element.
-         */
-        "updateLang": () => Promise<void>;
         /**
           * The variant of the component, is shown only if the message attribute is defined
          */
@@ -1195,10 +1171,6 @@ export namespace Components {
          */
         "srcsetConsumption"?: string;
         /**
-          * Updates the component's texts to the locale currently set on the host element.
-         */
-        "updateLang": () => Promise<void>;
-        /**
           * The width attribute specifies the width of an image, in pixels.
          */
         "width"?: string;
@@ -1332,10 +1304,6 @@ export namespace Components {
          */
         "typography": TypographyInputType;
         /**
-          * Updates the component's texts to the locale currently set on the host element.
-         */
-        "updateLang": () => Promise<void>;
-        /**
           * Specifies the value of the input element
           * @default ''
          */
@@ -1399,10 +1367,6 @@ export namespace Components {
          */
         "setValue": (value: string) => Promise<void>;
         /**
-          * Updates the component's texts to the locale currently set on the host element.
-         */
-        "updateLang": () => Promise<void>;
-        /**
           * Specifies the value of the input
           * @description It's in ISO format (YYYY-MM-DD).
           * @default ''
@@ -1459,10 +1423,6 @@ export namespace Components {
           * @default ''
          */
         "startDate": string;
-        /**
-          * Updates the component's texts to the locale currently set on the host element.
-         */
-        "updateLang": () => Promise<void>;
     }
     interface MdsInputDateRangePreselection {
         /**
@@ -1589,10 +1549,6 @@ export namespace Components {
          */
         "size"?: number;
         /**
-          * Updates the component's texts to the locale currently set on the host element.
-         */
-        "updateLang": () => Promise<void>;
-        /**
           * Specifies the value of the component
           * @default ''
          */
@@ -1649,10 +1605,6 @@ export namespace Components {
          */
         "typography"?: TypographyInfoType | TypographyReadType;
         /**
-          * Updates the component's texts to the locale currently set on the host element.
-         */
-        "updateLang": () => Promise<void>;
-        /**
           * Specifies the value of the input element
           * @default ''
          */
@@ -1679,10 +1631,6 @@ export namespace Components {
           * Specifies if the element is expanded
          */
         "expanded"?: boolean;
-        /**
-          * Updates the component's texts to the locale currently set on the host element.
-         */
-        "updateLang": () => Promise<void>;
         /**
           * Specifies the variant of the element
           * @default 'required'
@@ -1725,10 +1673,6 @@ export namespace Components {
           * Specifies if the component should show a sort widget by status or date of upload, if not defined let user choose
          */
         "sort"?: AttachmentSort;
-        /**
-          * Updates the component's texts to the locale currently set on the host element.
-         */
-        "updateLang": () => Promise<void>;
     }
     interface MdsKeyboard {
         /**
@@ -1739,10 +1683,6 @@ export namespace Components {
           * Sets if the keyboard key combination test is enabled
          */
         "try"?: boolean;
-        /**
-          * Updates the component's texts to the locale currently set on the host element.
-         */
-        "updateLang": () => Promise<void>;
     }
     interface MdsKeyboardKey {
         /**
@@ -1753,10 +1693,6 @@ export namespace Components {
           * Sets if the key is pressed or not
          */
         "pressed"?: boolean;
-        /**
-          * Updates the component's texts to the locale currently set on the host element.
-         */
-        "updateLang": () => Promise<void>;
     }
     interface MdsKpi {
     }
@@ -1804,10 +1740,6 @@ export namespace Components {
           * @default 'caption'
          */
         "typography": TypographyTooltipType;
-        /**
-          * Updates the component's texts to the locale currently set on the host element.
-         */
-        "updateLang": () => Promise<void>;
         /**
           * Sets the theme variant colors
           * @default 'sky'
@@ -1890,10 +1822,6 @@ export namespace Components {
          */
         "deletable"?: boolean;
         /**
-          * Updates the component's texts to the locale currently set on the host element.
-         */
-        "updateLang": () => Promise<void>;
-        /**
           * Specifies the color variant for the element
           * @default 'yellow'
          */
@@ -1965,10 +1893,6 @@ export namespace Components {
          */
         "href"?: string;
         /**
-          * Updates the component's texts to the locale currently set on the host element.
-         */
-        "updateLang": () => Promise<void>;
-        /**
           * Sets the variant type of the component
           * @default 'chip'
          */
@@ -2000,10 +1924,6 @@ export namespace Components {
           * Sets the size of the component items nested inside it
          */
         "size"?: TabSizeType;
-        /**
-          * Updates the component's texts to the locale currently set on the host element.
-         */
-        "updateLang": () => Promise<void>;
     }
     interface MdsPrefAnimation {
         /**
@@ -2014,10 +1934,6 @@ export namespace Components {
           * Sets the size of the component items nested inside it
          */
         "size"?: TabSizeType;
-        /**
-          * Updates the component's texts to the locale currently set on the host element.
-         */
-        "updateLang": () => Promise<void>;
     }
     interface MdsPrefConsumption {
         /**
@@ -2028,10 +1944,6 @@ export namespace Components {
           * Sets the size of the component items nested inside it
          */
         "size"?: TabSizeType;
-        /**
-          * Updates the component's texts to the locale currently set on the host element.
-         */
-        "updateLang": () => Promise<void>;
     }
     interface MdsPrefContrast {
         /**
@@ -2042,10 +1954,6 @@ export namespace Components {
           * Sets the size of the component items nested inside it
          */
         "size"?: TabSizeType;
-        /**
-          * Updates the component's texts to the locale currently set on the host element.
-         */
-        "updateLang": () => Promise<void>;
     }
     interface MdsPrefLanguage {
         /**
@@ -2057,10 +1965,6 @@ export namespace Components {
           * Sets the size of the component items nested inside it
          */
         "size"?: TabSizeType;
-        /**
-          * Updates the component's texts to the locale currently set on the host element.
-         */
-        "updateLang": () => Promise<void>;
     }
     interface MdsPrefLanguageItem {
         /**
@@ -2072,10 +1976,6 @@ export namespace Components {
           * @default false
          */
         "selected"?: boolean;
-        /**
-          * Updates the component's texts to the locale currently set on the host element.
-         */
-        "updateLang": () => Promise<void>;
     }
     interface MdsPrefTheme {
         /**
@@ -2091,10 +1991,6 @@ export namespace Components {
           * @default 'smooth'
          */
         "transition": PreferenceThemeTransitionType;
-        /**
-          * Updates the component's texts to the locale currently set on the host element.
-         */
-        "updateLang": () => Promise<void>;
     }
     interface MdsPrefThemeVariant {
         /**
@@ -2111,10 +2007,6 @@ export namespace Components {
           * Sets the size of the component items nested inside it
          */
         "size"?: TabSizeType;
-        /**
-          * Updates the component's texts to the locale currently set on the host element.
-         */
-        "updateLang": () => Promise<void>;
     }
     interface MdsPrefThemeVariantItem {
         /**
@@ -2136,10 +2028,6 @@ export namespace Components {
           * @default false
          */
         "selected"?: boolean;
-        /**
-          * Updates the component's texts to the locale currently set on the host element.
-         */
-        "updateLang": () => Promise<void>;
     }
     interface MdsPriceTable {
     }
@@ -2276,10 +2164,6 @@ export namespace Components {
           * @default 'weak'
          */
         "tone"?: ToneMinimalVariantType;
-        /**
-          * Updates the component's texts to the locale currently set on the host element.
-         */
-        "updateLang": () => Promise<void>;
         /**
           * Specifies the color variant of the component
          */
@@ -2485,10 +2369,6 @@ export namespace Components {
          */
         "typography"?: TypographyType;
         /**
-          * Updates the component's texts to the locale currently set on the host element.
-         */
-        "updateLang": () => Promise<void>;
-        /**
           * Specifies the value the component will return mdsStepperBarItemSelect event
          */
         "value"?: string;
@@ -2647,10 +2527,6 @@ export namespace Components {
           * @param totalItems the total number of selectable rows
          */
         "setSelection": (selectedItems: number, totalItems: number) => Promise<void>;
-        /**
-          * Updates the component's texts to the locale currently set on the host element.
-         */
-        "updateLang": () => Promise<void>;
     }
     interface MdsTableHeaderCell {
         /**
@@ -2689,10 +2565,6 @@ export namespace Components {
           * Reflects the parent table selection state (set by mds-table); drives the row action background without :host-context
          */
         "selection"?: boolean;
-        /**
-          * Updates the component's texts to the locale currently set on the host element.
-         */
-        "updateLang": () => Promise<void>;
         /**
           * The value associated with the row, emitted when the row is selected.
          */
@@ -2900,10 +2772,6 @@ export namespace Components {
           * @default 'word'
          */
         "truncate"?: TypographyTruncateType;
-        /**
-          * Updates the component's texts to the locale currently set on the host element.
-         */
-        "updateLang": () => Promise<void>;
     }
     interface MdsUrlView {
         /**
@@ -2923,20 +2791,12 @@ export namespace Components {
           * Specifies the URL to the web page
          */
         "src": string;
-        /**
-          * Updates the component's texts to the locale currently set on the host element.
-         */
-        "updateLang": () => Promise<void>;
     }
     interface MdsUsage {
         /**
           * Specifies the alias of the usage phrase on the top of the component
          */
         "alias"?: string;
-        /**
-          * Updates the component's texts to the locale currently set on the host element.
-         */
-        "updateLang": () => Promise<void>;
         /**
           * Specifies the delay when the tooltip will trigger
           * @default 'info'

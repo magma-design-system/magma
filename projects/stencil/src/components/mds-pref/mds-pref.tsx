@@ -1,4 +1,4 @@
-import { Component, Host, h, Element, State, Method, Prop, Watch } from '@stencil/core';
+import { Component, Host, h, Element, State, Prop, Watch } from '@stencil/core';
 import { Locale } from '@common/locale';
 import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
@@ -46,14 +46,6 @@ export class MdsPref {
     es: localeEs,
     it: localeIt,
   });
-  @State() language: string;
-  /**
-   * Updates the component's texts to the locale currently set on the host element.
-   */
-  @Method()
-  async updateLang(): Promise<void> {
-    this.language = this.t.lang(this.host);
-  }
 
   /**
    * Sets if the component works as hidden element controller instead as UI element, visible on the DOM
@@ -74,10 +66,6 @@ export class MdsPref {
     elements.forEach((element: HTMLMdsTabElement) => {
       element.size = newValue;
     });
-  }
-
-  componentWillRender(): void {
-    this.t.lang(this.host);
   }
 
   componentDidLoad(): void {
@@ -115,9 +103,6 @@ export class MdsPref {
   private handlePrefChangeEvent = (e: CustomEvent): void => {
     if (this.prefNeedsReload.includes(e.detail.preference)) {
       this.showReload = true;
-      if (e.detail.preference === 'language') {
-        this.t.lang(this.host);
-      }
     }
   };
 

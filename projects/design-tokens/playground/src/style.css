@@ -360,6 +360,32 @@ button.danger:hover { border-color: #c0392b; color: #c0392b; }
   white-space: nowrap;
 }
 
+/* usable-band shading (issue #578): dead zone below the APCA clamp and the
+   unreachable zone above the ceiling; markers landing out of band are flagged */
+.strip-band { border-radius: 2px; height: 16px; pointer-events: none; position: absolute; top: 20px; }
+.strip-band-dead,
+.strip-band-unreachable {
+  background: repeating-linear-gradient(
+    45deg,
+    rgb(200 60 60 / 0.14),
+    rgb(200 60 60 / 0.14) 5px,
+    rgb(200 60 60 / 0.05) 5px,
+    rgb(200 60 60 / 0.05) 10px
+  );
+}
+.strip-band-edge {
+  background: rgb(200 60 60 / 0.5);
+  height: 24px;
+  pointer-events: none;
+  position: absolute;
+  top: 16px;
+  width: 1px;
+}
+.strip-marker.out-of-band.warn { background: rgb(200 60 60); }
+.strip-marker.out-of-band.info { background: rgb(224 161 0); }
+.strip-marker.out-of-band.warn .strip-value { color: rgb(200 60 60); font-weight: 600; }
+.strip-marker.out-of-band.info .strip-value { color: rgb(176 128 0); font-weight: 600; }
+
 .scale-stops { align-items: center; display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 4px; }
 .stop-field { display: inline-flex; position: relative; }
 

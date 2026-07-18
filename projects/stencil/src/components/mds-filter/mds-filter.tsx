@@ -10,7 +10,7 @@ import {
   Prop,
   State,
 } from '@stencil/core';
-import { subscribePreference } from '@common/preference';
+import { preferenceStore } from '@common/preference';
 import { MdsFilterEventDetail } from './meta/event-detail';
 import { MdsFilterItemEventDetail } from '@component/mds-filter-item/meta/event-detail';
 import miBaselineClose from '@icon/mi/baseline/close.svg';
@@ -26,14 +26,6 @@ import miBaselineClose from '@icon/mi/baseline/close.svg';
 })
 export class MdsFilter {
   @Element() private element: HTMLMdsFilterElement;
-  @State() prefAnimation?: string;
-  private unsubscribePrefAnimation?: () => void;
-  @State() prefContrast?: string;
-  private unsubscribePrefContrast?: () => void;
-  @State() prefTheme?: string;
-  private unsubscribePrefTheme?: () => void;
-  @State() prefThemeScheme?: string;
-  private unsubscribePrefThemeScheme?: () => void;
 
   @State() active?: boolean;
   @State() itemsSelected = 0;
@@ -113,28 +105,6 @@ export class MdsFilter {
     return list.toString();
   };
 
-  connectedCallback(): void {
-    this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
-      this.prefAnimation = value;
-    });
-    this.unsubscribePrefContrast = subscribePreference('contrast', (value) => {
-      this.prefContrast = value;
-    });
-    this.unsubscribePrefTheme = subscribePreference('theme', (value) => {
-      this.prefTheme = value;
-    });
-    this.unsubscribePrefThemeScheme = subscribePreference('theme-scheme', (value) => {
-      this.prefThemeScheme = value;
-    });
-  }
-
-  disconnectedCallback(): void {
-    this.unsubscribePrefAnimation?.();
-    this.unsubscribePrefContrast?.();
-    this.unsubscribePrefTheme?.();
-    this.unsubscribePrefThemeScheme?.();
-  }
-
   componentWillLoad(): void {
     const items = this.queryItems();
     items.forEach((item, key) => {
@@ -191,10 +161,10 @@ export class MdsFilter {
       <Host
         aria-label={this.label}
         role="menubar"
-        pref-animation={this.prefAnimation}
-        pref-contrast={this.prefContrast}
-        pref-theme={this.prefTheme}
-        pref-theme-scheme={this.prefThemeScheme}
+        pref-animation={preferenceStore.state.animation}
+        pref-contrast={preferenceStore.state.contrast}
+        pref-theme={preferenceStore.state.theme}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
         {this.label && (
           <mds-text class="label" typography="label">

@@ -344,16 +344,6 @@ Type: `Promise<void>`
 
 
 
-### `updateLang() => Promise<void>`
-
-Updates the component's texts to the locale currently set on the host element.
-
-#### Returns
-
-Type: `Promise<void>`
-
-
-
 
 ## Shadow Parts
 

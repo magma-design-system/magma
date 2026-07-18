@@ -1,4 +1,4 @@
-import { Component, Host, h, Element, Prop, State, Method } from '@stencil/core';
+import { Component, Host, h, Prop } from '@stencil/core';
 import { KeyboardKeyName } from '@type/keyboard';
 import keyboardKeysData from '@meta/keyboard/keys.json';
 import { KeyboardKeyMap } from '@type/keyboard';
@@ -17,21 +17,12 @@ import { icons } from './meta/icons';
   shadow: true,
 })
 export class MdsKeyboardKey {
-  @Element() private host: HTMLMdsKeyboardElement;
   private t: Locale = new Locale({
     el: localeEl,
     en: localeEn,
     es: localeEs,
     it: localeIt,
   });
-  @State() language: string;
-  /**
-   * Updates the component's texts to the locale currently set on the host element.
-   */
-  @Method()
-  async updateLang(): Promise<void> {
-    this.language = this.t.lang(this.host);
-  }
 
   private keyboardKeys = keyboardKeysData as KeyboardKeyMap;
 
@@ -54,10 +45,6 @@ export class MdsKeyboardKey {
     }
     return undefined;
   };
-
-  componentWillLoad(): void {
-    this.t.lang(this.host);
-  }
 
   render() {
     return (

@@ -89,6 +89,12 @@ export interface CssVarRenameRule {
   to: string;
   /** e.g. hex → `R G B` channels; the value cannot be migrated automatically. */
   valueFormatChanged?: boolean;
+  /**
+   * Extra context surfaced as a flag on the definition site: the value-format
+   * details, or the fact that the v1 name was documented but never shipped
+   * (renaming it activates an override that was silently inert).
+   */
+  note?: string;
 }
 
 /** Category G2 — a CSS custom property was removed with no v2 replacement; usages are reported. */
@@ -169,6 +175,12 @@ export interface GlobalRules {
     map: Record<string, string | null>;
     /** Name of the per-component `v2EnumSets` entry holding that component's valid tone values. */
     toneSet: string;
+    /**
+     * Per-tag replacement maps for components whose v2 tone set supports a
+     * closer target than the global one (e.g. `quiet → text` where `text`
+     * exists). A tag listed here uses its map *instead of* `map`.
+     */
+    overrides?: Record<string, Record<string, string | null>>;
   };
   /** Remove `slot="default"` everywhere (v2 uses the unnamed default slot). */
   removeDefaultSlot?: boolean;

@@ -4,7 +4,6 @@ import {
   Event,
   EventEmitter,
   Host,
-  Method,
   Prop,
   State,
   Watch,
@@ -41,14 +40,6 @@ export class MdsImg {
     es: localeEs,
     it: localeIt,
   });
-  @State() language: string;
-  /**
-   * Updates the component's texts to the locale currently set on the host element.
-   */
-  @Method()
-  async updateLang(): Promise<void> {
-    this.language = this.t.lang(this.host);
-  }
 
   /**
    * Specifies an alternate text for an image
@@ -86,7 +77,7 @@ export class MdsImg {
   /**
    * Specifies the path to the image
    */
-  @Prop() readonly src: string;
+  @Prop() readonly src?: string;
 
   /**
    * Specifies a list of image files to use in different situations.
@@ -166,7 +157,7 @@ export class MdsImg {
   };
 
   private autoAltName = (): string => {
-    if (this.src !== '') {
+    if (this.src !== undefined && this.src !== '') {
       const index = this.src.lastIndexOf('/') + 1;
       return this.src.substring(index);
     }
@@ -192,10 +183,6 @@ export class MdsImg {
     if (this.alt === '') {
       this.alt = this.autoAltName();
     }
-  }
-
-  componentWillRender(): void {
-    this.t.lang(this.host);
   }
 
   componentDidLoad(): void {
@@ -238,9 +225,8 @@ export class MdsImg {
                   tabIndex={-1}
                   variant="light"
                   tone="outline"
-                >
-                  {this.t.get('clickToLoad')}
-                </mds-button>
+                  label={this.t.get('clickToLoad')}
+                ></mds-button>
               </div>
             ) : (
               <img

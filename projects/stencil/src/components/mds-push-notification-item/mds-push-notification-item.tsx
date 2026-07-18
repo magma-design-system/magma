@@ -13,8 +13,6 @@ import {
   Host,
   h,
   Prop,
-  Method,
-  State,
   Watch,
 } from '@stencil/core';
 import { Locale } from '@common/locale';
@@ -28,7 +26,7 @@ import { ThemeFullVariantAvatarType } from '@type/variant';
 import { ToneMinimalVariantType } from '@type/tone';
 
 import { sanitizeISO8601Date } from '@common/date';
-import { subscribePreference } from '@common/preference';
+import { preferenceStore } from '@common/preference';
 
 /**
  * @part actions - The actions wrapper
@@ -48,28 +46,12 @@ export class MdsPushNotificationItem {
   private hasActions?: boolean;
   private hasBadge?: boolean;
   @Element() host: HTMLMdsPushNotificationItemElement;
-  @State() prefAnimation?: string;
-  private unsubscribePrefAnimation?: () => void;
-  @State() prefContrast?: string;
-  private unsubscribePrefContrast?: () => void;
-  @State() prefTheme?: string;
-  private unsubscribePrefTheme?: () => void;
-  @State() prefThemeScheme?: string;
-  private unsubscribePrefThemeScheme?: () => void;
   private t: Locale = new Locale({
     el: localeEl,
     en: localeEn,
     es: localeEs,
     it: localeIt,
   });
-  @State() language: string;
-  /**
-   * Updates the component's texts to the locale currently set on the host element.
-   */
-  @Method()
-  async updateLang(): Promise<void> {
-    this.language = this.t.lang(this.host);
-  }
 
   /**
    * Specifies the notification date based on [standard ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html).
@@ -137,28 +119,6 @@ export class MdsPushNotificationItem {
     this.closedEvent.emit();
   };
 
-  connectedCallback(): void {
-    this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
-      this.prefAnimation = value;
-    });
-    this.unsubscribePrefContrast = subscribePreference('contrast', (value) => {
-      this.prefContrast = value;
-    });
-    this.unsubscribePrefTheme = subscribePreference('theme', (value) => {
-      this.prefTheme = value;
-    });
-    this.unsubscribePrefThemeScheme = subscribePreference('theme-scheme', (value) => {
-      this.prefThemeScheme = value;
-    });
-  }
-
-  disconnectedCallback(): void {
-    this.unsubscribePrefAnimation?.();
-    this.unsubscribePrefContrast?.();
-    this.unsubscribePrefTheme?.();
-    this.unsubscribePrefThemeScheme?.();
-  }
-
   componentDidLoad(): void {
     this.handleDeletableChange(this.deletable);
   }
@@ -172,7 +132,6 @@ export class MdsPushNotificationItem {
       this.datetime = sanitizeISO8601Date(this.datetime?.toString());
     }
 
-    this.t.lang(this.host);
     const relativeTimeCustom = {
       future: this.t.get('future'),
       past: this.t.get('past'),
@@ -202,10 +161,10 @@ export class MdsPushNotificationItem {
   render() {
     return (
       <Host
-        pref-animation={this.prefAnimation}
-        pref-contrast={this.prefContrast}
-        pref-theme={this.prefTheme}
-        pref-theme-scheme={this.prefThemeScheme}
+        pref-animation={preferenceStore.state.animation}
+        pref-contrast={preferenceStore.state.contrast}
+        pref-theme={preferenceStore.state.theme}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
         {(this.icon ?? this.preview === 'avatar') && (
           <mds-avatar

@@ -129,7 +129,7 @@ Style the preview panel only through the three documented `--mds-file-*` CSS cus
 ```css
 .archivio-documenti mds-file {
   --mds-file-preview-icon-color: rgb(var(--variant-primary-04));
-  --mds-file-preview-icon-bacground: rgb(var(--variant-primary-10));
+  --mds-file-preview-icon-background: rgb(var(--variant-primary-10));
   --mds-file-preview-color: rgb(var(--variant-primary-04));
 }
 ```
@@ -181,7 +181,7 @@ mds-file >>> .preview {
 
 /* ✅ CORRECT */
 mds-file {
-  --mds-file-preview-icon-bacground: rgb(var(--variant-primary-10));
+  --mds-file-preview-icon-background: rgb(var(--variant-primary-10));
   --mds-file-preview-icon-color: rgb(var(--variant-primary-04));
 }
 ```
@@ -242,26 +242,13 @@ The host is already focusable, keyboard-accessible, and emits its own interactio
 | `mdsFileDownload` | Emits when the component is clicked, returning file infos | `CustomEvent<MdsFileEventDetail>` |
 
 
-## Methods
-
-### `updateLang() => Promise<void>`
-
-Updates the component's texts to the locale currently set on the host element.
-
-#### Returns
-
-Type: `Promise<void>`
-
-
-
-
 ## CSS Custom Properties
 
-| Name                                | Description                                        |
-| ----------------------------------- | -------------------------------------------------- |
-| `--mds-file-preview-color`          | Sets the text color used in the file preview       |
-| `--mds-file-preview-icon-bacground` | Sets the background color of the file preview icon |
-| `--mds-file-preview-icon-color`     | Sets the color of the file preview icon            |
+| Name                                 | Description                                        |
+| ------------------------------------ | -------------------------------------------------- |
+| `--mds-file-preview-color`           | Sets the text color used in the file preview       |
+| `--mds-file-preview-icon-background` | Sets the background color of the file preview icon |
+| `--mds-file-preview-icon-color`      | Sets the color of the file preview icon            |
 
 
 ## Dependencies
