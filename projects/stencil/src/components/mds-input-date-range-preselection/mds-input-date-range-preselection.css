@@ -44,19 +44,19 @@
 
 @property --mds-date-range-preselection-selected-color {
   inherits: false;
-  initial-value: rgb(var(--tone-neutral));
+  initial-value: rgb(var(--tone-neutral-seed));
   syntax: '<color>';
 }
 
 @property --mds-date-range-preselection-hover-background {
   inherits: false;
-  initial-value: rgb(var(--tone-neutral));
+  initial-value: rgb(var(--tone-neutral-seed));
   syntax: '<color>';
 }
 
 @property --mds-date-range-preselection-hover-border {
   inherits: false;
-  initial-value: var(--tone-neutral);
+  initial-value: var(--tone-neutral-seed);
   syntax: '<color>';
 }
 
@@ -72,9 +72,9 @@
   --mds-date-range-preselection-default-color: rgb(var(--tone-neutral-03));
   --mds-date-range-preselection-selected-background: rgb(var(--variant-primary-03));
   --mds-date-range-preselection-selected-border: var(--variant-primary-03);
-  --mds-date-range-preselection-selected-color: rgb(var(--tone-neutral));
-  --mds-date-range-preselection-hover-background: rgb(var(--tone-neutral));
-  --mds-date-range-preselection-hover-border: var(--tone-neutral);
+  --mds-date-range-preselection-selected-color: rgb(var(--tone-neutral-seed));
+  --mds-date-range-preselection-hover-background: rgb(var(--tone-neutral-seed));
+  --mds-date-range-preselection-hover-border: var(--tone-neutral-seed);
   --mds-date-range-preselection-hover-color: rgb(var(--tone-neutral-03));
 
   /* private */

@@ -11,7 +11,7 @@
   --mds-paginator-item-background: transparent;
   --mds-paginator-item-color-disabled: rgb(var(--tone-neutral-06));
   --mds-paginator-item-color-hover: rgb(var(--tone-neutral-02));
-  --mds-paginator-item-color-selected: rgb(var(--tone-neutral));
+  --mds-paginator-item-color-selected: rgb(var(--tone-neutral-seed));
   --mds-paginator-item-color: rgb(var(--tone-neutral-02));
   --mds-paginator-item-shadow-disabled: none;
   --mds-paginator-item-shadow-hover: none;
@@ -28,7 +28,7 @@
     --mds-paginator-item-background: transparent;
     --mds-paginator-item-color-disabled: rgb(var(--tone-neutral-06));
     --mds-paginator-item-color-hover: rgb(var(--tone-neutral-02));
-    --mds-paginator-item-color-selected: rgb(var(--tone-neutral));
+    --mds-paginator-item-color-selected: rgb(var(--tone-neutral-seed));
     --mds-paginator-item-color: rgb(var(--tone-neutral-02));
     --mds-paginator-item-shadow-disabled: none;
     --mds-paginator-item-shadow-hover: none;

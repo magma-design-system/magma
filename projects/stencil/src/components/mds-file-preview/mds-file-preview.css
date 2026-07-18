@@ -10,7 +10,7 @@
 
 @property --mds-file-preview-background-color {
   inherits: false;
-  initial-value: rgb(var(--tone-neutral));
+  initial-value: rgb(var(--tone-neutral-seed));
   syntax: '<color>';
 }
 
@@ -39,7 +39,7 @@
 }
 
 :host {
-  --mds-file-preview-background-color: rgb(var(--tone-neutral));
+  --mds-file-preview-background-color: rgb(var(--tone-neutral-seed));
   --mds-file-preview-border-radius: var(--radius-2xl);
   --mds-file-preview-color: rgb(var(--tone-neutral-03));
   --mds-file-preview-icon-background: inherit;

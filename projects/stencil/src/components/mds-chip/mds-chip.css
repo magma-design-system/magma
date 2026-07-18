@@ -15,7 +15,7 @@
 
 @property --mds-chip-background {
   inherits: false;
-  initial-value: rgb(var(--tone-neutral));
+  initial-value: rgb(var(--tone-neutral-seed));
   syntax: '<color>';
 }
 
@@ -39,7 +39,7 @@
 
 @property --mds-chip-icon-color {
   inherits: false;
-  initial-value: rgb(var(--tone-neutral));
+  initial-value: rgb(var(--tone-neutral-seed));
   syntax: '<color>';
 }
 
@@ -52,11 +52,11 @@
 /* --mds-chip-shadow not supported by Houdini */
 
 :host {
-  --mds-chip-background: rgb(var(--tone-neutral));
+  --mds-chip-background: rgb(var(--tone-neutral-seed));
   --mds-chip-border: transparent;
   --mds-chip-color: rgb(var(--tone-neutral-03));
   --mds-chip-icon-background: rgb(var(--variant-primary-06));
-  --mds-chip-icon-color: rgb(var(--tone-neutral));
+  --mds-chip-icon-color: rgb(var(--tone-neutral-seed));
   --mds-chip-opacity-disabled: 0.5;
   --mds-chip-shadow: var(--shadow-sm-sharp);
   --mds-chip-transition-duration: var(--duration-150);

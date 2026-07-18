@@ -4,7 +4,7 @@
  * `system` and no controller follow the OS via @media. Cross-browser, no :host-context. */
 
 :host([pref-contrast='more']) {
-  background-color: rgb(var(--tone-neutral));
+  background-color: rgb(var(--tone-neutral-seed));
   box-shadow: var(--shadow-outline-50);
   color: rgb(var(--tone-neutral-01));
 
@@ -16,7 +16,7 @@
 @media (prefers-contrast: more) {
   :host([pref-contrast='system']),
   :host(:not([pref-contrast])) {
-    background-color: rgb(var(--tone-neutral));
+    background-color: rgb(var(--tone-neutral-seed));
     box-shadow: var(--shadow-outline-50);
     color: rgb(var(--tone-neutral-01));
 

@@ -1,0 +1,88 @@
+/*
+  Theming axes (issue #574, B2) - layered on top of the semantic layer
+  (css/semantic.css). Three INDEPENDENT axes, all driven by attributes/classes
+  on <html> (cross-browser; no @container style(), which is below the
+  browserslist floor and crashes WebKit with shadow DOM):
+
+    1. mode (light|dark|system)  -> the existing global --tone-* flip; the
+       semantic tokens follow it automatically (nothing to do here).
+    2. data-theme-name           -> a named theme overrides the semantic layer;
+       the common case is retinting the neutral scaffolding with one tint swap.
+    3. --depth (numeric 0..1)    -> shadow/elevation intensity, consumed as a
+       scalar in calc(). NOT a true|false style query.
+
+  Supersedes projects/styles/draft/theme.css.
+*/
+
+/* --------------------------------------------------------------------------
+   Axis 3: depth
+   A plain number multiplied into every elevation term. depth 1 = full
+   elevation, depth 0 collapses offset/blur/alpha to zero = perfectly flat.
+   calc()-based, so it works in every engine (Firefox/Safari included) and
+   inherits across shadow boundaries - no style query, no :host-context.
+   -------------------------------------------------------------------------- */
+
+@property --depth {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 1;
+}
+
+:root {
+  --depth: 1;
+
+  /*
+    Elevation shadows for the raised / overlay surface roles. Consume with
+    `box-shadow: var(--mds-elevation-raised)`. Colour comes from
+    --magma-backdrop-color (channel triplet) so it stays themeable.
+  */
+  --mds-elevation-raised:
+    0 calc(1px * var(--depth)) calc(2px * var(--depth)) rgb(var(--magma-backdrop-color) / calc(0.06 * var(--depth))),
+    0 calc(2px * var(--depth)) calc(8px * var(--depth)) rgb(var(--magma-backdrop-color) / calc(0.08 * var(--depth)));
+  --mds-elevation-overlay:
+    0 calc(4px * var(--depth)) calc(12px * var(--depth)) rgb(var(--magma-backdrop-color) / calc(0.12 * var(--depth))),
+    0 calc(8px * var(--depth)) calc(24px * var(--depth)) rgb(var(--magma-backdrop-color) / calc(0.16 * var(--depth)));
+}
+
+/* Flat variant of the depth axis (set --depth directly for anything between). */
+:root[data-theme-depth='flat'] {
+  --depth: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Axis 2: named themes (data-theme-name)
+   A theme is an override map of the semantic tokens. The ergonomic case is a
+   single tint swap: repoint --mds-tint-* at another generated family and every
+   surface + border role follows. Optionally swap the accent hue too. These two
+   are shipped examples; consumer apps add their own the same way.
+   -------------------------------------------------------------------------- */
+
+/* Cool: porcelain (blue-grey) scaffolding + AI-violet accent */
+:root[data-theme-name='cool'] {
+  --mds-tint-sunken: var(--surface-porcelain-sunken);
+  --mds-tint-muted: var(--surface-porcelain-muted);
+  --mds-tint-default: var(--surface-porcelain-default);
+  --mds-tint-raised: var(--surface-porcelain-raised);
+  --mds-tint-overlay: var(--surface-porcelain-overlay);
+  --mds-tint-border-muted: var(--border-porcelain-muted);
+  --mds-tint-border-default: var(--border-porcelain-default);
+  --mds-tint-border-strong: var(--border-porcelain-strong);
+
+  --mds-accent-surface: var(--variant-ai-09);
+  --mds-accent-fg: var(--variant-ai-05);
+  --mds-accent-border: var(--variant-ai-06);
+  --mds-accent-emphasis: var(--variant-ai-04);
+  --mds-border-focus: var(--variant-ai);
+}
+
+/* Warm: bisque (warm grey) scaffolding */
+:root[data-theme-name='warm'] {
+  --mds-tint-sunken: var(--surface-bisque-sunken);
+  --mds-tint-muted: var(--surface-bisque-muted);
+  --mds-tint-default: var(--surface-bisque-default);
+  --mds-tint-raised: var(--surface-bisque-raised);
+  --mds-tint-overlay: var(--surface-bisque-overlay);
+  --mds-tint-border-muted: var(--border-bisque-muted);
+  --mds-tint-border-default: var(--border-bisque-default);
+  --mds-tint-border-strong: var(--border-bisque-strong);
+}

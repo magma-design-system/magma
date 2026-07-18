@@ -1,11 +1,11 @@
 :host([variant='light']) {
-  --mds-tooltip-background: rgb(var(--tone-neutral));
+  --mds-tooltip-background: rgb(var(--tone-neutral-seed));
   --mds-tooltip-color: rgb(var(--tone-neutral-02));
   --mds-tooltip-drop-shadow: drop-shadow(var(--drop-shadow-sm)) drop-shadow(var(--drop-shadow-md));
 }
 
 :host([variant='dark']) {
   --mds-tooltip-background: rgb(var(--tone-neutral-01));
-  --mds-tooltip-color: rgb(var(--tone-neutral));
+  --mds-tooltip-color: rgb(var(--tone-neutral-seed));
   --mds-tooltip-drop-shadow: drop-shadow(var(--drop-shadow-md));
 }
