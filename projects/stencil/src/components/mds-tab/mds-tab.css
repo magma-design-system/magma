@@ -89,7 +89,7 @@
 
 @property --mds-tab-item-selected-background {
   inherits: false;
-  initial-value: rgb(var(--tone-neutral));
+  initial-value: rgb(var(--tone-neutral-seed));
   syntax: '<color>';
 }
 
@@ -233,7 +233,7 @@
   --mds-tab-item-hover-color: rgb(var(--tone-neutral-02));
   --mds-tab-item-hover-shadow: transparent;
   --mds-tab-item-radius: calc(var(--mds-tab-tabs-radius) - var(--mds-tab-tabs-padding));
-  --mds-tab-item-selected-background: rgb(var(--tone-neutral));
+  --mds-tab-item-selected-background: rgb(var(--tone-neutral-seed));
   --mds-tab-item-selected-color: rgb(var(--tone-neutral-01));
   --mds-tab-item-selected-shadow: var(--shadow-sm);
   --mds-tab-scroll-behavior: smooth;

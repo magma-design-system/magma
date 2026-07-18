@@ -4,7 +4,7 @@
 }
 
 :host([variant='light']) {
-  --mds-progress-color: rgb(var(--tone-neutral));
+  --mds-progress-color: rgb(var(--tone-neutral-seed));
   --mds-progress-background: rgb(var(--tone-neutral-05));
 }
 

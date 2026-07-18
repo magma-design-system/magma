@@ -21,7 +21,7 @@
 
 @property --mds-input-background {
   inherits: false;
-  initial-value: rgb(var(--tone-neutral));
+  initial-value: rgb(var(--tone-neutral-seed));
   syntax: '<color>';
 }
 
@@ -120,7 +120,7 @@
 */
 
 :host {
-  --mds-input-background: rgb(var(--tone-neutral));
+  --mds-input-background: rgb(var(--tone-neutral-seed));
   --mds-input-icon-color: rgb(var(--variant-primary-03));
   --mds-input-placeholder-default-color: rgb(var(--tone-neutral-06));
   --mds-input-placeholder-focus-color: rgb(var(--tone-neutral-07));

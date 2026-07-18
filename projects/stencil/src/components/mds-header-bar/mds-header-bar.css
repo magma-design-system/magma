@@ -15,7 +15,7 @@
   --mds-header-bar-transition-duration: 500ms;
   --private-header-bar-transition-duration: var(--mds-header-bar-transition-duration);
 
-  background-color: rgb(var(--tone-neutral));
+  background-color: rgb(var(--tone-neutral-seed));
   box-shadow: var(--shadow-md-sharp);
   display: flex;
   inset: 0 0 auto;

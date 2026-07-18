@@ -1161,7 +1161,7 @@ export namespace Components {
         /**
           * Specifies the path to the image
          */
-        "src": string;
+        "src"?: string;
         /**
           * Specifies a list of image files to use in different situations. Defines multiple sizes of the same image, allowing the browser to select the appropriate image source.
          */

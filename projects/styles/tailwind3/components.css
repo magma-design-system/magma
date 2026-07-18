@@ -40,7 +40,7 @@
 
   .focus-zoom--light.focus-zoom--focused,
   .focus-zoom--light:focus-visible {
-    --magma-outline-blur: 2px solid rgb(var(--tone-neutral));
+    --magma-outline-blur: 2px solid rgb(var(--tone-neutral-seed));
   }
 
   .hide-scrollbar {

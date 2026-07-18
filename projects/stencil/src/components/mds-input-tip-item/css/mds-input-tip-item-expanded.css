@@ -3,7 +3,7 @@
 }
 
 :host([expanded]) {
-  --mds-input-tip-item-color: rgb(var(--tone-neutral));
+  --mds-input-tip-item-color: rgb(var(--tone-neutral-seed));
 
   padding-left: --spacing(200);
   padding-right: --spacing(200);

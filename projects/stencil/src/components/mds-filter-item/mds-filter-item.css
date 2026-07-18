@@ -28,7 +28,7 @@
 
 @property --mds-filter-item-count-color-selected {
   inherits: false;
-  initial-value: rgb(var(--tone-neutral));
+  initial-value: rgb(var(--tone-neutral-seed));
   syntax: '<color>';
 }
 
@@ -38,7 +38,7 @@
   --mds-filter-item-count-background-default: rgb(var(--tone-neutral-08));
   --mds-filter-item-count-color-default: rgb(var(--tone-neutral-02));
   --mds-filter-item-count-background-selected: rgb(var(--tone-neutral-05));
-  --mds-filter-item-count-color-selected: rgb(var(--tone-neutral));
+  --mds-filter-item-count-color-selected: rgb(var(--tone-neutral-seed));
 
   @apply focus-bounce;
 
@@ -94,7 +94,7 @@ mds-text {
 
 :host([selected]:not([selected='false'])),
 :host(:hover) {
-  background-color: rgb(var(--tone-neutral));
+  background-color: rgb(var(--tone-neutral-seed));
 }
 
 :host(:hover) {

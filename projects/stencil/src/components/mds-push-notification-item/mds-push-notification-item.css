@@ -65,7 +65,7 @@
   --mds-push-notification-item-timing-function: var(--ease-in-out-quint);
 
   align-items: flex-start;
-  background-color: rgb(var(--tone-neutral));
+  background-color: rgb(var(--tone-neutral-seed));
   border-radius: var(--radius-lg);
   box-shadow: var(--mds-push-notification-item-shadow);
   color: rgb(var(--tone-neutral-02));

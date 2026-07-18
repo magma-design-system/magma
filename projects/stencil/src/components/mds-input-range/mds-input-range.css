@@ -16,7 +16,7 @@
   --mds-input-range-transition-duration: var(--duration-300);
   --private-input-range-transition-duration: var(--mds-input-range-transition-duration);
   --mds-input-range-thumb-background-disabled: rgb(var(--tone-neutral-08));
-  --mds-input-range-thumb-background: rgb(var(--tone-neutral));
+  --mds-input-range-thumb-background: rgb(var(--tone-neutral-seed));
   --mds-input-range-thumb-cursor: col-resize;
   --mds-input-range-thumb-size: --spacing(400);
   --mds-input-range-track-background-disabled: rgb(var(--tone-neutral-08));

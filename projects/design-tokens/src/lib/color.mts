@@ -133,10 +133,14 @@ export function formatColortoTokens(
         palette[colorCode] = { value: element.value };
 
         if (paletteSource.length === index + 1) {
-          palette.color = { value: colorValue };
-
+          // A color with a seed emits an explicit off-scale `-seed` token (issue
+          // #572): the palette key `seed` flows through the `leadZero` else-branch
+          // of every template as `--<group>-<name>-seed`. Without a seed the bare
+          // `--<group>-<name>` base token stays (the brand anchor).
           if (seed !== undefined && colorMode !== undefined) {
-            palette.color = { value: seed[colorMode] };
+            palette.seed = { value: seed[colorMode] };
+          } else {
+            palette.color = { value: colorValue };
           }
         }
       });

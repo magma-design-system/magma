@@ -134,7 +134,7 @@
 
 @property --mds-input-switch-toggle-color-enabled-checked {
   inherits: false;
-  initial-value: rgb(var(--tone-neutral));
+  initial-value: rgb(var(--tone-neutral-seed));
   syntax: '<color>';
 }
 
@@ -146,13 +146,13 @@
 
 @property --mds-input-switch-toggle-color-disabled-checked {
   inherits: false;
-  initial-value: rgb(var(--tone-neutral));
+  initial-value: rgb(var(--tone-neutral-seed));
   syntax: '<color>';
 }
 
 @property --mds-input-switch-toggle-color-disabled-unchecked {
   inherits: false;
-  initial-value: rgb(var(--tone-neutral));
+  initial-value: rgb(var(--tone-neutral-seed));
   syntax: '<color>';
 }
 
@@ -222,10 +222,10 @@
   --mds-input-switch-icon-color-unchecked-disabled: rgb(var(--tone-neutral-06));
   --mds-input-switch-icon-color-unchecked: rgb(var(--tone-neutral-06));
   --mds-input-switch-icon-explicit-color: var(--mds-input-switch-icon-color-checked);
-  --mds-input-switch-toggle-color-enabled-checked: rgb(var(--tone-neutral));
+  --mds-input-switch-toggle-color-enabled-checked: rgb(var(--tone-neutral-seed));
   --mds-input-switch-toggle-color-enabled-unchecked: rgb(var(--tone-neutral-10));
-  --mds-input-switch-toggle-color-disabled-checked: rgb(var(--tone-neutral));
-  --mds-input-switch-toggle-color-disabled-unchecked: rgb(var(--tone-neutral));
+  --mds-input-switch-toggle-color-disabled-checked: rgb(var(--tone-neutral-seed));
+  --mds-input-switch-toggle-color-disabled-unchecked: rgb(var(--tone-neutral-seed));
   --mds-input-switch-toggle-container-size: calc(
     calc(var(--mds-input-switch-toggle-size-md) * 2) +
       calc(var(--mds-input-switch-box-padding-md) * 2)

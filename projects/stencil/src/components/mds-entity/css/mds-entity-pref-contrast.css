@@ -4,7 +4,7 @@
  * `system` and no controller follow the OS via @media. Cross-browser, no :host-context. */
 
 :host([pref-contrast='more']) {
-  --mds-entity-background: rgb(var(--tone-neutral));
+  --mds-entity-background: rgb(var(--tone-neutral-seed));
   --mds-entity-color: rgb(var(--tone-neutral-01));
   --mds-entity-detail-color: rgb(var(--tone-neutral-02));
   --mds-entity-icon-background: rgb(var(--label-blue-08));
@@ -15,7 +15,7 @@
 @media (prefers-contrast: more) {
   :host([pref-contrast='system']),
   :host(:not([pref-contrast])) {
-    --mds-entity-background: rgb(var(--tone-neutral));
+    --mds-entity-background: rgb(var(--tone-neutral-seed));
     --mds-entity-color: rgb(var(--tone-neutral-01));
     --mds-entity-detail-color: rgb(var(--tone-neutral-02));
     --mds-entity-icon-background: rgb(var(--label-blue-08));
