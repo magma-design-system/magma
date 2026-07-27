@@ -167,6 +167,12 @@ step clamps to the pure extreme. Validation flags this.
 Namespace `--magma-*`. Each is resolved per mode via the global flip. Bridged to Tailwind as
 `--color-*` so utilities like `bg-surface-raised`, `text-muted`, `bg-success-surface` exist.
 
+The layer is GENERATED from `semantic.config.ts` by `scripts/semantic.ts` (A9): that config
+is the tracked contract (which primitive each role points at), and `css/semantic.css` +
+`tailwind/semantic.css` are generated (gitignored), not hand-edited. Text roles resolve from
+the by-target `--text-*` primitives (A7); surfaces/borders through the `--magma-tint-*`
+indirection (section 8).
+
 ### 6.1 Surfaces - neutral backgrounds (elevation + same-plane prominence)
 
 The `surface` family owns ALL neutral backgrounds - both the elevation axis (z-stacking)
