@@ -17,14 +17,6 @@
       "achieved": 74.9,
       "target": 75
     },
-    "text-muted|surface-sunken|light": {
-      "achieved": 74.8,
-      "target": 75
-    },
-    "text-subtle|surface-overlay|dark": {
-      "achieved": 44.1,
-      "target": 45
-    },
     "warning-on-emphasis|warning-emphasis|dark": {
       "achieved": 74.7,
       "target": 75

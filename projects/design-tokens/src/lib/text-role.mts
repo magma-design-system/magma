@@ -12,12 +12,13 @@ import type { ColorTokenSet, MagmaConfig } from "./color.mjs";
  * consistent with the tone scale's own APCA philosophy (spec section 5:
  * foreground = contrast-driven, background = lightness-driven).
  *
- * For each opted-in family and mode, a role declares an APCA Lc target against
- * that family's `surface-default`; the engine picks the LEAST-contrast tone step
- * that still meets the target - i.e. the most de-emphasized shade that stays
- * legible. This is more ergonomic for a theme author than picking a raw step
- * (state the legibility intent, not the mechanism) and it survives surface
- * retunes. An explicit `{ step }` override is available for exact control.
+ * For each opted-in family and mode, a role declares an APCA Lc target checked
+ * against the family's WORST-CASE (lowest-contrast) surface; the engine picks the
+ * LEAST-contrast tone step that still meets it there - so the role stays legible
+ * on EVERY surface it can sit on, not just the canvas. This is more ergonomic for
+ * a theme author than picking a raw step (state the legibility intent, not the
+ * mechanism) and it survives surface retunes. An explicit `{ step }` override is
+ * available for exact control.
  *
  * Output mirrors surface.mts (`family -> { light, dark } role sets`) so it slots
  * into `color.text` and ships as `--text-<family>-<role>`, flipping per mode
@@ -44,13 +45,15 @@ const apcaLc = (fg: string, bg: string): number =>
 
 /**
  * Pick the tone step for one role/mode. With an explicit `{ step }` it returns
- * that step; otherwise the least-contrast step whose APCA magnitude vs the
- * reference surface still meets the target, clamping to the highest-contrast
- * step (with a warning) when the target is unreachable.
+ * that step; otherwise the least-contrast step whose APCA magnitude still meets
+ * the target on the WORST-CASE surface - the surface giving the lowest contrast
+ * for that step - so the role stays legible on EVERY surface it can land on, not
+ * just the canvas. Clamps to the highest-contrast step (with a warning) when the
+ * target is unreachable on some surface.
  */
 function pickStep(
   tone: StepSet,
-  refSurface: string,
+  refSurfaces: string[],
   level: TextLevel,
   family: string,
   role: TextRole,
@@ -64,10 +67,12 @@ function pickStep(
     return value;
   }
 
+  // a step's contrast is its WORST (minimum APCA) across all surfaces
+  const worstLc = (value: string) => Math.min(...refSurfaces.map((surface) => apcaLc(value, surface)));
   const candidates = Array.from({ length: 10 }, (_, i) => String(i + 1))
     .map((step) => tone[step]?.value)
     .filter((value): value is string => Boolean(value))
-    .map((value) => ({ value, lc: apcaLc(value, refSurface) }));
+    .map((value) => ({ value, lc: worstLc(value) }));
 
   const meeting = candidates.filter((c) => c.lc >= level).sort((a, b) => a.lc - b.lc);
   if (meeting.length > 0) return meeting[0].value;
@@ -75,7 +80,7 @@ function pickStep(
   const strongest = [...candidates].sort((a, b) => b.lc - a.lc)[0];
   console.warn(
     chalk.yellow(
-      `text-role: ${family}.${role} (${mode}) target Lc ${level} is unreachable ` +
+      `text-role: ${family}.${role} (${mode}) target Lc ${level} is unreachable on every surface ` +
         `(max ${strongest.lc.toFixed(0)}); clamping to the highest-contrast step.`,
     ),
   );
@@ -104,13 +109,16 @@ export function createTextTokens(config: MagmaConfig, tree: ColorTree): TextToke
   families.forEach((family) => {
     const buildMode = (mode: Mode): StepSet => {
       const tone = tree.tone![family][mode];
-      const refSurface = tree.surface![family][mode]?.default?.value;
-      if (!refSurface) {
-        throw new Error(`text-role: no surface-default for family "${family}" (${mode})`);
+      // every surface the text can sit on; the worst (lowest-contrast) one binds
+      const refSurfaces = Object.values(tree.surface![family][mode] ?? {})
+        .map((s) => s.value)
+        .filter(Boolean);
+      if (refSurfaces.length === 0) {
+        throw new Error(`text-role: no surfaces for family "${family}" (${mode})`);
       }
       const roleSet: StepSet = {};
       TEXT_ROLES.forEach((role) => {
-        roleSet[role] = { value: pickStep(tone, refSurface, textConfig[role], family, role, mode) };
+        roleSet[role] = { value: pickStep(tone, refSurfaces, textConfig[role], family, role, mode) };
       });
       return roleSet;
     };

@@ -38,7 +38,7 @@ export const DEFAULT_THEME: ThemeConfig = {
     light: { muted: '87%', default: '82%', strong: '72%' },
     dark: { muted: '30%', default: '36%', strong: '44%' },
   },
-  // APCA Lc targets per text role vs surface-default (A7); by-target engine picks the step
+  // APCA Lc targets per text role vs the worst-case surface (A7); engine picks the step
   text: { default: 85, muted: 75, subtle: 45, disabled: 30 },
 };
 
@@ -66,7 +66,7 @@ const BORDER_PURPOSE: Record<string, string> = {
   default: 'functional outlines: inputs, buttons',
   strong: 'assertive / state: selected, focus, error',
 };
-// text roles are chosen BY APCA TARGET vs surface-default (A7); see SEMANTIC_COLOR_SPEC 9.1
+// text roles are chosen BY APCA TARGET vs the worst-case surface (A7); see SEMANTIC_COLOR_SPEC 9.1
 const TEXT_PURPOSE: Record<string, string> = {
   default: 'body / primary data (highest contrast)',
   muted: 'secondary ESSENTIAL text: address, phone (stays legible)',
