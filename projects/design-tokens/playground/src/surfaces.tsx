@@ -1,7 +1,10 @@
 import { useMemo } from 'preact/hooks';
+import { APCAcontrast, sRGBtoY } from 'apca-w3';
+import chroma from 'chroma-js';
 import type { ColorConfig, MagmaConfig } from '../../src/lib/color.mjs';
 import { createColorTokens } from '../../src/lib/color.mjs';
 import { SURFACE_ROLES, BORDER_ROLES, type ThemeConfig } from '../../src/lib/surface.mjs';
+import { TEXT_ROLES } from '../../src/lib/text-role.mjs';
 
 type Mode = 'light' | 'dark';
 const MODES: Mode[] = ['light', 'dark'];
@@ -17,7 +20,13 @@ export const DEFAULT_THEME: ThemeConfig = {
     light: { muted: '87%', default: '82%', strong: '72%' },
     dark: { muted: '30%', default: '36%', strong: '44%' },
   },
+  // APCA Lc targets per text role vs surface-default (A7); by-target engine picks the step
+  text: { default: 85, muted: 75, subtle: 45, disabled: 30 },
 };
+
+/** APCA Lc magnitude (Magma flips the sign in dark; the preview shows the size). */
+const apcaLc = (fg: string, bg: string): number =>
+  Math.abs(APCAcontrast(sRGBtoY(chroma(fg).rgb()), sRGBtoY(chroma(bg).rgb())) as number);
 
 /** A level ("96%" | "96" | 0.96) shown as a 0..100 number for the editor. */
 function toPercent(level: string | number): number {
@@ -38,6 +47,13 @@ const BORDER_PURPOSE: Record<string, string> = {
   muted: 'decorative: grid, dividers, cell/row borders (softest)',
   default: 'functional outlines: inputs, buttons',
   strong: 'assertive / state: selected, focus, error',
+};
+// text roles are chosen BY APCA TARGET vs surface-default (A7); see SEMANTIC_COLOR_SPEC 9.1
+const TEXT_PURPOSE: Record<string, string> = {
+  default: 'body / primary data (highest contrast)',
+  muted: 'secondary ESSENTIAL text: address, phone (stays legible)',
+  subtle: 'non-essential: captions, hints, units',
+  disabled: 'disabled / inactive (lowest)',
 };
 
 /** The family segment of a color name (tone.neutral -> neutral). */
@@ -61,7 +77,8 @@ export function SurfaceManager({ config, onToggleSurface, onUpdateTheme }: Surfa
   const theme = config.theme ?? DEFAULT_THEME;
 
   // generate once; the surface/border groups only exist when a family opts in
-  const [surfaces, borders, tones, genError] = useMemo((): [
+  const [surfaces, borders, tones, texts, genError] = useMemo((): [
+    Record<string, FamilyModes>,
     Record<string, FamilyModes>,
     Record<string, FamilyModes>,
     Record<string, FamilyModes>,
@@ -74,10 +91,11 @@ export function SurfaceManager({ config, onToggleSurface, onUpdateTheme }: Surfa
         (color.surface as Record<string, FamilyModes>) ?? {},
         (color.border as Record<string, FamilyModes>) ?? {},
         (color.tone as Record<string, FamilyModes>) ?? {},
+        (color.text as Record<string, FamilyModes>) ?? {},
         null,
       ];
     } catch (error) {
-      return [{}, {}, {}, String(error)];
+      return [{}, {}, {}, {}, String(error)];
     }
   }, [JSON.stringify(config)]);
 
@@ -87,6 +105,14 @@ export function SurfaceManager({ config, onToggleSurface, onUpdateTheme }: Surfa
     onUpdateTheme((draft) => {
       const table = draft[kind] as Record<Mode, Record<string, string | number>>;
       table[mode][role] = `${percent}%`;
+    });
+  };
+
+  // text targets are an APCA Lc magnitude, mode-agnostic (unlike surfaces/borders)
+  const setTextTarget = (role: string, target: number) => {
+    onUpdateTheme((draft) => {
+      const text = (draft.text ??= { ...(DEFAULT_THEME.text as Record<string, number>) });
+      (text as Record<string, number | { step: number }>)[role] = target;
     });
   };
 
@@ -150,6 +176,12 @@ export function SurfaceManager({ config, onToggleSurface, onUpdateTheme }: Surfa
             purpose={BORDER_PURPOSE}
             onChange={(mode, role, pct) => setLevel('borders', mode, role, pct)}
           />
+          <TextTargetTable
+            targets={
+              (theme.text ?? DEFAULT_THEME.text) as Record<string, number | { step: number }>
+            }
+            onChange={setTextTarget}
+          />
         </div>
       </div>
 
@@ -169,12 +201,13 @@ export function SurfaceManager({ config, onToggleSurface, onUpdateTheme }: Surfa
             {MODES.map((mode) => {
               const s = surfaces[family]?.[mode];
               const b = borders[family]?.[mode];
-              const textStrong = hex(tones.neutral?.[mode], '3');
-              const textSubtle = hex(tones.neutral?.[mode], '5');
+              const t = texts[family]?.[mode];
+              // real text-default role (A7); fall back to tone-3 for configs without theme.text
+              const canvasText = t ? hex(t, 'default') : hex(tones.neutral?.[mode], '3');
               return (
                 <div
                   class="sf-canvas"
-                  style={{ background: hex(s, 'default'), color: textStrong }}
+                  style={{ background: hex(s, 'default'), color: canvasText }}
                   title={SURFACE_PURPOSE.default}
                 >
                   <div class="sf-canvas-label">
@@ -208,13 +241,19 @@ export function SurfaceManager({ config, onToggleSurface, onUpdateTheme }: Surfa
                       title={SURFACE_PURPOSE.overlay}
                     >
                       overlay <code>{hex(s, 'overlay')}</code>
-                      <p class="sf-text" style={{ color: textStrong }}>
-                        Text default
-                      </p>
-                      <p class="sf-text" style={{ color: textSubtle }}>
-                        Text subtle
-                      </p>
                     </div>
+                  </div>
+                  {/* text roles (A7): by-target step + achieved APCA Lc vs the canvas */}
+                  <div class="sf-text-roles">
+                    {TEXT_ROLES.map((role) => {
+                      const c = hex(t, role);
+                      return (
+                        <span class="sf-text" style={{ color: c }} title={TEXT_PURPOSE[role]}>
+                          text {role} <code>{c}</code>{' '}
+                          <code>Lc {apcaLc(c, hex(s, 'default')).toFixed(0)}</code>
+                        </span>
+                      );
+                    })}
                   </div>
                   <div class="sf-borders">
                     {(BORDER_ROLES as readonly string[]).map((role) => (
@@ -279,6 +318,56 @@ function LevelTable({ title, roles, table, purpose, onChange }: LevelTableProps)
             ))}
           </tr>
         ))}
+      </tbody>
+    </table>
+  );
+}
+
+interface TextTargetTableProps {
+  targets: Record<string, number | { step: number }>;
+  onChange: (role: string, target: number) => void;
+}
+
+/**
+ * Text targets are an APCA Lc magnitude, mode-agnostic (one value, applied to
+ * both modes), so this is a single-column editor - unlike the per-mode surface
+ * and border level tables. A `{ step }` override is shown read-only.
+ */
+function TextTargetTable({ targets, onChange }: TextTargetTableProps) {
+  return (
+    <table class="level-table">
+      <thead>
+        <tr>
+          <th>text (APCA Lc)</th>
+          <th>target</th>
+        </tr>
+      </thead>
+      <tbody>
+        {(TEXT_ROLES as readonly string[]).map((role) => {
+          const level = targets[role];
+          return (
+            <tr>
+              <td>
+                <span class="role-name">{role}</span>
+                <span class="role-purpose">{TEXT_PURPOSE[role]}</span>
+              </td>
+              <td>
+                {typeof level === 'object' ? (
+                  <span class="role-purpose">step {level.step} (pinned)</span>
+                ) : (
+                  <input
+                    type="number"
+                    min={0}
+                    max={106}
+                    step={1}
+                    value={level ?? 0}
+                    onChange={(e) => onChange(role, Number((e.target as HTMLInputElement).value))}
+                  />
+                )}
+              </td>
+            </tr>
+          );
+        })}
       </tbody>
     </table>
   );
