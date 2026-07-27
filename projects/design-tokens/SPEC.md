@@ -135,6 +135,37 @@ shipping in the `theme` export group next to surfaces/borders. The semantic laye
 aliases these; `on-emphasis` is NOT a target role - it stays the pure
 `--tone-*-seed`.
 
+## Contrast gate (APCA / A3, issue #575)
+
+`src/lib/contrast-gate.ts` verifies that the semantic color pairs meet their
+contrast targets in BOTH modes, so a regression fails CI instead of shipping
+(the equivalent of GitHub Primer's per-PR APCA check). It resolves each pair
+from the in-memory token model (`createColorTokens(...).tokens.color`, NOT
+`dist/`, which can be stale) and reads the semantic mapping from
+`projects/styles/semantic.config.ts` (the A9 contract), so repointing a role
+re-verifies it automatically. Contrast bounds are shared with `contrast-range.ts` (A5).
+
+```bash
+nx run design-tokens:contrast           # or: npm run contrast
+npm run contrast -- --update-baseline    # re-record the known offenders
+```
+
+What it checks (spec sections 9.1 / 9.2):
+
+| Pairs | Metric | Target | Severity |
+| --- | --- | --- | --- |
+| every `text-*` on every `surface-*` | APCA Lc | 75 / 75 / 45 / 30 (default / muted / subtle / disabled) | enforced |
+| every `<hue>-on-emphasis` on `<hue>-emphasis` | APCA Lc | 75 | enforced |
+| `<hue>-fg` on `surface-default` / `-raised` | APCA Lc | 60 | report-only |
+| `border-*` on the adjacent surface | WCAG2 | 3:1 | report-only (decorative borders have no floor) |
+
+Enforced failures must be listed in `contrast-baseline.json` (the known-offenders
+list, to be tuned in issue #571); the gate fails on a NEW enforced failure or on
+any baselined pair that regresses below its recorded value. Report-only pairs are
+printed but never gate. The same check runs in the vitest suite
+(`test/contrast-gate.test.mts`), so CI enforces it through `npm test`; the
+design-tokens workflow also triggers on changes to `semantic.config.ts`.
+
 ## Typography tokens
 
 Typography tokens define font families, sizes, and line heights. They are consumed by the `styles` sub-project to generate Tailwind 4 theme utilities.

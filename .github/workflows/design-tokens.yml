@@ -20,6 +20,8 @@ jobs:
     uses: ./.github/workflows/_package-pipeline.yml
     with:
       path: projects/design-tokens/**
+      # the APCA contrast gate (A3, #575) also verifies the semantic mapping owned by styles
+      extra-path: projects/styles/semantic.config.ts
       nx-project: design-tokens
       artifact-paths: projects/design-tokens/dist
       artifact-download-path: projects/design-tokens/dist
