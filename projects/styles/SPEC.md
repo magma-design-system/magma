@@ -73,7 +73,7 @@ If you need a color outside Tailwind, always use the RGB wrapper:
 }
 ```
 
-## Semantic color layer (`--mds-*`)
+## Semantic color layer (`--magma-*`)
 
 The classes above are PRIMITIVES (a specific tone/status step). Prefer the
 SEMANTIC layer for anything role-based: it maps a role (surface, text, border,
@@ -81,11 +81,16 @@ a hue) to the right primitive and flips per mode automatically. Defined in
 `css/semantic.css`, bridged to Tailwind in `tailwind/semantic.css`. Full
 contract and rationale: `SEMANTIC_COLOR_SPEC.md`.
 
+Prefix: the semantic layer shares the styles-owned `--magma-*` prefix with the
+global decisions below; component tokens use `--mds-<comp>-*`. This keeps a role
+like `--magma-text-muted` from colliding with a component prop like
+`--mds-text-selection-color`. Naming rule: `SEMANTIC_COLOR_SPEC.md` section 11.
+
 One source, two faces - the same token in plain CSS or as a Tailwind utility:
 
 ```css
 /* plain CSS - always the rgb() wrapper (tokens are channel triplets) */
-.card { background: rgb(var(--mds-surface-raised)); color: rgb(var(--mds-text-default)); }
+.card { background: rgb(var(--magma-surface-raised)); color: rgb(var(--magma-text-default)); }
 ```
 
 ```html
@@ -95,10 +100,10 @@ One source, two faces - the same token in plain CSS or as a Tailwind utility:
 
 | Role | Token | Tailwind |
 | ---- | ----- | -------- |
-| Surfaces (5) | `--mds-surface-{sunken,muted,default,raised,overlay}` | `bg-surface-*` |
-| Text (5) | `--mds-text-{default,muted,subtle,disabled,on-emphasis}` | `text-fg-*` |
-| Border (4) | `--mds-border-{muted,default,strong,focus}` | `border-border-*` |
-| Hues | `--mds-<hue>-{surface,fg,border,emphasis,on-emphasis}` | `bg-<hue>-surface`, `text-<hue>-fg`, ... |
+| Surfaces (5) | `--magma-surface-{sunken,muted,default,raised,overlay}` | `bg-surface-*` |
+| Text (5) | `--magma-text-{default,muted,subtle,disabled,on-emphasis}` | `text-fg-*` |
+| Border (4) | `--magma-border-{muted,default,strong,focus}` | `border-border-*` |
+| Hues | `--magma-<hue>-{surface,fg,border,emphasis,on-emphasis}` | `bg-<hue>-surface`, `text-<hue>-fg`, ... |
 
 Hues: `accent`, `info`, `success`, `warning`, `danger` (full quintet) and
 `neutral` (`fg`/`border`/`emphasis`/`on-emphasis` only - its backgrounds are the
