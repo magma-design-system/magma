@@ -41,7 +41,7 @@ test('color and step order follows the config, run after run', () => {
   // surface/border are DERIVED groups (lightness engine, not config colors);
   // they are appended after the APCA colors, so exclude them when checking that
   // the config-driven entries follow the config order.
-  const isDerived = (entry: string) => ['surface', 'border'].includes(entry.split('.')[0])
+  const isDerived = (entry: string) => ['surface', 'border', 'text'].includes(entry.split('.')[0])
   const groupName = (entry: string) => entry.split('.').length === 2
   // the config-driven group.name entries appear in the exact order of the config colors
   expect(orderOf(first.tokens).filter((e) => groupName(e) && !isDerived(e))).toEqual(configOrder)
@@ -50,9 +50,12 @@ test('color and step order follows the config, run after run', () => {
   const surfaceFamilies = CONFIG.colors
     .filter((color) => !color.disabled && Boolean(color.surface))
     .map((color) => color.name.split('.')[1])
+  // text roles are DERIVED too (by-target, A7); one entry per opted-in family,
+  // appended after surfaces and borders in config order
   expect(orderOf(first.tokens).filter((e) => groupName(e) && isDerived(e))).toEqual([
     ...surfaceFamilies.map((family) => `surface.${family}`),
     ...surfaceFamilies.map((family) => `border.${family}`),
+    ...surfaceFamilies.map((family) => `text.${family}`),
   ])
   // and the whole flattened order is stable between runs
   expect(orderOf(second.tokens)).toEqual(orderOf(first.tokens))

@@ -23,6 +23,7 @@ import {
   type SurfaceOptIn,
   type ThemeConfig,
 } from "./surface.mjs";
+import { createTextTokens } from "./text-role.mjs";
 import { validateRatioScale } from "./contrast-range.js";
 export interface SeedConfig {
   light: RgbHexColor;
@@ -494,6 +495,16 @@ export function createColorTokens(magmaConfig: MagmaConfig) {
     exportGroups.theme = {
       color: { surface, border } as unknown as DesignTokens,
     };
+  }
+
+  // Text roles are chosen BY APCA TARGET (text-role.mts) against surface-default,
+  // so they run AFTER tones (the candidate steps) and surfaces (the reference) are
+  // in the tree. They ship as `--text-<family>-<role>` and join the `theme` group.
+  const { text } = createTextTokens(config, tokens.color as unknown as Parameters<typeof createTextTokens>[1]);
+  if (Object.keys(text).length > 0) {
+    tokens.color.text = text as unknown as DesignTokens;
+    exportGroups.theme = exportGroups.theme ?? { color: {} as unknown as DesignTokens };
+    (exportGroups.theme.color as Record<string, unknown>).text = text;
   }
 
   return { tokens, exportGroups };

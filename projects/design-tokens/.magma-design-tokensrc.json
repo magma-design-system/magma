@@ -107,6 +107,7 @@
     "borders": {
       "light": { "muted": "87%", "default": "82%", "strong": "72%" },
       "dark": { "muted": "30%", "default": "36%", "strong": "44%" }
-    }
+    },
+    "text": { "default": 85, "muted": 75, "subtle": 45, "disabled": 30 }
   }
 }
