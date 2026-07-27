@@ -1,15 +1,20 @@
 /**
  * Semantic color contract (A9, issue tracked in the epic #328).
  *
- * This is the TRACKED source of truth for the `--magma-*` semantic layer. The
- * generator `scripts/semantic.ts` turns it into `css/semantic.css` (the layer)
- * and `tailwind/semantic.css` (the Tailwind bridge), both GENERATED and NOT
- * tracked - so the layer is defined once here, in relation, instead of being
- * hand-maintained as CSS. The values themselves are design-tokens primitives
- * (`--surface-*`, `--text-*`, `--status-*`, `--variant-*`, ...); this file only
- * declares WHICH primitive each semantic role points at.
+ * This is the TRACKED source of truth for the `--magma-*` semantic layer. It
+ * lives in the design-tokens package (the lower of the two) so both consumers
+ * import it DOWNWARD, with no dependency cycle between the packages:
+ *  - the styles generator (`../styles/scripts/semantic.ts`) turns it into
+ *    `css/semantic.css` (the layer) and `tailwind/semantic.css` (the Tailwind
+ *    bridge), both GENERATED and NOT tracked - the layer is defined once here,
+ *    in relation, instead of being hand-maintained as CSS;
+ *  - the design-tokens contrast gate (`scripts/check-contrast.ts`) verifies the
+ *    resulting semantic pairs against their APCA targets.
+ * The values themselves are design-tokens primitives (`--surface-*`, `--text-*`,
+ * `--status-*`, `--variant-*`, ...); this file only declares WHICH primitive each
+ * semantic role points at.
  *
- * Conventions come from SEMANTIC_COLOR_SPEC.md:
+ * Conventions come from styles/SEMANTIC_COLOR_SPEC.md:
  *  - surfaces/borders resolve through the `--magma-tint-*` indirection so a named
  *    theme retints the whole neutral scaffolding with one swap (section 8, B2);
  *  - text roles come from the by-target `--text-*` primitives (A7, section 9);

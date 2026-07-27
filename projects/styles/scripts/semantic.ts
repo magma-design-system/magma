@@ -2,15 +2,15 @@ import chalk from 'chalk';
 import { writeFile } from 'fs/promises';
 import { join } from 'path';
 import { PROJECT_DIR } from './meta';
-import { semantic } from '../semantic.config';
+import { semantic } from '../../design-tokens/semantic.config';
 
 /**
- * Generate the semantic color layer (A9) from semantic.config.ts:
+ * Generate the semantic color layer (A9) from design-tokens/semantic.config.ts:
  *  - css/semantic.css        the `--magma-*` layer components consume
  *  - tailwind/semantic.css   the Tailwind `@theme` bridge (--color-* re-exports)
  *
  * Both are GENERATED and gitignored; the copy step ships them to dist. The
- * tracked contract is semantic.config.ts. Text roles come from A7's `--text-*`
+ * tracked contract is design-tokens/semantic.config.ts. Text roles come from A7's `--text-*`
  * primitives; surfaces/borders resolve through the `--magma-tint-*` indirection
  * so a named theme retints with one swap (B2, spec section 8).
  */

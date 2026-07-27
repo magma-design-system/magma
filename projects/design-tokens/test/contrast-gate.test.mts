@@ -4,7 +4,7 @@ import { expect, test } from 'vitest'
 
 import { getColorsConfig } from '../src/lib/utils.mjs'
 import { createColorTokens, type MagmaConfig } from '../src/lib/color.mjs'
-import { semantic } from '../../styles/semantic.config.js'
+import { semantic } from '../semantic.config.js'
 import {
   aliasesFromConfig,
   applyBaseline,

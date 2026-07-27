@@ -142,7 +142,7 @@ contrast targets in BOTH modes, so a regression fails CI instead of shipping
 (the equivalent of GitHub Primer's per-PR APCA check). It resolves each pair
 from the in-memory token model (`createColorTokens(...).tokens.color`, NOT
 `dist/`, which can be stale) and reads the semantic mapping from
-`projects/styles/semantic.config.ts` (the A9 contract), so repointing a role
+`projects/design-tokens/semantic.config.ts` (the A9 contract), so repointing a role
 re-verifies it automatically. Contrast bounds are shared with `contrast-range.ts` (A5).
 
 ```bash
@@ -163,8 +163,9 @@ Enforced failures must be listed in `contrast-baseline.json` (the known-offender
 list, to be tuned in issue #571); the gate fails on a NEW enforced failure or on
 any baselined pair that regresses below its recorded value. Report-only pairs are
 printed but never gate. The same check runs in the vitest suite
-(`test/contrast-gate.test.mts`), so CI enforces it through `npm test`; the
-design-tokens workflow also triggers on changes to `semantic.config.ts`.
+(`test/contrast-gate.test.mts`), so CI enforces it through `npm test`. The A9
+contract (`semantic.config.ts`) lives in this package; the styles workflow
+watches it via `extra-path` so its generated layer stays in sync.
 
 ## Typography tokens
 

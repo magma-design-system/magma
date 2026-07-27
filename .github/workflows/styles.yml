@@ -20,6 +20,8 @@ jobs:
     uses: ./.github/workflows/_package-pipeline.yml
     with:
       path: projects/styles/**
+      # the semantic layer is generated from the A9 contract, now owned by design-tokens
+      extra-path: projects/design-tokens/semantic.config.ts
       nx-project: styles
       # styles build also produces design-tokens dist (nx implicit dependency)
       artifact-paths: |

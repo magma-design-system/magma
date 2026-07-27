@@ -7,7 +7,7 @@
  *
  * Data source: the in-memory token model (`createColorTokens(config).tokens.color`),
  * NOT the generated `dist/css` (which can be stale relative to the source config).
- * The `--magma-*` -> primitive mapping is derived from `styles/semantic.config.ts`
+ * The `--magma-*` -> primitive mapping is derived from `semantic.config.ts`
  * (the A9 contract) via `aliasesFromConfig`, so when a role is repointed to a
  * different step or family the gate re-verifies it automatically.
  *
@@ -88,9 +88,9 @@ export function resolvePrimitive(tree: ColorTree, varName: string, mode: Mode): 
 }
 
 /**
- * The slice of `styles/semantic.config.ts` (the A9 contract) the gate needs.
- * Structurally typed so the shipped lib does not import the styles package;
- * the CLI/test pass the real `semantic` object.
+ * The slice of `semantic.config.ts` (the A9 contract) the gate needs.
+ * Structurally typed so the lib stays generic - it takes any mapping, not the
+ * concrete config; the CLI/test pass the real `semantic` object.
  */
 export interface SemanticMapping {
   tint: string;

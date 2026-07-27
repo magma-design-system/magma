@@ -6,7 +6,7 @@
  *   nx run design-tokens:contrast       # same, via Nx
  *
  * Loads the token config (in-memory model), the semantic mapping from
- * styles/semantic.config.ts, and the baseline, then prints a readable table and
+ * semantic.config.ts, and the baseline, then prints a readable table and
  * fails on any enforced pair that is not covered by the baseline (section 9.1).
  */
 import chalk from 'chalk';
@@ -14,7 +14,7 @@ import fs from 'fs';
 import path from 'path';
 import { getColorsConfig } from '../src/lib/utils.mjs';
 import { createColorTokens, type MagmaConfig } from '../src/lib/color.mjs';
-import { semantic } from '../../styles/semantic.config.js';
+import { semantic } from '../semantic.config.js';
 import {
   aliasesFromConfig,
   applyBaseline,
