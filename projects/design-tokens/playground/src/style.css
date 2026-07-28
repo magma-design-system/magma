@@ -22,6 +22,11 @@ body { background: var(--bg); min-width: 960px; }
   height: 100vh;
 }
 
+/* surfaces/groups/diff drop the color picker: the content spans full width */
+.layout.no-sidebar {
+  grid-template: "topbar" auto "error" auto "content" 1fr / 1fr;
+}
+
 .load-error {
   background: #fdf0ee;
   border-bottom: 1px solid #eccfc9;
