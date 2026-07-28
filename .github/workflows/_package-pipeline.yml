@@ -14,6 +14,10 @@ on:
         description: Glob of the project files; build/test run only when they changed
         type: string
         required: true
+      extra-path:
+        description: Extra path glob that also triggers this pipeline (e.g. a file this project verifies but does not own)
+        type: string
+        default: ''
       nx-project:
         description: Nx project name to build (empty = no build job)
         type: string
@@ -60,6 +64,7 @@ jobs:
           filters: |
             project:
               - '${{ inputs.path }}'
+              ${{ inputs.extra-path && format('- ''{0}''', inputs.extra-path) || '' }}
 
   build:
     needs: [changes]

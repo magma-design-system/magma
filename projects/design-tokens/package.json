@@ -28,6 +28,7 @@
     "build-playground": "vite build --config playground/vite.config.ts",
     "build-style-dictionary": "tsx scripts/build.ts",
     "clean": "tsx scripts/clean.ts",
+    "contrast": "tsx scripts/check-contrast.ts",
     "postbuild": "tsx scripts/postbuild.ts",
     "cli": "npm run clean && npm run build-cli && npm run postbuild && node ./dist/src/cli.mjs",
     "lint": "eslint .",

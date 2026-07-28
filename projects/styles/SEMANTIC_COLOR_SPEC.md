@@ -47,7 +47,7 @@ colors.
 1. PRIMITIVE   --tone-* (APCA)  |  --surface-* (lightness)  |  status/label/variant/brand (APCA)  |  --tone-*-seed
        |          raw scales, never consumed directly by components
        v
-2. SEMANTIC    --mds-surface/text/border/{hue}-*   (property x role x hue, resolved per mode)
+2. SEMANTIC    --magma-surface/text/border/{hue}-*   (property x role x hue, resolved per mode)
        |          the contract; where a theme overrides; bridged to Tailwind --color-*
        v
 3. COMPONENT   --mds-<comp>-*  ->  points at the semantic layer   (existing Magma pattern)
@@ -164,8 +164,14 @@ step clamps to the pure extreme. Validation flags this.
 
 ## 6. Layer 2 - semantic tokens (the contract)
 
-Namespace `--mds-*`. Each is resolved per mode via the global flip. Bridged to Tailwind as
+Namespace `--magma-*`. Each is resolved per mode via the global flip. Bridged to Tailwind as
 `--color-*` so utilities like `bg-surface-raised`, `text-muted`, `bg-success-surface` exist.
+
+The layer is GENERATED from `../design-tokens/semantic.config.ts` by `scripts/semantic.ts` (A9): that config
+is the tracked contract (which primitive each role points at), and `css/semantic.css` +
+`tailwind/semantic.css` are generated (gitignored), not hand-edited. Text roles resolve from
+the by-target `--text-*` primitives (A7); surfaces/borders through the `--magma-tint-*`
+indirection (section 8).
 
 ### 6.1 Surfaces - neutral backgrounds (elevation + same-plane prominence)
 
@@ -174,19 +180,19 @@ and same-plane prominence (`muted`). 5 roles:
 
 | Token | Axis | Use |
 |---|---|---|
-| `--mds-surface-sunken` | elevation | wells, insets, code blocks, tracks |
-| `--mds-surface-muted` | prominence | same-plane grouping (zebra rows, subtle sections) |
-| `--mds-surface-default` | - | canvas / page |
-| `--mds-surface-raised` | elevation | cards, panels, sticky headers |
-| `--mds-surface-overlay` | elevation | modal, dropdown, popover, tooltip, sheet |
+| `--magma-surface-sunken` | elevation | wells, insets, code blocks, tracks |
+| `--magma-surface-muted` | prominence | same-plane grouping (zebra rows, subtle sections) |
+| `--magma-surface-default` | - | canvas / page |
+| `--magma-surface-raised` | elevation | cards, panels, sticky headers |
+| `--magma-surface-overlay` | elevation | modal, dropdown, popover, tooltip, sheet |
 
 ### 6.2 Text (prominence)
 
-`--mds-text-{default,muted,subtle,disabled,on-emphasis}`
+`--magma-text-{default,muted,subtle,disabled,on-emphasis}`
 
 ### 6.3 Border (prominence)
 
-`--mds-border-{muted,default,strong,focus}` - 4 roles by prominence, NOT indexed per
+`--magma-border-{muted,default,strong,focus}` - 4 roles by prominence, NOT indexed per
 surface level.
 
 - OPAQUE, explicit value per mode (light and dark), flipping via the global mechanism -
@@ -214,11 +220,11 @@ For each of `neutral, accent, info, success, warning, danger`, the same quintet:
 
 | Token | Use |
 |---|---|
-| `--mds-<hue>-surface` | subtle tinted fill (banner/badge/alert background) |
-| `--mds-<hue>-fg` | colored text/icon |
-| `--mds-<hue>-border` | colored border |
-| `--mds-<hue>-emphasis` | solid fill (primary button, solid badge) |
-| `--mds-<hue>-on-emphasis` | text on the solid fill |
+| `--magma-<hue>-surface` | subtle tinted fill (banner/badge/alert background) |
+| `--magma-<hue>-fg` | colored text/icon |
+| `--magma-<hue>-border` | colored border |
+| `--magma-<hue>-emphasis` | solid fill (primary button, solid badge) |
+| `--magma-<hue>-on-emphasis` | text on the solid fill |
 
 The `neutral` hue is special: its background needs are already covered by the `surface`
 family (its "surface" role IS `surface-muted` / `surface-default`), so in the hue matrix
@@ -241,7 +247,7 @@ duplicate `neutral-surface` token.
 ### 6.6 Interaction states
 
 Do NOT author hover/active/selected as new tokens. Derive them (one elevation step, or
-`color-mix` on the base token). Focus uses `--mds-border-focus`.
+`color-mix` on the base token). Focus uses `--magma-border-focus`.
 
 ## 7. Layer 3 - component tokens
 
@@ -250,7 +256,7 @@ DEFAULT to point at a semantic role. Example:
 
 ```css
 /* before */ .card { background: rgb(var(--tone-neutral)); }
-/* after  */ .card { background: var(--mds-surface-raised); }
+/* after  */ .card { background: var(--magma-surface-raised); }
 ```
 
 Role mapping: page/body -> `surface-default`; card/panel -> `surface-raised`;
@@ -265,8 +271,8 @@ Three independent axes, all driven by classes/attributes on `<html>` (cross-brow
 DOM). Same mechanism as the existing preference system.
 
 - `data-theme-name` (attribute): a named theme OVERRIDES the semantic layer. The active
-  surface tint is an indirection: `--mds-surface-*` resolve from an active-tint pointer
-  (`--mds-tint-*`) that defaults to the `neutral` family; a theme repoints it to another
+  surface tint is an indirection: `--magma-surface-*` resolve from an active-tint pointer
+  (`--magma-tint-*`) that defaults to the `neutral` family; a theme repoints it to another
   family (e.g. `porcelain` for a cool, GitLab-like dark) - one swap, no per-token edits.
   Same pattern for the accent hue. (Note: this is a semantic indirection; the config
   `alias` field is declared but NOT consumed by the generator - `variant-primary` and
@@ -362,6 +368,24 @@ are kept on separate axes (daisyUI conflates them); extensible to the full prope
 x hue matrix that dense apps need. `-content`-style foreground is expressed as
 `text-*` / `<hue>-fg` / `*-on-emphasis`.
 
+### Namespace convention (prefixes by ownership)
+
+Three CSS-variable prefixes, kept distinct so they never collide:
+
+| Prefix | Owner | What it holds | Example |
+|---|---|---|---|
+| `--tone-* / --surface-* / --status-* / --border-* / ...` | design-tokens | generated PRIMITIVES (raw scales) | `--surface-neutral-default` |
+| `--magma-*` | styles | everything STYLES owns: the semantic color layer AND the global utilities (prefs, z-index, opacity, focus) | `--magma-surface-raised`, `--magma-text-muted`, `--magma-modal-z-index` |
+| `--mds-<comp>-*` | components | per-component API (the knobs a consumer overrides) | `--mds-button-background` |
+
+The semantic layer is `--magma-*`, NOT `--mds-*`: it is authored and owned by
+`styles`, exactly like the other `--magma-*` globals (see `styles/SPEC.md`).
+`--mds-*` stays reserved for component tokens, so the semantic role
+`--magma-text-muted` never collides with a component prop like
+`--mds-text-selection-color` (from the `mds-text` component). A component adopts
+the system by pointing its `--mds-<comp>-*` default at a `--magma-*` role, e.g.
+`--mds-card-background: var(--magma-surface-raised)`.
+
 ## 12. Migration
 
 - `--tone-<family>` (bare) -> `--tone-<family>-seed` (issue #572). ~243 uses of
@@ -394,7 +418,7 @@ consumer never carries docs it does not need:
 | Track | Ships into | Covers |
 |---|---|---|
 | `docs/agents/tokens.md` | `@maggioli-design-system/design-tokens` | primitives (`--tone-*`, `--surface-*`, `--*-seed`, colored families), the contrast bounds, how to consume the CSS vars |
-| `docs/agents/theming.md` | `@maggioli-design-system/styles` | the semantic layer (`--mds-*` roles + when to use each), the Tailwind utilities, and the theming attributes (`data-theme-name`, `--depth`, mode) |
+| `docs/agents/theming.md` | `@maggioli-design-system/styles` | the semantic layer (`--magma-*` roles + when to use each), the Tailwind utilities, and the theming attributes (`data-theme-name`, `--depth`, mode) |
 
 Extending shipping to `design-tokens` and `styles` reverses (for this material) the earlier
 "3 entry-points only" decision. Tracked in issue A6 (#581).
@@ -420,7 +444,7 @@ Epic: #328.
   same-plane grouping fill (a dedicated surface role, not folded into a hue).
 - Light canvas: NOT pure white. Grey canvas (`~L96`) with near-white raised (`~L99`, not
   `#fff`). Pure `#fff` / `#000` live only in `--tone-*-seed`.
-- Default tint: `neutral`, swappable via the `--mds-tint-*` indirection (section 8).
+- Default tint: `neutral`, swappable via the `--magma-tint-*` indirection (section 8).
 - Text APCA targets: section 9.1, split essential vs non-essential. The 10-step foreground
   scale is UNCHANGED; these are verification thresholds only.
 - Borders: opaque, explicit per mode, delta from surface, one value per mode (section 6.3);

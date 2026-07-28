@@ -45,6 +45,29 @@ const borderLevels = {
   required: ['light', 'dark'],
   properties: { light: borderModeLevels, dark: borderModeLevels },
 }
+// A text role is an APCA Lc target (number) or an explicit tone step (A7).
+const textLevel = {
+  oneOf: [
+    { type: 'number' },
+    {
+      type: 'object',
+      additionalProperties: false,
+      required: ['step'],
+      properties: { step: { type: 'number' } },
+    },
+  ],
+}
+const textLevels = {
+  type: 'object',
+  additionalProperties: false,
+  required: ['default', 'muted', 'subtle', 'disabled'],
+  properties: {
+    default: textLevel,
+    muted: textLevel,
+    subtle: textLevel,
+    disabled: textLevel,
+  },
+}
 
 const hueShift = {
   type: 'object',
@@ -105,6 +128,7 @@ export const CONFIG_SCHEMA = {
         colorspace: { type: 'string', enum: COLORSPACES },
         surfaces: surfaceLevels,
         borders: borderLevels,
+        text: textLevels,
       },
     },
     colors: {

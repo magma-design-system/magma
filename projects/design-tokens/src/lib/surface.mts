@@ -1,6 +1,7 @@
 import chroma from "chroma-js";
 import chalk from "chalk";
 import type { ColorConfig, ColorTokenSet, MagmaConfig } from "./color.mjs";
+import type { TextConfig } from "./text-role.mjs";
 
 /**
  * Surface / border generation engine (issue #571, spec:
@@ -42,6 +43,8 @@ export interface ThemeConfig {
   colorspace?: string;
   surfaces: ModeLevels<SurfaceRole>;
   borders: ModeLevels<BorderRole>;
+  /** Text roles, by APCA target vs surface-default (A7, text-role.mts). Optional. */
+  text?: TextConfig;
 }
 
 /** Per-color surface opt-in: `true` uses the global ramp; an object overrides levels. */

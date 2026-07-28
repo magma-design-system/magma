@@ -38,6 +38,11 @@ const CURVE_PRESETS = ['smooth', 'hard', 'custom'] as const;
 type CloneableConfig = MagmaConfig & Record<string, unknown>;
 type View = 'colors' | 'scales' | 'surface' | 'groups' | 'diff';
 
+// the color list on the left drives only the per-color views (edit a color,
+// sample its contrast scales). Surfaces, groups and diff operate on the whole
+// config, so the column - and its always-present selection - is hidden there.
+const COLOR_LIST_VIEWS = new Set<View>(['colors', 'scales']);
+
 function clone<T>(value: T): T {
   return JSON.parse(JSON.stringify(value)) as T;
 }
@@ -995,8 +1000,12 @@ export function App() {
     ...new Set(config.colors.flatMap((color) => resolveExport(color, config) ?? [])),
   ].sort();
 
+  // the surfaces/groups/diff views work on the whole config, not a single
+  // color, so the picker column is dropped and the content spans full width
+  const showSidebar = COLOR_LIST_VIEWS.has(view);
+
   return (
-    <div class="layout">
+    <div class={`layout${showSidebar ? '' : ' no-sidebar'}`}>
       <header class="topbar">
         <h1>
           magma design tokens <span>playground</span>
@@ -1094,46 +1103,48 @@ export function App() {
 
       {loadError && <div class="load-error">{loadError}</div>}
 
-      <aside class="sidebar">
-        {[...groups.entries()].map(([group, colors]) => (
-          <div class="group">
-            <h2>{group}</h2>
-            {colors.map((color) => (
-              <button
-                class={`color-item ${color.name === selectedName ? 'active' : ''} ${color.disabled ? 'disabled' : ''}`}
-                onClick={() => {
-                  setSelectedName(color.name);
-                  // the scales view works on the selected color: switching
-                  // color must not leave it
-                  if (view !== 'scales') setView('colors');
-                }}
-              >
-                <span class="swatch" style={{ background: color.color }} />
-                {color.name.split('.')[1]}
-                {hasHueShift(color.hueShift ?? config.hueShift) && (
-                  <span class="badge" title="hue shifting active">
-                    hs
-                  </span>
-                )}
-              </button>
-            ))}
+      {showSidebar && (
+        <aside class="sidebar">
+          {[...groups.entries()].map(([group, colors]) => (
+            <div class="group">
+              <h2>{group}</h2>
+              {colors.map((color) => (
+                <button
+                  class={`color-item ${color.name === selectedName ? 'active' : ''} ${color.disabled ? 'disabled' : ''}`}
+                  onClick={() => {
+                    setSelectedName(color.name);
+                    // the scales view works on the selected color: switching
+                    // color must not leave it
+                    if (view !== 'scales') setView('colors');
+                  }}
+                >
+                  <span class="swatch" style={{ background: color.color }} />
+                  {color.name.split('.')[1]}
+                  {hasHueShift(color.hueShift ?? config.hueShift) && (
+                    <span class="badge" title="hue shifting active">
+                      hs
+                    </span>
+                  )}
+                </button>
+              ))}
+            </div>
+          ))}
+          <div class="sidebar-actions">
+            <button
+              onClick={() =>
+                setAddModal({
+                  color: '#4f8fd9',
+                  name: nearestColorName('#4f8fd9'),
+                  group: 'label',
+                  manual: false,
+                })
+              }
+            >
+              + add color
+            </button>
           </div>
-        ))}
-        <div class="sidebar-actions">
-          <button
-            onClick={() =>
-              setAddModal({
-                color: '#4f8fd9',
-                name: nearestColorName('#4f8fd9'),
-                group: 'label',
-                manual: false,
-              })
-            }
-          >
-            + add color
-          </button>
-        </div>
-      </aside>
+        </aside>
+      )}
 
       {/* the dialog has no click-outside dismissal: an accidental click must not lose the input */}
       {addModal && (
