@@ -43,6 +43,7 @@ export const ruleId = (tag: string, rule: Rule): string => {
     case 'cssVarRemove':
       return `${tag}/${rule.kind}/${rule.name}`;
     case 'cssVarRename':
+    case 'cssVarSurfaceReport':
     case 'partRename':
     case 'eventRename':
       return `${tag}/${rule.kind}/${rule.from}`;

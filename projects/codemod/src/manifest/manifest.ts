@@ -216,6 +216,32 @@ const curate = (base: Manifest): Manifest => {
     });
   }
 
+  // G3 / A2 - global (non-component) CSS custom-property migrations for the
+  // semantic color system.
+  //  - Seed rename (A2): the bare `--tone-<family>` primitive became
+  //    `--tone-<family>-seed`. A consumer that referenced the bare token keeps
+  //    the pure-extreme value; a note points background users at a surface role.
+  //  - Surface-candidate reports: a neutral tone used as a *background* (the bare
+  //    token or any scale step) is a surface, but the exact role is contextual
+  //    (and often the component's own default, C2 territory), so it is REPORTED
+  //    for manual migration, never rewritten. In a background context the report
+  //    wins over the seed rename, so a background is never seed-renamed.
+  const toneFamilies = ['porcelain', 'kaolin', 'neutral', 'fireclay', 'bisque'] as const;
+  const neutralSteps = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10'];
+  m.global.cssVars = [
+    ...toneFamilies.map((family) => ({
+      kind: 'cssVarRename' as const,
+      from: `tone-${family}`,
+      to: `tone-${family}-seed`,
+      note: 'A2: the bare tone primitive is now the off-scale `-seed` escape hatch (the pure extreme); if it was used as a surface/background, migrate it to a `--magma-surface-*` role instead',
+    })),
+    { kind: 'cssVarSurfaceReport' as const, from: 'tone-neutral' },
+    ...neutralSteps.map((step) => ({
+      kind: 'cssVarSurfaceReport' as const,
+      from: `tone-neutral-${step}`,
+    })),
+  ];
+
   // Behavior guard: v2 mds-dropdown enables auto-placement by default (v1 was
   // off). Add `disable-auto-placement` to dropdowns that set neither prop, to
   // preserve the v1 behavior. (mds-tooltip's auto-placement default did not

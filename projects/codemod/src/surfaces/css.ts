@@ -14,6 +14,7 @@ import postcssScss from 'postcss-scss';
 import {
   type CssVarRemoveRule,
   type CssVarRenameRule,
+  type CssVarSurfaceReportRule,
   type Manifest,
   type PartRenameRule,
 } from '../manifest/schema.js';
@@ -29,14 +30,37 @@ interface CssVarRemovalEntry {
   rule: CssVarRemoveRule;
   id: string;
 }
+interface SurfaceReportEntry {
+  rule: CssVarSurfaceReportRule;
+  id: string;
+}
 interface PartEntry {
   rule: PartRenameRule;
   id: string;
 }
 
+/**
+ * Tag used for the manifest-global CSS-var rules (the `--tone-*-seed` rename and
+ * the surface-candidate reports), which no component owns. They surface in
+ * `--only` / `--skip` as `global/cssVarRename/...` and
+ * `global/cssVarSurfaceReport/...`.
+ */
+const GLOBAL_TAG = 'global';
+
+/**
+ * A neutral tone used as a *background* is a surface candidate (spec 12): the
+ * `background` / `background-color` property, or a custom property whose name
+ * carries `background` (component `--mds-*-background*` tokens).
+ */
+const isBackgroundContext = (prop: string): boolean =>
+  prop === 'background' ||
+  prop === 'background-color' ||
+  (prop.startsWith('--') && prop.includes('background'));
+
 const collectRules = (manifest: Manifest) => {
   const cssVars = new Map<string, CssVarEntry>();
   const removedVars = new Map<string, CssVarRemovalEntry>();
+  const surfaceReports = new Map<string, SurfaceReportEntry>();
   const parts = new Map<string, PartEntry>();
   for (const component of Object.values(manifest.components)) {
     for (const rule of component.rules) {
@@ -48,7 +72,14 @@ const collectRules = (manifest: Manifest) => {
         parts.set(rule.from, { rule, id: ruleId(component.tag, rule) });
     }
   }
-  return { cssVars, removedVars, parts };
+  // Manifest-global CSS-var migrations (not owned by any component): the seed
+  // rename (rewritten) and the surface-candidate reports (reported only).
+  for (const rule of manifest.global.cssVars ?? []) {
+    if (rule.kind === 'cssVarRename')
+      cssVars.set(rule.from, { rule, id: ruleId(GLOBAL_TAG, rule) });
+    else surfaceReports.set(rule.from, { rule, id: ruleId(GLOBAL_TAG, rule) });
+  }
+  return { cssVars, removedVars, surfaceReports, parts };
 };
 
 const PART_RE = /::part\(\s*([\w-]+)\s*\)/g;
@@ -60,7 +91,7 @@ export const transformCss = (
   ctx: TransformContext,
   options: { scss?: boolean } = {},
 ): TransformResult => {
-  const { cssVars, removedVars, parts } = collectRules(manifest);
+  const { cssVars, removedVars, surfaceReports, parts } = collectRules(manifest);
   const findings: Finding[] = [];
   let changed = false;
 
@@ -98,7 +129,7 @@ export const transformCss = (
   root.walkDecls((decl) => {
     const line = decl.source?.start?.line;
 
-    // Custom-property definition site: `--mds-banner-color: #fff;`
+    // Custom-property definition site: `--mds-banner-color: #fff;`.
     if (decl.prop.startsWith('--')) {
       const name = decl.prop.slice(2);
       warnRemoved(name, line);
@@ -132,11 +163,28 @@ export const transformCss = (
       }
     }
 
-    // `var(--x)` references inside any value.
+    // `var(--x)` references inside any value. A surface candidate used as a
+    // background is REPORTED, not rewritten (the exact role is contextual); this
+    // takes precedence over the seed rename so a background is never
+    // seed-renamed. Everything else follows the plain rename.
     if (decl.value && decl.value.includes('--')) {
       for (const token of decl.value.match(VAR_TOKEN_RE) ?? []) warnRemoved(token.slice(2), line);
+      const backgroundContext = isBackgroundContext(decl.prop);
       const newValue = decl.value.replace(VAR_TOKEN_RE, (token) => {
-        const entry = cssVars.get(token.slice(2));
+        const name = token.slice(2);
+        const report = backgroundContext ? surfaceReports.get(name) : undefined;
+        if (report && ruleEnabled(ctx, report.id)) {
+          findings.push({
+            kind: 'warn',
+            surface: 'css',
+            file: ctx.file,
+            line,
+            ruleId: report.id,
+            message: `\`${token}\` is used as a background here; migrate it by hand to a semantic surface role (\`--magma-surface-*\`: default / raised / overlay / sunken / muted)${report.rule.note ? ` (${report.rule.note})` : ''}`,
+          });
+          return token;
+        }
+        const entry = cssVars.get(name);
         if (entry && ruleEnabled(ctx, entry.id)) {
           changed = true;
           findings.push(

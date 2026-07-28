@@ -17,6 +17,26 @@ describe('curated manifest', () => {
     }
   });
 
+  it('adds the global semantic-color CSS-var migrations (seed rename + surface reports)', () => {
+    const globalVars = manifest.global.cssVars ?? [];
+    for (const family of ['porcelain', 'kaolin', 'neutral', 'fireclay', 'bisque']) {
+      expect(globalVars).toContainEqual(
+        expect.objectContaining({
+          kind: 'cssVarRename',
+          from: `tone-${family}`,
+          to: `tone-${family}-seed`,
+        }),
+      );
+    }
+    // the bare token and every neutral scale step are reported as surface
+    // candidates when used as a background (report-only, never rewritten)
+    for (const from of ['tone-neutral', 'tone-neutral-01', 'tone-neutral-09', 'tone-neutral-10']) {
+      expect(globalVars).toContainEqual(
+        expect.objectContaining({ kind: 'cssVarSurfaceReport', from }),
+      );
+    }
+  });
+
   it('overrides `quiet → text` on the three components whose v2 tone set has `text`', () => {
     const quietToText = { ghost: 'outline', quiet: 'text' };
     expect(manifest.global.tone?.overrides).toEqual({

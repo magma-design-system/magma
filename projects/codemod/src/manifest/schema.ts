@@ -105,6 +105,24 @@ export interface CssVarRemoveRule {
   message: string;
 }
 
+/**
+ * Category G3 (report-only). A neutral tone/primitive used as a *background* is
+ * a surface under the semantic color system, but the exact role (default /
+ * raised / overlay / sunken / muted) is contextual and often the component's own
+ * default (C2 territory), so the codemod REPORTS the site for manual migration
+ * to a `--magma-surface-*` role instead of rewriting it. "Background context" =
+ * a `background` / `background-color` property, OR a custom property whose name
+ * contains `background` (component `--mds-*-background*` tokens). CSS-only; the
+ * value is never rewritten.
+ */
+export interface CssVarSurfaceReportRule {
+  kind: 'cssVarSurfaceReport';
+  /** Without the leading `--`: the token that is a surface candidate as a background. */
+  from: string;
+  /** Optional extra guidance appended to the report message. */
+  note?: string;
+}
+
 /** Category H — rename a shadow part referenced in `::part()`. */
 export interface PartRenameRule {
   kind: 'partRename';
@@ -148,6 +166,7 @@ export type Rule =
   | SlotToAttrRule
   | CssVarRenameRule
   | CssVarRemoveRule
+  | CssVarSurfaceReportRule
   | PartRenameRule
   | EventRenameRule
   | EnsureAttrRule;
@@ -184,6 +203,14 @@ export interface GlobalRules {
   };
   /** Remove `slot="default"` everywhere (v2 uses the unnamed default slot). */
   removeDefaultSlot?: boolean;
+  /**
+   * CSS custom-property migrations that are not tied to a single component:
+   * primitive-token renames (the `--tone-*` -> `--tone-*-seed` seed rename from
+   * A2) and report-only surface candidates (a neutral tone used as a background,
+   * migrated by hand to a `--magma-surface-*` role). CSS-only; the
+   * HTML/React/Angular surfaces ignore them.
+   */
+  cssVars?: Array<CssVarRenameRule | CssVarSurfaceReportRule>;
 }
 
 export interface Manifest {
