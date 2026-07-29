@@ -290,8 +290,10 @@ DOM). Same mechanism as the existing preference system.
   A theme MUST take surface and text from the SAME family. Text roles are generated per
   family and APCA-verified (A7) against THAT family's own surfaces, so a coherent
   `{surface, border, text}` family keeps the contrast guarantee - mixing families can
-  break it. The family therefore needs a text scale (both a tone scale AND a surface):
-  `neutral`, `porcelain`, `bisque` qualify; a colour-only label family does not.
+  break it. The family just needs a SURFACE (opt it in): text is generated per family from
+  that family's OWN scale, so ANY tint qualifies - a `tone` family or a colour family (a
+  colour theme is monochromatic: its hue as surface, border and text). The groups
+  (`tone`/`status`/`label`/...) organise names; they do not gate what can back a theme.
   `text-on-emphasis` is the pure seed (max contrast on a solid fill) and may stay fixed
   across themes. The accent hue follows the same repoint pattern. (Note: the config
   `alias` field is declared but NOT consumed by the generator - `variant-primary` and
