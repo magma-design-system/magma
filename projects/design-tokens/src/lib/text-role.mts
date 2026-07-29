@@ -33,12 +33,23 @@ export type TextLevel = number | { step: number };
 export type TextConfig = Record<TextRole, TextLevel>;
 
 type Mode = "light" | "dark";
+const MODES: readonly Mode[] = ["light", "dark"];
 type StepSet = Record<string, { value: string }>;
-/** The minimal slice of the built `tokens.color` tree this engine reads. */
+type FamilyScales = Record<string, Record<Mode, StepSet>>;
+/**
+ * The slice of the built `tokens.color` tree this engine reads: the `surface`
+ * group (the reference) plus every colour group (`tone`/`status`/`label`/
+ * `variant`/`brand`/...), each keyed by family. A family's OWN scale - in
+ * whatever group it lives - is the text candidate source, so ANY opted-in tint
+ * can back a foreground, not only `tone`.
+ */
 type ColorTree = {
-  tone?: Record<string, Record<Mode, StepSet>>;
-  surface?: Record<string, Record<Mode, StepSet>>;
+  surface?: FamilyScales;
+  [group: string]: FamilyScales | undefined;
 };
+
+/** Derived groups, not candidate colour scales. */
+const DERIVED_GROUPS = new Set(["surface", "border", "text"]);
 
 const apcaLc = (fg: string, bg: string): number =>
   Math.abs(APCAcontrast(sRGBtoY(chroma(fg).rgb()), sRGBtoY(chroma(bg).rgb())) as number);
@@ -93,10 +104,13 @@ export interface TextTokens {
 }
 
 /**
- * Generate text-role tokens for every family that has BOTH a tone scale (the
- * candidate steps) and a surface (the reference), using the `theme.text`
- * targets. Returns an empty map when `theme.text` is absent or no family
- * qualifies, so existing output stays byte-identical.
+ * Generate text-role tokens for every family that has a surface (the
+ * reference), taking the candidate steps from that family's OWN scale wherever
+ * its group lives - so ANY opted-in tint (a `tone` OR a colour family) gets a
+ * contrast-matched foreground, not just `tone`. The groups organise names; they
+ * do not gate what can back a theme. Returns an empty map when `theme.text` is
+ * absent or no family qualifies. A default config opts only tone families into
+ * surfaces, so existing output stays byte-identical.
  */
 export function createTextTokens(config: MagmaConfig, tree: ColorTree): TextTokens {
   const text: Record<string, ColorTokenSet> = {};
@@ -104,11 +118,25 @@ export function createTextTokens(config: MagmaConfig, tree: ColorTree): TextToke
   const textConfig = config.theme?.text;
   if (!textConfig) return { text };
 
-  const families = Object.keys(tree.surface ?? {}).filter((family) => tree.tone?.[family]);
+  // a family's own base scale (the text candidates), found in whatever colour
+  // group it belongs to - tone, status, label, variant, brand, ...
+  const scaleFor = (family: string, mode: Mode): StepSet | undefined => {
+    for (const group of Object.keys(tree)) {
+      if (DERIVED_GROUPS.has(group)) continue;
+      const scale = tree[group]?.[family]?.[mode];
+      if (scale) return scale;
+    }
+    return undefined;
+  };
+
+  // every surface-opted family that also carries a base scale in both modes
+  const families = Object.keys(tree.surface ?? {}).filter((family) =>
+    MODES.every((mode) => scaleFor(family, mode)),
+  );
 
   families.forEach((family) => {
     const buildMode = (mode: Mode): StepSet => {
-      const tone = tree.tone![family][mode];
+      const candidates = scaleFor(family, mode)!;
       // every surface the text can sit on; the worst (lowest-contrast) one binds
       const refSurfaces = Object.values(tree.surface![family][mode] ?? {})
         .map((s) => s.value)
@@ -118,7 +146,9 @@ export function createTextTokens(config: MagmaConfig, tree: ColorTree): TextToke
       }
       const roleSet: StepSet = {};
       TEXT_ROLES.forEach((role) => {
-        roleSet[role] = { value: pickStep(tone, refSurfaces, textConfig[role], family, role, mode) };
+        roleSet[role] = {
+          value: pickStep(candidates, refSurfaces, textConfig[role], family, role, mode),
+        };
       });
       return roleSet;
     };
