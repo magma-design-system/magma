@@ -145,7 +145,8 @@ export function SurfaceManager({ config, onToggleSurface, onUpdateTheme }: Surfa
         Surfaces and borders are placed by perceptual <em>lightness</em> in OKLCH (not APCA), per
         mode and per role. Opt a family in below; the shared ramp is the same for every family (the
         tint comes from each family's key color). The active default tint is chosen in{' '}
-        <code>styles</code>, not here.
+        <code>styles</code>, not here. Every family you opt in here also becomes a theme in the
+        section below.
       </p>
 
       {/* Section 1: opt-in */}
