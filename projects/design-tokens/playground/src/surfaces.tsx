@@ -240,9 +240,16 @@ export function SurfaceManager({ config, onToggleSurface, onUpdateTheme }: Surfa
             {MODES.map((mode) => {
               const s = surfaces[family]?.[mode];
               const b = borders[family]?.[mode];
-              const t = texts[family]?.[mode];
-              // real text-default role (A7); fall back to tone-3 for configs without theme.text
-              const canvasText = t ? hex(t, 'default') : hex(tones.neutral?.[mode], '3');
+              // Foreground = the active INK. A full tint (tone + surface) carries its own
+              // by-target text; a surface-only family (a colored tint with no tone scale,
+              // e.g. label.green) has none, so it inherits the NEUTRAL ink - the default
+              // foreground, exactly as the semantic layer does (foreground = active
+              // counterpart of surface). tone-3 is the last resort for a config with no
+              // theme.text at all. The text must never fall through to #000: that is the
+              // black-on-dark-surface bug this guards against.
+              const ownText = texts[family]?.[mode];
+              const ink = ownText ?? texts.neutral?.[mode];
+              const canvasText = ink ? hex(ink, 'default') : hex(tones.neutral?.[mode], '3');
               return (
                 <div
                   class="sf-canvas"
@@ -282,10 +289,20 @@ export function SurfaceManager({ config, onToggleSurface, onUpdateTheme }: Surfa
                       overlay <code>{hex(s, 'overlay')}</code>
                     </div>
                   </div>
-                  {/* text roles (A7): by-target step + achieved APCA Lc vs the canvas */}
+                  {/* text roles (A7): by-target step + achieved APCA Lc vs the canvas.
+                      A surface-only family borrows the neutral ink (no own tone scale);
+                      the Lc then shows whether that default ink is legible here. */}
                   <div class="sf-text-roles">
+                    {!ownText && (
+                      <span
+                        class="sf-text-note"
+                        title="No tone scale of its own, so this surface shows the default NEUTRAL ink (foreground = active counterpart of surface). Check the Lc to see if the neutral ink is legible on this surface."
+                      >
+                        inherits neutral ink
+                      </span>
+                    )}
                     {TEXT_ROLES.map((role) => {
-                      const c = hex(t, role);
+                      const c = ink ? hex(ink, role) : canvasText;
                       return (
                         <span class="sf-text" style={{ color: c }} title={TEXT_PURPOSE[role]}>
                           text {role} <code>{c}</code>{' '}
