@@ -15,9 +15,11 @@
  * semantic role points at.
  *
  * Conventions come from styles/SEMANTIC_COLOR_SPEC.md:
- *  - surfaces/borders resolve through the `--magma-tint-*` indirection so a named
- *    theme retints the whole neutral scaffolding with one swap (section 8, B2);
- *  - text roles come from the by-target `--text-*` primitives (A7, section 9);
+ *  - surfaces, borders AND text resolve through the `--magma-tint-*` indirection
+ *    so a named theme retints the whole neutral scaffolding - background AND
+ *    foreground, kept to one coherent family - with one swap (section 8, B2);
+ *  - text role values are the by-target `--text-*` primitives (A7, section 9),
+ *    reached via the tint-text pointers so the foreground retints with its surface;
  *  - the colored-hue quintet uses fixed steps (section 6.4/6.5).
  */
 
