@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'preact/hooks';
+import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import { APCAcontrast, sRGBtoY } from 'apca-w3';
 import chroma from 'chroma-js';
 import type { ColorConfig, MagmaConfig } from '../../src/lib/color.mjs';
@@ -122,6 +122,21 @@ export function SurfaceManager({ config, onToggleSurface, onUpdateTheme }: Surfa
 
   const optedFamilies = Object.keys(surfaces);
 
+  // Preview one family at a time (saves vertical space). A newly opted-in family
+  // auto-selects; if the shown one is removed, fall back to the first.
+  const [selectedFamily, setSelectedFamily] = useState<string>('');
+  const prevOpted = useRef<string[]>([]);
+  useEffect(() => {
+    const added = optedFamilies.filter((family) => !prevOpted.current.includes(family));
+    if (prevOpted.current.length > 0 && added.length > 0) {
+      setSelectedFamily(added[added.length - 1]);
+    }
+    prevOpted.current = optedFamilies;
+  }, [optedFamilies.join(',')]);
+  const shownFamily = optedFamilies.includes(selectedFamily)
+    ? selectedFamily
+    : (optedFamilies[0] ?? '');
+
   const setLevel = (kind: 'surfaces' | 'borders', mode: Mode, role: string, percent: number) => {
     onUpdateTheme((draft) => {
       const table = draft[kind] as Record<Mode, Record<string, string | number>>;
@@ -215,6 +230,17 @@ export function SurfaceManager({ config, onToggleSurface, onUpdateTheme }: Surfa
       {!genError && optedFamilies.length > 0 && (
         <div class="preview-controls">
           <label class="preview-shadow-label">
+            preview family
+            <select
+              value={shownFamily}
+              onChange={(e) => setSelectedFamily((e.target as HTMLSelectElement).value)}
+            >
+              {optedFamilies.map((family) => (
+                <option value={family}>{family}</option>
+              ))}
+            </select>
+          </label>
+          <label class="preview-shadow-label">
             preview shadow
             <select
               value={previewShadow}
@@ -230,126 +256,129 @@ export function SurfaceManager({ config, onToggleSurface, onUpdateTheme }: Surfa
           </span>
         </div>
       )}
-      {optedFamilies.map((family) => (
-        <div class="scale-card">
-          <div class="scale-card-head">
-            <span class="scale-usage">
-              <code>surface-{family}</code> / <code>border-{family}</code>
-            </span>
-          </div>
-          <div class="surface-preview">
-            {MODES.map((mode) => {
-              const s = surfaces[family]?.[mode];
-              const b = borders[family]?.[mode];
-              // Foreground = the active INK. A full tint (tone + surface) carries its own
-              // by-target text; a surface-only family (a colored tint with no tone scale,
-              // e.g. label.green) has none, so it inherits the NEUTRAL ink - the default
-              // foreground, exactly as the semantic layer does (foreground = active
-              // counterpart of surface). tone-3 is the last resort for a config with no
-              // theme.text at all. The text must never fall through to #000: that is the
-              // black-on-dark-surface bug this guards against.
-              const ownText = texts[family]?.[mode];
-              const ink = ownText ?? texts.neutral?.[mode];
-              const canvasText = ink ? hex(ink, 'default') : hex(tones.neutral?.[mode], '3');
-              return (
-                <div
-                  class="sf-canvas"
-                  style={{ background: hex(s, 'default'), color: canvasText }}
-                  title={SURFACE_PURPOSE.default}
-                >
-                  <div class="sf-canvas-label">
-                    {mode} - canvas <code>{hex(s, 'default')}</code>
-                  </div>
-                  <div class="sf-row">
-                    <div
-                      class="sf-box"
-                      style={{ background: hex(s, 'sunken') }}
-                      title={SURFACE_PURPOSE.sunken}
-                    >
-                      sunken <code>{hex(s, 'sunken')}</code>
-                    </div>
-                    <div
-                      class="sf-box"
-                      style={{ background: hex(s, 'muted') }}
-                      title={SURFACE_PURPOSE.muted}
-                    >
-                      muted <code>{hex(s, 'muted')}</code>
-                    </div>
-                  </div>
+      {optedFamilies
+        .filter((family) => family === shownFamily)
+        .map((family) => (
+          <div class="scale-card">
+            {/* Text-role step selection FIRST - text contrast is the accessibility-critical
+              read, so it leads over the surface (background) preview below. */}
+            <div class="scale-card-head">
+              <span class="scale-usage">text-role step selection</span>
+              <span class="scales-hint">
+                worst-case APCA Lc per tone step; the engine picks the <em>least-contrast</em> step
+                whose bar clears a target. Edit the targets above (or the surface levels) and the
+                pick moves.
+              </span>
+            </div>
+            <div class="step-charts">
+              {MODES.map((mode) => (
+                <StepSelectionChart
+                  mode={mode}
+                  tone={tones[family]?.[mode]}
+                  surface={surfaces[family]?.[mode]}
+                  text={texts[family]?.[mode]}
+                  targets={
+                    (theme.text ?? DEFAULT_THEME.text) as Record<string, number | { step: number }>
+                  }
+                />
+              ))}
+            </div>
+            <div class="scale-card-head" style={{ marginTop: '12px' }}>
+              <span class="scale-usage">
+                <code>surface-{family}</code> / <code>border-{family}</code>
+              </span>
+            </div>
+            <div class="surface-preview">
+              {MODES.map((mode) => {
+                const s = surfaces[family]?.[mode];
+                const b = borders[family]?.[mode];
+                // Foreground = the active INK. A full tint (tone + surface) carries its own
+                // by-target text; a surface-only family (a colored tint with no tone scale,
+                // e.g. label.green) has none, so it inherits the NEUTRAL ink - the default
+                // foreground, exactly as the semantic layer does (foreground = active
+                // counterpart of surface). tone-3 is the last resort for a config with no
+                // theme.text at all. The text must never fall through to #000: that is the
+                // black-on-dark-surface bug this guards against.
+                const ownText = texts[family]?.[mode];
+                const ink = ownText ?? texts.neutral?.[mode];
+                const canvasText = ink ? hex(ink, 'default') : hex(tones.neutral?.[mode], '3');
+                return (
                   <div
-                    class="sf-box sf-raised"
-                    style={{ background: hex(s, 'raised') }}
-                    title={SURFACE_PURPOSE.raised}
+                    class="sf-canvas"
+                    style={{ background: hex(s, 'default'), color: canvasText }}
+                    title={SURFACE_PURPOSE.default}
                   >
-                    raised <code>{hex(s, 'raised')}</code>
+                    <div class="sf-canvas-label">
+                      {mode} - canvas <code>{hex(s, 'default')}</code>
+                    </div>
+                    <div class="sf-row">
+                      <div
+                        class="sf-box"
+                        style={{ background: hex(s, 'sunken') }}
+                        title={SURFACE_PURPOSE.sunken}
+                      >
+                        sunken <code>{hex(s, 'sunken')}</code>
+                      </div>
+                      <div
+                        class="sf-box"
+                        style={{ background: hex(s, 'muted') }}
+                        title={SURFACE_PURPOSE.muted}
+                      >
+                        muted <code>{hex(s, 'muted')}</code>
+                      </div>
+                    </div>
                     <div
-                      class="sf-box sf-overlay"
-                      style={{ background: hex(s, 'overlay') }}
-                      title={SURFACE_PURPOSE.overlay}
+                      class="sf-box sf-raised"
+                      style={{ background: hex(s, 'raised') }}
+                      title={SURFACE_PURPOSE.raised}
                     >
-                      overlay <code>{hex(s, 'overlay')}</code>
+                      raised <code>{hex(s, 'raised')}</code>
+                      <div
+                        class="sf-box sf-overlay"
+                        style={{ background: hex(s, 'overlay') }}
+                        title={SURFACE_PURPOSE.overlay}
+                      >
+                        overlay <code>{hex(s, 'overlay')}</code>
+                      </div>
+                    </div>
+                    {/* text roles (A7) below the surface swatches: by-target step + achieved
+                      APCA Lc vs the canvas. A surface-only family borrows the neutral ink. */}
+                    <div class="sf-text-roles">
+                      {!ownText && (
+                        <span
+                          class="sf-text-note"
+                          title="No tone scale of its own, so this surface shows the default NEUTRAL ink (foreground = active counterpart of surface). Check the Lc to see if the neutral ink is legible on this surface."
+                        >
+                          inherits neutral ink
+                        </span>
+                      )}
+                      {TEXT_ROLES.map((role) => {
+                        const c = ink ? hex(ink, role) : canvasText;
+                        return (
+                          <span class="sf-text" style={{ color: c }} title={TEXT_PURPOSE[role]}>
+                            text {role} <code>{c}</code>{' '}
+                            <code>Lc {apcaLc(c, hex(s, 'default')).toFixed(0)}</code>
+                          </span>
+                        );
+                      })}
+                    </div>
+                    <div class="sf-borders">
+                      {(BORDER_ROLES as readonly string[]).map((role) => (
+                        <span
+                          class="sf-border-chip"
+                          style={{ borderColor: hex(b, role), background: hex(s, 'default') }}
+                          title={BORDER_PURPOSE[role]}
+                        >
+                          border {role}
+                        </span>
+                      ))}
                     </div>
                   </div>
-                  {/* text roles (A7): by-target step + achieved APCA Lc vs the canvas.
-                      A surface-only family borrows the neutral ink (no own tone scale);
-                      the Lc then shows whether that default ink is legible here. */}
-                  <div class="sf-text-roles">
-                    {!ownText && (
-                      <span
-                        class="sf-text-note"
-                        title="No tone scale of its own, so this surface shows the default NEUTRAL ink (foreground = active counterpart of surface). Check the Lc to see if the neutral ink is legible on this surface."
-                      >
-                        inherits neutral ink
-                      </span>
-                    )}
-                    {TEXT_ROLES.map((role) => {
-                      const c = ink ? hex(ink, role) : canvasText;
-                      return (
-                        <span class="sf-text" style={{ color: c }} title={TEXT_PURPOSE[role]}>
-                          text {role} <code>{c}</code>{' '}
-                          <code>Lc {apcaLc(c, hex(s, 'default')).toFixed(0)}</code>
-                        </span>
-                      );
-                    })}
-                  </div>
-                  <div class="sf-borders">
-                    {(BORDER_ROLES as readonly string[]).map((role) => (
-                      <span
-                        class="sf-border-chip"
-                        style={{ borderColor: hex(b, role), background: hex(s, 'default') }}
-                        title={BORDER_PURPOSE[role]}
-                      >
-                        border {role}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
-          <div class="scale-card-head" style={{ marginTop: '12px' }}>
-            <span class="scale-usage">text-role step selection</span>
-            <span class="scales-hint">
-              worst-case APCA Lc per tone step; the engine picks the <em>least-contrast</em> step
-              whose bar clears a target. Edit the targets above (or the surface levels) and the pick
-              moves.
-            </span>
-          </div>
-          <div class="step-charts">
-            {MODES.map((mode) => (
-              <StepSelectionChart
-                mode={mode}
-                tone={tones[family]?.[mode]}
-                surface={surfaces[family]?.[mode]}
-                text={texts[family]?.[mode]}
-                targets={
-                  (theme.text ?? DEFAULT_THEME.text) as Record<string, number | { step: number }>
-                }
-              />
-            ))}
-          </div>
-        </div>
-      ))}
+        ))}
     </div>
   );
 }
