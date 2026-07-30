@@ -30,7 +30,7 @@ const BoxShadow = ({
   return (
     <div class="aspect-square w-full">
       <div
-        class="aspect-square w-full bg-tone-neutral rounded-md flex items-center justify-center"
+        class="aspect-square w-full bg-surface-raised rounded-md flex items-center justify-center"
         style={{ boxShadow: value }}
       >
         <div class="grid gap-100 text-center">
@@ -82,16 +82,16 @@ const getShadowValue = (preferredKeys: string[]): string => {
 const StackedDocuments = ({ value }: { value: string }) => (
   <div class="flex justify-start items-center">
     <div
-      class="text-center px-400 aspect-a4 flex bg-tone-neutral w-1/3 relative rounded-3xs items-center justify-center"
+      class="text-center px-400 aspect-a4 flex bg-surface-raised w-1/3 relative rounded-3xs items-center justify-center"
       style={{ boxShadow: value }}
     >
       <mds-text typography="label">Stacked documents</mds-text>
       <div
-        class="bg-tone-neutral flex left-100 right-100 top-100 -bottom-100 absolute -z-10 rounded-3xs"
+        class="bg-surface-raised flex left-100 right-100 top-100 -bottom-100 absolute -z-10 rounded-3xs"
         style={{ boxShadow: value }}
       ></div>
       <div
-        class="bg-tone-neutral flex left-200 right-200 top-200 -bottom-200 absolute -z-20 rounded-3xs"
+        class="bg-surface-raised flex left-200 right-200 top-200 -bottom-200 absolute -z-20 rounded-3xs"
         style={{ boxShadow: value }}
       ></div>
     </div>

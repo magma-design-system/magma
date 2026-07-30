@@ -107,7 +107,7 @@ const Template = (args) => {
           Disgree
         </mds-button>
       </div>
-      <div class="flex items-center justify-center bg-tone-neutral rounded-2xl shadow-md m-600 ml-0">
+      <div class="flex items-center justify-center bg-surface-raised rounded-2xl shadow-md m-600 ml-0">
         <mds-emoji style={{ width: `${svgSize}px`, height: `${svgSize}px` }} {...args} />
       </div>
     </div>
