@@ -74,6 +74,21 @@ const TEXT_PURPOSE: Record<string, string> = {
   disabled: 'disabled / inactive (lowest)',
 };
 
+// Slider ranges for the lightness editors, per mode: light surfaces stay high,
+// dark surfaces stay low. Borders sit a little darker than surfaces in light mode
+// (they are functional outlines), so they get a wider light range than surfaces.
+type LevelRange = Record<Mode, { min: number; max: number }>;
+const SURFACE_RANGE: LevelRange = {
+  light: { min: 85, max: 100 },
+  dark: { min: 1, max: 50 },
+};
+const BORDER_RANGE: LevelRange = {
+  light: { min: 50, max: 100 },
+  dark: { min: 1, max: 50 },
+};
+// text targets are an APCA Lc magnitude (0..~106), not a lightness percentage
+const TEXT_TARGET_MAX = 106;
+
 /** The family segment of a color name (tone.neutral -> neutral). */
 function familyOf(color: ColorConfig): string {
   return color.name.split('.')[1];
@@ -204,20 +219,22 @@ export function SurfaceManager({ config, onToggleSurface, onUpdateTheme }: Surfa
             roles={SURFACE_ROLES as readonly string[]}
             table={theme.surfaces as Record<Mode, Record<string, string | number>>}
             purpose={SURFACE_PURPOSE}
+            range={SURFACE_RANGE}
             onChange={(mode, role, pct) => setLevel('surfaces', mode, role, pct)}
-          />
-          <LevelTable
-            title="borders"
-            roles={BORDER_ROLES as readonly string[]}
-            table={theme.borders as Record<Mode, Record<string, string | number>>}
-            purpose={BORDER_PURPOSE}
-            onChange={(mode, role, pct) => setLevel('borders', mode, role, pct)}
           />
           <TextTargetTable
             targets={
               (theme.text ?? DEFAULT_THEME.text) as Record<string, number | { step: number }>
             }
             onChange={setTextTarget}
+          />
+          <LevelTable
+            title="borders"
+            roles={BORDER_ROLES as readonly string[]}
+            table={theme.borders as Record<Mode, Record<string, string | number>>}
+            purpose={BORDER_PURPOSE}
+            range={BORDER_RANGE}
+            onChange={(mode, role, pct) => setLevel('borders', mode, role, pct)}
           />
         </div>
       </div>
@@ -388,17 +405,23 @@ interface LevelTableProps {
   roles: readonly string[];
   table: Record<Mode, Record<string, string | number>>;
   purpose: Record<string, string>;
+  range: LevelRange;
   onChange: (mode: Mode, role: string, percent: number) => void;
 }
 
-function LevelTable({ title, roles, table, purpose, onChange }: LevelTableProps) {
+function LevelTable({ title, roles, table, purpose, range, onChange }: LevelTableProps) {
   return (
     <table class="level-table">
       <thead>
         <tr>
           <th>{title}</th>
           {MODES.map((mode) => (
-            <th>{mode}</th>
+            <th>
+              {mode}{' '}
+              <span class="level-range">
+                {range[mode].min}-{range[mode].max}
+              </span>
+            </th>
           ))}
         </tr>
       </thead>
@@ -409,20 +432,26 @@ function LevelTable({ title, roles, table, purpose, onChange }: LevelTableProps)
               <span class="role-name">{role}</span>
               <span class="role-purpose">{purpose[role]}</span>
             </td>
-            {MODES.map((mode) => (
-              <td>
-                <input
-                  type="number"
-                  min={0}
-                  max={100}
-                  step={1}
-                  value={toPercent(table[mode]?.[role] ?? 0)}
-                  onChange={(e) =>
-                    onChange(mode, role, Number((e.target as HTMLInputElement).value))
-                  }
-                />
-              </td>
-            ))}
+            {MODES.map((mode) => {
+              const value = toPercent(table[mode]?.[role] ?? 0);
+              return (
+                <td>
+                  <div class="level-slider">
+                    <input
+                      type="range"
+                      min={range[mode].min}
+                      max={range[mode].max}
+                      step={1}
+                      value={value}
+                      onInput={(e) =>
+                        onChange(mode, role, Number((e.target as HTMLInputElement).value))
+                      }
+                    />
+                    <span class="level-value">{value}</span>
+                  </div>
+                </td>
+              );
+            })}
           </tr>
         ))}
       </tbody>
@@ -446,7 +475,9 @@ function TextTargetTable({ targets, onChange }: TextTargetTableProps) {
       <thead>
         <tr>
           <th>text (APCA Lc)</th>
-          <th>target</th>
+          <th>
+            target <span class="level-range">0-{TEXT_TARGET_MAX}</span>
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -462,14 +493,17 @@ function TextTargetTable({ targets, onChange }: TextTargetTableProps) {
                 {typeof level === 'object' ? (
                   <span class="role-purpose">step {level.step} (pinned)</span>
                 ) : (
-                  <input
-                    type="number"
-                    min={0}
-                    max={106}
-                    step={1}
-                    value={level ?? 0}
-                    onChange={(e) => onChange(role, Number((e.target as HTMLInputElement).value))}
-                  />
+                  <div class="level-slider">
+                    <input
+                      type="range"
+                      min={0}
+                      max={TEXT_TARGET_MAX}
+                      step={1}
+                      value={level ?? 0}
+                      onInput={(e) => onChange(role, Number((e.target as HTMLInputElement).value))}
+                    />
+                    <span class="level-value">{level ?? 0}</span>
+                  </div>
                 )}
               </td>
             </tr>
