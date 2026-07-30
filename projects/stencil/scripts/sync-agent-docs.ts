@@ -158,12 +158,12 @@ Once installed, do not guess component APIs - read what ships with the package:
 /** Collapses common non-ASCII punctuation to ASCII, then drops anything left. */
 function toAscii(text: string): string {
   return text
-    .replace(/[–—]/g, '-')
-    .replace(/[‘’]/g, "'")
-    .replace(/[“”]/g, '"')
-    .replace(/…/g, '...')
-    .replace(/ /g, ' ')
-    .replace(/[^\x00-\x7F]/g, '');
+    .replace(/[\u2013\u2014]/g, '-')
+    .replace(/[\u2018\u2019]/g, "'")
+    .replace(/[\u201C\u201D]/g, '"')
+    .replace(/\u2026/g, '...')
+    .replace(/\u00A0/g, ' ')
+    .replace(/[\u0080-\uFFFF]/g, '');
 }
 
 /** First sentence of a component's "1. Description" usage markdown, for the catalogue. */
@@ -172,7 +172,7 @@ function summarise(description: string): string {
   let line = '';
   for (const raw of desc.split('\n')) {
     const s = raw.trim();
-    if (s && !s.startsWith('#') && !s.startsWith('|') && !s.startsWith('\`\`\`')) {
+    if (s && !s.startsWith('#') && !s.startsWith('|') && !s.startsWith('```')) {
       line = s;
       break;
     }
