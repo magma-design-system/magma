@@ -39,6 +39,7 @@ const main = async () => {
   // The generated semantic artifacts live under build/ (out of the source dirs);
   // ship them alongside the tracked CSS so dist/ keeps its published layout.
   await copyStaged(path.join('css', 'semantic.css'), path.join(DIST_DIR, 'css', 'semantic.css'));
+  await copyStaged(path.join('css', 'themes.css'), path.join(DIST_DIR, 'css', 'themes.css'));
   await copyStaged(
     path.join('tailwind', 'semantic.css'),
     path.join(DIST_DIR, 'tailwind', 'semantic.css'),

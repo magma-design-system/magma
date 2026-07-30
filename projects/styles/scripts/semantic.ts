@@ -8,8 +8,9 @@ import { semantic } from '../../design-tokens/semantic.config';
  * Generate the semantic color layer (A9) from design-tokens/semantic.config.ts:
  *  - build/css/semantic.css        the `--magma-*` layer components consume
  *  - build/tailwind/semantic.css   the Tailwind `@theme` bridge (--color-* re-exports)
+ *  - build/css/themes.css          named-theme overrides (data-theme-name, spec 8)
  *
- * Both are GENERATED and gitignored; they are staged under build/ (out of the
+ * All are GENERATED and gitignored; they are staged under build/ (out of the
  * hand-authored source dirs) and the copy step ships them to dist. The
  * tracked contract is design-tokens/semantic.config.ts. Text roles come from A7's `--text-*`
  * primitives; surfaces/borders resolve through the `--magma-tint-*` indirection
@@ -26,6 +27,7 @@ const {
   hues,
   hueSteps,
   neutralHueSteps,
+  themes,
 } = semantic;
 
 const HEADER = (what: string) =>
@@ -111,6 +113,22 @@ const bridgeBody = bridge
 const bridgeCss = `${HEADER('Tailwind bridge for the semantic color layer.')}\n@theme {\n${bridgeBody}\n}\n`;
 const layerCss = `${HEADER('Semantic color layer (--magma-*) - the contract components consume.')}${layer.join('\n')}`;
 
+// Named themes (spec 8): one override block per theme whose family differs from
+// the base `tint`. Each repoints the whole --magma-tint-* block (surface + border
+// + text) to that family, so a named theme retints background AND foreground in a
+// single swap. The base `tint` family is the plain :root and emits nothing.
+const themeBlocks = Object.entries(themes)
+  .filter(([, family]) => family !== tint)
+  .map(([name, family]) => {
+    const rules = [
+      ...surfaceRoles.map((r) => `  --magma-tint-${r}: var(--surface-${family}-${r});`),
+      ...borderRoles.map((r) => `  --magma-tint-border-${r}: var(--border-${family}-${r});`),
+      ...textRoles.map((r) => `  --magma-tint-text-${r}: var(--text-${family}-${r});`),
+    ];
+    return `:root[data-theme-name='${name}'] {\n${rules.join('\n')}\n}`;
+  });
+const themesCss = `${HEADER('Named themes - retint the --magma-tint-* block per data-theme-name (spec 8).')}\n${themeBlocks.join('\n\n')}\n`;
+
 async function main() {
   const cssDir = join(BUILD_DIR, 'css');
   const tailwindDir = join(BUILD_DIR, 'tailwind');
@@ -118,9 +136,11 @@ async function main() {
   await mkdir(tailwindDir, { recursive: true });
   await writeFile(join(cssDir, 'semantic.css'), layerCss, 'utf8');
   await writeFile(join(tailwindDir, 'semantic.css'), bridgeCss, 'utf8');
+  await writeFile(join(cssDir, 'themes.css'), themesCss, 'utf8');
   console.info(
     chalk.green(
-      `Generated semantic layer: ${bridge.length} tokens (build/css/semantic.css + build/tailwind/semantic.css).`,
+      `Generated semantic layer: ${bridge.length} tokens + ${themeBlocks.length} named themes ` +
+        `(build/css/semantic.css + build/tailwind/semantic.css + build/css/themes.css).`,
     ),
   );
 }
