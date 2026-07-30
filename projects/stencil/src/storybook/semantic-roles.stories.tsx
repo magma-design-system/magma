@@ -7,15 +7,16 @@ import { useState, type ReactNode } from 'react';
  * A single scrolling page that DEFINES what each `--magma-*` semantic token is
  * for, so a name can be reasoned about, not guessed. It documents the layer
  * exactly as it ships today (`css/semantic.css`): the groups `tint`, `surface`,
- * `text`, `border` and the hue families (accent + status + neutral). Names are
- * the current ones - no rename is proposed here.
+ * `text`, `border` and the hue families (accent + status + neutral), plus the
+ * inverse-surface role.
  *
  * Three things make the naming legible:
  *  - the grammar: `--magma-<property>-<role>`, and the suffix is RELATIVE to the
  *    property (`-muted` is not a color, it is "the quiet variant of THAT group");
  *  - the foundation: how the old `lv1/lv2` draft became the surface roles, and
  *    why text/border are derived from the surface band;
- *  - the emphasis bridge: why `neutral-emphasis` is the odd one in the matrix.
+ *  - the inverse-surface role: the neutral fill that flips with the mode
+ *    (`surface-inverse` / `on-inverse`, formerly `neutral-emphasis` / `-on-emphasis`).
  *
  * Every swatch reads the REAL token (`rgb(var(--magma-*))`), so the page is live
  * and follows the root theme - flip it with the header switch.
@@ -327,7 +328,7 @@ const TEXT_ROWS: RoleRow[] = [
     use: 'label on the dark/light chip',
     src: 'tone-neutral-seed',
     kind: 'on',
-    bg: 'neutral-emphasis',
+    bg: 'surface-inverse',
   },
 ];
 
@@ -387,7 +388,10 @@ const HueCell = ({
   role: string;
   kind: SwatchKind;
 }) => {
-  if (hue.partial && role === 'surface') {
+  // neutral is partial: no colored -surface (the surface ladder covers it), and its
+  // emphasis pair is the dedicated inverse-surface role (surface-inverse / on-inverse),
+  // not a colored fill - so dash all three here and document them in the callout below.
+  if (hue.partial && (role === 'surface' || role === 'emphasis' || role === 'on-emphasis')) {
     return <span style={{ color: textVar('subtle') }}>-</span>;
   }
   return <Swatch token={`${hue.key}-${role}`} kind={kind} bg={`${hue.key}-emphasis`} />;
@@ -438,7 +442,7 @@ const Chip = ({ label, variant }: { label: string; variant: 'property' | 'role' 
     <span
       class="inline-flex items-center rounded-md px-300 py-100"
       style={{
-        background: hueVar('neutral', 'emphasis'),
+        background: magmaVar('surface-inverse'),
         color: textVar('on-emphasis'),
         fontFamily: MONO,
       }}
@@ -677,7 +681,7 @@ export const Reference = {
   render: () => (
     <PageFrame
       title="Semantic token roles"
-      lead="How to read a --magma-* token, and what each one is for. Every swatch reads the real token, so it follows the theme - flip it with the switch. Names are the current ones."
+      lead="How to read a --magma-* token, and what each one is for. Every swatch reads the real token, so it follows the theme - flip it with the switch. The neutral solid fill is now the inverse-surface role (surface-inverse / on-inverse)."
     >
       <Grammar />
 
@@ -711,9 +715,10 @@ export const Reference = {
         <HueMatrix />
         <mds-text typography="detail" style={{ color: textVar('subtle') }}>
           Sources: surface = &lt;family&gt;-09, fg = -05, border = -06, emphasis = -04, on-emphasis
-          = tone-neutral-seed. Neutral: fg = tone-neutral-03, border = -06, emphasis = -02.
+          = tone-neutral-seed. Neutral: fg = tone-neutral-03, border = -06; its solid fill is the
+          inverse-surface role below (surface-inverse = tone-neutral-02, on-inverse = seed).
         </mds-text>
-        <Callout title="The bridge: -emphasis (hue) and neutral-emphasis">
+        <Callout title="The inverse-surface role (formerly neutral-emphasis)">
           <mds-text typography="detail" style={{ color: textVar('muted') }}>
             Every color has TWO backgrounds:{' '}
             <code style={{ fontFamily: MONO }}>&lt;hue&gt;-surface</code> is the soft tint (quiet),{' '}
@@ -721,12 +726,23 @@ export const Reference = {
             fill (loud).
           </mds-text>
           <mds-text typography="detail" style={{ color: textVar('muted') }}>
-            For neutral, the soft tint is already the surface ladder (muted / default). The solid
-            neutral fill is <code style={{ fontFamily: MONO }}>neutral-emphasis</code> - the
-            high-contrast chip that flips with the mode (dark on a light UI, light on a dark UI);
-            its text is <code style={{ fontFamily: MONO }}>neutral-on-emphasis</code>. This is the
-            one seed named entry left in the matrix - the open naming question.
+            Neutral is different. Its soft tint is already the surface ladder (muted / default), and
+            its solid fill is not a colored emphasis but the INVERSE SURFACE:{' '}
+            <code style={{ fontFamily: MONO }}>surface-inverse</code> - the high-contrast neutral
+            chip that flips with the mode (dark on a light UI, light on a dark UI: toast, tooltip);
+            its text is <code style={{ fontFamily: MONO }}>on-inverse</code>. This is now a
+            dedicated role, decoupled from the colored{' '}
+            <code style={{ fontFamily: MONO }}>-emphasis</code> fills. The old{' '}
+            <code style={{ fontFamily: MONO }}>neutral-emphasis</code> /{' '}
+            <code style={{ fontFamily: MONO }}>neutral-on-emphasis</code> names still resolve as
+            deprecated aliases.
           </mds-text>
+          <div class="flex flex-wrap items-center gap-200">
+            <Swatch token="on-inverse" kind="on" bg="surface-inverse" />
+            <code style={{ fontFamily: MONO }}>--magma-surface-inverse</code>
+            <span style={{ color: textVar('subtle') }}>/</span>
+            <code style={{ fontFamily: MONO }}>--magma-on-inverse</code>
+          </div>
         </Callout>
       </Section>
 
