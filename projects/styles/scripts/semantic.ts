@@ -75,7 +75,13 @@ borderRoles.forEach((r) =>
 );
 layer.push(alias('border-focus', borderFocus, 'border-focus'));
 
-// 5. hues - colored families carry the full quintet; neutral omits surface (spec 6.4)
+// 5. hues - colored families carry the full quintet; neutral omits surface (spec 6.4).
+//    The neutral family's "emphasis" pair is NOT a saturated fill like the colored
+//    hues: it is the INVERSE SURFACE role (a dark chip in light mode, light in dark -
+//    toast, tooltip). It is emitted under role names --magma-surface-inverse /
+//    --magma-on-inverse (Material inverseSurface), decoupled from the colored
+//    <hue>-emphasis fills. The former --magma-neutral-emphasis / -on-emphasis names
+//    stay as DEPRECATED aliases (one release) so existing consumers keep resolving.
 Object.entries(hues).forEach(([hue, { family, partial }]) => {
   layer.push('', `  /* ${hue} (${family}) */`);
   const steps = partial ? neutralHueSteps : hueSteps;
@@ -83,8 +89,17 @@ Object.entries(hues).forEach(([hue, { family, partial }]) => {
     layer.push(alias(`${hue}-surface`, `${family}-${hueSteps.surface}`, `${hue}-surface`));
   layer.push(alias(`${hue}-fg`, `${family}-${steps.fg}`, `${hue}-fg`));
   layer.push(alias(`${hue}-border`, `${family}-${steps.border}`, `${hue}-border`));
-  layer.push(alias(`${hue}-emphasis`, `${family}-${steps.emphasis}`, `${hue}-emphasis`));
-  layer.push(alias(`${hue}-on-emphasis`, seed, `${hue}-on-emphasis`));
+  if (partial) {
+    // inverse-surface role (renamed from neutral-emphasis / -on-emphasis)
+    layer.push(alias('surface-inverse', `${family}-${steps.emphasis}`, 'surface-inverse'));
+    layer.push(alias('on-inverse', seed, 'on-inverse'));
+    layer.push('  /* deprecated: renamed to --magma-surface-inverse / --magma-on-inverse */');
+    layer.push(alias(`${hue}-emphasis`, 'magma-surface-inverse', `${hue}-emphasis`));
+    layer.push(alias(`${hue}-on-emphasis`, 'magma-on-inverse', `${hue}-on-emphasis`));
+  } else {
+    layer.push(alias(`${hue}-emphasis`, `${family}-${steps.emphasis}`, `${hue}-emphasis`));
+    layer.push(alias(`${hue}-on-emphasis`, seed, `${hue}-on-emphasis`));
+  }
 });
 
 layer.push('}', '');
