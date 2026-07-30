@@ -47,6 +47,16 @@ export interface SemanticConfig {
   hueSteps: { surface: string; fg: string; border: string; emphasis: string };
   /** Steps for the neutral (partial) hue - it borrows from the tone scale. */
   neutralHueSteps: { fg: string; border: string; emphasis: string };
+  /**
+   * Named themes (spec 8): map of theme name -> the family whose
+   * `{surface,border,text}` scales retint the `--magma-tint-*` block under
+   * `:root[data-theme-name='<name>']`. The `tint` family is the base `:root`
+   * (default theme) and emits NO override rule. A theme is thus a one-family
+   * repoint; a colour family gives a monochromatic theme (A7 verifies text
+   * against that family's own surfaces). Future cosmetic axes (spacing, radii,
+   * shadow) attach under the same `data-theme-name` from their own sources.
+   */
+  themes: Record<string, string>;
 }
 
 export const semantic: SemanticConfig = {
@@ -66,4 +76,9 @@ export const semantic: SemanticConfig = {
   },
   hueSteps: { surface: '09', fg: '05', border: '06', emphasis: '04' },
   neutralHueSteps: { fg: '03', border: '06', emphasis: '02' },
+  themes: {
+    default: 'neutral', // base :root (== tint); emits no override rule
+    cool: 'porcelain',
+    warm: 'bisque',
+  },
 };
