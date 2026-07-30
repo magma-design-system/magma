@@ -8,7 +8,7 @@
 
 @property --mds-pref-theme-variant-item-color-background {
   inherits: false;
-  initial-value: rgb(var(--tint-base-lv1, var(--tone-neutral-09)));
+  initial-value: rgb(var(--tone-neutral-09));
   syntax: '<color>';
 }
 
@@ -37,7 +37,7 @@
 }
 
 :host {
-  --mds-pref-theme-variant-item-color-background: rgb(var(--tint-base-lv1, var(--tone-neutral-09)));
+  --mds-pref-theme-variant-item-color-background: rgb(var(--tone-neutral-09));
   --mds-pref-theme-variant-item-color-status-error: rgb(var(--status-error-06));
   --mds-pref-theme-variant-item-color-status-success: rgb(var(--status-success-06));
   --mds-pref-theme-variant-item-color-status-warning: rgb(var(--status-warning-06));

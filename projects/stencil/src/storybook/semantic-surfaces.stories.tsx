@@ -1400,8 +1400,8 @@ export const Preferences = {
             <mds-pref-theme />
             <mds-pref-theme-variant>
               <mds-pref-theme-variant-item name="default" />
-              <mds-pref-theme-variant-item name="magma" />
-              <mds-pref-theme-variant-item name="maggioli-editore" />
+              <mds-pref-theme-variant-item name="cool" />
+              <mds-pref-theme-variant-item name="warm" />
             </mds-pref-theme-variant>
             <mds-pref-contrast />
             <mds-pref-animation />
