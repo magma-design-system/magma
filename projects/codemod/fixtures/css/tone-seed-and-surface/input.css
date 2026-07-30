@@ -1,0 +1,5 @@
+.a {
+  color: rgb(var(--tone-neutral));
+  background: rgb(var(--tone-neutral));
+  background-color: rgb(var(--tone-neutral-09));
+}

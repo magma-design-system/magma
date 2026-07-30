@@ -18,6 +18,19 @@ export const testManifest: Manifest = {
       toneSet: 'tone',
     },
     removeDefaultSlot: true,
+    // Seed rename on the bare token + surface-candidate reports (bare token and
+    // a scale step), so the fixtures/unit tests exercise the report-vs-rename
+    // split by background context.
+    cssVars: [
+      {
+        kind: 'cssVarRename',
+        from: 'tone-neutral',
+        to: 'tone-neutral-seed',
+        note: 'the bare tone primitive is now the off-scale `-seed` escape hatch',
+      },
+      { kind: 'cssVarSurfaceReport', from: 'tone-neutral' },
+      { kind: 'cssVarSurfaceReport', from: 'tone-neutral-09' },
+    ],
   },
   components: {
     'mds-dropdown': {
