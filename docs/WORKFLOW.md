@@ -25,7 +25,7 @@ Every unit of work must be tracked by a GitHub issue, and its branch must be lin
 - Create the branch **from the issue itself**: the "Create a branch" button in the issue's Development section, or `gh issue develop <issue-number> --base dev`. Both produce a branch named `<issue-number>-<slug>` that GitHub links automatically.
 - A matching branch name alone does **not** create the link: `123-my-feature` created by hand is not connected to issue #123.
 - If a branch was created manually anyway, establish the link at PR time at the latest: the PR body must contain a closing keyword referencing the issue (`Closes #123`).
-- PR bodies always reference their issue with a closing keyword, even when the branch is already linked.
+- PR bodies always reference their issue with a closing keyword, even when the branch is already linked. If the PR resolves more than one issue (e.g. a branch that stacks several units of work), list **every** resolved issue and **repeat the keyword for each one** (`Closes #12, closes #34`, not `Closes #12, #34`): GitHub only closes an issue that carries its own keyword, so a bare `#34` silently stays open after the merge. Use a non-closing reference (`Refs #56`) for issues that are related but NOT resolved by the PR (e.g. the tracking epic).
 - One issue, one branch: if a linked branch already exists for the issue, work on that branch instead of creating a second one; delete empty leftover branches.
 
 ## 4. Sync with `dev` before pushing

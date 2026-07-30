@@ -8,6 +8,9 @@
 
 <!-- One or two sentences: what does this PR do and why. -->
 
+<!-- List EVERY issue this PR resolves and REPEAT the keyword for each:
+     "Closes #12, closes #34" (a bare "Closes #12, #34" leaves #34 open after merge).
+     Use "Refs #56" for related issues it does NOT close, e.g. the tracking epic. -->
 Closes #
 
 ## Commits overview
