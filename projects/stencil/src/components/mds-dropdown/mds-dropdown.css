@@ -35,7 +35,7 @@
 
 @property --mds-dropdown-background {
   inherits: false;
-  initial-value: rgb(var(--tone-neutral-seed));
+  initial-value: rgb(var(--magma-surface-overlay));
   syntax: '<color>';
 }
 
@@ -85,7 +85,7 @@
   --private-dropdown-backdrop-duration: 200ms;
   --mds-dropdown-backdrop-duration: var(--private-dropdown-backdrop-duration);
   --mds-dropdown-backdrop-z-index: var(--magma-backdrop-z-index, 3000);
-  --mds-dropdown-background: rgb(var(--tone-neutral-seed));
+  --mds-dropdown-background: rgb(var(--magma-surface-overlay));
   --mds-dropdown-drop-shadow-color-rgb: var(--tone-neutral-01);
   --mds-dropdown-drop-shadow: drop-shadow(
       0 10px 8px rgb(var(--mds-dropdown-drop-shadow-color-rgb) / 0.05)

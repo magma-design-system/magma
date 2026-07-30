@@ -1,24 +1,7 @@
-/* Theme preference. The component reflects the resolved theme mode and scheme
- * from <html> onto its host as pref-theme + pref-theme-scheme (see
- * subscribePreference in @common/preference); these plain shadow selectors refine
- * for dark. `dark` is the explicit choice; `system` and no controller follow the
- * OS via @media; the scheme axis gates it. Cross-browser, no :host-context. */
-
-:host([pref-theme='dark']:not([pref-theme-scheme='light'])) {
-  --mds-table-background: rgb(var(--tone-neutral-08));
-  --mds-table-body-background-hover: rgb(var(--tone-neutral-10));
-  --mds-table-border-color: rgb(var(--tone-neutral-07));
-  --mds-table-color-hover: rgb(var(--tone-neutral-02));
-  --mds-table-color: rgb(var(--tone-neutral-03));
-}
-
-@media (prefers-color-scheme: dark) {
-  :host([pref-theme='system']:not([pref-theme-scheme='light'])),
-  :host(:not([pref-theme])) {
-    --mds-table-background: rgb(var(--tone-neutral-08));
-    --mds-table-body-background-hover: rgb(var(--tone-neutral-10));
-    --mds-table-border-color: rgb(var(--tone-neutral-07));
-    --mds-table-color-hover: rgb(var(--tone-neutral-02));
-    --mds-table-color: rgb(var(--tone-neutral-03));
-  }
-}
+/* Theme preference. Surface, border and text now come from the semantic layer
+ * (--magma-surface-* / --magma-border-* / --magma-text-*, spec 6.1/6.2/6.3):
+ * they flip per mode at :root and inherit into the shadow DOM, so this component
+ * needs no per-mode dark refinement. The former dark override (a --tone-*
+ * background, border and text re-set that darkened the table on the old
+ * flat-black canvas) is intentionally gone. The high-contrast axis is orthogonal
+ * and still refined in mds-table-pref-contrast(-dark).css. */

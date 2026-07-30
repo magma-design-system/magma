@@ -12,13 +12,13 @@
 
 @property --mds-toast-background {
   inherits: false;
-  initial-value: rgb(var(--tone-neutral-02));
+  initial-value: rgb(var(--magma-surface-inverse));
   syntax: '<color>';
 }
 
 @property --mds-toast-color {
   inherits: false;
-  initial-value: rgb(var(--tone-neutral-seed));
+  initial-value: rgb(var(--magma-on-inverse));
   syntax: '<color>';
 }
 
@@ -30,7 +30,7 @@
 
 @property --mds-toast-icon-color {
   inherits: false;
-  initial-value: rgb(var(--tone-neutral-seed));
+  initial-value: rgb(var(--magma-on-inverse));
   syntax: '<color>';
 }
 
@@ -51,10 +51,10 @@
 */
 
 :host {
-  --mds-toast-background: rgb(var(--tone-neutral-02));
-  --mds-toast-color: rgb(var(--tone-neutral-seed));
+  --mds-toast-background: rgb(var(--magma-surface-inverse));
+  --mds-toast-color: rgb(var(--magma-on-inverse));
   --mds-toast-duration: 300ms;
-  --mds-toast-icon-color: rgb(var(--tone-neutral-seed));
+  --mds-toast-icon-color: rgb(var(--magma-on-inverse));
   --mds-toast-shadow: var(--shadow-xl);
   --mds-toast-width: auto;
 
@@ -69,6 +69,7 @@
   pointer-events: none;
   position: fixed;
   right: 0;
+  z-index: var(--magma-modal-z-index);
 }
 
 .dialog {

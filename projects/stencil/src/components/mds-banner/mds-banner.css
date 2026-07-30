@@ -17,7 +17,7 @@
 
 @property --mds-banner-background {
   inherits: false;
-  initial-value: rgb(var(--tone-neutral-10));
+  initial-value: rgb(var(--magma-surface-muted));
   syntax: '<color>';
 }
 
@@ -90,7 +90,7 @@
 */
 
 :host {
-  --mds-banner-background: rgb(var(--tone-neutral-10));
+  --mds-banner-background: rgb(var(--magma-surface-muted));
   --mds-banner-close-icon-hover-background: rgb(var(--tone-neutral-09));
   --mds-banner-cockade-background: rgb(var(--tone-neutral-09));
   --mds-banner-cockade-distance: --spacing(600);

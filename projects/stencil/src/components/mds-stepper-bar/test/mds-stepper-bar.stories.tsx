@@ -197,7 +197,7 @@ const Template = (args) => (
 );
 
 const TemplateOffsetMargin = (args) => (
-  <div class="w-full p-600 bg-tone-neutral shadow-sharp rounded-2xl">
+  <div class="w-full p-600 bg-surface-raised shadow-sharp rounded-2xl">
     <mds-stepper-bar {...args}>
       <mds-stepper-bar-item
         badge

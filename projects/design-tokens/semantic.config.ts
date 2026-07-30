@@ -15,9 +15,11 @@
  * semantic role points at.
  *
  * Conventions come from styles/SEMANTIC_COLOR_SPEC.md:
- *  - surfaces/borders resolve through the `--magma-tint-*` indirection so a named
- *    theme retints the whole neutral scaffolding with one swap (section 8, B2);
- *  - text roles come from the by-target `--text-*` primitives (A7, section 9);
+ *  - surfaces, borders AND text resolve through the `--magma-tint-*` indirection
+ *    so a named theme retints the whole neutral scaffolding - background AND
+ *    foreground, kept to one coherent family - with one swap (section 8, B2);
+ *  - text role values are the by-target `--text-*` primitives (A7, section 9),
+ *    reached via the tint-text pointers so the foreground retints with its surface;
  *  - the colored-hue quintet uses fixed steps (section 6.4/6.5).
  */
 
@@ -34,7 +36,12 @@ export interface SemanticConfig {
   borderFocus: string;
   /** The pure-extreme foreground for text/`*-on-emphasis` (spec 6.5). */
   seed: string;
-  /** Colored hues carry the full quintet; a `partial` hue omits `surface` (spec 6.4). */
+  /**
+   * Colored hues carry the full quintet; a `partial` hue omits `surface` (spec 6.4).
+   * The partial (neutral) hue's emphasis pair is emitted as the INVERSE SURFACE role
+   * (`--magma-surface-inverse` / `--magma-on-inverse`), not a colored `-emphasis` fill;
+   * the old `neutral-emphasis` / `-on-emphasis` names remain as deprecated aliases.
+   */
   hues: Record<string, { family: string; partial?: boolean }>;
   /** Steps of a colored family for the quintet (spec 6.5). */
   hueSteps: { surface: string; fg: string; border: string; emphasis: string };
