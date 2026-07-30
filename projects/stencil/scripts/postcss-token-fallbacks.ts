@@ -1,5 +1,5 @@
 import type { Declaration } from 'postcss';
-import { COMPONENTS_DIR, TOKENS_DIR } from './meta';
+import { COMPONENTS_DIR, STYLES_DIR, TOKENS_DIR } from './meta';
 import fs from 'node:fs';
 import path from 'node:path';
 import postcss from 'postcss';
@@ -7,6 +7,14 @@ import postcss from 'postcss';
 type Tokens = Record<string, string>;
 
 const TOKENS_CSS_DIR = path.resolve(TOKENS_DIR, 'dist/css');
+
+// The generated semantic layer (`--magma-*`). Prefer the built `dist` (the form
+// consumers load, a prerequisite the same way the token dist is); fall back to
+// the in-package generated source.
+const SEMANTIC_CSS_CANDIDATES = [
+  path.resolve(STYLES_DIR, 'dist/css/semantic.css'),
+  path.resolve(STYLES_DIR, 'css/semantic.css'),
+];
 
 /**
  * Minimal shape of a Stencil style-transform plugin. Stencil only runs plugins
@@ -62,6 +70,33 @@ const loadDesignTokens = (): Tokens => {
 };
 
 /**
+ * Build a `name -> value` map for the generated semantic layer (`--magma-*`,
+ * `projects/styles/css/semantic.css`). Every entry is an indirection - e.g.
+ * `--magma-surface-raised: var(--magma-tint-raised)` - that ultimately points at
+ * a design-token primitive. Seeding them into the lookup lets `inject()` follow
+ * the chain, so a bare `var(--magma-*)` in component CSS still resolves to a
+ * concrete value when the consumer has not loaded the semantic sheet, exactly as
+ * the raw `--tone-*` / `--surface-*` primitives already do.
+ */
+const loadSemanticTokens = (): Tokens => {
+  const tokens: Tokens = {};
+  const file = SEMANTIC_CSS_CANDIDATES.find((candidate) => fs.existsSync(candidate));
+  if (!file) {
+    return tokens;
+  }
+  const root = postcss.parse(fs.readFileSync(file, 'utf-8'), { from: file });
+  root.walkDecls((decl) => {
+    if (decl.prop.startsWith('--')) {
+      const value = decl.value.trim();
+      if (value.length > 0) {
+        tokens[decl.prop.slice(2)] = value;
+      }
+    }
+  });
+  return tokens;
+};
+
+/**
  * Build a `name -> initial-value` map from every `@property --mds-*` block
  * declared by the components. The registered `initial-value` is the component
  * author's intended default, so it doubles as the natural `var()` fallback.
@@ -89,6 +124,8 @@ const loadComponentDefaults = (): Tokens => {
 export interface TokenFallbackPluginOptions {
   /** Inline design-token values (colors, radii, shadows, ...) as fallbacks. */
   injectTokenFallbacks?: boolean;
+  /** Inline the semantic layer (`--magma-*`) indirections as fallbacks. */
+  injectSemanticFallbacks?: boolean;
   /** Inline each `--mds-*` `@property` `initial-value` as a fallback. */
   injectComponentDefaults?: boolean;
   /** Log a warning for every bare `var()` with no resolvable fallback. */
@@ -107,15 +144,19 @@ export default function tokenFallbackPlugin(
 ): StencilStylePlugin {
   const {
     injectTokenFallbacks = true,
+    injectSemanticFallbacks = true,
     injectComponentDefaults = true,
     warnOnMissing = false,
     failOnMissing = false,
   } = options;
 
-  // Built once per build; token names and `mds-*` names never collide, so a
-  // flat lookup is enough. Component defaults win on the off chance they do.
+  // Built once per build. Primitive, semantic (`--magma-*`) and `--mds-*` names
+  // never collide, so a flat lookup is enough; later spreads win on the off
+  // chance they do. Semantic entries are indirections resolved recursively by
+  // `inject()` down to the primitive values loaded alongside them.
   const lookup: Tokens = {
     ...(injectTokenFallbacks ? loadDesignTokens() : {}),
+    ...(injectSemanticFallbacks ? loadSemanticTokens() : {}),
     ...(injectComponentDefaults ? loadComponentDefaults() : {}),
   };
 

@@ -150,6 +150,7 @@ export const config: Config = {
   plugins: [
     tokenFallbackPlugin({
       injectTokenFallbacks: true,
+      injectSemanticFallbacks: true,
       injectComponentDefaults: true,
       warnOnMissing: false,
       failOnMissing: false,
