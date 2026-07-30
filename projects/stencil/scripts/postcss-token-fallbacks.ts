@@ -10,10 +10,10 @@ const TOKENS_CSS_DIR = path.resolve(TOKENS_DIR, 'dist/css');
 
 // The generated semantic layer (`--magma-*`). Prefer the built `dist` (the form
 // consumers load, a prerequisite the same way the token dist is); fall back to
-// the in-package generated source.
+// the generated source staged under build/.
 const SEMANTIC_CSS_CANDIDATES = [
   path.resolve(STYLES_DIR, 'dist/css/semantic.css'),
-  path.resolve(STYLES_DIR, 'css/semantic.css'),
+  path.resolve(STYLES_DIR, 'build/css/semantic.css'),
 ];
 
 /**
