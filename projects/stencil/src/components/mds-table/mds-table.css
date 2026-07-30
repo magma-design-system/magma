@@ -19,19 +19,19 @@
 
 @property --mds-table-background-alt {
   inherits: false;
-  initial-value: rgb(var(--tone-neutral-10));
+  initial-value: rgb(var(--magma-surface-raised));
   syntax: '<color>';
 }
 
 @property --mds-table-background {
   inherits: false;
-  initial-value: rgb(var(--tone-neutral-seed));
+  initial-value: rgb(var(--magma-surface-default));
   syntax: '<color>';
 }
 
 @property --mds-table-border-color {
   inherits: false;
-  initial-value: rgb(var(--tone-neutral-08));
+  initial-value: rgb(var(--magma-border-default));
   syntax: '<color>';
 }
 
@@ -49,13 +49,13 @@
 
 @property --mds-table-color-alt {
   inherits: false;
-  initial-value: rgb(var(--tone-neutral-05));
+  initial-value: rgb(var(--magma-text-muted));
   syntax: '<color>';
 }
 
 @property --mds-table-color {
   inherits: false;
-  initial-value: rgb(var(--tone-neutral-02));
+  initial-value: rgb(var(--magma-text-default));
   syntax: '<color>';
 }
 
@@ -63,13 +63,13 @@
   --mds-table-transition-duration: var(--duration-300);
   --private-table-transition-duration: var(--mds-table-transition-duration);
   --mds-table-actions-gap: --spacing(200);
-  --mds-table-background-alt: rgb(var(--tone-neutral-10));
-  --mds-table-background: rgb(var(--tone-neutral-seed));
-  --mds-table-border-color: rgb(var(--tone-neutral-08));
+  --mds-table-background-alt: rgb(var(--magma-surface-raised));
+  --mds-table-background: rgb(var(--magma-surface-default));
+  --mds-table-border-color: rgb(var(--magma-border-default));
   --mds-table-border-width: 2px;
   --mds-table-cell-padding: --spacing(400);
-  --mds-table-color-alt: rgb(var(--tone-neutral-05));
-  --mds-table-color: rgb(var(--tone-neutral-02));
+  --mds-table-color-alt: rgb(var(--magma-text-muted));
+  --mds-table-color: rgb(var(--magma-text-default));
   --mds-table-batch-actions-width: --spacing(4800);
 
   /* internal */
