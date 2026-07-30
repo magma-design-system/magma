@@ -1,13 +1,10 @@
-/* Theme preference. The component reflects the resolved theme mode and scheme
- * from <html> onto its host as pref-theme + pref-theme-scheme (see
- * subscribePreference in @common/preference); these plain shadow selectors refine
- * for dark. `dark` is the explicit choice; `system` and no controller follow the
- * OS via @media; the scheme axis gates it. Cross-browser, no :host-context. */
+/* Theme preference. Surface and elevation now come from the semantic layer
+ * (--magma-surface-overlay + the base --shadow-2xl, spec 6.1), which flips per
+ * mode at :root, so the former dark background re-set and fake outline are gone.
+ * The close icon still needs a dark-mode value: it sits over the dark scrim, not
+ * over the modal surface, so it does not follow the surface flip. */
 
 :host([pref-theme='dark']:not([pref-theme-scheme='light'])) {
-  --mds-modal-window-background: rgb(var(--tone-neutral-10));
-  --mds-modal-window-shadow: var(--shadow-outline), var(--shadow-xl);
-
   .action-close {
     --mds-button-color: rgb(var(--tone-neutral-01));
   }
@@ -16,9 +13,6 @@
 @media (prefers-color-scheme: dark) {
   :host([pref-theme='system']:not([pref-theme-scheme='light'])),
   :host(:not([pref-theme])) {
-    --mds-modal-window-background: rgb(var(--tone-neutral-10));
-    --mds-modal-window-shadow: var(--shadow-outline), var(--shadow-xl);
-
     .action-close {
       --mds-button-color: rgb(var(--tone-neutral-01));
     }

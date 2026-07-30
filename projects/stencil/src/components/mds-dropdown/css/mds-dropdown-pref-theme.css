@@ -1,20 +1,5 @@
-/* Theme preference. The component reflects the resolved theme mode and scheme
- * from <html> onto its host as pref-theme + pref-theme-scheme (see
- * subscribePreference in @common/preference); these plain shadow selectors refine
- * for dark. `dark` is the explicit choice; `system` and no controller follow the
- * OS via @media; the scheme axis gates it. Cross-browser, no :host-context. */
-
-:host([pref-theme='dark']:not([pref-theme-scheme='light'])) {
-  --mds-dropdown-drop-shadow: drop-shadow(0 0 2px rgb(var(--tone-neutral-01) / 0.05))
-    drop-shadow(0 0 2px rgb(var(--tone-neutral-01) / 0.3))
-    drop-shadow(0 0 2px rgb(var(--tone-neutral-01) / 0.3));
-}
-
-@media (prefers-color-scheme: dark) {
-  :host([pref-theme='system']:not([pref-theme-scheme='light'])),
-  :host(:not([pref-theme])) {
-    --mds-dropdown-drop-shadow: drop-shadow(0 0 2px rgb(var(--tone-neutral-01) / 0.05))
-      drop-shadow(0 0 2px rgb(var(--tone-neutral-01) / 0.3))
-      drop-shadow(0 0 2px rgb(var(--tone-neutral-01) / 0.3));
-  }
-}
+/* Theme preference. Background and elevation now come from the semantic surface
+ * layer (--magma-surface-*, spec 6.1): it flips per mode at :root and inherits
+ * into the shadow DOM, so this component needs no per-mode dark refinement. The
+ * former dark override (a --tone-* background re-set and/or a fake outline / glow
+ * that faked elevation on the old flat-black canvas) is intentionally gone. */

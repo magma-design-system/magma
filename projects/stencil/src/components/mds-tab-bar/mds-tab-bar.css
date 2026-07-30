@@ -6,7 +6,7 @@
 
   @apply ease-out;
 
-  background-color: rgb(var(--tone-neutral-seed));
+  background-color: rgb(var(--magma-surface-raised));
   bottom: 0;
   box-shadow: var(--shadow-outline-light-50);
   display: flex;
