@@ -5,4 +5,4 @@
 @import '@maggioli-design-system/design-tokens/dist/css/tailwind-theme-typography.css';
 
 /* semantic color layer bridge (--mds-* -> Tailwind --color-*) */
-@import './semantic.css';
+@import '../build/tailwind/semantic.css';

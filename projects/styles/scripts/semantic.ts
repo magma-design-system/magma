@@ -1,15 +1,16 @@
 import chalk from 'chalk';
-import { writeFile } from 'fs/promises';
+import { mkdir, writeFile } from 'fs/promises';
 import { join } from 'path';
-import { PROJECT_DIR } from './meta';
+import { BUILD_DIR } from './meta';
 import { semantic } from '../../design-tokens/semantic.config';
 
 /**
  * Generate the semantic color layer (A9) from design-tokens/semantic.config.ts:
- *  - css/semantic.css        the `--magma-*` layer components consume
- *  - tailwind/semantic.css   the Tailwind `@theme` bridge (--color-* re-exports)
+ *  - build/css/semantic.css        the `--magma-*` layer components consume
+ *  - build/tailwind/semantic.css   the Tailwind `@theme` bridge (--color-* re-exports)
  *
- * Both are GENERATED and gitignored; the copy step ships them to dist. The
+ * Both are GENERATED and gitignored; they are staged under build/ (out of the
+ * hand-authored source dirs) and the copy step ships them to dist. The
  * tracked contract is design-tokens/semantic.config.ts. Text roles come from A7's `--text-*`
  * primitives; surfaces/borders resolve through the `--magma-tint-*` indirection
  * so a named theme retints with one swap (B2, spec section 8).
@@ -111,11 +112,15 @@ const bridgeCss = `${HEADER('Tailwind bridge for the semantic color layer.')}\n@
 const layerCss = `${HEADER('Semantic color layer (--magma-*) - the contract components consume.')}${layer.join('\n')}`;
 
 async function main() {
-  await writeFile(join(PROJECT_DIR, 'css', 'semantic.css'), layerCss, 'utf8');
-  await writeFile(join(PROJECT_DIR, 'tailwind', 'semantic.css'), bridgeCss, 'utf8');
+  const cssDir = join(BUILD_DIR, 'css');
+  const tailwindDir = join(BUILD_DIR, 'tailwind');
+  await mkdir(cssDir, { recursive: true });
+  await mkdir(tailwindDir, { recursive: true });
+  await writeFile(join(cssDir, 'semantic.css'), layerCss, 'utf8');
+  await writeFile(join(tailwindDir, 'semantic.css'), bridgeCss, 'utf8');
   console.info(
     chalk.green(
-      `Generated semantic layer: ${bridge.length} tokens (css/semantic.css + tailwind/semantic.css).`,
+      `Generated semantic layer: ${bridge.length} tokens (build/css/semantic.css + build/tailwind/semantic.css).`,
     ),
   );
 }
