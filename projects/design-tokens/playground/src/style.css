@@ -655,26 +655,50 @@ button.danger:hover { border-color: #c0392b; color: #c0392b; }
   width: 14px;
 }
 
-.surface-levels { display: flex; flex-direction: column; gap: 20px; margin-top: 8px; }
-.level-table { border-collapse: collapse; font-variant-numeric: tabular-nums; width: 100%; }
+/* left-align the three tables (no stretch) so their columns line up: the text
+   block's single slider column sits under the surfaces/borders "light" column. */
+.surface-levels { align-items: flex-start; display: flex; flex-direction: column; gap: 18px; margin-top: 8px; }
+.level-table { border-collapse: separate; border-spacing: 4px 6px; font-variant-numeric: tabular-nums; }
 
 .level-table th,
-.level-table td { padding: 4px 8px; text-align: left; }
+.level-table td { padding: 0 4px; text-align: left; }
 .level-table th { color: var(--ink-soft); font-size: 11px; font-weight: 600; }
-.level-table td { vertical-align: top; }
-.level-table td:first-child { display: flex; flex-direction: column; gap: 1px; width: 240px; }
+.level-table td { vertical-align: middle; }
+.level-table td:first-child {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding-top: 6px;
+  width: 240px;
+}
 .role-name { color: var(--ink); font-weight: 500; }
 .role-purpose { color: var(--ink-soft); font-size: 10px; max-width: 230px; }
 .level-range { color: var(--ink-soft); font-variant-numeric: tabular-nums; font-weight: 400; opacity: 0.7; }
 
-.level-slider { align-items: center; display: flex; gap: 8px; }
+/* Each slider is a chip framed like the canvas it edits (echoes the previews
+   below): light = pale grey, dark = near-black, plain = neutral (text targets,
+   mode-agnostic). The value has a FIXED width so digit-count changes (9 -> 92 ->
+   100) never shift the slider. */
+.level-slider {
+  align-items: center;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  display: flex;
+  gap: 8px;
+  padding: 5px 9px;
+}
 .level-slider input[type='range'] { accent-color: var(--accent, currentColor); cursor: pointer; margin: 0; width: 160px; }
 .level-value {
   color: var(--ink);
+  flex: 0 0 auto;
   font-variant-numeric: tabular-nums;
-  min-width: 24px;
   text-align: right;
+  width: 3ch;
 }
+.level-slider--light { background: #e9edf1; border-color: #d5dbe1; }
+.level-slider--dark { background: #14171c; border-color: #05070a; }
+.level-slider--dark .level-value { color: #e9e9ec; }
+.level-slider--plain { background: var(--bg); border-color: var(--line); }
 
 .surface-preview { display: grid; gap: 12px; grid-template-columns: 1fr 1fr; margin-top: 8px; }
 

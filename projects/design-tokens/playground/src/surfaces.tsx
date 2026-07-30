@@ -214,6 +214,12 @@ export function SurfaceManager({ config, onToggleSurface, onUpdateTheme }: Surfa
           <span class="scales-hint">shared ramp for surfaces and borders, per mode</span>
         </div>
         <div class="surface-levels">
+          <TextTargetTable
+            targets={
+              (theme.text ?? DEFAULT_THEME.text) as Record<string, number | { step: number }>
+            }
+            onChange={setTextTarget}
+          />
           <LevelTable
             title="surfaces"
             roles={SURFACE_ROLES as readonly string[]}
@@ -221,12 +227,6 @@ export function SurfaceManager({ config, onToggleSurface, onUpdateTheme }: Surfa
             purpose={SURFACE_PURPOSE}
             range={SURFACE_RANGE}
             onChange={(mode, role, pct) => setLevel('surfaces', mode, role, pct)}
-          />
-          <TextTargetTable
-            targets={
-              (theme.text ?? DEFAULT_THEME.text) as Record<string, number | { step: number }>
-            }
-            onChange={setTextTarget}
           />
           <LevelTable
             title="borders"
@@ -436,7 +436,7 @@ function LevelTable({ title, roles, table, purpose, range, onChange }: LevelTabl
               const value = toPercent(table[mode]?.[role] ?? 0);
               return (
                 <td>
-                  <div class="level-slider">
+                  <div class={`level-slider level-slider--${mode}`}>
                     <input
                       type="range"
                       min={range[mode].min}
@@ -493,7 +493,7 @@ function TextTargetTable({ targets, onChange }: TextTargetTableProps) {
                 {typeof level === 'object' ? (
                   <span class="role-purpose">step {level.step} (pinned)</span>
                 ) : (
-                  <div class="level-slider">
+                  <div class="level-slider level-slider--plain">
                     <input
                       type="range"
                       min={0}
