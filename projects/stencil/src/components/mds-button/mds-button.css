@@ -139,6 +139,7 @@
   @apply focus-bounce;
 
   align-items: center;
+  align-self: flex-start;
   background-color: var(--mds-button-background);
   border-radius: var(--mds-button-radius);
   box-shadow: 0 0 0 var(--mds-button-border-width)
@@ -151,6 +152,7 @@
   fill: currentcolor;
   gap: var(--mds-button-gap);
   justify-content: center;
+  justify-self: flex-start;
   padding: 0 --spacing(400);
   position: relative;
   transition-duration: var(--duration-200);

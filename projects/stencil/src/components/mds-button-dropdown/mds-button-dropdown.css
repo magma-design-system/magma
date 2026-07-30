@@ -20,8 +20,10 @@
   --mds-button-dropdown-radius: var(--radius-2xl);
   --mds-button-dropdown-window-radius: var(--radius-2xl);
 
+  align-self: flex-start;
   border-radius: var(--mds-button-dropdown-radius);
   display: inline-flex;
+  justify-self: flex-start;
   transition-duration: var(--duration-200);
   transition-property: background-color, box-shadow;
   transition-timing-function: var(--ease-out-quad);
@@ -41,7 +43,7 @@ mds-button {
   --mds-button-border-high-contrast-width: 0;
 }
 
-mds-button:first-child {
+.dropdown-primary-action {
   border-bottom-right-radius: 0;
   border-top-right-radius: 0;
 }

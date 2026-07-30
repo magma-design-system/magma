@@ -238,7 +238,7 @@ duplicate `neutral-surface` token.
 | Semantic | Source primitive |
 |---|---|
 | `surface-*` (5) | `--surface-<active-tint>-*` (lightness); active tint = neutral by default (section 8) |
-| `text-*` | `--tone-neutral-*` (APCA) |
+| `text-*` | `--text-<active-tint>-*` (by-target, A7) via the `--magma-tint-text-*` pointer; active tint = neutral by default (section 8) |
 | `border-{muted,default,strong}` | `--border-<active-tint>-*` (OKLCH levels, opaque, per mode, beyond the surface band); `focus` = accent |
 | `<hue>-fg / -border / -emphasis` | `status/label/variant-*` (APCA) |
 | `<hue>-surface` | subtle end (step 09/10) of the colored family |
@@ -271,13 +271,34 @@ Three independent axes, all driven by classes/attributes on `<html>` (cross-brow
 DOM). Same mechanism as the existing preference system.
 
 - `data-theme-name` (attribute): a named theme OVERRIDES the semantic layer. The active
-  surface tint is an indirection: `--magma-surface-*` resolve from an active-tint pointer
-  (`--magma-tint-*`) that defaults to the `neutral` family; a theme repoints it to another
-  family (e.g. `porcelain` for a cool, GitLab-like dark) - one swap, no per-token edits.
-  Same pattern for the accent hue. (Note: this is a semantic indirection; the config
+  tint is ONE indirection block, `--magma-tint-*`, defaulting to the `neutral` family and
+  covering the whole neutral scaffolding - background AND foreground: `--magma-surface-*`,
+  `--magma-border-*` and `--magma-text-*` each resolve from their pointer
+  (`--magma-tint-*` / `--magma-tint-border-*` / `--magma-tint-text-*`). A theme repoints
+  that one block to another family and surface, border and text retint together, one swap,
+  no per-token edits:
+
+  ```css
+  :root[data-theme-name='cool'] {
+    --magma-tint-default:        var(--surface-porcelain-default);
+    --magma-tint-border-default: var(--border-porcelain-default);
+    --magma-tint-text-default:   var(--text-porcelain-default);
+    /* ...the rest of the block, same family... */
+  }
+  ```
+
+  A theme MUST take surface and text from the SAME family. Text roles are generated per
+  family and APCA-verified (A7) against THAT family's own surfaces, so a coherent
+  `{surface, border, text}` family keeps the contrast guarantee - mixing families can
+  break it. The family just needs a SURFACE (opt it in): text is generated per family from
+  that family's OWN scale, so ANY tint qualifies - a `tone` family or a colour family (a
+  colour theme is monochromatic: its hue as surface, border and text). The groups
+  (`tone`/`status`/`label`/...) organise names; they do not gate what can back a theme.
+  `text-on-emphasis` is the pure seed (max contrast on a solid fill) and may stay fixed
+  across themes. The accent hue follows the same repoint pattern. (Note: the config
   `alias` field is declared but NOT consumed by the generator - `variant-primary` and
-  `brand-maggioli` merely share a seed, they are not live-aliased.) A theme is an override
-  map of the semantic tokens (daisyUI-style ergonomics).
+  `brand-maggioli` merely share a seed, they are not live-aliased.) A theme is thus an
+  override map of the `--magma-tint-*` block (daisyUI-style ergonomics).
 - mode `light | dark | system`: the existing global flip; semantic tokens follow it.
 - `--depth` (numeric `0 | 1`): shadow/bevel intensity, consumed as a scalar in `calc()`
   (NOT a `true|false` style query). Does not change the surface colors; only the shadow
@@ -445,6 +466,10 @@ Epic: #328.
 - Light canvas: NOT pure white. Grey canvas (`~L96`) with near-white raised (`~L99`, not
   `#fff`). Pure `#fff` / `#000` live only in `--tone-*-seed`.
 - Default tint: `neutral`, swappable via the `--magma-tint-*` indirection (section 8).
+- Foreground follows the theme: `--magma-text-*` resolves through `--magma-tint-text-*`
+  (not pinned to `neutral`), so a theme retints surface + border + text as ONE coherent
+  family and A7 keeps the pair contrast-verified (section 8). Names are unchanged
+  (`--magma-text-*`); only the internal indirection was added.
 - Text APCA targets: section 9.1, split essential vs non-essential. The 10-step foreground
   scale is UNCHANGED; these are verification thresholds only.
 - Borders: opaque, explicit per mode, delta from surface, one value per mode (section 6.3);

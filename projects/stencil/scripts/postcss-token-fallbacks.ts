@@ -1,5 +1,5 @@
-import type { Declaration } from 'postcss';
-import { COMPONENTS_DIR, TOKENS_DIR } from './meta';
+import type { Declaration, Rule } from 'postcss';
+import { COMPONENTS_DIR, STYLES_DIR, TOKENS_DIR } from './meta';
 import fs from 'node:fs';
 import path from 'node:path';
 import postcss from 'postcss';
@@ -7,6 +7,14 @@ import postcss from 'postcss';
 type Tokens = Record<string, string>;
 
 const TOKENS_CSS_DIR = path.resolve(TOKENS_DIR, 'dist/css');
+
+// The generated semantic layer (`--magma-*`). Prefer the built `dist` (the form
+// consumers load, a prerequisite the same way the token dist is); fall back to
+// the in-package generated source.
+const SEMANTIC_CSS_CANDIDATES = [
+  path.resolve(STYLES_DIR, 'dist/css/semantic.css'),
+  path.resolve(STYLES_DIR, 'css/semantic.css'),
+];
 
 /**
  * Minimal shape of a Stencil style-transform plugin. Stencil only runs plugins
@@ -40,25 +48,89 @@ const collectCssFiles = (dir: string): string[] => {
 };
 
 /**
- * Build a `name -> value` map for every design-token custom property declared
- * across all generated token stylesheets (colors, transitions, radii, shadows,
- * fonts, ...). These are the values inlined as `var()` fallbacks so component
- * CSS renders correctly even when the consumer has not loaded the token sheets.
+ * A selector belongs to the DEFAULT theme when it is not gated on a preference:
+ * once every `:not(...)` guard is stripped, at least one of its comma parts is
+ * left with no class (`.x`), attribute (`[x]`) or id (`#x`) - i.e. it applies to
+ * a bare `:root`. `:root:not(.pref-theme-scheme-light)` still counts as default;
+ * `:root.pref-theme-scheme-dark` does not.
  */
-const loadDesignTokens = (): Tokens => {
-  const tokens: Tokens = {};
-  for (const file of collectCssFiles(TOKENS_CSS_DIR)) {
+const selectorIsUnconditional = (selector: string): boolean =>
+  selector.split(',').some((part) => {
+    const bare = part.replace(/:not\([^)]*\)/g, '').trim();
+    return bare.length > 0 && !bare.includes('.') && !bare.includes('[') && !bare.includes('#');
+  });
+
+/**
+ * True when nothing about a declaration's context makes it conditional: it is
+ * not nested in an `@media` (or any other) at-rule, and every enclosing rule is
+ * unconditional. Flipping tokens are declared for light in a bare `:root` and
+ * again for dark under `.pref-theme-scheme-dark` / `@media (prefers-color-scheme:
+ * dark)`; a blind last-wins pass would inline the DARK value as the static
+ * fallback, so a component rendered without the token sheets loaded would show a
+ * dark surface on a light page. Preferring the default keeps the fallback light.
+ */
+const isDefaultTheme = (decl: Declaration): boolean => {
+  let node = decl.parent;
+  while (node) {
+    if (node.type === 'atrule') {
+      return false;
+    }
+    if (node.type === 'rule' && !selectorIsUnconditional((node as Rule).selector)) {
+      return false;
+    }
+    node = node.parent;
+  }
+  return true;
+};
+
+/**
+ * Build a `name -> value` map from the given stylesheets, preferring the value
+ * declared for the default theme over any theme/preference variant. A property
+ * that only ever appears in a variant still gets that value (last-wins), so
+ * coverage never regresses.
+ */
+const buildLookup = (files: string[]): Tokens => {
+  const preferred: Tokens = {};
+  const anyValue: Tokens = {};
+  for (const file of files) {
     const root = postcss.parse(fs.readFileSync(file, 'utf-8'), { from: file });
     root.walkDecls((decl) => {
-      if (decl.prop.startsWith('--')) {
-        const value = decl.value.trim();
-        if (value.length > 0) {
-          tokens[decl.prop.slice(2)] = value;
-        }
+      if (!decl.prop.startsWith('--')) {
+        return;
+      }
+      const value = decl.value.trim();
+      if (value.length === 0) {
+        return;
+      }
+      const name = decl.prop.slice(2);
+      anyValue[name] = value;
+      if (isDefaultTheme(decl)) {
+        preferred[name] = value;
       }
     });
   }
-  return tokens;
+  return { ...anyValue, ...preferred };
+};
+
+/**
+ * Design-token custom properties (colors, transitions, radii, shadows, fonts,
+ * ...) declared across all generated token stylesheets, inlined as `var()`
+ * fallbacks so component CSS renders even when the consumer has not loaded the
+ * token sheets.
+ */
+const loadDesignTokens = (): Tokens => buildLookup(collectCssFiles(TOKENS_CSS_DIR));
+
+/**
+ * The generated semantic layer (`--magma-*`, `projects/styles/css/semantic.css`).
+ * Every entry is an indirection - e.g. `--magma-surface-raised:
+ * var(--magma-tint-raised)` - resolved recursively by `inject()` down to a
+ * design-token primitive, so a bare `var(--magma-*)` in component CSS still
+ * resolves to a concrete value when the consumer has not loaded the semantic
+ * sheet.
+ */
+const loadSemanticTokens = (): Tokens => {
+  const file = SEMANTIC_CSS_CANDIDATES.find((candidate) => fs.existsSync(candidate));
+  return file ? buildLookup([file]) : {};
 };
 
 /**
@@ -89,6 +161,8 @@ const loadComponentDefaults = (): Tokens => {
 export interface TokenFallbackPluginOptions {
   /** Inline design-token values (colors, radii, shadows, ...) as fallbacks. */
   injectTokenFallbacks?: boolean;
+  /** Inline the semantic layer (`--magma-*`) indirections as fallbacks. */
+  injectSemanticFallbacks?: boolean;
   /** Inline each `--mds-*` `@property` `initial-value` as a fallback. */
   injectComponentDefaults?: boolean;
   /** Log a warning for every bare `var()` with no resolvable fallback. */
@@ -107,15 +181,19 @@ export default function tokenFallbackPlugin(
 ): StencilStylePlugin {
   const {
     injectTokenFallbacks = true,
+    injectSemanticFallbacks = true,
     injectComponentDefaults = true,
     warnOnMissing = false,
     failOnMissing = false,
   } = options;
 
-  // Built once per build; token names and `mds-*` names never collide, so a
-  // flat lookup is enough. Component defaults win on the off chance they do.
+  // Built once per build. Primitive, semantic (`--magma-*`) and `--mds-*` names
+  // never collide, so a flat lookup is enough; later spreads win on the off
+  // chance they do. Semantic entries are indirections resolved recursively by
+  // `inject()` down to the primitive values loaded alongside them.
   const lookup: Tokens = {
     ...(injectTokenFallbacks ? loadDesignTokens() : {}),
+    ...(injectSemanticFallbacks ? loadSemanticTokens() : {}),
     ...(injectComponentDefaults ? loadComponentDefaults() : {}),
   };
 

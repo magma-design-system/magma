@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'preact/hooks';
+import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import { APCAcontrast, sRGBtoY } from 'apca-w3';
 import chroma from 'chroma-js';
 import type { ColorConfig, MagmaConfig } from '../../src/lib/color.mjs';
@@ -74,6 +74,21 @@ const TEXT_PURPOSE: Record<string, string> = {
   disabled: 'disabled / inactive (lowest)',
 };
 
+// Slider ranges for the lightness editors, per mode: light surfaces stay high,
+// dark surfaces stay low. Borders sit a little darker than surfaces in light mode
+// (they are functional outlines), so they get a wider light range than surfaces.
+type LevelRange = Record<Mode, { min: number; max: number }>;
+const SURFACE_RANGE: LevelRange = {
+  light: { min: 85, max: 100 },
+  dark: { min: 1, max: 50 },
+};
+const BORDER_RANGE: LevelRange = {
+  light: { min: 50, max: 100 },
+  dark: { min: 1, max: 50 },
+};
+// text targets are an APCA Lc magnitude (0..~106), not a lightness percentage
+const TEXT_TARGET_MAX = 106;
+
 /** The family segment of a color name (tone.neutral -> neutral). */
 function familyOf(color: ColorConfig): string {
   return color.name.split('.')[1];
@@ -122,6 +137,21 @@ export function SurfaceManager({ config, onToggleSurface, onUpdateTheme }: Surfa
 
   const optedFamilies = Object.keys(surfaces);
 
+  // Preview one family at a time (saves vertical space). A newly opted-in family
+  // auto-selects; if the shown one is removed, fall back to the first.
+  const [selectedFamily, setSelectedFamily] = useState<string>('');
+  const prevOpted = useRef<string[]>([]);
+  useEffect(() => {
+    const added = optedFamilies.filter((family) => !prevOpted.current.includes(family));
+    if (prevOpted.current.length > 0 && added.length > 0) {
+      setSelectedFamily(added[added.length - 1]);
+    }
+    prevOpted.current = optedFamilies;
+  }, [optedFamilies.join(',')]);
+  const shownFamily = optedFamilies.includes(selectedFamily)
+    ? selectedFamily
+    : (optedFamilies[0] ?? '');
+
   const setLevel = (kind: 'surfaces' | 'borders', mode: Mode, role: string, percent: number) => {
     onUpdateTheme((draft) => {
       const table = draft[kind] as Record<Mode, Record<string, string | number>>;
@@ -145,7 +175,8 @@ export function SurfaceManager({ config, onToggleSurface, onUpdateTheme }: Surfa
         Surfaces and borders are placed by perceptual <em>lightness</em> in OKLCH (not APCA), per
         mode and per role. Opt a family in below; the shared ramp is the same for every family (the
         tint comes from each family's key color). The active default tint is chosen in{' '}
-        <code>styles</code>, not here.
+        <code>styles</code>, not here. Every family you opt in here also becomes a theme in the
+        section below.
       </p>
 
       {/* Section 1: opt-in */}
@@ -183,11 +214,18 @@ export function SurfaceManager({ config, onToggleSurface, onUpdateTheme }: Surfa
           <span class="scales-hint">shared ramp for surfaces and borders, per mode</span>
         </div>
         <div class="surface-levels">
+          <TextTargetTable
+            targets={
+              (theme.text ?? DEFAULT_THEME.text) as Record<string, number | { step: number }>
+            }
+            onChange={setTextTarget}
+          />
           <LevelTable
             title="surfaces"
             roles={SURFACE_ROLES as readonly string[]}
             table={theme.surfaces as Record<Mode, Record<string, string | number>>}
             purpose={SURFACE_PURPOSE}
+            range={SURFACE_RANGE}
             onChange={(mode, role, pct) => setLevel('surfaces', mode, role, pct)}
           />
           <LevelTable
@@ -195,13 +233,8 @@ export function SurfaceManager({ config, onToggleSurface, onUpdateTheme }: Surfa
             roles={BORDER_ROLES as readonly string[]}
             table={theme.borders as Record<Mode, Record<string, string | number>>}
             purpose={BORDER_PURPOSE}
+            range={BORDER_RANGE}
             onChange={(mode, role, pct) => setLevel('borders', mode, role, pct)}
-          />
-          <TextTargetTable
-            targets={
-              (theme.text ?? DEFAULT_THEME.text) as Record<string, number | { step: number }>
-            }
-            onChange={setTextTarget}
           />
         </div>
       </div>
@@ -213,6 +246,17 @@ export function SurfaceManager({ config, onToggleSurface, onUpdateTheme }: Surfa
       )}
       {!genError && optedFamilies.length > 0 && (
         <div class="preview-controls">
+          <label class="preview-shadow-label">
+            preview family
+            <select
+              value={shownFamily}
+              onChange={(e) => setSelectedFamily((e.target as HTMLSelectElement).value)}
+            >
+              {optedFamilies.map((family) => (
+                <option value={family}>{family}</option>
+              ))}
+            </select>
+          </label>
           <label class="preview-shadow-label">
             preview shadow
             <select
@@ -229,109 +273,129 @@ export function SurfaceManager({ config, onToggleSurface, onUpdateTheme }: Surfa
           </span>
         </div>
       )}
-      {optedFamilies.map((family) => (
-        <div class="scale-card">
-          <div class="scale-card-head">
-            <span class="scale-usage">
-              <code>surface-{family}</code> / <code>border-{family}</code>
-            </span>
-          </div>
-          <div class="surface-preview">
-            {MODES.map((mode) => {
-              const s = surfaces[family]?.[mode];
-              const b = borders[family]?.[mode];
-              const t = texts[family]?.[mode];
-              // real text-default role (A7); fall back to tone-3 for configs without theme.text
-              const canvasText = t ? hex(t, 'default') : hex(tones.neutral?.[mode], '3');
-              return (
-                <div
-                  class="sf-canvas"
-                  style={{ background: hex(s, 'default'), color: canvasText }}
-                  title={SURFACE_PURPOSE.default}
-                >
-                  <div class="sf-canvas-label">
-                    {mode} - canvas <code>{hex(s, 'default')}</code>
-                  </div>
-                  <div class="sf-row">
-                    <div
-                      class="sf-box"
-                      style={{ background: hex(s, 'sunken') }}
-                      title={SURFACE_PURPOSE.sunken}
-                    >
-                      sunken <code>{hex(s, 'sunken')}</code>
-                    </div>
-                    <div
-                      class="sf-box"
-                      style={{ background: hex(s, 'muted') }}
-                      title={SURFACE_PURPOSE.muted}
-                    >
-                      muted <code>{hex(s, 'muted')}</code>
-                    </div>
-                  </div>
+      {optedFamilies
+        .filter((family) => family === shownFamily)
+        .map((family) => (
+          <div class="scale-card">
+            {/* Text-role step selection FIRST - text contrast is the accessibility-critical
+              read, so it leads over the surface (background) preview below. */}
+            <div class="scale-card-head">
+              <span class="scale-usage">text-role step selection</span>
+              <span class="scales-hint">
+                worst-case APCA Lc per tone step; the engine picks the <em>least-contrast</em> step
+                whose bar clears a target. Edit the targets above (or the surface levels) and the
+                pick moves.
+              </span>
+            </div>
+            <div class="step-charts">
+              {MODES.map((mode) => (
+                <StepSelectionChart
+                  mode={mode}
+                  tone={tones[family]?.[mode]}
+                  surface={surfaces[family]?.[mode]}
+                  text={texts[family]?.[mode]}
+                  targets={
+                    (theme.text ?? DEFAULT_THEME.text) as Record<string, number | { step: number }>
+                  }
+                />
+              ))}
+            </div>
+            <div class="scale-card-head" style={{ marginTop: '12px' }}>
+              <span class="scale-usage">
+                <code>surface-{family}</code> / <code>border-{family}</code>
+              </span>
+            </div>
+            <div class="surface-preview">
+              {MODES.map((mode) => {
+                const s = surfaces[family]?.[mode];
+                const b = borders[family]?.[mode];
+                // Foreground = the active INK. A full tint (tone + surface) carries its own
+                // by-target text; a surface-only family (a colored tint with no tone scale,
+                // e.g. label.green) has none, so it inherits the NEUTRAL ink - the default
+                // foreground, exactly as the semantic layer does (foreground = active
+                // counterpart of surface). tone-3 is the last resort for a config with no
+                // theme.text at all. The text must never fall through to #000: that is the
+                // black-on-dark-surface bug this guards against.
+                const ownText = texts[family]?.[mode];
+                const ink = ownText ?? texts.neutral?.[mode];
+                const canvasText = ink ? hex(ink, 'default') : hex(tones.neutral?.[mode], '3');
+                return (
                   <div
-                    class="sf-box sf-raised"
-                    style={{ background: hex(s, 'raised') }}
-                    title={SURFACE_PURPOSE.raised}
+                    class="sf-canvas"
+                    style={{ background: hex(s, 'default'), color: canvasText }}
+                    title={SURFACE_PURPOSE.default}
                   >
-                    raised <code>{hex(s, 'raised')}</code>
+                    <div class="sf-canvas-label">
+                      {mode} - canvas <code>{hex(s, 'default')}</code>
+                    </div>
+                    <div class="sf-row">
+                      <div
+                        class="sf-box"
+                        style={{ background: hex(s, 'sunken') }}
+                        title={SURFACE_PURPOSE.sunken}
+                      >
+                        sunken <code>{hex(s, 'sunken')}</code>
+                      </div>
+                      <div
+                        class="sf-box"
+                        style={{ background: hex(s, 'muted') }}
+                        title={SURFACE_PURPOSE.muted}
+                      >
+                        muted <code>{hex(s, 'muted')}</code>
+                      </div>
+                    </div>
                     <div
-                      class="sf-box sf-overlay"
-                      style={{ background: hex(s, 'overlay') }}
-                      title={SURFACE_PURPOSE.overlay}
+                      class="sf-box sf-raised"
+                      style={{ background: hex(s, 'raised') }}
+                      title={SURFACE_PURPOSE.raised}
                     >
-                      overlay <code>{hex(s, 'overlay')}</code>
+                      raised <code>{hex(s, 'raised')}</code>
+                      <div
+                        class="sf-box sf-overlay"
+                        style={{ background: hex(s, 'overlay') }}
+                        title={SURFACE_PURPOSE.overlay}
+                      >
+                        overlay <code>{hex(s, 'overlay')}</code>
+                      </div>
+                    </div>
+                    {/* text roles (A7) below the surface swatches: by-target step + achieved
+                      APCA Lc vs the canvas. A surface-only family borrows the neutral ink. */}
+                    <div class="sf-text-roles">
+                      {!ownText && (
+                        <span
+                          class="sf-text-note"
+                          title="No tone scale of its own, so this surface shows the default NEUTRAL ink (foreground = active counterpart of surface). Check the Lc to see if the neutral ink is legible on this surface."
+                        >
+                          inherits neutral ink
+                        </span>
+                      )}
+                      {TEXT_ROLES.map((role) => {
+                        const c = ink ? hex(ink, role) : canvasText;
+                        return (
+                          <span class="sf-text" style={{ color: c }} title={TEXT_PURPOSE[role]}>
+                            text {role} <code>{c}</code>{' '}
+                            <code>Lc {apcaLc(c, hex(s, 'default')).toFixed(0)}</code>
+                          </span>
+                        );
+                      })}
+                    </div>
+                    <div class="sf-borders">
+                      {(BORDER_ROLES as readonly string[]).map((role) => (
+                        <span
+                          class="sf-border-chip"
+                          style={{ borderColor: hex(b, role), background: hex(s, 'default') }}
+                          title={BORDER_PURPOSE[role]}
+                        >
+                          border {role}
+                        </span>
+                      ))}
                     </div>
                   </div>
-                  {/* text roles (A7): by-target step + achieved APCA Lc vs the canvas */}
-                  <div class="sf-text-roles">
-                    {TEXT_ROLES.map((role) => {
-                      const c = hex(t, role);
-                      return (
-                        <span class="sf-text" style={{ color: c }} title={TEXT_PURPOSE[role]}>
-                          text {role} <code>{c}</code>{' '}
-                          <code>Lc {apcaLc(c, hex(s, 'default')).toFixed(0)}</code>
-                        </span>
-                      );
-                    })}
-                  </div>
-                  <div class="sf-borders">
-                    {(BORDER_ROLES as readonly string[]).map((role) => (
-                      <span
-                        class="sf-border-chip"
-                        style={{ borderColor: hex(b, role), background: hex(s, 'default') }}
-                        title={BORDER_PURPOSE[role]}
-                      >
-                        border {role}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
-          <div class="scale-card-head" style={{ marginTop: '12px' }}>
-            <span class="scale-usage">text-role step selection</span>
-            <span class="scales-hint">
-              worst-case APCA Lc per tone step; the engine picks the <em>least-contrast</em> step
-              whose bar clears a target. Edit the targets above (or the surface levels) and the pick
-              moves.
-            </span>
-          </div>
-          <div class="step-charts">
-            {MODES.map((mode) => (
-              <StepSelectionChart
-                mode={mode}
-                tone={tones[family]?.[mode]}
-                surface={surfaces[family]?.[mode]}
-                text={texts[family]?.[mode]}
-                targets={
-                  (theme.text ?? DEFAULT_THEME.text) as Record<string, number | { step: number }>
-                }
-              />
-            ))}
-          </div>
-        </div>
-      ))}
+        ))}
     </div>
   );
 }
@@ -341,17 +405,23 @@ interface LevelTableProps {
   roles: readonly string[];
   table: Record<Mode, Record<string, string | number>>;
   purpose: Record<string, string>;
+  range: LevelRange;
   onChange: (mode: Mode, role: string, percent: number) => void;
 }
 
-function LevelTable({ title, roles, table, purpose, onChange }: LevelTableProps) {
+function LevelTable({ title, roles, table, purpose, range, onChange }: LevelTableProps) {
   return (
     <table class="level-table">
       <thead>
         <tr>
           <th>{title}</th>
           {MODES.map((mode) => (
-            <th>{mode}</th>
+            <th>
+              {mode}{' '}
+              <span class="level-range">
+                {range[mode].min}-{range[mode].max}
+              </span>
+            </th>
           ))}
         </tr>
       </thead>
@@ -362,20 +432,26 @@ function LevelTable({ title, roles, table, purpose, onChange }: LevelTableProps)
               <span class="role-name">{role}</span>
               <span class="role-purpose">{purpose[role]}</span>
             </td>
-            {MODES.map((mode) => (
-              <td>
-                <input
-                  type="number"
-                  min={0}
-                  max={100}
-                  step={1}
-                  value={toPercent(table[mode]?.[role] ?? 0)}
-                  onChange={(e) =>
-                    onChange(mode, role, Number((e.target as HTMLInputElement).value))
-                  }
-                />
-              </td>
-            ))}
+            {MODES.map((mode) => {
+              const value = toPercent(table[mode]?.[role] ?? 0);
+              return (
+                <td>
+                  <div class={`level-slider level-slider--${mode}`}>
+                    <input
+                      type="range"
+                      min={range[mode].min}
+                      max={range[mode].max}
+                      step={1}
+                      value={value}
+                      onInput={(e) =>
+                        onChange(mode, role, Number((e.target as HTMLInputElement).value))
+                      }
+                    />
+                    <span class="level-value">{value}</span>
+                  </div>
+                </td>
+              );
+            })}
           </tr>
         ))}
       </tbody>
@@ -399,7 +475,9 @@ function TextTargetTable({ targets, onChange }: TextTargetTableProps) {
       <thead>
         <tr>
           <th>text (APCA Lc)</th>
-          <th>target</th>
+          <th>
+            target <span class="level-range">0-{TEXT_TARGET_MAX}</span>
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -415,14 +493,17 @@ function TextTargetTable({ targets, onChange }: TextTargetTableProps) {
                 {typeof level === 'object' ? (
                   <span class="role-purpose">step {level.step} (pinned)</span>
                 ) : (
-                  <input
-                    type="number"
-                    min={0}
-                    max={106}
-                    step={1}
-                    value={level ?? 0}
-                    onChange={(e) => onChange(role, Number((e.target as HTMLInputElement).value))}
-                  />
+                  <div class="level-slider level-slider--plain">
+                    <input
+                      type="range"
+                      min={0}
+                      max={TEXT_TARGET_MAX}
+                      step={1}
+                      value={level ?? 0}
+                      onInput={(e) => onChange(role, Number((e.target as HTMLInputElement).value))}
+                    />
+                    <span class="level-value">{level ?? 0}</span>
+                  </div>
                 )}
               </td>
             </tr>

@@ -19,6 +19,7 @@ import { hasHueShift, resolveCurveWeights, type HueShiftConfig } from '../../src
 import { generateScales, singleColorConfig, type ColorScales, type Step } from './generator.js';
 import { ScalesManager, type RatioSet, type ScaleOrigin } from './scales.js';
 import { SurfaceManager, DEFAULT_THEME } from './surfaces.js';
+import { ThemesManager } from './themes.js';
 import type { ThemeConfig } from '../../src/lib/surface.mjs';
 import { nearestColorName } from './color-names.js';
 const COLORSPACES = [
@@ -1017,8 +1018,10 @@ export function App() {
           <button class={view === 'scales' ? 'active' : ''} onClick={() => setView('scales')}>
             contrast scales
           </button>
+          {/* One workflow: opt families into surfaces, then use them as themes. The view
+              id stays 'surface' so existing localStorage drafts keep working. */}
           <button class={view === 'surface' ? 'active' : ''} onClick={() => setView('surface')}>
-            surfaces
+            themes
           </button>
           <button class={view === 'groups' ? 'active' : ''} onClick={() => setView('groups')}>
             groups
@@ -1407,25 +1410,33 @@ export function App() {
           />
         )}
         {view === 'surface' && (
-          <SurfaceManager
-            config={config}
-            onToggleSurface={(colorName, on) =>
-              updateConfig((draft) => {
-                const color = draft.colors.find((c) => c.name === colorName);
-                if (!color) return;
-                if (on) (color as ColorConfig).surface = true;
-                else delete (color as Record<string, unknown>).surface;
-              })
-            }
-            onUpdateTheme={(mutate) =>
-              updateConfig((draft) => {
-                if (!draft.theme) {
-                  draft.theme = JSON.parse(JSON.stringify(DEFAULT_THEME)) as ThemeConfig;
-                }
-                mutate(draft.theme);
-              })
-            }
-          />
+          <>
+            <div class="content-head">
+              <h2>surfaces</h2>
+              <span class="scales-hint">the palettes themes are built from</span>
+            </div>
+            <SurfaceManager
+              config={config}
+              onToggleSurface={(colorName, on) =>
+                updateConfig((draft) => {
+                  const color = draft.colors.find((c) => c.name === colorName);
+                  if (!color) return;
+                  if (on) (color as ColorConfig).surface = true;
+                  else delete (color as Record<string, unknown>).surface;
+                })
+              }
+              onUpdateTheme={(mutate) =>
+                updateConfig((draft) => {
+                  if (!draft.theme) {
+                    draft.theme = JSON.parse(JSON.stringify(DEFAULT_THEME)) as ThemeConfig;
+                  }
+                  mutate(draft.theme);
+                })
+              }
+            />
+            {/* Themes are DERIVED from the surfaces opt-in above - same axis, one step down. */}
+            <ThemesManager config={config} />
+          </>
         )}
         {view === 'groups' && (
           <GroupsManager

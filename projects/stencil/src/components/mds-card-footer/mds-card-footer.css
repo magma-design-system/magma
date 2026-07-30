@@ -2,6 +2,7 @@
 
 :host {
   align-items: center;
+  background-color: var(--mds-card-background);
   display: flex;
   flex-grow: 1;
   gap: --spacing(400);

@@ -59,7 +59,7 @@ const HeaderComponent = ({ slot = undefined }: { slot?: string } = {}) => {
   return (
     <header
       slot={slot}
-      class="p-400 bg-tone-neutral/80 backdrop-blur-md shadow-outline-light flex gap-400 items-center "
+      class="p-400 bg-surface-overlay/80 backdrop-blur-md shadow-outline-light flex gap-400 items-center "
     >
       <mds-img class="w-800 h-800" src="./logo-gruppo-maggioli-512w.webp" />
       <div class="text-tone-neutral-02 grid grid-cols-full">
@@ -78,7 +78,7 @@ const FooterComponent = ({ slot = undefined }: { slot?: string } = {}) => {
   return (
     <footer
       slot={slot}
-      class="flex gap-400 text-tone-neutral-02 p-400 bg-tone-neutral/80 backdrop-blur-md shadow-outline-light"
+      class="flex gap-400 text-tone-neutral-02 p-400 bg-surface-overlay/80 backdrop-blur-md shadow-outline-light"
     >
       <mds-author class="flex-grow">
         <mds-avatar slot="avatar" class="w-800 h-800" src="./avatar-01-200x200.jpeg" />

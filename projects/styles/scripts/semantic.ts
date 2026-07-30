@@ -42,19 +42,31 @@ const alias = (magma: string, source: string, tw: string): string => {
 
 const layer: string[] = ['', ':root {'];
 
-// 1. tint indirection (internal; not bridged to Tailwind)
-layer.push('  /* Active surface tint (spec 8): a theme retints by repointing --magma-tint-*. */');
+// 1. tint indirection (internal; not bridged to Tailwind). The tint block IS the
+//    theme: a named theme repoints these to another family and retints surface,
+//    border AND text together in one swap (spec 8). Text joins the block so the
+//    foreground retints WITH its surface, kept to one coherent, contrast-paired
+//    family (A7 verifies text against that same family's surfaces).
+layer.push(
+  '  /* Active tint = the theme (spec 8): a named theme retints surface + border + text by repointing --magma-tint-*. */',
+);
 surfaceRoles.forEach((r) => layer.push(`  --magma-tint-${r}: var(--surface-${tint}-${r});`));
 borderRoles.forEach((r) => layer.push(`  --magma-tint-border-${r}: var(--border-${tint}-${r});`));
+textRoles.forEach((r) => layer.push(`  --magma-tint-text-${r}: var(--text-${tint}-${r});`));
+layer.push(`  --magma-tint-text-on-emphasis: var(--${seed});`);
 
 // 2. surfaces (from the tint pointers)
 layer.push('', '  /* Surfaces - elevation + same-plane prominence (spec 6.1) */');
 surfaceRoles.forEach((r) => layer.push(alias(`surface-${r}`, `magma-tint-${r}`, `surface-${r}`)));
 
-// 3. text roles (by-target --text-*, A7); on-emphasis is the pure seed
-layer.push('', '  /* Text - prominence, by APCA target vs surface-default (spec 6.2 / 9, A7) */');
-textRoles.forEach((r) => layer.push(alias(`text-${r}`, `text-${tint}-${r}`, `fg-${r}`)));
-layer.push(alias('text-on-emphasis', seed, 'fg-on-emphasis'));
+// 3. text roles - resolve through the tint-text indirection so a theme retints
+//    the foreground with its surface (values are the by-target --text-*, A7).
+layer.push(
+  '',
+  '  /* Text - prominence, by APCA target (spec 6.2 / 9, A7); retints via --magma-tint-text-* */',
+);
+textRoles.forEach((r) => layer.push(alias(`text-${r}`, `magma-tint-text-${r}`, `fg-${r}`)));
+layer.push(alias('text-on-emphasis', 'magma-tint-text-on-emphasis', 'fg-on-emphasis'));
 
 // 4. borders (from the tint pointers); focus is an accent
 layer.push('', '  /* Border - prominence (spec 6.3); focus is an accent, not a neutral level */');
@@ -63,7 +75,13 @@ borderRoles.forEach((r) =>
 );
 layer.push(alias('border-focus', borderFocus, 'border-focus'));
 
-// 5. hues - colored families carry the full quintet; neutral omits surface (spec 6.4)
+// 5. hues - colored families carry the full quintet; neutral omits surface (spec 6.4).
+//    The neutral family's "emphasis" pair is NOT a saturated fill like the colored
+//    hues: it is the INVERSE SURFACE role (a dark chip in light mode, light in dark -
+//    toast, tooltip). It is emitted under role names --magma-surface-inverse /
+//    --magma-on-inverse (Material inverseSurface), decoupled from the colored
+//    <hue>-emphasis fills. The former --magma-neutral-emphasis / -on-emphasis names
+//    stay as DEPRECATED aliases (one release) so existing consumers keep resolving.
 Object.entries(hues).forEach(([hue, { family, partial }]) => {
   layer.push('', `  /* ${hue} (${family}) */`);
   const steps = partial ? neutralHueSteps : hueSteps;
@@ -71,8 +89,17 @@ Object.entries(hues).forEach(([hue, { family, partial }]) => {
     layer.push(alias(`${hue}-surface`, `${family}-${hueSteps.surface}`, `${hue}-surface`));
   layer.push(alias(`${hue}-fg`, `${family}-${steps.fg}`, `${hue}-fg`));
   layer.push(alias(`${hue}-border`, `${family}-${steps.border}`, `${hue}-border`));
-  layer.push(alias(`${hue}-emphasis`, `${family}-${steps.emphasis}`, `${hue}-emphasis`));
-  layer.push(alias(`${hue}-on-emphasis`, seed, `${hue}-on-emphasis`));
+  if (partial) {
+    // inverse-surface role (renamed from neutral-emphasis / -on-emphasis)
+    layer.push(alias('surface-inverse', `${family}-${steps.emphasis}`, 'surface-inverse'));
+    layer.push(alias('on-inverse', seed, 'on-inverse'));
+    layer.push('  /* deprecated: renamed to --magma-surface-inverse / --magma-on-inverse */');
+    layer.push(alias(`${hue}-emphasis`, 'magma-surface-inverse', `${hue}-emphasis`));
+    layer.push(alias(`${hue}-on-emphasis`, 'magma-on-inverse', `${hue}-on-emphasis`));
+  } else {
+    layer.push(alias(`${hue}-emphasis`, `${family}-${steps.emphasis}`, `${hue}-emphasis`));
+    layer.push(alias(`${hue}-on-emphasis`, seed, `${hue}-on-emphasis`));
+  }
 });
 
 layer.push('}', '');

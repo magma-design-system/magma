@@ -1,6 +1,7 @@
 @import '../../tailwind/fouc.css';
 
 :host {
+  background-color: var(--mds-card-background);
   display: grid;
   gap: --spacing(400);
   grid-template-columns: repeat(auto-fit, minmax(1px, 100%));

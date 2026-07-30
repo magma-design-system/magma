@@ -1,16 +1,6 @@
-/* Theme preference. The component reflects the resolved theme mode and scheme
- * from <html> onto its host as pref-theme + pref-theme-scheme (see
- * subscribePreference in @common/preference); these plain shadow selectors refine
- * for dark. `dark` is the explicit choice; `system` and no controller follow the
- * OS via @media; the scheme axis gates it. Cross-browser, no :host-context. */
-
-:host([pref-theme='dark']:not([pref-theme-scheme='light'])) {
-  box-shadow: var(--shadow-outline);
-}
-
-@media (prefers-color-scheme: dark) {
-  :host([pref-theme='system']:not([pref-theme-scheme='light'])),
-  :host(:not([pref-theme])) {
-    box-shadow: var(--shadow-outline);
-  }
-}
+/* Theme preference. Background now comes from the semantic surface layer
+ * (--magma-surface-muted for the neutral banner, spec 6.1): it flips per mode at
+ * :root and inherits into the shadow DOM, so this component needs no per-mode
+ * dark refinement. The former dark fake outline that gave the banner an edge on
+ * the old flat-black canvas is intentionally gone (a full-width notice on the
+ * muted surface needs no elevation). */
