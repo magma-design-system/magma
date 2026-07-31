@@ -6,8 +6,9 @@
 
     1. mode (light|dark|system)  -> the existing global --tone-* flip; the
        semantic tokens follow it automatically (nothing to do here).
-    2. data-theme-name           -> a named theme overrides the semantic layer;
-       the common case is retinting the neutral scaffolding with one tint swap.
+    2. data-theme-name           -> a named theme retints the --magma-tint-*
+       block; GENERATED in build/css/themes.css from semantic.config.ts (spec 8),
+       shipped as dist/css/themes.css - NOT defined here.
     3. --depth (numeric 0..1)    -> shadow/elevation intensity, consumed as a
        scalar in calc(). NOT a true|false style query.
 
@@ -47,42 +48,4 @@
 /* Flat variant of the depth axis (set --depth directly for anything between). */
 :root[data-theme-depth='flat'] {
   --depth: 0;
-}
-
-/* --------------------------------------------------------------------------
-   Axis 2: named themes (data-theme-name)
-   A theme is an override map of the semantic tokens. The ergonomic case is a
-   single tint swap: repoint --mds-tint-* at another generated family and every
-   surface + border role follows. Optionally swap the accent hue too. These two
-   are shipped examples; consumer apps add their own the same way.
-   -------------------------------------------------------------------------- */
-
-/* Cool: porcelain (blue-grey) scaffolding + AI-violet accent */
-:root[data-theme-name='cool'] {
-  --mds-tint-sunken: var(--surface-porcelain-sunken);
-  --mds-tint-muted: var(--surface-porcelain-muted);
-  --mds-tint-default: var(--surface-porcelain-default);
-  --mds-tint-raised: var(--surface-porcelain-raised);
-  --mds-tint-overlay: var(--surface-porcelain-overlay);
-  --mds-tint-border-muted: var(--border-porcelain-muted);
-  --mds-tint-border-default: var(--border-porcelain-default);
-  --mds-tint-border-strong: var(--border-porcelain-strong);
-
-  --mds-accent-surface: var(--variant-ai-09);
-  --mds-accent-fg: var(--variant-ai-05);
-  --mds-accent-border: var(--variant-ai-06);
-  --mds-accent-emphasis: var(--variant-ai-04);
-  --mds-border-focus: var(--variant-ai);
-}
-
-/* Warm: bisque (warm grey) scaffolding */
-:root[data-theme-name='warm'] {
-  --mds-tint-sunken: var(--surface-bisque-sunken);
-  --mds-tint-muted: var(--surface-bisque-muted);
-  --mds-tint-default: var(--surface-bisque-default);
-  --mds-tint-raised: var(--surface-bisque-raised);
-  --mds-tint-overlay: var(--surface-bisque-overlay);
-  --mds-tint-border-muted: var(--border-bisque-muted);
-  --mds-tint-border-default: var(--border-bisque-default);
-  --mds-tint-border-strong: var(--border-bisque-strong);
 }

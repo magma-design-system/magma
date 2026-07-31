@@ -1979,6 +1979,10 @@ export namespace Components {
     }
     interface MdsPrefTheme {
         /**
+          * Locks the mode items forbidden by a scheme-constrained theme, without touching the stored preference: `light` disables the explicit `dark` item, `dark` disables the explicit `light` item, `all` (or unset) locks nothing; the `system` item is never locked. Set by the `mds-pref` controller from the active theme variant's `scheme`; not meant to be set directly.
+         */
+        "lockedScheme"?: PreferenceThemeSchemeType;
+        /**
           * Specifies the preference mode
          */
         "mode"?: PreferenceThemeModeType;
@@ -6442,6 +6446,10 @@ declare namespace LocalJSX {
     }
     interface MdsPrefTheme {
         /**
+          * Locks the mode items forbidden by a scheme-constrained theme, without touching the stored preference: `light` disables the explicit `dark` item, `dark` disables the explicit `light` item, `all` (or unset) locks nothing; the `system` item is never locked. Set by the `mds-pref` controller from the active theme variant's `scheme`; not meant to be set directly.
+         */
+        "lockedScheme"?: PreferenceThemeSchemeType;
+        /**
           * Specifies the preference mode
          */
         "mode"?: PreferenceThemeModeType;
@@ -7804,6 +7812,7 @@ declare namespace LocalJSX {
         "size": TabSizeType;
         "mode": PreferenceThemeModeType;
         "transition": PreferenceThemeTransitionType;
+        "lockedScheme": PreferenceThemeSchemeType;
     }
     interface MdsPrefThemeVariantAttributes {
         "size": TabSizeType;

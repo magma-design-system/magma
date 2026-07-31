@@ -2,14 +2,15 @@ import chalk from 'chalk';
 import { mkdir, writeFile } from 'fs/promises';
 import { join } from 'path';
 import { BUILD_DIR } from './meta';
-import { semantic } from '../../design-tokens/semantic.config';
+import { semantic, type ThemeDef } from '../../design-tokens/semantic.config';
 
 /**
  * Generate the semantic color layer (A9) from design-tokens/semantic.config.ts:
  *  - build/css/semantic.css        the `--magma-*` layer components consume
  *  - build/tailwind/semantic.css   the Tailwind `@theme` bridge (--color-* re-exports)
+ *  - build/css/themes.css          named-theme overrides (data-theme-name, spec 8)
  *
- * Both are GENERATED and gitignored; they are staged under build/ (out of the
+ * All are GENERATED and gitignored; they are staged under build/ (out of the
  * hand-authored source dirs) and the copy step ships them to dist. The
  * tracked contract is design-tokens/semantic.config.ts. Text roles come from A7's `--text-*`
  * primitives; surfaces/borders resolve through the `--magma-tint-*` indirection
@@ -26,6 +27,8 @@ const {
   hues,
   hueSteps,
   neutralHueSteps,
+  accents,
+  themes,
 } = semantic;
 
 const HEADER = (what: string) =>
@@ -69,12 +72,15 @@ layer.push(
 textRoles.forEach((r) => layer.push(alias(`text-${r}`, `magma-tint-text-${r}`, `fg-${r}`)));
 layer.push(alias('text-on-emphasis', 'magma-tint-text-on-emphasis', 'fg-on-emphasis'));
 
-// 4. borders (from the tint pointers); focus is an accent
-layer.push('', '  /* Border - prominence (spec 6.3); focus is an accent, not a neutral level */');
+// 4. borders (from the tint pointers); focus follows an accent (theme-aware)
+layer.push(
+  '',
+  '  /* Border - prominence (spec 6.3); focus follows the accent it is named after */',
+);
 borderRoles.forEach((r) =>
   layer.push(alias(`border-${r}`, `magma-tint-border-${r}`, `border-${r}`)),
 );
-layer.push(alias('border-focus', borderFocus, 'border-focus'));
+layer.push(alias('border-focus', `magma-accent-${borderFocus}-emphasis`, 'border-focus'));
 
 // 5. hues - colored families carry the full quintet; neutral omits surface (spec 6.4).
 //    The neutral family's "emphasis" pair is NOT a saturated fill like the colored
@@ -103,6 +109,43 @@ Object.entries(hues).forEach(([hue, { family, partial }]) => {
   }
 });
 
+// 6. accents (variant) - the standout colors (spec 8). Each accent role is a
+//    THEME-AWARE quintet: the roles resolve through per-role tint pointers
+//    (--magma-tint-accent-<role>-*), so a named theme repoints an accent exactly
+//    like a surface. Steps reuse the colored-hue quintet (hueSteps); on-emphasis
+//    is the seed (family-independent, spec 6.5). The former single --magma-accent-*
+//    is kept as a DEPRECATED alias of accent-primary for one release.
+Object.entries(accents).forEach(([role, family]) => {
+  layer.push('', `  /* accent ${role} (${family}) */`);
+  // tint pointers (internal; repointed per theme, not bridged to Tailwind)
+  layer.push(`  --magma-tint-accent-${role}-surface: var(--${family}-${hueSteps.surface});`);
+  layer.push(`  --magma-tint-accent-${role}-fg: var(--${family}-${hueSteps.fg});`);
+  layer.push(`  --magma-tint-accent-${role}-border: var(--${family}-${hueSteps.border});`);
+  layer.push(`  --magma-tint-accent-${role}-emphasis: var(--${family}-${hueSteps.emphasis});`);
+  // roles resolve through the tint pointers -> theme-aware
+  layer.push(
+    alias(`accent-${role}-surface`, `magma-tint-accent-${role}-surface`, `accent-${role}-surface`),
+  );
+  layer.push(alias(`accent-${role}-fg`, `magma-tint-accent-${role}-fg`, `accent-${role}-fg`));
+  layer.push(
+    alias(`accent-${role}-border`, `magma-tint-accent-${role}-border`, `accent-${role}-border`),
+  );
+  layer.push(
+    alias(
+      `accent-${role}-emphasis`,
+      `magma-tint-accent-${role}-emphasis`,
+      `accent-${role}-emphasis`,
+    ),
+  );
+  layer.push(alias(`accent-${role}-on-emphasis`, seed, `accent-${role}-on-emphasis`));
+});
+
+// deprecated (one release): the former single accent == the primary accent
+layer.push('', '  /* deprecated: use --magma-accent-primary-* (kept one release) */');
+['surface', 'fg', 'border', 'emphasis', 'on-emphasis'].forEach((sub) =>
+  layer.push(alias(`accent-${sub}`, `magma-accent-primary-${sub}`, `accent-${sub}`)),
+);
+
 layer.push('}', '');
 
 const bridgeBody = bridge
@@ -111,6 +154,45 @@ const bridgeBody = bridge
 const bridgeCss = `${HEADER('Tailwind bridge for the semantic color layer.')}\n@theme {\n${bridgeBody}\n}\n`;
 const layerCss = `${HEADER('Semantic color layer (--magma-*) - the contract components consume.')}${layer.join('\n')}`;
 
+// Named themes (spec 8): one override block per theme. A theme repoints the
+// --magma-tint-* block (surface + border + text) when its surface family differs
+// from the base `tint`, AND repoints --magma-tint-accent-<role>-* for every
+// accent it overrides - so a theme retints background, foreground AND accents in
+// one swap. A theme that changes nothing (base tint, no accent override) emits
+// nothing. String shorthand == surface family only (back-compat).
+const normalizeTheme = (def: ThemeDef): { surface?: string; accents?: Record<string, string> } =>
+  typeof def === 'string' ? { surface: def } : def;
+
+const themeBlocks = Object.entries(themes)
+  .map(([name, def]) => {
+    const { surface, accents: accentOverride } = normalizeTheme(def);
+    const rules: string[] = [];
+    if (surface && surface !== tint) {
+      surfaceRoles.forEach((r) =>
+        rules.push(`  --magma-tint-${r}: var(--surface-${surface}-${r});`),
+      );
+      borderRoles.forEach((r) =>
+        rules.push(`  --magma-tint-border-${r}: var(--border-${surface}-${r});`),
+      );
+      textRoles.forEach((r) =>
+        rules.push(`  --magma-tint-text-${r}: var(--text-${surface}-${r});`),
+      );
+    }
+    if (accentOverride) {
+      Object.entries(accentOverride).forEach(([role, family]) => {
+        rules.push(`  --magma-tint-accent-${role}-surface: var(--${family}-${hueSteps.surface});`);
+        rules.push(`  --magma-tint-accent-${role}-fg: var(--${family}-${hueSteps.fg});`);
+        rules.push(`  --magma-tint-accent-${role}-border: var(--${family}-${hueSteps.border});`);
+        rules.push(
+          `  --magma-tint-accent-${role}-emphasis: var(--${family}-${hueSteps.emphasis});`,
+        );
+      });
+    }
+    return rules.length ? `:root[data-theme-name='${name}'] {\n${rules.join('\n')}\n}` : '';
+  })
+  .filter(Boolean);
+const themesCss = `${HEADER('Named themes - retint the --magma-tint-* block per data-theme-name (spec 8).')}\n${themeBlocks.join('\n\n')}\n`;
+
 async function main() {
   const cssDir = join(BUILD_DIR, 'css');
   const tailwindDir = join(BUILD_DIR, 'tailwind');
@@ -118,9 +200,11 @@ async function main() {
   await mkdir(tailwindDir, { recursive: true });
   await writeFile(join(cssDir, 'semantic.css'), layerCss, 'utf8');
   await writeFile(join(tailwindDir, 'semantic.css'), bridgeCss, 'utf8');
+  await writeFile(join(cssDir, 'themes.css'), themesCss, 'utf8');
   console.info(
     chalk.green(
-      `Generated semantic layer: ${bridge.length} tokens (build/css/semantic.css + build/tailwind/semantic.css).`,
+      `Generated semantic layer: ${bridge.length} tokens + ${themeBlocks.length} named themes ` +
+        `(build/css/semantic.css + build/tailwind/semantic.css + build/css/themes.css).`,
     ),
   );
 }

@@ -21,7 +21,11 @@ import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.es.json';
 import localeIt from './meta/locale.it.json';
-import { PreferenceThemeModeType, PreferenceThemeTransitionType } from '@type/preference';
+import {
+  PreferenceThemeModeType,
+  PreferenceThemeSchemeType,
+  PreferenceThemeTransitionType,
+} from '@type/preference';
 import { MdsPrefChangeEventDetail } from '@event/preference';
 import { TabSizeType } from '@type/button';
 
@@ -80,6 +84,15 @@ export class MdsPrefTheme {
    * Specifies the transition of switching from a theme to another one
    */
   @Prop({ mutable: true, reflect: true }) transition: PreferenceThemeTransitionType = 'smooth';
+
+  /**
+   * Locks the mode items forbidden by a scheme-constrained theme, without
+   * touching the stored preference: `light` disables the explicit `dark` item,
+   * `dark` disables the explicit `light` item, `all` (or unset) locks nothing;
+   * the `system` item is never locked. Set by the `mds-pref` controller from the
+   * active theme variant's `scheme`; not meant to be set directly.
+   */
+  @Prop({ reflect: true }) readonly lockedScheme?: PreferenceThemeSchemeType;
 
   /**
    * Emits when the component is triggered
@@ -221,8 +234,21 @@ export class MdsPrefTheme {
     }, 1);
   };
 
-  private changeTheme = (mode: PreferenceThemeModeType): void => {
+  private readonly isModeDisabled = (mode: PreferenceThemeModeType): boolean => {
     if (this.disabled) {
+      return true;
+    }
+    if (this.lockedScheme === 'light') {
+      return mode === 'dark';
+    }
+    if (this.lockedScheme === 'dark') {
+      return mode === 'light';
+    }
+    return false;
+  };
+
+  private changeTheme = (mode: PreferenceThemeModeType): void => {
+    if (this.isModeDisabled(mode)) {
       return;
     }
 
@@ -273,21 +299,21 @@ export class MdsPrefTheme {
         </mds-text>
         <mds-tab fill size={this.size}>
           <mds-tab-item
-            disabled={this.disabled}
+            disabled={this.isModeDisabled('light')}
             selected={this.mode === 'light'}
             onClick={this.handleModeClick('light')}
             class="item item--light"
             icon={miBaselineLightMode}
           ></mds-tab-item>
           <mds-tab-item
-            disabled={this.disabled}
+            disabled={this.isModeDisabled('system')}
             selected={this.mode === 'system'}
             onClick={this.handleModeClick('system')}
             class="item item--system"
             icon={miBaselineSettings}
           ></mds-tab-item>
           <mds-tab-item
-            disabled={this.disabled}
+            disabled={this.isModeDisabled('dark')}
             selected={this.mode === 'dark'}
             onClick={this.handleModeClick('dark')}
             class="item item--dark"

@@ -67,9 +67,9 @@
     { "color": "#eab308", "export": ["label", "default"], "name": "label.yellow" },
     { "color": "#f97316", "export": ["label", "default"], "name": "label.orange" },
 
-    { "color": "#00379E", "export": ["default"], "name": "variant.primary" },
-    { "color": "#0f4ad5", "export": ["default"], "name": "variant.secondary" },
-    { "color": "#782FF6", "export": ["default"], "name": "variant.ai" },
+    { "alias": "brand.maggioli", "export": ["default"], "name": "variant.primary" },
+    { "alias": "brand.maggioli-editore", "export": ["default"], "name": "variant.secondary" },
+    { "alias": "label.violet", "export": ["default"], "name": "variant.ai" },
 
     {
       "color": "#00379E",

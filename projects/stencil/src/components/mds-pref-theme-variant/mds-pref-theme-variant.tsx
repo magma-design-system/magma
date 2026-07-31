@@ -23,7 +23,7 @@ import { TabSizeType } from '@type/button';
 })
 export class MdsPrefThemeVariant {
   @State() showDropdown: boolean = false;
-  @Element() element: HTMLMdsPrefLanguageElement;
+  @Element() element: HTMLMdsPrefThemeVariantElement;
   private readonly localStorageAliasThemeName: string = 'mdsPrefThemeName';
   private readonly localStorageAliasThemeScheme: string = 'mdsPrefThemeScheme';
   private readonly defaultTheme: string = 'default';

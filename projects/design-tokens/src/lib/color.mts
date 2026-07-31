@@ -30,12 +30,23 @@ export interface SeedConfig {
   dark: RgbHexColor;
 }
 export interface ColorConfig {
+  /**
+   * Base color the palette is solved from. A family provides EITHER `color` (its
+   * own palette) OR `alias` (a reference to another family); the config schema
+   * enforces the XOR, so alias entries carry no `color` at runtime.
+   */
   color: RgbHexColor;
   export?: string[];
   name: string;
   seed?: SeedConfig;
   disabled?: boolean;
   title?: string;
+  /**
+   * Reference another family as a `<group>.<name>` path (e.g. `brand.maggioli`)
+   * instead of solving a palette: this family re-exports the source's already
+   * resolved scale under its own name (a single-source alias). Mutually
+   * exclusive with `color`.
+   */
   alias?: string;
   ratios?: string;
   formula?: Formula;
@@ -352,6 +363,8 @@ export function createColorTokens(magmaConfig: MagmaConfig) {
     [key: string]: { light: ColorVariant[]; dark: ColorVariant[] };
   } = {};
   config.colors.forEach((element) => {
+    // alias entries reference another family and generate no palette of their own
+    if (element.alias) return;
     const formula = resolveFormula(element, config);
     const light = createColorVariants(element, config, "light");
     // hue shift sides are anchored to physical lightness, so the two theme
@@ -422,6 +435,27 @@ export function createColorTokens(magmaConfig: MagmaConfig) {
     const group = element.name.split(".")[groupIndex];
     const name = element.name.split(".")[nameIndex];
 
+    // alias entries carry no palette: RESERVE their tree + export slot here so the
+    // config order is preserved, then fill the values from the source family in the
+    // post-pass below (reassigning a reserved key keeps its insertion position).
+    if (element.alias && !element.disabled) {
+      if (!Object.hasOwn(tokens.color, group)) tokens.color[group] = {};
+      tokens.color[group][name] = {};
+      const exportTargets = resolveExport(element, config);
+      if (exportTargets !== undefined) {
+        exportTargets.forEach((exportElement) => {
+          if (exportGroups[exportElement] === undefined) {
+            exportGroups[exportElement] = { color: {} };
+          }
+          if (exportGroups[exportElement].color[group] === undefined) {
+            exportGroups[exportElement].color[group] = {};
+          }
+          exportGroups[exportElement].color[group][name] = {};
+        });
+      }
+      return;
+    }
+
     if (!element.disabled) {
       if (!Object.hasOwn(tokens.color, group)) {
         console.info(`Creating ${chalk.magenta("group")} ${group}`);
@@ -479,6 +513,42 @@ export function createColorTokens(magmaConfig: MagmaConfig) {
           };
         });
       }
+    }
+  });
+
+  // Alias families (e.g. variant.primary -> brand.maggioli) are REFERENCES, not
+  // their own palette: they carry no `color` and solve nothing. Instead they
+  // re-export the source family's already-built (resolved) subtree under their
+  // own name. Runs AFTER the main loop so the source is present, and copies the
+  // resolved tree so contrast-gate/figma keep seeing hex, never a reference.
+  config.colors.forEach((element) => {
+    if (!element.alias || element.disabled) return;
+    const [group, name] = element.name.split(".");
+    const [srcGroup, srcName] = element.alias.split(".");
+    const source = tokens.color[srcGroup]?.[srcName];
+    if (source === undefined) {
+      throw new Error(
+        `Color "${element.name}" aliases "${element.alias}", which is not a generated family ` +
+          `(it must be a non-alias color declared in the same config).`,
+      );
+    }
+    if (!Object.hasOwn(tokens.color, group)) tokens.color[group] = {};
+    tokens.color[group][name] = structuredClone(source);
+
+    const exportTargets = resolveExport(element, config);
+    if (exportTargets !== undefined) {
+      exportTargets.forEach((exportElement) => {
+        if (exportGroups[exportElement] === undefined) {
+          exportGroups[exportElement] = { color: {} };
+        }
+        if (exportGroups[exportElement].color[group] === undefined) {
+          exportGroups[exportElement].color[group] = {};
+        }
+        exportGroups[exportElement].color[group][name] = {
+          light: tokens.color[group][name].light,
+          dark: tokens.color[group][name].dark,
+        };
+      });
     }
   });
 

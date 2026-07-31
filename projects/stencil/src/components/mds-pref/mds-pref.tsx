@@ -5,6 +5,8 @@ import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.es.json';
 import localeIt from './meta/locale.it.json';
 import { TabSizeType } from '@type/button';
+import { PreferenceThemeSchemeType } from '@type/preference';
+import { MdsPrefThemeVariantEventDetail } from '@event/theme-variant';
 
 /**
  * @name Pref
@@ -75,6 +77,10 @@ export class MdsPref {
     if (this.controller) {
       this.addPerfEvents();
     }
+    // The lock coordination drives the visible-mode UI (the controller mode is
+    // hidden via CSS), so it is wired regardless of the controller prop.
+    this.addThemeVariantEvent(this.host.querySelector('mds-pref-theme-variant') as HTMLElement);
+    this.applyInitialSchemeLock();
   }
 
   disconnectedCallback(): void {
@@ -82,6 +88,7 @@ export class MdsPref {
       document.documentElement?.removeAttribute('data-magma-pref');
     }
     this.removePerfEvents();
+    this.removeThemeVariantEvent(this.host.querySelector('mds-pref-theme-variant') as HTMLElement);
   }
 
   private addPerfEvents = (): void => {
@@ -114,6 +121,39 @@ export class MdsPref {
   private removeEvent = (element?: HTMLElement): void => {
     if (!element) return;
     element.removeEventListener('mdsPrefChange', this.handlePrefChangeEvent.bind(this));
+  };
+
+  private handleThemeVariantChangeEvent = (e: Event): void => {
+    const detail = (e as CustomEvent<MdsPrefThemeVariantEventDetail>).detail;
+    this.applySchemeLock(detail?.scheme);
+  };
+
+  private addThemeVariantEvent = (element?: HTMLElement): void => {
+    if (!element) return;
+    element.addEventListener('mdsPrefThemeVariantChange', this.handleThemeVariantChangeEvent);
+  };
+
+  private removeThemeVariantEvent = (element?: HTMLElement): void => {
+    if (!element) return;
+    element.removeEventListener('mdsPrefThemeVariantChange', this.handleThemeVariantChangeEvent);
+  };
+
+  /**
+   * Cross-lane coordination: a scheme-constrained theme locks the matching mode
+   * item in `mds-pref-theme`. This is a UI concern only - it never writes the
+   * stored mode preference, which the theme's `scheme` overrides at render time.
+   */
+  private applySchemeLock = (scheme?: PreferenceThemeSchemeType): void => {
+    const themeEl = this.host.querySelector('mds-pref-theme') as HTMLMdsPrefThemeElement | null;
+    if (!themeEl) return;
+    themeEl.lockedScheme = scheme === 'light' || scheme === 'dark' ? scheme : undefined;
+  };
+
+  private applyInitialSchemeLock = (): void => {
+    const variantEl = this.host.querySelector(
+      'mds-pref-theme-variant',
+    ) as HTMLMdsPrefThemeVariantElement | null;
+    this.applySchemeLock(variantEl?.scheme);
   };
 
   render() {

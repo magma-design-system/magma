@@ -1,6 +1,6 @@
 @import './css/mds-pref-theme-variant-fouc.css';
 
-mds-pref-language {
+:host {
   display: grid;
   gap: --spacing(400);
 }
