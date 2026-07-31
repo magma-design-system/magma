@@ -8,6 +8,7 @@ import { semantic } from '../semantic.config.js'
 import {
   aliasesFromConfig,
   applyBaseline,
+  contrastAliasesFromConfig,
   evaluatePairs,
   formatRow,
   resolvePrimitive,
@@ -88,4 +89,40 @@ test('the committed baseline has no stale entries', async () => {
     staleBaseline,
     `These baseline entries now pass and should be removed (npm run contrast -- --update-baseline):\n${staleBaseline.join('\n')}`,
   ).toEqual([])
+})
+
+// --- contrast (spec 7, prototype): pref-contrast-more promotes text/border ---
+
+test('contrast-more promotes text/border roles to stronger same-family steps', () => {
+  const map = contrastAliasesFromConfig(semantic)
+  // subtle borrows the muted step, muted borrows default (base tint = neutral)
+  expect(map['--magma-text-subtle']).toBe('--text-neutral-muted')
+  expect(map['--magma-text-muted']).toBe('--text-neutral-default')
+  // decorative/default borders shift one step toward strong
+  expect(map['--magma-border-muted']).toBe('--border-neutral-default')
+  expect(map['--magma-border-default']).toBe('--border-neutral-strong')
+  // roles not promoted keep their base step
+  expect(map['--magma-text-default']).toBe('--text-neutral-default')
+  expect(map['--magma-text-disabled']).toBe('--text-neutral-disabled')
+})
+
+test('contrast-more never reduces text contrast on any surface, and boosts subtle', async () => {
+  const tree = await loadTree()
+  const onSurface = (aliases: Record<string, string>) =>
+    evaluatePairs(tree, aliases).filter((r) => r.category === 'text-on-surface')
+  const base = onSurface(aliasesFromConfig(semantic))
+  const more = onSurface(contrastAliasesFromConfig(semantic))
+
+  // more-contrast is an upstream promotion: no text pair may drop below its base
+  for (const r of more) {
+    const b = base.find((x) => x.key === r.key)!
+    expect(r.achieved, `${r.key}: more=${r.achieved} < base=${b.achieved}`).toBeGreaterThanOrEqual(
+      b.achieved - 0.05,
+    )
+  }
+  // the weakest role (subtle) is strictly stronger on every surface
+  for (const r of more.filter((x) => x.fgToken === 'text-subtle')) {
+    const b = base.find((x) => x.key === r.key)!
+    expect(r.achieved, `subtle not boosted at ${r.key}`).toBeGreaterThan(b.achieved)
+  }
 })

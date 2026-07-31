@@ -29,6 +29,7 @@ const {
   neutralHueSteps,
   accents,
   themes,
+  contrast,
 } = semantic;
 
 const HEADER = (what: string) =>
@@ -152,7 +153,24 @@ const bridgeBody = bridge
   .map(([magma, tw]) => `  --color-${tw}: rgb(var(--magma-${magma}));`)
   .join('\n');
 const bridgeCss = `${HEADER('Tailwind bridge for the semantic color layer.')}\n@theme {\n${bridgeBody}\n}\n`;
-const layerCss = `${HEADER('Semantic color layer (--magma-*) - the contract components consume.')}${layer.join('\n')}`;
+
+// Contrast (spec 7, prototype): `pref-contrast-more` promotes text/border roles to
+// a STRONGER same-family step via the tint block, so the whole scaffolding gains
+// contrast UPSTREAM (no per-component --tone-* sheet). Family-independent - the same
+// promotion extends to each theme later by swapping the family; the base `tint` is
+// emitted here, text + border only. Roles omitted keep their normal step.
+const contrastRules: string[] = [];
+Object.entries(contrast?.more?.text ?? {}).forEach(([role, stronger]) =>
+  contrastRules.push(`  --magma-tint-text-${role}: var(--text-${tint}-${stronger});`),
+);
+Object.entries(contrast?.more?.border ?? {}).forEach(([role, stronger]) =>
+  contrastRules.push(`  --magma-tint-border-${role}: var(--border-${tint}-${stronger});`),
+);
+const contrastCss = contrastRules.length
+  ? `\n/* Contrast (spec 7): pref-contrast-more promotes text + border to stronger same-family steps via the tint block. */\n:root.pref-contrast-more {\n${contrastRules.join('\n')}\n}\n`
+  : '';
+
+const layerCss = `${HEADER('Semantic color layer (--magma-*) - the contract components consume.')}${layer.join('\n')}${contrastCss}`;
 
 // Named themes (spec 8): one override block per theme. A theme repoints the
 // --magma-tint-* block (surface + border + text) when its surface family differs
@@ -204,6 +222,7 @@ async function main() {
   console.info(
     chalk.green(
       `Generated semantic layer: ${bridge.length} tokens + ${themeBlocks.length} named themes ` +
+        `+ ${contrastRules.length} pref-contrast-more promotions ` +
         `(build/css/semantic.css + build/tailwind/semantic.css + build/css/themes.css).`,
     ),
   );

@@ -76,6 +76,18 @@ export interface SemanticConfig {
    * axes (spacing, radii, shadow) attach under the same `data-theme-name`.
    */
   themes: Record<string, ThemeDef>;
+  /**
+   * High-contrast promotions (spec 7, prototype). Under `pref-contrast-more`
+   * each listed role borrows a STRONGER same-family step (role -> stronger
+   * role), so the semantic scaffolding gains contrast upstream via the
+   * `--magma-tint-*` block instead of per-component `--tone-*` sheets.
+   * Family-independent: the same promotion extends to a named theme by swapping
+   * the family; the generator emits the base `tint` only for now. Roles omitted
+   * keep their normal step. Optional, so it stays a non-breaking addition.
+   */
+  contrast?: {
+    more?: { text?: Record<string, string>; border?: Record<string, string> };
+  };
 }
 
 export const semantic: SemanticConfig = {
@@ -103,5 +115,14 @@ export const semantic: SemanticConfig = {
     default: 'neutral', // base :root (== tint); emits no override rule
     cool: 'porcelain',
     warm: 'bisque',
+  },
+  contrast: {
+    // prototype: text + border only, base theme. muted/subtle text shift one step
+    // stronger; decorative/default borders shift toward strong. default text is
+    // already the ceiling; disabled text stays faint (intentional, WCAG-exempt).
+    more: {
+      text: { muted: 'default', subtle: 'muted' },
+      border: { muted: 'default', default: 'strong' },
+    },
   },
 };
