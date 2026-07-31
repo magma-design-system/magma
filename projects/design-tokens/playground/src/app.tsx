@@ -401,7 +401,9 @@ function ColorEditor({
       <input
         type="checkbox"
         checked={color.disabled ?? false}
-        onChange={(e) => onChange({ disabled: (e.target as HTMLInputElement).checked || undefined })}
+        onChange={(e) =>
+          onChange({ disabled: (e.target as HTMLInputElement).checked || undefined })
+        }
       />
       disabled
     </label>
@@ -859,8 +861,7 @@ export function App() {
     const color = config.colors[index];
     if (!color) return;
     const duplicate = config.colors.find(
-      (other, i) =>
-        i !== index && !!other.color && other.color.toLowerCase() === hex.toLowerCase(),
+      (other, i) => i !== index && !!other.color && other.color.toLowerCase() === hex.toLowerCase(),
     );
     setLoadError(duplicate ? `Warning: ${hex} is already used by "${duplicate.name}"` : null);
 
@@ -1283,7 +1284,17 @@ export function App() {
             <div class="modal-kind">
               <button
                 class={addModal.kind === 'color' ? 'active' : ''}
-                onClick={() => setAddModal((state) => state && { ...state, kind: 'color' })}
+                onClick={() =>
+                  setAddModal(
+                    (state) =>
+                      state && {
+                        ...state,
+                        kind: 'color',
+                        // A2: leaving reference mode must not keep the alias-only `variant` family
+                        group: state.group === 'variant' ? 'label' : state.group,
+                      },
+                  )
+                }
               >
                 own color
               </button>
@@ -1303,8 +1314,8 @@ export function App() {
                       ...state,
                       kind: 'alias',
                       alias: target,
-                      // variants live in their own group by convention
-                      group: state.manual ? state.group : 'variant',
+                      // A1: a reference can only live in the alias-only `variant` family
+                      group: 'variant',
                       name: state.manual ? state.name : (target.split('.')[1] ?? state.name),
                     };
                   })
@@ -1357,7 +1368,9 @@ export function App() {
               <label>
                 group
                 <select
-                  value={addModal.group}
+                  // A1: references are locked to the alias-only `variant` family
+                  value={addModal.kind === 'alias' ? 'variant' : addModal.group}
+                  disabled={addModal.kind === 'alias'}
                   onChange={(e) =>
                     setAddModal(
                       (state) =>
@@ -1365,9 +1378,12 @@ export function App() {
                     )
                   }
                 >
-                  {[...new Set([...groups.keys(), 'label', 'variant'])].map((group) => (
-                    <option value={group}>{group}</option>
-                  ))}
+                  {[...new Set([...groups.keys(), 'label', 'variant'])]
+                    // A2: an own color can never live in the alias-only `variant` family
+                    .filter((group) => addModal.kind === 'alias' || group !== 'variant')
+                    .map((group) => (
+                      <option value={group}>{group}</option>
+                    ))}
                 </select>
               </label>
               <label>

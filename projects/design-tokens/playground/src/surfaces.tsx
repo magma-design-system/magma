@@ -190,7 +190,8 @@ export function SurfaceManager({ config, onToggleSurface, onUpdateTheme }: Surfa
         </div>
         <div class="surface-optin">
           {config.colors
-            .filter((color) => !color.disabled)
+            // A3: `variant.*` is an alias-only accent family, never a surface seed
+            .filter((color) => !color.disabled && color.name.split('.')[0] !== 'variant')
             .map((color) => (
               <label class="surface-optin-item" title={color.name}>
                 <input
