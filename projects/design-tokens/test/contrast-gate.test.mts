@@ -51,14 +51,18 @@ test('aliasesFromConfig maps every --magma-* role to its primitive (A9 contract)
   expect(map['--magma-surface-default']).toBe('--surface-neutral-default')
   expect(map['--magma-text-muted']).toBe('--text-neutral-muted') // A7 by-target primitive
   expect(map['--magma-text-on-emphasis']).toBe('--tone-neutral-seed')
-  // focus follows the primary accent's emphasis step (theme-aware)
+  // focus follows the general accent's emphasis step (theme-aware)
   expect(map['--magma-border-focus']).toBe('--variant-primary-04')
   // hue quintet steps
   expect(map['--magma-danger-fg']).toBe('--status-error-05')
-  // accents: one quintet per fixed role, resolving to the mapped variant family
-  expect(map['--magma-accent-primary-emphasis']).toBe('--variant-primary-04')
-  expect(map['--magma-accent-secondary-fg']).toBe('--variant-secondary-05')
+  // accents: the general `accent` owns the bare namespace (no infix, promoted from
+  // the former deprecated alias); its states are infix-free too; `ai` infixes.
+  expect(map['--magma-accent-emphasis']).toBe('--variant-primary-04')
+  expect(map['--magma-accent-emphasis-hover']).toBe('--variant-primary-03')
   expect(map['--magma-accent-ai-emphasis']).toBe('--variant-ai-04')
+  // the old per-role infix names are gone (secondary role dropped, primary promoted)
+  expect(map['--magma-accent-primary-emphasis']).toBeUndefined()
+  expect(map['--magma-accent-secondary-fg']).toBeUndefined()
 })
 
 // --- integration: the shipped palette + config mapping + committed baseline ---

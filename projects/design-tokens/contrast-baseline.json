@@ -5,12 +5,8 @@
       "achieved": 74.9,
       "target": 75
     },
-    "accent-primary-on-emphasis|accent-primary-emphasis|dark": {
+    "accent-on-emphasis|accent-emphasis|dark": {
       "achieved": 74.9,
-      "target": 75
-    },
-    "accent-secondary-on-emphasis|accent-secondary-emphasis|dark": {
-      "achieved": 74.7,
       "target": 75
     },
     "danger-on-emphasis|danger-emphasis|dark": {

@@ -1,140 +1,140 @@
 :host([variant='primary']) {
-  --mds-button-background: rgb(var(--variant-primary-04));
-  --mds-button-border-color-rgb: var(--variant-primary-04);
+  --mds-button-background: rgb(var(--magma-accent-emphasis));
+  --mds-button-border-color-rgb: var(--magma-accent-emphasis);
   --mds-button-color: rgb(var(--tone-neutral-seed));
 
   &:host([tone='strong']:hover) {
-    --mds-button-background: rgb(var(--variant-primary-03));
-    --mds-button-border-color-rgb: var(--variant-primary-03);
+    --mds-button-background: rgb(var(--magma-accent-emphasis-hover));
+    --mds-button-border-color-rgb: var(--magma-accent-emphasis-hover);
   }
 
   &:host([tone='weak']) {
-    --mds-button-background: rgb(var(--variant-primary-09));
-    --mds-button-border-color-rgb: var(--variant-primary-09);
-    --mds-button-color: rgb(var(--variant-primary-03));
+    --mds-button-background: rgb(var(--magma-accent-surface));
+    --mds-button-border-color-rgb: var(--magma-accent-surface);
+    --mds-button-color: rgb(var(--magma-accent-emphasis-hover));
 
-    fill: rgb(var(--variant-primary-03));
+    fill: rgb(var(--magma-accent-emphasis-hover));
   }
 
   &:host([tone='weak']:hover) {
-    --mds-button-background: rgb(var(--variant-primary-08));
-    --mds-button-border-color-rgb: var(--variant-primary-08);
+    --mds-button-background: rgb(var(--magma-accent-surface-hover));
+    --mds-button-border-color-rgb: var(--magma-accent-surface-hover);
   }
 
   &:host([tone='outline']) {
-    --mds-button-border-color-rgb: var(--variant-primary-04);
-    --mds-button-color: rgb(var(--variant-primary-03));
+    --mds-button-border-color-rgb: var(--magma-accent-emphasis);
+    --mds-button-color: rgb(var(--magma-accent-emphasis-hover));
   }
 
   &:host([tone='outline']:hover) {
-    --mds-button-border-color-rgb: var(--variant-primary-04);
-    --mds-button-color: rgb(var(--variant-primary-02));
+    --mds-button-border-color-rgb: var(--magma-accent-emphasis);
+    --mds-button-color: rgb(var(--magma-accent-emphasis-active));
   }
 
   &:host([tone='text']) {
-    --mds-button-color: rgb(var(--variant-primary-02));
+    --mds-button-color: rgb(var(--magma-accent-emphasis-active));
   }
 
   &:host([tone='text']:hover) {
-    --mds-button-color: rgb(var(--variant-primary-04));
-    --mds-button-background: rgb(var(--variant-primary-10));
+    --mds-button-color: rgb(var(--magma-accent-emphasis));
+    --mds-button-background: rgb(var(--magma-accent-surface-subtle));
   }
 
   &:host([tone='text'][active]) {
-    --mds-button-color: rgb(var(--variant-primary-01));
+    --mds-button-color: rgb(var(--magma-accent-emphasis-active));
   }
 }
 
 :host([variant='secondary']) {
-  --mds-button-background: rgb(var(--variant-secondary-04));
-  --mds-button-border-color-rgb: var(--variant-secondary-04);
+  --mds-button-background: rgb(var(--magma-accent-emphasis));
+  --mds-button-border-color-rgb: var(--magma-accent-emphasis);
   --mds-button-color: rgb(var(--tone-neutral-seed));
 
   &:host([tone='strong']:hover) {
-    --mds-button-background: rgb(var(--variant-secondary-03));
-    --mds-button-border-color-rgb: var(--variant-secondary-03);
+    --mds-button-background: rgb(var(--magma-accent-emphasis-hover));
+    --mds-button-border-color-rgb: var(--magma-accent-emphasis-hover);
   }
 
   &:host([tone='weak']) {
-    --mds-button-background: rgb(var(--variant-secondary-09));
-    --mds-button-border-color-rgb: var(--variant-secondary-09);
-    --mds-button-color: rgb(var(--variant-secondary-03));
+    --mds-button-background: rgb(var(--magma-accent-surface));
+    --mds-button-border-color-rgb: var(--magma-accent-surface);
+    --mds-button-color: rgb(var(--magma-accent-emphasis-hover));
 
-    fill: rgb(var(--variant-secondary-03));
+    fill: rgb(var(--magma-accent-emphasis-hover));
   }
 
   &:host([tone='weak']:hover) {
-    --mds-button-background: rgb(var(--variant-secondary-08));
-    --mds-button-border-color-rgb: var(--variant-secondary-08);
+    --mds-button-background: rgb(var(--magma-accent-surface-hover));
+    --mds-button-border-color-rgb: var(--magma-accent-surface-hover);
   }
 
   &:host([tone='outline']) {
-    --mds-button-border-color-rgb: var(--variant-secondary-04);
-    --mds-button-color: rgb(var(--variant-secondary-03));
+    --mds-button-border-color-rgb: var(--magma-accent-emphasis);
+    --mds-button-color: rgb(var(--magma-accent-emphasis-hover));
   }
 
   &:host([tone='outline']:hover) {
-    --mds-button-border-color-rgb: var(--variant-secondary-04);
-    --mds-button-color: rgb(var(--variant-secondary-02));
+    --mds-button-border-color-rgb: var(--magma-accent-emphasis);
+    --mds-button-color: rgb(var(--magma-accent-emphasis-active));
   }
 
   &:host([tone='text']) {
-    --mds-button-color: rgb(var(--variant-secondary-02));
+    --mds-button-color: rgb(var(--magma-accent-emphasis-active));
   }
 
   &:host([tone='text']:hover) {
-    --mds-button-color: rgb(var(--variant-secondary-04));
-    --mds-button-background: rgb(var(--variant-secondary-10));
+    --mds-button-color: rgb(var(--magma-accent-emphasis));
+    --mds-button-background: rgb(var(--magma-accent-surface-subtle));
   }
 
   &:host([tone='text'][active]) {
-    --mds-button-color: rgb(var(--variant-secondary-01));
+    --mds-button-color: rgb(var(--magma-accent-emphasis-active));
   }
 }
 
 :host([variant='ai']) {
-  --mds-button-background: rgb(var(--variant-ai-04));
-  --mds-button-border-color-rgb: var(--variant-ai-04);
+  --mds-button-background: rgb(var(--magma-accent-ai-emphasis));
+  --mds-button-border-color-rgb: var(--magma-accent-ai-emphasis);
   --mds-button-color: rgb(var(--tone-neutral-seed));
 
   &:host([tone='strong']:hover) {
-    --mds-button-background: rgb(var(--variant-ai-03));
-    --mds-button-border-color-rgb: var(--variant-ai-03);
+    --mds-button-background: rgb(var(--magma-accent-ai-emphasis-hover));
+    --mds-button-border-color-rgb: var(--magma-accent-ai-emphasis-hover);
   }
 
   &:host([tone='weak']) {
-    --mds-button-background: rgb(var(--variant-ai-09));
-    --mds-button-border-color-rgb: var(--variant-ai-09);
-    --mds-button-color: rgb(var(--variant-ai-03));
+    --mds-button-background: rgb(var(--magma-accent-ai-surface));
+    --mds-button-border-color-rgb: var(--magma-accent-ai-surface);
+    --mds-button-color: rgb(var(--magma-accent-ai-emphasis-hover));
 
-    fill: rgb(var(--variant-ai-03));
+    fill: rgb(var(--magma-accent-ai-emphasis-hover));
   }
 
   &:host([tone='weak']:hover) {
-    --mds-button-background: rgb(var(--variant-ai-08));
-    --mds-button-border-color-rgb: var(--variant-ai-08);
+    --mds-button-background: rgb(var(--magma-accent-ai-surface-hover));
+    --mds-button-border-color-rgb: var(--magma-accent-ai-surface-hover);
   }
 
   &:host([tone='outline']) {
-    --mds-button-border-color-rgb: var(--variant-ai-04);
-    --mds-button-color: rgb(var(--variant-ai-03));
+    --mds-button-border-color-rgb: var(--magma-accent-ai-emphasis);
+    --mds-button-color: rgb(var(--magma-accent-ai-emphasis-hover));
   }
 
   &:host([tone='outline']:hover) {
-    --mds-button-border-color-rgb: var(--variant-ai-04);
-    --mds-button-color: rgb(var(--variant-ai-02));
+    --mds-button-border-color-rgb: var(--magma-accent-ai-emphasis);
+    --mds-button-color: rgb(var(--magma-accent-ai-emphasis-active));
   }
 
   &:host([tone='text']) {
-    --mds-button-color: rgb(var(--variant-ai-02));
+    --mds-button-color: rgb(var(--magma-accent-ai-emphasis-active));
   }
 
   &:host([tone='text']:hover) {
-    --mds-button-color: rgb(var(--variant-ai-04));
-    --mds-button-background: rgb(var(--variant-ai-10));
+    --mds-button-color: rgb(var(--magma-accent-ai-emphasis));
+    --mds-button-background: rgb(var(--magma-accent-ai-surface-subtle));
   }
 
   &:host([tone='text'][active]) {
-    --mds-button-color: rgb(var(--variant-ai-01));
+    --mds-button-color: rgb(var(--magma-accent-ai-emphasis-active));
   }
 }

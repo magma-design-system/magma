@@ -1,9 +1,9 @@
 .icon-help {
-  background-color: rgb(var(--variant-ai-05));
+  background-color: rgb(var(--magma-accent-ai-fg));
   border: 1px solid rgb(var(--tone-neutral-seed));
   border-radius: --spacing(600);
   cursor: pointer;
-  fill: rgb(var(--variant-ai-10));
+  fill: rgb(var(--magma-accent-ai-surface-subtle));
   height: min-content;
   width: min-content;
 }
