@@ -1,22 +1,22 @@
 :host {
-  --mds-input-icon-color: rgb(var(--variant-primary-04));
+  --mds-input-icon-color: rgb(var(--magma-accent-emphasis));
   --mds-input-variant-color-rgb: 0 0 0;
 }
 
 :host(:focus) {
-  --mds-input-icon-color: rgb(var(--variant-primary-05));
-  --mds-input-variant-color-rgb: var(--variant-primary-04);
+  --mds-input-icon-color: rgb(var(--magma-accent-fg));
+  --mds-input-variant-color-rgb: var(--magma-accent-emphasis);
 }
 
 :host([variant='ai']) {
-  --mds-input-icon-color: rgb(var(--variant-ai-04));
-  --mds-input-tip-background: rgb(var(--variant-ai-05));
+  --mds-input-icon-color: rgb(var(--magma-accent-ai-emphasis));
+  --mds-input-tip-background: rgb(var(--magma-accent-ai-fg));
   --mds-input-variant-color-rgb: 0 0 0;
 }
 
 :host([variant='ai']:focus) {
-  --mds-input-icon-color: rgb(var(--variant-ai-05));
-  --mds-input-variant-color-rgb: var(--variant-ai-04);
+  --mds-input-icon-color: rgb(var(--magma-accent-ai-fg));
+  --mds-input-variant-color-rgb: var(--magma-accent-ai-emphasis);
 }
 
 :host([variant='info']) {

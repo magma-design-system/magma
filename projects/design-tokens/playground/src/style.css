@@ -838,6 +838,22 @@ button.danger:hover { border-color: #c0392b; color: #c0392b; }
 .tsw-text code { font-size: 10px; opacity: 0.7; }
 .tsw-borders { display: flex; flex-wrap: wrap; gap: 6px; }
 .tsw-bchip { border: 2px solid; border-radius: 6px; font-size: 10px; padding: 3px 7px; }
+.theme-accent-controls {
+  display: flex; flex-wrap: wrap; gap: 8px 12px; margin-top: 8px;
+  border-top: 1px solid var(--line); padding-top: 8px;
+}
+.theme-accent-ctl { align-items: center; display: flex; font-size: 11px; gap: 4px; }
+.theme-accent-role { color: var(--ink-soft); text-transform: capitalize; }
+.theme-accent-ctl select { font-size: 11px; padding: 1px 4px; }
+.theme-accent-flag {
+  background: var(--accent, #6d28d9); border-radius: 4px; color: #fff;
+  font-size: 9px; padding: 1px 4px; text-transform: uppercase;
+}
+.tsw-accents { display: flex; flex-wrap: wrap; gap: 6px; }
+.tsw-accent { align-items: center; display: flex; gap: 4px; }
+.tsw-accent-pill { border-radius: 6px; font-size: 11px; font-weight: 600; padding: 3px 9px; text-transform: capitalize; }
+.tsw-accent-soft { border-radius: 5px; font-size: 10px; font-weight: 600; padding: 2px 6px; }
+.tsw-accent-lc { font-size: 9px; opacity: 0.7; }
 .theme-export {
   background: #f2f3f5; border: 1px solid var(--line); border-radius: var(--radius); color: var(--ink);
   font-family: ui-monospace, monospace; font-size: 11px; line-height: 1.6; margin-top: 8px;
