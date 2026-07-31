@@ -2,7 +2,7 @@ import chalk from 'chalk';
 import { mkdir, writeFile } from 'fs/promises';
 import { join } from 'path';
 import { BUILD_DIR } from './meta';
-import { semantic, type ThemeDef } from '../../design-tokens/semantic.config';
+import { semantic, accentTintOverride, type ThemeDef } from '../../design-tokens/semantic.config';
 
 /**
  * Generate the semantic color layer (A9) from design-tokens/semantic.config.ts:
@@ -118,16 +118,11 @@ Object.entries(hues).forEach(([hue, { family, partial }]) => {
 //    is kept as a DEPRECATED alias of accent-primary for one release.
 Object.entries(accents).forEach(([role, family]) => {
   layer.push('', `  /* accent ${role} (${family}) */`);
-  // tint pointers (internal; repointed per theme, not bridged to Tailwind)
-  layer.push(`  --magma-tint-accent-${role}-surface: var(--${family}-${hueSteps.surface});`);
-  layer.push(`  --magma-tint-accent-${role}-fg: var(--${family}-${hueSteps.fg});`);
-  layer.push(`  --magma-tint-accent-${role}-border: var(--${family}-${hueSteps.border});`);
-  layer.push(`  --magma-tint-accent-${role}-emphasis: var(--${family}-${hueSteps.emphasis});`);
-  // interaction-state pointers (spec 6.6 accent exception): each names an existing
-  // ramp step, so it mode-flips and retints per theme exactly like the quintet.
-  Object.entries(accentStateSteps).forEach(([state, step]) =>
-    layer.push(`  --magma-tint-accent-${role}-${state}: var(--${family}-${step});`),
-  );
+  // tint pointers (internal; repointed per theme, not bridged to Tailwind): the
+  // quintet steps + interaction states (spec 6.6 accent exception), each an
+  // existing ramp step so it mode-flips and retints per theme like the quintet.
+  // Shared with the theme overrides + playground via accentTintOverride().
+  accentTintOverride(role, family).forEach((line) => layer.push(line));
   // roles resolve through the tint pointers -> theme-aware
   layer.push(
     alias(`accent-${role}-surface`, `magma-tint-accent-${role}-surface`, `accent-${role}-surface`),
@@ -194,17 +189,9 @@ const themeBlocks = Object.entries(themes)
       );
     }
     if (accentOverride) {
-      Object.entries(accentOverride).forEach(([role, family]) => {
-        rules.push(`  --magma-tint-accent-${role}-surface: var(--${family}-${hueSteps.surface});`);
-        rules.push(`  --magma-tint-accent-${role}-fg: var(--${family}-${hueSteps.fg});`);
-        rules.push(`  --magma-tint-accent-${role}-border: var(--${family}-${hueSteps.border});`);
-        rules.push(
-          `  --magma-tint-accent-${role}-emphasis: var(--${family}-${hueSteps.emphasis});`,
-        );
-        Object.entries(accentStateSteps).forEach(([state, step]) =>
-          rules.push(`  --magma-tint-accent-${role}-${state}: var(--${family}-${step});`),
-        );
-      });
+      Object.entries(accentOverride).forEach(([role, family]) =>
+        rules.push(...accentTintOverride(role, family)),
+      );
     }
     return rules.length ? `:root[data-theme-name='${name}'] {\n${rules.join('\n')}\n}` : '';
   })
