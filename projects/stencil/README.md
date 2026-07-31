@@ -86,13 +86,39 @@ npm i '@maggioli-design-system/magma'
 
 ## Define Components
 
+The recommended entry point is `@maggioli-design-system/magma/components`: import only
+the components you use and the bundler drops the rest.
+
 ```js
 // insert in bootstrap file of client part of your application
 
-import { defineCustomElements } from "@maggioli-design-system/magma/loader";
+import {
+  defineCustomElementMdsButton,
+  defineCustomElementMdsIcon,
+} from '@maggioli-design-system/magma/components';
+
+defineCustomElementMdsButton();
+defineCustomElementMdsIcon();
+```
+
+Each `defineCustomElement*` registers the component's children recursively, so only the
+tags you write yourself need to be listed. A per-component deep import is available too:
+
+```js
+import { defineCustomElement } from '@maggioli-design-system/magma/components/mds-button.js';
+```
+
+The lazy loader registers every `mds-*` tag in one call. It is simpler, but nothing can
+be tree-shaken away - use it only when the app needs most of the library.
+
+```js
+import { defineCustomElements } from '@maggioli-design-system/magma/loader';
 
 defineCustomElements();
 ```
+
+Do not mix the two entry points in the same app: they are separate builds of the same
+components.
 
 Alternatively, if you wanted to take advantage of ES Modules, you could include the components using an import statement.
 

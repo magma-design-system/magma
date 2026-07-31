@@ -40,7 +40,8 @@ const TARGETS: Target[] = [
     track: 'web-components.md',
     framework: 'none (plain HTML / vanilla JS, or any framework via custom elements)',
     wrapperPkg: '@maggioli-design-system/magma',
-    register: "defineCustomElements() from '@maggioli-design-system/magma/loader'",
+    register:
+      "the defineCustomElement* functions from '@maggioli-design-system/magma/components' (tree-shakeable), or defineCustomElements() from '@maggioli-design-system/magma/loader' to register everything at once",
   },
   {
     pkgDir: 'react',
@@ -55,7 +56,8 @@ const TARGETS: Target[] = [
     track: 'angular.md',
     framework: 'Angular (>= 18.2)',
     wrapperPkg: '@maggioli-design-system/magma-angular',
-    register: "MagmaModule.forRoot() from '@maggioli-design-system/magma-angular'",
+    register:
+      "import the standalone Mds* components from '@maggioli-design-system/magma-angular' (they self-register; MagmaModule.forRoot() is deprecated and a no-op)",
   },
 ];
 

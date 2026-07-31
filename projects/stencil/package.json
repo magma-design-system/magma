@@ -38,16 +38,17 @@
       "default": "./loader/index.js"
     },
     "./components/*.js": {
-      "types": "./dist/types/components/*.d.ts",
-      "import": "./components/*.js"
+      "types": "./dist/components/*.d.ts",
+      "import": "./dist/components/*.js"
     },
     "./components": {
-      "types": "./dist/types/components.d.ts",
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs.js",
-      "default": "./dist/index.js"
+      "types": "./dist/components/index.d.ts",
+      "import": "./dist/components/index.js"
     }
   },
+  "sideEffects": [
+    "**/*.css"
+  ],
   "files": [
     "dist/",
     "loader/",
@@ -63,6 +64,7 @@
     "build.no-cache": "stencil build --no-cache",
     "build.watch": "npm run build.icons && stencil build -c stencil.dev.config.ts --dev --watch",
     "build.watch-no-cache": "stencil build --no-cache --watch",
+    "check.treeshaking": "tsx --tsconfig script.tsconfig.json ./scripts/check-treeshaking.ts",
     "clean": "tsx --tsconfig script.tsconfig.json ./scripts/clean.ts",
     "generate": "stencil generate",
     "generate.spec": "tsx --tsconfig script.tsconfig.json ./scripts/generate-spec.ts",

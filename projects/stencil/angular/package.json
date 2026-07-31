@@ -4,9 +4,10 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
-    "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "build": "ng build magma-angular",
+    "build.treeshaking-probe": "ng build treeshaking-probe",
+    "watch": "ng build magma-angular --watch --configuration development",
+    "test": "ng test magma-angular"
   },
   "private": true,
   "dependencies": {
