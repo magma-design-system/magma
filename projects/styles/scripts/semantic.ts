@@ -28,6 +28,7 @@ const {
   hueSteps,
   neutralHueSteps,
   accents,
+  accentStateSteps,
   themes,
 } = semantic;
 
@@ -122,6 +123,11 @@ Object.entries(accents).forEach(([role, family]) => {
   layer.push(`  --magma-tint-accent-${role}-fg: var(--${family}-${hueSteps.fg});`);
   layer.push(`  --magma-tint-accent-${role}-border: var(--${family}-${hueSteps.border});`);
   layer.push(`  --magma-tint-accent-${role}-emphasis: var(--${family}-${hueSteps.emphasis});`);
+  // interaction-state pointers (spec 6.6 accent exception): each names an existing
+  // ramp step, so it mode-flips and retints per theme exactly like the quintet.
+  Object.entries(accentStateSteps).forEach(([state, step]) =>
+    layer.push(`  --magma-tint-accent-${role}-${state}: var(--${family}-${step});`),
+  );
   // roles resolve through the tint pointers -> theme-aware
   layer.push(
     alias(`accent-${role}-surface`, `magma-tint-accent-${role}-surface`, `accent-${role}-surface`),
@@ -135,6 +141,15 @@ Object.entries(accents).forEach(([role, family]) => {
       `accent-${role}-emphasis`,
       `magma-tint-accent-${role}-emphasis`,
       `accent-${role}-emphasis`,
+    ),
+  );
+  Object.keys(accentStateSteps).forEach((state) =>
+    layer.push(
+      alias(
+        `accent-${role}-${state}`,
+        `magma-tint-accent-${role}-${state}`,
+        `accent-${role}-${state}`,
+      ),
     ),
   );
   layer.push(alias(`accent-${role}-on-emphasis`, seed, `accent-${role}-on-emphasis`));
@@ -185,6 +200,9 @@ const themeBlocks = Object.entries(themes)
         rules.push(`  --magma-tint-accent-${role}-border: var(--${family}-${hueSteps.border});`);
         rules.push(
           `  --magma-tint-accent-${role}-emphasis: var(--${family}-${hueSteps.emphasis});`,
+        );
+        Object.entries(accentStateSteps).forEach(([state, step]) =>
+          rules.push(`  --magma-tint-accent-${role}-${state}: var(--${family}-${step});`),
         );
       });
     }
