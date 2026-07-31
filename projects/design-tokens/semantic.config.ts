@@ -65,6 +65,18 @@ export interface SemanticConfig {
    */
   accents: Record<string, string>;
   /**
+   * Accent interaction-state steps (a scoped spec 6.6 exception, accents only).
+   * The accent quintet has no elevation ladder to derive hover/active from
+   * (unlike neutral surfaces), and the `--variant-*` ramp INVERTS between light
+   * and dark, so a runtime `color-mix` cannot reproduce the states per mode.
+   * Instead each state NAMES an existing ramp step: the design-tokens engine
+   * already generates and mode-flips it, so the states stay theme-aware and the
+   * component migration is a mechanical 1:1 rename. Emitted as
+   * `--magma-accent-<role>-<state>` (through `--magma-tint-accent-<role>-<state>`)
+   * for every accent, so a named theme repoints them exactly like the quintet.
+   */
+  accentStateSteps: Record<string, string>;
+  /**
    * Named themes (spec 8): map of theme name -> either a surface family (string
    * shorthand) or a `ThemeDef` that also repoints accents. The named family's
    * `{surface,border,text}` scales retint the `--magma-tint-*` block, and any
@@ -98,6 +110,14 @@ export const semantic: SemanticConfig = {
     primary: 'variant-primary',
     secondary: 'variant-secondary',
     ai: 'variant-ai',
+  },
+  accentStateSteps: {
+    // emphasis band (solid fill): hover/active go one/two steps STRONGER.
+    'emphasis-hover': '03',
+    'emphasis-active': '02',
+    // surface band (subtle fill): hover one step stronger, subtle one lighter.
+    'surface-hover': '08',
+    'surface-subtle': '10',
   },
   themes: {
     default: 'neutral', // base :root (== tint); emits no override rule

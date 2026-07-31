@@ -74,6 +74,10 @@ const HUES = [
   'neutral',
 ] as const;
 const BORDERS = ['muted', 'default', 'strong', 'focus'] as const;
+// Accent emphasis-band states (spec 6.6 accent exception): the hover/active solid
+// fills carry on-emphasis text like the base emphasis, so they are gated the same
+// way. Surface-band states (surface-hover/subtle) add no new text-on-fill pair.
+const ACCENT_EMPHASIS_STATES = ['emphasis-hover', 'emphasis-active'] as const;
 
 // APCA is reported to <1 Lc precision; round display and compare on the rounded
 // value so float noise never flips a verdict.
@@ -115,6 +119,8 @@ export interface SemanticMapping {
   hueSteps: { surface: string; fg: string; border: string; emphasis: string };
   neutralHueSteps: { fg: string; border: string; emphasis: string };
   accents: Record<string, string>;
+  /** Accent interaction-state steps (spec 6.6 accent exception); optional. */
+  accentStateSteps?: Record<string, string>;
 }
 
 /**
@@ -151,6 +157,11 @@ export function aliasesFromConfig(m: SemanticMapping): Record<string, string> {
     set(`accent-${role}-border`, `${family}-${m.hueSteps.border}`);
     set(`accent-${role}-emphasis`, `${family}-${m.hueSteps.emphasis}`);
     set(`accent-${role}-on-emphasis`, m.seed);
+    // interaction states (spec 6.6 accent exception): each names an existing ramp
+    // step of the same family, mirroring scripts/semantic.ts.
+    Object.entries(m.accentStateSteps ?? {}).forEach(([state, step]) =>
+      set(`accent-${role}-${state}`, `${family}-${step}`),
+    );
   });
   return map;
 }
@@ -250,6 +261,23 @@ export function evaluatePairs(
         targets.onEmphasis,
         mode,
       );
+    }
+    // 2b. accent hover/active fills carry on-emphasis text too (enforced). They are
+    //     more extreme than the base emphasis in the safe direction, so they pass by
+    //     construction; gated for regression protection (e.g. a themed accent family).
+    for (const hue of HUES) {
+      if (!hue.startsWith('accent-')) continue;
+      for (const state of ACCENT_EMPHASIS_STATES) {
+        push(
+          'on-emphasis',
+          'error',
+          'apca',
+          `--magma-${hue}-on-emphasis`,
+          `--magma-${hue}-${state}`,
+          targets.onEmphasis,
+          mode,
+        );
+      }
     }
     // 3. colored fg on the elevated surfaces (report-only)
     for (const hue of HUES) {
