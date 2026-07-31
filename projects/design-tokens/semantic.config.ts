@@ -125,3 +125,25 @@ export const semantic: SemanticConfig = {
     warm: 'bisque',
   },
 };
+
+/**
+ * The `--magma-tint-accent-<role>-*` lines that point an accent role at `family`
+ * (a variant family): the quintet steps (surface/fg/border/emphasis) plus the
+ * interaction states. `on-emphasis` is family-independent (the seed) so it is not
+ * repointed. SHARED so the styles generator (`scripts/semantic.ts`, both the base
+ * layer and each named-theme override) and the playground theme export
+ * (`playground/src/themes.tsx`) emit byte-identical CSS - a theme repoints an
+ * accent exactly the way the base layer declares it.
+ */
+export const accentTintOverride = (role: string, family: string): string[] => {
+  const { hueSteps, accentStateSteps } = semantic;
+  return [
+    `  --magma-tint-accent-${role}-surface: var(--${family}-${hueSteps.surface});`,
+    `  --magma-tint-accent-${role}-fg: var(--${family}-${hueSteps.fg});`,
+    `  --magma-tint-accent-${role}-border: var(--${family}-${hueSteps.border});`,
+    `  --magma-tint-accent-${role}-emphasis: var(--${family}-${hueSteps.emphasis});`,
+    ...Object.entries(accentStateSteps).map(
+      ([state, step]) => `  --magma-tint-accent-${role}-${state}: var(--${family}-${step});`,
+    ),
+  ];
+};
