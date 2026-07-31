@@ -48,6 +48,28 @@ function clone<T>(value: T): T {
   return JSON.parse(JSON.stringify(value)) as T;
 }
 
+// an alias family references another family instead of solving its own palette:
+// the schema enforces `color` XOR `alias`, so an alias entry carries no `color`.
+function isAliasColor(color: Pick<ColorConfig, 'alias'>): boolean {
+  return typeof color.alias === 'string' && color.alias.length > 0;
+}
+
+// families that ship as aliases in the bundled config are the built-in variants:
+// their reference target stays editable, but they cannot be renamed or deleted
+// (mirrors how built-in contrast scales are protected). User-created aliases are
+// not in this set and stay fully editable.
+const BUILTIN_ALIAS_NAMES = new Set(
+  (initialConfigJson as unknown as MagmaConfig).colors.filter(isAliasColor).map((c) => c.name),
+);
+
+// the base color a swatch/preview should show: an alias follows through to its
+// source family's own base color (the source is a non-alias family).
+function resolveBaseColor(config: MagmaConfig, color: ColorConfig): string | undefined {
+  if (color.color) return color.color;
+  if (!color.alias) return undefined;
+  return config.colors.find((c) => c.name === color.alias)?.color;
+}
+
 // the working state is mirrored to localStorage so a reload keeps the edited
 // or loaded configuration instead of falling back to the defaults
 const DRAFT_STORAGE_KEY = 'magma-design-tokens:playground:draft';
@@ -326,6 +348,14 @@ interface ColorEditorProps {
   inheritedFormula: string;
   /** export groups inherited from the group when the color does not set its own */
   inheritedExport: string[];
+  /** this family is an alias (a reference), not a solved palette */
+  isAlias: boolean;
+  /** a built-in variant: retarget is allowed, but rename/delete are not */
+  isBuiltin: boolean;
+  /** non-alias families an alias may point at (`<group>.<name>` paths) */
+  aliasTargets: string[];
+  /** the source family's base color, for the read-only resolved swatch */
+  resolvedColor: string | undefined;
   onChange: (patch: Partial<ColorConfig> | { hueShift: undefined }) => void;
   /** fired when the color picker is released (change, not live input) */
   onColorCommit: (hex: string) => void;
@@ -339,9 +369,95 @@ function ColorEditor({
   inheritedRatios,
   inheritedFormula,
   inheritedExport,
+  isAlias,
+  isBuiltin,
+  aliasTargets,
+  resolvedColor,
   onChange,
   onColorCommit,
 }: ColorEditorProps) {
+  const exportField = (
+    <label>
+      export groups
+      <input
+        type="text"
+        value={(color.export ?? []).join(', ')}
+        placeholder={
+          inheritedExport.length ? `inherit (${inheritedExport.join(', ')})` : 'e.g. tones, default'
+        }
+        onChange={(e) => {
+          const raw = (e.target as HTMLInputElement).value
+            .split(',')
+            .map((s) => s.trim())
+            .filter(Boolean);
+          onChange({ export: raw.length ? raw : undefined });
+        }}
+      />
+    </label>
+  );
+
+  const disabledField = (
+    <label class="checkbox">
+      <input
+        type="checkbox"
+        checked={color.disabled ?? false}
+        onChange={(e) => onChange({ disabled: (e.target as HTMLInputElement).checked || undefined })}
+      />
+      disabled
+    </label>
+  );
+
+  // An alias family is a reference: it re-exports the source family's already
+  // resolved scale, so it carries no palette-solving fields (base color, hue
+  // shift, ratios, formula). The only alias-specific control is which family it
+  // points at; built-in variants keep that editable but lock name/delete.
+  if (isAlias) {
+    const targetKnown = !!color.alias && aliasTargets.includes(color.alias);
+    return (
+      <div class="editor">
+        <div class="editor-grid">
+          <label>
+            name
+            <input
+              type="text"
+              value={color.name}
+              disabled={isBuiltin}
+              title={isBuiltin ? 'built-in variant: cannot be renamed' : undefined}
+              onChange={(e) => onChange({ name: (e.target as HTMLInputElement).value })}
+            />
+          </label>
+          <label>
+            reference
+            <select
+              value={color.alias}
+              onChange={(e) => onChange({ alias: (e.target as HTMLSelectElement).value })}
+            >
+              {!targetKnown && color.alias && (
+                <option value={color.alias}>{color.alias} (missing)</option>
+              )}
+              {aliasTargets.map((name) => (
+                <option value={name}>{name}</option>
+              ))}
+            </select>
+          </label>
+          <label>
+            resolves to
+            <span class="color-input readonly">
+              <span class="alias-swatch" style={{ background: resolvedColor ?? 'transparent' }} />
+              <code>{resolvedColor ?? 'unresolved'}</code>
+            </span>
+          </label>
+          {exportField}
+          {disabledField}
+        </div>
+        <p class="alias-note">
+          Reference to <code>{color.alias}</code>: this family re-exports the source's resolved
+          scale. Base color, hue shift, ratios and formula are defined by the source, not here.
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div class="editor">
       <div class="editor-grid">
@@ -414,25 +530,7 @@ function ColorEditor({
             ))}
           </select>
         </label>
-        <label>
-          export groups
-          <input
-            type="text"
-            value={(color.export ?? []).join(', ')}
-            placeholder={
-              inheritedExport.length
-                ? `inherit (${inheritedExport.join(', ')})`
-                : 'e.g. tones, default'
-            }
-            onChange={(e) => {
-              const raw = (e.target as HTMLInputElement).value
-                .split(',')
-                .map((s) => s.trim())
-                .filter(Boolean);
-              onChange({ export: raw.length ? raw : undefined });
-            }}
-          />
-        </label>
+        {exportField}
         <label class="checkbox">
           <input
             type="checkbox"
@@ -443,16 +541,7 @@ function ColorEditor({
           />
           smooth
         </label>
-        <label class="checkbox">
-          <input
-            type="checkbox"
-            checked={color.disabled ?? false}
-            onChange={(e) =>
-              onChange({ disabled: (e.target as HTMLInputElement).checked || undefined })
-            }
-          />
-          disabled
-        </label>
+        {disabledField}
       </div>
       <HueShiftEditor
         value={color.hueShift}
@@ -490,7 +579,11 @@ export function App() {
   const [statusMsg, setStatusMsg] = useState<string | null>(null);
   const [scalesFormula, setScalesFormula] = useState<Formula>('wcag3');
   const [addModal, setAddModal] = useState<{
+    // 'color' creates an own-palette family, 'alias' a reference to another family
+    kind: 'color' | 'alias';
     color: string;
+    /** alias target (`<group>.<name>`) when kind === 'alias' */
+    alias: string;
     name: string;
     group: string;
     manual: boolean;
@@ -514,6 +607,22 @@ export function App() {
   const [selectedScales, selectedError] = useMemo((): [ColorScales | null, string | null] => {
     if (!selected || view !== 'colors') return [null, null];
     try {
+      if (isAliasColor(selected)) {
+        const source = config.colors.find((c) => c.name === selected.alias);
+        if (!source) {
+          return [null, `alias target "${selected.alias}" is not defined in this config`];
+        }
+        if (isAliasColor(source)) {
+          return [
+            null,
+            `alias target "${selected.alias}" is itself a reference; point it at a base-color family`,
+          ];
+        }
+        // resolve through the real generator with the source present, so the
+        // alias re-export finds it; the alias scale equals the source's.
+        const scales = generateScales({ ...config, colors: [source, selected] });
+        return [scales.get(selected.name) ?? null, null];
+      }
       const scales = generateScales(singleColorConfig(config, selected));
       return [scales.get(selected.name) ?? null, null];
     } catch (error) {
@@ -521,6 +630,10 @@ export function App() {
     }
   }, [
     JSON.stringify(selected),
+    // an alias preview also depends on its source family's palette settings
+    selected && isAliasColor(selected)
+      ? JSON.stringify(config.colors.find((c) => c.name === selected.alias))
+      : '',
     JSON.stringify(config.hueShift),
     JSON.stringify(config.ratios),
     config.colorspace,
@@ -746,7 +859,8 @@ export function App() {
     const color = config.colors[index];
     if (!color) return;
     const duplicate = config.colors.find(
-      (other, i) => i !== index && other.color.toLowerCase() === hex.toLowerCase(),
+      (other, i) =>
+        i !== index && !!other.color && other.color.toLowerCase() === hex.toLowerCase(),
     );
     setLoadError(duplicate ? `Warning: ${hex} is already used by "${duplicate.name}"` : null);
 
@@ -1001,6 +1115,10 @@ export function App() {
     ...new Set(config.colors.flatMap((color) => resolveExport(color, config) ?? [])),
   ].sort();
 
+  // families an alias may point at: any non-alias color (one with its own base
+  // palette). Shared by the alias editor and the "new reference" flow.
+  const aliasTargets = config.colors.filter((color) => !isAliasColor(color)).map((c) => c.name);
+
   // the surfaces/groups/diff views work on the whole config, not a single
   // color, so the picker column is dropped and the content spans full width
   const showSidebar = COLOR_LIST_VIEWS.has(view);
@@ -1121,12 +1239,18 @@ export function App() {
                     if (view !== 'scales') setView('colors');
                   }}
                 >
-                  <span class="swatch" style={{ background: color.color }} />
+                  <span class="swatch" style={{ background: resolveBaseColor(config, color) }} />
                   {color.name.split('.')[1]}
-                  {hasHueShift(color.hueShift ?? config.hueShift) && (
-                    <span class="badge" title="hue shifting active">
-                      hs
+                  {isAliasColor(color) ? (
+                    <span class="badge ref" title={`alias -> ${color.alias}`}>
+                      ref
                     </span>
+                  ) : (
+                    hasHueShift(color.hueShift ?? config.hueShift) && (
+                      <span class="badge" title="hue shifting active">
+                        hs
+                      </span>
+                    )
                   )}
                 </button>
               ))}
@@ -1136,7 +1260,9 @@ export function App() {
             <button
               onClick={() =>
                 setAddModal({
+                  kind: 'color',
                   color: '#4f8fd9',
+                  alias: aliasTargets[0] ?? '',
                   name: nearestColorName('#4f8fd9'),
                   group: 'label',
                   manual: false,
@@ -1153,23 +1279,80 @@ export function App() {
       {addModal && (
         <div class="modal-overlay">
           <div class="modal">
-            <h2>New color</h2>
-            <input
-              class="modal-picker"
-              type="color"
-              value={addModal.color}
-              onInput={(e) => {
-                const hex = (e.target as HTMLInputElement).value;
-                setAddModal(
-                  (state) =>
-                    state && {
+            <h2>{addModal.kind === 'alias' ? 'New reference' : 'New color'}</h2>
+            <div class="modal-kind">
+              <button
+                class={addModal.kind === 'color' ? 'active' : ''}
+                onClick={() => setAddModal((state) => state && { ...state, kind: 'color' })}
+              >
+                own color
+              </button>
+              <button
+                class={addModal.kind === 'alias' ? 'active' : ''}
+                disabled={aliasTargets.length === 0}
+                title={
+                  aliasTargets.length === 0
+                    ? 'no base-color family to reference yet'
+                    : 'reference another family instead of solving a palette'
+                }
+                onClick={() =>
+                  setAddModal((state) => {
+                    if (!state) return state;
+                    const target = state.alias || aliasTargets[0] || '';
+                    return {
                       ...state,
-                      color: hex,
-                      name: state.manual ? state.name : nearestColorName(hex),
-                    },
-                );
-              }}
-            />
+                      kind: 'alias',
+                      alias: target,
+                      // variants live in their own group by convention
+                      group: state.manual ? state.group : 'variant',
+                      name: state.manual ? state.name : (target.split('.')[1] ?? state.name),
+                    };
+                  })
+                }
+              >
+                reference
+              </button>
+            </div>
+            {addModal.kind === 'color' ? (
+              <input
+                class="modal-picker"
+                type="color"
+                value={addModal.color}
+                onInput={(e) => {
+                  const hex = (e.target as HTMLInputElement).value;
+                  setAddModal(
+                    (state) =>
+                      state && {
+                        ...state,
+                        color: hex,
+                        name: state.manual ? state.name : nearestColorName(hex),
+                      },
+                  );
+                }}
+              />
+            ) : (
+              <label class="modal-ref">
+                references
+                <select
+                  value={addModal.alias}
+                  onChange={(e) => {
+                    const target = (e.target as HTMLSelectElement).value;
+                    setAddModal(
+                      (state) =>
+                        state && {
+                          ...state,
+                          alias: target,
+                          name: state.manual ? state.name : (target.split('.')[1] ?? state.name),
+                        },
+                    );
+                  }}
+                >
+                  {aliasTargets.map((name) => (
+                    <option value={name}>{name}</option>
+                  ))}
+                </select>
+              </label>
+            )}
             <div class="modal-fields">
               <label>
                 group
@@ -1182,7 +1365,7 @@ export function App() {
                     )
                   }
                 >
-                  {[...new Set([...groups.keys(), 'label'])].map((group) => (
+                  {[...new Set([...groups.keys(), 'label', 'variant'])].map((group) => (
                     <option value={group}>{group}</option>
                   ))}
                 </select>
@@ -1206,17 +1389,26 @@ export function App() {
               </label>
             </div>
             <p class="modal-preview">
-              <span class="swatch" style={{ background: addModal.color }} />
+              <span
+                class="swatch"
+                style={{
+                  background:
+                    addModal.kind === 'alias'
+                      ? (config.colors.find((c) => c.name === addModal.alias)?.color ??
+                        'transparent')
+                      : addModal.color,
+                }}
+              />
               <code>
                 {addModal.group}.{addModal.name}
               </code>
-              <code>{addModal.color}</code>
+              <code>{addModal.kind === 'alias' ? `-> ${addModal.alias}` : addModal.color}</code>
             </p>
             <div class="modal-actions">
               <button onClick={() => setAddModal(null)}>cancel</button>
               <button
                 class="primary"
-                disabled={!addModal.name.trim()}
+                disabled={!addModal.name.trim() || (addModal.kind === 'alias' && !addModal.alias)}
                 onClick={() => {
                   const base = addModal.name.trim();
                   let candidate = base;
@@ -1226,19 +1418,22 @@ export function App() {
                     suffix += 1;
                   }
                   const fullName = `${addModal.group}.${candidate}`;
-                  if (!addModal.manual) autoNamedRef.current.add(fullName);
+                  const { kind, alias: aliasTarget, color: colorHex, manual } = addModal;
+                  if (kind === 'color' && !manual) autoNamedRef.current.add(fullName);
                   updateConfig((draft) => {
-                    draft.colors.push({
-                      color: addModal.color,
-                      name: fullName,
-                    } as ColorConfig);
+                    // color XOR alias: emit exactly one of the two fields
+                    draft.colors.push(
+                      (kind === 'alias'
+                        ? { name: fullName, alias: aliasTarget }
+                        : { name: fullName, color: colorHex }) as ColorConfig,
+                    );
                   });
                   setSelectedName(fullName);
                   setView('colors');
                   setAddModal(null);
                 }}
               >
-                add color
+                {addModal.kind === 'alias' ? 'add reference' : 'add color'}
               </button>
             </div>
           </div>
@@ -1266,6 +1461,12 @@ export function App() {
                 </button>
                 <button
                   class="danger"
+                  disabled={BUILTIN_ALIAS_NAMES.has(selected.name)}
+                  title={
+                    BUILTIN_ALIAS_NAMES.has(selected.name)
+                      ? 'built-in variant: cannot be deleted'
+                      : undefined
+                  }
                   onClick={() =>
                     updateConfig((draft) => {
                       draft.colors.splice(selectedIndex, 1);
@@ -1286,6 +1487,10 @@ export function App() {
               inheritedRatios={resolveRatiosName({ ...selected, ratios: undefined }, config)}
               inheritedFormula={resolveFormula({ ...selected, formula: undefined }, config)}
               inheritedExport={config.groups?.[selected.name.split('.')[0]]?.export ?? []}
+              isAlias={isAliasColor(selected)}
+              isBuiltin={BUILTIN_ALIAS_NAMES.has(selected.name)}
+              aliasTargets={aliasTargets}
+              resolvedColor={resolveBaseColor(config, selected)}
               onColorCommit={(hex) => autoNameColor(selectedIndex, hex)}
               onChange={(patch) => {
                 // a name typed by the user opts the color out of auto-naming
@@ -1296,6 +1501,10 @@ export function App() {
                     if (value === undefined) delete target[key];
                     else target[key] = value;
                   });
+                  // keep the schema's color XOR alias invariant: a family carries
+                  // EITHER its own base color OR a reference, never both
+                  if ('alias' in patch && patch.alias) delete target.color;
+                  if ('color' in patch && patch.color) delete target.alias;
                   if ('name' in patch && typeof patch.name === 'string')
                     setSelectedName(patch.name);
                 });
