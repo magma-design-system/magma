@@ -154,7 +154,11 @@ export const CONFIG_SCHEMA = {
     color: {
       type: 'object',
       additionalProperties: false,
-      required: ['color', 'name'],
+      // `name` is always required; a family provides EITHER its own `color`
+      // (a solved palette) OR an `alias` to another family (a reference), never
+      // both and never neither.
+      required: ['name'],
+      oneOf: [{ required: ['color'] }, { required: ['alias'] }],
       properties: {
         color: hexColor,
         // dot-separated token path: <group>.<name>, e.g. tone.neutral
@@ -168,7 +172,8 @@ export const CONFIG_SCHEMA = {
         },
         disabled: { type: 'boolean' },
         title: { type: 'string' },
-        alias: { type: 'string' },
+        // reference to another family, as a <group>.<name> token path
+        alias: { type: 'string', pattern: '^[^.]+\\.[^.]+$' },
         ratios: { type: 'string' },
         formula,
         colorspace: { type: 'string', enum: COLORSPACES },
