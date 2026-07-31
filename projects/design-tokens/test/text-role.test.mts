@@ -3,7 +3,7 @@ import chroma from "chroma-js";
 import { expect, test } from "vitest";
 
 import { createTextTokens, TEXT_ROLES } from "../src/lib/text-role.mjs";
-import { createColorTokens, type MagmaConfig } from "../src/lib/color.mjs";
+import { createColorTokens, type MagmaConfig, type ColorTokensMap } from "../src/lib/color.mjs";
 import { getColorsConfig } from "../src/lib/utils.mjs";
 
 const apca = (fg: string, bg: string) =>
@@ -57,7 +57,7 @@ test("an unreachable target clamps to the strongest step (no throw)", () => {
 
 test("integration: the real palette generates text roles meeting their targets in both modes", async () => {
   const rc = await getColorsConfig();
-  const color = (createColorTokens(rc!.config as MagmaConfig).tokens as { color: Record<string, any> }).color;
+  const color = (createColorTokens(rc!.config as MagmaConfig).tokens as { color: ColorTokensMap }).color;
   const targets: Record<string, number> = { default: 85, muted: 75, subtle: 45, disabled: 30 };
 
   expect(color.text?.neutral).toBeDefined();
