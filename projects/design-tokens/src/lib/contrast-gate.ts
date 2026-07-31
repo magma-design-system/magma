@@ -60,19 +60,13 @@ export const DEFAULT_TARGETS: GateTargets = {
 const MODES: Mode[] = ['light', 'dark'];
 const SURFACES = ['sunken', 'muted', 'default', 'raised', 'overlay'] as const;
 const ELEVATED = ['default', 'raised'] as const;
-// The three fixed accents (spec 8) plus the colored/neutral hues. Accents are a
-// fixed set (semantic.config `accents`); their on-emphasis + fg pairs are gated
-// like any other hue.
-const HUES = [
-  'accent-primary',
-  'accent-secondary',
-  'accent-ai',
-  'info',
-  'success',
-  'warning',
-  'danger',
-  'neutral',
-] as const;
+// The two fixed accents (spec 8) plus the colored/neutral hues. Accents are a
+// fixed set (semantic.config `accents`): the general `accent` (bare namespace, no
+// infix) and `accent-ai`; their on-emphasis + fg pairs are gated like any other
+// hue. `isAccentHue` recognises both (the general accent is exactly `accent`, the
+// others carry an `accent-` prefix - see `accentInfix` in semantic.config).
+const HUES = ['accent', 'accent-ai', 'info', 'success', 'warning', 'danger', 'neutral'] as const;
+const isAccentHue = (hue: string): boolean => hue === 'accent' || hue.startsWith('accent-');
 const BORDERS = ['muted', 'default', 'strong', 'focus'] as const;
 // Accent emphasis-band states (spec 6.6 accent exception): the hover/active solid
 // fills carry on-emphasis text like the base emphasis, so they are gated the same
@@ -150,17 +144,20 @@ export function aliasesFromConfig(m: SemanticMapping): Record<string, string> {
   });
 
   // accents (variant): the standout quintet, one per fixed role (spec 8). They
-  // share the colored-hue steps and resolve to the accent's mapped family.
+  // share the colored-hue steps and resolve to the accent's mapped family. The
+  // general `accent` role carries no infix (bare `--magma-accent-*`); others infix
+  // their name - mirrors `accentInfix` in semantic.config and scripts/semantic.ts.
   Object.entries(m.accents).forEach(([role, family]) => {
-    set(`accent-${role}-surface`, `${family}-${m.hueSteps.surface}`);
-    set(`accent-${role}-fg`, `${family}-${m.hueSteps.fg}`);
-    set(`accent-${role}-border`, `${family}-${m.hueSteps.border}`);
-    set(`accent-${role}-emphasis`, `${family}-${m.hueSteps.emphasis}`);
-    set(`accent-${role}-on-emphasis`, m.seed);
+    const infix = role === 'accent' ? '' : `${role}-`;
+    set(`accent-${infix}surface`, `${family}-${m.hueSteps.surface}`);
+    set(`accent-${infix}fg`, `${family}-${m.hueSteps.fg}`);
+    set(`accent-${infix}border`, `${family}-${m.hueSteps.border}`);
+    set(`accent-${infix}emphasis`, `${family}-${m.hueSteps.emphasis}`);
+    set(`accent-${infix}on-emphasis`, m.seed);
     // interaction states (spec 6.6 accent exception): each names an existing ramp
     // step of the same family, mirroring scripts/semantic.ts.
     Object.entries(m.accentStateSteps ?? {}).forEach(([state, step]) =>
-      set(`accent-${role}-${state}`, `${family}-${step}`),
+      set(`accent-${infix}${state}`, `${family}-${step}`),
     );
   });
   return map;
@@ -266,7 +263,7 @@ export function evaluatePairs(
     //     more extreme than the base emphasis in the safe direction, so they pass by
     //     construction; gated for regression protection (e.g. a themed accent family).
     for (const hue of HUES) {
-      if (!hue.startsWith('accent-')) continue;
+      if (!isAccentHue(hue)) continue;
       for (const state of ACCENT_EMPHASIS_STATES) {
         push(
           'on-emphasis',

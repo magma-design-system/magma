@@ -14,8 +14,8 @@ import { semantic, accentTintOverride } from '../../semantic.config';
  * so any tint works, not just the neutrals.
  *
  * Surfaces derive implicitly (opting a family into a surface IS opting it into a
- * theme). ACCENTS do not derive - an accent is a role (primary/secondary/ai) that
- * points at a `variant` family, and a theme may repoint it. So each non-default
+ * theme). ACCENTS do not derive - an accent is a role (accent/ai) that points at a
+ * `variant` family, and a theme may repoint it. So each non-default
  * theme gets an accent ASSIGNMENT: per role, pick which variant it uses (default =
  * the base variant). The card previews the accent APPLIED per mode and the export
  * emits `--magma-tint-accent-*` via the SAME helper the styles generator uses, so
@@ -31,12 +31,14 @@ const SURFACE_ROLES = semantic.surfaceRoles;
 const BORDER_ROLES = semantic.borderRoles;
 const TEXT_ROLES = semantic.textRoles;
 
-// accent roles (primary/secondary/ai) and the variant families they may point at.
-// An accent is derivative of a variant: you pick WHICH variant, nothing more - to
-// add a new accent colour you add a variant upstream, keeping variant the single
-// place a colour is chosen.
+// accent roles (accent/ai). An accent is derivative of a variant: you pick WHICH
+// variant it points at, nothing more - to add a new accent colour you add a variant
+// upstream, keeping variant the single place a colour is chosen. The pickable
+// families are ALL the variant families in the palette (derived per card from the
+// token tree, see `variantFamilies`), not only the ones a role currently defaults
+// to - so a theme can repoint an accent to any variant (e.g. `variant-secondary`
+// for a future maggioli-editore theme), even one no role uses by default.
 const ACCENT_ROLES = Object.keys(semantic.accents);
-const VARIANT_FAMILIES = [...new Set(Object.values(semantic.accents))];
 const ACCENT_STEPS = semantic.hueSteps;
 /** tree step keys are numeric without the leading zero (`04` -> `4`). */
 const stepKey = (s: string): string => String(Number(s));
@@ -112,7 +114,17 @@ export function ThemesManager({ config }: ThemesManagerProps) {
     lines.push('}');
     return lines.join('\n');
   };
-  const exportCss = extras.map(themeCss).join('\n\n');
+  // the default family is the base :root: it emits no surface/border/text override,
+  // but a repointed accent IS a base change, so surface it as a :root accent block.
+  const defaultAccentCss = (): string => {
+    const lines: string[] = [];
+    ACCENT_ROLES.forEach((role) => {
+      const variant = accentFor(semantic.tint, role);
+      if (variant !== semantic.accents[role]) lines.push(...accentTintOverride(role, variant));
+    });
+    return lines.length ? [':root {', ...lines, '}'].join('\n') : '';
+  };
+  const exportCss = [defaultAccentCss(), ...extras.map(themeCss)].filter(Boolean).join('\n\n');
   const [copied, setCopied] = useState(false);
   const copy = async () => {
     try {
@@ -205,6 +217,9 @@ function ThemeCard({
 }: ThemeCardProps) {
   const hasScales = Boolean(surfaces[family] && texts[family]);
   const isDefault = family === semantic.tint;
+  // every variant family in the palette is a pickable accent - not just the ones a
+  // role defaults to (so a theme can repoint an accent to e.g. variant-secondary).
+  const variantFamilies = Object.keys(variants).map((k) => `variant-${k}`);
   return (
     <div class="theme-card">
       <div class="scale-card-head">
@@ -215,8 +230,10 @@ function ThemeCard({
         <code class="theme-attr-code">{isDefault ? ':root' : `data-theme-name='${family}'`}</code>
       </div>
 
-      {/* accent assignment: pick a variant per role (base default). The default
-          theme shows its base accents read-only - it is the :root, not an override. */}
+      {/* accent assignment: pick a variant per role. Every theme - including the
+          default (:root) - can repoint an accent role to another variant; the roles
+          themselves are fixed (never renamed or removed). On the default a change is
+          a BASE change (exported as a :root block), elsewhere a per-theme override. */}
       {hasScales && (
         <div class="theme-accent-controls">
           {ACCENT_ROLES.map((role) => {
@@ -225,22 +242,20 @@ function ThemeCard({
             return (
               <label class="theme-accent-ctl">
                 <span class="theme-accent-role">{role}</span>
-                {isDefault ? (
-                  <code class="theme-attr-code">{current.replace('variant-', '')}</code>
-                ) : (
-                  <select
-                    value={current}
-                    onChange={(e) => onAccent(family, role, (e.target as HTMLSelectElement).value)}
-                  >
-                    {VARIANT_FAMILIES.map((v) => (
-                      <option value={v}>
-                        {v.replace('variant-', '')}
-                        {v === semantic.accents[role] ? ' (base)' : ''}
-                      </option>
-                    ))}
-                  </select>
+                <select
+                  value={current}
+                  onChange={(e) => onAccent(family, role, (e.target as HTMLSelectElement).value)}
+                >
+                  {variantFamilies.map((v) => (
+                    <option value={v}>
+                      {v.replace('variant-', '')}
+                      {v === semantic.accents[role] ? ' (base)' : ''}
+                    </option>
+                  ))}
+                </select>
+                {!isBase && (
+                  <span class="theme-accent-flag">{isDefault ? 'changed' : 'override'}</span>
                 )}
-                {!isBase && <span class="theme-accent-flag">override</span>}
               </label>
             );
           })}

@@ -1,10 +1,10 @@
 :host([variant='primary']) {
-  --mds-radial-progress-color: rgb(var(--magma-accent-primary-emphasis-hover));
+  --mds-radial-progress-color: rgb(var(--magma-accent-emphasis-hover));
   --mds-radial-progress-background: rgb(var(--tone-neutral-09));
 }
 
 :host([variant='secondary']) {
-  --mds-radial-progress-color: rgb(var(--magma-accent-secondary-emphasis-hover));
+  --mds-radial-progress-color: rgb(var(--magma-accent-emphasis-hover));
   --mds-radial-progress-background: rgb(var(--tone-neutral-09));
 }
 

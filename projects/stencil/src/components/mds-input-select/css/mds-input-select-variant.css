@@ -1,15 +1,15 @@
 :host {
-  --mds-input-select-icon-color: rgb(var(--magma-accent-primary-emphasis-hover));
+  --mds-input-select-icon-color: rgb(var(--magma-accent-emphasis-hover));
   --mds-input-select-variant-color-rgb: 0 0 0;
-  --mds-input-select-arrow-icon-blur-background-color: rgb(var(--magma-accent-primary-surface));
-  --mds-input-select-arrow-icon-hover-background-color: rgb(var(--magma-accent-primary-surface-hover));
-  --mds-input-select-arrow-icon-blur-color: rgb(var(--magma-accent-primary-border));
-  --mds-input-select-arrow-icon-hover-color: rgb(var(--magma-accent-primary-emphasis));
+  --mds-input-select-arrow-icon-blur-background-color: rgb(var(--magma-accent-surface));
+  --mds-input-select-arrow-icon-hover-background-color: rgb(var(--magma-accent-surface-hover));
+  --mds-input-select-arrow-icon-blur-color: rgb(var(--magma-accent-border));
+  --mds-input-select-arrow-icon-hover-color: rgb(var(--magma-accent-emphasis));
 }
 
 :host(:hover),
 :host(:focus-within) {
-  --mds-input-select-variant-color-rgb: var(--magma-accent-primary-emphasis);
+  --mds-input-select-variant-color-rgb: var(--magma-accent-emphasis);
 }
 
 :host([variant='info']) {

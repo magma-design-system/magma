@@ -58,10 +58,13 @@ export interface SemanticConfig {
    * Accent (variant) roles - the "standout" colors, spec 8. A FIXED set of named
    * accents, each mapped to the family it draws from (the `variant-*` families,
    * which alias brand/label at the primitive level, so the colour choice lives
-   * once in the token config's alias). Emitted as a theme-aware quintet
-   * (`--magma-accent-<role>-*` resolving through `--magma-tint-accent-<role>-*`,
-   * steps from `hueSteps`), so a named theme can repoint an accent the same way
-   * it repoints surfaces. `borderFocus` names which of these focus follows.
+   * once in the token config's alias). Two roles: the GENERAL `accent` owns the
+   * bare `--magma-accent-*` namespace (NO infix - it promotes the formerly
+   * "deprecated" single alias to the canonical general accent), and `ai` emits
+   * `--magma-accent-ai-*` (the infix rule lives in `accentInfix`). Each is a
+   * theme-aware quintet resolving through `--magma-tint-accent-*` (steps from
+   * `hueSteps`), so a named theme can repoint an accent the same way it repoints
+   * surfaces. `borderFocus` names which of these focus follows.
    */
   accents: Record<string, string>;
   /**
@@ -95,7 +98,7 @@ export const semantic: SemanticConfig = {
   surfaceRoles: ['sunken', 'muted', 'default', 'raised', 'overlay'],
   borderRoles: ['muted', 'default', 'strong'],
   textRoles: ['default', 'muted', 'subtle', 'disabled'],
-  borderFocus: 'primary',
+  borderFocus: 'accent',
   seed: 'tone-neutral-seed',
   hues: {
     info: { family: 'status-info' },
@@ -107,8 +110,7 @@ export const semantic: SemanticConfig = {
   hueSteps: { surface: '09', fg: '05', border: '06', emphasis: '04' },
   neutralHueSteps: { fg: '03', border: '06', emphasis: '02' },
   accents: {
-    primary: 'variant-primary',
-    secondary: 'variant-secondary',
+    accent: 'variant-primary',
     ai: 'variant-ai',
   },
   accentStateSteps: {
@@ -127,9 +129,21 @@ export const semantic: SemanticConfig = {
 };
 
 /**
- * The `--magma-tint-accent-<role>-*` lines that point an accent role at `family`
- * (a variant family): the quintet steps (surface/fg/border/emphasis) plus the
- * interaction states. `on-emphasis` is family-independent (the seed) so it is not
+ * The infix an accent role contributes to its `--magma-accent-*` / `--magma-tint-
+ * accent-*` names. The GENERAL accent (`accent`) has NO infix - it owns the bare
+ * `--magma-accent-*` namespace (promoting the formerly "deprecated" single alias
+ * to the canonical general accent); every other role (e.g. `ai`) infixes its name,
+ * so `--magma-accent-ai-*`. SHARED so the config, the styles generator and the
+ * contrast gate name accents identically ("accent" as a uniform infix ->
+ * `--magma-accent-accent-*` is deliberately avoided: accent is the category).
+ */
+export const accentInfix = (role: string): string => (role === 'accent' ? '' : `${role}-`);
+
+/**
+ * The `--magma-tint-accent-*` lines that point an accent role at `family` (a
+ * variant family): the quintet steps (surface/fg/border/emphasis) plus the
+ * interaction states, prefixed per `accentInfix` (general accent = no infix,
+ * `ai` = `ai-`). `on-emphasis` is family-independent (the seed) so it is not
  * repointed. SHARED so the styles generator (`scripts/semantic.ts`, both the base
  * layer and each named-theme override) and the playground theme export
  * (`playground/src/themes.tsx`) emit byte-identical CSS - a theme repoints an
@@ -137,13 +151,14 @@ export const semantic: SemanticConfig = {
  */
 export const accentTintOverride = (role: string, family: string): string[] => {
   const { hueSteps, accentStateSteps } = semantic;
+  const infix = accentInfix(role);
   return [
-    `  --magma-tint-accent-${role}-surface: var(--${family}-${hueSteps.surface});`,
-    `  --magma-tint-accent-${role}-fg: var(--${family}-${hueSteps.fg});`,
-    `  --magma-tint-accent-${role}-border: var(--${family}-${hueSteps.border});`,
-    `  --magma-tint-accent-${role}-emphasis: var(--${family}-${hueSteps.emphasis});`,
+    `  --magma-tint-accent-${infix}surface: var(--${family}-${hueSteps.surface});`,
+    `  --magma-tint-accent-${infix}fg: var(--${family}-${hueSteps.fg});`,
+    `  --magma-tint-accent-${infix}border: var(--${family}-${hueSteps.border});`,
+    `  --magma-tint-accent-${infix}emphasis: var(--${family}-${hueSteps.emphasis});`,
     ...Object.entries(accentStateSteps).map(
-      ([state, step]) => `  --magma-tint-accent-${role}-${state}: var(--${family}-${step});`,
+      ([state, step]) => `  --magma-tint-accent-${infix}${state}: var(--${family}-${step});`,
     ),
   ];
 };

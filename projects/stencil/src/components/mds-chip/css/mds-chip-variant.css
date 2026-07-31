@@ -8,39 +8,39 @@
 /* variant */
 
 :host([variant='primary'][tone='strong']) {
-  --mds-chip-icon-background: rgb(var(--magma-accent-primary-fg));
+  --mds-chip-icon-background: rgb(var(--magma-accent-fg));
   --mds-chip-icon-color: rgb(var(--tone-neutral-seed));
 }
 
 :host([variant='primary'][tone='weak']) {
-  --mds-chip-icon-background: rgb(var(--magma-accent-primary-surface));
-  --mds-chip-icon-color: rgb(var(--magma-accent-primary-emphasis));
+  --mds-chip-icon-background: rgb(var(--magma-accent-surface));
+  --mds-chip-icon-color: rgb(var(--magma-accent-emphasis));
 }
 
 :host([variant='primary'][tone='strong'][selected]) {
-  --mds-chip-border: rgb(var(--magma-accent-primary-emphasis));
+  --mds-chip-border: rgb(var(--magma-accent-emphasis));
 }
 
 :host([variant='primary'][tone='weak'][selected]) {
-  --mds-chip-border: rgb(var(--magma-accent-primary-border));
+  --mds-chip-border: rgb(var(--magma-accent-border));
 }
 
 :host([variant='secondary'][tone='strong']) {
-  --mds-chip-icon-background: rgb(var(--magma-accent-secondary-fg));
+  --mds-chip-icon-background: rgb(var(--magma-accent-fg));
   --mds-chip-icon-color: rgb(var(--tone-neutral-seed));
 }
 
 :host([variant='secondary'][tone='weak']) {
-  --mds-chip-icon-background: rgb(var(--magma-accent-secondary-surface));
-  --mds-chip-icon-color: rgb(var(--magma-accent-secondary-emphasis));
+  --mds-chip-icon-background: rgb(var(--magma-accent-surface));
+  --mds-chip-icon-color: rgb(var(--magma-accent-emphasis));
 }
 
 :host([variant='secondary'][tone='strong'][selected]) {
-  --mds-chip-border: rgb(var(--magma-accent-secondary-emphasis));
+  --mds-chip-border: rgb(var(--magma-accent-emphasis));
 }
 
 :host([variant='secondary'][tone='weak'][selected]) {
-  --mds-chip-border: rgb(var(--magma-accent-secondary-border));
+  --mds-chip-border: rgb(var(--magma-accent-border));
 }
 
 :host([variant='ai'][tone='strong']) {

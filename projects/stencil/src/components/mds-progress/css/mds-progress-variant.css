@@ -29,7 +29,7 @@
 }
 
 :host([variant='primary']) {
-  --mds-progress-color: rgb(var(--magma-accent-primary-emphasis-hover));
+  --mds-progress-color: rgb(var(--magma-accent-emphasis-hover));
   --mds-progress-background: rgb(var(--tone-neutral-08));
 }
 

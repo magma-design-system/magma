@@ -1,11 +1,11 @@
 :host {
-  --mds-input-date-icon-color: rgb(var(--magma-accent-primary-emphasis));
+  --mds-input-date-icon-color: rgb(var(--magma-accent-emphasis));
   --mds-input-date-variant-color-rgb: 0 0 0;
 }
 
 :host(:focus) {
-  --mds-input-date-icon-color: rgb(var(--magma-accent-primary-fg));
-  --mds-input-date-variant-color-rgb: var(--magma-accent-primary-emphasis);
+  --mds-input-date-icon-color: rgb(var(--magma-accent-fg));
+  --mds-input-date-variant-color-rgb: var(--magma-accent-emphasis);
 }
 
 :host([variant='ai']) {

@@ -2,7 +2,12 @@ import chalk from 'chalk';
 import { mkdir, writeFile } from 'fs/promises';
 import { join } from 'path';
 import { BUILD_DIR } from './meta';
-import { semantic, accentTintOverride, type ThemeDef } from '../../design-tokens/semantic.config';
+import {
+  semantic,
+  accentInfix,
+  accentTintOverride,
+  type ThemeDef,
+} from '../../design-tokens/semantic.config';
 
 /**
  * Generate the semantic color layer (A9) from design-tokens/semantic.config.ts:
@@ -81,7 +86,9 @@ layer.push(
 borderRoles.forEach((r) =>
   layer.push(alias(`border-${r}`, `magma-tint-border-${r}`, `border-${r}`)),
 );
-layer.push(alias('border-focus', `magma-accent-${borderFocus}-emphasis`, 'border-focus'));
+layer.push(
+  alias('border-focus', `magma-accent-${accentInfix(borderFocus)}emphasis`, 'border-focus'),
+);
 
 // 5. hues - colored families carry the full quintet; neutral omits surface (spec 6.4).
 //    The neutral family's "emphasis" pair is NOT a saturated fill like the colored
@@ -112,11 +119,14 @@ Object.entries(hues).forEach(([hue, { family, partial }]) => {
 
 // 6. accents (variant) - the standout colors (spec 8). Each accent role is a
 //    THEME-AWARE quintet: the roles resolve through per-role tint pointers
-//    (--magma-tint-accent-<role>-*), so a named theme repoints an accent exactly
-//    like a surface. Steps reuse the colored-hue quintet (hueSteps); on-emphasis
-//    is the seed (family-independent, spec 6.5). The former single --magma-accent-*
-//    is kept as a DEPRECATED alias of accent-primary for one release.
+//    (--magma-tint-accent-*), so a named theme repoints an accent exactly like a
+//    surface. Steps reuse the colored-hue quintet (hueSteps); on-emphasis is the
+//    seed (family-independent, spec 6.5). The GENERAL `accent` role carries NO
+//    infix (--magma-accent-*), promoting the formerly deprecated single alias to
+//    the canonical general accent; `ai` infixes (--magma-accent-ai-*). See
+//    `accentInfix`.
 Object.entries(accents).forEach(([role, family]) => {
+  const infix = accentInfix(role);
   layer.push('', `  /* accent ${role} (${family}) */`);
   // tint pointers (internal; repointed per theme, not bridged to Tailwind): the
   // quintet steps + interaction states (spec 6.6 accent exception), each an
@@ -125,36 +135,30 @@ Object.entries(accents).forEach(([role, family]) => {
   accentTintOverride(role, family).forEach((line) => layer.push(line));
   // roles resolve through the tint pointers -> theme-aware
   layer.push(
-    alias(`accent-${role}-surface`, `magma-tint-accent-${role}-surface`, `accent-${role}-surface`),
+    alias(`accent-${infix}surface`, `magma-tint-accent-${infix}surface`, `accent-${infix}surface`),
   );
-  layer.push(alias(`accent-${role}-fg`, `magma-tint-accent-${role}-fg`, `accent-${role}-fg`));
+  layer.push(alias(`accent-${infix}fg`, `magma-tint-accent-${infix}fg`, `accent-${infix}fg`));
   layer.push(
-    alias(`accent-${role}-border`, `magma-tint-accent-${role}-border`, `accent-${role}-border`),
+    alias(`accent-${infix}border`, `magma-tint-accent-${infix}border`, `accent-${infix}border`),
   );
   layer.push(
     alias(
-      `accent-${role}-emphasis`,
-      `magma-tint-accent-${role}-emphasis`,
-      `accent-${role}-emphasis`,
+      `accent-${infix}emphasis`,
+      `magma-tint-accent-${infix}emphasis`,
+      `accent-${infix}emphasis`,
     ),
   );
   Object.keys(accentStateSteps).forEach((state) =>
     layer.push(
       alias(
-        `accent-${role}-${state}`,
-        `magma-tint-accent-${role}-${state}`,
-        `accent-${role}-${state}`,
+        `accent-${infix}${state}`,
+        `magma-tint-accent-${infix}${state}`,
+        `accent-${infix}${state}`,
       ),
     ),
   );
-  layer.push(alias(`accent-${role}-on-emphasis`, seed, `accent-${role}-on-emphasis`));
+  layer.push(alias(`accent-${infix}on-emphasis`, seed, `accent-${infix}on-emphasis`));
 });
-
-// deprecated (one release): the former single accent == the primary accent
-layer.push('', '  /* deprecated: use --magma-accent-primary-* (kept one release) */');
-['surface', 'fg', 'border', 'emphasis', 'on-emphasis'].forEach((sub) =>
-  layer.push(alias(`accent-${sub}`, `magma-accent-primary-${sub}`, `accent-${sub}`)),
-);
 
 layer.push('}', '');
 
