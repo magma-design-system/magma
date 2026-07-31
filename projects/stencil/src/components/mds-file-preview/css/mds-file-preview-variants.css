@@ -1,6 +1,6 @@
 :host([variant='primary'][message]) {
-  --mds-file-preview-icon-background: rgb(var(--variant-primary-09));
-  --mds-file-preview-icon-color: rgb(var(--variant-primary-04));
+  --mds-file-preview-icon-background: rgb(var(--magma-accent-primary-surface));
+  --mds-file-preview-icon-color: rgb(var(--magma-accent-primary-emphasis));
 }
 
 :host([variant='info'][message]) {
@@ -93,9 +93,9 @@
 
 :host([pref-contrast='more']) {
   &:host([variant='primary'][message]) {
-    --mds-file-preview-icon-background: rgb(var(--variant-primary-10));
-    --mds-file-preview-icon-color: rgb(var(--variant-primary-02));
-    --mds-file-preview-color: rgb(var(--variant-primary-01));
+    --mds-file-preview-icon-background: rgb(var(--magma-accent-primary-surface-subtle));
+    --mds-file-preview-icon-color: rgb(var(--magma-accent-primary-emphasis-active));
+    --mds-file-preview-color: rgb(var(--magma-accent-primary-emphasis-active));
   }
 
   &:host([variant='info'][message]) {
@@ -187,9 +187,9 @@
   :host([pref-contrast='system']),
   :host(:not([pref-contrast])) {
     &:host([variant='primary'][message]) {
-      --mds-file-preview-icon-background: rgb(var(--variant-primary-10));
-      --mds-file-preview-icon-color: rgb(var(--variant-primary-02));
-      --mds-file-preview-color: rgb(var(--variant-primary-01));
+      --mds-file-preview-icon-background: rgb(var(--magma-accent-primary-surface-subtle));
+      --mds-file-preview-icon-color: rgb(var(--magma-accent-primary-emphasis-active));
+      --mds-file-preview-color: rgb(var(--magma-accent-primary-emphasis-active));
     }
 
     &:host([variant='info'][message]) {

@@ -1,15 +1,15 @@
 :host {
-  --mds-input-select-icon-color: rgb(var(--variant-primary-03));
+  --mds-input-select-icon-color: rgb(var(--magma-accent-primary-emphasis-hover));
   --mds-input-select-variant-color-rgb: 0 0 0;
-  --mds-input-select-arrow-icon-blur-background-color: rgb(var(--variant-primary-09));
-  --mds-input-select-arrow-icon-hover-background-color: rgb(var(--variant-primary-08));
-  --mds-input-select-arrow-icon-blur-color: rgb(var(--variant-primary-06));
-  --mds-input-select-arrow-icon-hover-color: rgb(var(--variant-primary-04));
+  --mds-input-select-arrow-icon-blur-background-color: rgb(var(--magma-accent-primary-surface));
+  --mds-input-select-arrow-icon-hover-background-color: rgb(var(--magma-accent-primary-surface-hover));
+  --mds-input-select-arrow-icon-blur-color: rgb(var(--magma-accent-primary-border));
+  --mds-input-select-arrow-icon-hover-color: rgb(var(--magma-accent-primary-emphasis));
 }
 
 :host(:hover),
 :host(:focus-within) {
-  --mds-input-select-variant-color-rgb: var(--variant-primary-04);
+  --mds-input-select-variant-color-rgb: var(--magma-accent-primary-emphasis);
 }
 
 :host([variant='info']) {

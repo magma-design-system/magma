@@ -1,10 +1,10 @@
 :host,
 :host([variant='primary']) {
-  --mds-avatar-background-color: rgb(var(--variant-primary-05));
-  --mds-avatar-color: rgb(var(--variant-primary-10));
+  --mds-avatar-background-color: rgb(var(--magma-accent-primary-fg));
+  --mds-avatar-color: rgb(var(--magma-accent-primary-surface-subtle));
 
   &:host([tone='weak']) {
-    --mds-avatar-background-color: rgb(var(--variant-primary-09));
-    --mds-avatar-color: rgb(var(--variant-primary-05));
+    --mds-avatar-background-color: rgb(var(--magma-accent-primary-surface));
+    --mds-avatar-color: rgb(var(--magma-accent-primary-fg));
   }
 }

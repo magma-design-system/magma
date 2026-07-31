@@ -10,11 +10,11 @@
 }
 
 .mini-card-icon {
-  background-color: rgb(var(--variant-ai-05));
+  background-color: rgb(var(--magma-accent-ai-fg));
   border-radius: var(--radius-2xl);
   border-top-left-radius: var(--radius-none);
   border-top-right-radius: var(--radius-none);
-  fill: rgb(var(--variant-ai-10));
+  fill: rgb(var(--magma-accent-ai-surface-subtle));
   height: --spacing(600);
   margin-top: --spacing(-400);
   padding: --spacing(100);

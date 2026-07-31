@@ -31,27 +31,27 @@
 }
 
 :host([variant='ai'][tone='strong']) {
-  background-color: rgb(var(--variant-ai-04));
+  background-color: rgb(var(--magma-accent-ai-emphasis));
 }
 
 :host([variant='ai'][tone='weak']) {
-  background-color: rgb(var(--variant-ai-08));
+  background-color: rgb(var(--magma-accent-ai-surface-hover));
 }
 
 :host([variant='primary'][tone='strong']) {
-  background-color: rgb(var(--variant-primary-03));
+  background-color: rgb(var(--magma-accent-primary-emphasis-hover));
 }
 
 :host([variant='primary'][tone='weak']) {
-  background-color: rgb(var(--variant-primary-08));
+  background-color: rgb(var(--magma-accent-primary-surface-hover));
 }
 
 :host([variant='secondary'][tone='strong']) {
-  background-color: rgb(var(--variant-secondary-04));
+  background-color: rgb(var(--magma-accent-secondary-emphasis));
 }
 
 :host([variant='secondary'][tone='weak']) {
-  background-color: rgb(var(--variant-secondary-08));
+  background-color: rgb(var(--magma-accent-secondary-surface-hover));
 }
 
 :host([variant='dark'][tone='strong']) {

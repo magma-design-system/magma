@@ -1,6 +1,6 @@
 :host([variant='ai']) {
-  --mds-input-field-message-color: rgb(var(--variant-ai-02));
-  --mds-input-field-message-background: rgb(var(--variant-ai-09));
+  --mds-input-field-message-color: rgb(var(--magma-accent-ai-emphasis-active));
+  --mds-input-field-message-background: rgb(var(--magma-accent-ai-surface));
 }
 
 :host([variant='info']) {

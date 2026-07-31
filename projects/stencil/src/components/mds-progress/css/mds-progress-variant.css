@@ -29,11 +29,11 @@
 }
 
 :host([variant='primary']) {
-  --mds-progress-color: rgb(var(--variant-primary-03));
+  --mds-progress-color: rgb(var(--magma-accent-primary-emphasis-hover));
   --mds-progress-background: rgb(var(--tone-neutral-08));
 }
 
 :host([variant='ai']) {
-  --mds-progress-color: rgb(var(--variant-ai-05));
-  --mds-progress-background: rgb(var(--variant-ai-09));
+  --mds-progress-color: rgb(var(--magma-accent-ai-fg));
+  --mds-progress-background: rgb(var(--magma-accent-ai-surface));
 }
