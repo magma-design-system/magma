@@ -51,10 +51,14 @@ test('aliasesFromConfig maps every --magma-* role to its primitive (A9 contract)
   expect(map['--magma-surface-default']).toBe('--surface-neutral-default')
   expect(map['--magma-text-muted']).toBe('--text-neutral-muted') // A7 by-target primitive
   expect(map['--magma-text-on-emphasis']).toBe('--tone-neutral-seed')
-  expect(map['--magma-border-focus']).toBe('--variant-primary')
+  // focus follows the primary accent's emphasis step (theme-aware)
+  expect(map['--magma-border-focus']).toBe('--variant-primary-04')
   // hue quintet steps
   expect(map['--magma-danger-fg']).toBe('--status-error-05')
-  expect(map['--magma-accent-emphasis']).toBe('--variant-primary-04')
+  // accents: one quintet per fixed role, resolving to the mapped variant family
+  expect(map['--magma-accent-primary-emphasis']).toBe('--variant-primary-04')
+  expect(map['--magma-accent-secondary-fg']).toBe('--variant-secondary-05')
+  expect(map['--magma-accent-ai-emphasis']).toBe('--variant-ai-04')
 })
 
 // --- integration: the shipped palette + config mapping + committed baseline ---

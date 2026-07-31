@@ -23,6 +23,13 @@
  *  - the colored-hue quintet uses fixed steps (section 6.4/6.5).
  */
 
+/**
+ * A named theme's cosmetic override (spec 8). The string shorthand names only
+ * the surface family (back-compat); the object form can also repoint individual
+ * accents, so a theme retints its accents the same way it retints surfaces.
+ */
+export type ThemeDef = string | { surface?: string; accents?: Record<string, string> };
+
 export interface SemanticConfig {
   /** Active default tint family; surfaces/borders/text resolve from it (spec 8). */
   tint: string;
@@ -32,7 +39,7 @@ export interface SemanticConfig {
   borderRoles: readonly string[];
   /** Text prominence roles, from the by-target `--text-<tint>-<role>` (A7). */
   textRoles: readonly string[];
-  /** Focus border is an accent, not a neutral level (spec 6.3). */
+  /** Accent role (a key of `accents`) the focus border follows; theme-aware (spec 6.3). */
   borderFocus: string;
   /** The pure-extreme foreground for text/`*-on-emphasis` (spec 6.5). */
   seed: string;
@@ -48,15 +55,27 @@ export interface SemanticConfig {
   /** Steps for the neutral (partial) hue - it borrows from the tone scale. */
   neutralHueSteps: { fg: string; border: string; emphasis: string };
   /**
-   * Named themes (spec 8): map of theme name -> the family whose
-   * `{surface,border,text}` scales retint the `--magma-tint-*` block under
-   * `:root[data-theme-name='<name>']`. The `tint` family is the base `:root`
-   * (default theme) and emits NO override rule. A theme is thus a one-family
-   * repoint; a colour family gives a monochromatic theme (A7 verifies text
-   * against that family's own surfaces). Future cosmetic axes (spacing, radii,
-   * shadow) attach under the same `data-theme-name` from their own sources.
+   * Accent (variant) roles - the "standout" colors, spec 8. A FIXED set of named
+   * accents, each mapped to the family it draws from (the `variant-*` families,
+   * which alias brand/label at the primitive level, so the colour choice lives
+   * once in the token config's alias). Emitted as a theme-aware quintet
+   * (`--magma-accent-<role>-*` resolving through `--magma-tint-accent-<role>-*`,
+   * steps from `hueSteps`), so a named theme can repoint an accent the same way
+   * it repoints surfaces. `borderFocus` names which of these focus follows.
    */
-  themes: Record<string, string>;
+  accents: Record<string, string>;
+  /**
+   * Named themes (spec 8): map of theme name -> either a surface family (string
+   * shorthand) or a `ThemeDef` that also repoints accents. The named family's
+   * `{surface,border,text}` scales retint the `--magma-tint-*` block, and any
+   * `accents` override retints `--magma-tint-accent-*`, under
+   * `:root[data-theme-name='<name>']`. The `tint` family is the base `:root`
+   * (default theme) and emits NO surface override; a theme with no accent
+   * override keeps the base accents. A colour family gives a monochromatic
+   * theme (A7 verifies text against that family's own surfaces). Future cosmetic
+   * axes (spacing, radii, shadow) attach under the same `data-theme-name`.
+   */
+  themes: Record<string, ThemeDef>;
 }
 
 export const semantic: SemanticConfig = {
@@ -64,10 +83,9 @@ export const semantic: SemanticConfig = {
   surfaceRoles: ['sunken', 'muted', 'default', 'raised', 'overlay'],
   borderRoles: ['muted', 'default', 'strong'],
   textRoles: ['default', 'muted', 'subtle', 'disabled'],
-  borderFocus: 'variant-primary',
+  borderFocus: 'primary',
   seed: 'tone-neutral-seed',
   hues: {
-    accent: { family: 'variant-primary' },
     info: { family: 'status-info' },
     success: { family: 'status-success' },
     warning: { family: 'status-warning' },
@@ -76,6 +94,11 @@ export const semantic: SemanticConfig = {
   },
   hueSteps: { surface: '09', fg: '05', border: '06', emphasis: '04' },
   neutralHueSteps: { fg: '03', border: '06', emphasis: '02' },
+  accents: {
+    primary: 'variant-primary',
+    secondary: 'variant-secondary',
+    ai: 'variant-ai',
+  },
   themes: {
     default: 'neutral', // base :root (== tint); emits no override rule
     cool: 'porcelain',

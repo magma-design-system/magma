@@ -1,8 +1,16 @@
 {
   "$comment": "Known contrast offenders accepted by the APCA gate (A3, issue #575). Each entry is an enforced pair currently below its target, to be tuned (issue #571). The gate fails on NEW enforced failures and on any baselined pair that regresses. Regenerate with: npm run contrast -- --update-baseline",
   "pairs": {
-    "accent-on-emphasis|accent-emphasis|dark": {
+    "accent-ai-on-emphasis|accent-ai-emphasis|dark": {
       "achieved": 74.9,
+      "target": 75
+    },
+    "accent-primary-on-emphasis|accent-primary-emphasis|dark": {
+      "achieved": 74.9,
+      "target": 75
+    },
+    "accent-secondary-on-emphasis|accent-secondary-emphasis|dark": {
+      "achieved": 74.7,
       "target": 75
     },
     "danger-on-emphasis|danger-emphasis|dark": {

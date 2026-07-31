@@ -60,7 +60,19 @@ export const DEFAULT_TARGETS: GateTargets = {
 const MODES: Mode[] = ['light', 'dark'];
 const SURFACES = ['sunken', 'muted', 'default', 'raised', 'overlay'] as const;
 const ELEVATED = ['default', 'raised'] as const;
-const HUES = ['accent', 'info', 'success', 'warning', 'danger', 'neutral'] as const;
+// The three fixed accents (spec 8) plus the colored/neutral hues. Accents are a
+// fixed set (semantic.config `accents`); their on-emphasis + fg pairs are gated
+// like any other hue.
+const HUES = [
+  'accent-primary',
+  'accent-secondary',
+  'accent-ai',
+  'info',
+  'success',
+  'warning',
+  'danger',
+  'neutral',
+] as const;
 const BORDERS = ['muted', 'default', 'strong', 'focus'] as const;
 
 // APCA is reported to <1 Lc precision; round display and compare on the rounded
@@ -102,6 +114,7 @@ export interface SemanticMapping {
   hues: Record<string, { family: string; partial?: boolean }>;
   hueSteps: { surface: string; fg: string; border: string; emphasis: string };
   neutralHueSteps: { fg: string; border: string; emphasis: string };
+  accents: Record<string, string>;
 }
 
 /**
@@ -118,7 +131,8 @@ export function aliasesFromConfig(m: SemanticMapping): Record<string, string> {
   m.textRoles.forEach((r) => set(`text-${r}`, `text-${m.tint}-${r}`));
   set('text-on-emphasis', m.seed);
   m.borderRoles.forEach((r) => set(`border-${r}`, `border-${m.tint}-${r}`));
-  set('border-focus', m.borderFocus);
+  // focus follows the accent named by borderFocus, at its emphasis step
+  set('border-focus', `${m.accents[m.borderFocus]}-${m.hueSteps.emphasis}`);
 
   Object.entries(m.hues).forEach(([hue, { family, partial }]) => {
     const steps = partial ? m.neutralHueSteps : m.hueSteps;
@@ -127,6 +141,16 @@ export function aliasesFromConfig(m: SemanticMapping): Record<string, string> {
     set(`${hue}-border`, `${family}-${steps.border}`);
     set(`${hue}-emphasis`, `${family}-${steps.emphasis}`);
     set(`${hue}-on-emphasis`, m.seed);
+  });
+
+  // accents (variant): the standout quintet, one per fixed role (spec 8). They
+  // share the colored-hue steps and resolve to the accent's mapped family.
+  Object.entries(m.accents).forEach(([role, family]) => {
+    set(`accent-${role}-surface`, `${family}-${m.hueSteps.surface}`);
+    set(`accent-${role}-fg`, `${family}-${m.hueSteps.fg}`);
+    set(`accent-${role}-border`, `${family}-${m.hueSteps.border}`);
+    set(`accent-${role}-emphasis`, `${family}-${m.hueSteps.emphasis}`);
+    set(`accent-${role}-on-emphasis`, m.seed);
   });
   return map;
 }
