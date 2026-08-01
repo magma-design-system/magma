@@ -28,10 +28,27 @@
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
             "tsConfig": "magma-angular/tsconfig.spec.json",
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ]
+            "polyfills": ["zone.js", "zone.js/testing"]
+          }
+        }
+      }
+    },
+    "treeshaking-probe": {
+      "projectType": "application",
+      "root": "treeshaking-probe",
+      "sourceRoot": "treeshaking-probe",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:application",
+          "options": {
+            "outputPath": "dist/treeshaking-probe",
+            "index": "treeshaking-probe/index.html",
+            "browser": "treeshaking-probe/main.ts",
+            "tsConfig": "treeshaking-probe/tsconfig.json",
+            "optimization": true,
+            "sourceMap": false,
+            "extractLicenses": false
           }
         }
       }

@@ -68,6 +68,10 @@ export const config: Config = {
       // navigazione degli attributi (es. variant, placeholder) dall'Angular
       // Language Service nei template. NB: opzione sperimentale.
       inlineProperties: true,
+      // Come per React: un modulo ES per proxy (stencil-generated/<tag>.ts) più
+      // un barrel di sole ri-esportazioni. Serve al tree-shaking anche dopo
+      // l'appiattimento in FESM di ng-packagr.
+      esModules: true,
       directivesProxyFile: './angular/magma-angular/src/stencil-generated/components.ts',
       directivesArrayFile: './angular/magma-angular/src/stencil-generated/index.ts',
       // Genera un ControlValueAccessor per i componenti input, così sono
@@ -119,11 +123,24 @@ export const config: Config = {
       // Relative path to where the React components will be generated
       outDir: './react/src/',
       customElementsDir: 'dist/components',
+      // Un modulo ES per wrapper (react/src/<tag>.ts) invece di un unico
+      // components.ts con tutti e 114: il barrel resta ma diventa di sole
+      // ri-esportazioni, così i bundler scartano i componenti non importati.
+      esModules: true,
       // hydrateModule: '@maggioli-design-system/magma/hydrate',
     }),
     {
       type: 'dist-custom-elements',
-      customElementsExportBehavior: 'default',
+      // `default` non ri-esporta nulla da dist/components/index.js: il barrel
+      // esiste ma espone solo setAssetPath & co. Con `single-export-module`
+      // ri-esporta ogni componente e il suo defineCustomElement<Pascal>,
+      // rendendo `@maggioli-design-system/magma/components` l'entry
+      // tree-shakeable dei web-component (le classi sono annotate @__PURE__).
+      customElementsExportBehavior: 'single-export-module',
+      // Non c'è globalScript configurato: senza questo flag il barrel
+      // conterrebbe comunque una chiamata `globalScripts()` a livello di
+      // modulo, cioè un side effect che i bundler devono tenere.
+      includeGlobalScripts: false,
     },
     // {
     //   type: 'dist-hydrate-script',
