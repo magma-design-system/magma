@@ -31,15 +31,15 @@ const SHADOW_OPTIONS: { name: string; value: string }[] = [
 export const DEFAULT_THEME: ThemeConfig = {
   colorspace: 'OKLCH',
   surfaces: {
-    light: { sunken: '92%', muted: '94%', default: '96%', raised: '99%', overlay: '99%' },
-    dark: { sunken: '15%', muted: '22%', default: '20%', raised: '24%', overlay: '28%' },
+    light: { sunken: '93%', muted: '94%', default: '96%', raised: '98%', overlay: '100%' },
+    dark: { sunken: '9%', muted: '16%', default: '23%', raised: '31%', overlay: '41%' },
   },
   borders: {
-    light: { muted: '87%', default: '82%', strong: '72%' },
-    dark: { muted: '30%', default: '36%', strong: '44%' },
+    light: { muted: '90%', default: '83%', strong: '72%' },
+    dark: { muted: '36%', default: '45%', strong: '50%' },
   },
   // APCA Lc targets per text role vs the worst-case surface (A7); engine picks the step
-  text: { default: 85, muted: 75, subtle: 45, disabled: 30 },
+  text: { default: 91, muted: 75, subtle: 70, disabled: 53 },
 };
 
 /** APCA Lc magnitude (Magma flips the sign in dark; the preview shows the size). */
