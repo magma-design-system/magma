@@ -666,6 +666,34 @@ button.danger:hover { border-color: #c0392b; color: #c0392b; }
 /* surface view (issue #571 playground editor) */
 .surface-manager { display: flex; flex-direction: column; gap: 16px; }
 
+/* B4/B8 (#614): lightness levels (left) beside a sticky preview (right); the
+   families card stays full-width above the workbench. */
+.surface-workbench { align-items: flex-start; display: flex; gap: 16px; }
+.surface-workbench-levels { flex: 0 0 auto; }
+.surface-preview-col {
+  align-self: flex-start;
+  /* a container so the light/dark grids inside can stack on THIS column's width
+     (it is half-width in the 2-col workbench even when the viewport is wide) */
+  container: preview / inline-size;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0; /* let the per-mode grids shrink instead of overflowing the row */
+  /* .content is the scroll container and the topbar is a separate grid row above it,
+     so top: 0 pins the preview flush under the viewport while the levels column scrolls */
+  position: sticky;
+  top: 0;
+}
+/* B5: preview tab switcher (Testi / Surface); active state uses the global button.active */
+.preview-tabs { display: flex; gap: 4px; margin-bottom: 10px; }
+/* D1: stack to one column on a narrow viewport and stop the preview sticking */
+@media (width <= 1024px) {
+  .surface-workbench { flex-direction: column; }
+  .surface-workbench-levels { width: 100%; }
+  .surface-preview-col { position: static; width: 100%; }
+}
+
 .surface-optin { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
 
 .surface-optin-item {
@@ -733,7 +761,8 @@ button.danger:hover { border-color: #c0392b; color: #c0392b; }
 
 .surface-preview { display: grid; gap: 12px; grid-template-columns: 1fr 1fr; margin-top: 8px; }
 
-@media (width <= 720px) { .surface-preview { grid-template-columns: 1fr; } }
+/* stack light/dark when the preview column itself is narrow (not just the viewport) */
+@container preview (width < 640px) { .surface-preview { grid-template-columns: 1fr; } }
 .preview-controls { align-items: center; display: flex; flex-wrap: wrap; gap: 12px; margin: 8px 0 2px; }
 .preview-shadow-label { align-items: center; color: var(--ink-soft); display: flex; font-size: 12px; gap: 6px; }
 .preview-controls select { border: 1px solid var(--line); border-radius: 4px; padding: 3px 6px; }
@@ -788,7 +817,8 @@ button.danger:hover { border-color: #c0392b; color: #c0392b; }
 
 .step-charts { display: grid; gap: 12px; grid-template-columns: 1fr 1fr; margin-top: 8px; }
 
-@media (width <= 720px) { .step-charts { grid-template-columns: 1fr; } }
+/* stack light/dark step-charts when the preview column is narrow (see .surface-preview) */
+@container preview (width < 640px) { .step-charts { grid-template-columns: 1fr; } }
 .step-chart { border: 1px solid var(--line); border-radius: var(--radius); font-variant-numeric: tabular-nums; padding: 8px 10px; }
 .step-chart-empty { color: var(--ink-soft); font-size: 11px; text-transform: capitalize; }
 
