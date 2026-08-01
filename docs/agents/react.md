@@ -41,6 +41,18 @@ export default function Component() {
 }
 ```
 
+The package root is a barrel of pure re-exports and the package declares
+`sideEffects: false`, so importing from it is already tree-shakeable - only the
+components you name reach the bundle. Deep imports are available as an escape
+hatch for bundlers that ignore `sideEffects`:
+
+```tsx
+import { MdsButton } from '@maggioli-design-system/magma-react/mds-button.js';
+```
+
+The per-component event types (`MdsButtonEvents`, ...) live in those per-component
+modules, not in the root barrel - import them from the deep path.
+
 ## 3. Set the icon path
 
 `window` / `sessionStorage` are not available during SSR, so set the icon path in a
