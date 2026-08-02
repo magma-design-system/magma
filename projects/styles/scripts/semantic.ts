@@ -6,6 +6,7 @@ import {
   semantic,
   accentInfix,
   accentTintOverride,
+  contrastTintOverride,
   type ThemeDef,
 } from '../../design-tokens/semantic.config';
 
@@ -166,7 +167,50 @@ const bridgeBody = bridge
   .map(([magma, tw]) => `  --color-${tw}: rgb(var(--magma-${magma}));`)
   .join('\n');
 const bridgeCss = `${HEADER('Tailwind bridge for the semantic color layer.')}\n@theme {\n${bridgeBody}\n}\n`;
-const layerCss = `${HEADER('Semantic color layer (--magma-*) - the contract components consume.')}${layer.join('\n')}`;
+
+// Contrast (spec 9.3): under `prefers-contrast: more` the text + border roles are
+// promoted to a STRONGER same-family step by repointing the --magma-tint-* block, so
+// the WHOLE scaffolding gains contrast UPSTREAM - every role that resolves through
+// the tint pointers follows, with no per-component --tone-* sheet involved.
+//
+// Two selectors per scope, the same shape the global dark layer uses (see the
+// design-tokens css-vars-rgb template) and the per-component `*-pref-contrast.css`
+// sheets: the explicit `pref-contrast-more` class published by mds-pref-contrast,
+// then an @media block covering `pref-contrast-system` and a page with no mds-pref
+// controller at all. An explicit `pref-contrast-no-preference` matches neither, so
+// opting out keeps the base steps.
+const CONTRAST_LEVEL = 'more';
+
+/**
+ * The contrast blocks for one scope. `scope` is an extra `:root` qualifier (empty
+ * for the base layer, `[data-theme-name='x']` for a named theme) and `family` the
+ * surface family the promotions draw from - that pairing is what makes the
+ * promotion family-independent. Empty string when the config declares no promotion.
+ */
+const contrastBlocks = (scope: string, family: string): string => {
+  const rules = contrastTintOverride(family, CONTRAST_LEVEL);
+  if (!rules.length) return '';
+  return [
+    `:root${scope}.pref-contrast-${CONTRAST_LEVEL} {`,
+    rules.join('\n'),
+    '}',
+    '',
+    `@media (prefers-contrast: ${CONTRAST_LEVEL}) {`,
+    `  :root${scope}.pref-contrast-system,`,
+    `  :root${scope}:not([data-magma-pref]) {`,
+    rules.map((rule) => `  ${rule}`).join('\n'),
+    '  }',
+    '}',
+  ].join('\n');
+};
+
+const contrastPromotions = contrastTintOverride(tint, CONTRAST_LEVEL).length;
+const contrastCss = contrastBlocks('', tint);
+const contrastComment =
+  '/* Contrast (spec 9.3): pref-contrast-more promotes text + border to stronger same-family steps via the tint block. */';
+const layerCss =
+  `${HEADER('Semantic color layer (--magma-*) - the contract components consume.')}${layer.join('\n')}` +
+  (contrastCss ? `\n${contrastComment}\n${contrastCss}\n` : '');
 
 // Named themes (spec 8): one override block per theme. A theme repoints the
 // --magma-tint-* block (surface + border + text) when its surface family differs
@@ -197,7 +241,19 @@ const themeBlocks = Object.entries(themes)
         rules.push(...accentTintOverride(role, family)),
       );
     }
-    return rules.length ? `:root[data-theme-name='${name}'] {\n${rules.join('\n')}\n}` : '';
+    const block = rules.length ? `:root[data-theme-name='${name}'] {\n${rules.join('\n')}\n}` : '';
+    // A theme that retints the tint block must ALSO restate the contrast promotions
+    // in its OWN family: `:root[data-theme-name='x']` and `:root.pref-contrast-more`
+    // carry the same specificity, so without a theme-scoped block which one wins is
+    // decided by the order semantic.css and themes.css happen to be loaded in - the
+    // promotion would silently vanish under a named theme. Qualifying the scope with
+    // the theme attribute makes it one selector stronger, and the family swap keeps
+    // the theme contrasted within its own ramp instead of borrowing the base tint.
+    // A theme that only overrides accents leaves the tint text/border alone, so the
+    // base block already covers it and nothing extra is emitted.
+    const themeContrast =
+      surface && surface !== tint ? contrastBlocks(`[data-theme-name='${name}']`, surface) : '';
+    return [block, themeContrast].filter(Boolean).join('\n\n');
   })
   .filter(Boolean);
 const themesCss = `${HEADER('Named themes - retint the --magma-tint-* block per data-theme-name (spec 8).')}\n${themeBlocks.join('\n\n')}\n`;
@@ -213,6 +269,7 @@ async function main() {
   console.info(
     chalk.green(
       `Generated semantic layer: ${bridge.length} tokens + ${themeBlocks.length} named themes ` +
+        `+ ${contrastPromotions} pref-contrast-more promotions ` +
         `(build/css/semantic.css + build/tailwind/semantic.css + build/css/themes.css).`,
     ),
   );

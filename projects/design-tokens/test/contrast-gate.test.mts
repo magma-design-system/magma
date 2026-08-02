@@ -4,10 +4,11 @@ import { expect, test } from 'vitest'
 
 import { getColorsConfig } from '../src/lib/utils.mjs'
 import { createColorTokens, type MagmaConfig } from '../src/lib/color.mjs'
-import { semantic } from '../semantic.config.js'
+import { contrastTintOverride, semantic } from '../semantic.config.js'
 import {
   aliasesFromConfig,
   applyBaseline,
+  contrastAliasesFromConfig,
   evaluatePairs,
   formatRow,
   resolvePrimitive,
@@ -92,4 +93,63 @@ test('the committed baseline has no stale entries', async () => {
     staleBaseline,
     `These baseline entries now pass and should be removed (npm run contrast -- --update-baseline):\n${staleBaseline.join('\n')}`,
   ).toEqual([])
+})
+
+// --- contrast (spec 9.3): pref-contrast-more promotes text/border ---
+
+test('contrast-more promotes text/border roles to stronger same-family steps', () => {
+  const map = contrastAliasesFromConfig(semantic)
+  // subtle borrows the muted step, muted borrows default (base tint = neutral)
+  expect(map['--magma-text-subtle']).toBe('--text-neutral-muted')
+  expect(map['--magma-text-muted']).toBe('--text-neutral-default')
+  // decorative/default borders shift one step toward strong
+  expect(map['--magma-border-muted']).toBe('--border-neutral-default')
+  expect(map['--magma-border-default']).toBe('--border-neutral-strong')
+  // roles not promoted keep their base step
+  expect(map['--magma-text-default']).toBe('--text-neutral-default')
+  expect(map['--magma-text-disabled']).toBe('--text-neutral-disabled')
+})
+
+test('contrast-more never reduces text contrast on any surface, and boosts muted', async () => {
+  const tree = await loadTree()
+  const onSurface = (aliases: Record<string, string>) =>
+    evaluatePairs(tree, aliases).filter((r) => r.category === 'text-on-surface')
+  const base = onSurface(aliasesFromConfig(semantic))
+  const more = onSurface(contrastAliasesFromConfig(semantic))
+
+  // more-contrast is an upstream promotion: no text pair may drop below its base
+  for (const r of more) {
+    const b = base.find((x) => x.key === r.key)!
+    expect(r.achieved, `${r.key}: more=${r.achieved} < base=${b.achieved}`).toBeGreaterThanOrEqual(
+      b.achieved - 0.05,
+    )
+  }
+  // `muted` borrows `default`, two steps that always differ, so it is strictly
+  // stronger on every surface. `subtle` borrows `muted`, which in the CURRENT
+  // default ramp resolves to the same color as `subtle` itself, so its promotion
+  // is a no-op today - a deliberate open question on the ramp, not on this layer:
+  // the effect is that contrast-more RESTORES the muted/subtle hierarchy the base
+  // ramp collapses. Lower `subtle` in the ramp and the promotion starts biting
+  // with no change here.
+  for (const r of more.filter((x) => x.fgToken === 'text-muted')) {
+    const b = base.find((x) => x.key === r.key)!
+    expect(r.achieved, `muted not boosted at ${r.key}`).toBeGreaterThan(b.achieved)
+  }
+})
+
+test('contrastTintOverride only moves the tint pointers, and is family-independent', () => {
+  const base = contrastTintOverride(semantic.tint)
+  expect(base).toEqual([
+    '  --magma-tint-text-muted: var(--text-neutral-default);',
+    '  --magma-tint-text-subtle: var(--text-neutral-muted);',
+    '  --magma-tint-border-muted: var(--border-neutral-default);',
+    '  --magma-tint-border-default: var(--border-neutral-strong);',
+  ])
+  // a named theme gains contrast by the SAME promotion with its own family swapped
+  // in - the shape is identical, only the family segment moves
+  const themed = contrastTintOverride('porcelain')
+  expect(themed).toEqual(base.map((line) => line.replace(/neutral/g, 'porcelain')))
+  // nothing but the tint indirection is touched: no --magma-<role> is restated,
+  // so every role resolving through the pointers follows for free
+  expect(base.every((line) => line.includes('--magma-tint-'))).toBe(true)
 })

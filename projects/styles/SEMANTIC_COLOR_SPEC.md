@@ -347,6 +347,59 @@ under-contrast that also broke in dark). Build hierarchy with OTHER axes:
 Only borders that convey STATE (selected, focus, error) stay at full contrast
 (`border-strong` / `border-focus`).
 
+### 9.3 High contrast (`prefers-contrast: more`)
+
+When the user asks for more contrast, the answer is NOT a parallel palette and NOT a
+per-component override sheet: each affected role is PROMOTED to a stronger step of the
+SAME family. The promotion is declared once in `semantic.config.ts`:
+
+```ts
+contrast: {
+  more: {
+    text: { muted: 'default', subtle: 'muted' },
+    border: { muted: 'default', default: 'strong' },
+  },
+}
+```
+
+and applied by repointing the `--magma-tint-*` indirection (section 8), never the
+`--magma-<role>` tokens themselves. Because every surface-borne role resolves THROUGH
+those pointers, the whole scaffolding gains contrast upstream and no component sheet is
+involved.
+
+Roles omitted keep their normal step, deliberately: `text-default` is already the contrast
+ceiling, and `text-disabled` stays faint because disabled controls are WCAG-exempt and
+raising them would read as enabled.
+
+The generator emits two blocks per scope, the same shape the global dark layer and the
+per-component `*-pref-contrast.css` sheets use:
+
+```css
+:root.pref-contrast-more { /* explicit choice, published by mds-pref-contrast */ }
+
+@media (prefers-contrast: more) {
+  :root.pref-contrast-system,
+  :root:not([data-magma-pref]) { /* follow the OS */ }
+}
+```
+
+An explicit `pref-contrast-no-preference` matches neither, so opting out keeps the base
+steps.
+
+The promotion is FAMILY-INDEPENDENT: a named theme (section 8) gets the same block with
+its own family swapped in, emitted into `themes.css` under
+`:root[data-theme-name='<name>'].pref-contrast-more`. That scoping is required, not
+cosmetic - `:root[data-theme-name='x']` and `:root.pref-contrast-more` carry the SAME
+specificity, so without it the winner would depend on the order the two stylesheets happen
+to be loaded in. A theme that only overrides accents leaves the tint text/border pointers
+alone and is already covered by the base block.
+
+Note on the current default ramp: `text-muted` and `text-subtle` resolve to the same step,
+so the `subtle -> muted` promotion is a no-op today. The effect is still correct - under
+high contrast `muted` rises to `default` and the muted/subtle hierarchy the base ramp
+collapses is RESTORED. Lowering `subtle` in the ramp makes the promotion bite with no
+change to this layer.
+
 ## 10. Baseline surface L-table (proposed)
 
 Neutral family (C = 0), computed with the repo's chroma-js + apca-w3. Starting point;
