@@ -87,6 +87,18 @@ export interface GroupConfig {
   ratios?: string;
   formula?: Formula;
   export?: string[];
+  /**
+   * Opt the WHOLE group into surface + border + text generation. The per-color
+   * `surface` still wins over this (an object tunes one family's levels, an
+   * explicit `false` opts that family back out), so the group is a default and
+   * not a lock. Resolved by `resolveSurfaceOptIn` in surface.mts.
+   *
+   * This is the group-level counterpart of the per-color flag: `status` opts in
+   * as a group because every status family needs a tinted surface with text
+   * guaranteed legible on it, whereas `tone` stays per-family - there only the
+   * tints meant to be THEMES opt in.
+   */
+  surface?: SurfaceOptIn;
 }
 
 export interface MagmaConfig {

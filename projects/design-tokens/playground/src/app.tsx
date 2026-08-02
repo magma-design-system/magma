@@ -1646,8 +1646,38 @@ export function App() {
                 updateConfig((draft) => {
                   const color = draft.colors.find((c) => c.name === colorName);
                   if (!color) return;
+                  // With a group-level default in play, "off" is not always the
+                  // absence of the key: unchecking a family whose GROUP opts in
+                  // has to write an explicit `false`, otherwise it would just
+                  // inherit the group straight back. When the group is silent,
+                  // deleting the key keeps the config clean as before.
+                  const groupOn = Boolean(draft.groups?.[colorName.split('.')[0]]?.surface);
                   if (on) (color as ColorConfig).surface = true;
+                  else if (groupOn) (color as ColorConfig).surface = false;
                   else delete (color as Record<string, unknown>).surface;
+                })
+              }
+              onToggleGroupSurface={(groupName, on) =>
+                updateConfig((draft) => {
+                  const groups = { ...(draft.groups ?? {}) };
+                  const group = { ...(groups[groupName] ?? {}) };
+                  if (on) group.surface = true;
+                  else delete (group as Record<string, unknown>).surface;
+                  // drop a group entry that carries nothing else, so toggling on
+                  // and back off leaves the config byte-identical
+                  if (Object.keys(group).length === 0) delete groups[groupName];
+                  else groups[groupName] = group;
+                  if (Object.keys(groups).length === 0) delete draft.groups;
+                  else draft.groups = groups;
+                  // a family-level `false` only exists to escape a group that opts
+                  // in; once the group is off it is noise, so clear it
+                  if (!on) {
+                    draft.colors.forEach((color) => {
+                      if (color.name.split('.')[0] === groupName && color.surface === false) {
+                        delete color.surface;
+                      }
+                    });
+                  }
                 })
               }
               onUpdateTheme={(mutate) =>

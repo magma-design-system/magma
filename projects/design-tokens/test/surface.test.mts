@@ -146,3 +146,69 @@ test('createColorTokens adds nothing when no color opts in', () => {
   expect(color.border).toBeUndefined()
   expect(result.exportGroups.theme).toBeUndefined()
 })
+
+// --- group-level opt-in (#612 follow-up): groups.<group>.surface -------------
+
+const GROUP_CFG = (
+  groups: MagmaConfig['groups'],
+  colors: MagmaConfig['colors'],
+): MagmaConfig => ({ colors, theme: THEME, groups })
+
+test('a group opts every one of its families into surfaces', () => {
+  const { surface, border } = createSurfaceTokens(
+    GROUP_CFG({ status: { surface: true } }, [
+      { name: 'status.success', color: '#16a34a' },
+      { name: 'status.error', color: '#dc2626' },
+      { name: 'tone.neutral', color: '#a3a3a3' },
+    ] as MagmaConfig['colors']),
+  )
+  // both status families follow the group; the ungrouped tone family stays out
+  expect(Object.keys(surface).sort()).toEqual(['error', 'success'])
+  expect(Object.keys(border).sort()).toEqual(['error', 'success'])
+})
+
+test('a per-color surface overrides its group in both directions', () => {
+  const { surface } = createSurfaceTokens(
+    GROUP_CFG({ status: { surface: true } }, [
+      { name: 'status.success', color: '#16a34a' },
+      // explicit opt-OUT of an opted-in group
+      { name: 'status.error', color: '#dc2626', surface: false },
+      // explicit opt-IN of a group that does not opt in
+      { name: 'tone.neutral', color: '#a3a3a3', surface: true },
+    ] as MagmaConfig['colors']),
+  )
+  expect(Object.keys(surface).sort()).toEqual(['neutral', 'success'])
+})
+
+test('a per-color level override still wins over the group opt-in', () => {
+  const custom = {
+    surfaces: {
+      light: { sunken: '10%', muted: '10%', default: '10%', raised: '10%', overlay: '10%' },
+      dark: { sunken: '10%', muted: '10%', default: '10%', raised: '10%', overlay: '10%' },
+    },
+  }
+  const { surface } = createSurfaceTokens(
+    GROUP_CFG({ status: { surface: true } }, [
+      { name: 'status.success', color: '#16a34a', surface: custom },
+      { name: 'status.error', color: '#dc2626' },
+    ] as unknown as MagmaConfig['colors']),
+  )
+  // the overridden family sits at the custom level, the inherited one does not
+  expect(surface.success.light.default.value).not.toEqual(surface.error.light.default.value)
+})
+
+test('the committed config opts the whole status group in', async () => {
+  const { getColorsConfig } = await import('../src/lib/utils.mjs')
+  const rc = await getColorsConfig()
+  const { tokens } = createColorTokens(rc!.config as MagmaConfig)
+  const families = Object.keys((tokens as { color: Record<string, object> }).color.surface ?? {})
+  // status families are opted in by the GROUP, with no per-color flag on any of them
+  expect(families).toEqual(expect.arrayContaining(['info', 'success', 'error', 'warning']))
+  const statusColors = (rc!.config as MagmaConfig).colors.filter((c) =>
+    c.name.startsWith('status.'),
+  )
+  expect(statusColors.every((c) => c.surface === undefined)).toBe(true)
+  // and text roles follow surfaces (A7), so every status family is legible-by-construction
+  const textFamilies = Object.keys((tokens as { color: Record<string, object> }).color.text ?? {})
+  expect(textFamilies).toEqual(expect.arrayContaining(['info', 'success', 'error', 'warning']))
+})

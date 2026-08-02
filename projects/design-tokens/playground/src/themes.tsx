@@ -86,8 +86,20 @@ export function ThemesManager({ config }: ThemesManagerProps) {
     }
   }, [JSON.stringify(config)]);
 
-  // every family opted into a surface above (text follows per A7); default first
-  const opted = Object.keys(surfaces).filter((family) => texts[family]);
+  // Every family opted into a surface above (text follows per A7); default first.
+  // THEMEABLE families only: a theme repoints the whole neutral scaffolding, so it
+  // only makes sense for a TINT. Since groups can opt in wholesale, non-tint
+  // families now carry surfaces too (status does, so its components get a text
+  // role guaranteed legible on their own tint) - and those must not show up here
+  // as selectable themes, or you could set the whole UI to "success".
+  const themeableFamilies = new Set(
+    config.colors
+      .filter((color) => !color.disabled && color.name.split('.')[0] === 'tone')
+      .map((color) => color.name.split('.')[1]),
+  );
+  const opted = Object.keys(surfaces).filter(
+    (family) => texts[family] && themeableFamilies.has(family),
+  );
   const extras = opted.filter((family) => family !== semantic.tint);
   const previewFamilies = [...(opted.includes(semantic.tint) ? [semantic.tint] : []), ...extras];
 

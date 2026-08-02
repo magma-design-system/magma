@@ -52,6 +52,32 @@ export type SurfaceOptIn =
   | boolean
   | { surfaces?: ModeLevels<SurfaceRole>; borders?: ModeLevels<BorderRole> };
 
+/** The `tone` in `tone.neutral` - the group segment a color belongs to. */
+export function groupOf(colorItem: ColorConfig): string {
+  return colorItem.name.split(".")[0];
+}
+
+/**
+ * The surface opt-in that actually applies to a color, resolving the GROUP default
+ * against the per-color override (issue #612 follow-up).
+ *
+ * A group opts its whole family set in with `groups.<group>.surface`; a color can
+ * then refine that - an object tunes the levels for that family alone, and an
+ * explicit `false` opts a single family back OUT of a group that opts in (this is
+ * why `false` is meaningful and not just "absent"). A color with no `surface` key
+ * inherits the group. `undefined` means the family generates no surface/border
+ * scale at all.
+ */
+export function resolveSurfaceOptIn(
+  config: MagmaConfig,
+  colorItem: ColorConfig,
+): SurfaceOptIn | undefined {
+  const own = colorItem.surface;
+  const inherited = config.groups?.[groupOf(colorItem)]?.surface;
+  const resolved = own === undefined ? inherited : own;
+  return resolved === undefined || resolved === false ? undefined : resolved;
+}
+
 /**
  * Parse a lightness level into the 0..1 range chroma-js expects. Accepts a
  * percentage string (`"96%"`), a bare 0..100 string (`"96"`), or a 0..1 number.
@@ -135,9 +161,11 @@ export function createSurfaceTokens(config: MagmaConfig): SurfaceTokens {
   const surface: Record<string, ColorTokenSet> = {};
   const border: Record<string, ColorTokenSet> = {};
 
-  const opted = config.colors.filter(
-    (color) => !color.disabled && Boolean(color.surface),
-  );
+  // family -> the opt-in that applies, group default already folded in
+  const opted = config.colors
+    .filter((color) => !color.disabled)
+    .map((color) => [color, resolveSurfaceOptIn(config, color)] as const)
+    .filter((entry): entry is readonly [ColorConfig, SurfaceOptIn] => entry[1] !== undefined);
   if (opted.length === 0) return { surface, border };
 
   if (config.theme === undefined) {
@@ -151,10 +179,10 @@ export function createSurfaceTokens(config: MagmaConfig): SurfaceTokens {
 
   const { surfaces: globalSurfaces, borders: globalBorders } = config.theme;
 
-  opted.forEach((color) => {
+  opted.forEach(([color, optIn]) => {
     const family = familyOf(color);
-    const surfaceLevels = resolveLevels(color.surface, globalSurfaces, "surfaces");
-    const borderLevels = resolveLevels(color.surface, globalBorders, "borders");
+    const surfaceLevels = resolveLevels(optIn, globalSurfaces, "surfaces");
+    const borderLevels = resolveLevels(optIn, globalBorders, "borders");
 
     console.info(`Creating ${chalk.cyan("surface")} ${family}`);
     surface[family] = {

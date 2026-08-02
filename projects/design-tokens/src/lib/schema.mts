@@ -45,6 +45,20 @@ const borderLevels = {
   required: ['light', 'dark'],
   properties: { light: borderModeLevels, dark: borderModeLevels },
 }
+// Opt into lightness-based surface + border generation: `true` uses the global
+// `theme` ramp, an object overrides the levels. Accepted at TWO levels - on a
+// group (opts in every family of that group) and on a single color (which wins,
+// so `false` opts one family back out of an opted-in group).
+const surfaceOptIn = {
+  oneOf: [
+    { type: 'boolean' },
+    {
+      type: 'object',
+      additionalProperties: false,
+      properties: { surfaces: surfaceLevels, borders: borderLevels },
+    },
+  ],
+}
 // A text role is an APCA Lc target (number) or an explicit tone step (A7).
 const textLevel = {
   oneOf: [
@@ -149,6 +163,7 @@ export const CONFIG_SCHEMA = {
         ratios: { type: 'string' },
         formula,
         export: { type: 'array', items: { type: 'string' } },
+        surface: surfaceOptIn,
       },
     },
     color: {
@@ -179,18 +194,8 @@ export const CONFIG_SCHEMA = {
         colorspace: { type: 'string', enum: COLORSPACES },
         smooth: { type: 'boolean' },
         hueShift,
-        // opt into lightness-based surface + border generation: `true` uses the
-        // global `theme` ramp, an object overrides levels for this family
-        surface: {
-          oneOf: [
-            { type: 'boolean' },
-            {
-              type: 'object',
-              additionalProperties: false,
-              properties: { surfaces: surfaceLevels, borders: borderLevels },
-            },
-          ],
-        },
+        // per-family opt-in; overrides the group's (see `surfaceOptIn`)
+        surface: surfaceOptIn,
       },
     },
   },
