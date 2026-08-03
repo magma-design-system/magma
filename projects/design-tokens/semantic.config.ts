@@ -30,6 +30,22 @@
  */
 export type ThemeDef = string | { surface?: string; accents?: Record<string, string> };
 
+/**
+ * A contrast preference level that carries role promotions (spec 9.3). Only `more`
+ * is meaningful today: `less` and `custom` exist in Media Queries Level 5 but the
+ * design system takes no position on them, and `no-preference` IS the base layer.
+ */
+export type ContrastLevel = 'more';
+
+/**
+ * A level's promotions: role -> the STRONGER same-family role it borrows from.
+ * Keyed by axis so text and border promote independently.
+ */
+export type ContrastPromotion = {
+  text?: Record<string, string>;
+  border?: Record<string, string>;
+};
+
 export interface SemanticConfig {
   /** Active default tint family; surfaces/borders/text resolve from it (spec 8). */
   tint: string;
@@ -91,6 +107,17 @@ export interface SemanticConfig {
    * axes (spacing, radii, shadow) attach under the same `data-theme-name`.
    */
   themes: Record<string, ThemeDef>;
+  /**
+   * High-contrast promotions (spec 9.3). Under `pref-contrast-more` each listed
+   * role borrows a STRONGER same-family step (role -> stronger role), so the
+   * semantic scaffolding gains contrast upstream via the `--magma-tint-*` block
+   * instead of per-component `--tone-*` sheets. Family-independent: the same
+   * promotion applies to a named theme by swapping the family, which is exactly
+   * what the generator does (base `tint` on `:root`, the theme family under
+   * `data-theme-name`). Roles omitted keep their normal step. Optional, so it
+   * stays a non-breaking addition.
+   */
+  contrast?: Partial<Record<ContrastLevel, ContrastPromotion>>;
 }
 
 export const semantic: SemanticConfig = {
@@ -126,6 +153,15 @@ export const semantic: SemanticConfig = {
     cool: 'porcelain',
     warm: 'bisque',
   },
+  contrast: {
+    // text + border only. muted/subtle text shift one step stronger; decorative
+    // and default borders shift toward strong. `default` text is already the
+    // contrast ceiling; `disabled` text stays faint (intentional, WCAG-exempt).
+    more: {
+      text: { muted: 'default', subtle: 'muted' },
+      border: { muted: 'default', default: 'strong' },
+    },
+  },
 };
 
 /**
@@ -159,6 +195,30 @@ export const accentTintOverride = (role: string, family: string): string[] => {
     `  --magma-tint-accent-${infix}emphasis: var(--${family}-${hueSteps.emphasis});`,
     ...Object.entries(accentStateSteps).map(
       ([state, step]) => `  --magma-tint-accent-${infix}${state}: var(--${family}-${step});`,
+    ),
+  ];
+};
+
+/**
+ * The `--magma-tint-*` lines that promote text + border to a STRONGER same-family
+ * step under a contrast level (spec 9.3). `family` is the surface family in play -
+ * the base `tint` for the `:root` layer, a named theme's family under
+ * `data-theme-name` - so the promotion is FAMILY-INDEPENDENT: a theme gains
+ * contrast exactly the way the base layer does, by swapping the family. Only the
+ * tint pointers move, so every role that resolves through them (surface-borne
+ * text, borders) follows without touching a single component sheet. SHARED so the
+ * styles generator emits byte-identical lines for the base layer and for every
+ * named theme. Returns [] when the level declares no promotion.
+ */
+export const contrastTintOverride = (family: string, level: ContrastLevel = 'more'): string[] => {
+  const promo = semantic.contrast?.[level];
+  if (!promo) return [];
+  return [
+    ...Object.entries(promo.text ?? {}).map(
+      ([role, stronger]) => `  --magma-tint-text-${role}: var(--text-${family}-${stronger});`,
+    ),
+    ...Object.entries(promo.border ?? {}).map(
+      ([role, stronger]) => `  --magma-tint-border-${role}: var(--border-${family}-${stronger});`,
     ),
   ];
 };

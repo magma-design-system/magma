@@ -163,6 +163,34 @@ export function aliasesFromConfig(m: SemanticMapping): Record<string, string> {
   return map;
 }
 
+/** A contrast level's role promotions (role -> stronger same-family role). */
+export type ContrastPromotions = {
+  more?: { text?: Record<string, string>; border?: Record<string, string> };
+};
+
+/**
+ * The `--magma-* -> primitive` map UNDER a contrast level: start from the base
+ * aliases and repoint the promoted text/border roles to their STRONGER same-family
+ * step, mirroring what `scripts/semantic.ts` emits for `:root.pref-contrast-<level>`.
+ * Everything the gate looks up (surfaces, hues, accents) stays at the base value,
+ * so the returned map can be fed straight to `evaluatePairs`.
+ */
+export function contrastAliasesFromConfig(
+  m: SemanticMapping & { contrast?: ContrastPromotions },
+  level: keyof ContrastPromotions = 'more',
+): Record<string, string> {
+  const map = aliasesFromConfig(m);
+  const promo = m.contrast?.[level];
+  if (!promo) return map;
+  Object.entries(promo.text ?? {}).forEach(([role, stronger]) => {
+    map[`--magma-text-${role}`] = `--text-${m.tint}-${stronger}`;
+  });
+  Object.entries(promo.border ?? {}).forEach(([role, stronger]) => {
+    map[`--magma-border-${role}`] = `--border-${m.tint}-${stronger}`;
+  });
+  return map;
+}
+
 const toY = (hex: string) => sRGBtoY(chroma(hex).rgb());
 /** APCA Lc as a magnitude (Magma flips the sign in dark; the gate checks size). */
 export const apcaLc = (fgHex: string, bgHex: string): number =>
