@@ -11,7 +11,7 @@
 
 @property --mds-status-bar-backdrop {
   inherits: true;
-  initial-value: rgb(var(--tone-neutral-01) / 0.1);
+  initial-value: rgb(var(--magma-scale-01) / 0.1);
   syntax: '<color>';
 }
 

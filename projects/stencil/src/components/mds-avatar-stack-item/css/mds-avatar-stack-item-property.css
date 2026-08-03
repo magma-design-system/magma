@@ -17,12 +17,12 @@
 
 @property --mds-avatar-stack-item-count-background-color {
   inherits: true;
-  initial-value: rgb(var(--tone-neutral-09));
+  initial-value: rgb(var(--magma-scale-09));
   syntax: '<color>';
 }
 
 @property --mds-avatar-stack-item-count-color {
   inherits: true;
-  initial-value: rgb(var(--tone-neutral-04));
+  initial-value: rgb(var(--magma-scale-04));
   syntax: '<color>';
 }

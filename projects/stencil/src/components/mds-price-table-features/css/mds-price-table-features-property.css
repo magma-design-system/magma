@@ -16,6 +16,6 @@
 
 @property --mds-price-table-features-border-color {
   inherits: true;
-  initial-value: rgb(var(--tone-neutral-06));
+  initial-value: rgb(var(--magma-scale-06));
   syntax: '<color>';
 }

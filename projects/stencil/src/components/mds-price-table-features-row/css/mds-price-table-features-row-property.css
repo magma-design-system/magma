@@ -17,13 +17,13 @@
 
 @property --mds-price-table-features-row-background-hover {
   inherits: true;
-  initial-value: rgb(var(--tone-neutral-10));
+  initial-value: rgb(var(--magma-scale-10));
   syntax: '<color>';
 }
 
 @property --mds-price-table-features-row-color {
   inherits: true;
-  initial-value: rgb(var(--tone-neutral-04));
+  initial-value: rgb(var(--magma-scale-04));
   syntax: '<color>';
 }
 

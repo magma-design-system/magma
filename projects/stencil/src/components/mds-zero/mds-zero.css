@@ -10,7 +10,7 @@
   @apply ease-out mobile:px-600;
 
   align-items: center;
-  background-color: rgb(var(--tone-neutral-10));
+  background-color: rgb(var(--magma-scale-10));
   border-radius: var(--radius-xl);
   display: flex;
   flex-direction: column;

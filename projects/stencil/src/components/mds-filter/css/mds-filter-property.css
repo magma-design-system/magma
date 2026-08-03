@@ -11,13 +11,13 @@
 
 @property --mds-filter-items-background {
   inherits: true;
-  initial-value: rgb(var(--tone-neutral-09));
+  initial-value: rgb(var(--magma-scale-09));
   syntax: '<color>';
 }
 
 @property --mds-filter-items-background-active {
   inherits: true;
-  initial-value: rgb(var(--tone-neutral-09));
+  initial-value: rgb(var(--magma-scale-09));
   syntax: '<color>';
 }
 
@@ -53,7 +53,7 @@
 
 @property --mds-filter-wrapper-shadow-color {
   inherits: true;
-  initial-value: rgb(var(--tone-neutral-06));
+  initial-value: rgb(var(--magma-scale-06));
   syntax: '<color>';
 }
 

@@ -18,7 +18,7 @@
 :host {
   --mds-breadcrumb-item-arrow-depth-color: var(
     --mds-breadcrumb-arrow-depth-color,
-    rgb(var(--tone-neutral-04))
+    rgb(var(--magma-scale-04))
   );
   --mds-breadcrumb-item-button-background-selected: var(
     --mds-breadcrumb-button-background-selected,
@@ -29,8 +29,8 @@
     rgb(var(--mds-breadcrumb-item-button-border-color-rgb-hover))
   );
   --mds-breadcrumb-item-button-background: var(--mds-breadcrumb-button-background, transparent);
-  --mds-breadcrumb-item-button-border-color-rgb-selected: var(--tone-neutral-09);
-  --mds-breadcrumb-item-button-border-color-rgb-hover: var(--tone-neutral-10);
+  --mds-breadcrumb-item-button-border-color-rgb-selected: var(--magma-scale-09);
+  --mds-breadcrumb-item-button-border-color-rgb-hover: var(--magma-scale-10);
   --mds-breadcrumb-item-button-border-color-rgb: var(
     --mds-breadcrumb-item-button-border-color-rgb-hover
   );
@@ -40,11 +40,11 @@
   );
   --mds-breadcrumb-item-button-color-hover: var(
     --mds-breadcrumb-button-color-hover,
-    rgb(var(--tone-neutral-02))
+    rgb(var(--magma-scale-02))
   );
   --mds-breadcrumb-item-button-color: var(
     --mds-breadcrumb-button-color,
-    rgb(var(--tone-neutral-02))
+    rgb(var(--magma-scale-02))
   );
   --mds-breadcrumb-item-button-border-radius: 1000px;
 

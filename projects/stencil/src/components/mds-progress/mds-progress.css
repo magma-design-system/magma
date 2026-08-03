@@ -9,7 +9,7 @@
  */
 
 :host {
-  --mds-progress-background: rgb(var(--tone-neutral-08));
+  --mds-progress-background: rgb(var(--magma-scale-08));
   --mds-progress-color: rgb(var(--variant-primary-03));
   --mds-progress-duration: 750ms;
   --private-progress-duration: var(--mds-progress-duration);

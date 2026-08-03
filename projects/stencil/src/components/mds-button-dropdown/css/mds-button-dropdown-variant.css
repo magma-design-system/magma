@@ -55,19 +55,19 @@
 }
 
 :host([variant='dark'][tone='strong']) {
-  background-color: rgb(var(--tone-neutral-05));
+  background-color: rgb(var(--magma-scale-05));
 }
 
 :host([variant='dark'][tone='weak']) {
-  background-color: rgb(var(--tone-neutral-07));
+  background-color: rgb(var(--magma-scale-07));
 }
 
 :host([variant='light'][tone='strong']) {
-  background-color: rgb(var(--tone-neutral-08));
+  background-color: rgb(var(--magma-scale-08));
   box-shadow: var(--shadow-outline-50);
 }
 
 :host([variant='light'][tone='weak']) {
-  background-color: rgb(var(--tone-neutral-08));
+  background-color: rgb(var(--magma-scale-08));
   box-shadow: var(--shadow-outline-light-50);
 }

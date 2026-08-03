@@ -28,7 +28,9 @@
  * the surface family (back-compat); the object form can also repoint individual
  * accents, so a theme retints its accents the same way it retints surfaces.
  */
-export type ThemeDef = string | { surface?: string; accents?: Record<string, string> };
+export type ThemeDef =
+  | string
+  | { surface?: string; accents?: Record<string, string>; scale?: string };
 
 /**
  * A contrast preference level that carries role promotions (spec 9.3). Only `more`
@@ -66,6 +68,19 @@ export interface SemanticConfig {
    * the old `neutral-emphasis` / `-on-emphasis` names remain as deprecated aliases.
    */
   hues: Record<string, { family: string; partial?: boolean }>;
+  /**
+   * How many steps of the active tint's ramp to expose as `--magma-scale-NN`.
+   *
+   * TRANSITIONAL (spec 8): the component sheets still reach for a raw ramp step in
+   * the places the role vocabulary does not cover yet (interaction washes, scrims,
+   * shadows, decorative fills). Pinned to `--tone-neutral-*` those uses split the
+   * theming in two - the semantic roles retint, the raw steps stay a static
+   * neutral - so the ramp gets the same active-tint indirection everything else
+   * has. It is deliberately NOT bridged to Tailwind: it is an internal step toward
+   * naming those uses, not an API to build on, and each one that earns a role
+   * leaves the ramp behind.
+   */
+  scaleSteps: number;
   /** Steps of a colored family for the quintet (spec 6.5). */
   hueSteps: { surface: string; fg: string; border: string; emphasis: string };
   /** Steps for the neutral (partial) hue - it borrows from the tone scale. */
@@ -134,6 +149,7 @@ export const semantic: SemanticConfig = {
     danger: { family: 'status-error' },
     neutral: { family: 'tone-neutral', partial: true },
   },
+  scaleSteps: 10,
   hueSteps: { surface: '09', fg: '05', border: '06', emphasis: '04' },
   neutralHueSteps: { fg: '03', border: '06', emphasis: '02' },
   accents: {
@@ -174,6 +190,29 @@ export const semantic: SemanticConfig = {
  * `--magma-accent-accent-*` is deliberately avoided: accent is the category).
  */
 export const accentInfix = (role: string): string => (role === 'accent' ? '' : `${role}-`);
+
+/** The ramp step names, zero-padded the way the primitives are (`01` ... `10`). */
+export const scaleStepList = (): string[] =>
+  Array.from({ length: semantic.scaleSteps }, (_, i) => String(i + 1).padStart(2, '0'));
+
+/**
+ * The PRIMITIVE ramp family behind a surface family. A surface role drops the token
+ * group (`tone.neutral` becomes `--surface-neutral-*`) while the ramp keeps it
+ * (`--tone-neutral-09`), and the group is NOT recoverable from the surface name - so
+ * `tone` is assumed, which is exactly right today because a theme must be a tint
+ * (the playground restricts theme candidates to the `tone` group: a theme repoints
+ * the whole neutral scaffolding). A future theme drawn from another group states its
+ * ramp explicitly, e.g. `blue: { surface: 'blue', scale: 'label-blue' }`.
+ */
+export const scaleFamily = (surface: string, scale?: string): string => scale ?? `tone-${surface}`;
+
+/**
+ * The `--magma-tint-scale-*` lines pointing the ramp at one family. SHARED for the
+ * same reason as `accentTintOverride`: the styles generator and the playground theme
+ * export must emit byte-identical CSS.
+ */
+export const scaleTintOverride = (family: string): string[] =>
+  scaleStepList().map((step) => `  --magma-tint-scale-${step}: var(--${family}-${step});`);
 
 /**
  * The `--magma-tint-accent-*` lines that point an accent role at `family` (a

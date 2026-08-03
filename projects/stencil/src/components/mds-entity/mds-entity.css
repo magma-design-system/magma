@@ -10,7 +10,7 @@
 
 :host {
   --mds-entity-background: rgb(var(--tone-neutral-seed));
-  --mds-entity-color: rgb(var(--tone-neutral-02));
+  --mds-entity-color: rgb(var(--magma-scale-02));
   --mds-entity-detail-color: rgb(var(--magma-text-muted));
   --mds-entity-icon-background: rgb(var(--label-blue-09));
   --mds-entity-icon-radius: var(--radius-md);

@@ -18,8 +18,8 @@
   --mds-stepper-bar-scrollbar-margin: 0;
   --mds-stepper-bar-scrollbar-radius: 0;
   --mds-stepper-bar-scrollbar-size: --spacing(200);
-  --mds-stepper-bar-scrollbar-thumb-background: rgb(var(--tone-neutral-06));
-  --mds-stepper-bar-scrollbar-track-background: rgb(var(--tone-neutral-08));
+  --mds-stepper-bar-scrollbar-thumb-background: rgb(var(--magma-scale-06));
+  --mds-stepper-bar-scrollbar-track-background: rgb(var(--magma-scale-08));
 
   display: grid;
   gap: --spacing(600);

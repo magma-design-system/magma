@@ -5,7 +5,7 @@
  */
 
 :host {
-  --mds-separator-background: rgb(var(--tone-neutral-08));
+  --mds-separator-background: rgb(var(--magma-scale-08));
 
   background-color: var(--mds-separator-background);
   border-radius: var(--radius-full);

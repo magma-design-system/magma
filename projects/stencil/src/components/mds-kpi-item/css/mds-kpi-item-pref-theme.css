@@ -5,7 +5,7 @@
  * OS via @media; the scheme axis gates it. Cross-browser, no :host-context. */
 
 :host([pref-theme='dark']:not([pref-theme-scheme='light'])) {
-  --mds-kpi-item-info-background: rgb(var(--tone-neutral-09));
+  --mds-kpi-item-info-background: rgb(var(--magma-scale-09));
 
   background-color: rgb(var(--magma-accent-surface));
   box-shadow: var(--shadow-outline);
@@ -14,7 +14,7 @@
 @media (prefers-color-scheme: dark) {
   :host([pref-theme='system']:not([pref-theme-scheme='light'])),
   :host(:not([pref-theme])) {
-    --mds-kpi-item-info-background: rgb(var(--tone-neutral-09));
+    --mds-kpi-item-info-background: rgb(var(--magma-scale-09));
 
     background-color: rgb(var(--magma-accent-surface));
     box-shadow: var(--shadow-outline);

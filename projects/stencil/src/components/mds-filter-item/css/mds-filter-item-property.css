@@ -11,19 +11,19 @@
 
 @property --mds-filter-item-count-background-default {
   inherits: true;
-  initial-value: rgb(var(--tone-neutral-08));
+  initial-value: rgb(var(--magma-scale-08));
   syntax: '<color>';
 }
 
 @property --mds-filter-item-count-background-selected {
   inherits: true;
-  initial-value: rgb(var(--tone-neutral-05));
+  initial-value: rgb(var(--magma-scale-05));
   syntax: '<color>';
 }
 
 @property --mds-filter-item-count-color-default {
   inherits: true;
-  initial-value: rgb(var(--tone-neutral-02));
+  initial-value: rgb(var(--magma-scale-02));
   syntax: '<color>';
 }
 

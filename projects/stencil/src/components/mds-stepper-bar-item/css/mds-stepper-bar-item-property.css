@@ -23,7 +23,7 @@
 
 @property --mds-stepper-bar-item-icon-background {
   inherits: true;
-  initial-value: rgb(var(--tone-neutral-08));
+  initial-value: rgb(var(--magma-scale-08));
   syntax: '<color>';
 }
 
@@ -41,7 +41,7 @@
 
 @property --mds-stepper-bar-item-icon-color {
   inherits: true;
-  initial-value: rgb(var(--tone-neutral-04));
+  initial-value: rgb(var(--magma-scale-04));
   syntax: '<color>';
 }
 
@@ -89,7 +89,7 @@
 
 @property --mds-stepper-bar-item-progress-background {
   inherits: true;
-  initial-value: rgb(var(--tone-neutral-08));
+  initial-value: rgb(var(--magma-scale-08));
   syntax: '<color>';
 }
 

@@ -29,7 +29,7 @@
   --mds-horizontal-scroll-dot-size: --spacing(200);
   --mds-horizontal-scroll-dot-max-width: auto;
   --mds-horizontal-scroll-dot-background: rgb(var(--tone-neutral-seed));
-  --mds-horizontal-scroll-dot-area-background: rgb(var(--tone-neutral-08));
+  --mds-horizontal-scroll-dot-area-background: rgb(var(--magma-scale-08));
   --mds-horizontal-scroll-contents-padding: --spacing(600);
   --mds-horizontal-scroll-contents-scroll-padding: 0 --spacing(600);
   --mds-horizontal-scroll-controls-margin: --spacing(1200);
@@ -39,7 +39,7 @@
   --mds-horizontal-scroll-scrollbar-radius: 0;
   --mds-horizontal-scroll-scrollbar-size: --spacing(200);
   --mds-horizontal-scroll-scrollbar-thumb-background: rgb(var(--magma-surface-inverse) / 0.3);
-  --mds-horizontal-scroll-scrollbar-track-background: rgb(var(--tone-neutral-06) / 0.3);
+  --mds-horizontal-scroll-scrollbar-track-background: rgb(var(--magma-scale-06) / 0.3);
 
   /* private custom props, DO NOT OVERRIDE from outside */
   --max-width: var(--mds-horizontal-scroll-max-width);

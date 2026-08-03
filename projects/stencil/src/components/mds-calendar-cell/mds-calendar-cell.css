@@ -46,11 +46,11 @@
   --mds-calendar-cell-boundaries-padding: --spacing(100);
   --mds-calendar-cell-color: rgb(var(--magma-text-default));
   --mds-calendar-cell-other-month-background: transparent;
-  --mds-calendar-cell-other-month-color: rgb(var(--tone-neutral-07));
+  --mds-calendar-cell-other-month-color: rgb(var(--magma-scale-07));
   --mds-calendar-cell-disabled-background: transparent;
-  --mds-calendar-cell-disabled-color: rgb(var(--tone-neutral-07));
+  --mds-calendar-cell-disabled-color: rgb(var(--magma-scale-07));
   --mds-calendar-cell-weekend-background: transparent;
-  --mds-calendar-cell-weekend-color: rgb(var(--tone-neutral-06));
+  --mds-calendar-cell-weekend-color: rgb(var(--magma-scale-06));
 
   /* radius */
   --mds-calendar-cell-size: --spacing(1200);
@@ -87,7 +87,7 @@
   );
   --mds-calendar-cell-selection-current-month-weekend-boundaries-color: rgb(var(--magma-text-muted));
   --mds-calendar-cell-selection-other-month-background: rgb(var(--variant-primary-07));
-  --mds-calendar-cell-selection-other-month-color: rgb(var(--tone-neutral-04));
+  --mds-calendar-cell-selection-other-month-color: rgb(var(--magma-scale-04));
   --mds-calendar-cell-selection-other-month-boundaries-background: rgb(var(--magma-accent-surface-subtle));
   --mds-calendar-cell-selection-other-month-boundaries-color: rgb(var(--magma-text-disabled));
 

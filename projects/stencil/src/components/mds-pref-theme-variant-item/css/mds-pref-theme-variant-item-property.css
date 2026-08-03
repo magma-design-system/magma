@@ -11,7 +11,7 @@
 
 @property --mds-pref-theme-variant-item-color-background {
   inherits: true;
-  initial-value: rgb(var(--tone-neutral-09));
+  initial-value: rgb(var(--magma-scale-09));
   syntax: '<color>';
 }
 

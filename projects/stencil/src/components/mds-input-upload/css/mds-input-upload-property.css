@@ -17,7 +17,7 @@
 
 @property --mds-input-upload-drag-area-background-color-on-drag {
   inherits: true;
-  initial-value: rgb(var(--tone-neutral-10));
+  initial-value: rgb(var(--magma-scale-10));
   syntax: '<color>';
 }
 

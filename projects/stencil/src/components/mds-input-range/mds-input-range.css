@@ -15,13 +15,13 @@
 :host {
   --mds-input-range-transition-duration: var(--duration-300);
   --private-input-range-transition-duration: var(--mds-input-range-transition-duration);
-  --mds-input-range-thumb-background-disabled: rgb(var(--tone-neutral-08));
+  --mds-input-range-thumb-background-disabled: rgb(var(--magma-scale-08));
   --mds-input-range-thumb-background: rgb(var(--tone-neutral-seed));
   --mds-input-range-thumb-cursor: col-resize;
   --mds-input-range-thumb-size: --spacing(400);
-  --mds-input-range-track-background-disabled: rgb(var(--tone-neutral-08));
-  --mds-input-range-track-background: rgb(var(--tone-neutral-08));
-  --mds-input-range-track-progress-background-disabled: rgb(var(--tone-neutral-06));
+  --mds-input-range-track-background-disabled: rgb(var(--magma-scale-08));
+  --mds-input-range-track-background: rgb(var(--magma-scale-08));
+  --mds-input-range-track-progress-background-disabled: rgb(var(--magma-scale-06));
   --mds-input-range-track-progress-background: rgb(var(--magma-accent-emphasis-hover));
   --mds-input-range-track-size: --spacing(600);
 

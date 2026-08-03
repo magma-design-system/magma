@@ -3,7 +3,12 @@ import { APCAcontrast, sRGBtoY } from 'apca-w3';
 import chroma from 'chroma-js';
 import type { MagmaConfig } from '../../src/lib/color.mjs';
 import { createColorTokens } from '../../src/lib/color.mjs';
-import { semantic, accentTintOverride } from '../../semantic.config';
+import {
+  semantic,
+  accentTintOverride,
+  scaleFamily,
+  scaleTintOverride,
+} from '../../semantic.config';
 
 /**
  * Themes - a DERIVED section under surfaces (epic #328, spec 8). It reads the
@@ -119,6 +124,10 @@ export function ThemesManager({ config }: ThemesManagerProps) {
       lines.push(`  --magma-tint-border-${r}: var(--border-${family}-${r});`),
     );
     TEXT_ROLES.forEach((r) => lines.push(`  --magma-tint-text-${r}: var(--text-${family}-${r});`));
+    // the ramp travels with the block: component sheets still read raw steps through
+    // --magma-scale-*, so a theme that retinted only surface/border/text would leave
+    // those on the base tint. Same shared helper the styles generator uses.
+    lines.push(...scaleTintOverride(scaleFamily(family)));
     ACCENT_ROLES.forEach((role) => {
       const variant = accentFor(family, role);
       if (variant !== semantic.accents[role]) lines.push(...accentTintOverride(role, variant));

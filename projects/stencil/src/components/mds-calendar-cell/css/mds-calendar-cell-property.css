@@ -53,7 +53,7 @@
 
 @property --mds-calendar-cell-disabled-color {
   inherits: true;
-  initial-value: rgb(var(--tone-neutral-07));
+  initial-value: rgb(var(--magma-scale-07));
   syntax: '<color>';
 }
 
@@ -65,7 +65,7 @@
 
 @property --mds-calendar-cell-other-month-color {
   inherits: true;
-  initial-value: rgb(var(--tone-neutral-07));
+  initial-value: rgb(var(--magma-scale-07));
   syntax: '<color>';
 }
 
@@ -203,7 +203,7 @@
 
 @property --mds-calendar-cell-selection-other-month-color {
   inherits: true;
-  initial-value: rgb(var(--tone-neutral-04));
+  initial-value: rgb(var(--magma-scale-04));
   syntax: '<color>';
 }
 
@@ -227,6 +227,6 @@
 
 @property --mds-calendar-cell-weekend-color {
   inherits: true;
-  initial-value: rgb(var(--tone-neutral-06));
+  initial-value: rgb(var(--magma-scale-06));
   syntax: '<color>';
 }

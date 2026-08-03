@@ -10,7 +10,7 @@
 :host {
   --mds-price-table-list-item-supported-icon-color-hover: rgb(var(--label-green-05));
   --mds-price-table-list-item-supported-icon-color: rgb(var(--label-green-06));
-  --mds-price-table-list-item-unsupported-icon-color-hover: rgb(var(--tone-neutral-04));
+  --mds-price-table-list-item-unsupported-icon-color-hover: rgb(var(--magma-scale-04));
   --mds-price-table-list-item-unsupported-icon-color: rgb(var(--magma-text-disabled));
 
   align-items: flex-start;

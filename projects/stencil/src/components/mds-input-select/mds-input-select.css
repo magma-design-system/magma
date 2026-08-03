@@ -47,7 +47,7 @@
   --mds-input-tip-horizontal-offset: --spacing(100);
   --mds-input-tip-horizontal-offset-focused: --spacing(1000);
   --mds-input-tip-vertical-offset: --spacing(100);
-  --mds-input-tip-background: rgb(var(--tone-neutral-03));
+  --mds-input-tip-background: rgb(var(--magma-scale-03));
   --mds-input-select-transition-duration: var(--duration-300);
   --mds-input-select-icon-transition-duration: var(--duration-200);
 
@@ -57,7 +57,7 @@
 
   @apply text-info-detail;
 
-  color: rgb(var(--tone-neutral-02));
+  color: rgb(var(--magma-scale-02));
   display: flex;
   position: relative;
   user-select: none;
@@ -89,7 +89,7 @@
   border-radius: var(--radius-xs);
   box-shadow: var(--mds-input-select-ring), var(--mds-input-select-shadow);
   box-sizing: border-box;
-  color: rgb(var(--tone-neutral-02));
+  color: rgb(var(--magma-scale-02));
   cursor: pointer;
   margin: 0;
   min-height: --spacing(1200);
@@ -121,7 +121,7 @@
 }
 
 .input:disabled {
-  background-color: rgb(var(--tone-neutral-09));
+  background-color: rgb(var(--magma-scale-09));
   opacity: 1;
 }
 
@@ -134,7 +134,7 @@
 }
 
 :host([disabled]:not([disabled='false'])) .icon {
-  fill: rgb(var(--tone-neutral-06));
+  fill: rgb(var(--magma-scale-06));
   transform: translate(--spacing(250), --spacing(200));
 }
 

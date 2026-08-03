@@ -176,9 +176,9 @@
 :host([tag='code']) {
   @apply ease-in-out;
 
-  background-color: rgb(var(--tone-neutral-09));
+  background-color: rgb(var(--magma-scale-09));
   border-radius: 0.25rem;
-  box-shadow: rgb(var(--tone-neutral-08)) 0 0 0 1px;
+  box-shadow: rgb(var(--magma-scale-08)) 0 0 0 1px;
   color: rgb(var(--magma-text-muted));
   padding-block: --spacing(25);
   padding-inline: --spacing(100);

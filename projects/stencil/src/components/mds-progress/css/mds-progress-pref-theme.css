@@ -6,11 +6,11 @@
 
 :host([pref-theme='dark']:not([pref-theme-scheme='light'])) {
   --mds-progress-color: rgb(var(--magma-accent-fg));
-  --mds-progress-background: rgb(var(--tone-neutral-07));
+  --mds-progress-background: rgb(var(--magma-scale-07));
 
   &:host([variant='primary']) {
     --mds-progress-color: rgb(var(--magma-accent-fg));
-    --mds-progress-background: rgb(var(--tone-neutral-07));
+    --mds-progress-background: rgb(var(--magma-scale-07));
   }
 
   &:host([variant='error']) {
@@ -38,11 +38,11 @@
   :host([pref-theme='system']:not([pref-theme-scheme='light'])),
   :host(:not([pref-theme])) {
     --mds-progress-color: rgb(var(--magma-accent-fg));
-    --mds-progress-background: rgb(var(--tone-neutral-07));
+    --mds-progress-background: rgb(var(--magma-scale-07));
 
     &:host([variant='primary']) {
       --mds-progress-color: rgb(var(--magma-accent-fg));
-      --mds-progress-background: rgb(var(--tone-neutral-07));
+      --mds-progress-background: rgb(var(--magma-scale-07));
     }
 
     &:host([variant='error']) {

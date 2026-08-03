@@ -11,7 +11,7 @@
 
 @property --mds-input-tip-item-background {
   inherits: true;
-  initial-value: rgb(var(--tone-neutral-03));
+  initial-value: rgb(var(--magma-scale-03));
   syntax: '<color>';
 }
 

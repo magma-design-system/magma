@@ -17,12 +17,12 @@
 
 @property --mds-bibliography-text-decoration {
   inherits: true;
-  initial-value: rgb(var(--tone-neutral-06));
+  initial-value: rgb(var(--magma-scale-06));
   syntax: '<color>';
 }
 
 @property --mds-bibliography-text-decoration-hover {
   inherits: true;
-  initial-value: rgb(var(--tone-neutral-02));
+  initial-value: rgb(var(--magma-scale-02));
   syntax: '<color>';
 }

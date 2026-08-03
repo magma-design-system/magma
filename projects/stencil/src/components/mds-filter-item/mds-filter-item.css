@@ -11,9 +11,9 @@
 :host {
   --mds-filter-item-transition-duration: var(--duration-200);
   --private-filter-item-transition-duration: var(--mds-filter-item-transition-duration);
-  --mds-filter-item-count-background-default: rgb(var(--tone-neutral-08));
-  --mds-filter-item-count-color-default: rgb(var(--tone-neutral-02));
-  --mds-filter-item-count-background-selected: rgb(var(--tone-neutral-05));
+  --mds-filter-item-count-background-default: rgb(var(--magma-scale-08));
+  --mds-filter-item-count-color-default: rgb(var(--magma-scale-02));
+  --mds-filter-item-count-background-selected: rgb(var(--magma-scale-05));
   --mds-filter-item-count-color-selected: rgb(var(--magma-text-on-emphasis));
 
   @apply focus-bounce;

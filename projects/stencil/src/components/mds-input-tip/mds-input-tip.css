@@ -12,7 +12,7 @@
   --mds-input-tip-transition-duration: var(--duration-300);
   --private-input-tip-transition-duration: var(--mds-input-tip-transition-duration);
   --mds-input-tip-active-translate: translate(0, 0);
-  --mds-input-tip-background: rgb(var(--tone-neutral-03));
+  --mds-input-tip-background: rgb(var(--magma-scale-03));
   --mds-input-tip-horizontal-offset-focused: 0px;
   --mds-input-tip-horizontal-offset: --spacing(400);
   --mds-input-tip-vertical-offset: --spacing(100);

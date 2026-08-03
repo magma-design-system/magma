@@ -31,13 +31,13 @@
 
 :host {
   --mds-banner-background: rgb(var(--magma-surface-muted));
-  --mds-banner-close-icon-hover-background: rgb(var(--tone-neutral-09));
-  --mds-banner-cockade-background: rgb(var(--tone-neutral-09));
+  --mds-banner-close-icon-hover-background: rgb(var(--magma-scale-09));
+  --mds-banner-cockade-background: rgb(var(--magma-scale-09));
   --mds-banner-cockade-distance: --spacing(600);
-  --mds-banner-color: rgb(var(--tone-neutral-02));
+  --mds-banner-color: rgb(var(--magma-scale-02));
   --mds-banner-content-gap: --spacing(400);
   --mds-banner-headline-color: var(--mds-banner-color);
-  --mds-banner-icon-color: rgb(var(--tone-neutral-04));
+  --mds-banner-icon-color: rgb(var(--magma-scale-04));
   --mds-banner-radius: var(--radius-2xl, 24px);
   --mds-banner-shadow: none;
   --mds-banner-transition-duration: 300ms;

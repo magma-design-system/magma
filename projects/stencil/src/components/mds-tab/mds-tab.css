@@ -92,7 +92,7 @@
   --mds-tab-item-default-color: rgb(var(--magma-text-muted));
   --mds-tab-item-default-shadow: transparent;
   --mds-tab-item-hover-background: transparent;
-  --mds-tab-item-hover-color: rgb(var(--tone-neutral-02));
+  --mds-tab-item-hover-color: rgb(var(--magma-scale-02));
   --mds-tab-item-hover-shadow: transparent;
   --mds-tab-item-radius: calc(var(--mds-tab-tabs-radius) - var(--mds-tab-tabs-padding));
   --mds-tab-item-selected-background: rgb(var(--tone-neutral-seed));
@@ -103,9 +103,9 @@
   --mds-tab-scroll-scrollbar-radius: 0;
   --mds-tab-scroll-scrollbar-size: --spacing(200);
   --mds-tab-scroll-scrollbar-thumb-background: rgb(var(--magma-surface-inverse) / 0.3);
-  --mds-tab-scroll-scrollbar-track-background: rgb(var(--tone-neutral-06) / 0.3);
+  --mds-tab-scroll-scrollbar-track-background: rgb(var(--magma-scale-06) / 0.3);
   --mds-tab-slide-delay: 0.125s;
-  --mds-tab-tabs-background: rgb(var(--tone-neutral-09));
+  --mds-tab-tabs-background: rgb(var(--magma-scale-09));
   --mds-tab-tabs-gap: --spacing(200);
   --mds-tab-tabs-overflow-shadow-size: --spacing(600);
   --mds-tab-tabs-overflow-shadow: 0 0 var(--mds-tab-tabs-overflow-shadow-size) -2px

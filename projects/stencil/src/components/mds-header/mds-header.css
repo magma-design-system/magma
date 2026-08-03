@@ -37,10 +37,10 @@
 */
 
 :host {
-  --mds-header-color: rgb(var(--tone-neutral-02));
+  --mds-header-color: rgb(var(--magma-scale-02));
   --mds-header-hidden-bar-translate-inline: translateY(-150%);
   --mds-header-hidden-bar-translate-stripe: translateY(-110%);
-  --mds-header-icon-color: var(--mds-header-color, rgb(var(--tone-neutral-02)));
+  --mds-header-icon-color: var(--mds-header-color, rgb(var(--magma-scale-02)));
   --mds-header-modal-icon-color: rgb(var(--magma-text-on-emphasis));
   --mds-header-backdrop-blur-strength: 2px;
   --mds-header-backdrop-height: --spacing(1600);

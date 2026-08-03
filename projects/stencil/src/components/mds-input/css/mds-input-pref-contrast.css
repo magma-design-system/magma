@@ -5,23 +5,23 @@
 
 :host([pref-contrast='more']) {
   --mds-input-ring: var(--shadow-outline-strong-50);
-  --mds-input-background: rgb(var(--tone-neutral-09));
-  --mds-input-controls-border: 2px solid rgb(var(--tone-neutral-05));
+  --mds-input-background: rgb(var(--magma-scale-09));
+  --mds-input-controls-border: 2px solid rgb(var(--magma-scale-05));
 }
 
 :host([pref-contrast='more']) .input::placeholder {
-  color: rgb(var(--tone-neutral-03));
+  color: rgb(var(--magma-scale-03));
 }
 
 @media (prefers-contrast: more) {
   :host([pref-contrast='system']),
   :host(:not([pref-contrast])) {
     --mds-input-ring: var(--shadow-outline-strong-50);
-    --mds-input-background: rgb(var(--tone-neutral-09));
-    --mds-input-controls-border: 2px solid rgb(var(--tone-neutral-05));
+    --mds-input-background: rgb(var(--magma-scale-09));
+    --mds-input-controls-border: 2px solid rgb(var(--magma-scale-05));
 
     .input::placeholder {
-      color: rgb(var(--tone-neutral-03));
+      color: rgb(var(--magma-scale-03));
     }
   }
 }

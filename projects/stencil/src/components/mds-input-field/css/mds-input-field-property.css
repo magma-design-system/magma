@@ -11,7 +11,7 @@
 
 @property --mds-input-field-message-background {
   inherits: true;
-  initial-value: rgb(var(--tone-neutral-10));
+  initial-value: rgb(var(--magma-scale-10));
   syntax: '<color>';
 }
 

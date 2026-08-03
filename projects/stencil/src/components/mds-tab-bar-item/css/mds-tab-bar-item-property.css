@@ -11,7 +11,7 @@
 
 @property --mds-tab-bar-item-background {
   inherits: true;
-  initial-value: rgb(var(--tone-neutral-10));
+  initial-value: rgb(var(--magma-scale-10));
   syntax: '<color>';
 }
 
@@ -23,7 +23,7 @@
 
 @property --mds-tab-bar-item-color {
   inherits: true;
-  initial-value: rgb(var(--tone-neutral-04));
+  initial-value: rgb(var(--magma-scale-04));
   syntax: '<color>';
 }
 

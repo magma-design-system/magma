@@ -35,7 +35,7 @@
 
 @property --mds-keyboard-color {
   inherits: true;
-  initial-value: rgb(var(--tone-neutral-04));
+  initial-value: rgb(var(--magma-scale-04));
   syntax: '<color>';
 }
 

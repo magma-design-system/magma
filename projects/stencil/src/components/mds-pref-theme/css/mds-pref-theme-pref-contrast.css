@@ -4,7 +4,7 @@
   }
 
   .item--system {
-    --mds-tab-item-selected-color: rgb(var(--tone-neutral-03));
+    --mds-tab-item-selected-color: rgb(var(--magma-scale-03));
   }
 
   .item--light {
@@ -24,7 +24,7 @@
     }
 
     .item--system {
-      --mds-tab-item-selected-color: rgb(var(--tone-neutral-03));
+      --mds-tab-item-selected-color: rgb(var(--magma-scale-03));
     }
 
     .item--light {

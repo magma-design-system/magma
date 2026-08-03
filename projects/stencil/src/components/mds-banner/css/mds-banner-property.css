@@ -35,7 +35,7 @@
 
 @property --mds-banner-color {
   inherits: true;
-  initial-value: rgb(var(--tone-neutral-02));
+  initial-value: rgb(var(--magma-scale-02));
   syntax: '<color>';
 }
 

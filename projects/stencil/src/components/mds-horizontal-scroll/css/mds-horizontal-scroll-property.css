@@ -35,7 +35,7 @@
 
 @property --mds-horizontal-scroll-dot-area-background {
   inherits: true;
-  initial-value: rgb(var(--tone-neutral-08));
+  initial-value: rgb(var(--magma-scale-08));
   syntax: '<color>';
 }
 
@@ -95,6 +95,6 @@
 
 @property --mds-horizontal-scroll-scrollbar-track-background {
   inherits: true;
-  initial-value: rgb(var(--tone-neutral-06) / 0.3);
+  initial-value: rgb(var(--magma-scale-06) / 0.3);
   syntax: '<color>';
 }

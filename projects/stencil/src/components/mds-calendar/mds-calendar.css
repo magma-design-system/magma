@@ -13,7 +13,7 @@
  */
 
 :host {
-  --mds-calendar-day-number-other-month-color: rgb(var(--tone-neutral-07));
+  --mds-calendar-day-number-other-month-color: rgb(var(--magma-scale-07));
   --mds-calendar-day-number-color: rgb(var(--magma-text-default));
   --mds-calendar-cell-gap: --spacing(50);
   --mds-calendar-cell-other-month-visibility: visible;
@@ -25,7 +25,7 @@
   --mds-calendar-max-width: 480px;
   --mds-calendar-min-width: 280px;
 
-  background-color: rgb(var(--tone-neutral-09));
+  background-color: rgb(var(--magma-scale-09));
   border-radius: var(--mds-calendar-border-radius);
   cursor: auto;
   display: inline-flex;
@@ -78,7 +78,7 @@ nav {
 
 .select-month-or-year {
   align-items: stretch;
-  background-color: rgb(var(--tone-neutral-09));
+  background-color: rgb(var(--magma-scale-09));
   block-size: var(--mds-calendar-select-month-or-year-height);
   border-radius: var(--mds-calendar-border-radius);
   box-sizing: border-box;

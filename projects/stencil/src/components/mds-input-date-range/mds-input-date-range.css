@@ -44,7 +44,7 @@
   @apply text-info-detail;
 
   border-radius: var(--radius-2xl);
-  color: rgb(var(--tone-neutral-02));
+  color: rgb(var(--magma-scale-02));
   container-type: inline-size;
   corner-shape: var(--magma-corner-shape, round);
   cursor: text;
@@ -132,7 +132,7 @@
 
 .calendar-preselection-panel {
   align-content: start;
-  background-color: rgb(var(--tone-neutral-09));
+  background-color: rgb(var(--magma-scale-09));
   border-radius: var(--radius-lg);
   box-sizing: border-box;
   display: grid;

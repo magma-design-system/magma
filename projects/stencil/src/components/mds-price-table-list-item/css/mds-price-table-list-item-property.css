@@ -29,6 +29,6 @@
 
 @property --mds-price-table-list-item-unsupported-icon-color-hover {
   inherits: true;
-  initial-value: rgb(var(--tone-neutral-04));
+  initial-value: rgb(var(--magma-scale-04));
   syntax: '<color>';
 }

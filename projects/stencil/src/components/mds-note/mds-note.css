@@ -11,7 +11,7 @@
 :host {
   --mds-note-background: rgb(var(--label-yellow-10));
   --mds-note-color: rgb(var(--label-yellow-02));
-  --mds-note-fold-color: rgb(var(--tone-neutral-10));
+  --mds-note-fold-color: rgb(var(--magma-scale-10));
   --mds-note-fold-size: 40px;
   --mds-note-selection-background: var(--magma-selection-background, rgb(var(--label-yellow-09)));
   --mds-note-selection-color: var(--magma-selection-color, rgb(var(--label-yellow-02)));

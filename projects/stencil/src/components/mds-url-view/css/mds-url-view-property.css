@@ -11,13 +11,13 @@
 
 @property --mds-url-view-background {
   inherits: true;
-  initial-value: rgb(var(--tone-neutral-10));
+  initial-value: rgb(var(--magma-scale-10));
   syntax: '<color>';
 }
 
 @property --mds-url-view-color {
   inherits: true;
-  initial-value: rgb(var(--tone-neutral-02));
+  initial-value: rgb(var(--magma-scale-02));
   syntax: '<color>';
 }
 

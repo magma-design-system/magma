@@ -25,19 +25,19 @@
 
 @property --mds-input-placeholder-default-color {
   inherits: true;
-  initial-value: rgb(var(--tone-neutral-06));
+  initial-value: rgb(var(--magma-scale-06));
   syntax: '<color>';
 }
 
 @property --mds-input-placeholder-focus-color {
   inherits: true;
-  initial-value: rgb(var(--tone-neutral-07));
+  initial-value: rgb(var(--magma-scale-07));
   syntax: '<color>';
 }
 
 @property --mds-input-placeholder-hover-color {
   inherits: true;
-  initial-value: rgb(var(--tone-neutral-06));
+  initial-value: rgb(var(--magma-scale-06));
   syntax: '<color>';
 }
 

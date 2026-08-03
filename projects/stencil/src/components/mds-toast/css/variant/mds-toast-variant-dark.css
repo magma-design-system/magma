@@ -1,14 +1,14 @@
 :host([variant='dark']),
 :host([variant='dark'][tone='strong']) {
   --mds-toast-background: rgb(var(--magma-surface-inverse));
-  --mds-toast-color: rgb(var(--tone-neutral-09));
+  --mds-toast-color: rgb(var(--magma-scale-09));
   --mds-toast-shadow: var(--shadow-lg-sharp);
-  --mds-toast-icon-color: rgb(var(--tone-neutral-09));
+  --mds-toast-icon-color: rgb(var(--magma-scale-09));
 }
 
 :host([variant='dark'][tone='weak']) {
-  --mds-toast-background: rgb(var(--tone-neutral-03));
-  --mds-toast-color: rgb(var(--tone-neutral-10));
+  --mds-toast-background: rgb(var(--magma-scale-03));
+  --mds-toast-color: rgb(var(--magma-scale-10));
   --mds-toast-shadow: var(--shadow-sm-sharp);
-  --mds-toast-icon-color: rgb(var(--tone-neutral-08));
+  --mds-toast-icon-color: rgb(var(--magma-scale-08));
 }
