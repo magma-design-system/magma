@@ -42,7 +42,7 @@
   --mds-accordion-timer-item-color: var(--mds-accordion-timer-color, rgb(var(--tone-neutral-02)));
   --mds-accordion-timer-item-progress-bar-color: var(
     --mds-accordion-timer-progress-bar-color,
-    rgb(var(--tone-neutral-03))
+    rgb(var(--magma-text-muted))
   );
   --mds-accordion-timer-item-progress-bar-background: var(
     --mds-accordion-timer-progress-bar-background,

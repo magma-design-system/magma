@@ -7,7 +7,7 @@
 :host([pref-theme='dark']:not([pref-theme-scheme='light'])) {
   --mds-kpi-item-info-background: rgb(var(--tone-neutral-09));
 
-  background-color: rgb(var(--variant-primary-09));
+  background-color: rgb(var(--magma-accent-surface));
   box-shadow: var(--shadow-outline);
 }
 
@@ -16,7 +16,7 @@
   :host(:not([pref-theme])) {
     --mds-kpi-item-info-background: rgb(var(--tone-neutral-09));
 
-    background-color: rgb(var(--variant-primary-09));
+    background-color: rgb(var(--magma-accent-surface));
     box-shadow: var(--shadow-outline);
   }
 }

@@ -28,8 +28,8 @@
 :host {
   --mds-details-duration: 300ms;
   --private-details-duration: var(--mds-details-duration);
-  --mds-details-icon-color: rgb(var(--variant-primary-04));
-  --mds-details-helper-icon-color: rgb(var(--tone-neutral-03));
+  --mds-details-icon-color: rgb(var(--magma-accent-emphasis));
+  --mds-details-helper-icon-color: rgb(var(--magma-text-muted));
 
   align-items: flex-start;
   display: flex;

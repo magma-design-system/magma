@@ -22,7 +22,7 @@
   --mds-input-range-track-background-disabled: rgb(var(--tone-neutral-08));
   --mds-input-range-track-background: rgb(var(--tone-neutral-08));
   --mds-input-range-track-progress-background-disabled: rgb(var(--tone-neutral-06));
-  --mds-input-range-track-progress-background: rgb(var(--variant-primary-03));
+  --mds-input-range-track-progress-background: rgb(var(--magma-accent-emphasis-hover));
   --mds-input-range-track-size: --spacing(600);
 
   /* private properties */

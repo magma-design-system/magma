@@ -6,7 +6,7 @@
 
 :host([pref-theme='dark']:not([pref-theme-scheme='light'])) {
   .action-close {
-    --mds-button-color: rgb(var(--tone-neutral-01));
+    --mds-button-color: rgb(var(--magma-text-default));
   }
 }
 
@@ -14,7 +14,7 @@
   :host([pref-theme='system']:not([pref-theme-scheme='light'])),
   :host(:not([pref-theme])) {
     .action-close {
-      --mds-button-color: rgb(var(--tone-neutral-01));
+      --mds-button-color: rgb(var(--magma-text-default));
     }
   }
 }

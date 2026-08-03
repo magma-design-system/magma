@@ -11,7 +11,7 @@
 }
 
 :host {
-  --mds-header-bar-hamburger-color: rgb(var(--tone-neutral-03));
+  --mds-header-bar-hamburger-color: rgb(var(--magma-text-muted));
   --mds-header-bar-transition-duration: 500ms;
   --private-header-bar-transition-duration: var(--mds-header-bar-transition-duration);
 

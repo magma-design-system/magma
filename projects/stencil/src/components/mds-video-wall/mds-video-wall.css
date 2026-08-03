@@ -34,13 +34,13 @@
 */
 
 :host {
-  --mds-video-wall-noise-background-color: rgb(var(--variant-primary-03) / 0.8);
+  --mds-video-wall-noise-background-color: rgb(var(--magma-accent-emphasis-hover) / 0.8);
   --mds-video-wall-noise-background-size: auto;
   --mds-video-wall-noise-filter: none;
   --mds-video-wall-video-fit: cover;
 
   aspect-ratio: var(--aspect-video);
-  background-color: rgb(var(--tone-neutral-02));
+  background-color: rgb(var(--magma-surface-inverse));
   display: flex;
   position: relative;
 }

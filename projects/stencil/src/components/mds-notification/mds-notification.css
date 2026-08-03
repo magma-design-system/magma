@@ -93,11 +93,11 @@
 */
 
 :host {
-  --mds-notification-color: rgb(var(--tone-neutral-seed));
+  --mds-notification-color: rgb(var(--magma-text-on-emphasis));
   --mds-notification-dot-background: rgb(var(--status-error-05));
   --mds-notification-dot-padding: 6px;
   --mds-notification-min-width: var(--mds-notification-size);
-  --mds-notification-ring-color: rgb(var(--tone-neutral-seed));
+  --mds-notification-ring-color: rgb(var(--magma-text-on-emphasis));
   --mds-notification-ring-size: 2px;
   --mds-notification-size: 20px;
   --mds-notification-transition-duration: 200ms;

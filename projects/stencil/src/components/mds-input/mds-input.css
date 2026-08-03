@@ -143,7 +143,7 @@
 
   /* private */
   --mds-input-controls-border: 2px solid rgb(var(--tone-neutral-09));
-  --mds-input-controls-color: rgb(var(--tone-neutral-03));
+  --mds-input-controls-color: rgb(var(--magma-text-muted));
   --private-input-transition-duration: var(--mds-input-transition-duration);
 
   border-radius: var(--mds-input-border-radius);
@@ -241,7 +241,7 @@
 
 .input:disabled,
 .input:disabled::placeholder {
-  color: rgb(var(--tone-neutral-05));
+  color: rgb(var(--magma-text-disabled));
 }
 
 .input.has-icon {

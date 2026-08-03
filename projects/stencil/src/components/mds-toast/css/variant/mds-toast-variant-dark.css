@@ -1,6 +1,6 @@
 :host([variant='dark']),
 :host([variant='dark'][tone='strong']) {
-  --mds-toast-background: rgb(var(--tone-neutral-02));
+  --mds-toast-background: rgb(var(--magma-surface-inverse));
   --mds-toast-color: rgb(var(--tone-neutral-09));
   --mds-toast-shadow: var(--shadow-lg-sharp);
   --mds-toast-icon-color: rgb(var(--tone-neutral-09));

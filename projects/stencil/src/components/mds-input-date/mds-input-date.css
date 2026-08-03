@@ -201,7 +201,7 @@
 
 .input:disabled,
 .input:disabled::placeholder {
-  color: rgb(var(--tone-neutral-05));
+  color: rgb(var(--magma-text-disabled));
 }
 
 .action-open-calendar-wrapper {

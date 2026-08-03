@@ -41,7 +41,7 @@
 :host {
   --mds-file-preview-background-color: rgb(var(--tone-neutral-seed));
   --mds-file-preview-border-radius: var(--radius-2xl);
-  --mds-file-preview-color: rgb(var(--tone-neutral-03));
+  --mds-file-preview-color: rgb(var(--magma-text-muted));
   --mds-file-preview-icon-background: inherit;
   --mds-file-preview-icon-color: var(--mds-file-preview-color);
   --mds-file-preview-transition-duration: 0s;

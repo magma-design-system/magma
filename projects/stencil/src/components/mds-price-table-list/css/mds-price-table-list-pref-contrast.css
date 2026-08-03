@@ -4,18 +4,18 @@
  * `system` and no controller follow the OS via @media. Cross-browser, no :host-context. */
 
 :host([pref-contrast='more']) {
-  --mds-price-table-list-separator-color: rgb(var(--tone-neutral-01) / 0.5);
+  --mds-price-table-list-separator-color: rgb(var(--magma-text-default) / 0.5);
 
   box-shadow: var(--shadow-outline-50) inset;
-  color: rgb(var(--tone-neutral-01));
+  color: rgb(var(--magma-text-default));
 }
 
 @media (prefers-contrast: more) {
   :host([pref-contrast='system']),
   :host(:not([pref-contrast])) {
-    --mds-price-table-list-separator-color: rgb(var(--tone-neutral-01) / 0.5);
+    --mds-price-table-list-separator-color: rgb(var(--magma-text-default) / 0.5);
 
     box-shadow: var(--shadow-outline-50) inset;
-    color: rgb(var(--tone-neutral-01));
+    color: rgb(var(--magma-text-default));
   }
 }

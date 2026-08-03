@@ -126,7 +126,7 @@
 
 .close-button:focus-visible,
 .close-button:hover {
-  fill: rgb(var(--tone-neutral-03));
+  fill: rgb(var(--magma-text-muted));
   opacity: 1;
 }
 

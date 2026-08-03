@@ -153,7 +153,7 @@
 .description {
   @apply truncate;
 
-  color: rgb(var(--tone-neutral-05));
+  color: rgb(var(--magma-text-disabled));
   min-width: 0px;
 }
 

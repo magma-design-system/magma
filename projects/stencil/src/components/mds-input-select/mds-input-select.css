@@ -93,7 +93,7 @@
 */
 
 :host {
-  --mds-input-select-variant-color-rgb: var(--tone-neutral-01);
+  --mds-input-select-variant-color-rgb: var(--magma-text-default);
   --mds-input-select-ring: 0 0 0 1px rgb(var(--mds-input-select-variant-color-rgb) / 0.1);
   --mds-input-select-shadow:
     0 1px 3px 0 rgb(var(--mds-input-select-variant-color-rgb) / 0.1),
@@ -173,17 +173,17 @@
 .input:focus {
   @apply outline-hidden;
 
-  color: rgb(var(--tone-neutral-03));
+  color: rgb(var(--magma-text-muted));
   transition-duration: var(--private-input-select-transition-duration);
   transition-timing-function: var(--ease-out-expo);
 }
 
 :host([value]:not([value=''])) .input {
-  color: rgb(var(--tone-neutral-03));
+  color: rgb(var(--magma-text-muted));
 }
 
 :host([required]:not([required='false'])) .input {
-  color: rgb(var(--tone-neutral-05));
+  color: rgb(var(--magma-text-disabled));
 }
 
 .input:disabled {

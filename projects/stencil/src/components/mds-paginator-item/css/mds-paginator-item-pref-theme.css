@@ -7,11 +7,11 @@
 :host([pref-theme='dark']:not([pref-theme-scheme='light'])) {
   --mds-paginator-item-background-disabled: rgb(var(--tone-neutral-09));
   --mds-paginator-item-background-hover: rgb(var(--tone-neutral-08));
-  --mds-paginator-item-background-selected: rgb(var(--variant-primary-03));
+  --mds-paginator-item-background-selected: rgb(var(--magma-accent-emphasis-hover));
   --mds-paginator-item-background: transparent;
   --mds-paginator-item-color-disabled: rgb(var(--tone-neutral-06));
   --mds-paginator-item-color-hover: rgb(var(--tone-neutral-02));
-  --mds-paginator-item-color-selected: rgb(var(--tone-neutral-seed));
+  --mds-paginator-item-color-selected: rgb(var(--magma-text-on-emphasis));
   --mds-paginator-item-color: rgb(var(--tone-neutral-02));
   --mds-paginator-item-shadow-disabled: none;
   --mds-paginator-item-shadow-hover: none;
@@ -24,11 +24,11 @@
   :host(:not([pref-theme])) {
     --mds-paginator-item-background-disabled: rgb(var(--tone-neutral-09));
     --mds-paginator-item-background-hover: rgb(var(--tone-neutral-08));
-    --mds-paginator-item-background-selected: rgb(var(--variant-primary-03));
+    --mds-paginator-item-background-selected: rgb(var(--magma-accent-emphasis-hover));
     --mds-paginator-item-background: transparent;
     --mds-paginator-item-color-disabled: rgb(var(--tone-neutral-06));
     --mds-paginator-item-color-hover: rgb(var(--tone-neutral-02));
-    --mds-paginator-item-color-selected: rgb(var(--tone-neutral-seed));
+    --mds-paginator-item-color-selected: rgb(var(--magma-text-on-emphasis));
     --mds-paginator-item-color: rgb(var(--tone-neutral-02));
     --mds-paginator-item-shadow-disabled: none;
     --mds-paginator-item-shadow-hover: none;

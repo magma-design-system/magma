@@ -5,11 +5,11 @@
  * OS via @media; the scheme axis gates it. Cross-browser, no :host-context. */
 
 :host([pref-theme='dark']:not([pref-theme-scheme='light'])) {
-  --mds-progress-color: rgb(var(--variant-primary-05));
+  --mds-progress-color: rgb(var(--magma-accent-fg));
   --mds-progress-background: rgb(var(--tone-neutral-07));
 
   &:host([variant='primary']) {
-    --mds-progress-color: rgb(var(--variant-primary-05));
+    --mds-progress-color: rgb(var(--magma-accent-fg));
     --mds-progress-background: rgb(var(--tone-neutral-07));
   }
 
@@ -37,11 +37,11 @@
 @media (prefers-color-scheme: dark) {
   :host([pref-theme='system']:not([pref-theme-scheme='light'])),
   :host(:not([pref-theme])) {
-    --mds-progress-color: rgb(var(--variant-primary-05));
+    --mds-progress-color: rgb(var(--magma-accent-fg));
     --mds-progress-background: rgb(var(--tone-neutral-07));
 
     &:host([variant='primary']) {
-      --mds-progress-color: rgb(var(--variant-primary-05));
+      --mds-progress-color: rgb(var(--magma-accent-fg));
       --mds-progress-background: rgb(var(--tone-neutral-07));
     }
 

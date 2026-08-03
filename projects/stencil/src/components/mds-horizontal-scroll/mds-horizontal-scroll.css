@@ -128,7 +128,7 @@
   --mds-horizontal-scroll-scrollbar-margin: 0;
   --mds-horizontal-scroll-scrollbar-radius: 0;
   --mds-horizontal-scroll-scrollbar-size: --spacing(200);
-  --mds-horizontal-scroll-scrollbar-thumb-background: rgb(var(--tone-neutral-02) / 0.3);
+  --mds-horizontal-scroll-scrollbar-thumb-background: rgb(var(--magma-surface-inverse) / 0.3);
   --mds-horizontal-scroll-scrollbar-track-background: rgb(var(--tone-neutral-06) / 0.3);
 
   /* private custom props, DO NOT OVERRIDE from outside */

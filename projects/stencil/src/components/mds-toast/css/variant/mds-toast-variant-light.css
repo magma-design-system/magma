@@ -3,7 +3,7 @@
   --mds-toast-background: rgb(var(--tone-neutral-seed));
   --mds-toast-color: rgb(var(--tone-neutral-02));
   --mds-toast-shadow: var(--shadow-lg-sharp);
-  --mds-toast-icon-color: rgb(var(--tone-neutral-03));
+  --mds-toast-icon-color: rgb(var(--magma-text-muted));
 }
 
 :host([variant='light'][tone='weak']) {

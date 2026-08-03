@@ -14,7 +14,7 @@
   --mds-list-item-icon-margin: 0 --spacing(200) 0 0;
 
   align-items: flex-start;
-  color: rgb(var(--tone-neutral-03));
+  color: rgb(var(--magma-text-muted));
   display: flex;
   justify-content: flex-start;
   width: 100%;

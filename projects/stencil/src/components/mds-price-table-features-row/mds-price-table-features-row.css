@@ -35,7 +35,7 @@
   --mds-price-table-features-row-background: transparent;
   --mds-price-table-features-row-background-hover: rgb(var(--tone-neutral-10));
   --mds-price-table-features-row-color: rgb(var(--tone-neutral-04));
-  --mds-price-table-features-row-color-hover: rgb(var(--tone-neutral-01));
+  --mds-price-table-features-row-color-hover: rgb(var(--magma-text-default));
   --mds-price-table-features-row-transition-duration: var(--duration-200);
   --private-price-table-features-row-transition-duration: var(--mds-price-table-features-row-transition-duration);
 

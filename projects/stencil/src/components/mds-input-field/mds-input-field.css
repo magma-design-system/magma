@@ -18,7 +18,7 @@
 }
 
 :host {
-  --mds-input-field-message-color: rgb(var(--tone-neutral-03));
+  --mds-input-field-message-color: rgb(var(--magma-text-muted));
   --mds-input-field-message-background: rgb(var(--tone-neutral-10));
 
   color: rgb(var(--tone-neutral-02));

@@ -79,11 +79,11 @@
   --mds-breadcrumb-button-background-disabled: transparent;
   --mds-breadcrumb-button-background-hover: rgb(var(--tone-neutral-10));
   --mds-breadcrumb-button-background: transparent;
-  --mds-breadcrumb-button-color-current: rgb(var(--tone-neutral-01));
+  --mds-breadcrumb-button-color-current: rgb(var(--magma-text-default));
   --mds-breadcrumb-button-color-disabled: rgb(var(--tone-neutral-06));
   --mds-breadcrumb-button-color-hover: rgb(var(--tone-neutral-02));
   --mds-breadcrumb-button-color: rgb(var(--tone-neutral-02));
-  --mds-breadcrumb-current-button-color: rgb(var(--tone-neutral-05));
+  --mds-breadcrumb-current-button-color: rgb(var(--magma-text-disabled));
 
   @apply hide-scrollbar;
 

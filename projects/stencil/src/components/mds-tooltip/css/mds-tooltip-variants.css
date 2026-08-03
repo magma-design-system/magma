@@ -6,6 +6,6 @@
 
 :host([variant='dark']) {
   --mds-tooltip-background: rgb(var(--tone-neutral-01));
-  --mds-tooltip-color: rgb(var(--tone-neutral-seed));
+  --mds-tooltip-color: rgb(var(--magma-text-on-emphasis));
   --mds-tooltip-drop-shadow: drop-shadow(var(--drop-shadow-md));
 }

@@ -84,7 +84,7 @@
   );
   --mds-breadcrumb-item-button-color-selected: var(
     --mds-breadcrumb-button-color-selected,
-    rgb(var(--tone-neutral-01))
+    rgb(var(--magma-text-default))
   );
   --mds-breadcrumb-item-button-color-hover: var(
     --mds-breadcrumb-button-color-hover,

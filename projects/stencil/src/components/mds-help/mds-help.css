@@ -39,7 +39,7 @@
   --mds-help-tooltip-min-width: 200px;
   --mds-help-tooltip-delay: 0.25s;
 
-  color: rgb(var(--tone-neutral-03));
+  color: rgb(var(--magma-text-muted));
   cursor: help;
   display: inline-flex;
   fill: currentcolor;

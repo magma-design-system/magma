@@ -227,20 +227,20 @@
 :host {
   --mds-tab-direction-vertical-columns: auto auto;
   --mds-tab-item-default-background: transparent;
-  --mds-tab-item-default-color: rgb(var(--tone-neutral-03));
+  --mds-tab-item-default-color: rgb(var(--magma-text-muted));
   --mds-tab-item-default-shadow: transparent;
   --mds-tab-item-hover-background: transparent;
   --mds-tab-item-hover-color: rgb(var(--tone-neutral-02));
   --mds-tab-item-hover-shadow: transparent;
   --mds-tab-item-radius: calc(var(--mds-tab-tabs-radius) - var(--mds-tab-tabs-padding));
   --mds-tab-item-selected-background: rgb(var(--tone-neutral-seed));
-  --mds-tab-item-selected-color: rgb(var(--tone-neutral-01));
+  --mds-tab-item-selected-color: rgb(var(--magma-text-default));
   --mds-tab-item-selected-shadow: var(--shadow-sm);
   --mds-tab-scroll-behavior: smooth;
   --mds-tab-scroll-scrollbar-margin: 0;
   --mds-tab-scroll-scrollbar-radius: 0;
   --mds-tab-scroll-scrollbar-size: --spacing(200);
-  --mds-tab-scroll-scrollbar-thumb-background: rgb(var(--tone-neutral-02) 30%);
+  --mds-tab-scroll-scrollbar-thumb-background: rgb(var(--magma-surface-inverse) 30%);
   --mds-tab-scroll-scrollbar-track-background: rgb(var(--tone-neutral-06) 30%);
   --mds-tab-slide-delay: 0.125s;
   --mds-tab-tabs-background: rgb(var(--tone-neutral-09));

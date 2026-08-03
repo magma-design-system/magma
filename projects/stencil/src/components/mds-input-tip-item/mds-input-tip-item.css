@@ -30,8 +30,8 @@
   --mds-input-tip-item-content-transition-duration: var(--duration-200);
   --private-input-tip-item-content-transition-duration: var(--mds-input-tip-item-content-transition-duration);
   --mds-input-tip-item-background: var(--mds-input-tip-background, rgb(var(--tone-neutral-03)));
-  --mds-input-tip-item-color: rgb(var(--tone-neutral-seed));
-  --mds-input-tip-item-icon-color: rgb(var(--tone-neutral-seed));
+  --mds-input-tip-item-color: rgb(var(--magma-text-on-emphasis));
+  --mds-input-tip-item-icon-color: rgb(var(--magma-text-on-emphasis));
 
   align-items: center;
   background-color: var(--mds-input-tip-item-background);

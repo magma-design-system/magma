@@ -1,7 +1,7 @@
 :host([variant='light']) {
   --mds-button-background: rgb(var(--tone-neutral-seed));
   --mds-button-border-color-rgb: var(--tone-neutral-seed);
-  --mds-button-color: rgb(var(--tone-neutral-03));
+  --mds-button-color: rgb(var(--magma-text-muted));
 
   &:host([tone='strong']:hover) {
     --mds-button-background: rgb(var(--tone-neutral-seed));
@@ -11,9 +11,9 @@
   &:host([tone='weak']) {
     --mds-button-background: rgb(var(--tone-neutral-seed));
     --mds-button-border-color-rgb: var(--tone-neutral-seed);
-    --mds-button-color: rgb(var(--tone-neutral-03));
+    --mds-button-color: rgb(var(--magma-text-muted));
 
-    fill: rgb(var(--tone-neutral-03));
+    fill: rgb(var(--magma-text-muted));
   }
 
   &:host([tone='weak']:hover) {
@@ -24,16 +24,16 @@
 
   &:host([tone='outline']) {
     --mds-button-border-color-rgb: var(--tone-neutral-seed);
-    --mds-button-color: rgb(var(--tone-neutral-seed));
+    --mds-button-color: rgb(var(--magma-text-on-emphasis));
   }
 
   &:host([tone='outline']:hover) {
     --mds-button-border-color-rgb: var(--tone-neutral-seed);
-    --mds-button-color: rgb(var(--tone-neutral-seed));
+    --mds-button-color: rgb(var(--magma-text-on-emphasis));
   }
 
   &:host([tone='text']) {
-    --mds-button-color: rgb(var(--tone-neutral-seed));
+    --mds-button-color: rgb(var(--magma-text-on-emphasis));
   }
 
   &:host([tone='text']:hover) {
@@ -42,14 +42,14 @@
   }
 
   &:host([tone='text'][active]) {
-    --mds-button-color: rgb(var(--tone-neutral-seed));
+    --mds-button-color: rgb(var(--magma-text-on-emphasis));
   }
 }
 
 :host([variant='dark']) {
   --mds-button-background: rgb(var(--tone-neutral-04));
   --mds-button-border-color-rgb: var(--tone-neutral-04);
-  --mds-button-color: rgb(var(--tone-neutral-seed));
+  --mds-button-color: rgb(var(--magma-text-on-emphasis));
 
   &:host([tone='strong']:hover) {
     --mds-button-background: rgb(var(--tone-neutral-05));
@@ -59,9 +59,9 @@
   &:host([tone='weak']) {
     --mds-button-background: rgb(var(--tone-neutral-08));
     --mds-button-border-color-rgb: var(--tone-neutral-08);
-    --mds-button-color: rgb(var(--tone-neutral-03));
+    --mds-button-color: rgb(var(--magma-text-muted));
 
-    fill: rgb(var(--tone-neutral-03));
+    fill: rgb(var(--magma-text-muted));
   }
 
   &:host([tone='weak']:hover) {
@@ -72,7 +72,7 @@
 
   &:host([tone='outline']) {
     --mds-button-border-color-rgb: var(--tone-neutral-04);
-    --mds-button-color: rgb(var(--tone-neutral-03));
+    --mds-button-color: rgb(var(--magma-text-muted));
   }
 
   &:host([tone='outline']:hover) {
@@ -85,11 +85,11 @@
   }
 
   &:host([tone='text']:hover) {
-    --mds-button-color: rgb(var(--tone-neutral-01));
+    --mds-button-color: rgb(var(--magma-text-default));
     --mds-button-background: rgb(var(--tone-neutral-10));
   }
 
   &:host([tone='text'][active]) {
-    --mds-button-color: rgb(var(--tone-neutral-01));
+    --mds-button-color: rgb(var(--magma-text-default));
   }
 }

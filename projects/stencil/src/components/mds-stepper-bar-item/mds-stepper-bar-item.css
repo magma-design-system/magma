@@ -111,19 +111,19 @@
 
 :host {
   --mds-stepper-bar-item-header-gap: var(--mds-stepper-bar-gap, --spacing(50));
-  --mds-stepper-bar-item-color: rgb(var(--tone-neutral-03));
+  --mds-stepper-bar-item-color: rgb(var(--magma-text-muted));
   --mds-stepper-bar-item-duaration: 250ms;
   --private-stepper-bar-item-duaration: var(--mds-stepper-bar-item-duaration);
   --mds-stepper-bar-item-transition-duration: var(--duration-200);
   --private-stepper-bar-item-transition-duration: var(--mds-stepper-bar-item-transition-duration);
   --mds-stepper-bar-item-icon-background-done: rgb(var(--status-success-05));
-  --mds-stepper-bar-item-icon-background-current: rgb(var(--variant-primary-04));
+  --mds-stepper-bar-item-icon-background-current: rgb(var(--magma-accent-emphasis));
   --mds-stepper-bar-item-icon-background: var(
     --mds-stepper-bar-item-progress-background,
     rgb(var(--tone-neutral-08))
   );
   --mds-stepper-bar-item-icon-color-done: rgb(var(--status-success-10));
-  --mds-stepper-bar-item-icon-color-current: rgb(var(--tone-neutral-seed));
+  --mds-stepper-bar-item-icon-color-current: rgb(var(--magma-text-on-emphasis));
   --mds-stepper-bar-item-icon-color: rgb(var(--tone-neutral-04));
   --mds-stepper-bar-item-min-width: 180px;
   --mds-stepper-bar-item-progress-background: rgb(var(--tone-neutral-08));

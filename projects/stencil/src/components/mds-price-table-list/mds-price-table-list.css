@@ -11,7 +11,7 @@
 }
 
 :host {
-  --mds-price-table-list-separator-color: rgb(var(--tone-neutral-03) / 0.5);
+  --mds-price-table-list-separator-color: rgb(var(--magma-text-muted) / 0.5);
   --mds-price-table-list-transition-duration: var(--duration-200);
   --private-price-table-list-transition-duration: var(--mds-price-table-list-transition-duration);
 

@@ -238,7 +238,7 @@
   --mds-tree-actions-gap: --spacing(50);
   --mds-tree-label-default-background: transparent;
   --mds-tree-label-hover-background: rgb(var(--tone-neutral-seed));
-  --mds-tree-label-icon-default-color: rgb(var(--variant-primary-04));
+  --mds-tree-label-icon-default-color: rgb(var(--magma-accent-emphasis));
   --mds-tree-label-icon-hover-color: var(--mds-tree-label-icon-default-color);
   --mds-tree-line-clamp: 2;
   --mds-tree-branch-border-color: rgb(var(--tone-neutral-07));
@@ -249,14 +249,14 @@
   --mds-tree-toggle-gap: --spacing(150);
   --mds-tree-toggle-icon-async-background: rgb(var(--tone-neutral-09));
   --mds-tree-toggle-icon-async-color: rgb(var(--variant-primary-03));
-  --mds-tree-toggle-icon-chevron-default-background: rgb(var(--variant-primary-04));
-  --mds-tree-toggle-icon-chevron-default-color: rgb(var(--tone-neutral-seed));
+  --mds-tree-toggle-icon-chevron-default-background: rgb(var(--magma-accent-emphasis));
+  --mds-tree-toggle-icon-chevron-default-color: rgb(var(--magma-text-on-emphasis));
   --mds-tree-toggle-icon-chevron-expanded-background: var(
     --mds-tree-toggle-icon-chevron-default-background
   );
   --mds-tree-toggle-icon-chevron-expanded-color: var(--mds-tree-toggle-icon-chevron-default-color);
   --mds-tree-toggle-icon-folder-default-background: rgb(var(--tone-neutral-08));
-  --mds-tree-toggle-icon-folder-default-color: rgb(var(--variant-primary-04));
+  --mds-tree-toggle-icon-folder-default-color: rgb(var(--magma-accent-emphasis));
   --mds-tree-toggle-icon-folder-expanded-background: var(
     --mds-tree-toggle-icon-folder-default-background
   );

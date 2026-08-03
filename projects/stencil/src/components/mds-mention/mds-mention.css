@@ -16,7 +16,7 @@
   align-items: center;
   background-color: rgb(var(--tone-neutral-09));
   border-radius: 100px;
-  color: rgb(var(--tone-neutral-03));
+  color: rgb(var(--magma-text-muted));
   cursor: pointer;
   display: inline-flex;
   fill: currentcolor;

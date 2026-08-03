@@ -25,7 +25,7 @@
 }
 
 :host {
-  --mds-bibliography-color: rgb(var(--tone-neutral-03));
+  --mds-bibliography-color: rgb(var(--magma-text-muted));
   --mds-bibliography-text-decoration-hover: rgb(var(--tone-neutral-02));
   --mds-bibliography-text-decoration: rgb(var(--tone-neutral-06));
 

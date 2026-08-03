@@ -5,7 +5,7 @@
 
 :host([pref-contrast='more']) {
   .item {
-    --mds-tab-item-default-color: rgb(var(--tone-neutral-01));
+    --mds-tab-item-default-color: rgb(var(--magma-text-default));
   }
 
   .item--high {
@@ -25,7 +25,7 @@
   :host([pref-contrast='system']),
   :host(:not([pref-contrast])) {
     .item {
-      --mds-tab-item-default-color: rgb(var(--tone-neutral-01));
+      --mds-tab-item-default-color: rgb(var(--magma-text-default));
     }
 
     .item--high {

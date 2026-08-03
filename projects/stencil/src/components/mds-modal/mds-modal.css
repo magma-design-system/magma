@@ -149,7 +149,7 @@
   border: 0;
   box-sizing: border-box;
   display: none;
-  fill: rgb(var(--tone-neutral-seed));
+  fill: rgb(var(--magma-text-on-emphasis));
   height: auto;
   inset: 0;
   justify-content: center;

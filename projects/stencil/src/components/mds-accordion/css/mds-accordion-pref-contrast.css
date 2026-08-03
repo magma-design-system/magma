@@ -5,13 +5,13 @@
 
 :host([pref-contrast='more']) {
   --mds-accordion-border-color: rgb(var(--tone-neutral-01));
-  --mds-accordion-color: rgb(var(--tone-neutral-01));
+  --mds-accordion-color: rgb(var(--magma-text-default));
 }
 
 @media (prefers-contrast: more) {
   :host([pref-contrast='system']),
   :host(:not([pref-contrast])) {
     --mds-accordion-border-color: rgb(var(--tone-neutral-01));
-    --mds-accordion-color: rgb(var(--tone-neutral-01));
+    --mds-accordion-color: rgb(var(--magma-text-default));
   }
 }

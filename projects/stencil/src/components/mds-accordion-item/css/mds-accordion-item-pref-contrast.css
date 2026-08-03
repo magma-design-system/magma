@@ -5,7 +5,7 @@
 
 :host([pref-contrast='more']) {
   --mds-accordion-item-border-color: var(--mds-accordion-border-color, rgb(var(--tone-neutral-01)));
-  --mds-accordion-item-color: var(--mds-accordion-color, rgb(var(--tone-neutral-01)));
+  --mds-accordion-item-color: var(--mds-accordion-color, rgb(var(--magma-text-default)));
 }
 
 @media (prefers-contrast: more) {
@@ -15,6 +15,6 @@
       --mds-accordion-border-color,
       rgb(var(--tone-neutral-01))
     );
-    --mds-accordion-item-color: var(--mds-accordion-color, rgb(var(--tone-neutral-01)));
+    --mds-accordion-item-color: var(--mds-accordion-color, rgb(var(--magma-text-default)));
   }
 }

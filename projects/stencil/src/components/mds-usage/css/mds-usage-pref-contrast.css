@@ -7,8 +7,8 @@
 :host([pref-contrast='more']):host([variant='do']),
 :host([pref-contrast='more']):host([variant='dont']),
 :host([pref-contrast='more']):host([variant='warn']) {
-  --mds-usage-badge-color: rgb(var(--tone-neutral-01));
-  --mds-usage-color: rgb(var(--tone-neutral-01));
+  --mds-usage-badge-color: rgb(var(--magma-text-default));
+  --mds-usage-color: rgb(var(--magma-text-default));
 }
 
 @media (prefers-contrast: more) {
@@ -17,7 +17,7 @@
   :host(:not([pref-contrast])):host([variant='do']),
   :host(:not([pref-contrast])):host([variant='dont']),
   :host(:not([pref-contrast])):host([variant='warn']) {
-    --mds-usage-badge-color: rgb(var(--tone-neutral-01));
-    --mds-usage-color: rgb(var(--tone-neutral-01));
+    --mds-usage-badge-color: rgb(var(--magma-text-default));
+    --mds-usage-color: rgb(var(--magma-text-default));
   }
 }

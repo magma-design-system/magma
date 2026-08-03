@@ -4,7 +4,7 @@
  * `system` and no controller follow the OS via @media. Cross-browser, no :host-context. */
 
 :host([pref-contrast='more']) {
-  --mds-header-bar-hamburger-color: rgb(var(--tone-neutral-01));
+  --mds-header-bar-hamburger-color: rgb(var(--magma-text-default));
 
   box-shadow: var(--shadow-outline-strong-50), var(--shadow-2xl);
 }
@@ -12,7 +12,7 @@
 @media (prefers-contrast: more) {
   :host([pref-contrast='system']),
   :host(:not([pref-contrast])) {
-    --mds-header-bar-hamburger-color: rgb(var(--tone-neutral-01));
+    --mds-header-bar-hamburger-color: rgb(var(--magma-text-default));
 
     box-shadow: var(--shadow-outline-strong-50), var(--shadow-2xl);
   }
