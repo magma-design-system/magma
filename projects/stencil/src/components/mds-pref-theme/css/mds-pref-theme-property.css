@@ -1,0 +1,28 @@
+/*
+  Document-level registrations for the mds-pref-theme public custom properties.
+
+  Never import this file from a component stylesheet: an @property rule inside a shadow root
+  registers nothing, and every Magma component is shadow: true.
+  projects/styles/scripts/properties.ts collects these into globals.css, which the document does
+  load, and resolves each initial-value down to a literal - see that file for the full
+  rationale. inherits is true throughout, because that is what the unregistered behaviour
+  already does today.
+*/
+
+@property --mds-pref-theme-overlay-fadeout-duration {
+  inherits: true;
+  initial-value: 200ms;
+  syntax: '<time>';
+}
+
+@property --mds-pref-theme-overlay-show-duration {
+  inherits: true;
+  initial-value: 300ms;
+  syntax: '<time>';
+}
+
+@property --mds-pref-theme-overlay-z-index {
+  inherits: true;
+  initial-value: var(--magma-theme-overlay-z-index, 6000);
+  syntax: '<integer>';
+}

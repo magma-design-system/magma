@@ -1,0 +1,70 @@
+/*
+  Document-level registrations for the mds-input-date-range-preselection public custom properties.
+
+  Never import this file from a component stylesheet: an @property rule inside a shadow root
+  registers nothing, and every Magma component is shadow: true.
+  projects/styles/scripts/properties.ts collects these into globals.css, which the document does
+  load, and resolves each initial-value down to a literal - see that file for the full
+  rationale. inherits is true throughout, because that is what the unregistered behaviour
+  already does today.
+*/
+
+@property --mds-date-range-preselection-default-background {
+  inherits: true;
+  initial-value: rgb(var(--tone-neutral-08) / 0);
+  syntax: '<color>';
+}
+
+/* syntax corrected from '<color>': the value is an RGB triplet, not a color. */
+
+@property --mds-date-range-preselection-default-border {
+  inherits: true;
+  initial-value: var(--tone-neutral-08);
+  syntax: '<number>+';
+}
+
+@property --mds-date-range-preselection-default-color {
+  inherits: true;
+  initial-value: rgb(var(--magma-text-muted));
+  syntax: '<color>';
+}
+
+@property --mds-date-range-preselection-hover-background {
+  inherits: true;
+  initial-value: rgb(var(--tone-neutral-seed));
+  syntax: '<color>';
+}
+
+/* syntax corrected from '<color>': the value is an RGB triplet, not a color. */
+
+@property --mds-date-range-preselection-hover-border {
+  inherits: true;
+  initial-value: var(--tone-neutral-seed);
+  syntax: '<number>+';
+}
+
+@property --mds-date-range-preselection-hover-color {
+  inherits: true;
+  initial-value: rgb(var(--magma-text-muted));
+  syntax: '<color>';
+}
+
+@property --mds-date-range-preselection-selected-background {
+  inherits: true;
+  initial-value: rgb(var(--magma-accent-emphasis-hover));
+  syntax: '<color>';
+}
+
+/* syntax corrected from '<color>': the value is an RGB triplet, not a color. */
+
+@property --mds-date-range-preselection-selected-border {
+  inherits: true;
+  initial-value: var(--variant-primary-03);
+  syntax: '<number>+';
+}
+
+@property --mds-date-range-preselection-selected-color {
+  inherits: true;
+  initial-value: rgb(var(--magma-text-on-emphasis));
+  syntax: '<color>';
+}

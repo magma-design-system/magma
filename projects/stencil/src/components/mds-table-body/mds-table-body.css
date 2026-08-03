@@ -8,36 +8,6 @@
  * @prop --mds-table-body-color: Default text color for table body rows.
  */
 
-@property --mds-table-body-background-hover {
-  inherits: false;
-  initial-value: var(--mds-table-background-alt, rgb(var(--magma-surface-raised)));
-  syntax: '<color>';
-}
-
-@property --mds-table-body-background {
-  inherits: false;
-  initial-value: var(--mds-table-background, rgb(var(--magma-surface-default)));
-  syntax: '<color>';
-}
-
-@property --mds-table-body-background-alt {
-  inherits: false;
-  initial-value: var(--mds-table-body-background-hover);
-  syntax: '<color>';
-}
-
-@property --mds-table-body-color-alt {
-  inherits: false;
-  initial-value: var(--mds-table-color-alt, rgb(var(--magma-text-muted)));
-  syntax: '<color>';
-}
-
-@property --mds-table-body-color {
-  inherits: false;
-  initial-value: var(--mds-table-color, rgb(var(--magma-text-default)));
-  syntax: '<color>';
-}
-
 :host {
   --mds-table-body-background-hover: var(--mds-table-background-alt, rgb(var(--magma-surface-raised)));
   --mds-table-body-background: var(--mds-table-background, rgb(var(--magma-surface-default)));

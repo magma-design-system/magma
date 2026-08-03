@@ -1,0 +1,64 @@
+/*
+  Document-level registrations for the mds-accordion-item public custom properties.
+
+  This file is NOT imported by mds-accordion-item.css, and must never be: an
+  @property rule inside a shadow root registers nothing (the registration map is
+  document-wide and browsers ignore the shadow-tree ones), and this component is
+  shadow: true. The styles build collects every <component>/css/<component>-property.css
+  into globals.css, which the document loads - see projects/styles/scripts/properties.ts.
+  That step also resolves every initial-value down to a literal, because an
+  initial-value must be computationally independent: a var() would make the whole
+  rule invalid, so it is kept here only for readability.
+
+  inherits is true across the board: the cascade into child elements is part of the
+  documented contract ("the properties cascade into all child mds-accordion-item
+  elements from the host"), and inherits: false would break it.
+
+  The --mds-accordion-* counterparts owned by the parent mds-accordion are
+  deliberately NOT registered: mds-accordion-item reads them as
+  var(--mds-accordion-color, <semantic default>), and a registration would always
+  supply the initial-value so that fallback would never fire - which flattens the
+  semantic chain onto a static light value and breaks dark mode.
+*/
+
+@property --mds-accordion-item-border-color {
+  inherits: true;
+  initial-value: rgb(var(--tone-neutral-08));
+  syntax: '<color>';
+}
+
+@property --mds-accordion-item-border-width {
+  inherits: true;
+  initial-value: 2px;
+  syntax: '<length>';
+}
+
+@property --mds-accordion-item-color {
+  inherits: true;
+  initial-value: rgb(var(--magma-text-muted));
+  syntax: '<color>';
+}
+
+@property --mds-accordion-item-description-color {
+  inherits: true;
+  initial-value: rgb(var(--tone-neutral-02));
+  syntax: '<color>';
+}
+
+@property --mds-accordion-item-duration {
+  inherits: true;
+  initial-value: 300ms;
+  syntax: '<time>';
+}
+
+@property --mds-accordion-item-padding-selected {
+  inherits: true;
+  initial-value: --spacing(400) 0 --spacing(800) 0;
+  syntax: '<length>+';
+}
+
+@property --mds-accordion-item-padding-unselected {
+  inherits: true;
+  initial-value: --spacing(400) 0 --spacing(400) 0;
+  syntax: '<length>+';
+}

@@ -8,42 +8,6 @@
  * @prop --mds-entity-icon-color: The color of the icon
  */
 
-@property --mds-entity-background {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-seed));
-  syntax: '<color>';
-}
-
-@property --mds-entity-color {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-02));
-  syntax: '<color>';
-}
-
-@property --mds-entity-detail-color {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-03));
-  syntax: '<color>';
-}
-
-@property --mds-entity-icon-background {
-  inherits: false;
-  initial-value: rgb(var(--label-blue-09));
-  syntax: '<color>';
-}
-
-@property --mds-entity-icon-radius {
-  inherits: false;
-  initial-value: var(--radius-md);
-  syntax: '<length>';
-}
-
-@property --mds-entity-icon-color {
-  inherits: false;
-  initial-value: rgb(var(--label-blue-04));
-  syntax: '<color>';
-}
-
 :host {
   --mds-entity-background: rgb(var(--tone-neutral-seed));
   --mds-entity-color: rgb(var(--tone-neutral-02));

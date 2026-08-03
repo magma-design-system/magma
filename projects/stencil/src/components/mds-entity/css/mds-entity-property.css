@@ -1,0 +1,46 @@
+/*
+  Document-level registrations for the mds-entity public custom properties.
+
+  Never import this file from a component stylesheet: an @property rule inside a shadow root
+  registers nothing, and every Magma component is shadow: true.
+  projects/styles/scripts/properties.ts collects these into globals.css, which the document does
+  load, and resolves each initial-value down to a literal - see that file for the full
+  rationale. inherits is true throughout, because that is what the unregistered behaviour
+  already does today.
+*/
+
+@property --mds-entity-background {
+  inherits: true;
+  initial-value: rgb(var(--tone-neutral-seed));
+  syntax: '<color>';
+}
+
+@property --mds-entity-color {
+  inherits: true;
+  initial-value: rgb(var(--tone-neutral-02));
+  syntax: '<color>';
+}
+
+@property --mds-entity-detail-color {
+  inherits: true;
+  initial-value: rgb(var(--magma-text-muted));
+  syntax: '<color>';
+}
+
+@property --mds-entity-icon-background {
+  inherits: true;
+  initial-value: rgb(var(--label-blue-09));
+  syntax: '<color>';
+}
+
+@property --mds-entity-icon-color {
+  inherits: true;
+  initial-value: rgb(var(--label-blue-04));
+  syntax: '<color>';
+}
+
+@property --mds-entity-icon-radius {
+  inherits: true;
+  initial-value: var(--radius-md);
+  syntax: '<length>';
+}

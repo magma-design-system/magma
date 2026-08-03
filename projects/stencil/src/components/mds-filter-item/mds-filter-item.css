@@ -8,30 +8,6 @@
  * @prop --mds-filter-item-count-color-selected: Sets the `color` of the count element when it's selected
  */
 
-@property --mds-filter-item-count-background-default {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-08));
-  syntax: '<color>';
-}
-
-@property --mds-filter-item-count-color-default {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-02));
-  syntax: '<color>';
-}
-
-@property --mds-filter-item-count-background-selected {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-05));
-  syntax: '<color>';
-}
-
-@property --mds-filter-item-count-color-selected {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-seed));
-  syntax: '<color>';
-}
-
 :host {
   --mds-filter-item-transition-duration: var(--duration-200);
   --private-filter-item-transition-duration: var(--mds-filter-item-transition-duration);

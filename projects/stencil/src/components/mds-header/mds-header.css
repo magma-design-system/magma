@@ -14,60 +14,6 @@
  * @prop --mds-header-z-index: Sets the z-index of the modal
  */
 
-@property --mds-header-color {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-02));
-  syntax: '<color>';
-}
-
-@property --mds-header-icon-color {
-  inherits: false;
-  initial-value: var(--mds-header-color);
-  syntax: '<color>';
-}
-
-@property --mds-header-modal-icon-color {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-seed));
-  syntax: '<color>';
-}
-
-@property --mds-header-backdrop-height {
-  inherits: false;
-  initial-value: --spacing(1600);
-  syntax: '<length>';
-}
-
-@property --mds-header-inline-margin-mobile {
-  inherits: false;
-  initial-value: --spacing(400);
-  syntax: '<length>';
-}
-
-@property --mds-header-inline-margin {
-  inherits: false;
-  initial-value: --spacing(600);
-  syntax: '<length>';
-}
-
-@property --mds-header-z-index {
-  inherits: false;
-  initial-value: var(--magma-header-z-index, 1000);
-  syntax: '<integer>';
-}
-
-@property --mds-header-backdrop-show {
-  inherits: false;
-  initial-value: true;
-  syntax: 'true | false';
-}
-
-@property --mds-header-backdrop-blur-strength {
-  inherits: false;
-  initial-value: 2px;
-  syntax: '<length>';
-}
-
 /* ❌ Not supported: transform values cannot be validated by @property
 @property --mds-header-hidden-bar-translate-inline {
   inherits: false;

@@ -8,36 +8,6 @@
  * @prop --mds-progress-thickness: Thickness (height) of the progress bar.
  */
 
-@property --mds-progress-background {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-08));
-  syntax: '<color>';
-}
-
-@property --mds-progress-color {
-  inherits: false;
-  initial-value: rgb(var(--variant-primary-03));
-  syntax: '<color>';
-}
-
-@property --mds-progress-duration {
-  inherits: false;
-  initial-value: 750ms;
-  syntax: '<time>';
-}
-
-@property --mds-progress-radius {
-  inherits: false;
-  initial-value: var(--radius-lg);
-  syntax: '<length>';
-}
-
-@property --mds-progress-thickness {
-  inherits: false;
-  initial-value: var(--height-200);
-  syntax: '<length>';
-}
-
 :host {
   --mds-progress-background: rgb(var(--tone-neutral-08));
   --mds-progress-color: rgb(var(--variant-primary-03));
@@ -45,7 +15,7 @@
   --private-progress-duration: var(--mds-progress-duration);
   --mds-progress-transition-duration: var(--duration-300);
   --private-progress-transition-duration: var(--mds-progress-transition-duration);
-  --mds-progress-thickness: var(--height-200);
+  --mds-progress-thickness: --spacing(200);
 
   @apply ease-in-out;
 

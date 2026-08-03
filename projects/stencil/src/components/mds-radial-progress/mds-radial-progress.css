@@ -1,11 +1,5 @@
 @import './css/mds-radial-progress-fouc.css';
 
-@property --mds-radial-progress {
-  inherits: false;
-  initial-value: 0%;
-  syntax: '<length-percentage>';
-}
-
 :host {
   --mds-radial-progress-background: rgb(var(--tone-neutral-09));
   --mds-radial-progress-color: rgb(var(--variant-primary-03));

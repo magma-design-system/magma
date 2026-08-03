@@ -9,42 +9,6 @@
  * @prop --mds-img-error-icon-color: The icon color used in the error state.
  */
 
-@property --mds-img-background {
-  inherits: false;
-  initial-value: rgb(var(--variant-primary-03));
-  syntax: '<color>';
-}
-
-@property --mds-img-color {
-  inherits: false;
-  initial-value: rgb(var(--variant-primary-09));
-  syntax: '<color>';
-}
-
-@property --mds-img-icon-color {
-  inherits: false;
-  initial-value: rgb(var(--variant-primary-07));
-  syntax: '<color>';
-}
-
-@property --mds-img-error-background {
-  inherits: false;
-  initial-value: rgb(var(--status-error-09));
-  syntax: '<color>';
-}
-
-@property --mds-img-error-color {
-  inherits: false;
-  initial-value: rgb(var(--status-error-04));
-  syntax: '<color>';
-}
-
-@property --mds-img-error-icon-color {
-  inherits: false;
-  initial-value: rgb(var(--status-error-06));
-  syntax: '<color>';
-}
-
 :host {
   --mds-img-background: rgb(var(--magma-accent-emphasis-hover));
   --mds-img-color: rgb(var(--variant-primary-09));

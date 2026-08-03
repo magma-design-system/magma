@@ -1,0 +1,57 @@
+/*
+  Document-level registrations for the mds-breadcrumb public custom properties.
+
+  Never import this file from a component stylesheet: an @property rule inside a shadow root
+  registers nothing, and every Magma component is shadow: true.
+  projects/styles/scripts/properties.ts collects these into globals.css, which the document does
+  load, and resolves each initial-value down to a literal - see that file for the full
+  rationale. inherits is true throughout, because that is what the unregistered behaviour
+  already does today.
+
+  Deliberately NOT registered:
+    - --mds-breadcrumb-arrow-depth-color: read by mds-breadcrumb-item as
+      var(--mds-breadcrumb-arrow-depth-color, <default>), so a registration would keep that
+      fallback from ever firing.
+    - --mds-breadcrumb-button-background-hover: read by mds-breadcrumb-item as
+      var(--mds-breadcrumb-button-background-hover, <default>), so a registration would keep
+      that fallback from ever firing.
+    - --mds-breadcrumb-button-background: read by mds-breadcrumb-item as
+      var(--mds-breadcrumb-button-background, <default>), so a registration would keep that
+      fallback from ever firing.
+    - --mds-breadcrumb-button-color-hover: read by mds-breadcrumb-item as
+      var(--mds-breadcrumb-button-color-hover, <default>), so a registration would keep that
+      fallback from ever firing.
+    - --mds-breadcrumb-button-color: read by mds-breadcrumb-item as
+      var(--mds-breadcrumb-button-color, <default>), so a registration would keep that fallback
+      from ever firing.
+*/
+
+@property --mds-breadcrumb-button-background-current {
+  inherits: true;
+  initial-value: rgb(var(--tone-neutral-09));
+  syntax: '<color>';
+}
+
+@property --mds-breadcrumb-button-background-disabled {
+  inherits: true;
+  initial-value: transparent;
+  syntax: '<color>';
+}
+
+@property --mds-breadcrumb-button-color-current {
+  inherits: true;
+  initial-value: rgb(var(--magma-text-default));
+  syntax: '<color>';
+}
+
+@property --mds-breadcrumb-button-color-disabled {
+  inherits: true;
+  initial-value: rgb(var(--tone-neutral-06));
+  syntax: '<color>';
+}
+
+@property --mds-breadcrumb-current-button-color {
+  inherits: true;
+  initial-value: rgb(var(--magma-text-disabled));
+  syntax: '<color>';
+}

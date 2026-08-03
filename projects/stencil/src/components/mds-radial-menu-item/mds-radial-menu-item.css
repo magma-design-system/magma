@@ -5,12 +5,6 @@
  * @prop --mds-radial-menu-item-transition-timing-function: Timing function for individual radial menu item transitions.
  */
 
-@property --mds-radial-menu-item-transition-duration {
-  inherits: false;
-  initial-value: var(--mds-radial-menu-transition-duration, 500ms);
-  syntax: '<time>';
-}
-
 /* ❌ Not supported
 @property --mds-radial-menu-item-transition-timing-function {
   inherits: false;

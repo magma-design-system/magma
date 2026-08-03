@@ -1,0 +1,72 @@
+/*
+  Document-level registrations for the mds-input public custom properties.
+
+  Never import this file from a component stylesheet: an @property rule inside a shadow root
+  registers nothing, and every Magma component is shadow: true.
+  projects/styles/scripts/properties.ts collects these into globals.css, which the document does
+  load, and resolves each initial-value down to a literal - see that file for the full
+  rationale. inherits is true throughout, because that is what the unregistered behaviour
+  already does today.
+*/
+
+@property --mds-input-background {
+  inherits: true;
+  initial-value: rgb(var(--tone-neutral-seed));
+  syntax: '<color>';
+}
+
+/* syntax corrected from '<integer>+': the value is a color, not a channel list. */
+
+@property --mds-input-icon-color {
+  inherits: true;
+  initial-value: rgb(var(--magma-accent-emphasis));
+  syntax: '<color>';
+}
+
+@property --mds-input-placeholder-default-color {
+  inherits: true;
+  initial-value: rgb(var(--tone-neutral-06));
+  syntax: '<color>';
+}
+
+@property --mds-input-placeholder-focus-color {
+  inherits: true;
+  initial-value: rgb(var(--tone-neutral-07));
+  syntax: '<color>';
+}
+
+@property --mds-input-placeholder-hover-color {
+  inherits: true;
+  initial-value: rgb(var(--tone-neutral-06));
+  syntax: '<color>';
+}
+
+@property --mds-input-textarea-field-sizing {
+  inherits: true;
+  initial-value: content;
+  syntax: 'content | fixed';
+}
+
+@property --mds-input-textarea-max-height {
+  inherits: true;
+  initial-value: --spacing(6400);
+  syntax: '<length>';
+}
+
+@property --mds-input-textarea-min-height {
+  inherits: true;
+  initial-value: --spacing(2400);
+  syntax: '<length>';
+}
+
+@property --mds-input-textarea-resize {
+  inherits: true;
+  initial-value: none;
+  syntax: 'none | vertical';
+}
+
+@property --mds-input-variant-color-rgb {
+  inherits: true;
+  initial-value: 0 0 0;
+  syntax: '<integer>+';
+}

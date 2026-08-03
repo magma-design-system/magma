@@ -6,36 +6,6 @@
  * @prop --mds-pref-theme-variant-item-color-variant-primary: Color for the primary variant item.
  */
 
-@property --mds-pref-theme-variant-item-color-background {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-09));
-  syntax: '<color>';
-}
-
-@property --mds-pref-theme-variant-item-color-status-error {
-  inherits: false;
-  initial-value: rgb(var(--status-error-06));
-  syntax: '<color>';
-}
-
-@property --mds-pref-theme-variant-item-color-status-success {
-  inherits: false;
-  initial-value: rgb(var(--status-success-06));
-  syntax: '<color>';
-}
-
-@property --mds-pref-theme-variant-item-color-status-warning {
-  inherits: false;
-  initial-value: rgb(var(--status-warning-06));
-  syntax: '<color>';
-}
-
-@property --mds-pref-theme-variant-item-color-variant-primary {
-  inherits: false;
-  initial-value: rgb(var(--variant-primary-03));
-  syntax: '<color>';
-}
-
 :host {
   --mds-pref-theme-variant-item-color-background: rgb(var(--tone-neutral-09));
   --mds-pref-theme-variant-item-color-status-error: rgb(var(--status-error-06));

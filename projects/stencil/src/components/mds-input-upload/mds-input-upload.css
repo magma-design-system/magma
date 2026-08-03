@@ -8,24 +8,6 @@
  * @prop --mds-input-upload-min-cols: Set the minimum number of columns for the file list.
  */
 
-@property --mds-input-upload-drag-area-background-color-on-drag {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-10));
-  syntax: '<color>';
-}
-
-@property --mds-input-upload-drag-area-background-color {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-seed));
-  syntax: '<color>';
-}
-
-@property --mds-input-upload-min-cols {
-  inherits: false;
-  initial-value: 3;
-  syntax: '<integer>';
-}
-
 /* ❌ Not supported
 @property --mds-input-upload-drag-area-border-on-drag {
   inherits: false;

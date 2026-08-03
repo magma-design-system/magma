@@ -1,0 +1,40 @@
+/*
+  Document-level registrations for the mds-push-notification-item public custom properties.
+
+  Never import this file from a component stylesheet: an @property rule inside a shadow root
+  registers nothing, and every Magma component is shadow: true.
+  projects/styles/scripts/properties.ts collects these into globals.css, which the document does
+  load, and resolves each initial-value down to a literal - see that file for the full
+  rationale. inherits is true throughout, because that is what the unregistered behaviour
+  already does today.
+*/
+
+@property --mds-push-notification-item-duration {
+  inherits: true;
+  initial-value: 300ms;
+  syntax: '<time>';
+}
+
+@property --mds-push-notification-item-icon-background-color {
+  inherits: true;
+  initial-value: transparent;
+  syntax: '<color>';
+}
+
+@property --mds-push-notification-item-icon-color {
+  inherits: true;
+  initial-value: rgb(var(--tone-neutral-04));
+  syntax: '<color>';
+}
+
+@property --mds-push-notification-item-message-line-clamp {
+  inherits: true;
+  initial-value: 2;
+  syntax: '<integer>';
+}
+
+@property --mds-push-notification-item-subject-line-clamp {
+  inherits: true;
+  initial-value: 1;
+  syntax: '<integer>';
+}

@@ -2,12 +2,6 @@
  * @prop --mds-spinner-duration: Duration of the spinner animation.
  */
 
-@property --mds-spinner-duration {
-  inherits: false;
-  initial-value: 0.725s;
-  syntax: '<time>';
-}
-
 :host {
   --mds-spinner-duration: 0.725s;
 

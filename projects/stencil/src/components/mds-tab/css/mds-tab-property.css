@@ -1,0 +1,106 @@
+/*
+  Document-level registrations for the mds-tab public custom properties.
+
+  Never import this file from a component stylesheet: an @property rule inside a shadow root
+  registers nothing, and every Magma component is shadow: true.
+  projects/styles/scripts/properties.ts collects these into globals.css, which the document does
+  load, and resolves each initial-value down to a literal - see that file for the full
+  rationale. inherits is true throughout, because that is what the unregistered behaviour
+  already does today.
+*/
+
+@property --mds-tab-direction-vertical-columns {
+  inherits: true;
+  initial-value: auto auto;
+  syntax: '<length>+ | auto+';
+}
+
+@property --mds-tab-scroll-scrollbar-margin {
+  inherits: true;
+  initial-value: 0;
+  syntax: '<length>';
+}
+
+@property --mds-tab-scroll-scrollbar-radius {
+  inherits: true;
+  initial-value: 0;
+  syntax: '<length>';
+}
+
+@property --mds-tab-scroll-scrollbar-size {
+  inherits: true;
+  initial-value: --spacing(200);
+  syntax: '<length>';
+}
+
+@property --mds-tab-scroll-scrollbar-thumb-background {
+  inherits: true;
+  initial-value: rgb(var(--magma-surface-inverse) / 0.3);
+  syntax: '<color>';
+}
+
+@property --mds-tab-scroll-scrollbar-track-background {
+  inherits: true;
+  initial-value: rgb(var(--tone-neutral-06) / 0.3);
+  syntax: '<color>';
+}
+
+@property --mds-tab-slide-delay {
+  inherits: true;
+  initial-value: 0.125s;
+  syntax: '<time>';
+}
+
+@property --mds-tab-tabs-background {
+  inherits: true;
+  initial-value: rgb(var(--tone-neutral-09));
+  syntax: '<color>';
+}
+
+@property --mds-tab-tabs-gap {
+  inherits: true;
+  initial-value: --spacing(200);
+  syntax: '<length>';
+}
+
+@property --mds-tab-tabs-overflow-shadow-size {
+  inherits: true;
+  initial-value: --spacing(600);
+  syntax: '<length>';
+}
+
+@property --mds-tab-tabs-padding {
+  inherits: true;
+  initial-value: --spacing(200);
+  syntax: '<length>';
+}
+
+@property --mds-tab-tabs-radius {
+  inherits: true;
+  initial-value: var(--radius-2xl);
+  syntax: '<length>';
+}
+
+@property --mds-tab-tabs-wrapper-margin {
+  inherits: true;
+  initial-value: 0;
+  syntax: '<length>';
+}
+
+@property --mds-tab-tabs-wrapper-outline-opacity {
+  inherits: true;
+  initial-value: 0.7;
+  syntax: '<number>';
+}
+
+@property --mds-tab-tabs-wrapper-shadow-color {
+  inherits: true;
+  initial-value: rgb(var(--tone-neutral-09));
+  syntax: '<color>';
+}
+
+@property --mds-tab-transition-duration {
+  inherits: true;
+  initial-value: 0.5s;
+  syntax: '<time>';
+}

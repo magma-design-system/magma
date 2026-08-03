@@ -17,66 +17,6 @@
  * @prop --mds-paginator-item-size: Sets the height and the min-width of the paginator item
  */
 
-@property --mds-paginator-item-background-disabled {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-09));
-  syntax: '<color>';
-}
-
-@property --mds-paginator-item-background-hover {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-08));
-  syntax: '<color>';
-}
-
-@property --mds-paginator-item-background-selected {
-  inherits: false;
-  initial-value: rgb(var(--variant-primary-03));
-  syntax: '<color>';
-}
-
-@property --mds-paginator-item-background {
-  inherits: false;
-  initial-value: transparent;
-  syntax: '<color>';
-}
-
-@property --mds-paginator-item-color-disabled {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-06));
-  syntax: '<color>';
-}
-
-@property --mds-paginator-item-color-hover {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-02));
-  syntax: '<color>';
-}
-
-@property --mds-paginator-item-color-selected {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-seed));
-  syntax: '<color>';
-}
-
-@property --mds-paginator-item-color {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-02));
-  syntax: '<color>';
-}
-
-@property --mds-paginator-item-radius {
-  inherits: false;
-  initial-value: 200px;
-  syntax: '<length>';
-}
-
-@property --mds-paginator-item-size {
-  inherits: false;
-  initial-value: --spacing(900);
-  syntax: '<length>';
-}
-
 /* ❌ Not supported
 @property --mds-paginator-item-shadow-disabled {
   inherits: false;

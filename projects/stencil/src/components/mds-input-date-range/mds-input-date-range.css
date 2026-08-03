@@ -11,42 +11,6 @@
  * @prop --mds-input-date-range-variant-color-rgb: Sets the variant colors of the component
  */
 
-@property --mds-input-date-range-background {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-seed));
-  syntax: '<color>';
-}
-
-@property --mds-input-date-range-calendar-width {
-  inherits: false;
-  initial-value: 22rem;
-  syntax: '<length>';
-}
-
-@property --mds-input-date-range-fields-firefox-justify-content {
-  inherits: false;
-  initial-value: start;
-  syntax: 'start | end | center | left | right | flex-start | flex-end';
-}
-
-@property --mds-input-date-range-fields-gap {
-  inherits: false;
-  initial-value: 0 --spacing(200);
-  syntax: '<length>+';
-}
-
-@property --mds-input-date-range-icon-color {
-  inherits: false;
-  initial-value: rgb(var(--variant-primary-03));
-  syntax: '<color>';
-}
-
-@property --mds-input-date-range-variant-color-rgb {
-  inherits: false;
-  initial-value: 0 0 0;
-  syntax: '<integer>+';
-}
-
 /* ❌ Not supported
 @property --mds-input-date-range-ring {
   inherits: false;

@@ -1,0 +1,58 @@
+/*
+  Document-level registrations for the mds-tree public custom properties.
+
+  Never import this file from a component stylesheet: an @property rule inside a shadow root
+  registers nothing, and every Magma component is shadow: true.
+  projects/styles/scripts/properties.ts collects these into globals.css, which the document does
+  load, and resolves each initial-value down to a literal - see that file for the full
+  rationale. inherits is true throughout, because that is what the unregistered behaviour
+  already does today.
+
+  Deliberately NOT registered:
+    - --mds-tree-actions-border-radius, --mds-tree-actions-gap, --mds-tree-branch-border-color,
+      --mds-tree-branch-border-size, --mds-tree-branch-dot-default-color,
+      --mds-tree-branch-dot-expanded-color, --mds-tree-label-default-background,
+      --mds-tree-label-hover-background, --mds-tree-label-icon-default-color,
+      --mds-tree-label-icon-hover-color, --mds-tree-line-clamp, --mds-tree-toggle-gap,
+      --mds-tree-toggle-icon-async-background, --mds-tree-toggle-icon-async-color,
+      --mds-tree-toggle-icon-chevron-default-background,
+      --mds-tree-toggle-icon-chevron-default-color,
+      --mds-tree-toggle-icon-folder-default-background,
+      --mds-tree-toggle-icon-folder-default-color,
+      --mds-tree-toggle-icon-position-right-default-background,
+      --mds-tree-toggle-icon-position-right-default-color,
+      --mds-tree-toggle-icon-position-right-expanded-background,
+      --mds-tree-toggle-icon-position-right-expanded-color, --mds-tree-transition-duration: read
+      directly by mds-tree-item, which sets no default of its own, so a registration would
+      substitute a static light value there whenever mds-tree is absent.
+*/
+
+@property --mds-tree-branch-use-rounded-border {
+  inherits: true;
+  initial-value: true;
+  syntax: 'true | false';
+}
+
+@property --mds-tree-toggle-icon-chevron-expanded-background {
+  inherits: true;
+  initial-value: rgb(var(--magma-accent-emphasis));
+  syntax: '<color>';
+}
+
+@property --mds-tree-toggle-icon-chevron-expanded-color {
+  inherits: true;
+  initial-value: rgb(var(--magma-text-on-emphasis));
+  syntax: '<color>';
+}
+
+@property --mds-tree-toggle-icon-folder-expanded-background {
+  inherits: true;
+  initial-value: rgb(var(--tone-neutral-08));
+  syntax: '<color>';
+}
+
+@property --mds-tree-toggle-icon-folder-expanded-color {
+  inherits: true;
+  initial-value: rgb(var(--magma-accent-emphasis));
+  syntax: '<color>';
+}

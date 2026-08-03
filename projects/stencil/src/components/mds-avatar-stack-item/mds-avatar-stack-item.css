@@ -10,24 +10,6 @@
  * @prop --mds-avatar-stack-item-offset-margin: Computed margin for overlapping avatars
  */
 
-@property --mds-avatar-stack-item-background {
-  inherits: false;
-  initial-value: var(--mds-avatar-stack-background, rgb(var(--tone-neutral-seed)));
-  syntax: '<color>';
-}
-
-@property --mds-avatar-stack-item-count-background-color {
-  inherits: false;
-  initial-value: var(--mds-avatar-stack-count-background-color, rgb(var(--tone-neutral-09)));
-  syntax: '<color>';
-}
-
-@property --mds-avatar-stack-item-count-color {
-  inherits: false;
-  initial-value: var(--mds-avatar-stack-count-color, rgb(var(--tone-neutral-04)));
-  syntax: '<color>';
-}
-
 :host {
 
   /* private */

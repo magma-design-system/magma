@@ -13,54 +13,6 @@
  * @prop --mds-tooltip-z-index: z-index of the tooltip container.
  */
 
-@property --mds-tooltip-arrow-background {
-  inherits: false;
-  initial-value: var(--mds-tooltip-background);
-  syntax: '<color>';
-}
-
-@property --mds-tooltip-background {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-seed));
-  syntax: '<color>';
-}
-
-@property --mds-tooltip-delay {
-  inherits: false;
-  initial-value: 1s;
-  syntax: '<time>';
-}
-
-@property --mds-tooltip-duration {
-  inherits: false;
-  initial-value: 0.5s;
-  syntax: '<time>';
-}
-
-@property --mds-tooltip-dot-padding {
-  inherits: false;
-  initial-value: --spacing(100);
-  syntax: '<length>';
-}
-
-@property --mds-tooltip-transform-from {
-  inherits: false;
-  initial-value: scale(0.9) translateY(-3%);
-  syntax: '<transform-function>';
-}
-
-@property --mds-tooltip-transform-to {
-  inherits: false;
-  initial-value: scale(1) translate(0, 0);
-  syntax: '<transform-list>';
-}
-
-@property --mds-tooltip-z-index {
-  inherits: false;
-  initial-value: var(--magma-tooltip-z-index, 4000);
-  syntax: '<integer>';
-}
-
 /* ❌ Not supported
 @property --mds-tooltip-drop-shadow {
   inherits: false;

@@ -3,10 +3,14 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "type": "library",
   "tags": ["type:lib"],
- "targetDefaults": {
+  "targets": {
     "build": {
-      "cache": true,
-      "dependsOn": ["design-tokens"]
+      "dependsOn": ["^build", "design-tokens:build"],
+      "inputs": [
+        "default",
+        "^default",
+        "{workspaceRoot}/projects/stencil/src/components/**/*-property.css"
+      ]
     }
   }
 }

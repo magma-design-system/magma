@@ -8,36 +8,6 @@
  * @prop --mds-text-animation-placeholder-char: Placeholder character used during text animation.
  */
 
-@property --mds-text-selection-background {
-  inherits: false;
-  initial-value: rgb(var(--label-sky-09));
-  syntax: '<color>';
-}
-
-@property --mds-text-selection-color {
-  inherits: false;
-  initial-value: rgb(var(--label-sky-01));
-  syntax: '<color>';
-}
-
-@property --mds-text-line-clamp {
-  inherits: false;
-  initial-value: 3;
-  syntax: '<integer>';
-}
-
-@property --mds-text-animation-speed {
-  inherits: false;
-  initial-value: 0.5;
-  syntax: '<number>';
-}
-
-@property --mds-text-animation-placeholder-char {
-  inherits: false;
-  initial-value: ' ';
-  syntax: '<string>';
-}
-
 :host {
   --mds-text-selection-background: rgb(var(--label-sky-09));
   --mds-text-selection-color: rgb(var(--label-sky-01));

@@ -1,0 +1,178 @@
+/*
+  Document-level registrations for the mds-emoji public custom properties.
+
+  Never import this file from a component stylesheet: an @property rule inside a shadow root
+  registers nothing, and every Magma component is shadow: true.
+  projects/styles/scripts/properties.ts collects these into globals.css, which the document does
+  load, and resolves each initial-value down to a literal - see that file for the full
+  rationale. inherits is true throughout, because that is what the unregistered behaviour
+  already does today.
+*/
+
+@property --mds-emoji-expression-follow-mouse-head-duration {
+  inherits: true;
+  initial-value: 300ms;
+  syntax: '<time>';
+}
+
+@property --mds-emoji-expression-follow-mouse-traits-duration {
+  inherits: true;
+  initial-value: 200ms;
+  syntax: '<time>';
+}
+
+@property --mds-emoji-expression-max-rotation {
+  inherits: true;
+  initial-value: 16deg;
+  syntax: '<angle>';
+}
+
+@property --mds-emoji-mia-eyes {
+  inherits: true;
+  initial-value: rgb(var(--magma-accent-ai-emphasis-hover));
+  syntax: '<color>';
+}
+
+@property --mds-emoji-mia-hands {
+  inherits: true;
+  initial-value: rgb(var(--magma-accent-ai-border));
+  syntax: '<color>';
+}
+
+@property --mds-emoji-mia-head {
+  inherits: true;
+  initial-value: rgb(var(--magma-accent-ai-surface-hover));
+  syntax: '<color>';
+}
+
+@property --mds-emoji-mia-mouth {
+  inherits: true;
+  initial-value: rgb(var(--magma-accent-ai-border));
+  syntax: '<color>';
+}
+
+@property --mds-emoji-offset-ears {
+  inherits: true;
+  initial-value: 0;
+  syntax: '<length>';
+}
+
+@property --mds-emoji-offset-eyebrows {
+  inherits: true;
+  initial-value: 10px;
+  syntax: '<length>';
+}
+
+@property --mds-emoji-offset-eyes {
+  inherits: true;
+  initial-value: 1px;
+  syntax: '<length>';
+}
+
+@property --mds-emoji-offset-gadget {
+  inherits: true;
+  initial-value: 1px;
+  syntax: '<length>';
+}
+
+@property --mds-emoji-offset-hands {
+  inherits: true;
+  initial-value: 2px;
+  syntax: '<length>';
+}
+
+@property --mds-emoji-offset-head {
+  inherits: true;
+  initial-value: 0;
+  syntax: '<length>';
+}
+
+@property --mds-emoji-offset-mouth {
+  inherits: true;
+  initial-value: 1px;
+  syntax: '<length>';
+}
+
+@property --mds-emoji-perspective {
+  inherits: true;
+  initial-value: 400px;
+  syntax: '<length>';
+}
+
+@property --mds-emoji-simi-eye {
+  inherits: true;
+  initial-value: #40281b;
+  syntax: '<color>';
+}
+
+@property --mds-emoji-simi-eye-light {
+  inherits: true;
+  initial-value: #ffffff;
+  syntax: '<color>';
+}
+
+@property --mds-emoji-simi-eyebrow {
+  inherits: true;
+  initial-value: #feefd8;
+  syntax: '<color>';
+}
+
+@property --mds-emoji-simi-gadget {
+  inherits: true;
+  initial-value: #2b1c15;
+  syntax: '<color>';
+}
+
+@property --mds-emoji-simi-mouth {
+  inherits: true;
+  initial-value: #2b1c15;
+  syntax: '<color>';
+}
+
+@property --mds-emoji-simi-mouth-teeth {
+  inherits: true;
+  initial-value: #ffffff;
+  syntax: '<color>';
+}
+
+@property --mds-emoji-simi-mouth-throat {
+  inherits: true;
+  initial-value: #c3481b;
+  syntax: '<color>';
+}
+
+@property --mds-emoji-simi-nose {
+  inherits: true;
+  initial-value: #2b1c15;
+  syntax: '<color>';
+}
+
+@property --mds-emoji-simi-nose-light {
+  inherits: true;
+  initial-value: #7e695f;
+  syntax: '<color>';
+}
+
+@property --mds-emoji-simi-outline {
+  inherits: true;
+  initial-value: #2b1c15;
+  syntax: '<color>';
+}
+
+@property --mds-emoji-simi-skin {
+  inherits: true;
+  initial-value: #f36320;
+  syntax: '<color>';
+}
+
+@property --mds-emoji-simi-skin-dark {
+  inherits: true;
+  initial-value: #c3481b;
+  syntax: '<color>';
+}
+
+@property --mds-emoji-simi-skin-light {
+  inherits: true;
+  initial-value: #feefd8;
+  syntax: '<color>';
+}

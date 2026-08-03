@@ -1,0 +1,39 @@
+/*
+  Document-level registrations for the mds-accordion-timer-item public custom
+  properties. See mds-accordion-item-property.css for why this file must not be
+  imported by the component CSS and why inherits is always true.
+
+  The --mds-accordion-timer-* counterparts owned by the parent mds-accordion-timer
+  stay unregistered for the same reason: the item reads them as
+  var(--mds-accordion-timer-progress-bar-color, <semantic default>).
+*/
+
+@property --mds-accordion-timer-item-color {
+  inherits: true;
+  initial-value: rgb(var(--tone-neutral-02));
+  syntax: '<color>';
+}
+
+@property --mds-accordion-timer-item-duration {
+  inherits: true;
+  initial-value: 500ms;
+  syntax: '<time>';
+}
+
+@property --mds-accordion-timer-item-progress-bar-background {
+  inherits: true;
+  initial-value: rgb(var(--tone-neutral-08));
+  syntax: '<color>';
+}
+
+@property --mds-accordion-timer-item-progress-bar-color {
+  inherits: true;
+  initial-value: rgb(var(--magma-text-muted));
+  syntax: '<color>';
+}
+
+@property --mds-accordion-timer-item-progress-bar-thickness {
+  inherits: true;
+  initial-value: --spacing(100);
+  syntax: '<length>';
+}

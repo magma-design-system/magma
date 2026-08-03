@@ -1,0 +1,21 @@
+/*
+  Document-level registrations for the mds-price-table-features public custom properties.
+
+  Never import this file from a component stylesheet: an @property rule inside a shadow root
+  registers nothing, and every Magma component is shadow: true.
+  projects/styles/scripts/properties.ts collects these into globals.css, which the document does
+  load, and resolves each initial-value down to a literal - see that file for the full
+  rationale. inherits is true throughout, because that is what the unregistered behaviour
+  already does today.
+
+  Deliberately NOT registered:
+    - --mds-price-table-features-padding: read by mds-price-table-features-cell as
+      var(--mds-price-table-features-padding, <default>), so a registration would keep that
+      fallback from ever firing.
+*/
+
+@property --mds-price-table-features-border-color {
+  inherits: true;
+  initial-value: rgb(var(--tone-neutral-06));
+  syntax: '<color>';
+}

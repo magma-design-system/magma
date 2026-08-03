@@ -6,18 +6,6 @@
  * @prop --mds-status-bar-backdrop-filter: Filter applied to the status bar backdrop.
  */
 
-@property --mds-status-bar-max-width {
-  inherits: false;
-  initial-value: 500px;
-  syntax: '<length>';
-}
-
-@property --mds-status-bar-backdrop {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-01) / 0.1);
-  syntax: '<color>';
-}
-
 /* ❌ Not supported
 @property --mds-status-bar-backdrop-filter {
   inherits: false;

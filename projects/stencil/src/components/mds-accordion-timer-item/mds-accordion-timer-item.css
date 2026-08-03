@@ -8,36 +8,6 @@
  * @prop --mds-accordion-timer-item-progress-bar-thickness: Sets thickness of the progress bar
  */
 
-@property --mds-accordion-timer-item-color {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-02));
-  syntax: '<color>';
-}
-
-@property --mds-accordion-timer-item-progress-bar-color {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-03));
-  syntax: '<color>';
-}
-
-@property --mds-accordion-timer-item-progress-bar-background {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-08));
-  syntax: '<color>';
-}
-
-@property --mds-accordion-timer-item-progress-bar-thickness {
-  inherits: false;
-  initial-value: --spacing(100);
-  syntax: '<length>';
-}
-
-@property --mds-accordion-timer-item-duration {
-  inherits: false;
-  initial-value: 500ms;
-  syntax: '<time>';
-}
-
 :host {
   --mds-accordion-timer-item-color: var(--mds-accordion-timer-color, rgb(var(--tone-neutral-02)));
   --mds-accordion-timer-item-progress-bar-color: var(

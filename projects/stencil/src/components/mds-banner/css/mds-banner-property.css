@@ -1,0 +1,70 @@
+/*
+  Document-level registrations for the mds-banner public custom properties.
+
+  Never import this file from a component stylesheet: an @property rule inside a shadow root
+  registers nothing, and every Magma component is shadow: true.
+  projects/styles/scripts/properties.ts collects these into globals.css, which the document does
+  load, and resolves each initial-value down to a literal - see that file for the full
+  rationale. inherits is true throughout, because that is what the unregistered behaviour
+  already does today.
+*/
+
+@property --mds-banner-background {
+  inherits: true;
+  initial-value: rgb(var(--tone-neutral-seed));
+  syntax: '<color>';
+}
+
+@property --mds-banner-close-icon-hover-background {
+  inherits: true;
+  initial-value: rgb(var(--magma-accent-surface));
+  syntax: '<color>';
+}
+
+@property --mds-banner-cockade-background {
+  inherits: true;
+  initial-value: rgb(var(--magma-accent-surface));
+  syntax: '<color>';
+}
+
+@property --mds-banner-cockade-distance {
+  inherits: true;
+  initial-value: --spacing(600);
+  syntax: '<length>';
+}
+
+@property --mds-banner-color {
+  inherits: true;
+  initial-value: rgb(var(--tone-neutral-02));
+  syntax: '<color>';
+}
+
+@property --mds-banner-content-gap {
+  inherits: true;
+  initial-value: --spacing(400);
+  syntax: '<length>+';
+}
+
+@property --mds-banner-headline-color {
+  inherits: true;
+  initial-value: rgb(var(--magma-accent-emphasis-active));
+  syntax: '<color>';
+}
+
+@property --mds-banner-icon-color {
+  inherits: true;
+  initial-value: rgb(var(--magma-accent-fg));
+  syntax: '<color>';
+}
+
+@property --mds-banner-radius {
+  inherits: true;
+  initial-value: var(--radius-2xl, 24px);
+  syntax: '<length>';
+}
+
+@property --mds-banner-transition-duration {
+  inherits: true;
+  initial-value: 300ms;
+  syntax: '<time>';
+}

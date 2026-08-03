@@ -1,0 +1,70 @@
+/*
+  Document-level registrations for the mds-dropdown public custom properties.
+
+  Never import this file from a component stylesheet: an @property rule inside a shadow root
+  registers nothing, and every Magma component is shadow: true.
+  projects/styles/scripts/properties.ts collects these into globals.css, which the document does
+  load, and resolves each initial-value down to a literal - see that file for the full
+  rationale. inherits is true throughout, because that is what the unregistered behaviour
+  already does today.
+*/
+
+@property --mds-dropdown-arrow-background {
+  inherits: true;
+  initial-value: rgb(var(--magma-surface-overlay));
+  syntax: '<color>';
+}
+
+@property --mds-dropdown-backdrop-duration {
+  inherits: true;
+  initial-value: 200ms;
+  syntax: '<time>';
+}
+
+@property --mds-dropdown-backdrop-z-index {
+  inherits: true;
+  initial-value: var(--magma-backdrop-z-index, 3000);
+  syntax: '<integer>';
+}
+
+@property --mds-dropdown-background {
+  inherits: true;
+  initial-value: rgb(var(--magma-surface-overlay));
+  syntax: '<color>';
+}
+
+@property --mds-dropdown-drop-shadow-color-rgb {
+  inherits: true;
+  initial-value: var(--tone-neutral-01);
+  syntax: '<number>+';
+}
+
+@property --mds-dropdown-duration {
+  inherits: true;
+  initial-value: 0.5s;
+  syntax: '<time>';
+}
+
+@property --mds-dropdown-mouseover-delay {
+  inherits: true;
+  initial-value: 0.5s;
+  syntax: '<time>';
+}
+
+@property --mds-dropdown-transform-from {
+  inherits: true;
+  initial-value: scale(0.9) translateY(-3%);
+  syntax: '<transform-list>';
+}
+
+@property --mds-dropdown-transform-to {
+  inherits: true;
+  initial-value: scale(1) translate(0, 0);
+  syntax: '<transform-list>';
+}
+
+@property --mds-dropdown-z-index {
+  inherits: true;
+  initial-value: var(--magma-dropdown-z-index, 4000);
+  syntax: '<integer>';
+}

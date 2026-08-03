@@ -6,24 +6,6 @@
  * @prop --mds-pref-theme-overlay-z-index: Sets the z-index of the overlay which hides UI color flash on theme change
  */
 
-@property --mds-pref-theme-overlay-fadeout-duration {
-  inherits: false;
-  initial-value: 200ms;
-  syntax: '<time>';
-}
-
-@property --mds-pref-theme-overlay-show-duration {
-  inherits: false;
-  initial-value: 300ms;
-  syntax: '<time>';
-}
-
-@property --mds-pref-theme-overlay-z-index {
-  inherits: false;
-  initial-value: var(--magma-theme-overlay-z-index, 6000);
-  syntax: '<integer>';
-}
-
 :host {
   --mds-pref-theme-overlay-fadeout-duration: 200ms;
   --mds-pref-theme-overlay-show-duration: 300ms;

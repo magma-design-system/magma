@@ -9,42 +9,6 @@
  * @prop --mds-price-table-features-cell-border-color: Border color of individual feature cells.
  */
 
-@property --mds-price-table-features-cell-padding {
-  inherits: false;
-  initial-value: var(--mds-price-table-features-padding, --spacing(300));
-  syntax: '<length>';
-}
-
-@property --mds-price-table-features-cell-icon-supported-color-hover {
-  inherits: false;
-  initial-value: rgb(var(--label-green-06));
-  syntax: '<color>';
-}
-
-@property --mds-price-table-features-cell-icon-supported-color {
-  inherits: false;
-  initial-value: rgb(var(--label-green-06));
-  syntax: '<color>';
-}
-
-@property --mds-price-table-features-cell-icon-unsupported-color-hover {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-06));
-  syntax: '<color>';
-}
-
-@property --mds-price-table-features-cell-icon-unsupported-color {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-06));
-  syntax: '<color>';
-}
-
-@property --mds-price-table-features-cell-border-color {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-08));
-  syntax: '<color>';
-}
-
 :host {
   --mds-price-table-features-cell-padding: var(--mds-price-table-features-padding, --spacing(300));
   --mds-price-table-features-cell-icon-supported-color-hover: rgb(var(--label-green-06));

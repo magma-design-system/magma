@@ -1,0 +1,84 @@
+/*
+  Document-level registrations for the mds-modal public custom properties.
+
+  Never import this file from a component stylesheet: an @property rule inside a shadow root
+  registers nothing, and every Magma component is shadow: true.
+  projects/styles/scripts/properties.ts collects these into globals.css, which the document does
+  load, and resolves each initial-value down to a literal - see that file for the full
+  rationale. inherits is true throughout, because that is what the unregistered behaviour
+  already does today.
+*/
+
+@property --mds-modal-custom-closed-transform {
+  inherits: true;
+  initial-value: rotateX(10deg) rotateY(0) scale(1.25) translate(0, 10%);
+  syntax: '<transform-function>+';
+}
+
+@property --mds-modal-custom-window-distance {
+  inherits: true;
+  initial-value: --spacing(600);
+  syntax: '<length>';
+}
+
+/* syntax corrected from '<color>': the value is an RGB triplet, not a color. */
+
+@property --mds-modal-overlay-color {
+  inherits: true;
+  initial-value: var(--magma-overlay-color, 0 0 0);
+  syntax: '<number>+';
+}
+
+@property --mds-modal-overlay-opacity {
+  inherits: true;
+  initial-value: var(--magma-overlay-opacity, 0.5);
+  syntax: '<number>';
+}
+
+@property --mds-modal-transition-duration {
+  inherits: true;
+  initial-value: 500ms;
+  syntax: '<time>';
+}
+
+@property --mds-modal-window-background {
+  inherits: true;
+  initial-value: rgb(var(--magma-surface-overlay));
+  syntax: '<color>';
+}
+
+@property --mds-modal-window-distance {
+  inherits: true;
+  initial-value: 0;
+  syntax: '<length>';
+}
+
+@property --mds-modal-window-max-width {
+  inherits: true;
+  initial-value: 33%;
+  syntax: '<length> | <percentage>';
+}
+
+@property --mds-modal-window-min-width {
+  inherits: true;
+  initial-value: 400px;
+  syntax: '<length>';
+}
+
+@property --mds-modal-window-overflow {
+  inherits: true;
+  initial-value: auto;
+  syntax: 'auto | clip | hidden | scroll | visible';
+}
+
+@property --mds-modal-window-radius {
+  inherits: true;
+  initial-value: 0;
+  syntax: '<length>';
+}
+
+@property --mds-modal-z-index {
+  inherits: true;
+  initial-value: var(--magma-modal-z-index);
+  syntax: '<integer>';
+}

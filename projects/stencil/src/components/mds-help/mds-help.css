@@ -15,24 +15,6 @@
 }
 */
 
-@property --mds-help-tooltip-max-width {
-  inherits: false;
-  initial-value: 300px;
-  syntax: '<length>';
-}
-
-@property --mds-help-tooltip-min-width {
-  inherits: false;
-  initial-value: 200px;
-  syntax: '<length>';
-}
-
-@property --mds-help-tooltip-delay {
-  inherits: false;
-  initial-value: 0.25s;
-  syntax: '<time>';
-}
-
 :host {
   --mds-help-tooltip-width: fit-content;
   --mds-help-tooltip-max-width: 300px;

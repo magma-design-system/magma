@@ -10,36 +10,6 @@
  * @prop --mds-push-notification-item-timing-function: Timing function used for the item animation.
  */
 
-@property --mds-push-notification-item-duration {
-  inherits: false;
-  initial-value: 300ms;
-  syntax: '<time>';
-}
-
-@property --mds-push-notification-item-icon-background-color {
-  inherits: false;
-  initial-value: transparent;
-  syntax: '<color>';
-}
-
-@property --mds-push-notification-item-icon-color {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-04));
-  syntax: '<color>';
-}
-
-@property --mds-push-notification-item-message-line-clamp {
-  inherits: false;
-  initial-value: 2;
-  syntax: '<integer>';
-}
-
-@property --mds-push-notification-item-subject-line-clamp {
-  inherits: false;
-  initial-value: 1;
-  syntax: '<integer>';
-}
-
 /* ❌ Not supported
 @property --mds-push-notification-item-shadow {
   inherits: false;

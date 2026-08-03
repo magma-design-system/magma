@@ -7,24 +7,6 @@
  * @prop --mds-file-preview-icon-background: Sets the background color of the file preview icon
  */
 
-@property --mds-file-preview-icon-color {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-04));
-  syntax: '<color>';
-}
-
-@property --mds-file-preview-color {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-04));
-  syntax: '<color>';
-}
-
-@property --mds-file-preview-icon-background {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-10));
-  syntax: '<color>';
-}
-
 :host {
   --mds-file-preview-icon-color: rgb(var(--tone-neutral-04));
   --mds-file-preview-color: rgb(var(--tone-neutral-04));
