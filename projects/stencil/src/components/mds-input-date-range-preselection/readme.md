@@ -239,6 +239,13 @@ mds-input-date-range-preselection {
 | `start` _(required)_ | `start`    | Sets the start date of the preselection | `string`               | `undefined` |
 
 
+## Slots
+
+| Slot | Description                                                      |
+| ---- | ---------------------------------------------------------------- |
+|      | Add `text string`, `HTML elements` or `components` to this slot. |
+
+
 ## CSS Custom Properties
 
 | Name                                                | Description                                                     |

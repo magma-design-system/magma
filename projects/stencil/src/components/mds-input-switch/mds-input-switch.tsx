@@ -11,7 +11,6 @@ import {
   Event,
   EventEmitter,
   State,
-  Method,
   Watch,
 } from '@stencil/core';
 import { InputSwitchType, InputSwitchSizeType } from './meta/types';
@@ -21,13 +20,14 @@ import { TypographyInfoType, TypographyReadType, TypographyVariants } from '@typ
 import { inputSwitchIconVariant } from './meta/variants';
 import { hasSlotted } from '@common/slot';
 import { Locale } from '@common/locale';
+import { preferenceStore } from '@common/preference';
 import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.es.json';
 import localeIt from './meta/locale.it.json';
 
 /**
- * @slot default - Put text string or elements here
+ * @slot - Put text string or elements here
  */
 
 @Component({
@@ -50,11 +50,6 @@ export class MdsInputSwitch {
     es: localeEs,
     it: localeIt,
   });
-  @State() language: string;
-  @Method()
-  async updateLang(): Promise<void> {
-    this.language = this.t.lang(this.host);
-  }
 
   /**
    * Sets or returns whether a checkbox should automatically
@@ -210,7 +205,6 @@ export class MdsInputSwitch {
   }
 
   componentDidLoad(): void {
-    this.language = this.t.lang(this.host);
     this.label = this.host.textContent ?? '';
     this.internals.setFormValue(this.checked ? (this.value ?? null) : null);
     this.checkFocusElement();
@@ -222,7 +216,11 @@ export class MdsInputSwitch {
     const iconCheckedUser = this.icon !== '' ? this.icon : iconChecked;
 
     return (
-      <Host onClick={this.handleDirty}>
+      <Host
+        onClick={this.handleDirty}
+        pref-theme={preferenceStore.state.theme}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
+      >
         <input
           autoFocus={this.autofocus}
           checked={this.checked}
@@ -231,7 +229,7 @@ export class MdsInputSwitch {
           id="field"
           indeterminate={this.indeterminate}
           name={this.name}
-          onChange={(event) => this.handleInputOnChange(event)}
+          onChange={this.handleInputOnChange}
           type={this.type === 'switch' ? 'checkbox' : this.type}
           value={this.value ?? undefined}
         />

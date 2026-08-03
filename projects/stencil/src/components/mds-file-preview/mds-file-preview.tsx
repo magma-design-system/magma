@@ -1,16 +1,5 @@
 import miBaselineCancel from '@icon/mi/baseline/cancel.svg';
-import {
-  Component,
-  Element,
-  Event,
-  EventEmitter,
-  Host,
-  h,
-  Prop,
-  Watch,
-  State,
-  Method,
-} from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Prop, Watch } from '@stencil/core';
 import { ExtensionSuffixType } from '@type/file-types';
 import { MdsFilePreviewEventDetail } from './meta/event-detail';
 import { TypographyTruncateType } from '@type/text';
@@ -19,6 +8,7 @@ import { filesize } from 'filesize';
 import { ThemeFullVariantAvatarType, ThemeFullVariantType } from '@type/variant';
 import { getFormatsVariant, getSuffix, getExtensionInfos } from '@common/file';
 import { Locale } from '@common/locale';
+import { preferenceStore } from '@common/preference';
 import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.es.json';
@@ -41,11 +31,6 @@ export class MdsFilePreview {
     es: { ...localeEs, ...fileDescriptionLocaleEs },
     it: { ...localeIt, ...fileDescriptionLocaleIt },
   });
-  @State() language: string;
-  @Method()
-  async updateLang(): Promise<void> {
-    this.language = this.t.lang(this.host);
-  }
 
   // ciaone
 
@@ -139,7 +124,6 @@ export class MdsFilePreview {
   };
 
   componentWillLoad(): void {
-    this.t.lang(this.host);
     this.format = getExtensionInfos(this.filename, this.suffix).format;
   }
 
@@ -165,7 +149,12 @@ export class MdsFilePreview {
 
   render() {
     return (
-      <Host>
+      <Host
+        pref-animation={preferenceStore.state.animation}
+        pref-contrast={preferenceStore.state.contrast}
+        pref-theme={preferenceStore.state.theme}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
+      >
         {this.deletable && (
           <mds-button
             title={this.t.get('remove')}
@@ -176,11 +165,21 @@ export class MdsFilePreview {
           ></mds-button>
         )}
         <div class="card" part="card" onClick={this.onClickDownloadEvent}>
-          {this.src && !this.message && getExtensionInfos(this.filename, this.suffix).preview ? (
+          {this.src !== undefined &&
+          this.src !== '' &&
+          (this.message === undefined || this.message === '') &&
+          getExtensionInfos(this.filename, this.suffix).preview ? (
             <mds-img src={this.src} class="preview preview--image" aspect-ratio="1/1"></mds-img>
           ) : (
-            <div class={clsx('preview', !this.message ? 'preview--icon' : 'preview--status')}>
-              {this.icon ? (
+            <div
+              class={clsx(
+                'preview',
+                this.message === undefined || this.message === ''
+                  ? 'preview--icon'
+                  : 'preview--status',
+              )}
+            >
+              {this.icon !== '' ? (
                 <mds-icon class="icon" name={this.icon}></mds-icon>
               ) : (
                 <mds-icon class="icon" name={getFormatsVariant(this.filename, this.suffix).icon} />
@@ -224,7 +223,7 @@ export class MdsFilePreview {
                 {getSuffix(this.filename, this.suffix)}
               </mds-badge>
             )}
-            {!this.filesize && (
+            {(this.filesize === undefined || this.filesize === '') && (
               <mds-text
                 class="description"
                 truncate="word"

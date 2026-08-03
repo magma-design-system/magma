@@ -9,7 +9,10 @@ import {
   Watch,
   h,
 } from '@stencil/core';
+import { preferenceStore } from '@common/preference';
 import { ButtonIconPositionType, ButtonSizeType, ButtonType } from '@type/button';
+import { HorizontalActionsAnimationType } from '@type/animation';
+import { DirectionType } from '@component/mds-tab/meta/type';
 import { MdsTabItemEventDetail } from './meta/event-detail';
 import clsx from 'clsx';
 
@@ -64,6 +67,18 @@ export class MdsTabItem {
   @Prop({ reflect: true }) readonly size?: ButtonSizeType = 'md';
 
   /**
+   * Reflects the parent tab layout direction (set by mds-tab); drives the
+   * vertical layout without :host-context
+   */
+  @Prop({ reflect: true }) readonly direction?: DirectionType;
+
+  /**
+   * Reflects the parent tab selection animation (set by mds-tab); drives the
+   * slide-variant styling without :host-context
+   */
+  @Prop({ reflect: true }) readonly animation?: HorizontalActionsAnimationType;
+
+  /**
    * Specifies an optional value to get from mdsTabItemSelect event
    */
   @Prop({ reflect: true }) readonly value?: string;
@@ -111,7 +126,11 @@ export class MdsTabItem {
 
   render() {
     return (
-      <Host>
+      <Host
+        pref-contrast={preferenceStore.state.contrast}
+        pref-theme={preferenceStore.state.theme}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
+      >
         <mds-button
           class={clsx('button', this.selected ? 'selected' : '')}
           await={this.await}

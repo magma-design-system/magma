@@ -1,10 +1,16 @@
-:host-context(:root.pref-theme-dark:not(.pref-theme-scheme-light)) {
+/* Theme preference. The component reflects the resolved theme mode and scheme
+ * from <html> onto its host as pref-theme + pref-theme-scheme (see
+ * subscribePreference in @common/preference); these plain shadow selectors refine
+ * for dark. `dark` is the explicit choice; `system` and no controller follow the
+ * OS via @media; the scheme axis gates it. Cross-browser, no :host-context. */
+
+:host([pref-theme='dark']:not([pref-theme-scheme='light'])) {
   --mds-header-modal-icon-color: rgb(var(--tone-neutral-01));
 }
 
 @media (prefers-color-scheme: dark) {
-  :host-context(:root.pref-theme-system:not(.pref-theme-scheme-light)),
-  :host-context(:root:not([data-magma-pref])) {
+  :host([pref-theme='system']:not([pref-theme-scheme='light'])),
+  :host(:not([pref-theme])) {
     --mds-header-modal-icon-color: rgb(var(--tone-neutral-01));
   }
 }

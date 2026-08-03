@@ -216,19 +216,6 @@ The component emits `mdsPrefLanguageItemSelect` (or the parent emits `mdsPrefLan
 | `mdsPrefLanguageItemSelect` | Emits when the component trigger the language | `CustomEvent<MdsPrefLanguageEventDetail>` |
 
 
-## Methods
-
-### `updateLang() => Promise<void>`
-
-
-
-#### Returns
-
-Type: `Promise<void>`
-
-
-
-
 ## Dependencies
 
 ### Depends on

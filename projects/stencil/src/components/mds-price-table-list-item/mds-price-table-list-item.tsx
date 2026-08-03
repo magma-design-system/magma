@@ -3,6 +3,9 @@ import { TypographyReadType } from '@type/typography';
 import miBaselineCheckCircle from '@icon/mi/baseline/check-circle.svg';
 import miBaselineHorizontalRule from '@icon/mi/baseline/horizontal-rule.svg';
 
+/**
+ * @slot - Add `text string`, `HTML elements` or `components` to this slot.
+ */
 @Component({
   tag: 'mds-price-table-list-item',
   styleUrl: 'mds-price-table-list-item.css',

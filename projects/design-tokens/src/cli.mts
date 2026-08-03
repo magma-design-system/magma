@@ -1,10 +1,23 @@
 #!/usr/bin/env node
-import { createColorTokens } from './lib/color.mjs'
-import chalk from 'chalk'
 import { parseArgs } from './lib/parse-args.mjs'
-import { writeJsonTokens, getColorsConfig, exportColors } from './lib/utils.mjs'
+import { getColorsConfig } from './lib/utils.mjs'
+import { runGeneration } from './lib/generate.mjs'
+import { startUiServer } from './lib/ui-server.mjs'
+
 export async function main () {
   const opts = parseArgs()
+
+  if (opts.command === 'ui') {
+    await startUiServer({
+      port: opts.port,
+      config: opts.config,
+      outDir: opts.outDir,
+      outTokensDir: opts.outTokensDir,
+      exportTokens: opts.exportTokens,
+      generate: opts.generate,
+    })
+    return
+  }
 
   const colorsConfig = await getColorsConfig(opts.config)
   if (colorsConfig === null) {
@@ -12,31 +25,7 @@ export async function main () {
     return
   }
 
-  const { tokens, exportGroups } = createColorTokens(colorsConfig.config)
-
-  if (opts.exportTokens) {
-    if (opts.dryRun) {
-      const jsonPalette = JSON.stringify(tokens, null, 2)
-      console.log(jsonPalette)
-    } else {
-      console.log('Exporting whole color palette')
-      writeJsonTokens(tokens, 'base', opts.outTokensDir!)
-    }
-  }
-
-  // export all colors in one file
-  console.log('export colors')
-  exportColors(tokens, 'custom', opts.outDir, opts.generate)
-
-  // export colors separated by export config
-  Object.keys(exportGroups).forEach(group => {
-    if (opts.exportTokens) {
-      console.info(`Exporting ${chalk.yellow('color palette')} ${group}`)
-      writeJsonTokens(exportGroups[group], group, opts.outTokensDir)
-    }
-    exportColors(exportGroups[group], group, opts.outDir, opts.generate)
-  })
+  await runGeneration(colorsConfig.config, opts)
 }
 
 main()
-

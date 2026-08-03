@@ -1,4 +1,4 @@
-:host-context(:root.pref-theme-dark:not(.pref-theme-scheme-light)) {
+:host([pref-theme='dark']:not([pref-theme-scheme='light'])) {
   .item {
     --mds-tab-item-default-color: rgb(var(--tone-neutral-01));
   }
@@ -17,8 +17,8 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  :host-context(:root.pref-theme-system:not(.pref-theme-scheme-light)),
-  :host-context(:root:not([data-magma-pref])) {
+  :host([pref-theme='system']:not([pref-theme-scheme='light'])),
+  :host(:not([pref-contrast])) {
     .item {
       --mds-tab-item-default-color: rgb(var(--tone-neutral-01));
     }

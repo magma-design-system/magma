@@ -10,6 +10,9 @@ import { ToneMinimalVariantType } from '@type/tone';
 
 import { TypographyTruncateType } from '@type/text';
 
+/**
+ * @slot - Add `text string`, `HTML elements` or `components` to this slot.
+ */
 @Component({
   tag: 'mds-button-dropdown',
   styleUrl: 'mds-button-dropdown.css',
@@ -87,6 +90,7 @@ export class MdsButtonDropdown {
         <mds-button
           active={this.active}
           autoFocus={this.autoFocus}
+          class="dropdown-primary-action"
           await={this.await}
           disabled={this.disabled}
           href={this.href}

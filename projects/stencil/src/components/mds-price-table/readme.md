@@ -329,6 +329,13 @@ mds-price-table-features-cell::part(icon) {
 
 
 
+## Slots
+
+| Slot | Description                                                       |
+| ---- | ----------------------------------------------------------------- |
+|      | Add `mds-price-table-list` elements or `components` to this slot. |
+
+
 ----------------------------------------------
 
 Built with love @ [Gruppo Maggioli](https://www.maggioli.com) from [R&D Department](https://www.maggioli.com/it-it/chi-siamo/ricerca-sviluppo)

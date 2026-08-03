@@ -1,11 +1,12 @@
 import { Component, Host, h, Element, State } from '@stencil/core';
+import { preferenceStore } from '@common/preference';
 
 /**
  * @part content - Selects the element which wraps elements added via `default slot`
  * @part footer - Selects the element which wraps elements added via `slot="price"` and `slot="action"`
  * @part header - Selects the element which wraps elements added via `slot="header"`
  * @slot action - Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element.
- * @slot default - Add `mds-price-table-list-item` component, `HTML elements` or other `components` to this slot.
+ * @slot item - Add `mds-price-table-list-item` component, `HTML elements` or other `components` to this slot.
  * @slot header - Add `text string`, `HTML elements` or `components` to this slot.
  * @slot price - Add `text string`, `HTML elements` or `components` to this slot.
  */
@@ -26,7 +27,12 @@ export class MdsPriceTableList {
 
   render() {
     return (
-      <Host>
+      <Host
+        pref-animation={preferenceStore.state.animation}
+        pref-contrast={preferenceStore.state.contrast}
+        pref-theme={preferenceStore.state.theme}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
+      >
         <div class="header" part="header">
           <slot name="header" />
         </div>

@@ -1,7 +1,7 @@
 import { Component, Host, h } from '@stencil/core';
 
 /**
- * @slot default - Add `text string`, `HTML elements` or `components` to this slot.
+ * @slot - Add `text string`, `HTML elements` or `components` to this slot.
  */
 
 @Component({

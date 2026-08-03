@@ -1,7 +1,7 @@
 import { Component, Host, h } from '@stencil/core';
 
 /**
- * @slot default - Add `HTML elements` or `components` to this slot, it is **recommended** to add `mds-img` element or other component which represents media contents.
+ * @slot - Add `HTML elements` or `components` to this slot, it is **recommended** to add `mds-img` element or other component which represents media contents.
  * @slot content - Add `text string`, `HTML elements` or `components` to this slot, contents will be shown in front of the media element.
  */
 

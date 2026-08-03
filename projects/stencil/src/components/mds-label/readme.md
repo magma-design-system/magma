@@ -250,19 +250,6 @@ mds-label {
 | `mdsLabelDelete` | Emits when the label has to be cancelled | `CustomEvent<void>` |
 
 
-## Methods
-
-### `updateLang() => Promise<void>`
-
-
-
-#### Returns
-
-Type: `Promise<void>`
-
-
-
-
 ## CSS Custom Properties
 
 | Name                                  | Description                                              |

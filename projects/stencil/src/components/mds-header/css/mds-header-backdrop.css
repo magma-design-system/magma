@@ -101,7 +101,7 @@
 }
 
 @container style(--mds-header-backdrop-show: false) {
-  :host-context(:not(.safari)) .backdrop {
+  .backdrop {
     display: none;
   }
 }

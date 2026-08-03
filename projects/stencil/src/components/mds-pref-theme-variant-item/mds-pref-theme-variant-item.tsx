@@ -1,17 +1,4 @@
-import {
-  Component,
-  Host,
-  Element,
-  Event,
-  EventEmitter,
-  h,
-  Prop,
-  Method,
-  State,
-} from '@stencil/core';
-import { Locale } from '@common/locale';
-import localeIt from './meta/locale.it.json';
-import localeEn from './meta/locale.en.json';
+import { Component, Host, Event, EventEmitter, h, Prop } from '@stencil/core';
 import miBaselineCheckCircle from '@icon/mi/baseline/check-circle.svg';
 import miOutlineCircle from '@icon/mi/outline/circle.svg';
 import { MdsPrefThemeVariantEventDetail } from '@event/theme-variant';
@@ -23,17 +10,6 @@ import { PreferenceThemeSchemeType } from '@type/preference';
   shadow: true,
 })
 export class MdsPrefThemeVariantItem {
-  @Element() private element: HTMLMdsPrefThemeVariantItemElement;
-  private readonly t: Locale = new Locale({
-    en: localeEn,
-    it: localeIt,
-  });
-  @State() language: string;
-  @Method()
-  async updateLang(): Promise<void> {
-    this.language = this.t.lang(this.element);
-  }
-
   /**
    * Specifies the theme name
    */
@@ -61,8 +37,7 @@ export class MdsPrefThemeVariantItem {
   selectVariantEvent: EventEmitter<MdsPrefThemeVariantEventDetail>;
 
   componentWillRender(): void {
-    this.t.lang(this.element);
-    if (!this.label) {
+    if (this.label === undefined || this.label === '') {
       this.label = this.name.charAt(0).toUpperCase() + this.name.slice(1).replace(/-/g, ' ');
     }
   }

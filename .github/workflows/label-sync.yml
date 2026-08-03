@@ -1,0 +1,39 @@
+name: label-sync
+
+# Keeps GitHub labels in sync with the single source of truth in
+# .github/ISSUE_TEMPLATE/labels.yml.
+#
+# Triggered manually (workflow_dispatch) on purpose: label changes are a
+# governance action and this workflow can delete labels (skip-delete: false),
+# so it should be run intentionally, not on every push. Run once with
+# dry-run: true to preview, then again with dry-run: false to apply.
+#
+# labels.yml mirrors the labels already on the repository, so the first real run
+# only deletes labels not listed there (e.g. the stray 'type: refactor'); all
+# existing labels and their issue associations are left untouched.
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry-run:
+        description: 'Preview changes without applying them'
+        type: boolean
+        default: true
+
+permissions:
+  issues: write
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: crazy-max/ghaction-github-labeler@v5
+        with:
+          yaml-file: .github/ISSUE_TEMPLATE/labels.yml
+          skip-delete: false
+          dry-run: ${{ inputs.dry-run }}

@@ -307,12 +307,12 @@ mds-details::part(header) {
 
 ## Slots
 
-| Slot        | Description                                                                                                       |
-| ----------- | ----------------------------------------------------------------------------------------------------------------- |
-| `"action"`  | Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element.                           |
-| `"default"` | Add `text string`, `HTML elements` or `components` to this slot.                                                  |
-| `"icon"`    | Insert an icon image, it can be `HTML elements` or `components`, it is **recommended** to add `mds-icon` element. |
-| `"title"`   | Add a `text string`, `HTML elements` or `components`, it is **recommended** to use `mds-text` element.            |
+| Slot       | Description                                                                                                       |
+| ---------- | ----------------------------------------------------------------------------------------------------------------- |
+|            | Add `text string`, `HTML elements` or `components` to this slot.                                                  |
+| `"action"` | Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element.                           |
+| `"icon"`   | Insert an icon image, it can be `HTML elements` or `components`, it is **recommended** to add `mds-icon` element. |
+| `"title"`  | Add a `text string`, `HTML elements` or `components`, it is **recommended** to use `mds-text` element.            |
 
 
 ## Shadow Parts

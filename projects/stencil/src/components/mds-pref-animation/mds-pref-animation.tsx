@@ -1,20 +1,10 @@
-import {
-  Component,
-  Host,
-  Element,
-  Event,
-  EventEmitter,
-  h,
-  Prop,
-  Watch,
-  Method,
-  State,
-} from '@stencil/core';
+import { Component, Host, Event, EventEmitter, h, Prop, Watch } from '@stencil/core';
 import miOutlineCircle from '@icon/mi/outline/circle.svg';
 import miBaselineAnimation from '@icon/mi/baseline/animation.svg';
 import miBaselineSettings from '@icon/mi/baseline/settings.svg';
 import { MdsPrefChangeEventDetail } from '@event/preference';
 import { Locale } from '@common/locale';
+import { preferenceStore } from '@common/preference';
 import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.es.json';
@@ -28,7 +18,6 @@ import { TabSizeType } from '@type/button';
   shadow: true,
 })
 export class MdsPrefAnimation {
-  @Element() private element: HTMLMdsPrefAnimationElement;
   private readonly localStorageAlias: string = 'mdsPrefAnimation';
   private readonly customPropertyAlias: string = '--magma-pref-animation';
   private readonly defaultMode: AnimationModeType = 'system';
@@ -39,11 +28,6 @@ export class MdsPrefAnimation {
     es: localeEs,
     it: localeIt,
   });
-  @State() language: string;
-  @Method()
-  async updateLang(): Promise<void> {
-    this.language = this.t.lang(this.element);
-  }
 
   /**
    * Sets the size of the component items nested inside it
@@ -76,7 +60,6 @@ export class MdsPrefAnimation {
   };
 
   componentWillRender(): void {
-    this.t.lang(this.element);
     this.setAnimation(
       this.mode ??
         (localStorage.getItem(this.localStorageAlias) as AnimationModeType) ??
@@ -88,7 +71,7 @@ export class MdsPrefAnimation {
     this.prefChangeEvent.emit({ preference: 'animation' });
     this.mode = mode;
     localStorage.setItem(this.localStorageAlias, this.mode);
-    if (document) {
+    if (typeof document !== 'undefined') {
       const element = document.querySelector('html');
 
       for (const key in this.animation) {
@@ -99,6 +82,7 @@ export class MdsPrefAnimation {
       element?.classList.add(this.animation[this.mode].selector);
       element?.style.setProperty(this.customPropertyAlias, this.mode);
     }
+    preferenceStore.state.animation = mode;
   };
 
   @Watch('mode')
@@ -106,9 +90,13 @@ export class MdsPrefAnimation {
     this.setAnimation(newValue);
   }
 
+  private readonly handleModeClick = (mode: AnimationModeType) => (): void => {
+    this.setAnimation(mode);
+  };
+
   render() {
     return (
-      <Host>
+      <Host pref-contrast={preferenceStore.state.contrast}>
         <mds-text class="info" typography="caption">
           <b>{this.t.get('label')}</b>{' '}
           {this.t.get(this.animation[this.mode ?? this.defaultMode].label)}
@@ -116,25 +104,19 @@ export class MdsPrefAnimation {
         <mds-tab fill size={this.size}>
           <mds-tab-item
             selected={this.mode === 'reduce'}
-            onClick={() => {
-              this.setAnimation('reduce');
-            }}
+            onClick={this.handleModeClick('reduce')}
             class="item item--reduce"
             icon={miOutlineCircle}
           ></mds-tab-item>
           <mds-tab-item
             selected={this.mode === 'system'}
-            onClick={() => {
-              this.setAnimation('system');
-            }}
+            onClick={this.handleModeClick('system')}
             class="item item--system"
             icon={miBaselineSettings}
           ></mds-tab-item>
           <mds-tab-item
             selected={this.mode === 'no-preference'}
-            onClick={() => {
-              this.setAnimation('no-preference');
-            }}
+            onClick={this.handleModeClick('no-preference')}
             class="item item--no-preference"
             icon={miBaselineAnimation}
           ></mds-tab-item>

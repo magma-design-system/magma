@@ -6,9 +6,9 @@ import { toneMinimalBoxVariantDictionary } from '@type/tone';
 export default {
   title: 'UI / Banner',
   argTypes: {
-    cockade: {
+    'hide-cockade': {
       type: { name: 'boolean' },
-      description: 'Shows a decoration around the banner icon',
+      description: 'Hides the decoration around the banner icon',
     },
     deletable: {
       type: { name: 'boolean' },
@@ -118,7 +118,7 @@ export const Cockade = {
 
   args: {
     icon: 'mi/baseline/warning',
-    cockade: true,
+    'hide-cockade': false,
   },
 };
 

@@ -4,41 +4,34 @@
       "color": "#94a3b8",
       "export": ["tones"],
       "name": "tone.porcelain",
-      "ratios": "tone",
-      "formula": "wcag3",
-      "seed": { "light": "#FFFFFF", "dark": "#000000" }
+      "seed": { "light": "#FFFFFF", "dark": "#000000" },
+      "surface": true
     },
     {
       "color": "#9ca3af",
       "export": ["tones"],
       "name": "tone.kaolin",
-      "ratios": "tone",
-      "formula": "wcag3",
       "seed": { "light": "#FFFFFF", "dark": "#000000" }
     },
     {
       "color": "#a3a3a3",
       "export": ["tones", "default"],
       "name": "tone.neutral",
-      "ratios": "tone",
-      "formula": "wcag3",
-      "seed": { "light": "#FFFFFF", "dark": "#000000" }
+      "seed": { "light": "#FFFFFF", "dark": "#000000" },
+      "surface": true
     },
     {
       "color": "#A99F95",
       "export": ["tones"],
       "name": "tone.fireclay",
-      "ratios": "tone",
-      "formula": "wcag3",
       "seed": { "light": "#FFFFFF", "dark": "#000000" }
     },
     {
       "color": "#AC9C97",
       "export": ["tones"],
       "name": "tone.bisque",
-      "ratios": "tone",
-      "formula": "wcag3",
-      "seed": { "light": "#FFFFFF", "dark": "#000000" }
+      "seed": { "light": "#FFFFFF", "dark": "#000000" },
+      "surface": true
     },
 
     {
@@ -74,9 +67,9 @@
     { "color": "#eab308", "export": ["label", "default"], "name": "label.yellow" },
     { "color": "#f97316", "export": ["label", "default"], "name": "label.orange" },
 
-    { "color": "#00379E", "export": ["default"], "name": "variant.primary" },
-    { "color": "#0f4ad5", "export": ["default"], "name": "variant.secondary" },
-    { "color": "#782FF6", "export": ["default"], "name": "variant.ai" },
+    { "alias": "brand.maggioli", "export": ["default"], "name": "variant.primary" },
+    { "alias": "brand.maggioli-editore", "export": ["default"], "name": "variant.secondary" },
+    { "alias": "label.violet", "export": ["default"], "name": "variant.ai" },
 
     {
       "color": "#00379E",
@@ -101,5 +94,21 @@
     }
   ],
   "colorspace": "HSL",
-  "smooth": false
+  "smooth": false,
+  "groups": {
+    "tone": { "ratios": "tone" },
+    "status": { "surface": true }
+  },
+  "theme": {
+    "colorspace": "OKLCH",
+    "surfaces": {
+      "light": { "sunken": "93%", "muted": "94%", "default": "96%", "raised": "98%", "overlay": "100%" },
+      "dark": { "sunken": "9%", "muted": "16%", "default": "23%", "raised": "31%", "overlay": "41%" }
+    },
+    "borders": {
+      "light": { "muted": "90%", "default": "83%", "strong": "72%" },
+      "dark": { "muted": "36%", "default": "45%", "strong": "50%" }
+    },
+    "text": { "default": 91, "muted": 75, "subtle": 70, "disabled": 53 }
+  }
 }

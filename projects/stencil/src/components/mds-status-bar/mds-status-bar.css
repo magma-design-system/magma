@@ -49,7 +49,7 @@ mds-modal {
 
 .status-bar {
   align-items: flex-start;
-  background-color: rgb(var(--tone-neutral));
+  background-color: rgb(var(--tone-neutral-seed));
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-md);
   display: inline-flex;
@@ -88,7 +88,6 @@ mds-modal {
   }
 }
 
-@import './css/mds-status-bar-pref-animation.css';
 @import './css/mds-status-bar-pref-consumption.css';
 @import './css/mds-status-bar-pref-contrast.css';
 @import './css/mds-status-bar-pref-theme.css';

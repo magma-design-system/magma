@@ -236,6 +236,13 @@ mds-input-field {
 | `variant` | `variant` | Display the variant of a message at the bottom of the input text field | `"ai" \| "error" \| "info" \| "primary" \| "success" \| "warning" \| undefined` | `'primary'` |
 
 
+## Slots
+
+| Slot | Description                                       |
+| ---- | ------------------------------------------------- |
+|      | Add the native input `HTML element` to this slot. |
+
+
 ## Shadow Parts
 
 | Part        | Description |

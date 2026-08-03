@@ -1,18 +1,9 @@
-import {
-  Component,
-  Element,
-  Event,
-  EventEmitter,
-  Host,
-  h,
-  Prop,
-  State,
-  Method,
-} from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Prop, State } from '@stencil/core';
 import { MdsPrefThemeVariantEventDetail } from '@event/theme-variant';
 import { MdsPrefChangeEventDetail } from '@event/preference';
 import { PreferenceThemeSchemeType } from '@type/preference';
 import { Locale } from '@common/locale';
+import { preferenceStore } from '@common/preference';
 import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.es.json';
@@ -22,7 +13,7 @@ import miBaselineKeyboardArrowUp from '@icon/mi/baseline/keyboard-arrow-up.svg';
 import { TabSizeType } from '@type/button';
 
 /**
- * @slot default - Add `mds-pref-theme-variant-item` element/s.
+ * @slot - Add `mds-pref-theme-variant-item` element/s.
  */
 
 @Component({
@@ -32,7 +23,7 @@ import { TabSizeType } from '@type/button';
 })
 export class MdsPrefThemeVariant {
   @State() showDropdown: boolean = false;
-  @Element() element: HTMLMdsPrefLanguageElement;
+  @Element() element: HTMLMdsPrefThemeVariantElement;
   private readonly localStorageAliasThemeName: string = 'mdsPrefThemeName';
   private readonly localStorageAliasThemeScheme: string = 'mdsPrefThemeScheme';
   private readonly defaultTheme: string = 'default';
@@ -46,11 +37,6 @@ export class MdsPrefThemeVariant {
     es: localeEs,
     it: localeIt,
   });
-  @State() language: string;
-  @Method()
-  async updateLang(): Promise<void> {
-    this.language = this.t.lang(this.element);
-  }
   private readonly clasNameThemeNamePrefix: string = 'pref-theme-name-';
   private previousName: string | null = null;
   private readonly customPropertyAliasThemeScheme: string = '--magma-pref-theme-scheme';
@@ -101,7 +87,6 @@ export class MdsPrefThemeVariant {
       | PreferenceThemeSchemeType
       | 'all';
     this.setThemeVariant(this.userThemeName ?? this.name, this.userThemeScheme ?? this.scheme);
-    this.t.lang(this.element);
   }
 
   private readonly toggleDropdown = (): void => {
@@ -130,7 +115,6 @@ export class MdsPrefThemeVariant {
         this.themeChangeEvent.emit({ name, scheme });
         this.showDropdown = false;
         this.setThemeVariant(name, scheme);
-        this.t.update(document);
       });
     });
 
@@ -149,7 +133,7 @@ export class MdsPrefThemeVariant {
     localStorage.setItem(this.localStorageAliasThemeName, this.name);
     localStorage.setItem(this.localStorageAliasThemeScheme, this.scheme);
 
-    if (document) {
+    if (typeof document !== 'undefined') {
       const element = document.querySelector('html');
       // cleanup previeous selection
       for (const key in this.schemeSet) {
@@ -157,7 +141,7 @@ export class MdsPrefThemeVariant {
           element?.classList.remove(this.schemeSet[key]);
         }
       }
-      if (this.previousName) {
+      if (this.previousName !== null && this.previousName !== '') {
         element?.classList.remove(this.clasNameThemeNamePrefix + this.previousName);
       }
       // set new selection
@@ -168,6 +152,7 @@ export class MdsPrefThemeVariant {
       element?.style.setProperty(this.customPropertyAliasThemeScheme, this.scheme);
       this.previousName = this.name;
     }
+    preferenceStore.state['theme-scheme'] = this.scheme;
   };
 
   render() {
@@ -185,9 +170,8 @@ export class MdsPrefThemeVariant {
               class="item item--custom-theme-variant"
               icon-position="right"
               icon={this.showDropdown ? miBaselineKeyboardArrowUp : miBaselineKeyboardArrowDown}
-            >
-              {this.name}
-            </mds-tab-item>
+              label={this.name}
+            ></mds-tab-item>
           </mds-tab>
         </div>
         <mds-dropdown
@@ -196,7 +180,6 @@ export class MdsPrefThemeVariant {
           interaction="none"
           visible={this.showDropdown}
           onMdsDropdownHide={this.hideThemeVariantDropdownSelect}
-          autoPlacement
         >
           <slot></slot>
         </mds-dropdown>

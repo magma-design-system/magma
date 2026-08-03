@@ -308,9 +308,9 @@ mds-filter {
 
 ## Slots
 
-| Slot        | Description                      |
-| ----------- | -------------------------------- |
-| `"default"` | Add `mds-filter-item` element/s. |
+| Slot | Description                      |
+| ---- | -------------------------------- |
+|      | Add `mds-filter-item` element/s. |
 
 
 ## CSS Custom Properties

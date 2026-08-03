@@ -184,19 +184,6 @@ The `size` prop controls the dimensions of the nested tab items. Overriding them
 | `mdsPrefChange` | Emits when the component is triggered | `CustomEvent<MdsPrefChangeEventDetail>` |
 
 
-## Methods
-
-### `updateLang() => Promise<void>`
-
-
-
-#### Returns
-
-Type: `Promise<void>`
-
-
-
-
 ## Dependencies
 
 ### Depends on

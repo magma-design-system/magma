@@ -4,24 +4,42 @@
 
 Defines general rules, conventions and composition patterns that apply to all Magma web components. Read this before working on any component. For a specific component, also read its own `SPEC.md`.
 
-## Registering components
+## Public entry points
+
+Every published entry point is tree-shakeable except the lazy loader, which registers all 114 components by design.
+
+| package         | entry                       | what it gives                                         | tree-shakeable                    |
+| :-------------- | :-------------------------- | :---------------------------------------------------- | :-------------------------------- |
+| `magma`         | `/components`               | `MdsButton`, `defineCustomElementMdsButton`, ...      | ✅                                |
+| `magma`         | `/components/mds-button.js` | one component per file                                | ✅                                |
+| `magma`         | `/loader`                   | `defineCustomElements()`, registers everything lazily | ❌ by design                      |
+| `magma`         | `.`                         | lazy runtime + `IconsSetService` (no components)      | n/a                               |
+| `magma`         | `/services`                 | `IconsSetService`                                     | n/a                               |
+| `magma-react`   | `.`                         | barrel of `Mds*` React wrappers                       | ✅                                |
+| `magma-react`   | `/mds-button.js`            | one wrapper per file                                  | ✅                                |
+| `magma-angular` | `.`                         | standalone proxies, CVAs, `MagmaModule`               | ✅ (AOT prunes `MagmaModule` too) |
 
 ```javascript
-import { defineCustomElements } from '@maggioli-design-system/magma/loader';
-defineCustomElements();
+// web components
+import { defineCustomElementMdsButton } from '@maggioli-design-system/magma/components';
+defineCustomElementMdsButton();
+
+// React
+import { MdsButton } from '@maggioli-design-system/magma-react';
+
+// Angular - standalone, self-registering
+import { MdsButton } from '@maggioli-design-system/magma-angular';
 ```
 
-For React:
+### What keeps this working
 
-```javascript
-import { defineCustomElements } from '@maggioli-design-system/magma-react/loader';
-```
+Three things hold the tree-shaking together; breaking any one of them silently ships the whole library:
 
-For Angular, import `MagmaModule` in your `AppModule`:
+- **No module-level side effects in component sources.** All three packages declare `sideEffects` (`magma` allows only `**/*.css`). Code that must run once belongs in `connectedCallback`, not at module scope. Stencil annotates `proxyCustomElement(...)` with `/*@__PURE__*/`, and the React output target does the same on `createComponent(...)` - keep it that way.
+- **One ES module per component.** Both output targets run with `esModules: true`, and `dist-custom-elements` with `customElementsExportBehavior: 'single-export-module'`. The barrels are pure re-exports.
+- **No eager `defineCustomElements()` in the wrappers.** The React and Angular proxies register their own custom element on demand. Importing `magma/loader` from wrapper code (as `MagmaModule.forRoot()` used to) pulls in every component: measured on a probe Angular app, 229 kB in 2 files became 1.9 MB in 142.
 
-```typescript
-import { MagmaModule } from '@maggioli-design-system/magma-angular';
-```
+`scripts/check-treeshaking.ts` (`npm run check.treeshaking`) asserts all three and guards the bundle size; it runs in CI on every stencil build.
 
 ## Naming convention
 
@@ -89,6 +107,15 @@ mds-button >>> .internal-class {
   color: red;
 }
 ```
+
+### Reading `<html>` preference state from inside a component
+
+Some components ship `*-pref-*.css` files (e.g. `mds-modal-pref-theme.css`) that refine their look for dark / high-contrast / reduced-motion on top of the global palette flip (see `projects/styles/SPEC.md`). Because these files are scoped to the component shadow tree, a normal selector cannot reach the `<html>` element where the `pref-*` classes live, so they use `:host-context(:root.pref-...)` - the only selector that lets a shadow stylesheet test an ancestor's state.
+
+Two facts agents must keep in mind before touching these files:
+
+- `:host-context()` is **Chromium-only** (not Firefox, not Safari). These per-component refinements therefore apply only in Chromium; elsewhere the component simply uses the globally-flipped tokens. This is tolerated, not a bug to "fix" with `@container style()` (which crashes WebKit in the shadow + slotted + inherited-custom-property case).
+- The only thing that crosses the shadow boundary inward is the **value of an inherited custom property** (e.g. `var(--tone-neutral)`, `var(--magma-pref-animation)`), never a selector reaching upward. To make a refinement work cross-browser, resolve it to a token at `:root` and consume the value inside the component, instead of branching on a selector. Removing `:host-context` without that value channel deletes the refinement (the rule then matches nothing inside the shadow tree).
 
 ## Tone and variant system
 

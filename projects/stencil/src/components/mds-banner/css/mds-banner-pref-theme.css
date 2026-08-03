@@ -1,10 +1,6 @@
-:host-context(:root.pref-theme-dark:not(.pref-theme-scheme-light)) {
-  box-shadow: var(--shadow-outline);
-}
-
-@media (prefers-color-scheme: dark) {
-  :host-context(:root.pref-theme-system:not(.pref-theme-scheme-light)),
-  :host-context(:root:not([data-magma-pref])) {
-    box-shadow: var(--shadow-outline);
-  }
-}
+/* Theme preference. Background now comes from the semantic surface layer
+ * (--magma-surface-muted for the neutral banner, spec 6.1): it flips per mode at
+ * :root and inherits into the shadow DOM, so this component needs no per-mode
+ * dark refinement. The former dark fake outline that gave the banner an edge on
+ * the old flat-black canvas is intentionally gone (a full-width notice on the
+ * muted surface needs no elevation). */

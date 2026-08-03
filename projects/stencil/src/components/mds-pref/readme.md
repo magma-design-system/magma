@@ -252,24 +252,11 @@ Native events may not bubble out of shadow DOM as expected. Use the documented `
 | `size`       | `size`       | Sets the size of the component items nested inside it                                              | `"md" \| "sm" \| undefined` | `undefined` |
 
 
-## Methods
-
-### `updateLang() => Promise<void>`
-
-
-
-#### Returns
-
-Type: `Promise<void>`
-
-
-
-
 ## Slots
 
-| Slot        | Description                                                                                                                |
-| ----------- | -------------------------------------------------------------------------------------------------------------------------- |
-| `"default"` | Add `mds-pref-animation`, `mds-pref-consumption`, `mds-pref-contrast`, `mds-pref-language`, or `mds-pref-theme` element/s. |
+| Slot | Description                                                                                                                |
+| ---- | -------------------------------------------------------------------------------------------------------------------------- |
+|      | Add `mds-pref-animation`, `mds-pref-consumption`, `mds-pref-contrast`, `mds-pref-language`, or `mds-pref-theme` element/s. |
 
 
 ## Dependencies

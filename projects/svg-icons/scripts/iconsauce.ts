@@ -25,7 +25,9 @@ const dictionary = (icons: PathLike[]): string[] => {
 };
 
 const dumpIconsauceIcons = async (): Promise<string[]> => {
-  const entries = await fg(`${ICONS_DIR.toString()}/*.svg`, { dot: true });
+  // fast-glob richiede pattern con forward slash: su Windows il path risolto da
+  // path.resolve usa backslash (trattati come escape) e non matcherebbe nulla.
+  const entries = await fg(`${fg.convertPathToPattern(ICONS_DIR.toString())}/*.svg`, { dot: true });
   return dictionary(entries);
 };
 

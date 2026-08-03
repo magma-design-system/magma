@@ -1,18 +1,18 @@
-:host-context(:root.pref-theme-dark:not(.pref-theme-scheme-light)) {
-  --mds-modal-window-background: rgb(var(--tone-neutral-10));
-  --mds-modal-window-shadow: var(--shadow-outline), var(--shadow-xl);
+/* Theme preference. Surface and elevation now come from the semantic layer
+ * (--magma-surface-overlay + the base --shadow-2xl, spec 6.1), which flips per
+ * mode at :root, so the former dark background re-set and fake outline are gone.
+ * The close icon still needs a dark-mode value: it sits over the dark scrim, not
+ * over the modal surface, so it does not follow the surface flip. */
 
+:host([pref-theme='dark']:not([pref-theme-scheme='light'])) {
   .action-close {
     --mds-button-color: rgb(var(--tone-neutral-01));
   }
 }
 
 @media (prefers-color-scheme: dark) {
-  :host-context(:root.pref-theme-system:not(.pref-theme-scheme-light)),
-  :host-context(:root:not([data-magma-pref])) {
-    --mds-modal-window-background: rgb(var(--tone-neutral-10));
-    --mds-modal-window-shadow: var(--shadow-outline), var(--shadow-xl);
-
+  :host([pref-theme='system']:not([pref-theme-scheme='light'])),
+  :host(:not([pref-theme])) {
     .action-close {
       --mds-button-color: rgb(var(--tone-neutral-01));
     }

@@ -227,17 +227,11 @@ mds-input-tip-item {
 | `variant`  | `variant`  | Specifies the variant of the element | `"count-almost" \| "count-almost-full" \| "count-empty" \| "count-full" \| "count-incomplete" \| "disabled" \| "readonly" \| "required" \| "required-success" \| "text" \| undefined` | `'required'` |
 
 
-## Methods
+## Slots
 
-### `updateLang() => Promise<void>`
-
-
-
-#### Returns
-
-Type: `Promise<void>`
-
-
+| Slot | Description                                                      |
+| ---- | ---------------------------------------------------------------- |
+|      | Add `text string`, `HTML elements` or `components` to this slot. |
 
 
 ## CSS Custom Properties

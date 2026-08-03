@@ -1,22 +1,22 @@
 :host {
-  --mds-input-icon-color: rgb(var(--variant-primary-04));
+  --mds-input-icon-color: rgb(var(--magma-accent-emphasis));
   --mds-input-variant-color-rgb: 0 0 0;
 }
 
 :host(:focus) {
-  --mds-input-icon-color: rgb(var(--variant-primary-05));
-  --mds-input-variant-color-rgb: var(--variant-primary-04);
+  --mds-input-icon-color: rgb(var(--magma-accent-fg));
+  --mds-input-variant-color-rgb: var(--magma-accent-emphasis);
 }
 
 :host([variant='ai']) {
-  --mds-input-icon-color: rgb(var(--variant-ai-04));
-  --mds-input-tip-background: rgb(var(--variant-ai-05));
+  --mds-input-icon-color: rgb(var(--magma-accent-ai-emphasis));
+  --mds-input-tip-background: rgb(var(--magma-accent-ai-fg));
   --mds-input-variant-color-rgb: 0 0 0;
 }
 
 :host([variant='ai']:focus) {
-  --mds-input-icon-color: rgb(var(--variant-ai-05));
-  --mds-input-variant-color-rgb: var(--variant-ai-04);
+  --mds-input-icon-color: rgb(var(--magma-accent-ai-fg));
+  --mds-input-variant-color-rgb: var(--magma-accent-ai-emphasis);
 }
 
 :host([variant='info']) {
@@ -59,50 +59,6 @@
 }
 
 :host([variant='error']:focus) {
-  --mds-input-icon-color: rgb(var(--status-error-05));
-  --mds-input-variant-color-rgb: var(--status-error-04);
-}
-
-:host-context(mds-input-field[variant='info']):host {
-  --mds-input-icon-color: rgb(var(--status-info-04));
-  --mds-input-tip-background: rgb(var(--status-info-05));
-  --mds-input-variant-color-rgb: 0 0 0;
-}
-
-:host-context(mds-input-field[variant='info']):host(:focus) {
-  --mds-input-icon-color: rgb(var(--status-info-05));
-  --mds-input-variant-color-rgb: var(--status-info-04);
-}
-
-:host-context(mds-input-field[variant='warning']):host {
-  --mds-input-icon-color: rgb(var(--status-warning-04));
-  --mds-input-tip-background: rgb(var(--status-warning-05));
-  --mds-input-variant-color-rgb: 0 0 0;
-}
-
-:host-context(mds-input-field[variant='warning']):host(:focus) {
-  --mds-input-icon-color: rgb(var(--status-warning-05));
-  --mds-input-variant-color-rgb: var(--status-warning-04);
-}
-
-:host-context(mds-input-field[variant='success']):host {
-  --mds-input-icon-color: rgb(var(--status-success-04));
-  --mds-input-tip-background: rgb(var(--status-success-05));
-  --mds-input-variant-color-rgb: 0 0 0;
-}
-
-:host-context(mds-input-field[variant='success']):host(:focus) {
-  --mds-input-icon-color: rgb(var(--status-success-05));
-  --mds-input-variant-color-rgb: var(--status-success-04);
-}
-
-:host-context(mds-input-field[variant='error']):host {
-  --mds-input-icon-color: rgb(var(--status-error-04));
-  --mds-input-tip-background: rgb(var(--status-error-05));
-  --mds-input-variant-color-rgb: 0 0 0;
-}
-
-:host-context(mds-input-field[variant='error']):host(:focus) {
   --mds-input-icon-color: rgb(var(--status-error-05));
   --mds-input-variant-color-rgb: var(--status-error-04);
 }

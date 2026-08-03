@@ -1,4 +1,5 @@
 import { Component, Element, Host, h, Prop, State, Watch } from '@stencil/core';
+import { preferenceStore } from '@common/preference';
 import miBaselineKeyboardArrowUp from '@icon/mi/baseline/keyboard-arrow-up.svg';
 import miBaselineKeyboardArrowDown from '@icon/mi/baseline/keyboard-arrow-down.svg';
 import miBaselineUnfoldMore from '@icon/mi/baseline/unfold-more.svg';
@@ -37,6 +38,9 @@ export class MdsTableHeaderCell {
    */
   @Prop({ reflect: true }) readonly label?: string;
 
+  /**
+   * Specifies the current sort direction of the column.
+   */
   @Prop({ reflect: true, mutable: true }) direction: SortDirectionType = 'none';
 
   componentDidLoad(): void {
@@ -44,7 +48,13 @@ export class MdsTableHeaderCell {
   }
 
   private prepareSorter = (): void => {
-    if (!this.sortable || (this.sortable && this.tableHeaderCellSiblings?.length)) return;
+    if (
+      !this.sortable ||
+      (this.sortable &&
+        this.tableHeaderCellSiblings?.length !== undefined &&
+        this.tableHeaderCellSiblings?.length !== 0)
+    )
+      return;
     this.tableBody = this.element
       .closest('mds-table')
       ?.querySelector('mds-table-body') as HTMLMdsTableBodyElement;
@@ -58,10 +68,17 @@ export class MdsTableHeaderCell {
   };
 
   private getValue = (element: HTMLMdsTableCellElement): string | number => {
-    if (element.value) {
+    if (
+      element.value !== undefined &&
+      element.value !== '' &&
+      element.value !== 0 &&
+      !Number.isNaN(element.value)
+    ) {
       return element.value;
     }
-    return element.textContent ? element.textContent.trim() : '';
+    return element.textContent !== null && element.textContent !== ''
+      ? element.textContent.trim()
+      : '';
   };
 
   private resetSortAttribute = (): void => {
@@ -153,7 +170,11 @@ export class MdsTableHeaderCell {
 
   render() {
     return (
-      <Host role="columnheader" aria-sort={this.direction}>
+      <Host
+        role="columnheader"
+        aria-sort={this.direction}
+        pref-animation={preferenceStore.state.animation}
+      >
         {this.sortable ? (
           <mds-button
             class="action"
@@ -168,9 +189,8 @@ export class MdsTableHeaderCell {
             variant="dark"
             size="sm"
             part="action"
-          >
-            {this.label}
-          </mds-button>
+            label={this.label}
+          ></mds-button>
         ) : (
           <mds-text class="label" typography="label" part="label">
             {this.label}

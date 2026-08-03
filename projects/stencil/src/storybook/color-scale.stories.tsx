@@ -474,11 +474,11 @@ const ColorItem = ({ color, scale }: { color: string; scale: string }) => {
   return (
     <div class={`color-item aspect-square flex items-start p-100 justify-start ${colorClass}`}>
       <div
-        class={`inline-flex px-100 py-50 ${scale ? 'bg-transparent' : ''} ${color.startsWith('tone') ? 'bg-tone-neutral-09' : 'bg-tone-neutral'}`}
+        class={`inline-flex px-100 py-50 ${scale ? 'bg-surface-raised' : ''} ${color.startsWith('tone') ? 'bg-surface-default' : 'bg-surface-raised'}`}
       >
         {scale ? (
           <mds-text
-            class={`${Number(scale) > 5 ? 'text-tone-neutral-01' : 'text-tone-neutral'}`}
+            class={`${Number(scale) > 5 ? 'text-tone-neutral-01' : 'text-fg-on-emphasis'}`}
             typography="option"
           >
             {scale}
@@ -557,7 +557,7 @@ const ColorScaleCanvas = () => {
 
   return (
     <div class="grid-cols-full grid desktop:grid-cols-[3fr_2fr] gap-600">
-      <mds-accordion class="auto-rows-min" closable={false} multiple>
+      <mds-accordion class="auto-rows-min" disable-close multiple>
         {colorGroups.map((group) => (
           <ColorGrid group={group} selected={group === 'tone'} />
         ))}

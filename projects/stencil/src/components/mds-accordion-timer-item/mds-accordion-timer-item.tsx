@@ -2,9 +2,10 @@ import miBaselineKeyboardArrowRight from '@icon/mi/baseline/keyboard-arrow-right
 import { Component, Event, EventEmitter, Host, Prop, h, Watch } from '@stencil/core';
 import { MdsAccordionTimerItemEventDetail } from './meta/event-detail';
 import { TypographyTitleType } from '@type/typography';
+import { preferenceStore } from '@common/preference';
 
 /**
- * @slot default - Add content like `text string`, `HTML elements` or `components` to this slot
+ * @slot - Add content like `text string`, `HTML elements` or `components` to this slot
  * @part content - the content wrapper of the `default` slot
  * @part icon - The arrow icon of the component
  * @part label - The text label of the component
@@ -105,7 +106,11 @@ export class MdsAccordionTimerItem {
 
   render() {
     return (
-      <Host onMouseEnter={this.mouseEnter} onMouseLeave={this.mouseLeave}>
+      <Host
+        onMouseEnter={this.mouseEnter}
+        onMouseLeave={this.mouseLeave}
+        pref-animation={preferenceStore.state.animation}
+      >
         <div class="row">
           <mds-progress
             aria-hidden="true"

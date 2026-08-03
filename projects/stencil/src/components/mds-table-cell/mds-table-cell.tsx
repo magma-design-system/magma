@@ -1,7 +1,8 @@
 import { Component, Host, h, Prop, Element } from '@stencil/core';
 import { setAttributeIfEmpty } from '@common/aria';
+import { preferenceStore } from '@common/preference';
 /**
- * @slot default - Add `text string`, `HTML elements` or `components` to this slot.
+ * @slot - Add `text string`, `HTML elements` or `components` to this slot.
  */
 
 @Component({
@@ -23,7 +24,7 @@ export class MdsTableCell {
 
   render() {
     return (
-      <Host>
+      <Host pref-animation={preferenceStore.state.animation}>
         <slot></slot>
       </Host>
     );

@@ -1,15 +1,5 @@
 import miBaselineCancel from '@icon/mi/baseline/cancel.svg';
-import {
-  Component,
-  Element,
-  Event,
-  EventEmitter,
-  Host,
-  h,
-  Prop,
-  State,
-  Method,
-} from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Prop } from '@stencil/core';
 import { KeyboardManager } from '@common/keyboard-manager';
 import { ThemeLabelVariantType, ThemeStatusVariantType } from '@type/variant';
 import { ToneMinimalVariantType } from '@type/tone';
@@ -17,13 +7,14 @@ import { ToneMinimalVariantType } from '@type/tone';
 import { TypographyTooltipType } from '@type/typography';
 import { TypographyTruncateType } from '@type/text';
 import { Locale } from '@common/locale';
+import { preferenceStore } from '@common/preference';
 import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.en.json';
 import localeIt from './meta/locale.it.json';
 
 /**
- * @slot default - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
+ * @slot - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
  */
 
 export type MdsLabelVariantType = ThemeLabelVariantType | ThemeStatusVariantType;
@@ -42,11 +33,6 @@ export class MdsLabel {
     es: localeEs,
     it: localeIt,
   });
-  @State() language: string;
-  @Method()
-  async updateLang(): Promise<void> {
-    this.language = this.t.lang(this.host);
-  }
 
   /**
    * The label of the component
@@ -100,7 +86,6 @@ export class MdsLabel {
   };
 
   componentDidLoad(): void {
-    this.t.lang(this.host);
     this.handleKeyboard();
   }
 
@@ -114,7 +99,11 @@ export class MdsLabel {
 
   render() {
     return (
-      <Host>
+      <Host
+        pref-contrast={preferenceStore.state.contrast}
+        pref-theme={preferenceStore.state.theme}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
+      >
         <mds-text class="text" truncate={this.truncate} typography={this.typography}>
           {this.label}
         </mds-text>
@@ -122,7 +111,7 @@ export class MdsLabel {
           <mds-button
             class="button-close"
             icon={miBaselineCancel}
-            onClick={this.onClickDelete.bind(this)}
+            onClick={this.onClickDelete}
             title={this.t.get('remove')}
             size="sm"
           ></mds-button>

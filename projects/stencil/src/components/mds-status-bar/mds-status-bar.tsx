@@ -1,9 +1,10 @@
 import { Component, Host, h, Prop, Element, Watch, Method } from '@stencil/core';
 import { ModalOverflowType } from 'src/components';
 import { StatusBarPositionType } from './meta/types';
+import { preferenceStore } from '@common/preference';
 
 /**
- * @slot default - Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element.
+ * @slot - Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element.
  * @part actions - Selects the `actions` container element wrapped in shadowDOM.
  * @part status-bar - Selects the `status-bar` window component wrapped in shadowDOM.
  * @part status-bar-area - Selects the `status-bar-area` which wraps `status-bar` element with darker area in shadowDOM.
@@ -40,7 +41,7 @@ export class MdsStatusBar {
 
   componentDidLoad(): void {
     this.modal = this.host.shadowRoot?.querySelector('.modal') as HTMLMdsModalElement;
-    this.modal.backdrop = undefined;
+    this.modal.hideBackdrop = true;
   }
 
   @Watch('visible')
@@ -50,6 +51,9 @@ export class MdsStatusBar {
     }
   }
 
+  /**
+   * Hides the status bar.
+   */
   @Method()
   async hide(): Promise<void> {
     this.visible = undefined;
@@ -57,7 +61,12 @@ export class MdsStatusBar {
 
   render() {
     return (
-      <Host>
+      <Host
+        pref-consumption={preferenceStore.state.consumption}
+        pref-contrast={preferenceStore.state.contrast}
+        pref-theme={preferenceStore.state.theme}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
+      >
         <mds-modal
           class="modal"
           opened={this.visible}

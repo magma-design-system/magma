@@ -238,24 +238,11 @@ mds-usage {
 | `variant` | `variant` | Specifies the delay when the tooltip will trigger                   | `"do" \| "dont" \| "info" \| "warn"` | `'info'`    |
 
 
-## Methods
-
-### `updateLang() => Promise<void>`
-
-
-
-#### Returns
-
-Type: `Promise<void>`
-
-
-
-
 ## Slots
 
-| Slot        | Description                                                      |
-| ----------- | ---------------------------------------------------------------- |
-| `"default"` | Add `text string`, `HTML elements` or `components` to this slot. |
+| Slot | Description                                                      |
+| ---- | ---------------------------------------------------------------- |
+|      | Add `text string`, `HTML elements` or `components` to this slot. |
 
 
 ## Shadow Parts

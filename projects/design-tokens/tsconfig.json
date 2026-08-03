@@ -13,10 +13,6 @@
     "strict": false,
     "target": "ESNext",
     "types": ["node"],
-    "paths": {
-      "@/formats/*": ["./src/formats/*"],
-      "@/leonardo/*": ["./src/lib/leonardo/*"],
-    },
   },
   "include": ["src", "test"],
   "exclude": ["node_modules" ]

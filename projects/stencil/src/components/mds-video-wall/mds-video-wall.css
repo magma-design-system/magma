@@ -3,7 +3,7 @@
 /**
  * @prop --mds-video-wall-noise-background-color: The background color applied to the noise layer of the video wall.
  * @prop --mds-video-wall-noise-background-size: The background-size used for the noise texture.
- * @prop --mds-video-wall-noise-fitler: The CSS filter applied to the noise layer (e.g., blur, brightness).
+ * @prop --mds-video-wall-noise-filter: The CSS filter applied to the noise layer (e.g., blur, brightness).
  * @prop --mds-video-wall-video-fit: Defines how the video content should scale to fit its container (e.g., cover, contain).
  */
 
@@ -26,7 +26,7 @@
 }
 
 /*
-@property --mds-video-wall-noise-fitler {
+@property --mds-video-wall-noise-filter {
   inherits: false;
   initial-value: none;
   syntax: "<filter-function> | none";
@@ -36,7 +36,7 @@
 :host {
   --mds-video-wall-noise-background-color: rgb(var(--variant-primary-03) / 0.8);
   --mds-video-wall-noise-background-size: auto;
-  --mds-video-wall-noise-fitler: none;
+  --mds-video-wall-noise-filter: none;
   --mds-video-wall-video-fit: cover;
 
   aspect-ratio: var(--aspect-video);
@@ -57,11 +57,10 @@
 
 video,
 .noise {
-  @apply h-full
-    w-full;
-
+  height: 100%;
   inset: 0;
   position: absolute;
+  width: 100%;
 }
 
 video {
@@ -69,10 +68,21 @@ video {
   z-index: 1;
 }
 
+/* Animation preference: an autoplaying video is motion that cannot be reduced
+ * by scaling a duration, so reduced motion hides it. This is handled here,
+ * cross-browser, via @media following the OS preference (a custom property
+ * cannot toggle display). */
+
+@media (prefers-reduced-motion: reduce) {
+  video {
+    display: none;
+  }
+}
+
 .noise {
   background-color: var(--mds-video-wall-noise-background-color);
   background-size: var(--mds-video-wall-noise-background-size);
-  filter: var(--mds-video-wall-noise-fitler);
+  filter: var(--mds-video-wall-noise-filter);
   z-index: 2;
 }
 
@@ -92,4 +102,3 @@ video {
   background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAHCAYAAADEUlfTAAAAMElEQVQYV2NkYGDwZcABGP8zKBuD5Bj/P4coEf0Kod8wSjH+Z5CVgki+RZc0HghJADPEICMR8Ep/AAAAAElFTkSuQmCC');
 }
 
-@import './css/mds-video-wall-pref-animation.css';

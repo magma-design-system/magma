@@ -8,7 +8,6 @@ import {
   Prop,
   State,
   Watch,
-  Method,
 } from '@stencil/core';
 import { ExtensionSuffixType } from '@type/file-types';
 import { MdsFileEventDetail } from './meta/event-detail';
@@ -18,6 +17,7 @@ import { getFormatsVariant, getName, getSuffix, getExtensionInfos } from '@commo
 import miBaselineFileDownloadDone from '@icon/mi/baseline/file-download-done.svg';
 import miOutlineFileDownload from '@icon/mi/outline/file-download.svg';
 import { Locale } from '@common/locale';
+import { preferenceStore } from '@common/preference';
 import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.es.json';
@@ -42,11 +42,6 @@ export class MdsFile {
     es: { ...localeEs, ...fileDescriptionLocaleEs },
     it: { ...localeIt, ...fileDescriptionLocaleIt },
   });
-  @State() language: string;
-  @Method()
-  async updateLang(): Promise<void> {
-    this.language = this.t.lang(this.host);
-  }
 
   @State() private wasDownloaded = false;
 
@@ -71,9 +66,9 @@ export class MdsFile {
   @Prop() readonly preview?: string;
 
   /**
-   * Sets if the download icon must be shown or not
+   * Hides the download icon
    */
-  @Prop() readonly showDownloadedIcon?: boolean = true;
+  @Prop() readonly hideDownloadedIcon?: boolean = false;
 
   /**
    * Sets if the download icon must be shown or not
@@ -108,7 +103,6 @@ export class MdsFile {
 
   componentWillLoad(): void {
     this.checkWasDownloaded();
-    this.t.lang(this.host);
     this.format = getExtensionInfos(this.filename, this.suffix).format;
   }
 
@@ -123,7 +117,14 @@ export class MdsFile {
 
   render() {
     return (
-      <Host tabindex="0" onClick={this.handleOnClick}>
+      <Host
+        tabindex="0"
+        onClick={this.handleOnClick}
+        pref-animation={preferenceStore.state.animation}
+        pref-contrast={preferenceStore.state.contrast}
+        pref-theme={preferenceStore.state.theme}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
+      >
         <div class="preview">
           {this.preview !== undefined ? (
             <div class="image-preview" style={{ backgroundImage: `url(${this.preview})` }}></div>
@@ -170,7 +171,7 @@ export class MdsFile {
             </mds-text>
           </div>
         </div>
-        {this.wasDownloaded && this.showDownloadedIcon && (
+        {this.wasDownloaded && !this.hideDownloadedIcon && (
           <div class="indicator">
             <i
               class="downloaded"

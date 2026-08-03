@@ -179,7 +179,7 @@
 
 @property --mds-calendar-cell-preselection-other-month-boundaries-background {
   inherits: false;
-  initial-value: rgb(var(--tone-neutral));
+  initial-value: rgb(var(--tone-neutral-seed));
   syntax: '<color>';
 }
 
@@ -191,13 +191,13 @@
 
 @property --mds-calendar-cell-selection-current-month-color {
   inherits: false;
-  initial-value: rgb(var(--tone-neutral));
+  initial-value: rgb(var(--tone-neutral-seed));
   syntax: '<color>';
 }
 
 @property --mds-calendar-cell-selection-current-month-boundaries-background {
   inherits: false;
-  initial-value: rgb(var(--tone-neutral));
+  initial-value: rgb(var(--tone-neutral-seed));
   syntax: '<color>';
 }
 
@@ -288,13 +288,13 @@
   --mds-calendar-cell-preselection-other-month-background: rgb(var(--variant-primary-09));
   --mds-calendar-cell-preselection-other-month-color: rgb(var(--tone-neutral-05));
   --mds-calendar-cell-preselection-other-month-boundaries-color: rgb(var(--tone-neutral-05));
-  --mds-calendar-cell-preselection-other-month-boundaries-background: rgb(var(--tone-neutral));
+  --mds-calendar-cell-preselection-other-month-boundaries-background: rgb(var(--tone-neutral-seed));
 
   /* selection */
 
   --mds-calendar-cell-selection-current-month-background: rgb(var(--variant-primary-04));
-  --mds-calendar-cell-selection-current-month-color: rgb(var(--tone-neutral));
-  --mds-calendar-cell-selection-current-month-boundaries-background: rgb(var(--tone-neutral));
+  --mds-calendar-cell-selection-current-month-color: rgb(var(--tone-neutral-seed));
+  --mds-calendar-cell-selection-current-month-boundaries-background: rgb(var(--tone-neutral-seed));
   --mds-calendar-cell-selection-current-month-boundaries-color: rgb(var(--tone-neutral-03));
   --mds-calendar-cell-selection-current-month-weekend-background: rgb(var(--variant-primary-03));
   --mds-calendar-cell-selection-current-month-weekend-color: rgb(var(--variant-primary-07));

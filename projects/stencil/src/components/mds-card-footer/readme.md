@@ -217,9 +217,9 @@ Compound component children must be direct slot children of the parent - wrappin
 
 ## Slots
 
-| Slot        | Description                                                      |
-| ----------- | ---------------------------------------------------------------- |
-| `"default"` | Add `text string`, `HTML elements` or `components` to this slot. |
+| Slot | Description                                                      |
+| ---- | ---------------------------------------------------------------- |
+|      | Add `text string`, `HTML elements` or `components` to this slot. |
 
 
 ----------------------------------------------

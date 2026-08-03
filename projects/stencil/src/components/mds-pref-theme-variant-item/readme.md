@@ -230,19 +230,6 @@ mds-pref-theme-variant-item[name="brand"] {
 | `mdsPrefThemeVariantItemSelect` | Emits when the component trigger the language | `CustomEvent<MdsPrefThemeVariantEventDetail>` |
 
 
-## Methods
-
-### `updateLang() => Promise<void>`
-
-
-
-#### Returns
-
-Type: `Promise<void>`
-
-
-
-
 ## CSS Custom Properties
 
 | Name                                                  | Description                                             |

@@ -14,14 +14,15 @@ import {
 import { MdsTableSelectionEventDetail } from './meta/event-detail';
 import { MdsTableRowSelection } from './meta/type';
 import { Locale } from '@common/locale';
+import { preferenceStore } from '@common/preference';
 import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.es.json';
 import localeIt from './meta/locale.it.json';
 
 /**
- * @slot default - Put `mds-table-header`, `mds-table-body`, `mds-table-footer` element/s.
- * @slot batch-actions - Put `mds-button` element/s.
+ * @slot - Put `mds-table-header`, `mds-table-body`, `mds-table-footer` element/s.
+ * @slot batch-action - Put `mds-button` element/s.
  * @part table-wrapper - Selects the element which wraps the table
  * @part table - Selects the table element
  * @part batch-actions - Selects the element which wraps the batch actions
@@ -34,12 +35,17 @@ import localeIt from './meta/locale.it.json';
 })
 export class MdsTable {
   @Element() host: HTMLMdsTableElement;
-  private rows: NodeListOf<HTMLMdsTableRowElement>;
-  private body: HTMLMdsTableBodyElement;
-  private header: HTMLMdsTableHeaderElement;
+  /**
+   * Slotted elements are assigned in `componentWillLoad`, but the `interactive`/`selectable`
+   * watchers can fire before it and, with streamed HTML, the children can still be unparsed
+   * when it runs: every dereference below has to tolerate `undefined`/`null`.
+   */
+  private rows?: NodeListOf<HTMLMdsTableRowElement>;
+  private body?: HTMLMdsTableBodyElement | null;
+  private header?: HTMLMdsTableHeaderElement | null;
   private scrollWrapper: HTMLDivElement;
   private resizeObserver?: ResizeObserver;
-  private tableBodyObserver: MutationObserver;
+  private tableBodyObserver?: MutationObserver;
   private hasBatchActions: boolean = false;
   private cellsWidth: number = 0;
   @State() selectedRows: MdsTableRowSelection[] = [];
@@ -49,7 +55,6 @@ export class MdsTable {
     es: localeEs,
     it: localeIt,
   });
-  @State() language: string;
 
   /**
    * Specifies if the table rows are higlighted on mouseover event
@@ -61,6 +66,9 @@ export class MdsTable {
    */
   @Prop() readonly selectable?: boolean;
 
+  /**
+   * Indicates whether row selection is currently active in the table.
+   */
   @Prop({ mutable: true, reflect: true }) selection?: boolean;
 
   /**
@@ -77,7 +85,9 @@ export class MdsTable {
   @Watch('selectable')
   onTableSelectable(newValue: boolean): void {
     this.handleSelection();
-    this.header.selectable = newValue;
+    if (this.header) {
+      this.header.selectable = newValue;
+    }
   }
 
   /**
@@ -85,7 +95,7 @@ export class MdsTable {
    */
   @Method()
   async updateSelection(): Promise<void> {
-    if (!this.selectable) {
+    if (!this.selectable || !this.rows) {
       return;
     }
     this.selectedRows = [];
@@ -95,9 +105,14 @@ export class MdsTable {
       }
     });
     this.selectionEvent.emit({ rows: this.selectedRows });
-    this.header.setSelection(this.selectedRows.length, this.rows.length);
+    this.header?.setSelection(this.selectedRows.length, this.rows.length);
     this.selection = this.selectedRows.length > 0;
-    this.body.selection = this.selection;
+    if (this.body) {
+      this.body.selection = this.selection;
+    }
+    this.rows.forEach((row: HTMLMdsTableRowElement) => {
+      row.selection = this.selection;
+    });
   }
 
   /**
@@ -105,7 +120,7 @@ export class MdsTable {
    */
   @Method()
   async selectAll(select: boolean = true): Promise<void> {
-    if (!this.selectable) {
+    if (!this.selectable || !this.rows) {
       return;
     }
     this.rows.forEach((row: HTMLMdsTableRowElement) => {
@@ -115,19 +130,24 @@ export class MdsTable {
   }
 
   private updateInteractive = (): void => {
-    this.body.interactive = this.interactive;
-    this.rows.forEach((row: HTMLMdsTableRowElement) => {
+    if (this.body) {
+      this.body.interactive = this.interactive;
+    }
+    this.rows?.forEach((row: HTMLMdsTableRowElement) => {
       row.interactive = this.interactive;
     });
   };
 
   private updateCellsSize = (): void => {
-    const cells: NodeListOf<HTMLMdsTableCellElement> =
-      this.rows[0].querySelectorAll('mds-table-cell');
-    const cellSelection: HTMLMdsTableCellElement = this.rows[0].shadowRoot?.querySelector(
+    const firstRow = this.rows?.[0];
+    if (!firstRow) {
+      return;
+    }
+    const cells: NodeListOf<HTMLMdsTableCellElement> = firstRow.querySelectorAll('mds-table-cell');
+    const cellSelection: HTMLMdsTableCellElement = firstRow.shadowRoot?.querySelector(
       '.selection-cell',
     ) as HTMLMdsTableCellElement;
-    this.cellsWidth = cellSelection ? cellSelection.offsetWidth : 0;
+    this.cellsWidth = cellSelection != null ? cellSelection.offsetWidth : 0;
     cells.forEach((cell: HTMLMdsTableCellElement) => {
       this.cellsWidth += cell.offsetWidth;
     });
@@ -139,7 +159,7 @@ export class MdsTable {
   };
 
   private handleSelection = (): void => {
-    this.rows.forEach((row: HTMLMdsTableRowElement) => {
+    this.rows?.forEach((row: HTMLMdsTableRowElement) => {
       row.selectable = this.selectable;
     });
   };
@@ -148,25 +168,37 @@ export class MdsTable {
     this.updateCellsSize();
     const overlayActions =
       this.scrollWrapper.offsetWidth + this.scrollWrapper.scrollLeft < this.cellsWidth;
-    this.rows.forEach((row: HTMLMdsTableRowElement) => {
+    this.rows?.forEach((row: HTMLMdsTableRowElement) => {
       row.overlayActions = overlayActions;
     });
   };
 
-  componentWillLoad(): void {
-    this.language = this.t.lang(this.host);
-    this.body = this.host.querySelector('mds-table-body')!;
-    this.header = this.host.querySelector('mds-table-header')!;
+  private querySlottedElements = (): void => {
+    this.body = this.host.querySelector('mds-table-body');
+    this.header = this.host.querySelector('mds-table-header');
     this.rows = this.host.querySelectorAll('mds-table-row');
-    this.hasBatchActions = this.host.querySelector(':scope > [slot="batch-action"]') !== null;
+    if (this.body) {
+      // observing an already observed node just resets its options, so this is safe to
+      // re-run: it also attaches the observer to a body parsed after the first render
+      this.tableBodyObserver?.observe(this.body, { childList: true });
+    }
+  };
+
+  componentWillLoad(): void {
+    // equivalent to `:scope > [slot="batch-action"]`, which mock-doc cannot parse in spec tests
+    this.hasBatchActions = Array.from(this.host.children).some(
+      (child: Element) => child.getAttribute('slot') === 'batch-action',
+    );
     this.tableBodyObserver = new MutationObserver(() => {
       this.updateSlottedElements();
     });
-    this.tableBodyObserver.observe(this.body, { childList: true });
+    this.querySlottedElements();
   }
 
   componentDidLoad(): void {
-    this.header.selectable = this.selectable;
+    if (this.header) {
+      this.header.selectable = this.selectable;
+    }
     if (this.hasActions()) {
       const scrollWrapper = this.host.shadowRoot?.querySelector('.table-wrapper');
       if (!scrollWrapper) {
@@ -181,7 +213,7 @@ export class MdsTable {
   }
 
   private updateSlottedElements = (): void => {
-    this.rows = this.host.querySelectorAll('mds-table-row');
+    this.querySlottedElements();
     this.updateInteractive();
     this.handleSelection();
   };
@@ -189,12 +221,17 @@ export class MdsTable {
   disconnectedCallback(): void {
     this.host.removeEventListener('scroll', this.handleActions);
     this.resizeObserver?.disconnect();
-    this.tableBodyObserver.disconnect();
+    this.tableBodyObserver?.disconnect();
   }
 
   render() {
     return (
-      <Host>
+      <Host
+        pref-animation={preferenceStore.state.animation}
+        pref-contrast={preferenceStore.state.contrast}
+        pref-theme={preferenceStore.state.theme}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
+      >
         <div class="table-wrapper" part="table-wrapper">
           <table
             class={clsx('table', this.interactive && 'table--interactive')}

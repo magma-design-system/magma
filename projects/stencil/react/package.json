@@ -4,12 +4,27 @@
   "main": "dist/components.js",
   "module": "dist/components.js",
   "types": "dist/types/components.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/types/components.d.ts",
+      "import": "./dist/components.js",
+      "default": "./dist/components.js"
+    },
+    "./*.js": {
+      "types": "./dist/types/*.d.ts",
+      "import": "./dist/*.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "sideEffects": false,
   "scripts": {
     "build": "npm run tsc",
     "tsc": "tsc -p . --outDir ./dist"
   },
   "files": [
-    "dist"
+    "dist",
+    "AGENTS.md",
+    "agents/"
   ],
   "publishConfig": {
     "access": "public"

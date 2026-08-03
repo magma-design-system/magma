@@ -2,9 +2,10 @@ import miBaselineKeyboardArrowRight from '@icon/mi/baseline/keyboard-arrow-right
 import { Component, Element, Event, EventEmitter, Host, Prop, h } from '@stencil/core';
 import { TypographyTitleType } from '@type/typography';
 import { MdsAccordionItemEventDetail } from './meta/event-detail';
+import { preferenceStore } from '@common/preference';
 
 /**
- * @slot default - Add contents like `text string`, `HTML elements` or `components` to this slot.
+ * @slot - Add contents like `text string`, `HTML elements` or `components` to this slot.
  * @part content - the content wrapper of the `default` slot
  * @part icon - The arrow icon of the component
  * @part label - The text label of the component
@@ -66,7 +67,12 @@ export class MdsAccordionItem {
 
   render() {
     return (
-      <Host>
+      <Host
+        pref-animation={preferenceStore.state.animation}
+        pref-contrast={preferenceStore.state.contrast}
+        pref-theme={preferenceStore.state.theme}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
+      >
         <button
           aria-controls="content"
           aria-expanded={this.selected ? 'true' : 'false'}

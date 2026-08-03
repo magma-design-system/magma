@@ -425,11 +425,11 @@ Selection state is communicated via the `mdsTableSelectionChange` custom event. 
 
 ## Properties
 
-| Property      | Attribute     | Description                                                   | Type                   | Default     |
-| ------------- | ------------- | ------------------------------------------------------------- | ---------------------- | ----------- |
-| `interactive` | `interactive` | Specifies if the table rows are higlighted on mouseover event | `boolean \| undefined` | `undefined` |
-| `selectable`  | `selectable`  | Specifies if the table rows are selectable by a checkbox      | `boolean \| undefined` | `undefined` |
-| `selection`   | `selection`   |                                                               | `boolean \| undefined` | `undefined` |
+| Property      | Attribute     | Description                                                       | Type                   | Default     |
+| ------------- | ------------- | ----------------------------------------------------------------- | ---------------------- | ----------- |
+| `interactive` | `interactive` | Specifies if the table rows are higlighted on mouseover event     | `boolean \| undefined` | `undefined` |
+| `selectable`  | `selectable`  | Specifies if the table rows are selectable by a checkbox          | `boolean \| undefined` | `undefined` |
+| `selection`   | `selection`   | Indicates whether row selection is currently active in the table. | `boolean \| undefined` | `undefined` |
 
 
 ## Events
@@ -470,10 +470,10 @@ Type: `Promise<void>`
 
 ## Slots
 
-| Slot              | Description                                                             |
-| ----------------- | ----------------------------------------------------------------------- |
-| `"batch-actions"` | Put `mds-button` element/s.                                             |
-| `"default"`       | Put `mds-table-header`, `mds-table-body`, `mds-table-footer` element/s. |
+| Slot             | Description                                                             |
+| ---------------- | ----------------------------------------------------------------------- |
+|                  | Put `mds-table-header`, `mds-table-body`, `mds-table-footer` element/s. |
+| `"batch-action"` | Put `mds-button` element/s.                                             |
 
 
 ## Shadow Parts

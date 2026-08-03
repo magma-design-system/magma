@@ -223,9 +223,9 @@ mds-kpi {
 
 ## Slots
 
-| Slot        | Description                   |
-| ----------- | ----------------------------- |
-| `"default"` | Add `mds-kpi-item` element/s. |
+| Slot | Description                   |
+| ---- | ----------------------------- |
+|      | Add `mds-kpi-item` element/s. |
 
 
 ## CSS Custom Properties

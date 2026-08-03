@@ -15,6 +15,8 @@
 @import '@maggioli-design-system/styles/dist/css/reset.css' layer(reset);
 @import '@maggioli-design-system/styles/dist/css/globals.css' layer(theme);
 @import '@maggioli-design-system/styles/dist/css/colors-rgb.css' layer(theme);
+@import '@maggioli-design-system/styles/dist/css/semantic.css' layer(theme);
+@import '@maggioli-design-system/styles/dist/css/themes.css' layer(theme);
 @import '@maggioli-design-system/styles/dist/css/hydrated.css' layer(base);
 @import '@maggioli-design-system/styles/dist/css/animations.css' layer(base);
 @import '@maggioli-design-system/styles/dist/css/base.css' layer(base);
@@ -22,7 +24,7 @@
 
 @layer overrides {
   body {
-    @apply bg-tone-neutral
+    @apply bg-surface-default
     text-tone-neutral-03
       transition-colors
       duration-300

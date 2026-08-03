@@ -1,5 +1,6 @@
 import { Component, Host, h, Element, State, Method, Prop } from '@stencil/core';
 import { Locale } from '@common/locale';
+import { preferenceStore } from '@common/preference';
 import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.es.json';
@@ -7,7 +8,7 @@ import localeIt from './meta/locale.it.json';
 import { MdsInputSwitchEventDetail } from '@component/mds-input-switch/meta/event-detail';
 
 /**
- * @slot default - Add `mds-table-row` element/s.
+ * @slot - Add `mds-table-row` element/s.
  */
 
 @Component({
@@ -29,20 +30,22 @@ export class MdsTableHeader {
     es: localeEs,
     it: localeIt,
   });
-  @State() language: string;
-  @Method()
-  async updateLang(): Promise<void> {
-    this.language = this.t.lang(this.host);
-    this.t.update();
-  }
 
+  /**
+   * Enables the select-all checkbox in the header.
+   */
   @Prop() readonly selectable?: boolean;
 
+  /**
+   * Updates the header's select-all state from the number of selected rows.
+   * @param selectedItems the number of currently selected rows
+   * @param totalItems the total number of selectable rows
+   */
   @Method()
   async setSelection(selectedItems: number, totalItems: number): Promise<void> {
     this.indeterminate = selectedItems !== 0 && selectedItems !== totalItems;
     if (this.indeterminate) {
-      if (!this.checkboxEl) {
+      if (this.checkboxEl == null) {
         this.checkboxEl = this.host.shadowRoot?.querySelector(
           '.checkbox',
         ) as HTMLMdsInputSwitchElement;
@@ -52,7 +55,6 @@ export class MdsTableHeader {
   }
 
   componentWillLoad(): void {
-    this.language = this.t.lang(this.host);
     this.table = this.host.closest('mds-table') as HTMLMdsTableElement;
     this.hasActions = this.table.querySelector('mds-table-row > [slot="action"]') !== null;
   }
@@ -69,14 +71,13 @@ export class MdsTableHeader {
 
   render() {
     return (
-      <Host role="row">
+      <Host role="row" pref-animation={preferenceStore.state.animation}>
         {this.selectable && (
           <mds-table-cell class="selection" role="columnheader">
             <div class="checkbox-wrapper">
               <mds-input-switch
                 class="checkbox"
                 title={this.t.get(this.selectAll ? 'selectNoneRows' : 'selectAllRows')}
-                lang={this.language}
                 type="checkbox"
                 onMdsInputSwitchChange={this.handleSelectAllChange}
                 indeterminate={this.indeterminate}

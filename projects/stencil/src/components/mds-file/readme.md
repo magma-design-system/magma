@@ -27,7 +27,7 @@ The `<mds-file>` web component is the Magma Design System control for representi
 - **`suffix`** forces a specific file type from the supported format set when the filename's extension is missing or wrong; it bypasses automatic recognition.
 - **`description`** overrides the derived, localized file-type description when a custom label is needed.
 - **`preview`** supplies an image URL (logo or thumbnail) rendered as the preview surface instead of the generic format icon - use it when a meaningful visual of the file exists.
-- **`showDownloadedIcon`** (default `true`) toggles the persisted "already downloaded" indicator; set it to `false` to suppress that affordance.
+- **`hideDownloadedIcon`** (default `false`) suppresses the persisted "already downloaded" indicator; set it when that affordance is not appropriate.
 - **`format`** is normally populated by the component itself from detection rather than set by the consumer.
 
 
@@ -95,10 +95,10 @@ Provide `preview` with an image URL when a meaningful visual thumbnail is availa
 
 #### Hiding the "Already Downloaded" Indicator
 
-By default the component persists a "done" indicator once the file has been downloaded. Set `show-downloaded-icon="false"` to suppress it when the affordance is not appropriate for the context (e.g. a list where every file is always shown as fresh).
+By default the component persists a "done" indicator once the file has been downloaded. Add `hide-downloaded-icon` to suppress it when the affordance is not appropriate for the context (e.g. a list where every file is always shown as fresh).
 
 ```html
-<mds-file filename="modulo-richiesta.xlsx" show-downloaded-icon="false"></mds-file>
+<mds-file filename="modulo-richiesta.xlsx" hide-downloaded-icon></mds-file>
 ```
 
 Note: this is the only valid way to turn the indicator off - do not set it to the string `"false"` (see the Antipattern file).
@@ -129,7 +129,7 @@ Style the preview panel only through the three documented `--mds-file-*` CSS cus
 ```css
 .archivio-documenti mds-file {
   --mds-file-preview-icon-color: rgb(var(--variant-primary-04));
-  --mds-file-preview-icon-bacground: rgb(var(--variant-primary-10));
+  --mds-file-preview-icon-background: rgb(var(--variant-primary-10));
   --mds-file-preview-color: rgb(var(--variant-primary-04));
 }
 ```
@@ -157,18 +157,6 @@ Common incorrect uses of `<mds-file>`. Each entry pairs the wrong form with the 
 </script>
 ```
 
-#### Do Not Set `show-downloaded-icon` to the String "false"
-
-`showDownloadedIcon` is a boolean prop. Setting the attribute to the string `"false"` evaluates as truthy in HTML and leaves the indicator enabled. Remove the attribute or set the prop to `false` in your framework binding.
-
-```html
-<!-- 🚫 INCORRECT -->
-<mds-file filename="modulo.pdf" show-downloaded-icon="false"></mds-file>
-
-<!-- ✅ CORRECT (HTML attribute absent = disabled) -->
-<mds-file filename="modulo.pdf"></mds-file>
-```
-
 #### Do Not Set `format` Manually
 
 `format` is an internal reflected attribute automatically derived from the filename and suffix. Setting it directly has no guaranteed effect because the component overwrites it during `componentWillLoad` and on every `filename` change. Use `suffix` to control type detection.
@@ -193,7 +181,7 @@ mds-file >>> .preview {
 
 /* ✅ CORRECT */
 mds-file {
-  --mds-file-preview-icon-bacground: rgb(var(--variant-primary-10));
+  --mds-file-preview-icon-background: rgb(var(--variant-primary-10));
   --mds-file-preview-icon-color: rgb(var(--variant-primary-04));
 }
 ```
@@ -242,8 +230,8 @@ The host is already focusable, keyboard-accessible, and emits its own interactio
 | `description`        | `description`          | Overrides the default filetype description                                                                                 | `string \| undefined`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | `undefined` |
 | `filename`           | `filename`             | The filename shown as component title, is used to auto assign one of the filetype known in the filetype dictionary         | `string`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | `undefined` |
 | `format`             | `format`               | Sets if the download icon must be shown or not                                                                             | `string \| undefined`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | `undefined` |
+| `hideDownloadedIcon` | `hide-downloaded-icon` | Hides the download icon                                                                                                    | `boolean \| undefined`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | `false`     |
 | `preview`            | `preview`              | The image preview src if available of a file, useful if you have a logo to display, or a smaller version of a bigger image | `string \| undefined`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | `undefined` |
-| `showDownloadedIcon` | `show-downloaded-icon` | Sets if the download icon must be shown or not                                                                             | `boolean \| undefined`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | `true`      |
 | `suffix`             | `suffix`               | Overrides the automatic filetype recongition by forcing the suffix to one of the available formats choosen                 | `"7z" \| "ace" \| "ai" \| "db" \| "default" \| "dmg" \| "doc" \| "docm" \| "docx" \| "eml" \| "eps" \| "exe" \| "flac" \| "gif" \| "heic" \| "htm" \| "html" \| "jpe" \| "jpeg" \| "jpg" \| "js" \| "json" \| "jsx" \| "m2v" \| "mp2" \| "mp3" \| "mp4" \| "mp4v" \| "mpeg" \| "mpg" \| "mpg4" \| "mpga" \| "odf" \| "odp" \| "ods" \| "odt" \| "ole" \| "p7m" \| "pdf" \| "php" \| "png" \| "ppt" \| "rar" \| "rtf" \| "sass" \| "shtml" \| "svg" \| "tar" \| "tiff" \| "ts" \| "tsd" \| "txt" \| "wav" \| "webp" \| "xar" \| "xls" \| "xlsx" \| "xml" \| "zip" \| undefined` | `undefined` |
 
 
@@ -254,26 +242,13 @@ The host is already focusable, keyboard-accessible, and emits its own interactio
 | `mdsFileDownload` | Emits when the component is clicked, returning file infos | `CustomEvent<MdsFileEventDetail>` |
 
 
-## Methods
-
-### `updateLang() => Promise<void>`
-
-
-
-#### Returns
-
-Type: `Promise<void>`
-
-
-
-
 ## CSS Custom Properties
 
-| Name                                | Description                                        |
-| ----------------------------------- | -------------------------------------------------- |
-| `--mds-file-preview-color`          | Sets the text color used in the file preview       |
-| `--mds-file-preview-icon-bacground` | Sets the background color of the file preview icon |
-| `--mds-file-preview-icon-color`     | Sets the color of the file preview icon            |
+| Name                                 | Description                                        |
+| ------------------------------------ | -------------------------------------------------- |
+| `--mds-file-preview-color`           | Sets the text color used in the file preview       |
+| `--mds-file-preview-icon-background` | Sets the background color of the file preview icon |
+| `--mds-file-preview-icon-color`      | Sets the color of the file preview icon            |
 
 
 ## Dependencies

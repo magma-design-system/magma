@@ -275,11 +275,11 @@ mds-entity {
 
 ## Slots
 
-| Slot        | Description                                                                             |
-| ----------- | --------------------------------------------------------------------------------------- |
-| `"action"`  | Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element. |
-| `"default"` | Add `text string`, `HTML elements` or `components` to this slot.                        |
-| `"detail"`  | Add `HTML elements` or `components` to this slot.                                       |
+| Slot       | Description                                                                             |
+| ---------- | --------------------------------------------------------------------------------------- |
+|            | Add `text string`, `HTML elements` or `components` to this slot.                        |
+| `"action"` | Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element. |
+| `"detail"` | Add `HTML elements` or `components` to this slot.                                       |
 
 
 ## Shadow Parts

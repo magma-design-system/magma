@@ -276,10 +276,10 @@ Using a plain `<div slot="header">` bypasses the component's conditional action 
 
 ## Slots
 
-| Slot        | Description                                                                             |
-| ----------- | --------------------------------------------------------------------------------------- |
-| `"action"`  | Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element. |
-| `"default"` | Add `text string`, `HTML elements` or `components` to this slot.                        |
+| Slot       | Description                                                                             |
+| ---------- | --------------------------------------------------------------------------------------- |
+|            | Add `text string`, `HTML elements` or `components` to this slot.                        |
+| `"action"` | Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element. |
 
 
 ----------------------------------------------

@@ -223,6 +223,13 @@ The default slot is for the feature label - plain text plus inline helpers such 
 | `typography` | `typography` | Specifies if the feature is supported or not | `"caption" \| "detail" \| "paragraph"` | `'detail'` |
 
 
+## Slots
+
+| Slot | Description                                                      |
+| ---- | ---------------------------------------------------------------- |
+|      | Add `text string`, `HTML elements` or `components` to this slot. |
+
+
 ## Shadow Parts
 
 | Part     | Description |

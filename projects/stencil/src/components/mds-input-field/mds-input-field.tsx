@@ -2,6 +2,9 @@ import { Component, Element, Host, Prop, h } from '@stencil/core';
 import { MdsValidationErrors } from '@component/mds-input/meta/validators';
 import { ThemeInputVariantType } from '@type/variant';
 
+/**
+ * @slot - Add the native input `HTML element` to this slot.
+ */
 @Component({
   tag: 'mds-input-field',
   styleUrl: 'mds-input-field.css',
@@ -17,12 +20,12 @@ export class MdsInputField {
     // mdsInput.hasValidator().then(hasValidator => {
     // if (!hasValidator) return
     mdsInput.getErrors().then((errors: MdsValidationErrors) => {
-      if (errors) {
+      if (errors != null) {
         this.variant = 'error';
         const messages = Object.entries(errors)
           .map((v) => v[1])
           .filter((v) => v);
-        this.message = messages.length ? messages.join(';') : undefined;
+        this.message = messages.length !== 0 ? messages.join(';') : undefined;
         return;
       }
       this.variant = 'success';
@@ -33,7 +36,7 @@ export class MdsInputField {
 
   componentDidLoad(): void {
     const [mdsInput] = this.slotInput.assignedElements() as HTMLMdsInputElement[];
-    if (!mdsInput) throw new Error('Mds input not found');
+    if (mdsInput == null) throw new Error('Mds input not found');
     mdsInput.addEventListener('mdsInputValidation', () => this.handleValidation(mdsInput));
   }
 

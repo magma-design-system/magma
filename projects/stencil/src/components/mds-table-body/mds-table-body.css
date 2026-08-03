@@ -10,13 +10,13 @@
 
 @property --mds-table-body-background-hover {
   inherits: false;
-  initial-value: var(--mds-table-background-alt, rgb(var(--tone-neutral-10)));
+  initial-value: var(--mds-table-background-alt, rgb(var(--magma-surface-raised)));
   syntax: '<color>';
 }
 
 @property --mds-table-body-background {
   inherits: false;
-  initial-value: var(--mds-table-background, rgb(var(--tone-neutral)));
+  initial-value: var(--mds-table-background, rgb(var(--magma-surface-default)));
   syntax: '<color>';
 }
 
@@ -28,32 +28,34 @@
 
 @property --mds-table-body-color-alt {
   inherits: false;
-  initial-value: var(--mds-table-color-alt, rgb(var(--tone-neutral-05)));
+  initial-value: var(--mds-table-color-alt, rgb(var(--magma-text-muted)));
   syntax: '<color>';
 }
 
 @property --mds-table-body-color {
   inherits: false;
-  initial-value: var(--mds-table-color, rgb(var(--tone-neutral-02)));
+  initial-value: var(--mds-table-color, rgb(var(--magma-text-default)));
   syntax: '<color>';
 }
 
 :host {
-  --mds-table-body-background-hover: var(--mds-table-background-alt, rgb(var(--tone-neutral-10)));
-  --mds-table-body-background: var(--mds-table-background, rgb(var(--tone-neutral)));
+  --mds-table-body-background-hover: var(--mds-table-background-alt, rgb(var(--magma-surface-raised)));
+  --mds-table-body-background: var(--mds-table-background, rgb(var(--magma-surface-default)));
   --mds-table-body-background-alt: var(--mds-table-body-background-hover);
-  --mds-table-body-color-alt: var(--mds-table-color-alt, rgb(var(--tone-neutral-05)));
-  --mds-table-body-color: var(--mds-table-color, rgb(var(--tone-neutral-02)));
+  --mds-table-body-color-alt: var(--mds-table-color-alt, rgb(var(--magma-text-muted)));
+  --mds-table-body-color: var(--mds-table-color, rgb(var(--magma-text-default)));
 
   /* internal */
   --mds-table-row-color: var(--mds-table-body-color);
+  --mds-table-body-transition-duration: var(--duration-200);
+  --private-table-body-transition-duration: var(--mds-table-body-transition-duration);
 
-  @apply duration-200
-    ease-out;
+  @apply ease-out;
 
   background-color: var(--mds-table-body-background);
   display: table-row-group;
   overflow: hidden;
+  transition-duration: var(--private-table-body-transition-duration);
   transition-property: background-color;
 }
 

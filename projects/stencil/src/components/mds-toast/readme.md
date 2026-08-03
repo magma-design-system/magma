@@ -336,11 +336,11 @@ mds-toast {
 
 ## Slots
 
-| Slot        | Description                                                                                                       |
-| ----------- | ----------------------------------------------------------------------------------------------------------------- |
-| `"action"`  | Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element.                           |
-| `"default"` | Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.                            |
-| `"icon"`    | Insert an icon image, it can be `HTML elements` or `components`, it is **recommended** to add `mds-icon` element. |
+| Slot       | Description                                                                                                       |
+| ---------- | ----------------------------------------------------------------------------------------------------------------- |
+|            | Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.                            |
+| `"action"` | Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element.                           |
+| `"icon"`   | Insert an icon image, it can be `HTML elements` or `components`, it is **recommended** to add `mds-icon` element. |
 
 
 ## CSS Custom Properties

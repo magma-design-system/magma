@@ -371,9 +371,9 @@ mds-emoji {
 
 ## Properties
 
-| Property | Attribute | Description | Type              | Default |
-| -------- | --------- | ----------- | ----------------- | ------- |
-| `name`   | `name`    |             | `"mia" \| "simi"` | `'mia'` |
+| Property | Attribute | Description                       | Type              | Default |
+| -------- | --------- | --------------------------------- | ----------------- | ------- |
+| `name`   | `name`    | Specifies which emoji to display. | `"mia" \| "simi"` | `'mia'` |
 
 
 ## Methods
@@ -480,13 +480,13 @@ Stops following mouse with CSS 3D transform.
 
 ### `stopThinking(duration?: number) => Promise<void>`
 
-
+Stops the "thinking" animation after the given duration.
 
 #### Parameters
 
-| Name       | Type     | Description |
-| ---------- | -------- | ----------- |
-| `duration` | `number` |             |
+| Name       | Type     | Description                        |
+| ---------- | -------- | ---------------------------------- |
+| `duration` | `number` | the animation duration, in seconds |
 
 #### Returns
 

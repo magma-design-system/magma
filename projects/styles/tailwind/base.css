@@ -15,7 +15,7 @@
     @apply font-info
       text-info-detail;
 
-    background-color: rgb(var(--tone-neutral));
+    background-color: rgb(var(--tone-neutral-seed));
     color: rgb(var(--tone-neutral-03));
   }
 

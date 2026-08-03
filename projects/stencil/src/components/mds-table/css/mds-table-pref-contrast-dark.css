@@ -1,15 +1,15 @@
-:host-context(:root.pref-contrast-more.pref-theme-dark) {
+:host([pref-contrast='more'][pref-theme='dark']) {
   --mds-table-background: rgb(var(--tone-neutral-08));
-  --mds-table-body-background-hover: rgb(var(--tone-neutral));
+  --mds-table-body-background-hover: rgb(var(--tone-neutral-seed));
   --mds-table-border-color: rgb(var(--tone-neutral-05));
   --mds-table-color-hover: rgb(var(--tone-neutral-02));
   --mds-table-color: rgb(var(--tone-neutral-01));
 }
 
 @media (prefers-contrast: more) {
-  :host-context(:root.pref-contrast-system.pref-theme-dark) {
+  :host([pref-contrast='system'][pref-theme='dark']) {
     --mds-table-background: rgb(var(--tone-neutral-08));
-    --mds-table-body-background-hover: rgb(var(--tone-neutral));
+    --mds-table-body-background-hover: rgb(var(--tone-neutral-seed));
     --mds-table-border-color: rgb(var(--tone-neutral-05));
     --mds-table-color-hover: rgb(var(--tone-neutral-02));
     --mds-table-color: rgb(var(--tone-neutral-01));
@@ -17,9 +17,9 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  :host-context(:root.pref-contrast-more.pref-theme-system) {
+  :host([pref-contrast='more'][pref-theme='system']) {
     --mds-table-background: rgb(var(--tone-neutral-08));
-    --mds-table-body-background-hover: rgb(var(--tone-neutral));
+    --mds-table-body-background-hover: rgb(var(--tone-neutral-seed));
     --mds-table-border-color: rgb(var(--tone-neutral-05));
     --mds-table-color-hover: rgb(var(--tone-neutral-02));
     --mds-table-color: rgb(var(--tone-neutral-01));
@@ -27,9 +27,9 @@
 }
 
 @media (prefers-contrast: more) and (prefers-color-scheme: dark) {
-  :host-context(:root.pref-contrast-system.pref-theme-system) {
+  :host([pref-contrast='system'][pref-theme='system']) {
     --mds-table-background: rgb(var(--tone-neutral-08));
-    --mds-table-body-background-hover: rgb(var(--tone-neutral));
+    --mds-table-body-background-hover: rgb(var(--tone-neutral-seed));
     --mds-table-border-color: rgb(var(--tone-neutral-05));
     --mds-table-color-hover: rgb(var(--tone-neutral-02));
     --mds-table-color: rgb(var(--tone-neutral-01));

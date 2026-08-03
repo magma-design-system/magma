@@ -34,9 +34,10 @@
   --mds-table-cell-background-alt: var(--mds-table-row-background-alt);
   --mds-table-cell-color-alt: var(--mds-table-row-color-alt);
   --mds-table-cell-color: var(--mds-table-row-color);
+  --mds-table-cell-transition-duration: var(--duration-200);
+  --private-table-cell-transition-duration: var(--mds-table-cell-transition-duration);
 
-  @apply duration-200
-    ease-out;
+  @apply ease-out;
 
   background-color: var(--mds-table-cell-background);
   border-bottom: var(--private-cell-border-width) solid var(--private-cell-border-color) !important;
@@ -44,6 +45,7 @@
   color: var(--mds-table-cell-color);
   display: table-cell;
   padding: var(--mds-table-cell-padding);
+  transition-duration: var(--private-table-cell-transition-duration);
   transition-property: background-color, border-color, color;
 }
 

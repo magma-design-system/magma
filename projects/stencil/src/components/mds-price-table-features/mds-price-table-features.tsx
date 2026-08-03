@@ -1,8 +1,9 @@
 import { Component, Host, h, Prop } from '@stencil/core';
+import { preferenceStore } from '@common/preference';
 
 /**
  * @part header - Selects the HTML element wrapper of label text
- * @slot default - Expects to slot `mds-price-table-features-row` component
+ * @slot - Expects to slot `mds-price-table-features-row` component
  */
 
 @Component({
@@ -18,7 +19,12 @@ export class MdsPriceTableFeatures {
 
   render() {
     return (
-      <Host>
+      <Host
+        pref-animation={preferenceStore.state.animation}
+        pref-contrast={preferenceStore.state.contrast}
+        pref-theme={preferenceStore.state.theme}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
+      >
         <div class="table-wrapper">
           {this.label && (
             <header part="header">

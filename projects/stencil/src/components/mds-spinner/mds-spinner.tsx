@@ -1,4 +1,5 @@
 import { Component, Host, h, Prop, Watch } from '@stencil/core';
+import { preferenceStore } from '@common/preference';
 import awaitIcon from './assets/await-rounded.svg';
 
 @Component({
@@ -21,7 +22,7 @@ export class MdsSpinner {
 
   render() {
     return (
-      <Host>
+      <Host pref-contrast={preferenceStore.state.contrast}>
         <i class="await-icon" innerHTML={awaitIcon} />
       </Host>
     );

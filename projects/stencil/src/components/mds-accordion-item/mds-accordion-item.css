@@ -62,6 +62,9 @@
     rgb(var(--tone-neutral-02))
   );
   --mds-accordion-item-duration: var(--mds-accordion-duration, 300ms);
+  --private-accordion-item-duration: var(--mds-accordion-item-duration);
+  --mds-accordion-item-transition-duration: var(--duration-500);
+  --private-accordion-item-transition-duration: var(--mds-accordion-item-transition-duration);
   --mds-accordion-item-padding-selected: var(
     --mds-accordion-padding-selected,
     --spacing(400) 0 --spacing(800) 0
@@ -79,7 +82,7 @@
   margin-top: calc(-1 * var(--mds-accordion-item-border-width));
   padding: var(--mds-accordion-item-padding-unselected);
   position: relative;
-  transition-duration: var(--duration-500);
+  transition-duration: var(--private-accordion-item-transition-duration);
   transition-property: background-color, border-color, color, fill, margin, padding;
   transition-timing-function: var(--ease-out-expo);
 }
@@ -122,7 +125,7 @@
   opacity: 0;
   overflow: hidden;
   padding-top: 0;
-  transition-duration: var(--mds-accordion-item-duration);
+  transition-duration: var(--private-accordion-item-duration);
   transition-property: grid-template-rows, opacity, padding;
   transition-timing-function: var(--ease-in-out-expo);
 }
@@ -131,7 +134,7 @@
   display: grid;
   grid-template-columns: minmax(0, 100%);
   min-height: 0;
-  transition-duration: var(--mds-accordion-item-duration);
+  transition-duration: var(--private-accordion-item-duration);
   transition-property: opacity, padding;
   transition-timing-function: var(--ease-out-expo);
 }
@@ -141,7 +144,7 @@
 
   fill: var(--mds-accordion-item-color);
   transform: rotate(0deg);
-  transition-duration: var(--duration-500);
+  transition-duration: var(--private-accordion-item-transition-duration);
   transition-property: transform;
   transition-timing-function: var(--ease-out-expo);
 }

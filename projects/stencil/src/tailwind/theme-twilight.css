@@ -10,7 +10,7 @@ mds-pref-theme-variant-item[name='twilight'] {
   --tone-porcelain-08: 226 230 236;
   --tone-porcelain-09: 241 243 246;
   --tone-porcelain-10: 247 248 250;
-  --tone-porcelain: 255 255 255;
+  --tone-porcelain-seed: 255 255 255;
   --tone-kaolin-01: 31 33 38;
   --tone-kaolin-02: 37 40 46;
   --tone-kaolin-03: 59 64 73;
@@ -21,7 +21,7 @@ mds-pref-theme-variant-item[name='twilight'] {
   --tone-kaolin-08: 230 231 234;
   --tone-kaolin-09: 242 243 245;
   --tone-kaolin-10: 248 248 249;
-  --tone-kaolin: 255 255 255;
+  --tone-kaolin-seed: 255 255 255;
   --tone-fireclay-01: 33 33 37;
   --tone-fireclay-02: 40 40 44;
   --tone-fireclay-03: 64 64 70;
@@ -32,7 +32,7 @@ mds-pref-theme-variant-item[name='twilight'] {
   --tone-fireclay-08: 230 230 232;
   --tone-fireclay-09: 243 243 244;
   --tone-fireclay-10: 248 248 249;
-  --tone-fireclay: 255 255 255;
+  --tone-fireclay-seed: 255 255 255;
   --tone-bisque-01: 35 33 32;
   --tone-bisque-02: 42 40 38;
   --tone-bisque-03: 68 64 61;
@@ -43,7 +43,7 @@ mds-pref-theme-variant-item[name='twilight'] {
   --tone-bisque-08: 232 230 229;
   --tone-bisque-09: 244 243 242;
   --tone-bisque-10: 249 248 248;
-  --tone-bisque: 255 255 255;
+  --tone-bisque-seed: 255 255 255;
   --status-info-01: 0 25 66;
   --status-info-02: 0 68 109;
   --status-info-03: 0 81 124;
@@ -265,7 +265,7 @@ mds-pref-theme-variant-item[name='twilight'] {
   --tone-neutral-08: var(--tone-porcelain-08);
   --tone-neutral-09: var(--tone-porcelain-09);
   --tone-neutral-10: var(--tone-porcelain-10);
-  --tone-neutral: var(--tone-porcelain);
+  --tone-neutral-seed: var(--tone-porcelain-seed);
   --variant-primary-01: var(--variant-ai-01);
   --variant-primary-02: var(--variant-ai-02);
   --variant-primary-03: var(--variant-ai-03);
@@ -279,7 +279,7 @@ mds-pref-theme-variant-item[name='twilight'] {
   --variant-primary-seed: var(--variant-ai-seed);
   --variant-primary: var(--variant-ai-02);
   --variant-primary-content: var(--variant-ai-10);
-  --tint-base-lv1: var(--tone-neutral);
+  --tint-base-lv1: var(--tone-neutral-seed);
   --tint-base-lv2: var(--tone-neutral-10);
   --tint-base-lv3: var(--tone-neutral-09);
   --tint-base-content: var(--tone-neutral-02);

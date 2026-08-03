@@ -1,4 +1,5 @@
 import { Component, Element, Host, Prop, h, State } from '@stencil/core';
+import { preferenceStore } from '@common/preference';
 
 /**
  * @part content - Selects the label and description wrapper element
@@ -58,7 +59,14 @@ export class MdsKpiItem {
 
   render() {
     return (
-      <Host aria-label={`${this.label}: ${this.description}`} role="listitem">
+      <Host
+        aria-label={`${this.label}: ${this.description}`}
+        role="listitem"
+        pref-animation={preferenceStore.state.animation}
+        pref-contrast={preferenceStore.state.contrast}
+        pref-theme={preferenceStore.state.theme}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
+      >
         {this.icon && (
           <div class="icon-container" part="icon-container">
             <mds-icon class="icon" name={this.icon} part="icon"></mds-icon>

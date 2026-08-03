@@ -30,6 +30,8 @@ Consumer applications must import styles in this exact cascade layer order to av
 @import '@maggioli-design-system/styles/dist/css/transitions.css' layer(base);
 @import '@maggioli-design-system/styles/dist/css/animations.css' layer(base);
 @import '@maggioli-design-system/styles/dist/css/globals.css' layer(theme);
+@import '@maggioli-design-system/styles/dist/css/semantic.css' layer(theme);
+@import '@maggioli-design-system/styles/dist/css/theme.css' layer(theme);
 @import '@maggioli-design-system/styles/dist/css/base.css' layer(base);
 
 /* your Tailwind entry point */
@@ -69,6 +71,64 @@ If you need a color outside Tailwind, always use the RGB wrapper:
   color: rgb(var(--tone-neutral-03));
   background: rgb(var(--tone-neutral-03) / 0.15);
 }
+```
+
+## Semantic color layer (`--magma-*`)
+
+The classes above are PRIMITIVES (a specific tone/status step). Prefer the
+SEMANTIC layer for anything role-based: it maps a role (surface, text, border,
+a hue) to the right primitive and flips per mode automatically. Defined in
+`css/semantic.css`, bridged to Tailwind in `tailwind/semantic.css`. Full
+contract and rationale: `SEMANTIC_COLOR_SPEC.md`.
+
+Prefix: the semantic layer shares the styles-owned `--magma-*` prefix with the
+global decisions below; component tokens use `--mds-<comp>-*`. This keeps a role
+like `--magma-text-muted` from colliding with a component prop like
+`--mds-text-selection-color`. Naming rule: `SEMANTIC_COLOR_SPEC.md` section 11.
+
+One source, two faces - the same token in plain CSS or as a Tailwind utility:
+
+```css
+/* plain CSS - always the rgb() wrapper (tokens are channel triplets) */
+.card { background: rgb(var(--magma-surface-raised)); color: rgb(var(--magma-text-default)); }
+```
+
+```html
+<!-- Tailwind - same token, no dark: variant needed -->
+<div class="bg-surface-raised text-fg-default border-border-muted">...</div>
+```
+
+| Role | Token | Tailwind |
+| ---- | ----- | -------- |
+| Surfaces (5) | `--magma-surface-{sunken,muted,default,raised,overlay}` | `bg-surface-*` |
+| Text (5) | `--magma-text-{default,muted,subtle,disabled,on-emphasis}` | `text-fg-*` |
+| Border (4) | `--magma-border-{muted,default,strong,focus}` | `border-border-*` |
+| Hues | `--magma-<hue>-{surface,fg,border,emphasis,on-emphasis}` | `bg-<hue>-surface`, `text-<hue>-fg`, ... |
+
+Hues: `accent`, `info`, `success`, `warning`, `danger` (full quintet) and
+`neutral` (`fg`/`border`/`emphasis`/`on-emphasis` only - its backgrounds are the
+`surface` family). Interaction states (hover/active/selected) are DERIVED (an
+elevation step or `color-mix`), not authored as tokens.
+
+## Theming axes (`css/theme.css`)
+
+Three independent axes on `<html>`, on top of the semantic layer:
+
+- **mode** `pref-theme-{light,dark,system}` - the global `--tone-*` flip; the
+  semantic tokens follow it automatically (see Dark mode below).
+- **`data-theme-name`** - a named theme overrides the semantic layer. The common
+  case is retinting the neutral scaffolding with ONE swap: a theme repoints
+  `--mds-tint-*` at another generated family (`porcelain` for a cool cast,
+  `bisque` for warm) and every surface + border role follows. Shipped examples:
+  `cool`, `warm`. Add your own the same way (an override map of `--mds-*`).
+- **`--depth`** (number 0..1) - shadow/elevation intensity, multiplied into every
+  term of `--mds-elevation-{raised,overlay}` via `calc()`. `--depth: 0` is
+  perfectly flat, `1` is full. Set it directly, or use `data-theme-depth="flat"`.
+  It is a scalar, NOT a `true|false` style query, so it is cross-browser and
+  inherits across shadow boundaries.
+
+```html
+<html class="pref-theme-dark" data-theme-name="cool" data-theme-depth="flat">
 ```
 
 ## Typography utilities
@@ -118,6 +178,17 @@ Dark mode is handled at the palette level. No class changes are needed on indivi
   <!-- always dark -->
 </html>
 ```
+
+### How preferences are applied
+
+Every preference (`theme`, `contrast`, `animation`, `consumption`) is driven by the `mds-pref` controller and its children (`mds-pref-theme`, `mds-pref-contrast`, ...). Each child writes its state to the `<html>` element in two redundant forms, on purpose, so future changes stay cheap:
+
+- a **class** (e.g. `pref-theme-dark`, `pref-contrast-more`) - consumed by selectors
+- a **custom property** (e.g. `--magma-pref-user-theme`, `--magma-pref-animation`) - readable as an inherited value, including across shadow boundaries
+
+`mds-pref` also toggles the `data-magma-pref` attribute on `<html>` while a controller is mounted; selectors use `:root:not([data-magma-pref])` to fall back to the OS preference (`@media`) when no controller is present.
+
+The visible effect is produced **globally, at the palette level**: the published color CSS (`colors-rgb-*.css`) redefines the `--tone-*` (and related) tokens on `:root` for the dark and high-contrast states, with plain selectors plus `@media (prefers-color-scheme)` / `(prefers-contrast)`. This is light-DOM CSS, so it works in every browser and the tokens inherit into every component shadow DOM. Activating dark mode does not depend on any component-level rule. Per-component `*-pref-*.css` files only refine on top of this (see `projects/stencil/SPEC.md`).
 
 ## Other accessibility preferences
 

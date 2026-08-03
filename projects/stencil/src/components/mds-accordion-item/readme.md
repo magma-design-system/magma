@@ -84,10 +84,10 @@ Add `multiple` to `<mds-accordion>` so the user can expand more than one panel a
 
 #### Non-closable Accordion
 
-Set the parent `closable` prop to `false` via JavaScript to prevent the user from collapsing an open panel. An open item then stays open until another item is clicked (single mode only). Because `closable` defaults to `true`, do not set it via the HTML attribute - assign it through the element property instead.
+Set the parent `disable-close` attribute to prevent the user from collapsing an open panel. An open item then stays open until another item is clicked (single mode only). Because `disableClose` defaults to `false`, just add the boolean attribute to enable mandatory selection.
 
 ```html
-<mds-accordion id="steps">
+<mds-accordion disable-close>
   <mds-accordion-item label="Passo 1 - Installazione" selected>
     <mds-text>Esegui npm install @maggioli-design-system/magma per aggiungere il pacchetto.</mds-text>
   </mds-accordion-item>
@@ -95,10 +95,6 @@ Set the parent `closable` prop to `false` via JavaScript to prevent the user fro
     <mds-text>Importa defineCustomElements e registra i componenti nell'app.</mds-text>
   </mds-accordion-item>
 </mds-accordion>
-
-<script>
-  document.querySelector('#steps').closable = false;
-</script>
 ```
 
 #### Typography for Section Headers
@@ -339,9 +335,9 @@ The item already is a styled disclosure widget. Nesting a native `<details>` ins
 
 ## Slots
 
-| Slot        | Description                                                                    |
-| ----------- | ------------------------------------------------------------------------------ |
-| `"default"` | Add contents like `text string`, `HTML elements` or `components` to this slot. |
+| Slot | Description                                                                    |
+| ---- | ------------------------------------------------------------------------------ |
+|      | Add contents like `text string`, `HTML elements` or `components` to this slot. |
 
 
 ## Shadow Parts

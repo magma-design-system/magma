@@ -1,9 +1,10 @@
 import { Component, Element, Host, h, Prop } from '@stencil/core';
 import { ThemeFullVariantAvatarType } from '@type/variant';
 import { ToneMinimalVariantType } from '@type/tone';
+import { preferenceStore } from '@common/preference';
 
 /**
- * @slot default - Add `text string`, `HTML elements` or `components` to this slot.
+ * @slot - Add `text string`, `HTML elements` or `components` to this slot.
  * @slot action - Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element.
  * @slot detail - Add `HTML elements` or `components` to this slot.
  * @part spinner - The spinner element
@@ -66,6 +67,7 @@ export class MdsEntity {
     }
     return hasAvatar;
   }
+
   componentWillLoad(): void {
     this.details = this.hostElement.querySelector(':scope > [slot="detail"]') !== null;
     this.actions = this.hostElement.querySelector(':scope > [slot="action"]') !== null;
@@ -73,7 +75,11 @@ export class MdsEntity {
 
   render() {
     return (
-      <Host>
+      <Host
+        pref-contrast={preferenceStore.state.contrast}
+        pref-theme={preferenceStore.state.theme}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
+      >
         <div class="spinner" part="spinner">
           <mds-spinner running></mds-spinner>
         </div>

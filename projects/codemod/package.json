@@ -1,0 +1,56 @@
+{
+  "name": "@maggioli-design-system/magma-codemods",
+  "version": "0.0.0",
+  "description": "Codemods to migrate consumer code (HTML, React/JSX, Angular templates, CSS/SCSS) of @maggioli-design-system/magma from v1 to v2.",
+  "license": "ISC",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "bin": {
+    "magma-codemods": "dist/cli.js"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist/"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "generate.candidate": "tsx scripts/build-candidate-manifest.ts",
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@angular/compiler": "^20.3.0",
+    "arg": "^5.0.2",
+    "chalk": "^5.4.1",
+    "globby": "^14.0.0",
+    "parse5": "^7.3.0",
+    "postcss": "^8.5.0",
+    "postcss-scss": "^4.0.9",
+    "ts-morph": "^28.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/magma-design-system/magma.git",
+    "directory": "projects/codemod"
+  },
+  "keywords": [
+    "codemod",
+    "migration",
+    "magma",
+    "design-system",
+    "jscodeshift",
+    "stencil"
+  ]
+}

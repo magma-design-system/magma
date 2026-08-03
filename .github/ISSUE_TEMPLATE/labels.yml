@@ -1,0 +1,67 @@
+# Label definitions for the Magma repository.
+# This file is the single source of truth for GitHub labels and mirrors the
+# labels actually configured on the repository. It is synced by the label-sync
+# workflow (.github/workflows/label-sync.yml, crazy-max/ghaction-github-labeler).
+# Colors are 6-digit hex without the leading '#'.
+
+# --- Type of work ---
+- name: bug
+  color: d93f0b
+  description: Something is broken
+- name: docs
+  color: c5def5
+  description: Docs site, Storybook, READMEs
+- name: feature
+  color: 1d76db
+  description: New component, token, or capability
+- name: breaking change
+  color: d93f0b
+  description: Introduces a semver-major change
+- name: build
+  color: d4c5f9
+  description: nx, tooling, CI pipelines
+- name: maintenance
+  color: d4c5f9
+  description: Build, CI, dependencies, chores
+
+# --- Workflow status ---
+- name: ready
+  color: c2e0c6
+  description: Accepted, ready to be worked on
+- name: blocked
+  color: fbca04
+  description: Stalled or on hold
+- name: duplicate
+  color: cfd3d7
+  description: This already exists
+- name: wontfix
+  color: cfcfcf
+  description: This will not be worked on
+- name: invalid
+  color: e4e669
+  description: This does not seem right
+
+# --- Packages ---
+- name: prg-stencil
+  color: 0e8a16
+  description: '@maggioli-design-system/magma components'
+- name: prg-design-tokens
+  color: 0e8a16
+  description: '@maggioli-design-system/design-tokens'
+- name: prg-styles
+  color: 0e8a16
+  description: '@maggioli-design-system/styles'
+- name: prg-icons
+  color: 0e8a16
+  description: '@maggioli-design-system/icons'
+- name: prg-svg-icons
+  color: 0e8a16
+  description: '@maggioli-design-system/svg-icons'
+- name: prg-identity
+  color: 0e8a16
+  description: '@maggioli-design-system/identity'
+
+# --- Other ---
+- name: governance
+  color: 0052cc
+  description: Project governance and process

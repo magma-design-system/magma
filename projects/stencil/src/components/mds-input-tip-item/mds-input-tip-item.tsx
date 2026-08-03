@@ -1,35 +1,28 @@
-import { Component, Element, Host, h, Prop, State, Method, Watch } from '@stencil/core';
+import { Component, Host, h, Prop, Watch } from '@stencil/core';
 import { InputTipItemVariantType } from '@type/input-tip';
 import miBaselineDone from '@icon/mi/baseline/done.svg';
 import { Locale } from '@common/locale';
+import { preferenceStore } from '@common/preference';
 import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.es.json';
 import localeIt from './meta/locale.it.json';
 
+/**
+ * @slot - Add `text string`, `HTML elements` or `components` to this slot.
+ */
 @Component({
   tag: 'mds-input-tip-item',
   styleUrl: 'mds-input-tip-item.css',
   shadow: true,
 })
 export class MdsInputTipItem {
-  @Element() private element: HTMLMdsInputTipItemElement;
-
   private t: Locale = new Locale({
     en: localeEn,
     el: localeEl,
     es: localeEs,
     it: localeIt,
   });
-  @State() language: string;
-  @Method()
-  async updateLang(): Promise<void> {
-    this.language = this.t.lang(this.element);
-  }
-
-  componentWillRender(): void {
-    this.t.lang(this.element);
-  }
 
   /**
    * Specifies the variant of the element
@@ -50,7 +43,10 @@ export class MdsInputTipItem {
 
   render() {
     return (
-      <Host>
+      <Host
+        pref-animation={preferenceStore.state.animation}
+        pref-contrast={preferenceStore.state.contrast}
+      >
         <div class="content">
           {this.variant === 'text' && (
             <mds-text typography="option" truncate="word">

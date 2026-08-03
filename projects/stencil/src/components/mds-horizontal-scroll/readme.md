@@ -308,9 +308,9 @@ Slotted items without a declared width collapse to zero or stretch unpredictably
 
 ## Slots
 
-| Slot        | Description                                                      |
-| ----------- | ---------------------------------------------------------------- |
-| `"default"` | Add `text string`, `HTML elements` or `components` to this slot. |
+| Slot | Description                                                      |
+| ---- | ---------------------------------------------------------------- |
+|      | Add `text string`, `HTML elements` or `components` to this slot. |
 
 
 ## Shadow Parts

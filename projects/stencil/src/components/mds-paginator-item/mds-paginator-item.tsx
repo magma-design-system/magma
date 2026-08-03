@@ -1,8 +1,9 @@
 import { Component, Host, h, Prop, Element } from '@stencil/core';
 import { KeyboardManager } from '@common/keyboard-manager';
+import { preferenceStore } from '@common/preference';
 
 /**
- * @slot default - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
+ * @slot - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
  */
 
 @Component({
@@ -43,13 +44,18 @@ export class MdsPaginatorItem {
     this.km.detachClickBehavior();
   }
 
-  disconnectedCallback = (): void => {
+  disconnectedCallback(): void {
     this.km.detachClickBehavior();
-  };
+  }
 
   render() {
     return (
-      <Host tabindex="0">
+      <Host
+        tabindex="0"
+        pref-animation={preferenceStore.state.animation}
+        pref-theme={preferenceStore.state.theme}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
+      >
         {this.icon !== undefined ? (
           <mds-icon class="icon" name={this.icon} />
         ) : (

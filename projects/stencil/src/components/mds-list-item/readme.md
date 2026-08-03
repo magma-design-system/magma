@@ -243,9 +243,9 @@ When a Magma list is needed, use the component pair - not raw HTML. Raw elements
 
 ## Slots
 
-| Slot        | Description                                                                            |
-| ----------- | -------------------------------------------------------------------------------------- |
-| `"default"` | Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here. |
+| Slot | Description                                                                            |
+| ---- | -------------------------------------------------------------------------------------- |
+|      | Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here. |
 
 
 ## Shadow Parts

@@ -302,9 +302,9 @@ Inserting a `<div>` or `<span>` wrapper around `<mds-table-cell>` inside `<mds-t
 
 ## Slots
 
-| Slot        | Description                                                      |
-| ----------- | ---------------------------------------------------------------- |
-| `"default"` | Add `text string`, `HTML elements` or `components` to this slot. |
+| Slot | Description                                                      |
+| ---- | ---------------------------------------------------------------- |
+|      | Add `text string`, `HTML elements` or `components` to this slot. |
 
 
 ## CSS Custom Properties

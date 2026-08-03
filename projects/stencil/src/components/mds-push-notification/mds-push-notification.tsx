@@ -10,12 +10,11 @@ import {
   Method,
 } from '@stencil/core';
 import { cssDurationToMilliseconds, cssSizeToNumber } from '@common/unit';
+import { preferenceStore } from '@common/preference';
 import { MdsPushNotificationEventDetail } from './meta/event-detail';
 /**
  * @part notifications - The container wrapper of the notifications.
- * @slot top - Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element.
- * @slot bottom - Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element.
- * @slot default - Add `HTML elements` or `components`, it is **recommended** to use `mds-push-notification` element.
+ * @slot - Add `HTML elements` or `components`, it is **recommended** to use `mds-push-notification` element.
  */
 
 @Component({
@@ -25,7 +24,7 @@ import { MdsPushNotificationEventDetail } from './meta/event-detail';
 })
 export class MdsPushNotification {
   @Element() host: HTMLMdsPushNotificationElement;
-  slotNotifications!: HTMLSlotElement;
+  private slotNotifications!: HTMLSlotElement;
   private cssItemsIntroDuration: string;
   private cssItemsOutroDuration: string;
   private cssItemsGap: string;
@@ -126,7 +125,7 @@ export class MdsPushNotification {
     const elements = this.slotNotifications
       .assignedElements()
       .map((e) => e as HTMLElement)
-      .filter((e) => !e.style.visibility);
+      .filter((e) => e.style.visibility === '');
     if (elements.length === 0) return;
 
     elements.forEach(async (e) => {
@@ -146,23 +145,33 @@ export class MdsPushNotification {
       elementStyles.getPropertyValue('--mds-push-notification-items-outro-delay') ?? '0ms';
   };
 
-  private clear(): void {
+  private clear = (): void => {
     this.slotNotifications.assignedElements().forEach((e) => this.outroItem(e as HTMLElement));
     this.hide();
-  }
+  };
 
+  /**
+   * Shows the notification container.
+   */
   @Method()
   show(): Promise<void> {
     this.visible = true;
     return Promise.resolve();
   }
 
+  /**
+   * Hides the notification container.
+   */
   @Method()
   hide(): Promise<void> {
     this.visible = undefined;
     return Promise.resolve();
   }
 
+  /**
+   * Removes the given notification item(s) from the stack.
+   * @param notification the notification item or items to remove
+   */
   @Method()
   removeNotification(
     notification: HTMLMdsPushNotificationItemElement | HTMLMdsPushNotificationItemElement[],
@@ -199,11 +208,12 @@ export class MdsPushNotification {
 
   render() {
     return (
-      <Host>
+      <Host
+        pref-theme={preferenceStore.state.theme}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
+      >
         {/* <slot name="top"></slot> */}
-        <mds-button variant="dark" onClick={this.clear.bind(this)}>
-          Cancella notifiche
-        </mds-button>
+        <mds-button variant="dark" onClick={this.clear} label="Cancella notifiche"></mds-button>
         <div class="notifications" part="notifications">
           <slot ref={(el) => (this.slotNotifications = el as HTMLSlotElement)} />
         </div>

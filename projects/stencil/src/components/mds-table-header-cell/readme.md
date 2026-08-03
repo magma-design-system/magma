@@ -281,7 +281,7 @@ mds-table-header-cell {
 
 | Property    | Attribute   | Description                                                               | Type                                    | Default     |
 | ----------- | ----------- | ------------------------------------------------------------------------- | --------------------------------------- | ----------- |
-| `direction` | `direction` |                                                                           | `"ascending" \| "descending" \| "none"` | `'none'`    |
+| `direction` | `direction` | Specifies the current sort direction of the column.                       | `"ascending" \| "descending" \| "none"` | `'none'`    |
 | `label`     | `label`     | Sets a label for the cell                                                 | `string \| undefined`                   | `undefined` |
 | `sortable`  | `sortable`  | Tells the component to make the cell able to sort the table columns items | `boolean \| undefined`                  | `undefined` |
 

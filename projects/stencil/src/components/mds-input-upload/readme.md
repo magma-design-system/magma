@@ -348,16 +348,6 @@ Type: `Promise<void>`
 
 
 
-### `updateLang() => Promise<void>`
-
-
-
-#### Returns
-
-Type: `Promise<void>`
-
-
-
 
 ## CSS Custom Properties
 

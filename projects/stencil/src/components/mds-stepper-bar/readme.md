@@ -346,8 +346,8 @@ The component pairs panels to items by index position; if a panel is missing for
 
 | Slot        | Description                                                             |
 | ----------- | ----------------------------------------------------------------------- |
+|             | Add `mds-tepper-bar-item` element/s.                                    |
 | `"content"` | Add `HTML elements` or `components`, one per mds-stepper-bar-item added |
-| `"default"` | Add `mds-tepper-bar-item` element/s.                                    |
 
 
 ## Shadow Parts

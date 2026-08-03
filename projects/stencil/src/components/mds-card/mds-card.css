@@ -17,11 +17,18 @@
   syntax: '<length>';
 }
 
+@property --mds-card-background {
+  inherits: false;
+  initial-value: rgb(var(--magma-surface-raised));
+  syntax: '<color>';
+}
+
 :host {
   --mds-card-gap: 0;
   --mds-card-padding: 0;
+  --mds-card-background: rgb(var(--magma-surface-raised));
 
-  background-color: rgb(var(--tone-neutral));
+  background-color: rgb(var(--magma-surface-raised));
   border-radius: var(--radius-2xl);
   box-shadow: var(--shadow-md-sharp);
   container-name: mds-card;

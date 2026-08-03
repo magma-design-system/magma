@@ -338,9 +338,9 @@ mds-price-table-features::part(header) {
 
 ## Slots
 
-| Slot        | Description                                              |
-| ----------- | -------------------------------------------------------- |
-| `"default"` | Expects to slot `mds-price-table-features-row` component |
+| Slot | Description                                              |
+| ---- | -------------------------------------------------------- |
+|      | Expects to slot `mds-price-table-features-row` component |
 
 
 ## Shadow Parts

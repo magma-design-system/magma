@@ -25,7 +25,7 @@ const TemplateNavigationMenu = () => {
         ></mds-button>
       </div>
       <mds-tree
-        class="bg-tone-neutral shadow"
+        class="bg-surface-raised shadow"
         toggle="chevron"
         toggle-position="right"
         actions="auto"

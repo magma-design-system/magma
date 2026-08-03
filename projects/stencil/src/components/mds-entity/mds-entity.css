@@ -10,7 +10,7 @@
 
 @property --mds-entity-background {
   inherits: false;
-  initial-value: rgb(var(--tone-neutral));
+  initial-value: rgb(var(--tone-neutral-seed));
   syntax: '<color>';
 }
 
@@ -45,7 +45,7 @@
 }
 
 :host {
-  --mds-entity-background: rgb(var(--tone-neutral));
+  --mds-entity-background: rgb(var(--tone-neutral-seed));
   --mds-entity-color: rgb(var(--tone-neutral-02));
   --mds-entity-detail-color: rgb(var(--tone-neutral-03));
   --mds-entity-icon-background: rgb(var(--label-blue-09));
@@ -81,9 +81,8 @@
 
 .spinner,
 .preview {
-  @apply aspect-square;
-
   align-items: center;
+  aspect-ratio: var(--aspect-square);
   display: inline-flex;
   justify-content: center;
 }
@@ -127,8 +126,7 @@ mds-spinner {
 }
 
 ::slotted([slot='action']) {
-  @apply aspect-square;
-
+  aspect-ratio: var(--aspect-square);
   height: auto;
   width: --spacing(1100);
 }

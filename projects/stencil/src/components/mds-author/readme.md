@@ -295,10 +295,10 @@ Using a raw `<img>` in the avatar slot skips the initials fallback, image-load e
 
 ## Slots
 
-| Slot        | Description                                                                                                                          |
-| ----------- | ------------------------------------------------------------------------------------------------------------------------------------ |
-| `"avatar"`  | Insert an avatar image, it is **recommended** to add `mds-avatar` element.                                                           |
-| `"default"` | Add `text string`, `HTML elements` or `components` to this slot. Insert author information, name, role or other useful author infos. |
+| Slot       | Description                                                                                                                          |
+| ---------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+|            | Add `text string`, `HTML elements` or `components` to this slot. Insert author information, name, role or other useful author infos. |
+| `"avatar"` | Insert an avatar image, it is **recommended** to add `mds-avatar` element.                                                           |
 
 
 ----------------------------------------------

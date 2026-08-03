@@ -1,8 +1,9 @@
 import { Component, Event, EventEmitter, Element, Host, h, Listen } from '@stencil/core';
 import { MdsTabBarEventDetail } from './meta/event-detail';
+import { preferenceStore } from '@common/preference';
 
 /**
- * @slot default - Add `mds-tab-bar-item` element/s.
+ * @slot - Add `mds-tab-bar-item` element/s.
  */
 
 @Component({
@@ -39,7 +40,12 @@ export class MdsTabBar {
 
   render() {
     return (
-      <Host>
+      <Host
+        pref-animation={preferenceStore.state.animation}
+        pref-contrast={preferenceStore.state.contrast}
+        pref-theme={preferenceStore.state.theme}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
+      >
         <slot />
       </Host>
     );

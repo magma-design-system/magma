@@ -16,6 +16,7 @@ import { setAttributeIfEmpty, hashRandomValue } from '@common/aria';
 import { HorizontalActionsAnimationType } from '@type/animation';
 import clsx from 'clsx';
 import { cssDurationToMilliseconds } from '@common/unit';
+import { preferenceStore } from '@common/preference';
 import { TabSizeType } from '@type/button';
 import { DirectionType } from './meta/type';
 
@@ -24,7 +25,7 @@ import { DirectionType } from './meta/type';
  * @part slider - Selects the slider element which is visible when attribute `animation` is set to `slide`.
  * @part tabs - Selects the container of `mds-tab-item` list elements.
  * @slot content - Add `HTML elements` or `components`, one per mds-tab-item added.
- * @slot default - Add `mds-tab-item` element/s.
+ * @slot - Add `mds-tab-item` element/s.
  */
 
 @Component({
@@ -127,10 +128,12 @@ export class MdsTab {
     this.currentItemIndex = -1;
     this.tabItems.forEach((item) => {
       item.size = this.size;
+      item.direction = this.direction;
+      item.animation = this.animation;
     });
 
     this.tabItems.forEach((item, key) => {
-      if (!item.id) {
+      if (item.id === '') {
         setAttributeIfEmpty(item, 'id', hashRandomValue('mds-tab-item'));
       }
       if (item.selected) {
@@ -163,7 +166,7 @@ export class MdsTab {
   };
 
   private updateOverflowState = (): void => {
-    if (!this.tabs || !this.tabsContainer) return;
+    if (this.tabs == null || this.tabsContainer == null) return;
 
     const containerWidth = this.tabsContainer.offsetWidth;
     const tabsWidth = this.tabs.scrollWidth;
@@ -257,8 +260,18 @@ export class MdsTab {
   }
 
   @Watch('animation')
-  handleAnimationChange(): void {
+  handleAnimationChange(newValue?: HorizontalActionsAnimationType): void {
+    this.tabItems.forEach((element: HTMLMdsTabItemElement) => {
+      element.animation = newValue;
+    });
     this.updateSliderPosition();
+  }
+
+  @Watch('direction')
+  handleDirectionChange(newValue?: DirectionType): void {
+    this.tabItems.forEach((element: HTMLMdsTabItemElement) => {
+      element.direction = newValue;
+    });
   }
 
   @Watch('scrollbar')
@@ -293,7 +306,12 @@ export class MdsTab {
 
   render() {
     return (
-      <Host>
+      <Host
+        pref-animation={preferenceStore.state.animation}
+        pref-contrast={preferenceStore.state.contrast}
+        pref-theme={preferenceStore.state.theme}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
+      >
         <div class={clsx('tabs-wrapper', this.fill && 'tabs-wrapper--fill')}>
           {this.overflow && (
             <div

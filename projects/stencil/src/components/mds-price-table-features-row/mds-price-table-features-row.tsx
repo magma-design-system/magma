@@ -1,7 +1,8 @@
 import { Component, Host, h, Element, State } from '@stencil/core';
+import { preferenceStore } from '@common/preference';
 
 /**
- * @slot default - Expects to slot `mds-price-table-features-cell` component
+ * @slot - Expects to slot `mds-price-table-features-cell` component
  */
 
 @Component({
@@ -24,7 +25,12 @@ export class MdsPriceTableFeaturesRow {
 
   render() {
     return (
-      <Host>
+      <Host
+        pref-animation={preferenceStore.state.animation}
+        pref-contrast={preferenceStore.state.contrast}
+        pref-theme={preferenceStore.state.theme}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
+      >
         <slot />
       </Host>
     );

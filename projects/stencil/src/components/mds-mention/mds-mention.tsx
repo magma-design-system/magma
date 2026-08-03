@@ -34,7 +34,9 @@ export class MdsMention {
   render() {
     return (
       <Host>
-        <mds-icon name={this.icon ? this.icon : miBaselineAlternateEmail}></mds-icon>
+        <mds-icon
+          name={this.icon !== undefined && this.icon !== '' ? this.icon : miBaselineAlternateEmail}
+        ></mds-icon>
         <mds-text typography={this.sizeTypography[this.size ?? 'md'] as TypographyType}>
           {this.size === 'lg' ? this.label : <b>{this.label}</b>}
         </mds-text>

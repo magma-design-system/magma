@@ -13,8 +13,6 @@ import {
   Host,
   h,
   Prop,
-  Method,
-  State,
   Watch,
 } from '@stencil/core';
 import { Locale } from '@common/locale';
@@ -28,8 +26,7 @@ import { ThemeFullVariantAvatarType } from '@type/variant';
 import { ToneMinimalVariantType } from '@type/tone';
 
 import { sanitizeISO8601Date } from '@common/date';
-
-dayjs.extend(relativeTime);
+import { preferenceStore } from '@common/preference';
 
 /**
  * @part actions - The actions wrapper
@@ -55,11 +52,6 @@ export class MdsPushNotificationItem {
     es: localeEs,
     it: localeIt,
   });
-  @State() language: string;
-  @Method()
-  async updateLang(): Promise<void> {
-    this.language = this.t.lang(this.host);
-  }
 
   /**
    * Specifies the notification date based on [standard ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html).
@@ -72,9 +64,9 @@ export class MdsPushNotificationItem {
   @Prop({ reflect: true }) readonly dateFormat: NotificationItemDateFormatType = 'timeago';
 
   /**
-   * Specifies if the component is dismissable or not, it should be set to true by default is used with it's parent component `mds-push-notification-items`
+   * Specifies if the component is dismissable; when set, a dismiss button is shown.
    */
-  @Prop({ reflect: true, mutable: true }) deletable?: boolean = true;
+  @Prop({ reflect: true, mutable: true }) deletable?: boolean = false;
 
   /**
    * Specifies the icon to be displayed
@@ -132,14 +124,14 @@ export class MdsPushNotificationItem {
   }
 
   componentWillLoad(): void {
+    dayjs.extend(relativeTime);
     this.hasActions = this.host.querySelector(':scope > [slot="action"]') !== null;
     this.hasBadge = this.host.querySelector(':scope > [slot="badge"]') !== null;
 
-    if (this.datetime) {
+    if (this.datetime !== undefined && this.datetime !== '') {
       this.datetime = sanitizeISO8601Date(this.datetime?.toString());
     }
 
-    this.t.lang(this.host);
     const relativeTimeCustom = {
       future: this.t.get('future'),
       past: this.t.get('past'),
@@ -168,7 +160,12 @@ export class MdsPushNotificationItem {
 
   render() {
     return (
-      <Host>
+      <Host
+        pref-animation={preferenceStore.state.animation}
+        pref-contrast={preferenceStore.state.contrast}
+        pref-theme={preferenceStore.state.theme}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
+      >
         {(this.icon ?? this.preview === 'avatar') && (
           <mds-avatar
             class="avatar"
@@ -221,7 +218,7 @@ export class MdsPushNotificationItem {
             tone="text"
             title={this.t.get('dismiss')}
             icon={miBaselineCancel}
-            onClick={this.onClickClose.bind(this)}
+            onClick={this.onClickClose}
           ></mds-button>
         )}
       </Host>

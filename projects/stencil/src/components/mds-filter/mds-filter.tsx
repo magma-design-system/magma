@@ -10,12 +10,13 @@ import {
   Prop,
   State,
 } from '@stencil/core';
+import { preferenceStore } from '@common/preference';
 import { MdsFilterEventDetail } from './meta/event-detail';
 import { MdsFilterItemEventDetail } from '@component/mds-filter-item/meta/event-detail';
 import miBaselineClose from '@icon/mi/baseline/close.svg';
 
 /**
- * @slot default - Add `mds-filter-item` element/s.
+ * @slot - Add `mds-filter-item` element/s.
  */
 
 @Component({
@@ -114,7 +115,9 @@ export class MdsFilter {
 
   @Listen('mdsFilterItemSelect')
   activeEventHandler(event: CustomEvent<MdsFilterItemEventDetail>): void {
-    this.lastSelectedItem = Number(event.detail.id ? event.detail.id.replace('item-', '') : 0);
+    this.lastSelectedItem = Number(
+      event.detail.id !== '' ? event.detail.id.replace('item-', '') : 0,
+    );
     this.scrollTabs();
 
     const items = this.queryItems();
@@ -155,7 +158,14 @@ export class MdsFilter {
 
   render() {
     return (
-      <Host aria-label={this.label} role="menubar">
+      <Host
+        aria-label={this.label}
+        role="menubar"
+        pref-animation={preferenceStore.state.animation}
+        pref-contrast={preferenceStore.state.contrast}
+        pref-theme={preferenceStore.state.theme}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
+      >
         {this.label && (
           <mds-text class="label" typography="label">
             {this.label}

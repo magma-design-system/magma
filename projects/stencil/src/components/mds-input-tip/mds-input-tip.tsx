@@ -1,6 +1,10 @@
 import { Component, Host, h, Prop } from '@stencil/core';
+import { preferenceStore } from '@common/preference';
 import { InputTipPositionType } from './meta/types';
 
+/**
+ * @slot - Add `mds-input-tip-item` elements or `components` to this slot.
+ */
 @Component({
   tag: 'mds-input-tip',
   styleUrl: 'mds-input-tip.css',
@@ -19,7 +23,7 @@ export class MdsInputTip {
 
   render() {
     return (
-      <Host>
+      <Host pref-animation={preferenceStore.state.animation}>
         <slot></slot>
       </Host>
     );

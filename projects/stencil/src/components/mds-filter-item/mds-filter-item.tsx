@@ -1,6 +1,7 @@
 import { Component, Element, Event, EventEmitter, Host, h, Prop } from '@stencil/core';
 import { MdsFilterItemEventDetail } from './meta/event-detail';
 import { KeyboardManager } from '@common/keyboard-manager';
+import { preferenceStore } from '@common/preference';
 
 @Component({
   tag: 'mds-filter-item',
@@ -57,9 +58,9 @@ export class MdsFilterItem {
     this.km.attachClickBehavior();
   }
 
-  disconnectedCallback = (): void => {
+  disconnectedCallback(): void {
     this.km.detachClickBehavior();
-  };
+  }
 
   render() {
     return (
@@ -68,6 +69,10 @@ export class MdsFilterItem {
         role="menuitem"
         aria-label={this.label ?? this.icon}
         onClick={this.toggle}
+        pref-animation={preferenceStore.state.animation}
+        pref-contrast={preferenceStore.state.contrast}
+        pref-theme={preferenceStore.state.theme}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
         {this.icon && <mds-icon aria-hidden="true" name={this.icon} />}
         {this.label && (

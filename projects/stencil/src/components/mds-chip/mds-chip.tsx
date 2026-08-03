@@ -1,15 +1,4 @@
-import {
-  Component,
-  Element,
-  Event,
-  EventEmitter,
-  Host,
-  Method,
-  Prop,
-  State,
-  Watch,
-  h,
-} from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, Prop, Watch, h } from '@stencil/core';
 import miBaselineCancel from '@icon/mi/baseline/cancel.svg';
 import { setAttributeIfEmpty } from '@common/aria';
 import { MdsChipEvent } from './meta/interface';
@@ -18,6 +7,7 @@ import { ChipVariantType } from '@type/variant';
 import { ToneMinimalVariantType } from '@type/tone';
 
 import { Locale } from '@common/locale';
+import { preferenceStore } from '@common/preference';
 import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.es.json';
@@ -37,11 +27,6 @@ export class MdsChip {
     es: localeEs,
     it: localeIt,
   });
-  @State() language: string;
-  @Method()
-  async updateLang(): Promise<void> {
-    this.language = this.t.lang(this.host);
-  }
 
   /**
    * Adds ARIA support to the element if has interaction
@@ -135,9 +120,9 @@ export class MdsChip {
     this.clickLabelEvent.emit({ event, element: this.host });
   }
 
-  private onDeleteHandler(event: Event): void {
+  private onDeleteHandler = (event: Event): void => {
     this.deleteEvent.emit({ event, element: this.host });
-  }
+  };
 
   private handleClickableKeyboard = (isClickable: boolean): void => {
     if (isClickable) {
@@ -151,7 +136,7 @@ export class MdsChip {
 
   private handleClickableElement = (isClickable: boolean): void => {
     const label = this.host.shadowRoot?.querySelector('.label') as HTMLElement;
-    if (!label) {
+    if (label == null) {
       return;
     }
     if (isClickable) {
@@ -162,10 +147,6 @@ export class MdsChip {
     label.removeAttribute('role');
     label.removeEventListener('click', this.onClickLabelHandler.bind(this));
   };
-
-  componentWillLoad(): void {
-    this.t.lang(this.host);
-  }
 
   componentDidLoad(): void {
     if (this.clickable) {
@@ -180,7 +161,13 @@ export class MdsChip {
 
   render() {
     return (
-      <Host aria-disabled={this.disabled ? 'true' : 'false'}>
+      <Host
+        aria-disabled={this.disabled ? 'true' : 'false'}
+        pref-animation={preferenceStore.state.animation}
+        pref-contrast={preferenceStore.state.contrast}
+        pref-theme={preferenceStore.state.theme}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
+      >
         {this.icon && (
           <div aria-hidden="true" class="icon-area">
             <mds-icon class="icon" name={this.icon} />
@@ -206,7 +193,7 @@ export class MdsChip {
           <mds-button
             class="button-delete"
             icon={miBaselineCancel}
-            onClick={this.onDeleteHandler.bind(this)}
+            onClick={this.onDeleteHandler}
             title={`${this.t.get('deleteLabel')} ${this.label}`}
             variant="dark"
             tone="text"

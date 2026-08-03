@@ -2,11 +2,19 @@
 # Detects the next version from conventional commits scoped `icons`,
 # bumps projects/icons/package.json, tags it and creates the GitHub release.
 # The version bump commit then triggers CI -> publish.yml (npm).
+#
+# Stable versions release directly from dev (dist-tag latest), so icon
+# additions reach npm without waiting for a dev -> main promotion. The
+# promotion itself is an idempotent no-op: tags and versions arrive with the
+# merge commit and the tag-exists guard skips the re-release. Ship icons
+# fixes through dev, not straight to main: a main-only release creates a tag
+# unreachable from dev that can silently block later dev releases (if that
+# ever happens, back-merge main into dev before the next icons commit).
 name: icons release
 
 on:
   push:
-    branches: [main]
+    branches: [dev, main]
 
 concurrency:
   group: release-icons
@@ -17,9 +25,13 @@ permissions:
 
 jobs:
   release:
+    # chore(release) pushes come from release-finalize itself: their version is
+    # already tagged, so re-running would only be a wasted no-op dry-run
+    if: ${{ !startsWith(github.event.head_commit.message, 'chore(release):') }}
     uses: ./.github/workflows/semantic-release.yml
     secrets: inherit
     with:
       working-directory: projects/icons
       tag-format: 'icons@${version}'
       commit-scope: icons
+      stable-branches: dev main

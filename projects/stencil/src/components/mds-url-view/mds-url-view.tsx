@@ -1,19 +1,10 @@
 import miBaselineClose from '@icon/mi/baseline/close.svg';
 import miBaselineExplore from '@icon/mi/baseline/explore.svg';
-import {
-  Component,
-  Element,
-  Event,
-  EventEmitter,
-  Host,
-  h,
-  Prop,
-  State,
-  Method,
-} from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Prop } from '@stencil/core';
 import { KeyboardManager } from '@common/keyboard-manager';
 import { LoadingType } from '@type/loading';
 import { Locale } from '@common/locale';
+import { preferenceStore } from '@common/preference';
 import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.es.json';
@@ -33,11 +24,6 @@ export class MdsUrlView {
     es: localeEs,
     it: localeIt,
   });
-  @State() language: string;
-  @Method()
-  async updateLang(): Promise<void> {
-    this.language = this.t.lang(this.host);
-  }
 
   /**
    * Specifies if domain is visible on header
@@ -75,23 +61,25 @@ export class MdsUrlView {
     this.host.closest('mds-modal')?.close();
   };
 
-  componentWillLoad(): void {
-    this.t.lang(this.host);
-  }
-
   componentDidLoad(): void {
     const close = this.host.shadowRoot?.querySelector('.action-close') as HTMLElement;
     this.km.addElement(close);
     this.km.attachClickBehavior();
   }
 
-  disconnectedCallback = (): void => {
+  disconnectedCallback(): void {
     this.km.detachClickBehavior();
-  };
+  }
 
   render() {
     return (
-      <Host aria-label={this.t.get('previewURL', { url: this.urlDomain(this.src) })}>
+      <Host
+        aria-label={this.t.get('previewURL', { url: this.urlDomain(this.src) })}
+        pref-animation={preferenceStore.state.animation}
+        pref-contrast={preferenceStore.state.contrast}
+        pref-theme={preferenceStore.state.theme}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
+      >
         <div class="window">
           <div class="header">
             <mds-icon class="window-icon" name={this.icon ?? miBaselineExplore}></mds-icon>

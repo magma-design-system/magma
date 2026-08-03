@@ -1,5 +1,6 @@
-# Publishes the packages to npm. Runs on main once every CI workflow
-# of the commit has succeeded (fan-in via workflow_run), or manually
+# Publishes the packages to npm. Runs on main (all packages) and on dev
+# (opted-in packages only, see the dev-publish matrix flag) once every CI
+# workflow of the commit has succeeded (fan-in via workflow_run), or manually
 # via workflow dispatch. A package is published only when its version
 # differs from the latest one on the npm registry.
 #
@@ -13,8 +14,10 @@ on:
   workflow_run:
     workflows: [design-tokens, icons, identity, styles, svg-icons, stencil]
     types: [completed]
-    # main = stable releases; beta = magma prerelease channel (2.0.0-beta.N -> npm dist-tag 'beta')
-    branches: [main, beta]
+    # main = stable releases; beta = magma prerelease channel (2.0.0-beta.N ->
+    # npm dist-tag 'beta'); dev = stable releases of the packages that opt in
+    # via the dev-publish matrix flag (icons, svg-icons)
+    branches: [main, beta, dev]
   workflow_dispatch:
     inputs:
       package:
@@ -65,9 +68,15 @@ jobs:
             fi
           fi
           echo "sha=$SHA" >> "$GITHUB_OUTPUT"
-          # latest run of each CI workflow for this commit
+          # latest push-event run of each watched CI workflow for this commit
+          # (allowlist in lockstep with on.workflow_run.workflows above). Release
+          # workflows and any other workflow are excluded: their completion does
+          # not re-trigger publish, so waiting on one still in progress would
+          # lose the publish. pull_request runs are excluded because they share
+          # the head SHA when a PR from dev is open, produce no artifacts, and
+          # could win the max_by(.id) pick over the artifact-bearing push run.
           RUNS=$(gh api "repos/${{ github.repository }}/actions/runs?head_sha=$SHA&per_page=100" \
-            --jq '[.workflow_runs[] | select(.name != "publish")] | group_by(.name) | map(max_by(.id))')
+            --jq '[.workflow_runs[] | select(.event == "push" and (.name as $n | ["design-tokens", "icons", "identity", "styles", "svg-icons", "stencil"] | index($n)))] | group_by(.name) | map(max_by(.id))')
           echo "$RUNS" | jq -r '.[] | "\(.name): \(.status) (\(.conclusion))"'
           if [ "${{ github.event_name }}" = "workflow_run" ]; then
             PENDING=$(echo "$RUNS" | jq '[.[] | select(.status != "completed")] | length')
@@ -106,6 +115,8 @@ jobs:
             workflow: icons
             artifact: icons-build
             artifact-path: projects
+            # stable releases also ship from dev (see icons.release.yml)
+            dev-publish: true
           - component: identity
             directory: projects/identity
             workflow: identity
@@ -121,6 +132,8 @@ jobs:
             workflow: svg-icons
             artifact: svg-icons-build
             artifact-path: projects/svg-icons/dist
+            # stable releases also ship from dev (see svg-icons.release.yml)
+            dev-publish: true
           - component: magma
             directory: projects/stencil
             workflow: stencil
@@ -148,8 +161,18 @@ jobs:
           ref: ${{ needs.gate.outputs.sha }}
       - name: Check whether a new version needs publishing
         id: ver
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           echo "proceed=false" >> "$GITHUB_OUTPUT"
+          # only opted-in packages publish from dev. This guard must run before
+          # the npm view check: a dev version missing from npm (e.g. a magma
+          # alpha bumped on dev but released elsewhere) must never publish here
+          BRANCH="${{ github.event.workflow_run.head_branch || github.ref_name }}"
+          if [ "$BRANCH" = "dev" ] && [ "${{ matrix.dev-publish || false }}" != "true" ]; then
+            echo "::notice::${{ matrix.component }} does not publish from dev, skipping"
+            exit 0
+          fi
           if [ "${{ github.event_name }}" = "workflow_dispatch" ] && \
              [ "${{ inputs.package }}" != "all" ] && [ "${{ inputs.package }}" != "${{ matrix.component }}" ]; then
             echo "::notice::${{ matrix.component }} not selected, skipping"
@@ -161,6 +184,20 @@ jobs:
           PUBLISHED="$(npm view "@maggioli-design-system/${{ matrix.component }}@${TO_BE_PUBLISHED_V}" version 2>/dev/null || true)"
           if [ -n "$PUBLISHED" ]; then
             echo "::notice::@maggioli-design-system/${{ matrix.component }}@${TO_BE_PUBLISHED_V} already published, skipping"
+            exit 0
+          fi
+          # A version can be missing from npm without a fresh build to publish
+          # (manual bump merged to a branch where this package's CI does not run,
+          # or a chore(release) push where its build was path-filtered out):
+          # skip with a warning instead of failing the artifact download.
+          RUN_ID='${{ fromJSON(needs.gate.outputs.run-ids)[matrix.workflow] }}'
+          if [ -z "$RUN_ID" ] || [ "$RUN_ID" = "null" ]; then
+            echo "::warning::${{ matrix.component }}@${TO_BE_PUBLISHED_V} is not on npm but the '${{ matrix.workflow }}' workflow has no run for this commit, skipping"
+            exit 0
+          fi
+          ARTIFACTS=$(gh api "repos/${{ github.repository }}/actions/runs/${RUN_ID}/artifacts?name=${{ matrix.artifact }}" --jq '.total_count')
+          if [ "$ARTIFACTS" = "0" ]; then
+            echo "::warning::${{ matrix.component }}@${TO_BE_PUBLISHED_V} is not on npm but run ${RUN_ID} produced no '${{ matrix.artifact }}' artifact, skipping"
             exit 0
           fi
           # dist-tag from the semver prerelease identifier: 2.0.0-alpha.0 -> alpha,

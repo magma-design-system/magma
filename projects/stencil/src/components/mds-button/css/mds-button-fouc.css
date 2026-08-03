@@ -1,9 +1,9 @@
 @import '../../../tailwind/fouc.css';
 
 :host {
-  --mds-button-background: rgb(var(--variant-primary-04));
-  --mds-button-border-color-rgb: var(--variant-primary-04);
-  --mds-button-color: rgb(var(--tone-neutral));
+  --mds-button-background: rgb(var(--magma-accent-emphasis));
+  --mds-button-border-color-rgb: var(--magma-accent-emphasis);
+  --mds-button-color: rgb(var(--tone-neutral-seed));
 
   min-height: --spacing(900);
   min-width: --spacing(900);

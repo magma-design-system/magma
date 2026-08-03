@@ -1,13 +1,14 @@
-import { Component, Host, h, Prop, Element, State, Method } from '@stencil/core';
+import { Component, Host, h, Prop, Element, State } from '@stencil/core';
 import { Locale } from '@common/locale';
 import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.es.json';
 import localeIt from './meta/locale.it.json';
 import { isSafari } from '@common/browser';
+import { preferenceStore } from '@common/preference';
 
 /**
- * @slot default - Put `mds-table-cell` element/s.
+ * @slot - Put `mds-table-cell` element/s.
  * @slot action - Put `mds-button` element/s or other kind of actions as aside menu for the single row.
  */
 
@@ -30,25 +31,39 @@ export class MdsTableRow {
     es: localeEs,
     it: localeIt,
   });
-  @State() language: string;
-  @Method()
-  async updateLang(): Promise<void> {
-    this.language = this.t.lang(this.host);
-    this.t.update();
-  }
 
+  /**
+   * Specifies whether the row reacts to user interaction (hover/focus).
+   */
   @Prop({ reflect: true }) readonly interactive?: boolean;
 
+  /**
+   * Specifies whether the row's actions are shown as an overlay.
+   */
   @Prop({ reflect: true }) readonly overlayActions: boolean;
 
+  /**
+   * Specifies whether the row can be selected via a checkbox.
+   */
   @Prop({ reflect: true }) readonly selectable?: boolean = undefined;
 
+  /**
+   * Specifies whether the row is currently selected.
+   */
   @Prop({ mutable: true, reflect: true }) selected?: boolean;
 
+  /**
+   * Reflects the parent table selection state (set by mds-table); drives the
+   * row action background without :host-context
+   */
+  @Prop({ reflect: true }) readonly selection?: boolean;
+
+  /**
+   * The value associated with the row, emitted when the row is selected.
+   */
   @Prop({ reflect: true }) readonly value?: string | number;
 
   componentWillLoad(): void {
-    this.language = this.t.lang(this.host);
     this.hasActions = this.host.querySelector(':scope > [slot="action"]') !== null;
   }
 
@@ -75,13 +90,12 @@ export class MdsTableRow {
 
   render() {
     return (
-      <Host role="row">
+      <Host role="row" pref-animation={preferenceStore.state.animation}>
         {this.selectable && (
           <mds-table-cell class="selection-cell">
             <div class="checkbox-wrapper">
               <mds-input-switch
                 title={this.t.get(this.selected ? 'unselectRow' : 'selectRow')}
-                lang={this.language}
                 type="checkbox"
                 checked={this.selected}
                 onMdsInputSwitchChange={this.handleSelectionChange}

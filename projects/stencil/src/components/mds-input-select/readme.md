@@ -380,15 +380,12 @@ Type: `Promise<void>`
 
 
 
-### `updateLang() => Promise<void>`
 
+## Slots
 
-
-#### Returns
-
-Type: `Promise<void>`
-
-
+| Slot | Description                                                |
+| ---- | ---------------------------------------------------------- |
+|      | Add `option` `HTML elements` or `components` to this slot. |
 
 
 ## Shadow Parts

@@ -1,6 +1,9 @@
 import { Component, Host, h, Prop, Element } from '@stencil/core';
 import { AvatarSizeType } from './meta/types';
 
+/**
+ * @slot - Add `mds-avatar-stack-item` elements to display in the stack.
+ */
 @Component({
   tag: 'mds-avatar-stack',
   styleUrl: 'mds-avatar-stack.css',

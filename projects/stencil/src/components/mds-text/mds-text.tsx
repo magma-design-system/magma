@@ -5,9 +5,10 @@ import { TypographyTruncateType } from '@type/text';
 import { TypographyType, TypographyVariants } from '@type/typography';
 import { typographyDefaultsVariant } from './meta/variants';
 import RandomText from '@common/yugop';
+import { preferenceStore } from '@common/preference';
 
 /**
- * @slot default - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
+ * @slot - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
  */
 
 @Component({
@@ -103,18 +104,20 @@ export class MdsText {
     if (this.animation === 'none') {
       return;
     }
-    if (this.randomText) {
+    if (this.randomText != null) {
       this.randomText.stop();
     }
-    if (newValue) {
+    if (newValue !== undefined && newValue !== '') {
       this.animateText(newValue);
     }
   }
 
   render() {
     return (
-      <Host>
-        <this.tag class="text">{!this.text ? <slot></slot> : this.text}</this.tag>
+      <Host pref-animation={preferenceStore.state.animation}>
+        <this.tag class="text">
+          {this.text === undefined || this.text === '' ? <slot></slot> : this.text}
+        </this.tag>
       </Host>
     );
   }

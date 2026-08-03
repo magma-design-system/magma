@@ -170,6 +170,7 @@
   --mds-keyboard-spinner-duration: 1s;
 
   align-items: center;
+  align-self: flex-start;
   background-color: var(--mds-keyboard-background-default);
   border-radius: var(--radius-2xl);
   box-shadow:
@@ -179,6 +180,7 @@
   corner-shape: var(--magma-corner-shape, round);
   display: inline-flex;
   gap: --spacing(200);
+  justify-self: flex-start;
   padding: calc(var(--mds-keyboard-illumination-light-size) + var(--mds-keyboard-padding))
     var(--mds-keyboard-padding)
     calc(var(--mds-keyboard-illumination-dark-size) + var(--mds-keyboard-padding))

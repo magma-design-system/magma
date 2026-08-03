@@ -10,9 +10,7 @@ describe('mds-push-notification', () => {
     expect(page.root).toEqualHtml(`
       <mds-push-notification>
         <mock:shadow-root>
-          <mds-button variant="dark">
-            Cancella notifiche
-          </mds-button>
+          <mds-button label="Cancella notifiche" variant="dark"></mds-button>
           <div class="notifications" part="notifications">
             <slot></slot>
           </div>

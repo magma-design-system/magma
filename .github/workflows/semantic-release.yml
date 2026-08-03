@@ -22,7 +22,11 @@
 #     drive the bump and appear in the release notes. Empty = no filtering.
 #   - version-sync-paths: extra package.json files bumped to the same version
 #     (e.g. companion packages kept in lockstep).
-# Release branches are fixed: main (stable) + beta (prerelease channel).
+#   - stable-branches: space-separated branches allowed to release stable
+#     versions. The current branch is used when listed (first entry otherwise,
+#     which makes runs on unlisted branches a graceful no-op). Default 'main';
+#     icons/svg-icons pass 'dev main' to release directly from dev.
+# The beta branch is always available as the prerelease channel.
 name: Reusable Semantic Release Pipeline
 
 on:
@@ -68,6 +72,11 @@ on:
         type: string
         required: false
         default: ''
+      stable-branches:
+        description: Space-separated branches that release stable versions; the current branch is used when listed, the first entry otherwise
+        type: string
+        required: false
+        default: 'main'
 
 permissions:
   contents: write
@@ -107,6 +116,7 @@ jobs:
         env:
           SR_TAG_FORMAT: ${{ inputs.tag-format }}
           SR_COMMIT_SCOPE: ${{ inputs.commit-scope }}
+          SR_STABLE_BRANCHES: ${{ inputs.stable-branches }}
         run: |
           cat > release-version.config.cjs <<'EOF'
           // Values come from the environment so the file needs no shell/Actions
@@ -116,8 +126,15 @@ jobs:
           // non-releasing; in-scope commits fall through to the preset defaults
           // (feat -> minor, fix/perf -> patch, breaking -> major).
           const releaseRules = scope ? [{ scope: `!(${scope})`, release: false }] : [];
+          // Release stable versions from the branch we are running on when the
+          // caller lists it in stable-branches; fall back to the first entry so
+          // runs on unlisted branches stay a graceful semantic-release no-op.
+          const stableBranches = (process.env.SR_STABLE_BRANCHES || 'main').split(/\s+/).filter(Boolean);
+          const stable = stableBranches.includes(process.env.GITHUB_REF_NAME)
+            ? process.env.GITHUB_REF_NAME
+            : stableBranches[0];
           module.exports = {
-            branches: ['main', { name: 'beta', prerelease: true }],
+            branches: [stable, { name: 'beta', prerelease: true }],
             tagFormat: process.env.SR_TAG_FORMAT,
             plugins: [
               ['@semantic-release/commit-analyzer', { preset: 'conventionalcommits', releaseRules }],
@@ -129,6 +146,14 @@ jobs:
           EOF
 
       - name: Run semantic-release --dry-run to detect next version
+        # release-version.config.cjs reads tagFormat/scope from these at require time,
+        # so they must be present in THIS step's env (not just the generation step);
+        # without them tagFormat falls back to the default v${version} (wrong tags) and
+        # scope filtering is disabled.
+        env:
+          SR_TAG_FORMAT: ${{ inputs.tag-format }}
+          SR_COMMIT_SCOPE: ${{ inputs.commit-scope }}
+          SR_STABLE_BRANCHES: ${{ inputs.stable-branches }}
         run: |
           set -o pipefail
           npx semantic-release -e ./release-version.config.cjs --dry-run

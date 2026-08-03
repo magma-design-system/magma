@@ -249,9 +249,9 @@ mds-table {
 
 ## Slots
 
-| Slot        | Description                    |
-| ----------- | ------------------------------ |
-| `"default"` | Add `mds-table-row` element/s. |
+| Slot | Description                    |
+| ---- | ------------------------------ |
+|      | Add `mds-table-row` element/s. |
 
 
 ----------------------------------------------

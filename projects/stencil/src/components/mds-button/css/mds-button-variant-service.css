@@ -1,6 +1,6 @@
 :host([variant='google']),
 :host([variant='google'][tone]) {
-  --mds-button-background: rgb(var(--tone-neutral));
+  --mds-button-background: rgb(var(--tone-neutral-seed));
   --mds-button-border-hover-opacity: 50%;
   --mds-button-border-hover-width: --spacing(50);
   --mds-button-border-opacity: 20%;
@@ -14,7 +14,7 @@
 
 :host([variant='google']:hover),
 :host([variant='google'][tone]:hover) {
-  --mds-button-background: rgb(var(--tone-neutral));
+  --mds-button-background: rgb(var(--tone-neutral-seed));
   --mds-button-border-width: var(--mds-button-border-hover-width);
   --mds-button-border-opacity: var(--mds-button-border-hover-opacity);
 }
@@ -26,7 +26,7 @@
 :host([variant='apple']),
 :host([variant='apple'][tone]) {
   --mds-button-background: rgb(var(--tone-neutral-02));
-  --mds-button-color: rgb(var(--tone-neutral));
+  --mds-button-color: rgb(var(--tone-neutral-seed));
   --mds-button-border-width: 0;
   --mds-button-border-color-rgb: var(--tone-neutral-02);
 }
@@ -37,7 +37,12 @@
   --mds-button-border-opacity: 100%;
 }
 
-:host-context(:root.pref-theme-dark:not(.pref-theme-scheme-light)) {
+/* Theme preference (service variants). The component reflects the resolved theme
+ * mode + scheme from <html> onto its host as pref-theme + pref-theme-scheme (see
+ * subscribePreference in @common/preference); `dark` is explicit, `system` and no
+ * controller follow the OS via @media, the scheme axis gates it. Cross-browser. */
+
+:host([pref-theme='dark']:not([pref-theme-scheme='light'])) {
   &:host([variant='google']),
   &:host([variant='google'][tone]) {
     --mds-button-border-width: --spacing(50);
@@ -56,8 +61,8 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  :host-context(:root.pref-theme-system:not(.pref-theme-scheme-light)),
-  :host-context(:root:not([data-magma-pref])) {
+  :host([pref-theme='system']:not([pref-theme-scheme='light'])),
+  :host(:not([pref-theme])) {
     &:host([variant='apple']),
     &:host([variant='apple'][tone]) {
       --mds-button-background: rgb(var(--tone-neutral-01));

@@ -14,13 +14,11 @@
  * @prop --mds-horizontal-scroll-scrollbar-track-background: Sets the background-color of the browser scroll bar track (if supported)
  */
 
-/* ❌ Not supported: scroll-behavior cannot be expressed in @property syntax
 @property --mds-horizontal-scroll-behavior {
   inherits: false;
-  syntax: "auto | smooth";
   initial-value: smooth;
+  syntax: "auto | smooth";
 }
-*/
 
 @property --mds-horizontal-scroll-dots-gap {
   inherits: false;
@@ -93,7 +91,7 @@
 
 @property --mds-horizontal-scroll-dot-background {
   inherits: false;
-  initial-value: rgb(var(--tone-neutral));
+  initial-value: rgb(var(--tone-neutral-seed));
   syntax: '<color>';
 }
 
@@ -120,7 +118,7 @@
   --mds-horizontal-scroll-dots-gap: --spacing(100);
   --mds-horizontal-scroll-dot-size: --spacing(200);
   --mds-horizontal-scroll-dot-max-width: auto;
-  --mds-horizontal-scroll-dot-background: rgb(var(--tone-neutral));
+  --mds-horizontal-scroll-dot-background: rgb(var(--tone-neutral-seed));
   --mds-horizontal-scroll-dot-area-background: rgb(var(--tone-neutral-08));
   --mds-horizontal-scroll-contents-padding: --spacing(600);
   --mds-horizontal-scroll-contents-scroll-padding: 0 --spacing(600);
@@ -147,6 +145,15 @@
   justify-content: center;
   position: relative;
   width: 100%;
+}
+
+/* Animation preference: scroll-behavior is a keyword, so its reduced-motion state
+ * is handled here, cross-browser, via @media following the OS preference. */
+
+@media (prefers-reduced-motion: reduce) {
+  :host {
+    --mds-horizontal-scroll-behavior: auto;
+  }
 }
 
 .navigation {
@@ -223,7 +230,6 @@ right: clamp(calc(var(--mds-horizontal-scroll-gap) / 2), var(--position), var(--
   }
 }
 
-@import './css/mds-horizontal-scroll-pref-animation.css';
 @import './css/mds-horizontal-scroll-controls.css';
 @import './css/mds-horizontal-scroll-dot-navigation.css';
 @import './css/mds-horizontal-scroll-navigation.css';

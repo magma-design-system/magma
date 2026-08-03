@@ -10,10 +10,12 @@ import {
   Watch,
   State,
 } from '@stencil/core';
+import { preferenceStore } from '@common/preference';
 
 /**
  * @part header - The element containing the labels displayed over the input element
  * @part track - The element containing the track of the input range
+ * @slot - Add `text string`, `HTML elements` or `components` to this slot.
  */
 @Component({
   tag: 'mds-input-range',
@@ -70,7 +72,7 @@ export class MdsInputRange {
    */
   @Event({ eventName: 'mdsInputRangeChange' }) changeEvent: EventEmitter<number>;
 
-  calculateProgress(): void {
+  private calculateProgress(): void {
     // validate value
     let v = Number(this.inputElement.value);
     // multiplier is needed to manage decimal value and step, so we can work with integer value and avoid decimal division
@@ -153,7 +155,12 @@ export class MdsInputRange {
 
   render() {
     return (
-      <Host>
+      <Host
+        pref-animation={preferenceStore.state.animation}
+        pref-contrast={preferenceStore.state.contrast}
+        pref-theme={preferenceStore.state.theme}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
+      >
         <header class="header" part="header">
           <mds-text class="label" typography="label">
             <slot />

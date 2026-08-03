@@ -287,13 +287,13 @@ The accepted values for both props are `'all' | 'desktop' | 'mobile' | 'none'`. 
 
 ### `setOpened(isOpened?: boolean) => Promise<void>`
 
-
+Opens or closes the header bar.
 
 #### Parameters
 
-| Name       | Type      | Description |
-| ---------- | --------- | ----------- |
-| `isOpened` | `boolean` |             |
+| Name       | Type      | Description                             |
+| ---------- | --------- | --------------------------------------- |
+| `isOpened` | `boolean` | whether the header bar should be opened |
 
 #### Returns
 
@@ -304,10 +304,10 @@ Type: `Promise<void>`
 
 ## Slots
 
-| Slot        | Description                                                                                                                                          |
-| ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `"default"` | Put contents, like logo and a small description shown on the left of the component. Add `text string`, `HTML elements` or `components` to this slot. |
-| `"nav"`     | Put the actions shown when the component is on desktop mode. Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element. |
+| Slot    | Description                                                                                                                                          |
+| ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+|         | Put contents, like logo and a small description shown on the left of the component. Add `text string`, `HTML elements` or `components` to this slot. |
+| `"nav"` | Put the actions shown when the component is on desktop mode. Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element. |
 
 
 ## Shadow Parts

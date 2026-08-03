@@ -3,9 +3,10 @@ import { TypographyLabelType } from '@type/typography';
 import { ThemeFullVariantType } from '@type/variant';
 import { ToneSmartVariantType } from '@type/tone';
 import { readSlottedLabel, sanitizeLabel } from '@common/slot';
+import { preferenceStore } from '@common/preference';
 
 /**
- * @slot default - **Deprecated**, use the `label` property instead. Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
+ * @slot - **Deprecated**, use the `label` property instead. Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
  */
 
 @Component({
@@ -43,13 +44,18 @@ export class MdsBadge {
 
   private onSlotChangeHandler = (): void => {
     /* this should be removed in the future once slotted text is no longer used, use the label property instead */
-    if (this.label) return;
+    if (this.label !== undefined && this.label !== '') return;
     this.label = readSlottedLabel(this.host);
   };
 
   render() {
     return (
-      <Host>
+      <Host
+        pref-animation={preferenceStore.state.animation}
+        pref-contrast={preferenceStore.state.contrast}
+        pref-theme={preferenceStore.state.theme}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
+      >
         <mds-text tag="span" typography={this.typography} variant="info" text={this.label}>
           {this.label || <slot onSlotchange={this.onSlotChangeHandler} />}
         </mds-text>

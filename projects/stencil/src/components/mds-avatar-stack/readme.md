@@ -272,6 +272,13 @@ mds-avatar-stack {
 | `total`  | `total`   | Specifies the size of the slotted avatars elements | `number \| undefined`               | `undefined` |
 
 
+## Slots
+
+| Slot | Description                                                   |
+| ---- | ------------------------------------------------------------- |
+|      | Add `mds-avatar-stack-item` elements to display in the stack. |
+
+
 ## CSS Custom Properties
 
 | Name                                        | Description                                          |

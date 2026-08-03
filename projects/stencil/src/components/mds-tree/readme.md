@@ -382,9 +382,9 @@ Inserting wrapper elements breaks the compound slot protocol - `<mds-tree>` comm
 
 ## Slots
 
-| Slot        | Description                    |
-| ----------- | ------------------------------ |
-| `"default"` | Add `mds-tree-item` element/s. |
+| Slot | Description                    |
+| ---- | ------------------------------ |
+|      | Add `mds-tree-item` element/s. |
 
 
 ## CSS Custom Properties

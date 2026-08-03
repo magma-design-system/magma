@@ -12,9 +12,10 @@ import {
 import clsx from 'clsx';
 import miBaselineKeyboardArrowRight from '@icon/mi/baseline/keyboard-arrow-right.svg';
 import { KeyboardManager } from '@common/keyboard-manager';
+import { preferenceStore } from '@common/preference';
 
 /**
- * @slot default - Add `text string`, `HTML elements` or `components` to this slot.
+ * @slot - Add `text string`, `HTML elements` or `components` to this slot.
  * @slot action - Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element.
  * @slot icon - Insert an icon image, it can be `HTML elements` or `components`, it is **recommended** to add `mds-icon` element.
  * @slot title - Add a `text string`, `HTML elements` or `components`, it is **recommended** to use `mds-text` element.
@@ -78,7 +79,10 @@ export class MdsDetails {
 
   render() {
     return (
-      <Host>
+      <Host
+        pref-animation={preferenceStore.state.animation}
+        pref-contrast={preferenceStore.state.contrast}
+      >
         <div class={clsx('icon', this.hasIcon ? '' : 'icon--hidden')} onClick={this.toggle}>
           <slot name="icon" onSlotchange={this.onSlotChangeHandler} />
         </div>

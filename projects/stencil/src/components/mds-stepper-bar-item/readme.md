@@ -365,19 +365,6 @@ Both are required props. An item without `label` has no accessible or visual des
 | `mdsStepperBarItemDone` | Emits when the accordion is selected | `CustomEvent<MdsStepperBarItemEventDetail>` |
 
 
-## Methods
-
-### `updateLang() => Promise<void>`
-
-
-
-#### Returns
-
-Type: `Promise<void>`
-
-
-
-
 ## Shadow Parts
 
 | Part      | Description       |

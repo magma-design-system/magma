@@ -44,6 +44,8 @@
   --mds-avatar-color: rgb(var(--variant-primary-10));
   --mds-avatar-radius: var(--radius-full);
   --mds-avatar-initials-padding: 20%;
+  --mds-avatar-transition-duration: var(--duration-200);
+  --private-avatar-transition-duration: var(--mds-avatar-transition-duration);
 
   aspect-ratio: 1/1;
   border-radius: var(--mds-avatar-radius);
@@ -60,7 +62,7 @@
   color: transparent;
   display: inline-flex;
   overflow: hidden;
-  transition-duration: var(--duration-200);
+  transition-duration: var(--private-avatar-transition-duration);
   transition-property: color, background-color, box-shadow, fill;
   width: 100%;
 }
@@ -131,18 +133,18 @@
 .icon {
   fill: var(--mds-avatar-color);
   height: 100%;
-  transition-duration: var(--duration-200);
+  transition-duration: var(--private-avatar-transition-duration);
   transition-property: fill;
   transition-timing-function: var(--ease-in-out-expo);
   width: 100%;
 }
 
 @container (max-width: 24px) {
-  :host-context(:not(.safari)) .avatar--initials {
+  .avatar--initials {
     padding: 0 var(--mds-avatar-initials-padding);
   }
 
-  :host-context(:not(.safari)) .initials-text {
+  .initials-text {
     @apply font-black;
   }
 }

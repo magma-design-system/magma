@@ -1,25 +1,16 @@
 import miBaselineClose from '@icon/mi/baseline/close.svg';
-import {
-  Component,
-  Element,
-  Event,
-  EventEmitter,
-  Host,
-  h,
-  Prop,
-  State,
-  Method,
-} from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Prop } from '@stencil/core';
 import { KeyboardManager } from '@common/keyboard-manager';
 import { ThemeLabelVariantType } from '@type/variant';
 import { Locale } from '@common/locale';
+import { preferenceStore } from '@common/preference';
 import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.es.json';
 import localeIt from './meta/locale.it.json';
 
 /**
- * @slot default - Add `text string`, `HTML elements` or `components` to this slot.
+ * @slot - Add `text string`, `HTML elements` or `components` to this slot.
  * @slot title - Add `text string`, `HTML elements` or `components` to this slot.
  */
 
@@ -37,11 +28,6 @@ export class MdsNote {
     es: localeEs,
     it: localeIt,
   });
-  @State() language: string;
-  @Method()
-  async updateLang(): Promise<void> {
-    this.language = this.t.lang(this.host);
-  }
 
   /**
    * Enables the cross icon to perform cancel/delete action on element
@@ -61,10 +47,6 @@ export class MdsNote {
    * Emits when the note has to be cancelled
    */
   @Event({ eventName: 'mdsNoteDelete' }) deleteEvent: EventEmitter<void>;
-
-  componentWillLoad(): void {
-    this.t.lang(this.host);
-  }
 
   componentDidLoad(): void {
     this.km.addElement(this.host);
@@ -87,7 +69,13 @@ export class MdsNote {
 
   render() {
     return (
-      <Host role="note">
+      <Host
+        role="note"
+        pref-animation={preferenceStore.state.animation}
+        pref-contrast={preferenceStore.state.contrast}
+        pref-theme={preferenceStore.state.theme}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
+      >
         {this.deletable && (
           <mds-button
             title={this.t.get('deleteLabel')}
@@ -95,7 +83,7 @@ export class MdsNote {
             class="button-close"
             variant="dark"
             tone="text"
-            onClick={this.onClickClose.bind(this)}
+            onClick={this.onClickClose}
           ></mds-button>
         )}
         <slot name="title" />

@@ -5,10 +5,20 @@ on:
     branches: [dev, main, beta]
   pull_request:
 
+concurrency:
+  # one run per ref: a newer push cancels the superseded run. On main, and for
+  # chore(release) pushes on any branch, each push gets its own group (no
+  # cancel, no queued-run replacement): chained chore(release) pushes must each
+  # complete their CI to provide the build artifact for their own publish run
+  group: ${{ github.workflow }}-${{ (github.ref == 'refs/heads/main' || startsWith(github.event.head_commit.message, 'chore(release):')) && github.sha || github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' && !startsWith(github.event.head_commit.message, 'chore(release):') }}
+
 jobs:
   # Builds stencil and runs the e2e tests; its build artifact
   # also feeds the react/angular builds below
   magma:
+    # PRs from dev (release PRs) duplicate the CI already run on every push to dev
+    if: ${{ github.event_name != 'pull_request' || github.head_ref != 'dev' }}
     uses: ./.github/workflows/_package-pipeline.yml
     with:
       path: projects/stencil/**
@@ -94,3 +104,40 @@ jobs:
           path: projects/stencil/angular/dist
           retention-days: 1
           include-hidden-files: true
+
+  # Guards the tree-shaking of the three published packages: a consumer that
+  # imports one component must not end up shipping all 114. Needs all three
+  # builds, so it runs last.
+  treeshaking:
+    needs: [magma, magma-react, magma-angular]
+    if: ${{ needs.magma.outputs.changed == 'true' }}
+    runs-on: ubuntu-latest
+    env:
+      PUPPETEER_SKIP_DOWNLOAD: 'true'
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          cache: yarn
+      - name: Restore Nx cache
+        uses: actions/cache@v5
+        with:
+          path: .nx
+          key: nx-${{ hashFiles('yarn.lock') }}-${{ github.sha }}
+          restore-keys: |
+            nx-${{ hashFiles('yarn.lock') }}-
+      - run: yarn install --frozen-lockfile --prefer-offline
+      - uses: actions/download-artifact@v8
+        with:
+          name: stencil-build
+          path: projects
+      - uses: actions/download-artifact@v8
+        with:
+          name: stencil-react-build
+          path: projects/stencil/react/dist
+      - uses: actions/download-artifact@v8
+        with:
+          name: stencil-angular-build
+          path: projects/stencil/angular/dist
+      - run: yarn nx run stencil:check.treeshaking

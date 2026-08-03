@@ -1,4 +1,4 @@
-import { Locale } from '@common/locale';
+import { preferenceStore } from '@common/preference';
 import miBaselineKeyboardArrowDown from '@icon/mi/baseline/keyboard-arrow-down.svg';
 import {
   AttachInternals,
@@ -19,6 +19,7 @@ import { ThemeStatusVariantType } from '@type/variant';
 /**
  * @part select - The select HTML element
  * @part tip-top - Selects the verbose status of input on top of element
+ * @slot - Add `option` `HTML elements` or `components` to this slot.
  */
 
 @Component({
@@ -32,16 +33,7 @@ export class MdsInputSelect {
   @Element() host: HTMLMdsInputSelectElement;
   // @State() selected: boolean
   @State() hasFocus = false;
-  @State() language: string;
   @AttachInternals() internals: ElementInternals;
-
-  private t: Locale = new Locale();
-
-  @Method()
-  async updateLang(): Promise<void> {
-    this.language = this.t.lang(this.host);
-    this.t.update();
-  }
 
   /**
    * Specifies a short hint that describes the expected value of the element
@@ -143,14 +135,19 @@ export class MdsInputSelect {
    */
   @Watch('placeholder')
   protected placeholderChanged(newValue: string | undefined, oldValue: string | undefined) {
-    if (newValue && !oldValue) {
+    if (newValue !== undefined && newValue !== '' && (oldValue === undefined || oldValue === '')) {
       let defaultOption: HTMLOptionElement | null = document.querySelector('.placeholder-option');
       if (defaultOption) defaultOption.remove();
       defaultOption = document.createElement('option');
       this.selectEl.insertBefore(defaultOption, this.selectEl.firstChild);
       defaultOption.value = '';
       defaultOption.text = newValue;
-      if (!this.defaultValue) {
+      if (
+        this.defaultValue == null ||
+        this.defaultValue === '' ||
+        this.defaultValue === 0 ||
+        Number.isNaN(this.defaultValue)
+      ) {
         defaultOption.selected = true;
         this.value = undefined;
       }
@@ -163,15 +160,19 @@ export class MdsInputSelect {
   }
 
   componentWillLoad(): void {
-    this.language = this.t.lang(this.host);
     // needed for react component, this prop should be used as default-value html attributo instead of defaultValue prop
-    if (this.defaultValue) {
+    if (
+      this.defaultValue != null &&
+      this.defaultValue !== '' &&
+      this.defaultValue !== 0 &&
+      !Number.isNaN(this.defaultValue)
+    ) {
       this.value = this.defaultValue;
     }
   }
 
   componentDidLoad(): void {
-    if (this.value) {
+    if (this.value != null && this.value !== '' && this.value !== 0 && !Number.isNaN(this.value)) {
       this.internals.setFormValue(this.value.toString());
     }
   }
@@ -200,11 +201,11 @@ export class MdsInputSelect {
     }
 
     options.forEach((option: HTMLOptionElement, index: number) => {
-      if (!this.placeholder) {
+      if (this.placeholder === undefined || this.placeholder === '') {
         option.remove();
       }
 
-      if (this.placeholder && index > 0) {
+      if (this.placeholder !== undefined && this.placeholder !== '' && index > 0) {
         option.remove();
       }
     });
@@ -214,15 +215,15 @@ export class MdsInputSelect {
     const elements = this.host.shadowRoot?.querySelectorAll('slot')[0]?.assignedNodes();
     const options = this.selectEl?.querySelectorAll('option');
 
-    if (!options) {
+    if (options == null) {
       return;
     }
 
-    if (!this.placeholder && options.length > 0) {
+    if ((this.placeholder === undefined || this.placeholder === '') && options.length > 0) {
       this.emptyOptions();
     }
 
-    if (this.placeholder && options.length > 1) {
+    if (this.placeholder !== undefined && this.placeholder !== '' && options.length > 1) {
       this.emptyOptions();
     }
 
@@ -234,22 +235,27 @@ export class MdsInputSelect {
   };
 
   private setCurrentValue = (): void => {
-    if (!this.selectEl) return;
-    if (this.value) {
+    if (this.selectEl == null) return;
+    if (this.value != null && this.value !== '' && this.value !== 0 && !Number.isNaN(this.value)) {
       this.selectEl.querySelectorAll('option').forEach((element: HTMLOptionElement) => {
         element.selected = element.value === this.value;
       });
-    } else if (!this.placeholder) {
+    } else if (this.placeholder === undefined || this.placeholder === '') {
       this.value = this.selectEl?.querySelectorAll('option')[0].value;
     }
   };
 
   render() {
     return (
-      <Host>
+      <Host
+        pref-animation={preferenceStore.state.animation}
+        pref-contrast={preferenceStore.state.contrast}
+        pref-theme={preferenceStore.state.theme}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
+      >
         <select
           class="input"
-          onInput={this.onInput.bind(this)}
+          onInput={this.onInput}
           onBlur={this.onBlur}
           onFocus={this.onFocus}
           name={this.name}
@@ -264,7 +270,14 @@ export class MdsInputSelect {
             class="placeholder-option"
             value=""
             disabled={!this.required ? undefined : true}
-            selected={this.defaultValue ? undefined : true}
+            selected={
+              this.defaultValue != null &&
+              this.defaultValue !== '' &&
+              this.defaultValue !== 0 &&
+              !Number.isNaN(this.defaultValue)
+                ? undefined
+                : true
+            }
           >
             {this.placeholder}
           </option>
@@ -275,7 +288,7 @@ export class MdsInputSelect {
         <div class="option-container">
           <slot onSlotchange={this.onSlotChangeHandler}></slot>
         </div>
-        <mds-input-tip position="top" lang={this.language} active={this.hasFocus} part="tip-top">
+        <mds-input-tip position="top" active={this.hasFocus} part="tip-top">
           {this.disabled && <mds-input-tip-item expanded variant="disabled"></mds-input-tip-item>}
           {this.required && (
             <mds-input-tip-item

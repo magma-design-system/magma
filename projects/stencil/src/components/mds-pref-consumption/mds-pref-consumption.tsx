@@ -1,20 +1,10 @@
-import {
-  Component,
-  Host,
-  Element,
-  Event,
-  EventEmitter,
-  h,
-  Prop,
-  Watch,
-  Method,
-  State,
-} from '@stencil/core';
+import { Component, Host, Event, EventEmitter, h, Prop, Watch } from '@stencil/core';
 import { MdsPrefChangeEventDetail } from '@event/preference';
 import mggConsumptionLow from '@icon/mgg/consumption-low.svg';
 import mggConsumptionMedium from '@icon/mgg/consumption-medium.svg';
 import mggConsumptionHigh from '@icon/mgg/consumption-high.svg';
 import { Locale } from '@common/locale';
+import { preferenceStore } from '@common/preference';
 import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.es.json';
@@ -28,7 +18,6 @@ import { TabSizeType } from '@type/button';
   shadow: true,
 })
 export class MdsPrefContrast {
-  @Element() private element: HTMLMdsPrefContrastElement;
   private readonly localStorageAlias: string = 'mdsPrefConsumption';
   private readonly customPropertyAlias: string = '--magma-pref-consumption';
   private readonly defaultMode: ConsumptionModeType = 'high';
@@ -38,11 +27,6 @@ export class MdsPrefContrast {
     es: localeEs,
     it: localeIt,
   });
-  @State() language: string;
-  @Method()
-  async updateLang(): Promise<void> {
-    this.language = this.t.lang(this.element);
-  }
 
   /**
    * Sets the size of the component items nested inside it
@@ -75,7 +59,6 @@ export class MdsPrefContrast {
   };
 
   componentWillRender(): void {
-    this.t.lang(this.element);
     this.setConsumption(
       this.mode ??
         (localStorage.getItem(this.localStorageAlias) as ConsumptionModeType) ??
@@ -87,7 +70,7 @@ export class MdsPrefContrast {
     this.prefChangeEvent.emit({ preference: 'consumption' });
     this.mode = mode;
     localStorage.setItem(this.localStorageAlias, this.mode);
-    if (document) {
+    if (typeof document !== 'undefined') {
       const element = document.querySelector('html');
       for (const key in this.consumption) {
         if ({}.hasOwnProperty.call(this.consumption, key)) {
@@ -97,6 +80,7 @@ export class MdsPrefContrast {
       element?.classList.add(this.consumption[this.mode].selector);
       element?.style.setProperty(this.customPropertyAlias, this.mode);
     }
+    preferenceStore.state.consumption = mode;
   };
 
   @Watch('mode')
@@ -104,9 +88,13 @@ export class MdsPrefContrast {
     this.setConsumption(newValue);
   }
 
+  private readonly handleModeClick = (mode: ConsumptionModeType) => (): void => {
+    this.setConsumption(mode);
+  };
+
   render() {
     return (
-      <Host>
+      <Host pref-contrast={preferenceStore.state.contrast}>
         <mds-text class="info" typography="caption">
           <b>{this.t.get('label')}</b>{' '}
           {this.t.get(this.consumption[this.mode ?? this.defaultMode].label)}
@@ -114,25 +102,19 @@ export class MdsPrefContrast {
         <mds-tab fill size={this.size}>
           <mds-tab-item
             selected={this.mode === 'low'}
-            onClick={() => {
-              this.setConsumption('low');
-            }}
+            onClick={this.handleModeClick('low')}
             class="item item--low"
             icon={mggConsumptionLow}
           ></mds-tab-item>
           <mds-tab-item
             selected={this.mode === 'medium'}
-            onClick={() => {
-              this.setConsumption('medium');
-            }}
+            onClick={this.handleModeClick('medium')}
             class="item item--medium"
             icon={mggConsumptionMedium}
           ></mds-tab-item>
           <mds-tab-item
             selected={this.mode === 'high'}
-            onClick={() => {
-              this.setConsumption('high');
-            }}
+            onClick={this.handleModeClick('high')}
             class="item item--high"
             icon={mggConsumptionHigh}
           ></mds-tab-item>

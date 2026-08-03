@@ -69,11 +69,6 @@
   );
 
   @apply ease-in-out-expo
-    gap-200
-    max-w-[360px]
-    min-w-7200
-    p-400
-    pl-2400
     hide-scrollbar;
 
   /* stylelint-disable-next-line property-disallowed-list */
@@ -82,7 +77,12 @@
   box-sizing: content-box !important;
   display: flex;
   flex-direction: column;
+  gap: --spacing(200);
+  max-width: 360px;
+  min-width: --spacing(7200);
   overflow-x: hidden;
+  padding: --spacing(400);
+  padding-left: --spacing(2400);
   position: fixed;
   right: 0;
   top: 0;

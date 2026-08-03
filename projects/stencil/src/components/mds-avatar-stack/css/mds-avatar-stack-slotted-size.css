@@ -1,0 +1,24 @@
+/* Size variants are driven from the parent: mds-avatar-stack[size] sets the
+ * active size/border/offset tokens on each slotted item via ::slotted, instead
+ * of the item reading its parent. The variant source tokens are the parent's
+ * own --mds-avatar-stack-<size>-* (no item prefix). Cross-browser (no
+ * :host-context); the item keeps its own md default on :host for standalone
+ * use, and ::slotted (outer tree) wins over that default inside a stack. */
+
+:host([size='sm']) ::slotted(mds-avatar-stack-item) {
+  --mds-avatar-stack-item-size: var(--mds-avatar-stack-sm-size);
+  --mds-avatar-stack-item-border: var(--mds-avatar-stack-sm-border);
+  --mds-avatar-stack-item-offset: var(--mds-avatar-stack-sm-offset);
+}
+
+:host([size='md']) ::slotted(mds-avatar-stack-item) {
+  --mds-avatar-stack-item-size: var(--mds-avatar-stack-md-size);
+  --mds-avatar-stack-item-border: var(--mds-avatar-stack-md-border);
+  --mds-avatar-stack-item-offset: var(--mds-avatar-stack-md-offset);
+}
+
+:host([size='lg']) ::slotted(mds-avatar-stack-item) {
+  --mds-avatar-stack-item-size: var(--mds-avatar-stack-lg-size);
+  --mds-avatar-stack-item-border: var(--mds-avatar-stack-lg-border);
+  --mds-avatar-stack-item-offset: var(--mds-avatar-stack-lg-offset);
+}
