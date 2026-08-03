@@ -96,7 +96,8 @@
   "colorspace": "HSL",
   "smooth": false,
   "groups": {
-    "tone": { "ratios": "tone" }
+    "tone": { "ratios": "tone" },
+    "status": { "surface": true }
   },
   "theme": {
     "colorspace": "OKLCH",

@@ -3,7 +3,13 @@ import { APCAcontrast, sRGBtoY } from 'apca-w3';
 import chroma from 'chroma-js';
 import type { ColorConfig, MagmaConfig } from '../../src/lib/color.mjs';
 import { createColorTokens } from '../../src/lib/color.mjs';
-import { SURFACE_ROLES, BORDER_ROLES, type ThemeConfig } from '../../src/lib/surface.mjs';
+import {
+  SURFACE_ROLES,
+  BORDER_ROLES,
+  groupOf,
+  resolveSurfaceOptIn,
+  type ThemeConfig,
+} from '../../src/lib/surface.mjs';
 import { TEXT_ROLES } from '../../src/lib/text-role.mjs';
 import boxShadowTokens from '../../tokens/cosmetic/box-shadow.json';
 
@@ -104,10 +110,28 @@ function familyOf(color: ColorConfig): string {
   return color.name.split('.')[1];
 }
 
+/**
+ * Groups that MUST generate surfaces, shown checked and locked. `status` is
+ * mandatory because a status component (banner, toast, badge) paints text on its
+ * own tinted background, and that pair only has a contrast guarantee when the
+ * family carries generated `--text-*` roles (text-role picks the step against the
+ * WORST of the family's surfaces). Left optional, a status family would fall back
+ * to hand-picked ramp steps in each component - which is what it does today.
+ */
+const REQUIRED_SURFACE_GROUPS = new Set(['status']);
+
+/**
+ * Groups that can never be a surface seed. `variant.*` is an alias-only accent
+ * family (constraint A3, issue #613), so it is excluded from both lists.
+ */
+const EXCLUDED_SURFACE_GROUPS = new Set(['variant']);
+
 interface SurfaceManagerProps {
   config: MagmaConfig;
   /** toggle the per-color surface opt-in flag */
   onToggleSurface: (colorName: string, on: boolean) => void;
+  /** toggle the group-level opt-in (groups.<group>.surface) */
+  onToggleGroupSurface: (groupName: string, on: boolean) => void;
   /** mutate the global theme block (initialized from defaults if absent) */
   onUpdateTheme: (mutate: (theme: ThemeConfig) => void) => void;
 }
@@ -116,11 +140,23 @@ interface SurfaceManagerProps {
 type RoleSet = Record<string, { value: string }>;
 type FamilyModes = { light: RoleSet; dark: RoleSet };
 
-export function SurfaceManager({ config, onToggleSurface, onUpdateTheme }: SurfaceManagerProps) {
+export function SurfaceManager({
+  config,
+  onToggleSurface,
+  onToggleGroupSurface,
+  onUpdateTheme,
+}: SurfaceManagerProps) {
   const theme = config.theme ?? DEFAULT_THEME;
   // preview-only: which Magma box-shadow renders on the surface boxes (default off)
   const [previewShadow, setPreviewShadow] = useState('none');
   const shadowValue = SHADOW_OPTIONS.find((o) => o.name === previewShadow)?.value ?? 'none';
+
+  // the families eligible to be surfaces, and the groups they fall into (config
+  // order, deduped) - both lists exclude the alias-only accent group
+  const surfaceColors = config.colors.filter(
+    (color) => !color.disabled && !EXCLUDED_SURFACE_GROUPS.has(groupOf(color)),
+  );
+  const surfaceGroups = [...new Set(surfaceColors.map(groupOf))];
   // B5: the preview column shows one panel at a time (manual tab switch); surface boxes
   // lead by default, so editing surface levels shows their effect without a tab change
   const [previewTab, setPreviewTab] = useState<'text' | 'surface'>('surface');
@@ -192,32 +228,78 @@ export function SurfaceManager({ config, onToggleSurface, onUpdateTheme }: Surfa
         section below.
       </p>
 
-      {/* Section 1: opt-in */}
+      {/* Section 1a: opt-in by GROUP - the coarse switch. A group opts every one of
+        its families in at once; the per-family list below refines it. */}
+      <div class="scale-card">
+        <div class="scale-card-head">
+          <span class="scale-usage">surface groups</span>
+          <span class="scales-hint">
+            a whole group at once - every family in it generates a <code>--surface-*</code> /{' '}
+            <code>--border-*</code> / <code>--text-*</code> scale
+          </span>
+        </div>
+        <div class="surface-optin">
+          {surfaceGroups.map((group) => {
+            const required = REQUIRED_SURFACE_GROUPS.has(group);
+            return (
+              <label
+                class={`surface-optin-item${required ? ' is-locked' : ''}`}
+                title={
+                  required
+                    ? `${group} always generates surfaces: its components paint text on their own tinted background, so the pair needs a generated text role to be legible by construction`
+                    : group
+                }
+              >
+                <input
+                  type="checkbox"
+                  checked={required || Boolean(config.groups?.[group]?.surface)}
+                  disabled={required}
+                  onChange={(e) =>
+                    onToggleGroupSurface(group, (e.target as HTMLInputElement).checked)
+                  }
+                />
+                {group}
+                {required && <span class="scales-hint"> always on</span>}
+              </label>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Section 1b: opt-in by FAMILY - the refinement. A family with no flag of its
+        own follows its group; checking or unchecking one writes an explicit override. */}
       <div class="scale-card">
         <div class="scale-card-head">
           <span class="scale-usage">surface families</span>
           <span class="scales-hint">
-            check every family that should generate a <code>--surface-*</code> /{' '}
-            <code>--border-*</code> scale (multiple allowed - themes repoint the tint between them)
+            refine the groups above per family - a family with no flag of its own follows its group;
+            the tints you opt in here are also the ones that become themes below
           </span>
         </div>
         <div class="surface-optin">
-          {config.colors
-            // A3: `variant.*` is an alias-only accent family, never a surface seed
-            .filter((color) => !color.disabled && color.name.split('.')[0] !== 'variant')
-            .map((color) => (
-              <label class="surface-optin-item" title={color.name}>
+          {surfaceColors.map((color) => {
+            const group = groupOf(color);
+            const on = resolveSurfaceOptIn(config, color) !== undefined;
+            const inherited =
+              color.surface === undefined && Boolean(config.groups?.[group]?.surface);
+            return (
+              <label
+                class={`surface-optin-item${inherited ? ' is-inherited' : ''}`}
+                title={inherited ? `${color.name} (follows the ${group} group)` : color.name}
+              >
                 <input
                   type="checkbox"
-                  checked={Boolean(color.surface)}
+                  checked={on}
                   onChange={(e) =>
                     onToggleSurface(color.name, (e.target as HTMLInputElement).checked)
                   }
                 />
                 <span class="swatch" style={{ background: color.color }} />
                 {familyOf(color)}
+                {inherited && <span class="scales-hint"> via {group}</span>}
               </label>
-            ))}
+            );
+          })}
         </div>
       </div>
 

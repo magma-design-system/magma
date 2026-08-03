@@ -1,6 +1,7 @@
 import { expect, test } from 'vitest'
 
 import { createColorTokens, MagmaConfig } from '../src/lib/color.mjs'
+import { resolveSurfaceOptIn } from '../src/lib/surface.mjs'
 import realConfig from '../.magma-design-tokensrc.json'
 
 const CONFIG = realConfig as MagmaConfig
@@ -47,8 +48,10 @@ test('color and step order follows the config, run after run', () => {
   expect(orderOf(first.tokens).filter((e) => groupName(e) && !isDerived(e))).toEqual(configOrder)
   // the derived surface/border families appear after them, one entry per opted-in
   // family, surfaces first then borders, in config order
+  // opting in happens at TWO levels (group default + per-color override), so the
+  // expectation goes through the same resolver the generator uses
   const surfaceFamilies = CONFIG.colors
-    .filter((color) => !color.disabled && Boolean(color.surface))
+    .filter((color) => !color.disabled && resolveSurfaceOptIn(CONFIG, color) !== undefined)
     .map((color) => color.name.split('.')[1])
   // text roles are DERIVED too (by-target, A7); one entry per opted-in family,
   // appended after surfaces and borders in config order
