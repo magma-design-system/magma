@@ -111,21 +111,42 @@ const parameters = {
     devices,
     // viewports,
   },
+  // Storybook 9 reads `options`, keyed by id (the 7.x shape - a `values` array plus a
+  // `default` name - is no longer read, which is why the previous entries did nothing).
+  //
+  // The entries are the five SURFACE ROLES, so the picker lets a component be judged on
+  // each plane of the system and retints with the active theme. They read the public
+  // `--magma-surface-*` roles, NOT the `--magma-tint-*` block those resolve through:
+  // the tint block is the private seam a theme repoints (and where the contrast
+  // promotions land), and no component sheet reads it - keep this consumer on the same
+  // side of the contract as everything else.
+  //
+  // No default is set on purpose: with no background chosen the canvas comes from the
+  // `body` rule in styles.css, which is token-driven too (`bg-surface-overlay` - pure
+  // white in light, following the theme in dark). So the theme-aware neutral canvas is
+  // the DEFAULT state and this picker is only the manual override.
+  //
+  // The fallbacks are what make the swatches render. Each value is used in TWO frames:
+  // the preview, where the tokens exist and the var wins, so the applied background
+  // follows the theme; and the MANAGER, which draws the swatch in the toolbar and never
+  // loads the token CSS, so there the var resolves to nothing and only the fallback is
+  // left. They are the LIGHT values of the neutral family and exist for the swatch only -
+  // refresh them if the surface ramp is retuned (`--surface-neutral-*` in design-tokens).
   backgrounds: {
-    values: [
-      { name: 'White', value: 'rgb(255 255 255)' },
-      { name: 'Light', value: 'rgb(var(--tone-neutral-10, 248 248 248))' },
-      { name: 'Grey', value: 'rgb(var(--tone-neutral-06, 162 162 162))' },
-      { name: 'Dark', value: 'rgb(var(--tone-neutral-01, 33 33 33))' },
-      { name: 'Black', value: 'rgb(0 0 0)' },
-    ],
-    // default: 'White',
+    options: {
+      neutral: { name: 'Neutral', value: 'rgb(var(--tone-neutral-seed, 255 255 255))' },
+      sunken: { name: 'Sunken', value: 'rgb(var(--magma-surface-sunken, 232 232 232))' },
+      muted: { name: 'Muted', value: 'rgb(var(--magma-surface-muted, 235 235 235))' },
+      default: { name: 'Default', value: 'rgb(var(--magma-surface-default, 242 242 242))' },
+      raised: { name: 'Raised', value: 'rgb(var(--magma-surface-raised, 248 248 248))' },
+      overlay: { name: 'Overlay', value: 'rgb(var(--magma-surface-overlay, 255 255 255))' },
+    },
   },
 };
 
 const decorators = [
   (Story) => (
-    <div className="p-600">
+    <div className="p-lg">
       <Story />
     </div>
   ),

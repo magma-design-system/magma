@@ -22,9 +22,14 @@
 @import '@maggioli-design-system/styles/dist/css/base.css' layer(base);
 @import './tailwind.css';
 
+/* The story canvas is a NEUTRAL test surface, not a page: `surface-overlay` is the top
+   of the surface scale (100% lightness), so it is pure white in light and still follows
+   the theme in dark, where a hardcoded white would make a dark component unreadable.
+   `surface-default` was the page canvas (96% = 242 242 242), which tinted every
+   component being judged. */
 @layer overrides {
   body {
-    @apply bg-surface-default
+    @apply bg-surface-overlay
     text-tone-neutral-03
       transition-colors
       duration-300
