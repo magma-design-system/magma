@@ -11,6 +11,7 @@ import {
   type ThemeConfig,
 } from '../../src/lib/surface.mjs';
 import { TEXT_ROLES } from '../../src/lib/text-role.mjs';
+import { DEFAULT_TARGETS, wcag2Ratio } from '../../src/lib/contrast-gate.js';
 import boxShadowTokens from '../../tokens/cosmetic/box-shadow.json';
 
 type Mode = 'light' | 'dark';
@@ -41,8 +42,8 @@ export const DEFAULT_THEME: ThemeConfig = {
     dark: { sunken: '9%', muted: '16%', default: '23%', raised: '31%', overlay: '41%' },
   },
   borders: {
-    light: { muted: '90%', default: '83%', strong: '72%' },
-    dark: { muted: '36%', default: '45%', strong: '50%' },
+    light: { muted: '89%', default: '82%', strong: '64%' },
+    dark: { muted: '37%', default: '54%', strong: '74%' },
   },
   // APCA Lc targets per text role vs the worst-case surface (A7); engine picks the step
   text: { default: 91, muted: 75, subtle: 70, disabled: 53 },
@@ -72,6 +73,40 @@ const BORDER_PURPOSE: Record<string, string> = {
   default: 'functional outlines: inputs, buttons',
   strong: 'assertive / state: selected, focus, error',
 };
+// Borders are judged with the WCAG2 non-text ratio (NOT APCA), and only the STATE roles
+// carry the 3:1 floor of WCAG 1.4.11 - decorative borders deliberately have none, so a
+// verdict on them would be permanent noise. Both facts mirror the severity split in
+// contrast-gate.ts ("borders vs the elevated surfaces": strong/focus are `warn`, the rest
+// `info`), so the playground and the CI gate cannot drift apart.
+// NOTE the gate measures every border on `surface-raised` too, while the chip can only show
+// the surface it is actually drawn on (`default`); in dark `raised` is the stricter of the
+// two, so the chip is not always the worst case the gate reports.
+const BORDER_STATE_ROLES = new Set(['strong', 'focus']);
+const BORDER_MIN_RATIO = DEFAULT_TARGETS.borderState;
+
+export interface BorderVerdict {
+  ratio: number;
+  /** true when the role conveys state, i.e. when the ratio floor applies at all */
+  isState: boolean;
+  ok: boolean;
+  note: string;
+}
+/** SHARED by both border previews (the surface panel and the theme cards) so one rule
+ * decides the verdict in both. `bgHex` is the surface the chip is actually drawn on. */
+export function borderVerdict(borderHex: string, bgHex: string, role: string): BorderVerdict {
+  const ratio = Math.round(wcag2Ratio(borderHex, bgHex) * 10) / 10;
+  const isState = BORDER_STATE_ROLES.has(role);
+  const ok = ratio >= BORDER_MIN_RATIO;
+  const note = !isState
+    ? `${ratio}:1 on the surface below; decorative, no ratio floor`
+    : ok
+      ? `${ratio}:1 on the surface below, OK (floor ${BORDER_MIN_RATIO}:1, WCAG 1.4.11)`
+      : `${ratio}:1 on the surface below is under the ${BORDER_MIN_RATIO}:1 floor for a border that conveys state (WCAG 1.4.11)`;
+  return { ratio, isState, ok, note };
+}
+export const borderTick = (ok: boolean): string =>
+  ok ? String.fromCodePoint(0x2705) : String.fromCodePoint(0x26a0, 0xfe0f);
+
 // text roles are chosen BY APCA TARGET vs the worst-case surface (A7); see SEMANTIC_COLOR_SPEC 9.1
 const TEXT_PURPOSE: Record<string, string> = {
   default: 'body / primary data (highest contrast)',
@@ -90,17 +125,20 @@ const TEXT_ROLE_MIN_LC: Record<string, number> = {
   disabled: 30,
 };
 
-// Slider ranges for the lightness editors, per mode: light surfaces stay high,
-// dark surfaces stay low. Borders sit a little darker than surfaces in light mode
-// (they are functional outlines), so they get a wider light range than surfaces.
+// Slider ranges for the lightness editors. Surfaces are confined to a band per mode
+// (high in light, low in dark) because they ARE the canvas. Borders are not: a border
+// has to stand out FROM the surface it sits on, and in dark `strong` has to climb well
+// past the 50% ceiling of the dark surfaces to read at all, so they get the whole ramp
+// in both modes. There is deliberately no guard here against a level that dissolves
+// into the canvas: the contrast gate is what catches that, not the slider bounds.
 type LevelRange = Record<Mode, { min: number; max: number }>;
 const SURFACE_RANGE: LevelRange = {
   light: { min: 85, max: 100 },
   dark: { min: 1, max: 50 },
 };
 const BORDER_RANGE: LevelRange = {
-  light: { min: 50, max: 100 },
-  dark: { min: 1, max: 50 },
+  light: { min: 0, max: 100 },
+  dark: { min: 0, max: 100 },
 };
 // text targets are an APCA Lc magnitude (0..~106), not a lightness percentage
 const TEXT_TARGET_MAX = 106;
@@ -530,18 +568,25 @@ export function SurfaceManager({
                               })()}
                             </div>
                             <div class="sf-borders">
-                              {(BORDER_ROLES as readonly string[]).map((role) => (
-                                <span
-                                  class="sf-border-chip"
-                                  style={{
-                                    borderColor: hex(b, role),
-                                    background: hex(s, 'default'),
-                                  }}
-                                  title={BORDER_PURPOSE[role]}
-                                >
-                                  border {role}
-                                </span>
-                              ))}
+                              {(BORDER_ROLES as readonly string[]).map((role) => {
+                                const bg = hex(s, 'default');
+                                const v = borderVerdict(hex(b, role), bg, role);
+                                return (
+                                  <span
+                                    class="sf-border-chip"
+                                    style={{ borderColor: hex(b, role), background: bg }}
+                                    title={`${BORDER_PURPOSE[role]} - ${v.note}`}
+                                  >
+                                    border {role} <code>{v.ratio}:1</code>
+                                    {v.isState && (
+                                      <span class="sf-text-check" aria-hidden="true">
+                                        {' '}
+                                        {borderTick(v.ok)}
+                                      </span>
+                                    )}
+                                  </span>
+                                );
+                              })}
                             </div>
                           </div>
                         );

@@ -4,6 +4,7 @@ import chroma from 'chroma-js';
 import type { MagmaConfig } from '../../src/lib/color.mjs';
 import { createColorTokens } from '../../src/lib/color.mjs';
 import { semantic, accentTintOverride } from '../../semantic.config';
+import { borderVerdict } from './surfaces.js';
 
 /**
  * Themes - a DERIVED section under surfaces (epic #328, spec 8). It reads the
@@ -307,14 +308,23 @@ function ThemeCard({
                   })}
                 </div>
                 <div class="tsw-borders">
-                  {(BORDER_ROLES as readonly string[]).map((role) => (
-                    <span
-                      class="tsw-bchip"
-                      style={{ borderColor: hex(b, role), background: canvas }}
-                    >
-                      border {role}
-                    </span>
-                  ))}
+                  {(BORDER_ROLES as readonly string[]).map((role) => {
+                    // Ratio only, NO pass/warn tick: these cards report numbers so the
+                    // families can be compared (same as the text roles above, which show
+                    // Lc without a verdict). The verdict against the 3:1 floor lives in
+                    // the surface panel; `borderVerdict` is still the source of the number
+                    // so the rounding cannot drift between the two previews.
+                    const v = borderVerdict(hex(b, role), canvas, role);
+                    return (
+                      <span
+                        class="tsw-bchip"
+                        style={{ borderColor: hex(b, role), background: canvas }}
+                        title={v.note}
+                      >
+                        border {role} <code>{v.ratio}:1</code>
+                      </span>
+                    );
+                  })}
                 </div>
                 {/* accents applied on THIS theme's surface, per mode. Each role: a
                     solid pill (emphasis fill + on-emphasis text) with its APCA Lc,
