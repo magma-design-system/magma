@@ -69,7 +69,7 @@
 
 :host(:hover),
 :host(:focus-within) {
-  --mds-input-select-variant-color-rgb: var(--variant-primary-03);
+  --mds-input-select-variant-color-rgb: var(--magma-accent-scale-03);
   --mds-input-select-ring: 0 0 0 3px rgb(var(--mds-input-select-variant-color-rgb) / 1);
   --mds-input-select-shadow:
     0 4px 6px -1px rgb(var(--mds-input-select-variant-color-rgb) / 0.1),
@@ -182,7 +182,7 @@ mds-input-tip {
   }
 
   :host {
-    --mds-input-select-background: rgb(var(--variant-primary-07));
+    --mds-input-select-background: rgb(var(--magma-accent-scale-07));
   }
 }
 

@@ -56,7 +56,7 @@
   --mds-tree-branch-dot-expanded-color: rgb(var(--magma-scale-06));
   --mds-tree-toggle-gap: --spacing(150);
   --mds-tree-toggle-icon-async-background: rgb(var(--magma-scale-09));
-  --mds-tree-toggle-icon-async-color: rgb(var(--variant-primary-03));
+  --mds-tree-toggle-icon-async-color: rgb(var(--magma-accent-scale-03));
   --mds-tree-toggle-icon-chevron-default-background: rgb(var(--magma-accent-emphasis));
   --mds-tree-toggle-icon-chevron-default-color: rgb(var(--magma-text-on-emphasis));
   --mds-tree-toggle-icon-chevron-expanded-background: var(

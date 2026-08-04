@@ -6,10 +6,10 @@
 
 :host([pref-theme='dark']:not([pref-theme-scheme='light'])) {
   --mds-input-select-ring: var(--shadow-outline-50);
-  --mds-input-select-arrow-icon-blur-background-color: rgb(var(--variant-primary-05));
+  --mds-input-select-arrow-icon-blur-background-color: rgb(var(--magma-accent-scale-05));
   --mds-input-select-arrow-icon-blur-color: rgb(var(--mds-input-select-variant-color));
   --mds-input-select-arrow-icon-hover-background-color: rgb(var(--magma-accent-emphasis));
-  --mds-input-select-arrow-icon-hover-color: rgb(var(--variant-primary-08));
+  --mds-input-select-arrow-icon-hover-color: rgb(var(--magma-accent-scale-08));
 
   .input {
     color: rgb(var(--magma-text-muted));
@@ -20,10 +20,10 @@
   :host([pref-theme='system']:not([pref-theme-scheme='light'])),
   :host(:not([pref-theme])) {
     --mds-input-select-ring: var(--shadow-outline-50);
-    --mds-input-select-arrow-icon-blur-background-color: rgb(var(--variant-primary-05));
+    --mds-input-select-arrow-icon-blur-background-color: rgb(var(--magma-accent-scale-05));
     --mds-input-select-arrow-icon-blur-color: rgb(var(--mds-input-select-variant-color));
     --mds-input-select-arrow-icon-hover-background-color: rgb(var(--magma-accent-emphasis));
-    --mds-input-select-arrow-icon-hover-color: rgb(var(--variant-primary-08));
+    --mds-input-select-arrow-icon-hover-color: rgb(var(--magma-accent-scale-08));
 
     .input {
       color: rgb(var(--magma-text-muted));

@@ -37,7 +37,7 @@
 
 :host {
   --mds-input-background: rgb(var(--tone-neutral-seed));
-  --mds-input-icon-color: rgb(var(--variant-primary-03));
+  --mds-input-icon-color: rgb(var(--magma-accent-scale-03));
   --mds-input-placeholder-default-color: rgb(var(--magma-scale-06));
   --mds-input-placeholder-focus-color: rgb(var(--magma-scale-07));
   --mds-input-placeholder-hover-color: var(--mds-input-placeholder-default-color);
@@ -53,7 +53,7 @@
   --mds-input-tip-horizontal-offset-focused: --spacing(100);
   --mds-input-tip-horizontal-offset: --spacing(100);
   --mds-input-tip-vertical-offset: --spacing(100);
-  --mds-input-variant-color-rgb: var(--variant-primary-03);
+  --mds-input-variant-color-rgb: var(--magma-accent-scale-03);
   --mds-input-border-radius: var(--radius-xl);
   --mds-input-transition-duration: var(--duration-300);
 
@@ -322,7 +322,7 @@ mds-input-tip {
   }
 
   :host {
-    --mds-input-background: var(--variant-primary-07');
+    --mds-input-background: var(--magma-accent-scale-07');
   }
 } */
 

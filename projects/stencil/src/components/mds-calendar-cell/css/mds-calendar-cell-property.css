@@ -125,7 +125,7 @@
 
 @property --mds-calendar-cell-preselection-today-color {
   inherits: true;
-  initial-value: rgb(var(--variant-primary-03));
+  initial-value: rgb(var(--magma-accent-scale-03));
   syntax: '<color>';
 }
 
@@ -179,13 +179,13 @@
 
 @property --mds-calendar-cell-selection-current-month-weekend-color {
   inherits: true;
-  initial-value: rgb(var(--variant-primary-07));
+  initial-value: rgb(var(--magma-accent-scale-07));
   syntax: '<color>';
 }
 
 @property --mds-calendar-cell-selection-other-month-background {
   inherits: true;
-  initial-value: rgb(var(--variant-primary-07));
+  initial-value: rgb(var(--magma-accent-scale-07));
   syntax: '<color>';
 }
 

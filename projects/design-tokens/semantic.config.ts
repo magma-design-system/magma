@@ -235,7 +235,27 @@ export const accentTintOverride = (role: string, family: string): string[] => {
     ...Object.entries(accentStateSteps).map(
       ([state, step]) => `  --magma-tint-accent-${infix}${state}: var(--${family}-${step});`,
     ),
+    ...accentScaleTintOverride(role, family),
   ];
+};
+
+/**
+ * The `--magma-tint-accent-<infix>scale-*` lines pointing an accent's RAMP at its variant
+ * family - the accent counterpart of `scaleTintOverride`, and it exists for the same
+ * reason. A component that reaches for a raw accent step (`--variant-primary-06`) is
+ * pinned to ONE variant family, so the moment a theme repoints that accent through
+ * `accents` the roles follow and the raw step does not: the emphasis splits in two inside
+ * a single component. Routed through the tint block the raw steps follow the accent.
+ *
+ * Called FROM `accentTintOverride` on purpose: the base layer, every named-theme override
+ * and the playground theme export all go through that one helper, so there is no place
+ * left where an accent can be repointed without its ramp coming along.
+ */
+export const accentScaleTintOverride = (role: string, family: string): string[] => {
+  const infix = accentInfix(role);
+  return scaleStepList().map(
+    (step) => `  --magma-tint-accent-${infix}scale-${step}: var(--${family}-${step});`,
+  );
 };
 
 /**

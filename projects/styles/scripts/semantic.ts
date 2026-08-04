@@ -184,6 +184,19 @@ Object.entries(accents).forEach(([role, family]) => {
     ),
   );
   layer.push(alias(`accent-${infix}on-emphasis`, seed, `accent-${infix}on-emphasis`));
+  // this accent's RAMP, for the component sheets that still reach for a raw variant step
+  // where no accent role covers the use (or where the role that matches by value carries
+  // the wrong name - `emphasis-hover` on a resting colour). Pinned to --variant-<family>-*
+  // those uses split the emphasis in two the moment a theme repoints the accent: the roles
+  // follow, the raw steps stay behind. Routed through the tint block they follow it.
+  //
+  // NOT bridged to Tailwind, exactly like the neutral ramp (hence the raw push): it is a
+  // transitional internal vocabulary on the way to naming those uses, not an API.
+  scaleStepList().forEach((step) =>
+    layer.push(
+      `  --magma-accent-${infix}scale-${step}: var(--magma-tint-accent-${infix}scale-${step});`,
+    ),
+  );
 });
 
 layer.push('}', '');
@@ -315,13 +328,31 @@ const assertRampsExist = async (): Promise<void> => {
     for (const step of scaleStepList())
       if (!declared.has(`--${family}-${step}`)) missing.push(`${theme} -> --${family}-${step}`);
 
+  // The ACCENT ramps get the same guarantee: an accent's raw steps now resolve through
+  // --magma-tint-accent-<infix>scale-*, so a variant family missing a step would put every
+  // consumer of that step back on the fallback chain, silently.
+  const accentFamilies = new Map<string, string>();
+  Object.entries(accents).forEach(([role, family]) =>
+    accentFamilies.set(`(base accent) ${role}`, family),
+  );
+  Object.entries(themes).forEach(([name, def]) => {
+    const { accents: override } = normalizeTheme(def);
+    if (override)
+      Object.entries(override).forEach(([role, family]) =>
+        accentFamilies.set(`theme ${name} -> accent ${role}`, family),
+      );
+  });
+  for (const [where, family] of accentFamilies)
+    for (const step of scaleStepList())
+      if (!declared.has(`--${family}-${step}`)) missing.push(`${where} -> --${family}-${step}`);
+
   if (missing.length) {
     throw new Error(
-      `${missing.length} --magma-tint-scale-* pointer(s) have no primitive to resolve to:\n` +
+      `${missing.length} ramp pointer(s) have no primitive to resolve to:\n` +
         missing.map((m) => `  ${m}`).join('\n') +
-        `\nA theme needs BOTH a surface and a full ramp. Either opt the family's group` +
-        ` into the ramp, or name the ramp explicitly in semantic.config.ts themes,` +
-        ` e.g. { surface: 'blue', scale: 'label-blue' }.`,
+        `\nA theme needs BOTH a surface and a full ramp, and an accent needs a full variant` +
+        ` ramp. Either opt the family's group into the ramp, or name the ramp explicitly in` +
+        ` semantic.config.ts themes, e.g. { surface: 'blue', scale: 'label-blue' }.`,
     );
   }
 };

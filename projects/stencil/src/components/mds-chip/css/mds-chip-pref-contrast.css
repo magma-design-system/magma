@@ -9,7 +9,7 @@
   --mds-chip-icon-background-selected: rgb(var(--magma-accent-emphasis-hover));
   --mds-chip-icon-color: rgb(var(--magma-text-on-emphasis));
   --mds-chip-opacity-disabled: var(--opacity-disabled, 0.6);
-  --mds-chip-backgroud-selected: rgb(var(--magma-scale-09));
+  --mds-chip-background-selected: rgb(var(--magma-scale-09));
   --mds-chip-color-selected: rgb(var(--magma-text-default));
   --mds-chip-icon-color-selected: rgb(var(--magma-text-on-emphasis));
 
@@ -24,7 +24,7 @@
     --mds-chip-icon-background-selected: rgb(var(--magma-accent-emphasis-hover));
     --mds-chip-icon-color: rgb(var(--magma-text-on-emphasis));
     --mds-chip-opacity-disabled: var(--opacity-disabled, 0.6);
-    --mds-chip-backgroud-selected: rgb(var(--magma-scale-09));
+    --mds-chip-background-selected: rgb(var(--magma-scale-09));
     --mds-chip-color-selected: rgb(var(--magma-text-default));
     --mds-chip-icon-color-selected: rgb(var(--magma-text-on-emphasis));
 
