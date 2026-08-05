@@ -1,0 +1,76 @@
+/*
+  Document-level registrations for the mds-notification public custom properties.
+
+  Never import this file from a component stylesheet: an @property rule inside a shadow root
+  registers nothing, and every Magma component is shadow: true.
+  projects/styles/scripts/properties.ts collects these into globals.css, which the document does
+  load, and resolves each initial-value down to a literal - see that file for the full
+  rationale. inherits is true throughout, because that is what the unregistered behaviour
+  already does today.
+*/
+
+@property --mds-notification-color {
+  inherits: true;
+  initial-value: rgb(var(--magma-text-on-emphasis));
+  syntax: '<color>';
+}
+
+@property --mds-notification-dot-background {
+  inherits: true;
+  initial-value: rgb(var(--status-error-05));
+  syntax: '<color>';
+}
+
+@property --mds-notification-dot-padding {
+  inherits: true;
+  initial-value: 6px;
+  syntax: '<length>';
+}
+
+@property --mds-notification-min-width {
+  inherits: true;
+  initial-value: 20px;
+  syntax: '<length>';
+}
+
+@property --mds-notification-ring-color {
+  inherits: true;
+  initial-value: rgb(var(--magma-text-on-emphasis));
+  syntax: '<color>';
+}
+
+@property --mds-notification-ring-size {
+  inherits: true;
+  initial-value: 2px;
+  syntax: '<length>';
+}
+
+@property --mds-notification-size {
+  inherits: true;
+  initial-value: 20px;
+  syntax: '<length>';
+}
+
+@property --mds-notification-transition-duration {
+  inherits: true;
+  initial-value: 200ms;
+  syntax: '<time>';
+}
+
+@property --mds-notification-translate {
+  inherits: true;
+  initial-value: translate( calc(20px / -1.75), calc(20px / -2) );
+  syntax: '<transform-function>';
+}
+
+@property --mds-notification-translate-offset-x {
+  inherits: true;
+  initial-value: -1.75;
+  syntax: '<number>';
+}
+
+@property --mds-notification-translate-offset-y {
+  inherits: true;
+  initial-value: -2;
+  syntax: '<number>';
+}

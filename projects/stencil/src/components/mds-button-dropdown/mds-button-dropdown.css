@@ -4,18 +4,6 @@
  * @prop --mds-button-dropdown-radius: Sets the border-radius of the component
  */
 
-@property --mds-button-dropdown-radius {
-  inherits: true;
-  initial-value: var(--radius-2xl);
-  syntax: '<length>';
-}
-
-@property --mds-button-dropdown-window-radius {
-  inherits: true;
-  initial-value: var(--radius-2xl);
-  syntax: '<length>';
-}
-
 :host {
   --mds-button-dropdown-radius: var(--radius-2xl);
   --mds-button-dropdown-window-radius: var(--radius-2xl);

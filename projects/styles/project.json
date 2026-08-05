@@ -5,7 +5,12 @@
   "tags": ["type:lib"],
   "targets": {
     "build": {
-      "dependsOn": ["^build", "design-tokens:build"]
+      "dependsOn": ["^build", "design-tokens:build"],
+      "inputs": [
+        "default",
+        "^default",
+        "{workspaceRoot}/projects/stencil/src/components/**/*-property.css"
+      ]
     }
   }
 }

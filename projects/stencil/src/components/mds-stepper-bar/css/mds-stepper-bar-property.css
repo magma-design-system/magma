@@ -1,0 +1,56 @@
+/*
+  Document-level registrations for the mds-stepper-bar public custom properties.
+
+  Never import this file from a component stylesheet: an @property rule inside a shadow root
+  registers nothing, and every Magma component is shadow: true.
+  projects/styles/scripts/properties.ts collects these into globals.css, which the document does
+  load, and resolves each initial-value down to a literal - see that file for the full
+  rationale. inherits is true throughout, because that is what the unregistered behaviour
+  already does today.
+
+  Deliberately NOT registered:
+    - --mds-stepper-bar-gap: read by mds-stepper-bar-item as var(--mds-stepper-bar-gap,
+      <default>), so a registration would keep that fallback from ever firing.
+*/
+
+@property --mds-stepper-bar-offset-margin {
+  inherits: true;
+  initial-value: 0;
+  syntax: '<length>';
+}
+
+@property --mds-stepper-bar-scroll-behavior {
+  inherits: true;
+  initial-value: smooth;
+  syntax: 'smooth | auto';
+}
+
+@property --mds-stepper-bar-scrollbar-margin {
+  inherits: true;
+  initial-value: 0;
+  syntax: '<length>';
+}
+
+@property --mds-stepper-bar-scrollbar-radius {
+  inherits: true;
+  initial-value: 0;
+  syntax: '<length>';
+}
+
+@property --mds-stepper-bar-scrollbar-size {
+  inherits: true;
+  initial-value: --spacing(200);
+  syntax: '<length>';
+}
+
+@property --mds-stepper-bar-scrollbar-thumb-background {
+  inherits: true;
+  initial-value: rgb(var(--magma-scale-06));
+  syntax: '<color>';
+}
+
+@property --mds-stepper-bar-scrollbar-track-background {
+  inherits: true;
+  initial-value: rgb(var(--magma-scale-08));
+  syntax: '<color>';
+}

@@ -4,14 +4,8 @@
  * @prop --mds-separator-background: Background color of the separator element.
  */
 
-@property --mds-separator-background {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-08));
-  syntax: '<color>';
-}
-
 :host {
-  --mds-separator-background: rgb(var(--tone-neutral-08));
+  --mds-separator-background: rgb(var(--magma-scale-08));
 
   background-color: var(--mds-separator-background);
   border-radius: var(--radius-full);

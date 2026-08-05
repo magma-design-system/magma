@@ -1,0 +1,63 @@
+/*
+  Document-level registrations for the mds-radial-menu public custom properties.
+
+  Never import this file from a component stylesheet: an @property rule inside a shadow root
+  registers nothing, and every Magma component is shadow: true.
+  projects/styles/scripts/properties.ts collects these into globals.css, which the document does
+  load, and resolves each initial-value down to a literal - see that file for the full
+  rationale. inherits is true throughout, because that is what the unregistered behaviour
+  already does today.
+
+  Deliberately NOT registered:
+    - --mds-radial-menu-transition-duration: read by mds-radial-menu-item as
+      var(--mds-radial-menu-transition-duration, <default>), so a registration would keep that
+      fallback from ever firing.
+*/
+
+@property --mds-radial-menu-angle-end {
+  inherits: true;
+  initial-value: 360deg;
+  syntax: '<angle>';
+}
+
+@property --mds-radial-menu-angle-start {
+  inherits: true;
+  initial-value: 0deg;
+  syntax: '<angle>';
+}
+
+@property --mds-radial-menu-context-menu-z-index {
+  inherits: true;
+  initial-value: var(--magma-context-menu-z-index, 8000);
+  syntax: '<integer>';
+}
+
+@property --mds-radial-menu-delay {
+  inherits: true;
+  initial-value: 0.01s;
+  syntax: '<time>';
+}
+
+@property --mds-radial-menu-direction {
+  inherits: true;
+  initial-value: -1;
+  syntax: '<integer>';
+}
+
+@property --mds-radial-menu-disc-background {
+  inherits: true;
+  initial-value: rgb(var(--tone-neutral-seed) / 0.5);
+  syntax: '<color>';
+}
+
+@property --mds-radial-menu-disc-size {
+  inherits: true;
+  initial-value: calc(5rem * 2);
+  syntax: '<length>';
+}
+
+@property --mds-radial-menu-radius {
+  inherits: true;
+  initial-value: 5rem;
+  syntax: '<length>';
+}

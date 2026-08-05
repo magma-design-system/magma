@@ -1,15 +1,20 @@
 import chalk from 'chalk';
 import { mkdir, writeFile } from 'fs/promises';
 import { join } from 'path';
-import { BUILD_DIR } from './meta';
+import { BUILD_DIR, PROJECT_DIR } from './meta';
 import {
   semantic,
   accentInfix,
   accentTintOverride,
   contrastTintOverride,
   hueContrastOverride,
+  scaleFamily,
+  scaleStepList,
+  scaleTintOverride,
   type ThemeDef,
 } from '../../design-tokens/semantic.config';
+import { readFile, readdir } from 'fs/promises';
+import { resolve } from 'path';
 
 /**
  * Generate the semantic color layer (A9) from design-tokens/semantic.config.ts:
@@ -68,6 +73,26 @@ surfaceRoles.forEach((r) => layer.push(`  --magma-tint-${r}: var(--surface-${tin
 borderRoles.forEach((r) => layer.push(`  --magma-tint-border-${r}: var(--border-${tint}-${r});`));
 textRoles.forEach((r) => layer.push(`  --magma-tint-text-${r}: var(--text-${tint}-${r});`));
 layer.push(`  --magma-tint-text-on-emphasis: var(--${seed});`);
+layer.push(...scaleTintOverride(scaleFamily(tint)));
+
+// 1b. the active tint's RAMP, for the component sheets that still reach for a raw
+//     step where no role covers the use yet (washes, scrims, shadows, decorative
+//     fills). Pinned to --tone-neutral-* those uses split the theming in two: the
+//     roles retint, the raw steps stay a static neutral. Routed through the tint
+//     block they follow the theme like everything else.
+//
+//     NOT bridged to Tailwind on purpose (hence the raw push, not `alias`): this is
+//     a transitional internal vocabulary on the way to naming those uses, not an
+//     API to build on. Publishing `--color-scale-09` utilities would make the raw
+//     step the easy choice again and freeze the step-indexed habit the semantic
+//     layer exists to remove.
+layer.push(
+  '',
+  '  /* Active tint ramp (spec 8) - transitional, for uses no role covers yet; not bridged to Tailwind. */',
+);
+scaleStepList().forEach((step) =>
+  layer.push(`  --magma-scale-${step}: var(--magma-tint-scale-${step});`),
+);
 
 // 2. surfaces (from the tint pointers)
 layer.push('', '  /* Surfaces - elevation + same-plane prominence (spec 6.1) */');
@@ -269,12 +294,17 @@ const layerCss =
 // accent it overrides - so a theme retints background, foreground AND accents in
 // one swap. A theme that changes nothing (base tint, no accent override) emits
 // nothing. String shorthand == surface family only (back-compat).
-const normalizeTheme = (def: ThemeDef): { surface?: string; accents?: Record<string, string> } =>
+const normalizeTheme = (
+  def: ThemeDef,
+): { surface?: string; accents?: Record<string, string>; scale?: string } =>
   typeof def === 'string' ? { surface: def } : def;
+
+/** Every ramp family a theme points at, so they can be checked against the tokens. */
+const rampFamilies = new Map<string, string>([['(base tint)', scaleFamily(tint)]]);
 
 const themeBlocks = Object.entries(themes)
   .map(([name, def]) => {
-    const { surface, accents: accentOverride } = normalizeTheme(def);
+    const { surface, accents: accentOverride, scale } = normalizeTheme(def);
     const rules: string[] = [];
     if (surface && surface !== tint) {
       surfaceRoles.forEach((r) =>
@@ -286,6 +316,11 @@ const themeBlocks = Object.entries(themes)
       textRoles.forEach((r) =>
         rules.push(`  --magma-tint-text-${r}: var(--text-${surface}-${r});`),
       );
+      // the ramp retints with the rest of the block, or the raw steps a component
+      // still uses would stay on the base tint while its surfaces moved
+      const family = scaleFamily(surface, scale);
+      rampFamilies.set(name, family);
+      rules.push(...scaleTintOverride(family));
     }
     if (accentOverride) {
       Object.entries(accentOverride).forEach(([role, family]) =>
@@ -309,7 +344,41 @@ const themeBlocks = Object.entries(themes)
   .filter(Boolean);
 const themesCss = `${HEADER('Named themes - retint the --magma-tint-* block per data-theme-name (spec 8).')}\n${themeBlocks.join('\n\n')}\n`;
 
+/**
+ * A theme is only eligible if its family ships a full ramp, not just a surface.
+ * Surfaces can be opted in per group, so a family can have `--surface-x-*` and no
+ * `--x-01..10` - and a ramp pointer that resolves to nothing would silently put
+ * every `--magma-scale-*` consumer back on whatever the fallback chain finds. The
+ * step list is checked against the emitted primitives rather than assumed.
+ */
+const assertRampsExist = async (): Promise<void> => {
+  const tokensDir = resolve(PROJECT_DIR, '../design-tokens/dist/css');
+  const files = (await readdir(tokensDir)).filter((f) => f.endsWith('.css'));
+  const declared = new Set<string>();
+  for (const file of files)
+    for (const match of (await readFile(resolve(tokensDir, file), 'utf8')).matchAll(
+      /^\s*(--[a-z0-9-]+)\s*:/gim,
+    ))
+      declared.add(match[1]);
+
+  const missing: string[] = [];
+  for (const [theme, family] of rampFamilies)
+    for (const step of scaleStepList())
+      if (!declared.has(`--${family}-${step}`)) missing.push(`${theme} -> --${family}-${step}`);
+
+  if (missing.length) {
+    throw new Error(
+      `${missing.length} --magma-tint-scale-* pointer(s) have no primitive to resolve to:\n` +
+        missing.map((m) => `  ${m}`).join('\n') +
+        `\nA theme needs BOTH a surface and a full ramp. Either opt the family's group` +
+        ` into the ramp, or name the ramp explicitly in semantic.config.ts themes,` +
+        ` e.g. { surface: 'blue', scale: 'label-blue' }.`,
+    );
+  }
+};
+
 async function main() {
+  await assertRampsExist();
   const cssDir = join(BUILD_DIR, 'css');
   const tailwindDir = join(BUILD_DIR, 'tailwind');
   await mkdir(cssDir, { recursive: true });
