@@ -95,6 +95,40 @@ at that path.
 until Stencil sets the hydrated attribute. Keep it in the `base` layer and load it
 before the first render to avoid a flash of unstyled custom elements.
 
+## 5. Server-side rendering (SSR)
+
+`@maggioli-design-system/magma/hydrate` exposes `renderToString()`: it serializes
+components to HTML with their shadow DOM inlined as
+`<template shadowrootmode="open">` (declarative shadow DOM), reflected props as
+attributes and the `hydrated` flag already set — so the markup paints with its
+final geometry (no layout shift) and `hydrated.css` does not hide it.
+
+```javascript
+// server only — the module bundles all components and must not reach the client
+import { renderToString } from '@maggioli-design-system/magma/hydrate';
+
+const { html, diagnostics } = await renderToString(
+  '<mds-button variant="primary">Save</mds-button>',
+  { fullDocument: false, serializeShadowRoot: 'declarative-shadow-dom' },
+);
+```
+
+Always check `diagnostics` for `level: 'error'` entries: component failures
+during serialization are reported there, not thrown, and the partial HTML is
+returned anyway.
+
+SSR caveats (by design):
+
+- **Icons render empty on the server** — `mds-icon` fetches SVGs at runtime and
+  skips the fetch during SSR. The box is still reserved (`aspect-ratio` +
+  `width` on `:host`), so nothing shifts; the icon appears after hydration.
+- **The default theme is rendered** — user preferences live in `localStorage`,
+  which does not exist server-side. Publish the `pref-*` classes on `<html>`
+  from an inline script if you need the right theme at first paint.
+
+React consumers get this automatically through the generated server wrappers —
+see [`react.md`](react.md).
+
 ## Gotchas
 
 - Call `defineCustomElements()` exactly once. Calling it twice is harmless but

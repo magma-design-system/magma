@@ -13,6 +13,7 @@ Every published entry point is tree-shakeable except the lazy loader, which regi
 | `magma`         | `/components`               | `MdsButton`, `defineCustomElementMdsButton`, ...      | ✅                                |
 | `magma`         | `/components/mds-button.js` | one component per file                                | ✅                                |
 | `magma`         | `/loader`                   | `defineCustomElements()`, registers everything lazily | ❌ by design                      |
+| `magma`         | `/hydrate`                  | `renderToString()` for SSR (server-only bundle)       | ❌ by design (server bundle)      |
 | `magma`         | `.`                         | lazy runtime + `IconsSetService` (no components)      | n/a                               |
 | `magma`         | `/services`                 | `IconsSetService`                                     | n/a                               |
 | `magma-react`   | `.`                         | barrel of `Mds*` React wrappers                       | ✅                                |
