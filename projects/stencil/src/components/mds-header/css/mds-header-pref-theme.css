@@ -5,12 +5,12 @@
  * OS via @media; the scheme axis gates it. Cross-browser, no :host-context. */
 
 :host([pref-theme='dark']:not([pref-theme-scheme='light'])) {
-  --mds-header-modal-icon-color: rgb(var(--tone-neutral-01));
+  --mds-header-modal-icon-color: rgb(var(--magma-text-default));
 }
 
 @media (prefers-color-scheme: dark) {
   :host([pref-theme='system']:not([pref-theme-scheme='light'])),
   :host(:not([pref-theme])) {
-    --mds-header-modal-icon-color: rgb(var(--tone-neutral-01));
+    --mds-header-modal-icon-color: rgb(var(--magma-text-default));
   }
 }

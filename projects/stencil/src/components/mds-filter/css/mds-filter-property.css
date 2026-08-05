@@ -1,0 +1,64 @@
+/*
+  Document-level registrations for the mds-filter public custom properties.
+
+  Never import this file from a component stylesheet: an @property rule inside a shadow root
+  registers nothing, and every Magma component is shadow: true.
+  projects/styles/scripts/properties.ts collects these into globals.css, which the document does
+  load, and resolves each initial-value down to a literal - see that file for the full
+  rationale. inherits is true throughout, because that is what the unregistered behaviour
+  already does today.
+*/
+
+@property --mds-filter-items-background {
+  inherits: true;
+  initial-value: rgb(var(--magma-scale-09));
+  syntax: '<color>';
+}
+
+@property --mds-filter-items-background-active {
+  inherits: true;
+  initial-value: rgb(var(--magma-scale-09));
+  syntax: '<color>';
+}
+
+@property --mds-filter-items-gap {
+  inherits: true;
+  initial-value: --spacing(200);
+  syntax: '<length>';
+}
+
+@property --mds-filter-items-padding {
+  inherits: true;
+  initial-value: --spacing(200);
+  syntax: '<length>';
+}
+
+@property --mds-filter-items-radius {
+  inherits: true;
+  initial-value: var(--radius-full);
+  syntax: '<length>';
+}
+
+@property --mds-filter-items-scroll-behavior {
+  inherits: true;
+  initial-value: smooth;
+  syntax: 'smooth | auto';
+}
+
+@property --mds-filter-label-padding {
+  inherits: true;
+  initial-value: 0 --spacing(600);
+  syntax: '<length>+';
+}
+
+@property --mds-filter-wrapper-shadow-color {
+  inherits: true;
+  initial-value: rgb(var(--magma-scale-06));
+  syntax: '<color>';
+}
+
+@property --mds-filter-wrapper-shadow-opacity {
+  inherits: true;
+  initial-value: 0.1;
+  syntax: '<number>';
+}

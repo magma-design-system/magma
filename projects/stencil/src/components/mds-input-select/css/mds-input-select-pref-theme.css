@@ -8,11 +8,11 @@
   --mds-input-select-ring: var(--shadow-outline-50);
   --mds-input-select-arrow-icon-blur-background-color: rgb(var(--variant-primary-05));
   --mds-input-select-arrow-icon-blur-color: rgb(var(--mds-input-select-variant-color));
-  --mds-input-select-arrow-icon-hover-background-color: rgb(var(--variant-primary-04));
+  --mds-input-select-arrow-icon-hover-background-color: rgb(var(--magma-accent-emphasis));
   --mds-input-select-arrow-icon-hover-color: rgb(var(--variant-primary-08));
 
   .input {
-    color: rgb(var(--tone-neutral-03));
+    color: rgb(var(--magma-text-muted));
   }
 }
 
@@ -22,11 +22,11 @@
     --mds-input-select-ring: var(--shadow-outline-50);
     --mds-input-select-arrow-icon-blur-background-color: rgb(var(--variant-primary-05));
     --mds-input-select-arrow-icon-blur-color: rgb(var(--mds-input-select-variant-color));
-    --mds-input-select-arrow-icon-hover-background-color: rgb(var(--variant-primary-04));
+    --mds-input-select-arrow-icon-hover-background-color: rgb(var(--magma-accent-emphasis));
     --mds-input-select-arrow-icon-hover-color: rgb(var(--variant-primary-08));
 
     .input {
-      color: rgb(var(--tone-neutral-03));
+      color: rgb(var(--magma-text-muted));
     }
   }
 }

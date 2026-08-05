@@ -6,22 +6,22 @@
 }
 
 .item {
-  --mds-tab-item-default-color: rgb(var(--tone-neutral-05));
+  --mds-tab-item-default-color: rgb(var(--magma-text-disabled));
 
   flex-basis: 0;
   flex-grow: 1;
 }
 
 .item--system {
-  --mds-tab-item-selected-color: rgb(var(--tone-neutral-03));
+  --mds-tab-item-selected-color: rgb(var(--magma-text-muted));
 }
 
 .item--enabled {
-  --mds-tab-item-selected-color: rgb(var(--tone-neutral-03));
+  --mds-tab-item-selected-color: rgb(var(--magma-text-muted));
 }
 
 .item--disabled {
-  --mds-tab-item-selected-color: rgb(var(--tone-neutral-03));
+  --mds-tab-item-selected-color: rgb(var(--magma-text-muted));
 }
 
 @import './css/mds-pref-animation-pref-contrast.css';

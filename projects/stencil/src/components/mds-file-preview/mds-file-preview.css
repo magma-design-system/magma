@@ -8,40 +8,10 @@
  * @prop --mds-file-preview-icon-color: Sets the color of the file preview icon
  */
 
-@property --mds-file-preview-background-color {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-seed));
-  syntax: '<color>';
-}
-
-@property --mds-file-preview-border-radius {
-  inherits: false;
-  initial-value: var(--radius-lg);
-  syntax: '<length>';
-}
-
-@property --mds-file-preview-color {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-03));
-  syntax: '<color>';
-}
-
-@property --mds-file-preview-icon-background {
-  inherits: false;
-  initial-value: inherit;
-  syntax: '<color>';
-}
-
-@property --mds-file-preview-icon-color {
-  inherits: false;
-  initial-value: var(--mds-file-preview-color);
-  syntax: '<color>';
-}
-
 :host {
   --mds-file-preview-background-color: rgb(var(--tone-neutral-seed));
   --mds-file-preview-border-radius: var(--radius-2xl);
-  --mds-file-preview-color: rgb(var(--tone-neutral-03));
+  --mds-file-preview-color: rgb(var(--magma-text-muted));
   --mds-file-preview-icon-background: inherit;
   --mds-file-preview-icon-color: var(--mds-file-preview-color);
   --mds-file-preview-transition-duration: 0s;

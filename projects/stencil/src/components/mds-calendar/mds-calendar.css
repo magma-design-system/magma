@@ -12,63 +12,9 @@
  * @prop --mds-calendar-select-month-or-year-width: The width of the month/year selector in the calendar header.
  */
 
-@property --mds-calendar-day-number-other-month-color {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-07));
-  syntax: '<color>';
-}
-
-@property --mds-calendar-day-number-color {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-01));
-  syntax: '<color>';
-}
-
-@property --mds-calendar-cell-gap {
-  inherits: false;
-  initial-value: var(--gap-50);
-  syntax: '<length>';
-}
-
-@property --mds-calendar-cell-other-month-visibility {
-  inherits: false;
-  initial-value: visible;
-  syntax: 'visible | hidden';
-}
-
-@property --mds-calendar-border-radius {
-  inherits: false;
-  initial-value: var(--radius-lg);
-  syntax: '<length>';
-}
-
-@property --mds-calendar-background {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-seed));
-  syntax: '<color>';
-}
-
-@property --mds-calendar-padding {
-  inherits: false;
-  initial-value: --spacing(400);
-  syntax: '<length>';
-}
-
-@property --mds-calendar-select-month-or-year-height {
-  inherits: false;
-  initial-value: --spacing(900);
-  syntax: '<length>';
-}
-
-@property --mds-calendar-select-month-or-year-width {
-  inherits: false;
-  initial-value: 14rem;
-  syntax: '<length>';
-}
-
 :host {
-  --mds-calendar-day-number-other-month-color: rgb(var(--tone-neutral-07));
-  --mds-calendar-day-number-color: rgb(var(--tone-neutral-01));
+  --mds-calendar-day-number-other-month-color: rgb(var(--magma-scale-07));
+  --mds-calendar-day-number-color: rgb(var(--magma-text-default));
   --mds-calendar-cell-gap: --spacing(50);
   --mds-calendar-cell-other-month-visibility: visible;
   --mds-calendar-border-radius: var(--radius-lg);
@@ -79,7 +25,7 @@
   --mds-calendar-max-width: 480px;
   --mds-calendar-min-width: 280px;
 
-  background-color: rgb(var(--tone-neutral-09));
+  background-color: rgb(var(--magma-scale-09));
   border-radius: var(--mds-calendar-border-radius);
   cursor: auto;
   display: inline-flex;
@@ -132,7 +78,7 @@ nav {
 
 .select-month-or-year {
   align-items: stretch;
-  background-color: rgb(var(--tone-neutral-09));
+  background-color: rgb(var(--magma-scale-09));
   block-size: var(--mds-calendar-select-month-or-year-height);
   border-radius: var(--mds-calendar-border-radius);
   box-sizing: border-box;

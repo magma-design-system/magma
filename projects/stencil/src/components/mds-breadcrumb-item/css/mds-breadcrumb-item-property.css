@@ -1,0 +1,58 @@
+/*
+  Document-level registrations for the mds-breadcrumb-item public custom properties.
+
+  Never import this file from a component stylesheet: an @property rule inside a shadow root
+  registers nothing, and every Magma component is shadow: true.
+  projects/styles/scripts/properties.ts collects these into globals.css, which the document does
+  load, and resolves each initial-value down to a literal - see that file for the full
+  rationale. inherits is true throughout, because that is what the unregistered behaviour
+  already does today.
+*/
+
+@property --mds-breadcrumb-item-arrow-depth-color {
+  inherits: true;
+  initial-value: rgb(var(--magma-scale-04));
+  syntax: '<color>';
+}
+
+@property --mds-breadcrumb-item-button-background {
+  inherits: true;
+  initial-value: transparent;
+  syntax: '<color>';
+}
+
+@property --mds-breadcrumb-item-button-background-hover {
+  inherits: true;
+  initial-value: rgb(var(--magma-scale-10));
+  syntax: '<color>';
+}
+
+@property --mds-breadcrumb-item-button-background-selected {
+  inherits: true;
+  initial-value: rgb(var(--magma-scale-09));
+  syntax: '<color>';
+}
+
+@property --mds-breadcrumb-item-button-border-radius {
+  inherits: true;
+  initial-value: 1000px;
+  syntax: '<length>';
+}
+
+@property --mds-breadcrumb-item-button-color {
+  inherits: true;
+  initial-value: rgb(var(--magma-scale-02));
+  syntax: '<color>';
+}
+
+@property --mds-breadcrumb-item-button-color-hover {
+  inherits: true;
+  initial-value: rgb(var(--magma-scale-02));
+  syntax: '<color>';
+}
+
+@property --mds-breadcrumb-item-button-color-selected {
+  inherits: true;
+  initial-value: rgb(var(--magma-text-default));
+  syntax: '<color>';
+}

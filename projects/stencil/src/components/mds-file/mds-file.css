@@ -7,28 +7,10 @@
  * @prop --mds-file-preview-icon-background: Sets the background color of the file preview icon
  */
 
-@property --mds-file-preview-icon-color {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-04));
-  syntax: '<color>';
-}
-
-@property --mds-file-preview-color {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-04));
-  syntax: '<color>';
-}
-
-@property --mds-file-preview-icon-background {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-10));
-  syntax: '<color>';
-}
-
 :host {
-  --mds-file-preview-icon-color: rgb(var(--tone-neutral-04));
-  --mds-file-preview-color: rgb(var(--tone-neutral-04));
-  --mds-file-preview-icon-background: rgb(var(--tone-neutral-10));
+  --mds-file-preview-icon-color: rgb(var(--magma-scale-04));
+  --mds-file-preview-color: rgb(var(--magma-scale-04));
+  --mds-file-preview-icon-background: rgb(var(--magma-scale-10));
   --mds-file-transition-duration: var(--duration-200);
   --private-file-transition-duration: var(--mds-file-transition-duration);
   --private-icon-download-offset: 10%;
@@ -39,7 +21,7 @@
   background-color: rgb(var(--tone-neutral-seed));
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-outline-weak);
-  color: rgb(var(--tone-neutral-04));
+  color: rgb(var(--magma-scale-04));
   corner-shape: var(--magma-corner-shape, round);
   cursor: pointer;
   display: inline-flex;
@@ -153,7 +135,7 @@
 .description {
   @apply truncate;
 
-  color: rgb(var(--tone-neutral-05));
+  color: rgb(var(--magma-text-disabled));
   min-width: 0px;
 }
 

@@ -5,18 +5,18 @@
  * OS via @media; the scheme axis gates it. Cross-browser, no :host-context. */
 
 :host([pref-theme='dark']:not([pref-theme-scheme='light'])) {
-  --mds-price-table-features-cell-border-color: rgb(var(--tone-neutral-07));
+  --mds-price-table-features-cell-border-color: rgb(var(--magma-scale-07));
   --mds-price-table-features-cell-icon-supported-color: rgb(var(--label-green-03));
   --mds-price-table-features-cell-icon-supported-color-hover: rgb(var(--label-green-02));
-  --mds-price-table-features-cell-icon-unsupported-color-hover: rgb(var(--tone-neutral-04));
+  --mds-price-table-features-cell-icon-unsupported-color-hover: rgb(var(--magma-scale-04));
 }
 
 @media (prefers-color-scheme: dark) {
   :host([pref-theme='system']:not([pref-theme-scheme='light'])),
   :host(:not([pref-theme])) {
-    --mds-price-table-features-cell-border-color: rgb(var(--tone-neutral-07));
+    --mds-price-table-features-cell-border-color: rgb(var(--magma-scale-07));
     --mds-price-table-features-cell-icon-supported-color: rgb(var(--label-green-03));
     --mds-price-table-features-cell-icon-supported-color-hover: rgb(var(--label-green-02));
-    --mds-price-table-features-cell-icon-unsupported-color-hover: rgb(var(--tone-neutral-04));
+    --mds-price-table-features-cell-icon-unsupported-color-hover: rgb(var(--magma-scale-04));
   }
 }

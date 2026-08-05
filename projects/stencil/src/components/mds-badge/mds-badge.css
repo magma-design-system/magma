@@ -8,36 +8,6 @@
  * @prop --mds-badge-border-width: Sets the border width of the component when tone is "outline"
  */
 
-@property --mds-badge-background {
-  inherits: false;
-  initial-value: rgb(var(--label-sky-09));
-  syntax: '<color>';
-}
-
-@property --mds-badge-border-color {
-  inherits: false;
-  initial-value: rgb(var(--label-sky-06));
-  syntax: '<color>';
-}
-
-@property --mds-badge-color {
-  inherits: false;
-  initial-value: rgb(var(--label-sky-03));
-  syntax: '<color>';
-}
-
-@property --mds-badge-border-width {
-  inherits: true;
-  initial-value: 1px;
-  syntax: '<length>';
-}
-
-@property --mds-badge-radius {
-  inherits: true;
-  initial-value: 10px;
-  syntax: '<length>';
-}
-
 :host {
   --mds-badge-background: rgb(var(--label-sky-09));
   --mds-badge-border-color: rgb(var(--label-sky-06));

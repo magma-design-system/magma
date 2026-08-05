@@ -1,0 +1,34 @@
+/*
+  Document-level registrations for the mds-filter-item public custom properties.
+
+  Never import this file from a component stylesheet: an @property rule inside a shadow root
+  registers nothing, and every Magma component is shadow: true.
+  projects/styles/scripts/properties.ts collects these into globals.css, which the document does
+  load, and resolves each initial-value down to a literal - see that file for the full
+  rationale. inherits is true throughout, because that is what the unregistered behaviour
+  already does today.
+*/
+
+@property --mds-filter-item-count-background-default {
+  inherits: true;
+  initial-value: rgb(var(--magma-scale-08));
+  syntax: '<color>';
+}
+
+@property --mds-filter-item-count-background-selected {
+  inherits: true;
+  initial-value: rgb(var(--magma-scale-05));
+  syntax: '<color>';
+}
+
+@property --mds-filter-item-count-color-default {
+  inherits: true;
+  initial-value: rgb(var(--magma-scale-02));
+  syntax: '<color>';
+}
+
+@property --mds-filter-item-count-color-selected {
+  inherits: true;
+  initial-value: rgb(var(--magma-text-on-emphasis));
+  syntax: '<color>';
+}

@@ -1,0 +1,38 @@
+/*
+  Document-level registrations for the mds-file-preview public custom properties.
+
+  Never import this file from a component stylesheet: an @property rule inside a shadow root
+  registers nothing, and every Magma component is shadow: true.
+  projects/styles/scripts/properties.ts collects these into globals.css, which the document does
+  load, and resolves each initial-value down to a literal - see that file for the full
+  rationale. inherits is true throughout, because that is what the unregistered behaviour
+  already does today.
+
+  Deliberately NOT registered:
+    - --mds-file-preview-icon-background: its default is the CSS-wide keyword inherit, which
+      cannot be an initial-value: a registration would have to invent one.
+*/
+
+@property --mds-file-preview-background-color {
+  inherits: true;
+  initial-value: rgb(var(--tone-neutral-seed));
+  syntax: '<color>';
+}
+
+@property --mds-file-preview-border-radius {
+  inherits: true;
+  initial-value: var(--radius-2xl);
+  syntax: '<length>';
+}
+
+@property --mds-file-preview-color {
+  inherits: true;
+  initial-value: rgb(var(--magma-text-muted));
+  syntax: '<color>';
+}
+
+@property --mds-file-preview-icon-color {
+  inherits: true;
+  initial-value: rgb(var(--magma-text-muted));
+  syntax: '<color>';
+}

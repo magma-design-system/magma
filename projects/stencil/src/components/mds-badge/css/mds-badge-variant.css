@@ -1,5 +1,5 @@
 :host {
-  --mds-badge-color: rgb(var(--tone-neutral-seed));
+  --mds-badge-color: rgb(var(--magma-text-on-emphasis));
 }
 
 :host([tone='text']),

@@ -299,6 +299,25 @@ DOM). Same mechanism as the existing preference system.
   `alias` field is declared but NOT consumed by the generator - `variant-primary` and
   `brand-maggioli` merely share a seed, they are not live-aliased.) A theme is thus an
   override map of the `--magma-tint-*` block (daisyUI-style ergonomics).
+
+  A theme family MUST also ship a full RAMP, not just a surface. The component sheets
+  still reach for a raw ramp step wherever the role vocabulary does not cover the use yet
+  (interaction washes, scrims, shadows, decorative fills); those read
+  `--magma-scale-01..10`, which resolves through `--magma-tint-scale-*` and so retints
+  with the rest of the block. Pinned to `--tone-neutral-*` instead they would split the
+  theming in two - the roles retinting while the raw steps stayed a static neutral. Since
+  surfaces can be opted in per GROUP, a family can carry `--surface-<x>-*` and no
+  `--<x>-01..10`; a ramp pointer with nothing to resolve to would silently put every
+  consumer back on the fallback chain, so `scripts/semantic.ts` checks each pointer
+  against the emitted primitives and FAILS the build otherwise. The ramp family is assumed
+  to be `tone-<surface>` - correct as long as a theme is a tint - and a theme drawn from
+  another group names it: `blue: { surface: 'blue', scale: 'label-blue' }`.
+
+  `--magma-scale-*` is TRANSITIONAL and deliberately NOT bridged to Tailwind. It exists so
+  theming is correct today while those uses are still step-indexed; each one that earns a
+  role (a wash, a scrim, a shadow) drops out of it. Publishing `--color-scale-09`
+  utilities would make the raw step the easy choice again and freeze the habit this layer
+  exists to remove.
 - mode `light | dark | system`: the existing global flip; semantic tokens follow it.
 - `--depth` (numeric `0 | 1`): shadow/bevel intensity, consumed as a scalar in `calc()`
   (NOT a `true|false` style query). Does not change the surface colors; only the shadow

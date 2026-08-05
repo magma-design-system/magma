@@ -1,7 +1,7 @@
 :host([variant='info']) {
   --mds-button-background: rgb(var(--status-info-05));
   --mds-button-border-color-rgb: var(--status-info-05);
-  --mds-button-color: rgb(var(--tone-neutral-seed));
+  --mds-button-color: rgb(var(--magma-text-on-emphasis));
 
   &:host([tone='strong']:hover) {
     --mds-button-background: rgb(var(--status-info-04));
@@ -49,7 +49,7 @@
 :host([variant='success']) {
   --mds-button-background: rgb(var(--status-success-05));
   --mds-button-border-color-rgb: var(--status-success-05);
-  --mds-button-color: rgb(var(--tone-neutral-seed));
+  --mds-button-color: rgb(var(--magma-text-on-emphasis));
 
   &:host([tone='strong']:hover) {
     --mds-button-background: rgb(var(--status-success-04));
@@ -97,7 +97,7 @@
 :host([variant='warning']) {
   --mds-button-background: rgb(var(--status-warning-05));
   --mds-button-border-color-rgb: var(--status-warning-05);
-  --mds-button-color: rgb(var(--tone-neutral-seed));
+  --mds-button-color: rgb(var(--magma-text-on-emphasis));
 
   &:host([tone='strong']:hover) {
     --mds-button-background: rgb(var(--status-warning-04));
@@ -145,7 +145,7 @@
 :host([variant='error']) {
   --mds-button-background: rgb(var(--status-error-05));
   --mds-button-border-color-rgb: var(--status-error-05);
-  --mds-button-color: rgb(var(--tone-neutral-seed));
+  --mds-button-color: rgb(var(--magma-text-on-emphasis));
 
   &:host([tone='strong']:hover) {
     --mds-button-background: rgb(var(--status-error-04));

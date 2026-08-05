@@ -13,66 +13,6 @@
  * @prop --mds-input-tip-background: The background of the input tip
  */
 
-@property --mds-input-date-icon-color {
-  inherits: false;
-  initial-value: rgb(var(--variant-primary-03));
-  syntax: '<color>';
-}
-
-@property --mds-input-date-background {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-seed));
-  syntax: '<color>';
-}
-
-@property --mds-input-date-field-background-empty {
-  inherits: false;
-  initial-value: rgb(var(--status-error-10));
-  syntax: '<color>';
-}
-
-@property --mds-input-date-field-color-empty {
-  inherits: false;
-  initial-value: rgb(var(--status-error-06));
-  syntax: '<color>';
-}
-
-@property --mds-input-date-icon-color-rgb {
-  inherits: false;
-  initial-value: var(--mds-input-date-variant-color-rgb);
-  syntax: '<integer>+'; /* RGB channels */
-}
-
-@property --mds-input-date-variant-color-rgb {
-  inherits: false;
-  initial-value: 0 0 0;
-  syntax: '<integer>+';
-}
-
-@property --mds-input-tip-horizontal-offset {
-  inherits: false;
-  initial-value: --spacing(100);
-  syntax: '<length>';
-}
-
-@property --mds-input-tip-horizontal-offset-focused {
-  inherits: false;
-  initial-value: --spacing(1000);
-  syntax: '<length>';
-}
-
-@property --mds-input-tip-vertical-offset {
-  inherits: false;
-  initial-value: --spacing(100);
-  syntax: '<length>';
-}
-
-@property --mds-input-tip-background {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-03));
-  syntax: '<color>';
-}
-
 /* ❌ Not supported
 @property --mds-input-date-ring {
   inherits: false;
@@ -101,7 +41,7 @@
   --mds-input-tip-horizontal-offset: --spacing(100);
   --mds-input-tip-horizontal-offset-focused: --spacing(1000);
   --mds-input-tip-vertical-offset: --spacing(100);
-  --mds-input-tip-background: rgb(var(--tone-neutral-03));
+  --mds-input-tip-background: rgb(var(--magma-scale-03));
   --mds-input-date-transition-duration: var(--duration-300);
 
   /* private */
@@ -110,7 +50,7 @@
   @apply text-info-detail;
 
   border-radius: var(--radius-2xl);
-  color: rgb(var(--tone-neutral-02));
+  color: rgb(var(--magma-scale-02));
   container-type: inline-size;
   corner-shape: var(--magma-corner-shape, round);
   display: flex;
@@ -185,7 +125,7 @@
 }
 
 .input::placeholder {
-  color: rgb(var(--tone-neutral-04));
+  color: rgb(var(--magma-scale-04));
 }
 
 .input::-webkit-outer-spin-button,
@@ -196,12 +136,12 @@
 }
 
 .input:disabled {
-  background-color: rgb(var(--tone-neutral-10));
+  background-color: rgb(var(--magma-scale-10));
 }
 
 .input:disabled,
 .input:disabled::placeholder {
-  color: rgb(var(--tone-neutral-05));
+  color: rgb(var(--magma-text-disabled));
 }
 
 .action-open-calendar-wrapper {

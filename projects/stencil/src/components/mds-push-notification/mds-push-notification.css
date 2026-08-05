@@ -11,36 +11,6 @@
  * @prop --mds-push-notification-background: Background of the push notification, supports gradients.
  */
 
-@property --mds-push-notification-fadeout-delay {
-  inherits: false;
-  initial-value: 0s;
-  syntax: '<time>';
-}
-
-@property --mds-push-notification-gap {
-  inherits: false;
-  initial-value: --spacing(200);
-  syntax: '<length>';
-}
-
-@property --mds-push-notification-items-intro-delay {
-  inherits: false;
-  initial-value: 300ms;
-  syntax: '<time>';
-}
-
-@property --mds-push-notification-items-outro-delay {
-  inherits: false;
-  initial-value: 0ms;
-  syntax: '<time>';
-}
-
-@property --mds-push-notification-items-duration {
-  inherits: false;
-  initial-value: 300ms;
-  syntax: '<time>';
-}
-
 /* ❌ Not supported
 @property --mds-push-notification-items-timing-function {
   inherits: false;

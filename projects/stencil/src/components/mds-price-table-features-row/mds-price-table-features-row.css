@@ -7,35 +7,11 @@
  * @prop --mds-price-table-features-row-color-hover: Text color of a features row on hover.
  */
 
-@property --mds-price-table-features-row-background {
-  inherits: false;
-  initial-value: transparent;
-  syntax: '<color>';
-}
-
-@property --mds-price-table-features-row-background-hover {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-10));
-  syntax: '<color>';
-}
-
-@property --mds-price-table-features-row-color {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-04));
-  syntax: '<color>';
-}
-
-@property --mds-price-table-features-row-color-hover {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-01));
-  syntax: '<color>';
-}
-
 :host {
   --mds-price-table-features-row-background: transparent;
-  --mds-price-table-features-row-background-hover: rgb(var(--tone-neutral-10));
-  --mds-price-table-features-row-color: rgb(var(--tone-neutral-04));
-  --mds-price-table-features-row-color-hover: rgb(var(--tone-neutral-01));
+  --mds-price-table-features-row-background-hover: rgb(var(--magma-scale-10));
+  --mds-price-table-features-row-color: rgb(var(--magma-scale-04));
+  --mds-price-table-features-row-color-hover: rgb(var(--magma-text-default));
   --mds-price-table-features-row-transition-duration: var(--duration-200);
   --private-price-table-features-row-transition-duration: var(--mds-price-table-features-row-transition-duration);
 

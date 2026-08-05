@@ -4,14 +4,14 @@
  * `system` and no controller follow the OS via @media. Cross-browser, no :host-context. */
 
 :host([pref-contrast='more']) {
-  --mds-accordion-border-color: rgb(var(--tone-neutral-01));
-  --mds-accordion-color: rgb(var(--tone-neutral-01));
+  --mds-accordion-border-color: rgb(var(--magma-scale-01));
+  --mds-accordion-color: rgb(var(--magma-text-default));
 }
 
 @media (prefers-contrast: more) {
   :host([pref-contrast='system']),
   :host(:not([pref-contrast])) {
-    --mds-accordion-border-color: rgb(var(--tone-neutral-01));
-    --mds-accordion-color: rgb(var(--tone-neutral-01));
+    --mds-accordion-border-color: rgb(var(--magma-scale-01));
+    --mds-accordion-color: rgb(var(--magma-text-default));
   }
 }

@@ -5,11 +5,11 @@
 
 :host([pref-contrast='more']) {
   --mds-input-date-range-ring: var(--shadow-outline-strong-50);
-  --mds-input-date-range-background: rgb(var(--tone-neutral-09));
-  --mds-input-date-range-controls-border: 2px solid rgb(var(--tone-neutral-05));
+  --mds-input-date-range-background: rgb(var(--magma-scale-09));
+  --mds-input-date-range-controls-border: 2px solid rgb(var(--magma-scale-05));
 
   .input::placeholder {
-    color: rgb(var(--tone-neutral-03));
+    color: rgb(var(--magma-scale-03));
   }
 }
 
@@ -17,11 +17,11 @@
   :host([pref-contrast='system']),
   :host(:not([pref-contrast])) {
     --mds-input-date-range-ring: var(--shadow-outline-strong-50);
-    --mds-input-date-range-background: rgb(var(--tone-neutral-09));
-    --mds-input-date-range-controls-border: 2px solid rgb(var(--tone-neutral-05));
+    --mds-input-date-range-background: rgb(var(--magma-scale-09));
+    --mds-input-date-range-controls-border: 2px solid rgb(var(--magma-scale-05));
 
     .input::placeholder {
-      color: rgb(var(--tone-neutral-03));
+      color: rgb(var(--magma-scale-03));
     }
   }
 }

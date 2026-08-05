@@ -11,11 +11,11 @@
 }
 
 :host([variant='disabled']) {
-  --mds-input-tip-item-background: rgb(var(--tone-neutral-05));
+  --mds-input-tip-item-background: rgb(var(--magma-scale-05));
 }
 
 /* :host([variant="text"]) {
-  --mds-input-tip-item-background: rgb(var(--tone-neutral-03));
+  --mds-input-tip-item-background: rgb(var(--magma-scale-03));
 } */
 
 :host([variant='count-empty']) {

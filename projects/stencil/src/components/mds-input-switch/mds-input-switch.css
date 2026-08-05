@@ -30,165 +30,6 @@
  * @prop --mds-input-switch-toggle-size: Effective toggle size currently in use
  */
 
-@property --mds-input-switch-animation-timing-adjust {
-  inherits: false;
-  initial-value: 1.4;
-  syntax: '<number>';
-}
-
-@property --mds-input-switch-box-color-enabled-checked {
-  inherits: false;
-  initial-value: rgb(var(--variant-primary-04));
-  syntax: '<color>';
-}
-
-@property --mds-input-switch-box-color-enabled-unchecked {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-06));
-  syntax: '<color>';
-}
-
-@property --mds-input-switch-box-color-disabled-checked {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-08));
-  syntax: '<color>';
-}
-
-@property --mds-input-switch-box-color-disabled-unchecked {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-08));
-  syntax: '<color>';
-}
-
-@property --mds-input-switch-box-padding-lg {
-  inherits: false;
-  initial-value: --spacing(100);
-  syntax: '<length>';
-}
-
-@property --mds-input-switch-box-padding-md {
-  inherits: false;
-  initial-value: --spacing(100);
-  syntax: '<length>';
-}
-
-@property --mds-input-switch-box-padding-sm {
-  inherits: false;
-  initial-value: --spacing(100);
-  syntax: '<length>';
-}
-
-@property --mds-input-switch-box-padding {
-  inherits: false;
-  initial-value: var(--mds-input-switch-box-padding-md);
-  syntax: '<length>';
-}
-
-@property --mds-input-switch-duration {
-  inherits: false;
-  initial-value: 300ms;
-  syntax: '<time>';
-}
-
-@property --mds-input-switch-icon-color-checked-disabled {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-06));
-  syntax: '<color>';
-}
-
-@property --mds-input-switch-icon-color-checked {
-  inherits: false;
-  initial-value: rgb(var(--variant-primary-04));
-  syntax: '<color>';
-}
-
-@property --mds-input-switch-icon-color-indeterminate-disabled {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-05));
-  syntax: '<color>';
-}
-
-@property --mds-input-switch-icon-color-indeterminate {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-05));
-  syntax: '<color>';
-}
-
-@property --mds-input-switch-icon-color-unchecked-disabled {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-06));
-  syntax: '<color>';
-}
-
-@property --mds-input-switch-icon-color-unchecked {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-06));
-  syntax: '<color>';
-}
-
-@property --mds-input-switch-icon-explicit-color {
-  inherits: false;
-  initial-value: var(--mds-input-switch-icon-color-checked);
-  syntax: '<color>';
-}
-
-@property --mds-input-switch-toggle-color-enabled-checked {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-seed));
-  syntax: '<color>';
-}
-
-@property --mds-input-switch-toggle-color-enabled-unchecked {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-10));
-  syntax: '<color>';
-}
-
-@property --mds-input-switch-toggle-color-disabled-checked {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-seed));
-  syntax: '<color>';
-}
-
-@property --mds-input-switch-toggle-color-disabled-unchecked {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-seed));
-  syntax: '<color>';
-}
-
-@property --mds-input-switch-toggle-container-size {
-  inherits: false;
-  initial-value: calc(
-    calc(var(--mds-input-switch-toggle-size-md) * 2) +
-      calc(var(--mds-input-switch-box-padding-md) * 2)
-  );
-  syntax: '<length>';
-}
-
-@property --mds-input-switch-toggle-size-lg {
-  inherits: false;
-  initial-value: --spacing(800);
-  syntax: '<length>';
-}
-
-@property --mds-input-switch-toggle-size-md {
-  inherits: false;
-  initial-value: --spacing(600);
-  syntax: '<length>';
-}
-
-@property --mds-input-switch-toggle-size-sm {
-  inherits: false;
-  initial-value: --spacing(400);
-  syntax: '<length>';
-}
-
-@property --mds-input-switch-toggle-size {
-  inherits: false;
-  initial-value: var(--mds-input-switch-toggle-size-md);
-  syntax: '<length>';
-}
-
 /* ❌ Not supported
 @property --mds-input-switch-animation-timing-function {
   inherits: false;
@@ -206,26 +47,26 @@
 :host {
   --mds-input-switch-animation-timing-adjust: 1.4;
   --mds-input-switch-animation-timing-function: var(--ease-in-out-quad);
-  --mds-input-switch-box-color-enabled-checked: rgb(var(--variant-primary-04));
-  --mds-input-switch-box-color-enabled-unchecked: rgb(var(--tone-neutral-06));
-  --mds-input-switch-box-color-disabled-checked: rgb(var(--tone-neutral-08));
-  --mds-input-switch-box-color-disabled-unchecked: rgb(var(--tone-neutral-08));
+  --mds-input-switch-box-color-enabled-checked: rgb(var(--magma-accent-emphasis));
+  --mds-input-switch-box-color-enabled-unchecked: rgb(var(--magma-scale-06));
+  --mds-input-switch-box-color-disabled-checked: rgb(var(--magma-scale-08));
+  --mds-input-switch-box-color-disabled-unchecked: rgb(var(--magma-scale-08));
   --mds-input-switch-box-padding-lg: --spacing(100);
   --mds-input-switch-box-padding-md: --spacing(100);
   --mds-input-switch-box-padding-sm: --spacing(100);
   --mds-input-switch-box-padding: var(--mds-input-switch-box-padding-md);
   --mds-input-switch-duration: 300ms;
-  --mds-input-switch-icon-color-checked-disabled: rgb(var(--tone-neutral-06));
-  --mds-input-switch-icon-color-checked: rgb(var(--variant-primary-04));
-  --mds-input-switch-icon-color-indeterminate-disabled: rgb(var(--tone-neutral-05));
-  --mds-input-switch-icon-color-indeterminate: rgb(var(--tone-neutral-05));
-  --mds-input-switch-icon-color-unchecked-disabled: rgb(var(--tone-neutral-06));
-  --mds-input-switch-icon-color-unchecked: rgb(var(--tone-neutral-06));
+  --mds-input-switch-icon-color-checked-disabled: rgb(var(--magma-scale-06));
+  --mds-input-switch-icon-color-checked: rgb(var(--magma-accent-emphasis));
+  --mds-input-switch-icon-color-indeterminate-disabled: rgb(var(--magma-text-disabled));
+  --mds-input-switch-icon-color-indeterminate: rgb(var(--magma-text-disabled));
+  --mds-input-switch-icon-color-unchecked-disabled: rgb(var(--magma-scale-06));
+  --mds-input-switch-icon-color-unchecked: rgb(var(--magma-scale-06));
   --mds-input-switch-icon-explicit-color: var(--mds-input-switch-icon-color-checked);
-  --mds-input-switch-toggle-color-enabled-checked: rgb(var(--tone-neutral-seed));
-  --mds-input-switch-toggle-color-enabled-unchecked: rgb(var(--tone-neutral-10));
-  --mds-input-switch-toggle-color-disabled-checked: rgb(var(--tone-neutral-seed));
-  --mds-input-switch-toggle-color-disabled-unchecked: rgb(var(--tone-neutral-seed));
+  --mds-input-switch-toggle-color-enabled-checked: rgb(var(--magma-text-on-emphasis));
+  --mds-input-switch-toggle-color-enabled-unchecked: rgb(var(--magma-scale-10));
+  --mds-input-switch-toggle-color-disabled-checked: rgb(var(--magma-text-on-emphasis));
+  --mds-input-switch-toggle-color-disabled-unchecked: rgb(var(--magma-text-on-emphasis));
   --mds-input-switch-toggle-container-size: calc(
     calc(var(--mds-input-switch-toggle-size-md) * 2) +
       calc(var(--mds-input-switch-box-padding-md) * 2)

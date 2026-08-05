@@ -1,0 +1,46 @@
+/*
+  Document-level registrations for the mds-input-date-range public custom properties.
+
+  Never import this file from a component stylesheet: an @property rule inside a shadow root
+  registers nothing, and every Magma component is shadow: true.
+  projects/styles/scripts/properties.ts collects these into globals.css, which the document does
+  load, and resolves each initial-value down to a literal - see that file for the full
+  rationale. inherits is true throughout, because that is what the unregistered behaviour
+  already does today.
+*/
+
+@property --mds-input-date-range-background {
+  inherits: true;
+  initial-value: rgb(var(--tone-neutral-seed));
+  syntax: '<color>';
+}
+
+@property --mds-input-date-range-calendar-width {
+  inherits: true;
+  initial-value: 22rem;
+  syntax: '<length>';
+}
+
+@property --mds-input-date-range-fields-firefox-justify-content {
+  inherits: true;
+  initial-value: start;
+  syntax: 'start | end | center | left | right | flex-start | flex-end';
+}
+
+@property --mds-input-date-range-fields-gap {
+  inherits: true;
+  initial-value: 0 --spacing(200);
+  syntax: '<length>+';
+}
+
+@property --mds-input-date-range-icon-color {
+  inherits: true;
+  initial-value: rgb(var(--magma-accent-emphasis));
+  syntax: '<color>';
+}
+
+@property --mds-input-date-range-variant-color-rgb {
+  inherits: true;
+  initial-value: 0 0 0;
+  syntax: '<integer>+';
+}
