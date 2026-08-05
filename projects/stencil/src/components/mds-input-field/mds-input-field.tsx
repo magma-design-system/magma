@@ -36,7 +36,12 @@ export class MdsInputField {
 
   componentDidLoad(): void {
     const [mdsInput] = this.slotInput.assignedElements() as HTMLMdsInputElement[];
-    if (mdsInput == null) throw new Error('Mds input not found');
+    if (mdsInput == null) {
+      // slot assignment is empty in the hydrate/SSR runtime (assignedElements
+      // returns [] in mock-doc); validation wiring happens on the client
+      console.warn('mds-input-field: no mds-input assigned to the input slot');
+      return;
+    }
     mdsInput.addEventListener('mdsInputValidation', () => this.handleValidation(mdsInput));
   }
 

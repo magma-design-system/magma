@@ -11,6 +11,7 @@ import {
   Watch,
   AttachInternals,
 } from '@stencil/core';
+import { setFormValue } from '@common/form';
 import miBaselineCalendarToday from '@icon/mi/baseline/calendar-today.svg';
 import { DateTime } from 'luxon';
 import clsx from 'clsx';
@@ -420,17 +421,19 @@ export class MdsInputDateRange {
     const endSlot = this.host.shadowRoot?.querySelector('slot[name="end"]') as HTMLSlotElement;
     this.hasPreselection = this.host.querySelector('mds-input-date-range-preselection') !== null;
 
-    if (startSlot != null) {
-      const input = startSlot.assignedElements()[0] as HTMLMdsInputDateElement;
-      input.addEventListener(
+    // assignedElements() is empty in the hydrate/SSR runtime (mock-doc):
+    // listener wiring happens on the client
+    const startInput = startSlot?.assignedElements()[0] as HTMLMdsInputDateElement | undefined;
+    if (startInput != null) {
+      startInput.addEventListener(
         'mdsInputDateSelect',
         this.createFocusoutListener('start') as EventListener,
       );
     }
 
-    if (endSlot != null) {
-      const input = endSlot.assignedElements()[0] as HTMLMdsInputDateElement;
-      input.addEventListener(
+    const endInput = endSlot?.assignedElements()[0] as HTMLMdsInputDateElement | undefined;
+    if (endInput != null) {
+      endInput.addEventListener(
         'mdsInputDateSelect',
         this.createFocusoutListener('end') as EventListener,
       );
@@ -680,10 +683,10 @@ export class MdsInputDateRange {
     const endDate = this.internalEndDate?.trim() ?? '';
 
     if (startDate === '' && endDate === '') {
-      this.internals.setFormValue(null);
+      setFormValue(this.internals, null);
       return;
     }
 
-    this.internals.setFormValue(JSON.stringify({ startDate, endDate }));
+    setFormValue(this.internals, JSON.stringify({ startDate, endDate }));
   }
 }

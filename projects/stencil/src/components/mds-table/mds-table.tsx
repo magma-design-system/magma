@@ -189,9 +189,13 @@ export class MdsTable {
     this.hasBatchActions = Array.from(this.host.children).some(
       (child: Element) => child.getAttribute('slot') === 'batch-action',
     );
-    this.tableBodyObserver = new MutationObserver(() => {
-      this.updateSlottedElements();
-    });
+    // MutationObserver is missing in the hydrate/SSR runtime; every use of
+    // tableBodyObserver is already optional-chained
+    if (typeof MutationObserver !== 'undefined') {
+      this.tableBodyObserver = new MutationObserver(() => {
+        this.updateSlottedElements();
+      });
+    }
     this.querySlottedElements();
   }
 

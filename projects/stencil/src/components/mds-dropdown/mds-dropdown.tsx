@@ -1,15 +1,6 @@
 import { KeyboardManager } from '@common/keyboard-manager';
 import { cssDurationToMilliseconds } from '@common/unit';
-import {
-  Component,
-  Element,
-  Event,
-  EventEmitter,
-  Host,
-  Prop,
-  Watch,
-  h,
-} from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, Prop, Watch, h } from '@stencil/core';
 import { FloatingUIPlacement, FloatingUIStrategy } from '@type/floating-ui';
 import arrowSvg from './assets/arrow.svg';
 import { MdsDropdownEventDetail } from './meta/event-detail';
@@ -189,7 +180,9 @@ export class MdsDropdown implements FloatingElement {
   @Watch('target')
   targetChanged(): void {
     if (this.target === '' || this.floatingController == null) return;
-    this.caller = this.floatingController.updateCaller(this.target);
+    const caller = this.floatingController.updateCaller(this.target);
+    if (!caller) return;
+    this.caller = caller;
     this.setInteractionBehaviour();
     this.km.addElement(this.host);
     this.km.attachEscapeBehavior(() => this.visibleChanged(false));

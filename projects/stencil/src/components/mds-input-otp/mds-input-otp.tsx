@@ -1,4 +1,5 @@
 import { Component, Element, AttachInternals, Host, h, Prop } from '@stencil/core';
+import { setFormValue } from '@common/form';
 
 export interface MdsInputOtpInterface {
   length?: number;
@@ -43,7 +44,7 @@ export class MdsInputOtp {
 
     const otpCode = this.getOtpCode();
     this.value = otpCode;
-    this.internals.setFormValue(otpCode);
+    setFormValue(this.internals, otpCode);
   };
 
   private submit = (currentInput: HTMLMdsInputElement): void => {

@@ -129,11 +129,14 @@ export class MdsPrefLanguage {
       throw Error(`Language code set not reconized: ${set}`);
     }
 
-    const systemLanguage = this.sanitizeLanguage(navigator.language);
+    // navigator.language is missing in the hydrate/SSR runtime's MockNavigator
+    const systemLanguage = this.sanitizeLanguage(navigator.language ?? 'en');
     const userLanguage = localStorage.getItem(this.localStorageAlias);
     const pageLanguage = document.querySelector('html')?.getAttribute('lang') ?? null;
     const language =
-      set === 'auto' ? (userLanguage ?? pageLanguage ?? systemLanguage) : this.sanitizeLanguage(set);
+      set === 'auto'
+        ? (userLanguage ?? pageLanguage ?? systemLanguage)
+        : this.sanitizeLanguage(set);
 
     this.set = language;
     // Re-applying the same language must not emit or write again (the `set`

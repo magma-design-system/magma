@@ -13,6 +13,7 @@ import {
   State,
   Watch,
 } from '@stencil/core';
+import { setFormValue } from '@common/form';
 import { InputSwitchType, InputSwitchSizeType } from './meta/types';
 import { KeyboardManager } from '@common/keyboard-manager';
 import { MdsInputSwitchEventDetail } from './meta/event-detail';
@@ -142,7 +143,7 @@ export class MdsInputSwitch {
     }
 
     this.changeEvent.emit({ name: this.name, checked: this.checked, value });
-    this.internals.setFormValue(this.checked ? (this.value ?? null) : null);
+    setFormValue(this.internals, this.checked ? (this.value ?? null) : null);
   };
 
   private handleDirty = (): void => {
@@ -177,7 +178,7 @@ export class MdsInputSwitch {
      * https://github.com/ionic-team/stencil/issues/5461
      */
     if (newValue) {
-      this.internals.setFormValue(null);
+      setFormValue(this.internals, null);
       return;
     }
 
@@ -201,12 +202,12 @@ export class MdsInputSwitch {
   }
 
   formResetCallback(): void {
-    this.internals.setFormValue('');
+    setFormValue(this.internals, '');
   }
 
   componentDidLoad(): void {
     this.label = this.host.textContent ?? '';
-    this.internals.setFormValue(this.checked ? (this.value ?? null) : null);
+    setFormValue(this.internals, this.checked ? (this.value ?? null) : null);
     this.checkFocusElement();
     this.hasText = hasSlotted(this.host);
   }

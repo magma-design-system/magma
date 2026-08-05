@@ -47,8 +47,13 @@ export class MdsUrlView {
   @Prop({ reflect: true }) readonly loading?: LoadingType = 'lazy';
 
   private urlDomain = (url: string): string => {
-    const domain = new URL(url);
-    return domain.hostname.replace('www.', '');
+    try {
+      const domain = new URL(url);
+      return domain.hostname.replace('www.', '');
+    } catch {
+      // src missing or not a valid absolute URL: fall back to the raw value
+      return url ?? '';
+    }
   };
 
   /**
@@ -62,9 +67,11 @@ export class MdsUrlView {
   };
 
   componentDidLoad(): void {
-    const close = this.host.shadowRoot?.querySelector('.action-close') as HTMLElement;
-    this.km.addElement(close);
-    this.km.attachClickBehavior();
+    const close = this.host.shadowRoot?.querySelector<HTMLElement>('.action-close') ?? null;
+    if (close !== null) {
+      this.km.addElement(close);
+      this.km.attachClickBehavior();
+    }
   }
 
   disconnectedCallback(): void {

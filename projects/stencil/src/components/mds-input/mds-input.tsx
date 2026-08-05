@@ -22,6 +22,7 @@ import {
   Watch,
   h,
 } from '@stencil/core';
+import { setFormValue } from '@common/form';
 import { AutocompleteType } from '@type/autocomplete';
 import {
   InputTextType,
@@ -286,7 +287,7 @@ export class MdsInput {
   @Event({ eventName: 'mdsInputValidation' }) validationEvent!: EventEmitter<boolean>;
 
   formResetCallback(): void {
-    this.internals.setFormValue('');
+    setFormValue(this.internals, '');
   }
 
   connectedCallback(): void {
@@ -304,7 +305,7 @@ export class MdsInput {
       this.tabindex = tabindex !== null ? parseInt(tabindex) : undefined;
       this.el.removeAttribute('tabindex');
     }
-    this.internals.setFormValue(this.value ?? null);
+    setFormValue(this.internals, this.value ?? null);
     this.maxLengthChanged(this.maxlength);
     this.isValid = !(this.required && this.value === '');
   }
@@ -337,7 +338,7 @@ export class MdsInput {
   @Watch('value')
   protected valueChanged(): void {
     this.changeEvent.emit({ value: this.value });
-    this.internals.setFormValue(this.value ?? null);
+    setFormValue(this.internals, this.value ?? null);
     if (this.maxlength !== undefined) {
       this.countMaxLength();
     }
@@ -457,7 +458,7 @@ export class MdsInput {
      * https://github.com/ionic-team/stencil/issues/5461
      */
     if (newValue) {
-      this.internals.setFormValue(null);
+      setFormValue(this.internals, null);
     }
   }
 
@@ -485,7 +486,7 @@ export class MdsInput {
     const input = ev.target as HTMLInputElement | HTMLTextAreaElement | false;
     if (input) {
       this.value = input.value;
-      this.internals.setFormValue(this.value);
+      setFormValue(this.internals, this.value);
     }
     this.keyDownEvent.emit(ev as Event as KeyboardEvent);
   };
