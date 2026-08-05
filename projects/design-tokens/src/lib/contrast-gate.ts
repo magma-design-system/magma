@@ -27,7 +27,7 @@ import chroma from 'chroma-js';
 export type Mode = 'light' | 'dark';
 export type Severity = 'error' | 'warn' | 'info';
 export type Metric = 'apca' | 'wcag2';
-export type Category = 'text-on-surface' | 'on-emphasis' | 'hue-fg' | 'border';
+export type Category = 'text-on-surface' | 'text-on-hue' | 'on-emphasis' | 'hue-fg' | 'border';
 
 /** Shape of `createColorTokens(config).tokens.color`: color[group][name][mode][step] = { value }. */
 export type ColorTree = Record<
@@ -72,6 +72,26 @@ const BORDERS = ['muted', 'default', 'strong', 'focus'] as const;
 // fills carry on-emphasis text like the base emphasis, so they are gated the same
 // way. Surface-band states (surface-hover/subtle) add no new text-on-fill pair.
 const ACCENT_EMPHASIS_STATES = ['emphasis-hover', 'emphasis-active'] as const;
+// The colored hues (every hue that is neither an accent nor the partial neutral):
+// the ones that publish a text ladder on their own tint levels.
+const TINTED_HUES = ['info', 'success', 'warning', 'danger'] as const;
+/**
+ * Which text roles are ENFORCED on each hue tint level (spec 9.1). This is the
+ * contract for a colored background, and it is bounded by measurement, not taste:
+ * the more marked the tint, the less of the text ladder it can carry.
+ *  - `subtle` (the lightest tint) carries the whole ladder;
+ *  - `default` carries `text-default` only (`muted` measures 73-75 Lc on it,
+ *    i.e. at or just under its 75 floor);
+ *  - `strong` carries NO essential text: it is a graphic wash (chips, cockades,
+ *    hover) and only has to keep icons legible, which the report-only target
+ *    covers (`text-default` measures 74.5-76 Lc there).
+ * Roles left out of a level are still measured and reported, just not gated.
+ */
+const HUE_TEXT_ENFORCED: Record<string, readonly string[]> = {
+  subtle: ['default', 'muted', 'subtle', 'disabled'],
+  default: ['default'],
+  strong: [],
+};
 
 // APCA is reported to <1 Lc precision; round display and compare on the rounded
 // value so float noise never flips a verdict.
@@ -109,12 +129,16 @@ export interface SemanticMapping {
   textRoles: readonly string[];
   borderFocus: string;
   seed: string;
-  hues: Record<string, { family: string; partial?: boolean }>;
+  hues: Record<string, { family: string; roles?: string; partial?: boolean }>;
   hueSteps: { surface: string; fg: string; border: string; emphasis: string };
   neutralHueSteps: { fg: string; border: string; emphasis: string };
   accents: Record<string, string>;
   /** Accent interaction-state steps (spec 6.6 accent exception); optional. */
   accentStateSteps?: Record<string, string>;
+  /** Tint levels of a colored hue, level -> ramp step (spec 6.4); optional. */
+  hueSurfaceSteps?: Record<string, string>;
+  /** Which published role each legacy quintet alias shortcuts to; optional. */
+  hueRoles?: { surface: string; text: string; border: string };
 }
 
 /**
@@ -134,13 +158,34 @@ export function aliasesFromConfig(m: SemanticMapping): Record<string, string> {
   // focus follows the accent named by borderFocus, at its emphasis step
   set('border-focus', `${m.accents[m.borderFocus]}-${m.hueSteps.emphasis}`);
 
-  Object.entries(m.hues).forEach(([hue, { family, partial }]) => {
-    const steps = partial ? m.neutralHueSteps : m.hueSteps;
-    if (!partial) set(`${hue}-surface`, `${family}-${m.hueSteps.surface}`);
-    set(`${hue}-fg`, `${family}-${steps.fg}`);
-    set(`${hue}-border`, `${family}-${steps.border}`);
-    set(`${hue}-emphasis`, `${family}-${steps.emphasis}`);
+  // A colored hue publishes the same vocabulary as the neutral scaffolding on its
+  // own family: tint levels from named ramp steps, text + border from the family's
+  // GENERATED role scales. The quintet aliases are shortcuts onto those roles, so
+  // the gate resolves them to the same primitive the layer does. A `partial` hue
+  // (neutral) still borrows ramp steps and publishes no ladder of its own.
+  Object.entries(m.hues).forEach(([hue, { family, roles, partial }]) => {
+    if (partial || !roles) {
+      const steps = partial ? m.neutralHueSteps : m.hueSteps;
+      if (!partial) set(`${hue}-surface`, `${family}-${m.hueSteps.surface}`);
+      set(`${hue}-fg`, `${family}-${steps.fg}`);
+      set(`${hue}-border`, `${family}-${steps.border}`);
+      set(`${hue}-emphasis`, `${family}-${steps.emphasis}`);
+      set(`${hue}-on-emphasis`, m.seed);
+      return;
+    }
+    Object.entries(m.hueSurfaceSteps ?? {}).forEach(([level, step]) =>
+      set(`${hue}-surface-${level}`, `${family}-${step}`),
+    );
+    m.textRoles.forEach((r) => set(`${hue}-text-${r}`, `text-${roles}-${r}`));
+    m.borderRoles.forEach((r) => set(`${hue}-border-${r}`, `border-${roles}-${r}`));
+    set(`${hue}-emphasis`, `${family}-${m.hueSteps.emphasis}`);
     set(`${hue}-on-emphasis`, m.seed);
+    const shortcut = m.hueRoles;
+    if (shortcut) {
+      set(`${hue}-surface`, `${family}-${(m.hueSurfaceSteps ?? {})[shortcut.surface]}`);
+      set(`${hue}-fg`, `text-${roles}-${shortcut.text}`);
+      set(`${hue}-border`, `border-${roles}-${shortcut.border}`);
+    }
   });
 
   // accents (variant): the standout quintet, one per fixed role (spec 8). They
@@ -187,6 +232,25 @@ export function contrastAliasesFromConfig(
   });
   Object.entries(promo.border ?? {}).forEach(([role, stronger]) => {
     map[`--magma-border-${role}`] = `--border-${m.tint}-${stronger}`;
+  });
+  // Every colored hue promotes its own roles off the same table (spec 9.3): the
+  // layer states them as roles because a hue does not resolve through a tint
+  // pointer. The quintet shortcuts are var() of these roles, so `<hue>-border`
+  // follows `<hue>-border-default` here exactly as it does in CSS.
+  Object.entries(m.hues).forEach(([hue, { roles, partial }]) => {
+    if (partial || !roles) return;
+    Object.entries(promo.text ?? {}).forEach(([role, stronger]) => {
+      map[`--magma-${hue}-text-${role}`] = `--text-${roles}-${stronger}`;
+    });
+    Object.entries(promo.border ?? {}).forEach(([role, stronger]) => {
+      map[`--magma-${hue}-border-${role}`] = `--border-${roles}-${stronger}`;
+    });
+    if (m.hueRoles?.text && promo.text?.[m.hueRoles.text]) {
+      map[`--magma-${hue}-fg`] = `--text-${roles}-${promo.text[m.hueRoles.text]}`;
+    }
+    if (m.hueRoles?.border && promo.border?.[m.hueRoles.border]) {
+      map[`--magma-${hue}-border`] = `--border-${roles}-${promo.border[m.hueRoles.border]}`;
+    }
   });
   return map;
 }
@@ -302,6 +366,27 @@ export function evaluatePairs(
           targets.onEmphasis,
           mode,
         );
+      }
+    }
+    // 2c. every hue's text ladder on its OWN tint levels. This is the pair a
+    //     banner, toast or badge actually renders, and the one that had no name in
+    //     the contract before: previously the gate only checked colored ink on the
+    //     NEUTRAL surfaces (section 3 below), which is a different question.
+    //     Enforced per HUE_TEXT_ENFORCED; the rest is measured and reported.
+    for (const hue of TINTED_HUES) {
+      for (const [level, enforced] of Object.entries(HUE_TEXT_ENFORCED)) {
+        for (const [role, floor] of Object.entries(targets.text)) {
+          const gated = enforced.includes(role);
+          push(
+            'text-on-hue',
+            gated ? 'error' : 'warn',
+            'apca',
+            `--magma-${hue}-text-${role}`,
+            `--magma-${hue}-surface-${level}`,
+            gated ? floor : targets.hueFg,
+            mode,
+          );
+        }
       }
     }
     // 3. colored fg on the elevated surfaces (report-only)

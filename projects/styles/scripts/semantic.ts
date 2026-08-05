@@ -7,6 +7,7 @@ import {
   accentInfix,
   accentTintOverride,
   contrastTintOverride,
+  hueContrastOverride,
   type ThemeDef,
 } from '../../design-tokens/semantic.config';
 
@@ -32,6 +33,8 @@ const {
   seed,
   hues,
   hueSteps,
+  hueSurfaceSteps,
+  hueRoles,
   neutralHueSteps,
   accents,
   accentStateSteps,
@@ -91,31 +94,68 @@ layer.push(
   alias('border-focus', `magma-accent-${accentInfix(borderFocus)}emphasis`, 'border-focus'),
 );
 
-// 5. hues - colored families carry the full quintet; neutral omits surface (spec 6.4).
+// 5. hues - a colored hue carries the SAME role vocabulary as the neutral
+//    scaffolding, on its own family: tint levels (how marked the colored
+//    background is), the text ladder and the border ladder. Text and border come
+//    from the generated per-family role scales (`--text-success-*`), so the A7
+//    guarantee - each step solved against the family's own surfaces - carries over
+//    to every hue, and the spec 9.3 promotion applies to them verbatim.
+//    Tint levels instead NAME ramp steps (see `hueSurfaceSteps`): a tinted chip
+//    moves toward the ink in both modes, which no elevation role can express.
+//    The legacy quintet (`-surface`, `-fg`, `-border`) stays as a shortcut onto
+//    these roles, so consumers keep resolving AND inherit the promotion.
+//    A `partial` hue (neutral) is unchanged: it borrows ramp steps and its
+//    emphasis pair is the inverse-surface role, not a colored fill (spec 6.4).
 //    The neutral family's "emphasis" pair is NOT a saturated fill like the colored
 //    hues: it is the INVERSE SURFACE role (a dark chip in light mode, light in dark -
 //    toast, tooltip). It is emitted under role names --magma-surface-inverse /
 //    --magma-on-inverse (Material inverseSurface), decoupled from the colored
 //    <hue>-emphasis fills. The former --magma-neutral-emphasis / -on-emphasis names
 //    stay as DEPRECATED aliases (one release) so existing consumers keep resolving.
-Object.entries(hues).forEach(([hue, { family, partial }]) => {
+Object.entries(hues).forEach(([hue, { family, roles, partial }]) => {
   layer.push('', `  /* ${hue} (${family}) */`);
-  const steps = partial ? neutralHueSteps : hueSteps;
-  if (!partial)
-    layer.push(alias(`${hue}-surface`, `${family}-${hueSteps.surface}`, `${hue}-surface`));
-  layer.push(alias(`${hue}-fg`, `${family}-${steps.fg}`, `${hue}-fg`));
-  layer.push(alias(`${hue}-border`, `${family}-${steps.border}`, `${hue}-border`));
   if (partial) {
+    const steps = neutralHueSteps;
+    layer.push(alias(`${hue}-fg`, `${family}-${steps.fg}`, `${hue}-fg`));
+    layer.push(alias(`${hue}-border`, `${family}-${steps.border}`, `${hue}-border`));
     // inverse-surface role (renamed from neutral-emphasis / -on-emphasis)
     layer.push(alias('surface-inverse', `${family}-${steps.emphasis}`, 'surface-inverse'));
     layer.push(alias('on-inverse', seed, 'on-inverse'));
     layer.push('  /* deprecated: renamed to --magma-surface-inverse / --magma-on-inverse */');
     layer.push(alias(`${hue}-emphasis`, 'magma-surface-inverse', `${hue}-emphasis`));
     layer.push(alias(`${hue}-on-emphasis`, 'magma-on-inverse', `${hue}-on-emphasis`));
-  } else {
-    layer.push(alias(`${hue}-emphasis`, `${family}-${steps.emphasis}`, `${hue}-emphasis`));
-    layer.push(alias(`${hue}-on-emphasis`, seed, `${hue}-on-emphasis`));
+    return;
   }
+  if (!roles) {
+    // Not a fallback: without the role family there is nothing to point text and
+    // border at, and silently dropping back to ramp steps would ship the very
+    // hand-picked pairs this layer exists to remove.
+    throw new Error(
+      `semantic.config: hue "${hue}" is colored but declares no "roles" family; ` +
+        `add the generated role family (e.g. roles: '${family.split('-').slice(1).join('-')}').`,
+    );
+  }
+  // tint levels: named ramp steps, so they mode-flip with the primitive
+  Object.entries(hueSurfaceSteps).forEach(([level, step]) =>
+    layer.push(alias(`${hue}-surface-${level}`, `${family}-${step}`, `${hue}-surface-${level}`)),
+  );
+  // text + border: the family's own generated role scales (A7 guarantee)
+  textRoles.forEach((r) =>
+    layer.push(alias(`${hue}-text-${r}`, `text-${roles}-${r}`, `${hue}-fg-${r}`)),
+  );
+  borderRoles.forEach((r) =>
+    layer.push(alias(`${hue}-border-${r}`, `border-${roles}-${r}`, `${hue}-border-${r}`)),
+  );
+  // the solid saturated fill has no counterpart in the generated scales (those
+  // model tinted surfaces, not fills), so it keeps naming a ramp step
+  layer.push(alias(`${hue}-emphasis`, `${family}-${hueSteps.emphasis}`, `${hue}-emphasis`));
+  layer.push(alias(`${hue}-on-emphasis`, seed, `${hue}-on-emphasis`));
+  // shortcuts onto the roles above (NOT onto the primitives): stated this way
+  // they follow the contrast promotion instead of freezing the base step
+  layer.push('  /* shortcuts: the roles above at their default prominence */');
+  layer.push(alias(`${hue}-surface`, `magma-${hue}-surface-${hueRoles.surface}`, `${hue}-surface`));
+  layer.push(alias(`${hue}-fg`, `magma-${hue}-text-${hueRoles.text}`, `${hue}-fg`));
+  layer.push(alias(`${hue}-border`, `magma-${hue}-border-${hueRoles.border}`, `${hue}-border`));
 });
 
 // 6. accents (variant) - the standout colors (spec 8). Each accent role is a
@@ -185,10 +225,12 @@ const CONTRAST_LEVEL = 'more';
  * The contrast blocks for one scope. `scope` is an extra `:root` qualifier (empty
  * for the base layer, `[data-theme-name='x']` for a named theme) and `family` the
  * surface family the promotions draw from - that pairing is what makes the
- * promotion family-independent. Empty string when the config declares no promotion.
+ * promotion family-independent. `extra` carries rules that belong to the BASE
+ * scope only (the hue roles: a named theme does not retint them, so restating
+ * them per theme would be dead weight). Empty string when nothing is promoted.
  */
-const contrastBlocks = (scope: string, family: string): string => {
-  const rules = contrastTintOverride(family, CONTRAST_LEVEL);
+const contrastBlocks = (scope: string, family: string, extra: string[] = []): string => {
+  const rules = [...contrastTintOverride(family, CONTRAST_LEVEL), ...extra];
   if (!rules.length) return '';
   return [
     `:root${scope}.pref-contrast-${CONTRAST_LEVEL} {`,
@@ -204,10 +246,17 @@ const contrastBlocks = (scope: string, family: string): string => {
   ].join('\n');
 };
 
-const contrastPromotions = contrastTintOverride(tint, CONTRAST_LEVEL).length;
-const contrastCss = contrastBlocks('', tint);
+// Every colored hue promotes its own text + border roles off the SAME table. They
+// are stated as roles (not through a tint pointer) because a hue is not retinted
+// by a theme; the quintet shortcuts are var() of these roles, so they follow.
+const hueContrastRules = Object.entries(hues).flatMap(([hue, { roles, partial }]) =>
+  partial || !roles ? [] : hueContrastOverride(hue, roles, CONTRAST_LEVEL),
+);
+const contrastPromotions =
+  contrastTintOverride(tint, CONTRAST_LEVEL).length + hueContrastRules.length;
+const contrastCss = contrastBlocks('', tint, hueContrastRules);
 const contrastComment =
-  '/* Contrast (spec 9.3): pref-contrast-more promotes text + border to stronger same-family steps via the tint block. */';
+  '/* Contrast (spec 9.3): pref-contrast-more promotes text + border to stronger same-family steps, on the tint block and on every hue. */';
 const layerCss =
   `${HEADER('Semantic color layer (--magma-*) - the contract components consume.')}${layer.join('\n')}` +
   (contrastCss ? `\n${contrastComment}\n${contrastCss}\n` : '');

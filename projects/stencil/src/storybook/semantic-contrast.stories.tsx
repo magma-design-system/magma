@@ -65,7 +65,24 @@ const BORDER_ROLES: Promotion[] = [
   { token: 'border-strong', borrows: null, note: 'already the ceiling' },
 ];
 
-const PROBED = [...TEXT_ROLES, ...BORDER_ROLES].map((role) => role.token);
+// A colored hue promotes its OWN roles off the same table (#621, spec 6.4 + 9.3).
+// This is the path a tint pointer does not cover: a hue is not retinted by a theme,
+// so its roles are stated directly. `success` stands in for all four hues; the last
+// two rows are the controls - a shortcut must follow its role, a tint level must not
+// move at all (it is a background, and promoting it would repaint the component).
+const HUE_ROLES: Promotion[] = [
+  { token: 'success-text-muted', borrows: 'success-text-default' },
+  { token: 'success-text-subtle', borrows: 'success-text-muted' },
+  { token: 'success-border-default', borrows: 'success-border-strong' },
+  { token: 'success-border', borrows: 'success-border-strong', note: 'shortcut: follows its role' },
+  {
+    token: 'success-surface-strong',
+    borrows: null,
+    note: 'a tint level is a background: never promoted',
+  },
+];
+
+const PROBED = [...TEXT_ROLES, ...BORDER_ROLES, ...HUE_ROLES].map((role) => role.token);
 
 // -- <html> state: the same contract the real writers use ------------------
 
@@ -296,7 +313,7 @@ const PromotionRow = ({
       </td>
       <td class="p-200">
         {role.borrows ? (
-          <Code>-&gt; {role.borrows.replace(/^(text|border)-/, '')}</Code>
+          <Code>-&gt; {role.borrows.replace(/^.*?(text|border)-/, '')}</Code>
         ) : (
           <span style={{ color: textVar('subtle') }}>not promoted</span>
         )}
@@ -403,6 +420,43 @@ const BorderSpecimen = () => (
   </div>
 );
 
+/**
+ * A status component dressed ENTIRELY from one hue: two tint levels (the panel and
+ * the chip behind the icon), two text prominences and a border. This is the shape
+ * `mds-banner` has today with hand-picked ramp steps, rebuilt on the roles - the
+ * component migration itself is #615.
+ *
+ * The chip is the pair worth watching: the icon on it measures 74.7 Lc through
+ * `text-default`, where the hand-picked step it replaces measured 40.7.
+ */
+const HueSpecimen = ({ hue }: { key?: string; hue: string }) => {
+  const role = (name: string): string => magmaVar(`${hue}-${name}`);
+  return (
+    <div
+      class="rounded-md p-400 flex gap-300 items-start"
+      style={{
+        background: role('surface-subtle'),
+        border: `1px solid ${role('border-default')}`,
+      }}
+    >
+      <div class="rounded-md p-200 flex" style={{ background: role('surface-strong') }}>
+        <mds-icon name="mdi/crown" style={{ color: role('text-default') }} />
+      </div>
+      <div class="grid gap-100">
+        <mds-text typography="label" style={{ color: role('text-default') }}>
+          {hue} - headline on surface-subtle
+        </mds-text>
+        <mds-text typography="detail" style={{ color: role('text-muted') }}>
+          body copy through text-muted, the role a banner reads for its message
+        </mds-text>
+        <mds-text typography="detail" style={{ color: role('text-subtle') }}>
+          subtle - non-essential note
+        </mds-text>
+      </div>
+    </div>
+  );
+};
+
 // -- page ------------------------------------------------------------------
 
 const ContrastPage = () => {
@@ -440,6 +494,7 @@ const ContrastPage = () => {
           <div class="grid gap-400">
             <PromotionsTable roles={TEXT_ROLES} probes={probes} />
             <PromotionsTable roles={BORDER_ROLES} probes={probes} />
+            <PromotionsTable roles={HUE_ROLES} probes={probes} />
           </div>
         )}
         <Callout>
@@ -475,6 +530,27 @@ const ContrastPage = () => {
         hint="Decorative separators (border-muted) and container edges (border-default) both shift one step toward strong."
       >
         <BorderSpecimen />
+      </Section>
+
+      <Section
+        title="Status hues on their own tint"
+        hint="Each hue publishes the same ladders on its own family (#621), so a colored component needs no hand-picked ramp step - and gains contrast from the same table."
+      >
+        <div class="grid gap-300 grid-cols-1 tablet:grid-cols-2">
+          {['info', 'success', 'warning', 'danger'].map((hue) => (
+            <HueSpecimen key={hue} hue={hue} />
+          ))}
+        </div>
+        <Callout>
+          <mds-text typography="detail" style={{ color: textVar('muted') }}>
+            The tint levels (<Code>surface-subtle</Code> / <Code>-default</Code> /{' '}
+            <Code>-strong</Code>) NAME ramp steps instead of resolving through the generated surface
+            scale, and that is not a shortcut: a tinted chip moves toward the ink in BOTH modes,
+            while the elevation ladder rises toward white in light and toward the ink in dark. No
+            single elevation role can be it - flip <strong>Mode</strong> and watch the chip stay on
+            the ink side either way.
+          </mds-text>
+        </Callout>
       </Section>
 
       <Section
