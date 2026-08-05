@@ -37,7 +37,7 @@
   }
 
   &:host([tone='text']:hover) {
-    --mds-button-color: rgb(var(--status-info-04));
+    --mds-button-color: rgb(var(--magma-info-text-default));
     --mds-button-background: rgb(var(--magma-info-wash-soft));
   }
 
@@ -85,7 +85,7 @@
   }
 
   &:host([tone='text']:hover) {
-    --mds-button-color: rgb(var(--status-success-04));
+    --mds-button-color: rgb(var(--magma-success-text-default));
     --mds-button-background: rgb(var(--magma-success-wash-soft));
   }
 
@@ -133,7 +133,7 @@
   }
 
   &:host([tone='text']:hover) {
-    --mds-button-color: rgb(var(--status-warning-04));
+    --mds-button-color: rgb(var(--magma-warning-text-default));
     --mds-button-background: rgb(var(--magma-warning-wash-soft));
   }
 
@@ -181,7 +181,7 @@
   }
 
   &:host([tone='text']:hover) {
-    --mds-button-color: rgb(var(--status-error-04));
+    --mds-button-color: rgb(var(--magma-danger-text-default));
     --mds-button-background: rgb(var(--magma-danger-wash-soft));
   }
 

@@ -20,7 +20,7 @@
 }
 
 :host([variant='info']) {
-  --mds-input-date-icon-color: rgb(var(--status-info-04));
+  --mds-input-date-icon-color: rgb(var(--magma-info-emphasis));
   --mds-input-tip-background: rgb(var(--status-info-05));
   --mds-input-date-variant-color-rgb: 0 0 0;
 }
@@ -31,7 +31,7 @@
 }
 
 :host([variant='success']) {
-  --mds-input-date-icon-color: rgb(var(--status-success-04));
+  --mds-input-date-icon-color: rgb(var(--magma-success-emphasis));
   --mds-input-tip-background: rgb(var(--status-success-05));
   --mds-input-date-variant-color-rgb: 0 0 0;
 }
@@ -42,7 +42,7 @@
 }
 
 :host([variant='warning']) {
-  --mds-input-date-icon-color: rgb(var(--status-warning-04));
+  --mds-input-date-icon-color: rgb(var(--magma-warning-emphasis));
   --mds-input-tip-background: rgb(var(--status-warning-05));
   --mds-input-date-variant-color-rgb: 0 0 0;
 }
@@ -53,7 +53,7 @@
 }
 
 :host([variant='error']) {
-  --mds-input-date-icon-color: rgb(var(--status-error-04));
+  --mds-input-date-icon-color: rgb(var(--magma-danger-emphasis));
   --mds-input-tip-background: rgb(var(--status-error-05));
   --mds-input-date-variant-color-rgb: 0 0 0;
 }
