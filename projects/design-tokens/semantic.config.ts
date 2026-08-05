@@ -66,7 +66,15 @@ export interface SemanticConfig {
    * The partial (neutral) hue's emphasis pair is emitted as the INVERSE SURFACE role
    * (`--magma-surface-inverse` / `--magma-on-inverse`), not a colored `-emphasis` fill;
    * the old `neutral-emphasis` / `-on-emphasis` names remain as deprecated aliases.
+   *
+   * `family` names the RAMP (`status-success`), `roles` the generated role scales
+   * of the same family (`--text-success-*`): the surface engine drops the group
+   * segment (`status.success` becomes `success`) and the hue key can differ from
+   * both (`danger` draws from `status-error`), so neither name is derivable from
+   * the other and both are declared. A `partial` hue keeps borrowing ramp steps
+   * (`neutralHueSteps`) and needs no `roles`.
    */
+  hues: Record<string, { family: string; roles?: string; partial?: boolean }>;
   hues: Record<string, { family: string; partial?: boolean }>;
   /**
    * How many steps of the active tint's ramp to expose as `--magma-scale-NN`.
@@ -83,6 +91,45 @@ export interface SemanticConfig {
   scaleSteps: number;
   /** Steps of a colored family for the quintet (spec 6.5). */
   hueSteps: { surface: string; fg: string; border: string; emphasis: string };
+  /**
+   * WASH LEVELS of a colored hue: how marked the colored background is, NOT how
+   * high it sits. Emitted as `--magma-<hue>-wash-<level>` and, like
+   * `accentStateSteps`, each level NAMES an existing ramp step rather than
+   * resolving through the generated `--surface-<family>-*` scale.
+   *
+   * The name is deliberate on both halves. NOT `surface-*`, because
+   * `--magma-<hue>-surface-default` would read as the colored parent of
+   * `--magma-surface-default` and is nothing of the sort - that one is the
+   * elevation band (L 96%), this one is a ramp step, and the generated
+   * `--surface-<family>-*` scale (the band, tinted) already occupies the middle
+   * ground. Three near-identical names for three different things is a trap, so
+   * this group says what it is. NOT `tint-*` either: `tint` already means the
+   * ACTIVE THEME FAMILY throughout this contract (`--magma-tint-*` pointers,
+   * `contrastTintOverride`), and one word cannot carry both senses.
+   *
+   * The reason is measured, not stylistic: the elevation ladder moves toward
+   * WHITE as it rises in light and toward the INK as it rises in dark, while a
+   * tinted chip (a banner cockade, a status wash under an icon) moves toward the
+   * ink in BOTH modes. One elevation role therefore cannot name it - it would be
+   * `sunken` in light and `raised` in dark - whereas a ramp step mode-flips for
+   * free because the primitive itself flips. The generated surface scale stays
+   * what it is for: the constraint the text roles are solved against.
+   *
+   * Text on these levels is bounded by the spec 9.1 table, not by taste:
+   * `soft` carries the whole text ladder, `base` carries `text-default`, and
+   * `strong` carries icons only (no essential text).
+   */
+  hueWashSteps: Record<string, string>;
+  /**
+   * Which published role each legacy quintet alias is a SHORTCUT for (spec 6.5).
+   * `--magma-<hue>-surface`, `-fg` and `-border` are kept so existing consumers
+   * keep resolving, but they now point at a role in the published scale instead
+   * of at a ramp step of their own, which is what lets the contrast promotion
+   * reach them: promote the role and the shortcut follows. `surface` names a WASH
+   * level (it keeps step 09, the value that alias always had); `text` and
+   * `border` name a role of the generated ladders.
+   */
+  hueRoles: { surface: string; text: string; border: string };
   /** Steps for the neutral (partial) hue - it borrows from the tone scale. */
   neutralHueSteps: { fg: string; border: string; emphasis: string };
   /**
@@ -143,14 +190,24 @@ export const semantic: SemanticConfig = {
   borderFocus: 'accent',
   seed: 'tone-neutral-seed',
   hues: {
-    info: { family: 'status-info' },
-    success: { family: 'status-success' },
-    warning: { family: 'status-warning' },
-    danger: { family: 'status-error' },
+    info: { family: 'status-info', roles: 'info' },
+    success: { family: 'status-success', roles: 'success' },
+    warning: { family: 'status-warning', roles: 'warning' },
+    danger: { family: 'status-error', roles: 'error' },
     neutral: { family: 'tone-neutral', partial: true },
   },
   scaleSteps: 10,
   hueSteps: { surface: '09', fg: '05', border: '06', emphasis: '04' },
+  // The three wash levels the component sheets actually use as a colored
+  // background today (10 x68, 09 x71, 08 x41), so adopting them is a 1:1 rename
+  // and no value moves. `base` is the step `--magma-<hue>-surface` already
+  // pointed at - which is why the shortcut can stay put. NOTE: the accents
+  // express the same three levels with state-derived names (`surface-subtle` /
+  // base / `surface-hover`, #606); these are named by INTENSITY because a
+  // colored chip is not an interaction state. Unifying the two vocabularies is a
+  // follow-up, not part of this change.
+  hueWashSteps: { soft: '10', base: '09', strong: '08' },
+  hueRoles: { surface: 'base', text: 'default', border: 'default' },
   neutralHueSteps: { fg: '03', border: '06', emphasis: '02' },
   accents: {
     accent: 'variant-primary',
@@ -249,15 +306,46 @@ export const accentTintOverride = (role: string, family: string): string[] => {
  * styles generator emits byte-identical lines for the base layer and for every
  * named theme. Returns [] when the level declares no promotion.
  */
-export const contrastTintOverride = (family: string, level: ContrastLevel = 'more'): string[] => {
+export const contrastTintOverride = (family: string, level: ContrastLevel = 'more'): string[] =>
+  contrastLines(family, level, (axis, role) => `--magma-tint-${axis}-${role}`);
+
+/**
+ * The same promotions for a colored HUE's published roles (spec 9.3 + 6.4).
+ * Hues are DIRECT aliases - they do not resolve through the `--magma-tint-*`
+ * block, because a hue is not retinted by a named theme - so the promotion has to
+ * name their roles instead of a shared pointer. It reads the very same table:
+ * `roleFamily` is the hue's generated role family (`success`), and because the
+ * legacy quintet aliases (`-fg`, `-border`) are declared as `var()` of these
+ * roles, promoting the role carries the shortcut along.
+ *
+ * NOT theme-scoped, unlike `contrastTintOverride`: a named theme leaves hues
+ * alone, so the base block is the only place these can be stated.
+ */
+export const hueContrastOverride = (
+  hue: string,
+  roleFamily: string,
+  level: ContrastLevel = 'more',
+): string[] => contrastLines(roleFamily, level, (axis, role) => `--magma-${hue}-${axis}-${role}`);
+
+/**
+ * Shared body of the two overrides above: walk the level's promotion table and
+ * emit one line per promoted role, naming the target through `name` so the tint
+ * pointers and the hue roles cannot drift apart in what they promote or in the
+ * order they promote it. Returns [] when the level declares no promotion.
+ */
+function contrastLines(
+  family: string,
+  level: ContrastLevel,
+  name: (axis: 'text' | 'border', role: string) => string,
+): string[] {
   const promo = semantic.contrast?.[level];
   if (!promo) return [];
   return [
     ...Object.entries(promo.text ?? {}).map(
-      ([role, stronger]) => `  --magma-tint-text-${role}: var(--text-${family}-${stronger});`,
+      ([role, stronger]) => `  ${name('text', role)}: var(--text-${family}-${stronger});`,
     ),
     ...Object.entries(promo.border ?? {}).map(
-      ([role, stronger]) => `  --magma-tint-border-${role}: var(--border-${family}-${stronger});`,
+      ([role, stronger]) => `  ${name('border', role)}: var(--border-${family}-${stronger});`,
     ),
   ];
-};
+}
