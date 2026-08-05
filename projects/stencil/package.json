@@ -37,6 +37,12 @@
       "require": "./loader/index.cjs.js",
       "default": "./loader/index.js"
     },
+    "./hydrate": {
+      "types": "./dist/hydrate/index.d.ts",
+      "import": "./dist/hydrate/index.mjs",
+      "require": "./dist/hydrate/index.js",
+      "default": "./dist/hydrate/index.mjs"
+    },
     "./components/*.js": {
       "types": "./dist/components/*.d.ts",
       "import": "./dist/components/*.js"
@@ -56,7 +62,8 @@
     "agents/"
   ],
   "scripts": {
-    "build": "npm run clean && npm run build.icons && npm run sync.agent-docs && stencil build --prerender --docs-readme --docs-json dist/documentation.json",
+    "build": "npm run clean && npm run build.icons && npm run sync.agent-docs && stencil build --prerender --docs-readme --docs-json dist/documentation.json && npm run patch.custom-elements",
+    "patch.custom-elements": "tsx --tsconfig script.tsconfig.json ./scripts/patch-custom-elements-lazy-import.ts",
     "sync.agent-docs": "tsx --tsconfig script.tsconfig.json ./scripts/sync-agent-docs.ts",
     "build.docs": "stencil docs",
     "build.icons": "iconsauce --verbose --config ./.storybook/iconsauce.config.js --output-dictionary ./src/fixtures/icons.json --output-svg ./assets/svg --output-dump-dictionary ./src/fixtures/icons-dictionary.json && npm run sort.icons-dictionary",
@@ -64,6 +71,7 @@
     "build.no-cache": "stencil build --no-cache",
     "build.watch": "npm run build.icons && stencil build -c stencil.dev.config.ts --dev --watch",
     "build.watch-no-cache": "stencil build --no-cache --watch",
+    "check.ssr": "tsx --tsconfig script.tsconfig.json ./scripts/check-ssr.ts",
     "check.treeshaking": "tsx --tsconfig script.tsconfig.json ./scripts/check-treeshaking.ts",
     "clean": "tsx --tsconfig script.tsconfig.json ./scripts/clean.ts",
     "generate": "stencil generate",

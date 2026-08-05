@@ -127,7 +127,14 @@ export const config: Config = {
       // components.ts con tutti e 114: il barrel resta ma diventa di sole
       // ri-esportazioni, così i bundler scartano i componenti non importati.
       esModules: true,
-      // hydrateModule: '@maggioli-design-system/magma/hydrate',
+      // SSR: oltre ai wrapper client (invariati) genera un <tag>.server.ts
+      // per componente che sul server usa renderToString dal modulo hydrate
+      // (declarative shadow DOM nell'HTML iniziale, CLS ~0) e sul client
+      // delega al wrapper di clientModule. Richiede l'output target
+      // dist-hydrate-script esplicito e l'export "./hydrate" nel package.json.
+      hydrateModule: '@maggioli-design-system/magma/hydrate',
+      clientModule: '@maggioli-design-system/magma-react',
+      serializeShadowRoot: 'declarative-shadow-dom',
     }),
     {
       type: 'dist-custom-elements',
@@ -141,10 +148,25 @@ export const config: Config = {
       // conterrebbe comunque una chiamata `globalScripts()` a livello di
       // modulo, cioè un side effect che i bundler devono tenere.
       includeGlobalScripts: false,
+      // Con il runtime esterno (default true) i custom element importano lo
+      // stock @stencil/core/internal/client, compilato con
+      // hydrateClientSide:false e hydratedClass:true: il markup SSR
+      // (declarative shadow DOM annotato s-id) non viene idratato ma
+      // ri-renderizzato sopra, duplicando il contenuto, e il flag hydrated
+      // diventa una classe invece dell'attributo configurato in hydratedFlag.
+      // Bundlando il runtime, le build conditionals del progetto si applicano
+      // (hydrateClientSide:true perché esiste dist-hydrate-script).
+      externalRuntime: false,
     },
-    // {
-    //   type: 'dist-hydrate-script',
-    // },
+    {
+      // Build hydrate per SSR (renderToString). Già prodotto implicitamente
+      // da `--prerender`, ma reso esplicito perché reactOutputTarget lo
+      // richiede quando hydrateModule è impostato (la sua validazione gira
+      // prima che il target implicito venga aggiunto). Senza `dir` il default
+      // sarebbe `hydrate/` alla radice del progetto, non `dist/hydrate`.
+      type: 'dist-hydrate-script',
+      dir: 'dist/hydrate',
+    },
     {
       type: 'docs-readme',
       footer:
