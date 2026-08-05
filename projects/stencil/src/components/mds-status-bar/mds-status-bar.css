@@ -30,6 +30,8 @@
   --mds-status-bar-max-width: 500px;
   --mds-status-bar-backdrop: rgb(var(--tone-neutral-01) / 0.1);
   --mds-status-bar-backdrop-filter: blur(10px);
+
+  display: block;
 }
 
 mds-modal {
