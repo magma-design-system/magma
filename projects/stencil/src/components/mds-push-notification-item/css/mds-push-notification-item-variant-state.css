@@ -6,12 +6,12 @@
 :host([variant='error']),
 :host([variant='error'][tone='weak']) {
   --mds-push-notification-item-icon-background-color: rgb(var(--magma-danger-wash-base));
-  --mds-push-notification-item-icon-color: rgb(var(--status-error-05));
+  --mds-push-notification-item-icon-color: rgb(var(--magma-danger-text-default));
 }
 
 :host([variant='error'][tone='text']) {
   --mds-push-notification-item-icon-background-color: transparent;
-  --mds-push-notification-item-icon-color: rgb(var(--status-error-05));
+  --mds-push-notification-item-icon-color: rgb(var(--magma-danger-emphasis));
 }
 
 :host([variant='warning'][tone='strong']) {
@@ -22,12 +22,12 @@
 :host([variant='warning']),
 :host([variant='warning'][tone='weak']) {
   --mds-push-notification-item-icon-background-color: rgb(var(--magma-warning-wash-base));
-  --mds-push-notification-item-icon-color: rgb(var(--status-warning-05));
+  --mds-push-notification-item-icon-color: rgb(var(--magma-warning-text-default));
 }
 
 :host([variant='warning'][tone='text']) {
   --mds-push-notification-item-icon-background-color: transparent;
-  --mds-push-notification-item-icon-color: rgb(var(--status-warning-05));
+  --mds-push-notification-item-icon-color: rgb(var(--magma-warning-emphasis));
 }
 
 :host([variant='success'][tone='strong']) {
@@ -38,12 +38,12 @@
 :host([variant='success']),
 :host([variant='success'][tone='weak']) {
   --mds-push-notification-item-icon-background-color: rgb(var(--magma-success-wash-base));
-  --mds-push-notification-item-icon-color: rgb(var(--status-success-05));
+  --mds-push-notification-item-icon-color: rgb(var(--magma-success-text-default));
 }
 
 :host([variant='success'][tone='text']) {
   --mds-push-notification-item-icon-background-color: transparent;
-  --mds-push-notification-item-icon-color: rgb(var(--status-success-05));
+  --mds-push-notification-item-icon-color: rgb(var(--magma-success-emphasis));
 }
 
 :host([variant='info'][tone='strong']) {
@@ -54,10 +54,10 @@
 :host([variant='info']),
 :host([variant='info'][tone='weak']) {
   --mds-push-notification-item-icon-background-color: rgb(var(--magma-info-wash-base));
-  --mds-push-notification-item-icon-color: rgb(var(--status-info-05));
+  --mds-push-notification-item-icon-color: rgb(var(--magma-info-text-default));
 }
 
 :host([variant='info'][tone='text']) {
   --mds-push-notification-item-icon-background-color: transparent;
-  --mds-push-notification-item-icon-color: rgb(var(--status-info-05));
+  --mds-push-notification-item-icon-color: rgb(var(--magma-info-emphasis));
 }

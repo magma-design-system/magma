@@ -4,7 +4,7 @@
 
   &:host([tone='weak']) {
     --mds-avatar-background-color: rgb(var(--magma-danger-wash-base));
-    --mds-avatar-color: rgb(var(--status-error-05));
+    --mds-avatar-color: rgb(var(--magma-danger-text-default));
   }
 }
 
@@ -14,7 +14,7 @@
 
   &:host([tone='weak']) {
     --mds-avatar-background-color: rgb(var(--magma-warning-wash-base));
-    --mds-avatar-color: rgb(var(--status-warning-05));
+    --mds-avatar-color: rgb(var(--magma-warning-text-default));
   }
 }
 
@@ -24,7 +24,7 @@
 
   &:host([tone='weak']) {
     --mds-avatar-background-color: rgb(var(--magma-info-wash-base));
-    --mds-avatar-color: rgb(var(--status-info-05));
+    --mds-avatar-color: rgb(var(--magma-info-text-default));
   }
 }
 
@@ -34,6 +34,6 @@
 
   &:host([tone='weak']) {
     --mds-avatar-background-color: rgb(var(--magma-success-wash-base));
-    --mds-avatar-color: rgb(var(--status-success-05));
+    --mds-avatar-color: rgb(var(--magma-success-text-default));
   }
 }

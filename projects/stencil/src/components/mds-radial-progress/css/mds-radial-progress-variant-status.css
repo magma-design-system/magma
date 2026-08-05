@@ -1,19 +1,19 @@
 :host([variant='error']) {
-  --mds-radial-progress-color: rgb(var(--status-error-05));
+  --mds-radial-progress-color: rgb(var(--magma-danger-text-default));
   --mds-radial-progress-background: rgb(var(--magma-danger-wash-base));
 }
 
 :host([variant='warning']) {
-  --mds-radial-progress-color: rgb(var(--status-warning-05));
+  --mds-radial-progress-color: rgb(var(--magma-warning-text-default));
   --mds-radial-progress-background: rgb(var(--magma-warning-wash-base));
 }
 
 :host([variant='success']) {
-  --mds-radial-progress-color: rgb(var(--status-success-05));
+  --mds-radial-progress-color: rgb(var(--magma-success-text-default));
   --mds-radial-progress-background: rgb(var(--magma-success-wash-base));
 }
 
 :host([variant='info']) {
-  --mds-radial-progress-color: rgb(var(--status-info-05));
+  --mds-radial-progress-color: rgb(var(--magma-info-text-default));
   --mds-radial-progress-background: rgb(var(--magma-info-wash-base));
 }

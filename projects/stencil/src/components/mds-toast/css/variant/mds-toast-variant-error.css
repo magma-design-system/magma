@@ -3,7 +3,7 @@
   --mds-toast-background: rgb(var(--magma-danger-wash-base));
   --mds-toast-color: rgb(var(--magma-danger-text-muted));
   --mds-toast-shadow: var(--shadow-lg-sharp);
-  --mds-toast-icon-color: rgb(var(--status-error-05));
+  --mds-toast-icon-color: rgb(var(--magma-danger-text-default));
 }
 
 :host([variant='error'][tone='weak']) {
