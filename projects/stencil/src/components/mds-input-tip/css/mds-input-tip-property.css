@@ -1,0 +1,38 @@
+/*
+  Document-level registrations for the mds-input-tip public custom properties.
+
+  Never import this file from a component stylesheet: an @property rule inside a shadow root
+  registers nothing, and every Magma component is shadow: true.
+  projects/styles/scripts/properties.ts collects these into globals.css, which the document does
+  load, and resolves each initial-value down to a literal - see that file for the full
+  rationale. inherits is true throughout, because that is what the unregistered behaviour
+  already does today.
+
+  Deliberately NOT registered:
+    - --mds-input-tip-background: read by mds-input-tip-item as var(--mds-input-tip-background,
+      <default>), so a registration would keep that fallback from ever firing.
+*/
+
+@property --mds-input-tip-active-translate {
+  inherits: true;
+  initial-value: translate(0, 0);
+  syntax: '<transform-function>';
+}
+
+@property --mds-input-tip-horizontal-offset {
+  inherits: true;
+  initial-value: --spacing(400);
+  syntax: '<length>';
+}
+
+@property --mds-input-tip-horizontal-offset-focused {
+  inherits: true;
+  initial-value: 0px;
+  syntax: '<length>';
+}
+
+@property --mds-input-tip-vertical-offset {
+  inherits: true;
+  initial-value: --spacing(100);
+  syntax: '<length>';
+}

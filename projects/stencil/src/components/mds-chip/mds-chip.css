@@ -13,50 +13,14 @@
  * @prop --mds-chip-icon-color-selected: Sets the `fill` color of the icon of the component when it's selected
  */
 
-@property --mds-chip-background {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-seed));
-  syntax: '<color>';
-}
-
-@property --mds-chip-border {
-  inherits: false;
-  initial-value: transparent;
-  syntax: '<color>';
-}
-
-@property --mds-chip-color {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-03));
-  syntax: '<color>';
-}
-
-@property --mds-chip-icon-background {
-  inherits: false;
-  initial-value: rgb(var(--variant-primary-06));
-  syntax: '<color>';
-}
-
-@property --mds-chip-icon-color {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-seed));
-  syntax: '<color>';
-}
-
-@property --mds-chip-opacity-disabled {
-  inherits: false;
-  initial-value: 0.5;
-  syntax: '<number>';
-}
-
 /* --mds-chip-shadow not supported by Houdini */
 
 :host {
   --mds-chip-background: rgb(var(--tone-neutral-seed));
   --mds-chip-border: transparent;
-  --mds-chip-color: rgb(var(--tone-neutral-03));
+  --mds-chip-color: rgb(var(--magma-text-muted));
   --mds-chip-icon-background: rgb(var(--variant-primary-06));
-  --mds-chip-icon-color: rgb(var(--tone-neutral-seed));
+  --mds-chip-icon-color: rgb(var(--magma-text-on-emphasis));
   --mds-chip-opacity-disabled: 0.5;
   --mds-chip-shadow: var(--shadow-sm-sharp);
   --mds-chip-transition-duration: var(--duration-150);

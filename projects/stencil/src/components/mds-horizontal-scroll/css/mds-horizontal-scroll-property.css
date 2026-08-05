@@ -1,0 +1,100 @@
+/*
+  Document-level registrations for the mds-horizontal-scroll public custom properties.
+
+  Never import this file from a component stylesheet: an @property rule inside a shadow root
+  registers nothing, and every Magma component is shadow: true.
+  projects/styles/scripts/properties.ts collects these into globals.css, which the document does
+  load, and resolves each initial-value down to a literal - see that file for the full
+  rationale. inherits is true throughout, because that is what the unregistered behaviour
+  already does today.
+*/
+
+@property --mds-horizontal-scroll-behavior {
+  inherits: true;
+  initial-value: smooth;
+  syntax: "auto | smooth";
+}
+
+@property --mds-horizontal-scroll-contents-padding {
+  inherits: true;
+  initial-value: --spacing(600);
+  syntax: '<length>';
+}
+
+@property --mds-horizontal-scroll-contents-scroll-padding {
+  inherits: true;
+  initial-value: 0 --spacing(600);
+  syntax: '<length>+';
+}
+
+@property --mds-horizontal-scroll-controls-margin {
+  inherits: true;
+  initial-value: --spacing(1200);
+  syntax: '<length>';
+}
+
+@property --mds-horizontal-scroll-dot-area-background {
+  inherits: true;
+  initial-value: rgb(var(--magma-scale-08));
+  syntax: '<color>';
+}
+
+@property --mds-horizontal-scroll-dot-background {
+  inherits: true;
+  initial-value: rgb(var(--tone-neutral-seed));
+  syntax: '<color>';
+}
+
+@property --mds-horizontal-scroll-dot-size {
+  inherits: true;
+  initial-value: --spacing(200);
+  syntax: '<length>';
+}
+
+@property --mds-horizontal-scroll-dots-gap {
+  inherits: true;
+  initial-value: --spacing(100);
+  syntax: '<length>';
+}
+
+@property --mds-horizontal-scroll-gap {
+  inherits: true;
+  initial-value: --spacing(600);
+  syntax: '<length>';
+}
+
+@property --mds-horizontal-scroll-max-width {
+  inherits: true;
+  initial-value: var(--breakpoint-wide);
+  syntax: '<length>';
+}
+
+@property --mds-horizontal-scroll-scrollbar-margin {
+  inherits: true;
+  initial-value: 0;
+  syntax: '<length>';
+}
+
+@property --mds-horizontal-scroll-scrollbar-radius {
+  inherits: true;
+  initial-value: 0;
+  syntax: '<length>';
+}
+
+@property --mds-horizontal-scroll-scrollbar-size {
+  inherits: true;
+  initial-value: --spacing(200);
+  syntax: '<length>';
+}
+
+@property --mds-horizontal-scroll-scrollbar-thumb-background {
+  inherits: true;
+  initial-value: rgb(var(--magma-surface-inverse) / 0.3);
+  syntax: '<color>';
+}
+
+@property --mds-horizontal-scroll-scrollbar-track-background {
+  inherits: true;
+  initial-value: rgb(var(--magma-scale-06) / 0.3);
+  syntax: '<color>';
+}

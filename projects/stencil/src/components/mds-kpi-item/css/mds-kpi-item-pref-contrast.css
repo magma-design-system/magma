@@ -7,7 +7,7 @@
   --mds-kpi-item-info-background: rgb(var(--tone-neutral-seed));
 
   box-shadow: var(--shadow-lg), var(--shadow-outline);
-  color: rgb(var(--tone-neutral-01));
+  color: rgb(var(--magma-text-default));
 
   .info {
     box-shadow: var(--shadow-outline);
@@ -20,7 +20,7 @@
     --mds-kpi-item-info-background: rgb(var(--tone-neutral-seed));
 
     box-shadow: var(--shadow-lg), var(--shadow-outline);
-    color: rgb(var(--tone-neutral-01));
+    color: rgb(var(--magma-text-default));
 
     .info {
       box-shadow: var(--shadow-outline);

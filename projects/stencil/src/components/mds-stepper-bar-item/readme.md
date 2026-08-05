@@ -319,7 +319,7 @@ mds-stepper-bar-item::part(progress) {
 /* ✅ CORRECT */
 mds-stepper-bar-item {
   --mds-stepper-bar-item-icon-background-current: rgb(var(--variant-primary-04));
-  --mds-stepper-bar-item-progress-thickness: var(--height-200);
+  --mds-stepper-bar-item-progress-thickness: 6px;
 }
 ```
 
@@ -377,7 +377,7 @@ Both are required props. An item without `label` has no accessible or visual des
 | Name                                             | Description                                                         |
 | ------------------------------------------------ | ------------------------------------------------------------------- |
 | `--mds-stepper-bar-item-color`                   | Sets the color of the text                                          |
-| `--mds-stepper-bar-item-duaration`               | Sets the duration of the animation                                  |
+| `--mds-stepper-bar-item-duration`                | Sets the duration of the animation                                  |
 | `--mds-stepper-bar-item-icon-background`         | Sets the background-color of the icon                               |
 | `--mds-stepper-bar-item-icon-background-current` | Sets the background-color of the icon when the component is current |
 | `--mds-stepper-bar-item-icon-background-done`    | Sets the background-color of the icon when the component is done    |

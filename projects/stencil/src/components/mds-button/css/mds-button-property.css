@@ -1,0 +1,106 @@
+/*
+  Document-level registrations for the mds-button public custom properties.
+
+  Never import this file from a component stylesheet: an @property rule inside a shadow root
+  registers nothing, and every Magma component is shadow: true.
+  projects/styles/scripts/properties.ts collects these into globals.css, which the document does
+  load, and resolves each initial-value down to a literal - see that file for the full
+  rationale. inherits is true throughout, because that is what the unregistered behaviour
+  already does today.
+*/
+
+@property --mds-button-await-duration {
+  inherits: true;
+  initial-value: 0.725s;
+  syntax: '<time>';
+}
+
+@property --mds-button-background {
+  inherits: true;
+  initial-value: rgb(var(--magma-accent-emphasis));
+  syntax: '<color>';
+}
+
+@property --mds-button-border-color-rgb {
+  inherits: true;
+  initial-value: var(--magma-accent-emphasis);
+  syntax: '<number>+';
+}
+
+@property --mds-button-border-default-opacity {
+  inherits: true;
+  initial-value: 0;
+  syntax: '<number>';
+}
+
+@property --mds-button-border-high-contrast-hover-width {
+  inherits: true;
+  initial-value: 3px;
+  syntax: '<length>';
+}
+
+@property --mds-button-border-high-contrast-width {
+  inherits: true;
+  initial-value: --spacing(50);
+  syntax: '<length>';
+}
+
+@property --mds-button-border-hover-opacity {
+  inherits: true;
+  initial-value: 0.75;
+  syntax: '<number>';
+}
+
+@property --mds-button-border-opacity {
+  inherits: true;
+  initial-value: 0;
+  syntax: '<number>';
+}
+
+@property --mds-button-border-tone-outline-hover-width {
+  inherits: true;
+  initial-value: 3px;
+  syntax: '<length>';
+}
+
+@property --mds-button-border-tone-strong-hover-width {
+  inherits: true;
+  initial-value: --spacing(50);
+  syntax: '<length>';
+}
+
+@property --mds-button-border-tone-weak-hover-width {
+  inherits: true;
+  initial-value: --spacing(50);
+  syntax: '<length>';
+}
+
+@property --mds-button-border-width {
+  inherits: true;
+  initial-value: --spacing(50);
+  syntax: '<length>';
+}
+
+@property --mds-button-color {
+  inherits: true;
+  initial-value: rgb(var(--magma-text-on-emphasis));
+  syntax: '<color>';
+}
+
+@property --mds-button-gap {
+  inherits: true;
+  initial-value: --spacing(200);
+  syntax: '<length>';
+}
+
+@property --mds-button-line-clamp {
+  inherits: true;
+  initial-value: 1;
+  syntax: '<integer>';
+}
+
+@property --mds-button-radius {
+  inherits: true;
+  initial-value: var(--radius-2xl);
+  syntax: '<length>';
+}

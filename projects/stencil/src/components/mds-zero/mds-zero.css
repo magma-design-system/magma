@@ -2,12 +2,6 @@
  * @prop --mds-zero-contents-max-width: Set if the contents has a max width to be centered in the component
  */
 
-@property --mds-zero-contents-max-width {
-  inherits: false;
-  initial-value: none;
-  syntax: '<length> | none';
-}
-
 :host {
   --mds-zero-contents-max-width: 400px;
   --mds-zero-transition-duration: var(--duration-200);
@@ -16,7 +10,7 @@
   @apply ease-out mobile:px-600;
 
   align-items: center;
-  background-color: rgb(var(--tone-neutral-10));
+  background-color: rgb(var(--magma-scale-10));
   border-radius: var(--radius-xl);
   display: flex;
   flex-direction: column;

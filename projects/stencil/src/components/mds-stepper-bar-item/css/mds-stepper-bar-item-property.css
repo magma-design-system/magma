@@ -1,0 +1,106 @@
+/*
+  Document-level registrations for the mds-stepper-bar-item public custom properties.
+
+  Never import this file from a component stylesheet: an @property rule inside a shadow root
+  registers nothing, and every Magma component is shadow: true.
+  projects/styles/scripts/properties.ts collects these into globals.css, which the document does
+  load, and resolves each initial-value down to a literal - see that file for the full
+  rationale. inherits is true throughout, because that is what the unregistered behaviour
+  already does today.
+*/
+
+@property --mds-stepper-bar-item-color {
+  inherits: true;
+  initial-value: rgb(var(--magma-text-muted));
+  syntax: '<color>';
+}
+
+@property --mds-stepper-bar-item-duaration {
+  inherits: true;
+  initial-value: 250ms;
+  syntax: '<time>';
+}
+
+@property --mds-stepper-bar-item-icon-background {
+  inherits: true;
+  initial-value: rgb(var(--magma-scale-08));
+  syntax: '<color>';
+}
+
+@property --mds-stepper-bar-item-icon-background-current {
+  inherits: true;
+  initial-value: rgb(var(--magma-accent-emphasis));
+  syntax: '<color>';
+}
+
+@property --mds-stepper-bar-item-icon-background-done {
+  inherits: true;
+  initial-value: rgb(var(--status-success-05));
+  syntax: '<color>';
+}
+
+@property --mds-stepper-bar-item-icon-color {
+  inherits: true;
+  initial-value: rgb(var(--magma-scale-04));
+  syntax: '<color>';
+}
+
+@property --mds-stepper-bar-item-icon-color-current {
+  inherits: true;
+  initial-value: rgb(var(--magma-text-on-emphasis));
+  syntax: '<color>';
+}
+
+@property --mds-stepper-bar-item-icon-color-done {
+  inherits: true;
+  initial-value: rgb(var(--status-success-10));
+  syntax: '<color>';
+}
+
+@property --mds-stepper-bar-item-icon-ring-color {
+  inherits: true;
+  initial-value: rgb(var(--magma-accent-emphasis));
+  syntax: '<color>';
+}
+
+@property --mds-stepper-bar-item-icon-ring-separator-color {
+  inherits: true;
+  initial-value: rgb(var(--tone-neutral-seed));
+  syntax: '<color>';
+}
+
+@property --mds-stepper-bar-item-icon-ring-separator-size {
+  inherits: true;
+  initial-value: 0.375rem;
+  syntax: '<length>';
+}
+
+@property --mds-stepper-bar-item-icon-ring-size {
+  inherits: true;
+  initial-value: --spacing(100);
+  syntax: '<length>';
+}
+
+@property --mds-stepper-bar-item-min-width {
+  inherits: true;
+  initial-value: 180px;
+  syntax: '<length>';
+}
+
+@property --mds-stepper-bar-item-progress-background {
+  inherits: true;
+  initial-value: rgb(var(--magma-scale-08));
+  syntax: '<color>';
+}
+
+@property --mds-stepper-bar-item-progress-color {
+  inherits: true;
+  initial-value: rgb(var(--status-success-04));
+  syntax: '<color>';
+}
+
+@property --mds-stepper-bar-item-progress-thickness {
+  inherits: true;
+  initial-value: --spacing(200);
+  syntax: '<length>';
+}

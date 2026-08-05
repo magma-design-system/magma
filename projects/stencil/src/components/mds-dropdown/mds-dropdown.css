@@ -15,70 +15,10 @@
  * @prop --mds-dropdown-z-index: Sets the z-index of the component.
  */
 
-@property --mds-dropdown-arrow-background {
-  inherits: false;
-  initial-value: var(--mds-dropdown-background);
-  syntax: '<color>';
-}
-
-@property --mds-dropdown-backdrop-duration {
-  inherits: false;
-  initial-value: 200ms;
-  syntax: '<time>';
-}
-
-@property --mds-dropdown-backdrop-z-index {
-  inherits: false;
-  initial-value: 3000;
-  syntax: '<integer>';
-}
-
-@property --mds-dropdown-background {
-  inherits: false;
-  initial-value: rgb(var(--magma-surface-overlay));
-  syntax: '<color>';
-}
-
-@property --mds-dropdown-mouseover-delay {
-  inherits: false;
-  initial-value: 0.5s;
-  syntax: '<time>';
-}
-
-@property --mds-dropdown-drop-shadow-color-rgb {
-  inherits: false;
-  initial-value: 0 0 0;
-  syntax: '<number>+';
-}
-
 /* The following properties are not supported by Houdini:
   --mds-dropdown-drop-shadow, --mds-dropdown-ease,
   --mds-dropdown-transform-from, --mds-dropdown-transform-to
 */
-
-@property --mds-dropdown-duration {
-  inherits: false;
-  initial-value: 0.5s;
-  syntax: '<time>';
-}
-
-@property --mds-dropdown-z-index {
-  inherits: false;
-  initial-value: 4000;
-  syntax: '<integer>';
-}
-
-@property --mds-dropdown-transform-from {
-  inherits: false;
-  initial-value: scale(0.9) translateY(-3%);
-  syntax: '<transform-list>';
-}
-
-@property --mds-dropdown-transform-to {
-  inherits: false;
-  initial-value: scale(0.9) translateY(-3%);
-  syntax: '<transform-list>';
-}
 
 :host {
   --mds-dropdown-arrow-background: var(--mds-dropdown-background);
@@ -86,7 +26,7 @@
   --mds-dropdown-backdrop-duration: var(--private-dropdown-backdrop-duration);
   --mds-dropdown-backdrop-z-index: var(--magma-backdrop-z-index, 3000);
   --mds-dropdown-background: rgb(var(--magma-surface-overlay));
-  --mds-dropdown-drop-shadow-color-rgb: var(--tone-neutral-01);
+  --mds-dropdown-drop-shadow-color-rgb: var(--magma-scale-01);
   --mds-dropdown-drop-shadow: drop-shadow(
       0 10px 8px rgb(var(--mds-dropdown-drop-shadow-color-rgb) / 0.05)
     )

@@ -8,46 +8,10 @@
  * @prop --mds-note-selection-color: Sets the selection text color of the component
  */
 
-@property --mds-note-background {
-  inherits: false;
-  initial-value: rgb(var(--label-yellow-10));
-  syntax: '<color>';
-}
-
-@property --mds-note-color {
-  inherits: false;
-  initial-value: rgb(var(--label-yellow-02));
-  syntax: '<color>';
-}
-
-@property --mds-note-fold-color {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-10));
-  syntax: '<color>';
-}
-
-@property --mds-note-fold-size {
-  inherits: false;
-  initial-value: 40px;
-  syntax: '<length>';
-}
-
-@property --mds-note-selection-background {
-  inherits: false;
-  initial-value: var(--magma-selection-background, rgb(var(--label-yellow-09)));
-  syntax: '<color>';
-}
-
-@property --mds-note-selection-color {
-  inherits: false;
-  initial-value: var(--magma-selection-color, rgb(var(--label-yellow-02)));
-  syntax: '<color>';
-}
-
 :host {
   --mds-note-background: rgb(var(--label-yellow-10));
   --mds-note-color: rgb(var(--label-yellow-02));
-  --mds-note-fold-color: rgb(var(--tone-neutral-10));
+  --mds-note-fold-color: rgb(var(--magma-scale-10));
   --mds-note-fold-size: 40px;
   --mds-note-selection-background: var(--magma-selection-background, rgb(var(--label-yellow-09)));
   --mds-note-selection-color: var(--magma-selection-color, rgb(var(--label-yellow-02)));

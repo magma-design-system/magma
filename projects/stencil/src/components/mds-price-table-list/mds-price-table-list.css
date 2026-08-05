@@ -4,14 +4,8 @@
  * @prop --mds-price-table-list-separator-color: Color of the separator line in the price table list.
  */
 
-@property --mds-price-table-list-separator-color {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-03) / 0.5);
-  syntax: '<color>';
-}
-
 :host {
-  --mds-price-table-list-separator-color: rgb(var(--tone-neutral-03) / 0.5);
+  --mds-price-table-list-separator-color: rgb(var(--magma-text-muted) / 0.5);
   --mds-price-table-list-transition-duration: var(--duration-200);
   --private-price-table-list-transition-duration: var(--mds-price-table-list-transition-duration);
 

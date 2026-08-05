@@ -1,7 +1,7 @@
 :host([variant='primary']) {
   --mds-button-background: rgb(var(--magma-accent-emphasis));
   --mds-button-border-color-rgb: var(--magma-accent-emphasis);
-  --mds-button-color: rgb(var(--tone-neutral-seed));
+  --mds-button-color: rgb(var(--magma-text-on-emphasis));
 
   &:host([tone='strong']:hover) {
     --mds-button-background: rgb(var(--magma-accent-emphasis-hover));
@@ -48,7 +48,7 @@
 :host([variant='secondary']) {
   --mds-button-background: rgb(var(--magma-accent-emphasis));
   --mds-button-border-color-rgb: var(--magma-accent-emphasis);
-  --mds-button-color: rgb(var(--tone-neutral-seed));
+  --mds-button-color: rgb(var(--magma-text-on-emphasis));
 
   &:host([tone='strong']:hover) {
     --mds-button-background: rgb(var(--magma-accent-emphasis-hover));
@@ -95,7 +95,7 @@
 :host([variant='ai']) {
   --mds-button-background: rgb(var(--magma-accent-ai-emphasis));
   --mds-button-border-color-rgb: var(--magma-accent-ai-emphasis);
-  --mds-button-color: rgb(var(--tone-neutral-seed));
+  --mds-button-color: rgb(var(--magma-text-on-emphasis));
 
   &:host([tone='strong']:hover) {
     --mds-button-background: rgb(var(--magma-accent-ai-emphasis-hover));

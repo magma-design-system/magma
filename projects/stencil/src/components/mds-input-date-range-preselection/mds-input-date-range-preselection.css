@@ -12,70 +12,16 @@
  * @prop --mds-date-range-preselection-hover-color: Text color used on hover state
  */
 
-@property --mds-date-range-preselection-default-background {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-08) / 0);
-  syntax: '<color>';
-}
-
-@property --mds-date-range-preselection-default-border {
-  inherits: false;
-  initial-value: var(--tone-neutral-08);
-  syntax: '<color>';
-}
-
-@property --mds-date-range-preselection-default-color {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-03));
-  syntax: '<color>';
-}
-
-@property --mds-date-range-preselection-selected-background {
-  inherits: false;
-  initial-value: rgb(var(--variant-primary-03));
-  syntax: '<color>';
-}
-
-@property --mds-date-range-preselection-selected-border {
-  inherits: false;
-  initial-value: var(--variant-primary-03);
-  syntax: '<color>';
-}
-
-@property --mds-date-range-preselection-selected-color {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-seed));
-  syntax: '<color>';
-}
-
-@property --mds-date-range-preselection-hover-background {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-seed));
-  syntax: '<color>';
-}
-
-@property --mds-date-range-preselection-hover-border {
-  inherits: false;
-  initial-value: var(--tone-neutral-seed);
-  syntax: '<color>';
-}
-
-@property --mds-date-range-preselection-hover-color {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-03));
-  syntax: '<color>';
-}
-
 :host {
-  --mds-date-range-preselection-default-background: rgb(var(--tone-neutral-08) / 0);
-  --mds-date-range-preselection-default-border: var(--tone-neutral-08);
-  --mds-date-range-preselection-default-color: rgb(var(--tone-neutral-03));
-  --mds-date-range-preselection-selected-background: rgb(var(--variant-primary-03));
+  --mds-date-range-preselection-default-background: rgb(var(--magma-scale-08) / 0);
+  --mds-date-range-preselection-default-border: var(--magma-scale-08);
+  --mds-date-range-preselection-default-color: rgb(var(--magma-text-muted));
+  --mds-date-range-preselection-selected-background: rgb(var(--magma-accent-emphasis-hover));
   --mds-date-range-preselection-selected-border: var(--variant-primary-03);
-  --mds-date-range-preselection-selected-color: rgb(var(--tone-neutral-seed));
+  --mds-date-range-preselection-selected-color: rgb(var(--magma-text-on-emphasis));
   --mds-date-range-preselection-hover-background: rgb(var(--tone-neutral-seed));
   --mds-date-range-preselection-hover-border: var(--tone-neutral-seed);
-  --mds-date-range-preselection-hover-color: rgb(var(--tone-neutral-03));
+  --mds-date-range-preselection-hover-color: rgb(var(--magma-text-muted));
 
   /* private */
   --mds-date-range-preselection-background: var(--mds-date-range-preselection-default-background);

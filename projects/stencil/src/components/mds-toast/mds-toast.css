@@ -10,36 +10,6 @@
  * @prop --mds-toast-width: Width of the toast component.
  */
 
-@property --mds-toast-background {
-  inherits: false;
-  initial-value: rgb(var(--magma-surface-inverse));
-  syntax: '<color>';
-}
-
-@property --mds-toast-color {
-  inherits: false;
-  initial-value: rgb(var(--magma-on-inverse));
-  syntax: '<color>';
-}
-
-@property --mds-toast-duration {
-  inherits: false;
-  initial-value: 300ms;
-  syntax: '<time>';
-}
-
-@property --mds-toast-icon-color {
-  inherits: false;
-  initial-value: rgb(var(--magma-on-inverse));
-  syntax: '<color>';
-}
-
-@property --mds-toast-width {
-  inherits: false;
-  initial-value: auto;
-  syntax: '<length> | auto';
-}
-
 /* ❌ Not supported
 
 @property --mds-toast-shadow {
