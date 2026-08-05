@@ -4,24 +4,24 @@
  * `system` and no controller follow the OS via @media. Cross-browser, no :host-context. */
 
 :host([pref-contrast='more']) {
-  --mds-progress-color: rgb(var(--variant-primary-05));
-  --mds-progress-background: rgb(var(--tone-neutral-07));
+  --mds-progress-color: rgb(var(--magma-accent-fg));
+  --mds-progress-background: rgb(var(--magma-scale-07));
 
   &:host([variant='primary']) {
-    --mds-progress-color: rgb(var(--variant-primary-05));
-    --mds-progress-background: rgb(var(--tone-neutral-07));
+    --mds-progress-color: rgb(var(--magma-accent-fg));
+    --mds-progress-background: rgb(var(--magma-scale-07));
   }
 }
 
 @media (prefers-contrast: more) {
   :host([pref-contrast='system']),
   :host(:not([pref-contrast])) {
-    --mds-progress-color: rgb(var(--variant-primary-05));
-    --mds-progress-background: rgb(var(--tone-neutral-07));
+    --mds-progress-color: rgb(var(--magma-accent-fg));
+    --mds-progress-background: rgb(var(--magma-scale-07));
 
     &:host([variant='primary']) {
-      --mds-progress-color: rgb(var(--variant-primary-05));
-      --mds-progress-background: rgb(var(--tone-neutral-07));
+      --mds-progress-color: rgb(var(--magma-accent-fg));
+      --mds-progress-background: rgb(var(--magma-scale-07));
     }
   }
 }

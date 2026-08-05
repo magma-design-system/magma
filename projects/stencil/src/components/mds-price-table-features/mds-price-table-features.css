@@ -3,20 +3,8 @@
  * @prop --mds-price-table-features-padding: Sets the cell padding of the children components
  */
 
-@property --mds-price-table-features-border-color {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-06));
-  syntax: '<color>';
-}
-
-@property --mds-price-table-features-padding {
-  inherits: false;
-  initial-value: --spacing(300);
-  syntax: '<length>';
-}
-
 :host {
-  --mds-price-table-features-border-color: rgb(var(--tone-neutral-06));
+  --mds-price-table-features-border-color: rgb(var(--magma-scale-06));
   --mds-price-table-features-padding: --spacing(300);
   --mds-price-table-features-transition-duration: var(--duration-200);
   --private-price-table-features-transition-duration: var(--mds-price-table-features-transition-duration);

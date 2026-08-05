@@ -8,29 +8,14 @@
  * @prop --mds-tab-item-default-shadow: Default shadow of a tab item.
  */
 
-@property --mds-tab-item-hover-background {
-  inherits: false;
-  initial-value: transparent;
-  syntax: '<color>';
-}
-
-@property --mds-tab-item-selected-background {
-  inherits: false;
-  initial-value: transparent;
-  syntax: '<color>';
-}
-
-@property --mds-tab-item-default-background {
-  inherits: false;
-  initial-value: transparent;
-  syntax: '<color>';
-}
-
-@property --mds-tab-item-corner-shape {
-  inherits: false;
-  initial-value: round;
-  syntax: 'bevel | notch | round | scoop | square | squircle';
-}
+/*
+  No css/mds-tab-item-property.css on purpose. The backgrounds and colours here are only
+  set under a conditional :host([animation='slide']) or a pref-* guard, or are not set at
+  all, so a document-level registration would start supplying an initial-value in every
+  state that has none today. --mds-tab-item-radius is out too: its default is the
+  CSS-wide keyword inherit, which an initial-value cannot express. See
+  projects/styles/scripts/properties.ts for how the registrations are collected.
+*/
 
 /* Not supported
 @property --mds-tab-item-selected-shadow {

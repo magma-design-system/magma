@@ -1,0 +1,52 @@
+/*
+  Document-level registrations for the mds-calendar public custom properties.
+
+  Never import this file from a component stylesheet: an @property rule inside a shadow root
+  registers nothing, and every Magma component is shadow: true.
+  projects/styles/scripts/properties.ts collects these into globals.css, which the document does
+  load, and resolves each initial-value down to a literal - see that file for the full
+  rationale. inherits is true throughout, because that is what the unregistered behaviour
+  already does today.
+*/
+
+@property --mds-calendar-background {
+  inherits: true;
+  initial-value: rgb(var(--tone-neutral-seed));
+  syntax: '<color>';
+}
+
+@property --mds-calendar-border-radius {
+  inherits: true;
+  initial-value: var(--radius-lg);
+  syntax: '<length>';
+}
+
+@property --mds-calendar-day-number-color {
+  inherits: true;
+  initial-value: rgb(var(--magma-text-default));
+  syntax: '<color>';
+}
+
+@property --mds-calendar-day-number-other-month-color {
+  inherits: true;
+  initial-value: rgb(var(--magma-scale-07));
+  syntax: '<color>';
+}
+
+@property --mds-calendar-padding {
+  inherits: true;
+  initial-value: --spacing(400);
+  syntax: '<length>';
+}
+
+@property --mds-calendar-select-month-or-year-height {
+  inherits: true;
+  initial-value: --spacing(900);
+  syntax: '<length>';
+}
+
+@property --mds-calendar-select-month-or-year-width {
+  inherits: true;
+  initial-value: 14rem;
+  syntax: '<length>';
+}

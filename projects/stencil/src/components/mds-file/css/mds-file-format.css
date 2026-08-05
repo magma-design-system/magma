@@ -6,9 +6,9 @@
 }
 
 :host([format='attachment']) {
-  --mds-file-preview-icon-color: rgb(var(--tone-neutral-04));
-  --mds-file-preview-color: rgb(var(--tone-neutral-04));
-  --mds-file-preview-icon-background: rgb(var(--tone-neutral-10));
+  --mds-file-preview-icon-color: rgb(var(--magma-scale-04));
+  --mds-file-preview-color: rgb(var(--magma-scale-04));
+  --mds-file-preview-icon-background: rgb(var(--magma-scale-10));
 }
 
 :host([format='audio']),

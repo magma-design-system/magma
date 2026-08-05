@@ -1,0 +1,46 @@
+/*
+  Document-level registrations for the mds-img public custom properties.
+
+  Never import this file from a component stylesheet: an @property rule inside a shadow root
+  registers nothing, and every Magma component is shadow: true.
+  projects/styles/scripts/properties.ts collects these into globals.css, which the document does
+  load, and resolves each initial-value down to a literal - see that file for the full
+  rationale. inherits is true throughout, because that is what the unregistered behaviour
+  already does today.
+*/
+
+@property --mds-img-background {
+  inherits: true;
+  initial-value: rgb(var(--magma-accent-emphasis-hover));
+  syntax: '<color>';
+}
+
+@property --mds-img-color {
+  inherits: true;
+  initial-value: rgb(var(--variant-primary-09));
+  syntax: '<color>';
+}
+
+@property --mds-img-error-background {
+  inherits: true;
+  initial-value: rgb(var(--status-error-09));
+  syntax: '<color>';
+}
+
+@property --mds-img-error-color {
+  inherits: true;
+  initial-value: rgb(var(--status-error-04));
+  syntax: '<color>';
+}
+
+@property --mds-img-error-icon-color {
+  inherits: true;
+  initial-value: rgb(var(--status-error-06));
+  syntax: '<color>';
+}
+
+@property --mds-img-icon-color {
+  inherits: true;
+  initial-value: rgb(var(--variant-primary-07));
+  syntax: '<color>';
+}

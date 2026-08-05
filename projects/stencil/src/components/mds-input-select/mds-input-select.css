@@ -12,72 +12,6 @@
  * @prop --mds-input-select-arrow-icon-hover-color: Color of the arrow icon when hovered
  */
 
-@property --mds-input-select-variant-color-rgb {
-  inherits: false;
-  initial-value: var(--tone-neutral-01);
-  syntax: '<integer>+';
-}
-
-@property --mds-input-select-arrow-icon-background-color {
-  inherits: false;
-  initial-value: var(--mds-input-select-arrow-icon-blur-background-color);
-  syntax: '<color>';
-}
-
-@property --mds-input-select-arrow-icon-blur-background-color {
-  inherits: false;
-  initial-value: rgb(var(--mds-input-select-variant-color-rgb) / 0);
-  syntax: '<color>';
-}
-
-@property --mds-input-select-arrow-icon-blur-color {
-  inherits: false;
-  initial-value: rgb(var(--mds-input-select-variant-color-rgb) / 0.5);
-  syntax: '<color>';
-}
-
-@property --mds-input-select-arrow-icon-color {
-  inherits: false;
-  initial-value: var(--mds-input-select-arrow-icon-blur-color);
-  syntax: '<color>';
-}
-
-@property --mds-input-select-arrow-icon-hover-background-color {
-  inherits: false;
-  initial-value: rgb(var(--mds-input-select-variant-color-rgb) / 0.5);
-  syntax: '<color>';
-}
-
-@property --mds-input-select-arrow-icon-hover-color {
-  inherits: false;
-  initial-value: rgb(var(--mds-input-select-variant-color-rgb));
-  syntax: '<color>';
-}
-
-@property --mds-input-tip-horizontal-offset {
-  inherits: false;
-  initial-value: --spacing(100);
-  syntax: '<length>';
-}
-
-@property --mds-input-tip-horizontal-offset-focused {
-  inherits: false;
-  initial-value: --spacing(1000);
-  syntax: '<length>';
-}
-
-@property --mds-input-tip-vertical-offset {
-  inherits: false;
-  initial-value: --spacing(100);
-  syntax: '<length>';
-}
-
-@property --mds-input-tip-background {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-03));
-  syntax: '<color>';
-}
-
 /* ❌ Not supported
 @property --mds-input-select-ring {
   inherits: false;
@@ -93,7 +27,7 @@
 */
 
 :host {
-  --mds-input-select-variant-color-rgb: var(--tone-neutral-01);
+  --mds-input-select-variant-color-rgb: var(--magma-text-default);
   --mds-input-select-ring: 0 0 0 1px rgb(var(--mds-input-select-variant-color-rgb) / 0.1);
   --mds-input-select-shadow:
     0 1px 3px 0 rgb(var(--mds-input-select-variant-color-rgb) / 0.1),
@@ -113,7 +47,7 @@
   --mds-input-tip-horizontal-offset: --spacing(100);
   --mds-input-tip-horizontal-offset-focused: --spacing(1000);
   --mds-input-tip-vertical-offset: --spacing(100);
-  --mds-input-tip-background: rgb(var(--tone-neutral-03));
+  --mds-input-tip-background: rgb(var(--magma-scale-03));
   --mds-input-select-transition-duration: var(--duration-300);
   --mds-input-select-icon-transition-duration: var(--duration-200);
 
@@ -123,7 +57,7 @@
 
   @apply text-info-detail;
 
-  color: rgb(var(--tone-neutral-02));
+  color: rgb(var(--magma-scale-02));
   display: flex;
   position: relative;
   user-select: none;
@@ -155,7 +89,7 @@
   border-radius: var(--radius-xs);
   box-shadow: var(--mds-input-select-ring), var(--mds-input-select-shadow);
   box-sizing: border-box;
-  color: rgb(var(--tone-neutral-02));
+  color: rgb(var(--magma-scale-02));
   cursor: pointer;
   margin: 0;
   min-height: --spacing(1200);
@@ -173,21 +107,21 @@
 .input:focus {
   @apply outline-hidden;
 
-  color: rgb(var(--tone-neutral-03));
+  color: rgb(var(--magma-text-muted));
   transition-duration: var(--private-input-select-transition-duration);
   transition-timing-function: var(--ease-out-expo);
 }
 
 :host([value]:not([value=''])) .input {
-  color: rgb(var(--tone-neutral-03));
+  color: rgb(var(--magma-text-muted));
 }
 
 :host([required]:not([required='false'])) .input {
-  color: rgb(var(--tone-neutral-05));
+  color: rgb(var(--magma-text-disabled));
 }
 
 .input:disabled {
-  background-color: rgb(var(--tone-neutral-09));
+  background-color: rgb(var(--magma-scale-09));
   opacity: 1;
 }
 
@@ -200,7 +134,7 @@
 }
 
 :host([disabled]:not([disabled='false'])) .icon {
-  fill: rgb(var(--tone-neutral-06));
+  fill: rgb(var(--magma-scale-06));
   transform: translate(--spacing(250), --spacing(200));
 }
 

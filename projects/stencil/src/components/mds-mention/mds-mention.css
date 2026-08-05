@@ -4,19 +4,13 @@
  * @prop --mds-mention-icon-size: Sets the size (width and height) of the mention icon.
  */
 
-@property --mds-mention-icon-size {
-  inherits: false;
-  initial-value: --spacing(600);
-  syntax: '<length>';
-}
-
 :host {
   --mds-mention-icon-size: --spacing(600);
 
   align-items: center;
-  background-color: rgb(var(--tone-neutral-09));
+  background-color: rgb(var(--magma-scale-09));
   border-radius: 100px;
-  color: rgb(var(--tone-neutral-03));
+  color: rgb(var(--magma-text-muted));
   cursor: pointer;
   display: inline-flex;
   fill: currentcolor;

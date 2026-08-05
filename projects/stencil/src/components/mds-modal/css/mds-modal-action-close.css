@@ -1,5 +1,5 @@
 .action-close {
-  --mds-button-color: rgb(var(--tone-neutral-10));
+  --mds-button-color: rgb(var(--magma-scale-10));
 
   opacity: 0;
   pointer-events: none;

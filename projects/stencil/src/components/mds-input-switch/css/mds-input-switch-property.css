@@ -1,0 +1,166 @@
+/*
+  Document-level registrations for the mds-input-switch public custom properties.
+
+  Never import this file from a component stylesheet: an @property rule inside a shadow root
+  registers nothing, and every Magma component is shadow: true.
+  projects/styles/scripts/properties.ts collects these into globals.css, which the document does
+  load, and resolves each initial-value down to a literal - see that file for the full
+  rationale. inherits is true throughout, because that is what the unregistered behaviour
+  already does today.
+*/
+
+@property --mds-input-switch-animation-timing-adjust {
+  inherits: true;
+  initial-value: 1.4;
+  syntax: '<number>';
+}
+
+@property --mds-input-switch-box-color-disabled-checked {
+  inherits: true;
+  initial-value: rgb(var(--magma-scale-08));
+  syntax: '<color>';
+}
+
+@property --mds-input-switch-box-color-disabled-unchecked {
+  inherits: true;
+  initial-value: rgb(var(--magma-scale-08));
+  syntax: '<color>';
+}
+
+@property --mds-input-switch-box-color-enabled-checked {
+  inherits: true;
+  initial-value: rgb(var(--magma-accent-emphasis));
+  syntax: '<color>';
+}
+
+@property --mds-input-switch-box-color-enabled-unchecked {
+  inherits: true;
+  initial-value: rgb(var(--magma-scale-06));
+  syntax: '<color>';
+}
+
+@property --mds-input-switch-box-padding {
+  inherits: true;
+  initial-value: --spacing(100);
+  syntax: '<length>';
+}
+
+@property --mds-input-switch-box-padding-lg {
+  inherits: true;
+  initial-value: --spacing(100);
+  syntax: '<length>';
+}
+
+@property --mds-input-switch-box-padding-md {
+  inherits: true;
+  initial-value: --spacing(100);
+  syntax: '<length>';
+}
+
+@property --mds-input-switch-box-padding-sm {
+  inherits: true;
+  initial-value: --spacing(100);
+  syntax: '<length>';
+}
+
+@property --mds-input-switch-duration {
+  inherits: true;
+  initial-value: 300ms;
+  syntax: '<time>';
+}
+
+@property --mds-input-switch-icon-color-checked {
+  inherits: true;
+  initial-value: rgb(var(--magma-accent-emphasis));
+  syntax: '<color>';
+}
+
+@property --mds-input-switch-icon-color-checked-disabled {
+  inherits: true;
+  initial-value: rgb(var(--magma-scale-06));
+  syntax: '<color>';
+}
+
+@property --mds-input-switch-icon-color-indeterminate {
+  inherits: true;
+  initial-value: rgb(var(--magma-text-disabled));
+  syntax: '<color>';
+}
+
+@property --mds-input-switch-icon-color-indeterminate-disabled {
+  inherits: true;
+  initial-value: rgb(var(--magma-text-disabled));
+  syntax: '<color>';
+}
+
+@property --mds-input-switch-icon-color-unchecked {
+  inherits: true;
+  initial-value: rgb(var(--magma-scale-06));
+  syntax: '<color>';
+}
+
+@property --mds-input-switch-icon-color-unchecked-disabled {
+  inherits: true;
+  initial-value: rgb(var(--magma-scale-06));
+  syntax: '<color>';
+}
+
+@property --mds-input-switch-icon-explicit-color {
+  inherits: true;
+  initial-value: rgb(var(--magma-accent-emphasis));
+  syntax: '<color>';
+}
+
+@property --mds-input-switch-toggle-color-disabled-checked {
+  inherits: true;
+  initial-value: rgb(var(--magma-text-on-emphasis));
+  syntax: '<color>';
+}
+
+@property --mds-input-switch-toggle-color-disabled-unchecked {
+  inherits: true;
+  initial-value: rgb(var(--magma-text-on-emphasis));
+  syntax: '<color>';
+}
+
+@property --mds-input-switch-toggle-color-enabled-checked {
+  inherits: true;
+  initial-value: rgb(var(--magma-text-on-emphasis));
+  syntax: '<color>';
+}
+
+@property --mds-input-switch-toggle-color-enabled-unchecked {
+  inherits: true;
+  initial-value: rgb(var(--magma-scale-10));
+  syntax: '<color>';
+}
+
+@property --mds-input-switch-toggle-container-size {
+  inherits: true;
+  initial-value: calc( calc(--spacing(600) * 2) + calc(--spacing(100) * 2) );
+  syntax: '<length>';
+}
+
+@property --mds-input-switch-toggle-size {
+  inherits: true;
+  initial-value: --spacing(600);
+  syntax: '<length>';
+}
+
+@property --mds-input-switch-toggle-size-lg {
+  inherits: true;
+  initial-value: --spacing(800);
+  syntax: '<length>';
+}
+
+@property --mds-input-switch-toggle-size-md {
+  inherits: true;
+  initial-value: --spacing(600);
+  syntax: '<length>';
+}
+
+@property --mds-input-switch-toggle-size-sm {
+  inherits: true;
+  initial-value: --spacing(400);
+  syntax: '<length>';
+}

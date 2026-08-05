@@ -4,12 +4,12 @@
  * `system` and no controller follow the OS via @media. Cross-browser, no :host-context. */
 
 :host([pref-contrast='more']) {
-  --mds-status-bar-backdrop: rgb(var(--tone-neutral-02) / 0.3);
+  --mds-status-bar-backdrop: rgb(var(--magma-scale-02) / 0.3);
 }
 
 @media (prefers-contrast: more) {
   :host([pref-contrast='system']),
   :host(:not([pref-contrast])) {
-    --mds-status-bar-backdrop: rgb(var(--tone-neutral-02) / 0.3);
+    --mds-status-bar-backdrop: rgb(var(--magma-scale-02) / 0.3);
   }
 }

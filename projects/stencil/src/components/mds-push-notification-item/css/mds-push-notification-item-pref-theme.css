@@ -7,7 +7,7 @@
 :host([pref-theme='dark']:not([pref-theme-scheme='light'])) {
   --mds-push-notifications-shadow: var(--shadow-outline) inset;
 
-  background-color: rgb(var(--tone-neutral-09));
+  background-color: rgb(var(--magma-scale-09));
 }
 
 @media (prefers-color-scheme: dark) {
@@ -15,6 +15,6 @@
   :host(:not([pref-theme])) {
     --mds-push-notifications-shadow: var(--shadow-outline) inset;
 
-    background-color: rgb(var(--tone-neutral-09));
+    background-color: rgb(var(--magma-scale-09));
   }
 }
