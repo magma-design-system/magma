@@ -109,6 +109,6 @@
       "light": { "muted": "89%", "default": "82%", "strong": "64%" },
       "dark": { "muted": "37%", "default": "54%", "strong": "74%" }
     },
-    "text": { "default": 91, "muted": 75, "subtle": 70, "disabled": 53 }
+    "text": { "default": 91, "muted": 73, "subtle": 64, "disabled": 40 }
   }
 }

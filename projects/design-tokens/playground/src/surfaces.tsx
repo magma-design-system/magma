@@ -45,8 +45,12 @@ export const DEFAULT_THEME: ThemeConfig = {
     light: { muted: '89%', default: '82%', strong: '64%' },
     dark: { muted: '37%', default: '54%', strong: '74%' },
   },
-  // APCA Lc targets per text role vs the worst-case surface (A7); engine picks the step
-  text: { default: 91, muted: 75, subtle: 70, disabled: 53 },
+  // APCA Lc targets per text role vs the worst-case surface (A7); engine picks the
+  // step. Each target must land in a DIFFERENT band of the ramp on every family, in
+  // both modes - the bands are only 8-11 Lc wide and sit lower on a saturated family,
+  // so targets closer than that make two roles resolve to one step (#632). Keep in
+  // sync with `theme.text` in `.magma-design-tokensrc.json`.
+  text: { default: 91, muted: 73, subtle: 64, disabled: 40 },
 };
 
 /** APCA Lc magnitude (Magma flips the sign in dark; the preview shows the size). */

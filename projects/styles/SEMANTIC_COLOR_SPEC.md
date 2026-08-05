@@ -162,6 +162,23 @@ clamped:
 The current `wcag3.tone` scale ends at `115` (above the ceiling) so its highest-contrast
 step clamps to the pure extreme. Validation flags this.
 
+**Text targets must be a BAND apart (issue #632).** `theme.text` states an APCA target per
+role and the engine picks the least-contrast ramp step that still meets it on the family's
+worst-case surface. The ramp only offers about five usable bands (steps `01-05`; `06` and
+beyond fall under 35 Lc), each 8-11 Lc wide, and on a saturated family the whole set sits
+lower - `neutral` light runs `92 / 88 / 77 / 66 / 58` while `success` dark runs
+`83 / 75 / 67 / 57 / 49`. Two targets closer than one band therefore resolve to the SAME
+step, and the collapse lands in a different place per family and per mode. Current values:
+
+```jsonc
+"text": { "default": 91, "muted": 73, "subtle": 64, "disabled": 40 }
+```
+
+`default` is deliberately above what a saturated family can reach (they top out at 83-87 Lc)
+so it clamps to step `01`, the strongest available - that is the intent, and the build logs
+it. The other three must each land in their own band on EVERY opted-in family: verify after
+any ramp or surface retune, because moving the bands can re-collapse the ladder.
+
 ## 6. Layer 2 - semantic tokens (the contract)
 
 Namespace `--magma-*`. Each is resolved per mode via the global flip. Bridged to Tailwind as
