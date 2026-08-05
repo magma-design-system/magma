@@ -76,10 +76,20 @@ export interface SemanticConfig {
   /** Steps of a colored family for the quintet (spec 6.5). */
   hueSteps: { surface: string; fg: string; border: string; emphasis: string };
   /**
-   * TINT LEVELS of a colored hue: how marked the tinted background is, NOT how
-   * high it sits. Emitted as `--magma-<hue>-surface-<level>` and, like
+   * WASH LEVELS of a colored hue: how marked the colored background is, NOT how
+   * high it sits. Emitted as `--magma-<hue>-wash-<level>` and, like
    * `accentStateSteps`, each level NAMES an existing ramp step rather than
    * resolving through the generated `--surface-<family>-*` scale.
+   *
+   * The name is deliberate on both halves. NOT `surface-*`, because
+   * `--magma-<hue>-surface-default` would read as the colored parent of
+   * `--magma-surface-default` and is nothing of the sort - that one is the
+   * elevation band (L 96%), this one is a ramp step, and the generated
+   * `--surface-<family>-*` scale (the band, tinted) already occupies the middle
+   * ground. Three near-identical names for three different things is a trap, so
+   * this group says what it is. NOT `tint-*` either: `tint` already means the
+   * ACTIVE THEME FAMILY throughout this contract (`--magma-tint-*` pointers,
+   * `contrastTintOverride`), and one word cannot carry both senses.
    *
    * The reason is measured, not stylistic: the elevation ladder moves toward
    * WHITE as it rises in light and toward the INK as it rises in dark, while a
@@ -90,16 +100,18 @@ export interface SemanticConfig {
    * what it is for: the constraint the text roles are solved against.
    *
    * Text on these levels is bounded by the spec 9.1 table, not by taste:
-   * `subtle` carries the whole text ladder, `default` carries `text-default`,
-   * and `strong` is a GRAPHIC wash (icons, chips, hover) with no essential text.
+   * `soft` carries the whole text ladder, `base` carries `text-default`, and
+   * `strong` carries icons only (no essential text).
    */
-  hueSurfaceSteps: Record<string, string>;
+  hueWashSteps: Record<string, string>;
   /**
-   * Which named role each legacy quintet alias is a SHORTCUT for (spec 6.5).
+   * Which published role each legacy quintet alias is a SHORTCUT for (spec 6.5).
    * `--magma-<hue>-surface`, `-fg` and `-border` are kept so existing consumers
    * keep resolving, but they now point at a role in the published scale instead
    * of at a ramp step of their own, which is what lets the contrast promotion
-   * reach them: promote the role and the shortcut follows.
+   * reach them: promote the role and the shortcut follows. `surface` names a WASH
+   * level (it keeps step 09, the value that alias always had); `text` and
+   * `border` name a role of the generated ladders.
    */
   hueRoles: { surface: string; text: string; border: string };
   /** Steps for the neutral (partial) hue - it borrows from the tone scale. */
@@ -169,15 +181,16 @@ export const semantic: SemanticConfig = {
     neutral: { family: 'tone-neutral', partial: true },
   },
   hueSteps: { surface: '09', fg: '05', border: '06', emphasis: '04' },
-  // The three tint levels the component sheets actually use as a colored
+  // The three wash levels the component sheets actually use as a colored
   // background today (10 x68, 09 x71, 08 x41), so adopting them is a 1:1 rename
-  // and no value moves. `default` is the step `--magma-<hue>-surface` already
-  // pointed at. NOTE: the accents express the same three levels with
-  // state-derived names (`surface-subtle` / base / `surface-hover`, #606); these
-  // are named by INTENSITY because a tinted chip is not an interaction state.
-  // Unifying the two vocabularies is a follow-up, not part of this change.
-  hueSurfaceSteps: { subtle: '10', default: '09', strong: '08' },
-  hueRoles: { surface: 'default', text: 'default', border: 'default' },
+  // and no value moves. `base` is the step `--magma-<hue>-surface` already
+  // pointed at - which is why the shortcut can stay put. NOTE: the accents
+  // express the same three levels with state-derived names (`surface-subtle` /
+  // base / `surface-hover`, #606); these are named by INTENSITY because a
+  // colored chip is not an interaction state. Unifying the two vocabularies is a
+  // follow-up, not part of this change.
+  hueWashSteps: { soft: '10', base: '09', strong: '08' },
+  hueRoles: { surface: 'base', text: 'default', border: 'default' },
   neutralHueSteps: { fg: '03', border: '06', emphasis: '02' },
   accents: {
     accent: 'variant-primary',

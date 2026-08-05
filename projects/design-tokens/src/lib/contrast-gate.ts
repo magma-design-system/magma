@@ -73,23 +73,23 @@ const BORDERS = ['muted', 'default', 'strong', 'focus'] as const;
 // way. Surface-band states (surface-hover/subtle) add no new text-on-fill pair.
 const ACCENT_EMPHASIS_STATES = ['emphasis-hover', 'emphasis-active'] as const;
 // The colored hues (every hue that is neither an accent nor the partial neutral):
-// the ones that publish a text ladder on their own tint levels.
+// the ones that publish a text ladder on their own wash levels.
 const TINTED_HUES = ['info', 'success', 'warning', 'danger'] as const;
 /**
- * Which text roles are ENFORCED on each hue tint level (spec 9.1). This is the
+ * Which text roles are ENFORCED on each hue wash level (spec 9.1). This is the
  * contract for a colored background, and it is bounded by measurement, not taste:
- * the more marked the tint, the less of the text ladder it can carry.
- *  - `subtle` (the lightest tint) carries the whole ladder;
- *  - `default` carries `text-default` only (`muted` measures 73-75 Lc on it,
+ * the more marked the wash, the less of the text ladder it can carry.
+ *  - `soft` (the lightest wash) carries the whole ladder;
+ *  - `base` carries `text-default` only (`muted` measures 73-75 Lc on it,
  *    i.e. at or just under its 75 floor);
- *  - `strong` carries NO essential text: it is a graphic wash (chips, cockades,
- *    hover) and only has to keep icons legible, which the report-only target
- *    covers (`text-default` measures 74.5-76 Lc there).
+ *  - `strong` carries NO essential text: it is the graphic wash (chips,
+ *    cockades, hover) and only has to keep icons legible, which the report-only
+ *    target covers (`text-default` measures 74.5-76 Lc there).
  * Roles left out of a level are still measured and reported, just not gated.
  */
 const HUE_TEXT_ENFORCED: Record<string, readonly string[]> = {
-  subtle: ['default', 'muted', 'subtle', 'disabled'],
-  default: ['default'],
+  soft: ['default', 'muted', 'subtle', 'disabled'],
+  base: ['default'],
   strong: [],
 };
 
@@ -135,8 +135,8 @@ export interface SemanticMapping {
   accents: Record<string, string>;
   /** Accent interaction-state steps (spec 6.6 accent exception); optional. */
   accentStateSteps?: Record<string, string>;
-  /** Tint levels of a colored hue, level -> ramp step (spec 6.4); optional. */
-  hueSurfaceSteps?: Record<string, string>;
+  /** Wash levels of a colored hue, level -> ramp step (spec 6.4); optional. */
+  hueWashSteps?: Record<string, string>;
   /** Which published role each legacy quintet alias shortcuts to; optional. */
   hueRoles?: { surface: string; text: string; border: string };
 }
@@ -159,7 +159,7 @@ export function aliasesFromConfig(m: SemanticMapping): Record<string, string> {
   set('border-focus', `${m.accents[m.borderFocus]}-${m.hueSteps.emphasis}`);
 
   // A colored hue publishes the same vocabulary as the neutral scaffolding on its
-  // own family: tint levels from named ramp steps, text + border from the family's
+  // own family: wash levels from named ramp steps, text + border from the family's
   // GENERATED role scales. The quintet aliases are shortcuts onto those roles, so
   // the gate resolves them to the same primitive the layer does. A `partial` hue
   // (neutral) still borrows ramp steps and publishes no ladder of its own.
@@ -173,8 +173,8 @@ export function aliasesFromConfig(m: SemanticMapping): Record<string, string> {
       set(`${hue}-on-emphasis`, m.seed);
       return;
     }
-    Object.entries(m.hueSurfaceSteps ?? {}).forEach(([level, step]) =>
-      set(`${hue}-surface-${level}`, `${family}-${step}`),
+    Object.entries(m.hueWashSteps ?? {}).forEach(([level, step]) =>
+      set(`${hue}-wash-${level}`, `${family}-${step}`),
     );
     m.textRoles.forEach((r) => set(`${hue}-text-${r}`, `text-${roles}-${r}`));
     m.borderRoles.forEach((r) => set(`${hue}-border-${r}`, `border-${roles}-${r}`));
@@ -182,7 +182,7 @@ export function aliasesFromConfig(m: SemanticMapping): Record<string, string> {
     set(`${hue}-on-emphasis`, m.seed);
     const shortcut = m.hueRoles;
     if (shortcut) {
-      set(`${hue}-surface`, `${family}-${(m.hueSurfaceSteps ?? {})[shortcut.surface]}`);
+      set(`${hue}-surface`, `${family}-${(m.hueWashSteps ?? {})[shortcut.surface]}`);
       set(`${hue}-fg`, `text-${roles}-${shortcut.text}`);
       set(`${hue}-border`, `border-${roles}-${shortcut.border}`);
     }
@@ -368,7 +368,7 @@ export function evaluatePairs(
         );
       }
     }
-    // 2c. every hue's text ladder on its OWN tint levels. This is the pair a
+    // 2c. every hue's text ladder on its OWN wash levels. This is the pair a
     //     banner, toast or badge actually renders, and the one that had no name in
     //     the contract before: previously the gate only checked colored ink on the
     //     NEUTRAL surfaces (section 3 below), which is a different question.
@@ -382,7 +382,7 @@ export function evaluatePairs(
             gated ? 'error' : 'warn',
             'apca',
             `--magma-${hue}-text-${role}`,
-            `--magma-${hue}-surface-${level}`,
+            `--magma-${hue}-wash-${level}`,
             gated ? floor : targets.hueFg,
             mode,
           );

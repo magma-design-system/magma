@@ -33,7 +33,7 @@ const {
   seed,
   hues,
   hueSteps,
-  hueSurfaceSteps,
+  hueWashSteps,
   hueRoles,
   neutralHueSteps,
   accents,
@@ -95,13 +95,15 @@ layer.push(
 );
 
 // 5. hues - a colored hue carries the SAME role vocabulary as the neutral
-//    scaffolding, on its own family: tint levels (how marked the colored
+//    scaffolding, on its own family: wash levels (how marked the colored
 //    background is), the text ladder and the border ladder. Text and border come
 //    from the generated per-family role scales (`--text-success-*`), so the A7
 //    guarantee - each step solved against the family's own surfaces - carries over
 //    to every hue, and the spec 9.3 promotion applies to them verbatim.
-//    Tint levels instead NAME ramp steps (see `hueSurfaceSteps`): a tinted chip
-//    moves toward the ink in both modes, which no elevation role can express.
+//    Wash levels instead NAME ramp steps (see `hueWashSteps`): a colored chip
+//    moves toward the ink in both modes, which no elevation role can express, and
+//    they are NOT called `surface-*` precisely so they cannot be read as the
+//    colored parent of `--magma-surface-*`, which is a different thing.
 //    The legacy quintet (`-surface`, `-fg`, `-border`) stays as a shortcut onto
 //    these roles, so consumers keep resolving AND inherit the promotion.
 //    A `partial` hue (neutral) is unchanged: it borrows ramp steps and its
@@ -135,9 +137,9 @@ Object.entries(hues).forEach(([hue, { family, roles, partial }]) => {
         `add the generated role family (e.g. roles: '${family.split('-').slice(1).join('-')}').`,
     );
   }
-  // tint levels: named ramp steps, so they mode-flip with the primitive
-  Object.entries(hueSurfaceSteps).forEach(([level, step]) =>
-    layer.push(alias(`${hue}-surface-${level}`, `${family}-${step}`, `${hue}-surface-${level}`)),
+  // wash levels: named ramp steps, so they mode-flip with the primitive
+  Object.entries(hueWashSteps).forEach(([level, step]) =>
+    layer.push(alias(`${hue}-wash-${level}`, `${family}-${step}`, `${hue}-wash-${level}`)),
   );
   // text + border: the family's own generated role scales (A7 guarantee)
   textRoles.forEach((r) =>
@@ -153,7 +155,7 @@ Object.entries(hues).forEach(([hue, { family, roles, partial }]) => {
   // shortcuts onto the roles above (NOT onto the primitives): stated this way
   // they follow the contrast promotion instead of freezing the base step
   layer.push('  /* shortcuts: the roles above at their default prominence */');
-  layer.push(alias(`${hue}-surface`, `magma-${hue}-surface-${hueRoles.surface}`, `${hue}-surface`));
+  layer.push(alias(`${hue}-surface`, `magma-${hue}-wash-${hueRoles.surface}`, `${hue}-surface`));
   layer.push(alias(`${hue}-fg`, `magma-${hue}-text-${hueRoles.text}`, `${hue}-fg`));
   layer.push(alias(`${hue}-border`, `magma-${hue}-border-${hueRoles.border}`, `${hue}-border`));
 });

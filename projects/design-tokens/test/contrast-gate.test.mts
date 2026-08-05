@@ -68,11 +68,11 @@ test('aliasesFromConfig maps every --magma-* role to its primitive (A9 contract)
   expect(map['--magma-text-on-emphasis']).toBe('--tone-neutral-seed');
   // focus follows the general accent's emphasis step (theme-aware)
   expect(map['--magma-border-focus']).toBe('--variant-primary-04');
-  // A colored hue publishes the neutral vocabulary on its OWN family: tint levels
+  // A colored hue publishes the neutral vocabulary on its OWN family: wash levels
   // name ramp steps (they must mode-flip), text/border come from the generated
   // role scales. `danger` also proves the three names are independent: hue key
   // `danger`, ramp family `status-error`, role family `error`.
-  expect(map['--magma-danger-surface-strong']).toBe('--status-error-08');
+  expect(map['--magma-danger-wash-strong']).toBe('--status-error-08');
   expect(map['--magma-danger-text-muted']).toBe('--text-error-muted');
   expect(map['--magma-danger-border-strong']).toBe('--border-error-strong');
   // the legacy quintet aliases are shortcuts onto those roles, not steps of their own
@@ -80,6 +80,12 @@ test('aliasesFromConfig maps every --magma-* role to its primitive (A9 contract)
   expect(map['--magma-danger-surface']).toBe('--status-error-09'); // unchanged value
   // the solid fill keeps naming a ramp step (the role scales model tints, not fills)
   expect(map['--magma-danger-emphasis']).toBe('--status-error-04');
+  // the wash levels are deliberately NOT called `surface-*`: that name would read as
+  // the colored parent of `--magma-surface-default` (the elevation band) and would
+  // also collide with the generated `--surface-<family>-*` scale, which is the band
+  // tinted. Three different things, so the ambiguous name must not exist at all.
+  expect(map['--magma-danger-surface-strong']).toBeUndefined();
+  expect(map['--magma-danger-surface-default']).toBeUndefined();
   // accents: the general `accent` owns the bare namespace (no infix, promoted from
   // the former deprecated alias); its states are infix-free too; `ai` infixes.
   expect(map['--magma-accent-emphasis']).toBe('--variant-primary-04');
@@ -147,8 +153,8 @@ test('contrast-more promotes the colored hues off the same table', () => {
   expect(more['--magma-success-border']).toBe('--border-success-strong');
   // `-fg` shortcuts text-default, already the ceiling: nothing to promote
   expect(more['--magma-success-fg']).toBe(base['--magma-success-fg']);
-  // tint levels are backgrounds, not text/border: contrast never moves them
-  expect(more['--magma-success-surface-strong']).toBe(base['--magma-success-surface-strong']);
+  // wash levels are backgrounds, not text/border: contrast never moves them
+  expect(more['--magma-success-wash-strong']).toBe(base['--magma-success-wash-strong']);
   // the partial hue publishes no ladder, so it has nothing to promote
   expect(more['--magma-neutral-fg']).toBe(base['--magma-neutral-fg']);
 });

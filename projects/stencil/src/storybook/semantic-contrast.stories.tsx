@@ -68,7 +68,7 @@ const BORDER_ROLES: Promotion[] = [
 // A colored hue promotes its OWN roles off the same table (#621, spec 6.4 + 9.3).
 // This is the path a tint pointer does not cover: a hue is not retinted by a theme,
 // so its roles are stated directly. `success` stands in for all four hues; the last
-// two rows are the controls - a shortcut must follow its role, a tint level must not
+// two rows are the controls - a shortcut must follow its role, a wash level must not
 // move at all (it is a background, and promoting it would repaint the component).
 const HUE_ROLES: Promotion[] = [
   { token: 'success-text-muted', borrows: 'success-text-default' },
@@ -76,9 +76,9 @@ const HUE_ROLES: Promotion[] = [
   { token: 'success-border-default', borrows: 'success-border-strong' },
   { token: 'success-border', borrows: 'success-border-strong', note: 'shortcut: follows its role' },
   {
-    token: 'success-surface-strong',
+    token: 'success-wash-strong',
     borrows: null,
-    note: 'a tint level is a background: never promoted',
+    note: 'a wash level is a background: never promoted',
   },
 ];
 
@@ -421,7 +421,7 @@ const BorderSpecimen = () => (
 );
 
 /**
- * A status component dressed ENTIRELY from one hue: two tint levels (the panel and
+ * A status component dressed ENTIRELY from one hue: two wash levels (the panel and
  * the chip behind the icon), two text prominences and a border. This is the shape
  * `mds-banner` has today with hand-picked ramp steps, rebuilt on the roles - the
  * component migration itself is #615.
@@ -435,16 +435,16 @@ const HueSpecimen = ({ hue }: { key?: string; hue: string }) => {
     <div
       class="rounded-md p-400 flex gap-300 items-start"
       style={{
-        background: role('surface-subtle'),
+        background: role('wash-soft'),
         border: `1px solid ${role('border-default')}`,
       }}
     >
-      <div class="rounded-md p-200 flex" style={{ background: role('surface-strong') }}>
+      <div class="rounded-md p-200 flex" style={{ background: role('wash-strong') }}>
         <mds-icon name="mdi/crown" style={{ color: role('text-default') }} />
       </div>
       <div class="grid gap-100">
         <mds-text typography="label" style={{ color: role('text-default') }}>
-          {hue} - headline on surface-subtle
+          {hue} - headline on wash-soft
         </mds-text>
         <mds-text typography="detail" style={{ color: role('text-muted') }}>
           body copy through text-muted, the role a banner reads for its message
@@ -533,7 +533,7 @@ const ContrastPage = () => {
       </Section>
 
       <Section
-        title="Status hues on their own tint"
+        title="Status hues on their own wash"
         hint="Each hue publishes the same ladders on its own family (#621), so a colored component needs no hand-picked ramp step - and gains contrast from the same table."
       >
         <div class="grid gap-300 grid-cols-1 tablet:grid-cols-2">
@@ -543,12 +543,19 @@ const ContrastPage = () => {
         </div>
         <Callout>
           <mds-text typography="detail" style={{ color: textVar('muted') }}>
-            The tint levels (<Code>surface-subtle</Code> / <Code>-default</Code> /{' '}
-            <Code>-strong</Code>) NAME ramp steps instead of resolving through the generated surface
-            scale, and that is not a shortcut: a tinted chip moves toward the ink in BOTH modes,
-            while the elevation ladder rises toward white in light and toward the ink in dark. No
-            single elevation role can be it - flip <strong>Mode</strong> and watch the chip stay on
-            the ink side either way.
+            The wash levels (<Code>wash-soft</Code> / <Code>-base</Code> / <Code>-strong</Code>)
+            NAME ramp steps instead of resolving through the generated surface scale, and that is
+            not a shortcut: a colored chip moves toward the ink in BOTH modes, while the elevation
+            ladder rises toward white in light and toward the ink in dark. No single elevation role
+            can be it - flip <strong>Mode</strong> and watch the chip stay on the ink side either
+            way.
+          </mds-text>
+          <mds-text typography="detail" style={{ color: textVar('muted') }}>
+            They are also NOT called <Code>surface-*</Code> on purpose:{' '}
+            <Code>--magma-success-surface-default</Code> would read as the colored parent of{' '}
+            <Code>--magma-surface-default</Code>, which is the elevation band (L 96%), while the
+            generated <Code>--surface-success-*</Code> scale is that band tinted. Three different
+            things - the ambiguous name is left unused so nothing can reach for it by mistake.
           </mds-text>
         </Callout>
       </Section>
