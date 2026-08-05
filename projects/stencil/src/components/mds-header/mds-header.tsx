@@ -10,6 +10,7 @@ import {
   Watch,
   Method,
 } from '@stencil/core';
+import { queryChildBySlot } from '@common/slot';
 import { MdsHeaderEventDetail, MdsHeaderVisibilityEventDetail } from './meta/event-detail';
 import { HeaderBarMenuType, HeaderBarNavType } from '@type/header-bar';
 import { AppearanceType } from './meta/types';
@@ -105,7 +106,7 @@ export class MdsHeader {
   }
 
   private mobileMenu = (): HTMLElement => {
-    return this.host.querySelector(':scope > [slot="menu"]') as HTMLElement;
+    return queryChildBySlot(this.host, 'menu') as HTMLElement;
   };
 
   private close = () => {

@@ -10,6 +10,7 @@ import {
   Watch,
   State,
 } from '@stencil/core';
+import { queryChildrenBySlot } from '@common/slot';
 import { MdsTabEventDetail } from './meta/event-detail';
 import { MdsTabItemEventDetail } from '@component/mds-tab-item/meta/event-detail';
 import { setAttributeIfEmpty, hashRandomValue } from '@common/aria';
@@ -86,7 +87,7 @@ export class MdsTab {
   @Event({ eventName: 'mdsTabChange' }) changedEvent: EventEmitter<MdsTabEventDetail>;
 
   private queryContentItems = (): Array<HTMLElement> =>
-    Array.from(this.element.querySelectorAll<HTMLElement>(':scope > [slot=content]'));
+    queryChildrenBySlot(this.element, 'content');
 
   componentWillLoad(): void {
     this.setTabsItems();

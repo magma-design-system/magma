@@ -1,4 +1,5 @@
 import { Component, Host, h, Element, Prop, Watch } from '@stencil/core';
+import { queryChildrenByTag } from '@common/slot';
 import { TreeActions, TreeAppearance, TreeIcon } from '@type/tree';
 import { TypographyTruncateType } from '@type/text';
 import { ButtonIconPositionType } from '@type/button';
@@ -137,7 +138,10 @@ export class MdsTree {
     this.updateChildrenToggle(this.toggle);
     this.updateChildrenTogglePosition(this.togglePosition);
     this.updateChildrenAppearance(this.appearance);
-    const firstLevelElements = this.host.querySelectorAll(':scope > mds-tree-item');
+    const firstLevelElements = queryChildrenByTag(
+      this.host,
+      'mds-tree-item',
+    ) as HTMLMdsTreeItemElement[];
 
     if (firstLevelElements != null) {
       firstLevelElements.forEach((element: HTMLMdsTreeItemElement) => {

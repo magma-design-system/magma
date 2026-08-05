@@ -1,4 +1,5 @@
 import { Component, Host, h, Prop, Element, State } from '@stencil/core';
+import { hasChildWithSlot } from '@common/slot';
 import { Locale } from '@common/locale';
 import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
@@ -64,7 +65,7 @@ export class MdsTableRow {
   @Prop({ reflect: true }) readonly value?: string | number;
 
   componentWillLoad(): void {
-    this.hasActions = this.host.querySelector(':scope > [slot="action"]') !== null;
+    this.hasActions = hasChildWithSlot(this.host, 'action');
   }
 
   componentDidLoad(): void {

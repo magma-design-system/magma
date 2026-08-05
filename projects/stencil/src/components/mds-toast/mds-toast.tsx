@@ -1,15 +1,7 @@
 import { cssDurationToMilliseconds } from '@common/unit';
 import { preferenceStore } from '@common/preference';
-import {
-  Component,
-  Element,
-  Event,
-  EventEmitter,
-  Host,
-  Prop,
-  Watch,
-  h,
-} from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, Prop, Watch, h } from '@stencil/core';
+import { hasChildWithSlot } from '@common/slot';
 import { ThemeVariantType } from '@type/variant';
 import { ToneMinimalVariantType } from '@type/tone';
 
@@ -104,7 +96,7 @@ export class MdsToast {
 
   componentWillLoad(): void {
     this.hasText = this.hostElement.innerHTML !== '';
-    this.actions = this.hostElement.querySelector(':scope > [slot="action"]') !== null;
+    this.actions = hasChildWithSlot(this.hostElement, 'action');
     if (this.duration === undefined || this.duration === 0 || Number.isNaN(this.duration)) {
       return;
     }

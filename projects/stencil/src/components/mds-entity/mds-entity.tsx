@@ -1,4 +1,5 @@
 import { Component, Element, Host, h, Prop } from '@stencil/core';
+import { hasChildWithSlot } from '@common/slot';
 import { ThemeFullVariantAvatarType } from '@type/variant';
 import { ToneMinimalVariantType } from '@type/tone';
 import { preferenceStore } from '@common/preference';
@@ -69,8 +70,8 @@ export class MdsEntity {
   }
 
   componentWillLoad(): void {
-    this.details = this.hostElement.querySelector(':scope > [slot="detail"]') !== null;
-    this.actions = this.hostElement.querySelector(':scope > [slot="action"]') !== null;
+    this.details = hasChildWithSlot(this.hostElement, 'detail');
+    this.actions = hasChildWithSlot(this.hostElement, 'action');
   }
 
   render() {
