@@ -10,6 +10,7 @@ import {
   Prop,
   Watch,
 } from '@stencil/core';
+import { hasChildWithSlot, queryChildBySlot } from '@common/slot';
 import {
   ModalPositionType,
   ModalOverflowType,
@@ -212,16 +213,16 @@ export class MdsModal {
   };
 
   componentWillLoad(): void {
-    this.bottom = this.host.querySelector(':scope > [slot="bottom"]') !== null;
-    this.top = this.host.querySelector(':scope > [slot="top"]') !== null;
-    this.window = this.host.querySelector(':scope > [slot="window"]') !== null;
+    this.bottom = hasChildWithSlot(this.host, 'bottom');
+    this.top = hasChildWithSlot(this.host, 'top');
+    this.window = hasChildWithSlot(this.host, 'window');
 
     if (this.overflow === 'auto' && this.opened) {
       this.disableOverflow();
     }
 
     if (this.window) {
-      this.host.querySelector(':scope > [slot="window"]')?.setAttribute('role', 'dialog');
+      queryChildBySlot(this.host, 'window')?.setAttribute('role', 'dialog');
     }
   }
 

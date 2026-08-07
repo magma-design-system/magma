@@ -9,6 +9,7 @@ import {
   State,
   Watch,
 } from '@stencil/core';
+import { hasChildWithSlot } from '@common/slot';
 import { ThemeVariantType } from '@type/variant';
 import { ToneMinimalBoxVariantType } from '@type/tone';
 
@@ -100,7 +101,7 @@ export class MdsBanner {
   };
 
   componentWillLoad(): void {
-    this.actions = this.host.querySelector(':scope > [slot="action"]') !== null;
+    this.actions = hasChildWithSlot(this.host, 'action');
     this.setCloseButtonVariant(this.variant);
   }
 

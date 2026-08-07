@@ -21,6 +21,7 @@ import {
   Method,
   Watch,
 } from '@stencil/core';
+import { hasChildWithSlot } from '@common/slot';
 import { Locale } from '@common/locale';
 import { TypographyTruncateType } from '@type/text';
 import { cssDurationToMilliseconds } from '@common/unit';
@@ -211,7 +212,7 @@ export class MdsTreeItem {
     this.updateToggleIcon();
     this.resolveActions();
 
-    this.hasActions = !!this.host.querySelector(':scope > [slot="action"]');
+    this.hasActions = hasChildWithSlot(this.host, 'action');
     this.hasChildren = !!this.host.querySelector('mds-tree-item');
   }
 

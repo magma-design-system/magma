@@ -58,6 +58,7 @@
   --private-mask-opacity: 1;
 
   color: var(--mds-header-color);
+  display: block;
   fill: var(--mds-header-icon-color);
   position: relative;
   z-index: var(--mds-header-z-index);

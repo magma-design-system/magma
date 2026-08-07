@@ -57,6 +57,8 @@
   gap: var(--mds-button-gap);
   justify-content: center;
   justify-self: flex-start;
+  min-height: --spacing(900);
+  min-width: --spacing(900);
   padding: 0 --spacing(400);
   position: relative;
   transition-duration: var(--duration-200);

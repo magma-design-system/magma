@@ -9,6 +9,7 @@ import {
   Watch,
   h,
 } from '@stencil/core';
+import { hasChildWithSlot } from '@common/slot';
 import clsx from 'clsx';
 import miBaselineKeyboardArrowRight from '@icon/mi/baseline/keyboard-arrow-right.svg';
 import { KeyboardManager } from '@common/keyboard-manager';
@@ -70,7 +71,7 @@ export class MdsDetails {
   };
 
   private checkIcon = (): void => {
-    this.hasIcon = this.host.querySelector(':scope > [slot="icon"]') !== null;
+    this.hasIcon = hasChildWithSlot(this.host, 'icon');
   };
 
   private onSlotChangeHandler = (): void => {

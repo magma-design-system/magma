@@ -14,7 +14,7 @@ import { buttonSizeTypographyVariant } from './meta/variants';
 import { setAttributeIfEmpty, unslugName } from '@common/aria';
 import { isIconFormatIsBase64, isIconFormatIsSVG } from '@common/icon';
 import { TypographyTruncateType } from '@type/text';
-import { readSlottedLabel, sanitizeLabel } from '@common/slot';
+import { hasChildWithSlot, readSlottedLabel, sanitizeLabel } from '@common/slot';
 import { preferenceStore } from '@common/preference';
 import mdiApple from '@icon/mdi/apple.svg';
 import logoGoogle from './asset/logo-google.svg';
@@ -203,7 +203,7 @@ export class MdsButton {
   };
 
   componentWillLoad(): void {
-    this.hasNotification = this.host.querySelector(':scope > [slot="notification"]') !== null;
+    this.hasNotification = hasChildWithSlot(this.host, 'notification');
 
     this.handleVariantChange(this.variant);
 

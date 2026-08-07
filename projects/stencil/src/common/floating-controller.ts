@@ -47,14 +47,17 @@ export class FloatingController {
     this.arrowEl = arrowEl;
   }
 
-  updateCaller(target: string): HTMLElement {
+  updateCaller(target: string): HTMLElement | null {
     // search caller in document or rootNode of host (if target is in shadowDOM)
     const caller =
       (this._host.parentElement?.shadowRoot?.querySelector(target) as HTMLElement) ??
       ((this._host.getRootNode() as HTMLElement).querySelector(target) as HTMLElement);
 
     if (!caller) {
-      throw Error(`Target not found: ${target}`);
+      // the target may legitimately be absent (e.g. during SSR the document
+      // only contains the component subtree being serialized)
+      console.warn(`FloatingController: target not found: ${target}`);
+      return null;
     }
 
     this._caller = caller;

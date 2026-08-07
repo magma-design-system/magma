@@ -10,6 +10,7 @@ import {
   State,
   h,
 } from '@stencil/core';
+import { hasChildWithSlot } from '@common/slot';
 import { preferenceStore } from '@common/preference';
 import { HeaderBarMenuType, HeaderBarNavType } from '@type/header-bar';
 
@@ -42,7 +43,7 @@ export class MdsHeaderBar {
   @Prop({ reflect: true }) nav: HeaderBarNavType = 'desktop';
 
   componentWillLoad(): void {
-    this.hasNav = this.host.querySelector(':scope > [slot="nav"]') !== null;
+    this.hasNav = hasChildWithSlot(this.host, 'nav');
   }
 
   /**

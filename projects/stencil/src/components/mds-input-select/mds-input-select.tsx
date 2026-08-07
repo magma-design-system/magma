@@ -13,6 +13,7 @@ import {
   State,
   Watch,
 } from '@stencil/core';
+import { setFormValue } from '@common/form';
 import { MdsInputEventDetail } from '@type/input';
 import { ThemeStatusVariantType } from '@type/variant';
 
@@ -111,7 +112,7 @@ export class MdsInputSelect {
   protected valueChanged(): void {
     this.changeEvent.emit({ value: this.value?.toString() });
     this.setCurrentValue();
-    this.internals.setFormValue(this.value?.toString() ?? null);
+    setFormValue(this.internals, this.value?.toString() ?? null);
   }
 
   @Watch('disabled')
@@ -122,7 +123,7 @@ export class MdsInputSelect {
      * https://github.com/ionic-team/stencil/issues/5461
      */
     if (newValue) {
-      this.internals.setFormValue(null);
+      setFormValue(this.internals, null);
     }
   }
 
@@ -156,7 +157,7 @@ export class MdsInputSelect {
   }
 
   formResetCallback(): void {
-    this.internals.setFormValue('');
+    setFormValue(this.internals, '');
   }
 
   componentWillLoad(): void {
@@ -173,7 +174,7 @@ export class MdsInputSelect {
 
   componentDidLoad(): void {
     if (this.value != null && this.value !== '' && this.value !== 0 && !Number.isNaN(this.value)) {
-      this.internals.setFormValue(this.value.toString());
+      setFormValue(this.internals, this.value.toString());
     }
   }
 

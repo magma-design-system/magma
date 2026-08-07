@@ -10,6 +10,7 @@ import {
   Watch,
   State,
 } from '@stencil/core';
+import { setFormValue } from '@common/form';
 import { preferenceStore } from '@common/preference';
 
 /**
@@ -87,7 +88,7 @@ export class MdsInputRange {
         multiplier;
     }
     this.value = v;
-    this.internals.setFormValue(this.value.toString());
+    setFormValue(this.internals, this.value.toString());
     const total = this.max - this.min;
     const current = this.value - this.min;
     this.progress = (current / total) * 100;
@@ -113,7 +114,7 @@ export class MdsInputRange {
      * https://github.com/ionic-team/stencil/issues/5461
      */
     if (newValue) {
-      this.internals.setFormValue(null);
+      setFormValue(this.internals, null);
     }
   }
 
@@ -143,7 +144,7 @@ export class MdsInputRange {
   }
 
   formResetCallback(): void {
-    this.internals.setFormValue('');
+    setFormValue(this.internals, '');
   }
 
   componentDidLoad(): void {
