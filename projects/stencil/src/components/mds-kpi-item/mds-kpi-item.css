@@ -8,7 +8,7 @@
  */
 
 :host {
-  --mds-kpi-item-icon-color: rgb(var(--variant-primary-04));
+  --mds-kpi-item-icon-color: rgb(var(--magma-accent-emphasis));
   --mds-kpi-item-info-background: rgb(var(--tone-neutral-seed));
   --mds-kpi-item-text-animation-placeholder-char: var(
     --mds-kpi-text-animation-placeholder-char,
@@ -21,7 +21,7 @@
   @apply ease-out;
 
   aspect-ratio: 1;
-  background-color: rgb(var(--variant-primary-10));
+  background-color: rgb(var(--magma-accent-surface-subtle));
   border-radius: var(--radius-4xl);
   corner-shape: var(--magma-corner-shape, round);
   display: flex;

@@ -5,13 +5,13 @@
 
 :host([pref-contrast='more']) {
   --mds-chip-background: rgb(var(--tone-neutral-seed));
-  --mds-chip-color: rgb(var(--tone-neutral-02));
-  --mds-chip-icon-background-selected: rgb(var(--variant-primary-03));
-  --mds-chip-icon-color: rgb(var(--tone-neutral-seed));
+  --mds-chip-color: rgb(var(--magma-scale-02));
+  --mds-chip-icon-background-selected: rgb(var(--magma-accent-emphasis-hover));
+  --mds-chip-icon-color: rgb(var(--magma-text-on-emphasis));
   --mds-chip-opacity-disabled: var(--opacity-disabled, 0.6);
-  --mds-chip-backgroud-selected: rgb(var(--tone-neutral-09));
-  --mds-chip-color-selected: rgb(var(--tone-neutral-01));
-  --mds-chip-icon-color-selected: rgb(var(--tone-neutral-seed));
+  --mds-chip-backgroud-selected: rgb(var(--magma-scale-09));
+  --mds-chip-color-selected: rgb(var(--magma-text-default));
+  --mds-chip-icon-color-selected: rgb(var(--magma-text-on-emphasis));
 
   box-shadow: var(--shadow-outline-50);
 }
@@ -20,13 +20,13 @@
   :host([pref-contrast='system']),
   :host(:not([pref-contrast])) {
     --mds-chip-background: rgb(var(--tone-neutral-seed));
-    --mds-chip-color: rgb(var(--tone-neutral-02));
-    --mds-chip-icon-background-selected: rgb(var(--variant-primary-03));
-    --mds-chip-icon-color: rgb(var(--tone-neutral-seed));
+    --mds-chip-color: rgb(var(--magma-scale-02));
+    --mds-chip-icon-background-selected: rgb(var(--magma-accent-emphasis-hover));
+    --mds-chip-icon-color: rgb(var(--magma-text-on-emphasis));
     --mds-chip-opacity-disabled: var(--opacity-disabled, 0.6);
-    --mds-chip-backgroud-selected: rgb(var(--tone-neutral-09));
-    --mds-chip-color-selected: rgb(var(--tone-neutral-01));
-    --mds-chip-icon-color-selected: rgb(var(--tone-neutral-seed));
+    --mds-chip-backgroud-selected: rgb(var(--magma-scale-09));
+    --mds-chip-color-selected: rgb(var(--magma-text-default));
+    --mds-chip-icon-color-selected: rgb(var(--magma-text-on-emphasis));
 
     box-shadow: var(--shadow-outline-50);
   }

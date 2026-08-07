@@ -1,0 +1,88 @@
+/*
+  Document-level registrations for the mds-keyboard public custom properties.
+
+  Never import this file from a component stylesheet: an @property rule inside a shadow root
+  registers nothing, and every Magma component is shadow: true.
+  projects/styles/scripts/properties.ts collects these into globals.css, which the document does
+  load, and resolves each initial-value down to a literal - see that file for the full
+  rationale. inherits is true throughout, because that is what the unregistered behaviour
+  already does today.
+*/
+
+@property --mds-keyboard-background {
+  inherits: true;
+  initial-value: rgb(var(--tone-porcelain-08));
+  syntax: '<color>';
+}
+
+@property --mds-keyboard-background-default {
+  inherits: true;
+  initial-value: rgb(var(--tone-porcelain-08));
+  syntax: '<color>';
+}
+
+@property --mds-keyboard-background-fail {
+  inherits: true;
+  initial-value: rgb(var(--status-error-09));
+  syntax: '<color>';
+}
+
+@property --mds-keyboard-background-pass {
+  inherits: true;
+  initial-value: rgb(var(--status-success-09));
+  syntax: '<color>';
+}
+
+@property --mds-keyboard-color {
+  inherits: true;
+  initial-value: rgb(var(--magma-scale-04));
+  syntax: '<color>';
+}
+
+@property --mds-keyboard-fill-fail {
+  inherits: true;
+  initial-value: rgb(var(--status-error-06));
+  syntax: '<color>';
+}
+
+@property --mds-keyboard-fill-pass {
+  inherits: true;
+  initial-value: rgb(var(--status-success-06));
+  syntax: '<color>';
+}
+
+@property --mds-keyboard-illumination-dark-opacity {
+  inherits: true;
+  initial-value: 0.05;
+  syntax: '<number>';
+}
+
+@property --mds-keyboard-illumination-dark-size {
+  inherits: true;
+  initial-value: --spacing(150);
+  syntax: '<length>';
+}
+
+@property --mds-keyboard-illumination-light-opacity {
+  inherits: true;
+  initial-value: 0.075;
+  syntax: '<number>';
+}
+
+@property --mds-keyboard-illumination-light-size {
+  inherits: true;
+  initial-value: --spacing(25);
+  syntax: '<length>';
+}
+
+@property --mds-keyboard-padding {
+  inherits: true;
+  initial-value: --spacing(200);
+  syntax: '<length>';
+}
+
+@property --mds-keyboard-spinner-duration {
+  inherits: true;
+  initial-value: 1s;
+  syntax: '<time>';
+}

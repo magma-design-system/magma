@@ -5,30 +5,6 @@
  * @prop --mds-emoji-mia-hands: Sets the color of Mia's hands
  */
 
-@property --mds-emoji-mia-head {
-  inherits: false;
-  initial-value: rgb(var(--magma-accent-ai-surface-hover));
-  syntax: '<color>';
-}
-
-@property --mds-emoji-mia-eyes {
-  inherits: false;
-  initial-value: rgb(var(--magma-accent-ai-emphasis-hover));
-  syntax: '<color>';
-}
-
-@property --mds-emoji-mia-mouth {
-  inherits: false;
-  initial-value: rgb(var(--magma-accent-ai-border));
-  syntax: '<color>';
-}
-
-@property --mds-emoji-mia-hands {
-  inherits: false;
-  initial-value: rgb(var(--magma-accent-ai-border));
-  syntax: '<color>';
-}
-
 :host([name='mia']) {
   --mds-emoji-mia-eyes-color: rgb(var(--magma-accent-ai-emphasis-hover));
   --mds-emoji-mia-hands-color: rgb(var(--magma-accent-ai-emphasis));

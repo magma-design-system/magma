@@ -15,60 +15,6 @@
  * @prop --mds-radial-menu-transition-timing-function: Timing function of the radial menu transition.
  */
 
-@property --mds-radial-menu-angle-start {
-  inherits: false;
-  initial-value: 0deg;
-  syntax: '<angle>';
-}
-
-@property --mds-radial-menu-angle-end {
-  inherits: false;
-  initial-value: 360deg;
-  syntax: '<angle>';
-}
-
-@property --mds-radial-menu-context-menu-z-index {
-  inherits: false;
-  initial-value: var(--magma-context-menu-z-index, 8000);
-  syntax: '<integer>';
-}
-
-@property --mds-radial-menu-delay {
-  inherits: false;
-  initial-value: 0.01s;
-  syntax: '<time>';
-}
-
-@property --mds-radial-menu-direction {
-  inherits: false;
-  initial-value: -1;
-  syntax: '<integer>';
-}
-
-@property --mds-radial-menu-disc-background {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-seed) / 0.5);
-  syntax: '<color>';
-}
-
-@property --mds-radial-menu-disc-size {
-  inherits: false;
-  initial-value: calc(var(--mds-radial-menu-radius) * 2);
-  syntax: '<length>';
-}
-
-@property --mds-radial-menu-radius {
-  inherits: false;
-  initial-value: 5rem;
-  syntax: '<length>';
-}
-
-@property --mds-radial-menu-transition-duration {
-  inherits: false;
-  initial-value: 500ms;
-  syntax: '<time>';
-}
-
 /* ❌ Not supported
 @property --mds-radial-menu-disc-filter {
   inherits: false;

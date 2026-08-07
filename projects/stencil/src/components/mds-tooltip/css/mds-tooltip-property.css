@@ -1,0 +1,60 @@
+/*
+  Document-level registrations for the mds-tooltip public custom properties.
+
+  Never import this file from a component stylesheet: an @property rule inside a shadow root
+  registers nothing, and every Magma component is shadow: true.
+  projects/styles/scripts/properties.ts collects these into globals.css, which the document does
+  load, and resolves each initial-value down to a literal - see that file for the full
+  rationale. inherits is true throughout, because that is what the unregistered behaviour
+  already does today.
+*/
+
+@property --mds-tooltip-arrow-background {
+  inherits: true;
+  initial-value: rgb(var(--magma-surface-overlay));
+  syntax: '<color>';
+}
+
+@property --mds-tooltip-background {
+  inherits: true;
+  initial-value: rgb(var(--magma-surface-overlay));
+  syntax: '<color>';
+}
+
+@property --mds-tooltip-delay {
+  inherits: true;
+  initial-value: 1s;
+  syntax: '<time>';
+}
+
+@property --mds-tooltip-dot-padding {
+  inherits: true;
+  initial-value: --spacing(100);
+  syntax: '<length>';
+}
+
+@property --mds-tooltip-duration {
+  inherits: true;
+  initial-value: 0.5s;
+  syntax: '<time>';
+}
+
+/* syntax corrected from '<transform-function>': the value is two chained functions, not one. */
+
+@property --mds-tooltip-transform-from {
+  inherits: true;
+  initial-value: scale(0.9) translateY(calc(--spacing(400) * -1));
+  syntax: '<transform-list>';
+}
+
+@property --mds-tooltip-transform-to {
+  inherits: true;
+  initial-value: scale(1) translate(0, 0);
+  syntax: '<transform-list>';
+}
+
+@property --mds-tooltip-z-index {
+  inherits: true;
+  initial-value: var(--magma-tooltip-z-index, 4000);
+  syntax: '<integer>';
+}

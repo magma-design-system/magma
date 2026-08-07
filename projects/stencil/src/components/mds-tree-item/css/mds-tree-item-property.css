@@ -1,0 +1,123 @@
+/*
+  Document-level registrations for the mds-tree-item public custom properties.
+
+  Never import this file from a component stylesheet: an @property rule inside a shadow root
+  registers nothing, and every Magma component is shadow: true.
+  projects/styles/scripts/properties.ts collects these into globals.css, which the document does
+  load, and resolves each initial-value down to a literal - see that file for the full
+  rationale. inherits is true throughout, because that is what the unregistered behaviour
+  already does today.
+
+  Deliberately NOT registered:
+    - --mds-tree-item-actions-border-radius: its default is
+      var(--mds-tree-actions-border-radius), which resolves to nothing unless a parent sets
+      --mds-tree-actions-border-radius, and a registration would substitute a static light value
+      there instead.
+    - --mds-tree-item-actions-gap: its default is var(--mds-tree-actions-gap), which resolves to
+      nothing unless a parent sets --mds-tree-actions-gap, and a registration would substitute a
+      static light value there instead.
+    - --mds-tree-item-branch-border-color: its default is var(--mds-tree-branch-border-color),
+      which resolves to nothing unless a parent sets --mds-tree-branch-border-color, and a
+      registration would substitute a static light value there instead.
+    - --mds-tree-item-branch-border-size: its default is var(--mds-tree-branch-border-size),
+      which resolves to nothing unless a parent sets --mds-tree-branch-border-size, and a
+      registration would substitute a static light value there instead.
+    - --mds-tree-item-branch-dot-default-color: its default is
+      var(--mds-tree-branch-dot-default-color), which resolves to nothing unless a parent sets
+      --mds-tree-branch-dot-default-color, and a registration would substitute a static light
+      value there instead.
+    - --mds-tree-item-branch-dot-expanded-color: its default is
+      var(--mds-tree-branch-dot-expanded-color), which resolves to nothing unless a parent sets
+      --mds-tree-branch-dot-expanded-color, and a registration would substitute a static light
+      value there instead.
+    - --mds-tree-item-label-default-background: its default is
+      var(--mds-tree-label-default-background), which resolves to nothing unless a parent sets
+      --mds-tree-label-default-background, and a registration would substitute a static light
+      value there instead.
+    - --mds-tree-item-label-hover-background: its default is
+      var(--mds-tree-label-hover-background), which resolves to nothing unless a parent sets
+      --mds-tree-label-hover-background, and a registration would substitute a static light
+      value there instead.
+    - --mds-tree-item-label-icon-default-color: its default is
+      var(--mds-tree-label-icon-default-color), which resolves to nothing unless a parent sets
+      --mds-tree-label-icon-default-color, and a registration would substitute a static light
+      value there instead.
+    - --mds-tree-item-label-icon-hover-color: its default is
+      var(--mds-tree-label-icon-hover-color), which resolves to nothing unless a parent sets
+      --mds-tree-label-icon-hover-color, and a registration would substitute a static light
+      value there instead.
+    - --mds-tree-item-line-clamp: its default is var(--mds-tree-line-clamp), which resolves to
+      nothing unless a parent sets --mds-tree-line-clamp, and a registration would substitute a
+      static light value there instead.
+    - --mds-tree-item-toggle-gap: its default is var(--mds-tree-toggle-gap), which resolves to
+      nothing unless a parent sets --mds-tree-toggle-gap, and a registration would substitute a
+      static light value there instead.
+    - --mds-tree-item-toggle-icon-async-background: its default is
+      var(--mds-tree-toggle-icon-async-background), which resolves to nothing unless a parent
+      sets --mds-tree-toggle-icon-async-background, and a registration would substitute a static
+      light value there instead.
+    - --mds-tree-item-toggle-icon-async-color: its default is
+      var(--mds-tree-toggle-icon-async-color), which resolves to nothing unless a parent sets
+      --mds-tree-toggle-icon-async-color, and a registration would substitute a static light
+      value there instead.
+    - --mds-tree-item-toggle-icon-chevron-default-background: its default is var(
+      --mds-tree-toggle-icon-chevron-default-background ), which resolves to nothing unless a
+      parent sets --mds-tree-toggle-icon-chevron-default-background, and a registration would
+      substitute a static light value there instead.
+    - --mds-tree-item-toggle-icon-chevron-default-color: its default is var(
+      --mds-tree-toggle-icon-chevron-default-color ), which resolves to nothing unless a parent
+      sets --mds-tree-toggle-icon-chevron-default-color, and a registration would substitute a
+      static light value there instead.
+    - --mds-tree-item-toggle-icon-chevron-expanded-background: its default is var(
+      --mds-tree-item-toggle-icon-chevron-default-background ), which resolves to nothing unless
+      a parent sets the outer property, and a registration would substitute a static light value
+      there instead.
+    - --mds-tree-item-toggle-icon-chevron-expanded-color: its default is var(
+      --mds-tree-item-toggle-icon-chevron-default-color ), which resolves to nothing unless a
+      parent sets the outer property, and a registration would substitute a static light value
+      there instead.
+    - --mds-tree-item-toggle-icon-folder-default-background: its default is var(
+      --mds-tree-toggle-icon-folder-default-background ), which resolves to nothing unless a
+      parent sets --mds-tree-toggle-icon-folder-default-background, and a registration would
+      substitute a static light value there instead.
+    - --mds-tree-item-toggle-icon-folder-default-color: its default is var(
+      --mds-tree-toggle-icon-folder-default-color ), which resolves to nothing unless a parent
+      sets --mds-tree-toggle-icon-folder-default-color, and a registration would substitute a
+      static light value there instead.
+    - --mds-tree-item-toggle-icon-folder-expanded-background: its default is var(
+      --mds-tree-item-toggle-icon-folder-default-background ), which resolves to nothing unless
+      a parent sets the outer property, and a registration would substitute a static light value
+      there instead.
+    - --mds-tree-item-toggle-icon-folder-expanded-color: its default is var(
+      --mds-tree-item-toggle-icon-folder-default-color ), which resolves to nothing unless a
+      parent sets the outer property, and a registration would substitute a static light value
+      there instead.
+    - --mds-tree-item-toggle-icon-position-right-default-background: its default is var(
+      --mds-tree-toggle-icon-position-right-default-background ), which resolves to nothing
+      unless a parent sets --mds-tree-toggle-icon-position-right-default-background, and a
+      registration would substitute a static light value there instead.
+    - --mds-tree-item-toggle-icon-position-right-default-color: its default is var(
+      --mds-tree-toggle-icon-position-right-default-color ), which resolves to nothing unless a
+      parent sets --mds-tree-toggle-icon-position-right-default-color, and a registration would
+      substitute a static light value there instead.
+    - --mds-tree-item-toggle-icon-position-right-expanded-background: its default is var(
+      --mds-tree-toggle-icon-position-right-expanded-background ), which resolves to nothing
+      unless a parent sets --mds-tree-toggle-icon-position-right-expanded-background, and a
+      registration would substitute a static light value there instead.
+    - --mds-tree-item-toggle-icon-position-right-expanded-color: its default is var(
+      --mds-tree-toggle-icon-position-right-expanded-color ), which resolves to nothing unless a
+      parent sets --mds-tree-toggle-icon-position-right-expanded-color, and a registration would
+      substitute a static light value there instead.
+    - --mds-tree-item-toggle-size: its default is var(--mds-tree-toggle-size), which resolves to
+      nothing unless a parent sets --mds-tree-toggle-size, and a registration would substitute a
+      static light value there instead.
+    - --mds-tree-item-transition-duration: its default is var(--mds-tree-transition-duration),
+      which resolves to nothing unless a parent sets --mds-tree-transition-duration, and a
+      registration would substitute a static light value there instead.
+*/
+
+@property --mds-tree-item-branch-border-radius {
+  inherits: true;
+  initial-value: var(--radius-lg);
+  syntax: '<length>';
+}

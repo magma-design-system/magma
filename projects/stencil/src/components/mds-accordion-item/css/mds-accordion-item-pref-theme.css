@@ -5,7 +5,7 @@
  * OS via @media; the scheme axis gates it. Cross-browser, no :host-context. */
 
 :host([pref-theme='dark']:not([pref-theme-scheme='light'])) {
-  --mds-accordion-item-border-color: var(--mds-accordion-border-color, rgb(var(--tone-neutral-06)));
+  --mds-accordion-item-border-color: var(--mds-accordion-border-color, rgb(var(--magma-scale-06)));
 }
 
 @media (prefers-color-scheme: dark) {
@@ -13,7 +13,7 @@
   :host(:not([pref-theme])) {
     --mds-accordion-item-border-color: var(
       --mds-accordion-border-color,
-      rgb(var(--tone-neutral-06))
+      rgb(var(--magma-scale-06))
     );
   }
 }

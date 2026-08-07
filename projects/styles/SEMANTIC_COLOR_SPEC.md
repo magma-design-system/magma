@@ -162,6 +162,23 @@ clamped:
 The current `wcag3.tone` scale ends at `115` (above the ceiling) so its highest-contrast
 step clamps to the pure extreme. Validation flags this.
 
+**Text targets must be a BAND apart (issue #632).** `theme.text` states an APCA target per
+role and the engine picks the least-contrast ramp step that still meets it on the family's
+worst-case surface. The ramp only offers about five usable bands (steps `01-05`; `06` and
+beyond fall under 35 Lc), each 8-11 Lc wide, and on a saturated family the whole set sits
+lower - `neutral` light runs `92 / 88 / 77 / 66 / 58` while `success` dark runs
+`83 / 75 / 67 / 57 / 49`. Two targets closer than one band therefore resolve to the SAME
+step, and the collapse lands in a different place per family and per mode. Current values:
+
+```jsonc
+"text": { "default": 91, "muted": 73, "subtle": 64, "disabled": 40 }
+```
+
+`default` is deliberately above what a saturated family can reach (they top out at 83-87 Lc)
+so it clamps to step `01`, the strongest available - that is the intent, and the build logs
+it. The other three must each land in their own band on EVERY opted-in family: verify after
+any ramp or surface retune, because moving the bands can re-collapse the ladder.
+
 ## 6. Layer 2 - semantic tokens (the contract)
 
 Namespace `--magma-*`. Each is resolved per mode via the global flip. Bridged to Tailwind as
@@ -233,6 +250,52 @@ dark neutral chip). The colored hues (accent/info/success/warning/danger) carry 
 quintet. This keeps neutral backgrounds in ONE place (the `surface` family) with no
 duplicate `neutral-surface` token.
 
+**A colored hue publishes the whole vocabulary, on its own family.** The quintet alone
+cannot dress a colored component: a banner uses two tinted backgrounds and two text
+prominences, so with only `-surface` and `-fg` available it hand-picked ramp steps instead
+(30 components did, which is why nothing upstream could raise their contrast). Each colored
+hue therefore publishes the same ladders the neutral scaffolding has:
+
+| Token | Source | Use |
+|---|---|---|
+| `--magma-<hue>-wash-{soft,base,strong}` | ramp steps `10 / 09 / 08` | colored background, by how MARKED it is |
+| `--magma-<hue>-text-{default,muted,subtle,disabled}` | `--text-<family>-*` (A7) | text/icon on that wash |
+| `--magma-<hue>-border-{muted,default,strong}` | `--border-<family>-*` | colored border |
+
+Text and border come from the family's GENERATED role scales, so A7's guarantee - each step
+solved against the family's own surfaces - carries over to every hue, and the section 9.3
+promotion applies to them verbatim.
+
+The wash levels are the one exception: they NAME ramp steps rather than resolving through
+the generated `--surface-<family>-*` scale. The reason is measured. The elevation ladder
+rises toward white in light and toward the ink in dark, while a colored chip (a banner
+cockade, the wash under a status icon) moves toward the ink in BOTH modes - it would have to
+be `sunken` in light and `raised` in dark, which no single role can be. A ramp step
+mode-flips for free because the primitive itself flips, the same argument as 6.6 for
+accents. The generated surface scale keeps its job: it is the constraint the text roles are
+solved against.
+
+**Why `wash` and not `surface`.** Three different things would otherwise wear one name:
+
+| Token | Light | What it is |
+|---|---|---|
+| `--magma-surface-default` | `242 242 242` | the elevation band (L 96%) of the active tint |
+| `--surface-success-default` | `229 247 235` | that same band, tinted (generated, feeds A7) |
+| `--magma-success-wash-base` | `191 233 205` | ramp step 09 - the colored background components use |
+
+`--magma-success-surface-default` would read as the colored parent of the first and be
+neither it nor the second, so the name is deliberately left unused. `tint` was not an option
+either: it already means the ACTIVE THEME FAMILY throughout this spec (`--magma-tint-*`,
+section 8).
+
+The quintet names remain as SHORTCUTS onto these roles (`-surface` = `wash-base`, `-fg` =
+`text-default`, `-border` = `border-default`), declared as `var()` of the role so they
+inherit the contrast promotion instead of freezing a step. `-surface` keeps step `09`, the
+value that alias always had. `-emphasis` / `-on-emphasis` still name a ramp step: they are a
+solid saturated fill, which the role scales - built for tinted surfaces - do not model.
+
+Which text roles a wash level may carry is bounded in section 9.1, not by taste.
+
 ### 6.5 Source mapping
 
 | Semantic | Source primitive |
@@ -240,8 +303,10 @@ duplicate `neutral-surface` token.
 | `surface-*` (5) | `--surface-<active-tint>-*` (lightness); active tint = neutral by default (section 8) |
 | `text-*` | `--text-<active-tint>-*` (by-target, A7) via the `--magma-tint-text-*` pointer; active tint = neutral by default (section 8) |
 | `border-{muted,default,strong}` | `--border-<active-tint>-*` (OKLCH levels, opaque, per mode, beyond the surface band); `focus` = accent |
-| `<hue>-fg / -border / -emphasis` | `status/label/variant-*` (APCA) |
-| `<hue>-surface` | subtle end (step 09/10) of the colored family |
+| `<hue>-text-* / -border-*` | `--text-<family>-*` / `--border-<family>-*` (generated role scales of the hue's own family, A7) |
+| `<hue>-wash-{soft,base,strong}` | steps `10 / 09 / 08` of the colored family, named (see 6.4) |
+| `<hue>-emphasis` | `status/label/variant-*` (APCA), solid fill |
+| `<hue>-fg / -border / -surface` | shortcuts onto the roles above at their default prominence |
 | `*-on-emphasis` | `--tone-*-seed` / near-extreme, verified on the fill |
 
 ### 6.6 Interaction states
@@ -299,6 +364,25 @@ DOM). Same mechanism as the existing preference system.
   `alias` field is declared but NOT consumed by the generator - `variant-primary` and
   `brand-maggioli` merely share a seed, they are not live-aliased.) A theme is thus an
   override map of the `--magma-tint-*` block (daisyUI-style ergonomics).
+
+  A theme family MUST also ship a full RAMP, not just a surface. The component sheets
+  still reach for a raw ramp step wherever the role vocabulary does not cover the use yet
+  (interaction washes, scrims, shadows, decorative fills); those read
+  `--magma-scale-01..10`, which resolves through `--magma-tint-scale-*` and so retints
+  with the rest of the block. Pinned to `--tone-neutral-*` instead they would split the
+  theming in two - the roles retinting while the raw steps stayed a static neutral. Since
+  surfaces can be opted in per GROUP, a family can carry `--surface-<x>-*` and no
+  `--<x>-01..10`; a ramp pointer with nothing to resolve to would silently put every
+  consumer back on the fallback chain, so `scripts/semantic.ts` checks each pointer
+  against the emitted primitives and FAILS the build otherwise. The ramp family is assumed
+  to be `tone-<surface>` - correct as long as a theme is a tint - and a theme drawn from
+  another group names it: `blue: { surface: 'blue', scale: 'label-blue' }`.
+
+  `--magma-scale-*` is TRANSITIONAL and deliberately NOT bridged to Tailwind. It exists so
+  theming is correct today while those uses are still step-indexed; each one that earns a
+  role (a wash, a scrim, a shadow) drops out of it. Publishing `--color-scale-09`
+  utilities would make the raw step the easy choice again and freeze the habit this layer
+  exists to remove.
 - mode `light | dark | system`: the existing global flip; semantic tokens follow it.
 - `--depth` (numeric `0 | 1`): shadow/bevel intensity, consumed as a scalar in `calc()`
   (NOT a `true|false` style query). Does not change the surface colors; only the shadow
@@ -326,10 +410,26 @@ non-essential, because APCA floors differ:
 | `text-disabled` | ~30 | disabled (non-essential) |
 | `*-on-emphasis` | >= 75 | text on a solid fill |
 
-Verified pairs: every `text-*` on every `surface-*`; every `<hue>-fg` on
-`surface-default`/`-raised`; every `<hue>-on-emphasis` on `<hue>-emphasis`. Failure prints
-a table of offending pairs (Lc vs target) - GitHub's per-PR check applied to the semantic
-pairs.
+Verified pairs: every `text-*` on every `surface-*`; every `<hue>-text-*` on every
+`<hue>-wash-*` (see the table below); every `<hue>-fg` on `surface-default`/`-raised`
+(colored ink on a NEUTRAL background - a different question from the one above); every
+`<hue>-on-emphasis` on `<hue>-emphasis`. Failure prints a table of offending pairs (Lc vs
+target) - GitHub's per-PR check applied to the semantic pairs.
+
+**Text on a hue's own wash (6.4).** How much of the text ladder a wash level can carry is a
+measured bound, and the gate enforces exactly this much - the rest is measured and reported,
+never silently accepted:
+
+| Wash level | Enforced text roles | Why |
+|---|---|---|
+| `<hue>-wash-soft` | the whole ladder | 89-91 Lc for `text-default`, 81-83 for `muted` |
+| `<hue>-wash-base` | `text-default` only | `muted` lands at 73-75 Lc, i.e. at or just under its floor |
+| `<hue>-wash-strong` | none | the graphic wash (chips, cockades, hover): icons only, no essential text |
+
+`strong` is not a text surface by design, but it is not exempt either: `text-default` on it
+measures 74.5-76 Lc, comfortably above the report-only target, which is what makes it safe
+for the icon a status chip carries. For scale, the same icon before this contract resolved
+to what is now `text-disabled` and measured **40.7 Lc**.
 
 ### 9.2 De-emphasis without dropping text contrast
 
@@ -366,6 +466,15 @@ and applied by repointing the `--magma-tint-*` indirection (section 8), never th
 `--magma-<role>` tokens themselves. Because every surface-borne role resolves THROUGH
 those pointers, the whole scaffolding gains contrast upstream and no component sheet is
 involved.
+
+The colored HUES gain contrast from the same table, but stated on their own roles
+(`--magma-<hue>-text-muted` -> `--text-<family>-default`) rather than through a pointer:
+a hue is not retinted by a named theme, so it needs no indirection and no theme-scoped
+block. The published roles are what move; the quintet shortcuts are `var()` of those roles,
+so `--magma-<hue>-border` follows `--magma-<hue>-border-default` for free. Wash levels are
+backgrounds and never move. This is the piece that makes status contrast automatic: a banner
+that consumes the roles gains its high-contrast treatment with no per-component sheet and no
+media query.
 
 Roles omitted keep their normal step, deliberately: `text-default` is already the contrast
 ceiling, and `text-disabled` stays faint because disabled controls are WCAG-exempt and

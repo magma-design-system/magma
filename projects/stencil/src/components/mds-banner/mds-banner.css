@@ -15,66 +15,6 @@
  * @prop --mds-banner-transition-timing-function: Sets the transition timing function
  */
 
-@property --mds-banner-background {
-  inherits: false;
-  initial-value: rgb(var(--magma-surface-muted));
-  syntax: '<color>';
-}
-
-@property --mds-banner-close-icon-hover-background {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-09));
-  syntax: '<color>';
-}
-
-@property --mds-banner-cockade-background {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-09));
-  syntax: '<color>';
-}
-
-@property --mds-banner-color {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-02));
-  syntax: '<color>';
-}
-
-@property --mds-banner-headline-color {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-02));
-  syntax: '<color>';
-}
-
-@property --mds-banner-icon-color {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-04));
-  syntax: '<color>';
-}
-
-@property --mds-banner-cockade-distance {
-  inherits: true;
-  initial-value: --spacing(600);
-  syntax: '<length>';
-}
-
-@property --mds-banner-content-gap {
-  inherits: true;
-  initial-value: --spacing(200) --spacing(400);
-  syntax: '<length>+';
-}
-
-@property --mds-banner-radius {
-  inherits: true;
-  initial-value: var(--radius-lg);
-  syntax: '<length>';
-}
-
-@property --mds-banner-transition-duration {
-  inherits: true;
-  initial-value: 300ms;
-  syntax: '<time>';
-}
-
 /*
 @property --mds-banner-shadow {
   inherits: true;
@@ -91,13 +31,13 @@
 
 :host {
   --mds-banner-background: rgb(var(--magma-surface-muted));
-  --mds-banner-close-icon-hover-background: rgb(var(--tone-neutral-09));
-  --mds-banner-cockade-background: rgb(var(--tone-neutral-09));
+  --mds-banner-close-icon-hover-background: rgb(var(--magma-scale-09));
+  --mds-banner-cockade-background: rgb(var(--magma-scale-09));
   --mds-banner-cockade-distance: --spacing(600);
-  --mds-banner-color: rgb(var(--tone-neutral-02));
+  --mds-banner-color: rgb(var(--magma-scale-02));
   --mds-banner-content-gap: --spacing(400);
   --mds-banner-headline-color: var(--mds-banner-color);
-  --mds-banner-icon-color: rgb(var(--tone-neutral-04));
+  --mds-banner-icon-color: rgb(var(--magma-scale-04));
   --mds-banner-radius: var(--radius-2xl, 24px);
   --mds-banner-shadow: none;
   --mds-banner-transition-duration: 300ms;
