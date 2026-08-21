@@ -1,6 +1,6 @@
 :host([variant='error'][tone='strong']) {
-  --mds-push-notification-item-icon-background-color: rgb(var(--status-error-05));
-  --mds-push-notification-item-icon-color: rgb(var(--status-error-10));
+  --mds-push-notification-item-icon-background-color: rgb(var(--magma-danger-emphasis));
+  --mds-push-notification-item-icon-color: rgb(var(--magma-danger-on-emphasis));
 }
 
 :host([variant='error']),
@@ -15,8 +15,8 @@
 }
 
 :host([variant='warning'][tone='strong']) {
-  --mds-push-notification-item-icon-background-color: rgb(var(--status-warning-05));
-  --mds-push-notification-item-icon-color: rgb(var(--status-warning-10));
+  --mds-push-notification-item-icon-background-color: rgb(var(--magma-warning-emphasis));
+  --mds-push-notification-item-icon-color: rgb(var(--magma-warning-on-emphasis));
 }
 
 :host([variant='warning']),
@@ -31,8 +31,8 @@
 }
 
 :host([variant='success'][tone='strong']) {
-  --mds-push-notification-item-icon-background-color: rgb(var(--status-success-05));
-  --mds-push-notification-item-icon-color: rgb(var(--status-success-10));
+  --mds-push-notification-item-icon-background-color: rgb(var(--magma-success-emphasis));
+  --mds-push-notification-item-icon-color: rgb(var(--magma-success-on-emphasis));
 }
 
 :host([variant='success']),
@@ -47,8 +47,8 @@
 }
 
 :host([variant='info'][tone='strong']) {
-  --mds-push-notification-item-icon-background-color: rgb(var(--status-info-05));
-  --mds-push-notification-item-icon-color: rgb(var(--status-info-10));
+  --mds-push-notification-item-icon-background-color: rgb(var(--magma-info-emphasis));
+  --mds-push-notification-item-icon-color: rgb(var(--magma-info-on-emphasis));
 }
 
 :host([variant='info']),

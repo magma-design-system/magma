@@ -20,13 +20,13 @@
   --private-stepper-bar-item-duaration: var(--mds-stepper-bar-item-duration);
   --mds-stepper-bar-item-transition-duration: var(--duration-200);
   --private-stepper-bar-item-transition-duration: var(--mds-stepper-bar-item-transition-duration);
-  --mds-stepper-bar-item-icon-background-done: rgb(var(--status-success-05));
+  --mds-stepper-bar-item-icon-background-done: rgb(var(--magma-success-emphasis));
   --mds-stepper-bar-item-icon-background-current: rgb(var(--magma-accent-emphasis));
   --mds-stepper-bar-item-icon-background: var(
     --mds-stepper-bar-item-progress-background,
     rgb(var(--magma-scale-08))
   );
-  --mds-stepper-bar-item-icon-color-done: rgb(var(--status-success-10));
+  --mds-stepper-bar-item-icon-color-done: rgb(var(--magma-success-on-emphasis));
   --mds-stepper-bar-item-icon-color-current: rgb(var(--magma-text-on-emphasis));
   --mds-stepper-bar-item-icon-color: rgb(var(--magma-scale-04));
   --mds-stepper-bar-item-min-width: 180px;
