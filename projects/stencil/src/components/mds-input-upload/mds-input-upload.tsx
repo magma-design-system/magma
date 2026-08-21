@@ -16,6 +16,7 @@ import {
   h,
   Watch,
 } from '@stencil/core';
+import { setFormValue, setValidity } from '@common/form';
 import {
   AttachmentSort,
   ErrorType,
@@ -307,8 +308,8 @@ export class MdsInputUpload {
         }
         errorMessage.add(this.t.get(error.errorKey!));
       });
-    this.internals.setFormValue(input.value);
-    this.internals.setValidity(validity, Array.from(errorMessage).join(', '));
+    setFormValue(this.internals, input.value);
+    setValidity(this.internals, validity, Array.from(errorMessage).join(', '));
     this.updateProgress();
     this.changedEvent.emit(files);
   }

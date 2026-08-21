@@ -11,6 +11,7 @@ import {
   Watch,
   AttachInternals,
 } from '@stencil/core';
+import { setFormValue } from '@common/form';
 import miBaselineCalendarToday from '@icon/mi/baseline/calendar-today.svg';
 import { DateTime } from 'luxon';
 import { preferenceStore } from '@common/preference';
@@ -115,12 +116,12 @@ export class MdsInputDate {
     if (hasBadInput || hasInvalidValue || isMissingRequiredValue || outOfRange) {
       this.isValid = false;
       this.variant = 'error';
-      this.internals.setFormValue(null);
+      setFormValue(this.internals, null);
       this.empty = hasBadInput || hasInvalidValue ? true : undefined;
     } else {
       this.isValid = true;
       this.variant = 'primary';
-      this.internals.setFormValue(this.value);
+      setFormValue(this.internals, this.value);
       this.empty = undefined;
     }
 
@@ -158,7 +159,7 @@ export class MdsInputDate {
   }
 
   formResetCallback(): void {
-    this.internals.setFormValue('');
+    setFormValue(this.internals, '');
   }
 
   componentWillLoad(): void {
@@ -232,7 +233,6 @@ export class MdsInputDate {
         pref-theme={preferenceStore.state.theme}
         pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
-
         <input
           value={this.value}
           id="dateInput"

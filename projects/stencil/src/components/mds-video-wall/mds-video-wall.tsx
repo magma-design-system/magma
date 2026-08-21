@@ -1,5 +1,6 @@
 /* eslint-disable stencil/ban-default-true */
 import { Component, Element, Host, h, Prop } from '@stencil/core';
+import { hasChildWithSlot } from '@common/slot';
 import clsx from 'clsx';
 import { NoiseType, PreloadType } from './meta/types';
 
@@ -53,7 +54,7 @@ export class MdsVideoWall {
   @Prop() readonly src?: string;
 
   componentWillLoad(): void {
-    this.hasContent = this.hostElement.querySelector(':scope > [slot="content"]') !== null;
+    this.hasContent = hasChildWithSlot(this.hostElement, 'content');
   }
 
   render() {

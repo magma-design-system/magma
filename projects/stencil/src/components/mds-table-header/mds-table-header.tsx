@@ -56,7 +56,8 @@ export class MdsTableHeader {
 
   componentWillLoad(): void {
     this.table = this.host.closest('mds-table') as HTMLMdsTableElement;
-    this.hasActions = this.table.querySelector('mds-table-row > [slot="action"]') !== null;
+    // standalone header (or SSR of the subtree alone): no surrounding table
+    this.hasActions = this.table?.querySelector('mds-table-row > [slot="action"]') != null;
   }
 
   private handleSelectAllChange = (e: CustomEvent<MdsInputSwitchEventDetail>): void => {
@@ -66,7 +67,7 @@ export class MdsTableHeader {
       this.selectAll = e.detail.checked ?? false;
     }
     this.indeterminate = false;
-    this.table.selectAll(this.selectAll);
+    this.table?.selectAll(this.selectAll);
   };
 
   render() {

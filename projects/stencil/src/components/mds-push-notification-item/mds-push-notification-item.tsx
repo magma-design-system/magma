@@ -5,16 +5,8 @@ import localeEs from './meta/locale.es.json';
 import localeIt from './meta/locale.it.json';
 import miBaselineCancel from '@icon/mi/baseline/cancel.svg';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import {
-  Component,
-  Element,
-  Event,
-  EventEmitter,
-  Host,
-  h,
-  Prop,
-  Watch,
-} from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Prop, Watch } from '@stencil/core';
+import { hasChildWithSlot } from '@common/slot';
 import { Locale } from '@common/locale';
 import { MdsPushNotificationItemEventDetail } from './meta/event-detail';
 import {
@@ -125,8 +117,8 @@ export class MdsPushNotificationItem {
 
   componentWillLoad(): void {
     dayjs.extend(relativeTime);
-    this.hasActions = this.host.querySelector(':scope > [slot="action"]') !== null;
-    this.hasBadge = this.host.querySelector(':scope > [slot="badge"]') !== null;
+    this.hasActions = hasChildWithSlot(this.host, 'action');
+    this.hasBadge = hasChildWithSlot(this.host, 'badge');
 
     if (this.datetime !== undefined && this.datetime !== '') {
       this.datetime = sanitizeISO8601Date(this.datetime?.toString());

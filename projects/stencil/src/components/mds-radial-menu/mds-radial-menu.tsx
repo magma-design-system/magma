@@ -1,4 +1,5 @@
 import { Component, Host, Prop, Element, h, Watch } from '@stencil/core';
+import { queryChildrenBySlot } from '@common/slot';
 import { ButtonSizeType, ButtonVariantType } from '@type/button';
 import { Direction, Interaction } from './meta/types';
 import miBaselineMoreVert from '@icon/mi/baseline/more-vert.svg';
@@ -80,7 +81,7 @@ export class MdsRadialMenu {
    */
   @Prop({ reflect: true }) readonly size: ButtonSizeType = 'lg';
 
-  private items: NodeListOf<HTMLMdsRadialMenuItemElement>;
+  private items: HTMLMdsRadialMenuItemElement[];
 
   private toggleMenu = (): void => {
     if (this.opened === true) {
@@ -117,7 +118,7 @@ export class MdsRadialMenu {
   };
 
   private updateItems = (): void => {
-    this.items = this.hostElement.querySelectorAll(':scope > [slot="item"]');
+    this.items = queryChildrenBySlot(this.hostElement, 'item') as HTMLMdsRadialMenuItemElement[];
     this.setItemSize();
     this.setItemIndex();
     this.hostElement.style.setProperty(

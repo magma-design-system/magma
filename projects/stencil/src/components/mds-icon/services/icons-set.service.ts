@@ -1,3 +1,4 @@
+import { Build } from '@stencil/core';
 import { get, set, del } from 'idb-keyval';
 import { IconNameResolverFn, MdsIconSet } from '../meta/icon-set';
 
@@ -100,6 +101,10 @@ class IconsSetController {
 
   // Try to retrieve svg from cache
   private isCacheAvailable = async (url: string) => {
+    // idb-keyval requires indexedDB, missing in the hydrate/SSR runtime
+    if (typeof indexedDB === 'undefined') {
+      return false;
+    }
     try {
       const loaderItem = await get(`loader_${url}`);
 
@@ -123,6 +128,9 @@ class IconsSetController {
 
   // Set svg to cache
   private setCache = async (url: string, data: string) => {
+    if (typeof indexedDB === 'undefined') {
+      return;
+    }
     try {
       await set(
         `loader_${url}`,
@@ -145,6 +153,14 @@ class IconsSetController {
   }
 
   async fetchSvg(name: string): Promise<string> {
+    // No fetch during SSR: relative icon paths have no origin to resolve
+    // against, and the client re-fetches after hydration anyway. The empty
+    // icon causes no layout shift because mds-icon's :host reserves the box
+    // (aspect-ratio + width). Spec tests also run with isServer=true but mock
+    // fetch, so they are excluded via isTesting.
+    if (Build.isServer && !Build.isTesting) {
+      return '';
+    }
     try {
       if (!this._svgPath && typeof window === 'undefined') {
         throw Error('Cant find svgPath, ensure you set it');

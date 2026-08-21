@@ -87,7 +87,9 @@ export class MdsPrefContrast {
       }
     }
 
-    throw Error('No prefers-contrast value found.');
+    // no media query matched: the hydrate/SSR runtime's matchMedia always
+    // reports matches:false, and some browsers expose no prefers-contrast
+    return this.defaultMode;
   };
 
   private readonly setContrast = (mode: ContrastModeType): void => {

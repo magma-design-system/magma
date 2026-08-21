@@ -81,7 +81,13 @@ export class MdsNotification {
       return;
     }
     const c = document.querySelector(this.target) as HTMLElement;
-    if (c == null) throw new Error('No valid target found');
+    if (c == null) {
+      // the target may legitimately be absent (e.g. during SSR the document
+      // only contains the component subtree being serialized)
+      console.warn(`mds-notification: no valid target found: ${this.target}`);
+      this.strategy = 'disabled';
+      return;
+    }
     this.caller = c;
   }
 
