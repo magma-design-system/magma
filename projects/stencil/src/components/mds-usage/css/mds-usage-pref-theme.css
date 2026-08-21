@@ -2,43 +2,26 @@
  * from <html> onto its host as pref-theme + pref-theme-scheme (see
  * subscribePreference in @common/preference); these plain shadow selectors refine
  * for dark. `dark` is the explicit choice; `system` and no controller follow the
- * OS via @media; the scheme axis gates it. Cross-browser, no :host-context. */
+ * OS via @media; the scheme axis gates it. Cross-browser, no :host-context.
+ *
+ * The header background is NOT refined here. It was, in eight declarations that
+ * never took effect: the header painted with --mds-usage-border-color until the
+ * token was wired up. They are a snapshot of the raw ramp from before #638 put
+ * the status fills on the emphasis band, so reviving them would REGRESS that
+ * migration, in dark only: info/do/dont would fall from the emphasis fill back
+ * to the raw 05 step (on-emphasis 74.9 -> 67.1/67.4 APCA Lc), `warn` would land
+ * its ink at 25.0 Lc (#ffe595 on #edb100), and a host with no variant attribute
+ * would take a header one ramp step off its own border. Measured with the APCA
+ * helpers in projects/design-tokens/src/lib/contrast-gate.ts; do not restore
+ * without measuring again. */
 
 :host([pref-theme='dark']:not([pref-theme-scheme='light'])) {
-  --mds-usage-header-background: rgb(var(--status-info-05));
-
   box-shadow: var(--shadow-outline);
-
-  &:host([variant='do']) {
-    --mds-usage-header-background: rgb(var(--status-success-05));
-  }
-
-  &:host([variant='dont']) {
-    --mds-usage-header-background: rgb(var(--status-error-05));
-  }
-
-  &:host([variant='warn']) {
-    --mds-usage-header-background: rgb(var(--status-warning-05));
-  }
 }
 
 @media (prefers-color-scheme: dark) {
   :host([pref-theme='system']:not([pref-theme-scheme='light'])),
   :host(:not([pref-theme])) {
-    --mds-usage-header-background: rgb(var(--status-info-05));
-
     box-shadow: var(--shadow-outline);
-
-    &:host([variant='do']) {
-      --mds-usage-header-background: rgb(var(--status-success-05));
-    }
-
-    &:host([variant='dont']) {
-      --mds-usage-header-background: rgb(var(--status-error-05));
-    }
-
-    &:host([variant='warn']) {
-      --mds-usage-header-background: rgb(var(--status-warning-05));
-    }
   }
 }
