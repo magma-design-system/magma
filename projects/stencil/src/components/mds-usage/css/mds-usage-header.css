@@ -10,7 +10,7 @@ mds-icon {
 
 .header {
   align-items: center;
-  background-color: var(--mds-usage-border-color);
+  background-color: var(--mds-usage-header-background);
   border-bottom-left-radius: --spacing(200);
   border-bottom-right-radius: --spacing(200);
   display: inline-flex;
