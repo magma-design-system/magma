@@ -1,11 +1,11 @@
 :host([variant='info']) {
-  --mds-button-background: rgb(var(--status-info-05));
-  --mds-button-border-color-rgb: var(--status-info-05);
-  --mds-button-color: rgb(var(--magma-text-on-emphasis));
+  --mds-button-background: rgb(var(--magma-info-emphasis));
+  --mds-button-border-color-rgb: var(--magma-info-emphasis);
+  --mds-button-color: rgb(var(--magma-info-on-emphasis));
 
   &:host([tone='strong']:hover) {
-    --mds-button-background: rgb(var(--magma-info-emphasis));
-    --mds-button-border-color-rgb: var(--status-info-04);
+    --mds-button-background: rgb(var(--magma-info-emphasis-hover));
+    --mds-button-border-color-rgb: var(--magma-info-emphasis-hover);
   }
 
   &:host([tone='weak']) {
@@ -13,7 +13,7 @@
     --mds-button-border-color-rgb: var(--status-info-09);
     --mds-button-color: rgb(var(--magma-info-text-subtle));
 
-    fill: rgb(var(--status-info-03));
+    fill: rgb(var(--magma-info-text-subtle));
   }
 
   &:host([tone='weak']:hover) {
@@ -47,13 +47,13 @@
 }
 
 :host([variant='success']) {
-  --mds-button-background: rgb(var(--status-success-05));
-  --mds-button-border-color-rgb: var(--status-success-05);
-  --mds-button-color: rgb(var(--magma-text-on-emphasis));
+  --mds-button-background: rgb(var(--magma-success-emphasis));
+  --mds-button-border-color-rgb: var(--magma-success-emphasis);
+  --mds-button-color: rgb(var(--magma-success-on-emphasis));
 
   &:host([tone='strong']:hover) {
-    --mds-button-background: rgb(var(--magma-success-emphasis));
-    --mds-button-border-color-rgb: var(--status-success-04);
+    --mds-button-background: rgb(var(--magma-success-emphasis-hover));
+    --mds-button-border-color-rgb: var(--magma-success-emphasis-hover);
   }
 
   &:host([tone='weak']) {
@@ -61,7 +61,7 @@
     --mds-button-border-color-rgb: var(--status-success-09);
     --mds-button-color: rgb(var(--magma-success-text-subtle));
 
-    fill: rgb(var(--status-success-03));
+    fill: rgb(var(--magma-success-text-subtle));
   }
 
   &:host([tone='weak']:hover) {
@@ -95,13 +95,13 @@
 }
 
 :host([variant='warning']) {
-  --mds-button-background: rgb(var(--status-warning-05));
-  --mds-button-border-color-rgb: var(--status-warning-05);
-  --mds-button-color: rgb(var(--magma-text-on-emphasis));
+  --mds-button-background: rgb(var(--magma-warning-emphasis));
+  --mds-button-border-color-rgb: var(--magma-warning-emphasis);
+  --mds-button-color: rgb(var(--magma-warning-on-emphasis));
 
   &:host([tone='strong']:hover) {
-    --mds-button-background: rgb(var(--magma-warning-emphasis));
-    --mds-button-border-color-rgb: var(--status-warning-04);
+    --mds-button-background: rgb(var(--magma-warning-emphasis-hover));
+    --mds-button-border-color-rgb: var(--magma-warning-emphasis-hover);
   }
 
   &:host([tone='weak']) {
@@ -109,7 +109,7 @@
     --mds-button-border-color-rgb: var(--status-warning-09);
     --mds-button-color: rgb(var(--magma-warning-text-subtle));
 
-    fill: rgb(var(--status-warning-03));
+    fill: rgb(var(--magma-warning-text-subtle));
   }
 
   &:host([tone='weak']:hover) {
@@ -143,13 +143,13 @@
 }
 
 :host([variant='error']) {
-  --mds-button-background: rgb(var(--status-error-05));
-  --mds-button-border-color-rgb: var(--status-error-05);
-  --mds-button-color: rgb(var(--magma-text-on-emphasis));
+  --mds-button-background: rgb(var(--magma-danger-emphasis));
+  --mds-button-border-color-rgb: var(--magma-danger-emphasis);
+  --mds-button-color: rgb(var(--magma-danger-on-emphasis));
 
   &:host([tone='strong']:hover) {
-    --mds-button-background: rgb(var(--magma-danger-emphasis));
-    --mds-button-border-color-rgb: var(--status-error-04);
+    --mds-button-background: rgb(var(--magma-danger-emphasis-hover));
+    --mds-button-border-color-rgb: var(--magma-danger-emphasis-hover);
   }
 
   &:host([tone='weak']) {
@@ -157,7 +157,7 @@
     --mds-button-border-color-rgb: var(--status-error-09);
     --mds-button-color: rgb(var(--magma-danger-text-subtle));
 
-    fill: rgb(var(--status-error-03));
+    fill: rgb(var(--magma-danger-text-subtle));
   }
 
   &:host([tone='weak']:hover) {

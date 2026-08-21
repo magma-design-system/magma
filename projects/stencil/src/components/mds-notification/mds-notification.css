@@ -25,7 +25,7 @@
 
 :host {
   --mds-notification-color: rgb(var(--magma-text-on-emphasis));
-  --mds-notification-dot-background: rgb(var(--status-error-05));
+  --mds-notification-dot-background: rgb(var(--magma-danger-emphasis));
   --mds-notification-dot-padding: 6px;
   --mds-notification-min-width: var(--mds-notification-size);
   --mds-notification-ring-color: rgb(var(--magma-text-on-emphasis));

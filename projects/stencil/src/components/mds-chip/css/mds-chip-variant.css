@@ -64,8 +64,8 @@
 /* state */
 
 :host([variant='success'][tone='strong']) {
-  --mds-chip-icon-background: rgb(var(--status-success-05));
-  --mds-chip-icon-color: rgb(var(--magma-text-on-emphasis));
+  --mds-chip-icon-background: rgb(var(--magma-success-emphasis));
+  --mds-chip-icon-color: rgb(var(--magma-success-on-emphasis));
 }
 
 :host([variant='success'][tone='weak']) {
@@ -82,8 +82,8 @@
 }
 
 :host([variant='warning'][tone='strong']) {
-  --mds-chip-icon-background: rgb(var(--status-warning-05));
-  --mds-chip-icon-color: rgb(var(--magma-text-on-emphasis));
+  --mds-chip-icon-background: rgb(var(--magma-warning-emphasis));
+  --mds-chip-icon-color: rgb(var(--magma-warning-on-emphasis));
 }
 
 :host([variant='warning'][tone='weak']) {
@@ -100,8 +100,8 @@
 }
 
 :host([variant='error'][tone='strong']) {
-  --mds-chip-icon-background: rgb(var(--status-error-05));
-  --mds-chip-icon-color: rgb(var(--magma-text-on-emphasis));
+  --mds-chip-icon-background: rgb(var(--magma-danger-emphasis));
+  --mds-chip-icon-color: rgb(var(--magma-danger-on-emphasis));
 }
 
 :host([variant='error'][tone='weak']) {
@@ -118,8 +118,8 @@
 }
 
 :host([variant='info'][tone='strong']) {
-  --mds-chip-icon-background: rgb(var(--status-info-05));
-  --mds-chip-icon-color: rgb(var(--magma-text-on-emphasis));
+  --mds-chip-icon-background: rgb(var(--magma-info-emphasis));
+  --mds-chip-icon-color: rgb(var(--magma-info-on-emphasis));
 }
 
 :host([variant='info'][tone='weak']) {

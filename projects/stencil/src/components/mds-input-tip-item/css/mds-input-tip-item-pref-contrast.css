@@ -5,23 +5,23 @@
 
 :host([pref-contrast='more']) {
   &:host([variant='count-empty']) {
-    --mds-input-tip-item-color: rgb(var(--status-info-10));
-    --mds-input-tip-item-background: rgb(var(--status-info-05));
+    --mds-input-tip-item-color: rgb(var(--magma-info-on-emphasis));
+    --mds-input-tip-item-background: rgb(var(--magma-info-emphasis));
   }
 
   &:host([variant='count-incomplete']) {
-    --mds-input-tip-item-color: rgb(var(--status-success-10));
-    --mds-input-tip-item-background: rgb(var(--status-success-05));
+    --mds-input-tip-item-color: rgb(var(--magma-success-on-emphasis));
+    --mds-input-tip-item-background: rgb(var(--magma-success-emphasis));
   }
 
   &:host([variant='count-almost']) {
-    --mds-input-tip-item-color: rgb(var(--status-warning-10));
-    --mds-input-tip-item-background: rgb(var(--status-warning-05));
+    --mds-input-tip-item-color: rgb(var(--magma-warning-on-emphasis));
+    --mds-input-tip-item-background: rgb(var(--magma-warning-emphasis));
   }
 
   &:host([variant='count-almost-full']) {
-    --mds-input-tip-item-color: rgb(var(--status-error-10));
-    --mds-input-tip-item-background: rgb(var(--status-error-05));
+    --mds-input-tip-item-color: rgb(var(--magma-danger-on-emphasis));
+    --mds-input-tip-item-background: rgb(var(--magma-danger-emphasis));
   }
 }
 
@@ -29,23 +29,23 @@
   :host([pref-contrast='system']),
   :host(:not([pref-contrast])) {
     &:host([variant='count-empty']) {
-      --mds-input-tip-item-color: rgb(var(--status-info-10));
-      --mds-input-tip-item-background: rgb(var(--status-info-05));
+      --mds-input-tip-item-color: rgb(var(--magma-info-on-emphasis));
+      --mds-input-tip-item-background: rgb(var(--magma-info-emphasis));
     }
 
     &:host([variant='count-incomplete']) {
-      --mds-input-tip-item-color: rgb(var(--status-success-10));
-      --mds-input-tip-item-background: rgb(var(--status-success-05));
+      --mds-input-tip-item-color: rgb(var(--magma-success-on-emphasis));
+      --mds-input-tip-item-background: rgb(var(--magma-success-emphasis));
     }
 
     &:host([variant='count-almost']) {
-      --mds-input-tip-item-color: rgb(var(--status-warning-10));
-      --mds-input-tip-item-background: rgb(var(--status-warning-05));
+      --mds-input-tip-item-color: rgb(var(--magma-warning-on-emphasis));
+      --mds-input-tip-item-background: rgb(var(--magma-warning-emphasis));
     }
 
     &:host([variant='count-almost-full']) {
-      --mds-input-tip-item-color: rgb(var(--status-error-10));
-      --mds-input-tip-item-background: rgb(var(--status-error-05));
+      --mds-input-tip-item-color: rgb(var(--magma-danger-on-emphasis));
+      --mds-input-tip-item-background: rgb(var(--magma-danger-emphasis));
     }
   }
 }
