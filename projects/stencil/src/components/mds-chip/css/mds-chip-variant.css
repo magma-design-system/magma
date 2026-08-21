@@ -74,11 +74,11 @@
 }
 
 :host([variant='success'][tone='strong'][selected]) {
-  --mds-chip-border: rgb(var(--status-success-04));
+  --mds-chip-border: rgb(var(--magma-success-emphasis));
 }
 
 :host([variant='success'][tone='weak'][selected]) {
-  --mds-chip-border: rgb(var(--status-success-06));
+  --mds-chip-border: rgb(var(--magma-success-border-strong));
 }
 
 :host([variant='warning'][tone='strong']) {
@@ -92,11 +92,11 @@
 }
 
 :host([variant='warning'][tone='strong'][selected]) {
-  --mds-chip-border: rgb(var(--status-warning-04));
+  --mds-chip-border: rgb(var(--magma-warning-emphasis));
 }
 
 :host([variant='warning'][tone='weak'][selected]) {
-  --mds-chip-border: rgb(var(--status-warning-06));
+  --mds-chip-border: rgb(var(--magma-warning-border-strong));
 }
 
 :host([variant='error'][tone='strong']) {
@@ -110,11 +110,11 @@
 }
 
 :host([variant='error'][tone='strong'][selected]) {
-  --mds-chip-border: rgb(var(--status-error-04));
+  --mds-chip-border: rgb(var(--magma-danger-emphasis));
 }
 
 :host([variant='error'][tone='weak'][selected]) {
-  --mds-chip-border: rgb(var(--status-error-06));
+  --mds-chip-border: rgb(var(--magma-danger-border-strong));
 }
 
 :host([variant='info'][tone='strong']) {
@@ -128,11 +128,11 @@
 }
 
 :host([variant='info'][tone='strong'][selected]) {
-  --mds-chip-border: rgb(var(--status-info-04));
+  --mds-chip-border: rgb(var(--magma-info-emphasis));
 }
 
 :host([variant='info'][tone='weak'][selected]) {
-  --mds-chip-border: rgb(var(--status-info-06));
+  --mds-chip-border: rgb(var(--magma-info-border-strong));
 }
 
 /* label */
