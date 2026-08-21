@@ -7,6 +7,7 @@ import {
   accentInfix,
   accentTintOverride,
   contrastTintOverride,
+  emphasisStateSteps,
   hueContrastOverride,
   scaleFamily,
   scaleStepList,
@@ -174,8 +175,14 @@ Object.entries(hues).forEach(([hue, { family, roles, partial }]) => {
     layer.push(alias(`${hue}-border-${r}`, `border-${roles}-${r}`, `${hue}-border-${r}`)),
   );
   // the solid saturated fill has no counterpart in the generated scales (those
-  // model tinted surfaces, not fills), so it keeps naming a ramp step
+  // model tinted surfaces, not fills), so it keeps naming a ramp step - and so do
+  // its interaction states, shared with the accents through emphasisStateSteps()
+  // (spec 6.6). Stated directly on the family, not through a tint pointer: a
+  // named theme retints the accents, never a hue.
   layer.push(alias(`${hue}-emphasis`, `${family}-${hueSteps.emphasis}`, `${hue}-emphasis`));
+  Object.entries(emphasisStateSteps()).forEach(([state, step]) =>
+    layer.push(alias(`${hue}-${state}`, `${family}-${step}`, `${hue}-${state}`)),
+  );
   layer.push(alias(`${hue}-on-emphasis`, seed, `${hue}-on-emphasis`));
   // shortcuts onto the roles above (NOT onto the primitives): stated this way
   // they follow the contrast promotion instead of freezing the base step

@@ -457,6 +457,45 @@ const HueSpecimen = ({ hue }: { key?: string; hue: string }) => {
   );
 };
 
+/**
+ * The emphasis band of one hue: the solid fill at rest and its two interaction
+ * states, each carrying `on-emphasis` text. The states NAME ramp steps (03 / 02)
+ * because a fill has no elevation ladder and the ramp inverts between modes - flip
+ * MODE and the ladder still moves the same way, toward more contrast.
+ *
+ * Watch the rest swatch: components used to fill it with step 05 by hand, where
+ * `on-emphasis` measured 71.5 Lc light / 67.1 dark, under the 75 floor. On the role
+ * it reads 79.5 / 74.9 - the same values the accents carry.
+ */
+const EmphasisBandSpecimen = ({ hue }: { key?: string; hue: string }) => {
+  const role = (name: string): string => magmaVar(`${hue}-${name}`);
+  return (
+    <div class="grid gap-100">
+      <mds-text typography="detail" style={{ color: textVar('muted') }}>
+        {hue}
+      </mds-text>
+      <div class="flex gap-100">
+        {[
+          { state: 'emphasis', label: 'rest (04)' },
+          { state: 'emphasis-hover', label: 'hover (03)' },
+          { state: 'emphasis-active', label: 'active (02)' },
+        ].map(({ state, label }) => (
+          <div
+            key={state}
+            class="rounded-md p-200 flex-1 flex items-center gap-100"
+            style={{ background: role(state), color: role('on-emphasis') }}
+          >
+            <mds-icon name="mdi/crown" style={{ color: role('on-emphasis') }} />
+            <mds-text typography="detail" style={{ color: role('on-emphasis') }}>
+              {label}
+            </mds-text>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
 // -- page ------------------------------------------------------------------
 
 const ContrastPage = () => {
@@ -556,6 +595,30 @@ const ContrastPage = () => {
             <Code>--magma-surface-default</Code>, which is the elevation band (L 96%), while the
             generated <Code>--surface-success-*</Code> scale is that band tinted. Three different
             things - the ambiguous name is left unused so nothing can reach for it by mistake.
+          </mds-text>
+        </Callout>
+      </Section>
+
+      <Section
+        title="The emphasis band on a hue"
+        hint="A solid status fill and its states, from the same definition the accents use - so a status button and an accent button behave identically."
+      >
+        <div class="grid gap-300 grid-cols-1 tablet:grid-cols-2">
+          {['info', 'success', 'warning', 'danger'].map((hue) => (
+            <EmphasisBandSpecimen key={hue} hue={hue} />
+          ))}
+        </div>
+        <Callout>
+          <mds-text typography="detail" style={{ color: textVar('muted') }}>
+            The states are NOT derived with <Code>color-mix</Code>: the ramp inverts between
+            light and dark, so &quot;one step stronger&quot; cannot be one expression in both
+            modes. They name steps <Code>03</Code> and <Code>02</Code>, which the engine already
+            mode-flips - flip <strong>Mode</strong> and the three swatches keep the same order.
+          </mds-text>
+          <mds-text typography="detail" style={{ color: textVar('muted') }}>
+            This band is what the component sheets built by hand, with the fill on step{' '}
+            <Code>05</Code> and hover on <Code>04</Code> - which IS <Code>-emphasis</Code>, so
+            adopting the role without states would have collapsed hover onto rest.
           </mds-text>
         </Callout>
       </Section>
