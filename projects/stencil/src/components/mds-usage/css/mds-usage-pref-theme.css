@@ -6,12 +6,14 @@
  *
  * The header background is NOT refined here. It was, in eight declarations that
  * never took effect: the header painted with --mds-usage-border-color until the
- * token was wired up. Six only restated the border colour of their own variant
- * (do, dont, and the unqualified rule as it lands on variant='info'); the other
- * two were drift, not intent - `warn` would have put the ink at 25.0 APCA Lc
- * (#ffe595 on #edb100), and on a host with no variant attribute the unqualified
- * rule would have set a header one ramp step off its own border. Measured with
- * the design-tokens APCA gate helpers; do not restore without measuring again. */
+ * token was wired up. They are a snapshot of the raw ramp from before #638 put
+ * the status fills on the emphasis band, so reviving them would REGRESS that
+ * migration, in dark only: info/do/dont would fall from the emphasis fill back
+ * to the raw 05 step (on-emphasis 74.9 -> 67.1/67.4 APCA Lc), `warn` would land
+ * its ink at 25.0 Lc (#ffe595 on #edb100), and a host with no variant attribute
+ * would take a header one ramp step off its own border. Measured with the APCA
+ * helpers in projects/design-tokens/src/lib/contrast-gate.ts; do not restore
+ * without measuring again. */
 
 :host([pref-theme='dark']:not([pref-theme-scheme='light'])) {
   box-shadow: var(--shadow-outline);
