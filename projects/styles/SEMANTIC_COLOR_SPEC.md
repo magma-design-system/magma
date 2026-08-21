@@ -306,13 +306,43 @@ Which text roles a wash level may carry is bounded in section 9.1, not by taste.
 | `<hue>-text-* / -border-*` | `--text-<family>-*` / `--border-<family>-*` (generated role scales of the hue's own family, A7) |
 | `<hue>-wash-{soft,base,strong}` | steps `10 / 09 / 08` of the colored family, named (see 6.4) |
 | `<hue>-emphasis` | `status/label/variant-*` (APCA), solid fill |
+| `<hue>-emphasis-{hover,active}` | steps `03 / 02` of the same family, named (see 6.6) |
 | `<hue>-fg / -border / -surface` | shortcuts onto the roles above at their default prominence |
 | `*-on-emphasis` | `--tone-*-seed` / near-extreme, verified on the fill |
 
 ### 6.6 Interaction states
 
-Do NOT author hover/active/selected as new tokens. Derive them (one elevation step, or
-`color-mix` on the base token). Focus uses `--magma-border-focus`.
+Do NOT author hover/active/selected as new tokens where they can be DERIVED: on the neutral
+scaffolding a state is one elevation step, or a `color-mix` on the base token. Focus uses
+`--magma-border-focus`.
+
+**A solid fill is the exception, and it is a measured one.** A saturated fill has no
+elevation ladder to step through, and the ramp INVERTS between light and dark (step `03` is
+darker than `04` in light, lighter in dark), so one `color-mix` cannot mean "one step
+stronger" in both modes. Each state therefore NAMES a ramp step, which the engine already
+generates and mode-flips:
+
+| Token | Step | Band |
+|---|---|---|
+| `--magma-<hue>-emphasis` | `04` | the solid fill at rest |
+| `--magma-<hue>-emphasis-hover` | `03` | one step stronger |
+| `--magma-<hue>-emphasis-active` | `02` | two steps stronger |
+| `--magma-accent-<role>-surface-hover` | `08` | accent surface band, one step stronger |
+| `--magma-accent-<role>-surface-subtle` | `10` | accent surface band, one step lighter |
+
+The emphasis band belongs to every hue that HAS a solid fill - the accents and the colored
+hues alike - and comes from ONE definition (`emphasisStateSteps()` in `semantic.config.ts`),
+so a status button and an accent button cannot drift apart. Accent states resolve through
+`--magma-tint-accent-*`, so a named theme repoints them together with the quintet; hue
+states are stated directly on the family, because a theme does not retint a hue. The SURFACE
+band stays accent-only: a colored hue expresses it as wash levels (6.4), named by intensity
+rather than by state.
+
+Why the colored hues needed it: the component sheets had already built the band by hand,
+fill on step `05` and hover on `04` - and `04` IS `-emphasis`, so adopting the role without
+states would have collapsed hover onto rest. The step also buys contrast, which is the point:
+`-on-emphasis` measures 71.5 Lc light / 67.1 dark on step `05`, under the 75 floor of section
+9.1, against 79.5 / 74.9 on `-emphasis` - the values the accents already carried.
 
 ## 7. Layer 3 - component tokens
 
@@ -413,8 +443,16 @@ non-essential, because APCA floors differ:
 Verified pairs: every `text-*` on every `surface-*`; every `<hue>-text-*` on every
 `<hue>-wash-*` (see the table below); every `<hue>-fg` on `surface-default`/`-raised`
 (colored ink on a NEUTRAL background - a different question from the one above); every
-`<hue>-on-emphasis` on `<hue>-emphasis`. Failure prints a table of offending pairs (Lc vs
-target) - GitHub's per-PR check applied to the semantic pairs.
+`<hue>-on-emphasis` on `<hue>-emphasis` AND on each of its interaction states (6.6), read off
+the published tokens so a state added to the config is gated without editing the gate.
+Failure prints a table of offending pairs (Lc vs target) - GitHub's per-PR check applied to
+the semantic pairs.
+
+The state fills are stronger than the base one in the safe direction, so they clear the floor
+by construction (84-89 Lc on `-hover`, 91-96 on `-active`); they are gated for regression
+protection, e.g. a themed accent family or a retuned ramp. The base pair is the tight one:
+`74.7-74.9` in dark on all four hues and both accents, six baselined offenders that move
+together the day the emphasis band is retuned.
 
 **Text on a hue's own wash (6.4).** How much of the text ladder a wash level can carry is a
 measured bound, and the gate enforces exactly this much - the rest is measured and reported,

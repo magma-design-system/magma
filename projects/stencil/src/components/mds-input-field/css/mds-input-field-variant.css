@@ -29,7 +29,7 @@
 
 :host([variant='info']) ::slotted(mds-input) {
   --mds-input-icon-color: rgb(var(--magma-info-emphasis));
-  --mds-input-tip-background: rgb(var(--status-info-05));
+  --mds-input-tip-background: rgb(var(--magma-info-emphasis));
   --mds-input-variant-color-rgb: 0 0 0;
 }
 
@@ -40,7 +40,7 @@
 
 :host([variant='warning']) ::slotted(mds-input) {
   --mds-input-icon-color: rgb(var(--magma-warning-emphasis));
-  --mds-input-tip-background: rgb(var(--status-warning-05));
+  --mds-input-tip-background: rgb(var(--magma-warning-emphasis));
   --mds-input-variant-color-rgb: 0 0 0;
 }
 
@@ -51,7 +51,7 @@
 
 :host([variant='success']) ::slotted(mds-input) {
   --mds-input-icon-color: rgb(var(--magma-success-emphasis));
-  --mds-input-tip-background: rgb(var(--status-success-05));
+  --mds-input-tip-background: rgb(var(--magma-success-emphasis));
   --mds-input-variant-color-rgb: 0 0 0;
 }
 
@@ -62,7 +62,7 @@
 
 :host([variant='error']) ::slotted(mds-input) {
   --mds-input-icon-color: rgb(var(--magma-danger-emphasis));
-  --mds-input-tip-background: rgb(var(--status-error-05));
+  --mds-input-tip-background: rgb(var(--magma-danger-emphasis));
   --mds-input-variant-color-rgb: 0 0 0;
 }
 

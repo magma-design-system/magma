@@ -1,13 +1,13 @@
 :host([variant='required']) {
-  --mds-input-tip-item-background: rgb(var(--status-error-05));
+  --mds-input-tip-item-background: rgb(var(--magma-danger-emphasis));
 }
 
 :host([variant='required-success']) {
-  --mds-input-tip-item-background: rgb(var(--status-success-05));
+  --mds-input-tip-item-background: rgb(var(--magma-success-emphasis));
 }
 
 :host([variant='readonly']) {
-  --mds-input-tip-item-background: rgb(var(--status-info-05));
+  --mds-input-tip-item-background: rgb(var(--magma-info-emphasis));
 }
 
 :host([variant='disabled']) {
@@ -39,6 +39,6 @@
 }
 
 :host([variant='count-full']) {
-  --mds-input-tip-item-color: rgb(var(--status-error-09));
-  --mds-input-tip-item-background: rgb(var(--status-error-05));
+  --mds-input-tip-item-color: rgb(var(--magma-danger-on-emphasis));
+  --mds-input-tip-item-background: rgb(var(--magma-danger-emphasis));
 }

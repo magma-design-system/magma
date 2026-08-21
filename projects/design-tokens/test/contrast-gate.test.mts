@@ -4,7 +4,7 @@ import { expect, test } from 'vitest';
 
 import { getColorsConfig } from '../src/lib/utils.mjs';
 import { createColorTokens, type MagmaConfig } from '../src/lib/color.mjs';
-import { contrastTintOverride, semantic } from '../semantic.config.js';
+import { contrastTintOverride, emphasisStateSteps, semantic } from '../semantic.config.js';
 import {
   aliasesFromConfig,
   applyBaseline,
@@ -78,8 +78,14 @@ test('aliasesFromConfig maps every --magma-* role to its primitive (A9 contract)
   // the legacy quintet aliases are shortcuts onto those roles, not steps of their own
   expect(map['--magma-danger-fg']).toBe('--text-error-default');
   expect(map['--magma-danger-surface']).toBe('--status-error-09'); // unchanged value
-  // the solid fill keeps naming a ramp step (the role scales model tints, not fills)
+  // the solid fill keeps naming a ramp step (the role scales model tints, not fills),
+  // and so do its interaction states - the same band as an accent, so the same steps
   expect(map['--magma-danger-emphasis']).toBe('--status-error-04');
+  expect(map['--magma-danger-emphasis-hover']).toBe('--status-error-03');
+  expect(map['--magma-danger-emphasis-active']).toBe('--status-error-02');
+  // the SURFACE-band states stay accent-only: a hue says that with wash levels
+  expect(map['--magma-danger-surface-hover']).toBeUndefined();
+  expect(map['--magma-danger-surface-subtle']).toBeUndefined();
   // the wash levels are deliberately NOT called `surface-*`: that name would read as
   // the colored parent of `--magma-surface-default` (the elevation band) and would
   // also collide with the generated `--surface-<family>-*` scale, which is the band
@@ -94,6 +100,32 @@ test('aliasesFromConfig maps every --magma-* role to its primitive (A9 contract)
   // the old per-role infix names are gone (secondary role dropped, primary promoted)
   expect(map['--magma-accent-primary-emphasis']).toBeUndefined();
   expect(map['--magma-accent-secondary-fg']).toBeUndefined();
+});
+
+test('the emphasis band carries the same states on a hue as on an accent', async () => {
+  const states = emphasisStateSteps();
+  // only the emphasis band: the surface-band states are an accent affair
+  expect(Object.keys(states).sort()).toEqual(['emphasis-active', 'emphasis-hover']);
+  const map = aliasesFromConfig(semantic);
+  for (const [state, step] of Object.entries(states)) {
+    for (const hue of ['info', 'success', 'warning', 'danger']) {
+      const family = semantic.hues[hue].family;
+      expect(map[`--magma-${hue}-${state}`]).toBe(`--${family}-${step}`);
+      // a state that resolved to the base fill would silently kill the interaction
+      expect(map[`--magma-${hue}-${state}`]).not.toBe(map[`--magma-${hue}-emphasis`]);
+    }
+  }
+
+  // and the gate measures the text on those fills, enforced like the base pair
+  const results = evaluatePairs(await loadTree(), map);
+  const hueStatePairs = results.filter(
+    (r) => r.category === 'on-emphasis' && /^(info|success|warning|danger)-/.test(r.bgToken) && r.bgToken.includes('-emphasis-'),
+  );
+  // 4 hues x 2 states x 2 modes
+  expect(hueStatePairs).toHaveLength(16);
+  expect(hueStatePairs.every((r) => r.severity === 'error')).toBe(true);
+  // stronger fills in the safe direction, so they clear the floor by construction
+  expect(hueStatePairs.every((r) => r.pass)).toBe(true);
 });
 
 // --- integration: the shipped palette + config mapping + committed baseline ---

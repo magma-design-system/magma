@@ -1,19 +1,19 @@
 :host([variant='do']) {
-  --mds-usage-border-color: rgb(var(--status-success-05));
-  --mds-usage-header-color: rgb(var(--status-success-10));
+  --mds-usage-border-color: rgb(var(--magma-success-emphasis));
+  --mds-usage-header-color: rgb(var(--magma-success-on-emphasis));
 }
 
 :host([variant='info']) {
-  --mds-usage-border-color: rgb(var(--status-info-05));
-  --mds-usage-header-color: rgb(var(--status-info-10));
+  --mds-usage-border-color: rgb(var(--magma-info-emphasis));
+  --mds-usage-header-color: rgb(var(--magma-info-on-emphasis));
 }
 
 :host([variant='dont']) {
-  --mds-usage-border-color: rgb(var(--status-error-05));
-  --mds-usage-header-color: rgb(var(--status-error-10));
+  --mds-usage-border-color: rgb(var(--magma-danger-emphasis));
+  --mds-usage-header-color: rgb(var(--magma-danger-on-emphasis));
 }
 
 :host([variant='warn']) {
-  --mds-usage-border-color: rgb(var(--status-warning-08));
+  --mds-usage-border-color: rgb(var(--magma-warning-wash-strong));
   --mds-usage-header-color: rgb(var(--magma-warning-text-muted));
 }
