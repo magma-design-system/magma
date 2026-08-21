@@ -51,8 +51,8 @@
 
 :host {
   --mds-keyboard-background-default: var(--mds-keyboard-background);
-  --mds-keyboard-background-fail: rgb(var(--status-error-09));
-  --mds-keyboard-background-pass: rgb(var(--status-success-09));
+  --mds-keyboard-background-fail: rgb(var(--magma-danger-wash-base));
+  --mds-keyboard-background-pass: rgb(var(--magma-success-wash-base));
   --mds-keyboard-background: rgb(var(--tone-porcelain-08));
   --mds-keyboard-color: rgb(var(--magma-scale-04));
   --mds-keyboard-fill-fail: rgb(var(--status-error-06));

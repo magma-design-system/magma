@@ -15,5 +15,5 @@
 
 :host([variant='warn']) {
   --mds-usage-border-color: rgb(var(--status-warning-08));
-  --mds-usage-header-color: rgb(var(--status-warning-02));
+  --mds-usage-header-color: rgb(var(--magma-warning-text-muted));
 }

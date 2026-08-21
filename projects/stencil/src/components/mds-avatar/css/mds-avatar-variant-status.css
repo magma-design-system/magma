@@ -3,8 +3,8 @@
   --mds-avatar-color: rgb(var(--status-error-10));
 
   &:host([tone='weak']) {
-    --mds-avatar-background-color: rgb(var(--status-error-09));
-    --mds-avatar-color: rgb(var(--status-error-05));
+    --mds-avatar-background-color: rgb(var(--magma-danger-wash-base));
+    --mds-avatar-color: rgb(var(--magma-danger-text-default));
   }
 }
 
@@ -13,8 +13,8 @@
   --mds-avatar-color: rgb(var(--status-warning-10));
 
   &:host([tone='weak']) {
-    --mds-avatar-background-color: rgb(var(--status-warning-09));
-    --mds-avatar-color: rgb(var(--status-warning-05));
+    --mds-avatar-background-color: rgb(var(--magma-warning-wash-base));
+    --mds-avatar-color: rgb(var(--magma-warning-text-default));
   }
 }
 
@@ -23,8 +23,8 @@
   --mds-avatar-color: rgb(var(--status-info-10));
 
   &:host([tone='weak']) {
-    --mds-avatar-background-color: rgb(var(--status-info-09));
-    --mds-avatar-color: rgb(var(--status-info-05));
+    --mds-avatar-background-color: rgb(var(--magma-info-wash-base));
+    --mds-avatar-color: rgb(var(--magma-info-text-default));
   }
 }
 
@@ -33,7 +33,7 @@
   --mds-avatar-color: rgb(var(--status-success-10));
 
   &:host([tone='weak']) {
-    --mds-avatar-background-color: rgb(var(--status-success-09));
-    --mds-avatar-color: rgb(var(--status-success-05));
+    --mds-avatar-background-color: rgb(var(--magma-success-wash-base));
+    --mds-avatar-color: rgb(var(--magma-success-text-default));
   }
 }

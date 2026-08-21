@@ -88,16 +88,16 @@
 
 .action--cancel-upload:focus-visible,
 .action--cancel-upload:hover {
-  --mds-button-background: rgb(var(--status-error-09));
+  --mds-button-background: rgb(var(--magma-danger-wash-base));
 
-  fill: rgb(var(--status-error-04));
+  fill: rgb(var(--magma-danger-emphasis));
 }
 
 .action--retry-upload:focus-visible,
 .action--retry-upload:hover {
-  --mds-button-background: rgb(var(--status-success-09));
+  --mds-button-background: rgb(var(--magma-success-wash-base));
 
-  fill: rgb(var(--status-success-04));
+  fill: rgb(var(--magma-success-emphasis));
 }
 
 .main-action {

@@ -4,23 +4,23 @@
 }
 
 :host([variant='info']) {
-  --mds-input-field-message-color: rgb(var(--status-info-02));
-  --mds-input-field-message-background: rgb(var(--status-info-09));
+  --mds-input-field-message-color: rgb(var(--magma-info-text-muted));
+  --mds-input-field-message-background: rgb(var(--magma-info-wash-base));
 }
 
 :host([variant='success']) {
-  --mds-input-field-message-color: rgb(var(--status-success-02));
-  --mds-input-field-message-background: rgb(var(--status-success-09));
+  --mds-input-field-message-color: rgb(var(--magma-success-text-muted));
+  --mds-input-field-message-background: rgb(var(--magma-success-wash-base));
 }
 
 :host([variant='warning']) {
-  --mds-input-field-message-color: rgb(var(--status-warning-02));
-  --mds-input-field-message-background: rgb(var(--status-warning-09));
+  --mds-input-field-message-color: rgb(var(--magma-warning-text-muted));
+  --mds-input-field-message-background: rgb(var(--magma-warning-wash-base));
 }
 
 :host([variant='error']) {
-  --mds-input-field-message-color: rgb(var(--status-error-02));
-  --mds-input-field-message-background: rgb(var(--status-error-09));
+  --mds-input-field-message-color: rgb(var(--magma-danger-text-muted));
+  --mds-input-field-message-background: rgb(var(--magma-danger-wash-base));
 }
 
 /* Propagate the field variant to the slotted input from the parent via
@@ -28,45 +28,45 @@
  * :host-context); ::slotted (outer tree) wins over the input's own variant. */
 
 :host([variant='info']) ::slotted(mds-input) {
-  --mds-input-icon-color: rgb(var(--status-info-04));
+  --mds-input-icon-color: rgb(var(--magma-info-emphasis));
   --mds-input-tip-background: rgb(var(--status-info-05));
   --mds-input-variant-color-rgb: 0 0 0;
 }
 
 :host([variant='info']) ::slotted(mds-input:focus) {
-  --mds-input-icon-color: rgb(var(--status-info-05));
+  --mds-input-icon-color: rgb(var(--magma-info-emphasis));
   --mds-input-variant-color-rgb: var(--status-info-04);
 }
 
 :host([variant='warning']) ::slotted(mds-input) {
-  --mds-input-icon-color: rgb(var(--status-warning-04));
+  --mds-input-icon-color: rgb(var(--magma-warning-emphasis));
   --mds-input-tip-background: rgb(var(--status-warning-05));
   --mds-input-variant-color-rgb: 0 0 0;
 }
 
 :host([variant='warning']) ::slotted(mds-input:focus) {
-  --mds-input-icon-color: rgb(var(--status-warning-05));
+  --mds-input-icon-color: rgb(var(--magma-warning-emphasis));
   --mds-input-variant-color-rgb: var(--status-warning-04);
 }
 
 :host([variant='success']) ::slotted(mds-input) {
-  --mds-input-icon-color: rgb(var(--status-success-04));
+  --mds-input-icon-color: rgb(var(--magma-success-emphasis));
   --mds-input-tip-background: rgb(var(--status-success-05));
   --mds-input-variant-color-rgb: 0 0 0;
 }
 
 :host([variant='success']) ::slotted(mds-input:focus) {
-  --mds-input-icon-color: rgb(var(--status-success-05));
+  --mds-input-icon-color: rgb(var(--magma-success-emphasis));
   --mds-input-variant-color-rgb: var(--status-success-04);
 }
 
 :host([variant='error']) ::slotted(mds-input) {
-  --mds-input-icon-color: rgb(var(--status-error-04));
+  --mds-input-icon-color: rgb(var(--magma-danger-emphasis));
   --mds-input-tip-background: rgb(var(--status-error-05));
   --mds-input-variant-color-rgb: 0 0 0;
 }
 
 :host([variant='error']) ::slotted(mds-input:focus) {
-  --mds-input-icon-color: rgb(var(--status-error-05));
+  --mds-input-icon-color: rgb(var(--magma-danger-emphasis));
   --mds-input-variant-color-rgb: var(--status-error-04);
 }

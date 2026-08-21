@@ -20,45 +20,45 @@
 }
 
 :host([variant='info']) {
-  --mds-input-icon-color: rgb(var(--status-info-04));
+  --mds-input-icon-color: rgb(var(--magma-info-emphasis));
   --mds-input-tip-background: rgb(var(--status-info-05));
   --mds-input-variant-color-rgb: 0 0 0;
 }
 
 :host([variant='info']:focus) {
-  --mds-input-icon-color: rgb(var(--status-info-05));
+  --mds-input-icon-color: rgb(var(--magma-info-emphasis));
   --mds-input-variant-color-rgb: var(--status-info-04);
 }
 
 :host([variant='success']) {
-  --mds-input-icon-color: rgb(var(--status-success-04));
+  --mds-input-icon-color: rgb(var(--magma-success-emphasis));
   --mds-input-tip-background: rgb(var(--status-success-05));
   --mds-input-variant-color-rgb: 0 0 0;
 }
 
 :host([variant='success']:focus) {
-  --mds-input-icon-color: rgb(var(--status-success-05));
+  --mds-input-icon-color: rgb(var(--magma-success-emphasis));
   --mds-input-variant-color-rgb: var(--status-success-04);
 }
 
 :host([variant='warning']) {
-  --mds-input-icon-color: rgb(var(--status-warning-04));
+  --mds-input-icon-color: rgb(var(--magma-warning-emphasis));
   --mds-input-tip-background: rgb(var(--status-warning-05));
   --mds-input-variant-color-rgb: 0 0 0;
 }
 
 :host([variant='warning']:focus) {
-  --mds-input-icon-color: rgb(var(--status-warning-05));
+  --mds-input-icon-color: rgb(var(--magma-warning-emphasis));
   --mds-input-variant-color-rgb: var(--status-warning-04);
 }
 
 :host([variant='error']) {
-  --mds-input-icon-color: rgb(var(--status-error-04));
+  --mds-input-icon-color: rgb(var(--magma-danger-emphasis));
   --mds-input-tip-background: rgb(var(--status-error-05));
   --mds-input-variant-color-rgb: 0 0 0;
 }
 
 :host([variant='error']:focus) {
-  --mds-input-icon-color: rgb(var(--status-error-05));
+  --mds-input-icon-color: rgb(var(--magma-danger-emphasis));
   --mds-input-variant-color-rgb: var(--status-error-04);
 }
