@@ -63,15 +63,24 @@ const ELEVATED = ['default', 'raised'] as const;
 // The two fixed accents (spec 8) plus the colored/neutral hues. Accents are a
 // fixed set (semantic.config `accents`): the general `accent` (bare namespace, no
 // infix) and `accent-ai`; their on-emphasis + fg pairs are gated like any other
-// hue. `isAccentHue` recognises both (the general accent is exactly `accent`, the
-// others carry an `accent-` prefix - see `accentInfix` in semantic.config).
+// hue.
 const HUES = ['accent', 'accent-ai', 'info', 'success', 'warning', 'danger', 'neutral'] as const;
-const isAccentHue = (hue: string): boolean => hue === 'accent' || hue.startsWith('accent-');
 const BORDERS = ['muted', 'default', 'strong', 'focus'] as const;
-// Accent emphasis-band states (spec 6.6 accent exception): the hover/active solid
-// fills carry on-emphasis text like the base emphasis, so they are gated the same
-// way. Surface-band states (surface-hover/subtle) add no new text-on-fill pair.
-const ACCENT_EMPHASIS_STATES = ['emphasis-hover', 'emphasis-active'] as const;
+/**
+ * The emphasis-band states a hue publishes, READ OFF the alias map instead of
+ * listed here (spec 6.6): every `--magma-<hue>-emphasis-<state>` is a solid fill
+ * that carries on-emphasis text, so a state added to the config is gated without
+ * editing this file. The bare namespace never swallows an infixed one -
+ * `accent-ai-emphasis-hover` does not start with `accent-emphasis-`. Surface-band
+ * states (`surface-hover`/`-subtle`) add no new text-on-fill pair, and the
+ * partial neutral publishes none at all.
+ */
+const emphasisStatesOf = (aliases: Record<string, string>, hue: string): string[] => {
+  const prefix = `--magma-${hue}-emphasis-`;
+  return Object.keys(aliases)
+    .filter((token) => token.startsWith(prefix))
+    .map((token) => token.slice(`--magma-${hue}-`.length));
+};
 // The colored hues (every hue that is neither an accent nor the partial neutral):
 // the ones that publish a text ladder on their own wash levels.
 const TINTED_HUES = ['info', 'success', 'warning', 'danger'] as const;
@@ -133,7 +142,11 @@ export interface SemanticMapping {
   hueSteps: { surface: string; fg: string; border: string; emphasis: string };
   neutralHueSteps: { fg: string; border: string; emphasis: string };
   accents: Record<string, string>;
-  /** Accent interaction-state steps (spec 6.6 accent exception); optional. */
+  /**
+   * Solid-fill interaction-state steps (spec 6.6); optional. The `emphasis-*`
+   * entries apply to the accents AND to the colored hues, the `surface-*` ones to
+   * the accents only - see `emphasisStateSteps()` in semantic.config.
+   */
   accentStateSteps?: Record<string, string>;
   /** Wash levels of a colored hue, level -> ramp step (spec 6.4); optional. */
   hueWashSteps?: Record<string, string>;
@@ -179,6 +192,12 @@ export function aliasesFromConfig(m: SemanticMapping): Record<string, string> {
     m.textRoles.forEach((r) => set(`${hue}-text-${r}`, `text-${roles}-${r}`));
     m.borderRoles.forEach((r) => set(`${hue}-border-${r}`, `border-${roles}-${r}`));
     set(`${hue}-emphasis`, `${family}-${m.hueSteps.emphasis}`);
+    // the emphasis band's interaction states, shared with the accents (spec 6.6).
+    // Same predicate as `emphasisStateSteps()` in semantic.config: the surface-band
+    // states are accent-only, a hue says that with wash levels.
+    Object.entries(m.accentStateSteps ?? {})
+      .filter(([state]) => state.startsWith('emphasis-'))
+      .forEach(([state, step]) => set(`${hue}-${state}`, `${family}-${step}`));
     set(`${hue}-on-emphasis`, m.seed);
     const shortcut = m.hueRoles;
     if (shortcut) {
@@ -351,12 +370,12 @@ export function evaluatePairs(
         mode,
       );
     }
-    // 2b. accent hover/active fills carry on-emphasis text too (enforced). They are
-    //     more extreme than the base emphasis in the safe direction, so they pass by
-    //     construction; gated for regression protection (e.g. a themed accent family).
+    // 2b. hover/active fills carry on-emphasis text too (enforced), for accents and
+    //     colored hues alike. They are more extreme than the base emphasis in the
+    //     safe direction, so they pass by construction; gated for regression
+    //     protection (e.g. a themed accent family, or a retuned ramp).
     for (const hue of HUES) {
-      if (!isAccentHue(hue)) continue;
-      for (const state of ACCENT_EMPHASIS_STATES) {
+      for (const state of emphasisStatesOf(aliases, hue)) {
         push(
           'on-emphasis',
           'error',

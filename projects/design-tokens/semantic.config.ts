@@ -146,15 +146,28 @@ export interface SemanticConfig {
    */
   accents: Record<string, string>;
   /**
-   * Accent interaction-state steps (a scoped spec 6.6 exception, accents only).
-   * The accent quintet has no elevation ladder to derive hover/active from
-   * (unlike neutral surfaces), and the `--variant-*` ramp INVERTS between light
-   * and dark, so a runtime `color-mix` cannot reproduce the states per mode.
-   * Instead each state NAMES an existing ramp step: the design-tokens engine
-   * already generates and mode-flips it, so the states stay theme-aware and the
-   * component migration is a mechanical 1:1 rename. Emitted as
-   * `--magma-accent-<role>-<state>` (through `--magma-tint-accent-<role>-<state>`)
-   * for every accent, so a named theme repoints them exactly like the quintet.
+   * Interaction-state steps of a SOLID FILL (spec 6.6). Such a fill has no
+   * elevation ladder to derive hover/active from (unlike neutral surfaces), and
+   * the ramp INVERTS between light and dark, so a runtime `color-mix` cannot
+   * reproduce the states per mode. Instead each state NAMES an existing ramp
+   * step: the design-tokens engine already generates and mode-flips it, so the
+   * states stay theme-aware and the component migration is a mechanical 1:1
+   * rename.
+   *
+   * The `emphasis-*` entries belong to the emphasis band wherever it appears, so
+   * they are emitted for the accents (`--magma-accent-<role>-<state>`, through
+   * `--magma-tint-accent-<role>-<state>`, so a named theme repoints them like the
+   * quintet) AND for the colored hues (`--magma-<hue>-<state>`, stated directly -
+   * a theme does not retint a hue). Read them through `emphasisStateSteps()` so
+   * one definition serves both and a status fill cannot drift from an accent
+   * fill. Measured reason the hues need them: the component sheets had built the
+   * band by hand, fill on step 05 and hover on 04 - and 04 IS `-emphasis`, so
+   * adopting the role without states would collapse hover onto rest. On step 05
+   * `-on-emphasis` sits at 71.5 Lc light / 67.1 dark, under the 75 floor; on
+   * `-emphasis` it reaches 79.5 / 74.9, which is what the accents already carry.
+   *
+   * The `surface-*` entries stay ACCENT-ONLY: a colored hue expresses that band
+   * as wash levels (`hueWashSteps`), named by intensity rather than by state.
    */
   accentStateSteps: Record<string, string>;
   /**
@@ -214,10 +227,13 @@ export const semantic: SemanticConfig = {
     ai: 'variant-ai',
   },
   accentStateSteps: {
-    // emphasis band (solid fill): hover/active go one/two steps STRONGER.
+    // emphasis band (solid fill): hover/active go one/two steps STRONGER. Shared
+    // with the colored hues via emphasisStateSteps() - the same two steps, so a
+    // status button and an accent button behave identically.
     'emphasis-hover': '03',
     'emphasis-active': '02',
     // surface band (subtle fill): hover one step stronger, subtle one lighter.
+    // Accent-only: a hue says this with hueWashSteps.
     'surface-hover': '08',
     'surface-subtle': '10',
   },
@@ -281,6 +297,18 @@ export const scaleTintOverride = (family: string): string[] =>
  * (`playground/src/themes.tsx`) emit byte-identical CSS - a theme repoints an
  * accent exactly the way the base layer declares it.
  */
+/**
+ * The EMPHASIS-band states of `accentStateSteps`, i.e. the ones that describe a
+ * solid fill and therefore apply to the colored hues as well as to the accents.
+ * Derived rather than duplicated: the steps live in ONE place, so the two bands
+ * cannot drift. The `surface-*` states are left out on purpose - a hue expresses
+ * that band as wash levels (`hueWashSteps`).
+ */
+export const emphasisStateSteps = (): Record<string, string> =>
+  Object.fromEntries(
+    Object.entries(semantic.accentStateSteps).filter(([state]) => state.startsWith('emphasis-')),
+  );
+
 export const accentTintOverride = (role: string, family: string): string[] => {
   const { hueSteps, accentStateSteps } = semantic;
   const infix = accentInfix(role);
