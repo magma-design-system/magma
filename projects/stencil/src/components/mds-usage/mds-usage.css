@@ -7,7 +7,7 @@
  */
 
 :host {
-  --mds-usage-border-color: rgb(var(--status-info-06));
+  --mds-usage-border-color: rgb(var(--magma-info-border-strong));
   --mds-usage-header-background: var(--mds-usage-border-color);
   --mds-usage-header-color: rgb(var(--magma-text-on-emphasis));
   --mds-usage-transition-duration: var(--duration-200);
