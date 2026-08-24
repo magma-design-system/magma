@@ -134,6 +134,37 @@ jobs:
           path: projects
       - run: yarn nx run stencil:check.ssr
 
+  # Guards against component CSS referencing a token no layer publishes. An
+  # unresolvable var() makes the declaration invalid at computed-value time, so the
+  # property silently falls back to its initial value - which is how 129 box-shadow
+  # declarations computed to `none` for five months without a single test failing
+  # (#641). Reads the emitted token layer, so it needs the build artifact.
+  tokens:
+    needs: [magma]
+    if: ${{ needs.magma.outputs.changed == 'true' }}
+    runs-on: ubuntu-latest
+    env:
+      PUPPETEER_SKIP_DOWNLOAD: 'true'
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          cache: yarn
+      - name: Restore Nx cache
+        uses: actions/cache@v5
+        with:
+          path: .nx
+          key: nx-${{ hashFiles('yarn.lock') }}-${{ github.sha }}
+          restore-keys: |
+            nx-${{ hashFiles('yarn.lock') }}-
+      - run: yarn install --frozen-lockfile --prefer-offline
+      - uses: actions/download-artifact@v8
+        with:
+          name: stencil-build
+          path: projects
+      - run: yarn nx run stencil:check.tokens
+
   # Guards the tree-shaking of the three published packages: a consumer that
   # imports one component must not end up shipping all 114. Needs all three
   # builds, so it runs last.
