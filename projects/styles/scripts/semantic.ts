@@ -40,6 +40,7 @@ const {
   hues,
   hueSteps,
   washSteps,
+  shadowStep,
   hueRoles,
   neutralHueSteps,
   accents,
@@ -120,6 +121,17 @@ layer.push(
 Object.entries(washSteps).forEach(([level, step]) =>
   layer.push(alias(`wash-${level}`, `magma-tint-scale-${step}`, `wash-${level}`)),
 );
+
+// 2c. shadow ink - the COLOUR a projected shadow is drawn with, not a shadow.
+//    Named on the tint ramp's ink extreme, so it flips with the mode: black on a
+//    light page, white on a dark one. That flip is the whole point - a pure black
+//    shadow is invisible on a dark surface, which is the defect #641 documents on
+//    the composite ring tokens.
+//    The composite `--shadow-*` tokens live one layer down (design-tokens cosmetic
+//    tokens) and name the primitive directly: they cannot reference a role without
+//    inverting the layering, and at the ink extreme the difference is 1/255.
+layer.push('', '  /* Shadow ink - the colour of a projected shadow (spec 6.1c) */');
+layer.push(alias('shadow-ink', `magma-tint-scale-${shadowStep}`, 'shadow-ink'));
 
 // 3. text roles - resolve through the tint-text indirection so a theme retints
 //    the foreground with its surface (values are the by-target --text-*, A7).

@@ -72,6 +72,7 @@
     "build.watch": "npm run build.icons && stencil build -c stencil.dev.config.ts --dev --watch",
     "build.watch-no-cache": "stencil build --no-cache --watch",
     "check.ssr": "tsx --tsconfig script.tsconfig.json ./scripts/check-ssr.ts",
+    "check.tokens": "tsx --tsconfig script.tsconfig.json ./scripts/check-dangling-tokens.ts",
     "check.treeshaking": "tsx --tsconfig script.tsconfig.json ./scripts/check-treeshaking.ts",
     "clean": "tsx --tsconfig script.tsconfig.json ./scripts/clean.ts",
     "generate": "stencil generate",

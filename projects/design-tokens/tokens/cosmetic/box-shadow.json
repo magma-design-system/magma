@@ -104,6 +104,30 @@
       },
       "highlight-strong": {
         "value": "rgb(0 0 0 / 0.4) 0px 0px 0px 2px, rgb(0 0 0 / 0.65) 0px 4px 6px -1px"
+      },
+      "ring": {
+        "description": "1px ring, base intensity - a border drawn with box-shadow, not a shadow",
+        "value": "0 0 0 1px rgb(var(--tone-neutral-01) / 0.3)"
+      },
+      "ring-2": {
+        "description": "2px ring, base intensity",
+        "value": "0 0 0 2px rgb(var(--tone-neutral-01) / 0.3)"
+      },
+      "ring-weak": {
+        "description": "1px ring, faint",
+        "value": "0 0 0 1px rgb(var(--tone-neutral-01) / 0.15)"
+      },
+      "ring-weak-2": {
+        "description": "2px ring, faint",
+        "value": "0 0 0 2px rgb(var(--tone-neutral-01) / 0.15)"
+      },
+      "ring-strong-2": {
+        "description": "2px ring, marked - the high-contrast affordance",
+        "value": "0 0 0 2px rgb(var(--tone-neutral-01) / 0.6)"
+      },
+      "ring-strong-4": {
+        "description": "4px ring, marked",
+        "value": "0 0 0 4px rgb(var(--tone-neutral-01) / 0.6)"
       }
     }
   }

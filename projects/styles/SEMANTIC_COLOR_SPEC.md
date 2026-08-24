@@ -231,6 +231,34 @@ default level, and a second word for it would invite reading the band as a surfa
 Censused for #624: 144 component declarations were naming steps `10/09/08` as a background
 because no role could hold their value. Adopting the band is a 1:1 rename at identical value.
 
+### 6.1c Shadow ink
+
+`--magma-shadow-ink`, the ink extreme of the active tint (step `01`). It publishes a COLOUR,
+not a shadow: a component composes it with its own geometry and alpha, e.g.
+`drop-shadow(0 0 4px rgb(var(--magma-shadow-ink) / 0.45))`.
+
+Naming it on the ramp buys the mode flip for free - black on a light page (`#050505`), white on
+a dark one (`#fcfcfc`) - which is what a projected shadow has to do: a pure black shadow is
+invisible on a dark surface. That is the defect the composite ring tokens carried for five
+months (#641), where `outline-weak` and friends hardcode `rgb(0 0 0 / a)`.
+
+**It is a colour, `--shadow-*` are shadows.** The composite tokens (`--shadow-lg`,
+`--shadow-ring-2`, ...) live one layer down, in `design-tokens/tokens/cosmetic/box-shadow.json`,
+and name the PRIMITIVE (`--tone-neutral-01`) rather than this role: a cosmetic token cannot
+reference the semantic layer without inverting the layering. The cost of that is measured at
+1/255 - the ink extreme is all but identical in every tint (`5 5 5` on the base tint, `6 5 5`
+under `warm`) - so nothing is lost by not routing them through the tint.
+
+**The ring family.** `--shadow-ring`, `-ring-2`, `-ring-weak`, `-ring-weak-2`, `-ring-strong-2`,
+`-ring-strong-4`: a border drawn with `box-shadow` (`0 0 0 Npx`), where the suffix is the width
+in px and the `weak`/base/`strong` axis is the alpha (0.15 / 0.3 / 0.6). They restore the family
+deleted in `d40590400` with the same values, under names that say what they are - the old
+`-50 / -75 / -100` was a width code, and `outline-*` collided with the live composite tokens of
+a different geometry.
+
+A ring is NOT a shadow role and NOT a border role: it is geometry. The colour question is
+settled by the primitive it names, which flips with the mode.
+
 ### 6.2 Text (prominence)
 
 `--magma-text-{default,muted,subtle,disabled,on-emphasis}`
@@ -439,8 +467,8 @@ DOM). Same mechanism as the existing preference system.
   `--magma-scale-*` is TRANSITIONAL and deliberately NOT bridged to Tailwind. It exists so
   theming is correct today while those uses are still step-indexed; each one that earns a
   role (a wash, a scrim, a shadow) drops out of it. First to leave: the 144 background uses
-  of steps `10/09/08`, which became the neutral wash band of 6.1b - the census behind that
-  move is in #624. Publishing `--color-scale-09`
+  of steps `10/09/08`, which became the neutral wash band of 6.1b, and the 37 drop shadows on
+  step `01`, which became the shadow ink of 6.1c - the census behind both moves is in #624. Publishing `--color-scale-09`
   utilities would make the raw step the easy choice again and freeze the habit this layer
   exists to remove.
 - mode `light | dark | system`: the existing global flip; semantic tokens follow it.
