@@ -64,10 +64,10 @@
 
 :host([variant='light'][tone='strong']) {
   background-color: rgb(var(--magma-wash-strong));
-  box-shadow: var(--shadow-outline-50);
+  box-shadow: var(--shadow-ring-2);
 }
 
 :host([variant='light'][tone='weak']) {
   background-color: rgb(var(--magma-wash-strong));
-  box-shadow: var(--shadow-outline-light-50);
+  box-shadow: var(--shadow-ring-weak-2);
 }

@@ -5,13 +5,13 @@
 
 :host([pref-contrast='more']) {
   --mds-tab-item-selected-color: rgb(var(--magma-text-default));
-  --mds-tab-item-selected-shadow: var(--shadow-outline-strong-50);
+  --mds-tab-item-selected-shadow: var(--shadow-ring-strong-2);
 }
 
 @media (prefers-contrast: more) {
   :host([pref-contrast='system']),
   :host(:not([pref-contrast])) {
     --mds-tab-item-selected-color: rgb(var(--magma-text-default));
-    --mds-tab-item-selected-shadow: var(--shadow-outline-strong-50);
+    --mds-tab-item-selected-shadow: var(--shadow-ring-strong-2);
   }
 }

@@ -7,7 +7,7 @@
 :host([pref-theme='dark']:not([pref-theme-scheme='light'])) {
   --mds-chip-background: rgb(var(--magma-wash-strong));
 
-  box-shadow: var(--shadow-outline);
+  box-shadow: var(--shadow-ring);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -15,6 +15,6 @@
   :host(:not([pref-theme])) {
     --mds-chip-background: rgb(var(--magma-wash-strong));
 
-    box-shadow: var(--shadow-outline);
+    box-shadow: var(--shadow-ring);
   }
 }

@@ -8,7 +8,7 @@
   --mds-paginator-background: rgb(var(--magma-wash-base));
 
   .pages {
-    box-shadow: var(--shadow-outline) inset;
+    box-shadow: var(--shadow-ring) inset;
   }
 }
 
@@ -18,7 +18,7 @@
     --mds-paginator-background: rgb(var(--magma-wash-base));
 
     .pages {
-      box-shadow: var(--shadow-outline) inset;
+      box-shadow: var(--shadow-ring) inset;
     }
   }
 }

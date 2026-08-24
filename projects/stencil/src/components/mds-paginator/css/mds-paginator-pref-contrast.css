@@ -5,21 +5,21 @@
 
 :host([pref-contrast='more']) {
   .pages {
-    box-shadow: var(--shadow-outline-50) inset;
+    box-shadow: var(--shadow-ring-2) inset;
   }
 
   .item {
     --mds-paginator-item-background-hover: rgb(var(--tone-neutral-seed));
-    --mds-paginator-item-shadow-hover: var(--shadow-outline-50) inset;
+    --mds-paginator-item-shadow-hover: var(--shadow-ring-2) inset;
     --mds-paginator-item-shadow: none;
   }
 
   .item-first,
   .item-last,
   .item-icon {
-    --mds-paginator-item-shadow-disabled: var(--shadow-outline-50) inset;
-    --mds-paginator-item-shadow-hover: var(--shadow-outline-50) inset;
-    --mds-paginator-item-shadow: var(--shadow-outline-50) inset;
+    --mds-paginator-item-shadow-disabled: var(--shadow-ring-2) inset;
+    --mds-paginator-item-shadow-hover: var(--shadow-ring-2) inset;
+    --mds-paginator-item-shadow: var(--shadow-ring-2) inset;
   }
 }
 
@@ -27,21 +27,21 @@
   :host([pref-contrast='system']),
   :host(:not([pref-contrast])) {
     .pages {
-      box-shadow: var(--shadow-outline-50) inset;
+      box-shadow: var(--shadow-ring-2) inset;
     }
 
     .item {
       --mds-paginator-item-background-hover: rgb(var(--tone-neutral-seed));
-      --mds-paginator-item-shadow-hover: var(--shadow-outline-50) inset;
+      --mds-paginator-item-shadow-hover: var(--shadow-ring-2) inset;
       --mds-paginator-item-shadow: none;
     }
 
     .item-first,
     .item-last,
     .item-icon {
-      --mds-paginator-item-shadow-disabled: var(--shadow-outline-50) inset;
-      --mds-paginator-item-shadow-hover: var(--shadow-outline-50) inset;
-      --mds-paginator-item-shadow: var(--shadow-outline-50) inset;
+      --mds-paginator-item-shadow-disabled: var(--shadow-ring-2) inset;
+      --mds-paginator-item-shadow-hover: var(--shadow-ring-2) inset;
+      --mds-paginator-item-shadow: var(--shadow-ring-2) inset;
     }
   }
 }

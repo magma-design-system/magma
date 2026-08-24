@@ -6,13 +6,13 @@
 
 :host([pref-theme='dark']:not([pref-theme-scheme='light'])) {
   background-color: rgb(var(--magma-wash-soft));
-  box-shadow: var(--shadow-outline), var(--shadow-lg);
+  box-shadow: var(--shadow-ring), var(--shadow-lg);
 }
 
 @media (prefers-color-scheme: dark) {
   :host([pref-theme='system']:not([pref-theme-scheme='light'])),
   :host(:not([pref-theme])) {
     background-color: rgb(var(--magma-wash-soft));
-    box-shadow: var(--shadow-outline), var(--shadow-lg);
+    box-shadow: var(--shadow-ring), var(--shadow-lg);
   }
 }

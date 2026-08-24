@@ -12,7 +12,7 @@
 
 @utility contrast-area-base {
   border-radius: inherit;
-  box-shadow: var(--shadow-outline-50) inset;
+  box-shadow: var(--shadow-ring-2) inset;
   display: none;
   inset: 0;
   opacity: 0;
@@ -25,13 +25,13 @@
 @utility contrast-area-50 {
   @apply contrast-area-base;
 
-  box-shadow: var(--shadow-outline-50) inset;
+  box-shadow: var(--shadow-ring-2) inset;
 }
 
 @utility contrast-area {
   @apply contrast-area-base;
 
-  box-shadow: var(--shadow-outline) inset;
+  box-shadow: var(--shadow-ring) inset;
 }
 
 @utility not-hydrated {

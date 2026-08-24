@@ -8,7 +8,7 @@
   --mds-kpi-item-info-background: rgb(var(--magma-wash-base));
 
   background-color: rgb(var(--magma-accent-surface));
-  box-shadow: var(--shadow-outline);
+  box-shadow: var(--shadow-ring);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -17,6 +17,6 @@
     --mds-kpi-item-info-background: rgb(var(--magma-wash-base));
 
     background-color: rgb(var(--magma-accent-surface));
-    box-shadow: var(--shadow-outline);
+    box-shadow: var(--shadow-ring);
   }
 }

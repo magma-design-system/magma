@@ -6,7 +6,7 @@
 :host([pref-contrast='more']) {
   --mds-file-preview-color: rgb(var(--magma-text-default));
 
-  box-shadow: var(--shadow-outline-50);
+  box-shadow: var(--shadow-ring-2);
 }
 
 @media (prefers-contrast: more) {
@@ -14,6 +14,6 @@
   :host(:not([pref-contrast])) {
     --mds-file-preview-color: rgb(var(--magma-text-default));
 
-    box-shadow: var(--shadow-outline-50);
+    box-shadow: var(--shadow-ring-2);
   }
 }

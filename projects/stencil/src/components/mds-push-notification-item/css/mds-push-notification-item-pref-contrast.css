@@ -4,7 +4,7 @@
  * `system` and no controller follow the OS via @media. Cross-browser, no :host-context. */
 
 :host([pref-contrast='more']) {
-  --mds-push-notification-item-shadow: var(--shadow-outline-strong-50) inset;
+  --mds-push-notification-item-shadow: var(--shadow-ring-strong-2) inset;
 
   color: rgb(var(--magma-text-default));
 }
@@ -12,7 +12,7 @@
 @media (prefers-contrast: more) {
   :host([pref-contrast='system']),
   :host(:not([pref-contrast])) {
-    --mds-push-notification-item-shadow: var(--shadow-outline-strong-50) inset;
+    --mds-push-notification-item-shadow: var(--shadow-ring-strong-2) inset;
 
     color: rgb(var(--magma-text-default));
   }

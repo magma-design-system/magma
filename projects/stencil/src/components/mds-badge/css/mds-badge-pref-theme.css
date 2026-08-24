@@ -7,7 +7,7 @@
 :host([pref-theme='dark']:not([pref-theme-scheme='light'])) {
   &:host([tone='strong']),
   &:host([tone='weak']) {
-    box-shadow: var(--shadow-outline) inset;
+    box-shadow: var(--shadow-ring) inset;
   }
 }
 
@@ -16,7 +16,7 @@
   :host(:not([pref-theme])) {
     &:host([tone='strong']),
     &:host([tone='weak']) {
-      box-shadow: var(--shadow-outline) inset;
+      box-shadow: var(--shadow-ring) inset;
     }
   }
 }
