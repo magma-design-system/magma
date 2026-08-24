@@ -10,9 +10,9 @@
   --mds-paginator-item-background-selected: rgb(var(--magma-accent-emphasis-hover));
   --mds-paginator-item-background: transparent;
   --mds-paginator-item-color-disabled: rgb(var(--magma-scale-06));
-  --mds-paginator-item-color-hover: rgb(var(--magma-scale-02));
+  --mds-paginator-item-color-hover: rgb(var(--magma-text-default));
   --mds-paginator-item-color-selected: rgb(var(--magma-text-on-emphasis));
-  --mds-paginator-item-color: rgb(var(--magma-scale-02));
+  --mds-paginator-item-color: rgb(var(--magma-text-default));
   --mds-paginator-item-shadow-disabled: none;
   --mds-paginator-item-shadow-hover: none;
   --mds-paginator-item-shadow-selected: var(--shadow-md-sharp);
@@ -27,9 +27,9 @@
     --mds-paginator-item-background-selected: rgb(var(--magma-accent-emphasis-hover));
     --mds-paginator-item-background: transparent;
     --mds-paginator-item-color-disabled: rgb(var(--magma-scale-06));
-    --mds-paginator-item-color-hover: rgb(var(--magma-scale-02));
+    --mds-paginator-item-color-hover: rgb(var(--magma-text-default));
     --mds-paginator-item-color-selected: rgb(var(--magma-text-on-emphasis));
-    --mds-paginator-item-color: rgb(var(--magma-scale-02));
+    --mds-paginator-item-color: rgb(var(--magma-text-default));
     --mds-paginator-item-shadow-disabled: none;
     --mds-paginator-item-shadow-hover: none;
     --mds-paginator-item-shadow-selected: var(--shadow-md-sharp);

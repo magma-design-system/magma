@@ -19,7 +19,7 @@
   &:host([tone='weak']:hover) {
     --mds-button-background: rgb(var(--tone-neutral-seed));
     --mds-button-border-color-rgb: var(--tone-neutral-seed);
-    --mds-button-color: rgb(var(--magma-scale-02));
+    --mds-button-color: rgb(var(--magma-text-default));
   }
 
   &:host([tone='outline']) {
@@ -67,7 +67,7 @@
   &:host([tone='weak']:hover) {
     --mds-button-background: rgb(var(--magma-scale-07));
     --mds-button-border-color-rgb: var(--magma-scale-07);
-    --mds-button-color: rgb(var(--magma-scale-02));
+    --mds-button-color: rgb(var(--magma-text-default));
   }
 
   &:host([tone='outline']) {
@@ -77,11 +77,11 @@
 
   &:host([tone='outline']:hover) {
     --mds-button-border-color-rgb: var(--magma-scale-04);
-    --mds-button-color: rgb(var(--magma-scale-02));
+    --mds-button-color: rgb(var(--magma-text-default));
   }
 
   &:host([tone='text']) {
-    --mds-button-color: rgb(var(--magma-scale-02));
+    --mds-button-color: rgb(var(--magma-text-default));
   }
 
   &:host([tone='text']:hover) {

@@ -9,7 +9,7 @@
 
   &:host([tone='outline']) {
     --mds-badge-background: rgb(var(--tone-neutral-seed));
-    --mds-badge-color: rgb(var(--magma-scale-02));
+    --mds-badge-color: rgb(var(--magma-text-default));
     --mds-badge-border-color: rgb(var(--magma-scale-06));
   }
 }
@@ -25,7 +25,7 @@
 
   &:host([tone='outline']) {
     --mds-badge-background: rgb(var(--tone-neutral-seed));
-    --mds-badge-color: rgb(var(--magma-scale-02));
+    --mds-badge-color: rgb(var(--magma-text-default));
     --mds-badge-border-color: rgb(var(--magma-scale-06));
   }
 }

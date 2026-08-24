@@ -57,7 +57,7 @@
 
   @apply text-info-detail;
 
-  color: rgb(var(--magma-scale-02));
+  color: rgb(var(--magma-text-default));
   display: flex;
   position: relative;
   user-select: none;
@@ -89,7 +89,7 @@
   border-radius: var(--radius-xs);
   box-shadow: var(--mds-input-select-ring), var(--mds-input-select-shadow);
   box-sizing: border-box;
-  color: rgb(var(--magma-scale-02));
+  color: rgb(var(--magma-text-default));
   cursor: pointer;
   margin: 0;
   min-height: --spacing(1200);

@@ -8,7 +8,7 @@
 
 :host {
   --mds-bibliography-color: rgb(var(--magma-text-muted));
-  --mds-bibliography-text-decoration-hover: rgb(var(--magma-scale-02));
+  --mds-bibliography-text-decoration-hover: rgb(var(--magma-text-default));
   --mds-bibliography-text-decoration: rgb(var(--magma-scale-06));
 
   display: inline;

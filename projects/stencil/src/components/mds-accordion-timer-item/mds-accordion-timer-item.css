@@ -9,7 +9,7 @@
  */
 
 :host {
-  --mds-accordion-timer-item-color: var(--mds-accordion-timer-color, rgb(var(--magma-scale-02)));
+  --mds-accordion-timer-item-color: var(--mds-accordion-timer-color, rgb(var(--magma-text-default)));
   --mds-accordion-timer-item-progress-bar-color: var(
     --mds-accordion-timer-progress-bar-color,
     rgb(var(--magma-text-muted))

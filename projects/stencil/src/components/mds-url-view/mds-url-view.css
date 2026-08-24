@@ -30,7 +30,7 @@
   /* stylelint-disable-next-line length-zero-no-unit */
   --mds-modal-custom-window-distance: 0px;
   --mds-url-view-background: rgb(var(--magma-wash-soft));
-  --mds-url-view-color: rgb(var(--magma-scale-02));
+  --mds-url-view-color: rgb(var(--magma-text-default));
   --mds-url-view-radius: var(--radius-md);
   --mds-url-view-header-shadow: var(--shadow-sm-sharp);
   --mds-url-view-shadow: var(--shadow-lg);
