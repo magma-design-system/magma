@@ -32,9 +32,9 @@
 :host {
   --mds-banner-background: rgb(var(--magma-surface-muted));
   --mds-banner-close-icon-hover-background: rgb(var(--magma-scale-09));
-  --mds-banner-cockade-background: rgb(var(--magma-scale-09));
+  --mds-banner-cockade-background: rgb(var(--magma-wash-base));
   --mds-banner-cockade-distance: --spacing(600);
-  --mds-banner-color: rgb(var(--magma-scale-02));
+  --mds-banner-color: rgb(var(--magma-text-default));
   --mds-banner-content-gap: --spacing(400);
   --mds-banner-headline-color: var(--mds-banner-color);
   --mds-banner-icon-color: rgb(var(--magma-scale-04));

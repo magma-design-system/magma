@@ -29,7 +29,7 @@
   --mds-horizontal-scroll-dot-size: --spacing(200);
   --mds-horizontal-scroll-dot-max-width: auto;
   --mds-horizontal-scroll-dot-background: rgb(var(--tone-neutral-seed));
-  --mds-horizontal-scroll-dot-area-background: rgb(var(--magma-scale-08));
+  --mds-horizontal-scroll-dot-area-background: rgb(var(--magma-wash-strong));
   --mds-horizontal-scroll-contents-padding: --spacing(600);
   --mds-horizontal-scroll-contents-scroll-padding: 0 --spacing(600);
   --mds-horizontal-scroll-controls-margin: --spacing(1200);

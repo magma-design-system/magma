@@ -1,5 +1,5 @@
 :host([pref-contrast='more'][pref-theme='dark']) {
-  --mds-table-background: rgb(var(--magma-scale-08));
+  --mds-table-background: rgb(var(--magma-wash-strong));
   --mds-table-body-background-hover: rgb(var(--tone-neutral-seed));
   --mds-table-border-color: rgb(var(--magma-scale-05));
   --mds-table-color-hover: rgb(var(--magma-scale-02));
@@ -8,7 +8,7 @@
 
 @media (prefers-contrast: more) {
   :host([pref-contrast='system'][pref-theme='dark']) {
-    --mds-table-background: rgb(var(--magma-scale-08));
+    --mds-table-background: rgb(var(--magma-wash-strong));
     --mds-table-body-background-hover: rgb(var(--tone-neutral-seed));
     --mds-table-border-color: rgb(var(--magma-scale-05));
     --mds-table-color-hover: rgb(var(--magma-scale-02));
@@ -18,7 +18,7 @@
 
 @media (prefers-color-scheme: dark) {
   :host([pref-contrast='more'][pref-theme='system']) {
-    --mds-table-background: rgb(var(--magma-scale-08));
+    --mds-table-background: rgb(var(--magma-wash-strong));
     --mds-table-body-background-hover: rgb(var(--tone-neutral-seed));
     --mds-table-border-color: rgb(var(--magma-scale-05));
     --mds-table-color-hover: rgb(var(--magma-scale-02));
@@ -28,7 +28,7 @@
 
 @media (prefers-contrast: more) and (prefers-color-scheme: dark) {
   :host([pref-contrast='system'][pref-theme='system']) {
-    --mds-table-background: rgb(var(--magma-scale-08));
+    --mds-table-background: rgb(var(--magma-wash-strong));
     --mds-table-body-background-hover: rgb(var(--tone-neutral-seed));
     --mds-table-border-color: rgb(var(--magma-scale-05));
     --mds-table-color-hover: rgb(var(--magma-scale-02));

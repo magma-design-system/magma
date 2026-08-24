@@ -3,13 +3,13 @@
   --mds-badge-color: rgb(var(--magma-text-muted));
 
   &:host([tone='weak']) {
-    --mds-badge-background: rgb(var(--magma-scale-10));
+    --mds-badge-background: rgb(var(--magma-wash-soft));
     --mds-badge-color: rgb(var(--magma-text-muted));
   }
 
   &:host([tone='outline']) {
     --mds-badge-background: rgb(var(--tone-neutral-seed));
-    --mds-badge-color: rgb(var(--magma-scale-02));
+    --mds-badge-color: rgb(var(--magma-text-default));
     --mds-badge-border-color: rgb(var(--magma-scale-06));
   }
 }
@@ -19,13 +19,13 @@
   --mds-badge-color: rgb(var(--magma-text-on-emphasis));
 
   &:host([tone='weak']) {
-    --mds-badge-background: rgb(var(--magma-scale-10));
+    --mds-badge-background: rgb(var(--magma-wash-soft));
     --mds-badge-color: rgb(var(--magma-text-muted));
   }
 
   &:host([tone='outline']) {
     --mds-badge-background: rgb(var(--tone-neutral-seed));
-    --mds-badge-color: rgb(var(--magma-scale-02));
+    --mds-badge-color: rgb(var(--magma-text-default));
     --mds-badge-border-color: rgb(var(--magma-scale-06));
   }
 }

@@ -22,8 +22,8 @@
 */
 
 :host {
-  --mds-filter-items-background-active: rgb(var(--magma-scale-09));
-  --mds-filter-items-background: rgb(var(--magma-scale-09));
+  --mds-filter-items-background-active: rgb(var(--magma-wash-base));
+  --mds-filter-items-background: rgb(var(--magma-wash-base));
   --mds-filter-items-gap: --spacing(200);
   --mds-filter-items-padding: --spacing(200);
   --mds-filter-items-radius: var(--radius-full);

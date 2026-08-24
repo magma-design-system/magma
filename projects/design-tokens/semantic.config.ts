@@ -118,8 +118,15 @@ export interface SemanticConfig {
    * Text on these levels is bounded by the spec 9.1 table, not by taste:
    * `soft` carries the whole text ladder, `base` carries `text-default`, and
    * `strong` carries icons only (no essential text).
+   *
+   * The SAME map serves the neutral band (`--magma-wash-*`) and every colored hue
+   * (`--magma-<hue>-wash-*`), on purpose: the two must not drift, because a
+   * neutral pill and a colored pill are the same graphic device. They differ only
+   * in what they name - the neutral levels resolve through `--magma-tint-scale-*`,
+   * so they follow the active theme, while a hue names its own family directly,
+   * since a theme never retints a hue (spec 6.4).
    */
-  hueWashSteps: Record<string, string>;
+  washSteps: Record<string, string>;
   /**
    * Which published role each legacy quintet alias is a SHORTCUT for (spec 6.5).
    * `--magma-<hue>-surface`, `-fg` and `-border` are kept so existing consumers
@@ -167,7 +174,7 @@ export interface SemanticConfig {
    * `-emphasis` it reaches 79.5 / 74.9, which is what the accents already carry.
    *
    * The `surface-*` entries stay ACCENT-ONLY: a colored hue expresses that band
-   * as wash levels (`hueWashSteps`), named by intensity rather than by state.
+   * as wash levels (`washSteps`), named by intensity rather than by state.
    */
   accentStateSteps: Record<string, string>;
   /**
@@ -211,15 +218,16 @@ export const semantic: SemanticConfig = {
   },
   scaleSteps: 10,
   hueSteps: { surface: '09', fg: '05', border: '06', emphasis: '04' },
-  // The three wash levels the component sheets actually use as a colored
-  // background today (10 x68, 09 x71, 08 x41), so adopting them is a 1:1 rename
-  // and no value moves. `base` is the step `--magma-<hue>-surface` already
+  // The three wash levels the component sheets actually use as a background
+  // today. Colored: 10 x68, 09 x71, 08 x41. NEUTRAL, censused for #624: 10 x35,
+  // 09 x51, 08 x58 - 144 declarations that name a raw step because no role could
+  // hold their value. Either way adopting them is a 1:1 rename and no value moves. `base` is the step `--magma-<hue>-surface` already
   // pointed at - which is why the shortcut can stay put. NOTE: the accents
   // express the same three levels with state-derived names (`surface-subtle` /
   // base / `surface-hover`, #606); these are named by INTENSITY because a
   // colored chip is not an interaction state. Unifying the two vocabularies is a
   // follow-up, not part of this change.
-  hueWashSteps: { soft: '10', base: '09', strong: '08' },
+  washSteps: { soft: '10', base: '09', strong: '08' },
   hueRoles: { surface: 'base', text: 'default', border: 'default' },
   neutralHueSteps: { fg: '03', border: '06', emphasis: '02' },
   accents: {
@@ -233,7 +241,7 @@ export const semantic: SemanticConfig = {
     'emphasis-hover': '03',
     'emphasis-active': '02',
     // surface band (subtle fill): hover one step stronger, subtle one lighter.
-    // Accent-only: a hue says this with hueWashSteps.
+    // Accent-only: a hue says this with washSteps.
     'surface-hover': '08',
     'surface-subtle': '10',
   },
@@ -302,7 +310,7 @@ export const scaleTintOverride = (family: string): string[] =>
  * solid fill and therefore apply to the colored hues as well as to the accents.
  * Derived rather than duplicated: the steps live in ONE place, so the two bands
  * cannot drift. The `surface-*` states are left out on purpose - a hue expresses
- * that band as wash levels (`hueWashSteps`).
+ * that band as wash levels (`washSteps`).
  */
 export const emphasisStateSteps = (): Record<string, string> =>
   Object.fromEntries(

@@ -1,7 +1,7 @@
 @import './css/mds-radial-progress-fouc.css';
 
 :host {
-  --mds-radial-progress-background: rgb(var(--magma-scale-09));
+  --mds-radial-progress-background: rgb(var(--magma-wash-base));
   --mds-radial-progress-color: rgb(var(--variant-primary-03));
   --mds-radial-progress-text-background-shadow: var(--shadow-sm-sharp);
   --mds-radial-progress-text-background: rgb(var(--tone-neutral-seed));

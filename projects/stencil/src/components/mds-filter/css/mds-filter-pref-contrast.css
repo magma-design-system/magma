@@ -4,8 +4,8 @@
  * `system` and no controller follow the OS via @media. Cross-browser, no :host-context. */
 
 :host([pref-contrast='more']) {
-  --mds-filter-items-background-active: rgb(var(--magma-scale-09));
-  --mds-filter-items-background: rgb(var(--magma-scale-10));
+  --mds-filter-items-background-active: rgb(var(--magma-wash-base));
+  --mds-filter-items-background: rgb(var(--magma-wash-soft));
   --mds-filter-wrapper-shadow-opacity: 30%;
   --mds-filter-wrapper-shadow-color: rgb(var(--magma-scale-07));
   --mds-filter-wrapper-shadow: 0 0 0 --spacing(50) var(--mds-filter-wrapper-shadow-color) inset;
@@ -14,8 +14,8 @@
 @media (prefers-contrast: more) {
   :host([pref-contrast='system']),
   :host(:not([pref-contrast])) {
-    --mds-filter-items-background-active: rgb(var(--magma-scale-09));
-    --mds-filter-items-background: rgb(var(--magma-scale-10));
+    --mds-filter-items-background-active: rgb(var(--magma-wash-base));
+    --mds-filter-items-background: rgb(var(--magma-wash-soft));
     --mds-filter-wrapper-shadow-opacity: 30%;
     --mds-filter-wrapper-shadow-color: rgb(var(--magma-scale-07));
     --mds-filter-wrapper-shadow: 0 0 0 --spacing(50) var(--mds-filter-wrapper-shadow-color) inset;

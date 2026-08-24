@@ -6,11 +6,11 @@
 
 :host([pref-theme='dark']:not([pref-theme-scheme='light'])) {
   --mds-input-date-ring: var(--shadow-outline-50);
-  --mds-input-date-background: rgb(var(--magma-scale-09));
+  --mds-input-date-background: rgb(var(--magma-wash-base));
   --mds-input-date-controls-border: 2px solid rgb(var(--magma-scale-06));
 
   .counter-button:hover {
-    --mds-button-background: rgb(var(--magma-scale-08));
+    --mds-button-background: rgb(var(--magma-wash-strong));
   }
 }
 
@@ -18,11 +18,11 @@
   :host([pref-theme='system']:not([pref-theme-scheme='light'])),
   :host(:not([pref-theme])) {
     --mds-input-date-ring: var(--shadow-outline-50);
-    --mds-input-date-background: rgb(var(--magma-scale-09));
+    --mds-input-date-background: rgb(var(--magma-wash-base));
     --mds-input-date-controls-border: 2px solid rgb(var(--magma-scale-06));
 
     .counter-button:hover {
-      --mds-button-background: rgb(var(--magma-scale-08));
+      --mds-button-background: rgb(var(--magma-wash-strong));
     }
   }
 }

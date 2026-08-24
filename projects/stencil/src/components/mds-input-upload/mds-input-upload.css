@@ -23,7 +23,7 @@
 */
 
 :host {
-  --mds-input-upload-drag-area-background-color-on-drag: rgb(var(--magma-scale-10));
+  --mds-input-upload-drag-area-background-color-on-drag: rgb(var(--magma-wash-soft));
   --mds-input-upload-drag-area-background-color: rgb(var(--tone-neutral-seed));
   --mds-input-upload-drag-area-border-on-drag: 3px dashed rgb(var(--magma-scale-04));
   --mds-input-upload-drag-area-border: 3px dashed rgb(var(--magma-scale-07));

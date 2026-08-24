@@ -176,7 +176,7 @@
 :host([tag='code']) {
   @apply ease-in-out;
 
-  background-color: rgb(var(--magma-scale-09));
+  background-color: rgb(var(--magma-wash-base));
   border-radius: 0.25rem;
   box-shadow: rgb(var(--magma-scale-08)) 0 0 0 1px;
   color: rgb(var(--magma-text-muted));

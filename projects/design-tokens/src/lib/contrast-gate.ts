@@ -27,7 +27,13 @@ import chroma from 'chroma-js';
 export type Mode = 'light' | 'dark';
 export type Severity = 'error' | 'warn' | 'info';
 export type Metric = 'apca' | 'wcag2';
-export type Category = 'text-on-surface' | 'text-on-hue' | 'on-emphasis' | 'hue-fg' | 'border';
+export type Category =
+  | 'text-on-surface'
+  | 'text-on-wash'
+  | 'text-on-hue'
+  | 'on-emphasis'
+  | 'hue-fg'
+  | 'border';
 
 /** Shape of `createColorTokens(config).tokens.color`: color[group][name][mode][step] = { value }. */
 export type ColorTree = Record<
@@ -85,9 +91,10 @@ const emphasisStatesOf = (aliases: Record<string, string>, hue: string): string[
 // the ones that publish a text ladder on their own wash levels.
 const TINTED_HUES = ['info', 'success', 'warning', 'danger'] as const;
 /**
- * Which text roles are ENFORCED on each hue wash level (spec 9.1). This is the
- * contract for a colored background, and it is bounded by measurement, not taste:
- * the more marked the wash, the less of the text ladder it can carry.
+ * Which text roles are ENFORCED on each wash level (spec 9.1) - for the colored
+ * hues AND for the neutral band of 6.1b. This is the contract for a pill-shaped
+ * background, and it is bounded by measurement, not taste: the more marked the
+ * wash, the less of the text ladder it can carry.
  *  - `soft` (the lightest wash) carries the whole ladder;
  *  - `base` carries `text-default` only (`muted` measures 73-75 Lc on it,
  *    i.e. at or just under its 75 floor);
@@ -95,8 +102,15 @@ const TINTED_HUES = ['info', 'success', 'warning', 'danger'] as const;
  *    cockades, hover) and only has to keep icons legible, which the report-only
  *    target covers (`text-default` measures 74.5-76 Lc there).
  * Roles left out of a level are still measured and reported, just not gated.
+ *
+ * ONE table for both bands because the measurement says so, not for symmetry.
+ * Measured on the neutral band the day it was added (#624): `soft` 95.3/96.8 Lc
+ * for `default` down to 60.4/61.8 for `disabled` (light/dark, all above their
+ * floors); `base` 88.4/89.5 for `default` but 73.1/74.0 for `muted`, under the
+ * 75 floor exactly as on a hue; `strong` 78.7/79.9 for `default`, which clears
+ * the icon target but leaves no headroom for a ladder.
  */
-const HUE_TEXT_ENFORCED: Record<string, readonly string[]> = {
+const WASH_TEXT_ENFORCED: Record<string, readonly string[]> = {
   soft: ['default', 'muted', 'subtle', 'disabled'],
   base: ['default'],
   strong: [],
@@ -148,10 +162,21 @@ export interface SemanticMapping {
    * the accents only - see `emphasisStateSteps()` in semantic.config.
    */
   accentStateSteps?: Record<string, string>;
-  /** Wash levels of a colored hue, level -> ramp step (spec 6.4); optional. */
-  hueWashSteps?: Record<string, string>;
+  /**
+   * Wash levels, level -> ramp step: the neutral band (`--magma-wash-*`, spec
+   * 6.1b, on the tint ramp) and every colored hue (`--magma-<hue>-wash-*`, spec
+   * 6.4, on its own family). One map for both, so they cannot drift; optional.
+   */
+  washSteps?: Record<string, string>;
   /** Which published role each legacy quintet alias shortcuts to; optional. */
   hueRoles?: { surface: string; text: string; border: string };
+  /**
+   * Ramp family behind `--magma-tint-scale-*`, when it is not the tint's own tone
+   * scale. Mirrors `scaleFamily()` in semantic.config, which the gate cannot
+   * import: this type is deliberately the SLICE of the contract the gate needs,
+   * not the config itself.
+   */
+  scale?: string;
 }
 
 /**
@@ -170,6 +195,13 @@ export function aliasesFromConfig(m: SemanticMapping): Record<string, string> {
   m.borderRoles.forEach((r) => set(`border-${r}`, `border-${m.tint}-${r}`));
   // focus follows the accent named by borderFocus, at its emphasis step
   set('border-focus', `${m.accents[m.borderFocus]}-${m.hueSteps.emphasis}`);
+  // the neutral wash band (spec 6.1b): named steps of the ACTIVE TINT ramp, which
+  // is what `scaleFamily(tint)` resolves to - not the surface band, which is
+  // elevation and cannot hold these values in both modes.
+  const rampFamily = m.scale ?? `tone-${m.tint}`; // = scaleFamily(tint) in semantic.config
+  Object.entries(m.washSteps ?? {}).forEach(([level, step]) =>
+    set(`wash-${level}`, `${rampFamily}-${step}`),
+  );
 
   // A colored hue publishes the same vocabulary as the neutral scaffolding on its
   // own family: wash levels from named ramp steps, text + border from the family's
@@ -186,7 +218,7 @@ export function aliasesFromConfig(m: SemanticMapping): Record<string, string> {
       set(`${hue}-on-emphasis`, m.seed);
       return;
     }
-    Object.entries(m.hueWashSteps ?? {}).forEach(([level, step]) =>
+    Object.entries(m.washSteps ?? {}).forEach(([level, step]) =>
       set(`${hue}-wash-${level}`, `${family}-${step}`),
     );
     m.textRoles.forEach((r) => set(`${hue}-text-${r}`, `text-${roles}-${r}`));
@@ -201,7 +233,7 @@ export function aliasesFromConfig(m: SemanticMapping): Record<string, string> {
     set(`${hue}-on-emphasis`, m.seed);
     const shortcut = m.hueRoles;
     if (shortcut) {
-      set(`${hue}-surface`, `${family}-${(m.hueWashSteps ?? {})[shortcut.surface]}`);
+      set(`${hue}-surface`, `${family}-${(m.washSteps ?? {})[shortcut.surface]}`);
       set(`${hue}-fg`, `text-${roles}-${shortcut.text}`);
       set(`${hue}-border`, `border-${roles}-${shortcut.border}`);
     }
@@ -391,9 +423,9 @@ export function evaluatePairs(
     //     banner, toast or badge actually renders, and the one that had no name in
     //     the contract before: previously the gate only checked colored ink on the
     //     NEUTRAL surfaces (section 3 below), which is a different question.
-    //     Enforced per HUE_TEXT_ENFORCED; the rest is measured and reported.
+    //     Enforced per WASH_TEXT_ENFORCED; the rest is measured and reported.
     for (const hue of TINTED_HUES) {
-      for (const [level, enforced] of Object.entries(HUE_TEXT_ENFORCED)) {
+      for (const [level, enforced] of Object.entries(WASH_TEXT_ENFORCED)) {
         for (const [role, floor] of Object.entries(targets.text)) {
           const gated = enforced.includes(role);
           push(
@@ -406,6 +438,25 @@ export function evaluatePairs(
             mode,
           );
         }
+      }
+    }
+    // 2d. the neutral text ladder on the NEUTRAL wash band (spec 6.1b). Same
+    //     question as 2c one level down: a grey pill (a disabled switch track, a
+    //     paginator hover, a zebra chip) is not an elevation surface, so section 1
+    //     above never checked this pair. Enforced per WASH_TEXT_ENFORCED, the same
+    //     table as the hues because the measurement came out the same.
+    for (const [level, enforced] of Object.entries(WASH_TEXT_ENFORCED)) {
+      for (const [role, floor] of Object.entries(targets.text)) {
+        const gated = enforced.includes(role);
+        push(
+          'text-on-wash',
+          gated ? 'error' : 'warn',
+          'apca',
+          `--magma-text-${role}`,
+          `--magma-wash-${level}`,
+          gated ? floor : targets.hueFg,
+          mode,
+        );
       }
     }
     // 3. colored fg on the elevated surfaces (report-only)

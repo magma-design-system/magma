@@ -40,11 +40,11 @@
   );
   --mds-breadcrumb-item-button-color-hover: var(
     --mds-breadcrumb-button-color-hover,
-    rgb(var(--magma-scale-02))
+    rgb(var(--magma-text-default))
   );
   --mds-breadcrumb-item-button-color: var(
     --mds-breadcrumb-button-color,
-    rgb(var(--magma-scale-02))
+    rgb(var(--magma-text-default))
   );
   --mds-breadcrumb-item-button-border-radius: 1000px;
 

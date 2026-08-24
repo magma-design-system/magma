@@ -9,14 +9,14 @@
  */
 
 :host {
-  --mds-accordion-timer-item-color: var(--mds-accordion-timer-color, rgb(var(--magma-scale-02)));
+  --mds-accordion-timer-item-color: var(--mds-accordion-timer-color, rgb(var(--magma-text-default)));
   --mds-accordion-timer-item-progress-bar-color: var(
     --mds-accordion-timer-progress-bar-color,
     rgb(var(--magma-text-muted))
   );
   --mds-accordion-timer-item-progress-bar-background: var(
     --mds-accordion-timer-progress-bar-background,
-    rgb(var(--magma-scale-08))
+    rgb(var(--magma-wash-strong))
   );
   --mds-accordion-timer-item-progress-bar-thickness: var(
     --mds-accordion-timer-progress-bar-thickness,

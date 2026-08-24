@@ -38,7 +38,7 @@
   background-color: rgb(var(--tone-neutral-seed));
   border-radius: var(--radius-lg);
   box-shadow: var(--mds-push-notification-item-shadow);
-  color: rgb(var(--magma-scale-02));
+  color: rgb(var(--magma-text-default));
   display: flex;
   gap: --spacing(400);
   max-width: --spacing(8000);

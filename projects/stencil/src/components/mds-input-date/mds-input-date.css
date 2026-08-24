@@ -50,7 +50,7 @@
   @apply text-info-detail;
 
   border-radius: var(--radius-2xl);
-  color: rgb(var(--magma-scale-02));
+  color: rgb(var(--magma-text-default));
   container-type: inline-size;
   corner-shape: var(--magma-corner-shape, round);
   display: flex;
@@ -136,7 +136,7 @@
 }
 
 .input:disabled {
-  background-color: rgb(var(--magma-scale-10));
+  background-color: rgb(var(--magma-wash-soft));
 }
 
 .input:disabled,

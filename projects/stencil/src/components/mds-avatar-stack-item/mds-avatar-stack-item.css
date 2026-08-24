@@ -16,7 +16,7 @@
   --mds-avatar-stack-item-background: var(--mds-avatar-stack-background, rgb(var(--tone-neutral-seed)));
   --mds-avatar-stack-item-count-background-color: var(
     --mds-avatar-stack-count-background-color,
-    rgb(var(--magma-scale-09))
+    rgb(var(--magma-wash-base))
   );
   --mds-avatar-stack-item-count-color: var(
     --mds-avatar-stack-count-color,

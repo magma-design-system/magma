@@ -6,13 +6,13 @@
 
 :host([pref-theme='dark']:not([pref-theme-scheme='light'])) {
   --mds-tab-tabs-background: rgb(var(--magma-scale-10));
-  --mds-tab-item-selected-background: rgb(var(--magma-scale-08));
+  --mds-tab-item-selected-background: rgb(var(--magma-wash-strong));
 }
 
 @media (prefers-color-scheme: dark) {
   :host([pref-theme='system']:not([pref-theme-scheme='light'])),
   :host(:not([pref-theme])) {
     --mds-tab-tabs-background: rgb(var(--magma-scale-10));
-    --mds-tab-item-selected-background: rgb(var(--magma-scale-08));
+    --mds-tab-item-selected-background: rgb(var(--magma-wash-strong));
   }
 }

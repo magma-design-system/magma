@@ -37,7 +37,7 @@
 */
 
 :host {
-  --mds-header-color: rgb(var(--magma-scale-02));
+  --mds-header-color: rgb(var(--magma-text-default));
   --mds-header-hidden-bar-translate-inline: translateY(-150%);
   --mds-header-hidden-bar-translate-stripe: translateY(-110%);
   --mds-header-icon-color: var(--mds-header-color, rgb(var(--magma-scale-02)));
