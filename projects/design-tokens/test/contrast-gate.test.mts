@@ -102,6 +102,34 @@ test('aliasesFromConfig maps every --magma-* role to its primitive (A9 contract)
   expect(map['--magma-accent-secondary-fg']).toBeUndefined();
 });
 
+test('the neutral wash band names tint ramp steps, and shares one map with the hues', () => {
+  const map = aliasesFromConfig(semantic);
+  // the neutral pills (spec 6.1b) name steps of the ACTIVE TINT ramp, so they
+  // follow a named theme; they are NOT the elevation band, which cannot hold these
+  // values in both modes (a pill moves toward the ink in light AND in dark).
+  expect(map['--magma-wash-soft']).toBe('--tone-neutral-10');
+  expect(map['--magma-wash-base']).toBe('--tone-neutral-09');
+  expect(map['--magma-wash-strong']).toBe('--tone-neutral-08');
+  // three DISTINCT levels: two collapsing would silently kill a hover or a
+  // selected state built out of them (the failure #635 hit on the input family).
+  const levels = ['soft', 'base', 'strong'].map((l) => map[`--magma-wash-${l}`]);
+  expect(new Set(levels).size).toBe(3);
+  // one map for both bands: the neutral level and the colored level of the same
+  // name must name the same step, or a neutral pill and a status pill drift apart.
+  for (const [level, step] of Object.entries(semantic.washSteps)) {
+    expect(map[`--magma-wash-${level}`]).toBe(`--tone-neutral-${step}`);
+    expect(map[`--magma-danger-wash-${level}`]).toBe(`--status-error-${step}`);
+  }
+  // the ambiguous names must not exist, for the same reason they do not on a hue:
+  // `--magma-surface-*` is elevation and a wash is not a level of it.
+  expect(map['--magma-surface-wash']).toBeUndefined();
+  expect(map['--magma-surface-soft']).toBeUndefined();
+  expect(map['--magma-wash-default']).toBeUndefined();
+  // and the ramp escape hatch stays out of the role map: naming a step is what
+  // this band exists to replace (#624), so `--magma-scale-*` must not be a role.
+  expect(map['--magma-scale-09']).toBeUndefined();
+});
+
 test('the emphasis band carries the same states on a hue as on an accent', async () => {
   const states = emphasisStateSteps();
   // only the emphasis band: the surface-band states are an accent affair

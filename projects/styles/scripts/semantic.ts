@@ -39,7 +39,7 @@ const {
   seed,
   hues,
   hueSteps,
-  hueWashSteps,
+  washSteps,
   hueRoles,
   neutralHueSteps,
   accents,
@@ -99,6 +99,28 @@ scaleStepList().forEach((step) =>
 layer.push('', '  /* Surfaces - elevation + same-plane prominence (spec 6.1) */');
 surfaceRoles.forEach((r) => layer.push(alias(`surface-${r}`, `magma-tint-${r}`, `surface-${r}`)));
 
+// 2b. wash levels - neutral PILLS, not elevation. Same device as the colored
+//    `--magma-<hue>-wash-*` of 6.4 and the same `washSteps` map, so the two
+//    vocabularies cannot drift; what differs is what they name. A hue names its
+//    own family directly (a theme never retints a hue), while the neutral levels
+//    resolve through `--magma-tint-scale-*`, so they follow the active theme
+//    exactly like the surfaces above.
+//    Why they cannot BE surfaces, measured: the elevation ladder moves toward
+//    white as it rises in light and toward the ink in dark, while a pill moves
+//    toward the ink in BOTH modes (step 08 is #d0d0d0 on #f2f2f2 paper in light,
+//    #6b6b6b on #1d1d1d in dark). No elevation role can hold that value - it
+//    would have to be `sunken` in light and `raised` in dark. Naming a ramp step
+//    gets the mode-flip for free, because the primitive itself flips.
+//    Censused for #624: 144 component declarations were naming steps 10/09/08 as
+//    a background for exactly this reason, with no role to reach for.
+layer.push(
+  '',
+  '  /* Wash - neutral pills, by how marked they are (spec 6.1b); follows the theme via --magma-tint-scale-* */',
+);
+Object.entries(washSteps).forEach(([level, step]) =>
+  layer.push(alias(`wash-${level}`, `magma-tint-scale-${step}`, `wash-${level}`)),
+);
+
 // 3. text roles - resolve through the tint-text indirection so a theme retints
 //    the foreground with its surface (values are the by-target --text-*, A7).
 layer.push(
@@ -126,7 +148,8 @@ layer.push(
 //    from the generated per-family role scales (`--text-success-*`), so the A7
 //    guarantee - each step solved against the family's own surfaces - carries over
 //    to every hue, and the spec 9.3 promotion applies to them verbatim.
-//    Wash levels instead NAME ramp steps (see `hueWashSteps`): a colored chip
+//    Wash levels instead NAME ramp steps (see `washSteps`, shared with the
+//    neutral band of 2b): a colored chip
 //    moves toward the ink in both modes, which no elevation role can express, and
 //    they are NOT called `surface-*` precisely so they cannot be read as the
 //    colored parent of `--magma-surface-*`, which is a different thing.
@@ -164,7 +187,7 @@ Object.entries(hues).forEach(([hue, { family, roles, partial }]) => {
     );
   }
   // wash levels: named ramp steps, so they mode-flip with the primitive
-  Object.entries(hueWashSteps).forEach(([level, step]) =>
+  Object.entries(washSteps).forEach(([level, step]) =>
     layer.push(alias(`${hue}-wash-${level}`, `${family}-${step}`, `${hue}-wash-${level}`)),
   );
   // text + border: the family's own generated role scales (A7 guarantee)

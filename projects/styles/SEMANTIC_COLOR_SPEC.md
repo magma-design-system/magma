@@ -203,6 +203,34 @@ and same-plane prominence (`muted`). 5 roles:
 | `--magma-surface-raised` | elevation | cards, panels, sticky headers |
 | `--magma-surface-overlay` | elevation | modal, dropdown, popover, tooltip, sheet |
 
+### 6.1b Wash - neutral pills (how MARKED, not how elevated)
+
+`--magma-wash-{soft,base,strong}`, naming ramp steps `10 / 09 / 08` of the ACTIVE TINT
+(`--magma-tint-scale-*`), so they retint with a named theme exactly like the surfaces above.
+
+| Token | Step | Use |
+|---|---|---|
+| `--magma-wash-soft` | `10` | the faintest pill: zebra rows on a card, a resting track |
+| `--magma-wash-base` | `09` | the default pill: paginator page, disabled fill, chip ground |
+| `--magma-wash-strong` | `08` | the marked pill: hover on a pill, a selected track |
+
+**Why this cannot be a surface role.** Measured, not stylistic - the same argument as the
+colored washes of 6.4, one level down. The elevation ladder moves toward WHITE as it rises in
+light and toward the INK in dark, while a pill moves toward the ink in BOTH modes: step 08 is
+`#d0d0d0` against `#f2f2f2` paper in light and `#6b6b6b` against `#1d1d1d` in dark. One
+elevation role therefore cannot name it - it would have to be `sunken` in light and `raised`
+in dark - whereas naming a ramp step gets the mode-flip for free, because the primitive flips.
+
+**Why the same word as the hues.** A grey pill and a status pill are the same graphic device,
+so they share one config map (`washSteps`) and one gate table (section 9.1). What differs is
+only what they name: the neutral levels resolve through the tint (a theme retints them), a hue
+names its own family directly (a theme never retints a hue). The `--magma-surface-*` names stay
+reserved for elevation, and `--magma-wash-default` deliberately does not exist: `base` is the
+default level, and a second word for it would invite reading the band as a surface ladder.
+
+Censused for #624: 144 component declarations were naming steps `10/09/08` as a background
+because no role could hold their value. Adopting the band is a 1:1 rename at identical value.
+
 ### 6.2 Text (prominence)
 
 `--magma-text-{default,muted,subtle,disabled,on-emphasis}`
@@ -410,7 +438,9 @@ DOM). Same mechanism as the existing preference system.
 
   `--magma-scale-*` is TRANSITIONAL and deliberately NOT bridged to Tailwind. It exists so
   theming is correct today while those uses are still step-indexed; each one that earns a
-  role (a wash, a scrim, a shadow) drops out of it. Publishing `--color-scale-09`
+  role (a wash, a scrim, a shadow) drops out of it. First to leave: the 144 background uses
+  of steps `10/09/08`, which became the neutral wash band of 6.1b - the census behind that
+  move is in #624. Publishing `--color-scale-09`
   utilities would make the raw step the easy choice again and freeze the habit this layer
   exists to remove.
 - mode `light | dark | system`: the existing global flip; semantic tokens follow it.
@@ -454,15 +484,21 @@ protection, e.g. a themed accent family or a retuned ramp. The base pair is the 
 `74.7-74.9` in dark on all four hues and both accents, six baselined offenders that move
 together the day the emphasis band is retuned.
 
-**Text on a hue's own wash (6.4).** How much of the text ladder a wash level can carry is a
-measured bound, and the gate enforces exactly this much - the rest is measured and reported,
-never silently accepted:
+**Text on a wash level (6.1b and 6.4).** How much of the text ladder a wash level can carry is
+a measured bound, and the gate enforces exactly this much - the rest is measured and reported,
+never silently accepted. ONE table covers the neutral band and the colored ones, because the
+measurement came out the same on both:
 
 | Wash level | Enforced text roles | Why |
 |---|---|---|
-| `<hue>-wash-soft` | the whole ladder | 89-91 Lc for `text-default`, 81-83 for `muted` |
-| `<hue>-wash-base` | `text-default` only | `muted` lands at 73-75 Lc, i.e. at or just under its floor |
-| `<hue>-wash-strong` | none | the graphic wash (chips, cockades, hover): icons only, no essential text |
+| `wash-soft` / `<hue>-wash-soft` | the whole ladder | 89-91 Lc for `text-default` on a hue, 95-97 on the neutral; 80-83 for `muted` |
+| `wash-base` / `<hue>-wash-base` | `text-default` only | `muted` lands at 73-75 Lc, i.e. at or just under its floor, on both bands |
+| `wash-strong` / `<hue>-wash-strong` | none | the graphic wash (chips, cockades, hover): icons only, no essential text |
+
+Neutral band, measured the day it was added (light/dark): `soft` 95.3/96.8 Lc for `default`
+down to 60.4/61.8 for `disabled`; `base` 88.4/89.5 for `default` but 73.1/74.0 for `muted`;
+`strong` 78.7/79.9 for `default`. Gate categories: `text-on-wash` for the neutral band,
+`text-on-hue` for the colored ones.
 
 `strong` is not a text surface by design, but it is not exempt either: `text-default` on it
 measures 74.5-76 Lc, comfortably above the report-only target, which is what makes it safe
