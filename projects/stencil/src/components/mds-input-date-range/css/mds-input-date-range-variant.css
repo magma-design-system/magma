@@ -27,7 +27,7 @@
 
 :host([variant='info']:focus-within) {
   --mds-input-date-range-icon-color: rgb(var(--magma-info-emphasis));
-  --mds-input-date-range-variant-color-rgb: var(--status-info-04);
+  --mds-input-date-range-variant-color-rgb: var(--magma-info-emphasis);
 }
 
 :host([variant='success']) {
@@ -38,7 +38,7 @@
 
 :host([variant='success']:focus-within) {
   --mds-input-date-range-icon-color: rgb(var(--magma-success-emphasis));
-  --mds-input-date-range-variant-color-rgb: var(--status-success-04);
+  --mds-input-date-range-variant-color-rgb: var(--magma-success-emphasis);
 }
 
 :host([variant='warning']) {
@@ -49,7 +49,7 @@
 
 :host([variant='warning']:focus-within) {
   --mds-input-date-range-icon-color: rgb(var(--magma-warning-emphasis));
-  --mds-input-date-range-variant-color-rgb: var(--status-warning-04);
+  --mds-input-date-range-variant-color-rgb: var(--magma-warning-emphasis);
 }
 
 :host([variant='error']) {
@@ -60,5 +60,5 @@
 
 :host([variant='error']:focus-within) {
   --mds-input-date-range-icon-color: rgb(var(--magma-danger-emphasis));
-  --mds-input-date-range-variant-color-rgb: var(--status-error-04);
+  --mds-input-date-range-variant-color-rgb: var(--magma-danger-emphasis);
 }

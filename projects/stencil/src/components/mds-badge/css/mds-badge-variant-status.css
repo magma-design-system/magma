@@ -7,7 +7,7 @@
   }
 
   &:host([tone='outline']) {
-    --mds-badge-border-color: rgb(var(--status-warning-06));
+    --mds-badge-border-color: rgb(var(--magma-warning-border-strong));
     --mds-badge-color: rgb(var(--magma-warning-emphasis));
   }
 }
@@ -21,7 +21,7 @@
   }
 
   &:host([tone='outline']) {
-    --mds-badge-border-color: rgb(var(--status-error-06));
+    --mds-badge-border-color: rgb(var(--magma-danger-border-strong));
     --mds-badge-color: rgb(var(--magma-danger-emphasis));
   }
 }
@@ -35,7 +35,7 @@
   }
 
   &:host([tone='outline']) {
-    --mds-badge-border-color: rgb(var(--status-success-06));
+    --mds-badge-border-color: rgb(var(--magma-success-border-strong));
     --mds-badge-color: rgb(var(--magma-success-emphasis));
   }
 }
@@ -49,7 +49,7 @@
   }
 
   &:host([tone='outline']) {
-    --mds-badge-border-color: rgb(var(--status-info-06));
+    --mds-badge-border-color: rgb(var(--magma-info-border-strong));
     --mds-badge-color: rgb(var(--magma-info-emphasis));
   }
 }
