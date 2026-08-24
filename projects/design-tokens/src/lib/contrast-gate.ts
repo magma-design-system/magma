@@ -170,6 +170,8 @@ export interface SemanticMapping {
   washSteps?: Record<string, string>;
   /** Which published role each legacy quintet alias shortcuts to; optional. */
   hueRoles?: { surface: string; text: string; border: string };
+  /** Ramp step the shadow ink names (spec 6.1c); optional. */
+  shadowStep?: string;
   /**
    * Ramp family behind `--magma-tint-scale-*`, when it is not the tint's own tone
    * scale. Mirrors `scaleFamily()` in semantic.config, which the gate cannot
@@ -199,6 +201,9 @@ export function aliasesFromConfig(m: SemanticMapping): Record<string, string> {
   // is what `scaleFamily(tint)` resolves to - not the surface band, which is
   // elevation and cannot hold these values in both modes.
   const rampFamily = m.scale ?? `tone-${m.tint}`; // = scaleFamily(tint) in semantic.config
+  // the shadow ink (spec 6.1c): a colour, gated for resolution only - a shadow has
+  // no text contrast floor of its own.
+  if (m.shadowStep) set('shadow-ink', `${rampFamily}-${m.shadowStep}`);
   Object.entries(m.washSteps ?? {}).forEach(([level, step]) =>
     set(`wash-${level}`, `${rampFamily}-${step}`),
   );

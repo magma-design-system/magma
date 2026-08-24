@@ -4,7 +4,7 @@
  * `system` and no controller follow the OS via @media. Cross-browser, no :host-context. */
 
 :host([pref-contrast='more']) {
-  --mds-input-date-range-ring: var(--shadow-outline-strong-50);
+  --mds-input-date-range-ring: var(--shadow-ring-strong-2);
   --mds-input-date-range-background: rgb(var(--magma-wash-base));
   --mds-input-date-range-controls-border: 2px solid rgb(var(--magma-scale-05));
 
@@ -16,7 +16,7 @@
 @media (prefers-contrast: more) {
   :host([pref-contrast='system']),
   :host(:not([pref-contrast])) {
-    --mds-input-date-range-ring: var(--shadow-outline-strong-50);
+    --mds-input-date-range-ring: var(--shadow-ring-strong-2);
     --mds-input-date-range-background: rgb(var(--magma-wash-base));
     --mds-input-date-range-controls-border: 2px solid rgb(var(--magma-scale-05));
 

@@ -6,7 +6,7 @@
 :host([pref-contrast='more']) {
   --mds-price-table-list-separator-color: rgb(var(--magma-text-default) / 0.5);
 
-  box-shadow: var(--shadow-outline-50) inset;
+  box-shadow: var(--shadow-ring-2) inset;
   color: rgb(var(--magma-text-default));
 }
 
@@ -15,7 +15,7 @@
   :host(:not([pref-contrast])) {
     --mds-price-table-list-separator-color: rgb(var(--magma-text-default) / 0.5);
 
-    box-shadow: var(--shadow-outline-50) inset;
+    box-shadow: var(--shadow-ring-2) inset;
     color: rgb(var(--magma-text-default));
   }
 }

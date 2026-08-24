@@ -9,11 +9,11 @@
 
   &:host([selected]:not([selected='false'])) {
     background-color: rgb(var(--magma-wash-strong));
-    box-shadow: var(--shadow-outline);
+    box-shadow: var(--shadow-ring);
   }
 
   &:host(:hover) {
-    box-shadow: var(--shadow-outline);
+    box-shadow: var(--shadow-ring);
   }
 }
 
@@ -24,11 +24,11 @@
 
     &:host([selected]:not([selected='false'])) {
       background-color: rgb(var(--magma-wash-strong));
-      box-shadow: var(--shadow-outline);
+      box-shadow: var(--shadow-ring);
     }
 
     &:host(:hover) {
-      box-shadow: var(--shadow-outline);
+      box-shadow: var(--shadow-ring);
     }
   }
 }

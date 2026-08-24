@@ -8,7 +8,7 @@
   --mds-price-table-list-separator-color: rgb(var(--magma-text-default) / 0.5);
 
   background-color: rgb(var(--label-green-09));
-  box-shadow: var(--shadow-outline);
+  box-shadow: var(--shadow-ring);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -17,6 +17,6 @@
     --mds-price-table-list-separator-color: rgb(var(--magma-text-default) / 0.5);
 
     background-color: rgb(var(--label-green-09));
-    box-shadow: var(--shadow-outline);
+    box-shadow: var(--shadow-ring);
   }
 }

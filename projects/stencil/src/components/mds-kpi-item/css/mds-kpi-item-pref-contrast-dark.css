@@ -1,14 +1,14 @@
 :host([pref-contrast='more'][pref-theme='dark']) {
   --mds-kpi-item-info-background: rgb(var(--tone-neutral-seed));
 
-  box-shadow: var(--shadow-outline-50);
+  box-shadow: var(--shadow-ring-2);
 }
 
 @media (prefers-contrast: more) {
   :host([pref-contrast='system'][pref-theme='dark']) {
     --mds-kpi-item-info-background: rgb(var(--tone-neutral-seed));
 
-    box-shadow: var(--shadow-outline-50);
+    box-shadow: var(--shadow-ring-2);
   }
 }
 
@@ -16,7 +16,7 @@
   :host([pref-contrast='more'][pref-theme='system']) {
     --mds-kpi-item-info-background: rgb(var(--tone-neutral-seed));
 
-    box-shadow: var(--shadow-outline-50);
+    box-shadow: var(--shadow-ring-2);
   }
 }
 
@@ -26,7 +26,7 @@
     :host([pref-contrast='system'][pref-theme='system']) {
       --mds-kpi-item-info-background: rgb(var(--tone-neutral-seed));
 
-      box-shadow: var(--shadow-outline-50);
+      box-shadow: var(--shadow-ring-2);
     }
   }
 }

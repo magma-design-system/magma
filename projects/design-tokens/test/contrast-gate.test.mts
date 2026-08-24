@@ -130,6 +130,20 @@ test('the neutral wash band names tint ramp steps, and shares one map with the h
   expect(map['--magma-scale-09']).toBeUndefined();
 });
 
+test('the shadow ink names the tint ink extreme, and is a colour not a shadow', () => {
+  const map = aliasesFromConfig(semantic);
+  // spec 6.1c: the ink extreme of the ACTIVE tint ramp, so it flips with the mode
+  // (black on a light page, white on a dark one) - which is what makes a shadow
+  // visible on a dark surface, the defect #641 documents on the composite tokens.
+  expect(map['--magma-shadow-ink']).toBe(`--tone-neutral-${semantic.shadowStep}`);
+  expect(semantic.shadowStep).toBe('01');
+  // it must NOT be a shadow: no composite token may enter the role map, or the
+  // gate would try to read a colour out of `0 0 0 1px rgb(...)`.
+  expect(map['--magma-shadow']).toBeUndefined();
+  expect(map['--magma-shadow-ring']).toBeUndefined();
+  expect(map['--shadow-ring']).toBeUndefined();
+});
+
 test('the emphasis band carries the same states on a hue as on an accent', async () => {
   const states = emphasisStateSteps();
   // only the emphasis band: the surface-band states are an accent affair

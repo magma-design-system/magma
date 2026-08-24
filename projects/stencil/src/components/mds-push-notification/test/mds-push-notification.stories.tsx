@@ -121,7 +121,7 @@ const Template = (args) => {
       <div class="fixed top-600 left-600 flex gap-100">
         {visible ? (
           <mds-button
-            class="shadow-outline-50 shadow-tone-neutral"
+            class="shadow-ring-2 shadow-tone-neutral"
             onClick={() => setVisible(false)}
             icon="mdi/eye-off-outline"
             variant="error"
@@ -130,7 +130,7 @@ const Template = (args) => {
           </mds-button>
         ) : (
           <mds-button
-            class="shadow-outline-50 shadow-tone-neutral"
+            class="shadow-ring-2 shadow-tone-neutral"
             onClick={() => setVisible(true)}
             icon="mi/baseline/remove-red-eye"
             variant="primary"
@@ -138,7 +138,7 @@ const Template = (args) => {
             Show notifications
           </mds-button>
         )}
-        <mds-button class="shadow-outline-50 shadow-tone-neutral" variant="success" onClick={pushN}>
+        <mds-button class="shadow-ring-2 shadow-tone-neutral" variant="success" onClick={pushN}>
           Carica altre...
         </mds-button>
       </div>

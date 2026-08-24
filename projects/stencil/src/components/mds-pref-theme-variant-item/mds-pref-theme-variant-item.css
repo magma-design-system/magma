@@ -25,7 +25,7 @@
 .theme-preview {
   background-color: var(--mds-pref-theme-variant-item-color-background);
   border-radius: var(--radius-md);
-  box-shadow: var(--shadow-outline-light);
+  box-shadow: var(--shadow-ring-weak);
   box-sizing: border-box;
   display: inline-flex;
   flex-wrap: wrap;
@@ -46,7 +46,7 @@
 
 .theme-color::after {
   border-radius: inherit;
-  box-shadow: var(--shadow-outline-light) inset;
+  box-shadow: var(--shadow-ring-weak) inset;
   content: '';
   display: flex;
   inset: 0;

@@ -4,16 +4,16 @@
  * `system` and no controller follow the OS via @media. Cross-browser, no :host-context. */
 
 :host([pref-contrast='more']) {
-  --mds-dropdown-drop-shadow: drop-shadow(0 0 4px rgb(var(--magma-scale-01) / 0.05))
-    drop-shadow(0 0 4px rgb(var(--magma-scale-01) / 0.3))
-    drop-shadow(0 0 4px rgb(var(--magma-scale-01) / 0.3));
+  --mds-dropdown-drop-shadow: drop-shadow(0 0 4px rgb(var(--magma-shadow-ink) / 0.05))
+    drop-shadow(0 0 4px rgb(var(--magma-shadow-ink) / 0.3))
+    drop-shadow(0 0 4px rgb(var(--magma-shadow-ink) / 0.3));
 }
 
 @media (prefers-contrast: more) {
   :host([pref-contrast='system']),
   :host(:not([pref-contrast])) {
-    --mds-dropdown-drop-shadow: drop-shadow(0 0 4px rgb(var(--magma-scale-01) / 0.05))
-      drop-shadow(0 0 4px rgb(var(--magma-scale-01) / 0.3))
-      drop-shadow(0 0 4px rgb(var(--magma-scale-01) / 0.3));
+    --mds-dropdown-drop-shadow: drop-shadow(0 0 4px rgb(var(--magma-shadow-ink) / 0.05))
+      drop-shadow(0 0 4px rgb(var(--magma-shadow-ink) / 0.3))
+      drop-shadow(0 0 4px rgb(var(--magma-shadow-ink) / 0.3));
   }
 }

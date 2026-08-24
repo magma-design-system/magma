@@ -13,7 +13,7 @@
   --mds-chip-color-selected: rgb(var(--magma-text-default));
   --mds-chip-icon-color-selected: rgb(var(--magma-text-on-emphasis));
 
-  box-shadow: var(--shadow-outline-50);
+  box-shadow: var(--shadow-ring-2);
 }
 
 @media (prefers-contrast: more) {
@@ -28,6 +28,6 @@
     --mds-chip-color-selected: rgb(var(--magma-text-default));
     --mds-chip-icon-color-selected: rgb(var(--magma-text-on-emphasis));
 
-    box-shadow: var(--shadow-outline-50);
+    box-shadow: var(--shadow-ring-2);
   }
 }

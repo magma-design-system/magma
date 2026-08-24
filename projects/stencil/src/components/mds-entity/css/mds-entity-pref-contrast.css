@@ -9,7 +9,7 @@
   --mds-entity-detail-color: rgb(var(--magma-scale-02));
   --mds-entity-icon-background: rgb(var(--label-blue-08));
   --mds-entity-icon-color: rgb(var(--label-blue-03));
-  --mds-entity-shadow: var(--shadow-outline-50);
+  --mds-entity-shadow: var(--shadow-ring-2);
 }
 
 @media (prefers-contrast: more) {
@@ -20,6 +20,6 @@
     --mds-entity-detail-color: rgb(var(--magma-scale-02));
     --mds-entity-icon-background: rgb(var(--label-blue-08));
     --mds-entity-icon-color: rgb(var(--label-blue-03));
-    --mds-entity-shadow: var(--shadow-outline-50);
+    --mds-entity-shadow: var(--shadow-ring-2);
   }
 }

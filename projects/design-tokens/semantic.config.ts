@@ -128,6 +128,19 @@ export interface SemanticConfig {
    */
   washSteps: Record<string, string>;
   /**
+   * Ramp step the shadow ink names (spec 6.1c). A projected shadow is drawn with
+   * the ink extreme of the ACTIVE TINT, so it flips with the mode for free: black
+   * on a light page, white on a dark one - which is what a shadow has to do, since
+   * a pure black shadow is invisible on a dark surface.
+   *
+   * It publishes a COLOUR, not a shadow: the composite `--shadow-*` tokens stay in
+   * tokens/cosmetic/box-shadow.json, one layer down, where they cannot reference
+   * this role without inverting the layering. They name the primitive instead, and
+   * the difference is measured at 1/255 - the ink extreme is all but identical in
+   * every tint (step 01 is `5 5 5` on the base tint, `6 5 5` under `warm`).
+   */
+  shadowStep: string;
+  /**
    * Which published role each legacy quintet alias is a SHORTCUT for (spec 6.5).
    * `--magma-<hue>-surface`, `-fg` and `-border` are kept so existing consumers
    * keep resolving, but they now point at a role in the published scale instead
@@ -228,6 +241,9 @@ export const semantic: SemanticConfig = {
   // colored chip is not an interaction state. Unifying the two vocabularies is a
   // follow-up, not part of this change.
   washSteps: { soft: '10', base: '09', strong: '08' },
+  // The ink extreme. 51 component declarations were naming it for a drop shadow
+  // (dropdown 20, tooltip 18, tab 7, filter 4), 38 of them on step 01 itself.
+  shadowStep: '01',
   hueRoles: { surface: 'base', text: 'default', border: 'default' },
   neutralHueSteps: { fg: '03', border: '06', emphasis: '02' },
   accents: {

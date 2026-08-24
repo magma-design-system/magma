@@ -16,12 +16,12 @@
  * without measuring again. */
 
 :host([pref-theme='dark']:not([pref-theme-scheme='light'])) {
-  box-shadow: var(--shadow-outline);
+  box-shadow: var(--shadow-ring);
 }
 
 @media (prefers-color-scheme: dark) {
   :host([pref-theme='system']:not([pref-theme-scheme='light'])),
   :host(:not([pref-theme])) {
-    box-shadow: var(--shadow-outline);
+    box-shadow: var(--shadow-ring);
   }
 }
