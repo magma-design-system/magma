@@ -33,7 +33,7 @@
 
 @property --mds-header-color {
   inherits: true;
-  initial-value: rgb(var(--magma-scale-02));
+  initial-value: rgb(var(--magma-text-default));
   syntax: '<color>';
 }
 

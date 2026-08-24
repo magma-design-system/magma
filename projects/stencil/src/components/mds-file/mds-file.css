@@ -8,8 +8,8 @@
  */
 
 :host {
-  --mds-file-preview-icon-color: rgb(var(--magma-scale-04));
-  --mds-file-preview-color: rgb(var(--magma-scale-04));
+  --mds-file-preview-icon-color: rgb(var(--magma-text-subtle));
+  --mds-file-preview-color: rgb(var(--magma-text-subtle));
   --mds-file-preview-icon-background: rgb(var(--magma-wash-soft));
   --mds-file-transition-duration: var(--duration-200);
   --private-file-transition-duration: var(--mds-file-transition-duration);
@@ -21,7 +21,7 @@
   background-color: rgb(var(--tone-neutral-seed));
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-outline-weak);
-  color: rgb(var(--magma-scale-04));
+  color: rgb(var(--magma-text-subtle));
   corner-shape: var(--magma-corner-shape, round);
   cursor: pointer;
   display: inline-flex;

@@ -10,7 +10,7 @@
 :host {
   --mds-price-table-features-row-background: transparent;
   --mds-price-table-features-row-background-hover: rgb(var(--magma-wash-soft));
-  --mds-price-table-features-row-color: rgb(var(--magma-scale-04));
+  --mds-price-table-features-row-color: rgb(var(--magma-text-subtle));
   --mds-price-table-features-row-color-hover: rgb(var(--magma-text-default));
   --mds-price-table-features-row-transition-duration: var(--duration-200);
   --private-price-table-features-row-transition-duration: var(--mds-price-table-features-row-transition-duration);

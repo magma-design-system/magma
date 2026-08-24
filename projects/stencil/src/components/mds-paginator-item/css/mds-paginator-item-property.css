@@ -17,13 +17,13 @@
 
 @property --mds-paginator-item-background-disabled {
   inherits: true;
-  initial-value: rgb(var(--magma-scale-09));
+  initial-value: rgb(var(--magma-wash-base));
   syntax: '<color>';
 }
 
 @property --mds-paginator-item-background-hover {
   inherits: true;
-  initial-value: rgb(var(--magma-scale-08));
+  initial-value: rgb(var(--magma-wash-strong));
   syntax: '<color>';
 }
 
@@ -35,7 +35,7 @@
 
 @property --mds-paginator-item-color {
   inherits: true;
-  initial-value: rgb(var(--magma-scale-02));
+  initial-value: rgb(var(--magma-text-default));
   syntax: '<color>';
 }
 
@@ -47,7 +47,7 @@
 
 @property --mds-paginator-item-color-hover {
   inherits: true;
-  initial-value: rgb(var(--magma-scale-02));
+  initial-value: rgb(var(--magma-text-default));
   syntax: '<color>';
 }
 

@@ -5,13 +5,19 @@
  */
 
 :host {
-  --mds-separator-background: rgb(var(--magma-wash-strong));
+  /* A rule is a BORDER, not a pill: `border-default` is the role, and taking it
+   * deletes both refinement sheets this component used to carry. The role flips
+   * with the mode on its own (#c4c4c4 light / #6f6f6f dark), which is what the
+   * pref-theme sheet did by hand on step 07; and under `pref-contrast-more` the
+   * #612 layer promotes it to `border-strong` (3.00:1 against the paper, where the
+   * hand-written step 06 reached 2.20:1), which is what the pref-contrast sheet
+   * did by hand. The host `pref-*` attributes are a REFLECTION of the root classes
+   * (see resolve() in @common/preference), so the global layer is always in sync
+   * with them - a component on a promoted role needs no sheet of its own. */
+  --mds-separator-background: rgb(var(--magma-border-default));
 
   background-color: var(--mds-separator-background);
   border-radius: var(--radius-full);
   display: flex;
   height: 1px;
 }
-
-@import './css/mds-separator-pref-theme.css';
-@import './css/mds-separator-pref-contrast.css';

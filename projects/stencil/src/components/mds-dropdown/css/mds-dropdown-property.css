@@ -35,7 +35,7 @@
 
 @property --mds-dropdown-drop-shadow-color-rgb {
   inherits: true;
-  initial-value: var(--magma-scale-01);
+  initial-value: var(--magma-shadow-ink);
   syntax: '<number>+';
 }
 

@@ -23,7 +23,7 @@
 
 @property --mds-chip-color {
   inherits: true;
-  initial-value: rgb(var(--magma-scale-04));
+  initial-value: rgb(var(--magma-text-muted));
   syntax: '<color>';
 }
 

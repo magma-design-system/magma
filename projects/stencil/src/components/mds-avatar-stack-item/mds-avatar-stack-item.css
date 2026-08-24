@@ -20,7 +20,7 @@
   );
   --mds-avatar-stack-item-count-color: var(
     --mds-avatar-stack-count-color,
-    rgb(var(--magma-scale-04))
+    rgb(var(--magma-text-subtle))
   );
 
   /* apply: default to the md variant for standalone use; inside a stack the

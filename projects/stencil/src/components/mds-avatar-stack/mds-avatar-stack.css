@@ -19,7 +19,7 @@
 :host {
   --mds-avatar-stack-background: rgb(var(--tone-neutral-seed));
   --mds-avatar-stack-count-background-color: rgb(var(--magma-wash-base));
-  --mds-avatar-stack-count-color: rgb(var(--magma-scale-04));
+  --mds-avatar-stack-count-color: rgb(var(--magma-text-subtle));
   --mds-avatar-stack-lg-border: --spacing(100);
   --mds-avatar-stack-lg-offset: 2;
   --mds-avatar-stack-lg-size: --spacing(1500);
