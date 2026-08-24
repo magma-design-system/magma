@@ -13,7 +13,7 @@
  */
 
 :host {
-  --mds-date-range-preselection-default-background: rgb(var(--magma-scale-08) / 0);
+  --mds-date-range-preselection-default-background: rgb(var(--magma-wash-strong) / 0);
   --mds-date-range-preselection-default-border: var(--magma-scale-08);
   --mds-date-range-preselection-default-color: rgb(var(--magma-text-muted));
   --mds-date-range-preselection-selected-background: rgb(var(--magma-accent-emphasis-hover));

@@ -5,10 +5,10 @@
  * OS via @media; the scheme axis gates it. Cross-browser, no :host-context. */
 
 :host([pref-theme='dark']:not([pref-theme-scheme='light'])) {
-  background-color: rgb(var(--magma-scale-10));
+  background-color: rgb(var(--magma-wash-soft));
 
   &:host([selected]:not([selected='false'])) {
-    background-color: rgb(var(--magma-scale-08));
+    background-color: rgb(var(--magma-wash-strong));
     box-shadow: var(--shadow-outline);
   }
 
@@ -20,10 +20,10 @@
 @media (prefers-color-scheme: dark) {
   :host([pref-theme='system']:not([pref-theme-scheme='light'])),
   :host(:not([pref-theme])) {
-    background-color: rgb(var(--magma-scale-10));
+    background-color: rgb(var(--magma-wash-soft));
 
     &:host([selected]:not([selected='false'])) {
-      background-color: rgb(var(--magma-scale-08));
+      background-color: rgb(var(--magma-wash-strong));
       box-shadow: var(--shadow-outline);
     }
 

@@ -1,7 +1,7 @@
 @import '../../tailwind/fouc.css';
 
 :host {
-  background-color: rgb(var(--magma-scale-08));
+  background-color: rgb(var(--magma-wash-strong));
   border: 0;
   border-radius: 1000px;
   display: flex;

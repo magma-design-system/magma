@@ -63,11 +63,11 @@
 }
 
 :host([variant='light'][tone='strong']) {
-  background-color: rgb(var(--magma-scale-08));
+  background-color: rgb(var(--magma-wash-strong));
   box-shadow: var(--shadow-outline-50);
 }
 
 :host([variant='light'][tone='weak']) {
-  background-color: rgb(var(--magma-scale-08));
+  background-color: rgb(var(--magma-wash-strong));
   box-shadow: var(--shadow-outline-light-50);
 }

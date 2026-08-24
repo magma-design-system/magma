@@ -8,7 +8,7 @@
  */
 
 :host {
-  --mds-tab-bar-item-background: rgb(var(--magma-scale-10));
+  --mds-tab-bar-item-background: rgb(var(--magma-wash-soft));
   --mds-tab-bar-item-background-selected: transparent;
   --mds-tab-bar-item-color: rgb(var(--magma-scale-04));
   --mds-tab-bar-item-color-selected: rgb(var(--variant-primary-03));

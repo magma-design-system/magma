@@ -121,7 +121,7 @@
 }
 
 .input:disabled {
-  background-color: rgb(var(--magma-scale-09));
+  background-color: rgb(var(--magma-wash-base));
   opacity: 1;
 }
 

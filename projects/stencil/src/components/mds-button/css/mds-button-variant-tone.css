@@ -57,7 +57,7 @@
   }
 
   &:host([tone='weak']) {
-    --mds-button-background: rgb(var(--magma-scale-08));
+    --mds-button-background: rgb(var(--magma-wash-strong));
     --mds-button-border-color-rgb: var(--magma-scale-08);
     --mds-button-color: rgb(var(--magma-text-muted));
 
@@ -86,7 +86,7 @@
 
   &:host([tone='text']:hover) {
     --mds-button-color: rgb(var(--magma-text-default));
-    --mds-button-background: rgb(var(--magma-scale-10));
+    --mds-button-background: rgb(var(--magma-wash-soft));
   }
 
   &:host([tone='text'][active]) {

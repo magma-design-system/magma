@@ -16,7 +16,7 @@
   );
   --mds-accordion-timer-item-progress-bar-background: var(
     --mds-accordion-timer-progress-bar-background,
-    rgb(var(--magma-scale-08))
+    rgb(var(--magma-wash-strong))
   );
   --mds-accordion-timer-item-progress-bar-thickness: var(
     --mds-accordion-timer-progress-bar-thickness,

@@ -25,7 +25,7 @@
   --mds-calendar-max-width: 480px;
   --mds-calendar-min-width: 280px;
 
-  background-color: rgb(var(--magma-scale-09));
+  background-color: rgb(var(--magma-wash-base));
   border-radius: var(--mds-calendar-border-radius);
   cursor: auto;
   display: inline-flex;
@@ -78,7 +78,7 @@ nav {
 
 .select-month-or-year {
   align-items: stretch;
-  background-color: rgb(var(--magma-scale-09));
+  background-color: rgb(var(--magma-wash-base));
   block-size: var(--mds-calendar-select-month-or-year-height);
   border-radius: var(--mds-calendar-border-radius);
   box-sizing: border-box;

@@ -47,8 +47,8 @@
 :host {
   --mds-paginator-item-transition-duration: var(--duration-200);
   --private-paginator-item-transition-duration: var(--mds-paginator-item-transition-duration);
-  --mds-paginator-item-background-disabled: rgb(var(--magma-scale-09));
-  --mds-paginator-item-background-hover: rgb(var(--magma-scale-08));
+  --mds-paginator-item-background-disabled: rgb(var(--magma-wash-base));
+  --mds-paginator-item-background-hover: rgb(var(--magma-wash-strong));
   --mds-paginator-item-background-selected: rgb(var(--magma-accent-emphasis-hover));
   --mds-paginator-item-background: transparent;
   --mds-paginator-item-color-disabled: rgb(var(--magma-scale-06));

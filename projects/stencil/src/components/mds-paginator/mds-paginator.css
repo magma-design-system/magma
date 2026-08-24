@@ -6,7 +6,7 @@
  */
 
 :host {
-  --mds-paginator-background: rgb(var(--magma-scale-09));
+  --mds-paginator-background: rgb(var(--magma-wash-base));
   --mds-paginator-scroll-behavior: smooth;
   --mds-paginator-transition-duration: var(--duration-200);
   --private-paginator-transition-duration: var(--mds-paginator-transition-duration);

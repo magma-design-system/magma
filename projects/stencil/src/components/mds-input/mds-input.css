@@ -152,7 +152,7 @@
 }
 
 .input:disabled {
-  background-color: rgb(var(--magma-scale-10));
+  background-color: rgb(var(--magma-wash-soft));
 }
 
 .input:disabled,

@@ -9,7 +9,7 @@
  */
 
 :host {
-  --mds-avatar-background-color-pending: rgb(var(--magma-scale-08));
+  --mds-avatar-background-color-pending: rgb(var(--magma-wash-strong));
   --mds-avatar-background-color: rgb(var(--variant-primary-05));
   --mds-avatar-color: rgb(var(--variant-primary-10));
   --mds-avatar-radius: var(--radius-full);

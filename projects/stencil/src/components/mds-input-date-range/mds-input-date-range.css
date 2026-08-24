@@ -132,7 +132,7 @@
 
 .calendar-preselection-panel {
   align-content: start;
-  background-color: rgb(var(--magma-scale-09));
+  background-color: rgb(var(--magma-wash-base));
   border-radius: var(--radius-lg);
   box-sizing: border-box;
   display: grid;

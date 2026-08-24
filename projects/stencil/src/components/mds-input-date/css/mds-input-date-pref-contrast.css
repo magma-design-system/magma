@@ -5,7 +5,7 @@
 
 :host([pref-contrast='more']) {
   --mds-input-date-ring: var(--shadow-outline-strong-50);
-  --mds-input-date-background: rgb(var(--magma-scale-09));
+  --mds-input-date-background: rgb(var(--magma-wash-base));
   --mds-input-date-controls-border: 2px solid rgb(var(--magma-scale-05));
 
   .input::placeholder {
@@ -17,7 +17,7 @@
   :host([pref-contrast='system']),
   :host(:not([pref-contrast])) {
     --mds-input-date-ring: var(--shadow-outline-strong-50);
-    --mds-input-date-background: rgb(var(--magma-scale-09));
+    --mds-input-date-background: rgb(var(--magma-wash-base));
     --mds-input-date-controls-border: 2px solid rgb(var(--magma-scale-05));
 
     .input::placeholder {
