@@ -38,6 +38,28 @@ describe('mds-text', () => {
     expect(element).toEqualAttribute('variant', 'read')
   })
 
+  it('falls back to the default tag for an unknown typography', async () => {
+    page = await newE2EPage()
+    await page.setContent(`<mds-text typography="title">${textContent}</mds-text>`)
+
+    const element = await page.find('mds-text')
+    expect(element).toHaveAttribute('hydrated')
+    expect(element).toEqualAttribute('tag', 'p')
+    expect(element.textContent).toEqual(textContent)
+  })
+
+  it('does not throw when the typography attribute is removed after hydration', async () => {
+    const consoleErrors: string[] = []
+    page.on('console', message => {
+      if (message.type() === 'error') consoleErrors.push(message.text())
+    })
+
+    await page.$eval('mds-text', (elem: HTMLMdsTextElement) => elem.removeAttribute('typography'))
+    await page.waitForChanges()
+
+    expect(consoleErrors).toEqual([])
+  })
+
   async function setTypography (page: E2EPage, typography: TypographyType): Promise<void> {
     await page.$eval('mds-text', (elem: HTMLMdsTextElement, typography: TypographyType) => {
       elem.typography = typography
