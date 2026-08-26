@@ -347,6 +347,9 @@ chipEl.selected = undefined;
 | ------------------------------------- | ---------------------------------------------------------------------------- |
 | `--mds-chip-backgroud-selected`       | Sets the `background-color` of the component when it's selected              |
 | `--mds-chip-background`               | Sets the `background-color` of the component                                 |
+| `--mds-chip-background-selected`      | Sets the `background-color` of the component when it's selected              |
+| `--mds-chip-border`                   | Sets the `border-color` of the component                                     |
+| `--mds-chip-border-selected`          | Sets the `border-color` of the component when it's selected                  |
 | `--mds-chip-color`                    | Sets the `color` of the component                                            |
 | `--mds-chip-color-selected`           | Sets the `color` of the component when it's selected                         |
 | `--mds-chip-icon-background`          | Sets the `background-color` of the icon                                      |
@@ -354,6 +357,8 @@ chipEl.selected = undefined;
 | `--mds-chip-icon-color`               | Sets the `fill` color of the icon of the component                           |
 | `--mds-chip-icon-color-selected`      | Sets the `fill` color of the icon of the component when it's selected        |
 | `--mds-chip-opacity-disabled`         | Sets the `opacity` of the component when it's disabled                       |
+| `--mds-chip-shadow`                   | Sets the `box-shadow` of the component                                       |
+| `--mds-chip-shadow-selected`          | Sets the `box-shadow` of the component when it's selected                    |
 
 
 ## Dependencies

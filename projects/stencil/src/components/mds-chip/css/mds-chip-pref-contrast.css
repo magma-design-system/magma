@@ -5,13 +5,13 @@
 
 :host([pref-contrast='more']) {
   --mds-chip-background: rgb(var(--tone-neutral-seed));
+  --mds-chip-background-selected: rgb(var(--magma-scale-09));
   --mds-chip-color: rgb(var(--magma-text-default));
+  --mds-chip-color-selected: rgb(var(--magma-text-default));
   --mds-chip-icon-background-selected: rgb(var(--magma-accent-emphasis-hover));
   --mds-chip-icon-color: rgb(var(--magma-text-on-emphasis));
-  --mds-chip-opacity-disabled: var(--opacity-disabled, 0.6);
-  --mds-chip-backgroud-selected: rgb(var(--magma-scale-09));
-  --mds-chip-color-selected: rgb(var(--magma-text-default));
   --mds-chip-icon-color-selected: rgb(var(--magma-text-on-emphasis));
+  --mds-chip-opacity-disabled: var(--opacity-disabled, 0.6);
 
   box-shadow: var(--shadow-ring-2);
 }
@@ -20,13 +20,13 @@
   :host([pref-contrast='system']),
   :host(:not([pref-contrast])) {
     --mds-chip-background: rgb(var(--tone-neutral-seed));
+    --mds-chip-background-selected: rgb(var(--magma-scale-09));
     --mds-chip-color: rgb(var(--magma-text-default));
+    --mds-chip-color-selected: rgb(var(--magma-text-default));
     --mds-chip-icon-background-selected: rgb(var(--magma-accent-emphasis-hover));
     --mds-chip-icon-color: rgb(var(--magma-text-on-emphasis));
-    --mds-chip-opacity-disabled: var(--opacity-disabled, 0.6);
-    --mds-chip-backgroud-selected: rgb(var(--magma-scale-09));
-    --mds-chip-color-selected: rgb(var(--magma-text-default));
     --mds-chip-icon-color-selected: rgb(var(--magma-text-on-emphasis));
+    --mds-chip-opacity-disabled: var(--opacity-disabled, 0.6);
 
     box-shadow: var(--shadow-ring-2);
   }

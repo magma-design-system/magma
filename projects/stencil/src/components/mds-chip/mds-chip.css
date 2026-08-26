@@ -3,14 +3,18 @@
 
 /**
  * @prop --mds-chip-background: Sets the `background-color` of the component
+ * @prop --mds-chip-background-selected: Sets the `background-color` of the component when it's selected
+ * @prop --mds-chip-border: Sets the `border-color` of the component
+ * @prop --mds-chip-border-selected: Sets the `border-color` of the component when it's selected
  * @prop --mds-chip-color: Sets the `color` of the component
- * @prop --mds-chip-icon-background: Sets the `background-color` of the icon
- * @prop --mds-chip-icon-background-selected: Sets the `background-color` color of the icon when the component is selected
- * @prop --mds-chip-icon-color: Sets the `fill` color of the icon of the component
- * @prop --mds-chip-opacity-disabled: Sets the `opacity` of the component when it's disabled
- * @prop --mds-chip-backgroud-selected: Sets the `background-color` of the component when it's selected
  * @prop --mds-chip-color-selected: Sets the `color` of the component when it's selected
+ * @prop --mds-chip-icon-background: Sets the `background-color` of the icon
+ * @prop --mds-chip-icon-background-selected: Sets the `background-color` of the icon when the component is selected
+ * @prop --mds-chip-icon-color: Sets the `fill` color of the icon of the component
  * @prop --mds-chip-icon-color-selected: Sets the `fill` color of the icon of the component when it's selected
+ * @prop --mds-chip-opacity-disabled: Sets the `opacity` of the component when it's disabled
+ * @prop --mds-chip-shadow: Sets the `box-shadow` of the component
+ * @prop --mds-chip-shadow-selected: Sets the `box-shadow` of the component when it's selected
  */
 
 /* --mds-chip-shadow not supported by Houdini */
