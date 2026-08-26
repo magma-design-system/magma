@@ -19,7 +19,7 @@ The `<mds-paginator>` web component is the page-navigation control of the Magma 
 - **Page change event**: Selecting a page (or an arrow) emits `mdsPaginatorChange` with a detail of `{ page, caller }`, where `caller` is the `mds-paginator-item` that triggered the change.
 - **Bounds clamping**: Navigation requests below `1` or above `pages` are ignored, so the arrows can never move past the valid range.
 - **Arrow disabling**: The back arrow is disabled on the first page and the forward arrow on the last page.
-- **Auto-scroll into view**: When `pages` exceeds two, the strip scrolls so the active page is centered; focusing or selecting an item re-centers it. Scroll motion is themeable via `--mds-paginator-scroll-behavior`.
+- **Auto-scroll into view**: When `pages` exceeds two, the strip scrolls so the active page is centered; selecting an item re-centers it, and so does focusing an item from the keyboard (tabbing through the pages). Pointer interaction never scrolls the strip before the click lands, so the clicked page is always the one selected. Scroll motion is themeable via `--mds-paginator-scroll-behavior`.
 - **Initial sync**: On load the component navigates to the provided `currentPage`, emitting the change event and scrolling the strip to match.
 
 #### Properties & Visual Configurations
