@@ -1,7 +1,7 @@
 :host {
   --mds-chip-background: rgb(var(--tone-neutral-seed));
   --mds-chip-border: transparent;
-  --mds-chip-color: rgb(var(--magma-scale-04));
+  --mds-chip-color: rgb(var(--magma-text-subtle));
   --mds-chip-shadow: var(--shadow-sm-sharp);
 }
 

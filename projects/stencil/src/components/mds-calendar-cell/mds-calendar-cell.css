@@ -87,7 +87,7 @@
   );
   --mds-calendar-cell-selection-current-month-weekend-boundaries-color: rgb(var(--magma-text-muted));
   --mds-calendar-cell-selection-other-month-background: rgb(var(--variant-primary-07));
-  --mds-calendar-cell-selection-other-month-color: rgb(var(--magma-scale-04));
+  --mds-calendar-cell-selection-other-month-color: rgb(var(--magma-text-subtle));
   --mds-calendar-cell-selection-other-month-boundaries-background: rgb(var(--magma-accent-surface-subtle));
   --mds-calendar-cell-selection-other-month-boundaries-color: rgb(var(--magma-text-disabled));
 

@@ -23,7 +23,7 @@
 
 @property --mds-push-notification-item-icon-color {
   inherits: true;
-  initial-value: rgb(var(--magma-scale-04));
+  initial-value: rgb(var(--magma-text-subtle));
   syntax: '<color>';
 }
 

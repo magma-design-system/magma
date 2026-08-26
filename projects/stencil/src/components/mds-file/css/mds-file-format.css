@@ -6,8 +6,8 @@
 }
 
 :host([format='attachment']) {
-  --mds-file-preview-icon-color: rgb(var(--magma-scale-04));
-  --mds-file-preview-color: rgb(var(--magma-scale-04));
+  --mds-file-preview-icon-color: rgb(var(--magma-text-subtle));
+  --mds-file-preview-color: rgb(var(--magma-text-subtle));
   --mds-file-preview-icon-background: rgb(var(--magma-wash-soft));
 }
 

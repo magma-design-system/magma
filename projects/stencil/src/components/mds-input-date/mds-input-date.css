@@ -125,7 +125,7 @@
 }
 
 .input::placeholder {
-  color: rgb(var(--magma-scale-04));
+  color: rgb(var(--magma-text-subtle));
 }
 
 .input::-webkit-outer-spin-button,

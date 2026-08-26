@@ -35,7 +35,7 @@
 
 @property --mds-horizontal-scroll-dot-area-background {
   inherits: true;
-  initial-value: rgb(var(--magma-scale-08));
+  initial-value: rgb(var(--magma-wash-strong));
   syntax: '<color>';
 }
 

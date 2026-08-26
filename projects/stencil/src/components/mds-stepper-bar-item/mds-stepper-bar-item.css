@@ -28,7 +28,7 @@
   );
   --mds-stepper-bar-item-icon-color-done: rgb(var(--magma-success-on-emphasis));
   --mds-stepper-bar-item-icon-color-current: rgb(var(--magma-text-on-emphasis));
-  --mds-stepper-bar-item-icon-color: rgb(var(--magma-scale-04));
+  --mds-stepper-bar-item-icon-color: rgb(var(--magma-text-subtle));
   --mds-stepper-bar-item-min-width: 180px;
   --mds-stepper-bar-item-progress-background: rgb(var(--magma-wash-strong));
   --mds-stepper-bar-item-progress-color: rgb(var(--magma-success-emphasis));
@@ -148,7 +148,7 @@
 
 .step {
   border-radius: var(--radius-full);
-  color: rgb(var(--magma-scale-04));
+  color: rgb(var(--magma-text-subtle));
   pointer-events: none;
 }
 

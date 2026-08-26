@@ -14,7 +14,7 @@
  */
 
 :host {
-  --mds-breadcrumb-arrow-depth-color: rgb(var(--magma-scale-04));
+  --mds-breadcrumb-arrow-depth-color: rgb(var(--magma-text-subtle));
   --mds-breadcrumb-button-background-current: rgb(var(--magma-scale-09));
   --mds-breadcrumb-button-background-disabled: transparent;
   --mds-breadcrumb-button-background-hover: rgb(var(--magma-wash-soft));

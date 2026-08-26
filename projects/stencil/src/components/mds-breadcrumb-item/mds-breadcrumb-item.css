@@ -18,7 +18,7 @@
 :host {
   --mds-breadcrumb-item-arrow-depth-color: var(
     --mds-breadcrumb-arrow-depth-color,
-    rgb(var(--magma-scale-04))
+    rgb(var(--magma-text-subtle))
   );
   --mds-breadcrumb-item-button-background-selected: var(
     --mds-breadcrumb-button-background-selected,
