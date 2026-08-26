@@ -11,13 +11,13 @@
 
 @property --mds-filter-items-background {
   inherits: true;
-  initial-value: rgb(var(--magma-scale-09));
+  initial-value: rgb(var(--magma-wash-base));
   syntax: '<color>';
 }
 
 @property --mds-filter-items-background-active {
   inherits: true;
-  initial-value: rgb(var(--magma-scale-09));
+  initial-value: rgb(var(--magma-wash-base));
   syntax: '<color>';
 }
 

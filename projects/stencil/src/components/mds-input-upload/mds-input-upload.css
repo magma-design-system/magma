@@ -81,7 +81,7 @@
 
 .action {
   border-radius: 1000px;
-  fill: rgb(var(--magma-scale-04));
+  fill: rgb(var(--magma-text-subtle));
   height: auto;
   padding: --spacing(150);
 }

@@ -11,7 +11,7 @@
 
 @property --mds-date-range-preselection-default-background {
   inherits: true;
-  initial-value: rgb(var(--magma-scale-08) / 0);
+  initial-value: rgb(var(--magma-wash-strong) / 0);
   syntax: '<color>';
 }
 

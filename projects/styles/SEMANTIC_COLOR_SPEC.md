@@ -468,7 +468,30 @@ DOM). Same mechanism as the existing preference system.
   theming is correct today while those uses are still step-indexed; each one that earns a
   role (a wash, a scrim, a shadow) drops out of it. First to leave: the 144 background uses
   of steps `10/09/08`, which became the neutral wash band of 6.1b, and the 37 drop shadows on
-  step `01`, which became the shadow ink of 6.1c - the census behind both moves is in #624. Publishing `--color-scale-09`
+  step `01`, which became the shadow ink of 6.1c - the census behind both moves is in #624.
+
+  **The honest size of the escape hatch (#624, closed at 235 uses from 515).** Every group
+  that stayed has a reason, and none of them is "not done yet":
+
+  | uses | why they stay |
+  |---|---|
+  | 96 on steps `06/07` | no role holds their value BY CONSTRUCTION: past step 05 the ramp has no roles, and the surface/border/text ladders are solved elsewhere. Naming them would mean inventing levels nobody asked for. |
+  | 47 in `*-pref-contrast*` sheets | the #612 layer promotes `text-muted`, `text-subtle`, `border-muted` and `border-default` there. Using a promoted role inside one of those sheets applies the boost TWICE, so 15 otherwise-free substitutions are deliberately left raw. |
+  | 46 `@property` registrations | an `initial-value` must resolve to a LITERAL (a `var()` there is invalid and the property gets dropped), and 13 of them point at another component property, which cannot be resolved at all. They are synced FROM the component's own default declaration, never step-mapped by hand. |
+  | 31 dead declarations | nothing reads them: they are tracked in #643, to delete rather than migrate. |
+  | 13 shadows on intermediate steps | a shadow SCALE does not exist in this contract; only the ink extreme has a role (6.1c). |
+  | 6 backgrounds and borders | a text role happens to hold the same value. A name has to say what the thing is, so they keep the step. |
+  | 1 in `mds-keyboard` | its greys are deliberately a different grey from the UI and must not follow the theme. |
+
+  **A role often DELETES code instead of adding it.** `mds-separator` is the worked example:
+  it carried a `pref-theme` sheet naming step 07 for dark and a `pref-contrast` sheet naming
+  step 06 for high contrast. A rule is a border, so it now takes `--magma-border-default` -
+  which flips with the mode on its own (`#c4c4c4` light / `#6f6f6f` dark) and is promoted to
+  `border-strong` under `pref-contrast-more` (3.00:1 against the paper, where the hand-written
+  step 06 reached 2.20:1). Both sheets were deleted. This works because the host `pref-*`
+  attributes are a REFLECTION of the root classes (see `resolve()` in `@common/preference`),
+  so the global layer is always in sync with them: a component sitting on a promoted role
+  needs no sheet of its own. It is the corollary of the double-boost guard above. Publishing `--color-scale-09`
   utilities would make the raw step the easy choice again and freeze the habit this layer
   exists to remove.
 - mode `light | dark | system`: the existing global flip; semantic tokens follow it.

@@ -203,7 +203,7 @@
 
 @property --mds-calendar-cell-selection-other-month-color {
   inherits: true;
-  initial-value: rgb(var(--magma-scale-04));
+  initial-value: rgb(var(--magma-text-subtle));
   syntax: '<color>';
 }
 

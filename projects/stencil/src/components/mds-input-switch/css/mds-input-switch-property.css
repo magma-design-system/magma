@@ -17,13 +17,13 @@
 
 @property --mds-input-switch-box-color-disabled-checked {
   inherits: true;
-  initial-value: rgb(var(--magma-scale-08));
+  initial-value: rgb(var(--magma-wash-strong));
   syntax: '<color>';
 }
 
 @property --mds-input-switch-box-color-disabled-unchecked {
   inherits: true;
-  initial-value: rgb(var(--magma-scale-08));
+  initial-value: rgb(var(--magma-wash-strong));
   syntax: '<color>';
 }
 
@@ -131,7 +131,7 @@
 
 @property --mds-input-switch-toggle-color-enabled-unchecked {
   inherits: true;
-  initial-value: rgb(var(--magma-scale-10));
+  initial-value: rgb(var(--magma-wash-soft));
   syntax: '<color>';
 }
 

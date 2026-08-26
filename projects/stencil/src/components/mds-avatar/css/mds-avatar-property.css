@@ -17,7 +17,7 @@
 
 @property --mds-avatar-background-color-pending {
   inherits: true;
-  initial-value: rgb(var(--magma-scale-08));
+  initial-value: rgb(var(--magma-wash-strong));
   syntax: '<color>';
 }
 
