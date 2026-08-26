@@ -60,8 +60,8 @@ const stripGeometry = (page: E2EPage): Promise<{ scrollLeft: number, focusedPage
  * late for the initial sync, emitted 10ms after load) and it cannot serialize the
  * `caller` element. Each record keeps the page and the caller as `tag.class`.
  */
-const recordChangeEvents = (page: E2EPage): Promise<void> =>
-  page.evaluateOnNewDocument(() => {
+const recordChangeEvents = async (page: E2EPage): Promise<void> => {
+  await page.evaluateOnNewDocument(() => {
     window.mdsPaginatorChanges = []
     document.addEventListener('mdsPaginatorChange', (ev: Event) => {
       const { page: selected, caller } = (ev as CustomEvent).detail
@@ -71,6 +71,7 @@ const recordChangeEvents = (page: E2EPage): Promise<void> =>
       })
     })
   })
+}
 
 const recordedChanges = (page: E2EPage): Promise<RecordedChange[]> =>
   page.evaluate(() => window.mdsPaginatorChanges)
