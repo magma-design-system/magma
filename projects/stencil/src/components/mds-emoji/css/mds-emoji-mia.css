@@ -1,8 +1,10 @@
 /**
- * @prop --mds-emoji-mia-head: Sets the color of Mia's head
- * @prop --mds-emoji-mia-eyes: Sets the color of Mia's eyes
- * @prop --mds-emoji-mia-mouth: Sets the color of Mia's mouth
- * @prop --mds-emoji-mia-hands: Sets the color of Mia's hands
+ * @prop --mds-emoji-mia-eyes-color: Sets the color of Mia's eyes
+ * @prop --mds-emoji-mia-hands-color: Sets the color of Mia's hands
+ * @prop --mds-emoji-mia-head-color: Sets the color of Mia's head
+ * @prop --mds-emoji-mia-head-stroke-color: Sets the stroke color of Mia's head
+ * @prop --mds-emoji-mia-head-stroke-width: Sets the stroke width of Mia's head
+ * @prop --mds-emoji-mia-mouth-color: Sets the color of Mia's mouth
  */
 
 :host([name='mia']) {

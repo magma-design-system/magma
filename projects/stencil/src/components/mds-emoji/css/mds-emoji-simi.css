@@ -4,13 +4,15 @@
  * @prop --mds-emoji-simi-eyebrow: Sets the color of Simi's eyebrows
  * @prop --mds-emoji-simi-gadget: Sets the color of Simi's gadget
  * @prop --mds-emoji-simi-mouth: Sets the color of Simi's mouth
+ * @prop --mds-emoji-simi-mouth-teeth: Sets the color of Simi's teeth
+ * @prop --mds-emoji-simi-mouth-throat: Sets the color of Simi's throat
  * @prop --mds-emoji-simi-nose-light: Sets the light color of Simi's nose
  * @prop --mds-emoji-simi-nose: Sets the color of Simi's nose
  * @prop --mds-emoji-simi-outline: Sets the color of Simi's outline
  * @prop --mds-emoji-simi-skin-dark: Sets the dark shade of Simi's skin
  * @prop --mds-emoji-simi-skin-light: Sets the light shade of Simi's skin
  * @prop --mds-emoji-simi-skin: Sets the base color of Simi's skin
- * @prop --mds-emoji-offset-hand: Sets the positional offset for the hands
+ * @prop --mds-emoji-offset-hands: Sets the positional offset for the hands
  * @prop --mds-emoji-offset-mouth: Sets the positional offset for the mouth
  * @prop --mds-emoji-offset-gadget: Sets the positional offset for gadgets
  * @prop --mds-emoji-offset-eyebrows: Sets the positional offset for eyebrows
@@ -24,7 +26,7 @@
   --mds-emoji-offset-eyebrows: 10px;
   --mds-emoji-offset-eyes: 7px;
   --mds-emoji-offset-gadget: 14px;
-  --mds-emoji-offset-hand: 18px;
+  --mds-emoji-offset-hands: 18px;
   --mds-emoji-offset-head: 5px;
   --mds-emoji-offset-mouth: 16px;
   --mds-emoji-simi-eye-light: #ffffff;
