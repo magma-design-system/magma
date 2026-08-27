@@ -1,0 +1,131 @@
+# CI of the v1.x support line: builds @maggioli-design-system/magma with its
+# companions magma-react and magma-angular and runs the stencil e2e tests on
+# every push and pull request. Publishing to npm is manual (publish.yml) and
+# gated on this workflow being green for the commit, tests included.
+name: stencil
+
+on:
+  push:
+    branches: [support/v1.x]
+  pull_request:
+    branches: [support/v1.x]
+
+concurrency:
+  # one run per ref: a newer push cancels the superseded run
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # The support line ships major 1 only: a manifest bumped to any other major
+  # (e.g. 2.0.0) fails the CI, and publish.yml refuses to release it
+  version:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Check that the published packages stay on major 1
+        run: |
+          STATUS=0
+          for MANIFEST in projects/stencil/package.json \
+                          projects/stencil/react/package.json \
+                          projects/stencil/angular/magma-angular/package.json; do
+            NAME="$(jq -r '.name' "$MANIFEST")"
+            VERSION="$(jq -r '.version' "$MANIFEST")"
+            if echo "$VERSION" | grep -Eq '^1\.[0-9]+\.[0-9]+'; then
+              echo "$NAME@$VERSION"
+            else
+              echo "::error file=$MANIFEST::$NAME@$VERSION: the support/v1.x line publishes major 1 only"
+              STATUS=1
+            fi
+          done
+          exit $STATUS
+
+  # Builds stencil and runs the e2e tests; its build artifact
+  # also feeds the react/angular builds below
+  magma:
+    uses: ./.github/workflows/_package-pipeline.yml
+    with:
+      # no path filter: publish.yml relies on every commit of the line having
+      # been built and tested, whatever it touched
+      path: '**'
+      nx-project: stencil
+      artifact-paths: |
+        projects/design-tokens/dist
+        projects/styles/dist
+        projects/svg-icons/dist
+        projects/stencil/dist
+        projects/stencil/src/components.d.ts
+        projects/stencil/src/fixtures
+        projects/stencil/www
+        projects/stencil/assets
+        projects/stencil/react/src
+        projects/stencil/loader
+        projects/stencil/angular/magma-angular/src/stencil-generated
+      artifact-download-path: projects
+      run-tests: true
+      # the e2e tests need Chrome
+      install-chrome: true
+      test-working-directory: projects/stencil
+
+  magma-react:
+    needs: [magma]
+    if: ${{ needs.magma.outputs.changed == 'true' }}
+    runs-on: ubuntu-latest
+    env:
+      PUPPETEER_SKIP_DOWNLOAD: 'true'
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          cache: yarn
+      - name: Restore Nx cache
+        uses: actions/cache@v5
+        with:
+          path: .nx
+          key: nx-${{ hashFiles('yarn.lock') }}-${{ github.sha }}
+          restore-keys: |
+            nx-${{ hashFiles('yarn.lock') }}-
+      - run: yarn install --frozen-lockfile --prefer-offline
+      - uses: actions/download-artifact@v8
+        with:
+          name: stencil-build
+          path: projects
+      - run: yarn nx run stencil-react:build
+      - uses: actions/upload-artifact@v7
+        with:
+          name: stencil-react-build
+          path: projects/stencil/react/dist
+          retention-days: 1
+          include-hidden-files: true
+
+  magma-angular:
+    needs: [magma]
+    if: ${{ needs.magma.outputs.changed == 'true' }}
+    runs-on: ubuntu-latest
+    env:
+      PUPPETEER_SKIP_DOWNLOAD: 'true'
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          cache: yarn
+      - name: Restore Nx cache
+        uses: actions/cache@v5
+        with:
+          path: .nx
+          key: nx-${{ hashFiles('yarn.lock') }}-${{ github.sha }}
+          restore-keys: |
+            nx-${{ hashFiles('yarn.lock') }}-
+      - run: yarn install --frozen-lockfile --prefer-offline
+      - uses: actions/download-artifact@v8
+        with:
+          name: stencil-build
+          path: projects
+      - run: yarn nx run stencil-angular:build
+      - uses: actions/upload-artifact@v7
+        with:
+          name: stencil-angular-build
+          path: projects/stencil/angular/dist
+          retention-days: 1
+          include-hidden-files: true

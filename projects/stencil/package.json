@@ -2,6 +2,11 @@
   "name": "@maggioli-design-system/magma",
   "version": "1.12.0",
   "description": "Magma is Maggioli Design System's web-components library.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/magma-design-system/magma.git",
+    "directory": "projects/stencil"
+  },
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
   "es2015": "dist/esm/index.mjs",
@@ -23,7 +28,6 @@
     "clean": "tsx ./scripts/clean.ts",
     "generate": "stencil generate",
     "generate.doc": "tsx ./scripts/generate-doc.ts",
-    "gitlab-ci-yml-regenerate": "tsx ./scripts/gitlab-ci-yml-regenerate.ts",
     "lint": "npm run lint.ts && npm run lint.css",
     "lint.css": "stylelint -c ./stylelint.config.mjs  'src/**/*.css'",
     "lint.ts": "eslint --fix",

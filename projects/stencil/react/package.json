@@ -1,6 +1,11 @@
 {
   "name": "@maggioli-design-system/magma-react",
   "version": "1.12.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/magma-design-system/magma.git",
+    "directory": "projects/stencil/react"
+  },
   "main": "dist/components.js",
   "module": "dist/components.js",
   "types": "dist/types/components.d.ts",

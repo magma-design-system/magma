@@ -1,0 +1,329 @@
+# Manual release of the v1.x support line: bumps @maggioli-design-system/magma
+# and its companions magma-react (same version) and magma-angular (which keeps
+# its 1.0.0-beta.<magma version> scheme), commits and tags the release, then
+# publishes the three packages to npm.
+# The other workspace packages and the single components are not published
+# from this line, and Storybook is not deployed.
+#
+# Guards:
+#   - runs from support/v1.x only
+#   - the commit must have a green CI (stencil workflow, push run, tests
+#     included): a CI still running is awaited, a failed one fails the release
+#   - the line ships major 1 only: a manifest bumped to 2.x fails the release
+#   - the new versions must be newer than the latest ones on npm: a manifest
+#     edited by hand to an older version fails the release instead of moving
+#     the latest dist-tag backwards
+#
+# Authentication uses npm trusted publishing (OIDC): this repo + workflow file
+# (publish.yml, the same name as the one on dev) is registered as trusted
+# publisher of the packages on npmjs.com, so no NPM_TOKEN secret is needed
+# and provenance is attached automatically.
+#
+# If a publish job fails after the release commit was pushed, re-run the
+# failed jobs: packages already on npm are skipped.
+name: publish
+
+on:
+  workflow_dispatch:
+    inputs:
+      bump:
+        description: Version bump, applied to magma, magma-react and magma-angular
+        type: choice
+        required: true
+        default: patch
+        options:
+          - patch
+          - minor
+
+concurrency:
+  # releases of the line are serialized, never cancelled
+  group: publish-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # release commit, tag and GitHub release
+      actions: read # CI runs of the commit (gate)
+    env:
+      # the tests ran in the CI of the commit (see the gate): no Chrome needed
+      PUPPETEER_SKIP_DOWNLOAD: 'true'
+      # yarn install would install the husky hooks: commitlint rejects the
+      # `release` scope of the release commit and lint-staged is not needed here
+      HUSKY: '0'
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      angular-version: ${{ steps.version.outputs.angular-version }}
+      tag: ${{ steps.version.outputs.tag }}
+      sha: ${{ steps.push.outputs.sha }}
+    steps:
+      - name: Check the branch
+        if: ${{ github.ref != 'refs/heads/support/v1.x' }}
+        run: |
+          echo "::error::this workflow releases the v1.x support line and must run from support/v1.x (got ${{ github.ref_name }})"
+          exit 1
+
+      - name: Wait for the CI of the commit and check that it is green
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SHA: ${{ github.sha }}
+        run: |
+          # latest push run of the stencil workflow for this commit. A release
+          # commit is pushed with the workflow token, which does not trigger
+          # the CI: releasing twice from the same HEAD is refused on purpose
+          find_run() {
+            gh api "repos/${{ github.repository }}/actions/runs?head_sha=$SHA&event=push&per_page=100" \
+              --jq '[.workflow_runs[] | select(.name == "stencil")] | max_by(.id) // empty'
+          }
+          START=$SECONDS
+          while :; do
+            RUN="$(find_run)"
+            if [ -z "$RUN" ]; then
+              # the run of a commit pushed a moment ago may not be registered yet
+              if [ $((SECONDS - START)) -ge 120 ]; then
+                echo "::error::no 'stencil' CI run found for $SHA: release a commit that went through the CI of support/v1.x"
+                exit 1
+              fi
+              echo "no stencil CI run for $SHA yet, waiting..."
+              sleep 15
+              continue
+            fi
+            STATUS="$(jq -r '.status' <<< "$RUN")"
+            URL="$(jq -r '.html_url' <<< "$RUN")"
+            [ "$STATUS" = "completed" ] && break
+            if [ $((SECONDS - START)) -ge 5400 ]; then
+              echo "::error::the CI of $SHA ($URL) is still $STATUS after 90 minutes, giving up"
+              exit 1
+            fi
+            echo "stencil CI run $URL is $STATUS, waiting..."
+            sleep 30
+          done
+          CONCLUSION="$(jq -r '.conclusion' <<< "$RUN")"
+          echo "stencil CI run $URL: $STATUS ($CONCLUSION)"
+          if [ "$CONCLUSION" != "success" ]; then
+            echo "::error::the CI of $SHA did not succeed ($CONCLUSION): fix it (or, if it was cancelled by a newer push, release the new HEAD)"
+            exit 1
+          fi
+          # the workflow is green also when its jobs were skipped: make sure the
+          # e2e tests actually ran and passed on this commit
+          TESTS="$(gh api "repos/${{ github.repository }}/actions/runs/$(jq -r '.id' <<< "$RUN")/jobs?per_page=100" \
+            --jq '[.jobs[] | select(.name == "magma / test")] | max_by(.id) | .conclusion // "missing"')"
+          if [ "$TESTS" != "success" ]; then
+            echo "::error::the CI of $SHA did not run the tests successfully (test job: $TESTS)"
+            exit 1
+          fi
+
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          cache: yarn
+      - run: yarn install --frozen-lockfile --prefer-offline
+
+      - name: Compute the release version
+        id: version
+        run: |
+          CURRENT="$(jq -r '.version' projects/stencil/package.json)"
+          if ! echo "$CURRENT" | grep -Eq '^1\.[0-9]+\.[0-9]+$'; then
+            echo "::error file=projects/stencil/package.json::magma@$CURRENT: the support/v1.x line releases stable 1.x.y versions only"
+            exit 1
+          fi
+          IFS=. read -r MAJOR MINOR PATCH <<< "$CURRENT"
+          case "${{ inputs.bump }}" in
+            minor) VERSION="$MAJOR.$((MINOR + 1)).0" ;;
+            patch) VERSION="$MAJOR.$MINOR.$((PATCH + 1))" ;;
+            *) echo "::error::unknown bump '${{ inputs.bump }}'"; exit 1 ;;
+          esac
+          case "$VERSION" in
+            1.*) ;;
+            *) echo "::error::$VERSION leaves major 1, the support/v1.x line cannot release it"; exit 1 ;;
+          esac
+          # magma-angular keeps its historical scheme: 1.0.0-beta.<magma version>
+          ANGULAR_VERSION="1.0.0-beta.$VERSION"
+          TAG="magma@$VERSION"
+          echo "magma@$CURRENT -> $TAG (${{ inputs.bump }}), magma-react@$VERSION, magma-angular@$ANGULAR_VERSION"
+          if git ls-remote --exit-code --tags origin "refs/tags/$TAG" > /dev/null; then
+            echo "::error::tag $TAG already exists"
+            exit 1
+          fi
+          for SPEC in "magma@$VERSION" "magma-react@$VERSION" "magma-angular@$ANGULAR_VERSION"; do
+            NAME="@maggioli-design-system/${SPEC%@*}"
+            NEW="${SPEC#*@}"
+            # npm view of a missing version exits 0 with empty output, so test the output
+            if [ -n "$(npm view "$NAME@$NEW" version 2>/dev/null || true)" ]; then
+              echo "::error::$NAME@$NEW is already on npm"
+              exit 1
+            fi
+            # the release must move the latest dist-tag forward (a manifest edited
+            # by hand may be older than what is published)
+            LATEST="$(npm view "$NAME" dist-tags.latest)"
+            if [ -z "$LATEST" ] || [ "$(printf '%s\n' "$LATEST" "$NEW" | sort -V | tail -n 1)" != "$NEW" ]; then
+              echo "::error::$NAME@$NEW is not newer than the latest published version ($LATEST)"
+              exit 1
+            fi
+            echo "$NAME: latest $LATEST -> $NEW"
+          done
+          {
+            echo "current=$CURRENT"
+            echo "version=$VERSION"
+            echo "angular-version=$ANGULAR_VERSION"
+            echo "tag=$TAG"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Bump the manifests (magma-react and magma-angular follow magma)
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+          ANGULAR_VERSION: ${{ steps.version.outputs.angular-version }}
+        run: |
+          bump() {
+            jq --indent 2 --arg v "$VERSION" --arg av "$ANGULAR_VERSION" "$2" "$1" > "$1.tmp" && mv "$1.tmp" "$1"
+          }
+          bump projects/stencil/package.json '.version = $v'
+          bump projects/stencil/react/package.json \
+            '.version = $v | .dependencies["@maggioli-design-system/magma"] = $v'
+          bump projects/stencil/angular/magma-angular/package.json \
+            '.version = $av | .peerDependencies["@maggioli-design-system/magma"] = $v'
+          git --no-pager diff
+
+      # built after the bump so the published manifests (the angular one is
+      # copied into the build output by ng-packagr) carry the new version
+      - run: yarn nx run stencil:build
+      - run: yarn nx run stencil-react:build
+      - run: yarn nx run stencil-angular:build
+      - name: Check the built angular manifest
+        env:
+          ANGULAR_VERSION: ${{ steps.version.outputs.angular-version }}
+        run: |
+          BUILT="$(jq -r '.version' projects/stencil/angular/dist/magma-angular/package.json)"
+          if [ "$BUILT" != "$ANGULAR_VERSION" ]; then
+            echo "::error::built magma-angular manifest is at $BUILT, expected $ANGULAR_VERSION"
+            exit 1
+          fi
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: stencil-build
+          path: |
+            projects/stencil/dist
+            projects/stencil/loader
+          retention-days: 1
+          include-hidden-files: true
+      - uses: actions/upload-artifact@v7
+        with:
+          name: stencil-react-build
+          path: projects/stencil/react/dist
+          retention-days: 1
+          include-hidden-files: true
+      - uses: actions/upload-artifact@v7
+        with:
+          name: stencil-angular-build
+          path: projects/stencil/angular/dist
+          retention-days: 1
+          include-hidden-files: true
+
+      - name: Commit, tag and push the release
+        id: push
+        env:
+          TAG: ${{ steps.version.outputs.tag }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add projects/stencil/package.json \
+                  projects/stencil/react/package.json \
+                  projects/stencil/angular/magma-angular/package.json
+          git commit -m "chore(release): $TAG"
+          git tag -a "$TAG" -m "Release $TAG"
+          # no rebase-retry: the release was gated on the CI of ${{ github.sha }},
+          # if the branch moved in the meantime the new HEAD has to be released
+          git push --atomic origin "HEAD:${{ github.ref_name }}" "refs/tags/$TAG"
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Create the GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.version.outputs.tag }}
+          CURRENT: ${{ steps.version.outputs.current }}
+          ANGULAR_VERSION: ${{ steps.version.outputs.angular-version }}
+          SHA: ${{ steps.push.outputs.sha }}
+        run: |
+          # notes generated from the previous release of the line when it is
+          # tagged; otherwise GitHub would pick an unrelated previous release
+          NOTES=(--notes "Release $TAG of @maggioli-design-system/magma and magma-react, with magma-angular@$ANGULAR_VERSION (v1.x support line).")
+          for PREVIOUS in "magma@$CURRENT" "v$CURRENT"; do
+            if git ls-remote --exit-code --tags origin "refs/tags/$PREVIOUS" > /dev/null; then
+              NOTES=(--generate-notes --notes-start-tag "$PREVIOUS")
+              break
+            fi
+          done
+          # a support-line release is never the repository's latest release
+          gh release create "$TAG" --verify-tag --target "$SHA" --title "$TAG" --latest=false "${NOTES[@]}"
+
+  publish:
+    needs: [release]
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write # OIDC token for npm trusted publishing
+      contents: read # checkout
+    strategy:
+      fail-fast: false
+      # one at a time, magma first: its companions depend on the version being published
+      max-parallel: 1
+      matrix:
+        include:
+          - package: magma
+            version: ${{ needs.release.outputs.version }}
+            directory: projects/stencil
+            artifact: stencil-build
+            artifact-path: projects/stencil
+          - package: magma-react
+            version: ${{ needs.release.outputs.version }}
+            directory: projects/stencil/react
+            artifact: stencil-react-build
+            artifact-path: projects/stencil/react/dist
+          - package: magma-angular
+            # 1.0.0-beta.<magma version>; publishes the build output (ng-packagr
+            # layout, manifest included)
+            version: ${{ needs.release.outputs.angular-version }}
+            directory: projects/stencil/angular/dist/magma-angular
+            artifact: stencil-angular-build
+            artifact-path: projects/stencil/angular/dist
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ needs.release.outputs.sha }}
+      - uses: actions/download-artifact@v8
+        with:
+          name: ${{ matrix.artifact }}
+          path: ${{ matrix.artifact-path }}
+      # trusted publishing needs npm >= 11.5 (node 24); the build ran on .nvmrc
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+      - name: Check whether the package needs publishing
+        id: check
+        env:
+          VERSION: ${{ matrix.version }}
+        run: |
+          echo "publish=false" >> "$GITHUB_OUTPUT"
+          NAME="@maggioli-design-system/${{ matrix.package }}"
+          MANIFEST="$(jq -r '.version' "${{ matrix.directory }}/package.json")"
+          if [ "$MANIFEST" != "$VERSION" ]; then
+            echo "::error::$NAME manifest is at $MANIFEST, expected $VERSION"
+            exit 1
+          fi
+          # re-run after a partial failure: the packages already published are skipped
+          if [ -n "$(npm view "$NAME@$VERSION" version 2>/dev/null || true)" ]; then
+            echo "::notice::$NAME@$VERSION already on npm, skipping"
+            exit 0
+          fi
+          echo "publish=true" >> "$GITHUB_OUTPUT"
+      - name: Publish to npm
+        if: ${{ steps.check.outputs.publish == 'true' }}
+        working-directory: ${{ matrix.directory }}
+        # magma-angular is a prerelease version by scheme but is the line's
+        # current release: it goes to latest like the others
+        run: npm publish --access public --tag latest

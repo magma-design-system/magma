@@ -1,6 +1,6 @@
 import chalk from 'chalk'
 import { ask } from 'stdio'
-import { createTempProjectInstance, compilePackage, compileTemplateFile, checkComponentExistance, checkComponentWasBuilt } from './lib'
+import { createTempProjectInstance, compilePackage, checkComponentExistance, checkComponentWasBuilt } from './lib'
 import { logStatus, dontUseWithNX } from '../../../scripts/log'
 
 let componentNameArgument = ''
@@ -48,7 +48,6 @@ const isolateComponent = async () => {
       subject: componentName,
     })
     await compilePackage(componentName)
-    await compileTemplateFile(componentName, '.gitlab-ci.yml.hbs', '.gitlab-ci.yml')
     await createTempProjectInstance(componentName)
   }
 }

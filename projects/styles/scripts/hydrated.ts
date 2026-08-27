@@ -8,7 +8,7 @@ import Handlebars from 'handlebars'
 const COMPONENTS_DIR = '../stencil/src/components'
 const main = async () => {
   const componentsFolderContents = await readdir(COMPONENTS_DIR)
-  const components = componentsFolderContents.filter(element => element !== '.gitlab-ci.yml')
+  const components = componentsFolderContents
   const hydratedTemplate = await readFile(join(TEMPLATES_DIR, 'hydrated.css.hbs')).catch(error => { throw new Error(chalk.red(error)) })
   const template = Handlebars.compile(hydratedTemplate.toString())
   const compiledHydratedComponents = template({ components })
