@@ -2,7 +2,9 @@
 # companions magma-react and magma-angular and runs the stencil e2e tests on
 # every push and pull request. Publishing to npm is manual (publish.yml) and
 # gated on this workflow being green for the commit, tests included.
-name: stencil
+# Same file path as the stencil workflow of dev: the name tells the runs of
+# this line apart in the Actions tab (publish.yml matches the CI run by it).
+name: stencil v1.x
 
 on:
   push:

@@ -7,7 +7,7 @@
 #
 # Guards:
 #   - runs from support/v1.x only
-#   - the commit must have a green CI (stencil workflow, push run, tests
+#   - the commit must have a green CI (stencil v1.x workflow, push run, tests
 #     included): a CI still running is awaited, a failed one fails the release
 #   - the line ships major 1 only: a manifest bumped to 2.x fails the release
 #   - the new versions must be newer than the latest ones on npm: a manifest
@@ -17,11 +17,13 @@
 # Authentication uses npm trusted publishing (OIDC): this repo + workflow file
 # (publish.yml, the same name as the one on dev) is registered as trusted
 # publisher of the packages on npmjs.com, so no NPM_TOKEN secret is needed
-# and provenance is attached automatically.
+# and provenance is attached automatically. The file name must therefore stay
+# publish.yml: only the display name below differs from the dev workflow, so
+# that the runs of this line can be told apart in the Actions tab.
 #
 # If a publish job fails after the release commit was pushed, re-run the
 # failed jobs: packages already on npm are skipped.
-name: publish
+name: publish v1.x
 
 on:
   workflow_dispatch:
@@ -72,12 +74,12 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           SHA: ${{ github.sha }}
         run: |
-          # latest push run of the stencil workflow for this commit. A release
+          # latest push run of the stencil v1.x workflow for this commit. A release
           # commit is pushed with the workflow token, which does not trigger
           # the CI: releasing twice from the same HEAD is refused on purpose
           find_run() {
             gh api "repos/${{ github.repository }}/actions/runs?head_sha=$SHA&event=push&per_page=100" \
-              --jq '[.workflow_runs[] | select(.name == "stencil")] | max_by(.id) // empty'
+              --jq '[.workflow_runs[] | select(.name == "stencil v1.x")] | max_by(.id) // empty'
           }
           START=$SECONDS
           while :; do
@@ -85,10 +87,10 @@ jobs:
             if [ -z "$RUN" ]; then
               # the run of a commit pushed a moment ago may not be registered yet
               if [ $((SECONDS - START)) -ge 120 ]; then
-                echo "::error::no 'stencil' CI run found for $SHA: release a commit that went through the CI of support/v1.x"
+                echo "::error::no 'stencil v1.x' CI run found for $SHA: release a commit that went through the CI of support/v1.x"
                 exit 1
               fi
-              echo "no stencil CI run for $SHA yet, waiting..."
+              echo "no stencil v1.x CI run for $SHA yet, waiting..."
               sleep 15
               continue
             fi
@@ -99,11 +101,11 @@ jobs:
               echo "::error::the CI of $SHA ($URL) is still $STATUS after 90 minutes, giving up"
               exit 1
             fi
-            echo "stencil CI run $URL is $STATUS, waiting..."
+            echo "stencil v1.x CI run $URL is $STATUS, waiting..."
             sleep 30
           done
           CONCLUSION="$(jq -r '.conclusion' <<< "$RUN")"
-          echo "stencil CI run $URL: $STATUS ($CONCLUSION)"
+          echo "stencil v1.x CI run $URL: $STATUS ($CONCLUSION)"
           if [ "$CONCLUSION" != "success" ]; then
             echo "::error::the CI of $SHA did not succeed ($CONCLUSION): fix it (or, if it was cancelled by a newer push, release the new HEAD)"
             exit 1

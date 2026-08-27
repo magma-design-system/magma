@@ -68,14 +68,16 @@ create the file `.vscode/settings.json` with the following content:
 
 The `support/v1.x` branch is the maintenance line of `@maggioli-design-system/magma` 1.x. Its GitHub Actions workflows live in [.github/workflows](.github/workflows):
 
-- **`stencil`** (every push and pull request to `support/v1.x`): builds `magma`, `magma-react` and `magma-angular`, runs the stencil e2e tests and checks that the three manifests stay on major 1.
-- **`publish`** (manual): releases and publishes the three packages to npm.
+- **`stencil v1.x`** (`stencil.yml`, every push and pull request to `support/v1.x`): builds `magma`, `magma-react` and `magma-angular`, runs the stencil e2e tests and checks that the three manifests stay on major 1.
+- **`publish v1.x`** (`publish.yml`, manual): releases and publishes the three packages to npm.
+
+The two files have the same path as the `stencil` and `publish` workflows of `dev`, so the *Actions* sidebar lists them once, under the `dev` names: the runs of this line are told apart by their `v1.x` name. The `publish.yml` file name in particular cannot change, being registered on npm as the trusted publisher of the packages.
 
 Only `magma`, `magma-react` and `magma-angular` are published from this line: the other workspace packages and the single components are not, and Storybook is not deployed.
 
 ### Publishing a release
 
-From the *Actions* tab pick the `publish` workflow, *Run workflow*, select the `support/v1.x` branch and the bump to apply (`patch` or `minor`), or from the CLI:
+From the *Actions* tab pick the `publish` workflow (the sidebar entry keeps the `dev` name, see above), *Run workflow*, select the `support/v1.x` branch and the bump to apply (`patch` or `minor`), or from the CLI (by file name: `gh` resolves workflow names from the default branch):
 
 ```
 gh workflow run publish.yml --ref support/v1.x -f bump=patch
@@ -83,7 +85,7 @@ gh workflow run publish.yml --ref support/v1.x -f bump=patch
 
 The workflow:
 
-1. refuses to run from any branch other than `support/v1.x`; waits for the `stencil` CI of the branch head if it is still running and requires it to be green, tests included (a failed or cancelled CI fails the release);
+1. refuses to run from any branch other than `support/v1.x`; waits for the `stencil v1.x` CI of the branch head if it is still running and requires it to be green, tests included (a failed or cancelled CI fails the release);
 2. bumps `projects/stencil/package.json` and, following it, `projects/stencil/react/package.json` (same version) and `projects/stencil/angular/magma-angular/package.json` (`1.0.0-beta.<magma version>`, e.g. magma `1.12.1` → magma-angular `1.0.0-beta.1.12.1`), including their dependency on `magma`. The line is locked to major 1: a manifest set to any other major (e.g. `2.0.0`) fails both the CI and the release. The new versions must not exist on npm and must be newer than the current `latest` ones, so a manifest edited by hand to an older version fails the release instead of moving `latest` backwards;
 3. builds the three packages, commits `chore(release): magma@<version>`, tags `magma@<version>` and creates the GitHub release;
 4. publishes `magma`, `magma-react` and `magma-angular` to npm (dist-tag `latest`) with [npm trusted publishing](https://docs.npmjs.com/trusted-publishers), so no npm token is needed.
