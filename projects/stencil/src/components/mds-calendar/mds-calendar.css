@@ -7,6 +7,7 @@
  * @prop --mds-calendar-cell-other-month-visibility: Controls visibility of days from other months (e.g. "visible", "hidden").
  * @prop --mds-calendar-border-radius: The border-radius of the calendar container.
  * @prop --mds-calendar-background: The background color of the calendar container.
+ * @prop --mds-calendar-max-width: The maximum inline size of the calendar; it fills its container up to this width.
  * @prop --mds-calendar-padding: The internal padding of the calendar container.
  * @prop --mds-calendar-select-month-or-year-height: The height of the month/year selector in the calendar header.
  * @prop --mds-calendar-select-month-or-year-width: The width of the month/year selector in the calendar header.
@@ -29,8 +30,9 @@
   border-radius: var(--mds-calendar-border-radius);
   cursor: auto;
   display: inline-flex;
+  inline-size: 100%;
   max-width: var(--mds-calendar-max-width);
-  min-width: max-content;
+  min-width: min-content;
   overflow: hidden;
 }
 
@@ -131,7 +133,8 @@ nav {
 
 .week-day-name {
   align-items: center;
-  aspect-ratio: 1;
+  block-size: --spacing(1200);
+  inline-size: 100%;
   min-height: auto;
   padding: 0;
 }
