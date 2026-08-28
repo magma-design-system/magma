@@ -164,7 +164,8 @@
 }
 
 mds-calendar {
-  min-width: max-content;
+  min-width: min-content;
+  width: 100cqw;
 }
 
 mds-dropdown {
