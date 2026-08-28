@@ -113,3 +113,82 @@ describe('mds-calendar', () => {
     expect(yearSelection).toBeNull();
   });
 });
+
+describe('mds-calendar sizing', () => {
+  it('fills its container up to --mds-calendar-max-width', async () => {
+    const page = await newE2EPage();
+    await page.setViewport({ width: 1280, height: 800 });
+    await page.setContent(
+      '<div style="width: 800px;"><mds-calendar view-date="2026-08-01"></mds-calendar></div>',
+    );
+    await page.waitForChanges();
+
+    const width = await page.$eval(
+      'mds-calendar',
+      (element) => (element as HTMLElement).offsetWidth,
+    );
+
+    expect(width).toBe(480);
+  });
+
+  it('shrinks with a narrower container', async () => {
+    const page = await newE2EPage();
+    await page.setViewport({ width: 1280, height: 800 });
+    await page.setContent(
+      '<div style="width: 400px;"><mds-calendar view-date="2026-08-01"></mds-calendar></div>',
+    );
+    await page.waitForChanges();
+
+    const width = await page.$eval(
+      'mds-calendar',
+      (element) => (element as HTMLElement).offsetWidth,
+    );
+
+    expect(width).toBe(400);
+  });
+
+  it('does not let the week-day header inflate its intrinsic width beyond max-width', async () => {
+    const page = await newE2EPage();
+    await page.setViewport({ width: 1280, height: 800 });
+    // `min-width: max-content` is what mds-input-date used to apply: it must not blow the calendar
+    // past its own max-width, otherwise the used min-width wins over max-width.
+    await page.setContent(`
+      <div style="display: inline-block;">
+        <mds-calendar view-date="2026-08-01" style="min-width: max-content;"></mds-calendar>
+      </div>
+    `);
+    await page.waitForChanges();
+
+    const width = await page.$eval(
+      'mds-calendar',
+      (element) => (element as HTMLElement).offsetWidth,
+    );
+
+    expect(width).toBeLessThanOrEqual(480);
+  });
+
+  it('sizes the week-day header cells from the grid track', async () => {
+    const page = await newE2EPage();
+    await page.setViewport({ width: 1280, height: 800 });
+    await page.setContent(
+      '<div style="width: 800px;"><mds-calendar view-date="2026-08-01"></mds-calendar></div>',
+    );
+    await page.waitForChanges();
+
+    const metrics = await page.$eval('mds-calendar', (element) => {
+      const header = element.shadowRoot?.querySelector('.week-day-name') as HTMLElement;
+      const cell = element.shadowRoot?.querySelector('mds-calendar-cell') as HTMLElement;
+      return {
+        headerHeight: header.offsetHeight,
+        headerWidth: header.offsetWidth,
+        cellWidth: cell.offsetWidth,
+      };
+    });
+
+    // 480 - 2 * 16px padding - 6 * 2px gaps = 7 tracks of ~62px; the header keeps a fixed 48px height
+    expect(metrics.headerHeight).toBe(48);
+    expect(metrics.headerWidth).toBe(metrics.cellWidth);
+    expect(metrics.cellWidth).toBeGreaterThanOrEqual(62);
+    expect(metrics.cellWidth).toBeLessThanOrEqual(63);
+  });
+});
