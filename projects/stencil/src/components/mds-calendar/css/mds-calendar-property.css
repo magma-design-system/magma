@@ -33,6 +33,12 @@
   syntax: '<color>';
 }
 
+@property --mds-calendar-max-width {
+  inherits: true;
+  initial-value: 480px;
+  syntax: '<length>';
+}
+
 @property --mds-calendar-padding {
   inherits: true;
   initial-value: --spacing(400);
