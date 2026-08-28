@@ -15,6 +15,7 @@
   border-radius: var(--mds-calendar-border-radius);
   cursor: auto;
   display: inline-flex;
+  inline-size: 100%;
   max-width: 380px;
   min-width: min-content;
   overflow: hidden;
@@ -68,8 +69,8 @@ nav {
   display: flex;
   flex: 0 0 var(--mds-calendar-select-month-or-year-width);
   height: var(--mds-calendar-select-month-or-year-height);
-  justify-content: flex-start;
   inline-size: var(--mds-calendar-select-month-or-year-width);
+  justify-content: flex-start;
   max-block-size: var(--mds-calendar-select-month-or-year-height);
   max-height: var(--mds-calendar-select-month-or-year-height);
   max-inline-size: var(--mds-calendar-select-month-or-year-width);
@@ -115,7 +116,8 @@ nav {
 
 .week-day-name {
   align-items: center;
-  aspect-ratio: 1;
+  block-size: theme('size.1200');
+  inline-size: 100%;
   min-height: auto;
   padding: 0;
 }
