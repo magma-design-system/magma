@@ -191,4 +191,40 @@ describe('mds-calendar sizing', () => {
     expect(metrics.cellWidth).toBeGreaterThanOrEqual(62);
     expect(metrics.cellWidth).toBeLessThanOrEqual(63);
   });
+
+  it('stretches the day button over the whole cell, keeping the number centered', async () => {
+    const page = await newE2EPage();
+    await page.setViewport({ width: 1280, height: 800 });
+    await page.setContent(
+      '<div style="width: 800px;"><mds-calendar view-date="2026-08-01"></mds-calendar></div>',
+    );
+    await page.waitForChanges();
+
+    const metrics = await page.$eval('mds-calendar', (element) => {
+      const cell = element.shadowRoot?.querySelector(
+        'mds-calendar-cell[date="2026-08-12"]',
+      ) as HTMLElement;
+      const action = cell.shadowRoot?.querySelector('.action') as HTMLElement;
+      const cellRect = cell.getBoundingClientRect();
+      const actionRect = action.getBoundingClientRect();
+      return {
+        cell: { left: cellRect.left, right: cellRect.right, x: cellRect.x + cellRect.width / 2 },
+        action: {
+          left: actionRect.left,
+          right: actionRect.right,
+          x: actionRect.x + actionRect.width / 2,
+          y: actionRect.y + actionRect.height / 2,
+        },
+        cellY: cellRect.y + cellRect.height / 2,
+      };
+    });
+
+    // mds-button places itself flex-start on its :host; without place-self: stretch the
+    // absolutely positioned button shrinks to its label and the day number sticks to the
+    // top-left corner of the cell instead of covering it.
+    expect(metrics.action.left).toBeLessThanOrEqual(metrics.cell.left);
+    expect(metrics.action.right).toBeGreaterThanOrEqual(metrics.cell.right);
+    expect(Math.abs(metrics.action.x - metrics.cell.x)).toBeLessThanOrEqual(1);
+    expect(Math.abs(metrics.action.y - metrics.cellY)).toBeLessThanOrEqual(1);
+  });
 });
