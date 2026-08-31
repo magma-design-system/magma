@@ -31,6 +31,7 @@
 
   @apply grid-cols-full;
 
+  container-type: inline-size;
   display: grid;
   gap: --spacing(400);
 }
@@ -111,9 +112,10 @@
 
 .main-actions {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap;
   gap: --spacing(200);
-  min-width: --spacing(3200);
+  justify-content: center;
 }
 
 .main-action-icon {
@@ -149,7 +151,7 @@
 }
 
 .main-infos {
-  max-width: --spacing(4800);
+  max-width: --spacing(8000);
   min-width: 0;
   text-align: center;
   width: 100%;
@@ -189,5 +191,9 @@
 @container (max-width: 340px) {
   .file-list {
     --template-cols: 1fr;
+  }
+
+  .main-actions {
+    flex-direction: column;
   }
 }
