@@ -60,9 +60,11 @@ describe('mds-input-upload', () => {
 });
 
 describe('mds-input-upload drag-area layout', () => {
-  // The infos column is capped at --spacing(8000): the value must keep the counter caption on a
-  // single line in every shipped locale, both before (maxFilesUpload) and after
-  // (currentFilesWithMax) some files are uploaded.
+  // Only the progress bar is capped (--spacing(8000)): the counter caption keeps the full
+  // drag-area width, so it must stay on a single line in every shipped locale, both before
+  // (maxFilesUpload) and after (currentFilesWithMax) some files are uploaded — including in wide
+  // fallback fonts such as DejaVu Sans (Karla ships no greek subset, and the CI runner renders
+  // the el strings with it).
   it.each(['en', 'it', 'es', 'el'])(
     'keeps the counter caption on a single line at regular widths (%s)',
     async (language) => {
@@ -105,14 +107,22 @@ describe('mds-input-upload drag-area layout', () => {
     expect(actions[1].y).toBeGreaterThan(actions[0].y);
   });
 
-  it('sizes the progress bar to the widened infos column', async () => {
+  it('caps the progress bar width and centers it in the infos column', async () => {
     const page = await setupUploadInContainer(800);
 
-    const width = await page.$eval('mds-input-upload', (element) => {
+    const metrics = await page.$eval('mds-input-upload', (element) => {
       const progress = element.shadowRoot?.querySelector('.progress-bar') as HTMLElement;
-      return progress.getBoundingClientRect().width;
+      const infos = element.shadowRoot?.querySelector('.main-infos') as HTMLElement;
+      const progressRect = progress.getBoundingClientRect();
+      const infosRect = infos.getBoundingClientRect();
+      return {
+        width: progressRect.width,
+        leftGap: progressRect.left - infosRect.left,
+        rightGap: infosRect.right - progressRect.right,
+      };
     });
 
-    expect(width).toBe(320);
+    expect(metrics.width).toBe(320);
+    expect(Math.abs(metrics.leftGap - metrics.rightGap)).toBeLessThanOrEqual(1);
   });
 });
