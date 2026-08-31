@@ -1,6 +1,6 @@
 {
   "name": "@maggioli-design-system/magma-react",
-  "version": "1.12.1",
+  "version": "1.12.2",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/magma-design-system/magma.git",
@@ -20,7 +20,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@maggioli-design-system/magma": "1.12.1",
+    "@maggioli-design-system/magma": "1.12.2",
     "@stencil/react-output-target": "1.0.2"
   },
   "devDependencies": {
