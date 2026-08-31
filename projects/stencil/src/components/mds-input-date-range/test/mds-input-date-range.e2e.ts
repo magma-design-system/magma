@@ -52,6 +52,37 @@ describe('mds-input-date-range', () => {
     expect(formValue).toBe(JSON.stringify({ startDate: '2026-01-01', endDate: '2026-01-10' }));
   });
 
+  it('centers the open-calendar button on the field vertical axis, inside the field', async () => {
+    const page = await newE2EPage();
+    await page.setViewport({ width: 1280, height: 800 });
+    await page.setContent(`
+      <div style="width: 560px; margin: 40px auto;">
+        <mds-input-date-range name="period">
+          <mds-input-date slot="start"></mds-input-date>
+          <mds-input-date slot="end"></mds-input-date>
+        </mds-input-date-range>
+      </div>
+    `);
+    await page.waitForChanges();
+
+    const metrics = await page.$eval('mds-input-date-range', (element) => {
+      const button = element.shadowRoot?.querySelector('.action-open-calendar') as HTMLElement;
+      const hostRect = element.getBoundingClientRect();
+      const buttonRect = button.getBoundingClientRect();
+      return {
+        hostCenterY: hostRect.y + hostRect.height / 2,
+        hostRight: hostRect.right,
+        buttonCenterY: buttonRect.y + buttonRect.height / 2,
+        buttonRight: buttonRect.right,
+      };
+    });
+
+    // mds-button aligns itself flex-start on its :host: without the align-self
+    // re-centering the icon floats above the field axis.
+    expect(Math.abs(metrics.buttonCenterY - metrics.hostCenterY)).toBeLessThanOrEqual(1);
+    expect(metrics.buttonRight).toBeLessThanOrEqual(metrics.hostRight);
+  });
+
   it('renders a single calendar by default', async () => {
     const page = await newE2EPage();
     await page.setContent(`

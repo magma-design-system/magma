@@ -70,6 +70,41 @@ describe('mds-input-date', () => {
     expect(element).toHaveAttribute('hydrated');
   });
 
+  describe('open-calendar button placement', () => {
+    it.each(['', 'disabled'])(
+      'centers the button on the field vertical axis and keeps it inside the field (%s)',
+      async (state) => {
+        const page = await newE2EPage();
+        await page.setViewport({ width: 1280, height: 800 });
+        await page.setContent(`
+          <div style="width: 420px; margin: 40px auto;">
+            <mds-input-date name="d" ${state}></mds-input-date>
+          </div>
+        `);
+        await page.waitForChanges();
+
+        const metrics = await page.$eval('mds-input-date', (element) => {
+          const input = element.shadowRoot?.querySelector('.input') as HTMLElement;
+          const button = element.shadowRoot?.querySelector('.action-open-calendar') as HTMLElement;
+          const inputRect = input.getBoundingClientRect();
+          const buttonRect = button.getBoundingClientRect();
+          return {
+            inputCenterY: inputRect.y + inputRect.height / 2,
+            inputRight: inputRect.right,
+            buttonCenterY: buttonRect.y + buttonRect.height / 2,
+            buttonRight: buttonRect.right,
+          };
+        });
+
+        // mds-button aligns itself flex-start on its :host: without the align-self
+        // re-centering the icon floats 6px above the field axis, and the old disabled
+        // translate hack pushed it past the field right edge.
+        expect(Math.abs(metrics.buttonCenterY - metrics.inputCenterY)).toBeLessThanOrEqual(1);
+        expect(metrics.buttonRight).toBeLessThanOrEqual(metrics.inputRight);
+      },
+    );
+  });
+
   describe('calendar dropdown sizing', () => {
     it('sizes the calendar to the field width with evenly sized day cells', async () => {
       const page = await setupFieldInNarrowColumn();
