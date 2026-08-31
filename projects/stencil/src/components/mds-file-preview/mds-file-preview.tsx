@@ -179,7 +179,7 @@ export class MdsFilePreview {
                   : 'preview--status',
               )}
             >
-              {this.icon !== '' ? (
+              {this.icon !== undefined && this.icon !== '' ? (
                 <mds-icon class="icon" name={this.icon}></mds-icon>
               ) : (
                 <mds-icon class="icon" name={getFormatsVariant(this.filename, this.suffix).icon} />
