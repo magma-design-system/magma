@@ -151,13 +151,14 @@
 }
 
 .main-infos {
-  max-width: --spacing(8000);
   min-width: 0;
   text-align: center;
   width: 100%;
 }
 
 .progress-bar {
+  justify-self: center;
+  max-width: --spacing(8000);
   min-width: 0;
   width: 100%;
 }
