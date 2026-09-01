@@ -20,6 +20,7 @@ import {
   type SlotToAttrRule,
 } from '../manifest/schema.js';
 import { getByTag, ruleId, rulesForComponent } from '../manifest/registry.js';
+import { classRulesOf, hasClassRules, rewriteClassList } from './shared/class-ops.js';
 import { invertBoolean, remapEnum } from './shared/attribute-ops.js';
 import { bareTrue, stringLiteral, type AttrValue } from './shared/value-model.js';
 import { applyEdits, lineIndentAt, type Edit } from './shared/edits.js';
@@ -78,6 +79,7 @@ export const transformHtml = (
   const fragment = parseFragment(source, { sourceCodeLocationInfo: true }) as unknown as P5Node;
   const edits: Edit[] = [];
   const findings: Finding[] = [];
+  const classRules = classRulesOf(manifest);
 
   const pushFinding = (f: Finding): void => {
     findings.push(f);
@@ -123,6 +125,66 @@ export const transformHtml = (
             before: 'slot="default"',
             after: '',
           });
+        }
+      }
+    }
+
+    // Global: utility-class migrations (J) on any element's `class` attribute.
+    // The raw source value is rewritten (not the entity-decoded one), so
+    // arbitrary variants written with references (`[&gt;li]:`) round-trip.
+    if (hasClassRules(classRules)) {
+      const l = attrLocs['class'];
+      if (l && hasAttr('class')) {
+        const raw = source.slice(l.startOffset, l.endOffset);
+        const parsed = parseRawAttr(raw);
+        if (parsed.hasValue) {
+          const open = raw.indexOf(parsed.quote) + 1;
+          const close = raw.lastIndexOf(parsed.quote);
+          const rawValue = open > 0 && close > open ? raw.slice(open, close) : '';
+          const result = rewriteClassList(
+            rawValue,
+            classRules,
+            (id) => ruleEnabled(ctx, id),
+            (entry, before, after) => {
+              pushFinding({
+                kind: 'change',
+                surface: 'html',
+                file: ctx.file,
+                line: l.startLine,
+                ruleId: entry.id,
+                message: 'rename utility class',
+                before,
+                after,
+              });
+              if (entry.rule.note) {
+                pushFinding({
+                  kind: 'flag',
+                  surface: 'html',
+                  file: ctx.file,
+                  line: l.startLine,
+                  ruleId: entry.id,
+                  message: entry.rule.note,
+                });
+              }
+            },
+            (entry, token) => {
+              pushFinding({
+                kind: 'warn',
+                surface: 'html',
+                file: ctx.file,
+                line: l.startLine,
+                ruleId: entry.id,
+                message: `\`${token}\`: ${entry.rule.message}`,
+              });
+            },
+          );
+          if (result.changed) {
+            edits.push({
+              start: l.startOffset + open,
+              end: l.startOffset + close,
+              text: result.value,
+            });
+          }
         }
       }
     }

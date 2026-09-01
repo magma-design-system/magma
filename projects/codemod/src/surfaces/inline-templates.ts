@@ -3,7 +3,8 @@
  *
  *  - Angular `@Component({ template: `…` })` inline templates → {@link transformAngular}.
  *  - Generic inline HTML in no-substitution template literals that contain
- *    `<mds-…>` tags (e.g. `el.innerHTML = `…``) → {@link transformHtml}.
+ *    `<mds-…>` tags or migrated utility classes (e.g. `el.innerHTML = `…``)
+ *    → {@link transformHtml}.
  *
  * Template literals with `${…}` substitutions are reported under `dynamic`
  * (the holes make the markup unsafe to parse) rather than rewritten. Host
@@ -15,6 +16,7 @@ import { Node, Project, SyntaxKind, ts } from 'ts-morph';
 import { type Manifest } from '../manifest/schema.js';
 import { type Finding } from '../report/types.js';
 import { applyEdits, type Edit } from './shared/edits.js';
+import { classRulesOf } from './shared/class-ops.js';
 import { transformAngular } from './angular.js';
 import { transformHtml } from './html.js';
 import { type TransformContext, type TransformResult } from './shared/transform.js';
@@ -39,13 +41,19 @@ export const transformInlineTemplates = (
   const findings: Finding[] = [];
   const handled = new Set<number>();
 
+  // A literal is worth parsing when it contains mds-* markup OR mentions a
+  // migrated utility class (J) — those live on any element, not just mds-*.
+  const classRules = classRulesOf(manifest);
+  const relevant = (chunk: string): boolean =>
+    MDS_TAG_RE.test(chunk) || (classRules.candidateRe?.test(chunk) ?? false);
+
   /** Transform the raw inner text of a no-substitution template literal node. */
   const transformLiteral = (node: Node, run: SubTransform): void => {
     handled.add(node.getStart());
     const innerStart = node.getStart() + 1;
     const innerEnd = node.getEnd() - 1;
     const inner = source.slice(innerStart, innerEnd);
-    if (!MDS_TAG_RE.test(inner)) return;
+    if (!relevant(inner)) return;
 
     const sub = run(inner, manifest, ctx);
     const baseLine = node.getStartLineNumber();
@@ -57,7 +65,7 @@ export const transformInlineTemplates = (
 
   const flagDynamic = (node: Node, message: string): void => {
     handled.add(node.getStart());
-    if (!MDS_TAG_RE.test(node.getText())) return;
+    if (!relevant(node.getText())) return;
     findings.push({
       kind: 'dynamic',
       surface: 'html',

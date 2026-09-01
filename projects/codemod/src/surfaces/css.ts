@@ -1,7 +1,8 @@
 /**
- * CSS / SCSS surface (category G — CSS custom properties, and category H —
- * shadow parts in `::part()` selectors). Uses postcss (+ postcss-scss) and
- * mutates the AST in place so formatting is preserved.
+ * CSS / SCSS surface (category G — CSS custom properties, category H — shadow
+ * parts in `::part()` selectors, and category J — utility classes in `@apply`
+ * at-rules). Uses postcss (+ postcss-scss) and mutates the AST in place so
+ * formatting is preserved.
  *
  * Custom-property *definitions* are renamed and, when the value format changed
  * (e.g. hex → `R G B` channels for `-rgb` variables), flagged for manual
@@ -19,6 +20,7 @@ import {
   type PartRenameRule,
 } from '../manifest/schema.js';
 import { ruleId } from '../manifest/registry.js';
+import { classRulesOf, hasClassRules, rewriteClassList } from './shared/class-ops.js';
 import { type Finding } from '../report/types.js';
 import { ruleEnabled, type TransformContext, type TransformResult } from './shared/transform.js';
 
@@ -201,6 +203,55 @@ export const transformCss = (
       if (newValue !== decl.value) decl.value = newValue;
     }
   });
+
+  // Utility-class migrations (J) in `@apply` at-rules (Tailwind CSS sources).
+  const classRules = classRulesOf(manifest);
+  if (hasClassRules(classRules)) {
+    root.walkAtRules('apply', (atRule) => {
+      const line = atRule.source?.start?.line;
+      const result = rewriteClassList(
+        atRule.params,
+        classRules,
+        (id) => ruleEnabled(ctx, id),
+        (entry, before, after) => {
+          findings.push({
+            kind: 'change',
+            surface: 'css',
+            file: ctx.file,
+            line,
+            ruleId: entry.id,
+            message: 'rename utility class',
+            before,
+            after,
+          });
+          if (entry.rule.note) {
+            findings.push({
+              kind: 'flag',
+              surface: 'css',
+              file: ctx.file,
+              line,
+              ruleId: entry.id,
+              message: entry.rule.note,
+            });
+          }
+        },
+        (entry, token) => {
+          findings.push({
+            kind: 'warn',
+            surface: 'css',
+            file: ctx.file,
+            line,
+            ruleId: entry.id,
+            message: `\`${token}\`: ${entry.rule.message}`,
+          });
+        },
+      );
+      if (result.changed) {
+        atRule.params = result.value;
+        changed = true;
+      }
+    });
+  }
 
   root.walkRules((rule) => {
     if (!rule.selector.includes('::part(')) return;

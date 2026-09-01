@@ -53,6 +53,7 @@ Notes:
 | G3  | Semantic color migration (#576) | seed rename `--tone-<family> → --tone-<family>-seed` (A2), rewritten; plus report-only surface candidates: a neutral tone (bare token or any scale step) used as a _background_ (a `background`/`background-color` property, or a `--mds-*-background*` token) is reported for manual migration to a `--magma-surface-*` role (the exact role, default/raised/overlay, is contextual)                                                                                                                                                                                                                                                                                                                                                         | seed: safe · surface: report  |
 | H   | Shadow part rename              | rename in `::part()` selectors                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | safe                          |
 | I   | Event rename                    | declared in the manifest schema, but **not implemented by any surface yet** — no event was renamed between v1.12 and v2.0.0-beta, so no rule currently exists                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | n/a                           |
+| J   | Utility-class migration         | the styles-package Tailwind contract that changed between v1 and v2: the `shadow-outline-*` ring family → `shadow-ring-*`, the retuned `rounded-*` / `border-*` / named `gap-*` scales. Value-exact renames are rewritten; combos with no v2 token are reported (see below)                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | rename: safe · report: manual |
 
 The bundled manifest is built by diffing the two `documentation.json` builds (`manifest.generated.ts`) with curated
 corrections layered on top in `src/manifest/manifest.ts`.
@@ -80,12 +81,43 @@ The same guard covers other default flips (same prop, new default — invisible 
 
 (`mds-emoji`'s default `name` changed `hexabot → mia`; deliberately not guarded — treat it as branding.)
 
+### Utility-class migration (J)
+
+The styles package's Tailwind token contract changed between v1 and v2; the codemod rewrites the classes whose
+**value survives under a new name** (verified value-by-value against the two token sets) and reports the rest. It
+runs on `class` attributes of **any** element (HTML, Angular templates, inline templates), `className`/`class` in
+JSX — including string literals inside `clsx()`/ternaries — `[class.x]`/`[ngClass]`/`[class]` bindings in Angular,
+and `@apply` in CSS/SCSS. Variant prefixes (`hover:`, `md:`, arbitrary variants) and important markers are
+preserved; only the utility segment is rewritten.
+
+| Family             | Renames (value-exact)                                                                                                                                                                                     | Reported (no exact v2 token)                                                                                                                                                      | Unchanged                                                              |
+| ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| Shadows            | `shadow-sm → shadow-xs`, `shadow-sm-sharp → shadow-xs-sharp`, `shadow-inner → shadow-inset-sm` (near-exact, flagged)                                                                                      | —                                                                                                                                                                                 | `shadow`, `shadow-sharp`, `shadow-md/lg/xl/2xl(-sharp)`, `shadow-none` |
+| Ring family (#641) | `shadow-outline → shadow-ring`, `-outline-50 → -ring-2`, `-outline-light → -ring-weak`, `-outline-light-50 → -ring-weak-2`, `-outline-strong-50 → -ring-strong-2`, `-outline-strong-100 → -ring-strong-4` | `-outline-75/-100`, `-outline-light-75/-100`, `-outline-strong(-75)` — ⚠ v2 reuses the name `shadow-outline-strong` for a **different** shadow, so leaving it is a silent restyle | —                                                                      |
+| Radius             | `rounded → rounded-3xs`, `md → 2xs`, `lg → xs`, `xl → md`, `2xl → lg`, `3xl → 2xl` — expanded over every corner/side variant (`rounded-t-*`, `rounded-tl-*`, …)                                           | `rounded-sm` (2px; the v2 scale starts at 4px, and v2 reuses `rounded-sm` for 10px)                                                                                               | `rounded-none`, `rounded-full`                                         |
+| Border width       | `border-md → border-sm`, `border-lg → border-200`, `border-xl → border-800` (side variants included)                                                                                                      | —                                                                                                                                                                                 | bare `border`, numeric steps                                           |
+| Gap                | bare `gap`(`-x`/`-y`) `→ gap-lg` (flagged: skippable if it is a hand-written class), `gap-3xl → gap-2000`                                                                                                 | —                                                                                                                                                                                 | `gap-xs`…`gap-2xl`, numeric steps                                      |
+
+Caveats:
+
+- **Run it once.** The radius scale shift is a chain (`rounded-xl → rounded-md` while `rounded-md → rounded-2xs`):
+  a single run is single-pass and never cascades, but a second run over already-migrated code double-shifts it.
+  The `--write` dirty-git-tree guard is your friend here.
+- Numeric steps (`p-400`, `gap-200`, `border-50`, `h-*`, `w-*`, typography, screens) kept their values everywhere
+  — no rules, nothing to do.
+- The **generic Tailwind 3 → 4 migration** (config → CSS-first `@theme`, renamed core utilities like `shadow-sm`'s
+  own TW-default meaning, `outline-none`, …) is Tailwind's own upgrade guide's business, not this codemod's: only
+  the magma token contract is covered.
+
 ## What it cannot rewrite (reported, not changed)
 
 These are surfaced under the **dynamic / manual** category in the report:
 
 - React **spread props** (`<MdsButton {...props} />`), aliased components, computed prop names.
 - Dynamic enum values (`tone={expr}` / `[tone]="expr"`).
+- **Dynamic class lists**: a `className` template literal with `${…}` holes that mentions a migrated utility class
+  is reported (a hole can split a token), and an `[ngClass]="expr"` whose expression carries no string literals is
+  silently out of reach — only the quoted class strings inside the expression are rewritten.
 - Slot content that contains **markup** (e.g. `<mds-icon>` inside `mds-button`).
 - Inline templates / HTML in template literals that contain `${…}` interpolation.
 - Angular `@Component({ host })` bindings are intentionally left untouched (rewriting a consumer component's own
