@@ -32,6 +32,7 @@ import {
   type SlotToAttrRule,
 } from '../manifest/schema.js';
 import { getByReactName, getByTag, ruleId, rulesForComponent } from '../manifest/registry.js';
+import { classRulesOf, hasClassRules, rewriteClassList } from './shared/class-ops.js';
 import { invertBoolean, remapEnum } from './shared/attribute-ops.js';
 import {
   bareTrue,
@@ -375,6 +376,97 @@ export const transformReact = (
         before,
         after: labelAttr,
       });
+    }
+  }
+
+  // Global: utility-class migrations (J) on `className` / `class` of ANY JSX
+  // element (the classes are not tied to an mds-* component). String literals
+  // and no-substitution templates anywhere in the attribute expression are
+  // rewritten (covers clsx()/classnames(), ternaries, `||` fallbacks);
+  // substitution templates can split a class across chunks, so they are
+  // reported instead.
+  const classRules = classRulesOf(manifest);
+  if (hasClassRules(classRules)) {
+    const rewriteLiteralContent = (node: Node): void => {
+      const inner = source.slice(node.getStart() + 1, node.getEnd() - 1);
+      const line = node.getStartLineNumber();
+      const result = rewriteClassList(
+        inner,
+        classRules,
+        (id) => ruleEnabled(ctx, id),
+        (entry, before, after) => {
+          findings.push({
+            kind: 'change',
+            surface: 'react',
+            file: ctx.file,
+            line,
+            ruleId: entry.id,
+            message: 'rename utility class',
+            before,
+            after,
+          });
+          if (entry.rule.note) {
+            findings.push({
+              kind: 'flag',
+              surface: 'react',
+              file: ctx.file,
+              line,
+              ruleId: entry.id,
+              message: entry.rule.note,
+            });
+          }
+        },
+        (entry, token) => {
+          findings.push({
+            kind: 'warn',
+            surface: 'react',
+            file: ctx.file,
+            line,
+            ruleId: entry.id,
+            message: `\`${token}\`: ${entry.rule.message}`,
+          });
+        },
+      );
+      if (result.changed)
+        edits.push({ start: node.getStart() + 1, end: node.getEnd() - 1, text: result.value });
+    };
+
+    const isPlainLiteral = (node: Node): boolean =>
+      node.getKind() === SyntaxKind.StringLiteral ||
+      node.getKind() === SyntaxKind.NoSubstitutionTemplateLiteral;
+
+    for (const attr of sf.getDescendantsOfKind(SyntaxKind.JsxAttribute)) {
+      const name = attr.getNameNode().getText();
+      if (name !== 'className' && name !== 'class') continue;
+      const init = attr.getInitializer();
+      if (!init) continue;
+      if (isPlainLiteral(init)) {
+        rewriteLiteralContent(init);
+        continue;
+      }
+      if (init.getKind() !== SyntaxKind.JsxExpression) continue;
+      const expr = (init as JsxExpression).getExpression();
+      if (!expr) continue;
+      const literals = [
+        ...(isPlainLiteral(expr) ? [expr as Node] : []),
+        ...expr.getDescendantsOfKind(SyntaxKind.StringLiteral),
+        ...expr.getDescendantsOfKind(SyntaxKind.NoSubstitutionTemplateLiteral),
+      ];
+      for (const literal of literals) rewriteLiteralContent(literal);
+      const templates = [
+        ...(expr.getKind() === SyntaxKind.TemplateExpression ? [expr as Node] : []),
+        ...expr.getDescendantsOfKind(SyntaxKind.TemplateExpression),
+      ];
+      for (const template of templates) {
+        if (!classRules.candidateRe?.test(template.getText())) continue;
+        findings.push({
+          kind: 'dynamic',
+          surface: 'react',
+          file: ctx.file,
+          line: template.getStartLineNumber(),
+          message: `template literal in \`${name}\` mentions a migrated utility class; rewrite it manually`,
+        });
+      }
     }
   }
 

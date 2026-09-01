@@ -16,12 +16,15 @@
  *    `mds-breadcrumb-item` / `mds-tab-item` mandatory — v2 dropped their slot).
  *  - CSS custom properties the docs diff recorded as removals but that are
  *    renames in the shipped CSS.
+ *  - utility-class migrations of the styles package (J): the shadow/ring,
+ *    radius, border-width and named-gap token contracts that changed between
+ *    v1 and v2 (invisible to the docs diff, which only sees components).
  *
  * Re-run the generator on each alpha/beta and review the diff; keep the
  * corrections here.
  */
 import { generatedManifest } from './manifest.generated.js';
-import { type Manifest } from './schema.js';
+import { type ClassRenameRule, type ClassReportRule, type Manifest } from './schema.js';
 
 const curate = (base: Manifest): Manifest => {
   const m = structuredClone(base);
@@ -248,6 +251,159 @@ const curate = (base: Manifest): Manifest => {
       from: `tone-neutral-${step}`,
     })),
   ];
+
+  // J — utility classes of the styles package (the Tailwind design-token
+  // contract) that changed between v1.12 and v2, verified value-by-value
+  // against the two token sets (box-shadow.json, border-radius.json vs
+  // radius.json, border.json, gap.json vs spacing.json). Renames are
+  // value-exact — the v2 class paints the same pixels; classes with no exact
+  // v2 token are report-only, with the nearest candidates named. Numeric steps
+  // (`p-400`, `gap-200`, `border-50`, …) kept their values everywhere, and the
+  // generic Tailwind 3 → 4 migration is Tailwind's business, not ours.
+  const classRenames: ClassRenameRule[] = [];
+  const classReports: ClassReportRule[] = [];
+
+  // Shadows. The size scale slid one name down at the bottom (v1 `sm` is v2
+  // `xs`; v2 `DEFAULT`/`sharp` alias the old values, so bare `shadow` and
+  // `shadow-sharp` are unchanged), `inner` became `inset-sm`, and the neutral
+  // ring family `outline-*` was republished as `ring-*` (#641): the suffix is
+  // now the width in px, weak/base/strong is the alpha (0.15 / 0.3 / 0.6).
+  const shadowRenames: Array<[string, string]> = [
+    ['shadow-sm', 'shadow-xs'],
+    ['shadow-sm-sharp', 'shadow-xs-sharp'],
+    ['shadow-outline', 'shadow-ring'], // 1px @ 30%
+    ['shadow-outline-50', 'shadow-ring-2'], // 2px @ 30%
+    ['shadow-outline-light', 'shadow-ring-weak'], // 1px @ 15%
+    ['shadow-outline-light-50', 'shadow-ring-weak-2'], // 2px @ 15%
+    ['shadow-outline-strong-50', 'shadow-ring-strong-2'], // 2px @ 60%
+    ['shadow-outline-strong-100', 'shadow-ring-strong-4'], // 4px @ 60%
+  ];
+  for (const [from, to] of shadowRenames) classRenames.push({ kind: 'classRename', from, to });
+  classRenames.push({
+    kind: 'classRename',
+    from: 'shadow-inner',
+    to: 'shadow-inset-sm',
+    note: 'v2 `shadow-inset-sm` adds a 1%-alpha inset hairline to the v1 `shadow-inner` value — visually equivalent',
+  });
+
+  // v1 ring width×alpha combos that were not republished (the `-75` = 3px step
+  // is gone entirely). `shadow-outline-strong` is the dangerous one: v2 reuses
+  // that exact name for an unrelated black composite shadow, so leaving it
+  // unchanged silently restyles the element.
+  const ringReports: Array<[string, string]> = [
+    [
+      'shadow-outline-75',
+      'the v1 3px @ 30% ring has no v2 token; nearest `shadow-ring-2` (2px @ 30%)',
+    ],
+    [
+      'shadow-outline-100',
+      'the v1 4px @ 30% ring has no v2 token; nearest `shadow-ring-strong-4` (4px @ 60%)',
+    ],
+    [
+      'shadow-outline-light-75',
+      'the v1 3px @ 15% ring has no v2 token; nearest `shadow-ring-weak-2` (2px @ 15%)',
+    ],
+    [
+      'shadow-outline-light-100',
+      'the v1 4px @ 15% ring has no v2 token; nearest `shadow-ring-weak-2` (2px @ 15%)',
+    ],
+    [
+      'shadow-outline-strong',
+      'v2 reuses this name for a different shadow (a black composite, not the neutral ring), so leaving it is a silent restyle; the v1 1px @ 60% ring has no v2 token — nearest `shadow-ring` (1px @ 30%) or `shadow-ring-strong-2` (2px @ 60%)',
+    ],
+    [
+      'shadow-outline-strong-75',
+      'the v1 3px @ 60% ring has no v2 token; nearest `shadow-ring-strong-2` (2px) or `shadow-ring-strong-4` (4px)',
+    ],
+  ];
+  for (const [name, message] of ringReports)
+    classReports.push({ kind: 'classReport', name, message });
+
+  // Radius. The scale was retuned: every v1 step except `sm` keeps its value
+  // under a new (smaller-sounding) name — DEFAULT 4px → `3xs`, md 6px → `2xs`,
+  // lg 8px → `xs`, xl 12px → `md`, 2xl 16px → `lg`, 3xl 24px → `2xl`
+  // (`rounded-none` / `rounded-full` are unchanged). Corner and side variants
+  // share the theme scale, so the map is expanded over every prefix. The
+  // lookup is single-pass, so `rounded-xl → rounded-md` never cascades into
+  // the `rounded-md → rounded-2xs` rule.
+  const roundedPrefixes = [
+    'rounded',
+    'rounded-s',
+    'rounded-e',
+    'rounded-t',
+    'rounded-r',
+    'rounded-b',
+    'rounded-l',
+    'rounded-ss',
+    'rounded-se',
+    'rounded-ee',
+    'rounded-es',
+    'rounded-tl',
+    'rounded-tr',
+    'rounded-br',
+    'rounded-bl',
+  ];
+  const radiusSteps: Array<[string, string]> = [
+    ['', '3xs'],
+    ['md', '2xs'],
+    ['lg', 'xs'],
+    ['xl', 'md'],
+    ['2xl', 'lg'],
+    ['3xl', '2xl'],
+  ];
+  for (const prefix of roundedPrefixes) {
+    for (const [from, to] of radiusSteps)
+      classRenames.push({
+        kind: 'classRename',
+        from: from === '' ? prefix : `${prefix}-${from}`,
+        to: `${prefix}-${to}`,
+      });
+    classReports.push({
+      kind: 'classReport',
+      name: `${prefix}-sm`,
+      message: `the v1 2px radius has no v2 step (the scale starts at 4px), and v2 reuses \`${prefix}-sm\` for 10px, so leaving it is a silent restyle; nearest \`${prefix}-3xs\` (4px), or keep 2px with the arbitrary \`${prefix}-[2px]\``,
+    });
+  }
+
+  // Border widths. The named steps were retuned (md 2px → 3px, lg 8px → 4px,
+  // xl 32px → 5px) but every v1 value survives: 2px under the new `sm` name,
+  // 8px and 32px under the numeric steps that kept their values.
+  const borderPrefixes = [
+    'border',
+    'border-x',
+    'border-y',
+    'border-s',
+    'border-e',
+    'border-t',
+    'border-r',
+    'border-b',
+    'border-l',
+  ];
+  const borderSteps: Array<[string, string]> = [
+    ['md', 'sm'],
+    ['lg', '200'],
+    ['xl', '800'],
+  ];
+  for (const prefix of borderPrefixes)
+    for (const [from, to] of borderSteps)
+      classRenames.push({ kind: 'classRename', from: `${prefix}-${from}`, to: `${prefix}-${to}` });
+
+  // Gap. The named steps moved from the gap-only scale to the global spacing
+  // scale with two casualties: the bare DEFAULT spelling (24px; v2 has no bare
+  // `gap` class — `gap-lg` is the same 24px) and `3xl` (80px in v1, 64px in
+  // v2 — the numeric `gap-2000` keeps 80px). Every other named step (`xs` …
+  // `2xl`) kept its value.
+  for (const prefix of ['gap', 'gap-x', 'gap-y']) {
+    classRenames.push({
+      kind: 'classRename',
+      from: prefix,
+      to: `${prefix}-lg`,
+      note: `bare \`${prefix}\` is assumed to be the Tailwind DEFAULT step (24px); if it is a hand-written class of your own, skip this rule with --skip global/classRename/${prefix}`,
+    });
+    classRenames.push({ kind: 'classRename', from: `${prefix}-3xl`, to: `${prefix}-2000` });
+  }
+
+  m.global.classes = [...classRenames, ...classReports];
 
   // Behavior guard: v2 mds-dropdown enables auto-placement by default (v1 was
   // off). Add `disable-auto-placement` to dropdowns that set neither prop, to

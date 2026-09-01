@@ -123,6 +123,30 @@ export interface CssVarSurfaceReportRule {
   note?: string;
 }
 
+/**
+ * Category J — rename a utility class of the styles package (the Tailwind
+ * design-token contract: `shadow-*`, `rounded-*`, `border-*`, `gap-*`), value
+ * preserved. `from`/`to` are the bare utility names; the surfaces match them
+ * under any variant prefixes (`hover:`, `md:`, arbitrary variants) and the
+ * important marker, and rewrite only the utility segment.
+ */
+export interface ClassRenameRule {
+  kind: 'classRename';
+  /** Bare utility name, without variant prefixes: `shadow-outline-light`. */
+  from: string;
+  to: string;
+  /** Extra context surfaced as a flag next to the rename. */
+  note?: string;
+}
+
+/** Category J (report-only) — a v1 utility class with no exact v2 equivalent; usages are reported. */
+export interface ClassReportRule {
+  kind: 'classReport';
+  /** Bare utility name, without variant prefixes. */
+  name: string;
+  message: string;
+}
+
 /** Category H — rename a shadow part referenced in `::part()`. */
 export interface PartRenameRule {
   kind: 'partRename';
@@ -167,6 +191,8 @@ export type Rule =
   | CssVarRenameRule
   | CssVarRemoveRule
   | CssVarSurfaceReportRule
+  | ClassRenameRule
+  | ClassReportRule
   | PartRenameRule
   | EventRenameRule
   | EnsureAttrRule;
@@ -211,6 +237,15 @@ export interface GlobalRules {
    * HTML/React/Angular surfaces ignore them.
    */
   cssVars?: Array<CssVarRenameRule | CssVarSurfaceReportRule>;
+  /**
+   * Utility-class migrations of the styles package (category J): the Tailwind
+   * design-token contract that changed between v1 and v2 (`shadow-*` ring
+   * family, retuned `rounded-*` scale, `border-*` widths, named `gap-*`
+   * steps). Applied to `class` / `className` values on ANY element (the
+   * classes are global, not tied to an `mds-*` component) and to `@apply` in
+   * CSS/SCSS.
+   */
+  classes?: Array<ClassRenameRule | ClassReportRule>;
 }
 
 export interface Manifest {
