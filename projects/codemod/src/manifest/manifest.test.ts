@@ -219,6 +219,14 @@ describe('curated manifest', () => {
         rulesOf(tag).some((r) => r.kind === 'cssVarRemove' && r.name.includes('preview-icon-ba')),
       ).toBe(false);
     }
+    // The stepper duration typo was corrected after the v2.0.0-beta docs
+    // snapshot (while registering the properties from globals.css, #328), so
+    // only the curated layer can see it.
+    expect(rulesOf('mds-stepper-bar-item')).toContainEqual({
+      kind: 'cssVarRename',
+      from: 'mds-stepper-bar-item-duaration',
+      to: 'mds-stepper-bar-item-duration',
+    });
   });
 });
 
