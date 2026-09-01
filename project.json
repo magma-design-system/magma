@@ -1,0 +1,21 @@
+{
+  "name": "magma",
+  "$schema": "node_modules/nx/schemas/project-schema.json",
+  "targets": {
+    "all": {
+      "executor": "nx:noop",
+      "cache": false,
+      "dependsOn": [
+        "design-tokens:build",
+        "svg-icons:build",
+        "identity:build",
+        "codemod:build",
+        "styles:build",
+        "icons:build",
+        "stencil:build",
+        "stencil-react:build",
+        "stencil-angular:build"
+      ]
+    }
+  }
+}
