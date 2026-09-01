@@ -34,9 +34,7 @@ export default defineConfig([
   // #region storybook
   ...storybook.configs['flat/recommended'],
   {
-    extends: [
-      compat.extends('plugin:storybook/recommended', 'plugin:@typescript-eslint/recommended'),
-    ],
+    extends: [compat.extends('plugin:@typescript-eslint/recommended')],
   },
   // #endregion
 
