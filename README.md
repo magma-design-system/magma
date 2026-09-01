@@ -88,8 +88,12 @@ yarn install
 Build everything (NX resolves the dependency graph and build order):
 
 ```bash
+nx run magma:all
+# Or
 nx run-many --target=build --all
 ```
+
+The `magma:all` target (defined in the root `project.json`) depends on every project's `build`, so NX schedules them topologically: `design-tokens`, `svg-icons`, `identity` and `codemod` first, then `styles` and `icons`, then `stencil`, and finally `stencil-react` and `stencil-angular`.
 
 Or build a single project:
 
