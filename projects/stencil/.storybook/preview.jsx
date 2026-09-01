@@ -24,7 +24,7 @@ import {
   UNSET,
   storageKey,
   storedValue,
-} from './preferences';
+} from './preferences.mjs';
 
 defineCustomElements();
 
@@ -112,14 +112,13 @@ const parameters = {
     // viewports,
   },
   backgrounds: {
-    values: [
-      { name: 'White', value: 'rgb(255 255 255)' },
-      { name: 'Light', value: 'rgb(var(--tone-neutral-10, 248 248 248))' },
-      { name: 'Grey', value: 'rgb(var(--tone-neutral-06, 162 162 162))' },
-      { name: 'Dark', value: 'rgb(var(--tone-neutral-01, 33 33 33))' },
-      { name: 'Black', value: 'rgb(0 0 0)' },
-    ],
-    // default: 'White',
+    options: {
+      white: { name: 'White', value: 'rgb(255 255 255)' },
+      light: { name: 'Light', value: 'rgb(var(--tone-neutral-10, 248 248 248))' },
+      grey: { name: 'Grey', value: 'rgb(var(--tone-neutral-06, 162 162 162))' },
+      dark: { name: 'Dark', value: 'rgb(var(--tone-neutral-01, 33 33 33))' },
+      black: { name: 'Black', value: 'rgb(0 0 0)' },
+    },
   },
 };
 

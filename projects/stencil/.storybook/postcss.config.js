@@ -6,7 +6,7 @@ import autoprefixer from 'autoprefixer';
 export default {
   plugins: [
     postcssImport(),
-    iconsauce('./.storybook/iconsauce.config.js'),
+    iconsauce('./.storybook/iconsauce.config.mjs'),
     tailwindcss(),
     autoprefixer({
       flexbox: 'no-2009',
