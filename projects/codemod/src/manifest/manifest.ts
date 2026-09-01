@@ -127,8 +127,10 @@ const curate = (base: Manifest): Manifest => {
   //  - "doc-only v1 name" cases where the shipped v1 CSS already used the v2
   //    name, so overrides written against the documented name were silently
   //    inert — the rename activates them (explanatory note attached);
-  //  - typo'd v1 names corrected in v2 (#566): v1 shipped the misspelled name,
-  //    so the working v1 name is renamed to the corrected v2 one.
+  //  - typo'd v1 names corrected in v2 (#566, plus the stepper `duaration`
+  //    fixed while registering the properties from globals.css, #328): v1
+  //    shipped the misspelled name, so the working v1 name is renamed to the
+  //    corrected v2 one.
   const docOnlyNote = (shipped: string): string =>
     `the v1 name was documented but never shipped (the CSS always read \`--${shipped}\`); this override was inert in v1 and becomes effective after the rename`;
   const cssVarRenames: Array<{
@@ -191,6 +193,11 @@ const curate = (base: Manifest): Manifest => {
       from: 'mds-tab-item-transition-timing-function',
       to: 'mds-tab-transition-timing-function',
       note: docOnlyNote('mds-tab-transition-timing-function'),
+    },
+    {
+      tag: 'mds-stepper-bar-item',
+      from: 'mds-stepper-bar-item-duaration',
+      to: 'mds-stepper-bar-item-duration',
     },
     {
       tag: 'mds-video-wall',
