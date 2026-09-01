@@ -228,6 +228,51 @@ describe('curated manifest', () => {
       to: 'mds-stepper-bar-item-duration',
     });
   });
+
+  it('migrates the utility classes whose token contract changed (J)', () => {
+    const classes = manifest.global.classes ?? [];
+    const renames = classes.filter((r) => r.kind === 'classRename');
+    const reports = classes.filter((r) => r.kind === 'classReport');
+    const renameMap = new Map(renames.map((r) => [r.from, r.to]));
+
+    // Shadows: ring family back under width/alpha names; sm slid to xs;
+    // DEFAULT/sharp/md/lg/xl/2xl are value-stable and must NOT be renamed.
+    expect(renameMap.get('shadow-outline')).toBe('shadow-ring');
+    expect(renameMap.get('shadow-outline-light-50')).toBe('shadow-ring-weak-2');
+    expect(renameMap.get('shadow-outline-strong-100')).toBe('shadow-ring-strong-4');
+    expect(renameMap.get('shadow-sm')).toBe('shadow-xs');
+    expect(renameMap.get('shadow-inner')).toBe('shadow-inset-sm');
+    for (const stable of ['shadow', 'shadow-sharp', 'shadow-md', 'shadow-2xl', 'shadow-none'])
+      expect(renameMap.has(stable)).toBe(false);
+    // No-equivalent ring widths are report-only — the name collision above all.
+    for (const name of ['shadow-outline-strong', 'shadow-outline-75', 'shadow-outline-light-100'])
+      expect(reports.some((r) => r.name === name)).toBe(true);
+
+    // Radius: value-preserving scale shift, expanded over corner variants;
+    // `sm` (2px, no v2 step) is report-only; `none`/`full` are stable.
+    expect(renameMap.get('rounded')).toBe('rounded-3xs');
+    expect(renameMap.get('rounded-md')).toBe('rounded-2xs');
+    expect(renameMap.get('rounded-3xl')).toBe('rounded-2xl');
+    expect(renameMap.get('rounded-tl-xl')).toBe('rounded-tl-md');
+    expect(renameMap.get('rounded-t-2xl')).toBe('rounded-t-lg');
+    expect(reports.some((r) => r.name === 'rounded-sm')).toBe(true);
+    expect(reports.some((r) => r.name === 'rounded-b-sm')).toBe(true);
+    for (const stable of ['rounded-none', 'rounded-full'])
+      expect(renameMap.has(stable)).toBe(false);
+
+    // Border widths: retuned named steps land on value-stable names; the bare
+    // `border` (1px DEFAULT) is unchanged.
+    expect(renameMap.get('border-md')).toBe('border-sm');
+    expect(renameMap.get('border-lg')).toBe('border-200');
+    expect(renameMap.get('border-x-xl')).toBe('border-x-800');
+    expect(renameMap.has('border')).toBe(false);
+
+    // Gap: only the bare DEFAULT and the 3xl step changed value.
+    expect(renameMap.get('gap')).toBe('gap-lg');
+    expect(renameMap.get('gap-y-3xl')).toBe('gap-y-2000');
+    for (const stable of ['gap-xs', 'gap-md', 'gap-2xl', 'gap-400'])
+      expect(renameMap.has(stable)).toBe(false);
+  });
 });
 
 describe('generated manifest alignment (v1.12 tip vs dev tip)', () => {
