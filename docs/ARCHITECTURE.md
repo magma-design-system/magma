@@ -2,7 +2,7 @@
 
 ## 1. System Overview
 
-Magma is a monorepo managed with NX and Yarn workspaces. It is composed of five independent sub-projects, each published as a separate npm package under the `@maggioli-design-system` scope. Sub-projects have a strict one-directional dependency graph: no circular dependencies are allowed.
+Magma is a monorepo managed with NX and npm workspaces. It is composed of five independent sub-projects, each published as a separate npm package under the `@maggioli-design-system` scope. Sub-projects have a strict one-directional dependency graph: no circular dependencies are allowed.
 
 ```mermaid
 graph TD

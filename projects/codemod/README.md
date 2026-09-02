@@ -139,8 +139,8 @@ Out of scope entirely (all surfaces work on markup/templates only):
 ## Development
 
 ```bash
-yarn nx run codemod:build     # tsc → dist/
-yarn nx run codemod:test      # jest (ESM)
+npx nx run codemod:build      # tsc → dist/
+npx nx run codemod:test       # jest (ESM)
 ```
 
 ### Regenerating the manifest from the docs
@@ -148,7 +148,7 @@ yarn nx run codemod:test      # jest (ESM)
 ```bash
 # v2 docs come from a `dev` build; v1 docs from a one-off build of `support/v1.x` in a worktree.
 FROM_VERSION=1.12.0 TO_VERSION=2.0.0 \
-  yarn generate.candidate <v1 documentation.json> <v2 documentation.json> src/manifest/manifest.candidate.json
+  npm run generate.candidate -- <v1 documentation.json> <v2 documentation.json> src/manifest/manifest.candidate.json
 ```
 
 Review the candidate and merge confirmed rules into `src/manifest/manifest.ts`.
