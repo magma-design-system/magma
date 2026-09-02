@@ -94,7 +94,7 @@ jobs:
             nx-${{ hashFiles('package-lock.json') }}-
       - run: npm ci --prefer-offline
       # npm never materializes node_modules of nested workspaces, so ng can't
-      # find @angular-devkit/build-angular from the root install — see #666
+      # find @angular/build from the root install — see #666
       - run: npm install --workspaces=false --no-audit --no-fund
         working-directory: projects/stencil/angular
       - uses: actions/download-artifact@v8
