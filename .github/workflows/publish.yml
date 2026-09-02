@@ -216,9 +216,9 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version-file: .nvmrc
-          cache: yarn
+          cache: npm
       - if: ${{ steps.ver.outputs.proceed == 'true' }}
-        run: yarn install --frozen-lockfile --prefer-offline
+        run: npm ci --prefer-offline
       - name: Download the build artifact from the CI run
         if: ${{ steps.ver.outputs.proceed == 'true' }}
         uses: actions/download-artifact@v8
