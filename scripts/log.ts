@@ -10,7 +10,7 @@ const dontUseWithNX = (exit = false): void => {
     console.info(`${chalk.bold(chalk.bgRed(' DO NOT USE this with NX '))}`);
     console.info('Prompt messages are not shown for NX limitation');
     console.info('For infos: https://github.com/nrwl/nx/issues/15924');
-    console.info(`Use it with ${chalk.bold('npm')} or ${chalk.bold('yarn')} instead`);
+    console.info(`Use it with ${chalk.bold('npm')} instead`);
     console.info(' ');
     if (exit) {
       process.exit(0);
