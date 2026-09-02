@@ -43,6 +43,8 @@ export const config: Config = {
   taskQueue: 'async',
   transformAliasedImportPaths: true,
   srcDir,
+  // Come in stencil.config.ts: esclude le *.stories.tsx dalla build.
+  tsconfig: 'tsconfig.stencil.json',
   sourceMap: true,
   buildEs5: true,
   extras: {

@@ -43,6 +43,10 @@ export const config: Config = {
   taskQueue: 'async',
   transformAliasedImportPaths: true,
   srcDir,
+  // tsconfig dedicato che esclude le *.stories.tsx dal program TypeScript:
+  // le storie restano nel tsconfig.json principale (editor, ESLint, paths di
+  // Storybook) ma non vengono più compilate né copiate in dist/collection.
+  tsconfig: 'tsconfig.stencil.json',
   sourceMap: false,
   minifyCss: false,
   minifyJs: true,
