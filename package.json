@@ -60,7 +60,7 @@
     "changelog.stencil": "conventional-changelog -p conventionalcommits -i projects/stencil/CHANGELOG.md -s --commit-path projects/stencil",
     "changelog.styles": "conventional-changelog -p conventionalcommits -i projects/styles/CHANGELOG.md -s --commit-path projects/styles",
     "changelog.svg-icons": "conventional-changelog -p conventionalcommits -i projects/svg-icons/CHANGELOG.md -s --commit-path projects/svg-icons",
-    "clean-modules": "rm -rf node_modules || true && rm -rf projects/**/node_modules || true && rm package-lock.json",
+    "clean-modules": "find . -type d -name node_modules -prune -exec rm -rf {} + && find . -type f -name package-lock.json -delete",
     "lint": "nx run-many -t lint",
     "lint:fix": "nx run-many -t lint:fix",
     "format": "prettier --write '**/*.{js,jsx,ts,tsx,css}' '!**/deprecated/**'",
