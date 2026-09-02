@@ -192,6 +192,10 @@ jobs:
           restore-keys: |
             nx-${{ hashFiles('package-lock.json') }}-
       - run: npm ci --prefer-offline
+      # the angular tree-shaking probe builds inside projects/stencil/angular,
+      # whose node_modules npm never materializes — see #666
+      - run: npm install --workspaces=false --no-audit --no-fund
+        working-directory: projects/stencil/angular
       - uses: actions/download-artifact@v8
         with:
           name: stencil-build
