@@ -48,15 +48,15 @@ jobs:
         with:
           node-version-file: .nvmrc
           registry-url: 'https://registry.npmjs.org'
-          cache: yarn
+          cache: npm
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile --prefer-offline
+        run: npm ci --prefer-offline
 
       - name: Build & test
         run: |
-          yarn nx run codemod:build
-          yarn nx run codemod:test
+          npx nx run codemod:build
+          npx nx run codemod:test
 
       - name: Compute next version & dist-tag
         id: ver

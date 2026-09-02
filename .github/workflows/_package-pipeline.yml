@@ -78,16 +78,16 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version-file: .nvmrc
-          cache: yarn
+          cache: npm
       - name: Restore Nx cache
         uses: actions/cache@v5
         with:
           path: .nx
-          key: nx-${{ hashFiles('yarn.lock') }}-${{ github.sha }}
+          key: nx-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
           restore-keys: |
-            nx-${{ hashFiles('yarn.lock') }}-
-      - run: yarn install --frozen-lockfile --prefer-offline
-      - run: yarn nx run ${{ inputs.nx-project }}:build
+            nx-${{ hashFiles('package-lock.json') }}-
+      - run: npm ci --prefer-offline
+      - run: npx nx run ${{ inputs.nx-project }}:build
       - uses: actions/upload-artifact@v7
         with:
           name: ${{ format('{0}-build', inputs.nx-project) }}
@@ -110,15 +110,15 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version-file: .nvmrc
-          cache: yarn
+          cache: npm
       - name: Restore Puppeteer Chrome cache
         if: ${{ inputs.install-chrome }}
         uses: actions/cache@v5
         with:
           path: .cache/puppeteer
-          key: puppeteer-${{ hashFiles('yarn.lock') }}
+          key: puppeteer-${{ hashFiles('package-lock.json') }}
       # postinstall downloads Chrome into .cache/puppeteer (see .puppeteerrc.cjs) unless cached
-      - run: yarn install --frozen-lockfile --prefer-offline
+      - run: npm ci --prefer-offline
       - if: ${{ inputs.nx-project != '' }}
         uses: actions/download-artifact@v8
         with:

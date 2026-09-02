@@ -25,10 +25,10 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version-file: .nvmrc
-          cache: yarn
+          cache: npm
       - name: Install dependencies
-        run: yarn install --frozen-lockfile --prefer-offline
+        run: npm ci --prefer-offline
       - name: Build
-        run: yarn nx run codemod:build
+        run: npx nx run codemod:build
       - name: Test
-        run: yarn nx run codemod:test
+        run: npx nx run codemod:test
