@@ -6,7 +6,7 @@ Magma is the [Maggioli Design System][docs]: a library of ~115 web components (S
 
 ## Stack
 
-- **Monorepo**: [NX](https://nx.dev/) + Yarn workspaces
+- **Monorepo**: [NX](https://nx.dev/) + npm workspaces
 - **Web components**: [StencilJS](https://stenciljs.com/) + TypeScript
 - **Styles**: Tailwind 4 (CSS custom properties) + CSS cascade layers
 - **Design tokens**: Style Dictionary + Adobe Leonardo
@@ -19,7 +19,7 @@ Magma is the [Maggioli Design System][docs]: a library of ~115 web components (S
 ├── docs/                  # Cross-project documentation (architecture, workflow, standards)
 │   └── agents/            # Install/usage guides for consumer apps (web components, React, Angular)
 ├── docker/                # nginx config used by the Storybook Docker image
-├── projects/              # The sub-projects (Yarn workspaces, published npm packages)
+├── projects/              # The sub-projects (npm workspaces, published npm packages)
 │   ├── codemod/           # @maggioli-design-system/magma-codemods — v1 → v2 consumer migration
 │   ├── design-tokens/     # @maggioli-design-system/design-tokens — token source + build + playground
 │   ├── icons/             # @maggioli-design-system/icons — icon font (Material Design based)
@@ -64,11 +64,11 @@ stencil        →  design-tokens, styles, svg-icons, identity
 ### Requirements
 
 - **Node**: see [.nvmrc](.nvmrc) (minimum `22.15.0`); with NVM run `nvm use`
-- **Yarn** as package manager — always Yarn, never npm
+- **npm** as package manager — always npm, never Yarn
 - **NX** and **ESLint** installed globally
 
 ```bash
-npm install -g eslint nx yarn
+npm install -g eslint nx
 ```
 
 > Note: if you are using NVM and you change the Node version, you must reinstall global packages for the version you are using.
@@ -80,7 +80,7 @@ Clone the repository and install the dependencies from the project root:
 ```bash
 git clone git@github.com:magma-design-system/magma.git
 cd magma
-yarn install
+npm install
 ```
 
 ### Build
@@ -152,10 +152,10 @@ npx @maggioli-design-system/magma-codemods --path ./src
 From the repo root:
 
 ```bash
-yarn lint          # ESLint + Stylelint on every project
-yarn lint:fix      # same, autofixing what it can
-yarn format        # Prettier on the whole repo
-yarn format:check
+npm run lint          # ESLint + Stylelint on every project
+npm run lint:fix      # same, autofixing what it can
+npm run format        # Prettier on the whole repo
+npm run format:check
 ```
 
 ## Development setup

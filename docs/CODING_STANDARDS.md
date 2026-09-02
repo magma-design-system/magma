@@ -57,8 +57,8 @@ Common settings:
 
 ```bash
 # In projects/stencil/
-yarn lint.ts          # check
-yarn lint:fix         # auto-fix what's fixable
+npm run lint.ts       # check
+npm run lint:fix      # auto-fix what's fixable
 
 # Monorepo-wide
 nx run-many --target=lint --all
@@ -266,7 +266,7 @@ mds-button[type="primary"] { … }
 
 ```bash
 # In projects/stencil/
-yarn lint.css
+npm run lint.css
 
 # Auto-fix where possible
 npx stylelint --fix 'src/**/*.css'

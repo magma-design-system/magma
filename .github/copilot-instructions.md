@@ -6,7 +6,7 @@ When generating, completing, or reviewing code in this repository, follow the ru
 
 ## Stack
 
-- **Monorepo**: Nx + Yarn workspaces (always use `yarn`, never `npm`)
+- **Monorepo**: Nx + npm workspaces (always use `npm`, never `yarn`)
 - **Web components**: StencilJS + TypeScript (TSX, JSX pragma is `h`)
 - **Styles**: Tailwind 4 with CSS custom properties + cascade layers
 - **Tokens**: Style Dictionary + Adobe Leonardo
@@ -64,7 +64,7 @@ Every component documents its semantic intent in three markdown files inside `pr
 - `pattern.md` - numbered list of correct usage patterns with code examples
 - `antipattern.md` - numbered list of incorrect uses with `🚫 INCORRECT` / `✅ CORRECT` pairs
 
-These are the **canonical source of truth**. The component's `readme.md` is auto-generated from them by the Stencil build (`usage/*.md` → `documentation.json` → `readme.md`), so **never edit `readme.md` by hand**. Templates for new components live in `projects/stencil/template/usage/*.md.hbs`; the scaffolder is `yarn generate.usage`.
+These are the **canonical source of truth**. The component's `readme.md` is auto-generated from them by the Stencil build (`usage/*.md` → `documentation.json` → `readme.md`), so **never edit `readme.md` by hand**. Templates for new components live in `projects/stencil/template/usage/*.md.hbs`; the scaffolder is `npm run generate.usage`.
 
 ## Commit messages
 
@@ -105,9 +105,9 @@ Full rules: [`docs/WORKFLOW.md`](../docs/WORKFLOW.md).
 ## When suggesting a new component
 
 1. Scaffold with `nx run stencil:generate mds-component-name`.
-2. Generate the `usage/` triplet with `yarn generate.usage` and fill in the three files (templates in `projects/stencil/template/usage/`).
+2. Generate the `usage/` triplet with `npm run generate.usage` and fill in the three files (templates in `projects/stencil/template/usage/`).
 3. Add Storybook stories under `test/`.
-4. Run `yarn lint` before committing.
+4. Run `npm run lint` before committing.
 
 ## Anti-patterns Copilot must avoid
 

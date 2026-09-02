@@ -4,7 +4,7 @@ Magma is the Maggioli Group Design System: a library of ~115 web components (Ste
 
 ## Stack
 
-- **Monorepo**: NX + Yarn workspaces
+- **Monorepo**: NX + npm workspaces
 - **Web components**: StencilJS + TypeScript
 - **Styles**: Tailwind 4 (CSS custom properties) + CSS cascade layers
 - **Tokens**: Style Dictionary + Adobe Leonardo
@@ -13,7 +13,7 @@ Magma is the Maggioli Group Design System: a library of ~115 web components (Ste
 
 ## Package manager
 
-Always use **Yarn**, never npm.
+Always use **npm**, never Yarn.
 
 ## Git governance (read before committing or pushing)
 
@@ -27,9 +27,9 @@ Full rules: `docs/WORKFLOW.md`. Critical constraints for agents:
 ## Commands
 
 ```bash
-npm install -g eslint nx yarn                        # global dependencies
+npm install -g eslint nx                             # global dependencies
 
-yarn install                                         # install project dependencies
+npm install                                          # install project dependencies
 
 nx run-many --target=build --all                     # build everything
 nx run design-tokens:build                           # build tokens only
