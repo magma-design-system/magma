@@ -13,6 +13,14 @@ const CONTROL_C = `
  * `keyup` is what triggers the combination check.
  */
 const typeCombination = async (page: E2EPage, codes: string[]): Promise<void> => {
+  // Wait until the shortcuts area actually holds focus: a re-render between the
+  // trigger click and the dispatch can blur it, which detaches the key
+  // listeners and silently swallows the synthetic events.
+  await page.waitForFunction(() => {
+    const host = document.querySelector('mds-keyboard');
+    const shortcuts = host?.shadowRoot?.querySelector('.shortcuts');
+    return !!shortcuts && host.shadowRoot.activeElement === shortcuts;
+  });
   await page.$eval(
     'mds-keyboard',
     (host: HTMLElement, keyCodes: string[]) => {
