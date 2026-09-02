@@ -2559,7 +2559,25 @@
     fast-glob "^3.2.11"
     lilconfig "2.0.4"
 
-"@iconsauce/core@1.5.0", "@iconsauce/core@^1.2.4":
+"@iconsauce/core@2.0.0":
+  version "2.0.0"
+  resolved "https://registry.npmjs.org/@iconsauce/core/-/core-2.0.0.tgz#503e51fdc40678254317c851b1bf8a0e22793398"
+  integrity sha512-QYyp1YHygY3ddkJ4G5eH7UdIfZyomE8Mc7ONrUVErPfDrpab1Ohxt6DDJ0btga3Qlm8JixL8s4pBuOQRPDmkSg==
+  dependencies:
+    "@iconsauce/material-icons" "^1.0.3"
+    "@iconsauce/mdi-svg" "^1.0.8"
+    "@iconsauce/mgg-icons" "^1.2.0"
+    "@iconsauce/plugin" "^0.1.0"
+    arg "5.0.2"
+    chalk "4.1.2"
+    fast-glob "3.3.3"
+    fonteditor-core "2.6.3"
+    fs-extra "11.3.0"
+    handlebars "4.7.9"
+    lilconfig "3.1.3"
+    svgicons2svgfont "16.0.0"
+
+"@iconsauce/core@^1.2.4":
   version "1.5.0"
   resolved "https://registry.npmjs.org/@iconsauce/core/-/core-1.5.0.tgz#e7d0af8896778488da2f308612e6d85c16493ae5"
   integrity sha512-q6N+4s0+ZcTvBjd5M3dNEOboCkzhA9ASHBI2ZvlxssARq8JHtQ0AoPPUbRMGpKwiPEBqcX7HRjFVUsHPV0YoDQ==
@@ -2587,7 +2605,7 @@
   dependencies:
     "@mdi/svg" "^6.5.95"
 
-"@iconsauce/mgg-icons@^1.0.9", "@iconsauce/mgg-icons@^1.1.0":
+"@iconsauce/mgg-icons@^1.0.9", "@iconsauce/mgg-icons@^1.1.0", "@iconsauce/mgg-icons@^1.2.0":
   version "1.2.0"
   resolved "https://registry.npmjs.org/@iconsauce/mgg-icons/-/mgg-icons-1.2.0.tgz#fa265e6f41073874dc166cd57fe57867c9cd4f65"
   integrity sha512-S/O6DIK8crg3f5GQ8xy1nSHtGEmTzOkryZibY+wapOEETfsKgf1e7OEm7REppzfqv4mdAxjD0tj5RCRYsp22Kg==
@@ -2600,6 +2618,11 @@
   integrity sha512-qWHU/NAInyKFMdE+ayhpaLEjPEEggHZ3jxEB6fOpFDU10AbqeE8T6PKQPyIZchEb9edBsiLlGL5mAW/Rpsc0DQ==
   dependencies:
     "@maggioli-design-system/svg-icons" "^2.6.3"
+
+"@iconsauce/plugin@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.npmjs.org/@iconsauce/plugin/-/plugin-0.1.0.tgz#573aa62d7ecadecf899d74bf13f9c7187f0bdb5e"
+  integrity sha512-yD8HMN/cbnHdafU+4jdy/8YQKzbMBjGIH78Wwbst3ZsJVi10eJn9h1MCeTx1+hwMeZ3lBpa1XjqPzyJDlsFVIA==
 
 "@img/colour@^1.0.0":
   version "1.1.0"
@@ -7208,6 +7231,14 @@ chalk@4.1.1:
     ansi-styles "^4.1.0"
     supports-color "^7.1.0"
 
+chalk@4.1.2, chalk@^4.0.0, chalk@^4.1.0, chalk@^4.1.2:
+  version "4.1.2"
+  resolved "https://registry.npmjs.org/chalk/-/chalk-4.1.2.tgz#aac4e2b7734a740867aeb16bf02aad556a1e7a01"
+  integrity sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA==
+  dependencies:
+    ansi-styles "^4.1.0"
+    supports-color "^7.1.0"
+
 chalk@5.3.0:
   version "5.3.0"
   resolved "https://registry.npmjs.org/chalk/-/chalk-5.3.0.tgz#67c20a7ebef70e7f3970a01f90fa210cb6860385"
@@ -7226,14 +7257,6 @@ chalk@^2.4.2:
     ansi-styles "^3.2.1"
     escape-string-regexp "^1.0.5"
     supports-color "^5.3.0"
-
-chalk@^4.0.0, chalk@^4.1.0, chalk@^4.1.2:
-  version "4.1.2"
-  resolved "https://registry.npmjs.org/chalk/-/chalk-4.1.2.tgz#aac4e2b7734a740867aeb16bf02aad556a1e7a01"
-  integrity sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA==
-  dependencies:
-    ansi-styles "^4.1.0"
-    supports-color "^7.1.0"
 
 chalk@^5.3.0, chalk@^5.4.1:
   version "5.6.2"
