@@ -28,5 +28,6 @@
       "inputs": ["default", "^default"]
     }
   },
-  "defaultBase": "dev"
+  "defaultBase": "dev",
+  "analytics": false
 }
