@@ -19,9 +19,13 @@ describe('mds-accordion', () => {
 
     const component = await page.find('mds-accordion');
     const [item1, item2] = await component.findAll('mds-accordion-item');
+    // click the toggle button directly: the host center can land on the
+    // content area while the expand/collapse height animation is running
+    const action1 = await page.find('mds-accordion-item:nth-of-type(1) >>> button.action');
+    const action2 = await page.find('mds-accordion-item:nth-of-type(2) >>> button.action');
 
-    await item1.click();
-    await item2.click();
+    await action1.click();
+    await action2.click();
 
     expect(item1).toHaveAttribute('selected');
     expect(item2).toHaveAttribute('selected');
@@ -37,16 +41,18 @@ describe('mds-accordion', () => {
 
     const component = await page.find('mds-accordion');
     const [item1, item2] = await component.findAll('mds-accordion-item');
+    const action1 = await page.find('mds-accordion-item:nth-of-type(1) >>> button.action');
+    const action2 = await page.find('mds-accordion-item:nth-of-type(2) >>> button.action');
 
-    await item1.click();
+    await action1.click();
     expect(item1).toHaveAttribute('selected');
 
-    await item2.click();
+    await action2.click();
     expect(item1).not.toHaveAttribute('selected');
     expect(item2).toHaveAttribute('selected');
 
     // should not been closed
-    await item2.click();
+    await action2.click();
     expect(item2).toHaveAttribute('selected');
   });
 
@@ -60,19 +66,21 @@ describe('mds-accordion', () => {
 
     const component = await page.find('mds-accordion');
     const [item1, item2] = await component.findAll('mds-accordion-item');
+    const action1 = await page.find('mds-accordion-item:nth-of-type(1) >>> button.action');
+    const action2 = await page.find('mds-accordion-item:nth-of-type(2) >>> button.action');
 
-    await item1.click();
-    await item2.click();
+    await action1.click();
+    await action2.click();
     expect(item1).toHaveAttribute('selected');
     expect(item2).toHaveAttribute('selected');
 
     // closing one item while another stays open is allowed
-    await item2.click();
+    await action2.click();
     expect(item1).toHaveAttribute('selected');
     expect(item2).not.toHaveAttribute('selected');
 
     // closing the last open item is prevented
-    await item1.click();
+    await action1.click();
     expect(item1).toHaveAttribute('selected');
   });
 });
