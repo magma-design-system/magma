@@ -158,6 +158,8 @@ npm run format        # Prettier on the whole repo
 npm run format:check
 ```
 
+CI runs the same `npm run lint` on every pull request (`lint` workflow), so a lint error fails the `lint` check.
+
 ## Development setup
 
 Using VSCode you should install at least the ESLint extension (Dirk Baeumer) and configure the editor: create `.vscode/settings.json` with the following content:
