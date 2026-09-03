@@ -5,8 +5,10 @@
  */
 export const MIGRATED_TESTS: string[] = [
   'src/common/test/preference.e2e.ts',
+  'src/components/mds-accordion-item/test/mds-accordion-item.e2e.ts',
   'src/components/mds-accordion-timer-item/test/mds-accordion-timer-item.e2e.ts',
   'src/components/mds-accordion-timer/test/mds-accordion-timer.e2e.ts',
+  'src/components/mds-accordion/test/mds-accordion.e2e.ts',
   'src/components/mds-author/test/mds-author.e2e.ts',
   'src/components/mds-avatar-stack-item/test/mds-avatar-stack-item.e2e.ts',
   'src/components/mds-avatar-stack/test/mds-avatar-stack.e2e.ts',

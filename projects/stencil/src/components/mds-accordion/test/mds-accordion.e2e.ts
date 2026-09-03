@@ -1,86 +1,69 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { render } from '@stencil/vitest';
+import { userEvent } from 'vitest/browser';
 
 describe('mds-accordion', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<mds-accordion></mds-accordion>');
+    const { root } = await render('<mds-accordion></mds-accordion>');
 
-    const component = await page.find('mds-accordion');
-    expect(component).toHaveAttribute('hydrated');
+    expect(root).toHaveAttribute('hydrated');
   });
 
-  it('multiple select', async () => {
-    const page = await newE2EPage();
-    await page.setContent(`
-      <mds-accordion multiple>
+  const setup = async (attributes: string) => {
+    const { root, waitForChanges } = await render(`
+      <mds-accordion ${attributes}>
         <mds-accordion-item label="primo"></mds-accordion-item>
         <mds-accordion-item label="secondo"></mds-accordion-item>
       </mds-accordion>`);
-
-    const component = await page.find('mds-accordion');
-    const [item1, item2] = await component.findAll('mds-accordion-item');
+    const [item1, item2] = Array.from(root.querySelectorAll('mds-accordion-item'));
     // click the toggle button directly: the host center can land on the
     // content area while the expand/collapse height animation is running
-    const action1 = await page.find('mds-accordion-item:nth-of-type(1) >>> button.action');
-    const action2 = await page.find('mds-accordion-item:nth-of-type(2) >>> button.action');
+    const click = async (item: HTMLElement): Promise<void> => {
+      await userEvent.click(item.shadowRoot!.querySelector('button.action')!);
+      await waitForChanges();
+    };
+    return { item1, item2, click };
+  };
 
-    await action1.click();
-    await action2.click();
+  it('multiple select', async () => {
+    const { item1, item2, click } = await setup('multiple');
+
+    await click(item1);
+    await click(item2);
 
     expect(item1).toHaveAttribute('selected');
     expect(item2).toHaveAttribute('selected');
   });
 
   it('should not be closable when disable-close is set', async () => {
-    const page = await newE2EPage();
-    await page.setContent(`
-      <mds-accordion disable-close>
-        <mds-accordion-item label="primo"></mds-accordion-item>
-        <mds-accordion-item label="secondo"></mds-accordion-item>
-      </mds-accordion>`);
+    const { item1, item2, click } = await setup('disable-close');
 
-    const component = await page.find('mds-accordion');
-    const [item1, item2] = await component.findAll('mds-accordion-item');
-    const action1 = await page.find('mds-accordion-item:nth-of-type(1) >>> button.action');
-    const action2 = await page.find('mds-accordion-item:nth-of-type(2) >>> button.action');
-
-    await action1.click();
+    await click(item1);
     expect(item1).toHaveAttribute('selected');
 
-    await action2.click();
+    await click(item2);
     expect(item1).not.toHaveAttribute('selected');
     expect(item2).toHaveAttribute('selected');
 
     // should not been closed
-    await action2.click();
+    await click(item2);
     expect(item2).toHaveAttribute('selected');
   });
 
   it('should keep at least one item open in multiple mode when disable-close is set', async () => {
-    const page = await newE2EPage();
-    await page.setContent(`
-      <mds-accordion multiple disable-close>
-        <mds-accordion-item label="primo"></mds-accordion-item>
-        <mds-accordion-item label="secondo"></mds-accordion-item>
-      </mds-accordion>`);
+    const { item1, item2, click } = await setup('multiple disable-close');
 
-    const component = await page.find('mds-accordion');
-    const [item1, item2] = await component.findAll('mds-accordion-item');
-    const action1 = await page.find('mds-accordion-item:nth-of-type(1) >>> button.action');
-    const action2 = await page.find('mds-accordion-item:nth-of-type(2) >>> button.action');
-
-    await action1.click();
-    await action2.click();
+    await click(item1);
+    await click(item2);
     expect(item1).toHaveAttribute('selected');
     expect(item2).toHaveAttribute('selected');
 
     // closing one item while another stays open is allowed
-    await action2.click();
+    await click(item2);
     expect(item1).toHaveAttribute('selected');
     expect(item2).not.toHaveAttribute('selected');
 
     // closing the last open item is prevented
-    await action1.click();
+    await click(item1);
     expect(item1).toHaveAttribute('selected');
   });
 });
