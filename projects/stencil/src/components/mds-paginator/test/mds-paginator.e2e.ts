@@ -1,13 +1,10 @@
-import { newE2EPage, E2EPage } from '@stencil/core/testing';
-import { mockIconResponse } from '@test/mock';
+import { render, vi } from '@stencil/vitest';
+import { userEvent } from 'vitest/browser';
+import { mockIconFetch } from '@test/fetch';
 
 type RecordedChange = { page: number; caller: string | null };
 
-declare global {
-  interface Window {
-    mdsPaginatorChanges: RecordedChange[];
-  }
-}
+type Paginator = { host: HTMLMdsPaginatorElement; waitForChanges: () => Promise<void> };
 
 /**
  * A paginator narrow enough for the pages strip to overflow, with the instant
@@ -25,213 +22,190 @@ const LAST_PAGE = '.item-last';
 const stripItemSelector = (page: number): string =>
   `.pages mds-paginator-item:nth-child(${page - 1})`;
 
-/**
- * Returns the viewport coordinates of the center of an item of the paginator.
- * With `reveal` the strip is first scrolled just enough to show the item (nearest
- * edge, the way a user would scroll before clicking it).
- */
-const itemCenter = (
-  page: E2EPage,
-  selector: string,
-  reveal = false,
-): Promise<{ x: number; y: number }> =>
-  page.evaluate(
-    (itemSelector: string, revealItem: boolean) => {
-      const item = document
-        .querySelector('mds-paginator')
-        ?.shadowRoot?.querySelector<HTMLElement>(itemSelector);
-      if (!item) throw new Error(`Item ${itemSelector} not found`);
-      if (revealItem) item.scrollIntoView({ block: 'nearest', inline: 'nearest' });
-      const rect = item.getBoundingClientRect();
-      return { x: rect.x + rect.width / 2, y: rect.y + rect.height / 2 };
-    },
-    selector,
-    reveal,
-  );
-
-const stripGeometry = (
-  page: E2EPage,
-): Promise<{ scrollLeft: number; focusedPage: string | null; focusedItemOffset: number | null }> =>
-  page.evaluate(() => {
-    const root = document.querySelector('mds-paginator')?.shadowRoot;
-    const strip = root?.querySelector<HTMLElement>('.pages');
-    const focused = root?.activeElement as HTMLElement | null;
-    if (!strip) throw new Error('Strip not found');
-    const stripRect = strip.getBoundingClientRect();
-    const focusedRect = focused?.getBoundingClientRect();
-    return {
-      scrollLeft: strip.scrollLeft,
-      focusedPage: focused?.textContent?.trim() ?? null,
-      focusedItemOffset: focusedRect
-        ? focusedRect.x + focusedRect.width / 2 - (stripRect.x + stripRect.width / 2)
-        : null,
-    };
-  });
-
-/**
- * Records every `mdsPaginatorChange` from inside the page, before the component is
- * even defined: the event spy of the test runner is attached after hydration (too
- * late for the initial sync, emitted 10ms after load) and it cannot serialize the
- * `caller` element. Each record keeps the page and the caller as `tag.class`.
- */
-const recordChangeEvents = async (page: E2EPage): Promise<void> => {
-  await page.evaluateOnNewDocument(() => {
-    window.mdsPaginatorChanges = [];
-    document.addEventListener('mdsPaginatorChange', (ev: Event) => {
-      const { page: selected, caller } = (ev as CustomEvent).detail;
-      window.mdsPaginatorChanges.push({
-        page: selected,
-        caller: caller ? `${caller.tagName.toLowerCase()}.${caller.className}` : null,
-      });
-    });
-  });
+const getItem = (host: HTMLElement, selector: string): HTMLElement => {
+  const item = host.shadowRoot!.querySelector<HTMLElement>(selector);
+  if (!item) throw new Error(`Item ${selector} not found`);
+  return item;
 };
 
-const recordedChanges = (page: E2EPage): Promise<RecordedChange[]> =>
-  page.evaluate(() => window.mdsPaginatorChanges);
+/**
+ * Clicks an item of the paginator. With `reveal` the strip is first scrolled just
+ * enough to show the item (nearest edge, the way a user would scroll before clicking it);
+ * `force` clicks a disabled item as a pointer would, skipping the actionability checks.
+ */
+const clickItem = async (
+  { host, waitForChanges }: Paginator,
+  selector: string,
+  { reveal = false, force = false } = {},
+): Promise<void> => {
+  const item = getItem(host, selector);
+  if (reveal) item.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+  await userEvent.click(item, { force });
+  await waitForChanges();
+};
 
-const waitForRecordedChanges = (page: E2EPage, count: number): Promise<unknown> =>
-  page.waitForFunction(
-    (expected: number) => window.mdsPaginatorChanges.length >= expected,
-    {},
-    count,
-  );
+const stripGeometry = (
+  host: HTMLElement,
+): { scrollLeft: number; focusedPage: string | null; focusedItemOffset: number | null } => {
+  const root = host.shadowRoot!;
+  const strip = root.querySelector<HTMLElement>('.pages');
+  const focused = root.activeElement as HTMLElement | null;
+  if (!strip) throw new Error('Strip not found');
+  const stripRect = strip.getBoundingClientRect();
+  const focusedRect = focused?.getBoundingClientRect();
+  return {
+    scrollLeft: strip.scrollLeft,
+    focusedPage: focused?.textContent?.trim() ?? null,
+    focusedItemOffset: focusedRect
+      ? focusedRect.x + focusedRect.width / 2 - (stripRect.x + stripRect.width / 2)
+      : null,
+  };
+};
 
-const newRecordedPage = async (html: string): Promise<E2EPage> => {
-  const page = await newE2EPage();
-  mockIconResponse(page);
-  await recordChangeEvents(page);
-  await page.setContent(html);
-  await page.waitForChanges();
-  return page;
+const pressTab = async (times: number, waitForChanges: () => Promise<void>): Promise<void> => {
+  for (let i = 0; i < times; i++) {
+    await userEvent.tab();
+  }
+  await waitForChanges();
 };
 
 describe('mds-paginator', () => {
-  it('renders', async () => {
-    const page = await newE2EPage();
-    mockIconResponse(page);
-    await page.setContent('<mds-paginator></mds-paginator>');
+  beforeEach(mockIconFetch);
 
-    const element = await page.find('mds-paginator');
-    expect(element).toHaveAttribute('hydrated');
-    expect(true).toBe(true);
+  it('renders', async () => {
+    const { root } = await render('<mds-paginator></mds-paginator>');
+
+    expect(root).toHaveAttribute('hydrated');
   });
 
   it('selects the clicked page even when the item is at the edge of the strip', async () => {
-    const page = await newE2EPage();
-    mockIconResponse(page);
-    await page.setContent(NARROW_PAGINATOR);
-    const changeSpy = await page.spyOnEvent('mdsPaginatorChange');
-    await page.waitForChanges();
+    const { root, spyOnEvent, waitForChanges } =
+      await render<HTMLMdsPaginatorElement>(NARROW_PAGINATOR);
+    const changeSpy = spyOnEvent('mdsPaginatorChange');
 
-    const { x, y } = await itemCenter(page, stripItemSelector(9), true);
-    await page.mouse.click(x, y);
-    await page.waitForChanges();
+    await clickItem({ host: root, waitForChanges }, stripItemSelector(9), { reveal: true });
 
-    const paginator = await page.find('mds-paginator');
-    const item = await page.find(`mds-paginator >>> ${stripItemSelector(9)}`);
-    expect(await paginator.getProperty('currentPage')).toBe(9);
-    expect(item).toHaveAttribute('selected');
-    expect(changeSpy.lastEvent.detail.page).toBe(9);
+    expect(root.currentPage).toBe(9);
+    expect(getItem(root, stripItemSelector(9))).toHaveAttribute('selected');
+    expect(changeSpy.lastEvent?.detail.page).toBe(9);
   });
 
   it('keeps centering the strip on the item focused from the keyboard', async () => {
-    const page = await newE2EPage();
-    mockIconResponse(page);
-    await page.setContent(NARROW_PAGINATOR);
-    await page.waitForChanges();
+    const { root, waitForChanges } = await render<HTMLMdsPaginatorElement>(NARROW_PAGINATOR);
 
     // prev arrow, page 1, then pages 2..7 inside the strip
-    for (let i = 0; i < 8; i++) {
-      await page.keyboard.press('Tab');
-    }
-    await page.waitForChanges();
+    await pressTab(8, waitForChanges);
 
-    const { scrollLeft, focusedPage, focusedItemOffset } = await stripGeometry(page);
-    const paginator = await page.find('mds-paginator');
+    const { scrollLeft, focusedPage, focusedItemOffset } = stripGeometry(root);
     expect(focusedPage).toBe('7');
     expect(scrollLeft).toBeGreaterThan(0);
     expect(Math.abs(focusedItemOffset ?? Infinity)).toBeLessThan(2);
-    expect(await paginator.getProperty('currentPage')).toBe(1);
+    expect(root.currentPage).toBe(1);
   });
 
   describe('mdsPaginatorChange', () => {
+    /**
+     * Records every `mdsPaginatorChange` from a listener attached before the component
+     * is rendered: the initial sync is emitted 10ms after load, so a spy attached after
+     * hydration would be too late. Each record keeps the page and the caller as `tag.class`.
+     */
+    let changes: RecordedChange[];
+    const recordChange = (event: Event): void => {
+      const { page, caller } = (event as CustomEvent).detail;
+      changes.push({
+        page,
+        caller: caller ? `${caller.tagName.toLowerCase()}.${caller.className}` : null,
+      });
+    };
+
+    beforeEach(() => {
+      changes = [];
+      document.addEventListener('mdsPaginatorChange', recordChange);
+    });
+
+    afterEach(() => {
+      document.removeEventListener('mdsPaginatorChange', recordChange);
+    });
+
+    const newRecordedPaginator = async (html: string): Promise<Paginator> => {
+      const { root, waitForChanges } = await render<HTMLMdsPaginatorElement>(html);
+      await waitForChanges();
+      return { host: root, waitForChanges };
+    };
+
+    const waitForRecordedChanges = (count: number): Promise<void> =>
+      vi.waitFor(() => {
+        if (changes.length < count) throw new Error(`waiting for ${count} changes`);
+      });
+
     it('emits the initial page once on load, without a caller', async () => {
-      const page = await newRecordedPage(
+      const { waitForChanges } = await newRecordedPaginator(
         '<mds-paginator pages="10" current-page="4"></mds-paginator>',
       );
-      await waitForRecordedChanges(page, 1);
-      await page.waitForChanges();
+      await waitForRecordedChanges(1);
+      await waitForChanges();
 
-      expect(await recordedChanges(page)).toEqual([{ page: 4, caller: null }]);
+      expect(changes).toEqual([{ page: 4, caller: null }]);
     });
 
     it('does not emit on load when there are no pages', async () => {
-      const page = await newRecordedPage('<mds-paginator pages="0"></mds-paginator>');
+      const { waitForChanges } = await newRecordedPaginator(
+        '<mds-paginator pages="0"></mds-paginator>',
+      );
       await new Promise((resolve) => setTimeout(resolve, 50));
-      await page.waitForChanges();
+      await waitForChanges();
 
-      expect(await recordedChanges(page)).toEqual([]);
+      expect(changes).toEqual([]);
     });
 
     it('emits the target page with the pressed item as caller', async () => {
-      const page = await newRecordedPage(
+      const paginator = await newRecordedPaginator(
         '<mds-paginator pages="10" current-page="4"></mds-paginator>',
       );
-      await waitForRecordedChanges(page, 1);
+      await waitForRecordedChanges(1);
 
       for (const selector of [NEXT_ARROW, PREV_ARROW, LAST_PAGE, FIRST_PAGE]) {
-        const item = await page.find(`mds-paginator >>> ${selector}`);
-        await item.click();
-        await page.waitForChanges();
+        await clickItem(paginator, selector);
       }
 
-      const paginator = await page.find('mds-paginator');
-      expect(await recordedChanges(page)).toEqual([
+      expect(changes).toEqual([
         { page: 4, caller: null },
         { page: 5, caller: 'mds-paginator-item.item-icon' },
         { page: 4, caller: 'mds-paginator-item.item-icon' },
         { page: 10, caller: 'mds-paginator-item.item-last' },
         { page: 1, caller: 'mds-paginator-item.item-first' },
       ]);
-      expect(await paginator.getProperty('currentPage')).toBe(1);
+      expect(paginator.host.currentPage).toBe(1);
     });
 
     it('does not emit when the disabled arrow or the selected page is clicked', async () => {
-      const page = await newRecordedPage('<mds-paginator pages="10"></mds-paginator>');
-      await waitForRecordedChanges(page, 1);
+      const paginator = await newRecordedPaginator('<mds-paginator pages="10"></mds-paginator>');
+      await waitForRecordedChanges(1);
 
       for (const selector of [PREV_ARROW, FIRST_PAGE]) {
-        const { x, y } = await itemCenter(page, selector);
-        await page.mouse.click(x, y);
-        await page.waitForChanges();
+        await clickItem(paginator, selector, { force: true });
       }
 
-      const paginator = await page.find('mds-paginator');
-      expect(await recordedChanges(page)).toEqual([{ page: 1, caller: null }]);
-      expect(await paginator.getProperty('currentPage')).toBe(1);
+      expect(changes).toEqual([{ page: 1, caller: null }]);
+      expect(paginator.host.currentPage).toBe(1);
     });
 
     it('does not emit when an item is focused from the keyboard, and emits it on Enter', async () => {
-      const page = await newRecordedPage(NARROW_PAGINATOR);
-      await waitForRecordedChanges(page, 1);
+      const { host, waitForChanges } = await newRecordedPaginator(NARROW_PAGINATOR);
+      await waitForRecordedChanges(1);
 
       // prev arrow, page 1, page 2, page 3
-      for (let i = 0; i < 4; i++) {
-        await page.keyboard.press('Tab');
-      }
-      await page.waitForChanges();
-      expect(await recordedChanges(page)).toEqual([{ page: 1, caller: null }]);
+      await pressTab(4, waitForChanges);
+      expect(changes).toEqual([{ page: 1, caller: null }]);
 
-      await page.keyboard.press('Enter');
-      await page.waitForChanges();
+      await userEvent.keyboard('{Enter}');
+      await waitForChanges();
 
-      const paginator = await page.find('mds-paginator');
-      expect(await recordedChanges(page)).toEqual([
+      expect(changes).toEqual([
         { page: 1, caller: null },
         { page: 3, caller: 'mds-paginator-item.item' },
       ]);
-      expect(await paginator.getProperty('currentPage')).toBe(3);
+      expect(host.currentPage).toBe(3);
     });
   });
 });
