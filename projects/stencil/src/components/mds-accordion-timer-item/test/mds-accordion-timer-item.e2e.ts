@@ -1,12 +1,9 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { render } from '@stencil/vitest';
 
 describe('mds-accordion-timer-item', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<mds-accordion-timer-item></mds-accordion-timer-item>');
+    const { root } = await render('<mds-accordion-timer-item></mds-accordion-timer-item>');
 
-    const element = await page.find('mds-accordion-timer-item');
-    expect(element).toHaveAttribute('hydrated');
-    expect(true).toBe(true);
+    expect(root).toHaveAttribute('hydrated');
   });
 });
