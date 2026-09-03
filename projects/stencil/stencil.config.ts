@@ -7,12 +7,7 @@ import tailwind, { PluginConfigurationOptions } from './scripts/tailwind-plugin/
 import { reactOutputTarget } from '@stencil/react-output-target';
 import { angularOutputTarget } from '@stencil/angular-output-target';
 import tokenFallbackPlugin from './scripts/postcss-token-fallbacks';
-
-// https://github.com/ionic-team/stencil/issues/1307
-// still not working
-// import tsconfigPathsJest from 'tsconfig-paths-jest'
-// import tsconfig from './tsconfig.json'
-// console.log(tsconfig)
+import { MIGRATED_TESTS } from './scripts/vitest-migrated';
 
 const twConfigurationFn = () => {
   // remove tailwind preflight and add custom theme
@@ -263,6 +258,8 @@ export const config: Config = {
       '/dist',
       '/www',
       '/scripts',
+      // TEMPORARY (#662): files already running on @stencil/vitest
+      ...MIGRATED_TESTS,
     ],
     transform: {
       '^.+\\.svg$': 'jest-transformer-svg',

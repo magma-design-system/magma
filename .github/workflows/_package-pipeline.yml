@@ -42,6 +42,10 @@ on:
         description: Install (and cache) Chrome for puppeteer-based tests
         type: boolean
         default: false
+      install-playwright-browsers:
+        description: Install (and cache) the Playwright Chromium used by the vitest browser tests
+        type: boolean
+        default: false
     outputs:
       changed:
         description: Whether files matching `path` changed in this event
@@ -119,6 +123,16 @@ jobs:
           key: puppeteer-${{ hashFiles('package-lock.json') }}
       # postinstall downloads Chrome into .cache/puppeteer (see .puppeteerrc.cjs) unless cached
       - run: npm ci --prefer-offline
+      - name: Restore Playwright browsers cache
+        if: ${{ inputs.install-playwright-browsers }}
+        uses: actions/cache@v5
+        with:
+          path: ~/.cache/ms-playwright
+          # the browser revision is pinned by the playwright version in the lockfile
+          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+      # no-op for the browser when cached, still installs the system libraries
+      - if: ${{ inputs.install-playwright-browsers }}
+        run: npx playwright install --with-deps chromium
       - if: ${{ inputs.nx-project != '' }}
         uses: actions/download-artifact@v8
         with:
