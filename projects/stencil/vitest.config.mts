@@ -2,7 +2,6 @@ import path from 'node:path';
 import { defineVitestConfig } from '@stencil/vitest/config';
 import { stencilVitestPlugin } from '@stencil/vitest/plugin';
 import { playwright } from '@vitest/browser-playwright';
-import { MIGRATED_TESTS } from './scripts/vitest-migrated.ts';
 
 const src = (dir: string): string => path.resolve(import.meta.dirname, dir, '$1');
 
@@ -33,7 +32,7 @@ export default defineVitestConfig({
         test: {
           name: 'spec',
           environment: 'stencil',
-          include: MIGRATED_TESTS.filter((file) => /\.spec\.tsx?$/.test(file)),
+          include: ['src/**/*.spec.{ts,tsx}'],
         },
       },
       {
@@ -42,7 +41,7 @@ export default defineVitestConfig({
         optimizeDeps: { include: ['idb-keyval'] },
         test: {
           name: 'browser',
-          include: MIGRATED_TESTS.filter((file) => /\.e2e\.tsx?$/.test(file)),
+          include: ['src/**/*.e2e.{ts,tsx}'],
           setupFiles: ['./src/test/setup.ts', './src/test/setup.browser.ts'],
           restoreMocks: true,
           browser: {
