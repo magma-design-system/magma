@@ -1,0 +1,45 @@
+# Lints every workspace project (ESLint everywhere, plus Stylelint for the
+# stencil CSS) on each pull request and on pushes to the integration branches.
+#
+# A single job runs the root `lint` script (nx run-many -t lint) instead of a
+# per-package job in _package-pipeline.yml: linting the whole monorepo takes
+# seconds, one status check is easier to require than seven conditional ones,
+# and changes to the root ESLint/Stylelint configs are covered too. The Nx cache
+# restored from the build jobs skips the projects whose inputs did not change.
+name: lint
+
+on:
+  push:
+    branches: [dev, main, beta]
+  pull_request:
+
+concurrency:
+  # one run per ref: a newer push cancels the superseded run. Nothing
+  # downstream (publish) consumes this workflow, so chore(release) pushes
+  # need no per-SHA carve-out here
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    # PRs from dev (release PRs) duplicate the CI already run on every push to dev
+    if: ${{ github.event_name != 'pull_request' || github.head_ref != 'dev' }}
+    runs-on: ubuntu-latest
+    env:
+      # Chrome is only needed by the e2e tests
+      PUPPETEER_SKIP_DOWNLOAD: 'true'
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - name: Restore Nx cache
+        uses: actions/cache@v5
+        with:
+          path: .nx
+          key: nx-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
+          restore-keys: |
+            nx-${{ hashFiles('package-lock.json') }}-
+      - run: npm ci --prefer-offline
+      - run: npm run lint
