@@ -34,6 +34,8 @@ export default defineVitestConfig({
       },
       {
         extends: true,
+        // dependencies imported by the tests from the sources, pre-bundled to avoid a reload mid-run
+        optimizeDeps: { include: ['idb-keyval'] },
         test: {
           name: 'browser',
           include: MIGRATED_TESTS.filter((file) => /\.e2e\.tsx?$/.test(file)),
