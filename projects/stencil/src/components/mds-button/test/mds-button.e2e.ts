@@ -1,21 +1,16 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { render } from '@stencil/vitest';
 
 describe('mds-button', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<mds-button></mds-button>');
+    const { root } = await render('<mds-button></mds-button>');
 
-    const element = await page.find('mds-button');
-    expect(element).toHaveAttribute('hydrated');
-    expect(true).toBe(true);
+    expect(root).toHaveAttribute('hydrated');
   });
 
   it('falls back to the md typography for an unknown size', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<mds-button size="">Label</mds-button>');
-    await page.waitForChanges();
+    const { root } = await render('<mds-button size="">Label</mds-button>');
 
-    const text = await page.find('mds-button >>> mds-text');
+    const text = root.shadowRoot!.querySelector('mds-text');
     expect(text).toEqualAttribute('typography', 'action');
   });
 });
