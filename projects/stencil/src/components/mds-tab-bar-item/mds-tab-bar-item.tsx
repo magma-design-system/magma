@@ -23,7 +23,7 @@ import { preferenceStore } from '@common/preference';
   shadow: true,
 })
 export class MdsTabBarItem {
-  @Element() private element: HTMLMdsTabItemElement;
+  @Element() private element: HTMLMdsTabBarItemElement;
   @State() isSelected: boolean;
 
   /**

@@ -18,7 +18,7 @@ import { Backdrop } from '@common/floating-controller';
   shadow: true,
 })
 export class MdsRadialMenu {
-  @Element() private hostElement: HTMLMdsCardHeaderElement;
+  @Element() private hostElement: HTMLMdsRadialMenuElement;
   private readonly backdropController: Backdrop = new Backdrop('mds-radial-menu-backdrop');
 
   /**
