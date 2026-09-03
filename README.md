@@ -125,7 +125,7 @@ Other useful `stencil` targets:
 ```bash
 nx run stencil:dev                          # Stencil build in watch mode (dev config, no Storybook)
 nx run stencil:generate mds-component-name  # scaffold a new component
-nx run stencil:test                         # spec + e2e tests
+nx run stencil:test                         # unit + browser tests (Vitest)
 nx run stencil:build.docs                   # regenerate component readme docs
 ```
 
