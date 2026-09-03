@@ -58,6 +58,7 @@ export const MIGRATED_TESTS: string[] = [
   'src/components/mds-modal/test/mds-modal.e2e.ts',
   'src/components/mds-note/test/mds-note.e2e.ts',
   'src/components/mds-notification/test/mds-notification.e2e.ts',
+  'src/components/mds-paginator/test/mds-paginator.e2e.ts',
   'src/components/mds-policy-ai/test/mds-policy-ai.e2e.ts',
   'src/components/mds-pref-animation/test/mds-pref-animation.e2e.ts',
   'src/components/mds-pref-consumption/test/mds-pref-consumption.e2e.ts',
