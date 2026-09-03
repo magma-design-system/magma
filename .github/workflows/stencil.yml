@@ -39,6 +39,7 @@ jobs:
       run-tests: true
       # the e2e tests need Chrome
       install-chrome: true
+      install-playwright-browsers: true
       test-working-directory: projects/stencil
 
   magma-react:
