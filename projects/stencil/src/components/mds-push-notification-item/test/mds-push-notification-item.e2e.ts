@@ -1,24 +1,27 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { render } from '@stencil/vitest';
 
 describe('mds-push-notification-item', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<mds-push-notification-item></mds-push-notification-item>');
+    const { root } = await render('<mds-push-notification-item></mds-push-notification-item>');
 
-    const element = await page.find('mds-push-notification-item');
-    expect(element).toHaveAttribute('hydrated');
+    expect(root).toHaveAttribute('hydrated');
+    expect(root).toEqualAttributes({
+      'date-format': 'timeago',
+      message: 'Nessun messaggio disponibile',
+      preview: 'image',
+      tone: 'weak',
+    });
 
-    expect(element.outerHTML).toEqualHtml(`
-      <mds-push-notification-item date-format="timeago" hydrated="" message="Nessun messaggio disponibile" preview="image" tone="weak"><template shadowrootmode="open">
-        <div class="content" part="content">
-          <div class="header">
-            <div class="infos"></div>
-          </div>
-          <mds-text class="message" hydrated="" tag="span" truncate="all" typography="caption" variant="info">
-            Nessun messaggio disponibile
-          </mds-text>
-        </div>
-      </mds-push-notification-item>
-    `);
+    const shadow = root.shadowRoot!;
+    expect(shadow.querySelector('.content[part="content"] > .header > .infos')).not.toBeNull();
+
+    const message = shadow.querySelector('.content > mds-text.message')!;
+    expect(message).toEqualAttributes({
+      tag: 'span',
+      truncate: 'all',
+      typography: 'caption',
+      variant: 'info',
+    });
+    expect(message.textContent?.trim()).toBe('Nessun messaggio disponibile');
   });
 });
