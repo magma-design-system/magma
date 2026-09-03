@@ -5,6 +5,7 @@
  */
 
 :host {
+
   /* A rule is a BORDER, not a pill: `border-default` is the role, and taking it
    * deletes both refinement sheets this component used to carry. The role flips
    * with the mode on its own (#c4c4c4 light / #6f6f6f dark), which is what the

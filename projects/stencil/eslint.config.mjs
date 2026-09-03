@@ -56,6 +56,9 @@ export default defineConfig([
     rules: {
       'stencil/strict-mutable': 'off',
       'stencil/decorators-style': 'off',
+      // autofocus/autoFocus props mirror the native attribute on purpose;
+      // renaming them would break the public API
+      'stencil/reserved-member-names': 'off',
     },
   },
   // #endregion
