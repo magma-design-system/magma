@@ -1,11 +1,9 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { render } from '@stencil/vitest';
 
 describe('mds-radial-menu', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<mds-radial-menu></mds-radial-menu>');
+    const { root } = await render('<mds-radial-menu></mds-radial-menu>');
 
-    const element = await page.find('mds-radial-menu');
-    expect(element).toHaveAttribute('hydrated');
+    expect(root).toHaveAttribute('hydrated');
   });
 });
