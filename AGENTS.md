@@ -41,6 +41,7 @@ nx run design-tokens:playground                      # start the tokens config p
 
 nx run stencil:generate mds-component-name           # scaffold a new component
 nx run stencil:test                                  # run spec and e2e tests
+npm run lint                                         # ESLint + Stylelint on every project (also run in CI)
 ```
 
 ## Sub-projects and build order
