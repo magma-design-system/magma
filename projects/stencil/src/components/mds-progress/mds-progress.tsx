@@ -17,7 +17,7 @@ import { ProgressBarSizeType } from '@type/progress';
   shadow: true,
 })
 export class MdsProgress {
-  @Element() private element: HTMLMdsAccordionTimerElement;
+  @Element() private element: HTMLMdsProgressElement;
   @State() currentStep: string;
   private stepsList = new Array<string>();
 
