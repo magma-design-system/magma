@@ -39,6 +39,7 @@ export const MIGRATED_TESTS: string[] = [
   'src/components/mds-icon/test/mds-icon.e2e.ts',
   'src/components/mds-img/test/mds-img.e2e.ts',
   'src/components/mds-input-date-range-preselection/test/mds-input-date-range-preselection.e2e.ts',
+  'src/components/mds-input-date-range/test/mds-input-date-range.e2e.ts',
   'src/components/mds-input-date/test/mds-input-date.e2e.ts',
   'src/components/mds-input-field/test/mds-input-field.e2e.ts',
   'src/components/mds-input-otp/test/mds-input-otp.e2e.ts',
