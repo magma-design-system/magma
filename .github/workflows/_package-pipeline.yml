@@ -38,10 +38,6 @@ on:
         description: Directory where tests run
         type: string
         default: ''
-      install-chrome:
-        description: Install (and cache) Chrome for puppeteer-based tests
-        type: boolean
-        default: false
       install-playwright-browsers:
         description: Install (and cache) the Playwright Chromium used by the vitest browser tests
         type: boolean
@@ -76,7 +72,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       # Chrome is only needed by the test job (stencil e2e)
-      PUPPETEER_SKIP_DOWNLOAD: 'true'
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
@@ -106,22 +101,12 @@ jobs:
           needs.changes.outputs.changed == 'true' &&
           (needs.build.result == 'success' || needs.build.result == 'skipped') }}
     runs-on: ubuntu-latest
-    env:
-      # puppeteer treats 'false' as falsy: Chrome is downloaded only when install-chrome is set
-      PUPPETEER_SKIP_DOWNLOAD: ${{ !inputs.install-chrome }}
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
           node-version-file: .nvmrc
           cache: npm
-      - name: Restore Puppeteer Chrome cache
-        if: ${{ inputs.install-chrome }}
-        uses: actions/cache@v5
-        with:
-          path: .cache/puppeteer
-          key: puppeteer-${{ hashFiles('package-lock.json') }}
-      # postinstall downloads Chrome into .cache/puppeteer (see .puppeteerrc.cjs) unless cached
       - run: npm ci --prefer-offline
       - name: Restore Playwright browsers cache
         if: ${{ inputs.install-playwright-browsers }}

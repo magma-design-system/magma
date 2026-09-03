@@ -40,7 +40,6 @@ jobs:
       id-token: write # OIDC token for npm trusted publishing
       contents: write # push the release tag
     env:
-      PUPPETEER_SKIP_DOWNLOAD: 'true'
       PKG: '@maggioli-design-system/magma-codemods'
     steps:
       - uses: actions/checkout@v6

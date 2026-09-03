@@ -27,7 +27,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       # Chrome is only needed by the e2e tests
-      PUPPETEER_SKIP_DOWNLOAD: 'true'
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
