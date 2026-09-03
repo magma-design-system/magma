@@ -4,6 +4,7 @@
  * Removed once the whole suite runs on Vitest.
  */
 export const MIGRATED_TESTS: string[] = [
+  'src/common/test/preference.e2e.ts',
   'src/components/mds-accordion-timer-item/test/mds-accordion-timer-item.e2e.ts',
   'src/components/mds-accordion-timer/test/mds-accordion-timer.e2e.ts',
   'src/components/mds-author/test/mds-author.e2e.ts',
@@ -55,6 +56,8 @@ export const MIGRATED_TESTS: string[] = [
   'src/components/mds-pref-language/test/mds-pref-language.e2e.ts',
   'src/components/mds-pref-theme-variant-item/test/mds-pref-theme-variant-item.e2e.ts',
   'src/components/mds-pref-theme-variant/test/mds-pref-theme-variant.e2e.ts',
+  'src/components/mds-pref-theme/test/mds-pref-theme.e2e.ts',
+  'src/components/mds-pref/test/mds-pref.e2e.ts',
   'src/components/mds-price-table-features-cell/test/mds-price-table-features-cell.e2e.ts',
   'src/components/mds-price-table-features-row/test/mds-price-table-features-row.e2e.ts',
   'src/components/mds-price-table-features/test/mds-price-table-features.e2e.ts',
