@@ -1,60 +1,56 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { render } from '@stencil/vitest';
+import { userEvent } from 'vitest/browser';
 
 describe('mds-calendar', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<mds-calendar></mds-calendar>');
+    const { root } = await render('<mds-calendar></mds-calendar>');
 
-    const element = await page.find('mds-calendar');
-    expect(element).toHaveAttribute('hydrated');
+    expect(root).toHaveAttribute('hydrated');
   });
 
   it('renders and selects adjacent month days', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<mds-calendar view-date="2026-08-01"></mds-calendar>');
-    await page.waitForChanges();
+    const { root, waitForChanges } = await render(
+      '<mds-calendar view-date="2026-08-01"></mds-calendar>',
+    );
 
-    const calendarCells = await page.findAll('mds-calendar >>> mds-calendar-cell');
-    const otherMonthCell = await page.find('mds-calendar >>> mds-calendar-cell[month="other"]');
+    const shadow = root.shadowRoot!;
+    const calendarCells = shadow.querySelectorAll('mds-calendar-cell');
+    const otherMonthCell = shadow.querySelector<HTMLElement>('mds-calendar-cell[month="other"]')!;
 
     expect(calendarCells.length).toBeGreaterThan(31);
     expect(otherMonthCell).not.toBeNull();
     expect(otherMonthCell.getAttribute('month')).toBe('other');
 
-    await otherMonthCell.click();
-    await page.waitForChanges();
+    await userEvent.click(otherMonthCell);
+    await waitForChanges();
 
     expect(otherMonthCell.getAttribute('selection')).toBe('single');
   });
 
   it('updates the visible range when end date is set after the start date', async () => {
-    const page = await newE2EPage();
-    await page.setContent(
+    const { root, waitForChanges } = await render(
       '<mds-calendar view-date="2026-06-01" start-date="2026-06-02"></mds-calendar>',
     );
-    await page.waitForChanges();
 
-    await page.$eval('mds-calendar', (element) => {
-      element.setAttribute('end-date', '2026-07-24');
-    });
-    await page.waitForChanges();
+    root.setAttribute('end-date', '2026-07-24');
+    await waitForChanges();
 
-    const juneLastDay = await page.find('mds-calendar >>> mds-calendar-cell[date="2026-06-30"]');
-    const julyVisibleDay = await page.find('mds-calendar >>> mds-calendar-cell[date="2026-07-05"]');
+    const shadow = root.shadowRoot!;
+    const juneLastDay = shadow.querySelector('mds-calendar-cell[date="2026-06-30"]')!;
+    const julyVisibleDay = shadow.querySelector('mds-calendar-cell[date="2026-07-05"]')!;
 
     expect(juneLastDay.getAttribute('selection')).toBe('middle');
     expect(julyVisibleDay.getAttribute('selection')).toBe('middle');
   });
 
   it('previews the full visible range when hovering into the next month', async () => {
-    const page = await newE2EPage();
-    await page.setContent(
+    const { root } = await render(
       '<mds-calendar view-date="2026-06-01" start-date="2026-06-02" hover-date="2026-07-24"></mds-calendar>',
     );
-    await page.waitForChanges();
 
-    const juneLastDay = await page.find('mds-calendar >>> mds-calendar-cell[date="2026-06-30"]');
-    const julyVisibleDay = await page.find('mds-calendar >>> mds-calendar-cell[date="2026-07-05"]');
+    const shadow = root.shadowRoot!;
+    const juneLastDay = shadow.querySelector('mds-calendar-cell[date="2026-06-30"]')!;
+    const julyVisibleDay = shadow.querySelector('mds-calendar-cell[date="2026-07-05"]')!;
 
     expect(juneLastDay).toHaveAttribute('preview');
     expect(juneLastDay.getAttribute('selection')).toBe('middle');
@@ -63,168 +59,104 @@ describe('mds-calendar', () => {
   });
 
   it('switches to month selection when clicking the month action by default', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<mds-calendar view-date="2026-06-01"></mds-calendar>');
-    await page.waitForChanges();
+    const { root, waitForChanges } = await render(
+      '<mds-calendar view-date="2026-06-01"></mds-calendar>',
+    );
 
-    const actionMonth = await page.find('mds-calendar >>> .action-month');
-    await actionMonth.click();
-    await page.waitForChanges();
+    await userEvent.click(root.shadowRoot!.querySelector('.action-month')!);
+    await waitForChanges();
 
-    const monthSelection = await page.find('mds-calendar >>> .month-selection');
-
-    expect(monthSelection).not.toBeNull();
+    expect(root.shadowRoot!.querySelector('.month-selection')).not.toBeNull();
   });
 
   it('switches to year selection when clicking the year action by default', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<mds-calendar view-date="2026-06-01"></mds-calendar>');
-    await page.waitForChanges();
+    const { root, waitForChanges } = await render(
+      '<mds-calendar view-date="2026-06-01"></mds-calendar>',
+    );
 
-    const actionYear = await page.find('mds-calendar >>> .action-year');
-    await actionYear.click();
-    await page.waitForChanges();
+    await userEvent.click(root.shadowRoot!.querySelector('.action-year')!);
+    await waitForChanges();
 
-    const yearSelection = await page.find('mds-calendar >>> .year-selection');
-
-    expect(yearSelection).not.toBeNull();
+    expect(root.shadowRoot!.querySelector('.year-selection')).not.toBeNull();
   });
 
   it('does not switch view when month or year selection is disabled', async () => {
-    const page = await newE2EPage();
-    await page.setContent(
+    const { root, waitForChanges } = await render(
       '<mds-calendar view-date="2026-06-01" disable-month-year-selection="true"></mds-calendar>',
     );
-    await page.waitForChanges();
+    const shadow = root.shadowRoot!;
 
-    const actionMonth = await page.find('mds-calendar >>> .action-month');
-    const actionYear = await page.find('mds-calendar >>> .action-year');
+    await userEvent.click(shadow.querySelector('.action-month')!);
+    await userEvent.click(shadow.querySelector('.action-year')!);
+    await waitForChanges();
 
-    await actionMonth.click();
-    await actionYear.click();
-    await page.waitForChanges();
-
-    const monthView = await page.find('mds-calendar >>> .month-view');
-    const monthSelection = await page.find('mds-calendar >>> .month-selection');
-    const yearSelection = await page.find('mds-calendar >>> .year-selection');
-
-    expect(monthView).not.toBeNull();
-    expect(monthSelection).toBeNull();
-    expect(yearSelection).toBeNull();
+    expect(shadow.querySelector('.month-view')).not.toBeNull();
+    expect(shadow.querySelector('.month-selection')).toBeNull();
+    expect(shadow.querySelector('.year-selection')).toBeNull();
   });
 });
 
 describe('mds-calendar sizing', () => {
+  const setupInContainer = async (containerStyle: string, calendarStyle = '') => {
+    const { root } = await render(`
+      <div style="${containerStyle}">
+        <mds-calendar view-date="2026-08-01" style="${calendarStyle}"></mds-calendar>
+      </div>
+    `);
+    return root.querySelector<HTMLElement>('mds-calendar')!;
+  };
+
   it('fills its container up to --mds-calendar-max-width', async () => {
-    const page = await newE2EPage();
-    await page.setViewport({ width: 1280, height: 800 });
-    await page.setContent(
-      '<div style="width: 800px;"><mds-calendar view-date="2026-08-01"></mds-calendar></div>',
-    );
-    await page.waitForChanges();
+    const calendar = await setupInContainer('width: 800px;');
 
-    const width = await page.$eval(
-      'mds-calendar',
-      (element) => (element as HTMLElement).offsetWidth,
-    );
-
-    expect(width).toBe(480);
+    expect(calendar.offsetWidth).toBe(480);
   });
 
   it('shrinks with a narrower container', async () => {
-    const page = await newE2EPage();
-    await page.setViewport({ width: 1280, height: 800 });
-    await page.setContent(
-      '<div style="width: 400px;"><mds-calendar view-date="2026-08-01"></mds-calendar></div>',
-    );
-    await page.waitForChanges();
+    const calendar = await setupInContainer('width: 400px;');
 
-    const width = await page.$eval(
-      'mds-calendar',
-      (element) => (element as HTMLElement).offsetWidth,
-    );
-
-    expect(width).toBe(400);
+    expect(calendar.offsetWidth).toBe(400);
   });
 
   it('does not let the week-day header inflate its intrinsic width beyond max-width', async () => {
-    const page = await newE2EPage();
-    await page.setViewport({ width: 1280, height: 800 });
     // `min-width: max-content` is what mds-input-date used to apply: it must not blow the calendar
     // past its own max-width, otherwise the used min-width wins over max-width.
-    await page.setContent(`
-      <div style="display: inline-block;">
-        <mds-calendar view-date="2026-08-01" style="min-width: max-content;"></mds-calendar>
-      </div>
-    `);
-    await page.waitForChanges();
+    const calendar = await setupInContainer('display: inline-block;', 'min-width: max-content;');
 
-    const width = await page.$eval(
-      'mds-calendar',
-      (element) => (element as HTMLElement).offsetWidth,
-    );
-
-    expect(width).toBeLessThanOrEqual(480);
+    expect(calendar.offsetWidth).toBeLessThanOrEqual(480);
   });
 
   it('sizes the week-day header cells from the grid track', async () => {
-    const page = await newE2EPage();
-    await page.setViewport({ width: 1280, height: 800 });
-    await page.setContent(
-      '<div style="width: 800px;"><mds-calendar view-date="2026-08-01"></mds-calendar></div>',
-    );
-    await page.waitForChanges();
-
-    const metrics = await page.$eval('mds-calendar', (element) => {
-      const header = element.shadowRoot?.querySelector('.week-day-name') as HTMLElement;
-      const cell = element.shadowRoot?.querySelector('mds-calendar-cell') as HTMLElement;
-      return {
-        headerHeight: header.offsetHeight,
-        headerWidth: header.offsetWidth,
-        cellWidth: cell.offsetWidth,
-      };
-    });
+    const calendar = await setupInContainer('width: 800px;');
+    const header = calendar.shadowRoot!.querySelector<HTMLElement>('.week-day-name')!;
+    const cell = calendar.shadowRoot!.querySelector<HTMLElement>('mds-calendar-cell')!;
 
     // 480 - 2 * 16px padding - 6 * 2px gaps = 7 tracks of ~62px; the header keeps a fixed 48px height
-    expect(metrics.headerHeight).toBe(48);
-    expect(metrics.headerWidth).toBe(metrics.cellWidth);
-    expect(metrics.cellWidth).toBeGreaterThanOrEqual(62);
-    expect(metrics.cellWidth).toBeLessThanOrEqual(63);
+    expect(header.offsetHeight).toBe(48);
+    expect(header.offsetWidth).toBe(cell.offsetWidth);
+    expect(cell.offsetWidth).toBeGreaterThanOrEqual(62);
+    expect(cell.offsetWidth).toBeLessThanOrEqual(63);
   });
 
   it('stretches the day button over the whole cell, keeping the number centered', async () => {
-    const page = await newE2EPage();
-    await page.setViewport({ width: 1280, height: 800 });
-    await page.setContent(
-      '<div style="width: 800px;"><mds-calendar view-date="2026-08-01"></mds-calendar></div>',
-    );
-    await page.waitForChanges();
-
-    const metrics = await page.$eval('mds-calendar', (element) => {
-      const cell = element.shadowRoot?.querySelector(
-        'mds-calendar-cell[date="2026-08-12"]',
-      ) as HTMLElement;
-      const action = cell.shadowRoot?.querySelector('.action') as HTMLElement;
-      const cellRect = cell.getBoundingClientRect();
-      const actionRect = action.getBoundingClientRect();
-      return {
-        cell: { left: cellRect.left, right: cellRect.right, x: cellRect.x + cellRect.width / 2 },
-        action: {
-          left: actionRect.left,
-          right: actionRect.right,
-          x: actionRect.x + actionRect.width / 2,
-          y: actionRect.y + actionRect.height / 2,
-        },
-        cellY: cellRect.y + cellRect.height / 2,
-      };
-    });
+    const calendar = await setupInContainer('width: 800px;');
+    const cell = calendar.shadowRoot!.querySelector<HTMLElement>(
+      'mds-calendar-cell[date="2026-08-12"]',
+    )!;
+    const action = cell.shadowRoot!.querySelector<HTMLElement>('.action')!;
+    const cellRect = cell.getBoundingClientRect();
+    const actionRect = action.getBoundingClientRect();
 
     // mds-button places itself flex-start on its :host; without place-self: stretch the
     // absolutely positioned button shrinks to its label and the day number sticks to the
     // top-left corner of the cell instead of covering it.
-    expect(metrics.action.left).toBeLessThanOrEqual(metrics.cell.left);
-    expect(metrics.action.right).toBeGreaterThanOrEqual(metrics.cell.right);
-    expect(Math.abs(metrics.action.x - metrics.cell.x)).toBeLessThanOrEqual(1);
-    expect(Math.abs(metrics.action.y - metrics.cellY)).toBeLessThanOrEqual(1);
+    expect(actionRect.left).toBeLessThanOrEqual(cellRect.left);
+    expect(actionRect.right).toBeGreaterThanOrEqual(cellRect.right);
+    expect(
+      Math.abs(actionRect.x + actionRect.width / 2 - (cellRect.x + cellRect.width / 2)),
+    ).toBeLessThanOrEqual(1);
+    expect(
+      Math.abs(actionRect.y + actionRect.height / 2 - (cellRect.y + cellRect.height / 2)),
+    ).toBeLessThanOrEqual(1);
   });
 });

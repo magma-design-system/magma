@@ -1,4 +1,7 @@
-import { E2EPage, newE2EPage } from '@stencil/core/testing';
+import { render, vi } from '@stencil/vitest';
+import { userEvent } from 'vitest/browser';
+
+type Field = { host: HTMLMdsInputDateElement; waitForChanges: () => Promise<void> };
 
 type DropdownMetrics = {
   calendarWidth: number;
@@ -10,107 +13,88 @@ type DropdownMetrics = {
   transform: string;
 };
 
-const readDropdownMetrics = (page: E2EPage): Promise<DropdownMetrics> =>
-  page.evaluate(() => {
-    const host = document.querySelector('mds-input-date') as HTMLElement;
-    const dropdown = host.shadowRoot?.querySelector('mds-dropdown') as HTMLElement;
-    const calendar = dropdown.querySelector('mds-calendar') as HTMLElement;
-    const cells = calendar.shadowRoot?.querySelector('.month-view__cells') as HTMLElement;
-    return {
-      calendarWidth: calendar.offsetWidth,
-      dropdownLeft: dropdown.getBoundingClientRect().left,
-      dropdownRight: dropdown.getBoundingClientRect().right,
-      hostLeft: host.getBoundingClientRect().left,
-      hostRight: host.getBoundingClientRect().right,
-      tracks: getComputedStyle(cells).gridTemplateColumns.split(' ').map(parseFloat),
-      transform: getComputedStyle(dropdown).transform,
-    };
-  });
+const getDropdown = (host: HTMLElement): HTMLMdsDropdownElement =>
+  host.shadowRoot!.querySelector<HTMLMdsDropdownElement>('mds-dropdown')!;
+
+const readDropdownMetrics = (host: HTMLElement): DropdownMetrics => {
+  const dropdown = getDropdown(host);
+  const calendar = dropdown.querySelector<HTMLElement>('mds-calendar')!;
+  const cells = calendar.shadowRoot!.querySelector<HTMLElement>('.month-view__cells')!;
+  return {
+    calendarWidth: calendar.offsetWidth,
+    dropdownLeft: dropdown.getBoundingClientRect().left,
+    dropdownRight: dropdown.getBoundingClientRect().right,
+    hostLeft: host.getBoundingClientRect().left,
+    hostRight: host.getBoundingClientRect().right,
+    tracks: getComputedStyle(cells).gridTemplateColumns.split(' ').map(parseFloat),
+    transform: getComputedStyle(dropdown).transform,
+  };
+};
 
 // The dropdown animates in (scale transform) and floating-ui positions it asynchronously:
 // wait until the opening transition has settled before measuring the geometry.
-const waitForDropdownSettled = (page: E2EPage): Promise<unknown> =>
-  page.waitForFunction(
+const waitForDropdownSettled = (host: HTMLElement): Promise<void> =>
+  vi.waitFor(
     () => {
-      const dropdown = document
-        .querySelector('mds-input-date')
-        ?.shadowRoot?.querySelector('mds-dropdown');
-      if (!dropdown || !dropdown.hasAttribute('visible')) return false;
+      const dropdown = getDropdown(host);
       const { transform } = getComputedStyle(dropdown);
-      return transform === 'none' || transform === 'matrix(1, 0, 0, 1, 0, 0)';
+      const settled =
+        dropdown.hasAttribute('visible') &&
+        (transform === 'none' || transform === 'matrix(1, 0, 0, 1, 0, 0)');
+      if (!settled) throw new Error('the dropdown is still opening');
     },
     { timeout: 5000 },
   );
 
-const openCalendarDropdown = async (page: E2EPage): Promise<void> => {
-  const openCalendar = await page.find('mds-input-date >>> #calendar-dropdown');
-  await openCalendar.click();
-  await page.waitForChanges();
-  await waitForDropdownSettled(page);
+const openCalendarDropdown = async ({ host, waitForChanges }: Field): Promise<void> => {
+  await userEvent.click(host.shadowRoot!.querySelector('#calendar-dropdown')!);
+  await waitForChanges();
+  await waitForDropdownSettled(host);
 };
 
-const setupFieldInNarrowColumn = async (): Promise<E2EPage> => {
-  const page = await newE2EPage();
-  await page.setViewport({ width: 1280, height: 800 });
-  await page.setContent(`
+const setupFieldInNarrowColumn = async (state = ''): Promise<Field> => {
+  const { root, waitForChanges } = await render(`
     <div style="width: 420px; margin: 40px auto;">
-      <mds-input-date name="d"></mds-input-date>
+      <mds-input-date name="d" ${state}></mds-input-date>
     </div>
   `);
-  await page.waitForChanges();
-  return page;
+  return { host: root.querySelector<HTMLMdsInputDateElement>('mds-input-date')!, waitForChanges };
 };
 
 describe('mds-input-date', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<mds-input-date></mds-input-date>');
+    const { root } = await render('<mds-input-date></mds-input-date>');
 
-    const element = await page.find('mds-input-date');
-    expect(element).toHaveAttribute('hydrated');
+    expect(root).toHaveAttribute('hydrated');
   });
 
   describe('open-calendar button placement', () => {
     it.each(['', 'disabled'])(
       'centers the button on the field vertical axis and keeps it inside the field (%s)',
       async (state) => {
-        const page = await newE2EPage();
-        await page.setViewport({ width: 1280, height: 800 });
-        await page.setContent(`
-          <div style="width: 420px; margin: 40px auto;">
-            <mds-input-date name="d" ${state}></mds-input-date>
-          </div>
-        `);
-        await page.waitForChanges();
-
-        const metrics = await page.$eval('mds-input-date', (element) => {
-          const input = element.shadowRoot?.querySelector('.input') as HTMLElement;
-          const button = element.shadowRoot?.querySelector('.action-open-calendar') as HTMLElement;
-          const inputRect = input.getBoundingClientRect();
-          const buttonRect = button.getBoundingClientRect();
-          return {
-            inputCenterY: inputRect.y + inputRect.height / 2,
-            inputRight: inputRect.right,
-            buttonCenterY: buttonRect.y + buttonRect.height / 2,
-            buttonRight: buttonRect.right,
-          };
-        });
+        const { host } = await setupFieldInNarrowColumn(state);
+        const inputRect = host.shadowRoot!.querySelector('.input')!.getBoundingClientRect();
+        const buttonRect = host
+          .shadowRoot!.querySelector('.action-open-calendar')!
+          .getBoundingClientRect();
 
         // mds-button aligns itself flex-start on its :host: without the align-self
         // re-centering the icon floats 6px above the field axis, and the old disabled
         // translate hack pushed it past the field right edge.
-        expect(Math.abs(metrics.buttonCenterY - metrics.inputCenterY)).toBeLessThanOrEqual(1);
-        expect(metrics.buttonRight).toBeLessThanOrEqual(metrics.inputRight);
+        expect(
+          Math.abs(buttonRect.y + buttonRect.height / 2 - (inputRect.y + inputRect.height / 2)),
+        ).toBeLessThanOrEqual(1);
+        expect(buttonRect.right).toBeLessThanOrEqual(inputRect.right);
       },
     );
   });
 
   describe('calendar dropdown sizing', () => {
     it('sizes the calendar to the field width with evenly sized day cells', async () => {
-      const page = await setupFieldInNarrowColumn();
-      await openCalendarDropdown(page);
+      const field = await setupFieldInNarrowColumn();
+      await openCalendarDropdown(field);
 
-      const { calendarWidth, tracks } = await readDropdownMetrics(page);
+      const { calendarWidth, tracks } = readDropdownMetrics(field.host);
 
       // The calendar takes the field width (100cqw = 420px, below --mds-calendar-max-width 480px):
       // 420 - 2 * 16px padding - 6 * 2px gaps = 7 tracks of ~53.7px
@@ -124,22 +108,24 @@ describe('mds-input-date', () => {
     });
 
     it('anchors the dropdown to the end of the field (placement bottom-end)', async () => {
-      const page = await setupFieldInNarrowColumn();
-      await openCalendarDropdown(page);
+      const field = await setupFieldInNarrowColumn();
+      await openCalendarDropdown(field);
 
       // floating-ui repositions on its own autoUpdate ticks: give it a moment to converge.
-      await page
-        .waitForFunction(
+      await vi
+        .waitFor(
           () => {
-            const host = document.querySelector('mds-input-date') as HTMLElement;
-            const dropdown = host.shadowRoot?.querySelector('mds-dropdown') as HTMLElement;
-            return dropdown.getBoundingClientRect().left >= host.getBoundingClientRect().left;
+            const { host } = field;
+            const dropdownLeft = getDropdown(host).getBoundingClientRect().left;
+            if (dropdownLeft < host.getBoundingClientRect().left) {
+              throw new Error('the dropdown has not converged yet');
+            }
           },
           { timeout: 3000 },
         )
         .catch(() => undefined);
 
-      const { dropdownLeft, dropdownRight, hostLeft, hostRight } = await readDropdownMetrics(page);
+      const { dropdownLeft, dropdownRight, hostLeft, hostRight } = readDropdownMetrics(field.host);
 
       // The dropdown must stay within the field on the left, and end at the field's right edge.
       // The `arrow` middleware may push it past the field by at most `arrow-padding` (24px) so that
@@ -150,19 +136,14 @@ describe('mds-input-date', () => {
     });
 
     it('keeps the same calendar width after closing and reopening the dropdown', async () => {
-      const page = await setupFieldInNarrowColumn();
-      await openCalendarDropdown(page);
-      const first = await readDropdownMetrics(page);
+      const field = await setupFieldInNarrowColumn();
+      await openCalendarDropdown(field);
+      const first = readDropdownMetrics(field.host);
 
-      await page.$eval('mds-input-date', (element) => {
-        const dropdown = element.shadowRoot?.querySelector(
-          'mds-dropdown',
-        ) as HTMLMdsDropdownElement;
-        dropdown.visible = false;
-      });
-      await page.waitForChanges();
-      await openCalendarDropdown(page);
-      const second = await readDropdownMetrics(page);
+      getDropdown(field.host).visible = false;
+      await field.waitForChanges();
+      await openCalendarDropdown(field);
+      const second = readDropdownMetrics(field.host);
 
       expect(second.calendarWidth).toBe(first.calendarWidth);
       expect(second.calendarWidth).toBeLessThanOrEqual(420);
