@@ -1,5 +1,6 @@
 import path from 'node:path';
 import { defineVitestConfig } from '@stencil/vitest/config';
+import { stencilVitestPlugin } from '@stencil/vitest/plugin';
 import { playwright } from '@vitest/browser-playwright';
 import { MIGRATED_TESTS } from './scripts/vitest-migrated.ts';
 
@@ -26,6 +27,9 @@ export default defineVitestConfig({
     projects: [
       {
         extends: true,
+        // compiles the component classes imported by the unit specs: the @stencil/core runtime
+        // has no decorators, and the components are not registered in mock-doc
+        plugins: [stencilVitestPlugin({ css: true })],
         test: {
           name: 'spec',
           environment: 'stencil',
