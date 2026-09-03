@@ -70,8 +70,6 @@ jobs:
     needs: [changes]
     if: ${{ needs.changes.outputs.changed == 'true' && inputs.nx-project != '' }}
     runs-on: ubuntu-latest
-    env:
-      # Chrome is only needed by the test job (stencil e2e)
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
