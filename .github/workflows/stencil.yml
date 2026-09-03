@@ -37,8 +37,7 @@ jobs:
         projects/stencil/angular/magma-angular/src/stencil-generated
       artifact-download-path: projects
       run-tests: true
-      # the e2e tests need Chrome
-      install-chrome: true
+      # the browser tests need the Playwright Chromium
       install-playwright-browsers: true
       test-working-directory: projects/stencil
 
@@ -46,8 +45,6 @@ jobs:
     needs: [magma]
     if: ${{ needs.magma.outputs.changed == 'true' }}
     runs-on: ubuntu-latest
-    env:
-      PUPPETEER_SKIP_DOWNLOAD: 'true'
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
@@ -78,8 +75,6 @@ jobs:
     needs: [magma]
     if: ${{ needs.magma.outputs.changed == 'true' }}
     runs-on: ubuntu-latest
-    env:
-      PUPPETEER_SKIP_DOWNLOAD: 'true'
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
@@ -117,8 +112,6 @@ jobs:
     needs: [magma]
     if: ${{ needs.magma.outputs.changed == 'true' }}
     runs-on: ubuntu-latest
-    env:
-      PUPPETEER_SKIP_DOWNLOAD: 'true'
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
@@ -148,8 +141,6 @@ jobs:
     needs: [magma]
     if: ${{ needs.magma.outputs.changed == 'true' }}
     runs-on: ubuntu-latest
-    env:
-      PUPPETEER_SKIP_DOWNLOAD: 'true'
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
@@ -177,8 +168,6 @@ jobs:
     needs: [magma, magma-react, magma-angular]
     if: ${{ needs.magma.outputs.changed == 'true' }}
     runs-on: ubuntu-latest
-    env:
-      PUPPETEER_SKIP_DOWNLOAD: 'true'
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6

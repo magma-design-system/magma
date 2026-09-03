@@ -153,8 +153,6 @@ jobs:
             artifact: stencil-angular-build
             artifact-path: projects/stencil/angular/dist
     concurrency: publish-${{ matrix.component }}
-    env:
-      PUPPETEER_SKIP_DOWNLOAD: 'true'
     steps:
       - uses: actions/checkout@v6
         with:
