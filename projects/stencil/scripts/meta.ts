@@ -1,5 +1,8 @@
 import { resolve, join } from 'path';
 const PROJECT_DIR = resolve(__dirname, '../');
+// the magma-react and magma-angular wrappers are sibling workspaces of stencil
+const REACT_DIR = resolve(PROJECT_DIR, '../stencil-react');
+const ANGULAR_DIR = resolve(PROJECT_DIR, '../stencil-angular');
 const TOKENS_DIR = resolve(__dirname, '../../design-tokens/');
 const STYLES_DIR = resolve(__dirname, '../../styles/');
 const DIST_STORYBOOK_CACHE_DIR = resolve(__dirname, '../node_modules/.cache/storybook');
@@ -8,20 +11,21 @@ const DIST_PUBLISH_STENCIL_CACHE_DIR = resolve(__dirname, '../.stencil');
 const DIST_STENCIL_CACHE_DIR = resolve(__dirname, '../dist');
 const BUILD_DIR = resolve(PROJECT_DIR, '.build');
 const DIST_DIR = resolve(PROJECT_DIR, 'dist');
-const DIST_REACT_DIR = resolve(PROJECT_DIR, 'react', 'dist');
+const DIST_REACT_DIR = resolve(REACT_DIR, 'dist');
 const DIST_STORYBOOK_ICONS_DIR = resolve(PROJECT_DIR, 'assets/svg');
 const DIST_STORYBOOK_DIR = resolve(PROJECT_DIR, 'dist-storybook');
 const FIXTURES_DIR = resolve(PROJECT_DIR, 'src/fixtures');
 const ICONSAUCE_DIR = resolve(PROJECT_DIR, '.iconsauce');
 const LOADER_DIR = resolve(PROJECT_DIR, 'loader');
 const SRC_DIR = resolve(PROJECT_DIR, 'src');
-const SRC_REACT_DIR = resolve(PROJECT_DIR, 'react', 'src');
+const SRC_REACT_DIR = resolve(REACT_DIR, 'src');
 const COMPONENTS_DIR = resolve(SRC_DIR, 'components');
 const WWW_DIR = resolve(PROJECT_DIR, 'www');
 
 const TEMPLATES_DIR = join(PROJECT_DIR, 'template');
 
 export {
+  ANGULAR_DIR,
   BUILD_DIR,
   COMPONENTS_DIR,
   DIST_DIR,
@@ -36,6 +40,7 @@ export {
   ICONSAUCE_DIR,
   LOADER_DIR,
   PROJECT_DIR,
+  REACT_DIR,
   SRC_REACT_DIR,
   STYLES_DIR,
   TEMPLATES_DIR,
