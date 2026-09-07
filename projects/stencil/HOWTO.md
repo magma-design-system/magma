@@ -20,14 +20,53 @@ nx run stencil:build --skip-nx-cache
 
 All tests paths are from this project `design-system/projects/stencil/` path.
 
-### Spec and e2e tests
+### Unit and browser tests
+
+The tests run on [Vitest](https://vitest.dev) through
+[`@stencil/vitest`](https://stenciljs.com/docs/testing-vitest), against the components built in
+`www/` (see `vitest.config.mts`):
+
+- `*.spec.ts` files are unit tests running in the mock-doc environment, without rendering components;
+- `*.e2e.ts` files are component tests running in a real Chromium driven by Playwright.
 
 ```
-nx run stencil:test
+nx run stencil:test        # build, then unit + browser tests
+npm run test.spec          # unit tests only (needs a previous build)
+npm run test.e2e           # browser tests only (needs a previous build)
+npm run test.watch         # rebuild and rerun the tests on every change
 ```
 
-To run them in watch mode:
+The first run needs the Playwright browser: `npx playwright install chromium`.
 
+A component test renders the markup and asserts on the live DOM; real user interactions go
+through `userEvent`:
+
+```ts
+import { render } from '@stencil/vitest';
+import { userEvent } from 'vitest/browser';
+
+describe('mds-chip', () => {
+  it('emits mdsChipDelete when the delete button is clicked', async () => {
+    const { root, spyOnEvent, waitForChanges } = await render(
+      '<mds-chip label="chip" deletable></mds-chip>',
+    );
+    const deleteSpy = spyOnEvent('mdsChipDelete');
+
+    await userEvent.click(root.shadowRoot!.querySelector('.button-delete')!);
+    await waitForChanges();
+
+    expect(deleteSpy).toHaveReceivedEventTimes(1);
+  });
+});
 ```
-nx run stencil:test.e2e.watch
-```
+
+Keep in mind that:
+
+- the components are prebuilt, so the singletons imported from the sources (`preferenceStore`,
+  ...) are not the ones the components use: drive them through the DOM (`<html lang>`, the
+  `pref-*` classes, the `mds-pref-*` controllers, events and methods);
+- the tests of a file share one browser page: reset the global state they touch in `beforeEach`
+  (`src/test/setup.browser.ts` already clears `<html lang>`, the `pref-*` classes and the
+  storages);
+- `nx run stencil:generate` still scaffolds the Jest flavoured spec and e2e files: answer no and
+  start from the snippet above.

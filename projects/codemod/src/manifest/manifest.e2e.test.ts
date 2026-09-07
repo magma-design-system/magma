@@ -39,3 +39,35 @@ describe('real manifest — mds-button tone quiet → text', () => {
     ).toContain('tone="weak"');
   });
 });
+
+describe('real manifest — utility-class migrations (J)', () => {
+  const runHtml = (src: string) => transformHtml(src, manifest, { file: 'x.html' });
+
+  it('renames the ring family and the shifted radius scale in one single pass', () => {
+    expect(runHtml('<div class="shadow-outline-light rounded-xl rounded-md">x</div>').output).toBe(
+      '<div class="shadow-ring-weak rounded-md rounded-2xs">x</div>',
+    );
+  });
+
+  it('renames the retuned border/gap steps to their value-stable names', () => {
+    expect(runHtml('<div class="border-md border-lg gap gap-3xl">x</div>').output).toBe(
+      '<div class="border-sm border-200 gap-lg gap-2000">x</div>',
+    );
+  });
+
+  it('leaves the value-stable classes alone', () => {
+    const src =
+      '<div class="shadow shadow-md rounded-none rounded-full border gap-md p-400">x</div>';
+    const { changed, output } = runHtml(src);
+    expect(changed).toBe(false);
+    expect(output).toBe(src);
+  });
+
+  it('reports shadow-outline-strong (v2 reuses the name for a different shadow)', () => {
+    const { changed, findings } = runHtml('<div class="shadow-outline-strong">x</div>');
+    expect(changed).toBe(false);
+    const warn = findings.find((f) => f.ruleId === 'global/classReport/shadow-outline-strong');
+    expect(warn?.kind).toBe('warn');
+    expect(warn?.message).toContain('silent restyle');
+  });
+});

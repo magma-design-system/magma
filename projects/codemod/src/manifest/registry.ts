@@ -41,9 +41,11 @@ export const ruleId = (tag: string, rule: Rule): string => {
     case 'ensureAttr':
       return `${tag}/${rule.kind}/${rule.attr.prop}`;
     case 'cssVarRemove':
+    case 'classReport':
       return `${tag}/${rule.kind}/${rule.name}`;
     case 'cssVarRename':
     case 'cssVarSurfaceReport':
+    case 'classRename':
     case 'partRename':
     case 'eventRename':
       return `${tag}/${rule.kind}/${rule.from}`;

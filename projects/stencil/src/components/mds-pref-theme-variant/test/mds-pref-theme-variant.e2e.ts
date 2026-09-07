@@ -1,11 +1,9 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { render } from '@stencil/vitest';
 
 describe('mds-pref-theme-variant', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<mds-pref-theme-variant></mds-pref-theme-variant>');
+    const { root } = await render('<mds-pref-theme-variant></mds-pref-theme-variant>');
 
-    const element = await page.find('mds-pref-theme-variant');
-    expect(element).toHaveAttribute('hydrated');
+    expect(root).toHaveAttribute('hydrated');
   });
 });

@@ -61,15 +61,31 @@ export class MdsPaginator {
       pageItem.offsetWidth / 2;
   };
 
-  private focus = (ev: MouseEvent): void => {
+  /**
+   * The strip follows the focused item only when the focus comes from the keyboard.
+   * On a pointer interaction the item receives focus on mousedown: scrolling the strip
+   * at that moment moves the item away from under the pointer, the mouseup lands on
+   * another element and the browser dispatches the click on their common ancestor
+   * (the strip itself) instead of the item, so the page would never be selected.
+   */
+  private readonly isKeyboardFocus = (item: HTMLElement): boolean => {
+    try {
+      return item.matches(':focus-visible');
+    } catch {
+      return true;
+    }
+  };
+
+  private readonly handleItemFocus = (ev: FocusEvent): void => {
+    const item = ev.target as HTMLMdsPaginatorItemElement | null;
+    if (!item || !this.isKeyboardFocus(item)) return;
+
     const pagesElement = this.element.shadowRoot?.querySelector<HTMLDivElement>('.pages');
     const pagesItems =
       pagesElement?.querySelectorAll<HTMLMdsPaginatorItemElement>('mds-paginator-item');
-    if (pagesItems && ev.target) {
-      const elements = Array.from(pagesItems);
-      const index = elements.indexOf(ev.target as HTMLMdsPaginatorItemElement);
-      this.scrollPage(index);
-    }
+    if (!pagesItems) return;
+
+    this.scrollPage(Array.from(pagesItems).indexOf(item));
   };
 
   private goToPage = (selectedPage: number, caller?: HTMLMdsPaginatorItemElement): void => {
@@ -136,7 +152,7 @@ export class MdsPaginator {
                 class="item"
                 selected={this.currentPage === i + 2}
                 onClick={this.handlePageClick(i + 2)}
-                onFocus={this.focus}
+                onFocus={this.handleItemFocus}
               >
                 {i + 2}
               </mds-paginator-item>

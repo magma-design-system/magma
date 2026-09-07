@@ -1,11 +1,9 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { render } from '@stencil/vitest';
 
 describe('mds-avatar-stack', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<mds-avatar-stack></mds-avatar-stack>');
+    const { root } = await render('<mds-avatar-stack></mds-avatar-stack>');
 
-    const element = await page.find('mds-avatar-stack');
-    expect(element).toHaveAttribute('hydrated');
+    expect(root).toHaveAttribute('hydrated');
   });
 });

@@ -37,35 +37,33 @@ jobs:
         projects/stencil/angular/magma-angular/src/stencil-generated
       artifact-download-path: projects
       run-tests: true
-      # the e2e tests need Chrome
-      install-chrome: true
+      # the browser tests need the Playwright Chromium
+      install-playwright-browsers: true
       test-working-directory: projects/stencil
 
   magma-react:
     needs: [magma]
     if: ${{ needs.magma.outputs.changed == 'true' }}
     runs-on: ubuntu-latest
-    env:
-      PUPPETEER_SKIP_DOWNLOAD: 'true'
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
           node-version-file: .nvmrc
-          cache: yarn
+          cache: npm
       - name: Restore Nx cache
         uses: actions/cache@v5
         with:
           path: .nx
-          key: nx-${{ hashFiles('yarn.lock') }}-${{ github.sha }}
+          key: nx-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
           restore-keys: |
-            nx-${{ hashFiles('yarn.lock') }}-
-      - run: yarn install --frozen-lockfile --prefer-offline
+            nx-${{ hashFiles('package-lock.json') }}-
+      - run: npm ci --prefer-offline
       - uses: actions/download-artifact@v8
         with:
           name: stencil-build
           path: projects
-      - run: yarn nx run stencil-react:build
+      - run: npx nx run stencil-react:build
       - uses: actions/upload-artifact@v7
         with:
           name: stencil-react-build
@@ -77,27 +75,29 @@ jobs:
     needs: [magma]
     if: ${{ needs.magma.outputs.changed == 'true' }}
     runs-on: ubuntu-latest
-    env:
-      PUPPETEER_SKIP_DOWNLOAD: 'true'
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
           node-version-file: .nvmrc
-          cache: yarn
+          cache: npm
       - name: Restore Nx cache
         uses: actions/cache@v5
         with:
           path: .nx
-          key: nx-${{ hashFiles('yarn.lock') }}-${{ github.sha }}
+          key: nx-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
           restore-keys: |
-            nx-${{ hashFiles('yarn.lock') }}-
-      - run: yarn install --frozen-lockfile --prefer-offline
+            nx-${{ hashFiles('package-lock.json') }}-
+      - run: npm ci --prefer-offline
+      # npm never materializes node_modules of nested workspaces, so ng can't
+      # find @angular/build from the root install — see #666
+      - run: npm install --workspaces=false --no-audit --no-fund
+        working-directory: projects/stencil/angular
       - uses: actions/download-artifact@v8
         with:
           name: stencil-build
           path: projects
-      - run: yarn nx run stencil-angular:build
+      - run: npx nx run stencil-angular:build
       - uses: actions/upload-artifact@v7
         with:
           name: stencil-angular-build
@@ -112,27 +112,25 @@ jobs:
     needs: [magma]
     if: ${{ needs.magma.outputs.changed == 'true' }}
     runs-on: ubuntu-latest
-    env:
-      PUPPETEER_SKIP_DOWNLOAD: 'true'
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
           node-version-file: .nvmrc
-          cache: yarn
+          cache: npm
       - name: Restore Nx cache
         uses: actions/cache@v5
         with:
           path: .nx
-          key: nx-${{ hashFiles('yarn.lock') }}-${{ github.sha }}
+          key: nx-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
           restore-keys: |
-            nx-${{ hashFiles('yarn.lock') }}-
-      - run: yarn install --frozen-lockfile --prefer-offline
+            nx-${{ hashFiles('package-lock.json') }}-
+      - run: npm ci --prefer-offline
       - uses: actions/download-artifact@v8
         with:
           name: stencil-build
           path: projects
-      - run: yarn nx run stencil:check.ssr
+      - run: npx nx run stencil:check.ssr
 
   # Guards against component CSS referencing a token no layer publishes. An
   # unresolvable var() makes the declaration invalid at computed-value time, so the
@@ -143,27 +141,25 @@ jobs:
     needs: [magma]
     if: ${{ needs.magma.outputs.changed == 'true' }}
     runs-on: ubuntu-latest
-    env:
-      PUPPETEER_SKIP_DOWNLOAD: 'true'
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
           node-version-file: .nvmrc
-          cache: yarn
+          cache: npm
       - name: Restore Nx cache
         uses: actions/cache@v5
         with:
           path: .nx
-          key: nx-${{ hashFiles('yarn.lock') }}-${{ github.sha }}
+          key: nx-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
           restore-keys: |
-            nx-${{ hashFiles('yarn.lock') }}-
-      - run: yarn install --frozen-lockfile --prefer-offline
+            nx-${{ hashFiles('package-lock.json') }}-
+      - run: npm ci --prefer-offline
       - uses: actions/download-artifact@v8
         with:
           name: stencil-build
           path: projects
-      - run: yarn nx run stencil:check.tokens
+      - run: npx nx run stencil:check.tokens
 
   # Guards the tree-shaking of the three published packages: a consumer that
   # imports one component must not end up shipping all 114. Needs all three
@@ -172,22 +168,24 @@ jobs:
     needs: [magma, magma-react, magma-angular]
     if: ${{ needs.magma.outputs.changed == 'true' }}
     runs-on: ubuntu-latest
-    env:
-      PUPPETEER_SKIP_DOWNLOAD: 'true'
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
           node-version-file: .nvmrc
-          cache: yarn
+          cache: npm
       - name: Restore Nx cache
         uses: actions/cache@v5
         with:
           path: .nx
-          key: nx-${{ hashFiles('yarn.lock') }}-${{ github.sha }}
+          key: nx-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
           restore-keys: |
-            nx-${{ hashFiles('yarn.lock') }}-
-      - run: yarn install --frozen-lockfile --prefer-offline
+            nx-${{ hashFiles('package-lock.json') }}-
+      - run: npm ci --prefer-offline
+      # the angular tree-shaking probe builds inside projects/stencil/angular,
+      # whose node_modules npm never materializes — see #666
+      - run: npm install --workspaces=false --no-audit --no-fund
+        working-directory: projects/stencil/angular
       - uses: actions/download-artifact@v8
         with:
           name: stencil-build
@@ -200,4 +198,4 @@ jobs:
         with:
           name: stencil-angular-build
           path: projects/stencil/angular/dist
-      - run: yarn nx run stencil:check.treeshaking
+      - run: npx nx run stencil:check.treeshaking

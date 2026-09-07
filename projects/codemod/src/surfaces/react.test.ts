@@ -141,6 +141,49 @@ describe('transformReact — dynamic & safety', () => {
   });
 });
 
+describe('transformReact — utility-class migrations (J)', () => {
+  it('renames classes in a className string literal on any element', () => {
+    expect(run('<div className="p-4 shadow-outline-light rounded-xl" />').output).toBe(
+      '<div className="p-4 shadow-ring-weak rounded-md" />',
+    );
+  });
+
+  it('renames classes in the `class` attribute of intrinsic elements', () => {
+    expect(run('<mds-button class="rounded-xl" label="x" />').output).toBe(
+      '<mds-button class="rounded-md" label="x" />',
+    );
+  });
+
+  it('rewrites string literals inside className expressions (clsx, ternaries)', () => {
+    expect(
+      run(`<div className={clsx('shadow-outline-light', cond && 'rounded-xl p-2')} />`).output,
+    ).toBe(`<div className={clsx('shadow-ring-weak', cond && 'rounded-md p-2')} />`);
+    expect(run(`<div className={cond ? "rounded-md" : "rounded-xl"} />`).output).toBe(
+      `<div className={cond ? "rounded-2xs" : "rounded-md"} />`,
+    );
+  });
+
+  it('reports a substitution template mentioning a migrated class instead of rewriting it', () => {
+    const src = '<div className={`rounded-xl ${extra}`} />';
+    const { changed, output, findings } = run(src);
+    expect(changed).toBe(false);
+    expect(output).toBe(src);
+    expect(findings.some((f) => f.kind === 'dynamic')).toBe(true);
+  });
+
+  it('leaves a substitution template without migrated classes alone, silently', () => {
+    const src = '<div className={`gap-4 p-2 ${extra}`} />';
+    expect(run(src).findings).toEqual([]);
+  });
+
+  it('reports a class with no v2 equivalent', () => {
+    const src = '<div className="shadow-outline-strong" />';
+    const { changed, findings } = run(src);
+    expect(changed).toBe(false);
+    expect(findings.some((f) => f.kind === 'warn')).toBe(true);
+  });
+});
+
 describe('transformReact — intrinsic mds-* elements', () => {
   it('remaps tone and lifts children on the custom-element form', () => {
     expect(run('<mds-button tone="quiet">Salva</mds-button>').output).toBe(

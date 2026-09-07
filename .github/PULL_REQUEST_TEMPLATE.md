@@ -57,6 +57,7 @@ None
 
 - [ ] Work is on a dedicated branch, not directly on `dev` or `main`
 - [ ] Branch is up to date with `dev` (merged latest `dev` in)
+- [ ] Lint passes locally (`npm run lint`)
 - [ ] Tests pass locally (`nx run stencil:test`) and affected builds succeed
 - [ ] Commit messages follow `docs/COMMITS.md`
 - [ ] Updated the relevant `SPEC.md` (and `docs/ARCHITECTURE.md` if system-wide)

@@ -251,7 +251,7 @@ A local UI to explore and tune the configuration with live palette previews:
 ```bash
 nx run design-tokens:playground
 # or, without nx:
-yarn --cwd projects/design-tokens playground
+npm run playground -w projects/design-tokens
 ```
 
 It opens a Vite dev server (port 5177) that loads `.magma-design-tokensrc.json` and runs the real token generator in the browser, so every preview matches the build output exactly. The UI has four views: **colors** (the two-column editor: color list on the left, editing and live light/dark scale previews with achieved contrast on the right; `neutral` is selected by default when present), **contrast scales**, **groups** and **diff**. Selecting a color from the sidebar while in contrast scales keeps you there, since the scale samples follow the selected color.
@@ -294,7 +294,7 @@ It starts a small server (default port `5178`) that both serves the playground a
 - `PUT /api/config` writes it back with a stable key order, ASCII-only output and a trailing newline, so saves produce clean git diffs;
 - `POST /api/build` runs the full token generation on disk, honouring the `--outDir` / `--generate` / `--export-tokens` flags passed to `ui`.
 
-In this mode the playground loads the on-disk configuration on start and swaps **copy JSON** for a **save** button that persists to the resolved file; a `*` marks unsaved changes. The **download** menu gains **Build tokens on disk** to trigger the build endpoint. Run standalone (`nx run design-tokens:playground` or `yarn --cwd projects/design-tokens playground`) the API is absent and the playground keeps its in-memory, copy/download-only behaviour.
+In this mode the playground loads the on-disk configuration on start and swaps **copy JSON** for a **save** button that persists to the resolved file; a `*` marks unsaved changes. The **download** menu gains **Build tokens on disk** to trigger the build endpoint. Run standalone (`nx run design-tokens:playground` or `npm run playground -w projects/design-tokens`) the API is absent and the playground keeps its in-memory, copy/download-only behaviour.
 
 ### Cli example
 

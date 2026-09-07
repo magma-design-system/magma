@@ -34,9 +34,7 @@ export default defineConfig([
   // #region storybook
   ...storybook.configs['flat/recommended'],
   {
-    extends: [
-      compat.extends('plugin:storybook/recommended', 'plugin:@typescript-eslint/recommended'),
-    ],
+    extends: [compat.extends('plugin:@typescript-eslint/recommended')],
   },
   // #endregion
 
@@ -58,6 +56,9 @@ export default defineConfig([
     rules: {
       'stencil/strict-mutable': 'off',
       'stencil/decorators-style': 'off',
+      // autofocus/autoFocus props mirror the native attribute on purpose;
+      // renaming them would break the public API
+      'stencil/reserved-member-names': 'off',
     },
   },
   // #endregion

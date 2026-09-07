@@ -1,21 +1,17 @@
-import { newE2EPage } from '@stencil/core/testing';
-import { mockIconResponse } from '@test/mock';
+import { render } from '@stencil/vitest';
+import { mockIconFetch } from '@test/fetch';
 
 describe('mds-help', () => {
   it('renders without icon', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<mds-help icon=""></mds-help>');
+    const { root } = await render('<mds-help icon=""></mds-help>');
 
-    const element = await page.find('mds-help');
-    expect(element).toHaveAttribute('hydrated');
+    expect(root).toHaveAttribute('hydrated');
   });
 
   it('renders with icon', async () => {
-    const page = await newE2EPage();
+    mockIconFetch();
+    const { root } = await render('<mds-help></mds-help>');
 
-    mockIconResponse(page);
-    await page.setContent('<mds-help></mds-help>');
-    const element = await page.find('mds-help');
-    expect(element).toHaveAttribute('hydrated');
+    expect(root).toHaveAttribute('hydrated');
   });
 });

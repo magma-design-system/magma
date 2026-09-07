@@ -34,18 +34,18 @@ When you commit with the intention of pushing, follow this order before the push
 
 1. Check whether `dev` has new commits that your branch does not yet contain.
 2. If it does, merge `dev` into your branch.
-3. Run the test suite (`nx run stencil:test`, plus any build affected by the change).
+3. Run the linter (`npm run lint`) and the test suite (`nx run stencil:test`, plus any build affected by the change).
 4. Only if the tests pass, push your branch **to its own remote branch** (never to `dev` or `main`).
 
-If the tests fail after merging `dev`, stop and resolve the failures before pushing; do not push a branch that is broken against the latest `dev`.
+If lint or the tests fail after merging `dev`, stop and resolve the failures before pushing; do not push a branch that is broken against the latest `dev`.
 
 ## Summary for agents
 
-| Action                                          | Allowed for an agent?                          |
-| ----------------------------------------------- | ---------------------------------------------- |
-| Create a dedicated branch off `dev`             | Yes, linked to its issue (see rule 3)          |
-| Commit and push to that branch's own remote     | Yes, after syncing with `dev` and passing tests |
-| Merge `dev` into your feature branch            | Yes (to stay current before a push)            |
-| Merge a branch into `dev` or `main`             | No - manual governance step                    |
-| Push directly to `dev` or `main`                | No - manual governance step                    |
-| Auto-merge a pull request into `dev` or `main`  | No - manual governance step                    |
+| Action                                          | Allowed for an agent?                                    |
+| ----------------------------------------------- | -------------------------------------------------------- |
+| Create a dedicated branch off `dev`             | Yes, linked to its issue (see rule 3)                    |
+| Commit and push to that branch's own remote     | Yes, after syncing with `dev` and passing lint and tests |
+| Merge `dev` into your feature branch            | Yes (to stay current before a push)                      |
+| Merge a branch into `dev` or `main`             | No - manual governance step                              |
+| Push directly to `dev` or `main`                | No - manual governance step                              |
+| Auto-merge a pull request into `dev` or `main`  | No - manual governance step                              |

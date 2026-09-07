@@ -291,7 +291,8 @@ export class MdsButton {
   };
 
   render() {
-    this.typography = buttonSizeTypographyVariant[this.size] as TypographyType;
+    this.typography = (buttonSizeTypographyVariant[this.size] ??
+      buttonSizeTypographyVariant.md) as TypographyType;
     return (
       <Host
         onMouseDown={this.mouseDown}

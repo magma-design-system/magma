@@ -1,0 +1,15 @@
+{
+  "extends": "./tsconfig.json",
+  "exclude": [
+    "dist",
+    "loader",
+    "node_modules",
+    "template",
+    "www",
+    "scripts",
+    "src/**/*.stories.tsx",
+    "src/**/*.spec.*",
+    "src/**/*.e2e.*",
+    "src/test"
+  ]
+}

@@ -1,16 +1,24 @@
-import { dirname, join } from 'path';
-/* eslint-disable @typescript-eslint/no-require-imports */
 // https://www.mokkapps.de/blog/run-build-and-deploy-stencil-and-storybook-from-one-repository
-const path = require('path');
+import { createRequire } from 'node:module';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+import tailwindcss from '@tailwindcss/postcss';
+import autoprefixer from 'autoprefixer';
+import iconsauce from 'postcss-iconsauce';
+import { TsconfigPathsPlugin } from 'tsconfig-paths-webpack-plugin';
+
+const nodeRequire = createRequire(import.meta.url);
+const configDir = path.dirname(fileURLToPath(import.meta.url));
+
 const alias = {
-  '@dictionary': path.resolve(__dirname, '../src/dictionary/'),
-  '@fixture': path.resolve(__dirname, '../src/fixtures/'),
-  '@icon': path.resolve(__dirname, '../assets/svg/'),
+  '@dictionary': path.resolve(configDir, '../src/dictionary/'),
+  '@fixture': path.resolve(configDir, '../src/fixtures/'),
+  '@icon': path.resolve(configDir, '../assets/svg/'),
   '@placeholder': 'https://via.placeholder.com',
-  '@test': path.resolve(__dirname, '../src/test/'),
-  '@type': path.resolve(__dirname, '../src/types/'),
+  '@test': path.resolve(configDir, '../src/test/'),
+  '@type': path.resolve(configDir, '../src/types/'),
 };
-const TsConfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const stories = ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)'];
 const staticDirs = ['../assets', '../dist'];
 const addons = [
@@ -35,7 +43,7 @@ const webpackFinal = async (config) => {
       exclude: /node_modules/,
     },
     {
-      test: /(\.stories\.tsx|preview\.js)$/,
+      test: /(\.stories\.tsx|preview\.jsx)$/,
       exclude: /node_modules/,
       use: [
         {
@@ -59,15 +67,15 @@ const webpackFinal = async (config) => {
           options: {
             postcssOptions: {
               plugins: [
-                require('postcss-iconsauce')('./.storybook/iconsauce.config.js'),
-                require('@tailwindcss/postcss'),
-                require('autoprefixer'),
+                iconsauce('./.storybook/iconsauce.config.mjs'),
+                tailwindcss,
+                autoprefixer,
               ],
             },
           },
         },
       ],
-      include: path.resolve(__dirname, '../'),
+      include: path.resolve(configDir, '../'),
     },
   );
   config.resolve.fallback = {
@@ -76,8 +84,8 @@ const webpackFinal = async (config) => {
   };
   config.resolve.plugins = config.resolve.plugins || [];
   config.resolve.plugins.push(
-    new TsConfigPathsPlugin({
-      configFile: path.resolve(__dirname, '../tsconfig.json'),
+    new TsconfigPathsPlugin({
+      configFile: path.resolve(configDir, '../tsconfig.json'),
     }),
   );
   return config;
@@ -111,5 +119,5 @@ const config = {
 export default config;
 
 function getAbsolutePath(value) {
-  return dirname(require.resolve(join(value, 'package.json')));
+  return path.dirname(nodeRequire.resolve(path.join(value, 'package.json')));
 }

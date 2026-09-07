@@ -21,12 +21,18 @@
     },
     "lint": {
       "cache": true,
-      "inputs": ["default", "^default"]
+      "inputs": [
+        "default",
+        "^default",
+        "{workspaceRoot}/eslint.config.mjs",
+        "{workspaceRoot}/stylelint.config.mjs"
+      ]
     },
     "package": {
       "cache": true,
       "inputs": ["default", "^default"]
     }
   },
-  "defaultBase": "dev"
+  "defaultBase": "dev",
+  "analytics": false
 }

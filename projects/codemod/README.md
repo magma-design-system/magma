@@ -30,6 +30,7 @@ apply the changes in place.
 ```
 
 Notes:
+
 - `auto` maps `.css/.scss → css`, `.tsx/.jsx → react`, `.ts → Angular inline templates`, `.html → html`. For
   **Angular external templates** (`.html`), pass `--framework angular`.
 - `--write` refuses to run on a dirty git working tree unless `--force`, so the undo is always `git checkout`.
@@ -37,47 +38,76 @@ Notes:
 
 ## Migration matrix
 
-| # | Category | What it does | Confidence |
-|---|----------|--------------|------------|
-| A | Enum remap (`tone`) | `ghost → outline`, `quiet → weak`; on the three components whose v2 tone set gained `text` (`mds-button`, `mds-radial-menu`, `mds-radial-menu-item`) the documented intent applies instead: `quiet → text`. Validated against each component's v2 set | safe with validation |
-| B | Boolean inversion | rename + negate value: `arrow → hideArrow` (dropdown **and tooltip**), `autoPlacement → disableAutoPlacement`, `backdrop → hideBackdrop`, `cockade → hideCockade`, `showDownloadedIcon → hideDownloadedIcon`, … plus the curated pairs the name heuristic cannot see: `closable → disableClose`, `visible → dismissed` | safe |
-| C | Prop removal | warn + inline comment (HTML) / report (JSX, Angular): e.g. `mds-button hasText`, `mds-modal animating` | report |
-| D | Prop rename | `mds-label labelAction → label` | curated |
-| E | Misc enum shifts | remap or flag | mixed |
-| F | `slot="default"` removal | drop the attribute (v2 uses the unnamed default slot) | safe |
-| F2 | Slot → attribute | lift slotted text into an attribute: `Save` → `label="Save"` (`label={expr}` / `[label]="expr"` for dynamic). Preferred form on `mds-button` (v2 still reads slotted text); **mandatory** on `mds-breadcrumb-item` and `mds-tab-item`, whose v2 render dropped the slot entirely. Element/mixed content → reported | text: safe · markup: manual |
-| F3 | Removed named slot | report children using a slot dropped in v2: `mds-push-notification` `slot="top"` / `slot="bottom"` | report |
-| G | CSS custom property rename | `--mds-*-ghost-* → --mds-*-outline-*`, `--mds-*-color → --mds-*-color-rgb` (value hex → `R G B` flagged), plus the curated renames the docs diff saw as removals: `--mds-banner-gap → --mds-banner-content-gap`, `--mds-header-backdrop-filter → --mds-header-backdrop-blur-strength` (both value-flagged), the `shodow → shadow` / triple-dash typo fixes on `mds-filter(-item)`, `--mds-tab-item-transition-* → --mds-tab-transition-*`, and the v1 typo'd names corrected in v2 (#566): `--mds-video-wall-noise-fitler → --mds-video-wall-noise-filter`, `--mds-file-preview-icon-bacground → --mds-file-preview-icon-background` | name: safe · value: manual |
-| G2 | CSS custom property removal | warn on definitions/`var()` references of the ~11 properties removed with no replacement (e.g. `--mds-entity-shadow`, `--mds-table-cell-*`) | report |
-| G3 | Semantic color migration (#576) | seed rename `--tone-<family> → --tone-<family>-seed` (A2), rewritten; plus report-only surface candidates: a neutral tone (bare token or any scale step) used as a *background* (a `background`/`background-color` property, or a `--mds-*-background*` token) is reported for manual migration to a `--magma-surface-*` role (the exact role, default/raised/overlay, is contextual) | seed: safe · surface: report |
-| H | Shadow part rename | rename in `::part()` selectors | safe |
-| I | Event rename | declared in the manifest schema, but **not implemented by any surface yet** — no event was renamed between v1.12 and v2.0.0-beta, so no rule currently exists | n/a |
+| #   | Category                        | What it does                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | Confidence                    |
+| --- | ------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------- |
+| A   | Enum remap (`tone`)             | `ghost → outline`, `quiet → weak`; on the three components whose v2 tone set gained `text` (`mds-button`, `mds-radial-menu`, `mds-radial-menu-item`) the documented intent applies instead: `quiet → text`. Validated against each component's v2 set                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | safe with validation          |
+| B   | Boolean inversion               | rename + negate value: `arrow → hideArrow` (dropdown **and tooltip**), `autoPlacement → disableAutoPlacement`, `backdrop → hideBackdrop`, `cockade → hideCockade`, `showDownloadedIcon → hideDownloadedIcon`, … plus the curated pairs the name heuristic cannot see: `closable → disableClose`, `visible → dismissed`                                                                                                                                                                                                                                                                                                                                                                                                                        | safe                          |
+| C   | Prop removal                    | warn + inline comment (HTML) / report (JSX, Angular): e.g. `mds-button hasText`, `mds-modal animating`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | report                        |
+| D   | Prop rename                     | `mds-label labelAction → label`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | curated                       |
+| E   | Misc enum shifts                | remap or flag                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | mixed                         |
+| F   | `slot="default"` removal        | drop the attribute (v2 uses the unnamed default slot)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | safe                          |
+| F2  | Slot → attribute                | lift slotted text into an attribute: `Save` → `label="Save"` (`label={expr}` / `[label]="expr"` for dynamic). Preferred form on `mds-button` (v2 still reads slotted text); **mandatory** on `mds-breadcrumb-item` and `mds-tab-item`, whose v2 render dropped the slot entirely. Element/mixed content → reported                                                                                                                                                                                                                                                                                                                                                                                                                            | text: safe · markup: manual   |
+| F3  | Removed named slot              | report children using a slot dropped in v2: `mds-push-notification` `slot="top"` / `slot="bottom"`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | report                        |
+| G   | CSS custom property rename      | `--mds-*-ghost-* → --mds-*-outline-*`, `--mds-*-color → --mds-*-color-rgb` (value hex → `R G B` flagged), plus the curated renames the docs diff saw as removals: `--mds-banner-gap → --mds-banner-content-gap`, `--mds-header-backdrop-filter → --mds-header-backdrop-blur-strength` (both value-flagged), the `shodow → shadow` / triple-dash typo fixes on `mds-filter(-item)`, `--mds-tab-item-transition-* → --mds-tab-transition-*`, and the v1 typo'd names corrected in v2 (#566, plus #328's property registration): `--mds-video-wall-noise-fitler → --mds-video-wall-noise-filter`, `--mds-file-preview-icon-bacground → --mds-file-preview-icon-background`, `--mds-stepper-bar-item-duaration → --mds-stepper-bar-item-duration` | name: safe · value: manual    |
+| G2  | CSS custom property removal     | warn on definitions/`var()` references of the ~11 properties removed with no replacement (e.g. `--mds-entity-shadow`, `--mds-table-cell-*`)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | report                        |
+| G3  | Semantic color migration (#576) | seed rename `--tone-<family> → --tone-<family>-seed` (A2), rewritten; plus report-only surface candidates: a neutral tone (bare token or any scale step) used as a _background_ (a `background`/`background-color` property, or a `--mds-*-background*` token) is reported for manual migration to a `--magma-surface-*` role (the exact role, default/raised/overlay, is contextual)                                                                                                                                                                                                                                                                                                                                                         | seed: safe · surface: report  |
+| H   | Shadow part rename              | rename in `::part()` selectors                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | safe                          |
+| I   | Event rename                    | declared in the manifest schema, but **not implemented by any surface yet** — no event was renamed between v1.12 and v2.0.0-beta, so no rule currently exists                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | n/a                           |
+| J   | Utility-class migration         | the styles-package Tailwind contract that changed between v1 and v2: the `shadow-outline-*` ring family → `shadow-ring-*`, the retuned `rounded-*` / `border-*` / named `gap-*` scales. Value-exact renames are rewritten; combos with no v2 token are reported (see below)                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | rename: safe · report: manual |
 
 The bundled manifest is built by diffing the two `documentation.json` builds (`manifest.generated.ts`) with curated
 corrections layered on top in `src/manifest/manifest.ts`.
 
 ### Behaviour guards (preserving v1 defaults)
 
-Some inversions also flip the *default* behaviour. On `mds-dropdown`, v1 had auto-placement **off** by default
+Some inversions also flip the _default_ behaviour. On `mds-dropdown`, v1 had auto-placement **off** by default
 (`auto-placement` opt-in) while v2 has it **on** (`disable-auto-placement` opt-out). To keep the v1 behaviour, the
 codemod adds `disable-auto-placement` to dropdowns that set neither prop:
 
-| Input | Output |
-|---|---|
+| Input                                     | Output                                              |
+| ----------------------------------------- | --------------------------------------------------- |
 | `<mds-dropdown>` (auto-placement was off) | `<mds-dropdown disable-auto-placement>` (stays off) |
-| `<mds-dropdown auto-placement>` (was on) | `<mds-dropdown>` (stays on — v2 default) |
+| `<mds-dropdown auto-placement>` (was on)  | `<mds-dropdown>` (stays on — v2 default)            |
 
 (`mds-tooltip`'s auto-placement default did not change, so no guard is applied there.)
 
 The same guard covers other default flips (same prop, new default — invisible to the docs diff):
 
-| Component | v1 default | v2 default | Guard |
-|---|---|---|---|
-| `mds-push-notification-item` | `deletable` on | off | adds `deletable` |
-| `mds-banner` | `variant="light"` | `primary` | adds `variant="light"` |
-| `mds-label` | no truncation | `truncate="word"` | adds `truncate="none"` |
+| Component                    | v1 default        | v2 default        | Guard                  |
+| ---------------------------- | ----------------- | ----------------- | ---------------------- |
+| `mds-push-notification-item` | `deletable` on    | off               | adds `deletable`       |
+| `mds-banner`                 | `variant="light"` | `primary`         | adds `variant="light"` |
+| `mds-label`                  | no truncation     | `truncate="word"` | adds `truncate="none"` |
 
 (`mds-emoji`'s default `name` changed `hexabot → mia`; deliberately not guarded — treat it as branding.)
+
+### Utility-class migration (J)
+
+The styles package's Tailwind token contract changed between v1 and v2; the codemod rewrites the classes whose
+**value survives under a new name** (verified value-by-value against the two token sets) and reports the rest. It
+runs on `class` attributes of **any** element (HTML, Angular templates, inline templates), `className`/`class` in
+JSX — including string literals inside `clsx()`/ternaries — `[class.x]`/`[ngClass]`/`[class]` bindings in Angular,
+and `@apply` in CSS/SCSS. Variant prefixes (`hover:`, `md:`, arbitrary variants) and important markers are
+preserved; only the utility segment is rewritten.
+
+| Family             | Renames (value-exact)                                                                                                                                                                                     | Reported (no exact v2 token)                                                                                                                                                      | Unchanged                                                              |
+| ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| Shadows            | `shadow-sm → shadow-xs`, `shadow-sm-sharp → shadow-xs-sharp`, `shadow-inner → shadow-inset-sm` (near-exact, flagged)                                                                                      | —                                                                                                                                                                                 | `shadow`, `shadow-sharp`, `shadow-md/lg/xl/2xl(-sharp)`, `shadow-none` |
+| Ring family (#641) | `shadow-outline → shadow-ring`, `-outline-50 → -ring-2`, `-outline-light → -ring-weak`, `-outline-light-50 → -ring-weak-2`, `-outline-strong-50 → -ring-strong-2`, `-outline-strong-100 → -ring-strong-4` | `-outline-75/-100`, `-outline-light-75/-100`, `-outline-strong(-75)` — ⚠ v2 reuses the name `shadow-outline-strong` for a **different** shadow, so leaving it is a silent restyle | —                                                                      |
+| Radius             | `rounded → rounded-3xs`, `md → 2xs`, `lg → xs`, `xl → md`, `2xl → lg`, `3xl → 2xl` — expanded over every corner/side variant (`rounded-t-*`, `rounded-tl-*`, …)                                           | `rounded-sm` (2px; the v2 scale starts at 4px, and v2 reuses `rounded-sm` for 10px)                                                                                               | `rounded-none`, `rounded-full`                                         |
+| Border width       | `border-md → border-sm`, `border-lg → border-200`, `border-xl → border-800` (side variants included)                                                                                                      | —                                                                                                                                                                                 | bare `border`, numeric steps                                           |
+| Gap                | bare `gap`(`-x`/`-y`) `→ gap-lg` (flagged: skippable if it is a hand-written class), `gap-3xl → gap-2000`                                                                                                 | —                                                                                                                                                                                 | `gap-xs`…`gap-2xl`, numeric steps                                      |
+
+Caveats:
+
+- **Run it once.** The radius scale shift is a chain (`rounded-xl → rounded-md` while `rounded-md → rounded-2xs`):
+  a single run is single-pass and never cascades, but a second run over already-migrated code double-shifts it.
+  The `--write` dirty-git-tree guard is your friend here.
+- Numeric steps (`p-400`, `gap-200`, `border-50`, `h-*`, `w-*`, typography, screens) kept their values everywhere
+  — no rules, nothing to do.
+- The **generic Tailwind 3 → 4 migration** (config → CSS-first `@theme`, renamed core utilities like `shadow-sm`'s
+  own TW-default meaning, `outline-none`, …) is Tailwind's own upgrade guide's business, not this codemod's: only
+  the magma token contract is covered.
 
 ## What it cannot rewrite (reported, not changed)
 
@@ -85,6 +115,9 @@ These are surfaced under the **dynamic / manual** category in the report:
 
 - React **spread props** (`<MdsButton {...props} />`), aliased components, computed prop names.
 - Dynamic enum values (`tone={expr}` / `[tone]="expr"`).
+- **Dynamic class lists**: a `className` template literal with `${…}` holes that mentions a migrated utility class
+  is reported (a hole can split a token), and an `[ngClass]="expr"` whose expression carries no string literals is
+  silently out of reach — only the quoted class strings inside the expression are rewritten.
 - Slot content that contains **markup** (e.g. `<mds-icon>` inside `mds-button`).
 - Inline templates / HTML in template literals that contain `${…}` interpolation.
 - Angular `@Component({ host })` bindings are intentionally left untouched (rewriting a consumer component's own
@@ -106,8 +139,8 @@ Out of scope entirely (all surfaces work on markup/templates only):
 ## Development
 
 ```bash
-yarn nx run codemod:build     # tsc → dist/
-yarn nx run codemod:test      # jest (ESM)
+npx nx run codemod:build      # tsc → dist/
+npx nx run codemod:test       # jest (ESM)
 ```
 
 ### Regenerating the manifest from the docs
@@ -115,7 +148,7 @@ yarn nx run codemod:test      # jest (ESM)
 ```bash
 # v2 docs come from a `dev` build; v1 docs from a one-off build of `support/v1.x` in a worktree.
 FROM_VERSION=1.12.0 TO_VERSION=2.0.0 \
-  yarn generate.candidate <v1 documentation.json> <v2 documentation.json> src/manifest/manifest.candidate.json
+  npm run generate.candidate -- <v1 documentation.json> <v2 documentation.json> src/manifest/manifest.candidate.json
 ```
 
 Review the candidate and merge confirmed rules into `src/manifest/manifest.ts`.

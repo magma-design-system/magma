@@ -91,7 +91,10 @@ export class MdsText {
   };
 
   componentWillRender(): void {
-    const { tag } = typographyDefaultsVariant[this.typography];
+    // Stencil sets a string @Prop to null when its attribute is removed, so `typography` can be
+    // outside TypographyType at runtime and the lookup misses; fall back to the documented default
+    // instead of throwing out of the lifecycle.
+    const { tag } = typographyDefaultsVariant[this.typography] ?? typographyDefaultsVariant.detail;
     this.tag = this.tag ?? (tag as TypographyTagType);
   }
 

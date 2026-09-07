@@ -31,6 +31,27 @@ export const testManifest: Manifest = {
       { kind: 'cssVarSurfaceReport', from: 'tone-neutral' },
       { kind: 'cssVarSurfaceReport', from: 'tone-neutral-09' },
     ],
+    // Utility-class rules (J): a plain rename, a rename with a note, a chained
+    // pair (`rounded-xl → rounded-md` while `rounded-md → rounded-2xs`) to pin
+    // the single-pass guarantee, a bare one-word rename (`gap`) and a
+    // report-only class.
+    classes: [
+      { kind: 'classRename', from: 'shadow-outline-light', to: 'shadow-ring-weak' },
+      {
+        kind: 'classRename',
+        from: 'shadow-inner',
+        to: 'shadow-inset-sm',
+        note: 'v2 adds a 1%-alpha inset hairline — visually equivalent',
+      },
+      { kind: 'classRename', from: 'rounded-md', to: 'rounded-2xs' },
+      { kind: 'classRename', from: 'rounded-xl', to: 'rounded-md' },
+      { kind: 'classRename', from: 'gap', to: 'gap-lg' },
+      {
+        kind: 'classReport',
+        name: 'shadow-outline-strong',
+        message: 'v2 reuses this name for a different shadow; migrate manually',
+      },
+    ],
   },
   components: {
     'mds-dropdown': {

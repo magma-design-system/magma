@@ -1,22 +1,36 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { render } from '@stencil/vitest';
+import { userEvent } from 'vitest/browser';
 
 describe('mds-chip', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<mds-chip></mds-chip>');
+    const { root } = await render('<mds-chip></mds-chip>');
 
-    const element = await page.find('mds-chip');
-    expect(element).toHaveAttribute('hydrated');
+    expect(root).toHaveAttribute('hydrated');
+  });
+
+  it('renders the label in the shadow DOM', async () => {
+    const { root } = await render('<mds-chip label="chip"></mds-chip>');
+
+    expect(root).toEqualAttributes({
+      'aria-disabled': 'false',
+      label: 'chip',
+      tone: 'strong',
+      variant: 'primary',
+    });
+
+    const label = root.shadowRoot!.querySelector('.label-wrapper > mds-text.label')!;
+    expect(label).toEqualAttributes({ truncate: 'word', typography: 'caption' });
+    expect(label.textContent?.trim()).toBe('chip');
   });
 
   it('emits mdsChipDelete when the delete button is clicked', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<mds-chip label="chip" deletable></mds-chip>');
-    const deleteSpy = await page.spyOnEvent('mdsChipDelete');
+    const { root, spyOnEvent, waitForChanges } = await render(
+      '<mds-chip label="chip" deletable></mds-chip>',
+    );
+    const deleteSpy = spyOnEvent('mdsChipDelete');
 
-    const deleteButton = await page.find('mds-chip >>> .button-delete');
-    await deleteButton.click();
-    await page.waitForChanges();
+    await userEvent.click(root.shadowRoot!.querySelector('.button-delete')!);
+    await waitForChanges();
 
     expect(deleteSpy).toHaveReceivedEventTimes(1);
   });

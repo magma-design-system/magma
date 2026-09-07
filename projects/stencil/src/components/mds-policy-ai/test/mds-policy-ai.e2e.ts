@@ -1,11 +1,9 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { render } from '@stencil/vitest';
 
 describe('mds-policy-ai', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<mds-policy-ai></mds-policy-ai>');
+    const { root } = await render('<mds-policy-ai></mds-policy-ai>');
 
-    const element = await page.find('mds-policy-ai');
-    expect(element).toHaveAttribute('hydrated');
+    expect(root).toHaveAttribute('hydrated');
   });
 });

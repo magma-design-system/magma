@@ -1,12 +1,9 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { render } from '@stencil/vitest';
 
 describe('mds-card', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<mds-card></mds-card>');
+    const { root } = await render('<mds-card></mds-card>');
 
-    const element = await page.find('mds-card');
-    expect(element).toHaveAttribute('hydrated');
-    expect(true).toBe(true);
+    expect(root).toHaveAttribute('hydrated');
   });
 });

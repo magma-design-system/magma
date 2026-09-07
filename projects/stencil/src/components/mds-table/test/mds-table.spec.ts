@@ -1,9 +1,23 @@
-import { MdsTable } from '../mds-table';
+import { vi } from '@stencil/vitest';
+// compiled on the fly by the @stencil/vitest plugin, which defines the custom element
+import '../mds-table';
+
+/** The lifecycle hooks and private members the tests drive directly. */
+type MdsTable = HTMLMdsTableElement & {
+  componentWillLoad(): void;
+  componentDidLoad(): void;
+  disconnectedCallback(): void;
+  onTableInteractive(): void;
+  onTableSelectable(selectable: boolean): void;
+  hasBatchActions: boolean;
+  tableBodyObserver?: MutationObserver;
+  updateSlottedElements(): void;
+};
 
 class MutationObserverMock {
-  observe = jest.fn();
-  disconnect = jest.fn();
-  takeRecords = jest.fn(() => []);
+  observe = vi.fn();
+  disconnect = vi.fn();
+  takeRecords = vi.fn(() => []);
 }
 
 // mock-doc does not implement MutationObserver
@@ -15,15 +29,14 @@ beforeAll(() => {
 });
 
 /**
- * The component is driven directly instead of through `newSpecPage`: the races covered here
- * happen *between* the lifecycle steps, which a spec page always runs in the right order.
+ * The component is driven directly instead of through `render()`: the races covered here
+ * happen *between* the lifecycle steps, which a rendered page always runs in the right order.
+ * The element is created but never connected, so no lifecycle hook runs on its own.
  */
 const mockComponent = (html: string = ''): { component: MdsTable; host: HTMLElement } => {
-  const component = new MdsTable();
-  const host = document.createElement('mds-table');
-  host.innerHTML = html;
-  Object.defineProperty(component, 'host', { value: host, writable: true });
-  return { component, host };
+  const component = document.createElement('mds-table') as MdsTable;
+  component.innerHTML = html;
+  return { component, host: component };
 };
 
 describe('mds-table', () => {

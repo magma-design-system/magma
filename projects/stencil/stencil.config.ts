@@ -8,12 +8,6 @@ import { reactOutputTarget } from '@stencil/react-output-target';
 import { angularOutputTarget } from '@stencil/angular-output-target';
 import tokenFallbackPlugin from './scripts/postcss-token-fallbacks';
 
-// https://github.com/ionic-team/stencil/issues/1307
-// still not working
-// import tsconfigPathsJest from 'tsconfig-paths-jest'
-// import tsconfig from './tsconfig.json'
-// console.log(tsconfig)
-
 const twConfigurationFn = () => {
   // remove tailwind preflight and add custom theme
   return `
@@ -43,6 +37,10 @@ export const config: Config = {
   taskQueue: 'async',
   transformAliasedImportPaths: true,
   srcDir,
+  // tsconfig dedicato che esclude le *.stories.tsx dal program TypeScript:
+  // le storie restano nel tsconfig.json principale (editor, ESLint, paths di
+  // Storybook) ma non vengono più compilate né copiate in dist/collection.
+  tsconfig: 'tsconfig.stencil.json',
   sourceMap: false,
   minifyCss: false,
   minifyJs: true,
@@ -219,52 +217,4 @@ export const config: Config = {
     // tailwindHMR({ ...opts }), // hot module reload for watch but not generate docs
     inlineSvg(),
   ],
-  testing: {
-    /**
-     * Gitlab CI doesn't allow sandbox, therefor this parameters must be passed to your Headless Chrome
-     * before it can run your tests
-     */
-    browserArgs: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'],
-    coveragePathIgnorePatterns: [
-      '<rootDir>/.build/',
-      '<rootDir>/template/',
-      '<rootDir>/node_modules/',
-    ],
-    // moduleNameMapper: tsconfigPathsJest(tsconfig),
-    moduleNameMapper: {
-      '@common/(.*)': '<rootDir>src/common/$1',
-      '@dictionary/(.*)': '<rootDir>src/dictionary/$1',
-      '@event/(.*)': '<rootDir>src/event-detail/$1',
-      '@fixture/(.*)': '<rootDir>src/fixtures/$1',
-      '@meta/(.*)': '<rootDir>src/meta/$1',
-      '@icon/(.*)': '<rootDir>assets/svg/$1',
-      '@placeholder': 'https://via.placeholder.com',
-      '@tailwind/(.*)': '<rootDir>src/tailwind/$1',
-      '@test/(.*)': '<rootDir>src/test/$1',
-      '@type/(.*)': '<rootDir>src/type/$1',
-    },
-    modulePathIgnorePatterns: [
-      '<rootDir>/.build/',
-      '<rootDir>/template/',
-      '<rootDir>/node_modules/',
-      '<rootDir>/angular/',
-      '<rootDir>/react/',
-    ],
-    testPathIgnorePatterns: [
-      '<rootDir>/.cache',
-      '<rootDir>/template/',
-      '<rootDir>/node_modules/',
-      '<rootDir>/.vscode',
-      '/.stencil',
-      '/dist',
-      '/www',
-      '/scripts',
-    ],
-    transform: {
-      '^.+\\.svg$': 'jest-transformer-svg',
-      '^.+\\.(ts|tsx|js|jsx|css)$': '@stencil/core/testing/jest-preprocessor',
-    },
-    transformIgnorePatterns: ['<rootDir>/.build/', '<rootDir>/template/'],
-    watchPathIgnorePatterns: ['"^.+\\.d\\.ts$" '],
-  },
 };

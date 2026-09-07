@@ -1,12 +1,9 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { render } from '@stencil/vitest';
 
 describe('mds-table', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<mds-table></mds-table>');
+    const { root } = await render('<mds-table></mds-table>');
 
-    const element = await page.find('mds-table');
-    expect(element).toHaveAttribute('hydrated');
-    expect(true).toBe(true);
+    expect(root).toHaveAttribute('hydrated');
   });
 });

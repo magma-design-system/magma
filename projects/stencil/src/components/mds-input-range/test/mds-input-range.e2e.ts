@@ -1,12 +1,9 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { render } from '@stencil/vitest';
 
 describe('mds-input-range', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<mds-input-range></mds-input-range>');
+    const { root } = await render('<mds-input-range></mds-input-range>');
 
-    const element = await page.find('mds-input-range');
-    expect(element).toHaveAttribute('hydrated');
-    expect(true).toBe(true);
+    expect(root).toHaveAttribute('hydrated');
   });
 });

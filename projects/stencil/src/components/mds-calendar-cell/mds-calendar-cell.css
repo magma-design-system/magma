@@ -124,7 +124,6 @@
 
 .action {
   align-items: center;
-  aspect-ratio: 1 / 1;
   background-color: transparent;
   border-radius: 0;
   color: var(--mds-calendar-cell-color);
@@ -134,6 +133,12 @@
   min-height: 0;
   min-width: 0;
   padding: 0;
+
+  /* mds-button sets align-self/justify-self: flex-start on its :host, which makes
+     browsers supporting absolute-position self-alignment shrink the button to its
+     label instead of stretching it between the insets: stretch restores the CSS2
+     inset-driven sizing so the button always covers the whole cell. */
+  place-self: stretch;
   position: absolute;
   width: auto;
   z-index: 2;

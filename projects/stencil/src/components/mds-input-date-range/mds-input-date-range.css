@@ -168,6 +168,10 @@
 
 .action-open-calendar {
   --mds-button-color: var(--mds-input-date-range-icon-color);
+
+  /* mds-button aligns itself flex-start on its :host: re-center it inside the
+     48px square wrapper so the icon sits on the input's vertical axis. */
+  align-self: center;
 }
 
 mds-dropdown {

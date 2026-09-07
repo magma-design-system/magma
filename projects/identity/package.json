@@ -39,7 +39,7 @@
     "chalk": "4.1.1",
     "directory-tree": "3.5.1",
     "pdfkit": "0.15.1",
-    "sharp": "0.34.5",
+    "sharp": "0.35.4",
     "svg-dimensions": "1.0.2",
     "svg-to-pdfkit": "0.1.8"
   }

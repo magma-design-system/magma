@@ -1,232 +1,191 @@
-import { E2EElement, E2EPage, newE2EPage } from '@stencil/core/testing';
+import { render } from '@stencil/vitest';
+import { userEvent } from 'vitest/browser';
 
-let page: E2EPage;
-let mdsInput: E2EElement;
-let input: E2EElement;
+let mdsInput: HTMLMdsInputElement;
+let waitForChanges: () => Promise<void>;
+
+/** Renders the markup and returns the sibling button used to blur the input. */
+const setup = async (html: string): Promise<HTMLElement> => {
+  const result = await render<HTMLMdsInputElement>(html);
+  mdsInput = result.root;
+  waitForChanges = result.waitForChanges;
+  return mdsInput.parentElement!.querySelector('button')!;
+};
+
+const type = async (element: HTMLElement, text: string): Promise<void> => {
+  await userEvent.click(element);
+  await userEvent.keyboard(text);
+};
+
+/** Blurs the input by clicking elsewhere, which triggers the validation. */
+const blur = async (button: HTMLElement): Promise<void> => {
+  await userEvent.click(button);
+  await waitForChanges();
+};
 
 describe('mds-input', () => {
+  let input: HTMLInputElement;
+
   beforeEach(async () => {
-    page = await newE2EPage();
-    await page.setContent('<mds-input></mds-input>');
-    mdsInput = await page.find('mds-input');
-    // mdsInput = await page.find('mds-input >>> div mds-input')
-    input = await page.find('mds-input >>> input');
+    await setup('<mds-input></mds-input>');
+    input = mdsInput.shadowRoot!.querySelector('input')!;
   });
 
   it('renders default', async () => {
     expect(mdsInput).toHaveAttribute('hydrated');
-    // expect(mdsInput).not.toBeNull()
-    // expect(mdsInput).toHaveAttribute('hydrated')
-    // expect(mdsInput).toEqualAttribute('type', 'text')
     expect(input).not.toBeNull();
   });
 
   it('default type propagation', async () => {
-    await page.$eval('mds-input', (elm) => {
-      elm.type = 'tel';
-    });
-    await page.waitForChanges();
+    mdsInput.type = 'tel';
+    await waitForChanges();
 
-    expect(mdsInput).toEqualAttribute('type', 'tel');
     expect(mdsInput).toEqualAttribute('type', 'tel');
     expect(input).toEqualAttribute('type', 'tel');
   });
 
   it('test input typing', async () => {
     const textInput = 'abc';
-    mdsInput.getProperty('value').then((value) => expect(value).toEqual(''));
+    expect(mdsInput.value).toEqual('');
+    expect(await mdsInput.getErrors()).toBeNull();
 
-    let getErrorsRtnValue = await mdsInput.callMethod('getErrors');
-    expect(getErrorsRtnValue).toBeNull();
+    await type(mdsInput, textInput);
 
-    await mdsInput.click();
-    await mdsInput.type(textInput);
-
-    getErrorsRtnValue = await mdsInput.callMethod('getErrors');
-    expect(getErrorsRtnValue).toBeNull();
-
-    const value = await mdsInput.getProperty('value');
-    expect(value).toBe(textInput);
+    expect(await mdsInput.getErrors()).toBeNull();
+    expect(mdsInput.value).toBe(textInput);
   });
 
   it('mds-input type cf', async () => {
-    await page.$eval('mds-input', (elm) => {
-      elm.type = 'cf';
-    });
-    await page.waitForChanges();
+    mdsInput.type = 'cf';
+    await waitForChanges();
 
     expect(mdsInput).toHaveAttribute('type');
     expect(mdsInput).toEqualAttribute('type', 'cf');
-
-    mdsInput.getProperty('value').then((value) => expect(value).toEqual(''));
+    expect(mdsInput.value).toEqual('');
   });
 });
 
 describe('cf validation', () => {
+  let button: HTMLElement;
+
   beforeEach(async () => {
-    page = await newE2EPage();
-    await page.setContent(`
+    button = await setup(`
       <mds-input type='cf'></mds-input>
       <button><button>
     `);
-    mdsInput = await page.find('mds-input');
   });
 
   it('input type cf validation', async () => {
     const cf = 'MRCRSS83B21D704L';
 
-    await mdsInput.click();
-    await mdsInput.type(cf);
-
-    // trigger onblur and so validate input of component
-    await page.click('button');
-    await page.waitForChanges();
+    await type(mdsInput, cf);
+    await blur(button);
 
     expect(mdsInput).toEqualAttribute('variant', 'success');
-    mdsInput.getProperty('value').then((value) => expect(value).toEqual(cf));
-
-    const getErrorsRtnValue = await mdsInput.callMethod('getErrors');
-    expect(getErrorsRtnValue).toBeNull();
+    expect(mdsInput.value).toEqual(cf);
+    expect(await mdsInput.getErrors()).toBeNull();
   });
 
   it('input type cf with invalid cf', async () => {
     const cf = 'abcdefghi';
 
-    await mdsInput.click();
-    await mdsInput.type(cf);
-
-    // trigger onblur and so validate input of component
-    await page.click('button');
-    await page.waitForChanges();
+    await type(mdsInput, cf);
+    await blur(button);
 
     expect(mdsInput).toEqualAttribute('variant', 'error');
-    mdsInput.getProperty('value').then((value) => expect(value).toEqual(cf));
-
-    const getErrorsRtnValue = await mdsInput.callMethod('getErrors');
-    expect(getErrorsRtnValue).not.toBeNull();
+    expect(mdsInput.value).toEqual(cf);
+    expect(await mdsInput.getErrors()).not.toBeNull();
   });
 });
 
 describe('isbn validation', () => {
+  let button: HTMLElement;
+
   beforeEach(async () => {
-    page = await newE2EPage();
-    await page.setContent(`
+    button = await setup(`
       <mds-input type='isbn'></mds-input>
       <button><button>
     `);
-    mdsInput = await page.find('mds-input');
   });
 
   it('input type isbn validation', async () => {
     const isbn = '9788843025343';
 
-    await mdsInput.click();
-    await mdsInput.type(isbn);
-
-    // trigger onblur and so validate input of component
-    await page.click('button');
-    await page.waitForChanges();
+    await type(mdsInput, isbn);
+    await blur(button);
 
     expect(mdsInput).toEqualAttribute('variant', 'success');
-    mdsInput.getProperty('value').then((value) => expect(value).toEqual(isbn));
-
-    const getErrorsRtnValue = await mdsInput.callMethod('getErrors');
-    expect(getErrorsRtnValue).toBeNull();
+    expect(mdsInput.value).toEqual(isbn);
+    expect(await mdsInput.getErrors()).toBeNull();
   });
 
   it('input type isbn with invalid isbn', async () => {
     const isbn = 'abcdefghi';
 
-    await mdsInput.click();
-    await mdsInput.type(isbn);
-
-    // trigger onblur and so validate input of component
-    await page.click('button');
-    await page.waitForChanges();
+    await type(mdsInput, isbn);
+    await blur(button);
 
     expect(mdsInput).toEqualAttribute('variant', 'error');
-
-    mdsInput.getProperty('value').then((value) => expect(value).toEqual(isbn));
-
-    const getErrorsRtnValue = await mdsInput.callMethod('getErrors');
-    expect(getErrorsRtnValue).not.toBeNull();
+    expect(mdsInput.value).toEqual(isbn);
+    expect(await mdsInput.getErrors()).not.toBeNull();
   });
 });
 
 describe('custom validation', () => {
+  let button: HTMLElement;
+
   beforeEach(async () => {
-    page = await newE2EPage();
-    await page.setContent(`
+    button = await setup(`
       <mds-input></mds-input>
       <button><button>
     `);
-    mdsInput = await page.find('mds-input');
   });
 
   it('test custom upper validation', async () => {
     const lower = 'abcd';
     const upper = 'ABCD';
 
-    await page.$eval('mds-input', (el) => {
-      const caseValidationfn = (value: string) => {
-        return value.toUpperCase() === value ? null : { err: 'lower case' };
-      };
-      el.addValidator(caseValidationfn);
-    });
+    await mdsInput.addValidator((value: string) =>
+      value.toUpperCase() === value ? null : { err: 'lower case' },
+    );
 
-    await mdsInput.click();
-    await mdsInput.type(lower);
+    await type(mdsInput, lower);
+    await blur(button);
 
-    // trigger onblur and so validate input of component
-    await page.click('button');
-    await page.waitForChanges();
-
-    let getErrorsRtnValue = await mdsInput.callMethod('getErrors');
-    expect(getErrorsRtnValue).toEqual({ err: 'lower case' });
+    expect(await mdsInput.getErrors()).toEqual({ err: 'lower case' });
     expect(mdsInput).toEqualAttribute('variant', 'error');
 
     // simulate browser select so text can be replaced
-    await mdsInput.click({ count: 3 });
-    await mdsInput.type(upper);
+    await userEvent.tripleClick(mdsInput);
+    await userEvent.keyboard(upper);
+    await blur(button);
 
-    // trigger onblur and so validate input of component
-    await page.click('button');
-    await page.waitForChanges();
-
-    getErrorsRtnValue = await mdsInput.callMethod('getErrors');
-    expect(getErrorsRtnValue).toBeNull();
+    expect(await mdsInput.getErrors()).toBeNull();
     expect(mdsInput).toEqualAttribute('variant', 'success');
   });
 });
 
 describe('form submit', () => {
   it('check submit value', async () => {
-    page = await newE2EPage();
-    await page.setContent(`
+    const { root: form } = await render<HTMLFormElement>(`
       <form>
         <mds-input id="i1" name="i1"></mds-input>
         <mds-input id="i2" name="i2"></mds-input>
         <button type="submit"><button>
       </form>
     `);
-    const mdsInputField1 = await page.find('#i1');
-    const mdsInputField2 = await page.find('#i2');
+    const mdsInputField1 = form.querySelector<HTMLMdsInputElement>('#i1')!;
+    const mdsInputField2 = form.querySelector<HTMLMdsInputElement>('#i2')!;
 
     const text1 = 'bella la bestia';
     const text2 = '90min';
-    await mdsInputField1.click();
-    await mdsInputField1.type(text1);
-    await mdsInputField2.click();
-    await mdsInputField2.type(text2);
+    await type(mdsInputField1, text1);
+    await type(mdsInputField2, text2);
 
-    await page.$eval('form', (form) => form.addEventListener('submit', (e) => e.preventDefault()));
+    form.addEventListener('submit', (event) => event.preventDefault());
+    await userEvent.click(form.querySelector('button')!);
 
-    await page.click('button');
-
-    const value1 = await page.$eval('form', (f) => f.i1.value);
-    const value2 = await page.$eval('form', (f) => f.i2.value);
-
-    expect(value1).toEqual(text1);
-    expect(value2).toEqual(text2);
+    expect((form.elements.namedItem('i1') as HTMLMdsInputElement).value).toEqual(text1);
+    expect((form.elements.namedItem('i2') as HTMLMdsInputElement).value).toEqual(text2);
   });
 });

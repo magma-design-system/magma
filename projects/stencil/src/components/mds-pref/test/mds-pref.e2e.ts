@@ -1,12 +1,10 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { render } from '@stencil/vitest';
 
 describe('mds-pref', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<mds-pref></mds-pref>');
+    const { root } = await render('<mds-pref></mds-pref>');
 
-    const element = await page.find('mds-pref');
-    expect(element).toHaveAttribute('hydrated');
+    expect(root).toHaveAttribute('hydrated');
   });
 
   describe('lock-dark coordination', () => {
@@ -21,48 +19,40 @@ describe('mds-pref', () => {
       </mds-pref>
     `;
 
-    const clickVariant = (page, name: string): Promise<void> =>
-      page.evaluate((themeName: string) => {
-        document
-          .querySelector<HTMLElement>(`mds-pref-theme-variant-item[name="${themeName}"]`)
-          ?.click();
-      }, name);
+    const clickVariant = (pref: HTMLElement, name: string): void => {
+      pref.querySelector<HTMLElement>(`mds-pref-theme-variant-item[name="${name}"]`)?.click();
+    };
 
     it('locks the dark item when a light-only theme is selected, without touching the stored mode preference', async () => {
-      const page = await newE2EPage();
-      await page.setContent(markup);
-      await page.waitForChanges();
+      const { root, waitForChanges } = await render(markup);
 
-      await clickVariant(page, 'cool');
-      await page.waitForChanges();
+      clickVariant(root, 'cool');
+      await waitForChanges();
 
-      const theme = await page.find('mds-pref-theme');
-      const dark = await page.find('mds-pref-theme >>> .item--dark');
+      const theme = root.querySelector<HTMLMdsPrefThemeElement>('mds-pref-theme')!;
+      const dark = theme.shadowRoot!.querySelector('.item--dark');
       expect(theme).toHaveAttribute('locked-scheme');
-      expect(await theme.getProperty('lockedScheme')).toBe('light');
+      expect(theme.lockedScheme).toBe('light');
       expect(dark).toHaveAttribute('disabled');
 
       // the mode preference is preserved on both the prop and localStorage
-      expect(await theme.getProperty('mode')).toBe('dark');
-      expect(await page.evaluate(() => localStorage.getItem('mdsPrefTheme'))).toBe('dark');
+      expect(theme.mode).toBe('dark');
+      expect(localStorage.getItem('mdsPrefTheme')).toBe('dark');
     });
 
     it('clears the lock when an all-scheme theme is selected', async () => {
-      const page = await newE2EPage();
-      await page.setContent(markup);
-      await page.waitForChanges();
+      const { root, waitForChanges } = await render(markup);
 
-      await clickVariant(page, 'cool');
-      await page.waitForChanges();
-      expect(await page.find('mds-pref-theme')).toHaveAttribute('locked-scheme');
+      clickVariant(root, 'cool');
+      await waitForChanges();
+      const theme = root.querySelector<HTMLMdsPrefThemeElement>('mds-pref-theme')!;
+      expect(theme).toHaveAttribute('locked-scheme');
 
-      await clickVariant(page, 'default');
-      await page.waitForChanges();
+      clickVariant(root, 'default');
+      await waitForChanges();
 
-      const theme = await page.find('mds-pref-theme');
-      const dark = await page.find('mds-pref-theme >>> .item--dark');
       expect(theme).not.toHaveAttribute('locked-scheme');
-      expect(dark).not.toHaveAttribute('disabled');
+      expect(theme.shadowRoot!.querySelector('.item--dark')).not.toHaveAttribute('disabled');
     });
   });
 });

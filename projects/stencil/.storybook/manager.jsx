@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { AddonPanel, Form } from 'storybook/internal/components';
 import { addons, types } from 'storybook/manager-api';
-import themeMaggioli from './theme';
+import themeMaggioli from './theme.mjs';
 import clsx from 'clsx';
 
 import {
@@ -10,7 +10,7 @@ import {
   PREFERENCES,
   PREFS_ENABLED_KEY,
   storedValue,
-} from './preferences';
+} from './preferences.mjs';
 
 /**
  * The panel never touches the preview DOM: every change is emitted on the

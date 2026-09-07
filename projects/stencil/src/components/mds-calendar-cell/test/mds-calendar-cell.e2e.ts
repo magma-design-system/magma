@@ -1,11 +1,9 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { render } from '@stencil/vitest';
 
 describe('mds-calendar-cell', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<mds-calendar-cell></mds-calendar-cell>');
+    const { root } = await render('<mds-calendar-cell></mds-calendar-cell>');
 
-    const element = await page.find('mds-calendar-cell');
-    expect(element).toHaveAttribute('hydrated');
+    expect(root).toHaveAttribute('hydrated');
   });
 });

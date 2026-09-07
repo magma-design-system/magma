@@ -139,4 +139,29 @@ describe('transformCss', () => {
     expect(twice.changed).toBe(false);
     expect(twice.output).toBe(once);
   });
+
+  it('renames utility classes in @apply, preserving variants and untouched tokens', () => {
+    const source = '.card { @apply p-4 shadow-outline-light hover:rounded-xl; }';
+    const { output, changed } = transformCss(source, manifest, ctx);
+    expect(changed).toBe(true);
+    expect(output).toBe('.card { @apply p-4 shadow-ring-weak hover:rounded-md; }');
+  });
+
+  it('reports a no-equivalent class in @apply without rewriting', () => {
+    const source = '.card { @apply shadow-outline-strong; }';
+    const { output, changed, findings } = transformCss(source, manifest, ctx);
+    expect(changed).toBe(false);
+    expect(output).toBe(source);
+    expect(
+      findings.some(
+        (f) => f.kind === 'warn' && f.ruleId === 'global/classReport/shadow-outline-strong',
+      ),
+    ).toBe(true);
+  });
+
+  it('handles @apply in SCSS sources', () => {
+    const source = '.card {\n  @apply rounded-md;\n}';
+    const { output } = transformCss(source, manifest, ctx, { scss: true });
+    expect(output).toBe('.card {\n  @apply rounded-2xs;\n}');
+  });
 });
