@@ -62,6 +62,24 @@ const setupFieldInNarrowColumn = async (state = ''): Promise<Field> => {
 };
 
 describe('mds-input-date', () => {
+  it('highlights today in its calendar', async () => {
+    const { root } = await render<HTMLMdsInputDateElement>(
+      '<mds-input-date name="d"></mds-input-date>',
+    );
+    const calendar = getDropdown(root).querySelector<HTMLMdsCalendarElement>('mds-calendar')!;
+
+    expect(calendar.shadowRoot!.querySelector('mds-calendar-cell[today]')).not.toBeNull();
+  });
+
+  it('hides today in its calendar with hide-today', async () => {
+    const { root } = await render<HTMLMdsInputDateElement>(
+      '<mds-input-date name="d" hide-today></mds-input-date>',
+    );
+    const calendar = getDropdown(root).querySelector<HTMLMdsCalendarElement>('mds-calendar')!;
+
+    expect(calendar.shadowRoot!.querySelector('mds-calendar-cell[today]')).toBeNull();
+  });
+
   it('renders', async () => {
     const { root } = await render('<mds-input-date></mds-input-date>');
 

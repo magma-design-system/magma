@@ -64,6 +64,11 @@ export class MdsCalendar {
   @Prop() readonly showPreselection: boolean = false;
 
   /**
+   * Hides the highlight on today's date in the calendar view.
+   */
+  @Prop() readonly hideToday: boolean = false;
+
+  /**
    * Specifies the date used to determine the visible month without changing the selection.
    * @description It's in ISO format (YYYY-MM-DD).
    * @example '2023-10-01'
@@ -867,6 +872,7 @@ export class MdsCalendar {
                   <mds-calendar-cell
                     key={index}
                     today={
+                      !this.hideToday &&
                       DateTime.now().toFormat('yyyy-MM-dd') === dayInfo.date.toFormat('yyyy-MM-dd')
                     }
                     date={dayInfo.date.toFormat('yyyy-MM-dd')}

@@ -285,17 +285,18 @@ Setting `value=""` is the correct way to clear; do not set `value` to a non-ISO 
 
 ## Properties
 
-| Property   | Attribute  | Description                                                                                                             | Type                                                                            | Default     |
-| ---------- | ---------- | ----------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ----------- |
-| `delay`    | `delay`    | Specifies the delay in milliseconds before closing the calendar dropdown, if the value is 0 the dropdown will not close | `number`                                                                        | `500`       |
-| `disabled` | `disabled` | If true, the element is displayed as disabled                                                                           | `boolean \| undefined`                                                          | `false`     |
-| `max`      | `max`      | Specifies the max date of the range, user cannot set dates after this date                                              | `null \| string`                                                                | `null`      |
-| `min`      | `min`      | Specifies the min date of the range, user cannot set dates before this date                                             | `null \| string`                                                                | `null`      |
-| `name`     | `name`     | Is needed to reference the form data after the form is submitted                                                        | `string \| undefined`                                                           | `undefined` |
-| `readonly` | `readonly` | Specifies that the element is read-only                                                                                 | `boolean \| undefined`                                                          | `false`     |
-| `required` | `required` | Specifies that the element must be filled out before submitting the form                                                | `boolean \| undefined`                                                          | `false`     |
-| `value`    | `value`    | Specifies the value of the input                                                                                        | `string`                                                                        | `''`        |
-| `variant`  | `variant`  | Sets the variant of the input field                                                                                     | `"ai" \| "error" \| "info" \| "primary" \| "success" \| "warning" \| undefined` | `'primary'` |
+| Property    | Attribute    | Description                                                                                                             | Type                                                                            | Default     |
+| ----------- | ------------ | ----------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ----------- |
+| `delay`     | `delay`      | Specifies the delay in milliseconds before closing the calendar dropdown, if the value is 0 the dropdown will not close | `number`                                                                        | `500`       |
+| `disabled`  | `disabled`   | If true, the element is displayed as disabled                                                                           | `boolean \| undefined`                                                          | `false`     |
+| `hideToday` | `hide-today` | Hides the highlight on today's date in the calendar.                                                                    | `boolean`                                                                       | `false`     |
+| `max`       | `max`        | Specifies the max date of the range, user cannot set dates after this date                                              | `null \| string`                                                                | `null`      |
+| `min`       | `min`        | Specifies the min date of the range, user cannot set dates before this date                                             | `null \| string`                                                                | `null`      |
+| `name`      | `name`       | Is needed to reference the form data after the form is submitted                                                        | `string \| undefined`                                                           | `undefined` |
+| `readonly`  | `readonly`   | Specifies that the element is read-only                                                                                 | `boolean \| undefined`                                                          | `false`     |
+| `required`  | `required`   | Specifies that the element must be filled out before submitting the form                                                | `boolean \| undefined`                                                          | `false`     |
+| `value`     | `value`      | Specifies the value of the input                                                                                        | `string`                                                                        | `''`        |
+| `variant`   | `variant`    | Sets the variant of the input field                                                                                     | `"ai" \| "error" \| "info" \| "primary" \| "success" \| "warning" \| undefined` | `'primary'` |
 
 
 ## Events

@@ -275,6 +275,7 @@ mds-calendar {
 | --------------------------- | ------------------------------ | ----------------------------------------------------------------------------------------- | ---------------- | ------- |
 | `disableMonthYearSelection` | `disable-month-year-selection` | Disables switching to month or year selection views from the calendar header.             | `boolean`        | `false` |
 | `endDate`                   | `end-date`                     | Specifies the end date of the selection                                                   | `null \| string` | `null`  |
+| `hideToday`                 | `hide-today`                   | Hides the highlight on today's date in the calendar view.                                 | `boolean`        | `false` |
 | `hoverDate`                 | `hover-date`                   | Specifies the date used to preview the range selection across multiple visible calendars. | `null \| string` | `null`  |
 | `max`                       | `max`                          | Specifies the minimum date of the selection                                               | `null \| string` | `null`  |
 | `min`                       | `min`                          | Specifies the minimum date of the selection                                               | `null \| string` | `null`  |
