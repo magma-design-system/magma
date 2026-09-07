@@ -264,16 +264,22 @@ describe('mds-input-date-range', () => {
     expect(valueChanges(valueChange)).toEqual([]);
   });
 
+  it('renders its calendar when the start date is invalid', async () => {
+    vi.spyOn(console, 'warn').mockImplementation(() => {});
+    const { root } = await render<HTMLMdsInputDateRangeElement>(
+      `<mds-input-date-range start-date="invalid-date" end-date="2026-06-08">${SLOTTED_INPUTS}</mds-input-date-range>`,
+    );
+    const calendars = getCalendars(root);
+
+    expect(calendars).toHaveLength(1);
+    expect(calendars[0]).toHaveAttribute('hydrated');
+  });
+
   it('does not emit value change on focusout when the range is invalid', async () => {
-    // The inner mds-calendar throws a RangeError for the invalid start date (the Stencil test
-    // runner hid it as a page error): render without waitForReady so that the lifecycle error
-    // of the child is not re-thrown, the guard under test lives in mds-input-date-range.
-    vi.spyOn(console, 'error').mockImplementation(() => {});
+    vi.spyOn(console, 'warn').mockImplementation(() => {});
     const { root, spyOnEvent, waitForChanges } = await render<HTMLMdsInputDateRangeElement>(
       `<mds-input-date-range start-date="invalid-date" end-date="2026-06-08">${SLOTTED_INPUTS}</mds-input-date-range>`,
-      { waitForReady: false },
     );
-    await waitForChanges();
     const valueChange = spyOnEvent('mdsInputDateRangeValueChange');
 
     focusOut(root);
