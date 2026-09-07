@@ -123,6 +123,20 @@ describe('mds-input-date-range', () => {
     expect(getCalendars(host)).toHaveLength(1);
   });
 
+  it('highlights today in its calendar', async () => {
+    const { host } = await setupRange();
+    const [calendar] = getCalendars(host);
+
+    expect(calendar.shadowRoot!.querySelector('mds-calendar-cell[today]')).not.toBeNull();
+  });
+
+  it('hides today in its calendar with hide-today', async () => {
+    const { host } = await setupRange('hide-today');
+    const [calendar] = getCalendars(host);
+
+    expect(calendar.shadowRoot!.querySelector('mds-calendar-cell[today]')).toBeNull();
+  });
+
   it('keeps a usable width for the single calendar when opened', async () => {
     const range = await setupRange();
     await openCalendar(range);

@@ -87,6 +87,11 @@ export class MdsInputDateRange {
   @Prop({ reflect: true }) readonly delay: number = 500;
 
   /**
+   * Hides the highlight on today's date in the calendar.
+   */
+  @Prop({ reflect: true }) readonly hideToday: boolean = false;
+
+  /**
    * Enables the linked dual-calendar range picker behavior.
    */
   @Prop({ reflect: true }) readonly dualCalendar: boolean = false;
@@ -581,6 +586,7 @@ export class MdsInputDateRange {
         <mds-calendar
           key={this.calendarKey}
           rangePicker={true}
+          hideToday={this.hideToday}
           onMdsCalendarChange={this.handleCalendarChange}
           onMdsCalendarPreselect={this.handleCalendarPreselect}
           startDate={this.internalStartDate}
@@ -599,6 +605,7 @@ export class MdsInputDateRange {
         <mds-calendar
           key={`${this.calendarKey}-start`}
           rangePicker={true}
+          hideToday={this.hideToday}
           showNextButton={false}
           disableMonthYearSelection={true}
           viewDate={this.getCalendarViewDate()}
@@ -613,6 +620,7 @@ export class MdsInputDateRange {
         <mds-calendar
           key={`${this.calendarKey}-end`}
           rangePicker={true}
+          hideToday={this.hideToday}
           showPreviousButton={false}
           disableMonthYearSelection={true}
           viewDate={this.getCalendarViewDate(1)}

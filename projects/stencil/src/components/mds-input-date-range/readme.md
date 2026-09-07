@@ -301,6 +301,7 @@ Without `name` the component is form-associated but submits no named field, so t
 | `delay`        | `delay`         | Specifies the delay in milliseconds before closing the calendar dropdown, if the value is 0 the dropdown will not close | `number`              | `500`       |
 | `dualCalendar` | `dual-calendar` | Enables the linked dual-calendar range picker behavior.                                                                 | `boolean`             | `false`     |
 | `endDate`      | `end-date`      | Specifies the end date of the range                                                                                     | `string`              | `''`        |
+| `hideToday`    | `hide-today`    | Hides the highlight on today's date in the calendar.                                                                    | `boolean`             | `false`     |
 | `max`          | `max`           | Specifies the max date of the range, user cannot set dates after this date                                              | `null \| string`      | `null`      |
 | `min`          | `min`           | Specifies the min date of the range, user cannot set dates before this date                                             | `null \| string`      | `null`      |
 | `name`         | `name`          | Is needed to reference the form data after the form is submitted                                                        | `string \| undefined` | `undefined` |

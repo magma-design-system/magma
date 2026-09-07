@@ -68,6 +68,11 @@ export class MdsInputDate {
   @Prop({ reflect: true }) readonly delay: number = 500;
 
   /**
+   * Hides the highlight on today's date in the calendar.
+   */
+  @Prop({ reflect: true }) readonly hideToday: boolean = false;
+
+  /**
    * If true, the element is displayed as disabled
    */
   @Prop({ reflect: true }) readonly disabled?: boolean = false;
@@ -279,6 +284,7 @@ export class MdsInputDate {
             <mds-calendar
               key={this.calendarKey}
               rangePicker={false}
+              hideToday={this.hideToday}
               onMdsCalendarChange={this.handleCalendarChange}
               startDate={this.value}
               {...(this.min !== null && this.min !== '' ? { min: this.min } : {})}

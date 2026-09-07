@@ -58,6 +58,15 @@ describe('mds-calendar', () => {
     expect(julyVisibleDay.getAttribute('selection')).toBe('middle');
   });
 
+  it('highlights today by default and not with hide-today', async () => {
+    const { root: highlighted } = await render('<mds-calendar></mds-calendar>');
+    expect(highlighted.shadowRoot!.querySelector('mds-calendar-cell[today]')).not.toBeNull();
+
+    const { root: plain } = await render('<mds-calendar hide-today></mds-calendar>');
+    expect(plain.shadowRoot!.querySelector('mds-calendar-cell[today]')).toBeNull();
+    expect(plain.shadowRoot!.querySelectorAll('mds-calendar-cell').length).toBeGreaterThan(27);
+  });
+
   it('switches to month selection when clicking the month action by default', async () => {
     const { root, waitForChanges } = await render(
       '<mds-calendar view-date="2026-06-01"></mds-calendar>',
