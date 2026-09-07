@@ -1,4 +1,4 @@
-import { render } from '@stencil/vitest';
+import { render, vi } from '@stencil/vitest';
 import { userEvent } from 'vitest/browser';
 
 describe('mds-calendar', () => {
@@ -78,6 +78,63 @@ describe('mds-calendar', () => {
     await waitForChanges();
 
     expect(root.shadowRoot!.querySelector('.year-selection')).not.toBeNull();
+  });
+
+  it('ignores an invalid start date and renders the current month with no selection', async () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    const { root } = await render('<mds-calendar start-date="invalid-date"></mds-calendar>');
+    const shadow = root.shadowRoot!;
+
+    expect(root).toHaveAttribute('hydrated');
+    expect(shadow.querySelector('mds-calendar-cell[today][month="current"]')).not.toBeNull();
+    expect(shadow.querySelector('mds-calendar-cell[selection]')).toBeNull();
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining('start-date "invalid-date"'));
+  });
+
+  it('ignores an invalid end date on a range picker', async () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    const { root } = await render(
+      '<mds-calendar end-date="invalid-date" range-picker></mds-calendar>',
+    );
+
+    expect(root).toHaveAttribute('hydrated');
+    expect(root.shadowRoot!.querySelector('mds-calendar-cell[selection]')).toBeNull();
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining('end-date "invalid-date"'));
+  });
+
+  it('clears the selection when the start date changes to an invalid value', async () => {
+    vi.spyOn(console, 'warn').mockImplementation(() => {});
+    const { root, waitForChanges } = await render(
+      '<mds-calendar view-date="2026-06-01" start-date="2026-06-02"></mds-calendar>',
+    );
+    const shadow = root.shadowRoot!;
+    const selected = shadow.querySelector('mds-calendar-cell[date="2026-06-02"]')!;
+
+    expect(selected.getAttribute('selection')).toBe('single');
+
+    root.setAttribute('start-date', 'invalid-date');
+    await waitForChanges();
+
+    await vi.waitFor(() => {
+      expect(shadow.querySelector('mds-calendar-cell[selection]')).toBeNull();
+    });
+  });
+
+  it('starts a new selection on click when the start date is invalid', async () => {
+    vi.spyOn(console, 'warn').mockImplementation(() => {});
+    const { root, spyOnEvent, waitForChanges } = await render(
+      '<mds-calendar view-date="2026-06-01" start-date="invalid-date"></mds-calendar>',
+    );
+    const change = spyOnEvent('mdsCalendarChange');
+    const cell = root.shadowRoot!.querySelector<HTMLElement>(
+      'mds-calendar-cell[date="2026-06-10"]',
+    )!;
+
+    await userEvent.click(cell);
+    await waitForChanges();
+
+    expect(cell.getAttribute('selection')).toBe('single');
+    expect(change.events.map((event) => event.detail)).toEqual([{ startDate: '2026-06-10' }]);
   });
 
   it('does not switch view when month or year selection is disabled', async () => {
