@@ -217,3 +217,119 @@ describe('mds-calendar sizing', () => {
     ).toBeLessThanOrEqual(1);
   });
 });
+
+describe('mds-calendar standalone range selection', () => {
+  const cell = (calendar: HTMLElement, date: string): HTMLElement =>
+    calendar.shadowRoot!.querySelector<HTMLElement>(`mds-calendar-cell[date="${date}"]`)!;
+  const selection = (calendar: HTMLElement, date: string): string | null =>
+    cell(calendar, date).getAttribute('selection');
+
+  const setupStandalone = async (attributes = 'view-date="2026-06-01"') => {
+    const { root, waitForChanges } = await render(`
+      <div>
+        <mds-calendar ${attributes}></mds-calendar>
+        <p id="outside" style="padding: 40px;">outside</p>
+      </div>
+    `);
+    return {
+      calendar: root.querySelector<HTMLMdsCalendarElement>('mds-calendar')!,
+      outside: root.querySelector<HTMLElement>('#outside')!,
+      waitForChanges,
+    };
+  };
+
+  it('marks start, middle and end after selecting a range with two clicks', async () => {
+    const { calendar, waitForChanges } = await setupStandalone();
+
+    await userEvent.click(cell(calendar, '2026-06-10'));
+    await userEvent.click(cell(calendar, '2026-06-14'));
+    await waitForChanges();
+
+    await vi.waitFor(() => {
+      expect(selection(calendar, '2026-06-10')).toBe('start');
+      expect(selection(calendar, '2026-06-12')).toBe('middle');
+      expect(selection(calendar, '2026-06-14')).toBe('end');
+    });
+    expect(calendar.shadowRoot!.querySelectorAll('mds-calendar-cell[preview]')).toHaveLength(0);
+  });
+
+  it('swaps the ends when the second click is before the first', async () => {
+    const { calendar, waitForChanges } = await setupStandalone();
+
+    await userEvent.click(cell(calendar, '2026-06-14'));
+    await userEvent.click(cell(calendar, '2026-06-10'));
+    await waitForChanges();
+
+    await vi.waitFor(() => {
+      expect(selection(calendar, '2026-06-10')).toBe('start');
+      expect(selection(calendar, '2026-06-14')).toBe('end');
+    });
+  });
+
+  it('replaces a preset range with the newly clicked one', async () => {
+    const { calendar, waitForChanges } = await setupStandalone(
+      'start-date="2025-03-18" end-date="2025-03-24"',
+    );
+    expect(selection(calendar, '2025-03-18')).toBe('start');
+    expect(selection(calendar, '2025-03-24')).toBe('end');
+
+    await userEvent.click(cell(calendar, '2025-03-05'));
+    await userEvent.click(cell(calendar, '2025-03-08'));
+    await waitForChanges();
+
+    await vi.waitFor(() => {
+      expect(selection(calendar, '2025-03-05')).toBe('start');
+      expect(selection(calendar, '2025-03-06')).toBe('middle');
+      expect(selection(calendar, '2025-03-08')).toBe('end');
+      expect(selection(calendar, '2025-03-18')).toBeNull();
+      expect(selection(calendar, '2025-03-24')).toBeNull();
+    });
+  });
+
+  it('previews the range while hovering after the first click and clears it on leave', async () => {
+    const { calendar, outside, waitForChanges } = await setupStandalone();
+
+    await userEvent.click(cell(calendar, '2026-06-10'));
+    await userEvent.hover(cell(calendar, '2026-06-14'));
+    await waitForChanges();
+
+    await vi.waitFor(() => {
+      expect(selection(calendar, '2026-06-10')).toBe('start');
+      expect(selection(calendar, '2026-06-12')).toBe('middle');
+      expect(cell(calendar, '2026-06-12')).toHaveAttribute('preview');
+      expect(selection(calendar, '2026-06-14')).toBe('end');
+      expect(cell(calendar, '2026-06-14')).toHaveAttribute('preview');
+    });
+
+    await userEvent.hover(outside);
+    await waitForChanges();
+
+    await vi.waitFor(() => {
+      expect(selection(calendar, '2026-06-10')).toBe('single');
+      expect(selection(calendar, '2026-06-12')).toBeNull();
+      expect(selection(calendar, '2026-06-14')).toBeNull();
+    });
+  });
+
+  it('emits a null hover when the pointer leaves a calendar driven by hover-date', async () => {
+    const { calendar, outside, waitForChanges } = await setupStandalone(
+      'view-date="2026-06-01" start-date="2026-06-02"',
+    );
+    const hover = { events: [] as CustomEvent[] };
+    calendar.addEventListener('mdsCalendarHover', (event) =>
+      hover.events.push(event as CustomEvent),
+    );
+
+    await userEvent.hover(cell(calendar, '2026-06-10'));
+    calendar.setAttribute('hover-date', '2026-06-10');
+    await waitForChanges();
+
+    await userEvent.hover(outside);
+    await waitForChanges();
+
+    expect(hover.events.map((event) => event.detail)).toEqual([
+      { hoverDate: '2026-06-10' },
+      { hoverDate: null },
+    ]);
+  });
+});

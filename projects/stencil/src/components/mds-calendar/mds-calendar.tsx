@@ -235,6 +235,7 @@ export class MdsCalendar {
 
   private startDateTime: DateTime;
   private endDateTime: DateTime;
+  private internalHoverDate: string | null = null;
 
   @State() currentMonth: string = '';
   private currentMonthNumber!: number;
@@ -267,14 +268,14 @@ export class MdsCalendar {
       this.host?.querySelector('.date-preselection--has-preselection') !== null;
 
     this.host?.shadowRoot?.addEventListener('mouseover', this.handleMouseOver);
-    this.host?.shadowRoot?.addEventListener('mouseleave', this.handleMouseLeave);
+    this.host?.addEventListener('mouseleave', this.handleMouseLeave);
 
     this.setDates();
   }
 
   disconnectedCallback(): void {
     this.host?.shadowRoot?.removeEventListener('mouseover', this.handleMouseOver);
-    this.host?.shadowRoot?.removeEventListener('mouseleave', this.handleMouseLeave);
+    this.host?.removeEventListener('mouseleave', this.handleMouseLeave);
   }
 
   /**
@@ -308,24 +309,47 @@ export class MdsCalendar {
 
     const hoverDate = target.getAttribute('date');
     if (hoverDate !== null && hoverDate !== '') {
+      if (hoverDate !== this.internalHoverDate) {
+        this.internalHoverDate = hoverDate;
+        requestAnimationFrame(() => this.setDates());
+      }
       this.hoverEmitter.emit({ hoverDate });
     }
   };
 
   private readonly handleMouseLeave = (): void => {
+    const hadInternalHover = this.internalHoverDate !== null;
+    this.internalHoverDate = null;
+
     if (
       !this.rangePicker ||
       this.internalStartDate === null ||
       this.internalStartDate === '' ||
-      (this.internalEndDate !== null && this.internalEndDate !== '') ||
-      this.hoverDate === null ||
-      this.hoverDate === ''
+      (this.internalEndDate !== null && this.internalEndDate !== '')
     ) {
       return;
     }
 
-    this.hoverEmitter.emit({ hoverDate: null });
+    if (hadInternalHover) {
+      requestAnimationFrame(() => this.setDates());
+    }
+
+    if (this.hoverDate !== null && this.hoverDate !== '') {
+      this.hoverEmitter.emit({ hoverDate: null });
+    }
   };
+
+  /**
+   * The date previewed on hover: a `hover-date` set by a parent wins over the cell hovered in
+   * this calendar, so that the parent can spread the preview across several visible calendars.
+   */
+  private resolveHoverDate(): string | null {
+    if (this.hoverDate !== null && this.hoverDate !== '') {
+      return this.hoverDate;
+    }
+
+    return this.internalHoverDate;
+  }
 
   private updateDates(): void {
     this.updateCalendar().then(() => {
@@ -363,12 +387,10 @@ export class MdsCalendar {
     );
 
     if (this.rangePicker) {
-      if (
-        this.hoverDate !== null &&
-        this.hoverDate !== '' &&
-        (this.internalEndDate === null || this.internalEndDate === '')
-      ) {
-        this.setHoverSelection(calendarCells, shadowRoot);
+      const hoverDate = this.resolveHoverDate();
+
+      if (hoverDate !== null && (this.internalEndDate === null || this.internalEndDate === '')) {
+        this.setHoverSelection(calendarCells, shadowRoot, hoverDate);
       } else {
         this.setRangeSelection(calendarCells, shadowRoot);
       }
@@ -439,21 +461,20 @@ export class MdsCalendar {
     }
   }
 
-  private setHoverSelection(calendarCells: NodeListOf<Element>, shadowRoot: ShadowRoot): void {
+  private setHoverSelection(
+    calendarCells: NodeListOf<Element>,
+    shadowRoot: ShadowRoot,
+    hoverDateString: string,
+  ): void {
     this.clearSelectionState(calendarCells);
 
-    if (
-      this.internalStartDate === null ||
-      this.internalStartDate === '' ||
-      this.hoverDate === null ||
-      this.hoverDate === ''
-    ) {
+    if (this.internalStartDate === null || this.internalStartDate === '') {
       this.setRangeSelection(calendarCells, shadowRoot);
       return;
     }
 
     const startDate = DateTime.fromISO(this.internalStartDate);
-    const hoverDate = DateTime.fromISO(this.hoverDate);
+    const hoverDate = DateTime.fromISO(hoverDateString);
 
     if (!startDate.isValid || !hoverDate.isValid) {
       this.setRangeSelection(calendarCells, shadowRoot);
@@ -657,15 +678,6 @@ export class MdsCalendar {
       return;
     }
 
-    const calendar: HTMLMdsCalendarElement = this.host;
-    const mdsCalendarCellElements = calendar?.shadowRoot?.querySelectorAll('mds-calendar-cell');
-    const startDateElementIndex = Array.from(mdsCalendarCellElements ?? []).findIndex(
-      (cell: HTMLMdsCalendarCellElement) => cell.getAttribute('date') === this.startDateIdentifier,
-    );
-    const elementIndex = Array.from(mdsCalendarCellElements ?? []).indexOf(
-      element as HTMLMdsCalendarCellElement,
-    );
-
     if (
       this.startDateIdentifier !== null &&
       this.startDateIdentifier !== '' &&
@@ -684,15 +696,9 @@ export class MdsCalendar {
       this.internalStartDate = this.startDateTime.toISO().split('T')[0];
     }
 
-    calendar?.shadowRoot?.querySelectorAll('mds-calendar-cell[preview]').forEach((day) => {
-      day.removeAttribute('preview');
-    });
-
-    if (mdsCalendarCellElements && startDateElementIndex !== -1) {
-      for (let i = startDateElementIndex + 1; i < elementIndex; i++) {
-        mdsCalendarCellElements[i].setAttribute('selection', 'middle');
-      }
-    }
+    // Redraw start, middle and end from the internal dates: a standalone calendar has no parent
+    // echoing the range through start-date / end-date, so nothing else would mark the two ends.
+    requestAnimationFrame(() => this.setDates());
 
     if (
       this.internalStartDate !== null &&
