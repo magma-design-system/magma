@@ -1,4 +1,4 @@
-import { Component, Host, h, Method, Prop, Element, Watch } from '@stencil/core';
+import { Build, Component, Host, h, Method, Prop, Element, Watch } from '@stencil/core';
 import { cssRotationToNumber, cssDurationToSeconds, cssSizeToNumber } from '@common/unit';
 import type { EmojiNames, SvgDictionary, SvgPart } from './meta/types';
 import { gsap } from 'gsap';
@@ -323,6 +323,13 @@ export class MdsEmoji {
     // 2. buildBlinkTimeline uses fromTo, and GSAP renders a fromTo's start values
     //    immediately even on a paused timeline, so the open eyes were left squashed
     //    at scaleY 0.75 until the first blink ran to completion.
+    // Everything from here on needs a real browser: GSAP reads the computed transform
+    // and moveHead measures the host. `typeof window === 'undefined'` does not tell
+    // SSR apart - the hydrate app defines a window - so the guard has to be
+    // Build.isBrowser, which the hydrate build compiles to false. Without it the
+    // prerender of every mds-emoji dies inside GSAP's CSSPlugin, which reads a null
+    // computed transform from mock-doc (check.ssr).
+    if (!Build.isBrowser) return;
     this.resetEyesToDefault();
     if (this.isFollowingMouse) {
       this.moveHead(this.mouseX, this.mouseY);
