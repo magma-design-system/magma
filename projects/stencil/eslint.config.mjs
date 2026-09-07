@@ -1,4 +1,4 @@
-import { defineConfig, globalIgnores } from 'eslint/config';
+import { defineConfig } from 'eslint/config';
 import js from '@eslint/js';
 import { includeIgnoreFile } from '@eslint/compat';
 import { FlatCompat } from '@eslint/eslintrc';
@@ -18,7 +18,6 @@ const compat = new FlatCompat({
 
 export default defineConfig([
   ...baseConfig,
-  globalIgnores(['react', 'angular']),
   includeIgnoreFile(gitignorePath, 'Imported .gitignore patterns'),
 
   {

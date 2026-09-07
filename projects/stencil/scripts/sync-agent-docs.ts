@@ -44,7 +44,7 @@ const TARGETS: Target[] = [
       "the defineCustomElement* functions from '@maggioli-design-system/magma/components' (tree-shakeable), or defineCustomElements() from '@maggioli-design-system/magma/loader' to register everything at once",
   },
   {
-    pkgDir: 'react',
+    pkgDir: '../stencil-react',
     track: 'react.md',
     framework: 'React / Next.js',
     wrapperPkg: '@maggioli-design-system/magma-react',
@@ -52,7 +52,7 @@ const TARGETS: Target[] = [
       "import the Mds* components from '@maggioli-design-system/magma-react' (no defineCustomElements needed)",
   },
   {
-    pkgDir: 'angular/magma-angular',
+    pkgDir: '../stencil-angular/magma-angular',
     track: 'angular.md',
     framework: 'Angular (>= 18.2)',
     wrapperPkg: '@maggioli-design-system/magma-angular',

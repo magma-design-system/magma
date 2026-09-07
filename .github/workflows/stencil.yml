@@ -22,6 +22,8 @@ jobs:
     uses: ./.github/workflows/_package-pipeline.yml
     with:
       path: projects/stencil/**
+      # the react/angular wrappers are built and tree-shake-checked by this workflow
+      extra-path: projects/stencil-*/**
       nx-project: stencil
       artifact-paths: |
         projects/design-tokens/dist
@@ -32,9 +34,9 @@ jobs:
         projects/stencil/src/fixtures
         projects/stencil/www
         projects/stencil/assets
-        projects/stencil/react/src
+        projects/stencil-react/src
         projects/stencil/loader
-        projects/stencil/angular/magma-angular/src/stencil-generated
+        projects/stencil-angular/magma-angular/src/stencil-generated
       artifact-download-path: projects
       run-tests: true
       # the browser tests need the Playwright Chromium
@@ -67,7 +69,7 @@ jobs:
       - uses: actions/upload-artifact@v7
         with:
           name: stencil-react-build
-          path: projects/stencil/react/dist
+          path: projects/stencil-react/dist
           retention-days: 1
           include-hidden-files: true
 
@@ -89,10 +91,6 @@ jobs:
           restore-keys: |
             nx-${{ hashFiles('package-lock.json') }}-
       - run: npm ci --prefer-offline
-      # npm never materializes node_modules of nested workspaces, so ng can't
-      # find @angular/build from the root install — see #666
-      - run: npm install --workspaces=false --no-audit --no-fund
-        working-directory: projects/stencil/angular
       - uses: actions/download-artifact@v8
         with:
           name: stencil-build
@@ -101,7 +99,7 @@ jobs:
       - uses: actions/upload-artifact@v7
         with:
           name: stencil-angular-build
-          path: projects/stencil/angular/dist
+          path: projects/stencil-angular/dist
           retention-days: 1
           include-hidden-files: true
 
@@ -182,10 +180,6 @@ jobs:
           restore-keys: |
             nx-${{ hashFiles('package-lock.json') }}-
       - run: npm ci --prefer-offline
-      # the angular tree-shaking probe builds inside projects/stencil/angular,
-      # whose node_modules npm never materializes — see #666
-      - run: npm install --workspaces=false --no-audit --no-fund
-        working-directory: projects/stencil/angular
       - uses: actions/download-artifact@v8
         with:
           name: stencil-build
@@ -193,9 +187,9 @@ jobs:
       - uses: actions/download-artifact@v8
         with:
           name: stencil-react-build
-          path: projects/stencil/react/dist
+          path: projects/stencil-react/dist
       - uses: actions/download-artifact@v8
         with:
           name: stencil-angular-build
-          path: projects/stencil/angular/dist
+          path: projects/stencil-angular/dist
       - run: npx nx run stencil:check.treeshaking
