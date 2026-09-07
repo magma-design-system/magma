@@ -1,7 +1,6 @@
 @import './css/mds-calendar-fouc.css';
 
 /**
- * @prop --mds-calendar-day-number-other-month-color: The color of the day numbers belonging to previous/next months.
  * @prop --mds-calendar-day-number-color: The color of the day numbers of the current month.
  * @prop --mds-calendar-cell-gap: The spacing between calendar day cells.
  * @prop --mds-calendar-cell-other-month-visibility: Controls visibility of days from other months (e.g. "visible", "hidden").
@@ -14,7 +13,6 @@
  */
 
 :host {
-  --mds-calendar-day-number-other-month-color: rgb(var(--magma-scale-07));
   --mds-calendar-day-number-color: rgb(var(--magma-text-default));
   --mds-calendar-cell-gap: --spacing(50);
   --mds-calendar-cell-other-month-visibility: visible;

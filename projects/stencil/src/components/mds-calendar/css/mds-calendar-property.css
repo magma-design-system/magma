@@ -27,12 +27,6 @@
   syntax: '<color>';
 }
 
-@property --mds-calendar-day-number-other-month-color {
-  inherits: true;
-  initial-value: rgb(var(--magma-scale-07));
-  syntax: '<color>';
-}
-
 @property --mds-calendar-max-width {
   inherits: true;
   initial-value: 480px;

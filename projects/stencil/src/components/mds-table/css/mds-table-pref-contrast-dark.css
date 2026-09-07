@@ -2,7 +2,6 @@
   --mds-table-background: rgb(var(--magma-wash-strong));
   --mds-table-body-background-hover: rgb(var(--tone-neutral-seed));
   --mds-table-border-color: rgb(var(--magma-scale-05));
-  --mds-table-color-hover: rgb(var(--magma-scale-02));
   --mds-table-color: rgb(var(--magma-text-default));
 }
 
@@ -11,7 +10,6 @@
     --mds-table-background: rgb(var(--magma-wash-strong));
     --mds-table-body-background-hover: rgb(var(--tone-neutral-seed));
     --mds-table-border-color: rgb(var(--magma-scale-05));
-    --mds-table-color-hover: rgb(var(--magma-scale-02));
     --mds-table-color: rgb(var(--magma-text-default));
   }
 }
@@ -21,7 +19,6 @@
     --mds-table-background: rgb(var(--magma-wash-strong));
     --mds-table-body-background-hover: rgb(var(--tone-neutral-seed));
     --mds-table-border-color: rgb(var(--magma-scale-05));
-    --mds-table-color-hover: rgb(var(--magma-scale-02));
     --mds-table-color: rgb(var(--magma-text-default));
   }
 }
@@ -31,7 +28,6 @@
     --mds-table-background: rgb(var(--magma-wash-strong));
     --mds-table-body-background-hover: rgb(var(--tone-neutral-seed));
     --mds-table-border-color: rgb(var(--magma-scale-05));
-    --mds-table-color-hover: rgb(var(--magma-scale-02));
     --mds-table-color: rgb(var(--magma-text-default));
   }
 }
