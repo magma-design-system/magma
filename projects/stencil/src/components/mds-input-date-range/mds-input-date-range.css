@@ -108,7 +108,7 @@
   flex-shrink: 0;
 }
 
-:host() ::slotted(mds-input-date) {
+:host ::slotted(mds-input-date) {
   color: inherit;
 }
 
