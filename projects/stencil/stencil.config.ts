@@ -70,8 +70,8 @@ export const config: Config = {
       // un barrel di sole ri-esportazioni. Serve al tree-shaking anche dopo
       // l'appiattimento in FESM di ng-packagr.
       esModules: true,
-      directivesProxyFile: './angular/magma-angular/src/stencil-generated/components.ts',
-      directivesArrayFile: './angular/magma-angular/src/stencil-generated/index.ts',
+      directivesProxyFile: '../stencil-angular/magma-angular/src/stencil-generated/components.ts',
+      directivesArrayFile: '../stencil-angular/magma-angular/src/stencil-generated/index.ts',
       // Genera un ControlValueAccessor per i componenti input, così sono
       // usabili con formControlName/[formControl] nei Reactive Form Angular:
       // writeValue imposta la prop di valore (`value`, o `checked` per i
@@ -119,9 +119,9 @@ export const config: Config = {
     }),
     reactOutputTarget({
       // Relative path to where the React components will be generated
-      outDir: './react/src/',
+      outDir: '../stencil-react/src/',
       customElementsDir: 'dist/components',
-      // Un modulo ES per wrapper (react/src/<tag>.ts) invece di un unico
+      // Un modulo ES per wrapper (projects/stencil-react/src/<tag>.ts) invece di un unico
       // components.ts con tutti e 114: il barrel resta ma diventa di sole
       // ri-esportazioni, così i bundler scartano i componenti non importati.
       esModules: true,

@@ -7,9 +7,7 @@
     "includedScripts": []
   },
   "workspaces": [
-    "projects/!(deprecated)",
-    "projects/stencil/react",
-    "projects/stencil/angular"
+    "projects/*"
   ],
   "overrides": {
     "caniuse-lite": "1.0.30001799",

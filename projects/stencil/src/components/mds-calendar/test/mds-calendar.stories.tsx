@@ -13,6 +13,10 @@ export default {
       options: ['2024-12-16', '2024-12-24'],
       description: 'Sets the end date of the calendar',
     },
+    'hide-today': {
+      control: 'boolean',
+      description: "Hides the highlight on today's date",
+    },
   },
 };
 

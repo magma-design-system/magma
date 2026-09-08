@@ -121,7 +121,7 @@ export class MdsPushNotificationItem {
     this.hasBadge = hasChildWithSlot(this.host, 'badge');
 
     if (this.datetime !== undefined && this.datetime !== '') {
-      this.datetime = sanitizeISO8601Date(this.datetime?.toString());
+      this.datetime = sanitizeISO8601Date(this.datetime.toString()) ?? undefined;
     }
 
     const relativeTimeCustom = {

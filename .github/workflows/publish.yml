@@ -140,18 +140,18 @@ jobs:
             artifact: stencil-build
             artifact-path: projects
           - component: magma-react
-            directory: projects/stencil/react
+            directory: projects/stencil-react
             workflow: stencil
             artifact: stencil-react-build
-            artifact-path: projects/stencil/react/dist
+            artifact-path: projects/stencil-react/dist
           - component: magma-angular
             # publishes from the build output (ng-packagr layout), so the
             # version is read from the source package.json
-            directory: projects/stencil/angular/dist/magma-angular
-            version-file: projects/stencil/angular/magma-angular/package.json
+            directory: projects/stencil-angular/dist/magma-angular
+            version-file: projects/stencil-angular/magma-angular/package.json
             workflow: stencil
             artifact: stencil-angular-build
-            artifact-path: projects/stencil/angular/dist
+            artifact-path: projects/stencil-angular/dist
     concurrency: publish-${{ matrix.component }}
     steps:
       - uses: actions/checkout@v6

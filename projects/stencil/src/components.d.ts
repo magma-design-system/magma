@@ -588,6 +588,11 @@ export namespace Components {
          */
         "endDate": string | null;
         /**
+          * Hides the highlight on today's date in the calendar view.
+          * @default false
+         */
+        "hideToday": boolean;
+        /**
           * Specifies the date used to preview the range selection across multiple visible calendars.
           * @description It's in ISO format (YYYY-MM-DD).
           * @example '2023-10-15'
@@ -1336,6 +1341,11 @@ export namespace Components {
          */
         "getErrors": () => Promise<MdsValidationErrors | null>;
         /**
+          * Hides the highlight on today's date in the calendar.
+          * @default false
+         */
+        "hideToday": boolean;
+        /**
           * Specifies the max date of the range, user cannot set dates after this date
           * @description It's in ISO format (YYYY-MM-DD).
           * @default null
@@ -1396,6 +1406,11 @@ export namespace Components {
           * @default ''
          */
         "endDate": string;
+        /**
+          * Hides the highlight on today's date in the calendar.
+          * @default false
+         */
+        "hideToday": boolean;
         /**
           * Specifies the max date of the range, user cannot set dates after this date
           * @description It's in ISO format (YYYY-MM-DD).
@@ -4917,6 +4932,11 @@ declare namespace LocalJSX {
          */
         "endDate"?: string | null;
         /**
+          * Hides the highlight on today's date in the calendar view.
+          * @default false
+         */
+        "hideToday"?: boolean;
+        /**
           * Specifies the date used to preview the range selection across multiple visible calendars.
           * @description It's in ISO format (YYYY-MM-DD).
           * @example '2023-10-15'
@@ -5694,6 +5714,11 @@ declare namespace LocalJSX {
          */
         "form"?: string;
         /**
+          * Hides the highlight on today's date in the calendar.
+          * @default false
+         */
+        "hideToday"?: boolean;
+        /**
           * Specifies the max date of the range, user cannot set dates after this date
           * @description It's in ISO format (YYYY-MM-DD).
           * @default null
@@ -5765,6 +5790,11 @@ declare namespace LocalJSX {
           * The `id` of a `<form>` element to associate this element with.
          */
         "form"?: string;
+        /**
+          * Hides the highlight on today's date in the calendar.
+          * @default false
+         */
+        "hideToday"?: boolean;
         /**
           * Specifies the max date of the range, user cannot set dates after this date
           * @description It's in ISO format (YYYY-MM-DD).
@@ -7472,6 +7502,7 @@ declare namespace LocalJSX {
         "showNextButton": boolean;
         "disableMonthYearSelection": boolean;
         "showPreselection": boolean;
+        "hideToday": boolean;
         "viewDate": string | null;
         "hoverDate": string | null;
         "startDate": string | null;
@@ -7641,6 +7672,7 @@ declare namespace LocalJSX {
         "min": string | null;
         "max": string | null;
         "delay": number;
+        "hideToday": boolean;
         "disabled": boolean;
         "readonly": boolean;
         "required": boolean;
@@ -7651,6 +7683,7 @@ declare namespace LocalJSX {
         "min": string | null;
         "max": string | null;
         "delay": number;
+        "hideToday": boolean;
         "dualCalendar": boolean;
         "name": string;
     }

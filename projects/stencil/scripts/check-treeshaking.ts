@@ -17,12 +17,12 @@
  *    checks both an absolute budget and the single/full ratio.
  *
  * Angular is measured differently, through a real `ng build` of
- * `angular/treeshaking-probe`. esbuild alone reports ~100% of the library for a
- * single component and would be pure noise: the Angular CLI runs a Babel pass
- * that marks the `__decorate` calls emitted for `@ProxyCmp` as pure and elides
- * `ɵɵngDeclareClassMetadata`, and without it every proxy in the FESM looks
- * side-effectful. The probe build is checked for size and, more precisely, for
- * the absence of components it never imported.
+ * `projects/stencil-angular/treeshaking-probe`. esbuild alone reports ~100% of
+ * the library for a single component and would be pure noise: the Angular CLI
+ * runs a Babel pass that marks the `__decorate` calls emitted for `@ProxyCmp`
+ * as pure and elides `ɵɵngDeclareClassMetadata`, and without it every proxy in
+ * the FESM looks side-effectful. The probe build is checked for size and, more
+ * precisely, for the absence of components it never imported.
  *
  * Run from the stencil package dir, after building all three packages:
  *   npm run check.treeshaking
@@ -31,10 +31,16 @@ import fs from 'fs';
 import path from 'path';
 import { execFileSync } from 'child_process';
 import { build } from 'esbuild';
-import { COMPONENTS_DIR, DIST_DIR, DIST_REACT_DIR, PROJECT_DIR } from './meta';
+import {
+  ANGULAR_DIR,
+  COMPONENTS_DIR,
+  DIST_DIR,
+  DIST_REACT_DIR,
+  PROJECT_DIR,
+  REACT_DIR,
+} from './meta';
 
 const WORKSPACE_ROOT = path.resolve(PROJECT_DIR, '../..');
-const ANGULAR_DIR = path.resolve(PROJECT_DIR, 'angular');
 const ANGULAR_DIST_DIR = path.join(ANGULAR_DIR, 'dist/magma-angular');
 const ANGULAR_PROBE_OUT_DIR = path.join(ANGULAR_DIR, 'dist/treeshaking-probe/browser');
 const TMP_DIR = path.resolve(PROJECT_DIR, '.build/treeshaking');
@@ -108,12 +114,12 @@ const checkStructure = (): void => {
     fail('magma/package.json: expected "sideEffects": ["**/*.css"]');
   }
 
-  const reactPkg = readJson(path.resolve(PROJECT_DIR, 'react/package.json'));
+  const reactPkg = readJson(path.join(REACT_DIR, 'package.json'));
   if (reactPkg.sideEffects !== false) {
     fail('magma-react/package.json: expected "sideEffects": false');
   }
 
-  const angularPkg = readJson(path.resolve(PROJECT_DIR, 'angular/magma-angular/package.json'));
+  const angularPkg = readJson(path.join(ANGULAR_DIR, 'magma-angular/package.json'));
   if (angularPkg.sideEffects !== false) {
     fail('magma-angular/package.json: expected "sideEffects": false');
   }
@@ -148,7 +154,7 @@ const checkStructure = (): void => {
     }
   }
 
-  const angularGenerated = path.resolve(PROJECT_DIR, 'angular/magma-angular/src/stencil-generated');
+  const angularGenerated = path.join(ANGULAR_DIR, 'magma-angular/src/stencil-generated');
   if (requireBuilt(angularGenerated, 'nx run stencil:build')) {
     const missing = componentTags.filter(
       (tag) => !fs.existsSync(path.join(angularGenerated, `${tag}.ts`)),

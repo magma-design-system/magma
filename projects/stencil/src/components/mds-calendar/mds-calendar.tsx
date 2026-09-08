@@ -14,7 +14,6 @@ import miBaselineForwardIos from '@icon/mi/baseline/arrow-forward-ios.svg';
 import miBaselineBackIosNew from '@icon/mi/baseline/arrow-back-ios-new.svg';
 import { DateTime } from 'luxon';
 import { preferenceStore } from '@common/preference';
-import { ISO8601Date } from '@type/date';
 import { sanitizeISO8601Date } from '@common/date';
 import clsx from 'clsx';
 
@@ -63,6 +62,11 @@ export class MdsCalendar {
    * Shows the preselection area above the calendar view.
    */
   @Prop() readonly showPreselection: boolean = false;
+
+  /**
+   * Hides the highlight on today's date in the calendar view.
+   */
+  @Prop() readonly hideToday: boolean = false;
 
   /**
    * Specifies the date used to determine the visible month without changing the selection.
@@ -134,10 +138,12 @@ export class MdsCalendar {
   @Event({ eventName: 'mdsCalendarPreselect' }) checkPreselectionsEmitter: EventEmitter<void>;
 
   @Watch('startDate')
-  handleStartDate(newValue: ISO8601Date | null): void {
-    if (newValue !== null && newValue !== '') {
-      this.internalStartDate = sanitizeISO8601Date(newValue?.toString()) as ISO8601Date;
-      this.startDateTime = DateTime.fromISO(this.internalStartDate);
+  handleStartDate(newValue: string | null): void {
+    const startDate = this.parseDateProp(newValue, 'start-date');
+
+    if (startDate !== null) {
+      this.internalStartDate = startDate;
+      this.startDateTime = DateTime.fromISO(startDate);
       this.startDateIdentifier = this.startDateTime.toISODate();
 
       if (this.internalEndDate !== null && this.internalEndDate !== '') {
@@ -152,7 +158,7 @@ export class MdsCalendar {
       }
 
       this.updateDates();
-    } else if (newValue === null || newValue === '') {
+    } else {
       this.internalStartDate = null;
       this.startDateIdentifier = null;
       this.startDateTime = null;
@@ -162,13 +168,18 @@ export class MdsCalendar {
   }
 
   @Watch('endDate')
-  handleEndDate(newValue: ISO8601Date | null): void {
+  handleEndDate(newValue: string | null): void {
     if (!this.rangePicker) {
       console.warn('rangePicker is disabled, endDate cannot be set');
       this.internalEndDate = null;
-    } else if (newValue !== null && newValue !== '') {
-      this.internalEndDate = sanitizeISO8601Date(newValue?.toString()) as ISO8601Date;
-      this.endDateTime = DateTime.fromISO(this.internalEndDate);
+      return;
+    }
+
+    const endDate = this.parseDateProp(newValue, 'end-date');
+
+    if (endDate !== null) {
+      this.internalEndDate = endDate;
+      this.endDateTime = DateTime.fromISO(endDate);
       this.endDateIdentifier = this.endDateTime.toISODate();
 
       if (this.internalStartDate !== null && this.internalStartDate !== '') {
@@ -181,7 +192,7 @@ export class MdsCalendar {
       }
 
       this.updateDates();
-    } else if (newValue === null || newValue === '') {
+    } else {
       this.internalEndDate = null;
       this.endDateIdentifier = null;
       this.endDateTime = null;
@@ -190,7 +201,7 @@ export class MdsCalendar {
   }
 
   @Watch('viewDate')
-  handleViewDate(newValue: ISO8601Date | null): void {
+  handleViewDate(newValue: string | null): void {
     if (newValue !== null && newValue !== '') {
       const viewDate = DateTime.fromISO(newValue.toString());
 
@@ -208,32 +219,49 @@ export class MdsCalendar {
     requestAnimationFrame(() => this.setDates());
   }
 
+  /**
+   * Normalizes a date prop to ISO 8601, treating an empty or invalid value as unset (`null`).
+   * An invalid value is reported with a warning instead of breaking the component lifecycle.
+   */
+  private parseDateProp(value: string | null, name: 'start-date' | 'end-date'): string | null {
+    if (value === null || value === '') {
+      return null;
+    }
+
+    const date = sanitizeISO8601Date(value.toString());
+
+    if (date === null || !DateTime.fromISO(date).isValid) {
+      console.warn(`mds-calendar: ignoring the invalid ${name} "${value}"`);
+      return null;
+    }
+
+    return date;
+  }
+
   private startDateTime: DateTime;
   private endDateTime: DateTime;
+  private internalHoverDate: string | null = null;
 
   @State() currentMonth: string = '';
   private currentMonthNumber!: number;
   @State() currentYear: string = '';
 
   componentWillLoad(): void {
+    this.internalStartDate = this.parseDateProp(this.internalStartDate, 'start-date');
+    this.internalEndDate = this.parseDateProp(this.internalEndDate, 'end-date');
+
     if (this.viewDate !== null && this.viewDate !== '') {
       const viewDate = DateTime.fromISO(this.viewDate.toString());
 
       if (viewDate.isValid) {
         this.currentDate = viewDate;
       }
-    } else if (this.internalStartDate !== null && this.internalStartDate !== '') {
-      this.internalStartDate = sanitizeISO8601Date(
-        this.internalStartDate?.toString(),
-      ) as ISO8601Date;
+    } else if (this.internalStartDate !== null) {
       this.startDateTime = DateTime.fromISO(this.internalStartDate);
-      if (this.startDateTime.isValid) {
-        this.currentDate = this.startDateTime;
-      }
+      this.currentDate = this.startDateTime;
     }
 
-    if (this.internalEndDate !== null && this.internalEndDate !== '') {
-      this.internalEndDate = sanitizeISO8601Date(this.internalEndDate?.toString()) as ISO8601Date;
+    if (this.internalEndDate !== null) {
       this.endDateTime = DateTime.fromISO(this.internalEndDate);
     }
 
@@ -245,14 +273,14 @@ export class MdsCalendar {
       this.host?.querySelector('.date-preselection--has-preselection') !== null;
 
     this.host?.shadowRoot?.addEventListener('mouseover', this.handleMouseOver);
-    this.host?.shadowRoot?.addEventListener('mouseleave', this.handleMouseLeave);
+    this.host?.addEventListener('mouseleave', this.handleMouseLeave);
 
     this.setDates();
   }
 
   disconnectedCallback(): void {
     this.host?.shadowRoot?.removeEventListener('mouseover', this.handleMouseOver);
-    this.host?.shadowRoot?.removeEventListener('mouseleave', this.handleMouseLeave);
+    this.host?.removeEventListener('mouseleave', this.handleMouseLeave);
   }
 
   /**
@@ -286,24 +314,47 @@ export class MdsCalendar {
 
     const hoverDate = target.getAttribute('date');
     if (hoverDate !== null && hoverDate !== '') {
+      if (hoverDate !== this.internalHoverDate) {
+        this.internalHoverDate = hoverDate;
+        requestAnimationFrame(() => this.setDates());
+      }
       this.hoverEmitter.emit({ hoverDate });
     }
   };
 
   private readonly handleMouseLeave = (): void => {
+    const hadInternalHover = this.internalHoverDate !== null;
+    this.internalHoverDate = null;
+
     if (
       !this.rangePicker ||
       this.internalStartDate === null ||
       this.internalStartDate === '' ||
-      (this.internalEndDate !== null && this.internalEndDate !== '') ||
-      this.hoverDate === null ||
-      this.hoverDate === ''
+      (this.internalEndDate !== null && this.internalEndDate !== '')
     ) {
       return;
     }
 
-    this.hoverEmitter.emit({ hoverDate: null });
+    if (hadInternalHover) {
+      requestAnimationFrame(() => this.setDates());
+    }
+
+    if (this.hoverDate !== null && this.hoverDate !== '') {
+      this.hoverEmitter.emit({ hoverDate: null });
+    }
   };
+
+  /**
+   * The date previewed on hover: a `hover-date` set by a parent wins over the cell hovered in
+   * this calendar, so that the parent can spread the preview across several visible calendars.
+   */
+  private resolveHoverDate(): string | null {
+    if (this.hoverDate !== null && this.hoverDate !== '') {
+      return this.hoverDate;
+    }
+
+    return this.internalHoverDate;
+  }
 
   private updateDates(): void {
     this.updateCalendar().then(() => {
@@ -341,12 +392,10 @@ export class MdsCalendar {
     );
 
     if (this.rangePicker) {
-      if (
-        this.hoverDate !== null &&
-        this.hoverDate !== '' &&
-        (this.internalEndDate === null || this.internalEndDate === '')
-      ) {
-        this.setHoverSelection(calendarCells, shadowRoot);
+      const hoverDate = this.resolveHoverDate();
+
+      if (hoverDate !== null && (this.internalEndDate === null || this.internalEndDate === '')) {
+        this.setHoverSelection(calendarCells, shadowRoot, hoverDate);
       } else {
         this.setRangeSelection(calendarCells, shadowRoot);
       }
@@ -417,21 +466,20 @@ export class MdsCalendar {
     }
   }
 
-  private setHoverSelection(calendarCells: NodeListOf<Element>, shadowRoot: ShadowRoot): void {
+  private setHoverSelection(
+    calendarCells: NodeListOf<Element>,
+    shadowRoot: ShadowRoot,
+    hoverDateString: string,
+  ): void {
     this.clearSelectionState(calendarCells);
 
-    if (
-      this.internalStartDate === null ||
-      this.internalStartDate === '' ||
-      this.hoverDate === null ||
-      this.hoverDate === ''
-    ) {
+    if (this.internalStartDate === null || this.internalStartDate === '') {
       this.setRangeSelection(calendarCells, shadowRoot);
       return;
     }
 
     const startDate = DateTime.fromISO(this.internalStartDate);
-    const hoverDate = DateTime.fromISO(this.hoverDate);
+    const hoverDate = DateTime.fromISO(hoverDateString);
 
     if (!startDate.isValid || !hoverDate.isValid) {
       this.setRangeSelection(calendarCells, shadowRoot);
@@ -566,20 +614,23 @@ export class MdsCalendar {
   }
 
   private handleRange(element: HTMLElement, dayInfo: DateTime): void {
-    const pendingStartDate = this.startDate || this.host.getAttribute('start-date');
-
     if (
       this.rangePicker &&
-      pendingStartDate !== null &&
-      pendingStartDate !== '' &&
       (this.endDate === null || this.endDate === '') &&
       (this.internalEndDate === null || this.internalEndDate === '') &&
       this.isFirstClick
     ) {
-      this.internalStartDate = sanitizeISO8601Date(pendingStartDate.toString()) as ISO8601Date;
-      this.startDateTime = DateTime.fromISO(this.internalStartDate);
-      this.startDateIdentifier = this.startDateTime.toISODate();
-      this.isFirstClick = false;
+      const pendingStartDate = this.parseDateProp(
+        this.startDate || this.host.getAttribute('start-date'),
+        'start-date',
+      );
+
+      if (pendingStartDate !== null) {
+        this.internalStartDate = pendingStartDate;
+        this.startDateTime = DateTime.fromISO(pendingStartDate);
+        this.startDateIdentifier = this.startDateTime.toISODate();
+        this.isFirstClick = false;
+      }
     }
 
     const resetSelection = (): void => {
@@ -632,15 +683,6 @@ export class MdsCalendar {
       return;
     }
 
-    const calendar: HTMLMdsCalendarElement = this.host;
-    const mdsCalendarCellElements = calendar?.shadowRoot?.querySelectorAll('mds-calendar-cell');
-    const startDateElementIndex = Array.from(mdsCalendarCellElements ?? []).findIndex(
-      (cell: HTMLMdsCalendarCellElement) => cell.getAttribute('date') === this.startDateIdentifier,
-    );
-    const elementIndex = Array.from(mdsCalendarCellElements ?? []).indexOf(
-      element as HTMLMdsCalendarCellElement,
-    );
-
     if (
       this.startDateIdentifier !== null &&
       this.startDateIdentifier !== '' &&
@@ -659,15 +701,9 @@ export class MdsCalendar {
       this.internalStartDate = this.startDateTime.toISO().split('T')[0];
     }
 
-    calendar?.shadowRoot?.querySelectorAll('mds-calendar-cell[preview]').forEach((day) => {
-      day.removeAttribute('preview');
-    });
-
-    if (mdsCalendarCellElements && startDateElementIndex !== -1) {
-      for (let i = startDateElementIndex + 1; i < elementIndex; i++) {
-        mdsCalendarCellElements[i].setAttribute('selection', 'middle');
-      }
-    }
+    // Redraw start, middle and end from the internal dates: a standalone calendar has no parent
+    // echoing the range through start-date / end-date, so nothing else would mark the two ends.
+    requestAnimationFrame(() => this.setDates());
 
     if (
       this.internalStartDate !== null &&
@@ -836,6 +872,7 @@ export class MdsCalendar {
                   <mds-calendar-cell
                     key={index}
                     today={
+                      !this.hideToday &&
                       DateTime.now().toFormat('yyyy-MM-dd') === dayInfo.date.toFormat('yyyy-MM-dd')
                     }
                     date={dayInfo.date.toFormat('yyyy-MM-dd')}

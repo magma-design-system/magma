@@ -98,6 +98,8 @@ The web component library. ~115 components built with StencilJS, compiled to sta
 - `@maggioli-design-system/magma-react` — React wrapper
 - `@maggioli-design-system/magma-angular` — Angular wrapper
 
+The wrappers are separate npm workspaces, `projects/stencil-react` and `projects/stencil-angular` (nx projects of the same name), siblings of `projects/stencil`. The Stencil build generates their sources (`projects/stencil-react/src`, `projects/stencil-angular/magma-angular/src/stencil-generated`) and their agent install docs; they only compile what `stencil` emitted. They live outside `projects/stencil` because npm never materializes the `node_modules` of a workspace nested inside another workspace (#666, #672).
+
 ---
 
 ## 3. Component Architecture

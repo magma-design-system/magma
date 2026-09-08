@@ -13,6 +13,6 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/magma-design-system/magma.git",
-    "directory": "projects/stencil/angular/magma-angular"
+    "directory": "projects/stencil-angular/magma-angular"
   }
 }

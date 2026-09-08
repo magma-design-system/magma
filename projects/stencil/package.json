@@ -155,7 +155,7 @@
     "postcss-combine-duplicated-selectors": "poimen/postcss-combine-duplicated-selectors#duplicated-keyframes-fix",
     "postcss-combine-media-query": "2.1.0",
     "postcss-discard-comments": "7.0.3",
-    "postcss-iconsauce": "1.4.1",
+    "postcss-iconsauce": "2.0.0",
     "postcss-import": "16.1.1",
     "postcss-load-config": "6.0.1",
     "postcss-loader": "8.2.1",
