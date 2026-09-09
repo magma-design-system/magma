@@ -60,12 +60,13 @@ The simplest form: set `name` for form participation and `placeholder` for a vis
 
 #### Required Field with `tip` Helper Text
 
-Use `required` to enforce non-empty submission and `tip` to explain the constraint. The component surfaces a top-tip when focused and drives `variant` to `'error'` or `'success'` on blur.
+Use `required` to enforce non-empty submission and `tip` to explain the constraint. The component surfaces a top-tip when focused and drives `variant` to `'error'` or `'success'` on blur. When the field collects the user's own data, set the matching `autocomplete` token (`email`, `given-name`, `tel`, ...) so browsers can identify its purpose (WCAG 2.1 SC 1.3.5) and offer autofill; without it the component default `autocomplete="off"` applies.
 
 ```html
 <mds-input
   name="email"
   type="email"
+  autocomplete="email"
   placeholder="nome@esempio.it"
   required
   tip="Inserisci un indirizzo email valido"
@@ -126,15 +127,33 @@ Set `type="number"` to enable built-in increment/decrement buttons. Use `control
 
 #### Password Input
 
-Set `type="password"` to render a masked field with a built-in visibility toggle. The component renders a custom dot-mask overlay and a show/hide button - no extra wiring is needed.
+Set `type="password"` to render a masked field with a built-in visibility toggle. The component renders a custom dot-mask overlay and a show/hide button - no extra wiring is needed. Always set `autocomplete` to `new-password` (sign-up, password change) or `current-password` (login): the component default is `autocomplete="off"`, which browsers and password managers ignore on credential fields, but the explicit token is what lets them pair the password with its username field and fill or generate the right value.
 
 ```html
 <mds-input
   name="password"
   type="password"
+  autocomplete="new-password"
   placeholder="Scegli una password"
   required
 ></mds-input>
+```
+
+#### Login Form
+
+Pair a username field carrying `autocomplete="username"` with a password field carrying `autocomplete="current-password"` inside a `<form>`, and submit through `<mds-button type="submit">`. The native fields live in the Shadow DOM of each `<mds-input>`: among the password managers tested, Bitwarden, LastPass, Chrome and Edge detect and fill them, Firefox's built-in manager and KeePassXC-Browser do not (they only look at the light DOM).
+
+```html
+<form action="/login" method="post">
+  <mds-input-field label="Email">
+    <mds-input name="username" type="email" autocomplete="username" required></mds-input>
+  </mds-input-field>
+  <mds-input-field label="Password">
+    <mds-input name="password" type="password" autocomplete="current-password" required></mds-input>
+  </mds-input-field>
+
+  <mds-button type="submit" label="Accedi" variant="primary" tone="strong"></mds-button>
+</form>
 ```
 
 #### Italian-Specific Masked Types
