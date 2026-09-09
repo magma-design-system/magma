@@ -59,6 +59,15 @@ const main = async () => {
     destination: distGlobals,
   });
 
+  // The editor-only token sheet ships as its own file: it must NOT end up in
+  // globals.css (or in anything a page loads), it exists so editors can offer the
+  // --mds-* tokens in var() completion. See properties.ts for why it is needed and
+  // why it is inert.
+  await copyStaged(
+    path.join('css', 'tokens.editor.css'),
+    path.join(DIST_DIR, 'css', 'tokens.editor.css'),
+  );
+
   // tailwind/theme.css imports the bridge from the staging dir in source; in the
   // published package the bridge sits next to it, so realign the import to the
   // sibling in the emitted copy. Keeps dist/tailwind/theme.css self-contained.
