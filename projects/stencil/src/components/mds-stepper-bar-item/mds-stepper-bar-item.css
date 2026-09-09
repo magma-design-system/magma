@@ -118,9 +118,9 @@
 }
 
 .progress {
-  --mds-stepper-bar-item-background: var(--mds-stepper-bar-item-progress-background);
-  --mds-stepper-bar-item-color: var(--mds-stepper-bar-item-progress-color);
-  --mds-stepper-bar-item-thickness: var(--mds-stepper-bar-item-progress-thickness);
+  --mds-progress-background: var(--mds-stepper-bar-item-progress-background);
+  --mds-progress-color: var(--mds-stepper-bar-item-progress-color);
+  --mds-progress-thickness: var(--mds-stepper-bar-item-progress-thickness);
   --mds-progress-radius: 0;
 
   flex-grow: 1;

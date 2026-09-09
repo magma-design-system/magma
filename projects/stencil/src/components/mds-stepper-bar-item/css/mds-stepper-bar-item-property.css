@@ -15,7 +15,7 @@
   syntax: '<color>';
 }
 
-@property --mds-stepper-bar-item-duaration {
+@property --mds-stepper-bar-item-duration {
   inherits: true;
   initial-value: 250ms;
   syntax: '<time>';
@@ -55,30 +55,6 @@
   inherits: true;
   initial-value: rgb(var(--status-success-10));
   syntax: '<color>';
-}
-
-@property --mds-stepper-bar-item-icon-ring-color {
-  inherits: true;
-  initial-value: rgb(var(--magma-accent-emphasis));
-  syntax: '<color>';
-}
-
-@property --mds-stepper-bar-item-icon-ring-separator-color {
-  inherits: true;
-  initial-value: rgb(var(--tone-neutral-seed));
-  syntax: '<color>';
-}
-
-@property --mds-stepper-bar-item-icon-ring-separator-size {
-  inherits: true;
-  initial-value: 0.375rem;
-  syntax: '<length>';
-}
-
-@property --mds-stepper-bar-item-icon-ring-size {
-  inherits: true;
-  initial-value: --spacing(100);
-  syntax: '<length>';
 }
 
 @property --mds-stepper-bar-item-min-width {

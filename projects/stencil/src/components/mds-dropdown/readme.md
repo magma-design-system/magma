@@ -431,7 +431,7 @@ mds-dropdown {
 | -------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
 | `--mds-dropdown-arrow-background`      | Sets the fill color of the arrow.                                                                                   |
 | `--mds-dropdown-backdrop-duration`     | Sets the transition duration of the backdrop, used by component's code too.                                         |
-| `--mds-dropdown-backdrop-z-indx`       | Sets the backdrop z-index, used by component's code too.                                                            |
+| `--mds-dropdown-backdrop-z-index`      | Sets the backdrop z-index, used by component's code too.                                                            |
 | `--mds-dropdown-background`            | Sets the background-color of the dropdown.                                                                          |
 | `--mds-dropdown-drop-shadow`           | Sets the drop-shadow of the dropdown.                                                                               |
 | `--mds-dropdown-drop-shadow-color-rgb` | Sets the color used for the dropdown shadow                                                                         |

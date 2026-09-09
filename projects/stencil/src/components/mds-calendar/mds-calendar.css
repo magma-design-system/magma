@@ -22,7 +22,6 @@
   --mds-calendar-select-month-or-year-height: --spacing(900);
   --mds-calendar-select-month-or-year-width: 14rem;
   --mds-calendar-max-width: 480px;
-  --mds-calendar-min-width: 280px;
 
   background-color: rgb(var(--magma-wash-base));
   border-radius: var(--mds-calendar-border-radius);
@@ -41,8 +40,6 @@
   display: grid;
   flex: 1 1 auto;
   padding: var(--mds-calendar-padding);
-
-  /* width: clamp(var(--mds-calendar-min-width), calc((var(--mds-calendar-max-width) + var(--mds-calendar-min-width)) / 2), var(--mds-calendar-max-width)); */
   width: 100%;
 }
 

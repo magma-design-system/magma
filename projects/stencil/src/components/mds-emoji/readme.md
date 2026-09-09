@@ -205,10 +205,10 @@ Override per-mascot color tokens to adapt the character to a custom brand palett
 ```css
 /* Theming Mia for a custom brand */
 mds-emoji[name='mia'] {
-  --mds-emoji-mia-head: rgb(var(--variant-primary-08));
-  --mds-emoji-mia-eyes: rgb(var(--variant-primary-03));
-  --mds-emoji-mia-mouth: rgb(var(--variant-primary-06));
-  --mds-emoji-mia-hands: rgb(var(--variant-primary-06));
+  --mds-emoji-mia-head-color: rgb(var(--variant-primary-08));
+  --mds-emoji-mia-eyes-color: rgb(var(--variant-primary-03));
+  --mds-emoji-mia-mouth-color: rgb(var(--variant-primary-06));
+  --mds-emoji-mia-hands-color: rgb(var(--variant-primary-06));
 }
 
 /* Theming Simi */
