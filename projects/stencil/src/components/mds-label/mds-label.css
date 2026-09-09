@@ -4,7 +4,6 @@
  * @prop --mds-label-background: The background color of the label component.
  * @prop --mds-label-color: The text color of the label.
  * @prop --mds-label-icon-color: The color applied to any icon inside the label.
- * @prop --mds-label-radius: The border-radius of the label.
  * @prop --mds-label-selection-background: The background color applied when the label is selected.
  * @prop --mds-label-selection-color: The text color applied when the label is selected.
  * @prop --mds-label-button-background: The background color of a button inside the label.
@@ -27,9 +26,9 @@
 
   align-items: center;
   background-color: var(--mds-label-background);
-  border-radius: 100px;
+  border-radius: var(--radius-md);
   color: var(--mds-label-color);
-  corner-shape: round;
+  corner-shape: var(--magma-corner-shape, round);
   display: flex;
   fill: var(--mds-label-icon-color);
   flex: 1;

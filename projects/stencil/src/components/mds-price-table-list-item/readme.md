@@ -124,7 +124,6 @@ Override the icon colors only through the documented `--mds-price-table-list-ite
   --mds-price-table-list-item-supported-icon-color: rgb(var(--variant-primary-05));
   --mds-price-table-list-item-supported-icon-color-hover: rgb(var(--variant-primary-04));
   --mds-price-table-list-item-unsupported-icon-color: rgb(var(--tone-neutral-06));
-  --mds-price-table-list-item-unsupported-icon-color-hover: rgb(var(--tone-neutral-05));
 }
 ```
 
@@ -239,12 +238,11 @@ The default slot is for the feature label - plain text plus inline helpers such 
 
 ## CSS Custom Properties
 
-| Name                                                       | Description                                            |
-| ---------------------------------------------------------- | ------------------------------------------------------ |
-| `--mds-price-table-list-item-supported-icon-color`         | Default color of the supported icon in a list item.    |
-| `--mds-price-table-list-item-supported-icon-color-hover`   | Color of the supported icon in a list item on hover.   |
-| `--mds-price-table-list-item-unsupported-icon-color`       | Default color of the unsupported icon in a list item.  |
-| `--mds-price-table-list-item-unsupported-icon-color-hover` | Color of the unsupported icon in a list item on hover. |
+| Name                                                     | Description                                           |
+| -------------------------------------------------------- | ----------------------------------------------------- |
+| `--mds-price-table-list-item-supported-icon-color`       | Default color of the supported icon in a list item.   |
+| `--mds-price-table-list-item-supported-icon-color-hover` | Color of the supported icon in a list item on hover.  |
+| `--mds-price-table-list-item-unsupported-icon-color`     | Default color of the unsupported icon in a list item. |
 
 
 ## Dependencies

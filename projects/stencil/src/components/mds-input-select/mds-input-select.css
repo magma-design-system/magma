@@ -180,10 +180,6 @@ mds-input-tip {
     padding-left: 0;
     padding-right: 0;
   }
-
-  :host {
-    --mds-input-select-background: rgb(var(--variant-primary-07));
-  }
 }
 
 @import './css/mds-input-select-variant.css';

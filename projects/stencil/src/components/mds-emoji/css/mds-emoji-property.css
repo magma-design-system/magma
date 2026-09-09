@@ -27,30 +27,6 @@
   syntax: '<angle>';
 }
 
-@property --mds-emoji-mia-eyes {
-  inherits: true;
-  initial-value: rgb(var(--magma-accent-ai-emphasis-hover));
-  syntax: '<color>';
-}
-
-@property --mds-emoji-mia-hands {
-  inherits: true;
-  initial-value: rgb(var(--magma-accent-ai-border));
-  syntax: '<color>';
-}
-
-@property --mds-emoji-mia-head {
-  inherits: true;
-  initial-value: rgb(var(--magma-accent-ai-surface-hover));
-  syntax: '<color>';
-}
-
-@property --mds-emoji-mia-mouth {
-  inherits: true;
-  initial-value: rgb(var(--magma-accent-ai-border));
-  syntax: '<color>';
-}
-
 @property --mds-emoji-offset-ears {
   inherits: true;
   initial-value: 0;

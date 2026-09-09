@@ -2,7 +2,6 @@
 
 /**
  * @prop --mds-banner-background: Sets the background-color of the component
- * @prop --mds-banner-close-icon-hover-background: Sets the background color of the close icon when the mouse is over it
  * @prop --mds-banner-cockade-background: When cockade attribute is set, the icon will be wrapper with a colored area, this is it's background
  * @prop --mds-banner-cockade-distance: When cockade attribute is set, the icon will be wrapper with a colored area, this is it's icon color
  * @prop --mds-banner-color: Sets the text color of the component
@@ -31,7 +30,6 @@
 
 :host {
   --mds-banner-background: rgb(var(--magma-surface-muted));
-  --mds-banner-close-icon-hover-background: rgb(var(--magma-scale-09));
   --mds-banner-cockade-background: rgb(var(--magma-wash-base));
   --mds-banner-cockade-distance: --spacing(600);
   --mds-banner-color: rgb(var(--magma-text-default));

@@ -205,10 +205,10 @@ Override per-mascot color tokens to adapt the character to a custom brand palett
 ```css
 /* Theming Mia for a custom brand */
 mds-emoji[name='mia'] {
-  --mds-emoji-mia-head: rgb(var(--variant-primary-08));
-  --mds-emoji-mia-eyes: rgb(var(--variant-primary-03));
-  --mds-emoji-mia-mouth: rgb(var(--variant-primary-06));
-  --mds-emoji-mia-hands: rgb(var(--variant-primary-06));
+  --mds-emoji-mia-head-color: rgb(var(--variant-primary-08));
+  --mds-emoji-mia-eyes-color: rgb(var(--variant-primary-03));
+  --mds-emoji-mia-mouth-color: rgb(var(--variant-primary-06));
+  --mds-emoji-mia-hands-color: rgb(var(--variant-primary-06));
 }
 
 /* Theming Simi */
@@ -502,15 +502,16 @@ Type: `Promise<void>`
 | `--mds-emoji-expression-follow-mouse-head-duration`   | Sets the duration for the head to follow the mouse                |
 | `--mds-emoji-expression-follow-mouse-traits-duration` | Sets the duration for facial traits to follow the mouse           |
 | `--mds-emoji-expression-max-rotation`                 | Sets the maximum rotation angle for the emoji expression          |
-| `--mds-emoji-mia-eyes`                                | Sets the color of Mia's eyes                                      |
-| `--mds-emoji-mia-hands`                               | Sets the color of Mia's hands                                     |
-| `--mds-emoji-mia-head`                                | Sets the color of Mia's head                                      |
-| `--mds-emoji-mia-mouth`                               | Sets the color of Mia's mouth                                     |
+| `--mds-emoji-mia-eyes-color`                          | Sets the color of Mia's eyes                                      |
+| `--mds-emoji-mia-hands-color`                         | Sets the color of Mia's hands                                     |
+| `--mds-emoji-mia-head-color`                          | Sets the color of Mia's head                                      |
+| `--mds-emoji-mia-head-stroke-color`                   | Sets the stroke color of Mia's head                               |
+| `--mds-emoji-mia-head-stroke-width`                   | Sets the stroke width of Mia's head                               |
+| `--mds-emoji-mia-mouth-color`                         | Sets the color of Mia's mouth                                     |
 | `--mds-emoji-offset-ears`                             | Sets the positional offset for the ears                           |
 | `--mds-emoji-offset-eyebrows`                         | Sets the positional offset for eyebrows                           |
 | `--mds-emoji-offset-eyes`                             | Sets the positional offset for eyes                               |
 | `--mds-emoji-offset-gadget`                           | Sets the positional offset for gadgets                            |
-| `--mds-emoji-offset-hand`                             | Sets the positional offset for the hands                          |
 | `--mds-emoji-offset-hands`                            | Sets the positional offset for the hands                          |
 | `--mds-emoji-offset-head`                             | Sets the positional offset for the head                           |
 | `--mds-emoji-offset-mouth`                            | Sets the positional offset for the mouth                          |
@@ -520,6 +521,8 @@ Type: `Promise<void>`
 | `--mds-emoji-simi-eyebrow`                            | Sets the color of Simi's eyebrows                                 |
 | `--mds-emoji-simi-gadget`                             | Sets the color of Simi's gadget                                   |
 | `--mds-emoji-simi-mouth`                              | Sets the color of Simi's mouth                                    |
+| `--mds-emoji-simi-mouth-teeth`                        | Sets the color of Simi's teeth                                    |
+| `--mds-emoji-simi-mouth-throat`                       | Sets the color of Simi's throat                                   |
 | `--mds-emoji-simi-nose`                               | Sets the color of Simi's nose                                     |
 | `--mds-emoji-simi-nose-light`                         | Sets the light color of Simi's nose                               |
 | `--mds-emoji-simi-outline`                            | Sets the color of Simi's outline                                  |

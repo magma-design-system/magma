@@ -45,12 +45,6 @@
   syntax: '<color>';
 }
 
-@property --mds-label-radius {
-  inherits: true;
-  initial-value: --spacing(150);
-  syntax: '<length>';
-}
-
 @property --mds-label-selection-background {
   inherits: true;
   initial-value: rgb(var(--label-blue-06));

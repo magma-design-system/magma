@@ -1,7 +1,6 @@
 :host([variant='error']) {
   --mds-banner-headline-color: rgb(var(--magma-danger-text-subtle));
   --mds-banner-background: rgb(var(--magma-danger-wash-soft));
-  --mds-banner-close-icon-hover-background: rgb(var(--magma-danger-wash-strong));
   --mds-banner-color: rgb(var(--magma-danger-text-muted));
   --mds-banner-icon-color: rgb(var(--magma-danger-text-default));
   --mds-banner-shadow: none;
@@ -9,7 +8,6 @@
 
   &:host([tone='weak']) {
     --mds-banner-background: rgb(var(--tone-neutral-seed));
-    --mds-banner-close-icon-hover-background: rgb(var(--magma-danger-wash-soft));
     --mds-banner-color: rgb(var(--magma-text-default));
     --mds-banner-icon-color: rgb(var(--magma-danger-emphasis));
     --mds-banner-shadow: var(--shadow-sm-sharp);
@@ -20,7 +18,6 @@
 :host([variant='warning']) {
   --mds-banner-headline-color: rgb(var(--magma-warning-text-subtle));
   --mds-banner-background: rgb(var(--magma-warning-wash-soft));
-  --mds-banner-close-icon-hover-background: rgb(var(--magma-warning-wash-strong));
   --mds-banner-color: rgb(var(--magma-warning-text-muted));
   --mds-banner-icon-color: rgb(var(--magma-warning-text-default));
   --mds-banner-shadow: none;
@@ -28,7 +25,6 @@
 
   &:host([tone='weak']) {
     --mds-banner-background: rgb(var(--tone-neutral-seed));
-    --mds-banner-close-icon-hover-background: rgb(var(--magma-warning-wash-soft));
     --mds-banner-color: rgb(var(--magma-text-default));
     --mds-banner-icon-color: rgb(var(--magma-warning-emphasis));
     --mds-banner-shadow: var(--shadow-sm-sharp);
@@ -39,7 +35,6 @@
 :host([variant='info']) {
   --mds-banner-headline-color: rgb(var(--magma-info-text-subtle));
   --mds-banner-background: rgb(var(--magma-info-wash-soft));
-  --mds-banner-close-icon-hover-background: rgb(var(--magma-info-wash-strong));
   --mds-banner-color: rgb(var(--magma-info-text-muted));
   --mds-banner-icon-color: rgb(var(--magma-info-text-default));
   --mds-banner-shadow: none;
@@ -47,7 +42,6 @@
 
   &:host([tone='weak']) {
     --mds-banner-background: rgb(var(--tone-neutral-seed));
-    --mds-banner-close-icon-hover-background: rgb(var(--magma-info-wash-soft));
     --mds-banner-color: rgb(var(--magma-text-default));
     --mds-banner-icon-color: rgb(var(--magma-info-emphasis));
     --mds-banner-shadow: var(--shadow-sm-sharp);
@@ -58,7 +52,6 @@
 :host([variant='success']) {
   --mds-banner-headline-color: rgb(var(--magma-success-text-subtle));
   --mds-banner-background: rgb(var(--magma-success-wash-soft));
-  --mds-banner-close-icon-hover-background: rgb(var(--magma-success-wash-strong));
   --mds-banner-color: rgb(var(--magma-success-text-muted));
   --mds-banner-icon-color: rgb(var(--magma-success-text-default));
   --mds-banner-shadow: none;
@@ -66,7 +59,6 @@
 
   &:host([tone='weak']) {
     --mds-banner-background: rgb(var(--tone-neutral-seed));
-    --mds-banner-close-icon-hover-background: rgb(var(--magma-success-wash-soft));
     --mds-banner-color: rgb(var(--magma-text-default));
     --mds-banner-icon-color: rgb(var(--magma-success-emphasis));
     --mds-banner-shadow: var(--shadow-sm-sharp);

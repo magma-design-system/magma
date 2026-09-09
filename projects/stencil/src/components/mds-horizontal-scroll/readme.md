@@ -149,7 +149,6 @@ Style the component only through its documented `--mds-horizontal-scroll-*` CSS 
 
 ```css
 .sezione-evidenza mds-horizontal-scroll {
-  --mds-horizontal-scroll-background: rgb(var(--tone-neutral-09));
   --mds-horizontal-scroll-gap: var(--spacing-400);
   --mds-horizontal-scroll-dot-background: rgb(var(--variant-primary-03));
   --mds-horizontal-scroll-dot-area-background: rgb(var(--variant-primary-08));
@@ -324,7 +323,6 @@ Slotted items without a declared width collapse to zero or stretch unpredictably
 
 | Name                                                 | Description                                                                                              |
 | ---------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
-| `--mds-horizontal-scroll-background`                 | Sets the background-color of the component                                                               |
 | `--mds-horizontal-scroll-behavior`                   | Sets the scroll-behavior animation                                                                       |
 | `--mds-horizontal-scroll-dot-area-background`        | Sets the dot container area color                                                                        |
 | `--mds-horizontal-scroll-dot-background`             | Sets the navigation dot color                                                                            |

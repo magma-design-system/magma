@@ -38,7 +38,7 @@
 
 :host .action {
   --mds-button-background: var(--mds-date-range-preselection-background);
-  --mds-button-border-color: var(--mds-date-range-preselection-border);
+  --mds-button-border-color-rgb: var(--mds-date-range-preselection-border);
   --mds-button-color: var(--mds-date-range-preselection-color);
 }
 

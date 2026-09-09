@@ -131,7 +131,7 @@ function getBackgroundColor(
   return new BackgroundColor({
     colorKeys: ["#000000"],
     colorspace: config.colorspace as InterpolationColorspace,
-    name: "backgroud",
+    name: "background",
     ratios: config.ratios![formula].tone,
     smooth: config.smooth,
   });

@@ -188,6 +188,7 @@ Commits follow the [Conventional Commits](https://www.conventionalcommits.org/) 
 | Lint rules for TypeScript/JS and CSS                           | [docs/CODING_STANDARDS.md](docs/CODING_STANDARDS.md)     |
 | Navigable catalogue of all components                          | [docs/COMPONENTS.md](docs/COMPONENTS.md)                 |
 | Design token system: structure, naming, semantic levels        | [docs/TOKENS.md](docs/TOKENS.md)                         |
+| Editor autocomplete for tokens: setup, generated sheet, extensions | [docs/EDITOR_TOKENS.md](docs/EDITOR_TOKENS.md)       |
 | Installing Magma into a consumer app (all targets)             | [docs/agents/SPEC.md](docs/agents/SPEC.md)               |
 | Guidance for AI coding agents working on this repo             | [AGENTS.md](AGENTS.md)                                   |
 
