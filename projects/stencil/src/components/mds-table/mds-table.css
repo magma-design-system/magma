@@ -16,7 +16,7 @@
   --private-table-transition-duration: var(--mds-table-transition-duration);
   --mds-table-actions-gap: --spacing(200);
   --mds-table-background-alt: rgb(var(--magma-surface-raised));
-  --mds-table-background: rgb(var(--magma-surface-default));
+  --mds-table-background: rgb(var(--magma-surface-overlay));
   --mds-table-border-color: rgb(var(--magma-border-default));
   --mds-table-border-width: 2px;
   --mds-table-cell-padding: --spacing(400);
