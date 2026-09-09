@@ -261,6 +261,23 @@ Parent/child component pairs communicate via internal Stencil mechanisms. Rules:
 2. Never use a child component outside its parent (e.g. `mds-accordion-item` without `mds-accordion`)
 3. Never mix child types (e.g. do not put `mds-accordion-item` inside `mds-accordion-timer`)
 
+## Tests
+
+Every component keeps its tests in `test/` next to its sources (see the scaffold below):
+
+- `mds-component-name.e2e.ts` - component tests rendered in a real Chromium (Playwright), for anything that needs the live DOM: rendering, props, events, methods, keyboard and focus handling, form participation
+- `*.spec.ts` - unit tests in the mock-doc environment, for pure logic that does not need a rendered component (validators, parsers, helpers)
+- `mds-component-name.stories.tsx` - Storybook stories: visual rendering, interaction tests (`play` functions using `expect` / `fn` from `storybook/test` and the `canvas` / `userEvent` of the play context), accessibility checks (`@storybook/addon-a11y`), and integration scenarios showing several components working together on one page
+
+Rules:
+
+1. **Every behaviour change ships with a test that covers it**, in the same branch, so the change is protected against regressions. Behaviour is anything observable beyond presentation: props and their defaults, emitted events, public methods, rendered DOM structure, keyboard/focus handling, form participation, validation, state transitions. The public API of a new component counts as behaviour.
+2. **Pure style changes are exempt**: padding, margin, colours, radius, typography, transitions and similar CSS-only adjustments do not need a test.
+3. A bug fix's test should reproduce the bug: fail on the previous implementation, pass on the fix.
+4. **Split by tool**: Vitest (`spec` / `e2e`) owns the unit and component tests and is the mandatory part of rule 1; Storybook owns the visual, interaction and accessibility tests and the multi-component pages. Add or update a story when necessary: when the change affects the look, the user interaction, the accessibility or the composition with other components. A story never replaces a Vitest test.
+
+How to write and run the tests (Vitest + `@stencil/vitest`, `render` / `userEvent`, shared-page caveats; Storybook test-runner via `npm run test.storybook` / `npm run test.storybook.static`): [`HOWTO.md`](../../projects/stencil/HOWTO.md#tests).
+
 ## Per-component usage docs
 
 Every component documents its **semantic intent** in a `usage/` folder containing three markdown files. These are the **canonical source of truth** - agents and developers should read these to understand how a component is meant to be used.

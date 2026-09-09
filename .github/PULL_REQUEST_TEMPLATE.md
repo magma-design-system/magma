@@ -58,7 +58,9 @@ None
 - [ ] Work is on a dedicated branch, not directly on `dev` or `main`
 - [ ] Branch is up to date with `dev` (merged latest `dev` in)
 - [ ] Lint passes locally (`npm run lint`)
-- [ ] Tests pass locally (`nx run stencil:test`) and affected builds succeed
+- [ ] Tests pass locally (`nx run stencil:test`, plus `npm run test.storybook.static` when stories changed) and affected builds succeed
+- [ ] Every behaviour change (props, events, methods, DOM, keyboard/focus, validation) is covered by a new or updated `*.spec.ts` / `*.e2e.ts` test - pure style changes are exempt
+- [ ] Storybook story added or updated when the change affects look, interaction, accessibility or composition with other components (visual / interaction / a11y tests)
 - [ ] Commit messages follow `docs/COMMITS.md`
 - [ ] Updated the relevant `SPEC.md` (and `docs/ARCHITECTURE.md` if system-wide)
 - [ ] I am **not** merging this into `dev` or `main` myself - that is a manual governance step

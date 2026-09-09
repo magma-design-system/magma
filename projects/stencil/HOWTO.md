@@ -70,3 +70,21 @@ Keep in mind that:
   storages);
 - `nx run stencil:generate` still scaffolds the Jest flavoured spec and e2e files: answer no and
   start from the snippet above.
+
+### Storybook tests
+
+The stories (`test/*.stories.tsx`) carry the visual, interaction and accessibility tests: `play`
+functions (`expect` / `fn` from `storybook/test`, `canvas` / `userEvent` from the play context)
+and the a11y addon, which runs axe on every story with `a11y.test: 'error'` (the `afterEach` in
+`.storybook/preview.jsx` waits for the Stencil hydration before axe inspects the DOM). They run
+headless in Chromium through [`@storybook/test-runner`](https://github.com/storybookjs/test-runner)
+(Playwright):
+
+```
+npm run test.storybook           # against the live Storybook started by `npm start` (port 6006)
+npm run test.storybook.static    # build the static Storybook, serve it and run the tests (CI flavour)
+```
+
+Extra arguments are forwarded to `test-storybook`, e.g. `npm run test.storybook.static -- --testTimeout 30000`.
+`test.storybook.static` goes through `scripts/test-storybook.ts`, which serves `dist-storybook`
+on an ephemeral port and exits with the test-runner's exit code.
