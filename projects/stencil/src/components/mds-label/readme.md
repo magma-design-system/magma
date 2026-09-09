@@ -134,7 +134,6 @@ Style the label only through its documented `--mds-label-*` CSS custom propertie
 .categoria-speciale mds-label {
   --mds-label-background: rgb(var(--label-orchid-08));
   --mds-label-color: rgb(var(--label-orchid-02));
-  --mds-label-radius: var(--radius-sm);
   --mds-label-button-background: rgb(var(--label-orchid-07));
   --mds-label-button-icon-color: rgb(var(--label-orchid-03));
 }
@@ -225,7 +224,6 @@ mds-label >>> .text {
 mds-label {
   --mds-label-background: rgb(var(--label-blue-08));
   --mds-label-color: rgb(var(--label-blue-02));
-  --mds-label-radius: var(--radius-sm);
 }
 ```
 
@@ -260,7 +258,6 @@ mds-label {
 | `--mds-label-button-icon-color`       | The color of the icon inside the button.                 |
 | `--mds-label-color`                   | The text color of the label.                             |
 | `--mds-label-icon-color`              | The color applied to any icon inside the label.          |
-| `--mds-label-radius`                  | The border-radius of the label.                          |
 | `--mds-label-selection-background`    | The background color applied when the label is selected. |
 | `--mds-label-selection-color`         | The text color applied when the label is selected.       |
 
