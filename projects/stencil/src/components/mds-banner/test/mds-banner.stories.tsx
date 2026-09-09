@@ -197,7 +197,7 @@ const VariantsTableTemplate = () => (
       {variantToneCombinations.map(({ tone, variant }) => (
         <mds-table-row key={`${variant}-${tone}`}>
           <mds-table-cell>
-            <mds-banner class="w-[400px]" variant={variant} tone={tone}>
+            <mds-banner class="w-10000" variant={variant} tone={tone} deletable>
               <mds-text typography="detail">
                 Il tuo account è stato aggiornato alla versione PRO, ora puoi utilizzare le
                 notifiche su aggiornamenti di norme di legge e la consultazione dei volumi

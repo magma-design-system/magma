@@ -39,7 +39,12 @@ const webpackFinal = async (config) => {
   config.module.rules.push(
     {
       test: /\.ts$/,
-      use: 'ts-loader',
+      use: {
+        loader: 'ts-loader',
+        // the preview does not bundle the vitest specs: type checking the whole
+        // tsconfig program made a WIP test file break the whole Storybook build
+        options: { onlyCompileBundledFiles: true },
+      },
       exclude: /node_modules/,
     },
     {
