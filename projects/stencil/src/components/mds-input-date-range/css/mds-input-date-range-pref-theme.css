@@ -7,7 +7,6 @@
 :host([pref-theme='dark']:not([pref-theme-scheme='light'])) {
   --mds-input-date-range-ring: var(--shadow-ring-2);
   --mds-input-date-range-background: rgb(var(--magma-wash-base));
-  --mds-input-date-range-controls-border: 2px solid rgb(var(--magma-scale-06));
 
   .counter-button:hover {
     --mds-button-background: rgb(var(--magma-wash-strong));
@@ -19,7 +18,6 @@
   :host(:not([pref-theme])) {
     --mds-input-date-range-ring: var(--shadow-ring-2);
     --mds-input-date-range-background: rgb(var(--magma-wash-base));
-    --mds-input-date-range-controls-border: 2px solid rgb(var(--magma-scale-06));
 
     .counter-button:hover {
       --mds-button-background: rgb(var(--magma-wash-strong));

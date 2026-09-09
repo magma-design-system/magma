@@ -149,6 +149,16 @@ export class MdsChip {
   };
 
   componentDidLoad(): void {
+    // A @Watch does not fire for the value a prop is born with, so `handleSelectableProp`
+    // only ever ran for a `selectable` set from JS after load: a chip that arrives from
+    // markup as <mds-chip selectable> stayed non-clickable, with no role, no tabindex and
+    // a click that toggled nothing - while the readme promises that "selectable implies
+    // clickable". Turning it on here lets the clickable watcher do the wiring exactly once,
+    // which is why this returns instead of falling through to the block below.
+    if (this.selectable && !this.clickable) {
+      this.clickable = true;
+      return;
+    }
     if (this.clickable) {
       this.handleClickableElement(true);
       this.handleClickableKeyboard(true);
@@ -175,7 +185,13 @@ export class MdsChip {
         )}
         <div class="label-wrapper">
           {this.clickable ? (
+            /* The label carries role="button" (see handleClickableElement), and a toggle
+             * button states its state through aria-pressed: without it `selected` reaches
+             * the eye through the border and reaches a screen reader not at all (WCAG
+             * 4.1.2). Only when selectable, because aria-pressed on something that is not
+             * a button is invalid, and a merely clickable chip toggles nothing. */
             <mds-text
+              aria-pressed={this.selectable ? (this.selected ? 'true' : 'false') : undefined}
               class="label label--interactive"
               tabindex="0"
               typography="caption"

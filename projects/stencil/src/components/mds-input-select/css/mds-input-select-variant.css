@@ -1,5 +1,4 @@
 :host {
-  --mds-input-select-icon-color: rgb(var(--magma-accent-emphasis-hover));
   --mds-input-select-variant-color-rgb: 0 0 0;
   --mds-input-select-arrow-icon-blur-background-color: rgb(var(--magma-accent-surface));
   --mds-input-select-arrow-icon-hover-background-color: rgb(var(--magma-accent-surface-hover));
@@ -13,8 +12,7 @@
 }
 
 :host([variant='info']) {
-  --mds-input-select-icon-color: rgb(var(--magma-info-emphasis));
-  --mds-input-select-tip-background: rgb(var(--magma-info-emphasis));
+  --mds-input-tip-background: rgb(var(--magma-info-emphasis));
   --mds-input-select-arrow-icon-blur-background-color: rgb(var(--magma-info-wash-base));
   --mds-input-select-arrow-icon-hover-background-color: rgb(var(--magma-info-wash-strong));
   --mds-input-select-arrow-icon-blur-color: rgb(var(--status-info-06));
@@ -24,13 +22,11 @@
 
 :host([variant='info']:hover),
 :host([variant='info']:focus-within) {
-  --mds-input-select-icon-color: rgb(var(--magma-info-emphasis));
   --mds-input-select-variant-color-rgb: var(--magma-info-emphasis);
 }
 
 :host([variant='success']) {
-  --mds-input-select-icon-color: rgb(var(--magma-success-emphasis));
-  --mds-input-select-tip-background: rgb(var(--magma-success-emphasis));
+  --mds-input-tip-background: rgb(var(--magma-success-emphasis));
   --mds-input-select-arrow-icon-blur-background-color: rgb(var(--magma-success-wash-base));
   --mds-input-select-arrow-icon-hover-background-color: rgb(var(--magma-success-wash-strong));
   --mds-input-select-arrow-icon-blur-color: rgb(var(--status-success-06));
@@ -40,13 +36,11 @@
 
 :host([variant='success']:hover),
 :host([variant='success']:focus-within) {
-  --mds-input-select-icon-color: rgb(var(--magma-success-emphasis));
   --mds-input-select-variant-color-rgb: var(--magma-success-emphasis);
 }
 
 :host([variant='warning']) {
-  --mds-input-select-icon-color: rgb(var(--magma-warning-emphasis));
-  --mds-input-select-tip-background: rgb(var(--magma-warning-emphasis));
+  --mds-input-tip-background: rgb(var(--magma-warning-emphasis));
   --mds-input-select-arrow-icon-blur-background-color: rgb(var(--magma-warning-wash-base));
   --mds-input-select-arrow-icon-hover-background-color: rgb(var(--magma-warning-wash-strong));
   --mds-input-select-arrow-icon-blur-color: rgb(var(--status-warning-06));
@@ -56,13 +50,11 @@
 
 :host([variant='warning']:hover),
 :host([variant='warning']:focus-within) {
-  --mds-input-select-icon-color: rgb(var(--magma-warning-emphasis));
   --mds-input-select-variant-color-rgb: var(--magma-warning-emphasis);
 }
 
 :host([variant='error']) {
-  --mds-input-select-icon-color: rgb(var(--magma-danger-emphasis));
-  --mds-input-select-tip-background: rgb(var(--magma-danger-emphasis));
+  --mds-input-tip-background: rgb(var(--magma-danger-emphasis));
   --mds-input-select-arrow-icon-blur-background-color: rgb(var(--magma-danger-wash-base));
   --mds-input-select-arrow-icon-hover-background-color: rgb(var(--magma-danger-wash-strong));
   --mds-input-select-arrow-icon-blur-color: rgb(var(--status-error-06));
@@ -72,6 +64,5 @@
 
 :host([variant='error']:hover),
 :host([variant='error']:focus-within) {
-  --mds-input-select-icon-color: rgb(var(--magma-danger-emphasis));
   --mds-input-select-variant-color-rgb: var(--magma-danger-emphasis);
 }

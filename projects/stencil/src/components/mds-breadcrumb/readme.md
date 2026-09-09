@@ -108,7 +108,6 @@ Apply `--mds-breadcrumb-*` vars on the host to retheme the whole trail at once. 
 .sidebar-nav mds-breadcrumb {
   --mds-breadcrumb-button-color: rgb(var(--variant-secondary-03));
   --mds-breadcrumb-button-color-hover: rgb(var(--variant-secondary-01));
-  --mds-breadcrumb-button-background-current: rgb(var(--variant-secondary-09));
   --mds-breadcrumb-button-color-current: rgb(var(--variant-secondary-01));
   --mds-breadcrumb-arrow-depth-color: rgb(var(--variant-secondary-05));
 }
@@ -224,7 +223,6 @@ mds-breadcrumb::part(back) {
 /* ✅ CORRECT */
 mds-breadcrumb {
   --mds-breadcrumb-button-background-disabled: transparent;
-  --mds-breadcrumb-button-color-disabled: rgb(var(--tone-neutral-08));
 }
 ```
 
@@ -257,12 +255,10 @@ mds-breadcrumb {
 | --------------------------------------------- | ------------------------------------------------------------------------------------ |
 | `--mds-breadcrumb-arrow-depth-color`          | Sets the color of the arrow icon that separates buttons                              |
 | `--mds-breadcrumb-button-background`          | Sets the background color of the button                                              |
-| `--mds-breadcrumb-button-background-current`  | Sets the background color of the button when it's active                             |
 | `--mds-breadcrumb-button-background-disabled` | Sets the background color of the button when it's disabled, is used for arrow button |
 | `--mds-breadcrumb-button-background-hover`    | Sets the background color of the button when the mouse is over it                    |
 | `--mds-breadcrumb-button-color`               | Sets the text color of the button                                                    |
 | `--mds-breadcrumb-button-color-current`       | Sets the text color of the button when it's active                                   |
-| `--mds-breadcrumb-button-color-disabled`      | Sets the text color of the button when it's disabled, is used for arrow button       |
 | `--mds-breadcrumb-button-color-hover`         | Sets the text color of the button when the mouse is over it                          |
 | `--mds-breadcrumb-current-button-color`       | Sets the text color of the current depth button                                      |
 

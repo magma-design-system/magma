@@ -15,12 +15,6 @@
   syntax: '<color>';
 }
 
-@property --mds-banner-close-icon-hover-background {
-  inherits: true;
-  initial-value: rgb(var(--magma-accent-surface));
-  syntax: '<color>';
-}
-
 @property --mds-banner-cockade-background {
   inherits: true;
   initial-value: rgb(var(--magma-accent-surface));

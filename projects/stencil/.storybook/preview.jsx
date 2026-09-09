@@ -102,6 +102,9 @@ channel.on(PREF_CHANNEL_EVENTS.set, ({ name, value }) => {
 });
 
 const parameters = {
+  a11y: {
+    test: 'error',
+  },
   options: {
     storySort: {
       method: 'alphabetical',
@@ -130,7 +133,24 @@ const decorators = [
   ),
 ];
 
+// The a11y addon runs axe in its own afterEach: ours runs first (afterEach hooks
+// are called in reverse order) so axe never inspects a component that Stencil has
+// not finished hydrating, which otherwise reports the slotted label as missing.
+const HYDRATION_TIMEOUT = 3000;
+const pendingHydration = () =>
+  Array.from(document.querySelectorAll('*')).filter(
+    (element) => element.tagName.startsWith('MDS-') && !element.hasAttribute('hydrated'),
+  ).length;
+const afterEach = async () => {
+  const deadline = Date.now() + HYDRATION_TIMEOUT;
+  while (pendingHydration() > 0 && Date.now() < deadline) {
+    await new Promise((resolve) => setTimeout(resolve, 25));
+  }
+  await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+};
+
 const preview = {
+  afterEach,
   parameters,
   decorators,
   tags: ['autodocs'],

@@ -45,12 +45,6 @@
   syntax: '<color>';
 }
 
-@property --mds-tree-toggle-icon-folder-expanded-background {
-  inherits: true;
-  initial-value: rgb(var(--magma-scale-08));
-  syntax: '<color>';
-}
-
 @property --mds-tree-toggle-icon-folder-expanded-color {
   inherits: true;
   initial-value: rgb(var(--magma-accent-emphasis));

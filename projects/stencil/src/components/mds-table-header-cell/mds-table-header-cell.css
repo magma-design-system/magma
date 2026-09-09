@@ -1,9 +1,5 @@
 @import './css/mds-table-header-cell-fouc.css';
 
-/**
- * @prop --mds-table-header-cell-padding: The padding of the table cell
- */
-
 :host {
   --mds-table-header-cell-transition-duration: var(--duration-200);
   --private-table-header-cell-transition-duration: var(--mds-table-header-cell-transition-duration);

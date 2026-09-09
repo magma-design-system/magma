@@ -1,7 +1,6 @@
 @import './css/mds-horizontal-scroll-fouc.css';
 
 /**
- * @prop --mds-horizontal-scroll-background: Sets the background-color of the component
  * @prop --mds-horizontal-scroll-behavior: Sets the scroll-behavior animation
  * @prop --mds-horizontal-scroll-dot-area-background: Sets the dot container area color
  * @prop --mds-horizontal-scroll-dot-background: Sets the navigation dot color

@@ -70,8 +70,8 @@
 }
 
 .notifications ::slotted(mds-push-notification-item) {
-  --mds-push-notification-duration: var(--mds-push-notification-items-duration);
-  --mds-push-notification-timing-function: var(--mds-push-notification-items-timing-function);
+  --mds-push-notification-item-duration: var(--mds-push-notification-items-duration);
+  --mds-push-notification-item-timing-function: var(--mds-push-notification-items-timing-function);
 
   position: absolute;
   transform: translate(
