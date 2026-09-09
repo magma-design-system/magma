@@ -189,3 +189,24 @@ describe('form submit', () => {
     expect((form.elements.namedItem('i2') as HTMLMdsInputElement).value).toEqual(text2);
   });
 });
+
+describe('password mask', () => {
+  it('follows the corners of the input', async () => {
+    // The mask paints the input background over the native dots: its outer corners must match
+    // the input, otherwise the background sticks out of the rounded border while typing.
+    await setup(
+      '<mds-input type="password" value="secret" style="--mds-input-border-radius: 20px"></mds-input>',
+    );
+    const input = mdsInput.shadowRoot!.querySelector('input')!;
+    const mask = mdsInput.shadowRoot!.querySelector<HTMLElement>('.password-mask')!;
+    const inputStyle = getComputedStyle(input);
+    const maskStyle = getComputedStyle(mask);
+
+    expect(mask).not.toBeNull();
+    expect(inputStyle.borderTopLeftRadius).toBe('20px');
+    expect(maskStyle.borderTopLeftRadius).toBe(inputStyle.borderTopLeftRadius);
+    expect(maskStyle.borderBottomLeftRadius).toBe(inputStyle.borderBottomLeftRadius);
+    expect(maskStyle.borderTopRightRadius).toBe('0px');
+    expect(maskStyle.borderBottomRightRadius).toBe('0px');
+  });
+});
