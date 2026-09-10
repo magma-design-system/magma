@@ -77,14 +77,17 @@ The stories (`test/*.stories.tsx`) carry the visual, interaction and accessibili
 functions (`expect` / `fn` from `storybook/test`, `canvas` / `userEvent` from the play context)
 and the a11y addon, which runs axe on every story with `a11y.test: 'error'` (the `afterEach` in
 `.storybook/preview.jsx` waits for the Stencil hydration before axe inspects the DOM). They run
-headless in Chromium through [`@storybook/test-runner`](https://github.com/storybookjs/test-runner)
-(Playwright):
+as the `storybook` project of `vitest.config.mts` through
+[`@storybook/addon-vitest`](https://storybook.js.org/docs/writing-tests/integrations/vitest-addon),
+in the same headless Chromium (Playwright) as the e2e tests:
 
 ```
-npm run test.storybook           # against the live Storybook started by `npm start` (port 6006)
-npm run test.storybook.static    # build the static Storybook, serve it and run the tests (CI flavour)
+npm run test-storybook                                  # every story: play functions + a11y checks
+npm run test-storybook -- --run                         # one shot in a terminal too (CI is one shot by default)
+npx vitest run --project storybook src/components/mds-button   # a subset
 ```
 
-Extra arguments are forwarded to `test-storybook`, e.g. `npm run test.storybook.static -- --testTimeout 30000`.
-`test.storybook.static` goes through `scripts/test-storybook.ts`, which serves `dist-storybook`
-on an ephemeral port and exits with the test-runner's exit code.
+`nx run stencil:test` runs the `spec` and `browser` projects only; the stories are their own target
+(`nx run stencil:test-storybook`). Story globs, aliases and PostCSS come from `.storybook/main.mjs`
+(`viteFinal`), so the tests render exactly what Storybook renders. In watch mode the addon also
+starts Storybook (`storybook dev -p 6006`) and links every failure to its story.
