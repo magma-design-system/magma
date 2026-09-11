@@ -150,6 +150,11 @@
  * `round` instead of staying on the design system default.
  */
 
+/* The DEFAULT shape is not declared here: it is emitted with its radius scale by
+ * projects/styles/scripts/corner.ts (build/css/corner.css, appended to the
+ * published globals.css), so shape and scale cannot drift apart. This
+ * registration only fixes the type and the value an unstyled element resolves. */
+
 @property --magma-corner-shape {
   inherits: true;
   initial-value: squircle;
@@ -224,7 +229,6 @@
     (can be removed once support is more widespread)
   */
   --magma-backdrop-animation-duration: 300ms;
-  --magma-corner-shape: squircle;
   --magma-backdrop-blur: 4px;
   --magma-backdrop-color: 0 0 0;
   --magma-backdrop-opacity: 0.1;

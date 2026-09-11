@@ -4,10 +4,11 @@
   "description": "This module contains SCSS and CSS styles used by Maggioli Design System, it also makes available a Tailwind config based on Maggioli design tokens.",
   "main": "./tailwind.config.js",
   "scripts": {
-    "build": "npm run clean && npm run semantic && npm run properties && npm run editor.tokens && npm run copy && npm run hydrated && npm run tailwind.build",
+    "build": "npm run clean && npm run semantic && npm run corner && npm run properties && npm run editor.tokens && npm run copy && npm run hydrated && npm run tailwind.build",
     "clean": "tsx scripts/clean.ts",
     "semantic": "tsx scripts/semantic.ts",
     "properties": "tsx scripts/properties.ts",
+    "corner": "tsx scripts/corner.ts",
     "editor.tokens": "tsx scripts/editor-tokens.ts",
     "hydrated": "tsx scripts/hydrated.ts",
     "copy": "tsx scripts/copy.ts",
