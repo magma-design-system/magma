@@ -80,7 +80,7 @@
 
   @apply ease-out;
 
-  border-radius: --spacing(250);
+  border-radius: var(--radius-sm);
   display: grid;
   padding: --spacing(50);
   transition-duration: var(--duration-200);

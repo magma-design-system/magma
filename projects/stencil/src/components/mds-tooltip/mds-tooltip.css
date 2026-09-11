@@ -41,7 +41,7 @@
   --mds-tooltip-z-index: var(--magma-tooltip-z-index, 4000);
 
   background-color: var(--mds-tooltip-background);
-  border-radius: 0.25rem;
+  border-radius: var(--radius-3xs);
   box-sizing: border-box;
   display: grid;
   filter: var(--mds-tooltip-drop-shadow);

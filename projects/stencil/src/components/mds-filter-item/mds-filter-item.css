@@ -41,7 +41,7 @@ mds-text {
 .count {
   align-items: center;
   background-color: var(--mds-filter-item-count-background-default);
-  border-radius: --spacing(400);
+  border-radius: var(--radius-lg);
   box-sizing: border-box;
   color: currentcolor;
   color: var(--mds-filter-item-count-color-default);
