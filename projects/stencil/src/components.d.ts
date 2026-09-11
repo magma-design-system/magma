@@ -58,7 +58,7 @@ import { MdsPaginatorEventDetail } from "./components/mds-paginator/meta/event-d
 import { PolicyAiVariant } from "./components/mds-policy-ai/meta/types";
 import { AnimationModeType } from "./components/mds-pref-animation/meta/types";
 import { MdsPrefChangeEventDetail } from "./event-detail/preference";
-import { ConsumptionModeType, PreferenceThemeModeType, PreferenceThemeSchemeType, PreferenceThemeTransitionType } from "./type/preference";
+import { ConsumptionModeType, PreferenceCornerShapeChoiceType, PreferenceThemeModeType, PreferenceThemeSchemeType, PreferenceThemeTransitionType } from "./type/preference";
 import { ContrastModeType } from "./components/mds-pref-contrast/meta/types";
 import { MdsPrefLanguageEventDetail } from "./event-detail/language";
 import { MdsPrefThemeVariantEventDetail } from "./event-detail/theme-variant";
@@ -140,7 +140,7 @@ export { MdsPaginatorEventDetail } from "./components/mds-paginator/meta/event-d
 export { PolicyAiVariant } from "./components/mds-policy-ai/meta/types";
 export { AnimationModeType } from "./components/mds-pref-animation/meta/types";
 export { MdsPrefChangeEventDetail } from "./event-detail/preference";
-export { ConsumptionModeType, PreferenceThemeModeType, PreferenceThemeSchemeType, PreferenceThemeTransitionType } from "./type/preference";
+export { ConsumptionModeType, PreferenceCornerShapeChoiceType, PreferenceThemeModeType, PreferenceThemeSchemeType, PreferenceThemeTransitionType } from "./type/preference";
 export { ContrastModeType } from "./components/mds-pref-contrast/meta/types";
 export { MdsPrefLanguageEventDetail } from "./event-detail/language";
 export { MdsPrefThemeVariantEventDetail } from "./event-detail/theme-variant";
@@ -2012,6 +2012,10 @@ export namespace Components {
         "transition": PreferenceThemeTransitionType;
     }
     interface MdsPrefThemeVariant {
+        /**
+          * Specifies the corner geometry of the whole page: one of the `corner-shape` keywords, or `default`.  Corner geometry is theme appearance rather than an accessibility preference, which is why it lives here next to the theme name and scheme instead of in `mds-pref-theme`. Setting it writes `data-corner-shape` on `<html>`, where the generated axis picks both the shape and the radius scale tuned for it.  Leaving it unset touches nothing. Setting it to `default` REMOVES the attribute rather than writing today's default into the page, so a project that never chose keeps following the design system when the default changes.
+         */
+        "cornerShape"?: PreferenceCornerShapeChoiceType;
         /**
           * Specifies the theme name attribute A string representing the theme name, should be a simple string name or kebab kase name. `Examples of valid language codes include "magma", "maggioli-editore", etc.`
           * @default 'default'
@@ -6499,6 +6503,10 @@ declare namespace LocalJSX {
     }
     interface MdsPrefThemeVariant {
         /**
+          * Specifies the corner geometry of the whole page: one of the `corner-shape` keywords, or `default`.  Corner geometry is theme appearance rather than an accessibility preference, which is why it lives here next to the theme name and scheme instead of in `mds-pref-theme`. Setting it writes `data-corner-shape` on `<html>`, where the generated axis picks both the shape and the radius scale tuned for it.  Leaving it unset touches nothing. Setting it to `default` REMOVES the attribute rather than writing today's default into the page, so a project that never chose keeps following the design system when the default changes.
+         */
+        "cornerShape"?: PreferenceCornerShapeChoiceType;
+        /**
           * Specifies the theme name attribute A string representing the theme name, should be a simple string name or kebab kase name. `Examples of valid language codes include "magma", "maggioli-editore", etc.`
           * @default 'default'
          */
@@ -7851,6 +7859,7 @@ declare namespace LocalJSX {
         "size": TabSizeType;
         "name": string;
         "scheme": PreferenceThemeSchemeType;
+        "cornerShape": PreferenceCornerShapeChoiceType;
     }
     interface MdsPrefThemeVariantItemAttributes {
         "label": string;
