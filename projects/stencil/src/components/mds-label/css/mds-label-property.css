@@ -17,7 +17,7 @@
 
 @property --mds-label-button-background {
   inherits: true;
-  initial-value: rgb(var(--label-blue-09));
+  initial-value: transparent;
   syntax: '<color>';
 }
 

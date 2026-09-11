@@ -1,7 +1,6 @@
 :host {
   --mds-label-background: rgb(var(--label-blue-08));
-  --mds-label-button-background: rgb(var(--label-blue-09));
-  --mds-label-button-background-hover: rgb(var(--label-blue-08));
+  --mds-label-button-background-hover: rgb(var(--label-blue-09));
   --mds-label-button-icon-color: rgb(var(--label-blue-04));
   --mds-label-color: rgb(var(--label-blue-02));
   --mds-label-icon-color: rgb(var(--label-blue-02));
@@ -11,7 +10,6 @@
 
 :host([variant='red']) {
   --mds-label-background: rgb(var(--label-red-04));
-  --mds-label-button-background: rgb(var(--label-red-04));
   --mds-label-button-background-hover: rgb(var(--label-red-05));
   --mds-label-button-icon-color: rgb(var(--label-red-10));
   --mds-label-color: rgb(var(--label-red-10));
@@ -21,8 +19,7 @@
 
   &:host([tone='weak']) {
     --mds-label-background: rgb(var(--label-red-08));
-    --mds-label-button-background: rgb(var(--label-red-09));
-    --mds-label-button-background-hover: rgb(var(--label-red-08));
+    --mds-label-button-background-hover: rgb(var(--label-red-09));
     --mds-label-button-icon-color: rgb(var(--label-red-04));
     --mds-label-color: rgb(var(--label-red-02));
     --mds-label-icon-color: rgb(var(--label-red-02));
@@ -33,7 +30,6 @@
 
 :host([variant='amaranth']) {
   --mds-label-background: rgb(var(--label-amaranth-04));
-  --mds-label-button-background: rgb(var(--label-amaranth-04));
   --mds-label-button-background-hover: rgb(var(--label-amaranth-05));
   --mds-label-button-icon-color: rgb(var(--label-amaranth-10));
   --mds-label-color: rgb(var(--label-amaranth-10));
@@ -43,8 +39,7 @@
 
   &:host([tone='weak']) {
     --mds-label-background: rgb(var(--label-amaranth-08));
-    --mds-label-button-background: rgb(var(--label-amaranth-09));
-    --mds-label-button-background-hover: rgb(var(--label-amaranth-08));
+    --mds-label-button-background-hover: rgb(var(--label-amaranth-09));
     --mds-label-button-icon-color: rgb(var(--label-amaranth-04));
     --mds-label-color: rgb(var(--label-amaranth-02));
     --mds-label-icon-color: rgb(var(--label-amaranth-02));
@@ -55,7 +50,6 @@
 
 :host([variant='aqua']) {
   --mds-label-background: rgb(var(--label-aqua-04));
-  --mds-label-button-background: rgb(var(--label-aqua-04));
   --mds-label-button-background-hover: rgb(var(--label-aqua-05));
   --mds-label-button-icon-color: rgb(var(--label-aqua-10));
   --mds-label-color: rgb(var(--label-aqua-10));
@@ -65,8 +59,7 @@
 
   &:host([tone='weak']) {
     --mds-label-background: rgb(var(--label-aqua-08));
-    --mds-label-button-background: rgb(var(--label-aqua-09));
-    --mds-label-button-background-hover: rgb(var(--label-aqua-08));
+    --mds-label-button-background-hover: rgb(var(--label-aqua-09));
     --mds-label-button-icon-color: rgb(var(--label-aqua-04));
     --mds-label-color: rgb(var(--label-aqua-02));
     --mds-label-icon-color: rgb(var(--label-aqua-02));
@@ -77,7 +70,6 @@
 
 :host([variant='blue']) {
   --mds-label-background: rgb(var(--label-blue-04));
-  --mds-label-button-background: rgb(var(--label-blue-04));
   --mds-label-button-background-hover: rgb(var(--label-blue-05));
   --mds-label-button-icon-color: rgb(var(--label-blue-10));
   --mds-label-color: rgb(var(--label-blue-10));
@@ -87,8 +79,7 @@
 
   &:host([tone='weak']) {
     --mds-label-background: rgb(var(--label-blue-08));
-    --mds-label-button-background: rgb(var(--label-blue-09));
-    --mds-label-button-background-hover: rgb(var(--label-blue-08));
+    --mds-label-button-background-hover: rgb(var(--label-blue-09));
     --mds-label-button-icon-color: rgb(var(--label-blue-04));
     --mds-label-color: rgb(var(--label-blue-02));
     --mds-label-icon-color: rgb(var(--label-blue-02));
@@ -99,7 +90,6 @@
 
 :host([variant='green']) {
   --mds-label-background: rgb(var(--label-green-04));
-  --mds-label-button-background: rgb(var(--label-green-04));
   --mds-label-button-background-hover: rgb(var(--label-green-05));
   --mds-label-button-icon-color: rgb(var(--label-green-10));
   --mds-label-color: rgb(var(--label-green-10));
@@ -109,8 +99,7 @@
 
   &:host([tone='weak']) {
     --mds-label-background: rgb(var(--label-green-08));
-    --mds-label-button-background: rgb(var(--label-green-09));
-    --mds-label-button-background-hover: rgb(var(--label-green-08));
+    --mds-label-button-background-hover: rgb(var(--label-green-09));
     --mds-label-button-icon-color: rgb(var(--label-green-04));
     --mds-label-color: rgb(var(--label-green-02));
     --mds-label-icon-color: rgb(var(--label-green-02));
@@ -121,7 +110,6 @@
 
 :host([variant='lime']) {
   --mds-label-background: rgb(var(--label-lime-04));
-  --mds-label-button-background: rgb(var(--label-lime-04));
   --mds-label-button-background-hover: rgb(var(--label-lime-05));
   --mds-label-button-icon-color: rgb(var(--label-lime-10));
   --mds-label-color: rgb(var(--label-lime-10));
@@ -131,8 +119,7 @@
 
   &:host([tone='weak']) {
     --mds-label-background: rgb(var(--label-lime-08));
-    --mds-label-button-background: rgb(var(--label-lime-09));
-    --mds-label-button-background-hover: rgb(var(--label-lime-08));
+    --mds-label-button-background-hover: rgb(var(--label-lime-09));
     --mds-label-button-icon-color: rgb(var(--label-lime-04));
     --mds-label-color: rgb(var(--label-lime-02));
     --mds-label-icon-color: rgb(var(--label-lime-02));
@@ -143,7 +130,6 @@
 
 :host([variant='orange']) {
   --mds-label-background: rgb(var(--label-orange-04));
-  --mds-label-button-background: rgb(var(--label-orange-04));
   --mds-label-button-background-hover: rgb(var(--label-orange-05));
   --mds-label-button-icon-color: rgb(var(--label-orange-10));
   --mds-label-color: rgb(var(--label-orange-10));
@@ -153,8 +139,7 @@
 
   &:host([tone='weak']) {
     --mds-label-background: rgb(var(--label-orange-08));
-    --mds-label-button-background: rgb(var(--label-orange-09));
-    --mds-label-button-background-hover: rgb(var(--label-orange-08));
+    --mds-label-button-background-hover: rgb(var(--label-orange-09));
     --mds-label-button-icon-color: rgb(var(--label-orange-04));
     --mds-label-color: rgb(var(--label-orange-02));
     --mds-label-icon-color: rgb(var(--label-orange-02));
@@ -165,7 +150,6 @@
 
 :host([variant='orchid']) {
   --mds-label-background: rgb(var(--label-orchid-04));
-  --mds-label-button-background: rgb(var(--label-orchid-04));
   --mds-label-button-background-hover: rgb(var(--label-orchid-05));
   --mds-label-button-icon-color: rgb(var(--label-orchid-10));
   --mds-label-color: rgb(var(--label-orchid-10));
@@ -175,8 +159,7 @@
 
   &:host([tone='weak']) {
     --mds-label-background: rgb(var(--label-orchid-08));
-    --mds-label-button-background: rgb(var(--label-orchid-09));
-    --mds-label-button-background-hover: rgb(var(--label-orchid-08));
+    --mds-label-button-background-hover: rgb(var(--label-orchid-09));
     --mds-label-button-icon-color: rgb(var(--label-orchid-04));
     --mds-label-color: rgb(var(--label-orchid-02));
     --mds-label-icon-color: rgb(var(--label-orchid-02));
@@ -187,7 +170,6 @@
 
 :host([variant='sky']) {
   --mds-label-background: rgb(var(--label-sky-04));
-  --mds-label-button-background: rgb(var(--label-sky-04));
   --mds-label-button-background-hover: rgb(var(--label-sky-05));
   --mds-label-button-icon-color: rgb(var(--label-sky-10));
   --mds-label-color: rgb(var(--label-sky-10));
@@ -197,8 +179,7 @@
 
   &:host([tone='weak']) {
     --mds-label-background: rgb(var(--label-sky-08));
-    --mds-label-button-background: rgb(var(--label-sky-09));
-    --mds-label-button-background-hover: rgb(var(--label-sky-08));
+    --mds-label-button-background-hover: rgb(var(--label-sky-09));
     --mds-label-button-icon-color: rgb(var(--label-sky-04));
     --mds-label-color: rgb(var(--label-sky-02));
     --mds-label-icon-color: rgb(var(--label-sky-02));
@@ -209,7 +190,6 @@
 
 :host([variant='violet']) {
   --mds-label-background: rgb(var(--label-violet-04));
-  --mds-label-button-background: rgb(var(--label-violet-04));
   --mds-label-button-background-hover: rgb(var(--label-violet-05));
   --mds-label-button-icon-color: rgb(var(--label-violet-10));
   --mds-label-color: rgb(var(--label-violet-10));
@@ -219,8 +199,7 @@
 
   &:host([tone='weak']) {
     --mds-label-background: rgb(var(--label-violet-08));
-    --mds-label-button-background: rgb(var(--label-violet-09));
-    --mds-label-button-background-hover: rgb(var(--label-violet-08));
+    --mds-label-button-background-hover: rgb(var(--label-violet-09));
     --mds-label-button-icon-color: rgb(var(--label-violet-04));
     --mds-label-color: rgb(var(--label-violet-02));
     --mds-label-icon-color: rgb(var(--label-violet-02));
@@ -231,7 +210,6 @@
 
 :host([variant='purple']) {
   --mds-label-background: rgb(var(--label-purple-04));
-  --mds-label-button-background: rgb(var(--label-purple-04));
   --mds-label-button-background-hover: rgb(var(--label-purple-05));
   --mds-label-button-icon-color: rgb(var(--label-purple-10));
   --mds-label-color: rgb(var(--label-purple-10));
@@ -241,8 +219,7 @@
 
   &:host([tone='weak']) {
     --mds-label-background: rgb(var(--label-purple-08));
-    --mds-label-button-background: rgb(var(--label-purple-09));
-    --mds-label-button-background-hover: rgb(var(--label-purple-08));
+    --mds-label-button-background-hover: rgb(var(--label-purple-09));
     --mds-label-button-icon-color: rgb(var(--label-purple-04));
     --mds-label-color: rgb(var(--label-purple-02));
     --mds-label-icon-color: rgb(var(--label-purple-02));
@@ -253,7 +230,6 @@
 
 :host([variant='yellow']) {
   --mds-label-background: rgb(var(--label-yellow-04));
-  --mds-label-button-background: rgb(var(--label-yellow-04));
   --mds-label-button-background-hover: rgb(var(--label-yellow-05));
   --mds-label-button-icon-color: rgb(var(--label-yellow-10));
   --mds-label-color: rgb(var(--label-yellow-10));
@@ -263,8 +239,7 @@
 
   &:host([tone='weak']) {
     --mds-label-background: rgb(var(--label-yellow-08));
-    --mds-label-button-background: rgb(var(--label-yellow-09));
-    --mds-label-button-background-hover: rgb(var(--label-yellow-08));
+    --mds-label-button-background-hover: rgb(var(--label-yellow-09));
     --mds-label-button-icon-color: rgb(var(--label-yellow-04));
     --mds-label-color: rgb(var(--label-yellow-02));
     --mds-label-icon-color: rgb(var(--label-yellow-02));

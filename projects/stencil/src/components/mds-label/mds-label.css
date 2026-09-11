@@ -17,7 +17,7 @@
   --mds-label-icon-color: var(--mds-label-color);
   --mds-label-selection-background: var(--magma-selection-background, rgb(var(--label-yellow-09)));
   --mds-label-selection-color: var(--magma-selection-color, rgb(var(--label-yellow-02)));
-  --mds-label-button-background: rgb(var(--label-yellow-08));
+  --mds-label-button-background: transparent;
   --mds-label-button-background-hover: rgb(var(--label-yellow-07));
   --mds-label-button-icon-color: rgb(var(--label-yellow-03));
   --private-bevel-size: --spacing(900);
@@ -74,15 +74,16 @@
   }
 }
 
+/* The close button paints no resting pad: it is as tall as the label, so its own
+ * box can only cut across the corners of the tag, whatever radius it is given.
+ * The tint comes back on hover, where it reads as feedback and not as a second
+ * shape; --mds-label-button-background stays the knob to bring it back. */
+
 .button-close {
   --mds-button-background: var(--mds-label-button-background);
   --mds-button-border-opacity: 0;
 
   align-self: center;
-
-  /* border-radius: 100px; */
-
-  /* corner-shape: round; */
   fill: var(--mds-label-button-icon-color);
   flex-shrink: 0;
 }
