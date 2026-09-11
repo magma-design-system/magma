@@ -38,6 +38,39 @@
     },
     "full": {
       "value": "1000px"
+    },
+    "squircle-3xs": {
+      "value": "{sizing.primitive.150}"
+    },
+    "squircle-2xs": {
+      "value": "{sizing.primitive.250}"
+    },
+    "squircle-xs": {
+      "value": "{sizing.primitive.350}"
+    },
+    "squircle-sm": {
+      "value": "{sizing.primitive.400}"
+    },
+    "squircle-md": {
+      "value": "{sizing.primitive.500}"
+    },
+    "squircle-lg": {
+      "value": "{sizing.primitive.700}"
+    },
+    "squircle-xl": {
+      "value": "{sizing.primitive.900}"
+    },
+    "squircle-2xl": {
+      "value": "{sizing.primitive.1000}"
+    },
+    "squircle-3xl": {
+      "value": "{sizing.primitive.1400}"
+    },
+    "squircle-4xl": {
+      "value": "{sizing.primitive.2000}"
+    },
+    "squircle-5xl": {
+      "value": "{sizing.primitive.2800}"
     }
   }
 }

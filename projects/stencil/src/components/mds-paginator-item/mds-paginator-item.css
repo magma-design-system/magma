@@ -55,7 +55,7 @@
   --mds-paginator-item-color-hover: rgb(var(--magma-text-default));
   --mds-paginator-item-color-selected: rgb(var(--magma-text-on-emphasis));
   --mds-paginator-item-color: rgb(var(--magma-text-default));
-  --mds-paginator-item-radius: 200px;
+  --mds-paginator-item-radius: var(--radius-full);
   --mds-paginator-item-shadow-disabled: none;
   --mds-paginator-item-shadow-hover: none;
   --mds-paginator-item-shadow-selected: var(--shadow-md-sharp);

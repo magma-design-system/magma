@@ -76,7 +76,7 @@
   align-items: center;
   align-self: flex-start;
   background-color: var(--mds-keyboard-background-default);
-  border-radius: var(--radius-2xl);
+  border-radius: var(--magma-radius-2xl);
   box-shadow:
     var(--mds-keyboard-illumination-light), var(--mds-keyboard-illumination-dark),
     var(--mds-keyboard-illumination-shadow);
@@ -118,7 +118,7 @@ mds-tooltip {
 .combination-checker {
   --mds-button-await-duration: var(--mds-keyboard-spinner-duration);
 
-  border-radius: 100px;
+  border-radius: var(--radius-full);
 }
 
 ::slotted(mds-keyboard-key) {

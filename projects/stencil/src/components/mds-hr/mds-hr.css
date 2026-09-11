@@ -3,7 +3,7 @@
 :host {
   background-color: rgb(var(--magma-wash-strong));
   border: 0;
-  border-radius: 1000px;
+  border-radius: var(--radius-full);
   display: flex;
   height: 1px;
   width: 100%;

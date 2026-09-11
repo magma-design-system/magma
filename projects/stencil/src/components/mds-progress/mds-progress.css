@@ -20,7 +20,7 @@
   @apply ease-in-out;
 
   background-color: var(--mds-progress-background);
-  border-radius: var(--radius-2xl);
+  border-radius: var(--magma-radius-2xl);
   corner-shape: var(--magma-corner-shape, round);
   display: flex;
   height: var(--mds-progress-thickness);

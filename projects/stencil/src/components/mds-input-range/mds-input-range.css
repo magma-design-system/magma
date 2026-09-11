@@ -71,7 +71,7 @@
 
   appearance: none;
   background-color: transparent;
-  border-radius: 1000px;
+  border-radius: var(--radius-full);
   flex-grow: 1;
   height: --spacing(400);
   margin: 0;
