@@ -135,13 +135,25 @@
 /*
  * corner-shape
  * https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/corner-shape
- * also supports superellipse(-1.0 to 1.0) method
+ *
+ * `inherits: true` is what makes this token deviable. With `false` the value a
+ * consumer declares on `:root` reaches NOBODY - every element keeps seeing the
+ * initial value below - so neither the documented escape hatch nor a per-subtree
+ * override can work. Measured on Chromium 151: with `false` a wrapper declaring
+ * `round` still leaves its children on `squircle`; with `true` they follow.
+ *
+ * `syntax: '*'` is the only way to admit the functional shapes, `superellipse()`
+ * included: there is no `<superellipse()>` type to list next to the keywords, and
+ * an enumerated syntax REJECTS the function and silently falls back to the initial
+ * value. The cost is the lost safety net - with `*` a typo is no longer rejected
+ * either, it invalidates `corner-shape` and the element renders the CSS default
+ * `round` instead of staying on the design system default.
  */
 
 @property --magma-corner-shape {
-  inherits: false;
+  inherits: true;
   initial-value: squircle;
-  syntax: 'bevel | notch | round | scoop | square | squircle';
+  syntax: '*';
 }
 
 /* z-index */
