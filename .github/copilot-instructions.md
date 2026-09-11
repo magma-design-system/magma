@@ -66,6 +66,15 @@ Every component documents its semantic intent in three markdown files inside `pr
 
 These are the **canonical source of truth**. The component's `readme.md` is auto-generated from them by the Stencil build (`usage/*.md` → `documentation.json` → `readme.md`), so **never edit `readme.md` by hand**. Templates for new components live in `projects/stencil/template/usage/*.md.hbs`; the scaffolder is `npm run generate.usage`.
 
+## Tests
+
+Tests live in `projects/stencil/src/components/<name>/test/`: `*.e2e.ts` (component tests in Chromium via Playwright, `render` from `@stencil/vitest` + `userEvent` from `vitest/browser`) and `*.spec.ts` (unit tests in mock-doc, no rendering). Run them with `nx run stencil:test`; the Storybook tests with `npm run test.storybook.static` (from `projects/stencil`).
+
+- **Every behaviour change must come with a test that covers it**, in the same branch: props, events, methods, rendered DOM, keyboard/focus handling, form participation, validation. A bug fix's test reproduces the bug first.
+- Pure style changes (padding, margin, colours, radius, typography) do not need a test.
+- Storybook (`*.stories.tsx`, same folder) adds the visual, interaction (`play` with `expect` / `fn` from `storybook/test`) and accessibility (addon-a11y) tests, plus integration pages with several components. Add or update a story when necessary; it complements the Vitest tests, never replaces them.
+- Setup and caveats: [`projects/stencil/HOWTO.md`](../projects/stencil/HOWTO.md#tests).
+
 ## Commit messages
 
 Format: `type(scope): subject`. Enforced by `commitlint.config.js` via `.husky/commit-msg`.
@@ -106,7 +115,7 @@ Full rules: [`docs/WORKFLOW.md`](../docs/WORKFLOW.md).
 
 1. Scaffold with `nx run stencil:generate mds-component-name`.
 2. Generate the `usage/` triplet with `npm run generate.usage` and fill in the three files (templates in `projects/stencil/template/usage/`).
-3. Add Storybook stories under `test/`.
+3. Add Storybook stories and an `*.e2e.ts` covering the public API under `test/`.
 4. Run `npm run lint` before committing.
 
 ## Anti-patterns Copilot must avoid
@@ -120,3 +129,4 @@ Full rules: [`docs/WORKFLOW.md`](../docs/WORKFLOW.md).
 - Using the `background` shorthand or any vendor-prefixed property.
 - Composing typography with raw `font-*` + `text-*` primitives - use semantic `text-*` utilities.
 - Piercing the shadow DOM of a component with `>>>` or undocumented internal selectors.
+- Changing a component's behaviour (props, events, methods, DOM, keyboard/focus, validation) without a `*.spec.ts` / `*.e2e.ts` test covering it.

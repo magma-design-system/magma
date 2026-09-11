@@ -39,6 +39,18 @@ When you commit with the intention of pushing, follow this order before the push
 
 If lint or the tests fail after merging `dev`, stop and resolve the failures before pushing; do not push a branch that is broken against the latest `dev`.
 
+## 5. Cover every behaviour change with a test
+
+Every change to what a component **does** must ship, in the same branch, with a test that covers the new or changed implementation, so that the change is protected against regressions.
+
+- **Behaviour** is anything observable beyond presentation: props and their defaults, emitted events, public methods, the rendered DOM structure, keyboard and focus handling, form participation, validation, state transitions. This includes the public API of a new component.
+- **Pure style changes are exempt**: padding, margin, colours, radius, typography, transitions and similar CSS-only adjustments do not need a test.
+- Put the test in the component's `test/` folder: `*.spec.ts` for logic that does not need a rendered component, `*.e2e.ts` for anything that needs the live DOM. A bug fix's test should reproduce the bug: fail on the previous implementation, pass on the fix.
+- How to write and run the tests (Vitest + `@stencil/vitest`, `render` / `userEvent`, shared-page caveats): `projects/stencil/HOWTO.md`.
+- **Storybook is the other half.** The Vitest `spec` / `e2e` files are the unit and component tests; the `*.stories.tsx` files in the same `test/` folder add the visual, interaction (`play` functions with `expect` / `fn` from `storybook/test` and the `canvas` / `userEvent` of the play context) and accessibility (`@storybook/addon-a11y`) tests, and are the place to show and exercise several components together on one page (integration scenarios). Add or update a story when necessary: when the change affects how the component looks, how the user interacts with it, its accessibility, or how it composes with other components. A story complements the Vitest tests; it never replaces them. Run them headless with `npm run test.storybook.static` (from `projects/stencil`), or `npm run test.storybook` against a live Storybook.
+
+A pull request that changes a component's behaviour without a covering test is not ready for review.
+
 ## Summary for agents
 
 | Action                                          | Allowed for an agent?                                    |
@@ -46,6 +58,7 @@ If lint or the tests fail after merging `dev`, stop and resolve the failures bef
 | Create a dedicated branch off `dev`             | Yes, linked to its issue (see rule 3)                    |
 | Commit and push to that branch's own remote     | Yes, after syncing with `dev` and passing lint and tests |
 | Merge `dev` into your feature branch            | Yes (to stay current before a push)                      |
+| Change a component's behaviour without a test   | No - add or update a `spec` / `e2e` test (see rule 5)    |
 | Merge a branch into `dev` or `main`             | No - manual governance step                              |
 | Push directly to `dev` or `main`                | No - manual governance step                              |
 | Auto-merge a pull request into `dev` or `main`  | No - manual governance step                              |
