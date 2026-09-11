@@ -19,7 +19,7 @@
   @apply focus-bounce;
 
   align-items: center;
-  border-radius: 1000px;
+  border-radius: var(--radius-full);
   color: rgb(var(--magma-text-muted));
   cursor: pointer;
   display: flex;

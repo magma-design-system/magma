@@ -118,7 +118,7 @@ mds-tooltip {
 .combination-checker {
   --mds-button-await-duration: var(--mds-keyboard-spinner-duration);
 
-  border-radius: 100px;
+  border-radius: var(--radius-full);
 }
 
 ::slotted(mds-keyboard-key) {
