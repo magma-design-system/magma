@@ -26,7 +26,7 @@
 
   align-items: center;
   background-color: var(--mds-label-background);
-  border-radius: var(--magma-radius-md);
+  border-radius: var(--magma-radius-full);
   color: var(--mds-label-color);
   corner-shape: var(--magma-corner-shape, round);
   display: flex;
@@ -43,8 +43,6 @@
 @supports (corner-shape: bevel) {
   :host {
     align-items: stretch;
-    border-bottom-left-radius: 100px;
-    border-top-left-radius: 100px;
     corner-left-shape: superellipse(0.25);
     corner-right-shape: var(--magma-corner-shape, round);
     padding-left: calc(var(--private-bevel-size) / 2);
