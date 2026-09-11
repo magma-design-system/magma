@@ -17,7 +17,7 @@
 
 .message-window {
   background-color: transparent;
-  border-radius: var(--radius-2xl);
+  border-radius: var(--magma-radius-2xl);
   color: var(--mds-input-field-message-color);
   corner-shape: inherit;
   display: grid;

@@ -26,7 +26,7 @@
 
   align-items: center;
   background-color: var(--mds-label-background);
-  border-radius: var(--radius-md);
+  border-radius: var(--magma-radius-md);
   color: var(--mds-label-color);
   corner-shape: var(--magma-corner-shape, round);
   display: flex;

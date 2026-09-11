@@ -41,7 +41,7 @@
   --mds-dropdown-z-index: var(--magma-dropdown-z-index, 4000);
 
   background-color: var(--mds-dropdown-background);
-  border-radius: var(--radius-md);
+  border-radius: var(--magma-radius-md);
   box-sizing: border-box;
   corner-shape: var(--magma-corner-shape, round);
   display: none;

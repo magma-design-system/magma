@@ -111,7 +111,7 @@
   --mds-tab-tabs-overflow-shadow: 0 0 var(--mds-tab-tabs-overflow-shadow-size) -2px
     rgb(0 0 0 / 0.375);
   --mds-tab-tabs-padding: --spacing(200);
-  --mds-tab-tabs-radius: var(--radius-2xl);
+  --mds-tab-tabs-radius: var(--magma-radius-2xl);
   --mds-tab-tabs-wrapper-margin: 0;
   --mds-tab-tabs-wrapper-outline-opacity: 0.7;
   --mds-tab-tabs-wrapper-shadow-color: var(--mds-tab-tabs-background);

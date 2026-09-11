@@ -38,7 +38,7 @@
   --mds-button-color: rgb(var(--magma-text-on-emphasis));
   --mds-button-gap: --spacing(200);
   --mds-button-line-clamp: 1;
-  --mds-button-radius: var(--radius-2xl);
+  --mds-button-radius: var(--magma-radius-2xl);
 
   @apply focus-bounce;
 

@@ -53,7 +53,7 @@
 
 @property --mds-banner-radius {
   inherits: true;
-  initial-value: var(--radius-2xl, 24px);
+  initial-value: var(--magma-radius-2xl);
   syntax: '<length>';
 }
 

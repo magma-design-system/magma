@@ -54,7 +54,7 @@
   --mds-input-tip-horizontal-offset: --spacing(100);
   --mds-input-tip-vertical-offset: --spacing(100);
   --mds-input-variant-color-rgb: var(--variant-primary-03);
-  --mds-input-border-radius: var(--radius-xl);
+  --mds-input-border-radius: var(--magma-radius-xl);
   --mds-input-transition-duration: var(--duration-300);
 
   /* private */
