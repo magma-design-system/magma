@@ -50,7 +50,7 @@
     rgb(var(--mds-button-border-color-rgb) / var(--mds-button-border-opacity));
   box-sizing: border-box;
   color: var(--mds-button-color);
-  corner-shape: var(--magma-corner-shape, round);
+  corner-shape: var(--mds-button-corner-shape, var(--magma-corner-shape, round));
   cursor: pointer;
   display: inline-flex;
   fill: currentcolor;
