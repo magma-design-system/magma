@@ -283,7 +283,7 @@ export class MdsInputDate {
           >
             <mds-calendar
               key={this.calendarKey}
-              rangePicker={false}
+              singlePicker
               hideToday={this.hideToday}
               onMdsCalendarChange={this.handleCalendarChange}
               startDate={this.value}
