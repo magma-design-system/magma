@@ -42,6 +42,10 @@ on:
         description: Install (and cache) the Playwright Chromium used by the vitest browser tests
         type: boolean
         default: false
+      run-storybook-tests:
+        description: Also run `npm run test-storybook` (the Vitest `storybook` project) in test-working-directory
+        type: boolean
+        default: false
     outputs:
       changed:
         description: Whether files matching `path` changed in this event
@@ -123,3 +127,8 @@ jobs:
           path: ${{ inputs.artifact-download-path }}
       - working-directory: ${{ inputs.test-working-directory }}
         run: npm run test
+      # the stories render the dist of the build artifact in the same Playwright Chromium;
+      # vitest runs once in CI, no Storybook server is started
+      - if: ${{ inputs.run-storybook-tests }}
+        working-directory: ${{ inputs.test-working-directory }}
+        run: npm run test-storybook

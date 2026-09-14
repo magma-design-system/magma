@@ -87,6 +87,10 @@ npm run test-storybook -- --run                         # one shot in a terminal
 npx vitest run --project storybook src/components/mds-button   # a subset
 ```
 
+CI runs them in the test job of the stencil workflow (`.github/workflows/stencil.yml`, input
+`run-storybook-tests` of the shared package pipeline), right after `npm run test`, against the dist
+of the build artifact.
+
 `nx run stencil:test` runs the `spec` and `browser` projects only; the stories are their own target
 (`nx run stencil:test-storybook`). Story globs, aliases and PostCSS come from `.storybook/main.mjs`
 (`viteFinal`), so the tests render exactly what Storybook renders. In watch mode the addon also

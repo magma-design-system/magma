@@ -42,6 +42,8 @@ jobs:
       # the browser tests need the Playwright Chromium
       install-playwright-browsers: true
       test-working-directory: projects/stencil
+      # play functions and a11y checks of the stories (Vitest project `storybook`)
+      run-storybook-tests: true
 
   magma-react:
     needs: [magma]
