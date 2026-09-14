@@ -588,6 +588,21 @@ export namespace Components {
          */
         "endDate": string | null;
         /**
+          * If set, the component hides the next navigation button in the calendar header.
+          * @default false
+         */
+        "hideNextButton": boolean;
+        /**
+          * If set, the component hides the preselection area above the calendar view even when the `preselection` slot has content.
+          * @default false
+         */
+        "hidePreselection": boolean;
+        /**
+          * If set, the component hides the previous navigation button in the calendar header.
+          * @default false
+         */
+        "hidePreviousButton": boolean;
+        /**
           * Hides the highlight on today's date in the calendar view.
           * @default false
          */
@@ -614,25 +629,10 @@ export namespace Components {
          */
         "min": string | null;
         /**
-          * Enables selecting a date range (start and end date) instead of a single date.
-          * @default true
-         */
-        "rangePicker": boolean;
-        /**
-          * Shows the next navigation button in the calendar header.
-          * @default true
-         */
-        "showNextButton": boolean;
-        /**
-          * Shows the preselection area above the calendar view.
+          * If set, the component selects a single date instead of a date range (start and end date).
           * @default false
          */
-        "showPreselection": boolean;
-        /**
-          * Shows the previous navigation button in the calendar header.
-          * @default true
-         */
-        "showPreviousButton": boolean;
+        "singlePicker": boolean;
         /**
           * Specifies the start date of the selection
           * @description It's in ISO format (YYYY-MM-DD).
@@ -4936,6 +4936,21 @@ declare namespace LocalJSX {
          */
         "endDate"?: string | null;
         /**
+          * If set, the component hides the next navigation button in the calendar header.
+          * @default false
+         */
+        "hideNextButton"?: boolean;
+        /**
+          * If set, the component hides the preselection area above the calendar view even when the `preselection` slot has content.
+          * @default false
+         */
+        "hidePreselection"?: boolean;
+        /**
+          * If set, the component hides the previous navigation button in the calendar header.
+          * @default false
+         */
+        "hidePreviousButton"?: boolean;
+        /**
           * Hides the highlight on today's date in the calendar view.
           * @default false
          */
@@ -4986,25 +5001,10 @@ declare namespace LocalJSX {
          */
         "onMdsCalendarPreselect"?: (event: MdsCalendarCustomEvent<void>) => void;
         /**
-          * Enables selecting a date range (start and end date) instead of a single date.
-          * @default true
-         */
-        "rangePicker"?: boolean;
-        /**
-          * Shows the next navigation button in the calendar header.
-          * @default true
-         */
-        "showNextButton"?: boolean;
-        /**
-          * Shows the preselection area above the calendar view.
+          * If set, the component selects a single date instead of a date range (start and end date).
           * @default false
          */
-        "showPreselection"?: boolean;
-        /**
-          * Shows the previous navigation button in the calendar header.
-          * @default true
-         */
-        "showPreviousButton"?: boolean;
+        "singlePicker"?: boolean;
         /**
           * Specifies the start date of the selection
           * @description It's in ISO format (YYYY-MM-DD).
@@ -7505,11 +7505,11 @@ declare namespace LocalJSX {
         "truncate": TypographyTruncateType;
     }
     interface MdsCalendarAttributes {
-        "rangePicker": boolean;
-        "showPreviousButton": boolean;
-        "showNextButton": boolean;
+        "singlePicker": boolean;
+        "hidePreviousButton": boolean;
+        "hideNextButton": boolean;
         "disableMonthYearSelection": boolean;
-        "showPreselection": boolean;
+        "hidePreselection": boolean;
         "hideToday": boolean;
         "viewDate": string | null;
         "hoverDate": string | null;

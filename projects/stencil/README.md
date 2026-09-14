@@ -57,6 +57,7 @@ The [migration codemod](../codemod/README.md) applies exactly this mapping.
 | ⚠️ | `mds-text`                 | added `text-box` css module with vertically treats text nodes with a better optical alignment.
 | ⚠️ | `mds-banner`               | Removed old `quiet` tone which is NOT replaced with `text` tone. |
 | ⚠️ | `mds-breadcrumb`           | Now item requires `label` attribute to be set. |
+| ⚠️ | `mds-calendar`             | Boolean props inverted to the negative form, every default is now `false`: `rangePicker` → `singlePicker`, `showPreviousButton` → `hidePreviousButton`, `showNextButton` → `hideNextButton`, `showPreselection` → `hidePreselection`. The [migration codemod](../codemod/README.md) rewrites them. |
 | ✅ | `mds-file`                  | Added download icon on hover to make component more explicit. |
 | ✅ | `mds-table`                | Added batch actions to the table when rows are selectable. |
 | ✅ | `mds-header-bar`           | The overlay blur effect is now applied progressively rather than sharply outlined. |
