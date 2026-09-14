@@ -83,10 +83,18 @@ mds-spinner {
   gap: --spacing(100);
 }
 
+.details--hidden {
+  display: none;
+}
+
 .actions {
   align-items: center;
   display: flex;
   gap: --spacing(200);
+}
+
+.actions--hidden {
+  display: none;
 }
 
 ::slotted([slot='action']) {

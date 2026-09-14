@@ -1,5 +1,6 @@
-import { Component, Host, h, Element } from '@stencil/core';
+import { Component, Host, h, Element, State } from '@stencil/core';
 import { hasChildWithSlot } from '@common/slot';
+import clsx from 'clsx';
 
 /**
  * @slot - Add `text string`, `HTML elements` or `components` to this slot.
@@ -13,21 +14,23 @@ import { hasChildWithSlot } from '@common/slot';
 })
 export class MdsCardHeader {
   @Element() private hostElement: HTMLMdsCardHeaderElement;
-  private actions: boolean;
+  @State() hasActions: boolean;
+
+  private onActionSlotChange = (): void => {
+    this.hasActions = hasChildWithSlot(this.hostElement, 'action');
+  };
 
   componentWillLoad(): void {
-    this.actions = hasChildWithSlot(this.hostElement, 'action');
+    this.hasActions = hasChildWithSlot(this.hostElement, 'action');
   }
 
   render() {
     return (
       <Host slot="header">
         <slot />
-        {this.actions && (
-          <div class="actions">
-            <slot name="action" />
-          </div>
-        )}
+        <div class={clsx('actions', !this.hasActions && 'actions--hidden')}>
+          <slot name="action" onSlotchange={this.onActionSlotChange} />
+        </div>
       </Host>
     );
   }

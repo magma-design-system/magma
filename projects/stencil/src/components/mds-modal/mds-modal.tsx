@@ -8,6 +8,7 @@ import {
   Host,
   h,
   Prop,
+  State,
   Watch,
 } from '@stencil/core';
 import { hasChildWithSlot, queryChildBySlot } from '@common/slot';
@@ -38,22 +39,20 @@ import miBaselineClose from '@icon/mi/baseline/close.svg';
 export class MdsModal {
   private animationDelayTimeout: NodeJS.Timeout;
   private dialogEl?: HTMLDialogElement;
-  private window = false;
-  private top = false;
   private bodyOverflow: string;
-  private bottom = false;
   private cssTransitionDuration: string = '500';
   private windowElement: HTMLElement;
   private windowContentWrapper?: HTMLElement;
-  private windowHeaderElement: HTMLElement;
-  private windowFooterElement: HTMLElement;
-  private windowHeaderHeight: number;
-  private windowFooterHeight: number;
   private touchStartX: number;
   private touchStartY: number;
   private touchMargin: number = 50;
 
   @Element() host: HTMLMdsModalElement;
+  @State() hasBottom = false;
+  @State() hasTop = false;
+  @State() hasWindow = false;
+  @State() windowHeaderHeight = 0;
+  @State() windowFooterHeight = 0;
 
   /**
    * Specifies if the modal is opened or not
@@ -212,17 +211,34 @@ export class MdsModal {
     this.windowElement.addEventListener('touchend', this.setTouchEnd);
   };
 
+  private updateSlots = (): void => {
+    this.hasBottom = hasChildWithSlot(this.host, 'bottom');
+    this.hasTop = hasChildWithSlot(this.host, 'top');
+    this.hasWindow = hasChildWithSlot(this.host, 'window');
+
+    if (this.hasWindow) {
+      queryChildBySlot(this.host, 'window')?.setAttribute('role', 'dialog');
+    }
+  };
+
+  /**
+   * Measures the header and the footer to pad the content: the states change
+   * only when a measure differs, so the update pass settles after one render.
+   */
+  private updateWindowPaddings = (): void => {
+    const header = this.host.shadowRoot?.querySelector('.window-header') as HTMLElement | null;
+    const footer = this.host.shadowRoot?.querySelector('.window-footer') as HTMLElement | null;
+    const headerHeight = header?.offsetHeight ?? 0;
+    const footerHeight = footer?.offsetHeight ?? 0;
+    if (headerHeight !== this.windowHeaderHeight) this.windowHeaderHeight = headerHeight;
+    if (footerHeight !== this.windowFooterHeight) this.windowFooterHeight = footerHeight;
+  };
+
   componentWillLoad(): void {
-    this.bottom = hasChildWithSlot(this.host, 'bottom');
-    this.top = hasChildWithSlot(this.host, 'top');
-    this.window = hasChildWithSlot(this.host, 'window');
+    this.updateSlots();
 
     if (this.overflow === 'auto' && this.opened) {
       this.disableOverflow();
-    }
-
-    if (this.window) {
-      queryChildBySlot(this.host, 'window')?.setAttribute('role', 'dialog');
     }
   }
 
@@ -231,15 +247,7 @@ export class MdsModal {
     this.windowContentWrapper = this.host.shadowRoot?.querySelector(
       '.window-content-wrapper',
     ) as HTMLElement;
-    this.windowHeaderElement = this.host.shadowRoot?.querySelector('.window-header') as HTMLElement;
-    this.windowFooterElement = this.host.shadowRoot?.querySelector('.window-footer') as HTMLElement;
-
-    if (this.windowHeaderElement != null) {
-      this.windowHeaderHeight = this.windowHeaderElement.offsetHeight;
-    }
-    if (this.windowFooterElement != null) {
-      this.windowFooterHeight = this.windowFooterElement.offsetHeight;
-    }
+    this.updateWindowPaddings();
     if (this.windowElement != null) {
       this.addMobileEvents();
       this.windowElement.addEventListener('transitionend', this.handleWindowTransitionEnd);
@@ -253,6 +261,12 @@ export class MdsModal {
       this.animateOpenWindow();
       this.openEvent.emit();
     }
+  }
+
+  componentDidUpdate(): void {
+    // the header and the footer are hidden while their slots are empty: refresh
+    // the paddings of the content once a late `top` or `bottom` child shows them
+    this.updateWindowPaddings();
   }
 
   disconnectedCallback(): void {
@@ -364,12 +378,11 @@ export class MdsModal {
             this.handleCancel(e);
           }}
         >
-          {this.window ? (
-            <slot name="window" />
-          ) : (
+          <slot name="window" onSlotchange={this.updateSlots} />
+          {!this.hasWindow && (
             <div class="window" part="window">
-              <div class={clsx('window-header', this.top ? '' : 'window-content--empty')}>
-                <slot name="top" />
+              <div class={clsx('window-header', !this.hasTop && 'window-content--empty')}>
+                <slot name="top" onSlotchange={this.updateSlots} />
               </div>
               <div class="window-content-wrapper">
                 <div
@@ -382,12 +395,12 @@ export class MdsModal {
                   <slot />
                 </div>
               </div>
-              <div class={clsx('window-footer', this.bottom ? '' : 'window-content--empty')}>
-                <slot name="bottom" />
+              <div class={clsx('window-footer', !this.hasBottom && 'window-content--empty')}>
+                <slot name="bottom" onSlotchange={this.updateSlots} />
               </div>
             </div>
           )}
-          {!this.window && (
+          {!this.hasWindow && (
             <mds-button
               class="action-close"
               icon={miBaselineClose}
