@@ -1,16 +1,16 @@
 import { render } from '@stencil/vitest';
 import { describeConditionalSlot } from '@test/slot';
 
-describe('mds-tree-item', () => {
+describe('mds-toast', () => {
   it('renders', async () => {
-    const { root } = await render('<mds-tree-item></mds-tree-item>');
+    const { root } = await render('<mds-toast>Text</mds-toast>');
 
     expect(root).toHaveAttribute('hydrated');
   });
 
   describeConditionalSlot({
-    html: '<mds-tree-item label="Item"></mds-tree-item>',
+    html: '<mds-toast>Text</mds-toast>',
     slot: 'action',
-    region: '.actions-container',
+    region: '.actions',
   });
 });

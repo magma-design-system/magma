@@ -208,6 +208,10 @@ export class MdsTreeItem {
     this.resolveActions();
   }
 
+  private onActionSlotChange = (): void => {
+    this.hasActions = hasChildWithSlot(this.host, 'action');
+  };
+
   componentWillLoad(): void {
     this.updateToggleIcon();
     this.resolveActions();
@@ -261,7 +265,7 @@ export class MdsTreeItem {
               part="actions-container"
             >
               <div class="actions" part="actions-list">
-                <slot name="action"></slot>
+                <slot name="action" onSlotchange={this.onActionSlotChange}></slot>
               </div>
             </div>
           </div>

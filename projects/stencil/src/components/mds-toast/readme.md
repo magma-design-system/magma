@@ -16,7 +16,7 @@ The `<mds-toast>` web component is the transient notification surface of the Mag
 - **Auto-dismiss timer**: When `visible` is true and `duration` is a positive number, an internal timer counts down and then sets `visible` back to `false`; setting `duration` to `0` (or falsy) keeps the toast on screen until it is closed intentionally.
 - **Close event**: After the outro animation completes, the component emits `mdsToastClose` - consumers should listen for this to remove the toast from the DOM or update queue state.
 - **Reactive timer**: Changing `visible` or `duration` at runtime restarts the timer, so toggling visibility re-arms the countdown rather than leaving a stale timer.
-- **Conditional regions**: The text region renders only when the host has inner content, and the action region renders only when a `[slot="action"]` child is present - empty slots produce no layout.
+- **Conditional regions**: The text region renders only when the host has inner content, and the action region is shown only while a `[slot="action"]` child is present, following the children added or removed later - empty slots produce no layout.
 - **Default-slot is text**: The default slot is intended for a plain text string only; icons go in the `icon` slot and interactive controls in the `action` slot.
 
 #### Properties & Visual Configurations
@@ -103,7 +103,7 @@ Use the `icon` slot with an `<mds-icon>` to add a leading glyph. The icon color 
 
 #### Toast with Action
 
-Use the `action` slot with an `<mds-button>` to offer a follow-up. The action region appears only when a `[slot="action"]` child is present - no empty layout is produced otherwise.
+Use the `action` slot with an `<mds-button>` to offer a follow-up. The action region appears only while a `[slot="action"]` child is present, also when it is added after the first render - no empty layout is produced otherwise.
 
 ```html
 <mds-toast visible variant="error">
