@@ -144,6 +144,8 @@ export class MdsTabItem {
           role="tab"
           label={this.label}
           size={this.size}
+          // the tab is the inner button: an icon-only item takes its accessible name from the host title
+          title={this.element.title || undefined}
           type={this.type}
         ></mds-button>
       </Host>

@@ -105,18 +105,21 @@ export class MdsPrefContrast {
             onClick={this.handleModeClick('low')}
             class="item item--low"
             icon={mggConsumptionLow}
+            title={this.t.get(this.consumption.low.label)}
           ></mds-tab-item>
           <mds-tab-item
             selected={this.mode === 'medium'}
             onClick={this.handleModeClick('medium')}
             class="item item--medium"
             icon={mggConsumptionMedium}
+            title={this.t.get(this.consumption.medium.label)}
           ></mds-tab-item>
           <mds-tab-item
             selected={this.mode === 'high'}
             onClick={this.handleModeClick('high')}
             class="item item--high"
             icon={mggConsumptionHigh}
+            title={this.t.get(this.consumption.high.label)}
           ></mds-tab-item>
         </mds-tab>
       </Host>
