@@ -1,7 +1,7 @@
 .icon-help {
   background-color: rgb(var(--magma-accent-ai-fg));
   border: 1px solid rgb(var(--tone-neutral-seed));
-  border-radius: --spacing(600);
+  border-radius: var(--radius-2xl);
   cursor: pointer;
   fill: rgb(var(--magma-accent-ai-surface-subtle));
   height: min-content;

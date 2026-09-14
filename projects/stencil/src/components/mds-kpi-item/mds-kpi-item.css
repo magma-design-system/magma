@@ -22,7 +22,7 @@
 
   aspect-ratio: 1;
   background-color: rgb(var(--magma-accent-surface-subtle));
-  border-radius: var(--radius-4xl);
+  border-radius: var(--magma-radius-4xl);
   corner-shape: var(--magma-corner-shape, round);
   display: flex;
   flex-direction: column;
@@ -57,7 +57,7 @@
   @apply ease-out;
 
   background-color: var(--mds-kpi-item-info-background);
-  border-radius: var(--radius-xl);
+  border-radius: var(--magma-radius-xl);
   box-shadow: var(--shadow-sm);
   corner-shape: inherit;
   display: grid;

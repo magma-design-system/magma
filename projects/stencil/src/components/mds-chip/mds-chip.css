@@ -36,7 +36,7 @@
   align-self: self-start;
   background-color: var(--mds-chip-background);
   border: 2px solid var(--mds-chip-border);
-  border-radius: 1000px;
+  border-radius: var(--radius-full);
   box-shadow: var(--mds-chip-shadow);
   box-sizing: border-box;
   color: var(--mds-chip-color);
@@ -73,7 +73,7 @@
 }
 
 .label {
-  border-radius: 1000px;
+  border-radius: var(--radius-full);
   flex-grow: 1;
   text-decoration-color: transparent;
   transition-duration: var(--private-chip-label-transition-duration);
@@ -103,7 +103,7 @@
 .icon-area {
   align-items: center;
   background-color: var(--mds-chip-icon-background);
-  border-radius: 1000px;
+  border-radius: var(--radius-full);
   display: flex;
   flex-shrink: 0;
   height: --spacing(700);
@@ -122,7 +122,7 @@
 }
 
 .button-delete {
-  border-radius: 100px;
+  border-radius: var(--radius-full);
   corner-shape: round;
   height: auto;
   padding: 0;

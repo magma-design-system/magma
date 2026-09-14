@@ -74,7 +74,7 @@
 }
 
 .picture {
-  border-radius: 0.25rem;
+  border-radius: var(--radius-3xs);
   box-shadow: var(--shadow-sm-sharp);
   max-width: --spacing(1200);
   width: 100%;
@@ -136,7 +136,7 @@
 
 .avatar {
   background-color: var(--mds-push-notification-item-icon-background-color);
-  border-radius: 1000px;
+  border-radius: var(--radius-full);
   fill: var(--mds-push-notification-item-icon-color);
   height: --spacing(900);
   width: --spacing(900);

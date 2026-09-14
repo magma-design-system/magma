@@ -21,7 +21,7 @@
   @apply ease-in-out;
 
   background-color: var(--mds-note-background);
-  border-radius: 0.25rem;
+  border-radius: var(--radius-3xs);
   color: var(--mds-note-color);
   display: grid;
   gap: --spacing(200);

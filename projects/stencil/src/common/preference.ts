@@ -19,7 +19,18 @@ import { createStore } from '@stencil/store';
 
 type PreferenceName = 'animation' | 'consumption' | 'contrast' | 'theme' | 'theme-scheme';
 
-type PreferenceState = Partial<Record<PreferenceName, string>> & { language: string };
+/**
+ * The corner axis is the one dimension published as an ATTRIBUTE rather than a
+ * class: the shape is cosmetic rather than an accessibility preference, and it
+ * has to be able to deviate on any subtree, which `data-corner-shape` does and a
+ * `pref-*` class on `<html>` does not. `undefined` means no deviation, i.e. the
+ * shape the stylesheet ships (see projects/styles/scripts/corner.ts).
+ */
+type AttributePreferenceName = 'corner-shape';
+
+type PreferenceState = Partial<Record<PreferenceName | AttributePreferenceName, string>> & {
+  language: string;
+};
 
 // Allowed values per preference, mirroring the pref-<dim>-<value> classes the
 // controllers publish. Single-axis only for now - theme is multi-axis (mode +
@@ -42,11 +53,15 @@ const resolve = (preference: PreferenceName): string | undefined => {
   return values.find((value) => classList.contains(`pref-${preference}-${value}`));
 };
 
+const resolveCornerShape = (): string | undefined =>
+  document.documentElement.getAttribute('data-corner-shape') ?? undefined;
+
 // The store skips no-op assignments, so redundant syncs don't re-render consumers.
 const syncPreferences = (): void => {
   (Object.keys(PREFERENCE_VALUES) as PreferenceName[]).forEach((preference) => {
     preferenceStore.state[preference] = resolve(preference);
   });
+  preferenceStore.state['corner-shape'] = resolveCornerShape();
 };
 
 const syncLanguage = (): void => {
@@ -59,7 +74,7 @@ if (typeof document !== 'undefined') {
   if (typeof MutationObserver !== 'undefined') {
     new MutationObserver(syncPreferences).observe(document.documentElement, {
       attributes: true,
-      attributeFilter: ['class'],
+      attributeFilter: ['class', 'data-corner-shape'],
     });
     new MutationObserver(syncLanguage).observe(document.documentElement, {
       attributes: true,

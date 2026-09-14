@@ -192,11 +192,22 @@ hand.
 ### Global design decisions
 
 Override `--magma-*` vars only inside the `overrides` cascade layer:
-`--magma-corner-shape` (default `squircle`), `--magma-disabled-opacity` (`0.5`),
-`--magma-backdrop-opacity` (`0.1`), `--magma-outline-focus`.
+`--magma-disabled-opacity` (`0.5`), `--magma-backdrop-opacity` (`0.1`),
+`--magma-outline-focus`.
 
 ```css
-@layer overrides { :root { --magma-corner-shape: round; } }
+@layer overrides { :root { --magma-disabled-opacity: 0.35; } }
+```
+
+Corner geometry is an axis of its own, because the shape and the radius scale tuned
+for it have to move together: a squircle cuts a much smaller corner than a round one
+at the same radius. Set `data-corner-shape` - on `<html>`, or on any element to
+deviate for that subtree only - and both follow. Overriding `--magma-corner-shape`
+by itself changes the shape WITHOUT the scale.
+
+```html
+<html data-corner-shape="round">
+<section data-corner-shape="squircle">...</section>
 ```
 
 ## See also

@@ -1,5 +1,5 @@
 .action-remove {
-  border-radius: 100px;
+  border-radius: var(--radius-full);
   corner-shape: round;
   min-height: 0;
   min-width: 0;

@@ -49,7 +49,7 @@
 
   @apply text-info-detail;
 
-  border-radius: var(--radius-2xl);
+  border-radius: var(--magma-radius-2xl);
   color: rgb(var(--magma-text-default));
   container-type: inline-size;
   corner-shape: var(--magma-corner-shape, round);
@@ -104,7 +104,7 @@
 :host(:not([slot])) .input {
   background-color: var(--mds-input-date-background);
 
-  /* border-radius: var(--radius-xs); */
+  /* border-radius: var(--magma-radius-xs); */
   box-shadow: var(--mds-input-date-ring), var(--mds-input-date-shadow);
   min-height: 3rem;
   padding-left: --spacing(400);

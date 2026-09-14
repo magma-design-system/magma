@@ -11,7 +11,7 @@
   --mds-card-background: rgb(var(--magma-surface-raised));
 
   background-color: rgb(var(--magma-surface-raised));
-  border-radius: var(--radius-2xl);
+  border-radius: var(--magma-radius-2xl);
   box-shadow: var(--shadow-md-sharp);
   container-name: mds-card;
   container-type: inline-size;

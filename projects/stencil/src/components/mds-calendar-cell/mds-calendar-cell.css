@@ -54,8 +54,8 @@
 
   /* radius */
   --mds-calendar-cell-size: --spacing(1200);
-  --mds-calendar-cell-selection-boundaries-border-radius: 200px;
-  --mds-calendar-cell-selection-week-boundaries-border-radius: 200px;
+  --mds-calendar-cell-selection-boundaries-border-radius: var(--radius-full);
+  --mds-calendar-cell-selection-week-boundaries-border-radius: var(--radius-full);
 
   /* today */
   --mds-calendar-cell-preselection-today-background: rgb(var(--magma-accent-surface));

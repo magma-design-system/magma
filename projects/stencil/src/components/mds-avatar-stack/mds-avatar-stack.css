@@ -31,7 +31,7 @@
   --mds-avatar-stack-sm-size: --spacing(900);
 
   background-color: var(--mds-avatar-stack-background);
-  border-radius: 1000px;
+  border-radius: var(--radius-full);
   display: inline-flex;
 }
 

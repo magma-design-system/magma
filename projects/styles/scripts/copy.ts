@@ -59,6 +59,19 @@ const main = async () => {
     destination: distGlobals,
   });
 
+  // The corner axis is appended to globals.css for the same reason: it is the
+  // sheet every consumer already imports, so the default shape and its radius
+  // scale arrive without a new import line, and a deviation block is one
+  // attribute away.
+  const cornerCss = await readFile(path.join(BUILD_DIR, 'css', 'corner.css'), 'utf8');
+  await appendFile(distGlobals, `\n${cornerCss}`, 'utf8');
+  logFileActionDone({
+    entity: 'file',
+    source: 'corner.css',
+    actionDone: 'appended',
+    destination: distGlobals,
+  });
+
   // The editor-only token sheet ships as its own file: it must NOT end up in
   // globals.css (or in anything a page loads), it exists so editors can offer the
   // --mds-* tokens in var() completion. See properties.ts for why it is needed and

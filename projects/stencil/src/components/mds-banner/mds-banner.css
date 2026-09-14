@@ -36,7 +36,7 @@
   --mds-banner-content-gap: --spacing(400);
   --mds-banner-headline-color: var(--mds-banner-color);
   --mds-banner-icon-color: rgb(var(--magma-text-subtle));
-  --mds-banner-radius: var(--radius-2xl, 24px);
+  --mds-banner-radius: var(--magma-radius-2xl);
   --mds-banner-shadow: none;
   --mds-banner-transition-duration: 300ms;
   --private-banner-transition-duration: var(--mds-banner-transition-duration);

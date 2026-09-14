@@ -15,7 +15,7 @@
     var(--mds-radial-progress-color) var(--mds-radial-progress),
     transparent 0%
   );
-  border-radius: calc(infinity * 1px);
+  border-radius: var(--radius-full);
   box-sizing: border-box;
   container-name: mds-radial-progress;
   container-type: inline-size;

@@ -16,6 +16,14 @@ const SEMANTIC_CSS_CANDIDATES = [
   path.resolve(STYLES_DIR, 'build/css/semantic.css'),
 ];
 
+// The generated corner axis (`--magma-corner-shape` and the `--magma-radius-*`
+// scale). It ships appended to dist/css/globals.css, so the staged build/ copy is
+// the one that can be read on its own.
+const CORNER_CSS_CANDIDATES = [
+  path.resolve(STYLES_DIR, 'build/css/corner.css'),
+  path.resolve(STYLES_DIR, 'dist/css/corner.css'),
+];
+
 /**
  * Minimal shape of a Stencil style-transform plugin. Stencil only runs plugins
  * that expose a `transform` hook for the matching `pluginType`; a bare PostCSS
@@ -134,6 +142,18 @@ const loadSemanticTokens = (): Tokens => {
 };
 
 /**
+ * The generated corner axis (`projects/styles/build/css/corner.css`). Its default
+ * block sits on a bare `:root` and the deviations on `[data-corner-shape]`, so
+ * `buildLookup` already prefers the default - a component rendered without the
+ * stylesheet falls back to the shipped default shape and its scale, not to
+ * whichever block happens to come last.
+ */
+const loadCornerTokens = (): Tokens => {
+  const file = CORNER_CSS_CANDIDATES.find((candidate) => fs.existsSync(candidate));
+  return file ? buildLookup([file]) : {};
+};
+
+/**
  * Build a `name -> initial-value` map from every `@property --mds-*` block
  * declared by the components. The registered `initial-value` is the component
  * author's intended default, so it doubles as the natural `var()` fallback.
@@ -194,6 +214,7 @@ export default function tokenFallbackPlugin(
   const lookup: Tokens = {
     ...(injectTokenFallbacks ? loadDesignTokens() : {}),
     ...(injectSemanticFallbacks ? loadSemanticTokens() : {}),
+    ...(injectSemanticFallbacks ? loadCornerTokens() : {}),
     ...(injectComponentDefaults ? loadComponentDefaults() : {}),
   };
 

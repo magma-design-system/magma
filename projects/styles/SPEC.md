@@ -112,7 +112,7 @@ elevation step or `color-mix`), not authored as tokens.
 
 ## Theming axes (`css/theme.css`)
 
-Three independent axes on `<html>`, on top of the semantic layer:
+Four independent axes on `<html>`, on top of the semantic layer:
 
 - **mode** `pref-theme-{light,dark,system}` - the global `--tone-*` flip; the
   semantic tokens follow it automatically (see Dark mode below).
@@ -126,10 +126,65 @@ Three independent axes on `<html>`, on top of the semantic layer:
   perfectly flat, `1` is full. Set it directly, or use `data-theme-depth="flat"`.
   It is a scalar, NOT a `true|false` style query, so it is cross-browser and
   inherits across shadow boundaries.
+- **`data-corner-shape`** - corner geometry: the shape AND the radius scale tuned
+  for it, moved together. See Corner geometry below.
 
 ```html
-<html class="pref-theme-dark" data-theme-name="cool" data-theme-depth="flat">
+<html class="pref-theme-dark" data-theme-name="cool" data-theme-depth="flat" data-corner-shape="round">
 ```
+
+## Corner geometry (`data-corner-shape`)
+
+Shape and radius are two halves of one decision. In CSS `superellipse(k)` draws a
+curve of exponent `n = 2^k`, so `round` is a quarter circle and `squircle` is
+`superellipse(2)`: at the SAME `border-radius` the run along the sides is
+identical and only the fullness of the corner changes, a squircle cutting 0.073r2
+of area where a round corner cuts 0.215r2. A scale tuned for one shape therefore
+reads wrong under the other - which is why this axis carries both.
+
+`projects/styles/scripts/corner.ts` generates one block per shape, each declaring
+`--magma-corner-shape` and the whole `--magma-radius-*` scale. The default sits on
+a bare `:root`, so installing the design system is enough - there is no attribute
+to write, the way nobody spells `data-theme-name="default"`. The deviation blocks
+are NOT prefixed with `:root`, so the attribute works on any element and the
+custom properties inherit into that subtree, shadow DOM included:
+
+```html
+<section data-corner-shape="round">
+  <!-- round corners, and the radii tuned for round, for this subtree only -->
+</section>
+```
+
+Components name the role, never the shape: `border-radius: var(--magma-radius-2xl)`
+plus `corner-shape: var(--magma-corner-shape, round)`.
+
+| | round | squircle |
+| --- | --- | --- |
+| `--magma-radius-md` | 12px | 20px |
+| `--magma-radius-lg` | 16px | 28px |
+| `--magma-radius-2xl` | 24px | 40px |
+
+The squircle scale is the round one multiplied by **1.715** - the factor that
+preserves the AREA the corner cuts - then snapped to the nearest existing
+primitive so it stays inside the system. Two other factors were on the table and
+rejected: 1.000 preserves the run along the sides (it does not compensate at all,
+and reads rigid), 1.841 preserves the corner depth (it overshoots).
+
+**The pill is out of the axis.** `--magma-radius-full` resolves to the same value
+under every shape, and the components that spell a pill - chip, filter item,
+avatar, hr, mention - keep the CSS default `round` by not declaring `corner-shape`
+on their host. Past half the shorter side a squircle stops producing a pill and
+draws the filled superellipse of an app icon, so there is nothing to tune there,
+only something to stay out of.
+
+Consumers rarely write the attribute by hand: `mds-pref-theme-variant` carries a
+`corner-shape` prop that writes it, persists the choice and emits `mdsPrefChange`,
+next to the theme name and scheme it already owns. Its `default` value REMOVES
+the attribute rather than writing today's shape, so a project that never chose
+keeps following the design system when the default changes.
+
+`--magma-corner-shape` on its own remains a documented escape hatch, with one
+caveat: it changes the shape and NOT the scale.
 
 ## Typography utilities
 
@@ -230,7 +285,7 @@ These CSS custom properties on `:root` control system-wide visual behaviour. Ove
 
 | Property                   | Default                                      | Description                     |
 | -------------------------- | -------------------------------------------- | ------------------------------- |
-| `--magma-corner-shape`     | `squircle`                                   | Corner shape for all components |
+| `--magma-corner-shape`     | `squircle`                                   | Corner shape for all components (set it through `data-corner-shape`, see Corner geometry: alone it changes the shape without the scale) |
 | `--magma-disabled-opacity` | `0.5`                                        | Opacity of disabled components  |
 | `--magma-backdrop-opacity` | `0.1`                                        | Opacity of modal backdrops      |
 | `--magma-outline-focus`    | `2px solid var(--magma-outline-focus-color)` | Focus ring style                |
@@ -240,10 +295,14 @@ Example override:
 ```css
 @layer overrides {
   :root {
-    --magma-corner-shape: round;
+    --magma-disabled-opacity: 0.35;
   }
 }
 ```
+
+Corner shape is the exception: change it through the `data-corner-shape` axis,
+which moves the radius scale with it, rather than by overriding
+`--magma-corner-shape` alone.
 
 ## Anti-patterns
 

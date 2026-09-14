@@ -1,7 +1,11 @@
 import { Component, Element, Event, EventEmitter, Host, h, Prop, State } from '@stencil/core';
 import { MdsPrefThemeVariantEventDetail } from '@event/theme-variant';
 import { MdsPrefChangeEventDetail } from '@event/preference';
-import { PreferenceThemeSchemeType } from '@type/preference';
+import {
+  PreferenceCornerShapeChoiceType,
+  PreferenceThemeSchemeType,
+  preferenceCornerShapeChoiceType,
+} from '@type/preference';
 import { Locale } from '@common/locale';
 import { preferenceStore } from '@common/preference';
 import localeEl from './meta/locale.el.json';
@@ -26,11 +30,13 @@ export class MdsPrefThemeVariant {
   @Element() element: HTMLMdsPrefThemeVariantElement;
   private readonly localStorageAliasThemeName: string = 'mdsPrefThemeName';
   private readonly localStorageAliasThemeScheme: string = 'mdsPrefThemeScheme';
+  private readonly localStorageAliasCornerShape: string = 'mdsPrefCornerShape';
   private readonly defaultTheme: string = 'default';
   private currentSelectedItem: HTMLMdsPrefThemeVariantItemElement;
   private elPreferThemeVariantItems: NodeListOf<HTMLMdsPrefThemeVariantItemElement>;
   private userThemeName: string | null;
   private userThemeScheme: PreferenceThemeSchemeType | null;
+  private userCornerShape: PreferenceCornerShapeChoiceType | null;
   private readonly t: Locale = new Locale({
     el: localeEl,
     en: localeEn,
@@ -67,6 +73,21 @@ export class MdsPrefThemeVariant {
   @Prop({ mutable: true, reflect: true }) scheme: PreferenceThemeSchemeType = 'all';
 
   /**
+   * Specifies the corner geometry of the whole page: one of the `corner-shape`
+   * keywords, or `default`.
+   *
+   * Corner geometry is theme appearance rather than an accessibility preference,
+   * which is why it lives here next to the theme name and scheme instead of in
+   * `mds-pref-theme`. Setting it writes `data-corner-shape` on `<html>`, where
+   * the generated axis picks both the shape and the radius scale tuned for it.
+   *
+   * Leaving it unset touches nothing. Setting it to `default` REMOVES the
+   * attribute rather than writing today's default into the page, so a project
+   * that never chose keeps following the design system when the default changes.
+   */
+  @Prop({ mutable: true, reflect: true }) cornerShape?: PreferenceCornerShapeChoiceType;
+
+  /**
    * Emits when the component changes the language selected from the click event of the dropdown list item
    */
   @Event({ eventName: 'mdsPrefThemeVariantChange' })
@@ -87,6 +108,10 @@ export class MdsPrefThemeVariant {
       | PreferenceThemeSchemeType
       | 'all';
     this.setThemeVariant(this.userThemeName ?? this.name, this.userThemeScheme ?? this.scheme);
+    this.userCornerShape = localStorage.getItem(
+      this.localStorageAliasCornerShape,
+    ) as PreferenceCornerShapeChoiceType | null;
+    this.setCornerShape(this.userCornerShape ?? this.cornerShape);
   }
 
   private readonly toggleDropdown = (): void => {
@@ -153,6 +178,39 @@ export class MdsPrefThemeVariant {
       this.previousName = this.name;
     }
     preferenceStore.state['theme-scheme'] = this.scheme;
+  };
+
+  /**
+   * Apply a corner choice, or do nothing at all when there is none: an unset prop
+   * with nothing in storage must leave the page exactly as the stylesheet ships
+   * it.
+   *
+   * Note the one place this deliberately does NOT follow `setThemeVariant`:
+   * `data-theme-name` is always written, `default` included, which is harmless
+   * only because no CSS block defines a theme called `default`. Here the default
+   * IS a live block, so writing it would freeze today's default into the
+   * consumer's page - `default` removes the attribute instead.
+   */
+  private readonly setCornerShape = (shape?: PreferenceCornerShapeChoiceType | null): void => {
+    if (shape === undefined || shape === null) {
+      return;
+    }
+    if (!(preferenceCornerShapeChoiceType as readonly string[]).includes(shape)) {
+      throw Error(`Corner shape not valid: ${shape}`);
+    }
+    this.cornerShape = shape;
+    this.prefChangeEvent.emit({ preference: 'corner-shape' });
+    localStorage.setItem(this.localStorageAliasCornerShape, shape);
+
+    if (typeof document !== 'undefined') {
+      const element = document.querySelector('html');
+      if (shape === 'default') {
+        element?.removeAttribute('data-corner-shape');
+      } else {
+        element?.setAttribute('data-corner-shape', shape);
+      }
+    }
+    preferenceStore.state['corner-shape'] = shape === 'default' ? undefined : shape;
   };
 
   render() {

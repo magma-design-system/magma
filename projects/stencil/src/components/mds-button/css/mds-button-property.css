@@ -101,6 +101,6 @@
 
 @property --mds-button-radius {
   inherits: true;
-  initial-value: var(--radius-2xl);
+  initial-value: var(--magma-radius-2xl);
   syntax: '<length>';
 }

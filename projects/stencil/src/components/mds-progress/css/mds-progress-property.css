@@ -29,7 +29,7 @@
 
 @property --mds-progress-radius {
   inherits: true;
-  initial-value: var(--radius-lg);
+  initial-value: var(--magma-radius-lg);
   syntax: '<length>';
 }
 

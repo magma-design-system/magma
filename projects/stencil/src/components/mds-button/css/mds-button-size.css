@@ -1,5 +1,5 @@
 :host([size='sm']) {
-  --mds-button-radius: var(--radius-md);
+  --mds-button-radius: var(--magma-radius-md);
 
   min-height: --spacing(700);
   min-width: --spacing(700);

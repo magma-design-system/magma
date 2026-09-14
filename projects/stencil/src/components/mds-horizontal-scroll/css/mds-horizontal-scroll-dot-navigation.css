@@ -1,7 +1,7 @@
 .dot-navigation {
   align-self: center;
   background-color: var(--mds-horizontal-scroll-dot-area-background);
-  border-radius: 200px;
+  border-radius: var(--radius-full);
   display: none;
   gap: var(--mds-horizontal-scroll-dots-gap);
   justify-content: start;
@@ -17,7 +17,7 @@
 
 .dot {
   background-color: var(--mds-horizontal-scroll-dot-background);
-  border-radius: 200px;
+  border-radius: var(--radius-full);
   height: var(--mds-horizontal-scroll-dot-size);
   max-width: var(--mds-horizontal-scroll-dot-max-width);
   min-width: var(--mds-horizontal-scroll-dot-size);
