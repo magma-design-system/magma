@@ -88,7 +88,14 @@ export class MdsDetails {
           <slot name="icon" onSlotchange={this.onSlotChangeHandler} />
         </div>
         <div class="content">
-          <header class="header" part="header" tabindex="0" onClick={this.toggle}>
+          <div
+            class="header"
+            part="header"
+            role="button"
+            aria-expanded={this.isOpened ? 'true' : 'false'}
+            tabindex="0"
+            onClick={this.toggle}
+          >
             <div class="title" part="title">
               <slot name="title" />
             </div>
@@ -96,7 +103,7 @@ export class MdsDetails {
               class={clsx('helper-icon', this.isOpened && 'opened')}
               innerHTML={miBaselineKeyboardArrowRight}
             />
-          </header>
+          </div>
           <div class={clsx('details', this.isOpened && 'opened')}>
             <div class="content-expander" part="content">
               <slot />
