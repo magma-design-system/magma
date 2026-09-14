@@ -54,8 +54,15 @@ describe('mds-keyboard', () => {
 
   it('renders the combination checker with the `try` attribute', async () => {
     const { root } = await render(CONTROL_C);
+    const checker = root.shadowRoot!.querySelector('.combination-checker')!;
 
-    expect(root.shadowRoot!.querySelector('.combination-checker')).not.toBeNull();
+    expect(checker).not.toBeNull();
+    // the icon-only button is named for assistive technology; `aria-title` is not an ARIA attribute
+    expect(checker).toEqualAttribute(
+      'aria-label',
+      'Click to test the combination by typing on the keyboard',
+    );
+    expect(checker).not.toHaveAttribute('aria-title');
   });
 
   describe('with the combination checker', () => {
