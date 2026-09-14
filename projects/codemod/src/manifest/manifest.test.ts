@@ -104,6 +104,35 @@ describe('curated manifest', () => {
     );
   });
 
+  it('inverts the mds-calendar booleans renamed after the docs snapshot (#685)', () => {
+    const expected: Array<[string, string, string, string, boolean]> = [
+      ['range-picker', 'rangePicker', 'single-picker', 'singlePicker', true],
+      [
+        'show-previous-button',
+        'showPreviousButton',
+        'hide-previous-button',
+        'hidePreviousButton',
+        true,
+      ],
+      ['show-next-button', 'showNextButton', 'hide-next-button', 'hideNextButton', true],
+      ['show-preselection', 'showPreselection', 'hide-preselection', 'hidePreselection', false],
+    ];
+    expect(manifest.components['mds-calendar']?.react).toBe('MdsCalendar');
+    for (const [fromAttr, fromProp, toAttr, toProp, oldDefault] of expected) {
+      expect(rulesOf('mds-calendar')).toContainEqual(
+        expect.objectContaining({
+          kind: 'booleanInvert',
+          from: { attr: fromAttr, prop: fromProp },
+          to: { attr: toAttr, prop: toProp },
+          oldDefault,
+          newDefault: false,
+        }),
+      );
+    }
+    // the preselection area already followed the slot content in v1, so no guard
+    expect(rulesOf('mds-calendar').some((r) => r.kind === 'ensureAttr')).toBe(false);
+  });
+
   it('guards the mds-dropdown auto-placement default flip', () => {
     expect(rulesOf('mds-dropdown')).toContainEqual(
       expect.objectContaining({

@@ -68,28 +68,66 @@ const curate = (base: Manifest): Manifest => {
   }
 
   // B — boolean inversions the docs diff could not pair: either the v2 prop
-  // shares no stem with the v1 name (the diff only shows removals), or the pair
-  // is missing from the diff entirely (mds-tooltip `arrow`).
+  // shares no stem with the v1 name (the diff only shows removals), the pair
+  // is missing from the diff entirely (mds-tooltip `arrow`), or the rename
+  // landed after the v2.0.0-beta docs snapshot (the mds-calendar set, #685:
+  // range mode, the two navigation buttons and the preselection area stay on
+  // by default, the v2 props opt out). `showPreselection` already defaulted
+  // to false, and the area kept showing up whenever the slot had content, so
+  // its inversion flips no default and needs no behaviour guard.
   const curatedInversions = [
     {
       tag: 'mds-accordion',
+      react: 'MdsAccordion',
       from: { attr: 'closable', prop: 'closable' },
       to: { attr: 'disable-close', prop: 'disableClose' },
+      oldDefault: true,
     },
     {
       tag: 'mds-notification',
+      react: 'MdsNotification',
       from: { attr: 'visible', prop: 'visible' },
       to: { attr: 'dismissed', prop: 'dismissed' },
+      oldDefault: true,
     },
     {
       tag: 'mds-tooltip',
+      react: 'MdsTooltip',
       from: { attr: 'arrow', prop: 'arrow' },
       to: { attr: 'hide-arrow', prop: 'hideArrow' },
+      oldDefault: true,
+    },
+    {
+      tag: 'mds-calendar',
+      react: 'MdsCalendar',
+      from: { attr: 'range-picker', prop: 'rangePicker' },
+      to: { attr: 'single-picker', prop: 'singlePicker' },
+      oldDefault: true,
+    },
+    {
+      tag: 'mds-calendar',
+      react: 'MdsCalendar',
+      from: { attr: 'show-previous-button', prop: 'showPreviousButton' },
+      to: { attr: 'hide-previous-button', prop: 'hidePreviousButton' },
+      oldDefault: true,
+    },
+    {
+      tag: 'mds-calendar',
+      react: 'MdsCalendar',
+      from: { attr: 'show-next-button', prop: 'showNextButton' },
+      to: { attr: 'hide-next-button', prop: 'hideNextButton' },
+      oldDefault: true,
+    },
+    {
+      tag: 'mds-calendar',
+      react: 'MdsCalendar',
+      from: { attr: 'show-preselection', prop: 'showPreselection' },
+      to: { attr: 'hide-preselection', prop: 'hidePreselection' },
+      oldDefault: false,
     },
   ] as const;
-  for (const { tag, from, to } of curatedInversions) {
-    const component = m.components[tag];
-    if (!component) continue;
+  for (const { tag, react, from, to, oldDefault } of curatedInversions) {
+    const component = (m.components[tag] ??= { tag, react, rules: [] });
     component.rules = component.rules.filter(
       (r) => !(r.kind === 'propRemove' && r.prop.prop === from.prop),
     );
@@ -97,7 +135,7 @@ const curate = (base: Manifest): Manifest => {
       kind: 'booleanInvert',
       from: { ...from },
       to: { ...to },
-      oldDefault: true,
+      oldDefault,
       newDefault: false,
       confidence: 'review',
     });
