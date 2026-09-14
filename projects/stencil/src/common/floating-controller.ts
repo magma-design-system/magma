@@ -35,16 +35,21 @@ export interface PositionOptions {
   strategy: FloatingUIStrategy;
 }
 
+/** ARIA role of the floating element: a `menu` is a popup its caller controls, a `tooltip` only describes it */
+export type FloatingRole = 'menu' | 'tooltip';
+
 export class FloatingController {
   private _caller: HTMLElement;
   private readonly _host: HTMLFloatingElement;
+  private readonly _role: FloatingRole;
   arrowEl: HTMLElement | undefined;
 
   private cleanupAutoUpdate: () => void;
 
-  constructor(host: HTMLFloatingElement, arrowEl?: HTMLElement) {
+  constructor(host: HTMLFloatingElement, arrowEl?: HTMLElement, role: FloatingRole = 'menu') {
     this._host = host;
     this.arrowEl = arrowEl;
+    this._role = role;
   }
 
   updateCaller(target: string): HTMLElement | null {
@@ -62,10 +67,15 @@ export class FloatingController {
 
     this._caller = caller;
 
-    setAttributeIfEmpty(this._caller, 'aria-haspopup', 'true');
-    setAttributeIfEmpty(this._caller, 'aria-controls', target);
-    setAttributeIfEmpty(this._host, 'role', 'menu');
-    setAttributeIfEmpty(this._host, 'aria-labelledby', target);
+    setAttributeIfEmpty(this._host, 'role', this._role);
+    // a tooltip is neither a popup the caller controls nor labelled by it: wiring
+    // `aria-haspopup`/`aria-controls` on the caller would also turn an `mds-tab-item`
+    // host into an element axe no longer accepts as a child of the tablist
+    if (this._role === 'menu') {
+      setAttributeIfEmpty(this._caller, 'aria-haspopup', 'true');
+      setAttributeIfEmpty(this._caller, 'aria-controls', target);
+      setAttributeIfEmpty(this._host, 'aria-labelledby', target);
+    }
     return caller;
   }
 
