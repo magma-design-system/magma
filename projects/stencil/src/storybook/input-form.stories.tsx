@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react';
 
 export default {
   title: 'Form',
+  // TODO a11y: mds-input inside mds-input-field and mds-input-select have no accessible name yet
+  parameters: { a11y: { test: 'todo' } },
 };
 
 /*

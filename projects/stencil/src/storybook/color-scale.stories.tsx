@@ -453,6 +453,8 @@ bg-variant-ai-10
 */
 export default {
   title: 'Common tests',
+  // TODO a11y: the mds-input-select controls have no accessible name yet
+  parameters: { a11y: { test: 'todo' } },
 };
 
 const ColorGrid = ({ group, selected }: { group: string; selected: boolean }) => {

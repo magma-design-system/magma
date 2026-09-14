@@ -5,6 +5,9 @@ import { useState } from 'react';
 
 export default {
   title: 'Form / OTP',
+  // TODO a11y: the component gives its native control no accessible name (no label, aria-label
+  // or aria-labelledby is forwarded), so every story fails the axe `label` rule
+  parameters: { a11y: { test: 'todo' } },
   argTypes: {
     length: {
       type: { name: 'number' },

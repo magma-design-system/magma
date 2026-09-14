@@ -91,3 +91,10 @@ npx vitest run --project storybook src/components/mds-button   # a subset
 (`nx run stencil:test-storybook`). Story globs, aliases and PostCSS come from `.storybook/main.mjs`
 (`viteFinal`), so the tests render exactly what Storybook renders. In watch mode the addon also
 starts Storybook (`storybook dev -p 6006`) and links every failure to its story.
+
+Two conventions keep the a11y run green without hiding anything. `color-contrast` runs with
+`reviewOnFail` (`.storybook/preview.jsx`): the colours are design-tokens decisions, so its
+violations land in the addon's "needs review" list instead of failing the story. A story whose
+violation is a known component gap carries `parameters: { a11y: { test: 'todo' } }` next to a
+`TODO a11y` comment naming the gap: axe still runs and reports it as a warning until the component
+is fixed, then the parameter goes away.

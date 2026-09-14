@@ -9,7 +9,7 @@ const Template = () => {
     <div class="grid gap-600">
       <mds-table>
         <mds-table-header>
-          <mds-mds-table-header-cell label="Component"></mds-mds-table-header-cell>
+          <mds-table-header-cell label="Component"></mds-table-header-cell>
         </mds-table-header>
         <mds-table-body>
           <mds-table-row>
