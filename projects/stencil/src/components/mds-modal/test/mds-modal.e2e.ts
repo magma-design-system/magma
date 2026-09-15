@@ -33,6 +33,23 @@ describe('mds-modal', () => {
     expect(root).not.toHaveAttribute('opened');
   });
 
+  it('pads the content of a modal that mounts already open', async () => {
+    const { root } = await render(
+      '<mds-modal opened="true">' +
+        '<div slot="top" style="height: 40px">Top</div>' +
+        'Text' +
+        '<div slot="bottom" style="height: 24px">Bottom</div>' +
+        '</mds-modal>',
+    );
+
+    // the bars are absolute over the scroll area, so the padding is the only thing
+    // keeping the first and the last line out from under them
+    const content = root.shadowRoot!.querySelector('.window-content') as HTMLElement;
+
+    expect(content.style.paddingTop).toBe('40px');
+    expect(content.style.paddingBottom).toBe('24px');
+  });
+
   it('lets the page colour through the dialog', async () => {
     const { root } = await render('<mds-modal opened="true"><p>Text</p></mds-modal>');
 

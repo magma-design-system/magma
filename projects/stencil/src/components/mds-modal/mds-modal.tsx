@@ -295,6 +295,11 @@ export class MdsModal {
     } else {
       this.dialogEl.show();
     }
+    // Measure here, not only in the lifecycle hooks: until this call the dialog is
+    // `display: none`, so a header and a footer measure 0. A modal that mounts
+    // already open never renders again on its own, so that 0 would stay and the
+    // content would sit under both bars.
+    this.updateWindowPaddings();
   };
 
   private closeDialog = (): void => {
