@@ -74,6 +74,12 @@
   background-color: transparent;
   border: 0;
   box-sizing: border-box;
+
+  /* The UA sheet gives a dialog `color: CanvasText`, the pure black or white of
+   * the colour scheme, which breaks the inheritance from the page: everything
+   * slotted in would skip the semantic layer, contrast preference and theme
+   * retint included. */
+  color: inherit;
   display: none;
   fill: rgb(var(--magma-text-on-emphasis));
   height: auto;

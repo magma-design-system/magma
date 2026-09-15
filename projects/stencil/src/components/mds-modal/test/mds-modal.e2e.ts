@@ -33,6 +33,19 @@ describe('mds-modal', () => {
     expect(root).not.toHaveAttribute('opened');
   });
 
+  it('lets the page colour through the dialog', async () => {
+    const { root } = await render('<mds-modal opened="true"><p>Text</p></mds-modal>');
+
+    root.style.color = 'rgb(200, 30, 30)';
+
+    // the UA sheet gives a dialog `color: CanvasText`, and inheritance follows the
+    // flattened tree, so without the reset every slotted element takes the pure
+    // black or white of the colour scheme instead of the page colour
+    const dialog = root.shadowRoot!.querySelector('dialog')!;
+    expect(getComputedStyle(dialog).color).toBe('rgb(200, 30, 30)');
+    expect(getComputedStyle(root.querySelector('p')!).color).toBe('rgb(200, 30, 30)');
+  });
+
   describe('body scroll lock', () => {
     // Mounting a new stage disconnects the modals of the previous cases, and
     // disconnectedCallback releases the body: whatever a case wants on the body
