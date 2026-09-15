@@ -33,6 +33,108 @@ describe('mds-modal', () => {
     expect(root).not.toHaveAttribute('opened');
   });
 
+  it('pads the content of a modal that mounts already open', async () => {
+    const { root } = await render(
+      '<mds-modal opened="true">' +
+        '<div slot="top" style="height: 40px">Top</div>' +
+        'Text' +
+        '<div slot="bottom" style="height: 24px">Bottom</div>' +
+        '</mds-modal>',
+    );
+
+    // the bars are absolute over the scroll area, so the padding is the only thing
+    // keeping the first and the last line out from under them
+    const content = root.shadowRoot!.querySelector('.window-content') as HTMLElement;
+
+    expect(content.style.paddingTop).toBe('40px');
+    expect(content.style.paddingBottom).toBe('24px');
+  });
+
+  it('lets the page colour through the dialog', async () => {
+    const { root } = await render('<mds-modal opened="true"><p>Text</p></mds-modal>');
+
+    root.style.color = 'rgb(200, 30, 30)';
+
+    // the UA sheet gives a dialog `color: CanvasText`, and inheritance follows the
+    // flattened tree, so without the reset every slotted element takes the pure
+    // black or white of the colour scheme instead of the page colour
+    const dialog = root.shadowRoot!.querySelector('dialog')!;
+    expect(getComputedStyle(dialog).color).toBe('rgb(200, 30, 30)');
+    expect(getComputedStyle(root.querySelector('p')!).color).toBe('rgb(200, 30, 30)');
+  });
+
+  describe('body scroll lock', () => {
+    // Mounting a new stage disconnects the modals of the previous cases, and
+    // disconnectedCallback releases the body: whatever a case wants on the body
+    // has to be written AFTER its render, or that release wipes it.
+    const openOn = async (
+      { root, waitForChanges },
+      overflow?: string,
+    ): Promise<HTMLMdsModalElement> => {
+      if (overflow === undefined) {
+        document.body.style.removeProperty('overflow');
+      } else {
+        document.body.style.overflow = overflow;
+      }
+      root.opened = true;
+      await waitForChanges();
+      return root;
+    };
+
+    afterEach(() => {
+      document.body.style.removeProperty('overflow');
+    });
+
+    it('releases the body when the modal is dismissed', async () => {
+      const stage = await render('<mds-modal>Text</mds-modal>');
+      const root = await openOn(stage);
+
+      expect(document.body.style.overflow).toBe('hidden');
+
+      // same backdrop dismissal as the case above
+      const dialog = root.shadowRoot!.querySelector('dialog')!;
+      await userEvent.click(dialog, { position: { x: 5, y: 5 } });
+      await stage.waitForChanges();
+
+      // the page scrolls again: the lock is gone, not replaced by another value
+      expect(document.body.style.overflow).toBe('');
+    });
+
+    it('releases the body when the consumer closes it from the prop', async () => {
+      const stage = await render('<mds-modal>Text</mds-modal>');
+      const root = await openOn(stage);
+
+      root.opened = false;
+      await stage.waitForChanges();
+
+      expect(document.body.style.overflow).toBe('');
+    });
+
+    it('puts back an overflow the page had set on its own', async () => {
+      const stage = await render('<mds-modal>Text</mds-modal>');
+      const root = await openOn(stage, 'clip');
+
+      expect(document.body.style.overflow).toBe('hidden');
+
+      root.opened = false;
+      await stage.waitForChanges();
+
+      expect(document.body.style.overflow).toBe('clip');
+    });
+
+    it('leaves the body alone when the lock is manual', async () => {
+      const stage = await render('<mds-modal overflow="manual">Text</mds-modal>');
+      const root = await openOn(stage);
+
+      expect(document.body.style.overflow).toBe('');
+
+      root.opened = false;
+      await stage.waitForChanges();
+
+      expect(document.body.style.overflow).toBe('');
+    });
+  });
+
   describeConditionalSlot({
     html: '<mds-modal>Text</mds-modal>',
     slot: 'top',

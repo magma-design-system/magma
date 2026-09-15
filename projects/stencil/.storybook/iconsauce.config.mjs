@@ -10,6 +10,7 @@ export default {
   content: [
     './src/components/**/*.{js,json,ts,tsx}',
     './src/type/**/*.ts',
+    './src/storybook/**/*.{js,json,ts,tsx}',
     require.resolve('@maggioli-design-system/svg-icons/dist/iconsauce.json'),
   ],
   plugin: [mi, mdi, mgg],

@@ -2,6 +2,7 @@
 @reference "@maggioli-design-system/design-tokens/dist/css/tailwind-theme-typography.css";
 
 @layer base {
+
   @view-transition {
     navigation: var(--magma-view-transition-navigation, auto);
   }
@@ -11,22 +12,17 @@
     transition-timing-function: var(--ease-out);
   }
 
+  /* No contrast twin: `text-default` is already the strongest step of the family,
+   * and the two rules that used to sit here keyed off `pref-contrast-high`, a
+   * class no controller writes, and off a hardcoded `--tone-neutral-01` that
+   * resolves to the very same value in both modes. */
+
   body {
     @apply font-info
       text-info-detail;
 
-    background-color: rgb(var(--tone-neutral-seed));
-    color: rgb(var(--tone-neutral-03));
-  }
-
-  :root.pref-contrast-high body {
-    color: rgb(var(--tone-neutral-01));
-  }
-
-  @media (prefers-contrast: more) {
-    :root.pref-contrast-system body {
-      color: rgb(var(--tone-neutral-01));
-    }
+    background-color: rgb(var(--magma-surface-default));
+    color: rgb(var(--magma-text-default));
   }
 
   :root.pref-theme-scheme-dark {
@@ -69,7 +65,12 @@
   }
 
   a {
-    color: rgb(var(--theme-default-02-primary-text));
+
+    /* `--theme-default-02-primary-text` was defined nowhere, so the declaration
+     * was invalid at computed-value time and a link inherited the body colour.
+     * `accent-emphasis`, not `accent-fg`: 5.04:1 on white and 4.50:1 on the page
+     * surface, where fg sits at 3.92 and 3.51. */
+    color: rgb(var(--magma-accent-emphasis));
   }
 
   h1,
@@ -86,6 +87,7 @@
   }
 
   .hydrated {
+
     /*
       Revert all styles for hydrated web components
       to avoid tailwind base unwanted overrides

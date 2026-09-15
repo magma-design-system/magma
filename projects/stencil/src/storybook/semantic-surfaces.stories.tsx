@@ -136,14 +136,18 @@ const PageFrame = ({
   lead,
   children,
   hideThemeSwitch,
+  floatingHeader,
 }: {
   title: string;
   lead: string;
   children?: ReactNode;
   hideThemeSwitch?: boolean;
+  /** Reserve the top strip for a fixed mds-header-bar: the bar is out of flow, so
+   * a page that does not make room for it gets its first screenful covered. */
+  floatingHeader?: boolean;
 }) => (
   <div
-    class="grid gap-800 p-800 min-h-screen"
+    class={`grid gap-800 p-800 min-h-screen${floatingHeader ? ' pt-2400' : ''}`}
     style={{ background: surfaceVar('default'), color: textVar('default') }}
   >
     <header class="flex flex-wrap gap-400 items-end justify-between">
@@ -474,9 +478,24 @@ const openOverlay = (id: string, prop: 'opened' | 'visible') => () => {
 
 const ExamplePageTemplate = () => (
   <PageFrame
+    floatingHeader
     title="Acme Console"
     lead="A realistic application screen, then the full component library - every released component sitting on the semantic surfaces. Flip the theme: the whole system follows the root, no per-component dark refinement."
   >
+    {/* The real header, doing what it does in a page: mds-header-bar is fixed, so
+        it stays pinned over everything while the page scrolls under it. The frame
+        reserves the strip it covers. */}
+    <mds-header appearance="inline" nav="all" menu="none">
+      <mds-header-bar>
+        <div class="flex gap-400 items-center">
+          <mds-img class="w-1000" src="/logo-gruppo-maggioli.svg" alt="Logo" />
+          <mds-text typography="h5">Header bar</mds-text>
+        </div>
+        <mds-button slot="nav" variant="dark" tone="outline" label="Sign in" />
+        <mds-button slot="nav" icon="mi/round/person" label="Register" />
+      </mds-header-bar>
+    </mds-header>
+
     {/* App bar - a raised strip above the canvas */}
     <div
       class="flex flex-wrap gap-400 items-center justify-between p-400 rounded-lg"
@@ -802,16 +821,12 @@ const ExamplePageTemplate = () => (
           </div>
         </Cell>
         <Cell tag="<mds-header> / <mds-header-bar>" wide>
-          <mds-header class="relative w-full" appearance="inline" nav="all" menu="none">
-            <mds-header-bar class="relative">
-              <div class="flex gap-400 items-center">
-                <mds-img class="w-1000" src="/logo-gruppo-maggioli.svg" alt="Logo" />
-                <mds-text typography="h5">Header bar</mds-text>
-              </div>
-              <mds-button slot="nav" variant="dark" tone="outline" label="Sign in" />
-              <mds-button slot="nav" icon="mi/round/person" label="Register" />
-            </mds-header-bar>
-          </mds-header>
+          {/* No copy in the cell: mds-header-bar is fixed, and the only way to hold
+              it here would be to override that position, which is exactly what hides
+              the behaviour the page should be showing. The live one is at the top. */}
+          <mds-text typography="detail" style={{ color: textVar('muted') }}>
+            Pinned at the top of this page - it stays there while everything below scrolls under it.
+          </mds-text>
         </Cell>
         <Cell tag="<mds-stepper-bar>" wide>
           <mds-stepper-bar items-done="2">
