@@ -1,19 +1,12 @@
+/* See ../tailwind/base.css for the why: the page is the semantic surface, the
+ * text role needs no contrast twin, and the fallbacks name the raw family the
+ * default theme aliases. */
 body {
   @apply font-info
     text-info-detail;
 
-  background-color: rgb(var(--tone-neutral-seed, theme('colors.tone-neutral')));
-  color: rgb(var(--tone-neutral-03, theme('colors.tone-neutral-03')));
-}
-
-:root.pref-contrast-high body {
-  color: rgb(var(--tone-neutral-01, theme('colors.tone-neutral-01')));
-}
-
-@media (prefers-contrast: more) {
-  :root.pref-contrast-system body {
-    color: rgb(var(--tone-neutral-01, theme('colors.tone-neutral-01')));
-  }
+  background-color: rgb(var(--magma-surface-default, theme('colors.surface-neutral-default')));
+  color: rgb(var(--magma-text-default, theme('colors.text-neutral-default')));
 }
 
 ::selection {
@@ -34,7 +27,10 @@ strong {
 }
 
 a {
-  color: rgb(var(--theme-default-02-primary-text, theme('colors.theme-default-02-primary-text')));
+  /* no theme() fallback: the accent roles are theme aliases with no raw twin in
+   * the palette, and `colors.theme-default-02-primary-text` never existed there
+   * either - the fallback was as dead as the custom property. */
+  color: rgb(var(--magma-accent-emphasis));
 }
 
 h1,
