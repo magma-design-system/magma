@@ -127,14 +127,18 @@ const TemplateCustomBanner = (args) => (
         </mds-text>
         <mds-author>
           <mds-avatar slot="avatar" initials="er" tone="weak"></mds-avatar>
-          <mds-text typography="h6">Ettore Rossi</mds-text>
+          <mds-text typography="h6" tag="p">
+            Ettore Rossi
+          </mds-text>
           <mds-text typography="caption">Autore ed Architetto Ambientale</mds-text>
         </mds-author>
       </div>
     </div>
     <mds-hr class="bg-tone-neutral-10"></mds-hr>
     <div class="grid gap-400">
-      <mds-text typography="h4">Descrizione</mds-text>
+      <mds-text typography="h4" tag="h3">
+        Descrizione
+      </mds-text>
       <mds-text typography="paragraph">
         Lorem, ipsum dolor sit amet consectetur adipisicing elit. Accusamus, quae dolorum. In quas
         eaque sed numquam sapiente nesciunt perferendis, autem id ratione possimus ex harum?

@@ -147,7 +147,7 @@ export class MdsTooltip implements FloatingElement {
 
   componentDidLoad(): void {
     const arrow = this.host.shadowRoot?.querySelector('.arrow') as HTMLElement;
-    this.floatingController = new FloatingController(this.host, arrow);
+    this.floatingController = new FloatingController(this.host, arrow, 'tooltip');
     this.targetChanged();
   }
 

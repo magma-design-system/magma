@@ -17,6 +17,9 @@ export class MdsInputField {
   @Element() host!: HTMLMdsInputFieldElement;
 
   private handleValidation(mdsInput: HTMLMdsInputElement) {
+    // the event also bubbles from inputs nested in the slotted element (the mds-input-date
+    // of an mds-input-date-range): only the ones exposing the validation API are read
+    if (typeof mdsInput.getErrors !== 'function') return;
     // mdsInput.hasValidator().then(hasValidator => {
     // if (!hasValidator) return
     mdsInput.getErrors().then((errors: MdsValidationErrors) => {
@@ -42,7 +45,9 @@ export class MdsInputField {
       console.warn('mds-input-field: no mds-input assigned to the input slot');
       return;
     }
-    mdsInput.addEventListener('mdsInputValidation', () => this.handleValidation(mdsInput));
+    mdsInput.addEventListener('mdsInputValidation', (event: Event) =>
+      this.handleValidation(event.target as HTMLMdsInputElement),
+    );
   }
 
   /**

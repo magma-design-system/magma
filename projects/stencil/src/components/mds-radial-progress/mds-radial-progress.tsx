@@ -101,7 +101,13 @@ export class MdsRadialProgress {
     const progressVar = `${(this.animatedProgress * 100).toFixed(2)}%`;
     const progressText = this.progressPercentage(this.clampProgress(this.progress));
     return (
-      <Host style={{ '--mds-radial-progress': progressVar }} role="progressbar">
+      <Host
+        aria-valuemax="100"
+        aria-valuemin="0"
+        aria-valuenow={progressText}
+        role="progressbar"
+        style={{ '--mds-radial-progress': progressVar }}
+      >
         <div class="value-container" part="value-container">
           {this.icon && <mds-icon class="icon" name={this.icon} part="icon" />}
           <div class="value-container__text">

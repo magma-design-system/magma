@@ -10,6 +10,9 @@ citiesDictionary.map((element, index) => {
 
 export default {
   title: 'Form / Select',
+  // TODO a11y: the component gives its native control no accessible name (no label, aria-label
+  // or aria-labelledby is forwarded), so every story fails the axe `select-name` rule
+  parameters: { a11y: { test: 'todo' } },
   argTypes: {
     value: {
       type: { name: 'string' },

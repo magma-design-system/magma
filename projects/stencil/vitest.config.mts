@@ -1,6 +1,7 @@
 import path from 'node:path';
 import { defineVitestConfig } from '@stencil/vitest/config';
 import { stencilVitestPlugin } from '@stencil/vitest/plugin';
+import { storybookTest } from '@storybook/addon-vitest/vitest-plugin';
 import { playwright } from '@vitest/browser-playwright';
 
 const src = (dir: string): string => path.resolve(import.meta.dirname, dir, '$1');
@@ -51,6 +52,27 @@ export default defineVitestConfig({
             // the Puppeteer based tests assumed a desktop frame
             viewport: { width: 1280, height: 800 },
             screenshotFailures: false,
+            instances: [{ browser: 'chromium' }],
+          },
+        },
+      },
+      {
+        extends: true,
+        // the stories: play functions and the a11y addon checks over the whole catalogue.
+        // Story globs, aliases and PostCSS come from .storybook/main.mjs (viteFinal)
+        plugins: [
+          storybookTest({
+            configDir: path.resolve(import.meta.dirname, '.storybook'),
+            storybookScript: 'storybook dev -p 6006 --no-open',
+          }),
+        ],
+        test: {
+          name: 'storybook',
+          browser: {
+            enabled: true,
+            provider: playwright(),
+            headless: true,
+            viewport: { width: 1280, height: 800 },
             instances: [{ browser: 'chromium' }],
           },
         },

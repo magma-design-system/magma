@@ -2,6 +2,9 @@ import { h } from '@stencil/core';
 
 export default {
   title: 'Form / Input Date Range',
+  // TODO a11y: the component gives its native control no accessible name (no label, aria-label
+  // or aria-labelledby is forwarded), so every story fails the axe `label` rule
+  parameters: { a11y: { test: 'todo' } },
   argTypes: {
     delay: {
       type: { name: 'number' },

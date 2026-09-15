@@ -69,6 +69,19 @@ describe('mds-input-field', () => {
     expect(label.textContent).toBe('codice fiscale');
   });
 
+  it('reads the validation of an input nested in the slotted element', async () => {
+    const { root, waitForChanges } = await render(
+      '<mds-input-field><mds-input-date-range><mds-input-date slot="start"></mds-input-date><mds-input-date slot="end"></mds-input-date></mds-input-date-range></mds-input-field>',
+    );
+    const start = root.querySelector<HTMLMdsInputDateElement>('mds-input-date[slot="start"]')!;
+
+    // the range emits no validation of its own: the event bubbles from the date that validated
+    await start.setValue('2026-09-14');
+    await waitForChanges();
+
+    expect(root).toEqualAttribute('variant', 'success');
+  });
+
   it('should not change message if there are no validator', async () => {
     const m = 'custom message that should not change';
     const { message, typeAndBlur } = await setup(

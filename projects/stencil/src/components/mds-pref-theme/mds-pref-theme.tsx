@@ -304,6 +304,7 @@ export class MdsPrefTheme {
             onClick={this.handleModeClick('light')}
             class="item item--light"
             icon={miBaselineLightMode}
+            title={this.t.get(this.theme.light.label, { forced: false })}
           ></mds-tab-item>
           <mds-tab-item
             disabled={this.isModeDisabled('system')}
@@ -311,6 +312,7 @@ export class MdsPrefTheme {
             onClick={this.handleModeClick('system')}
             class="item item--system"
             icon={miBaselineSettings}
+            title={this.t.get(this.theme.system.label)}
           ></mds-tab-item>
           <mds-tab-item
             disabled={this.isModeDisabled('dark')}
@@ -318,6 +320,7 @@ export class MdsPrefTheme {
             onClick={this.handleModeClick('dark')}
             class="item item--dark"
             icon={this.mode === 'dark' ? miBaselineDarkMode : miOutlineDarkMode}
+            title={this.t.get(this.theme.dark.label)}
           ></mds-tab-item>
         </mds-tab>
       </Host>

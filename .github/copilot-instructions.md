@@ -68,7 +68,7 @@ These are the **canonical source of truth**. The component's `readme.md` is auto
 
 ## Tests
 
-Tests live in `projects/stencil/src/components/<name>/test/`: `*.e2e.ts` (component tests in Chromium via Playwright, `render` from `@stencil/vitest` + `userEvent` from `vitest/browser`) and `*.spec.ts` (unit tests in mock-doc, no rendering). Run them with `nx run stencil:test`; the Storybook tests with `npm run test.storybook.static` (from `projects/stencil`).
+Tests live in `projects/stencil/src/components/<name>/test/`: `*.e2e.ts` (component tests in Chromium via Playwright, `render` from `@stencil/vitest` + `userEvent` from `vitest/browser`) and `*.spec.ts` (unit tests in mock-doc, no rendering). Run them with `nx run stencil:test`; the Storybook tests with `npm run test-storybook` (from `projects/stencil`, the `storybook` Vitest project).
 
 - **Every behaviour change must come with a test that covers it**, in the same branch: props, events, methods, rendered DOM, keyboard/focus handling, form participation, validation. A bug fix's test reproduces the bug first.
 - Pure style changes (padding, margin, colours, radius, typography) do not need a test.
