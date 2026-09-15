@@ -16,6 +16,7 @@
    * and the two rules that used to sit here keyed off `pref-contrast-high`, a
    * class no controller writes, and off a hardcoded `--tone-neutral-01` that
    * resolves to the very same value in both modes. */
+
   body {
     @apply font-info
       text-info-detail;
@@ -64,6 +65,7 @@
   }
 
   a {
+
     /* `--theme-default-02-primary-text` was defined nowhere, so the declaration
      * was invalid at computed-value time and a link inherited the body colour.
      * `accent-emphasis`, not `accent-fg`: 5.04:1 on white and 4.50:1 on the page
