@@ -287,6 +287,13 @@ export class MdsDropdown implements FloatingElement {
     this.floatingController = new FloatingController(this.host, arrow);
     this.updateCSSCustomProps();
     this.targetChanged();
+
+    // The watcher does not fire for the initial value, so a dropdown that mounts
+    // with `visible` set was never positioned at all: no left, no top, no origin,
+    // parked at the top left corner of the page.
+    if (this.visible) {
+      this.visibleChanged(true);
+    }
   }
 
   disconnectedCallback(): void {
