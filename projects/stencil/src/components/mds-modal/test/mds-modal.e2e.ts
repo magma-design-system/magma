@@ -33,6 +33,78 @@ describe('mds-modal', () => {
     expect(root).not.toHaveAttribute('opened');
   });
 
+  describe('body scroll lock', () => {
+    // Mounting a new stage disconnects the modals of the previous cases, and
+    // disconnectedCallback releases the body: whatever a case wants on the body
+    // has to be written AFTER its render, or that release wipes it.
+    const openOn = async (
+      { root, waitForChanges },
+      overflow?: string,
+    ): Promise<HTMLMdsModalElement> => {
+      if (overflow === undefined) {
+        document.body.style.removeProperty('overflow');
+      } else {
+        document.body.style.overflow = overflow;
+      }
+      root.opened = true;
+      await waitForChanges();
+      return root;
+    };
+
+    afterEach(() => {
+      document.body.style.removeProperty('overflow');
+    });
+
+    it('releases the body when the modal is dismissed', async () => {
+      const stage = await render('<mds-modal>Text</mds-modal>');
+      const root = await openOn(stage);
+
+      expect(document.body.style.overflow).toBe('hidden');
+
+      // same backdrop dismissal as the case above
+      const dialog = root.shadowRoot!.querySelector('dialog')!;
+      await userEvent.click(dialog, { position: { x: 5, y: 5 } });
+      await stage.waitForChanges();
+
+      // the page scrolls again: the lock is gone, not replaced by another value
+      expect(document.body.style.overflow).toBe('');
+    });
+
+    it('releases the body when the consumer closes it from the prop', async () => {
+      const stage = await render('<mds-modal>Text</mds-modal>');
+      const root = await openOn(stage);
+
+      root.opened = false;
+      await stage.waitForChanges();
+
+      expect(document.body.style.overflow).toBe('');
+    });
+
+    it('puts back an overflow the page had set on its own', async () => {
+      const stage = await render('<mds-modal>Text</mds-modal>');
+      const root = await openOn(stage, 'clip');
+
+      expect(document.body.style.overflow).toBe('hidden');
+
+      root.opened = false;
+      await stage.waitForChanges();
+
+      expect(document.body.style.overflow).toBe('clip');
+    });
+
+    it('leaves the body alone when the lock is manual', async () => {
+      const stage = await render('<mds-modal overflow="manual">Text</mds-modal>');
+      const root = await openOn(stage);
+
+      expect(document.body.style.overflow).toBe('');
+
+      root.opened = false;
+      await stage.waitForChanges();
+
+      expect(document.body.style.overflow).toBe('');
+    });
+  });
+
   describeConditionalSlot({
     html: '<mds-modal>Text</mds-modal>',
     slot: 'top',

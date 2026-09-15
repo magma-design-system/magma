@@ -39,7 +39,10 @@ import miBaselineClose from '@icon/mi/baseline/close.svg';
 export class MdsModal {
   private animationDelayTimeout: NodeJS.Timeout;
   private dialogEl?: HTMLDialogElement;
-  private bodyOverflow: string;
+  // Initialised on purpose: both readers compare it against '' (the strict boolean
+  // rules forbid the truthiness check this used to be), and an undeclared field is
+  // `undefined`, not ''. See enableOverflow.
+  private bodyOverflow: string = '';
   private cssTransitionDuration: string = '500';
   private windowElement: HTMLElement;
   private windowContentWrapper?: HTMLElement;
