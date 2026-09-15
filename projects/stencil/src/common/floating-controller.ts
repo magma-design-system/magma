@@ -139,6 +139,36 @@ export class FloatingController {
     }
   };
 
+  /**
+   * The pivot of the opening animation is the arrow, which the `arrow` middleware
+   * parks wherever it has to sit to keep pointing at the caller: after a shift it
+   * is nowhere near the centre of the panel. `convertToTransformOrigin` only knows
+   * the placement, so it answers `center top` for every bottom placement and the
+   * panel grows from a point that has nothing to do with the arrow - measured on a
+   * 408px panel pushed against the left edge, the two were 165px apart.
+   */
+  private readonly arrowOrigin = (
+    placement: Placement,
+    middleware: MiddlewareData,
+  ): string | null => {
+    const { arrow: arrowData } = middleware;
+    if (!this.arrowEl || this._host.hideArrow || arrowData === undefined) {
+      return null;
+    }
+    const side = placement.split('-')[0];
+    if (arrowData.x !== null && arrowData.x !== undefined) {
+      const x = arrowData.x + this.arrowEl.offsetWidth / 2;
+      if (side === 'bottom') return `${x}px top`;
+      if (side === 'top') return `${x}px bottom`;
+    }
+    if (arrowData.y !== null && arrowData.y !== undefined) {
+      const y = arrowData.y + this.arrowEl.offsetHeight / 2;
+      if (side === 'right') return `left ${y}px`;
+      if (side === 'left') return `right ${y}px`;
+    }
+    return null;
+  };
+
   private convertToTransformOrigin = (position: Placement): string => {
     const positions = {
       top: 'center bottom',
@@ -197,10 +227,17 @@ export class FloatingController {
       placement: this._host.placement,
       strategy: this._host.strategy,
     }).then(({ x, y, placement, middlewareData }) => {
+      // The first placement must land instantly: until it happens the panel has no
+      // position at all, so animating left/top towards the caller would fly it in
+      // from the top left corner of the page. The mark lets the sheet transition
+      // the following moves, which are real repositionings.
+      this._host.setAttribute('data-floating-placed', '');
+
       Object.assign(this._host.style, {
         left: `${x}px`,
         top: `${y}px`,
-        transformOrigin: this.convertToTransformOrigin(placement),
+        transformOrigin:
+          this.arrowOrigin(placement, middlewareData) ?? this.convertToTransformOrigin(placement),
         position: this._host.strategy,
       });
 
