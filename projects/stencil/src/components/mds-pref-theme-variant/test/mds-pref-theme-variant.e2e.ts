@@ -1,6 +1,7 @@
 import { render } from '@stencil/vitest';
 
 const CORNER_STORAGE_KEY = 'mdsPrefCornerShape';
+const THEME_NAME_STORAGE_KEY = 'mdsPrefThemeName';
 
 describe('mds-pref-theme-variant', () => {
   beforeEach(() => {
@@ -8,6 +9,14 @@ describe('mds-pref-theme-variant', () => {
     // decide this one
     localStorage.removeItem(CORNER_STORAGE_KEY);
     document.documentElement.removeAttribute('data-corner-shape');
+    // the theme name is stored and read back the same way, and a leftover would
+    // outrank the prop here too
+    localStorage.removeItem(THEME_NAME_STORAGE_KEY);
+    document.documentElement.removeAttribute('data-theme-name');
+    // the list is live, so the names come out of a copy before they are removed
+    [...document.documentElement.classList]
+      .filter((name) => name.startsWith('pref-theme-name-'))
+      .forEach((name) => document.documentElement.classList.remove(name));
   });
 
   it('renders', async () => {
@@ -39,6 +48,18 @@ describe('mds-pref-theme-variant', () => {
     // from reaching a project that never chose
     expect(document.documentElement).not.toHaveAttribute('data-corner-shape');
     expect(localStorage.getItem(CORNER_STORAGE_KEY)).toBe('default');
+  });
+
+  it('renders no caption of its own for a theme that is not the default', async () => {
+    const { root } = await render('<mds-pref-theme-variant name="ocean"></mds-pref-theme-variant>');
+
+    // the dropped caption read a key none of the four locale files has, so every
+    // theme but the default used to get an empty mds-text under the dropdown
+    const texts = [...root.shadowRoot!.querySelectorAll('mds-text')];
+
+    expect(root).toHaveAttribute('name', 'ocean');
+    expect(texts).toHaveLength(1);
+    expect(texts[0].textContent!.trim()).not.toBe('');
   });
 
   it('lets the stored choice outrank the prop, like the theme name does', async () => {
