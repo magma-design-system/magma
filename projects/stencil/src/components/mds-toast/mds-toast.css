@@ -101,6 +101,10 @@
   gap: --spacing(200);
 }
 
+.actions--hidden {
+  display: none;
+}
+
 ::slotted([slot='icon']) {
   @apply ease-out;
 

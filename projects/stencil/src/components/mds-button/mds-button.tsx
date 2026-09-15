@@ -14,7 +14,7 @@ import { buttonSizeTypographyVariant } from './meta/variants';
 import { setAttributeIfEmpty, unslugName } from '@common/aria';
 import { isIconFormatIsBase64, isIconFormatIsSVG } from '@common/icon';
 import { TypographyTruncateType } from '@type/text';
-import { hasChildWithSlot, readSlottedLabel, sanitizeLabel } from '@common/slot';
+import { readSlottedLabel, sanitizeLabel } from '@common/slot';
 import { preferenceStore } from '@common/preference';
 import mdiApple from '@icon/mdi/apple.svg';
 import logoGoogle from './asset/logo-google.svg';
@@ -34,7 +34,6 @@ import { TextAnimationType } from '@component/mds-text/meta/types';
 })
 export class MdsButton {
   private typography?: TypographyType;
-  private hasNotification?: boolean;
   private km = new KeyboardManager();
 
   @Element() host: HTMLMdsButtonElement;
@@ -203,8 +202,6 @@ export class MdsButton {
   };
 
   componentWillLoad(): void {
-    this.hasNotification = hasChildWithSlot(this.host, 'notification');
-
     this.handleVariantChange(this.variant);
 
     if (this.href !== undefined && this.href !== '') {
@@ -320,7 +317,7 @@ export class MdsButton {
         >
           {this.label || <slot onSlotchange={this.onSlotChangeHandler} />}
         </mds-text>
-        {this.hasNotification && <slot name="notification" />}
+        <slot name="notification" />
         {this.icon && this.iconPosition === 'right' && (
           <mds-icon aria-hidden="true" class="icon" name={this.icon} part="icon" />
         )}

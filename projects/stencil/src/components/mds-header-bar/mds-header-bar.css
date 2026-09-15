@@ -52,6 +52,10 @@
   gap: --spacing(400);
 }
 
+.nav--hidden {
+  display: none;
+}
+
 .menu {
   --mds-button-border-opacity: 0;
 

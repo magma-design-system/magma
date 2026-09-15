@@ -10,6 +10,7 @@ import {
   Watch,
 } from '@stencil/core';
 import { hasChildWithSlot } from '@common/slot';
+import clsx from 'clsx';
 import { ThemeVariantType } from '@type/variant';
 import { ToneMinimalBoxVariantType } from '@type/tone';
 
@@ -35,7 +36,6 @@ import localeIt from './meta/locale.it.json';
 })
 export class MdsBanner {
   @Element() host: HTMLMdsBannerElement;
-  private actions: boolean;
   private km = new KeyboardManager();
   private t: Locale = new Locale({
     el: localeEl,
@@ -45,6 +45,7 @@ export class MdsBanner {
   });
 
   @State() closeButtonVariant: ThemeVariantType;
+  @State() hasActions: boolean;
 
   /**
    * Sets the theme variant colors
@@ -101,7 +102,7 @@ export class MdsBanner {
   };
 
   componentWillLoad(): void {
-    this.actions = hasChildWithSlot(this.host, 'action');
+    this.hasActions = hasChildWithSlot(this.host, 'action');
     this.setCloseButtonVariant(this.variant);
   }
 
@@ -137,6 +138,10 @@ export class MdsBanner {
       return;
     }
     this.closeButtonVariant = newValue ?? 'primary';
+  };
+
+  private onActionSlotChange = (): void => {
+    this.hasActions = hasChildWithSlot(this.host, 'action');
   };
 
   private closeBanner = (): void => {
@@ -181,11 +186,9 @@ export class MdsBanner {
             />
           )}
         </div>
-        {this.actions && (
-          <div class="actions">
-            <slot name="action" />
-          </div>
-        )}
+        <div class={clsx('actions', !this.hasActions && 'actions--hidden')}>
+          <slot name="action" onSlotchange={this.onActionSlotChange} />
+        </div>
       </Host>
     );
   }

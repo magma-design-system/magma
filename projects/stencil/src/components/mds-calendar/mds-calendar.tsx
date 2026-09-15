@@ -39,19 +39,19 @@ export class MdsCalendar {
   @State() selectedYear: number = this.currentDate.year;
 
   /**
-   * Enables selecting a date range (start and end date) instead of a single date.
+   * If set, the component selects a single date instead of a date range (start and end date).
    */
-  @Prop() readonly rangePicker: boolean = true;
+  @Prop() readonly singlePicker: boolean = false;
 
   /**
-   * Shows the previous navigation button in the calendar header.
+   * If set, the component hides the previous navigation button in the calendar header.
    */
-  @Prop() readonly showPreviousButton: boolean = true;
+  @Prop() readonly hidePreviousButton: boolean = false;
 
   /**
-   * Shows the next navigation button in the calendar header.
+   * If set, the component hides the next navigation button in the calendar header.
    */
-  @Prop() readonly showNextButton: boolean = true;
+  @Prop() readonly hideNextButton: boolean = false;
 
   /**
    * Disables switching to month or year selection views from the calendar header.
@@ -59,9 +59,10 @@ export class MdsCalendar {
   @Prop() readonly disableMonthYearSelection: boolean = false;
 
   /**
-   * Shows the preselection area above the calendar view.
+   * If set, the component hides the preselection area above the calendar view even when the
+   * `preselection` slot has content.
    */
-  @Prop() readonly showPreselection: boolean = false;
+  @Prop() readonly hidePreselection: boolean = false;
 
   /**
    * Hides the highlight on today's date in the calendar view.
@@ -153,7 +154,7 @@ export class MdsCalendar {
           console.warn('startDate is after endDate, swapping values');
           return;
         }
-      } else if (this.rangePicker) {
+      } else if (!this.singlePicker) {
         this.isFirstClick = false;
       }
 
@@ -169,8 +170,8 @@ export class MdsCalendar {
 
   @Watch('endDate')
   handleEndDate(newValue: string | null): void {
-    if (!this.rangePicker) {
-      console.warn('rangePicker is disabled, endDate cannot be set');
+    if (this.singlePicker) {
+      console.warn('singlePicker is enabled, endDate cannot be set');
       this.internalEndDate = null;
       return;
     }
@@ -250,6 +251,11 @@ export class MdsCalendar {
     this.internalStartDate = this.parseDateProp(this.internalStartDate, 'start-date');
     this.internalEndDate = this.parseDateProp(this.internalEndDate, 'end-date');
 
+    if (this.singlePicker && this.internalEndDate !== null) {
+      console.warn('singlePicker is enabled, endDate cannot be set');
+      this.internalEndDate = null;
+    }
+
     if (this.viewDate !== null && this.viewDate !== '') {
       const viewDate = DateTime.fromISO(this.viewDate.toString());
 
@@ -304,7 +310,7 @@ export class MdsCalendar {
 
     if (
       !target.matches('mds-calendar-cell') ||
-      !this.rangePicker ||
+      this.singlePicker ||
       this.internalStartDate === null ||
       this.internalStartDate === '' ||
       (this.internalEndDate !== null && this.internalEndDate !== '')
@@ -327,7 +333,7 @@ export class MdsCalendar {
     this.internalHoverDate = null;
 
     if (
-      !this.rangePicker ||
+      this.singlePicker ||
       this.internalStartDate === null ||
       this.internalStartDate === '' ||
       (this.internalEndDate !== null && this.internalEndDate !== '')
@@ -391,7 +397,7 @@ export class MdsCalendar {
       'mds-calendar-cell[selection], mds-calendar-cell[preview]',
     );
 
-    if (this.rangePicker) {
+    if (!this.singlePicker) {
       const hoverDate = this.resolveHoverDate();
 
       if (hoverDate !== null && (this.internalEndDate === null || this.internalEndDate === '')) {
@@ -615,7 +621,7 @@ export class MdsCalendar {
 
   private handleRange(element: HTMLElement, dayInfo: DateTime): void {
     if (
-      this.rangePicker &&
+      !this.singlePicker &&
       (this.endDate === null || this.endDate === '') &&
       (this.internalEndDate === null || this.internalEndDate === '') &&
       this.isFirstClick
@@ -772,8 +778,8 @@ export class MdsCalendar {
     (event: MouseEvent): void => {
       event.stopPropagation();
       const target = event.currentTarget as HTMLElement;
-      if (this.rangePicker) this.handleRange(target, dayInfo);
-      else this.handleSingleSelection(target, dayInfo);
+      if (this.singlePicker) this.handleSingleSelection(target, dayInfo);
+      else this.handleRange(target, dayInfo);
     };
 
   private readonly handleMonthSelect =
@@ -806,7 +812,8 @@ export class MdsCalendar {
         <div
           class={clsx(
             'calendar-preselection',
-            (this.showPreselection || this.hasPreselection) &&
+            this.hasPreselection &&
+              !this.hidePreselection &&
               'calendar-preselection--has-preselection',
           )}
         >
@@ -814,7 +821,7 @@ export class MdsCalendar {
         </div>
         <div class="calendar-view">
           <nav>
-            {this.showPreviousButton && (
+            {!this.hidePreviousButton && (
               <mds-button
                 class="action-back"
                 icon={miBaselineBackIosNew}
@@ -845,7 +852,7 @@ export class MdsCalendar {
                 ></mds-button>
               )}
             </div>
-            {this.showNextButton && (
+            {!this.hideNextButton && (
               <mds-button
                 class="action-forward"
                 icon={miBaselineForwardIos}

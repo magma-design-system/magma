@@ -18,7 +18,7 @@ The `<mds-video-wall>` web component is the Magma Design System's full-bleed bac
 - **Ambient by default**: `autoplay`, `loop` and `muted` are all `true` out of the box, producing a self-contained background loop with no controls and no audio - the configuration browsers require for autoplay to be honored.
 - **Decorative video**: The footage is treated as presentation only; meaningful information must live in the `content` slot, not in the video itself.
 - **Noise overlay**: When `noise` is anything other than `'none'`, a decorative grain layer is rendered above the video; with `noise="none"` the layer is omitted entirely.
-- **Conditional content layer**: The `content` overlay wrapper is only rendered when a `slot="content"` child is present, so an empty overlay never affects layout.
+- **Conditional content layer**: The `content` overlay wrapper is shown only while a `slot="content"` child is present, also when it is added after the first render, so an empty overlay never affects layout.
 - **Default slot is fallback text**: The default (unnamed) slot is projected inside the `<video>` element and is intended for the browser-support fallback message shown when video playback is unavailable.
 - **Preload is conditional**: `preload` only takes effect when autoplay is disabled; the browser ignores it while `autoplay` is active.
 
@@ -71,7 +71,7 @@ Add a grain overlay with `noise` to give the video a cinematic or retro feel. Ch
 
 #### Foreground Content Overlay via the `content` Slot
 
-Place any text, HTML elements, or Magma components in the `content` slot to render them centered above the video. The overlay wrapper is injected only when this slot is populated, so an empty overlay never affects layout.
+Place any text, HTML elements, or Magma components in the `content` slot to render them centered above the video. The overlay wrapper is shown only while this slot is populated, also when the content is added after the first render, so an empty overlay never affects layout.
 
 ```html
 <mds-video-wall src="/assets/video/ambient.mp4" noise="soft">

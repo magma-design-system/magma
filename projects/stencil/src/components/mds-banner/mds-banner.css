@@ -88,6 +88,10 @@
   justify-content: flex-end;
 }
 
+.actions--hidden {
+  display: none;
+}
+
 .icon {
   fill: var(--mds-banner-icon-color);
   flex-shrink: 0;

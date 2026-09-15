@@ -585,7 +585,6 @@ export class MdsInputDateRange {
         {this.renderCalendarPreselectionPanel()}
         <mds-calendar
           key={this.calendarKey}
-          rangePicker={true}
           hideToday={this.hideToday}
           onMdsCalendarChange={this.handleCalendarChange}
           onMdsCalendarPreselect={this.handleCalendarPreselect}
@@ -604,10 +603,9 @@ export class MdsInputDateRange {
         {this.renderCalendarPreselectionPanel()}
         <mds-calendar
           key={`${this.calendarKey}-start`}
-          rangePicker={true}
           hideToday={this.hideToday}
-          showNextButton={false}
-          disableMonthYearSelection={true}
+          hideNextButton
+          disableMonthYearSelection
           viewDate={this.getCalendarViewDate()}
           onMdsCalendarNavigate={this.handleCalendarNavigate}
           onMdsCalendarChange={this.handleCalendarChange}
@@ -619,10 +617,9 @@ export class MdsInputDateRange {
         ></mds-calendar>
         <mds-calendar
           key={`${this.calendarKey}-end`}
-          rangePicker={true}
           hideToday={this.hideToday}
-          showPreviousButton={false}
-          disableMonthYearSelection={true}
+          hidePreviousButton
+          disableMonthYearSelection
           viewDate={this.getCalendarViewDate(1)}
           onMdsCalendarNavigate={this.handleCalendarNavigate}
           onMdsCalendarChange={this.handleCalendarChange}

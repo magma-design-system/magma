@@ -5,8 +5,19 @@ import localeEs from './meta/locale.es.json';
 import localeIt from './meta/locale.it.json';
 import miBaselineCancel from '@icon/mi/baseline/cancel.svg';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import { Component, Element, Event, EventEmitter, Host, h, Prop, Watch } from '@stencil/core';
+import {
+  Component,
+  Element,
+  Event,
+  EventEmitter,
+  Host,
+  h,
+  Prop,
+  State,
+  Watch,
+} from '@stencil/core';
 import { hasChildWithSlot } from '@common/slot';
+import clsx from 'clsx';
 import { Locale } from '@common/locale';
 import { MdsPushNotificationItemEventDetail } from './meta/event-detail';
 import {
@@ -35,9 +46,9 @@ import { preferenceStore } from '@common/preference';
   shadow: true,
 })
 export class MdsPushNotificationItem {
-  private hasActions?: boolean;
-  private hasBadge?: boolean;
   @Element() host: HTMLMdsPushNotificationItemElement;
+  @State() hasActions: boolean;
+  @State() hasBadge: boolean;
   private t: Locale = new Locale({
     el: localeEl,
     en: localeEn,
@@ -115,10 +126,14 @@ export class MdsPushNotificationItem {
     this.handleDeletableChange(this.deletable);
   }
 
-  componentWillLoad(): void {
-    dayjs.extend(relativeTime);
+  private onSlotChange = (): void => {
     this.hasActions = hasChildWithSlot(this.host, 'action');
     this.hasBadge = hasChildWithSlot(this.host, 'badge');
+  };
+
+  componentWillLoad(): void {
+    dayjs.extend(relativeTime);
+    this.onSlotChange();
 
     if (this.datetime !== undefined && this.datetime !== '') {
       this.datetime = sanitizeISO8601Date(this.datetime.toString()) ?? undefined;
@@ -175,11 +190,9 @@ export class MdsPushNotificationItem {
         <div class="content" part="content">
           <div class="header">
             <div class="infos">
-              {this.hasBadge && (
-                <div>
-                  <slot name="badge"></slot>
-                </div>
-              )}
+              <div class={clsx('badge', !this.hasBadge && 'badge--hidden')}>
+                <slot name="badge" onSlotchange={this.onSlotChange}></slot>
+              </div>
               {this.subject && (
                 <mds-text class="subject" typography="h6" variant="title" truncate="all">
                   {this.subject}
@@ -197,11 +210,9 @@ export class MdsPushNotificationItem {
           <mds-text class="message" truncate="all" typography="caption" variant="info">
             {this.message}
           </mds-text>
-          {this.hasActions && (
-            <div class="actions" part="actions">
-              <slot name="action"></slot>
-            </div>
-          )}
+          <div class={clsx('actions', !this.hasActions && 'actions--hidden')} part="actions">
+            <slot name="action" onSlotchange={this.onSlotChange}></slot>
+          </div>
         </div>
         {this.deletable && (
           <mds-button

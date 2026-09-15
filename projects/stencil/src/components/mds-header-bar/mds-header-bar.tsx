@@ -11,6 +11,7 @@ import {
   h,
 } from '@stencil/core';
 import { hasChildWithSlot } from '@common/slot';
+import clsx from 'clsx';
 import { preferenceStore } from '@common/preference';
 import { HeaderBarMenuType, HeaderBarNavType } from '@type/header-bar';
 
@@ -28,7 +29,7 @@ import { HeaderBarMenuType, HeaderBarNavType } from '@type/header-bar';
   shadow: true,
 })
 export class MdsHeaderBar {
-  private hasNav: boolean;
+  @State() hasNav: boolean;
   @Element() host: HTMLMdsHeaderBarElement;
   @State() isOpened: boolean;
 
@@ -41,6 +42,10 @@ export class MdsHeaderBar {
    * Sets the visibility type of the navigation menu
    */
   @Prop({ reflect: true }) nav: HeaderBarNavType = 'desktop';
+
+  private onNavSlotChange = (): void => {
+    this.hasNav = hasChildWithSlot(this.host, 'nav');
+  };
 
   componentWillLoad(): void {
     this.hasNav = hasChildWithSlot(this.host, 'nav');
@@ -79,11 +84,9 @@ export class MdsHeaderBar {
             <slot />
           </div>
           <div class="actions" part="actions">
-            {this.nav !== 'none' && this.hasNav && (
-              <nav class="nav" part="nav">
-                <slot name="nav" />
-              </nav>
-            )}
+            <nav class={clsx('nav', !this.hasNav && 'nav--hidden')} part="nav">
+              <slot name="nav" onSlotchange={this.onNavSlotChange} />
+            </nav>
             {this.menu !== 'none' && (
               <mds-button
                 class="menu"
