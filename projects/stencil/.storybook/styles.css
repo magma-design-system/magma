@@ -25,9 +25,12 @@
 @layer overrides {
   body {
     @apply bg-surface-default
-    text-tone-neutral-03
       transition-colors
       duration-300
       ease-in-out;
+
+    /* the tokens are channel triplets: they only make a colour inside rgb() */
+    background-color: rgb(var(--magma-surface-default));
+    color: rgb(var(--magma-text-default));
   }
 }
