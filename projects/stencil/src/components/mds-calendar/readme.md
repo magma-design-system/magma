@@ -13,20 +13,22 @@ The `<mds-calendar>` web component is the date-selection surface of the Magma De
 
 #### Semantic Behavior
 
-- **Range vs. single mode**: `rangePicker` defaults to `true`. In range mode the first click sets the start, the second sets the end, and a third click resets the selection; in single mode each click replaces the prior choice.
+- **Range vs. single mode**: range selection is the default; set `singlePicker` to pick one day. In range mode the first click sets the start, the second sets the end, and a third click resets the selection; in single mode each click replaces the prior choice.
 - **Range auto-ordering**: If the second click lands before the current start, the two endpoints are swapped so `startDate` always precedes `endDate`; setting an `endDate` earlier than `startDate` is rejected with a console warning.
 - **Hover preview**: While a range start is set, hovering over cells previews the candidate range live (range mode only).
 - **Min/max bounds**: `min` and `max` mark out-of-range day cells as disabled, blocking their selection.
 - **Multi-view navigation**: The header toggles between the day grid, a month picker, and a year picker; the year view pages in decades while the calendar view pages month by month.
 - **Localization**: Weekday names, month names, and cell titles are formatted from the host's resolved locale (`it`, `en`, `es`, `el`).
 - **Emitted events**: `mdsCalendarChange` fires with `{ startDate, endDate? }` once a selection is complete; `mdsCalendarPreselect` fires alongside it to let preselection chips re-evaluate their state.
-- **Preselection slot**: A `preselection` named slot hosts quick-pick shortcuts.
+- **Preselection slot**: A `preselection` named slot hosts quick-pick shortcuts. The area appears automatically when the slot has content and `hidePreselection` collapses it.
 
 #### Properties & Visual Configurations
 
 Dates are exchanged as ISO 8601 strings (`YYYY-MM-DD`). `startDate` and `endDate` seed and reflect the current selection; on load, a valid `startDate` also determines which month is shown first.
 
-- **`rangePicker`** is the mode switch: leave it `true` for two-ended range selection, set it `false` for single-day pickers. When `false`, any `endDate` is ignored and cleared with a warning.
+- **`singlePicker`** is the mode switch: omit it for two-ended range selection, set it for single-day pickers. When set, any `endDate` is ignored and cleared with a warning.
+- **`hidePreviousButton`** / **`hideNextButton`** remove one of the header navigation buttons, typically on calendars paired side by side; **`disableMonthYearSelection`** keeps the header on the day grid; **`hideToday`** removes the highlight on today's date.
+- Every boolean prop defaults to `false`: the feature is on until the bare attribute turns it off.
 - **`min`** / **`max`** define the selectable window; days outside it render disabled rather than being hidden.
 
 This component does not use the shared `variant` / `tone` ladders on its host - those are defined in [`projects/stencil/SPEC.md`](../../../../SPEC.md#tone-and-variant-system) and are applied internally to the navigation buttons it renders.
@@ -38,10 +40,10 @@ Correct and idiomatic ways to use the `<mds-calendar>` component, ordered from m
 
 #### Single-Day Picker
 
-Disable range mode with `range-picker="false"` for a plain single-date selector. `mdsCalendarChange` fires once with `{ startDate }` and no `endDate`. Seed an initial date via `start-date`.
+Set the bare `single-picker` attribute for a plain single-date selector. `mdsCalendarChange` fires once with `{ startDate }` and no `endDate`. Seed an initial date via `start-date`.
 
 ```html
-<mds-calendar range-picker="false" start-date="2025-06-10"></mds-calendar>
+<mds-calendar single-picker start-date="2025-06-10"></mds-calendar>
 
 <script>
   document.querySelector('mds-calendar').addEventListener('mdsCalendarChange', (e) => {
@@ -52,7 +54,7 @@ Disable range mode with `range-picker="false"` for a plain single-date selector.
 
 #### Range Picker (default mode)
 
-`range-picker` defaults to `true`. The first click sets the start date, the second sets the end date. A third click resets the selection. Preload a range by supplying both `start-date` and `end-date`.
+Range selection is the default: omit `single-picker`. The first click sets the start date, the second sets the end date. A third click resets the selection. Preload a range by supplying both `start-date` and `end-date`.
 
 ```html
 <mds-calendar start-date="2025-09-01" end-date="2025-09-15"></mds-calendar>
@@ -71,7 +73,7 @@ Pass ISO 8601 strings to `min` and `max` to mark out-of-range days as disabled. 
 
 ```html
 <mds-calendar
-  range-picker="false"
+  single-picker
   min="2025-01-01"
   max="2025-12-31"
 ></mds-calendar>
@@ -82,7 +84,7 @@ Pass ISO 8601 strings to `min` and `max` to mark out-of-range days as disabled. 
 Use the `updateCurrentDate` method to jump the visible month without changing the current selection. Pass any ISO date string that falls within the target month.
 
 ```html
-<mds-calendar id="cal" range-picker="false"></mds-calendar>
+<mds-calendar id="cal" single-picker></mds-calendar>
 
 <script>
   document.querySelector('#cal').updateCurrentDate('2026-03-01');
@@ -91,7 +93,7 @@ Use the `updateCurrentDate` method to jump the visible month without changing th
 
 #### Quick-Pick Preselection Shortcuts
 
-The `preselection` named slot accepts shortcut components such as [`mds-input-date-range-preselection`](../../mds-input-date-range-preselection). When at least one child with the class `date-preselection--has-preselection` is present, the slot panel becomes visible automatically. `mdsCalendarPreselect` fires after each range selection so preselection chips can re-evaluate their active state.
+The `preselection` named slot accepts shortcut components such as [`mds-input-date-range-preselection`](../../mds-input-date-range-preselection). When at least one child with the class `date-preselection--has-preselection` is present, the slot panel becomes visible automatically; set `hide-preselection` to keep it collapsed. `mdsCalendarPreselect` fires after each range selection so preselection chips can re-evaluate their active state.
 
 ```html
 <mds-calendar start-date="2025-09-01" end-date="2025-09-07">
@@ -101,12 +103,21 @@ The `preselection` named slot accepts shortcut components such as [`mds-input-da
 </mds-calendar>
 ```
 
+#### Paired Calendars Without Duplicate Navigation
+
+Two calendars shown side by side (the pattern used by `mds-input-date-range` on wide viewports) should expose one previous and one next button in total: hide the inner buttons with `hide-previous-button` / `hide-next-button` and lock the header on the day grid with `disable-month-year-selection`, then keep the two `view-date` values one month apart from the `mdsCalendarNavigate` event.
+
+```html
+<mds-calendar id="start" view-date="2025-09-01" hide-next-button disable-month-year-selection></mds-calendar>
+<mds-calendar id="end" view-date="2025-10-01" hide-previous-button disable-month-year-selection></mds-calendar>
+```
+
 #### Listening for Selection Changes
 
 Listen on the documented `mdsCalendarChange` event - not the native `change` event - so the handler receives the structured `{ startDate, endDate? }` detail object directly from the Shadow DOM.
 
 ```html
-<mds-calendar id="picker" range-picker="false"></mds-calendar>
+<mds-calendar id="picker" single-picker></mds-calendar>
 
 <script>
   document.querySelector('#picker').addEventListener('mdsCalendarChange', (e) => {
@@ -125,7 +136,7 @@ Listen on the documented `mdsCalendarChange` event - not the native `change` eve
 <mds-input-date name="scadenza" label="Scadenza"></mds-input-date>
 
 <!-- Lower-level: always-visible standalone grid -->
-<mds-calendar range-picker="false"></mds-calendar>
+<mds-calendar single-picker></mds-calendar>
 ```
 
 #### Styling Customization via CSS Custom Properties
@@ -148,32 +159,33 @@ Adjust the calendar appearance only through the documented `--mds-calendar-*` CS
 
 Common incorrect uses of `<mds-calendar>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
 
-#### Do Not Disable Range Mode with `range-picker="false"` as a Quoted String
+#### Do Not Toggle Single Mode with a Quoted Boolean String
 
-`rangePicker` is a boolean prop. In HTML any non-empty attribute value is truthy, so `range-picker="false"` does not turn off range mode - it keeps it on. Remove the attribute to use the default `true`, or omit the quoted value and use just the bare attribute for `true`. For `false`, remove the attribute entirely via DOM or set the property to `false` in JavaScript.
+`singlePicker` is a boolean prop that defaults to `false`. In HTML any non-empty attribute value is truthy, so `single-picker="false"` does not restore range mode - it turns single mode on. Use the bare attribute for single mode and omit it for the default range mode; toggle it at runtime by adding/removing the attribute or setting the property in JavaScript.
 
 ```html
 <!-- 🚫 INCORRECT -->
-<mds-calendar range-picker="false"></mds-calendar>
+<mds-calendar single-picker="false"></mds-calendar>
+<mds-calendar single-picker="true"></mds-calendar>
 
-<!-- ✅ CORRECT (HTML attribute approach) -->
-<!-- Range mode OFF: omit the attribute and set the property in JS -->
-<mds-calendar id="cal"></mds-calendar>
+<!-- ✅ CORRECT -->
+<mds-calendar></mds-calendar>
+<mds-calendar single-picker></mds-calendar>
 <script>
-  document.querySelector('#cal').rangePicker = false;
+  document.querySelector('#cal').singlePicker = false; // back to range mode
 </script>
 ```
 
-#### Do Not Set `end-date` When `range-picker` Is Disabled
+#### Do Not Set `end-date` When `single-picker` Is Set
 
-When `rangePicker` is `false`, the component rejects `endDate` with a console warning and clears it internally. Setting both `range-picker="false"` and `end-date` is contradictory and produces no visible selection for the end date.
+When `singlePicker` is set, the component rejects `endDate` with a console warning and clears it internally. Setting both `single-picker` and `end-date` is contradictory and produces no visible selection for the end date.
 
 ```html
 <!-- 🚫 INCORRECT -->
-<mds-calendar range-picker="false" start-date="2025-06-01" end-date="2025-06-15"></mds-calendar>
+<mds-calendar single-picker start-date="2025-06-01" end-date="2025-06-15"></mds-calendar>
 
 <!-- ✅ CORRECT -->
-<mds-calendar range-picker="false" start-date="2025-06-01"></mds-calendar>
+<mds-calendar single-picker start-date="2025-06-01"></mds-calendar>
 ```
 
 #### Do Not Provide `startDate` After `endDate`
@@ -235,7 +247,7 @@ The `preselection` slot is designed for preselection shortcut components - not f
 ```html
 <!-- 🚫 INCORRECT -->
 <form action="/prenota" method="post">
-  <mds-calendar name="check-in" range-picker="false"></mds-calendar>
+  <mds-calendar name="check-in" single-picker></mds-calendar>
   <button type="submit">Prenota</button>
 </form>
 
@@ -271,20 +283,20 @@ mds-calendar {
 
 ## Properties
 
-| Property                    | Attribute                      | Description                                                                               | Type             | Default |
-| --------------------------- | ------------------------------ | ----------------------------------------------------------------------------------------- | ---------------- | ------- |
-| `disableMonthYearSelection` | `disable-month-year-selection` | Disables switching to month or year selection views from the calendar header.             | `boolean`        | `false` |
-| `endDate`                   | `end-date`                     | Specifies the end date of the selection                                                   | `null \| string` | `null`  |
-| `hideToday`                 | `hide-today`                   | Hides the highlight on today's date in the calendar view.                                 | `boolean`        | `false` |
-| `hoverDate`                 | `hover-date`                   | Specifies the date used to preview the range selection across multiple visible calendars. | `null \| string` | `null`  |
-| `max`                       | `max`                          | Specifies the minimum date of the selection                                               | `null \| string` | `null`  |
-| `min`                       | `min`                          | Specifies the minimum date of the selection                                               | `null \| string` | `null`  |
-| `rangePicker`               | `range-picker`                 | Enables selecting a date range (start and end date) instead of a single date.             | `boolean`        | `true`  |
-| `showNextButton`            | `show-next-button`             | Shows the next navigation button in the calendar header.                                  | `boolean`        | `true`  |
-| `showPreselection`          | `show-preselection`            | Shows the preselection area above the calendar view.                                      | `boolean`        | `false` |
-| `showPreviousButton`        | `show-previous-button`         | Shows the previous navigation button in the calendar header.                              | `boolean`        | `true`  |
-| `startDate`                 | `start-date`                   | Specifies the start date of the selection                                                 | `null \| string` | `null`  |
-| `viewDate`                  | `view-date`                    | Specifies the date used to determine the visible month without changing the selection.    | `null \| string` | `null`  |
+| Property                    | Attribute                      | Description                                                                                                              | Type             | Default |
+| --------------------------- | ------------------------------ | ------------------------------------------------------------------------------------------------------------------------ | ---------------- | ------- |
+| `disableMonthYearSelection` | `disable-month-year-selection` | Disables switching to month or year selection views from the calendar header.                                            | `boolean`        | `false` |
+| `endDate`                   | `end-date`                     | Specifies the end date of the selection                                                                                  | `null \| string` | `null`  |
+| `hideNextButton`            | `hide-next-button`             | If set, the component hides the next navigation button in the calendar header.                                           | `boolean`        | `false` |
+| `hidePreselection`          | `hide-preselection`            | If set, the component hides the preselection area above the calendar view even when the `preselection` slot has content. | `boolean`        | `false` |
+| `hidePreviousButton`        | `hide-previous-button`         | If set, the component hides the previous navigation button in the calendar header.                                       | `boolean`        | `false` |
+| `hideToday`                 | `hide-today`                   | Hides the highlight on today's date in the calendar view.                                                                | `boolean`        | `false` |
+| `hoverDate`                 | `hover-date`                   | Specifies the date used to preview the range selection across multiple visible calendars.                                | `null \| string` | `null`  |
+| `max`                       | `max`                          | Specifies the minimum date of the selection                                                                              | `null \| string` | `null`  |
+| `min`                       | `min`                          | Specifies the minimum date of the selection                                                                              | `null \| string` | `null`  |
+| `singlePicker`              | `single-picker`                | If set, the component selects a single date instead of a date range (start and end date).                                | `boolean`        | `false` |
+| `startDate`                 | `start-date`                   | Specifies the start date of the selection                                                                                | `null \| string` | `null`  |
+| `viewDate`                  | `view-date`                    | Specifies the date used to determine the visible month without changing the selection.                                   | `null \| string` | `null`  |
 
 
 ## Events

@@ -65,3 +65,7 @@
   margin-right: 0 !important;
   transform: translateX(0) !important;
 }
+
+.actions-cell--hidden {
+  display: none;
+}

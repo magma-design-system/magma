@@ -37,6 +37,10 @@
   z-index: 3;
 }
 
+.content--hidden {
+  display: none;
+}
+
 video,
 .noise {
   height: 100%;
@@ -83,4 +87,3 @@ video {
 .noise--tv {
   background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAHCAYAAADEUlfTAAAAMElEQVQYV2NkYGDwZcABGP8zKBuD5Bj/P4coEf0Kod8wSjH+Z5CVgki+RZc0HghJADPEICMR8Ep/AAAAAElFTkSuQmCC');
 }
-

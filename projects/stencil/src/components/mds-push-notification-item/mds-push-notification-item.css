@@ -68,6 +68,11 @@
   padding-top: --spacing(200);
 }
 
+.actions--hidden,
+.badge--hidden {
+  display: none;
+}
+
 .avatar,
 .picture {
   flex-shrink: 0;

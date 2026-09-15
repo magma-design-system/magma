@@ -10,3 +10,7 @@
   min-width: 0;
   padding: --spacing(400);
 }
+
+.actions--hidden {
+  display: none;
+}

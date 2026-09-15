@@ -1,5 +1,6 @@
-import { Component, Element, Host, h, Prop } from '@stencil/core';
+import { Component, Element, Host, h, Prop, State } from '@stencil/core';
 import { hasChildWithSlot } from '@common/slot';
+import clsx from 'clsx';
 import { ThemeFullVariantAvatarType } from '@type/variant';
 import { ToneMinimalVariantType } from '@type/tone';
 import { preferenceStore } from '@common/preference';
@@ -19,8 +20,8 @@ import { preferenceStore } from '@common/preference';
 })
 export class MdsEntity {
   @Element() private hostElement: HTMLMdsEntityElement;
-  private details: boolean;
-  private actions: boolean;
+  @State() hasDetails: boolean;
+  @State() hasActions: boolean;
 
   /**
    * Specifies if the component is awaiting a response from an external resource
@@ -69,9 +70,13 @@ export class MdsEntity {
     return hasAvatar;
   }
 
+  private onSlotChange = (): void => {
+    this.hasDetails = hasChildWithSlot(this.hostElement, 'detail');
+    this.hasActions = hasChildWithSlot(this.hostElement, 'action');
+  };
+
   componentWillLoad(): void {
-    this.details = hasChildWithSlot(this.hostElement, 'detail');
-    this.actions = hasChildWithSlot(this.hostElement, 'action');
+    this.onSlotChange();
   }
 
   render() {
@@ -97,17 +102,13 @@ export class MdsEntity {
         )}
         <div class="infos">
           <slot />
-          {this.details && (
-            <div class="details">
-              <slot name="detail" />
-            </div>
-          )}
-        </div>
-        {this.actions && (
-          <div class="actions">
-            <slot name="action" />
+          <div class={clsx('details', !this.hasDetails && 'details--hidden')}>
+            <slot name="detail" onSlotchange={this.onSlotChange} />
           </div>
-        )}
+        </div>
+        <div class={clsx('actions', !this.hasActions && 'actions--hidden')}>
+          <slot name="action" onSlotchange={this.onSlotChange} />
+        </div>
       </Host>
     );
   }

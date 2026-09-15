@@ -1,4 +1,5 @@
 import { render } from '@stencil/vitest';
+import { describeConditionalSlot } from '@test/slot';
 
 describe('mds-push-notification-item', () => {
   it('renders', async () => {
@@ -23,5 +24,18 @@ describe('mds-push-notification-item', () => {
       variant: 'info',
     });
     expect(message.textContent?.trim()).toBe('Nessun messaggio disponibile');
+  });
+
+  describeConditionalSlot({
+    html: '<mds-push-notification-item message="Message"></mds-push-notification-item>',
+    slot: 'badge',
+    region: '.badge',
+    childTag: 'span',
+  });
+
+  describeConditionalSlot({
+    html: '<mds-push-notification-item message="Message"></mds-push-notification-item>',
+    slot: 'action',
+    region: '.actions',
   });
 });

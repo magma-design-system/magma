@@ -40,6 +40,48 @@ describe('real manifest — mds-button tone quiet → text', () => {
   });
 });
 
+describe('real manifest — mds-calendar negative props (#685)', () => {
+  const runHtml = (src: string) => transformHtml(src, manifest, { file: 'x.html' });
+  const runReact = (src: string) => transformReact(src, manifest, { file: 'x.tsx' });
+
+  it('html: rewrites the opt-outs as the new shorthand props', () => {
+    expect(
+      runHtml(
+        '<mds-calendar range-picker="false" show-previous-button="false" show-next-button="false"></mds-calendar>',
+      ).output,
+    ).toBe('<mds-calendar single-picker hide-previous-button hide-next-button></mds-calendar>');
+  });
+
+  it('html: drops the v1 opt-ins that are now the default', () => {
+    expect(
+      runHtml('<mds-calendar range-picker show-next-button show-preselection></mds-calendar>')
+        .output,
+    ).toBe('<mds-calendar></mds-calendar>');
+  });
+
+  it('html: leaves a v2 calendar alone', () => {
+    const src = '<mds-calendar single-picker hide-today></mds-calendar>';
+    const { changed, output } = runHtml(src);
+    expect(changed).toBe(false);
+    expect(output).toBe(src);
+  });
+
+  it('react component: inverts literals and negates expressions', () => {
+    expect(runReact('<MdsCalendar rangePicker={false} showNextButton={false} />').output).toBe(
+      '<MdsCalendar singlePicker hideNextButton />',
+    );
+    expect(runReact('<MdsCalendar rangePicker={isRange} />').output).toBe(
+      '<MdsCalendar singlePicker={!isRange} />',
+    );
+  });
+
+  it('react intrinsic element: takes the kebab-case attribute spelling', () => {
+    expect(runReact('<mds-calendar range-picker="false" show-preselection />').output).toBe(
+      '<mds-calendar single-picker />',
+    );
+  });
+});
+
 describe('real manifest — utility-class migrations (J)', () => {
   const runHtml = (src: string) => transformHtml(src, manifest, { file: 'x.html' });
 

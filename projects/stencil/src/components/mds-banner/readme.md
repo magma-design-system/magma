@@ -118,7 +118,7 @@ Set `deletable` to show a close button. The button emits `mdsBannerClose` when a
 
 #### Banner with Action Buttons
 
-Slot `<mds-button>` elements with `slot="action"` to add inline controls. The action region is rendered only when at least one `[slot="action"]` child is present. Match the button variant to the banner variant for visual consistency.
+Slot `<mds-button>` elements with `slot="action"` to add inline controls. The action region is shown only while at least one `[slot="action"]` child is present, and it follows the actions added or removed after the first render. Match the button variant to the banner variant for visual consistency.
 
 ```html
 <mds-banner variant="warning" headline="Abbonamento scaduto">
