@@ -31,6 +31,16 @@
   display: inherit;
 }
 
+/* The animation fills the characters it has not revealed yet with the placeholder, which
+   is a space by default: collapsed like any other run of spaces, it would give the element
+   no width and - while every character is still a placeholder - no line box either, so the
+   text would blink into existence and push whatever sits around it. Kept as typed, the
+   placeholders hold the final box from the first frame. */
+
+:host([animation='yugop']) .text {
+  white-space: pre-wrap;
+}
+
 :host([typography='snippet']) {
   @apply text-code-snippet;
 }

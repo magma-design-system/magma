@@ -46,7 +46,8 @@ describe('mds-kpi-item', () => {
       const item = root.querySelector('mds-kpi-item') as HTMLElement;
 
       const before = info(item).getBoundingClientRect().height;
-      expect(value(item)).toHaveAttribute('text', '   ');
+      const waiting = value(item).getAttribute('text') ?? '';
+      expect([waiting.length, waiting.trim()]).toEqual([3, '']);
 
       item.scrollIntoView({ block: 'center' });
       await settle();

@@ -40,10 +40,11 @@ export class MdsKpiItem {
   /**
    * The animated texts stay empty until the item is on screen, and an empty text has no
    * line box at all: the info panel measured 32px and jumped to 82px the moment the value
-   * arrived, with the icon sliding up behind it. A run of non-breaking spaces as long as
-   * the value holds that line box open, so the animation only changes the glyphs.
+   * arrived, with the icon sliding up behind it. Waiting on a run of spaces as long as the
+   * value holds that line box open - mds-text keeps the whitespace of an animated text, so
+   * this is the same picture the animation itself starts from.
    */
-  private reserveLine = (text: string): string => '\u00a0'.repeat(text.length);
+  private reserveLine = (text: string): string => ' '.repeat(text.length);
 
   private setObserver = (): void => {
     if (typeof window === 'undefined') return;

@@ -34,7 +34,7 @@ export class MdsText {
   /**
    * Specifies if the text is animated when it is rendered
    */
-  @Prop() readonly animation?: TextAnimationType = 'none';
+  @Prop({ reflect: true }) readonly animation?: TextAnimationType = 'none';
 
   /**
    * Specifies the HTML tag of the element
