@@ -15,16 +15,18 @@
 
 /* .tree-node::before, */
 
-/* The elbow spans two rows: it starts on the line of the item above and turns into the
-   middle of this one. Both ends are measured from the centre of the icon that covers them,
-   which sits half a row down - the corner radius is drawn INSIDE the box and has no place
-   in that measurement. Counting it in lifted the top by another 16px, so the line came out
-   of the icon above instead of ending behind it. */
+/* The elbow spans two rows, and where its line has to STOP depends on what is above it.
+   Under a sibling it is that sibling's elbow, and an elbow leaves the vertical a radius
+   before its own line: hence the radius in the travel, which is what joins the two into one
+   continuous line down the side of the list. */
 
 .tree-branch {
-  --pos-y: calc(var(--mds-tree-item-toggle-size) / 2 * -1);
+  --pos-y: calc(
+    calc(var(--mds-tree-item-toggle-size) / 2 + var(--mds-tree-item-branch-border-radius)) * -1
+  );
   --tree-height: calc(
-    var(--mds-tree-item-toggle-size) + var(--mds-tree-item-branch-border-size) / 2
+    var(--mds-tree-item-toggle-size) + var(--mds-tree-item-branch-border-radius) +
+      var(--mds-tree-item-branch-border-size) / 2
   );
   --tree-width: calc(var(--mds-tree-item-toggle-size) / 2);
 
@@ -40,6 +42,17 @@
   transform: translateY(var(--pos-y));
   width: calc(var(--mds-tree-item-toggle-size) / 2);
   z-index: 1;
+}
+
+/* Above the first child there is no sibling elbow but the icon of the item it hangs from,
+   and the line has to end on the CENTRE of that icon, which covers it. A radius more - the
+   travel every other child needs - and the line came out of the top of the icon. */
+
+:host(:first-child) .tree-branch {
+  --pos-y: calc(var(--mds-tree-item-toggle-size) / 2 * -1);
+  --tree-height: calc(
+    var(--mds-tree-item-toggle-size) + var(--mds-tree-item-branch-border-size) / 2
+  );
 }
 
 .tree-dot {
