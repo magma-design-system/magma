@@ -40,6 +40,22 @@ describe('mds-dropdown', () => {
       expect(panel.style.top).not.toBe('');
     });
 
+    it('keeps display in the transition list once it is placed, so the outro can play', async () => {
+      const { root } = await stage(
+        '<mds-dropdown id="panel" target="#caller" placement="bottom" disable-auto-placement visible>Panel</mds-dropdown>',
+      );
+      const panel = root.querySelector('#panel') as HTMLElement;
+
+      await vi.waitFor(() => {
+        expect(panel).toHaveAttribute('data-floating-placed');
+      });
+
+      // the panel is display:none when closed and the sheet holds it visible for the
+      // outro with transition-behavior: allow-discrete - drop `display` from the list
+      // and the panel is gone on the frame the attribute goes, with no fade at all
+      expect(getComputedStyle(panel).transitionProperty).toContain('display');
+    });
+
     it('pivots on the side that faces the caller when the placement is left', async () => {
       const { root } = await stage(
         '<mds-dropdown id="panel" target="#caller" placement="left" disable-auto-placement visible>Panel</mds-dropdown>',
