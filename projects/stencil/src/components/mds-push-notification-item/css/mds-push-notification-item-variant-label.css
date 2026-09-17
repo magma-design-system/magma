@@ -46,6 +46,38 @@
   --mds-push-notification-item-icon-color: rgb(var(--label-orchid-05));
 }
 
+:host([variant='purple'][tone='strong']) {
+  --mds-push-notification-item-icon-background-color: rgb(var(--label-purple-05));
+  --mds-push-notification-item-icon-color: rgb(var(--label-purple-10));
+}
+
+:host([variant='purple']),
+:host([variant='purple'][tone='weak']) {
+  --mds-push-notification-item-icon-background-color: rgb(var(--label-purple-09));
+  --mds-push-notification-item-icon-color: rgb(var(--label-purple-05));
+}
+
+:host([variant='purple'][tone='text']) {
+  --mds-push-notification-item-icon-background-color: transparent;
+  --mds-push-notification-item-icon-color: rgb(var(--label-purple-05));
+}
+
+:host([variant='red'][tone='strong']) {
+  --mds-push-notification-item-icon-background-color: rgb(var(--label-red-05));
+  --mds-push-notification-item-icon-color: rgb(var(--label-red-10));
+}
+
+:host([variant='red']),
+:host([variant='red'][tone='weak']) {
+  --mds-push-notification-item-icon-background-color: rgb(var(--label-red-09));
+  --mds-push-notification-item-icon-color: rgb(var(--label-red-05));
+}
+
+:host([variant='red'][tone='text']) {
+  --mds-push-notification-item-icon-background-color: transparent;
+  --mds-push-notification-item-icon-color: rgb(var(--label-red-05));
+}
+
 :host([variant='violet'][tone='strong']) {
   --mds-push-notification-item-icon-background-color: rgb(var(--label-violet-05));
   --mds-push-notification-item-icon-color: rgb(var(--label-violet-10));

@@ -69,6 +69,18 @@
   --mds-file-preview-color: rgb(var(--label-orchid-03));
 }
 
+:host([variant='purple'][message]) {
+  --mds-file-preview-icon-background: rgb(var(--label-purple-09));
+  --mds-file-preview-icon-color: rgb(var(--label-purple-04));
+  --mds-file-preview-color: rgb(var(--label-purple-03));
+}
+
+:host([variant='red'][message]) {
+  --mds-file-preview-icon-background: rgb(var(--label-red-09));
+  --mds-file-preview-icon-color: rgb(var(--label-red-04));
+  --mds-file-preview-color: rgb(var(--label-red-03));
+}
+
 :host([variant='sky'][message]) {
   --mds-file-preview-icon-background: rgb(var(--label-sky-09));
   --mds-file-preview-icon-color: rgb(var(--label-sky-04));
@@ -164,6 +176,18 @@
     --mds-file-preview-color: rgb(var(--label-orchid-01));
   }
 
+  &:host([variant='purple'][message]) {
+    --mds-file-preview-icon-background: rgb(var(--label-purple-10));
+    --mds-file-preview-icon-color: rgb(var(--label-purple-02));
+    --mds-file-preview-color: rgb(var(--label-purple-01));
+  }
+
+  &:host([variant='red'][message]) {
+    --mds-file-preview-icon-background: rgb(var(--label-red-10));
+    --mds-file-preview-icon-color: rgb(var(--label-red-02));
+    --mds-file-preview-color: rgb(var(--label-red-01));
+  }
+
   &:host([variant='sky'][message]) {
     --mds-file-preview-icon-background: rgb(var(--label-sky-10));
     --mds-file-preview-icon-color: rgb(var(--label-sky-02));
@@ -256,6 +280,18 @@
       --mds-file-preview-icon-background: rgb(var(--label-orchid-10));
       --mds-file-preview-icon-color: rgb(var(--label-orchid-02));
       --mds-file-preview-color: rgb(var(--label-orchid-01));
+    }
+
+    &:host([variant='purple'][message]) {
+      --mds-file-preview-icon-background: rgb(var(--label-purple-10));
+      --mds-file-preview-icon-color: rgb(var(--label-purple-02));
+      --mds-file-preview-color: rgb(var(--label-purple-01));
+    }
+
+    &:host([variant='red'][message]) {
+      --mds-file-preview-icon-background: rgb(var(--label-red-10));
+      --mds-file-preview-icon-color: rgb(var(--label-red-02));
+      --mds-file-preview-color: rgb(var(--label-red-01));
     }
 
     &:host([variant='sky'][message]) {
