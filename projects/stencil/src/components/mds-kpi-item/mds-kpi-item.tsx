@@ -37,6 +37,14 @@ export class MdsKpiItem {
    */
   @Prop() readonly icon?: string;
 
+  /**
+   * The animated texts stay empty until the item is on screen, and an empty text has no
+   * line box at all: the info panel measured 32px and jumped to 82px the moment the value
+   * arrived, with the icon sliding up behind it. A run of non-breaking spaces as long as
+   * the value holds that line box open, so the animation only changes the glyphs.
+   */
+  private reserveLine = (text: string): string => '\u00a0'.repeat(text.length);
+
   private setObserver = (): void => {
     if (typeof window === 'undefined') return;
     this.observer = new window.IntersectionObserver(
@@ -77,7 +85,7 @@ export class MdsKpiItem {
             <mds-text
               class="value"
               typography="h2"
-              text={this.isIntersecting ? this.label : ''}
+              text={this.isIntersecting ? this.label : this.reserveLine(this.label)}
               animation="yugop"
             ></mds-text>
           )}
@@ -90,7 +98,7 @@ export class MdsKpiItem {
             <mds-text
               class="description"
               typography="label"
-              text={this.isIntersecting ? this.description : ''}
+              text={this.isIntersecting ? this.description : this.reserveLine(this.description)}
               animation="yugop"
             ></mds-text>
           )}

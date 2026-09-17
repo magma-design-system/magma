@@ -70,7 +70,11 @@
   transition-property: background-color, border-radius, box-shadow;
 }
 
-.label,
+/* The value carries class="value", not class="label": spelled the old way these two
+   variables reached the description only, so the number animated at the mds-text default
+   of 0.5 while the line under it ran at the 0.15 the KPI asks for. */
+
+.value,
 .description {
   @apply ease-out;
 
