@@ -97,6 +97,25 @@ describe('mds-button', () => {
     });
   });
 
+  describe('with the animation preference set to reduce', () => {
+    // the class lives on the document, so it would outlive this file
+    afterEach(() => {
+      document.documentElement.classList.remove('pref-animation-reduce');
+    });
+
+    it('holds back its own transition, not only the ones on a private duration', async () => {
+      // the preference sheets zero the private durations the base CSS reads, and the
+      // host's own transition read --duration-200 straight: the button kept animating
+      document.documentElement.classList.add('pref-animation-reduce');
+      await new Promise((resolve) => setTimeout(resolve, 50));
+
+      const { root } = await render('<mds-button label="Salva"></mds-button>');
+
+      expect(root).toHaveAttribute('pref-animation', 'reduce');
+      expect(getComputedStyle(root).transitionDuration).toBe('1e-05s');
+    });
+  });
+
   describe('notification slot', () => {
     it('renders the notification slotted after the first render', async () => {
       const { root, waitForChanges } = await render('<mds-button label="Label"></mds-button>');

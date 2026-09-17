@@ -1,3 +1,5 @@
+@import '../../../tailwind/pref-animation.css';
+
 /* Animation preference. The component mirrors the resolved mode from <html>
  * onto its host as pref-animation (see subscribePreference in @common/preference);
  * these plain shadow selectors then zero the private duration(s) the base CSS
