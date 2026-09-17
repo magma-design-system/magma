@@ -15,13 +15,16 @@
 
 /* .tree-node::before, */
 
+/* The elbow spans two rows: it starts on the line of the item above and turns into the
+   middle of this one. Both ends are measured from the centre of the icon that covers them,
+   which sits half a row down - the corner radius is drawn INSIDE the box and has no place
+   in that measurement. Counting it in lifted the top by another 16px, so the line came out
+   of the icon above instead of ending behind it. */
+
 .tree-branch {
-  --pos-y: calc(
-    calc(var(--mds-tree-item-toggle-size) / 2 + var(--mds-tree-item-branch-border-radius)) * -1
-  );
+  --pos-y: calc(var(--mds-tree-item-toggle-size) / 2 * -1);
   --tree-height: calc(
-    var(--mds-tree-item-toggle-size) + var(--mds-tree-item-branch-border-radius) +
-      var(--mds-tree-item-branch-border-size) / 2
+    var(--mds-tree-item-toggle-size) + var(--mds-tree-item-branch-border-size) / 2
   );
   --tree-width: calc(var(--mds-tree-item-toggle-size) / 2);
 

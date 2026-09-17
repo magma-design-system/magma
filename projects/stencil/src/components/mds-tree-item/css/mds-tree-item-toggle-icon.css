@@ -18,6 +18,7 @@
 .toggle-icon mds-button {
   --size: --spacing(600);
 
+  align-self: center;
   background-color: var(--mds-tree-item-icon-background-color);
   border: 0;
   border-radius: var(--mds-tree-item-toggle-size);
