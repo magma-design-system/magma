@@ -2,14 +2,16 @@
  * from <html> onto its host as pref-theme + pref-theme-scheme (see
  * subscribePreference in @common/preference); these plain shadow selectors refine
  * for dark. `dark` is the explicit choice; `system` and no controller follow the
- * OS via @media; the scheme axis gates it. Cross-browser, no :host-context. */
+ * OS via @media; the scheme axis gates it. Cross-browser, no :host-context.
+ *
+ * The arrow is not listed here: its roles (accent-emphasis at rest, accent-fg on hover)
+ * flip with the palette on their own, exactly as the icon of mds-input-date does. The dark
+ * block used to repaint it from the raw ramp and to restore the pill behind it, and its
+ * blur colour named --mds-input-select-variant-color, a variable that does not exist:
+ * invalid at computed-value time, so the icon fell back to the registration's literal. */
 
 :host([pref-theme='dark']:not([pref-theme-scheme='light'])) {
   --mds-input-select-ring: var(--shadow-ring-2);
-  --mds-input-select-arrow-icon-blur-background-color: rgb(var(--variant-primary-05));
-  --mds-input-select-arrow-icon-blur-color: rgb(var(--mds-input-select-variant-color));
-  --mds-input-select-arrow-icon-hover-background-color: rgb(var(--magma-accent-emphasis));
-  --mds-input-select-arrow-icon-hover-color: rgb(var(--variant-primary-08));
 
   .input {
     color: rgb(var(--magma-text-muted));
@@ -20,10 +22,6 @@
   :host([pref-theme='system']:not([pref-theme-scheme='light'])),
   :host(:not([pref-theme])) {
     --mds-input-select-ring: var(--shadow-ring-2);
-    --mds-input-select-arrow-icon-blur-background-color: rgb(var(--variant-primary-05));
-    --mds-input-select-arrow-icon-blur-color: rgb(var(--mds-input-select-variant-color));
-    --mds-input-select-arrow-icon-hover-background-color: rgb(var(--magma-accent-emphasis));
-    --mds-input-select-arrow-icon-hover-color: rgb(var(--variant-primary-08));
 
     .input {
       color: rgb(var(--magma-text-muted));
