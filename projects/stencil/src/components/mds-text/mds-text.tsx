@@ -5,7 +5,7 @@ import { TypographyTruncateType } from '@type/text';
 import { TypographyType, TypographyVariants } from '@type/typography';
 import { typographyDefaultsVariant } from './meta/variants';
 import RandomText from '@common/yugop';
-import { preferenceStore } from '@common/preference';
+import { preferenceStore, prefersReducedMotion } from '@common/preference';
 
 /**
  * @slot - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
@@ -110,9 +110,20 @@ export class MdsText {
     if (this.randomText != null) {
       this.randomText.stop();
     }
-    if (newValue !== undefined && newValue !== '') {
-      this.animateText(newValue);
+    if (newValue === undefined || newValue === '') {
+      return;
     }
+    // The scramble is a rAF loop writing innerHTML: no stylesheet can hold it back, so it
+    // asks. The text is written out here rather than left to the render, because the loop
+    // may already have replaced the node the renderer holds.
+    if (prefersReducedMotion()) {
+      const painted = this.host.shadowRoot?.querySelector('.text');
+      if (painted) {
+        painted.textContent = newValue;
+      }
+      return;
+    }
+    this.animateText(newValue);
   }
 
   render() {

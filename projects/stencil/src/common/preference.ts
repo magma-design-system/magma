@@ -83,4 +83,28 @@ if (typeof document !== 'undefined') {
   }
 }
 
-export { preferenceStore };
+/**
+ * Whether motion should be held back right now: the explicit `reduce` choice, or the OS
+ * preference when the choice is `system` and when no controller has published one at all.
+ *
+ * The stylesheets read the same three cases through `:host([pref-animation])`, but a
+ * stylesheet can only hold back what CSS drives. An animation written in JS - a GSAP
+ * timeline, a rAF loop, a tween of an attribute - has to ask for itself, and until it does
+ * the preference is only half kept.
+ */
+const prefersReducedMotion = (): boolean => {
+  const choice = preferenceStore.state.animation;
+  if (choice === 'reduce') {
+    return true;
+  }
+  if (choice === 'no-preference') {
+    return false;
+  }
+  return (
+    typeof window !== 'undefined' &&
+    typeof window.matchMedia === 'function' &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  );
+};
+
+export { preferenceStore, prefersReducedMotion };

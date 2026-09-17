@@ -1,5 +1,6 @@
 import { Build, Component, Host, h, Method, Prop, Element, Watch } from '@stencil/core';
 import { cssRotationToNumber, cssDurationToSeconds, cssSizeToNumber } from '@common/unit';
+import { prefersReducedMotion } from '@common/preference';
 import type { EmojiNames, SvgDictionary, SvgPart } from './meta/types';
 import { gsap } from 'gsap';
 
@@ -869,6 +870,9 @@ export class MdsEmoji {
   // intent and isBusy, so it is a no-op while another animation owns the eyes
   // and is simply called again once that animation finishes.
   private scheduleBlink = (): void => {
+    // The two idle behaviours - blinking and following the pointer - are the ones that
+    // never stop on their own, and GSAP does not read a stylesheet: they ask here.
+    if (prefersReducedMotion()) return;
     if (!this.isBlinking || this.isBusy || !this.blinkTimeline) return;
     this.blinkDelay?.kill();
     this.blinkDelay = gsap.delayedCall(gsap.utils.random(1, 3, 0.1), () => {
@@ -900,6 +904,9 @@ export class MdsEmoji {
   };
 
   private followMouse = (): void => {
+    // Reduced motion keeps the face still; stopFollowMouse still recentres it, because
+    // that is a state the caller asked for rather than an animation of its own.
+    if (prefersReducedMotion()) return;
     const { centerX, centerY } = this.getEmojiCenter();
     let currentMouseX = centerX;
     let currentMouseY = centerY;
