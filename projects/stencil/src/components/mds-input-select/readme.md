@@ -415,12 +415,14 @@ Type: `Promise<void>`
 
 ### Depends on
 
+- [mds-icon](../mds-icon)
 - [mds-input-tip](../mds-input-tip)
 - [mds-input-tip-item](../mds-input-tip-item)
 
 ### Graph
 ```mermaid
 graph TD;
+  mds-input-select --> mds-icon
   mds-input-select --> mds-input-tip
   mds-input-select --> mds-input-tip-item
   mds-input-tip-item --> mds-text

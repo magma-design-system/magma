@@ -3,20 +3,29 @@ import { render } from '@stencil/vitest';
 const CORNER_STORAGE_KEY = 'mdsPrefCornerShape';
 const THEME_NAME_STORAGE_KEY = 'mdsPrefThemeName';
 
+/** The stored choice outranks the prop, and both the theme name and the corner
+ * shape are written on the document, so a leftover decides the next case. */
+const reset = (): void => {
+  localStorage.removeItem(CORNER_STORAGE_KEY);
+  document.documentElement.removeAttribute('data-corner-shape');
+  localStorage.removeItem(THEME_NAME_STORAGE_KEY);
+  document.documentElement.removeAttribute('data-theme-name');
+  // the list is live, so the names come out of a copy before they are removed
+  [...document.documentElement.classList]
+    .filter((name) => name.startsWith('pref-theme-name-'))
+    .forEach((name) => document.documentElement.classList.remove(name));
+};
+
 describe('mds-pref-theme-variant', () => {
+  // the theme name and the corner shape are written on the document, so they
+  // outlive this file and reach the cases that run after it: clear them on the way
+  // out as well as on the way in
+  afterEach(() => {
+    reset();
+  });
+
   beforeEach(() => {
-    // the stored choice outranks the prop, so a leftover from another test would
-    // decide this one
-    localStorage.removeItem(CORNER_STORAGE_KEY);
-    document.documentElement.removeAttribute('data-corner-shape');
-    // the theme name is stored and read back the same way, and a leftover would
-    // outrank the prop here too
-    localStorage.removeItem(THEME_NAME_STORAGE_KEY);
-    document.documentElement.removeAttribute('data-theme-name');
-    // the list is live, so the names come out of a copy before they are removed
-    [...document.documentElement.classList]
-      .filter((name) => name.startsWith('pref-theme-name-'))
-      .forEach((name) => document.documentElement.classList.remove(name));
+    reset();
   });
 
   it('renders', async () => {
