@@ -40,6 +40,25 @@ describe('mds-dropdown', () => {
       expect(panel.style.top).not.toBe('');
     });
 
+    it('pivots on the side that faces the caller when the placement is left', async () => {
+      const { root } = await stage(
+        '<mds-dropdown id="panel" target="#caller" placement="left" disable-auto-placement visible>Panel</mds-dropdown>',
+      );
+      const panel = root.querySelector('#panel') as HTMLElement;
+
+      await vi.waitFor(() => {
+        expect(panel.style.transformOrigin).not.toBe('');
+      });
+
+      const arrow = panel.shadowRoot!.querySelector('.arrow') as HTMLElement;
+      const [x, y] = panel.style.transformOrigin.split(' ');
+
+      // a panel to the left of its caller has to unfurl from its own right edge,
+      // the side the arrow is on, at the height the arrow sits at
+      expect(x).toBe('right');
+      expect(Math.round(parseFloat(y))).toBe(Math.round(arrow.offsetTop + arrow.offsetHeight / 2));
+    });
+
     it('pivots the opening on the arrow, not on the middle of the panel', async () => {
       const { root } = await stage(
         '<mds-dropdown id="panel" target="#caller" placement="bottom" disable-auto-placement visible>A panel wide enough for the arrow to sit off centre</mds-dropdown>',

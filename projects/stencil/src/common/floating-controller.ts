@@ -229,9 +229,11 @@ export class FloatingController {
     }).then(({ x, y, placement, middlewareData }) => {
       // The first placement must land instantly: until it happens the panel has no
       // position at all, so animating left/top towards the caller would fly it in
-      // from the top left corner of the page. The mark lets the sheet transition
-      // the following moves, which are real repositionings.
-      this._host.setAttribute('data-floating-placed', '');
+      // from the corner of the page. The mark goes on a frame LATER, because a
+      // value and the attribute that makes it transition, written in the same
+      // recalc, still animate - the frame in between is what makes the first
+      // placement a jump and every move after it a glide.
+      const firstPlacement = !this._host.hasAttribute('data-floating-placed');
 
       Object.assign(this._host.style, {
         left: `${x}px`,
@@ -240,6 +242,10 @@ export class FloatingController {
           this.arrowOrigin(placement, middlewareData) ?? this.convertToTransformOrigin(placement),
         position: this._host.strategy,
       });
+
+      if (firstPlacement) {
+        requestAnimationFrame(() => this._host.setAttribute('data-floating-placed', ''));
+      }
 
       const arrowStyle = {};
       const arrowPosition = {
@@ -258,10 +264,29 @@ export class FloatingController {
     });
   };
 
+  /**
+   * Starts positioning only once the panel has a box to measure. A closed panel is
+   * `display: none`, and Stencil reflects `visible` on its own render, so the tick
+   * that asks for the position still sees a panel of zero width: floating-ui then
+   * places a box that does not exist. On a `bottom` placement that lands it half a
+   * panel off; on `left` or `right` it lands it a whole panel off, which reads as
+   * the panel opening on the wrong side of the caller and sliding across to its
+   * place, because the correction that follows is transitioned like any other
+   * move.
+   */
+  private readonly startWhenMeasurable = (attempts: number): void => {
+    if (!this._host.visible) return;
+    if (this._host.offsetWidth === 0 && attempts > 0) {
+      requestAnimationFrame(() => this.startWhenMeasurable(attempts - 1));
+      return;
+    }
+    this.cleanupAutoUpdate = autoUpdate(this._caller, this._host, this.calculatePosition);
+  };
+
   updatePosition(): void {
     if (this._host.visible) {
       this.dismiss(); // to clean the old update function before update function
-      this.cleanupAutoUpdate = autoUpdate(this._caller, this._host, this.calculatePosition);
+      this.startWhenMeasurable(3);
     }
   }
 
