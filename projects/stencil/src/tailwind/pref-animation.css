@@ -1,0 +1,42 @@
+/* Motion, held back.
+ *
+ * Every component zeroes the private durations its own base CSS reads, which composes
+ * with the public knobs - but that only reaches the declarations that read them. An audit
+ * of the 52 sheets found 21 transitions in 15 components that did not: the host's own
+ * transition in mds-button and mds-table, the focus ring of the input family, the tab
+ * slider, the close button of mds-note. This reset reaches the whole shadow tree, which is
+ * what the preference promises, and keeps reaching it when a declaration is added.
+ *
+ * Transitions only, on purpose. A keyframe animation is usually a loader, and a loader has
+ * to keep saying "working": mds-spinner slows to 8s under reduced motion instead of
+ * freezing, and a duration of nearly zero on an infinite animation would spin it out of
+ * control instead of stopping it.
+ *
+ * 0.01ms rather than 0s, so a component that waits for its own transitionend still gets
+ * one: mds-modal, mds-push-notification and mds-tree-item all listen for it, and a
+ * transition of zero never fires it. */
+
+/* stylelint-disable time-min-milliseconds -- the floor is there to keep a transition
+   perceivable; the point of these two is that it is not. */
+
+:host([pref-animation='reduce']),
+:host([pref-animation='reduce']) *,
+:host([pref-animation='reduce']) *::before,
+:host([pref-animation='reduce']) *::after {
+  transition-duration: 0.01ms !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :host([pref-animation='system']),
+  :host([pref-animation='system']) *,
+  :host([pref-animation='system']) *::before,
+  :host([pref-animation='system']) *::after,
+  :host(:not([pref-animation])),
+  :host(:not([pref-animation])) *,
+  :host(:not([pref-animation])) *::before,
+  :host(:not([pref-animation])) *::after {
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* stylelint-enable time-min-milliseconds */

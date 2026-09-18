@@ -172,8 +172,8 @@ const TemplateLandingPage = (args) => (
       <div class="grid gap-600 grid-cols-3 max-mobile:grid-cols-1 max-w-screen-desktop">
         {Array(18)
           .fill(null)
-          .map(() => (
-            <div class="grid gap-25">
+          .map((_value, index) => (
+            <div key={index} class="grid gap-25">
               <mds-text typography="h5" tag="h2">
                 This is a section title
               </mds-text>

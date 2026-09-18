@@ -1,14 +1,23 @@
 /* Joined-group radii are driven from the parent: mds-button-group flattens the
- * inner edges of its slotted buttons via ::slotted, instead of each button
+ * inner edges of its slotted members via ::slotted, instead of each member
  * reading its parent. Cross-browser (no :host-context); ::slotted (outer tree)
- * wins over the button's own host radius. */
+ * wins over the member's own host radius.
+ *
+ * The edge is decided among the MEMBERS, with `:nth-child(of S)`, and not among
+ * all the children: plain `:first-child` counts whatever sits in the slot, so a
+ * stray element before a single button flattened that button on the left and
+ * left it rounded only on the right, and `mds-button-dropdown` - a documented
+ * member - was never counted, so a [button, dropdown] pair was joined on the
+ * button side only. */
 
-::slotted(mds-button:not(:first-child)) {
+::slotted(mds-button:not(:nth-child(1 of mds-button, mds-button-dropdown))),
+::slotted(mds-button-dropdown:not(:nth-child(1 of mds-button, mds-button-dropdown))) {
   border-bottom-left-radius: 0;
   border-top-left-radius: 0;
 }
 
-::slotted(mds-button:not(:last-child)) {
+::slotted(mds-button:not(:nth-last-child(1 of mds-button, mds-button-dropdown))),
+::slotted(mds-button-dropdown:not(:nth-last-child(1 of mds-button, mds-button-dropdown))) {
   border-bottom-right-radius: 0;
   border-top-right-radius: 0;
 }

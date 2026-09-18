@@ -14,8 +14,11 @@
     @apply font-medium;
   }
 
+  /* scale() takes a number, so 75 is 7500%: the spinner of a small button was painted
+     1800px wide, off the button and over the page, which is why nobody ever saw it. */
+
   &:host([await]:not([await='false'])) .await {
-    transform: scale(75);
+    transform: scale(0.75);
   }
 }
 

@@ -20,8 +20,14 @@
   transform: translate(0, calc(--spacing(400) * -1));
 }
 
+/* The toast leaves by its own height plus enough to take its shadow with it: `100%` of a
+   transform is the element, which is what the `full` of the class this was ported from
+   meant. Spelled --spacing(full) it compiled to nothing, the declaration was dropped, and a
+   toast that was not visible sat painted against the edge of the screen instead of being
+   parked outside it. The 48px is --shadow-xl, which reaches some 40px past the box. */
+
 @utility animate-bottom-outro {
-  transform: translate(0, calc(--spacing(full) + --spacing(200)));
+  transform: translate(0, calc(100% + --spacing(1200)));
 }
 
 @utility animate-top-intro {
@@ -29,5 +35,5 @@
 }
 
 @utility animate-top-outro {
-  transform: translate(0, calc(-1 * --spacing(full) - --spacing(400)));
+  transform: translate(0, calc(-100% - --spacing(1200)));
 }

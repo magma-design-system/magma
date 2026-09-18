@@ -24,5 +24,13 @@ mds-icon {
   width: var(--mds-mention-icon-size);
 }
 
+/* The pill keeps its wide right padding when nothing follows the label; with the remove
+  button in place that padding moves onto the button, so the disc is inset like the leading
+  icon instead of floating short of the edge. */
+
+:host([deletable]) {
+  padding-right: --spacing(25);
+}
+
 @import './css/mds-mention-size.css';
 @import './css/mds-mention-action-remove.css';

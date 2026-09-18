@@ -15,11 +15,12 @@ The `<mds-mention>` web component renders a compact inline chip that references 
 
 - **Props-only**: It has no default slot and exposes its content exclusively through props.
 - **Default icon**: When `icon` is not set the component falls back to the `alternate-email` (`@`) glyph, reinforcing the mention metaphor.
-- **Built-in remove affordance**: Always renders a trailing remove button, signalling that the mention can be dismissed.
+- **Opt-in remove affordance**: `deletable` adds a trailing remove button; its click emits `mdsMentionDelete`, and the component leaves the removal itself to the application.
 - **Size-driven typography**: `size` maps to a fixed typography ramp (`sm` → `caption`, `md` → `detail`, `lg` → `h6`); the label is bold at `sm` and `md`, and normal weight at `lg`.
 
 #### Properties & Visual Configurations
 
+- **`deletable`** turns on the trailing remove button. Without it the mention is a read-only token: no button, no event.
 - **`icon`** is an SVG filename slug from the Magma icon library, shown at the left of the label; omit it to keep the default `@` mention glyph.
 - **`size`** controls both the physical scale and the typography of the label - pick `sm` for dense inline contexts, `lg` for prominent, headline-adjacent placements. Note that `size` also flips the label weight (bold below `lg`).
 
@@ -30,12 +31,26 @@ Correct and idiomatic ways to use the `<mds-mention>` component, ordered from mo
 
 #### Basic Inline Mention
 
-The canonical form. Provide `label` with the user handle or display name. The component renders the default `@` glyph and a trailing remove button automatically.
+The canonical form. Provide `label` with the user handle or display name. The component renders the default `@` glyph; the mention is read-only until `deletable` is set.
 
 ```html
 <mds-text>
   Ciao <mds-mention label="mario.rossi"></mds-mention>, sei riuscito a inviare il messaggio?
 </mds-text>
+```
+
+#### Removable Mention
+
+Set `deletable` to show the remove button, then listen for `mdsMentionDelete` on the element. The
+event carries the mention that was dismissed, so one handler can serve a whole list.
+
+```html
+<mds-mention id="m1" label="mario.rossi" deletable></mds-mention>
+<script>
+  document.querySelector('#m1').addEventListener('mdsMentionDelete', ({ detail }) => {
+    detail.element.remove();
+  });
+</script>
 ```
 
 #### Custom Icon
@@ -117,7 +132,7 @@ Common incorrect uses of `<mds-mention>`. Each entry pairs the wrong form with t
 
 #### Do Not Use a Raw `<span>` Chip Instead of the Component
 
-Wrapping text in a styled `<span>` misses the built-in remove affordance, icon handling, size ramp, and dark-mode token cascade. Use `<mds-mention>` whenever the UI needs an @-mention token.
+Wrapping text in a styled `<span>` misses the remove affordance, icon handling, size ramp, and dark-mode token cascade. Use `<mds-mention>` whenever the UI needs an @-mention token.
 
 ```html
 <!-- 🚫 INCORRECT -->
@@ -157,29 +172,42 @@ mds-mention {
 
 #### Do Not Listen for `click` on the Remove Button Directly
 
-The internal remove button lives inside the shadow DOM and its click does not bubble out as a standard DOM event you can reliably capture from outside. React to mention removal at the application level - for example by removing the chip from your data model when the outer host receives a custom event or when the element is no longer present in the DOM.
+The remove button lives inside the shadow DOM: a `click` listener on the host cannot tell it apart
+from a click on the label, and reaching into the shadow root ties your code to an internal class
+name. Listen for `mdsMentionDelete` instead - it is the contract, and it names the mention that was
+dismissed.
 
 ```html
 <!-- 🚫 INCORRECT -->
-<mds-mention id="m1" label="marco.bianchi"></mds-mention>
+<mds-mention id="m1" label="marco.bianchi" deletable></mds-mention>
 <script>
-  // shadow-DOM click does not reliably bubble to the host
   document.querySelector('#m1').addEventListener('click', removeMention);
 </script>
 
-<!-- ✅ CORRECT: manage removal in your own data layer -->
-<mds-mention label="marco.bianchi"></mds-mention>
+<!-- ✅ CORRECT -->
+<mds-mention id="m1" label="marco.bianchi" deletable></mds-mention>
+<script>
+  document.querySelector('#m1').addEventListener('mdsMentionDelete', removeMention);
+</script>
 ```
 
 
 
 ## Properties
 
-| Property | Attribute | Description                                  | Type                                | Default     |
-| -------- | --------- | -------------------------------------------- | ----------------------------------- | ----------- |
-| `icon`   | `icon`    | Sets the icon shown at the left of the label | `string \| undefined`               | `undefined` |
-| `label`  | `label`   | Sets the label of the component              | `string \| undefined`               | `undefined` |
-| `size`   | `size`    | Sets the label of the component              | `"lg" \| "md" \| "sm" \| undefined` | `'sm'`      |
+| Property    | Attribute   | Description                                                     | Type                                | Default     |
+| ----------- | ----------- | --------------------------------------------------------------- | ----------------------------------- | ----------- |
+| `deletable` | `deletable` | Shows the cross icon to perform cancel/delete action on element | `boolean \| undefined`              | `undefined` |
+| `icon`      | `icon`      | Sets the icon shown at the left of the label                    | `string \| undefined`               | `undefined` |
+| `label`     | `label`     | Sets the label of the component                                 | `string \| undefined`               | `undefined` |
+| `size`      | `size`      | Sets the label of the component                                 | `"lg" \| "md" \| "sm" \| undefined` | `'sm'`      |
+
+
+## Events
+
+| Event              | Description                                         | Type                           |
+| ------------------ | --------------------------------------------------- | ------------------------------ |
+| `mdsMentionDelete` | Emits when the component's delete button is clicked | `CustomEvent<MdsMentionEvent>` |
 
 
 ## CSS Custom Properties

@@ -461,7 +461,9 @@ const ColorGrid = ({ group, selected }: { group: string; selected: boolean }) =>
     <mds-accordion-item label={capitalize(group)} selected={selected}>
       <div class="grid grid-cols-11 [border border-solid] w-full">
         {groupColors.map((color) =>
-          colorScale.map((scale) => <ColorItem color={color} scale={scale} />),
+          colorScale.map((scale) => (
+            <ColorItem key={`${color}-${scale}`} color={color} scale={scale} />
+          )),
         )}
       </div>
     </mds-accordion-item>
@@ -559,7 +561,7 @@ const ColorScaleCanvas = () => {
     <div class="grid-cols-full grid desktop:grid-cols-[3fr_2fr] gap-600">
       <mds-accordion class="auto-rows-min" disable-close multiple>
         {colorGroups.map((group) => (
-          <ColorGrid group={group} selected={group === 'tone'} />
+          <ColorGrid key={group} group={group} selected={group === 'tone'} />
         ))}
       </mds-accordion>
       <div class="sticky top-0 self-start p-600 grid gap-600 grid-cols-full">
@@ -571,7 +573,9 @@ const ColorScaleCanvas = () => {
               ref={groupSelectRef}
             >
               {colorGroups.map((group) => (
-                <option value={group}>{capitalize(group)}</option>
+                <option key={group} value={group}>
+                  {capitalize(group)}
+                </option>
               ))}
             </mds-input-select>
           </mds-input-field>
@@ -582,14 +586,18 @@ const ColorScaleCanvas = () => {
               ref={variantSelectRef}
             >
               {variantOptions.map((name) => (
-                <option value={name}>{capitalize(name)}</option>
+                <option key={name} value={name}>
+                  {capitalize(name)}
+                </option>
               ))}
             </mds-input-select>
           </mds-input-field>
           <mds-input-field label="tone">
             <mds-input-select id="color-scale-tone-select" value={selectedTone} ref={toneSelectRef}>
               {variantTones.map((name) => (
-                <option value={name}>{capitalize(name)}</option>
+                <option key={name} value={name}>
+                  {capitalize(name)}
+                </option>
               ))}
             </mds-input-select>
           </mds-input-field>

@@ -55,7 +55,11 @@
   transform: var(--mds-tooltip-transform-from);
   transition-delay: 0s;
   transition-duration: var(--private-tooltip-duration);
-  transition-property: opacity, transform, transform-origin;
+
+  /* transform-origin is the pivot of the opening: in the list it interpolates from
+   * the initial 50% 50% and the tooltip grows from a point that moves while it
+   * grows. */
+  transition-property: opacity, transform;
   transition-timing-function: var(--mds-tooltip-ease);
   width: fit-content;
   z-index: var(--mds-tooltip-z-index);

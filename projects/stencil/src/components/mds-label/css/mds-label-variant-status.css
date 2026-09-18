@@ -1,6 +1,5 @@
 :host([variant='error']) {
   --mds-label-background: rgb(var(--magma-danger-emphasis));
-  --mds-label-button-background: rgb(var(--magma-danger-emphasis));
   --mds-label-button-background-hover: rgb(var(--magma-danger-emphasis-hover));
   --mds-label-button-icon-color: rgb(var(--magma-danger-on-emphasis));
   --mds-label-color: rgb(var(--magma-danger-on-emphasis));
@@ -10,8 +9,7 @@
 
   &:host([tone='weak']) {
     --mds-label-background: rgb(var(--magma-danger-wash-strong));
-    --mds-label-button-background: rgb(var(--magma-danger-wash-base));
-    --mds-label-button-background-hover: rgb(var(--magma-danger-wash-strong));
+    --mds-label-button-background-hover: rgb(var(--magma-danger-wash-base));
     --mds-label-button-icon-color: rgb(var(--magma-danger-text-default));
     --mds-label-color: rgb(var(--magma-danger-text-muted));
     --mds-label-icon-color: rgb(var(--magma-danger-text-muted));
@@ -22,7 +20,6 @@
 
 :host([variant='warning']) {
   --mds-label-background: rgb(var(--magma-warning-emphasis));
-  --mds-label-button-background: rgb(var(--magma-warning-emphasis));
   --mds-label-button-background-hover: rgb(var(--magma-warning-emphasis-hover));
   --mds-label-button-icon-color: rgb(var(--magma-warning-on-emphasis));
   --mds-label-color: rgb(var(--magma-warning-on-emphasis));
@@ -32,8 +29,7 @@
 
   &:host([tone='weak']) {
     --mds-label-background: rgb(var(--magma-warning-wash-strong));
-    --mds-label-button-background: rgb(var(--magma-warning-wash-base));
-    --mds-label-button-background-hover: rgb(var(--magma-warning-wash-strong));
+    --mds-label-button-background-hover: rgb(var(--magma-warning-wash-base));
     --mds-label-button-icon-color: rgb(var(--magma-warning-text-default));
     --mds-label-color: rgb(var(--magma-warning-text-muted));
     --mds-label-icon-color: rgb(var(--magma-warning-text-muted));
@@ -44,7 +40,6 @@
 
 :host([variant='success']) {
   --mds-label-background: rgb(var(--magma-success-emphasis));
-  --mds-label-button-background: rgb(var(--magma-success-emphasis));
   --mds-label-button-background-hover: rgb(var(--magma-success-emphasis-hover));
   --mds-label-button-icon-color: rgb(var(--magma-success-on-emphasis));
   --mds-label-color: rgb(var(--magma-success-on-emphasis));
@@ -54,8 +49,7 @@
 
   &:host([tone='weak']) {
     --mds-label-background: rgb(var(--magma-success-wash-strong));
-    --mds-label-button-background: rgb(var(--magma-success-wash-base));
-    --mds-label-button-background-hover: rgb(var(--magma-success-wash-strong));
+    --mds-label-button-background-hover: rgb(var(--magma-success-wash-base));
     --mds-label-button-icon-color: rgb(var(--magma-success-text-default));
     --mds-label-color: rgb(var(--magma-success-text-muted));
     --mds-label-icon-color: rgb(var(--magma-success-text-muted));
@@ -66,7 +60,6 @@
 
 :host([variant='info']) {
   --mds-label-background: rgb(var(--magma-info-emphasis));
-  --mds-label-button-background: rgb(var(--magma-info-emphasis));
   --mds-label-button-background-hover: rgb(var(--magma-info-emphasis-hover));
   --mds-label-button-icon-color: rgb(var(--magma-info-on-emphasis));
   --mds-label-color: rgb(var(--magma-info-on-emphasis));
@@ -76,8 +69,7 @@
 
   &:host([tone='weak']) {
     --mds-label-background: rgb(var(--magma-info-wash-strong));
-    --mds-label-button-background: rgb(var(--magma-info-wash-base));
-    --mds-label-button-background-hover: rgb(var(--magma-info-wash-strong));
+    --mds-label-button-background-hover: rgb(var(--magma-info-wash-base));
     --mds-label-button-icon-color: rgb(var(--magma-info-text-default));
     --mds-label-color: rgb(var(--magma-info-text-muted));
     --mds-label-icon-color: rgb(var(--magma-info-text-muted));

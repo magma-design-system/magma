@@ -1,7 +1,14 @@
 .action-remove {
   border-radius: var(--radius-full);
   corner-shape: round;
+  flex-shrink: 0;
+
+  /* Mirror the leading icon: same box on both ends of the pill, so the disc reads as a
+     control of the mention and not as the last glyph of the label. */
+  height: var(--mds-mention-icon-size);
+  margin-left: --spacing(50);
   min-height: 0;
   min-width: 0;
   padding: 0;
+  width: var(--mds-mention-icon-size);
 }

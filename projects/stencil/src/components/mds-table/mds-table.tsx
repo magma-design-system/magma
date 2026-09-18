@@ -258,9 +258,17 @@ export class MdsTable {
                 <mds-text class="batch-actions-label" typography="label">
                   {this.t.get('batchActions')}
                 </mds-text>
-                <mds-badge variant="dark" tone="outline" typography="label">
-                  {this.selectedRows.length}
-                </mds-badge>
+                {/* the count goes in through `label`, not through the slot: a badge reads
+                    its slotted text once, on the first slotchange, and from then on renders
+                    the copy - and slotchange does not fire again when the text node keeps
+                    its place and only changes its data, which is exactly what a re-render
+                    of this number does */}
+                <mds-badge
+                  label={`${this.selectedRows.length}`}
+                  variant="dark"
+                  tone="outline"
+                  typography="label"
+                ></mds-badge>
               </div>
               <slot name="batch-action" />
             </div>

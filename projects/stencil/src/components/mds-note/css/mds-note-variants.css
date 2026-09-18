@@ -47,6 +47,20 @@
   --mds-note-selection-color: rgb(var(--label-orchid-04));
 }
 
+:host([variant='purple']) {
+  --mds-note-background: rgb(var(--label-purple-09));
+  --mds-note-color: rgb(var(--label-purple-02));
+  --mds-note-selection-background: rgb(var(--label-purple-08));
+  --mds-note-selection-color: rgb(var(--label-purple-04));
+}
+
+:host([variant='red']) {
+  --mds-note-background: rgb(var(--label-red-09));
+  --mds-note-color: rgb(var(--label-red-02));
+  --mds-note-selection-background: rgb(var(--label-red-08));
+  --mds-note-selection-color: rgb(var(--label-red-04));
+}
+
 :host([variant='sky']) {
   --mds-note-background: rgb(var(--label-sky-09));
   --mds-note-color: rgb(var(--label-sky-02));

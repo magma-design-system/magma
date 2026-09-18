@@ -42,3 +42,12 @@
 :host([await]:not([await='false'])) {
   pointer-events: none;
 }
+
+/* A button with no label is a square (`aspect-ratio: 1` in the size sheet), so letting the
+   spinner in NEXT to the icon grows it in both axes - 36px to 56px at md - and pushes
+   whatever line it sits in: a table row with an mds-keyboard in it jumps by 16px. With no
+   label to keep it company, the spinner takes the icon's place and the box stays put. */
+
+:host([icon]:not([label])[await]:not([await='false'])) .icon {
+  display: none;
+}

@@ -284,7 +284,7 @@ export class MdsInputSelect {
           </option>
         </select>
         <div class="icon-container">
-          <i class="icon" innerHTML={miBaselineKeyboardArrowDown} />
+          <mds-icon class="icon" name={miBaselineKeyboardArrowDown} />
         </div>
         <div class="option-container">
           <slot onSlotchange={this.onSlotChangeHandler}></slot>
