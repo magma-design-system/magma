@@ -1,4 +1,6 @@
 import { h } from '@stencil/core';
+import { useEffect, useState } from 'react';
+import { expect, waitFor } from 'storybook/test';
 
 export default {
   title: 'Form / Input Date',
@@ -81,5 +83,120 @@ export const Disabled = {
 
   args: {
     disabled: true,
+  },
+};
+
+// A date field inside a modal with a custom window (mds-banner in slot="window", so the calendar
+// pops out of the window instead of being clipped by the default window). The play opens the
+// modal and the calendar and checks that the calendar takes the field width, capped by
+// --mds-calendar-max-width (480px), with seven evenly sized columns, anchored to the end of the
+// field.
+const InsideModalTemplate = () => {
+  const [opened, setOpened] = useState(false);
+
+  useEffect(() => {
+    const modalElement = document.querySelector('#date-modal');
+    const close = (): void => setOpened(false);
+    modalElement?.addEventListener('mdsModalClose', close);
+    modalElement?.addEventListener('mdsModalHide', close);
+    return () => {
+      modalElement?.removeEventListener('mdsModalClose', close);
+      modalElement?.removeEventListener('mdsModalHide', close);
+    };
+  }, []);
+
+  return (
+    <div>
+      <mds-button id="open-modal" onClick={() => setOpened(true)}>
+        Apri la modale
+      </mds-button>
+      <mds-modal id="date-modal" opened={opened ? true : undefined} position="center">
+        <mds-banner slot="window" class="max-w-[480px]">
+          <mds-button
+            icon="mi/baseline/close"
+            variant="dark"
+            tone="text"
+            style={{ position: 'absolute', right: '0.5rem', top: '0.5rem' }}
+            onClick={() => setOpened(false)}
+          ></mds-button>
+          <mds-input-field label="Preparato da">
+            <mds-input value="Mario Rossi"></mds-input>
+          </mds-input-field>
+          <mds-input-field label="il">
+            <mds-input-date id="modal-date" value={getDate()}></mds-input-date>
+          </mds-input-field>
+          <mds-input-field label="Commento">
+            <mds-input type="textarea" placeholder="Commento"></mds-input>
+          </mds-input-field>
+        </mds-banner>
+      </mds-modal>
+    </div>
+  );
+};
+
+// Waits for the dropdown opening transition to stand still before measuring.
+const waitForSettled = (element: Element): Promise<void> =>
+  waitFor(
+    () => {
+      const { opacity, transform } = getComputedStyle(element);
+      expect(opacity).toBe('1');
+      expect(['none', 'matrix(1, 0, 0, 1, 0, 0)']).toContain(transform);
+    },
+    { timeout: 5000 },
+  );
+
+// The play starts on the React render, before the Stencil hydration: wait for the components,
+// then for mdsModalShow (the end of the window's opening transition) before opening the calendar.
+const openModalAndCalendar = async ({ canvasElement, userEvent }) => {
+  const modal = canvasElement.querySelector('#date-modal') as HTMLMdsModalElement;
+  const host = canvasElement.querySelector('#modal-date') as HTMLMdsInputDateElement;
+  await Promise.all([modal.componentOnReady(), host.componentOnReady()]);
+  const dropdown = host.shadowRoot?.querySelector('mds-dropdown') as HTMLMdsDropdownElement;
+  await dropdown.componentOnReady();
+
+  let shown = false;
+  modal.addEventListener(
+    'mdsModalShow',
+    () => {
+      shown = true;
+    },
+    { once: true },
+  );
+  await userEvent.click(canvasElement.querySelector('#open-modal') as HTMLElement);
+  await waitFor(() => expect(shown).toBe(true), { timeout: 5000 });
+
+  await userEvent.click(host.shadowRoot?.querySelector('#calendar-dropdown') as HTMLElement);
+  await waitFor(() => expect(dropdown).toHaveAttribute('visible'), { timeout: 5000 });
+  await waitForSettled(dropdown);
+
+  return {
+    host,
+    dropdown,
+    calendar: dropdown.querySelector('mds-calendar') as HTMLMdsCalendarElement,
+  };
+};
+
+// The calendar takes the field width (100cqw of the input-date host) capped by
+// --mds-calendar-max-width (480px), with seven evenly sized columns; the dropdown ends at the
+// field's right edge (placement bottom-end), pushed past it by at most the arrow padding (24px).
+const expectCalendarSizedToField = ({ host, dropdown, calendar }): void => {
+  const { width: fieldWidth, right: fieldRight } = host.getBoundingClientRect();
+  const { width } = calendar.getBoundingClientRect();
+  expect(width).toBeCloseTo(Math.min(fieldWidth, 480), 0);
+
+  const cells = calendar.shadowRoot?.querySelector('.month-view__cells') as HTMLElement;
+  const tracks = getComputedStyle(cells).gridTemplateColumns.split(' ').map(parseFloat);
+  expect(tracks).toHaveLength(7);
+  tracks.forEach((track) => expect(track).toBeCloseTo(tracks[0], 0));
+
+  expect(dropdown.getBoundingClientRect().right).toBeGreaterThanOrEqual(fieldRight - 1);
+  expect(dropdown.getBoundingClientRect().right).toBeLessThanOrEqual(fieldRight + 24);
+};
+
+export const UseCaseInsideModal = {
+  render: InsideModalTemplate,
+
+  play: async (context) => {
+    expectCalendarSizedToField(await openModalAndCalendar(context));
   },
 };
