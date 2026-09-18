@@ -1,4 +1,4 @@
-import { newE2EPage } from '@stencil/core/testing'
+import { E2EPage, newE2EPage } from '@stencil/core/testing'
 
 type DateRangeDetail = {
   startDate: string
@@ -13,6 +13,48 @@ declare global {
   interface Window {
     __dateRangeEvents?: DateRangeEvents
   }
+}
+
+type CalendarLayout = {
+  width: number
+  declaredWidth: number
+  overflows: boolean
+}
+
+// The dropdown becomes visible on the caller click, then floating-ui places it asynchronously while
+// its opening transition (a scale) plays: on a slow runner a measure taken right after the click
+// still sees the closed dropdown, and every calendar in it is 0px wide.
+const openCalendarDropdown = async (page: E2EPage): Promise<void> => {
+  const openCalendar = await page.find('mds-input-date-range >>> .action-open-calendar')
+  await openCalendar.click()
+  await page.waitForChanges()
+  await page.waitForFunction(
+    () => {
+      const dropdown = document.querySelector('mds-input-date-range')?.shadowRoot?.querySelector('mds-dropdown')
+      if (!dropdown || !dropdown.hasAttribute('visible')) return false
+      const { transform } = getComputedStyle(dropdown)
+      return transform === 'none' || transform === 'matrix(1, 0, 0, 1, 0, 0)'
+    },
+    { timeout: 5000 },
+  )
+}
+
+// The width the component assigns to each calendar (--mds-input-date-range-calendar-width) reaches
+// the browser as the calendar's min-inline-size: a calendar squeezed by the panel or by a sibling is
+// narrower than that, and its nav row overflows it.
+const readCalendarLayouts = (page: E2EPage): Promise<CalendarLayout[]> =>
+  page.$eval('mds-input-date-range', element =>
+    Array.from(element.shadowRoot?.querySelectorAll('mds-calendar') ?? []).map(calendar => ({
+      width: calendar.getBoundingClientRect().width,
+      declaredWidth: parseFloat(getComputedStyle(calendar).minInlineSize),
+      overflows: calendar.scrollWidth > calendar.clientWidth,
+    })),
+  )
+
+const expectCalendarNotShrunk = ({ width, declaredWidth, overflows }: CalendarLayout): void => {
+  expect(declaredWidth).toBeGreaterThan(0)
+  expect(width).toBeCloseTo(declaredWidth, 0)
+  expect(overflows).toBe(false)
 }
 
 describe('mds-input-date-range', () => {
@@ -73,16 +115,12 @@ describe('mds-input-date-range', () => {
     `)
     await page.waitForChanges()
 
-    const openCalendar = await page.find('mds-input-date-range >>> .action-open-calendar')
-    await openCalendar.click()
-    await page.waitForChanges()
+    await openCalendarDropdown(page)
 
-    const calendarWidth = await page.$eval('mds-input-date-range', element => {
-      const calendar = element.shadowRoot?.querySelector('mds-calendar')
-      return calendar?.getBoundingClientRect().width ?? 0
-    })
+    const layouts = await readCalendarLayouts(page)
 
-    expect(calendarWidth).toBeGreaterThan(250)
+    expect(layouts).toHaveLength(1)
+    expectCalendarNotShrunk(layouts[0])
   })
 
   it('shows and applies preselection values when a preselection is clicked', async () => {
@@ -98,9 +136,7 @@ describe('mds-input-date-range', () => {
     `)
     await page.waitForChanges()
 
-    const openCalendar = await page.find('mds-input-date-range >>> .action-open-calendar')
-    await openCalendar.click()
-    await page.waitForChanges()
+    await openCalendarDropdown(page)
 
     const preselectionVisible = await page.$eval('mds-input-date-range', element => {
       const calendar = element.shadowRoot?.querySelector('mds-calendar')
@@ -112,19 +148,19 @@ describe('mds-input-date-range', () => {
       return {
         panelExists: panel !== null,
         internalVisible: preselection?.classList.contains('calendar-preselection--has-preselection') ?? false,
-        width: calendar?.getBoundingClientRect().width ?? 0,
         panelIsOnTheLeft:
           panelRect !== undefined &&
           calendarRect !== undefined &&
           panelRect.right <= calendarRect.left,
       }
     })
+    const layouts = await readCalendarLayouts(page)
 
     expect(preselectionVisible.panelExists).toBe(true)
     expect(preselectionVisible.internalVisible).toBe(false)
-    expect(preselectionVisible.width).toBeGreaterThan(250)
-    expect(preselectionVisible.width).toBeLessThan(400)
     expect(preselectionVisible.panelIsOnTheLeft).toBe(true)
+    expect(layouts).toHaveLength(1)
+    expectCalendarNotShrunk(layouts[0])
 
     await page.$eval('mds-input-date-range-preselection', element => {
       const button = element.shadowRoot?.querySelector('.action') as HTMLElement | null
@@ -161,9 +197,7 @@ describe('mds-input-date-range', () => {
     `)
     await page.waitForChanges()
 
-    const openCalendar = await page.find('mds-input-date-range >>> .action-open-calendar')
-    await openCalendar.click()
-    await page.waitForChanges()
+    await openCalendarDropdown(page)
 
     const layout = await page.$eval('mds-input-date-range', element => {
       const panel = element.shadowRoot?.querySelector('.calendar-preselection-panel')
@@ -172,17 +206,16 @@ describe('mds-input-date-range', () => {
 
       return {
         panelExists: panel !== null,
-        calendarWidths: calendars.map(calendar => calendar.getBoundingClientRect().width),
         firstCalendarShowsPreselection:
           firstCalendarPreselection?.classList.contains('calendar-preselection--has-preselection') ?? false,
       }
     })
+    const layouts = await readCalendarLayouts(page)
 
     expect(layout.panelExists).toBe(true)
-    expect(layout.calendarWidths).toHaveLength(2)
-    expect(layout.calendarWidths[0]).toBeGreaterThan(250)
-    expect(layout.calendarWidths[1]).toBeGreaterThan(250)
     expect(layout.firstCalendarShowsPreselection).toBe(false)
+    expect(layouts).toHaveLength(2)
+    layouts.forEach(expectCalendarNotShrunk)
   })
 
   it('keeps the visible months anchored when the first selection starts in the last visible calendar', async () => {
@@ -327,9 +360,7 @@ describe('mds-input-date-range', () => {
       })
     })
 
-    const openCalendar = await page.find('mds-input-date-range >>> .action-open-calendar')
-    await openCalendar.click()
-    await page.waitForChanges()
+    await openCalendarDropdown(page)
 
     await page.$eval('mds-input-date-range-preselection', element => {
       const button = element.shadowRoot?.querySelector('.action') as HTMLElement | null
@@ -365,9 +396,7 @@ describe('mds-input-date-range', () => {
       })
     })
 
-    const openCalendar = await page.find('mds-input-date-range >>> .action-open-calendar')
-    await openCalendar.click()
-    await page.waitForChanges()
+    await openCalendarDropdown(page)
 
     await page.$eval('mds-input-date-range', element => {
       const calendar = element.shadowRoot?.querySelector('mds-calendar')
@@ -447,9 +476,7 @@ describe('mds-input-date-range', () => {
       })
     })
 
-    const openCalendar = await page.find('mds-input-date-range >>> .action-open-calendar')
-    await openCalendar.click()
-    await page.waitForChanges()
+    await openCalendarDropdown(page)
 
     await page.$eval('mds-input-date-range-preselection', element => {
       const button = element.shadowRoot?.querySelector('.action') as HTMLElement | null

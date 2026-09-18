@@ -92,8 +92,7 @@ export const Disabled = {
 // A date field inside a modal with a custom window (mds-banner in slot="window", so the calendar
 // pops out of the window instead of being clipped by the default window). The play opens the
 // modal and the calendar and checks that the calendar takes the field width, capped by
-// the calendar max-width (380px), with seven evenly sized columns, anchored to the end of the
-// field.
+// the calendar max-width, with seven evenly sized columns, anchored to the end of the field.
 const InsideModalTemplate = () => {
   const [opened, setOpened] = useState(false)
 
@@ -179,21 +178,25 @@ const openModalAndCalendar = async ({ canvasElement, userEvent }) => {
   }
 }
 
-// The calendar takes the field width (100cqw of the input-date host) capped by
-// the calendar max-width (380px), with seven evenly sized columns; the dropdown ends at the field's
-// right edge (placement bottom-end), pushed past it by at most the arrow padding (24px).
+// The calendar takes the field width (100cqw of the input-date host) capped by its own max-width,
+// with seven evenly sized columns; the dropdown ends at the field's right edge (placement
+// bottom-end), pushed past it by at most the dropdown arrow padding.
 const expectCalendarSizedToField = ({ host, dropdown, calendar }): void => {
   const { width: fieldWidth, right: fieldRight } = host.getBoundingClientRect()
+  const maxWidth = parseFloat(getComputedStyle(calendar).maxWidth)
   const { width } = calendar.getBoundingClientRect()
-  expect(width).toBeCloseTo(Math.min(fieldWidth, 380), 0)
+  expect(maxWidth).toBeGreaterThan(0)
+  expect(width).toBeCloseTo(Math.min(fieldWidth, maxWidth), 0)
 
   const cells = calendar.shadowRoot?.querySelector('.month-view__cells') as HTMLElement
   const tracks = getComputedStyle(cells).gridTemplateColumns.split(' ').map(parseFloat)
   expect(tracks).toHaveLength(7)
   tracks.forEach(track => expect(track).toBeCloseTo(tracks[0], 0))
 
-  expect(dropdown.getBoundingClientRect().right).toBeGreaterThanOrEqual(fieldRight - 1)
-  expect(dropdown.getBoundingClientRect().right).toBeLessThanOrEqual(fieldRight + 24)
+  // sub-pixel rounding aside, the dropdown never starts before the field's end
+  const overshoot = dropdown.getBoundingClientRect().right - fieldRight
+  expect(overshoot).toBeGreaterThanOrEqual(-1)
+  expect(overshoot).toBeLessThanOrEqual(dropdown.arrowPadding)
 }
 
 export const UseCaseInsideModal = {
