@@ -122,6 +122,7 @@
 }
 
 .button-delete {
+  align-self: center;
   border-radius: var(--radius-full);
   corner-shape: round;
   height: auto;

@@ -12,7 +12,7 @@
  */
 
 :host {
-  --mds-stepper-bar-gap: --spacing(500);
+  --mds-stepper-bar-gap: --spacing(50);
   --mds-stepper-bar-offset-margin: 0;
   --mds-stepper-bar-scroll-behavior: smooth;
   --mds-stepper-bar-scrollbar-margin: 0;

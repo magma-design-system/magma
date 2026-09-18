@@ -57,6 +57,23 @@ describe('mds-kpi-item', () => {
     });
   });
 
+  it('gives the panel the corner of the card minus the gap between them', async () => {
+    // the panel carried a fixed step off the scale, so the relation only held for whichever
+    // corner shape it had been picked on: 20px in a 16px gap under a 48px card on `round`,
+    // where the concentric answer is 32
+    const { root } = await render(
+      '<mds-kpi-item label="451" description="Progetti" style="width: 300px"></mds-kpi-item>',
+    );
+    const panel = info(root);
+    const radius = (element: Element) =>
+      parseFloat(getComputedStyle(element).borderBottomLeftRadius);
+    // the panel fills the padding box, so the inset on the side IS the gap at the corner
+    const gap = Math.round(panel.getBoundingClientRect().left - root.getBoundingClientRect().left);
+
+    expect(gap).toBe(parseFloat(getComputedStyle(root).paddingLeft));
+    expect(radius(panel)).toBe(radius(root) - gap);
+  });
+
   it('runs the value at the animation speed of the KPI, like the description', async () => {
     // the speed reached `.label`, a class the component never renders: the number ran at
     // the mds-text default of 0.5 while the line under it ran at 0.15
