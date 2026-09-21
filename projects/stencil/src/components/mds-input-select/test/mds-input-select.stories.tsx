@@ -10,9 +10,6 @@ citiesDictionary.map((element, index) => {
 
 export default {
   title: 'Form / Select',
-  // TODO a11y: the component gives its native control no accessible name (no label, aria-label
-  // or aria-labelledby is forwarded), so every story fails the axe `select-name` rule
-  parameters: { a11y: { test: 'todo' } },
   argTypes: {
     value: {
       type: { name: 'string' },
@@ -62,7 +59,7 @@ export default {
 };
 
 const Template = (args) => (
-  <mds-input-select {...args}>
+  <mds-input-select aria-label="Film" {...args}>
     <option value="1">First contact</option>
     <option value="2">Second impact</option>
     <option value="3">The Third Man</option>
@@ -82,7 +79,7 @@ const TemplateForm = (args) => (
       return false;
     }}
   >
-    <mds-input-select {...args}>
+    <mds-input-select aria-label="Film" {...args}>
       <option value="1">First contact</option>
       <option value="2">Second impact</option>
       <option value="3">The Third Man</option>

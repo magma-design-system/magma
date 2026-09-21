@@ -446,7 +446,4 @@ const LoginTemplate = () => {
 
 export const Login = {
   render: LoginTemplate,
-  // TODO a11y: the mds-input-field label is not associated with the slotted input, and
-  // mds-input does not forward an accessible name to its native input yet
-  parameters: { a11y: { test: 'todo' } },
 };

@@ -4,9 +4,6 @@ import { expect, waitFor } from 'storybook/test';
 
 export default {
   title: 'Form / Input Date',
-  // TODO a11y: the component gives its native control no accessible name (no label, aria-label
-  // or aria-labelledby is forwarded), so every story fails the axe `label` rule
-  parameters: { a11y: { test: 'todo' } },
   argTypes: {
     disabled: {
       type: { name: 'boolean' },
@@ -46,7 +43,9 @@ const getDate = (offsetDays: number = 0): string => {
   return `${year}-${month}-${day}`;
 };
 
-const Template = (args) => <mds-input-date {...args} class="max-w-[400px]"></mds-input-date>;
+const Template = (args) => (
+  <mds-input-date aria-label="Data" {...args} class="max-w-[400px]"></mds-input-date>
+);
 
 export const Default = {
   render: Template,
@@ -114,7 +113,7 @@ const InsideModalTemplate = () => {
         Apri la modale
       </mds-button>
       <mds-modal id="date-modal" opened={opened ? true : undefined} position="center">
-        <mds-banner slot="window" class="max-w-[480px]">
+        <mds-banner slot="window" class="max-w-[480px]" headline="Verbale">
           <mds-button
             icon="mi/baseline/close"
             variant="dark"
