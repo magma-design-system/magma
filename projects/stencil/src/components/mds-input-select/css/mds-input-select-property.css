@@ -11,37 +11,37 @@
 
 @property --mds-input-select-arrow-icon-background-color {
   inherits: true;
-  initial-value: rgb( var(--magma-text-default) / 0 );
+  initial-value: transparent;
   syntax: '<color>';
 }
 
 @property --mds-input-select-arrow-icon-blur-background-color {
   inherits: true;
-  initial-value: rgb(var(--magma-accent-surface));
+  initial-value: transparent;
   syntax: '<color>';
 }
 
 @property --mds-input-select-arrow-icon-blur-color {
   inherits: true;
-  initial-value: rgb(var(--magma-accent-border));
+  initial-value: rgb(var(--magma-accent-emphasis));
   syntax: '<color>';
 }
 
 @property --mds-input-select-arrow-icon-color {
   inherits: true;
-  initial-value: rgb(var(--magma-text-default) / 0.5);
+  initial-value: rgb(var(--magma-accent-emphasis));
   syntax: '<color>';
 }
 
 @property --mds-input-select-arrow-icon-hover-background-color {
   inherits: true;
-  initial-value: rgb(var(--magma-accent-surface-hover));
+  initial-value: transparent;
   syntax: '<color>';
 }
 
 @property --mds-input-select-arrow-icon-hover-color {
   inherits: true;
-  initial-value: rgb(var(--magma-accent-emphasis));
+  initial-value: rgb(var(--magma-accent-fg));
   syntax: '<color>';
 }
 

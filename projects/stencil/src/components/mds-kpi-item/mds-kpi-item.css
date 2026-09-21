@@ -16,19 +16,21 @@
   );
   --mds-kpi-item-text-animation-speed: var(--mds-kpi-text-animation-speed, 0.15);
   --mds-kpi-item-transition-duration: var(--duration-300);
+  --private-kpi-item-padding: --spacing(400);
+  --private-kpi-item-radius: var(--magma-radius-4xl);
   --private-kpi-item-transition-duration: var(--mds-kpi-item-transition-duration);
 
   @apply ease-out;
 
   aspect-ratio: 1;
   background-color: rgb(var(--magma-accent-surface-subtle));
-  border-radius: var(--magma-radius-4xl);
+  border-radius: var(--private-kpi-item-radius);
   corner-shape: var(--magma-corner-shape, round);
   display: flex;
   flex-direction: column;
   gap: 0;
   overflow: hidden;
-  padding: --spacing(400);
+  padding: var(--private-kpi-item-padding);
   transition-duration: var(--private-kpi-item-transition-duration);
   transition-property: background-color, box-shadow;
 }
@@ -53,11 +55,24 @@
   width: 40%;
 }
 
+/* Concentric corners: the panel sits in the corner of the card, so its radius is the card's
+   minus the gap between them - the two read the same variables and cannot drift. A fixed
+   step could not: the card radius follows the corner shape, the gap does not, so the one
+   step that fitted `round` was already wrong on the squircle scale.
+
+   The bottom pair is what the rule is about; the top two face nothing but the icon. They
+   carry the same value for the simple reason that a box reads as one shape, and where the
+   panel is too short to hold it the global clamp scales all four down together - the same
+   mechanism every pill in the system leans on. */
+
 .info {
   @apply ease-out;
 
   background-color: var(--mds-kpi-item-info-background);
-  border-radius: var(--magma-radius-xl);
+  border-radius: max(
+    0px,
+    calc(var(--private-kpi-item-radius) - var(--private-kpi-item-padding))
+  );
   box-shadow: var(--shadow-sm);
   corner-shape: inherit;
   display: grid;
@@ -70,7 +85,11 @@
   transition-property: background-color, border-radius, box-shadow;
 }
 
-.label,
+/* The value carries class="value", not class="label": spelled the old way these two
+   variables reached the description only, so the number animated at the mds-text default
+   of 0.5 while the line under it ran at the 0.15 the KPI asks for. */
+
+.value,
 .description {
   @apply ease-out;
 

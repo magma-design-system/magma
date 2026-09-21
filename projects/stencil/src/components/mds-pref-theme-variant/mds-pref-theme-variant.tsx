@@ -31,7 +31,6 @@ export class MdsPrefThemeVariant {
   private readonly localStorageAliasThemeName: string = 'mdsPrefThemeName';
   private readonly localStorageAliasThemeScheme: string = 'mdsPrefThemeScheme';
   private readonly localStorageAliasCornerShape: string = 'mdsPrefCornerShape';
-  private readonly defaultTheme: string = 'default';
   private currentSelectedItem: HTMLMdsPrefThemeVariantItemElement;
   private elPreferThemeVariantItems: NodeListOf<HTMLMdsPrefThemeVariantItemElement>;
   private userThemeName: string | null;
@@ -241,9 +240,6 @@ export class MdsPrefThemeVariant {
         >
           <slot></slot>
         </mds-dropdown>
-        {this.name !== this.defaultTheme && (
-          <mds-text typography="caption">{this.t.get('defaultTheme')}</mds-text>
-        )}
       </Host>
     );
   }

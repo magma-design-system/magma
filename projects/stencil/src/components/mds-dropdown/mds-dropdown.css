@@ -54,7 +54,7 @@
   transform: var(--mds-dropdown-transform-from);
   transition-behavior: allow-discrete;
   transition-duration: var(--private-dropdown-duration);
-  transition-property: opacity, transform, transform-origin, display;
+  transition-property: opacity, transform, display;
   transition-timing-function: var(--mds-dropdown-ease);
   z-index: var(--mds-dropdown-z-index);
 }
@@ -71,9 +71,21 @@
   }
 }
 
-:host(:not([disable-smooth])),
-:host([disable-smooth='false']) {
-  transition-property: bottom, left, opacity, right, top, transform, transform-origin;
+/* `data-floating-placed` is written by the floating controller after the first
+ * computePosition: before it the panel has no position, so transitioning left and
+ * top would slide it in from the corner of the page instead of opening it where
+ * the caller is. transform-origin stays out of the list on purpose - it is the
+ * pivot of the opening, and interpolating it makes the panel grow from a point
+ * that moves while it grows.
+ *
+ * `display` has to be repeated here. The panel is `display: none` when closed and
+ * the sheet leans on `transition-behavior: allow-discrete` to hold it visible for
+ * the length of the outro: a list that leaves `display` out hides the panel on the
+ * frame the attribute goes away, and the fade never plays. */
+
+:host([data-floating-placed]:not([disable-smooth])),
+:host([data-floating-placed][disable-smooth='false']) {
+  transition-property: bottom, left, display, opacity, right, top, transform;
 }
 
 .arrow {

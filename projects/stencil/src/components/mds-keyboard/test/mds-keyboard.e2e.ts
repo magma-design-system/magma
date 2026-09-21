@@ -37,6 +37,26 @@ const typeCombination = async (
   await waitForChanges();
 };
 
+/**
+ * The trigger button animates into its awaiting state, and the keyboard is sized by it,
+ * so a box read right after the click catches the animation halfway.
+ */
+const settledBox = async (element: Element): Promise<DOMRect> => {
+  await new Promise((resolve) => setTimeout(resolve, 400));
+
+  let previous = '';
+  let box = element.getBoundingClientRect();
+  for (let attempt = 0; attempt < 60; attempt += 1) {
+    await new Promise((resolve) => requestAnimationFrame(resolve));
+    box = element.getBoundingClientRect();
+    const current = `${box.width}x${box.height}`;
+    if (current === previous) return box;
+    previous = current;
+  }
+
+  return box;
+};
+
 describe('mds-keyboard', () => {
   it('renders', async () => {
     const { root } = await render('<mds-keyboard></mds-keyboard>');
@@ -87,6 +107,19 @@ describe('mds-keyboard', () => {
       // the trigger button in its awaiting state.
       expect(host.shadowRoot!.querySelector('.shortcuts')).toEqualAttribute('tabindex', '0');
       expect(button).toHaveAttribute('await');
+    });
+
+    it('keeps its box while the test is running', async () => {
+      // the trigger is an icon-only mds-button: while it awaited, its spinner used to
+      // arrive beside the icon and grow the square by 20px in both axes, which pushed
+      // the keyboard from 100x63 to 120x79 and the table row under it with it
+      const before = await settledBox(host);
+
+      await clickButton();
+      const after = await settledBox(host);
+
+      expect(after.width).toBe(before.width);
+      expect(after.height).toBe(before.height);
     });
 
     it('clears a previous result when restarted', async () => {

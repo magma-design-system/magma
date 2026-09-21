@@ -52,6 +52,7 @@ import { KeyboardTest } from "./components/mds-keyboard/meta/type";
 import { KeyboardKeyName } from "./type/keyboard";
 import { MdsLabelVariantType } from "./components/mds-label/mds-label";
 import { MentionSize } from "./components/mds-mention/meta/type";
+import { MdsMentionEvent } from "./components/mds-mention/meta/interface";
 import { ModalAnimationStyleType, ModalInteractionType, ModalOverflowType, ModalPositionType } from "./components/mds-modal/meta/types";
 import { StrategyType } from "./components/mds-notification/meta/types";
 import { MdsPaginatorEventDetail } from "./components/mds-paginator/meta/event-detail";
@@ -134,6 +135,7 @@ export { KeyboardTest } from "./components/mds-keyboard/meta/type";
 export { KeyboardKeyName } from "./type/keyboard";
 export { MdsLabelVariantType } from "./components/mds-label/mds-label";
 export { MentionSize } from "./components/mds-mention/meta/type";
+export { MdsMentionEvent } from "./components/mds-mention/meta/interface";
 export { ModalAnimationStyleType, ModalInteractionType, ModalOverflowType, ModalPositionType } from "./components/mds-modal/meta/types";
 export { StrategyType } from "./components/mds-notification/meta/types";
 export { MdsPaginatorEventDetail } from "./components/mds-paginator/meta/event-detail";
@@ -1781,6 +1783,10 @@ export namespace Components {
     }
     interface MdsMention {
         /**
+          * Shows the cross icon to perform cancel/delete action on element
+         */
+        "deletable"?: boolean;
+        /**
           * Sets the icon shown at the left of the label
          */
         "icon"?: string;
@@ -2968,6 +2974,10 @@ export interface MdsLabelCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLMdsLabelElement;
 }
+export interface MdsMentionCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLMdsMentionElement;
+}
 export interface MdsModalCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLMdsModalElement;
@@ -3733,7 +3743,18 @@ declare global {
         prototype: HTMLMdsListItemElement;
         new (): HTMLMdsListItemElement;
     };
+    interface HTMLMdsMentionElementEventMap {
+        "mdsMentionDelete": MdsMentionEvent;
+    }
     interface HTMLMdsMentionElement extends Components.MdsMention, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMdsMentionElementEventMap>(type: K, listener: (this: HTMLMdsMentionElement, ev: MdsMentionCustomEvent<HTMLMdsMentionElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMdsMentionElementEventMap>(type: K, listener: (this: HTMLMdsMentionElement, ev: MdsMentionCustomEvent<HTMLMdsMentionElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLMdsMentionElement: {
         prototype: HTMLMdsMentionElement;
@@ -6223,6 +6244,10 @@ declare namespace LocalJSX {
     }
     interface MdsMention {
         /**
+          * Shows the cross icon to perform cancel/delete action on element
+         */
+        "deletable"?: boolean;
+        /**
           * Sets the icon shown at the left of the label
          */
         "icon"?: string;
@@ -6230,6 +6255,10 @@ declare namespace LocalJSX {
           * Sets the label of the component
          */
         "label"?: string;
+        /**
+          * Emits when the component's delete button is clicked
+         */
+        "onMdsMentionDelete"?: (event: MdsMentionCustomEvent<MdsMentionEvent>) => void;
         /**
           * Sets the label of the component
           * @default 'sm'
@@ -7787,6 +7816,7 @@ declare namespace LocalJSX {
         "icon": string;
     }
     interface MdsMentionAttributes {
+        "deletable": boolean;
         "icon": string;
         "label": string;
         "size": MentionSize;

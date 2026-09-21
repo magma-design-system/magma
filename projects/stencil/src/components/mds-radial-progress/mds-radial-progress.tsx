@@ -1,6 +1,7 @@
 import { Component, Host, h, Prop, State, Watch } from '@stencil/core';
 import { TypographyTechnicalType, TypographyType } from '@type/typography';
 import { ThemeVariantType } from '@type/variant';
+import { prefersReducedMotion } from '@common/preference';
 
 /**
  * @part value-container - Selects the value container of the radial progress.
@@ -45,10 +46,6 @@ export class MdsRadialProgress {
 
   private clampProgress = (value: number): number => Math.min(1, Math.max(0, value));
 
-  private prefersReducedMotion = (): boolean =>
-    typeof window !== 'undefined' &&
-    window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches === true;
-
   private easeOutExpo = (t: number): number => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t));
 
   private stopAnimation = () => {
@@ -64,7 +61,7 @@ export class MdsRadialProgress {
 
     this.stopAnimation();
 
-    if (this.prefersReducedMotion()) {
+    if (prefersReducedMotion()) {
       this.animatedProgress = to;
       return;
     }

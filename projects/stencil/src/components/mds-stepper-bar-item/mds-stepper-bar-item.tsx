@@ -92,7 +92,13 @@ export class MdsStepperBarItem {
     this.isCurrent = this.current;
     this.isDone = this.done;
     const parent = this.host.parentElement;
-    if (parent) this.index = [...Array.from(parent.childNodes)].indexOf(this.host);
+    // childNodes counts the whitespace between the tags, so formatted markup made
+    // the step numbers come out doubled: 2, 4, 6, 8 for four steps.
+    if (parent) {
+      this.index = Array.from(parent.children)
+        .filter((child) => child.tagName === this.host.tagName)
+        .indexOf(this.host);
+    }
   }
 
   componentDidLoad(): void {

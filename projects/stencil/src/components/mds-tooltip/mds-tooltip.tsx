@@ -149,6 +149,12 @@ export class MdsTooltip implements FloatingElement {
     const arrow = this.host.shadowRoot?.querySelector('.arrow') as HTMLElement;
     this.floatingController = new FloatingController(this.host, arrow, 'tooltip');
     this.targetChanged();
+
+    // The watcher does not fire for the initial value: a tooltip that mounts with
+    // `visible` set would never be positioned.
+    if (this.visible) {
+      this.visibleChanged(true);
+    }
   }
 
   disconnectedCallback(): void {

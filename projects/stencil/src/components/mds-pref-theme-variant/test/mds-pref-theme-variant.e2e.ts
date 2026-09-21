@@ -1,13 +1,31 @@
 import { render } from '@stencil/vitest';
 
 const CORNER_STORAGE_KEY = 'mdsPrefCornerShape';
+const THEME_NAME_STORAGE_KEY = 'mdsPrefThemeName';
+
+/** The stored choice outranks the prop, and both the theme name and the corner
+ * shape are written on the document, so a leftover decides the next case. */
+const reset = (): void => {
+  localStorage.removeItem(CORNER_STORAGE_KEY);
+  document.documentElement.removeAttribute('data-corner-shape');
+  localStorage.removeItem(THEME_NAME_STORAGE_KEY);
+  document.documentElement.removeAttribute('data-theme-name');
+  // the list is live, so the names come out of a copy before they are removed
+  [...document.documentElement.classList]
+    .filter((name) => name.startsWith('pref-theme-name-'))
+    .forEach((name) => document.documentElement.classList.remove(name));
+};
 
 describe('mds-pref-theme-variant', () => {
+  // the theme name and the corner shape are written on the document, so they
+  // outlive this file and reach the cases that run after it: clear them on the way
+  // out as well as on the way in
+  afterEach(() => {
+    reset();
+  });
+
   beforeEach(() => {
-    // the stored choice outranks the prop, so a leftover from another test would
-    // decide this one
-    localStorage.removeItem(CORNER_STORAGE_KEY);
-    document.documentElement.removeAttribute('data-corner-shape');
+    reset();
   });
 
   it('renders', async () => {
@@ -39,6 +57,18 @@ describe('mds-pref-theme-variant', () => {
     // from reaching a project that never chose
     expect(document.documentElement).not.toHaveAttribute('data-corner-shape');
     expect(localStorage.getItem(CORNER_STORAGE_KEY)).toBe('default');
+  });
+
+  it('renders no caption of its own for a theme that is not the default', async () => {
+    const { root } = await render('<mds-pref-theme-variant name="ocean"></mds-pref-theme-variant>');
+
+    // the dropped caption read a key none of the four locale files has, so every
+    // theme but the default used to get an empty mds-text under the dropdown
+    const texts = [...root.shadowRoot!.querySelectorAll('mds-text')];
+
+    expect(root).toHaveAttribute('name', 'ocean');
+    expect(texts).toHaveLength(1);
+    expect(texts[0].textContent!.trim()).not.toBe('');
   });
 
   it('lets the stored choice outrank the prop, like the theme name does', async () => {

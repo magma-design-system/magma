@@ -15,6 +15,7 @@
   --mds-file-preview-icon-background: inherit;
   --mds-file-preview-icon-color: var(--mds-file-preview-color);
   --mds-file-preview-transition-duration: 0s;
+  --private-file-preview-padding: --spacing(400);
   --private-file-preview-transition-duration: var(--mds-file-preview-transition-duration);
 
   align-items: stretch;
@@ -36,14 +37,22 @@
   corner-shape: inherit;
   display: grid;
   gap: --spacing(200);
-  padding: --spacing(400);
+  padding: var(--private-file-preview-padding);
   width: 100%;
 }
+
+/* Concentric corners: the inside of a corner is the outside minus the gap that separates
+   them, so the radius and the padding have to read the SAME variable or they drift. This
+   one subtracted --spacing(200) from a --spacing(400) padding and the preview came out one
+   step too round - visibly so under `round`, where 16px sat in a gap that asks for 8. */
 
 .preview {
   aspect-ratio: var(--aspect-square);
   background-color: var(--mds-file-preview-icon-background);
-  border-radius: calc(var(--mds-file-preview-border-radius) - --spacing(200));
+  border-radius: max(
+    0px,
+    calc(var(--mds-file-preview-border-radius) - var(--private-file-preview-padding))
+  );
   box-sizing: border-box;
   color: var(--mds-file-preview-color);
   corner-shape: inherit;
