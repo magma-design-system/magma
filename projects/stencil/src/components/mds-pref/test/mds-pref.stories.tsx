@@ -65,9 +65,6 @@ const TemplateController = () => (
 );
 
 export const Default = {
-  // TODO a11y: the mds-dropdown wires aria-controls on the mds-tab-item host it targets, which
-  // axe then rejects as a child of the tablist (the tab is the inner button)
-  parameters: { a11y: { test: 'todo' } },
   render: Template,
   args: {},
 };

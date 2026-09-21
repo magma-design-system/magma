@@ -38,6 +38,15 @@ export interface PositionOptions {
 /** ARIA role of the floating element: a `menu` is a popup its caller controls, a `tooltip` only describes it */
 export type FloatingRole = 'menu' | 'tooltip';
 
+/**
+ * Callers that delegate their role to a control of their shadow root: an `mds-tab-item` renders the
+ * tab as its inner `mds-button[role="tab"]`, so ARIA written on the host describes the wrapper and
+ * not the tab, and inside the tablist it makes the item a child the `tab` role no longer covers
+ * (axe `aria-required-children`). Moving the attributes onto the inner control is not an option
+ * either: an IDREF does not cross the shadow boundary.
+ */
+const ROLE_DELEGATING_CALLERS = ['MDS-TAB-ITEM'];
+
 export class FloatingController {
   private _caller: HTMLElement;
   private readonly _host: HTMLFloatingElement;
@@ -68,10 +77,9 @@ export class FloatingController {
     this._caller = caller;
 
     setAttributeIfEmpty(this._host, 'role', this._role);
-    // a tooltip is neither a popup the caller controls nor labelled by it: wiring
-    // `aria-haspopup`/`aria-controls` on the caller would also turn an `mds-tab-item`
-    // host into an element axe no longer accepts as a child of the tablist
-    if (this._role === 'menu') {
+    // a tooltip is neither a popup the caller controls nor labelled by it, and a caller that
+    // delegates its role to an inner control carries no wiring at all on its host
+    if (this._role === 'menu' && !ROLE_DELEGATING_CALLERS.includes(this._caller.tagName)) {
       setAttributeIfEmpty(this._caller, 'aria-haspopup', 'true');
       setAttributeIfEmpty(this._caller, 'aria-controls', target);
       setAttributeIfEmpty(this._host, 'aria-labelledby', target);

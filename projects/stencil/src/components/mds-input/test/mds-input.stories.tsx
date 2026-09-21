@@ -332,9 +332,6 @@ export const Icon = {
 
 export const TestLanguageChange = {
   render: TemplateLanguage,
-  // TODO a11y: the mds-dropdown of mds-pref-language wires aria-controls on the mds-tab-item
-  // host, which axe then rejects as a child of the tablist (the tab is the inner button)
-  parameters: { a11y: { test: 'todo' } },
 
   args: {
     icon: 'mi/round/email',
