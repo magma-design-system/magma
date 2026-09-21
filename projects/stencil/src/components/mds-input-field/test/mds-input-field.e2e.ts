@@ -92,4 +92,26 @@ describe('mds-input-field', () => {
 
     expect(message.textContent).toBe(m);
   });
+
+  describe('accessible name', () => {
+    it('passes its label down to the control it slots', async () => {
+      const { mdsInput } = await setup(
+        '<mds-input-field label="Password"><mds-input></mds-input></mds-input-field>',
+      );
+
+      expect(mdsInput).toEqualAttribute('aria-label', 'Password');
+      expect(mdsInput.shadowRoot!.querySelector('input')).toEqualAttribute(
+        'aria-label',
+        'Password',
+      );
+    });
+
+    it('leaves a name written on the control alone', async () => {
+      const { mdsInput } = await setup(
+        '<mds-input-field label="Password"><mds-input aria-label="Codice"></mds-input></mds-input-field>',
+      );
+
+      expect(mdsInput).toEqualAttribute('aria-label', 'Codice');
+    });
+  });
 });

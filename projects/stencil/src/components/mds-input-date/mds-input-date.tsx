@@ -34,6 +34,14 @@ export class MdsInputDate {
   @State() touched: boolean = false;
 
   /**
+   * The accessible name of the native control: the label a screen reader announces. An
+   * `mds-input-field` around the component passes its own label down here, so the attribute
+   * is only written by hand when the control stands on its own. The placeholder is deliberately
+   * not a fallback: it disappears as soon as the field is filled.
+   */
+  @Prop({ attribute: 'aria-label' }) readonly accessibleName?: string;
+
+  /**
    * Specifies the value of the input
    * @description It's in ISO format (YYYY-MM-DD).
    */
@@ -239,6 +247,7 @@ export class MdsInputDate {
         pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
         <input
+          aria-label={this.accessibleName}
           value={this.value}
           id="dateInput"
           class="input"
@@ -274,11 +283,14 @@ export class MdsInputDate {
             ></mds-input-tip-item>
           )}
         </mds-input-tip>
+        {/* the panel holds a calendar, not a list of entries: it is a group, not the
+            menu the dropdown declares by default */}
         {!this.isSlotted && (
           <mds-dropdown
             placement="bottom-end"
             disable-auto-placement
             ref={(el) => (this.dropdownRef = el as HTMLMdsDropdownElement)}
+            role="group"
             target="#calendar-dropdown"
           >
             <mds-calendar
