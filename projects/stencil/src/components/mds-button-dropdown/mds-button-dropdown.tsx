@@ -1,4 +1,4 @@
-import { Component, Host, h, Prop } from '@stencil/core';
+import { Component, Element, Host, h, Prop } from '@stencil/core';
 import miBaselineKeyboardArrowDown from '@icon/mi/baseline/keyboard-arrow-down.svg';
 import {
   ButtonSizeType,
@@ -19,6 +19,8 @@ import { TypographyTruncateType } from '@type/text';
   shadow: true,
 })
 export class MdsButtonDropdown {
+  @Element() private readonly host!: HTMLMdsButtonDropdownElement;
+
   /**
    * Specifies le text label of the component
    */
@@ -83,6 +85,24 @@ export class MdsButtonDropdown {
    * Specifies if the text shoud be truncated or should behave as a normal text
    */
   @Prop({ reflect: true }) readonly truncate?: TypographyTruncateType = 'word';
+
+  // the slot is handed straight to the `menu` of the mds-dropdown, whose children axe only
+  // accepts as entries: what the consumer slots in is what has to carry the role. An
+  // `mds-button` names itself a button as soon as it loads, and which of the two loads first
+  // is not guaranteed, so `button` is overwritten here while any other role is left alone
+  private readonly markEntries = (): void => {
+    Array.from(this.host.children).forEach((entry) => {
+      const role = entry.getAttribute('role');
+      if (role === null || role === 'button') {
+        entry.setAttribute('role', 'menuitem');
+      }
+    });
+  };
+
+  componentDidLoad(): void {
+    this.markEntries();
+    this.host.shadowRoot?.querySelector('slot')?.addEventListener('slotchange', this.markEntries);
+  }
 
   render() {
     return (
