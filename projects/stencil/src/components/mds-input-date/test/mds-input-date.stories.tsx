@@ -112,7 +112,12 @@ const InsideModalTemplate = () => {
       <mds-button id="open-modal" onClick={() => setOpened(true)}>
         Apri la modale
       </mds-button>
-      <mds-modal id="date-modal" opened={opened ? true : undefined} position="center">
+      <mds-modal
+        id="date-modal"
+        aria-label="Verbale"
+        opened={opened ? true : undefined}
+        position="center"
+      >
         <mds-banner slot="window" class="max-w-[480px]" headline="Verbale">
           <mds-button
             icon="mi/baseline/close"

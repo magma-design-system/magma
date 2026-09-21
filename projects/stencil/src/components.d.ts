@@ -1822,6 +1822,10 @@ export namespace Components {
     }
     interface MdsModal {
         /**
+          * The accessible name of the modal: the name a screen reader announces when the window opens. The `<dialog>` this component renders is the dialog, so the name goes there.
+         */
+        "accessibleName"?: string;
+        /**
           * Specifies the animation style of the modal window
           * @default 'slide'
          */
@@ -6307,6 +6311,10 @@ declare namespace LocalJSX {
     }
     interface MdsModal {
         /**
+          * The accessible name of the modal: the name a screen reader announces when the window opens. The `<dialog>` this component renders is the dialog, so the name goes there.
+         */
+        "accessibleName"?: string;
+        /**
           * Specifies the animation style of the modal window
           * @default 'slide'
          */
@@ -7867,6 +7875,7 @@ declare namespace LocalJSX {
         "size": MentionSize;
     }
     interface MdsModalAttributes {
+        "accessibleName": string;
         "opened": boolean;
         "hideBackdrop": boolean;
         "position": ModalPositionType;
