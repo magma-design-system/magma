@@ -163,6 +163,94 @@ describe('mds-dropdown', () => {
     });
   });
 
+  describe('changing the target', () => {
+    const twoCallers = () =>
+      render(
+        `<div style="position: relative; height: 300px">
+           <mds-button id="first" label="First"></mds-button>
+           <mds-button id="second" label="Second"></mds-button>
+           <mds-dropdown id="panel" target="#first">Menu</mds-dropdown>
+         </div>`,
+      );
+
+    it('hands back to the old caller everything it was given', async () => {
+      const { root } = await twoCallers();
+      const panel = root.querySelector('#panel') as HTMLMdsDropdownElement;
+      const first = root.querySelector('#first') as HTMLElement;
+      const second = root.querySelector('#second') as HTMLElement;
+
+      await vi.waitFor(() => {
+        expect(first).toHaveAttribute('aria-controls');
+      });
+
+      panel.target = '#second';
+
+      await vi.waitFor(() => {
+        expect(second).toHaveAttribute('aria-controls');
+      });
+
+      // left alone the old caller points at a panel that is no longer its own, with a state
+      // frozen on the last time it was open
+      expect(first).not.toHaveAttribute('aria-controls');
+      expect(first).not.toHaveAttribute('aria-haspopup');
+      expect(first).not.toHaveAttribute('aria-expanded');
+      // the label is written once, so without taking it back the second caller never gets it
+      expect(panel).toEqualAttribute('aria-labelledby', 'second');
+    });
+
+    it('stops the old caller from opening a panel that is no longer its own', async () => {
+      const { root, waitForChanges } = await twoCallers();
+      const panel = root.querySelector('#panel') as HTMLMdsDropdownElement;
+      const first = root.querySelector('#first') as HTMLElement;
+      const second = root.querySelector('#second') as HTMLElement;
+
+      await vi.waitFor(() => {
+        expect(first).toHaveAttribute('aria-controls');
+      });
+
+      panel.target = '#second';
+      await vi.waitFor(() => {
+        expect(second).toHaveAttribute('aria-controls');
+      });
+
+      first.click();
+      await waitForChanges();
+
+      expect(panel.visible).toBe(false);
+
+      second.click();
+      await waitForChanges();
+
+      expect(panel.visible).toBe(true);
+    });
+
+    it('leaves the old caller what it wrote itself', async () => {
+      const { root } = await render(
+        `<div style="position: relative; height: 300px">
+           <mds-button id="first" label="First" aria-haspopup="dialog"></mds-button>
+           <mds-button id="second" label="Second"></mds-button>
+           <mds-dropdown id="panel" target="#first">Menu</mds-dropdown>
+         </div>`,
+      );
+      const panel = root.querySelector('#panel') as HTMLMdsDropdownElement;
+      const first = root.querySelector('#first') as HTMLElement;
+      const second = root.querySelector('#second') as HTMLElement;
+
+      await vi.waitFor(() => {
+        expect(first).toHaveAttribute('aria-controls');
+      });
+
+      panel.target = '#second';
+
+      await vi.waitFor(() => {
+        expect(second).toHaveAttribute('aria-controls');
+      });
+
+      // an attribute that was already there belongs to whoever wrote it
+      expect(first).toEqualAttribute('aria-haspopup', 'dialog');
+    });
+  });
+
   describe('entries of the menu', () => {
     it('names as entries the elements the slot receives', async () => {
       const { root } = await stage(

@@ -182,6 +182,7 @@ export class MdsDropdown implements FloatingElement {
     if (this.target === '' || this.floatingController == null) return;
     const caller = this.floatingController.updateCaller(this.target);
     if (!caller) return;
+    if (this.caller && this.caller !== caller) this.unsetInteractionBehaviour(this.caller);
     this.caller = caller;
     // the role of the panel arrives with the caller, so the entries are named once it resolves
     this.markEntries();
@@ -210,28 +211,31 @@ export class MdsDropdown implements FloatingElement {
     this.hiddenEvent.emit({ caller: this.caller, visible: false });
   }
 
-  private onClickTarget(ev: Event): void {
+  // the handlers of the caller are held as they are attached: `removeEventListener` answers to
+  // the reference it was given, and a `.bind(this)` written at the call site makes a new one
+  // every time, which is why nothing the caller was given was ever taken back
+  private readonly onClickTarget = (ev: Event): void => {
     // stop propagation event for when target is a element cointainer
     ev.stopPropagation();
     // trigger a body click to execute handleCloseDropdown on other dropdowns
     document.body.click();
     this.visible = !this.visible;
-  }
+  };
 
-  private onMouseOverTarget(): void {
+  private readonly onMouseOverTarget = (): void => {
     this.mouseoverTimer = setTimeout(() => {
       clearTimeout(this.mouseoverTimer);
       this.visible = true;
     }, cssDurationToMilliseconds(this.cssMouseOverDelayDuration));
-  }
+  };
 
-  private onMouseOutTarget(): void {
+  private readonly onMouseOutTarget = (): void => {
     clearTimeout(this.mouseoverTimer);
     this.mouseoverTimer = setTimeout(() => {
       clearTimeout(this.mouseoverTimer);
       this.visible = false;
     }, cssDurationToMilliseconds(this.cssMouseOverDelayDuration));
-  }
+  };
 
   /**
    * The panel declares itself a `menu`, whose children axe only accepts as entries
@@ -288,20 +292,28 @@ export class MdsDropdown implements FloatingElement {
     }
 
     if (this.interaction === 'click') {
-      this.caller.addEventListener('click', this.onClickTarget.bind(this));
+      this.caller.addEventListener('click', this.onClickTarget);
     }
 
     if (this.interaction === 'mouseover') {
-      this.caller.addEventListener('mouseover', this.onMouseOverTarget.bind(this));
-      this.caller.addEventListener('mouseout', this.onMouseOutTarget.bind(this));
-      this.host.addEventListener('mouseover', this.handleCloseDropdownMouseLeave.bind(this));
+      this.caller.addEventListener('mouseover', this.onMouseOverTarget);
+      this.caller.addEventListener('mouseout', this.onMouseOutTarget);
+      this.host.addEventListener('mouseover', this.handleCloseDropdownMouseLeave);
     }
+  };
+
+  /** Hands the caller back what it was given: a caller the target no longer names would go on
+   * opening a panel that is not its own */
+  private readonly unsetInteractionBehaviour = (caller: HTMLElement): void => {
+    caller.removeEventListener('click', this.onClickTarget);
+    caller.removeEventListener('mouseover', this.onMouseOverTarget);
+    caller.removeEventListener('mouseout', this.onMouseOutTarget);
   };
 
   private readonly handleCloseDropdownMouseLeave = (): void => {
     clearTimeout(this.mouseoverTimer);
-    this.host.removeEventListener('mouseover', this.handleCloseDropdownMouseLeave.bind(this));
-    this.host.addEventListener('mouseleave', this.handleCloseDropdown.bind(this));
+    this.host.removeEventListener('mouseover', this.handleCloseDropdownMouseLeave);
+    this.host.addEventListener('mouseleave', this.handleCloseDropdown);
   };
 
   componentDidLoad(): void {

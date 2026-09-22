@@ -62,6 +62,10 @@ const NATIVE_CALLERS = ['A', 'BUTTON', 'INPUT', 'SELECT', 'SUMMARY', 'TEXTAREA']
 export class FloatingController {
   private _caller: HTMLElement;
   private _wired = false;
+  /** what was written on the caller, to be taken back when the target moves to another one:
+   * an attribute that was already there belongs to whoever wrote it and is none of our business */
+  private _written: string[] = [];
+  private _labelledByOurs = false;
   private readonly _host: HTMLFloatingElement;
   private readonly _role: FloatingRole;
   arrowEl: HTMLElement | undefined;
@@ -87,6 +91,7 @@ export class FloatingController {
       return null;
     }
 
+    if (this._caller && this._caller !== caller) this.unwireCaller();
     this._caller = caller;
     this._wired = false;
 
@@ -94,6 +99,27 @@ export class FloatingController {
     void this.wireCaller();
     return caller;
   }
+
+  /**
+   * Lets go of the caller the target no longer names. Left alone it keeps pointing at a panel
+   * that is not its own, with a state frozen on the last time it was open, and the panel keeps
+   * being labelled by it - `setAttributeIfEmpty` writes the label once and the second caller
+   * would never get it.
+   */
+  private readonly unwireCaller = (): void => {
+    this._written.forEach((attribute) => this._caller.removeAttribute(attribute));
+    this._written = [];
+    if (this._labelledByOurs) {
+      this._host.removeAttribute('aria-labelledby');
+      this._labelledByOurs = false;
+    }
+  };
+
+  private readonly writeOnCaller = (attribute: string, value: string): void => {
+    if (this._caller.hasAttribute(attribute)) return;
+    this._caller.setAttribute(attribute, value);
+    this._written.push(attribute);
+  };
 
   /** An IDREF does not cross a shadow boundary: a caller the host shares no tree with keeps the
    * attributes that need no reference and loses the ones that do */
@@ -130,7 +156,7 @@ export class FloatingController {
     if (this._role === 'tooltip') {
       if (this.sameRoot()) {
         const tipId = setAttributeIfEmpty(this._host, 'id', hashRandomValue('mds-tooltip'));
-        setAttributeIfEmpty(caller, 'aria-describedby', tipId);
+        this.writeOnCaller('aria-describedby', tipId);
       }
       return;
     }
@@ -140,15 +166,17 @@ export class FloatingController {
     if (this.sameRoot()) {
       const hostId = setAttributeIfEmpty(this._host, 'id', hashRandomValue('mds-dropdown'));
       const callerId = setAttributeIfEmpty(caller, 'id', hashRandomValue('mds-dropdown-caller'));
-      setAttributeIfEmpty(caller, 'aria-controls', hostId);
+      this.writeOnCaller('aria-controls', hostId);
+      this._labelledByOurs = !this._host.hasAttribute('aria-labelledby');
       setAttributeIfEmpty(this._host, 'aria-labelledby', callerId);
     }
 
     const popupRole = this._host.getAttribute('role') ?? '';
     if (HASPOPUP_ROLES.includes(popupRole)) {
-      setAttributeIfEmpty(caller, 'aria-haspopup', popupRole);
+      this.writeOnCaller('aria-haspopup', popupRole);
     }
 
+    if (!caller.hasAttribute('aria-expanded')) this._written.push('aria-expanded');
     this._wired = true;
     this.syncExpanded(this._host.visible);
   };
