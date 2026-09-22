@@ -183,6 +183,8 @@ export class MdsDropdown implements FloatingElement {
     const caller = this.floatingController.updateCaller(this.target);
     if (!caller) return;
     this.caller = caller;
+    // the role of the panel arrives with the caller, so the entries are named once it resolves
+    this.markEntries();
     this.setInteractionBehaviour();
     this.km.addElement(this.host);
     this.km.attachEscapeBehavior(() => this.visibleChanged(false));
@@ -230,6 +232,34 @@ export class MdsDropdown implements FloatingElement {
       this.visible = false;
     }, cssDurationToMilliseconds(this.cssMouseOverDelayDuration));
   }
+
+  /**
+   * The panel declares itself a `menu`, whose children axe only accepts as entries
+   * (`aria-required-children`), so what the slot receives is what has to carry the role. And what
+   * it receives can be a slot of its own, when the dropdown is rendered by a component that hands
+   * over the slot of its own host - `mds-button-dropdown`, `mds-pref-language`. An `mds-button`
+   * names itself a button as soon as it loads and which of the two loads first is not guaranteed,
+   * so `button` is the role an entry overwrites, any other being a deliberate choice of the
+   * consumer. A panel that declares another role holds no entries at all: its children are left
+   * alone, a calendar being no menu item.
+   */
+  private readonly markEntries = (): void => {
+    if (this.host.getAttribute('role') !== 'menu') return;
+    const slot = this.host.shadowRoot?.querySelector('slot');
+    this.slottedEntries(slot?.assignedElements() ?? []).forEach((entry) => {
+      const role = entry.getAttribute('role');
+      if (role === null || role === 'button') {
+        entry.setAttribute('role', 'menuitem');
+      }
+    });
+  };
+
+  private readonly slottedEntries = (elements: Element[]): Element[] =>
+    elements.flatMap((element) =>
+      element.tagName === 'SLOT'
+        ? this.slottedEntries((element as HTMLSlotElement).assignedElements())
+        : [element],
+    );
 
   private readonly updateCSSCustomProps = (): void => {
     if (typeof window === 'undefined') return;
@@ -288,6 +318,10 @@ export class MdsDropdown implements FloatingElement {
     this.floatingController = new FloatingController(this.host, arrow);
     this.updateCSSCustomProps();
     this.targetChanged();
+    this.host.shadowRoot?.querySelector('slot')?.addEventListener('slotchange', this.markEntries);
+    // a nested slot lives in the tree of the host, where the slot of the shadow root, which is
+    // the one the entries reach us through, never hears its slotchange
+    this.host.addEventListener('slotchange', this.markEntries);
 
     // The watcher does not fire for the initial value, so a dropdown that mounts
     // with `visible` set was never positioned at all: no left, no top, no origin,

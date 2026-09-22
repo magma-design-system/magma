@@ -162,4 +162,43 @@ describe('mds-dropdown', () => {
       expect(caller).not.toHaveAttribute('aria-expanded');
     });
   });
+
+  describe('entries of the menu', () => {
+    it('names as entries the elements the slot receives', async () => {
+      const { root } = await stage(
+        `<mds-dropdown id="panel" target="#caller">
+           <mds-button label="One"></mds-button>
+           <a id="link" href="#">Two</a>
+         </mds-dropdown>`,
+      );
+      const panel = root.querySelector('#panel') as HTMLElement;
+
+      await vi.waitFor(() => {
+        expect(panel.querySelector('mds-button')).toHaveAttribute('role');
+      });
+
+      // a menu accepts none of its children as anything but an entry
+      expect(panel.querySelector('mds-button')).toEqualAttribute('role', 'menuitem');
+      expect(panel.querySelector('#link')).toEqualAttribute('role', 'menuitem');
+    });
+
+    it('leaves the contents of a panel that declares another role alone', async () => {
+      const { root } = await stage(
+        `<mds-dropdown id="panel" target="#caller" role="group">
+           <mds-button label="One"></mds-button>
+         </mds-dropdown>`,
+      );
+      const panel = root.querySelector('#panel') as HTMLElement;
+      const caller = root.querySelector('#caller') as HTMLElement;
+
+      await vi.waitFor(() => {
+        expect(caller).toHaveAttribute('aria-controls');
+      });
+
+      expect(panel).toEqualAttribute('role', 'group');
+      expect(panel.querySelector('mds-button')).not.toEqualAttribute('role', 'menuitem');
+      // `group` is not a popup aria-haspopup knows how to name
+      expect(caller).not.toHaveAttribute('aria-haspopup');
+    });
+  });
 });
