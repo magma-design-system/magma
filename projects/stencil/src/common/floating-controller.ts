@@ -12,8 +12,9 @@ import {
 } from '@floating-ui/dom';
 import { FloatingUIPlacement, FloatingUIStrategy } from '@type/floating-ui';
 import { cssDurationToMilliseconds } from './unit';
-import { setAttributeIfEmpty } from './aria';
+import { hashRandomValue, setAttributeIfEmpty } from './aria';
 import { HTMLStencilElement } from '@stencil/core/internal';
+import { Build } from '@stencil/core';
 
 export interface FloatingElement extends PositionOptions {
   host: HTMLFloatingElement;
@@ -35,20 +36,32 @@ export interface PositionOptions {
   strategy: FloatingUIStrategy;
 }
 
-/** ARIA role of the floating element: a `menu` is a popup its caller controls, a `tooltip` only describes it */
+/**
+ * ARIA role the floating element takes when the markup does not name one: a `menu` is a popup its
+ * caller controls, a `tooltip` only describes it. A panel that holds anything other than a list of
+ * actions declares its own role and keeps it, `setAttributeIfEmpty` never overwriting it.
+ */
 export type FloatingRole = 'menu' | 'tooltip';
 
+/** Roles of a popup that `aria-haspopup` knows how to name: a panel that calls itself a `group` has none */
+const HASPOPUP_ROLES = ['dialog', 'grid', 'listbox', 'menu', 'tree'];
+
 /**
- * Callers that delegate their role to a control of their shadow root: an `mds-tab-item` renders the
- * tab as its inner `mds-button[role="tab"]`, so ARIA written on the host describes the wrapper and
- * not the tab, and inside the tablist it makes the item a child the `tab` role no longer covers
- * (axe `aria-required-children`). Moving the attributes onto the inner control is not an option
- * either: an IDREF does not cross the shadow boundary.
+ * A caller is wired only when it exposes a role that accepts the wiring: on a generic element
+ * `aria-expanded` and `aria-haspopup` are attributes ARIA does not allow (axe `aria-allowed-attr`),
+ * and a host that keeps its control inside its shadow root is generic exactly like a `div` - an
+ * `mds-tab-item` renders the tab as its inner `mds-button[role="tab"]`, an `mds-chip` puts
+ * `role="button"` on its label. Written on those hosts the attributes describe the wrapper and not
+ * the control, and inside a tablist they even make the item a child the `tab` role no longer covers
+ * (axe `aria-required-children`). Moving them onto the inner control is not an option either: an
+ * IDREF does not cross the shadow boundary.
  */
-const ROLE_DELEGATING_CALLERS = ['MDS-TAB-ITEM'];
+const CALLER_ROLES = ['button', 'combobox', 'link', 'menuitem', 'tab', 'treeitem'];
+const NATIVE_CALLERS = ['A', 'BUTTON', 'INPUT', 'SELECT', 'SUMMARY', 'TEXTAREA'];
 
 export class FloatingController {
   private _caller: HTMLElement;
+  private _wired = false;
   private readonly _host: HTMLFloatingElement;
   private readonly _role: FloatingRole;
   arrowEl: HTMLElement | undefined;
@@ -75,16 +88,68 @@ export class FloatingController {
     }
 
     this._caller = caller;
+    this._wired = false;
 
     setAttributeIfEmpty(this._host, 'role', this._role);
-    // a tooltip is neither a popup the caller controls nor labelled by it, and a caller that
-    // delegates its role to an inner control carries no wiring at all on its host
-    if (this._role === 'menu' && !ROLE_DELEGATING_CALLERS.includes(this._caller.tagName)) {
-      setAttributeIfEmpty(this._caller, 'aria-haspopup', 'true');
-      setAttributeIfEmpty(this._caller, 'aria-controls', target);
-      setAttributeIfEmpty(this._host, 'aria-labelledby', target);
-    }
+    void this.wireCaller();
     return caller;
+  }
+
+  /** An IDREF does not cross a shadow boundary: a caller the host shares no tree with keeps the
+   * attributes that need no reference and loses the ones that do */
+  private readonly sameRoot = (): boolean =>
+    this._caller.getRootNode() === this._host.getRootNode();
+
+  private readonly callerAcceptsWiring = (): boolean => {
+    const role = this._caller.getAttribute('role');
+    return role !== null
+      ? CALLER_ROLES.includes(role)
+      : NATIVE_CALLERS.includes(this._caller.tagName);
+  };
+
+  /**
+   * Ties caller and popup to each other with real IDREFs - the wiring used to write the selector
+   * of the caller, which names no element at all, on both sides and towards the caller itself.
+   * Our own callers are waited for first: an `mds-button` writes its `role="button"` in its own
+   * `componentDidLoad`, and which of the two components loads first is not guaranteed.
+   */
+  private readonly wireCaller = async (): Promise<void> => {
+    const caller = this._caller;
+    // the hydrate app has no registry to wait on (its `customElements` is null) and renders
+    // every component in one pass, so there the attributes are written on the spot - and kept
+    // by the client, `setAttributeIfEmpty` leaving a prerendered value alone
+    if (Build.isBrowser && caller.tagName.startsWith('MDS-')) {
+      await customElements.whenDefined(caller.tagName.toLowerCase());
+      await (caller as Partial<HTMLStencilElement>).componentOnReady?.();
+    }
+    // a target change while we waited has already wired another caller
+    if (caller !== this._caller) return;
+
+    // a tooltip is not a popup its caller controls, and nothing it opens is named on it
+    if (this._role === 'tooltip') return;
+
+    if (!this.callerAcceptsWiring()) return;
+
+    if (this.sameRoot()) {
+      const hostId = setAttributeIfEmpty(this._host, 'id', hashRandomValue('mds-dropdown'));
+      const callerId = setAttributeIfEmpty(caller, 'id', hashRandomValue('mds-dropdown-caller'));
+      setAttributeIfEmpty(caller, 'aria-controls', hostId);
+      setAttributeIfEmpty(this._host, 'aria-labelledby', callerId);
+    }
+
+    const popupRole = this._host.getAttribute('role') ?? '';
+    if (HASPOPUP_ROLES.includes(popupRole)) {
+      setAttributeIfEmpty(caller, 'aria-haspopup', popupRole);
+    }
+
+    this._wired = true;
+    this.syncExpanded(this._host.visible);
+  };
+
+  /** Whether the popup is open is state, not a default: it is rewritten at every change, so it
+   * cannot go through `setAttributeIfEmpty` */
+  syncExpanded(visible: boolean): void {
+    if (this._wired) this._caller.setAttribute('aria-expanded', `${visible}`);
   }
 
   private readonly arrowInset = (

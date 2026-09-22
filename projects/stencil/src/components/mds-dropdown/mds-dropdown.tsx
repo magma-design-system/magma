@@ -191,6 +191,7 @@ export class MdsDropdown implements FloatingElement {
   @Watch('visible')
   visibleChanged(newValue: boolean): void {
     this.changedEvent.emit({ caller: this.caller, visible: newValue });
+    this.floatingController.syncExpanded(newValue);
     if (newValue) {
       document.addEventListener('click', this.handleCloseDropdown);
       this.floatingController.updatePosition();

@@ -95,14 +95,53 @@ describe('mds-dropdown', () => {
   });
 
   describe('aria wiring', () => {
-    it('exposes the caller as the control of the popup', async () => {
+    it('names the popup on the caller with an IDREF, and the caller back on the popup', async () => {
       const { root } = await stage('<mds-dropdown id="panel" target="#caller">Menu</mds-dropdown>');
       const panel = root.querySelector('#panel') as HTMLElement;
       const caller = root.querySelector('#caller') as HTMLElement;
 
+      // the wiring waits for the caller: an mds-button writes its own role at load
+      await vi.waitFor(() => {
+        expect(caller).toHaveAttribute('aria-controls');
+      });
+
+      // it used to write the selector of the caller, `#caller`, which names no element at all,
+      // and to point the caller at itself instead of at the panel it opens
+      expect(caller).toEqualAttribute('aria-controls', 'panel');
+      expect(caller).toEqualAttribute('aria-haspopup', 'menu');
       expect(panel).toEqualAttribute('role', 'menu');
-      expect(caller).toHaveAttribute('aria-haspopup');
-      expect(caller).toHaveAttribute('aria-controls');
+      expect(panel).toEqualAttribute('aria-labelledby', 'caller');
+    });
+
+    it('gives an id to a caller and a popup that have none', async () => {
+      const { root } = await render(
+        '<button id="caller">Open</button><mds-dropdown target="#caller">Menu</mds-dropdown>',
+      );
+      const panel = root.parentElement!.querySelector('mds-dropdown') as HTMLElement;
+      const caller = root.parentElement!.querySelector('#caller') as HTMLElement;
+
+      await vi.waitFor(() => {
+        expect(caller).toHaveAttribute('aria-controls');
+      });
+
+      expect(panel.id).not.toBe('');
+      expect(caller.getAttribute('aria-controls')).toBe(panel.id);
+    });
+
+    it('follows the state of the popup on the caller', async () => {
+      const { root } = await stage('<mds-dropdown id="panel" target="#caller">Menu</mds-dropdown>');
+      const panel = root.querySelector('#panel') as HTMLMdsDropdownElement;
+      const caller = root.querySelector('#caller') as HTMLElement;
+
+      await vi.waitFor(() => {
+        expect(caller).toEqualAttribute('aria-expanded', 'false');
+      });
+
+      panel.visible = true;
+
+      await vi.waitFor(() => {
+        expect(caller).toEqualAttribute('aria-expanded', 'true');
+      });
     });
 
     it('leaves an mds-tab-item caller unwired, its tab being the inner button', async () => {
@@ -116,8 +155,11 @@ describe('mds-dropdown', () => {
       const caller = root.querySelector('#caller') as HTMLElement;
 
       expect(panel).toEqualAttribute('role', 'menu');
+      // the host of the item is generic, the tab being its inner button: the attributes it
+      // accepts none of are left off it
       expect(caller).not.toHaveAttribute('aria-haspopup');
       expect(caller).not.toHaveAttribute('aria-controls');
+      expect(caller).not.toHaveAttribute('aria-expanded');
     });
   });
 });
