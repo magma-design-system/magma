@@ -2494,6 +2494,10 @@ export namespace Components {
          */
         "disabled"?: boolean;
         /**
+          * Specifies whether the popup the tab item opens is showing. Left unset the tab says nothing about a popup, which is what a tab that opens none has to say.
+         */
+        "expanded"?: boolean;
+        /**
           * Specifies the URL target of the button
          */
         "href"?: string;
@@ -7062,6 +7066,10 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
+          * Specifies whether the popup the tab item opens is showing. Left unset the tab says nothing about a popup, which is what a tab that opens none has to say.
+         */
+        "expanded"?: boolean;
+        /**
           * Specifies the URL target of the button
          */
         "href"?: string;
@@ -8068,6 +8076,7 @@ declare namespace LocalJSX {
         "animation": HorizontalActionsAnimationType;
         "value": string;
         "href": string;
+        "expanded": boolean;
     }
     interface MdsTableAttributes {
         "interactive": boolean;
