@@ -6,7 +6,7 @@ There are many situations where the component should be placed on the surface of
 
 ```html
 <body>
-  <mds-dropdown target="ui-content">
+  <mds-dropdown target="#ui-content">
     <mds-text>Dropdown contents</mds-text>
   </mds-dropdown>
   <div>
@@ -26,7 +26,7 @@ The next use case couldn't be rendered correctly depending by relative/absolute/
     <mds-text>Deep contents</mds-text>
     <div>
       <mds-text id="ui-content">Deeper contents</mds-text>
-      <mds-dropdown target="ui-content">
+      <mds-dropdown target="#ui-content">
         <mds-text>Dropdown contents</mds-text>
       </mds-dropdown>
     </div>
@@ -59,6 +59,7 @@ The `<mds-dropdown>` web component is a floating overlay surface of the Magma De
 - **Backdrop**: When `backdrop` is set, a backdrop is shown while the dropdown is visible and removed on close.
 - **Emitted events**: `mdsDropdownChange` fires on every visibility transition; `mdsDropdownVisible` and `mdsDropdownHide` fire on open and close respectively. Each detail carries the resolved `caller` and the current `visible` state.
 - **Default slot is the panel content**: Anything in the default slot (text, HTML, or other components) is the surface shown when the dropdown is triggered.
+- **ARIA wiring**: The panel declares itself a `menu` and names the elements the slot receives as its entries (`role="menuitem"`, a role of their own being left alone); the caller receives `aria-haspopup`, an `aria-controls` pointing at the panel and an `aria-expanded` that follows `visible`. A panel that is not a list of actions declares its own `role` in the markup and keeps it, its contents then being left alone. A caller that exposes no role of its own - a generic host that keeps its control inside its shadow root, such as `mds-tab-item` - is left unwired, none of those attributes being valid on it.
 
 #### Properties & Visual Configurations
 
@@ -86,6 +87,19 @@ The minimal required setup: a trigger element with a unique `id` and a `<mds-dro
 <mds-dropdown target="#menu-utente">
   <mds-button icon="mi/baseline/settings" variant="dark" tone="text" label="Impostazioni account"></mds-button>
   <mds-button icon="mi/baseline/logout" variant="error" tone="text" label="Esci"></mds-button>
+</mds-dropdown>
+```
+
+#### Panel That Is Not a Menu
+
+The dropdown is a `menu` by default, a list of actions being what it holds most of the time. A panel that holds anything else - a calendar, a form, a paragraph with a link - declares its own `role`, which the component never overwrites: its contents are then left alone instead of being named entries of a menu.
+
+```html
+<mds-button id="info-policy" label="Come usiamo i tuoi dati" variant="secondary" tone="weak"></mds-button>
+
+<mds-dropdown target="#info-policy" role="group">
+  <mds-text typography="tip">I dati restano sui server di Maggioli.</mds-text>
+  <mds-button href="/policy" label="Leggi la policy" variant="dark" tone="text" size="sm"></mds-button>
 </mds-dropdown>
 ```
 
