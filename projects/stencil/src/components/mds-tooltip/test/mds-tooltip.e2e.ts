@@ -36,7 +36,14 @@ describe('mds-tooltip', () => {
     );
     const caller = root.parentElement!.querySelector('#caller')!;
 
+    // the text of the tooltip reaches a screen reader through the caller, or not at all
+    await vi.waitFor(() => {
+      expect(caller).toHaveAttribute('aria-describedby');
+    });
+
     expect(root).toEqualAttribute('role', 'tooltip');
+    expect(caller.getAttribute('aria-describedby')).toBe(root.id);
+    expect(root.id).not.toBe('');
     expect(root).not.toHaveAttribute('aria-labelledby');
     expect(caller).not.toHaveAttribute('aria-haspopup');
     expect(caller).not.toHaveAttribute('aria-controls');

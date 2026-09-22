@@ -125,8 +125,15 @@ export class FloatingController {
     // a target change while we waited has already wired another caller
     if (caller !== this._caller) return;
 
-    // a tooltip is not a popup its caller controls, and nothing it opens is named on it
-    if (this._role === 'tooltip') return;
+    // a tooltip is not a popup its caller controls: it only describes it, and a description
+    // reaches a screen reader whatever role the caller has, generic included
+    if (this._role === 'tooltip') {
+      if (this.sameRoot()) {
+        const tipId = setAttributeIfEmpty(this._host, 'id', hashRandomValue('mds-tooltip'));
+        setAttributeIfEmpty(caller, 'aria-describedby', tipId);
+      }
+      return;
+    }
 
     if (!this.callerAcceptsWiring()) return;
 
