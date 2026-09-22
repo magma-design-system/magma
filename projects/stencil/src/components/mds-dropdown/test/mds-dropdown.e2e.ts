@@ -1,4 +1,5 @@
 import { render } from '@stencil/vitest';
+import { userEvent } from 'vitest/browser';
 
 /** Where the arrow sits inside the panel, in layout coordinates - the space
  * transform-origin is resolved in, so it stays comparable while the panel
@@ -248,6 +249,136 @@ describe('mds-dropdown', () => {
 
       // an attribute that was already there belongs to whoever wrote it
       expect(first).toEqualAttribute('aria-haspopup', 'dialog');
+    });
+  });
+
+  describe('keyboard', () => {
+    const menu = () =>
+      render(
+        `<div style="position: relative; height: 300px">
+           <mds-button id="caller" label="Open"></mds-button>
+           <mds-dropdown id="panel" target="#caller">
+             <mds-button id="one" label="One"></mds-button>
+             <mds-button id="two" label="Two"></mds-button>
+             <mds-button id="three" label="Three"></mds-button>
+           </mds-dropdown>
+         </div>`,
+      );
+
+    const open = async (root: HTMLElement): Promise<HTMLMdsDropdownElement> => {
+      const panel = root.querySelector('#panel') as HTMLMdsDropdownElement;
+      const caller = root.querySelector('#caller') as HTMLElement;
+      await vi.waitFor(() => {
+        expect(caller).toHaveAttribute('aria-controls');
+      });
+      caller.focus();
+      await userEvent.keyboard('{ArrowDown}');
+      return panel;
+    };
+
+    it('opens on the down arrow and lands on the first entry', async () => {
+      const { root } = await menu();
+      const panel = await open(root);
+
+      await vi.waitFor(() => {
+        expect(document.activeElement).toBe(root.querySelector('#one'));
+      });
+
+      expect(panel.visible).toBe(true);
+    });
+
+    it('opens on the up arrow and lands on the last entry', async () => {
+      const { root } = await menu();
+      const caller = root.querySelector('#caller') as HTMLElement;
+      await vi.waitFor(() => {
+        expect(caller).toHaveAttribute('aria-controls');
+      });
+
+      caller.focus();
+      await userEvent.keyboard('{ArrowUp}');
+
+      await vi.waitFor(() => {
+        expect(document.activeElement).toBe(root.querySelector('#three'));
+      });
+    });
+
+    it('walks the entries with the arrows, and wraps at the ends', async () => {
+      const { root } = await menu();
+      await open(root);
+      await vi.waitFor(() => {
+        expect(document.activeElement).toBe(root.querySelector('#one'));
+      });
+
+      await userEvent.keyboard('{ArrowDown}');
+      expect(document.activeElement).toBe(root.querySelector('#two'));
+
+      await userEvent.keyboard('{ArrowUp}{ArrowUp}');
+      expect(document.activeElement).toBe(root.querySelector('#three'));
+    });
+
+    it('jumps to the ends with Home and End', async () => {
+      const { root } = await menu();
+      await open(root);
+      await vi.waitFor(() => {
+        expect(document.activeElement).toBe(root.querySelector('#one'));
+      });
+
+      await userEvent.keyboard('{End}');
+      expect(document.activeElement).toBe(root.querySelector('#three'));
+
+      await userEvent.keyboard('{Home}');
+      expect(document.activeElement).toBe(root.querySelector('#one'));
+    });
+
+    it('closes on Escape and hands the focus back to the caller', async () => {
+      const { root } = await menu();
+      const panel = await open(root);
+      await vi.waitFor(() => {
+        expect(document.activeElement).toBe(root.querySelector('#one'));
+      });
+
+      await userEvent.keyboard('{Escape}');
+
+      await vi.waitFor(() => {
+        expect(panel.visible).toBe(false);
+      });
+      // the focus was inside a panel that is now display:none, and nobody else can claim it
+      expect(document.activeElement).toBe(root.querySelector('#caller'));
+    });
+
+    it('closes on Tab, the focus leaving from the caller', async () => {
+      const { root } = await menu();
+      const panel = await open(root);
+      await vi.waitFor(() => {
+        expect(document.activeElement).toBe(root.querySelector('#one'));
+      });
+
+      await userEvent.keyboard('{Tab}');
+
+      await vi.waitFor(() => {
+        expect(panel.visible).toBe(false);
+      });
+    });
+
+    it('leaves the keys alone on a panel that is not a menu', async () => {
+      const { root } = await render(
+        `<div style="position: relative; height: 300px">
+           <mds-button id="caller" label="Open"></mds-button>
+           <mds-dropdown id="panel" target="#caller" role="group" visible>
+             <mds-button id="one" label="One"></mds-button>
+           </mds-dropdown>
+         </div>`,
+      );
+      const caller = root.querySelector('#caller') as HTMLElement;
+      await vi.waitFor(() => {
+        expect(caller).toHaveAttribute('aria-controls');
+      });
+
+      caller.focus();
+      // the arrows of a calendar or of a form are none of our business
+      await userEvent.keyboard('{ArrowDown}');
+
+      expect(document.activeElement).toBe(caller);
     });
   });
 

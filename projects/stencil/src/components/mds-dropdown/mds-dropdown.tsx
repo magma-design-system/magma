@@ -188,7 +188,7 @@ export class MdsDropdown implements FloatingElement {
     this.markEntries();
     this.setInteractionBehaviour();
     this.km.addElement(this.host);
-    this.km.attachEscapeBehavior(() => this.visibleChanged(false));
+    this.km.attachEscapeBehavior(this.closeFromKeyboard);
   }
 
   @Watch('visible')
@@ -220,6 +220,11 @@ export class MdsDropdown implements FloatingElement {
     // trigger a body click to execute handleCloseDropdown on other dropdowns
     document.body.click();
     this.visible = !this.visible;
+    // a click with no coordinates behind it came from Enter on the caller, and a menu opened
+    // from the keyboard has to land on an entry - a mouse leaves the focus where it is
+    if (this.visible && this.isMenu && (ev as MouseEvent).detail === 0) {
+      this.focusEntry(0);
+    }
   };
 
   private readonly onMouseOverTarget = (): void => {
@@ -248,14 +253,27 @@ export class MdsDropdown implements FloatingElement {
    * alone, a calendar being no menu item.
    */
   private readonly markEntries = (): void => {
-    if (this.host.getAttribute('role') !== 'menu') return;
-    const slot = this.host.shadowRoot?.querySelector('slot');
-    this.slottedEntries(slot?.assignedElements() ?? []).forEach((entry) => {
+    if (!this.isMenu) return;
+    this.entries().forEach((entry) => {
       const role = entry.getAttribute('role');
       if (role === null || role === 'button') {
         entry.setAttribute('role', 'menuitem');
       }
+      // an entry the arrows can reach has to be focusable, and an entry of a menu is reached
+      // by the arrows and not by Tab, the menu being one stop of its own
+      if (!entry.hasAttribute('tabindex')) {
+        entry.setAttribute('tabindex', '-1');
+      }
     });
+  };
+
+  private get isMenu(): boolean {
+    return this.host.getAttribute('role') === 'menu';
+  }
+
+  private readonly entries = (): HTMLElement[] => {
+    const slot = this.host.shadowRoot?.querySelector('slot');
+    return this.slottedEntries(slot?.assignedElements() ?? []) as HTMLElement[];
   };
 
   private readonly slottedEntries = (elements: Element[]): Element[] =>
@@ -264,6 +282,77 @@ export class MdsDropdown implements FloatingElement {
         ? this.slottedEntries((element as HTMLSlotElement).assignedElements())
         : [element],
     );
+
+  /**
+   * Walks the entries the way the menu button pattern asks for: the arrows open the menu and
+   * land on an entry, Home and End go to the ends, Escape gives the focus back and Tab lets it
+   * leave from the caller. A panel that declares another role is none of this - the arrows of a
+   * calendar or of a form belong to what the panel holds.
+   */
+  private readonly focusEntry = (index: number, attempts = 3): void => {
+    const entries = this.entries();
+    if (entries.length === 0 || !this.visible) return;
+    const entry = entries[(index + entries.length) % entries.length];
+    // the panel is display:none until `visible` reaches the render, and nothing hidden takes
+    // the focus: the first frame after opening is the earliest the entry can have it
+    if (entry.offsetWidth === 0 && attempts > 0) {
+      requestAnimationFrame(() => this.focusEntry(index, attempts - 1));
+      return;
+    }
+    entry.focus();
+  };
+
+  private readonly onCallerKeydown = (ev: KeyboardEvent): void => {
+    if (!this.isMenu || (ev.key !== 'ArrowDown' && ev.key !== 'ArrowUp')) return;
+    ev.preventDefault(); // the arrows would scroll the page under the menu
+    this.visible = true;
+    this.focusEntry(ev.key === 'ArrowUp' ? -1 : 0);
+  };
+
+  private readonly onPanelKeydown = (ev: KeyboardEvent): void => {
+    if (!this.isMenu || !this.visible) return;
+    const entries = this.entries();
+    if (entries.length === 0) return;
+    const focused = entries.findIndex((entry) => entry.contains(document.activeElement));
+    const from = focused === -1 ? null : focused;
+
+    switch (ev.key) {
+      case 'ArrowDown':
+        ev.preventDefault();
+        this.focusEntry(from === null ? 0 : from + 1);
+        break;
+      case 'ArrowUp':
+        ev.preventDefault();
+        this.focusEntry(from === null ? -1 : from - 1);
+        break;
+      case 'Home':
+        ev.preventDefault();
+        this.focusEntry(0);
+        break;
+      case 'End':
+        ev.preventDefault();
+        this.focusEntry(-1);
+        break;
+      case 'Tab':
+        // no preventDefault: the focus is handed to the caller and Tab carries on from there,
+        // which is where it would have gone had the menu never opened
+        this.visible = false;
+        this.caller?.focus();
+        break;
+      default:
+        break;
+    }
+  };
+
+  /** Escape is heard on window, so it closes the panel wherever the focus is. Giving the focus
+   * back is only right when the panel was holding it: a panel that goes display:none under the
+   * focus drops it on the body, and the place in the page is lost */
+  private readonly closeFromKeyboard = (): void => {
+    if (!this.visible) return;
+    const holdsFocus = this.host.contains(document.activeElement);
+    this.visible = false;
+    if (holdsFocus) this.caller?.focus();
+  };
 
   private readonly updateCSSCustomProps = (): void => {
     if (typeof window === 'undefined') return;
@@ -293,6 +382,7 @@ export class MdsDropdown implements FloatingElement {
 
     if (this.interaction === 'click') {
       this.caller.addEventListener('click', this.onClickTarget);
+      this.caller.addEventListener('keydown', this.onCallerKeydown);
     }
 
     if (this.interaction === 'mouseover') {
@@ -306,6 +396,7 @@ export class MdsDropdown implements FloatingElement {
    * opening a panel that is not its own */
   private readonly unsetInteractionBehaviour = (caller: HTMLElement): void => {
     caller.removeEventListener('click', this.onClickTarget);
+    caller.removeEventListener('keydown', this.onCallerKeydown);
     caller.removeEventListener('mouseover', this.onMouseOverTarget);
     caller.removeEventListener('mouseout', this.onMouseOutTarget);
   };
@@ -334,6 +425,8 @@ export class MdsDropdown implements FloatingElement {
     // a nested slot lives in the tree of the host, where the slot of the shadow root, which is
     // the one the entries reach us through, never hears its slotchange
     this.host.addEventListener('slotchange', this.markEntries);
+    // the entries are slotted children, so their keys reach the host by bubbling
+    this.host.addEventListener('keydown', this.onPanelKeydown);
 
     // The watcher does not fire for the initial value, so a dropdown that mounts
     // with `visible` set was never positioned at all: no left, no top, no origin,
