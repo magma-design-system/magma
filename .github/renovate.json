@@ -1,6 +1,66 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "github>nicolatamburini/renovate-runner"
+  "extends": ["github>nicolatamburini/renovate-runner"],
+  "packageRules": [
+    {
+      "description": "Block major",
+      "matchUpdateTypes": "major",
+      "enabled": false,
+      "matchPackageNames": [
+        "/^typescript/",
+        "/^chalk/",
+        "/^eslint/",
+        "/^stylelint/",
+        "/^jest/",
+        "/^postcss/",
+        "handlebars",
+        "/^vite/",
+        "/tailwindcss/",
+        "/^@typescript-eslint/",
+        "/^@babel"
+      ]
+    },
+    {
+      "description": "Angular packages",
+      "matchPackageNames": ["/^@angular/", "zone.js", "/^karma", "ng-packagr"],
+      "groupName": "Angular",
+      "enabled": false
+    },
+    {
+      "groupName": "docker-compose services",
+      "matchManagers": ["docker-compose"]
+    },
+    {
+      "description": "Design tokens dependencies",
+      "groupName": "design token deps",
+      "matchPackageNames": [
+        "chroma-js",
+        "colorjs.io",
+        "lilconfig",
+        "style-dictionary",
+        "hsluv",
+        "hex-rgb"
+      ]
+    },
+    {
+      "description": "Pdfkit",
+      "matchPackageNames": ["/pdfkit/"],
+      "enabled": false
+    },
+    {
+      "description": "Stencil",
+      "groupName": "stencil",
+      "matchPackageNames": ["/^@stencil/"]
+    },
+    {
+      "description": "Storybook",
+      "groupName": "storybook",
+      "matchPackageNames": ["/storybook/"]
+    },
+    {
+      "description": "Babel",
+      "groupName": "babel",
+      "matchPackageNames": ["/^@babel/"]
+    }
   ]
 }
