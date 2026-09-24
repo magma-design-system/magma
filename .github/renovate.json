@@ -17,7 +17,7 @@
         "/^vite/",
         "/tailwindcss/",
         "/^@typescript-eslint/",
-        "/^@babel"
+        "/^@babel/"
       ]
     },
     {
