@@ -17,7 +17,8 @@
         "/^vite/",
         "/tailwindcss/",
         "/^@typescript-eslint/",
-        "/^@babel/"
+        "/^@babel/",
+        "style-dictionary"
       ]
     },
     {
