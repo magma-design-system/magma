@@ -7,6 +7,15 @@ describe('mds-pref-theme', () => {
     expect(root).toHaveAttribute('hydrated');
   });
 
+  it('writes the mode on <html> as --magma-pref-theme', async () => {
+    await render('<mds-pref-theme mode="dark"></mds-pref-theme>');
+
+    const html = document.documentElement;
+    expect(html.style.getPropertyValue('--magma-pref-theme')).toBe('dark');
+    expect(html).toHaveClass('pref-theme-dark');
+    html.style.removeProperty('--magma-pref-theme');
+  });
+
   it('locks only the dark item when locked-scheme is light', async () => {
     const { root } = await render(
       '<mds-pref-theme mode="light" locked-scheme="light"></mds-pref-theme>',
