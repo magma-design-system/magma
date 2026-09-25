@@ -15,7 +15,7 @@
   box-shadow: var(--shadow-md-sharp);
   container-name: mds-card;
   container-type: inline-size;
-  corner-shape: var(--magma-corner-shape, round);
+  corner-shape: var(--magma-corner-shape);
   display: grid;
   min-height: --spacing(400);
   overflow: hidden;

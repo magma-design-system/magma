@@ -25,7 +25,7 @@
   aspect-ratio: 1;
   background-color: rgb(var(--magma-accent-surface-subtle));
   border-radius: var(--private-kpi-item-radius);
-  corner-shape: var(--magma-corner-shape, round);
+  corner-shape: var(--magma-corner-shape);
   display: flex;
   flex-direction: column;
   gap: 0;

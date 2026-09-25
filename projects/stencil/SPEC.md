@@ -109,6 +109,26 @@ mds-button >>> .internal-class {
 }
 ```
 
+### Reading a `--magma-*` token: never write its fallback
+
+A component must render at the intended default even when the consumer has not loaded
+`@maggioli-design-system/styles`. That fallback is NOT written by hand: at build time
+`scripts/postcss-token-fallbacks.ts` turns every bare `var(--magma-x)` into
+`var(--magma-x, <default>)`, reading the default from the same place the stylesheet does (the
+design-token dist, the semantic layer, the corner axis, `styles/css/globals.css`).
+
+```css
+/* correct - the build injects 3000, the value globals.css declares */
+z-index: var(--magma-modal-z-index);
+
+/* incorrect - a second copy of the default, free to drift from the first */
+z-index: var(--magma-modal-z-index, 4000);
+```
+
+A bare `var(--magma-*)` the injector cannot resolve FAILS the build (`failOnMissing`, limited to
+`--magma-*` by `checkPrefixes`): it is a typo or a token that does not exist yet. Component-private
+names (`--mds-*`, `--private-*`) are not checked.
+
 ### Reading `<html>` preference state from inside a component
 
 Some components ship `*-pref-*.css` files (e.g. `mds-modal-pref-theme.css`) that refine their look for dark / high-contrast / reduced-motion on top of the global palette flip (see `projects/styles/SPEC.md`). Because these files are scoped to the component shadow tree, a normal selector cannot reach the `<html>` element where the `pref-*` classes live, so they use `:host-context(:root.pref-...)` - the only selector that lets a shadow stylesheet test an ancestor's state.

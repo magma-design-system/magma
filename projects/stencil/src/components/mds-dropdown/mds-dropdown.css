@@ -24,7 +24,7 @@
   --mds-dropdown-arrow-background: var(--mds-dropdown-background);
   --private-dropdown-backdrop-duration: 200ms;
   --mds-dropdown-backdrop-duration: var(--private-dropdown-backdrop-duration);
-  --mds-dropdown-backdrop-z-index: var(--magma-backdrop-z-index, 3000);
+  --mds-dropdown-backdrop-z-index: var(--magma-backdrop-z-index);
   --mds-dropdown-background: rgb(var(--magma-surface-overlay));
   --mds-dropdown-drop-shadow-color-rgb: var(--magma-shadow-ink);
   --mds-dropdown-drop-shadow: drop-shadow(
@@ -38,12 +38,12 @@
   --mds-dropdown-mouseover-delay: 0.5s;
   --mds-dropdown-transform-from: scale(0.9) translateY(-3%);
   --mds-dropdown-transform-to: scale(1) translate(0, 0);
-  --mds-dropdown-z-index: var(--magma-dropdown-z-index, 4000);
+  --mds-dropdown-z-index: var(--magma-dropdown-z-index);
 
   background-color: var(--mds-dropdown-background);
   border-radius: var(--magma-radius-md);
   box-sizing: border-box;
-  corner-shape: var(--magma-corner-shape, round);
+  corner-shape: var(--magma-corner-shape);
   display: none;
   filter: var(--mds-dropdown-drop-shadow);
   gap: --spacing(400);
