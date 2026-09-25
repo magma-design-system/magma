@@ -25,8 +25,12 @@ describe('mds-tooltip', () => {
     const arrow = tip.shadowRoot!.querySelector('.arrow') as HTMLElement;
 
     expect(tip.style.top).not.toBe('');
-    expect(Math.round(parseFloat(tip.style.transformOrigin))).toBe(
-      Math.round(arrow.offsetLeft + arrow.offsetWidth / 2),
-    );
+    // the pivot is written from the fractional arrow.x of floating-ui, while
+    // offsetLeft and offsetWidth are rounded to whole pixels: the two can drift by
+    // up to one pixel, so the comparison allows that rounding
+    const pivot = parseFloat(tip.style.transformOrigin);
+    const arrowCenter = arrow.offsetLeft + arrow.offsetWidth / 2;
+
+    expect(Math.abs(pivot - arrowCenter)).toBeLessThanOrEqual(1);
   });
 });
