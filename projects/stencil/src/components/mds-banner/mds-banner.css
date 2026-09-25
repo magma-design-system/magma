@@ -50,7 +50,7 @@
   color: var(--mds-banner-color);
   container-name: mds-banner;
   container-type: inline-size;
-  corner-shape: var(--magma-corner-shape, round);
+  corner-shape: var(--magma-corner-shape);
   display: grid;
   gap: --spacing(600);
   padding: --spacing(600);

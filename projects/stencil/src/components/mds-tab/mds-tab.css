@@ -119,7 +119,7 @@
   --mds-tab-transition-duration: 0.5s;
   --private-tab-transition-duration: var(--mds-tab-transition-duration);
   --mds-tab-transition-timing-function: var(--ease-out-expo);
-  --mds-tab-corner-shape: var(--magma-corner-shape, round);
+  --mds-tab-corner-shape: var(--magma-corner-shape);
 
   border-radius: var(--mds-tab-tabs-radius);
   corner-shape: var(--mds-tab-corner-shape, round);

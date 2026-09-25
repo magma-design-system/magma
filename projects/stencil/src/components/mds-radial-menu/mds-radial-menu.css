@@ -38,7 +38,7 @@
 :host {
   --mds-radial-menu-angle-start: 0deg;
   --mds-radial-menu-angle-end: 360deg;
-  --mds-radial-menu-context-menu-z-index: var(--magma-context-menu-z-index, 8000);
+  --mds-radial-menu-context-menu-z-index: var(--magma-context-menu-z-index);
   --mds-radial-menu-delay: 0.01s;
   --mds-radial-menu-direction: -1;
   --mds-radial-menu-disc-background: rgb(var(--tone-neutral-seed) / 0.5);
@@ -72,7 +72,7 @@
   transition-duration: var(--mds-radial-menu-transition-duration);
   transition-property: top, left;
   transition-timing-function: var(--mds-radial-menu-transition-timing-function);
-  z-index: var(--magma-dropdown-z-index, 5000);
+  z-index: var(--magma-dropdown-z-index);
 }
 
 :host([direction='clockwise']) {
