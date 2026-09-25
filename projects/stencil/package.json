@@ -91,6 +91,8 @@
     "test": "vitest run",
     "test.e2e": "vitest run --project browser",
     "test.spec": "vitest run --project spec",
+    "test.storybook": "test-storybook --url http://localhost:6006",
+    "test.storybook.static": "npm run storybook.build && tsx --tsconfig script.tsconfig.json ./scripts/test-storybook.ts",
     "test.watch": "stencil-test --watch",
     "update:fouc": "tsx --tsconfig script.tsconfig.json ./scripts/update-fouc.ts",
     "watch": "npm run build.icons && stencil build --docs-readme --watch"
