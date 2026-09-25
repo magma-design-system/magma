@@ -225,7 +225,7 @@ export class MdsKeyboard {
         {this.try && (
           <mds-button
             icon={this.getButtonIcon()}
-            aria-title={this.t.get('testKeyCombination')}
+            aria-label={this.t.get('testKeyCombination')}
             class="combination-checker"
             variant="dark"
             tone="text"

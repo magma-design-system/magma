@@ -200,7 +200,7 @@ export class MdsFilePreview {
           >
             {this.filename}
           </mds-text>
-          <footer class={clsx('infos', this.filesize && 'infos--has-file-size')}>
+          <div class={clsx('infos', this.filesize && 'infos--has-file-size')}>
             {this.filesize && this.filesize === Number(this.filesize).toString() && (
               <mds-text class="file-size" truncate="word" typography="caption" variant="info">
                 {filesize(Number(this.filesize), { standard: 'jedec' })}
@@ -234,7 +234,7 @@ export class MdsFilePreview {
                 {this.description ?? this.t.get(this.getDefaultKeyDescription())}
               </mds-text>
             )}
-          </footer>
+          </div>
         </div>
       </Host>
     );

@@ -162,7 +162,7 @@ export const AutoComplete = {
   render: Template,
 
   args: {
-    autocomplete: 'address',
+    autocomplete: 'cc-name',
     type: 'text',
     placeholder: 'Intestatario carta di credito',
   },
@@ -213,6 +213,7 @@ export const Max = {
     max: '3',
     type: 'number',
     value: '2',
+    placeholder: 'Scrivi qualcosa',
   },
 };
 
@@ -223,6 +224,7 @@ export const MaxLength = {
     maxlength: 128,
     type: 'text',
     value: 'Hello',
+    placeholder: 'Scrivi qualcosa',
   },
 };
 
@@ -233,6 +235,7 @@ export const Min = {
     min: '3',
     type: 'number',
     value: '5',
+    placeholder: 'Scrivi qualcosa',
   },
 };
 
@@ -243,6 +246,7 @@ export const MinLength = {
     minlength: 5,
     type: 'text',
     value: 'Hello',
+    placeholder: 'Scrivi qualcosa',
   },
 };
 
@@ -261,6 +265,7 @@ export const ReadOnly = {
   args: {
     readOnly: true,
     value: 'Read only text',
+    placeholder: 'Scrivi qualcosa',
   },
 };
 

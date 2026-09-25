@@ -6,6 +6,9 @@ describe('mds-file-preview', () => {
     const { root } = await render('<mds-file-preview filename=""></mds-file-preview>');
 
     expect(root).toHaveAttribute('hydrated');
+    // the infos row is not a page landmark: several previews on a page are not several footers
+    expect(root.shadowRoot!.querySelector('footer')).toBeNull();
+    expect(root.shadowRoot!.querySelector('.infos')).not.toBeNull();
   });
 
   it('renders the unknown format fallback in the current language', async () => {

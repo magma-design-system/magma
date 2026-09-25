@@ -29,4 +29,23 @@ describe('mds-tooltip', () => {
       Math.round(arrow.offsetLeft + arrow.offsetWidth / 2),
     );
   });
+
+  it('describes its caller as a tooltip, not as a menu the caller controls', async () => {
+    const { root } = await render(
+      '<mds-tooltip target="#caller">Hint</mds-tooltip><button id="caller">Open</button>',
+    );
+    const caller = root.parentElement!.querySelector('#caller')!;
+
+    // the text of the tooltip reaches a screen reader through the caller, or not at all
+    await vi.waitFor(() => {
+      expect(caller).toHaveAttribute('aria-describedby');
+    });
+
+    expect(root).toEqualAttribute('role', 'tooltip');
+    expect(caller.getAttribute('aria-describedby')).toBe(root.id);
+    expect(root.id).not.toBe('');
+    expect(root).not.toHaveAttribute('aria-labelledby');
+    expect(caller).not.toHaveAttribute('aria-haspopup');
+    expect(caller).not.toHaveAttribute('aria-controls');
+  });
 });

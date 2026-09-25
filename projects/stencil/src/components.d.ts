@@ -1184,6 +1184,10 @@ export namespace Components {
     }
     interface MdsInput {
         /**
+          * The accessible name of the native control: the label a screen reader announces. An `mds-input-field` around the component passes its own label down here, so the attribute is only written by hand when the input stands on its own. The placeholder is deliberately not a fallback: it disappears as soon as the field is filled.
+         */
+        "accessibleName"?: string;
+        /**
           * Adds a validator to the input.
           * @param validator the validator function to add
          */
@@ -1323,6 +1327,10 @@ export namespace Components {
     }
     interface MdsInputDate {
         /**
+          * The accessible name of the native control: the label a screen reader announces. An `mds-input-field` around the component passes its own label down here, so the attribute is only written by hand when the control stands on its own. The placeholder is deliberately not a fallback: it disappears as soon as the field is filled.
+         */
+        "accessibleName"?: string;
+        /**
           * Specifies the delay in milliseconds before closing the calendar dropdown, if the value is 0 the dropdown will not close
           * @description Default is 500
           * @default 500
@@ -1391,6 +1399,10 @@ export namespace Components {
         "variant"?: ThemeInputVariantType;
     }
     interface MdsInputDateRange {
+        /**
+          * The accessible name of the range: each of the two fields is named after it and after the end of the range it covers, the visible "from" and "to" labels living in this shadow root, where no IDREF of the slotted fields could reach them.
+         */
+        "accessibleName"?: string;
         /**
           * Specifies the delay in milliseconds before closing the calendar dropdown, if the value is 0 the dropdown will not close
           * @description Default is 500
@@ -1472,6 +1484,10 @@ export namespace Components {
     }
     interface MdsInputOtp {
         /**
+          * The accessible name of the code: each digit is announced as a position inside it, the fields being separate controls a screen reader reaches one at a time.
+         */
+        "accessibleName"?: string;
+        /**
           * Automatically submits the form when the OTP code is complete
           * @default false
          */
@@ -1521,6 +1537,10 @@ export namespace Components {
         "value": number;
     }
     interface MdsInputSelect {
+        /**
+          * The accessible name of the native control: the label a screen reader announces. An `mds-input-field` around the component passes its own label down here, so the attribute is only written by hand when the control stands on its own. The placeholder is deliberately not a fallback: it disappears as soon as the field is filled.
+         */
+        "accessibleName"?: string;
         /**
           * Specifies a short hint that describes the expected value of the element
          */
@@ -1801,6 +1821,10 @@ export namespace Components {
         "size"?: MentionSize;
     }
     interface MdsModal {
+        /**
+          * The accessible name of the modal: the name a screen reader announces when the window opens. The `<dialog>` this component renders is the dialog, so the name goes there.
+         */
+        "accessibleName"?: string;
         /**
           * Specifies the animation style of the modal window
           * @default 'slide'
@@ -2469,6 +2493,10 @@ export namespace Components {
           * Specifies if the tab item is disabled or not
          */
         "disabled"?: boolean;
+        /**
+          * Specifies whether the popup the tab item opens is showing. Left unset the tab says nothing about a popup, which is what a tab that opens none has to say.
+         */
+        "expanded"?: boolean;
         /**
           * Specifies the URL target of the button
          */
@@ -5586,6 +5614,10 @@ declare namespace LocalJSX {
     }
     interface MdsInput {
         /**
+          * The accessible name of the native control: the label a screen reader announces. An `mds-input-field` around the component passes its own label down here, so the attribute is only written by hand when the input stands on its own. The placeholder is deliberately not a fallback: it disappears as soon as the field is filled.
+         */
+        "accessibleName"?: string;
+        /**
           * Specifies whether the element should have autocomplete enabled
           * @default 'off'
          */
@@ -5724,6 +5756,10 @@ declare namespace LocalJSX {
     }
     interface MdsInputDate {
         /**
+          * The accessible name of the native control: the label a screen reader announces. An `mds-input-field` around the component passes its own label down here, so the attribute is only written by hand when the control stands on its own. The placeholder is deliberately not a fallback: it disappears as soon as the field is filled.
+         */
+        "accessibleName"?: string;
+        /**
           * Specifies the delay in milliseconds before closing the calendar dropdown, if the value is 0 the dropdown will not close
           * @description Default is 500
           * @default 500
@@ -5790,6 +5826,10 @@ declare namespace LocalJSX {
         "variant"?: ThemeInputVariantType;
     }
     interface MdsInputDateRange {
+        /**
+          * The accessible name of the range: each of the two fields is named after it and after the end of the range it covers, the visible "from" and "to" labels living in this shadow root, where no IDREF of the slotted fields could reach them.
+         */
+        "accessibleName"?: string;
         /**
           * Specifies the delay in milliseconds before closing the calendar dropdown, if the value is 0 the dropdown will not close
           * @description Default is 500
@@ -5893,6 +5933,10 @@ declare namespace LocalJSX {
     }
     interface MdsInputOtp {
         /**
+          * The accessible name of the code: each digit is announced as a position inside it, the fields being separate controls a screen reader reaches one at a time.
+         */
+        "accessibleName"?: string;
+        /**
           * Automatically submits the form when the OTP code is complete
           * @default false
          */
@@ -5962,6 +6006,10 @@ declare namespace LocalJSX {
         "value"?: number;
     }
     interface MdsInputSelect {
+        /**
+          * The accessible name of the native control: the label a screen reader announces. An `mds-input-field` around the component passes its own label down here, so the attribute is only written by hand when the control stands on its own. The placeholder is deliberately not a fallback: it disappears as soon as the field is filled.
+         */
+        "accessibleName"?: string;
         /**
           * Specifies a short hint that describes the expected value of the element
          */
@@ -6266,6 +6314,10 @@ declare namespace LocalJSX {
         "size"?: MentionSize;
     }
     interface MdsModal {
+        /**
+          * The accessible name of the modal: the name a screen reader announces when the window opens. The `<dialog>` this component renders is the dialog, so the name goes there.
+         */
+        "accessibleName"?: string;
         /**
           * Specifies the animation style of the modal window
           * @default 'slide'
@@ -7014,6 +7066,10 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
+          * Specifies whether the popup the tab item opens is showing. Left unset the tab says nothing about a popup, which is what a tab that opens none has to say.
+         */
+        "expanded"?: boolean;
+        /**
           * Specifies the URL target of the button
          */
         "href"?: string;
@@ -7678,6 +7734,7 @@ declare namespace LocalJSX {
         "width": string;
     }
     interface MdsInputAttributes {
+        "accessibleName": string;
         "autocomplete": AutocompleteType;
         "autofocus": boolean;
         "await": boolean;
@@ -7703,6 +7760,7 @@ declare namespace LocalJSX {
         "value": string;
     }
     interface MdsInputDateAttributes {
+        "accessibleName": string;
         "value": string;
         "name": string;
         "variant": ThemeInputVariantType;
@@ -7715,6 +7773,7 @@ declare namespace LocalJSX {
         "required": boolean;
     }
     interface MdsInputDateRangeAttributes {
+        "accessibleName": string;
         "startDate": string;
         "endDate": string;
         "min": string | null;
@@ -7735,6 +7794,7 @@ declare namespace LocalJSX {
         "variant": ThemeInputVariantType;
     }
     interface MdsInputOtpAttributes {
+        "accessibleName": string;
         "length": number;
         "autosubmit": boolean;
         "value": string;
@@ -7748,6 +7808,7 @@ declare namespace LocalJSX {
         "value": number;
     }
     interface MdsInputSelectAttributes {
+        "accessibleName": string;
         "autocomplete": 'on';
         "autoFocus": boolean;
         "placeholder": string;
@@ -7822,6 +7883,7 @@ declare namespace LocalJSX {
         "size": MentionSize;
     }
     interface MdsModalAttributes {
+        "accessibleName": string;
         "opened": boolean;
         "hideBackdrop": boolean;
         "position": ModalPositionType;
@@ -8014,6 +8076,7 @@ declare namespace LocalJSX {
         "animation": HorizontalActionsAnimationType;
         "value": string;
         "href": string;
+        "expanded": boolean;
     }
     interface MdsTableAttributes {
         "interactive": boolean;

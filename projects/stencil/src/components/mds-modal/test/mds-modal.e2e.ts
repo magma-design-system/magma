@@ -163,7 +163,7 @@ describe('mds-modal', () => {
 
       expect(shadow.querySelector('.window')).toBeNull();
       expect(shadow.querySelector('.action-close')).toBeNull();
-      expect(window).toHaveAttribute('role', 'dialog');
+      expect(window).not.toHaveAttribute('role');
       const slot = shadow.querySelector('slot[name="window"]') as HTMLSlotElement;
       expect(slot.assignedElements()).toHaveLength(1);
     });
@@ -181,6 +181,22 @@ describe('mds-modal', () => {
 
       expect(shadow.querySelector('.window')).not.toBeNull();
       expect(shadow.querySelector('.action-close')).not.toBeNull();
+    });
+  });
+
+  describe('accessible name', () => {
+    it('names the native dialog after the aria-label of the host', async () => {
+      const { root } = await render('<mds-modal aria-label="Conferma"></mds-modal>');
+
+      expect(root.shadowRoot!.querySelector('dialog')).toEqualAttribute('aria-label', 'Conferma');
+    });
+
+    it('leaves the slotted window out of the dialog role, the native one being the dialog', async () => {
+      const { root } = await render(
+        '<mds-modal aria-label="Conferma"><div slot="window">Content</div></mds-modal>',
+      );
+
+      expect(root.querySelector('[slot="window"]')).not.toHaveAttribute('role');
     });
   });
 });

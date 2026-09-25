@@ -11,6 +11,7 @@ import {
   Watch,
   AttachInternals,
 } from '@stencil/core';
+import { setAttributeIfEmpty } from '@common/aria';
 import { setFormValue } from '@common/form';
 import miBaselineCalendarToday from '@icon/mi/baseline/calendar-today.svg';
 import { DateTime } from 'luxon';
@@ -55,6 +56,13 @@ export class MdsInputDateRange {
     es: localeEs,
     it: localeIt,
   });
+
+  /**
+   * The accessible name of the range: each of the two fields is named after it and after the
+   * end of the range it covers, the visible "from" and "to" labels living in this shadow root,
+   * where no IDREF of the slotted fields could reach them.
+   */
+  @Prop({ attribute: 'aria-label' }) readonly accessibleName?: string;
 
   /**
    * Specifies the start date of the range
@@ -362,7 +370,27 @@ export class MdsInputDateRange {
     );
   };
 
+  // the two fields render their native input in their own shadow root, out of reach of the
+  // visible labels of this one: each is named after the range and the end it covers
+  private readonly nameSlottedFields = (): void => {
+    (
+      [
+        ['start', this.t.get('startDate')],
+        ['end', this.t.get('endDate')],
+      ] as [string, string][]
+    ).forEach(([slot, part]) => {
+      const field = this.host.querySelector(`[slot="${slot}"]`);
+      if (field === null) return;
+      setAttributeIfEmpty(
+        field as HTMLElement,
+        'aria-label',
+        (this.accessibleName ?? '') !== '' ? `${this.accessibleName}, ${part}` : part,
+      );
+    });
+  };
+
   componentDidLoad(): void {
+    this.nameSlottedFields();
     this.updateInputListeners();
     this.updateInputValue('start', this.internalStartDate);
     this.updateInputValue('end', this.internalEndDate);
@@ -671,11 +699,14 @@ export class MdsInputDateRange {
           ></mds-button>
         </div>
 
+        {/* the panel holds one or two calendars, not a list of entries: it is a group, not
+            the menu the dropdown declares by default */}
         <mds-dropdown
           ref={(el) => (this.dropdownRef = el as HTMLMdsDropdownElement)}
           target="#calendar-dropdown"
           disable-auto-placement
           placement="bottom-end"
+          role="group"
         >
           {this.dualCalendar ? this.renderDualCalendars() : this.renderSingleCalendar()}
         </mds-dropdown>

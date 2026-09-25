@@ -1,4 +1,5 @@
 import { render } from '@stencil/vitest';
+import { userEvent } from 'vitest/browser';
 
 /** Where the arrow sits inside the panel, in layout coordinates - the space
  * transform-origin is resolved in, so it stays comparable while the panel
@@ -91,6 +92,332 @@ describe('mds-dropdown', () => {
       // caller, so the pivot has to read it instead of assuming the centre
       expect(Math.round(parseFloat(x))).toBe(Math.round(arrowCentre(panel)));
       expect(y).toBe('top');
+    });
+  });
+
+  describe('aria wiring', () => {
+    it('names the popup on the caller with an IDREF, and the caller back on the popup', async () => {
+      const { root } = await stage('<mds-dropdown id="panel" target="#caller">Menu</mds-dropdown>');
+      const panel = root.querySelector('#panel') as HTMLElement;
+      const caller = root.querySelector('#caller') as HTMLElement;
+
+      // the wiring waits for the caller: an mds-button writes its own role at load
+      await vi.waitFor(() => {
+        expect(caller).toHaveAttribute('aria-controls');
+      });
+
+      // it used to write the selector of the caller, `#caller`, which names no element at all,
+      // and to point the caller at itself instead of at the panel it opens
+      expect(caller).toEqualAttribute('aria-controls', 'panel');
+      expect(caller).toEqualAttribute('aria-haspopup', 'menu');
+      expect(panel).toEqualAttribute('role', 'menu');
+      expect(panel).toEqualAttribute('aria-labelledby', 'caller');
+    });
+
+    it('gives an id to a caller and a popup that have none', async () => {
+      const { root } = await render(
+        '<button id="caller">Open</button><mds-dropdown target="#caller">Menu</mds-dropdown>',
+      );
+      const panel = root.parentElement!.querySelector('mds-dropdown') as HTMLElement;
+      const caller = root.parentElement!.querySelector('#caller') as HTMLElement;
+
+      await vi.waitFor(() => {
+        expect(caller).toHaveAttribute('aria-controls');
+      });
+
+      expect(panel.id).not.toBe('');
+      expect(caller.getAttribute('aria-controls')).toBe(panel.id);
+    });
+
+    it('follows the state of the popup on the caller', async () => {
+      const { root } = await stage('<mds-dropdown id="panel" target="#caller">Menu</mds-dropdown>');
+      const panel = root.querySelector('#panel') as HTMLMdsDropdownElement;
+      const caller = root.querySelector('#caller') as HTMLElement;
+
+      await vi.waitFor(() => {
+        expect(caller).toEqualAttribute('aria-expanded', 'false');
+      });
+
+      panel.visible = true;
+
+      await vi.waitFor(() => {
+        expect(caller).toEqualAttribute('aria-expanded', 'true');
+      });
+    });
+
+    it('leaves an mds-tab-item caller unwired, its tab being the inner button', async () => {
+      const { root } = await render(
+        `<div>
+           <mds-tab><mds-tab-item id="caller" label="Tab"></mds-tab-item></mds-tab>
+           <mds-dropdown id="panel" target="#caller">Menu</mds-dropdown>
+         </div>`,
+      );
+      const panel = root.querySelector('#panel') as HTMLElement;
+      const caller = root.querySelector('#caller') as HTMLElement;
+
+      expect(panel).toEqualAttribute('role', 'menu');
+      // the host of the item is generic, the tab being its inner button: the attributes it
+      // accepts none of are left off it
+      expect(caller).not.toHaveAttribute('aria-haspopup');
+      expect(caller).not.toHaveAttribute('aria-controls');
+      expect(caller).not.toHaveAttribute('aria-expanded');
+    });
+  });
+
+  describe('changing the target', () => {
+    const twoCallers = () =>
+      render(
+        `<div style="position: relative; height: 300px">
+           <mds-button id="first" label="First"></mds-button>
+           <mds-button id="second" label="Second"></mds-button>
+           <mds-dropdown id="panel" target="#first">Menu</mds-dropdown>
+         </div>`,
+      );
+
+    it('hands back to the old caller everything it was given', async () => {
+      const { root } = await twoCallers();
+      const panel = root.querySelector('#panel') as HTMLMdsDropdownElement;
+      const first = root.querySelector('#first') as HTMLElement;
+      const second = root.querySelector('#second') as HTMLElement;
+
+      await vi.waitFor(() => {
+        expect(first).toHaveAttribute('aria-controls');
+      });
+
+      panel.target = '#second';
+
+      await vi.waitFor(() => {
+        expect(second).toHaveAttribute('aria-controls');
+      });
+
+      // left alone the old caller points at a panel that is no longer its own, with a state
+      // frozen on the last time it was open
+      expect(first).not.toHaveAttribute('aria-controls');
+      expect(first).not.toHaveAttribute('aria-haspopup');
+      expect(first).not.toHaveAttribute('aria-expanded');
+      // the label is written once, so without taking it back the second caller never gets it
+      expect(panel).toEqualAttribute('aria-labelledby', 'second');
+    });
+
+    it('stops the old caller from opening a panel that is no longer its own', async () => {
+      const { root, waitForChanges } = await twoCallers();
+      const panel = root.querySelector('#panel') as HTMLMdsDropdownElement;
+      const first = root.querySelector('#first') as HTMLElement;
+      const second = root.querySelector('#second') as HTMLElement;
+
+      await vi.waitFor(() => {
+        expect(first).toHaveAttribute('aria-controls');
+      });
+
+      panel.target = '#second';
+      await vi.waitFor(() => {
+        expect(second).toHaveAttribute('aria-controls');
+      });
+
+      first.click();
+      await waitForChanges();
+
+      expect(panel.visible).toBe(false);
+
+      second.click();
+      await waitForChanges();
+
+      expect(panel.visible).toBe(true);
+    });
+
+    it('leaves the old caller what it wrote itself', async () => {
+      const { root } = await render(
+        `<div style="position: relative; height: 300px">
+           <mds-button id="first" label="First" aria-haspopup="dialog"></mds-button>
+           <mds-button id="second" label="Second"></mds-button>
+           <mds-dropdown id="panel" target="#first">Menu</mds-dropdown>
+         </div>`,
+      );
+      const panel = root.querySelector('#panel') as HTMLMdsDropdownElement;
+      const first = root.querySelector('#first') as HTMLElement;
+      const second = root.querySelector('#second') as HTMLElement;
+
+      await vi.waitFor(() => {
+        expect(first).toHaveAttribute('aria-controls');
+      });
+
+      panel.target = '#second';
+
+      await vi.waitFor(() => {
+        expect(second).toHaveAttribute('aria-controls');
+      });
+
+      // an attribute that was already there belongs to whoever wrote it
+      expect(first).toEqualAttribute('aria-haspopup', 'dialog');
+    });
+  });
+
+  describe('keyboard', () => {
+    const menu = () =>
+      render(
+        `<div style="position: relative; height: 300px">
+           <mds-button id="caller" label="Open"></mds-button>
+           <mds-dropdown id="panel" target="#caller">
+             <mds-button id="one" label="One"></mds-button>
+             <mds-button id="two" label="Two"></mds-button>
+             <mds-button id="three" label="Three"></mds-button>
+           </mds-dropdown>
+         </div>`,
+      );
+
+    const open = async (root: HTMLElement): Promise<HTMLMdsDropdownElement> => {
+      const panel = root.querySelector('#panel') as HTMLMdsDropdownElement;
+      const caller = root.querySelector('#caller') as HTMLElement;
+      await vi.waitFor(() => {
+        expect(caller).toHaveAttribute('aria-controls');
+      });
+      caller.focus();
+      await userEvent.keyboard('{ArrowDown}');
+      return panel;
+    };
+
+    it('opens on the down arrow and lands on the first entry', async () => {
+      const { root } = await menu();
+      const panel = await open(root);
+
+      await vi.waitFor(() => {
+        expect(document.activeElement).toBe(root.querySelector('#one'));
+      });
+
+      expect(panel.visible).toBe(true);
+    });
+
+    it('opens on the up arrow and lands on the last entry', async () => {
+      const { root } = await menu();
+      const caller = root.querySelector('#caller') as HTMLElement;
+      await vi.waitFor(() => {
+        expect(caller).toHaveAttribute('aria-controls');
+      });
+
+      caller.focus();
+      await userEvent.keyboard('{ArrowUp}');
+
+      await vi.waitFor(() => {
+        expect(document.activeElement).toBe(root.querySelector('#three'));
+      });
+    });
+
+    it('walks the entries with the arrows, and wraps at the ends', async () => {
+      const { root } = await menu();
+      await open(root);
+      await vi.waitFor(() => {
+        expect(document.activeElement).toBe(root.querySelector('#one'));
+      });
+
+      await userEvent.keyboard('{ArrowDown}');
+      expect(document.activeElement).toBe(root.querySelector('#two'));
+
+      await userEvent.keyboard('{ArrowUp}{ArrowUp}');
+      expect(document.activeElement).toBe(root.querySelector('#three'));
+    });
+
+    it('jumps to the ends with Home and End', async () => {
+      const { root } = await menu();
+      await open(root);
+      await vi.waitFor(() => {
+        expect(document.activeElement).toBe(root.querySelector('#one'));
+      });
+
+      await userEvent.keyboard('{End}');
+      expect(document.activeElement).toBe(root.querySelector('#three'));
+
+      await userEvent.keyboard('{Home}');
+      expect(document.activeElement).toBe(root.querySelector('#one'));
+    });
+
+    it('closes on Escape and hands the focus back to the caller', async () => {
+      const { root } = await menu();
+      const panel = await open(root);
+      await vi.waitFor(() => {
+        expect(document.activeElement).toBe(root.querySelector('#one'));
+      });
+
+      await userEvent.keyboard('{Escape}');
+
+      await vi.waitFor(() => {
+        expect(panel.visible).toBe(false);
+      });
+      // the focus was inside a panel that is now display:none, and nobody else can claim it
+      expect(document.activeElement).toBe(root.querySelector('#caller'));
+    });
+
+    it('closes on Tab, the focus leaving from the caller', async () => {
+      const { root } = await menu();
+      const panel = await open(root);
+      await vi.waitFor(() => {
+        expect(document.activeElement).toBe(root.querySelector('#one'));
+      });
+
+      await userEvent.keyboard('{Tab}');
+
+      await vi.waitFor(() => {
+        expect(panel.visible).toBe(false);
+      });
+    });
+
+    it('leaves the keys alone on a panel that is not a menu', async () => {
+      const { root } = await render(
+        `<div style="position: relative; height: 300px">
+           <mds-button id="caller" label="Open"></mds-button>
+           <mds-dropdown id="panel" target="#caller" role="group" visible>
+             <mds-button id="one" label="One"></mds-button>
+           </mds-dropdown>
+         </div>`,
+      );
+      const caller = root.querySelector('#caller') as HTMLElement;
+      await vi.waitFor(() => {
+        expect(caller).toHaveAttribute('aria-controls');
+      });
+
+      caller.focus();
+      // the arrows of a calendar or of a form are none of our business
+      await userEvent.keyboard('{ArrowDown}');
+
+      expect(document.activeElement).toBe(caller);
+    });
+  });
+
+  describe('entries of the menu', () => {
+    it('names as entries the elements the slot receives', async () => {
+      const { root } = await stage(
+        `<mds-dropdown id="panel" target="#caller">
+           <mds-button label="One"></mds-button>
+           <a id="link" href="#">Two</a>
+         </mds-dropdown>`,
+      );
+      const panel = root.querySelector('#panel') as HTMLElement;
+
+      await vi.waitFor(() => {
+        expect(panel.querySelector('mds-button')).toHaveAttribute('role');
+      });
+
+      // a menu accepts none of its children as anything but an entry
+      expect(panel.querySelector('mds-button')).toEqualAttribute('role', 'menuitem');
+      expect(panel.querySelector('#link')).toEqualAttribute('role', 'menuitem');
+    });
+
+    it('leaves the contents of a panel that declares another role alone', async () => {
+      const { root } = await stage(
+        `<mds-dropdown id="panel" target="#caller" role="group">
+           <mds-button label="One"></mds-button>
+         </mds-dropdown>`,
+      );
+      const panel = root.querySelector('#panel') as HTMLElement;
+      const caller = root.querySelector('#caller') as HTMLElement;
+
+      await vi.waitFor(() => {
+        expect(caller).toHaveAttribute('aria-controls');
+      });
+
+      expect(panel).toEqualAttribute('role', 'group');
+      expect(panel.querySelector('mds-button')).not.toEqualAttribute('role', 'menuitem');
+      // `group` is not a popup aria-haspopup knows how to name
+      expect(caller).not.toHaveAttribute('aria-haspopup');
     });
   });
 });

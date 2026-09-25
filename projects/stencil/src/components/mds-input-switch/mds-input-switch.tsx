@@ -151,23 +151,9 @@ export class MdsInputSwitch {
   };
 
   private checkFocusElement = (): void => {
-    switch (this.type) {
-      case 'switch':
-        this.km.removeElement('default');
-        this.km.addElement(
-          this.host.shadowRoot?.querySelector('.switch-container') as HTMLElement,
-          'switch',
-        );
-        this.km.attachClickBehavior('switch');
-        break;
-      default:
-        this.km.removeElement('switch');
-        this.km.addElement(
-          this.host.shadowRoot?.querySelector('.label-icon') as HTMLElement,
-          'default',
-        );
-        this.km.attachClickBehavior('default');
-    }
+    // the native input is the focusable control: Space toggles it natively, Enter through the manager
+    this.km.addElement(this.host.shadowRoot?.querySelector('.field') as HTMLElement);
+    this.km.attachClickBehavior();
   };
 
   @Watch('disabled')
@@ -223,6 +209,7 @@ export class MdsInputSwitch {
         pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
         <input
+          aria-label={this.t.get(this.checked ? 'unselect' : 'select', { label: this.label })}
           autoFocus={this.autofocus}
           checked={this.checked}
           class="field"
@@ -231,16 +218,12 @@ export class MdsInputSwitch {
           indeterminate={this.indeterminate}
           name={this.name}
           onChange={this.handleInputOnChange}
+          role={this.type === 'switch' ? 'switch' : undefined}
           type={this.type === 'switch' ? 'checkbox' : this.type}
           value={this.value ?? undefined}
         />
         {this.type === 'switch' ? (
-          <label
-            htmlFor="field"
-            class={clsx('switch-container', this.dirty !== false && 'dirty')}
-            tabindex="0"
-            aria-label={this.t.get(this.checked ? 'unselect' : 'select', { label: this.label })}
-          >
+          <label htmlFor="field" class={clsx('switch-container', this.dirty !== false && 'dirty')}>
             <div class="switch">
               <div class="switch-toggle">
                 {this.explicit && (
@@ -253,12 +236,7 @@ export class MdsInputSwitch {
             </div>
           </label>
         ) : (
-          <label
-            htmlFor="field"
-            class="label-icon"
-            tabindex="0"
-            aria-label={this.t.get(this.checked ? 'unselect' : 'select', { label: this.label })}
-          >
+          <label htmlFor="field" class="label-icon">
             <mds-text
               class="icon-typography-unchecked"
               tag="div"

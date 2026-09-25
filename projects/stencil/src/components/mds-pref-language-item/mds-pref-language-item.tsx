@@ -60,7 +60,9 @@ export class MdsPrefLanguageItem {
 
   render() {
     return (
-      <Host onClick={this.handleClick}>
+      // the item is an entry of the `menu` the mds-dropdown of the controller opens:
+      // without the role axe rejects it as a child of that menu (aria-required-children)
+      <Host onClick={this.handleClick} role="menuitem">
         {this.code !== '' ? (
           <mds-button
             icon={this.selected ? miBaselineCheckCircle : miOutlineCircle}

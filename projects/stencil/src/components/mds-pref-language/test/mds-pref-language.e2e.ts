@@ -58,5 +58,20 @@ describe('mds-pref-language', () => {
       await waitForChanges();
       expect(prefChange).toHaveBeenCalledTimes(1);
     });
+
+    it('tells on the tab whether the menu of the languages is open', async () => {
+      const { root, waitForChanges } = await setup();
+      const item = root.shadowRoot!.querySelector('mds-tab-item')!;
+      // the caller is the tab item, whose host the dropdown leaves alone: the state has to
+      // travel to the inner button, the one carrying role="tab"
+      const tab = (): Element => item.shadowRoot!.querySelector('mds-button')!;
+
+      expect(tab()).toEqualAttribute('aria-expanded', 'false');
+
+      item.click();
+      await waitForChanges();
+
+      expect(tab()).toEqualAttribute('aria-expanded', 'true');
+    });
   });
 });

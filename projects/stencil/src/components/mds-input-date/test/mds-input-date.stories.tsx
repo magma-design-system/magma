@@ -43,7 +43,9 @@ const getDate = (offsetDays: number = 0): string => {
   return `${year}-${month}-${day}`;
 };
 
-const Template = (args) => <mds-input-date {...args} class="max-w-[400px]"></mds-input-date>;
+const Template = (args) => (
+  <mds-input-date aria-label="Data" {...args} class="max-w-[400px]"></mds-input-date>
+);
 
 export const Default = {
   render: Template,
@@ -110,8 +112,13 @@ const InsideModalTemplate = () => {
       <mds-button id="open-modal" onClick={() => setOpened(true)}>
         Apri la modale
       </mds-button>
-      <mds-modal id="date-modal" opened={opened ? true : undefined} position="center">
-        <mds-banner slot="window" class="max-w-[480px]">
+      <mds-modal
+        id="date-modal"
+        aria-label="Verbale"
+        opened={opened ? true : undefined}
+        position="center"
+      >
+        <mds-banner slot="window" class="max-w-[480px]" headline="Verbale">
           <mds-button
             icon="mi/baseline/close"
             variant="dark"
