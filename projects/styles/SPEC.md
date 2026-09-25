@@ -239,7 +239,15 @@ Dark mode is handled at the palette level. No class changes are needed on indivi
 Every preference (`theme`, `contrast`, `animation`, `consumption`) is driven by the `mds-pref` controller and its children (`mds-pref-theme`, `mds-pref-contrast`, ...). Each child writes its state to the `<html>` element in two redundant forms, on purpose, so future changes stay cheap:
 
 - a **class** (e.g. `pref-theme-dark`, `pref-contrast-more`) - consumed by selectors
-- a **custom property** (e.g. `--magma-pref-user-theme`, `--magma-pref-animation`) - readable as an inherited value, including across shadow boundaries
+- a **custom property** (e.g. `--magma-pref-theme`, `--magma-pref-animation`) - readable as an inherited value, including across shadow boundaries
+
+That last promise holds because every `@property` in `css/globals.css` is `inherits: true`. With
+`false` a value set on `<html>` or `:root` reaches no other element - each one resolves the
+registration's `initial-value` - so neither a preference nor a consumer override (e.g.
+`--magma-modal-z-index: 9999` on `:root`) would arrive in a component. Keep new registrations
+there `inherits: true`, and give a value a component reads by name a `syntax` that accepts what is
+actually written: `--magma-pref-theme-name` is `*` because the theme name is a bare identifier,
+which `<string>` rejects.
 
 `mds-pref` also toggles the `data-magma-pref` attribute on `<html>` while a controller is mounted; selectors use `:root:not([data-magma-pref])` to fall back to the OS preference (`@media`) when no controller is present.
 

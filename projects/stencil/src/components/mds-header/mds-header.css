@@ -45,7 +45,7 @@
   --mds-header-backdrop-blur-strength: 2px;
   --mds-header-backdrop-height: --spacing(1600);
   --mds-header-backdrop-show: true;
-  --mds-header-z-index: var(--magma-header-z-index, 1000);
+  --mds-header-z-index: var(--magma-header-z-index);
   --mds-header-inline-margin-mobile: --spacing(400);
   --mds-header-inline-margin: --spacing(600);
   --mds-header-backdrop-background-image: linear-gradient(

@@ -22,7 +22,7 @@
   border-radius: var(--magma-radius-xl);
   box-shadow: var(--shadow-outline-weak);
   color: rgb(var(--magma-text-subtle));
-  corner-shape: var(--magma-corner-shape, round);
+  corner-shape: var(--magma-corner-shape);
   cursor: pointer;
   display: inline-flex;
   overflow: hidden;

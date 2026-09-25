@@ -25,26 +25,32 @@
     color: rgb(var(--magma-text-default));
   }
 
-  :root.pref-theme-scheme-dark {
-    color-scheme: only dark;
+  /* color-scheme follows the palette, so the browser's own UI (scrollbars, form
+   * controls, autofill) matches the theme. The MODE comes first; a theme that
+   * only exists in one scheme (`pref-theme-scheme-light|dark`) comes after and
+   * wins, exactly as it overrides the mode in the palette. All the selectors have
+   * the same specificity, so the source order is the rule. */
+
+  /* no controller: the palette follows the OS, and so does the browser */
+  :root:not([data-magma-pref]),
+  :root.pref-theme-system {
+    color-scheme: light dark;
+  }
+
+  :root.pref-theme-light {
+    color-scheme: light;
+  }
+
+  :root.pref-theme-dark {
+    color-scheme: dark;
   }
 
   :root.pref-theme-scheme-light {
     color-scheme: only light;
   }
 
-  :root.pref-theme-scheme-all {
-    color-scheme: light dark;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    :root.pref-theme-system {
-      color-scheme: dark;
-    }
-  }
-
-  :root.pref-theme-scheme-all.pref-theme-dark {
-    color-scheme: dark;
+  :root.pref-theme-scheme-dark {
+    color-scheme: only dark;
   }
 
   ::selection {

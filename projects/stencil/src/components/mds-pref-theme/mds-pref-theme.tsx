@@ -45,7 +45,7 @@ export class MdsPrefTheme {
   });
 
   private readonly localStorageAlias: string = 'mdsPrefTheme';
-  private readonly customPropertyAlias: string = '--magma-pref-user-theme';
+  private readonly customPropertyAlias: string = '--magma-pref-theme';
   private readonly overlayBackgroundVisible = 'rgb(var(--tone-neutral-seed))';
   private readonly overlayBackgroundHidden = 'rgb(var(--tone-neutral-seed) / 0)';
   private cssOverlayShowDuration: string = '300';

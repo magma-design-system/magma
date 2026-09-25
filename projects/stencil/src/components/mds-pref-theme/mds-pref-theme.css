@@ -9,7 +9,7 @@
 :host {
   --mds-pref-theme-overlay-fadeout-duration: 200ms;
   --mds-pref-theme-overlay-show-duration: 300ms;
-  --mds-pref-theme-overlay-z-index: var(--magma-theme-overlay-z-index, 6000);
+  --mds-pref-theme-overlay-z-index: var(--magma-theme-overlay-z-index);
 
   display: grid;
   gap: --spacing(100);

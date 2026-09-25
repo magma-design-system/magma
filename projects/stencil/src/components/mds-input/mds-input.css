@@ -64,7 +64,7 @@
 
   border-radius: var(--mds-input-border-radius);
   container-type: inline-size;
-  corner-shape: var(--magma-corner-shape, round);
+  corner-shape: var(--magma-corner-shape);
   display: flex;
   gap: --spacing(200);
   position: relative;
