@@ -266,7 +266,7 @@ export class MdsHeader {
     return (
       <Host
         pref-consumption={preferenceStore.state.consumption}
-        pref-theme={preferenceStore.state.theme}
+        pref-mode={preferenceStore.state.mode}
         pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
         {!this.hideBackdrop && (

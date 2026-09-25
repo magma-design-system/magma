@@ -107,5 +107,5 @@
 }
 
 @import './css/mds-header-backdrop.css';
-@import './css/mds-header-pref-theme.css';
+@import './css/mds-header-pref-mode.css';
 @import './css/mds-header-pref-consumption.css';

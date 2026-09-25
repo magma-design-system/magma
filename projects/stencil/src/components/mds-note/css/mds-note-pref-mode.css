@@ -1,0 +1,176 @@
+/* Theme preference. The component reflects the resolved theme mode and scheme
+ * from <html> onto its host as pref-mode + pref-theme-scheme (see
+ * subscribePreference in @common/preference); these plain shadow selectors refine
+ * for dark. `dark` is the explicit choice; `system` and no controller follow the
+ * OS via @media; the scheme axis gates it. Cross-browser, no :host-context. */
+
+:host([pref-mode='dark']:not([pref-theme-scheme='light'])) {
+  box-shadow: var(--shadow-ring) inset;
+
+  &:host([variant='amaranth']) {
+    --mds-note-background: rgb(var(--label-amaranth-08));
+    --mds-note-fold-color: rgb(var(--label-amaranth-06));
+    --mds-note-color: rgb(var(--label-amaranth-02));
+    --mds-note-selection-background: rgb(var(--label-amaranth-07));
+    --mds-note-selection-color: rgb(var(--label-amaranth-03));
+  }
+
+  &:host([variant='aqua']) {
+    --mds-note-background: rgb(var(--label-aqua-08));
+    --mds-note-fold-color: rgb(var(--label-aqua-06));
+    --mds-note-color: rgb(var(--label-aqua-02));
+    --mds-note-selection-background: rgb(var(--label-aqua-07));
+    --mds-note-selection-color: rgb(var(--label-aqua-03));
+  }
+
+  &:host([variant='blue']) {
+    --mds-note-background: rgb(var(--label-blue-08));
+    --mds-note-fold-color: rgb(var(--label-blue-06));
+    --mds-note-color: rgb(var(--label-blue-02));
+    --mds-note-selection-background: rgb(var(--label-blue-07));
+    --mds-note-selection-color: rgb(var(--label-blue-03));
+  }
+
+  &:host([variant='green']) {
+    --mds-note-background: rgb(var(--label-green-08));
+    --mds-note-fold-color: rgb(var(--label-green-06));
+    --mds-note-color: rgb(var(--label-green-02));
+    --mds-note-selection-background: rgb(var(--label-green-07));
+    --mds-note-selection-color: rgb(var(--label-green-03));
+  }
+
+  &:host([variant='lime']) {
+    --mds-note-background: rgb(var(--label-lime-08));
+    --mds-note-fold-color: rgb(var(--label-lime-06));
+    --mds-note-color: rgb(var(--label-lime-02));
+    --mds-note-selection-background: rgb(var(--label-lime-07));
+    --mds-note-selection-color: rgb(var(--label-lime-03));
+  }
+
+  &:host([variant='orange']) {
+    --mds-note-background: rgb(var(--label-orange-08));
+    --mds-note-fold-color: rgb(var(--label-orange-06));
+    --mds-note-color: rgb(var(--label-orange-02));
+    --mds-note-selection-background: rgb(var(--label-orange-07));
+    --mds-note-selection-color: rgb(var(--label-orange-03));
+  }
+
+  &:host([variant='orchid']) {
+    --mds-note-background: rgb(var(--label-orchid-08));
+    --mds-note-fold-color: rgb(var(--label-orchid-06));
+    --mds-note-color: rgb(var(--label-orchid-02));
+    --mds-note-selection-background: rgb(var(--label-orchid-07));
+    --mds-note-selection-color: rgb(var(--label-orchid-03));
+  }
+
+  &:host([variant='sky']) {
+    --mds-note-background: rgb(var(--label-sky-08));
+    --mds-note-fold-color: rgb(var(--label-sky-06));
+    --mds-note-color: rgb(var(--label-sky-02));
+    --mds-note-selection-background: rgb(var(--label-sky-07));
+    --mds-note-selection-color: rgb(var(--label-sky-03));
+  }
+
+  &:host([variant='violet']) {
+    --mds-note-background: rgb(var(--label-violet-08));
+    --mds-note-fold-color: rgb(var(--label-violet-06));
+    --mds-note-color: rgb(var(--label-violet-02));
+    --mds-note-selection-background: rgb(var(--label-violet-07));
+    --mds-note-selection-color: rgb(var(--label-violet-03));
+  }
+
+  &:host([variant='yellow']) {
+    --mds-note-background: rgb(var(--label-yellow-08));
+    --mds-note-fold-color: rgb(var(--label-yellow-06));
+    --mds-note-color: rgb(var(--label-yellow-02));
+    --mds-note-selection-background: rgb(var(--label-yellow-07));
+    --mds-note-selection-color: rgb(var(--label-yellow-03));
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :host([pref-mode='system']:not([pref-theme-scheme='light'])),
+  :host(:not([pref-mode])) {
+    box-shadow: var(--shadow-ring) inset;
+
+    &:host([variant='amaranth']) {
+      --mds-note-background: rgb(var(--label-amaranth-08));
+      --mds-note-fold-color: rgb(var(--label-amaranth-06));
+      --mds-note-color: rgb(var(--label-amaranth-02));
+      --mds-note-selection-background: rgb(var(--label-amaranth-07));
+      --mds-note-selection-color: rgb(var(--label-amaranth-03));
+    }
+
+    &:host([variant='aqua']) {
+      --mds-note-background: rgb(var(--label-aqua-08));
+      --mds-note-fold-color: rgb(var(--label-aqua-06));
+      --mds-note-color: rgb(var(--label-aqua-02));
+      --mds-note-selection-background: rgb(var(--label-aqua-07));
+      --mds-note-selection-color: rgb(var(--label-aqua-03));
+    }
+
+    &:host([variant='blue']) {
+      --mds-note-background: rgb(var(--label-blue-08));
+      --mds-note-fold-color: rgb(var(--label-blue-06));
+      --mds-note-color: rgb(var(--label-blue-02));
+      --mds-note-selection-background: rgb(var(--label-blue-07));
+      --mds-note-selection-color: rgb(var(--label-blue-03));
+    }
+
+    &:host([variant='green']) {
+      --mds-note-background: rgb(var(--label-green-08));
+      --mds-note-fold-color: rgb(var(--label-green-06));
+      --mds-note-color: rgb(var(--label-green-02));
+      --mds-note-selection-background: rgb(var(--label-green-07));
+      --mds-note-selection-color: rgb(var(--label-green-03));
+    }
+
+    &:host([variant='lime']) {
+      --mds-note-background: rgb(var(--label-lime-08));
+      --mds-note-fold-color: rgb(var(--label-lime-06));
+      --mds-note-color: rgb(var(--label-lime-02));
+      --mds-note-selection-background: rgb(var(--label-lime-07));
+      --mds-note-selection-color: rgb(var(--label-lime-03));
+    }
+
+    &:host([variant='orange']) {
+      --mds-note-background: rgb(var(--label-orange-08));
+      --mds-note-fold-color: rgb(var(--label-orange-06));
+      --mds-note-color: rgb(var(--label-orange-02));
+      --mds-note-selection-background: rgb(var(--label-orange-07));
+      --mds-note-selection-color: rgb(var(--label-orange-03));
+    }
+
+    &:host([variant='orchid']) {
+      --mds-note-background: rgb(var(--label-orchid-08));
+      --mds-note-fold-color: rgb(var(--label-orchid-06));
+      --mds-note-color: rgb(var(--label-orchid-02));
+      --mds-note-selection-background: rgb(var(--label-orchid-07));
+      --mds-note-selection-color: rgb(var(--label-orchid-03));
+    }
+
+    &:host([variant='sky']) {
+      --mds-note-background: rgb(var(--label-sky-08));
+      --mds-note-fold-color: rgb(var(--label-sky-06));
+      --mds-note-color: rgb(var(--label-sky-02));
+      --mds-note-selection-background: rgb(var(--label-sky-07));
+      --mds-note-selection-color: rgb(var(--label-sky-03));
+    }
+
+    &:host([variant='violet']) {
+      --mds-note-background: rgb(var(--label-violet-08));
+      --mds-note-fold-color: rgb(var(--label-violet-06));
+      --mds-note-color: rgb(var(--label-violet-02));
+      --mds-note-selection-background: rgb(var(--label-violet-07));
+      --mds-note-selection-color: rgb(var(--label-violet-03));
+    }
+
+    &:host([variant='yellow']) {
+      --mds-note-background: rgb(var(--label-yellow-08));
+      --mds-note-fold-color: rgb(var(--label-yellow-06));
+      --mds-note-color: rgb(var(--label-yellow-02));
+      --mds-note-selection-background: rgb(var(--label-yellow-07));
+      --mds-note-selection-color: rgb(var(--label-yellow-03));
+    }
+  }
+}

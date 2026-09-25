@@ -32,19 +32,19 @@ describe('color-scheme', () => {
     expect(schemeWith()).toBe('light dark');
   });
 
-  it('is dark in dark mode, even with no theme variant', () => {
-    expect(schemeWith('pref-theme-dark')).toBe('dark');
+  it('is dark in dark mode, even with no named theme', () => {
+    expect(schemeWith('pref-mode-dark')).toBe('dark');
   });
 
   it('stays light in light mode on a theme that has both schemes', () => {
-    expect(schemeWith('pref-theme-light', 'pref-theme-scheme-all')).toBe('light');
+    expect(schemeWith('pref-mode-light', 'pref-theme-scheme-all')).toBe('light');
   });
 
   it('follows the OS in system mode', () => {
-    expect(schemeWith('pref-theme-system')).toBe('light dark');
+    expect(schemeWith('pref-mode-system')).toBe('light dark');
   });
 
   it('lets a single-scheme theme override the mode', () => {
-    expect(schemeWith('pref-theme-light', 'pref-theme-scheme-dark')).toBe('dark only');
+    expect(schemeWith('pref-mode-light', 'pref-theme-scheme-dark')).toBe('dark only');
   });
 });

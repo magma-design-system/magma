@@ -102,6 +102,6 @@
 }
 
 @import './css/mds-dropdown-pref-animation.css';
-@import './css/mds-dropdown-pref-theme.css';
+@import './css/mds-dropdown-pref-mode.css';
 @import './css/mds-dropdown-pref-contrast.css';
 @import './css/mds-dropdown-pref-contrast-dark.css';

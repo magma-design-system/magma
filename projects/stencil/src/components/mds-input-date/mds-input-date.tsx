@@ -235,7 +235,7 @@ export class MdsInputDate {
         empty={this.empty}
         pref-animation={preferenceStore.state.animation}
         pref-contrast={preferenceStore.state.contrast}
-        pref-theme={preferenceStore.state.theme}
+        pref-mode={preferenceStore.state.mode}
         pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
         <input

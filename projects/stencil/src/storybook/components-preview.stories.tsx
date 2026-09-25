@@ -706,7 +706,7 @@ export const Paginator = () => (
 export const Preference = () => (
   <Layout>
     <mds-pref class="w-full">
-      <mds-pref-theme />
+      <mds-pref-mode />
       <mds-pref-contrast />
       <mds-pref-animation />
       <mds-pref-consumption />

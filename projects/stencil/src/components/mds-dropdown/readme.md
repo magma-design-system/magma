@@ -452,7 +452,7 @@ mds-dropdown {
  - [mds-input-date-range](../mds-input-date-range)
  - [mds-policy-ai](../mds-policy-ai)
  - [mds-pref-language](../mds-pref-language)
- - [mds-pref-theme-variant](../mds-pref-theme-variant)
+ - [mds-pref-theme](../mds-pref-theme)
 
 ### Graph
 ```mermaid
@@ -462,7 +462,7 @@ graph TD;
   mds-input-date-range --> mds-dropdown
   mds-policy-ai --> mds-dropdown
   mds-pref-language --> mds-dropdown
-  mds-pref-theme-variant --> mds-dropdown
+  mds-pref-theme --> mds-dropdown
   style mds-dropdown fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

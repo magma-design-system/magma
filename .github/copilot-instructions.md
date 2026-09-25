@@ -54,7 +54,7 @@ Use semantic `text-*` utilities, never compose `font-*` + `text-*` primitives ma
 
 ## Dark mode
 
-Dark mode is handled at the palette level via `<html>` classes (`pref-theme-system`, `pref-theme-light`, `pref-theme-dark`). Do not write `color-scheme` declarations or `@media (prefers-color-scheme)` queries manually. The same applies to contrast, animation, and consumption preferences (`pref-contrast-*`, `pref-animation-*`, `pref-consumption-*`).
+Dark mode is handled at the palette level via `<html>` classes (`pref-mode-system`, `pref-mode-light`, `pref-mode-dark`). Do not write `color-scheme` declarations or `@media (prefers-color-scheme)` queries manually. The same applies to contrast, animation, and consumption preferences (`pref-contrast-*`, `pref-animation-*`, `pref-consumption-*`).
 
 ## Per-component documentation
 
@@ -122,7 +122,7 @@ Full rules: [`docs/WORKFLOW.md`](../docs/WORKFLOW.md).
 
 - Suggesting `bg-white`, `bg-gray-500`, or other raw Tailwind colour primitives - use Magma token classes.
 - Suggesting `disabled="false"` or `await="false"` - remove the attribute instead.
-- Hand-writing `@media (prefers-color-scheme: dark)` - use `pref-theme-*` classes.
+- Hand-writing `@media (prefers-color-scheme: dark)` - use `pref-mode-*` classes.
 - Editing the generated `readme.md` directly - edit `usage/*.md`.
 - Suggesting `refact` or `doc` in commit messages - use `refactor` and `docs`.
 - Suggesting `em`, `cm`, `pt`, or other disallowed units in CSS.

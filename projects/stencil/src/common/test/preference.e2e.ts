@@ -31,12 +31,12 @@ describe('preference store (sync from <html>)', () => {
 
   it('reflects pref-* classes published on <html> onto consumer hosts', async () => {
     const { root, waitForChanges } = await render('<mds-note></mds-note>');
-    expect(root.getAttribute('pref-theme')).toBeNull();
+    expect(root.getAttribute('pref-mode')).toBeNull();
 
-    document.documentElement.classList.add('pref-theme-dark');
+    document.documentElement.classList.add('pref-mode-dark');
     await waitForChanges();
 
-    expect(root.getAttribute('pref-theme')).toBe('dark');
+    expect(root.getAttribute('pref-mode')).toBe('dark');
   });
 
   it('propagates the contrast selected on mds-pref-contrast to every consumer', async () => {

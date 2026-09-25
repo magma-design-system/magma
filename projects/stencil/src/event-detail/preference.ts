@@ -1,7 +1,7 @@
-import { UIPreferenceType, PreferenceThemeModeType } from '@type/preference';
+import { UIPreferenceType, PreferenceModeType } from '@type/preference';
 
 export interface MdsPrefEventDetail {
-  theme: PreferenceThemeModeType;
+  mode: PreferenceModeType;
 }
 
 export interface MdsPrefChangeEventDetail {

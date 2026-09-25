@@ -59,10 +59,10 @@ import { MdsPaginatorEventDetail } from "./components/mds-paginator/meta/event-d
 import { PolicyAiVariant } from "./components/mds-policy-ai/meta/types";
 import { AnimationModeType } from "./components/mds-pref-animation/meta/types";
 import { MdsPrefChangeEventDetail } from "./event-detail/preference";
-import { ConsumptionModeType, PreferenceCornerShapeChoiceType, PreferenceThemeModeType, PreferenceThemeSchemeType, PreferenceThemeTransitionType } from "./type/preference";
+import { ConsumptionModeType, PreferenceCornerShapeChoiceType, PreferenceModeType, PreferenceThemeSchemeType, PreferenceThemeTransitionType } from "./type/preference";
 import { ContrastModeType } from "./components/mds-pref-contrast/meta/types";
 import { MdsPrefLanguageEventDetail } from "./event-detail/language";
-import { MdsPrefThemeVariantEventDetail } from "./event-detail/theme-variant";
+import { MdsPrefThemeEventDetail } from "./event-detail/theme";
 import { PriceTableFeaturesCellType } from "./components/mds-price-table-features-cell/meta/types";
 import { DirectionType } from "./components/mds-progress/meta/types";
 import { MdsPushNotificationEventDetail } from "./components/mds-push-notification/meta/event-detail";
@@ -142,10 +142,10 @@ export { MdsPaginatorEventDetail } from "./components/mds-paginator/meta/event-d
 export { PolicyAiVariant } from "./components/mds-policy-ai/meta/types";
 export { AnimationModeType } from "./components/mds-pref-animation/meta/types";
 export { MdsPrefChangeEventDetail } from "./event-detail/preference";
-export { ConsumptionModeType, PreferenceCornerShapeChoiceType, PreferenceThemeModeType, PreferenceThemeSchemeType, PreferenceThemeTransitionType } from "./type/preference";
+export { ConsumptionModeType, PreferenceCornerShapeChoiceType, PreferenceModeType, PreferenceThemeSchemeType, PreferenceThemeTransitionType } from "./type/preference";
 export { ContrastModeType } from "./components/mds-pref-contrast/meta/types";
 export { MdsPrefLanguageEventDetail } from "./event-detail/language";
-export { MdsPrefThemeVariantEventDetail } from "./event-detail/theme-variant";
+export { MdsPrefThemeEventDetail } from "./event-detail/theme";
 export { PriceTableFeaturesCellType } from "./components/mds-price-table-features-cell/meta/types";
 export { DirectionType } from "./components/mds-progress/meta/types";
 export { MdsPushNotificationEventDetail } from "./components/mds-push-notification/meta/event-detail";
@@ -1929,7 +1929,7 @@ export namespace Components {
      * <mds-pref-animation></mds-pref-animation>
      * <mds-pref-consumption></mds-pref-consumption>
      * <mds-pref-contrast></mds-pref-contrast>
-     * <mds-pref-theme></mds-pref-theme>
+     * <mds-pref-mode></mds-pref-mode>
      * <mds-pref-language>
      * <mds-pref-language-item code="it"></mds-pref-language-item>
      * <mds-pref-language-item code="en"></mds-pref-language-item>
@@ -1998,28 +1998,28 @@ export namespace Components {
          */
         "selected"?: boolean;
     }
-    interface MdsPrefTheme {
+    interface MdsPrefMode {
         /**
-          * Locks the mode items forbidden by a scheme-constrained theme, without touching the stored preference: `light` disables the explicit `dark` item, `dark` disables the explicit `light` item, `all` (or unset) locks nothing; the `system` item is never locked. Set by the `mds-pref` controller from the active theme variant's `scheme`; not meant to be set directly.
+          * Locks the mode items forbidden by a scheme-constrained theme, without touching the stored preference: `light` disables the explicit `dark` item, `dark` disables the explicit `light` item, `all` (or unset) locks nothing; the `system` item is never locked. Set by the `mds-pref` controller from the active theme's `scheme`; not meant to be set directly.
          */
         "lockedScheme"?: PreferenceThemeSchemeType;
         /**
           * Specifies the preference mode
          */
-        "mode"?: PreferenceThemeModeType;
+        "mode"?: PreferenceModeType;
         /**
           * Sets the size of the component items nested inside it
          */
         "size"?: TabSizeType;
         /**
-          * Specifies the transition of switching from a theme to another one
+          * Specifies the transition of switching from a mode to another one
           * @default 'smooth'
          */
         "transition": PreferenceThemeTransitionType;
     }
-    interface MdsPrefThemeVariant {
+    interface MdsPrefTheme {
         /**
-          * Specifies the corner geometry of the whole page: one of the `corner-shape` keywords, or `default`.  Corner geometry is theme appearance rather than an accessibility preference, which is why it lives here next to the theme name and scheme instead of in `mds-pref-theme`. Setting it writes `data-corner-shape` on `<html>`, where the generated axis picks both the shape and the radius scale tuned for it.  Leaving it unset touches nothing. Setting it to `default` REMOVES the attribute rather than writing today's default into the page, so a project that never chose keeps following the design system when the default changes.
+          * Specifies the corner geometry of the whole page: one of the `corner-shape` keywords, or `default`.  Corner geometry is theme appearance rather than an accessibility preference, which is why it lives here next to the theme name and scheme instead of in `mds-pref-mode`. Setting it writes `data-corner-shape` on `<html>`, where the generated axis picks both the shape and the radius scale tuned for it.  Leaving it unset touches nothing. Setting it to `default` REMOVES the attribute rather than writing today's default into the page, so a project that never chose keeps following the design system when the default changes.
          */
         "cornerShape"?: PreferenceCornerShapeChoiceType;
         /**
@@ -2037,7 +2037,7 @@ export namespace Components {
          */
         "size"?: TabSizeType;
     }
-    interface MdsPrefThemeVariantItem {
+    interface MdsPrefThemeItem {
         /**
           * Specifies the theme name
          */
@@ -3010,17 +3010,17 @@ export interface MdsPrefLanguageItemCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLMdsPrefLanguageItemElement;
 }
+export interface MdsPrefModeCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLMdsPrefModeElement;
+}
 export interface MdsPrefThemeCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLMdsPrefThemeElement;
 }
-export interface MdsPrefThemeVariantCustomEvent<T> extends CustomEvent<T> {
+export interface MdsPrefThemeItemCustomEvent<T> extends CustomEvent<T> {
     detail: T;
-    target: HTMLMdsPrefThemeVariantElement;
-}
-export interface MdsPrefThemeVariantItemCustomEvent<T> extends CustomEvent<T> {
-    detail: T;
-    target: HTMLMdsPrefThemeVariantItemElement;
+    target: HTMLMdsPrefThemeItemElement;
 }
 export interface MdsPushNotificationCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -3842,7 +3842,7 @@ declare global {
      * <mds-pref-animation></mds-pref-animation>
      * <mds-pref-consumption></mds-pref-consumption>
      * <mds-pref-contrast></mds-pref-contrast>
-     * <mds-pref-theme></mds-pref-theme>
+     * <mds-pref-mode></mds-pref-mode>
      * <mds-pref-language>
      * <mds-pref-language-item code="it"></mds-pref-language-item>
      * <mds-pref-language-item code="en"></mds-pref-language-item>
@@ -3941,7 +3941,25 @@ declare global {
         prototype: HTMLMdsPrefLanguageItemElement;
         new (): HTMLMdsPrefLanguageItemElement;
     };
+    interface HTMLMdsPrefModeElementEventMap {
+        "mdsPrefChange": MdsPrefChangeEventDetail;
+    }
+    interface HTMLMdsPrefModeElement extends Components.MdsPrefMode, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMdsPrefModeElementEventMap>(type: K, listener: (this: HTMLMdsPrefModeElement, ev: MdsPrefModeCustomEvent<HTMLMdsPrefModeElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMdsPrefModeElementEventMap>(type: K, listener: (this: HTMLMdsPrefModeElement, ev: MdsPrefModeCustomEvent<HTMLMdsPrefModeElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLMdsPrefModeElement: {
+        prototype: HTMLMdsPrefModeElement;
+        new (): HTMLMdsPrefModeElement;
+    };
     interface HTMLMdsPrefThemeElementEventMap {
+        "mdsPrefThemeChange": MdsPrefThemeEventDetail;
         "mdsPrefChange": MdsPrefChangeEventDetail;
     }
     interface HTMLMdsPrefThemeElement extends Components.MdsPrefTheme, HTMLStencilElement {
@@ -3958,40 +3976,22 @@ declare global {
         prototype: HTMLMdsPrefThemeElement;
         new (): HTMLMdsPrefThemeElement;
     };
-    interface HTMLMdsPrefThemeVariantElementEventMap {
-        "mdsPrefThemeVariantChange": MdsPrefThemeVariantEventDetail;
-        "mdsPrefChange": MdsPrefChangeEventDetail;
+    interface HTMLMdsPrefThemeItemElementEventMap {
+        "mdsPrefThemeItemSelect": MdsPrefThemeEventDetail;
     }
-    interface HTMLMdsPrefThemeVariantElement extends Components.MdsPrefThemeVariant, HTMLStencilElement {
-        addEventListener<K extends keyof HTMLMdsPrefThemeVariantElementEventMap>(type: K, listener: (this: HTMLMdsPrefThemeVariantElement, ev: MdsPrefThemeVariantCustomEvent<HTMLMdsPrefThemeVariantElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+    interface HTMLMdsPrefThemeItemElement extends Components.MdsPrefThemeItem, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMdsPrefThemeItemElementEventMap>(type: K, listener: (this: HTMLMdsPrefThemeItemElement, ev: MdsPrefThemeItemCustomEvent<HTMLMdsPrefThemeItemElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLMdsPrefThemeVariantElementEventMap>(type: K, listener: (this: HTMLMdsPrefThemeVariantElement, ev: MdsPrefThemeVariantCustomEvent<HTMLMdsPrefThemeVariantElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMdsPrefThemeItemElementEventMap>(type: K, listener: (this: HTMLMdsPrefThemeItemElement, ev: MdsPrefThemeItemCustomEvent<HTMLMdsPrefThemeItemElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
         removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
         removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
         removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
-    var HTMLMdsPrefThemeVariantElement: {
-        prototype: HTMLMdsPrefThemeVariantElement;
-        new (): HTMLMdsPrefThemeVariantElement;
-    };
-    interface HTMLMdsPrefThemeVariantItemElementEventMap {
-        "mdsPrefThemeVariantItemSelect": MdsPrefThemeVariantEventDetail;
-    }
-    interface HTMLMdsPrefThemeVariantItemElement extends Components.MdsPrefThemeVariantItem, HTMLStencilElement {
-        addEventListener<K extends keyof HTMLMdsPrefThemeVariantItemElementEventMap>(type: K, listener: (this: HTMLMdsPrefThemeVariantItemElement, ev: MdsPrefThemeVariantItemCustomEvent<HTMLMdsPrefThemeVariantItemElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLMdsPrefThemeVariantItemElementEventMap>(type: K, listener: (this: HTMLMdsPrefThemeVariantItemElement, ev: MdsPrefThemeVariantItemCustomEvent<HTMLMdsPrefThemeVariantItemElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
-    }
-    var HTMLMdsPrefThemeVariantItemElement: {
-        prototype: HTMLMdsPrefThemeVariantItemElement;
-        new (): HTMLMdsPrefThemeVariantItemElement;
+    var HTMLMdsPrefThemeItemElement: {
+        prototype: HTMLMdsPrefThemeItemElement;
+        new (): HTMLMdsPrefThemeItemElement;
     };
     interface HTMLMdsPriceTableElement extends Components.MdsPriceTable, HTMLStencilElement {
     }
@@ -4436,9 +4436,9 @@ declare global {
         "mds-pref-contrast": HTMLMdsPrefContrastElement;
         "mds-pref-language": HTMLMdsPrefLanguageElement;
         "mds-pref-language-item": HTMLMdsPrefLanguageItemElement;
+        "mds-pref-mode": HTMLMdsPrefModeElement;
         "mds-pref-theme": HTMLMdsPrefThemeElement;
-        "mds-pref-theme-variant": HTMLMdsPrefThemeVariantElement;
-        "mds-pref-theme-variant-item": HTMLMdsPrefThemeVariantItemElement;
+        "mds-pref-theme-item": HTMLMdsPrefThemeItemElement;
         "mds-price-table": HTMLMdsPriceTableElement;
         "mds-price-table-features": HTMLMdsPriceTableFeaturesElement;
         "mds-price-table-features-cell": HTMLMdsPriceTableFeaturesCellElement;
@@ -6414,7 +6414,7 @@ declare namespace LocalJSX {
      * <mds-pref-animation></mds-pref-animation>
      * <mds-pref-consumption></mds-pref-consumption>
      * <mds-pref-contrast></mds-pref-contrast>
-     * <mds-pref-theme></mds-pref-theme>
+     * <mds-pref-mode></mds-pref-mode>
      * <mds-pref-language>
      * <mds-pref-language-item code="it"></mds-pref-language-item>
      * <mds-pref-language-item code="en"></mds-pref-language-item>
@@ -6507,32 +6507,32 @@ declare namespace LocalJSX {
          */
         "selected"?: boolean;
     }
-    interface MdsPrefTheme {
+    interface MdsPrefMode {
         /**
-          * Locks the mode items forbidden by a scheme-constrained theme, without touching the stored preference: `light` disables the explicit `dark` item, `dark` disables the explicit `light` item, `all` (or unset) locks nothing; the `system` item is never locked. Set by the `mds-pref` controller from the active theme variant's `scheme`; not meant to be set directly.
+          * Locks the mode items forbidden by a scheme-constrained theme, without touching the stored preference: `light` disables the explicit `dark` item, `dark` disables the explicit `light` item, `all` (or unset) locks nothing; the `system` item is never locked. Set by the `mds-pref` controller from the active theme's `scheme`; not meant to be set directly.
          */
         "lockedScheme"?: PreferenceThemeSchemeType;
         /**
           * Specifies the preference mode
          */
-        "mode"?: PreferenceThemeModeType;
+        "mode"?: PreferenceModeType;
         /**
           * Emits when the component is triggered
          */
-        "onMdsPrefChange"?: (event: MdsPrefThemeCustomEvent<MdsPrefChangeEventDetail>) => void;
+        "onMdsPrefChange"?: (event: MdsPrefModeCustomEvent<MdsPrefChangeEventDetail>) => void;
         /**
           * Sets the size of the component items nested inside it
          */
         "size"?: TabSizeType;
         /**
-          * Specifies the transition of switching from a theme to another one
+          * Specifies the transition of switching from a mode to another one
           * @default 'smooth'
          */
         "transition"?: PreferenceThemeTransitionType;
     }
-    interface MdsPrefThemeVariant {
+    interface MdsPrefTheme {
         /**
-          * Specifies the corner geometry of the whole page: one of the `corner-shape` keywords, or `default`.  Corner geometry is theme appearance rather than an accessibility preference, which is why it lives here next to the theme name and scheme instead of in `mds-pref-theme`. Setting it writes `data-corner-shape` on `<html>`, where the generated axis picks both the shape and the radius scale tuned for it.  Leaving it unset touches nothing. Setting it to `default` REMOVES the attribute rather than writing today's default into the page, so a project that never chose keeps following the design system when the default changes.
+          * Specifies the corner geometry of the whole page: one of the `corner-shape` keywords, or `default`.  Corner geometry is theme appearance rather than an accessibility preference, which is why it lives here next to the theme name and scheme instead of in `mds-pref-mode`. Setting it writes `data-corner-shape` on `<html>`, where the generated axis picks both the shape and the radius scale tuned for it.  Leaving it unset touches nothing. Setting it to `default` REMOVES the attribute rather than writing today's default into the page, so a project that never chose keeps following the design system when the default changes.
          */
         "cornerShape"?: PreferenceCornerShapeChoiceType;
         /**
@@ -6543,11 +6543,11 @@ declare namespace LocalJSX {
         /**
           * Emits when the component is triggered
          */
-        "onMdsPrefChange"?: (event: MdsPrefThemeVariantCustomEvent<MdsPrefChangeEventDetail>) => void;
+        "onMdsPrefChange"?: (event: MdsPrefThemeCustomEvent<MdsPrefChangeEventDetail>) => void;
         /**
           * Emits when the component changes the language selected from the click event of the dropdown list item
          */
-        "onMdsPrefThemeVariantChange"?: (event: MdsPrefThemeVariantCustomEvent<MdsPrefThemeVariantEventDetail>) => void;
+        "onMdsPrefThemeChange"?: (event: MdsPrefThemeCustomEvent<MdsPrefThemeEventDetail>) => void;
         /**
           * Specifies the theme scheme which can be 'light', 'dark' or 'all' Default is 'all' which means this theme supporto both light and dark. If you set 'light' means this theme support only light mode and will be forced and shown light colors mode only.
           * @default 'all'
@@ -6558,7 +6558,7 @@ declare namespace LocalJSX {
          */
         "size"?: TabSizeType;
     }
-    interface MdsPrefThemeVariantItem {
+    interface MdsPrefThemeItem {
         /**
           * Specifies the theme name
          */
@@ -6571,7 +6571,7 @@ declare namespace LocalJSX {
         /**
           * Emits when the component trigger the language
          */
-        "onMdsPrefThemeVariantItemSelect"?: (event: MdsPrefThemeVariantItemCustomEvent<MdsPrefThemeVariantEventDetail>) => void;
+        "onMdsPrefThemeItemSelect"?: (event: MdsPrefThemeItemCustomEvent<MdsPrefThemeEventDetail>) => void;
         /**
           * Specifies the theme scheme which can be 'light', 'dark' or 'all'
           * @default 'all'
@@ -7879,19 +7879,19 @@ declare namespace LocalJSX {
         "code": string;
         "selected": boolean;
     }
-    interface MdsPrefThemeAttributes {
+    interface MdsPrefModeAttributes {
         "size": TabSizeType;
-        "mode": PreferenceThemeModeType;
+        "mode": PreferenceModeType;
         "transition": PreferenceThemeTransitionType;
         "lockedScheme": PreferenceThemeSchemeType;
     }
-    interface MdsPrefThemeVariantAttributes {
+    interface MdsPrefThemeAttributes {
         "size": TabSizeType;
         "name": string;
         "scheme": PreferenceThemeSchemeType;
         "cornerShape": PreferenceCornerShapeChoiceType;
     }
-    interface MdsPrefThemeVariantItemAttributes {
+    interface MdsPrefThemeItemAttributes {
         "label": string;
         "name": string;
         "scheme": PreferenceThemeSchemeType;
@@ -8187,9 +8187,9 @@ declare namespace LocalJSX {
         "mds-pref-contrast": Omit<MdsPrefContrast, keyof MdsPrefContrastAttributes> & { [K in keyof MdsPrefContrast & keyof MdsPrefContrastAttributes]?: MdsPrefContrast[K] } & { [K in keyof MdsPrefContrast & keyof MdsPrefContrastAttributes as `attr:${K}`]?: MdsPrefContrastAttributes[K] } & { [K in keyof MdsPrefContrast & keyof MdsPrefContrastAttributes as `prop:${K}`]?: MdsPrefContrast[K] };
         "mds-pref-language": Omit<MdsPrefLanguage, keyof MdsPrefLanguageAttributes> & { [K in keyof MdsPrefLanguage & keyof MdsPrefLanguageAttributes]?: MdsPrefLanguage[K] } & { [K in keyof MdsPrefLanguage & keyof MdsPrefLanguageAttributes as `attr:${K}`]?: MdsPrefLanguageAttributes[K] } & { [K in keyof MdsPrefLanguage & keyof MdsPrefLanguageAttributes as `prop:${K}`]?: MdsPrefLanguage[K] };
         "mds-pref-language-item": Omit<MdsPrefLanguageItem, keyof MdsPrefLanguageItemAttributes> & { [K in keyof MdsPrefLanguageItem & keyof MdsPrefLanguageItemAttributes]?: MdsPrefLanguageItem[K] } & { [K in keyof MdsPrefLanguageItem & keyof MdsPrefLanguageItemAttributes as `attr:${K}`]?: MdsPrefLanguageItemAttributes[K] } & { [K in keyof MdsPrefLanguageItem & keyof MdsPrefLanguageItemAttributes as `prop:${K}`]?: MdsPrefLanguageItem[K] };
+        "mds-pref-mode": Omit<MdsPrefMode, keyof MdsPrefModeAttributes> & { [K in keyof MdsPrefMode & keyof MdsPrefModeAttributes]?: MdsPrefMode[K] } & { [K in keyof MdsPrefMode & keyof MdsPrefModeAttributes as `attr:${K}`]?: MdsPrefModeAttributes[K] } & { [K in keyof MdsPrefMode & keyof MdsPrefModeAttributes as `prop:${K}`]?: MdsPrefMode[K] };
         "mds-pref-theme": Omit<MdsPrefTheme, keyof MdsPrefThemeAttributes> & { [K in keyof MdsPrefTheme & keyof MdsPrefThemeAttributes]?: MdsPrefTheme[K] } & { [K in keyof MdsPrefTheme & keyof MdsPrefThemeAttributes as `attr:${K}`]?: MdsPrefThemeAttributes[K] } & { [K in keyof MdsPrefTheme & keyof MdsPrefThemeAttributes as `prop:${K}`]?: MdsPrefTheme[K] };
-        "mds-pref-theme-variant": Omit<MdsPrefThemeVariant, keyof MdsPrefThemeVariantAttributes> & { [K in keyof MdsPrefThemeVariant & keyof MdsPrefThemeVariantAttributes]?: MdsPrefThemeVariant[K] } & { [K in keyof MdsPrefThemeVariant & keyof MdsPrefThemeVariantAttributes as `attr:${K}`]?: MdsPrefThemeVariantAttributes[K] } & { [K in keyof MdsPrefThemeVariant & keyof MdsPrefThemeVariantAttributes as `prop:${K}`]?: MdsPrefThemeVariant[K] };
-        "mds-pref-theme-variant-item": Omit<MdsPrefThemeVariantItem, keyof MdsPrefThemeVariantItemAttributes> & { [K in keyof MdsPrefThemeVariantItem & keyof MdsPrefThemeVariantItemAttributes]?: MdsPrefThemeVariantItem[K] } & { [K in keyof MdsPrefThemeVariantItem & keyof MdsPrefThemeVariantItemAttributes as `attr:${K}`]?: MdsPrefThemeVariantItemAttributes[K] } & { [K in keyof MdsPrefThemeVariantItem & keyof MdsPrefThemeVariantItemAttributes as `prop:${K}`]?: MdsPrefThemeVariantItem[K] };
+        "mds-pref-theme-item": Omit<MdsPrefThemeItem, keyof MdsPrefThemeItemAttributes> & { [K in keyof MdsPrefThemeItem & keyof MdsPrefThemeItemAttributes]?: MdsPrefThemeItem[K] } & { [K in keyof MdsPrefThemeItem & keyof MdsPrefThemeItemAttributes as `attr:${K}`]?: MdsPrefThemeItemAttributes[K] } & { [K in keyof MdsPrefThemeItem & keyof MdsPrefThemeItemAttributes as `prop:${K}`]?: MdsPrefThemeItem[K] };
         "mds-price-table": MdsPriceTable;
         "mds-price-table-features": Omit<MdsPriceTableFeatures, keyof MdsPriceTableFeaturesAttributes> & { [K in keyof MdsPriceTableFeatures & keyof MdsPriceTableFeaturesAttributes]?: MdsPriceTableFeatures[K] } & { [K in keyof MdsPriceTableFeatures & keyof MdsPriceTableFeaturesAttributes as `attr:${K}`]?: MdsPriceTableFeaturesAttributes[K] } & { [K in keyof MdsPriceTableFeatures & keyof MdsPriceTableFeaturesAttributes as `prop:${K}`]?: MdsPriceTableFeatures[K] };
         "mds-price-table-features-cell": Omit<MdsPriceTableFeaturesCell, keyof MdsPriceTableFeaturesCellAttributes> & { [K in keyof MdsPriceTableFeaturesCell & keyof MdsPriceTableFeaturesCellAttributes]?: MdsPriceTableFeaturesCell[K] } & { [K in keyof MdsPriceTableFeaturesCell & keyof MdsPriceTableFeaturesCellAttributes as `attr:${K}`]?: MdsPriceTableFeaturesCellAttributes[K] } & { [K in keyof MdsPriceTableFeaturesCell & keyof MdsPriceTableFeaturesCellAttributes as `prop:${K}`]?: MdsPriceTableFeaturesCell[K] };
@@ -8311,7 +8311,7 @@ declare module "@stencil/core" {
              * <mds-pref-animation></mds-pref-animation>
              * <mds-pref-consumption></mds-pref-consumption>
              * <mds-pref-contrast></mds-pref-contrast>
-             * <mds-pref-theme></mds-pref-theme>
+             * <mds-pref-mode></mds-pref-mode>
              * <mds-pref-language>
              * <mds-pref-language-item code="it"></mds-pref-language-item>
              * <mds-pref-language-item code="en"></mds-pref-language-item>
@@ -8324,9 +8324,9 @@ declare module "@stencil/core" {
             "mds-pref-contrast": LocalJSX.IntrinsicElements["mds-pref-contrast"] & JSXBase.HTMLAttributes<HTMLMdsPrefContrastElement>;
             "mds-pref-language": LocalJSX.IntrinsicElements["mds-pref-language"] & JSXBase.HTMLAttributes<HTMLMdsPrefLanguageElement>;
             "mds-pref-language-item": LocalJSX.IntrinsicElements["mds-pref-language-item"] & JSXBase.HTMLAttributes<HTMLMdsPrefLanguageItemElement>;
+            "mds-pref-mode": LocalJSX.IntrinsicElements["mds-pref-mode"] & JSXBase.HTMLAttributes<HTMLMdsPrefModeElement>;
             "mds-pref-theme": LocalJSX.IntrinsicElements["mds-pref-theme"] & JSXBase.HTMLAttributes<HTMLMdsPrefThemeElement>;
-            "mds-pref-theme-variant": LocalJSX.IntrinsicElements["mds-pref-theme-variant"] & JSXBase.HTMLAttributes<HTMLMdsPrefThemeVariantElement>;
-            "mds-pref-theme-variant-item": LocalJSX.IntrinsicElements["mds-pref-theme-variant-item"] & JSXBase.HTMLAttributes<HTMLMdsPrefThemeVariantItemElement>;
+            "mds-pref-theme-item": LocalJSX.IntrinsicElements["mds-pref-theme-item"] & JSXBase.HTMLAttributes<HTMLMdsPrefThemeItemElement>;
             "mds-price-table": LocalJSX.IntrinsicElements["mds-price-table"] & JSXBase.HTMLAttributes<HTMLMdsPriceTableElement>;
             "mds-price-table-features": LocalJSX.IntrinsicElements["mds-price-table-features"] & JSXBase.HTMLAttributes<HTMLMdsPriceTableFeaturesElement>;
             "mds-price-table-features-cell": LocalJSX.IntrinsicElements["mds-price-table-features-cell"] & JSXBase.HTMLAttributes<HTMLMdsPriceTableFeaturesCellElement>;

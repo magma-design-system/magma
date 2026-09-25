@@ -1,0 +1,326 @@
+import {
+  Component,
+  Host,
+  Element,
+  Event,
+  EventEmitter,
+  h,
+  Prop,
+  Watch,
+  State,
+} from '@stencil/core';
+import { cssDurationToMilliseconds } from '@common/unit';
+import miBaselineLightMode from '@icon/mi/baseline/light-mode.svg';
+import miOutlineDarkMode from '@icon/mi/outline/dark-mode.svg';
+import miBaselineDarkMode from '@icon/mi/baseline/dark-mode.svg';
+import miBaselineSettings from '@icon/mi/baseline/settings.svg';
+import { Locale } from '@common/locale';
+import { isSafari } from '@common/browser';
+import { preferenceStore } from '@common/preference';
+import localeEl from './meta/locale.el.json';
+import localeEn from './meta/locale.en.json';
+import localeEs from './meta/locale.es.json';
+import localeIt from './meta/locale.it.json';
+import {
+  PreferenceModeType,
+  PreferenceThemeSchemeType,
+  PreferenceThemeTransitionType,
+} from '@type/preference';
+import { MdsPrefChangeEventDetail } from '@event/preference';
+import { TabSizeType } from '@type/button';
+
+@Component({
+  tag: 'mds-pref-mode',
+  styleUrl: 'mds-pref-mode.css',
+  shadow: true,
+})
+export class MdsPrefMode {
+  @Element() private element: HTMLMdsPrefModeElement;
+  private readonly defaultMode: PreferenceModeType = 'system';
+  private readonly t: Locale = new Locale({
+    el: localeEl,
+    en: localeEn,
+    es: localeEs,
+    it: localeIt,
+  });
+
+  private readonly localStorageAlias: string = 'mdsPrefMode';
+  private readonly customPropertyAlias: string = '--magma-pref-mode';
+  private readonly overlayBackgroundVisible = 'rgb(var(--tone-neutral-seed))';
+  private readonly overlayBackgroundHidden = 'rgb(var(--tone-neutral-seed) / 0)';
+  private cssOverlayShowDuration: string = '300';
+  private cssOverlayFadeoutDuration: string = '200';
+  private cssOverlayZIndex: string = '6000';
+  private overlayEl: HTMLElement;
+  private readonly overlayId = 'mds-pref-mode-overlay';
+  private overlayTimer: NodeJS.Timeout;
+  private overlaySmoothTimer: NodeJS.Timeout;
+  private overlayShow: boolean = false;
+
+  @State() disabled: boolean = false;
+
+  private updateCSSCustomProps = (): void => {
+    if (typeof window === 'undefined') return;
+    const elementStyles = window.getComputedStyle(this.element);
+    this.cssOverlayShowDuration =
+      elementStyles.getPropertyValue('--mds-pref-mode-overlay-show-duration') ?? '300';
+    this.cssOverlayFadeoutDuration =
+      elementStyles.getPropertyValue('--mds-pref-mode-overlay-fadeout-duration') ?? '200';
+    this.cssOverlayZIndex =
+      elementStyles.getPropertyValue('--mds-pref-mode-overlay-z-index') ?? '6000';
+  };
+
+  /**
+   * Sets the size of the component items nested inside it
+   */
+  @Prop({ reflect: true }) readonly size?: TabSizeType;
+
+  /**
+   * Specifies the preference mode
+   */
+  @Prop({ mutable: true, reflect: true }) mode?: PreferenceModeType;
+
+  /**
+   * Specifies the transition of switching from a mode to another one
+   */
+  @Prop({ mutable: true, reflect: true }) transition: PreferenceThemeTransitionType = 'smooth';
+
+  /**
+   * Locks the mode items forbidden by a scheme-constrained theme, without
+   * touching the stored preference: `light` disables the explicit `dark` item,
+   * `dark` disables the explicit `light` item, `all` (or unset) locks nothing;
+   * the `system` item is never locked. Set by the `mds-pref` controller from the
+   * active theme's `scheme`; not meant to be set directly.
+   */
+  @Prop({ reflect: true }) readonly lockedScheme?: PreferenceThemeSchemeType;
+
+  /**
+   * Emits when the component is triggered
+   */
+  @Event({ eventName: 'mdsPrefChange' }) prefChangeEvent: EventEmitter<MdsPrefChangeEventDetail>;
+
+  private readonly modes = {
+    dark: {
+      selector: 'pref-mode-dark',
+      label: 'darkMode',
+    },
+    system: {
+      selector: 'pref-mode-system',
+      label: 'systemSettings',
+    },
+    light: {
+      selector: 'pref-mode-light',
+      label: 'lightMode',
+    },
+  };
+
+  componentWillRender(): void {
+    if (!isSafari()) {
+      this.setMode(
+        this.mode ??
+          (localStorage.getItem(this.localStorageAlias) as PreferenceModeType) ??
+          this.defaultMode,
+      );
+      return;
+    }
+    this.disabled = true;
+    this.mode = 'light';
+  }
+
+  componentDidLoad(): void {
+    this.updateCSSCustomProps();
+  }
+
+  @Watch('mode')
+  modeChanged(newValue: PreferenceModeType, oldValue: PreferenceModeType): void {
+    if (newValue === oldValue) {
+      return;
+    }
+    this.setMode(newValue);
+  }
+
+  private readonly setMode = (mode: PreferenceModeType): void => {
+    this.prefChangeEvent.emit({ preference: 'mode' });
+    this.mode = mode;
+    localStorage.setItem(this.localStorageAlias, this.mode);
+    if (typeof document !== 'undefined') {
+      const element = document.querySelector('html');
+      for (const key in this.modes) {
+        if ({}.hasOwnProperty.call(this.modes, key)) {
+          element?.classList.remove(this.modes[key].selector);
+        }
+      }
+      element?.classList.add(this.modes[mode].selector);
+      element?.style.setProperty(this.customPropertyAlias, this.mode);
+    }
+    preferenceStore.state.mode = mode;
+  };
+
+  private readonly isDarkMode = (): boolean => {
+    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  };
+
+  private readonly getColorScheme = (mode?: PreferenceModeType): PreferenceModeType => {
+    if (mode !== undefined) {
+      if (mode === 'system') {
+        return this.isDarkMode() ? 'dark' : 'light';
+      }
+      return mode as PreferenceModeType;
+    }
+
+    if (this.mode === 'system') {
+      return this.isDarkMode() ? 'dark' : 'light';
+    }
+    return this.mode as PreferenceModeType;
+  };
+
+  private instanceOverlay = (): void => {
+    if (this.overlayEl == null) {
+      this.overlayEl = document.createElement('div');
+      this.overlayEl.className = this.overlayId;
+      this.overlayEl.style.inset = '0';
+      this.overlayEl.style.pointerEvents = 'none';
+      this.overlayEl.style.position = 'fixed';
+      this.overlayEl.style.transition = `background-color ${this.cssOverlayFadeoutDuration} ease-out`;
+      this.overlayEl.style.zIndex = this.cssOverlayZIndex;
+    }
+    this.overlayEl.style.backgroundColor = this.overlayBackgroundHidden;
+  };
+
+  private detachOverlayTransition(): void {
+    if (this.overlayEl == null) {
+      return;
+    }
+    this.overlayEl.style.backgroundColor = this.overlayBackgroundHidden;
+    clearTimeout(this.overlayTimer);
+
+    this.overlayTimer = setTimeout(() => {
+      this.overlayEl.remove();
+    }, cssDurationToMilliseconds(this.cssOverlayFadeoutDuration));
+  }
+
+  private attachFlashOverlayTransition = (): void => {
+    this.overlayShow = true;
+    this.instanceOverlay();
+    this.overlayEl.style.backgroundColor = this.overlayBackgroundVisible;
+    document.body.appendChild(this.overlayEl);
+
+    clearTimeout(this.overlayTimer);
+    this.overlayTimer = setTimeout(() => {
+      this.overlayShow = false;
+      this.detachOverlayTransition();
+    }, cssDurationToMilliseconds(this.cssOverlayShowDuration));
+  };
+
+  private attachSmoothOverlayTransition = (mode: PreferenceModeType): void => {
+    this.overlayShow = true;
+    this.instanceOverlay();
+    document.body.appendChild(this.overlayEl);
+
+    clearTimeout(this.overlaySmoothTimer);
+    this.overlaySmoothTimer = setTimeout(() => {
+      this.overlayEl.style.backgroundColor = this.overlayBackgroundVisible;
+      clearTimeout(this.overlayTimer);
+
+      this.overlayTimer = setTimeout(() => {
+        this.setMode(mode);
+
+        clearTimeout(this.overlayTimer);
+        this.overlayTimer = setTimeout(() => {
+          this.overlayShow = false;
+          this.detachOverlayTransition();
+        }, cssDurationToMilliseconds(this.cssOverlayFadeoutDuration));
+      }, cssDurationToMilliseconds(this.cssOverlayShowDuration));
+    }, 1);
+  };
+
+  private readonly isModeDisabled = (mode: PreferenceModeType): boolean => {
+    if (this.disabled) {
+      return true;
+    }
+    if (this.lockedScheme === 'light') {
+      return mode === 'dark';
+    }
+    if (this.lockedScheme === 'dark') {
+      return mode === 'light';
+    }
+    return false;
+  };
+
+  private changeMode = (mode: PreferenceModeType): void => {
+    if (this.isModeDisabled(mode)) {
+      return;
+    }
+
+    const prevColor = this.getColorScheme();
+    const nextColor = this.getColorScheme(mode);
+
+    if (prevColor === nextColor) {
+      this.setMode(mode);
+      return;
+    }
+
+    switch (this.transition) {
+      case 'none':
+        this.setMode(mode);
+        break;
+      case 'flash':
+        this.setMode(mode);
+        this.attachFlashOverlayTransition();
+        break;
+      case 'smooth':
+        this.attachSmoothOverlayTransition(mode);
+        break;
+      default:
+        this.setMode(mode);
+        break;
+    }
+  };
+
+  private readonly handleModeClick = (mode: PreferenceModeType) => (): void => {
+    if (this.overlayShow) {
+      return;
+    }
+    this.changeMode(mode);
+  };
+
+  render() {
+    return (
+      <Host
+        pref-contrast={preferenceStore.state.contrast}
+        pref-mode={preferenceStore.state.mode}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
+      >
+        <mds-text class="info" typography="caption">
+          <b>{this.t.get('label')}</b>{' '}
+          {this.disabled
+            ? this.t.get(this.modes[this.mode ?? this.defaultMode].label, { forced: true })
+            : this.t.get(this.modes[this.mode ?? this.defaultMode].label, { forced: false })}
+        </mds-text>
+        <mds-tab fill size={this.size}>
+          <mds-tab-item
+            disabled={this.isModeDisabled('light')}
+            selected={this.mode === 'light'}
+            onClick={this.handleModeClick('light')}
+            class="item item--light"
+            icon={miBaselineLightMode}
+          ></mds-tab-item>
+          <mds-tab-item
+            disabled={this.isModeDisabled('system')}
+            selected={this.mode === 'system'}
+            onClick={this.handleModeClick('system')}
+            class="item item--system"
+            icon={miBaselineSettings}
+          ></mds-tab-item>
+          <mds-tab-item
+            disabled={this.isModeDisabled('dark')}
+            selected={this.mode === 'dark'}
+            onClick={this.handleModeClick('dark')}
+            class="item item--dark"
+            icon={this.mode === 'dark' ? miBaselineDarkMode : miOutlineDarkMode}
+          ></mds-tab-item>
+        </mds-tab>
+      </Host>
+    );
+  }
+}

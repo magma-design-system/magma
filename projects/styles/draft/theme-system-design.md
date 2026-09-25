@@ -7,7 +7,7 @@ Scope: the "named theme" (variant) round-trip and the component model around it.
 
 Verified live in Storybook (Common tests / Semantic surfaces / Preferences):
 
-- light <-> dark works (surface-default 242,242,242 -> 22,22,22 via `pref-theme-dark`
+- light <-> dark works (surface-default 242,242,242 -> 22,22,22 via `pref-mode-dark`
   and `pref-theme-scheme-dark`);
 - picking a theme VARIANT is inert (data-theme-name=cool/magma leaves `--magma-*`
   unchanged);
@@ -36,10 +36,10 @@ without rework. Do NOT over-build the future dimensions; implement color only fo
 
 ## 3. Two orthogonal lanes (management model)
 
-- Lane A - mode: `mds-pref-theme` = user preference `light | dark | system`. Writes
-  class `pref-theme-{mode}` on `<html>`.
-- Lane B - theme: `mds-pref-theme-variant` (+ `-item`) = which theme. Writes
-  `data-theme-name`, `pref-theme-name-<name>`, `pref-theme-scheme-{scheme}`.
+- Lane A - mode: `mds-pref-mode` = user preference `light | dark | system`. Writes
+  class `pref-mode-{mode}` on `<html>`.
+- Lane B - theme: `mds-pref-theme` (+ `-item`) = which theme. Writes
+  `data-theme-name`, `pref-theme-<name>`, `pref-theme-scheme-{scheme}`.
 
 The two lanes are independent; the CSS combines them. No component disables another.
 Cross-lane coordination lives only in the `mds-pref` controller.
@@ -49,9 +49,9 @@ Cross-lane coordination lives only in the `mds-pref` controller.
 | Component | Role | Attributes |
 | --- | --- | --- |
 | `mds-pref` | controller/orchestrator (`controller` prop); listens to sub-component events; shows reload-notice; the ONLY place for cross-lane logic | `controller`, `size` |
-| `mds-pref-theme` | lane A only: the mode preference | mode `light \| dark \| system` |
-| `mds-pref-theme-variant` | lane B: which theme; manages `selected` of its items; writes the root | `name`, `scheme` (`light \| dark \| all`), `size` |
-| `mds-pref-theme-variant-item` | one selectable theme | `name`, `label`, `scheme`, `selected` |
+| `mds-pref-mode` | lane A only: the mode preference | mode `light \| dark \| system` |
+| `mds-pref-theme` | lane B: which theme; manages `selected` of its items; writes the root | `name`, `scheme` (`light \| dark \| all`), `size` |
+| `mds-pref-theme-item` | one selectable theme | `name`, `label`, `scheme`, `selected` |
 
 `name` is the theme key (see the map in section 6), NOT necessarily a color-family name.
 
@@ -65,7 +65,7 @@ wins on the RENDERING; the preference is preserved, not mirrored 1:1.
 Mechanism already present and correct - do NOT change it:
 
 ```
-:root:not(.pref-theme-scheme-light).pref-theme-dark,
+:root:not(.pref-theme-scheme-light).pref-mode-dark,
 :root.pref-theme-scheme-dark { ...dark values... }
 ```
 
@@ -74,10 +74,10 @@ Mechanism already present and correct - do NOT change it:
 and a dark scale generated, so "light-only" is editorial, not a token limitation.
 
 Optional UI coordination (via the controller, not the individual components): on a
-light-only theme, `mds-pref` disables the `dark` item in `mds-pref-theme` (explicit
+light-only theme, `mds-pref` disables the `dark` item in `mds-pref-mode` (explicit
 `dark` only; leave `system`). It does NOT touch the stored preference. Needs: `mds-pref`
-to listen to `mdsPrefThemeVariantChange {name, scheme}` (today it only listens to the
-generic `mdsPrefChange {preference}`), and `mds-pref-theme` to expose a lock prop
+to listen to `mdsPrefThemeChange {name, scheme}` (today it only listens to the
+generic `mdsPrefChange {preference}`), and `mds-pref-mode` to expose a lock prop
 (e.g. `locked-scheme`).
 
 ## 6. The color axis (`data-theme-name` -> family) - THE MISSING PIECE now
@@ -118,11 +118,11 @@ follow-up.
 
 ## 8. Residual fixes in the parked components
 
-- `mds-pref-theme-variant.css`: selector is `mds-pref-language` (copy-paste) -> should be
+- `mds-pref-theme.css`: selector is `mds-pref-language` (copy-paste) -> should be
   `:host`, otherwise the grid layout never applies.
-- `mds-pref-theme-variant-item.css`: preview swatch uses `--tint-base-lv1` (superseded
+- `mds-pref-theme-item.css`: preview swatch uses `--tint-base-lv1` (superseded
   draft token, spec section 8) -> use real surface roles, so previews show the theme.
-- `mds-pref-theme-variant.tsx`: `@Element` typed `HTMLMdsPrefLanguageElement` (copy-paste).
+- `mds-pref-theme.tsx`: `@Element` typed `HTMLMdsPrefLanguageElement` (copy-paste).
 
 ## 9. Open decisions
 

@@ -84,20 +84,20 @@ const HUES: { key: string; label: string; use: string }[] = [
 
 // -- theme switch ----------------------------------------------------------
 
-// Drive the REAL root theme flip. The generated tokens key on the `pref-theme-*`
-// class on <html> (:root:not(.pref-theme-scheme-light).pref-theme-dark), and
+// Drive the REAL root theme flip. The generated tokens key on the `pref-mode-*`
+// class on <html> (:root:not(.pref-theme-scheme-light).pref-mode-dark), and
 // preferenceStore mirrors that class onto every component host through its class
 // MutationObserver (src/common/preference.ts) - so this one toggle flips both the
 // surface tokens and the components.
 const THEME_MODES = ['light', 'dark', 'system'];
 const readMode = (): string => {
   const { classList } = document.documentElement;
-  return THEME_MODES.find((mode) => classList.contains(`pref-theme-${mode}`)) ?? 'light';
+  return THEME_MODES.find((mode) => classList.contains(`pref-mode-${mode}`)) ?? 'light';
 };
 const applyMode = (mode: string): void => {
   const { classList } = document.documentElement;
-  THEME_MODES.forEach((value) => classList.remove(`pref-theme-${value}`));
-  classList.add(`pref-theme-${mode}`);
+  THEME_MODES.forEach((value) => classList.remove(`pref-mode-${value}`));
+  classList.add(`pref-mode-${mode}`);
 };
 
 const ThemeSwitch = () => {
@@ -1233,7 +1233,7 @@ const ExamplePageTemplate = () => (
 
     <Section title="Preferences">
       <Cell
-        tag="<mds-pref> + pref-theme / -contrast / -animation / -consumption / -language / -theme-variant"
+        tag="<mds-pref> + pref-mode / -contrast / -animation / -consumption / -language / -theme"
         wide
       >
         <mds-text style={{ color: textVar('muted') }}>
@@ -1412,12 +1412,12 @@ export const Preferences = {
       <div class="grid gap-600 desktop:grid-cols-2 items-start">
         <Section title="Controls">
           <mds-pref class="w-full">
-            <mds-pref-theme />
-            <mds-pref-theme-variant>
-              <mds-pref-theme-variant-item name="default" />
-              <mds-pref-theme-variant-item name="cool" />
-              <mds-pref-theme-variant-item name="warm" />
-            </mds-pref-theme-variant>
+            <mds-pref-mode />
+            <mds-pref-theme>
+              <mds-pref-theme-item name="default" />
+              <mds-pref-theme-item name="cool" />
+              <mds-pref-theme-item name="warm" />
+            </mds-pref-theme>
             <mds-pref-contrast />
             <mds-pref-animation />
             <mds-pref-consumption />

@@ -9,8 +9,8 @@
   could neither retune a token nor read a preference from inside a shadow tree.
 */
 
-/* Written on <html> by mds-pref-theme: the mode the user picked. */
-@property --magma-pref-theme {
+/* Written on <html> by mds-pref-mode: the mode the user picked. */
+@property --magma-pref-mode {
   inherits: true;
   initial-value: light;
   syntax: 'light | dark | system';
@@ -22,10 +22,10 @@
   syntax: 'light | dark | all';
 }
 
-/* Written on <html> by mds-pref-theme-variant as a bare name (`default`,
+/* Written on <html> by mds-pref-theme as a bare name (`default`,
  * `business`), never a quoted string: a `<string>` syntax rejects it, and the
  * computed value silently stays on the initial one. `*` admits any name. */
-@property --magma-pref-theme-name {
+@property --magma-pref-theme {
   inherits: true;
   initial-value: default;
   syntax: '*';

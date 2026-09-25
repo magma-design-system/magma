@@ -131,7 +131,7 @@ names (`--mds-*`, `--private-*`) are not checked.
 
 ### Reading `<html>` preference state from inside a component
 
-Some components ship `*-pref-*.css` files (e.g. `mds-modal-pref-theme.css`) that refine their look for dark / high-contrast / reduced-motion on top of the global palette flip (see `projects/styles/SPEC.md`). Because these files are scoped to the component shadow tree, a normal selector cannot reach the `<html>` element where the `pref-*` classes live, so they use `:host-context(:root.pref-...)` - the only selector that lets a shadow stylesheet test an ancestor's state.
+Some components ship `*-pref-*.css` files (e.g. `mds-modal-pref-mode.css`) that refine their look for dark / high-contrast / reduced-motion on top of the global palette flip (see `projects/styles/SPEC.md`). Because these files are scoped to the component shadow tree, a normal selector cannot reach the `<html>` element where the `pref-*` classes live, so they use `:host-context(:root.pref-...)` - the only selector that lets a shadow stylesheet test an ancestor's state.
 
 Two facts agents must keep in mind before touching these files:
 

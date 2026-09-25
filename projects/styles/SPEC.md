@@ -114,7 +114,7 @@ elevation step or `color-mix`), not authored as tokens.
 
 Four independent axes on `<html>`, on top of the semantic layer:
 
-- **mode** `pref-theme-{light,dark,system}` - the global `--tone-*` flip; the
+- **mode** `pref-mode-{light,dark,system}` - the global `--tone-*` flip; the
   semantic tokens follow it automatically (see Dark mode below).
 - **`data-theme-name`** - a named theme overrides the semantic layer. The common
   case is retinting the neutral scaffolding with ONE swap: a theme repoints
@@ -130,7 +130,7 @@ Four independent axes on `<html>`, on top of the semantic layer:
   for it, moved together. See Corner geometry below.
 
 ```html
-<html class="pref-theme-dark" data-theme-name="cool" data-theme-depth="flat" data-corner-shape="round">
+<html class="pref-mode-dark" data-theme-name="cool" data-theme-depth="flat" data-corner-shape="round">
 ```
 
 ## Corner geometry (`data-corner-shape`)
@@ -177,7 +177,7 @@ on their host. Past half the shorter side a squircle stops producing a pill and
 draws the filled superellipse of an app icon, so there is nothing to tune there,
 only something to stay out of.
 
-Consumers rarely write the attribute by hand: `mds-pref-theme-variant` carries a
+Consumers rarely write the attribute by hand: `mds-pref-theme` carries a
 `corner-shape` prop that writes it, persists the choice and emits `mdsPrefChange`,
 next to the theme name and scheme it already owns. Its `default` value REMOVES
 the attribute rather than writing today's shape, so a project that never chose
@@ -223,30 +223,32 @@ Use these utilities instead of writing focus styles manually:
 Dark mode is handled at the palette level. No class changes are needed on individual elements. Activate via `<html>`:
 
 ```html
-<html class="pref-theme-system">
+<html class="pref-mode-system">
   <!-- follows OS -->
 </html>
-<html class="pref-theme-light">
+<html class="pref-mode-light">
   <!-- always light -->
 </html>
-<html class="pref-theme-dark">
+<html class="pref-mode-dark">
   <!-- always dark -->
 </html>
 ```
 
 ### How preferences are applied
 
-Every preference (`theme`, `contrast`, `animation`, `consumption`) is driven by the `mds-pref` controller and its children (`mds-pref-theme`, `mds-pref-contrast`, ...). Each child writes its state to the `<html>` element in two redundant forms, on purpose, so future changes stay cheap:
+Every preference (`mode`, `theme`, `contrast`, `animation`, `consumption`) is driven by the `mds-pref` controller and its children (`mds-pref-mode`, `mds-pref-theme`, `mds-pref-contrast`, ...). Each child writes its state to the `<html>` element in two redundant forms, on purpose, so future changes stay cheap:
 
-- a **class** (e.g. `pref-theme-dark`, `pref-contrast-more`) - consumed by selectors
-- a **custom property** (e.g. `--magma-pref-theme`, `--magma-pref-animation`) - readable as an inherited value, including across shadow boundaries
+- a **class** (e.g. `pref-mode-dark`, `pref-contrast-more`) - consumed by selectors
+- a **custom property** (e.g. `--magma-pref-mode`, `--magma-pref-animation`) - readable as an inherited value, including across shadow boundaries
+
+The two colour preferences keep two disjoint nouns: everything that says **`mode`** is light / dark / system (`mds-pref-mode`, `pref-mode-*`, `--magma-pref-mode`, `mdsPrefMode`), everything that says **`theme`** is the named theme (`mds-pref-theme`, `pref-theme-<name>`, `--magma-pref-theme`, `mdsPrefTheme`, plus its `pref-theme-scheme-*` constraint). v1 used `theme` for the mode, so `mds-pref-theme`, `--magma-pref-theme` and `mdsPrefTheme` changed meaning in v2 (#702): the codemod migrates the markup, and the stored v1 keys are moved on first load (`src/common/preference.ts`).
 
 That last promise holds because every `@property` in `css/globals.css` is `inherits: true`. With
 `false` a value set on `<html>` or `:root` reaches no other element - each one resolves the
 registration's `initial-value` - so neither a preference nor a consumer override (e.g.
 `--magma-modal-z-index: 9999` on `:root`) would arrive in a component. Keep new registrations
 there `inherits: true`, and give a value a component reads by name a `syntax` that accepts what is
-actually written: `--magma-pref-theme-name` is `*` because the theme name is a bare identifier,
+actually written: `--magma-pref-theme` is `*` because the theme name is a bare identifier,
 which `<string>` rejects.
 
 `mds-pref` also toggles the `data-magma-pref` attribute on `<html>` while a controller is mounted; selectors use `:root:not([data-magma-pref])` to fall back to the OS preference (`@media`) when no controller is present.
@@ -285,7 +287,7 @@ The visible effect is produced **globally, at the palette level**: the published
 </html>
 ```
 
-For programmatic control, use the `mds-pref-theme` component.
+For programmatic control, use the `mds-pref-mode` component.
 
 ## Global design decisions (`--magma-*` vars)
 
