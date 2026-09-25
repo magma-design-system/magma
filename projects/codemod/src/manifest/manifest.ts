@@ -518,6 +518,77 @@ const curate = (base: Manifest): Manifest => {
     });
   }
 
+  // K — mode vs theme (#702). v1 called the light / dark / system control
+  // `mds-pref-theme`; v2 calls it `mds-pref-mode` and gives `mds-pref-theme` to
+  // the named-theme chooser, which v1 never had (the v2 betas shipped it as
+  // `mds-pref-theme-variant`). Every rename below is applied in one pass by
+  // name as written, so the name the two share is never renamed twice.
+  const modeControl = (m.components['mds-pref-theme'] ??= {
+    tag: 'mds-pref-theme',
+    react: 'MdsPrefTheme',
+    rules: [],
+  });
+  const overlayProps = ['fadeout-duration', 'show-duration', 'z-index'];
+  // The docs diff saw the overlay properties as removals: they moved with the tag.
+  modeControl.rules = modeControl.rules.filter(
+    (r) =>
+      !(
+        r.kind === 'cssVarRemove' &&
+        overlayProps.includes(r.name.replace('mds-pref-theme-overlay-', ''))
+      ),
+  );
+  modeControl.rules.push(
+    { kind: 'tagRename', to: 'mds-pref-mode', toReact: 'MdsPrefMode' },
+    ...overlayProps.map((prop) => ({
+      kind: 'cssVarRename' as const,
+      from: `mds-pref-theme-overlay-${prop}`,
+      to: `mds-pref-mode-overlay-${prop}`,
+    })),
+  );
+  // v2 beta names, for a page written against a beta: harmless on v1 code.
+  m.components['mds-pref-theme-variant'] ??= {
+    tag: 'mds-pref-theme-variant',
+    react: 'MdsPrefThemeVariant',
+    rules: [{ kind: 'tagRename', to: 'mds-pref-theme', toReact: 'MdsPrefTheme' }],
+  };
+  m.components['mds-pref-theme-variant-item'] ??= {
+    tag: 'mds-pref-theme-variant-item',
+    react: 'MdsPrefThemeVariantItem',
+    rules: [
+      { kind: 'tagRename', to: 'mds-pref-theme-item', toReact: 'MdsPrefThemeItem' },
+      ...['background', 'status-error', 'status-success', 'status-warning', 'variant-primary'].map(
+        (color) => ({
+          kind: 'cssVarRename' as const,
+          from: `mds-pref-theme-variant-item-color-${color}`,
+          to: `mds-pref-theme-item-color-${color}`,
+        }),
+      ),
+    ],
+  };
+  m.global.cssVars = [
+    ...(m.global.cssVars ?? []),
+    { kind: 'cssVarRename', from: 'magma-pref-theme', to: 'magma-pref-mode' },
+    { kind: 'cssVarRename', from: 'magma-pref-theme-name', to: 'magma-pref-theme' },
+  ];
+  // The mode classes on <html>: in markup (a server-rendered first paint) and
+  // in the consumer stylesheets that select them.
+  m.global.classes = [
+    ...(m.global.classes ?? []),
+    ...['light', 'dark', 'system'].map((mode) => ({
+      kind: 'classRename' as const,
+      from: `pref-theme-${mode}`,
+      to: `pref-mode-${mode}`,
+      selectors: true,
+    })),
+    // the transition overlay the mode control appends to <body>
+    {
+      kind: 'classRename',
+      from: 'mds-pref-theme-overlay',
+      to: 'mds-pref-mode-overlay',
+      selectors: true,
+    },
+  ];
+
   return m;
 };
 

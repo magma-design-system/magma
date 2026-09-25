@@ -37,6 +37,18 @@ describe('fixtures', () => {
           expect(cfg.run(input, { file: `${name}/input.${cfg.ext}` }).output).toBe(expected);
         });
 
+        // A case with a RUN_ONCE file is not idempotent by construction: a v2 name
+        // that is also a v1 name (`mds-pref-theme`) is renamed again by a second
+        // run. The file says why; the test pins that a second run does change it,
+        // which is what the README's "run it once" warns about.
+        if (existsSync(join(caseDir, 'RUN_ONCE'))) {
+          it(`${name}: is NOT idempotent on expected (RUN_ONCE)`, () => {
+            const result = cfg.run(expected, { file: `${name}/expected.${cfg.ext}` });
+            expect(result.changed).toBe(true);
+          });
+          continue;
+        }
+
         it(`${name}: is idempotent on expected`, () => {
           const result = cfg.run(expected, { file: `${name}/expected.${cfg.ext}` });
           expect(result.changed).toBe(false);

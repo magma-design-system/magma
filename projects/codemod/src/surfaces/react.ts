@@ -30,8 +30,15 @@ import {
   type PropRemoveRule,
   type SlotRule,
   type SlotToAttrRule,
+  type TagRenameRule,
 } from '../manifest/schema.js';
-import { getByReactName, getByTag, ruleId, rulesForComponent } from '../manifest/registry.js';
+import {
+  getByReactName,
+  getByTag,
+  ruleId,
+  rulesForComponent,
+  tagRenamesOf,
+} from '../manifest/registry.js';
 import { classRulesOf, hasClassRules, rewriteClassList } from './shared/class-ops.js';
 import { invertBoolean, remapEnum } from './shared/attribute-ops.js';
 import {
@@ -466,6 +473,71 @@ export const transformReact = (
           line: template.getStartLineNumber(),
           message: `template literal in \`${name}\` mentions a migrated utility class; rewrite it manually`,
         });
+      }
+    }
+  }
+
+  // K: tag renames. A separate pass over the tag names, so a component the
+  // manifest does not otherwise touch is renamed too. Every rename is looked up
+  // by the name AS WRITTEN, so a v1 name that another component takes in v2 is
+  // never renamed twice.
+  const tagRenames = tagRenamesOf(manifest);
+  if (tagRenames.size > 0) {
+    const byReact = new Map<string, { tag: string; rule: TagRenameRule }>();
+    for (const [tag, rule] of tagRenames) {
+      const component = getByTag(manifest, tag);
+      if (component) byReact.set(component.react, { tag, rule });
+    }
+    const renamedAt = new Set<number>();
+    const renameNode = (node: Node, tag: string, from: string, to: string): void => {
+      const start = node.getStart();
+      if (renamedAt.has(start)) return;
+      renamedAt.add(start);
+      edits.push({ start, end: node.getEnd(), text: to });
+      findings.push({
+        kind: 'change',
+        surface: 'react',
+        file: ctx.file,
+        line: node.getStartLineNumber(),
+        component: tag,
+        ruleId: `${tag}/tagRename`,
+        message: `rename ${from} to ${to}`,
+        before: from,
+        after: to,
+      });
+    };
+
+    const tagNodes = [...openings, ...sf.getDescendantsOfKind(SyntaxKind.JsxClosingElement)].map(
+      (el) => el.getTagNameNode(),
+    );
+    for (const nameNode of tagNodes) {
+      const name = nameNode.getText();
+      const hit = name.includes('-')
+        ? tagRenames.has(name)
+          ? { tag: name, to: tagRenames.get(name)!.to }
+          : undefined
+        : byReact.has(name)
+          ? { tag: byReact.get(name)!.tag, to: byReact.get(name)!.rule.toReact }
+          : undefined;
+      if (hit && ruleEnabled(ctx, `${hit.tag}/tagRename`))
+        renameNode(nameNode, hit.tag, name, hit.to);
+    }
+
+    // The named import from the React wrapper, and every other reference to it
+    // (`typeof MdsPrefTheme`, a re-export). An aliased import renames only the
+    // imported name: the local alias stays valid.
+    for (const decl of sf.getImportDeclarations()) {
+      if (!decl.getModuleSpecifierValue().startsWith('@maggioli-design-system/magma-react'))
+        continue;
+      for (const spec of decl.getNamedImports()) {
+        const name = spec.getName();
+        const hit = byReact.get(name);
+        if (!hit || !ruleEnabled(ctx, `${hit.tag}/tagRename`)) continue;
+        renameNode(spec.getNameNode(), hit.tag, name, hit.rule.toReact);
+        if (spec.getAliasNode()) continue;
+        for (const id of sf.getDescendantsOfKind(SyntaxKind.Identifier)) {
+          if (id.getText() === name) renameNode(id, hit.tag, name, hit.rule.toReact);
+        }
       }
     }
   }

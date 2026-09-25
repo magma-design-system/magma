@@ -137,6 +137,13 @@ export interface ClassRenameRule {
   to: string;
   /** Extra context surfaced as a flag next to the rename. */
   note?: string;
+  /**
+   * Also rename the class in CSS class selectors (`.pref-theme-dark .x`). Off
+   * for the utility classes, which a stylesheet applies with `@apply` rather
+   * than selects; on for the state classes the design system writes on
+   * `<html>`, which consumer stylesheets select.
+   */
+  selectors?: boolean;
 }
 
 /** Category J (report-only) — a v1 utility class with no exact v2 equivalent; usages are reported. */
@@ -152,6 +159,23 @@ export interface PartRenameRule {
   kind: 'partRename';
   from: string;
   to: string;
+}
+
+/**
+ * Category K — rename the element itself. The component keeps its v1 tag as its
+ * manifest key, so every other rule of the component still matches the source
+ * as written; the surfaces rename the tag (HTML / Angular start and end tags,
+ * CSS type selectors) and the React component name (JSX tags and the named
+ * import) in the same single pass. All renames are applied at once, so a v1
+ * name that another component takes in v2 (`mds-pref-theme`) is never renamed
+ * twice.
+ */
+export interface TagRenameRule {
+  kind: 'tagRename';
+  /** v2 tag, `mds-pref-mode`. */
+  to: string;
+  /** v2 React component name, `MdsPrefMode`. */
+  toReact: string;
 }
 
 /** Category I — rename an event (raw event name, e.g. `mdsChange`). */
@@ -195,6 +219,7 @@ export type Rule =
   | ClassReportRule
   | PartRenameRule
   | EventRenameRule
+  | TagRenameRule
   | EnsureAttrRule;
 
 export type RuleKind = Rule['kind'];

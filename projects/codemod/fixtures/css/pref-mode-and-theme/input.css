@@ -1,0 +1,4 @@
+mds-pref > mds-pref-theme,
+mds-pref-theme-variant > mds-pref-theme-variant-item {
+  outline: var(--magma-pref-theme) var(--magma-pref-theme-name);
+}
