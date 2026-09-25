@@ -123,7 +123,7 @@
     "@fontsource/roboto": "5.1.0",
     "@fontsource/roboto-mono": "5.1.0",
     "@iconsauce/core": "2.0.0",
-    "@maggioli-design-system/svg-icons": "4.4.0",
+    "@maggioli-design-system/svg-icons": "*",
     "@rollup/plugin-alias": "5.1.0",
     "@stencil/angular-output-target": "1.4.1",
     "@stencil/eslint-plugin": "1.4.0",
