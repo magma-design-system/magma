@@ -32,16 +32,16 @@
       "matchManagers": ["docker-compose"]
     },
     {
-      "description": "Design tokens dependencies",
+      "description": "Design tokens: every dependency of projects/design-tokens in one PR. chalk stays out because it is handled at the global level",
       "groupName": "design token deps",
-      "matchPackageNames": [
-        "chroma-js",
-        "colorjs.io",
-        "lilconfig",
-        "style-dictionary",
-        "hsluv",
-        "hex-rgb"
-      ]
+      "matchFileNames": ["projects/design-tokens/package.json"],
+      "matchPackageNames": ["!chalk"]
+    },
+    {
+      "description": "Design tokens: majors go in the same PR as the other updates. Packages listed in \"Block major\" keep the default (separate buckets), otherwise the blocked major would hide their minor and patch updates",
+      "matchFileNames": ["projects/design-tokens/package.json"],
+      "matchPackageNames": ["!chalk", "!style-dictionary", "!handlebars", "!/^vite/"],
+      "separateMajorMinor": false
     },
     {
       "description": "Pdfkit",
