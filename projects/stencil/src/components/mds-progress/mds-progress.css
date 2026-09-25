@@ -21,7 +21,7 @@
 
   background-color: var(--mds-progress-background);
   border-radius: var(--magma-radius-2xl);
-  corner-shape: var(--magma-corner-shape, round);
+  corner-shape: var(--magma-corner-shape);
   display: flex;
   height: var(--mds-progress-thickness);
   min-height: var(--mds-progress-thickness);

@@ -2,40 +2,49 @@
   Accessibility features
   They are used by Magma web-components to adapt to user preferences
   regarding theme, animation, contrast, and consumption.
+
+  Every registration in this file is `inherits: true`. With `false` a value
+  declared on `:root` (or written on `<html>` by a preference component) reaches
+  NOBODY: every other element resolves the initial value below, so a consumer
+  could neither retune a token nor read a preference from inside a shadow tree.
 */
 
+/* Written on <html> by mds-pref-theme: the mode the user picked. */
 @property --magma-pref-theme {
-  inherits: false;
+  inherits: true;
   initial-value: light;
   syntax: 'light | dark | system';
 }
 
 @property --magma-pref-theme-scheme {
-  inherits: false;
+  inherits: true;
   initial-value: light;
   syntax: 'light | dark | all';
 }
 
+/* Written on <html> by mds-pref-theme-variant as a bare name (`default`,
+ * `business`), never a quoted string: a `<string>` syntax rejects it, and the
+ * computed value silently stays on the initial one. `*` admits any name. */
 @property --magma-pref-theme-name {
-  inherits: false;
-  initial-value: 'magma';
-  syntax: '<string>';
+  inherits: true;
+  initial-value: default;
+  syntax: '*';
 }
 
 @property --magma-pref-consumption {
-  inherits: false;
+  inherits: true;
   initial-value: high;
   syntax: 'high | medium | low';
 }
 
 @property --magma-pref-animation {
-  inherits: false;
+  inherits: true;
   initial-value: no-preference;
   syntax: 'reduce | no-preference | system';
 }
 
 @property --magma-pref-contrast {
-  inherits: false;
+  inherits: true;
   initial-value: no-preference;
   syntax: 'more | no-preference | system';
 }
@@ -43,13 +52,13 @@
 /* Animations */
 
 @property --magma-backdrop-animation-duration {
-  inherits: false;
+  inherits: true;
   initial-value: 300ms;
   syntax: '<time>';
 }
 
 @property --magma-outline-animation-duration {
-  inherits: false;
+  inherits: true;
   initial-value: 1.5s;
   syntax: '<time>';
 }
@@ -77,19 +86,19 @@
 /* Blur */
 
 @property --magma-backdrop-blur {
-  inherits: false;
+  inherits: true;
   initial-value: 4px;
   syntax: '<length>';
 }
 
 @property --magma-outline-blur-offset {
-  inherits: false;
+  inherits: true;
   initial-value: 6px;
   syntax: '<length>';
 }
 
 @property --magma-outline-focus-offset {
-  inherits: false;
+  inherits: true;
   initial-value: 2px;
   syntax: '<length>';
 }
@@ -164,49 +173,49 @@
 /* z-index */
 
 @property --magma-header-z-index {
-  inherits: false;
+  inherits: true;
   initial-value: 1000;
   syntax: '<integer>';
 }
 
 @property --magma-notification-z-index {
-  inherits: false;
+  inherits: true;
   initial-value: 2000;
   syntax: '<integer>';
 }
 
 @property --magma-modal-z-index {
-  inherits: false;
+  inherits: true;
   initial-value: 3000;
   syntax: '<integer>';
 }
 
 @property --magma-backdrop-z-index {
-  inherits: false;
+  inherits: true;
   initial-value: 4000;
   syntax: '<integer>';
 }
 
 @property --magma-dropdown-z-index {
-  inherits: false;
+  inherits: true;
   initial-value: 5000;
   syntax: '<integer>';
 }
 
 @property --magma-tooltip-z-index {
-  inherits: false;
+  inherits: true;
   initial-value: 6000;
   syntax: '<integer>';
 }
 
 @property --magma-theme-overlay-z-index {
-  inherits: false;
+  inherits: true;
   initial-value: 7000;
   syntax: '<integer>';
 }
 
 @property --magma-context-menu-z-index {
-  inherits: false;
+  inherits: true;
   initial-value: 8000;
   syntax: '<integer>';
 }
@@ -216,7 +225,7 @@
  */
 
 @property --magma-view-transition-navigation {
-  inherits: false;
+  inherits: true;
   initial-value: auto;
   syntax: 'auto | traverse | push | replace';
 }

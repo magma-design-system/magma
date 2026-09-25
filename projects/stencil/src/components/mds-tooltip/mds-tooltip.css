@@ -38,7 +38,7 @@
   --mds-tooltip-dot-padding: --spacing(100);
   --mds-tooltip-transform-from: scale(0.9) translateY(calc(--spacing(400) * -1));
   --mds-tooltip-transform-to: scale(1) translate(0, 0);
-  --mds-tooltip-z-index: var(--magma-tooltip-z-index, 4000);
+  --mds-tooltip-z-index: var(--magma-tooltip-z-index);
 
   background-color: var(--mds-tooltip-background);
   border-radius: var(--radius-3xs);

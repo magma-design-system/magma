@@ -23,6 +23,6 @@
 
 @property --mds-pref-theme-overlay-z-index {
   inherits: true;
-  initial-value: var(--magma-theme-overlay-z-index, 6000);
+  initial-value: var(--magma-theme-overlay-z-index);
   syntax: '<integer>';
 }

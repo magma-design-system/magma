@@ -23,7 +23,7 @@
 
 @property --mds-dropdown-backdrop-z-index {
   inherits: true;
-  initial-value: var(--magma-backdrop-z-index, 3000);
+  initial-value: var(--magma-backdrop-z-index);
   syntax: '<integer>';
 }
 
@@ -65,6 +65,6 @@
 
 @property --mds-dropdown-z-index {
   inherits: true;
-  initial-value: var(--magma-dropdown-z-index, 4000);
+  initial-value: var(--magma-dropdown-z-index);
   syntax: '<integer>';
 }

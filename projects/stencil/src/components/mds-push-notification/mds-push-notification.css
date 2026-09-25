@@ -60,7 +60,7 @@
   transition-delay: var(--mds-push-notification-fadeout-delay);
   transition-duration: var(--duration-500);
   transition-property: transform;
-  z-index: var(--magma-notification-z-index, 3000);
+  z-index: var(--magma-notification-z-index);
 }
 
 .notifications {

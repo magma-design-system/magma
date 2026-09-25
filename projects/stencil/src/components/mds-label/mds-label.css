@@ -15,8 +15,8 @@
   --mds-label-background: rgb(var(--label-yellow-09));
   --mds-label-color: rgb(var(--label-yellow-02));
   --mds-label-icon-color: var(--mds-label-color);
-  --mds-label-selection-background: var(--magma-selection-background, rgb(var(--label-yellow-09)));
-  --mds-label-selection-color: var(--magma-selection-color, rgb(var(--label-yellow-02)));
+  --mds-label-selection-background: var(--magma-selection-background);
+  --mds-label-selection-color: var(--magma-selection-color);
   --mds-label-button-background: transparent;
   --mds-label-button-background-hover: rgb(var(--label-yellow-07));
   --mds-label-button-icon-color: rgb(var(--label-yellow-03));
@@ -28,7 +28,7 @@
   background-color: var(--mds-label-background);
   border-radius: var(--magma-radius-full);
   color: var(--mds-label-color);
-  corner-shape: var(--magma-corner-shape, round);
+  corner-shape: var(--magma-corner-shape);
   display: flex;
   fill: var(--mds-label-icon-color);
   flex: 1;
@@ -44,7 +44,7 @@
   :host {
     align-items: stretch;
     corner-left-shape: superellipse(0.25);
-    corner-right-shape: var(--magma-corner-shape, round);
+    corner-right-shape: var(--magma-corner-shape);
     padding-left: calc(var(--private-bevel-size) / 2);
     padding-right: 0;
   }
