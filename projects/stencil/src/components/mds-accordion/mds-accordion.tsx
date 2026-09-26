@@ -1,14 +1,5 @@
 import { MdsAccordionItemEventDetail } from '@component/mds-accordion-item/meta/event-detail';
-import {
-  Component,
-  Element,
-  Event,
-  EventEmitter,
-  Host,
-  Listen,
-  Prop,
-  h,
-} from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, Listen, Prop, h } from '@stencil/core';
 import { MdsAccordionEventDetail } from './meta/event-detail';
 import { preferenceStore } from '@common/preference';
 
@@ -102,7 +93,7 @@ export class MdsAccordion {
     return (
       <Host
         pref-contrast={preferenceStore.state.contrast}
-        pref-theme={preferenceStore.state.theme}
+        pref-mode={preferenceStore.state.mode}
         pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
         <slot />

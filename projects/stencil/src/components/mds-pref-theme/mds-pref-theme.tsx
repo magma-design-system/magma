@@ -1,33 +1,24 @@
+import { Component, Element, Event, EventEmitter, Host, h, Prop, State } from '@stencil/core';
+import { MdsPrefThemeEventDetail } from '@event/theme';
+import { MdsPrefChangeEventDetail } from '@event/preference';
 import {
-  Component,
-  Host,
-  Element,
-  Event,
-  EventEmitter,
-  h,
-  Prop,
-  Watch,
-  State,
-} from '@stencil/core';
-import { cssDurationToMilliseconds } from '@common/unit';
-import miBaselineLightMode from '@icon/mi/baseline/light-mode.svg';
-import miOutlineDarkMode from '@icon/mi/outline/dark-mode.svg';
-import miBaselineDarkMode from '@icon/mi/baseline/dark-mode.svg';
-import miBaselineSettings from '@icon/mi/baseline/settings.svg';
+  PreferenceCornerShapeChoiceType,
+  PreferenceThemeSchemeType,
+  preferenceCornerShapeChoiceType,
+} from '@type/preference';
 import { Locale } from '@common/locale';
-import { isSafari } from '@common/browser';
-import { preferenceStore } from '@common/preference';
+import { MODE_VALUES, preferenceStore } from '@common/preference';
 import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.es.json';
 import localeIt from './meta/locale.it.json';
-import {
-  PreferenceThemeModeType,
-  PreferenceThemeSchemeType,
-  PreferenceThemeTransitionType,
-} from '@type/preference';
-import { MdsPrefChangeEventDetail } from '@event/preference';
+import miBaselineKeyboardArrowDown from '@icon/mi/baseline/keyboard-arrow-down.svg';
+import miBaselineKeyboardArrowUp from '@icon/mi/baseline/keyboard-arrow-up.svg';
 import { TabSizeType } from '@type/button';
+
+/**
+ * @slot - Add `mds-pref-theme-item` element/s.
+ */
 
 @Component({
   tag: 'mds-pref-theme',
@@ -35,39 +26,30 @@ import { TabSizeType } from '@type/button';
   shadow: true,
 })
 export class MdsPrefTheme {
-  @Element() private element: HTMLMdsPrefThemeElement;
-  private readonly defaultMode: PreferenceThemeModeType = 'system';
+  @State() showDropdown: boolean = false;
+  @Element() element: HTMLMdsPrefThemeElement;
+  private readonly localStorageAliasThemeName: string = 'mdsPrefTheme';
+  private readonly localStorageAliasThemeScheme: string = 'mdsPrefThemeScheme';
+  private readonly localStorageAliasCornerShape: string = 'mdsPrefCornerShape';
+  private currentSelectedItem: HTMLMdsPrefThemeItemElement;
+  private themeItems: NodeListOf<HTMLMdsPrefThemeItemElement>;
+  private userThemeName: string | null;
+  private userThemeScheme: PreferenceThemeSchemeType | null;
+  private userCornerShape: PreferenceCornerShapeChoiceType | null;
   private readonly t: Locale = new Locale({
     el: localeEl,
     en: localeEn,
     es: localeEs,
     it: localeIt,
   });
-
-  private readonly localStorageAlias: string = 'mdsPrefTheme';
-  private readonly customPropertyAlias: string = '--magma-pref-theme';
-  private readonly overlayBackgroundVisible = 'rgb(var(--tone-neutral-seed))';
-  private readonly overlayBackgroundHidden = 'rgb(var(--tone-neutral-seed) / 0)';
-  private cssOverlayShowDuration: string = '300';
-  private cssOverlayFadeoutDuration: string = '200';
-  private cssOverlayZIndex: string = '6000';
-  private overlayEl: HTMLElement;
-  private readonly overlayId = 'mds-pref-theme-overlay';
-  private overlayTimer: NodeJS.Timeout;
-  private overlaySmoothTimer: NodeJS.Timeout;
-  private overlayShow: boolean = false;
-
-  @State() disabled: boolean = false;
-
-  private updateCSSCustomProps = (): void => {
-    if (typeof window === 'undefined') return;
-    const elementStyles = window.getComputedStyle(this.element);
-    this.cssOverlayShowDuration =
-      elementStyles.getPropertyValue('--mds-pref-theme-overlay-show-duration') ?? '300';
-    this.cssOverlayFadeoutDuration =
-      elementStyles.getPropertyValue('--mds-pref-theme-overlay-fadeout-duration') ?? '200';
-    this.cssOverlayZIndex =
-      elementStyles.getPropertyValue('--mds-pref-theme-overlay-z-index') ?? '6000';
+  private readonly clasNameThemeNamePrefix: string = 'pref-theme-';
+  private previousName: string | null = null;
+  private readonly customPropertyAliasThemeScheme: string = '--magma-pref-theme-scheme';
+  private readonly customPropertyAliasThemeName: string = '--magma-pref-theme';
+  private readonly schemeSet = {
+    light: 'pref-theme-scheme-light',
+    dark: 'pref-theme-scheme-dark',
+    all: 'pref-theme-scheme-all',
   };
 
   /**
@@ -76,250 +58,193 @@ export class MdsPrefTheme {
   @Prop({ reflect: true }) readonly size?: TabSizeType;
 
   /**
-   * Specifies the preference mode
+   * Specifies the theme name attribute
+   * A string representing the theme name, should be a simple string name or kebab kase name.
+   * `Examples of valid language codes include "magma", "maggioli-editore", etc.`
    */
-  @Prop({ mutable: true, reflect: true }) mode?: PreferenceThemeModeType;
+  @Prop({ mutable: true, reflect: true }) name: string = 'default';
 
   /**
-   * Specifies the transition of switching from a theme to another one
+   * Specifies the theme scheme which can be 'light', 'dark' or 'all'
+   * Default is 'all' which means this theme supporto both light and dark.
+   * If you set 'light' means this theme support only light mode and will be forced and shown light colors mode only.
    */
-  @Prop({ mutable: true, reflect: true }) transition: PreferenceThemeTransitionType = 'smooth';
+  @Prop({ mutable: true, reflect: true }) scheme: PreferenceThemeSchemeType = 'all';
 
   /**
-   * Locks the mode items forbidden by a scheme-constrained theme, without
-   * touching the stored preference: `light` disables the explicit `dark` item,
-   * `dark` disables the explicit `light` item, `all` (or unset) locks nothing;
-   * the `system` item is never locked. Set by the `mds-pref` controller from the
-   * active theme variant's `scheme`; not meant to be set directly.
+   * Specifies the corner geometry of the whole page: one of the `corner-shape`
+   * keywords, or `default`.
+   *
+   * Corner geometry is theme appearance rather than an accessibility preference,
+   * which is why it lives here next to the theme name and scheme instead of in
+   * `mds-pref-mode`. Setting it writes `data-corner-shape` on `<html>`, where
+   * the generated axis picks both the shape and the radius scale tuned for it.
+   *
+   * Leaving it unset touches nothing. Setting it to `default` REMOVES the
+   * attribute rather than writing today's default into the page, so a project
+   * that never chose keeps following the design system when the default changes.
    */
-  @Prop({ reflect: true }) readonly lockedScheme?: PreferenceThemeSchemeType;
+  @Prop({ mutable: true, reflect: true }) cornerShape?: PreferenceCornerShapeChoiceType;
+
+  /**
+   * Emits when the component changes the language selected from the click event of the dropdown list item
+   */
+  @Event({ eventName: 'mdsPrefThemeChange' })
+  themeChangeEvent: EventEmitter<MdsPrefThemeEventDetail>;
 
   /**
    * Emits when the component is triggered
    */
   @Event({ eventName: 'mdsPrefChange' }) prefChangeEvent: EventEmitter<MdsPrefChangeEventDetail>;
 
-  private readonly theme = {
-    dark: {
-      selector: 'pref-theme-dark',
-      label: 'darkMode',
-    },
-    system: {
-      selector: 'pref-theme-system',
-      label: 'systemSettings',
-    },
-    light: {
-      selector: 'pref-theme-light',
-      label: 'lightMode',
-    },
-  };
+  componentDidLoad(): void {
+    this.checkThemeSelect();
+  }
 
   componentWillRender(): void {
-    if (!isSafari()) {
-      this.setTheme(
-        this.mode ??
-          (localStorage.getItem(this.localStorageAlias) as PreferenceThemeModeType) ??
-          this.defaultMode,
-      );
-      return;
+    this.userThemeName = localStorage.getItem(this.localStorageAliasThemeName);
+    this.userThemeScheme = localStorage.getItem(this.localStorageAliasThemeScheme) as
+      | PreferenceThemeSchemeType
+      | 'all';
+    this.setTheme(this.userThemeName ?? this.name, this.userThemeScheme ?? this.scheme);
+    this.userCornerShape = localStorage.getItem(
+      this.localStorageAliasCornerShape,
+    ) as PreferenceCornerShapeChoiceType | null;
+    this.setCornerShape(this.userCornerShape ?? this.cornerShape);
+  }
+
+  private readonly toggleDropdown = (): void => {
+    this.showDropdown = !this.showDropdown;
+  };
+
+  private readonly hideThemeDropdownSelect = (): void => {
+    this.showDropdown = false;
+  };
+
+  private readonly changeThemeItem = (): void => {
+    this.themeItems.forEach((element) => {
+      element.selected = false;
+    });
+  };
+
+  private readonly checkThemeSelect = (): void => {
+    this.themeItems = this.element.querySelectorAll('mds-pref-theme-item');
+    this.themeItems.forEach((element) => {
+      element.addEventListener('mdsPrefThemeItemSelect', (e: CustomEvent) => {
+        this.changeThemeItem();
+        this.currentSelectedItem = e.currentTarget as HTMLMdsPrefThemeItemElement;
+        this.currentSelectedItem.selected = true;
+        const name: string = e.detail.name.toLowerCase();
+        const scheme: PreferenceThemeSchemeType = e.detail.scheme.toLowerCase();
+        this.themeChangeEvent.emit({ name, scheme });
+        this.showDropdown = false;
+        this.setTheme(name, scheme);
+      });
+    });
+
+    this.themeItems.forEach((element) => {
+      element.selected = element.name === this.name;
+    });
+  };
+
+  private readonly setTheme = (name: string, scheme: PreferenceThemeSchemeType): void => {
+    if (!/^[a-z]+(-[a-z]+)*$/gm.exec(name)) {
+      throw Error(`Theme name not valid: ${name}`);
     }
-    this.disabled = true;
-    this.mode = 'light';
-  }
-
-  componentDidLoad(): void {
-    this.updateCSSCustomProps();
-  }
-
-  @Watch('mode')
-  modeChanged(newValue: PreferenceThemeModeType, oldValue: PreferenceThemeModeType): void {
-    if (newValue === oldValue) {
-      return;
+    // A mode value would be taken for a v1 mode by the storage migration, and a
+    // `scheme` name would write a `pref-theme-scheme-*` class of the scheme axis.
+    if (MODE_VALUES.includes(name) || name === 'scheme' || name.startsWith('scheme-')) {
+      throw Error(`Theme name reserved: ${name}`);
     }
-    this.setTheme(newValue);
-  }
+    this.name = name;
+    this.scheme = scheme;
+    this.prefChangeEvent.emit({ preference: 'theme' });
+    localStorage.setItem(this.localStorageAliasThemeName, this.name);
+    localStorage.setItem(this.localStorageAliasThemeScheme, this.scheme);
 
-  private readonly setTheme = (mode: PreferenceThemeModeType): void => {
-    this.prefChangeEvent.emit({ preference: 'theme-mode' });
-    this.mode = mode;
-    localStorage.setItem(this.localStorageAlias, this.mode);
     if (typeof document !== 'undefined') {
       const element = document.querySelector('html');
-      for (const key in this.theme) {
-        if ({}.hasOwnProperty.call(this.theme, key)) {
-          element?.classList.remove(this.theme[key].selector);
+      // cleanup previeous selection
+      for (const key in this.schemeSet) {
+        if ({}.hasOwnProperty.call(this.schemeSet, key)) {
+          element?.classList.remove(this.schemeSet[key]);
         }
       }
-      element?.classList.add(this.theme[mode].selector);
-      element?.style.setProperty(this.customPropertyAlias, this.mode);
-    }
-    preferenceStore.state.theme = mode;
-  };
-
-  private readonly isDarkMode = (): boolean => {
-    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-  };
-
-  private readonly getColorScheme = (mode?: PreferenceThemeModeType): PreferenceThemeModeType => {
-    if (mode !== undefined) {
-      if (mode === 'system') {
-        return this.isDarkMode() ? 'dark' : 'light';
+      if (this.previousName !== null && this.previousName !== '') {
+        element?.classList.remove(this.clasNameThemeNamePrefix + this.previousName);
       }
-      return mode as PreferenceThemeModeType;
+      // set new selection
+      element?.setAttribute('data-theme-name', this.name);
+      element?.classList.add(this.schemeSet[this.scheme]);
+      element?.classList.add(this.clasNameThemeNamePrefix + this.name);
+      element?.style.setProperty(this.customPropertyAliasThemeName, this.name);
+      element?.style.setProperty(this.customPropertyAliasThemeScheme, this.scheme);
+      this.previousName = this.name;
     }
-
-    if (this.mode === 'system') {
-      return this.isDarkMode() ? 'dark' : 'light';
-    }
-    return this.mode as PreferenceThemeModeType;
+    preferenceStore.state['theme-scheme'] = this.scheme;
   };
 
-  private instanceOverlay = (): void => {
-    if (this.overlayEl == null) {
-      this.overlayEl = document.createElement('div');
-      this.overlayEl.className = this.overlayId;
-      this.overlayEl.style.inset = '0';
-      this.overlayEl.style.pointerEvents = 'none';
-      this.overlayEl.style.position = 'fixed';
-      this.overlayEl.style.transition = `background-color ${this.cssOverlayFadeoutDuration} ease-out`;
-      this.overlayEl.style.zIndex = this.cssOverlayZIndex;
-    }
-    this.overlayEl.style.backgroundColor = this.overlayBackgroundHidden;
-  };
-
-  private detachOverlayTransition(): void {
-    if (this.overlayEl == null) {
+  /**
+   * Apply a corner choice, or do nothing at all when there is none: an unset prop
+   * with nothing in storage must leave the page exactly as the stylesheet ships
+   * it.
+   *
+   * Note the one place this deliberately does NOT follow `setTheme`:
+   * `data-theme-name` is always written, `default` included, which is harmless
+   * only because no CSS block defines a theme called `default`. Here the default
+   * IS a live block, so writing it would freeze today's default into the
+   * consumer's page - `default` removes the attribute instead.
+   */
+  private readonly setCornerShape = (shape?: PreferenceCornerShapeChoiceType | null): void => {
+    if (shape === undefined || shape === null) {
       return;
     }
-    this.overlayEl.style.backgroundColor = this.overlayBackgroundHidden;
-    clearTimeout(this.overlayTimer);
-
-    this.overlayTimer = setTimeout(() => {
-      this.overlayEl.remove();
-    }, cssDurationToMilliseconds(this.cssOverlayFadeoutDuration));
-  }
-
-  private attachFlashOverlayTransition = (): void => {
-    this.overlayShow = true;
-    this.instanceOverlay();
-    this.overlayEl.style.backgroundColor = this.overlayBackgroundVisible;
-    document.body.appendChild(this.overlayEl);
-
-    clearTimeout(this.overlayTimer);
-    this.overlayTimer = setTimeout(() => {
-      this.overlayShow = false;
-      this.detachOverlayTransition();
-    }, cssDurationToMilliseconds(this.cssOverlayShowDuration));
-  };
-
-  private attachSmoothOverlayTransition = (mode: PreferenceThemeModeType): void => {
-    this.overlayShow = true;
-    this.instanceOverlay();
-    document.body.appendChild(this.overlayEl);
-
-    clearTimeout(this.overlaySmoothTimer);
-    this.overlaySmoothTimer = setTimeout(() => {
-      this.overlayEl.style.backgroundColor = this.overlayBackgroundVisible;
-      clearTimeout(this.overlayTimer);
-
-      this.overlayTimer = setTimeout(() => {
-        this.setTheme(mode);
-
-        clearTimeout(this.overlayTimer);
-        this.overlayTimer = setTimeout(() => {
-          this.overlayShow = false;
-          this.detachOverlayTransition();
-        }, cssDurationToMilliseconds(this.cssOverlayFadeoutDuration));
-      }, cssDurationToMilliseconds(this.cssOverlayShowDuration));
-    }, 1);
-  };
-
-  private readonly isModeDisabled = (mode: PreferenceThemeModeType): boolean => {
-    if (this.disabled) {
-      return true;
+    if (!(preferenceCornerShapeChoiceType as readonly string[]).includes(shape)) {
+      throw Error(`Corner shape not valid: ${shape}`);
     }
-    if (this.lockedScheme === 'light') {
-      return mode === 'dark';
-    }
-    if (this.lockedScheme === 'dark') {
-      return mode === 'light';
-    }
-    return false;
-  };
+    this.cornerShape = shape;
+    this.prefChangeEvent.emit({ preference: 'corner-shape' });
+    localStorage.setItem(this.localStorageAliasCornerShape, shape);
 
-  private changeTheme = (mode: PreferenceThemeModeType): void => {
-    if (this.isModeDisabled(mode)) {
-      return;
+    if (typeof document !== 'undefined') {
+      const element = document.querySelector('html');
+      if (shape === 'default') {
+        element?.removeAttribute('data-corner-shape');
+      } else {
+        element?.setAttribute('data-corner-shape', shape);
+      }
     }
-
-    const prevColor = this.getColorScheme();
-    const nextColor = this.getColorScheme(mode);
-
-    if (prevColor === nextColor) {
-      this.setTheme(mode);
-      return;
-    }
-
-    switch (this.transition) {
-      case 'none':
-        this.setTheme(mode);
-        break;
-      case 'flash':
-        this.setTheme(mode);
-        this.attachFlashOverlayTransition();
-        break;
-      case 'smooth':
-        this.attachSmoothOverlayTransition(mode);
-        break;
-      default:
-        this.setTheme(mode);
-        break;
-    }
-  };
-
-  private readonly handleModeClick = (mode: PreferenceThemeModeType) => (): void => {
-    if (this.overlayShow) {
-      return;
-    }
-    this.changeTheme(mode);
+    preferenceStore.state['corner-shape'] = shape === 'default' ? undefined : shape;
   };
 
   render() {
     return (
-      <Host
-        pref-contrast={preferenceStore.state.contrast}
-        pref-theme={preferenceStore.state.theme}
-        pref-theme-scheme={preferenceStore.state['theme-scheme']}
-      >
-        <mds-text class="info" typography="caption">
-          <b>{this.t.get('label')}</b>{' '}
-          {this.disabled
-            ? this.t.get(this.theme[this.mode ?? this.defaultMode].label, { forced: true })
-            : this.t.get(this.theme[this.mode ?? this.defaultMode].label, { forced: false })}
-        </mds-text>
-        <mds-tab fill size={this.size}>
-          <mds-tab-item
-            disabled={this.isModeDisabled('light')}
-            selected={this.mode === 'light'}
-            onClick={this.handleModeClick('light')}
-            class="item item--light"
-            icon={miBaselineLightMode}
-          ></mds-tab-item>
-          <mds-tab-item
-            disabled={this.isModeDisabled('system')}
-            selected={this.mode === 'system'}
-            onClick={this.handleModeClick('system')}
-            class="item item--system"
-            icon={miBaselineSettings}
-          ></mds-tab-item>
-          <mds-tab-item
-            disabled={this.isModeDisabled('dark')}
-            selected={this.mode === 'dark'}
-            onClick={this.handleModeClick('dark')}
-            class="item item--dark"
-            icon={this.mode === 'dark' ? miBaselineDarkMode : miOutlineDarkMode}
-          ></mds-tab-item>
-        </mds-tab>
+      <Host>
+        <div class="menu">
+          <mds-text class="info" typography="caption">
+            <b>{this.t.get('label')}</b>
+          </mds-text>
+          <mds-tab fill size={this.size}>
+            <mds-tab-item
+              selected
+              onClick={this.toggleDropdown}
+              id="mds-pref-theme-nav"
+              class="item item--theme"
+              icon-position="right"
+              icon={this.showDropdown ? miBaselineKeyboardArrowUp : miBaselineKeyboardArrowDown}
+              label={this.name}
+            ></mds-tab-item>
+          </mds-tab>
+        </div>
+        <mds-dropdown
+          class="mds-pref-theme-dropdown"
+          target="#mds-pref-theme-nav"
+          interaction="none"
+          visible={this.showDropdown}
+          onMdsDropdownHide={this.hideThemeDropdownSelect}
+        >
+          <slot></slot>
+        </mds-dropdown>
       </Host>
     );
   }

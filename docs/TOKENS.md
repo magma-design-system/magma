@@ -101,11 +101,11 @@ The hex variants (`colors-hex-*.css`) are pre-rendered for consumers that can't 
 Token values flip at the **palette level** - you don't write conditional colour code. Activate via an `<html>` class:
 
 ```html
-<html class="pref-theme-system">
+<html class="pref-mode-system">
   <!-- follows OS preference -->
-  <html class="pref-theme-light">
+  <html class="pref-mode-light">
     <!-- always light -->
-    <html class="pref-theme-dark">
+    <html class="pref-mode-dark">
       <!-- always dark -->
     </html>
   </html>

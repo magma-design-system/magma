@@ -370,8 +370,8 @@ The parent resolves each content panel by index, matching it to the `mds-tab-ite
  - [mds-pref-consumption](../mds-pref-consumption)
  - [mds-pref-contrast](../mds-pref-contrast)
  - [mds-pref-language](../mds-pref-language)
+ - [mds-pref-mode](../mds-pref-mode)
  - [mds-pref-theme](../mds-pref-theme)
- - [mds-pref-theme-variant](../mds-pref-theme-variant)
 
 ### Depends on
 
@@ -389,8 +389,8 @@ graph TD;
   mds-pref-consumption --> mds-tab-item
   mds-pref-contrast --> mds-tab-item
   mds-pref-language --> mds-tab-item
+  mds-pref-mode --> mds-tab-item
   mds-pref-theme --> mds-tab-item
-  mds-pref-theme-variant --> mds-tab-item
   style mds-tab-item fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

@@ -1,6 +1,3 @@
 {
-  "darkMode": "Oscura",
-  "label": "Modo de tema",
-  "lightMode": "Clara{{#forced}} (forzada en Safari){{/forced}}",
-  "systemSettings": "Basado en el sistema operativo"
+  "label": "Tema"
 }

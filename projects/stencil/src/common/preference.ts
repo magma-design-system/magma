@@ -2,7 +2,7 @@ import { createStore } from '@stencil/store';
 
 /**
  * Shared, reactive read-model of the `<html>` UI preferences
- * (theme / contrast / animation / consumption / language).
+ * (mode / theme scheme / contrast / animation / consumption / language).
  *
  * The `mds-pref-*` controllers remain the sole internal writers/authority: they
  * publish the resolved state as `pref-<dim>-<value>` classes on `<html>` (the
@@ -17,7 +17,7 @@ import { createStore } from '@stencil/store';
  * `:host([pref-<dim>='...'])` selectors (no `:host-context`).
  */
 
-type PreferenceName = 'animation' | 'consumption' | 'contrast' | 'theme' | 'theme-scheme';
+type PreferenceName = 'animation' | 'consumption' | 'contrast' | 'mode' | 'theme-scheme';
 
 /**
  * The corner axis is the one dimension published as an ATTRIBUTE rather than a
@@ -33,19 +33,57 @@ type PreferenceState = Partial<Record<PreferenceName | AttributePreferenceName, 
 };
 
 // Allowed values per preference, mirroring the pref-<dim>-<value> classes the
-// controllers publish. Single-axis only for now - theme is multi-axis (mode +
-// scheme) and will need a dedicated resolver when it is converted.
+// controllers publish.
 const PREFERENCE_VALUES: Record<PreferenceName, string[]> = {
   animation: ['reduce', 'system', 'no-preference'],
   consumption: ['low', 'medium', 'high'],
   contrast: ['more', 'no-preference', 'system'],
-  // theme is two independent single-axis prefs: mode (mds-pref-theme) + scheme
-  // (mds-pref-theme-variant). Resolved separately, both reflected on the host.
-  theme: ['light', 'dark', 'system'],
+  // Two independent axes: the mode (light / dark / system, mds-pref-mode) and the
+  // scheme the named theme allows (mds-pref-theme). Both reflected on the host.
+  mode: ['light', 'dark', 'system'],
   'theme-scheme': ['light', 'dark', 'all'],
 };
 
 const preferenceStore = createStore<PreferenceState>({ language: 'en' });
+
+const MODE_VALUES = PREFERENCE_VALUES.mode;
+
+/**
+ * Carry the v1 storage keys over to the v2 ones, once, before any controller
+ * reads them.
+ *
+ * v1 called the mode `mdsPrefTheme` and the named theme `mdsPrefThemeName`; v2
+ * calls them `mdsPrefMode` and `mdsPrefTheme`. The key `mdsPrefTheme` exists in
+ * both with a different meaning, so it has to be moved before `mds-pref-theme`
+ * reads it: a v1 `dark` read as a theme name would be applied as a theme, and
+ * the v1 mode would be lost. A mode value cannot be a theme name
+ * (`mds-pref-theme` rejects the three), which is what tells the two apart. It
+ * runs here, at module load, because the controllers load in no fixed order.
+ */
+const migrateLegacyPreferenceStorage = (storage: Storage): void => {
+  const legacyMode = storage.getItem('mdsPrefTheme');
+  if (legacyMode !== null && MODE_VALUES.includes(legacyMode)) {
+    if (storage.getItem('mdsPrefMode') === null) {
+      storage.setItem('mdsPrefMode', legacyMode);
+    }
+    storage.removeItem('mdsPrefTheme');
+  }
+  const legacyTheme = storage.getItem('mdsPrefThemeName');
+  if (legacyTheme !== null) {
+    if (storage.getItem('mdsPrefTheme') === null) {
+      storage.setItem('mdsPrefTheme', legacyTheme);
+    }
+    storage.removeItem('mdsPrefThemeName');
+  }
+};
+
+if (typeof localStorage !== 'undefined') {
+  try {
+    migrateLegacyPreferenceStorage(localStorage);
+  } catch {
+    // Storage blocked (private mode, sandboxed frame): nothing to migrate.
+  }
+}
 
 const resolve = (preference: PreferenceName): string | undefined => {
   const values = PREFERENCE_VALUES[preference];
@@ -107,4 +145,4 @@ const prefersReducedMotion = (): boolean => {
   );
 };
 
-export { preferenceStore, prefersReducedMotion };
+export { MODE_VALUES, migrateLegacyPreferenceStorage, preferenceStore, prefersReducedMotion };

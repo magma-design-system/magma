@@ -126,7 +126,7 @@ export class MdsPaginator {
       <Host
         pref-animation={preferenceStore.state.animation}
         pref-contrast={preferenceStore.state.contrast}
-        pref-theme={preferenceStore.state.theme}
+        pref-mode={preferenceStore.state.mode}
         pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
         <mds-paginator-item

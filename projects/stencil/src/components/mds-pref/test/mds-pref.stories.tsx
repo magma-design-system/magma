@@ -21,12 +21,12 @@ export default {
 
 const Template = (args) => (
   <mds-pref {...args}>
-    <mds-pref-theme></mds-pref-theme>
-    <mds-pref-theme-variant>
-      <mds-pref-theme-variant-item name="default"></mds-pref-theme-variant-item>
-      <mds-pref-theme-variant-item name="magma"></mds-pref-theme-variant-item>
-      <mds-pref-theme-variant-item name="maggioli-editore"></mds-pref-theme-variant-item>
-    </mds-pref-theme-variant>
+    <mds-pref-mode></mds-pref-mode>
+    <mds-pref-theme>
+      <mds-pref-theme-item name="default"></mds-pref-theme-item>
+      <mds-pref-theme-item name="magma"></mds-pref-theme-item>
+      <mds-pref-theme-item name="maggioli-editore"></mds-pref-theme-item>
+    </mds-pref-theme>
     <mds-pref-contrast></mds-pref-contrast>
     <mds-pref-animation></mds-pref-animation>
     <mds-pref-consumption></mds-pref-consumption>
@@ -49,7 +49,7 @@ const TemplateController = () => (
       but you need it sets used preferences based on localStorage method.
     </mds-text>
     <mds-pref controller>
-      <mds-pref-theme></mds-pref-theme>
+      <mds-pref-mode></mds-pref-mode>
       <mds-pref-contrast></mds-pref-contrast>
       <mds-pref-animation></mds-pref-animation>
       <mds-pref-consumption></mds-pref-consumption>

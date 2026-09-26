@@ -4,7 +4,7 @@
 
 /*
 :root,
-:root.pref-theme-dark {
+:root.pref-mode-dark {
 
   --variant-primary-01: var(--brand-rnd-01);
   --variant-primary-02: var(--brand-rnd-02);
@@ -20,7 +20,7 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  :root.pref-theme-system {
+  :root.pref-mode-system {
 
     --variant-primary-01: var(--brand-rnd-01);
     --variant-primary-02: var(--brand-rnd-02);

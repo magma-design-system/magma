@@ -84,7 +84,7 @@ export class MdsUrlView {
         aria-label={this.t.get('previewURL', { url: this.urlDomain(this.src) })}
         pref-animation={preferenceStore.state.animation}
         pref-contrast={preferenceStore.state.contrast}
-        pref-theme={preferenceStore.state.theme}
+        pref-mode={preferenceStore.state.mode}
         pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
         <div class="window">

@@ -238,9 +238,9 @@ Subparts (e.g. `mds-table-cell`, `mds-card-header`) always compose inside their 
 | Component                     | Native analogue | Intent                                                     |
 | ----------------------------- | --------------- | ---------------------------------------------------------- |
 | `mds-pref`                    | -               | Root preferences panel grouping all `mds-pref-*` controls. |
-| `mds-pref-theme`              | -               | Light / dark / system theme selector.                      |
-| `mds-pref-theme-variant`      | -               | Theme colour-variant chooser inside `mds-pref-theme`.      |
-| `mds-pref-theme-variant-item` | -               | Single theme variant inside `mds-pref-theme-variant`.      |
+| `mds-pref-mode`               | -               | Light / dark / system mode selector.                       |
+| `mds-pref-theme`              | -               | Named theme chooser (`default`, `business`, ...).          |
+| `mds-pref-theme-item`         | -               | Single named theme inside `mds-pref-theme`.                |
 | `mds-pref-contrast`           | -               | High-contrast preference toggle.                           |
 | `mds-pref-animation`          | -               | Reduced-motion / animation preference toggle.              |
 | `mds-pref-consumption`        | -               | Image / data consumption preference (low / medium / high). |
@@ -339,7 +339,7 @@ Components that expose `size` accept `sm`, `md` (default), `lg`, `xl`. Do not ov
 
 The component layer already handles these - **do not re-implement them in app code**:
 
-- **Dark mode** - flips at the palette level via `<html class="pref-theme-*">`. Components read tokens, not literal colours, so they invert automatically. See [`docs/TOKENS.md`](./TOKENS.md#dark-mode).
+- **Dark mode** - flips at the palette level via `<html class="pref-mode-*">`. Components read tokens, not literal colours, so they invert automatically. See [`docs/TOKENS.md`](./TOKENS.md#dark-mode).
 - **High contrast / reduced motion / low consumption** - `pref-contrast-*`, `pref-animation-*`, `pref-consumption-*` classes on `<html>` cascade through.
 - **Focus styles** - apply `focus-bounce` (interactive elements) or `focus-zoom` (links / static elements). Do not write `:focus { outline: … }`.
 - **ARIA on icon-only controls** - components that accept `icon` without a label require `aria-label` (or `title`) on the host element. The component does not synthesize one.

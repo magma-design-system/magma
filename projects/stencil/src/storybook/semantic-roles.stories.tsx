@@ -52,12 +52,12 @@ const MONO = 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace';
 const THEME_MODES = ['light', 'dark', 'system'];
 const readMode = (): string => {
   const { classList } = document.documentElement;
-  return THEME_MODES.find((mode) => classList.contains(`pref-theme-${mode}`)) ?? 'light';
+  return THEME_MODES.find((mode) => classList.contains(`pref-mode-${mode}`)) ?? 'light';
 };
 const applyMode = (mode: string): void => {
   const { classList } = document.documentElement;
-  THEME_MODES.forEach((value) => classList.remove(`pref-theme-${value}`));
-  classList.add(`pref-theme-${mode}`);
+  THEME_MODES.forEach((value) => classList.remove(`pref-mode-${value}`));
+  classList.add(`pref-mode-${mode}`);
 };
 
 const ThemeSwitch = () => {

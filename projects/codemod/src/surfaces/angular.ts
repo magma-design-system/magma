@@ -27,6 +27,7 @@ import {
   type PropRemoveRule,
   type SlotRule,
   type SlotToAttrRule,
+  type TagRenameRule,
 } from '../manifest/schema.js';
 import { getByTag, ruleId, rulesForComponent } from '../manifest/registry.js';
 import {
@@ -249,9 +250,37 @@ export const transformAngular = (
         case 'slotRemove':
           applySlotRemove(rule, id);
           break;
+        case 'tagRename':
+          applyTagRename(rule, id);
+          break;
         default:
           break;
       }
+    }
+
+    /**
+     * Rename the start tag and the end tag. The end span is only an end tag when
+     * the source there reads `</tag`: a self-closing element reports its start
+     * span again.
+     */
+    function applyTagRename(rule: TagRenameRule, id: string): void {
+      const nameEdit = (at: number): Edit => ({ start: at, end: at + tag.length, text: rule.to });
+      const startSpan = el.startSourceSpan as Span;
+      edits.push(nameEdit(startSpan.start.offset + 1));
+      const endSpan = el.endSourceSpan as Span | null;
+      if (endSpan && source.startsWith(`</${tag}`, endSpan.start.offset))
+        edits.push(nameEdit(endSpan.start.offset + 2));
+      findings.push({
+        kind: 'change',
+        surface: 'angular',
+        file: ctx.file,
+        line,
+        ruleId: id,
+        component: tag,
+        message: `rename <${tag}> to <${rule.to}>`,
+        before: tag,
+        after: rule.to,
+      });
     }
 
     function applyEnsureAttr(rule: EnsureAttrRule, id: string): void {

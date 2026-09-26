@@ -10,7 +10,7 @@ export class MdsHr {
   render() {
     return (
       <Host
-        pref-theme={preferenceStore.state.theme}
+        pref-mode={preferenceStore.state.mode}
         pref-theme-scheme={preferenceStore.state['theme-scheme']}
       />
     );

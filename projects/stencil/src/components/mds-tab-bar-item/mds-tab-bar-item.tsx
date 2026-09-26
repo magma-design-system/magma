@@ -84,7 +84,7 @@ export class MdsTabBarItem {
         onClick={this.select}
         pref-animation={preferenceStore.state.animation}
         pref-contrast={preferenceStore.state.contrast}
-        pref-theme={preferenceStore.state.theme}
+        pref-mode={preferenceStore.state.mode}
         pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
         <mds-icon name={this.icon} />

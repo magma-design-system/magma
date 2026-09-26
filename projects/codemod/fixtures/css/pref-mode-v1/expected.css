@@ -1,0 +1,13 @@
+.pref-mode-dark .card,
+html.pref-mode-dark .panel {
+  color: var(--magma-pref-mode);
+}
+
+.pref-theme-darker,
+.card[data-mode='pref-theme-dark'] {
+  color: red;
+}
+
+mds-pref-mode {
+  --mds-pref-mode-overlay-z-index: 10;
+}

@@ -6,7 +6,7 @@ import localeEs from './meta/locale.es.json';
 import localeIt from './meta/locale.it.json';
 import { TabSizeType } from '@type/button';
 import { PreferenceThemeSchemeType } from '@type/preference';
-import { MdsPrefThemeVariantEventDetail } from '@event/theme-variant';
+import { MdsPrefThemeEventDetail } from '@event/theme';
 
 /**
  * @name Pref
@@ -15,12 +15,12 @@ import { MdsPrefThemeVariantEventDetail } from '@event/theme-variant';
  *  <mds-text>Accessibility preferences in web browsers allow users to customize their navigation to improve readability, interaction, and usability. Common options include dark mode, text resizing, screen reader support, keyboard navigation, and blocking animated content. These settings help people with visual, hearing, motor, or cognitive disabilities experience the web more effectively and inclusively.</mds-text>
  * @category Patterns
  * @tags pattern, user, tab
- * @slot - Add `mds-pref-animation`, `mds-pref-consumption`, `mds-pref-contrast`, `mds-pref-language`, or `mds-pref-theme` element/s.
+ * @slot - Add `mds-pref-animation`, `mds-pref-consumption`, `mds-pref-contrast`, `mds-pref-language`, or `mds-pref-mode` element/s.
  * @example <mds-pref>
  *    <mds-pref-animation></mds-pref-animation>
  *    <mds-pref-consumption></mds-pref-consumption>
  *    <mds-pref-contrast></mds-pref-contrast>
- *    <mds-pref-theme></mds-pref-theme>
+ *    <mds-pref-mode></mds-pref-mode>
  *    <mds-pref-language>
  *      <mds-pref-language-item code="it"></mds-pref-language-item>
  *      <mds-pref-language-item code="en"></mds-pref-language-item>
@@ -79,7 +79,7 @@ export class MdsPref {
     }
     // The lock coordination drives the visible-mode UI (the controller mode is
     // hidden via CSS), so it is wired regardless of the controller prop.
-    this.addThemeVariantEvent(this.host.querySelector('mds-pref-theme-variant') as HTMLElement);
+    this.addThemeEvent(this.host.querySelector('mds-pref-theme') as HTMLElement);
     this.applyInitialSchemeLock();
   }
 
@@ -88,23 +88,23 @@ export class MdsPref {
       document.documentElement?.removeAttribute('data-magma-pref');
     }
     this.removePerfEvents();
-    this.removeThemeVariantEvent(this.host.querySelector('mds-pref-theme-variant') as HTMLElement);
+    this.removeThemeEvent(this.host.querySelector('mds-pref-theme') as HTMLElement);
   }
 
   private addPerfEvents = (): void => {
     this.addEvent(this.host.querySelector('mds-pref-consumption') as HTMLElement);
     this.addEvent(this.host.querySelector('mds-pref-contrast') as HTMLElement);
     this.addEvent(this.host.querySelector('mds-pref-language') as HTMLElement);
+    this.addEvent(this.host.querySelector('mds-pref-mode') as HTMLElement);
     this.addEvent(this.host.querySelector('mds-pref-theme') as HTMLElement);
-    this.addEvent(this.host.querySelector('mds-pref-theme-variant') as HTMLElement);
   };
 
   private removePerfEvents = (): void => {
     this.removeEvent(this.host.querySelector('mds-pref-consumption') as HTMLElement);
     this.removeEvent(this.host.querySelector('mds-pref-contrast') as HTMLElement);
     this.removeEvent(this.host.querySelector('mds-pref-language') as HTMLElement);
+    this.removeEvent(this.host.querySelector('mds-pref-mode') as HTMLElement);
     this.removeEvent(this.host.querySelector('mds-pref-theme') as HTMLElement);
-    this.removeEvent(this.host.querySelector('mds-pref-theme-variant') as HTMLElement);
   };
 
   private handlePrefChangeEvent = (e: CustomEvent): void => {
@@ -123,37 +123,35 @@ export class MdsPref {
     element.removeEventListener('mdsPrefChange', this.handlePrefChangeEvent.bind(this));
   };
 
-  private handleThemeVariantChangeEvent = (e: Event): void => {
-    const detail = (e as CustomEvent<MdsPrefThemeVariantEventDetail>).detail;
+  private handleThemeChangeEvent = (e: Event): void => {
+    const detail = (e as CustomEvent<MdsPrefThemeEventDetail>).detail;
     this.applySchemeLock(detail?.scheme);
   };
 
-  private addThemeVariantEvent = (element?: HTMLElement): void => {
+  private addThemeEvent = (element?: HTMLElement): void => {
     if (!element) return;
-    element.addEventListener('mdsPrefThemeVariantChange', this.handleThemeVariantChangeEvent);
+    element.addEventListener('mdsPrefThemeChange', this.handleThemeChangeEvent);
   };
 
-  private removeThemeVariantEvent = (element?: HTMLElement): void => {
+  private removeThemeEvent = (element?: HTMLElement): void => {
     if (!element) return;
-    element.removeEventListener('mdsPrefThemeVariantChange', this.handleThemeVariantChangeEvent);
+    element.removeEventListener('mdsPrefThemeChange', this.handleThemeChangeEvent);
   };
 
   /**
    * Cross-lane coordination: a scheme-constrained theme locks the matching mode
-   * item in `mds-pref-theme`. This is a UI concern only - it never writes the
+   * item in `mds-pref-mode`. This is a UI concern only - it never writes the
    * stored mode preference, which the theme's `scheme` overrides at render time.
    */
   private applySchemeLock = (scheme?: PreferenceThemeSchemeType): void => {
-    const themeEl = this.host.querySelector('mds-pref-theme') as HTMLMdsPrefThemeElement | null;
-    if (!themeEl) return;
-    themeEl.lockedScheme = scheme === 'light' || scheme === 'dark' ? scheme : undefined;
+    const modeEl = this.host.querySelector('mds-pref-mode') as HTMLMdsPrefModeElement | null;
+    if (!modeEl) return;
+    modeEl.lockedScheme = scheme === 'light' || scheme === 'dark' ? scheme : undefined;
   };
 
   private applyInitialSchemeLock = (): void => {
-    const variantEl = this.host.querySelector(
-      'mds-pref-theme-variant',
-    ) as HTMLMdsPrefThemeVariantElement | null;
-    this.applySchemeLock(variantEl?.scheme);
+    const themeEl = this.host.querySelector('mds-pref-theme') as HTMLMdsPrefThemeElement | null;
+    this.applySchemeLock(themeEl?.scheme);
   };
 
   render() {

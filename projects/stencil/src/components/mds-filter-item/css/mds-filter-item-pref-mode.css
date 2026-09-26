@@ -1,0 +1,34 @@
+/* Theme preference. The component reflects the resolved theme mode and scheme
+ * from <html> onto its host as pref-mode + pref-theme-scheme (see
+ * subscribePreference in @common/preference); these plain shadow selectors refine
+ * for dark. `dark` is the explicit choice; `system` and no controller follow the
+ * OS via @media; the scheme axis gates it. Cross-browser, no :host-context. */
+
+:host([pref-mode='dark']:not([pref-theme-scheme='light'])) {
+  background-color: rgb(var(--magma-wash-soft));
+
+  &:host([selected]:not([selected='false'])) {
+    background-color: rgb(var(--magma-wash-strong));
+    box-shadow: var(--shadow-ring);
+  }
+
+  &:host(:hover) {
+    box-shadow: var(--shadow-ring);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :host([pref-mode='system']:not([pref-theme-scheme='light'])),
+  :host(:not([pref-mode])) {
+    background-color: rgb(var(--magma-wash-soft));
+
+    &:host([selected]:not([selected='false'])) {
+      background-color: rgb(var(--magma-wash-strong));
+      box-shadow: var(--shadow-ring);
+    }
+
+    &:host(:hover) {
+      box-shadow: var(--shadow-ring);
+    }
+  }
+}
