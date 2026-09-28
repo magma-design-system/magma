@@ -154,6 +154,7 @@ export interface SemanticMapping {
   seed: string;
   hues: Record<string, { family: string; roles?: string; partial?: boolean }>;
   hueSteps: { surface: string; fg: string; border: string; emphasis: string };
+  accentSteps?: Partial<{ surface: string; fg: string; border: string; emphasis: string }>;
   neutralHueSteps: { fg: string; border: string; emphasis: string };
   accents: Record<string, string>;
   /**
@@ -245,15 +246,16 @@ export function aliasesFromConfig(m: SemanticMapping): Record<string, string> {
   });
 
   // accents (variant): the standout quintet, one per fixed role (spec 8). They
-  // share the colored-hue steps and resolve to the accent's mapped family. The
+  // share the colored-hue steps (but for `accentSteps`) and resolve to the accent's mapped family. The
   // general `accent` role carries no infix (bare `--magma-accent-*`); others infix
   // their name - mirrors `accentInfix` in semantic.config and scripts/semantic.ts.
+  const accentSteps = { ...m.hueSteps, ...m.accentSteps };
   Object.entries(m.accents).forEach(([role, family]) => {
     const infix = role === 'accent' ? '' : `${role}-`;
-    set(`accent-${infix}surface`, `${family}-${m.hueSteps.surface}`);
-    set(`accent-${infix}fg`, `${family}-${m.hueSteps.fg}`);
-    set(`accent-${infix}border`, `${family}-${m.hueSteps.border}`);
-    set(`accent-${infix}emphasis`, `${family}-${m.hueSteps.emphasis}`);
+    set(`accent-${infix}surface`, `${family}-${accentSteps.surface}`);
+    set(`accent-${infix}fg`, `${family}-${accentSteps.fg}`);
+    set(`accent-${infix}border`, `${family}-${accentSteps.border}`);
+    set(`accent-${infix}emphasis`, `${family}-${accentSteps.emphasis}`);
     set(`accent-${infix}on-emphasis`, m.seed);
     // interaction states (spec 6.6 accent exception): each names an existing ramp
     // step of the same family, mirroring scripts/semantic.ts.

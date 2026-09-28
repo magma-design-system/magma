@@ -364,6 +364,7 @@ Which text roles a wash level may carry is bounded in section 9.1, not by taste.
 | `<hue>-emphasis` | `status/label/variant-*` (APCA), solid fill |
 | `<hue>-emphasis-{hover,active}` | steps `03 / 02` of the same family, named (see 6.6) |
 | `<hue>-fg / -border / -surface` | shortcuts onto the roles above at their default prominence |
+| `accent-<role>-fg` | step `03` of the accent family (`accentSteps`), not the hue `05`: the accent has no generated text scale, and `05` measured 53-66 Lc on the neutral surfaces (under the 60 floor in light); `03` gives 71-84 in both modes. Same step as `-emphasis-hover`, different role: ink on a surface vs a fill state |
 | `*-on-emphasis` | `--tone-*-seed` / near-extreme, verified on the fill |
 
 ### 6.6 Interaction states

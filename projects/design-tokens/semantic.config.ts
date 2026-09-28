@@ -94,6 +94,14 @@ export interface SemanticConfig {
   /** Steps of a colored family for the quintet (spec 6.5). */
   hueSteps: { surface: string; fg: string; border: string; emphasis: string };
   /**
+   * Quintet steps where an ACCENT departs from `hueSteps` (spec 6.3). The accent
+   * ink: `fg` is what icons and text in the accent colour use on a neutral surface,
+   * and step 05 measured 53-66 Lc there (below the 60 floor in light, 53 on an
+   * overlay field in dark), so the components kept reaching for step 03 by hand.
+   * Step 03 gives 71-84 Lc in both modes. Optional: an omitted step follows `hueSteps`.
+   */
+  accentSteps?: Partial<{ surface: string; fg: string; border: string; emphasis: string }>;
+  /**
    * WASH LEVELS of a colored hue: how marked the colored background is, NOT how
    * high it sits. Emitted as `--magma-<hue>-wash-<level>` and, like
    * `accentStateSteps`, each level NAMES an existing ramp step rather than
@@ -233,6 +241,7 @@ export const semantic: SemanticConfig = {
   },
   scaleSteps: 10,
   hueSteps: { surface: '09', fg: '05', border: '06', emphasis: '04' },
+  accentSteps: { fg: '03' },
   // The three wash levels the component sheets actually use as a background
   // today. Colored: 10 x68, 09 x71, 08 x41. NEUTRAL, censused for #624: 10 x35,
   // 09 x51, 08 x58 - 144 declarations that name a raw step because no role could
@@ -340,7 +349,8 @@ export const emphasisStateSteps = (): Record<string, string> =>
   );
 
 export const accentTintOverride = (role: string, family: string): string[] => {
-  const { hueSteps, accentStateSteps } = semantic;
+  const { accentStateSteps } = semantic;
+  const hueSteps = { ...semantic.hueSteps, ...semantic.accentSteps };
   const infix = accentInfix(role);
   return [
     `  --magma-tint-accent-${infix}surface: var(--${family}-${hueSteps.surface});`,
