@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { AddonPanel, Form } from 'storybook/internal/components';
 import { addons, types } from 'storybook/manager-api';
-import themeMaggioli from './theme.mjs';
+import { themes } from './theme.mjs';
 import clsx from 'clsx';
 
 import {
@@ -9,6 +9,7 @@ import {
   PREF_CHANNEL_EVENTS,
   PREFERENCES,
   PREFS_ENABLED_KEY,
+  effectiveScheme,
   storedValue,
 } from './preferences.mjs';
 
@@ -68,7 +69,17 @@ const AccessibilityPanel = () => {
   );
 };
 
-addons.register('maggioli/panel', () => {
+// The chrome follows the scheme the preview renders: `color-scheme` aligns the
+// browser's own UI (scrollbars, form controls) and the theme repaints the rest.
+const paintChrome = (api, scheme) => {
+  document.documentElement.style.colorScheme = scheme;
+  api?.setOptions({ theme: themes[scheme] });
+};
+
+addons.register('maggioli/panel', (api) => {
+  paintChrome(null, effectiveScheme());
+  addons.getChannel().on(PREF_CHANNEL_EVENTS.scheme, (scheme) => paintChrome(api, scheme));
+
   addons.add('maggioli-addon/accessibility', {
     title: 'Magma accessibility',
     // 👇 Sets the type of UI element in Storybook
@@ -84,8 +95,6 @@ addons.register('maggioli/panel', () => {
 });
 
 addons.setConfig({
-  /**
-   * theme storybook, see link below
-   */
-  theme: themeMaggioli,
+  // the starting theme, repainted by paintChrome when the preview publishes its scheme
+  theme: themes[effectiveScheme()],
 });

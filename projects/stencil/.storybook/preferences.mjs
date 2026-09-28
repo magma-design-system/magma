@@ -12,6 +12,7 @@
  */
 
 export const PREF_CHANNEL_EVENTS = {
+  scheme: 'magma/preferences/scheme',
   set: 'magma/preferences/set',
   toggle: 'magma/preferences/toggle',
 };
@@ -84,3 +85,26 @@ export const storageKey = (name) => `mdsPref${capitalize(name)}`;
 
 export const storedValue = ({ name, fallback }) =>
   window.localStorage.getItem(storageKey(name)) ?? fallback;
+
+// The mode the preview is pinned to while the panel is disabled.
+export const CHROME_MODE = 'light';
+
+export const DARK_QUERY = '(prefers-color-scheme: dark)';
+
+const MODE = PREFERENCES.find(({ name }) => name === 'mode');
+
+/**
+ * The scheme the preview actually renders, so the Storybook chrome (manager
+ * and docs theme) can be painted in the same one: the pinned chrome mode while
+ * the panel is disabled, otherwise the stored mode, with `system` resolved
+ * against the OS. Manager and preview share the origin, so both read the same
+ * keys; after startup the preview publishes it on `PREF_CHANNEL_EVENTS.scheme`.
+ */
+export const effectiveScheme = () => {
+  const enabled = window.localStorage.getItem(PREFS_ENABLED_KEY) === 'enable';
+  const mode = enabled ? storedValue(MODE) : CHROME_MODE;
+  if (mode === 'system') {
+    return window.matchMedia(DARK_QUERY).matches ? 'dark' : 'light';
+  }
+  return mode;
+};
