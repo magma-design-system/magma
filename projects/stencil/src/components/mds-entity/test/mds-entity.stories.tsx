@@ -158,7 +158,7 @@ const TemplateCustomIconColors = (args) => (
     {...args}
     style={{
       '--mds-entity-icon-background': 'transparent',
-      '--mds-entity-icon-color': 'rgb(var(--tone-neutral-04))',
+      '--mds-entity-icon-color': 'rgb(var(--magma-text-subtle))',
     }}
     aria-label="Luogo"
   >
