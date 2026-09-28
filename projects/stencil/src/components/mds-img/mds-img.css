@@ -11,8 +11,8 @@
 
 :host {
   --mds-img-background: rgb(var(--magma-accent-emphasis-hover));
-  --mds-img-color: rgb(var(--variant-primary-09));
-  --mds-img-icon-color: rgb(var(--variant-primary-07));
+  --mds-img-color: rgb(var(--magma-accent-surface));
+  --mds-img-icon-color: rgb(var(--magma-accent-border));
   --mds-img-error-background: rgb(var(--magma-danger-wash-base));
   --mds-img-error-color: rgb(var(--magma-danger-text-default));
   --mds-img-error-icon-color: rgb(var(--status-error-06));

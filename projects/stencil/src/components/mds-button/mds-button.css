@@ -24,7 +24,7 @@
   --mds-button-transition-duration: var(--duration-300);
   --private-button-transition-duration: var(--mds-button-transition-duration);
   --mds-button-background: rgb(var(--mds-button-border-color-rgb));
-  --mds-button-border-color-rgb: var(--variant-primary-02);
+  --mds-button-border-color-rgb: var(--magma-accent-emphasis-active);
   --mds-button-border-hover-opacity: 0.75;
   --mds-button-border-high-contrast-hover-width: 3px;
   --mds-button-border-high-contrast-width: --spacing(50);

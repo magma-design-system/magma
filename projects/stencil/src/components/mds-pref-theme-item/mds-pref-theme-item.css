@@ -11,7 +11,7 @@
   --mds-pref-theme-item-color-status-error: rgb(var(--status-error-06));
   --mds-pref-theme-item-color-status-success: rgb(var(--status-success-06));
   --mds-pref-theme-item-color-status-warning: rgb(var(--status-warning-06));
-  --mds-pref-theme-item-color-variant-primary: rgb(var(--variant-primary-03));
+  --mds-pref-theme-item-color-variant-primary: rgb(var(--magma-accent-emphasis));
 
   display: flex;
 }

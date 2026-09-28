@@ -17,7 +17,7 @@
 
 @property --mds-img-color {
   inherits: true;
-  initial-value: rgb(var(--variant-primary-09));
+  initial-value: rgb(var(--magma-accent-surface));
   syntax: '<color>';
 }
 
@@ -41,6 +41,6 @@
 
 @property --mds-img-icon-color {
   inherits: true;
-  initial-value: rgb(var(--variant-primary-07));
+  initial-value: rgb(var(--magma-accent-border));
   syntax: '<color>';
 }

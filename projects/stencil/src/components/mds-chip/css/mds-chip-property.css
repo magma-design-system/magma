@@ -29,7 +29,7 @@
 
 @property --mds-chip-icon-background {
   inherits: true;
-  initial-value: rgb(var(--variant-primary-06));
+  initial-value: rgb(var(--magma-accent-fg));
   syntax: '<color>';
 }
 

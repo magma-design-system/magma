@@ -14,7 +14,7 @@
   --mds-input-switch-toggle-color-disabled-checked: rgb(var(--magma-text-on-emphasis));
   --mds-input-switch-toggle-color-disabled-unchecked: rgb(var(--magma-text-on-emphasis));
   --mds-input-switch-icon-color-checked-disabled: rgb(var(--magma-scale-06));
-  --mds-input-switch-icon-color-checked: rgb(var(--variant-primary-06));
+  --mds-input-switch-icon-color-checked: rgb(var(--magma-accent-border));
   --mds-input-switch-icon-color-indeterminate-disabled: rgb(var(--magma-text-disabled));
   --mds-input-switch-icon-color-indeterminate: rgb(var(--magma-text-disabled));
   --mds-input-switch-icon-color-unchecked-disabled: rgb(var(--magma-scale-06));
@@ -33,7 +33,7 @@
     --mds-input-switch-toggle-color-disabled-checked: rgb(var(--magma-text-on-emphasis));
     --mds-input-switch-toggle-color-disabled-unchecked: rgb(var(--magma-text-on-emphasis));
     --mds-input-switch-icon-color-checked-disabled: rgb(var(--magma-scale-06));
-    --mds-input-switch-icon-color-checked: rgb(var(--variant-primary-06));
+    --mds-input-switch-icon-color-checked: rgb(var(--magma-accent-border));
     --mds-input-switch-icon-color-indeterminate-disabled: rgb(var(--magma-text-disabled));
     --mds-input-switch-icon-color-indeterminate: rgb(var(--magma-text-disabled));
     --mds-input-switch-icon-color-unchecked-disabled: rgb(var(--magma-scale-06));

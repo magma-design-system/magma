@@ -59,7 +59,7 @@
 
 @property --mds-date-range-preselection-selected-border {
   inherits: true;
-  initial-value: var(--variant-primary-03);
+  initial-value: var(--magma-accent-emphasis-hover);
   syntax: '<number>+';
 }
 
