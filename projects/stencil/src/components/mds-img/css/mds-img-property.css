@@ -23,19 +23,19 @@
 
 @property --mds-img-error-background {
   inherits: true;
-  initial-value: rgb(var(--status-error-09));
+  initial-value: rgb(var(--magma-danger-wash-base));
   syntax: '<color>';
 }
 
 @property --mds-img-error-color {
   inherits: true;
-  initial-value: rgb(var(--status-error-04));
+  initial-value: rgb(var(--magma-danger-text-default));
   syntax: '<color>';
 }
 
 @property --mds-img-error-icon-color {
   inherits: true;
-  initial-value: rgb(var(--status-error-06));
+  initial-value: rgb(var(--magma-danger-text-default));
   syntax: '<color>';
 }
 

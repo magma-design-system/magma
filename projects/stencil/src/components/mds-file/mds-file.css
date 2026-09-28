@@ -149,7 +149,7 @@
 .downloaded {
   @apply svg;
 
-  fill: rgb(var(--status-success-06));
+  fill: rgb(var(--magma-success-emphasis));
 }
 
 @import './css/mds-file-format.css';

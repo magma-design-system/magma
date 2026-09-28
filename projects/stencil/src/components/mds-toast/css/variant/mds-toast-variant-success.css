@@ -10,5 +10,5 @@
   --mds-toast-background: rgb(var(--magma-success-wash-soft));
   --mds-toast-color: rgb(var(--magma-success-text-subtle));
   --mds-toast-shadow: var(--shadow-sm-sharp);
-  --mds-toast-icon-color: rgb(var(--status-success-06));
+  --mds-toast-icon-color: rgb(var(--magma-success-text-default));
 }

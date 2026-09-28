@@ -8,9 +8,9 @@
 
 :host {
   --mds-pref-theme-item-color-background: rgb(var(--magma-wash-base));
-  --mds-pref-theme-item-color-status-error: rgb(var(--status-error-06));
-  --mds-pref-theme-item-color-status-success: rgb(var(--status-success-06));
-  --mds-pref-theme-item-color-status-warning: rgb(var(--status-warning-06));
+  --mds-pref-theme-item-color-status-error: rgb(var(--magma-danger-emphasis));
+  --mds-pref-theme-item-color-status-success: rgb(var(--magma-success-emphasis));
+  --mds-pref-theme-item-color-status-warning: rgb(var(--magma-warning-emphasis));
   --mds-pref-theme-item-color-variant-primary: rgb(var(--magma-accent-emphasis));
 
   display: flex;

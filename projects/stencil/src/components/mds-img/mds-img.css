@@ -15,7 +15,7 @@
   --mds-img-icon-color: rgb(var(--magma-accent-border));
   --mds-img-error-background: rgb(var(--magma-danger-wash-base));
   --mds-img-error-color: rgb(var(--magma-danger-text-default));
-  --mds-img-error-icon-color: rgb(var(--status-error-06));
+  --mds-img-error-icon-color: rgb(var(--magma-danger-text-default));
 
   display: flex;
   height: auto;

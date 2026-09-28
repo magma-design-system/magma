@@ -31,7 +31,7 @@
   --mds-input-date-icon-color: rgb(var(--magma-accent-fg));
   --mds-input-date-background: rgb(var(--magma-surface-overlay));
   --mds-input-date-field-background-empty: rgb(var(--magma-danger-wash-soft));
-  --mds-input-date-field-color-empty: rgb(var(--status-error-06));
+  --mds-input-date-field-color-empty: rgb(var(--magma-danger-text-default));
   --mds-input-date-icon-color-rgb: var(--mds-input-date-variant-color-rgb);
   --mds-input-date-ring: 0 0 0 1px rgb(var(--mds-input-date-variant-color-rgb) / 0.1);
   --mds-input-date-shadow:
