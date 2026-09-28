@@ -31,7 +31,7 @@
 
 @property --mds-date-range-preselection-hover-background {
   inherits: true;
-  initial-value: rgb(var(--tone-neutral-seed));
+  initial-value: rgb(var(--magma-wash-soft));
   syntax: '<color>';
 }
 
@@ -39,7 +39,7 @@
 
 @property --mds-date-range-preselection-hover-border {
   inherits: true;
-  initial-value: var(--tone-neutral-seed);
+  initial-value: var(--magma-wash-soft);
   syntax: '<number>+';
 }
 

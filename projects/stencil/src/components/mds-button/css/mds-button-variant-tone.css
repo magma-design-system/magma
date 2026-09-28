@@ -1,3 +1,8 @@
+/* The light / dark variants are a pure-inversion pair: light is painted in the
+ * paper of the mode, --tone-neutral-seed (#fff light / #000 dark), dark in the
+ * ink of the mode. The seed is the intended value here, not a surface: no
+ * elevation role is paper in both modes (SEMANTIC_COLOR_SPEC 10 and 15). */
+
 :host([variant='light']) {
   --mds-button-background: rgb(var(--tone-neutral-seed));
   --mds-button-border-color-rgb: var(--tone-neutral-seed);

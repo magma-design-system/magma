@@ -35,6 +35,8 @@
   border-width: var(--mds-badge-border-width);
 }
 
+/* the paper of the mode, as the light variant (see mds-badge-variant-tone.css) */
+
 :host([tone='text']) {
   --mds-badge-background: rgb(var(--tone-neutral-seed));
 }

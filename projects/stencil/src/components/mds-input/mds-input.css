@@ -36,7 +36,7 @@
 */
 
 :host {
-  --mds-input-background: rgb(var(--tone-neutral-seed));
+  --mds-input-background: rgb(var(--magma-surface-overlay));
   --mds-input-icon-color: rgb(var(--variant-primary-03));
   --mds-input-placeholder-default-color: rgb(var(--magma-scale-06));
   --mds-input-placeholder-focus-color: rgb(var(--magma-scale-07));

@@ -44,7 +44,7 @@
   --mds-tree-actions-border-radius: var(--radius-lg);
   --mds-tree-actions-gap: --spacing(50);
   --mds-tree-label-default-background: transparent;
-  --mds-tree-label-hover-background: rgb(var(--tone-neutral-seed));
+  --mds-tree-label-hover-background: rgb(var(--magma-wash-soft));
   --mds-tree-label-icon-default-color: rgb(var(--magma-accent-emphasis));
   --mds-tree-label-icon-hover-color: var(--mds-tree-label-icon-default-color);
   --mds-tree-line-clamp: 2;

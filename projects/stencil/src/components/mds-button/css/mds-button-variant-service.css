@@ -1,3 +1,6 @@
+/* The google button is painted in the paper of the mode, --tone-neutral-seed
+ * (#fff light / #000 dark), as the brand button is: the seed is intended here. */
+
 :host([variant='google']),
 :host([variant='google'][tone]) {
   --mds-button-background: rgb(var(--tone-neutral-seed));

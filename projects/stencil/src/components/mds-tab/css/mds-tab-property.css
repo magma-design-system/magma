@@ -53,7 +53,7 @@
 
 @property --mds-tab-tabs-background {
   inherits: true;
-  initial-value: rgb(var(--magma-scale-09));
+  initial-value: rgb(var(--magma-wash-soft));
   syntax: '<color>';
 }
 
