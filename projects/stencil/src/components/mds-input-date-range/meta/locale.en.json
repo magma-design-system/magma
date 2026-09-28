@@ -1,4 +1,6 @@
 {
+  "endDate": "End date",
   "from": "From",
+  "startDate": "Start date",
   "to": "to"
 }

@@ -1,5 +1,10 @@
 import { Component, Element, AttachInternals, Host, h, Prop } from '@stencil/core';
 import { setFormValue } from '@common/form';
+import { Locale } from '@common/locale';
+import localeEl from './meta/locale.el.json';
+import localeEn from './meta/locale.en.json';
+import localeEs from './meta/locale.es.json';
+import localeIt from './meta/locale.it.json';
 
 export interface MdsInputOtpInterface {
   length?: number;
@@ -16,6 +21,18 @@ export interface MdsInputOtpInterface {
 export class MdsInputOtp {
   @Element() private element: HTMLMdsInputOtpElement;
   @AttachInternals() internals: ElementInternals;
+  private t: Locale = new Locale({
+    el: localeEl,
+    en: localeEn,
+    es: localeEs,
+    it: localeIt,
+  });
+
+  /**
+   * The accessible name of the code: each digit is announced as a position inside it, the
+   * fields being separate controls a screen reader reaches one at a time.
+   */
+  @Prop({ attribute: 'aria-label' }) readonly accessibleName?: string;
 
   /**
    * Number of digits in the OTP code
@@ -106,11 +123,17 @@ export class MdsInputOtp {
     }
   };
 
+  private digitName = (index: number): string => {
+    const digit = this.t.get('digit', { position: index + 1, length: this.length });
+    return (this.accessibleName ?? '') !== '' ? `${this.accessibleName}, ${digit}` : digit;
+  };
+
   render() {
     return (
       <Host>
-        {Array.from({ length: this.length }).map(() => (
+        {Array.from({ length: this.length }).map((_, index) => (
           <mds-input
+            aria-label={this.digitName(index)}
             class="input"
             maxlength={1}
             onKeyDown={this.handleKeyDown}

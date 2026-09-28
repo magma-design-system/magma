@@ -169,6 +169,7 @@ export class MdsPrefLanguage {
             <mds-tab-item
               selected
               onClick={this.toggleDropdown}
+              expanded={this.showDropdown}
               id="mds-pref-language-nav"
               class="item item--custom-language"
               icon-position="right"

@@ -296,7 +296,7 @@ Rules:
 3. A bug fix's test should reproduce the bug: fail on the previous implementation, pass on the fix.
 4. **Split by tool**: Vitest (`spec` / `e2e`) owns the unit and component tests and is the mandatory part of rule 1; Storybook owns the visual, interaction and accessibility tests and the multi-component pages. Add or update a story when necessary: when the change affects the look, the user interaction, the accessibility or the composition with other components. A story never replaces a Vitest test.
 
-How to write and run the tests (Vitest + `@stencil/vitest`, `render` / `userEvent`, shared-page caveats; Storybook test-runner via `npm run test.storybook` / `npm run test.storybook.static`): [`HOWTO.md`](../../projects/stencil/HOWTO.md#tests).
+How to write and run the tests (Vitest + `@stencil/vitest`, `render` / `userEvent`, shared-page caveats; the stories via `npm run test-storybook`, the `storybook` Vitest project): [`HOWTO.md`](../../projects/stencil/HOWTO.md#tests).
 
 ## Per-component usage docs
 

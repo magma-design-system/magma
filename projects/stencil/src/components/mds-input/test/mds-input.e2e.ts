@@ -209,4 +209,18 @@ describe('password mask', () => {
     expect(maskStyle.borderTopRightRadius).toBe('0px');
     expect(maskStyle.borderBottomRightRadius).toBe('0px');
   });
+
+  describe('accessible name', () => {
+    it('names its native control after the aria-label of the host', async () => {
+      await setup('<mds-input aria-label="Email"></mds-input><button></button>');
+
+      expect(mdsInput.shadowRoot!.querySelector('input')).toEqualAttribute('aria-label', 'Email');
+    });
+
+    it('names a textarea the same way', async () => {
+      await setup('<mds-input type="textarea" aria-label="Note"></mds-input><button></button>');
+
+      expect(mdsInput.shadowRoot!.querySelector('textarea')).toEqualAttribute('aria-label', 'Note');
+    });
+  });
 });

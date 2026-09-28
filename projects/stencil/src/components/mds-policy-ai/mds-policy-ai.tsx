@@ -81,7 +81,9 @@ export class MdsPolicyAi {
               variant="ai"
               label={this.headline ?? this.t.get('chipLabel')}
             ></mds-chip>
-            <mds-dropdown target="#chip" class="chip-dropdown" interaction="mouseover">
+            {/* the panel describes the policy and offers one link: it is a group, not the menu
+                the dropdown declares by default, whose children can only be entries */}
+            <mds-dropdown target="#chip" class="chip-dropdown" interaction="mouseover" role="group">
               <mds-text typography="tip">
                 {this.description ?? this.t.get('cardDescription')}
               </mds-text>

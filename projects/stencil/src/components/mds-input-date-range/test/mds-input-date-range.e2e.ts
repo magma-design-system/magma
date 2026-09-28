@@ -322,4 +322,31 @@ describe('mds-input-date-range', () => {
       },
     ]);
   });
+
+  describe('accessible name', () => {
+    it('names each slotted field after the end of the range it covers', async () => {
+      const { host } = await setupRange();
+
+      expect(host.querySelector('[slot="start"]')).toEqualAttribute('aria-label', 'Start date');
+      expect(host.querySelector('[slot="end"]')).toEqualAttribute('aria-label', 'End date');
+    });
+
+    it('puts the name of the range in front of both', async () => {
+      const { host } = await setupRange('aria-label="Periodo"');
+
+      expect(host.querySelector('[slot="start"]')).toEqualAttribute(
+        'aria-label',
+        'Periodo, Start date',
+      );
+    });
+
+    it('leaves a name written on the field alone', async () => {
+      const { host } = await setupRange(
+        '',
+        '<mds-input-date slot="start" aria-label="Arrivo"></mds-input-date><mds-input-date slot="end"></mds-input-date>',
+      );
+
+      expect(host.querySelector('[slot="start"]')).toEqualAttribute('aria-label', 'Arrivo');
+    });
+  });
 });

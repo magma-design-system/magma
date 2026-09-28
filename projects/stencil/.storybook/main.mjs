@@ -5,98 +5,65 @@ import { fileURLToPath } from 'node:url';
 
 import tailwindcss from '@tailwindcss/postcss';
 import autoprefixer from 'autoprefixer';
+import postcss from 'postcss';
 import iconsauce from 'postcss-iconsauce';
-import { TsconfigPathsPlugin } from 'tsconfig-paths-webpack-plugin';
+import { mergeConfig } from 'vite';
 
 const nodeRequire = createRequire(import.meta.url);
 const configDir = path.dirname(fileURLToPath(import.meta.url));
+const projectDir = path.resolve(configDir, '..');
 
+// Vite does not read the tsconfig `paths`: mirror them (same list as vitest.config.mts)
 const alias = {
-  '@dictionary': path.resolve(configDir, '../src/dictionary/'),
-  '@fixture': path.resolve(configDir, '../src/fixtures/'),
-  '@icon': path.resolve(configDir, '../assets/svg/'),
+  '@common': path.resolve(projectDir, 'src/common'),
+  '@component': path.resolve(projectDir, 'src/components'),
+  '@dictionary': path.resolve(projectDir, 'src/dictionary'),
+  '@event': path.resolve(projectDir, 'src/event-detail'),
+  '@fixture': path.resolve(projectDir, 'src/fixtures'),
+  '@icon': path.resolve(projectDir, 'assets/svg'),
+  '@meta': path.resolve(projectDir, 'src/meta'),
   '@placeholder': 'https://via.placeholder.com',
-  '@test': path.resolve(configDir, '../src/test/'),
-  '@type': path.resolve(configDir, '../src/types/'),
+  '@tailwind': path.resolve(projectDir, 'src/tailwind'),
+  '@test': path.resolve(projectDir, 'src/test'),
+  '@type': path.resolve(projectDir, 'src/type'),
 };
 const stories = ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)'];
 const staticDirs = ['../assets', '../dist'];
 const addons = [
   getAbsolutePath('@storybook/addon-a11y'),
-  getAbsolutePath('@storybook/addon-styling-webpack'),
-  getAbsolutePath('@storybook/addon-webpack5-compiler-babel'),
   getAbsolutePath('@storybook/addon-docs'),
+  getAbsolutePath('@storybook/addon-vitest'),
 ];
-const webpackFinal = async (config) => {
-  // `configType` has a value of 'DEVELOPMENT' or 'PRODUCTION'
-  // You can change the configuration based on that.
-  // 'PRODUCTION' is used when building the static version of storybook.
 
-  config.resolve.alias = {
-    ...config.resolve.alias,
-    ...alias,
+// Tailwind 4 rewrites the whole stylesheet in its `Once` hook, which runs before any `AtRule`
+// visitor, and drops the unknown `@iconsauce` at-rule with it. Under webpack css-loader fed the
+// imported iconsauce.css to PostCSS on its own, so Tailwind never saw the at-rule; Vite inlines
+// the `@import`s first, so the icons have to be resolved in a `Once` that runs ahead of Tailwind.
+const iconsauceBeforeTailwind = () => {
+  const plugin = iconsauce(path.resolve(configDir, 'iconsauce.config.mjs'));
+  return {
+    postcssPlugin: 'iconsauce-before-tailwind',
+    async Once(root, { result }) {
+      await postcss([plugin]).process(root, { from: result.opts.from });
+    },
   };
-  config.module.rules.push(
-    {
-      test: /\.ts$/,
-      use: {
-        loader: 'ts-loader',
-        // the preview does not bundle the vitest specs: type checking the whole
-        // tsconfig program made a WIP test file break the whole Storybook build
-        options: { onlyCompileBundledFiles: true },
-      },
-      exclude: /node_modules/,
-    },
-    {
-      test: /(\.stories\.tsx|preview\.jsx)$/,
-      exclude: /node_modules/,
-      use: [
-        {
-          loader: 'babel-loader',
-          options: {
-            sourceType: 'unambiguous',
-            babelrc: false,
-            presets: [
-              ['@babel/preset-react', { runtime: 'automatic' }],
-              '@babel/preset-typescript',
-            ],
-          },
-        },
-      ],
-    },
-    {
-      test: /\.css$/,
-      use: [
-        {
-          loader: 'postcss-loader',
-          options: {
-            postcssOptions: {
-              plugins: [
-                iconsauce('./.storybook/iconsauce.config.mjs'),
-                tailwindcss,
-                autoprefixer,
-              ],
-            },
-          },
-        },
-      ],
-      include: path.resolve(configDir, '../'),
-    },
-  );
-  config.resolve.fallback = {
-    crypto: false,
-    path: false,
-  };
-  config.resolve.plugins = config.resolve.plugins || [];
-  config.resolve.plugins.push(
-    new TsconfigPathsPlugin({
-      configFile: path.resolve(configDir, '../tsconfig.json'),
-    }),
-  );
-  return config;
 };
+
+// Shared by `storybook dev|build` and by the `storybook` project of vitest.config.mts
+const viteFinal = async (config) =>
+  mergeConfig(config, {
+    resolve: { alias },
+    css: {
+      // the same pipeline the webpack builder ran through postcss-loader
+      postcss: { plugins: [iconsauceBeforeTailwind(), tailwindcss, autoprefixer] },
+    },
+    // the stories are React JSX (automatic runtime): tsconfig.json declares the Stencil `h`
+    // factory for the components, and @storybook/react-vite ships no React plugin of its own
+    oxc: { jsx: { runtime: 'automatic' } },
+  });
+
 const framework = {
-  name: getAbsolutePath('@storybook/react-webpack5'),
+  name: getAbsolutePath('@storybook/react-vite'),
   options: { legacyRootApi: true },
 };
 const docs = {};
@@ -105,7 +72,7 @@ const config = {
   stories,
   staticDirs,
   addons,
-  webpackFinal,
+  viteFinal,
   framework,
 
   options: {
@@ -117,7 +84,8 @@ const config = {
   docs,
 
   typescript: {
-    reactDocgen: 'react-docgen-typescript',
+    // no React component to document: the props tables come from the stories' argTypes
+    reactDocgen: false,
   },
 };
 

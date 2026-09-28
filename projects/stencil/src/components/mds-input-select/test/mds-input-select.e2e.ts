@@ -68,4 +68,14 @@ describe('mds-input-select', () => {
       expect(arrowStyle.backgroundColor).toBe('rgba(0, 0, 0, 0)');
     });
   });
+
+  describe('accessible name', () => {
+    it('names the select after the aria-label of the host', async () => {
+      const { root } = await render<HTMLMdsInputSelectElement>(
+        '<mds-input-select aria-label="Film"><option value="1">First contact</option></mds-input-select>',
+      );
+
+      expect(root.shadowRoot!.querySelector('select')).toEqualAttribute('aria-label', 'Film');
+    });
+  });
 });

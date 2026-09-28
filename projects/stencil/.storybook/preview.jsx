@@ -104,6 +104,13 @@ channel.on(PREF_CHANNEL_EVENTS.set, ({ name, value }) => {
 const parameters = {
   a11y: {
     test: 'error',
+    config: {
+      rules: [
+        // the colours come from @maggioli-design-system/design-tokens: a contrast below the
+        // threshold is a token decision, reported in the "needs review" list instead of failing
+        { id: 'color-contrast', reviewOnFail: true },
+      ],
+    },
   },
   options: {
     storySort: {

@@ -12,8 +12,9 @@ import {
 } from '@floating-ui/dom';
 import { FloatingUIPlacement, FloatingUIStrategy } from '@type/floating-ui';
 import { cssDurationToMilliseconds } from './unit';
-import { setAttributeIfEmpty } from './aria';
+import { hashRandomValue, setAttributeIfEmpty } from './aria';
 import { HTMLStencilElement } from '@stencil/core/internal';
+import { Build } from '@stencil/core';
 
 export interface FloatingElement extends PositionOptions {
   host: HTMLFloatingElement;
@@ -35,16 +36,46 @@ export interface PositionOptions {
   strategy: FloatingUIStrategy;
 }
 
+/**
+ * ARIA role the floating element takes when the markup does not name one: a `menu` is a popup its
+ * caller controls, a `tooltip` only describes it. A panel that holds anything other than a list of
+ * actions declares its own role and keeps it, `setAttributeIfEmpty` never overwriting it.
+ */
+export type FloatingRole = 'menu' | 'tooltip';
+
+/** Roles of a popup that `aria-haspopup` knows how to name: a panel that calls itself a `group` has none */
+const HASPOPUP_ROLES = ['dialog', 'grid', 'listbox', 'menu', 'tree'];
+
+/**
+ * A caller is wired only when it exposes a role that accepts the wiring: on a generic element
+ * `aria-expanded` and `aria-haspopup` are attributes ARIA does not allow (axe `aria-allowed-attr`),
+ * and a host that keeps its control inside its shadow root is generic exactly like a `div` - an
+ * `mds-tab-item` renders the tab as its inner `mds-button[role="tab"]`, an `mds-chip` puts
+ * `role="button"` on its label. Written on those hosts the attributes describe the wrapper and not
+ * the control, and inside a tablist they even make the item a child the `tab` role no longer covers
+ * (axe `aria-required-children`). Moving them onto the inner control is not an option either: an
+ * IDREF does not cross the shadow boundary.
+ */
+const CALLER_ROLES = ['button', 'combobox', 'link', 'menuitem', 'tab', 'treeitem'];
+const NATIVE_CALLERS = ['A', 'BUTTON', 'INPUT', 'SELECT', 'SUMMARY', 'TEXTAREA'];
+
 export class FloatingController {
   private _caller: HTMLElement;
+  private _wired = false;
+  /** what was written on the caller, to be taken back when the target moves to another one:
+   * an attribute that was already there belongs to whoever wrote it and is none of our business */
+  private _written: string[] = [];
+  private _labelledByOurs = false;
   private readonly _host: HTMLFloatingElement;
+  private readonly _role: FloatingRole;
   arrowEl: HTMLElement | undefined;
 
   private cleanupAutoUpdate: () => void;
 
-  constructor(host: HTMLFloatingElement, arrowEl?: HTMLElement) {
+  constructor(host: HTMLFloatingElement, arrowEl?: HTMLElement, role: FloatingRole = 'menu') {
     this._host = host;
     this.arrowEl = arrowEl;
+    this._role = role;
   }
 
   updateCaller(target: string): HTMLElement | null {
@@ -60,13 +91,100 @@ export class FloatingController {
       return null;
     }
 
+    if (this._caller && this._caller !== caller) this.unwireCaller();
     this._caller = caller;
+    this._wired = false;
 
-    setAttributeIfEmpty(this._caller, 'aria-haspopup', 'true');
-    setAttributeIfEmpty(this._caller, 'aria-controls', target);
-    setAttributeIfEmpty(this._host, 'role', 'menu');
-    setAttributeIfEmpty(this._host, 'aria-labelledby', target);
+    setAttributeIfEmpty(this._host, 'role', this._role);
+    void this.wireCaller();
     return caller;
+  }
+
+  /**
+   * Lets go of the caller the target no longer names. Left alone it keeps pointing at a panel
+   * that is not its own, with a state frozen on the last time it was open, and the panel keeps
+   * being labelled by it - `setAttributeIfEmpty` writes the label once and the second caller
+   * would never get it.
+   */
+  private readonly unwireCaller = (): void => {
+    this._written.forEach((attribute) => this._caller.removeAttribute(attribute));
+    this._written = [];
+    if (this._labelledByOurs) {
+      this._host.removeAttribute('aria-labelledby');
+      this._labelledByOurs = false;
+    }
+  };
+
+  private readonly writeOnCaller = (attribute: string, value: string): void => {
+    if (this._caller.hasAttribute(attribute)) return;
+    this._caller.setAttribute(attribute, value);
+    this._written.push(attribute);
+  };
+
+  /** An IDREF does not cross a shadow boundary: a caller the host shares no tree with keeps the
+   * attributes that need no reference and loses the ones that do */
+  private readonly sameRoot = (): boolean =>
+    this._caller.getRootNode() === this._host.getRootNode();
+
+  private readonly callerAcceptsWiring = (): boolean => {
+    const role = this._caller.getAttribute('role');
+    return role !== null
+      ? CALLER_ROLES.includes(role)
+      : NATIVE_CALLERS.includes(this._caller.tagName);
+  };
+
+  /**
+   * Ties caller and popup to each other with real IDREFs - the wiring used to write the selector
+   * of the caller, which names no element at all, on both sides and towards the caller itself.
+   * Our own callers are waited for first: an `mds-button` writes its `role="button"` in its own
+   * `componentDidLoad`, and which of the two components loads first is not guaranteed.
+   */
+  private readonly wireCaller = async (): Promise<void> => {
+    const caller = this._caller;
+    // the hydrate app has no registry to wait on (its `customElements` is null) and renders
+    // every component in one pass, so there the attributes are written on the spot - and kept
+    // by the client, `setAttributeIfEmpty` leaving a prerendered value alone
+    if (Build.isBrowser && caller.tagName.startsWith('MDS-')) {
+      await customElements.whenDefined(caller.tagName.toLowerCase());
+      await (caller as Partial<HTMLStencilElement>).componentOnReady?.();
+    }
+    // a target change while we waited has already wired another caller
+    if (caller !== this._caller) return;
+
+    // a tooltip is not a popup its caller controls: it only describes it, and a description
+    // reaches a screen reader whatever role the caller has, generic included
+    if (this._role === 'tooltip') {
+      if (this.sameRoot()) {
+        const tipId = setAttributeIfEmpty(this._host, 'id', hashRandomValue('mds-tooltip'));
+        this.writeOnCaller('aria-describedby', tipId);
+      }
+      return;
+    }
+
+    if (!this.callerAcceptsWiring()) return;
+
+    if (this.sameRoot()) {
+      const hostId = setAttributeIfEmpty(this._host, 'id', hashRandomValue('mds-dropdown'));
+      const callerId = setAttributeIfEmpty(caller, 'id', hashRandomValue('mds-dropdown-caller'));
+      this.writeOnCaller('aria-controls', hostId);
+      this._labelledByOurs = !this._host.hasAttribute('aria-labelledby');
+      setAttributeIfEmpty(this._host, 'aria-labelledby', callerId);
+    }
+
+    const popupRole = this._host.getAttribute('role') ?? '';
+    if (HASPOPUP_ROLES.includes(popupRole)) {
+      this.writeOnCaller('aria-haspopup', popupRole);
+    }
+
+    if (!caller.hasAttribute('aria-expanded')) this._written.push('aria-expanded');
+    this._wired = true;
+    this.syncExpanded(this._host.visible);
+  };
+
+  /** Whether the popup is open is state, not a default: it is rewritten at every change, so it
+   * cannot go through `setAttributeIfEmpty` */
+  syncExpanded(visible: boolean): void {
+    if (this._wired) this._caller.setAttribute('aria-expanded', `${visible}`);
   }
 
   private readonly arrowInset = (

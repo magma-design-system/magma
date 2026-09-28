@@ -129,6 +129,14 @@ export class MdsInput {
   @AttachInternals() internals: ElementInternals;
 
   /**
+   * The accessible name of the native control: the label a screen reader announces. An
+   * `mds-input-field` around the component passes its own label down here, so the attribute
+   * is only written by hand when the input stands on its own. The placeholder is deliberately
+   * not a fallback: it disappears as soon as the field is filled.
+   */
+  @Prop({ attribute: 'aria-label' }) readonly accessibleName?: string;
+
+  /**
    * Specifies whether the element should have autocomplete enabled
    */
   @Prop({ reflect: true }) readonly autocomplete?: AutocompleteType = 'off';
@@ -628,6 +636,7 @@ export class MdsInput {
         )}
         {this.type === 'textarea' ? (
           <textarea
+            aria-label={this.accessibleName}
             class={clsx(
               'input',
               (this.icon ?? this.await) && 'has-icon',
@@ -651,6 +660,7 @@ export class MdsInput {
           ></textarea>
         ) : (
           <input
+            aria-label={this.accessibleName}
             class={clsx(
               'input',
               (this.icon ?? this.await) && 'has-icon',

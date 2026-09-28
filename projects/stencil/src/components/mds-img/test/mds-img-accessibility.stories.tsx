@@ -54,7 +54,12 @@ export const LabelledBackgroundImage = {
 };
 
 const TemplateAriaDescription = (args) => (
-  <div role="img" aria-describedby="image-description" class="flex flex-col items-center gap-600">
+  <div
+    role="img"
+    aria-label="Empty preview"
+    aria-describedby="image-description"
+    class="flex flex-col items-center gap-600"
+  >
     <mds-img {...args} />
     <mds-text id="image-description" typography="caption">
       Descriptions are more verbose explanations. This image shows an empty preview with the

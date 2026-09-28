@@ -107,18 +107,21 @@ export class MdsPrefAnimation {
             onClick={this.handleModeClick('reduce')}
             class="item item--reduce"
             icon={miOutlineCircle}
+            title={this.t.get(this.animation.reduce.label)}
           ></mds-tab-item>
           <mds-tab-item
             selected={this.mode === 'system'}
             onClick={this.handleModeClick('system')}
             class="item item--system"
             icon={miBaselineSettings}
+            title={this.t.get(this.animation.system.label)}
           ></mds-tab-item>
           <mds-tab-item
             selected={this.mode === 'no-preference'}
             onClick={this.handleModeClick('no-preference')}
             class="item item--no-preference"
             icon={miBaselineAnimation}
+            title={this.t.get(this.animation['no-preference'].label)}
           ></mds-tab-item>
         </mds-tab>
       </Host>

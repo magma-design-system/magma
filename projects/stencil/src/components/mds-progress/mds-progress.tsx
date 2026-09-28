@@ -99,6 +99,8 @@ export class MdsProgress {
       >
         {this.direction === 'radial' ? (
           <mds-radial-progress
+            // the host already is the progressbar: a second, nameless one would be announced too
+            aria-hidden="true"
             progress={this.progress}
             part="radial-progress"
             typography={this.typography}

@@ -11,7 +11,7 @@ import {
   State,
   Watch,
 } from '@stencil/core';
-import { hasChildWithSlot, queryChildBySlot } from '@common/slot';
+import { hasChildWithSlot } from '@common/slot';
 import {
   ModalPositionType,
   ModalOverflowType,
@@ -56,6 +56,12 @@ export class MdsModal {
   @State() hasWindow = false;
   @State() windowHeaderHeight = 0;
   @State() windowFooterHeight = 0;
+
+  /**
+   * The accessible name of the modal: the name a screen reader announces when the window
+   * opens. The `<dialog>` this component renders is the dialog, so the name goes there.
+   */
+  @Prop({ attribute: 'aria-label' }) readonly accessibleName?: string;
 
   /**
    * Specifies if the modal is opened or not
@@ -219,9 +225,8 @@ export class MdsModal {
     this.hasTop = hasChildWithSlot(this.host, 'top');
     this.hasWindow = hasChildWithSlot(this.host, 'window');
 
-    if (this.hasWindow) {
-      queryChildBySlot(this.host, 'window')?.setAttribute('role', 'dialog');
-    }
+    // the slotted window is NOT given a role: the `<dialog>` below is the dialog already,
+    // opened with showModal(), and a second one inside it reads as a second window
   };
 
   /**
@@ -376,6 +381,7 @@ export class MdsModal {
         pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
         <dialog
+          aria-label={this.accessibleName}
           class="dialog"
           part="dialog"
           ref={(el?: HTMLElement) => (this.dialogEl = el as HTMLDialogElement)}

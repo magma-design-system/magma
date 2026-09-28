@@ -1,4 +1,6 @@
 {
+  "endDate": "Data di fine",
   "from": "Dal",
+  "startDate": "Data di inizio",
   "to": "al"
 }

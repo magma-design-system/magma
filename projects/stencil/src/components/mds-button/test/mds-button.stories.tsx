@@ -12,7 +12,7 @@ import { ButtonVariantType } from '@type/button';
 import { ToneVariantType } from '@type/tone';
 
 import { useEffect, useState } from 'react';
-import { expect, fn } from 'storybook/test';
+import { expect, fn, waitFor } from 'storybook/test';
 import { textAnimateDictionary } from '@component/mds-text/meta/dictionary';
 
 export default {
@@ -328,6 +328,13 @@ export const Default = {
 
 export const AsyncContent = {
   render: TemplateAsyncContent,
+  // the button has no name until the label arrives: the a11y audit runs after the play
+  play: async ({ canvasElement }) => {
+    const button = canvasElement.querySelector('mds-button')!;
+    await waitFor(() => expect(button).toHaveAttribute('label', 'Hello async world'), {
+      timeout: 3000,
+    });
+  },
 };
 
 export const TextAnimation = {

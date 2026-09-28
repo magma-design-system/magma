@@ -37,6 +37,14 @@ export class MdsInputSelect {
   @AttachInternals() internals: ElementInternals;
 
   /**
+   * The accessible name of the native control: the label a screen reader announces. An
+   * `mds-input-field` around the component passes its own label down here, so the attribute
+   * is only written by hand when the control stands on its own. The placeholder is deliberately
+   * not a fallback: it disappears as soon as the field is filled.
+   */
+  @Prop({ attribute: 'aria-label' }) readonly accessibleName?: string;
+
+  /**
    * Specifies a short hint that describes the expected value of the element
    */
   @Prop({ reflect: true }) readonly autocomplete?: 'on';
@@ -255,6 +263,7 @@ export class MdsInputSelect {
         pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
         <select
+          aria-label={this.accessibleName}
           class="input"
           onInput={this.onInput}
           onBlur={this.onBlur}

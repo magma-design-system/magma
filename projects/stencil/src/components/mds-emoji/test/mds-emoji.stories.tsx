@@ -93,7 +93,9 @@ const Template = (args) => {
         <mds-input-switch id="eye-blinking" size="sm" checked={eyeBlinking || undefined}>
           Eye blinking
         </mds-input-switch>
-        <mds-input-range id="size" min={24} max={320} step={8} value={svgSize}></mds-input-range>
+        <mds-input-range id="size" min={24} max={320} step={8} value={svgSize}>
+          Size
+        </mds-input-range>
         <mds-input-switch id="think" size="sm" checked={thinking || undefined}>
           Think
         </mds-input-switch>

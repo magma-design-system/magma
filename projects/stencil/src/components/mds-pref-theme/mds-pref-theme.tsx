@@ -228,6 +228,7 @@ export class MdsPrefTheme {
             <mds-tab-item
               selected
               onClick={this.toggleDropdown}
+              expanded={this.showDropdown}
               id="mds-pref-theme-nav"
               class="item item--theme"
               icon-position="right"
