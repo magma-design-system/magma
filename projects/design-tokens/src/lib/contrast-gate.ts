@@ -266,14 +266,19 @@ export function aliasesFromConfig(m: SemanticMapping): Record<string, string> {
 
 /** A contrast level's role promotions (role -> stronger same-family role). */
 export type ContrastPromotions = {
-  more?: { text?: Record<string, string>; border?: Record<string, string> };
+  more?: {
+    text?: Record<string, string>;
+    border?: Record<string, string>;
+    surface?: Record<string, string>;
+  };
 };
 
 /**
  * The `--magma-* -> primitive` map UNDER a contrast level: start from the base
  * aliases and repoint the promoted text/border roles to their STRONGER same-family
- * step, mirroring what `scripts/semantic.ts` emits for `:root.pref-contrast-<level>`.
- * Everything the gate looks up (surfaces, hues, accents) stays at the base value,
+ * step and the promoted surfaces to the family seed, mirroring what
+ * `scripts/semantic.ts` emits for `:root.pref-contrast-<level>`. Everything else
+ * the gate looks up (the other surfaces, hues, accents) stays at the base value,
  * so the returned map can be fed straight to `evaluatePairs`.
  */
 export function contrastAliasesFromConfig(
@@ -288,6 +293,11 @@ export function contrastAliasesFromConfig(
   });
   Object.entries(promo.border ?? {}).forEach(([role, stronger]) => {
     map[`--magma-border-${role}`] = `--border-${m.tint}-${stronger}`;
+  });
+  // the promoted surfaces take the family seed, so the gate measures the text
+  // against the paper the page really shows under the level
+  Object.entries(promo.surface ?? {}).forEach(([role, target]) => {
+    map[`--magma-surface-${role}`] = `--tone-${m.tint}-${target}`;
   });
   // Every colored hue promotes its own roles off the same table (spec 9.3): the
   // layer states them as roles because a hue does not resolve through a tint
