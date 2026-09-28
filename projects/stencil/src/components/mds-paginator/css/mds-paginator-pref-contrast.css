@@ -1,7 +1,11 @@
 /* Contrast preference. The component reflects the resolved mode from <html> onto
  * its host as pref-contrast (see subscribePreference in @common/preference); these
  * plain shadow selectors refine for high contrast. `more` is the explicit choice;
- * `system` and no controller follow the OS via @media. Cross-browser, no :host-context. */
+ * `system` and no controller follow the OS via @media. Cross-browser, no :host-context.
+ *
+ * The paper ground is --magma-surface-default on purpose: under pref-contrast-more
+ * the layer promotes it to the seed (spec 9.3), so this reads as the paper of the
+ * mode in high contrast and as the page anywhere else. */
 
 :host([pref-contrast='more']) {
   .pages {
@@ -9,7 +13,7 @@
   }
 
   .item {
-    --mds-paginator-item-background-hover: rgb(var(--tone-neutral-seed));
+    --mds-paginator-item-background-hover: rgb(var(--magma-surface-default));
     --mds-paginator-item-shadow-hover: var(--shadow-ring-2) inset;
     --mds-paginator-item-shadow: none;
   }
@@ -31,7 +35,7 @@
     }
 
     .item {
-      --mds-paginator-item-background-hover: rgb(var(--tone-neutral-seed));
+      --mds-paginator-item-background-hover: rgb(var(--magma-surface-default));
       --mds-paginator-item-shadow-hover: var(--shadow-ring-2) inset;
       --mds-paginator-item-shadow: none;
     }

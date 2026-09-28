@@ -1,12 +1,16 @@
+/* In dark the pref-mode sheet moves the info panel to a wash; high contrast puts
+ * it back on its base role, --magma-surface-raised, so it stands off the paper
+ * page the layer promotes under pref-contrast-more (spec 9.3). */
+
 :host([pref-contrast='more'][pref-mode='dark']) {
-  --mds-kpi-item-info-background: rgb(var(--tone-neutral-seed));
+  --mds-kpi-item-info-background: rgb(var(--magma-surface-raised));
 
   box-shadow: var(--shadow-ring-2);
 }
 
 @media (prefers-contrast: more) {
   :host([pref-contrast='system'][pref-mode='dark']) {
-    --mds-kpi-item-info-background: rgb(var(--tone-neutral-seed));
+    --mds-kpi-item-info-background: rgb(var(--magma-surface-raised));
 
     box-shadow: var(--shadow-ring-2);
   }
@@ -14,7 +18,7 @@
 
 @media (prefers-color-scheme: dark) {
   :host([pref-contrast='more'][pref-mode='system']) {
-    --mds-kpi-item-info-background: rgb(var(--tone-neutral-seed));
+    --mds-kpi-item-info-background: rgb(var(--magma-surface-raised));
 
     box-shadow: var(--shadow-ring-2);
   }
@@ -24,7 +28,7 @@
 
   @media (prefers-color-scheme: dark) {
     :host([pref-contrast='system'][pref-mode='system']) {
-      --mds-kpi-item-info-background: rgb(var(--tone-neutral-seed));
+      --mds-kpi-item-info-background: rgb(var(--magma-surface-raised));
 
       box-shadow: var(--shadow-ring-2);
     }
