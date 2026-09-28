@@ -155,7 +155,7 @@
     "normalize.css": "8.0.1",
     "p-queue": "6.6.2",
     "playwright": "1.62.1",
-    "postcss": "8.5.26",
+    "postcss": "8.5.28",
     "postcss-combine-duplicated-selectors": "poimen/postcss-combine-duplicated-selectors#duplicated-keyframes-fix",
     "postcss-combine-media-query": "2.1.0",
     "postcss-discard-comments": "7.0.3",
