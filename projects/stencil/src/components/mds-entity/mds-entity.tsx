@@ -83,7 +83,7 @@ export class MdsEntity {
     return (
       <Host
         pref-contrast={preferenceStore.state.contrast}
-        pref-theme={preferenceStore.state.theme}
+        pref-mode={preferenceStore.state.mode}
         pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
         <div class="spinner" part="spinner">

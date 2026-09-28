@@ -1,6 +1,3 @@
 {
-  "darkMode": "Σκούρο",
-  "label": "Λειτουργία θέματος",
-  "lightMode": "Ανοιχτό{{#forced}} (επιβεβλημένο στο Safari){{/forced}}",
-  "systemSettings": "Με βάση το λειτουργικό σύστημα"
+  "label": "Θέμα"
 }

@@ -1,18 +1,13 @@
 @import './css/mds-pref-theme-fouc.css';
 
-/*
- * @prop --mds-pref-theme-overlay-fadeout-duration: Sets the fadeout duration of the overlay which hides UI color flash on theme change
- * @prop --mds-pref-theme-overlay-show-duration: Sets the show duration of the overlay which hides UI color flash on theme change
- * @prop --mds-pref-theme-overlay-z-index: Sets the z-index of the overlay which hides UI color flash on theme change
- */
-
 :host {
-  --mds-pref-theme-overlay-fadeout-duration: 200ms;
-  --mds-pref-theme-overlay-show-duration: 300ms;
-  --mds-pref-theme-overlay-z-index: var(--magma-theme-overlay-z-index);
-
   display: grid;
+  gap: --spacing(400);
+}
+
+.mds-pref-theme-dropdown {
   gap: --spacing(100);
+  padding: --spacing(400);
 }
 
 .item {
@@ -22,16 +17,11 @@
   flex-grow: 1;
 }
 
-.item--system {
+.item--theme {
+  cursor: pointer;
+}
+
+.item--auto,
+.item--theme {
   --mds-tab-item-selected-color: rgb(var(--magma-text-muted));
 }
-
-.item--light {
-  --mds-tab-item-selected-color: rgb(var(--label-yellow-06));
-}
-
-.item--dark {
-  --mds-tab-item-selected-color: rgb(var(--label-sky-06));
-}
-
-@import './css/mds-pref-theme-pref-contrast.css';

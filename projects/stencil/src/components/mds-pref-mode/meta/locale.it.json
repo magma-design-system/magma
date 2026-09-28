@@ -1,0 +1,6 @@
+{
+  "darkMode": "Scura",
+  "label": "Modalità",
+  "lightMode": "Chiara{{#forced}} (forzata su Safari){{/forced}}",
+  "systemSettings": "Basato sul sistema operativo"
+}

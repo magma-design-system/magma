@@ -182,11 +182,11 @@ Use the semantic `text-*` utilities instead of composing `font-*` + `text-*`:
 Handled at the palette level - no per-element classes. Activate on `<html>`:
 
 ```html
-<html class="pref-theme-system"><!-- or pref-theme-light / pref-theme-dark --></html>
+<html class="pref-mode-system"><!-- or pref-mode-light / pref-mode-dark --></html>
 ```
 
 Same pattern for `pref-contrast-*` and `pref-animation-*`. For programmatic control use
-the `mds-pref-theme` component. Never write `color-scheme` or dark-mode media queries by
+the `mds-pref-mode` component. Never write `color-scheme` or dark-mode media queries by
 hand.
 
 ### Global design decisions

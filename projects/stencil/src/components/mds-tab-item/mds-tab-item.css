@@ -85,5 +85,5 @@
   justify-content: start;
 }
 
-/* @import './css/mds-tab-item-pref-theme.css'; */
+/* @import './css/mds-tab-item-pref-mode.css'; */
 @import './css/mds-tab-item-pref-contrast.css';

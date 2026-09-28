@@ -19,7 +19,7 @@ import {
   type Manifest,
   type PartRenameRule,
 } from '../manifest/schema.js';
-import { ruleId } from '../manifest/registry.js';
+import { ruleId, tagRenamesOf } from '../manifest/registry.js';
 import { classRulesOf, hasClassRules, rewriteClassList } from './shared/class-ops.js';
 import { type Finding } from '../report/types.js';
 import { ruleEnabled, type TransformContext, type TransformResult } from './shared/transform.js';
@@ -85,6 +85,14 @@ const collectRules = (manifest: Manifest) => {
 };
 
 const PART_RE = /::part\(\s*([\w-]+)\s*\)/g;
+
+/**
+ * A class (`.name`, also compounded: `html.name`) or a type selector (`name`) in
+ * a selector. A type selector is a name that no `.`, `#`, `-`, word character,
+ * `[`, `=`, quote or `:` precedes, so a class, an id, an attribute, a
+ * pseudo-class and the tail of a longer name are left alone.
+ */
+const SELECTOR_NAME_RE = /\.([\w-]+)|(?<![\w.#\-[="':])([a-zA-Z][\w-]*)/g;
 const VAR_TOKEN_RE = /--[\w-]+/g;
 
 export const transformCss = (
@@ -273,6 +281,61 @@ export const transformCss = (
     });
     if (newSelector !== rule.selector) rule.selector = newSelector;
   });
+
+  // K and J in selectors: a renamed element (`mds-pref-theme`) as a type
+  // selector, and a renamed state class that consumer stylesheets select
+  // (`.pref-theme-dark`, only the class rules with `selectors: true`). One
+  // lookup per token, so a v1 name that another one takes in v2 is renamed
+  // once.
+  const tagRenames = tagRenamesOf(manifest);
+  const selectorClasses = [...classRules.renames.values()].filter((e) => e.rule.selectors);
+  if (tagRenames.size > 0 || selectorClasses.length > 0) {
+    const classByName = new Map(selectorClasses.map((e) => [e.rule.from, e]));
+    root.walkRules((rule) => {
+      const line = rule.source?.start?.line;
+      const newSelector = rule.selector.replace(
+        SELECTOR_NAME_RE,
+        (match, className?: string, typeName?: string) => {
+          if (className !== undefined) {
+            const name = className;
+            const entry = classByName.get(name);
+            if (!entry || !ruleEnabled(ctx, entry.id)) return match;
+            findings.push({
+              kind: 'change',
+              surface: 'css',
+              file: ctx.file,
+              line,
+              ruleId: entry.id,
+              message: 'rename class selector',
+              before: `.${name}`,
+              after: `.${entry.rule.to}`,
+            });
+            return `.${entry.rule.to}`;
+          }
+          const name = typeName!;
+          const tagRule = tagRenames.get(name);
+          const id = `${name}/tagRename`;
+          if (!tagRule || !ruleEnabled(ctx, id)) return match;
+          findings.push({
+            kind: 'change',
+            surface: 'css',
+            file: ctx.file,
+            line,
+            component: name,
+            ruleId: id,
+            message: 'rename type selector',
+            before: name,
+            after: tagRule.to,
+          });
+          return tagRule.to;
+        },
+      );
+      if (newSelector !== rule.selector) {
+        rule.selector = newSelector;
+        changed = true;
+      }
+    });
+  }
 
   if (!changed) return { output: source, changed: false, findings };
 

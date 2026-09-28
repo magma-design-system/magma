@@ -81,5 +81,5 @@
   visibility: hidden;
 }
 
-@import './css/mds-push-notification-pref-theme.css';
+@import './css/mds-push-notification-pref-mode.css';
 @import './css/mds-push-notification-visible.css';

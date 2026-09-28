@@ -53,7 +53,7 @@ export class MdsPaginatorItem {
       <Host
         tabindex="0"
         pref-animation={preferenceStore.state.animation}
-        pref-theme={preferenceStore.state.theme}
+        pref-mode={preferenceStore.state.mode}
         pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
         {this.icon !== undefined ? (

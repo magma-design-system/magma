@@ -128,7 +128,7 @@ export class MdsTabItem {
     return (
       <Host
         pref-contrast={preferenceStore.state.contrast}
-        pref-theme={preferenceStore.state.theme}
+        pref-mode={preferenceStore.state.mode}
         pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
         <mds-button

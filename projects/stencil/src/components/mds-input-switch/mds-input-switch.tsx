@@ -219,7 +219,7 @@ export class MdsInputSwitch {
     return (
       <Host
         onClick={this.handleDirty}
-        pref-theme={preferenceStore.state.theme}
+        pref-mode={preferenceStore.state.mode}
         pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
         <input

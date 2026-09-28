@@ -1,6 +1,6 @@
 /*
 :root,
-:root.pref-theme-dark {
+:root.pref-mode-dark {
 
   --variant-base-01: var(--tone-fireclay-01);
   --variant-base-02: var(--tone-fireclay-02);
@@ -16,7 +16,7 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  :root.pref-theme-system {
+  :root.pref-mode-system {
 
     --variant-base-01: var(--tone-fireclay-01);
     --variant-base-02: var(--tone-fireclay-02);

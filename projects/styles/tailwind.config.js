@@ -31,8 +31,8 @@ module.exports = {
   darkMode: [
     'variant',
     [
-      '@media (prefers-color-scheme: dark) { &:is(.pref-theme-system *) }',
-      '&:is(.pref-theme-dark *)',
+      '@media (prefers-color-scheme: dark) { &:is(.pref-mode-system *) }',
+      '&:is(.pref-mode-dark *)',
     ],
   ],
   corePlugins: {

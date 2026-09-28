@@ -101,7 +101,7 @@ export class MdsLabel {
     return (
       <Host
         pref-contrast={preferenceStore.state.contrast}
-        pref-theme={preferenceStore.state.theme}
+        pref-mode={preferenceStore.state.mode}
         pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
         <mds-text class="text" truncate={this.truncate} typography={this.typography}>

@@ -20,8 +20,8 @@ describe('global tokens', () => {
     sheet?.remove();
     sheet = undefined;
     const html = document.documentElement;
-    ['--magma-modal-z-index', '--magma-pref-theme-scheme', '--magma-pref-theme-name'].forEach(
-      (name) => html.style.removeProperty(name),
+    ['--magma-modal-z-index', '--magma-pref-theme-scheme', '--magma-pref-theme'].forEach((name) =>
+      html.style.removeProperty(name),
     );
   });
 
@@ -53,15 +53,15 @@ describe('global tokens', () => {
       loadGlobals();
       const html = document.documentElement;
       html.style.setProperty('--magma-pref-theme-scheme', 'dark');
-      // written as a bare name by mds-pref-theme-variant, never as a quoted string
-      html.style.setProperty('--magma-pref-theme-name', 'business');
+      // written as a bare name by mds-pref-theme, never as a quoted string
+      html.style.setProperty('--magma-pref-theme', 'business');
       const { root } = await render('<mds-modal></mds-modal>');
       const inner = root.shadowRoot?.firstElementChild as Element;
 
       expect(getComputedStyle(inner).getPropertyValue('--magma-pref-theme-scheme').trim()).toBe(
         'dark',
       );
-      expect(getComputedStyle(inner).getPropertyValue('--magma-pref-theme-name').trim()).toBe(
+      expect(getComputedStyle(inner).getPropertyValue('--magma-pref-theme').trim()).toBe(
         'business',
       );
     });

@@ -33,15 +33,15 @@
 
   /* no controller: the palette follows the OS, and so does the browser */
   :root:not([data-magma-pref]),
-  :root.pref-theme-system {
+  :root.pref-mode-system {
     color-scheme: light dark;
   }
 
-  :root.pref-theme-light {
+  :root.pref-mode-light {
     color-scheme: light;
   }
 
-  :root.pref-theme-dark {
+  :root.pref-mode-dark {
     color-scheme: dark;
   }
 

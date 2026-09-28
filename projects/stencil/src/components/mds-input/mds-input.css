@@ -329,5 +329,5 @@ mds-input-tip {
 @import './css/mds-input-variant.css';
 @import './css/mds-input-pref-animation.css';
 @import './css/mds-input-pref-contrast.css';
-@import './css/mds-input-pref-theme.css';
+@import './css/mds-input-pref-mode.css';
 @import './css/mds-input-type-password.css';

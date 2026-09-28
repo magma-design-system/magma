@@ -22,8 +22,8 @@ export const UNSET = 'unset';
 
 export const PREFERENCES = [
   {
-    name: 'theme',
-    label: 'Theme',
+    name: 'mode',
+    label: 'Mode',
     fallback: 'light',
     options: [
       { value: 'light', label: 'Light' },
