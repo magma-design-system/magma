@@ -46,7 +46,7 @@
   border-radius: var(--magma-radius-2xl);
   color: rgb(var(--magma-text-default));
   container-type: inline-size;
-  corner-shape: var(--magma-corner-shape, round);
+  corner-shape: var(--magma-corner-shape);
   cursor: text;
   display: flex;
   gap: --spacing(200);
@@ -179,7 +179,7 @@ mds-dropdown {
 }
 
 @import './css/mds-input-date-range-pref-animation.css';
-@import './css/mds-input-date-range-pref-theme.css';
+@import './css/mds-input-date-range-pref-mode.css';
 @import './css/mds-input-date-range-pref-contrast.css';
 @import './css/mds-input-date-range-firefox.css';
 @import './css/mds-input-date-range-variant.css';

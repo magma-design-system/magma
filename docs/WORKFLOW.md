@@ -4,9 +4,9 @@ This document is the canonical reference for how work flows through this reposit
 
 ## 1. Never auto-merge `dev` or `main`
 
-The `dev` and `main` branches are protected governance targets. **Agents must never merge into `dev` or `main`, open or auto-merge a pull request into them, or push to them directly.** These integration steps are, for now, handled manually by a maintainer.
+The `dev` and `main` branches are protected governance targets. **Agents must never merge into `dev` or `main`, enable auto-merge on a pull request into them, or push to them directly.** These integration steps are, for now, handled manually by a maintainer.
 
-An agent may prepare work up to (and including) a feature branch pushed to its own remote, but the promotion of that work into `dev` or `main` is a human decision.
+An agent may prepare work up to (and including) a feature branch pushed to its own remote and a pull request opened from it into `dev`, but merging that pull request - the promotion of the work into `dev` or `main` - is a human decision.
 
 When a maintainer promotes `dev` into `main`, the promotion must use a **merge commit** (never squash or rebase): release tags created on `dev` (e.g. `icons@*`, `svg-icons@*`) must stay reachable from `main`, otherwise the release workflows on `main` would keep recomputing already-released versions.
 
@@ -58,6 +58,7 @@ A pull request that changes a component's behaviour without a covering test is n
 | Create a dedicated branch off `dev`             | Yes, linked to its issue (see rule 3)                    |
 | Commit and push to that branch's own remote     | Yes, after syncing with `dev` and passing lint and tests |
 | Merge `dev` into your feature branch            | Yes (to stay current before a push)                      |
+| Open a pull request from it into `dev`          | Yes, with `Closes #<issue>` in the body (see rule 3)     |
 | Change a component's behaviour without a test   | No - add or update a `spec` / `e2e` test (see rule 5)    |
 | Merge a branch into `dev` or `main`             | No - manual governance step                              |
 | Push directly to `dev` or `main`                | No - manual governance step                              |

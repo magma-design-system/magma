@@ -34,7 +34,7 @@
   border: var(--mds-table-border-width) solid var(--mds-table-border-color) !important;
   border-color: var(--mds-table-border-color);
   border-radius: var(--magma-radius-2xl);
-  corner-shape: var(--magma-corner-shape, round);
+  corner-shape: var(--magma-corner-shape);
   display: flex;
   overflow: hidden;
   transition-duration: var(--duration-200);
@@ -58,6 +58,6 @@
 @import './css/mds-table-batch-actions.css';
 @import './css/mds-table-selection.css';
 @import './css/mds-table-pref-animation.css';
-@import './css/mds-table-pref-theme.css';
+@import './css/mds-table-pref-mode.css';
 @import './css/mds-table-pref-contrast.css';
 @import './css/mds-table-pref-contrast-dark.css';

@@ -25,13 +25,13 @@
 
 @property --mds-modal-overlay-color {
   inherits: true;
-  initial-value: var(--magma-overlay-color, 0 0 0);
+  initial-value: var(--magma-overlay-color);
   syntax: '<number>+';
 }
 
 @property --mds-modal-overlay-opacity {
   inherits: true;
-  initial-value: var(--magma-overlay-opacity, 0.5);
+  initial-value: var(--magma-overlay-opacity);
   syntax: '<number>';
 }
 

@@ -87,5 +87,5 @@ mds-text {
 }
 
 @import './css/mds-filter-item-pref-animation.css';
-@import './css/mds-filter-item-pref-theme.css';
+@import './css/mds-filter-item-pref-mode.css';
 @import './css/mds-filter-item-pref-contrast.css';

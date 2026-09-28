@@ -22,5 +22,5 @@
   display: grid;
 }
 
-@import './css/mds-accordion-pref-theme.css';
+@import './css/mds-accordion-pref-mode.css';
 @import './css/mds-accordion-pref-contrast.css';

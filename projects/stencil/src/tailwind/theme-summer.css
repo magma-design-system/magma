@@ -1,5 +1,5 @@
 :root[data-theme-name='summer'],
-mds-pref-theme-variant-item[name='summer'] {
+mds-pref-theme-item[name='summer'] {
   --tone-porcelain-01: 28 34 42;
   --tone-porcelain-02: 33 41 50;
   --tone-porcelain-03: 54 65 81;

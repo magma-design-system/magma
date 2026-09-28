@@ -33,6 +33,12 @@
       "inputs": ["default", "^default"]
     }
   },
+  "pluginsConfig": {
+    "@nx/js": {
+      "analyzePackageJson": true,
+      "analyzeSourceFiles": true
+    }
+  },
   "defaultBase": "dev",
   "analytics": false
 }

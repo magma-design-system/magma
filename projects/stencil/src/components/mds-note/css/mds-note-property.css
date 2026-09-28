@@ -35,12 +35,12 @@
 
 @property --mds-note-selection-background {
   inherits: true;
-  initial-value: var(--magma-selection-background, rgb(var(--label-yellow-09)));
+  initial-value: var(--magma-selection-background);
   syntax: '<color>';
 }
 
 @property --mds-note-selection-color {
   inherits: true;
-  initial-value: var(--magma-selection-color, rgb(var(--label-yellow-02)));
+  initial-value: var(--magma-selection-color);
   syntax: '<color>';
 }

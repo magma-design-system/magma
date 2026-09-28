@@ -188,9 +188,13 @@ export const config: Config = {
     tokenFallbackPlugin({
       injectTokenFallbacks: true,
       injectSemanticFallbacks: true,
+      injectGlobalFallbacks: true,
       injectComponentDefaults: true,
       warnOnMissing: false,
-      failOnMissing: false,
+      // Every public token has a source the injector reads, so a bare
+      // `var(--magma-*)` it cannot resolve is a typo or a missing token.
+      failOnMissing: true,
+      checkPrefixes: ['magma-'],
     }),
     alias({
       entries: [

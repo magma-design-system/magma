@@ -13,7 +13,7 @@ The `<mds-pref-contrast>` web component is a preference control that lets users 
 
 #### Semantic Behavior
 
-- **Compound child only**: It is designed to be placed as a direct slot child of `<mds-pref>` alongside the other preference children (`mds-pref-animation`, `mds-pref-consumption`, `mds-pref-language`, `mds-pref-theme`); it is not meant to be used standalone or mixed with unrelated element types.
+- **Compound child only**: It is designed to be placed as a direct slot child of `<mds-pref>` alongside the other preference children (`mds-pref-animation`, `mds-pref-consumption`, `mds-pref-language`, `mds-pref-mode`); it is not meant to be used standalone or mixed with unrelated element types.
 - **Mode resolution on render**: The active mode is resolved in order from the `mode` prop, the persisted value, then the `system` default, and applied immediately - so it acts on the document even before any user interaction.
 - **Applies the preference globally**: Selecting a mode applies it across the whole document and persists the choice.
 - **System resolution**: When the host environment exposes a `prefers-contrast` media query, that value is consulted to map the OS-level preference onto the design system's contrast tokens.
@@ -37,7 +37,7 @@ The canonical form. Slot `<mds-pref-contrast>` directly inside [`<mds-pref>`](..
 
 ```html
 <mds-pref>
-  <mds-pref-theme></mds-pref-theme>
+  <mds-pref-mode></mds-pref-mode>
   <mds-pref-contrast></mds-pref-contrast>
   <mds-pref-animation></mds-pref-animation>
   <mds-pref-consumption></mds-pref-consumption>

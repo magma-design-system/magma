@@ -10,7 +10,7 @@
   --mds-input-field-message-background: rgb(var(--magma-wash-soft));
 
   color: rgb(var(--magma-text-default));
-  corner-shape: var(--magma-corner-shape, round);
+  corner-shape: var(--magma-corner-shape);
   display: grid;
   gap: --spacing(300);
 }

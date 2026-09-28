@@ -30,6 +30,9 @@ export const testManifest: Manifest = {
       },
       { kind: 'cssVarSurfaceReport', from: 'tone-neutral' },
       { kind: 'cssVarSurfaceReport', from: 'tone-neutral-09' },
+      // the pair that swaps meaning (#702)
+      { kind: 'cssVarRename', from: 'magma-pref-theme', to: 'magma-pref-mode' },
+      { kind: 'cssVarRename', from: 'magma-pref-theme-name', to: 'magma-pref-theme' },
     ],
     // Utility-class rules (J): a plain rename, a rename with a note, a chained
     // pair (`rounded-xl → rounded-md` while `rounded-md → rounded-2xs`) to pin
@@ -46,6 +49,8 @@ export const testManifest: Manifest = {
       { kind: 'classRename', from: 'rounded-md', to: 'rounded-2xs' },
       { kind: 'classRename', from: 'rounded-xl', to: 'rounded-md' },
       { kind: 'classRename', from: 'gap', to: 'gap-lg' },
+      // a state class, renamed in CSS selectors too
+      { kind: 'classRename', from: 'pref-theme-dark', to: 'pref-mode-dark', selectors: true },
       {
         kind: 'classReport',
         name: 'shadow-outline-strong',
@@ -162,6 +167,31 @@ export const testManifest: Manifest = {
           note: 'Verify semantics: v1 `labelAction` maps to v2 `label`.',
         },
       ],
+    },
+    // Tag renames (K) with the pair that swaps: v2 gives `mds-pref-theme` to
+    // the component that was `mds-pref-theme-variant`, so the tests pin the
+    // single-pass guarantee on the name the two share.
+    'mds-pref-theme': {
+      tag: 'mds-pref-theme',
+      react: 'MdsPrefTheme',
+      rules: [
+        { kind: 'tagRename', to: 'mds-pref-mode', toReact: 'MdsPrefMode' },
+        {
+          kind: 'cssVarRename',
+          from: 'mds-pref-theme-overlay-z-index',
+          to: 'mds-pref-mode-overlay-z-index',
+        },
+      ],
+    },
+    'mds-pref-theme-variant': {
+      tag: 'mds-pref-theme-variant',
+      react: 'MdsPrefThemeVariant',
+      rules: [{ kind: 'tagRename', to: 'mds-pref-theme', toReact: 'MdsPrefTheme' }],
+    },
+    'mds-pref-theme-variant-item': {
+      tag: 'mds-pref-theme-variant-item',
+      react: 'MdsPrefThemeVariantItem',
+      rules: [{ kind: 'tagRename', to: 'mds-pref-theme-item', toReact: 'MdsPrefThemeItem' }],
     },
   },
 };

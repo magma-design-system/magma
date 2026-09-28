@@ -55,6 +55,6 @@
 
 @property --mds-tooltip-z-index {
   inherits: true;
-  initial-value: var(--magma-tooltip-z-index, 4000);
+  initial-value: var(--magma-tooltip-z-index);
   syntax: '<integer>';
 }

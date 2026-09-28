@@ -25,7 +25,7 @@
   aspect-ratio: 1;
   background-color: rgb(var(--magma-accent-surface-subtle));
   border-radius: var(--private-kpi-item-radius);
-  corner-shape: var(--magma-corner-shape, round);
+  corner-shape: var(--magma-corner-shape);
   display: flex;
   flex-direction: column;
   gap: 0;
@@ -101,6 +101,6 @@
 }
 
 @import './css/mds-kpi-item-pref-animation.css';
-@import './css/mds-kpi-item-pref-theme.css';
+@import './css/mds-kpi-item-pref-mode.css';
 @import './css/mds-kpi-item-pref-contrast.css';
 @import './css/mds-kpi-item-pref-contrast-dark.css';

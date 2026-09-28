@@ -54,6 +54,7 @@ Notes:
 | H   | Shadow part rename              | rename in `::part()` selectors                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | safe                          |
 | I   | Event rename                    | declared in the manifest schema, but **not implemented by any surface yet** — no event was renamed between v1.12 and v2.0.0-beta, so no rule currently exists                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | n/a                           |
 | J   | Utility-class migration         | the styles-package Tailwind contract that changed between v1 and v2: the `shadow-outline-*` ring family → `shadow-ring-*`, the retuned `rounded-*` / `border-*` / named `gap-*` scales. Value-exact renames are rewritten; combos with no v2 token are reported (see below)                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | rename: safe · report: manual |
+| K   | Tag rename (mode vs theme)      | the light / dark / system control `mds-pref-theme` becomes `mds-pref-mode` (#702): the tag in HTML / Angular (start and end tag) and in CSS type selectors, the React component in JSX and in the named import from `magma-react` (with its other references, e.g. `typeof MdsPrefTheme`), the mode classes `pref-theme-{light,dark,system}` -> `pref-mode-*` in markup AND in CSS selectors, `--magma-pref-theme` -> `--magma-pref-mode`, the overlay properties and class `--mds-pref-theme-overlay-*` / `.mds-pref-theme-overlay` -> `mds-pref-mode-overlay`. Code written against a v2 beta also gets `mds-pref-theme-variant(-item)` -> `mds-pref-theme(-item)` and `--magma-pref-theme-name` -> `--magma-pref-theme`, applied in the same pass| safe (run once)               |
 
 The bundled manifest is built by diffing the two `documentation.json` builds (`manifest.generated.ts`) with curated
 corrections layered on top in `src/manifest/manifest.ts`.
@@ -110,6 +111,25 @@ Caveats:
 - The **generic Tailwind 3 → 4 migration** (config → CSS-first `@theme`, renamed core utilities like `shadow-sm`'s
   own TW-default meaning, `outline-none`, …) is Tailwind's own upgrade guide's business, not this codemod's: only
   the magma token contract is covered.
+
+### Mode vs theme (K)
+
+v1 had one colour-preference control, `mds-pref-theme`, and it set the **mode** (light / dark / system). v2 calls
+it `mds-pref-mode` and gives the name `mds-pref-theme` to the **named theme** chooser (`default`, `business`, ...),
+which v1 never had. The swap is silent: a v1 page upgraded without the codemod renders the theme chooser where the
+mode control was, with no error.
+
+- **Run it once.** Every rename is looked up by the name as written, so one run is safe even on code that mixes a
+  v1 `<mds-pref-theme>` with a beta `<mds-pref-theme-variant>`. A second run over migrated code turns the v2 theme
+  chooser into a mode control.
+- **The stored preference needs no codemod**: v2 moves a v1 `localStorage.mdsPrefTheme` (`light` / `dark` /
+  `system`) to `mdsPrefMode` on first load, before any control reads it.
+- **Imperative code is not rewritten** (as everywhere): `querySelector('mds-pref-theme')`,
+  `classList.contains('pref-theme-dark')`, `getPropertyValue('--magma-pref-theme')`, a `mdsPrefChange` listener
+  that compares `detail.preference` with `'theme-mode'` (v2: `'mode'`). Search your scripts for `pref-theme`.
+- **Beta only, not covered**: the events `mdsPrefThemeVariantChange` / `mdsPrefThemeVariantItemSelect` (v2:
+  `mdsPrefThemeChange` / `mdsPrefThemeItemSelect`), the `pref-theme-name-<name>` class (v2: `pref-theme-<name>`)
+  and `'theme-variant'` in `mdsPrefChange` (v2: `'theme'`).
 
 ## What it cannot rewrite (reported, not changed)
 

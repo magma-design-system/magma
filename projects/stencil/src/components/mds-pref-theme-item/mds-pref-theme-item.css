@@ -1,0 +1,70 @@
+/**
+ * @prop --mds-pref-theme-item-color-background: Background color of a theme item.
+ * @prop --mds-pref-theme-item-color-status-error: Color representing an error status for a theme item.
+ * @prop --mds-pref-theme-item-color-status-success: Color representing a success status for a theme item.
+ * @prop --mds-pref-theme-item-color-status-warning: Color representing a warning status for a theme item.
+ * @prop --mds-pref-theme-item-color-variant-primary: Color for the primary variant item.
+ */
+
+:host {
+  --mds-pref-theme-item-color-background: rgb(var(--magma-wash-base));
+  --mds-pref-theme-item-color-status-error: rgb(var(--status-error-06));
+  --mds-pref-theme-item-color-status-success: rgb(var(--status-success-06));
+  --mds-pref-theme-item-color-status-warning: rgb(var(--status-warning-06));
+  --mds-pref-theme-item-color-variant-primary: rgb(var(--variant-primary-03));
+
+  display: flex;
+}
+
+.label {
+  align-items: center;
+  display: flex;
+  gap: --spacing(200);
+}
+
+.theme-preview {
+  background-color: var(--mds-pref-theme-item-color-background);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-ring-weak);
+  box-sizing: border-box;
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: --spacing(100);
+  height: --spacing(600);
+  margin: 1px;
+  padding: --spacing(100);
+  width: --spacing(600);
+}
+
+.theme-color {
+  background-color: var(--color-tone-neutral-09);
+  border-radius: var(--radius-lg);
+  height: --spacing(150);
+  position: relative;
+  width: --spacing(150);
+}
+
+.theme-color::after {
+  border-radius: inherit;
+  box-shadow: var(--shadow-ring-weak) inset;
+  content: '';
+  display: flex;
+  inset: 0;
+  position: absolute;
+}
+
+.theme-color--variant-primary {
+  background-color: var(--mds-pref-theme-item-color-variant-primary);
+}
+
+.theme-color--status-success {
+  background-color: var(--mds-pref-theme-item-color-status-success);
+}
+
+.theme-color--status-warning {
+  background-color: var(--mds-pref-theme-item-color-status-warning);
+}
+
+.theme-color--status-error {
+  background-color: var(--mds-pref-theme-item-color-status-error);
+}

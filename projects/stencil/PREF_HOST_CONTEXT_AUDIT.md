@@ -13,14 +13,14 @@ all'attributo `pref-<dim>` + store condiviso. tsc/eslint/stylelint/`stencil buil
 | Dimensione  | File | Con host-context | Stato |
 |-------------|------|------------------|-------|
 | animation   | 50   | 0                | FATTA (unificata sull'attributo) |
-| theme       | 47   | 0                | FATTA (2 assi: pref-theme + pref-theme-scheme) |
-| contrast    | 51   | 0                | FATTA (+5 contrast-dark a 2 assi + mds-pref-theme) |
+| theme       | 47   | 0                | FATTA (2 assi: pref-mode + pref-theme-scheme) |
+| contrast    | 51   | 0                | FATTA (+5 contrast-dark a 2 assi + mds-pref-mode) |
 | consumption | 2    | 0                | FATTA (store + attributo) |
 
-theme = due preferenze single-asse: `theme` (light/dark/system, da mds-pref-theme) +
-`theme-scheme` (light/dark/all, da mds-pref-theme-variant); il componente sottoscrive entrambe
-e lega `pref-theme` + `pref-theme-scheme`. contrast-dark (badge/dropdown/kpi-item/table/tooltip)
-combinano gli assi: `:host([pref-contrast='..'][pref-theme='..'][tone='..'])`. mds-pref-theme
+theme = due preferenze single-asse: `theme` (light/dark/system, da mds-pref-mode) +
+`theme-scheme` (light/dark/all, da mds-pref-theme); il componente sottoscrive entrambe
+e lega `pref-mode` + `pref-theme-scheme`. contrast-dark (badge/dropdown/kpi-item/table/tooltip)
+combinano gli assi: `:host([pref-contrast='..'][pref-mode='..'][tone='..'])`. mds-pref-mode
 wirato a mano (usa contrast+theme+theme-scheme). Store `PREFERENCE_VALUES` ha tutte e 5 le chiavi.
 
 BUG PREESISTENTE trovato: mds-keyboard ha un metodo storpiato `discottectedCallback()` (refuso,
@@ -35,7 +35,7 @@ mai eseguito come lifecycle). Lasciato com'era; aggiunto il `disconnectedCallbac
 50 componenti wired (`@State() prefContrast` + `subscribePreference('contrast')` + `pref-contrast`
 su Host). Store esteso con `contrast: ['more','no-preference','system']`. tsc+eslint+build puliti.
 RISULTATO: l'alto contrasto ora e' cross-browser (prima solo-Chromium via host-context).
-Anche `mds-pref-theme/css/mds-pref-theme-pref-contrast.css` (mescola selettori theme) e i 5
+Anche `mds-pref-mode/css/mds-pref-mode-pref-contrast.css` (mescola selettori theme) e i 5
 `*-pref-contrast-dark.css` (combinano contrast+theme) sono stati convertiti con gli attributi
 di theme: nessun residuo.
 
@@ -118,10 +118,10 @@ Tutte le fasi del piano originale sono state eseguite (lo store ha reso superflu
 del "layer globale contrast", scartata: i contrast sono andati per-componente con l'attributo).
 
 1. **consumption** = pilota. FATTO (store + attributo). 3 file.
-2. **contrast** FATTO per-componente (52 file, +5 contrast-dark, + mds-pref-theme): l'attributo
+2. **contrast** FATTO per-componente (52 file, +5 contrast-dark, + mds-pref-mode): l'attributo
    `pref-contrast` + `@media (prefers-contrast)` copre il caso `system`/no-controller, senza
    bisogno di un layer globale ne' di pubblicare un custom prop dedicato.
-3. **theme** FATTO (48 file, 2 assi `pref-theme` + `pref-theme-scheme`).
+3. **theme** FATTO (48 file, 2 assi `pref-mode` + `pref-theme-scheme`).
 4. **animation** FATTO e unificato sull'attributo (51 file).
 
 Verificato 2026-06-30: `grep -r ":host-context("` sui `*-pref-*.css` => 0 occorrenze reali.

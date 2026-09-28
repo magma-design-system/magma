@@ -33,9 +33,6 @@
     "@maggioli-design-system/magma": "2.0.0-alpha.1",
     "@stencil/react-output-target": "1.6.2"
   },
-  "devDependencies": {
-    "typescript": "5.8.3"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/magma-design-system/magma.git",

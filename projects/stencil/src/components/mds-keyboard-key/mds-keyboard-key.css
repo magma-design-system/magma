@@ -47,7 +47,7 @@
   );
 
   align-items: flex-end;
-  corner-shape: var(--magma-corner-shape, round);
+  corner-shape: var(--magma-corner-shape);
   display: inline-flex;
   min-height: var(--key-size-default);
   min-width: var(--key-size-default);

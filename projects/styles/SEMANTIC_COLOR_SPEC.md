@@ -55,7 +55,7 @@ colors.
 
 Pipeline (unchanged): `design-tokens` generates -> `styles` builds and publishes CSS to
 `dist/css` -> `stencil` consumes. Per-mode values are published as light-DOM custom
-properties on `:root` and flipped under `.pref-theme-dark` / `@media (prefers-color-scheme)`
+properties on `:root` and flipped under `.pref-mode-dark` / `@media (prefers-color-scheme)`
 (the existing `colors-rgb-tones.css` mechanism), so they inherit into every shadow DOM with
 no `:host-context` and no Tailwind `dark:` variants.
 
@@ -484,7 +484,7 @@ DOM). Same mechanism as the existing preference system.
   | 1 in `mds-keyboard` | its greys are deliberately a different grey from the UI and must not follow the theme. |
 
   **A role often DELETES code instead of adding it.** `mds-separator` is the worked example:
-  it carried a `pref-theme` sheet naming step 07 for dark and a `pref-contrast` sheet naming
+  it carried a `pref-mode` sheet naming step 07 for dark and a `pref-contrast` sheet naming
   step 06 for high contrast. A rule is a border, so it now takes `--magma-border-default` -
   which flips with the mode on its own (`#c4c4c4` light / `#6f6f6f` dark) and is promoted to
   `border-strong` under `pref-contrast-more` (3.00:1 against the paper, where the hand-written

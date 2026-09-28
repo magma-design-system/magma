@@ -13,7 +13,7 @@ The `<mds-pref>` web component is the accessibility-preferences panel of the Mag
 
 #### Semantic Behavior
 
-- **Compound parent**: Expects `mds-pref-animation`, `mds-pref-consumption`, `mds-pref-contrast`, `mds-pref-theme`, and/or `mds-pref-language` children in its default slot; it owns no preference UI of its own beyond coordination.
+- **Compound parent**: Expects `mds-pref-animation`, `mds-pref-consumption`, `mds-pref-contrast`, `mds-pref-mode`, and/or `mds-pref-language` children in its default slot; it owns no preference UI of its own beyond coordination.
 - **Size propagation**: Changing `size` cascades the value down to every nested `mds-pref-*` child, keeping the whole panel on one tab size.
 - **Reload notice**: Listens for the `mdsPrefChange` event from children and, when the changed preference cannot apply live (`consumption` or `language`), reveals an inline caption prompting the user to refresh the page.
 - **Live language sync**: When a `language` change is emitted, the panel re-resolves its own locale so the reload notice is shown in the newly selected language.
@@ -37,11 +37,11 @@ The canonical form: slot every `mds-pref-*` control directly inside `<mds-pref>`
 
 ```html
 <mds-pref>
-  <mds-pref-theme></mds-pref-theme>
-  <mds-pref-theme-variant>
-    <mds-pref-theme-variant-item name="default"></mds-pref-theme-variant-item>
-    <mds-pref-theme-variant-item name="magma"></mds-pref-theme-variant-item>
-  </mds-pref-theme-variant>
+  <mds-pref-mode></mds-pref-mode>
+  <mds-pref-theme>
+    <mds-pref-theme-item name="default"></mds-pref-theme-item>
+    <mds-pref-theme-item name="magma"></mds-pref-theme-item>
+  </mds-pref-theme>
   <mds-pref-contrast></mds-pref-contrast>
   <mds-pref-animation></mds-pref-animation>
   <mds-pref-consumption></mds-pref-consumption>
@@ -71,7 +71,7 @@ Use the `size` prop on the parent to drive all child controls at once. Setting i
 ```html
 <!-- Compact panel for a sidebar or popover -->
 <mds-pref size="sm">
-  <mds-pref-theme></mds-pref-theme>
+  <mds-pref-mode></mds-pref-mode>
   <mds-pref-contrast></mds-pref-contrast>
   <mds-pref-animation></mds-pref-animation>
 </mds-pref>
@@ -84,7 +84,7 @@ Set the `controller` boolean attribute when you need the preference engine to ap
 ```html
 <!-- Place in <body>; the panel is invisible but activates stored preferences -->
 <mds-pref controller>
-  <mds-pref-theme></mds-pref-theme>
+  <mds-pref-mode></mds-pref-mode>
   <mds-pref-contrast></mds-pref-contrast>
   <mds-pref-animation></mds-pref-animation>
   <mds-pref-consumption></mds-pref-consumption>
@@ -133,18 +133,18 @@ Common incorrect uses of `<mds-pref>`. Each entry pairs the wrong form with the 
 
 #### Do Not Place Non-Pref Children in the Default Slot
 
-The default slot accepts only `mds-pref-animation`, `mds-pref-consumption`, `mds-pref-contrast`, `mds-pref-language`, and `mds-pref-theme` children. Slotting other elements breaks the coordination logic and may not render.
+The default slot accepts only `mds-pref-animation`, `mds-pref-consumption`, `mds-pref-contrast`, `mds-pref-language`, and `mds-pref-mode` children. Slotting other elements breaks the coordination logic and may not render.
 
 ```html
 <!-- 🚫 INCORRECT -->
 <mds-pref>
   <div class="custom-section">Tema</div>
-  <mds-pref-theme></mds-pref-theme>
+  <mds-pref-mode></mds-pref-mode>
 </mds-pref>
 
 <!-- ✅ CORRECT -->
 <mds-pref>
-  <mds-pref-theme></mds-pref-theme>
+  <mds-pref-mode></mds-pref-mode>
 </mds-pref>
 ```
 
@@ -171,12 +171,12 @@ Preference children depend on parent coordination for size propagation and the r
 ```html
 <!-- 🚫 INCORRECT -->
 <mds-pref controller="false">
-  <mds-pref-theme></mds-pref-theme>
+  <mds-pref-mode></mds-pref-mode>
 </mds-pref>
 
 <!-- ✅ CORRECT -->
 <mds-pref>
-  <mds-pref-theme></mds-pref-theme>
+  <mds-pref-mode></mds-pref-mode>
 </mds-pref>
 ```
 
@@ -187,14 +187,14 @@ Preference children depend on parent coordination for size propagation and the r
 ```html
 <!-- 🚫 INCORRECT -->
 <mds-pref>
-  <mds-pref-theme size="sm"></mds-pref-theme>
+  <mds-pref-mode size="sm"></mds-pref-mode>
   <mds-pref-contrast size="sm"></mds-pref-contrast>
   <mds-pref-animation size="sm"></mds-pref-animation>
 </mds-pref>
 
 <!-- ✅ CORRECT -->
 <mds-pref size="sm">
-  <mds-pref-theme></mds-pref-theme>
+  <mds-pref-mode></mds-pref-mode>
   <mds-pref-contrast></mds-pref-contrast>
   <mds-pref-animation></mds-pref-animation>
 </mds-pref>
@@ -214,7 +214,7 @@ Native events may not bubble out of shadow DOM as expected. Use the documented `
 
 <!-- ✅ CORRECT -->
 <script>
-  document.querySelector('mds-pref-theme').addEventListener('mdsPrefChange', (e) => {
+  document.querySelector('mds-pref-mode').addEventListener('mdsPrefChange', (e) => {
     console.log(e.detail.preference);
   });
 </script>
@@ -254,9 +254,9 @@ Native events may not bubble out of shadow DOM as expected. Use the documented `
 
 ## Slots
 
-| Slot | Description                                                                                                                |
-| ---- | -------------------------------------------------------------------------------------------------------------------------- |
-|      | Add `mds-pref-animation`, `mds-pref-consumption`, `mds-pref-contrast`, `mds-pref-language`, or `mds-pref-theme` element/s. |
+| Slot | Description                                                                                                               |
+| ---- | ------------------------------------------------------------------------------------------------------------------------- |
+|      | Add `mds-pref-animation`, `mds-pref-consumption`, `mds-pref-contrast`, `mds-pref-language`, or `mds-pref-mode` element/s. |
 
 
 ## Dependencies

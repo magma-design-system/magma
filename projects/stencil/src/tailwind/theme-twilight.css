@@ -1,5 +1,5 @@
 :root[data-theme-name='twilight'],
-mds-pref-theme-variant-item[name='twilight'] {
+mds-pref-theme-item[name='twilight'] {
   --tone-porcelain-01: 28 34 42;
   --tone-porcelain-02: 33 41 50;
   --tone-porcelain-03: 54 65 81;

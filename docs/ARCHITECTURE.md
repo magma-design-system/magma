@@ -119,7 +119,7 @@ Most components use `shadow: true` (full Shadow DOM encapsulation). Form-associa
 | **Molecule** | Composed of atoms, single concern | `mds-input`, `mds-chip`, `mds-breadcrumb` |
 | **Compound** | Parent + required child component pair | `mds-accordion` + `mds-accordion-item`, `mds-card` + `mds-card-header/content/footer/media` |
 | **Organism** | Complex layout component | `mds-table`, `mds-modal`, `mds-header` |
-| **Preference** | User preference controls (theme, contrast, animation) | `mds-pref`, `mds-pref-theme`, `mds-pref-contrast` |
+| **Preference** | User preference controls (mode, theme, contrast, animation) | `mds-pref`, `mds-pref-mode`, `mds-pref-theme`, `mds-pref-contrast` |
 
 ### 3.3 Compound component pattern
 

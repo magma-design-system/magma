@@ -24,6 +24,11 @@ const CORNER_CSS_CANDIDATES = [
   path.resolve(STYLES_DIR, 'dist/css/corner.css'),
 ];
 
+// The global tokens (z-index, blur, durations, overlay, selection, preferences):
+// hand written, so the source is always there and is exactly what the published
+// globals.css starts with.
+const GLOBALS_CSS = path.resolve(STYLES_DIR, 'css/globals.css');
+
 /**
  * Minimal shape of a Stencil style-transform plugin. Stencil only runs plugins
  * that expose a `transform` hook for the matching `pluginType`; a bare PostCSS
@@ -154,6 +159,29 @@ const loadCornerTokens = (): Tokens => {
 };
 
 /**
+ * The global tokens (`projects/styles/css/globals.css`). A token declared on the
+ * default `:root` falls back to that value; one that is only registered (the
+ * `--magma-pref-*` switches) falls back to its `initial-value`, which is what an
+ * element resolves when nothing declares it.
+ */
+const loadGlobalTokens = (): Tokens => {
+  if (!fs.existsSync(GLOBALS_CSS)) {
+    return {};
+  }
+  const registered: Tokens = {};
+  const root = postcss.parse(fs.readFileSync(GLOBALS_CSS, 'utf-8'), { from: GLOBALS_CSS });
+  root.walkAtRules('property', (atRule) => {
+    const name = atRule.params.trim();
+    atRule.walkDecls('initial-value', (decl) => {
+      if (name.startsWith('--') && decl.value.trim().length > 0) {
+        registered[name.slice(2)] = decl.value.trim();
+      }
+    });
+  });
+  return { ...registered, ...buildLookup([GLOBALS_CSS]) };
+};
+
+/**
  * Build a `name -> initial-value` map from every `@property --mds-*` block
  * declared by the components. The registered `initial-value` is the component
  * author's intended default, so it doubles as the natural `var()` fallback.
@@ -183,12 +211,21 @@ export interface TokenFallbackPluginOptions {
   injectTokenFallbacks?: boolean;
   /** Inline the semantic layer (`--magma-*`) indirections as fallbacks. */
   injectSemanticFallbacks?: boolean;
+  /** Inline the global tokens (`styles/css/globals.css`) as fallbacks. */
+  injectGlobalFallbacks?: boolean;
   /** Inline each `--mds-*` `@property` `initial-value` as a fallback. */
   injectComponentDefaults?: boolean;
   /** Log a warning for every bare `var()` with no resolvable fallback. */
   warnOnMissing?: boolean;
   /** Throw for every bare `var()` with no resolvable fallback. */
   failOnMissing?: boolean;
+  /**
+   * Limit `warnOnMissing` / `failOnMissing` to the names starting with one of
+   * these prefixes (without the leading `--`). Component-private names
+   * (`--mds-*`, `--private-*`) are left bare on purpose, so checking every name
+   * only buries the one that matters.
+   */
+  checkPrefixes?: string[];
 }
 
 // Bare `var(--name)` with no existing fallback (closing paren right after the
@@ -202,10 +239,15 @@ export default function tokenFallbackPlugin(
   const {
     injectTokenFallbacks = true,
     injectSemanticFallbacks = true,
+    injectGlobalFallbacks = true,
     injectComponentDefaults = true,
     warnOnMissing = false,
     failOnMissing = false,
+    checkPrefixes,
   } = options;
+
+  const isChecked = (name: string): boolean =>
+    !checkPrefixes || checkPrefixes.some((prefix) => name.startsWith(prefix));
 
   // Built once per build. Primitive, semantic (`--magma-*`) and `--mds-*` names
   // never collide, so a flat lookup is enough; later spreads win on the off
@@ -213,6 +255,9 @@ export default function tokenFallbackPlugin(
   // `inject()` down to the primitive values loaded alongside them.
   const lookup: Tokens = {
     ...(injectTokenFallbacks ? loadDesignTokens() : {}),
+    // Before the generated layers: a global that globals.css only registers (the
+    // corner shape) must yield to the default block its generated layer emits.
+    ...(injectGlobalFallbacks ? loadGlobalTokens() : {}),
     ...(injectSemanticFallbacks ? loadSemanticTokens() : {}),
     ...(injectSemanticFallbacks ? loadCornerTokens() : {}),
     ...(injectComponentDefaults ? loadComponentDefaults() : {}),
@@ -227,7 +272,7 @@ export default function tokenFallbackPlugin(
     return value.replace(BARE_VAR, (whole, name: string) => {
       const fallback = lookup[name];
       if (fallback === undefined) {
-        if ((failOnMissing || warnOnMissing) && !reported.has(name)) {
+        if ((failOnMissing || warnOnMissing) && isChecked(name) && !reported.has(name)) {
           reported.add(name);
           const message = `CSS variable with no resolvable fallback: --${name}`;
           if (failOnMissing) {

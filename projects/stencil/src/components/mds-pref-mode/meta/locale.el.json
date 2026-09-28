@@ -1,0 +1,6 @@
+{
+  "darkMode": "Σκούρο",
+  "label": "Λειτουργία",
+  "lightMode": "Ανοιχτό{{#forced}} (επιβεβλημένο στο Safari){{/forced}}",
+  "systemSettings": "Με βάση το λειτουργικό σύστημα"
+}

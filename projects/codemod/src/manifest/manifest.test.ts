@@ -304,6 +304,57 @@ describe('curated manifest', () => {
   });
 });
 
+describe('mode vs theme (#702)', () => {
+  it('renames the v1 mode control, and the v2 beta theme chooser into the freed name', () => {
+    expect(rulesOf('mds-pref-theme')).toContainEqual({
+      kind: 'tagRename',
+      to: 'mds-pref-mode',
+      toReact: 'MdsPrefMode',
+    });
+    expect(rulesOf('mds-pref-theme-variant')).toContainEqual({
+      kind: 'tagRename',
+      to: 'mds-pref-theme',
+      toReact: 'MdsPrefTheme',
+    });
+    expect(rulesOf('mds-pref-theme-variant-item')).toContainEqual({
+      kind: 'tagRename',
+      to: 'mds-pref-theme-item',
+      toReact: 'MdsPrefThemeItem',
+    });
+  });
+
+  it('moves the overlay properties with the tag instead of reporting them removed', () => {
+    const rules = rulesOf('mds-pref-theme');
+    expect(rules.some((r) => r.kind === 'cssVarRemove')).toBe(false);
+    for (const prop of ['fadeout-duration', 'show-duration', 'z-index'])
+      expect(rules).toContainEqual({
+        kind: 'cssVarRename',
+        from: `mds-pref-theme-overlay-${prop}`,
+        to: `mds-pref-mode-overlay-${prop}`,
+      });
+  });
+
+  it('renames the mode classes in markup and in selectors, and the preference properties', () => {
+    for (const mode of ['light', 'dark', 'system'])
+      expect(manifest.global.classes).toContainEqual({
+        kind: 'classRename',
+        from: `pref-theme-${mode}`,
+        to: `pref-mode-${mode}`,
+        selectors: true,
+      });
+    expect(manifest.global.cssVars).toContainEqual({
+      kind: 'cssVarRename',
+      from: 'magma-pref-theme',
+      to: 'magma-pref-mode',
+    });
+    expect(manifest.global.cssVars).toContainEqual({
+      kind: 'cssVarRename',
+      from: 'magma-pref-theme-name',
+      to: 'magma-pref-theme',
+    });
+  });
+});
+
 describe('generated manifest alignment (v1.12 tip vs dev tip)', () => {
   it('rewrites the hide/disable renames as boolean inversions, not removals', () => {
     const expected: Array<[string, string, string]> = [
@@ -347,7 +398,8 @@ describe('generated manifest alignment (v1.12 tip vs dev tip)', () => {
     const removals = Object.values(manifest.components).flatMap((c) =>
       c.rules.filter((r) => r.kind === 'cssVarRemove'),
     );
-    // 20 in the generated manifest, minus the 9 the curation converts to renames.
-    expect(removals.length).toBeGreaterThanOrEqual(11);
+    // 20 in the generated manifest, minus the 12 the curation converts to renames
+    // (the 3 mds-pref-theme overlay properties moved with the tag, #702).
+    expect(removals.length).toBeGreaterThanOrEqual(8);
   });
 });

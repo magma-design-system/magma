@@ -1,0 +1,16 @@
+/* Theme preference. The component reflects the resolved theme mode and scheme
+ * from <html> onto its host as pref-mode + pref-theme-scheme (see
+ * subscribePreference in @common/preference); these plain shadow selectors refine
+ * for dark. `dark` is the explicit choice; `system` and no controller follow the
+ * OS via @media; the scheme axis gates it. Cross-browser, no :host-context. */
+
+:host([pref-mode='dark']:not([pref-theme-scheme='light'])) {
+  --mds-accordion-border-color: rgb(var(--magma-scale-06));
+}
+
+@media (prefers-color-scheme: dark) {
+  :host([pref-mode='system']:not([pref-theme-scheme='light'])),
+  :host(:not([pref-mode])) {
+    --mds-accordion-border-color: rgb(var(--magma-scale-06));
+  }
+}

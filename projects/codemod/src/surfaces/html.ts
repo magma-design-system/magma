@@ -18,6 +18,7 @@ import {
   type PropRemoveRule,
   type SlotRule,
   type SlotToAttrRule,
+  type TagRenameRule,
 } from '../manifest/schema.js';
 import { getByTag, ruleId, rulesForComponent } from '../manifest/registry.js';
 import { classRulesOf, hasClassRules, rewriteClassList } from './shared/class-ops.js';
@@ -217,10 +218,32 @@ export const transformHtml = (
         case 'slotRemove':
           applySlotRemove(rule, id);
           break;
+        case 'tagRename':
+          applyTagRename(rule, id);
+          break;
         // slotRename/cssVarRename/cssVarRemove/partRename/eventRename: not applicable to plain HTML attributes.
         default:
           break;
       }
+    }
+
+    /** Rename the start tag and, when written, the end tag; the name sits right after `<` / `</`. */
+    function applyTagRename(rule: TagRenameRule, id: string): void {
+      if (!loc?.startTag) return;
+      const nameEdit = (at: number): Edit => ({ start: at, end: at + tag.length, text: rule.to });
+      edits.push(nameEdit(loc.startTag.startOffset + 1));
+      if (loc.endTag) edits.push(nameEdit(loc.endTag.startOffset + 2));
+      pushFinding({
+        kind: 'change',
+        surface: 'html',
+        file: ctx.file,
+        line: loc.startLine,
+        component: tag,
+        ruleId: id,
+        message: `rename <${tag}> to <${rule.to}>`,
+        before: tag,
+        after: rule.to,
+      });
     }
 
     function attrValueOf(attr: P5Attr, hasValueRaw: boolean): AttrValue {

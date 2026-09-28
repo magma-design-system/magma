@@ -19,7 +19,7 @@ import { useEffect, useState, type ReactNode } from 'react';
  *    its OWN promotion block - the theme switch here is what exercises it.
  *
  * The switches write exactly what the real writers write (the `mds-pref-*`
- * controllers and the Storybook a11y panel): `pref-contrast-*` / `pref-theme-*`
+ * controllers and the Storybook a11y panel): `pref-contrast-*` / `pref-mode-*`
  * classes and `data-theme-name` on `<html>`. The Contrast control in the
  * Storybook toolbar panel drives the same class and stays in sync with this page.
  */
@@ -183,7 +183,7 @@ const Controls = ({ onChange }: { onChange: () => void }) => {
     readClassValue('pref-contrast-', CONTRAST_VALUES, 'no-preference'),
   );
   const [mode, setMode] = useState<string>(() =>
-    readClassValue('pref-theme-', THEME_MODES, 'light'),
+    readClassValue('pref-mode-', THEME_MODES, 'light'),
   );
   const [themeName, setThemeName] = useState<string>(readThemeName);
 
@@ -204,7 +204,7 @@ const Controls = ({ onChange }: { onChange: () => void }) => {
         values={THEME_MODES}
         active={mode}
         onPick={(next) => {
-          applyClassValue('pref-theme-', THEME_MODES, next);
+          applyClassValue('pref-mode-', THEME_MODES, next);
           setMode(next);
           onChange();
         }}
@@ -610,10 +610,10 @@ const ContrastPage = () => {
         </div>
         <Callout>
           <mds-text typography="detail" style={{ color: textVar('muted') }}>
-            The states are NOT derived with <Code>color-mix</Code>: the ramp inverts between
-            light and dark, so &quot;one step stronger&quot; cannot be one expression in both
-            modes. They name steps <Code>03</Code> and <Code>02</Code>, which the engine already
-            mode-flips - flip <strong>Mode</strong> and the three swatches keep the same order.
+            The states are NOT derived with <Code>color-mix</Code>: the ramp inverts between light
+            and dark, so &quot;one step stronger&quot; cannot be one expression in both modes. They
+            name steps <Code>03</Code> and <Code>02</Code>, which the engine already mode-flips -
+            flip <strong>Mode</strong> and the three swatches keep the same order.
           </mds-text>
           <mds-text typography="detail" style={{ color: textVar('muted') }}>
             This band is what the component sheets built by hand, with the fill on step{' '}

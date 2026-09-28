@@ -160,7 +160,7 @@
 }
 
 @import './css/mds-push-notification-item-pref-animation.css';
-@import './css/mds-push-notification-item-pref-theme.css';
+@import './css/mds-push-notification-item-pref-mode.css';
 @import './css/mds-push-notification-item-pref-contrast.css';
 @import './css/mds-push-notification-item-variant-primary.css';
 @import './css/mds-push-notification-item-variant-label.css';

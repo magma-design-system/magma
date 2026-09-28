@@ -3,7 +3,13 @@
  * (which builds the manifest from `documentation.json`) and the transformers
  * (which consume it).
  */
-import { type ComponentManifest, type EnumRemapRule, type Manifest, type Rule } from './schema.js';
+import {
+  type ComponentManifest,
+  type EnumRemapRule,
+  type Manifest,
+  type Rule,
+  type TagRenameRule,
+} from './schema.js';
 
 /** camelCase prop → kebab-case attribute: `autoPlacement` → `auto-placement`. */
 export const propToAttr = (prop: string): string => prop.replace(/([A-Z])/g, '-$1').toLowerCase();
@@ -40,6 +46,8 @@ export const ruleId = (tag: string, rule: Rule): string => {
       return `${tag}/${rule.kind}/${rule.slot}`;
     case 'ensureAttr':
       return `${tag}/${rule.kind}/${rule.attr.prop}`;
+    case 'tagRename':
+      return `${tag}/${rule.kind}`;
     case 'cssVarRemove':
     case 'classReport':
       return `${tag}/${rule.kind}/${rule.name}`;
@@ -106,3 +114,24 @@ export const v2SetFor = (
   component: ComponentManifest,
   rule: EnumRemapRule,
 ): readonly string[] | undefined => (rule.v2set ? component.v2EnumSets?.[rule.v2set] : undefined);
+
+/**
+ * The v1 → v2 tag renames of the manifest, keyed by v1 tag. Read in one lookup
+ * per element so the renames are simultaneous: `mds-pref-theme` becomes
+ * `mds-pref-mode` while `mds-pref-theme-variant` becomes `mds-pref-theme`, and
+ * neither result is looked up again.
+ */
+const tagRenameCache = new WeakMap<Manifest, Map<string, TagRenameRule>>();
+
+export const tagRenamesOf = (manifest: Manifest): Map<string, TagRenameRule> => {
+  let renames = tagRenameCache.get(manifest);
+  if (!renames) {
+    renames = new Map();
+    for (const component of Object.values(manifest.components)) {
+      const rule = component.rules.find((r): r is TagRenameRule => r.kind === 'tagRename');
+      if (rule) renames.set(component.tag, rule);
+    }
+    tagRenameCache.set(manifest, renames);
+  }
+  return renames;
+};

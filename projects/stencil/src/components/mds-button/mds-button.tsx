@@ -297,7 +297,7 @@ export class MdsButton {
         onMouseOut={this.mouseUp}
         tabindex="0"
         pref-animation={preferenceStore.state.animation}
-        pref-theme={preferenceStore.state.theme}
+        pref-mode={preferenceStore.state.mode}
         pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
         <div class="await">
