@@ -29,7 +29,12 @@
   transition-timing-function: var(--ease-out-quad);
 }
 
+/* An outline badge is never filled. Set on background-color itself, not through
+   --mds-badge-background: every variant sheet restates that token, and the CSS
+   minifier merges same-selector rules, so an order-based reset loses to them. */
+
 :host([tone='outline']) {
+  background-color: transparent;
   border-color: var(--mds-badge-border-color);
   border-style: solid;
   border-width: var(--mds-badge-border-width);
