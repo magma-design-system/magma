@@ -9,7 +9,7 @@
 
 :host {
   --mds-kpi-item-icon-color: rgb(var(--magma-accent-emphasis));
-  --mds-kpi-item-info-background: rgb(var(--tone-neutral-seed));
+  --mds-kpi-item-info-background: rgb(var(--magma-surface-raised));
   --mds-kpi-item-text-animation-placeholder-char: var(
     --mds-kpi-text-animation-placeholder-char,
     ' '

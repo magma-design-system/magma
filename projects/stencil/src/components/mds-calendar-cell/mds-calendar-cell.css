@@ -72,13 +72,13 @@
   --mds-calendar-cell-preselection-other-month-background: rgb(var(--magma-accent-surface));
   --mds-calendar-cell-preselection-other-month-color: rgb(var(--magma-text-disabled));
   --mds-calendar-cell-preselection-other-month-boundaries-color: rgb(var(--magma-text-disabled));
-  --mds-calendar-cell-preselection-other-month-boundaries-background: rgb(var(--tone-neutral-seed));
+  --mds-calendar-cell-preselection-other-month-boundaries-background: rgb(var(--magma-surface-raised));
 
   /* selection */
 
   --mds-calendar-cell-selection-current-month-background: rgb(var(--magma-accent-emphasis));
   --mds-calendar-cell-selection-current-month-color: rgb(var(--magma-text-on-emphasis));
-  --mds-calendar-cell-selection-current-month-boundaries-background: rgb(var(--tone-neutral-seed));
+  --mds-calendar-cell-selection-current-month-boundaries-background: rgb(var(--magma-surface-raised));
   --mds-calendar-cell-selection-current-month-boundaries-color: rgb(var(--magma-text-muted));
   --mds-calendar-cell-selection-current-month-weekend-background: rgb(var(--magma-accent-emphasis-hover));
   --mds-calendar-cell-selection-current-month-weekend-color: rgb(var(--variant-primary-07));

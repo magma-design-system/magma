@@ -23,12 +23,12 @@
   }
 
   &:host([tone='outline']) {
-    --mds-button-border-color-rgb: var(--tone-neutral-seed);
+    --mds-button-border-color-rgb: var(--magma-text-on-emphasis);
     --mds-button-color: rgb(var(--magma-text-on-emphasis));
   }
 
   &:host([tone='outline']:hover) {
-    --mds-button-border-color-rgb: var(--tone-neutral-seed);
+    --mds-button-border-color-rgb: var(--magma-text-on-emphasis);
     --mds-button-color: rgb(var(--magma-text-on-emphasis));
   }
 

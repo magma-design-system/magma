@@ -41,7 +41,7 @@
 
 @property --mds-horizontal-scroll-dot-background {
   inherits: true;
-  initial-value: rgb(var(--tone-neutral-seed));
+  initial-value: rgb(var(--magma-surface-overlay));
   syntax: '<color>';
 }
 

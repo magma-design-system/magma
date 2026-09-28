@@ -13,7 +13,7 @@
 :host {
 
   /* private */
-  --mds-avatar-stack-item-background: var(--mds-avatar-stack-background, rgb(var(--tone-neutral-seed)));
+  --mds-avatar-stack-item-background: var(--mds-avatar-stack-background, rgb(var(--magma-surface-overlay)));
   --mds-avatar-stack-item-count-background-color: var(
     --mds-avatar-stack-count-background-color,
     rgb(var(--magma-wash-base))
