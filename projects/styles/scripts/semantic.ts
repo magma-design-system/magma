@@ -278,9 +278,10 @@ const bridgeBody = bridge
 const bridgeCss = `${HEADER('Tailwind bridge for the semantic color layer.')}\n@theme {\n${bridgeBody}\n}\n`;
 
 // Contrast (spec 9.3): under `prefers-contrast: more` the text + border roles are
-// promoted to a STRONGER same-family step by repointing the --magma-tint-* block, so
-// the WHOLE scaffolding gains contrast UPSTREAM - every role that resolves through
-// the tint pointers follows, with no per-component --tone-* sheet involved.
+// promoted to a STRONGER same-family step and the page surface to the family seed
+// (the paper of the mode) by repointing the --magma-tint-* block, so the WHOLE
+// scaffolding gains contrast UPSTREAM - every role that resolves through the tint
+// pointers follows, with no per-component --tone-* sheet involved.
 //
 // Two selectors per scope, the same shape the global dark layer uses (see the
 // design-tokens css-vars-rgb template) and the per-component `*-pref-contrast.css`
@@ -325,7 +326,7 @@ const contrastPromotions =
   contrastTintOverride(tint, CONTRAST_LEVEL).length + hueContrastRules.length;
 const contrastCss = contrastBlocks('', tint, hueContrastRules);
 const contrastComment =
-  '/* Contrast (spec 9.3): pref-contrast-more promotes text + border to stronger same-family steps, on the tint block and on every hue. */';
+  '/* Contrast (spec 9.3): pref-contrast-more promotes text + border to stronger same-family steps (tint block and every hue) and the page surface to the paper of the mode. */';
 const layerCss =
   `${HEADER('Semantic color layer (--magma-*) - the contract components consume.')}${layer.join('\n')}` +
   (contrastCss ? `\n${contrastComment}\n${contrastCss}\n` : '');
