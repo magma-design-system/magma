@@ -79,16 +79,17 @@ export interface SemanticConfig {
    */
   hues: Record<string, { family: string; roles?: string; partial?: boolean }>;
   /**
-   * How many steps of the active tint's ramp to expose as `--magma-scale-NN`.
+   * How many steps of the active tint's ramp the `--magma-tint-scale-NN` pointers
+   * cover (spec 8).
    *
-   * TRANSITIONAL (spec 8): the component sheets still reach for a raw ramp step in
-   * the places the role vocabulary does not cover yet (interaction washes, scrims,
-   * shadows, decorative fills). Pinned to `--tone-neutral-*` those uses split the
-   * theming in two - the semantic roles retint, the raw steps stay a static
-   * neutral - so the ramp gets the same active-tint indirection everything else
-   * has. It is deliberately NOT bridged to Tailwind: it is an internal step toward
-   * naming those uses, not an API to build on, and each one that earns a role
-   * leaves the ramp behind.
+   * These pointers are the retint mechanism for the roles drawn from a ramp step
+   * rather than from a surface: the wash band, the shadow ink, the inverse pair and
+   * the neutral hue's fg/border. A named theme repoints them with the rest of the
+   * `--magma-tint-*` block; pinned to `--tone-neutral-*` those roles would stay grey
+   * under `cool` / `warm`.
+   *
+   * They are internal to the layer. The `--magma-scale-NN` bridge that once exposed
+   * them to the component sheets was retired in #732, once every use had a role.
    */
   scaleSteps: number;
   /** Steps of a colored family for the quintet (spec 6.5). */

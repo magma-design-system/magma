@@ -75,26 +75,13 @@ surfaceRoles.forEach((r) => layer.push(`  --magma-tint-${r}: var(--surface-${tin
 borderRoles.forEach((r) => layer.push(`  --magma-tint-border-${r}: var(--border-${tint}-${r});`));
 textRoles.forEach((r) => layer.push(`  --magma-tint-text-${r}: var(--text-${tint}-${r});`));
 layer.push(`  --magma-tint-text-on-emphasis: var(--${seed});`);
+// the active tint's RAMP pointers. Not an API: nothing outside this layer reads
+// them. They are what the wash band (2b), the shadow ink (2c), the inverse pair and
+// the neutral hue's fg/border resolve through, so a named theme retints those roles
+// by repointing this block.
+// The public `--magma-scale-NN` bridge that once exposed the ramp to the component
+// sheets was retired (#732, spec 8) once every use had a role.
 layer.push(...scaleTintOverride(scaleFamily(tint)));
-
-// 1b. the active tint's RAMP, for the component sheets that still reach for a raw
-//     step where no role covers the use yet (washes, scrims, shadows, decorative
-//     fills). Pinned to --tone-neutral-* those uses split the theming in two: the
-//     roles retint, the raw steps stay a static neutral. Routed through the tint
-//     block they follow the theme like everything else.
-//
-//     NOT bridged to Tailwind on purpose (hence the raw push, not `alias`): this is
-//     a transitional internal vocabulary on the way to naming those uses, not an
-//     API to build on. Publishing `--color-scale-09` utilities would make the raw
-//     step the easy choice again and freeze the step-indexed habit the semantic
-//     layer exists to remove.
-layer.push(
-  '',
-  '  /* Active tint ramp (spec 8) - transitional, for uses no role covers yet; not bridged to Tailwind. */',
-);
-scaleStepList().forEach((step) =>
-  layer.push(`  --magma-scale-${step}: var(--magma-tint-scale-${step});`),
-);
 
 // 2. surfaces (from the tint pointers)
 layer.push('', '  /* Surfaces - elevation + same-plane prominence (spec 6.1) */');
@@ -182,7 +169,7 @@ Object.entries(hues).forEach(([hue, { family, roles, partial }]) => {
     // The neutral hue is the TINT's own ramp, so its steps resolve through the
     // tint pointers and retint with a named theme like the wash band does. Named
     // on `${family}` directly they stayed a static neutral under `cool` / `warm`
-    // (#731: the dark variants had retinted through --magma-scale-* until then).
+    // (#731: the dark variants had retinted through the retired --magma-scale-* bridge).
     const tintStep = (step: string) => `magma-tint-scale-${step}`;
     layer.push(alias(`${hue}-fg`, tintStep(steps.fg), `${hue}-fg`));
     layer.push(alias(`${hue}-border`, tintStep(steps.border), `${hue}-border`));
@@ -399,7 +386,8 @@ const themesCss = `${HEADER('Named themes - retint the --magma-tint-* block per 
  * A theme is only eligible if its family ships a full ramp, not just a surface.
  * Surfaces can be opted in per group, so a family can have `--surface-x-*` and no
  * `--x-01..10` - and a ramp pointer that resolves to nothing would silently put
- * every `--magma-scale-*` consumer back on whatever the fallback chain finds. The
+ * the wash band, the shadow ink, the inverse pair and the neutral hue back on
+ * whatever the fallback chain finds. The
  * step list is checked against the emitted primitives rather than assumed.
  */
 const assertRampsExist = async (): Promise<void> => {
