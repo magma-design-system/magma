@@ -202,7 +202,7 @@
 }
 
 /* .counter-button:hover {
-  --mds-button-background: rgb(var(--magma-scale-09));
+  --mds-button-background: rgb(var(--magma-wash-base));
 } */
 
 .counter .counter-button:first-child {
