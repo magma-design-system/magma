@@ -35,7 +35,7 @@
 
 @property --mds-input-switch-box-color-enabled-unchecked {
   inherits: true;
-  initial-value: rgb(var(--magma-scale-06));
+  initial-value: rgb(var(--magma-border-strong));
   syntax: '<color>';
 }
 

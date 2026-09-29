@@ -64,14 +64,14 @@
   &:host([tone='weak']) {
     --mds-button-background: rgb(var(--magma-wash-strong));
     --mds-button-border-color-rgb: var(--magma-wash-strong);
-    --mds-button-color: rgb(var(--magma-text-muted));
+    --mds-button-color: rgb(var(--magma-text-default));
 
-    fill: rgb(var(--magma-text-muted));
+    fill: rgb(var(--magma-text-default));
   }
 
   &:host([tone='weak']:hover) {
-    --mds-button-background: rgb(var(--magma-scale-07));
-    --mds-button-border-color-rgb: var(--magma-scale-07);
+    --mds-button-background: rgb(var(--magma-wash-strong));
+    --mds-button-border-color-rgb: var(--magma-border-strong);
     --mds-button-color: rgb(var(--magma-text-default));
   }
 
