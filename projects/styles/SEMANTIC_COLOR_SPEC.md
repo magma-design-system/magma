@@ -270,7 +270,7 @@ neutral hue's emphasis pair (6.4), published under its own name.
 |---|---|---|
 | `--magma-surface-inverse` | `02` | the strong fill: tooltip, toast, banner, dark button at rest |
 | `--magma-surface-inverse-muted` | `03` | the less marked fill: weak tone, hover of the strong fill, the input-tip bubble, a selected count |
-| `--magma-on-inverse` | seed | text and icons on either level |
+| `--magma-on-inverse` | fill ink (6.5): seed in light, canvas in dark | text and icons on either level |
 
 **Why a second level.** Measured, not added for symmetry: 13 component declarations were
 already painting step `03` as the weak dark fill (badge, banner and toast weak, the seven
@@ -280,7 +280,8 @@ not carry the text: `on-inverse` measures 85.2 / 80.4 on `04` but 76.6 / **72.1*
 where the dark button hovered.
 
 **One ink, not a ladder.** `on-inverse` measures 104.0 / 99.5 on the strong level and
-95.1 / 90.1 on the muted one (light / dark), both gated (`on-emphasis`). The dark variants had
+95.1 / 90.1 on the muted one (light / dark, against the seed), both gated (`on-emphasis`).
+Since the dark ink became the canvas (6.5) the dark values are 97.2 / 87.9. The dark variants had
 softened it by hand to steps `07`-`10`, and two of those pairs sat under the 75 floor in dark
 (`08` on `01` at 74.8, `09` on `03` at 70.8); a muted ink would have to be step `10` to clear
 both levels (92.3 / 88.3 and 83.3 / 78.9), a difference of `#ededed` vs `#fff` that no
@@ -400,10 +401,22 @@ Which text roles a wash level may carry is bounded in section 9.1, not by taste.
 | `<hue>-wash-{soft,base,strong}` | steps `10 / 09 / 08` of the colored family, named (see 6.4) |
 | `<hue>-emphasis` | `status/label/variant-*` (APCA), solid fill |
 | `<hue>-emphasis-{hover,active}` | steps `03 / 02` of the same family, named (see 6.6) |
-| `surface-inverse` / `-muted` | steps `02 / 03` of the ACTIVE TINT ramp (`--magma-tint-scale-*`), so they retint with a named theme (see 6.1d); `on-inverse` = seed |
+| `surface-inverse` / `-muted` | steps `02 / 03` of the ACTIVE TINT ramp (`--magma-tint-scale-*`), so they retint with a named theme (see 6.1d); `on-inverse` = the fill ink (below) |
 | `<hue>-fg / -border / -surface` | shortcuts onto the roles above at their default prominence |
 | `accent-<role>-fg` | step `03` of the accent family (`accentSteps`), not the hue `05`: the accent has no generated text scale, and `05` measured 53-66 Lc on the neutral surfaces (under the 60 floor in light); `03` gives 71-84 in both modes. Same step as `-emphasis-hover`, different role: ink on a surface vs a fill state |
-| `*-on-emphasis` | `--tone-*-seed` / near-extreme, verified on the fill |
+| `*-on-emphasis` | the fill ink `--magma-tint-text-on-emphasis`: `--tone-*-seed` in light, `--magma-tint-default` (the canvas) in dark; verified on the fill |
+
+**The fill ink (#739).** Every ink on a solid fill - `text-on-emphasis`, `<hue>-on-emphasis`,
+`accent-*-on-emphasis`, `on-inverse` - resolves through ONE pointer,
+`--magma-tint-text-on-emphasis`, so the fills cannot disagree on their ink. In light it is
+the seed (`#fff` on a saturated fill). In dark it is NOT the seed: pure `#000` was the only
+pure extreme left once the canvas was lifted (`#1d1d1d`), and labels, switch knobs and badge
+rings read as holes cut into the page. The dark ink is the canvas (`onEmphasisDark:
+'default'` in `semantic.config.ts`), i.e. the page showing through the fill. Stated as the
+tint pointer, it follows a named theme (which repoints `--magma-tint-default`) and
+`pref-contrast-more` (which sends the page back to the seed, so the ink returns to pure black
+with no rule of its own). The cost is ~2.3 Lc on every fill, which is why the dark floor is 70
+(9.1).
 
 ### 6.6 Interaction states
 
@@ -484,8 +497,8 @@ DOM). Same mechanism as the existing preference system.
   that family's OWN scale, so ANY tint qualifies - a `tone` family or a colour family (a
   colour theme is monochromatic: its hue as surface, border and text). The groups
   (`tone`/`status`/`label`/...) organise names; they do not gate what can back a theme.
-  `text-on-emphasis` is the pure seed (max contrast on a solid fill) and may stay fixed
-  across themes. The accent hue follows the same repoint pattern. (Note: the config
+  `text-on-emphasis` is the fill ink (6.5): the pure seed in light, the theme's own canvas
+  in dark, so it follows the theme with no override of its own. The accent hue follows the same repoint pattern. (Note: the config
   `alias` field is declared but NOT consumed by the generator - `variant-primary` and
   `brand-maggioli` merely share a seed, they are not live-aliased.) A theme is thus an
   override map of the `--magma-tint-*` block (daisyUI-style ergonomics).
@@ -558,7 +571,16 @@ non-essential, because APCA floors differ:
 | `text-muted` | ~75 (min 75) | secondary ESSENTIAL text (address, phone) - stays legible |
 | `text-subtle` | ~45 | NON-essential only (caption, unit, hint) - below body floor is allowed |
 | `text-disabled` | ~30 | disabled (non-essential) |
-| `*-on-emphasis` | >= 75 | text on a solid fill |
+| `*-on-emphasis` | >= 75 light, >= 70 dark | text on a solid fill (dark: see below) |
+
+**Why the dark on-emphasis floor is 70.** The dark ink is the canvas, not pure black (6.5,
+#739), and the dark colored ramps are generated by Leonardo against pure black, so the rest
+fill (step `04`) was calibrated at 74.7-74.9 Lc against `#000` and measures 72.5-72.7
+against `#1d1d1d` (hover `03` ~82, active `02` ~89). The labels a solid fill carries are
+short and bold (buttons, badges, chips, counters), the case where APCA accepts Lc 60-70; body
+text never sits on a solid fill. Light keeps 75. Restoring 75 in dark means generating the
+dark ramps against the canvas instead of pure black, which regenerates the whole dark palette
+and is left as a follow-up.
 
 Verified pairs: every `text-*` on every `surface-*`; every `<hue>-text-*` on every
 `<hue>-wash-*` (see the table below); every `<hue>-fg` on `surface-default`/`-raised`
@@ -804,6 +826,8 @@ Epic: #328.
   same-plane grouping fill (a dedicated surface role, not folded into a hue).
 - Light canvas: NOT pure white. Grey canvas (`~L96`) with near-white raised (`~L99`, not
   `#fff`). Pure `#fff` / `#000` live only in `--tone-*-seed`.
+- Fill ink in dark: the canvas (`--magma-tint-default`), not the seed; floor 70 in dark,
+  75 in light (6.5, 9.1, #739).
 - Default tint: `neutral`, swappable via the `--magma-tint-*` indirection (section 8).
 - Foreground follows the theme: `--magma-text-*` resolves through `--magma-tint-text-*`
   (not pinned to `neutral`), so a theme retints surface + border + text as ONE coherent

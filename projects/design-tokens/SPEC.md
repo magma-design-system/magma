@@ -133,8 +133,9 @@ control; an unreachable target clamps to the strongest step with a warning.
 Emits `--text-<family>-<role>` (roles: `default`, `muted`, `subtle`, `disabled`)
 for every family that has both a tone scale and a surface, flipping per mode and
 shipping in the `theme` export group next to surfaces/borders. The semantic layer
-aliases these; `on-emphasis` is NOT a target role - it stays the pure
-`--tone-*-seed`.
+aliases these; `on-emphasis` is NOT a target role - it is the fill ink: the pure
+`--tone-*-seed` in light, the canvas (`--surface-<family>-default`) in dark
+(`onEmphasisDark` in `semantic.config.ts`, #739).
 
 ## Contrast gate (APCA / A3, issue #575)
 
@@ -156,7 +157,7 @@ What it checks (spec sections 9.1 / 9.2):
 | Pairs | Metric | Target | Severity |
 | --- | --- | --- | --- |
 | every `text-*` on every `surface-*` | APCA Lc | 75 / 75 / 45 / 30 (default / muted / subtle / disabled) | enforced |
-| every `<hue>-on-emphasis` on `<hue>-emphasis` | APCA Lc | 75 | enforced |
+| every `<hue>-on-emphasis` on `<hue>-emphasis` | APCA Lc | 75 light / 70 dark (the dark ink is the canvas, #739) | enforced |
 | `<hue>-fg` on `surface-default` / `-raised` | APCA Lc | 60 | report-only |
 | `border-*` on the adjacent surface | WCAG2 | 3:1 | report-only (decorative borders have no floor) |
 

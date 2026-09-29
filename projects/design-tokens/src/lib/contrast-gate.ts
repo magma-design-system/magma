@@ -35,6 +35,13 @@ export type Category =
   | 'hue-fg'
   | 'border';
 
+/**
+ * What a `--magma-*` role resolves to: one primitive in both modes, or one per
+ * mode when the layer states the role differently in dark (the fill ink, #739).
+ */
+export type Alias = string | Record<Mode, string>;
+export type AliasMap = Record<string, Alias>;
+
 /** Shape of `createColorTokens(config).tokens.color`: color[group][name][mode][step] = { value }. */
 export type ColorTree = Record<
   string,
@@ -48,8 +55,11 @@ export type ColorTree = Record<
 export interface GateTargets {
   /** APCA Lc floor per text role (essential text cannot drop below its floor). */
   text: Record<'default' | 'muted' | 'subtle' | 'disabled', number>;
-  /** APCA Lc floor for text on a solid emphasis fill. */
-  onEmphasis: number;
+  /**
+   * APCA Lc floor for text on a solid emphasis fill, per mode. Dark is lower
+   * because the ink is the canvas, not pure black (spec 9.1, #739).
+   */
+  onEmphasis: Record<Mode, number>;
   /** APCA Lc target for colored fg on a surface (report-only; spec gives no number). */
   hueFg: number;
   /** WCAG2 non-text ratio for state borders (report-only; WCAG 1.4.11). */
@@ -58,7 +68,7 @@ export interface GateTargets {
 
 export const DEFAULT_TARGETS: GateTargets = {
   text: { default: 75, muted: 75, subtle: 45, disabled: 30 },
-  onEmphasis: 75,
+  onEmphasis: { light: 75, dark: 70 },
   hueFg: 60,
   borderState: 3,
 };
@@ -81,7 +91,7 @@ const BORDERS = ['muted', 'default', 'strong', 'focus'] as const;
  * states (`surface-hover`/`-subtle`) add no new text-on-fill pair, and the
  * partial neutral publishes none at all.
  */
-const emphasisStatesOf = (aliases: Record<string, string>, hue: string): string[] => {
+const emphasisStatesOf = (aliases: AliasMap, hue: string): string[] => {
   const prefix = `--magma-${hue}-emphasis-`;
   return Object.keys(aliases)
     .filter((token) => token.startsWith(prefix))
@@ -152,6 +162,8 @@ export interface SemanticMapping {
   textRoles: readonly string[];
   borderFocus: string;
   seed: string;
+  /** Surface role the fill ink takes in dark instead of the seed (spec 6.5); optional. */
+  onEmphasisDark?: string;
   hues: Record<string, { family: string; roles?: string; partial?: boolean }>;
   hueSteps: { surface: string; fg: string; border: string; emphasis: string };
   accentSteps?: Partial<{ surface: string; fg: string; border: string; emphasis: string }>;
@@ -188,7 +200,30 @@ export interface SemanticMapping {
  * verifies (surfaces/text/borders from the active tint family; hues per the
  * quintet steps). Mirrors what `scripts/semantic.ts` emits.
  */
-export function aliasesFromConfig(m: SemanticMapping): Record<string, string> {
+export function aliasesFromConfig(m: SemanticMapping): AliasMap {
+  return withDarkInk(baseAliases(m), m);
+}
+
+/**
+ * The fill ink in dark (spec 6.5, #739): every `*-on-emphasis` and `on-inverse`
+ * takes the seed in light and the `onEmphasisDark` surface in dark, read off the
+ * map itself so a promoted surface (spec 9.3) carries the ink with it, exactly as
+ * the var() chain does in CSS.
+ */
+function withDarkInk(map: Record<string, string>, m: SemanticMapping): AliasMap {
+  const out: AliasMap = { ...map };
+  if (!m.onEmphasisDark) return out;
+  const dark = map[`--magma-surface-${m.onEmphasisDark}`];
+  if (!dark)
+    throw new Error(`contrast-gate: onEmphasisDark "${m.onEmphasisDark}" is not a surface role`);
+  Object.keys(map)
+    .filter((token) => token.endsWith('on-emphasis') || token === '--magma-on-inverse')
+    .forEach((token) => (out[token] = { light: map[token], dark }));
+  return out;
+}
+
+/** The mode-independent map, before the dark ink is applied. */
+function baseAliases(m: SemanticMapping): Record<string, string> {
   const map: Record<string, string> = {};
   const set = (magma: string, primitive: string) => (map[`--magma-${magma}`] = `--${primitive}`);
 
@@ -296,10 +331,10 @@ export type ContrastPromotions = {
 export function contrastAliasesFromConfig(
   m: SemanticMapping & { contrast?: ContrastPromotions },
   level: keyof ContrastPromotions = 'more',
-): Record<string, string> {
-  const map = aliasesFromConfig(m);
+): AliasMap {
+  const map = baseAliases(m);
   const promo = m.contrast?.[level];
-  if (!promo) return map;
+  if (!promo) return withDarkInk(map, m);
   Object.entries(promo.text ?? {}).forEach(([role, stronger]) => {
     map[`--magma-text-${role}`] = `--text-${m.tint}-${stronger}`;
   });
@@ -330,7 +365,7 @@ export function contrastAliasesFromConfig(
       map[`--magma-${hue}-border`] = `--border-${roles}-${promo.border[m.hueRoles.border]}`;
     }
   });
-  return map;
+  return withDarkInk(map, m);
 }
 
 const toY = (hex: string) => sRGBtoY(chroma(hex).rgb());
@@ -362,16 +397,16 @@ export interface PairResult {
  */
 export function evaluatePairs(
   tree: ColorTree,
-  aliases: Record<string, string>,
+  aliases: AliasMap,
   targets: GateTargets = DEFAULT_TARGETS,
 ): PairResult[] {
   const out: PairResult[] = [];
   const short = (t: string) => t.replace(/^--magma-/, '');
 
   const resolveRole = (token: string, mode: Mode): string => {
-    const prim = aliases[token];
-    if (!prim) throw new Error(`contrast-gate: ${token} is not in the semantic config`);
-    return resolvePrimitive(tree, prim, mode);
+    const alias = aliases[token];
+    if (!alias) throw new Error(`contrast-gate: ${token} is not in the semantic config`);
+    return resolvePrimitive(tree, typeof alias === 'string' ? alias : alias[mode], mode);
   };
 
   const push = (
@@ -425,7 +460,7 @@ export function evaluatePairs(
         'apca',
         `--magma-${hue}-on-emphasis`,
         `--magma-${hue}-emphasis`,
-        targets.onEmphasis,
+        targets.onEmphasis[mode],
         mode,
       );
     }
@@ -441,7 +476,7 @@ export function evaluatePairs(
           'apca',
           `--magma-${hue}-on-emphasis`,
           `--magma-${hue}-${state}`,
-          targets.onEmphasis,
+          targets.onEmphasis[mode],
           mode,
         );
       }
@@ -455,7 +490,7 @@ export function evaluatePairs(
         'apca',
         '--magma-on-inverse',
         '--magma-surface-inverse-muted',
-        targets.onEmphasis,
+        targets.onEmphasis[mode],
         mode,
       );
     }
