@@ -6,11 +6,9 @@
 
 :host([pref-mode='dark']:not([pref-theme-scheme='light'])) {
   --mds-progress-color: rgb(var(--magma-accent-fg));
-  --mds-progress-background: rgb(var(--magma-scale-07));
 
   &:host([variant='primary']) {
     --mds-progress-color: rgb(var(--magma-accent-fg));
-    --mds-progress-background: rgb(var(--magma-scale-07));
   }
 
   &:host([variant='error']) {
@@ -38,11 +36,9 @@
   :host([pref-mode='system']:not([pref-theme-scheme='light'])),
   :host(:not([pref-mode])) {
     --mds-progress-color: rgb(var(--magma-accent-fg));
-    --mds-progress-background: rgb(var(--magma-scale-07));
 
     &:host([variant='primary']) {
       --mds-progress-color: rgb(var(--magma-accent-fg));
-      --mds-progress-background: rgb(var(--magma-scale-07));
     }
 
     &:host([variant='error']) {

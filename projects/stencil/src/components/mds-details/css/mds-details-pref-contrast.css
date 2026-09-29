@@ -5,13 +5,11 @@
 
 :host([pref-contrast='more']) {
   --mds-details-icon-color: rgb(var(--magma-accent-fg));
-  --mds-details-helper-icon-color: rgb(var(--magma-scale-02));
 }
 
 @media (prefers-contrast: more) {
   :host([pref-contrast='system']),
   :host(:not([pref-contrast])) {
     --mds-details-icon-color: rgb(var(--magma-accent-fg));
-    --mds-details-helper-icon-color: rgb(var(--magma-scale-02));
   }
 }

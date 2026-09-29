@@ -6,7 +6,6 @@
 
 :host([pref-mode='dark']:not([pref-theme-scheme='light'])) {
   --mds-input-range-thumb-background: rgb(var(--magma-accent-emphasis));
-  --mds-input-range-track-background: rgb(var(--magma-scale-07));
   --mds-input-range-track-progress-background: rgb(var(--magma-accent-emphasis));
 }
 
@@ -14,7 +13,6 @@
   :host([pref-mode='system']:not([pref-theme-scheme='light'])),
   :host(:not([pref-mode])) {
     --mds-input-range-thumb-background: rgb(var(--magma-accent-emphasis));
-    --mds-input-range-track-background: rgb(var(--magma-scale-07));
     --mds-input-range-track-progress-background: rgb(var(--magma-accent-emphasis));
   }
 }

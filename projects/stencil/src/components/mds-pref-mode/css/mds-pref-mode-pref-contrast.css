@@ -3,10 +3,6 @@
     --mds-tab-item-default-color: rgb(var(--magma-text-default));
   }
 
-  .item--system {
-    --mds-tab-item-selected-color: rgb(var(--magma-scale-03));
-  }
-
   .item--light {
     --mds-tab-item-selected-color: rgb(var(--label-yellow-03));
   }
@@ -21,10 +17,6 @@
   :host(:not([pref-contrast])) {
     .item {
       --mds-tab-item-default-color: rgb(var(--magma-text-default));
-    }
-
-    .item--system {
-      --mds-tab-item-selected-color: rgb(var(--magma-scale-03));
     }
 
     .item--light {
