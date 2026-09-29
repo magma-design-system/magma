@@ -217,15 +217,19 @@ export function aliasesFromConfig(m: SemanticMapping): Record<string, string> {
   Object.entries(m.hues).forEach(([hue, { family, roles, partial }]) => {
     if (partial || !roles) {
       const steps = partial ? m.neutralHueSteps : m.hueSteps;
+      // the neutral hue is the active tint's own ramp: the layer names it through
+      // `--magma-tint-scale-*` so it retints with a named theme (#731), which for
+      // the gate means the same `rampFamily` the wash band resolves to
+      const source = partial ? rampFamily : family;
       if (!partial) set(`${hue}-surface`, `${family}-${m.hueSteps.surface}`);
-      set(`${hue}-fg`, `${family}-${steps.fg}`);
-      set(`${hue}-border`, `${family}-${steps.border}`);
-      set(`${hue}-emphasis`, `${family}-${steps.emphasis}`);
+      set(`${hue}-fg`, `${source}-${steps.fg}`);
+      set(`${hue}-border`, `${source}-${steps.border}`);
+      set(`${hue}-emphasis`, `${source}-${steps.emphasis}`);
       set(`${hue}-on-emphasis`, m.seed);
       // the inverse surface's less marked level (spec 6.1d): a fill that carries
       // on-inverse text, gated like an emphasis state
       if (partial && m.neutralHueSteps.emphasisMuted) {
-        set('surface-inverse-muted', `${family}-${m.neutralHueSteps.emphasisMuted}`);
+        set('surface-inverse-muted', `${rampFamily}-${m.neutralHueSteps.emphasisMuted}`);
         set('on-inverse', m.seed);
       }
       return;

@@ -715,8 +715,9 @@ export const Reference = {
         <HueMatrix />
         <mds-text typography="detail" style={{ color: textVar('subtle') }}>
           Sources: surface = &lt;family&gt;-09, fg = -05, border = -06, emphasis = -04, on-emphasis
-          = tone-neutral-seed. Neutral: fg = tone-neutral-03, border = -06; its solid fill is the
-          inverse-surface role below (surface-inverse = tone-neutral-02, on-inverse = seed).
+          = tone-neutral-seed. Neutral: fg = step 03, border = step 06 of the active tint; its solid
+          fill is the inverse-surface role below (surface-inverse = step 02 of the active tint,
+          on-inverse = seed).
         </mds-text>
         <Callout title="The inverse-surface role (formerly neutral-emphasis)">
           <mds-text typography="detail" style={{ color: textVar('muted') }}>
@@ -738,9 +739,10 @@ export const Reference = {
             deprecated aliases.
           </mds-text>
           <mds-text typography="detail" style={{ color: textVar('muted') }}>
-            <code style={{ fontFamily: MONO }}>surface-inverse-muted</code> (tone-neutral-03) is its
-            less marked level: the weak tone of a dark variant and the hover of the strong one. It
-            carries the same <code style={{ fontFamily: MONO }}>on-inverse</code> text.
+            <code style={{ fontFamily: MONO }}>surface-inverse-muted</code> (step 03 of the active
+            tint) is its less marked level: the weak tone of a dark variant and the hover of the
+            strong one. It carries the same <code style={{ fontFamily: MONO }}>on-inverse</code>{' '}
+            text.
           </mds-text>
           <div class="flex flex-wrap items-center gap-200">
             <Swatch token="on-inverse" kind="on" bg="surface-inverse" />

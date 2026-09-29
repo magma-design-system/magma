@@ -286,6 +286,12 @@ softened it by hand to steps `07`-`10`, and two of those pairs sat under the 75 
 both levels (92.3 / 88.3 and 83.3 / 78.9), a difference of `#ededed` vs `#fff` that no
 component needs a role for.
 
+**It follows the theme.** Both levels name steps of the active tint ramp through
+`--magma-tint-scale-*`, like the wash band of 6.1b, so a named theme retints the chip with the
+page: under `cool` step `02` is `#232b35` instead of `#2a2a2a`. Named on `--tone-neutral-*`
+directly they would stay a static grey while everything around them retints - which is what
+the dark variants had silently lost when they left `--magma-scale-*` for these roles (#731).
+
 A ring drawn on an inverse fill (`--mds-button-border-color-rgb`) names the fill's role, so
 fill and ring cannot drift apart. The pure-inversion `light` variants stay on
 `--tone-neutral-seed` (the paper of the mode), which is not an inverse role.
@@ -394,7 +400,7 @@ Which text roles a wash level may carry is bounded in section 9.1, not by taste.
 | `<hue>-wash-{soft,base,strong}` | steps `10 / 09 / 08` of the colored family, named (see 6.4) |
 | `<hue>-emphasis` | `status/label/variant-*` (APCA), solid fill |
 | `<hue>-emphasis-{hover,active}` | steps `03 / 02` of the same family, named (see 6.6) |
-| `surface-inverse` / `-muted` | steps `02 / 03` of the neutral tone scale, named (see 6.1d); `on-inverse` = seed |
+| `surface-inverse` / `-muted` | steps `02 / 03` of the ACTIVE TINT ramp (`--magma-tint-scale-*`), so they retint with a named theme (see 6.1d); `on-inverse` = seed |
 | `<hue>-fg / -border / -surface` | shortcuts onto the roles above at their default prominence |
 | `accent-<role>-fg` | step `03` of the accent family (`accentSteps`), not the hue `05`: the accent has no generated text scale, and `05` measured 53-66 Lc on the neutral surfaces (under the 60 floor in light); `03` gives 71-84 in both modes. Same step as `-emphasis-hover`, different role: ink on a surface vs a fill state |
 | `*-on-emphasis` | `--tone-*-seed` / near-extreme, verified on the fill |
