@@ -298,6 +298,7 @@ These CSS custom properties on `:root` control system-wide visual behaviour. Ove
 | `--magma-corner-shape`     | `squircle`                                   | Corner shape for all components (set it through `data-corner-shape`, see Corner geometry: alone it changes the shape without the scale) |
 | `--magma-disabled-opacity` | `0.5`                                        | Opacity of disabled components  |
 | `--magma-backdrop-opacity` | `0.1`                                        | Opacity of modal backdrops      |
+| `--magma-on-backdrop`      | `252 252 252`                                | Ink drawn on the backdrop / overlay scrim (the modal close icon); fixed in both modes because the scrim is. Override it together with `--magma-backdrop-color` |
 | `--magma-outline-focus`    | `2px solid var(--magma-outline-focus-color)` | Focus ring style                |
 
 Example override:
