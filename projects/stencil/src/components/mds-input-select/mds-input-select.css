@@ -134,7 +134,7 @@
 }
 
 :host([disabled]:not([disabled='false'])) .icon {
-  fill: rgb(var(--magma-scale-06));
+  fill: rgb(var(--magma-text-disabled));
   transform: translate(--spacing(250), --spacing(200));
 }
 

@@ -227,6 +227,6 @@
 
 @property --mds-calendar-cell-weekend-color {
   inherits: true;
-  initial-value: rgb(var(--magma-scale-06));
+  initial-value: rgb(var(--magma-text-subtle));
   syntax: '<color>';
 }

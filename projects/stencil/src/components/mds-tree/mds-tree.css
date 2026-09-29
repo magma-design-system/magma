@@ -52,7 +52,7 @@
   --mds-tree-branch-use-rounded-border: true;
   --mds-tree-branch-border-size: --spacing(50);
   --mds-tree-branch-dot-default-color: rgb(var(--magma-scale-07));
-  --mds-tree-branch-dot-expanded-color: rgb(var(--magma-scale-06));
+  --mds-tree-branch-dot-expanded-color: rgb(var(--magma-border-strong));
   --mds-tree-toggle-gap: --spacing(150);
   --mds-tree-toggle-icon-async-background: rgb(var(--magma-wash-base));
   --mds-tree-toggle-icon-async-color: rgb(var(--magma-accent-fg));

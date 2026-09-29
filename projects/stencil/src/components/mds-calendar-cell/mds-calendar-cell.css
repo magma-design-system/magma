@@ -50,7 +50,7 @@
   --mds-calendar-cell-disabled-background: transparent;
   --mds-calendar-cell-disabled-color: rgb(var(--magma-scale-07));
   --mds-calendar-cell-weekend-background: transparent;
-  --mds-calendar-cell-weekend-color: rgb(var(--magma-scale-06));
+  --mds-calendar-cell-weekend-color: rgb(var(--magma-text-subtle));
 
   /* radius */
   --mds-calendar-cell-size: --spacing(1200);
