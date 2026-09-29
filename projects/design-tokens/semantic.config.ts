@@ -160,8 +160,13 @@ export interface SemanticConfig {
    * `border` name a role of the generated ladders.
    */
   hueRoles: { surface: string; text: string; border: string };
-  /** Steps for the neutral (partial) hue - it borrows from the tone scale. */
-  neutralHueSteps: { fg: string; border: string; emphasis: string };
+  /**
+   * Steps for the neutral (partial) hue - it borrows from the tone scale.
+   * `emphasis` is the inverse surface (`--magma-surface-inverse`), `emphasisMuted`
+   * its less marked level (`--magma-surface-inverse-muted`, spec 6.1d): the weak
+   * tone of the dark variants and the hover of their strong fill.
+   */
+  neutralHueSteps: { fg: string; border: string; emphasis: string; emphasisMuted: string };
   /**
    * Accent (variant) roles - the "standout" colors, spec 8. A FIXED set of named
    * accents, each mapped to the family it draws from (the `variant-*` families,
@@ -256,7 +261,9 @@ export const semantic: SemanticConfig = {
   // (dropdown 20, tooltip 18, tab 7, filter 4), 38 of them on step 01 itself.
   shadowStep: '01',
   hueRoles: { surface: 'base', text: 'default', border: 'default' },
-  neutralHueSteps: { fg: '03', border: '06', emphasis: '02' },
+  // emphasisMuted: 13 component declarations were already painting step 03 as the
+  // weak dark fill (badge, banner/toast weak, the input-tip bubble) - #731.
+  neutralHueSteps: { fg: '03', border: '06', emphasis: '02', emphasisMuted: '03' },
   accents: {
     accent: 'variant-primary',
     ai: 'variant-ai',

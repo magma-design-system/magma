@@ -155,7 +155,7 @@ export interface SemanticMapping {
   hues: Record<string, { family: string; roles?: string; partial?: boolean }>;
   hueSteps: { surface: string; fg: string; border: string; emphasis: string };
   accentSteps?: Partial<{ surface: string; fg: string; border: string; emphasis: string }>;
-  neutralHueSteps: { fg: string; border: string; emphasis: string };
+  neutralHueSteps: { fg: string; border: string; emphasis: string; emphasisMuted?: string };
   accents: Record<string, string>;
   /**
    * Solid-fill interaction-state steps (spec 6.6); optional. The `emphasis-*`
@@ -222,6 +222,12 @@ export function aliasesFromConfig(m: SemanticMapping): Record<string, string> {
       set(`${hue}-border`, `${family}-${steps.border}`);
       set(`${hue}-emphasis`, `${family}-${steps.emphasis}`);
       set(`${hue}-on-emphasis`, m.seed);
+      // the inverse surface's less marked level (spec 6.1d): a fill that carries
+      // on-inverse text, gated like an emphasis state
+      if (partial && m.neutralHueSteps.emphasisMuted) {
+        set('surface-inverse-muted', `${family}-${m.neutralHueSteps.emphasisMuted}`);
+        set('on-inverse', m.seed);
+      }
       return;
     }
     Object.entries(m.washSteps ?? {}).forEach(([level, step]) =>
@@ -435,6 +441,19 @@ export function evaluatePairs(
           mode,
         );
       }
+    }
+    // 2b'. the inverse surface's less marked level carries on-inverse text too
+    //      (enforced): the weak dark variants and the hover of the strong one.
+    if (aliases['--magma-surface-inverse-muted']) {
+      push(
+        'on-emphasis',
+        'error',
+        'apca',
+        '--magma-on-inverse',
+        '--magma-surface-inverse-muted',
+        targets.onEmphasis,
+        mode,
+      );
     }
     // 2c. every hue's text ladder on its OWN wash levels. This is the pair a
     //     banner, toast or badge actually renders, and the one that had no name in
