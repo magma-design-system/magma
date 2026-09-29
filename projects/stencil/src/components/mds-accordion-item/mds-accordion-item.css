@@ -17,7 +17,7 @@
   --mds-accordion-item-color: var(--mds-accordion-color, rgb(var(--magma-text-muted)));
   --mds-accordion-item-description-color: var(
     --mds-accordion-description-color,
-    rgb(var(--magma-scale-02))
+    rgb(var(--magma-text-default))
   );
   --mds-accordion-item-duration: var(--mds-accordion-duration, 300ms);
   --private-accordion-item-duration: var(--mds-accordion-item-duration);
