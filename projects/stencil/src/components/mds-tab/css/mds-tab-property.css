@@ -95,7 +95,7 @@
 
 @property --mds-tab-tabs-wrapper-shadow-color {
   inherits: true;
-  initial-value: rgb(var(--magma-scale-09));
+  initial-value: rgb(var(--magma-wash-soft));
   syntax: '<color>';
 }
 

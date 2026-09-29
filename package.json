@@ -10,7 +10,7 @@
     "projects/*"
   ],
   "overrides": {
-    "caniuse-lite": "1.0.30001812",
+    "caniuse-lite": "1.0.30001813",
     "minimatch@^9.0.0": "9.0.9",
     "picomatch@^4.0.0": "4.0.7",
     "xml2js": "0.6.2"
@@ -39,7 +39,7 @@
     "stylelint-config-recess-order": "7.0.0",
     "stylelint-config-standard": "38.0.0",
     "stylelint-no-unsupported-browser-features": "^8.1.1",
-    "stylelint-order": "7.0.0",
+    "stylelint-order": "7.0.1",
     "tsx": "4.19.3",
     "typescript": "5.8.3",
     "typescript-eslint": "8.35.1"

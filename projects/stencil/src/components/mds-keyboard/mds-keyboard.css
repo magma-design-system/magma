@@ -54,7 +54,7 @@
   --mds-keyboard-background-fail: rgb(var(--magma-danger-wash-base));
   --mds-keyboard-background-pass: rgb(var(--magma-success-wash-base));
   --mds-keyboard-background: rgb(var(--tone-porcelain-08));
-  --mds-keyboard-color: rgb(var(--magma-scale-04));
+  --mds-keyboard-color: rgb(var(--magma-text-subtle));
   --mds-keyboard-fill-fail: rgb(var(--magma-danger-text-default));
   --mds-keyboard-fill-pass: rgb(var(--magma-success-text-default));
   --mds-keyboard-illumination-dark-opacity: 0.05;
