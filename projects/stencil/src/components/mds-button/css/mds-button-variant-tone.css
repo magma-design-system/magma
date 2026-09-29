@@ -42,8 +42,8 @@
   }
 
   &:host([tone='text']:hover) {
-    --mds-button-color: rgb(var(--magma-scale-10));
-    --mds-button-background: rgb(var(--magma-scale-03));
+    --mds-button-color: rgb(var(--magma-on-inverse));
+    --mds-button-background: rgb(var(--magma-surface-inverse-muted));
   }
 
   &:host([tone='text'][active]) {
@@ -52,36 +52,36 @@
 }
 
 :host([variant='dark']) {
-  --mds-button-background: rgb(var(--magma-scale-04));
-  --mds-button-border-color-rgb: var(--magma-scale-04);
-  --mds-button-color: rgb(var(--magma-text-on-emphasis));
+  --mds-button-background: rgb(var(--magma-surface-inverse));
+  --mds-button-border-color-rgb: var(--magma-surface-inverse);
+  --mds-button-color: rgb(var(--magma-on-inverse));
 
   &:host([tone='strong']:hover) {
-    --mds-button-background: rgb(var(--magma-scale-05));
-    --mds-button-border-color-rgb: var(--magma-scale-05);
+    --mds-button-background: rgb(var(--magma-surface-inverse-muted));
+    --mds-button-border-color-rgb: var(--magma-surface-inverse-muted);
   }
 
   &:host([tone='weak']) {
     --mds-button-background: rgb(var(--magma-wash-strong));
-    --mds-button-border-color-rgb: var(--magma-scale-08);
-    --mds-button-color: rgb(var(--magma-text-muted));
+    --mds-button-border-color-rgb: var(--magma-wash-strong);
+    --mds-button-color: rgb(var(--magma-text-default));
 
-    fill: rgb(var(--magma-text-muted));
+    fill: rgb(var(--magma-text-default));
   }
 
   &:host([tone='weak']:hover) {
-    --mds-button-background: rgb(var(--magma-scale-07));
-    --mds-button-border-color-rgb: var(--magma-scale-07);
+    --mds-button-background: rgb(var(--magma-wash-strong));
+    --mds-button-border-color-rgb: var(--magma-border-strong);
     --mds-button-color: rgb(var(--magma-text-default));
   }
 
   &:host([tone='outline']) {
-    --mds-button-border-color-rgb: var(--magma-scale-04);
+    --mds-button-border-color-rgb: var(--magma-surface-inverse);
     --mds-button-color: rgb(var(--magma-text-muted));
   }
 
   &:host([tone='outline']:hover) {
-    --mds-button-border-color-rgb: var(--magma-scale-04);
+    --mds-button-border-color-rgb: var(--magma-surface-inverse);
     --mds-button-color: rgb(var(--magma-text-default));
   }
 

@@ -18,7 +18,7 @@
   --mds-stepper-bar-scrollbar-margin: 0;
   --mds-stepper-bar-scrollbar-radius: 0;
   --mds-stepper-bar-scrollbar-size: --spacing(200);
-  --mds-stepper-bar-scrollbar-thumb-background: rgb(var(--magma-scale-06));
+  --mds-stepper-bar-scrollbar-thumb-background: rgb(var(--magma-border-strong));
   --mds-stepper-bar-scrollbar-track-background: rgb(var(--magma-wash-strong));
 
   display: grid;

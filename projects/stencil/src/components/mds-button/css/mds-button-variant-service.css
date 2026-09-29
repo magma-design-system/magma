@@ -9,7 +9,7 @@
   --mds-button-border-opacity: 0.2;
   --mds-button-border-width: --spacing(25);
   --mds-button-color: rgb(var(--magma-text-muted));
-  --mds-button-border-color-rgb: var(--magma-scale-01);
+  --mds-button-border-color-rgb: var(--magma-shadow-ink);
 
   box-shadow: 0 0 0 var(--mds-button-border-width)
     rgb(var(--mds-button-border-color-rgb) / var(--mds-button-border-opacity));
@@ -29,9 +29,9 @@
 :host([variant='apple']),
 :host([variant='apple'][tone]) {
   --mds-button-background: rgb(var(--magma-surface-inverse));
-  --mds-button-color: rgb(var(--magma-text-on-emphasis));
+  --mds-button-color: rgb(var(--magma-on-inverse));
   --mds-button-border-width: 0;
-  --mds-button-border-color-rgb: var(--magma-scale-02);
+  --mds-button-border-color-rgb: var(--magma-surface-inverse);
 }
 
 :host([variant='apple']:hover),
@@ -56,21 +56,11 @@
   &:host([variant='google'][tone]:hover) {
     --mds-button-border-opacity: 0.5;
   }
-
-  &:host([variant='apple']),
-  &:host([variant='apple'][tone]) {
-    --mds-button-background: rgb(var(--magma-scale-01));
-  }
 }
 
 @media (prefers-color-scheme: dark) {
   :host([pref-mode='system']:not([pref-theme-scheme='light'])),
   :host(:not([pref-mode])) {
-    &:host([variant='apple']),
-    &:host([variant='apple'][tone]) {
-      --mds-button-background: rgb(var(--magma-scale-01));
-    }
-
     &:host([variant='google']),
     &:host([variant='google'][tone]) {
       --mds-button-border-width: --spacing(50);

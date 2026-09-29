@@ -5,7 +5,7 @@
 
 :host([variant='light']) {
   --mds-progress-color: rgb(var(--magma-text-on-emphasis));
-  --mds-progress-background: rgb(var(--magma-scale-05));
+  --mds-progress-background: rgb(var(--magma-surface-inverse-muted));
 }
 
 :host([variant='error']) {

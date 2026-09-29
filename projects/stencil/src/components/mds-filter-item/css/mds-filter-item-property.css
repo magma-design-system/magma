@@ -17,7 +17,7 @@
 
 @property --mds-filter-item-count-background-selected {
   inherits: true;
-  initial-value: rgb(var(--magma-scale-05));
+  initial-value: rgb(var(--magma-surface-inverse-muted));
   syntax: '<color>';
 }
 
@@ -29,6 +29,6 @@
 
 @property --mds-filter-item-count-color-selected {
   inherits: true;
-  initial-value: rgb(var(--magma-text-on-emphasis));
+  initial-value: rgb(var(--magma-on-inverse));
   syntax: '<color>';
 }

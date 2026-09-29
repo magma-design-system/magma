@@ -29,7 +29,7 @@
 
 @property --mds-price-table-features-cell-icon-unsupported-color {
   inherits: true;
-  initial-value: rgb(var(--magma-scale-06));
+  initial-value: rgb(var(--magma-text-disabled));
   syntax: '<color>';
 }
 

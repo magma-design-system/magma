@@ -149,6 +149,23 @@ test('the shadow ink names the tint ink extreme, and is a colour not a shadow', 
   expect(map['--shadow-ring']).toBeUndefined();
 });
 
+test('the inverse surface has a less marked level, gated for on-inverse text', async () => {
+  const map = aliasesFromConfig(semantic);
+  // spec 6.1d: two levels of the neutral ramp, so both flip with the mode
+  expect(map['--magma-surface-inverse-muted']).toBe(
+    `--tone-neutral-${semantic.neutralHueSteps.emphasisMuted}`,
+  );
+  expect(semantic.neutralHueSteps.emphasisMuted).toBe('03');
+  // a muted level that resolved to the base fill would collapse weak onto strong
+  expect(map['--magma-surface-inverse-muted']).not.toBe(map['--magma-neutral-emphasis']);
+
+  const pairs = evaluatePairs(await loadTree(), map).filter(
+    (r) => r.fgToken === 'on-inverse' && r.bgToken === 'surface-inverse-muted',
+  );
+  expect(pairs.map((r) => r.mode).sort()).toEqual(['dark', 'light']);
+  expect(pairs.every((r) => r.severity === 'error' && r.pass)).toBe(true);
+});
+
 test('the emphasis band carries the same states on a hue as on an accent', async () => {
   const states = emphasisStateSteps();
   // only the emphasis band: the surface-band states are an accent affair

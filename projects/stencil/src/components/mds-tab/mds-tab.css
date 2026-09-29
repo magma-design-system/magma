@@ -103,7 +103,7 @@
   --mds-tab-scroll-scrollbar-radius: 0;
   --mds-tab-scroll-scrollbar-size: --spacing(200);
   --mds-tab-scroll-scrollbar-thumb-background: rgb(var(--magma-surface-inverse) / 0.3);
-  --mds-tab-scroll-scrollbar-track-background: rgb(var(--magma-scale-06) / 0.3);
+  --mds-tab-scroll-scrollbar-track-background: rgb(var(--magma-wash-base));
   --mds-tab-slide-delay: 0.125s;
   --mds-tab-tabs-background: rgb(var(--magma-wash-soft));
   --mds-tab-tabs-gap: --spacing(200);

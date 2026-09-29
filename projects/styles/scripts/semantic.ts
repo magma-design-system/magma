@@ -179,10 +179,18 @@ Object.entries(hues).forEach(([hue, { family, roles, partial }]) => {
   layer.push('', `  /* ${hue} (${family}) */`);
   if (partial) {
     const steps = neutralHueSteps;
-    layer.push(alias(`${hue}-fg`, `${family}-${steps.fg}`, `${hue}-fg`));
-    layer.push(alias(`${hue}-border`, `${family}-${steps.border}`, `${hue}-border`));
+    // The neutral hue is the TINT's own ramp, so its steps resolve through the
+    // tint pointers and retint with a named theme like the wash band does. Named
+    // on `${family}` directly they stayed a static neutral under `cool` / `warm`
+    // (#731: the dark variants had retinted through --magma-scale-* until then).
+    const tintStep = (step: string) => `magma-tint-scale-${step}`;
+    layer.push(alias(`${hue}-fg`, tintStep(steps.fg), `${hue}-fg`));
+    layer.push(alias(`${hue}-border`, tintStep(steps.border), `${hue}-border`));
     // inverse-surface role (renamed from neutral-emphasis / -on-emphasis)
-    layer.push(alias('surface-inverse', `${family}-${steps.emphasis}`, 'surface-inverse'));
+    layer.push(alias('surface-inverse', tintStep(steps.emphasis), 'surface-inverse'));
+    layer.push(
+      alias('surface-inverse-muted', tintStep(steps.emphasisMuted), 'surface-inverse-muted'),
+    );
     layer.push(alias('on-inverse', seed, 'on-inverse'));
     layer.push('  /* deprecated: renamed to --magma-surface-inverse / --magma-on-inverse */');
     layer.push(alias(`${hue}-emphasis`, 'magma-surface-inverse', `${hue}-emphasis`));

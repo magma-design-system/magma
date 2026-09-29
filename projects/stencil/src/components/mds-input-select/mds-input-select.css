@@ -47,7 +47,7 @@
   --mds-input-tip-horizontal-offset: --spacing(100);
   --mds-input-tip-horizontal-offset-focused: --spacing(1000);
   --mds-input-tip-vertical-offset: --spacing(100);
-  --mds-input-tip-background: rgb(var(--magma-scale-03));
+  --mds-input-tip-background: rgb(var(--magma-surface-inverse-muted));
   --mds-input-select-transition-duration: var(--duration-300);
   --mds-input-select-icon-transition-duration: var(--duration-200);
 
@@ -134,7 +134,7 @@
 }
 
 :host([disabled]:not([disabled='false'])) .icon {
-  fill: rgb(var(--magma-scale-06));
+  fill: rgb(var(--magma-text-disabled));
   transform: translate(--spacing(250), --spacing(200));
 }
 
