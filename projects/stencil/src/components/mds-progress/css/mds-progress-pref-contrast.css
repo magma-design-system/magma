@@ -5,11 +5,9 @@
 
 :host([pref-contrast='more']) {
   --mds-progress-color: rgb(var(--magma-accent-fg));
-  --mds-progress-background: rgb(var(--magma-scale-07));
 
   &:host([variant='primary']) {
     --mds-progress-color: rgb(var(--magma-accent-fg));
-    --mds-progress-background: rgb(var(--magma-scale-07));
   }
 }
 
@@ -17,11 +15,9 @@
   :host([pref-contrast='system']),
   :host(:not([pref-contrast])) {
     --mds-progress-color: rgb(var(--magma-accent-fg));
-    --mds-progress-background: rgb(var(--magma-scale-07));
 
     &:host([variant='primary']) {
       --mds-progress-color: rgb(var(--magma-accent-fg));
-      --mds-progress-background: rgb(var(--magma-scale-07));
     }
   }
 }

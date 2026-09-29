@@ -1,16 +1,4 @@
-/* Theme preference. The component reflects the resolved theme mode and scheme
- * from <html> onto its host as pref-mode + pref-theme-scheme (see
- * subscribePreference in @common/preference); these plain shadow selectors refine
- * for dark. `dark` is the explicit choice; `system` and no controller follow the
- * OS via @media; the scheme axis gates it. Cross-browser, no :host-context. */
-
-:host([pref-mode='dark']:not([pref-theme-scheme='light'])) {
-  --mds-tab-item-selected-background: rgb(var(--magma-scale-07));
-}
-
-@media (prefers-color-scheme: dark) {
-  :host([pref-mode='system']:not([pref-theme-scheme='light'])),
-  :host(:not([pref-mode])) {
-    --mds-tab-item-selected-background: rgb(var(--magma-scale-07));
-  }
-}
+/* Theme preference. The component takes its colours from semantic roles that
+ * flip per mode at :root (spec 6.1-6.3) and inherit into the shadow DOM, so it
+ * needs no per-mode dark refinement. The former dark override (a ramp step
+ * re-set to lift the colour off the old flat-black canvas) is intentionally gone. */

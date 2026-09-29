@@ -9,7 +9,6 @@
 
 :host([pref-contrast='more']) {
   --mds-chip-background: rgb(var(--magma-surface-default));
-  --mds-chip-background-selected: rgb(var(--magma-scale-09));
   --mds-chip-color: rgb(var(--magma-text-default));
   --mds-chip-color-selected: rgb(var(--magma-text-default));
   --mds-chip-icon-background-selected: rgb(var(--magma-accent-emphasis-hover));
@@ -24,7 +23,6 @@
   :host([pref-contrast='system']),
   :host(:not([pref-contrast])) {
     --mds-chip-background: rgb(var(--magma-surface-default));
-    --mds-chip-background-selected: rgb(var(--magma-scale-09));
     --mds-chip-color: rgb(var(--magma-text-default));
     --mds-chip-color-selected: rgb(var(--magma-text-default));
     --mds-chip-icon-background-selected: rgb(var(--magma-accent-emphasis-hover));

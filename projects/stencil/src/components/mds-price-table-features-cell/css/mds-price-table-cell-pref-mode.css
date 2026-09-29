@@ -5,7 +5,6 @@
  * OS via @media; the scheme axis gates it. Cross-browser, no :host-context. */
 
 :host([pref-mode='dark']:not([pref-theme-scheme='light'])) {
-  --mds-price-table-features-cell-border-color: rgb(var(--magma-scale-07));
   --mds-price-table-features-cell-icon-supported-color: rgb(var(--label-green-03));
   --mds-price-table-features-cell-icon-supported-color-hover: rgb(var(--label-green-02));
   --mds-price-table-features-cell-icon-unsupported-color-hover: rgb(var(--magma-text-subtle));
@@ -14,7 +13,6 @@
 @media (prefers-color-scheme: dark) {
   :host([pref-mode='system']:not([pref-theme-scheme='light'])),
   :host(:not([pref-mode])) {
-    --mds-price-table-features-cell-border-color: rgb(var(--magma-scale-07));
     --mds-price-table-features-cell-icon-supported-color: rgb(var(--label-green-03));
     --mds-price-table-features-cell-icon-supported-color-hover: rgb(var(--label-green-02));
     --mds-price-table-features-cell-icon-unsupported-color-hover: rgb(var(--magma-text-subtle));
