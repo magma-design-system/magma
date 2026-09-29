@@ -19,8 +19,8 @@
 }
 
 :host([variant='dark']) {
-  --mds-badge-background: rgb(var(--magma-scale-03));
-  --mds-badge-color: rgb(var(--magma-text-on-emphasis));
+  --mds-badge-background: rgb(var(--magma-surface-inverse-muted));
+  --mds-badge-color: rgb(var(--magma-on-inverse));
 
   &:host([tone='weak']) {
     --mds-badge-background: rgb(var(--magma-wash-soft));

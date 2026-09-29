@@ -49,7 +49,7 @@
   --mds-input-textarea-resize: none;
   --mds-input-textarea-max-height: --spacing(6400);
   --mds-input-textarea-min-height: --spacing(2400);
-  --mds-input-tip-background: rgb(var(--magma-scale-03));
+  --mds-input-tip-background: rgb(var(--magma-surface-inverse-muted));
   --mds-input-tip-horizontal-offset-focused: --spacing(100);
   --mds-input-tip-horizontal-offset: --spacing(100);
   --mds-input-tip-vertical-offset: --spacing(100);

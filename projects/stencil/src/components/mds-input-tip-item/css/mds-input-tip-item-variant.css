@@ -11,11 +11,13 @@
 }
 
 :host([variant='disabled']) {
-  --mds-input-tip-item-background: rgb(var(--magma-scale-05));
+  --mds-input-tip-item-background: rgb(var(--magma-wash-base));
+  --mds-input-tip-item-color: rgb(var(--magma-text-disabled));
+  --mds-input-tip-item-icon-color: rgb(var(--magma-text-disabled));
 }
 
 /* :host([variant="text"]) {
-  --mds-input-tip-item-background: rgb(var(--magma-scale-03));
+  --mds-input-tip-item-background: rgb(var(--magma-surface-inverse-muted));
 } */
 
 :host([variant='count-empty']) {

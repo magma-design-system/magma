@@ -55,7 +55,7 @@
 }
 
 :host([variant='dark'][tone='strong']) {
-  background-color: rgb(var(--magma-scale-05));
+  background-color: rgb(var(--magma-surface-inverse-muted));
 }
 
 :host([variant='dark'][tone='weak']) {

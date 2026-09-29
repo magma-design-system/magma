@@ -4,6 +4,6 @@
 }
 
 :host([variant='dark']) {
-  --mds-tooltip-background: rgb(var(--magma-scale-01));
+  --mds-tooltip-background: rgb(var(--magma-surface-inverse));
   --mds-tooltip-drop-shadow: drop-shadow(var(--drop-shadow-md));
 }

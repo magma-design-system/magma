@@ -41,7 +41,7 @@
   --mds-input-tip-horizontal-offset: --spacing(100);
   --mds-input-tip-horizontal-offset-focused: --spacing(1000);
   --mds-input-tip-vertical-offset: --spacing(100);
-  --mds-input-tip-background: rgb(var(--magma-scale-03));
+  --mds-input-tip-background: rgb(var(--magma-surface-inverse-muted));
   --mds-input-date-transition-duration: var(--duration-300);
 
   /* private */

@@ -737,9 +737,20 @@ export const Reference = {
             <code style={{ fontFamily: MONO }}>neutral-on-emphasis</code> names still resolve as
             deprecated aliases.
           </mds-text>
+          <mds-text typography="detail" style={{ color: textVar('muted') }}>
+            <code style={{ fontFamily: MONO }}>surface-inverse-muted</code> (tone-neutral-03) is its
+            less marked level: the weak tone of a dark variant and the hover of the strong one. It
+            carries the same <code style={{ fontFamily: MONO }}>on-inverse</code> text.
+          </mds-text>
           <div class="flex flex-wrap items-center gap-200">
             <Swatch token="on-inverse" kind="on" bg="surface-inverse" />
             <code style={{ fontFamily: MONO }}>--magma-surface-inverse</code>
+            <span style={{ color: textVar('subtle') }}>/</span>
+            <code style={{ fontFamily: MONO }}>--magma-on-inverse</code>
+          </div>
+          <div class="flex flex-wrap items-center gap-200">
+            <Swatch token="on-inverse" kind="on" bg="surface-inverse-muted" />
+            <code style={{ fontFamily: MONO }}>--magma-surface-inverse-muted</code>
             <span style={{ color: textVar('subtle') }}>/</span>
             <code style={{ fontFamily: MONO }}>--magma-on-inverse</code>
           </div>
