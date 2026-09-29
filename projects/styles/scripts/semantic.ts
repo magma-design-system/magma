@@ -183,6 +183,9 @@ Object.entries(hues).forEach(([hue, { family, roles, partial }]) => {
     layer.push(alias(`${hue}-border`, `${family}-${steps.border}`, `${hue}-border`));
     // inverse-surface role (renamed from neutral-emphasis / -on-emphasis)
     layer.push(alias('surface-inverse', `${family}-${steps.emphasis}`, 'surface-inverse'));
+    layer.push(
+      alias('surface-inverse-muted', `${family}-${steps.emphasisMuted}`, 'surface-inverse-muted'),
+    );
     layer.push(alias('on-inverse', seed, 'on-inverse'));
     layer.push('  /* deprecated: renamed to --magma-surface-inverse / --magma-on-inverse */');
     layer.push(alias(`${hue}-emphasis`, 'magma-surface-inverse', `${hue}-emphasis`));

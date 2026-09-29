@@ -259,6 +259,37 @@ a different geometry.
 A ring is NOT a shadow role and NOT a border role: it is geometry. The colour question is
 settled by the primitive it names, which flips with the mode.
 
+### 6.1d Inverse surface - the dark variants
+
+`--magma-surface-inverse` / `--magma-surface-inverse-muted`, with `--magma-on-inverse` on
+both: the neutral chip that flips with the mode (dark on a light UI, light on a dark one) -
+the `dark` variant of banner, badge, button, toast, tooltip, the input-tip bubble. It is the
+neutral hue's emphasis pair (6.4), published under its own name.
+
+| Token | Step | Use |
+|---|---|---|
+| `--magma-surface-inverse` | `02` | the strong fill: tooltip, toast, banner, dark button at rest |
+| `--magma-surface-inverse-muted` | `03` | the less marked fill: weak tone, hover of the strong fill, the input-tip bubble, a selected count |
+| `--magma-on-inverse` | seed | text and icons on either level |
+
+**Why a second level.** Measured, not added for symmetry: 13 component declarations were
+already painting step `03` as the weak dark fill (badge, banner and toast weak, the seven
+input-tip bubbles, the text-button hover) because no role held it (#731). The two levels are
+a tone apart (8.3 Lc in both modes), which is what a weak tone is; the step below (`04`) would
+not carry the text: `on-inverse` measures 85.2 / 80.4 on `04` but 76.6 / **72.1** on `05`,
+where the dark button hovered.
+
+**One ink, not a ladder.** `on-inverse` measures 104.0 / 99.5 on the strong level and
+95.1 / 90.1 on the muted one (light / dark), both gated (`on-emphasis`). The dark variants had
+softened it by hand to steps `07`-`10`, and two of those pairs sat under the 75 floor in dark
+(`08` on `01` at 74.8, `09` on `03` at 70.8); a muted ink would have to be step `10` to clear
+both levels (92.3 / 88.3 and 83.3 / 78.9), a difference of `#ededed` vs `#fff` that no
+component needs a role for.
+
+A ring drawn on an inverse fill (`--mds-button-border-color-rgb`) names the fill's role, so
+fill and ring cannot drift apart. The pure-inversion `light` variants stay on
+`--tone-neutral-seed` (the paper of the mode), which is not an inverse role.
+
 ### 6.2 Text (prominence)
 
 `--magma-text-{default,muted,subtle,disabled,on-emphasis}`
@@ -363,6 +394,7 @@ Which text roles a wash level may carry is bounded in section 9.1, not by taste.
 | `<hue>-wash-{soft,base,strong}` | steps `10 / 09 / 08` of the colored family, named (see 6.4) |
 | `<hue>-emphasis` | `status/label/variant-*` (APCA), solid fill |
 | `<hue>-emphasis-{hover,active}` | steps `03 / 02` of the same family, named (see 6.6) |
+| `surface-inverse` / `-muted` | steps `02 / 03` of the neutral tone scale, named (see 6.1d); `on-inverse` = seed |
 | `<hue>-fg / -border / -surface` | shortcuts onto the roles above at their default prominence |
 | `accent-<role>-fg` | step `03` of the accent family (`accentSteps`), not the hue `05`: the accent has no generated text scale, and `05` measured 53-66 Lc on the neutral surfaces (under the 60 floor in light); `03` gives 71-84 in both modes. Same step as `-emphasis-hover`, different role: ink on a surface vs a fill state |
 | `*-on-emphasis` | `--tone-*-seed` / near-extreme, verified on the fill |
