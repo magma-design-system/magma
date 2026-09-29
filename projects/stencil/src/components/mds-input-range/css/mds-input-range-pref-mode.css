@@ -7,7 +7,7 @@
 :host([pref-mode='dark']:not([pref-theme-scheme='light'])) {
   --mds-input-range-thumb-background: rgb(var(--magma-accent-emphasis));
   --mds-input-range-track-background: rgb(var(--magma-scale-07));
-  --mds-input-range-track-progress-background: rgb(var(--variant-primary-05));
+  --mds-input-range-track-progress-background: rgb(var(--magma-accent-emphasis));
 }
 
 @media (prefers-color-scheme: dark) {
@@ -15,6 +15,6 @@
   :host(:not([pref-mode])) {
     --mds-input-range-thumb-background: rgb(var(--magma-accent-emphasis));
     --mds-input-range-track-background: rgb(var(--magma-scale-07));
-    --mds-input-range-track-progress-background: rgb(var(--variant-primary-05));
+    --mds-input-range-track-progress-background: rgb(var(--magma-accent-emphasis));
   }
 }

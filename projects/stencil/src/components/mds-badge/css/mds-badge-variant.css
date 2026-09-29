@@ -1,8 +1,3 @@
 :host {
   --mds-badge-color: rgb(var(--magma-text-on-emphasis));
 }
-
-:host([tone='text']),
-:host([tone='outline']) {
-  --mds-badge-background: transparent;
-}

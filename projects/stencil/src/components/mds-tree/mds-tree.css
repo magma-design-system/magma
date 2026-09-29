@@ -44,7 +44,7 @@
   --mds-tree-actions-border-radius: var(--radius-lg);
   --mds-tree-actions-gap: --spacing(50);
   --mds-tree-label-default-background: transparent;
-  --mds-tree-label-hover-background: rgb(var(--tone-neutral-seed));
+  --mds-tree-label-hover-background: rgb(var(--magma-wash-soft));
   --mds-tree-label-icon-default-color: rgb(var(--magma-accent-emphasis));
   --mds-tree-label-icon-hover-color: var(--mds-tree-label-icon-default-color);
   --mds-tree-line-clamp: 2;
@@ -55,7 +55,7 @@
   --mds-tree-branch-dot-expanded-color: rgb(var(--magma-scale-06));
   --mds-tree-toggle-gap: --spacing(150);
   --mds-tree-toggle-icon-async-background: rgb(var(--magma-wash-base));
-  --mds-tree-toggle-icon-async-color: rgb(var(--variant-primary-03));
+  --mds-tree-toggle-icon-async-color: rgb(var(--magma-accent-fg));
   --mds-tree-toggle-icon-chevron-default-background: rgb(var(--magma-accent-emphasis));
   --mds-tree-toggle-icon-chevron-default-color: rgb(var(--magma-text-on-emphasis));
   --mds-tree-toggle-icon-chevron-expanded-background: var(

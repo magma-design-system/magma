@@ -10,8 +10,8 @@
 
 :host {
   --mds-avatar-background-color-pending: rgb(var(--magma-wash-strong));
-  --mds-avatar-background-color: rgb(var(--variant-primary-05));
-  --mds-avatar-color: rgb(var(--variant-primary-10));
+  --mds-avatar-background-color: rgb(var(--magma-accent-emphasis));
+  --mds-avatar-color: rgb(var(--magma-accent-surface-subtle));
   --mds-avatar-radius: var(--radius-full);
   --mds-avatar-initials-padding: 20%;
   --mds-avatar-transition-duration: var(--duration-200);

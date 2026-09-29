@@ -77,7 +77,7 @@
 }
 
 .button-close:hover {
-  background-color: rgb(var(--tone-neutral-seed) / 0.5);
+  background-color: rgb(var(--magma-surface-overlay) / 0.5);
 }
 
 .title {

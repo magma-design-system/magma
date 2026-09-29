@@ -13,7 +13,7 @@
     --mds-label-button-icon-color: rgb(var(--magma-danger-text-default));
     --mds-label-color: rgb(var(--magma-danger-text-muted));
     --mds-label-icon-color: rgb(var(--magma-danger-text-muted));
-    --mds-label-selection-background: rgb(var(--status-error-06));
+    --mds-label-selection-background: rgb(var(--magma-danger-border-strong));
     --mds-label-selection-color: rgb(var(--magma-danger-text-default));
   }
 }
@@ -33,7 +33,7 @@
     --mds-label-button-icon-color: rgb(var(--magma-warning-text-default));
     --mds-label-color: rgb(var(--magma-warning-text-muted));
     --mds-label-icon-color: rgb(var(--magma-warning-text-muted));
-    --mds-label-selection-background: rgb(var(--status-warning-06));
+    --mds-label-selection-background: rgb(var(--magma-warning-border-strong));
     --mds-label-selection-color: rgb(var(--magma-warning-text-default));
   }
 }
@@ -53,7 +53,7 @@
     --mds-label-button-icon-color: rgb(var(--magma-success-text-default));
     --mds-label-color: rgb(var(--magma-success-text-muted));
     --mds-label-icon-color: rgb(var(--magma-success-text-muted));
-    --mds-label-selection-background: rgb(var(--status-success-06));
+    --mds-label-selection-background: rgb(var(--magma-success-border-strong));
     --mds-label-selection-color: rgb(var(--magma-success-text-default));
   }
 }
@@ -73,7 +73,7 @@
     --mds-label-button-icon-color: rgb(var(--magma-info-text-default));
     --mds-label-color: rgb(var(--magma-info-text-muted));
     --mds-label-icon-color: rgb(var(--magma-info-text-muted));
-    --mds-label-selection-background: rgb(var(--status-info-06));
+    --mds-label-selection-background: rgb(var(--magma-info-border-strong));
     --mds-label-selection-color: rgb(var(--magma-info-text-default));
   }
 }

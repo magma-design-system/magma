@@ -17,24 +17,24 @@
 
 @property --mds-pref-theme-item-color-status-error {
   inherits: true;
-  initial-value: rgb(var(--status-error-06));
+  initial-value: rgb(var(--magma-danger-emphasis));
   syntax: '<color>';
 }
 
 @property --mds-pref-theme-item-color-status-success {
   inherits: true;
-  initial-value: rgb(var(--status-success-06));
+  initial-value: rgb(var(--magma-success-emphasis));
   syntax: '<color>';
 }
 
 @property --mds-pref-theme-item-color-status-warning {
   inherits: true;
-  initial-value: rgb(var(--status-warning-06));
+  initial-value: rgb(var(--magma-warning-emphasis));
   syntax: '<color>';
 }
 
 @property --mds-pref-theme-item-color-variant-primary {
   inherits: true;
-  initial-value: rgb(var(--variant-primary-03));
+  initial-value: rgb(var(--magma-accent-emphasis));
   syntax: '<color>';
 }

@@ -3,8 +3,8 @@
    token only has to be added in one place. */
 
 :host {
-  --mds-chip-background: rgb(var(--tone-neutral-seed));
-  --mds-chip-background-selected: rgb(var(--tone-neutral-seed));
+  --mds-chip-background: rgb(var(--magma-wash-base));
+  --mds-chip-background-selected: rgb(var(--magma-wash-base));
   --mds-chip-border: transparent;
   --mds-chip-border-selected: transparent;
   --mds-chip-color: rgb(var(--magma-text-subtle));

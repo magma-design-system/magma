@@ -4,7 +4,12 @@ import { expect, test } from 'vitest';
 
 import { getColorsConfig } from '../src/lib/utils.mjs';
 import { createColorTokens, type MagmaConfig } from '../src/lib/color.mjs';
-import { contrastTintOverride, emphasisStateSteps, semantic } from '../semantic.config.js';
+import {
+  contrastTintOverride,
+  emphasisStateSteps,
+  hueContrastOverride,
+  semantic,
+} from '../semantic.config.js';
 import {
   aliasesFromConfig,
   applyBaseline,
@@ -214,6 +219,19 @@ test('contrast-more promotes text/border roles to stronger same-family steps', (
   expect(map['--magma-text-disabled']).toBe('--text-neutral-disabled');
 });
 
+test('contrast-more takes the page to the paper of the mode, and only the page', () => {
+  const base = aliasesFromConfig(semantic);
+  const more = contrastAliasesFromConfig(semantic);
+  expect(more['--magma-surface-default']).toBe('--tone-neutral-seed');
+  // raised and overlay keep their step, so cards and floating layers still stand
+  // off the page; the sunken/muted steps keep wells and zebra rows readable
+  for (const role of ['sunken', 'muted', 'raised', 'overlay']) {
+    expect(more[`--magma-surface-${role}`]).toBe(base[`--magma-surface-${role}`]);
+  }
+  // a hue has washes, not a surface ladder: the surface promotion never reaches it
+  expect(hueContrastOverride('success', 'success').some((l) => l.includes('surface'))).toBe(false);
+});
+
 test('contrast-more promotes the colored hues off the same table', () => {
   const base = aliasesFromConfig(semantic);
   const more = contrastAliasesFromConfig(semantic);
@@ -267,6 +285,7 @@ test('contrastTintOverride only moves the tint pointers, and is family-independe
     '  --magma-tint-text-subtle: var(--text-neutral-muted);',
     '  --magma-tint-border-muted: var(--border-neutral-default);',
     '  --magma-tint-border-default: var(--border-neutral-strong);',
+    '  --magma-tint-default: var(--tone-neutral-seed);',
   ]);
   // a named theme gains contrast by the SAME promotion with its own family swapped
   // in - the shape is identical, only the family segment moves

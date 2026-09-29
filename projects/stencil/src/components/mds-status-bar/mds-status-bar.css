@@ -39,7 +39,7 @@ mds-modal {
 
 .status-bar {
   align-items: flex-start;
-  background-color: rgb(var(--tone-neutral-seed));
+  background-color: rgb(var(--magma-surface-overlay));
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-md);
   display: inline-flex;

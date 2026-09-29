@@ -41,11 +41,14 @@ export type ContrastLevel = 'more';
 
 /**
  * A level's promotions: role -> the STRONGER same-family role it borrows from.
- * Keyed by axis so text and border promote independently.
+ * Keyed by axis so text and border promote independently. `surface` has a single
+ * target, the family `seed`: the paper of the mode (#fff light / #000 dark), the
+ * one extreme no surface step reaches on purpose (spec 10).
  */
 export type ContrastPromotion = {
   text?: Record<string, string>;
   border?: Record<string, string>;
+  surface?: Record<string, 'seed'>;
 };
 
 export interface SemanticConfig {
@@ -75,7 +78,6 @@ export interface SemanticConfig {
    * (`neutralHueSteps`) and needs no `roles`.
    */
   hues: Record<string, { family: string; roles?: string; partial?: boolean }>;
-  hues: Record<string, { family: string; partial?: boolean }>;
   /**
    * How many steps of the active tint's ramp to expose as `--magma-scale-NN`.
    *
@@ -91,6 +93,14 @@ export interface SemanticConfig {
   scaleSteps: number;
   /** Steps of a colored family for the quintet (spec 6.5). */
   hueSteps: { surface: string; fg: string; border: string; emphasis: string };
+  /**
+   * Quintet steps where an ACCENT departs from `hueSteps` (spec 6.3). The accent
+   * ink: `fg` is what icons and text in the accent colour use on a neutral surface,
+   * and step 05 measured 53-66 Lc there (below the 60 floor in light, 53 on an
+   * overlay field in dark), so the components kept reaching for step 03 by hand.
+   * Step 03 gives 71-84 Lc in both modes. Optional: an omitted step follows `hueSteps`.
+   */
+  accentSteps?: Partial<{ surface: string; fg: string; border: string; emphasis: string }>;
   /**
    * WASH LEVELS of a colored hue: how marked the colored background is, NOT how
    * high it sits. Emitted as `--magma-<hue>-wash-<level>` and, like
@@ -231,6 +241,7 @@ export const semantic: SemanticConfig = {
   },
   scaleSteps: 10,
   hueSteps: { surface: '09', fg: '05', border: '06', emphasis: '04' },
+  accentSteps: { fg: '03' },
   // The three wash levels the component sheets actually use as a background
   // today. Colored: 10 x68, 09 x71, 08 x41. NEUTRAL, censused for #624: 10 x35,
   // 09 x51, 08 x58 - 144 declarations that name a raw step because no role could
@@ -267,12 +278,16 @@ export const semantic: SemanticConfig = {
     warm: 'bisque',
   },
   contrast: {
-    // text + border only. muted/subtle text shift one step stronger; decorative
-    // and default borders shift toward strong. `default` text is already the
-    // contrast ceiling; `disabled` text stays faint (intentional, WCAG-exempt).
+    // muted/subtle text shift one step stronger; decorative and default borders
+    // shift toward strong. `default` text is already the contrast ceiling;
+    // `disabled` text stays faint (intentional, WCAG-exempt). Only the PAGE goes to
+    // the paper of the mode: raised and overlay keep their step, so cards and
+    // floating layers still stand off the page (a flat paper ladder would need a
+    // contrast ring on every elevated component).
     more: {
       text: { muted: 'default', subtle: 'muted' },
       border: { muted: 'default', default: 'strong' },
+      surface: { default: 'seed' },
     },
   },
 };
@@ -334,7 +349,8 @@ export const emphasisStateSteps = (): Record<string, string> =>
   );
 
 export const accentTintOverride = (role: string, family: string): string[] => {
-  const { hueSteps, accentStateSteps } = semantic;
+  const { accentStateSteps } = semantic;
+  const hueSteps = { ...semantic.hueSteps, ...semantic.accentSteps };
   const infix = accentInfix(role);
   return [
     `  --magma-tint-accent-${infix}surface: var(--${family}-${hueSteps.surface});`,
@@ -349,7 +365,7 @@ export const accentTintOverride = (role: string, family: string): string[] => {
 
 /**
  * The `--magma-tint-*` lines that promote text + border to a STRONGER same-family
- * step under a contrast level (spec 9.3). `family` is the surface family in play -
+ * step, and the page surface to the family seed, under a contrast level (spec 9.3). `family` is the surface family in play -
  * the base `tint` for the `:root` layer, a named theme's family under
  * `data-theme-name` - so the promotion is FAMILY-INDEPENDENT: a theme gains
  * contrast exactly the way the base layer does, by swapping the family. Only the
@@ -358,8 +374,14 @@ export const accentTintOverride = (role: string, family: string): string[] => {
  * styles generator emits byte-identical lines for the base layer and for every
  * named theme. Returns [] when the level declares no promotion.
  */
-export const contrastTintOverride = (family: string, level: ContrastLevel = 'more'): string[] =>
-  contrastLines(family, level, (axis, role) => `--magma-tint-${axis}-${role}`);
+export const contrastTintOverride = (family: string, level: ContrastLevel = 'more'): string[] => [
+  ...contrastLines(family, level, (axis, role) => `--magma-tint-${axis}-${role}`),
+  // surfaces are tint pointers too (`--magma-tint-<role>`, no axis infix), and
+  // only the tint block carries them: a hue has washes, not a surface ladder
+  ...Object.entries(semantic.contrast?.[level]?.surface ?? {}).map(
+    ([role, target]) => `  --magma-tint-${role}: var(--tone-${family}-${target});`,
+  ),
+];
 
 /**
  * The same promotions for a colored HUE's published roles (spec 9.3 + 6.4).

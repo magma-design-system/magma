@@ -20,10 +20,10 @@
 /* --mds-chip-shadow not supported by Houdini */
 
 :host {
-  --mds-chip-background: rgb(var(--tone-neutral-seed));
+  --mds-chip-background: rgb(var(--magma-wash-base));
   --mds-chip-border: transparent;
   --mds-chip-color: rgb(var(--magma-text-muted));
-  --mds-chip-icon-background: rgb(var(--variant-primary-06));
+  --mds-chip-icon-background: rgb(var(--magma-accent-fg));
   --mds-chip-icon-color: rgb(var(--magma-text-on-emphasis));
   --mds-chip-opacity-disabled: 0.5;
   --mds-chip-shadow: var(--shadow-sm-sharp);

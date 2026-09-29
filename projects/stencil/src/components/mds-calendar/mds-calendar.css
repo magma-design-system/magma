@@ -17,7 +17,7 @@
   --mds-calendar-cell-gap: --spacing(50);
   --mds-calendar-cell-other-month-visibility: visible;
   --mds-calendar-border-radius: var(--radius-lg);
-  --mds-calendar-background: rgb(var(--tone-neutral-seed));
+  --mds-calendar-background: rgb(var(--magma-surface-raised));
   --mds-calendar-padding: --spacing(400);
   --mds-calendar-select-month-or-year-height: --spacing(900);
   --mds-calendar-select-month-or-year-width: 14rem;

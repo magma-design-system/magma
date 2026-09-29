@@ -9,7 +9,7 @@
  */
 
 :host {
-  --mds-file-preview-background-color: rgb(var(--tone-neutral-seed));
+  --mds-file-preview-background-color: rgb(var(--magma-surface-raised));
   --mds-file-preview-border-radius: var(--magma-radius-2xl);
   --mds-file-preview-color: rgb(var(--magma-text-muted));
   --mds-file-preview-icon-background: inherit;

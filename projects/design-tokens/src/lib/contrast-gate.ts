@@ -154,6 +154,7 @@ export interface SemanticMapping {
   seed: string;
   hues: Record<string, { family: string; roles?: string; partial?: boolean }>;
   hueSteps: { surface: string; fg: string; border: string; emphasis: string };
+  accentSteps?: Partial<{ surface: string; fg: string; border: string; emphasis: string }>;
   neutralHueSteps: { fg: string; border: string; emphasis: string };
   accents: Record<string, string>;
   /**
@@ -245,15 +246,16 @@ export function aliasesFromConfig(m: SemanticMapping): Record<string, string> {
   });
 
   // accents (variant): the standout quintet, one per fixed role (spec 8). They
-  // share the colored-hue steps and resolve to the accent's mapped family. The
+  // share the colored-hue steps (but for `accentSteps`) and resolve to the accent's mapped family. The
   // general `accent` role carries no infix (bare `--magma-accent-*`); others infix
   // their name - mirrors `accentInfix` in semantic.config and scripts/semantic.ts.
+  const accentSteps = { ...m.hueSteps, ...m.accentSteps };
   Object.entries(m.accents).forEach(([role, family]) => {
     const infix = role === 'accent' ? '' : `${role}-`;
-    set(`accent-${infix}surface`, `${family}-${m.hueSteps.surface}`);
-    set(`accent-${infix}fg`, `${family}-${m.hueSteps.fg}`);
-    set(`accent-${infix}border`, `${family}-${m.hueSteps.border}`);
-    set(`accent-${infix}emphasis`, `${family}-${m.hueSteps.emphasis}`);
+    set(`accent-${infix}surface`, `${family}-${accentSteps.surface}`);
+    set(`accent-${infix}fg`, `${family}-${accentSteps.fg}`);
+    set(`accent-${infix}border`, `${family}-${accentSteps.border}`);
+    set(`accent-${infix}emphasis`, `${family}-${accentSteps.emphasis}`);
     set(`accent-${infix}on-emphasis`, m.seed);
     // interaction states (spec 6.6 accent exception): each names an existing ramp
     // step of the same family, mirroring scripts/semantic.ts.
@@ -266,14 +268,19 @@ export function aliasesFromConfig(m: SemanticMapping): Record<string, string> {
 
 /** A contrast level's role promotions (role -> stronger same-family role). */
 export type ContrastPromotions = {
-  more?: { text?: Record<string, string>; border?: Record<string, string> };
+  more?: {
+    text?: Record<string, string>;
+    border?: Record<string, string>;
+    surface?: Record<string, string>;
+  };
 };
 
 /**
  * The `--magma-* -> primitive` map UNDER a contrast level: start from the base
  * aliases and repoint the promoted text/border roles to their STRONGER same-family
- * step, mirroring what `scripts/semantic.ts` emits for `:root.pref-contrast-<level>`.
- * Everything the gate looks up (surfaces, hues, accents) stays at the base value,
+ * step and the promoted surfaces to the family seed, mirroring what
+ * `scripts/semantic.ts` emits for `:root.pref-contrast-<level>`. Everything else
+ * the gate looks up (the other surfaces, hues, accents) stays at the base value,
  * so the returned map can be fed straight to `evaluatePairs`.
  */
 export function contrastAliasesFromConfig(
@@ -288,6 +295,11 @@ export function contrastAliasesFromConfig(
   });
   Object.entries(promo.border ?? {}).forEach(([role, stronger]) => {
     map[`--magma-border-${role}`] = `--border-${m.tint}-${stronger}`;
+  });
+  // the promoted surfaces take the family seed, so the gate measures the text
+  // against the paper the page really shows under the level
+  Object.entries(promo.surface ?? {}).forEach(([role, target]) => {
+    map[`--magma-surface-${role}`] = `--tone-${m.tint}-${target}`;
   });
   // Every colored hue promotes its own roles off the same table (spec 9.3): the
   // layer states them as roles because a hue does not resolve through a tint

@@ -11,19 +11,19 @@
 
 @property --mds-input-date-background {
   inherits: true;
-  initial-value: rgb(var(--tone-neutral-seed));
+  initial-value: rgb(var(--magma-surface-overlay));
   syntax: '<color>';
 }
 
 @property --mds-input-date-field-background-empty {
   inherits: true;
-  initial-value: rgb(var(--status-error-10));
+  initial-value: rgb(var(--magma-danger-wash-soft));
   syntax: '<color>';
 }
 
 @property --mds-input-date-field-color-empty {
   inherits: true;
-  initial-value: rgb(var(--status-error-06));
+  initial-value: rgb(var(--magma-danger-text-default));
   syntax: '<color>';
 }
 

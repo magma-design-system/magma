@@ -364,6 +364,7 @@ Which text roles a wash level may carry is bounded in section 9.1, not by taste.
 | `<hue>-emphasis` | `status/label/variant-*` (APCA), solid fill |
 | `<hue>-emphasis-{hover,active}` | steps `03 / 02` of the same family, named (see 6.6) |
 | `<hue>-fg / -border / -surface` | shortcuts onto the roles above at their default prominence |
+| `accent-<role>-fg` | step `03` of the accent family (`accentSteps`), not the hue `05`: the accent has no generated text scale, and `05` measured 53-66 Lc on the neutral surfaces (under the 60 floor in light); `03` gives 71-84 in both modes. Same step as `-emphasis-hover`, different role: ink on a surface vs a fill state |
 | `*-on-emphasis` | `--tone-*-seed` / near-extreme, verified on the fill |
 
 ### 6.6 Interaction states
@@ -583,6 +584,7 @@ contrast: {
   more: {
     text: { muted: 'default', subtle: 'muted' },
     border: { muted: 'default', default: 'strong' },
+    surface: { default: 'seed' },
   },
 }
 ```
@@ -604,6 +606,18 @@ media query.
 Roles omitted keep their normal step, deliberately: `text-default` is already the contrast
 ceiling, and `text-disabled` stays faint because disabled controls are WCAG-exempt and
 raising them would read as enabled.
+
+Surfaces have a single target, the family `seed` - the paper of the mode (`#fff` light,
+`#000` dark), the one extreme no surface step reaches on purpose (section 10). Only the PAGE
+is promoted (`--magma-tint-default -> --tone-<family>-seed`): `raised` and `overlay` keep
+their step, so cards and floating layers still stand off the page, and `sunken` / `muted`
+keep wells and zebra rows readable. Promoting the whole elevation ladder to paper would
+flatten it, and every elevated component would then need a contrast ring of its own to stay
+visible - a dropdown in dark would be black on black. This is what retired the seed
+backgrounds of the `*-pref-contrast.css` sheets (#720): a sheet that wants the paper ground
+now names `--magma-surface-default`, the one surface role this layer promotes (the #612 guard
+against promoted roles in those sheets does not apply: here the promoted value IS the
+intent), and a sheet that only restated the base surface is simply gone.
 
 The generator emits two blocks per scope, the same shape the global dark layer and the
 per-component `*-pref-contrast.css` sheets use:
