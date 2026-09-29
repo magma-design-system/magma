@@ -48,7 +48,7 @@
   --mds-tree-label-icon-default-color: rgb(var(--magma-accent-emphasis));
   --mds-tree-label-icon-hover-color: var(--mds-tree-label-icon-default-color);
   --mds-tree-line-clamp: 2;
-  --mds-tree-branch-border-color: rgb(var(--magma-scale-07));
+  --mds-tree-branch-border-color: rgb(var(--magma-border-default));
   --mds-tree-branch-use-rounded-border: true;
   --mds-tree-branch-border-size: --spacing(50);
   --mds-tree-branch-dot-default-color: rgb(var(--magma-scale-07));

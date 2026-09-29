@@ -19,7 +19,7 @@
 
 @property --mds-date-range-preselection-default-border {
   inherits: true;
-  initial-value: var(--magma-scale-08);
+  initial-value: var(--magma-border-default);
   syntax: '<number>+';
 }
 

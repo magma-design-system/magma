@@ -11,13 +11,13 @@
 /* ❌ Not supported
 @property --mds-input-upload-drag-area-border-on-drag {
   inherits: false;
-  initial-value: 3px dashed rgb(var(--magma-scale-04));
+  initial-value: 3px dashed rgb(var(--magma-border-strong));
   syntax: "<border>";
 }
 
 @property --mds-input-upload-drag-area-border {
   inherits: false;
-  initial-value: 3px dashed rgb(var(--magma-scale-07));
+  initial-value: 3px dashed rgb(var(--magma-border-default));
   syntax: "<border>";
 }
 */
@@ -25,8 +25,8 @@
 :host {
   --mds-input-upload-drag-area-background-color-on-drag: rgb(var(--magma-wash-soft));
   --mds-input-upload-drag-area-background-color: rgb(var(--magma-surface-overlay));
-  --mds-input-upload-drag-area-border-on-drag: 3px dashed rgb(var(--magma-scale-04));
-  --mds-input-upload-drag-area-border: 3px dashed rgb(var(--magma-scale-07));
+  --mds-input-upload-drag-area-border-on-drag: 3px dashed rgb(var(--magma-border-strong));
+  --mds-input-upload-drag-area-border: 3px dashed rgb(var(--magma-border-default));
   --mds-input-upload-min-cols: 3;
 
   @apply grid-cols-full;
