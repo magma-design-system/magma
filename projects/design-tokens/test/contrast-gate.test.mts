@@ -17,6 +17,7 @@ import {
   evaluatePairs,
   formatRow,
   resolvePrimitive,
+  type AliasMap,
   type Baseline,
   type ColorTree,
 } from '../src/lib/contrast-gate.js';
@@ -70,7 +71,11 @@ test('aliasesFromConfig maps every --magma-* role to its primitive (A9 contract)
   // surfaces/text/border resolve through the active tint family (neutral)
   expect(map['--magma-surface-default']).toBe('--surface-neutral-default');
   expect(map['--magma-text-muted']).toBe('--text-neutral-muted'); // A7 by-target primitive
-  expect(map['--magma-text-on-emphasis']).toBe('--tone-neutral-seed');
+  // the fill ink: the seed in light, the canvas in dark (spec 6.5, #739)
+  expect(map['--magma-text-on-emphasis']).toEqual({
+    light: '--tone-neutral-seed',
+    dark: '--surface-neutral-default',
+  });
   // focus follows the general accent's emphasis step (theme-aware)
   expect(map['--magma-border-focus']).toBe('--variant-primary-04');
   // A colored hue publishes the neutral vocabulary on its OWN family: wash levels
@@ -221,6 +226,41 @@ test('the committed baseline has no stale entries', async () => {
   ).toEqual([]);
 });
 
+test('every fill ink takes the canvas in dark and the seed in light', async () => {
+  const map = aliasesFromConfig(semantic);
+  const inks = Object.keys(map).filter(
+    (token) => token.endsWith('on-emphasis') || token === '--magma-on-inverse',
+  );
+  // text, the four hues, the partial neutral, the two accents and on-inverse
+  expect(inks.length).toBeGreaterThanOrEqual(9);
+  for (const token of inks) {
+    expect(map[token], token).toEqual({
+      light: `--${semantic.seed}`,
+      dark: map[`--magma-surface-${semantic.onEmphasisDark}`],
+    });
+  }
+  // measured: the ink really is the dark page, and the rest fill clears the dark
+  // floor (70) while light keeps 75
+  const pairs = evaluatePairs(await loadTree(), map).filter((r) => r.category === 'on-emphasis');
+  const dark = pairs.filter((r) => r.mode === 'dark');
+  expect(dark.every((r) => r.fgHex !== '#000000')).toBe(true);
+  expect(dark.every((r) => r.target === 70 && r.pass)).toBe(true);
+  expect(pairs.filter((r) => r.mode === 'light').every((r) => r.target === 75 && r.pass)).toBe(
+    true,
+  );
+});
+
+test('contrast-more sends the dark fill ink back to the seed with the page', () => {
+  const more = contrastAliasesFromConfig(semantic);
+  // the page goes to the paper of the mode, and the ink is the page: pure black
+  // again under more contrast, with no rule of its own (the var() chain in CSS)
+  expect(more['--magma-text-on-emphasis']).toEqual({
+    light: '--tone-neutral-seed',
+    dark: '--tone-neutral-seed',
+  });
+  expect(more['--magma-accent-on-emphasis']).toEqual(more['--magma-text-on-emphasis']);
+});
+
 // --- contrast (spec 9.3): pref-contrast-more promotes text/border ---
 
 test('contrast-more promotes text/border roles to stronger same-family steps', () => {
@@ -270,7 +310,7 @@ test('contrast-more promotes the colored hues off the same table', () => {
 
 test('contrast-more never reduces text contrast on any surface, and boosts muted', async () => {
   const tree = await loadTree();
-  const onSurface = (aliases: Record<string, string>) =>
+  const onSurface = (aliases: AliasMap) =>
     evaluatePairs(tree, aliases).filter((r) => r.category === 'text-on-surface');
   const base = onSurface(aliasesFromConfig(semantic));
   const more = onSurface(contrastAliasesFromConfig(semantic));

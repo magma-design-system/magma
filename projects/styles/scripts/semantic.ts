@@ -37,6 +37,7 @@ const {
   textRoles,
   borderFocus,
   seed,
+  onEmphasisDark,
   hues,
   hueSteps,
   washSteps,
@@ -74,6 +75,9 @@ layer.push(
 surfaceRoles.forEach((r) => layer.push(`  --magma-tint-${r}: var(--surface-${tint}-${r});`));
 borderRoles.forEach((r) => layer.push(`  --magma-tint-border-${r}: var(--border-${tint}-${r});`));
 textRoles.forEach((r) => layer.push(`  --magma-tint-text-${r}: var(--text-${tint}-${r});`));
+// the ink on a solid fill: the seed in light; repointed to the canvas in dark by
+// the mode block below (#739). Every `*-on-emphasis` and `on-inverse` resolves
+// through this one pointer, so the fills cannot disagree on their ink.
 layer.push(`  --magma-tint-text-on-emphasis: var(--${seed});`);
 // the active tint's RAMP pointers. Not an API: nothing outside this layer reads
 // them. They are what the wash band (2b), the shadow ink (2c), the inverse pair and
@@ -178,7 +182,7 @@ Object.entries(hues).forEach(([hue, { family, roles, partial }]) => {
     layer.push(
       alias('surface-inverse-muted', tintStep(steps.emphasisMuted), 'surface-inverse-muted'),
     );
-    layer.push(alias('on-inverse', seed, 'on-inverse'));
+    layer.push(alias('on-inverse', 'magma-tint-text-on-emphasis', 'on-inverse'));
     layer.push('  /* deprecated: renamed to --magma-surface-inverse / --magma-on-inverse */');
     layer.push(alias(`${hue}-emphasis`, 'magma-surface-inverse', `${hue}-emphasis`));
     layer.push(alias(`${hue}-on-emphasis`, 'magma-on-inverse', `${hue}-on-emphasis`));
@@ -213,7 +217,7 @@ Object.entries(hues).forEach(([hue, { family, roles, partial }]) => {
   Object.entries(emphasisStateSteps()).forEach(([state, step]) =>
     layer.push(alias(`${hue}-${state}`, `${family}-${step}`, `${hue}-${state}`)),
   );
-  layer.push(alias(`${hue}-on-emphasis`, seed, `${hue}-on-emphasis`));
+  layer.push(alias(`${hue}-on-emphasis`, 'magma-tint-text-on-emphasis', `${hue}-on-emphasis`));
   // shortcuts onto the roles above (NOT onto the primitives): stated this way
   // they follow the contrast promotion instead of freezing the base step
   layer.push('  /* shortcuts: the roles above at their default prominence */');
@@ -226,7 +230,7 @@ Object.entries(hues).forEach(([hue, { family, roles, partial }]) => {
 //    THEME-AWARE quintet: the roles resolve through per-role tint pointers
 //    (--magma-tint-accent-*), so a named theme repoints an accent exactly like a
 //    surface. Steps reuse the colored-hue quintet (hueSteps); on-emphasis is the
-//    seed (family-independent, spec 6.5). The GENERAL `accent` role carries NO
+//    fill ink pointer (family-independent, spec 6.5). The GENERAL `accent` role carries NO
 //    infix (--magma-accent-*), promoting the formerly deprecated single alias to
 //    the canonical general accent; `ai` infixes (--magma-accent-ai-*). See
 //    `accentInfix`.
@@ -262,10 +266,42 @@ Object.entries(accents).forEach(([role, family]) => {
       ),
     ),
   );
-  layer.push(alias(`accent-${infix}on-emphasis`, seed, `accent-${infix}on-emphasis`));
+  layer.push(
+    alias(
+      `accent-${infix}on-emphasis`,
+      'magma-tint-text-on-emphasis',
+      `accent-${infix}on-emphasis`,
+    ),
+  );
 });
 
 layer.push('}', '');
+
+// Dark ink (spec 6.5, #739): in dark the seed is pure black, the only pure extreme
+// left once the canvas is lifted, so the ink on a solid fill takes the canvas
+// instead - the page showing through the fill. Stated as the tint pointer, so a
+// named theme (which repoints --magma-tint-default) and `pref-contrast-more`
+// (which sends the page back to the seed) carry the ink with them, no rule of
+// their own. Same selectors as the global dark layer (the design-tokens
+// css-vars-rgb template), so the ink flips exactly when the primitives do.
+if (onEmphasisDark) {
+  const rule = `  --magma-tint-text-on-emphasis: var(--magma-tint-${onEmphasisDark});`;
+  layer.push(
+    '/* Dark ink: the canvas, not pure black (spec 6.5) */',
+    ':root:not(.pref-theme-scheme-light).pref-mode-dark,',
+    ':root.pref-theme-scheme-dark {',
+    rule,
+    '}',
+    '',
+    '@media (prefers-color-scheme: dark) {',
+    '  :root:not(.pref-theme-scheme-light).pref-mode-system,',
+    '  :root:not([data-magma-pref]) {',
+    `  ${rule}`,
+    '  }',
+    '}',
+    '',
+  );
+}
 
 const bridgeBody = bridge
   .map(([magma, tw]) => `  --color-${tw}: rgb(var(--magma-${magma}));`)

@@ -65,6 +65,14 @@ export interface SemanticConfig {
   /** The pure-extreme foreground for text/`*-on-emphasis` (spec 6.5). */
   seed: string;
   /**
+   * The surface role the ink on a solid fill takes in DARK instead of the seed
+   * (`*-on-emphasis`, `on-inverse`; spec 6.5, #739). Light keeps the seed: white
+   * on a saturated fill. In dark the seed is pure black, the only pure extreme
+   * left once the canvas is lifted, so labels and knobs read as holes cut into
+   * the page; the canvas colour reads as the page showing through the fill.
+   */
+  onEmphasisDark?: string;
+  /**
    * Colored hues carry the full quintet; a `partial` hue omits `surface` (spec 6.4).
    * The partial (neutral) hue's emphasis pair is emitted as the INVERSE SURFACE role
    * (`--magma-surface-inverse` / `--magma-on-inverse`), not a colored `-emphasis` fill;
@@ -238,6 +246,7 @@ export const semantic: SemanticConfig = {
   textRoles: ['default', 'muted', 'subtle', 'disabled'],
   borderFocus: 'accent',
   seed: 'tone-neutral-seed',
+  onEmphasisDark: 'default',
   hues: {
     info: { family: 'status-info', roles: 'info' },
     success: { family: 'status-success', roles: 'success' },

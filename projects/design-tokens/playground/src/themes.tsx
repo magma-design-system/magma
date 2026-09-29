@@ -339,7 +339,11 @@ function ThemeCard({
                   {ACCENT_ROLES.map((role) => {
                     const variant = accentFor(family, role);
                     const emphasis = variantHex(variants, variant, mode, ACCENT_STEPS.emphasis);
-                    const onEmph = seeds[mode];
+                    // the fill ink: the seed in light, the canvas in dark (spec 6.5)
+                    const onEmph =
+                      mode === 'dark' && semantic.onEmphasisDark
+                        ? hex(s, semantic.onEmphasisDark)
+                        : seeds[mode];
                     const aSurface = variantHex(variants, variant, mode, ACCENT_STEPS.surface);
                     const aFg = variantHex(variants, variant, mode, ACCENT_STEPS.fg);
                     return (
