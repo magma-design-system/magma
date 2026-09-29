@@ -490,37 +490,38 @@ DOM). Same mechanism as the existing preference system.
   `brand-maggioli` merely share a seed, they are not live-aliased.) A theme is thus an
   override map of the `--magma-tint-*` block (daisyUI-style ergonomics).
 
-  A theme family MUST also ship a full RAMP, not just a surface. The component sheets
-  still reach for a raw ramp step wherever the role vocabulary does not cover the use yet
-  (interaction washes, scrims, shadows, decorative fills); those read
-  `--magma-scale-01..10`, which resolves through `--magma-tint-scale-*` and so retints
-  with the rest of the block. Pinned to `--tone-neutral-*` instead they would split the
-  theming in two - the roles retinting while the raw steps stayed a static neutral. Since
-  surfaces can be opted in per GROUP, a family can carry `--surface-<x>-*` and no
-  `--<x>-01..10`; a ramp pointer with nothing to resolve to would silently put every
-  consumer back on the fallback chain, so `scripts/semantic.ts` checks each pointer
-  against the emitted primitives and FAILS the build otherwise. The ramp family is assumed
-  to be `tone-<surface>` - correct as long as a theme is a tint - and a theme drawn from
-  another group names it: `blue: { surface: 'blue', scale: 'label-blue' }`.
+  A theme family MUST also ship a full RAMP, not just a surface. The roles drawn from a
+  ramp step rather than from a surface - the wash band (6.1b), the shadow ink (6.1c), the
+  inverse pair (6.1d) and the neutral hue's `fg` / `border` - resolve through
+  `--magma-tint-scale-01..10`, which the theme repoints with the rest of the block. Pinned
+  to `--tone-neutral-*` instead they would stay grey under `cool` / `warm` while the
+  surfaces around them retinted (the regression found and fixed on #736). Since surfaces
+  can be opted in per GROUP, a family can carry `--surface-<x>-*` and no `--<x>-01..10`; a
+  ramp pointer with nothing to resolve to would silently put those roles back on the
+  fallback chain, so `scripts/semantic.ts` checks each pointer against the emitted
+  primitives and FAILS the build otherwise. The ramp family is assumed to be
+  `tone-<surface>` - correct as long as a theme is a tint - and a theme drawn from another
+  group names it: `blue: { surface: 'blue', scale: 'label-blue' }`.
 
-  `--magma-scale-*` is TRANSITIONAL and deliberately NOT bridged to Tailwind. It exists so
-  theming is correct today while those uses are still step-indexed; each one that earns a
-  role (a wash, a scrim, a shadow) drops out of it. First to leave: the 144 background uses
-  of steps `10/09/08`, which became the neutral wash band of 6.1b, and the 37 drop shadows on
-  step `01`, which became the shadow ink of 6.1c - the census behind both moves is in #624.
+  `--magma-tint-scale-*` is internal to the layer and deliberately NOT bridged to Tailwind:
+  it is the retint mechanism, not a vocabulary. Publishing `--color-scale-09` utilities
+  would make the raw step the easy choice again and freeze the step-indexed habit this
+  layer exists to remove.
 
-  **The honest size of the escape hatch (#624, closed at 235 uses from 515).** Every group
-  that stayed has a reason, and none of them is "not done yet":
-
-  | uses | why they stay |
-  |---|---|
-  | 96 on steps `06/07` | no role holds their value BY CONSTRUCTION: past step 05 the ramp has no roles, and the surface/border/text ladders are solved elsewhere. Naming them would mean inventing levels nobody asked for. |
-  | 47 in `*-pref-contrast*` sheets | the #612 layer promotes `text-muted`, `text-subtle`, `border-muted` and `border-default` there. Using a promoted role inside one of those sheets applies the boost TWICE, so 15 otherwise-free substitutions are deliberately left raw. |
-  | 46 `@property` registrations | an `initial-value` must resolve to a LITERAL (a `var()` there is invalid and the property gets dropped), and 13 of them point at another component property, which cannot be resolved at all. They are synced FROM the component's own default declaration, never step-mapped by hand. |
-  | 31 dead declarations | nothing reads them: they are tracked in #643, to delete rather than migrate. |
-  | 13 shadows on intermediate steps | a shadow SCALE does not exist in this contract; only the ink extreme has a role (6.1c). |
-  | 6 backgrounds and borders | a text role happens to hold the same value. A name has to say what the thing is, so they keep the step. |
-  | 1 in `mds-keyboard` | its greys are deliberately a different grey from the UI and must not follow the theme. |
+  **The `--magma-scale-NN` bridge is retired (#732).** Until epic #726 the layer also
+  emitted `--magma-scale-01..10` (one line per step, `var(--magma-tint-scale-NN)`), a
+  TRANSITIONAL escape hatch so the component sheets that still named a raw ramp step
+  retinted with the theme while those uses waited for a role. #624 shrank it from 515 uses
+  to 235 (the 144 backgrounds on steps `10/09/08` became the wash band of 6.1b, the 37 drop
+  shadows on step `01` became the shadow ink of 6.1c); #726 moved the rest - identical
+  values onto `text-*` / `wash-*` / `shadow-ink`, the `*-pref-*` sheets, the borders onto
+  `border-*`, and steps `02/06/07`, which had no role, onto the ones they turned out to
+  mean (plus `surface-inverse-muted` and `--magma-on-backdrop`). With 0 uses left the
+  bridge was removed rather than kept as an API. It never reached a release (no tag
+  contains the commit that introduced it, and no published `styles` or `magma` tarball
+  names it), so no consumer can depend on it and no codemod rule exists for it. A
+  `var(--magma-scale-NN)` left or re-added in a component sheet now fails the Stencil
+  build: the fallback plugin runs with `failOnMissing` on `magma-*`.
 
   **A role often DELETES code instead of adding it.** `mds-separator` is the worked example:
   it carried a `pref-mode` sheet naming step 07 for dark and a `pref-contrast` sheet naming
@@ -530,9 +531,8 @@ DOM). Same mechanism as the existing preference system.
   step 06 reached 2.20:1). Both sheets were deleted. This works because the host `pref-*`
   attributes are a REFLECTION of the root classes (see `resolve()` in `@common/preference`),
   so the global layer is always in sync with them: a component sitting on a promoted role
-  needs no sheet of its own. It is the corollary of the double-boost guard above. Publishing `--color-scale-09`
-  utilities would make the raw step the easy choice again and freeze the habit this layer
-  exists to remove.
+  needs no sheet of its own, and using a promoted role INSIDE a `pref-contrast` sheet would
+  apply the boost twice.
 - mode `light | dark | system`: the existing global flip; semantic tokens follow it.
 - `--depth` (numeric `0 | 1`): shadow/bevel intensity, consumed as a scalar in `calc()`
   (NOT a `true|false` style query). Does not change the surface colors; only the shadow
