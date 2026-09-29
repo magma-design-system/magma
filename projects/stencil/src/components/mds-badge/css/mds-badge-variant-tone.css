@@ -14,7 +14,7 @@
 
   &:host([tone='outline']) {
     --mds-badge-color: rgb(var(--magma-text-default));
-    --mds-badge-border-color: rgb(var(--magma-scale-06));
+    --mds-badge-border-color: rgb(var(--magma-border-strong));
   }
 }
 
@@ -29,6 +29,6 @@
 
   &:host([tone='outline']) {
     --mds-badge-color: rgb(var(--magma-text-default));
-    --mds-badge-border-color: rgb(var(--magma-scale-06));
+    --mds-badge-border-color: rgb(var(--magma-border-strong));
   }
 }

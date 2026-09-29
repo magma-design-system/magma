@@ -53,7 +53,7 @@
 
 @property --mds-filter-wrapper-shadow-color {
   inherits: true;
-  initial-value: rgb(var(--magma-scale-06));
+  initial-value: rgb(var(--magma-border-default));
   syntax: '<color>';
 }
 

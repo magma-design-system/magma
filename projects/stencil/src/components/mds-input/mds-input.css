@@ -58,7 +58,7 @@
   --mds-input-transition-duration: var(--duration-300);
 
   /* private */
-  --mds-input-controls-border: 2px solid rgb(var(--magma-scale-09));
+  --mds-input-controls-border: 2px solid rgb(var(--magma-border-muted));
   --mds-input-controls-color: rgb(var(--magma-text-muted));
   --private-input-transition-duration: var(--mds-input-transition-duration);
 
