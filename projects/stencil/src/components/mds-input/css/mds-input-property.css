@@ -31,7 +31,7 @@
 
 @property --mds-input-placeholder-focus-color {
   inherits: true;
-  initial-value: rgb(var(--magma-scale-07));
+  initial-value: rgb(var(--magma-text-disabled));
   syntax: '<color>';
 }
 

@@ -39,7 +39,7 @@
   --mds-input-background: rgb(var(--magma-surface-overlay));
   --mds-input-icon-color: rgb(var(--magma-accent-fg));
   --mds-input-placeholder-default-color: rgb(var(--magma-text-disabled));
-  --mds-input-placeholder-focus-color: rgb(var(--magma-scale-07));
+  --mds-input-placeholder-focus-color: rgb(var(--magma-text-disabled));
   --mds-input-placeholder-hover-color: var(--mds-input-placeholder-default-color);
   --mds-input-ring: 0 0 0 1px rgb(var(--mds-input-variant-color-rgb) / 0.1);
   --mds-input-shadow:

@@ -53,7 +53,7 @@
 
 @property --mds-calendar-cell-disabled-color {
   inherits: true;
-  initial-value: rgb(var(--magma-scale-07));
+  initial-value: rgb(var(--magma-text-disabled));
   syntax: '<color>';
 }
 
@@ -65,7 +65,7 @@
 
 @property --mds-calendar-cell-other-month-color {
   inherits: true;
-  initial-value: rgb(var(--magma-scale-07));
+  initial-value: rgb(var(--magma-text-disabled));
   syntax: '<color>';
 }
 

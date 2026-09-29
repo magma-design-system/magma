@@ -50,7 +50,7 @@
   /*
     actually there is no way to custom background-image url
     paramter which not allows to pass custom properties inside
-    --stroke-color: rgb(var(--magma-scale-07));
+    --stroke-color: rgb(var(--magma-border-default));
     --stroke-dashoffset: 8;
     --stroke-line-width: 8;
     --stroke-width: 5;
