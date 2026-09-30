@@ -10,6 +10,8 @@ An agent may prepare work up to (and including) a feature branch pushed to its o
 
 When a maintainer promotes `dev` into `main`, the promotion must use a **merge commit** (never squash or rebase): release tags created on `dev` (e.g. `icons@*`, `svg-icons@*`) must stay reachable from `main`, otherwise the release workflows on `main` would keep recomputing already-released versions.
 
+`beta` is the magma prerelease channel, fed by promoting `dev` into it with a merge commit as well. A release on `beta` commits nothing: it only creates the `magma@<version>` tag on the promoted commit, the semantic-release channel note and the GitHub prerelease, and the publish workflow writes that version into the magma, magma-react and magma-angular manifests right before publishing. `beta` therefore never diverges from `dev`, and promoting `dev` into it cannot conflict on version bumps. The consequence: the `version` fields in the manifests on `beta` are not the published version, the `magma@*` tag on the commit is.
+
 ## 2. One branch per unit of work
 
 Every unit of work (feature, fix, refactor, chore, etc.) must be carried out on its own dedicated branch, never directly on `dev` or `main`.
