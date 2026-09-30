@@ -34,7 +34,7 @@ When you commit with the intention of pushing, follow this order before the push
 
 1. Check whether `dev` has new commits that your branch does not yet contain.
 2. If it does, merge `dev` into your branch.
-3. Run the linter (`npm run lint`) and the test suite (`nx run stencil:test`, plus any build affected by the change).
+3. Run the linter (`npm run lint`) and the test suite (`nx run stencil:test`, plus any build affected by the change; `nx run stencil-react:test` and `nx run stencil-angular:test` when the change touches the React or Angular output target).
 4. Only if the tests pass, push your branch **to its own remote branch** (never to `dev` or `main`).
 
 If lint or the tests fail after merging `dev`, stop and resolve the failures before pushing; do not push a branch that is broken against the latest `dev`.
