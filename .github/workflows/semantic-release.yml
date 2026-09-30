@@ -10,6 +10,11 @@
 # then tags `<tag-format>`, pushes the bump back to the triggering branch, and
 # creates a GitHub release. Publishing to npm is handled separately by publish.yml.
 #
+# On beta nothing is committed: the tag goes on the pushed commit itself and
+# publish.yml writes its version into the manifests right before publishing
+# (scripts/set-release-version.sh), so beta never diverges from dev and merging
+# dev into it cannot conflict on the version bumps.
+#
 # Uses the automatic GITHUB_TOKEN via `github.token`, so callers do NOT need
 # `secrets: inherit`.
 #
@@ -237,47 +242,22 @@ jobs:
           echo "----- cliff.toml -----"; cat cliff.toml
 
       - name: Update version manifest (and pin internal dependency versions)
-        if: steps.set-release.outputs.release_version != ''
+        # beta commits no bump: publish.yml applies the tag version at publish time
+        if: steps.set-release.outputs.release_version != '' && github.ref_name != 'beta'
         env:
           V: ${{ steps.set-release.outputs.release_version }}
           WD: ${{ inputs.working-directory }}
           SYNC_PATHS: ${{ inputs.version-sync-paths }}
         run: |
           set -euo pipefail
-          setver() { jq --arg v "$V" '.version = $v' "$1" > "$1.tmp" && mv "$1.tmp" "$1"; }
           MANIFESTS=("$WD/package.json")
-          setver "$WD/package.json"
-          echo "Updated $WD/package.json -> $V"
           if [ -n "$SYNC_PATHS" ]; then
             while IFS= read -r f; do
               [ -n "$f" ] || continue
-              setver "$f"
               MANIFESTS+=("$f")
-              echo "Synced $f -> $V"
             done <<< "$SYNC_PATHS"
           fi
-          # Pin internal @maggioli-design-system/* references to the versions currently
-          # in the workspace, so published metadata stays consistent (no manual lockstep,
-          # no leftover prerelease references). The map is built AFTER the bumps above, so
-          # the released package and its companions resolve to $V; everything else resolves
-          # to its current source version. Covers: magma-react/magma-angular -> magma@$V,
-          # magma -> design-tokens/styles, styles -> design-tokens, icons -> svg-icons.
-          # No cascade: a dependency release does not re-release its dependents; they pick
-          # up the new version on their own next release.
-          MAP=$(find projects -name package.json \
-                  -not -path '*/node_modules/*' -not -path '*/dist/*' -not -path '*/deprecated/*' \
-                  -exec jq -c '{(.name): .version}' {} \; | jq -s 'add // {}')
-          echo "internal package map: $MAP"
-          for m in "${MANIFESTS[@]}"; do
-            jq --argjson map "$MAP" '
-              def pin(section):
-                if .[section]
-                then .[section] |= with_entries(if $map[.key] then .value = $map[.key] else . end)
-                else . end;
-              pin("dependencies") | pin("peerDependencies") | pin("optionalDependencies")
-            ' "$m" > "$m.tmp" && mv "$m.tmp" "$m"
-            echo "Pinned internal deps in $m"
-          done
+          ./scripts/set-release-version.sh "$V" "${MANIFESTS[@]}"
 
       - name: Generate RELEASE_NOTES.md
         if: steps.set-release.outputs.release_version != ''
@@ -313,6 +293,7 @@ jobs:
           fetch-depth: 0
           # Push with a PAT/App token when provided, so the chore(release) commit triggers
           # CI -> publish (the default GITHUB_TOKEN does not trigger downstream workflows).
+          # On beta only the tag and the notes are pushed: publish waits for this run instead.
           token: ${{ secrets.RELEASE_PUSH_TOKEN || github.token }}
 
       - name: Download artifacts from check
@@ -334,7 +315,9 @@ jobs:
             echo "::error::Tag ${TAG} already exists on remote"; exit 1
           fi
 
+      # beta: no version bump commit, the tag below goes on the pushed commit itself
       - name: Stage updated manifests
+        if: github.ref_name != 'beta'
         env:
           WD: ${{ inputs.working-directory }}
           SYNC_PATHS: ${{ inputs.version-sync-paths }}
@@ -348,6 +331,7 @@ jobs:
           fi
 
       - name: Commit release changes if any
+        if: github.ref_name != 'beta'
         env:
           TAG: ${{ needs.release-check.outputs.release_tag }}
         run: |
@@ -358,6 +342,7 @@ jobs:
           fi
 
       - name: Push release commit (rebase-retry for concurrent monorepo releases)
+        if: github.ref_name != 'beta'
         env:
           BRANCH: ${{ github.ref_name }}
         run: |

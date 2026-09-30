@@ -4,6 +4,10 @@
 # bumps projects/stencil/package.json and keeps the companion magma-react and
 # magma-angular packages in lockstep at the same version. The version bump
 # commit then triggers CI -> publish.yml (npm).
+# On beta no version bump is committed: the magma@<version> tag goes on the
+# pushed commit and publish.yml writes that version into the three manifests
+# before publishing (keep its MAGMA_LOCKSTEP_MANIFESTS in sync with the paths
+# below).
 name: stencil release
 
 on:
