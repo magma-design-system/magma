@@ -4,6 +4,12 @@
 # via workflow dispatch. A package is published only when its version
 # differs from the latest one on the npm registry.
 #
+# On beta the release commits no version bump: the version of magma and its
+# companions is the one of the `magma@*` tag on the commit, written into the
+# manifests right before publishing (scripts/set-release-version.sh). There
+# the gate also waits for the `stencil release` run of the commit, which
+# creates that tag, and the packages without a release tag are not published.
+#
 # Authentication uses npm trusted publishing (OIDC): no NPM_TOKEN secret,
 # the npm CLI exchanges the GitHub Actions OIDC token for short-lived
 # credentials and attaches provenance automatically. Each package must
@@ -12,7 +18,9 @@ name: publish
 
 on:
   workflow_run:
-    workflows: [design-tokens, icons, identity, styles, svg-icons, stencil]
+    # `stencil release` only matters on beta, where it creates the tag the
+    # version is read from (the gate ignores it on the other branches)
+    workflows: [design-tokens, icons, identity, styles, svg-icons, stencil, stencil release]
     types: [completed]
     # main = stable releases; beta = magma prerelease channel (2.0.0-beta.N ->
     # npm dist-tag 'beta'); dev = stable releases of the packages that opt in
@@ -61,6 +69,11 @@ jobs:
             fi
           else
             SHA="${{ github.event.workflow_run.head_sha }}"
+            if [ "${{ github.event.workflow_run.name }}" = "stencil release" ] && \
+               [ "${{ github.event.workflow_run.head_branch }}" != "beta" ]; then
+              echo "::notice::the stencil release run only gates publishing on beta, nothing to do"
+              exit 0
+            fi
             if [ "${{ github.event.workflow_run.conclusion }}" != "success" ]; then
               echo "::warning::workflow '${{ github.event.workflow_run.name }}' did not succeed, skipping publish"
               echo "sha=$SHA" >> "$GITHUB_OUTPUT"
@@ -69,18 +82,26 @@ jobs:
           fi
           echo "sha=$SHA" >> "$GITHUB_OUTPUT"
           # latest push-event run of each watched CI workflow for this commit
-          # (allowlist in lockstep with on.workflow_run.workflows above). Release
-          # workflows and any other workflow are excluded: their completion does
-          # not re-trigger publish, so waiting on one still in progress would
-          # lose the publish. pull_request runs are excluded because they share
-          # the head SHA when a PR from dev is open, produce no artifacts, and
-          # could win the max_by(.id) pick over the artifact-bearing push run.
+          # (allowlist in lockstep with on.workflow_run.workflows above). The
+          # other release workflows and any other workflow are excluded: their
+          # completion does not re-trigger publish, so waiting on one still in
+          # progress would lose the publish. On beta `stencil release` is watched
+          # too, because it creates the tag the version is read from: whichever of
+          # it and the CI finishes last runs the publish. pull_request runs are
+          # excluded because they share the head SHA when a PR from dev is open,
+          # produce no artifacts, and could win the max_by(.id) pick over the
+          # artifact-bearing push run.
+          WATCHED='["design-tokens", "icons", "identity", "styles", "svg-icons", "stencil"]'
+          if [ "${{ github.event.workflow_run.head_branch || github.ref_name }}" = "beta" ]; then
+            WATCHED=$(echo "$WATCHED" | jq -c '. + ["stencil release"]')
+          fi
           RUNS=$(gh api "repos/${{ github.repository }}/actions/runs?head_sha=$SHA&per_page=100" \
-            --jq '[.workflow_runs[] | select(.event == "push" and (.name as $n | ["design-tokens", "icons", "identity", "styles", "svg-icons", "stencil"] | index($n)))] | group_by(.name) | map(max_by(.id))')
+            | jq --argjson watched "$WATCHED" '[.workflow_runs[] | select(.event == "push" and (.name as $n | $watched | index($n)))] | group_by(.name) | map(max_by(.id))')
           echo "$RUNS" | jq -r '.[] | "\(.name): \(.status) (\(.conclusion))"'
           if [ "${{ github.event_name }}" = "workflow_run" ]; then
             PENDING=$(echo "$RUNS" | jq '[.[] | select(.status != "completed")] | length')
-            FAILED=$(echo "$RUNS" | jq '[.[] | select(.status == "completed" and .conclusion != "success")] | length')
+            # a skipped release run (e.g. a chore(release) push) created no tag, it is not a failure
+            FAILED=$(echo "$RUNS" | jq '[.[] | select(.status == "completed" and .conclusion != "success" and (.name != "stencil release" or .conclusion != "skipped"))] | length')
             if [ "$PENDING" -gt 0 ]; then
               echo "::notice::$PENDING CI workflow(s) still running, the last one to finish will re-run this check"
               exit 0
@@ -101,6 +122,13 @@ jobs:
       id-token: write # OIDC token for npm trusted publishing
       contents: read # checkout
       actions: read # download build artifacts from the CI runs
+    env:
+      # released in lockstep under the magma@* tag: the same set as the
+      # working-directory + version-sync-paths of stencil.release.yml
+      MAGMA_LOCKSTEP_MANIFESTS: >-
+        projects/stencil/package.json
+        projects/stencil-react/package.json
+        projects/stencil-angular/magma-angular/package.json
     strategy:
       fail-fast: false
       matrix:
@@ -139,11 +167,14 @@ jobs:
             workflow: stencil
             artifact: stencil-build
             artifact-path: projects
+            # on beta the version comes from the magma@* tag on the commit
+            release-tag: magma
           - component: magma-react
             directory: projects/stencil-react
             workflow: stencil
             artifact: stencil-react-build
             artifact-path: projects/stencil-react/dist
+            release-tag: magma
           - component: magma-angular
             # publishes from the build output (ng-packagr layout), so the
             # version is read from the source package.json
@@ -152,6 +183,7 @@ jobs:
             workflow: stencil
             artifact: stencil-angular-build
             artifact-path: projects/stencil-angular/dist
+            release-tag: magma
     concurrency: publish-${{ matrix.component }}
     steps:
       - uses: actions/checkout@v6
@@ -176,7 +208,27 @@ jobs:
             echo "::notice::${{ matrix.component }} not selected, skipping"
             exit 0
           fi
-          TO_BE_PUBLISHED_V="$(jq -r '.version' "${{ matrix.version-file || format('{0}/package.json', matrix.directory) }}")"
+          if [ "$BRANCH" = "beta" ]; then
+            # beta commits no version bump: the version is the one of the
+            # release tag on the commit, and a commit without it publishes nothing
+            if [ -z "${{ matrix.release-tag }}" ]; then
+              echo "::notice::${{ matrix.component }} does not publish from beta, skipping"
+              exit 0
+            fi
+            # an annotated tag is listed twice: as the tag object and, peeled
+            # with ^{}, as the commit it points to
+            RELEASE_TAG=$(git ls-remote --tags origin "refs/tags/${{ matrix.release-tag }}@*" \
+              | awk -v sha="${{ needs.gate.outputs.sha }}" '$1 == sha { sub(/^refs\/tags\//, "", $2); sub(/\^\{\}$/, "", $2); print $2 }' \
+              | sort -u | tail -n 1)
+            if [ -z "$RELEASE_TAG" ]; then
+              echo "::notice::no ${{ matrix.release-tag }}@* release tag on ${{ needs.gate.outputs.sha }}, skipping"
+              exit 0
+            fi
+            TO_BE_PUBLISHED_V="${RELEASE_TAG##*@}"
+            echo "release-version=$TO_BE_PUBLISHED_V" >> "$GITHUB_OUTPUT"
+          else
+            TO_BE_PUBLISHED_V="$(jq -r '.version' "${{ matrix.version-file || format('{0}/package.json', matrix.directory) }}")"
+          fi
           echo "VERSION TO BE PUBLISHED ${TO_BE_PUBLISHED_V}"
           # npm view of a missing version exits 0 with empty output, so test the output
           PUBLISHED="$(npm view "@maggioli-design-system/${{ matrix.component }}@${TO_BE_PUBLISHED_V}" version 2>/dev/null || true)"
@@ -225,6 +277,21 @@ jobs:
           path: ${{ matrix.artifact-path }}
           run-id: ${{ fromJSON(needs.gate.outputs.run-ids)[matrix.workflow] }}
           github-token: ${{ github.token }}
+      - name: Write the release tag version into the manifests (beta)
+        if: ${{ steps.ver.outputs.proceed == 'true' && steps.ver.outputs.release-version != '' }}
+        env:
+          V: ${{ steps.ver.outputs.release-version }}
+          MANIFEST: ${{ matrix.directory }}/package.json
+        run: |
+          # a chore(release) commit (release flow before the tag-only beta) already carries it
+          if [ "$(jq -r '.version' "$MANIFEST")" = "$V" ]; then
+            echo "$MANIFEST already at $V"
+            exit 0
+          fi
+          # the lockstep sources first, so every companion pins magma to $V, then
+          # the published manifest itself (the ng-packagr output for magma-angular)
+          # shellcheck disable=SC2086 # the list is split on purpose
+          ./scripts/set-release-version.sh "$V" $MAGMA_LOCKSTEP_MANIFESTS "$MANIFEST"
       - name: Publish to npm
         if: ${{ steps.ver.outputs.proceed == 'true' }}
         working-directory: ${{ matrix.directory }}
