@@ -52,4 +52,40 @@ describe('mds-tooltip', () => {
     expect(caller).not.toHaveAttribute('aria-haspopup');
     expect(caller).not.toHaveAttribute('aria-controls');
   });
+
+  describe('a target that names nothing', () => {
+    const stage = () =>
+      render(
+        `<div style="position: relative; height: 200px">
+           <mds-button id="caller" label="Target"></mds-button>
+           <mds-tooltip id="tip" target="#nope">Hint</mds-tooltip>
+         </div>`,
+      );
+
+    it('loads without throwing and leaves the page alone', async () => {
+      const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+      // render throws what the lifecycle throws: the listeners used to be attached to a caller
+      // that was never found
+      const { root } = await stage();
+      const tip = root.querySelector('#tip') as HTMLMdsTooltipElement;
+      const caller = root.querySelector('#caller') as HTMLElement;
+
+      expect(tip).toHaveAttribute('hydrated');
+      expect(warn).toHaveBeenCalledWith(expect.stringContaining('target not found: #nope'));
+      expect(caller).not.toHaveAttribute('aria-describedby');
+    });
+
+    it('describes the caller once the target names an element', async () => {
+      vi.spyOn(console, 'warn').mockImplementation(() => {});
+      const { root } = await stage();
+      const tip = root.querySelector('#tip') as HTMLMdsTooltipElement;
+      const caller = root.querySelector('#caller') as HTMLElement;
+
+      tip.target = '#caller';
+
+      await vi.waitFor(() => {
+        expect(caller).toEqualAttribute('aria-describedby', 'tip');
+      });
+    });
+  });
 });
