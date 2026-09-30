@@ -27,6 +27,8 @@ coverage/
 dist/
 loader/
 log.txt
+.release/
+release-version.txt
 node_modules/
 projects/**/package-lock.json
 projects/scripts/**/*.js

@@ -124,7 +124,8 @@ jobs:
       actions: read # download build artifacts from the CI runs
     env:
       # released in lockstep under the magma@* tag: the same set as the
-      # working-directory + version-sync-paths of stencil.release.yml
+      # working-directory + version-sync-paths of stencil.release.yml (beta)
+      # and of the magma entry of release.yml (main)
       MAGMA_LOCKSTEP_MANIFESTS: >-
         projects/stencil/package.json
         projects/stencil-react/package.json

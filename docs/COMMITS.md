@@ -55,6 +55,16 @@ Use the component scope when the change is isolated to a single component.
 
 > The component list is read dynamically at lint time, so any newly scaffolded `mds-*` directory becomes a valid scope without editing the config.
 
+### Scopes and releases
+
+Each package is released from the commits of its own scopes: `design-tokens`, `icons`, `identity`, `styles`, `svg-icons`, and for `magma` the scopes `magma`, `stencil`, `react`, `lit`, `storybook` and every `mds-*` component. A commit that changes several packages can list several scopes separated by a comma, and then counts for every package listed, both for the version bump and in the release notes:
+
+```
+feat(design-tokens,styles): give the neutral pills a wash band
+```
+
+A `revert` counts for the packages of the header it reverts (`revert: feat(styles): …`).
+
 ## Special rules
 
 These are the non-obvious rules enforced by the custom plugin in `commitlint.config.js`. They override the defaults from `@commitlint/config-conventional`.

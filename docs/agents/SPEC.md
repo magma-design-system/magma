@@ -41,7 +41,8 @@ The wrapper packages follow the same major version as `magma`. Pin
 | magma (and magma-react / magma-angular) | design-tokens | styles |
 | --------------------------------------- | ------------- | ------ |
 | `1.x` (before Magma 2) | `13.x` (latest `13.7.2`) | `15.x` (latest `15.11.1`) |
-| `2.x` and later | `>= 14` | `>= 16` |
+| `2.0.0-alpha.0` to `2.0.0-beta.3` (prereleases) | `14.x` | `16.x` |
+| `2.x` and later | `>= 15` | `>= 17` |
 
 Always install `magma`, `magma-react`/`magma-angular`, `design-tokens` and `styles`
 from the same compatibility row. Mixing rows produces missing tokens and broken
