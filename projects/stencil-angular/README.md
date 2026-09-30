@@ -16,7 +16,9 @@ Run `ng build` to build the project. The build artifacts will be stored in the `
 
 ## Running unit tests
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Run `npm test` to execute the unit tests once in a headless Chrome via [Karma](https://karma-runner.github.io); this is what `nx run stencil-angular:test` runs. Run `npm run test.watch` to keep Karma open in a Chrome window and re-run the specs on every change.
+
+The specs live in `magma-angular/src/lib/*.spec.ts` and exercise the wrapper library (module, generated proxies, `ControlValueAccessor` directives) against the Stencil build in `projects/stencil/dist`, so build `stencil` first.
 
 ## Running end-to-end tests
 
