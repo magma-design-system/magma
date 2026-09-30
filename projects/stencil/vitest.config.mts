@@ -60,6 +60,8 @@ export default defineVitestConfig({
         extends: true,
         // the stories: play functions and the a11y addon checks over the whole catalogue.
         // Story globs, aliases and PostCSS come from .storybook/main.mjs (viteFinal)
+        // the preview themes the docs chrome: pre-bundled to avoid a reload mid-run
+        optimizeDeps: { include: ['storybook/theming'] },
         plugins: [
           storybookTest({
             configDir: path.resolve(import.meta.dirname, '.storybook'),

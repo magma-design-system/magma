@@ -1,3 +1,5 @@
+import React, { useEffect, useState } from 'react';
+import { DocsContainer } from '@storybook/addon-docs/blocks';
 import { addons } from 'storybook/preview-api';
 
 import { defineCustomElements } from '../dist/esm/loader';
@@ -16,12 +18,16 @@ import './styles.css';
 import devices from './devices.json';
 // import media from '@maggioli-design-system/design-tokens/dist/js/tailwind-screens'
 
+import { themes } from './theme.mjs';
 import {
+  CHROME_MODE,
+  DARK_QUERY,
   LANGUAGE,
   PREF_CHANNEL_EVENTS,
   PREFERENCES,
   PREFS_ENABLED_KEY,
   UNSET,
+  effectiveScheme,
   storageKey,
   storedValue,
 } from './preferences.mjs';
@@ -68,12 +74,17 @@ const applyLanguage = (value) => {
 };
 
 // Disabling only suspends the emulation: `<html>` is cleaned up but the
-// stored choices are kept, so re-enabling restores them.
+// stored choices are kept, so re-enabling restores them. The preview is then
+// pinned to CHROME_MODE instead of left unmanaged: with no controller the palette
+// and `color-scheme` would follow the OS behind the back of the chrome, which only
+// repaints on the scheme the preview publishes. Mode: System covers the OS path.
 const applyStoredPreferences = (enabled) => {
   if (!enabled) {
-    htmlEl.removeAttribute('data-magma-pref');
     htmlEl.removeAttribute('lang');
     PREFERENCES.forEach((preference) => clearPreference(preference));
+    htmlEl.setAttribute('data-magma-pref', '');
+    htmlEl.classList.add(`pref-mode-${CHROME_MODE}`);
+    htmlEl.style.setProperty('--magma-pref-mode', CHROME_MODE);
     return;
   }
   htmlEl.setAttribute('data-magma-pref', '');
@@ -81,13 +92,26 @@ const applyStoredPreferences = (enabled) => {
   applyLanguage(storedValue(LANGUAGE));
 };
 
-applyStoredPreferences(window.localStorage.getItem(PREFS_ENABLED_KEY) === 'enable');
-
 const channel = addons.getChannel();
+
+// The chrome is painted in the scheme the preview renders: every change of the
+// mode, of the panel toggle or of the OS scheme is published to the manager
+// (channel) and to the docs container (local listeners).
+const schemeListeners = new Set();
+const publishScheme = () => {
+  const scheme = effectiveScheme();
+  channel.emit(PREF_CHANNEL_EVENTS.scheme, scheme);
+  schemeListeners.forEach((listener) => listener(scheme));
+};
+
+applyStoredPreferences(window.localStorage.getItem(PREFS_ENABLED_KEY) === 'enable');
+publishScheme();
+window.matchMedia(DARK_QUERY).addEventListener('change', publishScheme);
 
 channel.on(PREF_CHANNEL_EVENTS.toggle, (enabled) => {
   window.localStorage.setItem(PREFS_ENABLED_KEY, enabled ? 'enable' : 'disable');
   applyStoredPreferences(enabled);
+  publishScheme();
 });
 
 channel.on(PREF_CHANNEL_EVENTS.set, ({ name, value }) => {
@@ -98,8 +122,24 @@ channel.on(PREF_CHANNEL_EVENTS.set, ({ name, value }) => {
   const preference = PREFERENCES.find((item) => item.name === name);
   if (preference) {
     applyPreference(preference, value);
+    publishScheme();
   }
 });
+
+const ThemedDocsContainer = ({ children, context }) => {
+  const [scheme, setScheme] = useState(effectiveScheme);
+
+  useEffect(() => {
+    schemeListeners.add(setScheme);
+    return () => schemeListeners.delete(setScheme);
+  }, []);
+
+  return (
+    <DocsContainer context={context} theme={themes[scheme]}>
+      {children}
+    </DocsContainer>
+  );
+};
 
 const parameters = {
   a11y: {
@@ -111,6 +151,9 @@ const parameters = {
         { id: 'color-contrast', reviewOnFail: true },
       ],
     },
+  },
+  docs: {
+    container: ThemedDocsContainer,
   },
   options: {
     storySort: {
