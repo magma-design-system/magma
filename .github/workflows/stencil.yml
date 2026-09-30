@@ -15,7 +15,7 @@ concurrency:
 
 jobs:
   # Builds stencil and runs the e2e tests; its build artifact
-  # also feeds the react/angular builds below
+  # also feeds the react/angular builds and tests below
   magma:
     # PRs from dev (release PRs) duplicate the CI already run on every push to dev
     if: ${{ github.event_name != 'pull_request' || github.head_ref != 'dev' }}
@@ -68,6 +68,16 @@ jobs:
           name: stencil-build
           path: projects
       - run: npx nx run stencil-react:build
+      - name: Restore Playwright browsers cache
+        uses: actions/cache@v5
+        with:
+          path: ~/.cache/ms-playwright
+          # the browser revision is pinned by the playwright version in the lockfile
+          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+      # no-op for the browser when cached, still installs the system libraries
+      - run: npx playwright install --with-deps chromium
+      # the wrapper against the real custom elements (browser) and its SSR modules (node)
+      - run: npx nx run stencil-react:test
       - uses: actions/upload-artifact@v7
         with:
           name: stencil-react-build
@@ -98,6 +108,8 @@ jobs:
           name: stencil-build
           path: projects
       - run: npx nx run stencil-angular:build
+      # Karma in the Chrome of the runner image, headless
+      - run: npx nx run stencil-angular:test
       - uses: actions/upload-artifact@v7
         with:
           name: stencil-angular-build
