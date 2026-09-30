@@ -7,7 +7,7 @@ const source = `---
 title: Render Test
 theme: maggioli-dark
 tokens:
-  --mds-slide-accent: rgb(var(--variant-secondary))
+  --mds-slide-accent: rgb(var(--magma-accent-ai-emphasis))
 ---
 
 # Cover
@@ -38,8 +38,9 @@ describe('exportHtml', () => {
     expect(html.startsWith('<!doctype html>')).toBe(true);
     expect(html).toContain('pref-theme-scheme-dark'); // maggioli-dark
     expect(html).toContain('data-magma-pref="slides"');
-    expect(html).toContain('--mds-slide-accent: rgb(var(--variant-secondary));');
-    expect(html).toContain('--tone-neutral'); // inlined Magma tokens
+    expect(html).toContain('--mds-slide-accent: rgb(var(--magma-accent-ai-emphasis));');
+    expect(html).toContain('--tone-neutral-seed'); // inlined Magma primitives
+    expect(html).toContain('--magma-surface-default:'); // inlined semantic layer
     expect(html).toContain('<title>Render Test</title>');
   });
 });

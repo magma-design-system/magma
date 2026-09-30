@@ -14,8 +14,8 @@ title: How dark mode works
 ---
 
 Nothing is re-styled per slide. Setting the theme adds a
-`pref-theme-scheme-dark` class on the root, and Magma's global `--tone-*`
-tokens flip. Every layout follows automatically.
+`pref-theme-scheme-dark` class on the root, and Magma's semantic `--magma-*`
+roles flip. Every layout follows automatically.
 
 ---
 layout: quote

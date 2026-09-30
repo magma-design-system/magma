@@ -6,7 +6,7 @@ title: My Deck
 author: Jane
 theme: maggioli
 tokens:
-  --mds-slide-accent: rgb(var(--variant-secondary))
+  --mds-slide-accent: rgb(var(--magma-accent-ai-emphasis))
 ---
 
 # Cover
@@ -38,7 +38,7 @@ describe('parseDeck', () => {
     expect(deck.config.author).toBe('Jane');
     expect(deck.config.theme).toBe('maggioli');
     expect(deck.config.tokens).toEqual({
-      '--mds-slide-accent': 'rgb(var(--variant-secondary))',
+      '--mds-slide-accent': 'rgb(var(--magma-accent-ai-emphasis))',
     });
   });
 

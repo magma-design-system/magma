@@ -15,9 +15,9 @@ title: Una griglia al volo
 ---
 
 <div class="grid grid-cols-3 gap-6">
-  <div class="p-6 rounded-lg bg-variant-primary text-tone-neutral">Primo</div>
-  <div class="p-6 rounded-lg bg-variant-secondary text-tone-neutral">Secondo</div>
-  <div class="p-6 rounded-lg bg-variant-ai text-tone-neutral">Terzo</div>
+  <div class="p-6 rounded-lg bg-accent-emphasis text-accent-on-emphasis">Primo</div>
+  <div class="p-6 rounded-lg bg-surface-muted text-fg-default">Secondo</div>
+  <div class="p-6 rounded-lg bg-accent-ai-emphasis text-accent-ai-on-emphasis">Terzo</div>
 </div>
 
 ---
@@ -29,5 +29,5 @@ title: Enfasi tipografica
   Testo centrato, corsivo e tenue - senza CSS custom, solo utility.
 </p>
 
-Le utility valgono i token Magma: <code>bg-variant-primary</code> usa lo stesso
-blu del resto del design system.
+Le utility valgono i token Magma: <code>bg-accent-emphasis</code> usa lo stesso
+ruolo accent del resto del design system.

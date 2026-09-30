@@ -2,10 +2,17 @@
  * Default `--mds-slide-*` component tokens (theming cascade level 2 base).
  *
  * Every value is sourced from Magma design tokens published by
- * @maggioli-design-system/styles (inlined at export): colors from `--tone-*` /
- * `--variant-*`, fonts from `--font-*`, spacing/shape from `--spacing(-*)` /
- * `--radius-*`. Nothing here is a magic literal - so a deck inherits the
- * Maggioli identity, follows the light/dark flip, and tracks the design system.
+ * @maggioli-design-system/styles (inlined at export): colors from the semantic
+ * layer (`--magma-surface-*`, `--magma-text-*`, `--magma-border-*`,
+ * `--magma-accent-*`, see styles/SEMANTIC_COLOR_SPEC.md), fonts from `--font-*`,
+ * spacing/shape from `--spacing(-*)` / `--radius-*`. Nothing here is a magic
+ * literal - so a deck inherits the Maggioli identity, follows the light/dark
+ * flip and the contrast preference, and tracks the design system.
+ *
+ * Roles, not ramp steps: the page behind the slides is the sunken plane, the
+ * slide is the default plane and inline/fenced code sits on the muted plane.
+ * `--mds-slide-accent` is the accent FILL (title bar, section background, quote
+ * rule); `--mds-slide-accent-fg` is accent TEXT (links).
  *
  * The presentation type scale is larger than the web `--text-size-*` scale, so
  * it is derived from the spacing base: `calc(var(--spacing) * N)` is the
@@ -26,16 +33,18 @@
   --mds-slide-gap: var(--spacing-xl, 2rem);
   --mds-slide-radius: var(--radius-lg, 1rem);
 
-  /* Surfaces and text (Magma color tokens; flip light/dark automatically). */
-  --mds-slide-bg: rgb(var(--tone-neutral));
-  --mds-slide-fg: rgb(var(--tone-neutral-03));
-  --mds-slide-heading-fg: rgb(var(--tone-neutral-05));
-  --mds-slide-muted-fg: rgb(var(--tone-neutral-02));
-  --mds-slide-accent: rgb(var(--variant-primary));
-  --mds-slide-on-accent: rgb(var(--tone-neutral));
-  --mds-slide-code-bg: rgb(var(--tone-neutral-01));
-  --mds-slide-code-fg: rgb(var(--tone-neutral-04));
-  --mds-slide-rule: rgb(var(--tone-neutral-01));
+  /* Surfaces and text (Magma semantic roles; flip light/dark automatically). */
+  --mds-slide-page-bg: rgb(var(--magma-surface-sunken));
+  --mds-slide-bg: rgb(var(--magma-surface-default));
+  --mds-slide-fg: rgb(var(--magma-text-default));
+  --mds-slide-heading-fg: rgb(var(--magma-text-default));
+  --mds-slide-muted-fg: rgb(var(--magma-text-muted));
+  --mds-slide-accent: rgb(var(--magma-accent-emphasis));
+  --mds-slide-accent-fg: rgb(var(--magma-accent-fg));
+  --mds-slide-on-accent: rgb(var(--magma-accent-on-emphasis));
+  --mds-slide-code-bg: rgb(var(--magma-surface-muted));
+  --mds-slide-code-fg: rgb(var(--magma-text-default));
+  --mds-slide-rule: rgb(var(--magma-border-default));
 
   /* Fonts from Magma tokens. */
   --mds-slide-font-heading: var(--font-info, Karla, system-ui, sans-serif);

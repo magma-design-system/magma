@@ -86,12 +86,12 @@ token per deck without touching CSS:
 ---
 theme: maggioli-dark
 tokens:
-  --mds-slide-accent: rgb(var(--variant-secondary))
+  --mds-slide-accent: rgb(var(--magma-accent-ai-emphasis))
   --mds-slide-font-heading: Karla
 ---
 ```
 
-Overrides expressed against Magma tokens (`--tone-*`, `--variant-*`) stay correct
+Overrides expressed against the Magma semantic layer (`--magma-*`) stay correct
 in both light and dark. Full details in [SPEC.md](./SPEC.md).
 
 ## Tailwind
@@ -102,8 +102,8 @@ in a deck - with Magma tokens baked in:
 
 ```markdown
 <div class="grid grid-cols-3 gap-6">
-  <div class="p-6 rounded-lg bg-variant-primary text-tone-neutral">One</div>
-  <div class="p-6 rounded-lg bg-variant-secondary text-tone-neutral">Two</div>
+  <div class="p-6 rounded-lg bg-accent-emphasis text-accent-on-emphasis">One</div>
+  <div class="p-6 rounded-lg bg-surface-muted text-fg-default">Two</div>
 </div>
 ```
 

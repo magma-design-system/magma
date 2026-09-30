@@ -3,7 +3,7 @@ title: A text-first slide pipeline
 author: Magma Design System
 theme: maggioli-dark
 tokens:
-  --mds-slide-accent: rgb(var(--variant-secondary))
+  --mds-slide-accent: rgb(var(--magma-accent-ai-emphasis))
 ---
 
 # A text-first slide pipeline
@@ -31,7 +31,7 @@ Three levels, lowest to highest precedence:
 2. The theme's `--mds-slide-*` tokens
 3. Per-deck `tokens:` overrides
 
-Light/dark is the global `--tone-*` flip, not per-slide CSS.
+Light/dark is the global semantic-layer flip, not per-slide CSS.
 
 ---
 layout: code

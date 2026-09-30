@@ -15,6 +15,7 @@ const STYLES_FILES = [
   'reset.css',
   'globals.css',
   'colors-rgb.css',
+  'semantic.css', // --magma-surface-*, --magma-text-*, ... roles over colors-rgb
   'typography.css', // --font-*, --text-size-*, --spacing(-*), --radius-*, --shadow-* on :root
   'hydrated.css',
   'animations.css',

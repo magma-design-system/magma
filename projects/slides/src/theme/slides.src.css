@@ -24,11 +24,12 @@
 @import "tailwindcss/utilities.css";
 @import "@maggioli-design-system/design-tokens/dist/css/tailwind-theme-color.css";
 @import "@maggioli-design-system/design-tokens/dist/css/tailwind-theme-typography.css";
+@import "@maggioli-design-system/styles/dist/tailwind/semantic.css";
 
 @source "../render";
 
 .mds-deck {
-  background-color: rgb(var(--tone-neutral-01));
+  background-color: var(--mds-slide-page-bg);
   color: var(--mds-slide-fg);
   font-family: var(--mds-slide-font-body);
   margin: 0;
@@ -71,7 +72,7 @@
 }
 
 .mds-slide a {
-  color: var(--mds-slide-accent);
+  color: var(--mds-slide-accent-fg);
 }
 
 .mds-slide strong {
@@ -243,8 +244,8 @@
 .mds-slide[data-layout='image-full'] .mds-slide__caption {
   @apply absolute;
 
-  background-image: linear-gradient(transparent, rgb(var(--tone-neutral-01) / 0.85));
-  color: rgb(var(--tone-neutral-05));
+  background-image: linear-gradient(transparent, rgb(var(--magma-surface-default) / 0.85));
+  color: var(--mds-slide-heading-fg);
   font-family: var(--mds-slide-font-heading);
   font-size: var(--mds-slide-heading-size);
   inset: auto 0 0;

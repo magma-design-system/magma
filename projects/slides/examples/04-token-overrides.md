@@ -3,8 +3,8 @@ title: Token overrides
 author: Magma Design System
 theme: maggioli
 tokens:
-  --mds-slide-accent: rgb(var(--variant-ai))
-  --mds-slide-heading-fg: rgb(var(--variant-ai))
+  --mds-slide-accent: rgb(var(--magma-accent-ai-emphasis))
+  --mds-slide-heading-fg: rgb(var(--magma-accent-ai-fg))
   --mds-slide-font-body: Roboto, system-ui, sans-serif
   --mds-slide-title-size: 6.5rem
 ---
@@ -19,11 +19,11 @@ layout: content
 title: What changed here
 ---
 
-- Accent and headings now use `--variant-ai`
+- Accent and headings now use the AI accent (`--magma-accent-ai-*`)
 - Body font switched to Roboto
 - Title size bumped to `6.5rem`
 
-Because overrides are expressed against Magma tokens (`--variant-ai`), they
+Because overrides are expressed against semantic roles (`--magma-accent-ai-*`), they
 stay correct if you also switch to `maggioli-dark`.
 
 ---

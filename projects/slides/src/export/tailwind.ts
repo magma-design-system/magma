@@ -6,13 +6,14 @@ import { fileURLToPath } from 'node:url';
 /**
  * Input CSS for the author-utilities pass. Pulls Tailwind's default theme and
  * utilities (NO preflight - the deck is already styled) plus the Magma token
- * theme, so utilities like `grid-cols-2` or `bg-variant-primary` resolve to
- * Magma values. `@source` points Tailwind at the deck HTML to scan.
+ * theme and its semantic bridge, so utilities like `grid-cols-2` or
+ * `bg-accent-emphasis` resolve to Magma values. `@source` points Tailwind at the deck HTML to scan.
  */
 const inputCss = (htmlPath: string): string => `@import "tailwindcss/theme.css";
 @import "tailwindcss/utilities.css";
 @import "@maggioli-design-system/design-tokens/dist/css/tailwind-theme-color.css";
 @import "@maggioli-design-system/design-tokens/dist/css/tailwind-theme-typography.css";
+@import "@maggioli-design-system/styles/dist/tailwind/semantic.css";
 @source "${htmlPath.replace(/\\/g, '/')}";
 `;
 
