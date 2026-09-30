@@ -1,4 +1,4 @@
-import { Component, Host, h, Prop, Method, Element, State } from '@stencil/core';
+import { Component, Host, h, Prop } from '@stencil/core';
 // import mggAiBrain from '@icon/mgg/ai-brain.svg'
 import mggAiChatbot from '@icon/mgg/ai-chatbot.svg';
 import miOutlinePolicy from '@icon/mi/outline/policy.svg';
@@ -22,23 +22,12 @@ import localeIt from './meta/locale.it.json';
   shadow: true,
 })
 export class MdsPolicyAi {
-  @Element() host: HTMLMdsPolicyAiElement;
-
-  @State() language: string;
   private t: Locale = new Locale({
     el: localeEl,
     en: localeEn,
     es: localeEs,
     it: localeIt,
   });
-  /**
-   * Updates the component's texts to the locale currently set on the host element.
-   */
-  @Method()
-  async updateLang(): Promise<void> {
-    this.language = this.t.lang(this.host);
-    this.t.update();
-  }
 
   /**
    * Sets the headline to custom component text
@@ -60,10 +49,6 @@ export class MdsPolicyAi {
    */
   @Prop({ reflect: true }) href?: string =
     'https://www.maggiolieditore.it/il-regolamento-europeo-sull-intelligenza-artificiale.html';
-
-  componentWillLoad(): void {
-    this.language = this.t.lang(this.host);
-  }
 
   private readonly handleIconClick = (): void => {
     window.open(this.href, '_blank');
@@ -96,7 +81,9 @@ export class MdsPolicyAi {
               variant="ai"
               label={this.headline ?? this.t.get('chipLabel')}
             ></mds-chip>
-            <mds-dropdown target="#chip" class="chip-dropdown" interaction="mouseover">
+            {/* the panel describes the policy and offers one link: it is a group, not the menu
+                the dropdown declares by default, whose children can only be entries */}
+            <mds-dropdown target="#chip" class="chip-dropdown" interaction="mouseover" role="group">
               <mds-text typography="tip">
                 {this.description ?? this.t.get('cardDescription')}
               </mds-text>
@@ -106,9 +93,8 @@ export class MdsPolicyAi {
                 variant="ai"
                 tone="weak"
                 size="sm"
-              >
-                {this.t.get('linkLabel')}
-              </mds-button>
+                label={this.t.get('linkLabel')}
+              ></mds-button>
             </mds-dropdown>
           </div>
         )}

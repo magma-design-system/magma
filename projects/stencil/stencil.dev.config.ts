@@ -43,6 +43,8 @@ export const config: Config = {
   taskQueue: 'async',
   transformAliasedImportPaths: true,
   srcDir,
+  // Come in stencil.config.ts: esclude le *.stories.tsx dalla build.
+  tsconfig: 'tsconfig.stencil.json',
   sourceMap: true,
   buildEs5: true,
   extras: {
@@ -56,12 +58,12 @@ export const config: Config = {
     // angularOutputTarget({
     //   componentCorePackage: '@maggioli-design-system/magma',
     //   outputType: 'component',
-    //   directivesProxyFile: './angular/magma-angular/src/stencil-generated/components.ts',
-    //   directivesArrayFile: './angular/magma-angular/src/stencil-generated/index.ts',
+    //   directivesProxyFile: '../stencil-angular/magma-angular/src/stencil-generated/components.ts',
+    //   directivesArrayFile: '../stencil-angular/magma-angular/src/stencil-generated/index.ts',
     // }),
     // reactOutputTarget({
     //   // Relative path to where the React components will be generated
-    //   outDir: './react/src/',
+    //   outDir: '../stencil-react/src/',
     //   customElementsDir: 'dist/components',
     //   // hydrateModule: '@maggioli-design-system/magma/hydrate',
     // }),

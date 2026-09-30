@@ -5,31 +5,19 @@
  * @prop --mds-input-field-message-background: Sets the message background color of the component, will be visible only if there is a text defined by `tip` component attribute
  */
 
-@property --mds-input-field-message-color {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-03));
-  syntax: '<color>';
-}
-
-@property --mds-input-field-message-background {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-10));
-  syntax: '<color>';
-}
-
 :host {
-  --mds-input-field-message-color: rgb(var(--tone-neutral-03));
-  --mds-input-field-message-background: rgb(var(--tone-neutral-10));
+  --mds-input-field-message-color: rgb(var(--magma-text-muted));
+  --mds-input-field-message-background: rgb(var(--magma-wash-soft));
 
-  color: rgb(var(--tone-neutral-02));
-  corner-shape: var(--magma-corner-shape, round);
+  color: rgb(var(--magma-text-default));
+  corner-shape: var(--magma-corner-shape);
   display: grid;
   gap: --spacing(300);
 }
 
 .message-window {
   background-color: transparent;
-  border-radius: var(--radius-2xl);
+  border-radius: var(--magma-radius-2xl);
   color: var(--mds-input-field-message-color);
   corner-shape: inherit;
   display: grid;

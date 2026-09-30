@@ -17,7 +17,7 @@ The `<mds-header-bar>` web component is the top bar of a Magma application layou
 
 - **Branding region**: The default (unnamed) slot is the logo/branding area on the left; place text, HTML, or components such as a logo with a short description here.
 - **Navigation region**: The `nav` named slot holds the horizontal desktop actions, wrapped in a real `<nav>` element; `mds-button` elements are the recommended children.
-- **Conditional nav rendering**: The `<nav>` is rendered only when `nav` is not `'none'` and a `slot="nav"` child is present, so an empty header collapses cleanly.
+- **Conditional nav rendering**: The `<nav>` is shown only when `nav` is not `'none'` and a `slot="nav"` child is present, also when it is added after the first render, so an empty header collapses cleanly.
 - **Hamburger trigger**: When `menu` is not `'none'` the component renders a menu button that opens the menu on click.
 - **Open event**: Clicking the hamburger emits the bubbling `mdsHeaderBarOpen` event and opens the drawer on the surrounding `mds-header`.
 - **Imperative open control**: The public `setOpened(isOpened = true)` method lets a parent or script toggle the opened state programmatically.

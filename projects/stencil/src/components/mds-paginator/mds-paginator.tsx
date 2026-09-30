@@ -1,5 +1,5 @@
-import { Component, Element, Event, EventEmitter, Host, h, Prop, State } from '@stencil/core';
-import { subscribePreference } from '@common/preference';
+import { Component, Element, Event, EventEmitter, Host, h, Prop } from '@stencil/core';
+import { preferenceStore } from '@common/preference';
 import { MdsPaginatorEventDetail } from './meta/event-detail';
 import miBaselineArrowBack from '@icon/mi/baseline/arrow-back.svg';
 import miBaselineArrowForward from '@icon/mi/baseline/arrow-forward.svg';
@@ -11,14 +11,6 @@ import miBaselineArrowForward from '@icon/mi/baseline/arrow-forward.svg';
 })
 export class MdsPaginator {
   @Element() private element: HTMLMdsPaginatorElement;
-  @State() prefAnimation?: string;
-  private unsubscribePrefAnimation?: () => void;
-  @State() prefContrast?: string;
-  private unsubscribePrefContrast?: () => void;
-  @State() prefTheme?: string;
-  private unsubscribePrefTheme?: () => void;
-  @State() prefThemeScheme?: string;
-  private unsubscribePrefThemeScheme?: () => void;
 
   /**
    * Specifies the number of total pages to be handled
@@ -29,28 +21,6 @@ export class MdsPaginator {
    * Specifies the current page selected in the paginator
    */
   @Prop({ mutable: true, reflect: true }) currentPage = 1;
-
-  connectedCallback(): void {
-    this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
-      this.prefAnimation = value;
-    });
-    this.unsubscribePrefContrast = subscribePreference('contrast', (value) => {
-      this.prefContrast = value;
-    });
-    this.unsubscribePrefTheme = subscribePreference('theme', (value) => {
-      this.prefTheme = value;
-    });
-    this.unsubscribePrefThemeScheme = subscribePreference('theme-scheme', (value) => {
-      this.prefThemeScheme = value;
-    });
-  }
-
-  disconnectedCallback(): void {
-    this.unsubscribePrefAnimation?.();
-    this.unsubscribePrefContrast?.();
-    this.unsubscribePrefTheme?.();
-    this.unsubscribePrefThemeScheme?.();
-  }
 
   componentDidLoad(): void {
     setTimeout(() => {
@@ -91,15 +61,31 @@ export class MdsPaginator {
       pageItem.offsetWidth / 2;
   };
 
-  private focus = (ev: MouseEvent): void => {
+  /**
+   * The strip follows the focused item only when the focus comes from the keyboard.
+   * On a pointer interaction the item receives focus on mousedown: scrolling the strip
+   * at that moment moves the item away from under the pointer, the mouseup lands on
+   * another element and the browser dispatches the click on their common ancestor
+   * (the strip itself) instead of the item, so the page would never be selected.
+   */
+  private readonly isKeyboardFocus = (item: HTMLElement): boolean => {
+    try {
+      return item.matches(':focus-visible');
+    } catch {
+      return true;
+    }
+  };
+
+  private readonly handleItemFocus = (ev: FocusEvent): void => {
+    const item = ev.target as HTMLMdsPaginatorItemElement | null;
+    if (!item || !this.isKeyboardFocus(item)) return;
+
     const pagesElement = this.element.shadowRoot?.querySelector<HTMLDivElement>('.pages');
     const pagesItems =
       pagesElement?.querySelectorAll<HTMLMdsPaginatorItemElement>('mds-paginator-item');
-    if (pagesItems && ev.target) {
-      const elements = Array.from(pagesItems);
-      const index = elements.indexOf(ev.target as HTMLMdsPaginatorItemElement);
-      this.scrollPage(index);
-    }
+    if (!pagesItems) return;
+
+    this.scrollPage(Array.from(pagesItems).indexOf(item));
   };
 
   private goToPage = (selectedPage: number, caller?: HTMLMdsPaginatorItemElement): void => {
@@ -138,10 +124,10 @@ export class MdsPaginator {
   render() {
     return (
       <Host
-        pref-animation={this.prefAnimation}
-        pref-contrast={this.prefContrast}
-        pref-theme={this.prefTheme}
-        pref-theme-scheme={this.prefThemeScheme}
+        pref-animation={preferenceStore.state.animation}
+        pref-contrast={preferenceStore.state.contrast}
+        pref-mode={preferenceStore.state.mode}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
         <mds-paginator-item
           class="item-icon"
@@ -166,7 +152,7 @@ export class MdsPaginator {
                 class="item"
                 selected={this.currentPage === i + 2}
                 onClick={this.handlePageClick(i + 2)}
-                onFocus={this.focus}
+                onFocus={this.handleItemFocus}
               >
                 {i + 2}
               </mds-paginator-item>

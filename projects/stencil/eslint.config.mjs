@@ -1,4 +1,4 @@
-import { defineConfig, globalIgnores } from 'eslint/config';
+import { defineConfig } from 'eslint/config';
 import js from '@eslint/js';
 import { includeIgnoreFile } from '@eslint/compat';
 import { FlatCompat } from '@eslint/eslintrc';
@@ -7,6 +7,7 @@ import { baseConfig } from '../../eslint.config.mjs';
 import stencil from '@stencil/eslint-plugin';
 import tseslint from 'typescript-eslint';
 import storybook from 'eslint-plugin-storybook';
+import react from 'eslint-plugin-react';
 
 const gitignorePath = fileURLToPath(new URL('.gitignore', import.meta.url));
 
@@ -18,7 +19,6 @@ const compat = new FlatCompat({
 
 export default defineConfig([
   ...baseConfig,
-  globalIgnores(['react', 'angular']),
   includeIgnoreFile(gitignorePath, 'Imported .gitignore patterns'),
 
   {
@@ -34,9 +34,18 @@ export default defineConfig([
   // #region storybook
   ...storybook.configs['flat/recommended'],
   {
-    extends: [
-      compat.extends('plugin:storybook/recommended', 'plugin:@typescript-eslint/recommended'),
-    ],
+    // The stories are rendered by @storybook/react-webpack5, so they are React
+    // components: a children array built in a story's own render function without a key
+    // does not merely warn, it takes the story down with "Rendered more hooks than
+    // during the previous render" and leaves the canvas empty (entry 20 of #680).
+    files: ['**/*.stories.tsx'],
+    plugins: { react },
+    rules: {
+      'react/jsx-key': 'error',
+    },
+  },
+  {
+    extends: [compat.extends('plugin:@typescript-eslint/recommended')],
   },
   // #endregion
 
@@ -58,6 +67,9 @@ export default defineConfig([
     rules: {
       'stencil/strict-mutable': 'off',
       'stencil/decorators-style': 'off',
+      // autofocus/autoFocus props mirror the native attribute on purpose;
+      // renaming them would break the public API
+      'stencil/reserved-member-names': 'off',
     },
   },
   // #endregion

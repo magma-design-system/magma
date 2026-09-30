@@ -4,31 +4,41 @@ Magma is the Maggioli Group Design System: a library of ~115 web components (Ste
 
 ## Stack
 
-- **Monorepo**: NX + Yarn workspaces
+- **Monorepo**: NX + npm workspaces
 - **Web components**: StencilJS + TypeScript
 - **Styles**: Tailwind 4 (CSS custom properties) + CSS cascade layers
 - **Tokens**: Style Dictionary + Adobe Leonardo
-- **Documentation**: Storybook
+- **Documentation**: Storybook (Vite builder, `@storybook/react-vite`)
 - **Node version**: see `.nvmrc`
 
 ## Package manager
 
-Always use **Yarn**, never npm.
+Always use **npm**, never Yarn.
 
 ## Git governance (read before committing or pushing)
 
 Full rules: `docs/WORKFLOW.md`. Critical constraints for agents:
 
-1. **Never auto-merge `dev` or `main`** - merging or pushing into these branches is a manual governance step. Never open or auto-merge a pull request into them either.
+1. **Never auto-merge `dev` or `main`** - merging or pushing into these branches is a manual governance step. Opening a pull request into `dev` from your own branch is fine; never merge it or enable auto-merge on it.
 2. **One branch per unit of work** - every feature, fix, refactor, etc. lives on its own dedicated branch, branched off `dev`. Never work directly on `dev` or `main`.
-3. **Sync with `dev` before pushing** - when committing with intent to push, first check for new commits on `dev`; if present, merge `dev` into your branch, run the tests, and only then push (always to your branch's own remote, never to `dev` or `main`).
+3. **Link every branch to its issue** - create work branches from their GitHub issue (Development section button or `gh issue develop <n> --base dev`) so they appear in the issue's Development section; a matching name alone does not link. At the latest, the PR body must declare `Closes #<issue>`.
+4. **Sync with `dev` before pushing** - when committing with intent to push, first check for new commits on `dev`; if present, merge `dev` into your branch, run the tests, and only then push (always to your branch's own remote, never to `dev` or `main`).
+
+## Tests (read before changing a component)
+
+Full rules: `docs/WORKFLOW.md` rule 5 and the Tests section of `projects/stencil/SPEC.md`. In short:
+
+- **Every behaviour change ships with a test that covers it**, in the same branch, so the change is protected against regressions: props, events, methods, rendered DOM, keyboard/focus handling, form participation, validation, state transitions.
+- **Pure style changes are exempt**: padding, margin, colours, radius, typography and similar CSS-only adjustments.
+- `*.spec.ts` for logic that does not need a rendered component, `*.e2e.ts` for anything that needs the live DOM. How to write and run them: `projects/stencil/HOWTO.md`.
+- **Storybook (`*.stories.tsx`)** adds the visual, interaction (`play` + `storybook/test`) and accessibility (addon-a11y) tests, and the integration scenarios with several components on one page. Add or update a story when necessary; it complements the Vitest tests, it does not replace them. Run them with `nx run stencil:test-storybook` (the `storybook` project of `vitest.config.mts`, via `@storybook/addon-vitest`).
 
 ## Commands
 
 ```bash
-npm install -g eslint nx yarn                        # global dependencies
+npm install -g eslint nx                             # global dependencies
 
-yarn install                                         # install project dependencies
+npm install                                          # install project dependencies
 
 nx run-many --target=build --all                     # build everything
 nx run design-tokens:build                           # build tokens only
@@ -36,22 +46,29 @@ nx run styles:build                                  # build styles only
 nx run icons:build                                   # build icons only
 nx run stencil:build                                 # build web components
 nx run stencil:storybook.start                       # start Storybook
+nx run design-tokens:playground                      # start the tokens config playground (port 5177)
 
 nx run stencil:generate mds-component-name           # scaffold a new component
-nx run stencil:test                                  # run spec and e2e tests
+nx run stencil:test                                  # run the unit and browser tests (Vitest)
+nx run stencil:test-storybook                        # run the stories' play functions and a11y checks headless (Vitest project `storybook`)
+nx run stencil-react:test                            # run the React wrapper tests (Vitest browser + node projects)
+nx run stencil-angular:test                          # run the Angular wrapper tests (Karma, headless Chrome)
+npm run lint                                         # ESLint + Stylelint on every project (also run in CI)
 ```
 
 ## Sub-projects and build order
 
 ```
-design-tokens  →  no internal dependencies
-identity       →  no internal dependencies
-svg-icons      →  no internal dependencies
-styles         →  design-tokens
-stencil        →  design-tokens, styles, svg-icons, identity
+design-tokens    →  no internal dependencies
+identity         →  no internal dependencies
+svg-icons        →  no internal dependencies
+styles           →  design-tokens
+stencil          →  design-tokens, styles, svg-icons, identity
+stencil-react    →  stencil (wrapper sources generated by the stencil build)
+stencil-angular  →  stencil (wrapper sources generated by the stencil build)
 ```
 
-**Required build order**: `design-tokens` → `styles` → `icons` → `stencil`
+**Required build order**: `design-tokens` → `styles` → `icons` → `stencil` → `stencil-react`, `stencil-angular`
 
 ## Documentation index
 
@@ -64,9 +81,11 @@ stencil        →  design-tokens, styles, svg-icons, identity
 | Monorepo architecture, sub-project relationships, component composition patterns       | `docs/ARCHITECTURE.md`                           |
 | Lint rules for TypeScript/JS and CSS authoring (ESLint + Stylelint)                    | `docs/CODING_STANDARDS.md`                       |
 | Commit message convention: allowed types, scopes, special rules                        | `docs/COMMITS.md`                                |
-| Contribution workflow and git governance: branching, merge, push rules                  | `docs/WORKFLOW.md`                               |
+| Contribution workflow and git governance: branching, merge, push and testing rules      | `docs/WORKFLOW.md`                               |
+| Writing and running tests: Vitest spec, e2e, storybook (play + a11y) and wrapper tests | `projects/stencil/HOWTO.md`                      |
 | Navigable catalogue of all 115 components                                              | `docs/COMPONENTS.md`                             |
 | Design token system: structure, naming convention, semantic levels                     | `docs/TOKENS.md`                                 |
+| Editor autocomplete for tokens: setup, generated sheet, extension traps                | `docs/EDITOR_TOKENS.md`                          |
 | Design tokens: structure, levels, semantics, naming convention                         | `projects/design-tokens/SPEC.md`                 |
 | CSS and Tailwind 4 styles: semantic classes, anti-patterns, dark mode                  | `projects/styles/SPEC.md`                        |
 | Web components: general Stencil conventions, composition patterns, accessibility rules | `projects/stencil/SPEC.md`                       |

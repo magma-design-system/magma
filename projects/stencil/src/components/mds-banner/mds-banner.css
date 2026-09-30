@@ -2,7 +2,6 @@
 
 /**
  * @prop --mds-banner-background: Sets the background-color of the component
- * @prop --mds-banner-close-icon-hover-background: Sets the background color of the close icon when the mouse is over it
  * @prop --mds-banner-cockade-background: When cockade attribute is set, the icon will be wrapper with a colored area, this is it's background
  * @prop --mds-banner-cockade-distance: When cockade attribute is set, the icon will be wrapper with a colored area, this is it's icon color
  * @prop --mds-banner-color: Sets the text color of the component
@@ -14,66 +13,6 @@
  * @prop --mds-banner-transition-duration: Sets the transition duration
  * @prop --mds-banner-transition-timing-function: Sets the transition timing function
  */
-
-@property --mds-banner-background {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-10));
-  syntax: '<color>';
-}
-
-@property --mds-banner-close-icon-hover-background {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-09));
-  syntax: '<color>';
-}
-
-@property --mds-banner-cockade-background {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-09));
-  syntax: '<color>';
-}
-
-@property --mds-banner-color {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-02));
-  syntax: '<color>';
-}
-
-@property --mds-banner-headline-color {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-02));
-  syntax: '<color>';
-}
-
-@property --mds-banner-icon-color {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-04));
-  syntax: '<color>';
-}
-
-@property --mds-banner-cockade-distance {
-  inherits: true;
-  initial-value: --spacing(600);
-  syntax: '<length>';
-}
-
-@property --mds-banner-content-gap {
-  inherits: true;
-  initial-value: --spacing(200) --spacing(400);
-  syntax: '<length>+';
-}
-
-@property --mds-banner-radius {
-  inherits: true;
-  initial-value: var(--radius-lg);
-  syntax: '<length>';
-}
-
-@property --mds-banner-transition-duration {
-  inherits: true;
-  initial-value: 300ms;
-  syntax: '<time>';
-}
 
 /*
 @property --mds-banner-shadow {
@@ -90,15 +29,14 @@
 */
 
 :host {
-  --mds-banner-background: rgb(var(--tone-neutral-10));
-  --mds-banner-close-icon-hover-background: rgb(var(--tone-neutral-09));
-  --mds-banner-cockade-background: rgb(var(--tone-neutral-09));
+  --mds-banner-background: rgb(var(--magma-surface-overlay));
+  --mds-banner-cockade-background: rgb(var(--magma-wash-base));
   --mds-banner-cockade-distance: --spacing(600);
-  --mds-banner-color: rgb(var(--tone-neutral-02));
+  --mds-banner-color: rgb(var(--magma-text-default));
   --mds-banner-content-gap: --spacing(400);
   --mds-banner-headline-color: var(--mds-banner-color);
-  --mds-banner-icon-color: rgb(var(--tone-neutral-04));
-  --mds-banner-radius: var(--radius-2xl, 24px);
+  --mds-banner-icon-color: rgb(var(--magma-text-subtle));
+  --mds-banner-radius: var(--magma-radius-2xl);
   --mds-banner-shadow: none;
   --mds-banner-transition-duration: 300ms;
   --private-banner-transition-duration: var(--mds-banner-transition-duration);
@@ -112,7 +50,7 @@
   color: var(--mds-banner-color);
   container-name: mds-banner;
   container-type: inline-size;
-  corner-shape: var(--magma-corner-shape, round);
+  corner-shape: var(--magma-corner-shape);
   display: grid;
   gap: --spacing(600);
   padding: --spacing(600);
@@ -148,6 +86,10 @@
   flex-wrap: wrap;
   gap: var(--mds-banner-content-gap);
   justify-content: flex-end;
+}
+
+.actions--hidden {
+  display: none;
 }
 
 .icon {
@@ -188,5 +130,5 @@
 @import './css/mds-banner-variant-status.css';
 @import './css/mds-banner-variant-tone.css';
 @import './css/mds-banner-pref-animation.css';
-@import './css/mds-banner-pref-theme.css';
+@import './css/mds-banner-pref-mode.css';
 @import './css/mds-banner-pref-contrast.css';

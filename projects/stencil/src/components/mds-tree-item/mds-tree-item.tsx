@@ -21,6 +21,7 @@ import {
   Method,
   Watch,
 } from '@stencil/core';
+import { hasChildWithSlot } from '@common/slot';
 import { Locale } from '@common/locale';
 import { TypographyTruncateType } from '@type/text';
 import { cssDurationToMilliseconds } from '@common/unit';
@@ -53,14 +54,6 @@ export class MdsTreeItem {
     es: localeEs,
     it: localeIt,
   });
-  @State() language: string;
-  /**
-   * Updates the component's texts to the locale currently set on the host element.
-   */
-  @Method()
-  async updateLang(): Promise<void> {
-    this.language = this.t.lang(this.host);
-  }
 
   /**
    * Show actions on the tree item on hover or by default.
@@ -215,13 +208,15 @@ export class MdsTreeItem {
     this.resolveActions();
   }
 
-  componentWillLoad(): void {
-    this.language = this.t.lang(this.host);
+  private onActionSlotChange = (): void => {
+    this.hasActions = hasChildWithSlot(this.host, 'action');
+  };
 
+  componentWillLoad(): void {
     this.updateToggleIcon();
     this.resolveActions();
 
-    this.hasActions = !!this.host.querySelector(':scope > [slot="action"]');
+    this.hasActions = hasChildWithSlot(this.host, 'action');
     this.hasChildren = !!this.host.querySelector('mds-tree-item');
   }
 
@@ -263,15 +258,14 @@ export class MdsTreeItem {
               variant="dark"
               tone="text"
               truncate={this.truncate}
-            >
-              {this.label}
-            </mds-button>
+              label={this.label}
+            ></mds-button>
             <div
               class={clsx('actions-container', this.hasActions && 'actions-container--has-actions')}
               part="actions-container"
             >
               <div class="actions" part="actions-list">
-                <slot name="action"></slot>
+                <slot name="action" onSlotchange={this.onActionSlotChange}></slot>
               </div>
             </div>
           </div>

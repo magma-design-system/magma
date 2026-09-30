@@ -1,9 +1,9 @@
-import { Component, Element, Host, Prop, State, h, Watch } from '@stencil/core';
+import { Component, Element, Host, Prop, h, Watch } from '@stencil/core';
 import { FloatingUIPlacement, FloatingUIStrategy } from '@type/floating-ui';
 import { TypographyTooltipType } from '@type/typography';
 import arrowSvg from './assets/arrow.svg';
 import { FloatingController, FloatingElement } from '@common/floating-controller';
-import { subscribePreference } from '@common/preference';
+import { preferenceStore } from '@common/preference';
 
 /**
  * @slot - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
@@ -19,14 +19,6 @@ export class MdsTooltip implements FloatingElement {
   private floatingController: FloatingController;
 
   @Element() host!: HTMLMdsTooltipElement;
-  @State() prefAnimation?: string;
-  private unsubscribePrefAnimation?: () => void;
-  @State() prefContrast?: string;
-  private unsubscribePrefContrast?: () => void;
-  @State() prefTheme?: string;
-  private unsubscribePrefTheme?: () => void;
-  @State() prefThemeScheme?: string;
-  private unsubscribePrefThemeScheme?: () => void;
 
   /**
    * @internal
@@ -146,47 +138,36 @@ export class MdsTooltip implements FloatingElement {
   targetChanged(): void {
     if (this.target === '') return;
 
-    this.caller = this.floatingController?.updateCaller(this.target);
+    const caller = this.floatingController?.updateCaller(this.target);
+    if (!caller) return;
+    this.caller = caller;
     this.caller.addEventListener('mouseleave', this.handleVisibility.bind(this, false));
     this.caller.addEventListener('mouseenter', this.handleVisibility.bind(this, true));
   }
 
-  connectedCallback(): void {
-    this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
-      this.prefAnimation = value;
-    });
-    this.unsubscribePrefContrast = subscribePreference('contrast', (value) => {
-      this.prefContrast = value;
-    });
-    this.unsubscribePrefTheme = subscribePreference('theme', (value) => {
-      this.prefTheme = value;
-    });
-    this.unsubscribePrefThemeScheme = subscribePreference('theme-scheme', (value) => {
-      this.prefThemeScheme = value;
-    });
-  }
-
   componentDidLoad(): void {
     const arrow = this.host.shadowRoot?.querySelector('.arrow') as HTMLElement;
-    this.floatingController = new FloatingController(this.host, arrow);
+    this.floatingController = new FloatingController(this.host, arrow, 'tooltip');
     this.targetChanged();
+
+    // The watcher does not fire for the initial value: a tooltip that mounts with
+    // `visible` set would never be positioned.
+    if (this.visible) {
+      this.visibleChanged(true);
+    }
   }
 
   disconnectedCallback(): void {
-    this.unsubscribePrefAnimation?.();
-    this.unsubscribePrefContrast?.();
-    this.unsubscribePrefTheme?.();
-    this.unsubscribePrefThemeScheme?.();
     this.floatingController.dismiss();
   }
 
   render() {
     return (
       <Host
-        pref-animation={this.prefAnimation}
-        pref-contrast={this.prefContrast}
-        pref-theme={this.prefTheme}
-        pref-theme-scheme={this.prefThemeScheme}
+        pref-animation={preferenceStore.state.animation}
+        pref-contrast={preferenceStore.state.contrast}
+        pref-mode={preferenceStore.state.mode}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
         <div class="arrow" innerHTML={arrowSvg} />
         <mds-text class="text" typography={this.typography} part="text">

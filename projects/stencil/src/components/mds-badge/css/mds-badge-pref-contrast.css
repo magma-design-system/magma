@@ -4,12 +4,12 @@
  * `system` and no controller follow the OS via @media. Cross-browser, no :host-context. */
 
 :host([pref-contrast='more']):host([tone='weak']) {
-  box-shadow: var(--shadow-outline) inset;
+  box-shadow: var(--shadow-ring) inset;
 }
 
 @media (prefers-contrast: more) {
   :host([pref-contrast='system']),
   :host(:not([pref-contrast])):host([tone='weak']) {
-    box-shadow: var(--shadow-outline) inset;
+    box-shadow: var(--shadow-ring) inset;
   }
 }

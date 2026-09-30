@@ -8,41 +8,11 @@
  * @prop --mds-table-row-actions-gap: Gap spacing for actions inside table rows.
  */
 
-@property --mds-table-row-color-hover {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-02));
-  syntax: '<color>';
-}
-
-@property --mds-table-row-color-alt {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-02));
-  syntax: '<color>';
-}
-
-@property --mds-table-row-background-hover {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral));
-  syntax: '<color>';
-}
-
-@property --mds-table-row-background-alt {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral));
-  syntax: '<color>';
-}
-
-@property --mds-table-row-actions-gap {
-  inherits: false;
-  initial-value: --spacing(400);
-  syntax: '<length>';
-}
-
 :host {
-  --mds-table-row-color-hover: var(--mds-table-color, rgb(var(--tone-neutral-02)));
-  --mds-table-row-color-alt: var(--mds-table-color-alt, rgb(var(--tone-neutral-02)));
-  --mds-table-row-background-hover: var(--mds-table-background, rgb(var(--tone-neutral)));
-  --mds-table-row-background-alt: var(--mds-table-background-alt, rgb(var(--tone-neutral)));
+  --mds-table-row-color-hover: var(--mds-table-color, rgb(var(--magma-text-default)));
+  --mds-table-row-color-alt: var(--mds-table-color-alt, rgb(var(--magma-text-default)));
+  --mds-table-row-background-hover: var(--mds-table-background, rgb(var(--magma-surface-default)));
+  --mds-table-row-background-alt: var(--mds-table-background-alt, rgb(var(--magma-surface-default)));
   --mds-table-row-actions-gap: var(--mds-table-actions-gap, --spacing(400));
   --mds-table-row-transition-duration: var(--duration-200);
 

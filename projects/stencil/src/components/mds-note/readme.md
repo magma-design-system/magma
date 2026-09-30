@@ -244,19 +244,6 @@ mds-note {
 | `mdsNoteDelete` | Emits when the note has to be cancelled | `CustomEvent<void>` |
 
 
-## Methods
-
-### `updateLang() => Promise<void>`
-
-Updates the component's texts to the locale currently set on the host element.
-
-#### Returns
-
-Type: `Promise<void>`
-
-
-
-
 ## Slots
 
 | Slot      | Description                                                      |

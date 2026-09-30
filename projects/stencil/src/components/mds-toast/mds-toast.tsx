@@ -1,5 +1,5 @@
 import { cssDurationToMilliseconds } from '@common/unit';
-import { subscribePreference } from '@common/preference';
+import { preferenceStore } from '@common/preference';
 import {
   Component,
   Element,
@@ -11,6 +11,7 @@ import {
   Watch,
   h,
 } from '@stencil/core';
+import { hasChildWithSlot } from '@common/slot';
 import { ThemeVariantType } from '@type/variant';
 import { ToneMinimalVariantType } from '@type/tone';
 
@@ -32,18 +33,10 @@ export class MdsToast {
   private timer: number;
   private timerToastDismiss: number;
   private cssDismissAnimationDuration = 300; // hardcoded from CSS :-(
-  private actions: boolean;
   private hasText?: boolean;
 
   @Element() hostElement: HTMLMdsToastElement;
-  @State() prefAnimation?: string;
-  private unsubscribePrefAnimation?: () => void;
-  @State() prefContrast?: string;
-  private unsubscribePrefContrast?: () => void;
-  @State() prefTheme?: string;
-  private unsubscribePrefTheme?: () => void;
-  @State() prefThemeScheme?: string;
-  private unsubscribePrefThemeScheme?: () => void;
+  @State() hasActions: boolean;
 
   /**
    * If set, specifies the visibility duration in milliseconds of the element inside the viewport, when the time is up the visible property will be set to false. If the duration is set to 0 the component will still visible until intentionally closed by user.
@@ -111,31 +104,13 @@ export class MdsToast {
     }, this.duration);
   };
 
-  connectedCallback(): void {
-    this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
-      this.prefAnimation = value;
-    });
-    this.unsubscribePrefContrast = subscribePreference('contrast', (value) => {
-      this.prefContrast = value;
-    });
-    this.unsubscribePrefTheme = subscribePreference('theme', (value) => {
-      this.prefTheme = value;
-    });
-    this.unsubscribePrefThemeScheme = subscribePreference('theme-scheme', (value) => {
-      this.prefThemeScheme = value;
-    });
-  }
-
-  disconnectedCallback(): void {
-    this.unsubscribePrefAnimation?.();
-    this.unsubscribePrefContrast?.();
-    this.unsubscribePrefTheme?.();
-    this.unsubscribePrefThemeScheme?.();
-  }
+  private onActionSlotChange = (): void => {
+    this.hasActions = hasChildWithSlot(this.hostElement, 'action');
+  };
 
   componentWillLoad(): void {
     this.hasText = this.hostElement.innerHTML !== '';
-    this.actions = this.hostElement.querySelector(':scope > [slot="action"]') !== null;
+    this.hasActions = hasChildWithSlot(this.hostElement, 'action');
     if (this.duration === undefined || this.duration === 0 || Number.isNaN(this.duration)) {
       return;
     }
@@ -161,10 +136,10 @@ export class MdsToast {
   render() {
     return (
       <Host
-        pref-animation={this.prefAnimation}
-        pref-contrast={this.prefContrast}
-        pref-theme={this.prefTheme}
-        pref-theme-scheme={this.prefThemeScheme}
+        pref-animation={preferenceStore.state.animation}
+        pref-contrast={preferenceStore.state.contrast}
+        pref-mode={preferenceStore.state.mode}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
         <div
           class={clsx(
@@ -179,11 +154,9 @@ export class MdsToast {
               <slot />
             </mds-text>
           )}
-          {this.actions && (
-            <div class="actions">
-              <slot name="action" />
-            </div>
-          )}
+          <div class={clsx('actions', !this.hasActions && 'actions--hidden')}>
+            <slot name="action" onSlotchange={this.onActionSlotChange} />
+          </div>
         </div>
       </Host>
     );

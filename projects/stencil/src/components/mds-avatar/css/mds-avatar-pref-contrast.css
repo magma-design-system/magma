@@ -7,7 +7,7 @@
   .avatar--icon,
   .avatar--fallback,
   .avatar--initials {
-    box-shadow: var(--shadow-outline-50) inset;
+    box-shadow: var(--shadow-ring-2) inset;
   }
 }
 
@@ -17,7 +17,7 @@
     .avatar--icon,
     .avatar--fallback,
     .avatar--initials {
-      box-shadow: var(--shadow-outline-50), var(--shadow-lg);
+      box-shadow: var(--shadow-ring-2), var(--shadow-lg);
     }
   }
 }

@@ -1,31 +1,34 @@
+/* The light / dark variants are a pure-inversion pair: light is painted in the
+ * paper of the mode, --tone-neutral-seed (#fff light / #000 dark), dark in the
+ * ink of the mode. The seed is the intended value here, not a surface: no
+ * elevation role is paper in both modes (SEMANTIC_COLOR_SPEC 10 and 15). */
+
 :host([variant='light']) {
-  --mds-badge-background: rgb(var(--tone-neutral));
-  --mds-badge-color: rgb(var(--tone-neutral-03));
+  --mds-badge-background: rgb(var(--tone-neutral-seed));
+  --mds-badge-color: rgb(var(--magma-text-muted));
 
   &:host([tone='weak']) {
-    --mds-badge-background: rgb(var(--tone-neutral-10));
-    --mds-badge-color: rgb(var(--tone-neutral-03));
+    --mds-badge-background: rgb(var(--magma-wash-soft));
+    --mds-badge-color: rgb(var(--magma-text-muted));
   }
 
   &:host([tone='outline']) {
-    --mds-badge-background: rgb(var(--tone-neutral));
-    --mds-badge-color: rgb(var(--tone-neutral-02));
-    --mds-badge-border-color: rgb(var(--tone-neutral-06));
+    --mds-badge-color: rgb(var(--magma-text-default));
+    --mds-badge-border-color: rgb(var(--magma-border-strong));
   }
 }
 
 :host([variant='dark']) {
-  --mds-badge-background: rgb(var(--tone-neutral-03));
-  --mds-badge-color: rgb(var(--tone-neutral));
+  --mds-badge-background: rgb(var(--magma-surface-inverse-muted));
+  --mds-badge-color: rgb(var(--magma-on-inverse));
 
   &:host([tone='weak']) {
-    --mds-badge-background: rgb(var(--tone-neutral-10));
-    --mds-badge-color: rgb(var(--tone-neutral-03));
+    --mds-badge-background: rgb(var(--magma-wash-soft));
+    --mds-badge-color: rgb(var(--magma-text-muted));
   }
 
   &:host([tone='outline']) {
-    --mds-badge-background: rgb(var(--tone-neutral));
-    --mds-badge-color: rgb(var(--tone-neutral-02));
-    --mds-badge-border-color: rgb(var(--tone-neutral-06));
+    --mds-badge-color: rgb(var(--magma-text-default));
+    --mds-badge-border-color: rgb(var(--magma-border-strong));
   }
 }

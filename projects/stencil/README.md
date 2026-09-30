@@ -25,14 +25,19 @@ Use the versions of `@maggioli-design-system/design-tokens` and `@maggioli-desig
 
 #### Tones name changes
 
-Now tones have new names to make them more consistent with the rest of the system and to be more semantiaclly correct.
+Now tones have new names to make them more consistent with the rest of the system and to be more semantically correct.
 
 | V1 | V2 | V1 compatibility |
 |---------|---------|-------------|
 | `strong`  | `strong`  | ✅ |
 | `weak`    | `weak`    | ✅ |
 | `ghost`   | `outline` | ⚠️ |
-| `quiet`   | `text`    | ⚠️ |
+| `quiet`   | `text` or `weak` (see below) | ⚠️ |
+
+`quiet → text` only applies to the components whose v2 tone set includes `text`: `mds-button`,
+`mds-radial-menu` and `mds-radial-menu-item`. Every other component dropped `quiet` without
+gaining `text` (e.g. `mds-banner`, `mds-label`), so there the closest replacement is `weak`.
+The [migration codemod](../codemod/README.md) applies exactly this mapping.
 
 #### Design tokens
 
@@ -52,6 +57,7 @@ Now tones have new names to make them more consistent with the rest of the syste
 | ⚠️ | `mds-text`                 | added `text-box` css module with vertically treats text nodes with a better optical alignment.
 | ⚠️ | `mds-banner`               | Removed old `quiet` tone which is NOT replaced with `text` tone. |
 | ⚠️ | `mds-breadcrumb`           | Now item requires `label` attribute to be set. |
+| ⚠️ | `mds-calendar`             | Boolean props inverted to the negative form, every default is now `false`: `rangePicker` → `singlePicker`, `showPreviousButton` → `hidePreviousButton`, `showNextButton` → `hideNextButton`, `showPreselection` → `hidePreselection`. The [migration codemod](../codemod/README.md) rewrites them. |
 | ✅ | `mds-file`                  | Added download icon on hover to make component more explicit. |
 | ✅ | `mds-table`                | Added batch actions to the table when rows are selectable. |
 | ✅ | `mds-header-bar`           | The overlay blur effect is now applied progressively rather than sharply outlined. |
@@ -81,13 +87,39 @@ npm i '@maggioli-design-system/magma'
 
 ## Define Components
 
+The recommended entry point is `@maggioli-design-system/magma/components`: import only
+the components you use and the bundler drops the rest.
+
 ```js
 // insert in bootstrap file of client part of your application
 
-import { defineCustomElements } from "@maggioli-design-system/magma/loader";
+import {
+  defineCustomElementMdsButton,
+  defineCustomElementMdsIcon,
+} from '@maggioli-design-system/magma/components';
+
+defineCustomElementMdsButton();
+defineCustomElementMdsIcon();
+```
+
+Each `defineCustomElement*` registers the component's children recursively, so only the
+tags you write yourself need to be listed. A per-component deep import is available too:
+
+```js
+import { defineCustomElement } from '@maggioli-design-system/magma/components/mds-button.js';
+```
+
+The lazy loader registers every `mds-*` tag in one call. It is simpler, but nothing can
+be tree-shaken away - use it only when the app needs most of the library.
+
+```js
+import { defineCustomElements } from '@maggioli-design-system/magma/loader';
 
 defineCustomElements();
 ```
+
+Do not mix the two entry points in the same app: they are separate builds of the same
+components.
 
 Alternatively, if you wanted to take advantage of ES Modules, you could include the components using an import statement.
 

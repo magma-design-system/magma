@@ -7,12 +7,12 @@
     <path id="left-eye" d="M8 8H10V12H8V8Z" fill="var(--mds-emoji-mia-eyes-color, rgb(81 9 207))"/>
     <path id="right-eye" d="M14 8H16V12H14V8Z" fill="var(--mds-emoji-mia-eyes-color, rgb(81 9 207))"/>
   </g>
-  <g id="eyes-closed">
+  <g id="eyes-closed" style="visibility:hidden;">
     <path id="left-eye-closed" d="M6 10H10V12H6V10Z" fill="var(--mds-emoji-mia-eyes-color, rgb(81 9 207))"/>
     <path id="right-eye-closed" d="M14 10H18V12H14V10Z" fill="var(--mds-emoji-mia-eyes-color, rgb(81 9 207))"/>
   </g>
   <path id="mouth-default" d="M16.707 15.707C15.4771 16.937 13.6985 17.5 12 17.5C10.3015 17.5 8.52294 16.937 7.29297 15.707L8.70703 14.293C9.47706 15.063 10.6985 15.5 12 15.5C13.3015 15.5 14.5229 15.063 15.293 14.293L16.707 15.707Z" fill="var(--mds-emoji-mia-mouth-color, rgb(98 12 245))"/>
-  <path id="mouth-smile" d="M16 14H8C8.33333 15.3333 9 18 12 18C15 18 15.6667 15.3333 16 14Z" fill="var(--mds-emoji-mia-mouth-color, rgb(98 12 245))"/>
-  <path id="mouth-serious" d="M8 15H16V17H8V15Z" fill="var(--mds-emoji-mia-mouth-color, rgb(98 12 245))"/>
+  <path id="mouth-smile" style="visibility:hidden;" d="M16 14H8C8.33333 15.3333 9 18 12 18C15 18 15.6667 15.3333 16 14Z" fill="var(--mds-emoji-mia-mouth-color, rgb(98 12 245))"/>
+  <path id="mouth-serious" style="visibility:hidden;" d="M8 15H16V17H8V15Z" fill="var(--mds-emoji-mia-mouth-color, rgb(98 12 245))"/>
   <path id="hand-think" style="visibility:hidden;" d="M6 16C6.55228 16 7 16.4477 7 17V18H13C13.5523 18 14 18.4477 14 19C14 19.5523 13.5523 20 13 20H10.3818C11.1252 20 11.6088 20.7824 11.2764 21.4473L10.2764 23.4473C10.107 23.786 9.76059 24 9.38184 24H4V20L5 18V16H6Z" fill="var(--mds-emoji-mia-hands-color, rgb(98 12 245))"/>
 </svg>

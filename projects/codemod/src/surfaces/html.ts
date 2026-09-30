@@ -18,8 +18,10 @@ import {
   type PropRemoveRule,
   type SlotRule,
   type SlotToAttrRule,
+  type TagRenameRule,
 } from '../manifest/schema.js';
 import { getByTag, ruleId, rulesForComponent } from '../manifest/registry.js';
+import { classRulesOf, hasClassRules, rewriteClassList } from './shared/class-ops.js';
 import { invertBoolean, remapEnum } from './shared/attribute-ops.js';
 import { bareTrue, stringLiteral, type AttrValue } from './shared/value-model.js';
 import { applyEdits, lineIndentAt, type Edit } from './shared/edits.js';
@@ -78,6 +80,7 @@ export const transformHtml = (
   const fragment = parseFragment(source, { sourceCodeLocationInfo: true }) as unknown as P5Node;
   const edits: Edit[] = [];
   const findings: Finding[] = [];
+  const classRules = classRulesOf(manifest);
 
   const pushFinding = (f: Finding): void => {
     findings.push(f);
@@ -127,6 +130,66 @@ export const transformHtml = (
       }
     }
 
+    // Global: utility-class migrations (J) on any element's `class` attribute.
+    // The raw source value is rewritten (not the entity-decoded one), so
+    // arbitrary variants written with references (`[&gt;li]:`) round-trip.
+    if (hasClassRules(classRules)) {
+      const l = attrLocs['class'];
+      if (l && hasAttr('class')) {
+        const raw = source.slice(l.startOffset, l.endOffset);
+        const parsed = parseRawAttr(raw);
+        if (parsed.hasValue) {
+          const open = raw.indexOf(parsed.quote) + 1;
+          const close = raw.lastIndexOf(parsed.quote);
+          const rawValue = open > 0 && close > open ? raw.slice(open, close) : '';
+          const result = rewriteClassList(
+            rawValue,
+            classRules,
+            (id) => ruleEnabled(ctx, id),
+            (entry, before, after) => {
+              pushFinding({
+                kind: 'change',
+                surface: 'html',
+                file: ctx.file,
+                line: l.startLine,
+                ruleId: entry.id,
+                message: 'rename utility class',
+                before,
+                after,
+              });
+              if (entry.rule.note) {
+                pushFinding({
+                  kind: 'flag',
+                  surface: 'html',
+                  file: ctx.file,
+                  line: l.startLine,
+                  ruleId: entry.id,
+                  message: entry.rule.note,
+                });
+              }
+            },
+            (entry, token) => {
+              pushFinding({
+                kind: 'warn',
+                surface: 'html',
+                file: ctx.file,
+                line: l.startLine,
+                ruleId: entry.id,
+                message: `\`${token}\`: ${entry.rule.message}`,
+              });
+            },
+          );
+          if (result.changed) {
+            edits.push({
+              start: l.startOffset + open,
+              end: l.startOffset + close,
+              text: result.value,
+            });
+          }
+        }
+      }
+    }
+
     const component = getByTag(manifest, tag);
     if (!component) return;
 
@@ -155,10 +218,32 @@ export const transformHtml = (
         case 'slotRemove':
           applySlotRemove(rule, id);
           break;
+        case 'tagRename':
+          applyTagRename(rule, id);
+          break;
         // slotRename/cssVarRename/cssVarRemove/partRename/eventRename: not applicable to plain HTML attributes.
         default:
           break;
       }
+    }
+
+    /** Rename the start tag and, when written, the end tag; the name sits right after `<` / `</`. */
+    function applyTagRename(rule: TagRenameRule, id: string): void {
+      if (!loc?.startTag) return;
+      const nameEdit = (at: number): Edit => ({ start: at, end: at + tag.length, text: rule.to });
+      edits.push(nameEdit(loc.startTag.startOffset + 1));
+      if (loc.endTag) edits.push(nameEdit(loc.endTag.startOffset + 2));
+      pushFinding({
+        kind: 'change',
+        surface: 'html',
+        file: ctx.file,
+        line: loc.startLine,
+        component: tag,
+        ruleId: id,
+        message: `rename <${tag}> to <${rule.to}>`,
+        before: tag,
+        after: rule.to,
+      });
     }
 
     function attrValueOf(attr: P5Attr, hasValueRaw: boolean): AttrValue {

@@ -403,6 +403,7 @@ Type: `Promise<void>`
  - [mds-help](../mds-help)
  - [mds-img](../mds-img)
  - [mds-input](../mds-input)
+ - [mds-input-select](../mds-input-select)
  - [mds-input-switch](../mds-input-switch)
  - [mds-input-upload](../mds-input-upload)
  - [mds-keyboard-key](../mds-keyboard-key)
@@ -430,6 +431,7 @@ graph TD;
   mds-help --> mds-icon
   mds-img --> mds-icon
   mds-input --> mds-icon
+  mds-input-select --> mds-icon
   mds-input-switch --> mds-icon
   mds-input-upload --> mds-icon
   mds-keyboard-key --> mds-icon

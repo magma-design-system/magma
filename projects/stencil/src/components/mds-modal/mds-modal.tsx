@@ -8,9 +8,10 @@ import {
   Host,
   h,
   Prop,
-  Watch,
   State,
+  Watch,
 } from '@stencil/core';
+import { hasChildWithSlot } from '@common/slot';
 import {
   ModalPositionType,
   ModalOverflowType,
@@ -18,7 +19,7 @@ import {
   ModalInteractionType,
 } from './meta/types';
 import { cssDurationToMilliseconds } from '@common/unit';
-import { subscribePreference } from '@common/preference';
+import { preferenceStore } from '@common/preference';
 import miBaselineClose from '@icon/mi/baseline/close.svg';
 
 /**
@@ -38,30 +39,29 @@ import miBaselineClose from '@icon/mi/baseline/close.svg';
 export class MdsModal {
   private animationDelayTimeout: NodeJS.Timeout;
   private dialogEl?: HTMLDialogElement;
-  private window = false;
-  private top = false;
-  private bodyOverflow: string;
-  private bottom = false;
+  // Initialised on purpose: both readers compare it against '' (the strict boolean
+  // rules forbid the truthiness check this used to be), and an undeclared field is
+  // `undefined`, not ''. See enableOverflow.
+  private bodyOverflow: string = '';
   private cssTransitionDuration: string = '500';
   private windowElement: HTMLElement;
   private windowContentWrapper?: HTMLElement;
-  private windowHeaderElement: HTMLElement;
-  private windowFooterElement: HTMLElement;
-  private windowHeaderHeight: number;
-  private windowFooterHeight: number;
   private touchStartX: number;
   private touchStartY: number;
   private touchMargin: number = 50;
 
   @Element() host: HTMLMdsModalElement;
-  @State() prefAnimation?: string;
-  private unsubscribePrefAnimation?: () => void;
-  @State() prefContrast?: string;
-  private unsubscribePrefContrast?: () => void;
-  @State() prefTheme?: string;
-  private unsubscribePrefTheme?: () => void;
-  @State() prefThemeScheme?: string;
-  private unsubscribePrefThemeScheme?: () => void;
+  @State() hasBottom = false;
+  @State() hasTop = false;
+  @State() hasWindow = false;
+  @State() windowHeaderHeight = 0;
+  @State() windowFooterHeight = 0;
+
+  /**
+   * The accessible name of the modal: the name a screen reader announces when the window
+   * opens. The `<dialog>` this component renders is the dialog, so the name goes there.
+   */
+  @Prop({ attribute: 'aria-label' }) readonly accessibleName?: string;
 
   /**
    * Specifies if the modal is opened or not
@@ -220,17 +220,33 @@ export class MdsModal {
     this.windowElement.addEventListener('touchend', this.setTouchEnd);
   };
 
+  private updateSlots = (): void => {
+    this.hasBottom = hasChildWithSlot(this.host, 'bottom');
+    this.hasTop = hasChildWithSlot(this.host, 'top');
+    this.hasWindow = hasChildWithSlot(this.host, 'window');
+
+    // the slotted window is NOT given a role: the `<dialog>` below is the dialog already,
+    // opened with showModal(), and a second one inside it reads as a second window
+  };
+
+  /**
+   * Measures the header and the footer to pad the content: the states change
+   * only when a measure differs, so the update pass settles after one render.
+   */
+  private updateWindowPaddings = (): void => {
+    const header = this.host.shadowRoot?.querySelector('.window-header') as HTMLElement | null;
+    const footer = this.host.shadowRoot?.querySelector('.window-footer') as HTMLElement | null;
+    const headerHeight = header?.offsetHeight ?? 0;
+    const footerHeight = footer?.offsetHeight ?? 0;
+    if (headerHeight !== this.windowHeaderHeight) this.windowHeaderHeight = headerHeight;
+    if (footerHeight !== this.windowFooterHeight) this.windowFooterHeight = footerHeight;
+  };
+
   componentWillLoad(): void {
-    this.bottom = this.host.querySelector(':scope > [slot="bottom"]') !== null;
-    this.top = this.host.querySelector(':scope > [slot="top"]') !== null;
-    this.window = this.host.querySelector(':scope > [slot="window"]') !== null;
+    this.updateSlots();
 
     if (this.overflow === 'auto' && this.opened) {
       this.disableOverflow();
-    }
-
-    if (this.window) {
-      this.host.querySelector(':scope > [slot="window"]')?.setAttribute('role', 'dialog');
     }
   }
 
@@ -239,15 +255,7 @@ export class MdsModal {
     this.windowContentWrapper = this.host.shadowRoot?.querySelector(
       '.window-content-wrapper',
     ) as HTMLElement;
-    this.windowHeaderElement = this.host.shadowRoot?.querySelector('.window-header') as HTMLElement;
-    this.windowFooterElement = this.host.shadowRoot?.querySelector('.window-footer') as HTMLElement;
-
-    if (this.windowHeaderElement != null) {
-      this.windowHeaderHeight = this.windowHeaderElement.offsetHeight;
-    }
-    if (this.windowFooterElement != null) {
-      this.windowFooterHeight = this.windowFooterElement.offsetHeight;
-    }
+    this.updateWindowPaddings();
     if (this.windowElement != null) {
       this.addMobileEvents();
       this.windowElement.addEventListener('transitionend', this.handleWindowTransitionEnd);
@@ -263,26 +271,13 @@ export class MdsModal {
     }
   }
 
-  connectedCallback(): void {
-    this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
-      this.prefAnimation = value;
-    });
-    this.unsubscribePrefContrast = subscribePreference('contrast', (value) => {
-      this.prefContrast = value;
-    });
-    this.unsubscribePrefTheme = subscribePreference('theme', (value) => {
-      this.prefTheme = value;
-    });
-    this.unsubscribePrefThemeScheme = subscribePreference('theme-scheme', (value) => {
-      this.prefThemeScheme = value;
-    });
+  componentDidUpdate(): void {
+    // the header and the footer are hidden while their slots are empty: refresh
+    // the paddings of the content once a late `top` or `bottom` child shows them
+    this.updateWindowPaddings();
   }
 
   disconnectedCallback(): void {
-    this.unsubscribePrefAnimation?.();
-    this.unsubscribePrefContrast?.();
-    this.unsubscribePrefTheme?.();
-    this.unsubscribePrefThemeScheme?.();
     this.enableOverflow();
     clearTimeout(this.animationDelayTimeout);
     if (this.windowElement) {
@@ -305,6 +300,11 @@ export class MdsModal {
     } else {
       this.dialogEl.show();
     }
+    // Measure here, not only in the lifecycle hooks: until this call the dialog is
+    // `display: none`, so a header and a footer measure 0. A modal that mounts
+    // already open never renders again on its own, so that 0 would stay and the
+    // content would sit under both bars.
+    this.updateWindowPaddings();
   };
 
   private closeDialog = (): void => {
@@ -375,12 +375,13 @@ export class MdsModal {
   render() {
     return (
       <Host
-        pref-animation={this.prefAnimation}
-        pref-contrast={this.prefContrast}
-        pref-theme={this.prefTheme}
-        pref-theme-scheme={this.prefThemeScheme}
+        pref-animation={preferenceStore.state.animation}
+        pref-contrast={preferenceStore.state.contrast}
+        pref-mode={preferenceStore.state.mode}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
         <dialog
+          aria-label={this.accessibleName}
           class="dialog"
           part="dialog"
           ref={(el?: HTMLElement) => (this.dialogEl = el as HTMLDialogElement)}
@@ -391,12 +392,11 @@ export class MdsModal {
             this.handleCancel(e);
           }}
         >
-          {this.window ? (
-            <slot name="window" />
-          ) : (
+          <slot name="window" onSlotchange={this.updateSlots} />
+          {!this.hasWindow && (
             <div class="window" part="window">
-              <div class={clsx('window-header', this.top ? '' : 'window-content--empty')}>
-                <slot name="top" />
+              <div class={clsx('window-header', !this.hasTop && 'window-content--empty')}>
+                <slot name="top" onSlotchange={this.updateSlots} />
               </div>
               <div class="window-content-wrapper">
                 <div
@@ -409,12 +409,12 @@ export class MdsModal {
                   <slot />
                 </div>
               </div>
-              <div class={clsx('window-footer', this.bottom ? '' : 'window-content--empty')}>
-                <slot name="bottom" />
+              <div class={clsx('window-footer', !this.hasBottom && 'window-content--empty')}>
+                <slot name="bottom" onSlotchange={this.updateSlots} />
               </div>
             </div>
           )}
-          {!this.window && (
+          {!this.hasWindow && (
             <mds-button
               class="action-close"
               icon={miBaselineClose}

@@ -11,11 +11,13 @@ import {
   Watch,
   AttachInternals,
 } from '@stencil/core';
+import { setAttributeIfEmpty } from '@common/aria';
+import { setFormValue } from '@common/form';
 import miBaselineCalendarToday from '@icon/mi/baseline/calendar-today.svg';
 import { DateTime } from 'luxon';
 import clsx from 'clsx';
 import { Locale } from '@common/locale';
-import { subscribePreference } from '@common/preference';
+import { preferenceStore } from '@common/preference';
 import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.es.json';
@@ -40,14 +42,6 @@ export interface EventDate {
 })
 export class MdsInputDateRange {
   @Element() host: HTMLMdsInputDateRangeElement;
-  @State() prefAnimation?: string;
-  private unsubscribePrefAnimation?: () => void;
-  @State() prefContrast?: string;
-  private unsubscribePrefContrast?: () => void;
-  @State() prefTheme?: string;
-  private unsubscribePrefTheme?: () => void;
-  @State() prefThemeScheme?: string;
-  private unsubscribePrefThemeScheme?: () => void;
   @AttachInternals() internals: ElementInternals;
 
   @State() calendarKey: number = 0;
@@ -62,14 +56,13 @@ export class MdsInputDateRange {
     es: localeEs,
     it: localeIt,
   });
-  @State() language: string;
+
   /**
-   * Updates the component's texts to the locale currently set on the host element.
+   * The accessible name of the range: each of the two fields is named after it and after the
+   * end of the range it covers, the visible "from" and "to" labels living in this shadow root,
+   * where no IDREF of the slotted fields could reach them.
    */
-  @Method()
-  async updateLang(): Promise<void> {
-    this.language = this.t.lang(this.host);
-  }
+  @Prop({ attribute: 'aria-label' }) readonly accessibleName?: string;
 
   /**
    * Specifies the start date of the range
@@ -100,6 +93,11 @@ export class MdsInputDateRange {
    * @description Default is 500
    */
   @Prop({ reflect: true }) readonly delay: number = 500;
+
+  /**
+   * Hides the highlight on today's date in the calendar.
+   */
+  @Prop({ reflect: true }) readonly hideToday: boolean = false;
 
   /**
    * Enables the linked dual-calendar range picker behavior.
@@ -251,7 +249,6 @@ export class MdsInputDateRange {
   }
 
   componentWillLoad(): void {
-    this.language = this.t.lang(this.host);
     this.internalStartDate = this.startDate;
     this.internalEndDate = this.endDate;
     this.initialStartDate = this.startDate;
@@ -272,26 +269,7 @@ export class MdsInputDateRange {
     this.syncFormValue();
   }
 
-  connectedCallback(): void {
-    this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
-      this.prefAnimation = value;
-    });
-    this.unsubscribePrefContrast = subscribePreference('contrast', (value) => {
-      this.prefContrast = value;
-    });
-    this.unsubscribePrefTheme = subscribePreference('theme', (value) => {
-      this.prefTheme = value;
-    });
-    this.unsubscribePrefThemeScheme = subscribePreference('theme-scheme', (value) => {
-      this.prefThemeScheme = value;
-    });
-  }
-
   disconnectedCallback(): void {
-    this.unsubscribePrefAnimation?.();
-    this.unsubscribePrefContrast?.();
-    this.unsubscribePrefTheme?.();
-    this.unsubscribePrefThemeScheme?.();
     this.host.removeEventListener('focusout', this.handleFocusOut);
     this.host.shadowRoot?.removeEventListener(
       'mdsCalendarHover',
@@ -392,7 +370,27 @@ export class MdsInputDateRange {
     );
   };
 
+  // the two fields render their native input in their own shadow root, out of reach of the
+  // visible labels of this one: each is named after the range and the end it covers
+  private readonly nameSlottedFields = (): void => {
+    (
+      [
+        ['start', this.t.get('startDate')],
+        ['end', this.t.get('endDate')],
+      ] as [string, string][]
+    ).forEach(([slot, part]) => {
+      const field = this.host.querySelector(`[slot="${slot}"]`);
+      if (field === null) return;
+      setAttributeIfEmpty(
+        field as HTMLElement,
+        'aria-label',
+        (this.accessibleName ?? '') !== '' ? `${this.accessibleName}, ${part}` : part,
+      );
+    });
+  };
+
   componentDidLoad(): void {
+    this.nameSlottedFields();
     this.updateInputListeners();
     this.updateInputValue('start', this.internalStartDate);
     this.updateInputValue('end', this.internalEndDate);
@@ -456,17 +454,19 @@ export class MdsInputDateRange {
     const endSlot = this.host.shadowRoot?.querySelector('slot[name="end"]') as HTMLSlotElement;
     this.hasPreselection = this.host.querySelector('mds-input-date-range-preselection') !== null;
 
-    if (startSlot != null) {
-      const input = startSlot.assignedElements()[0] as HTMLMdsInputDateElement;
-      input.addEventListener(
+    // assignedElements() is empty in the hydrate/SSR runtime (mock-doc):
+    // listener wiring happens on the client
+    const startInput = startSlot?.assignedElements()[0] as HTMLMdsInputDateElement | undefined;
+    if (startInput != null) {
+      startInput.addEventListener(
         'mdsInputDateSelect',
         this.createFocusoutListener('start') as EventListener,
       );
     }
 
-    if (endSlot != null) {
-      const input = endSlot.assignedElements()[0] as HTMLMdsInputDateElement;
-      input.addEventListener(
+    const endInput = endSlot?.assignedElements()[0] as HTMLMdsInputDateElement | undefined;
+    if (endInput != null) {
+      endInput.addEventListener(
         'mdsInputDateSelect',
         this.createFocusoutListener('end') as EventListener,
       );
@@ -612,9 +612,8 @@ export class MdsInputDateRange {
       <div class="calendar-single">
         {this.renderCalendarPreselectionPanel()}
         <mds-calendar
-          lang={this.language}
           key={this.calendarKey}
-          rangePicker={true}
+          hideToday={this.hideToday}
           onMdsCalendarChange={this.handleCalendarChange}
           onMdsCalendarPreselect={this.handleCalendarPreselect}
           startDate={this.internalStartDate}
@@ -631,11 +630,10 @@ export class MdsInputDateRange {
       <div class="calendars">
         {this.renderCalendarPreselectionPanel()}
         <mds-calendar
-          lang={this.language}
           key={`${this.calendarKey}-start`}
-          rangePicker={true}
-          showNextButton={false}
-          disableMonthYearSelection={true}
+          hideToday={this.hideToday}
+          hideNextButton
+          disableMonthYearSelection
           viewDate={this.getCalendarViewDate()}
           onMdsCalendarNavigate={this.handleCalendarNavigate}
           onMdsCalendarChange={this.handleCalendarChange}
@@ -646,11 +644,10 @@ export class MdsInputDateRange {
           {...(this.max !== null && this.max !== '' ? { max: this.max } : {})}
         ></mds-calendar>
         <mds-calendar
-          lang={this.language}
           key={`${this.calendarKey}-end`}
-          rangePicker={true}
-          showPreviousButton={false}
-          disableMonthYearSelection={true}
+          hideToday={this.hideToday}
+          hidePreviousButton
+          disableMonthYearSelection
           viewDate={this.getCalendarViewDate(1)}
           onMdsCalendarNavigate={this.handleCalendarNavigate}
           onMdsCalendarChange={this.handleCalendarChange}
@@ -668,10 +665,10 @@ export class MdsInputDateRange {
     return (
       <Host
         onClick={this.focusDateInput}
-        pref-animation={this.prefAnimation}
-        pref-contrast={this.prefContrast}
-        pref-theme={this.prefTheme}
-        pref-theme-scheme={this.prefThemeScheme}
+        pref-animation={preferenceStore.state.animation}
+        pref-contrast={preferenceStore.state.contrast}
+        pref-mode={preferenceStore.state.mode}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
         <div class="inputs">
           <div class="input-element">
@@ -702,11 +699,14 @@ export class MdsInputDateRange {
           ></mds-button>
         </div>
 
+        {/* the panel holds one or two calendars, not a list of entries: it is a group, not
+            the menu the dropdown declares by default */}
         <mds-dropdown
           ref={(el) => (this.dropdownRef = el as HTMLMdsDropdownElement)}
           target="#calendar-dropdown"
           disable-auto-placement
           placement="bottom-end"
+          role="group"
         >
           {this.dualCalendar ? this.renderDualCalendars() : this.renderSingleCalendar()}
         </mds-dropdown>
@@ -719,10 +719,10 @@ export class MdsInputDateRange {
     const endDate = this.internalEndDate?.trim() ?? '';
 
     if (startDate === '' && endDate === '') {
-      this.internals.setFormValue(null);
+      setFormValue(this.internals, null);
       return;
     }
 
-    this.internals.setFormValue(JSON.stringify({ startDate, endDate }));
+    setFormValue(this.internals, JSON.stringify({ startDate, endDate }));
   }
 }

@@ -1,112 +1,67 @@
 # Label definitions for the Magma repository.
-# Sync with EndBug/label-sync or github-label-sync so labels stay versioned.
+# This file is the single source of truth for GitHub labels and mirrors the
+# labels actually configured on the repository. It is synced by the label-sync
+# workflow (.github/workflows/label-sync.yml, crazy-max/ghaction-github-labeler).
 # Colors are 6-digit hex without the leading '#'.
 
-# --- Type (omit these if you use native GitHub Issue Types) ---
-- name: 'type: bug'
-  color: d73a4a
-  description: Something is not working
-- name: 'type: feature'
-  color: a2eeef
-  description: New feature or request
-- name: 'type: docs'
-  color: 0075ca
-  description: Documentation change
-- name: 'type: training'
-  color: c5def5
-  description: Training or onboarding request
-
-# --- Status ---
-- name: 'status: triage'
-  color: ededed
-  description: Needs classification by the core team
-- name: 'status: needs-info'
-  color: fbca04
-  description: Waiting for more information from the author
-- name: 'status: accepted'
-  color: 0e8a16
-  description: Validated and ready to be picked up
-- name: 'status: in-progress'
-  color: 1d76db
-  description: Someone is working on it
-- name: 'status: needs-review'
-  color: 5319e7
-  description: Waiting for review
-- name: 'status: blocked'
-  color: b60205
-  description: Blocked by an external dependency
-- name: 'status: wontfix'
-  color: ffffff
-  description: This will not be worked on
-- name: 'status: duplicate'
-  color: cfd3d7
-  description: Already tracked elsewhere
-
-# --- Area (aligned to the monorepo packages) ---
-- name: 'area: components'
-  color: bfd4f2
-  description: Stencil components
-- name: 'area: tokens'
-  color: bfd4f2
-  description: Design tokens
-- name: 'area: styles'
-  color: bfd4f2
-  description: Styles package
-- name: 'area: icons'
-  color: bfd4f2
-  description: Icons / svg-icons
-- name: 'area: identity'
-  color: bfd4f2
-  description: Brand identity assets
-- name: 'area: docs-site'
-  color: bfd4f2
-  description: Documentation site
-- name: 'area: storybook'
-  color: bfd4f2
-  description: Storybook
-- name: 'area: build-ci'
-  color: bfd4f2
-  description: Build scripts and CI
-
-# --- Semver impact (maps to the 🟢🟡🔴 versioning model) ---
-- name: 'semver: patch'
-  color: 0e8a16
-  description: Backwards-compatible bug fix
-- name: 'semver: minor'
-  color: fbca04
-  description: Backwards-compatible new functionality
-- name: 'semver: major'
+# --- Type of work ---
+- name: bug
   color: d93f0b
-  description: Breaking API change
-
-# --- Review needed ---
-- name: 'review: needs-design'
+  description: Something is broken
+- name: docs
+  color: c5def5
+  description: Docs site, Storybook, READMEs
+- name: feature
+  color: 1d76db
+  description: New component, token, or capability
+- name: breaking change
+  color: d93f0b
+  description: Introduces a semver-major change
+- name: build
   color: d4c5f9
-  description: Needs a system designer review
-- name: 'review: needs-a11y'
+  description: nx, tooling, CI pipelines
+- name: maintenance
   color: d4c5f9
-  description: Needs an accessibility review
-- name: 'review: needs-dev'
-  color: d4c5f9
-  description: Needs a system developer review
+  description: Build, CI, dependencies, chores
 
-# --- Community ---
-- name: 'good first issue'
-  color: 7057ff
-  description: Good for newcomers
-- name: 'help wanted'
-  color: 008672
-  description: The core team is looking for a contributor
-- name: 'needs mentor'
-  color: 006b75
-  description: A core team mentor is needed to proceed
-
-# --- Priority (assigned by the core team) ---
-- name: 'priority: low'
+# --- Workflow status ---
+- name: ready
   color: c2e0c6
-- name: 'priority: medium'
-  color: fef2c0
-- name: 'priority: high'
-  color: f9d0c4
-- name: 'priority: critical'
-  color: b60205
+  description: Accepted, ready to be worked on
+- name: blocked
+  color: fbca04
+  description: Stalled or on hold
+- name: duplicate
+  color: cfd3d7
+  description: This already exists
+- name: wontfix
+  color: cfcfcf
+  description: This will not be worked on
+- name: invalid
+  color: e4e669
+  description: This does not seem right
+
+# --- Packages ---
+- name: prg-stencil
+  color: 0e8a16
+  description: '@maggioli-design-system/magma components'
+- name: prg-design-tokens
+  color: 0e8a16
+  description: '@maggioli-design-system/design-tokens'
+- name: prg-styles
+  color: 0e8a16
+  description: '@maggioli-design-system/styles'
+- name: prg-icons
+  color: 0e8a16
+  description: '@maggioli-design-system/icons'
+- name: prg-svg-icons
+  color: 0e8a16
+  description: '@maggioli-design-system/svg-icons'
+- name: prg-identity
+  color: 0e8a16
+  description: '@maggioli-design-system/identity'
+
+# --- Other ---
+- name: governance
+  color: 0052cc
+  description: Project governance and process

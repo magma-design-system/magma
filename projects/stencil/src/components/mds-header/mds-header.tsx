@@ -10,10 +10,11 @@ import {
   Watch,
   Method,
 } from '@stencil/core';
+import { queryChildBySlot } from '@common/slot';
 import { MdsHeaderEventDetail, MdsHeaderVisibilityEventDetail } from './meta/event-detail';
 import { HeaderBarMenuType, HeaderBarNavType } from '@type/header-bar';
 import { AppearanceType } from './meta/types';
-import { subscribePreference } from '@common/preference';
+import { preferenceStore } from '@common/preference';
 // import clsx from 'clsx'
 
 /**
@@ -37,12 +38,6 @@ export class MdsHeader {
   private sanitizedAppearance: AppearanceType = ['stripe'];
   private appearanceThreshold = 300;
   private headerBar: HTMLMdsHeaderBarElement;
-  @State() consumption?: string;
-  private unsubscribeConsumption?: () => void;
-  @State() prefTheme?: string;
-  private unsubscribePrefTheme?: () => void;
-  @State() prefThemeScheme?: string;
-  private unsubscribePrefThemeScheme?: () => void;
 
   /**
    * Sets the appearance of the header bar element when loaded,
@@ -111,7 +106,7 @@ export class MdsHeader {
   }
 
   private mobileMenu = (): HTMLElement => {
-    return this.host.querySelector(':scope > [slot="menu"]') as HTMLElement;
+    return queryChildBySlot(this.host, 'menu') as HTMLElement;
   };
 
   private close = () => {
@@ -208,22 +203,7 @@ export class MdsHeader {
     window.addEventListener('scroll', this.handleScroll);
   };
 
-  connectedCallback(): void {
-    this.unsubscribeConsumption = subscribePreference('consumption', (value) => {
-      this.consumption = value;
-    });
-    this.unsubscribePrefTheme = subscribePreference('theme', (value) => {
-      this.prefTheme = value;
-    });
-    this.unsubscribePrefThemeScheme = subscribePreference('theme-scheme', (value) => {
-      this.prefThemeScheme = value;
-    });
-  }
-
   disconnectedCallback(): void {
-    this.unsubscribeConsumption?.();
-    this.unsubscribePrefTheme?.();
-    this.unsubscribePrefThemeScheme?.();
     if (typeof window === 'undefined') {
       return;
     }
@@ -285,9 +265,9 @@ export class MdsHeader {
   render() {
     return (
       <Host
-        pref-consumption={this.consumption}
-        pref-theme={this.prefTheme}
-        pref-theme-scheme={this.prefThemeScheme}
+        pref-consumption={preferenceStore.state.consumption}
+        pref-mode={preferenceStore.state.mode}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
         {!this.hideBackdrop && (
           <div class="backdrop">

@@ -11,10 +11,10 @@ import {
   Watch,
   AttachInternals,
 } from '@stencil/core';
+import { setFormValue } from '@common/form';
 import miBaselineCalendarToday from '@icon/mi/baseline/calendar-today.svg';
 import { DateTime } from 'luxon';
-import { Locale } from '@common/locale';
-import { subscribePreference } from '@common/preference';
+import { preferenceStore } from '@common/preference';
 import { ThemeInputVariantType } from '@type/variant';
 import { MdsValidationErrors } from 'src/components';
 
@@ -27,33 +27,19 @@ import { MdsValidationErrors } from 'src/components';
 })
 export class MdsInputDate {
   @Element() host: HTMLMdsInputDateElement;
-  @State() prefAnimation?: string;
-  private unsubscribePrefAnimation?: () => void;
-  @State() prefContrast?: string;
-  private unsubscribePrefContrast?: () => void;
-  @State() prefTheme?: string;
-  private unsubscribePrefTheme?: () => void;
-  @State() prefThemeScheme?: string;
-  private unsubscribePrefThemeScheme?: () => void;
   @AttachInternals() internals: ElementInternals;
   private isSlotted: boolean = false;
   @State() empty: boolean | undefined = undefined;
   @State() isValid: boolean;
-  private t: Locale = new Locale({
-    el: {},
-    en: {},
-    es: {},
-    it: {},
-  });
-  @State() language: string;
   @State() touched: boolean = false;
+
   /**
-   * Updates the component's texts to the locale currently set on the host element.
+   * The accessible name of the native control: the label a screen reader announces. An
+   * `mds-input-field` around the component passes its own label down here, so the attribute
+   * is only written by hand when the control stands on its own. The placeholder is deliberately
+   * not a fallback: it disappears as soon as the field is filled.
    */
-  @Method()
-  async updateLang(): Promise<void> {
-    this.language = this.t.lang(this.host);
-  }
+  @Prop({ attribute: 'aria-label' }) readonly accessibleName?: string;
 
   /**
    * Specifies the value of the input
@@ -88,6 +74,11 @@ export class MdsInputDate {
    * @description Default is 500
    */
   @Prop({ reflect: true }) readonly delay: number = 500;
+
+  /**
+   * Hides the highlight on today's date in the calendar.
+   */
+  @Prop({ reflect: true }) readonly hideToday: boolean = false;
 
   /**
    * If true, the element is displayed as disabled
@@ -138,12 +129,12 @@ export class MdsInputDate {
     if (hasBadInput || hasInvalidValue || isMissingRequiredValue || outOfRange) {
       this.isValid = false;
       this.variant = 'error';
-      this.internals.setFormValue(null);
+      setFormValue(this.internals, null);
       this.empty = hasBadInput || hasInvalidValue ? true : undefined;
     } else {
       this.isValid = true;
       this.variant = 'primary';
-      this.internals.setFormValue(this.value);
+      setFormValue(this.internals, this.value);
       this.empty = undefined;
     }
 
@@ -181,29 +172,7 @@ export class MdsInputDate {
   }
 
   formResetCallback(): void {
-    this.internals.setFormValue('');
-  }
-
-  connectedCallback(): void {
-    this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
-      this.prefAnimation = value;
-    });
-    this.unsubscribePrefContrast = subscribePreference('contrast', (value) => {
-      this.prefContrast = value;
-    });
-    this.unsubscribePrefTheme = subscribePreference('theme', (value) => {
-      this.prefTheme = value;
-    });
-    this.unsubscribePrefThemeScheme = subscribePreference('theme-scheme', (value) => {
-      this.prefThemeScheme = value;
-    });
-  }
-
-  disconnectedCallback(): void {
-    this.unsubscribePrefAnimation?.();
-    this.unsubscribePrefContrast?.();
-    this.unsubscribePrefTheme?.();
-    this.unsubscribePrefThemeScheme?.();
+    setFormValue(this.internals, '');
   }
 
   componentWillLoad(): void {
@@ -211,7 +180,6 @@ export class MdsInputDate {
       this.host.getAttribute('slot') === null || this.host.getAttribute('slot') === ''
     );
     this.value = this.value || '';
-    this.language = this.t.lang(this.host);
 
     // Se max è precedente a min, imposto max uguale a min
     if (this.min !== null && this.min !== '' && this.max !== null && this.max !== '') {
@@ -273,13 +241,13 @@ export class MdsInputDate {
     return (
       <Host
         empty={this.empty}
-        pref-animation={this.prefAnimation}
-        pref-contrast={this.prefContrast}
-        pref-theme={this.prefTheme}
-        pref-theme-scheme={this.prefThemeScheme}
+        pref-animation={preferenceStore.state.animation}
+        pref-contrast={preferenceStore.state.contrast}
+        pref-mode={preferenceStore.state.mode}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
-
         <input
+          aria-label={this.accessibleName}
           value={this.value}
           id="dateInput"
           class="input"
@@ -305,7 +273,7 @@ export class MdsInputDate {
             ></mds-button>
           </div>
         )}
-        <mds-input-tip lang={this.language} position="top" active={this.hasFocus}>
+        <mds-input-tip position="top" active={this.hasFocus}>
           {this.disabled && <mds-input-tip-item expanded variant="disabled"></mds-input-tip-item>}
           {this.readonly && <mds-input-tip-item expanded variant="readonly"></mds-input-tip-item>}
           {this.required && (
@@ -315,17 +283,20 @@ export class MdsInputDate {
             ></mds-input-tip-item>
           )}
         </mds-input-tip>
+        {/* the panel holds a calendar, not a list of entries: it is a group, not the
+            menu the dropdown declares by default */}
         {!this.isSlotted && (
           <mds-dropdown
             placement="bottom-end"
             disable-auto-placement
             ref={(el) => (this.dropdownRef = el as HTMLMdsDropdownElement)}
+            role="group"
             target="#calendar-dropdown"
           >
             <mds-calendar
               key={this.calendarKey}
-              rangePicker={false}
-              lang={this.language}
+              singlePicker
+              hideToday={this.hideToday}
               onMdsCalendarChange={this.handleCalendarChange}
               startDate={this.value}
               {...(this.min !== null && this.min !== '' ? { min: this.min } : {})}

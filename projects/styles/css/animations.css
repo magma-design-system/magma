@@ -2,10 +2,10 @@
   0%,
   75%,
   100% {
-    outline-offset: var(--magma-outline-focus-offset, 6px);
+    outline-offset: var(--magma-outline-focus-offset, 2px);
   }
 
   50% {
-    outline-offset: var(--magma-outline-blur-offset, 2px);
+    outline-offset: var(--magma-outline-blur-offset, 6px);
   }
 }

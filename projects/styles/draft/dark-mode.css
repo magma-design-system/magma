@@ -3,14 +3,14 @@
 @custom-variant dark {
   @media (prefers-color-scheme: dark) {
     &:where(
-      :root:not(.pref-theme-scheme-light).pref-theme-system *,
+      :root:not(.pref-theme-scheme-light).pref-mode-system *,
       :root:not([data-magma-pref]) *
     ) {
       @slot;
     }
   }
 
-  &:where(:root:not(.pref-theme-scheme-light).pref-theme-dark *, :root.pref-theme-dark *) {
+  &:where(:root:not(.pref-theme-scheme-light).pref-mode-dark *, :root.pref-mode-dark *) {
     @slot;
   }
 }

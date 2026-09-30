@@ -1,6 +1,6 @@
 import { Component, Host, h, Element, State, Method, Prop } from '@stencil/core';
 import { Locale } from '@common/locale';
-import { subscribePreference } from '@common/preference';
+import { preferenceStore } from '@common/preference';
 import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.es.json';
@@ -18,8 +18,6 @@ import { MdsInputSwitchEventDetail } from '@component/mds-input-switch/meta/even
 })
 export class MdsTableHeader {
   @Element() host: HTMLMdsTableHeaderElement;
-  @State() prefAnimation?: string;
-  private unsubscribePrefAnimation?: () => void;
   private table: HTMLMdsTableElement;
   private checkboxEl: HTMLMdsInputSwitchElement;
   @State() selectAll: boolean = false;
@@ -32,15 +30,6 @@ export class MdsTableHeader {
     es: localeEs,
     it: localeIt,
   });
-  @State() language: string;
-  /**
-   * Updates the component's texts to the locale currently set on the host element.
-   */
-  @Method()
-  async updateLang(): Promise<void> {
-    this.language = this.t.lang(this.host);
-    this.t.update();
-  }
 
   /**
    * Enables the select-all checkbox in the header.
@@ -55,30 +44,23 @@ export class MdsTableHeader {
   @Method()
   async setSelection(selectedItems: number, totalItems: number): Promise<void> {
     this.indeterminate = selectedItems !== 0 && selectedItems !== totalItems;
-    if (this.indeterminate) {
-      if (this.checkboxEl == null) {
-        this.checkboxEl = this.host.shadowRoot?.querySelector(
-          '.checkbox',
-        ) as HTMLMdsInputSwitchElement;
-      }
+    // the reference used to be looked up only on the indeterminate branch, so the first
+    // call that was NOT indeterminate - select all, or unselect the last row - threw on an
+    // undefined checkbox; and a header that is not selectable renders none at all
+    this.checkboxEl ??= this.host.shadowRoot?.querySelector(
+      '.checkbox',
+    ) as HTMLMdsInputSwitchElement;
+    if (!this.checkboxEl) {
+      return;
     }
-    this.checkboxEl.checked = selectedItems === totalItems;
-  }
-
-  connectedCallback(): void {
-    this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
-      this.prefAnimation = value;
-    });
-  }
-
-  disconnectedCallback(): void {
-    this.unsubscribePrefAnimation?.();
+    // totalItems 0 would otherwise read as "all of them are selected"
+    this.checkboxEl.checked = totalItems > 0 && selectedItems === totalItems;
   }
 
   componentWillLoad(): void {
-    this.language = this.t.lang(this.host);
     this.table = this.host.closest('mds-table') as HTMLMdsTableElement;
-    this.hasActions = this.table.querySelector('mds-table-row > [slot="action"]') !== null;
+    // standalone header (or SSR of the subtree alone): no surrounding table
+    this.hasActions = this.table?.querySelector('mds-table-row > [slot="action"]') != null;
   }
 
   private handleSelectAllChange = (e: CustomEvent<MdsInputSwitchEventDetail>): void => {
@@ -88,19 +70,18 @@ export class MdsTableHeader {
       this.selectAll = e.detail.checked ?? false;
     }
     this.indeterminate = false;
-    this.table.selectAll(this.selectAll);
+    this.table?.selectAll(this.selectAll);
   };
 
   render() {
     return (
-      <Host role="row" pref-animation={this.prefAnimation}>
+      <Host role="row" pref-animation={preferenceStore.state.animation}>
         {this.selectable && (
           <mds-table-cell class="selection" role="columnheader">
             <div class="checkbox-wrapper">
               <mds-input-switch
                 class="checkbox"
                 title={this.t.get(this.selectAll ? 'selectNoneRows' : 'selectAllRows')}
-                lang={this.language}
                 type="checkbox"
                 onMdsInputSwitchChange={this.handleSelectAllChange}
                 indeterminate={this.indeterminate}

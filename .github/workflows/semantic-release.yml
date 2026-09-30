@@ -10,6 +10,11 @@
 # then tags `<tag-format>`, pushes the bump back to the triggering branch, and
 # creates a GitHub release. Publishing to npm is handled separately by publish.yml.
 #
+# On beta nothing is committed: the tag goes on the pushed commit itself and
+# publish.yml writes its version into the manifests right before publishing
+# (scripts/set-release-version.sh), so beta never diverges from dev and merging
+# dev into it cannot conflict on the version bumps.
+#
 # Uses the automatic GITHUB_TOKEN via `github.token`, so callers do NOT need
 # `secrets: inherit`.
 #
@@ -22,7 +27,11 @@
 #     drive the bump and appear in the release notes. Empty = no filtering.
 #   - version-sync-paths: extra package.json files bumped to the same version
 #     (e.g. companion packages kept in lockstep).
-# Release branches are fixed: main (stable) + beta (prerelease channel).
+#   - stable-branches: space-separated branches allowed to release stable
+#     versions. The current branch is used when listed (first entry otherwise,
+#     which makes runs on unlisted branches a graceful no-op). Default 'main';
+#     icons/svg-icons pass 'dev main' to release directly from dev.
+# The beta branch is always available as the prerelease channel.
 name: Reusable Semantic Release Pipeline
 
 on:
@@ -68,6 +77,11 @@ on:
         type: string
         required: false
         default: ''
+      stable-branches:
+        description: Space-separated branches that release stable versions; the current branch is used when listed, the first entry otherwise
+        type: string
+        required: false
+        default: 'main'
 
 permissions:
   contents: write
@@ -107,6 +121,7 @@ jobs:
         env:
           SR_TAG_FORMAT: ${{ inputs.tag-format }}
           SR_COMMIT_SCOPE: ${{ inputs.commit-scope }}
+          SR_STABLE_BRANCHES: ${{ inputs.stable-branches }}
         run: |
           cat > release-version.config.cjs <<'EOF'
           // Values come from the environment so the file needs no shell/Actions
@@ -116,8 +131,15 @@ jobs:
           // non-releasing; in-scope commits fall through to the preset defaults
           // (feat -> minor, fix/perf -> patch, breaking -> major).
           const releaseRules = scope ? [{ scope: `!(${scope})`, release: false }] : [];
+          // Release stable versions from the branch we are running on when the
+          // caller lists it in stable-branches; fall back to the first entry so
+          // runs on unlisted branches stay a graceful semantic-release no-op.
+          const stableBranches = (process.env.SR_STABLE_BRANCHES || 'main').split(/\s+/).filter(Boolean);
+          const stable = stableBranches.includes(process.env.GITHUB_REF_NAME)
+            ? process.env.GITHUB_REF_NAME
+            : stableBranches[0];
           module.exports = {
-            branches: ['main', { name: 'beta', prerelease: true }],
+            branches: [stable, { name: 'beta', prerelease: true }],
             tagFormat: process.env.SR_TAG_FORMAT,
             plugins: [
               ['@semantic-release/commit-analyzer', { preset: 'conventionalcommits', releaseRules }],
@@ -136,6 +158,7 @@ jobs:
         env:
           SR_TAG_FORMAT: ${{ inputs.tag-format }}
           SR_COMMIT_SCOPE: ${{ inputs.commit-scope }}
+          SR_STABLE_BRANCHES: ${{ inputs.stable-branches }}
         run: |
           set -o pipefail
           npx semantic-release -e ./release-version.config.cjs --dry-run
@@ -219,47 +242,22 @@ jobs:
           echo "----- cliff.toml -----"; cat cliff.toml
 
       - name: Update version manifest (and pin internal dependency versions)
-        if: steps.set-release.outputs.release_version != ''
+        # beta commits no bump: publish.yml applies the tag version at publish time
+        if: steps.set-release.outputs.release_version != '' && github.ref_name != 'beta'
         env:
           V: ${{ steps.set-release.outputs.release_version }}
           WD: ${{ inputs.working-directory }}
           SYNC_PATHS: ${{ inputs.version-sync-paths }}
         run: |
           set -euo pipefail
-          setver() { jq --arg v "$V" '.version = $v' "$1" > "$1.tmp" && mv "$1.tmp" "$1"; }
           MANIFESTS=("$WD/package.json")
-          setver "$WD/package.json"
-          echo "Updated $WD/package.json -> $V"
           if [ -n "$SYNC_PATHS" ]; then
             while IFS= read -r f; do
               [ -n "$f" ] || continue
-              setver "$f"
               MANIFESTS+=("$f")
-              echo "Synced $f -> $V"
             done <<< "$SYNC_PATHS"
           fi
-          # Pin internal @maggioli-design-system/* references to the versions currently
-          # in the workspace, so published metadata stays consistent (no manual lockstep,
-          # no leftover prerelease references). The map is built AFTER the bumps above, so
-          # the released package and its companions resolve to $V; everything else resolves
-          # to its current source version. Covers: magma-react/magma-angular -> magma@$V,
-          # magma -> design-tokens/styles, styles -> design-tokens, icons -> svg-icons.
-          # No cascade: a dependency release does not re-release its dependents; they pick
-          # up the new version on their own next release.
-          MAP=$(find projects -name package.json \
-                  -not -path '*/node_modules/*' -not -path '*/dist/*' -not -path '*/deprecated/*' \
-                  -exec jq -c '{(.name): .version}' {} \; | jq -s 'add // {}')
-          echo "internal package map: $MAP"
-          for m in "${MANIFESTS[@]}"; do
-            jq --argjson map "$MAP" '
-              def pin(section):
-                if .[section]
-                then .[section] |= with_entries(if $map[.key] then .value = $map[.key] else . end)
-                else . end;
-              pin("dependencies") | pin("peerDependencies") | pin("optionalDependencies")
-            ' "$m" > "$m.tmp" && mv "$m.tmp" "$m"
-            echo "Pinned internal deps in $m"
-          done
+          ./scripts/set-release-version.sh "$V" "${MANIFESTS[@]}"
 
       - name: Generate RELEASE_NOTES.md
         if: steps.set-release.outputs.release_version != ''
@@ -295,6 +293,7 @@ jobs:
           fetch-depth: 0
           # Push with a PAT/App token when provided, so the chore(release) commit triggers
           # CI -> publish (the default GITHUB_TOKEN does not trigger downstream workflows).
+          # On beta only the tag and the notes are pushed: publish waits for this run instead.
           token: ${{ secrets.RELEASE_PUSH_TOKEN || github.token }}
 
       - name: Download artifacts from check
@@ -316,7 +315,9 @@ jobs:
             echo "::error::Tag ${TAG} already exists on remote"; exit 1
           fi
 
+      # beta: no version bump commit, the tag below goes on the pushed commit itself
       - name: Stage updated manifests
+        if: github.ref_name != 'beta'
         env:
           WD: ${{ inputs.working-directory }}
           SYNC_PATHS: ${{ inputs.version-sync-paths }}
@@ -330,6 +331,7 @@ jobs:
           fi
 
       - name: Commit release changes if any
+        if: github.ref_name != 'beta'
         env:
           TAG: ${{ needs.release-check.outputs.release_tag }}
         run: |
@@ -340,6 +342,7 @@ jobs:
           fi
 
       - name: Push release commit (rebase-retry for concurrent monorepo releases)
+        if: github.ref_name != 'beta'
         env:
           BRANCH: ${{ github.ref_name }}
         run: |

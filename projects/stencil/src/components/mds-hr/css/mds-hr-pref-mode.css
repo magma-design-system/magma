@@ -1,0 +1,4 @@
+/* Theme preference. The component takes its colours from semantic roles that
+ * flip per mode at :root (spec 6.1-6.3) and inherit into the shadow DOM, so it
+ * needs no per-mode dark refinement. The former dark override (a ramp step
+ * re-set to lift the colour off the old flat-black canvas) is intentionally gone. */

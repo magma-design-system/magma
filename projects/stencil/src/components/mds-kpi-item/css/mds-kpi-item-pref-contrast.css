@@ -4,26 +4,22 @@
  * `system` and no controller follow the OS via @media. Cross-browser, no :host-context. */
 
 :host([pref-contrast='more']) {
-  --mds-kpi-item-info-background: rgb(var(--tone-neutral));
-
-  box-shadow: var(--shadow-lg), var(--shadow-outline);
-  color: rgb(var(--tone-neutral-01));
+  box-shadow: var(--shadow-lg), var(--shadow-ring);
+  color: rgb(var(--magma-text-default));
 
   .info {
-    box-shadow: var(--shadow-outline);
+    box-shadow: var(--shadow-ring);
   }
 }
 
 @media (prefers-contrast: more) {
   :host([pref-contrast='system']),
   :host(:not([pref-contrast])) {
-    --mds-kpi-item-info-background: rgb(var(--tone-neutral));
-
-    box-shadow: var(--shadow-lg), var(--shadow-outline);
-    color: rgb(var(--tone-neutral-01));
+    box-shadow: var(--shadow-lg), var(--shadow-ring);
+    color: rgb(var(--magma-text-default));
 
     .info {
-      box-shadow: var(--shadow-outline);
+      box-shadow: var(--shadow-ring);
     }
   }
 }

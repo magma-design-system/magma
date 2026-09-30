@@ -14,6 +14,10 @@ on:
         description: Glob of the project files; build/test run only when they changed
         type: string
         required: true
+      extra-path:
+        description: Extra path glob that also triggers this pipeline (e.g. a file this project verifies but does not own)
+        type: string
+        default: ''
       nx-project:
         description: Nx project name to build (empty = no build job)
         type: string
@@ -34,8 +38,12 @@ on:
         description: Directory where tests run
         type: string
         default: ''
-      install-chrome:
-        description: Install (and cache) Chrome for puppeteer-based tests
+      install-playwright-browsers:
+        description: Install (and cache) the Playwright Chromium used by the vitest browser tests
+        type: boolean
+        default: false
+      run-storybook-tests:
+        description: Also run `npm run test-storybook` (the Vitest `storybook` project) in test-working-directory
         type: boolean
         default: false
     outputs:
@@ -60,29 +68,27 @@ jobs:
           filters: |
             project:
               - '${{ inputs.path }}'
+              ${{ inputs.extra-path && format('- ''{0}''', inputs.extra-path) || '' }}
 
   build:
     needs: [changes]
     if: ${{ needs.changes.outputs.changed == 'true' && inputs.nx-project != '' }}
     runs-on: ubuntu-latest
-    env:
-      # Chrome is only needed by the test job (stencil e2e)
-      PUPPETEER_SKIP_DOWNLOAD: 'true'
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
           node-version-file: .nvmrc
-          cache: yarn
+          cache: npm
       - name: Restore Nx cache
         uses: actions/cache@v5
         with:
           path: .nx
-          key: nx-${{ hashFiles('yarn.lock') }}-${{ github.sha }}
+          key: nx-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
           restore-keys: |
-            nx-${{ hashFiles('yarn.lock') }}-
-      - run: yarn install --frozen-lockfile --prefer-offline
-      - run: yarn nx run ${{ inputs.nx-project }}:build
+            nx-${{ hashFiles('package-lock.json') }}-
+      - run: npm ci --prefer-offline
+      - run: npx nx run ${{ inputs.nx-project }}:build
       - uses: actions/upload-artifact@v7
         with:
           name: ${{ format('{0}-build', inputs.nx-project) }}
@@ -97,23 +103,23 @@ jobs:
           needs.changes.outputs.changed == 'true' &&
           (needs.build.result == 'success' || needs.build.result == 'skipped') }}
     runs-on: ubuntu-latest
-    env:
-      # puppeteer treats 'false' as falsy: Chrome is downloaded only when install-chrome is set
-      PUPPETEER_SKIP_DOWNLOAD: ${{ !inputs.install-chrome }}
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
           node-version-file: .nvmrc
-          cache: yarn
-      - name: Restore Puppeteer Chrome cache
-        if: ${{ inputs.install-chrome }}
+          cache: npm
+      - run: npm ci --prefer-offline
+      - name: Restore Playwright browsers cache
+        if: ${{ inputs.install-playwright-browsers }}
         uses: actions/cache@v5
         with:
-          path: .cache/puppeteer
-          key: puppeteer-${{ hashFiles('yarn.lock') }}
-      # postinstall downloads Chrome into .cache/puppeteer (see .puppeteerrc.cjs) unless cached
-      - run: yarn install --frozen-lockfile --prefer-offline
+          path: ~/.cache/ms-playwright
+          # the browser revision is pinned by the playwright version in the lockfile
+          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+      # no-op for the browser when cached, still installs the system libraries
+      - if: ${{ inputs.install-playwright-browsers }}
+        run: npx playwright install --with-deps chromium
       - if: ${{ inputs.nx-project != '' }}
         uses: actions/download-artifact@v8
         with:
@@ -121,3 +127,8 @@ jobs:
           path: ${{ inputs.artifact-download-path }}
       - working-directory: ${{ inputs.test-working-directory }}
         run: npm run test
+      # the stories render the dist of the build artifact in the same Playwright Chromium;
+      # vitest runs once in CI, no Storybook server is started
+      - if: ${{ inputs.run-storybook-tests }}
+        working-directory: ${{ inputs.test-working-directory }}
+        run: npm run test-storybook

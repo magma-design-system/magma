@@ -40,10 +40,11 @@ const TARGETS: Target[] = [
     track: 'web-components.md',
     framework: 'none (plain HTML / vanilla JS, or any framework via custom elements)',
     wrapperPkg: '@maggioli-design-system/magma',
-    register: "defineCustomElements() from '@maggioli-design-system/magma/loader'",
+    register:
+      "the defineCustomElement* functions from '@maggioli-design-system/magma/components' (tree-shakeable), or defineCustomElements() from '@maggioli-design-system/magma/loader' to register everything at once",
   },
   {
-    pkgDir: 'react',
+    pkgDir: '../stencil-react',
     track: 'react.md',
     framework: 'React / Next.js',
     wrapperPkg: '@maggioli-design-system/magma-react',
@@ -51,11 +52,12 @@ const TARGETS: Target[] = [
       "import the Mds* components from '@maggioli-design-system/magma-react' (no defineCustomElements needed)",
   },
   {
-    pkgDir: 'angular/magma-angular',
+    pkgDir: '../stencil-angular/magma-angular',
     track: 'angular.md',
     framework: 'Angular (>= 18.2)',
     wrapperPkg: '@maggioli-design-system/magma-angular',
-    register: "MagmaModule.forRoot() from '@maggioli-design-system/magma-angular'",
+    register:
+      "import the standalone Mds* components from '@maggioli-design-system/magma-angular' (they self-register; MagmaModule.forRoot() is deprecated and a no-op)",
   },
 ];
 
@@ -158,12 +160,12 @@ Once installed, do not guess component APIs - read what ships with the package:
 /** Collapses common non-ASCII punctuation to ASCII, then drops anything left. */
 function toAscii(text: string): string {
   return text
-    .replace(/[–—]/g, '-')
-    .replace(/[‘’]/g, "'")
-    .replace(/[“”]/g, '"')
-    .replace(/…/g, '...')
-    .replace(/ /g, ' ')
-    .replace(/[^\x00-\x7F]/g, '');
+    .replace(/[\u2013\u2014]/g, '-')
+    .replace(/[\u2018\u2019]/g, "'")
+    .replace(/[\u201C\u201D]/g, '"')
+    .replace(/\u2026/g, '...')
+    .replace(/\u00A0/g, ' ')
+    .replace(/[\u0080-\uFFFF]/g, '');
 }
 
 /** First sentence of a component's "1. Description" usage markdown, for the catalogue. */
@@ -172,7 +174,7 @@ function summarise(description: string): string {
   let line = '';
   for (const raw of desc.split('\n')) {
     const s = raw.trim();
-    if (s && !s.startsWith('#') && !s.startsWith('|') && !s.startsWith('\`\`\`')) {
+    if (s && !s.startsWith('#') && !s.startsWith('|') && !s.startsWith('```')) {
       line = s;
       break;
     }

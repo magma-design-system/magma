@@ -27,8 +27,16 @@ import {
   type PropRemoveRule,
   type SlotRule,
   type SlotToAttrRule,
+  type TagRenameRule,
 } from '../manifest/schema.js';
 import { getByTag, ruleId, rulesForComponent } from '../manifest/registry.js';
+import {
+  classRulesOf,
+  hasClassRules,
+  rewriteClassList,
+  type ClassRenameEntry,
+  type ClassReportEntry,
+} from './shared/class-ops.js';
 import { invertBoolean, remapEnum } from './shared/attribute-ops.js';
 import { bareTrue, dynamic, stringLiteral, type AttrValue } from './shared/value-model.js';
 import { applyEdits, type Edit } from './shared/edits.js';
@@ -57,6 +65,7 @@ export const transformAngular = (
 
   const edits: Edit[] = [];
   const findings: Finding[] = [];
+  const classRules = classRulesOf(manifest);
 
   const text = (span: Span): string => source.slice(span.start.offset, span.end.offset);
   const removeSpanEdit = (span: Span): Edit => {
@@ -103,6 +112,116 @@ export const transformAngular = (
       }
     }
 
+    // Global: utility-class migrations (J) on any element — the static `class`
+    // attribute, `[class.x]` bindings (bare class in the key) and the string
+    // literals inside `[ngClass]` / `[class]` / `[attr.class]` expressions.
+    if (hasClassRules(classRules)) {
+      const enabled = (id: string): boolean => ruleEnabled(ctx, id);
+      const emitRename = (
+        atLine: number | undefined,
+        entry: ClassRenameEntry,
+        before: string,
+        after: string,
+      ): void => {
+        findings.push({
+          kind: 'change',
+          surface: 'angular',
+          file: ctx.file,
+          line: atLine,
+          ruleId: entry.id,
+          message: 'rename utility class',
+          before,
+          after,
+        });
+        if (entry.rule.note) {
+          findings.push({
+            kind: 'flag',
+            surface: 'angular',
+            file: ctx.file,
+            line: atLine,
+            ruleId: entry.id,
+            message: entry.rule.note,
+          });
+        }
+      };
+      const emitReport = (
+        atLine: number | undefined,
+        entry: ClassReportEntry,
+        token: string,
+      ): void => {
+        findings.push({
+          kind: 'warn',
+          surface: 'angular',
+          file: ctx.file,
+          line: atLine,
+          ruleId: entry.id,
+          message: `\`${token}\`: ${entry.rule.message}`,
+        });
+      };
+
+      const classAttr = findStatic('class');
+      if (classAttr?.valueSpan) {
+        const span = classAttr.valueSpan as Span;
+        const atLine = (classAttr.sourceSpan as Span).start.line;
+        const result = rewriteClassList(
+          text(span),
+          classRules,
+          enabled,
+          (entry, before, after) => emitRename(atLine, entry, before, after),
+          (entry, token) => emitReport(atLine, entry, token),
+        );
+        if (result.changed)
+          edits.push({ start: span.start.offset, end: span.end.offset, text: result.value });
+      }
+
+      for (const input of inputs) {
+        const keySpan = input.keySpan as Span | undefined;
+        if (!keySpan) continue;
+        const key = text(keySpan);
+        const atLine = (input.sourceSpan as Span).start.line;
+        if (key.startsWith('class.')) {
+          const token = key.slice('class.'.length);
+          const rename = classRules.renames.get(token);
+          if (rename && enabled(rename.id)) {
+            edits.push({
+              start: keySpan.start.offset,
+              end: keySpan.end.offset,
+              text: `class.${rename.rule.to}`,
+            });
+            emitRename(atLine, rename, key, `class.${rename.rule.to}`);
+            continue;
+          }
+          const report = classRules.reports.get(token);
+          if (report && enabled(report.id)) emitReport(atLine, report, token);
+          continue;
+        }
+        if (key !== 'ngClass' && key !== 'class' && key !== 'attr.class') continue;
+        const span = input.valueSpan as Span | undefined;
+        if (!span) continue;
+        const raw = text(span);
+        if (!classRules.candidateRe?.test(raw)) continue;
+        let exprChanged = false;
+        const newRaw = raw.replace(
+          /(['"`])((?:\\.|(?!\1)[^\\])*)\1/g,
+          (match, quote: string, body: string) => {
+            const result = rewriteClassList(
+              body,
+              classRules,
+              enabled,
+              (entry, before, after) => {
+                exprChanged = true;
+                emitRename(atLine, entry, before, after);
+              },
+              (entry, token) => emitReport(atLine, entry, token),
+            );
+            return result.changed ? `${quote}${result.value}${quote}` : match;
+          },
+        );
+        if (exprChanged)
+          edits.push({ start: span.start.offset, end: span.end.offset, text: newRaw });
+      }
+    }
+
     const component = getByTag(manifest, tag);
     if (!component) return;
 
@@ -131,9 +250,37 @@ export const transformAngular = (
         case 'slotRemove':
           applySlotRemove(rule, id);
           break;
+        case 'tagRename':
+          applyTagRename(rule, id);
+          break;
         default:
           break;
       }
+    }
+
+    /**
+     * Rename the start tag and the end tag. The end span is only an end tag when
+     * the source there reads `</tag`: a self-closing element reports its start
+     * span again.
+     */
+    function applyTagRename(rule: TagRenameRule, id: string): void {
+      const nameEdit = (at: number): Edit => ({ start: at, end: at + tag.length, text: rule.to });
+      const startSpan = el.startSourceSpan as Span;
+      edits.push(nameEdit(startSpan.start.offset + 1));
+      const endSpan = el.endSourceSpan as Span | null;
+      if (endSpan && source.startsWith(`</${tag}`, endSpan.start.offset))
+        edits.push(nameEdit(endSpan.start.offset + 2));
+      findings.push({
+        kind: 'change',
+        surface: 'angular',
+        file: ctx.file,
+        line,
+        ruleId: id,
+        component: tag,
+        message: `rename <${tag}> to <${rule.to}>`,
+        before: tag,
+        after: rule.to,
+      });
     }
 
     function applyEnsureAttr(rule: EnsureAttrRule, id: string): void {

@@ -472,8 +472,8 @@ mds-tab::part(tabs) {
  - [mds-pref-consumption](../mds-pref-consumption)
  - [mds-pref-contrast](../mds-pref-contrast)
  - [mds-pref-language](../mds-pref-language)
+ - [mds-pref-mode](../mds-pref-mode)
  - [mds-pref-theme](../mds-pref-theme)
- - [mds-pref-theme-variant](../mds-pref-theme-variant)
 
 ### Graph
 ```mermaid
@@ -483,8 +483,8 @@ graph TD;
   mds-pref-consumption --> mds-tab
   mds-pref-contrast --> mds-tab
   mds-pref-language --> mds-tab
+  mds-pref-mode --> mds-tab
   mds-pref-theme --> mds-tab
-  mds-pref-theme-variant --> mds-tab
   style mds-tab fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

@@ -10,7 +10,8 @@ import {
   Watch,
   State,
 } from '@stencil/core';
-import { subscribePreference } from '@common/preference';
+import { setFormValue } from '@common/form';
+import { preferenceStore } from '@common/preference';
 
 /**
  * @part header - The element containing the labels displayed over the input element
@@ -29,14 +30,6 @@ export class MdsInputRange {
   private inputElement: HTMLInputElement;
   private decimalPlaces: number; // number of decimal places
   @Element() private element: HTMLMdsInputRangeElement;
-  @State() prefAnimation?: string;
-  private unsubscribePrefAnimation?: () => void;
-  @State() prefContrast?: string;
-  private unsubscribePrefContrast?: () => void;
-  @State() prefTheme?: string;
-  private unsubscribePrefTheme?: () => void;
-  @State() prefThemeScheme?: string;
-  private unsubscribePrefThemeScheme?: () => void;
   @AttachInternals() internals: ElementInternals;
 
   /**
@@ -95,7 +88,7 @@ export class MdsInputRange {
         multiplier;
     }
     this.value = v;
-    this.internals.setFormValue(this.value.toString());
+    setFormValue(this.internals, this.value.toString());
     const total = this.max - this.min;
     const current = this.value - this.min;
     this.progress = (current / total) * 100;
@@ -121,7 +114,7 @@ export class MdsInputRange {
      * https://github.com/ionic-team/stencil/issues/5461
      */
     if (newValue) {
-      this.internals.setFormValue(null);
+      setFormValue(this.internals, null);
     }
   }
 
@@ -151,29 +144,7 @@ export class MdsInputRange {
   }
 
   formResetCallback(): void {
-    this.internals.setFormValue('');
-  }
-
-  connectedCallback(): void {
-    this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
-      this.prefAnimation = value;
-    });
-    this.unsubscribePrefContrast = subscribePreference('contrast', (value) => {
-      this.prefContrast = value;
-    });
-    this.unsubscribePrefTheme = subscribePreference('theme', (value) => {
-      this.prefTheme = value;
-    });
-    this.unsubscribePrefThemeScheme = subscribePreference('theme-scheme', (value) => {
-      this.prefThemeScheme = value;
-    });
-  }
-
-  disconnectedCallback(): void {
-    this.unsubscribePrefAnimation?.();
-    this.unsubscribePrefContrast?.();
-    this.unsubscribePrefTheme?.();
-    this.unsubscribePrefThemeScheme?.();
+    setFormValue(this.internals, '');
   }
 
   componentDidLoad(): void {
@@ -186,10 +157,10 @@ export class MdsInputRange {
   render() {
     return (
       <Host
-        pref-animation={this.prefAnimation}
-        pref-contrast={this.prefContrast}
-        pref-theme={this.prefTheme}
-        pref-theme-scheme={this.prefThemeScheme}
+        pref-animation={preferenceStore.state.animation}
+        pref-contrast={preferenceStore.state.contrast}
+        pref-mode={preferenceStore.state.mode}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
         <header class="header" part="header">
           <mds-text class="label" typography="label">

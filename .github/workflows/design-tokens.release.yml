@@ -17,6 +17,9 @@ permissions:
 
 jobs:
   release:
+    # chore(release) pushes come from release-finalize itself: their version is
+    # already tagged, so re-running would only be a wasted no-op dry-run
+    if: ${{ !startsWith(github.event.head_commit.message, 'chore(release):') }}
     uses: ./.github/workflows/semantic-release.yml
     secrets: inherit
     with:

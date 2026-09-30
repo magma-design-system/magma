@@ -1,11 +1,16 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { render } from '@stencil/vitest';
+import { describeConditionalSlot } from '@test/slot';
 
 describe('mds-card-header', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<mds-card-header></mds-card-header>');
+    const { root } = await render('<mds-card-header></mds-card-header>');
 
-    const element = await page.find('mds-card-header');
-    expect(element).toHaveAttribute('hydrated');
+    expect(root).toHaveAttribute('hydrated');
+  });
+
+  describeConditionalSlot({
+    html: '<mds-card-header>Title</mds-card-header>',
+    slot: 'action',
+    region: '.actions',
   });
 });

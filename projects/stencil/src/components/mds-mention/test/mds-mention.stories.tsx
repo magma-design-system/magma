@@ -5,6 +5,12 @@ import { mentionSizeDictionary } from '../meta/dictionary';
 export default {
   title: 'UI / Mention',
   argTypes: {
+    deletable: {
+      type: { name: 'boolean' },
+      description:
+        'Shows the remove button; its click emits `mdsMentionDelete` with the mention element',
+      control: { type: 'boolean' },
+    },
     icon: {
       type: { name: 'string' },
       description:
@@ -35,6 +41,21 @@ export const Default = {
   render: Template,
 
   args: {
+    label: 'mario.rossi',
+  },
+};
+
+export const Deletable = {
+  render: (args) => (
+    <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+      <mds-mention {...args} size="sm"></mds-mention>
+      <mds-mention {...args} size="md"></mds-mention>
+      <mds-mention {...args} size="lg"></mds-mention>
+    </div>
+  ),
+
+  args: {
+    deletable: true,
     label: 'mario.rossi',
   },
 };

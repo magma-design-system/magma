@@ -1,7 +1,7 @@
 name: 🎓 Training / Onboarding
 description: Request training or onboarding for an individual, a team, or a larger group.
 title: '[Training]: '
-labels: ['type: training', 'status: triage']
+labels: ['docs']
 projects: ['magma-design-system/magma']
 body:
   - type: markdown

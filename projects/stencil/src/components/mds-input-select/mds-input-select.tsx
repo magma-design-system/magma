@@ -1,5 +1,4 @@
-import { Locale } from '@common/locale';
-import { subscribePreference } from '@common/preference';
+import { preferenceStore } from '@common/preference';
 import miBaselineKeyboardArrowDown from '@icon/mi/baseline/keyboard-arrow-down.svg';
 import {
   AttachInternals,
@@ -14,6 +13,7 @@ import {
   State,
   Watch,
 } from '@stencil/core';
+import { setFormValue } from '@common/form';
 import { MdsInputEventDetail } from '@type/input';
 import { ThemeStatusVariantType } from '@type/variant';
 
@@ -32,29 +32,17 @@ import { ThemeStatusVariantType } from '@type/variant';
 export class MdsInputSelect {
   private selectEl: HTMLSelectElement;
   @Element() host: HTMLMdsInputSelectElement;
-  @State() prefAnimation?: string;
-  private unsubscribePrefAnimation?: () => void;
-  @State() prefContrast?: string;
-  private unsubscribePrefContrast?: () => void;
-  @State() prefTheme?: string;
-  private unsubscribePrefTheme?: () => void;
-  @State() prefThemeScheme?: string;
-  private unsubscribePrefThemeScheme?: () => void;
   // @State() selected: boolean
   @State() hasFocus = false;
-  @State() language: string;
   @AttachInternals() internals: ElementInternals;
 
-  private t: Locale = new Locale();
-
   /**
-   * Updates the component's texts to the locale currently set on the host element.
+   * The accessible name of the native control: the label a screen reader announces. An
+   * `mds-input-field` around the component passes its own label down here, so the attribute
+   * is only written by hand when the control stands on its own. The placeholder is deliberately
+   * not a fallback: it disappears as soon as the field is filled.
    */
-  @Method()
-  async updateLang(): Promise<void> {
-    this.language = this.t.lang(this.host);
-    this.t.update();
-  }
+  @Prop({ attribute: 'aria-label' }) readonly accessibleName?: string;
 
   /**
    * Specifies a short hint that describes the expected value of the element
@@ -132,7 +120,7 @@ export class MdsInputSelect {
   protected valueChanged(): void {
     this.changeEvent.emit({ value: this.value?.toString() });
     this.setCurrentValue();
-    this.internals.setFormValue(this.value?.toString() ?? null);
+    setFormValue(this.internals, this.value?.toString() ?? null);
   }
 
   @Watch('disabled')
@@ -143,7 +131,7 @@ export class MdsInputSelect {
      * https://github.com/ionic-team/stencil/issues/5461
      */
     if (newValue) {
-      this.internals.setFormValue(null);
+      setFormValue(this.internals, null);
     }
   }
 
@@ -177,33 +165,10 @@ export class MdsInputSelect {
   }
 
   formResetCallback(): void {
-    this.internals.setFormValue('');
-  }
-
-  connectedCallback(): void {
-    this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
-      this.prefAnimation = value;
-    });
-    this.unsubscribePrefContrast = subscribePreference('contrast', (value) => {
-      this.prefContrast = value;
-    });
-    this.unsubscribePrefTheme = subscribePreference('theme', (value) => {
-      this.prefTheme = value;
-    });
-    this.unsubscribePrefThemeScheme = subscribePreference('theme-scheme', (value) => {
-      this.prefThemeScheme = value;
-    });
-  }
-
-  disconnectedCallback(): void {
-    this.unsubscribePrefAnimation?.();
-    this.unsubscribePrefContrast?.();
-    this.unsubscribePrefTheme?.();
-    this.unsubscribePrefThemeScheme?.();
+    setFormValue(this.internals, '');
   }
 
   componentWillLoad(): void {
-    this.language = this.t.lang(this.host);
     // needed for react component, this prop should be used as default-value html attributo instead of defaultValue prop
     if (
       this.defaultValue != null &&
@@ -217,7 +182,7 @@ export class MdsInputSelect {
 
   componentDidLoad(): void {
     if (this.value != null && this.value !== '' && this.value !== 0 && !Number.isNaN(this.value)) {
-      this.internals.setFormValue(this.value.toString());
+      setFormValue(this.internals, this.value.toString());
     }
   }
 
@@ -292,12 +257,13 @@ export class MdsInputSelect {
   render() {
     return (
       <Host
-        pref-animation={this.prefAnimation}
-        pref-contrast={this.prefContrast}
-        pref-theme={this.prefTheme}
-        pref-theme-scheme={this.prefThemeScheme}
+        pref-animation={preferenceStore.state.animation}
+        pref-contrast={preferenceStore.state.contrast}
+        pref-mode={preferenceStore.state.mode}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
         <select
+          aria-label={this.accessibleName}
           class="input"
           onInput={this.onInput}
           onBlur={this.onBlur}
@@ -327,12 +293,12 @@ export class MdsInputSelect {
           </option>
         </select>
         <div class="icon-container">
-          <i class="icon" innerHTML={miBaselineKeyboardArrowDown} />
+          <mds-icon class="icon" name={miBaselineKeyboardArrowDown} />
         </div>
         <div class="option-container">
           <slot onSlotchange={this.onSlotChangeHandler}></slot>
         </div>
-        <mds-input-tip position="top" lang={this.language} active={this.hasFocus} part="tip-top">
+        <mds-input-tip position="top" active={this.hasFocus} part="tip-top">
           {this.disabled && <mds-input-tip-item expanded variant="disabled"></mds-input-tip-item>}
           {this.required && (
             <mds-input-tip-item

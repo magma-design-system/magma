@@ -1,11 +1,9 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { render } from '@stencil/vitest';
 
 describe('mds-card-footer', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<mds-card-footer></mds-card-footer>');
+    const { root } = await render('<mds-card-footer></mds-card-footer>');
 
-    const element = await page.find('mds-card-footer');
-    expect(element).toHaveAttribute('hydrated');
+    expect(root).toHaveAttribute('hydrated');
   });
 });

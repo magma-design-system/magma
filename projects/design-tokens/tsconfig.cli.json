@@ -10,11 +10,7 @@
     "sourceMap": false,
     "strict": false,
     "target": "ESNext",
-    "types": ["node"],
-    "paths": {
-      "@/formats/*": ["./src/formats/*"],
-      "@/leonardo/*": ["./src/lib/leonardo/*"],
-    }
+    "types": ["node"]
   },
   "include": ["src"],
   "exclude": ["node_modules", "test" ]

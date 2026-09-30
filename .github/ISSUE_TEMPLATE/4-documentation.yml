@@ -1,7 +1,7 @@
 name: 📖 Documentation
 description: Report something wrong, outdated, or missing in the documentation.
 title: '[Docs]: '
-labels: ['type: docs', 'status: triage', 'area: docs-site']
+labels: ['docs']
 projects: ['magma-design-system/magma']
 body:
   - type: markdown

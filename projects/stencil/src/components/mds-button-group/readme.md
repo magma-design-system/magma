@@ -227,9 +227,9 @@ mds-button-group {
 
 ## Slots
 
-| Slot | Description                             |
-| ---- | --------------------------------------- |
-|      | Add `mds-button` elements to this slot. |
+| Slot | Description                                                      |
+| ---- | ---------------------------------------------------------------- |
+|      | Add `mds-button` or `mds-button-dropdown` elements to this slot. |
 
 
 ----------------------------------------------

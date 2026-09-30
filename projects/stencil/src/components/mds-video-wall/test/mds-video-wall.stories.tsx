@@ -48,7 +48,7 @@ const Template = (args) => (
 
 const TemplateContents = (args) => (
   <mds-video-wall {...args} style={{ '--aspect-ratio': '16/9' }}>
-    <div slot="content" class="text-tone-neutral text-center p-200">
+    <div slot="content" class="text-fg-on-emphasis text-center p-200">
       <mds-text typography="h1">This is a text</mds-text>
     </div>
   </mds-video-wall>

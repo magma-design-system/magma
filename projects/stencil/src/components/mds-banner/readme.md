@@ -118,7 +118,7 @@ Set `deletable` to show a close button. The button emits `mdsBannerClose` when a
 
 #### Banner with Action Buttons
 
-Slot `<mds-button>` elements with `slot="action"` to add inline controls. The action region is rendered only when at least one `[slot="action"]` child is present. Match the button variant to the banner variant for visual consistency.
+Slot `<mds-button>` elements with `slot="action"` to add inline controls. The action region is shown only while at least one `[slot="action"]` child is present, and it follows the actions added or removed after the first render. Match the button variant to the banner variant for visual consistency.
 
 ```html
 <mds-banner variant="warning" headline="Abbonamento scaduto">
@@ -360,19 +360,6 @@ The component fires `mdsBannerClose` when the close button is activated (both po
 | `mdsBannerClose` | Emits when the url view is closed | `CustomEvent<void>` |
 
 
-## Methods
-
-### `updateLang() => Promise<void>`
-
-Updates the component's texts to the locale currently set on the host element.
-
-#### Returns
-
-Type: `Promise<void>`
-
-
-
-
 ## Slots
 
 | Slot       | Description                                                                             |
@@ -390,20 +377,19 @@ Type: `Promise<void>`
 
 ## CSS Custom Properties
 
-| Name                                       | Description                                                                                          |
-| ------------------------------------------ | ---------------------------------------------------------------------------------------------------- |
-| `--mds-banner-background`                  | Sets the background-color of the component                                                           |
-| `--mds-banner-close-icon-hover-background` | Sets the background color of the close icon when the mouse is over it                                |
-| `--mds-banner-cockade-background`          | When cockade attribute is set, the icon will be wrapper with a colored area, this is it's background |
-| `--mds-banner-cockade-distance`            | When cockade attribute is set, the icon will be wrapper with a colored area, this is it's icon color |
-| `--mds-banner-color`                       | Sets the text color of the component                                                                 |
-| `--mds-banner-content-gap`                 | Sets gap between banner elements                                                                     |
-| `--mds-banner-headline-color`              | The text color of the headline                                                                       |
-| `--mds-banner-icon-color`                  | Sets the close icon fill color of the component                                                      |
-| `--mds-banner-radius`                      | Sets the border-radius of the component                                                              |
-| `--mds-banner-shadow`                      | Sets the box-shadow of the component                                                                 |
-| `--mds-banner-transition-duration`         | Sets the transition duration                                                                         |
-| `--mds-banner-transition-timing-function`  | Sets the transition timing function                                                                  |
+| Name                                      | Description                                                                                          |
+| ----------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `--mds-banner-background`                 | Sets the background-color of the component                                                           |
+| `--mds-banner-cockade-background`         | When cockade attribute is set, the icon will be wrapper with a colored area, this is it's background |
+| `--mds-banner-cockade-distance`           | When cockade attribute is set, the icon will be wrapper with a colored area, this is it's icon color |
+| `--mds-banner-color`                      | Sets the text color of the component                                                                 |
+| `--mds-banner-content-gap`                | Sets gap between banner elements                                                                     |
+| `--mds-banner-headline-color`             | The text color of the headline                                                                       |
+| `--mds-banner-icon-color`                 | Sets the close icon fill color of the component                                                      |
+| `--mds-banner-radius`                     | Sets the border-radius of the component                                                              |
+| `--mds-banner-shadow`                     | Sets the box-shadow of the component                                                                 |
+| `--mds-banner-transition-duration`        | Sets the transition duration                                                                         |
+| `--mds-banner-transition-timing-function` | Sets the transition timing function                                                                  |
 
 
 ## Dependencies

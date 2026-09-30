@@ -35,19 +35,19 @@ export class KeyboardManager {
     this.elements.get(name)?.removeEventListener('keydown', this.handleClickBehaviorDispatchEvent);
   };
 
+  // the handler goes on and comes off window by the same reference: `bind` writes a new function
+  // every time it is evaluated, so a removal that binds again names a listener window was never
+  // given, and attaching twice used to leave two of them behind
   attachEscapeBehavior = (callback: () => void): void => {
     this.escapeCallback = callback;
     if (typeof window !== 'undefined') {
-      window.addEventListener('keydown', this.handleEscapeBehaviorDispatchEvent.bind(this));
+      window.addEventListener('keydown', this.handleEscapeBehaviorDispatchEvent);
     }
   };
 
   detachEscapeBehavior = (): void => {
-    this.escapeCallback = () => {
-      return;
-    };
     if (typeof window !== 'undefined') {
-      window.removeEventListener('keydown', this.handleEscapeBehaviorDispatchEvent.bind(this));
+      window.removeEventListener('keydown', this.handleEscapeBehaviorDispatchEvent);
     }
   };
 }

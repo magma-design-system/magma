@@ -2,10 +2,15 @@
 
 :host {
   align-items: center;
+  background-color: var(--mds-card-background);
   display: flex;
   flex-grow: 1;
   gap: --spacing(400);
   justify-content: space-between;
   min-width: 0;
   padding: --spacing(400);
+}
+
+.actions--hidden {
+  display: none;
 }

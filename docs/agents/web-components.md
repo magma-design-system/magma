@@ -24,7 +24,39 @@ npm i @fontsource/karla @fontsource/merriweather @fontsource/roboto @fontsource/
 
 ## 2. Register the components
 
-Call `defineCustomElements()` once, as early as possible:
+Two entry points, with different bundle-size trade-offs. Pick one - do not mix them
+in the same app, or a tag ends up registered from two different builds.
+
+### Per component (recommended, tree-shakeable)
+
+Import only the components you use from `@maggioli-design-system/magma/components`
+and call their `defineCustomElement*` function. Everything else is dropped by the
+bundler:
+
+```javascript
+import {
+  defineCustomElementMdsButton,
+  defineCustomElementMdsIcon,
+} from '@maggioli-design-system/magma/components';
+
+defineCustomElementMdsButton();
+defineCustomElementMdsIcon();
+```
+
+Each `defineCustomElement*` also registers the component's own children
+recursively, so you only list the tags you write yourself.
+
+A deep import is available too, when you want the bundler to resolve one file:
+
+```javascript
+import { defineCustomElement } from '@maggioli-design-system/magma/components/mds-button.js';
+```
+
+### All at once (lazy loader)
+
+Simplest to wire up, but it ships every `mds-*` component: the loader resolves
+chunks at runtime, so nothing can be tree-shaken away. Use it for prototypes, or
+when the app genuinely uses most of the library.
 
 ```javascript
 import { defineCustomElements } from '@maggioli-design-system/magma/loader';
@@ -32,7 +64,7 @@ import { defineCustomElements } from '@maggioli-design-system/magma/loader';
 defineCustomElements();
 ```
 
-This lazy-registers all `mds-*` tags. After this, use them as normal HTML:
+Either way, the tags are then plain HTML:
 
 ```html
 <mds-button variant="primary" tone="strong">Save</mds-button>
@@ -63,10 +95,46 @@ at that path.
 until Stencil sets the hydrated attribute. Keep it in the `base` layer and load it
 before the first render to avoid a flash of unstyled custom elements.
 
+## 5. Server-side rendering (SSR)
+
+`@maggioli-design-system/magma/hydrate` exposes `renderToString()`: it serializes
+components to HTML with their shadow DOM inlined as
+`<template shadowrootmode="open">` (declarative shadow DOM), reflected props as
+attributes and the `hydrated` flag already set — so the markup paints with its
+final geometry (no layout shift) and `hydrated.css` does not hide it.
+
+```javascript
+// server only — the module bundles all components and must not reach the client
+import { renderToString } from '@maggioli-design-system/magma/hydrate';
+
+const { html, diagnostics } = await renderToString(
+  '<mds-button variant="primary">Save</mds-button>',
+  { fullDocument: false, serializeShadowRoot: 'declarative-shadow-dom' },
+);
+```
+
+Always check `diagnostics` for `level: 'error'` entries: component failures
+during serialization are reported there, not thrown, and the partial HTML is
+returned anyway.
+
+SSR caveats (by design):
+
+- **Icons render empty on the server** — `mds-icon` fetches SVGs at runtime and
+  skips the fetch during SSR. The box is still reserved (`aspect-ratio` +
+  `width` on `:host`), so nothing shifts; the icon appears after hydration.
+- **The default theme is rendered** — user preferences live in `localStorage`,
+  which does not exist server-side. Publish the `pref-*` classes on `<html>`
+  from an inline script if you need the right theme at first paint.
+
+React consumers get this automatically through the generated server wrappers —
+see [`react.md`](react.md).
+
 ## Gotchas
 
 - Call `defineCustomElements()` exactly once. Calling it twice is harmless but
   pointless; never call it after manually defining the same tags.
+- Do not mix `/loader` and `/components` in the same app: they are two separate
+  builds of the same components, and loading both doubles the bytes.
 - `mdsIconSvgPath` must be set before the first `mds-icon` renders, or icons will
   fetch from the wrong path. If you set it late, dispatch
   `window.dispatchEvent(new CustomEvent('mdsIconSvgPathUpdate'))` to refresh.

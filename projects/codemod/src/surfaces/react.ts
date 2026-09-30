@@ -4,6 +4,10 @@
  * emitted as offset edits on the original source (via {@link applyEdits}) so
  * formatting is preserved and node invalidation is a non-issue.
  *
+ * Both the PascalCase React components (`<MdsButton>`) and the custom elements
+ * used directly as intrinsic JSX tags (`<mds-button>`) are matched; intrinsic
+ * elements are matched and emitted with the kebab-case attribute spelling.
+ *
  * Unanalyzable usage — spread props (`{...props}`), aliased components, computed
  * names, dynamic children — is reported under the `dynamic` category instead of
  * being rewritten.
@@ -21,12 +25,21 @@ import {
   type EnsureAttrRule,
   type EnumRemapRule,
   type Manifest,
+  type PropId,
   type PropRenameRule,
   type PropRemoveRule,
   type SlotRule,
   type SlotToAttrRule,
+  type TagRenameRule,
 } from '../manifest/schema.js';
-import { getByReactName, ruleId, rulesForComponent } from '../manifest/registry.js';
+import {
+  getByReactName,
+  getByTag,
+  ruleId,
+  rulesForComponent,
+  tagRenamesOf,
+} from '../manifest/registry.js';
+import { classRulesOf, hasClassRules, rewriteClassList } from './shared/class-ops.js';
 import { invertBoolean, remapEnum } from './shared/attribute-ops.js';
 import {
   bareTrue,
@@ -66,10 +79,18 @@ export const transformReact = (
 
   for (const opening of openings) {
     const tagName = opening.getTagNameNode().getText();
-    const component = getByReactName(manifest, tagName);
+    // A dash can only appear in a plain intrinsic tag (member expressions
+    // contain `.`, namespaced names `:`), so it safely discriminates
+    // `<mds-button>` from `<MdsButton>`.
+    const isIntrinsic = tagName.includes('-');
+    const component = isIntrinsic ? getByTag(manifest, tagName) : getByReactName(manifest, tagName);
     if (!component) continue;
     const tag = component.tag;
     const line = opening.getStartLineNumber();
+
+    // Intrinsic custom elements take the kebab-case attribute spelling (React
+    // sets attributes on unknown elements); React components take the prop.
+    const nameOf = (p: PropId): string => (isIntrinsic ? p.attr : p.prop);
 
     const attributes = opening.getAttributes();
     const hasSpread = attributes.some((a) => a.getKind() === SyntaxKind.JsxSpreadAttribute);
@@ -123,9 +144,10 @@ export const transformReact = (
 
     function applyEnsureAttr(rule: EnsureAttrRule, id: string): void {
       if (hasSpread) return; // a spread may already set the prop; don't risk a duplicate
-      if (rule.unless.some((p) => hasAttr(p.prop))) return;
+      if (rule.unless.some((p) => hasAttr(nameOf(p)))) return;
       const nameEnd = opening.getTagNameNode().getEnd();
-      const after = rule.value === undefined ? rule.attr.prop : `${rule.attr.prop}="${rule.value}"`;
+      const after =
+        rule.value === undefined ? nameOf(rule.attr) : `${nameOf(rule.attr)}="${rule.value}"`;
       edits.push({ start: nameEnd, end: nameEnd, text: ` ${after}` });
       findings.push({
         kind: 'change',
@@ -190,20 +212,21 @@ export const transformReact = (
     }
 
     function applyBooleanInvert(rule: BooleanInvertRule, id: string): void {
-      const attr = findAttr(rule.from.prop);
+      const attr = findAttr(nameOf(rule.from));
       if (!attr) return;
       const outcome = invertBoolean(valueOf(attr), rule.newDefault);
       let after = '';
       if (outcome.action === 'omit') {
         edits.push(removeAttrEdit(attr));
       } else if (outcome.action === 'shorthandTrue') {
-        after = rule.to.prop;
+        after = nameOf(rule.to);
         edits.push({ start: attr.getStart(), end: attr.getEnd(), text: after });
       } else if (outcome.action === 'explicitFalse') {
-        after = `${rule.to.prop}={false}`;
+        // Stencil parses the attribute string "false" as false (see resolveBoolean).
+        after = isIntrinsic ? `${rule.to.attr}="false"` : `${rule.to.prop}={false}`;
         edits.push({ start: attr.getStart(), end: attr.getEnd(), text: after });
       } else {
-        after = `${rule.to.prop}={${outcome.expr}}`;
+        after = `${nameOf(rule.to)}={${outcome.expr}}`;
         edits.push({ start: attr.getStart(), end: attr.getEnd(), text: after });
       }
       findings.push({
@@ -220,10 +243,10 @@ export const transformReact = (
     }
 
     function applyPropRename(rule: PropRenameRule, id: string): void {
-      const attr = findAttr(rule.from.prop);
+      const attr = findAttr(nameOf(rule.from));
       if (!attr) return;
       const nameNode = attr.getNameNode();
-      edits.push({ start: nameNode.getStart(), end: nameNode.getEnd(), text: rule.to.prop });
+      edits.push({ start: nameNode.getStart(), end: nameNode.getEnd(), text: nameOf(rule.to) });
       findings.push({
         kind: 'change',
         surface: 'react',
@@ -232,13 +255,13 @@ export const transformReact = (
         ruleId: id,
         component: tag,
         message: `rename ${rule.from.prop} → ${rule.to.prop}`,
-        before: rule.from.prop,
-        after: rule.to.prop,
+        before: nameOf(rule.from),
+        after: nameOf(rule.to),
       });
     }
 
     function applyPropRemove(rule: PropRemoveRule, id: string): void {
-      const attr = findAttr(rule.prop.prop);
+      const attr = findAttr(nameOf(rule.prop));
       if (!attr) return;
       edits.push(removeAttrEdit(attr));
       findings.push({
@@ -253,7 +276,7 @@ export const transformReact = (
     }
 
     function applyEnumRemap(rule: EnumRemapRule, id: string): void {
-      const attr = findAttr(rule.prop.prop);
+      const attr = findAttr(nameOf(rule.prop));
       if (!attr) return;
       const v2set = rule.v2set ? component!.v2EnumSets?.[rule.v2set] : undefined;
       const outcome = remapEnum(valueOf(attr), rule.map, v2set);
@@ -261,7 +284,7 @@ export const transformReact = (
         edits.push({
           start: attr.getStart(),
           end: attr.getEnd(),
-          text: `${rule.prop.prop}="${outcome.value}"`,
+          text: `${nameOf(rule.prop)}="${outcome.value}"`,
         });
         findings.push({
           kind: 'change',
@@ -289,7 +312,7 @@ export const transformReact = (
 
     function applySlotToAttr(rule: SlotToAttrRule, id: string): void {
       if (rule.slot !== 'default') return;
-      if (hasAttr(rule.to.prop)) return;
+      if (hasAttr(nameOf(rule.to))) return;
       const element = opening.getParentIfKind(SyntaxKind.JsxElement);
       if (!element) return; // self-closing → no children to lift
 
@@ -326,22 +349,22 @@ export const transformReact = (
       let before = '';
       if (elems.length > 0) {
         flag(
-          `<${tagName}> content contains elements; move the text into \`${rule.to.prop}\` manually`,
+          `<${tagName}> content contains elements; move the text into \`${nameOf(rule.to)}\` manually`,
         );
         return;
       } else if (exprs.length === 0 && text !== '') {
-        labelAttr = `${rule.to.prop}=${jsxStringFor(text)}`;
+        labelAttr = `${nameOf(rule.to)}=${jsxStringFor(text)}`;
         before = text;
       } else if (exprs.length === 1 && text === '') {
         const expr = exprs[0]!.getExpression();
         if (!expr) return;
-        labelAttr = `${rule.to.prop}={${expr.getText()}}`;
+        labelAttr = `${nameOf(rule.to)}={${expr.getText()}}`;
         before = `{${expr.getText()}}`;
       } else if (exprs.length === 0 && text === '') {
         return; // empty element
       } else {
         flag(
-          `<${tagName}> has mixed text/expression content; move it into \`${rule.to.prop}\` manually`,
+          `<${tagName}> has mixed text/expression content; move it into \`${nameOf(rule.to)}\` manually`,
         );
         return;
       }
@@ -356,10 +379,166 @@ export const transformReact = (
         line,
         ruleId: id,
         component: tag,
-        message: `lift content into \`${rule.to.prop}\``,
+        message: `lift content into \`${nameOf(rule.to)}\``,
         before,
         after: labelAttr,
       });
+    }
+  }
+
+  // Global: utility-class migrations (J) on `className` / `class` of ANY JSX
+  // element (the classes are not tied to an mds-* component). String literals
+  // and no-substitution templates anywhere in the attribute expression are
+  // rewritten (covers clsx()/classnames(), ternaries, `||` fallbacks);
+  // substitution templates can split a class across chunks, so they are
+  // reported instead.
+  const classRules = classRulesOf(manifest);
+  if (hasClassRules(classRules)) {
+    const rewriteLiteralContent = (node: Node): void => {
+      const inner = source.slice(node.getStart() + 1, node.getEnd() - 1);
+      const line = node.getStartLineNumber();
+      const result = rewriteClassList(
+        inner,
+        classRules,
+        (id) => ruleEnabled(ctx, id),
+        (entry, before, after) => {
+          findings.push({
+            kind: 'change',
+            surface: 'react',
+            file: ctx.file,
+            line,
+            ruleId: entry.id,
+            message: 'rename utility class',
+            before,
+            after,
+          });
+          if (entry.rule.note) {
+            findings.push({
+              kind: 'flag',
+              surface: 'react',
+              file: ctx.file,
+              line,
+              ruleId: entry.id,
+              message: entry.rule.note,
+            });
+          }
+        },
+        (entry, token) => {
+          findings.push({
+            kind: 'warn',
+            surface: 'react',
+            file: ctx.file,
+            line,
+            ruleId: entry.id,
+            message: `\`${token}\`: ${entry.rule.message}`,
+          });
+        },
+      );
+      if (result.changed)
+        edits.push({ start: node.getStart() + 1, end: node.getEnd() - 1, text: result.value });
+    };
+
+    const isPlainLiteral = (node: Node): boolean =>
+      node.getKind() === SyntaxKind.StringLiteral ||
+      node.getKind() === SyntaxKind.NoSubstitutionTemplateLiteral;
+
+    for (const attr of sf.getDescendantsOfKind(SyntaxKind.JsxAttribute)) {
+      const name = attr.getNameNode().getText();
+      if (name !== 'className' && name !== 'class') continue;
+      const init = attr.getInitializer();
+      if (!init) continue;
+      if (isPlainLiteral(init)) {
+        rewriteLiteralContent(init);
+        continue;
+      }
+      if (init.getKind() !== SyntaxKind.JsxExpression) continue;
+      const expr = (init as JsxExpression).getExpression();
+      if (!expr) continue;
+      const literals = [
+        ...(isPlainLiteral(expr) ? [expr as Node] : []),
+        ...expr.getDescendantsOfKind(SyntaxKind.StringLiteral),
+        ...expr.getDescendantsOfKind(SyntaxKind.NoSubstitutionTemplateLiteral),
+      ];
+      for (const literal of literals) rewriteLiteralContent(literal);
+      const templates = [
+        ...(expr.getKind() === SyntaxKind.TemplateExpression ? [expr as Node] : []),
+        ...expr.getDescendantsOfKind(SyntaxKind.TemplateExpression),
+      ];
+      for (const template of templates) {
+        if (!classRules.candidateRe?.test(template.getText())) continue;
+        findings.push({
+          kind: 'dynamic',
+          surface: 'react',
+          file: ctx.file,
+          line: template.getStartLineNumber(),
+          message: `template literal in \`${name}\` mentions a migrated utility class; rewrite it manually`,
+        });
+      }
+    }
+  }
+
+  // K: tag renames. A separate pass over the tag names, so a component the
+  // manifest does not otherwise touch is renamed too. Every rename is looked up
+  // by the name AS WRITTEN, so a v1 name that another component takes in v2 is
+  // never renamed twice.
+  const tagRenames = tagRenamesOf(manifest);
+  if (tagRenames.size > 0) {
+    const byReact = new Map<string, { tag: string; rule: TagRenameRule }>();
+    for (const [tag, rule] of tagRenames) {
+      const component = getByTag(manifest, tag);
+      if (component) byReact.set(component.react, { tag, rule });
+    }
+    const renamedAt = new Set<number>();
+    const renameNode = (node: Node, tag: string, from: string, to: string): void => {
+      const start = node.getStart();
+      if (renamedAt.has(start)) return;
+      renamedAt.add(start);
+      edits.push({ start, end: node.getEnd(), text: to });
+      findings.push({
+        kind: 'change',
+        surface: 'react',
+        file: ctx.file,
+        line: node.getStartLineNumber(),
+        component: tag,
+        ruleId: `${tag}/tagRename`,
+        message: `rename ${from} to ${to}`,
+        before: from,
+        after: to,
+      });
+    };
+
+    const tagNodes = [...openings, ...sf.getDescendantsOfKind(SyntaxKind.JsxClosingElement)].map(
+      (el) => el.getTagNameNode(),
+    );
+    for (const nameNode of tagNodes) {
+      const name = nameNode.getText();
+      const hit = name.includes('-')
+        ? tagRenames.has(name)
+          ? { tag: name, to: tagRenames.get(name)!.to }
+          : undefined
+        : byReact.has(name)
+          ? { tag: byReact.get(name)!.tag, to: byReact.get(name)!.rule.toReact }
+          : undefined;
+      if (hit && ruleEnabled(ctx, `${hit.tag}/tagRename`))
+        renameNode(nameNode, hit.tag, name, hit.to);
+    }
+
+    // The named import from the React wrapper, and every other reference to it
+    // (`typeof MdsPrefTheme`, a re-export). An aliased import renames only the
+    // imported name: the local alias stays valid.
+    for (const decl of sf.getImportDeclarations()) {
+      if (!decl.getModuleSpecifierValue().startsWith('@maggioli-design-system/magma-react'))
+        continue;
+      for (const spec of decl.getNamedImports()) {
+        const name = spec.getName();
+        const hit = byReact.get(name);
+        if (!hit || !ruleEnabled(ctx, `${hit.tag}/tagRename`)) continue;
+        renameNode(spec.getNameNode(), hit.tag, name, hit.rule.toReact);
+        if (spec.getAliasNode()) continue;
+        for (const id of sf.getDescendantsOfKind(SyntaxKind.Identifier)) {
+          if (id.getText() === name) renameNode(id, hit.tag, name, hit.rule.toReact);
+        }
+      }
     }
   }
 

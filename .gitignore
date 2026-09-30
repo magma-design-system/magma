@@ -1,4 +1,3 @@
-!yarn.lock
 $RECYCLE.BIN/
 **/dependency-check-report.xml
 *.lock
@@ -30,7 +29,6 @@ loader/
 log.txt
 node_modules/
 projects/**/package-lock.json
-projects/**/yarn.lock
 projects/scripts/**/*.js
 projects/stencil/assets/svg
 www/

@@ -41,6 +41,18 @@ describe('transformInlineTemplates', () => {
     expect(run('const t = `<div>hello</div>`;')).toMatchObject({ changed: false });
   });
 
+  it('rewrites utility classes in a literal without mds-* tags', () => {
+    const src = 'el.innerHTML = `<div class="shadow-outline-light">x</div>`;';
+    expect(run(src).output).toContain('class="shadow-ring-weak"');
+  });
+
+  it('flags an interpolated literal that mentions a migrated class', () => {
+    const src = 'const t = `<div class="rounded-xl ${extra}">x</div>`;';
+    const { changed, findings } = run(src);
+    expect(changed).toBe(false);
+    expect(findings.some((f) => f.kind === 'dynamic')).toBe(true);
+  });
+
   it('is idempotent', () => {
     const src = '@Component({ template: `<mds-button>Save</mds-button>` }) class X {}';
     const once = run(src).output;

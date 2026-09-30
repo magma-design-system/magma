@@ -8,12 +8,6 @@ import { reactOutputTarget } from '@stencil/react-output-target';
 import { angularOutputTarget } from '@stencil/angular-output-target';
 import tokenFallbackPlugin from './scripts/postcss-token-fallbacks';
 
-// https://github.com/ionic-team/stencil/issues/1307
-// still not working
-// import tsconfigPathsJest from 'tsconfig-paths-jest'
-// import tsconfig from './tsconfig.json'
-// console.log(tsconfig)
-
 const twConfigurationFn = () => {
   // remove tailwind preflight and add custom theme
   return `
@@ -43,6 +37,10 @@ export const config: Config = {
   taskQueue: 'async',
   transformAliasedImportPaths: true,
   srcDir,
+  // tsconfig dedicato che esclude le *.stories.tsx dal program TypeScript:
+  // le storie restano nel tsconfig.json principale (editor, ESLint, paths di
+  // Storybook) ma non vengono più compilate né copiate in dist/collection.
+  tsconfig: 'tsconfig.stencil.json',
   sourceMap: false,
   minifyCss: false,
   minifyJs: true,
@@ -68,8 +66,12 @@ export const config: Config = {
       // navigazione degli attributi (es. variant, placeholder) dall'Angular
       // Language Service nei template. NB: opzione sperimentale.
       inlineProperties: true,
-      directivesProxyFile: './angular/magma-angular/src/stencil-generated/components.ts',
-      directivesArrayFile: './angular/magma-angular/src/stencil-generated/index.ts',
+      // Come per React: un modulo ES per proxy (stencil-generated/<tag>.ts) più
+      // un barrel di sole ri-esportazioni. Serve al tree-shaking anche dopo
+      // l'appiattimento in FESM di ng-packagr.
+      esModules: true,
+      directivesProxyFile: '../stencil-angular/magma-angular/src/stencil-generated/components.ts',
+      directivesArrayFile: '../stencil-angular/magma-angular/src/stencil-generated/index.ts',
       // Genera un ControlValueAccessor per i componenti input, così sono
       // usabili con formControlName/[formControl] nei Reactive Form Angular:
       // writeValue imposta la prop di valore (`value`, o `checked` per i
@@ -117,17 +119,52 @@ export const config: Config = {
     }),
     reactOutputTarget({
       // Relative path to where the React components will be generated
-      outDir: './react/src/',
+      outDir: '../stencil-react/src/',
       customElementsDir: 'dist/components',
-      // hydrateModule: '@maggioli-design-system/magma/hydrate',
+      // Un modulo ES per wrapper (projects/stencil-react/src/<tag>.ts) invece di un unico
+      // components.ts con tutti e 114: il barrel resta ma diventa di sole
+      // ri-esportazioni, così i bundler scartano i componenti non importati.
+      esModules: true,
+      // SSR: oltre ai wrapper client (invariati) genera un <tag>.server.ts
+      // per componente che sul server usa renderToString dal modulo hydrate
+      // (declarative shadow DOM nell'HTML iniziale, CLS ~0) e sul client
+      // delega al wrapper di clientModule. Richiede l'output target
+      // dist-hydrate-script esplicito e l'export "./hydrate" nel package.json.
+      hydrateModule: '@maggioli-design-system/magma/hydrate',
+      clientModule: '@maggioli-design-system/magma-react',
+      serializeShadowRoot: 'declarative-shadow-dom',
     }),
     {
       type: 'dist-custom-elements',
-      customElementsExportBehavior: 'default',
+      // `default` non ri-esporta nulla da dist/components/index.js: il barrel
+      // esiste ma espone solo setAssetPath & co. Con `single-export-module`
+      // ri-esporta ogni componente e il suo defineCustomElement<Pascal>,
+      // rendendo `@maggioli-design-system/magma/components` l'entry
+      // tree-shakeable dei web-component (le classi sono annotate @__PURE__).
+      customElementsExportBehavior: 'single-export-module',
+      // Non c'è globalScript configurato: senza questo flag il barrel
+      // conterrebbe comunque una chiamata `globalScripts()` a livello di
+      // modulo, cioè un side effect che i bundler devono tenere.
+      includeGlobalScripts: false,
+      // Con il runtime esterno (default true) i custom element importano lo
+      // stock @stencil/core/internal/client, compilato con
+      // hydrateClientSide:false e hydratedClass:true: il markup SSR
+      // (declarative shadow DOM annotato s-id) non viene idratato ma
+      // ri-renderizzato sopra, duplicando il contenuto, e il flag hydrated
+      // diventa una classe invece dell'attributo configurato in hydratedFlag.
+      // Bundlando il runtime, le build conditionals del progetto si applicano
+      // (hydrateClientSide:true perché esiste dist-hydrate-script).
+      externalRuntime: false,
     },
-    // {
-    //   type: 'dist-hydrate-script',
-    // },
+    {
+      // Build hydrate per SSR (renderToString). Già prodotto implicitamente
+      // da `--prerender`, ma reso esplicito perché reactOutputTarget lo
+      // richiede quando hydrateModule è impostato (la sua validazione gira
+      // prima che il target implicito venga aggiunto). Senza `dir` il default
+      // sarebbe `hydrate/` alla radice del progetto, non `dist/hydrate`.
+      type: 'dist-hydrate-script',
+      dir: 'dist/hydrate',
+    },
     {
       type: 'docs-readme',
       footer:
@@ -150,9 +187,14 @@ export const config: Config = {
   plugins: [
     tokenFallbackPlugin({
       injectTokenFallbacks: true,
+      injectSemanticFallbacks: true,
+      injectGlobalFallbacks: true,
       injectComponentDefaults: true,
       warnOnMissing: false,
-      failOnMissing: false,
+      // Every public token has a source the injector reads, so a bare
+      // `var(--magma-*)` it cannot resolve is a typo or a missing token.
+      failOnMissing: true,
+      checkPrefixes: ['magma-'],
     }),
     alias({
       entries: [
@@ -179,52 +221,4 @@ export const config: Config = {
     // tailwindHMR({ ...opts }), // hot module reload for watch but not generate docs
     inlineSvg(),
   ],
-  testing: {
-    /**
-     * Gitlab CI doesn't allow sandbox, therefor this parameters must be passed to your Headless Chrome
-     * before it can run your tests
-     */
-    browserArgs: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'],
-    coveragePathIgnorePatterns: [
-      '<rootDir>/.build/',
-      '<rootDir>/template/',
-      '<rootDir>/node_modules/',
-    ],
-    // moduleNameMapper: tsconfigPathsJest(tsconfig),
-    moduleNameMapper: {
-      '@common/(.*)': '<rootDir>src/common/$1',
-      '@dictionary/(.*)': '<rootDir>src/dictionary/$1',
-      '@event/(.*)': '<rootDir>src/event-detail/$1',
-      '@fixture/(.*)': '<rootDir>src/fixtures/$1',
-      '@meta/(.*)': '<rootDir>src/meta/$1',
-      '@icon/(.*)': '<rootDir>assets/svg/$1',
-      '@placeholder': 'https://via.placeholder.com',
-      '@tailwind/(.*)': '<rootDir>src/tailwind/$1',
-      '@test/(.*)': '<rootDir>src/test/$1',
-      '@type/(.*)': '<rootDir>src/type/$1',
-    },
-    modulePathIgnorePatterns: [
-      '<rootDir>/.build/',
-      '<rootDir>/template/',
-      '<rootDir>/node_modules/',
-      '<rootDir>/angular/',
-      '<rootDir>/react/',
-    ],
-    testPathIgnorePatterns: [
-      '<rootDir>/.cache',
-      '<rootDir>/template/',
-      '<rootDir>/node_modules/',
-      '<rootDir>/.vscode',
-      '/.stencil',
-      '/dist',
-      '/www',
-      '/scripts',
-    ],
-    transform: {
-      '^.+\\.svg$': 'jest-transformer-svg',
-      '^.+\\.(ts|tsx|js|jsx|css)$': '@stencil/core/testing/jest-preprocessor',
-    },
-    transformIgnorePatterns: ['<rootDir>/.build/', '<rootDir>/template/'],
-    watchPathIgnorePatterns: ['"^.+\\.d\\.ts$" '],
-  },
 };

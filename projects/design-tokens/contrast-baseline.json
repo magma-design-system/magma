@@ -1,0 +1,4 @@
+{
+  "$comment": "Known contrast offenders accepted by the APCA gate (A3, issue #575). Each entry is an enforced pair currently below its target, to be tuned (issue #571). The gate fails on NEW enforced failures and on any baselined pair that regresses. Regenerate with: npm run contrast -- --update-baseline",
+  "pairs": {}
+}

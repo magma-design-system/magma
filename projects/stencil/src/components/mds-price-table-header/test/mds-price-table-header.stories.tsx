@@ -16,7 +16,7 @@ const Template = (args) => (
       Choose the plan for you
     </mds-text>
     <mds-price-table-list>
-      <mds-text typography="h5" slot="header">
+      <mds-text typography="h5" tag="h2" slot="header">
         Basic plan
       </mds-text>
       <mds-text typography="detail" slot="header">
@@ -30,7 +30,7 @@ const Template = (args) => (
       </mds-button>
     </mds-price-table-list>
     <mds-price-table-list class="bg-label-amaranth-10">
-      <mds-text typography="h5" slot="header">
+      <mds-text typography="h5" tag="h2" slot="header">
         Professional plan
       </mds-text>
       <mds-text typography="detail" slot="header">
@@ -44,7 +44,7 @@ const Template = (args) => (
       </mds-button>
     </mds-price-table-list>
     <mds-price-table-list class="bg-label-violet-10">
-      <mds-text typography="h5" slot="header">
+      <mds-text typography="h5" tag="h2" slot="header">
         Enterprise plan
       </mds-text>
       <mds-text typography="detail" slot="header">

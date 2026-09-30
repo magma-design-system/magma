@@ -8,56 +8,20 @@
  * @prop --mds-note-selection-color: Sets the selection text color of the component
  */
 
-@property --mds-note-background {
-  inherits: false;
-  initial-value: rgb(var(--label-yellow-10));
-  syntax: '<color>';
-}
-
-@property --mds-note-color {
-  inherits: false;
-  initial-value: rgb(var(--label-yellow-02));
-  syntax: '<color>';
-}
-
-@property --mds-note-fold-color {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-10));
-  syntax: '<color>';
-}
-
-@property --mds-note-fold-size {
-  inherits: false;
-  initial-value: 40px;
-  syntax: '<length>';
-}
-
-@property --mds-note-selection-background {
-  inherits: false;
-  initial-value: var(--magma-selection-background, rgb(var(--label-yellow-09)));
-  syntax: '<color>';
-}
-
-@property --mds-note-selection-color {
-  inherits: false;
-  initial-value: var(--magma-selection-color, rgb(var(--label-yellow-02)));
-  syntax: '<color>';
-}
-
 :host {
   --mds-note-background: rgb(var(--label-yellow-10));
   --mds-note-color: rgb(var(--label-yellow-02));
-  --mds-note-fold-color: rgb(var(--tone-neutral-10));
+  --mds-note-fold-color: rgb(var(--magma-wash-soft));
   --mds-note-fold-size: 40px;
-  --mds-note-selection-background: var(--magma-selection-background, rgb(var(--label-yellow-09)));
-  --mds-note-selection-color: var(--magma-selection-color, rgb(var(--label-yellow-02)));
+  --mds-note-selection-background: var(--magma-selection-background);
+  --mds-note-selection-color: var(--magma-selection-color);
   --mds-note-transition-duration: var(--duration-300);
   --private-note-transition-duration: var(--mds-note-transition-duration);
 
   @apply ease-in-out;
 
   background-color: var(--mds-note-background);
-  border-radius: 0.25rem;
+  border-radius: var(--radius-3xs);
   color: var(--mds-note-color);
   display: grid;
   gap: --spacing(200);
@@ -113,7 +77,7 @@
 }
 
 .button-close:hover {
-  background-color: rgb(var(--tone-neutral) / 0.5);
+  background-color: rgb(var(--magma-surface-overlay) / 0.5);
 }
 
 .title {
@@ -128,5 +92,5 @@
 
 @import './css/mds-note-variants.css';
 @import './css/mds-note-pref-animation.css';
-@import './css/mds-note-pref-theme.css';
+@import './css/mds-note-pref-mode.css';
 @import './css/mds-note-pref-contrast.css';

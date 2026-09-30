@@ -1,0 +1,7 @@
+.card {
+  @apply p-4 shadow-ring-weak rounded-2xs;
+}
+
+.badge {
+  @apply shadow-outline-strong;
+}
