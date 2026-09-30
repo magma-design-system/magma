@@ -20,5 +20,18 @@ export { exportPdf, type PdfOptions } from './export/pdf.js';
 export { applyUtilities } from './export/tailwind.js';
 export { collectCss } from './export/collect-css.js';
 
-export type { Deck, DeckConfig, Slide, SlideConfig, LayoutName } from './model/types.js';
-export { LAYOUT_NAMES } from './model/types.js';
+export type {
+  ChromeContent,
+  ChromeElement,
+  ChromeItem,
+  Deck,
+  DeckConfig,
+  LayoutName,
+  Scheme,
+  Slide,
+  SlideConfig,
+  ThemeManifest,
+  ZoneName,
+  ZonePlacement,
+} from './model/types.js';
+export { CHROME_ELEMENTS, LAYOUT_NAMES, SCHEMES, ZONE_NAMES } from './model/types.js';

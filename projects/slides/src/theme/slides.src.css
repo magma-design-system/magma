@@ -47,6 +47,10 @@
   width: var(--mds-slide-width);
 }
 
+.mds-slide.has-header {
+  padding-top: calc(var(--mds-slide-padding) + var(--mds-slide-header-height));
+}
+
 .mds-slide.has-footer {
   padding-bottom: calc(var(--mds-slide-padding) + var(--mds-slide-footer-height));
 }
@@ -222,7 +226,7 @@
   padding-left: --spacing(800);
 }
 
-/* footer: styled with inline Tailwind utilities in src/render/footer.ts,
+/* header/footer: styled with inline Tailwind utilities in src/render/chrome.ts,
    emitted into this file via @source above (no hand-kept CSS layer here). */
 
 /* --- image-full -------------------------------------------------------- */
@@ -231,7 +235,11 @@
   padding: 0;
 }
 
-/* Keep image-full bleeding to the edges even with a footer. */
+/* Keep image-full bleeding to the edges even with a header or footer. */
+
+.mds-slide[data-layout='image-full'].has-header {
+  padding-top: 0;
+}
 
 .mds-slide[data-layout='image-full'].has-footer {
   padding-bottom: 0;

@@ -1,12 +1,15 @@
 import type { Deck } from '../model/types.js';
 import { renderDeck } from '../render/render-deck.js';
-import { renderTokenOverrides, resolveThemeClass } from '../render/theme.js';
+import { renderTokenOverrides, resolveSchemeClass, resolveTheme } from '../render/theme.js';
+import type { Scheme } from '../model/types.js';
 import { collectCss } from './collect-css.js';
 import { embedImages } from './embed-images.js';
 
 export interface HtmlOptions {
   /** Override the deck theme (defaults to the deck frontmatter `theme`). */
   theme?: string;
+  /** Override the deck scheme (defaults to the deck frontmatter `scheme`). */
+  scheme?: Scheme;
   /** Document language attribute. Defaults to `en`. */
   lang?: string;
   /** Document title. Defaults to the deck title. */
@@ -61,16 +64,16 @@ const escapeHtml = (value: string): string =>
  * what {@link exportPdf} prints.
  */
 export function exportHtml(deck: Deck, options: HtmlOptions = {}): string {
-  const theme = options.theme ?? deck.config.theme;
-  const schemeClass = resolveThemeClass(theme);
+  const theme = resolveTheme(options.theme ?? deck.config.theme);
+  const schemeClass = resolveSchemeClass(options.scheme ?? deck.config.scheme);
   const lang = options.lang ?? 'en';
   const title = options.title ?? deck.config.title ?? 'Slides';
   const css = collectCss(theme);
   const overrides = renderTokenOverrides(deck.config);
-  const body = renderDeck(deck);
+  const body = renderDeck({ ...deck, config: { ...deck.config, theme } });
 
   const doc = `<!doctype html>
-<html lang="${escapeHtml(lang)}" class="${schemeClass}" data-magma-pref="slides">
+<html lang="${escapeHtml(lang)}" class="${schemeClass}" data-theme-name="${theme}" data-magma-pref="slides">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">

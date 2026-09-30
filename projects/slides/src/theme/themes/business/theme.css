@@ -1,0 +1,15 @@
+/**
+ * The `business` theme (the default, paired with Magma's default theme). One
+ * folder per theme under themes/; its theme.css layers brand refinements on
+ * top of the default `--mds-slide-*` tokens (../../tokens.css) and its
+ * theme.json places the header/footer elements (see ../README.md).
+ *
+ * Neither colors nor light/dark are handled here: colors come from the Magma
+ * theme of the same name (`data-theme-name`) and the scheme from the
+ * `pref-theme-scheme-*` class, both set by the renderer on the root element.
+ */
+
+.mds-slide h1,
+.mds-slide[data-layout='title'] .mds-slide__title {
+  letter-spacing: var(--text-size-title-h1--letter-spacing);
+}

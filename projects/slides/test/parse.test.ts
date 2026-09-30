@@ -4,7 +4,7 @@ import { parseDeck } from '../src/parser/parse.js';
 const deckSource = `---
 title: My Deck
 author: Jane
-theme: maggioli
+theme: business
 tokens:
   --mds-slide-accent: rgb(var(--magma-accent-ai-emphasis))
 ---
@@ -36,7 +36,7 @@ describe('parseDeck', () => {
     const deck = parseDeck(deckSource);
     expect(deck.config.title).toBe('My Deck');
     expect(deck.config.author).toBe('Jane');
-    expect(deck.config.theme).toBe('maggioli');
+    expect(deck.config.theme).toBe('business');
     expect(deck.config.tokens).toEqual({
       '--mds-slide-accent': 'rgb(var(--magma-accent-ai-emphasis))',
     });

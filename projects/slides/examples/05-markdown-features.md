@@ -1,7 +1,7 @@
 ---
 title: Markdown features
 author: Magma Design System
-theme: maggioli
+theme: business
 ---
 
 # Markdown features

@@ -1,12 +1,13 @@
 ---
 title: Dark theme
 author: Magma Design System
-theme: maggioli-dark
+theme: business
+scheme: dark
 ---
 
 # Dark by default
 
-`theme: maggioli-dark` forces the deck into dark mode.
+`scheme: dark` forces the deck into dark mode, whatever the theme.
 
 ---
 layout: content

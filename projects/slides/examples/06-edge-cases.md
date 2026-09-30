@@ -1,5 +1,5 @@
 ---
-theme: maggioli
+theme: business
 ---
 
 # Edge cases

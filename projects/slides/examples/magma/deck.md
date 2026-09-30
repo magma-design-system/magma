@@ -1,13 +1,14 @@
 ---
 title: Magma Design System
 author: ''
-theme: maggioli
-footer:
-  logo: images/logo.svg
-  group: Consorzio Maggioli
-  groupDetail: Ricerca e sviluppo Gruppo Maggioli / Hibo / Injenia
-  subject: Magma Design System
-  section: Introduzione
+theme: business
+header: true
+footer: true
+logo: images/logo.svg
+group: Consorzio Maggioli
+groupDetail: Ricerca e sviluppo Gruppo Maggioli / Hibo / Injenia
+subject: Magma Design System
+section: Introduzione
 ---
 
 Introduzione allo strumento che rende i prodotti consistenti tra loro
@@ -37,7 +38,8 @@ image: images/logo.svg
 section: Fondamenti
 ---
 
-Il footer resta fisso su ogni slide: logo, gruppo, soggetto e numero di pagina.
+Header e footer restano fissi su ogni slide: il deck scrive logo, gruppo, soggetto
+e sezione, il tema decide dove vanno.
 
 La sezione a destra e "sticky": impostata su un divisore, vale fino al divisore
 successivo.

@@ -8,8 +8,8 @@ colors and typography applied automatically. Because the source is Markdown with
 a documented schema, decks are Git-diff-able and straightforward to generate with
 AI.
 
-> First increment (issue #562): 7 built-in layouts, the `maggioli` theme with
-> light/dark, and HTML + PDF export. PPTX and deeper customization are planned.
+> First increment (issue #562): 7 built-in layouts, the `business` theme with
+> light/dark and an optional header/footer, and HTML + PDF export. PPTX and deeper customization are planned.
 
 ## Install
 
@@ -28,7 +28,7 @@ Write a deck (`deck.md`):
 ---
 title: My deck
 author: Jane Doe
-theme: maggioli
+theme: business
 ---
 
 # Hello
@@ -79,12 +79,14 @@ Select per slide via `layout:`. See [SPEC.md](./SPEC.md) for each layout's field
 ## Theming
 
 Three-level cascade: Magma tokens -> theme (`--mds-slide-*`) -> per-deck
-overrides. Pick a theme with `theme: maggioli | maggioli-dark`, and tweak any
+overrides. Pick a theme with `theme:` (default `business`, named as the Magma
+theme it pairs with) and the scheme with `scheme: light | dark`, then tweak any
 token per deck without touching CSS:
 
 ```markdown
 ---
-theme: maggioli-dark
+theme: business
+scheme: dark
 tokens:
   --mds-slide-accent: rgb(var(--magma-accent-ai-emphasis))
   --mds-slide-font-heading: Karla
@@ -93,6 +95,26 @@ tokens:
 
 Overrides expressed against the Magma semantic layer (`--magma-*`) stay correct
 in both light and dark. Full details in [SPEC.md](./SPEC.md).
+
+## Header and footer
+
+Both are optional. The deck supplies the content and turns the zones on; the
+theme decides where each element goes:
+
+```markdown
+---
+header: true
+footer: true
+logo: images/logo.svg
+group: Consorzio Maggioli
+subject: Magma Design System
+section: Introduzione
+---
+```
+
+A slide overrides any field, changes the sticky `section`, or forces a zone with
+`header: false` / `footer: true`. Placement lives in the theme's `theme.json`
+(see [SPEC.md](./SPEC.md#chrome-header-and-footer)).
 
 ## Tailwind
 
@@ -144,7 +166,7 @@ artifacts still come from `build-examples`.
 `build-examples` writes HTML; append `-- --pdf` to also emit PDFs:
 `nx run slides:build-examples -- --pdf`. Output lands in `dist/examples/`,
 preserving the folder structure of [`examples/`](./examples), which has decks for
-every layout, both themes, token overrides, Markdown features and edge cases.
+every layout, both schemes, header and footer, token overrides, Markdown features and edge cases.
 
 ## License
 

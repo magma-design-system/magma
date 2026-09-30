@@ -28,33 +28,60 @@
         "type": "string"
       }
     },
-    "footer": {
-      "type": "object",
-      "description": "Persistent footer shown on every slide.",
-      "properties": {
-        "logo": { "type": "string" },
-        "group": { "type": "string" },
-        "groupDetail": { "type": "string" },
-        "subject": { "type": "string" },
-        "section": { "type": "string" },
-        "pageNumbers": { "type": "boolean" }
-      },
-      "additionalProperties": false
-    },
     "deckConfig": {
       "type": "object",
       "description": "Deck-wide frontmatter (the leading --- block).",
       "properties": {
-        "title": { "type": "string" },
-        "author": { "type": "string" },
-        "theme": {
-          "type": "string",
-          "description": "Built-in theme name.",
-          "enum": ["maggioli", "maggioli-dark"]
+        "title": {
+          "type": "string"
         },
-        "layout": { "$ref": "#/$defs/layout" },
-        "tokens": { "$ref": "#/$defs/tokens" },
-        "footer": { "$ref": "#/$defs/footer" }
+        "author": {
+          "type": "string"
+        },
+        "theme": {
+          "$ref": "#/$defs/theme"
+        },
+        "layout": {
+          "$ref": "#/$defs/layout"
+        },
+        "tokens": {
+          "$ref": "#/$defs/tokens"
+        },
+        "scheme": {
+          "$ref": "#/$defs/scheme"
+        },
+        "header": {
+          "type": "boolean",
+          "description": "Show the header zone on every slide (default false)."
+        },
+        "footer": {
+          "type": "boolean",
+          "description": "Show the footer zone on every slide (default false)."
+        },
+        "logo": {
+          "type": "string",
+          "description": "Company logo (URL/path); embedded when local. Falls back to the theme logo."
+        },
+        "group": {
+          "type": "string",
+          "description": "Group/department presenting."
+        },
+        "groupDetail": {
+          "type": "string",
+          "description": "Longer description of the group."
+        },
+        "subject": {
+          "type": "string",
+          "description": "Deck subject."
+        },
+        "section": {
+          "type": "string",
+          "description": "Current section/chapter. Sticky: carries forward to later slides."
+        },
+        "pageNumbers": {
+          "type": "boolean",
+          "description": "Show the automatic page number wherever the theme places it (default true)."
+        }
       },
       "additionalProperties": false
     },
@@ -62,18 +89,72 @@
       "type": "object",
       "description": "Per-slide frontmatter.",
       "properties": {
-        "layout": { "$ref": "#/$defs/layout" },
-        "title": { "type": "string" },
-        "image": { "type": "string" },
-        "lang": { "type": "string" },
-        "section": { "type": "string" },
+        "layout": {
+          "$ref": "#/$defs/layout"
+        },
+        "title": {
+          "type": "string"
+        },
+        "image": {
+          "type": "string"
+        },
+        "lang": {
+          "type": "string"
+        },
+        "header": {
+          "type": "boolean",
+          "description": "Force the header on (true) or off (false) on this slide, over the layout default."
+        },
         "footer": {
-          "description": "false hides the footer on this slide; an object overrides footer fields.",
-          "oneOf": [{ "type": "boolean" }, { "$ref": "#/$defs/footer" }]
+          "type": "boolean",
+          "description": "Force the footer on (true) or off (false) on this slide, over the layout default."
+        },
+        "logo": {
+          "type": "string",
+          "description": "Company logo (URL/path); embedded when local. Falls back to the theme logo."
+        },
+        "group": {
+          "type": "string",
+          "description": "Group/department presenting."
+        },
+        "groupDetail": {
+          "type": "string",
+          "description": "Longer description of the group."
+        },
+        "subject": {
+          "type": "string",
+          "description": "Deck subject."
+        },
+        "section": {
+          "type": "string",
+          "description": "Current section/chapter. Sticky: carries forward to later slides."
+        },
+        "pageNumbers": {
+          "type": "boolean",
+          "description": "Show the automatic page number wherever the theme places it (default true)."
         }
       },
       "additionalProperties": true
+    },
+    "theme": {
+      "type": "string",
+      "description": "Slide theme: a folder under theme/themes/, named as the Magma theme it pairs with (set as data-theme-name). Placement of the header/footer elements belongs to the theme.",
+      "enum": [
+        "business"
+      ]
+    },
+    "scheme": {
+      "type": "string",
+      "description": "Color scheme, independent of the theme.",
+      "enum": [
+        "light",
+        "dark"
+      ]
     }
   },
-  "allOf": [{ "$ref": "#/$defs/deckConfig" }]
+  "allOf": [
+    {
+      "$ref": "#/$defs/deckConfig"
+    }
+  ]
 }

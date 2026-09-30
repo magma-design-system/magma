@@ -1,7 +1,7 @@
 ---
 title: Token overrides
 author: Magma Design System
-theme: maggioli
+theme: business
 tokens:
   --mds-slide-accent: rgb(var(--magma-accent-ai-emphasis))
   --mds-slide-heading-fg: rgb(var(--magma-accent-ai-fg))
@@ -24,7 +24,7 @@ title: What changed here
 - Title size bumped to `6.5rem`
 
 Because overrides are expressed against semantic roles (`--magma-accent-ai-*`), they
-stay correct if you also switch to `maggioli-dark`.
+stay correct if you also switch to `scheme: dark`.
 
 ---
 layout: section

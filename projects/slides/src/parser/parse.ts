@@ -32,17 +32,14 @@ export function parseDeck(source: string): Deck {
 }
 
 /**
- * Resolve the sticky footer section: a slide that sets `section` (directly or
- * via a `footer` override) changes the current section, which then carries
- * forward to later slides until the next change.
+ * Resolve the sticky chrome section: a slide that sets `section` changes the
+ * current section, which then carries forward to later slides until the next
+ * change. The deck's `section` is the starting value.
  */
 function resolveSections(slides: Slide[], deck: DeckConfig): void {
-  let current = deck.footer?.section;
+  let current = deck.section;
   for (const slide of slides) {
-    const footer = slide.config.footer;
-    const explicit =
-      slide.config.section ?? (footer && typeof footer === 'object' ? footer.section : undefined);
-    if (explicit !== undefined) current = explicit;
+    if (slide.config.section !== undefined) current = slide.config.section;
     slide.section = current;
   }
 }

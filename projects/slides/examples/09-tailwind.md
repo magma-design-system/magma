@@ -1,7 +1,7 @@
 ---
 title: Tailwind utilities
 author: Magma Design System
-theme: maggioli
+theme: business
 ---
 
 # Utility per gli autori

@@ -1,14 +1,16 @@
 import type { Deck, Slide } from '../model/types.js';
 import { getLayout } from './layout-registry.js';
-import { renderFooter } from './footer.js';
+import { renderZone } from './chrome.js';
 
-/** Render a single slide to its `<section>` markup, with its footer if any. */
+/** Render a single slide to its `<section>` markup, with its header/footer if any. */
 export function renderSlide(slide: Slide, deck: Deck): string {
   const inner = getLayout(slide.layout)(slide, deck);
-  const footer = renderFooter(slide, deck);
-  const footerClass = footer ? ' has-footer' : '';
+  const header = renderZone('header', slide, deck);
+  const footer = renderZone('footer', slide, deck);
+  const classes = `mds-slide${header ? ' has-header' : ''}${footer ? ' has-footer' : ''}`;
   return (
-    `<section class="mds-slide${footerClass}" data-layout="${slide.layout}" data-index="${slide.index}">` +
+    `<section class="${classes}" data-layout="${slide.layout}" data-index="${slide.index}">` +
+    header +
     inner +
     footer +
     `</section>`

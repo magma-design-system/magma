@@ -2,7 +2,7 @@ import { createRequire } from 'node:module';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
-import { DEFAULT_THEME, themeBase } from '../render/theme.js';
+import { resolveTheme } from '../render/theme.js';
 
 const require = createRequire(import.meta.url);
 
@@ -16,6 +16,7 @@ const STYLES_FILES = [
   'globals.css',
   'colors-rgb.css',
   'semantic.css', // --magma-surface-*, --magma-text-*, ... roles over colors-rgb
+  'themes.css', // named Magma themes, selected by data-theme-name on the root
   'typography.css', // --font-*, --text-size-*, --spacing(-*), --radius-*, --shadow-* on :root
   'hydrated.css',
   'animations.css',
@@ -44,14 +45,9 @@ const magmaCss = (file: string): string => {
   return readFileSync(resolved, 'utf8');
 };
 
-/** Theme CSS for a deck: themes/<base>/theme.css, falling back to the default. */
-function themeFile(theme: string | undefined): string {
-  try {
-    return localCss(`themes/${themeBase(theme)}/theme.css`);
-  } catch {
-    return localCss(`themes/${DEFAULT_THEME}/theme.css`);
-  }
-}
+/** Theme CSS for a deck: themes/<name>/theme.css (the default when not shipped). */
+const themeFile = (theme: string | undefined): string =>
+  localCss(`themes/${resolveTheme(theme)}/theme.css`);
 
 /**
  * Build the full CSS for a deck: Magma tokens/base + slide tokens + structure +

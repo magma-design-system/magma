@@ -1,7 +1,7 @@
 ---
 title: The seven layouts
 author: Magma Design System
-theme: maggioli
+theme: business
 ---
 
 # The seven layouts

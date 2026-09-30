@@ -1,0 +1,15 @@
+{
+  "header": {
+    "start": ["logo"],
+    "end": [["subject", "section"]]
+  },
+  "footer": {
+    "start": [["group", "groupDetail"]],
+    "end": ["page"]
+  },
+  "layouts": {
+    "title": { "header": false },
+    "section": { "header": false, "footer": false },
+    "image-full": { "header": false }
+  }
+}

@@ -1,7 +1,7 @@
 ---
 title: Magma Slides
 author: Maggioli Design System
-theme: maggioli
+theme: business
 ---
 
 # Magma Slides

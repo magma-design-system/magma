@@ -1,7 +1,8 @@
 ---
 title: A text-first slide pipeline
 author: Magma Design System
-theme: maggioli-dark
+theme: business
+scheme: dark
 tokens:
   --mds-slide-accent: rgb(var(--magma-accent-ai-emphasis))
 ---

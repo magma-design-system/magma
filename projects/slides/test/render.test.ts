@@ -5,7 +5,7 @@ import { exportHtml } from '../src/export/html.js';
 
 const source = `---
 title: Render Test
-theme: maggioli-dark
+scheme: dark
 tokens:
   --mds-slide-accent: rgb(var(--magma-accent-ai-emphasis))
 ---
@@ -36,7 +36,7 @@ describe('exportHtml', () => {
     const deck = parseDeck(source);
     const html = exportHtml(deck);
     expect(html.startsWith('<!doctype html>')).toBe(true);
-    expect(html).toContain('pref-theme-scheme-dark'); // maggioli-dark
+    expect(html).toContain('pref-theme-scheme-dark'); // scheme: dark
     expect(html).toContain('data-magma-pref="slides"');
     expect(html).toContain('--mds-slide-accent: rgb(var(--magma-accent-ai-emphasis));');
     expect(html).toContain('--tone-neutral-seed'); // inlined Magma primitives

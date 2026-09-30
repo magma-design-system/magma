@@ -8,11 +8,13 @@ import { validateDeck } from './parser/schema.js';
 import { exportHtml } from './export/html.js';
 import { exportPdf } from './export/pdf.js';
 import { applyUtilities } from './export/tailwind.js';
+import { SCHEMES, type Scheme } from './model/types.js';
 
 const spec = {
   '--out': String,
   '--pdf': String,
   '--theme': String,
+  '--scheme': String,
   '--title': String,
   '--validate': Boolean,
   '--no-tailwind': Boolean,
@@ -30,7 +32,8 @@ Usage:
 Options:
   -o, --out <file>    Output HTML file (default: <deck>.html)
       --pdf <file>    Also export a PDF to <file>
-      --theme <name>  Theme override: maggioli | maggioli-dark
+      --theme <name>  Theme override (default: business)
+      --scheme <s>    Scheme override: light | dark
       --title <text>  Document title override
       --validate      Validate the deck against the schema (fails on errors)
       --no-tailwind   Skip generating author Tailwind utilities
@@ -63,7 +66,17 @@ async function main(): Promise<void> {
     console.log(chalk.green('Deck is valid.'));
   }
 
-  const options = { theme: args['--theme'], title: args['--title'], baseDir: dirname(input) };
+  const scheme = args['--scheme'] as Scheme | undefined;
+  if (scheme !== undefined && !SCHEMES.includes(scheme)) {
+    console.error(chalk.red(`--scheme must be light or dark, got "${scheme}"`));
+    process.exit(1);
+  }
+  const options = {
+    theme: args['--theme'],
+    scheme,
+    title: args['--title'],
+    baseDir: dirname(input),
+  };
   const tailwind = !args['--no-tailwind'];
   const out = args['--out'] ?? deriveOut(input);
 
