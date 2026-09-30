@@ -11,7 +11,8 @@ Use the version of this package matching the major version of [`@maggioli-design
 | magma | design-tokens | styles |
 | :--- | :--- | :--- |
 | `1.x` (before Magma 2) | `13.x` (latest `13.7.2`) | `15.x` (latest `15.11.1`) |
-| `2.x` and later | `>= 14` | `>= 16` |
+| `2.0.0-alpha.0` to `2.0.0-beta.3` (prereleases) | `14.x` | `16.x` |
+| `2.x` and later | `>= 15` | `>= 17` |
 
 ---
 
@@ -54,7 +55,7 @@ The layer order is thinked to be used with tailwindcss, so the first layer is th
 @layer overrides {
   body {
     @apply
-    bg-tone-neutral
+    bg-tone-neutral-seed
     text-tone-neutral-03
       transition-colors
       duration-300
