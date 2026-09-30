@@ -1,22 +1,20 @@
-# Release pipeline for @maggioli-design-system/magma (StencilJS web components).
-# Detects the next version from conventional commits scoped to the Stencil
-# project (magma, stencil, react, lit, storybook and any mds-* component),
-# bumps projects/stencil/package.json and keeps the companion magma-react and
-# magma-angular packages in lockstep at the same version. The version bump
-# commit then triggers CI -> publish.yml (npm).
-# On beta no version bump is committed: the magma@<version> tag goes on the
-# pushed commit and publish.yml writes that version into the three manifests
-# before publishing (keep its MAGMA_LOCKSTEP_MANIFESTS in sync with the paths
-# below).
+# Prerelease pipeline for @maggioli-design-system/magma (StencilJS web
+# components) on beta. Detects the next 2.0.0-beta.N version from conventional
+# commits scoped to the Stencil project (magma, stencil, react, lit, storybook
+# and any mds-* component). No version bump is committed: the magma@<version>
+# tag goes on the pushed commit and publish.yml writes that version into the
+# magma, magma-react and magma-angular manifests before publishing (keep its
+# MAGMA_LOCKSTEP_MANIFESTS and the magma entry of release.yml in sync with the
+# paths below). Stable magma releases come from main with the other packages
+# (release.yml).
 name: stencil release
 
 on:
   push:
-    branches: [main, beta]
+    branches: [beta]
 
 concurrency:
-  # per-branch: a stable (main) and a prerelease (beta) release don't serialize against each other
-  group: release-magma-${{ github.ref_name }}
+  group: release-magma-beta
   cancel-in-progress: false
 
 permissions:
