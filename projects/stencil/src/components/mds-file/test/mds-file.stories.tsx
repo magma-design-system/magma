@@ -60,6 +60,15 @@ export const Description = {
   },
 };
 
+// real document names often contain dots (#747): only the last one separates the extension
+export const FilenameWithDots = {
+  render: Template,
+
+  args: {
+    filename: 'Delibera n. 12.2024 finale.pdf',
+  },
+};
+
 export const FilesWithoutExtension = {
   render: Template,
 

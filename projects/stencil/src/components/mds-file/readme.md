@@ -23,7 +23,7 @@ The `<mds-file>` web component is the Magma Design System control for representi
 
 #### Properties & Visual Configurations
 
-- **`filename`** is the primary input: it provides the displayed title and drives icon, badge, suffix, and description detection. The name and extension are rendered separately, with the extension shown only when not explicitly overridden by `suffix`.
+- **`filename`** is the primary input: it provides the displayed title and drives icon, badge, suffix, and description detection. The name and extension are rendered separately, split at the last dot so the dots inside the name are kept (`report.v2.final.docx` shows `report.v2.final` and `.docx`; a leading dot belongs to the name, as in `.env`); the extension is shown only when not explicitly overridden by `suffix`.
 - **`suffix`** forces a specific file type from the supported format set when the filename's extension is missing or wrong; it bypasses automatic recognition.
 - **`description`** overrides the derived, localized file-type description when a custom label is needed.
 - **`preview`** supplies an image URL (logo or thumbnail) rendered as the preview surface instead of the generic format icon - use it when a meaningful visual of the file exists.
