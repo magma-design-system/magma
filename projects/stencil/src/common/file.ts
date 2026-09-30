@@ -20,20 +20,26 @@ const sanitizeFilename = (
   return filename;
 };
 
+/**
+ * Index of the dot that separates the name from the extension: the last one, so that the dots
+ * inside the name are kept (`report.v2.final.docx`). A leading dot is part of the name
+ * (`.env` has no extension). Returns -1 when the filename has no extension.
+ */
+const getExtensionSeparator = (filename: string): number => {
+  const dot = filename.lastIndexOf('.');
+  return dot > 0 ? dot : -1;
+};
+
 const sanitizeSuffix = (rawFilename: string) => {
   const filename = sanitizeFilename(rawFilename);
-  if (filename.includes('.')) {
-    return filename.split('.').pop() ?? '';
-  }
-  return filename;
+  const dot = getExtensionSeparator(filename);
+  return dot === -1 ? filename : filename.slice(dot + 1);
 };
 
 const getName = (rawFilename: string): string => {
   const filename = sanitizeFilename(rawFilename);
-  if (filename.includes('.')) {
-    return filename.split('.')[0] ?? '';
-  }
-  return filename;
+  const dot = getExtensionSeparator(filename);
+  return dot === -1 ? filename : filename.slice(0, dot);
 };
 
 const getSuffix = (rawFilename: string, suffixOverride?: string): string => {
