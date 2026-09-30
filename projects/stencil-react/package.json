@@ -19,7 +19,9 @@
   "sideEffects": false,
   "scripts": {
     "build": "npm run tsc",
-    "tsc": "tsc -p . --outDir ./dist"
+    "tsc": "tsc -p . --outDir ./dist",
+    "test": "vitest run",
+    "test.watch": "vitest"
   },
   "files": [
     "dist",
@@ -37,5 +39,9 @@
     "type": "git",
     "url": "git+https://github.com/magma-design-system/magma.git",
     "directory": "projects/stencil-react"
+  },
+  "devDependencies": {
+    "@testing-library/dom": "10.4.2",
+    "@testing-library/react": "16.3.3"
   }
 }

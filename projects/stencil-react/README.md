@@ -95,3 +95,17 @@ export default function Component() {
 }
 ```
 
+
+## Running the tests
+
+For contributors, from the root of the [monorepo](https://github.com/magma-design-system/magma):
+
+```
+nx run stencil-react:test
+```
+
+It builds `magma` and this package, then runs the Vitest projects of `vitest.config.mts`: `browser`
+(`test/*.e2e.tsx`, the client wrappers in a headless Chromium driven by Playwright; the first run
+needs `npx playwright install chromium`) and `node` (`test/*.spec.ts(x)`, the `<tag>.server.js`
+wrappers and the generated exports). `npm run test.watch` from `projects/stencil-react` keeps Vitest
+in watch mode against the last build. Details: `projects/stencil/HOWTO.md`, section "Wrapper tests".
