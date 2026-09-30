@@ -55,6 +55,14 @@
   padding-bottom: calc(var(--mds-slide-padding) + var(--mds-slide-footer-height));
 }
 
+/* Magma's base layer caps headings and paragraphs at a 30ch reading measure,
+   sized for app UI; on a 1280px slide it wraps text after a few words. The
+   layout (columns, padding) sets the width instead. */
+
+.mds-slide :is(h1, h2, h3, h4, h5, h6, p) {
+  max-width: none;
+}
+
 .mds-slide h1,
 .mds-slide h2,
 .mds-slide h3 {
