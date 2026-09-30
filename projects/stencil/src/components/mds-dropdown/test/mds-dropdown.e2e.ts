@@ -252,6 +252,49 @@ describe('mds-dropdown', () => {
     });
   });
 
+  describe('a target that names nothing', () => {
+    it('loads without throwing and leaves the page alone', async () => {
+      const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+      // render throws what the lifecycle throws: the listeners used to be attached to a caller
+      // that was never found
+      const { root, waitForChanges } = await stage(
+        '<mds-dropdown id="panel" target="#nope">Menu</mds-dropdown>',
+      );
+      const panel = root.querySelector('#panel') as HTMLMdsDropdownElement;
+      const caller = root.querySelector('#caller') as HTMLElement;
+
+      expect(panel).toHaveAttribute('hydrated');
+      expect(warn).toHaveBeenCalledWith(expect.stringContaining('target not found: #nope'));
+      expect(caller).not.toHaveAttribute('aria-controls');
+      expect(caller).not.toHaveAttribute('aria-haspopup');
+
+      caller.click();
+      await waitForChanges();
+
+      expect(panel.visible).toBe(false);
+    });
+
+    it('wires itself once the target names an element', async () => {
+      vi.spyOn(console, 'warn').mockImplementation(() => {});
+      const { root, waitForChanges } = await stage(
+        '<mds-dropdown id="panel" target="#nope">Menu</mds-dropdown>',
+      );
+      const panel = root.querySelector('#panel') as HTMLMdsDropdownElement;
+      const caller = root.querySelector('#caller') as HTMLElement;
+
+      panel.target = '#caller';
+
+      await vi.waitFor(() => {
+        expect(caller).toEqualAttribute('aria-controls', 'panel');
+      });
+
+      caller.click();
+      await waitForChanges();
+
+      expect(panel.visible).toBe(true);
+    });
+  });
+
   describe('keyboard', () => {
     const menu = () =>
       render(
