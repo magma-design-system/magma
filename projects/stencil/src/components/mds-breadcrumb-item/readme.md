@@ -108,19 +108,6 @@ The internal `<mds-button>` is exposed as `::part(button)`. Use it only when the
 }
 ```
 
-#### Styling Focus Rings
-
-Override the outline tokens to match a custom focus style for keyboard users. Provide both focus and blur variants so the focus ring animates consistently.
-
-```css
-.custom-nav mds-breadcrumb-item {
-  --mds-breadcrumb-item-outline-focus: rgb(var(--variant-primary-03));
-  --mds-breadcrumb-item-outline-focus-offset: 2px;
-  --mds-breadcrumb-item-outline-blur: rgb(var(--tone-neutral-06));
-  --mds-breadcrumb-item-outline-blur-offset: 0px;
-}
-```
-
 
 ### 3. Antipattern
 
@@ -251,19 +238,15 @@ mds-breadcrumb-item {
 
 ## CSS Custom Properties
 
-| Name                                               | Description                                                         |
-| -------------------------------------------------- | ------------------------------------------------------------------- |
-| `--mds-breadcrumb-item-arrow-depth-color`          | Sets the color of the arrow icon that separates buttons             |
-| `--mds-breadcrumb-item-button-background`          | Sets the background color of the button                             |
-| `--mds-breadcrumb-item-button-background-hover`    | Sets the background color of the button when the mouse is over it   |
-| `--mds-breadcrumb-item-button-background-selected` | Sets the background color of the button when it's active            |
-| `--mds-breadcrumb-item-button-color`               | Sets the text color of the button                                   |
-| `--mds-breadcrumb-item-button-color-hover`         | Sets the text color of the button when the mouse is over it         |
-| `--mds-breadcrumb-item-button-color-selected`      | Sets the text color of the button when it's active                  |
-| `--mds-breadcrumb-item-outline-blur`               | Sets the blur color when the button is blurred via keyboard         |
-| `--mds-breadcrumb-item-outline-blur-offset`        | Sets the blur offset color when the button is blurred via keyboard  |
-| `--mds-breadcrumb-item-outline-focus`              | Sets the focus color when the button is focused via keyboard        |
-| `--mds-breadcrumb-item-outline-focus-offset`       | Sets the focus offset color when the button is focused via keyboard |
+| Name                                               | Description                                                       |
+| -------------------------------------------------- | ----------------------------------------------------------------- |
+| `--mds-breadcrumb-item-arrow-depth-color`          | Sets the color of the arrow icon that separates buttons           |
+| `--mds-breadcrumb-item-button-background`          | Sets the background color of the button                           |
+| `--mds-breadcrumb-item-button-background-hover`    | Sets the background color of the button when the mouse is over it |
+| `--mds-breadcrumb-item-button-background-selected` | Sets the background color of the button when it's active          |
+| `--mds-breadcrumb-item-button-color`               | Sets the text color of the button                                 |
+| `--mds-breadcrumb-item-button-color-hover`         | Sets the text color of the button when the mouse is over it       |
+| `--mds-breadcrumb-item-button-color-selected`      | Sets the text color of the button when it's active                |
 
 
 ## Dependencies

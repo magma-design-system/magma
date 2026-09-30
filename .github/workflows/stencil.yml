@@ -6,23 +6,24 @@ on:
   pull_request:
 
 concurrency:
-  # one run per ref: a newer push cancels the superseded run (on beta the
-  # chore(release) push supersedes the merge-commit run). On main each push
-  # gets its own group (no cancel, no queued-run replacement): chained
-  # chore(release) pushes must each complete their CI to provide the build
-  # artifact for their own publish run
-  group: ${{ github.workflow }}-${{ github.ref == 'refs/heads/main' && github.sha || github.ref }}
-  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+  # one run per ref: a newer push cancels the superseded run. On main, and for
+  # chore(release) pushes on any branch, each push gets its own group (no
+  # cancel, no queued-run replacement): chained chore(release) pushes must each
+  # complete their CI to provide the build artifact for their own publish run
+  group: ${{ github.workflow }}-${{ (github.ref == 'refs/heads/main' || startsWith(github.event.head_commit.message, 'chore(release):')) && github.sha || github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' && !startsWith(github.event.head_commit.message, 'chore(release):') }}
 
 jobs:
   # Builds stencil and runs the e2e tests; its build artifact
-  # also feeds the react/angular builds below
+  # also feeds the react/angular builds and tests below
   magma:
     # PRs from dev (release PRs) duplicate the CI already run on every push to dev
     if: ${{ github.event_name != 'pull_request' || github.head_ref != 'dev' }}
     uses: ./.github/workflows/_package-pipeline.yml
     with:
       path: projects/stencil/**
+      # the react/angular wrappers are built and tree-shake-checked by this workflow
+      extra-path: projects/stencil-*/**
       nx-project: stencil
       artifact-paths: |
         projects/design-tokens/dist
@@ -33,44 +34,54 @@ jobs:
         projects/stencil/src/fixtures
         projects/stencil/www
         projects/stencil/assets
-        projects/stencil/react/src
+        projects/stencil-react/src
         projects/stencil/loader
-        projects/stencil/angular/magma-angular/src/stencil-generated
+        projects/stencil-angular/magma-angular/src/stencil-generated
       artifact-download-path: projects
       run-tests: true
-      # the e2e tests need Chrome
-      install-chrome: true
+      # the browser tests need the Playwright Chromium
+      install-playwright-browsers: true
       test-working-directory: projects/stencil
+      # play functions and a11y checks of the stories (Vitest project `storybook`)
+      run-storybook-tests: true
 
   magma-react:
     needs: [magma]
     if: ${{ needs.magma.outputs.changed == 'true' }}
     runs-on: ubuntu-latest
-    env:
-      PUPPETEER_SKIP_DOWNLOAD: 'true'
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
           node-version-file: .nvmrc
-          cache: yarn
+          cache: npm
       - name: Restore Nx cache
         uses: actions/cache@v5
         with:
           path: .nx
-          key: nx-${{ hashFiles('yarn.lock') }}-${{ github.sha }}
+          key: nx-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
           restore-keys: |
-            nx-${{ hashFiles('yarn.lock') }}-
-      - run: yarn install --frozen-lockfile --prefer-offline
+            nx-${{ hashFiles('package-lock.json') }}-
+      - run: npm ci --prefer-offline
       - uses: actions/download-artifact@v8
         with:
           name: stencil-build
           path: projects
-      - run: yarn nx run stencil-react:build
+      - run: npx nx run stencil-react:build
+      - name: Restore Playwright browsers cache
+        uses: actions/cache@v5
+        with:
+          path: ~/.cache/ms-playwright
+          # the browser revision is pinned by the playwright version in the lockfile
+          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+      # no-op for the browser when cached, still installs the system libraries
+      - run: npx playwright install --with-deps chromium
+      # the wrapper against the real custom elements (browser) and its SSR modules (node)
+      - run: npx nx run stencil-react:test
       - uses: actions/upload-artifact@v7
         with:
           name: stencil-react-build
-          path: projects/stencil/react/dist
+          path: projects/stencil-react/dist
           retention-days: 1
           include-hidden-files: true
 
@@ -78,30 +89,121 @@ jobs:
     needs: [magma]
     if: ${{ needs.magma.outputs.changed == 'true' }}
     runs-on: ubuntu-latest
-    env:
-      PUPPETEER_SKIP_DOWNLOAD: 'true'
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
           node-version-file: .nvmrc
-          cache: yarn
+          cache: npm
       - name: Restore Nx cache
         uses: actions/cache@v5
         with:
           path: .nx
-          key: nx-${{ hashFiles('yarn.lock') }}-${{ github.sha }}
+          key: nx-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
           restore-keys: |
-            nx-${{ hashFiles('yarn.lock') }}-
-      - run: yarn install --frozen-lockfile --prefer-offline
+            nx-${{ hashFiles('package-lock.json') }}-
+      - run: npm ci --prefer-offline
       - uses: actions/download-artifact@v8
         with:
           name: stencil-build
           path: projects
-      - run: yarn nx run stencil-angular:build
+      - run: npx nx run stencil-angular:build
+      # Karma in the Chrome of the runner image, headless
+      - run: npx nx run stencil-angular:test
       - uses: actions/upload-artifact@v7
         with:
           name: stencil-angular-build
-          path: projects/stencil/angular/dist
+          path: projects/stencil-angular/dist
           retention-days: 1
           include-hidden-files: true
+
+  # Guards SSR: every component must serialize through renderToString from
+  # the hydrate build without error diagnostics (they are silent by design,
+  # so a broken component would quietly ship wrong markup to SSR consumers).
+  ssr:
+    needs: [magma]
+    if: ${{ needs.magma.outputs.changed == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - name: Restore Nx cache
+        uses: actions/cache@v5
+        with:
+          path: .nx
+          key: nx-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
+          restore-keys: |
+            nx-${{ hashFiles('package-lock.json') }}-
+      - run: npm ci --prefer-offline
+      - uses: actions/download-artifact@v8
+        with:
+          name: stencil-build
+          path: projects
+      - run: npx nx run stencil:check.ssr
+
+  # Guards against component CSS referencing a token no layer publishes. An
+  # unresolvable var() makes the declaration invalid at computed-value time, so the
+  # property silently falls back to its initial value - which is how 129 box-shadow
+  # declarations computed to `none` for five months without a single test failing
+  # (#641). Reads the emitted token layer, so it needs the build artifact.
+  tokens:
+    needs: [magma]
+    if: ${{ needs.magma.outputs.changed == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - name: Restore Nx cache
+        uses: actions/cache@v5
+        with:
+          path: .nx
+          key: nx-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
+          restore-keys: |
+            nx-${{ hashFiles('package-lock.json') }}-
+      - run: npm ci --prefer-offline
+      - uses: actions/download-artifact@v8
+        with:
+          name: stencil-build
+          path: projects
+      - run: npx nx run stencil:check.tokens
+
+  # Guards the tree-shaking of the three published packages: a consumer that
+  # imports one component must not end up shipping all 114. Needs all three
+  # builds, so it runs last.
+  treeshaking:
+    needs: [magma, magma-react, magma-angular]
+    if: ${{ needs.magma.outputs.changed == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - name: Restore Nx cache
+        uses: actions/cache@v5
+        with:
+          path: .nx
+          key: nx-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
+          restore-keys: |
+            nx-${{ hashFiles('package-lock.json') }}-
+      - run: npm ci --prefer-offline
+      - uses: actions/download-artifact@v8
+        with:
+          name: stencil-build
+          path: projects
+      - uses: actions/download-artifact@v8
+        with:
+          name: stencil-react-build
+          path: projects/stencil-react/dist
+      - uses: actions/download-artifact@v8
+        with:
+          name: stencil-angular-build
+          path: projects/stencil-angular/dist
+      - run: npx nx run stencil:check.treeshaking

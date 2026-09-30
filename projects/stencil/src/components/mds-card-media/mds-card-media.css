@@ -1,7 +1,7 @@
 @import '../../tailwind/fouc.css';
 
 :host {
-  background-color: rgb(var(--tone-neutral-09));
+  background-color: var(--mds-card-background);
   display: grid;
   min-width: 0;
   position: relative;

@@ -4,17 +4,11 @@
  * @prop --mds-list-item-icon-margin: Sets the margin of the component's icon
  */
 
-@property --mds-list-item-icon-margin {
-  inherits: false;
-  initial-value: 0 --spacing(200) 0 0;
-  syntax: '<length>+';
-}
-
 :host {
   --mds-list-item-icon-margin: 0 --spacing(200) 0 0;
 
   align-items: flex-start;
-  color: rgb(var(--tone-neutral-03));
+  color: rgb(var(--magma-text-muted));
   display: flex;
   justify-content: flex-start;
   width: 100%;

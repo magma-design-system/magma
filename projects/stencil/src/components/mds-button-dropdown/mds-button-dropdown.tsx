@@ -90,6 +90,7 @@ export class MdsButtonDropdown {
         <mds-button
           active={this.active}
           autoFocus={this.autoFocus}
+          class="dropdown-primary-action"
           await={this.await}
           disabled={this.disabled}
           href={this.href}

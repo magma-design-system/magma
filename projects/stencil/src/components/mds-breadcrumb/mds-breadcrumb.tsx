@@ -1,15 +1,4 @@
-import {
-  Component,
-  Element,
-  Event,
-  EventEmitter,
-  Listen,
-  Host,
-  h,
-  Prop,
-  State,
-  Method,
-} from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Listen, Host, h, Prop } from '@stencil/core';
 import miBaselineArrowBack from '@icon/mi/baseline/arrow-back.svg';
 import { MdsBreadcrumbEventDetail } from './meta/event-detail';
 import { MdsBreadcrumbItemEventDetail } from '@component/mds-breadcrumb-item/meta/event-detail';
@@ -38,14 +27,6 @@ export class MdsBreadcrumb {
     es: localeEs,
     it: localeIt,
   });
-  @State() language: string;
-  /**
-   * Updates the component's texts to the locale currently set on the host element.
-   */
-  @Method()
-  async updateLang(): Promise<void> {
-    this.language = this.t.lang(this.element);
-  }
 
   /**
    * Hides the back arrow button
@@ -98,10 +79,6 @@ export class MdsBreadcrumb {
       return;
     }
     this.kb.detachClickBehavior();
-  }
-
-  componentWillRender(): void {
-    this.t.lang(this.element);
   }
 
   disconnectedCallback(): void {

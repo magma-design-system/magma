@@ -13,10 +13,11 @@ import {
   Host,
   h,
   Prop,
-  Method,
   State,
   Watch,
 } from '@stencil/core';
+import { hasChildWithSlot } from '@common/slot';
+import clsx from 'clsx';
 import { Locale } from '@common/locale';
 import { MdsPushNotificationItemEventDetail } from './meta/event-detail';
 import {
@@ -28,7 +29,7 @@ import { ThemeFullVariantAvatarType } from '@type/variant';
 import { ToneMinimalVariantType } from '@type/tone';
 
 import { sanitizeISO8601Date } from '@common/date';
-import { subscribePreference } from '@common/preference';
+import { preferenceStore } from '@common/preference';
 
 /**
  * @part actions - The actions wrapper
@@ -45,31 +46,15 @@ import { subscribePreference } from '@common/preference';
   shadow: true,
 })
 export class MdsPushNotificationItem {
-  private hasActions?: boolean;
-  private hasBadge?: boolean;
   @Element() host: HTMLMdsPushNotificationItemElement;
-  @State() prefAnimation?: string;
-  private unsubscribePrefAnimation?: () => void;
-  @State() prefContrast?: string;
-  private unsubscribePrefContrast?: () => void;
-  @State() prefTheme?: string;
-  private unsubscribePrefTheme?: () => void;
-  @State() prefThemeScheme?: string;
-  private unsubscribePrefThemeScheme?: () => void;
+  @State() hasActions: boolean;
+  @State() hasBadge: boolean;
   private t: Locale = new Locale({
     el: localeEl,
     en: localeEn,
     es: localeEs,
     it: localeIt,
   });
-  @State() language: string;
-  /**
-   * Updates the component's texts to the locale currently set on the host element.
-   */
-  @Method()
-  async updateLang(): Promise<void> {
-    this.language = this.t.lang(this.host);
-  }
 
   /**
    * Specifies the notification date based on [standard ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html).
@@ -137,42 +122,23 @@ export class MdsPushNotificationItem {
     this.closedEvent.emit();
   };
 
-  connectedCallback(): void {
-    this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
-      this.prefAnimation = value;
-    });
-    this.unsubscribePrefContrast = subscribePreference('contrast', (value) => {
-      this.prefContrast = value;
-    });
-    this.unsubscribePrefTheme = subscribePreference('theme', (value) => {
-      this.prefTheme = value;
-    });
-    this.unsubscribePrefThemeScheme = subscribePreference('theme-scheme', (value) => {
-      this.prefThemeScheme = value;
-    });
-  }
-
-  disconnectedCallback(): void {
-    this.unsubscribePrefAnimation?.();
-    this.unsubscribePrefContrast?.();
-    this.unsubscribePrefTheme?.();
-    this.unsubscribePrefThemeScheme?.();
-  }
-
   componentDidLoad(): void {
     this.handleDeletableChange(this.deletable);
   }
 
+  private onSlotChange = (): void => {
+    this.hasActions = hasChildWithSlot(this.host, 'action');
+    this.hasBadge = hasChildWithSlot(this.host, 'badge');
+  };
+
   componentWillLoad(): void {
     dayjs.extend(relativeTime);
-    this.hasActions = this.host.querySelector(':scope > [slot="action"]') !== null;
-    this.hasBadge = this.host.querySelector(':scope > [slot="badge"]') !== null;
+    this.onSlotChange();
 
     if (this.datetime !== undefined && this.datetime !== '') {
-      this.datetime = sanitizeISO8601Date(this.datetime?.toString());
+      this.datetime = sanitizeISO8601Date(this.datetime.toString()) ?? undefined;
     }
 
-    this.t.lang(this.host);
     const relativeTimeCustom = {
       future: this.t.get('future'),
       past: this.t.get('past'),
@@ -202,10 +168,10 @@ export class MdsPushNotificationItem {
   render() {
     return (
       <Host
-        pref-animation={this.prefAnimation}
-        pref-contrast={this.prefContrast}
-        pref-theme={this.prefTheme}
-        pref-theme-scheme={this.prefThemeScheme}
+        pref-animation={preferenceStore.state.animation}
+        pref-contrast={preferenceStore.state.contrast}
+        pref-mode={preferenceStore.state.mode}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
         {(this.icon ?? this.preview === 'avatar') && (
           <mds-avatar
@@ -224,11 +190,9 @@ export class MdsPushNotificationItem {
         <div class="content" part="content">
           <div class="header">
             <div class="infos">
-              {this.hasBadge && (
-                <div>
-                  <slot name="badge"></slot>
-                </div>
-              )}
+              <div class={clsx('badge', !this.hasBadge && 'badge--hidden')}>
+                <slot name="badge" onSlotchange={this.onSlotChange}></slot>
+              </div>
               {this.subject && (
                 <mds-text class="subject" typography="h6" variant="title" truncate="all">
                   {this.subject}
@@ -246,11 +210,9 @@ export class MdsPushNotificationItem {
           <mds-text class="message" truncate="all" typography="caption" variant="info">
             {this.message}
           </mds-text>
-          {this.hasActions && (
-            <div class="actions" part="actions">
-              <slot name="action"></slot>
-            </div>
-          )}
+          <div class={clsx('actions', !this.hasActions && 'actions--hidden')} part="actions">
+            <slot name="action" onSlotchange={this.onSlotChange}></slot>
+          </div>
         </div>
         {this.deletable && (
           <mds-button

@@ -18,6 +18,45 @@ export const testManifest: Manifest = {
       toneSet: 'tone',
     },
     removeDefaultSlot: true,
+    // Seed rename on the bare token + surface-candidate reports (bare token and
+    // a scale step), so the fixtures/unit tests exercise the report-vs-rename
+    // split by background context.
+    cssVars: [
+      {
+        kind: 'cssVarRename',
+        from: 'tone-neutral',
+        to: 'tone-neutral-seed',
+        note: 'the bare tone primitive is now the off-scale `-seed` escape hatch',
+      },
+      { kind: 'cssVarSurfaceReport', from: 'tone-neutral' },
+      { kind: 'cssVarSurfaceReport', from: 'tone-neutral-09' },
+      // the pair that swaps meaning (#702)
+      { kind: 'cssVarRename', from: 'magma-pref-theme', to: 'magma-pref-mode' },
+      { kind: 'cssVarRename', from: 'magma-pref-theme-name', to: 'magma-pref-theme' },
+    ],
+    // Utility-class rules (J): a plain rename, a rename with a note, a chained
+    // pair (`rounded-xl → rounded-md` while `rounded-md → rounded-2xs`) to pin
+    // the single-pass guarantee, a bare one-word rename (`gap`) and a
+    // report-only class.
+    classes: [
+      { kind: 'classRename', from: 'shadow-outline-light', to: 'shadow-ring-weak' },
+      {
+        kind: 'classRename',
+        from: 'shadow-inner',
+        to: 'shadow-inset-sm',
+        note: 'v2 adds a 1%-alpha inset hairline — visually equivalent',
+      },
+      { kind: 'classRename', from: 'rounded-md', to: 'rounded-2xs' },
+      { kind: 'classRename', from: 'rounded-xl', to: 'rounded-md' },
+      { kind: 'classRename', from: 'gap', to: 'gap-lg' },
+      // a state class, renamed in CSS selectors too
+      { kind: 'classRename', from: 'pref-theme-dark', to: 'pref-mode-dark', selectors: true },
+      {
+        kind: 'classReport',
+        name: 'shadow-outline-strong',
+        message: 'v2 reuses this name for a different shadow; migrate manually',
+      },
+    ],
   },
   components: {
     'mds-dropdown': {
@@ -83,6 +122,7 @@ export const testManifest: Manifest = {
           kind: 'cssVarRename',
           from: 'mds-button-ghost-background-color',
           to: 'mds-button-outline-background-color',
+          note: 'the v1 name was documented but never shipped; the override becomes effective after the rename',
         },
         { kind: 'partRename', from: 'label', to: 'content' },
       ],
@@ -127,6 +167,31 @@ export const testManifest: Manifest = {
           note: 'Verify semantics: v1 `labelAction` maps to v2 `label`.',
         },
       ],
+    },
+    // Tag renames (K) with the pair that swaps: v2 gives `mds-pref-theme` to
+    // the component that was `mds-pref-theme-variant`, so the tests pin the
+    // single-pass guarantee on the name the two share.
+    'mds-pref-theme': {
+      tag: 'mds-pref-theme',
+      react: 'MdsPrefTheme',
+      rules: [
+        { kind: 'tagRename', to: 'mds-pref-mode', toReact: 'MdsPrefMode' },
+        {
+          kind: 'cssVarRename',
+          from: 'mds-pref-theme-overlay-z-index',
+          to: 'mds-pref-mode-overlay-z-index',
+        },
+      ],
+    },
+    'mds-pref-theme-variant': {
+      tag: 'mds-pref-theme-variant',
+      react: 'MdsPrefThemeVariant',
+      rules: [{ kind: 'tagRename', to: 'mds-pref-theme', toReact: 'MdsPrefTheme' }],
+    },
+    'mds-pref-theme-variant-item': {
+      tag: 'mds-pref-theme-variant-item',
+      react: 'MdsPrefThemeVariantItem',
+      rules: [{ kind: 'tagRename', to: 'mds-pref-theme-item', toReact: 'MdsPrefThemeItem' }],
     },
   },
 };

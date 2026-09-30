@@ -340,8 +340,8 @@ mds-text {
  - [mds-pref-consumption](../mds-pref-consumption)
  - [mds-pref-contrast](../mds-pref-contrast)
  - [mds-pref-language](../mds-pref-language)
+ - [mds-pref-mode](../mds-pref-mode)
  - [mds-pref-theme](../mds-pref-theme)
- - [mds-pref-theme-variant](../mds-pref-theme-variant)
  - [mds-price-table-features](../mds-price-table-features)
  - [mds-price-table-features-cell](../mds-price-table-features-cell)
  - [mds-price-table-list-item](../mds-price-table-list-item)
@@ -394,8 +394,8 @@ graph TD;
   mds-pref-consumption --> mds-text
   mds-pref-contrast --> mds-text
   mds-pref-language --> mds-text
+  mds-pref-mode --> mds-text
   mds-pref-theme --> mds-text
-  mds-pref-theme-variant --> mds-text
   mds-price-table-features --> mds-text
   mds-price-table-features-cell --> mds-text
   mds-price-table-list-item --> mds-text

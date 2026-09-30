@@ -1,6 +1,6 @@
-import { Component, Host, h, Prop, Element, State } from '@stencil/core';
+import { Component, Host, h, Prop, Element } from '@stencil/core';
 import { setAttributeIfEmpty } from '@common/aria';
-import { subscribePreference } from '@common/preference';
+import { preferenceStore } from '@common/preference';
 /**
  * @slot - Add `text string`, `HTML elements` or `components` to this slot.
  */
@@ -12,8 +12,6 @@ import { subscribePreference } from '@common/preference';
 })
 export class MdsTableCell {
   @Element() host: HTMLMdsTableCellElement;
-  @State() prefAnimation?: string;
-  private unsubscribePrefAnimation?: () => void;
 
   /**
    * Sets a value to help the sorting function from `mds-table-header-cell`, if not set it will be used the content of the cell.
@@ -24,19 +22,9 @@ export class MdsTableCell {
     setAttributeIfEmpty(this.host, 'role', 'cell');
   }
 
-  connectedCallback(): void {
-    this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
-      this.prefAnimation = value;
-    });
-  }
-
-  disconnectedCallback(): void {
-    this.unsubscribePrefAnimation?.();
-  }
-
   render() {
     return (
-      <Host pref-animation={this.prefAnimation}>
+      <Host pref-animation={preferenceStore.state.animation}>
         <slot></slot>
       </Host>
     );

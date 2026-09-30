@@ -7,14 +7,14 @@ export default {
 };
 
 const Layout = ({ children }: { children?: ReactNode }) => (
-  <div class="max-w-[480px] flex flex-wrap gap-400 p-600 outline-1 outline-offset-8 bg-tone-neutral">
+  <div class="max-w-[480px] flex flex-wrap gap-400 p-600 outline-1 outline-offset-8 bg-surface-default">
     {children}
   </div>
 );
 
 const LayoutGrid = ({ children, className }: { children?: ReactNode; className?: string }) => (
   <div
-    class={`max-w-[480px] grid gap-400 p-600 outline-1 outline-offset-8 bg-tone-neutral ${className}`}
+    class={`max-w-[480px] grid gap-400 p-600 outline-1 outline-offset-8 bg-surface-default ${className}`}
   >
     {children}
   </div>
@@ -706,7 +706,7 @@ export const Paginator = () => (
 export const Preference = () => (
   <Layout>
     <mds-pref class="w-full">
-      <mds-pref-theme />
+      <mds-pref-mode />
       <mds-pref-contrast />
       <mds-pref-animation />
       <mds-pref-consumption />

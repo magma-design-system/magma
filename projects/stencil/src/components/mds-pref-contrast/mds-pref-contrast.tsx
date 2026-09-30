@@ -1,21 +1,10 @@
-import {
-  Component,
-  Host,
-  Element,
-  Event,
-  EventEmitter,
-  h,
-  Prop,
-  Watch,
-  Method,
-  State,
-} from '@stencil/core';
+import { Component, Host, Event, EventEmitter, h, Prop, Watch } from '@stencil/core';
 import miBaselineContrast from '@icon/mi/baseline/contrast.svg';
 import miOutlineAutoAwesome from '@icon/mi/outline/auto-awesome.svg';
 import miBaselineAutoAwesome from '@icon/mi/baseline/auto-awesome.svg';
 import miBaselineSettings from '@icon/mi/baseline/settings.svg';
 import { Locale } from '@common/locale';
-import { subscribePreference } from '@common/preference';
+import { preferenceStore } from '@common/preference';
 import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.es.json';
@@ -30,9 +19,6 @@ import { TabSizeType } from '@type/button';
   shadow: true,
 })
 export class MdsPrefContrast {
-  @Element() private element: HTMLMdsPrefContrastElement;
-  @State() prefContrast?: string;
-  private unsubscribePrefContrast?: () => void;
   private readonly localStorageAlias: string = 'mdsPrefContrast';
   private readonly customPropertyAlias: string = '--magma-pref-contrast';
   private readonly defaultMode: ContrastModeType = 'system';
@@ -42,14 +28,6 @@ export class MdsPrefContrast {
     es: localeEs,
     it: localeIt,
   });
-  @State() language: string;
-  /**
-   * Updates the component's texts to the locale currently set on the host element.
-   */
-  @Method()
-  async updateLang(): Promise<void> {
-    this.language = this.t.lang(this.element);
-  }
 
   private readonly prefersDefaults = {
     custom: 'no-preference',
@@ -88,18 +66,7 @@ export class MdsPrefContrast {
     },
   };
 
-  connectedCallback(): void {
-    this.unsubscribePrefContrast = subscribePreference('contrast', (value) => {
-      this.prefContrast = value;
-    });
-  }
-
-  disconnectedCallback(): void {
-    this.unsubscribePrefContrast?.();
-  }
-
   componentWillRender(): void {
-    this.t.lang(this.element);
     this.setContrast(
       this.mode ??
         (localStorage.getItem(this.localStorageAlias) as ContrastModeType) ??
@@ -120,7 +87,9 @@ export class MdsPrefContrast {
       }
     }
 
-    throw Error('No prefers-contrast value found.');
+    // no media query matched: the hydrate/SSR runtime's matchMedia always
+    // reports matches:false, and some browsers expose no prefers-contrast
+    return this.defaultMode;
   };
 
   private readonly setContrast = (mode: ContrastModeType): void => {
@@ -138,6 +107,7 @@ export class MdsPrefContrast {
       element?.classList.add(this.contrast[mode].selector);
       element?.style.setProperty(this.customPropertyAlias, this.mode);
     }
+    preferenceStore.state.contrast = mode;
   };
 
   @Watch('mode')
@@ -153,7 +123,7 @@ export class MdsPrefContrast {
 
   render() {
     return (
-      <Host pref-contrast={this.prefContrast}>
+      <Host pref-contrast={preferenceStore.state.contrast}>
         <mds-text class="info" typography="caption">
           <b>{this.t.get('label')}</b>{' '}
           {this.t.get(this.contrast[this.mode ?? this.defaultMode].label)}
@@ -164,18 +134,21 @@ export class MdsPrefContrast {
             onClick={this.handleModeClick('more')}
             class="item item--more"
             icon={miBaselineContrast}
+            title={this.t.get(this.contrast.more.label)}
           ></mds-tab-item>
           <mds-tab-item
             selected={this.mode === 'system'}
             onClick={this.handleModeClick('system')}
             class="item item--system"
             icon={miBaselineSettings}
+            title={this.t.get(this.contrast.system.label)}
           ></mds-tab-item>
           <mds-tab-item
             selected={this.mode === 'no-preference'}
             onClick={this.handleModeClick('no-preference')}
             class="item item--default"
             icon={this.mode === 'no-preference' ? miBaselineAutoAwesome : miOutlineAutoAwesome}
+            title={this.t.get(this.contrast['no-preference'].label)}
           ></mds-tab-item>
           {/* <mds-tab-item selected={this.mode === 'sensor'} onClick={() => { this.setContrast('sensor') }} class="item item--sensor" icon={this.mode === 'sensor' ? miBaselineAutoAwesome : miOutlineAutoAwesome}></mds-tab-item> */}
         </mds-tab>

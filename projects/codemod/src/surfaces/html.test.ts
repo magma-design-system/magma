@@ -139,6 +139,58 @@ describe('transformHtml — slotRemove (removed named slots)', () => {
   });
 });
 
+describe('transformHtml — utility-class migrations (J)', () => {
+  it('renames classes on any element, not just mds-*', () => {
+    expect(run('<div class="p-4 shadow-outline-light rounded-xl">x</div>').output).toBe(
+      '<div class="p-4 shadow-ring-weak rounded-md">x</div>',
+    );
+  });
+
+  it('is single-pass: a rename target that is also a rename source never cascades', () => {
+    expect(run('<div class="rounded-xl rounded-md">x</div>').output).toBe(
+      '<div class="rounded-md rounded-2xs">x</div>',
+    );
+  });
+
+  it('rewrites only the utility segment under variant prefixes and important markers', () => {
+    expect(
+      run('<div class="hover:shadow-outline-light md:!rounded-xl [&>li]:rounded-md">x</div>')
+        .output,
+    ).toBe('<div class="hover:shadow-ring-weak md:!rounded-md [&>li]:rounded-2xs">x</div>');
+  });
+
+  it('matches the bare one-word class exactly (gap-4 is not `gap`)', () => {
+    expect(run('<div class="gap gap-4">x</div>').output).toBe('<div class="gap-lg gap-4">x</div>');
+  });
+
+  it('preserves multi-line class formatting', () => {
+    expect(run('<div class="p-4\n    shadow-outline-light\n    x">y</div>').output).toBe(
+      '<div class="p-4\n    shadow-ring-weak\n    x">y</div>',
+    );
+  });
+
+  it('reports a class with no v2 equivalent without rewriting it', () => {
+    const src = '<div class="shadow-outline-strong">x</div>';
+    const { changed, output, findings } = run(src);
+    expect(changed).toBe(false);
+    expect(output).toBe(src);
+    const warn = findings.find((f) => f.kind === 'warn');
+    expect(warn?.message).toContain('shadow-outline-strong');
+  });
+
+  it('flags the note of a near-exact rename', () => {
+    const { output, findings } = run('<div class="shadow-inner">x</div>');
+    expect(output).toBe('<div class="shadow-inset-sm">x</div>');
+    expect(findings.some((f) => f.kind === 'flag')).toBe(true);
+  });
+
+  it('applies component rules and class renames on the same element', () => {
+    expect(run('<mds-button class="rounded-xl" tone="ghost">Save</mds-button>').output).toBe(
+      '<mds-button class="rounded-md" tone="outline" label="Save"></mds-button>',
+    );
+  });
+});
+
 describe('transformHtml — safety', () => {
   it('leaves non-magma elements untouched', () => {
     const src = '<button arrow="false">x</button>';

@@ -1,5 +1,5 @@
-import type { Declaration } from 'postcss';
-import { COMPONENTS_DIR, TOKENS_DIR } from './meta';
+import type { Declaration, Rule } from 'postcss';
+import { COMPONENTS_DIR, STYLES_DIR, TOKENS_DIR } from './meta';
 import fs from 'node:fs';
 import path from 'node:path';
 import postcss from 'postcss';
@@ -7,6 +7,27 @@ import postcss from 'postcss';
 type Tokens = Record<string, string>;
 
 const TOKENS_CSS_DIR = path.resolve(TOKENS_DIR, 'dist/css');
+
+// The generated semantic layer (`--magma-*`). Prefer the built `dist` (the form
+// consumers load, a prerequisite the same way the token dist is); fall back to
+// the generated source staged under build/.
+const SEMANTIC_CSS_CANDIDATES = [
+  path.resolve(STYLES_DIR, 'dist/css/semantic.css'),
+  path.resolve(STYLES_DIR, 'build/css/semantic.css'),
+];
+
+// The generated corner axis (`--magma-corner-shape` and the `--magma-radius-*`
+// scale). It ships appended to dist/css/globals.css, so the staged build/ copy is
+// the one that can be read on its own.
+const CORNER_CSS_CANDIDATES = [
+  path.resolve(STYLES_DIR, 'build/css/corner.css'),
+  path.resolve(STYLES_DIR, 'dist/css/corner.css'),
+];
+
+// The global tokens (z-index, blur, durations, overlay, selection, preferences):
+// hand written, so the source is always there and is exactly what the published
+// globals.css starts with.
+const GLOBALS_CSS = path.resolve(STYLES_DIR, 'css/globals.css');
 
 /**
  * Minimal shape of a Stencil style-transform plugin. Stencil only runs plugins
@@ -40,25 +61,124 @@ const collectCssFiles = (dir: string): string[] => {
 };
 
 /**
- * Build a `name -> value` map for every design-token custom property declared
- * across all generated token stylesheets (colors, transitions, radii, shadows,
- * fonts, ...). These are the values inlined as `var()` fallbacks so component
- * CSS renders correctly even when the consumer has not loaded the token sheets.
+ * A selector belongs to the DEFAULT theme when it is not gated on a preference:
+ * once every `:not(...)` guard is stripped, at least one of its comma parts is
+ * left with no class (`.x`), attribute (`[x]`) or id (`#x`) - i.e. it applies to
+ * a bare `:root`. `:root:not(.pref-theme-scheme-light)` still counts as default;
+ * `:root.pref-theme-scheme-dark` does not.
  */
-const loadDesignTokens = (): Tokens => {
-  const tokens: Tokens = {};
-  for (const file of collectCssFiles(TOKENS_CSS_DIR)) {
+const selectorIsUnconditional = (selector: string): boolean =>
+  selector.split(',').some((part) => {
+    const bare = part.replace(/:not\([^)]*\)/g, '').trim();
+    return bare.length > 0 && !bare.includes('.') && !bare.includes('[') && !bare.includes('#');
+  });
+
+/**
+ * True when nothing about a declaration's context makes it conditional: it is
+ * not nested in an `@media` (or any other) at-rule, and every enclosing rule is
+ * unconditional. Flipping tokens are declared for light in a bare `:root` and
+ * again for dark under `.pref-theme-scheme-dark` / `@media (prefers-color-scheme:
+ * dark)`; a blind last-wins pass would inline the DARK value as the static
+ * fallback, so a component rendered without the token sheets loaded would show a
+ * dark surface on a light page. Preferring the default keeps the fallback light.
+ */
+const isDefaultTheme = (decl: Declaration): boolean => {
+  let node = decl.parent;
+  while (node) {
+    if (node.type === 'atrule') {
+      return false;
+    }
+    if (node.type === 'rule' && !selectorIsUnconditional((node as Rule).selector)) {
+      return false;
+    }
+    node = node.parent;
+  }
+  return true;
+};
+
+/**
+ * Build a `name -> value` map from the given stylesheets, preferring the value
+ * declared for the default theme over any theme/preference variant. A property
+ * that only ever appears in a variant still gets that value (last-wins), so
+ * coverage never regresses.
+ */
+const buildLookup = (files: string[]): Tokens => {
+  const preferred: Tokens = {};
+  const anyValue: Tokens = {};
+  for (const file of files) {
     const root = postcss.parse(fs.readFileSync(file, 'utf-8'), { from: file });
     root.walkDecls((decl) => {
-      if (decl.prop.startsWith('--')) {
-        const value = decl.value.trim();
-        if (value.length > 0) {
-          tokens[decl.prop.slice(2)] = value;
-        }
+      if (!decl.prop.startsWith('--')) {
+        return;
+      }
+      const value = decl.value.trim();
+      if (value.length === 0) {
+        return;
+      }
+      const name = decl.prop.slice(2);
+      anyValue[name] = value;
+      if (isDefaultTheme(decl)) {
+        preferred[name] = value;
       }
     });
   }
-  return tokens;
+  return { ...anyValue, ...preferred };
+};
+
+/**
+ * Design-token custom properties (colors, transitions, radii, shadows, fonts,
+ * ...) declared across all generated token stylesheets, inlined as `var()`
+ * fallbacks so component CSS renders even when the consumer has not loaded the
+ * token sheets.
+ */
+const loadDesignTokens = (): Tokens => buildLookup(collectCssFiles(TOKENS_CSS_DIR));
+
+/**
+ * The generated semantic layer (`--magma-*`, `projects/styles/css/semantic.css`).
+ * Every entry is an indirection - e.g. `--magma-surface-raised:
+ * var(--magma-tint-raised)` - resolved recursively by `inject()` down to a
+ * design-token primitive, so a bare `var(--magma-*)` in component CSS still
+ * resolves to a concrete value when the consumer has not loaded the semantic
+ * sheet.
+ */
+const loadSemanticTokens = (): Tokens => {
+  const file = SEMANTIC_CSS_CANDIDATES.find((candidate) => fs.existsSync(candidate));
+  return file ? buildLookup([file]) : {};
+};
+
+/**
+ * The generated corner axis (`projects/styles/build/css/corner.css`). Its default
+ * block sits on a bare `:root` and the deviations on `[data-corner-shape]`, so
+ * `buildLookup` already prefers the default - a component rendered without the
+ * stylesheet falls back to the shipped default shape and its scale, not to
+ * whichever block happens to come last.
+ */
+const loadCornerTokens = (): Tokens => {
+  const file = CORNER_CSS_CANDIDATES.find((candidate) => fs.existsSync(candidate));
+  return file ? buildLookup([file]) : {};
+};
+
+/**
+ * The global tokens (`projects/styles/css/globals.css`). A token declared on the
+ * default `:root` falls back to that value; one that is only registered (the
+ * `--magma-pref-*` switches) falls back to its `initial-value`, which is what an
+ * element resolves when nothing declares it.
+ */
+const loadGlobalTokens = (): Tokens => {
+  if (!fs.existsSync(GLOBALS_CSS)) {
+    return {};
+  }
+  const registered: Tokens = {};
+  const root = postcss.parse(fs.readFileSync(GLOBALS_CSS, 'utf-8'), { from: GLOBALS_CSS });
+  root.walkAtRules('property', (atRule) => {
+    const name = atRule.params.trim();
+    atRule.walkDecls('initial-value', (decl) => {
+      if (name.startsWith('--') && decl.value.trim().length > 0) {
+        registered[name.slice(2)] = decl.value.trim();
+      }
+    });
+  });
+  return { ...registered, ...buildLookup([GLOBALS_CSS]) };
 };
 
 /**
@@ -89,12 +209,23 @@ const loadComponentDefaults = (): Tokens => {
 export interface TokenFallbackPluginOptions {
   /** Inline design-token values (colors, radii, shadows, ...) as fallbacks. */
   injectTokenFallbacks?: boolean;
+  /** Inline the semantic layer (`--magma-*`) indirections as fallbacks. */
+  injectSemanticFallbacks?: boolean;
+  /** Inline the global tokens (`styles/css/globals.css`) as fallbacks. */
+  injectGlobalFallbacks?: boolean;
   /** Inline each `--mds-*` `@property` `initial-value` as a fallback. */
   injectComponentDefaults?: boolean;
   /** Log a warning for every bare `var()` with no resolvable fallback. */
   warnOnMissing?: boolean;
   /** Throw for every bare `var()` with no resolvable fallback. */
   failOnMissing?: boolean;
+  /**
+   * Limit `warnOnMissing` / `failOnMissing` to the names starting with one of
+   * these prefixes (without the leading `--`). Component-private names
+   * (`--mds-*`, `--private-*`) are left bare on purpose, so checking every name
+   * only buries the one that matters.
+   */
+  checkPrefixes?: string[];
 }
 
 // Bare `var(--name)` with no existing fallback (closing paren right after the
@@ -107,15 +238,28 @@ export default function tokenFallbackPlugin(
 ): StencilStylePlugin {
   const {
     injectTokenFallbacks = true,
+    injectSemanticFallbacks = true,
+    injectGlobalFallbacks = true,
     injectComponentDefaults = true,
     warnOnMissing = false,
     failOnMissing = false,
+    checkPrefixes,
   } = options;
 
-  // Built once per build; token names and `mds-*` names never collide, so a
-  // flat lookup is enough. Component defaults win on the off chance they do.
+  const isChecked = (name: string): boolean =>
+    !checkPrefixes || checkPrefixes.some((prefix) => name.startsWith(prefix));
+
+  // Built once per build. Primitive, semantic (`--magma-*`) and `--mds-*` names
+  // never collide, so a flat lookup is enough; later spreads win on the off
+  // chance they do. Semantic entries are indirections resolved recursively by
+  // `inject()` down to the primitive values loaded alongside them.
   const lookup: Tokens = {
     ...(injectTokenFallbacks ? loadDesignTokens() : {}),
+    // Before the generated layers: a global that globals.css only registers (the
+    // corner shape) must yield to the default block its generated layer emits.
+    ...(injectGlobalFallbacks ? loadGlobalTokens() : {}),
+    ...(injectSemanticFallbacks ? loadSemanticTokens() : {}),
+    ...(injectSemanticFallbacks ? loadCornerTokens() : {}),
     ...(injectComponentDefaults ? loadComponentDefaults() : {}),
   };
 
@@ -128,7 +272,7 @@ export default function tokenFallbackPlugin(
     return value.replace(BARE_VAR, (whole, name: string) => {
       const fallback = lookup[name];
       if (fallback === undefined) {
-        if ((failOnMissing || warnOnMissing) && !reported.has(name)) {
+        if ((failOnMissing || warnOnMissing) && isChecked(name) && !reported.has(name)) {
           reported.add(name);
           const message = `CSS variable with no resolvable fallback: --${name}`;
           if (failOnMissing) {

@@ -1,11 +1,13 @@
-import { Component, Host, h, Prop, Element, State, Method } from '@stencil/core';
+import { Component, Host, h, Prop, Element, State } from '@stencil/core';
+import { hasChildWithSlot } from '@common/slot';
+import clsx from 'clsx';
 import { Locale } from '@common/locale';
 import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.es.json';
 import localeIt from './meta/locale.it.json';
 import { isSafari } from '@common/browser';
-import { subscribePreference } from '@common/preference';
+import { preferenceStore } from '@common/preference';
 
 /**
  * @slot - Put `mds-table-cell` element/s.
@@ -21,10 +23,8 @@ import { subscribePreference } from '@common/preference';
 })
 export class MdsTableRow {
   @Element() host: HTMLMdsTableRowElement;
-  @State() prefAnimation?: string;
-  private unsubscribePrefAnimation?: () => void;
-  private actions: HTMLDivElement;
-  private hasActions: boolean = true;
+  private actions?: HTMLDivElement;
+  @State() hasActions: boolean;
   private observer?: ResizeObserver;
   @State() sizerWidth: string;
   private t: Locale = new Locale({
@@ -33,15 +33,6 @@ export class MdsTableRow {
     es: localeEs,
     it: localeIt,
   });
-  @State() language: string;
-  /**
-   * Updates the component's texts to the locale currently set on the host element.
-   */
-  @Method()
-  async updateLang(): Promise<void> {
-    this.language = this.t.lang(this.host);
-    this.t.update();
-  }
 
   /**
    * Specifies whether the row reacts to user interaction (hover/focus).
@@ -74,31 +65,28 @@ export class MdsTableRow {
    */
   @Prop({ reflect: true }) readonly value?: string | number;
 
-  connectedCallback(): void {
-    this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
-      this.prefAnimation = value;
-    });
-  }
+  private onActionSlotChange = (): void => {
+    this.hasActions = hasChildWithSlot(this.host, 'action');
+  };
 
   componentWillLoad(): void {
-    this.language = this.t.lang(this.host);
-    this.hasActions = this.host.querySelector(':scope > [slot="action"]') !== null;
+    this.hasActions = hasChildWithSlot(this.host, 'action');
   }
 
   componentDidLoad(): void {
     // needed to capture sizer width when become visible
-    if (this.hasActions) this.initObserver();
+    if (this.actions) this.initObserver(this.actions);
   }
 
-  private initObserver() {
+  private initObserver(actions: HTMLDivElement) {
     this.observer = new ResizeObserver((entry) => {
-      this.sizerWidth = `${entry[0].borderBoxSize[0].inlineSize.toString()}px`;
+      // the cell is hidden while the slot is empty: no border box to read
+      this.sizerWidth = `${entry[0].borderBoxSize?.[0]?.inlineSize ?? 0}px`;
     });
-    this.observer.observe(this.actions);
+    this.observer.observe(actions);
   }
 
   disconnectedCallback() {
-    this.unsubscribePrefAnimation?.();
     if (this.observer) this.observer.disconnect();
   }
 
@@ -109,13 +97,12 @@ export class MdsTableRow {
 
   render() {
     return (
-      <Host role="row" pref-animation={this.prefAnimation}>
+      <Host role="row" pref-animation={preferenceStore.state.animation}>
         {this.selectable && (
           <mds-table-cell class="selection-cell">
             <div class="checkbox-wrapper">
               <mds-input-switch
                 title={this.t.get(this.selected ? 'unselectRow' : 'selectRow')}
-                lang={this.language}
                 type="checkbox"
                 checked={this.selected}
                 onMdsInputSwitchChange={this.handleSelectionChange}
@@ -124,15 +111,21 @@ export class MdsTableRow {
           </mds-table-cell>
         )}
         <slot />
-        {this.hasActions && isSafari() && (
-          <mds-table-cell class="actions-cell actions-cell--disable">
+        {isSafari() && (
+          <mds-table-cell
+            class={clsx(
+              'actions-cell',
+              'actions-cell--disable',
+              !this.hasActions && 'actions-cell--hidden',
+            )}
+          >
             <div class="actions">
-              <slot name="action"></slot>
+              <slot name="action" onSlotchange={this.onActionSlotChange}></slot>
             </div>
           </mds-table-cell>
         )}
-        {this.hasActions && !isSafari() && (
-          <mds-table-cell class="actions-cell">
+        {!isSafari() && (
+          <mds-table-cell class={clsx('actions-cell', !this.hasActions && 'actions-cell--hidden')}>
             <div
               class="actions-sizer"
               style={{
@@ -149,7 +142,7 @@ export class MdsTableRow {
                   marginRight: `calc(${this.sizerWidth} + var(--mds-table-cell-padding))`,
                 }}
               >
-                <slot name="action"></slot>
+                <slot name="action" onSlotchange={this.onActionSlotChange}></slot>
               </div>
             </div>
           </mds-table-cell>

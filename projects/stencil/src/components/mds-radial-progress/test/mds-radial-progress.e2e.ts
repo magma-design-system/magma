@@ -1,11 +1,20 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { render } from '@stencil/vitest';
 
 describe('mds-radial-progress', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<mds-radial-progress></mds-radial-progress>');
+    const { root } = await render('<mds-radial-progress></mds-radial-progress>');
 
-    const element = await page.find('mds-radial-progress');
-    expect(element).toHaveAttribute('hydrated');
+    expect(root).toHaveAttribute('hydrated');
+  });
+
+  it('exposes the progress value to assistive technology', async () => {
+    const { root } = await render('<mds-radial-progress progress="0.65"></mds-radial-progress>');
+
+    expect(root).toEqualAttributes({
+      role: 'progressbar',
+      'aria-valuemin': '0',
+      'aria-valuemax': '100',
+      'aria-valuenow': '65',
+    });
   });
 });

@@ -41,5 +41,8 @@ export default defineConfig({
   },
   server: {
     port: 5177,
+    // pin the port: if 5177 is busy it is this same playground, so fail fast
+    // instead of silently moving to 5178 (which spawns confusing extra instances)
+    strictPort: true,
   },
 });

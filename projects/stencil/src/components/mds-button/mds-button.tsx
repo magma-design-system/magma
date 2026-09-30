@@ -5,7 +5,7 @@ import {
   ButtonType,
   ButtonVariantType,
 } from '@type/button';
-import { Component, Host, Element, h, Prop, State, Watch, AttachInternals } from '@stencil/core';
+import { Component, Host, Element, h, Prop, Watch, AttachInternals } from '@stencil/core';
 import { KeyboardManager } from '@common/keyboard-manager';
 import { ToneBoxVariantType } from '@type/tone';
 
@@ -15,7 +15,7 @@ import { setAttributeIfEmpty, unslugName } from '@common/aria';
 import { isIconFormatIsBase64, isIconFormatIsSVG } from '@common/icon';
 import { TypographyTruncateType } from '@type/text';
 import { readSlottedLabel, sanitizeLabel } from '@common/slot';
-import { subscribePreference } from '@common/preference';
+import { preferenceStore } from '@common/preference';
 import mdiApple from '@icon/mdi/apple.svg';
 import logoGoogle from './asset/logo-google.svg';
 import { TextAnimationType } from '@component/mds-text/meta/types';
@@ -34,16 +34,9 @@ import { TextAnimationType } from '@component/mds-text/meta/types';
 })
 export class MdsButton {
   private typography?: TypographyType;
-  private hasNotification?: boolean;
   private km = new KeyboardManager();
 
   @Element() host: HTMLMdsButtonElement;
-  @State() prefAnimation?: string;
-  private unsubscribePrefAnimation?: () => void;
-  @State() prefTheme?: string;
-  private unsubscribePrefTheme?: () => void;
-  @State() prefThemeScheme?: string;
-  private unsubscribePrefThemeScheme?: () => void;
 
   @AttachInternals() internals: ElementInternals;
 
@@ -209,8 +202,6 @@ export class MdsButton {
   };
 
   componentWillLoad(): void {
-    this.hasNotification = this.host.querySelector(':scope > [slot="notification"]') !== null;
-
     this.handleVariantChange(this.variant);
 
     if (this.href !== undefined && this.href !== '') {
@@ -283,22 +274,10 @@ export class MdsButton {
   }
 
   connectedCallback(): void {
-    this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
-      this.prefAnimation = value;
-    });
-    this.unsubscribePrefTheme = subscribePreference('theme', (value) => {
-      this.prefTheme = value;
-    });
-    this.unsubscribePrefThemeScheme = subscribePreference('theme-scheme', (value) => {
-      this.prefThemeScheme = value;
-    });
     if (!this.disabled) this.host.removeAttribute('disabled');
   }
 
   disconnectedCallback(): void {
-    this.unsubscribePrefAnimation?.();
-    this.unsubscribePrefTheme?.();
-    this.unsubscribePrefThemeScheme?.();
     this.km.detachClickBehavior();
   }
 
@@ -309,16 +288,17 @@ export class MdsButton {
   };
 
   render() {
-    this.typography = buttonSizeTypographyVariant[this.size] as TypographyType;
+    this.typography = (buttonSizeTypographyVariant[this.size] ??
+      buttonSizeTypographyVariant.md) as TypographyType;
     return (
       <Host
         onMouseDown={this.mouseDown}
         onMouseUp={this.mouseUp}
         onMouseOut={this.mouseUp}
         tabindex="0"
-        pref-animation={this.prefAnimation}
-        pref-theme={this.prefTheme}
-        pref-theme-scheme={this.prefThemeScheme}
+        pref-animation={preferenceStore.state.animation}
+        pref-mode={preferenceStore.state.mode}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
         <div class="await">
           <mds-spinner class="spinner" running={this.await} />
@@ -337,7 +317,7 @@ export class MdsButton {
         >
           {this.label || <slot onSlotchange={this.onSlotChangeHandler} />}
         </mds-text>
-        {this.hasNotification && <slot name="notification" />}
+        <slot name="notification" />
         {this.icon && this.iconPosition === 'right' && (
           <mds-icon aria-hidden="true" class="icon" name={this.icon} part="icon" />
         )}

@@ -2,7 +2,7 @@ import { Component, Element, Host, h, Prop, Watch, State } from '@stencil/core';
 import { DirectionType } from './meta/types';
 import { ThemeVariantType } from '@type/variant';
 import { removeAttributesIf, ifAttribute } from '@common/aria';
-import { subscribePreference } from '@common/preference';
+import { preferenceStore } from '@common/preference';
 import { TypographyTechnicalType } from '@type/typography';
 import { ProgressBarSizeType } from '@type/progress';
 
@@ -17,15 +17,7 @@ import { ProgressBarSizeType } from '@type/progress';
   shadow: true,
 })
 export class MdsProgress {
-  @Element() private element: HTMLMdsAccordionTimerElement;
-  @State() prefAnimation?: string;
-  private unsubscribePrefAnimation?: () => void;
-  @State() prefContrast?: string;
-  private unsubscribePrefContrast?: () => void;
-  @State() prefTheme?: string;
-  private unsubscribePrefTheme?: () => void;
-  @State() prefThemeScheme?: string;
-  private unsubscribePrefThemeScheme?: () => void;
+  @Element() private element: HTMLMdsProgressElement;
   @State() currentStep: string;
   private stepsList = new Array<string>();
 
@@ -58,28 +50,6 @@ export class MdsProgress {
    * Sets the steps that can be pronounced by accessibility technologies
    */
   @Prop() readonly steps: string = 'Inizio,Un quarto,Metà,Tre quarti,Fine';
-
-  connectedCallback(): void {
-    this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
-      this.prefAnimation = value;
-    });
-    this.unsubscribePrefContrast = subscribePreference('contrast', (value) => {
-      this.prefContrast = value;
-    });
-    this.unsubscribePrefTheme = subscribePreference('theme', (value) => {
-      this.prefTheme = value;
-    });
-    this.unsubscribePrefThemeScheme = subscribePreference('theme-scheme', (value) => {
-      this.prefThemeScheme = value;
-    });
-  }
-
-  disconnectedCallback(): void {
-    this.unsubscribePrefAnimation?.();
-    this.unsubscribePrefContrast?.();
-    this.unsubscribePrefTheme?.();
-    this.unsubscribePrefThemeScheme?.();
-  }
 
   componentWillLoad(): void {
     this.stepsList = this.steps.split(',');
@@ -122,13 +92,15 @@ export class MdsProgress {
         aria-valuemin="0"
         aria-valuenow={!ifAttribute(this.element, 'aria-hidden') && Math.round(this.progress * 100)}
         role="progressbar"
-        pref-animation={this.prefAnimation}
-        pref-contrast={this.prefContrast}
-        pref-theme={this.prefTheme}
-        pref-theme-scheme={this.prefThemeScheme}
+        pref-animation={preferenceStore.state.animation}
+        pref-contrast={preferenceStore.state.contrast}
+        pref-mode={preferenceStore.state.mode}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
         {this.direction === 'radial' ? (
           <mds-radial-progress
+            // the host already is the progressbar: a second, nameless one would be announced too
+            aria-hidden="true"
             progress={this.progress}
             part="radial-progress"
             typography={this.typography}

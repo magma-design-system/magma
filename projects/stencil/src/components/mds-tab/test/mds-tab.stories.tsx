@@ -96,7 +96,7 @@ const SectionComponent = ({ id, className, title, slot = 'none' }) => {
 
 const TemplateScroll = () => (
   <div class="grid gap-600 pt-[60px]">
-    <div class="fixed top-0 left-0 right-0 p-400 px-600 shadow-sm flex bg-tone-neutral">
+    <div class="fixed top-0 left-0 right-0 p-400 px-600 shadow-sm flex bg-surface-raised">
       <mds-tab>
         <mds-tab-item href="#section-1" selected label="Section 1"></mds-tab-item>
         <mds-tab-item href="#section-2" label="Section 2"></mds-tab-item>

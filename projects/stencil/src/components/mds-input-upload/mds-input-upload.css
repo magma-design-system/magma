@@ -8,47 +8,30 @@
  * @prop --mds-input-upload-min-cols: Set the minimum number of columns for the file list.
  */
 
-@property --mds-input-upload-drag-area-background-color-on-drag {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-10));
-  syntax: '<color>';
-}
-
-@property --mds-input-upload-drag-area-background-color {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral));
-  syntax: '<color>';
-}
-
-@property --mds-input-upload-min-cols {
-  inherits: false;
-  initial-value: 3;
-  syntax: '<integer>';
-}
-
 /* ❌ Not supported
 @property --mds-input-upload-drag-area-border-on-drag {
   inherits: false;
-  initial-value: 3px dashed rgb(var(--tone-neutral-04));
+  initial-value: 3px dashed rgb(var(--magma-border-strong));
   syntax: "<border>";
 }
 
 @property --mds-input-upload-drag-area-border {
   inherits: false;
-  initial-value: 3px dashed rgb(var(--tone-neutral-07));
+  initial-value: 3px dashed rgb(var(--magma-border-default));
   syntax: "<border>";
 }
 */
 
 :host {
-  --mds-input-upload-drag-area-background-color-on-drag: rgb(var(--tone-neutral-10));
-  --mds-input-upload-drag-area-background-color: rgb(var(--tone-neutral));
-  --mds-input-upload-drag-area-border-on-drag: 3px dashed rgb(var(--tone-neutral-04));
-  --mds-input-upload-drag-area-border: 3px dashed rgb(var(--tone-neutral-07));
+  --mds-input-upload-drag-area-background-color-on-drag: rgb(var(--magma-wash-soft));
+  --mds-input-upload-drag-area-background-color: rgb(var(--magma-surface-overlay));
+  --mds-input-upload-drag-area-border-on-drag: 3px dashed rgb(var(--magma-border-strong));
+  --mds-input-upload-drag-area-border: 3px dashed rgb(var(--magma-border-default));
   --mds-input-upload-min-cols: 3;
 
   @apply grid-cols-full;
 
+  container-type: inline-size;
   display: grid;
   gap: --spacing(400);
 }
@@ -67,7 +50,7 @@
   /*
     actually there is no way to custom background-image url
     paramter which not allows to pass custom properties inside
-    --stroke-color: rgb(var(--tone-neutral-07));
+    --stroke-color: rgb(var(--magma-border-default));
     --stroke-dashoffset: 8;
     --stroke-line-width: 8;
     --stroke-width: 5;
@@ -93,29 +76,29 @@
 .icon {
   @apply svg;
 
-  fill: rgb(var(--tone-neutral-03));
+  fill: rgb(var(--magma-text-muted));
   width: --spacing(600);
 }
 
 .action {
-  border-radius: 1000px;
-  fill: rgb(var(--tone-neutral-04));
+  border-radius: var(--radius-full);
+  fill: rgb(var(--magma-text-subtle));
   height: auto;
   padding: --spacing(150);
 }
 
 .action--cancel-upload:focus-visible,
 .action--cancel-upload:hover {
-  --mds-button-background: rgb(var(--status-error-09));
+  --mds-button-background: rgb(var(--magma-danger-wash-base));
 
-  fill: rgb(var(--status-error-04));
+  fill: rgb(var(--magma-danger-emphasis));
 }
 
 .action--retry-upload:focus-visible,
 .action--retry-upload:hover {
-  --mds-button-background: rgb(var(--status-success-09));
+  --mds-button-background: rgb(var(--magma-success-wash-base));
 
-  fill: rgb(var(--status-success-04));
+  fill: rgb(var(--magma-success-emphasis));
 }
 
 .main-action {
@@ -129,9 +112,10 @@
 
 .main-actions {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap;
   gap: --spacing(200);
-  min-width: --spacing(3200);
+  justify-content: center;
 }
 
 .main-action-icon {
@@ -167,13 +151,14 @@
 }
 
 .main-infos {
-  max-width: --spacing(4800);
   min-width: 0;
   text-align: center;
   width: 100%;
 }
 
 .progress-bar {
+  justify-self: center;
+  max-width: --spacing(8000);
   min-width: 0;
   width: 100%;
 }
@@ -207,5 +192,9 @@
 @container (max-width: 340px) {
   .file-list {
     --template-cols: 1fr;
+  }
+
+  .main-actions {
+    flex-direction: column;
   }
 }

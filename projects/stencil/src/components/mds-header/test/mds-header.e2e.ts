@@ -1,12 +1,9 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { render } from '@stencil/vitest';
 
 describe('mds-header', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<mds-header></mds-header>');
+    const { root } = await render('<mds-header></mds-header>');
 
-    const element = await page.find('mds-header');
-    expect(element).toHaveAttribute('hydrated');
-    expect(true).toBe(true);
+    expect(root).toHaveAttribute('hydrated');
   });
 });

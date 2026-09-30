@@ -4,7 +4,8 @@
       "color": "#94a3b8",
       "export": ["tones"],
       "name": "tone.porcelain",
-      "seed": { "light": "#FFFFFF", "dark": "#000000" }
+      "seed": { "light": "#FFFFFF", "dark": "#000000" },
+      "surface": true
     },
     {
       "color": "#9ca3af",
@@ -16,7 +17,8 @@
       "color": "#a3a3a3",
       "export": ["tones", "default"],
       "name": "tone.neutral",
-      "seed": { "light": "#FFFFFF", "dark": "#000000" }
+      "seed": { "light": "#FFFFFF", "dark": "#000000" },
+      "surface": true
     },
     {
       "color": "#A99F95",
@@ -28,7 +30,8 @@
       "color": "#AC9C97",
       "export": ["tones"],
       "name": "tone.bisque",
-      "seed": { "light": "#FFFFFF", "dark": "#000000" }
+      "seed": { "light": "#FFFFFF", "dark": "#000000" },
+      "surface": true
     },
 
     {
@@ -64,9 +67,9 @@
     { "color": "#eab308", "export": ["label", "default"], "name": "label.yellow" },
     { "color": "#f97316", "export": ["label", "default"], "name": "label.orange" },
 
-    { "color": "#00379E", "export": ["default"], "name": "variant.primary" },
-    { "color": "#0f4ad5", "export": ["default"], "name": "variant.secondary" },
-    { "color": "#782FF6", "export": ["default"], "name": "variant.ai" },
+    { "alias": "brand.maggioli", "export": ["default"], "name": "variant.primary" },
+    { "alias": "brand.maggioli-editore", "export": ["default"], "name": "variant.secondary" },
+    { "alias": "label.violet", "export": ["default"], "name": "variant.ai" },
 
     {
       "color": "#00379E",
@@ -93,6 +96,19 @@
   "colorspace": "HSL",
   "smooth": false,
   "groups": {
-    "tone": { "ratios": "tone" }
+    "tone": { "ratios": "tone" },
+    "status": { "surface": true }
+  },
+  "theme": {
+    "colorspace": "OKLCH",
+    "surfaces": {
+      "light": { "sunken": "93%", "muted": "94%", "default": "96%", "raised": "98%", "overlay": "100%" },
+      "dark": { "sunken": "9%", "muted": "16%", "default": "23%", "raised": "31%", "overlay": "41%" }
+    },
+    "borders": {
+      "light": { "muted": "89%", "default": "82%", "strong": "64%" },
+      "dark": { "muted": "37%", "default": "54%", "strong": "74%" }
+    },
+    "text": { "default": 91, "muted": 73, "subtle": 64, "disabled": 40 }
   }
 }

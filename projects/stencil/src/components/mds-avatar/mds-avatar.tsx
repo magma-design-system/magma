@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import fitty from 'fitty/dist/fitty.min.js';
 import { Component, Element, Host, h, State, Prop, Watch } from '@stencil/core';
-import { subscribePreference } from '@common/preference';
+import { preferenceStore } from '@common/preference';
 import { ThemeFullVariantAvatarType } from '@type/variant';
 import { ToneMinimalVariantType } from '@type/tone';
 
@@ -23,26 +23,8 @@ export class MdsAvatar {
   // BUG: when user switch from initials to other and turn back to initials fitty breaks
 
   @Element() private element: HTMLMdsAvatarElement;
-  @State() prefAnimation?: string;
-  private unsubscribePrefAnimation?: () => void;
-  @State() prefContrast?: string;
-  private unsubscribePrefContrast?: () => void;
   @State() fallback = false;
   @State() loaded = true;
-
-  connectedCallback(): void {
-    this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
-      this.prefAnimation = value;
-    });
-    this.unsubscribePrefContrast = subscribePreference('contrast', (value) => {
-      this.prefContrast = value;
-    });
-  }
-
-  disconnectedCallback(): void {
-    this.unsubscribePrefAnimation?.();
-    this.unsubscribePrefContrast?.();
-  }
 
   private observer: ResizeObserver;
   private fittyElements;
@@ -212,7 +194,10 @@ export class MdsAvatar {
 
   render() {
     return (
-      <Host pref-animation={this.prefAnimation} pref-contrast={this.prefContrast}>
+      <Host
+        pref-animation={preferenceStore.state.animation}
+        pref-contrast={preferenceStore.state.contrast}
+      >
         <div
           class={clsx(
             'avatar',

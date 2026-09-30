@@ -11,65 +11,17 @@
  * @prop --mds-table-color: Default text color of the table.
  */
 
-@property --mds-table-actions-gap {
-  inherits: false;
-  initial-value: --spacing(200);
-  syntax: '<length>';
-}
-
-@property --mds-table-background-alt {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-10));
-  syntax: '<color>';
-}
-
-@property --mds-table-background {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral));
-  syntax: '<color>';
-}
-
-@property --mds-table-border-color {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-08));
-  syntax: '<color>';
-}
-
-@property --mds-table-border-width {
-  inherits: false;
-  initial-value: 2px;
-  syntax: '<length>';
-}
-
-@property --mds-table-cell-padding {
-  inherits: false;
-  initial-value: --spacing(400);
-  syntax: '<length>';
-}
-
-@property --mds-table-color-alt {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-05));
-  syntax: '<color>';
-}
-
-@property --mds-table-color {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-02));
-  syntax: '<color>';
-}
-
 :host {
   --mds-table-transition-duration: var(--duration-300);
   --private-table-transition-duration: var(--mds-table-transition-duration);
   --mds-table-actions-gap: --spacing(200);
-  --mds-table-background-alt: rgb(var(--tone-neutral-10));
-  --mds-table-background: rgb(var(--tone-neutral));
-  --mds-table-border-color: rgb(var(--tone-neutral-08));
+  --mds-table-background-alt: rgb(var(--magma-surface-raised));
+  --mds-table-background: rgb(var(--magma-surface-overlay));
+  --mds-table-border-color: rgb(var(--magma-border-default));
   --mds-table-border-width: 2px;
   --mds-table-cell-padding: --spacing(400);
-  --mds-table-color-alt: rgb(var(--tone-neutral-05));
-  --mds-table-color: rgb(var(--tone-neutral-02));
+  --mds-table-color-alt: rgb(var(--magma-text-muted));
+  --mds-table-color: rgb(var(--magma-text-default));
   --mds-table-batch-actions-width: --spacing(4800);
 
   /* internal */
@@ -81,8 +33,8 @@
   background-color: var(--mds-table-background-alt);
   border: var(--mds-table-border-width) solid var(--mds-table-border-color) !important;
   border-color: var(--mds-table-border-color);
-  border-radius: var(--radius-2xl);
-  corner-shape: var(--magma-corner-shape, round);
+  border-radius: var(--magma-radius-2xl);
+  corner-shape: var(--magma-corner-shape);
   display: flex;
   overflow: hidden;
   transition-duration: var(--duration-200);
@@ -106,6 +58,5 @@
 @import './css/mds-table-batch-actions.css';
 @import './css/mds-table-selection.css';
 @import './css/mds-table-pref-animation.css';
-@import './css/mds-table-pref-theme.css';
-@import './css/mds-table-pref-contrast.css';
+@import './css/mds-table-pref-mode.css';
 @import './css/mds-table-pref-contrast-dark.css';

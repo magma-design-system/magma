@@ -89,6 +89,12 @@ export interface CssVarRenameRule {
   to: string;
   /** e.g. hex → `R G B` channels; the value cannot be migrated automatically. */
   valueFormatChanged?: boolean;
+  /**
+   * Extra context surfaced as a flag on the definition site: the value-format
+   * details, or the fact that the v1 name was documented but never shipped
+   * (renaming it activates an override that was silently inert).
+   */
+  note?: string;
 }
 
 /** Category G2 — a CSS custom property was removed with no v2 replacement; usages are reported. */
@@ -99,11 +105,77 @@ export interface CssVarRemoveRule {
   message: string;
 }
 
+/**
+ * Category G3 (report-only). A neutral tone/primitive used as a *background* is
+ * a surface under the semantic color system, but the exact role (default /
+ * raised / overlay / sunken / muted) is contextual and often the component's own
+ * default (C2 territory), so the codemod REPORTS the site for manual migration
+ * to a `--magma-surface-*` role instead of rewriting it. "Background context" =
+ * a `background` / `background-color` property, OR a custom property whose name
+ * contains `background` (component `--mds-*-background*` tokens). CSS-only; the
+ * value is never rewritten.
+ */
+export interface CssVarSurfaceReportRule {
+  kind: 'cssVarSurfaceReport';
+  /** Without the leading `--`: the token that is a surface candidate as a background. */
+  from: string;
+  /** Optional extra guidance appended to the report message. */
+  note?: string;
+}
+
+/**
+ * Category J — rename a utility class of the styles package (the Tailwind
+ * design-token contract: `shadow-*`, `rounded-*`, `border-*`, `gap-*`), value
+ * preserved. `from`/`to` are the bare utility names; the surfaces match them
+ * under any variant prefixes (`hover:`, `md:`, arbitrary variants) and the
+ * important marker, and rewrite only the utility segment.
+ */
+export interface ClassRenameRule {
+  kind: 'classRename';
+  /** Bare utility name, without variant prefixes: `shadow-outline-light`. */
+  from: string;
+  to: string;
+  /** Extra context surfaced as a flag next to the rename. */
+  note?: string;
+  /**
+   * Also rename the class in CSS class selectors (`.pref-theme-dark .x`). Off
+   * for the utility classes, which a stylesheet applies with `@apply` rather
+   * than selects; on for the state classes the design system writes on
+   * `<html>`, which consumer stylesheets select.
+   */
+  selectors?: boolean;
+}
+
+/** Category J (report-only) — a v1 utility class with no exact v2 equivalent; usages are reported. */
+export interface ClassReportRule {
+  kind: 'classReport';
+  /** Bare utility name, without variant prefixes. */
+  name: string;
+  message: string;
+}
+
 /** Category H — rename a shadow part referenced in `::part()`. */
 export interface PartRenameRule {
   kind: 'partRename';
   from: string;
   to: string;
+}
+
+/**
+ * Category K — rename the element itself. The component keeps its v1 tag as its
+ * manifest key, so every other rule of the component still matches the source
+ * as written; the surfaces rename the tag (HTML / Angular start and end tags,
+ * CSS type selectors) and the React component name (JSX tags and the named
+ * import) in the same single pass. All renames are applied at once, so a v1
+ * name that another component takes in v2 (`mds-pref-theme`) is never renamed
+ * twice.
+ */
+export interface TagRenameRule {
+  kind: 'tagRename';
+  /** v2 tag, `mds-pref-mode`. */
+  to: string;
+  /** v2 React component name, `MdsPrefMode`. */
+  toReact: string;
 }
 
 /** Category I — rename an event (raw event name, e.g. `mdsChange`). */
@@ -142,8 +214,12 @@ export type Rule =
   | SlotToAttrRule
   | CssVarRenameRule
   | CssVarRemoveRule
+  | CssVarSurfaceReportRule
+  | ClassRenameRule
+  | ClassReportRule
   | PartRenameRule
   | EventRenameRule
+  | TagRenameRule
   | EnsureAttrRule;
 
 export type RuleKind = Rule['kind'];
@@ -169,9 +245,32 @@ export interface GlobalRules {
     map: Record<string, string | null>;
     /** Name of the per-component `v2EnumSets` entry holding that component's valid tone values. */
     toneSet: string;
+    /**
+     * Per-tag replacement maps for components whose v2 tone set supports a
+     * closer target than the global one (e.g. `quiet → text` where `text`
+     * exists). A tag listed here uses its map *instead of* `map`.
+     */
+    overrides?: Record<string, Record<string, string | null>>;
   };
   /** Remove `slot="default"` everywhere (v2 uses the unnamed default slot). */
   removeDefaultSlot?: boolean;
+  /**
+   * CSS custom-property migrations that are not tied to a single component:
+   * primitive-token renames (the `--tone-*` -> `--tone-*-seed` seed rename from
+   * A2) and report-only surface candidates (a neutral tone used as a background,
+   * migrated by hand to a `--magma-surface-*` role). CSS-only; the
+   * HTML/React/Angular surfaces ignore them.
+   */
+  cssVars?: Array<CssVarRenameRule | CssVarSurfaceReportRule>;
+  /**
+   * Utility-class migrations of the styles package (category J): the Tailwind
+   * design-token contract that changed between v1 and v2 (`shadow-*` ring
+   * family, retuned `rounded-*` scale, `border-*` widths, named `gap-*`
+   * steps). Applied to `class` / `className` values on ANY element (the
+   * classes are global, not tied to an `mds-*` component) and to `@apply` in
+   * CSS/SCSS.
+   */
+  classes?: Array<ClassRenameRule | ClassReportRule>;
 }
 
 export interface Manifest {

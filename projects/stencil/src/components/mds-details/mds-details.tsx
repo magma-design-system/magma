@@ -9,10 +9,11 @@ import {
   Watch,
   h,
 } from '@stencil/core';
+import { hasChildWithSlot } from '@common/slot';
 import clsx from 'clsx';
 import miBaselineKeyboardArrowRight from '@icon/mi/baseline/keyboard-arrow-right.svg';
 import { KeyboardManager } from '@common/keyboard-manager';
-import { subscribePreference } from '@common/preference';
+import { preferenceStore } from '@common/preference';
 
 /**
  * @slot - Add `text string`, `HTML elements` or `components` to this slot.
@@ -31,10 +32,6 @@ import { subscribePreference } from '@common/preference';
 })
 export class MdsDetails {
   @Element() private host: HTMLMdsDetailsElement;
-  @State() prefAnimation?: string;
-  private unsubscribePrefAnimation?: () => void;
-  @State() prefContrast?: string;
-  private unsubscribePrefContrast?: () => void;
   @State() isOpened: boolean;
   @State() hasIcon: boolean = true;
   private km = new KeyboardManager();
@@ -64,18 +61,7 @@ export class MdsDetails {
     this.km.attachClickBehavior();
   }
 
-  connectedCallback(): void {
-    this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
-      this.prefAnimation = value;
-    });
-    this.unsubscribePrefContrast = subscribePreference('contrast', (value) => {
-      this.prefContrast = value;
-    });
-  }
-
   disconnectedCallback(): void {
-    this.unsubscribePrefAnimation?.();
-    this.unsubscribePrefContrast?.();
     this.km.detachClickBehavior();
   }
 
@@ -85,7 +71,7 @@ export class MdsDetails {
   };
 
   private checkIcon = (): void => {
-    this.hasIcon = this.host.querySelector(':scope > [slot="icon"]') !== null;
+    this.hasIcon = hasChildWithSlot(this.host, 'icon');
   };
 
   private onSlotChangeHandler = (): void => {
@@ -94,12 +80,22 @@ export class MdsDetails {
 
   render() {
     return (
-      <Host pref-animation={this.prefAnimation} pref-contrast={this.prefContrast}>
+      <Host
+        pref-animation={preferenceStore.state.animation}
+        pref-contrast={preferenceStore.state.contrast}
+      >
         <div class={clsx('icon', this.hasIcon ? '' : 'icon--hidden')} onClick={this.toggle}>
           <slot name="icon" onSlotchange={this.onSlotChangeHandler} />
         </div>
         <div class="content">
-          <header class="header" part="header" tabindex="0" onClick={this.toggle}>
+          <div
+            class="header"
+            part="header"
+            role="button"
+            aria-expanded={this.isOpened ? 'true' : 'false'}
+            tabindex="0"
+            onClick={this.toggle}
+          >
             <div class="title" part="title">
               <slot name="title" />
             </div>
@@ -107,7 +103,7 @@ export class MdsDetails {
               class={clsx('helper-icon', this.isOpened && 'opened')}
               innerHTML={miBaselineKeyboardArrowRight}
             />
-          </header>
+          </div>
           <div class={clsx('details', this.isOpened && 'opened')}>
             <div class="content-expander" part="content">
               <slot />

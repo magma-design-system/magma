@@ -2,7 +2,7 @@
 
 ## 1. System Overview
 
-Magma is a monorepo managed with NX and Yarn workspaces. It is composed of five independent sub-projects, each published as a separate npm package under the `@maggioli-design-system` scope. Sub-projects have a strict one-directional dependency graph: no circular dependencies are allowed.
+Magma is a monorepo managed with NX and npm workspaces. It is composed of five independent sub-projects, each published as a separate npm package under the `@maggioli-design-system` scope. Sub-projects have a strict one-directional dependency graph: no circular dependencies are allowed.
 
 ```mermaid
 graph TD
@@ -85,7 +85,9 @@ Dark mode is handled via palette-level CSS custom properties. Activation classes
 - `pref-theme-scheme-dark / light / all` — fine-grained control
 
 Global design decisions overridable via CSS custom properties on `:root`:
-- `--magma-corner-shape` — controls corner shape globally (default: `squircle`)
+- `data-corner-shape` — corner geometry: the shape AND the `--magma-radius-*` scale tuned for it,
+  moved together (default: `squircle`, on a bare `:root`). Works on any element, so a subtree can
+  deviate. `--magma-corner-shape` alone changes the shape WITHOUT the scale
 - `--magma-disabled-opacity` — default: `0.5`
 - `--magma-outline-focus` — focus ring style
 - Z-index scale: header `1000` → notification `2000` → modal `3000` → backdrop `4000` → dropdown `5000` → tooltip `6000` → theme-overlay `7000` → context-menu `8000`
@@ -97,6 +99,8 @@ The web component library. ~115 components built with StencilJS, compiled to sta
 - `@maggioli-design-system/magma` — vanilla JS / HTML
 - `@maggioli-design-system/magma-react` — React wrapper
 - `@maggioli-design-system/magma-angular` — Angular wrapper
+
+The wrappers are separate npm workspaces, `projects/stencil-react` and `projects/stencil-angular` (nx projects of the same name), siblings of `projects/stencil`. The Stencil build generates their sources (`projects/stencil-react/src`, `projects/stencil-angular/magma-angular/src/stencil-generated`) and their agent install docs; they only compile what `stencil` emitted. They live outside `projects/stencil` because npm never materializes the `node_modules` of a workspace nested inside another workspace (#666, #672). Each wrapper has its own tests against the stencil build (`nx run stencil-react:test`: Vitest, browser and node projects; `nx run stencil-angular:test`: Karma), run in CI by the `magma-react` and `magma-angular` jobs of the stencil workflow.
 
 ---
 
@@ -115,7 +119,7 @@ Most components use `shadow: true` (full Shadow DOM encapsulation). Form-associa
 | **Molecule** | Composed of atoms, single concern | `mds-input`, `mds-chip`, `mds-breadcrumb` |
 | **Compound** | Parent + required child component pair | `mds-accordion` + `mds-accordion-item`, `mds-card` + `mds-card-header/content/footer/media` |
 | **Organism** | Complex layout component | `mds-table`, `mds-modal`, `mds-header` |
-| **Preference** | User preference controls (theme, contrast, animation) | `mds-pref`, `mds-pref-theme`, `mds-pref-contrast` |
+| **Preference** | User preference controls (mode, theme, contrast, animation) | `mds-pref`, `mds-pref-mode`, `mds-pref-theme`, `mds-pref-contrast` |
 
 ### 3.3 Compound component pattern
 

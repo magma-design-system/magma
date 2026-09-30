@@ -11,7 +11,8 @@ Use the version of this package matching the major version of [`@maggioli-design
 | magma | design-tokens | styles |
 | :--- | :--- | :--- |
 | `1.x` (before Magma 2) | `13.x` (latest `13.7.2`) | `15.x` (latest `15.11.1`) |
-| `2.x` and later | `>= 14` | `>= 16` |
+| `2.0.0-alpha.0` to `2.0.0-beta.3` (prereleases) | `14.x` | `16.x` |
+| `2.x` and later | `>= 15` | `>= 17` |
 
 ---
 
@@ -54,7 +55,7 @@ The layer order is thinked to be used with tailwindcss, so the first layer is th
 @layer overrides {
   body {
     @apply
-    bg-tone-neutral
+    bg-tone-neutral-seed
     text-tone-neutral-03
       transition-colors
       duration-300
@@ -200,6 +201,55 @@ Fontsource supports [variable fonts][fontsource-var-fonts].
 
 ---
 
+### Editor autocomplete
+
+`dist/css/tokens.editor.css` is the single file to point an editor at. It is generated,
+holds every public token exactly once - the scales, motion, palette, semantic layer,
+globals and the tokens of every component - with each default resolved to a literal, and
+it is ordered: a scale runs from its smallest step up, a palette keeps its ramp order.
+
+One deliberate difference from the real stylesheets: a palette token whose value is a bare
+rgb triplet is written as `rgb(<triplet>)`, so an editor can show its actual color. No
+editor can preview `rgb(var(--label-yellow-03))` - a triplet is not a color, and VS Code's
+own color support returns nothing for that shape even when the token is in the same file.
+The token itself still holds the triplet, to be read as `rgb(var(--label-yellow-03))`.
+
+Why a generated file rather than the real stylesheets. Editors discover custom properties
+by walking declarations, so the `@property` registrations that publish the `--mds-*`
+component tokens and the `--magma-pref-*` switches are invisible to them. And the token
+layer ships the same names several times over (the design-tokens output is copied into
+this package, and every scale exists both as `:root` and as an `@theme` bridge), while
+editors dedupe per file rather than across files: pointing at the sources yields four to
+eight completion entries per token. One file makes that impossible.
+
+With [CSS Var Complete][css-variable-autocomplete], in `.vscode/settings.json`:
+
+```json
+{
+  "cssvar.files": [
+    "node_modules/@maggioli-design-system/styles/dist/css/tokens.editor.css"
+  ],
+  "cssvar.ignore": [],
+  "cssvar.disableSort": true
+}
+```
+
+`cssvar.ignore` defaults to `["**/node_modules/**"]` and is applied as an ignore list over
+`cssvar.files`, so the path above is dropped unless you empty it. `cssvar.disableSort`
+turns off the editor's own alphabetical sort and keeps the file's order, which is the
+point of generating it.
+
+Two things stay outside the file: `--private-*`, a component's internal wiring, declared
+in the file that uses it where same-document completion already covers it; and the
+handful of tokens Tailwind's own theme publishes (`--blur-*`, `--drop-shadow-*`, the
+`--radius` steps we do not override), which Tailwind IntelliSense completes.
+
+Never import this file. It only holds light-theme defaults, so loading it would pin every
+token at the highest-priority origin and freeze theming; it is wrapped in a query that can
+never match, which makes an accidental import a no-op.
+
+---
+
 ### Dist folder
 
 The `dist` folder contains the following files:
@@ -208,6 +258,7 @@ The `dist` folder contains the following files:
 | --------- | ----------- | ----------- |
 | `css` | both | `globals.css` |
 | `css` | both | `reset.css` |
+| `css` | editors only, never import | `tokens.editor.css` |
 | `css` | plain css | `base.css` |
 | `css` | plain css | `colors-hex-*.css` |
 | `css` | plain css | `utility-typography.css` |
@@ -217,6 +268,7 @@ The `dist` folder contains the following files:
 | `tailwind` | tailwind components | `components.css` |
 
 [mds]: https://magma.maggiolicloud.it/
+[css-variable-autocomplete]: https://marketplace.visualstudio.com/items?itemName=vunguyentuan.vscode-css-variables
 [fontsource-var-fonts]: https://fontsource.org/docs/variable-fonts
 [tailwindcss-config]: https://gitlab.com/maggiolispa/ricerca-sviluppo-new-media/magma/design-system/-/blob/dev/projects/styles/tailwind.config.js
 [tailwindcss-doc]: https://tailwindcss.com/docs/installation

@@ -15,14 +15,14 @@
 :host {
   --mds-input-range-transition-duration: var(--duration-300);
   --private-input-range-transition-duration: var(--mds-input-range-transition-duration);
-  --mds-input-range-thumb-background-disabled: rgb(var(--tone-neutral-08));
-  --mds-input-range-thumb-background: rgb(var(--tone-neutral));
+  --mds-input-range-thumb-background-disabled: rgb(var(--magma-wash-strong));
+  --mds-input-range-thumb-background: rgb(var(--magma-surface-overlay));
   --mds-input-range-thumb-cursor: col-resize;
   --mds-input-range-thumb-size: --spacing(400);
-  --mds-input-range-track-background-disabled: rgb(var(--tone-neutral-08));
-  --mds-input-range-track-background: rgb(var(--tone-neutral-08));
-  --mds-input-range-track-progress-background-disabled: rgb(var(--tone-neutral-06));
-  --mds-input-range-track-progress-background: rgb(var(--variant-primary-03));
+  --mds-input-range-track-background-disabled: rgb(var(--magma-wash-strong));
+  --mds-input-range-track-background: rgb(var(--magma-wash-strong));
+  --mds-input-range-track-progress-background-disabled: rgb(var(--magma-border-strong));
+  --mds-input-range-track-progress-background: rgb(var(--magma-accent-emphasis-hover));
   --mds-input-range-track-size: --spacing(600);
 
   /* private properties */
@@ -71,7 +71,7 @@
 
   appearance: none;
   background-color: transparent;
-  border-radius: 1000px;
+  border-radius: var(--radius-full);
   flex-grow: 1;
   height: --spacing(400);
   margin: 0;
@@ -142,5 +142,5 @@
 
 @import './css/mds-input-range-disabled.css';
 @import './css/mds-input-range-pref-animation.css';
-@import './css/mds-input-range-pref-theme.css';
+@import './css/mds-input-range-pref-mode.css';
 @import './css/mds-input-range-pref-contrast.css';

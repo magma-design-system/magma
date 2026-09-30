@@ -56,11 +56,19 @@ class RandomText {
     cancelAnimationFrame(this.rafId);
   }
 
+  /**
+   * Every frame advances the first `stepCount` characters towards their target and leaves
+   * the rest where they are. The whole array is mapped, not a `slice` of it: a character
+   * that has not started yet is still far from its target, so it comes out as the
+   * placeholder instead of coming out as nothing. The string therefore has its final
+   * length from the very first frame, which is what keeps the box from collapsing - an
+   * output of zero characters has no line box at all, and everything around it jumps.
+   */
   step(randoms: number[], stepCount: number, speed: number): void {
     const { str, charStep, minCharCode, maxCharCode, placeholderChar, onProgress, onComplete } =
       this;
-    const stepArray = randoms.slice(0, stepCount);
-    const steppedArray = stepArray.map((item) => {
+    const steppedArray = randoms.map((item, index) => {
+      if (index >= stepCount) return item;
       if (item > 0) return item - 1;
       if (item < 0) return item + 1;
       return 0;
@@ -72,7 +80,7 @@ class RandomText {
       placeholderChar,
       charStep,
     })(steppedArray);
-    const updatedRandoms = [...steppedArray, ...randoms.slice(stepCount)];
+    const updatedRandoms = steppedArray;
     onProgress(output);
 
     if (output !== str) {

@@ -1,30 +1,30 @@
 :host([variant='primary'][message]) {
-  --mds-file-preview-icon-background: rgb(var(--variant-primary-09));
-  --mds-file-preview-icon-color: rgb(var(--variant-primary-04));
+  --mds-file-preview-icon-background: rgb(var(--magma-accent-surface));
+  --mds-file-preview-icon-color: rgb(var(--magma-accent-emphasis));
 }
 
 :host([variant='info'][message]) {
-  --mds-file-preview-icon-background: rgb(var(--status-info-09));
-  --mds-file-preview-icon-color: rgb(var(--status-info-04));
-  --mds-file-preview-color: rgb(var(--status-info-03));
+  --mds-file-preview-icon-background: rgb(var(--magma-info-wash-base));
+  --mds-file-preview-icon-color: rgb(var(--magma-info-text-default));
+  --mds-file-preview-color: rgb(var(--magma-info-text-subtle));
 }
 
 :host([variant='success'][message]) {
-  --mds-file-preview-icon-background: rgb(var(--status-success-09));
-  --mds-file-preview-icon-color: rgb(var(--status-success-04));
-  --mds-file-preview-color: rgb(var(--status-success-03));
+  --mds-file-preview-icon-background: rgb(var(--magma-success-wash-base));
+  --mds-file-preview-icon-color: rgb(var(--magma-success-text-default));
+  --mds-file-preview-color: rgb(var(--magma-success-text-subtle));
 }
 
 :host([variant='warning'][message]) {
-  --mds-file-preview-icon-background: rgb(var(--status-warning-09));
-  --mds-file-preview-icon-color: rgb(var(--status-warning-04));
-  --mds-file-preview-color: rgb(var(--status-warning-03));
+  --mds-file-preview-icon-background: rgb(var(--magma-warning-wash-base));
+  --mds-file-preview-icon-color: rgb(var(--magma-warning-text-default));
+  --mds-file-preview-color: rgb(var(--magma-warning-text-subtle));
 }
 
 :host([variant='error'][message]) {
-  --mds-file-preview-icon-background: rgb(var(--status-error-09));
-  --mds-file-preview-icon-color: rgb(var(--status-error-04));
-  --mds-file-preview-color: rgb(var(--status-error-03));
+  --mds-file-preview-icon-background: rgb(var(--magma-danger-wash-base));
+  --mds-file-preview-icon-color: rgb(var(--magma-danger-text-default));
+  --mds-file-preview-color: rgb(var(--magma-danger-text-subtle));
 }
 
 :host([variant='amaranth'][message]) {
@@ -69,6 +69,18 @@
   --mds-file-preview-color: rgb(var(--label-orchid-03));
 }
 
+:host([variant='purple'][message]) {
+  --mds-file-preview-icon-background: rgb(var(--label-purple-09));
+  --mds-file-preview-icon-color: rgb(var(--label-purple-04));
+  --mds-file-preview-color: rgb(var(--label-purple-03));
+}
+
+:host([variant='red'][message]) {
+  --mds-file-preview-icon-background: rgb(var(--label-red-09));
+  --mds-file-preview-icon-color: rgb(var(--label-red-04));
+  --mds-file-preview-color: rgb(var(--label-red-03));
+}
+
 :host([variant='sky'][message]) {
   --mds-file-preview-icon-background: rgb(var(--label-sky-09));
   --mds-file-preview-icon-color: rgb(var(--label-sky-04));
@@ -93,33 +105,33 @@
 
 :host([pref-contrast='more']) {
   &:host([variant='primary'][message]) {
-    --mds-file-preview-icon-background: rgb(var(--variant-primary-10));
-    --mds-file-preview-icon-color: rgb(var(--variant-primary-02));
-    --mds-file-preview-color: rgb(var(--variant-primary-01));
+    --mds-file-preview-icon-background: rgb(var(--magma-accent-surface-subtle));
+    --mds-file-preview-icon-color: rgb(var(--magma-accent-emphasis-active));
+    --mds-file-preview-color: rgb(var(--magma-accent-emphasis-active));
   }
 
   &:host([variant='info'][message]) {
-    --mds-file-preview-icon-background: rgb(var(--status-info-10));
-    --mds-file-preview-icon-color: rgb(var(--status-info-02));
-    --mds-file-preview-color: rgb(var(--status-info-01));
+    --mds-file-preview-icon-background: rgb(var(--magma-info-wash-soft));
+    --mds-file-preview-icon-color: rgb(var(--magma-info-text-muted));
+    --mds-file-preview-color: rgb(var(--magma-info-text-default));
   }
 
   &:host([variant='success'][message]) {
-    --mds-file-preview-icon-background: rgb(var(--status-success-10));
-    --mds-file-preview-icon-color: rgb(var(--status-success-02));
-    --mds-file-preview-color: rgb(var(--status-success-01));
+    --mds-file-preview-icon-background: rgb(var(--magma-success-wash-soft));
+    --mds-file-preview-icon-color: rgb(var(--magma-success-text-muted));
+    --mds-file-preview-color: rgb(var(--magma-success-text-default));
   }
 
   &:host([variant='warning'][message]) {
-    --mds-file-preview-icon-background: rgb(var(--status-warning-10));
-    --mds-file-preview-icon-color: rgb(var(--status-warning-02));
-    --mds-file-preview-color: rgb(var(--status-warning-01));
+    --mds-file-preview-icon-background: rgb(var(--magma-warning-wash-soft));
+    --mds-file-preview-icon-color: rgb(var(--magma-warning-text-muted));
+    --mds-file-preview-color: rgb(var(--magma-warning-text-default));
   }
 
   &:host([variant='error'][message]) {
-    --mds-file-preview-icon-background: rgb(var(--status-error-10));
-    --mds-file-preview-icon-color: rgb(var(--status-error-02));
-    --mds-file-preview-color: rgb(var(--status-error-01));
+    --mds-file-preview-icon-background: rgb(var(--magma-danger-wash-soft));
+    --mds-file-preview-icon-color: rgb(var(--magma-danger-text-muted));
+    --mds-file-preview-color: rgb(var(--magma-danger-text-default));
   }
 
   &:host([variant='amaranth'][message]) {
@@ -164,6 +176,18 @@
     --mds-file-preview-color: rgb(var(--label-orchid-01));
   }
 
+  &:host([variant='purple'][message]) {
+    --mds-file-preview-icon-background: rgb(var(--label-purple-10));
+    --mds-file-preview-icon-color: rgb(var(--label-purple-02));
+    --mds-file-preview-color: rgb(var(--label-purple-01));
+  }
+
+  &:host([variant='red'][message]) {
+    --mds-file-preview-icon-background: rgb(var(--label-red-10));
+    --mds-file-preview-icon-color: rgb(var(--label-red-02));
+    --mds-file-preview-color: rgb(var(--label-red-01));
+  }
+
   &:host([variant='sky'][message]) {
     --mds-file-preview-icon-background: rgb(var(--label-sky-10));
     --mds-file-preview-icon-color: rgb(var(--label-sky-02));
@@ -187,33 +211,33 @@
   :host([pref-contrast='system']),
   :host(:not([pref-contrast])) {
     &:host([variant='primary'][message]) {
-      --mds-file-preview-icon-background: rgb(var(--variant-primary-10));
-      --mds-file-preview-icon-color: rgb(var(--variant-primary-02));
-      --mds-file-preview-color: rgb(var(--variant-primary-01));
+      --mds-file-preview-icon-background: rgb(var(--magma-accent-surface-subtle));
+      --mds-file-preview-icon-color: rgb(var(--magma-accent-emphasis-active));
+      --mds-file-preview-color: rgb(var(--magma-accent-emphasis-active));
     }
 
     &:host([variant='info'][message]) {
-      --mds-file-preview-icon-background: rgb(var(--status-info-10));
-      --mds-file-preview-icon-color: rgb(var(--status-info-02));
-      --mds-file-preview-color: rgb(var(--status-info-01));
+      --mds-file-preview-icon-background: rgb(var(--magma-info-wash-soft));
+      --mds-file-preview-icon-color: rgb(var(--magma-info-text-muted));
+      --mds-file-preview-color: rgb(var(--magma-info-text-default));
     }
 
     &:host([variant='success'][message]) {
-      --mds-file-preview-icon-background: rgb(var(--status-success-10));
-      --mds-file-preview-icon-color: rgb(var(--status-success-02));
-      --mds-file-preview-color: rgb(var(--status-success-01));
+      --mds-file-preview-icon-background: rgb(var(--magma-success-wash-soft));
+      --mds-file-preview-icon-color: rgb(var(--magma-success-text-muted));
+      --mds-file-preview-color: rgb(var(--magma-success-text-default));
     }
 
     &:host([variant='warning'][message]) {
-      --mds-file-preview-icon-background: rgb(var(--status-warning-10));
-      --mds-file-preview-icon-color: rgb(var(--status-warning-02));
-      --mds-file-preview-color: rgb(var(--status-warning-01));
+      --mds-file-preview-icon-background: rgb(var(--magma-warning-wash-soft));
+      --mds-file-preview-icon-color: rgb(var(--magma-warning-text-muted));
+      --mds-file-preview-color: rgb(var(--magma-warning-text-default));
     }
 
     &:host([variant='error'][message]) {
-      --mds-file-preview-icon-background: rgb(var(--status-error-10));
-      --mds-file-preview-icon-color: rgb(var(--status-error-02));
-      --mds-file-preview-color: rgb(var(--status-error-01));
+      --mds-file-preview-icon-background: rgb(var(--magma-danger-wash-soft));
+      --mds-file-preview-icon-color: rgb(var(--magma-danger-text-muted));
+      --mds-file-preview-color: rgb(var(--magma-danger-text-default));
     }
 
     &:host([variant='amaranth'][message]) {
@@ -256,6 +280,18 @@
       --mds-file-preview-icon-background: rgb(var(--label-orchid-10));
       --mds-file-preview-icon-color: rgb(var(--label-orchid-02));
       --mds-file-preview-color: rgb(var(--label-orchid-01));
+    }
+
+    &:host([variant='purple'][message]) {
+      --mds-file-preview-icon-background: rgb(var(--label-purple-10));
+      --mds-file-preview-icon-color: rgb(var(--label-purple-02));
+      --mds-file-preview-color: rgb(var(--label-purple-01));
+    }
+
+    &:host([variant='red'][message]) {
+      --mds-file-preview-icon-background: rgb(var(--label-red-10));
+      --mds-file-preview-icon-color: rgb(var(--label-red-02));
+      --mds-file-preview-color: rgb(var(--label-red-01));
     }
 
     &:host([variant='sky'][message]) {

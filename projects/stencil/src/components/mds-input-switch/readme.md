@@ -303,19 +303,6 @@ mds-input-switch {
 | `mdsInputSwitchChange` | Emits when the value changes | `CustomEvent<MdsInputSwitchEventDetail>` |
 
 
-## Methods
-
-### `updateLang() => Promise<void>`
-
-Updates the component's texts to the locale currently set on the host element.
-
-#### Returns
-
-Type: `Promise<void>`
-
-
-
-
 ## Slots
 
 | Slot | Description                      |

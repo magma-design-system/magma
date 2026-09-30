@@ -22,9 +22,12 @@ export default {
   },
 };
 
+// a menuitem is only valid inside a menubar: the story renders it in its mds-filter
 const Template = (args) => (
   <div class="inline-flex">
-    <mds-filter-item {...args} />
+    <mds-filter label="Filters">
+      <mds-filter-item {...args} />
+    </mds-filter>
   </div>
 );
 

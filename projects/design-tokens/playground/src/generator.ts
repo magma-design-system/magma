@@ -27,7 +27,7 @@ function toSteps(
   background: 'white' | 'black',
 ): Step[] {
   return Object.keys(palette)
-    .filter((key) => key !== 'color')
+    .filter((key) => key !== 'color' && key !== 'seed')
     .sort((a, b) => Number(a) - Number(b))
     .map((key) => ({
       value: palette[key].value,
@@ -58,8 +58,8 @@ export function generateScales(config: MagmaConfig): Map<string, ColorScales> {
       result.set(`${group}.${name}`, {
         light: toSteps(entry.light, 'white'),
         dark: toSteps(entry.dark, 'black'),
-        lightColor: entry.light.color?.value,
-        darkColor: entry.dark.color?.value,
+        lightColor: entry.light.seed?.value ?? entry.light.color?.value,
+        darkColor: entry.dark.seed?.value ?? entry.dark.color?.value,
       });
     });
   });

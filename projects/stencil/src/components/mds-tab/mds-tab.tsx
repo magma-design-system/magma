@@ -10,13 +10,14 @@ import {
   Watch,
   State,
 } from '@stencil/core';
+import { queryChildrenBySlot } from '@common/slot';
 import { MdsTabEventDetail } from './meta/event-detail';
 import { MdsTabItemEventDetail } from '@component/mds-tab-item/meta/event-detail';
 import { setAttributeIfEmpty, hashRandomValue } from '@common/aria';
 import { HorizontalActionsAnimationType } from '@type/animation';
 import clsx from 'clsx';
 import { cssDurationToMilliseconds } from '@common/unit';
-import { subscribePreference } from '@common/preference';
+import { preferenceStore } from '@common/preference';
 import { TabSizeType } from '@type/button';
 import { DirectionType } from './meta/type';
 
@@ -35,14 +36,6 @@ import { DirectionType } from './meta/type';
 })
 export class MdsTab {
   @Element() private element: HTMLMdsTabElement;
-  @State() prefAnimation?: string;
-  private unsubscribePrefAnimation?: () => void;
-  @State() prefContrast?: string;
-  private unsubscribePrefContrast?: () => void;
-  @State() prefTheme?: string;
-  private unsubscribePrefTheme?: () => void;
-  @State() prefThemeScheme?: string;
-  private unsubscribePrefThemeScheme?: () => void;
   private currentItemIndex: number = -1;
   private currentItemEl: HTMLMdsTabItemElement;
   private tabs: HTMLElement;
@@ -94,32 +87,13 @@ export class MdsTab {
   @Event({ eventName: 'mdsTabChange' }) changedEvent: EventEmitter<MdsTabEventDetail>;
 
   private queryContentItems = (): Array<HTMLElement> =>
-    Array.from(this.element.querySelectorAll<HTMLElement>(':scope > [slot=content]'));
+    queryChildrenBySlot(this.element, 'content');
 
   componentWillLoad(): void {
     this.setTabsItems();
   }
 
-  connectedCallback(): void {
-    this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
-      this.prefAnimation = value;
-    });
-    this.unsubscribePrefContrast = subscribePreference('contrast', (value) => {
-      this.prefContrast = value;
-    });
-    this.unsubscribePrefTheme = subscribePreference('theme', (value) => {
-      this.prefTheme = value;
-    });
-    this.unsubscribePrefThemeScheme = subscribePreference('theme-scheme', (value) => {
-      this.prefThemeScheme = value;
-    });
-  }
-
   disconnectedCallback(): void {
-    this.unsubscribePrefAnimation?.();
-    this.unsubscribePrefContrast?.();
-    this.unsubscribePrefTheme?.();
-    this.unsubscribePrefThemeScheme?.();
     this.unsetOverflowCheck();
   }
 
@@ -334,10 +308,10 @@ export class MdsTab {
   render() {
     return (
       <Host
-        pref-animation={this.prefAnimation}
-        pref-contrast={this.prefContrast}
-        pref-theme={this.prefTheme}
-        pref-theme-scheme={this.prefThemeScheme}
+        pref-animation={preferenceStore.state.animation}
+        pref-contrast={preferenceStore.state.contrast}
+        pref-mode={preferenceStore.state.mode}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
         <div class={clsx('tabs-wrapper', this.fill && 'tabs-wrapper--fill')}>
           {this.overflow && (

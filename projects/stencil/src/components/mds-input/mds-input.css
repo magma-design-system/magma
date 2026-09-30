@@ -19,90 +19,6 @@
  * @prop --mds-input-variant-color-rgb: The raw RGB channels used for variant-driven styling.
  */
 
-@property --mds-input-background {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral));
-  syntax: '<color>';
-}
-
-@property --mds-input-placeholder-default-color {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-06));
-  syntax: '<color>';
-}
-
-@property --mds-input-placeholder-focus-color {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-07));
-  syntax: '<color>';
-}
-
-@property --mds-input-placeholder-hover-color {
-  inherits: false;
-  initial-value: var(--mds-input-placeholder-default-color);
-  syntax: '<color>';
-}
-
-@property --mds-input-tip-background {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-03));
-  syntax: '<color>';
-}
-
-@property --mds-input-icon-color {
-  inherits: false;
-  initial-value: var(--mds-input-variant-color-rgb);
-  syntax: '<integer>+';
-}
-
-@property --mds-input-variant-color-rgb {
-  inherits: false;
-  initial-value: 0 0 0;
-  syntax: '<integer>+';
-}
-
-@property --mds-input-textarea-resize {
-  inherits: false;
-  initial-value: none;
-  syntax: 'none | vertical';
-}
-
-@property --mds-input-textarea-max-height {
-  inherits: false;
-  initial-value: --spacing(6400);
-  syntax: '<length>';
-}
-
-@property --mds-input-textarea-min-height {
-  inherits: false;
-  initial-value: --spacing(2400);
-  syntax: '<length>';
-}
-
-@property --mds-input-tip-horizontal-offset-focused {
-  inherits: false;
-  initial-value: --spacing(100);
-  syntax: '<length>';
-}
-
-@property --mds-input-tip-horizontal-offset {
-  inherits: false;
-  initial-value: --spacing(100);
-  syntax: '<length>';
-}
-
-@property --mds-input-tip-vertical-offset {
-  inherits: false;
-  initial-value: --spacing(100);
-  syntax: '<length>';
-}
-
-@property --mds-input-textarea-field-sizing {
-  inherits: false;
-  initial-value: content;
-  syntax: 'content | fixed';
-}
-
 /* ❌ Not supported: box-shadow cannot be expressed with @property syntax
 @property --mds-input-shadow {
   inherits: false;
@@ -120,10 +36,10 @@
 */
 
 :host {
-  --mds-input-background: rgb(var(--tone-neutral));
-  --mds-input-icon-color: rgb(var(--variant-primary-03));
-  --mds-input-placeholder-default-color: rgb(var(--tone-neutral-06));
-  --mds-input-placeholder-focus-color: rgb(var(--tone-neutral-07));
+  --mds-input-background: rgb(var(--magma-surface-overlay));
+  --mds-input-icon-color: rgb(var(--magma-accent-fg));
+  --mds-input-placeholder-default-color: rgb(var(--magma-text-disabled));
+  --mds-input-placeholder-focus-color: rgb(var(--magma-text-disabled));
   --mds-input-placeholder-hover-color: var(--mds-input-placeholder-default-color);
   --mds-input-ring: 0 0 0 1px rgb(var(--mds-input-variant-color-rgb) / 0.1);
   --mds-input-shadow:
@@ -133,22 +49,22 @@
   --mds-input-textarea-resize: none;
   --mds-input-textarea-max-height: --spacing(6400);
   --mds-input-textarea-min-height: --spacing(2400);
-  --mds-input-tip-background: rgb(var(--tone-neutral-03));
+  --mds-input-tip-background: rgb(var(--magma-surface-inverse-muted));
   --mds-input-tip-horizontal-offset-focused: --spacing(100);
   --mds-input-tip-horizontal-offset: --spacing(100);
   --mds-input-tip-vertical-offset: --spacing(100);
-  --mds-input-variant-color-rgb: var(--variant-primary-03);
-  --mds-input-border-radius: var(--radius-xl);
+  --mds-input-variant-color-rgb: var(--magma-accent-fg);
+  --mds-input-border-radius: var(--magma-radius-xl);
   --mds-input-transition-duration: var(--duration-300);
 
   /* private */
-  --mds-input-controls-border: 2px solid rgb(var(--tone-neutral-09));
-  --mds-input-controls-color: rgb(var(--tone-neutral-03));
+  --mds-input-controls-border: 2px solid rgb(var(--magma-border-muted));
+  --mds-input-controls-color: rgb(var(--magma-text-muted));
   --private-input-transition-duration: var(--mds-input-transition-duration);
 
   border-radius: var(--mds-input-border-radius);
   container-type: inline-size;
-  corner-shape: var(--magma-corner-shape, round);
+  corner-shape: var(--magma-corner-shape);
   display: flex;
   gap: --spacing(200);
   position: relative;
@@ -172,7 +88,7 @@
   border-radius: inherit;
   box-shadow: var(--mds-input-ring), var(--mds-input-shadow);
   box-sizing: border-box;
-  color: rgb(var(--tone-neutral-02));
+  color: rgb(var(--magma-text-default));
   corner-shape: inherit;
   margin: 0;
   max-width: 100%;
@@ -236,12 +152,12 @@
 }
 
 .input:disabled {
-  background-color: rgb(var(--tone-neutral-10));
+  background-color: rgb(var(--magma-wash-soft));
 }
 
 .input:disabled,
 .input:disabled::placeholder {
-  color: rgb(var(--tone-neutral-05));
+  color: rgb(var(--magma-text-disabled));
 }
 
 .input.has-icon {
@@ -286,7 +202,7 @@
 }
 
 /* .counter-button:hover {
-  --mds-button-background: rgb(var(--tone-neutral-09));
+  --mds-button-background: rgb(var(--magma-wash-base));
 } */
 
 .counter .counter-button:first-child {
@@ -341,7 +257,7 @@
 
 .toggle-button--error {
   cursor: help;
-  fill: rgb(var(--tone-neutral-06));
+  fill: rgb(var(--magma-text-disabled));
 }
 
 .mic-toggle-button--recording {
@@ -413,5 +329,5 @@ mds-input-tip {
 @import './css/mds-input-variant.css';
 @import './css/mds-input-pref-animation.css';
 @import './css/mds-input-pref-contrast.css';
-@import './css/mds-input-pref-theme.css';
+@import './css/mds-input-pref-mode.css';
 @import './css/mds-input-type-password.css';

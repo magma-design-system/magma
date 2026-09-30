@@ -46,9 +46,15 @@ test('should format color with seed', () => {
   const tokensLight = formatColortoTokens(contrastColorsLight, name, color, seed, 'light')
   const tokensDark = formatColortoTokens(contrastColorsDark, name, color, seed, 'dark')
 
-  // color value should be the seed color
-  expect(tokensLight).toEqual({ ...formatColortoTokensResultLight, color: { value: seed.light } })
-  expect(tokensDark).toEqual({ ...formatColortoTokensResultDark, color: { value: seed.dark } })
+  // a seeded color emits an explicit `seed` key (the off-scale pure extreme)
+  // instead of the bare `color` base token (issue #572)
+  const omitColor = (palette: Record<string, unknown>) => {
+    const copy = { ...palette }
+    delete copy.color
+    return copy
+  }
+  expect(tokensLight).toEqual({ ...omitColor(formatColortoTokensResultLight), seed: { value: seed.light } })
+  expect(tokensDark).toEqual({ ...omitColor(formatColortoTokensResultDark), seed: { value: seed.dark } })
 })
 
 

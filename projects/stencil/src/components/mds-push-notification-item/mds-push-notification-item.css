@@ -10,36 +10,6 @@
  * @prop --mds-push-notification-item-timing-function: Timing function used for the item animation.
  */
 
-@property --mds-push-notification-item-duration {
-  inherits: false;
-  initial-value: 300ms;
-  syntax: '<time>';
-}
-
-@property --mds-push-notification-item-icon-background-color {
-  inherits: false;
-  initial-value: transparent;
-  syntax: '<color>';
-}
-
-@property --mds-push-notification-item-icon-color {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-04));
-  syntax: '<color>';
-}
-
-@property --mds-push-notification-item-message-line-clamp {
-  inherits: false;
-  initial-value: 2;
-  syntax: '<integer>';
-}
-
-@property --mds-push-notification-item-subject-line-clamp {
-  inherits: false;
-  initial-value: 1;
-  syntax: '<integer>';
-}
-
 /* ❌ Not supported
 @property --mds-push-notification-item-shadow {
   inherits: false;
@@ -58,17 +28,17 @@
   --mds-push-notification-item-duration: 300ms;
   --private-push-notification-item-duration: var(--mds-push-notification-item-duration);
   --mds-push-notification-item-icon-background-color: transparent;
-  --mds-push-notification-item-icon-color: rgb(var(--tone-neutral-04));
+  --mds-push-notification-item-icon-color: rgb(var(--magma-text-subtle));
   --mds-push-notification-item-message-line-clamp: 2;
   --mds-push-notification-item-shadow: var(--shadow-sm-sharp);
   --mds-push-notification-item-subject-line-clamp: 1;
   --mds-push-notification-item-timing-function: var(--ease-in-out-quint);
 
   align-items: flex-start;
-  background-color: rgb(var(--tone-neutral));
+  background-color: rgb(var(--magma-surface-overlay));
   border-radius: var(--radius-lg);
   box-shadow: var(--mds-push-notification-item-shadow);
-  color: rgb(var(--tone-neutral-02));
+  color: rgb(var(--magma-text-default));
   display: flex;
   gap: --spacing(400);
   max-width: --spacing(8000);
@@ -98,13 +68,18 @@
   padding-top: --spacing(200);
 }
 
+.actions--hidden,
+.badge--hidden {
+  display: none;
+}
+
 .avatar,
 .picture {
   flex-shrink: 0;
 }
 
 .picture {
-  border-radius: 0.25rem;
+  border-radius: var(--radius-3xs);
   box-shadow: var(--shadow-sm-sharp);
   max-width: --spacing(1200);
   width: 100%;
@@ -126,7 +101,7 @@
 
 .close-button:focus-visible,
 .close-button:hover {
-  fill: rgb(var(--tone-neutral-03));
+  fill: rgb(var(--magma-text-muted));
   opacity: 1;
 }
 
@@ -166,7 +141,7 @@
 
 .avatar {
   background-color: var(--mds-push-notification-item-icon-background-color);
-  border-radius: 1000px;
+  border-radius: var(--radius-full);
   fill: var(--mds-push-notification-item-icon-color);
   height: --spacing(900);
   width: --spacing(900);
@@ -185,7 +160,7 @@
 }
 
 @import './css/mds-push-notification-item-pref-animation.css';
-@import './css/mds-push-notification-item-pref-theme.css';
+@import './css/mds-push-notification-item-pref-mode.css';
 @import './css/mds-push-notification-item-pref-contrast.css';
 @import './css/mds-push-notification-item-variant-primary.css';
 @import './css/mds-push-notification-item-variant-label.css';

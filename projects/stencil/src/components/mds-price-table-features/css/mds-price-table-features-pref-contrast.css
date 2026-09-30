@@ -1,15 +1,4 @@
-/* Contrast preference. The component reflects the resolved mode from <html> onto
- * its host as pref-contrast (see subscribePreference in @common/preference); these
- * plain shadow selectors refine for high contrast. `more` is the explicit choice;
- * `system` and no controller follow the OS via @media. Cross-browser, no :host-context. */
-
-:host([pref-contrast='more']) {
-  --mds-price-table-features-border-color: rgb(var(--tone-neutral-03));
-}
-
-@media (prefers-contrast: more) {
-  :host([pref-contrast='system']),
-  :host(:not([pref-contrast])) {
-    --mds-price-table-features-border-color: rgb(var(--tone-neutral-03));
-  }
-}
+/* Contrast preference. The component takes its colours from semantic roles that
+ * the contrast layer promotes under pref-contrast-more (spec 9.3), so it needs no
+ * per-component high-contrast refinement. The former override (a ramp step re-set
+ * by hand) is intentionally gone. */

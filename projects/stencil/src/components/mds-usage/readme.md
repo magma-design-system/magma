@@ -238,19 +238,6 @@ mds-usage {
 | `variant` | `variant` | Specifies the delay when the tooltip will trigger                   | `"do" \| "dont" \| "info" \| "warn"` | `'info'`    |
 
 
-## Methods
-
-### `updateLang() => Promise<void>`
-
-Updates the component's texts to the locale currently set on the host element.
-
-#### Returns
-
-Type: `Promise<void>`
-
-
-
-
 ## Slots
 
 | Slot | Description                                                      |

@@ -109,6 +109,38 @@ describe('transformAngular — slotRemove (removed named slots)', () => {
   });
 });
 
+describe('transformAngular — utility-class migrations (J)', () => {
+  it('renames classes in the static class attribute on any element', () => {
+    expect(run('<div class="p-4 shadow-outline-light rounded-xl">x</div>').output).toBe(
+      '<div class="p-4 shadow-ring-weak rounded-md">x</div>',
+    );
+  });
+
+  it('renames the class key of a [class.x] binding', () => {
+    expect(run('<div [class.shadow-outline-light]="cond">x</div>').output).toBe(
+      '<div [class.shadow-ring-weak]="cond">x</div>',
+    );
+  });
+
+  it('rewrites string literals inside [ngClass] expressions', () => {
+    expect(run(`<div [ngClass]="{ 'rounded-xl p-2': a, other: b }">x</div>`).output).toBe(
+      `<div [ngClass]="{ 'rounded-md p-2': a, other: b }">x</div>`,
+    );
+    expect(run(`<div [class]="cond ? 'rounded-md' : 'rounded-xl'">x</div>`).output).toBe(
+      `<div [class]="cond ? 'rounded-2xs' : 'rounded-md'">x</div>`,
+    );
+  });
+
+  it('reports a class with no v2 equivalent, in static and bound form', () => {
+    const attr = run('<div class="shadow-outline-strong">x</div>');
+    expect(attr.changed).toBe(false);
+    expect(attr.findings.some((f) => f.kind === 'warn')).toBe(true);
+    const bound = run('<div [class.shadow-outline-strong]="cond">x</div>');
+    expect(bound.changed).toBe(false);
+    expect(bound.findings.some((f) => f.kind === 'warn')).toBe(true);
+  });
+});
+
 describe('transformAngular — rename / remove / safety', () => {
   it('renames a static labelAction → label', () => {
     expect(run('<mds-label label-action="edit"></mds-label>').output).toBe(

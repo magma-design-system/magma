@@ -1,5 +1,5 @@
-import { Component, Host, h, Prop, State } from '@stencil/core';
-import { subscribePreference } from '@common/preference';
+import { Component, Host, h, Prop } from '@stencil/core';
+import { preferenceStore } from '@common/preference';
 import {
   TypographyInfoType,
   TypographyReadType,
@@ -17,19 +17,6 @@ import mggListDot from '@icon/mgg/list-dot.svg';
   shadow: true,
 })
 export class MdsListItem {
-  @State() prefContrast?: string;
-  private unsubscribePrefContrast?: () => void;
-
-  connectedCallback(): void {
-    this.unsubscribePrefContrast = subscribePreference('contrast', (value) => {
-      this.prefContrast = value;
-    });
-  }
-
-  disconnectedCallback(): void {
-    this.unsubscribePrefContrast?.();
-  }
-
   /**
    * Specifies the typography of the element
    */
@@ -47,7 +34,7 @@ export class MdsListItem {
 
   render() {
     return (
-      <Host role="listitem" pref-contrast={this.prefContrast}>
+      <Host role="listitem" pref-contrast={preferenceStore.state.contrast}>
         <mds-icon aria-hidden="true" class="icon" name={this.icon ?? mggListDot} part="icon" />
         <mds-text tag="span" typography={this.typography} variant={this.variant} part="text">
           <slot />

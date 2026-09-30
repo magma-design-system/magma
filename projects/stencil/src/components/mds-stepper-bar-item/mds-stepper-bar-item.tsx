@@ -3,7 +3,6 @@ import {
   Element,
   Event,
   EventEmitter,
-  Method,
   Host,
   Prop,
   State,
@@ -20,7 +19,7 @@ import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.es.json';
 import localeIt from './meta/locale.it.json';
-import { subscribePreference } from '@common/preference';
+import { preferenceStore } from '@common/preference';
 
 /**
  * @part badge - The badge wrapper
@@ -33,9 +32,6 @@ import { subscribePreference } from '@common/preference';
 })
 export class MdsStepperBarItem {
   @Element() private host: HTMLMdsStepperBarItemElement;
-  @State() prefAnimation?: string;
-  private unsubscribePrefAnimation?: () => void;
-
   @State() isDone: boolean;
   @State() isCurrent: boolean;
   @State() index: number;
@@ -46,14 +42,6 @@ export class MdsStepperBarItem {
     es: localeEs,
     it: localeIt,
   });
-  @State() language: string;
-  /**
-   * Updates the component's texts to the locale currently set on the host element.
-   */
-  @Method()
-  async updateLang(): Promise<void> {
-    this.language = this.t.lang(this.host);
-  }
 
   /**
    * Specifies a short description of the component
@@ -104,7 +92,13 @@ export class MdsStepperBarItem {
     this.isCurrent = this.current;
     this.isDone = this.done;
     const parent = this.host.parentElement;
-    if (parent) this.index = [...Array.from(parent.childNodes)].indexOf(this.host);
+    // childNodes counts the whitespace between the tags, so formatted markup made
+    // the step numbers come out doubled: 2, 4, 6, 8 for four steps.
+    if (parent) {
+      this.index = Array.from(parent.children)
+        .filter((child) => child.tagName === this.host.tagName)
+        .indexOf(this.host);
+    }
   }
 
   componentDidLoad(): void {
@@ -112,18 +106,7 @@ export class MdsStepperBarItem {
     this.km.attachClickBehavior();
   }
 
-  componentWillRender(): void {
-    this.t.lang(this.host);
-  }
-
-  connectedCallback(): void {
-    this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
-      this.prefAnimation = value;
-    });
-  }
-
   disconnectedCallback(): void {
-    this.unsubscribePrefAnimation?.();
     this.km.detachClickBehavior();
   }
 
@@ -167,7 +150,7 @@ export class MdsStepperBarItem {
 
   render() {
     return (
-      <Host pref-animation={this.prefAnimation}>
+      <Host pref-animation={preferenceStore.state.animation}>
         <div class="header">
           <mds-icon
             class="icon"

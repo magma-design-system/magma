@@ -8,43 +8,19 @@
  * @prop --mds-filter-item-count-color-selected: Sets the `color` of the count element when it's selected
  */
 
-@property --mds-filter-item-count-background-default {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-08));
-  syntax: '<color>';
-}
-
-@property --mds-filter-item-count-color-default {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-02));
-  syntax: '<color>';
-}
-
-@property --mds-filter-item-count-background-selected {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-05));
-  syntax: '<color>';
-}
-
-@property --mds-filter-item-count-color-selected {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral));
-  syntax: '<color>';
-}
-
 :host {
   --mds-filter-item-transition-duration: var(--duration-200);
   --private-filter-item-transition-duration: var(--mds-filter-item-transition-duration);
-  --mds-filter-item-count-background-default: rgb(var(--tone-neutral-08));
-  --mds-filter-item-count-color-default: rgb(var(--tone-neutral-02));
-  --mds-filter-item-count-background-selected: rgb(var(--tone-neutral-05));
-  --mds-filter-item-count-color-selected: rgb(var(--tone-neutral));
+  --mds-filter-item-count-background-default: rgb(var(--magma-wash-strong));
+  --mds-filter-item-count-color-default: rgb(var(--magma-text-default));
+  --mds-filter-item-count-background-selected: rgb(var(--magma-surface-inverse-muted));
+  --mds-filter-item-count-color-selected: rgb(var(--magma-on-inverse));
 
   @apply focus-bounce;
 
   align-items: center;
-  border-radius: 1000px;
-  color: rgb(var(--tone-neutral-03));
+  border-radius: var(--radius-full);
+  color: rgb(var(--magma-text-muted));
   cursor: pointer;
   display: flex;
   fill: currentcolor;
@@ -65,7 +41,7 @@ mds-text {
 .count {
   align-items: center;
   background-color: var(--mds-filter-item-count-background-default);
-  border-radius: --spacing(400);
+  border-radius: var(--radius-lg);
   box-sizing: border-box;
   color: currentcolor;
   color: var(--mds-filter-item-count-color-default);
@@ -94,7 +70,7 @@ mds-text {
 
 :host([selected]:not([selected='false'])),
 :host(:hover) {
-  background-color: rgb(var(--tone-neutral));
+  background-color: rgb(var(--magma-surface-overlay));
 }
 
 :host(:hover) {
@@ -102,7 +78,7 @@ mds-text {
 }
 
 :host([selected]:not([selected='false'])) {
-  color: rgb(var(--tone-neutral-01));
+  color: rgb(var(--magma-text-default));
 }
 
 :host([selected]:not([selected='false'])) .count {
@@ -111,5 +87,5 @@ mds-text {
 }
 
 @import './css/mds-filter-item-pref-animation.css';
-@import './css/mds-filter-item-pref-theme.css';
+@import './css/mds-filter-item-pref-mode.css';
 @import './css/mds-filter-item-pref-contrast.css';

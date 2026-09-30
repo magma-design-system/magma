@@ -12,6 +12,77 @@ const hexColor = {
 
 const formula = { enum: ['wcag2', 'wcag3'] }
 
+// A per-mode table of role -> lightness. Levels accept a percentage ("96%"),
+// a bare 0..100 string, or a 0..1 number (see surface.mts parseLightness).
+const lightness = { type: ['string', 'number'] }
+const surfaceModeLevels = {
+  type: 'object',
+  additionalProperties: false,
+  required: ['sunken', 'muted', 'default', 'raised', 'overlay'],
+  properties: {
+    sunken: lightness,
+    muted: lightness,
+    default: lightness,
+    raised: lightness,
+    overlay: lightness,
+  },
+}
+const borderModeLevels = {
+  type: 'object',
+  additionalProperties: false,
+  required: ['muted', 'default', 'strong'],
+  properties: { muted: lightness, default: lightness, strong: lightness },
+}
+const surfaceLevels = {
+  type: 'object',
+  additionalProperties: false,
+  required: ['light', 'dark'],
+  properties: { light: surfaceModeLevels, dark: surfaceModeLevels },
+}
+const borderLevels = {
+  type: 'object',
+  additionalProperties: false,
+  required: ['light', 'dark'],
+  properties: { light: borderModeLevels, dark: borderModeLevels },
+}
+// Opt into lightness-based surface + border generation: `true` uses the global
+// `theme` ramp, an object overrides the levels. Accepted at TWO levels - on a
+// group (opts in every family of that group) and on a single color (which wins,
+// so `false` opts one family back out of an opted-in group).
+const surfaceOptIn = {
+  oneOf: [
+    { type: 'boolean' },
+    {
+      type: 'object',
+      additionalProperties: false,
+      properties: { surfaces: surfaceLevels, borders: borderLevels },
+    },
+  ],
+}
+// A text role is an APCA Lc target (number) or an explicit tone step (A7).
+const textLevel = {
+  oneOf: [
+    { type: 'number' },
+    {
+      type: 'object',
+      additionalProperties: false,
+      required: ['step'],
+      properties: { step: { type: 'number' } },
+    },
+  ],
+}
+const textLevels = {
+  type: 'object',
+  additionalProperties: false,
+  required: ['default', 'muted', 'subtle', 'disabled'],
+  properties: {
+    default: textLevel,
+    muted: textLevel,
+    subtle: textLevel,
+    disabled: textLevel,
+  },
+}
+
 const hueShift = {
   type: 'object',
   additionalProperties: false,
@@ -63,6 +134,17 @@ export const CONFIG_SCHEMA = {
       type: 'object',
       additionalProperties: { $ref: '#/definitions/group' },
     },
+    theme: {
+      type: 'object',
+      additionalProperties: false,
+      required: ['surfaces', 'borders'],
+      properties: {
+        colorspace: { type: 'string', enum: COLORSPACES },
+        surfaces: surfaceLevels,
+        borders: borderLevels,
+        text: textLevels,
+      },
+    },
     colors: {
       type: 'array',
       minItems: 1,
@@ -81,12 +163,17 @@ export const CONFIG_SCHEMA = {
         ratios: { type: 'string' },
         formula,
         export: { type: 'array', items: { type: 'string' } },
+        surface: surfaceOptIn,
       },
     },
     color: {
       type: 'object',
       additionalProperties: false,
-      required: ['color', 'name'],
+      // `name` is always required; a family provides EITHER its own `color`
+      // (a solved palette) OR an `alias` to another family (a reference), never
+      // both and never neither.
+      required: ['name'],
+      oneOf: [{ required: ['color'] }, { required: ['alias'] }],
       properties: {
         color: hexColor,
         // dot-separated token path: <group>.<name>, e.g. tone.neutral
@@ -100,12 +187,15 @@ export const CONFIG_SCHEMA = {
         },
         disabled: { type: 'boolean' },
         title: { type: 'string' },
-        alias: { type: 'string' },
+        // reference to another family, as a <group>.<name> token path
+        alias: { type: 'string', pattern: '^[^.]+\\.[^.]+$' },
         ratios: { type: 'string' },
         formula,
         colorspace: { type: 'string', enum: COLORSPACES },
         smooth: { type: 'boolean' },
         hueShift,
+        // per-family opt-in; overrides the group's (see `surfaceOptIn`)
+        surface: surfaceOptIn,
       },
     },
   },

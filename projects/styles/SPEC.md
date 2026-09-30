@@ -30,6 +30,8 @@ Consumer applications must import styles in this exact cascade layer order to av
 @import '@maggioli-design-system/styles/dist/css/transitions.css' layer(base);
 @import '@maggioli-design-system/styles/dist/css/animations.css' layer(base);
 @import '@maggioli-design-system/styles/dist/css/globals.css' layer(theme);
+@import '@maggioli-design-system/styles/dist/css/semantic.css' layer(theme);
+@import '@maggioli-design-system/styles/dist/css/theme.css' layer(theme);
 @import '@maggioli-design-system/styles/dist/css/base.css' layer(base);
 
 /* your Tailwind entry point */
@@ -71,6 +73,119 @@ If you need a color outside Tailwind, always use the RGB wrapper:
 }
 ```
 
+## Semantic color layer (`--magma-*`)
+
+The classes above are PRIMITIVES (a specific tone/status step). Prefer the
+SEMANTIC layer for anything role-based: it maps a role (surface, text, border,
+a hue) to the right primitive and flips per mode automatically. Defined in
+`css/semantic.css`, bridged to Tailwind in `tailwind/semantic.css`. Full
+contract and rationale: `SEMANTIC_COLOR_SPEC.md`.
+
+Prefix: the semantic layer shares the styles-owned `--magma-*` prefix with the
+global decisions below; component tokens use `--mds-<comp>-*`. This keeps a role
+like `--magma-text-muted` from colliding with a component prop like
+`--mds-text-selection-color`. Naming rule: `SEMANTIC_COLOR_SPEC.md` section 11.
+
+One source, two faces - the same token in plain CSS or as a Tailwind utility:
+
+```css
+/* plain CSS - always the rgb() wrapper (tokens are channel triplets) */
+.card { background: rgb(var(--magma-surface-raised)); color: rgb(var(--magma-text-default)); }
+```
+
+```html
+<!-- Tailwind - same token, no dark: variant needed -->
+<div class="bg-surface-raised text-fg-default border-border-muted">...</div>
+```
+
+| Role | Token | Tailwind |
+| ---- | ----- | -------- |
+| Surfaces (5) | `--magma-surface-{sunken,muted,default,raised,overlay}` | `bg-surface-*` |
+| Text (5) | `--magma-text-{default,muted,subtle,disabled,on-emphasis}` | `text-fg-*` |
+| Border (4) | `--magma-border-{muted,default,strong,focus}` | `border-border-*` |
+| Hues | `--magma-<hue>-{surface,fg,border,emphasis,on-emphasis}` | `bg-<hue>-surface`, `text-<hue>-fg`, ... |
+
+Hues: `accent`, `info`, `success`, `warning`, `danger` (full quintet) and
+`neutral` (`fg`/`border`/`emphasis`/`on-emphasis` only - its backgrounds are the
+`surface` family). Interaction states (hover/active/selected) are DERIVED (an
+elevation step or `color-mix`), not authored as tokens.
+
+## Theming axes (`css/theme.css`)
+
+Four independent axes on `<html>`, on top of the semantic layer:
+
+- **mode** `pref-mode-{light,dark,system}` - the global `--tone-*` flip; the
+  semantic tokens follow it automatically (see Dark mode below).
+- **`data-theme-name`** - a named theme overrides the semantic layer. The common
+  case is retinting the neutral scaffolding with ONE swap: a theme repoints
+  `--mds-tint-*` at another generated family (`porcelain` for a cool cast,
+  `bisque` for warm) and every surface + border role follows. Shipped examples:
+  `cool`, `warm`. Add your own the same way (an override map of `--mds-*`).
+- **`--depth`** (number 0..1) - shadow/elevation intensity, multiplied into every
+  term of `--mds-elevation-{raised,overlay}` via `calc()`. `--depth: 0` is
+  perfectly flat, `1` is full. Set it directly, or use `data-theme-depth="flat"`.
+  It is a scalar, NOT a `true|false` style query, so it is cross-browser and
+  inherits across shadow boundaries.
+- **`data-corner-shape`** - corner geometry: the shape AND the radius scale tuned
+  for it, moved together. See Corner geometry below.
+
+```html
+<html class="pref-mode-dark" data-theme-name="cool" data-theme-depth="flat" data-corner-shape="round">
+```
+
+## Corner geometry (`data-corner-shape`)
+
+Shape and radius are two halves of one decision. In CSS `superellipse(k)` draws a
+curve of exponent `n = 2^k`, so `round` is a quarter circle and `squircle` is
+`superellipse(2)`: at the SAME `border-radius` the run along the sides is
+identical and only the fullness of the corner changes, a squircle cutting 0.073r2
+of area where a round corner cuts 0.215r2. A scale tuned for one shape therefore
+reads wrong under the other - which is why this axis carries both.
+
+`projects/styles/scripts/corner.ts` generates one block per shape, each declaring
+`--magma-corner-shape` and the whole `--magma-radius-*` scale. The default sits on
+a bare `:root`, so installing the design system is enough - there is no attribute
+to write, the way nobody spells `data-theme-name="default"`. The deviation blocks
+are NOT prefixed with `:root`, so the attribute works on any element and the
+custom properties inherit into that subtree, shadow DOM included:
+
+```html
+<section data-corner-shape="round">
+  <!-- round corners, and the radii tuned for round, for this subtree only -->
+</section>
+```
+
+Components name the role, never the shape: `border-radius: var(--magma-radius-2xl)`
+plus `corner-shape: var(--magma-corner-shape, round)`.
+
+| | round | squircle |
+| --- | --- | --- |
+| `--magma-radius-md` | 12px | 20px |
+| `--magma-radius-lg` | 16px | 28px |
+| `--magma-radius-2xl` | 24px | 40px |
+
+The squircle scale is the round one multiplied by **1.715** - the factor that
+preserves the AREA the corner cuts - then snapped to the nearest existing
+primitive so it stays inside the system. Two other factors were on the table and
+rejected: 1.000 preserves the run along the sides (it does not compensate at all,
+and reads rigid), 1.841 preserves the corner depth (it overshoots).
+
+**The pill is out of the axis.** `--magma-radius-full` resolves to the same value
+under every shape, and the components that spell a pill - chip, filter item,
+avatar, hr, mention - keep the CSS default `round` by not declaring `corner-shape`
+on their host. Past half the shorter side a squircle stops producing a pill and
+draws the filled superellipse of an app icon, so there is nothing to tune there,
+only something to stay out of.
+
+Consumers rarely write the attribute by hand: `mds-pref-theme` carries a
+`corner-shape` prop that writes it, persists the choice and emits `mdsPrefChange`,
+next to the theme name and scheme it already owns. Its `default` value REMOVES
+the attribute rather than writing today's shape, so a project that never chose
+keeps following the design system when the default changes.
+
+`--magma-corner-shape` on its own remains a documented escape hatch, with one
+caveat: it changes the shape and NOT the scale.
+
 ## Typography utilities
 
 Typography utilities are semantic and map directly to Magma's type scale. Use these instead of composing `font-*` and `text-*` primitives manually.
@@ -108,23 +223,33 @@ Use these utilities instead of writing focus styles manually:
 Dark mode is handled at the palette level. No class changes are needed on individual elements. Activate via `<html>`:
 
 ```html
-<html class="pref-theme-system">
+<html class="pref-mode-system">
   <!-- follows OS -->
 </html>
-<html class="pref-theme-light">
+<html class="pref-mode-light">
   <!-- always light -->
 </html>
-<html class="pref-theme-dark">
+<html class="pref-mode-dark">
   <!-- always dark -->
 </html>
 ```
 
 ### How preferences are applied
 
-Every preference (`theme`, `contrast`, `animation`, `consumption`) is driven by the `mds-pref` controller and its children (`mds-pref-theme`, `mds-pref-contrast`, ...). Each child writes its state to the `<html>` element in two redundant forms, on purpose, so future changes stay cheap:
+Every preference (`mode`, `theme`, `contrast`, `animation`, `consumption`) is driven by the `mds-pref` controller and its children (`mds-pref-mode`, `mds-pref-theme`, `mds-pref-contrast`, ...). Each child writes its state to the `<html>` element in two redundant forms, on purpose, so future changes stay cheap:
 
-- a **class** (e.g. `pref-theme-dark`, `pref-contrast-more`) - consumed by selectors
-- a **custom property** (e.g. `--magma-pref-user-theme`, `--magma-pref-animation`) - readable as an inherited value, including across shadow boundaries
+- a **class** (e.g. `pref-mode-dark`, `pref-contrast-more`) - consumed by selectors
+- a **custom property** (e.g. `--magma-pref-mode`, `--magma-pref-animation`) - readable as an inherited value, including across shadow boundaries
+
+The two colour preferences keep two disjoint nouns: everything that says **`mode`** is light / dark / system (`mds-pref-mode`, `pref-mode-*`, `--magma-pref-mode`, `mdsPrefMode`), everything that says **`theme`** is the named theme (`mds-pref-theme`, `pref-theme-<name>`, `--magma-pref-theme`, `mdsPrefTheme`, plus its `pref-theme-scheme-*` constraint). v1 used `theme` for the mode, so `mds-pref-theme`, `--magma-pref-theme` and `mdsPrefTheme` changed meaning in v2 (#702): the codemod migrates the markup, and the stored v1 keys are moved on first load (`src/common/preference.ts`).
+
+That last promise holds because every `@property` in `css/globals.css` is `inherits: true`. With
+`false` a value set on `<html>` or `:root` reaches no other element - each one resolves the
+registration's `initial-value` - so neither a preference nor a consumer override (e.g.
+`--magma-modal-z-index: 9999` on `:root`) would arrive in a component. Keep new registrations
+there `inherits: true`, and give a value a component reads by name a `syntax` that accepts what is
+actually written: `--magma-pref-theme` is `*` because the theme name is a bare identifier,
+which `<string>` rejects.
 
 `mds-pref` also toggles the `data-magma-pref` attribute on `<html>` while a controller is mounted; selectors use `:root:not([data-magma-pref])` to fall back to the OS preference (`@media`) when no controller is present.
 
@@ -162,7 +287,7 @@ The visible effect is produced **globally, at the palette level**: the published
 </html>
 ```
 
-For programmatic control, use the `mds-pref-theme` component.
+For programmatic control, use the `mds-pref-mode` component.
 
 ## Global design decisions (`--magma-*` vars)
 
@@ -170,9 +295,10 @@ These CSS custom properties on `:root` control system-wide visual behaviour. Ove
 
 | Property                   | Default                                      | Description                     |
 | -------------------------- | -------------------------------------------- | ------------------------------- |
-| `--magma-corner-shape`     | `squircle`                                   | Corner shape for all components |
+| `--magma-corner-shape`     | `squircle`                                   | Corner shape for all components (set it through `data-corner-shape`, see Corner geometry: alone it changes the shape without the scale) |
 | `--magma-disabled-opacity` | `0.5`                                        | Opacity of disabled components  |
 | `--magma-backdrop-opacity` | `0.1`                                        | Opacity of modal backdrops      |
+| `--magma-on-backdrop`      | `252 252 252`                                | Ink drawn on the backdrop / overlay scrim (the modal close icon); fixed in both modes because the scrim is. Override it together with `--magma-backdrop-color` |
 | `--magma-outline-focus`    | `2px solid var(--magma-outline-focus-color)` | Focus ring style                |
 
 Example override:
@@ -180,10 +306,14 @@ Example override:
 ```css
 @layer overrides {
   :root {
-    --magma-corner-shape: round;
+    --magma-disabled-opacity: 0.35;
   }
 }
 ```
+
+Corner shape is the exception: change it through the `data-corner-shape` axis,
+which moves the radius scale with it, rather than by overriding
+`--magma-corner-shape` alone.
 
 ## Anti-patterns
 

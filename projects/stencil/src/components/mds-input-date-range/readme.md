@@ -9,7 +9,7 @@
 
 ### 1. Description
 
-The `<mds-input-date-range>` web component is the Magma Design System control for capturing a start/end date pair, composing two slotted `<mds-input-date>` fields with a shared pop-up `mds-calendar` (in range-picker mode) and optional quick-pick presets. It is a form-associated compound parent that orchestrates its children rather than rendering its own native inputs.
+The `<mds-input-date-range>` web component is the Magma Design System control for capturing a start/end date pair, composing two slotted `<mds-input-date>` fields with a shared pop-up `mds-calendar` (in range mode) and optional quick-pick presets. It is a form-associated compound parent that orchestrates its children rather than rendering its own native inputs.
 
 #### Semantic Behavior
 
@@ -296,15 +296,17 @@ Without `name` the component is form-associated but submits no named field, so t
 
 ## Properties
 
-| Property       | Attribute       | Description                                                                                                             | Type                  | Default     |
-| -------------- | --------------- | ----------------------------------------------------------------------------------------------------------------------- | --------------------- | ----------- |
-| `delay`        | `delay`         | Specifies the delay in milliseconds before closing the calendar dropdown, if the value is 0 the dropdown will not close | `number`              | `500`       |
-| `dualCalendar` | `dual-calendar` | Enables the linked dual-calendar range picker behavior.                                                                 | `boolean`             | `false`     |
-| `endDate`      | `end-date`      | Specifies the end date of the range                                                                                     | `string`              | `''`        |
-| `max`          | `max`           | Specifies the max date of the range, user cannot set dates after this date                                              | `null \| string`      | `null`      |
-| `min`          | `min`           | Specifies the min date of the range, user cannot set dates before this date                                             | `null \| string`      | `null`      |
-| `name`         | `name`          | Is needed to reference the form data after the form is submitted                                                        | `string \| undefined` | `undefined` |
-| `startDate`    | `start-date`    | Specifies the start date of the range                                                                                   | `string`              | `''`        |
+| Property         | Attribute       | Description                                                                                                                                                                                                                                | Type                  | Default     |
+| ---------------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------- | ----------- |
+| `accessibleName` | `aria-label`    | The accessible name of the range: each of the two fields is named after it and after the end of the range it covers, the visible "from" and "to" labels living in this shadow root, where no IDREF of the slotted fields could reach them. | `string \| undefined` | `undefined` |
+| `delay`          | `delay`         | Specifies the delay in milliseconds before closing the calendar dropdown, if the value is 0 the dropdown will not close                                                                                                                    | `number`              | `500`       |
+| `dualCalendar`   | `dual-calendar` | Enables the linked dual-calendar range picker behavior.                                                                                                                                                                                    | `boolean`             | `false`     |
+| `endDate`        | `end-date`      | Specifies the end date of the range                                                                                                                                                                                                        | `string`              | `''`        |
+| `hideToday`      | `hide-today`    | Hides the highlight on today's date in the calendar.                                                                                                                                                                                       | `boolean`             | `false`     |
+| `max`            | `max`           | Specifies the max date of the range, user cannot set dates after this date                                                                                                                                                                 | `null \| string`      | `null`      |
+| `min`            | `min`           | Specifies the min date of the range, user cannot set dates before this date                                                                                                                                                                | `null \| string`      | `null`      |
+| `name`           | `name`          | Is needed to reference the form data after the form is submitted                                                                                                                                                                           | `string \| undefined` | `undefined` |
+| `startDate`      | `start-date`    | Specifies the start date of the range                                                                                                                                                                                                      | `string`              | `''`        |
 
 
 ## Events
@@ -325,16 +327,6 @@ Applies the given preselection range to the input.
 | Name    | Type        | Description                     |
 | ------- | ----------- | ------------------------------- |
 | `event` | `EventDate` | the preselection range to apply |
-
-#### Returns
-
-Type: `Promise<void>`
-
-
-
-### `updateLang() => Promise<void>`
-
-Updates the component's texts to the locale currently set on the host element.
 
 #### Returns
 

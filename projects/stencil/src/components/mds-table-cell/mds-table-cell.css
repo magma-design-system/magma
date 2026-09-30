@@ -5,29 +5,15 @@
  * @prop --mds-table-cell-color: Default text color of table cells.
  */
 
-@property --mds-table-cell-background {
-  inherits: false;
-  initial-value: var(--mds-table-row-background);
-  syntax: '<color>';
-}
-
-@property --mds-table-cell-background-alt {
-  inherits: false;
-  initial-value: var(--mds-table-row-background-alt);
-  syntax: '<color>';
-}
-
-@property --mds-table-cell-color-alt {
-  inherits: false;
-  initial-value: var(--mds-table-row-color-alt);
-  syntax: '<color>';
-}
-
-@property --mds-table-cell-color {
-  inherits: false;
-  initial-value: var(--mds-table-row-color);
-  syntax: '<color>';
-}
+/*
+  No css/mds-table-cell-property.css on purpose. Every default below is a bare
+  var(--mds-table-row-*), which resolves to nothing unless an mds-table-row supplies it:
+  a document-level registration would substitute its own static light initial-value
+  there instead, so a cell used outside a row would pick up light colours on a dark page.
+  --mds-table-cell-padding is out for the mirror-image reason: mds-table-header-cell and
+  mds-table-row read it directly and set no default of their own. See
+  projects/styles/scripts/properties.ts for how the registrations are collected.
+*/
 
 :host {
   --mds-table-cell-background: var(--mds-table-row-background);

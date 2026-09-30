@@ -19,7 +19,7 @@ interface FileStatus {
   key: string;
   file: File;
   status: Status;
-  errorMessage?: string;
+  errorKey?: string;
   errorType?: ErrorType;
   id: number;
 }

@@ -10,36 +10,6 @@
  * @prop --mds-toast-width: Width of the toast component.
  */
 
-@property --mds-toast-background {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-02));
-  syntax: '<color>';
-}
-
-@property --mds-toast-color {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral));
-  syntax: '<color>';
-}
-
-@property --mds-toast-duration {
-  inherits: false;
-  initial-value: 300ms;
-  syntax: '<time>';
-}
-
-@property --mds-toast-icon-color {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral));
-  syntax: '<color>';
-}
-
-@property --mds-toast-width {
-  inherits: false;
-  initial-value: auto;
-  syntax: '<length> | auto';
-}
-
 /* ❌ Not supported
 
 @property --mds-toast-shadow {
@@ -51,10 +21,10 @@
 */
 
 :host {
-  --mds-toast-background: rgb(var(--tone-neutral-02));
-  --mds-toast-color: rgb(var(--tone-neutral));
+  --mds-toast-background: rgb(var(--magma-surface-inverse));
+  --mds-toast-color: rgb(var(--magma-on-inverse));
   --mds-toast-duration: 300ms;
-  --mds-toast-icon-color: rgb(var(--tone-neutral));
+  --mds-toast-icon-color: rgb(var(--magma-on-inverse));
   --mds-toast-shadow: var(--shadow-xl);
   --mds-toast-width: auto;
 
@@ -69,6 +39,7 @@
   pointer-events: none;
   position: fixed;
   right: 0;
+  z-index: var(--magma-modal-z-index);
 }
 
 .dialog {
@@ -130,6 +101,10 @@
   gap: --spacing(200);
 }
 
+.actions--hidden {
+  display: none;
+}
+
 ::slotted([slot='icon']) {
   @apply ease-out;
 
@@ -148,5 +123,5 @@
 @import './css/animate/mds-toast-animate-top.css';
 @import './css/animate/mds-toast-animate-bottom.css';
 @import './css/mds-toast-pref-animation.css';
-@import './css/mds-toast-pref-theme.css';
+@import './css/mds-toast-pref-mode.css';
 @import './css/mds-toast-pref-contrast.css';

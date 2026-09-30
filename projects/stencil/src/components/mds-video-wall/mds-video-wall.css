@@ -3,30 +3,12 @@
 /**
  * @prop --mds-video-wall-noise-background-color: The background color applied to the noise layer of the video wall.
  * @prop --mds-video-wall-noise-background-size: The background-size used for the noise texture.
- * @prop --mds-video-wall-noise-fitler: The CSS filter applied to the noise layer (e.g., blur, brightness).
+ * @prop --mds-video-wall-noise-filter: The CSS filter applied to the noise layer (e.g., blur, brightness).
  * @prop --mds-video-wall-video-fit: Defines how the video content should scale to fit its container (e.g., cover, contain).
  */
 
-@property --mds-video-wall-noise-background-color {
-  inherits: false;
-  initial-value: rgb(var(--variant-primary-03) / 0.8);
-  syntax: '<color>';
-}
-
-@property --mds-video-wall-noise-background-size {
-  inherits: false;
-  initial-value: auto;
-  syntax: 'auto | <length>';
-}
-
-@property --mds-video-wall-video-fit {
-  inherits: false;
-  initial-value: cover;
-  syntax: 'contain | cover | fill | none | scale-down';
-}
-
 /*
-@property --mds-video-wall-noise-fitler {
+@property --mds-video-wall-noise-filter {
   inherits: false;
   initial-value: none;
   syntax: "<filter-function> | none";
@@ -34,13 +16,13 @@
 */
 
 :host {
-  --mds-video-wall-noise-background-color: rgb(var(--variant-primary-03) / 0.8);
+  --mds-video-wall-noise-background-color: rgb(var(--magma-accent-emphasis-hover) / 0.8);
   --mds-video-wall-noise-background-size: auto;
-  --mds-video-wall-noise-fitler: none;
+  --mds-video-wall-noise-filter: none;
   --mds-video-wall-video-fit: cover;
 
   aspect-ratio: var(--aspect-video);
-  background-color: rgb(var(--tone-neutral-02));
+  background-color: rgb(var(--magma-surface-inverse));
   display: flex;
   position: relative;
 }
@@ -53,6 +35,10 @@
   position: relative;
   width: 100%;
   z-index: 3;
+}
+
+.content--hidden {
+  display: none;
 }
 
 video,
@@ -82,7 +68,7 @@ video {
 .noise {
   background-color: var(--mds-video-wall-noise-background-color);
   background-size: var(--mds-video-wall-noise-background-size);
-  filter: var(--mds-video-wall-noise-fitler);
+  filter: var(--mds-video-wall-noise-filter);
   z-index: 2;
 }
 
@@ -101,4 +87,3 @@ video {
 .noise--tv {
   background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAHCAYAAADEUlfTAAAAMElEQVQYV2NkYGDwZcABGP8zKBuD5Bj/P4coEf0Kod8wSjH+Z5CVgki+RZc0HghJADPEICMR8Ep/AAAAAElFTkSuQmCC');
 }
-

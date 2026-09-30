@@ -1,77 +1,72 @@
+/* The arrow follows mds-input-date: the same role for the same state, bare, with
+ * no fill behind it. The background knobs stay documented so a consumer can bring
+ * the old pill back, but they default to nothing. */
+
 :host {
-  --mds-input-select-icon-color: rgb(var(--variant-primary-03));
   --mds-input-select-variant-color-rgb: 0 0 0;
-  --mds-input-select-arrow-icon-blur-background-color: rgb(var(--variant-primary-09));
-  --mds-input-select-arrow-icon-hover-background-color: rgb(var(--variant-primary-08));
-  --mds-input-select-arrow-icon-blur-color: rgb(var(--variant-primary-06));
-  --mds-input-select-arrow-icon-hover-color: rgb(var(--variant-primary-04));
+  --mds-input-select-arrow-icon-blur-background-color: transparent;
+  --mds-input-select-arrow-icon-hover-background-color: transparent;
+  --mds-input-select-arrow-icon-blur-color: rgb(var(--magma-accent-emphasis));
+  --mds-input-select-arrow-icon-hover-color: rgb(var(--magma-accent-fg));
 }
 
 :host(:hover),
 :host(:focus-within) {
-  --mds-input-select-variant-color-rgb: var(--variant-primary-04);
+  --mds-input-select-variant-color-rgb: var(--magma-accent-emphasis);
 }
 
 :host([variant='info']) {
-  --mds-input-select-icon-color: rgb(var(--status-info-05));
-  --mds-input-select-tip-background: rgb(var(--status-info-05));
-  --mds-input-select-arrow-icon-blur-background-color: rgb(var(--status-info-09));
-  --mds-input-select-arrow-icon-hover-background-color: rgb(var(--status-info-08));
-  --mds-input-select-arrow-icon-blur-color: rgb(var(--status-info-06));
-  --mds-input-select-arrow-icon-hover-color: rgb(var(--status-info-04));
+  --mds-input-tip-background: rgb(var(--magma-info-emphasis));
+  --mds-input-select-arrow-icon-blur-background-color: transparent;
+  --mds-input-select-arrow-icon-hover-background-color: transparent;
+  --mds-input-select-arrow-icon-blur-color: rgb(var(--magma-info-emphasis));
+  --mds-input-select-arrow-icon-hover-color: rgb(var(--magma-info-emphasis));
   --mds-input-select-variant-color-rgb: 0 0 0;
 }
 
 :host([variant='info']:hover),
 :host([variant='info']:focus-within) {
-  --mds-input-select-icon-color: rgb(var(--status-info-04));
-  --mds-input-select-variant-color-rgb: var(--status-info-05);
+  --mds-input-select-variant-color-rgb: var(--magma-info-emphasis);
 }
 
 :host([variant='success']) {
-  --mds-input-select-icon-color: rgb(var(--status-success-05));
-  --mds-input-select-tip-background: rgb(var(--status-success-05));
-  --mds-input-select-arrow-icon-blur-background-color: rgb(var(--status-success-09));
-  --mds-input-select-arrow-icon-hover-background-color: rgb(var(--status-success-08));
-  --mds-input-select-arrow-icon-blur-color: rgb(var(--status-success-06));
-  --mds-input-select-arrow-icon-hover-color: rgb(var(--status-success-04));
+  --mds-input-tip-background: rgb(var(--magma-success-emphasis));
+  --mds-input-select-arrow-icon-blur-background-color: transparent;
+  --mds-input-select-arrow-icon-hover-background-color: transparent;
+  --mds-input-select-arrow-icon-blur-color: rgb(var(--magma-success-emphasis));
+  --mds-input-select-arrow-icon-hover-color: rgb(var(--magma-success-emphasis));
   --mds-input-select-variant-color-rgb: 0 0 0;
 }
 
 :host([variant='success']:hover),
 :host([variant='success']:focus-within) {
-  --mds-input-select-icon-color: rgb(var(--status-success-04));
-  --mds-input-select-variant-color-rgb: var(--status-success-05);
+  --mds-input-select-variant-color-rgb: var(--magma-success-emphasis);
 }
 
 :host([variant='warning']) {
-  --mds-input-select-icon-color: rgb(var(--status-warning-05));
-  --mds-input-select-tip-background: rgb(var(--status-warning-05));
-  --mds-input-select-arrow-icon-blur-background-color: rgb(var(--status-warning-09));
-  --mds-input-select-arrow-icon-hover-background-color: rgb(var(--status-warning-08));
-  --mds-input-select-arrow-icon-blur-color: rgb(var(--status-warning-06));
-  --mds-input-select-arrow-icon-hover-color: rgb(var(--status-warning-04));
+  --mds-input-tip-background: rgb(var(--magma-warning-emphasis));
+  --mds-input-select-arrow-icon-blur-background-color: transparent;
+  --mds-input-select-arrow-icon-hover-background-color: transparent;
+  --mds-input-select-arrow-icon-blur-color: rgb(var(--magma-warning-emphasis));
+  --mds-input-select-arrow-icon-hover-color: rgb(var(--magma-warning-emphasis));
   --mds-input-select-variant-color-rgb: 0 0 0;
 }
 
 :host([variant='warning']:hover),
 :host([variant='warning']:focus-within) {
-  --mds-input-select-icon-color: rgb(var(--status-warning-04));
-  --mds-input-select-variant-color-rgb: var(--status-warning-05);
+  --mds-input-select-variant-color-rgb: var(--magma-warning-emphasis);
 }
 
 :host([variant='error']) {
-  --mds-input-select-icon-color: rgb(var(--status-error-05));
-  --mds-input-select-tip-background: rgb(var(--status-error-05));
-  --mds-input-select-arrow-icon-blur-background-color: rgb(var(--status-error-09));
-  --mds-input-select-arrow-icon-hover-background-color: rgb(var(--status-error-08));
-  --mds-input-select-arrow-icon-blur-color: rgb(var(--status-error-06));
-  --mds-input-select-arrow-icon-hover-color: rgb(var(--status-error-04));
+  --mds-input-tip-background: rgb(var(--magma-danger-emphasis));
+  --mds-input-select-arrow-icon-blur-background-color: transparent;
+  --mds-input-select-arrow-icon-hover-background-color: transparent;
+  --mds-input-select-arrow-icon-blur-color: rgb(var(--magma-danger-emphasis));
+  --mds-input-select-arrow-icon-hover-color: rgb(var(--magma-danger-emphasis));
   --mds-input-select-variant-color-rgb: 0 0 0;
 }
 
 :host([variant='error']:hover),
 :host([variant='error']:focus-within) {
-  --mds-input-select-icon-color: rgb(var(--status-error-04));
-  --mds-input-select-variant-color-rgb: var(--status-error-05);
+  --mds-input-select-variant-color-rgb: var(--magma-danger-emphasis);
 }

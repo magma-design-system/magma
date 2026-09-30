@@ -162,7 +162,7 @@ export const AutoComplete = {
   render: Template,
 
   args: {
-    autocomplete: 'address',
+    autocomplete: 'cc-name',
     type: 'text',
     placeholder: 'Intestatario carta di credito',
   },
@@ -213,6 +213,7 @@ export const Max = {
     max: '3',
     type: 'number',
     value: '2',
+    placeholder: 'Scrivi qualcosa',
   },
 };
 
@@ -223,6 +224,7 @@ export const MaxLength = {
     maxlength: 128,
     type: 'text',
     value: 'Hello',
+    placeholder: 'Scrivi qualcosa',
   },
 };
 
@@ -233,6 +235,7 @@ export const Min = {
     min: '3',
     type: 'number',
     value: '5',
+    placeholder: 'Scrivi qualcosa',
   },
 };
 
@@ -243,6 +246,7 @@ export const MinLength = {
     minlength: 5,
     type: 'text',
     value: 'Hello',
+    placeholder: 'Scrivi qualcosa',
   },
 };
 
@@ -261,6 +265,7 @@ export const ReadOnly = {
   args: {
     readOnly: true,
     value: 'Read only text',
+    placeholder: 'Scrivi qualcosa',
   },
 };
 
@@ -397,4 +402,48 @@ export const FormIntegration = {
     placeholder: 'Es: Hello world!',
     name: 'mds-input',
   },
+};
+
+/**
+ * Login form for manual checks with password managers. The native fields live in the Shadow DOM
+ * of each mds-input: Bitwarden, LastPass, Chrome and Edge detect them, Firefox and
+ * KeePassXC-Browser do not (see #519). Open the story in isolation (iframe.html) to avoid the
+ * Storybook frame.
+ */
+const LoginTemplate = () => {
+  return (
+    <form
+      class="grid gap-400"
+      onSubmit={(e: SubmitEvent) => {
+        e.preventDefault();
+        const data = new FormData(e.currentTarget as HTMLFormElement);
+        console.info('Login submitted as', data.get('username'));
+      }}
+    >
+      <mds-input-field label="Email">
+        <mds-input
+          name="username"
+          type="email"
+          autocomplete="username"
+          placeholder="nome@esempio.it"
+          required
+        ></mds-input>
+      </mds-input-field>
+      <mds-input-field label="Password">
+        <mds-input
+          name="password"
+          type="password"
+          autocomplete="current-password"
+          required
+        ></mds-input>
+      </mds-input-field>
+      <mds-button class="w-min" type="submit">
+        Accedi
+      </mds-button>
+    </form>
+  );
+};
+
+export const Login = {
+  render: LoginTemplate,
 };

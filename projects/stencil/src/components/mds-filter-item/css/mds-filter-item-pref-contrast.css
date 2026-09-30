@@ -6,7 +6,7 @@
 :host([pref-contrast='more']) {
   &:host([selected]:not([selected='false'])),
   &:host(:hover) {
-    box-shadow: var(--shadow-outline-strong-50);
+    box-shadow: var(--shadow-ring-strong-2);
   }
 }
 
@@ -15,7 +15,7 @@
   :host(:not([pref-contrast])) {
     &:host([selected]:not([selected='false'])),
     &:host(:hover) {
-      box-shadow: var(--shadow-outline-strong-50);
+      box-shadow: var(--shadow-ring-strong-2);
     }
   }
 }

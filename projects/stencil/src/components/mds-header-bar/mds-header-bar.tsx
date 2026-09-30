@@ -10,7 +10,9 @@ import {
   State,
   h,
 } from '@stencil/core';
-import { subscribePreference } from '@common/preference';
+import { hasChildWithSlot } from '@common/slot';
+import clsx from 'clsx';
+import { preferenceStore } from '@common/preference';
 import { HeaderBarMenuType, HeaderBarNavType } from '@type/header-bar';
 
 /**
@@ -27,16 +29,8 @@ import { HeaderBarMenuType, HeaderBarNavType } from '@type/header-bar';
   shadow: true,
 })
 export class MdsHeaderBar {
-  private hasNav: boolean;
+  @State() hasNav: boolean;
   @Element() host: HTMLMdsHeaderBarElement;
-  @State() prefAnimation?: string;
-  private unsubscribePrefAnimation?: () => void;
-  @State() prefContrast?: string;
-  private unsubscribePrefContrast?: () => void;
-  @State() prefTheme?: string;
-  private unsubscribePrefTheme?: () => void;
-  @State() prefThemeScheme?: string;
-  private unsubscribePrefThemeScheme?: () => void;
   @State() isOpened: boolean;
 
   /**
@@ -49,30 +43,12 @@ export class MdsHeaderBar {
    */
   @Prop({ reflect: true }) nav: HeaderBarNavType = 'desktop';
 
-  connectedCallback(): void {
-    this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
-      this.prefAnimation = value;
-    });
-    this.unsubscribePrefContrast = subscribePreference('contrast', (value) => {
-      this.prefContrast = value;
-    });
-    this.unsubscribePrefTheme = subscribePreference('theme', (value) => {
-      this.prefTheme = value;
-    });
-    this.unsubscribePrefThemeScheme = subscribePreference('theme-scheme', (value) => {
-      this.prefThemeScheme = value;
-    });
-  }
-
-  disconnectedCallback(): void {
-    this.unsubscribePrefAnimation?.();
-    this.unsubscribePrefContrast?.();
-    this.unsubscribePrefTheme?.();
-    this.unsubscribePrefThemeScheme?.();
-  }
+  private onNavSlotChange = (): void => {
+    this.hasNav = hasChildWithSlot(this.host, 'nav');
+  };
 
   componentWillLoad(): void {
-    this.hasNav = this.host.querySelector(':scope > [slot="nav"]') !== null;
+    this.hasNav = hasChildWithSlot(this.host, 'nav');
   }
 
   /**
@@ -98,21 +74,19 @@ export class MdsHeaderBar {
   render() {
     return (
       <Host
-        pref-animation={this.prefAnimation}
-        pref-contrast={this.prefContrast}
-        pref-theme={this.prefTheme}
-        pref-theme-scheme={this.prefThemeScheme}
+        pref-animation={preferenceStore.state.animation}
+        pref-contrast={preferenceStore.state.contrast}
+        pref-mode={preferenceStore.state.mode}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
         <div class="content" part="content">
           <div class="logo">
             <slot />
           </div>
           <div class="actions" part="actions">
-            {this.nav !== 'none' && this.hasNav && (
-              <nav class="nav" part="nav">
-                <slot name="nav" />
-              </nav>
-            )}
+            <nav class={clsx('nav', !this.hasNav && 'nav--hidden')} part="nav">
+              <slot name="nav" onSlotchange={this.onNavSlotChange} />
+            </nav>
             {this.menu !== 'none' && (
               <mds-button
                 class="menu"

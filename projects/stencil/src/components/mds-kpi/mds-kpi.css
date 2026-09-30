@@ -5,17 +5,12 @@
  * @prop --mds-kpi-text-animation-speed: Sets the animation speed of the text
  */
 
-@property --mds-kpi-text-animation-speed {
-  inherits: false;
-  initial-value: 0.15;
-  syntax: '<number>';
-}
-
-@property --mds-kpi-text-animation-placeholder-char {
-  inherits: false;
-  initial-value: ' ';
-  syntax: '<string>';
-}
+/*
+  No css/mds-kpi-property.css on purpose. mds-kpi-item reads both of these as
+  var(--mds-kpi-text-animation-speed, <default>), and a document-level registration
+  always supplies its initial-value, so that fallback would never fire again. See
+  projects/styles/scripts/properties.ts for how the registrations are collected.
+*/
 
 :host {
   --mds-kpi-text-animation-speed: 0.15;

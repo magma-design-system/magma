@@ -1,7 +1,7 @@
 name: 💡 Feature Request
 description: Suggest a new component, token, or improvement. You are asking the core team to consider it - not committing to build it yourself.
 title: '[Feature]: '
-labels: ['type: feature', 'status: triage']
+labels: ['feature']
 projects: ['magma-design-system/magma']
 type: feature
 body:

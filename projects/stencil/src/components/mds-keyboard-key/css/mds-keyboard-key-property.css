@@ -1,0 +1,39 @@
+/*
+  Document-level registrations for the mds-keyboard-key public custom properties.
+
+  Never import this file from a component stylesheet: an @property rule inside a shadow root
+  registers nothing, and every Magma component is shadow: true.
+  projects/styles/scripts/properties.ts collects these into globals.css, which the document does
+  load, and resolves each initial-value down to a literal - see that file for the full
+  rationale. inherits is true throughout, because that is what the unregistered behaviour
+  already does today.
+
+  Deliberately NOT registered:
+    - --mds-keyboard-key-background, --mds-keyboard-key-illumination-dark-opacity,
+      --mds-keyboard-key-illumination-light-opacity: read by the component through a var()
+      fallback and never set anywhere, so a registration would kill that fallback.
+*/
+
+@property --mds-keyboard-key-illumination-dark-size {
+  inherits: true;
+  initial-value: --spacing(150);
+  syntax: '<length>';
+}
+
+@property --mds-keyboard-key-illumination-light-size {
+  inherits: true;
+  initial-value: --spacing(50);
+  syntax: '<length>';
+}
+
+@property --mds-keyboard-key-padding {
+  inherits: true;
+  initial-value: --spacing(100);
+  syntax: '<length>';
+}
+
+@property --mds-keyboard-key-transition-duration {
+  inherits: true;
+  initial-value: 300ms;
+  syntax: '<time>';
+}

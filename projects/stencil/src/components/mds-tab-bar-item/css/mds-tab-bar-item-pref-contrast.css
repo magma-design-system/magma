@@ -4,14 +4,12 @@
  * `system` and no controller follow the OS via @media. Cross-browser, no :host-context. */
 
 :host([pref-contrast='more']) {
-  --mds-tab-bar-item-color: rgb(var(--tone-neutral-04));
-  --mds-tab-bar-item-color-selected: rgb(var(--variant-primary-02));
+  --mds-tab-bar-item-color-selected: rgb(var(--magma-accent-emphasis-active));
 }
 
 @media (prefers-contrast: more) {
   :host([pref-contrast='system']),
   :host(:not([pref-contrast])) {
-    --mds-tab-bar-item-color: rgb(var(--tone-neutral-04));
-    --mds-tab-bar-item-color-selected: rgb(var(--variant-primary-02));
+    --mds-tab-bar-item-color-selected: rgb(var(--magma-accent-emphasis-active));
   }
 }

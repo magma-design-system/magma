@@ -1,0 +1,40 @@
+/*
+  Document-level registrations for the mds-push-notification public custom properties.
+
+  Never import this file from a component stylesheet: an @property rule inside a shadow root
+  registers nothing, and every Magma component is shadow: true.
+  projects/styles/scripts/properties.ts collects these into globals.css, which the document does
+  load, and resolves each initial-value down to a literal - see that file for the full
+  rationale. inherits is true throughout, because that is what the unregistered behaviour
+  already does today.
+*/
+
+@property --mds-push-notification-fadeout-delay {
+  inherits: true;
+  initial-value: 0s;
+  syntax: '<time>';
+}
+
+@property --mds-push-notification-gap {
+  inherits: true;
+  initial-value: --spacing(200);
+  syntax: '<length>';
+}
+
+@property --mds-push-notification-items-duration {
+  inherits: true;
+  initial-value: 300ms;
+  syntax: '<time>';
+}
+
+@property --mds-push-notification-items-intro-delay {
+  inherits: true;
+  initial-value: 300ms;
+  syntax: '<time>';
+}
+
+@property --mds-push-notification-items-outro-delay {
+  inherits: true;
+  initial-value: 0ms;
+  syntax: '<time>';
+}

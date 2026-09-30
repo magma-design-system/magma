@@ -1,6 +1,7 @@
 import { expect, test } from 'vitest'
 
 import { createColorTokens, MagmaConfig } from '../src/lib/color.mjs'
+import { resolveSurfaceOptIn } from '../src/lib/surface.mjs'
 import realConfig from '../.magma-design-tokensrc.json'
 
 const CONFIG = realConfig as MagmaConfig
@@ -38,12 +39,29 @@ test('color and step order follows the config, run after run', () => {
   const configOrder = CONFIG.colors
     .filter((color) => !color.disabled)
     .map((color) => color.name)
-  const producedGroupsAndNames = orderOf(first.tokens).filter((entry) => !/\.\w+$/.test(entry.replace(/^[^.]+\./, '')) )
-  // the group.name entries appear in the exact order of the config colors
-  expect(orderOf(first.tokens).filter((e) => e.split('.').length === 2)).toEqual(configOrder)
+  // surface/border are DERIVED groups (lightness engine, not config colors);
+  // they are appended after the APCA colors, so exclude them when checking that
+  // the config-driven entries follow the config order.
+  const isDerived = (entry: string) => ['surface', 'border', 'text'].includes(entry.split('.')[0])
+  const groupName = (entry: string) => entry.split('.').length === 2
+  // the config-driven group.name entries appear in the exact order of the config colors
+  expect(orderOf(first.tokens).filter((e) => groupName(e) && !isDerived(e))).toEqual(configOrder)
+  // the derived surface/border families appear after them, one entry per opted-in
+  // family, surfaces first then borders, in config order
+  // opting in happens at TWO levels (group default + per-color override), so the
+  // expectation goes through the same resolver the generator uses
+  const surfaceFamilies = CONFIG.colors
+    .filter((color) => !color.disabled && resolveSurfaceOptIn(CONFIG, color) !== undefined)
+    .map((color) => color.name.split('.')[1])
+  // text roles are DERIVED too (by-target, A7); one entry per opted-in family,
+  // appended after surfaces and borders in config order
+  expect(orderOf(first.tokens).filter((e) => groupName(e) && isDerived(e))).toEqual([
+    ...surfaceFamilies.map((family) => `surface.${family}`),
+    ...surfaceFamilies.map((family) => `border.${family}`),
+    ...surfaceFamilies.map((family) => `text.${family}`),
+  ])
   // and the whole flattened order is stable between runs
   expect(orderOf(second.tokens)).toEqual(orderOf(first.tokens))
-  void producedGroupsAndNames
 })
 
 test('a hue-shifted map has the exact same structure as the master, only values differ', () => {

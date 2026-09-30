@@ -5,28 +5,17 @@
  * @prop --mds-card-padding: Sets the spacing around card elements
  */
 
-@property --mds-card-gap {
-  inherits: false;
-  initial-value: 0;
-  syntax: '<length>';
-}
-
-@property --mds-card-padding {
-  inherits: false;
-  initial-value: 0;
-  syntax: '<length>';
-}
-
 :host {
   --mds-card-gap: 0;
   --mds-card-padding: 0;
+  --mds-card-background: rgb(var(--magma-surface-raised));
 
-  background-color: rgb(var(--tone-neutral));
-  border-radius: var(--radius-2xl);
+  background-color: rgb(var(--magma-surface-raised));
+  border-radius: var(--magma-radius-2xl);
   box-shadow: var(--shadow-md-sharp);
   container-name: mds-card;
   container-type: inline-size;
-  corner-shape: var(--magma-corner-shape, round);
+  corner-shape: var(--magma-corner-shape);
   display: grid;
   min-height: --spacing(400);
   overflow: hidden;
@@ -240,5 +229,5 @@
   }
 }
 
-@import './css/mds-card-pref-theme.css';
+@import './css/mds-card-pref-mode.css';
 @import './css/mds-card-pref-contrast.css';

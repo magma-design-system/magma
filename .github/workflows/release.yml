@@ -1,0 +1,52 @@
+# Release pipeline of every package on main, in ONE chore(release) commit.
+# For each package it detects the next version from the conventional commits
+# of its scope, bumps its package.json, updates the pins of the packages that
+# depend on it (e.g. design-tokens -> styles and magma, magma -> magma-react
+# and magma-angular) and the lock, then commits, tags and creates the GitHub
+# releases (see semantic-release.yml). That single commit then triggers CI ->
+# publish.yml (npm) once, with every manifest already consistent.
+#
+# icons and svg-icons also release directly from dev (icons.release.yml,
+# svg-icons.release.yml): promoting dev into main brings their tags along and
+# the tag-exists guard skips the re-release. magma prereleases come from beta
+# (stencil.release.yml).
+name: release
+
+on:
+  push:
+    branches: [main]
+
+concurrency:
+  group: release-main
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    # chore(release) pushes come from release-finalize itself: their versions are
+    # already tagged, so re-running would only be a wasted no-op dry-run
+    if: ${{ !startsWith(github.event.head_commit.message, 'chore(release):') }}
+    uses: ./.github/workflows/semantic-release.yml
+    secrets: inherit
+    with:
+      # magma's manifests: keep in sync with stencil.release.yml and
+      # MAGMA_LOCKSTEP_MANIFESTS in publish.yml
+      packages: >-
+        [
+          {"name": "design-tokens", "working-directory": "projects/design-tokens",
+           "tag-format": "design-tokens@${version}", "commit-scope": "design-tokens"},
+          {"name": "identity", "working-directory": "projects/identity",
+           "tag-format": "identity@${version}", "commit-scope": "identity"},
+          {"name": "styles", "working-directory": "projects/styles",
+           "tag-format": "styles@${version}", "commit-scope": "styles"},
+          {"name": "svg-icons", "working-directory": "projects/svg-icons",
+           "tag-format": "svg-icons@${version}", "commit-scope": "svg-icons"},
+          {"name": "icons", "working-directory": "projects/icons",
+           "tag-format": "icons@${version}", "commit-scope": "icons"},
+          {"name": "magma", "working-directory": "projects/stencil",
+           "tag-format": "magma@${version}", "commit-scope": "magma|stencil|react|lit|storybook|mds-*",
+           "version-sync-paths": ["projects/stencil-react/package.json",
+                                  "projects/stencil-angular/magma-angular/package.json"]}
+        ]

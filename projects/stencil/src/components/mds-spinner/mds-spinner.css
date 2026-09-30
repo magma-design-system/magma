@@ -2,19 +2,13 @@
  * @prop --mds-spinner-duration: Duration of the spinner animation.
  */
 
-@property --mds-spinner-duration {
-  inherits: false;
-  initial-value: 0.725s;
-  syntax: '<time>';
-}
-
 :host {
   --mds-spinner-duration: 0.725s;
 
   @apply ease-in-out-quart;
 
   align-items: center;
-  color: rgb(var(--variant-primary-03));
+  color: rgb(var(--magma-accent-fg));
   display: inline-flex;
   height: --spacing(1200);
   justify-content: center;

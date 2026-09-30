@@ -1,4 +1,6 @@
-import { Component, Host, h, Element } from '@stencil/core';
+import { Component, Host, h, Element, State } from '@stencil/core';
+import { hasChildWithSlot } from '@common/slot';
+import clsx from 'clsx';
 
 /**
  * @slot - Add `text string`, `HTML elements` or `components` to this slot. Insert author information, name, role or other useful author infos.
@@ -10,21 +12,23 @@ import { Component, Host, h, Element } from '@stencil/core';
   shadow: true,
 })
 export class MdsAuthor {
-  private hasAvatar: boolean;
+  @State() hasAvatar: boolean;
   @Element() hostElement: HTMLMdsAuthorElement;
 
+  private onAvatarSlotChange = (): void => {
+    this.hasAvatar = hasChildWithSlot(this.hostElement, 'avatar');
+  };
+
   componentWillLoad(): void {
-    this.hasAvatar = this.hostElement.querySelector(':scope > [slot="avatar"]') !== null;
+    this.hasAvatar = hasChildWithSlot(this.hostElement, 'avatar');
   }
 
   render() {
     return (
       <Host>
-        {this.hasAvatar && (
-          <div class="avatar">
-            <slot name="avatar" />
-          </div>
-        )}
+        <div class={clsx('avatar', !this.hasAvatar && 'avatar--hidden')}>
+          <slot name="avatar" onSlotchange={this.onAvatarSlotChange} />
+        </div>
         <div class="info">
           <slot />
         </div>

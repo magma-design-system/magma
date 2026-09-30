@@ -4,12 +4,12 @@
  * `system` and no controller follow the OS via @media. Cross-browser, no :host-context. */
 
 :host([pref-contrast='more']) {
-  color: rgb(var(--variant-primary-01));
+  color: rgb(var(--magma-accent-emphasis-active));
 }
 
 @media (prefers-contrast: more) {
   :host([pref-contrast='system']),
   :host(:not([pref-contrast])) {
-    color: rgb(var(--variant-primary-01));
+    color: rgb(var(--magma-accent-emphasis-active));
   }
 }

@@ -1,60 +1,56 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { render, vi } from '@stencil/vitest';
+import { userEvent } from 'vitest/browser';
 
 describe('mds-calendar', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<mds-calendar></mds-calendar>');
+    const { root } = await render('<mds-calendar></mds-calendar>');
 
-    const element = await page.find('mds-calendar');
-    expect(element).toHaveAttribute('hydrated');
+    expect(root).toHaveAttribute('hydrated');
   });
 
   it('renders and selects adjacent month days', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<mds-calendar view-date="2026-08-01"></mds-calendar>');
-    await page.waitForChanges();
+    const { root, waitForChanges } = await render(
+      '<mds-calendar view-date="2026-08-01"></mds-calendar>',
+    );
 
-    const calendarCells = await page.findAll('mds-calendar >>> mds-calendar-cell');
-    const otherMonthCell = await page.find('mds-calendar >>> mds-calendar-cell[month="other"]');
+    const shadow = root.shadowRoot!;
+    const calendarCells = shadow.querySelectorAll('mds-calendar-cell');
+    const otherMonthCell = shadow.querySelector<HTMLElement>('mds-calendar-cell[month="other"]')!;
 
     expect(calendarCells.length).toBeGreaterThan(31);
     expect(otherMonthCell).not.toBeNull();
     expect(otherMonthCell.getAttribute('month')).toBe('other');
 
-    await otherMonthCell.click();
-    await page.waitForChanges();
+    await userEvent.click(otherMonthCell);
+    await waitForChanges();
 
     expect(otherMonthCell.getAttribute('selection')).toBe('single');
   });
 
   it('updates the visible range when end date is set after the start date', async () => {
-    const page = await newE2EPage();
-    await page.setContent(
+    const { root, waitForChanges } = await render(
       '<mds-calendar view-date="2026-06-01" start-date="2026-06-02"></mds-calendar>',
     );
-    await page.waitForChanges();
 
-    await page.$eval('mds-calendar', (element) => {
-      element.setAttribute('end-date', '2026-07-24');
-    });
-    await page.waitForChanges();
+    root.setAttribute('end-date', '2026-07-24');
+    await waitForChanges();
 
-    const juneLastDay = await page.find('mds-calendar >>> mds-calendar-cell[date="2026-06-30"]');
-    const julyVisibleDay = await page.find('mds-calendar >>> mds-calendar-cell[date="2026-07-05"]');
+    const shadow = root.shadowRoot!;
+    const juneLastDay = shadow.querySelector('mds-calendar-cell[date="2026-06-30"]')!;
+    const julyVisibleDay = shadow.querySelector('mds-calendar-cell[date="2026-07-05"]')!;
 
     expect(juneLastDay.getAttribute('selection')).toBe('middle');
     expect(julyVisibleDay.getAttribute('selection')).toBe('middle');
   });
 
   it('previews the full visible range when hovering into the next month', async () => {
-    const page = await newE2EPage();
-    await page.setContent(
+    const { root } = await render(
       '<mds-calendar view-date="2026-06-01" start-date="2026-06-02" hover-date="2026-07-24"></mds-calendar>',
     );
-    await page.waitForChanges();
 
-    const juneLastDay = await page.find('mds-calendar >>> mds-calendar-cell[date="2026-06-30"]');
-    const julyVisibleDay = await page.find('mds-calendar >>> mds-calendar-cell[date="2026-07-05"]');
+    const shadow = root.shadowRoot!;
+    const juneLastDay = shadow.querySelector('mds-calendar-cell[date="2026-06-30"]')!;
+    const julyVisibleDay = shadow.querySelector('mds-calendar-cell[date="2026-07-05"]')!;
 
     expect(juneLastDay).toHaveAttribute('preview');
     expect(juneLastDay.getAttribute('selection')).toBe('middle');
@@ -62,54 +58,397 @@ describe('mds-calendar', () => {
     expect(julyVisibleDay.getAttribute('selection')).toBe('middle');
   });
 
+  it('highlights today by default and not with hide-today', async () => {
+    const { root: highlighted } = await render('<mds-calendar></mds-calendar>');
+    expect(highlighted.shadowRoot!.querySelector('mds-calendar-cell[today]')).not.toBeNull();
+
+    const { root: plain } = await render('<mds-calendar hide-today></mds-calendar>');
+    expect(plain.shadowRoot!.querySelector('mds-calendar-cell[today]')).toBeNull();
+    expect(plain.shadowRoot!.querySelectorAll('mds-calendar-cell').length).toBeGreaterThan(27);
+  });
+
   it('switches to month selection when clicking the month action by default', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<mds-calendar view-date="2026-06-01"></mds-calendar>');
-    await page.waitForChanges();
+    const { root, waitForChanges } = await render(
+      '<mds-calendar view-date="2026-06-01"></mds-calendar>',
+    );
 
-    const actionMonth = await page.find('mds-calendar >>> .action-month');
-    await actionMonth.click();
-    await page.waitForChanges();
+    await userEvent.click(root.shadowRoot!.querySelector('.action-month')!);
+    await waitForChanges();
 
-    const monthSelection = await page.find('mds-calendar >>> .month-selection');
-
-    expect(monthSelection).not.toBeNull();
+    expect(root.shadowRoot!.querySelector('.month-selection')).not.toBeNull();
   });
 
   it('switches to year selection when clicking the year action by default', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<mds-calendar view-date="2026-06-01"></mds-calendar>');
-    await page.waitForChanges();
+    const { root, waitForChanges } = await render(
+      '<mds-calendar view-date="2026-06-01"></mds-calendar>',
+    );
 
-    const actionYear = await page.find('mds-calendar >>> .action-year');
-    await actionYear.click();
-    await page.waitForChanges();
+    await userEvent.click(root.shadowRoot!.querySelector('.action-year')!);
+    await waitForChanges();
 
-    const yearSelection = await page.find('mds-calendar >>> .year-selection');
+    expect(root.shadowRoot!.querySelector('.year-selection')).not.toBeNull();
+  });
 
-    expect(yearSelection).not.toBeNull();
+  it('ignores an invalid start date and renders the current month with no selection', async () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    const { root } = await render('<mds-calendar start-date="invalid-date"></mds-calendar>');
+    const shadow = root.shadowRoot!;
+
+    expect(root).toHaveAttribute('hydrated');
+    expect(shadow.querySelector('mds-calendar-cell[today][month="current"]')).not.toBeNull();
+    expect(shadow.querySelector('mds-calendar-cell[selection]')).toBeNull();
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining('start-date "invalid-date"'));
+  });
+
+  it('ignores an invalid end date on a range picker', async () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    const { root } = await render('<mds-calendar end-date="invalid-date"></mds-calendar>');
+
+    expect(root).toHaveAttribute('hydrated');
+    expect(root.shadowRoot!.querySelector('mds-calendar-cell[selection]')).toBeNull();
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining('end-date "invalid-date"'));
+  });
+
+  it('clears the selection when the start date changes to an invalid value', async () => {
+    vi.spyOn(console, 'warn').mockImplementation(() => {});
+    const { root, waitForChanges } = await render(
+      '<mds-calendar view-date="2026-06-01" start-date="2026-06-02"></mds-calendar>',
+    );
+    const shadow = root.shadowRoot!;
+    const selected = shadow.querySelector('mds-calendar-cell[date="2026-06-02"]')!;
+
+    expect(selected.getAttribute('selection')).toBe('single');
+
+    root.setAttribute('start-date', 'invalid-date');
+    await waitForChanges();
+
+    await vi.waitFor(() => {
+      expect(shadow.querySelector('mds-calendar-cell[selection]')).toBeNull();
+    });
+  });
+
+  it('starts a new selection on click when the start date is invalid', async () => {
+    vi.spyOn(console, 'warn').mockImplementation(() => {});
+    const { root, spyOnEvent, waitForChanges } = await render(
+      '<mds-calendar view-date="2026-06-01" start-date="invalid-date"></mds-calendar>',
+    );
+    const change = spyOnEvent('mdsCalendarChange');
+    const cell = root.shadowRoot!.querySelector<HTMLElement>(
+      'mds-calendar-cell[date="2026-06-10"]',
+    )!;
+
+    await userEvent.click(cell);
+    await waitForChanges();
+
+    expect(cell.getAttribute('selection')).toBe('single');
+    expect(change.events.map((event) => event.detail)).toEqual([{ startDate: '2026-06-10' }]);
   });
 
   it('does not switch view when month or year selection is disabled', async () => {
-    const page = await newE2EPage();
-    await page.setContent(
+    const { root, waitForChanges } = await render(
       '<mds-calendar view-date="2026-06-01" disable-month-year-selection="true"></mds-calendar>',
     );
-    await page.waitForChanges();
+    const shadow = root.shadowRoot!;
 
-    const actionMonth = await page.find('mds-calendar >>> .action-month');
-    const actionYear = await page.find('mds-calendar >>> .action-year');
+    await userEvent.click(shadow.querySelector('.action-month')!);
+    await userEvent.click(shadow.querySelector('.action-year')!);
+    await waitForChanges();
 
-    await actionMonth.click();
-    await actionYear.click();
-    await page.waitForChanges();
+    expect(shadow.querySelector('.month-view')).not.toBeNull();
+    expect(shadow.querySelector('.month-selection')).toBeNull();
+    expect(shadow.querySelector('.year-selection')).toBeNull();
+  });
+});
 
-    const monthView = await page.find('mds-calendar >>> .month-view');
-    const monthSelection = await page.find('mds-calendar >>> .month-selection');
-    const yearSelection = await page.find('mds-calendar >>> .year-selection');
+describe('mds-calendar negative boolean props', () => {
+  const cell = (calendar: HTMLElement, date: string): HTMLElement =>
+    calendar.shadowRoot!.querySelector<HTMLElement>(`mds-calendar-cell[date="${date}"]`)!;
 
-    expect(monthView).not.toBeNull();
-    expect(monthSelection).toBeNull();
-    expect(yearSelection).toBeNull();
+  it('selects a range by default', async () => {
+    const { root, spyOnEvent, waitForChanges } = await render(
+      '<mds-calendar view-date="2026-06-01"></mds-calendar>',
+    );
+    const change = spyOnEvent('mdsCalendarChange');
+
+    await userEvent.click(cell(root, '2026-06-10'));
+    await userEvent.click(cell(root, '2026-06-14'));
+    await waitForChanges();
+
+    await vi.waitFor(() => {
+      expect(cell(root, '2026-06-10').getAttribute('selection')).toBe('start');
+      expect(cell(root, '2026-06-14').getAttribute('selection')).toBe('end');
+    });
+    // the first click already emits the start date alone; the range closes on the second
+    expect(change.events.at(-1)?.detail).toEqual({
+      startDate: '2026-06-10',
+      endDate: '2026-06-14',
+    });
+  });
+
+  it('replaces the selected day on every click with single-picker', async () => {
+    const { root, spyOnEvent, waitForChanges } = await render(
+      '<mds-calendar view-date="2026-06-01" single-picker></mds-calendar>',
+    );
+    const change = spyOnEvent('mdsCalendarChange');
+
+    await userEvent.click(cell(root, '2026-06-10'));
+    await userEvent.click(cell(root, '2026-06-14'));
+    await waitForChanges();
+
+    expect(cell(root, '2026-06-10').getAttribute('selection')).toBeNull();
+    expect(cell(root, '2026-06-14').getAttribute('selection')).toBe('single');
+    expect(root.shadowRoot!.querySelectorAll('mds-calendar-cell[selection]')).toHaveLength(1);
+    expect(change.events.map((event) => event.detail)).toEqual([
+      { startDate: '2026-06-10' },
+      { startDate: '2026-06-14' },
+    ]);
+  });
+
+  it('ignores end-date with a warning when single-picker is set', async () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    const { root, waitForChanges } = await render(
+      '<mds-calendar single-picker start-date="2026-06-02" end-date="2026-06-10"></mds-calendar>',
+    );
+
+    expect(cell(root, '2026-06-02').getAttribute('selection')).toBe('single');
+    expect(cell(root, '2026-06-10').getAttribute('selection')).toBeNull();
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining('singlePicker'));
+
+    warn.mockClear();
+    root.setAttribute('end-date', '2026-06-14');
+    await waitForChanges();
+
+    expect(cell(root, '2026-06-14').getAttribute('selection')).toBeNull();
+    expect(root.shadowRoot!.querySelectorAll('mds-calendar-cell[selection]')).toHaveLength(1);
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining('singlePicker'));
+  });
+
+  it('renders both navigation buttons by default', async () => {
+    const { root } = await render('<mds-calendar></mds-calendar>');
+
+    expect(root.shadowRoot!.querySelector('.action-back')).not.toBeNull();
+    expect(root.shadowRoot!.querySelector('.action-forward')).not.toBeNull();
+  });
+
+  it('hides the previous button with hide-previous-button', async () => {
+    const { root } = await render('<mds-calendar hide-previous-button></mds-calendar>');
+
+    expect(root.shadowRoot!.querySelector('.action-back')).toBeNull();
+    expect(root.shadowRoot!.querySelector('.action-forward')).not.toBeNull();
+  });
+
+  it('hides the next button with hide-next-button', async () => {
+    const { root } = await render('<mds-calendar hide-next-button></mds-calendar>');
+
+    expect(root.shadowRoot!.querySelector('.action-back')).not.toBeNull();
+    expect(root.shadowRoot!.querySelector('.action-forward')).toBeNull();
+  });
+
+  it('shows the preselection area only when the slot has content', async () => {
+    const area = (calendar: HTMLElement) =>
+      calendar.shadowRoot!.querySelector('.calendar-preselection--has-preselection');
+
+    const { root: empty } = await render('<mds-calendar></mds-calendar>');
+    expect(area(empty)).toBeNull();
+
+    const { root: filled, waitForChanges } = await render(`
+      <mds-calendar>
+        <div slot="preselection" class="date-preselection--has-preselection">quick picks</div>
+      </mds-calendar>
+    `);
+    await waitForChanges();
+    expect(area(filled)).not.toBeNull();
+  });
+
+  it('hides the preselection area with hide-preselection even when the slot has content', async () => {
+    const { root, waitForChanges } = await render(`
+      <mds-calendar hide-preselection>
+        <div slot="preselection" class="date-preselection--has-preselection">quick picks</div>
+      </mds-calendar>
+    `);
+    await waitForChanges();
+
+    expect(root.shadowRoot!.querySelector('.calendar-preselection--has-preselection')).toBeNull();
+  });
+});
+
+describe('mds-calendar sizing', () => {
+  const setupInContainer = async (containerStyle: string, calendarStyle = '') => {
+    const { root } = await render(`
+      <div style="${containerStyle}">
+        <mds-calendar view-date="2026-08-01" style="${calendarStyle}"></mds-calendar>
+      </div>
+    `);
+    return root.querySelector<HTMLElement>('mds-calendar')!;
+  };
+
+  it('fills its container up to --mds-calendar-max-width', async () => {
+    const calendar = await setupInContainer('width: 800px;');
+
+    expect(calendar.offsetWidth).toBe(480);
+  });
+
+  it('shrinks with a narrower container', async () => {
+    const calendar = await setupInContainer('width: 400px;');
+
+    expect(calendar.offsetWidth).toBe(400);
+  });
+
+  it('does not let the week-day header inflate its intrinsic width beyond max-width', async () => {
+    // `min-width: max-content` is what mds-input-date used to apply: it must not blow the calendar
+    // past its own max-width, otherwise the used min-width wins over max-width.
+    const calendar = await setupInContainer('display: inline-block;', 'min-width: max-content;');
+
+    expect(calendar.offsetWidth).toBeLessThanOrEqual(480);
+  });
+
+  it('sizes the week-day header cells from the grid track', async () => {
+    const calendar = await setupInContainer('width: 800px;');
+    const header = calendar.shadowRoot!.querySelector<HTMLElement>('.week-day-name')!;
+    const cell = calendar.shadowRoot!.querySelector<HTMLElement>('mds-calendar-cell')!;
+
+    // 480 - 2 * 16px padding - 6 * 2px gaps = 7 tracks of ~62px; the header keeps a fixed 48px height
+    expect(header.offsetHeight).toBe(48);
+    expect(header.offsetWidth).toBe(cell.offsetWidth);
+    expect(cell.offsetWidth).toBeGreaterThanOrEqual(62);
+    expect(cell.offsetWidth).toBeLessThanOrEqual(63);
+  });
+
+  it('stretches the day button over the whole cell, keeping the number centered', async () => {
+    const calendar = await setupInContainer('width: 800px;');
+    const cell = calendar.shadowRoot!.querySelector<HTMLElement>(
+      'mds-calendar-cell[date="2026-08-12"]',
+    )!;
+    const action = cell.shadowRoot!.querySelector<HTMLElement>('.action')!;
+    const cellRect = cell.getBoundingClientRect();
+    const actionRect = action.getBoundingClientRect();
+
+    // mds-button places itself flex-start on its :host; without place-self: stretch the
+    // absolutely positioned button shrinks to its label and the day number sticks to the
+    // top-left corner of the cell instead of covering it.
+    expect(actionRect.left).toBeLessThanOrEqual(cellRect.left);
+    expect(actionRect.right).toBeGreaterThanOrEqual(cellRect.right);
+    expect(
+      Math.abs(actionRect.x + actionRect.width / 2 - (cellRect.x + cellRect.width / 2)),
+    ).toBeLessThanOrEqual(1);
+    expect(
+      Math.abs(actionRect.y + actionRect.height / 2 - (cellRect.y + cellRect.height / 2)),
+    ).toBeLessThanOrEqual(1);
+  });
+});
+
+describe('mds-calendar standalone range selection', () => {
+  const cell = (calendar: HTMLElement, date: string): HTMLElement =>
+    calendar.shadowRoot!.querySelector<HTMLElement>(`mds-calendar-cell[date="${date}"]`)!;
+  const selection = (calendar: HTMLElement, date: string): string | null =>
+    cell(calendar, date).getAttribute('selection');
+
+  const setupStandalone = async (attributes = 'view-date="2026-06-01"') => {
+    const { root, waitForChanges } = await render(`
+      <div>
+        <mds-calendar ${attributes}></mds-calendar>
+        <p id="outside" style="padding: 40px;">outside</p>
+      </div>
+    `);
+    return {
+      calendar: root.querySelector<HTMLMdsCalendarElement>('mds-calendar')!,
+      outside: root.querySelector<HTMLElement>('#outside')!,
+      waitForChanges,
+    };
+  };
+
+  it('marks start, middle and end after selecting a range with two clicks', async () => {
+    const { calendar, waitForChanges } = await setupStandalone();
+
+    await userEvent.click(cell(calendar, '2026-06-10'));
+    await userEvent.click(cell(calendar, '2026-06-14'));
+    await waitForChanges();
+
+    await vi.waitFor(() => {
+      expect(selection(calendar, '2026-06-10')).toBe('start');
+      expect(selection(calendar, '2026-06-12')).toBe('middle');
+      expect(selection(calendar, '2026-06-14')).toBe('end');
+    });
+    expect(calendar.shadowRoot!.querySelectorAll('mds-calendar-cell[preview]')).toHaveLength(0);
+  });
+
+  it('swaps the ends when the second click is before the first', async () => {
+    const { calendar, waitForChanges } = await setupStandalone();
+
+    await userEvent.click(cell(calendar, '2026-06-14'));
+    await userEvent.click(cell(calendar, '2026-06-10'));
+    await waitForChanges();
+
+    await vi.waitFor(() => {
+      expect(selection(calendar, '2026-06-10')).toBe('start');
+      expect(selection(calendar, '2026-06-14')).toBe('end');
+    });
+  });
+
+  it('replaces a preset range with the newly clicked one', async () => {
+    const { calendar, waitForChanges } = await setupStandalone(
+      'start-date="2025-03-18" end-date="2025-03-24"',
+    );
+    expect(selection(calendar, '2025-03-18')).toBe('start');
+    expect(selection(calendar, '2025-03-24')).toBe('end');
+
+    await userEvent.click(cell(calendar, '2025-03-05'));
+    await userEvent.click(cell(calendar, '2025-03-08'));
+    await waitForChanges();
+
+    await vi.waitFor(() => {
+      expect(selection(calendar, '2025-03-05')).toBe('start');
+      expect(selection(calendar, '2025-03-06')).toBe('middle');
+      expect(selection(calendar, '2025-03-08')).toBe('end');
+      expect(selection(calendar, '2025-03-18')).toBeNull();
+      expect(selection(calendar, '2025-03-24')).toBeNull();
+    });
+  });
+
+  it('previews the range while hovering after the first click and clears it on leave', async () => {
+    const { calendar, outside, waitForChanges } = await setupStandalone();
+
+    await userEvent.click(cell(calendar, '2026-06-10'));
+    await userEvent.hover(cell(calendar, '2026-06-14'));
+    await waitForChanges();
+
+    await vi.waitFor(() => {
+      expect(selection(calendar, '2026-06-10')).toBe('start');
+      expect(selection(calendar, '2026-06-12')).toBe('middle');
+      expect(cell(calendar, '2026-06-12')).toHaveAttribute('preview');
+      expect(selection(calendar, '2026-06-14')).toBe('end');
+      expect(cell(calendar, '2026-06-14')).toHaveAttribute('preview');
+    });
+
+    await userEvent.hover(outside);
+    await waitForChanges();
+
+    await vi.waitFor(() => {
+      expect(selection(calendar, '2026-06-10')).toBe('single');
+      expect(selection(calendar, '2026-06-12')).toBeNull();
+      expect(selection(calendar, '2026-06-14')).toBeNull();
+    });
+  });
+
+  it('emits a null hover when the pointer leaves a calendar driven by hover-date', async () => {
+    const { calendar, outside, waitForChanges } = await setupStandalone(
+      'view-date="2026-06-01" start-date="2026-06-02"',
+    );
+    const hover = { events: [] as CustomEvent[] };
+    calendar.addEventListener('mdsCalendarHover', (event) =>
+      hover.events.push(event as CustomEvent),
+    );
+
+    await userEvent.hover(cell(calendar, '2026-06-10'));
+    calendar.setAttribute('hover-date', '2026-06-10');
+    await waitForChanges();
+
+    await userEvent.hover(outside);
+    await waitForChanges();
+
+    expect(hover.events.map((event) => event.detail)).toEqual([
+      { hoverDate: '2026-06-10' },
+      { hoverDate: null },
+    ]);
   });
 });

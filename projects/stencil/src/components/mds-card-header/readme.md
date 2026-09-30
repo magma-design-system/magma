@@ -17,7 +17,7 @@ The `<mds-card-header>` web component is the header region of a [`<mds-card>`](.
 
 - **Compound child only**: `<mds-card-header>` must be placed as a direct child of `<mds-card>`; it is not used standalone, and a card expects at most one header alongside its sibling card regions (`mds-card-media`, `mds-card-content`, `mds-card-footer`), not mixed with arbitrary elements.
 - **Self-slotting into the parent**: It automatically lands in the card's `header` region without the author setting any `slot` attribute, and its presence is factored into the card's responsive layout.
-- **Action slot presence**: The dedicated actions wrapper is rendered only when a direct child assigned to the `action` slot exists, so a header without actions produces no empty action container.
+- **Action slot presence**: The dedicated actions wrapper is shown only while a direct child assigned to the `action` slot exists, also when it is added after the first render, so a header without actions produces no empty action container.
 - **No role/ARIA of its own**: It exposes no implicit role, state, or events; it is a passive layout grouping.
 
 #### Properties & Visual Configurations
@@ -25,7 +25,7 @@ The `<mds-card-header>` web component is the header region of a [`<mds-card>`](.
 `<mds-card-header>` has no configurable properties - it is a pure layout child driven entirely by its two slots:
 
 - **Default (unnamed) slot**: Holds the primary header content (title text, HTML, or components such as a heading element).
-- **`action` slot**: Holds inline action controls, rendered in a separate region next to the header content; `mds-button` is the recommended element here. Provide content to this slot only when the header needs actions, since the wrapper is conditional on its presence.
+- **`action` slot**: Holds inline action controls, rendered in a separate region next to the header content; `mds-button` is the recommended element here. Provide content to this slot only when the header needs actions, since the wrapper is shown only while children are present.
 
 
 ### 2. Pattern

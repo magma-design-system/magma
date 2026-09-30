@@ -38,7 +38,12 @@ export default {
   },
 };
 
-const Template = (args) => <mds-tab-item {...args} label="First Blood"></mds-tab-item>;
+// a tab is only valid inside a tablist: the story renders it in its mds-tab
+const Template = (args) => (
+  <mds-tab>
+    <mds-tab-item {...args} label="First Blood"></mds-tab-item>
+  </mds-tab>
+);
 
 export const Default = {
   render: Template,

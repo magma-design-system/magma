@@ -83,6 +83,7 @@ describe('transformReact — slotToAttr (children → label)', () => {
 describe('transformReact — enum / rename / remove', () => {
   it('remaps tone', () => {
     expect(run('<MdsButton tone="ghost" />').output).toBe('<MdsButton tone="outline" />');
+    expect(run('<MdsButton tone="quiet" />').output).toBe('<MdsButton tone="text" />');
   });
 
   it('flags a dynamic enum value', () => {
@@ -134,6 +135,114 @@ describe('transformReact — dynamic & safety', () => {
 
   it('is idempotent', () => {
     const once = run('<MdsButton tone="ghost">Save</MdsButton>').output;
+    const twice = run(once);
+    expect(twice.changed).toBe(false);
+    expect(twice.output).toBe(once);
+  });
+});
+
+describe('transformReact — utility-class migrations (J)', () => {
+  it('renames classes in a className string literal on any element', () => {
+    expect(run('<div className="p-4 shadow-outline-light rounded-xl" />').output).toBe(
+      '<div className="p-4 shadow-ring-weak rounded-md" />',
+    );
+  });
+
+  it('renames classes in the `class` attribute of intrinsic elements', () => {
+    expect(run('<mds-button class="rounded-xl" label="x" />').output).toBe(
+      '<mds-button class="rounded-md" label="x" />',
+    );
+  });
+
+  it('rewrites string literals inside className expressions (clsx, ternaries)', () => {
+    expect(
+      run(`<div className={clsx('shadow-outline-light', cond && 'rounded-xl p-2')} />`).output,
+    ).toBe(`<div className={clsx('shadow-ring-weak', cond && 'rounded-md p-2')} />`);
+    expect(run(`<div className={cond ? "rounded-md" : "rounded-xl"} />`).output).toBe(
+      `<div className={cond ? "rounded-2xs" : "rounded-md"} />`,
+    );
+  });
+
+  it('reports a substitution template mentioning a migrated class instead of rewriting it', () => {
+    const src = '<div className={`rounded-xl ${extra}`} />';
+    const { changed, output, findings } = run(src);
+    expect(changed).toBe(false);
+    expect(output).toBe(src);
+    expect(findings.some((f) => f.kind === 'dynamic')).toBe(true);
+  });
+
+  it('leaves a substitution template without migrated classes alone, silently', () => {
+    const src = '<div className={`gap-4 p-2 ${extra}`} />';
+    expect(run(src).findings).toEqual([]);
+  });
+
+  it('reports a class with no v2 equivalent', () => {
+    const src = '<div className="shadow-outline-strong" />';
+    const { changed, findings } = run(src);
+    expect(changed).toBe(false);
+    expect(findings.some((f) => f.kind === 'warn')).toBe(true);
+  });
+});
+
+describe('transformReact — intrinsic mds-* elements', () => {
+  it('remaps tone and lifts children on the custom-element form', () => {
+    expect(run('<mds-button tone="quiet">Salva</mds-button>').output).toBe(
+      '<mds-button tone="text" label="Salva" />',
+    );
+    expect(run('<mds-button tone="ghost" />').output).toBe('<mds-button tone="outline" />');
+  });
+
+  it('inverts booleans with kebab-case matching and emission', () => {
+    expect(run('<mds-dropdown arrow="false" />').output).toBe('<mds-dropdown hide-arrow />');
+    expect(run('<mds-dropdown arrow />').output).toBe('<mds-dropdown />');
+    expect(run('<mds-dropdown arrow={open} />').output).toBe('<mds-dropdown hide-arrow={!open} />');
+    expect(run('<mds-dropdown auto-placement={false} />').output).toBe(
+      '<mds-dropdown disable-auto-placement />',
+    );
+  });
+
+  it('renames label-action → label', () => {
+    expect(run('<mds-label label-action="edit" />').output).toBe('<mds-label label="edit" />');
+  });
+
+  it('removes has-text with a warning', () => {
+    const { output, findings } = run('<mds-button has-text />');
+    expect(output).toBe('<mds-button />');
+    expect(findings.some((f) => f.kind === 'warn')).toBe(true);
+  });
+
+  it('applies ensureAttr with the kebab-case attribute', () => {
+    const runE = (src: string) => transformReact(src, ensureAttrManifest, ctx);
+    expect(runE('<mds-dropdown />').output).toBe('<mds-dropdown disable-auto-placement />');
+    const src = '<mds-dropdown auto-placement />';
+    expect(runE(src)).toMatchObject({ changed: false, output: src });
+    expect(runE('<mds-banner>x</mds-banner>').output).toBe(
+      '<mds-banner variant="light">x</mds-banner>',
+    );
+  });
+
+  it('does not match the camelCase spelling on intrinsic elements', () => {
+    // `autoPlacement` on a custom element never reached Stencil in v1
+    // (React lowercases unknown attributes); migrating it would activate dead code.
+    const src = '<mds-dropdown autoPlacement />';
+    expect(run(src)).toMatchObject({ changed: false, output: src });
+  });
+
+  it('leaves member-expression tags and unknown dashed tags untouched', () => {
+    const member = '<Foo.MdsButton tone="ghost" />';
+    expect(run(member)).toMatchObject({ changed: false, output: member });
+    const unknown = '<my-widget tone="ghost" />';
+    expect(run(unknown)).toMatchObject({ changed: false, output: unknown });
+  });
+
+  it('reports spread props but still rewrites explicit ones', () => {
+    const { output, findings } = run('<mds-button {...props} tone="ghost" />');
+    expect(output).toContain('tone="outline"');
+    expect(findings.some((f) => f.kind === 'dynamic')).toBe(true);
+  });
+
+  it('is idempotent', () => {
+    const once = run('<mds-button tone="quiet">Salva</mds-button>').output;
     const twice = run(once);
     expect(twice.changed).toBe(false);
     expect(twice.output).toBe(once);

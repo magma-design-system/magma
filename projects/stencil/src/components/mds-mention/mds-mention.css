@@ -4,19 +4,13 @@
  * @prop --mds-mention-icon-size: Sets the size (width and height) of the mention icon.
  */
 
-@property --mds-mention-icon-size {
-  inherits: false;
-  initial-value: --spacing(600);
-  syntax: '<length>';
-}
-
 :host {
   --mds-mention-icon-size: --spacing(600);
 
   align-items: center;
-  background-color: rgb(var(--tone-neutral-09));
-  border-radius: 100px;
-  color: rgb(var(--tone-neutral-03));
+  background-color: rgb(var(--magma-wash-base));
+  border-radius: var(--radius-full);
+  color: rgb(var(--magma-text-muted));
   cursor: pointer;
   display: inline-flex;
   fill: currentcolor;
@@ -28,6 +22,14 @@
 mds-icon {
   height: var(--mds-mention-icon-size);
   width: var(--mds-mention-icon-size);
+}
+
+/* The pill keeps its wide right padding when nothing follows the label; with the remove
+  button in place that padding moves onto the button, so the disc is inset like the leading
+  icon instead of floating short of the edge. */
+
+:host([deletable]) {
+  padding-right: --spacing(25);
 }
 
 @import './css/mds-mention-size.css';

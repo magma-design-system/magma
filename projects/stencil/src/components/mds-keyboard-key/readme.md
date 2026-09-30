@@ -242,19 +242,6 @@ mds-keyboard-key {
 | `pressed` | `pressed` | Sets if the key is pressed or not                                                                                      | `boolean \| undefined`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | `undefined` |
 
 
-## Methods
-
-### `updateLang() => Promise<void>`
-
-Updates the component's texts to the locale currently set on the host element.
-
-#### Returns
-
-Type: `Promise<void>`
-
-
-
-
 ## CSS Custom Properties
 
 | Name                                         | Description                                                 |

@@ -1,20 +1,10 @@
 import miBaselineClose from '@icon/mi/baseline/close.svg';
 import miBaselineExplore from '@icon/mi/baseline/explore.svg';
-import {
-  Component,
-  Element,
-  Event,
-  EventEmitter,
-  Host,
-  h,
-  Prop,
-  State,
-  Method,
-} from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Prop } from '@stencil/core';
 import { KeyboardManager } from '@common/keyboard-manager';
 import { LoadingType } from '@type/loading';
 import { Locale } from '@common/locale';
-import { subscribePreference } from '@common/preference';
+import { preferenceStore } from '@common/preference';
 import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.es.json';
@@ -27,14 +17,6 @@ import localeIt from './meta/locale.it.json';
 })
 export class MdsUrlView {
   @Element() host: HTMLMdsUrlViewElement;
-  @State() prefAnimation?: string;
-  private unsubscribePrefAnimation?: () => void;
-  @State() prefContrast?: string;
-  private unsubscribePrefContrast?: () => void;
-  @State() prefTheme?: string;
-  private unsubscribePrefTheme?: () => void;
-  @State() prefThemeScheme?: string;
-  private unsubscribePrefThemeScheme?: () => void;
   private km = new KeyboardManager();
   private t: Locale = new Locale({
     el: localeEl,
@@ -42,14 +24,6 @@ export class MdsUrlView {
     es: localeEs,
     it: localeIt,
   });
-  @State() language: string;
-  /**
-   * Updates the component's texts to the locale currently set on the host element.
-   */
-  @Method()
-  async updateLang(): Promise<void> {
-    this.language = this.t.lang(this.host);
-  }
 
   /**
    * Specifies if domain is visible on header
@@ -73,8 +47,13 @@ export class MdsUrlView {
   @Prop({ reflect: true }) readonly loading?: LoadingType = 'lazy';
 
   private urlDomain = (url: string): string => {
-    const domain = new URL(url);
-    return domain.hostname.replace('www.', '');
+    try {
+      const domain = new URL(url);
+      return domain.hostname.replace('www.', '');
+    } catch {
+      // src missing or not a valid absolute URL: fall back to the raw value
+      return url ?? '';
+    }
   };
 
   /**
@@ -87,36 +66,15 @@ export class MdsUrlView {
     this.host.closest('mds-modal')?.close();
   };
 
-  connectedCallback(): void {
-    this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
-      this.prefAnimation = value;
-    });
-    this.unsubscribePrefContrast = subscribePreference('contrast', (value) => {
-      this.prefContrast = value;
-    });
-    this.unsubscribePrefTheme = subscribePreference('theme', (value) => {
-      this.prefTheme = value;
-    });
-    this.unsubscribePrefThemeScheme = subscribePreference('theme-scheme', (value) => {
-      this.prefThemeScheme = value;
-    });
-  }
-
-  componentWillLoad(): void {
-    this.t.lang(this.host);
-  }
-
   componentDidLoad(): void {
-    const close = this.host.shadowRoot?.querySelector('.action-close') as HTMLElement;
-    this.km.addElement(close);
-    this.km.attachClickBehavior();
+    const close = this.host.shadowRoot?.querySelector<HTMLElement>('.action-close') ?? null;
+    if (close !== null) {
+      this.km.addElement(close);
+      this.km.attachClickBehavior();
+    }
   }
 
   disconnectedCallback(): void {
-    this.unsubscribePrefAnimation?.();
-    this.unsubscribePrefContrast?.();
-    this.unsubscribePrefTheme?.();
-    this.unsubscribePrefThemeScheme?.();
     this.km.detachClickBehavior();
   }
 
@@ -124,10 +82,10 @@ export class MdsUrlView {
     return (
       <Host
         aria-label={this.t.get('previewURL', { url: this.urlDomain(this.src) })}
-        pref-animation={this.prefAnimation}
-        pref-contrast={this.prefContrast}
-        pref-theme={this.prefTheme}
-        pref-theme-scheme={this.prefThemeScheme}
+        pref-animation={preferenceStore.state.animation}
+        pref-contrast={preferenceStore.state.contrast}
+        pref-mode={preferenceStore.state.mode}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
         <div class="window">
           <div class="header">

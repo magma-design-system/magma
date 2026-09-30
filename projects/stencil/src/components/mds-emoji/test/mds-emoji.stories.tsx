@@ -93,7 +93,9 @@ const Template = (args) => {
         <mds-input-switch id="eye-blinking" size="sm" checked={eyeBlinking || undefined}>
           Eye blinking
         </mds-input-switch>
-        <mds-input-range id="size" min={24} max={320} step={8} value={svgSize}></mds-input-range>
+        <mds-input-range id="size" min={24} max={320} step={8} value={svgSize}>
+          Size
+        </mds-input-range>
         <mds-input-switch id="think" size="sm" checked={thinking || undefined}>
           Think
         </mds-input-switch>
@@ -107,7 +109,7 @@ const Template = (args) => {
           Disgree
         </mds-button>
       </div>
-      <div class="flex items-center justify-center bg-tone-neutral rounded-2xl shadow-md m-600 ml-0">
+      <div class="flex items-center justify-center bg-surface-raised rounded-2xl shadow-md m-600 ml-0">
         <mds-emoji style={{ width: `${svgSize}px`, height: `${svgSize}px` }} {...args} />
       </div>
     </div>

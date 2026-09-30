@@ -80,7 +80,6 @@ const FormIntegrationTemplate = (args: MdsInputFieldInterface) => (
         <mds-button
           class="shrink-0 max-mobile:grow"
           type="button"
-          role="submit"
           onClick={() => {
             const formEl = document.querySelector('form') as HTMLFormElement;
             const spanEl = document.querySelector('span.input-value') as HTMLSpanElement;

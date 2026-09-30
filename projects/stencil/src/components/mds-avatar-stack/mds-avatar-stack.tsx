@@ -1,4 +1,5 @@
 import { Component, Host, h, Prop, Element } from '@stencil/core';
+import { queryChildrenByTag } from '@common/slot';
 import { AvatarSizeType } from './meta/types';
 
 /**
@@ -11,7 +12,7 @@ import { AvatarSizeType } from './meta/types';
 })
 export class MdsAvatarStack {
   @Element() host: HTMLMdsAvatarStackElement;
-  private items: NodeListOf<HTMLMdsAvatarStackItemElement>;
+  private items: HTMLMdsAvatarStackItemElement[];
 
   /**
    * Specifies the size of the slotted avatars elements
@@ -24,9 +25,10 @@ export class MdsAvatarStack {
   @Prop({ reflect: true }) readonly total?: number;
 
   componentWillLoad(): void {
-    this.items = this.host.querySelectorAll(
-      ':scope > mds-avatar-stack-item',
-    ) as NodeListOf<HTMLMdsAvatarStackItemElement>;
+    this.items = queryChildrenByTag(
+      this.host,
+      'mds-avatar-stack-item',
+    ) as HTMLMdsAvatarStackItemElement[];
   }
 
   render() {

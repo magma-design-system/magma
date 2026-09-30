@@ -59,7 +59,7 @@ export default {
 };
 
 const Template = (args) => (
-  <mds-input-select {...args}>
+  <mds-input-select aria-label="Film" {...args}>
     <option value="1">First contact</option>
     <option value="2">Second impact</option>
     <option value="3">The Third Man</option>
@@ -79,7 +79,7 @@ const TemplateForm = (args) => (
       return false;
     }}
   >
-    <mds-input-select {...args}>
+    <mds-input-select aria-label="Film" {...args}>
       <option value="1">First contact</option>
       <option value="2">Second impact</option>
       <option value="3">The Third Man</option>

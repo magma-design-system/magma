@@ -1,11 +1,11 @@
-import { Component, Element, Host, Prop, State, h, Watch } from '@stencil/core';
+import { Component, Element, Host, Prop, h, Watch } from '@stencil/core';
 import { TextAnimationType } from './meta/types';
 import { TypographyTagType } from '@type/text';
 import { TypographyTruncateType } from '@type/text';
 import { TypographyType, TypographyVariants } from '@type/typography';
 import { typographyDefaultsVariant } from './meta/variants';
 import RandomText from '@common/yugop';
-import { subscribePreference } from '@common/preference';
+import { preferenceStore, prefersReducedMotion } from '@common/preference';
 
 /**
  * @slot - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
@@ -30,13 +30,11 @@ export class MdsText {
   private randomText: RandomText;
 
   @Element() host: HTMLMdsTextElement;
-  @State() prefAnimation?: string;
-  private unsubscribePrefAnimation?: () => void;
 
   /**
    * Specifies if the text is animated when it is rendered
    */
-  @Prop() readonly animation?: TextAnimationType = 'none';
+  @Prop({ reflect: true }) readonly animation?: TextAnimationType = 'none';
 
   /**
    * Specifies the HTML tag of the element
@@ -92,18 +90,11 @@ export class MdsText {
     this.cssTextAnimationPlaceholderChar = placeholderChar;
   };
 
-  connectedCallback(): void {
-    this.unsubscribePrefAnimation = subscribePreference('animation', (value) => {
-      this.prefAnimation = value;
-    });
-  }
-
-  disconnectedCallback(): void {
-    this.unsubscribePrefAnimation?.();
-  }
-
   componentWillRender(): void {
-    const { tag } = typographyDefaultsVariant[this.typography];
+    // Stencil sets a string @Prop to null when its attribute is removed, so `typography` can be
+    // outside TypographyType at runtime and the lookup misses; fall back to the documented default
+    // instead of throwing out of the lifecycle.
+    const { tag } = typographyDefaultsVariant[this.typography] ?? typographyDefaultsVariant.detail;
     this.tag = this.tag ?? (tag as TypographyTagType);
   }
 
@@ -119,14 +110,25 @@ export class MdsText {
     if (this.randomText != null) {
       this.randomText.stop();
     }
-    if (newValue !== undefined && newValue !== '') {
-      this.animateText(newValue);
+    if (newValue === undefined || newValue === '') {
+      return;
     }
+    // The scramble is a rAF loop writing innerHTML: no stylesheet can hold it back, so it
+    // asks. The text is written out here rather than left to the render, because the loop
+    // may already have replaced the node the renderer holds.
+    if (prefersReducedMotion()) {
+      const painted = this.host.shadowRoot?.querySelector('.text');
+      if (painted) {
+        painted.textContent = newValue;
+      }
+      return;
+    }
+    this.animateText(newValue);
   }
 
   render() {
     return (
-      <Host pref-animation={this.prefAnimation}>
+      <Host pref-animation={preferenceStore.state.animation}>
         <this.tag class="text">
           {this.text === undefined || this.text === '' ? <slot></slot> : this.text}
         </this.tag>
