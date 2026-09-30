@@ -73,6 +73,10 @@ const server = await createServer({
 server.watcher.add([examplesDir, path.join(root, 'src')]);
 server.watcher.on('change', (file) => {
   if (file.endsWith('.css') || file.endsWith('.ts')) cssCache = null;
+  // theme.json and theme assets are read with fs, not imported, so Vite does
+  // not know they are dependencies: drop every SSR module (and the caches they
+  // hold, e.g. the theme manifest cache) so the next request re-reads them.
+  server.moduleGraph.invalidateAll();
   server.ws.send({ type: 'full-reload' });
 });
 
