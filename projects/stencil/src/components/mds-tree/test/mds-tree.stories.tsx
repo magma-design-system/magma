@@ -152,7 +152,7 @@ export const ComplexMenu = {
     'toggle-position': 'right',
     appearance: 'none',
     style: {
-      '--mds-tree-label-hover-background': 'rgb(var(--tone-neutral-09))',
+      '--mds-tree-label-hover-background': 'rgb(var(--magma-wash-base))',
     },
   },
 };

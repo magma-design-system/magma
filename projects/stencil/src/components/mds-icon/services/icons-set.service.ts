@@ -1,5 +1,13 @@
+import { Build } from '@stencil/core';
 import { get, set, del } from 'idb-keyval';
 import { IconNameResolverFn, MdsIconSet } from '../meta/icon-set';
+
+// Shared, cross-realm key for the configured SVG base path. Stencil emits several bundled
+// copies of this singleton (lazy chunks, the esm/esm-es5 variants, dist/components, and the
+// public `services` entry); `Symbol.for` returns the same symbol in every copy, so storing
+// the path under it on `globalThis` gives them all one source of truth.
+const SVG_PATH_GLOBAL = Symbol.for('@maggioli-design-system/magma:mdsIconSvgPath');
+
 class IconsSetController {
   public readonly _svgPathKey = 'mdsIconSvgPath';
 
@@ -8,11 +16,22 @@ class IconsSetController {
   private readonly cacheExp = 60 * 60 * 1000 * 24;
   private readonly listeners: (() => void)[] = [];
 
-  private _svgPath: string;
   private memoryCache = {};
 
   constructor() {
     this.setUpListener();
+  }
+
+  // Backed by `globalThis` (see SVG_PATH_GLOBAL) rather than an instance field, so that every
+  // bundled copy of this singleton reads/writes the same path and stays in sync regardless of
+  // how the consumer imports the service. No sessionStorage involved.
+  private get _svgPath(): string {
+    if (typeof globalThis === 'undefined') return '';
+    return (globalThis as unknown as Record<symbol, string | undefined>)[SVG_PATH_GLOBAL] ?? '';
+  }
+  private set _svgPath(value: string) {
+    if (typeof globalThis === 'undefined') return;
+    (globalThis as unknown as Record<symbol, string>)[SVG_PATH_GLOBAL] = value;
   }
 
   addIconSet(name: string, path: string, resolveIconName: IconNameResolverFn): boolean {
@@ -82,6 +101,10 @@ class IconsSetController {
 
   // Try to retrieve svg from cache
   private isCacheAvailable = async (url: string) => {
+    // idb-keyval requires indexedDB, missing in the hydrate/SSR runtime
+    if (typeof indexedDB === 'undefined') {
+      return false;
+    }
     try {
       const loaderItem = await get(`loader_${url}`);
 
@@ -105,6 +128,9 @@ class IconsSetController {
 
   // Set svg to cache
   private setCache = async (url: string, data: string) => {
+    if (typeof indexedDB === 'undefined') {
+      return;
+    }
     try {
       await set(
         `loader_${url}`,
@@ -127,12 +153,32 @@ class IconsSetController {
   }
 
   async fetchSvg(name: string): Promise<string> {
+    // No fetch during SSR: relative icon paths have no origin to resolve
+    // against, and the client re-fetches after hydration anyway. The empty
+    // icon causes no layout shift because mds-icon's :host reserves the box
+    // (aspect-ratio + width). Spec tests also run with isServer=true but mock
+    // fetch, so they are excluded via isTesting.
+    if (Build.isServer && !Build.isTesting) {
+      return '';
+    }
     try {
       if (!this._svgPath && typeof window === 'undefined') {
         throw Error('Cant find svgPath, ensure you set it');
       }
       if (!this._svgPath) {
-        this.setSvgPath(window.sessionStorage.getItem(IconsSetService._svgPathKey) ?? '');
+        // Optional, backward-compatible fallback. Some browsers/contexts block or throw
+        // on sessionStorage (incognito, sandboxed iframes, storage partitioning): treat
+        // that as "no path from storage" instead of aborting the fetch, and rely on a
+        // programmatic IconsSetService.setSvgPath() call instead.
+        let storedSvgPath = '';
+        try {
+          storedSvgPath = window.sessionStorage.getItem(IconsSetService._svgPathKey) ?? '';
+        } catch {
+          /* sessionStorage unavailable — ignore */
+        }
+        if (storedSvgPath) {
+          this.setSvgPath(storedSvgPath);
+        }
       }
       const src =
         this._svgPath && !name.startsWith('http') ? this._svgPath.concat(name, '.svg') : name;

@@ -6,9 +6,9 @@ import { toneMinimalBoxVariantDictionary } from '@type/tone';
 export default {
   title: 'UI / Banner',
   argTypes: {
-    cockade: {
+    'hide-cockade': {
       type: { name: 'boolean' },
-      description: 'Shows a decoration around the banner icon',
+      description: 'Hides the decoration around the banner icon',
     },
     deletable: {
       type: { name: 'boolean' },
@@ -118,7 +118,7 @@ export const Cockade = {
 
   args: {
     icon: 'mi/baseline/warning',
-    cockade: true,
+    'hide-cockade': false,
   },
 };
 
@@ -197,7 +197,7 @@ const VariantsTableTemplate = () => (
       {variantToneCombinations.map(({ tone, variant }) => (
         <mds-table-row key={`${variant}-${tone}`}>
           <mds-table-cell>
-            <mds-banner class="w-[400px]" variant={variant} tone={tone}>
+            <mds-banner class="w-10000" variant={variant} tone={tone} deletable>
               <mds-text typography="detail">
                 Il tuo account è stato aggiornato alla versione PRO, ora puoi utilizzare le
                 notifiche su aggiornamenti di norme di legge e la consultazione dei volumi

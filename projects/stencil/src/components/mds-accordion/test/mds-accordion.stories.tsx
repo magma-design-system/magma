@@ -3,9 +3,10 @@ import { h } from '@stencil/core';
 export default {
   title: 'UI / Accordion',
   argTypes: {
-    closable: {
+    'disable-close': {
+      name: 'disableClose',
       type: { name: 'boolean' },
-      label: 'Specifies if an item can be closed by user',
+      label: 'Prevents the user from closing the currently open item',
     },
     multiple: {
       type: { name: 'boolean' },
@@ -291,7 +292,7 @@ export const ItemNotClosable = {
   render: Template,
 
   args: {
-    closable: false,
+    'disable-close': true,
   },
 };
 

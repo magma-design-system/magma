@@ -252,7 +252,7 @@ The `icon` prop renders the glyph through the shared icon service and positions 
 
 | Property     | Attribute    | Description                                   | Type                             | Default     |
 | ------------ | ------------ | --------------------------------------------- | -------------------------------- | ----------- |
-| `icon`       | `icon`       |                                               | `string`                         | `''`        |
+| `icon`       | `icon`       | The icon displayed in the tab bar item.       | `string`                         | `''`        |
 | `label`      | `label`      | Sets the label of the tab bar item            | `string \| undefined`            | `undefined` |
 | `selected`   | `selected`   | Specifies if the component is selected or not | `boolean`                        | `undefined` |
 | `typography` | `typography` | Specifies the typography of the element       | `"option" \| "tip" \| undefined` | `'tip'`     |
@@ -267,9 +267,9 @@ The `icon` prop renders the glyph through the shared icon service and positions 
 
 ## Slots
 
-| Slot        | Description                                                                                                                              |
-| ----------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| `"default"` | **Deprecated**, use the `label` property instead. Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here. |
+| Slot | Description                                                                                                                              |
+| ---- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+|      | **Deprecated**, use the `label` property instead. Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here. |
 
 
 ## CSS Custom Properties

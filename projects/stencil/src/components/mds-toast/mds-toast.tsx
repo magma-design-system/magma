@@ -1,5 +1,17 @@
 import { cssDurationToMilliseconds } from '@common/unit';
-import { Component, Element, Event, EventEmitter, Host, Prop, Watch, h } from '@stencil/core';
+import { preferenceStore } from '@common/preference';
+import {
+  Component,
+  Element,
+  Event,
+  EventEmitter,
+  Host,
+  Prop,
+  State,
+  Watch,
+  h,
+} from '@stencil/core';
+import { hasChildWithSlot } from '@common/slot';
 import { ThemeVariantType } from '@type/variant';
 import { ToneMinimalVariantType } from '@type/tone';
 
@@ -7,7 +19,7 @@ import clsx from 'clsx';
 import { ToastPosition } from './meta/types';
 
 /**
- * @slot default - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
+ * @slot - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
  * @slot icon - Insert an icon image, it can be `HTML elements` or `components`, it is **recommended** to add `mds-icon` element.
  * @slot action - Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element.
  */
@@ -21,10 +33,10 @@ export class MdsToast {
   private timer: number;
   private timerToastDismiss: number;
   private cssDismissAnimationDuration = 300; // hardcoded from CSS :-(
-  private actions: boolean;
   private hasText?: boolean;
 
   @Element() hostElement: HTMLMdsToastElement;
+  @State() hasActions: boolean;
 
   /**
    * If set, specifies the visibility duration in milliseconds of the element inside the viewport, when the time is up the visible property will be set to false. If the duration is set to 0 the component will still visible until intentionally closed by user.
@@ -65,7 +77,7 @@ export class MdsToast {
 
   private reloadTimeListeners = (visible: boolean): void => {
     if (typeof window === 'undefined') return;
-    if (!this.duration) {
+    if (this.duration === undefined || this.duration === 0 || Number.isNaN(this.duration)) {
       return;
     }
     if (!visible) {
@@ -92,10 +104,14 @@ export class MdsToast {
     }, this.duration);
   };
 
+  private onActionSlotChange = (): void => {
+    this.hasActions = hasChildWithSlot(this.hostElement, 'action');
+  };
+
   componentWillLoad(): void {
     this.hasText = this.hostElement.innerHTML !== '';
-    this.actions = this.hostElement.querySelector(':scope > [slot="action"]') !== null;
-    if (!this.duration) {
+    this.hasActions = hasChildWithSlot(this.hostElement, 'action');
+    if (this.duration === undefined || this.duration === 0 || Number.isNaN(this.duration)) {
       return;
     }
     if (this.visible) {
@@ -119,7 +135,12 @@ export class MdsToast {
 
   render() {
     return (
-      <Host>
+      <Host
+        pref-animation={preferenceStore.state.animation}
+        pref-contrast={preferenceStore.state.contrast}
+        pref-mode={preferenceStore.state.mode}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
+      >
         <div
           class={clsx(
             'dialog',
@@ -133,11 +154,9 @@ export class MdsToast {
               <slot />
             </mds-text>
           )}
-          {this.actions && (
-            <div class="actions">
-              <slot name="action" />
-            </div>
-          )}
+          <div class={clsx('actions', !this.hasActions && 'actions--hidden')}>
+            <slot name="action" onSlotchange={this.onActionSlotChange} />
+          </div>
         </div>
       </Host>
     );

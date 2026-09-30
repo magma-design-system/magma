@@ -266,7 +266,7 @@ mds-img::part(media) {
 | `loading`           | `loading`            | Specifies whether a browser should load an image immediately or to defer loading of images until some conditions are met.                                                                                                                                                                                                         | `"eager" \| "lazy" \| undefined`                                                                                       | `'lazy'`                       |
 | `referrerpolicy`    | `referrerpolicy`     | Specifies which referrer information to use when fetching an image.                                                                                                                                                                                                                                                               | `"no-referrer" \| "no-referrer-when-downgrade" \| "origin" \| "origin-when-cross-origin" \| "unsafe-url" \| undefined` | `'no-referrer-when-downgrade'` |
 | `sizes`             | `sizes`              | One or more strings separated by commas, indicating a set of source sizes. https://medium.com/@MRWwebDesign/responsive-images-the-sizes-attribute-and-unexpected-image-sizes-882a2eadb6db                                                                                                                                         | `string \| undefined`                                                                                                  | `undefined`                    |
-| `src`               | `src`                | Specifies the path to the image                                                                                                                                                                                                                                                                                                   | `string`                                                                                                               | `undefined`                    |
+| `src`               | `src`                | Specifies the path to the image                                                                                                                                                                                                                                                                                                   | `string \| undefined`                                                                                                  | `undefined`                    |
 | `srcset`            | `srcset`             | Specifies a list of image files to use in different situations. Defines multiple sizes of the same image, allowing the browser to select the appropriate image source.                                                                                                                                                            | `string \| undefined`                                                                                                  | `undefined`                    |
 | `srcsetConsumption` | `srcset-consumption` | Specifies a list of image files to use in different situations. Defines multiple sizes of the same image, allowing the browser to select the appropriate image source based on consumption configuration. ``` <mds-img srcset-consumption="image-black-n-white-1x.jpg low, image-1x.jpg medium, image-2x.jpg high"></mds-img> ``` | `string \| undefined`                                                                                                  | `undefined`                    |
 | `width`             | `width`              | The width attribute specifies the width of an image, in pixels.                                                                                                                                                                                                                                                                   | `string \| undefined`                                                                                                  | `undefined`                    |
@@ -278,19 +278,6 @@ mds-img::part(media) {
 | ------------------- | ------------------------------------------- | -------------------------------- |
 | `mdsImgLoadError`   | Emits when the image is not loaded          | `CustomEvent<MdsImgEventDetail>` |
 | `mdsImgLoadSuccess` | Emits when the image is successfully loaded | `CustomEvent<MdsImgEventDetail>` |
-
-
-## Methods
-
-### `updateLang() => Promise<void>`
-
-
-
-#### Returns
-
-Type: `Promise<void>`
-
-
 
 
 ## Shadow Parts

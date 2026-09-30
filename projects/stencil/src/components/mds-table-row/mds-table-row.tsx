@@ -1,13 +1,16 @@
-import { Component, Host, h, Prop, Element, State, Method } from '@stencil/core';
+import { Component, Host, h, Prop, Element, State } from '@stencil/core';
+import { hasChildWithSlot } from '@common/slot';
+import clsx from 'clsx';
 import { Locale } from '@common/locale';
 import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.es.json';
 import localeIt from './meta/locale.it.json';
 import { isSafari } from '@common/browser';
+import { preferenceStore } from '@common/preference';
 
 /**
- * @slot default - Put `mds-table-cell` element/s.
+ * @slot - Put `mds-table-cell` element/s.
  * @slot action - Put `mds-button` element/s or other kind of actions as aside menu for the single row.
  */
 
@@ -20,8 +23,8 @@ import { isSafari } from '@common/browser';
 })
 export class MdsTableRow {
   @Element() host: HTMLMdsTableRowElement;
-  private actions: HTMLDivElement;
-  private hasActions: boolean = true;
+  private actions?: HTMLDivElement;
+  @State() hasActions: boolean;
   private observer?: ResizeObserver;
   @State() sizerWidth: string;
   private t: Locale = new Locale({
@@ -30,38 +33,57 @@ export class MdsTableRow {
     es: localeEs,
     it: localeIt,
   });
-  @State() language: string;
-  @Method()
-  async updateLang(): Promise<void> {
-    this.language = this.t.lang(this.host);
-    this.t.update();
-  }
 
+  /**
+   * Specifies whether the row reacts to user interaction (hover/focus).
+   */
   @Prop({ reflect: true }) readonly interactive?: boolean;
 
+  /**
+   * Specifies whether the row's actions are shown as an overlay.
+   */
   @Prop({ reflect: true }) readonly overlayActions: boolean;
 
+  /**
+   * Specifies whether the row can be selected via a checkbox.
+   */
   @Prop({ reflect: true }) readonly selectable?: boolean = undefined;
 
+  /**
+   * Specifies whether the row is currently selected.
+   */
   @Prop({ mutable: true, reflect: true }) selected?: boolean;
 
+  /**
+   * Reflects the parent table selection state (set by mds-table); drives the
+   * row action background without :host-context
+   */
+  @Prop({ reflect: true }) readonly selection?: boolean;
+
+  /**
+   * The value associated with the row, emitted when the row is selected.
+   */
   @Prop({ reflect: true }) readonly value?: string | number;
 
+  private onActionSlotChange = (): void => {
+    this.hasActions = hasChildWithSlot(this.host, 'action');
+  };
+
   componentWillLoad(): void {
-    this.language = this.t.lang(this.host);
-    this.hasActions = this.host.querySelector(':scope > [slot="action"]') !== null;
+    this.hasActions = hasChildWithSlot(this.host, 'action');
   }
 
   componentDidLoad(): void {
     // needed to capture sizer width when become visible
-    if (this.hasActions) this.initObserver();
+    if (this.actions) this.initObserver(this.actions);
   }
 
-  private initObserver() {
+  private initObserver(actions: HTMLDivElement) {
     this.observer = new ResizeObserver((entry) => {
-      this.sizerWidth = `${entry[0].borderBoxSize[0].inlineSize.toString()}px`;
+      // the cell is hidden while the slot is empty: no border box to read
+      this.sizerWidth = `${entry[0].borderBoxSize?.[0]?.inlineSize ?? 0}px`;
     });
-    this.observer.observe(this.actions);
+    this.observer.observe(actions);
   }
 
   disconnectedCallback() {
@@ -75,13 +97,12 @@ export class MdsTableRow {
 
   render() {
     return (
-      <Host role="row">
+      <Host role="row" pref-animation={preferenceStore.state.animation}>
         {this.selectable && (
           <mds-table-cell class="selection-cell">
             <div class="checkbox-wrapper">
               <mds-input-switch
                 title={this.t.get(this.selected ? 'unselectRow' : 'selectRow')}
-                lang={this.language}
                 type="checkbox"
                 checked={this.selected}
                 onMdsInputSwitchChange={this.handleSelectionChange}
@@ -90,15 +111,21 @@ export class MdsTableRow {
           </mds-table-cell>
         )}
         <slot />
-        {this.hasActions && isSafari() && (
-          <mds-table-cell class="actions-cell actions-cell--disable">
+        {isSafari() && (
+          <mds-table-cell
+            class={clsx(
+              'actions-cell',
+              'actions-cell--disable',
+              !this.hasActions && 'actions-cell--hidden',
+            )}
+          >
             <div class="actions">
-              <slot name="action"></slot>
+              <slot name="action" onSlotchange={this.onActionSlotChange}></slot>
             </div>
           </mds-table-cell>
         )}
-        {this.hasActions && !isSafari() && (
-          <mds-table-cell class="actions-cell">
+        {!isSafari() && (
+          <mds-table-cell class={clsx('actions-cell', !this.hasActions && 'actions-cell--hidden')}>
             <div
               class="actions-sizer"
               style={{
@@ -115,7 +142,7 @@ export class MdsTableRow {
                   marginRight: `calc(${this.sizerWidth} + var(--mds-table-cell-padding))`,
                 }}
               >
-                <slot name="action"></slot>
+                <slot name="action" onSlotchange={this.onActionSlotChange}></slot>
               </div>
             </div>
           </mds-table-cell>

@@ -1,3 +1,2 @@
-/variables/*.scss
-!/variables/theme.scss
-/sass/config.scss
+# Generated CSS artifacts (scripts/semantic.ts), staged out of the source dirs.
+/build/

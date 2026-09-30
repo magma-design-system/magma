@@ -252,19 +252,6 @@ The component calls `new URL(src)` to extract the hostname for the fallback titl
 | `mdsUrlViewClose` | Emits when the close button is clicked | `CustomEvent<void>` |
 
 
-## Methods
-
-### `updateLang() => Promise<void>`
-
-
-
-#### Returns
-
-Type: `Promise<void>`
-
-
-
-
 ## CSS Custom Properties
 
 | Name                           | Description                                            |

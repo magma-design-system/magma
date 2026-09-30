@@ -7,7 +7,8 @@ import miBaselineChevronRight from '@icon/mi/baseline/chevron-right.svg';
 import mdiFolderOpen from '@icon/mdi/folder-open.svg';
 import miBaselineFolderClosed from '@icon/mi/baseline/folder.svg';
 import { MdsTreeItemEventDetail } from './meta/event-detail';
-import { TreeActions, TreeIcon } from '@type/tree';
+import { TreeActions, TreeAppearance, TreeIcon } from '@type/tree';
+import { ButtonIconPositionType } from '@type/button';
 import {
   Component,
   Host,
@@ -20,12 +21,13 @@ import {
   Method,
   Watch,
 } from '@stencil/core';
+import { hasChildWithSlot } from '@common/slot';
 import { Locale } from '@common/locale';
 import { TypographyTruncateType } from '@type/text';
 import { cssDurationToMilliseconds } from '@common/unit';
 
 /**
- * @slot default - Add `mds-tree-item` element/s.
+ * @slot - Add `mds-tree-item` element/s.
  * @slot action - Add `mds-button`, `mds-icon` or other types component and HTML element/s.
  * @part actions-container - Selects the wrapper of the container of the actions.
  * @part actions-list - Selects the container of the actions.
@@ -44,6 +46,7 @@ export class MdsTreeItem {
   @State() hasChildren: boolean = false;
   @State() currentToggleIcon: string;
   @State() await: boolean;
+  @State() private resolvedActions?: TreeActions;
   @Element() private readonly host: HTMLMdsTreeItemElement;
   private readonly t: Locale = new Locale({
     el: localeEl,
@@ -51,11 +54,6 @@ export class MdsTreeItem {
     es: localeEs,
     it: localeIt,
   });
-  @State() language: string;
-  @Method()
-  async updateLang(): Promise<void> {
-    this.language = this.t.lang(this.host);
-  }
 
   /**
    * Show actions on the tree item on hover or by default.
@@ -67,9 +65,9 @@ export class MdsTreeItem {
    */
   @Prop({ reflect: true }) readonly async?: boolean;
 
-  //
-  // Specifies the tree branch depth, it's internal and it's used by css to remove fitst level elements branch lines.
-  //
+  /**
+   * Specifies the tree branch depth. Internal: used by CSS to remove branch lines on first-level elements.
+   */
   @Prop({ reflect: true }) readonly depth?: number;
 
   /**
@@ -81,6 +79,18 @@ export class MdsTreeItem {
    * Specifies the icon of the element
    */
   @Prop({ reflect: true }) toggle?: TreeIcon;
+
+  /**
+   * Reflects the parent tree toggle icon position (set by mds-tree); drives the
+   * toggle-icon layout without :host-context
+   */
+  @Prop({ reflect: true }) togglePosition?: ButtonIconPositionType;
+
+  /**
+   * Reflects the parent tree appearance (set by mds-tree); drives the depth/none
+   * layout without :host-context
+   */
+  @Prop({ reflect: true }) appearance?: TreeAppearance;
 
   /**
    * Specifies if the tree is expanded.
@@ -164,6 +174,9 @@ export class MdsTreeItem {
     );
   };
 
+  /**
+   * Expands the tree item, revealing its children.
+   */
   @Method()
   async expand(): Promise<void> {
     this.expanded = true;
@@ -171,12 +184,39 @@ export class MdsTreeItem {
     this.updateToggleIcon();
   }
 
+  /**
+   * Resolves the effective actions mode: the item's own value wins, otherwise it
+   * inherits the nearest ancestor (tree-item or tree) that sets one. Replaces the
+   * :host-context own-vs-ancestor cascade with a value reflected on the host.
+   */
+  private resolveActions = (): void => {
+    const source = this.host.closest('mds-tree-item[actions], mds-tree[actions]');
+    this.resolvedActions = (source?.getAttribute('actions') as TreeActions) ?? 'auto';
+  };
+
+  @Watch('actions')
+  handleActionsChange(): void {
+    this.resolveActions();
+  }
+
+  /**
+   * `internal` Re-resolves the effective actions; called by mds-tree when its own
+   * actions changes so items that inherit it stay in sync.
+   */
+  @Method()
+  async refreshActions(): Promise<void> {
+    this.resolveActions();
+  }
+
+  private onActionSlotChange = (): void => {
+    this.hasActions = hasChildWithSlot(this.host, 'action');
+  };
+
   componentWillLoad(): void {
-    this.language = this.t.lang(this.host);
-
     this.updateToggleIcon();
+    this.resolveActions();
 
-    this.hasActions = !!this.host.querySelector(':scope > [slot="action"]');
+    this.hasActions = hasChildWithSlot(this.host, 'action');
     this.hasChildren = !!this.host.querySelector('mds-tree-item');
   }
 
@@ -192,16 +232,16 @@ export class MdsTreeItem {
 
   render() {
     return (
-      <Host>
+      <Host resolved-actions={this.resolvedActions}>
         <div class={clsx('header', this.hasChildren && 'header--has-children')}>
           <div class="tree-node">
             <div class="tree-branch"></div>
             <div class="tree-dot"></div>
           </div>
-          <div class={clsx('toggle-icon', `toggle-icon--${this.toggle}`)}>
+          <div class="toggle-icon">
             <mds-button
               await={this.await}
-              onClick={this.onClick.bind(this)}
+              onClick={this.onClick}
               icon={!this.await ? this.currentToggleIcon : undefined}
               title={this.t.get(this.expanded ? 'collapse' : 'expand', { label: this.label })}
               variant="dark"
@@ -214,19 +254,18 @@ export class MdsTreeItem {
               class={clsx('label-action', this.await && 'label-action--await')}
               disabled={this.await}
               icon={this.icon}
-              onClick={this.onClick.bind(this)}
+              onClick={this.onClick}
               variant="dark"
               tone="text"
               truncate={this.truncate}
-            >
-              {this.label}
-            </mds-button>
+              label={this.label}
+            ></mds-button>
             <div
               class={clsx('actions-container', this.hasActions && 'actions-container--has-actions')}
               part="actions-container"
             >
               <div class="actions" part="actions-list">
-                <slot name="action"></slot>
+                <slot name="action" onSlotchange={this.onActionSlotChange}></slot>
               </div>
             </div>
           </div>

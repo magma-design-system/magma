@@ -1,0 +1,39 @@
+/*
+  Document-level registrations for the mds-table-body public custom properties.
+
+  Never import this file from a component stylesheet: an @property rule inside a shadow root
+  registers nothing, and every Magma component is shadow: true.
+  projects/styles/scripts/properties.ts collects these into globals.css, which the document does
+  load, and resolves each initial-value down to a literal - see that file for the full
+  rationale. inherits is true throughout, because that is what the unregistered behaviour
+  already does today.
+
+  Deliberately NOT registered:
+    - --mds-table-body-background-hover: read directly by mds-table, which sets no default of
+      their own, so a registration would substitute a static light value there whenever
+      mds-table-body is absent.
+*/
+
+@property --mds-table-body-background {
+  inherits: true;
+  initial-value: rgb(var(--magma-surface-default));
+  syntax: '<color>';
+}
+
+@property --mds-table-body-background-alt {
+  inherits: true;
+  initial-value: rgb(var(--magma-surface-raised));
+  syntax: '<color>';
+}
+
+@property --mds-table-body-color {
+  inherits: true;
+  initial-value: rgb(var(--magma-text-default));
+  syntax: '<color>';
+}
+
+@property --mds-table-body-color-alt {
+  inherits: true;
+  initial-value: rgb(var(--magma-text-muted));
+  syntax: '<color>';
+}

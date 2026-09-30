@@ -2,6 +2,7 @@
 @reference "@maggioli-design-system/design-tokens/dist/css/tailwind-theme-typography.css";
 
 @layer base {
+
   @view-transition {
     navigation: var(--magma-view-transition-navigation, auto);
   }
@@ -11,44 +12,45 @@
     transition-timing-function: var(--ease-out);
   }
 
+  /* No contrast twin: `text-default` is already the strongest step of the family,
+   * and the two rules that used to sit here keyed off `pref-contrast-high`, a
+   * class no controller writes, and off a hardcoded `--tone-neutral-01` that
+   * resolves to the very same value in both modes. */
+
   body {
     @apply font-info
       text-info-detail;
 
-    background-color: rgb(var(--tone-neutral));
-    color: rgb(var(--tone-neutral-03));
+    background-color: rgb(var(--magma-surface-default));
+    color: rgb(var(--magma-text-default));
   }
 
-  :root.pref-contrast-high body {
-    color: rgb(var(--tone-neutral-01));
+  /* color-scheme follows the palette, so the browser's own UI (scrollbars, form
+   * controls, autofill) matches the theme. The MODE comes first; a theme that
+   * only exists in one scheme (`pref-theme-scheme-light|dark`) comes after and
+   * wins, exactly as it overrides the mode in the palette. All the selectors have
+   * the same specificity, so the source order is the rule. */
+
+  /* no controller: the palette follows the OS, and so does the browser */
+  :root:not([data-magma-pref]),
+  :root.pref-mode-system {
+    color-scheme: light dark;
   }
 
-  @media (prefers-contrast: more) {
-    :root.pref-contrast-system body {
-      color: rgb(var(--tone-neutral-01));
-    }
+  :root.pref-mode-light {
+    color-scheme: light;
   }
 
-  :root.pref-theme-scheme-dark {
-    color-scheme: only dark;
+  :root.pref-mode-dark {
+    color-scheme: dark;
   }
 
   :root.pref-theme-scheme-light {
     color-scheme: only light;
   }
 
-  :root.pref-theme-scheme-all {
-    color-scheme: light dark;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    :root.pref-theme-system {
-      color-scheme: dark;
-    }
-  }
-
-  :root.pref-theme-scheme-all.pref-theme-dark {
-    color-scheme: dark;
+  :root.pref-theme-scheme-dark {
+    color-scheme: only dark;
   }
 
   ::selection {
@@ -69,7 +71,12 @@
   }
 
   a {
-    color: rgb(var(--theme-default-02-primary-text));
+
+    /* `--theme-default-02-primary-text` was defined nowhere, so the declaration
+     * was invalid at computed-value time and a link inherited the body colour.
+     * `accent-emphasis`, not `accent-fg`: 5.04:1 on white and 4.50:1 on the page
+     * surface, where fg sits at 3.92 and 3.51. */
+    color: rgb(var(--magma-accent-emphasis));
   }
 
   h1,
@@ -86,6 +93,7 @@
   }
 
   .hydrated {
+
     /*
       Revert all styles for hydrated web components
       to avoid tailwind base unwanted overrides

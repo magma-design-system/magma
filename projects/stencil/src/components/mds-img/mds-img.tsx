@@ -4,7 +4,6 @@ import {
   Event,
   EventEmitter,
   Host,
-  Method,
   Prop,
   State,
   Watch,
@@ -41,11 +40,6 @@ export class MdsImg {
     es: localeEs,
     it: localeIt,
   });
-  @State() language: string;
-  @Method()
-  async updateLang(): Promise<void> {
-    this.language = this.t.lang(this.host);
-  }
 
   /**
    * Specifies an alternate text for an image
@@ -83,7 +77,7 @@ export class MdsImg {
   /**
    * Specifies the path to the image
    */
-  @Prop() readonly src: string;
+  @Prop() readonly src?: string;
 
   /**
    * Specifies a list of image files to use in different situations.
@@ -163,7 +157,7 @@ export class MdsImg {
   };
 
   private autoAltName = (): string => {
-    if (this.src) {
+    if (this.src !== undefined && this.src !== '') {
       const index = this.src.lastIndexOf('/') + 1;
       return this.src.substring(index);
     }
@@ -174,21 +168,21 @@ export class MdsImg {
     setAttributeIfEmpty(this.host, 'aria-label', this.alt);
   };
 
+  private readonly handleConsumptionLoadClick = (): void => {
+    this.imageConsumptionLoaded = true;
+  };
+
   componentWillLoad(): void {
     this.consumptionMode =
       (localStorage.getItem('mdsPrefConsumption') as ConsumptionModeType) ?? 'high';
-    if (this.srcsetConsumption) {
+    if (this.srcsetConsumption !== undefined && this.srcsetConsumption !== '') {
       this.srcsetConsumptionData = this.formatConsumptionData(this.srcsetConsumption);
     }
 
     this.image = this.host.querySelector<HTMLImageElement>('img') as HTMLImageElement;
-    if (!this.alt) {
+    if (this.alt === '') {
       this.alt = this.autoAltName();
     }
-  }
-
-  componentWillRender(): void {
-    this.t.lang(this.host);
   }
 
   componentDidLoad(): void {
@@ -213,13 +207,7 @@ export class MdsImg {
     if (this.srcsetConsumptionData) {
       if (this.consumptionMode === 'low') {
         return (
-          <Host
-            aria-label={this.alt}
-            role="img"
-            onClick={() => {
-              this.imageConsumptionLoaded = true;
-            }}
-          >
+          <Host aria-label={this.alt} role="img" onClick={this.handleConsumptionLoadClick}>
             <div class="contrast-area-50"></div>
             {!this.imageConsumptionLoaded ? (
               <div
@@ -237,9 +225,8 @@ export class MdsImg {
                   tabIndex={-1}
                   variant="light"
                   tone="outline"
-                >
-                  {this.t.get('clickToLoad')}
-                </mds-button>
+                  label={this.t.get('clickToLoad')}
+                ></mds-button>
               </div>
             ) : (
               <img

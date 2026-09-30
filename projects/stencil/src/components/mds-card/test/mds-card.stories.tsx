@@ -4,9 +4,9 @@ import { URLs } from '../../mds-img/meta/storybook';
 export default {
   title: 'Layout / Card',
   argTypes: {
-    'auto-grid': {
+    'disable-auto-grid': {
       type: { name: 'boolean' },
-      description: 'Enables automatic responsive behavior based on container queries',
+      description: 'Disables the automatic responsive behavior based on container queries',
     },
   },
 };
@@ -51,7 +51,7 @@ const FullCardTemplate = (args) => (
         <mds-button>Contact</mds-button>
       </mds-card-footer>
     </mds-card>
-    <mds-dropdown target="action-example" class="max-w-[350px] p-200 gap-100" backdrop>
+    <mds-dropdown target="#action-example" class="max-w-[350px] p-200 gap-100" backdrop>
       <mds-button variant="dark" tone="text" class="justify-start">
         Modifica account
       </mds-button>
@@ -97,7 +97,7 @@ const CustomSlotsTemplate = (args) => (
         <mds-button variant="dark">Contact</mds-button>
       </div>
     </mds-card>
-    <mds-dropdown target="action-example" class="max-w-[350px] p-200 gap-100" backdrop>
+    <mds-dropdown target="#action-example" class="max-w-[350px] p-200 gap-100" backdrop>
       <mds-button variant="dark" tone="text" class="justify-start">
         Modifica account
       </mds-button>
@@ -418,7 +418,7 @@ export const FullCardCustomSlots = {
   render: CustomSlotsTemplate,
 
   args: {
-    'auto-grid': false,
+    'disable-auto-grid': true,
   },
 };
 

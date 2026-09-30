@@ -7,40 +7,15 @@
  * @prop --mds-tab-bar-item-color: Sets the text color of the component
  */
 
-@property --mds-tab-bar-item-background {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-10));
-  syntax: '<color>';
-}
-
-@property --mds-tab-bar-item-background-selected {
-  inherits: false;
-  initial-value: transparent;
-  syntax: '<color>';
-}
-
-@property --mds-tab-bar-item-color {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-04));
-  syntax: '<color>';
-}
-
-@property --mds-tab-bar-item-color-selected {
-  inherits: false;
-  initial-value: rgb(var(--variant-primary-03));
-  syntax: '<color>';
-}
-
 :host {
-  --mds-tab-bar-item-background: rgb(var(--tone-neutral-10));
+  --mds-tab-bar-item-background: rgb(var(--magma-wash-soft));
   --mds-tab-bar-item-background-selected: transparent;
-  --mds-tab-bar-item-color: rgb(var(--tone-neutral-04));
-  --mds-tab-bar-item-color-selected: rgb(var(--variant-primary-03));
+  --mds-tab-bar-item-color: rgb(var(--magma-text-subtle));
+  --mds-tab-bar-item-color-selected: rgb(var(--magma-accent-fg));
+  --mds-tab-bar-item-transition-duration: var(--duration-200);
+  --private-tab-bar-item-transition-duration: var(--mds-tab-bar-item-transition-duration);
 
-  @apply duration-200
-    ease-in-out
-    gap-100
-    p-200;
+  @apply ease-in-out;
 
   align-items: center;
   background-color: var(--mds-tab-bar-item-background);
@@ -52,7 +27,10 @@
   flex-direction: column;
   flex-grow: 1;
   flex-shrink: 0;
+  gap: --spacing(100);
+  padding: --spacing(200);
   text-align: center;
+  transition-duration: var(--private-tab-bar-item-transition-duration);
   transition-property: color, background-color, fill;
 }
 
@@ -63,5 +41,5 @@
 }
 
 @import './css/mds-tab-bar-item-pref-animation.css';
-@import './css/mds-tab-bar-item-pref-theme.css';
+@import './css/mds-tab-bar-item-pref-mode.css';
 @import './css/mds-tab-bar-item-pref-contrast.css';

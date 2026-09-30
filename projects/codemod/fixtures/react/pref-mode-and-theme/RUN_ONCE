@@ -1,0 +1,3 @@
+The v1 mode control and the v2 theme chooser share the name mds-pref-theme:
+a second run would rename the migrated theme chooser to mds-pref-mode. Run the
+codemod once (#702).

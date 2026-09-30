@@ -1,10 +1,10 @@
 .action-close {
-  --mds-button-color: rgb(var(--tone-neutral-10));
+  --mds-button-color: rgb(var(--magma-on-backdrop));
 
   opacity: 0;
   pointer-events: none;
   position: absolute;
-  transition-duration: var(--mds-modal-transition-duration);
+  transition-duration: var(--private-modal-transition-duration);
   transition-property: background-color, bottom, color, fill, opacity, top, transform;
   transition-timing-function: var(--mds-modal-transition-timing-function);
 }

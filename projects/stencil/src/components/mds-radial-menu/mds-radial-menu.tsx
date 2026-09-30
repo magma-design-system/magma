@@ -1,4 +1,5 @@
 import { Component, Host, Prop, Element, h, Watch } from '@stencil/core';
+import { queryChildrenBySlot } from '@common/slot';
 import { ButtonSizeType, ButtonVariantType } from '@type/button';
 import { Direction, Interaction } from './meta/types';
 import miBaselineMoreVert from '@icon/mi/baseline/more-vert.svg';
@@ -8,13 +9,16 @@ import { ToneVariantType } from '@type/tone';
 
 import { Backdrop } from '@common/floating-controller';
 
+/**
+ * @slot item - Add `mds-radial-menu-item` elements or `components` to this slot.
+ */
 @Component({
   tag: 'mds-radial-menu',
   styleUrl: 'mds-radial-menu.css',
   shadow: true,
 })
 export class MdsRadialMenu {
-  @Element() private hostElement: HTMLMdsCardHeaderElement;
+  @Element() private hostElement: HTMLMdsRadialMenuElement;
   private readonly backdropController: Backdrop = new Backdrop('mds-radial-menu-backdrop');
 
   /**
@@ -77,7 +81,7 @@ export class MdsRadialMenu {
    */
   @Prop({ reflect: true }) readonly size: ButtonSizeType = 'lg';
 
-  private items: NodeListOf<HTMLMdsRadialMenuItemElement>;
+  private items: HTMLMdsRadialMenuItemElement[];
 
   private toggleMenu = (): void => {
     if (this.opened === true) {
@@ -114,7 +118,7 @@ export class MdsRadialMenu {
   };
 
   private updateItems = (): void => {
-    this.items = this.hostElement.querySelectorAll(':scope > [slot="item"]');
+    this.items = queryChildrenBySlot(this.hostElement, 'item') as HTMLMdsRadialMenuItemElement[];
     this.setItemSize();
     this.setItemIndex();
     this.hostElement.style.setProperty(
@@ -140,7 +144,7 @@ export class MdsRadialMenu {
   }
 
   disconnectedCallback(): void {
-    if (!document) return;
+    if (typeof document === 'undefined') return;
     document.removeEventListener('contextmenu', this.toggleRightClickMenu);
   }
 
@@ -180,7 +184,7 @@ export class MdsRadialMenu {
 
   @Watch('interaction')
   onInteractionChange(newValue?: Interaction): void {
-    if (!document) return;
+    if (typeof document === 'undefined') return;
     if (newValue === 'rightclick') {
       document.addEventListener('contextmenu', this.toggleRightClickMenu);
       return;

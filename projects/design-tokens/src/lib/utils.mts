@@ -1,6 +1,28 @@
 import StyleDictionary, { DesignTokens } from 'style-dictionary'
 
-import {
+import * as formatsModule from '../formats/index.js'
+import * as sdBrandColorConfigModule from '../config/styledictionary/sd-brand-color.config.js'
+import chalk from 'chalk'
+import pkg from 'fs-extra'
+import { resolve } from 'path'
+import { lilconfig } from 'lilconfig'
+
+// importing for esm
+const { mkdir, writeFile } = pkg
+
+// The formats barrel and the style-dictionary configs are CommonJS .ts
+// files consumed here from ESM. Their named exports are not statically
+// visible to every loader (native node on the compiled dist, tsx on the
+// sources, vite in the tests), so unwrap the namespace: CJS pipelines
+// expose module.exports as `default`, ESM pipelines expose real named
+// exports and no default.
+function interopDefault<T> (mod: T): T {
+  return ((mod as { default?: T }).default ?? mod)
+}
+
+const formats = interopDefault(formatsModule)
+const { getBrandColorConfig } = interopDefault(sdBrandColorConfigModule)
+const {
   flutterColorFormat,
   cssHexFormat,
   cssRgbFormat,
@@ -22,15 +44,8 @@ import {
   tailwindCss4Filter,
   cssTailwindThemeColor,
   cssVarsTransitionsFormat,
-} from '../formats/index.js'
-import { getBrandColorConfig } from '../config/styledictionary/sd-brand-color.config.js'
-import chalk from 'chalk'
-import pkg from 'fs-extra'
-import { resolve } from 'path'
-import { lilconfig } from 'lilconfig'
-
-// importing for esm
-const { mkdir, writeFile } = pkg
+  gimpPaletteFormat,
+} = formats
 
 export async function getColorsConfig (path?: string) {
   if (path) return lilconfig('magma-design-tokens').load(path)
@@ -48,10 +63,10 @@ export async function writeJsonTokens (tokens: unknown, name: string, dirPath?: 
   try {
     await writeFile(resolve(`${dirPath}/${name}.json`), jsonTokens, 'utf8')
   } catch (err) {
-    console.error(
-      chalk.red('An error occured while writing JSON Object to File.'),
-    )
-    console.error(chalk.red(err))
+    // rethrow: a silently skipped write would leave a partial/stale export,
+    // which breaks reproducibility for consumers diffing generated tokens
+    console.error(chalk.red(`An error occured while writing ${name}.json`))
+    throw err
   }
 }
 
@@ -92,6 +107,7 @@ export function getStyleDictionaryWithAllCustomTransform (): StyleDictionary.Cor
       .registerFormat(cssRgbFormat)
       .registerFormat(cssTailwindThemeColor)
       .registerFormat(jsonCoolorsFormat)
+      .registerFormat(gimpPaletteFormat)
       // FONT
       .registerFormat(flutterFontFormat)
       .registerFormat(jsTailwindFontFamilyFormat)
@@ -115,28 +131,4 @@ export function getStyleDictionaryWithAllCustomTransform (): StyleDictionary.Cor
 }
 
 
-/**
- * Deep merge of two object
- *
- * @param {object} target
- * @param {object} source
- * @returns {object} object merged
- */
-export function deepMerge (target: Record<string, unknown>, source: Record<string, unknown>): Record<string, unknown> {
-  const isObject = (obj: unknown): obj is Record<string, unknown> => obj !== null && typeof obj === 'object' && !Array.isArray(obj)
-
-  if (isObject(target) && isObject(source)) {
-    for (const key in source) {
-      if (isObject(source[key])) {
-        if (!target[key]) {
-          target[key] = {}
-        }
-        deepMerge(target[key] as Record<string, unknown>, source[key] as Record<string, unknown>)
-      } else {
-        target[key] = source[key]
-      }
-    }
-  }
-
-  return target
-}
+export { deepMerge } from './deep-merge.mjs'

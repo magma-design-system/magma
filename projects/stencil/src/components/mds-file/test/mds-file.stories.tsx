@@ -15,9 +15,9 @@ export default {
       type: { name: 'string' },
       description: 'Sets a label which is shown when the file is downloaded',
     },
-    'show-downloaded-icon': {
+    'hide-downloaded-icon': {
       type: { name: 'boolean' },
-      description: 'Sets if shows an icon when the file is downloaded',
+      description: 'Hides the icon shown when the file is downloaded',
     },
     filename: {
       type: { name: 'string' },
@@ -57,6 +57,15 @@ export const Description = {
   args: {
     description: 'This is a custom description',
     filename: filesList[2],
+  },
+};
+
+// real document names often contain dots (#747): only the last one separates the extension
+export const FilenameWithDots = {
+  render: Template,
+
+  args: {
+    filename: 'Delibera n. 12.2024 finale.pdf',
   },
 };
 

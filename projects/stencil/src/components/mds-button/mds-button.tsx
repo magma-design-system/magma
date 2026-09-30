@@ -15,12 +15,13 @@ import { setAttributeIfEmpty, unslugName } from '@common/aria';
 import { isIconFormatIsBase64, isIconFormatIsSVG } from '@common/icon';
 import { TypographyTruncateType } from '@type/text';
 import { readSlottedLabel, sanitizeLabel } from '@common/slot';
+import { preferenceStore } from '@common/preference';
 import mdiApple from '@icon/mdi/apple.svg';
 import logoGoogle from './asset/logo-google.svg';
 import { TextAnimationType } from '@component/mds-text/meta/types';
 
 /**
- * @slot default - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
+ * @slot - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
  * @slot notification - Add `HTML elements` or `components`, it is **recommended** to use `mds-notification` element.
  * @part icon - The icon inside the component
  */
@@ -33,7 +34,6 @@ import { TextAnimationType } from '@component/mds-text/meta/types';
 })
 export class MdsButton {
   private typography?: TypographyType;
-  private hasNotification?: boolean;
   private km = new KeyboardManager();
 
   @Element() host: HTMLMdsButtonElement;
@@ -202,11 +202,9 @@ export class MdsButton {
   };
 
   componentWillLoad(): void {
-    this.hasNotification = this.host.querySelector(':scope > [slot="notification"]') !== null;
-
     this.handleVariantChange(this.variant);
 
-    if (this.href) {
+    if (this.href !== undefined && this.href !== '') {
       this.host.addEventListener('click', (e: MouseEvent) => {
         e.preventDefault();
         if (this.target === 'blank') {
@@ -248,7 +246,11 @@ export class MdsButton {
       this.label = undefined;
     }
 
-    if (!this.label && this.icon) {
+    if (
+      (this.label === undefined || this.label === '') &&
+      this.icon !== undefined &&
+      this.icon !== ''
+    ) {
       const iconTitle = unslugName(this.icon);
       if (!this.host.hasAttribute('aria-label')) {
         setAttributeIfEmpty(this.host, 'title', iconTitle);
@@ -281,18 +283,22 @@ export class MdsButton {
 
   private onSlotChangeHandler = (): void => {
     /* this should be removed in the future once slotted text is no longer used, use the label property instead */
-    if (this.label) return;
+    if (this.label !== undefined && this.label !== '') return;
     this.label = readSlottedLabel(this.host);
   };
 
   render() {
-    this.typography = buttonSizeTypographyVariant[this.size] as TypographyType;
+    this.typography = (buttonSizeTypographyVariant[this.size] ??
+      buttonSizeTypographyVariant.md) as TypographyType;
     return (
       <Host
         onMouseDown={this.mouseDown}
         onMouseUp={this.mouseUp}
         onMouseOut={this.mouseUp}
         tabindex="0"
+        pref-animation={preferenceStore.state.animation}
+        pref-mode={preferenceStore.state.mode}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
         <div class="await">
           <mds-spinner class="spinner" running={this.await} />
@@ -311,7 +317,7 @@ export class MdsButton {
         >
           {this.label || <slot onSlotchange={this.onSlotChangeHandler} />}
         </mds-text>
-        {this.hasNotification && <slot name="notification" />}
+        <slot name="notification" />
         {this.icon && this.iconPosition === 'right' && (
           <mds-icon aria-hidden="true" class="icon" name={this.icon} part="icon" />
         )}

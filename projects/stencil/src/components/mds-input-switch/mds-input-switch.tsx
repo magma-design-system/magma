@@ -11,9 +11,9 @@ import {
   Event,
   EventEmitter,
   State,
-  Method,
   Watch,
 } from '@stencil/core';
+import { setFormValue } from '@common/form';
 import { InputSwitchType, InputSwitchSizeType } from './meta/types';
 import { KeyboardManager } from '@common/keyboard-manager';
 import { MdsInputSwitchEventDetail } from './meta/event-detail';
@@ -21,13 +21,14 @@ import { TypographyInfoType, TypographyReadType, TypographyVariants } from '@typ
 import { inputSwitchIconVariant } from './meta/variants';
 import { hasSlotted } from '@common/slot';
 import { Locale } from '@common/locale';
+import { preferenceStore } from '@common/preference';
 import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.es.json';
 import localeIt from './meta/locale.it.json';
 
 /**
- * @slot default - Put text string or elements here
+ * @slot - Put text string or elements here
  */
 
 @Component({
@@ -50,11 +51,6 @@ export class MdsInputSwitch {
     es: localeEs,
     it: localeIt,
   });
-  @State() language: string;
-  @Method()
-  async updateLang(): Promise<void> {
-    this.language = this.t.lang(this.host);
-  }
 
   /**
    * Sets or returns whether a checkbox should automatically
@@ -147,7 +143,7 @@ export class MdsInputSwitch {
     }
 
     this.changeEvent.emit({ name: this.name, checked: this.checked, value });
-    this.internals.setFormValue(this.checked ? (this.value ?? null) : null);
+    setFormValue(this.internals, this.checked ? (this.value ?? null) : null);
   };
 
   private handleDirty = (): void => {
@@ -155,23 +151,9 @@ export class MdsInputSwitch {
   };
 
   private checkFocusElement = (): void => {
-    switch (this.type) {
-      case 'switch':
-        this.km.removeElement('default');
-        this.km.addElement(
-          this.host.shadowRoot?.querySelector('.switch-container') as HTMLElement,
-          'switch',
-        );
-        this.km.attachClickBehavior('switch');
-        break;
-      default:
-        this.km.removeElement('switch');
-        this.km.addElement(
-          this.host.shadowRoot?.querySelector('.label-icon') as HTMLElement,
-          'default',
-        );
-        this.km.attachClickBehavior('default');
-    }
+    // the native input is the focusable control: Space toggles it natively, Enter through the manager
+    this.km.addElement(this.host.shadowRoot?.querySelector('.field') as HTMLElement);
+    this.km.attachClickBehavior();
   };
 
   @Watch('disabled')
@@ -182,7 +164,7 @@ export class MdsInputSwitch {
      * https://github.com/ionic-team/stencil/issues/5461
      */
     if (newValue) {
-      this.internals.setFormValue(null);
+      setFormValue(this.internals, null);
       return;
     }
 
@@ -206,13 +188,12 @@ export class MdsInputSwitch {
   }
 
   formResetCallback(): void {
-    this.internals.setFormValue('');
+    setFormValue(this.internals, '');
   }
 
   componentDidLoad(): void {
-    this.language = this.t.lang(this.host);
     this.label = this.host.textContent ?? '';
-    this.internals.setFormValue(this.checked ? (this.value ?? null) : null);
+    setFormValue(this.internals, this.checked ? (this.value ?? null) : null);
     this.checkFocusElement();
     this.hasText = hasSlotted(this.host);
   }
@@ -222,8 +203,13 @@ export class MdsInputSwitch {
     const iconCheckedUser = this.icon !== '' ? this.icon : iconChecked;
 
     return (
-      <Host onClick={this.handleDirty}>
+      <Host
+        onClick={this.handleDirty}
+        pref-mode={preferenceStore.state.mode}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
+      >
         <input
+          aria-label={this.t.get(this.checked ? 'unselect' : 'select', { label: this.label })}
           autoFocus={this.autofocus}
           checked={this.checked}
           class="field"
@@ -231,17 +217,13 @@ export class MdsInputSwitch {
           id="field"
           indeterminate={this.indeterminate}
           name={this.name}
-          onChange={(event) => this.handleInputOnChange(event)}
+          onChange={this.handleInputOnChange}
+          role={this.type === 'switch' ? 'switch' : undefined}
           type={this.type === 'switch' ? 'checkbox' : this.type}
           value={this.value ?? undefined}
         />
         {this.type === 'switch' ? (
-          <label
-            htmlFor="field"
-            class={clsx('switch-container', this.dirty !== false && 'dirty')}
-            tabindex="0"
-            aria-label={this.t.get(this.checked ? 'unselect' : 'select', { label: this.label })}
-          >
+          <label htmlFor="field" class={clsx('switch-container', this.dirty !== false && 'dirty')}>
             <div class="switch">
               <div class="switch-toggle">
                 {this.explicit && (
@@ -254,12 +236,7 @@ export class MdsInputSwitch {
             </div>
           </label>
         ) : (
-          <label
-            htmlFor="field"
-            class="label-icon"
-            tabindex="0"
-            aria-label={this.t.get(this.checked ? 'unselect' : 'select', { label: this.label })}
-          >
+          <label htmlFor="field" class="label-icon">
             <mds-text
               class="icon-typography-unchecked"
               tag="div"

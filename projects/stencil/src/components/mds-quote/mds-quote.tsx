@@ -1,9 +1,10 @@
 import { Component, Host, h, Prop } from '@stencil/core';
+import { preferenceStore } from '@common/preference';
 import { TypographyTitleType } from '@type/typography';
 import { TypographyHeadingTagType } from '@type/text';
 
 /**
- * @slot default - Add `text string`, `HTML elements` or `components` to this slot.
+ * @slot - Add `text string`, `HTML elements` or `components` to this slot.
  * @slot author - Add `text string`, `HTML elements` or `components` to this slot.
  */
 
@@ -25,7 +26,7 @@ export class MdsQuote {
 
   render() {
     return (
-      <Host>
+      <Host pref-contrast={preferenceStore.state.contrast}>
         <mds-text class="open-quote" tag="div" typography={this.typography}>
           <span>
             <i>❝&nbsp;</i>

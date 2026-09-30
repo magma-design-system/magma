@@ -1,4 +1,5 @@
 import { Component, Host, h } from '@stencil/core';
+import { preferenceStore } from '@common/preference';
 
 @Component({
   tag: 'mds-hr',
@@ -7,6 +8,11 @@ import { Component, Host, h } from '@stencil/core';
 })
 export class MdsHr {
   render() {
-    return <Host />;
+    return (
+      <Host
+        pref-mode={preferenceStore.state.mode}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
+      />
+    );
   }
 }

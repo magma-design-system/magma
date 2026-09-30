@@ -306,7 +306,7 @@ mds-button::part(icon) {
 
 | Slot             | Description                                                                                   |
 | ---------------- | --------------------------------------------------------------------------------------------- |
-| `"default"`      | Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.        |
+|                  | Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.        |
 | `"notification"` | Add `HTML elements` or `components`, it is **recommended** to use `mds-notification` element. |
 
 
@@ -366,7 +366,7 @@ mds-button::part(icon) {
  - [mds-note](../mds-note)
  - [mds-policy-ai](../mds-policy-ai)
  - [mds-pref-language-item](../mds-pref-language-item)
- - [mds-pref-theme-variant-item](../mds-pref-theme-variant-item)
+ - [mds-pref-theme-item](../mds-pref-theme-item)
  - [mds-push-notification](../mds-push-notification)
  - [mds-push-notification-item](../mds-push-notification-item)
  - [mds-radial-menu](../mds-radial-menu)
@@ -411,7 +411,7 @@ graph TD;
   mds-note --> mds-button
   mds-policy-ai --> mds-button
   mds-pref-language-item --> mds-button
-  mds-pref-theme-variant-item --> mds-button
+  mds-pref-theme-item --> mds-button
   mds-push-notification --> mds-button
   mds-push-notification-item --> mds-button
   mds-radial-menu --> mds-button

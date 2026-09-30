@@ -1,38 +1,43 @@
-:host-context(:root.pref-contrast-more) {
+/* Contrast preference. The component reflects the resolved mode from <html> onto
+ * its host as pref-contrast (see subscribePreference in @common/preference); these
+ * plain shadow selectors refine for high contrast. `more` is the explicit choice;
+ * `system` and no controller follow the OS via @media. Cross-browser, no :host-context. */
+
+:host([pref-contrast='more']) {
   .item {
-    --mds-tab-item-default-color: rgb(var(--tone-neutral-01));
+    --mds-tab-item-default-color: rgb(var(--magma-text-default));
   }
 
   .item--high {
-    --mds-tab-item-default-color: rgb(var(--status-error-03));
+    --mds-tab-item-default-color: rgb(var(--magma-danger-text-default));
   }
 
   .item--medium {
-    --mds-tab-item-default-color: rgb(var(--status-warning-03));
+    --mds-tab-item-default-color: rgb(var(--magma-warning-text-default));
   }
 
   .item--low {
-    --mds-tab-item-default-color: rgb(var(--status-success-03));
+    --mds-tab-item-default-color: rgb(var(--magma-success-text-default));
   }
 }
 
 @media (prefers-contrast: more) {
-  :host-context(:root.pref-contrast-system),
-  :host-context(:root:not([data-magma-pref])) {
+  :host([pref-contrast='system']),
+  :host(:not([pref-contrast])) {
     .item {
-      --mds-tab-item-default-color: rgb(var(--tone-neutral-01));
+      --mds-tab-item-default-color: rgb(var(--magma-text-default));
     }
 
     .item--high {
-      --mds-tab-item-default-color: rgb(var(--status-error-03));
+      --mds-tab-item-default-color: rgb(var(--magma-danger-text-default));
     }
 
     .item--medium {
-      --mds-tab-item-default-color: rgb(var(--status-warning-03));
+      --mds-tab-item-default-color: rgb(var(--magma-warning-text-default));
     }
 
     .item--low {
-      --mds-tab-item-default-color: rgb(var(--status-success-03));
+      --mds-tab-item-default-color: rgb(var(--magma-success-text-default));
     }
   }
 }

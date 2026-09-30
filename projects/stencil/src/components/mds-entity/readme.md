@@ -17,7 +17,7 @@ The `<mds-entity>` web component represents a person, organization, or resource 
 
 - **Avatar resolution**: The leading avatar renders only when one of `src`, `icon`, or `initials` is provided, following avatar priority (image, then icon, then initials).
 - **Await state**: While `await` is set the avatar is suppressed and a spinner is shown in its place, signalling that the entity is still loading.
-- **Conditional regions**: The `detail` and `action` regions are rendered only when content is actually projected into those slots.
+- **Conditional regions**: The `detail` and `action` regions are shown only while content is projected into those slots, also when it is added after the first render.
 - **Default slot is the name**: The default slot carries the entity's primary label (text, HTML, or components) and is always rendered inside the info column.
 
 #### Properties & Visual Configurations
@@ -275,11 +275,11 @@ mds-entity {
 
 ## Slots
 
-| Slot        | Description                                                                             |
-| ----------- | --------------------------------------------------------------------------------------- |
-| `"action"`  | Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element. |
-| `"default"` | Add `text string`, `HTML elements` or `components` to this slot.                        |
-| `"detail"`  | Add `HTML elements` or `components` to this slot.                                       |
+| Slot       | Description                                                                             |
+| ---------- | --------------------------------------------------------------------------------------- |
+|            | Add `text string`, `HTML elements` or `components` to this slot.                        |
+| `"action"` | Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element. |
+| `"detail"` | Add `HTML elements` or `components` to this slot.                                       |
 
 
 ## Shadow Parts

@@ -1,0 +1,1 @@
+<MdsButton tone="outline" label={label} />

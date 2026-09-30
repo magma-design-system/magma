@@ -33,24 +33,6 @@
  * @prop --mds-tab-transition-timing-function: Timing function for tab transition animation.
  */
 
-@property --mds-tab-direction-vertical-columns {
-  inherits: false;
-  initial-value: auto auto;
-  syntax: '<length>+ | auto+';
-}
-
-@property --mds-tab-item-default-background {
-  inherits: false;
-  initial-value: transparent;
-  syntax: '<color>';
-}
-
-@property --mds-tab-item-default-color {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-03));
-  syntax: '<color>';
-}
-
 /* ❌ Not supported
 
 @property --mds-tab-item-default-shadow {
@@ -61,18 +43,6 @@
 
 */
 
-@property --mds-tab-item-hover-background {
-  inherits: false;
-  initial-value: transparent;
-  syntax: '<color>';
-}
-
-@property --mds-tab-item-hover-color {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-02));
-  syntax: '<color>';
-}
-
 /* ❌ Not supported
 @property --mds-tab-item-hover-shadow {
   inherits: false;
@@ -80,24 +50,6 @@
   syntax: '<box-shadow>';
 }
 */
-
-@property --mds-tab-item-radius {
-  inherits: false;
-  initial-value: var(--radius-lg);
-  syntax: '<length>';
-}
-
-@property --mds-tab-item-selected-background {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral));
-  syntax: '<color>';
-}
-
-@property --mds-tab-item-selected-color {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-01));
-  syntax: '<color>';
-}
 
 /* ❌ Not supported
 
@@ -113,96 +65,6 @@
   syntax: '<scroll-behavior>';
 }
 */
-
-@property --mds-tab-scroll-scrollbar-margin {
-  inherits: false;
-  initial-value: 0;
-  syntax: '<length>';
-}
-
-@property --mds-tab-scroll-scrollbar-radius {
-  inherits: false;
-  initial-value: 0;
-  syntax: '<length>';
-}
-
-@property --mds-tab-scroll-scrollbar-size {
-  inherits: false;
-  initial-value: --spacing(200);
-  syntax: '<length>';
-}
-
-@property --mds-tab-scroll-scrollbar-thumb-background {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-02) 30%);
-  syntax: '<color>';
-}
-
-@property --mds-tab-scroll-scrollbar-track-background {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-06) 30%);
-  syntax: '<color>';
-}
-
-@property --mds-tab-slide-delay {
-  inherits: false;
-  initial-value: 0.125s;
-  syntax: '<time>';
-}
-
-@property --mds-tab-tabs-background {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-09));
-  syntax: '<color>';
-}
-
-@property --mds-tab-tabs-gap {
-  inherits: false;
-  initial-value: --spacing(200);
-  syntax: '<length>';
-}
-
-@property --mds-tab-tabs-overflow-shadow-size {
-  inherits: false;
-  initial-value: --spacing(600);
-  syntax: '<length>';
-}
-
-@property --mds-tab-tabs-padding {
-  inherits: false;
-  initial-value: --spacing(200);
-  syntax: '<length>';
-}
-
-@property --mds-tab-tabs-radius {
-  inherits: false;
-  initial-value: var(--radius-2xl);
-  syntax: '<length>';
-}
-
-@property --mds-tab-tabs-wrapper-margin {
-  inherits: false;
-  initial-value: 0;
-  syntax: '<length>';
-}
-
-@property --mds-tab-tabs-wrapper-outline-opacity {
-  inherits: false;
-  initial-value: 0.7;
-  syntax: '<number>';
-}
-
-@property --mds-tab-tabs-wrapper-shadow-color {
-  inherits: false;
-  initial-value: var(--mds-tab-tabs-background);
-  syntax: '<color>';
-}
-
-@property --mds-tab-transition-duration {
-  inherits: false;
-  initial-value: 0.5s;
-  syntax: '<time>';
-}
 
 /* ❌ Not supported
 @property --mds-tab-tabs-wrapper-shadow {
@@ -227,36 +89,37 @@
 :host {
   --mds-tab-direction-vertical-columns: auto auto;
   --mds-tab-item-default-background: transparent;
-  --mds-tab-item-default-color: rgb(var(--tone-neutral-03));
+  --mds-tab-item-default-color: rgb(var(--magma-text-muted));
   --mds-tab-item-default-shadow: transparent;
   --mds-tab-item-hover-background: transparent;
-  --mds-tab-item-hover-color: rgb(var(--tone-neutral-02));
+  --mds-tab-item-hover-color: rgb(var(--magma-text-default));
   --mds-tab-item-hover-shadow: transparent;
   --mds-tab-item-radius: calc(var(--mds-tab-tabs-radius) - var(--mds-tab-tabs-padding));
-  --mds-tab-item-selected-background: rgb(var(--tone-neutral));
-  --mds-tab-item-selected-color: rgb(var(--tone-neutral-01));
+  --mds-tab-item-selected-background: rgb(var(--magma-surface-overlay));
+  --mds-tab-item-selected-color: rgb(var(--magma-text-default));
   --mds-tab-item-selected-shadow: var(--shadow-sm);
   --mds-tab-scroll-behavior: smooth;
   --mds-tab-scroll-scrollbar-margin: 0;
   --mds-tab-scroll-scrollbar-radius: 0;
   --mds-tab-scroll-scrollbar-size: --spacing(200);
-  --mds-tab-scroll-scrollbar-thumb-background: rgb(var(--tone-neutral-02) 30%);
-  --mds-tab-scroll-scrollbar-track-background: rgb(var(--tone-neutral-06) 30%);
+  --mds-tab-scroll-scrollbar-thumb-background: rgb(var(--magma-surface-inverse) / 0.3);
+  --mds-tab-scroll-scrollbar-track-background: rgb(var(--magma-wash-base));
   --mds-tab-slide-delay: 0.125s;
-  --mds-tab-tabs-background: rgb(var(--tone-neutral-09));
+  --mds-tab-tabs-background: rgb(var(--magma-wash-soft));
   --mds-tab-tabs-gap: --spacing(200);
   --mds-tab-tabs-overflow-shadow-size: --spacing(600);
   --mds-tab-tabs-overflow-shadow: 0 0 var(--mds-tab-tabs-overflow-shadow-size) -2px
     rgb(0 0 0 / 0.375);
   --mds-tab-tabs-padding: --spacing(200);
-  --mds-tab-tabs-radius: var(--radius-2xl);
+  --mds-tab-tabs-radius: var(--magma-radius-2xl);
   --mds-tab-tabs-wrapper-margin: 0;
   --mds-tab-tabs-wrapper-outline-opacity: 0.7;
   --mds-tab-tabs-wrapper-shadow-color: var(--mds-tab-tabs-background);
   --mds-tab-tabs-wrapper-shadow: 0 0 0 2px var(--mds-tab-tabs-wrapper-shadow-color) inset;
   --mds-tab-transition-duration: 0.5s;
+  --private-tab-transition-duration: var(--mds-tab-transition-duration);
   --mds-tab-transition-timing-function: var(--ease-out-expo);
-  --mds-tab-corner-shape: var(--magma-corner-shape, round);
+  --mds-tab-corner-shape: var(--magma-corner-shape);
 
   border-radius: var(--mds-tab-tabs-radius);
   corner-shape: var(--mds-tab-corner-shape, round);
@@ -266,15 +129,15 @@
   position: relative;
 }
 
-@container style(--mds-tab-corner-shape: round) {
-  :host {
-    --mds-tab-item-radius: calc(var(--mds-tab-tabs-radius) - calc(var(--mds-tab-tabs-padding) * 2));
-  }
-}
+/* Animation preference: scroll-behavior is a keyword, so its reduced-motion state
+ * is handled here, cross-browser, via @media. This follows the OS preference
+ * (the in-app explicit override does not reach a keyword). The transition
+ * durations are reduced separately through the flag in
+ * css/mds-tab-pref-animation.css. */
 
-@container style(--mds-tab-corner-shape: squircle) {
+@media (prefers-reduced-motion: reduce) {
   :host {
-    --mds-tab-item-radius: calc(var(--mds-tab-tabs-radius) - calc(var(--mds-tab-tabs-padding) * 2));
+    --mds-tab-scroll-behavior: auto;
   }
 }
 
@@ -298,7 +161,7 @@
   padding: var(--mds-tab-tabs-padding);
   scroll-behavior: var(--mds-tab-scroll-behavior);
   scroll-snap-type: x mandatory;
-  transition-duration: var(--mds-tab-transition-duration);
+  transition-duration: var(--private-tab-transition-duration);
   transition-property: background-color;
   transition-timing-function: var(--mds-tab-transition-timing-function);
   z-index: 0;
@@ -328,7 +191,7 @@
   opacity: var(--mds-tab-tabs-wrapper-outline-opacity);
   pointer-events: none;
   position: absolute;
-  transition-duration: var(--mds-tab-transition-duration);
+  transition-duration: var(--private-tab-transition-duration);
   transition-property: box-shadow, opacity;
   transition-timing-function: var(--mds-tab-transition-timing-function);
 }
@@ -336,19 +199,20 @@
 .contents {
   --mds-tab-contents-height: auto;
 
-  @apply gap-600 hide-scrollbar;
+  @apply hide-scrollbar;
 
   align-items: stretch;
   box-sizing: border-box;
   display: flex;
   flex-grow: 1;
+  gap: --spacing(600);
   height: var(--mds-tab-contents-height);
   overflow-x: auto;
   overflow-y: hidden;
   position: relative;
   scroll-behavior: var(--mds-tab-scroll-behavior);
   scroll-snap-type: x mandatory;
-  transition-duration: var(--mds-tab-transition-duration);
+  transition-duration: var(--private-tab-transition-duration);
   transition-property: height;
   transition-timing-function: var(--mds-tab-transition-timing-function);
 }
@@ -358,11 +222,11 @@
 }
 
 ::slotted([slot='content']) {
-  @apply min-w-full w-full;
-
   flex-basis: 0;
   flex-grow: 1;
+  min-width: 100%;
   scroll-snap-align: start;
+  width: 100%;
 }
 
 ::slotted([slot='content'][mds-tab-content-hidden]) {
@@ -374,6 +238,6 @@
 @import './css/mds-tab-scrollbar.css';
 @import './css/mds-tab-tabs-wrapper-overflow.css';
 @import './css/mds-tab-tabs-wrapper-decorator.css';
-@import './css/mds-tab-pref-theme.css';
+@import './css/mds-tab-pref-mode.css';
 @import './css/mds-tab-pref-contrast.css';
 @import './css/mds-tab-pref-animation.css';

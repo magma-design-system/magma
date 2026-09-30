@@ -240,11 +240,12 @@ document.querySelector('form').addEventListener('submit', (e) => {
 
 ## Properties
 
-| Property     | Attribute    | Description                                                  | Type                  | Default |
-| ------------ | ------------ | ------------------------------------------------------------ | --------------------- | ------- |
-| `autosubmit` | `autosubmit` | Automatically submits the form when the OTP code is complete | `boolean`             | `false` |
-| `length`     | `length`     | Number of digits in the OTP code                             | `number`              | `6`     |
-| `value`      | `value`      | The current value of the OTP code                            | `string \| undefined` | `''`    |
+| Property         | Attribute    | Description                                                                                                                                                 | Type                  | Default     |
+| ---------------- | ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------- | ----------- |
+| `accessibleName` | `aria-label` | The accessible name of the code: each digit is announced as a position inside it, the fields being separate controls a screen reader reaches one at a time. | `string \| undefined` | `undefined` |
+| `autosubmit`     | `autosubmit` | Automatically submits the form when the OTP code is complete                                                                                                | `boolean`             | `false`     |
+| `length`         | `length`     | Number of digits in the OTP code                                                                                                                            | `number`              | `6`         |
+| `value`          | `value`      | The current value of the OTP code                                                                                                                           | `string \| undefined` | `''`        |
 
 
 ## Dependencies

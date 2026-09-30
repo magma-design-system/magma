@@ -9,7 +9,10 @@ import {
   Watch,
   h,
 } from '@stencil/core';
+import { preferenceStore } from '@common/preference';
 import { ButtonIconPositionType, ButtonSizeType, ButtonType } from '@type/button';
+import { HorizontalActionsAnimationType } from '@type/animation';
+import { DirectionType } from '@component/mds-tab/meta/type';
 import { MdsTabItemEventDetail } from './meta/event-detail';
 import clsx from 'clsx';
 
@@ -64,6 +67,18 @@ export class MdsTabItem {
   @Prop({ reflect: true }) readonly size?: ButtonSizeType = 'md';
 
   /**
+   * Reflects the parent tab layout direction (set by mds-tab); drives the
+   * vertical layout without :host-context
+   */
+  @Prop({ reflect: true }) readonly direction?: DirectionType;
+
+  /**
+   * Reflects the parent tab selection animation (set by mds-tab); drives the
+   * slide-variant styling without :host-context
+   */
+  @Prop({ reflect: true }) readonly animation?: HorizontalActionsAnimationType;
+
+  /**
    * Specifies an optional value to get from mdsTabItemSelect event
    */
   @Prop({ reflect: true }) readonly value?: string;
@@ -72,6 +87,12 @@ export class MdsTabItem {
    * Specifies the URL target of the button
    */
   @Prop({ reflect: true }) readonly href?: string;
+
+  /**
+   * Specifies whether the popup the tab item opens is showing. Left unset the tab says nothing
+   * about a popup, which is what a tab that opens none has to say.
+   */
+  @Prop() readonly expanded?: boolean;
 
   /**
    * Emits when the tab item is selected
@@ -111,7 +132,11 @@ export class MdsTabItem {
 
   render() {
     return (
-      <Host>
+      <Host
+        pref-contrast={preferenceStore.state.contrast}
+        pref-mode={preferenceStore.state.mode}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
+      >
         <mds-button
           class={clsx('button', this.selected ? 'selected' : '')}
           await={this.await}
@@ -123,8 +148,13 @@ export class MdsTabItem {
           onClick={this.toggle}
           part="button"
           role="tab"
+          // the tab is the inner button, so the state of the popup goes here and not on the
+          // host, which is generic and accepts none of the attributes of a caller
+          aria-expanded={this.expanded === undefined ? undefined : `${this.expanded}`}
           label={this.label}
           size={this.size}
+          // the tab is the inner button: an icon-only item takes its accessible name from the host title
+          title={this.element.title || undefined}
           type={this.type}
         ></mds-button>
       </Host>

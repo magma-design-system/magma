@@ -1,15 +1,4 @@
-import {
-  Component,
-  Element,
-  Event,
-  EventEmitter,
-  Host,
-  Method,
-  Prop,
-  State,
-  Watch,
-  h,
-} from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, Prop, Watch, h } from '@stencil/core';
 import miBaselineCancel from '@icon/mi/baseline/cancel.svg';
 import { setAttributeIfEmpty } from '@common/aria';
 import { MdsChipEvent } from './meta/interface';
@@ -18,6 +7,7 @@ import { ChipVariantType } from '@type/variant';
 import { ToneMinimalVariantType } from '@type/tone';
 
 import { Locale } from '@common/locale';
+import { preferenceStore } from '@common/preference';
 import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.es.json';
@@ -37,11 +27,6 @@ export class MdsChip {
     es: localeEs,
     it: localeIt,
   });
-  @State() language: string;
-  @Method()
-  async updateLang(): Promise<void> {
-    this.language = this.t.lang(this.host);
-  }
 
   /**
    * Adds ARIA support to the element if has interaction
@@ -135,9 +120,9 @@ export class MdsChip {
     this.clickLabelEvent.emit({ event, element: this.host });
   }
 
-  private onDeleteHandler(event: Event): void {
+  private onDeleteHandler = (event: Event): void => {
     this.deleteEvent.emit({ event, element: this.host });
-  }
+  };
 
   private handleClickableKeyboard = (isClickable: boolean): void => {
     if (isClickable) {
@@ -151,7 +136,7 @@ export class MdsChip {
 
   private handleClickableElement = (isClickable: boolean): void => {
     const label = this.host.shadowRoot?.querySelector('.label') as HTMLElement;
-    if (!label) {
+    if (label == null) {
       return;
     }
     if (isClickable) {
@@ -163,11 +148,17 @@ export class MdsChip {
     label.removeEventListener('click', this.onClickLabelHandler.bind(this));
   };
 
-  componentWillLoad(): void {
-    this.t.lang(this.host);
-  }
-
   componentDidLoad(): void {
+    // A @Watch does not fire for the value a prop is born with, so `handleSelectableProp`
+    // only ever ran for a `selectable` set from JS after load: a chip that arrives from
+    // markup as <mds-chip selectable> stayed non-clickable, with no role, no tabindex and
+    // a click that toggled nothing - while the readme promises that "selectable implies
+    // clickable". Turning it on here lets the clickable watcher do the wiring exactly once,
+    // which is why this returns instead of falling through to the block below.
+    if (this.selectable && !this.clickable) {
+      this.clickable = true;
+      return;
+    }
     if (this.clickable) {
       this.handleClickableElement(true);
       this.handleClickableKeyboard(true);
@@ -180,7 +171,13 @@ export class MdsChip {
 
   render() {
     return (
-      <Host aria-disabled={this.disabled ? 'true' : 'false'}>
+      <Host
+        aria-disabled={this.disabled ? 'true' : 'false'}
+        pref-animation={preferenceStore.state.animation}
+        pref-contrast={preferenceStore.state.contrast}
+        pref-mode={preferenceStore.state.mode}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
+      >
         {this.icon && (
           <div aria-hidden="true" class="icon-area">
             <mds-icon class="icon" name={this.icon} />
@@ -188,7 +185,13 @@ export class MdsChip {
         )}
         <div class="label-wrapper">
           {this.clickable ? (
+            /* The label carries role="button" (see handleClickableElement), and a toggle
+             * button states its state through aria-pressed: without it `selected` reaches
+             * the eye through the border and reaches a screen reader not at all (WCAG
+             * 4.1.2). Only when selectable, because aria-pressed on something that is not
+             * a button is invalid, and a merely clickable chip toggles nothing. */
             <mds-text
+              aria-pressed={this.selectable ? (this.selected ? 'true' : 'false') : undefined}
               class="label label--interactive"
               tabindex="0"
               typography="caption"
@@ -206,7 +209,7 @@ export class MdsChip {
           <mds-button
             class="button-delete"
             icon={miBaselineCancel}
-            onClick={this.onDeleteHandler.bind(this)}
+            onClick={this.onDeleteHandler}
             title={`${this.t.get('deleteLabel')} ${this.label}`}
             variant="dark"
             tone="text"

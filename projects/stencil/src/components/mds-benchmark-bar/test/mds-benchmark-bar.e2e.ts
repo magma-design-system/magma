@@ -1,12 +1,9 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { render } from '@stencil/vitest';
 
 describe('mds-benchmark-bar', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<mds-benchmark-bar></mds-benchmark-bar>');
+    const { root } = await render('<mds-benchmark-bar></mds-benchmark-bar>');
 
-    const element = await page.find('mds-benchmark-bar');
-    expect(element).toHaveAttribute('hydrated');
-    expect(true).toBe(true);
+    expect(root).toHaveAttribute('hydrated');
   });
 });

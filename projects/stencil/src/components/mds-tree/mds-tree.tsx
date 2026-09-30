@@ -1,10 +1,11 @@
 import { Component, Host, h, Element, Prop, Watch } from '@stencil/core';
+import { queryChildrenByTag } from '@common/slot';
 import { TreeActions, TreeAppearance, TreeIcon } from '@type/tree';
 import { TypographyTruncateType } from '@type/text';
 import { ButtonIconPositionType } from '@type/button';
 
 /**
- * @slot default - Add `mds-tree-item` element/s.
+ * @slot - Add `mds-tree-item` element/s.
  */
 
 @Component({
@@ -14,7 +15,7 @@ import { ButtonIconPositionType } from '@type/button';
 })
 export class MdsTree {
   @Element() private host: HTMLMdsTreeElement;
-  private elements: Node[];
+  private elements: HTMLElement[] = [];
   private childrenElements: NodeListOf<HTMLMdsTreeItemElement>;
 
   /**
@@ -80,6 +81,35 @@ export class MdsTree {
     this.updateChildrenToggle(newValue);
   }
 
+  private updateChildrenTogglePosition = (newValue: ButtonIconPositionType): void => {
+    this.childrenElements.forEach((element: HTMLMdsTreeItemElement) => {
+      element.togglePosition = newValue;
+    });
+  };
+
+  @Watch('togglePosition')
+  handleTogglePositionChange(newValue: ButtonIconPositionType): void {
+    this.updateChildrenTogglePosition(newValue);
+  }
+
+  private updateChildrenAppearance = (newValue: TreeAppearance): void => {
+    this.childrenElements.forEach((element: HTMLMdsTreeItemElement) => {
+      element.appearance = newValue;
+    });
+  };
+
+  @Watch('appearance')
+  handleAppearanceChange(newValue: TreeAppearance): void {
+    this.updateChildrenAppearance(newValue);
+  }
+
+  @Watch('actions')
+  handleActionsChange(): void {
+    this.childrenElements.forEach((element: HTMLMdsTreeItemElement) => {
+      void element.refreshActions();
+    });
+  }
+
   private updateChildrenTruncate = (newValue: TypographyTruncateType): void => {
     this.childrenElements.forEach((element: HTMLMdsTreeItemElement) => {
       element.truncate = newValue;
@@ -91,14 +121,20 @@ export class MdsTree {
     this.updateChildrenTruncate(newValue);
   }
 
+  /* assignedNodes() hands back the whitespace between the items as text nodes, and a text
+   * node has no style: the stacking order threw on the first tree written across more than
+   * one line, which is every tree a consumer actually writes. assignedElements() is the
+   * elements-only half of the same API. */
+
   private updateElements = (): void => {
-    this.elements = this.host.shadowRoot?.querySelectorAll('slot')[0]?.assignedNodes() as Node[];
+    this.elements = (this.host.shadowRoot?.querySelector('slot')?.assignedElements() ??
+      []) as HTMLElement[];
     this.updateZIndex();
   };
 
   private updateZIndex = (): void => {
     this.elements.forEach((element, index) => {
-      (element as HTMLElement).style.zIndex = `${this.elements.length - index}`;
+      element.style.zIndex = `${this.elements.length - index}`;
     });
   };
 
@@ -106,9 +142,14 @@ export class MdsTree {
     this.childrenElements = this.host.querySelectorAll('mds-tree-item');
     this.updateChildrenTruncate(this.truncate);
     this.updateChildrenToggle(this.toggle);
-    const firstLevelElements = this.host.querySelectorAll(':scope > mds-tree-item');
+    this.updateChildrenTogglePosition(this.togglePosition);
+    this.updateChildrenAppearance(this.appearance);
+    const firstLevelElements = queryChildrenByTag(
+      this.host,
+      'mds-tree-item',
+    ) as HTMLMdsTreeItemElement[];
 
-    if (firstLevelElements) {
+    if (firstLevelElements != null) {
       firstLevelElements.forEach((element: HTMLMdsTreeItemElement) => {
         element.depth = 0;
       });

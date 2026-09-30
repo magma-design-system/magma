@@ -1,10 +1,4 @@
-:host-context(:root.pref-contrast-more) {
-  --mds-price-table-features-border-color: rgb(var(--tone-neutral-03));
-}
-
-@media (prefers-contrast: more) {
-  :host-context(:root.pref-contrast-system),
-  :host-context(:root:not([data-magma-pref])) {
-    --mds-price-table-features-border-color: rgb(var(--tone-neutral-03));
-  }
-}
+/* Contrast preference. The component takes its colours from semantic roles that
+ * the contrast layer promotes under pref-contrast-more (spec 9.3), so it needs no
+ * per-component high-contrast refinement. The former override (a ramp step re-set
+ * by hand) is intentionally gone. */

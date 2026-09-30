@@ -1,7 +1,8 @@
 import { Component, Host, h } from '@stencil/core';
+import { preferenceStore } from '@common/preference';
 
 /**
- * @slot default - Add `mds-table-row` element/s.
+ * @slot - Add `mds-table-row` element/s.
  */
 
 @Component({
@@ -12,7 +13,7 @@ import { Component, Host, h } from '@stencil/core';
 export class MdsTableFooter {
   render() {
     return (
-      <Host role="row">
+      <Host role="row" pref-animation={preferenceStore.state.animation}>
         <slot />
       </Host>
     );

@@ -1,0 +1,72 @@
+import { Component, Host, Event, EventEmitter, h, Prop } from '@stencil/core';
+import miBaselineCheckCircle from '@icon/mi/baseline/check-circle.svg';
+import miOutlineCircle from '@icon/mi/outline/circle.svg';
+import { MdsPrefThemeEventDetail } from '@event/theme';
+import { PreferenceThemeSchemeType } from '@type/preference';
+
+@Component({
+  tag: 'mds-pref-theme-item',
+  styleUrl: 'mds-pref-theme-item.css',
+  shadow: true,
+})
+export class MdsPrefThemeItem {
+  /**
+   * Specifies the theme name
+   */
+  @Prop({ reflect: true, mutable: true }) label?: string;
+
+  /**
+   * Specifies the theme name
+   */
+  @Prop({ reflect: true }) readonly name: string = 'default';
+
+  /**
+   * Specifies the theme scheme which can be 'light', 'dark' or 'all'
+   */
+  @Prop({ reflect: true }) readonly scheme?: PreferenceThemeSchemeType = 'all';
+
+  /**
+   * Specifies if the element is selected
+   */
+  @Prop({ reflect: true }) readonly selected?: boolean = false;
+
+  /**
+   * Emits when the component trigger the language
+   */
+  @Event({ eventName: 'mdsPrefThemeItemSelect' })
+  selectThemeEvent: EventEmitter<MdsPrefThemeEventDetail>;
+
+  componentWillRender(): void {
+    if (this.label === undefined || this.label === '') {
+      this.label = this.name.charAt(0).toUpperCase() + this.name.slice(1).replace(/-/g, ' ');
+    }
+  }
+
+  private handleClick = (): void => {
+    this.selectThemeEvent.emit({ name: this.name, scheme: this.scheme });
+  };
+
+  render() {
+    return (
+      // the item is an entry of the `menu` the mds-dropdown of the controller opens:
+      // without the role axe rejects it as a child of that menu (aria-required-children)
+      <Host onClick={this.handleClick} role="menuitem">
+        <mds-button
+          icon={this.selected ? miBaselineCheckCircle : miOutlineCircle}
+          variant="dark"
+          tone="text"
+        >
+          <div class="label">
+            <div class="theme-preview">
+              <div class="theme-color theme-color--variant-primary"></div>
+              <div class="theme-color theme-color--status-success"></div>
+              <div class="theme-color theme-color--status-warning"></div>
+              <div class="theme-color theme-color--status-error"></div>
+            </div>
+            {this.label}
+          </div>
+        </mds-button>
+      </Host>
+    );
+  }
+}

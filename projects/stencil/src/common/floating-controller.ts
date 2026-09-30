@@ -12,8 +12,9 @@ import {
 } from '@floating-ui/dom';
 import { FloatingUIPlacement, FloatingUIStrategy } from '@type/floating-ui';
 import { cssDurationToMilliseconds } from './unit';
-import { setAttributeIfEmpty } from './aria';
+import { hashRandomValue, setAttributeIfEmpty } from './aria';
 import { HTMLStencilElement } from '@stencil/core/internal';
+import { Build } from '@stencil/core';
 
 export interface FloatingElement extends PositionOptions {
   host: HTMLFloatingElement;
@@ -24,46 +25,166 @@ export interface HTMLFloatingElement extends HTMLStencilElement, PositionOptions
 }
 
 export interface PositionOptions {
-  arrow: boolean;
+  hideArrow: boolean;
   arrowPadding: number;
-  autoPlacement: boolean;
+  disableAutoPlacement: boolean;
   flip: boolean;
   offset: number;
   placement: FloatingUIPlacement;
-  shift: boolean;
+  disableShift: boolean;
   shiftPadding: number;
   strategy: FloatingUIStrategy;
 }
 
+/**
+ * ARIA role the floating element takes when the markup does not name one: a `menu` is a popup its
+ * caller controls, a `tooltip` only describes it. A panel that holds anything other than a list of
+ * actions declares its own role and keeps it, `setAttributeIfEmpty` never overwriting it.
+ */
+export type FloatingRole = 'menu' | 'tooltip';
+
+/** Roles of a popup that `aria-haspopup` knows how to name: a panel that calls itself a `group` has none */
+const HASPOPUP_ROLES = ['dialog', 'grid', 'listbox', 'menu', 'tree'];
+
+/**
+ * A caller is wired only when it exposes a role that accepts the wiring: on a generic element
+ * `aria-expanded` and `aria-haspopup` are attributes ARIA does not allow (axe `aria-allowed-attr`),
+ * and a host that keeps its control inside its shadow root is generic exactly like a `div` - an
+ * `mds-tab-item` renders the tab as its inner `mds-button[role="tab"]`, an `mds-chip` puts
+ * `role="button"` on its label. Written on those hosts the attributes describe the wrapper and not
+ * the control, and inside a tablist they even make the item a child the `tab` role no longer covers
+ * (axe `aria-required-children`). Moving them onto the inner control is not an option either: an
+ * IDREF does not cross the shadow boundary.
+ */
+const CALLER_ROLES = ['button', 'combobox', 'link', 'menuitem', 'tab', 'treeitem'];
+const NATIVE_CALLERS = ['A', 'BUTTON', 'INPUT', 'SELECT', 'SUMMARY', 'TEXTAREA'];
+
 export class FloatingController {
   private _caller: HTMLElement;
+  private _wired = false;
+  /** what was written on the caller, to be taken back when the target moves to another one:
+   * an attribute that was already there belongs to whoever wrote it and is none of our business */
+  private _written: string[] = [];
+  private _labelledByOurs = false;
   private readonly _host: HTMLFloatingElement;
+  private readonly _role: FloatingRole;
   arrowEl: HTMLElement | undefined;
 
   private cleanupAutoUpdate: () => void;
 
-  constructor(host: HTMLFloatingElement, arrowEl?: HTMLElement) {
+  constructor(host: HTMLFloatingElement, arrowEl?: HTMLElement, role: FloatingRole = 'menu') {
     this._host = host;
     this.arrowEl = arrowEl;
+    this._role = role;
   }
 
-  updateCaller(target: string): HTMLElement {
+  updateCaller(target: string): HTMLElement | null {
     // search caller in document or rootNode of host (if target is in shadowDOM)
     const caller =
       (this._host.parentElement?.shadowRoot?.querySelector(target) as HTMLElement) ??
       ((this._host.getRootNode() as HTMLElement).querySelector(target) as HTMLElement);
 
     if (!caller) {
-      throw Error(`Target not found: ${target}`);
+      // the target may legitimately be absent (e.g. during SSR the document
+      // only contains the component subtree being serialized)
+      console.warn(`FloatingController: target not found: ${target}`);
+      return null;
     }
 
+    if (this._caller && this._caller !== caller) this.unwireCaller();
     this._caller = caller;
+    this._wired = false;
 
-    setAttributeIfEmpty(this._caller, 'aria-haspopup', 'true');
-    setAttributeIfEmpty(this._caller, 'aria-controls', target);
-    setAttributeIfEmpty(this._host, 'role', 'menu');
-    setAttributeIfEmpty(this._host, 'aria-labelledby', target);
+    setAttributeIfEmpty(this._host, 'role', this._role);
+    void this.wireCaller();
     return caller;
+  }
+
+  /**
+   * Lets go of the caller the target no longer names. Left alone it keeps pointing at a panel
+   * that is not its own, with a state frozen on the last time it was open, and the panel keeps
+   * being labelled by it - `setAttributeIfEmpty` writes the label once and the second caller
+   * would never get it.
+   */
+  private readonly unwireCaller = (): void => {
+    this._written.forEach((attribute) => this._caller.removeAttribute(attribute));
+    this._written = [];
+    if (this._labelledByOurs) {
+      this._host.removeAttribute('aria-labelledby');
+      this._labelledByOurs = false;
+    }
+  };
+
+  private readonly writeOnCaller = (attribute: string, value: string): void => {
+    if (this._caller.hasAttribute(attribute)) return;
+    this._caller.setAttribute(attribute, value);
+    this._written.push(attribute);
+  };
+
+  /** An IDREF does not cross a shadow boundary: a caller the host shares no tree with keeps the
+   * attributes that need no reference and loses the ones that do */
+  private readonly sameRoot = (): boolean =>
+    this._caller.getRootNode() === this._host.getRootNode();
+
+  private readonly callerAcceptsWiring = (): boolean => {
+    const role = this._caller.getAttribute('role');
+    return role !== null
+      ? CALLER_ROLES.includes(role)
+      : NATIVE_CALLERS.includes(this._caller.tagName);
+  };
+
+  /**
+   * Ties caller and popup to each other with real IDREFs - the wiring used to write the selector
+   * of the caller, which names no element at all, on both sides and towards the caller itself.
+   * Our own callers are waited for first: an `mds-button` writes its `role="button"` in its own
+   * `componentDidLoad`, and which of the two components loads first is not guaranteed.
+   */
+  private readonly wireCaller = async (): Promise<void> => {
+    const caller = this._caller;
+    // the hydrate app has no registry to wait on (its `customElements` is null) and renders
+    // every component in one pass, so there the attributes are written on the spot - and kept
+    // by the client, `setAttributeIfEmpty` leaving a prerendered value alone
+    if (Build.isBrowser && caller.tagName.startsWith('MDS-')) {
+      await customElements.whenDefined(caller.tagName.toLowerCase());
+      await (caller as Partial<HTMLStencilElement>).componentOnReady?.();
+    }
+    // a target change while we waited has already wired another caller
+    if (caller !== this._caller) return;
+
+    // a tooltip is not a popup its caller controls: it only describes it, and a description
+    // reaches a screen reader whatever role the caller has, generic included
+    if (this._role === 'tooltip') {
+      if (this.sameRoot()) {
+        const tipId = setAttributeIfEmpty(this._host, 'id', hashRandomValue('mds-tooltip'));
+        this.writeOnCaller('aria-describedby', tipId);
+      }
+      return;
+    }
+
+    if (!this.callerAcceptsWiring()) return;
+
+    if (this.sameRoot()) {
+      const hostId = setAttributeIfEmpty(this._host, 'id', hashRandomValue('mds-dropdown'));
+      const callerId = setAttributeIfEmpty(caller, 'id', hashRandomValue('mds-dropdown-caller'));
+      this.writeOnCaller('aria-controls', hostId);
+      this._labelledByOurs = !this._host.hasAttribute('aria-labelledby');
+      setAttributeIfEmpty(this._host, 'aria-labelledby', callerId);
+    }
+
+    const popupRole = this._host.getAttribute('role') ?? '';
+    if (HASPOPUP_ROLES.includes(popupRole)) {
+      this.writeOnCaller('aria-haspopup', popupRole);
+    }
+
+    if (!caller.hasAttribute('aria-expanded')) this._written.push('aria-expanded');
+    this._wired = true;
+    this.syncExpanded(this._host.visible);
+  };
+
+  /** Whether the popup is open is state, not a default: it is rewritten at every change, so it
+   * cannot go through `setAttributeIfEmpty` */
+  syncExpanded(visible: boolean): void {
+    if (this._wired) this._caller.setAttribute('aria-expanded', `${visible}`);
   }
 
   private readonly arrowInset = (
@@ -101,7 +222,7 @@ export class FloatingController {
   };
 
   private readonly arrowTransform = (arrowPosition: string): { transform: string } => {
-    let transformProps = this._host.arrow && this._host.visible ? 'scale(1)' : 'scale(0)';
+    let transformProps = !this._host.hideArrow && this._host.visible ? 'scale(1)' : 'scale(0)';
     switch (arrowPosition) {
       case 'bottom':
         transformProps = `rotate(180deg) ${transformProps} translate(0, -100%)`;
@@ -136,6 +257,36 @@ export class FloatingController {
     }
   };
 
+  /**
+   * The pivot of the opening animation is the arrow, which the `arrow` middleware
+   * parks wherever it has to sit to keep pointing at the caller: after a shift it
+   * is nowhere near the centre of the panel. `convertToTransformOrigin` only knows
+   * the placement, so it answers `center top` for every bottom placement and the
+   * panel grows from a point that has nothing to do with the arrow - measured on a
+   * 408px panel pushed against the left edge, the two were 165px apart.
+   */
+  private readonly arrowOrigin = (
+    placement: Placement,
+    middleware: MiddlewareData,
+  ): string | null => {
+    const { arrow: arrowData } = middleware;
+    if (!this.arrowEl || this._host.hideArrow || arrowData === undefined) {
+      return null;
+    }
+    const side = placement.split('-')[0];
+    if (arrowData.x !== null && arrowData.x !== undefined) {
+      const x = arrowData.x + this.arrowEl.offsetWidth / 2;
+      if (side === 'bottom') return `${x}px top`;
+      if (side === 'top') return `${x}px bottom`;
+    }
+    if (arrowData.y !== null && arrowData.y !== undefined) {
+      const y = arrowData.y + this.arrowEl.offsetHeight / 2;
+      if (side === 'right') return `left ${y}px`;
+      if (side === 'left') return `right ${y}px`;
+    }
+    return null;
+  };
+
   private convertToTransformOrigin = (position: Placement): string => {
     const positions = {
       top: 'center bottom',
@@ -164,7 +315,7 @@ export class FloatingController {
       config.padding = this._host.shiftPadding;
     }
 
-    if (this._host.autoPlacement) {
+    if (!this._host.disableAutoPlacement) {
       middleware.push(autoPlacement());
     }
 
@@ -172,15 +323,15 @@ export class FloatingController {
       middleware.push(offset(this._host.offset));
     }
 
-    if (!this._host.autoPlacement && this._host.flip) {
+    if (this._host.disableAutoPlacement && this._host.flip) {
       middleware.push(flip(config));
     }
 
-    if (this._host.shift) {
+    if (!this._host.disableShift) {
       middleware.push(shift(config));
     }
 
-    if (this.arrowEl && this._host.arrow) {
+    if (this.arrowEl && !this._host.hideArrow) {
       middleware.push(
         arrow({
           element: this.arrowEl,
@@ -194,12 +345,25 @@ export class FloatingController {
       placement: this._host.placement,
       strategy: this._host.strategy,
     }).then(({ x, y, placement, middlewareData }) => {
+      // The first placement must land instantly: until it happens the panel has no
+      // position at all, so animating left/top towards the caller would fly it in
+      // from the corner of the page. The mark goes on a frame LATER, because a
+      // value and the attribute that makes it transition, written in the same
+      // recalc, still animate - the frame in between is what makes the first
+      // placement a jump and every move after it a glide.
+      const firstPlacement = !this._host.hasAttribute('data-floating-placed');
+
       Object.assign(this._host.style, {
         left: `${x}px`,
         top: `${y}px`,
-        transformOrigin: this.convertToTransformOrigin(placement),
+        transformOrigin:
+          this.arrowOrigin(placement, middlewareData) ?? this.convertToTransformOrigin(placement),
         position: this._host.strategy,
       });
+
+      if (firstPlacement) {
+        requestAnimationFrame(() => this._host.setAttribute('data-floating-placed', ''));
+      }
 
       const arrowStyle = {};
       const arrowPosition = {
@@ -218,10 +382,29 @@ export class FloatingController {
     });
   };
 
+  /**
+   * Starts positioning only once the panel has a box to measure. A closed panel is
+   * `display: none`, and Stencil reflects `visible` on its own render, so the tick
+   * that asks for the position still sees a panel of zero width: floating-ui then
+   * places a box that does not exist. On a `bottom` placement that lands it half a
+   * panel off; on `left` or `right` it lands it a whole panel off, which reads as
+   * the panel opening on the wrong side of the caller and sliding across to its
+   * place, because the correction that follows is transitioned like any other
+   * move.
+   */
+  private readonly startWhenMeasurable = (attempts: number): void => {
+    if (!this._host.visible) return;
+    if (this._host.offsetWidth === 0 && attempts > 0) {
+      requestAnimationFrame(() => this.startWhenMeasurable(attempts - 1));
+      return;
+    }
+    this.cleanupAutoUpdate = autoUpdate(this._caller, this._host, this.calculatePosition);
+  };
+
   updatePosition(): void {
     if (this._host.visible) {
       this.dismiss(); // to clean the old update function before update function
-      this.cleanupAutoUpdate = autoUpdate(this._caller, this._host, this.calculatePosition);
+      this.startWhenMeasurable(3);
     }
   }
 

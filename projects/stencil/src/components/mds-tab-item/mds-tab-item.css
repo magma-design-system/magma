@@ -8,29 +8,14 @@
  * @prop --mds-tab-item-default-shadow: Default shadow of a tab item.
  */
 
-@property --mds-tab-item-hover-background {
-  inherits: false;
-  initial-value: transparent;
-  syntax: '<color>';
-}
-
-@property --mds-tab-item-selected-background {
-  inherits: false;
-  initial-value: transparent;
-  syntax: '<color>';
-}
-
-@property --mds-tab-item-default-background {
-  inherits: false;
-  initial-value: transparent;
-  syntax: '<color>';
-}
-
-@property --mds-tab-item-corner-shape {
-  inherits: false;
-  initial-value: round;
-  syntax: 'bevel | notch | round | scoop | square | squircle';
-}
+/*
+  No css/mds-tab-item-property.css on purpose. The backgrounds and colours here are only
+  set under a conditional :host([animation='slide']) or a pref-* guard, or are not set at
+  all, so a document-level registration would start supplying an initial-value in every
+  state that has none today. --mds-tab-item-radius is out too: its default is the
+  CSS-wide keyword inherit, which an initial-value cannot express. See
+  projects/styles/scripts/properties.ts for how the registrations are collected.
+*/
 
 /* Not supported
 @property --mds-tab-item-selected-shadow {
@@ -50,12 +35,12 @@
   --mds-tab-item-selected-shadow: inherit;
   --mds-tab-item-radius: inherit;
 
-  corner-shape: var(--magma-corner-shape, round);
+  corner-shape: var(--magma-corner-shape);
   cursor: pointer;
   display: flex;
 }
 
-:host-context(mds-tab[animation='slide']) {
+:host([animation='slide']) {
   --mds-tab-item-hover-background: transparent;
   --mds-tab-item-selected-background: transparent;
   --mds-tab-item-selected-shadow: none;
@@ -68,7 +53,7 @@
   --mds-button-color: var(--mds-tab-item-default-color);
   --mds-button-radius: var(--mds-tab-item-radius);
   --mds-button-border-default-opacity: 0;
-  --mds-button-corner-shape: var(--mds-tab-item-corner-shape, round);
+  --mds-button-corner-shape: var(--mds-tab-item-corner-shape, var(--magma-corner-shape));
 
   aspect-ratio: initial;
   flex-grow: 1;
@@ -92,13 +77,13 @@
   pointer-events: none;
 }
 
-:host-context(mds-tab[direction='vertical']) {
+:host([direction='vertical']) {
   width: 100%;
 }
 
-:host-context(mds-tab[direction='vertical']) .button {
+:host([direction='vertical']) .button {
   justify-content: start;
 }
 
-/* @import './css/mds-tab-item-pref-theme.css'; */
+/* @import './css/mds-tab-item-pref-mode.css'; */
 @import './css/mds-tab-item-pref-contrast.css';

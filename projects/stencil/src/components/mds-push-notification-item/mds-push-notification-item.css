@@ -10,36 +10,6 @@
  * @prop --mds-push-notification-item-timing-function: Timing function used for the item animation.
  */
 
-@property --mds-push-notification-item-duration {
-  inherits: false;
-  initial-value: 300ms;
-  syntax: '<time>';
-}
-
-@property --mds-push-notification-item-icon-background-color {
-  inherits: false;
-  initial-value: transparent;
-  syntax: '<color>';
-}
-
-@property --mds-push-notification-item-icon-color {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-04));
-  syntax: '<color>';
-}
-
-@property --mds-push-notification-item-message-line-clamp {
-  inherits: false;
-  initial-value: 2;
-  syntax: '<integer>';
-}
-
-@property --mds-push-notification-item-subject-line-clamp {
-  inherits: false;
-  initial-value: 1;
-  syntax: '<integer>';
-}
-
 /* ❌ Not supported
 @property --mds-push-notification-item-shadow {
   inherits: false;
@@ -56,32 +26,32 @@
 
 :host {
   --mds-push-notification-item-duration: 300ms;
+  --private-push-notification-item-duration: var(--mds-push-notification-item-duration);
   --mds-push-notification-item-icon-background-color: transparent;
-  --mds-push-notification-item-icon-color: rgb(var(--tone-neutral-04));
+  --mds-push-notification-item-icon-color: rgb(var(--magma-text-subtle));
   --mds-push-notification-item-message-line-clamp: 2;
   --mds-push-notification-item-shadow: var(--shadow-sm-sharp);
   --mds-push-notification-item-subject-line-clamp: 1;
   --mds-push-notification-item-timing-function: var(--ease-in-out-quint);
 
-  @apply gap-400
-  max-w-8000
-  min-w-7200
-  p-400
-  rounded-lg;
-
   align-items: flex-start;
-  background-color: rgb(var(--tone-neutral));
+  background-color: rgb(var(--magma-surface-overlay));
+  border-radius: var(--radius-lg);
   box-shadow: var(--mds-push-notification-item-shadow);
-  color: rgb(var(--tone-neutral-02));
+  color: rgb(var(--magma-text-default));
   display: flex;
+  gap: --spacing(400);
+  max-width: --spacing(8000);
+  min-width: --spacing(7200);
+  padding: --spacing(400);
   pointer-events: auto;
   position: relative;
-  transition-duration: var(--mds-push-notification-item-duration);
+  transition-duration: var(--private-push-notification-item-duration);
   transition-property: background-color, box-shadow, color, margin, transform;
   transition-timing-function: var(--mds-push-notification-item-timing-function);
 }
 
-:host([deletable]) {
+:host([deletable]:not([deletable='false'])) {
   @apply pr-800;
 }
 
@@ -91,12 +61,16 @@
 }
 
 .actions {
-  @apply gap-200
-  pt-200;
-
   display: flex;
   flex-wrap: wrap;
+  gap: --spacing(200);
   min-width: 1px;
+  padding-top: --spacing(200);
+}
+
+.actions--hidden,
+.badge--hidden {
+  display: none;
 }
 
 .avatar,
@@ -105,38 +79,36 @@
 }
 
 .picture {
-  @apply max-w-1200
-  rounded;
-
+  border-radius: var(--radius-3xs);
   box-shadow: var(--shadow-sm-sharp);
+  max-width: --spacing(1200);
   width: 100%;
 }
 
 .close-button {
-  @apply p-150
-  transition-cosmetic;
+  @apply transition-cosmetic;
 
   opacity: 0;
+  padding: --spacing(150);
   position: absolute;
   right: 0;
   top: 0;
 }
 
-:host-context(:not(.safari)):host(:hover) .close-button {
+:host(:hover) .close-button {
   opacity: 1;
 }
 
 .close-button:focus-visible,
 .close-button:hover {
-  fill: rgb(var(--tone-neutral-03));
+  fill: rgb(var(--magma-text-muted));
   opacity: 1;
 }
 
 .header {
-  @apply gap-100;
-
   align-items: baseline;
   display: flex;
+  gap: --spacing(100);
   justify-content: space-between;
   min-width: 0;
   overflow: hidden;
@@ -149,9 +121,8 @@
 }
 
 .time {
-  @apply mr-100;
-
   flex-shrink: 0;
+  margin-right: --spacing(100);
   white-space: nowrap;
 }
 
@@ -169,16 +140,15 @@
 }
 
 .avatar {
-  @apply h-900
-  w-900;
-
   background-color: var(--mds-push-notification-item-icon-background-color);
-  border-radius: 1000px;
+  border-radius: var(--radius-full);
   fill: var(--mds-push-notification-item-icon-color);
+  height: --spacing(900);
+  width: --spacing(900);
 }
 
 .avatar::part(svg) {
-  @apply w-600;
+  width: --spacing(600);
 }
 
 :host([src]) .avatar {
@@ -186,11 +156,11 @@
 }
 
 :host([icon]) .avatar::part(wrapper) {
-  @apply p-150;
+  padding: --spacing(150);
 }
 
 @import './css/mds-push-notification-item-pref-animation.css';
-@import './css/mds-push-notification-item-pref-theme.css';
+@import './css/mds-push-notification-item-pref-mode.css';
 @import './css/mds-push-notification-item-pref-contrast.css';
 @import './css/mds-push-notification-item-variant-primary.css';
 @import './css/mds-push-notification-item-variant-label.css';

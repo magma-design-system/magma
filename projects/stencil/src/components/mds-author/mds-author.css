@@ -15,6 +15,10 @@
   user-select: none;
 }
 
+.avatar--hidden {
+  display: none;
+}
+
 .info {
   display: grid;
   flex-grow: 1;
@@ -22,7 +26,7 @@
 }
 
 @container (max-width: 200px) {
-  :host-context(:not(.safari)) {
+  :host {
     flex-direction: column;
     justify-content: center;
     text-align: center;

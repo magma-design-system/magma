@@ -25,7 +25,7 @@ const TemplateNavigationMenu = () => {
         ></mds-button>
       </div>
       <mds-tree
-        class="bg-tone-neutral shadow"
+        class="bg-surface-raised shadow"
         toggle="chevron"
         toggle-position="right"
         actions="auto"
@@ -187,7 +187,7 @@ const TemplateWorkflow = () => (
     toggle-position="left"
     actions="visible"
     style={{
-      '--mds-tree-toggle-icon-folder-default-color': 'rgb(var(--tone-neutral-04))',
+      '--mds-tree-toggle-icon-folder-default-color': 'rgb(var(--magma-text-subtle))',
     }}
   >
     <mds-tree-item label="Nr: 144 Data: 29/01/2025 (DIREZIONE GENERALE)">

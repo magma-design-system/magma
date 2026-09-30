@@ -1,20 +1,23 @@
 @import './css/mds-tab-bar-fouc.css';
 
 :host {
-  @apply duration-200
-    ease-out;
+  --mds-tab-bar-transition-duration: var(--duration-200);
+  --private-tab-bar-transition-duration: var(--mds-tab-bar-transition-duration);
 
-  background-color: rgb(var(--tone-neutral));
+  @apply ease-out;
+
+  background-color: rgb(var(--magma-surface-raised));
   bottom: 0;
-  box-shadow: var(--shadow-outline-light-50);
+  box-shadow: var(--shadow-ring-weak-2);
   display: flex;
   justify-content: space-around;
   left: 0;
   position: fixed;
   right: 0;
+  transition-duration: var(--private-tab-bar-transition-duration);
   transition-property: background-color, color, box-shadow;
 }
 
 @import './css/mds-tab-bar-pref-animation.css';
-@import './css/mds-tab-bar-pref-theme.css';
+@import './css/mds-tab-bar-pref-mode.css';
 @import './css/mds-tab-bar-pref-contrast.css';

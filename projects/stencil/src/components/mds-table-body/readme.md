@@ -296,17 +296,17 @@ mds-table-body {
 
 ## Properties
 
-| Property      | Attribute     | Description | Type                   | Default     |
-| ------------- | ------------- | ----------- | ---------------------- | ----------- |
-| `interactive` | `interactive` |             | `boolean \| undefined` | `undefined` |
-| `selection`   | `selection`   |             | `boolean \| undefined` | `undefined` |
+| Property      | Attribute     | Description                                                         | Type                   | Default     |
+| ------------- | ------------- | ------------------------------------------------------------------- | ---------------------- | ----------- |
+| `interactive` | `interactive` | Specifies whether the rows react to user interaction (hover/focus). | `boolean \| undefined` | `undefined` |
+| `selection`   | `selection`   | Enables the selection column for the rows in this table body.       | `boolean \| undefined` | `undefined` |
 
 
 ## Slots
 
-| Slot        | Description                    |
-| ----------- | ------------------------------ |
-| `"default"` | Put `mds-table-row` element/s. |
+| Slot | Description                    |
+| ---- | ------------------------------ |
+|      | Put `mds-table-row` element/s. |
 
 
 ## CSS Custom Properties

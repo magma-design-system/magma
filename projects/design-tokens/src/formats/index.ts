@@ -5,6 +5,7 @@ export * from './css-vars-rgb/css-vars-rgb.js';
 export * from './css-vars-transitions/css-vars-transitions.js';
 export * from './css-vars-typography/css-vars-typography.js';
 export * from './flutter-color/flutter-color.js';
+export * from './gimp-palette/gimp-palette.js';
 export * from './flutter-font/flutter-font.js';
 export * from './js-tailwind-colors/js-tailwind-colors.js';
 export * from './js-tailwind-font-family/js-tailwind-font-family.js';

@@ -11,36 +11,6 @@
  * @prop --mds-push-notification-background: Background of the push notification, supports gradients.
  */
 
-@property --mds-push-notification-fadeout-delay {
-  inherits: false;
-  initial-value: 0s;
-  syntax: '<time>';
-}
-
-@property --mds-push-notification-gap {
-  inherits: false;
-  initial-value: --spacing(200);
-  syntax: '<length>';
-}
-
-@property --mds-push-notification-items-intro-delay {
-  inherits: false;
-  initial-value: 300ms;
-  syntax: '<time>';
-}
-
-@property --mds-push-notification-items-outro-delay {
-  inherits: false;
-  initial-value: 0ms;
-  syntax: '<time>';
-}
-
-@property --mds-push-notification-items-duration {
-  inherits: false;
-  initial-value: 300ms;
-  syntax: '<time>';
-}
-
 /* ❌ Not supported
 @property --mds-push-notification-items-timing-function {
   inherits: false;
@@ -69,11 +39,6 @@
   );
 
   @apply ease-in-out-expo
-    gap-200
-    max-w-[360px]
-    min-w-7200
-    p-400
-    pl-2400
     hide-scrollbar;
 
   /* stylelint-disable-next-line property-disallowed-list */
@@ -82,7 +47,12 @@
   box-sizing: content-box !important;
   display: flex;
   flex-direction: column;
+  gap: --spacing(200);
+  max-width: 360px;
+  min-width: --spacing(7200);
   overflow-x: hidden;
+  padding: --spacing(400);
+  padding-left: --spacing(2400);
   position: fixed;
   right: 0;
   top: 0;
@@ -90,7 +60,7 @@
   transition-delay: var(--mds-push-notification-fadeout-delay);
   transition-duration: var(--duration-500);
   transition-property: transform;
-  z-index: var(--magma-notification-z-index, 3000);
+  z-index: var(--magma-notification-z-index);
 }
 
 .notifications {
@@ -100,8 +70,8 @@
 }
 
 .notifications ::slotted(mds-push-notification-item) {
-  --mds-push-notification-duration: var(--mds-push-notification-items-duration);
-  --mds-push-notification-timing-function: var(--mds-push-notification-items-timing-function);
+  --mds-push-notification-item-duration: var(--mds-push-notification-items-duration);
+  --mds-push-notification-item-timing-function: var(--mds-push-notification-items-timing-function);
 
   position: absolute;
   transform: translate(
@@ -111,5 +81,5 @@
   visibility: hidden;
 }
 
-@import './css/mds-push-notification-pref-theme.css';
+@import './css/mds-push-notification-pref-mode.css';
 @import './css/mds-push-notification-visible.css';

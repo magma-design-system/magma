@@ -324,9 +324,9 @@ mds-accordion-timer-item::part(label) {
 
 ## Slots
 
-| Slot        | Description                                                                  |
-| ----------- | ---------------------------------------------------------------------------- |
-| `"default"` | Add content like `text string`, `HTML elements` or `components` to this slot |
+| Slot | Description                                                                  |
+| ---- | ---------------------------------------------------------------------------- |
+|      | Add content like `text string`, `HTML elements` or `components` to this slot |
 
 
 ## Shadow Parts

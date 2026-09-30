@@ -35,7 +35,7 @@ export default {
     deletable: {
       type: { name: 'boolean' },
       description:
-        "Specifies if the component is dismissable or not, it should be set to true by default is used with it's parent component `mds-push-notification-items`",
+        'Specifies if the component is dismissable; when set, a dismiss button is shown.',
     },
     icon: {
       type: { name: 'string' },
@@ -153,7 +153,7 @@ export const Deletable = {
     icon: 'mi/baseline/email',
     message: 'You have 3 new messages from different accounts',
     subject: 'New messages',
-    deletable: false,
+    deletable: true,
   },
 };
 

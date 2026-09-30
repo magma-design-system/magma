@@ -255,6 +255,13 @@ mds-input-tip {
 | `position` | `position` | Specifies the position of the element relative to its container         | `"bottom" \| "top" \| undefined` | `'top'` |
 
 
+## Slots
+
+| Slot | Description                                                     |
+| ---- | --------------------------------------------------------------- |
+|      | Add `mds-input-tip-item` elements or `components` to this slot. |
+
+
 ## CSS Custom Properties
 
 | Name                                        | Description                                         |

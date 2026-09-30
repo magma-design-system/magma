@@ -1,0 +1,11 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../out-tsc/treeshaking-probe",
+    "types": [],
+    "paths": {
+      "@maggioli-design-system/magma-angular": ["../dist/magma-angular"]
+    }
+  },
+  "files": ["main.ts"]
+}

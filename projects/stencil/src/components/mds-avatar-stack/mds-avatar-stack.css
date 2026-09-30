@@ -1,4 +1,5 @@
 @import './css/mds-avatar-stack-fouc.css';
+@import './css/mds-avatar-stack-slotted-size.css';
 
 /**
  * @prop --mds-avatar-stack-background: Background color for the avatar stack container
@@ -15,82 +16,10 @@
  * @prop --mds-avatar-stack-sm-size: Size of small avatars in the stack
  */
 
-@property --mds-avatar-stack-background {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral));
-  syntax: '<color>';
-}
-
-@property --mds-avatar-stack-count-background-color {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-09));
-  syntax: '<color>';
-}
-
-@property --mds-avatar-stack-count-color {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-04));
-  syntax: '<color>';
-}
-
-@property --mds-avatar-stack-lg-border {
-  inherits: false;
-  initial-value: var(--spacing-100, 0.25rem);
-  syntax: '<length>';
-}
-
-@property --mds-avatar-stack-lg-offset {
-  inherits: false;
-  initial-value: 2;
-  syntax: '<integer>';
-}
-
-@property --mds-avatar-stack-lg-size {
-  inherits: false;
-  initial-value: var(--spacing-1500, 3.75rem);
-  syntax: '<length>';
-}
-
-@property --mds-avatar-stack-md-border {
-  inherits: false;
-  initial-value: var(--spacing-100, 0.25rem);
-  syntax: '<length>';
-}
-
-@property --mds-avatar-stack-md-offset {
-  inherits: false;
-  initial-value: 1.75;
-  syntax: '<number>';
-}
-
-@property --mds-avatar-stack-md-size {
-  inherits: false;
-  initial-value: var(--spacing-1200, 3rem);
-  syntax: '<length>';
-}
-
-@property --mds-avatar-stack-sm-border {
-  inherits: false;
-  initial-value: var(--spacing-50, 0.125rem);
-  syntax: '<length>';
-}
-
-@property --mds-avatar-stack-sm-offset {
-  inherits: false;
-  initial-value: 1.5;
-  syntax: '<number>';
-}
-
-@property --mds-avatar-stack-sm-size {
-  inherits: false;
-  initial-value: var(--spacing-900, 2.25rem);
-  syntax: '<length>';
-}
-
 :host {
-  --mds-avatar-stack-background: rgb(var(--tone-neutral));
-  --mds-avatar-stack-count-background-color: rgb(var(--tone-neutral-09));
-  --mds-avatar-stack-count-color: rgb(var(--tone-neutral-04));
+  --mds-avatar-stack-background: rgb(var(--magma-surface-overlay));
+  --mds-avatar-stack-count-background-color: rgb(var(--magma-wash-base));
+  --mds-avatar-stack-count-color: rgb(var(--magma-text-subtle));
   --mds-avatar-stack-lg-border: --spacing(100);
   --mds-avatar-stack-lg-offset: 2;
   --mds-avatar-stack-lg-size: --spacing(1500);
@@ -102,7 +31,7 @@
   --mds-avatar-stack-sm-size: --spacing(900);
 
   background-color: var(--mds-avatar-stack-background);
-  border-radius: 1000px;
+  border-radius: var(--radius-full);
   display: inline-flex;
 }
 

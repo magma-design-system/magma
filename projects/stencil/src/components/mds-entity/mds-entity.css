@@ -8,46 +8,10 @@
  * @prop --mds-entity-icon-color: The color of the icon
  */
 
-@property --mds-entity-background {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral));
-  syntax: '<color>';
-}
-
-@property --mds-entity-color {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-02));
-  syntax: '<color>';
-}
-
-@property --mds-entity-detail-color {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-03));
-  syntax: '<color>';
-}
-
-@property --mds-entity-icon-background {
-  inherits: false;
-  initial-value: rgb(var(--label-blue-09));
-  syntax: '<color>';
-}
-
-@property --mds-entity-icon-radius {
-  inherits: false;
-  initial-value: var(--radius-md);
-  syntax: '<length>';
-}
-
-@property --mds-entity-icon-color {
-  inherits: false;
-  initial-value: rgb(var(--label-blue-04));
-  syntax: '<color>';
-}
-
 :host {
-  --mds-entity-background: rgb(var(--tone-neutral));
-  --mds-entity-color: rgb(var(--tone-neutral-02));
-  --mds-entity-detail-color: rgb(var(--tone-neutral-03));
+  --mds-entity-background: rgb(var(--magma-surface-raised));
+  --mds-entity-color: rgb(var(--magma-text-default));
+  --mds-entity-detail-color: rgb(var(--magma-text-muted));
   --mds-entity-icon-background: rgb(var(--label-blue-09));
   --mds-entity-icon-radius: var(--radius-md);
   --mds-entity-icon-color: rgb(var(--label-blue-04));
@@ -81,9 +45,8 @@
 
 .spinner,
 .preview {
-  @apply aspect-square;
-
   align-items: center;
+  aspect-ratio: var(--aspect-square);
   display: inline-flex;
   justify-content: center;
 }
@@ -120,15 +83,22 @@ mds-spinner {
   gap: --spacing(100);
 }
 
+.details--hidden {
+  display: none;
+}
+
 .actions {
   align-items: center;
   display: flex;
   gap: --spacing(200);
 }
 
-::slotted([slot='action']) {
-  @apply aspect-square;
+.actions--hidden {
+  display: none;
+}
 
+::slotted([slot='action']) {
+  aspect-ratio: var(--aspect-square);
   height: auto;
   width: --spacing(1100);
 }
@@ -147,4 +117,3 @@ mds-spinner {
 }
 
 @import './css/mds-entity-pref-contrast.css';
-@import './css/mds-entity-pref-theme.css';

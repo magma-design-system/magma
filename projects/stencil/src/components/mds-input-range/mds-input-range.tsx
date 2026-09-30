@@ -10,10 +10,13 @@ import {
   Watch,
   State,
 } from '@stencil/core';
+import { setFormValue } from '@common/form';
+import { preferenceStore } from '@common/preference';
 
 /**
  * @part header - The element containing the labels displayed over the input element
  * @part track - The element containing the track of the input range
+ * @slot - Add `text string`, `HTML elements` or `components` to this slot.
  */
 @Component({
   tag: 'mds-input-range',
@@ -70,7 +73,7 @@ export class MdsInputRange {
    */
   @Event({ eventName: 'mdsInputRangeChange' }) changeEvent: EventEmitter<number>;
 
-  calculateProgress(): void {
+  private calculateProgress(): void {
     // validate value
     let v = Number(this.inputElement.value);
     // multiplier is needed to manage decimal value and step, so we can work with integer value and avoid decimal division
@@ -85,7 +88,7 @@ export class MdsInputRange {
         multiplier;
     }
     this.value = v;
-    this.internals.setFormValue(this.value.toString());
+    setFormValue(this.internals, this.value.toString());
     const total = this.max - this.min;
     const current = this.value - this.min;
     this.progress = (current / total) * 100;
@@ -111,7 +114,7 @@ export class MdsInputRange {
      * https://github.com/ionic-team/stencil/issues/5461
      */
     if (newValue) {
-      this.internals.setFormValue(null);
+      setFormValue(this.internals, null);
     }
   }
 
@@ -141,7 +144,7 @@ export class MdsInputRange {
   }
 
   formResetCallback(): void {
-    this.internals.setFormValue('');
+    setFormValue(this.internals, '');
   }
 
   componentDidLoad(): void {
@@ -153,7 +156,12 @@ export class MdsInputRange {
 
   render() {
     return (
-      <Host>
+      <Host
+        pref-animation={preferenceStore.state.animation}
+        pref-contrast={preferenceStore.state.contrast}
+        pref-mode={preferenceStore.state.mode}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
+      >
         <header class="header" part="header">
           <mds-text class="label" typography="label">
             <slot />

@@ -225,6 +225,13 @@ mds-button-group {
 
 
 
+## Slots
+
+| Slot | Description                                                      |
+| ---- | ---------------------------------------------------------------- |
+|      | Add `mds-button` or `mds-button-dropdown` elements to this slot. |
+
+
 ----------------------------------------------
 
 Built with love @ [Gruppo Maggioli](https://www.maggioli.com) from [R&D Department](https://www.maggioli.com/it-it/chi-siamo/ricerca-sviluppo)

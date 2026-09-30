@@ -1,28 +1,35 @@
-:host-context(:root.pref-contrast-more) {
-  --mds-chip-background: rgb(var(--tone-neutral));
-  --mds-chip-color: rgb(var(--tone-neutral-02));
-  --mds-chip-icon-background-selected: rgb(var(--variant-primary-03));
-  --mds-chip-icon-color: rgb(var(--tone-neutral));
-  --mds-chip-opacity-disabled: var(--opacity-disabled, 0.6);
-  --mds-chip-backgroud-selected: rgb(var(--tone-neutral-09));
-  --mds-chip-color-selected: rgb(var(--tone-neutral-01));
-  --mds-chip-icon-color-selected: rgb(var(--tone-neutral));
+/* Contrast preference. The component reflects the resolved mode from <html> onto
+ * its host as pref-contrast (see subscribePreference in @common/preference); these
+ * plain shadow selectors refine for high contrast. `more` is the explicit choice;
+ * `system` and no controller follow the OS via @media. Cross-browser, no :host-context.
+ *
+ * The paper ground is --magma-surface-default on purpose: under pref-contrast-more
+ * the layer promotes it to the seed (spec 9.3), so this reads as the paper of the
+ * mode in high contrast and as the page anywhere else. */
 
-  box-shadow: var(--shadow-outline-50);
+:host([pref-contrast='more']) {
+  --mds-chip-background: rgb(var(--magma-surface-default));
+  --mds-chip-color: rgb(var(--magma-text-default));
+  --mds-chip-color-selected: rgb(var(--magma-text-default));
+  --mds-chip-icon-background-selected: rgb(var(--magma-accent-emphasis-hover));
+  --mds-chip-icon-color: rgb(var(--magma-text-on-emphasis));
+  --mds-chip-icon-color-selected: rgb(var(--magma-text-on-emphasis));
+  --mds-chip-opacity-disabled: var(--opacity-disabled, 0.6);
+
+  box-shadow: var(--shadow-ring-2);
 }
 
 @media (prefers-contrast: more) {
-  :host-context(:root.pref-contrast-system),
-  :host-context(:root:not([data-magma-pref])) {
-    --mds-chip-background: rgb(var(--tone-neutral));
-    --mds-chip-color: rgb(var(--tone-neutral-02));
-    --mds-chip-icon-background-selected: rgb(var(--variant-primary-03));
-    --mds-chip-icon-color: rgb(var(--tone-neutral));
+  :host([pref-contrast='system']),
+  :host(:not([pref-contrast])) {
+    --mds-chip-background: rgb(var(--magma-surface-default));
+    --mds-chip-color: rgb(var(--magma-text-default));
+    --mds-chip-color-selected: rgb(var(--magma-text-default));
+    --mds-chip-icon-background-selected: rgb(var(--magma-accent-emphasis-hover));
+    --mds-chip-icon-color: rgb(var(--magma-text-on-emphasis));
+    --mds-chip-icon-color-selected: rgb(var(--magma-text-on-emphasis));
     --mds-chip-opacity-disabled: var(--opacity-disabled, 0.6);
-    --mds-chip-backgroud-selected: rgb(var(--tone-neutral-09));
-    --mds-chip-color-selected: rgb(var(--tone-neutral-01));
-    --mds-chip-icon-color-selected: rgb(var(--tone-neutral));
 
-    box-shadow: var(--shadow-outline-50);
+    box-shadow: var(--shadow-ring-2);
   }
 }

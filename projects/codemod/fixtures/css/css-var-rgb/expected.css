@@ -1,0 +1,4 @@
+.banner {
+  --mds-banner-color-rgb: #ffffff;
+  background: var(--mds-banner-color-rgb);
+}

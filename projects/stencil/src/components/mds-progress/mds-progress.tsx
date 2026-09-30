@@ -2,6 +2,7 @@ import { Component, Element, Host, h, Prop, Watch, State } from '@stencil/core';
 import { DirectionType } from './meta/types';
 import { ThemeVariantType } from '@type/variant';
 import { removeAttributesIf, ifAttribute } from '@common/aria';
+import { preferenceStore } from '@common/preference';
 import { TypographyTechnicalType } from '@type/typography';
 import { ProgressBarSizeType } from '@type/progress';
 
@@ -16,7 +17,7 @@ import { ProgressBarSizeType } from '@type/progress';
   shadow: true,
 })
 export class MdsProgress {
-  @Element() private element: HTMLMdsAccordionTimerElement;
+  @Element() private element: HTMLMdsProgressElement;
   @State() currentStep: string;
   private stepsList = new Array<string>();
 
@@ -66,7 +67,7 @@ export class MdsProgress {
   }
 
   private setProgress(progress: number): void {
-    if (this.steps) {
+    if (this.steps !== '') {
       this.currentStep = this.stepsList[Math.round(progress * (this.stepsList.length - 1))];
       if (!ifAttribute(this.element, 'aria-hidden')) {
         this.element.setAttribute('aria-valuetext', this.currentStep);
@@ -91,9 +92,15 @@ export class MdsProgress {
         aria-valuemin="0"
         aria-valuenow={!ifAttribute(this.element, 'aria-hidden') && Math.round(this.progress * 100)}
         role="progressbar"
+        pref-animation={preferenceStore.state.animation}
+        pref-contrast={preferenceStore.state.contrast}
+        pref-mode={preferenceStore.state.mode}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
         {this.direction === 'radial' ? (
           <mds-radial-progress
+            // the host already is the progressbar: a second, nameless one would be announced too
+            aria-hidden="true"
             progress={this.progress}
             part="radial-progress"
             typography={this.typography}

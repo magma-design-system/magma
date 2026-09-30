@@ -145,7 +145,7 @@ Style the badge only through its documented `--mds-badge-*` CSS custom propertie
 }
 ```
 
-For `tone="outline"`, also set the border properties:
+For `tone="outline"`, also set the border properties. The outline badge is always transparent, so `--mds-badge-background` has no effect on it:
 
 ```css
 .custom-tag mds-badge[tone='outline'] {
@@ -267,9 +267,9 @@ mds-badge {
 
 ## Slots
 
-| Slot        | Description                                                                                                                              |
-| ----------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| `"default"` | **Deprecated**, use the `label` property instead. Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here. |
+| Slot | Description                                                                                                                              |
+| ---- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+|      | **Deprecated**, use the `label` property instead. Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here. |
 
 
 ## CSS Custom Properties

@@ -1,16 +1,19 @@
-:host-context([appearance='none']) .header {
+/* appearance and toggle-position are propagated from mds-tree onto every item
+ * (reflected props), so these read the item's own host (no :host-context). */
+
+:host([appearance='none']) .header {
   --offset: 0;
 
   gap: 0;
 }
 
-:host-context([appearance='none']):host(:not(:last-child)) .children--has-children::before,
-:host-context([appearance='none']) .tree-dot,
-:host-context([appearance='none']) .tree-node {
+:host([appearance='none']:not(:last-child)) .children--has-children::before,
+:host([appearance='none']) .tree-dot,
+:host([appearance='none']) .tree-node {
   display: none;
 }
 
-:host-context([appearance='none']) .label-action {
+:host([appearance='none']) .label-action {
   --padding: --spacing(200);
 
   margin-left: 0;
@@ -18,13 +21,13 @@
   padding-right: var(--padding);
 }
 
-:host-context([appearance='none'][toggle-position='left']) .children {
+:host([appearance='none'][toggle-position='left']) .children {
   padding-left: calc(
     calc(var(--header-gap) * 2) + var(--mds-tree-item-branch-border-size) +
       var(--mds-tree-item-children-padding-left) * 2
   );
 }
 
-:host-context([appearance='none'][toggle-position='right']) .children {
+:host([appearance='none'][toggle-position='right']) .children {
   padding-left: var(--mds-tree-item-children-padding-left);
 }

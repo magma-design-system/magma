@@ -9,30 +9,6 @@
  * @prop --mds-keyboard-key-transition-duration: Set the transition duration of the keyboard key.
  */
 
-@property --mds-keyboard-key-illumination-dark-size {
-  inherits: false;
-  initial-value: --spacing(150);
-  syntax: '<length>';
-}
-
-@property --mds-keyboard-key-illumination-light-size {
-  inherits: false;
-  initial-value: --spacing(50);
-  syntax: '<length>';
-}
-
-@property --mds-keyboard-key-padding {
-  inherits: false;
-  initial-value: --spacing(100);
-  syntax: '<length>';
-}
-
-@property --mds-keyboard-key-transition-duration {
-  inherits: false;
-  initial-value: 300ms;
-  syntax: '<time>';
-}
-
 /* ❌ Not supported
 
 @property --mds-keyboard-key-illumination-dark {
@@ -71,7 +47,7 @@
   );
 
   align-items: flex-end;
-  corner-shape: var(--magma-corner-shape, round);
+  corner-shape: var(--magma-corner-shape);
   display: inline-flex;
   min-height: var(--key-size-default);
   min-width: var(--key-size-default);
@@ -80,7 +56,7 @@
 .physical-key {
   align-items: baseline;
   background-color: var(--mds-keyboard-key-background, rgb(var(--tone-bisque-08)));
-  border-radius: var(--radius-lg);
+  border-radius: var(--magma-radius-lg);
   box-shadow:
     var(--mds-keyboard-key-illumination-light), var(--mds-keyboard-key-illumination-dark),
     var(--mds-keyboard-key-illumination-shadow);

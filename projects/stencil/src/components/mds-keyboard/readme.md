@@ -268,17 +268,11 @@ mds-keyboard {
 | `try`    | `try`     | Sets if the keyboard key combination test is enabled | `boolean \| undefined`          | `undefined` |
 
 
-## Methods
+## Slots
 
-### `updateLang() => Promise<void>`
-
-
-
-#### Returns
-
-Type: `Promise<void>`
-
-
+| Slot | Description                                                   |
+| ---- | ------------------------------------------------------------- |
+|      | Add `mds-keyboard-key` elements or `components` to this slot. |
 
 
 ## CSS Custom Properties

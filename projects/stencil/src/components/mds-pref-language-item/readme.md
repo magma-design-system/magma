@@ -96,7 +96,7 @@ Add as many items as needed - the parent wraps them in a scrollable dropdown. Ea
 
 ```html
 <mds-pref>
-  <mds-pref-theme></mds-pref-theme>
+  <mds-pref-mode></mds-pref-mode>
   <mds-pref-contrast></mds-pref-contrast>
   <mds-pref-language>
     <mds-pref-language-item code="it"></mds-pref-language-item>
@@ -214,19 +214,6 @@ The component emits `mdsPrefLanguageItemSelect` (or the parent emits `mdsPrefLan
 | Event                       | Description                                   | Type                                      |
 | --------------------------- | --------------------------------------------- | ----------------------------------------- |
 | `mdsPrefLanguageItemSelect` | Emits when the component trigger the language | `CustomEvent<MdsPrefLanguageEventDetail>` |
-
-
-## Methods
-
-### `updateLang() => Promise<void>`
-
-
-
-#### Returns
-
-Type: `Promise<void>`
-
-
 
 
 ## Dependencies

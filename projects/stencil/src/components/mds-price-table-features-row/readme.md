@@ -278,9 +278,9 @@ All rows inside a [`<mds-price-table-features>`](../../mds-price-table-features)
 
 ## Slots
 
-| Slot        | Description                                               |
-| ----------- | --------------------------------------------------------- |
-| `"default"` | Expects to slot `mds-price-table-features-cell` component |
+| Slot | Description                                               |
+| ---- | --------------------------------------------------------- |
+|      | Expects to slot `mds-price-table-features-cell` component |
 
 
 ## CSS Custom Properties

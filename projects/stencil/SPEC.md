@@ -4,24 +4,43 @@
 
 Defines general rules, conventions and composition patterns that apply to all Magma web components. Read this before working on any component. For a specific component, also read its own `SPEC.md`.
 
-## Registering components
+## Public entry points
+
+Every published entry point is tree-shakeable except the lazy loader, which registers all 114 components by design.
+
+| package         | entry                       | what it gives                                         | tree-shakeable                    |
+| :-------------- | :-------------------------- | :---------------------------------------------------- | :-------------------------------- |
+| `magma`         | `/components`               | `MdsButton`, `defineCustomElementMdsButton`, ...      | ✅                                |
+| `magma`         | `/components/mds-button.js` | one component per file                                | ✅                                |
+| `magma`         | `/loader`                   | `defineCustomElements()`, registers everything lazily | ❌ by design                      |
+| `magma`         | `/hydrate`                  | `renderToString()` for SSR (server-only bundle)       | ❌ by design (server bundle)      |
+| `magma`         | `.`                         | lazy runtime + `IconsSetService` (no components)      | n/a                               |
+| `magma`         | `/services`                 | `IconsSetService`                                     | n/a                               |
+| `magma-react`   | `.`                         | barrel of `Mds*` React wrappers                       | ✅                                |
+| `magma-react`   | `/mds-button.js`            | one wrapper per file                                  | ✅                                |
+| `magma-angular` | `.`                         | standalone proxies, CVAs, `MagmaModule`               | ✅ (AOT prunes `MagmaModule` too) |
 
 ```javascript
-import { defineCustomElements } from '@maggioli-design-system/magma/loader';
-defineCustomElements();
+// web components
+import { defineCustomElementMdsButton } from '@maggioli-design-system/magma/components';
+defineCustomElementMdsButton();
+
+// React
+import { MdsButton } from '@maggioli-design-system/magma-react';
+
+// Angular - standalone, self-registering
+import { MdsButton } from '@maggioli-design-system/magma-angular';
 ```
 
-For React:
+### What keeps this working
 
-```javascript
-import { defineCustomElements } from '@maggioli-design-system/magma-react/loader';
-```
+Three things hold the tree-shaking together; breaking any one of them silently ships the whole library:
 
-For Angular, import `MagmaModule` in your `AppModule`:
+- **No module-level side effects in component sources.** All three packages declare `sideEffects` (`magma` allows only `**/*.css`). Code that must run once belongs in `connectedCallback`, not at module scope. Stencil annotates `proxyCustomElement(...)` with `/*@__PURE__*/`, and the React output target does the same on `createComponent(...)` - keep it that way.
+- **One ES module per component.** Both output targets run with `esModules: true`, and `dist-custom-elements` with `customElementsExportBehavior: 'single-export-module'`. The barrels are pure re-exports.
+- **No eager `defineCustomElements()` in the wrappers.** The React and Angular proxies register their own custom element on demand. Importing `magma/loader` from wrapper code (as `MagmaModule.forRoot()` used to) pulls in every component: measured on a probe Angular app, 229 kB in 2 files became 1.9 MB in 142.
 
-```typescript
-import { MagmaModule } from '@maggioli-design-system/magma-angular';
-```
+`scripts/check-treeshaking.ts` (`npm run check.treeshaking`) asserts all three and guards the bundle size; it runs in CI on every stencil build.
 
 ## Naming convention
 
@@ -89,6 +108,35 @@ mds-button >>> .internal-class {
   color: red;
 }
 ```
+
+### Reading a `--magma-*` token: never write its fallback
+
+A component must render at the intended default even when the consumer has not loaded
+`@maggioli-design-system/styles`. That fallback is NOT written by hand: at build time
+`scripts/postcss-token-fallbacks.ts` turns every bare `var(--magma-x)` into
+`var(--magma-x, <default>)`, reading the default from the same place the stylesheet does (the
+design-token dist, the semantic layer, the corner axis, `styles/css/globals.css`).
+
+```css
+/* correct - the build injects 3000, the value globals.css declares */
+z-index: var(--magma-modal-z-index);
+
+/* incorrect - a second copy of the default, free to drift from the first */
+z-index: var(--magma-modal-z-index, 4000);
+```
+
+A bare `var(--magma-*)` the injector cannot resolve FAILS the build (`failOnMissing`, limited to
+`--magma-*` by `checkPrefixes`): it is a typo or a token that does not exist yet. Component-private
+names (`--mds-*`, `--private-*`) are not checked.
+
+### Reading `<html>` preference state from inside a component
+
+Some components ship `*-pref-*.css` files (e.g. `mds-modal-pref-mode.css`) that refine their look for dark / high-contrast / reduced-motion on top of the global palette flip (see `projects/styles/SPEC.md`). Because these files are scoped to the component shadow tree, a normal selector cannot reach the `<html>` element where the `pref-*` classes live, so they use `:host-context(:root.pref-...)` - the only selector that lets a shadow stylesheet test an ancestor's state.
+
+Two facts agents must keep in mind before touching these files:
+
+- `:host-context()` is **Chromium-only** (not Firefox, not Safari). These per-component refinements therefore apply only in Chromium; elsewhere the component simply uses the globally-flipped tokens. This is tolerated, not a bug to "fix" with `@container style()` (which crashes WebKit in the shadow + slotted + inherited-custom-property case).
+- The only thing that crosses the shadow boundary inward is the **value of an inherited custom property** (e.g. `var(--tone-neutral)`, `var(--magma-pref-animation)`), never a selector reaching upward. To make a refinement work cross-browser, resolve it to a token at `:root` and consume the value inside the component, instead of branching on a selector. Removing `:host-context` without that value channel deletes the refinement (the rule then matches nothing inside the shadow tree).
 
 ## Tone and variant system
 
@@ -232,6 +280,23 @@ Parent/child component pairs communicate via internal Stencil mechanisms. Rules:
 1. Child components must be **direct slot children** of the parent - no wrappers
 2. Never use a child component outside its parent (e.g. `mds-accordion-item` without `mds-accordion`)
 3. Never mix child types (e.g. do not put `mds-accordion-item` inside `mds-accordion-timer`)
+
+## Tests
+
+Every component keeps its tests in `test/` next to its sources (see the scaffold below):
+
+- `mds-component-name.e2e.ts` - component tests rendered in a real Chromium (Playwright), for anything that needs the live DOM: rendering, props, events, methods, keyboard and focus handling, form participation
+- `*.spec.ts` - unit tests in the mock-doc environment, for pure logic that does not need a rendered component (validators, parsers, helpers)
+- `mds-component-name.stories.tsx` - Storybook stories: visual rendering, interaction tests (`play` functions using `expect` / `fn` from `storybook/test` and the `canvas` / `userEvent` of the play context), accessibility checks (`@storybook/addon-a11y`), and integration scenarios showing several components working together on one page
+
+Rules:
+
+1. **Every behaviour change ships with a test that covers it**, in the same branch, so the change is protected against regressions. Behaviour is anything observable beyond presentation: props and their defaults, emitted events, public methods, rendered DOM structure, keyboard/focus handling, form participation, validation, state transitions. The public API of a new component counts as behaviour.
+2. **Pure style changes are exempt**: padding, margin, colours, radius, typography, transitions and similar CSS-only adjustments do not need a test.
+3. A bug fix's test should reproduce the bug: fail on the previous implementation, pass on the fix.
+4. **Split by tool**: Vitest (`spec` / `e2e`) owns the unit and component tests and is the mandatory part of rule 1; Storybook owns the visual, interaction and accessibility tests and the multi-component pages. Add or update a story when necessary: when the change affects the look, the user interaction, the accessibility or the composition with other components. A story never replaces a Vitest test.
+
+How to write and run the tests (Vitest + `@stencil/vitest`, `render` / `userEvent`, shared-page caveats; the stories via `npm run test-storybook`, the `storybook` Vitest project): [`HOWTO.md`](../../projects/stencil/HOWTO.md#tests).
 
 ## Per-component usage docs
 

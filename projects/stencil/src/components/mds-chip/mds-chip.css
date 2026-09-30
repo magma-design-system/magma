@@ -3,67 +3,40 @@
 
 /**
  * @prop --mds-chip-background: Sets the `background-color` of the component
+ * @prop --mds-chip-background-selected: Sets the `background-color` of the component when it's selected
+ * @prop --mds-chip-border: Sets the `border-color` of the component
+ * @prop --mds-chip-border-selected: Sets the `border-color` of the component when it's selected
  * @prop --mds-chip-color: Sets the `color` of the component
- * @prop --mds-chip-icon-background: Sets the `background-color` of the icon
- * @prop --mds-chip-icon-background-selected: Sets the `background-color` color of the icon when the component is selected
- * @prop --mds-chip-icon-color: Sets the `fill` color of the icon of the component
- * @prop --mds-chip-opacity-disabled: Sets the `opacity` of the component when it's disabled
- * @prop --mds-chip-backgroud-selected: Sets the `background-color` of the component when it's selected
  * @prop --mds-chip-color-selected: Sets the `color` of the component when it's selected
+ * @prop --mds-chip-icon-background: Sets the `background-color` of the icon
+ * @prop --mds-chip-icon-background-selected: Sets the `background-color` of the icon when the component is selected
+ * @prop --mds-chip-icon-color: Sets the `fill` color of the icon of the component
  * @prop --mds-chip-icon-color-selected: Sets the `fill` color of the icon of the component when it's selected
+ * @prop --mds-chip-opacity-disabled: Sets the `opacity` of the component when it's disabled
+ * @prop --mds-chip-shadow: Sets the `box-shadow` of the component
+ * @prop --mds-chip-shadow-selected: Sets the `box-shadow` of the component when it's selected
  */
-
-@property --mds-chip-background {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral));
-  syntax: '<color>';
-}
-
-@property --mds-chip-border {
-  inherits: false;
-  initial-value: transparent;
-  syntax: '<color>';
-}
-
-@property --mds-chip-color {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-03));
-  syntax: '<color>';
-}
-
-@property --mds-chip-icon-background {
-  inherits: false;
-  initial-value: rgb(var(--variant-primary-06));
-  syntax: '<color>';
-}
-
-@property --mds-chip-icon-color {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral));
-  syntax: '<color>';
-}
-
-@property --mds-chip-opacity-disabled {
-  inherits: false;
-  initial-value: 0.5;
-  syntax: '<number>';
-}
 
 /* --mds-chip-shadow not supported by Houdini */
 
 :host {
-  --mds-chip-background: rgb(var(--tone-neutral));
+  --mds-chip-background: rgb(var(--magma-wash-base));
   --mds-chip-border: transparent;
-  --mds-chip-color: rgb(var(--tone-neutral-03));
-  --mds-chip-icon-background: rgb(var(--variant-primary-06));
-  --mds-chip-icon-color: rgb(var(--tone-neutral));
+  --mds-chip-color: rgb(var(--magma-text-muted));
+  --mds-chip-icon-background: rgb(var(--magma-accent-fg));
+  --mds-chip-icon-color: rgb(var(--magma-text-on-emphasis));
   --mds-chip-opacity-disabled: 0.5;
   --mds-chip-shadow: var(--shadow-sm-sharp);
+  --mds-chip-transition-duration: var(--duration-150);
+  --mds-chip-label-transition-duration: var(--duration-200);
+  --private-chip-transition-duration: var(--mds-chip-transition-duration);
+  --private-chip-label-transition-duration: var(--mds-chip-label-transition-duration);
 
   align-items: center;
+  align-self: self-start;
   background-color: var(--mds-chip-background);
   border: 2px solid var(--mds-chip-border);
-  border-radius: 1000px;
+  border-radius: var(--radius-full);
   box-shadow: var(--mds-chip-shadow);
   box-sizing: border-box;
   color: var(--mds-chip-color);
@@ -74,7 +47,7 @@
   max-width: min-content;
   min-width: min-content;
   padding: 0 --spacing(50);
-  transition-duration: var(--duration-150);
+  transition-duration: var(--private-chip-transition-duration);
   transition-property: background-color, border-color, box-shadow, color, opacity;
   transition-timing-function: var(--ease-in-out-quad);
 }
@@ -100,10 +73,10 @@
 }
 
 .label {
-  border-radius: 1000px;
+  border-radius: var(--radius-full);
   flex-grow: 1;
   text-decoration-color: transparent;
-  transition-duration: var(--duration-200);
+  transition-duration: var(--private-chip-label-transition-duration);
   transition-property: color, text-decoration-color, outline, outline-offset;
   transition-timing-function: var(--ease-out-quad);
 }
@@ -130,7 +103,7 @@
 .icon-area {
   align-items: center;
   background-color: var(--mds-chip-icon-background);
-  border-radius: 1000px;
+  border-radius: var(--radius-full);
   display: flex;
   flex-shrink: 0;
   height: --spacing(700);
@@ -144,12 +117,13 @@
   fill: var(--mds-chip-icon-color);
   height: --spacing(400);
   transition: fill;
-  transition-duration: var(--duration-200);
+  transition-duration: var(--private-chip-label-transition-duration);
   width: --spacing(400);
 }
 
 .button-delete {
-  border-radius: 100px;
+  align-self: center;
+  border-radius: var(--radius-full);
   corner-shape: round;
   height: auto;
   padding: 0;
@@ -161,5 +135,5 @@
 
 @import './css/mds-chip-variant.css';
 @import './css/mds-chip-pref-animation.css';
-@import './css/mds-chip-pref-theme.css';
+@import './css/mds-chip-pref-mode.css';
 @import './css/mds-chip-pref-contrast.css';

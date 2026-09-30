@@ -8,42 +8,14 @@
  * @prop --mds-text-animation-placeholder-char: Placeholder character used during text animation.
  */
 
-@property --mds-text-selection-background {
-  inherits: false;
-  initial-value: rgb(var(--label-sky-09));
-  syntax: '<color>';
-}
-
-@property --mds-text-selection-color {
-  inherits: false;
-  initial-value: rgb(var(--label-sky-01));
-  syntax: '<color>';
-}
-
-@property --mds-text-line-clamp {
-  inherits: false;
-  initial-value: 3;
-  syntax: '<integer>';
-}
-
-@property --mds-text-animation-speed {
-  inherits: false;
-  initial-value: 0.5;
-  syntax: '<number>';
-}
-
-@property --mds-text-animation-placeholder-char {
-  inherits: false;
-  initial-value: ' ';
-  syntax: '<string>';
-}
-
 :host {
   --mds-text-selection-background: rgb(var(--label-sky-09));
   --mds-text-selection-color: rgb(var(--label-sky-01));
   --mds-text-line-clamp: 3;
   --mds-text-animation-speed: 0.5;
   --mds-text-animation-placeholder-char: ' ';
+  --mds-text-transition-duration: var(--duration-200);
+  --private-text-transition-duration: var(--mds-text-transition-duration);
 
   display: flex;
   min-width: 0;
@@ -57,6 +29,16 @@
 .text {
   cursor: inherit;
   display: inherit;
+}
+
+/* The animation fills the characters it has not revealed yet with the placeholder, which
+   is a space by default: collapsed like any other run of spaces, it would give the element
+   no width and - while every character is still a placeholder - no line box either, so the
+   text would blink into existence and push whatever sits around it. Kept as typed, the
+   placeholders hold the final box from the first frame. */
+
+:host([animation='yugop']) .text {
+  white-space: pre-wrap;
 }
 
 :host([typography='snippet']) {
@@ -202,15 +184,15 @@
 }
 
 :host([tag='code']) {
-  @apply ease-in-out
-  px-100
-  py-25
-  rounded;
+  @apply ease-in-out;
 
-  background-color: rgb(var(--tone-neutral-09));
-  box-shadow: rgb(var(--tone-neutral-08)) 0 0 0 1px;
-  color: rgb(var(--tone-neutral-03));
-  transition-duration: var(--duration-200);
+  background-color: rgb(var(--magma-wash-base));
+  border-radius: var(--radius-3xs);
+  box-shadow: rgb(var(--magma-border-default)) 0 0 0 1px;
+  color: rgb(var(--magma-text-muted));
+  padding-block: --spacing(25);
+  padding-inline: --spacing(100);
+  transition-duration: var(--private-text-transition-duration);
   transition-property: color, background-color;
 }
 

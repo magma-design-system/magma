@@ -13,7 +13,7 @@ import {
 import { MdsStepperBarEventDetail } from './meta/event-detail';
 import { StepperBarNavigationType } from './meta/meta';
 /**
- * @slot default - Add `mds-tepper-bar-item` element/s.
+ * @slot - Add `mds-tepper-bar-item` element/s.
  * @slot content - Add `HTML elements` or `components`, one per mds-stepper-bar-item added
  * @part items - Selects the `items` container element wrapped in shadowDOM.
  * @part contents - Selects the `contents` container element wrapped in shadowDOM.
@@ -60,7 +60,7 @@ export class MdsStepperBar {
       item.done = false;
       if (key < this.currentItem) {
         item.done = true;
-        if (item.value) {
+        if (item.value !== undefined && item.value !== '') {
           values.push(item.value);
         }
       }
@@ -104,17 +104,31 @@ export class MdsStepperBar {
     }
 
     if (elementIndex >= pagesItems.length) {
-      const pageItem = pagesItems[pagesItems.length - 1];
-      itemsElement.scrollLeft = pageItem.offsetLeft - itemsElement.offsetLeft;
+      this.scrollToItem(itemsElement, pagesItems[pagesItems.length - 1], 'start');
       return;
     }
 
-    const pageItem = pagesItems[elementIndex];
-    itemsElement.scrollLeft =
-      pageItem.offsetLeft -
-      itemsElement.offsetLeft -
-      itemsElement.offsetWidth / 2 +
-      pageItem.offsetWidth / 2;
+    this.scrollToItem(itemsElement, pagesItems[elementIndex], 'centre');
+  };
+
+  /**
+   * Measures from the boxes and moves the current scroll by the difference.
+   * `offsetLeft` would mix two coordinate systems: the items are slotted light
+   * children, so they measure from whatever is positioned above the host - the
+   * page, since mds-stepper-bar does not position itself - while the strip is a
+   * div in the shadow root that measures from its own parent. What is left over
+   * is the distance of the component from the left of the page, and it lands
+   * straight on the scroll.
+   */
+  private scrollToItem = (
+    strip: HTMLElement,
+    item: HTMLElement,
+    align: 'start' | 'centre',
+  ): void => {
+    const stripBox = strip.getBoundingClientRect();
+    const itemBox = item.getBoundingClientRect();
+    const centring = align === 'centre' ? (stripBox.width - itemBox.width) / 2 : 0;
+    strip.scrollLeft += itemBox.left - stripBox.left - centring;
   };
 
   componentWillLoad(): void {

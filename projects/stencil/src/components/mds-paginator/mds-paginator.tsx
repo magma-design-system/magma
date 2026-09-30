@@ -1,4 +1,5 @@
 import { Component, Element, Event, EventEmitter, Host, h, Prop } from '@stencil/core';
+import { preferenceStore } from '@common/preference';
 import { MdsPaginatorEventDetail } from './meta/event-detail';
 import miBaselineArrowBack from '@icon/mi/baseline/arrow-back.svg';
 import miBaselineArrowForward from '@icon/mi/baseline/arrow-forward.svg';
@@ -60,15 +61,31 @@ export class MdsPaginator {
       pageItem.offsetWidth / 2;
   };
 
-  private focus = (ev: MouseEvent): void => {
+  /**
+   * The strip follows the focused item only when the focus comes from the keyboard.
+   * On a pointer interaction the item receives focus on mousedown: scrolling the strip
+   * at that moment moves the item away from under the pointer, the mouseup lands on
+   * another element and the browser dispatches the click on their common ancestor
+   * (the strip itself) instead of the item, so the page would never be selected.
+   */
+  private readonly isKeyboardFocus = (item: HTMLElement): boolean => {
+    try {
+      return item.matches(':focus-visible');
+    } catch {
+      return true;
+    }
+  };
+
+  private readonly handleItemFocus = (ev: FocusEvent): void => {
+    const item = ev.target as HTMLMdsPaginatorItemElement | null;
+    if (!item || !this.isKeyboardFocus(item)) return;
+
     const pagesElement = this.element.shadowRoot?.querySelector<HTMLDivElement>('.pages');
     const pagesItems =
       pagesElement?.querySelectorAll<HTMLMdsPaginatorItemElement>('mds-paginator-item');
-    if (pagesItems && ev.target) {
-      const elements = Array.from(pagesItems);
-      const index = elements.indexOf(ev.target as HTMLMdsPaginatorItemElement);
-      this.scrollPage(index);
-    }
+    if (!pagesItems) return;
+
+    this.scrollPage(Array.from(pagesItems).indexOf(item));
   };
 
   private goToPage = (selectedPage: number, caller?: HTMLMdsPaginatorItemElement): void => {
@@ -82,22 +99,47 @@ export class MdsPaginator {
     this.pageChangedEvent.emit({ page: this.currentPage, caller });
   };
 
+  private readonly handlePrevClick = (event: MouseEvent): void => {
+    this.goToPage(this.currentPage - 1, event.target as HTMLMdsPaginatorItemElement);
+  };
+
+  private readonly handleFirstClick = (event: MouseEvent): void => {
+    this.goToPage(1, event.target as HTMLMdsPaginatorItemElement);
+  };
+
+  private readonly handlePageClick =
+    (page: number) =>
+    (event: MouseEvent): void => {
+      this.goToPage(page, event.target as HTMLMdsPaginatorItemElement);
+    };
+
+  private readonly handleLastClick = (event: MouseEvent): void => {
+    this.goToPage(this.pages, event.target as HTMLMdsPaginatorItemElement);
+  };
+
+  private readonly handleNextClick = (event: MouseEvent): void => {
+    this.goToPage(this.currentPage + 1, event.target as HTMLMdsPaginatorItemElement);
+  };
+
   render() {
     return (
-      <Host>
+      <Host
+        pref-animation={preferenceStore.state.animation}
+        pref-contrast={preferenceStore.state.contrast}
+        pref-mode={preferenceStore.state.mode}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
+      >
         <mds-paginator-item
           class="item-icon"
           icon={miBaselineArrowBack}
           disabled={this.currentPage === 1}
-          onClick={(ev) =>
-            this.goToPage(this.currentPage - 1, ev.target as HTMLMdsPaginatorItemElement)
-          }
+          onClick={this.handlePrevClick}
         />
         {this.pages > 0 && (
           <mds-paginator-item
             class="item-first"
             selected={this.currentPage === 1}
-            onClick={(ev) => this.goToPage(1, ev.target as HTMLMdsPaginatorItemElement)}
+            onClick={this.handleFirstClick}
           >
             1
           </mds-paginator-item>
@@ -109,8 +151,8 @@ export class MdsPaginator {
                 key={i}
                 class="item"
                 selected={this.currentPage === i + 2}
-                onClick={(ev) => this.goToPage(i + 2, ev.target as HTMLMdsPaginatorItemElement)}
-                onFocus={this.focus}
+                onClick={this.handlePageClick(i + 2)}
+                onFocus={this.handleItemFocus}
               >
                 {i + 2}
               </mds-paginator-item>
@@ -121,7 +163,7 @@ export class MdsPaginator {
           <mds-paginator-item
             class="item-last"
             selected={this.currentPage === this.pages}
-            onClick={(ev) => this.goToPage(this.pages, ev.target as HTMLMdsPaginatorItemElement)}
+            onClick={this.handleLastClick}
           >
             {this.pages}
           </mds-paginator-item>
@@ -130,9 +172,7 @@ export class MdsPaginator {
           class="item-icon"
           icon={miBaselineArrowForward}
           disabled={this.currentPage === this.pages}
-          onClick={(ev) =>
-            this.goToPage(this.currentPage + 1, ev.target as HTMLMdsPaginatorItemElement)
-          }
+          onClick={this.handleNextClick}
         />
       </Host>
     );

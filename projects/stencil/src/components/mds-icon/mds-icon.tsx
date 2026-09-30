@@ -33,10 +33,6 @@ export class MdsIcon {
     return atob(svgBase64);
   };
 
-  static setSvgPathStatic(path: string): void {
-    IconsSetService.setSvgPath(path);
-  }
-
   /**
    * Set the path to the directory of svg files
    * @param svgPath path to the directory of svg files
@@ -44,11 +40,12 @@ export class MdsIcon {
   @Method()
   async setSvgPath(svgPath: string): Promise<void> {
     IconsSetService.setSvgPath(svgPath);
+    return Promise.resolve();
   }
 
   @Watch('name')
   async updateIcon(): Promise<void> {
-    if (!this.name) return Promise.resolve();
+    if (this.name === '') return Promise.resolve();
 
     if (isIconFormatIsBase64(this.name)) {
       this.svgHTML = this.convertBase64ToSvg();

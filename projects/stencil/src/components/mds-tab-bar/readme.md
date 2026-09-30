@@ -223,9 +223,9 @@ mds-tab-bar mds-tab-bar-item {
 
 ## Slots
 
-| Slot        | Description                       |
-| ----------- | --------------------------------- |
-| `"default"` | Add `mds-tab-bar-item` element/s. |
+| Slot | Description                       |
+| ---- | --------------------------------- |
+|      | Add `mds-tab-bar-item` element/s. |
 
 
 ----------------------------------------------

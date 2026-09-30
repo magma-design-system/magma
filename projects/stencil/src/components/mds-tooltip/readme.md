@@ -32,14 +32,14 @@ The `<mds-tooltip>` web component is the floating contextual hint of the Magma D
 - **Detached trigger model**: The tooltip is not wrapped around its trigger; the required `target` selector is resolved and the component binds itself to the first matching caller.
 - **Hover-driven visibility**: The bubble appears and disappears as the pointer enters and leaves the trigger.
 - **Visibility is the source of truth**: Setting `visible` programmatically shows or dismisses the bubble, allowing the tooltip to be controlled without a hover.
-- **Live repositioning**: Changing any layout prop (`placement`, `offset`, `shift`, `shiftPadding`, `strategy`, `flip`, `autoPlacement`, `arrow`) recomputes the floating position on the fly.
+- **Live repositioning**: Changing any layout prop (`placement`, `offset`, `disableShift`, `shiftPadding`, `strategy`, `flip`, `disableAutoPlacement`, `hideArrow`) recomputes the floating position on the fly.
 - **Text-only default slot**: The default slot is meant for a plain text string (exposed as the `text` shadow part); HTML elements or components should not be slotted in.
 
 #### Properties & Visual Configurations
 
 - **`target`** (required) is the CSS selector of the trigger element the tooltip listens to and anchors against; the first match wins.
-- **`placement`** chooses the preferred side and alignment relative to the caller (e.g. `'top'`, `'bottom-start'`), while **`autoPlacement`** lets the system pick the best side automatically and **`flip`** allows falling back to the opposite side when the preferred one lacks space.
-- **`shift`** keeps the bubble inside the viewport, with **`shiftPadding`** reserving a safe gap from the viewport edges; **`offset`** sets the distance between the bubble and the caller.
+- **`placement`** chooses the preferred side and alignment relative to the caller (e.g. `'top'`, `'bottom-start'`); the system picks the best side automatically by default (**`disableAutoPlacement`** opts out and pins to `placement`) and **`flip`** allows falling back to the opposite side when the preferred one lacks space.
+- the bubble is kept inside the viewport by default (**`disableShift`** opts out), with **`shiftPadding`** reserving a safe gap from the viewport edges; **`offset`** sets the distance between the bubble and the caller.
 - **`strategy`** selects the CSS positioning strategy: `'fixed'` (default) escapes clipping ancestors, `'absolute'` anchors within the nearest positioned ancestor.
 - **`typography`** picks the text scale of the bubble (`'tip'`, `'caption'`, `'detail'`), where `'tip'` is the default compact hint sizing.
 
@@ -68,11 +68,11 @@ The most common form. Give the trigger element an `id` (or any unique CSS select
 
 #### Placement and Preferred Side
 
-Override the default `top` placement with `placement` when layout requires a different side. Set `auto-placement="false"` to lock the side and prevent the system from overriding it.
+Override the default `top` placement with `placement` when layout requires a different side. Add `disable-auto-placement` to lock the side and prevent the system from overriding it.
 
 ```html
 <mds-button id="dettagli-btn" label="Dettagli" variant="secondary" tone="outline"></mds-button>
-<mds-tooltip target="#dettagli-btn" placement="right" auto-placement="false">
+<mds-tooltip target="#dettagli-btn" placement="right" disable-auto-placement>
   Apre il pannello laterale con i dettagli completi
 </mds-tooltip>
 ```
@@ -81,22 +81,22 @@ Accepted values: `top`, `top-start`, `top-end`, `bottom`, `bottom-start`, `botto
 
 #### Flip Fallback When Space is Tight
 
-Enable `flip` so the tooltip moves to the opposite side if the preferred placement collides with the viewport edge. Combine with `auto-placement="false"` to keep a preferred side while allowing a single-axis fallback.
+Enable `flip` so the tooltip moves to the opposite side if the preferred placement collides with the viewport edge. Combine with `disable-auto-placement` to keep a preferred side while allowing a single-axis fallback.
 
 ```html
 <mds-button id="azione-btn" label="Azione" variant="primary"></mds-button>
-<mds-tooltip target="#azione-btn" placement="top" auto-placement="false" flip>
+<mds-tooltip target="#azione-btn" placement="top" disable-auto-placement flip>
   Esegui l'operazione selezionata
 </mds-tooltip>
 ```
 
 #### Viewport-Safe Shift
 
-`shift` (default `true`) slides the tooltip along its axis so it stays inside the viewport. Increase `shift-padding` to keep a wider safe margin from the viewport edges.
+By default the tooltip slides along its axis so it stays inside the viewport (set `disable-shift` to opt out). Increase `shift-padding` to keep a wider safe margin from the viewport edges.
 
 ```html
 <mds-button id="bordo-btn" label="Vicino al bordo" variant="dark" tone="outline"></mds-button>
-<mds-tooltip target="#bordo-btn" shift shift-padding="24">
+<mds-tooltip target="#bordo-btn" shift-padding="24">
   Questa azione e' irreversibile
 </mds-tooltip>
 ```
@@ -273,25 +273,25 @@ The native `title` tooltip is not keyboard-accessible, not styleable, and not an
 
 ## Properties
 
-| Property              | Attribute        | Description                                                                                       | Type                                                                                                                                                                 | Default     |
-| --------------------- | ---------------- | ------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| `autoPlacement`       | `auto-placement` | If set, the component will be placed automatically near it's caller.                              | `boolean`                                                                                                                                                            | `true`      |
-| `flip`                | `flip`           | Specifies the placement of the component if no space is available where it is placed.             | `boolean`                                                                                                                                                            | `false`     |
-| `offset`              | `offset`         | Sets distance between the tooltip and the caller.                                                 | `number`                                                                                                                                                             | `12`        |
-| `placement`           | `placement`      | Specifies where the component should be placed relative to the caller.                            | `"bottom" \| "bottom-end" \| "bottom-start" \| "left" \| "left-end" \| "left-start" \| "right" \| "right-end" \| "right-start" \| "top" \| "top-end" \| "top-start"` | `'top'`     |
-| `shift`               | `shift`          | If set, the component will be kept inside the viewport.                                           | `boolean`                                                                                                                                                            | `true`      |
-| `shiftPadding`        | `shift-padding`  | Sets a safe area distance between the tooltip and the viewport.                                   | `number`                                                                                                                                                             | `12`        |
-| `strategy`            | `strategy`       | Sets the CSS position strategy of the component.                                                  | `"absolute" \| "fixed"`                                                                                                                                              | `'fixed'`   |
-| `target` _(required)_ | `target`         | Specifies the selector of the target element, this attribute is used with `querySelector` method. | `string`                                                                                                                                                             | `undefined` |
-| `typography`          | `typography`     | Specifies the font typography of the element                                                      | `"caption" \| "detail" \| "tip"`                                                                                                                                     | `'tip'`     |
-| `visible`             | `visible`        | Specifies the visibility of the component.                                                        | `boolean`                                                                                                                                                            | `false`     |
+| Property               | Attribute                | Description                                                                                       | Type                                                                                                                                                                 | Default     |
+| ---------------------- | ------------------------ | ------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| `disableAutoPlacement` | `disable-auto-placement` | If set, the component will not be placed automatically near it's caller.                          | `boolean`                                                                                                                                                            | `false`     |
+| `disableShift`         | `disable-shift`          | If set, the component will not be kept inside the viewport.                                       | `boolean`                                                                                                                                                            | `false`     |
+| `flip`                 | `flip`                   | Specifies the placement of the component if no space is available where it is placed.             | `boolean`                                                                                                                                                            | `false`     |
+| `offset`               | `offset`                 | Sets distance between the tooltip and the caller.                                                 | `number`                                                                                                                                                             | `12`        |
+| `placement`            | `placement`              | Specifies where the component should be placed relative to the caller.                            | `"bottom" \| "bottom-end" \| "bottom-start" \| "left" \| "left-end" \| "left-start" \| "right" \| "right-end" \| "right-start" \| "top" \| "top-end" \| "top-start"` | `'top'`     |
+| `shiftPadding`         | `shift-padding`          | Sets a safe area distance between the tooltip and the viewport.                                   | `number`                                                                                                                                                             | `12`        |
+| `strategy`             | `strategy`               | Sets the CSS position strategy of the component.                                                  | `"absolute" \| "fixed"`                                                                                                                                              | `'fixed'`   |
+| `target` _(required)_  | `target`                 | Specifies the selector of the target element, this attribute is used with `querySelector` method. | `string`                                                                                                                                                             | `undefined` |
+| `typography`           | `typography`             | Specifies the font typography of the element                                                      | `"caption" \| "detail" \| "tip"`                                                                                                                                     | `'tip'`     |
+| `visible`              | `visible`                | Specifies the visibility of the component.                                                        | `boolean`                                                                                                                                                            | `false`     |
 
 
 ## Slots
 
-| Slot        | Description                                                                            |
-| ----------- | -------------------------------------------------------------------------------------- |
-| `"default"` | Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here. |
+| Slot | Description                                                                            |
+| ---- | -------------------------------------------------------------------------------------- |
+|      | Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here. |
 
 
 ## Shadow Parts

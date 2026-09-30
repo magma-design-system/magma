@@ -1,22 +1,25 @@
-:host-context(:root.pref-contrast-more) {
-  background-color: rgb(var(--tone-neutral));
-  box-shadow: var(--shadow-outline-50);
-  color: rgb(var(--tone-neutral-01));
+/* Contrast preference. The component reflects the resolved mode from <html> onto
+ * its host as pref-contrast (see subscribePreference in @common/preference); these
+ * plain shadow selectors refine for high contrast. `more` is the explicit choice;
+ * `system` and no controller follow the OS via @media. Cross-browser, no :host-context. */
+
+:host([pref-contrast='more']) {
+  box-shadow: var(--shadow-ring-2);
+  color: rgb(var(--magma-text-default));
 
   &:host(:hover) {
-    box-shadow: var(--shadow-outline-strong-100);
+    box-shadow: var(--shadow-ring-strong-4);
   }
 }
 
 @media (prefers-contrast: more) {
-  :host-context(:root.pref-contrast-system),
-  :host-context(:root:not([data-magma-pref])) {
-    background-color: rgb(var(--tone-neutral));
-    box-shadow: var(--shadow-outline-50);
-    color: rgb(var(--tone-neutral-01));
+  :host([pref-contrast='system']),
+  :host(:not([pref-contrast])) {
+    box-shadow: var(--shadow-ring-2);
+    color: rgb(var(--magma-text-default));
 
     &:host(:hover) {
-      box-shadow: var(--shadow-outline-strong-100);
+      box-shadow: var(--shadow-ring-strong-4);
     }
   }
 }

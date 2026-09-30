@@ -26,7 +26,7 @@ const Template = () => {
             <mds-button variant="light">This is a rendered component</mds-button>
             <mds-text>
               Use{' '}
-              <mds-text typography="hack" class="bg-tone-neutral">
+              <mds-text typography="hack" class="bg-surface-default">
                 hydrated.css
               </mds-text>{' '}
               from styles to avoid <b>FOUC, Flash of Unstyled Content</b>

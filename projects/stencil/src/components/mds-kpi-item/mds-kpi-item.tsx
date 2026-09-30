@@ -1,4 +1,5 @@
 import { Component, Element, Host, Prop, h, State } from '@stencil/core';
+import { preferenceStore } from '@common/preference';
 
 /**
  * @part content - Selects the label and description wrapper element
@@ -36,6 +37,15 @@ export class MdsKpiItem {
    */
   @Prop() readonly icon?: string;
 
+  /**
+   * The animated texts stay empty until the item is on screen, and an empty text has no
+   * line box at all: the info panel measured 32px and jumped to 82px the moment the value
+   * arrived, with the icon sliding up behind it. Waiting on a run of spaces as long as the
+   * value holds that line box open - mds-text keeps the whitespace of an animated text, so
+   * this is the same picture the animation itself starts from.
+   */
+  private reserveLine = (text: string): string => ' '.repeat(text.length);
+
   private setObserver = (): void => {
     if (typeof window === 'undefined') return;
     this.observer = new window.IntersectionObserver(
@@ -58,7 +68,14 @@ export class MdsKpiItem {
 
   render() {
     return (
-      <Host aria-label={`${this.label}: ${this.description}`} role="listitem">
+      <Host
+        aria-label={`${this.label}: ${this.description}`}
+        role="listitem"
+        pref-animation={preferenceStore.state.animation}
+        pref-contrast={preferenceStore.state.contrast}
+        pref-mode={preferenceStore.state.mode}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
+      >
         {this.icon && (
           <div class="icon-container" part="icon-container">
             <mds-icon class="icon" name={this.icon} part="icon"></mds-icon>
@@ -69,7 +86,7 @@ export class MdsKpiItem {
             <mds-text
               class="value"
               typography="h2"
-              text={this.isIntersecting ? this.label : ''}
+              text={this.isIntersecting ? this.label : this.reserveLine(this.label)}
               animation="yugop"
             ></mds-text>
           )}
@@ -82,7 +99,7 @@ export class MdsKpiItem {
             <mds-text
               class="description"
               typography="label"
-              text={this.isIntersecting ? this.description : ''}
+              text={this.isIntersecting ? this.description : this.reserveLine(this.description)}
               animation="yugop"
             ></mds-text>
           )}

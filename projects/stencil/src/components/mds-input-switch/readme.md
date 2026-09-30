@@ -303,24 +303,11 @@ mds-input-switch {
 | `mdsInputSwitchChange` | Emits when the value changes | `CustomEvent<MdsInputSwitchEventDetail>` |
 
 
-## Methods
-
-### `updateLang() => Promise<void>`
-
-
-
-#### Returns
-
-Type: `Promise<void>`
-
-
-
-
 ## Slots
 
-| Slot        | Description                      |
-| ----------- | -------------------------------- |
-| `"default"` | Put text string or elements here |
+| Slot | Description                      |
+| ---- | -------------------------------- |
+|      | Put text string or elements here |
 
 
 ## CSS Custom Properties

@@ -35,6 +35,7 @@ module.exports = {
       2,
       'always',
       [
+        'codemod',
         'design-tokens',
         'icons',
         'identity',

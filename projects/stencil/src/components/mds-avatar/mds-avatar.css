@@ -8,42 +8,14 @@
  * @prop --mds-avatar-radius: The border-radius of the element
  */
 
-@property --mds-avatar-background-color-pending {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-08));
-  syntax: '<color>';
-}
-
-@property --mds-avatar-background-color {
-  inherits: false;
-  initial-value: rgb(var(--variant-primary-05));
-  syntax: '<color>';
-}
-
-@property --mds-avatar-color {
-  inherits: false;
-  initial-value: rgb(var(--variant-primary-10));
-  syntax: '<color>';
-}
-
-@property --mds-avatar-radius {
-  inherits: false;
-  initial-value: 1000px;
-  syntax: '<length>';
-}
-
-@property --mds-avatar-initials-padding {
-  inherits: false;
-  initial-value: 20%;
-  syntax: '<percentage>';
-}
-
 :host {
-  --mds-avatar-background-color-pending: rgb(var(--tone-neutral-08));
-  --mds-avatar-background-color: rgb(var(--variant-primary-05));
-  --mds-avatar-color: rgb(var(--variant-primary-10));
+  --mds-avatar-background-color-pending: rgb(var(--magma-wash-strong));
+  --mds-avatar-background-color: rgb(var(--magma-accent-emphasis));
+  --mds-avatar-color: rgb(var(--magma-accent-surface-subtle));
   --mds-avatar-radius: var(--radius-full);
   --mds-avatar-initials-padding: 20%;
+  --mds-avatar-transition-duration: var(--duration-200);
+  --private-avatar-transition-duration: var(--mds-avatar-transition-duration);
 
   aspect-ratio: 1/1;
   border-radius: var(--mds-avatar-radius);
@@ -60,7 +32,7 @@
   color: transparent;
   display: inline-flex;
   overflow: hidden;
-  transition-duration: var(--duration-200);
+  transition-duration: var(--private-avatar-transition-duration);
   transition-property: color, background-color, box-shadow, fill;
   width: 100%;
 }
@@ -131,18 +103,18 @@
 .icon {
   fill: var(--mds-avatar-color);
   height: 100%;
-  transition-duration: var(--duration-200);
+  transition-duration: var(--private-avatar-transition-duration);
   transition-property: fill;
   transition-timing-function: var(--ease-in-out-expo);
   width: 100%;
 }
 
 @container (max-width: 24px) {
-  :host-context(:not(.safari)) .avatar--initials {
+  .avatar--initials {
     padding: 0 var(--mds-avatar-initials-padding);
   }
 
-  :host-context(:not(.safari)) .initials-text {
+  .initials-text {
     @apply font-black;
   }
 }

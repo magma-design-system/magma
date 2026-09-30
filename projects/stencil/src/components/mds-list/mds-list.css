@@ -1,13 +1,12 @@
 @import './css/mds-list-fouc.css';
 
 :host {
-  @apply gap-400
-  pl-400;
-
   display: grid;
+  gap: --spacing(400);
+  padding-left: --spacing(400);
 }
 
 ul {
-  @apply m-0
-  p-0;
+  margin: 0;
+  padding: 0;
 }

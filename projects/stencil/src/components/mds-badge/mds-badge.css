@@ -8,42 +8,14 @@
  * @prop --mds-badge-border-width: Sets the border width of the component when tone is "outline"
  */
 
-@property --mds-badge-background {
-  inherits: false;
-  initial-value: rgb(var(--label-sky-09));
-  syntax: '<color>';
-}
-
-@property --mds-badge-border-color {
-  inherits: false;
-  initial-value: rgb(var(--label-sky-06));
-  syntax: '<color>';
-}
-
-@property --mds-badge-color {
-  inherits: false;
-  initial-value: rgb(var(--label-sky-03));
-  syntax: '<color>';
-}
-
-@property --mds-badge-border-width {
-  inherits: true;
-  initial-value: 1px;
-  syntax: '<length>';
-}
-
-@property --mds-badge-radius {
-  inherits: true;
-  initial-value: 10px;
-  syntax: '<length>';
-}
-
 :host {
   --mds-badge-background: rgb(var(--label-sky-09));
   --mds-badge-border-color: rgb(var(--label-sky-06));
   --mds-badge-border-width: 1px;
   --mds-badge-color: rgb(var(--label-sky-03));
   --mds-badge-radius: var(--radius-lg, 10px);
+  --mds-badge-transition-duration: var(--duration-200);
+  --private-badge-transition-duration: var(--mds-badge-transition-duration);
 
   align-items: center;
   background-color: var(--mds-badge-background);
@@ -52,19 +24,20 @@
   display: inline-flex;
   min-width: min-content;
   padding: --spacing(100) --spacing(200);
-  transition-duration: var(--duration-200);
+  transition-duration: var(--private-badge-transition-duration);
   transition-property: background-color, border-color, border-width, color;
   transition-timing-function: var(--ease-out-quad);
 }
 
+/* An outline badge is never filled. Set on background-color itself, not through
+   --mds-badge-background: every variant sheet restates that token, and the CSS
+   minifier merges same-selector rules, so an order-based reset loses to them. */
+
 :host([tone='outline']) {
+  background-color: transparent;
   border-color: var(--mds-badge-border-color);
   border-style: solid;
   border-width: var(--mds-badge-border-width);
-}
-
-:host([tone='text']) {
-  --mds-badge-background: rgb(var(--tone-neutral));
 }
 
 @import './css/mds-badge-variant-label.css';
@@ -73,6 +46,6 @@
 @import './css/mds-badge-variant.css';
 
 @import './css/mds-badge-pref-animation.css';
-@import './css/mds-badge-pref-theme.css';
+@import './css/mds-badge-pref-mode.css';
 @import './css/mds-badge-pref-contrast.css';
 @import './css/mds-badge-pref-contrast-dark.css';

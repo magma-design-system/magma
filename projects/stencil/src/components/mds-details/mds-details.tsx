@@ -9,12 +9,14 @@ import {
   Watch,
   h,
 } from '@stencil/core';
+import { hasChildWithSlot } from '@common/slot';
 import clsx from 'clsx';
 import miBaselineKeyboardArrowRight from '@icon/mi/baseline/keyboard-arrow-right.svg';
 import { KeyboardManager } from '@common/keyboard-manager';
+import { preferenceStore } from '@common/preference';
 
 /**
- * @slot default - Add `text string`, `HTML elements` or `components` to this slot.
+ * @slot - Add `text string`, `HTML elements` or `components` to this slot.
  * @slot action - Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element.
  * @slot icon - Insert an icon image, it can be `HTML elements` or `components`, it is **recommended** to add `mds-icon` element.
  * @slot title - Add a `text string`, `HTML elements` or `components`, it is **recommended** to use `mds-text` element.
@@ -69,7 +71,7 @@ export class MdsDetails {
   };
 
   private checkIcon = (): void => {
-    this.hasIcon = this.host.querySelector(':scope > [slot="icon"]') !== null;
+    this.hasIcon = hasChildWithSlot(this.host, 'icon');
   };
 
   private onSlotChangeHandler = (): void => {
@@ -78,12 +80,22 @@ export class MdsDetails {
 
   render() {
     return (
-      <Host>
+      <Host
+        pref-animation={preferenceStore.state.animation}
+        pref-contrast={preferenceStore.state.contrast}
+      >
         <div class={clsx('icon', this.hasIcon ? '' : 'icon--hidden')} onClick={this.toggle}>
           <slot name="icon" onSlotchange={this.onSlotChangeHandler} />
         </div>
         <div class="content">
-          <header class="header" part="header" tabindex="0" onClick={this.toggle}>
+          <div
+            class="header"
+            part="header"
+            role="button"
+            aria-expanded={this.isOpened ? 'true' : 'false'}
+            tabindex="0"
+            onClick={this.toggle}
+          >
             <div class="title" part="title">
               <slot name="title" />
             </div>
@@ -91,7 +103,7 @@ export class MdsDetails {
               class={clsx('helper-icon', this.isOpened && 'opened')}
               innerHTML={miBaselineKeyboardArrowRight}
             />
-          </header>
+          </div>
           <div class={clsx('details', this.isOpened && 'opened')}>
             <div class="content-expander" part="content">
               <slot />

@@ -13,6 +13,22 @@ export default {
       options: ['2024-12-16', '2024-12-24'],
       description: 'Sets the end date of the calendar',
     },
+    'hide-today': {
+      control: 'boolean',
+      description: "Hides the highlight on today's date",
+    },
+    'single-picker': {
+      control: 'boolean',
+      description: 'Selects a single date instead of a date range',
+    },
+    'hide-previous-button': {
+      control: 'boolean',
+      description: 'Hides the previous navigation button',
+    },
+    'hide-next-button': {
+      control: 'boolean',
+      description: 'Hides the next navigation button',
+    },
   },
 };
 
@@ -24,5 +40,14 @@ export const Default = {
   args: {
     'start-date': '2025-03-18',
     'end-date': '2025-03-24',
+  },
+};
+
+export const SinglePicker = {
+  render: Template,
+
+  args: {
+    'single-picker': true,
+    'start-date': '2025-03-18',
   },
 };

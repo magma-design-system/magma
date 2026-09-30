@@ -79,7 +79,7 @@ The `<mds-author>` web component is the layout primitive of the Magma Design Sys
 
 #### Semantic Behavior
 
-- **Conditional avatar rendering**: The avatar column appears only when a direct child assigned to `slot="avatar"` is present, so omitting it produces no empty column.
+- **Conditional avatar rendering**: The avatar column appears only while a direct child assigned to `slot="avatar"` is present, also when it is added after the first render, so omitting it produces no empty column.
 - **Default slot is content, not text**: The default slot is meant to hold structured author information (typically stacked `mds-text` elements for name and role) rather than a single inline label.
 - **Responsive collapse**: Below ~200px wide the avatar stacks above the info and they center, so the same markup adapts from a horizontal row to a compact vertical card.
 - **Compound usage**: It is designed to wrap an `mds-avatar` in the `avatar` slot; the avatar element owns initials/image fallback logic, while `<mds-author>` only positions it.
@@ -295,10 +295,10 @@ Using a raw `<img>` in the avatar slot skips the initials fallback, image-load e
 
 ## Slots
 
-| Slot        | Description                                                                                                                          |
-| ----------- | ------------------------------------------------------------------------------------------------------------------------------------ |
-| `"avatar"`  | Insert an avatar image, it is **recommended** to add `mds-avatar` element.                                                           |
-| `"default"` | Add `text string`, `HTML elements` or `components` to this slot. Insert author information, name, role or other useful author infos. |
+| Slot       | Description                                                                                                                          |
+| ---------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+|            | Add `text string`, `HTML elements` or `components` to this slot. Insert author information, name, role or other useful author infos. |
+| `"avatar"` | Insert an avatar image, it is **recommended** to add `mds-avatar` element.                                                           |
 
 
 ----------------------------------------------

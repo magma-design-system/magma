@@ -8,53 +8,27 @@
  * @prop --mds-file-preview-icon-color: Sets the color of the file preview icon
  */
 
-@property --mds-file-preview-background-color {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral));
-  syntax: '<color>';
-}
-
-@property --mds-file-preview-border-radius {
-  inherits: false;
-  initial-value: var(--radius-lg);
-  syntax: '<length>';
-}
-
-@property --mds-file-preview-color {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-03));
-  syntax: '<color>';
-}
-
-@property --mds-file-preview-icon-background {
-  inherits: false;
-  initial-value: inherit;
-  syntax: '<color>';
-}
-
-@property --mds-file-preview-icon-color {
-  inherits: false;
-  initial-value: var(--mds-file-preview-color);
-  syntax: '<color>';
-}
-
 :host {
-  --mds-file-preview-background-color: rgb(var(--tone-neutral));
-  --mds-file-preview-border-radius: var(--radius-2xl);
-  --mds-file-preview-color: rgb(var(--tone-neutral-03));
+  --mds-file-preview-background-color: rgb(var(--magma-surface-raised));
+  --mds-file-preview-border-radius: var(--magma-radius-2xl);
+  --mds-file-preview-color: rgb(var(--magma-text-muted));
   --mds-file-preview-icon-background: inherit;
   --mds-file-preview-icon-color: var(--mds-file-preview-color);
+  --mds-file-preview-transition-duration: 0s;
+  --private-file-preview-padding: --spacing(400);
+  --private-file-preview-transition-duration: var(--mds-file-preview-transition-duration);
 
   align-items: stretch;
   background-color: var(--mds-file-preview-background-color);
   border-radius: var(--mds-file-preview-border-radius);
   box-shadow: var(--shadow-box-md);
-  corner-shape: var(--magma-corner-shape, round);
+  corner-shape: var(--magma-corner-shape);
   display: flex;
   fill: var(--mds-file-preview-color);
   justify-content: stretch;
   overflow: hidden;
   position: relative;
+  transition-duration: var(--private-file-preview-transition-duration);
 }
 
 .card {
@@ -63,19 +37,27 @@
   corner-shape: inherit;
   display: grid;
   gap: --spacing(200);
-  padding: --spacing(400);
+  padding: var(--private-file-preview-padding);
   width: 100%;
 }
 
-.preview {
-  @apply aspect-square;
+/* Concentric corners: the inside of a corner is the outside minus the gap that separates
+   them, so the radius and the padding have to read the SAME variable or they drift. This
+   one subtracted --spacing(200) from a --spacing(400) padding and the preview came out one
+   step too round - visibly so under `round`, where 16px sat in a gap that asks for 8. */
 
+.preview {
+  aspect-ratio: var(--aspect-square);
   background-color: var(--mds-file-preview-icon-background);
-  border-radius: calc(var(--mds-file-preview-border-radius) - --spacing(200));
+  border-radius: max(
+    0px,
+    calc(var(--mds-file-preview-border-radius) - var(--private-file-preview-padding))
+  );
   box-sizing: border-box;
   color: var(--mds-file-preview-color);
   corner-shape: inherit;
   fill: var(--mds-file-preview-icon-color);
+  transition-duration: inherit;
   width: 100%;
 }
 
@@ -135,5 +117,5 @@
 @import './css/mds-file-preview-format.css';
 @import './css/mds-file-preview-variants.css';
 @import './css/mds-file-preview-pref-animation.css';
-@import './css/mds-file-preview-pref-theme.css';
+@import './css/mds-file-preview-pref-mode.css';
 @import './css/mds-file-preview-pref-contrast.css';

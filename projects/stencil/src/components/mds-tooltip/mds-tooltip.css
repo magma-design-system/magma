@@ -13,54 +13,6 @@
  * @prop --mds-tooltip-z-index: z-index of the tooltip container.
  */
 
-@property --mds-tooltip-arrow-background {
-  inherits: false;
-  initial-value: var(--mds-tooltip-background);
-  syntax: '<color>';
-}
-
-@property --mds-tooltip-background {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral));
-  syntax: '<color>';
-}
-
-@property --mds-tooltip-delay {
-  inherits: false;
-  initial-value: 1s;
-  syntax: '<time>';
-}
-
-@property --mds-tooltip-duration {
-  inherits: false;
-  initial-value: 0.5s;
-  syntax: '<time>';
-}
-
-@property --mds-tooltip-dot-padding {
-  inherits: false;
-  initial-value: --spacing(100);
-  syntax: '<length>';
-}
-
-@property --mds-tooltip-transform-from {
-  inherits: false;
-  initial-value: scale(0.9) translateY(-3%);
-  syntax: '<transform-function>';
-}
-
-@property --mds-tooltip-transform-to {
-  inherits: false;
-  initial-value: scale(1) translate(0, 0);
-  syntax: '<transform-list>';
-}
-
-@property --mds-tooltip-z-index {
-  inherits: false;
-  initial-value: var(--magma-tooltip-z-index, 4000);
-  syntax: '<integer>';
-}
-
 /* ❌ Not supported
 @property --mds-tooltip-drop-shadow {
   inherits: false;
@@ -76,34 +28,38 @@
 
 :host {
   --mds-tooltip-arrow-background: var(--mds-tooltip-background);
-  --mds-tooltip-background: rgb(var(--tone-neutral));
+  --mds-tooltip-background: rgb(var(--magma-surface-overlay));
   --mds-tooltip-delay: 1s;
   --mds-tooltip-drop-shadow: drop-shadow(0 10px 8px rgb(0 0 0 / 0.04))
     drop-shadow(0 4px 3px rgb(0 0 0 / 0.1)) drop-shadow(0 0 1px rgb(0 0 0 / 0.1));
   --mds-tooltip-duration: 0.5s;
+  --private-tooltip-duration: var(--mds-tooltip-duration);
   --mds-tooltip-ease: var(--ease-out-expo);
   --mds-tooltip-dot-padding: --spacing(100);
   --mds-tooltip-transform-from: scale(0.9) translateY(calc(--spacing(400) * -1));
   --mds-tooltip-transform-to: scale(1) translate(0, 0);
-  --mds-tooltip-z-index: var(--magma-tooltip-z-index, 4000);
-
-  @apply gap-400
-    px-200
-    py-100
-    rounded;
+  --mds-tooltip-z-index: var(--magma-tooltip-z-index);
 
   background-color: var(--mds-tooltip-background);
+  border-radius: var(--radius-3xs);
   box-sizing: border-box;
   display: grid;
   filter: var(--mds-tooltip-drop-shadow);
+  gap: --spacing(400);
   max-width: --spacing(6400);
   opacity: 0;
+  padding-block: --spacing(100);
+  padding-inline: --spacing(200);
   pointer-events: none;
   position: fixed;
   transform: var(--mds-tooltip-transform-from);
   transition-delay: 0s;
-  transition-duration: var(--mds-tooltip-duration);
-  transition-property: opacity, transform, transform-origin;
+  transition-duration: var(--private-tooltip-duration);
+
+  /* transform-origin is the pivot of the opening: in the list it interpolates from
+   * the initial 50% 50% and the tooltip grows from a point that moves while it
+   * grows. */
+  transition-property: opacity, transform;
   transition-timing-function: var(--mds-tooltip-ease);
   width: fit-content;
   z-index: var(--mds-tooltip-z-index);
@@ -130,24 +86,23 @@
 }
 
 .arrow {
-  @apply duration-300
-    ease-in-out;
+  @apply ease-in-out;
 
   display: flex;
   fill: var(--mds-tooltip-arrow-background);
   pointer-events: none;
   position: fixed;
   top: -9px;
+  transition-duration: var(--duration-300);
   transition-property: fill;
   z-index: -1;
 }
 
 ::slotted(*) {
-  @apply z-10;
-
   position: relative;
+  z-index: 10;
 }
 
 @import './css/mds-tooltip-pref-animation.css';
-@import './css/mds-tooltip-pref-theme.css';
+@import './css/mds-tooltip-pref-mode.css';
 @import './css/mds-tooltip-pref-contrast.css';

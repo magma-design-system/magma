@@ -157,13 +157,9 @@ document.querySelector('#col-data').direction = 'none';
 
 #### Styling Customization
 
-Adjust cell padding through the documented `--mds-table-header-cell-padding` CSS custom property. Target the `label` or `action` shadow parts for glyph-level overrides. Set properties on the host or a parent selector.
+Target the `label` or `action` shadow parts for glyph-level overrides. Set them on the host or a parent selector.
 
 ```css
-mds-table-header mds-table-header-cell {
-  --mds-table-header-cell-padding: var(--spacing-200) var(--spacing-300);
-}
-
 mds-table-header-cell::part(label) {
   font-weight: var(--font-weight-semibold);
 }
@@ -238,7 +234,7 @@ The component renders its label through the `label` prop; there is no documented
 
 #### Do Not Pierce Shadow DOM to Style the Sort Button
 
-The sort button is an internal `<mds-button>` inside the shadow root. Use the documented `::part(action)` or `--mds-table-header-cell-padding` CSS custom property instead of undocumented selectors.
+The sort button is an internal `<mds-button>` inside the shadow root. Use the documented `::part(action)` instead of undocumented selectors.
 
 ```css
 /* 🚫 INCORRECT */
@@ -249,9 +245,6 @@ mds-table-header-cell >>> .action {
 /* ✅ CORRECT */
 mds-table-header-cell::part(action) {
   /* use only documented part-level overrides */
-}
-mds-table-header-cell {
-  --mds-table-header-cell-padding: var(--spacing-300);
 }
 ```
 
@@ -281,7 +274,7 @@ mds-table-header-cell {
 
 | Property    | Attribute   | Description                                                               | Type                                    | Default     |
 | ----------- | ----------- | ------------------------------------------------------------------------- | --------------------------------------- | ----------- |
-| `direction` | `direction` |                                                                           | `"ascending" \| "descending" \| "none"` | `'none'`    |
+| `direction` | `direction` | Specifies the current sort direction of the column.                       | `"ascending" \| "descending" \| "none"` | `'none'`    |
 | `label`     | `label`     | Sets a label for the cell                                                 | `string \| undefined`                   | `undefined` |
 | `sortable`  | `sortable`  | Tells the component to make the cell able to sort the table columns items | `boolean \| undefined`                  | `undefined` |
 
@@ -292,13 +285,6 @@ mds-table-header-cell {
 | ---------- | ----------- |
 | `"action"` |             |
 | `"label"`  |             |
-
-
-## CSS Custom Properties
-
-| Name                              | Description                   |
-| --------------------------------- | ----------------------------- |
-| `--mds-table-header-cell-padding` | The padding of the table cell |
 
 
 ## Dependencies

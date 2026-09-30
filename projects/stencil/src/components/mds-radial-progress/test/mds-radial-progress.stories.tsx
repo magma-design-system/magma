@@ -38,7 +38,11 @@ export default {
 };
 
 const Template = (args) => (
-  <mds-radial-progress {...args} style={{ width: `${args.width}px` }}></mds-radial-progress>
+  <mds-radial-progress
+    aria-label="Progress"
+    {...args}
+    style={{ width: `${args.width}px` }}
+  ></mds-radial-progress>
 );
 
 export const Default = {

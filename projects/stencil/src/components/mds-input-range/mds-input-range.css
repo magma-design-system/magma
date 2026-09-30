@@ -13,14 +13,16 @@
  */
 
 :host {
-  --mds-input-range-thumb-background-disabled: rgb(var(--tone-neutral-08));
-  --mds-input-range-thumb-background: rgb(var(--tone-neutral));
+  --mds-input-range-transition-duration: var(--duration-300);
+  --private-input-range-transition-duration: var(--mds-input-range-transition-duration);
+  --mds-input-range-thumb-background-disabled: rgb(var(--magma-wash-strong));
+  --mds-input-range-thumb-background: rgb(var(--magma-surface-overlay));
   --mds-input-range-thumb-cursor: col-resize;
   --mds-input-range-thumb-size: --spacing(400);
-  --mds-input-range-track-background-disabled: rgb(var(--tone-neutral-08));
-  --mds-input-range-track-background: rgb(var(--tone-neutral-08));
-  --mds-input-range-track-progress-background-disabled: rgb(var(--tone-neutral-06));
-  --mds-input-range-track-progress-background: rgb(var(--variant-primary-03));
+  --mds-input-range-track-background-disabled: rgb(var(--magma-wash-strong));
+  --mds-input-range-track-background: rgb(var(--magma-wash-strong));
+  --mds-input-range-track-progress-background-disabled: rgb(var(--magma-border-strong));
+  --mds-input-range-track-progress-background: rgb(var(--magma-accent-emphasis-hover));
   --mds-input-range-track-size: --spacing(600);
 
   /* private properties */
@@ -29,13 +31,9 @@
   );
   --private-thumb-size: calc(var(--mds-input-range-thumb-size) + var(--private-border-width) * 2);
 
-  @apply duration-300
-    ease-in-out
-    gap-200;
-
   display: grid;
-  gap: --spacing(100);
-  transition-duration: var(--duration-300);
+  gap: --spacing(200);
+  transition-duration: var(--private-input-range-transition-duration);
   transition-property: color;
   transition-timing-function: var(--ease-in-out);
 }
@@ -63,22 +61,21 @@
 }
 
 .track {
-  @apply w-full;
-
   box-sizing: border-box;
   position: absolute;
   width: 100%;
 }
 
 .field {
-  @apply focus-bounce z-20;
+  @apply focus-bounce;
 
   appearance: none;
   background-color: transparent;
-  border-radius: 1000px;
+  border-radius: var(--radius-full);
   flex-grow: 1;
   height: --spacing(400);
   margin: 0;
+  z-index: 20;
 }
 
 .field:focus-visible {
@@ -111,7 +108,7 @@
   background-color: var(--mds-input-range-track-progress-background);
   display: flex;
   height: var(--mds-input-range-track-size);
-  transition-duration: var(--duration-300);
+  transition-duration: var(--private-input-range-transition-duration);
   transition-property: background-color;
 
   /*
@@ -131,7 +128,7 @@
   display: flex;
   height: var(--mds-input-range-track-size);
   overflow: hidden;
-  transition-duration: var(--duration-300);
+  transition-duration: var(--private-input-range-transition-duration);
   transition-property: background-color;
   transition-timing-function: var(--ease-in-out);
   width: 100%;
@@ -145,5 +142,5 @@
 
 @import './css/mds-input-range-disabled.css';
 @import './css/mds-input-range-pref-animation.css';
-@import './css/mds-input-range-pref-theme.css';
+@import './css/mds-input-range-pref-mode.css';
 @import './css/mds-input-range-pref-contrast.css';

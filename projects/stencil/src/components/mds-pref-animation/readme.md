@@ -47,7 +47,7 @@ Place multiple `mds-pref-*` children inside the same `<mds-pref>`. The parent pr
 <mds-pref>
   <mds-pref-animation></mds-pref-animation>
   <mds-pref-contrast></mds-pref-contrast>
-  <mds-pref-theme></mds-pref-theme>
+  <mds-pref-mode></mds-pref-mode>
   <mds-pref-consumption></mds-pref-consumption>
 </mds-pref>
 ```
@@ -214,19 +214,6 @@ html.pref-animation-reduce .my-widget {
 | Event           | Description                           | Type                                    |
 | --------------- | ------------------------------------- | --------------------------------------- |
 | `mdsPrefChange` | Emits when the component is triggered | `CustomEvent<MdsPrefChangeEventDetail>` |
-
-
-## Methods
-
-### `updateLang() => Promise<void>`
-
-
-
-#### Returns
-
-Type: `Promise<void>`
-
-
 
 
 ## Dependencies

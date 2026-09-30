@@ -15,9 +15,9 @@ export default {
       options: appearanceSetDictionary,
       control: { type: 'select' },
     },
-    backdrop: {
+    'hide-backdrop': {
       description:
-        'Sets if the backdrop is shown when the mds-header-bar attribute appearace is set to `inline`',
+        'Hides the backdrop shown when the mds-header-bar attribute appearace is set to `inline`',
       type: 'boolean',
     },
     'auto-hide': {
@@ -63,7 +63,9 @@ const Template = (args) => (
         <div class="flex gap-400 items-center">
           <mds-img class="w-1000" src="/logo-gruppo-maggioli.svg" />
           <div class="mb-100 grid grid-cols-full gap-100">
-            <mds-text typography="h5">Mobile menu</mds-text>
+            <mds-text typography="h5" tag="h3">
+              Mobile menu
+            </mds-text>
             <mds-text typography="option" class="text-tone-neutral-04">
               Shows up under 1024px
             </mds-text>
@@ -80,7 +82,9 @@ const Template = (args) => (
         <div class="flex gap-200 items-center p-600 border-b border-tone-neutral-09">
           <mds-img class="w-1000" src="/logo-gruppo-maggioli.svg" />
           <div class="mb-100">
-            <mds-text typography="h6">Gruppo Maggioli</mds-text>
+            <mds-text typography="h6" tag="h4">
+              Gruppo Maggioli
+            </mds-text>
             <mds-text typography="option" class="text-tone-neutral-04">
               Header by RD Team
             </mds-text>
@@ -122,7 +126,9 @@ const TemplateAutoHide = (args) => (
         <div class="flex gap-400 items-center">
           <mds-img class="w-1000" src="/logo-gruppo-maggioli.svg" />
           <div class="mb-100 grid grid-cols-full gap-100">
-            <mds-text typography="h5">Mobile menu</mds-text>
+            <mds-text typography="h5" tag="h3">
+              Mobile menu
+            </mds-text>
             <mds-text typography="option" class="text-tone-neutral-04">
               Shows up under 1024px
             </mds-text>
@@ -139,7 +145,9 @@ const TemplateAutoHide = (args) => (
         <div class="flex gap-200 items-center p-600 border-b border-tone-neutral-09">
           <mds-img class="w-1000" src="/logo-gruppo-maggioli.svg" />
           <div class="mb-100">
-            <mds-text typography="h6">Gruppo Maggioli</mds-text>
+            <mds-text typography="h6" tag="h4">
+              Gruppo Maggioli
+            </mds-text>
             <mds-text typography="option" class="text-tone-neutral-04">
               Header by RD Team
             </mds-text>
@@ -158,7 +166,7 @@ const TemplateAutoHide = (args) => (
 
 const TemplateLandingPage = (args) => (
   <div class="-m-600">
-    <div class="bg-label-amaranth-06 text-tone-neutral flex text-center items-center justify-center h-[600px] flex-col pt-2000 select-none">
+    <div class="bg-label-amaranth-06 text-fg-on-emphasis flex text-center items-center justify-center h-[600px] flex-col pt-2000 select-none">
       <mds-text typography="h1">Hey</mds-text>
       <mds-text typography="h1">WelcomeTo</mds-text>
       <mds-text typography="h1">ThisBeautiful</mds-text>
@@ -172,8 +180,8 @@ const TemplateLandingPage = (args) => (
       <div class="grid gap-600 grid-cols-3 max-mobile:grid-cols-1 max-w-screen-desktop">
         {Array(18)
           .fill(null)
-          .map(() => (
-            <div class="grid gap-25">
+          .map((_value, index) => (
+            <div key={index} class="grid gap-25">
               <mds-text typography="h5" tag="h2">
                 This is a section title
               </mds-text>
@@ -191,7 +199,9 @@ const TemplateLandingPage = (args) => (
         <div class="flex gap-400 items-center">
           <mds-img class="w-1000" src="/logo-gruppo-maggioli.svg" />
           <div class="mb-100 grid grid-cols-full gap-100">
-            <mds-text typography="h5">Mobile menu</mds-text>
+            <mds-text typography="h5" tag="h3">
+              Mobile menu
+            </mds-text>
             <mds-text typography="option" class="text-tone-neutral-04">
               Shows up under 1024px
             </mds-text>
@@ -208,7 +218,9 @@ const TemplateLandingPage = (args) => (
         <div class="flex gap-200 items-center p-600 border-b border-tone-neutral-09">
           <mds-img class="w-1000" src="/logo-gruppo-maggioli.svg" />
           <div class="mb-100">
-            <mds-text typography="h6">Gruppo Maggioli</mds-text>
+            <mds-text typography="h6" tag="h4">
+              Gruppo Maggioli
+            </mds-text>
             <mds-text typography="option" class="text-tone-neutral-04">
               Header by RD Team
             </mds-text>

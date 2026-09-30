@@ -1,26 +1,63 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { render } from '@stencil/vitest';
+import { themeLabelVariantDictionary } from '@type/variant';
+import { describeConditionalSlot } from '@test/slot';
 
 describe('mds-push-notification-item', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<mds-push-notification-item></mds-push-notification-item>');
+    const { root } = await render('<mds-push-notification-item></mds-push-notification-item>');
 
-    const element = await page.find('mds-push-notification-item');
-    expect(element).toHaveAttribute('hydrated');
+    expect(root).toHaveAttribute('hydrated');
+    expect(root).toEqualAttributes({
+      'date-format': 'timeago',
+      message: 'Nessun messaggio disponibile',
+      preview: 'image',
+      tone: 'weak',
+    });
 
-    expect(element.outerHTML).toEqualHtml(`
-      <mds-push-notification-item date-format="timeago" deletable="" hydrated="" message="Nessun messaggio disponibile" preview="image" tone="weak"><template shadowrootmode="open">
-        <div class="content" part="content">
-          <div class="header">
-            <div class="infos"></div>
-          </div>
-          <mds-text class="message" hydrated="" tag="span" truncate="all" typography="caption" variant="info">
-            Nessun messaggio disponibile
-          </mds-text>
-        </div>
-        <mds-button animation="none" aria-busy="false" class="close-button" hydrated="" icon="<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;24&quot; height=&quot;24&quot; viewBox=&quot;0 0 24 24&quot;><path d=&quot;M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10s10-4.47 10-10S17.53 2 12 2zm5 13.59L15.59 17L12 13.41L8.41 17L7 15.59L10.59 12L7 8.41L8.41 7L12 10.59L15.59 7L17 8.41L13.41 12L17 15.59z&quot;/></svg>" icon-position="left" size="md" tabindex="0" title="Close" tone="text" truncate="word" type="submit" variant="dark">
-        </mds-button>
-      </mds-push-notification-item>
-    `);
+    const shadow = root.shadowRoot!;
+    expect(shadow.querySelector('.content[part="content"] > .header > .infos')).not.toBeNull();
+
+    const message = shadow.querySelector('.content > mds-text.message')!;
+    expect(message).toEqualAttributes({
+      tag: 'span',
+      truncate: 'all',
+      typography: 'caption',
+      variant: 'info',
+    });
+    expect(message.textContent?.trim()).toBe('Nessun messaggio disponibile');
+  });
+
+  describeConditionalSlot({
+    html: '<mds-push-notification-item message="Message"></mds-push-notification-item>',
+    slot: 'badge',
+    region: '.badge',
+    childTag: 'span',
+  });
+
+  describeConditionalSlot({
+    html: '<mds-push-notification-item message="Message"></mds-push-notification-item>',
+    slot: 'action',
+    region: '.actions',
+  });
+  describe('the label color variants', () => {
+    /** The value that drives the paint; a variant with no block of its own never reaches it. */
+    const painted = async (variant: string): Promise<string> => {
+      const { root } = await render(
+        `<mds-push-notification-item variant="${variant}" icon="mi/baseline/palette"></mds-push-notification-item>`,
+      );
+      return getComputedStyle(root)
+        .getPropertyValue('--mds-push-notification-item-icon-background-color')
+        .trim();
+    };
+
+    it('paints every variant of the dictionary, none of them falling back', async () => {
+      // red and purple were in the dictionary and in the tokens, but had no block here:
+      // they painted the default, silently
+      const fallback = await painted('there-is-no-such-variant');
+
+      for (const variant of themeLabelVariantDictionary) {
+        expect([variant, await painted(variant)]).not.toEqual([variant, fallback]);
+      }
+    });
   });
 });

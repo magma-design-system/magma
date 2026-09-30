@@ -52,6 +52,17 @@ export function getStyleDictionaryColorConfigAllPlatforms(
         ],
       },
 
+      gimp: {
+        transformGroup: 'js',
+        buildPath: `${buildPath}/gimp/`,
+        files: [
+          {
+            destination: 'colors.gpl',
+            format: 'gimp/palette',
+          },
+        ],
+      },
+
       scss: {
         transformGroup: 'scss',
         buildPath: `${buildPath}/scss/`,

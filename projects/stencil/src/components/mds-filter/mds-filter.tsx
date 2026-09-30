@@ -10,12 +10,13 @@ import {
   Prop,
   State,
 } from '@stencil/core';
+import { preferenceStore } from '@common/preference';
 import { MdsFilterEventDetail } from './meta/event-detail';
 import { MdsFilterItemEventDetail } from '@component/mds-filter-item/meta/event-detail';
 import miBaselineClose from '@icon/mi/baseline/close.svg';
 
 /**
- * @slot default - Add `mds-filter-item` element/s.
+ * @slot - Add `mds-filter-item` element/s.
  */
 
 @Component({
@@ -53,16 +54,24 @@ export class MdsFilter {
   private queryItems = (): NodeListOf<HTMLMdsFilterItemElement> =>
     this.element.querySelectorAll<HTMLMdsFilterItemElement>('mds-filter-item');
 
+  /**
+   * Centres the selected item in the strip. The measure is taken from the boxes
+   * and applied as a delta on the current scroll: `offsetLeft` would mix two
+   * coordinate systems, because the items are slotted light children and their
+   * offsetParent is whatever is positioned above the host - the page, usually -
+   * while the strip lives in the shadow root. The difference between the two is
+   * the distance of the filter from that ancestor, so the further right the
+   * component sits the more the scroll overshoots, until it clamps at the end of
+   * the strip and pushes the clicked item against the left edge.
+   */
   private scrollTabs = (): void => {
     const items = this.queryItems();
     const tabItem = items[this.lastSelectedItem];
     const itemsContainer = this.element.shadowRoot?.querySelector<HTMLElement>('.items');
-    if (itemsContainer) {
-      itemsContainer.scrollLeft =
-        tabItem.offsetLeft -
-        itemsContainer.offsetLeft -
-        itemsContainer.offsetWidth / 2 +
-        tabItem.offsetWidth / 2;
+    if (itemsContainer && tabItem) {
+      const strip = itemsContainer.getBoundingClientRect();
+      const item = tabItem.getBoundingClientRect();
+      itemsContainer.scrollLeft += item.left - strip.left - (strip.width - item.width) / 2;
     }
   };
 
@@ -114,7 +123,9 @@ export class MdsFilter {
 
   @Listen('mdsFilterItemSelect')
   activeEventHandler(event: CustomEvent<MdsFilterItemEventDetail>): void {
-    this.lastSelectedItem = Number(event.detail.id ? event.detail.id.replace('item-', '') : 0);
+    this.lastSelectedItem = Number(
+      event.detail.id !== '' ? event.detail.id.replace('item-', '') : 0,
+    );
     this.scrollTabs();
 
     const items = this.queryItems();
@@ -155,7 +166,14 @@ export class MdsFilter {
 
   render() {
     return (
-      <Host aria-label={this.label} role="menubar">
+      <Host
+        aria-label={this.label}
+        role="menubar"
+        pref-animation={preferenceStore.state.animation}
+        pref-contrast={preferenceStore.state.contrast}
+        pref-mode={preferenceStore.state.mode}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
+      >
         {this.label && (
           <mds-text class="label" typography="label">
             {this.label}

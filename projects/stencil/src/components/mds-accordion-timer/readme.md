@@ -311,9 +311,9 @@ accordion.addEventListener('mdsAccordionTimerChange', (e) => {
 
 ## Slots
 
-| Slot        | Description                               |
-| ----------- | ----------------------------------------- |
-| `"default"` | Add `mds-accordion-timer-item` element/s. |
+| Slot | Description                               |
+| ---- | ----------------------------------------- |
+|      | Add `mds-accordion-timer-item` element/s. |
 
 
 ## CSS Custom Properties

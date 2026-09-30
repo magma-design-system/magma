@@ -6,9 +6,10 @@ import arrowSvg from './assets/arrow.svg';
 import { MdsDropdownEventDetail } from './meta/event-detail';
 import { DropdownInteractionType } from './meta/types';
 import { Backdrop, FloatingController, FloatingElement } from '@common/floating-controller';
+import { preferenceStore } from '@common/preference';
 
 /**
- * @slot default - Add `text string`, `HTML elements` or `components` to this slot, elements will be shown when the component is triggered.
+ * @slot - Add `text string`, `HTML elements` or `components` to this slot, elements will be shown when the component is triggered.
  */
 
 @Component({
@@ -27,9 +28,9 @@ export class MdsDropdown implements FloatingElement {
   @Element() readonly host!: HTMLMdsDropdownElement;
 
   /**
-   * If set, the component will have an arrow pointing to the caller.
+   * If set, the component will not have an arrow pointing to the caller.
    */
-  @Prop({ reflect: true }) readonly arrow: boolean = true;
+  @Prop({ reflect: true }) readonly hideArrow: boolean = false;
 
   /**
    * Sets the distance between arrow and dropdown margins.
@@ -37,9 +38,9 @@ export class MdsDropdown implements FloatingElement {
   @Prop() readonly arrowPadding: number = 24;
 
   /**
-   * If set, the component will be placed automatically near it's caller.
+   * If set, the component will not be placed automatically near it's caller.
    */
-  @Prop() readonly autoPlacement: boolean = false;
+  @Prop() readonly disableAutoPlacement: boolean = false;
 
   /**
    * Specifies if the component has a backdrop background
@@ -72,9 +73,9 @@ export class MdsDropdown implements FloatingElement {
   @Prop() readonly placement: FloatingUIPlacement = 'bottom';
 
   /**
-   * If set, the component will be kept inside the viewport.
+   * If set, the component will not be kept inside the viewport.
    */
-  @Prop() readonly shift: boolean = true;
+  @Prop() readonly disableShift: boolean = false;
 
   /**
    * Sets a safe area distance between the dropdown and the viewport.
@@ -82,9 +83,9 @@ export class MdsDropdown implements FloatingElement {
   @Prop() readonly shiftPadding: number = 24;
 
   /**
-   * If set, the component will follow the caller smoothly, visible when the page scrolls.
+   * If set, the component will not follow the caller smoothly when the page scrolls.
    */
-  @Prop() readonly smooth: boolean = true;
+  @Prop() readonly disableSmooth: boolean = false;
 
   /**
    * Sets the CSS position strategy of the component.
@@ -116,8 +117,8 @@ export class MdsDropdown implements FloatingElement {
    */
   @Event({ eventName: 'mdsDropdownChange' }) changedEvent: EventEmitter<MdsDropdownEventDetail>;
 
-  @Watch('arrow')
-  arrowChanged(): void {
+  @Watch('hideArrow')
+  hideArrowChanged(): void {
     this.floatingController.updatePosition();
   }
 
@@ -126,8 +127,8 @@ export class MdsDropdown implements FloatingElement {
     this.floatingController.updatePosition();
   }
 
-  @Watch('autoPlacement')
-  autoPlacementChanged(): void {
+  @Watch('disableAutoPlacement')
+  disableAutoPlacementChanged(): void {
     this.floatingController.updatePosition();
   }
 
@@ -161,8 +162,8 @@ export class MdsDropdown implements FloatingElement {
     this.floatingController.updatePosition();
   }
 
-  @Watch('shift')
-  shiftChanged(): void {
+  @Watch('disableShift')
+  disableShiftChanged(): void {
     this.floatingController.updatePosition();
   }
 
@@ -178,16 +179,22 @@ export class MdsDropdown implements FloatingElement {
 
   @Watch('target')
   targetChanged(): void {
-    if (!this.target || !this.floatingController) return;
-    this.caller = this.floatingController.updateCaller(this.target);
+    if (this.target === '' || this.floatingController == null) return;
+    const caller = this.floatingController.updateCaller(this.target);
+    if (!caller) return;
+    if (this.caller && this.caller !== caller) this.unsetInteractionBehaviour(this.caller);
+    this.caller = caller;
+    // the role of the panel arrives with the caller, so the entries are named once it resolves
+    this.markEntries();
     this.setInteractionBehaviour();
     this.km.addElement(this.host);
-    this.km.attachEscapeBehavior(() => this.visibleChanged(false));
+    this.km.attachEscapeBehavior(this.closeFromKeyboard);
   }
 
   @Watch('visible')
   visibleChanged(newValue: boolean): void {
     this.changedEvent.emit({ caller: this.caller, visible: newValue });
+    this.floatingController.syncExpanded(newValue);
     if (newValue) {
       document.addEventListener('click', this.handleCloseDropdown);
       this.floatingController.updatePosition();
@@ -204,28 +211,148 @@ export class MdsDropdown implements FloatingElement {
     this.hiddenEvent.emit({ caller: this.caller, visible: false });
   }
 
-  onClickTarget(ev: Event): void {
+  // the handlers of the caller are held as they are attached: `removeEventListener` answers to
+  // the reference it was given, and a `.bind(this)` written at the call site makes a new one
+  // every time, which is why nothing the caller was given was ever taken back
+  private readonly onClickTarget = (ev: Event): void => {
     // stop propagation event for when target is a element cointainer
     ev.stopPropagation();
     // trigger a body click to execute handleCloseDropdown on other dropdowns
     document.body.click();
     this.visible = !this.visible;
-  }
+    // a click with no coordinates behind it came from Enter on the caller, and a menu opened
+    // from the keyboard has to land on an entry - a mouse leaves the focus where it is
+    if (this.visible && this.isMenu && (ev as MouseEvent).detail === 0) {
+      this.focusEntry(0);
+    }
+  };
 
-  onMouseOverTarget(): void {
+  private readonly onMouseOverTarget = (): void => {
     this.mouseoverTimer = setTimeout(() => {
       clearTimeout(this.mouseoverTimer);
       this.visible = true;
     }, cssDurationToMilliseconds(this.cssMouseOverDelayDuration));
-  }
+  };
 
-  onMouseOutTarget(): void {
+  private readonly onMouseOutTarget = (): void => {
     clearTimeout(this.mouseoverTimer);
     this.mouseoverTimer = setTimeout(() => {
       clearTimeout(this.mouseoverTimer);
       this.visible = false;
     }, cssDurationToMilliseconds(this.cssMouseOverDelayDuration));
+  };
+
+  /**
+   * The panel declares itself a `menu`, whose children axe only accepts as entries
+   * (`aria-required-children`), so what the slot receives is what has to carry the role. And what
+   * it receives can be a slot of its own, when the dropdown is rendered by a component that hands
+   * over the slot of its own host - `mds-button-dropdown`, `mds-pref-language`. An `mds-button`
+   * names itself a button as soon as it loads and which of the two loads first is not guaranteed,
+   * so `button` is the role an entry overwrites, any other being a deliberate choice of the
+   * consumer. A panel that declares another role holds no entries at all: its children are left
+   * alone, a calendar being no menu item.
+   */
+  private readonly markEntries = (): void => {
+    if (!this.isMenu) return;
+    this.entries().forEach((entry) => {
+      const role = entry.getAttribute('role');
+      if (role === null || role === 'button') {
+        entry.setAttribute('role', 'menuitem');
+      }
+      // an entry the arrows can reach has to be focusable, and an entry of a menu is reached
+      // by the arrows and not by Tab, the menu being one stop of its own
+      if (!entry.hasAttribute('tabindex')) {
+        entry.setAttribute('tabindex', '-1');
+      }
+    });
+  };
+
+  private get isMenu(): boolean {
+    return this.host.getAttribute('role') === 'menu';
   }
+
+  private readonly entries = (): HTMLElement[] => {
+    const slot = this.host.shadowRoot?.querySelector('slot');
+    return this.slottedEntries(slot?.assignedElements() ?? []) as HTMLElement[];
+  };
+
+  private readonly slottedEntries = (elements: Element[]): Element[] =>
+    elements.flatMap((element) =>
+      element.tagName === 'SLOT'
+        ? this.slottedEntries((element as HTMLSlotElement).assignedElements())
+        : [element],
+    );
+
+  /**
+   * Walks the entries the way the menu button pattern asks for: the arrows open the menu and
+   * land on an entry, Home and End go to the ends, Escape gives the focus back and Tab lets it
+   * leave from the caller. A panel that declares another role is none of this - the arrows of a
+   * calendar or of a form belong to what the panel holds.
+   */
+  private readonly focusEntry = (index: number, attempts = 3): void => {
+    const entries = this.entries();
+    if (entries.length === 0 || !this.visible) return;
+    const entry = entries[(index + entries.length) % entries.length];
+    // the panel is display:none until `visible` reaches the render, and nothing hidden takes
+    // the focus: the first frame after opening is the earliest the entry can have it
+    if (entry.offsetWidth === 0 && attempts > 0) {
+      requestAnimationFrame(() => this.focusEntry(index, attempts - 1));
+      return;
+    }
+    entry.focus();
+  };
+
+  private readonly onCallerKeydown = (ev: KeyboardEvent): void => {
+    if (!this.isMenu || (ev.key !== 'ArrowDown' && ev.key !== 'ArrowUp')) return;
+    ev.preventDefault(); // the arrows would scroll the page under the menu
+    this.visible = true;
+    this.focusEntry(ev.key === 'ArrowUp' ? -1 : 0);
+  };
+
+  private readonly onPanelKeydown = (ev: KeyboardEvent): void => {
+    if (!this.isMenu || !this.visible) return;
+    const entries = this.entries();
+    if (entries.length === 0) return;
+    const focused = entries.findIndex((entry) => entry.contains(document.activeElement));
+    const from = focused === -1 ? null : focused;
+
+    switch (ev.key) {
+      case 'ArrowDown':
+        ev.preventDefault();
+        this.focusEntry(from === null ? 0 : from + 1);
+        break;
+      case 'ArrowUp':
+        ev.preventDefault();
+        this.focusEntry(from === null ? -1 : from - 1);
+        break;
+      case 'Home':
+        ev.preventDefault();
+        this.focusEntry(0);
+        break;
+      case 'End':
+        ev.preventDefault();
+        this.focusEntry(-1);
+        break;
+      case 'Tab':
+        // no preventDefault: the focus is handed to the caller and Tab carries on from there,
+        // which is where it would have gone had the menu never opened
+        this.visible = false;
+        this.caller?.focus();
+        break;
+      default:
+        break;
+    }
+  };
+
+  /** Escape is heard on window, so it closes the panel wherever the focus is. Giving the focus
+   * back is only right when the panel was holding it: a panel that goes display:none under the
+   * focus drops it on the body, and the place in the page is lost */
+  private readonly closeFromKeyboard = (): void => {
+    if (!this.visible) return;
+    const holdsFocus = this.host.contains(document.activeElement);
+    this.visible = false;
+    if (holdsFocus) this.caller?.focus();
+  };
 
   private readonly updateCSSCustomProps = (): void => {
     if (typeof window === 'undefined') return;
@@ -254,20 +381,30 @@ export class MdsDropdown implements FloatingElement {
     }
 
     if (this.interaction === 'click') {
-      this.caller.addEventListener('click', this.onClickTarget.bind(this));
+      this.caller.addEventListener('click', this.onClickTarget);
+      this.caller.addEventListener('keydown', this.onCallerKeydown);
     }
 
     if (this.interaction === 'mouseover') {
-      this.caller.addEventListener('mouseover', this.onMouseOverTarget.bind(this));
-      this.caller.addEventListener('mouseout', this.onMouseOutTarget.bind(this));
-      this.host.addEventListener('mouseover', this.handleCloseDropdownMouseLeave.bind(this));
+      this.caller.addEventListener('mouseover', this.onMouseOverTarget);
+      this.caller.addEventListener('mouseout', this.onMouseOutTarget);
+      this.host.addEventListener('mouseover', this.handleCloseDropdownMouseLeave);
     }
+  };
+
+  /** Hands the caller back what it was given: a caller the target no longer names would go on
+   * opening a panel that is not its own */
+  private readonly unsetInteractionBehaviour = (caller: HTMLElement): void => {
+    caller.removeEventListener('click', this.onClickTarget);
+    caller.removeEventListener('keydown', this.onCallerKeydown);
+    caller.removeEventListener('mouseover', this.onMouseOverTarget);
+    caller.removeEventListener('mouseout', this.onMouseOutTarget);
   };
 
   private readonly handleCloseDropdownMouseLeave = (): void => {
     clearTimeout(this.mouseoverTimer);
-    this.host.removeEventListener('mouseover', this.handleCloseDropdownMouseLeave.bind(this));
-    this.host.addEventListener('mouseleave', this.handleCloseDropdown.bind(this));
+    this.host.removeEventListener('mouseover', this.handleCloseDropdownMouseLeave);
+    this.host.addEventListener('mouseleave', this.handleCloseDropdown);
   };
 
   componentDidLoad(): void {
@@ -284,6 +421,19 @@ export class MdsDropdown implements FloatingElement {
     this.floatingController = new FloatingController(this.host, arrow);
     this.updateCSSCustomProps();
     this.targetChanged();
+    this.host.shadowRoot?.querySelector('slot')?.addEventListener('slotchange', this.markEntries);
+    // a nested slot lives in the tree of the host, where the slot of the shadow root, which is
+    // the one the entries reach us through, never hears its slotchange
+    this.host.addEventListener('slotchange', this.markEntries);
+    // the entries are slotted children, so their keys reach the host by bubbling
+    this.host.addEventListener('keydown', this.onPanelKeydown);
+
+    // The watcher does not fire for the initial value, so a dropdown that mounts
+    // with `visible` set was never positioned at all: no left, no top, no origin,
+    // parked at the top left corner of the page.
+    if (this.visible) {
+      this.visibleChanged(true);
+    }
   }
 
   disconnectedCallback(): void {
@@ -298,6 +448,10 @@ export class MdsDropdown implements FloatingElement {
         style={{
           zIndex: `${this.zIndex}`,
         }}
+        pref-animation={preferenceStore.state.animation}
+        pref-contrast={preferenceStore.state.contrast}
+        pref-mode={preferenceStore.state.mode}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
         <div class="arrow" innerHTML={arrowSvg} />
         <slot />

@@ -40,6 +40,30 @@ const hasSlottedContent = (el: HTMLElement, name?: string): boolean => {
 };
 
 /**
+ * Direct-child queries equivalent to `:scope > …` selectors. Stencil's
+ * mock-doc selector engine (spec tests and the hydrate/SSR build) cannot
+ * parse `:scope`, so host-lifecycle code must use these instead of
+ * `host.querySelector(':scope > [slot="x"]')`.
+ */
+const queryChildBySlot = (host: HTMLElement, name: string): HTMLElement | null =>
+  (Array.from(host.children).find((child) => child.getAttribute('slot') === name) as
+    | HTMLElement
+    | undefined) ?? null;
+
+const queryChildrenBySlot = (host: HTMLElement, name: string): HTMLElement[] =>
+  Array.from(host.children).filter(
+    (child): child is HTMLElement => child.getAttribute('slot') === name,
+  );
+
+const hasChildWithSlot = (host: HTMLElement, name: string): boolean =>
+  queryChildBySlot(host, name) !== null;
+
+const queryChildrenByTag = (host: HTMLElement, tagName: string): HTMLElement[] =>
+  Array.from(host.children).filter(
+    (child): child is HTMLElement => child.tagName.toLowerCase() === tagName.toLowerCase(),
+  );
+
+/**
  * Normalises a label-like string: trims whitespace and coerces empty/nullish
  * values to `undefined`. Use inside `@Watch('label')` handlers when a component
  * exposes a `label` prop with a deprecated default slot fallback.
@@ -84,6 +108,10 @@ export {
   hasSlottedNodes,
   hasSlottedContent,
   hasSlotted,
+  hasChildWithSlot,
+  queryChildBySlot,
+  queryChildrenBySlot,
+  queryChildrenByTag,
   sanitizeLabel,
   readSlottedLabel,
 };

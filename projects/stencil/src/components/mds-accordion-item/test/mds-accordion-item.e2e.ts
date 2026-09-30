@@ -1,43 +1,58 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { render } from '@stencil/vitest';
+import { userEvent } from 'vitest/browser';
 
 describe('mds-accordion-item', () => {
   it('should hydrate', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<mds-accordion-item></mds-accordion-item>');
+    const { root } = await render('<mds-accordion-item></mds-accordion-item>');
 
-    const element = await page.find('mds-accordion-item');
-    expect(element).toHaveAttribute('hydrated');
+    expect(root).toHaveAttribute('hydrated');
   });
 
   it('should renders label', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<mds-accordion-item label="titolo"></mds-accordion-item>');
+    const { root } = await render<HTMLMdsAccordionItemElement>(
+      '<mds-accordion-item label="titolo"></mds-accordion-item>',
+    );
 
-    const element = await page.find('mds-accordion-item');
-    expect(await element.getProperty('label')).toBe('titolo');
+    expect(root.label).toBe('titolo');
   });
 
   it('should not render contents', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<mds-accordion-item label="titolo"></mds-accordion-item>');
+    const { root } = await render('<mds-accordion-item label="titolo"></mds-accordion-item>');
 
-    const contents = await page.find('mds-accordion-item >>> .content');
+    const contents = root.shadowRoot!.querySelector('.content')!;
     expect(contents).toBeTruthy();
-    expect(await contents.getComputedStyle()).toHaveProperty('gridTemplateRows', '0px');
-    expect(await contents.getComputedStyle()).toHaveProperty('opacity', '0');
+    expect(getComputedStyle(contents).gridTemplateRows).toBe('0px');
+    expect(getComputedStyle(contents).opacity).toBe('0');
   });
 
   it('should renders selected', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<mds-accordion-item selected>testo</mds-accordion-item>');
-    await page.waitForChanges();
-    const contents = await page.find('mds-accordion-item >>> .content');
+    const { root } = await render('<mds-accordion-item selected>testo</mds-accordion-item>');
 
+    const contents = root.shadowRoot!.querySelector('.content')!;
     expect(contents).toBeTruthy();
-    expect(await contents.getComputedStyle()).toHaveProperty(
-      'gridTemplateRows',
-      expect.not.stringContaining('0px'),
+    expect(getComputedStyle(contents).gridTemplateRows).not.toContain('0px');
+    expect(getComputedStyle(contents).opacity).toBe('1');
+  });
+
+  it('should trigger event', async () => {
+    const { root, spyOnEvent, waitForChanges } = await render(
+      '<mds-accordion-item></mds-accordion-item>',
     );
-    expect(await contents.getComputedStyle()).toHaveProperty('opacity', '1');
+    const spySelect = spyOnEvent('mdsAccordionItemSelect');
+    const spyChange = spyOnEvent('mdsAccordionItemChange');
+    const spyUnselect = spyOnEvent('mdsAccordionItemUnselect');
+    const button = root.shadowRoot!.querySelector('button')!;
+
+    await userEvent.click(button);
+    await waitForChanges();
+    expect(spyChange).toHaveReceivedEventTimes(1);
+    expect(spySelect).toHaveReceivedEventTimes(1);
+    expect(spyUnselect).not.toHaveReceivedEvent();
+
+    await userEvent.click(button);
+    await waitForChanges();
+    expect(spyChange).toHaveReceivedEventTimes(2);
+    expect(spySelect).toHaveReceivedEventTimes(1);
+    expect(spyUnselect).toHaveReceivedEventTimes(1);
   });
 });

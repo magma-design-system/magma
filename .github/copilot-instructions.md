@@ -6,7 +6,7 @@ When generating, completing, or reviewing code in this repository, follow the ru
 
 ## Stack
 
-- **Monorepo**: Nx + Yarn workspaces (always use `yarn`, never `npm`)
+- **Monorepo**: Nx + npm workspaces (always use `npm`, never `yarn`)
 - **Web components**: StencilJS + TypeScript (TSX, JSX pragma is `h`)
 - **Styles**: Tailwind 4 with CSS custom properties + cascade layers
 - **Tokens**: Style Dictionary + Adobe Leonardo
@@ -54,7 +54,7 @@ Use semantic `text-*` utilities, never compose `font-*` + `text-*` primitives ma
 
 ## Dark mode
 
-Dark mode is handled at the palette level via `<html>` classes (`pref-theme-system`, `pref-theme-light`, `pref-theme-dark`). Do not write `color-scheme` declarations or `@media (prefers-color-scheme)` queries manually. The same applies to contrast, animation, and consumption preferences (`pref-contrast-*`, `pref-animation-*`, `pref-consumption-*`).
+Dark mode is handled at the palette level via `<html>` classes (`pref-mode-system`, `pref-mode-light`, `pref-mode-dark`). Do not write `color-scheme` declarations or `@media (prefers-color-scheme)` queries manually. The same applies to contrast, animation, and consumption preferences (`pref-contrast-*`, `pref-animation-*`, `pref-consumption-*`).
 
 ## Per-component documentation
 
@@ -64,20 +64,38 @@ Every component documents its semantic intent in three markdown files inside `pr
 - `pattern.md` - numbered list of correct usage patterns with code examples
 - `antipattern.md` - numbered list of incorrect uses with `🚫 INCORRECT` / `✅ CORRECT` pairs
 
-These are the **canonical source of truth**. The component's `readme.md` is auto-generated from them by the Stencil build (`usage/*.md` → `documentation.json` → `readme.md`), so **never edit `readme.md` by hand**. Templates for new components live in `projects/stencil/template/usage/*.md.hbs`; the scaffolder is `yarn generate.usage`.
+These are the **canonical source of truth**. The component's `readme.md` is auto-generated from them by the Stencil build (`usage/*.md` → `documentation.json` → `readme.md`), so **never edit `readme.md` by hand**. Templates for new components live in `projects/stencil/template/usage/*.md.hbs`; the scaffolder is `npm run generate.usage`.
+
+## Tests
+
+Tests live in `projects/stencil/src/components/<name>/test/`: `*.e2e.ts` (component tests in Chromium via Playwright, `render` from `@stencil/vitest` + `userEvent` from `vitest/browser`) and `*.spec.ts` (unit tests in mock-doc, no rendering). Run them with `nx run stencil:test`; the Storybook tests with `npm run test-storybook` (from `projects/stencil`, the `storybook` Vitest project).
+
+- **Every behaviour change must come with a test that covers it**, in the same branch: props, events, methods, rendered DOM, keyboard/focus handling, form participation, validation. A bug fix's test reproduces the bug first.
+- Pure style changes (padding, margin, colours, radius, typography) do not need a test.
+- Storybook (`*.stories.tsx`, same folder) adds the visual, interaction (`play` with `expect` / `fn` from `storybook/test`) and accessibility (addon-a11y) tests, plus integration pages with several components. Add or update a story when necessary; it complements the Vitest tests, never replaces them.
+- Setup and caveats: [`projects/stencil/HOWTO.md`](../projects/stencil/HOWTO.md#tests).
 
 ## Commit messages
 
 Format: `type(scope): subject`. Enforced by `commitlint.config.js` via `.husky/commit-msg`.
 
-- Custom type spellings: use **`refact`** (not `refactor`) and **`doc`** (not `docs`).
-- Allowed types: `build`, `change`, `chore`, `ci`, `doc`, `feat`, `fix`, `hotfix`, `merge`, `perf`, `refact`, `revert`, `style`, `test`.
+- Allowed types: `build`, `change`, `chore`, `ci`, `docs`, `feat`, `fix`, `hotfix`, `merge`, `perf`, `refactor`, `revert`, `style`, `test`. Use the standard spellings **`docs`** and **`refactor`** (not `doc` / `refact`).
 - Scope is **required**. Use a project name (`design-tokens`, `icons`, `identity`, `lit`, `magma`, `react`, `stencil`, `storybook`, `styles`, `svg-icons`) or a component directory name (`mds-button`, `mds-input`, …).
 - `revert` must have an empty scope.
 - `style` type cannot be used with `magma`, `icons`, `identity`, `svg-icons` (no CSS in those projects), or `styles` (use `fix(styles)` / `change(styles)` instead).
 - Subject is short, imperative, lowercase first word, no trailing period, ≤ 72 characters.
 
 Full rules and examples: [`docs/COMMITS.md`](../docs/COMMITS.md).
+
+## Git governance
+
+The `dev` and `main` branches are protected governance targets integrated **manually** by a maintainer. When generating or automating git actions:
+
+- **Never** merge into `dev` or `main`, push to them directly, or auto-merge a pull request into them.
+- Do every unit of work (feature, fix, etc.) on its own dedicated branch, branched off `dev` - never work directly on `dev` or `main`.
+- Before pushing, check whether `dev` has new commits; if so, merge `dev` into your branch, run the tests, and only then push to the branch's own remote.
+
+Full rules: [`docs/WORKFLOW.md`](../docs/WORKFLOW.md).
 
 ## Where to look for deeper context
 
@@ -87,6 +105,7 @@ Full rules and examples: [`docs/COMMITS.md`](../docs/COMMITS.md).
 | Monorepo architecture and sub-project relationships                      | [`docs/ARCHITECTURE.md`](../docs/ARCHITECTURE.md)                     |
 | Full lint rule reference (TypeScript + CSS)                              | [`docs/CODING_STANDARDS.md`](../docs/CODING_STANDARDS.md)             |
 | Full commit message rules                                                | [`docs/COMMITS.md`](../docs/COMMITS.md)                               |
+| Contribution workflow and git governance (branch, merge, push)          | [`docs/WORKFLOW.md`](../docs/WORKFLOW.md)                             |
 | Design tokens (structure, levels, semantics, naming)                     | [`projects/design-tokens/SPEC.md`](../projects/design-tokens/SPEC.md) |
 | CSS and Tailwind 4 conventions, semantic classes, dark mode, layer order | [`projects/styles/SPEC.md`](../projects/styles/SPEC.md)               |
 | Stencil component conventions, composition, accessibility                | [`projects/stencil/SPEC.md`](../projects/stencil/SPEC.md)             |
@@ -95,18 +114,19 @@ Full rules and examples: [`docs/COMMITS.md`](../docs/COMMITS.md).
 ## When suggesting a new component
 
 1. Scaffold with `nx run stencil:generate mds-component-name`.
-2. Generate the `usage/` triplet with `yarn generate.usage` and fill in the three files (templates in `projects/stencil/template/usage/`).
-3. Add Storybook stories under `test/`.
-4. Run `yarn lint` before committing.
+2. Generate the `usage/` triplet with `npm run generate.usage` and fill in the three files (templates in `projects/stencil/template/usage/`).
+3. Add Storybook stories and an `*.e2e.ts` covering the public API under `test/`.
+4. Run `npm run lint` before committing.
 
 ## Anti-patterns Copilot must avoid
 
 - Suggesting `bg-white`, `bg-gray-500`, or other raw Tailwind colour primitives - use Magma token classes.
 - Suggesting `disabled="false"` or `await="false"` - remove the attribute instead.
-- Hand-writing `@media (prefers-color-scheme: dark)` - use `pref-theme-*` classes.
+- Hand-writing `@media (prefers-color-scheme: dark)` - use `pref-mode-*` classes.
 - Editing the generated `readme.md` directly - edit `usage/*.md`.
 - Suggesting `refact` or `doc` in commit messages - use `refactor` and `docs`.
 - Suggesting `em`, `cm`, `pt`, or other disallowed units in CSS.
 - Using the `background` shorthand or any vendor-prefixed property.
 - Composing typography with raw `font-*` + `text-*` primitives - use semantic `text-*` utilities.
 - Piercing the shadow DOM of a component with `>>>` or undocumented internal selectors.
+- Changing a component's behaviour (props, events, methods, DOM, keyboard/focus, validation) without a `*.spec.ts` / `*.e2e.ts` test covering it.

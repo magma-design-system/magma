@@ -1,28 +1,45 @@
 # Reusable semantic-release pipeline for the Magma npm monorepo.
 #
-# Called once per package (see <pkg>.release.yml). For the package in
-# `working-directory` it detects the next version from conventional commits
-# (semantic-release dry-run, scoped by `commit-scope`), bumps its package.json
-# (plus any `version-sync-paths`), pins every internal @maggioli-design-system/*
-# dependency reference to the version currently in the workspace (so e.g. the
-# magma-react/magma-angular -> magma reference and magma -> design-tokens/styles
-# stay consistent without manual edits), generates release notes with git-cliff,
-# then tags `<tag-format>`, pushes the bump back to the triggering branch, and
-# creates a GitHub release. Publishing to npm is handled separately by publish.yml.
+# Releases one package, or a group of packages together (see release.yml).
+# For each package it detects the next version from conventional commits
+# (semantic-release dry-run, scoped by `commit-scope`, see
+# scripts/release/semantic-release.config.cjs), writes the new versions into
+# the manifests (plus any `version-sync-paths`) and pins every internal
+# @maggioli-design-system/* dependency of the workspace to them, lock included
+# (scripts/set-release-version.sh: e.g. a design-tokens release updates the pin
+# in styles and magma), generates the release notes with git-cliff, then pushes
+# ONE chore(release) commit to the triggering branch, with one tag and one
+# GitHub release per package. One commit means one CI run and one publish, with
+# every manifest already consistent. Publishing to npm is handled separately by
+# publish.yml. The whole preparation lives in scripts/release/prepare-release.sh,
+# which scripts/test-release.sh runs locally the same way.
+#
+# On beta nothing is committed: the tag goes on the pushed commit itself and
+# publish.yml writes its version into the manifests right before publishing
+# (scripts/set-release-version.sh), so beta never diverges from dev and merging
+# dev into it cannot conflict on the version bumps.
 #
 # Uses the automatic GITHUB_TOKEN via `github.token`, so callers do NOT need
 # `secrets: inherit`.
 #
 # Inputs:
+#   - packages: JSON array of the packages released together, one object per
+#     package: name, working-directory, tag-format, commit-scope and optional
+#     version-sync-paths (array). Empty = the single package of the inputs below.
 #   - working-directory: dir holding the package's package.json.
 #   - tag-format: semantic-release tagFormat AND the git tag created
 #     (e.g. 'design-tokens@${version}'); must contain ${version} exactly once.
 #   - commit-scope: '|'-separated conventional-commit scope tokens (globs
-#     allowed, e.g. 'magma|stencil|mds-*'); only commits whose scope matches
-#     drive the bump and appear in the release notes. Empty = no filtering.
+#     allowed, e.g. 'magma|stencil|mds-*'); a commit drives the bump and appears
+#     in the release notes when one of its scopes (`feat(a,b)` has two) matches.
+#     Empty = no filtering.
 #   - version-sync-paths: extra package.json files bumped to the same version
 #     (e.g. companion packages kept in lockstep).
-# Release branches are fixed: main (stable) + beta (prerelease channel).
+#   - stable-branches: space-separated branches allowed to release stable
+#     versions. The current branch is used when listed (first entry otherwise,
+#     which makes runs on unlisted branches a graceful no-op). Default 'main';
+#     icons/svg-icons pass 'dev' to release directly from dev.
+# The beta branch is always available as the prerelease channel.
 name: Reusable Semantic Release Pipeline
 
 on:
@@ -48,6 +65,11 @@ on:
         type: string
         required: false
         default: '2.13.1'
+      packages:
+        description: JSON array of the packages released together; empty = the single package of the inputs below
+        type: string
+        required: false
+        default: ''
       working-directory:
         description: Directory holding the package manifest (version is read/written here)
         type: string
@@ -68,17 +90,21 @@ on:
         type: string
         required: false
         default: ''
+      stable-branches:
+        description: Space-separated branches that release stable versions; the current branch is used when listed, the first entry otherwise
+        type: string
+        required: false
+        default: 'main'
 
 permissions:
   contents: write
 
 jobs:
   release-check:
-    name: Release Check (detect version & changelog)
+    name: Release Check (detect versions, bump & notes)
     runs-on: ubuntu-latest
     outputs:
-      release_version: ${{ steps.set-release.outputs.release_version }}
-      release_tag: ${{ steps.set-release.outputs.release_tag }}
+      release_tags: ${{ steps.prepare.outputs.release_tags }}
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -103,184 +129,58 @@ jobs:
             @semantic-release/exec@${{ inputs.sr-exec-version }} \
             conventional-changelog-conventionalcommits@${{ inputs.conventional-changelog-version }}
 
-      - name: Generate semantic-release dry-run config
-        env:
-          SR_TAG_FORMAT: ${{ inputs.tag-format }}
-          SR_COMMIT_SCOPE: ${{ inputs.commit-scope }}
-        run: |
-          cat > release-version.config.cjs <<'EOF'
-          // Values come from the environment so the file needs no shell/Actions
-          // interpolation (keeps ${version}/${nextRelease.version} intact).
-          const scope = process.env.SR_COMMIT_SCOPE;
-          // A single negated catch-all marks every out-of-scope commit as
-          // non-releasing; in-scope commits fall through to the preset defaults
-          // (feat -> minor, fix/perf -> patch, breaking -> major).
-          const releaseRules = scope ? [{ scope: `!(${scope})`, release: false }] : [];
-          module.exports = {
-            branches: ['main', { name: 'beta', prerelease: true }],
-            tagFormat: process.env.SR_TAG_FORMAT,
-            plugins: [
-              ['@semantic-release/commit-analyzer', { preset: 'conventionalcommits', releaseRules }],
-              ['@semantic-release/exec', {
-                verifyReleaseCmd: 'echo "${nextRelease.version}" > release-version.txt'
-              }]
-            ]
-          };
-          EOF
-
-      - name: Run semantic-release --dry-run to detect next version
-        run: |
-          set -o pipefail
-          npx semantic-release -e ./release-version.config.cjs --dry-run
-
-      - name: Read detected version
-        id: set-release
-        env:
-          TAG_FORMAT: ${{ inputs.tag-format }}
-        run: |
-          if [ -f release-version.txt ]; then
-            VERSION=$(cat release-version.txt)
-            TAG=$(printf '%s' "$TAG_FORMAT" | sed "s|\${version}|$VERSION|")
-            # Already-released version (tag exists): graceful no-op, never fail/clean up.
-            if git ls-remote --tags origin "refs/tags/${TAG}" | grep -q .; then
-              echo "Tag ${TAG} already exists on remote -> nothing to release (no-op)"
-              echo "release_version=" >> $GITHUB_OUTPUT
-              exit 0
-            fi
-            echo "Detected version: $VERSION -> tag: $TAG"
-            echo "release_version=$VERSION" >> $GITHUB_OUTPUT
-            echo "release_tag=$TAG" >> $GITHUB_OUTPUT
-          else
-            echo "No release detected, exiting"
-            echo "release_version=" >> $GITHUB_OUTPUT
-            exit 0
-          fi
-
       - name: Install git-cliff
-        if: steps.set-release.outputs.release_version != ''
         run: |
           curl -sL "https://github.com/orhun/git-cliff/releases/download/v${{ inputs.git-cliff-version }}/git-cliff-${{ inputs.git-cliff-version }}-x86_64-unknown-linux-musl.tar.gz" | tar xz
           mv git-cliff-*/git-cliff /usr/local/bin/
+          rm -rf git-cliff-*
           git-cliff --version
 
-      - name: Generate cliff.toml
-        if: steps.set-release.outputs.release_version != ''
+      - name: Detect the next versions and prepare the release
+        id: prepare
         env:
+          PACKAGES: ${{ inputs.packages }}
+          WD: ${{ inputs.working-directory }}
           TAG_FORMAT: ${{ inputs.tag-format }}
           COMMIT_SCOPE: ${{ inputs.commit-scope }}
-        run: |
-          # tag_pattern bounds the changelog to this package's own tags.
-          PREFIX="${TAG_FORMAT%'${version}'}"
-          TAG_PATTERN="${PREFIX}[0-9].*"
-          if [ -n "$COMMIT_SCOPE" ]; then
-            # Rust regex has no lookahead, so keep in-scope commits per type and
-            # skip the rest. Glob '*' -> regex '[^)]*' for the scope alternation.
-            CLIFF_SCOPE=$(printf '%s' "$COMMIT_SCOPE" | sed 's/\*/[^)]*/g')
-            cat > cliff.toml <<'CLIFF'
-          [changelog]
-          trim = true
-          [git]
-          conventional_commits = true
-          filter_unconventional = true
-          filter_commits = true
-          tag_pattern = "__TAGPATTERN__"
-          commit_parsers = [
-            { message = "^feat\\((__SCOPES__)\\)", group = "Features" },
-            { message = "^fix\\((__SCOPES__)\\)", group = "Bug Fixes" },
-            { message = "^hotfix\\((__SCOPES__)\\)", group = "Bug Fixes" },
-            { message = "^perf\\((__SCOPES__)\\)", group = "Performance" },
-            { message = "^refactor\\((__SCOPES__)\\)", group = "Refactor" },
-            { message = "^change\\((__SCOPES__)\\)", group = "Changes" },
-            { message = "^docs\\((__SCOPES__)\\)", group = "Documentation" },
-            { message = "^build\\((__SCOPES__)\\)", group = "Build" },
-            { message = "^style\\((__SCOPES__)\\)", group = "Styling" },
-            { message = ".*", skip = true },
-          ]
-          CLIFF
-            sed -i "s|__TAGPATTERN__|$TAG_PATTERN|g; s/__SCOPES__/$CLIFF_SCOPE/g" cliff.toml
-          else
-            cat > cliff.toml <<'CLIFF'
-          [changelog]
-          trim = true
-          [git]
-          conventional_commits = true
-          filter_unconventional = true
-          tag_pattern = "__TAGPATTERN__"
-          CLIFF
-            sed -i "s|__TAGPATTERN__|$TAG_PATTERN|g" cliff.toml
-          fi
-          echo "----- cliff.toml -----"; cat cliff.toml
-
-      - name: Update version manifest (and pin internal dependency versions)
-        if: steps.set-release.outputs.release_version != ''
-        env:
-          V: ${{ steps.set-release.outputs.release_version }}
-          WD: ${{ inputs.working-directory }}
           SYNC_PATHS: ${{ inputs.version-sync-paths }}
+          # read by scripts/release/semantic-release.config.cjs, with GITHUB_REF_NAME
+          SR_STABLE_BRANCHES: ${{ inputs.stable-branches }}
         run: |
           set -euo pipefail
-          setver() { jq --arg v "$V" '.version = $v' "$1" > "$1.tmp" && mv "$1.tmp" "$1"; }
-          MANIFESTS=("$WD/package.json")
-          setver "$WD/package.json"
-          echo "Updated $WD/package.json -> $V"
-          if [ -n "$SYNC_PATHS" ]; then
-            while IFS= read -r f; do
-              [ -n "$f" ] || continue
-              setver "$f"
-              MANIFESTS+=("$f")
-              echo "Synced $f -> $V"
-            done <<< "$SYNC_PATHS"
+          if [ -z "$PACKAGES" ]; then
+            PACKAGES=$(jq -nc --arg wd "$WD" --arg tf "$TAG_FORMAT" --arg cs "$COMMIT_SCOPE" --arg sync "$SYNC_PATHS" \
+              '[{name: ($tf | split("@")[0]), "working-directory": $wd, "tag-format": $tf, "commit-scope": $cs,
+                 "version-sync-paths": ($sync | split("\n") | map(select(length > 0)))}]')
           fi
-          # Pin internal @maggioli-design-system/* references to the versions currently
-          # in the workspace, so published metadata stays consistent (no manual lockstep,
-          # no leftover prerelease references). The map is built AFTER the bumps above, so
-          # the released package and its companions resolve to $V; everything else resolves
-          # to its current source version. Covers: magma-react/magma-angular -> magma@$V,
-          # magma -> design-tokens/styles, styles -> design-tokens, icons -> svg-icons.
-          # No cascade: a dependency release does not re-release its dependents; they pick
-          # up the new version on their own next release.
-          MAP=$(find projects -name package.json \
-                  -not -path '*/node_modules/*' -not -path '*/dist/*' -not -path '*/deprecated/*' \
-                  -exec jq -c '{(.name): .version}' {} \; | jq -s 'add // {}')
-          echo "internal package map: $MAP"
-          for m in "${MANIFESTS[@]}"; do
-            jq --argjson map "$MAP" '
-              def pin(section):
-                if .[section]
-                then .[section] |= with_entries(if $map[.key] then .value = $map[.key] else . end)
-                else . end;
-              pin("dependencies") | pin("peerDependencies") | pin("optionalDependencies")
-            ' "$m" > "$m.tmp" && mv "$m.tmp" "$m"
-            echo "Pinned internal deps in $m"
-          done
+          # beta commits no bump: publish.yml applies the tag version at publish time
+          APPLY=--apply
+          [ "$GITHUB_REF_NAME" = beta ] && APPLY=
+          ./scripts/release/prepare-release.sh $APPLY --notes "$PACKAGES"
+          # the files of the release commit travel to the finalize job in the artifact
+          if [ -f .release/files.txt ]; then
+            while IFS= read -r f; do
+              mkdir -p ".release/files/$(dirname "$f")"
+              cp "$f" ".release/files/$f"
+            done < .release/files.txt
+          fi
+          echo "release_tags=$(jq -r 'map(.tag) | join(" ")' .release/plan.json)" >> "$GITHUB_OUTPUT"
 
-      - name: Generate RELEASE_NOTES.md
-        if: steps.set-release.outputs.release_version != ''
-        env:
-          TAG: ${{ steps.set-release.outputs.release_tag }}
-        run: |
-          git-cliff --offline --tag "$TAG" --unreleased --strip header > RELEASE_NOTES.md || true
-          echo "RELEASE_NOTES generated"
-
-      - name: Upload artifacts (manifests & release notes)
-        if: steps.set-release.outputs.release_version != ''
+      - name: Upload artifacts (plan, release files & notes)
+        if: steps.prepare.outputs.release_tags != ''
         uses: actions/upload-artifact@v4
         with:
           name: release-artifacts
-          if-no-files-found: ignore
-          path: |
-            ${{ inputs.working-directory }}/package.json
-            ${{ inputs.version-sync-paths }}
-            RELEASE_NOTES.md
-            release-version.txt
+          path: .release
+          include-hidden-files: true
 
   release-finalize:
-    name: Release Finalize (tag, push, create release)
+    name: Release Finalize (commit, tag, push, create releases)
     needs: release-check
     runs-on: ubuntu-latest
-    if: needs.release-check.outputs.release_version != ''
+    if: needs.release-check.outputs.release_tags != ''
     outputs:
-      tag_created: ${{ steps.tag.outputs.created }}
+      tags_created: ${{ steps.tag.outputs.created }}
     steps:
       - name: Checkout (full)
         uses: actions/checkout@v5
@@ -288,13 +188,14 @@ jobs:
           fetch-depth: 0
           # Push with a PAT/App token when provided, so the chore(release) commit triggers
           # CI -> publish (the default GITHUB_TOKEN does not trigger downstream workflows).
+          # On beta only the tags and the notes are pushed: publish waits for this run instead.
           token: ${{ secrets.RELEASE_PUSH_TOKEN || github.token }}
 
       - name: Download artifacts from check
         uses: actions/download-artifact@v4
         with:
           name: release-artifacts
-          path: .
+          path: .release
 
       - name: Configure git user
         run: |
@@ -303,41 +204,39 @@ jobs:
 
       - name: Preflight checks
         env:
-          TAG: ${{ needs.release-check.outputs.release_tag }}
+          TAGS: ${{ needs.release-check.outputs.release_tags }}
         run: |
-          if git ls-remote --tags origin "refs/tags/${TAG}" | grep -q .; then
-            echo "::error::Tag ${TAG} already exists on remote"; exit 1
-          fi
+          for TAG in $TAGS; do
+            if git ls-remote --tags origin "refs/tags/${TAG}" | grep -q .; then
+              echo "::error::Tag ${TAG} already exists on remote"; exit 1
+            fi
+          done
 
-      - name: Stage updated manifests
+      # beta: no version bump commit, the tags below go on the pushed commit itself
+      - name: Commit the release (versions, internal pins and lock of every package)
+        if: github.ref_name != 'beta'
         env:
-          WD: ${{ inputs.working-directory }}
-          SYNC_PATHS: ${{ inputs.version-sync-paths }}
+          TAGS: ${{ needs.release-check.outputs.release_tags }}
         run: |
-          [ -f "$WD/package.json" ] && git add "$WD/package.json"
-          if [ -n "$SYNC_PATHS" ]; then
-            while IFS= read -r f; do
-              [ -n "$f" ] || continue
-              [ -f "$f" ] && git add "$f" || true
-            done <<< "$SYNC_PATHS"
-          fi
-
-      - name: Commit release changes if any
-        env:
-          TAG: ${{ needs.release-check.outputs.release_tag }}
-        run: |
+          set -euo pipefail
+          while IFS= read -r f; do
+            cp ".release/files/$f" "$f"
+            git add "$f"
+          done < .release/files.txt
           if git diff --cached --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "chore(release): ${TAG}"
+            git commit -m "chore(release): ${TAGS}"
           fi
 
-      - name: Push release commit (rebase-retry for concurrent monorepo releases)
+      - name: Push release commit (rebase-retry for concurrent pushes)
+        if: github.ref_name != 'beta'
         env:
           BRANCH: ${{ github.ref_name }}
         run: |
-          # Concurrent package releases each touch only their own manifest, so
-          # rebasing onto the latest branch tip never conflicts.
+          # A release run of another group (e.g. icons and svg-icons on dev) only
+          # touches its own manifests and lock entries, so rebasing onto the
+          # latest branch tip does not conflict.
           for i in 1 2 3 4 5; do
             if git push origin "HEAD:${BRANCH}"; then
               echo "Pushed on attempt $i"; exit 0
@@ -348,32 +247,40 @@ jobs:
           done
           echo "::error::could not push release commit after 5 attempts"; exit 1
 
-      - name: Create and push tag
+      - name: Create and push tags
         id: tag
         env:
-          TAG: ${{ needs.release-check.outputs.release_tag }}
+          TAGS: ${{ needs.release-check.outputs.release_tags }}
         run: |
-          git tag -a "$TAG" -m "Release ${TAG}"
-          git push origin "$TAG"
-          # mark that THIS run created the tag, so cleanup only rolls back its own tag
+          set -euo pipefail
+          REFS=()
+          for TAG in $TAGS; do
+            git tag -a "$TAG" -m "Release ${TAG}"
+            REFS+=("refs/tags/${TAG}")
+          done
+          # all or nothing: a partial push would leave packages half released
+          git push --atomic origin "${REFS[@]}"
+          # mark that THIS run created the tags, so cleanup only rolls back its own tags
           echo "created=true" >> "$GITHUB_OUTPUT"
 
-      - name: Record release channel (git notes for prerelease continuation)
-        env:
-          TAG: ${{ needs.release-check.outputs.release_tag }}
-          VERSION: ${{ needs.release-check.outputs.release_version }}
+      - name: Record release channels (git notes for prerelease continuation)
         run: |
           # Only prereleases need a channel note; stable releases use default-channel
           # inference. semantic-release maps the channel to the prerelease identifier
           # (e.g. 2.0.0-beta.1 -> "beta"); without the note it cannot continue the
           # prerelease counter and would recompute the same version (tag collision).
-          case "$VERSION" in
-            *-*) ID="${VERSION#*-}"; ID="${ID%%.*}" ;;
-            *) echo "stable release, no channel note needed"; exit 0 ;;
-          esac
-          NOTE="{\"channels\":[\"${ID}\"]}"
+          set -euo pipefail
+          NOTED=false
           git fetch origin "refs/notes/semantic-release:refs/notes/semantic-release" 2>/dev/null || true
-          git notes --ref=semantic-release add -f -m "$NOTE" "${TAG}^{commit}"
+          while IFS=$'\t' read -r TAG VERSION; do
+            case "$VERSION" in
+              *-*) ID="${VERSION#*-}"; ID="${ID%%.*}" ;;
+              *) echo "${TAG}: stable release, no channel note needed"; continue ;;
+            esac
+            git notes --ref=semantic-release add -f -m "{\"channels\":[\"${ID}\"]}" "${TAG}^{commit}"
+            NOTED=true
+          done < <(jq -r '.[] | [.tag, .version] | @tsv' .release/plan.json)
+          $NOTED || exit 0
           # the notes ref is shared across packages/channels: fetch-merge-retry on reject
           for i in 1 2 3 4 5; do
             if git push origin "refs/notes/semantic-release"; then
@@ -386,39 +293,44 @@ jobs:
           done
           echo "::error::could not push semantic-release notes after retries"; exit 1
 
-      - name: Create GitHub Release
+      - name: Create GitHub Releases
         env:
           GH_TOKEN: ${{ github.token }}
           GITHUB_TOKEN: ${{ github.token }}
-          TAG: ${{ needs.release-check.outputs.release_tag }}
-          VERSION: ${{ needs.release-check.outputs.release_version }}
         run: |
-          # mark prereleases (versions with a -identifier) as GitHub prereleases
-          case "$VERSION" in *-*) PRE=--prerelease; PREJSON=true ;; *) PRE=; PREJSON=false ;; esac
-          gh release create "$TAG" $PRE --title "$TAG" --notes-file RELEASE_NOTES.md || {
-            BODY=$(jq -Rs . RELEASE_NOTES.md)
-            curl -s -X POST -H "Authorization: token $GITHUB_TOKEN" \
-              -H "Content-Type: application/json" \
-              -d "{\"tag_name\":\"${TAG}\",\"name\":\"${TAG}\",\"body\":$BODY,\"prerelease\":$PREJSON}" \
-              "https://api.github.com/repos/${{ github.repository }}/releases"
-          }
+          set -euo pipefail
+          while IFS=$'\t' read -r NAME TAG VERSION; do
+            NOTES=".release/notes/${NAME}.md"
+            [ -f "$NOTES" ] || : > "$NOTES"
+            # mark prereleases (versions with a -identifier) as GitHub prereleases
+            case "$VERSION" in *-*) PRE=--prerelease; PREJSON=true ;; *) PRE=; PREJSON=false ;; esac
+            gh release create "$TAG" $PRE --title "$TAG" --notes-file "$NOTES" || {
+              BODY=$(jq -Rs . "$NOTES")
+              curl -s -X POST -H "Authorization: token $GITHUB_TOKEN" \
+                -H "Content-Type: application/json" \
+                -d "{\"tag_name\":\"${TAG}\",\"name\":\"${TAG}\",\"body\":$BODY,\"prerelease\":$PREJSON}" \
+                "https://api.github.com/repos/${{ github.repository }}/releases"
+            }
+          done < <(jq -r '.[] | [.name, .tag, .version] | @tsv' .release/plan.json)
 
   release-cleanup:
     name: Release Cleanup (rollback on failure)
     needs: [release-check, release-finalize]
     runs-on: ubuntu-latest
-    # only roll back when THIS run actually created the tag (never delete a pre-existing release)
-    if: ${{ failure() && needs.release-finalize.outputs.tag_created == 'true' }}
+    # only roll back when THIS run actually created the tags (never delete a pre-existing release)
+    if: ${{ failure() && needs.release-finalize.outputs.tags_created == 'true' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
-      - name: Remove tag and release if present
+      - name: Remove tags and releases if present
         env:
           GH_TOKEN: ${{ github.token }}
-          TAG: ${{ needs.release-check.outputs.release_tag }}
+          TAGS: ${{ needs.release-check.outputs.release_tags }}
         run: |
-          git push --delete origin "$TAG" || echo "Tag $TAG not found on remote"
-          gh release delete "$TAG" --yes || echo "Release $TAG not found"
+          for TAG in $TAGS; do
+            git push --delete origin "$TAG" || echo "Tag $TAG not found on remote"
+            gh release delete "$TAG" --yes || echo "Release $TAG not found"
+          done

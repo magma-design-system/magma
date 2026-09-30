@@ -56,6 +56,12 @@ const rgbChannel = (value: string) => {
   return `${color.red} ${color.green} ${color.blue}`;
 };
 
+const gimpRgbChannel = (value: string) => {
+  const color = hexRgb(value);
+  const pad = (channel: number) => String(channel).padStart(3, ' ');
+  return `${pad(color.red)} ${pad(color.green)} ${pad(color.blue)}`;
+};
+
 const leadZero = (value: string) => {
   return Number(value) < 10 ? `0${value}` : value;
 };
@@ -122,6 +128,7 @@ const ifDartTextStyleProp = (property: string, options: HelperOptions) => {
 
 export {
   firstArrayElement,
+  gimpRgbChannel,
   humanCase,
   ifDartTextStyleProp,
   ifEquals,

@@ -244,25 +244,12 @@ mds-note {
 | `mdsNoteDelete` | Emits when the note has to be cancelled | `CustomEvent<void>` |
 
 
-## Methods
-
-### `updateLang() => Promise<void>`
-
-
-
-#### Returns
-
-Type: `Promise<void>`
-
-
-
-
 ## Slots
 
-| Slot        | Description                                                      |
-| ----------- | ---------------------------------------------------------------- |
-| `"default"` | Add `text string`, `HTML elements` or `components` to this slot. |
-| `"title"`   | Add `text string`, `HTML elements` or `components` to this slot. |
+| Slot      | Description                                                      |
+| --------- | ---------------------------------------------------------------- |
+|           | Add `text string`, `HTML elements` or `components` to this slot. |
+| `"title"` | Add `text string`, `HTML elements` or `components` to this slot. |
 
 
 ## CSS Custom Properties

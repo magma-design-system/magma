@@ -1,9 +1,11 @@
-import { Component, Element, Host, h, Prop } from '@stencil/core';
+/* eslint-disable stencil/ban-default-true */
+import { Component, Element, Host, h, Prop, State } from '@stencil/core';
+import { hasChildWithSlot } from '@common/slot';
 import clsx from 'clsx';
 import { NoiseType, PreloadType } from './meta/types';
 
 /**
- * @slot default - Write browser support missing message here.
+ * @slot - Write browser support missing message here.
  * @slot content - Add video content overlay here, add `text string`, `HTML elements` or `components` to this slot.
  */
 
@@ -14,7 +16,7 @@ import { NoiseType, PreloadType } from './meta/types';
 })
 export class MdsVideoWall {
   @Element() hostElement: HTMLMdsVideoWallElement;
-  private hasContent: boolean;
+  @State() hasContent: boolean;
 
   /**
    * Specifies that the video will start playing as soon as it is ready
@@ -51,8 +53,12 @@ export class MdsVideoWall {
    */
   @Prop() readonly src?: string;
 
+  private onContentSlotChange = (): void => {
+    this.hasContent = hasChildWithSlot(this.hostElement, 'content');
+  };
+
   componentWillLoad(): void {
-    this.hasContent = this.hostElement.querySelector(':scope > [slot="content"]') !== null;
+    this.hasContent = hasChildWithSlot(this.hostElement, 'content');
   }
 
   render() {
@@ -72,11 +78,9 @@ export class MdsVideoWall {
         >
           <slot></slot>
         </video>
-        {this.hasContent && (
-          <div class="content">
-            <slot name="content" />
-          </div>
-        )}
+        <div class={clsx('content', !this.hasContent && 'content--hidden')}>
+          <slot name="content" onSlotchange={this.onContentSlotChange} />
+        </div>
       </Host>
     );
   }

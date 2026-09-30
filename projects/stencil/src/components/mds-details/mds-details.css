@@ -7,28 +7,11 @@
  * @prop --mds-details-helper-icon-color: Sets the color of the helper icon in the details component
  */
 
-@property --mds-details-duration {
-  inherits: false;
-  initial-value: 300ms;
-  syntax: '<time>';
-}
-
-@property --mds-details-icon-color {
-  inherits: false;
-  initial-value: rgb(var(--variant-primary-04));
-  syntax: '<color>';
-}
-
-@property --mds-details-helper-icon-color {
-  inherits: false;
-  initial-value: rgb(var(--tone-neutral-03));
-  syntax: '<color>';
-}
-
 :host {
   --mds-details-duration: 300ms;
-  --mds-details-icon-color: rgb(var(--variant-primary-04));
-  --mds-details-helper-icon-color: rgb(var(--tone-neutral-03));
+  --private-details-duration: var(--mds-details-duration);
+  --mds-details-icon-color: rgb(var(--magma-accent-emphasis));
+  --mds-details-helper-icon-color: rgb(var(--magma-text-muted));
 
   align-items: flex-start;
   display: flex;
@@ -49,7 +32,7 @@
   overflow: hidden;
   padding-top: 0;
   pointer-events: none;
-  transition-duration: var(--mds-details-duration);
+  transition-duration: var(--private-details-duration);
   transition-property: grid-template-rows, opacity, padding;
 }
 

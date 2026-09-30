@@ -10,13 +10,16 @@ import {
   State,
   h,
 } from '@stencil/core';
+import { hasChildWithSlot } from '@common/slot';
+import clsx from 'clsx';
+import { preferenceStore } from '@common/preference';
 import { HeaderBarMenuType, HeaderBarNavType } from '@type/header-bar';
 
 /**
  * @part actions - Selects the element which wraps `nav` and `hamburger` parts
  * @part hamburger - Selects the `hamburger` menu action element
  * @part nav - Selects the `nav` element that contains the horizontal menu
- * @slot default - Put contents, like logo and a small description shown on the left of the component. Add `text string`, `HTML elements` or `components` to this slot.
+ * @slot - Put contents, like logo and a small description shown on the left of the component. Add `text string`, `HTML elements` or `components` to this slot.
  * @slot nav - Put the actions shown when the component is on desktop mode. Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element.
  */
 
@@ -26,7 +29,7 @@ import { HeaderBarMenuType, HeaderBarNavType } from '@type/header-bar';
   shadow: true,
 })
 export class MdsHeaderBar {
-  private hasNav: boolean;
+  @State() hasNav: boolean;
   @Element() host: HTMLMdsHeaderBarElement;
   @State() isOpened: boolean;
 
@@ -40,8 +43,12 @@ export class MdsHeaderBar {
    */
   @Prop({ reflect: true }) nav: HeaderBarNavType = 'desktop';
 
+  private onNavSlotChange = (): void => {
+    this.hasNav = hasChildWithSlot(this.host, 'nav');
+  };
+
   componentWillLoad(): void {
-    this.hasNav = this.host.querySelector(':scope > [slot="nav"]') !== null;
+    this.hasNav = hasChildWithSlot(this.host, 'nav');
   }
 
   /**
@@ -55,6 +62,10 @@ export class MdsHeaderBar {
     this.host.closest('mds-header')?.setOpened(true);
   };
 
+  /**
+   * Opens or closes the header bar.
+   * @param isOpened whether the header bar should be opened
+   */
   @Method()
   async setOpened(isOpened: boolean = true): Promise<void> {
     this.isOpened = isOpened;
@@ -62,17 +73,20 @@ export class MdsHeaderBar {
 
   render() {
     return (
-      <Host>
+      <Host
+        pref-animation={preferenceStore.state.animation}
+        pref-contrast={preferenceStore.state.contrast}
+        pref-mode={preferenceStore.state.mode}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
+      >
         <div class="content" part="content">
           <div class="logo">
             <slot />
           </div>
           <div class="actions" part="actions">
-            {this.nav !== 'none' && this.hasNav && (
-              <nav class="nav" part="nav">
-                <slot name="nav" />
-              </nav>
-            )}
+            <nav class={clsx('nav', !this.hasNav && 'nav--hidden')} part="nav">
+              <slot name="nav" onSlotchange={this.onNavSlotChange} />
+            </nav>
             {this.menu !== 'none' && (
               <mds-button
                 class="menu"

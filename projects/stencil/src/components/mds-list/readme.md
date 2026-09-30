@@ -234,9 +234,9 @@ The default slot of `<mds-list>` is documented to receive `<mds-list-item>` elem
 
 ## Slots
 
-| Slot        | Description                    |
-| ----------- | ------------------------------ |
-| `"default"` | Add `mds-list-item` element/s. |
+| Slot | Description                    |
+| ---- | ------------------------------ |
+|      | Add `mds-list-item` element/s. |
 
 
 ----------------------------------------------

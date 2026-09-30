@@ -382,9 +382,9 @@ Inserting wrapper elements breaks the compound slot protocol - `<mds-tree>` comm
 
 ## Slots
 
-| Slot        | Description                    |
-| ----------- | ------------------------------ |
-| `"default"` | Add `mds-tree-item` element/s. |
+| Slot | Description                    |
+| ---- | ------------------------------ |
+|      | Add `mds-tree-item` element/s. |
 
 
 ## CSS Custom Properties
@@ -412,7 +412,6 @@ Inserting wrapper elements breaks the compound slot protocol - `<mds-tree>` comm
 | `--mds-tree-toggle-icon-chevron-expanded-color`             | Sets the text color of the chevron icon when the item is expanded.                                                     |
 | `--mds-tree-toggle-icon-folder-default-background`          | Sets the background-color of the folder icon when the item is collapsed.                                               |
 | `--mds-tree-toggle-icon-folder-default-color`               | Sets the text color of the folder icon when the item is collapsed.                                                     |
-| `--mds-tree-toggle-icon-folder-expanded-background`         | Sets the background-color of the folder icon when the item is expanded.                                                |
 | `--mds-tree-toggle-icon-folder-expanded-color`              | Sets the text color of the folder icon when the item is expanded.                                                      |
 | `--mds-tree-toggle-icon-position-right-default-background`  | Sets the background-color of the icon when the attribute `toggle-position` is set to `right`.                          |
 | `--mds-tree-toggle-icon-position-right-default-color`       | Sets the text color of the icon when the attribute `toggle-position` is set to `right`.                                |

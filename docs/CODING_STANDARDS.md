@@ -11,7 +11,7 @@ Enforcement runs in three places:
 
 - **On save** - if your editor has ESLint and Stylelint extensions installed
 - **On commit** - via the `.husky/pre-commit` hook (lint + format on staged files)
-- **In CI** - `nx run <project>:lint`
+- **In CI** - the `lint` workflow ([`.github/workflows/lint.yml`](../.github/workflows/lint.yml)) runs `npm run lint` on every pull request and on every push to `dev`, `main` and `beta`; a lint error fails the check
 
 ## TypeScript / JavaScript
 
@@ -45,6 +45,8 @@ Common settings:
 
 - **`stencil/strict-mutable` is off** - mutable `@Prop()` is allowed when needed.
 
+- **`stencil/reserved-member-names` is off** - the `autofocus`/`autoFocus` props of mds-button, mds-button-dropdown, mds-input, mds-input-select and mds-input-switch mirror the native attribute on purpose; renaming them would break the public API.
+
 - **Storybook plugin (`eslint-plugin-storybook`)** - `flat/recommended` applies to story files.
 
 - **Ignored directories**: `react`, `angular` (these are auto-generated framework adapters and are not linted).
@@ -57,8 +59,8 @@ Common settings:
 
 ```bash
 # In projects/stencil/
-yarn lint.ts          # check
-yarn lint:fix         # auto-fix what's fixable
+npm run lint.ts       # check
+npm run lint:fix      # auto-fix what's fixable
 
 # Monorepo-wide
 nx run-many --target=lint --all
@@ -266,7 +268,7 @@ mds-button[type="primary"] { … }
 
 ```bash
 # In projects/stencil/
-yarn lint.css
+npm run lint.css
 
 # Auto-fix where possible
 npx stylelint --fix 'src/**/*.css'

@@ -1,44 +1,46 @@
 :host([variant='required']) {
-  --mds-input-tip-item-background: rgb(var(--status-error-05));
+  --mds-input-tip-item-background: rgb(var(--magma-danger-emphasis));
 }
 
 :host([variant='required-success']) {
-  --mds-input-tip-item-background: rgb(var(--status-success-05));
+  --mds-input-tip-item-background: rgb(var(--magma-success-emphasis));
 }
 
 :host([variant='readonly']) {
-  --mds-input-tip-item-background: rgb(var(--status-info-05));
+  --mds-input-tip-item-background: rgb(var(--magma-info-emphasis));
 }
 
 :host([variant='disabled']) {
-  --mds-input-tip-item-background: rgb(var(--tone-neutral-05));
+  --mds-input-tip-item-background: rgb(var(--magma-wash-base));
+  --mds-input-tip-item-color: rgb(var(--magma-text-disabled));
+  --mds-input-tip-item-icon-color: rgb(var(--magma-text-disabled));
 }
 
 /* :host([variant="text"]) {
-  --mds-input-tip-item-background: rgb(var(--tone-neutral-03));
+  --mds-input-tip-item-background: rgb(var(--magma-surface-inverse-muted));
 } */
 
 :host([variant='count-empty']) {
-  --mds-input-tip-item-color: rgb(var(--status-info-02));
-  --mds-input-tip-item-background: rgb(var(--status-info-08));
+  --mds-input-tip-item-color: rgb(var(--magma-info-text-muted));
+  --mds-input-tip-item-background: rgb(var(--magma-info-wash-strong));
 }
 
 :host([variant='count-incomplete']) {
-  --mds-input-tip-item-color: rgb(var(--status-success-02));
-  --mds-input-tip-item-background: rgb(var(--status-success-08));
+  --mds-input-tip-item-color: rgb(var(--magma-success-text-muted));
+  --mds-input-tip-item-background: rgb(var(--magma-success-wash-strong));
 }
 
 :host([variant='count-almost']) {
-  --mds-input-tip-item-color: rgb(var(--status-warning-02));
-  --mds-input-tip-item-background: rgb(var(--status-warning-08));
+  --mds-input-tip-item-color: rgb(var(--magma-warning-text-muted));
+  --mds-input-tip-item-background: rgb(var(--magma-warning-wash-strong));
 }
 
 :host([variant='count-almost-full']) {
-  --mds-input-tip-item-color: rgb(var(--status-error-02));
-  --mds-input-tip-item-background: rgb(var(--status-error-08));
+  --mds-input-tip-item-color: rgb(var(--magma-danger-text-muted));
+  --mds-input-tip-item-background: rgb(var(--magma-danger-wash-strong));
 }
 
 :host([variant='count-full']) {
-  --mds-input-tip-item-color: rgb(var(--status-error-09));
-  --mds-input-tip-item-background: rgb(var(--status-error-05));
+  --mds-input-tip-item-color: rgb(var(--magma-danger-on-emphasis));
+  --mds-input-tip-item-background: rgb(var(--magma-danger-emphasis));
 }

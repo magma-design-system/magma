@@ -1,8 +1,9 @@
 import chalk from 'chalk';
 import path from 'path';
-import { DIST_DIR, PROJECT_DIR } from './meta';
+import { BUILD_DIR, DIST_DIR, PROJECT_DIR } from './meta';
+import { appendFile, readFile, writeFile } from 'fs/promises';
 import { copy } from 'fs-extra';
-import { logDirectoryCopied } from '../../../scripts/log';
+import { logDirectoryCopied, logFileActionDone } from '../../../scripts/log';
 
 const copyDirectory = async (src: string, dest: string): Promise<void> => {
   return new Promise((resolve, reject) => {
@@ -18,6 +19,14 @@ const copyDirectory = async (src: string, dest: string): Promise<void> => {
   });
 };
 
+// Ship a generated artifact staged under build/ to its published location,
+// keeping the same basename so dist/ layout is unchanged.
+const copyStaged = async (relFromBuild: string, dest: string): Promise<void> => {
+  const src = path.join(BUILD_DIR, relFromBuild);
+  await copy(src, dest);
+  logDirectoryCopied(src, dest);
+};
+
 const main = async () => {
   await copyDirectory(path.join(PROJECT_DIR, 'tailwind'), path.join(DIST_DIR, 'tailwind'));
   await copyDirectory(path.join(PROJECT_DIR, 'tailwind3'), path.join(DIST_DIR, 'tailwind3'));
@@ -26,6 +35,58 @@ const main = async () => {
     path.join(PROJECT_DIR, '../design-tokens/dist/css'),
     path.join(DIST_DIR, 'css'),
   );
+
+  // The generated semantic artifacts live under build/ (out of the source dirs);
+  // ship them alongside the tracked CSS so dist/ keeps its published layout.
+  await copyStaged(path.join('css', 'semantic.css'), path.join(DIST_DIR, 'css', 'semantic.css'));
+  await copyStaged(path.join('css', 'themes.css'), path.join(DIST_DIR, 'css', 'themes.css'));
+  await copyStaged(
+    path.join('tailwind', 'semantic.css'),
+    path.join(DIST_DIR, 'tailwind', 'semantic.css'),
+  );
+
+  // The component custom-property registrations are appended to globals.css rather
+  // than shipped as a separate file: consumers already import globals.css, and a
+  // registration only takes effect when the document loads it. Appending is safe
+  // because globals.css holds no @import (those must precede every other rule).
+  const propertiesCss = await readFile(path.join(BUILD_DIR, 'css', 'properties.css'), 'utf8');
+  const distGlobals = path.join(DIST_DIR, 'css', 'globals.css');
+  await appendFile(distGlobals, `\n${propertiesCss}`, 'utf8');
+  logFileActionDone({
+    entity: 'file',
+    source: 'properties.css',
+    actionDone: 'appended',
+    destination: distGlobals,
+  });
+
+  // The corner axis is appended to globals.css for the same reason: it is the
+  // sheet every consumer already imports, so the default shape and its radius
+  // scale arrive without a new import line, and a deviation block is one
+  // attribute away.
+  const cornerCss = await readFile(path.join(BUILD_DIR, 'css', 'corner.css'), 'utf8');
+  await appendFile(distGlobals, `\n${cornerCss}`, 'utf8');
+  logFileActionDone({
+    entity: 'file',
+    source: 'corner.css',
+    actionDone: 'appended',
+    destination: distGlobals,
+  });
+
+  // The editor-only token sheet ships as its own file: it must NOT end up in
+  // globals.css (or in anything a page loads), it exists so editors can offer the
+  // --mds-* tokens in var() completion. See properties.ts for why it is needed and
+  // why it is inert.
+  await copyStaged(
+    path.join('css', 'tokens.editor.css'),
+    path.join(DIST_DIR, 'css', 'tokens.editor.css'),
+  );
+
+  // tailwind/theme.css imports the bridge from the staging dir in source; in the
+  // published package the bridge sits next to it, so realign the import to the
+  // sibling in the emitted copy. Keeps dist/tailwind/theme.css self-contained.
+  const distTheme = path.join(DIST_DIR, 'tailwind', 'theme.css');
+  const themeCss = await readFile(distTheme, 'utf8');
+  await writeFile(distTheme, themeCss.replace('../build/tailwind/semantic.css', './semantic.css'));
 };
 
 main();
