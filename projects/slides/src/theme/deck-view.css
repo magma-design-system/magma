@@ -12,14 +12,20 @@
 
   body {
     background-color: var(--mds-slide-page-bg);
-    display: grid;
     margin: 0;
     overflow: hidden;
-    place-items: center;
   }
 
+  /* Centered by position, not by a grid: an auto grid track takes the deck's
+     native 1280px width and starts at x=0, so in a viewport narrower than the
+     slide the scaled deck ends up off-center. translate() is relative to the
+     deck's own box, and scaling around its center keeps it centered. */
+
   .mds-deck {
-    transform: scale(var(--mds-deck-scale, 1));
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%) scale(var(--mds-deck-scale, 1));
     transform-origin: center;
   }
 
