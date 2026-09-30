@@ -61,11 +61,22 @@ jobs:
         id: ver
         working-directory: projects/codemod
         run: |
-          CURRENT=$(npm view "$PKG" version 2>/dev/null || node -p "require('./package.json').version")
+          # Baseline: the highest version published on npm, whatever its dist-tag,
+          # so a bump never re-publishes an existing version; or the package.json
+          # version when the package is not on npm yet.
+          # `npm view … versions --json` prints a bare string for a single version.
+          PUBLISHED=$(npm view "$PKG" versions --json 2>/dev/null \
+            | jq -r 'if type == "array" then .[] else . end' \
+            | xargs -r "$GITHUB_WORKSPACE/node_modules/.bin/semver" | tail -1)
+          CURRENT=${PUBLISHED:-$(jq -r '.version' package.json)}
           echo "Current published/baseline version: $CURRENT"
-          npm version "$CURRENT" --no-git-tag-version --allow-same-version >/dev/null
-          NEXT=$(npm version "${{ inputs.bump }}" --preid "${{ inputs.preid }}" --no-git-tag-version)
-          NEXT=${NEXT#v}
+          # Inside a workspace `npm version` prints several lines (package name,
+          # version, install summary), so read the result back from package.json
+          # instead of capturing its output; --no-workspaces-update skips the
+          # root lock/node_modules refresh the bump would otherwise trigger.
+          npm version "$CURRENT" --no-git-tag-version --no-workspaces-update --allow-same-version >/dev/null
+          npm version "${{ inputs.bump }}" --preid "${{ inputs.preid }}" --no-git-tag-version --no-workspaces-update >/dev/null
+          NEXT=$(jq -r '.version' package.json)
           echo "Next version: $NEXT"
           if [[ "$NEXT" == *-* ]]; then
             TAG=$(echo "$NEXT" | sed -E 's/.*-([a-zA-Z]+).*/\1/')
