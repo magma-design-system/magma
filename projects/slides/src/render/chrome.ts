@@ -144,8 +144,8 @@ export function renderZone(zone: ZoneName, slide: Slide, deck: Deck): string {
     <div class="flex items-center gap-[var(--spacing-md)] min-w-0">${end}</div>`;
 
   return zone === 'header'
-    ? `<header class="mds-slide__header absolute inset-x-0 top-0 flex items-center justify-between h-[var(--mds-slide-header-height)] gap-[var(--mds-slide-gap)] px-[var(--mds-slide-padding)] border-b border-solid border-[color:var(--mds-slide-rule)] leading-[1.2] font-[family-name:var(--mds-slide-font-heading)] text-[length:var(--mds-slide-footer-size)]">${inner}
+    ? `<header class="mds-slide__header absolute inset-x-0 top-0 flex items-center justify-between h-[var(--mds-slide-header-height)] gap-[var(--mds-slide-gap)] px-[var(--mds-slide-padding)] border-0 border-b border-solid border-[color:var(--mds-slide-rule)] leading-[1.2] font-[family-name:var(--mds-slide-font-ui)] text-[length:var(--mds-slide-footer-size)]">${inner}
   </header>`
-    : `<footer class="mds-slide__footer absolute inset-x-0 bottom-0 flex items-center justify-between h-[var(--mds-slide-footer-height)] gap-[var(--mds-slide-gap)] px-[var(--mds-slide-padding)] border-t border-solid border-[color:var(--mds-slide-rule)] leading-[1.2] font-[family-name:var(--mds-slide-font-heading)] text-[length:var(--mds-slide-footer-size)]">${inner}
+    : `<footer class="mds-slide__footer absolute inset-x-0 bottom-0 flex items-center justify-between h-[var(--mds-slide-footer-height)] gap-[var(--mds-slide-gap)] px-[var(--mds-slide-padding)] border-0 border-t border-solid border-[color:var(--mds-slide-rule)] leading-[1.2] font-[family-name:var(--mds-slide-font-ui)] text-[length:var(--mds-slide-footer-size)]">${inner}
   </footer>`;
 }

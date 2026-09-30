@@ -121,7 +121,7 @@
   color: var(--mds-slide-heading-fg);
   font-family: var(--mds-slide-font-heading);
   font-size: var(--mds-slide-title-size);
-  font-weight: 800;
+  font-weight: 900;
   line-height: 1.05;
   margin: 0;
 }
@@ -220,7 +220,7 @@
   color: var(--mds-slide-heading-fg);
   font-family: var(--mds-slide-font-heading);
   font-size: var(--mds-slide-heading-size);
-  font-weight: 600;
+  font-weight: 500;
   line-height: 1.25;
   margin: 0;
   padding-left: --spacing(800);

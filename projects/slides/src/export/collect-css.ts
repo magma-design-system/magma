@@ -3,6 +3,7 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
 import { resolveTheme } from '../render/theme.js';
+import { fontFaceCss } from './fonts.js';
 
 const require = createRequire(import.meta.url);
 
@@ -50,12 +51,13 @@ const themeFile = (theme: string | undefined): string =>
   localCss(`themes/${resolveTheme(theme)}/theme.css`);
 
 /**
- * Build the full CSS for a deck: Magma tokens/base + slide tokens + structure +
+ * Build the full CSS for a deck: embedded Magma fonts + Magma tokens/base +
+ * slide tokens + structure +
  * the selected theme + the presentation view CSS. Returned as one string ready
  * to inline in a `<style>` element.
  */
 export function collectCss(theme?: string): string {
-  const parts: string[] = [];
+  const parts: string[] = [fontFaceCss()];
   for (const file of STYLES_FILES) {
     try {
       parts.push(magmaCss(file));

@@ -165,6 +165,16 @@ list stacks elements vertically. The `business` theme:
 }
 ```
 
+## Fonts
+
+A deck uses the Magma type roles: titles in `--font-title` (Roboto), header,
+footer and counter in `--font-info` (Karla, via `--mds-slide-font-ui`), slide
+text in `--font-read` (Merriweather) and code in `--font-code` (Roboto Mono).
+Magma does not bundle webfonts, but a deck must render anywhere, so the export
+embeds the `@fontsource` Latin files as `data:` URIs (`src/export/fonts.ts`,
+about 300 KB per deck). Add a face there before using a new weight; a test
+fails when the slide CSS asks the title family for a weight it does not embed.
+
 ## Local images
 
 Structural images (`image:`) and the chrome `logo` may be local paths. On export
@@ -215,6 +225,6 @@ CLI: `magma-slides build <deck.md> [--out f.html] [--pdf f.pdf] [--theme t] [--s
 ## Out of scope (follow-up)
 
 - PPTX export; arbitrary per-slide CSS and custom layouts (`registerLayout`);
-  a `scheme: system` that follows the OS scheme; font embedding for offline HTML;
+  a `scheme: system` that follows the OS scheme;
   the `editorial` theme (needs its Magma colors, #692) and the shape axis
   (`data-corner-shape`).

@@ -43,6 +43,10 @@
     "test": "vitest --run"
   },
   "dependencies": {
+    "@fontsource/karla": "5.1.0",
+    "@fontsource/merriweather": "5.1.0",
+    "@fontsource/roboto": "5.1.0",
+    "@fontsource/roboto-mono": "5.1.0",
     "ajv": "^8.17.1",
     "arg": "^5.0.2",
     "chalk": "^5.4.1",
@@ -57,9 +61,15 @@
     "tailwindcss": ">=4"
   },
   "peerDependenciesMeta": {
-    "@tailwindcss/postcss": { "optional": true },
-    "postcss": { "optional": true },
-    "tailwindcss": { "optional": true }
+    "@tailwindcss/postcss": {
+      "optional": true
+    },
+    "postcss": {
+      "optional": true
+    },
+    "tailwindcss": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@maggioli-design-system/styles": "*",

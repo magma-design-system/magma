@@ -46,8 +46,11 @@
   --mds-slide-code-fg: rgb(var(--magma-text-default));
   --mds-slide-rule: rgb(var(--magma-border-default));
 
-  /* Fonts from Magma tokens. */
-  --mds-slide-font-heading: var(--font-info, Karla, system-ui, sans-serif);
+  /* Fonts from the Magma type roles (the export embeds the files, see
+     export/fonts.ts): titles in the title family, header/footer and other
+     chrome in the UI family, slide text in the reading family. */
+  --mds-slide-font-heading: var(--font-title, Roboto, system-ui, sans-serif);
+  --mds-slide-font-ui: var(--font-info, Karla, system-ui, sans-serif);
   --mds-slide-font-body: var(--font-read, Merriweather, Georgia, serif);
   --mds-slide-font-code: var(--font-code, 'Roboto Mono', ui-monospace, monospace);
 
@@ -58,7 +61,7 @@
   --mds-slide-code-size: calc(var(--spacing, 0.0025rem) * 550); /* 1.375rem */
 
   /* Header and footer zones (chrome text shares one size). */
-  --mds-slide-header-height: calc(var(--spacing, 0.0025rem) * 1400); /* 3.5rem */
-  --mds-slide-footer-height: calc(var(--spacing, 0.0025rem) * 1400); /* 3.5rem */
+  --mds-slide-header-height: calc(var(--spacing, 0.0025rem) * 1800); /* 3.5rem */
+  --mds-slide-footer-height: var(--mds-slide-header-height); /* 3.5rem */
   --mds-slide-footer-size: calc(var(--spacing, 0.0025rem) * 380); /* 0.95rem */
 }
