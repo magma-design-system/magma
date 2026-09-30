@@ -1,7 +1,7 @@
 /**
  * Build the generated base manifest from two Stencil `documentation.json` files.
  *
- *   FROM_VERSION=1.12.0 TO_VERSION=2.0.0-beta \
+ *   FROM_VERSION=1.12.0 TO_VERSION=2.0.0 \
  *     npm run generate.candidate -- <v1 documentation.json> <v2 documentation.json> [out.ts]
  *
  * v2 docs come from a `dev` build; v1 docs from a one-off build of `support/v1.x`

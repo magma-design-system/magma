@@ -4,7 +4,7 @@ import { type Manifest } from './schema.js';
 
 export const generatedManifest: Manifest = {
   fromVersion: '1.12.0',
-  toVersion: '2.0.0-beta',
+  toVersion: '2.0.0',
   global: {
     tone: {
       prop: {
