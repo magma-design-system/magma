@@ -1,15 +1,13 @@
 :host([variant='dark']) {
-  --mds-banner-background: rgb(var(--magma-scale-01));
-  --mds-banner-cockade-background: rgb(var(--magma-scale-04));
-  --mds-banner-color: rgb(var(--magma-scale-08));
-  --mds-banner-headline-color: rgb(var(--magma-text-on-emphasis));
-  --mds-banner-icon-color: rgb(var(--magma-scale-07));
+  --mds-banner-background: rgb(var(--magma-surface-inverse));
+  --mds-banner-cockade-background: rgb(var(--magma-on-inverse) / 0.15);
+  --mds-banner-color: rgb(var(--magma-on-inverse));
+  --mds-banner-headline-color: rgb(var(--magma-on-inverse));
+  --mds-banner-icon-color: rgb(var(--magma-on-inverse));
   --mds-banner-shadow: var(--shadow-lg-sharp);
 
   &:host([tone='weak']) {
-    --mds-banner-background: rgb(var(--magma-scale-03));
-    --mds-banner-color: rgb(var(--magma-scale-09));
-    --mds-banner-icon-color: rgb(var(--magma-scale-07));
+    --mds-banner-background: rgb(var(--magma-surface-inverse-muted));
     --mds-banner-shadow: var(--shadow-sm-sharp);
   }
 }

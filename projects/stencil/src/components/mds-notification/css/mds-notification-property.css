@@ -17,7 +17,7 @@
 
 @property --mds-notification-dot-background {
   inherits: true;
-  initial-value: rgb(var(--status-error-05));
+  initial-value: rgb(var(--magma-danger-emphasis));
   syntax: '<color>';
 }
 

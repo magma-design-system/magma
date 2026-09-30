@@ -121,9 +121,10 @@ export function ThemesManager({ config }: ThemesManagerProps) {
       lines.push(`  --magma-tint-border-${r}: var(--border-${family}-${r});`),
     );
     TEXT_ROLES.forEach((r) => lines.push(`  --magma-tint-text-${r}: var(--text-${family}-${r});`));
-    // the ramp travels with the block: component sheets still read raw steps through
-    // --magma-scale-*, so a theme that retinted only surface/border/text would leave
-    // those on the base tint. Same shared helper the styles generator uses.
+    // the ramp travels with the block: the wash band, the shadow ink, the inverse
+    // pair and the neutral hue resolve through --magma-tint-scale-*, so a theme that
+    // retinted only surface/border/text would leave those on the base tint. Same
+    // shared helper the styles generator uses.
     lines.push(...scaleTintOverride(scaleFamily(family)));
     ACCENT_ROLES.forEach((role) => {
       const variant = accentFor(family, role);
@@ -338,7 +339,11 @@ function ThemeCard({
                   {ACCENT_ROLES.map((role) => {
                     const variant = accentFor(family, role);
                     const emphasis = variantHex(variants, variant, mode, ACCENT_STEPS.emphasis);
-                    const onEmph = seeds[mode];
+                    // the fill ink: the seed in light, the canvas in dark (spec 6.5)
+                    const onEmph =
+                      mode === 'dark' && semantic.onEmphasisDark
+                        ? hex(s, semantic.onEmphasisDark)
+                        : seeds[mode];
                     const aSurface = variantHex(variants, variant, mode, ACCENT_STEPS.surface);
                     const aFg = variantHex(variants, variant, mode, ACCENT_STEPS.fg);
                     return (

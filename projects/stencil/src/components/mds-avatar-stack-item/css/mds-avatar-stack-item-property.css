@@ -11,18 +11,18 @@
 
 @property --mds-avatar-stack-item-background {
   inherits: true;
-  initial-value: rgb(var(--tone-neutral-seed));
+  initial-value: rgb(var(--magma-surface-overlay));
   syntax: '<color>';
 }
 
 @property --mds-avatar-stack-item-count-background-color {
   inherits: true;
-  initial-value: rgb(var(--magma-scale-09));
+  initial-value: rgb(var(--magma-wash-base));
   syntax: '<color>';
 }
 
 @property --mds-avatar-stack-item-count-color {
   inherits: true;
-  initial-value: rgb(var(--magma-scale-04));
+  initial-value: rgb(var(--magma-text-subtle));
   syntax: '<color>';
 }

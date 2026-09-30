@@ -111,6 +111,16 @@
   syntax: '<integer>+';
 }
 
+/* The ink drawn on the backdrop / overlay scrim (the modal close icon). The
+   scrim is black in BOTH modes, so this is a fixed light ink, not a role that
+   flips with the mode (a flipping ink measured 7.4 Lc on it in dark, #731).
+   Override it together with --magma-backdrop-color. */
+@property --magma-on-backdrop {
+  inherits: true;
+  initial-value: 252 252 252;
+  syntax: '<integer>+';
+}
+
 @property --magma-outline-blur-color {
   inherits: true;
   initial-value: transparent;
@@ -248,6 +258,7 @@
   --magma-header-z-index: 1000;
   --magma-modal-z-index: 3000;
   --magma-notification-z-index: 2000;
+  --magma-on-backdrop: 252 252 252;
   --magma-outline-animation-duration: 1.5s;
   --magma-outline-blur-color: transparent;
   --magma-outline-blur-offset: 6px;

@@ -13,8 +13,8 @@
   --private-filter-item-transition-duration: var(--mds-filter-item-transition-duration);
   --mds-filter-item-count-background-default: rgb(var(--magma-wash-strong));
   --mds-filter-item-count-color-default: rgb(var(--magma-text-default));
-  --mds-filter-item-count-background-selected: rgb(var(--magma-scale-05));
-  --mds-filter-item-count-color-selected: rgb(var(--magma-text-on-emphasis));
+  --mds-filter-item-count-background-selected: rgb(var(--magma-surface-inverse-muted));
+  --mds-filter-item-count-color-selected: rgb(var(--magma-on-inverse));
 
   @apply focus-bounce;
 
@@ -70,7 +70,7 @@ mds-text {
 
 :host([selected]:not([selected='false'])),
 :host(:hover) {
-  background-color: rgb(var(--tone-neutral-seed));
+  background-color: rgb(var(--magma-surface-overlay));
 }
 
 :host(:hover) {

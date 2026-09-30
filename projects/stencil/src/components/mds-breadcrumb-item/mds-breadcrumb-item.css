@@ -25,8 +25,8 @@
     rgb(var(--mds-breadcrumb-item-button-border-color-rgb-hover))
   );
   --mds-breadcrumb-item-button-background: var(--mds-breadcrumb-button-background, transparent);
-  --mds-breadcrumb-item-button-border-color-rgb-selected: var(--magma-scale-09);
-  --mds-breadcrumb-item-button-border-color-rgb-hover: var(--magma-scale-10);
+  --mds-breadcrumb-item-button-border-color-rgb-selected: var(--magma-wash-base);
+  --mds-breadcrumb-item-button-border-color-rgb-hover: var(--magma-wash-soft);
   --mds-breadcrumb-item-button-border-color-rgb: var(
     --mds-breadcrumb-item-button-border-color-rgb-hover
   );

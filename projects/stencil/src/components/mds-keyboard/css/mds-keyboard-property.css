@@ -23,31 +23,31 @@
 
 @property --mds-keyboard-background-fail {
   inherits: true;
-  initial-value: rgb(var(--status-error-09));
+  initial-value: rgb(var(--magma-danger-wash-base));
   syntax: '<color>';
 }
 
 @property --mds-keyboard-background-pass {
   inherits: true;
-  initial-value: rgb(var(--status-success-09));
+  initial-value: rgb(var(--magma-success-wash-base));
   syntax: '<color>';
 }
 
 @property --mds-keyboard-color {
   inherits: true;
-  initial-value: rgb(var(--magma-scale-04));
+  initial-value: rgb(var(--magma-text-subtle));
   syntax: '<color>';
 }
 
 @property --mds-keyboard-fill-fail {
   inherits: true;
-  initial-value: rgb(var(--status-error-06));
+  initial-value: rgb(var(--magma-danger-text-default));
   syntax: '<color>';
 }
 
 @property --mds-keyboard-fill-pass {
   inherits: true;
-  initial-value: rgb(var(--status-success-06));
+  initial-value: rgb(var(--magma-success-text-default));
   syntax: '<color>';
 }
 

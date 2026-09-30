@@ -46,7 +46,7 @@
 
 @property --mds-radial-menu-disc-background {
   inherits: true;
-  initial-value: rgb(var(--tone-neutral-seed) / 0.5);
+  initial-value: rgb(var(--magma-surface-overlay) / 0.5);
   syntax: '<color>';
 }
 

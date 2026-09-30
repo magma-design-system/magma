@@ -53,7 +53,7 @@
 
 @property --mds-calendar-cell-disabled-color {
   inherits: true;
-  initial-value: rgb(var(--magma-scale-07));
+  initial-value: rgb(var(--magma-text-disabled));
   syntax: '<color>';
 }
 
@@ -65,7 +65,7 @@
 
 @property --mds-calendar-cell-other-month-color {
   inherits: true;
-  initial-value: rgb(var(--magma-scale-07));
+  initial-value: rgb(var(--magma-text-disabled));
   syntax: '<color>';
 }
 
@@ -101,7 +101,7 @@
 
 @property --mds-calendar-cell-preselection-other-month-boundaries-background {
   inherits: true;
-  initial-value: rgb(var(--tone-neutral-seed));
+  initial-value: rgb(var(--magma-surface-raised));
   syntax: '<color>';
 }
 
@@ -125,7 +125,7 @@
 
 @property --mds-calendar-cell-preselection-today-color {
   inherits: true;
-  initial-value: rgb(var(--variant-primary-03));
+  initial-value: rgb(var(--magma-accent-fg));
   syntax: '<color>';
 }
 
@@ -143,7 +143,7 @@
 
 @property --mds-calendar-cell-selection-current-month-boundaries-background {
   inherits: true;
-  initial-value: rgb(var(--tone-neutral-seed));
+  initial-value: rgb(var(--magma-surface-raised));
   syntax: '<color>';
 }
 
@@ -179,13 +179,13 @@
 
 @property --mds-calendar-cell-selection-current-month-weekend-color {
   inherits: true;
-  initial-value: rgb(var(--variant-primary-07));
+  initial-value: rgb(var(--magma-accent-border));
   syntax: '<color>';
 }
 
 @property --mds-calendar-cell-selection-other-month-background {
   inherits: true;
-  initial-value: rgb(var(--variant-primary-07));
+  initial-value: rgb(var(--magma-accent-surface-hover));
   syntax: '<color>';
 }
 
@@ -227,6 +227,6 @@
 
 @property --mds-calendar-cell-weekend-color {
   inherits: true;
-  initial-value: rgb(var(--magma-scale-06));
+  initial-value: rgb(var(--magma-text-subtle));
   syntax: '<color>';
 }

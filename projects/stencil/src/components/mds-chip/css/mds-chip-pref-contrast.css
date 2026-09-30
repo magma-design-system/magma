@@ -1,11 +1,14 @@
 /* Contrast preference. The component reflects the resolved mode from <html> onto
  * its host as pref-contrast (see subscribePreference in @common/preference); these
  * plain shadow selectors refine for high contrast. `more` is the explicit choice;
- * `system` and no controller follow the OS via @media. Cross-browser, no :host-context. */
+ * `system` and no controller follow the OS via @media. Cross-browser, no :host-context.
+ *
+ * The paper ground is --magma-surface-default on purpose: under pref-contrast-more
+ * the layer promotes it to the seed (spec 9.3), so this reads as the paper of the
+ * mode in high contrast and as the page anywhere else. */
 
 :host([pref-contrast='more']) {
-  --mds-chip-background: rgb(var(--tone-neutral-seed));
-  --mds-chip-background-selected: rgb(var(--magma-scale-09));
+  --mds-chip-background: rgb(var(--magma-surface-default));
   --mds-chip-color: rgb(var(--magma-text-default));
   --mds-chip-color-selected: rgb(var(--magma-text-default));
   --mds-chip-icon-background-selected: rgb(var(--magma-accent-emphasis-hover));
@@ -19,8 +22,7 @@
 @media (prefers-contrast: more) {
   :host([pref-contrast='system']),
   :host(:not([pref-contrast])) {
-    --mds-chip-background: rgb(var(--tone-neutral-seed));
-    --mds-chip-background-selected: rgb(var(--magma-scale-09));
+    --mds-chip-background: rgb(var(--magma-surface-default));
     --mds-chip-color: rgb(var(--magma-text-default));
     --mds-chip-color-selected: rgb(var(--magma-text-default));
     --mds-chip-icon-background-selected: rgb(var(--magma-accent-emphasis-hover));

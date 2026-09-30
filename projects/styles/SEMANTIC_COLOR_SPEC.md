@@ -259,6 +259,44 @@ a different geometry.
 A ring is NOT a shadow role and NOT a border role: it is geometry. The colour question is
 settled by the primitive it names, which flips with the mode.
 
+### 6.1d Inverse surface - the dark variants
+
+`--magma-surface-inverse` / `--magma-surface-inverse-muted`, with `--magma-on-inverse` on
+both: the neutral chip that flips with the mode (dark on a light UI, light on a dark one) -
+the `dark` variant of banner, badge, button, toast, tooltip, the input-tip bubble. It is the
+neutral hue's emphasis pair (6.4), published under its own name.
+
+| Token | Step | Use |
+|---|---|---|
+| `--magma-surface-inverse` | `02` | the strong fill: tooltip, toast, banner, dark button at rest |
+| `--magma-surface-inverse-muted` | `03` | the less marked fill: weak tone, hover of the strong fill, the input-tip bubble, a selected count |
+| `--magma-on-inverse` | fill ink (6.5): seed in light, canvas in dark | text and icons on either level |
+
+**Why a second level.** Measured, not added for symmetry: 13 component declarations were
+already painting step `03` as the weak dark fill (badge, banner and toast weak, the seven
+input-tip bubbles, the text-button hover) because no role held it (#731). The two levels are
+a tone apart (8.3 Lc in both modes), which is what a weak tone is; the step below (`04`) would
+not carry the text: `on-inverse` measures 85.2 / 80.4 on `04` but 76.6 / **72.1** on `05`,
+where the dark button hovered.
+
+**One ink, not a ladder.** `on-inverse` measures 104.0 / 99.5 on the strong level and
+95.1 / 90.1 on the muted one (light / dark, against the seed), both gated (`on-emphasis`).
+Since the dark ink became the canvas (6.5) the dark values are 97.2 / 87.9. The dark variants had
+softened it by hand to steps `07`-`10`, and two of those pairs sat under the 75 floor in dark
+(`08` on `01` at 74.8, `09` on `03` at 70.8); a muted ink would have to be step `10` to clear
+both levels (92.3 / 88.3 and 83.3 / 78.9), a difference of `#ededed` vs `#fff` that no
+component needs a role for.
+
+**It follows the theme.** Both levels name steps of the active tint ramp through
+`--magma-tint-scale-*`, like the wash band of 6.1b, so a named theme retints the chip with the
+page: under `cool` step `02` is `#232b35` instead of `#2a2a2a`. Named on `--tone-neutral-*`
+directly they would stay a static grey while everything around them retints - which is what
+the dark variants had silently lost when they left `--magma-scale-*` for these roles (#731).
+
+A ring drawn on an inverse fill (`--mds-button-border-color-rgb`) names the fill's role, so
+fill and ring cannot drift apart. The pure-inversion `light` variants stay on
+`--tone-neutral-seed` (the paper of the mode), which is not an inverse role.
+
 ### 6.2 Text (prominence)
 
 `--magma-text-{default,muted,subtle,disabled,on-emphasis}`
@@ -363,8 +401,22 @@ Which text roles a wash level may carry is bounded in section 9.1, not by taste.
 | `<hue>-wash-{soft,base,strong}` | steps `10 / 09 / 08` of the colored family, named (see 6.4) |
 | `<hue>-emphasis` | `status/label/variant-*` (APCA), solid fill |
 | `<hue>-emphasis-{hover,active}` | steps `03 / 02` of the same family, named (see 6.6) |
+| `surface-inverse` / `-muted` | steps `02 / 03` of the ACTIVE TINT ramp (`--magma-tint-scale-*`), so they retint with a named theme (see 6.1d); `on-inverse` = the fill ink (below) |
 | `<hue>-fg / -border / -surface` | shortcuts onto the roles above at their default prominence |
-| `*-on-emphasis` | `--tone-*-seed` / near-extreme, verified on the fill |
+| `accent-<role>-fg` | step `03` of the accent family (`accentSteps`), not the hue `05`: the accent has no generated text scale, and `05` measured 53-66 Lc on the neutral surfaces (under the 60 floor in light); `03` gives 71-84 in both modes. Same step as `-emphasis-hover`, different role: ink on a surface vs a fill state |
+| `*-on-emphasis` | the fill ink `--magma-tint-text-on-emphasis`: `--tone-*-seed` in light, `--magma-tint-default` (the canvas) in dark; verified on the fill |
+
+**The fill ink (#739).** Every ink on a solid fill - `text-on-emphasis`, `<hue>-on-emphasis`,
+`accent-*-on-emphasis`, `on-inverse` - resolves through ONE pointer,
+`--magma-tint-text-on-emphasis`, so the fills cannot disagree on their ink. In light it is
+the seed (`#fff` on a saturated fill). In dark it is NOT the seed: pure `#000` was the only
+pure extreme left once the canvas was lifted (`#1d1d1d`), and labels, switch knobs and badge
+rings read as holes cut into the page. The dark ink is the canvas (`onEmphasisDark:
+'default'` in `semantic.config.ts`), i.e. the page showing through the fill. Stated as the
+tint pointer, it follows a named theme (which repoints `--magma-tint-default`) and
+`pref-contrast-more` (which sends the page back to the seed, so the ink returns to pure black
+with no rule of its own). The cost is ~2.3 Lc on every fill, which is why the dark floor is 70
+(9.1).
 
 ### 6.6 Interaction states
 
@@ -445,43 +497,44 @@ DOM). Same mechanism as the existing preference system.
   that family's OWN scale, so ANY tint qualifies - a `tone` family or a colour family (a
   colour theme is monochromatic: its hue as surface, border and text). The groups
   (`tone`/`status`/`label`/...) organise names; they do not gate what can back a theme.
-  `text-on-emphasis` is the pure seed (max contrast on a solid fill) and may stay fixed
-  across themes. The accent hue follows the same repoint pattern. (Note: the config
+  `text-on-emphasis` is the fill ink (6.5): the pure seed in light, the theme's own canvas
+  in dark, so it follows the theme with no override of its own. The accent hue follows the same repoint pattern. (Note: the config
   `alias` field is declared but NOT consumed by the generator - `variant-primary` and
   `brand-maggioli` merely share a seed, they are not live-aliased.) A theme is thus an
   override map of the `--magma-tint-*` block (daisyUI-style ergonomics).
 
-  A theme family MUST also ship a full RAMP, not just a surface. The component sheets
-  still reach for a raw ramp step wherever the role vocabulary does not cover the use yet
-  (interaction washes, scrims, shadows, decorative fills); those read
-  `--magma-scale-01..10`, which resolves through `--magma-tint-scale-*` and so retints
-  with the rest of the block. Pinned to `--tone-neutral-*` instead they would split the
-  theming in two - the roles retinting while the raw steps stayed a static neutral. Since
-  surfaces can be opted in per GROUP, a family can carry `--surface-<x>-*` and no
-  `--<x>-01..10`; a ramp pointer with nothing to resolve to would silently put every
-  consumer back on the fallback chain, so `scripts/semantic.ts` checks each pointer
-  against the emitted primitives and FAILS the build otherwise. The ramp family is assumed
-  to be `tone-<surface>` - correct as long as a theme is a tint - and a theme drawn from
-  another group names it: `blue: { surface: 'blue', scale: 'label-blue' }`.
+  A theme family MUST also ship a full RAMP, not just a surface. The roles drawn from a
+  ramp step rather than from a surface - the wash band (6.1b), the shadow ink (6.1c), the
+  inverse pair (6.1d) and the neutral hue's `fg` / `border` - resolve through
+  `--magma-tint-scale-01..10`, which the theme repoints with the rest of the block. Pinned
+  to `--tone-neutral-*` instead they would stay grey under `cool` / `warm` while the
+  surfaces around them retinted (the regression found and fixed on #736). Since surfaces
+  can be opted in per GROUP, a family can carry `--surface-<x>-*` and no `--<x>-01..10`; a
+  ramp pointer with nothing to resolve to would silently put those roles back on the
+  fallback chain, so `scripts/semantic.ts` checks each pointer against the emitted
+  primitives and FAILS the build otherwise. The ramp family is assumed to be
+  `tone-<surface>` - correct as long as a theme is a tint - and a theme drawn from another
+  group names it: `blue: { surface: 'blue', scale: 'label-blue' }`.
 
-  `--magma-scale-*` is TRANSITIONAL and deliberately NOT bridged to Tailwind. It exists so
-  theming is correct today while those uses are still step-indexed; each one that earns a
-  role (a wash, a scrim, a shadow) drops out of it. First to leave: the 144 background uses
-  of steps `10/09/08`, which became the neutral wash band of 6.1b, and the 37 drop shadows on
-  step `01`, which became the shadow ink of 6.1c - the census behind both moves is in #624.
+  `--magma-tint-scale-*` is internal to the layer and deliberately NOT bridged to Tailwind:
+  it is the retint mechanism, not a vocabulary. Publishing `--color-scale-09` utilities
+  would make the raw step the easy choice again and freeze the step-indexed habit this
+  layer exists to remove.
 
-  **The honest size of the escape hatch (#624, closed at 235 uses from 515).** Every group
-  that stayed has a reason, and none of them is "not done yet":
-
-  | uses | why they stay |
-  |---|---|
-  | 96 on steps `06/07` | no role holds their value BY CONSTRUCTION: past step 05 the ramp has no roles, and the surface/border/text ladders are solved elsewhere. Naming them would mean inventing levels nobody asked for. |
-  | 47 in `*-pref-contrast*` sheets | the #612 layer promotes `text-muted`, `text-subtle`, `border-muted` and `border-default` there. Using a promoted role inside one of those sheets applies the boost TWICE, so 15 otherwise-free substitutions are deliberately left raw. |
-  | 46 `@property` registrations | an `initial-value` must resolve to a LITERAL (a `var()` there is invalid and the property gets dropped), and 13 of them point at another component property, which cannot be resolved at all. They are synced FROM the component's own default declaration, never step-mapped by hand. |
-  | 31 dead declarations | nothing reads them: they are tracked in #643, to delete rather than migrate. |
-  | 13 shadows on intermediate steps | a shadow SCALE does not exist in this contract; only the ink extreme has a role (6.1c). |
-  | 6 backgrounds and borders | a text role happens to hold the same value. A name has to say what the thing is, so they keep the step. |
-  | 1 in `mds-keyboard` | its greys are deliberately a different grey from the UI and must not follow the theme. |
+  **The `--magma-scale-NN` bridge is retired (#732).** Until epic #726 the layer also
+  emitted `--magma-scale-01..10` (one line per step, `var(--magma-tint-scale-NN)`), a
+  TRANSITIONAL escape hatch so the component sheets that still named a raw ramp step
+  retinted with the theme while those uses waited for a role. #624 shrank it from 515 uses
+  to 235 (the 144 backgrounds on steps `10/09/08` became the wash band of 6.1b, the 37 drop
+  shadows on step `01` became the shadow ink of 6.1c); #726 moved the rest - identical
+  values onto `text-*` / `wash-*` / `shadow-ink`, the `*-pref-*` sheets, the borders onto
+  `border-*`, and steps `02/06/07`, which had no role, onto the ones they turned out to
+  mean (plus `surface-inverse-muted` and `--magma-on-backdrop`). With 0 uses left the
+  bridge was removed rather than kept as an API. It never reached a release (no tag
+  contains the commit that introduced it, and no published `styles` or `magma` tarball
+  names it), so no consumer can depend on it and no codemod rule exists for it. A
+  `var(--magma-scale-NN)` left or re-added in a component sheet now fails the Stencil
+  build: the fallback plugin runs with `failOnMissing` on `magma-*`.
 
   **A role often DELETES code instead of adding it.** `mds-separator` is the worked example:
   it carried a `pref-mode` sheet naming step 07 for dark and a `pref-contrast` sheet naming
@@ -491,9 +544,8 @@ DOM). Same mechanism as the existing preference system.
   step 06 reached 2.20:1). Both sheets were deleted. This works because the host `pref-*`
   attributes are a REFLECTION of the root classes (see `resolve()` in `@common/preference`),
   so the global layer is always in sync with them: a component sitting on a promoted role
-  needs no sheet of its own. It is the corollary of the double-boost guard above. Publishing `--color-scale-09`
-  utilities would make the raw step the easy choice again and freeze the habit this layer
-  exists to remove.
+  needs no sheet of its own, and using a promoted role INSIDE a `pref-contrast` sheet would
+  apply the boost twice.
 - mode `light | dark | system`: the existing global flip; semantic tokens follow it.
 - `--depth` (numeric `0 | 1`): shadow/bevel intensity, consumed as a scalar in `calc()`
   (NOT a `true|false` style query). Does not change the surface colors; only the shadow
@@ -519,7 +571,16 @@ non-essential, because APCA floors differ:
 | `text-muted` | ~75 (min 75) | secondary ESSENTIAL text (address, phone) - stays legible |
 | `text-subtle` | ~45 | NON-essential only (caption, unit, hint) - below body floor is allowed |
 | `text-disabled` | ~30 | disabled (non-essential) |
-| `*-on-emphasis` | >= 75 | text on a solid fill |
+| `*-on-emphasis` | >= 75 light, >= 70 dark | text on a solid fill (dark: see below) |
+
+**Why the dark on-emphasis floor is 70.** The dark ink is the canvas, not pure black (6.5,
+#739), and the dark colored ramps are generated by Leonardo against pure black, so the rest
+fill (step `04`) was calibrated at 74.7-74.9 Lc against `#000` and measures 72.5-72.7
+against `#1d1d1d` (hover `03` ~82, active `02` ~89). The labels a solid fill carries are
+short and bold (buttons, badges, chips, counters), the case where APCA accepts Lc 60-70; body
+text never sits on a solid fill. Light keeps 75. Restoring 75 in dark means generating the
+dark ramps against the canvas instead of pure black, which regenerates the whole dark palette
+and is left as a follow-up.
 
 Verified pairs: every `text-*` on every `surface-*`; every `<hue>-text-*` on every
 `<hue>-wash-*` (see the table below); every `<hue>-fg` on `surface-default`/`-raised`
@@ -583,6 +644,7 @@ contrast: {
   more: {
     text: { muted: 'default', subtle: 'muted' },
     border: { muted: 'default', default: 'strong' },
+    surface: { default: 'seed' },
   },
 }
 ```
@@ -604,6 +666,18 @@ media query.
 Roles omitted keep their normal step, deliberately: `text-default` is already the contrast
 ceiling, and `text-disabled` stays faint because disabled controls are WCAG-exempt and
 raising them would read as enabled.
+
+Surfaces have a single target, the family `seed` - the paper of the mode (`#fff` light,
+`#000` dark), the one extreme no surface step reaches on purpose (section 10). Only the PAGE
+is promoted (`--magma-tint-default -> --tone-<family>-seed`): `raised` and `overlay` keep
+their step, so cards and floating layers still stand off the page, and `sunken` / `muted`
+keep wells and zebra rows readable. Promoting the whole elevation ladder to paper would
+flatten it, and every elevated component would then need a contrast ring of its own to stay
+visible - a dropdown in dark would be black on black. This is what retired the seed
+backgrounds of the `*-pref-contrast.css` sheets (#720): a sheet that wants the paper ground
+now names `--magma-surface-default`, the one surface role this layer promotes (the #612 guard
+against promoted roles in those sheets does not apply: here the promoted value IS the
+intent), and a sheet that only restated the base surface is simply gone.
 
 The generator emits two blocks per scope, the same shape the global dark layer and the
 per-component `*-pref-contrast.css` sheets use:
@@ -752,6 +826,8 @@ Epic: #328.
   same-plane grouping fill (a dedicated surface role, not folded into a hue).
 - Light canvas: NOT pure white. Grey canvas (`~L96`) with near-white raised (`~L99`, not
   `#fff`). Pure `#fff` / `#000` live only in `--tone-*-seed`.
+- Fill ink in dark: the canvas (`--magma-tint-default`), not the seed; floor 70 in dark,
+  75 in light (6.5, 9.1, #739).
 - Default tint: `neutral`, swappable via the `--magma-tint-*` indirection (section 8).
 - Foreground follows the theme: `--magma-text-*` resolves through `--magma-tint-text-*`
   (not pinned to `neutral`), so a theme retints surface + border + text as ONE coherent

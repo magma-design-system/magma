@@ -35,7 +35,7 @@
   --mds-push-notification-item-timing-function: var(--ease-in-out-quint);
 
   align-items: flex-start;
-  background-color: rgb(var(--tone-neutral-seed));
+  background-color: rgb(var(--magma-surface-overlay));
   border-radius: var(--radius-lg);
   box-shadow: var(--mds-push-notification-item-shadow);
   color: rgb(var(--magma-text-default));

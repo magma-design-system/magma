@@ -19,7 +19,7 @@
 
 @property --mds-date-range-preselection-default-border {
   inherits: true;
-  initial-value: var(--magma-scale-08);
+  initial-value: var(--magma-border-default);
   syntax: '<number>+';
 }
 
@@ -31,7 +31,7 @@
 
 @property --mds-date-range-preselection-hover-background {
   inherits: true;
-  initial-value: rgb(var(--tone-neutral-seed));
+  initial-value: rgb(var(--magma-wash-soft));
   syntax: '<color>';
 }
 
@@ -39,7 +39,7 @@
 
 @property --mds-date-range-preselection-hover-border {
   inherits: true;
-  initial-value: var(--tone-neutral-seed);
+  initial-value: var(--magma-wash-soft);
   syntax: '<number>+';
 }
 
@@ -59,7 +59,7 @@
 
 @property --mds-date-range-preselection-selected-border {
   inherits: true;
-  initial-value: var(--variant-primary-03);
+  initial-value: var(--magma-accent-emphasis-hover);
   syntax: '<number>+';
 }
 

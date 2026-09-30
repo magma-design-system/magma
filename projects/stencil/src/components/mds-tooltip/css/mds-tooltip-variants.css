@@ -1,9 +1,9 @@
 :host([variant='light']) {
-  --mds-tooltip-background: rgb(var(--tone-neutral-seed));
+  --mds-tooltip-background: rgb(var(--magma-surface-overlay));
   --mds-tooltip-drop-shadow: drop-shadow(var(--drop-shadow-sm)) drop-shadow(var(--drop-shadow-md));
 }
 
 :host([variant='dark']) {
-  --mds-tooltip-background: rgb(var(--magma-scale-01));
+  --mds-tooltip-background: rgb(var(--magma-surface-inverse));
   --mds-tooltip-drop-shadow: drop-shadow(var(--drop-shadow-md));
 }

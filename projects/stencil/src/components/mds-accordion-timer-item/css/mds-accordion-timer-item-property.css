@@ -10,7 +10,7 @@
 
 @property --mds-accordion-timer-item-color {
   inherits: true;
-  initial-value: rgb(var(--magma-scale-02));
+  initial-value: rgb(var(--magma-text-default));
   syntax: '<color>';
 }
 
@@ -22,7 +22,7 @@
 
 @property --mds-accordion-timer-item-progress-bar-background {
   inherits: true;
-  initial-value: rgb(var(--magma-scale-08));
+  initial-value: rgb(var(--magma-wash-strong));
   syntax: '<color>';
 }
 

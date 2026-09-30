@@ -11,7 +11,7 @@
 
 @property --mds-entity-background {
   inherits: true;
-  initial-value: rgb(var(--tone-neutral-seed));
+  initial-value: rgb(var(--magma-surface-raised));
   syntax: '<color>';
 }
 

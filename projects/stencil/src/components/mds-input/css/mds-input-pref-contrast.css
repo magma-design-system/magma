@@ -1,16 +1,19 @@
 /* Contrast preference. The component reflects the resolved mode from <html> onto
  * its host as pref-contrast (see subscribePreference in @common/preference); these
  * plain shadow selectors refine for high contrast. `more` is the explicit choice;
- * `system` and no controller follow the OS via @media. Cross-browser, no :host-context. */
+ * `system` and no controller follow the OS via @media. Cross-browser, no :host-context.
+ *
+ * The placeholder names --magma-text-subtle on purpose: under pref-contrast-more the
+ * layer promotes it to the muted step, darker than at rest but still below the
+ * value, which text-default carries (text-muted would be promoted to it). */
 
 :host([pref-contrast='more']) {
   --mds-input-ring: var(--shadow-ring-strong-2);
   --mds-input-background: rgb(var(--magma-wash-base));
-  --mds-input-controls-border: 2px solid rgb(var(--magma-scale-05));
 }
 
 :host([pref-contrast='more']) .input::placeholder {
-  color: rgb(var(--magma-scale-03));
+  color: rgb(var(--magma-text-subtle));
 }
 
 @media (prefers-contrast: more) {
@@ -18,10 +21,9 @@
   :host(:not([pref-contrast])) {
     --mds-input-ring: var(--shadow-ring-strong-2);
     --mds-input-background: rgb(var(--magma-wash-base));
-    --mds-input-controls-border: 2px solid rgb(var(--magma-scale-05));
 
     .input::placeholder {
-      color: rgb(var(--magma-scale-03));
+      color: rgb(var(--magma-text-subtle));
     }
   }
 }

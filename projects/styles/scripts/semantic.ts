@@ -37,6 +37,7 @@ const {
   textRoles,
   borderFocus,
   seed,
+  onEmphasisDark,
   hues,
   hueSteps,
   washSteps,
@@ -74,27 +75,17 @@ layer.push(
 surfaceRoles.forEach((r) => layer.push(`  --magma-tint-${r}: var(--surface-${tint}-${r});`));
 borderRoles.forEach((r) => layer.push(`  --magma-tint-border-${r}: var(--border-${tint}-${r});`));
 textRoles.forEach((r) => layer.push(`  --magma-tint-text-${r}: var(--text-${tint}-${r});`));
+// the ink on a solid fill: the seed in light; repointed to the canvas in dark by
+// the mode block below (#739). Every `*-on-emphasis` and `on-inverse` resolves
+// through this one pointer, so the fills cannot disagree on their ink.
 layer.push(`  --magma-tint-text-on-emphasis: var(--${seed});`);
+// the active tint's RAMP pointers. Not an API: nothing outside this layer reads
+// them. They are what the wash band (2b), the shadow ink (2c), the inverse pair and
+// the neutral hue's fg/border resolve through, so a named theme retints those roles
+// by repointing this block.
+// The public `--magma-scale-NN` bridge that once exposed the ramp to the component
+// sheets was retired (#732, spec 8) once every use had a role.
 layer.push(...scaleTintOverride(scaleFamily(tint)));
-
-// 1b. the active tint's RAMP, for the component sheets that still reach for a raw
-//     step where no role covers the use yet (washes, scrims, shadows, decorative
-//     fills). Pinned to --tone-neutral-* those uses split the theming in two: the
-//     roles retint, the raw steps stay a static neutral. Routed through the tint
-//     block they follow the theme like everything else.
-//
-//     NOT bridged to Tailwind on purpose (hence the raw push, not `alias`): this is
-//     a transitional internal vocabulary on the way to naming those uses, not an
-//     API to build on. Publishing `--color-scale-09` utilities would make the raw
-//     step the easy choice again and freeze the step-indexed habit the semantic
-//     layer exists to remove.
-layer.push(
-  '',
-  '  /* Active tint ramp (spec 8) - transitional, for uses no role covers yet; not bridged to Tailwind. */',
-);
-scaleStepList().forEach((step) =>
-  layer.push(`  --magma-scale-${step}: var(--magma-tint-scale-${step});`),
-);
 
 // 2. surfaces (from the tint pointers)
 layer.push('', '  /* Surfaces - elevation + same-plane prominence (spec 6.1) */');
@@ -179,11 +170,19 @@ Object.entries(hues).forEach(([hue, { family, roles, partial }]) => {
   layer.push('', `  /* ${hue} (${family}) */`);
   if (partial) {
     const steps = neutralHueSteps;
-    layer.push(alias(`${hue}-fg`, `${family}-${steps.fg}`, `${hue}-fg`));
-    layer.push(alias(`${hue}-border`, `${family}-${steps.border}`, `${hue}-border`));
+    // The neutral hue is the TINT's own ramp, so its steps resolve through the
+    // tint pointers and retint with a named theme like the wash band does. Named
+    // on `${family}` directly they stayed a static neutral under `cool` / `warm`
+    // (#731: the dark variants had retinted through the retired --magma-scale-* bridge).
+    const tintStep = (step: string) => `magma-tint-scale-${step}`;
+    layer.push(alias(`${hue}-fg`, tintStep(steps.fg), `${hue}-fg`));
+    layer.push(alias(`${hue}-border`, tintStep(steps.border), `${hue}-border`));
     // inverse-surface role (renamed from neutral-emphasis / -on-emphasis)
-    layer.push(alias('surface-inverse', `${family}-${steps.emphasis}`, 'surface-inverse'));
-    layer.push(alias('on-inverse', seed, 'on-inverse'));
+    layer.push(alias('surface-inverse', tintStep(steps.emphasis), 'surface-inverse'));
+    layer.push(
+      alias('surface-inverse-muted', tintStep(steps.emphasisMuted), 'surface-inverse-muted'),
+    );
+    layer.push(alias('on-inverse', 'magma-tint-text-on-emphasis', 'on-inverse'));
     layer.push('  /* deprecated: renamed to --magma-surface-inverse / --magma-on-inverse */');
     layer.push(alias(`${hue}-emphasis`, 'magma-surface-inverse', `${hue}-emphasis`));
     layer.push(alias(`${hue}-on-emphasis`, 'magma-on-inverse', `${hue}-on-emphasis`));
@@ -218,7 +217,7 @@ Object.entries(hues).forEach(([hue, { family, roles, partial }]) => {
   Object.entries(emphasisStateSteps()).forEach(([state, step]) =>
     layer.push(alias(`${hue}-${state}`, `${family}-${step}`, `${hue}-${state}`)),
   );
-  layer.push(alias(`${hue}-on-emphasis`, seed, `${hue}-on-emphasis`));
+  layer.push(alias(`${hue}-on-emphasis`, 'magma-tint-text-on-emphasis', `${hue}-on-emphasis`));
   // shortcuts onto the roles above (NOT onto the primitives): stated this way
   // they follow the contrast promotion instead of freezing the base step
   layer.push('  /* shortcuts: the roles above at their default prominence */');
@@ -231,7 +230,7 @@ Object.entries(hues).forEach(([hue, { family, roles, partial }]) => {
 //    THEME-AWARE quintet: the roles resolve through per-role tint pointers
 //    (--magma-tint-accent-*), so a named theme repoints an accent exactly like a
 //    surface. Steps reuse the colored-hue quintet (hueSteps); on-emphasis is the
-//    seed (family-independent, spec 6.5). The GENERAL `accent` role carries NO
+//    fill ink pointer (family-independent, spec 6.5). The GENERAL `accent` role carries NO
 //    infix (--magma-accent-*), promoting the formerly deprecated single alias to
 //    the canonical general accent; `ai` infixes (--magma-accent-ai-*). See
 //    `accentInfix`.
@@ -267,10 +266,42 @@ Object.entries(accents).forEach(([role, family]) => {
       ),
     ),
   );
-  layer.push(alias(`accent-${infix}on-emphasis`, seed, `accent-${infix}on-emphasis`));
+  layer.push(
+    alias(
+      `accent-${infix}on-emphasis`,
+      'magma-tint-text-on-emphasis',
+      `accent-${infix}on-emphasis`,
+    ),
+  );
 });
 
 layer.push('}', '');
+
+// Dark ink (spec 6.5, #739): in dark the seed is pure black, the only pure extreme
+// left once the canvas is lifted, so the ink on a solid fill takes the canvas
+// instead - the page showing through the fill. Stated as the tint pointer, so a
+// named theme (which repoints --magma-tint-default) and `pref-contrast-more`
+// (which sends the page back to the seed) carry the ink with them, no rule of
+// their own. Same selectors as the global dark layer (the design-tokens
+// css-vars-rgb template), so the ink flips exactly when the primitives do.
+if (onEmphasisDark) {
+  const rule = `  --magma-tint-text-on-emphasis: var(--magma-tint-${onEmphasisDark});`;
+  layer.push(
+    '/* Dark ink: the canvas, not pure black (spec 6.5) */',
+    ':root:not(.pref-theme-scheme-light).pref-mode-dark,',
+    ':root.pref-theme-scheme-dark {',
+    rule,
+    '}',
+    '',
+    '@media (prefers-color-scheme: dark) {',
+    '  :root:not(.pref-theme-scheme-light).pref-mode-system,',
+    '  :root:not([data-magma-pref]) {',
+    `  ${rule}`,
+    '  }',
+    '}',
+    '',
+  );
+}
 
 const bridgeBody = bridge
   .map(([magma, tw]) => `  --color-${tw}: rgb(var(--magma-${magma}));`)
@@ -278,9 +309,10 @@ const bridgeBody = bridge
 const bridgeCss = `${HEADER('Tailwind bridge for the semantic color layer.')}\n@theme {\n${bridgeBody}\n}\n`;
 
 // Contrast (spec 9.3): under `prefers-contrast: more` the text + border roles are
-// promoted to a STRONGER same-family step by repointing the --magma-tint-* block, so
-// the WHOLE scaffolding gains contrast UPSTREAM - every role that resolves through
-// the tint pointers follows, with no per-component --tone-* sheet involved.
+// promoted to a STRONGER same-family step and the page surface to the family seed
+// (the paper of the mode) by repointing the --magma-tint-* block, so the WHOLE
+// scaffolding gains contrast UPSTREAM - every role that resolves through the tint
+// pointers follows, with no per-component --tone-* sheet involved.
 //
 // Two selectors per scope, the same shape the global dark layer uses (see the
 // design-tokens css-vars-rgb template) and the per-component `*-pref-contrast.css`
@@ -325,7 +357,7 @@ const contrastPromotions =
   contrastTintOverride(tint, CONTRAST_LEVEL).length + hueContrastRules.length;
 const contrastCss = contrastBlocks('', tint, hueContrastRules);
 const contrastComment =
-  '/* Contrast (spec 9.3): pref-contrast-more promotes text + border to stronger same-family steps, on the tint block and on every hue. */';
+  '/* Contrast (spec 9.3): pref-contrast-more promotes text + border to stronger same-family steps (tint block and every hue) and the page surface to the paper of the mode. */';
 const layerCss =
   `${HEADER('Semantic color layer (--magma-*) - the contract components consume.')}${layer.join('\n')}` +
   (contrastCss ? `\n${contrastComment}\n${contrastCss}\n` : '');
@@ -390,7 +422,8 @@ const themesCss = `${HEADER('Named themes - retint the --magma-tint-* block per 
  * A theme is only eligible if its family ships a full ramp, not just a surface.
  * Surfaces can be opted in per group, so a family can have `--surface-x-*` and no
  * `--x-01..10` - and a ramp pointer that resolves to nothing would silently put
- * every `--magma-scale-*` consumer back on whatever the fallback chain finds. The
+ * the wash band, the shadow ink, the inverse pair and the neutral hue back on
+ * whatever the fallback chain finds. The
  * step list is checked against the emitted primitives rather than assumed.
  */
 const assertRampsExist = async (): Promise<void> => {

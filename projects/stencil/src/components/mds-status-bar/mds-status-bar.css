@@ -16,7 +16,7 @@
 
 :host {
   --mds-status-bar-max-width: 500px;
-  --mds-status-bar-backdrop: rgb(var(--magma-scale-01) / 0.1);
+  --mds-status-bar-backdrop: rgb(var(--magma-shadow-ink) / 0.1);
   --mds-status-bar-backdrop-filter: blur(10px);
 
   display: block;
@@ -39,7 +39,7 @@ mds-modal {
 
 .status-bar {
   align-items: flex-start;
-  background-color: rgb(var(--tone-neutral-seed));
+  background-color: rgb(var(--magma-surface-overlay));
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-md);
   display: inline-flex;

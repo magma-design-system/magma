@@ -47,7 +47,7 @@
   --mds-input-tip-horizontal-offset: --spacing(100);
   --mds-input-tip-horizontal-offset-focused: --spacing(1000);
   --mds-input-tip-vertical-offset: --spacing(100);
-  --mds-input-tip-background: rgb(var(--magma-scale-03));
+  --mds-input-tip-background: rgb(var(--magma-surface-inverse-muted));
   --mds-input-select-transition-duration: var(--duration-300);
   --mds-input-select-icon-transition-duration: var(--duration-200);
 
@@ -69,7 +69,7 @@
 
 :host(:hover),
 :host(:focus-within) {
-  --mds-input-select-variant-color-rgb: var(--variant-primary-03);
+  --mds-input-select-variant-color-rgb: var(--magma-accent-fg);
   --mds-input-select-ring: 0 0 0 3px rgb(var(--mds-input-select-variant-color-rgb) / 1);
   --mds-input-select-shadow:
     0 4px 6px -1px rgb(var(--mds-input-select-variant-color-rgb) / 0.1),
@@ -84,7 +84,7 @@
   @apply text-info-detail;
 
   appearance: none;
-  background-color: rgb(var(--tone-neutral-seed));
+  background-color: rgb(var(--magma-surface-overlay));
   border: 0;
   border-radius: var(--radius-xs);
   box-shadow: var(--mds-input-select-ring), var(--mds-input-select-shadow);
@@ -134,7 +134,7 @@
 }
 
 :host([disabled]:not([disabled='false'])) .icon {
-  fill: rgb(var(--magma-scale-06));
+  fill: rgb(var(--magma-text-disabled));
   transform: translate(--spacing(250), --spacing(200));
 }
 

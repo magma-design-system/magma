@@ -9,7 +9,6 @@
   --mds-paginator-item-background-hover: rgb(var(--magma-wash-strong));
   --mds-paginator-item-background-selected: rgb(var(--magma-accent-emphasis-hover));
   --mds-paginator-item-background: transparent;
-  --mds-paginator-item-color-disabled: rgb(var(--magma-scale-06));
   --mds-paginator-item-color-hover: rgb(var(--magma-text-default));
   --mds-paginator-item-color-selected: rgb(var(--magma-text-on-emphasis));
   --mds-paginator-item-color: rgb(var(--magma-text-default));
@@ -26,7 +25,6 @@
     --mds-paginator-item-background-hover: rgb(var(--magma-wash-strong));
     --mds-paginator-item-background-selected: rgb(var(--magma-accent-emphasis-hover));
     --mds-paginator-item-background: transparent;
-    --mds-paginator-item-color-disabled: rgb(var(--magma-scale-06));
     --mds-paginator-item-color-hover: rgb(var(--magma-text-default));
     --mds-paginator-item-color-selected: rgb(var(--magma-text-on-emphasis));
     --mds-paginator-item-color: rgb(var(--magma-text-default));

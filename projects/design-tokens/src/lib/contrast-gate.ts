@@ -35,6 +35,13 @@ export type Category =
   | 'hue-fg'
   | 'border';
 
+/**
+ * What a `--magma-*` role resolves to: one primitive in both modes, or one per
+ * mode when the layer states the role differently in dark (the fill ink, #739).
+ */
+export type Alias = string | Record<Mode, string>;
+export type AliasMap = Record<string, Alias>;
+
 /** Shape of `createColorTokens(config).tokens.color`: color[group][name][mode][step] = { value }. */
 export type ColorTree = Record<
   string,
@@ -48,8 +55,11 @@ export type ColorTree = Record<
 export interface GateTargets {
   /** APCA Lc floor per text role (essential text cannot drop below its floor). */
   text: Record<'default' | 'muted' | 'subtle' | 'disabled', number>;
-  /** APCA Lc floor for text on a solid emphasis fill. */
-  onEmphasis: number;
+  /**
+   * APCA Lc floor for text on a solid emphasis fill, per mode. Dark is lower
+   * because the ink is the canvas, not pure black (spec 9.1, #739).
+   */
+  onEmphasis: Record<Mode, number>;
   /** APCA Lc target for colored fg on a surface (report-only; spec gives no number). */
   hueFg: number;
   /** WCAG2 non-text ratio for state borders (report-only; WCAG 1.4.11). */
@@ -58,7 +68,7 @@ export interface GateTargets {
 
 export const DEFAULT_TARGETS: GateTargets = {
   text: { default: 75, muted: 75, subtle: 45, disabled: 30 },
-  onEmphasis: 75,
+  onEmphasis: { light: 75, dark: 70 },
   hueFg: 60,
   borderState: 3,
 };
@@ -81,7 +91,7 @@ const BORDERS = ['muted', 'default', 'strong', 'focus'] as const;
  * states (`surface-hover`/`-subtle`) add no new text-on-fill pair, and the
  * partial neutral publishes none at all.
  */
-const emphasisStatesOf = (aliases: Record<string, string>, hue: string): string[] => {
+const emphasisStatesOf = (aliases: AliasMap, hue: string): string[] => {
   const prefix = `--magma-${hue}-emphasis-`;
   return Object.keys(aliases)
     .filter((token) => token.startsWith(prefix))
@@ -152,9 +162,12 @@ export interface SemanticMapping {
   textRoles: readonly string[];
   borderFocus: string;
   seed: string;
+  /** Surface role the fill ink takes in dark instead of the seed (spec 6.5); optional. */
+  onEmphasisDark?: string;
   hues: Record<string, { family: string; roles?: string; partial?: boolean }>;
   hueSteps: { surface: string; fg: string; border: string; emphasis: string };
-  neutralHueSteps: { fg: string; border: string; emphasis: string };
+  accentSteps?: Partial<{ surface: string; fg: string; border: string; emphasis: string }>;
+  neutralHueSteps: { fg: string; border: string; emphasis: string; emphasisMuted?: string };
   accents: Record<string, string>;
   /**
    * Solid-fill interaction-state steps (spec 6.6); optional. The `emphasis-*`
@@ -187,7 +200,30 @@ export interface SemanticMapping {
  * verifies (surfaces/text/borders from the active tint family; hues per the
  * quintet steps). Mirrors what `scripts/semantic.ts` emits.
  */
-export function aliasesFromConfig(m: SemanticMapping): Record<string, string> {
+export function aliasesFromConfig(m: SemanticMapping): AliasMap {
+  return withDarkInk(baseAliases(m), m);
+}
+
+/**
+ * The fill ink in dark (spec 6.5, #739): every `*-on-emphasis` and `on-inverse`
+ * takes the seed in light and the `onEmphasisDark` surface in dark, read off the
+ * map itself so a promoted surface (spec 9.3) carries the ink with it, exactly as
+ * the var() chain does in CSS.
+ */
+function withDarkInk(map: Record<string, string>, m: SemanticMapping): AliasMap {
+  const out: AliasMap = { ...map };
+  if (!m.onEmphasisDark) return out;
+  const dark = map[`--magma-surface-${m.onEmphasisDark}`];
+  if (!dark)
+    throw new Error(`contrast-gate: onEmphasisDark "${m.onEmphasisDark}" is not a surface role`);
+  Object.keys(map)
+    .filter((token) => token.endsWith('on-emphasis') || token === '--magma-on-inverse')
+    .forEach((token) => (out[token] = { light: map[token], dark }));
+  return out;
+}
+
+/** The mode-independent map, before the dark ink is applied. */
+function baseAliases(m: SemanticMapping): Record<string, string> {
   const map: Record<string, string> = {};
   const set = (magma: string, primitive: string) => (map[`--magma-${magma}`] = `--${primitive}`);
 
@@ -216,11 +252,21 @@ export function aliasesFromConfig(m: SemanticMapping): Record<string, string> {
   Object.entries(m.hues).forEach(([hue, { family, roles, partial }]) => {
     if (partial || !roles) {
       const steps = partial ? m.neutralHueSteps : m.hueSteps;
+      // the neutral hue is the active tint's own ramp: the layer names it through
+      // `--magma-tint-scale-*` so it retints with a named theme (#731), which for
+      // the gate means the same `rampFamily` the wash band resolves to
+      const source = partial ? rampFamily : family;
       if (!partial) set(`${hue}-surface`, `${family}-${m.hueSteps.surface}`);
-      set(`${hue}-fg`, `${family}-${steps.fg}`);
-      set(`${hue}-border`, `${family}-${steps.border}`);
-      set(`${hue}-emphasis`, `${family}-${steps.emphasis}`);
+      set(`${hue}-fg`, `${source}-${steps.fg}`);
+      set(`${hue}-border`, `${source}-${steps.border}`);
+      set(`${hue}-emphasis`, `${source}-${steps.emphasis}`);
       set(`${hue}-on-emphasis`, m.seed);
+      // the inverse surface's less marked level (spec 6.1d): a fill that carries
+      // on-inverse text, gated like an emphasis state
+      if (partial && m.neutralHueSteps.emphasisMuted) {
+        set('surface-inverse-muted', `${rampFamily}-${m.neutralHueSteps.emphasisMuted}`);
+        set('on-inverse', m.seed);
+      }
       return;
     }
     Object.entries(m.washSteps ?? {}).forEach(([level, step]) =>
@@ -245,15 +291,16 @@ export function aliasesFromConfig(m: SemanticMapping): Record<string, string> {
   });
 
   // accents (variant): the standout quintet, one per fixed role (spec 8). They
-  // share the colored-hue steps and resolve to the accent's mapped family. The
+  // share the colored-hue steps (but for `accentSteps`) and resolve to the accent's mapped family. The
   // general `accent` role carries no infix (bare `--magma-accent-*`); others infix
   // their name - mirrors `accentInfix` in semantic.config and scripts/semantic.ts.
+  const accentSteps = { ...m.hueSteps, ...m.accentSteps };
   Object.entries(m.accents).forEach(([role, family]) => {
     const infix = role === 'accent' ? '' : `${role}-`;
-    set(`accent-${infix}surface`, `${family}-${m.hueSteps.surface}`);
-    set(`accent-${infix}fg`, `${family}-${m.hueSteps.fg}`);
-    set(`accent-${infix}border`, `${family}-${m.hueSteps.border}`);
-    set(`accent-${infix}emphasis`, `${family}-${m.hueSteps.emphasis}`);
+    set(`accent-${infix}surface`, `${family}-${accentSteps.surface}`);
+    set(`accent-${infix}fg`, `${family}-${accentSteps.fg}`);
+    set(`accent-${infix}border`, `${family}-${accentSteps.border}`);
+    set(`accent-${infix}emphasis`, `${family}-${accentSteps.emphasis}`);
     set(`accent-${infix}on-emphasis`, m.seed);
     // interaction states (spec 6.6 accent exception): each names an existing ramp
     // step of the same family, mirroring scripts/semantic.ts.
@@ -266,28 +313,38 @@ export function aliasesFromConfig(m: SemanticMapping): Record<string, string> {
 
 /** A contrast level's role promotions (role -> stronger same-family role). */
 export type ContrastPromotions = {
-  more?: { text?: Record<string, string>; border?: Record<string, string> };
+  more?: {
+    text?: Record<string, string>;
+    border?: Record<string, string>;
+    surface?: Record<string, string>;
+  };
 };
 
 /**
  * The `--magma-* -> primitive` map UNDER a contrast level: start from the base
  * aliases and repoint the promoted text/border roles to their STRONGER same-family
- * step, mirroring what `scripts/semantic.ts` emits for `:root.pref-contrast-<level>`.
- * Everything the gate looks up (surfaces, hues, accents) stays at the base value,
+ * step and the promoted surfaces to the family seed, mirroring what
+ * `scripts/semantic.ts` emits for `:root.pref-contrast-<level>`. Everything else
+ * the gate looks up (the other surfaces, hues, accents) stays at the base value,
  * so the returned map can be fed straight to `evaluatePairs`.
  */
 export function contrastAliasesFromConfig(
   m: SemanticMapping & { contrast?: ContrastPromotions },
   level: keyof ContrastPromotions = 'more',
-): Record<string, string> {
-  const map = aliasesFromConfig(m);
+): AliasMap {
+  const map = baseAliases(m);
   const promo = m.contrast?.[level];
-  if (!promo) return map;
+  if (!promo) return withDarkInk(map, m);
   Object.entries(promo.text ?? {}).forEach(([role, stronger]) => {
     map[`--magma-text-${role}`] = `--text-${m.tint}-${stronger}`;
   });
   Object.entries(promo.border ?? {}).forEach(([role, stronger]) => {
     map[`--magma-border-${role}`] = `--border-${m.tint}-${stronger}`;
+  });
+  // the promoted surfaces take the family seed, so the gate measures the text
+  // against the paper the page really shows under the level
+  Object.entries(promo.surface ?? {}).forEach(([role, target]) => {
+    map[`--magma-surface-${role}`] = `--tone-${m.tint}-${target}`;
   });
   // Every colored hue promotes its own roles off the same table (spec 9.3): the
   // layer states them as roles because a hue does not resolve through a tint
@@ -308,7 +365,7 @@ export function contrastAliasesFromConfig(
       map[`--magma-${hue}-border`] = `--border-${roles}-${promo.border[m.hueRoles.border]}`;
     }
   });
-  return map;
+  return withDarkInk(map, m);
 }
 
 const toY = (hex: string) => sRGBtoY(chroma(hex).rgb());
@@ -340,16 +397,16 @@ export interface PairResult {
  */
 export function evaluatePairs(
   tree: ColorTree,
-  aliases: Record<string, string>,
+  aliases: AliasMap,
   targets: GateTargets = DEFAULT_TARGETS,
 ): PairResult[] {
   const out: PairResult[] = [];
   const short = (t: string) => t.replace(/^--magma-/, '');
 
   const resolveRole = (token: string, mode: Mode): string => {
-    const prim = aliases[token];
-    if (!prim) throw new Error(`contrast-gate: ${token} is not in the semantic config`);
-    return resolvePrimitive(tree, prim, mode);
+    const alias = aliases[token];
+    if (!alias) throw new Error(`contrast-gate: ${token} is not in the semantic config`);
+    return resolvePrimitive(tree, typeof alias === 'string' ? alias : alias[mode], mode);
   };
 
   const push = (
@@ -403,7 +460,7 @@ export function evaluatePairs(
         'apca',
         `--magma-${hue}-on-emphasis`,
         `--magma-${hue}-emphasis`,
-        targets.onEmphasis,
+        targets.onEmphasis[mode],
         mode,
       );
     }
@@ -419,10 +476,23 @@ export function evaluatePairs(
           'apca',
           `--magma-${hue}-on-emphasis`,
           `--magma-${hue}-${state}`,
-          targets.onEmphasis,
+          targets.onEmphasis[mode],
           mode,
         );
       }
+    }
+    // 2b'. the inverse surface's less marked level carries on-inverse text too
+    //      (enforced): the weak dark variants and the hover of the strong one.
+    if (aliases['--magma-surface-inverse-muted']) {
+      push(
+        'on-emphasis',
+        'error',
+        'apca',
+        '--magma-on-inverse',
+        '--magma-surface-inverse-muted',
+        targets.onEmphasis[mode],
+        mode,
+      );
     }
     // 2c. every hue's text ladder on its OWN wash levels. This is the pair a
     //     banner, toast or badge actually renders, and the one that had no name in

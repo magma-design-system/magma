@@ -188,7 +188,7 @@
 
   background-color: rgb(var(--magma-wash-base));
   border-radius: var(--radius-3xs);
-  box-shadow: rgb(var(--magma-scale-08)) 0 0 0 1px;
+  box-shadow: rgb(var(--magma-border-default)) 0 0 0 1px;
   color: rgb(var(--magma-text-muted));
   padding-block: --spacing(25);
   padding-inline: --spacing(100);

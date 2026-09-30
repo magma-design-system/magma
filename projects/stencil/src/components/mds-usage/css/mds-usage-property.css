@@ -11,13 +11,13 @@
 
 @property --mds-usage-border-color {
   inherits: true;
-  initial-value: rgb(var(--status-info-06));
+  initial-value: rgb(var(--magma-info-border-strong));
   syntax: '<color>';
 }
 
 @property --mds-usage-header-background {
   inherits: true;
-  initial-value: rgb(var(--status-info-06));
+  initial-value: rgb(var(--magma-info-border-strong));
   syntax: '<color>';
 }
 
