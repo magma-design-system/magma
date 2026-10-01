@@ -4,7 +4,12 @@ import chroma from 'chroma-js';
 import type { MagmaConfig } from '../../src/lib/color.mjs';
 import { createColorTokens } from '../../src/lib/color.mjs';
 
-import { semantic, accentTintOverride } from '../../semantic.config';
+import {
+  semantic,
+  accentTintOverride,
+  scaleFamily,
+  scaleTintOverride,
+} from '../../semantic.config';
 import { borderVerdict } from './surfaces.js';
 
 /**
