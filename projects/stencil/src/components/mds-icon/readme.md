@@ -101,9 +101,9 @@ The `<mds-icon>` web component is the single glyph primitive of the Magma Design
 #### Semantic Behavior
 
 - **Decorative by default**: The icon contributes no accessible name; meaning must come from the surrounding labelled control or text.
-- **Source resolution**: `name` is interpreted three ways - a base64 `data:` SVG string is decoded inline, a raw `<svg>`/`<?xml>` markup string is used verbatim, and anything else is treated as an icon filename slug fetched from the configured SVG directory.
-- **Async load**: When `name` is a slug the icon paints once the SVG arrives; a failed fetch renders empty rather than throwing.
-- **Path configuration**: The SVG directory is set programmatically via the shared `IconsSetService.setSvgPath()` singleton (imported from `@maggioli-design-system/magma/services`), with the `mdsIconSvgPath` `sessionStorage` key as an optional fallback and the `setSvgPath` instance / `setSvgPathStatic` static methods as alternatives; icons that mounted before the path was configured reload themselves once it is set.
+- **Source resolution**: `name` is interpreted three ways - a base64 `data:` SVG string is decoded inline, a raw `<svg>`/`<?xml>` markup string is used verbatim, and anything else is treated as an icon filename slug fetched from the configured SVG directory. Without a `name` (attribute missing or empty, property `undefined` or `null`) the icon renders nothing, sends no request and logs nothing; removing `name` clears the icon.
+- **Async load**: When `name` is a slug the icon paints once the SVG arrives; a failed fetch renders empty rather than throwing. Only the latest `name` and SVG path count: a request that finishes after a newer one is discarded.
+- **Path configuration**: The SVG directory is set programmatically via the shared `IconsSetService.setSvgPath()` singleton (imported from `@maggioli-design-system/magma/services`), with the `mdsIconSvgPath` `sessionStorage` key as an optional fallback and the `setSvgPath` instance / `setSvgPathStatic` static methods as alternatives; icons that mounted before the path was configured reload themselves once it is set. An icon removed from the page stops listening for path changes; once it is put back it picks up a path set in the meantime.
 
 #### Properties & Visual Configurations
 

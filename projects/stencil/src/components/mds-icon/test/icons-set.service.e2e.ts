@@ -128,3 +128,35 @@ describe('IconsSetService.setSvgPath', () => {
     expect(() => IconsSetService.setSvgPath(path)).toThrow('Svg path not recognize');
   });
 });
+
+describe('IconsSetService.fetchSvg without a name', () => {
+  // the value of `name` of an icon without the attribute, or with an undefined property
+  it.each([undefined, null, ''])(
+    'returns no svg for %j, without loading or logging',
+    async (name) => {
+      vi.spyOn(window, 'fetch');
+      const read = vi.spyOn(IDBObjectStore.prototype, 'get');
+      const consoleError = vi.spyOn(console, 'error');
+      IconsSetService.setSvgPath(svgPath);
+
+      expect(await IconsSetService.fetchSvg(name as string)).toBe('');
+      expect(window.fetch).not.toHaveBeenCalled();
+      expect(read).not.toHaveBeenCalled();
+      expect(consoleError).not.toHaveBeenCalled();
+    },
+  );
+});
+
+describe('IconsSetService listeners', () => {
+  it('stops calling a listener once it is unregistered', () => {
+    const listener = vi.fn();
+
+    IconsSetService.registerListener(listener);
+    IconsSetService.setSvgPath(svgPath);
+    expect(listener).toHaveBeenCalledOnce();
+
+    IconsSetService.unregisterListener(listener);
+    IconsSetService.setSvgPath(svgPath);
+    expect(listener).toHaveBeenCalledOnce();
+  });
+});
