@@ -24,20 +24,20 @@ interface Notification {
 const exampleNotifications: Notification[] = [
   {
     preview: 'avatar',
-    src: '/avatar-05-200x200.jpeg',
+    src: './avatar-05-200x200.jpeg',
     subject: 'Sarah Ho',
     message:
       'Sto preparando il documento che mi hai richiesto, dovrei finire in giornata, fammi sapere se hai altri aggiornamenti al riguardo così non mi perdo pezzi per la strada.',
   },
   {
     preview: 'avatar',
-    src: '/avatar-02-200x200.jpeg',
+    src: './avatar-02-200x200.png',
     subject: 'Marco Cicognetti',
     message: 'Ci sei andato poi alla riunione?',
   },
   {
     preview: 'avatar',
-    src: '/avatar-06-200x200.jpeg',
+    src: './avatar-06-200x200.jpeg',
     subject: 'JamPushNotificationElementes Millennial',
     message:
       'Domani ci sei alla riunione che ha organizzato Gigetto? Ho saputo che ci sarà anche Puppo.',

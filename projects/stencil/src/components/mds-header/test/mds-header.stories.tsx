@@ -61,7 +61,7 @@ const Template = (args) => (
     <mds-header {...args}>
       <mds-header-bar>
         <div class="flex gap-400 items-center">
-          <mds-img class="w-1000" src="/logo-gruppo-maggioli.svg" />
+          <mds-img class="w-1000" src="./logo-gruppo-maggioli.svg" />
           <div class="mb-100 grid grid-cols-full gap-100">
             <mds-text typography="h5" tag="h3">
               Mobile menu
@@ -80,7 +80,7 @@ const Template = (args) => (
       </mds-header-bar>
       <div slot="menu">
         <div class="flex gap-200 items-center p-600 border-b border-tone-neutral-09">
-          <mds-img class="w-1000" src="/logo-gruppo-maggioli.svg" />
+          <mds-img class="w-1000" src="./logo-gruppo-maggioli.svg" />
           <div class="mb-100">
             <mds-text typography="h6" tag="h4">
               Gruppo Maggioli
@@ -124,7 +124,7 @@ const TemplateAutoHide = (args) => (
     <mds-header {...args}>
       <mds-header-bar>
         <div class="flex gap-400 items-center">
-          <mds-img class="w-1000" src="/logo-gruppo-maggioli.svg" />
+          <mds-img class="w-1000" src="./logo-gruppo-maggioli.svg" />
           <div class="mb-100 grid grid-cols-full gap-100">
             <mds-text typography="h5" tag="h3">
               Mobile menu
@@ -143,7 +143,7 @@ const TemplateAutoHide = (args) => (
       </mds-header-bar>
       <div slot="menu">
         <div class="flex gap-200 items-center p-600 border-b border-tone-neutral-09">
-          <mds-img class="w-1000" src="/logo-gruppo-maggioli.svg" />
+          <mds-img class="w-1000" src="./logo-gruppo-maggioli.svg" />
           <div class="mb-100">
             <mds-text typography="h6" tag="h4">
               Gruppo Maggioli
@@ -197,7 +197,7 @@ const TemplateLandingPage = (args) => (
     <mds-header {...args}>
       <mds-header-bar>
         <div class="flex gap-400 items-center">
-          <mds-img class="w-1000" src="/logo-gruppo-maggioli.svg" />
+          <mds-img class="w-1000" src="./logo-gruppo-maggioli.svg" />
           <div class="mb-100 grid grid-cols-full gap-100">
             <mds-text typography="h5" tag="h3">
               Mobile menu
@@ -216,7 +216,7 @@ const TemplateLandingPage = (args) => (
       </mds-header-bar>
       <div slot="menu">
         <div class="flex gap-200 items-center p-600 border-b border-tone-neutral-09">
-          <mds-img class="w-1000" src="/logo-gruppo-maggioli.svg" />
+          <mds-img class="w-1000" src="./logo-gruppo-maggioli.svg" />
           <div class="mb-100">
             <mds-text typography="h6" tag="h4">
               Gruppo Maggioli
