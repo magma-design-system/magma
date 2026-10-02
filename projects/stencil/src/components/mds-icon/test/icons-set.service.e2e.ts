@@ -1,5 +1,5 @@
 import { vi } from '@stencil/vitest';
-import { del, get } from 'idb-keyval';
+import { del, get, set } from 'idb-keyval';
 import { IconsSetService } from '../services/icons-set.service';
 
 const svg =
@@ -45,6 +45,27 @@ describe('IconsSetService cache', () => {
 
   afterEach(async () => {
     await Promise.all(names.splice(0).map((name) => del(cacheKey(name))));
+  });
+
+  it('serves an icon already in memory without reading IndexedDB', async () => {
+    const name = icon('memory/fetched');
+    await IconsSetService.fetchSvg(name);
+    const read = vi.spyOn(IDBObjectStore.prototype, 'get');
+
+    expect(await IconsSetService.fetchSvg(name)).toBe(svg);
+    expect(read).not.toHaveBeenCalled();
+    expect(window.fetch).toHaveBeenCalledOnce();
+  });
+
+  it('keeps in memory an icon read from IndexedDB', async () => {
+    const name = icon('memory/stored');
+    await set(cacheKey(name), JSON.stringify({ data: svg, expiry: Date.now() + 60_000 }));
+    const read = vi.spyOn(IDBObjectStore.prototype, 'get');
+
+    expect(await IconsSetService.fetchSvg(name)).toBe(svg);
+    expect(await IconsSetService.fetchSvg(name)).toBe(svg);
+    expect(read).toHaveBeenCalledOnce();
+    expect(window.fetch).not.toHaveBeenCalled();
   });
 
   it('reopens IndexedDB after the browser closes the connection', async () => {
