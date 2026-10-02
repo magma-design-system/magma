@@ -125,10 +125,16 @@ class IconsSetController {
         this.setSvgPath(window.sessionStorage.getItem(IconsSetService._svgPathKey) ?? '')
       }
       const src = this._svgPath && !name.startsWith('http') ? this._svgPath.concat(name, '.svg') : name
+      // Memory first: every instance of an icon already loaded skips the IndexedDB round-trip
+      if (this.memoryCache[src]) {
+        return this.memoryCache[src]
+      }
+
       const lsCache = await this.isCacheAvailable(src)
 
-      if (this.memoryCache[src] || lsCache) {
-        return this.memoryCache[src] || lsCache
+      if (lsCache) {
+        this.memoryCache[src] = lsCache
+        return lsCache
       }
 
       const response = await fetch(src)
