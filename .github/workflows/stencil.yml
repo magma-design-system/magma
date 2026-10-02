@@ -44,6 +44,8 @@ jobs:
       test-working-directory: projects/stencil
       # play functions and a11y checks of the stories (Vitest project `storybook`)
       run-storybook-tests: true
+      # the static Storybook that deploy-storybook.yml publishes once this job is green
+      build-storybook: true
 
   magma-react:
     needs: [magma]
