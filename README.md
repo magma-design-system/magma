@@ -86,8 +86,15 @@ gh workflow run publish.yml --ref support/v1.x -f bump=patch
 The workflow:
 
 1. refuses to run from any branch other than `support/v1.x`; waits for the `stencil v1.x` CI of the branch head if it is still running and requires it to be green, tests included (a failed or cancelled CI fails the release);
-2. bumps `projects/stencil/package.json` and, following it, `projects/stencil/react/package.json` (same version) and `projects/stencil/angular/magma-angular/package.json` (`1.0.0-beta.<magma version>`, e.g. magma `1.12.1` → magma-angular `1.0.0-beta.1.12.1`), including their dependency on `magma`. The line is locked to major 1: a manifest set to any other major (e.g. `2.0.0`) fails both the CI and the release. The new versions must not exist on npm and must be newer than the current `latest` ones, so a manifest edited by hand to an older version fails the release instead of moving `latest` backwards;
+2. bumps `projects/stencil/package.json` and, following it, `projects/stencil/react/package.json` (same version) and `projects/stencil/angular/magma-angular/package.json` (`1.0.0-beta.<magma version>`, e.g. magma `1.12.1` → magma-angular `1.0.0-beta.1.12.1`), including their dependency on `magma`. The line is locked to major 1: a manifest set to any other major (e.g. `2.0.0`) fails both the CI and the release. The new versions must not exist on npm and must be newer than every version of the line already published (`1.x.y` for magma and magma-react, `1.0.0-beta.1.x.y` for magma-angular), so a manifest edited by hand to an older version fails the release instead of moving `v1-latest` backwards;
 3. builds the three packages, commits `chore(release): magma@<version>`, tags `magma@<version>` and creates the GitHub release;
-4. publishes `magma`, `magma-react` and `magma-angular` to npm (dist-tag `latest`) with [npm trusted publishing](https://docs.npmjs.com/trusted-publishers), so no npm token is needed.
+4. publishes `magma`, `magma-react` and `magma-angular` to npm with [npm trusted publishing](https://docs.npmjs.com/trusted-publishers), so no npm token is needed, under the dist-tag `v1-latest`: `latest` belongs to Magma 2 and later, released from `main`.
+
+A consumer of the line installs it with a major 1 range or with the dist-tag, never with a bare `npm install`, which resolves `latest` (Magma 2):
+
+```
+npm install @maggioli-design-system/magma@^1
+npm install @maggioli-design-system/magma@v1-latest
+```
 
 If a publish job fails after the release commit was pushed, re-run the failed jobs: packages already on npm are skipped.

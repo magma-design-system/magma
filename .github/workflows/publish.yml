@@ -1,7 +1,8 @@
 # Manual release of the v1.x support line: bumps @maggioli-design-system/magma
 # and its companions magma-react (same version) and magma-angular (which keeps
 # its 1.0.0-beta.<magma version> scheme), commits and tags the release, then
-# publishes the three packages to npm.
+# publishes the three packages to npm under the v1-latest dist-tag: latest
+# belongs to the newer majors, released from main.
 # The other workspace packages and the single components are not published
 # from this line, and Storybook is not deployed.
 #
@@ -10,9 +11,9 @@
 #   - the commit must have a green CI (stencil v1.x workflow, push run, tests
 #     included): a CI still running is awaited, a failed one fails the release
 #   - the line ships major 1 only: a manifest bumped to 2.x fails the release
-#   - the new versions must be newer than the latest ones on npm: a manifest
-#     edited by hand to an older version fails the release instead of moving
-#     the latest dist-tag backwards
+#   - the new versions must be newer than every version of the line already on
+#     npm: a manifest edited by hand to an older version fails the release
+#     instead of moving the v1-latest dist-tag backwards
 #
 # Authentication uses npm trusted publishing (OIDC): this repo + workflow file
 # (publish.yml, the same name as the one on dev) is registered as trusted
@@ -44,6 +45,12 @@ concurrency:
 
 permissions:
   contents: read
+
+env:
+  # npm dist-tag of the line. Not latest, which belongs to the newer majors
+  # (released from main); not v1 or 1.x either, which npm rejects because
+  # they read as version ranges
+  DIST_TAG: v1-latest
 
 jobs:
   release:
@@ -160,14 +167,23 @@ jobs:
               echo "::error::$NAME@$NEW is already on npm"
               exit 1
             fi
-            # the release must move the latest dist-tag forward (a manifest edited
-            # by hand may be older than what is published)
-            LATEST="$(npm view "$NAME" dist-tags.latest)"
-            if [ -z "$LATEST" ] || [ "$(printf '%s\n' "$LATEST" "$NEW" | sort -V | tail -n 1)" != "$NEW" ]; then
-              echo "::error::$NAME@$NEW is not newer than the latest published version ($LATEST)"
+            # the release must move the line forward (a manifest edited by hand may
+            # be older than what is published). Compared with the versions of the
+            # line, not with latest, which belongs to the newer majors; for
+            # magma-angular the line is 1.0.0-beta.1.x.y, its older
+            # 1.0.0-beta.<n> builds predate the scheme
+            case "$NAME" in
+              */magma-angular) LINE='^1\.0\.0-beta\.1\.[0-9]+\.[0-9]+$' ;;
+              *) LINE='^1\.[0-9]+\.[0-9]+$' ;;
+            esac
+            PREVIOUS="$(npm view "$NAME" versions --json \
+              | jq -r --arg line "$LINE" '(if type == "array" then .[] else . end) | select(test($line))' \
+              | sort -V | tail -n 1)"
+            if [ -z "$PREVIOUS" ] || [ "$(printf '%s\n' "$PREVIOUS" "$NEW" | sort -V | tail -n 1)" != "$NEW" ]; then
+              echo "::error::$NAME@$NEW is not newer than the last published version of the line (${PREVIOUS:-none})"
               exit 1
             fi
-            echo "$NAME: latest $LATEST -> $NEW"
+            echo "$NAME: $PREVIOUS -> $NEW"
           done
           {
             echo "current=$CURRENT"
@@ -327,5 +343,5 @@ jobs:
         if: ${{ steps.check.outputs.publish == 'true' }}
         working-directory: ${{ matrix.directory }}
         # magma-angular is a prerelease version by scheme but is the line's
-        # current release: it goes to latest like the others
-        run: npm publish --access public --tag latest
+        # current release: it goes to the line's dist-tag like the others
+        run: npm publish --access public --tag "$DIST_TAG"
