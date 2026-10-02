@@ -69,7 +69,7 @@ export class MdsTableHeaderCell {
 
   private getValue = (element: HTMLMdsTableCellElement): string | number => {
     if (
-      element.value !== undefined &&
+      element.value != null &&
       element.value !== '' &&
       element.value !== 0 &&
       !Number.isNaN(element.value)

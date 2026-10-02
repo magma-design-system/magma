@@ -249,10 +249,11 @@ export class MdsInputDateRange {
   }
 
   componentWillLoad(): void {
-    this.internalStartDate = this.startDate;
-    this.internalEndDate = this.endDate;
-    this.initialStartDate = this.startDate;
-    this.initialEndDate = this.endDate;
+    // a null bound by a framework counts as no date, as the watchers already do
+    this.internalStartDate = this.startDate ?? '';
+    this.internalEndDate = this.endDate ?? '';
+    this.initialStartDate = this.internalStartDate;
+    this.initialEndDate = this.internalEndDate;
     this.visibleCalendarDate = this.resolveVisibleCalendarDate(
       this.internalStartDate,
       this.internalEndDate,

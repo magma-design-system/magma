@@ -252,6 +252,18 @@ describe('mds-dropdown', () => {
     });
   });
 
+  it('does not look for a caller once the target attribute is removed', async () => {
+    const { root, waitForChanges } = await stage(
+      '<mds-dropdown id="panel" target="#caller">Menu</mds-dropdown>',
+    );
+    const warn = vi.spyOn(console, 'warn');
+
+    root.querySelector('#panel')!.removeAttribute('target');
+    await waitForChanges();
+
+    expect(warn).not.toHaveBeenCalled();
+  });
+
   describe('a target that names nothing', () => {
     it('loads without throwing and leaves the page alone', async () => {
       const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
