@@ -14,7 +14,7 @@ class IconsSetController {
   private readonly _iconsSets: Map<string, MdsIconSet> = new Map();
   private readonly _svgPathUpdate = 'mdsIconSvgPathUpdate';
   private readonly cacheExp = 60 * 60 * 1000 * 24;
-  private readonly listeners: (() => void)[] = [];
+  private readonly listeners: Set<() => void> = new Set();
 
   private memoryCache = {};
 
@@ -112,7 +112,11 @@ class IconsSetController {
   }
 
   registerListener(callback: () => void): void {
-    this.listeners.push(callback);
+    this.listeners.add(callback);
+  }
+
+  unregisterListener(callback: () => void): void {
+    this.listeners.delete(callback);
   }
 
   // Try to retrieve svg from cache
@@ -175,6 +179,10 @@ class IconsSetController {
     // (aspect-ratio + width). Spec tests also run with isServer=true but mock
     // fetch, so they are excluded via isTesting.
     if (Build.isServer && !Build.isTesting) {
+      return '';
+    }
+    // an icon without the attribute passes an undefined (or null) name: there is nothing to load
+    if (!name) {
       return '';
     }
     try {
