@@ -60,3 +60,27 @@ describe('IconsSetService cache', () => {
     expect(fetchSpy).not.toHaveBeenCalled()
   })
 })
+
+describe('IconsSetService.setSvgPath', () => {
+  it.each([
+    ['/svg/', '/svg/'],
+    ['svg/', 'svg/'],
+    [' /svg/ ', '/svg/'],
+    ['/svg/?v=3#top', '/svg/'],
+    ['/static/icons.v2/svg/', '/static/icons.v2/svg/'],
+    ['/node_modules/@maggioli-design-system/svg-icons/dist/svg/', '/node_modules/@maggioli-design-system/svg-icons/dist/svg/'],
+    ['https://cdn.example.com/svg/', 'https://cdn.example.com/svg/'],
+    ['https://my-cdn.example.com/svg/', 'https://my-cdn.example.com/svg/'],
+    ['https://unpkg.com/@maggioli-design-system/svg-icons@4.5.0/dist/svg/', 'https://unpkg.com/@maggioli-design-system/svg-icons@4.5.0/dist/svg/'],
+    ['https://cdn.example.com/svg/?v=3#top', 'https://cdn.example.com/svg/'],
+    ['localhost:9000/svg/', '//localhost:9000/svg/'],
+  ])('stores %j as %j', (path, expected) => {
+    IconsSetService.setSvgPath(path)
+
+    expect(IconsSetService.getSvgPath()).toBe(expected)
+  })
+
+  it.each(['', '   ', 'http://'])('throws on %j', path => {
+    expect(() => IconsSetService.setSvgPath(path)).toThrow('Svg path not recognize')
+  })
+})
