@@ -385,6 +385,8 @@ When creating `usage/` files for a component that doesn't yet have them:
 | Colour tokens, theming, dark mode                       | [`docs/TOKENS.md`](./TOKENS.md)                                                   |
 | Tailwind utilities, focus utilities, layer order        | [`projects/styles/SPEC.md`](../projects/styles/SPEC.md)                           |
 | Stencil build, packaging, publication                   | [`projects/stencil/SPEC.md`](../projects/stencil/SPEC.md)                         |
-| Live demos                                              | Storybook - `nx run stencil:storybook.start`                                      |
+| Live demos                                              | [Storybook][storybook] of `dev`, or `nx run stencil:storybook.start`              |
 | Architecture across the monorepo                        | [`docs/ARCHITECTURE.md`](./ARCHITECTURE.md)                                       |
 | Coding standards                                        | [`docs/CODING_STANDARDS.md`](./CODING_STANDARDS.md)                               |
+
+[storybook]: https://magma-design-system.github.io/magma/storybook/
