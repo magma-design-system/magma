@@ -136,7 +136,7 @@ export class MdsTooltip implements FloatingElement {
 
   @Watch('target')
   targetChanged(): void {
-    if (this.target === '') return;
+    if ((this.target ?? '') === '') return;
 
     const caller = this.floatingController?.updateCaller(this.target);
     if (!caller) return;

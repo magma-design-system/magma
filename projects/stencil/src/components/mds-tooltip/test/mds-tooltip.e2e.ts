@@ -53,6 +53,21 @@ describe('mds-tooltip', () => {
     expect(caller).not.toHaveAttribute('aria-controls');
   });
 
+  it('does not look for a caller once the target attribute is removed', async () => {
+    const { root, waitForChanges } = await render(
+      `<div style="position: relative; height: 200px">
+         <mds-button id="caller" label="Target"></mds-button>
+         <mds-tooltip id="tip" target="#caller">Hint</mds-tooltip>
+       </div>`,
+    );
+    const warn = vi.spyOn(console, 'warn');
+
+    root.querySelector('#tip')!.removeAttribute('target');
+    await waitForChanges();
+
+    expect(warn).not.toHaveBeenCalled();
+  });
+
   describe('a target that names nothing', () => {
     const stage = () =>
       render(

@@ -101,9 +101,11 @@ export class MdsKeyboard {
 
   private updateElements = (): void => {
     this.filteredNodes.forEach((node: HTMLMdsKeyboardKeyElement) => {
-      if (node.name !== undefined) {
+      // the type has no empty name, but the attribute can be empty or removed
+      const name: string = node.name ?? '';
+      if (name !== '') {
         this.keyEls.push(node);
-        this.keyCombination.add(this.keyCodes(node.name.toLowerCase()).toString());
+        this.keyCombination.add(this.keyCodes(name.toLowerCase()).toString());
       }
     });
   };

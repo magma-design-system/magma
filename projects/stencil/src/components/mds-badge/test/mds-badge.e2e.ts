@@ -1,4 +1,5 @@
 import { render } from '@stencil/vitest';
+import { itReadsTheSlottedLabelWhenLabelIsNull } from '@test/slot';
 
 const TRANSPARENT = 'rgba(0, 0, 0, 0)';
 
@@ -27,4 +28,6 @@ describe('mds-badge', () => {
 
     expect(getComputedStyle(root).backgroundColor).not.toBe(TRANSPARENT);
   });
+
+  itReadsTheSlottedLabelWhenLabelIsNull('mds-badge');
 });

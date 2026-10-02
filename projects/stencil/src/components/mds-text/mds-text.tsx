@@ -129,9 +129,7 @@ export class MdsText {
   render() {
     return (
       <Host pref-animation={preferenceStore.state.animation}>
-        <this.tag class="text">
-          {this.text === undefined || this.text === '' ? <slot></slot> : this.text}
-        </this.tag>
+        <this.tag class="text">{(this.text ?? '') === '' ? <slot></slot> : this.text}</this.tag>
       </Host>
     );
   }

@@ -115,12 +115,19 @@ export class MdsHeader {
     this.headerBar.setOpened(false);
   };
 
+  // a removed attribute leaves null, which turns the auto hide off like 0
+  private getAutoHide = (): number => {
+    const autoHide = this.autoHide ?? 0;
+    return Number.isNaN(autoHide) ? 0 : autoHide;
+  };
+
   private handleVisibility = (): void => {
-    if (this.autoHide === undefined || this.autoHide === 0 || Number.isNaN(this.autoHide)) {
+    const autoHide = this.getAutoHide();
+    if (autoHide === 0) {
       return;
     }
     // reset var if the page is scrolled to top
-    if (window.scrollY < this.autoHide) {
+    if (window.scrollY < autoHide) {
       this.visibility = 'visible';
       this.relativeThresholdUp = 0;
       this.relativeTresholdDown = 0;
@@ -140,9 +147,9 @@ export class MdsHeader {
     }
 
     // set hidden for the first scroll from top
-    if (this.relativePosition < this.autoHide && this.autoHide - window.scrollY <= 0) {
+    if (this.relativePosition < autoHide && autoHide - window.scrollY <= 0) {
       this.visibility = 'hidden';
-      this.relativePosition = this.autoHide;
+      this.relativePosition = autoHide;
     }
 
     // update respective threshold if page is scrolled up or down
@@ -154,11 +161,12 @@ export class MdsHeader {
   };
 
   private sanitizeAppearance = (): AppearanceType => {
-    if (this.appearanceSet === undefined || this.appearanceSet === '') {
+    const appearanceSet = this.appearanceSet ?? '';
+    if (appearanceSet === '') {
       return [this.appearance];
     }
     const regex = /\b(\w+)\b/g;
-    const matches = this.appearanceSet.match(regex);
+    const matches = appearanceSet.match(regex);
     if (matches) {
       return matches as AppearanceType;
     }
@@ -175,7 +183,7 @@ export class MdsHeader {
 
   private handleScroll = (): void => {
     if (typeof window === 'undefined') return;
-    if (this.autoHide !== undefined && this.autoHide !== 0 && !Number.isNaN(this.autoHide)) {
+    if (this.getAutoHide() !== 0) {
       this.handleVisibility();
     }
     if (this.sanitizedAppearance.length > 1) {

@@ -37,10 +37,12 @@ export class MdsKeyboardKey {
   @Prop({ reflect: true }) readonly pressed?: boolean;
 
   private getTitle = (): string | undefined => {
-    if (this.name !== undefined) {
-      return this.t.get(this.keyboardKeys[this.name.toLowerCase()].description, {
-        character: this.keyboardKeys[this.name.toLowerCase()].alias,
-        keyboardPosition: this.keyboardKeys[this.name.toLowerCase()].keyboardPosition,
+    // the type has no empty name, but the attribute can be empty or removed
+    const name: string = this.name ?? '';
+    if (name !== '') {
+      return this.t.get(this.keyboardKeys[name.toLowerCase()].description, {
+        character: this.keyboardKeys[name.toLowerCase()].alias,
+        keyboardPosition: this.keyboardKeys[name.toLowerCase()].keyboardPosition,
       });
     }
     return undefined;

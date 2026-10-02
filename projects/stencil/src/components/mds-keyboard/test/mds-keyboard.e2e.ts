@@ -64,6 +64,19 @@ describe('mds-keyboard', () => {
     expect(root).toHaveAttribute('hydrated');
   });
 
+  it('skips a key with an empty name when it prepares the combination', async () => {
+    const consoleError = vi.spyOn(console, 'error');
+    const { waitForChanges } = await render(`
+      <mds-keyboard try>
+        <mds-keyboard-key name="control"></mds-keyboard-key>
+        <mds-keyboard-key name=""></mds-keyboard-key>
+      </mds-keyboard>
+    `);
+    await waitForChanges();
+
+    expect(consoleError).not.toHaveBeenCalled();
+  });
+
   it('does not render the combination checker without the `try` attribute', async () => {
     const { root } = await render(
       '<mds-keyboard><mds-keyboard-key name="control"></mds-keyboard-key></mds-keyboard>',

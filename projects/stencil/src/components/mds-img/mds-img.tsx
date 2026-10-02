@@ -175,12 +175,12 @@ export class MdsImg {
   componentWillLoad(): void {
     this.consumptionMode =
       (localStorage.getItem('mdsPrefConsumption') as ConsumptionModeType) ?? 'high';
-    if (this.srcsetConsumption !== undefined && this.srcsetConsumption !== '') {
+    if (this.srcsetConsumption != null && this.srcsetConsumption !== '') {
       this.srcsetConsumptionData = this.formatConsumptionData(this.srcsetConsumption);
     }
 
     this.image = this.host.querySelector<HTMLImageElement>('img') as HTMLImageElement;
-    if (this.alt === '') {
+    if ((this.alt ?? '') === '') {
       this.alt = this.autoAltName();
     }
   }
