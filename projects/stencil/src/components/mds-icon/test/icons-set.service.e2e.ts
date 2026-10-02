@@ -84,3 +84,47 @@ describe('IconsSetService cache', () => {
     expect(consoleError).not.toHaveBeenCalled();
   });
 });
+
+describe('IconsSetService.setSvgPath', () => {
+  it.each([
+    ['/svg/', '/svg/'],
+    ['svg/', 'svg/'],
+    [' /svg/ ', '/svg/'],
+    ['/svg/?v=3#top', '/svg/'],
+    ['/static/icons.v2/svg/', '/static/icons.v2/svg/'],
+    [
+      '/node_modules/@maggioli-design-system/svg-icons/dist/svg/',
+      '/node_modules/@maggioli-design-system/svg-icons/dist/svg/',
+    ],
+    ['https://cdn.example.com/svg/', 'https://cdn.example.com/svg/'],
+    ['https://my-cdn.example.com/svg/', 'https://my-cdn.example.com/svg/'],
+    [
+      'https://unpkg.com/@maggioli-design-system/svg-icons@4.5.0/dist/svg/',
+      'https://unpkg.com/@maggioli-design-system/svg-icons@4.5.0/dist/svg/',
+    ],
+    ['https://cdn.example.com/svg/?v=3#top', 'https://cdn.example.com/svg/'],
+    ['localhost:9000/svg/', '//localhost:9000/svg/'],
+  ])('stores %j as %j', (path, expected) => {
+    IconsSetService.setSvgPath(path);
+
+    expect(IconsSetService.getSvgPath()).toBe(expected);
+  });
+
+  it('leaves a relative path to the document base URL of each request', () => {
+    const base = document.createElement('base');
+    base.href = '/app/';
+    document.head.append(base);
+    try {
+      IconsSetService.setSvgPath('assets/svg/');
+    } finally {
+      base.remove();
+    }
+
+    // not resolved against the base URL of the moment: `fetch` resolves it on each request
+    expect(IconsSetService.getSvgPath()).toBe('assets/svg/');
+  });
+
+  it.each(['', '   ', 'http://'])('throws on %j', (path) => {
+    expect(() => IconsSetService.setSvgPath(path)).toThrow('Svg path not recognize');
+  });
+});

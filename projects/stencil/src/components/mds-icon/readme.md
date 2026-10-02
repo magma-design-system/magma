@@ -133,7 +133,7 @@ The canonical form. Pass a slug string as `name`; the component fetches the matc
 
 #### Configuring the SVG Base Path via `IconsSetService` (recommended)
 
-Import the shared `IconsSetService` singleton from the package's `services` entry point and call `setSvgPath()`. It updates the shared, in-memory icon path - kept on `globalThis` so every bundled copy of the service (lazy chunks, `esm`/`esm-es5` variants, `dist/components`) agrees on it - and notifies all mounted icons to (re)load immediately. **No `sessionStorage` is involved**, which makes it the safest option when storage is blocked (incognito, sandboxed iframes, storage partitioning). Pass an absolute path (starting with `/`) or a full URL.
+Import the shared `IconsSetService` singleton from the package's `services` entry point and call `setSvgPath()`. It updates the shared, in-memory icon path - kept on `globalThis` so every bundled copy of the service (lazy chunks, `esm`/`esm-es5` variants, `dist/components`) agrees on it - and notifies all mounted icons to (re)load immediately. **No `sessionStorage` is involved**, which makes it the safest option when storage is blocked (incognito, sandboxed iframes, storage partitioning). Pass an absolute path (starting with `/`) or a full URL. The icons are downloaded with `fetch`: under a Content Security Policy the origin of the path must be allowed by `connect-src` (or `default-src`), which `'self'` already does for a path on the page's own origin, while a CDN must be listed.
 
 ```javascript
 import { IconsSetService } from '@maggioli-design-system/magma/services';
@@ -276,7 +276,7 @@ Using a raw `<img src="...svg">` or a hardcoded `<svg>` literal bypasses the ico
 
 #### Do Not Configure the Path with a Bare Relative Value
 
-`setSvgPath` (on `IconsSetService`, the element, or the static method) treats an absolute path (starting with `/`) as relative to `window.location.origin`, and accepts full URLs. A bare relative value like `assets/svg/` is *accepted* but resolved against the **current page URL**, so it silently breaks on nested routes (e.g. `/users/42/`). Always pass an absolute path or a full URL. Only an empty/whitespace value actually throws (`Svg path not recognize …`).
+`setSvgPath` (on `IconsSetService`, the element, or the static method) treats an absolute path (starting with `/`) as relative to `window.location.origin`, and accepts full URLs. A bare relative value like `assets/svg/` is *accepted* but resolved against the **current page URL** (or the `<base href>`, when the page has one) on each request, so it silently breaks on nested routes (e.g. `/users/42/`). Always pass an absolute path or a full URL. Only an empty/whitespace value, or one that is not a URL (e.g. `http://`), throws (`Svg path not recognize …`).
 
 ```javascript
 // 🚫 FRAGILE - resolved relative to the current page, breaks on nested routes
