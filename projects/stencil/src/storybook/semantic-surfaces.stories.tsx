@@ -488,7 +488,7 @@ const ExamplePageTemplate = () => (
     <mds-header appearance="inline" nav="all" menu="none">
       <mds-header-bar>
         <div class="flex gap-400 items-center">
-          <mds-img class="w-1000" src="/logo-gruppo-maggioli.svg" alt="Logo" />
+          <mds-img class="w-1000" src="./logo-gruppo-maggioli.svg" alt="Logo" />
           <mds-text typography="h5">Header bar</mds-text>
         </div>
         <mds-button slot="nav" variant="dark" tone="outline" label="Sign in" />
@@ -502,7 +502,7 @@ const ExamplePageTemplate = () => (
       style={{ background: surfaceVar('raised'), border: `1px solid ${borderVar('muted')}` }}
     >
       <div class="flex gap-300 items-center min-w-0">
-        <mds-img class="w-1000 shrink-0" src="/logo-gruppo-maggioli.svg" alt="Acme logo" />
+        <mds-img class="w-1000 shrink-0" src="./logo-gruppo-maggioli.svg" alt="Acme logo" />
         <mds-breadcrumb>
           <mds-breadcrumb-item label="Home" />
           <mds-breadcrumb-item label="Projects" />
@@ -648,7 +648,7 @@ const ExamplePageTemplate = () => (
             </div>
           </mds-card-header>
           <mds-card-media>
-            <mds-img src="/video-preview-01.webp" class="object-cover" alt="Release preview" />
+            <mds-img src="./video-preview-01.webp" class="object-cover" alt="Release preview" />
           </mds-card-media>
           <mds-card-content>
             <mds-text>
@@ -962,7 +962,7 @@ const ExamplePageTemplate = () => (
                 initials="fb"
                 slot="avatar"
                 class="w-1200"
-                src="/avatar-06-200x200.jpeg"
+                src="./avatar-06-200x200.jpeg"
               />
               <mds-text typography="h6">Fred Brooks</mds-text>
               <mds-text typography="caption">Software engineer</mds-text>
@@ -1061,7 +1061,7 @@ const ExamplePageTemplate = () => (
         <Cell tag="<mds-zero>" wide>
           <mds-zero>
             <mds-img
-              src="/logo-gruppo-maggioli.svg"
+              src="./logo-gruppo-maggioli.svg"
               alt="Maggioli logo"
               class="w-full max-w-[240px]"
             />
@@ -1081,7 +1081,7 @@ const ExamplePageTemplate = () => (
       <CellGrid>
         <Cell tag="<mds-author>">
           <mds-author>
-            <mds-avatar class="w-2000" initials="eb" slot="avatar" src="/avatar-06-200x200.jpeg" />
+            <mds-avatar class="w-2000" initials="eb" slot="avatar" src="./avatar-06-200x200.jpeg" />
             <mds-text typography="h6">Eric Bolton</mds-text>
             <mds-text typography="caption">Design System Architect</mds-text>
             <mds-text typography="caption">Author and Publisher</mds-text>
@@ -1106,7 +1106,7 @@ const ExamplePageTemplate = () => (
         </Cell>
         <Cell tag="<mds-avatar>">
           <div class="flex gap-300 items-center">
-            <mds-avatar class="w-2000" initials="eb" src="/avatar-06-200x200.jpeg" />
+            <mds-avatar class="w-2000" initials="eb" src="./avatar-06-200x200.jpeg" />
             <mds-avatar class="w-2000" initials="ab" tone="strong" />
             <mds-avatar class="w-2000" variant="info" tone="weak" />
           </div>
@@ -1123,7 +1123,7 @@ const ExamplePageTemplate = () => (
           <mds-img
             class="w-full object-cover rounded-md"
             style={{ aspectRatio: '16 / 9' }}
-            src="/video-preview-01.webp"
+            src="./video-preview-01.webp"
             alt="Aerial view of a coastal road"
           />
         </Cell>
@@ -1143,8 +1143,8 @@ const ExamplePageTemplate = () => (
         <Cell tag="<mds-video-wall>" wide>
           <mds-video-wall
             class="w-full max-w-full"
-            src="/video-nature.mp4"
-            poster="/video-nature-preview.webp"
+            src="./video-nature.mp4"
+            poster="./video-nature-preview.webp"
           >
             Your browser does not support videos.
           </mds-video-wall>
@@ -1290,7 +1290,7 @@ const ExamplePageTemplate = () => (
       </mds-modal>
       <mds-dropdown id="ss-dropdown" target="#ss-dropdown-trigger" class="max-w-[350px] w-full">
         <mds-author>
-          <mds-avatar initials="fb" slot="avatar" class="w-2000" src="/avatar-06-200x200.jpeg" />
+          <mds-avatar initials="fb" slot="avatar" class="w-2000" src="./avatar-06-200x200.jpeg" />
           <mds-text typography="h6">Fred Brooks</mds-text>
           <mds-text typography="caption">Software engineer</mds-text>
         </mds-author>
@@ -1305,7 +1305,7 @@ const ExamplePageTemplate = () => (
       <mds-push-notification id="ss-push" behavior="manual">
         <mds-push-notification-item
           preview="avatar"
-          src="/avatar-06-200x200.jpeg"
+          src="./avatar-06-200x200.jpeg"
           subject="Sarah Ho"
           message="I'm preparing the document and should finish today."
         >
