@@ -101,7 +101,7 @@
     "@maggioli-design-system/design-tokens": "15.0.0",
     "@maggioli-design-system/styles": "17.0.0",
     "@stencil/core": "4.44.2",
-    "clsx": "2.1.0",
+    "clsx": "2.1.1",
     "crypto-js": "4.2.0",
     "dayjs": "1.11.13",
     "filesize": "10.1.0",
