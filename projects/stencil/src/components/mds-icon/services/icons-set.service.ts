@@ -14,7 +14,7 @@ class IconsSetController {
   private readonly _iconsSets: Map<string, MdsIconSet> = new Map();
   private readonly _svgPathUpdate = 'mdsIconSvgPathUpdate';
   private readonly cacheExp = 60 * 60 * 1000 * 24;
-  private readonly listeners: (() => void)[] = [];
+  private readonly listeners: Set<() => void> = new Set();
 
   private memoryCache = {};
 
@@ -61,32 +61,48 @@ class IconsSetController {
   }
 
   /**
-   * recognize svg path pattern and set host and svgPath variable
+   * Sets the directory of the svg files. Query and fragment are dropped: the icon name is
+   * appended to the path.
    *
-   * input path: https://www.abc.com/svg/path
-   * svgPath =  https://www.abc.com/svg/path
+   * input path: https://www.abc.com/svg/path/
+   * svgPath = https://www.abc.com/svg/path/
    *
-   * input path: localhost:9000/svg/path
-   * svgPath = localhost:9000/svg/path
+   * input path: localhost:9000/svg/path/
+   * svgPath = //localhost:9000/svg/path/ (with the protocol of the page)
    *
-   * input path: /svg/path
-   * svgPath = {window.location.host}/svg/path
+   * input path: /svg/path/ or svg/path/
+   * svgPath = unchanged, resolved by `fetch` against the document base URL on each request
    *
-   * input path: svg/path
+   * input path: empty or not a URL
    * throw error
-   *
    */
   setSvgPath(svgPath: string): void {
-    const reg = /^(((https?:\/\/)?[.\w]+(:\d+)?)|\/)([\w/-]+)*/;
-    const match = reg.exec(svgPath);
-    if (!match) {
-      throw Error(
-        `Svg path not recognize ${svgPath}, ensure is a absolute path starting with '/' or a url`,
-      );
+    const error = Error(
+      `Svg path not recognize ${svgPath}, ensure is a absolute path starting with '/' or a url`,
+    );
+    if (typeof svgPath !== 'string' || svgPath.trim() === '') {
+      throw error;
+    }
+
+    const value = svgPath.trim();
+    // a host with a port and no scheme (`localhost:9000/svg/`) would be read as the scheme `localhost:`
+    const path = /^[\w.-]+:\d+(\/|$)/.test(value) ? `//${value}` : value;
+    let url: URL;
+    try {
+      // the placeholder base only validates a path, which is kept as it is
+      url = new URL(path, 'http://localhost/');
+    } catch {
+      throw error;
     }
 
     if (typeof window !== 'undefined') {
-      this._svgPath = match[1] ? match[0] : window.location.origin.concat(match[0]);
+      if (/^[a-z][a-z\d+.-]*:/i.test(path)) {
+        url.search = '';
+        url.hash = '';
+        this._svgPath = url.href;
+      } else {
+        this._svgPath = path.replace(/[?#].*$/, '');
+      }
       window.dispatchEvent(new Event(this._svgPathUpdate));
     }
   }
@@ -96,7 +112,11 @@ class IconsSetController {
   }
 
   registerListener(callback: () => void): void {
-    this.listeners.push(callback);
+    this.listeners.add(callback);
+  }
+
+  unregisterListener(callback: () => void): void {
+    this.listeners.delete(callback);
   }
 
   // Try to retrieve svg from cache
@@ -161,6 +181,10 @@ class IconsSetController {
     if (Build.isServer && !Build.isTesting) {
       return '';
     }
+    // an icon without the attribute passes an undefined (or null) name: there is nothing to load
+    if (!name) {
+      return '';
+    }
     try {
       if (!this._svgPath && typeof window === 'undefined') {
         throw Error('Cant find svgPath, ensure you set it');
@@ -182,10 +206,16 @@ class IconsSetController {
       }
       const src =
         this._svgPath && !name.startsWith('http') ? this._svgPath.concat(name, '.svg') : name;
+      // Memory first: every instance of an icon already loaded skips the IndexedDB round-trip
+      if (this.memoryCache[src]) {
+        return this.memoryCache[src];
+      }
+
       const lsCache = await this.isCacheAvailable(src);
 
-      if (this.memoryCache[src] || lsCache) {
-        return this.memoryCache[src] || lsCache;
+      if (lsCache) {
+        this.memoryCache[src] = lsCache;
+        return lsCache;
       }
 
       const response = await fetch(src);

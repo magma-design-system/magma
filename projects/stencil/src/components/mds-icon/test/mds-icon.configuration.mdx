@@ -30,7 +30,11 @@ IconsSetService.setSvgPath('/assets/svg/');                 // → <origin>/asse
 IconsSetService.setSvgPath('https://cdn.example.com/svg/'); // CDN / external host
 ```
 
-A bare relative value (`assets/svg/`) is accepted but resolved against the **current page URL**, so it breaks on nested routes — avoid it. An empty value throws.
+A bare relative value (`assets/svg/`) is accepted but resolved against the **current page URL** (or the `<base href>`, when the page has one) on each request, so it breaks on nested routes — avoid it. An empty value, or one that is not a URL, throws. A query or a fragment is dropped, since the icon name is appended to the path.
+
+### Content Security Policy
+
+The icons are downloaded with `fetch`, so the origin of the path must be allowed by the page's `connect-src` directive (or `default-src`, when `connect-src` is missing). A path on the page's own origin is covered by `'self'`; a CDN must be listed explicitly, e.g. `connect-src 'self' https://cdn.example.com`.
 
 ## Optional fallback: `sessionStorage`
 
