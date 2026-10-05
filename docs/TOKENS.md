@@ -127,7 +127,7 @@ The other five categories follow the same naming pattern (`<category>-<role>-<le
 
 ## Token gallery
 
-Visual reference is in Storybook - the colour scales are rendered live in [`projects/stencil/src/storybook/color-scale.stories.tsx`](../projects/stencil/src/storybook/color-scale.stories.tsx). Run `nx run stencil:storybook.start` to browse them, or look in the deployed Storybook site.
+Visual reference is in Storybook - the colour scales are rendered live in [`projects/stencil/src/storybook/color-scale.stories.tsx`](../projects/stencil/src/storybook/color-scale.stories.tsx). Run `nx run stencil:storybook.start` to browse them, or open them in the [published Storybook](https://magma-design-system.github.io/magma/storybook/?path=/story/common-tests--color-scale).
 
 ## Anti-patterns
 

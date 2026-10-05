@@ -204,7 +204,7 @@ export class MdsButton {
   componentWillLoad(): void {
     this.handleVariantChange(this.variant);
 
-    if (this.href !== undefined && this.href !== '') {
+    if ((this.href ?? '') !== '') {
       this.host.addEventListener('click', (e: MouseEvent) => {
         e.preventDefault();
         if (this.target === 'blank') {
@@ -246,11 +246,7 @@ export class MdsButton {
       this.label = undefined;
     }
 
-    if (
-      (this.label === undefined || this.label === '') &&
-      this.icon !== undefined &&
-      this.icon !== ''
-    ) {
+    if ((this.label ?? '') === '' && this.icon != null && this.icon !== '') {
       const iconTitle = unslugName(this.icon);
       if (!this.host.hasAttribute('aria-label')) {
         setAttributeIfEmpty(this.host, 'title', iconTitle);
@@ -283,7 +279,7 @@ export class MdsButton {
 
   private onSlotChangeHandler = (): void => {
     /* this should be removed in the future once slotted text is no longer used, use the label property instead */
-    if (this.label !== undefined && this.label !== '') return;
+    if ((this.label ?? '') !== '') return;
     this.label = readSlottedLabel(this.host);
   };
 

@@ -121,6 +121,31 @@ describe('mds-input-upload', () => {
     expect(sortTab?.firstChild).toHaveAttribute('selected');
   });
 
+  // a removed attribute leaves null, the value Angular and Vue bind for a missing one
+  it.each([
+    ['removed', (upload: HTMLElement) => upload.removeAttribute('sort')],
+    ['empty', (upload: HTMLElement) => upload.setAttribute('sort', '')],
+  ])('should not show sort once the sort attribute is %s', async (_, clearSort) => {
+    const result = await setupUpload('sort="date" max-files="5"');
+    await addFiles(result, 2);
+
+    clearSort(result.upload);
+    await result.waitForChanges();
+
+    expect(result.upload.shadowRoot!.querySelector('.action-sort')).toBeNull();
+  });
+
+  it('should count the files without a maximum once max-files is removed', async () => {
+    const result = await setupUpload('max-files="5"');
+    await addFiles(result, 2);
+
+    result.upload.removeAttribute('max-files');
+    await result.waitForChanges();
+
+    const caption = result.upload.shadowRoot!.querySelector('.main-infos mds-text')!;
+    expect(caption.textContent).toBe('You have uploaded 2 files');
+  });
+
   it('should set files', async () => {
     const { upload, waitForChanges } = await setupUpload();
     const inputElement = upload.shadowRoot!.querySelector('input')!;

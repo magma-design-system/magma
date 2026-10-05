@@ -37,7 +37,7 @@ export class MdsPrefThemeItem {
   selectThemeEvent: EventEmitter<MdsPrefThemeEventDetail>;
 
   componentWillRender(): void {
-    if (this.label === undefined || this.label === '') {
+    if ((this.label ?? '') === '') {
       this.label = this.name.charAt(0).toUpperCase() + this.name.slice(1).replace(/-/g, ' ');
     }
   }

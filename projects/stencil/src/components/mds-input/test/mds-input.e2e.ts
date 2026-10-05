@@ -224,3 +224,21 @@ describe('password mask', () => {
     });
   });
 });
+
+describe('required', () => {
+  afterEach(() => {
+    document.querySelectorAll('body > mds-input').forEach((input) => input.remove());
+  });
+
+  // Angular and Vue bind null for a missing value, before the first render
+  it('shows the required state, not the success one, when the value is null', async () => {
+    const input = document.createElement('mds-input');
+    input.required = true;
+    (input as { value: string | null }).value = null;
+    document.body.appendChild(input);
+    await vi.waitFor(() => expect(input).toHaveAttribute('hydrated'));
+
+    const tip = input.shadowRoot!.querySelector('mds-input-tip-item[variant^="required"]');
+    expect(tip).toEqualAttribute('variant', 'required');
+  });
+});

@@ -1,12 +1,12 @@
 import { render } from '@stencil/vitest';
 import { itReadsTheSlottedLabelWhenLabelIsNull } from '@test/slot';
 
-describe('mds-benchmark-bar', () => {
+describe('mds-tab-bar-item', () => {
   it('renders', async () => {
-    const { root } = await render('<mds-benchmark-bar></mds-benchmark-bar>');
+    const { root } = await render('<mds-tab-bar-item></mds-tab-bar-item>');
 
     expect(root).toHaveAttribute('hydrated');
   });
 
-  itReadsTheSlottedLabelWhenLabelIsNull('mds-benchmark-bar');
+  itReadsTheSlottedLabelWhenLabelIsNull('mds-tab-bar-item');
 });
