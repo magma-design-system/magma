@@ -6,6 +6,7 @@
  */
 import chalk from 'chalk';
 import { type MarkdownOptions, renderMarkdown } from './markdown.js';
+import { renderProblems } from './problems.js';
 import {
   type FileReport,
   type Finding,
@@ -87,6 +88,11 @@ export class Reporter {
     thresholds?: MarkdownOptions['thresholds'],
   ): string {
     return renderMarkdown(report, { baseDir, cwd, errors: this.errors, thresholds });
+  }
+
+  /** `path:line:column: severity: message` lines (see `problems.ts`); paths relative to `cwd`. */
+  toProblems(report: Report, cwd = process.cwd()): string {
+    return renderProblems(report, { cwd, errors: this.errors });
   }
 
   renderHuman(report: Report, options: { showDiff: boolean } = { showDiff: true }): string {

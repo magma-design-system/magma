@@ -335,6 +335,15 @@ describe('transformReact - context hints (L)', () => {
     expect(sunken!.alternatives?.map((a) => a.value)).not.toContain('bg-surface-sunken');
   });
 
+  it('locates a decision at its token, for editors that jump to a column', () => {
+    const [f] = transformReact(
+      `const A = () => (\n  <div\n    className={\`p-4\n      bg-tone-neutral-seed\`}\n  />\n);`,
+      manifest,
+      { file: 'x.tsx', semantic },
+    ).findings.filter((x) => x.reason === 'seed as a background');
+    expect(f).toMatchObject({ line: 4, column: 7 });
+  });
+
   it('gives no hint when the markup says nothing', () => {
     expect(hintsOf(`const A = () => <div className="p-4 bg-tone-neutral-seed" />;`)).toEqual([
       undefined,

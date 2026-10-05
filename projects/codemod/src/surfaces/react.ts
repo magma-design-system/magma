@@ -469,6 +469,14 @@ export const transformReact = (
       const inner = source.slice(node.getStart() + 1, node.getEnd() - 1);
       const line = node.getStartLineNumber();
       const context = element ? { context: describeElement(element) } : {};
+      // where the token itself starts (a literal can span lines), for editors
+      // that jump to a line and column
+      const at = (token?: string): { line: number; column: number } => {
+        const offset = token ? inner.indexOf(token.split(/\s+/)[0]!) : -1;
+        const pos = node.getStart() + 1 + Math.max(offset, 0);
+        const { line: l, column } = sf.getLineAndColumnAtPos(pos);
+        return { line: offset >= 0 ? l : line, column };
+      };
       const result = rewriteClassList(
         inner,
         classRules,
@@ -516,7 +524,7 @@ export const transformReact = (
               ...context,
               surface: 'react',
               file: ctx.file,
-              line,
+              ...at(f.token),
             }),
           partial,
           element,

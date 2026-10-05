@@ -22,6 +22,8 @@ Options:
   --report <path>                              write the JSON report
   --report-md <path>                           write a Markdown worklist: decisions by token (with alternatives)
                                                and a checklist per file
+  --problems                                   print only \`path:line:col: severity: message\` lines, one
+                                               per place left to you (VS Code problem matcher: hover tooltips)
   --only <ruleId,...>                          run only these rules
   --skip <ruleId,...>                          skip these rules
   --manifest <path>                            override the bundled manifest (JSON)
@@ -48,6 +50,7 @@ const main = async (): Promise<number> => {
     '--ignore': [String],
     '--report': String,
     '--report-md': String,
+    '--problems': Boolean,
     '--only': String,
     '--skip': String,
     '--manifest': String,
@@ -89,7 +92,11 @@ const main = async (): Promise<number> => {
     semantic: { accept, keepDarkOverrides: args['--keep-dark-overrides'] === true },
   });
 
-  console.log(reporter.renderHuman(report, { showDiff: true }));
+  console.log(
+    args['--problems']
+      ? reporter.toProblems(report)
+      : reporter.renderHuman(report, { showDiff: true }),
+  );
   return exitCode(report);
 };
 

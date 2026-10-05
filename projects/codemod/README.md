@@ -66,6 +66,67 @@ Links are relative to the report's location, so write it inside the project:
 npx @maggioli-design-system/magma-codemods --path ./src --report-md ./magma-migration.md
 ```
 
+### Decisions in the editor (`--problems`)
+
+`--problems` prints only one line per place left to you, `path:line:column: severity: message`. Decisions are
+`warning`, checks `info`, parse errors `error`; automatic changes are not listed. Paths are relative to the
+directory you run it from.
+
+In VS Code, run it as a task: every place gets underlined in the code, and hovering the class shows the decision
+(alternatives, where it sits, the role it could be with its dE).
+
+#### Set up VS Code
+
+1. Create `.vscode/tasks.json` in the project root (the folder you open in VS Code) with this content. If the file
+   already exists, add only the object inside `tasks` to its `tasks` array.
+
+   ```json
+   {
+     "version": "2.0.0",
+     "tasks": [
+       {
+         "label": "magma: migration worklist",
+         "type": "shell",
+         "command": "npx @maggioli-design-system/magma-codemods --path ./src --problems",
+         "presentation": { "reveal": "never", "panel": "dedicated", "clear": true },
+         "problemMatcher": {
+           "owner": "magma-codemods",
+           "fileLocation": ["relative", "${workspaceFolder}"],
+           "pattern": {
+             "regexp": "^(.+?):(\\d+):(\\d+): (error|warning|info): (.*)$",
+             "file": 1,
+             "line": 2,
+             "column": 3,
+             "severity": 4,
+             "message": 5
+           }
+         }
+       }
+     ]
+   }
+   ```
+
+   Change `--path ./src` to the folders you migrate. `"reveal": "never"` keeps the terminal closed: the result
+   is in the code, not in the output.
+
+2. Optional, a shortcut: Cmd+Shift+P > `Preferences: Open Keyboard Shortcuts (JSON)`, then add
+
+   ```json
+   {
+     "key": "cmd+alt+m",
+     "command": "workbench.action.tasks.runTask",
+     "args": "magma: migration worklist"
+   }
+   ```
+
+#### Use it
+
+- Run the task: Cmd+Shift+P > `Tasks: Run Task` > `magma: migration worklist` (or your shortcut). The process ends
+  with exit code 1 while places are left: that is expected.
+- Open any file: the classes to decide are underlined; hover one for its decision.
+- After your edits, run the task again: the places you solved lose their underline.
+- The Problems panel (Cmd+Shift+M) lists the same places; F8 / Shift+F8 jump between them.
+
 ## Migration matrix
 
 | #   | Category                        | What it does                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | Confidence                    |
