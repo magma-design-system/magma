@@ -2,7 +2,7 @@
 
 Magma is the [Maggioli Design System][docs]: a library of ~115 web components (StencilJS), design tokens, SVG icons, brand assets and CSS/Tailwind 4 styles, each published as a separate npm package.
 
-[docs]: https://design-system.maggiolicloud.it/
+[docs]: https://magma.maggiolicloud.it/
 
 ## Stack
 
@@ -117,6 +117,8 @@ NX caches build results. If you need to bypass the cache (e.g. to verify a clean
 ### Storybook (web components)
 
 The main development environment: it builds the components in watch mode and serves the Storybook documentation on <http://localhost:6006>.
+
+The Storybook of the `dev` branch is published at <https://magma-design-system.github.io/magma/storybook/> on every push that changes it.
 
 ```bash
 nx run stencil:storybook.start
