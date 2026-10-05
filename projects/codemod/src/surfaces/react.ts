@@ -358,6 +358,19 @@ export const transformReact = (
       } else if (exprs.length === 1 && text === '') {
         const expr = exprs[0]!.getExpression();
         if (!expr) return;
+        // `{cond ? <span>..</span> : <b>..</b>}` is markup too, only wrapped in
+        // an expression: `label` takes a string, so it is reported, not lifted.
+        const markup = [
+          SyntaxKind.JsxElement,
+          SyntaxKind.JsxSelfClosingElement,
+          SyntaxKind.JsxFragment,
+        ].some((kind) => expr.getKind() === kind || expr.getDescendantsOfKind(kind).length > 0);
+        if (markup) {
+          flag(
+            `<${tagName}> content is an expression that renders elements; \`${nameOf(rule.to)}\` takes a string, so move the text into it manually`,
+          );
+          return;
+        }
         labelAttr = `${nameOf(rule.to)}={${expr.getText()}}`;
         before = `{${expr.getText()}}`;
       } else if (exprs.length === 0 && text === '') {

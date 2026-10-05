@@ -247,7 +247,8 @@ These are surfaced under the **dynamic / manual** category in the report:
 - **Dynamic class lists**: a `className` template literal with `${…}` holes that mentions a migrated utility class
   is reported (a hole can split a token), and an `[ngClass]="expr"` whose expression carries no string literals is
   silently out of reach — only the quoted class strings inside the expression are rewritten.
-- Slot content that contains **markup** (e.g. `<mds-icon>` inside `mds-button`).
+- Slot content that contains **markup** (e.g. `<mds-icon>` inside `mds-button`), including a single JSX expression
+  that renders elements (`{selected ? <b>{label}</b> : label}`): `label` takes a string.
 - A light class and its `dark:` override in **different fragments** of a class expression (two `clsx()` arguments,
   two `[ngClass]` keys): category L decides one string at a time.
 - Inline templates / HTML in template literals that contain `${…}` interpolation.

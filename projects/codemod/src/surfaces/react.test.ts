@@ -60,6 +60,33 @@ describe('transformReact — slotToAttr (children → label)', () => {
     expect(run('<MdsButton>{title}</MdsButton>').output).toBe('<MdsButton label={title} />');
   });
 
+  it('reports, never lifts, an expression that renders elements', () => {
+    // the mindy case: a conditional choosing between two marked-up children
+    const source = [
+      '<MdsButton>',
+      '  {selected ? (',
+      '    <span><b>{children}</b></span>',
+      '  ) : (',
+      '    <span>{children}</span>',
+      '  )}',
+      '</MdsButton>',
+    ].join('\n');
+    const result = run(source);
+    expect(result.changed).toBe(false);
+    expect(result.findings).toEqual([
+      expect.objectContaining({
+        kind: 'dynamic',
+        message: expect.stringContaining('expression that renders elements'),
+      }),
+    ]);
+    expect(run('<MdsButton>{items.map((i) => <b>{i}</b>)}</MdsButton>').changed).toBe(false);
+    expect(run('<MdsButton>{ok && <></>}</MdsButton>').changed).toBe(false);
+    // a text-only conditional is still a string and is lifted
+    expect(run("<MdsButton>{ok ? 'Yes' : 'No'}</MdsButton>").output).toBe(
+      "<MdsButton label={ok ? 'Yes' : 'No'} />",
+    );
+  });
+
   it('uses an expression for text needing escaping', () => {
     expect(run('<MdsButton>Say "hi"</MdsButton>').output).toBe(
       '<MdsButton label={"Say \\"hi\\""} />',

@@ -6,7 +6,7 @@
 import { execFileSync } from 'node:child_process';
 import { readFileSync, statSync, writeFileSync } from 'node:fs';
 import { dirname, extname, resolve } from 'node:path';
-import { globby } from 'globby';
+import { convertPathToPattern, globby } from 'globby';
 import { manifest as bundledManifest } from './manifest/manifest.js';
 import { type Manifest } from './manifest/schema.js';
 import { unifiedDiff } from './report/diff.js';
@@ -137,7 +137,10 @@ export const collectFiles = async (
     } catch {
       continue;
     }
-    if (isDir) patterns.push(`${p.replace(/\/$/, '')}/**/*.{${EXTENSIONS.join(',')}}`);
+    // The directory is a literal path, not a pattern: escape it, or a Next.js
+    // route group `(pages)` or a dynamic segment `[id]` matches nothing.
+    if (isDir)
+      patterns.push(`${convertPathToPattern(p.replace(/\/$/, ''))}/**/*.{${EXTENSIONS.join(',')}}`);
     else files.add(p);
   }
   if (patterns.length) {
