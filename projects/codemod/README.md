@@ -24,6 +24,7 @@ apply the changes in place.
 --force                                      allow --write on a dirty git working tree
 --ignore <glob>                              extra ignore globs (repeatable)
 --report <path>                              write the JSON report
+--report-md <path>                           write a Markdown worklist: decisions by token, suggestions, checklist per file
 --only <ruleId,...> / --skip <ruleId,...>    run/skip specific rules (see the ids in the report)
 --manifest <path>                            override the bundled manifest (JSON)
 --accept-semantic <exact|near>               write the raw palette -> semantic role matches (L) up to this tier
@@ -37,6 +38,23 @@ Notes:
   **Angular external templates** (`.html`), pass `--framework angular`.
 - `--write` refuses to run on a dirty git working tree unless `--force`, so the undo is always `git checkout`.
 - `node_modules`, `dist`, `.git`, `build`, `.next` and `coverage` are ignored by default.
+
+### Markdown worklist (`--report-md`)
+
+A report to work through what the codemod left for you, written for a human rather than a machine:
+
+1. **Decisions by token**: each class token that needs a choice appears once, however many files use it, with
+   _how to decide_ (e.g. seed as a background: page -> `surface-default`, card -> `surface-raised`, popover ->
+   `surface-overlay`), its ready-to-paste alternatives with their distance in light and dark, and a checkbox per
+   place it occurs (linked to the line).
+2. **Suggestions**: the value matches a rerun with `--accept-semantic` would write, to review before accepting.
+3. **Files**: a checklist per file; the automatic changes are folded under each file.
+
+Links are relative to the report's location, so write it inside the project:
+
+```bash
+npx @maggioli-design-system/magma-codemods --path ./src --report-md ./magma-migration.md
+```
 
 ## Migration matrix
 

@@ -108,7 +108,7 @@ describe('category L: raw palette utilities -> semantic roles', () => {
     expect(value).toBe('bg-tone-neutral-seed/80');
     const report = findings.find((f) => f.kind === 'dynamic')!;
     expect(report.message).toContain('role is contextual');
-    expect(report.message).toContain('`bg-surface-overlay`');
+    expect(report.message).toContain('`bg-surface-overlay/80`');
   });
 
   it('reports a dark-only override and drops it only with --accept-semantic', () => {

@@ -5,7 +5,7 @@
  */
 import { execFileSync } from 'node:child_process';
 import { readFileSync, statSync, writeFileSync } from 'node:fs';
-import { extname } from 'node:path';
+import { dirname, extname, resolve } from 'node:path';
 import { globby } from 'globby';
 import { manifest as bundledManifest } from './manifest/manifest.js';
 import { type Manifest } from './manifest/schema.js';
@@ -45,6 +45,8 @@ export interface MigrationOptions {
   manifestPath?: string;
   /** Write the JSON report to this path. */
   reportPath?: string;
+  /** Write the Markdown worklist (decisions by token, checklist per file) to this path. */
+  reportMarkdownPath?: string;
   /** Category L: how far the semantic utility migration may write (default: report only). */
   semantic?: SemanticOptions;
   cwd?: string;
@@ -215,6 +217,10 @@ export const runMigration = async (options: MigrationOptions): Promise<Migration
 
   const report = reporter.build();
   if (options.reportPath) writeFileSync(options.reportPath, reporter.toJSON(report));
+  if (options.reportMarkdownPath) {
+    const target = resolve(cwd, options.reportMarkdownPath);
+    writeFileSync(target, reporter.toMarkdown(report, dirname(target), cwd));
+  }
   return { report, reporter };
 };
 

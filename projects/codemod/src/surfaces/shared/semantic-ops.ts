@@ -33,7 +33,7 @@ import {
   type SemanticThresholds,
 } from '../../manifest/schema.js';
 import { ruleId } from '../../manifest/registry.js';
-import { type FindingKind } from '../../report/types.js';
+import { type Alternative, type FindingKind } from '../../report/types.js';
 
 /** How far category L may write. */
 export interface SemanticOptions {
@@ -55,6 +55,9 @@ export interface ClassFinding {
   message: string;
   before?: string;
   after?: string;
+  token?: string;
+  reason?: string;
+  alternatives?: Alternative[];
 }
 
 export interface SemanticRules {
@@ -169,6 +172,7 @@ export const toSemanticToken = (
 };
 
 const fmt = (n: number): string => n.toFixed(1);
+const round = (n: number): number => Math.round(n * 10) / 10;
 /**
  * The ramp steps a removed colour may be pointed at; the generated role scales
  * (`surface-neutral-sunken`, `text-info-muted`) are inputs of the semantic
@@ -206,19 +210,28 @@ const rank = (
     })
     .sort((a, b) => a.score - b.score);
 
-const listCandidates = (
-  utility: string,
+/** The class `token` would become with `color` in place of its colour. */
+const recolor = (token: SemanticToken, color: string): string =>
+  `${token.prefix}${token.bang}${token.utility}-${color}${token.modifier}${token.trailingBang}`;
+
+/** The best roles within the cutoff, as ready-to-paste classes. */
+const alternativesOf = (
+  token: SemanticToken,
   candidates: Candidate[],
   cutoff: number,
   max = 3,
-): string => {
-  const shown = candidates.filter((c) => c.score <= cutoff).slice(0, max);
-  return shown.length === 0
+): Alternative[] =>
+  candidates
+    .filter((c) => c.score <= cutoff)
+    .slice(0, max)
+    .map((c) => ({ value: recolor(token, c.role), light: round(c.light), dark: round(c.dark) }));
+
+const listAlternatives = (alternatives: Alternative[], cutoff: number): string =>
+  alternatives.length === 0
     ? `no semantic role within dE ${cutoff}`
-    : `candidates: ${shown
-        .map((c) => `\`${utility}-${c.role}\` (dE light ${fmt(c.light)}, dark ${fmt(c.dark)})`)
+    : `candidates: ${alternatives
+        .map((a) => `\`${a.value}\` (dE light ${fmt(a.light)}, dark ${fmt(a.dark ?? 0)})`)
         .join(', ')}`;
-};
 
 export interface SemanticOutcome {
   /** Token index -> replacement text. */
@@ -259,17 +272,23 @@ export const migrateSemanticTokens = (
         .filter(([name]) => RAMP_STEP.test(name))
         .map(([name, [light]]) => ({ name, d: deltaE(v1[0], light) }))
         .sort((a, b) => a.d - b.d)
-        .slice(0, 2)
-        .map((p) => `\`${t.utility}-${p.name}\` (dE ${fmt(p.d)})`);
+        .slice(0, 2);
       const role = channel ? rank(rules, channel, null, v1[0], v1[1], false)[0] : undefined;
+      const roleOk = role && role.score <= thresholds.cutoff;
       emit({
         kind: 'warn',
         ruleId: removed.id,
-        message: `\`${t.raw}\`: v2 removed \`${t.color}\` (v1 ${rgbText(v1[0])}), so the class paints nothing; nearest v2 colours ${nearest.join(', ')}${
-          role && role.score <= thresholds.cutoff
-            ? `; nearest role \`${t.utility}-${role.role}\` (dE ${fmt(role.score)})`
-            : ''
+        message: `\`${t.raw}\`: v2 removed \`${t.color}\` (v1 ${rgbText(v1[0])}), so the class paints nothing; nearest v2 colours ${nearest
+          .map((p) => `\`${t.utility}-${p.name}\` (dE ${fmt(p.d)})`)
+          .join(', ')}${
+          roleOk ? `; nearest role \`${t.utility}-${role.role}\` (dE ${fmt(role.score)})` : ''
         }. If your app defines this colour itself, ignore this`,
+        token: t.raw,
+        reason: 'removed in v2',
+        alternatives: [
+          ...(roleOk ? [{ value: recolor(t, role.role), light: round(role.light) }] : []),
+          ...nearest.map((p) => ({ value: recolor(t, p.name), light: round(p.d) })),
+        ],
       });
       continue;
     }
@@ -287,6 +306,9 @@ export const migrateSemanticTokens = (
         kind: 'warn',
         ruleId: unknown.id,
         message: `\`${t.raw}\`: \`${t.color}\` is not a step of \`${family}\` in v1 or v2, so the class has never painted anything; pick a step or a semantic role`,
+        token: t.raw,
+        reason: 'step does not exist',
+        alternatives: [],
       });
     }
   }
@@ -311,6 +333,9 @@ export const migrateSemanticTokens = (
           kind: 'dynamic',
           ruleId: id,
           message: `dark-only override \`${darks.map((d) => d.raw).join(' ')}\` in one fragment of a class expression: its light class may sit in another fragment, so it is left for you (v2 colours flip by themselves)`,
+          token: darks.map((d) => d.raw).join(' '),
+          reason: 'dark-only override in a fragment',
+          alternatives: [],
         });
         continue;
       }
@@ -322,7 +347,9 @@ export const migrateSemanticTokens = (
         message: drop
           ? 'drop a dark-only override: v2 colours flip by themselves (check the dark rendering)'
           : `dark-only override \`${darks.map((d) => d.raw).join(' ')}\`: v2 colours flip by themselves; \`--accept-semantic\` drops it`,
-        ...(drop ? { before: darks.map((d) => d.raw).join(' '), after: '' } : {}),
+        ...(drop
+          ? { before: darks.map((d) => d.raw).join(' '), after: '' }
+          : { token: darks.map((d) => d.raw).join(' '), reason: 'dark-only override' }),
       });
       continue;
     }
@@ -331,6 +358,9 @@ export const migrateSemanticTokens = (
         kind: 'dynamic',
         ruleId: id,
         message: `\`${rawBases.map((t) => t.raw).join(' ')}\` set the same utility twice; migrate to a semantic role by hand`,
+        token: rawBases.map((t) => t.raw).join(' '),
+        reason: 'same utility set twice',
+        alternatives: [],
       });
       continue;
     }
@@ -349,7 +379,9 @@ export const migrateSemanticTokens = (
     );
     const best = candidates[0];
     const original = [base, ...darks].map((t) => t.raw).join(' ');
-    const others = listCandidates(base.utility, candidates, thresholds.cutoff);
+    const alternatives = alternativesOf(base, candidates, thresholds.cutoff);
+    const others = listAlternatives(alternatives, thresholds.cutoff);
+    const decide = (reason: string) => ({ token: original, reason, alternatives });
     if (!best) continue;
 
     if (rule.channel === 'background' && base.color.endsWith('-seed')) {
@@ -357,6 +389,7 @@ export const migrateSemanticTokens = (
         kind: 'dynamic',
         ruleId: id,
         message: `\`${original}\`: the seed as a background is a surface whose role is contextual (page = \`surface-default\`, card = \`surface-raised\`, popover = \`surface-overlay\`); ${others}`,
+        ...decide('seed as a background'),
       });
       continue;
     }
@@ -368,6 +401,7 @@ export const migrateSemanticTokens = (
         kind: 'dynamic',
         ruleId: id,
         message: `\`${original}\`: more than one dark value for one utility; ${others}`,
+        ...decide('more than one dark value'),
       });
       continue;
     }
@@ -377,6 +411,7 @@ export const migrateSemanticTokens = (
         kind: 'dynamic',
         ruleId: id,
         message: `\`${original}\`: no role within dE ${thresholds.near}; ${others}`,
+        ...decide('no close role'),
       });
       continue;
     }
@@ -391,6 +426,7 @@ export const migrateSemanticTokens = (
         kind: 'dynamic',
         ruleId: id,
         message: `\`${original}\`: the light value cannot tell these roles apart and they differ in dark; ${others}`,
+        ...decide('roles differ in dark'),
       });
       continue;
     }
@@ -406,6 +442,7 @@ export const migrateSemanticTokens = (
         kind: 'flag',
         ruleId: id,
         message: `suggested semantic role (${tierName}, dE ${fmt(best.score)}): \`${original}\` -> \`${after}\`${darkNote}; write it with --accept-semantic=${tierName}`,
+        ...decide(`suggested (${tierName})`),
       });
       continue;
     }

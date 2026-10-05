@@ -20,6 +20,8 @@ Options:
   --force                                      allow --write on a dirty git working tree
   --ignore <glob>                              extra ignore globs (repeatable)
   --report <path>                              write the JSON report
+  --report-md <path>                           write a Markdown worklist: decisions by token (with alternatives)
+                                               and a checklist per file
   --only <ruleId,...>                          run only these rules
   --skip <ruleId,...>                          skip these rules
   --manifest <path>                            override the bundled manifest (JSON)
@@ -45,6 +47,7 @@ const main = async (): Promise<number> => {
     '--force': Boolean,
     '--ignore': [String],
     '--report': String,
+    '--report-md': String,
     '--only': String,
     '--skip': String,
     '--manifest': String,
@@ -82,6 +85,7 @@ const main = async (): Promise<number> => {
     skip: split(args['--skip']),
     manifestPath: args['--manifest'],
     reportPath: args['--report'],
+    reportMarkdownPath: args['--report-md'],
     semantic: { accept, keepDarkOverrides: args['--keep-dark-overrides'] === true },
   });
 
