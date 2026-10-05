@@ -1,6 +1,6 @@
 {
   "name": "@maggioli-design-system/magma",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Magma is Maggioli Design System's web-components library.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -98,7 +98,7 @@
   },
   "dependencies": {
     "@floating-ui/dom": "1.6.12",
-    "@maggioli-design-system/design-tokens": "15.0.0",
+    "@maggioli-design-system/design-tokens": "15.0.1",
     "@maggioli-design-system/styles": "17.0.0",
     "@stencil/core": "4.44.2",
     "clsx": "2.1.1",
@@ -141,7 +141,7 @@
     "handlebars": "4.7.9",
     "normalize.css": "8.0.1",
     "p-queue": "6.6.2",
-    "postcss": "8.5.28",
+    "postcss": "8.5.29",
     "postcss-combine-duplicated-selectors": "poimen/postcss-combine-duplicated-selectors#duplicated-keyframes-fix",
     "postcss-combine-media-query": "2.1.0",
     "postcss-discard-comments": "7.0.8",
