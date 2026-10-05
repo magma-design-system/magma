@@ -40,6 +40,12 @@ export class Reporter {
     this.errors.push(error);
   }
 
+  private readonly notes: string[] = [];
+
+  addNote(note: string): void {
+    if (!this.notes.includes(note)) this.notes.push(note);
+  }
+
   build(): Report {
     const summary: ReportSummary = {
       filesScanned: this.files.length + this.errors.length,
@@ -56,6 +62,7 @@ export class Reporter {
       dryRun: this.meta.dryRun,
       files: this.files,
       summary,
+      ...(this.notes.length > 0 ? { notes: [...this.notes] } : {}),
     };
   }
 
@@ -143,6 +150,7 @@ const renderSummary = (report: Report): string => {
     `  flags         : ${s.flags ? chalk.yellow(String(s.flags)) : '0'}`,
     `  dynamic (manual): ${s.dynamic ? chalk.magenta(String(s.dynamic)) : '0'}`,
     `  parse errors  : ${s.errors ? chalk.red(String(s.errors)) : '0'}`,
+    ...(report.notes ?? []).map((note) => chalk.yellow(`\n  note: ${note}`)),
   ];
   return parts.join('\n');
 };

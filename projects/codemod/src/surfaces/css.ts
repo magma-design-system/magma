@@ -253,6 +253,10 @@ export const transformCss = (
             message: `\`${token}\`: ${entry.rule.message}`,
           });
         },
+        {
+          options: ctx.semantic,
+          emit: (f) => findings.push({ ...f, surface: 'css', file: ctx.file, line }),
+        },
       );
       if (result.changed) {
         atRule.params = result.value;

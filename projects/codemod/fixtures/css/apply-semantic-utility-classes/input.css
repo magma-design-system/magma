@@ -1,0 +1,11 @@
+.chip {
+  @apply rounded-xs bg-variant-primary-10 text-variant-primary-03 hover:bg-variant-primary-08;
+}
+
+.panel {
+  @apply bg-tone-neutral-10 dark:bg-tone-neutral-09;
+}
+
+.legacy {
+  @apply bg-tone-slate-08 text-tone-neutral-600;
+}

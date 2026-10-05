@@ -394,7 +394,7 @@ export const transformReact = (
   // reported instead.
   const classRules = classRulesOf(manifest);
   if (hasClassRules(classRules)) {
-    const rewriteLiteralContent = (node: Node): void => {
+    const rewriteLiteralContent = (node: Node, partial: boolean): void => {
       const inner = source.slice(node.getStart() + 1, node.getEnd() - 1);
       const line = node.getStartLineNumber();
       const result = rewriteClassList(
@@ -433,6 +433,11 @@ export const transformReact = (
             message: `\`${token}\`: ${entry.rule.message}`,
           });
         },
+        {
+          options: ctx.semantic,
+          emit: (f) => findings.push({ ...f, surface: 'react', file: ctx.file, line }),
+          partial,
+        },
       );
       if (result.changed)
         edits.push({ start: node.getStart() + 1, end: node.getEnd() - 1, text: result.value });
@@ -448,7 +453,7 @@ export const transformReact = (
       const init = attr.getInitializer();
       if (!init) continue;
       if (isPlainLiteral(init)) {
-        rewriteLiteralContent(init);
+        rewriteLiteralContent(init, false);
         continue;
       }
       if (init.getKind() !== SyntaxKind.JsxExpression) continue;
@@ -459,7 +464,9 @@ export const transformReact = (
         ...expr.getDescendantsOfKind(SyntaxKind.StringLiteral),
         ...expr.getDescendantsOfKind(SyntaxKind.NoSubstitutionTemplateLiteral),
       ];
-      for (const literal of literals) rewriteLiteralContent(literal);
+      // `className={'a b'}` is still the whole value; anything inside a call or
+      // a ternary is one fragment of it.
+      for (const literal of literals) rewriteLiteralContent(literal, literal !== expr);
       const templates = [
         ...(expr.getKind() === SyntaxKind.TemplateExpression ? [expr as Node] : []),
         ...expr.getDescendantsOfKind(SyntaxKind.TemplateExpression),

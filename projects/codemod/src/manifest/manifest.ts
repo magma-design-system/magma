@@ -441,7 +441,56 @@ const curate = (base: Manifest): Manifest => {
     classRenames.push({ kind: 'classRename', from: `${prefix}-3xl`, to: `${prefix}-2000` });
   }
 
+  // L1 - the A2 seed rename, for utility classes: the bare v1 colour
+  // (`bg-tone-neutral`) is the pure extreme v2 publishes as `-seed`, so the
+  // rename is value-exact like the custom-property one above. Variants and the
+  // `/NN` opacity modifier are kept by the class splitter.
+  const colorPrefixes = {
+    background: ['bg', 'from', 'via', 'to'],
+    foreground: ['text', 'fill', 'stroke', 'decoration', 'placeholder', 'caret', 'accent'],
+    border: [...borderPrefixes, 'divide', 'outline', 'ring'],
+  };
+  const seedPrefixes = [...Object.values(colorPrefixes).flat(), 'shadow'];
+  for (const prefix of seedPrefixes)
+    for (const family of toneFamilies)
+      classRenames.push({
+        kind: 'classRename',
+        from: `${prefix}-tone-${family}`,
+        to: `${prefix}-tone-${family}-seed`,
+      });
+
   m.global.classes = [...classRenames, ...classReports];
+
+  // L2/L3 - raw palette utilities -> semantic roles, matched by value against
+  // the generated colour table (src/semantic/). Only the families with a
+  // semantic hue are migrated; the other tone families, the labels and the
+  // brands are still valid v2 primitives and stay as they are. `shadow-*`
+  // colours have no role (the shadow ink is composed, not a utility), so only
+  // their seed rename applies.
+  const semanticFamilies = {
+    'tone-neutral': 'neutral',
+    'status-info': 'info',
+    'status-success': 'success',
+    'status-warning': 'warning',
+    'status-error': 'danger',
+    'variant-primary': 'accent',
+    'variant-ai': 'accent-ai',
+  };
+  m.global.semanticClasses = {
+    rules: [
+      ...(Object.entries(colorPrefixes) as Array<[keyof typeof colorPrefixes, string[]]>).map(
+        ([channel, prefixes]) => ({
+          kind: 'classSemantic' as const,
+          channel,
+          prefixes,
+          families: semanticFamilies,
+        }),
+      ),
+      { kind: 'classSemanticReport', reason: 'removed', prefixes: seedPrefixes },
+      { kind: 'classSemanticReport', reason: 'unknownStep', prefixes: seedPrefixes },
+    ],
+    thresholds: { exact: 0.5, near: 2, cutoff: 10 },
+  };
 
   // Behavior guard: v2 mds-dropdown enables auto-placement by default (v1 was
   // off). Add `disable-auto-placement` to dropdowns that set neither prop, to

@@ -18,6 +18,14 @@ import { transformHtml } from './surfaces/html.js';
 import { transformInlineTemplates } from './surfaces/inline-templates.js';
 import { transformReact } from './surfaces/react.js';
 import { type TransformContext, type TransformResult } from './surfaces/shared/transform.js';
+import { type SemanticOptions } from './surfaces/shared/semantic-ops.js';
+
+/**
+ * The semantic utilities (`bg-surface-raised`) are `rgb(var(--magma-*))`: the
+ * Tailwind bridge alone resolves them to an empty colour.
+ */
+export const SEMANTIC_CSS_NOTE =
+  'semantic utility classes need the `--magma-*` layer: import `@maggioli-design-system/styles/dist/css/semantic.css` (the `--magma-*` values) next to `dist/tailwind/theme.css` (the utilities), or they paint no colour';
 
 export type Framework = 'react' | 'angular' | 'html' | 'css' | 'auto';
 
@@ -37,6 +45,8 @@ export interface MigrationOptions {
   manifestPath?: string;
   /** Write the JSON report to this path. */
   reportPath?: string;
+  /** Category L: how far the semantic utility migration may write (default: report only). */
+  semantic?: SemanticOptions;
   cwd?: string;
 }
 
@@ -162,6 +172,7 @@ export const runMigration = async (options: MigrationOptions): Promise<Migration
   const ctxBase = {
     only: options.only ? new Set(options.only) : undefined,
     skip: options.skip ? new Set(options.skip) : undefined,
+    semantic: options.semantic,
   };
 
   const files = await collectFiles(options.paths, cwd, options.ignore ?? []);
@@ -190,6 +201,12 @@ export const runMigration = async (options: MigrationOptions): Promise<Migration
         diff: result.changed ? unifiedDiff(file, source, result.output) : undefined,
       };
       reporter.addFile(fileReport);
+      if (
+        result.findings.some(
+          (f) => f.kind === 'change' && f.ruleId?.startsWith('global/classSemantic/'),
+        )
+      )
+        reporter.addNote(SEMANTIC_CSS_NOTE);
       if (write && result.changed) writeFileSync(file, result.output);
     } catch (error) {
       reporter.addError({ file, surface: route.surface, message: (error as Error).message });
@@ -204,3 +221,4 @@ export const runMigration = async (options: MigrationOptions): Promise<Migration
 export * from './report/types.js';
 export { exitCode } from './report/reporter.js';
 export type { Manifest } from './manifest/schema.js';
+export type { SemanticOptions } from './surfaces/shared/semantic-ops.js';

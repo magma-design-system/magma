@@ -7,6 +7,10 @@
  * segment is rewritten. The lookup is a single pass per token: the rename map
  * contains chains (`rounded-xl → rounded-md` while `rounded-md → rounded-2xs`),
  * and one lookup per token guarantees a rename never cascades.
+ *
+ * Category L (raw palette -> semantic roles, `semantic-ops.ts`) runs on the same
+ * class list after the renames, because it has to see the whole list at once:
+ * a light class and its `dark:` override are decided together.
  */
 import {
   type ClassRenameRule,
@@ -14,6 +18,16 @@ import {
   type Manifest,
 } from '../../manifest/schema.js';
 import { ruleId } from '../../manifest/registry.js';
+import {
+  type ClassFinding,
+  type SemanticOptions,
+  type SemanticRules,
+  type SemanticToken,
+  DEFAULT_SEMANTIC_OPTIONS,
+  migrateSemanticTokens,
+  semanticRulesOf,
+  toSemanticToken,
+} from './semantic-ops.js';
 
 export interface ClassRenameEntry {
   rule: ClassRenameRule;
@@ -27,6 +41,8 @@ export interface ClassReportEntry {
 export interface ClassRules {
   renames: Map<string, ClassRenameEntry>;
   reports: Map<string, ClassReportEntry>;
+  /** Category L, when the manifest declares it. */
+  semantic: SemanticRules | null;
   /** Cheap probe: does this chunk of source mention any migrated class at all? */
   candidateRe: RegExp | null;
 }
@@ -48,22 +64,26 @@ export const classRulesOf = (manifest: Manifest): ClassRules => {
     else reports.set(rule.name, { rule, id: ruleId(GLOBAL_TAG, rule) });
   }
   const names = [...renames.keys(), ...reports.keys()];
+  const semantic = semanticRulesOf(manifest);
   // Word-ish boundaries so a short name like `gap` never matches inside
-  // `gap-4` or prose; `-` counts as a word character in utility names.
+  // `gap-4` or prose; `-` counts as a word character in utility names (a
+  // `/NN` opacity modifier is neither, so it passes).
+  const probes = [
+    ...(names.length > 0 ? [`(?<![\\w-])(?:${names.map(escapeRe).join('|')})(?![\\w-])`] : []),
+    ...(semantic ? [semantic.probe.source] : []),
+  ];
   const rules: ClassRules = {
     renames,
     reports,
-    candidateRe:
-      names.length > 0
-        ? new RegExp(`(?<![\\w-])(?:${names.map(escapeRe).join('|')})(?![\\w-])`)
-        : null,
+    semantic,
+    candidateRe: probes.length > 0 ? new RegExp(probes.join('|')) : null,
   };
   cache.set(manifest, rules);
   return rules;
 };
 
 export const hasClassRules = (rules: ClassRules): boolean =>
-  rules.renames.size > 0 || rules.reports.size > 0;
+  rules.renames.size > 0 || rules.reports.size > 0 || rules.semantic !== null;
 
 interface SplitToken {
   /** Variant prefix including its trailing colon(s): `hover:`, `md:[&>li]:`. */
@@ -72,6 +92,8 @@ interface SplitToken {
   bang: string;
   /** The bare utility name the manifest rules are keyed on. */
   base: string;
+  /** Opacity modifier including its slash: `/80`, `/[0.3]`, `/(--alpha)`; or ''. */
+  modifier: string;
   /** Trailing important marker (Tailwind 4). */
   trailingBang: string;
 }
@@ -101,7 +123,16 @@ export const splitClassToken = (token: string): SplitToken => {
     trailingBang = '!';
     rest = rest.slice(0, -1);
   }
-  return { prefix: token.slice(0, cut + 1), bang, base: rest, trailingBang };
+  // `bg-tone-neutral/80`: the modifier is not part of the utility name. Only a
+  // trailing number or bracketed value counts, and never inside an arbitrary
+  // value (`bg-[url(a/b)]`).
+  let modifier = '';
+  const mod = /\/(?:\d+|\[[^\]]*\]|\([^)]*\))$/.exec(rest);
+  if (mod && !rest.slice(0, mod.index).includes('[')) {
+    modifier = mod[0];
+    rest = rest.slice(0, mod.index);
+  }
+  return { prefix: token.slice(0, cut + 1), bang, base: rest, modifier, trailingBang };
 };
 
 export interface ClassListResult {
@@ -109,11 +140,21 @@ export interface ClassListResult {
   changed: boolean;
 }
 
+/** Category L wiring for one surface: the CLI options and where its findings go. */
+export interface SemanticHooks {
+  options?: SemanticOptions;
+  emit: (finding: ClassFinding) => void;
+  /** The list is one fragment of a class expression, not the whole value. */
+  partial?: boolean;
+}
+
 /**
  * Rewrite a whitespace-separated class list. Whitespace (including newlines in
  * multi-line `class` attributes) is preserved verbatim; each non-whitespace
  * token is looked up once by its bare utility name. `onRename` / `onReport`
- * fire once per occurrence with the full token as written.
+ * fire once per occurrence with the full token as written. With `semantic`,
+ * category L then runs on the renamed list; a token it deletes takes the
+ * whitespace before it along.
  */
 export const rewriteClassList = (
   value: string,
@@ -121,24 +162,67 @@ export const rewriteClassList = (
   enabled: (id: string) => boolean,
   onRename: (entry: ClassRenameEntry, before: string, after: string) => void,
   onReport: (entry: ClassReportEntry, token: string) => void,
+  semantic?: SemanticHooks,
 ): ClassListResult => {
   if (!rules.candidateRe || !rules.candidateRe.test(value)) return { value, changed: false };
   let changed = false;
   const parts = value.split(/(\s+)/);
+  const tokens: SemanticToken[] = [];
   for (let i = 0; i < parts.length; i++) {
     const token = parts[i]!;
     if (token === '' || /\s/.test(token)) continue;
-    const { prefix, bang, base, trailingBang } = splitClassToken(token);
+    const split = splitClassToken(token);
+    const { prefix, bang, base, modifier, trailingBang } = split;
     const rename = rules.renames.get(base);
     if (rename && enabled(rename.id)) {
-      const after = `${prefix}${bang}${rename.rule.to}${trailingBang}`;
+      const after = `${prefix}${bang}${rename.rule.to}${modifier}${trailingBang}`;
       parts[i] = after;
       changed = true;
       onRename(rename, token, after);
+      if (rules.semantic) {
+        const t = toSemanticToken(rules.semantic, i, after, { ...split, base: rename.rule.to });
+        if (t) tokens.push(t);
+      }
       continue;
     }
     const report = rules.reports.get(base);
     if (report && enabled(report.id)) onReport(report, token);
+    if (rules.semantic) {
+      const t = toSemanticToken(rules.semantic, i, token, split);
+      if (t) tokens.push(t);
+    }
+  }
+  if (semantic && rules.semantic && tokens.length > 0) {
+    const { replace, remove } = migrateSemanticTokens(
+      rules.semantic,
+      tokens,
+      semantic.options ?? DEFAULT_SEMANTIC_OPTIONS,
+      enabled,
+      semantic.emit,
+      semantic.partial,
+    );
+    for (const [i, text] of replace) parts[i] = text;
+    if (replace.size > 0 || remove.size > 0) changed = true;
+    if (remove.size > 0) {
+      // Rebuild around the deleted tokens: each kept token keeps the
+      // whitespace that preceded it, the list keeps its outer whitespace.
+      const lead = parts[0] === '' && /^\s+$/.test(parts[1] ?? '') ? parts[1]! : '';
+      const last = parts[parts.length - 1] === '' ? parts[parts.length - 2] : '';
+      const trail = last && /^\s+$/.test(last) ? last : '';
+      const kept: string[] = [];
+      let gap = '';
+      for (let i = 0; i < parts.length; i++) {
+        const p = parts[i]!;
+        if (p === '') continue;
+        if (/^\s+$/.test(p)) {
+          gap = p;
+          continue;
+        }
+        if (!remove.has(i)) kept.push(kept.length === 0 ? p : `${gap}${p}`);
+        gap = '';
+      }
+      return { value: kept.length === 0 ? '' : `${lead}${kept.join('')}${trail}`, changed };
+    }
   }
   return { value: changed ? parts.join('') : value, changed };
 };

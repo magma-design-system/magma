@@ -34,6 +34,7 @@ import {
   classRulesOf,
   hasClassRules,
   rewriteClassList,
+  type SemanticHooks,
   type ClassRenameEntry,
   type ClassReportEntry,
 } from './shared/class-ops.js';
@@ -159,6 +160,12 @@ export const transformAngular = (
         });
       };
 
+      const semanticHooks = (atLine: number | undefined, partial = false): SemanticHooks => ({
+        options: ctx.semantic,
+        emit: (f) => findings.push({ ...f, surface: 'angular', file: ctx.file, line: atLine }),
+        partial,
+      });
+
       const classAttr = findStatic('class');
       if (classAttr?.valueSpan) {
         const span = classAttr.valueSpan as Span;
@@ -169,6 +176,7 @@ export const transformAngular = (
           enabled,
           (entry, before, after) => emitRename(atLine, entry, before, after),
           (entry, token) => emitReport(atLine, entry, token),
+          semanticHooks(atLine),
         );
         if (result.changed)
           edits.push({ start: span.start.offset, end: span.end.offset, text: result.value });
@@ -213,7 +221,9 @@ export const transformAngular = (
                 emitRename(atLine, entry, before, after);
               },
               (entry, token) => emitReport(atLine, entry, token),
+              semanticHooks(atLine, true),
             );
+            if (result.changed) exprChanged = true;
             return result.changed ? `${quote}${result.value}${quote}` : match;
           },
         );

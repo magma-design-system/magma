@@ -54,4 +54,6 @@ export interface Report {
   dryRun: boolean;
   files: FileReport[];
   summary: ReportSummary;
+  /** Run-level notes: prerequisites the changes rely on, printed once under the summary. */
+  notes?: string[];
 }

@@ -26,6 +26,8 @@ apply the changes in place.
 --report <path>                              write the JSON report
 --only <ruleId,...> / --skip <ruleId,...>    run/skip specific rules (see the ids in the report)
 --manifest <path>                            override the bundled manifest (JSON)
+--accept-semantic <exact|near>               write the raw palette -> semantic role matches (L) up to this tier
+--keep-dark-overrides                        L: match on light AND dark instead of dropping the dark: overrides
 -h, --help
 ```
 
@@ -55,6 +57,7 @@ Notes:
 | I   | Event rename                    | declared in the manifest schema, but **not implemented by any surface yet** — no event was renamed between v1.12 and v2.0.0-beta, so no rule currently exists                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | n/a                           |
 | J   | Utility-class migration         | the styles-package Tailwind contract that changed between v1 and v2: the `shadow-outline-*` ring family → `shadow-ring-*`, the retuned `rounded-*` / `border-*` / named `gap-*` scales. Value-exact renames are rewritten; combos with no v2 token are reported (see below)                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | rename: safe · report: manual |
 | K   | Tag rename (mode vs theme)      | the light / dark / system control `mds-pref-theme` becomes `mds-pref-mode` (#702): the tag in HTML / Angular (start and end tag) and in CSS type selectors, the React component in JSX and in the named import from `magma-react` (with its other references, e.g. `typeof MdsPrefTheme`), the mode classes `pref-theme-{light,dark,system}` -> `pref-mode-*` in markup AND in CSS selectors, `--magma-pref-theme` -> `--magma-pref-mode`, the overlay properties and class `--mds-pref-theme-overlay-*` / `.mds-pref-theme-overlay` -> `mds-pref-mode-overlay`. Code written against a v2 beta also gets `mds-pref-theme-variant(-item)` -> `mds-pref-theme(-item)` and `--magma-pref-theme-name` -> `--magma-pref-theme`, applied in the same pass| safe (run once)               |
+| L   | Semantic utility migration      | raw palette utilities move to the semantic layer: the bare seed class `bg-tone-neutral` -> `bg-tone-neutral-seed` (L1, always), then each raw colour of a family with a semantic hue (`tone-neutral`, `status-*`, `variant-primary`, `variant-ai`) is matched BY VALUE to a role of its channel and hue (`bg-tone-neutral-09` -> `bg-wash-base`, `text-tone-neutral-01` -> `text-fg-default`), dropping the `dark:` override the role makes redundant (L2, written with `--accept-semantic`); contextual and unmatched sites, removed v1 colours and never-existing steps are reported (L3). See below | seed: safe · role: opt-in · rest: report |
 
 The bundled manifest is built by diffing the two `documentation.json` builds (`manifest.generated.ts`) with curated
 corrections layered on top in `src/manifest/manifest.ts`.
@@ -112,6 +115,62 @@ Caveats:
   own TW-default meaning, `outline-none`, …) is Tailwind's own upgrade guide's business, not this codemod's: only
   the magma token contract is covered.
 
+### Semantic utility migration (L)
+
+v2 publishes semantic roles (`bg-surface-raised`, `text-fg-muted`, `border-border-default`, `bg-danger-wash-base`,
+...) that follow the mode, the named themes and `pref-contrast-more` by themselves. Code written against v1 paints
+raw palette steps instead, often with a hand-tuned `dark:` override per element. Category L moves those classes to
+the roles, wherever category J rewrites classes (markup, `clsx()` literals, Angular bindings, `@apply`).
+
+| Level | What                                                                                                    | Written                       |
+| ----- | ------------------------------------------------------------------------------------------------------- | ----------------------------- |
+| L1    | seed rename: `{bg,text,border(-side),fill,stroke,shadow,...}-tone-<family>` -> `...-tone-<family>-seed` | always (value-exact, like A2) |
+| L2    | raw colour -> semantic role, chosen by value; the redundant `dark:` override is dropped                 | with `--accept-semantic`      |
+| L3    | the cases a value cannot decide (below)                                                                 | never: reported               |
+
+**How a role is chosen (L2).** Candidates are the roles of the utility's channel (background: `bg`/`from`/`via`/`to`;
+foreground: `text`/`fill`/`stroke`/...; border: `border*`/`divide`/`outline`/`ring`) and of the colour's own hue
+(`tone-neutral` -> neutral, `status-error` -> danger, `variant-primary` -> accent, ...). So `text-status-error-04`
+is never offered `danger-emphasis`, although the two share a value: that is a fill, and the text roles are darker
+on purpose. Candidates are ranked by OKLab deltaE (x100, about 2 = just noticeable) against the class's **light**
+value, as the default theme paints it:
+
+- `exact` (dE <= 0.5) and `near` (dE <= 2): a match. `--accept-semantic=exact` writes the exact ones,
+  `--accept-semantic=near` both; without the flag each match is reported as a suggestion.
+- otherwise: reported with the best three candidates (none farther than dE 10).
+
+**Dark overrides are dropped.** A v1 `dark:` override emulated a colour that follows the mode; the role does that by
+itself, so a written match removes the override on the same utility and variants (`hover:dark:` and `dark:hover:`
+pair with `hover:`). The report states how far the role's dark lands from what the override painted. Pass
+`--keep-dark-overrides` when your overrides are deliberate: the match is then judged on light AND dark, and a pair
+that no single role reproduces is reported instead.
+
+**Reported (L3).**
+
+- The seed as a background (`bg-tone-neutral-seed`): page, card and popover are `surface-default`, `-raised` and
+  `-overlay`, which the colour alone cannot tell.
+- Two roles the light value cannot tell apart that differ in dark (`bg-tone-neutral-10` is `wash-soft` exactly and
+  `surface-muted` within dE 0.6).
+- A `dark:` override with no light class of its utility: dropped by `--accept-semantic` when the list is the whole
+  class value; left (and reported) inside a `clsx()` argument or an `[ngClass]` key, whose light class may be in the
+  next fragment. An override next to another light class (`bg-white dark:bg-tone-neutral-09`) is never touched.
+- A colour v2 removed (`tone-slate-*`, `tone-grey-*`, `brand-mindy-*`, the `-v1` families, ...), with its nearest v2
+  ramp steps and role. In Tailwind 4 an unknown class is silently ignored, so these paint nothing today. If your app
+  defines the colour itself, ignore the warning.
+- A step that never existed (`text-tone-neutral-600`): it has never painted anything.
+
+Caveats:
+
+- **Import the semantic layer.** The role utilities are `rgb(var(--magma-*))`: next to `dist/tailwind/theme.css`
+  (the utilities) the app needs `@maggioli-design-system/styles/dist/css/semantic.css` (the values), or every role
+  paints no colour. The summary repeats this whenever L rewrites something.
+- **Run it once**, as for J and K: L1 is a rename, and a second run re-measures the classes the first one left.
+- The other tone families (`kaolin`, `porcelain`, ...), the labels and the brands are still valid v2 colours and
+  are left as they are; so are the `shadow-*` colours (the shadow ink is composed, not a utility role).
+- A role picked by value is a proposal, not a judgement on intent: `fill-status-warning-05` matches
+  `fill-warning-fg-disabled` exactly, which may or may not be what the icon means. Review the diff.
+- The colour table is generated (`src/semantic/semantic.generated.ts`, see Development) from the default theme.
+
 ### Mode vs theme (K)
 
 v1 had one colour-preference control, `mds-pref-theme`, and it set the **mode** (light / dark / system). v2 calls
@@ -141,6 +200,8 @@ These are surfaced under the **dynamic / manual** category in the report:
   is reported (a hole can split a token), and an `[ngClass]="expr"` whose expression carries no string literals is
   silently out of reach — only the quoted class strings inside the expression are rewritten.
 - Slot content that contains **markup** (e.g. `<mds-icon>` inside `mds-button`).
+- A light class and its `dark:` override in **different fragments** of a class expression (two `clsx()` arguments,
+  two `[ngClass]` keys): category L decides one string at a time.
 - Inline templates / HTML in template literals that contain `${…}` interpolation.
 - Angular `@Component({ host })` bindings are intentionally left untouched (rewriting a consumer component's own
   host with `mds-*` rules is rarely correct).
@@ -164,6 +225,17 @@ Out of scope entirely (all surfaces work on markup/templates only):
 npx nx run codemod:build      # tsc → dist/
 npx nx run codemod:test       # jest (ESM)
 ```
+
+### Regenerating the semantic colour table (L)
+
+```bash
+# build design-tokens and styles first; V1_TOKENS points at a v1 (13.x) design-tokens dist
+V1_TOKENS=<path>/node_modules/@maggioli-design-system/design-tokens/dist npx nx run codemod:generate.semantic
+```
+
+It resolves every v2 raw colour and every role of the Tailwind bridge in light and dark from `projects/styles/dist`,
+plus the v1 values of the colours v2 removed, into `src/semantic/semantic.generated.ts`. Re-run it when the tokens
+move, and review the diff.
 
 ### Regenerating the manifest from the docs
 
