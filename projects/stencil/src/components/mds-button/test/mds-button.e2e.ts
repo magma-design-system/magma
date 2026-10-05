@@ -1,11 +1,27 @@
-import { render } from '@stencil/vitest';
-import { createSlottedChild } from '@test/slot';
+import { render, vi } from '@stencil/vitest';
+import { mockIconFetch } from '@test/fetch';
+import { createSlottedChild, itReadsTheSlottedLabelWhenLabelIsNull } from '@test/slot';
 
 /**
  * The awaiting spinner slides in over --duration-300 and the button's own width follows it,
  * so a box read right after the attribute lands catches the animation halfway. Sit the
  * transition out, then poll until the box stops moving.
  */
+/**
+ * Creates a button, lets `setup` assign its properties before the first render (as a
+ * framework binding does) and waits until it has loaded.
+ */
+const mountButton = async (
+  setup: (button: HTMLMdsButtonElement) => void,
+  parent: HTMLElement = document.body,
+): Promise<HTMLMdsButtonElement> => {
+  const button = document.createElement('mds-button');
+  setup(button);
+  parent.appendChild(button);
+  await vi.waitFor(() => expect(button).toHaveAttribute('hydrated'));
+  return button;
+};
+
 const settledBox = async (element: Element): Promise<DOMRect> => {
   await new Promise((resolve) => setTimeout(resolve, 400));
 
@@ -113,6 +129,44 @@ describe('mds-button', () => {
 
       expect(root).toHaveAttribute('pref-animation', 'reduce');
       expect(getComputedStyle(root).transitionDuration).toBe('1e-05s');
+    });
+  });
+
+  itReadsTheSlottedLabelWhenLabelIsNull('mds-button');
+
+  // Angular and Vue bind null for a missing value
+  describe('with null properties', () => {
+    afterEach(() => {
+      document.querySelectorAll('body > form, body > mds-button').forEach((el) => el.remove());
+    });
+
+    it('submits its form when href is null', async () => {
+      const open = vi.spyOn(window, 'open').mockImplementation(() => null);
+      const form = document.createElement('form');
+      const submit = vi.fn((event: Event) => event.preventDefault());
+      form.addEventListener('submit', submit);
+      document.body.appendChild(form);
+      const button = await mountButton((el) => {
+        (el as { href?: string | null }).href = null;
+        // with a link the button would open a new tab instead of submitting
+        el.target = 'blank';
+        el.textContent = 'Send';
+      }, form);
+
+      button.click();
+
+      await vi.waitFor(() => expect(submit).toHaveBeenCalledOnce());
+      expect(open).not.toHaveBeenCalled();
+    });
+
+    it('names an icon-only button when label is null', async () => {
+      mockIconFetch();
+      const button = await mountButton((el) => {
+        (el as { label?: string | null }).label = null;
+        el.icon = 'mdi/alien';
+      });
+
+      expect(button.getAttribute('title') ?? button.getAttribute('aria-label')).toBeTruthy();
     });
   });
 

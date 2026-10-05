@@ -49,7 +49,7 @@ export class MdsPrefLanguageItem {
   // unrecognized code is a real error; empty codes fall back to the `noCode` branch
   // already handled in render().
   private readonly validateCode = (code: string | undefined): void => {
-    if (code !== undefined && code !== '' && localeDefault[code] === undefined) {
+    if (code != null && code !== '' && localeDefault[code] === undefined) {
       throw Error(`Language code not found: ${code}`);
     }
   };
@@ -63,7 +63,7 @@ export class MdsPrefLanguageItem {
       // the item is an entry of the `menu` the mds-dropdown of the controller opens:
       // without the role axe rejects it as a child of that menu (aria-required-children)
       <Host onClick={this.handleClick} role="menuitem">
-        {this.code !== '' ? (
+        {(this.code ?? '') !== '' ? (
           <mds-button
             icon={this.selected ? miBaselineCheckCircle : miOutlineCircle}
             variant="dark"

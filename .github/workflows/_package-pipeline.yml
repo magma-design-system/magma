@@ -46,6 +46,10 @@ on:
         description: Also run `npm run test-storybook` (the Vitest `storybook` project) in test-working-directory
         type: boolean
         default: false
+      build-storybook:
+        description: Also run `npm run storybook.build` in test-working-directory (the static site the deploy storybook workflow publishes)
+        type: boolean
+        default: false
     outputs:
       changed:
         description: Whether files matching `path` changed in this event
@@ -132,3 +136,9 @@ jobs:
       - if: ${{ inputs.run-storybook-tests }}
         working-directory: ${{ inputs.test-working-directory }}
         run: npm run test-storybook
+      # the play functions run the stories in Vitest, never the production
+      # build: a story that breaks only `storybook build` fails here, before
+      # the merge, instead of in the deploy
+      - if: ${{ inputs.build-storybook }}
+        working-directory: ${{ inputs.test-working-directory }}
+        run: npm run storybook.build

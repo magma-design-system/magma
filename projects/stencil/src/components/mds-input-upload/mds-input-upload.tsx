@@ -389,7 +389,9 @@ export class MdsInputUpload {
   }
 
   private isSortTabShown(): boolean {
-    return this.sort !== undefined && this.files.length > 1;
+    // the type has no empty sort, but the attribute can be empty or removed
+    const sort: string = this.sort ?? '';
+    return sort !== '' && this.files.length > 1;
   }
 
   private readonly handleAddFileClick = (): void => {
@@ -460,7 +462,7 @@ export class MdsInputUpload {
               </mds-text>
             ) : (
               <mds-text variant="info" typography="caption">
-                {this.maxFiles !== 0 && !Number.isNaN(this.maxFiles)
+                {(this.maxFiles ?? 0) !== 0 && !Number.isNaN(this.maxFiles)
                   ? this.t.get('currentFilesWithMax', {
                       currentFiles: this.files.length,
                       maxFiles: this.maxFiles,

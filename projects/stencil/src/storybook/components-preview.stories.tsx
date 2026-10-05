@@ -592,7 +592,7 @@ export const Header = () => (
     <mds-header class="relative w-full" appearance="inline" nav="none" menu="all">
       <mds-header-bar class="relative">
         <div class="flex gap-400 items-center">
-          <mds-img class="w-1000" src="/logo-gruppo-maggioli.svg" />
+          <mds-img class="w-1000" src="./logo-gruppo-maggioli.svg" />
           <div class="mb-100 grid grid-cols-full gap-100">
             <mds-text typography="h5">Header bar</mds-text>
             <mds-text typography="option" class="text-tone-neutral-04">
@@ -609,7 +609,7 @@ export const Header = () => (
       </mds-header-bar>
       <div slot="menu">
         <div class="flex gap-200 items-center p-600 border-b border-tone-neutral-09">
-          <mds-img class="w-1000" src="/logo-gruppo-maggioli.svg" />
+          <mds-img class="w-1000" src="./logo-gruppo-maggioli.svg" />
           <div class="mb-100">
             <mds-text typography="h6">Gruppo Maggioli</mds-text>
             <mds-text typography="option" class="text-tone-neutral-04">

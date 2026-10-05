@@ -1,0 +1,211 @@
+# Publishes the Storybook of `dev` to GitHub Pages, at
+# https://magma-design-system.github.io/magma/storybook/, on every push to
+# `dev` (a merged pull request included) that changes what the Storybook
+# shows. The previous host (magma.maggiolicloud.it, .deploy/) needs a runner
+# inside the Maggioli network and stopped updating with the move away from
+# GitLab CI.
+#
+# The stencil workflow builds and tests the same commit on the same push, the
+# stories included (test-storybook and `storybook build`, in `magma / test`):
+# this one waits for those tests, publishes nothing when they fail, and
+# reuses the `stencil-build` artifact. When that run gives no verdict (a push
+# that changes only tokens, styles or icons skips it, a newer push cancels it,
+# artifacts expire after a day) the components are built and the stories
+# tested here before publishing.
+#
+# A repository has a single Pages site and every deploy replaces it whole:
+# Storybook lives in storybook/ and the root redirects to it, leaving room
+# for the tokens playground and theme-studio (#695) next to it.
+name: deploy storybook
+
+on:
+  push:
+    branches: [dev]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  # Path filtering happens here instead of in the trigger, as in
+  # _package-pipeline.yml: GitHub evaluates trigger `paths` only on the first
+  # 300 files of the diff. A manual run always rebuilds, so it skips this job
+  changes:
+    if: ${{ github.event_name == 'push' }}
+    runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.filter.outputs.storybook }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          # diff against the commit before the push instead of the default branch
+          base: ${{ github.ref_name }}
+          filters: |
+            storybook:
+              - 'projects/stencil/**'
+              - 'projects/design-tokens/**'
+              - 'projects/styles/**'
+              - 'projects/svg-icons/**'
+              - 'package-lock.json'
+              - '.github/workflows/deploy-storybook.yml'
+
+  build:
+    needs: [changes]
+    if: ${{ !cancelled() && (github.event_name == 'workflow_dispatch' || needs.changes.outputs.changed == 'true') }}
+    runs-on: ubuntu-latest
+    # bounds the wait for the stencil tests
+    timeout-minutes: 60
+    # A newer push that changes the Storybook cancels the build still running
+    # for an older one. The group is set on the job rather than on the
+    # workflow, so a push that changes nothing (its `changes` job skips the
+    # rest) cannot cancel an older run and leave the site behind
+    concurrency:
+      group: ${{ github.workflow }}-build
+      cancel-in-progress: true
+    permissions:
+      contents: read
+      # read the runs of the stencil workflow and download their artifact
+      actions: read
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci --prefer-offline
+      - name: Wait for the stencil tests of this commit
+        id: stencil
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SHA: ${{ github.sha }}
+        run: |
+          api="repos/$GITHUB_REPOSITORY/actions"
+          # the stencil run is created by the same push: give it a minute to show up
+          for _ in $(seq 12); do
+            RUN_ID=$(gh api "$api/workflows/stencil.yml/runs?event=push&head_sha=$SHA" --jq '[.workflow_runs[].id] | max // empty')
+            [ -n "$RUN_ID" ] && break
+            sleep 5
+          done
+          if [ -z "$RUN_ID" ]; then
+            echo "::notice::no stencil run for $SHA, building and testing here"
+            exit 0
+          fi
+          # `magma / build` and `magma / test` are the jobs of the `magma` job in
+          # stencil.yml. A failure stops the publication; any other outcome
+          # (skipped: no change under projects/stencil; cancelled: superseded by
+          # a newer push, which also cancels this job if it changes the
+          # Storybook) leaves the verdict to this job. If the jobs are renamed,
+          # the wait lasts until the run ends and everything happens here
+          while :; do
+            RUN_STATUS=$(gh api "$api/runs/$RUN_ID" --jq '.status')
+            JOBS=$(gh api "$api/runs/$RUN_ID/jobs" --jq '[.jobs[] | {(.name): "\(.status) \(.conclusion // "")"}] | add // {}')
+            for JOB in build test; do
+              STATE=$(jq -r --arg name "magma / $JOB" '.[$name] // ""' <<< "$JOBS")
+              case "$STATE" in
+                "completed failure" | "completed timed_out")
+                  echo "::error::magma / $JOB of stencil run $RUN_ID failed: Storybook is not published"
+                  exit 1
+                  ;;
+                "completed success") ;;
+                # not created yet, queued or running: keep waiting
+                completed*)
+                  echo "::notice::magma / $JOB of stencil run $RUN_ID ended as '${STATE#completed }', building and testing here"
+                  exit 0
+                  ;;
+              esac
+            done
+            [ "$(jq -r '."magma / test" // ""' <<< "$JOBS")" = "completed success" ] && break
+            if [ "$RUN_STATUS" = completed ]; then
+              echo "::notice::stencil run $RUN_ID ended without its build and test jobs, building and testing here"
+              exit 0
+            fi
+            sleep 20
+          done
+          # a manual run on an older commit can find the artifact expired
+          ARTIFACTS=$(gh api "$api/runs/$RUN_ID/artifacts?name=stencil-build" --jq '[.artifacts[] | select(.expired | not)] | length')
+          if [ "$ARTIFACTS" = 0 ]; then
+            echo "::notice::the stencil-build artifact of run $RUN_ID has expired, building and testing here"
+            exit 0
+          fi
+          echo "::notice::stencil run $RUN_ID is green, reusing its stencil-build artifact"
+          echo "run-id=$RUN_ID" >> "$GITHUB_OUTPUT"
+      - if: ${{ steps.stencil.outputs.run-id != '' }}
+        uses: actions/download-artifact@v8
+        with:
+          name: stencil-build
+          path: projects
+          run-id: ${{ steps.stencil.outputs.run-id }}
+          github-token: ${{ github.token }}
+      - name: Restore Nx cache
+        if: ${{ steps.stencil.outputs.run-id == '' }}
+        uses: actions/cache@v5
+        with:
+          path: .nx
+          key: nx-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
+          restore-keys: |
+            nx-${{ hashFiles('package-lock.json') }}-
+      # the preview loads the components from dist/esm/loader and serves dist
+      # and assets as static files; Nx builds design-tokens, styles and
+      # svg-icons first
+      - if: ${{ steps.stencil.outputs.run-id == '' }}
+        run: npx nx run stencil:build
+      # without a green stencil run, the stories are tested here as in its
+      # test job (play functions and a11y checks, Playwright Chromium)
+      - name: Restore Playwright browsers cache
+        if: ${{ steps.stencil.outputs.run-id == '' }}
+        uses: actions/cache@v5
+        with:
+          path: ~/.cache/ms-playwright
+          # the browser revision is pinned by the playwright version in the lockfile
+          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+      # no-op for the browser when cached, still installs the system libraries
+      - if: ${{ steps.stencil.outputs.run-id == '' }}
+        run: npx playwright install --with-deps chromium
+      - if: ${{ steps.stencil.outputs.run-id == '' }}
+        working-directory: projects/stencil
+        run: npm run test-storybook
+      - run: npx nx run stencil:storybook.build
+      - name: Assemble the site
+        run: |
+          mkdir _site
+          mv projects/stencil/dist-storybook _site/storybook
+          cat > _site/index.html <<'EOF'
+          <!doctype html>
+          <html lang="en">
+            <head>
+              <meta charset="utf-8">
+              <title>Magma Design System</title>
+              <meta http-equiv="refresh" content="0; url=storybook/">
+            </head>
+            <body>
+              <a href="storybook/">Magma Design System Storybook</a>
+            </body>
+          </html>
+          EOF
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: _site
+
+  deploy:
+    needs: [build]
+    # the github-pages environment accepts deployments from dev only
+    if: ${{ github.ref == 'refs/heads/dev' }}
+    runs-on: ubuntu-latest
+    # its own group, not the build one: an older run entering it could
+    # otherwise cancel the build of a newer run. A deploy lasts seconds and
+    # starts only after a full build, so deploys never run out of order; the
+    # one in progress completes and the newer one follows
+    concurrency:
+      group: ${{ github.workflow }}-deploy
+      cancel-in-progress: false
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}storybook/
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5

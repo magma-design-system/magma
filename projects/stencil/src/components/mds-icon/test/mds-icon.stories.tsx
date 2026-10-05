@@ -3,7 +3,7 @@ import { iconsDictionary, mggIconsDictionary, svgIconsDictionary } from '@type/i
 import { useState } from 'react';
 import svgIconPackage from '@maggioli-design-system/svg-icons/package.json';
 
-const urlIcon = `${location.origin}/svg/mi/baseline/email.svg`;
+const urlIcon = new URL('svg/mi/baseline/email.svg', location.href).href;
 const base64IconEncoded =
   'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgLTk2MCA5NjAgOTYwIiB3aWR0aD0iMjQiPjxwYXRoIGQ9Im0yMzMtODAgNjUtMjgxTDgwLTU1MGwyODgtMjUgMTEyLTI2NSAxMTIgMjY1IDI4OCAyNS0yMTggMTg5IDY1IDI4MS0yNDctMTQ5TDIzMy04MFoiLz48L3N2Zz4=';
 const svgIconDecoded =

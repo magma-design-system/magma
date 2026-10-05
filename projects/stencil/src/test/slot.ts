@@ -1,4 +1,4 @@
-import { render } from '@stencil/vitest';
+import { render, vi } from '@stencil/vitest';
 
 interface ConditionalSlotOptions {
   /** Markup of the host, without children assigned to the slot under test */
@@ -79,4 +79,22 @@ const describeConditionalSlot = ({
   });
 };
 
-export { createSlottedChild, describeConditionalSlot };
+/**
+ * Shared case for the components that read their default slot as `label` when the
+ * property is missing: a null `label`, the value Angular and Vue bind for a missing one,
+ * counts as missing too. Once loaded the label watcher turns null into undefined, so the
+ * case sets it before the first render.
+ */
+const itReadsTheSlottedLabelWhenLabelIsNull = (tag: string): void => {
+  it('reads the slotted text as label when the label property starts null', async () => {
+    const host = document.createElement(tag) as HTMLElement & { label?: string | null };
+    host.label = null;
+    host.textContent = 'Slotted';
+    document.body.appendChild(host);
+
+    await vi.waitFor(() => expect(host.label).toBe('Slotted'));
+    host.remove();
+  });
+};
+
+export { createSlottedChild, describeConditionalSlot, itReadsTheSlottedLabelWhenLabelIsNull };

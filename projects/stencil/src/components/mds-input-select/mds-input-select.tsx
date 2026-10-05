@@ -144,7 +144,7 @@ export class MdsInputSelect {
    */
   @Watch('placeholder')
   protected placeholderChanged(newValue: string | undefined, oldValue: string | undefined) {
-    if (newValue !== undefined && newValue !== '' && (oldValue === undefined || oldValue === '')) {
+    if (newValue != null && newValue !== '' && (oldValue ?? '') === '') {
       let defaultOption: HTMLOptionElement | null = document.querySelector('.placeholder-option');
       if (defaultOption) defaultOption.remove();
       defaultOption = document.createElement('option');
@@ -201,6 +201,9 @@ export class MdsInputSelect {
     this.hasFocus = true;
   };
 
+  // a removed attribute or a null bound by a framework counts as no placeholder, like ''
+  private hasPlaceholder = (): boolean => (this.placeholder ?? '') !== '';
+
   private emptyOptions = (): void => {
     const select = this.host.shadowRoot?.querySelector('select');
     const options = select?.querySelectorAll('option');
@@ -210,11 +213,11 @@ export class MdsInputSelect {
     }
 
     options.forEach((option: HTMLOptionElement, index: number) => {
-      if (this.placeholder === undefined || this.placeholder === '') {
+      if (!this.hasPlaceholder()) {
         option.remove();
       }
 
-      if (this.placeholder !== undefined && this.placeholder !== '' && index > 0) {
+      if (this.hasPlaceholder() && index > 0) {
         option.remove();
       }
     });
@@ -228,11 +231,11 @@ export class MdsInputSelect {
       return;
     }
 
-    if ((this.placeholder === undefined || this.placeholder === '') && options.length > 0) {
+    if (!this.hasPlaceholder() && options.length > 0) {
       this.emptyOptions();
     }
 
-    if (this.placeholder !== undefined && this.placeholder !== '' && options.length > 1) {
+    if (this.hasPlaceholder() && options.length > 1) {
       this.emptyOptions();
     }
 
@@ -249,7 +252,7 @@ export class MdsInputSelect {
       this.selectEl.querySelectorAll('option').forEach((element: HTMLOptionElement) => {
         element.selected = element.value === this.value;
       });
-    } else if (this.placeholder === undefined || this.placeholder === '') {
+    } else if (!this.hasPlaceholder()) {
       this.value = this.selectEl?.querySelectorAll('option')[0].value;
     }
   };
