@@ -154,6 +154,67 @@ export interface ClassReportRule {
   message: string;
 }
 
+/**
+ * Category L - a raw palette utility (`bg-tone-neutral-09`, `text-status-error-04`)
+ * migrated to a role of the semantic layer (`bg-wash-base`). The role is chosen
+ * BY VALUE against the generated colour table (`src/semantic/`): only roles of
+ * the rule's channel and of the colour's own hue are candidates, so a fill role
+ * is never offered to a text colour even when the two share a value. Light
+ * decides; the matching `dark:` override on the same utility and variants is
+ * dropped with the rewrite, because the v2 role flips by itself (the CLI's
+ * `--keep-dark-overrides` makes the dark side count instead). Written only with
+ * `--accept-semantic`; otherwise the site is reported with the proposal.
+ */
+export interface ClassSemanticRule {
+  kind: 'classSemantic';
+  channel: 'background' | 'foreground' | 'border';
+  /** Utility prefixes painting this channel: `bg`, `text`, `border-t`, ... */
+  prefixes: string[];
+  /** Raw colour family -> hue of the candidate roles: `status-error` -> `danger`. */
+  families: Record<string, string>;
+}
+
+/**
+ * Category L (report-only) - raw palette utilities the value match cannot
+ * handle: a colour v2 removed (`tone-slate-08`, `brand-mindy-03`, reported with
+ * its nearest v2 colours), or a step that never existed in either version
+ * (`text-tone-neutral-600`, which has never painted anything).
+ */
+export interface ClassSemanticReportRule {
+  kind: 'classSemanticReport';
+  reason: 'removed' | 'unknownStep';
+  /** Utility prefixes the report looks at. */
+  prefixes: string[];
+}
+
+/** Category L thresholds, as OKLab deltaE x100 (about 2 = just noticeable). */
+export interface SemanticThresholds {
+  /** At or under: `exact`, written by `--accept-semantic=exact`. */
+  exact: number;
+  /** At or under: `near`, written by `--accept-semantic=near`. */
+  near: number;
+  /** Candidates farther than this are never listed. */
+  cutoff: number;
+}
+
+/**
+ * Category M - rename a responsive variant whose meaning changed. v1 `mobile:`
+ * was `max-width: 767px`; v2 `mobile:` is `min-width: 480px`, so an unmigrated
+ * class silently applies to the opposite range. The surfaces rename the variant
+ * segment of every class token (`mobile:hover:px-4` -> `max-tablet:hover:px-4`)
+ * and report the Tailwind 3 CSS forms (`@screen mobile`, `screen(mobile)`,
+ * `theme(screens.mobile)`) for manual migration.
+ */
+export interface VariantRenameRule {
+  kind: 'variantRename';
+  /** v1 variant name, without the colon: `mobile`. */
+  from: string;
+  /** v2 variant name: `max-tablet`. */
+  to: string;
+  /** The v1 media query, quoted in the CSS reports: `(max-width: 767px)`. */
+  media: string;
+}
+
 /** Category H — rename a shadow part referenced in `::part()`. */
 export interface PartRenameRule {
   kind: 'partRename';
@@ -217,6 +278,9 @@ export type Rule =
   | CssVarSurfaceReportRule
   | ClassRenameRule
   | ClassReportRule
+  | ClassSemanticRule
+  | ClassSemanticReportRule
+  | VariantRenameRule
   | PartRenameRule
   | EventRenameRule
   | TagRenameRule
@@ -271,6 +335,17 @@ export interface GlobalRules {
    * CSS/SCSS.
    */
   classes?: Array<ClassRenameRule | ClassReportRule>;
+  /**
+   * Raw palette utilities -> semantic roles (category L), applied wherever the
+   * category J class rules are, after them (so a seed rename is measured under
+   * its v2 name).
+   */
+  /** Responsive variant renames (category M), applied with the class rules. */
+  variants?: VariantRenameRule[];
+  semanticClasses?: {
+    rules: Array<ClassSemanticRule | ClassSemanticReportRule>;
+    thresholds: SemanticThresholds;
+  };
 }
 
 export interface Manifest {

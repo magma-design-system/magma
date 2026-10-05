@@ -26,6 +26,24 @@ export interface Finding {
   message: string;
   before?: string;
   after?: string;
+  /**
+   * The class token(s) as written, for findings that leave a decision to the
+   * reader: the Markdown report groups the same token across files under it.
+   */
+  token?: string;
+  /** Short label of why the site needs a decision: `seed as a background`, `removed in v2`. */
+  reason?: string;
+  /** Ready-to-paste replacements for `token`, best first. */
+  alternatives?: Alternative[];
+}
+
+/** One possible replacement for a reported class token. */
+export interface Alternative {
+  /** The full class as it would be written, variants and modifier included. */
+  value: string;
+  /** OKLab deltaE x100 from what the token painted in light (and dark, when known). */
+  light: number;
+  dark?: number;
 }
 
 export interface FileReport {
@@ -54,4 +72,6 @@ export interface Report {
   dryRun: boolean;
   files: FileReport[];
   summary: ReportSummary;
+  /** Run-level notes: prerequisites the changes rely on, printed once under the summary. */
+  notes?: string[];
 }

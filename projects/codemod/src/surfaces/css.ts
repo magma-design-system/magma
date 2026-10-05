@@ -212,6 +212,48 @@ export const transformCss = (
     }
   });
 
+  // M: the Tailwind 3 CSS forms of a renamed screen cannot be rewritten
+  // blindly (`@screen` is gone in Tailwind 4, `screen()` / `theme(screens.*)`
+  // need the v2 value), so they are reported with the v2 spelling.
+  const variantRules = manifest.global.variants ?? [];
+  if (variantRules.length > 0) {
+    const byName = new Map(variantRules.map((rule) => [rule.from, rule]));
+    const report = (
+      line: number | undefined,
+      form: string,
+      rule: (typeof variantRules)[number],
+    ) => {
+      const id = ruleId('global', rule);
+      if (!ruleEnabled(ctx, id)) return;
+      findings.push({
+        kind: 'dynamic',
+        surface: 'css',
+        file: ctx.file,
+        line,
+        ruleId: id,
+        message: `\`${form}\`: v1 \`${rule.from}\` was ${rule.media} and v2 \`${rule.from}\` is a different range; write it as \`@variant ${rule.to} { ... }\` (Tailwind 4)`,
+        token: form,
+        reason: 'renamed breakpoint in CSS',
+        alternatives: [{ value: `@variant ${rule.to}`, light: 0 }],
+      });
+    };
+    const screenRefRe =
+      /\b(?:screen\(\s*['"]?([\w-]+)['"]?\s*\)|theme\(\s*['"]?screens\.([\w-]+)['"]?\s*\))/g;
+    const scan = (text: string, line: number | undefined): void => {
+      for (const m of text.matchAll(screenRefRe)) {
+        const rule = byName.get(m[1] ?? m[2] ?? '');
+        if (rule) report(line, m[0], rule);
+      }
+    };
+    root.walkAtRules((atRule) => {
+      const line = atRule.source?.start?.line;
+      const rule = atRule.name === 'screen' ? byName.get(atRule.params.trim()) : undefined;
+      if (rule) report(line, `@screen ${atRule.params.trim()}`, rule);
+      else scan(atRule.params, line);
+    });
+    root.walkDecls((decl) => scan(decl.value, decl.source?.start?.line));
+  }
+
   // Utility-class migrations (J) in `@apply` at-rules (Tailwind CSS sources).
   const classRules = classRulesOf(manifest);
   if (hasClassRules(classRules)) {
@@ -252,6 +294,10 @@ export const transformCss = (
             ruleId: entry.id,
             message: `\`${token}\`: ${entry.rule.message}`,
           });
+        },
+        {
+          options: ctx.semantic,
+          emit: (f) => findings.push({ ...f, surface: 'css', file: ctx.file, line }),
         },
       );
       if (result.changed) {

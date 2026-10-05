@@ -1,0 +1,9 @@
+.layout {
+  @apply grid max-tablet:grid-cols-1 wide:mx-[16.666667%];
+}
+
+@screen mobile {
+  .aside {
+    display: none;
+  }
+}

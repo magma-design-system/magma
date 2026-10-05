@@ -5,8 +5,8 @@
  */
 import { execFileSync } from 'node:child_process';
 import { readFileSync, statSync, writeFileSync } from 'node:fs';
-import { extname } from 'node:path';
-import { globby } from 'globby';
+import { dirname, extname, resolve } from 'node:path';
+import { convertPathToPattern, globby } from 'globby';
 import { manifest as bundledManifest } from './manifest/manifest.js';
 import { type Manifest } from './manifest/schema.js';
 import { unifiedDiff } from './report/diff.js';
@@ -18,6 +18,14 @@ import { transformHtml } from './surfaces/html.js';
 import { transformInlineTemplates } from './surfaces/inline-templates.js';
 import { transformReact } from './surfaces/react.js';
 import { type TransformContext, type TransformResult } from './surfaces/shared/transform.js';
+import { type SemanticOptions } from './surfaces/shared/semantic-ops.js';
+
+/**
+ * The semantic utilities (`bg-surface-raised`) are `rgb(var(--magma-*))`: the
+ * Tailwind bridge alone resolves them to an empty colour.
+ */
+export const SEMANTIC_CSS_NOTE =
+  'semantic utility classes need the `--magma-*` layer: import `@maggioli-design-system/styles/dist/css/semantic.css` (the `--magma-*` values) next to `dist/tailwind/theme.css` (the utilities), or they paint no colour';
 
 export type Framework = 'react' | 'angular' | 'html' | 'css' | 'auto';
 
@@ -37,6 +45,10 @@ export interface MigrationOptions {
   manifestPath?: string;
   /** Write the JSON report to this path. */
   reportPath?: string;
+  /** Write the Markdown worklist (decisions by token, checklist per file) to this path. */
+  reportMarkdownPath?: string;
+  /** Category L: how far the semantic utility migration may write (default: report only). */
+  semantic?: SemanticOptions;
   cwd?: string;
 }
 
@@ -125,7 +137,10 @@ export const collectFiles = async (
     } catch {
       continue;
     }
-    if (isDir) patterns.push(`${p.replace(/\/$/, '')}/**/*.{${EXTENSIONS.join(',')}}`);
+    // The directory is a literal path, not a pattern: escape it, or a Next.js
+    // route group `(pages)` or a dynamic segment `[id]` matches nothing.
+    if (isDir)
+      patterns.push(`${convertPathToPattern(p.replace(/\/$/, ''))}/**/*.{${EXTENSIONS.join(',')}}`);
     else files.add(p);
   }
   if (patterns.length) {
@@ -162,6 +177,7 @@ export const runMigration = async (options: MigrationOptions): Promise<Migration
   const ctxBase = {
     only: options.only ? new Set(options.only) : undefined,
     skip: options.skip ? new Set(options.skip) : undefined,
+    semantic: options.semantic,
   };
 
   const files = await collectFiles(options.paths, cwd, options.ignore ?? []);
@@ -190,6 +206,12 @@ export const runMigration = async (options: MigrationOptions): Promise<Migration
         diff: result.changed ? unifiedDiff(file, source, result.output) : undefined,
       };
       reporter.addFile(fileReport);
+      if (
+        result.findings.some(
+          (f) => f.kind === 'change' && f.ruleId?.startsWith('global/classSemantic/'),
+        )
+      )
+        reporter.addNote(SEMANTIC_CSS_NOTE);
       if (write && result.changed) writeFileSync(file, result.output);
     } catch (error) {
       reporter.addError({ file, surface: route.surface, message: (error as Error).message });
@@ -198,9 +220,14 @@ export const runMigration = async (options: MigrationOptions): Promise<Migration
 
   const report = reporter.build();
   if (options.reportPath) writeFileSync(options.reportPath, reporter.toJSON(report));
+  if (options.reportMarkdownPath) {
+    const target = resolve(cwd, options.reportMarkdownPath);
+    writeFileSync(target, reporter.toMarkdown(report, dirname(target), cwd));
+  }
   return { report, reporter };
 };
 
 export * from './report/types.js';
 export { exitCode } from './report/reporter.js';
 export type { Manifest } from './manifest/schema.js';
+export type { SemanticOptions } from './surfaces/shared/semantic-ops.js';
