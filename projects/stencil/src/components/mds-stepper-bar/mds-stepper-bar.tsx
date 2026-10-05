@@ -60,8 +60,9 @@ export class MdsStepperBar {
       item.done = false;
       if (key < this.currentItem) {
         item.done = true;
-        if (item.value !== undefined && item.value !== '') {
-          values.push(item.value);
+        const value = item.value ?? '';
+        if (value !== '') {
+          values.push(value);
         }
       }
 

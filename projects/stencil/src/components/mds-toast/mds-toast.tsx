@@ -75,9 +75,15 @@ export class MdsToast {
     );
   }
 
+  // a removed attribute leaves null, which counts as no duration, like 0
+  private hasDuration = (): boolean => {
+    const duration = this.duration ?? 0;
+    return duration !== 0 && !Number.isNaN(duration);
+  };
+
   private reloadTimeListeners = (visible: boolean): void => {
     if (typeof window === 'undefined') return;
-    if (this.duration === undefined || this.duration === 0 || Number.isNaN(this.duration)) {
+    if (!this.hasDuration()) {
       return;
     }
     if (!visible) {
@@ -111,7 +117,7 @@ export class MdsToast {
   componentWillLoad(): void {
     this.hasText = this.hostElement.innerHTML !== '';
     this.hasActions = hasChildWithSlot(this.hostElement, 'action');
-    if (this.duration === undefined || this.duration === 0 || Number.isNaN(this.duration)) {
+    if (!this.hasDuration()) {
       return;
     }
     if (this.visible) {

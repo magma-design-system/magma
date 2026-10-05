@@ -1,11 +1,27 @@
 import { render } from '@stencil/vitest';
 import { userEvent } from 'vitest/browser';
+import { mockIconFetch } from '@test/fetch';
 
 describe('mds-mention', () => {
   it('renders', async () => {
     const { root } = await render('<mds-mention></mds-mention>');
 
     expect(root).toHaveAttribute('hydrated');
+  });
+
+  it('falls back to the default icon once the icon attribute is removed', async () => {
+    mockIconFetch();
+    const { root, waitForChanges } = await render(
+      '<mds-mention label="mario.rossi" icon="mdi/alien"></mds-mention>',
+    );
+    const icon = root.shadowRoot!.querySelector('mds-icon')!;
+    const custom = icon.name;
+
+    root.removeAttribute('icon');
+    await waitForChanges();
+
+    expect(icon.name).toBeTruthy();
+    expect(icon.name).not.toBe(custom);
   });
 
   it('keeps the remove button out until deletable asks for it', async () => {

@@ -148,7 +148,7 @@ export class MdsBibliography {
     }
 
     const firstName = fullName[0].split(' ')[0].trim();
-    const lastName = fullName[0].split(' ')[1] !== '' ? fullName[0].split(' ')[1].trim() : '';
+    const lastName = (fullName[0].split(' ')[1] ?? '').trim();
     return {
       apa: this.fullNameAPA(firstName, lastName),
       firstName,
@@ -192,7 +192,7 @@ export class MdsBibliography {
           {this.format === 'mla' && (
             <span>
               {this.name && ' '}
-              {this.name !== undefined && this.name !== '' && this.url !== null ? (
+              {(this.name ?? '') !== '' && this.url !== null ? (
                 <a class="link" href={this.url} target="_blank" rel={this.rel}>
                   <b>
                     <i>{this.name}.</i>
@@ -224,7 +224,7 @@ export class MdsBibliography {
             <span>
               {this.date && <time dateTime={this.date}> ({this.dateFormatAPA(this.date)}).</time>}
               {this.name && ' '}
-              {this.name !== undefined && this.name !== '' && this.url !== null ? (
+              {(this.name ?? '') !== '' && this.url !== null ? (
                 <a class="link" href={this.url} target="_blank" rel={this.rel}>
                   <b>
                     <i> {this.name}.</i>
@@ -248,7 +248,7 @@ export class MdsBibliography {
           {this.format === 'turabian' && (
             <span>
               {this.name && ' '}
-              {this.name !== undefined && this.name !== '' && this.url !== null ? (
+              {(this.name ?? '') !== '' && this.url !== null ? (
                 <a class="link" href={this.url} target="_blank" rel={this.rel}>
                   <b>
                     <i> {this.name}.</i>

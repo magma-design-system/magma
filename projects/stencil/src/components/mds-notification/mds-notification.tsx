@@ -65,18 +65,18 @@ export class MdsNotification {
   };
 
   private clean = (value: number): string => {
-    if (value === 0 || isNaN(value)) return '';
-    if (this.max !== undefined && this.max !== 0 && !Number.isNaN(this.max)) {
-      if (value > this.max) {
-        return `+${Number(this.max).toLocaleString()}`;
-      }
+    // a removed attribute leaves null, which counts as no value and no maximum
+    if ((value ?? 0) === 0 || isNaN(value)) return '';
+    const max = this.max ?? 0;
+    if (max !== 0 && !Number.isNaN(max) && value > max) {
+      return `+${Number(max).toLocaleString()}`;
     }
 
     return Number(value).toLocaleString();
   };
 
   componentDidRender(): void {
-    if (this.target === '') {
+    if ((this.target ?? '') === '') {
       this.strategy = 'disabled';
       return;
     }
@@ -96,7 +96,7 @@ export class MdsNotification {
       return;
     }
 
-    if (this.target !== '' && this.cleanupAutoUpdate == null) {
+    if ((this.target ?? '') !== '' && this.cleanupAutoUpdate == null) {
       setTimeout(() => {
         this.cleanupAutoUpdate = autoUpdate(this.caller, this.host, this.updatePosition);
       }, 100);

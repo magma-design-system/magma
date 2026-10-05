@@ -69,6 +69,20 @@ describe('mds-input-select', () => {
     });
   });
 
+  // Angular and Vue bind null for a missing value, before the first render
+  it('selects the first option, as without a placeholder, when the placeholder is null', async () => {
+    const select = document.createElement('mds-input-select');
+    (select as { placeholder?: string | null }).placeholder = null;
+    select.innerHTML = '<option value="a">A</option><option value="b">B</option>';
+    document.body.appendChild(select);
+    await vi.waitFor(() => expect(select).toHaveAttribute('hydrated'));
+
+    const native = select.shadowRoot!.querySelector('select')!;
+    await vi.waitFor(() => expect(native.options).toHaveLength(2));
+    expect(native.value).toBe('a');
+    select.remove();
+  });
+
   describe('accessible name', () => {
     it('names the select after the aria-label of the host', async () => {
       const { root } = await render<HTMLMdsInputSelectElement>(

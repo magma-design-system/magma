@@ -23,9 +23,31 @@ export class MdsIcon {
 
   @Element() hostElement: HTMLMdsIconElement;
 
+  // Each update supersedes the ones still loading: only the latest one sets the svg
+  private lastUpdate = 0;
+
+  private wasDisconnected = false;
+
+  private readonly onSvgPathUpdate = (): void => {
+    this.updateIcon();
+  };
+
+  connectedCallback(): void {
+    IconsSetService.registerListener(this.onSvgPathUpdate);
+    // the svg path may have changed while the icon was out of the page
+    if (this.wasDisconnected) {
+      this.wasDisconnected = false;
+      this.updateIcon();
+    }
+  }
+
+  disconnectedCallback(): void {
+    IconsSetService.unregisterListener(this.onSvgPathUpdate);
+    this.wasDisconnected = true;
+  }
+
   componentWillLoad(): void {
     this.updateIcon();
-    IconsSetService.registerListener(() => this.updateIcon());
   }
 
   private convertBase64ToSvg = (): string => {
@@ -45,7 +67,12 @@ export class MdsIcon {
 
   @Watch('name')
   async updateIcon(): Promise<void> {
-    if (this.name === '') return Promise.resolve();
+    const update = ++this.lastUpdate;
+    // `name` is undefined (or null) at runtime when the attribute is missing or removed
+    if ((this.name ?? '') === '') {
+      this.svgHTML = '';
+      return Promise.resolve();
+    }
 
     if (isIconFormatIsBase64(this.name)) {
       this.svgHTML = this.convertBase64ToSvg();
@@ -57,7 +84,10 @@ export class MdsIcon {
       return Promise.resolve();
     }
 
-    this.svgHTML = await IconsSetService.fetchSvg(this.name);
+    const svgHTML = await IconsSetService.fetchSvg(this.name);
+    if (update === this.lastUpdate) {
+      this.svgHTML = svgHTML;
+    }
   }
 
   render() {

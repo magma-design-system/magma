@@ -133,6 +133,17 @@ describe('mds-text', () => {
     });
   });
 
+  it('shows the slotted text again once the text attribute is removed', async () => {
+    element.setAttribute('text', 'Property text');
+    await waitForChanges();
+    expect(element.shadowRoot!.querySelector('slot')).toBeNull();
+
+    element.removeAttribute('text');
+    await waitForChanges();
+
+    expect(element.shadowRoot!.querySelector('slot')).not.toBeNull();
+  });
+
   it('does not throw when the typography attribute is removed after hydration', async () => {
     const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {});
 

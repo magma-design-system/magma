@@ -8,6 +8,19 @@ describe('mds-toast', () => {
     expect(root).toHaveAttribute('hydrated');
   });
 
+  it('does not close right away once the duration attribute is removed', async () => {
+    const { root, waitForChanges } = await render<HTMLMdsToastElement>(
+      '<mds-toast visible duration="60000">Text</mds-toast>',
+    );
+
+    root.removeAttribute('duration');
+    await waitForChanges();
+    // a timer started with a null duration fires on the next task
+    await new Promise((resolve) => setTimeout(resolve, 100));
+
+    expect(root.visible).toBe(true);
+  });
+
   describe('where it sits', () => {
     /** The animated box: the host is a full-width fixed strip, the dialog is the toast. */
     const dialog = (root: HTMLElement): HTMLElement =>

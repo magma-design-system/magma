@@ -211,6 +211,23 @@ describe('mds-input-date-range', () => {
     expect(viewDates()).toEqual(['2026-06-01', '2026-07-01']);
   });
 
+  // Angular and Vue bind null for a missing value, before the first render
+  it('previews the range on hover when the end date is null', async () => {
+    const host = document.createElement('mds-input-date-range');
+    host.startDate = '2026-06-10';
+    (host as { endDate: string | null }).endDate = null;
+    host.innerHTML = SLOTTED_INPUTS;
+    document.body.appendChild(host);
+    await vi.waitFor(() => expect(host).toHaveAttribute('hydrated'));
+
+    dispatch(getCalendars(host)[0], 'mdsCalendarHover', { hoverDate: '2026-06-15' });
+
+    await vi.waitFor(() =>
+      expect(getCalendars(host)[0]).toEqualAttribute('hover-date', '2026-06-15'),
+    );
+    host.remove();
+  });
+
   it('treats the first click in the last visible calendar as the end date when hovering left', async () => {
     const { host, waitForChanges } = await setupRange('dual-calendar="true"');
 

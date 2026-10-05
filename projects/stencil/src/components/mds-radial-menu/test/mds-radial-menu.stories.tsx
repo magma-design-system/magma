@@ -139,7 +139,7 @@ const Template = (args) => (
 const TemplateImage = (args) => (
   <div class="h-dvh min-h-[600px] flex items-center justify-center">
     <div class="relative w-full max-w-[320px]">
-      <mds-img src="/book-cover-10.webp" class="rounded-xl shadow-lg-sharp"></mds-img>
+      <mds-img src="./book-cover-10.webp" class="rounded-xl shadow-lg-sharp"></mds-img>
       <mds-radial-menu {...args} class="absolute top-600 right-600">
         <mds-radial-menu-item
           icon="mi/baseline/favorite"
