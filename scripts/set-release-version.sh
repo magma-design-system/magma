@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 #
 # Writes a release version into package manifests and keeps the internal
-# @maggioli-design-system/* dependencies pinned to the versions in the workspace.
+# @maggioli-design-system/* dependencies pinned to the versions in the workspace,
+# as caret ranges (`^<version>`) except for the lockstep packages (see EXACT).
 #
 # Shared by the release and publish workflows:
 #   - scripts/release/prepare-release.sh (semantic-release.yml) calls it once per
@@ -22,6 +23,16 @@
 #     (e.g. a design-tokens release updates the pin in styles and magma), so the
 #     workspace stays consistent and `npm ci` keeps working. That dependent is
 #     not re-released: it ships the new pin with its own next release;
+#   - a pin is a caret range (`^<version>`), so a patch or minor of a dependency
+#     satisfies the dependents already on npm and consumers keep one copy of it
+#     (an exact pin left styles@17.0.0 requiring design-tokens 15.0.0 next to
+#     the 15.0.1 required by magma@2.0.1: two token sets in one app). A major
+#     of a dependency still needs a release of its dependents to reach them;
+#   - the packages in EXACT are pinned to the exact version: they are released
+#     in lockstep with their dependents under one tag (magma with magma-react
+#     and magma-angular: the magma entry of release.yml, stencil.release.yml and
+#     MAGMA_LOCKSTEP_MANIFESTS in publish.yml), so a wrapper always requires the
+#     magma it was built from;
 #   - the `projects/<x>` entries of package-lock.json of the changed manifests
 #     get the same version and pins.
 # Calling it once per released package, in any order, ends in the same state.
@@ -49,24 +60,31 @@ MAP=$(find projects -name package.json \
         -exec jq -c '{(.name): .version}' {} \; | jq -s 'add // {}')
 echo "internal package map: $MAP"
 
+# internal packages pinned to the exact version (lockstep, see above)
+EXACT=("@maggioli-design-system/magma")
+EXACT_NAMES=$(printf '%s\n' "${EXACT[@]}" | jq -R . | jq -s -c .)
+
 ALL_NAMES=$(jq -c 'keys' <<< "$MAP")
 BUMPED_NAMES=$(jq -s -c 'map(.name)' "$@")
 
-# pins the dependencies named in $names to their version in $map
+# pins the dependencies named in $names to their version in $map: exact for the
+# names in $exact, a caret range for the others
 # shellcheck disable=SC2016 # a jq program, expanded by jq
 PIN='
   def pin(section):
     if .[section]
     then .[section] |= with_entries(
       .key as $k
-      | if ($k | IN($names[])) and $map[$k] != null then .value = $map[$k] else . end)
+      | if ($k | IN($names[])) and $map[$k] != null
+        then .value = (if ($k | IN($exact[])) then "" else "^" end) + $map[$k]
+        else . end)
     else . end;
   pin("dependencies") | pin("peerDependencies") | pin("optionalDependencies")
 '
 
 # <manifest> <names>: rewrites the manifest only when a pin changes (exit 1 otherwise)
 pin_manifest() {
-  jq --argjson map "$MAP" --argjson names "$2" "$PIN" "$1" > "$1.tmp"
+  jq --argjson map "$MAP" --argjson names "$2" --argjson exact "$EXACT_NAMES" "$PIN" "$1" > "$1.tmp"
   if cmp -s "$1" "$1.tmp"; then
     rm "$1.tmp"
     return 1
