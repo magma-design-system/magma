@@ -197,6 +197,24 @@ export interface SemanticThresholds {
   cutoff: number;
 }
 
+/**
+ * Category M - rename a responsive variant whose meaning changed. v1 `mobile:`
+ * was `max-width: 767px`; v2 `mobile:` is `min-width: 480px`, so an unmigrated
+ * class silently applies to the opposite range. The surfaces rename the variant
+ * segment of every class token (`mobile:hover:px-4` -> `max-tablet:hover:px-4`)
+ * and report the Tailwind 3 CSS forms (`@screen mobile`, `screen(mobile)`,
+ * `theme(screens.mobile)`) for manual migration.
+ */
+export interface VariantRenameRule {
+  kind: 'variantRename';
+  /** v1 variant name, without the colon: `mobile`. */
+  from: string;
+  /** v2 variant name: `max-tablet`. */
+  to: string;
+  /** The v1 media query, quoted in the CSS reports: `(max-width: 767px)`. */
+  media: string;
+}
+
 /** Category H — rename a shadow part referenced in `::part()`. */
 export interface PartRenameRule {
   kind: 'partRename';
@@ -262,6 +280,7 @@ export type Rule =
   | ClassReportRule
   | ClassSemanticRule
   | ClassSemanticReportRule
+  | VariantRenameRule
   | PartRenameRule
   | EventRenameRule
   | TagRenameRule
@@ -321,6 +340,8 @@ export interface GlobalRules {
    * category J class rules are, after them (so a seed rename is measured under
    * its v2 name).
    */
+  /** Responsive variant renames (category M), applied with the class rules. */
+  variants?: VariantRenameRule[];
   semanticClasses?: {
     rules: Array<ClassSemanticRule | ClassSemanticReportRule>;
     thresholds: SemanticThresholds;

@@ -76,6 +76,7 @@ npx @maggioli-design-system/magma-codemods --path ./src --report-md ./magma-migr
 | J   | Utility-class migration         | the styles-package Tailwind contract that changed between v1 and v2: the `shadow-outline-*` ring family → `shadow-ring-*`, the retuned `rounded-*` / `border-*` / named `gap-*` scales. Value-exact renames are rewritten; combos with no v2 token are reported (see below)                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | rename: safe · report: manual |
 | K   | Tag rename (mode vs theme)      | the light / dark / system control `mds-pref-theme` becomes `mds-pref-mode` (#702): the tag in HTML / Angular (start and end tag) and in CSS type selectors, the React component in JSX and in the named import from `magma-react` (with its other references, e.g. `typeof MdsPrefTheme`), the mode classes `pref-theme-{light,dark,system}` -> `pref-mode-*` in markup AND in CSS selectors, `--magma-pref-theme` -> `--magma-pref-mode`, the overlay properties and class `--mds-pref-theme-overlay-*` / `.mds-pref-theme-overlay` -> `mds-pref-mode-overlay`. Code written against a v2 beta also gets `mds-pref-theme-variant(-item)` -> `mds-pref-theme(-item)` and `--magma-pref-theme-name` -> `--magma-pref-theme`, applied in the same pass| safe (run once)               |
 | L   | Semantic utility migration      | raw palette utilities move to the semantic layer: the bare seed class `bg-tone-neutral` -> `bg-tone-neutral-seed` (L1, always), then each raw colour of a family with a semantic hue (`tone-neutral`, `status-*`, `variant-primary`, `variant-ai`) is matched BY VALUE to a role of its channel and hue (`bg-tone-neutral-09` -> `bg-wash-base`, `text-tone-neutral-01` -> `text-fg-default`), dropping the `dark:` override the role makes redundant (L2, written with `--accept-semantic`); contextual and unmatched sites, removed v1 colours and never-existing steps are reported (L3). See below | seed: safe · role: opt-in · rest: report |
+| M   | Responsive variant rename       | the v1 screens whose name changed meaning: `mobile:` (v1 `max-width: 767px`, v2 a 480px min-width) -> `max-tablet:`, and the v1 `-max` screens -> Tailwind 4 `max-*` (`tablet-max:` -> `max-desktop:`, `desktop-max:` -> `max-wide:`, `wide-max:` -> `max-large:`, `large-max:` -> `max-xlarge:`, `xlarge-max:` -> `max-tv:`), in every variant position. `@screen mobile`, `screen(mobile)` and `theme(screens.mobile)` in CSS are reported | safe (run once) · CSS: report |
 
 The bundled manifest is built by diffing the two `documentation.json` builds (`manifest.generated.ts`) with curated
 corrections layered on top in `src/manifest/manifest.ts`.
@@ -121,6 +122,7 @@ preserved; only the utility segment is rewritten.
 | Radius             | `rounded → rounded-3xs`, `md → 2xs`, `lg → xs`, `xl → md`, `2xl → lg`, `3xl → 2xl` — expanded over every corner/side variant (`rounded-t-*`, `rounded-tl-*`, …)                                           | `rounded-sm` (2px; the v2 scale starts at 4px, and v2 reuses `rounded-sm` for 10px)                                                                                               | `rounded-none`, `rounded-full`                                         |
 | Border width       | `border-md → border-sm`, `border-lg → border-200`, `border-xl → border-800` (side variants included)                                                                                                      | —                                                                                                                                                                                 | bare `border`, numeric steps                                           |
 | Gap                | bare `gap`(`-x`/`-y`) `→ gap-lg` (flagged: skippable if it is a hand-written class), `gap-3xl → gap-2000`                                                                                                 | —                                                                                                                                                                                 | `gap-xs`…`gap-2xl`, numeric steps                                      |
+| Fractions          | v1 spacing fractions (`1/2` … `11/12`) on margin, padding, gap, `space-*`, `scroll-m/p` and `indent`, negatives included, to the exact v1 percentage: `mx-2/12 → mx-[16.666667%]`                       | —                                                                                                                                                                                 | `w-*`, `h-*`, `size-*`, `min/max-*`, `inset`/`top`/…, `basis-*`, `translate-*` (Tailwind 4 resolves the fraction natively, same value) |
 
 Caveats:
 
@@ -188,6 +190,34 @@ Caveats:
 - A role picked by value is a proposal, not a judgement on intent: `fill-status-warning-05` matches
   `fill-warning-fg-disabled` exactly, which may or may not be what the icon means. Review the diff.
 - The colour table is generated (`src/semantic/semantic.generated.ts`, see Development) from the default theme.
+
+### Responsive variants (M)
+
+v1 paired each min-width screen with a `-max` one and named the bottom range `mobile` (`max-width: 767px`).
+v2 keeps the min-width names (`tablet` 768px ... `tv` 1920px), Tailwind 4 derives `max-*` from them, and
+`mobile` became a **480px min-width**: an unmigrated `mobile:hidden` hides the element on every screen wider
+than a phone instead of on phones. The codemod renames the variant wherever it sits in the prefix
+(`md:mobile:hover:` -> `md:max-tablet:hover:`); arbitrary variants and lookalikes (`max-mobile:`, `group-hover/mobile:`)
+are left alone.
+
+| v1            | v2            | Range                    |
+| ------------- | ------------- | ------------------------ |
+| `mobile:`     | `max-tablet:` | below 768px              |
+| `tablet-max:` | `max-desktop:`| below 1024px             |
+| `desktop-max:`| `max-wide:`   | below 1280px             |
+| `wide-max:`   | `max-large:`  | below 1440px             |
+| `large-max:`  | `max-xlarge:` | below 1600px             |
+| `xlarge-max:` | `max-tv:`     | below 1920px             |
+
+Caveats:
+
+- **Run it once.** A second run would turn a deliberate v2 `mobile:` (480px and up) into `max-tablet:`.
+- `max-<next>` is `width < next`, v1 was `max-width: next - 1px`: identical except at fractional widths.
+- CSS written with the Tailwind 3 forms (`@screen mobile`, `@media screen(mobile)`, `theme(screens.mobile)`) is
+  reported, not rewritten: Tailwind 4 has no `@screen`; the report gives the `@variant` to use. The forms of the
+  screens that kept their meaning (`@screen tablet`) are the generic Tailwind 3 -> 4 upgrade.
+- An app that redefines its own screens in its Tailwind config should skip the category: `--skip
+  global/variantRename/mobile,...`.
 
 ### Mode vs theme (K)
 

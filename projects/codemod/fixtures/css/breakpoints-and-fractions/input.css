@@ -1,0 +1,9 @@
+.layout {
+  @apply grid mobile:grid-cols-1 wide:mx-2/12;
+}
+
+@screen mobile {
+  .aside {
+    display: none;
+  }
+}

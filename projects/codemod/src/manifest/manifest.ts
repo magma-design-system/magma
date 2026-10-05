@@ -459,7 +459,82 @@ const curate = (base: Manifest): Manifest => {
         to: `${prefix}-tone-${family}-seed`,
       });
 
+  // J - fractional spacing. v1 put the fractions (`1/2` ... `11/12`, as
+  // percentages) in the shared spacing scale, so `mx-2/12` was 16.666667%.
+  // Tailwind 4 resolves a fraction natively only on sizing and placement
+  // utilities (w/h/size, min/max, inset/top/..., basis, translate), where
+  // `calc(2/12 * 100%)` is the same value; on margin, padding, gap, space and
+  // scroll spacing the class is unknown and silently paints nothing. Those are
+  // rewritten to the exact arbitrary percentage.
+  const fractions: Array<[string, string]> = [
+    ['1/2', '50%'],
+    ['1/3', '33.333333%'],
+    ['2/3', '66.666667%'],
+    ['1/4', '25%'],
+    ['2/4', '50%'],
+    ['3/4', '75%'],
+    ['1/5', '20%'],
+    ['2/5', '40%'],
+    ['3/5', '60%'],
+    ['4/5', '80%'],
+    ['1/6', '16.666667%'],
+    ['2/6', '33.333333%'],
+    ['3/6', '50%'],
+    ['4/6', '66.666667%'],
+    ['5/6', '83.333333%'],
+    ...Array.from({ length: 11 }, (_, i): [string, string] => [
+      `${i + 1}/12`,
+      `${String(Number((((i + 1) / 12) * 100).toFixed(6)))}%`,
+    ]),
+  ];
+  const sides = ['', 'x', 'y', 's', 'e', 't', 'r', 'b', 'l'];
+  const fractionPrefixes = [
+    ...sides.flatMap((s) => [
+      `m${s}`,
+      `-m${s}`,
+      `p${s}`,
+      `scroll-m${s}`,
+      `-scroll-m${s}`,
+      `scroll-p${s}`,
+    ]),
+    'gap',
+    'gap-x',
+    'gap-y',
+    'space-x',
+    '-space-x',
+    'space-y',
+    '-space-y',
+    'indent',
+    '-indent',
+  ];
+  for (const prefix of fractionPrefixes)
+    for (const [fraction, pct] of fractions)
+      classRenames.push({
+        kind: 'classRename',
+        from: `${prefix}-${fraction}`,
+        to: `${prefix}-[${pct}]`,
+      });
+
   m.global.classes = [...classRenames, ...classReports];
+
+  // M - responsive variants. v1 paired each min-width screen with a `-max`
+  // max-width one, and `mobile` was the max-width side of `tablet`; v2 keeps
+  // the min-width names and Tailwind 4 derives `max-*` from them, while
+  // `mobile` became a 480px min-width. `max-<next>` is `width < next`, the same
+  // range as v1's `max-width: next - 1px`.
+  m.global.variants = [
+    ['mobile', 'max-tablet', '(max-width: 767px)'],
+    ['tablet-max', 'max-desktop', '(max-width: 1023px)'],
+    ['desktop-max', 'max-wide', '(max-width: 1279px)'],
+    ['wide-max', 'max-large', '(max-width: 1439px)'],
+    ['large-max', 'max-xlarge', '(max-width: 1599px)'],
+    ['xlarge-max', 'max-tv', '(max-width: 1919px)'],
+  ].map(([from, to, media]) => ({
+    kind: 'variantRename' as const,
+    from: from!,
+    to: to!,
+    media: media!,
+  }));
 
   // L2/L3 - raw palette utilities -> semantic roles, matched by value against
   // the generated colour table (src/semantic/). Only the families with a

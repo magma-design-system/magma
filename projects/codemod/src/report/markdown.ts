@@ -36,6 +36,8 @@ const HOW_TO_DECIDE: Record<string, string> = {
     'v2 colours flip by themselves: delete it unless the dark colour is a deliberate choice. `--accept-semantic` deletes it.',
   'dark-only override in a fragment':
     'Its light class is in another fragment of the expression: delete it if that light class is a raw tone the codemod migrates, keep it if the light colour is fixed.',
+  'renamed breakpoint in CSS':
+    'Tailwind 4 has no `@screen`, and the v1 name now means another range: wrap the rules in the `@variant` shown (or the equivalent `@media`).',
   'more than one dark value': 'Keep one dark value, then rerun.',
   'same utility set twice': 'Keep one of the two classes, then rerun.',
 };

@@ -52,6 +52,8 @@ export const ruleId = (tag: string, rule: Rule): string => {
       return `${tag}/${rule.kind}/${rule.channel}`;
     case 'classSemanticReport':
       return `${tag}/${rule.kind}/${rule.reason}`;
+    case 'variantRename':
+      return `${tag}/${rule.kind}/${rule.from}`;
     case 'cssVarRemove':
     case 'classReport':
       return `${tag}/${rule.kind}/${rule.name}`;

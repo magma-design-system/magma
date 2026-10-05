@@ -58,6 +58,19 @@ export const testManifest: Manifest = {
       },
       // L1: the seed rename, measured by category L under its v2 name
       { kind: 'classRename', from: 'bg-tone-neutral', to: 'bg-tone-neutral-seed' },
+      // J: a fraction the v1 spacing scale had and Tailwind 4 does not resolve on margins
+      { kind: 'classRename', from: 'mx-2/12', to: 'mx-[16.666667%]' },
+      { kind: 'classRename', from: '-mt-1/2', to: '-mt-[50%]' },
+    ],
+    // M: a responsive variant whose meaning flipped, and a v1 max-width one
+    variants: [
+      { kind: 'variantRename', from: 'mobile', to: 'max-tablet', media: '(max-width: 767px)' },
+      {
+        kind: 'variantRename',
+        from: 'tablet-max',
+        to: 'max-desktop',
+        media: '(max-width: 1023px)',
+      },
     ],
     // L2/L3 against the real generated colour table: one rule per channel, a
     // trimmed prefix list, the neutral / danger / accent families.

@@ -16,6 +16,7 @@ import {
   type ClassRenameRule,
   type ClassReportRule,
   type Manifest,
+  type VariantRenameRule,
 } from '../../manifest/schema.js';
 import { ruleId } from '../../manifest/registry.js';
 import {
@@ -38,8 +39,15 @@ export interface ClassReportEntry {
   id: string;
 }
 
+export interface VariantRenameEntry {
+  rule: VariantRenameRule;
+  id: string;
+}
+
 export interface ClassRules {
   renames: Map<string, ClassRenameEntry>;
+  /** Category M, keyed by the v1 variant name. */
+  variants: Map<string, VariantRenameEntry>;
   reports: Map<string, ClassReportEntry>;
   /** Category L, when the manifest declares it. */
   semantic: SemanticRules | null;
@@ -63,6 +71,9 @@ export const classRulesOf = (manifest: Manifest): ClassRules => {
     if (rule.kind === 'classRename') renames.set(rule.from, { rule, id: ruleId(GLOBAL_TAG, rule) });
     else reports.set(rule.name, { rule, id: ruleId(GLOBAL_TAG, rule) });
   }
+  const variants = new Map<string, VariantRenameEntry>();
+  for (const rule of manifest.global.variants ?? [])
+    variants.set(rule.from, { rule, id: ruleId(GLOBAL_TAG, rule) });
   const names = [...renames.keys(), ...reports.keys()];
   const semantic = semanticRulesOf(manifest);
   // Word-ish boundaries so a short name like `gap` never matches inside
@@ -71,9 +82,14 @@ export const classRulesOf = (manifest: Manifest): ClassRules => {
   const probes = [
     ...(names.length > 0 ? [`(?<![\\w-])(?:${names.map(escapeRe).join('|')})(?![\\w-])`] : []),
     ...(semantic ? [semantic.probe.source] : []),
+    // a variant segment: at the start of a token or after another variant
+    ...(variants.size > 0
+      ? [`(?<![\\w-])(?:${[...variants.keys()].map(escapeRe).join('|')}):`]
+      : []),
   ];
   const rules: ClassRules = {
     renames,
+    variants,
     reports,
     semantic,
     candidateRe: probes.length > 0 ? new RegExp(probes.join('|')) : null,
@@ -83,7 +99,42 @@ export const classRulesOf = (manifest: Manifest): ClassRules => {
 };
 
 export const hasClassRules = (rules: ClassRules): boolean =>
-  rules.renames.size > 0 || rules.reports.size > 0 || rules.semantic !== null;
+  rules.renames.size > 0 ||
+  rules.reports.size > 0 ||
+  rules.variants.size > 0 ||
+  rules.semantic !== null;
+
+/**
+ * Rename the variant segments of a token prefix (`mobile:hover:` ->
+ * `max-tablet:hover:`). Segments are split on top-level colons, so an
+ * arbitrary variant (`[&:hover]:`) is never looked into.
+ */
+const renameVariants = (
+  prefix: string,
+  rules: ClassRules,
+  enabled: (id: string) => boolean,
+): { prefix: string; used: VariantRenameEntry[] } => {
+  if (rules.variants.size === 0 || prefix === '') return { prefix, used: [] };
+  const used: VariantRenameEntry[] = [];
+  let depth = 0;
+  let start = 0;
+  let out = '';
+  for (let i = 0; i < prefix.length; i++) {
+    const ch = prefix[i];
+    if (ch === '[') depth += 1;
+    else if (ch === ']') depth = Math.max(0, depth - 1);
+    else if (ch === ':' && depth === 0) {
+      const segment = prefix.slice(start, i);
+      const entry = rules.variants.get(segment);
+      if (entry && enabled(entry.id)) {
+        used.push(entry);
+        out += `${entry.rule.to}:`;
+      } else out += `${segment}:`;
+      start = i + 1;
+    }
+  }
+  return { prefix: out, used };
+};
 
 interface SplitToken {
   /** Variant prefix including its trailing colon(s): `hover:`, `md:[&>li]:`. */
@@ -172,23 +223,49 @@ export const rewriteClassList = (
     const token = parts[i]!;
     if (token === '' || /\s/.test(token)) continue;
     const split = splitClassToken(token);
-    const { prefix, bang, base, modifier, trailingBang } = split;
-    const rename = rules.renames.get(base);
-    if (rename && enabled(rename.id)) {
-      const after = `${prefix}${bang}${rename.rule.to}${modifier}${trailingBang}`;
+    // M: the variant segments first, so the class rules below see the
+    // v2 prefix and a rename keeps it.
+    const variant = renameVariants(split.prefix, rules, enabled);
+    if (variant.used.length > 0) {
+      split.prefix = variant.prefix;
+      const after = `${split.prefix}${split.bang}${split.base}${split.modifier}${split.trailingBang}`;
       parts[i] = after;
       changed = true;
-      onRename(rename, token, after);
+      for (const entry of variant.used)
+        semantic?.emit({
+          kind: 'change',
+          ruleId: entry.id,
+          message: `rename responsive variant (v1 \`${entry.rule.from}:\` was ${entry.rule.media})`,
+          before: token,
+          after,
+        });
+    }
+    const current = parts[i]!;
+    const { prefix, bang, base, modifier, trailingBang } = split;
+    // A fraction (`mx-2/12`) is a whole utility name, not a base + opacity
+    // modifier: it is looked up as written first.
+    const whole = modifier ? rules.renames.get(`${base}${modifier}`) : undefined;
+    const rename = whole && enabled(whole.id) ? whole : rules.renames.get(base);
+    if (rename && enabled(rename.id)) {
+      const kept = rename === whole ? '' : modifier;
+      const after = `${prefix}${bang}${rename.rule.to}${kept}${trailingBang}`;
+      parts[i] = after;
+      changed = true;
+      onRename(rename, current, after);
       if (rules.semantic) {
-        const t = toSemanticToken(rules.semantic, i, after, { ...split, base: rename.rule.to });
+        const t = toSemanticToken(rules.semantic, i, after, {
+          ...split,
+          base: rename.rule.to,
+          modifier: kept,
+        });
         if (t) tokens.push(t);
       }
       continue;
     }
     const report = rules.reports.get(base);
-    if (report && enabled(report.id)) onReport(report, token);
+    if (report && enabled(report.id)) onReport(report, current);
     if (rules.semantic) {
-      const t = toSemanticToken(rules.semantic, i, token, split);
+      const t = toSemanticToken(rules.semantic, i, current, split);
       if (t) tokens.push(t);
     }
   }
