@@ -775,6 +775,12 @@ the system by pointing its `--mds-<comp>-*` default at a `--magma-*` role, e.g.
 - Migration is manifest-driven via the existing `projects/codemod` surfaces framework
   (issue #576): a `cssVarRename` for the seed, plus a triaged repoint of background
   usages to surface roles (ambiguous sites reported, not blind-rewritten).
+- Utility classes go through the same codemod (category L, issue #771): the bare seed class is
+  renamed like the property, and each raw colour of a family with a semantic hue is matched BY
+  VALUE (light, OKLab) to a role of its own channel and hue, written only on request
+  (`--accept-semantic`) and dropping the `dark:` override the role makes redundant. The seed as a
+  background, ties the light value cannot break and removed v1 colours are reported. Contract and
+  thresholds: `projects/codemod/README.md`.
 - Component adoption + a semantic-layout Storybook story (surface ladder x components,
   light and dark) with the a11y addon as the gate (issue #577).
 

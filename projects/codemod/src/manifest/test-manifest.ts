@@ -56,7 +56,53 @@ export const testManifest: Manifest = {
         name: 'shadow-outline-strong',
         message: 'v2 reuses this name for a different shadow; migrate manually',
       },
+      // L1: the seed rename, measured by category L under its v2 name
+      { kind: 'classRename', from: 'bg-tone-neutral', to: 'bg-tone-neutral-seed' },
+      // J: a fraction the v1 spacing scale had and Tailwind 4 does not resolve on margins
+      { kind: 'classRename', from: 'mx-2/12', to: 'mx-[16.666667%]' },
+      { kind: 'classRename', from: '-mt-1/2', to: '-mt-[50%]' },
     ],
+    // M: a responsive variant whose meaning flipped, and a v1 max-width one
+    variants: [
+      { kind: 'variantRename', from: 'mobile', to: 'max-tablet', media: '(max-width: 767px)' },
+      {
+        kind: 'variantRename',
+        from: 'tablet-max',
+        to: 'max-desktop',
+        media: '(max-width: 1023px)',
+      },
+    ],
+    // L2/L3 against the real generated colour table: one rule per channel, a
+    // trimmed prefix list, the neutral / danger / accent families.
+    semanticClasses: {
+      rules: [
+        {
+          kind: 'classSemantic',
+          channel: 'background',
+          prefixes: ['bg'],
+          families: { 'tone-neutral': 'neutral', 'variant-primary': 'accent' },
+        },
+        {
+          kind: 'classSemantic',
+          channel: 'foreground',
+          prefixes: ['text', 'fill'],
+          families: {
+            'tone-neutral': 'neutral',
+            'status-error': 'danger',
+            'variant-primary': 'accent',
+          },
+        },
+        {
+          kind: 'classSemantic',
+          channel: 'border',
+          prefixes: ['border', 'border-t'],
+          families: { 'tone-neutral': 'neutral' },
+        },
+        { kind: 'classSemanticReport', reason: 'removed', prefixes: ['bg', 'text', 'fill'] },
+        { kind: 'classSemanticReport', reason: 'unknownStep', prefixes: ['bg', 'text', 'fill'] },
+      ],
+      thresholds: { exact: 0.5, near: 2, cutoff: 10 },
+    },
   },
   components: {
     'mds-dropdown': {

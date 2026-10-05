@@ -27,6 +27,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "generate.candidate": "tsx scripts/build-candidate-manifest.ts",
+    "generate.semantic": "tsx scripts/build-semantic-table.ts",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
     "lint": "eslint ."
   },

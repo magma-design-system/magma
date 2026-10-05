@@ -178,6 +178,11 @@ export const transformHtml = (
                 message: `\`${token}\`: ${entry.rule.message}`,
               });
             },
+            {
+              options: ctx.semantic,
+              emit: (f) =>
+                pushFinding({ ...f, surface: 'html', file: ctx.file, line: l.startLine }),
+            },
           );
           if (result.changed) {
             edits.push({
