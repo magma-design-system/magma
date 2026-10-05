@@ -275,3 +275,69 @@ describe('transformReact — intrinsic mds-* elements', () => {
     expect(twice.output).toBe(once);
   });
 });
+
+describe('transformReact - context hints (L)', () => {
+  const semantic = { accept: 'none' as const, keepDarkOverrides: false };
+  const hintsOf = (src: string) =>
+    transformReact(src, manifest, { file: 'x.tsx', semantic })
+      .findings.filter((f) => f.reason === 'seed as a background')
+      .map((f) => f.hint && { value: f.hint.value, why: f.hint.why });
+
+  it('reads the element and the components around it', () => {
+    expect(
+      hintsOf(`const A = () => (
+        <MdsModal opened>
+          <div slot="window">
+            <div className={clsx('grid', open && 'bg-tone-neutral-seed')} />
+          </div>
+        </MdsModal>
+      );`),
+    ).toEqual([{ value: 'bg-surface-overlay', why: 'inside `<MdsModal>`' }]);
+  });
+
+  it('reads the literal role and the other classes of the attribute', () => {
+    expect(
+      hintsOf(`const A = () => <>
+        <div role="dialog" className="bg-tone-neutral-seed" />
+        <div className={clsx('rounded', selected && 'bg-tone-neutral-seed shadow-xs')} />
+        <body className="m-0 bg-tone-neutral-seed" />
+      </>;`),
+    ).toEqual([
+      { value: 'bg-surface-overlay', why: '`role="dialog"`' },
+      { value: 'bg-surface-raised', why: 'with `shadow-xs`' },
+      { value: 'bg-surface-default', why: 'on `<body>`' },
+    ]);
+  });
+
+  it('tells where every class finding sits', () => {
+    const { findings } = transformReact(
+      `const A = () => <MdsModal><div className="rounded-md bg-tone-neutral-seed" /></MdsModal>;`,
+      manifest,
+      { file: 'x.tsx', semantic },
+    );
+    expect(findings.length).toBeGreaterThan(1);
+    for (const f of findings) expect(f.context).toBe('on `<div>` inside `<MdsModal>`');
+  });
+
+  it('measures the hinted role like an alternative, even when it is not listed', () => {
+    const [overlay, sunken] = transformReact(
+      `const A = () => <>
+        <MdsModal><div className="bg-tone-neutral-seed" /></MdsModal>
+        <code className="bg-tone-neutral-seed" />
+      </>;`,
+      manifest,
+      { file: 'x.tsx', semantic },
+    ).findings.filter((f) => f.reason === 'seed as a background');
+    expect(overlay!.hint).toMatchObject({ value: 'bg-surface-overlay', light: 0 });
+    expect(overlay!.alternatives?.map((a) => a.value)).toContain('bg-surface-overlay');
+    expect(sunken!.hint?.value).toBe('bg-surface-sunken');
+    expect(sunken!.hint?.light).toBeGreaterThan(0);
+    expect(sunken!.alternatives?.map((a) => a.value)).not.toContain('bg-surface-sunken');
+  });
+
+  it('gives no hint when the markup says nothing', () => {
+    expect(hintsOf(`const A = () => <div className="p-4 bg-tone-neutral-seed" />;`)).toEqual([
+      undefined,
+    ]);
+  });
+});
