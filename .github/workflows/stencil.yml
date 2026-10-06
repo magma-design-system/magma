@@ -58,7 +58,7 @@ jobs:
           node-version-file: .nvmrc
           cache: npm
       - name: Restore Nx cache
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: .nx
           key: nx-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
@@ -71,7 +71,7 @@ jobs:
           path: projects
       - run: npx nx run stencil-react:build
       - name: Restore Playwright browsers cache
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: ~/.cache/ms-playwright
           # the browser revision is pinned by the playwright version in the lockfile
@@ -98,7 +98,7 @@ jobs:
           node-version-file: .nvmrc
           cache: npm
       - name: Restore Nx cache
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: .nx
           key: nx-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
@@ -133,7 +133,7 @@ jobs:
           node-version-file: .nvmrc
           cache: npm
       - name: Restore Nx cache
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: .nx
           key: nx-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
@@ -162,7 +162,7 @@ jobs:
           node-version-file: .nvmrc
           cache: npm
       - name: Restore Nx cache
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: .nx
           key: nx-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
@@ -189,7 +189,7 @@ jobs:
           node-version-file: .nvmrc
           cache: npm
       - name: Restore Nx cache
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: .nx
           key: nx-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
