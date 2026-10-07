@@ -10,7 +10,7 @@ const cssDurationToMilliseconds = (duration: string, defaultValue = 1000): numbe
   return defaultValue;
 };
 
-const cssDurationToSeconds = (duration: string, defaultValue = 1000): number => {
+const cssDurationToSeconds = (duration: string, defaultValue = 1): number => {
   if (duration.includes('ms')) {
     return Number(duration.replace('ms', '')) / 1000;
   }
