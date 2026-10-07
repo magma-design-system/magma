@@ -10,7 +10,7 @@
     "projects/*"
   ],
   "overrides": {
-    "caniuse-lite": "1.0.30001814",
+    "caniuse-lite": "1.0.30001815",
     "minimatch@^9.0.0": "9.0.9",
     "picomatch@^4.0.0": "4.0.7",
     "xml2js": "0.6.2"
