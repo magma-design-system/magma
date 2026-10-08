@@ -20,7 +20,7 @@ When generating, completing, or reviewing code in this repository, follow the ru
 - Events are camelCase prefixed with the component name (`mdsInputChange`, `mdsAccordionChange`).
 - The `default` slot accepts plain text only; named slots accept HTML.
 - Prefer the `label` prop over the default slot for text content.
-- Boolean props default to `false`/`undefined`. **Never** write `disabled="false"` or `await="false"` - remove the attribute or set it to `undefined`. A non-empty string is truthy in HTML.
+- Boolean props default to `false`/`undefined`. **Never** write `disabled="false"` or `await="false"` - remove the attribute or set it to `undefined`. Stencil reads `"false"` as `false`, but the attribute can stay in the DOM, where `[attr]` selectors still match it.
 - External styling is only via the documented CSS Custom Properties and, for a deep customisation, the documented `::part()` names. Do not pierce the shadow DOM (`>>>`, `/deep/`, undocumented parts or internal classes).
 - Keep JSX pragma imports even if they look unused: `import { h, Fragment, Component } from '@stencil/core'`.
 

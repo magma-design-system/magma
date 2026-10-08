@@ -17,10 +17,10 @@ The `<mds-stepper-bar>` web component is the Magma Design System container that 
 
 - **Compound parent**: It is the controlling parent of `<mds-stepper-bar-item>` children placed in the default slot, driving every child's `done`/`current` state - children do not manage their own progression.
 - **Active step derivation**: From `itemsDone` it marks all earlier items as `done`, the item at the current index as `current`, and clears the rest; the active step is `itemsDone - 1`.
-- **Content synchronization**: Each `slot="content"` element is paired by position to a stepper item; only the panel matching the current index is shown.
-- **Child-driven navigation**: It listens for the `mdsStepperBarItemDone` event bubbling from a child and promotes the matching item to `current`, allowing a step to take focus on direct interaction.
+- **Content synchronization**: Each `slot="content"` element is paired by position to a stepper item; only the panel matching the current index is shown. The other panels get the `hidden` class, so the page needs a `.hidden { display: none }` rule (the Tailwind utility provides it).
+- **No child-driven navigation**: It listens for `mdsStepperBarItemDone`, but `<mds-stepper-bar-item>` never emits it, so clicking a step does not change the current step: progress is driven by `itemsDone` only.
 - **Auto-scroll**: When a step becomes current the indicator track scrolls horizontally to center the active item.
-- **Change event**: It emits `mdsStepperBarChange` whenever the current step changes, with a detail of the active `step` index and a comma-joined `value` string collected from the completed items.
+- **Change event**: It emits `mdsStepperBarChange` when it loads and whenever `itemsDone` changes, with a detail of the active `step` index and a comma-joined `value` string collected from the completed items.
 
 #### Properties & Visual Configurations
 
@@ -33,7 +33,7 @@ The `<mds-stepper-bar>` web component is the Magma Design System container that 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-stepper-bar>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the compound component rules documented in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md) and the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-stepper-bar>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Minimal Stepper with Step Labels
 
@@ -80,7 +80,7 @@ Drive progress by updating `items-done` from outside. `itemsDone = 0` leaves all
 
 <script>
   let step = 1;
-  document.getElementById('btn-next').addEventListener('mdsButtonClick', () => {
+  document.getElementById('btn-next').addEventListener('click', () => {
     step += 1;
     document.getElementById('reg-stepper').setAttribute('items-done', String(step));
   });
@@ -108,7 +108,7 @@ React to step changes via `mdsStepperBarChange`. The event detail carries `step`
 
 #### Content Panels Synchronized with Steps
 
-Add elements with `slot="content"` - one per step in the same order as the items. The component hides all panels except the one matching the active step. Nest navigation buttons inside each panel to let users move forward and back.
+Add elements with `slot="content"` - one per step in the same order as the items. The component hides all panels except the one matching the active step, by adding the `hidden` class: the page needs a `.hidden { display: none }` rule (the Tailwind utility provides it). Nest navigation buttons inside each panel to let users move forward and back.
 
 ```html
 <mds-stepper-bar items-done="1">
@@ -180,15 +180,15 @@ When the stepper bar lives inside a padded card or panel, use `--mds-stepper-bar
 
 #### Styling the Scrollbar and Gap
 
-Style the indicator track's scrollbar and item spacing through the documented `--mds-stepper-bar-*` CSS custom properties. Use Magma color tokens via `rgb(var(--<token>))` so dark mode and high-contrast keep working.
+Style the indicator track's scrollbar and item spacing through the documented `--mds-stepper-bar-*` CSS custom properties. Use semantic color roles via `rgb(var(--magma-<role>))` so dark mode and high-contrast keep working.
 
 ```css
 mds-stepper-bar {
-  --mds-stepper-bar-gap: var(--spacing-700);
+  --mds-stepper-bar-gap: calc(var(--spacing) * 700);
   --mds-stepper-bar-scrollbar-size: 6px;
-  --mds-stepper-bar-scrollbar-radius: var(--radius-full);
-  --mds-stepper-bar-scrollbar-thumb-background: rgb(var(--variant-primary-04));
-  --mds-stepper-bar-scrollbar-track-background: rgb(var(--tone-neutral-09));
+  --mds-stepper-bar-scrollbar-radius: var(--magma-radius-full);
+  --mds-stepper-bar-scrollbar-thumb-background: rgb(var(--magma-accent-emphasis));
+  --mds-stepper-bar-scrollbar-track-background: rgb(var(--magma-wash-base));
 }
 ```
 
@@ -198,12 +198,12 @@ The two documented shadow parts - `items` (the indicator track wrapper) and `con
 
 ```css
 mds-stepper-bar::part(items) {
-  padding-block: var(--spacing-400);
-  border-bottom: 1px solid rgb(var(--tone-neutral-08));
+  padding-block: calc(var(--spacing) * 400);
+  border-bottom: 1px solid rgb(var(--magma-border-muted));
 }
 
 mds-stepper-bar::part(contents) {
-  padding-block: var(--spacing-600);
+  padding-block: calc(var(--spacing) * 600);
 }
 ```
 
@@ -217,13 +217,13 @@ Common incorrect uses of `<mds-stepper-bar>`. Each entry pairs the wrong form wi
 `done` and `current` on `<mds-stepper-bar-item>` are managed exclusively by the parent; writing them from outside bypasses the synchronization logic and breaks content panel visibility, scroll centering, and the `mdsStepperBarChange` event. Drive progress through `items-done` on the parent instead.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-stepper-bar>
   <mds-stepper-bar-item done icon="mi/baseline/person" icon-checked="mi/baseline/done" label="Account"></mds-stepper-bar-item>
   <mds-stepper-bar-item current icon="mi/baseline/badge" icon-checked="mi/baseline/done" label="Profilo"></mds-stepper-bar-item>
 </mds-stepper-bar>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-stepper-bar items-done="2">
   <mds-stepper-bar-item icon="mi/baseline/person" icon-checked="mi/baseline/done" label="Account"></mds-stepper-bar-item>
   <mds-stepper-bar-item icon="mi/baseline/badge" icon-checked="mi/baseline/done" label="Profilo"></mds-stepper-bar-item>
@@ -235,13 +235,13 @@ Common incorrect uses of `<mds-stepper-bar>`. Each entry pairs the wrong form wi
 `<mds-stepper-bar>` emits `mdsStepperBarChange` - not a native `change` event. Native DOM events do not bubble out of shadow DOM reliably, so listening for `change` will silently never fire.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-stepper-bar id="stepper" items-done="1">...</mds-stepper-bar>
 <script>
   document.getElementById('stepper').addEventListener('change', handler);
 </script>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-stepper-bar id="stepper" items-done="1">...</mds-stepper-bar>
 <script>
   document.getElementById('stepper').addEventListener('mdsStepperBarChange', handler);
@@ -250,16 +250,16 @@ Common incorrect uses of `<mds-stepper-bar>`. Each entry pairs the wrong form wi
 
 #### Do Not Use `<mds-stepper-bar-item>` Outside `<mds-stepper-bar>`
 
-`<mds-stepper-bar-item>` is a compound child; it relies on the parent to receive its `done`/`current` state and to wire its `mdsStepperBarItemDone` event back to the flow. Outside the parent it renders without state management and will not advance any stepper.
+`<mds-stepper-bar-item>` is a compound child; it relies on the parent to receive its `done`/`current` state. Outside the parent it renders without state management and will not advance any stepper.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <div class="custom-steps">
   <mds-stepper-bar-item icon="mi/baseline/person" icon-checked="mi/baseline/done" label="Account"></mds-stepper-bar-item>
   <mds-stepper-bar-item icon="mi/baseline/badge" icon-checked="mi/baseline/done" label="Profilo"></mds-stepper-bar-item>
 </div>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-stepper-bar items-done="1">
   <mds-stepper-bar-item icon="mi/baseline/person" icon-checked="mi/baseline/done" label="Account"></mds-stepper-bar-item>
   <mds-stepper-bar-item icon="mi/baseline/badge" icon-checked="mi/baseline/done" label="Profilo"></mds-stepper-bar-item>
@@ -268,10 +268,10 @@ Common incorrect uses of `<mds-stepper-bar>`. Each entry pairs the wrong form wi
 
 #### Do Not Wrap Items in Extra Elements
 
-The parent queries `mds-stepper-bar-item` elements via `querySelectorAll('mds-stepper-bar-item')` across the whole light DOM, but compound communication relies on direct slot children - wrapping items in a container breaks the positional pairing with `slot="content"` panels and the auto-scroll logic.
+The indicator track lays out its direct slot children (flex row, `--mds-stepper-bar-gap`, scroll snapping): a wrapper becomes a single item of the track, so the steps lose that layout. Compound children must be direct children of the parent.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-stepper-bar items-done="1">
   <div class="step-group">
     <mds-stepper-bar-item icon="mi/baseline/person" icon-checked="mi/baseline/done" label="Account"></mds-stepper-bar-item>
@@ -279,7 +279,7 @@ The parent queries `mds-stepper-bar-item` elements via `querySelectorAll('mds-st
   </div>
 </mds-stepper-bar>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-stepper-bar items-done="1">
   <mds-stepper-bar-item icon="mi/baseline/person" icon-checked="mi/baseline/done" label="Account"></mds-stepper-bar-item>
   <mds-stepper-bar-item icon="mi/baseline/badge" icon-checked="mi/baseline/done" label="Profilo"></mds-stepper-bar-item>
@@ -291,7 +291,7 @@ The parent queries `mds-stepper-bar-item` elements via `querySelectorAll('mds-st
 The component pairs panels to items by index position; if a panel is missing for a given index, the content region for that step will be empty with no warning. Always provide exactly one `slot="content"` element per `<mds-stepper-bar-item>`.
 
 ```html
-<!-- 🚫 INCORRECT - three items, only two content panels -->
+<!-- INCORRECT - three items, only two content panels -->
 <mds-stepper-bar items-done="1">
   <mds-stepper-bar-item icon="mi/baseline/person" icon-checked="mi/baseline/done" label="Account"></mds-stepper-bar-item>
   <mds-stepper-bar-item icon="mi/baseline/badge" icon-checked="mi/baseline/done" label="Profilo"></mds-stepper-bar-item>
@@ -301,7 +301,7 @@ The component pairs panels to items by index position; if a panel is missing for
   <div slot="content"><mds-text>Profilo</mds-text></div>
 </mds-stepper-bar>
 
-<!-- ✅ CORRECT - one panel per item -->
+<!-- CORRECT - one panel per item -->
 <mds-stepper-bar items-done="1">
   <mds-stepper-bar-item icon="mi/baseline/person" icon-checked="mi/baseline/done" label="Account"></mds-stepper-bar-item>
   <mds-stepper-bar-item icon="mi/baseline/badge" icon-checked="mi/baseline/done" label="Profilo"></mds-stepper-bar-item>
@@ -315,13 +315,13 @@ The component pairs panels to items by index position; if a panel is missing for
 
 #### Do Not Set `items-done` as a Boolean
 
-`items-done` is a number, not a flag. Setting it as a bare boolean attribute sends the string `""` which is not a valid number, leaving the stepper at its default state. Always pass a numeric value.
+`items-done` is a number, not a flag. Setting it as a bare boolean attribute sends the string `""`, which parses to `NaN`: no step is marked current or done. Always pass a numeric value.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-stepper-bar items-done>...</mds-stepper-bar>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-stepper-bar items-done="1">...</mds-stepper-bar>
 ```
 

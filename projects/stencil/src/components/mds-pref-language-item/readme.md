@@ -21,14 +21,14 @@ The `<mds-pref-language-item>` web component represents a single selectable lang
 
 #### Properties & Visual Configurations
 
-The only meaningful prop is `code`: the BCP 47 / RFC 5646 language tag (such as `it`, `en`, `es`) that both keys the label lookup and is the payload emitted on selection. The set of accepted codes is defined by the bundled dictionary in `meta/locale.json`.
+The only meaningful prop is `code`: the BCP 47 / RFC 5646 language tag (such as `it`, `en`, `es`) that both keys the label lookup and is the payload emitted on selection. The accepted codes are the keys of the bundled language dictionary: the two-letter ISO 639-1 codes (`it`, `en`, `fr`, `de`, `zh`, ...) plus `ceb`, `haw` and `hmn`, which the parent cannot apply (its `set` accepts only `xx` / `xx-XX` codes).
 
 `selected` is a state flag managed by the parent rather than a configuration choice. Sizing and styling are fixed by the parent's layout, so this item exposes no `variant` / `tone` of its own; the shared ladders in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) are applied internally and are not configurable from the host.
 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-pref-language-item>` component, ordered from most common to most specialized. Patterns assume a working knowledge of compound-component rules documented in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md) and the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-pref-language-item>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Language List Inside the Parent
 
@@ -44,11 +44,11 @@ The canonical form. Place one `<mds-pref-language-item>` per supported language 
 
 #### Pre-selecting the Active Language
 
-The `selected` prop is normally managed by the parent, but you can set it declaratively when you know the initial active language at render time. The parent will take over selection management after the first user interaction.
+Pre-select through the parent, not through `selected`: `<mds-pref-language>` marks the item whose `code` matches its resolved language when it loads, and overwrites any `selected` written in the markup. Pass the language to the parent's `set` (or leave `set` on `auto`).
 
 ```html
 <mds-pref-language set="it">
-  <mds-pref-language-item code="it" selected></mds-pref-language-item>
+  <mds-pref-language-item code="it"></mds-pref-language-item>
   <mds-pref-language-item code="en"></mds-pref-language-item>
   <mds-pref-language-item code="de"></mds-pref-language-item>
 </mds-pref-language>
@@ -75,7 +75,7 @@ The item emits `mdsPrefLanguageItemSelect` with `{ language: code }` when clicke
 
 #### Offering a Large Language Set
 
-Add as many items as needed - the parent wraps them in a scrollable dropdown. Each item only needs a `code`; the visible label is derived automatically.
+Add as many items as needed - the parent lists them all in its dropdown. Each item only needs a `code`; the visible label is derived automatically.
 
 ```html
 <mds-pref-language>
@@ -115,10 +115,10 @@ Common incorrect uses of `<mds-pref-language-item>`. Each entry pairs the wrong 
 `<mds-pref-language-item>` is a compound child and relies on `<mds-pref-language>` for selection management, dropdown layout, and language persistence. Using it standalone leaves the click handler dangling and the selection state unmanaged.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-pref-language-item code="it"></mds-pref-language-item>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-pref-language>
   <mds-pref-language-item code="it"></mds-pref-language-item>
 </mds-pref-language>
@@ -129,38 +129,38 @@ Common incorrect uses of `<mds-pref-language-item>`. Each entry pairs the wrong 
 The item derives its label from the `code` prop via the bundled dictionary. Attempting to pass display text in the default slot or as an attribute is not supported and will be ignored by the render function.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-pref-language-item code="it">Italiano</mds-pref-language-item>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-pref-language-item code="it"></mds-pref-language-item>
 ```
 
 #### Do Not Use an Undocumented or Misspelled Language Code
 
-`code` must exactly match a key in the bundled dictionary (e.g. `"it"`, `"en"`, `"fr"`). An unknown code throws `Language code not found: <code>` at render time. Use the two-letter BCP 47 tag, not a locale variant like `"it-IT"`.
+`code` must exactly match a key in the bundled dictionary (e.g. `"it"`, `"en"`, `"fr"`). An unknown code throws `Language code not found: <code>` when the item loads or its `code` changes. Use the two-letter BCP 47 tag, not a locale variant like `"it-IT"`.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-pref-language-item code="it-IT"></mds-pref-language-item>
 <mds-pref-language-item code="italian"></mds-pref-language-item>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-pref-language-item code="it"></mds-pref-language-item>
 ```
 
 #### Do Not Manage the `selected` Prop by Hand Across Items
 
-The parent clears every sibling and marks only the active item. If you toggle `selected` yourself on multiple items, the visual state will desync from the stored preference after the first user interaction.
+The parent marks only the item matching the active language when it loads, overwriting the `selected` written in the markup, and clears every sibling on each pick. If you toggle `selected` yourself from script, several items can show as selected at once, out of step with the stored preference.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-pref-language>
   <mds-pref-language-item code="it" selected></mds-pref-language-item>
   <mds-pref-language-item code="en" selected></mds-pref-language-item>
 </mds-pref-language>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-pref-language set="it">
   <mds-pref-language-item code="it"></mds-pref-language-item>
   <mds-pref-language-item code="en"></mds-pref-language-item>
@@ -169,17 +169,17 @@ The parent clears every sibling and marks only the active item. If you toggle `s
 
 #### Do Not Listen for Native `click` to Detect Language Selection
 
-The component emits `mdsPrefLanguageItemSelect` (or the parent emits `mdsPrefLanguageChange`). Native `click` may not propagate reliably out of shadow DOM and skips the event payload that carries the selected language code.
+The component emits `mdsPrefLanguageItemSelect` (or the parent emits `mdsPrefLanguageChange`). A native `click` carries no `detail`, so it skips the event payload that carries the selected language code, and it does not tell you that the parent has committed the pick.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <script>
   document.querySelector('mds-pref-language-item').addEventListener('click', () => {
     // no language code available here
   });
 </script>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <script>
   document.querySelector('mds-pref-language').addEventListener('mdsPrefLanguageChange', (e) => {
     console.log('Lingua selezionata:', e.detail.language);
@@ -189,13 +189,13 @@ The component emits `mdsPrefLanguageItemSelect` (or the parent emits `mdsPrefLan
 
 #### Do Not Set `selected="false"` to Deselect
 
-`selected` is a boolean attribute. The string `"false"` is truthy in HTML and will keep the item visually selected. Remove the attribute or set the prop to `undefined` to deselect programmatically.
+`selected` is a boolean attribute: a false boolean is written by removing the attribute ([`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md)), or by setting the prop to `false` from script. Stencil does parse `"false"` as `false`, but the attribute stays in the markup until the component hydrates and its reflection removes it, so a `[selected]` selector or any code reading the attribute sees it set in the meantime. Inside `<mds-pref-language>` the parent owns `selected` anyway.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-pref-language-item code="it" selected="false"></mds-pref-language-item>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-pref-language-item code="it"></mds-pref-language-item>
 ```
 

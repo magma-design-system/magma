@@ -89,14 +89,14 @@ The `<mds-author>` web component is the layout primitive of the Magma Design Sys
 This component has no properties. All configuration is expressed through its two slots:
 
 - **`avatar` slot**: the leading element, recommended to be an `mds-avatar`. Its presence is what toggles the two-column layout.
-- **default slot**: the trailing block holding the author's textual details, laid out so multiple lines stack cleanly and truncate within the available width.
+- **default slot**: the trailing block holding the author's textual details, laid out so multiple lines stack cleanly and shrink to the available width (set `truncate` on an `mds-text` to cut a long line).
 
-See [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md) for the shared compound-component conventions and [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md) for the usage contract.
+See [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md) for the shared compound-component conventions and the usage contract.
 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-author>` component, ordered from most common to most specialized. Patterns assume a working knowledge of compound-component conventions documented in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md) and the component catalogue in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md).
+Correct and idiomatic ways to use the `<mds-author>` component, ordered from most common to most specialized. Patterns assume a working knowledge of compound-component conventions documented in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Full Byline with Avatar
 
@@ -124,7 +124,7 @@ When no profile image is available, omit `src` and rely on `initials`. The avata
 
 #### Multiple Info Lines
 
-The default slot is a grid container - any number of stacked lines render cleanly and truncate within the available width.
+The default slot is a grid container - any number of stacked lines render cleanly and shrink to the available width; set `truncate` on an `mds-text` to cut a long line.
 
 ```html
 <mds-author>
@@ -199,14 +199,14 @@ Common incorrect uses of `<mds-author>`. Each entry pairs the wrong form with th
 The default slot is a grid container designed for structured elements like `mds-text`. Bare text nodes render without typography tokens, scale inconsistently, and cannot be truncated reliably.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-author>
   <mds-avatar slot="avatar" initials="lr"></mds-avatar>
   Luca Rossi
   Redattore
 </mds-author>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-author>
   <mds-avatar slot="avatar" initials="lr"></mds-avatar>
   <mds-text typography="h6">Luca Rossi</mds-text>
@@ -219,13 +219,13 @@ The default slot is a grid container designed for structured elements like `mds-
 Assigning an `mds-avatar` without `slot="avatar"` puts it in the text/info region. The component only wires up the two-column layout when a child is assigned to the named `avatar` slot.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-author>
   <mds-avatar initials="ab"></mds-avatar>
   <mds-text typography="h6">Anna Bianchi</mds-text>
 </mds-author>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-author>
   <mds-avatar slot="avatar" initials="ab"></mds-avatar>
   <mds-text typography="h6">Anna Bianchi</mds-text>
@@ -234,16 +234,16 @@ Assigning an `mds-avatar` without `slot="avatar"` puts it in the text/info regio
 
 #### Do Not Inline an `<img>` Instead of `mds-avatar`
 
-Using a raw `<img>` in the avatar slot skips the initials fallback, image-load error handling, and consistent sizing that `mds-avatar` provides.
+Using a raw `<img>` in the avatar slot skips the image-load error handling (a person glyph replaces a broken image), the loading placeholder, and the consistent sizing that `mds-avatar` provides.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-author>
   <img slot="avatar" src="/assets/foto.jpg" alt="Foto autore" />
   <mds-text typography="h6">Paolo Neri</mds-text>
 </mds-author>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-author>
   <mds-avatar slot="avatar" src="/assets/foto.jpg" initials="pn"></mds-avatar>
   <mds-text typography="h6">Paolo Neri</mds-text>
@@ -255,13 +255,13 @@ Using a raw `<img>` in the avatar slot skips the initials fallback, image-load e
 `<mds-author>` manages its own flex and container-query layout. Overriding `display`, `flex-direction`, or `align-items` on the host breaks the responsive collapse at narrow widths.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-author style="flex-direction: column; align-items: flex-start;">
   <mds-avatar slot="avatar" initials="sv"></mds-avatar>
   <mds-text typography="h6">Sara Vitale</mds-text>
 </mds-author>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <!-- Constrain the parent container width to let the built-in container query handle the collapse -->
 <div style="width: 160px;">
   <mds-author>
@@ -276,19 +276,18 @@ Using a raw `<img>` in the avatar slot skips the initials fallback, image-load e
 `<mds-author>` is specifically designed for author bylines. For other avatar-plus-text combinations (entity cards, mention chips, user list rows) use [`mds-entity`](../../mds-entity) or [`mds-mention`](../../mds-mention) instead.
 
 ```html
-<!-- 🚫 INCORRECT - using mds-author to display a product or file entry -->
+<!-- INCORRECT - using mds-author to display a product or file entry -->
 <mds-author>
   <mds-avatar slot="avatar" icon="mi/baseline/folder"></mds-avatar>
   <mds-text typography="h6">Documento strategico.pdf</mds-text>
   <mds-text typography="caption">1.2 MB</mds-text>
 </mds-author>
 
-<!-- ✅ CORRECT -->
-<mds-entity
-  name="Documento strategico.pdf"
-  description="1.2 MB"
-  icon="mi/baseline/folder"
-></mds-entity>
+<!-- CORRECT -->
+<mds-entity icon="mi/baseline/folder">
+  <mds-text typography="h6">Documento strategico.pdf</mds-text>
+  <mds-text slot="detail" typography="caption">1.2 MB</mds-text>
+</mds-entity>
 ```
 
 

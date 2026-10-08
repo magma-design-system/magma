@@ -27,12 +27,12 @@ The `<mds-card-media>` web component is the media region of a [`<mds-card>`](../
 - **default slot**: the media surface. Place the actual visual asset here (an `mds-img`, video, or equivalent component). This layer fills the host.
 - **`content` slot**: an overlay layer (exposed as the `content` shadow part) positioned over the media, aligned to the bottom and horizontally centered, intended for captions, titles, or action controls that should appear in front of the media rather than beside it.
 
-The host paints a neutral background, so the media region keeps a defined surface even before its asset loads. For the shared variant/tone system that governs the parent card, see [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md).
+The host paints a neutral background, so the media region keeps a defined surface even before its asset loads. Neither this component nor the parent card uses the shared variant/tone system of [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md).
 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-card-media>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the compound-component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md) and the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-card-media>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Media Region with `mds-img`
 
@@ -67,7 +67,7 @@ The `content` slot accepts any element or component. Use it to place a badge, ch
 <mds-card>
   <mds-card-media>
     <mds-img src="/img/prodotto.jpg" alt="Scheda prodotto"></mds-img>
-    <mds-badge slot="content" label="Novita'" variant="primary" tone="strong"></mds-badge>
+    <mds-badge slot="content" label="Novita'" variant="info" tone="strong"></mds-badge>
   </mds-card-media>
 </mds-card>
 ```
@@ -81,7 +81,9 @@ The `content` slot accepts any element or component. Use it to place a badge, ch
   <mds-card-media>
     <mds-img src="/img/notizia.jpg" alt="Immagine della notizia"></mds-img>
   </mds-card-media>
-  <mds-card-header label="Titolo della notizia"></mds-card-header>
+  <mds-card-header>
+    <mds-text typography="h6">Titolo della notizia</mds-text>
+  </mds-card-header>
   <mds-card-content>
     <mds-text>Descrizione breve della notizia.</mds-text>
   </mds-card-content>
@@ -110,8 +112,8 @@ The `content` overlay div is exposed as the `content` shadow part. Use it for la
 ```css
 .card-destacada mds-card-media::part(content) {
   align-items: flex-start;
-  background: linear-gradient(to top, rgb(var(--tone-neutral-01) / 0.7), transparent);
-  padding: var(--spacing-600);
+  background: linear-gradient(to top, rgb(var(--magma-backdrop-color) / 0.7), transparent);
+  padding: calc(var(--spacing) * 600);
 }
 ```
 
@@ -125,12 +127,12 @@ Common incorrect uses of `<mds-card-media>`. Each entry pairs the wrong form wit
 `<mds-card-media>` is a compound child designed to live inside `<mds-card>`. Using it standalone produces unstyled output and breaks the card layout algorithm, which derives its responsive grid from the presence of its region children.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-card-media>
   <mds-img src="/img/foto.jpg" alt="Foto"></mds-img>
 </mds-card-media>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-card>
   <mds-card-media>
     <mds-img src="/img/foto.jpg" alt="Foto"></mds-img>
@@ -143,14 +145,14 @@ Common incorrect uses of `<mds-card-media>`. Each entry pairs the wrong form wit
 `<mds-card-media>` self-assigns into the card's `media` region via its internal `Host slot="media"`. Adding `slot="media"` on the element is redundant and signals a misunderstanding of the component's self-slotting contract.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-card>
   <mds-card-media slot="media">
     <mds-img src="/img/copertina.jpg" alt="Copertina"></mds-img>
   </mds-card-media>
 </mds-card>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-card>
   <mds-card-media>
     <mds-img src="/img/copertina.jpg" alt="Copertina"></mds-img>
@@ -160,10 +162,10 @@ Common incorrect uses of `<mds-card-media>`. Each entry pairs the wrong form wit
 
 #### Do Not Put the Overlay Text in the Default Slot
 
-Text or controls that should appear in front of the media must go in the `content` named slot. Content placed in the default slot renders behind or beside the media asset, not as an overlay.
+Text or controls that should appear in front of the media must go in the `content` named slot. Content placed in the default slot is stacked below the media asset (the host is a grid), not overlaid on it.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-card>
   <mds-card-media>
     <mds-img src="/img/foto.jpg" alt="Foto"></mds-img>
@@ -171,7 +173,7 @@ Text or controls that should appear in front of the media must go in the `conten
   </mds-card-media>
 </mds-card>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-card>
   <mds-card-media>
     <mds-img src="/img/foto.jpg" alt="Foto"></mds-img>
@@ -182,10 +184,10 @@ Text or controls that should appear in front of the media must go in the `conten
 
 #### Do Not Place `<mds-card-media>` Inside a Wrapper Element
 
-`mds-card` reads its direct children to compute the layout grid. Wrapping `<mds-card-media>` in a `<div>` or any other element hides it from that detection pass and breaks the responsive layout.
+`mds-card` reads its direct children to compute the layout grid and has no default slot. Wrapping `<mds-card-media>` in a `<div>` or any other element without a `slot` hides it from that detection pass and leaves it out of every region: it is not rendered at all.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-card>
   <div class="media-wrapper">
     <mds-card-media>
@@ -194,7 +196,7 @@ Text or controls that should appear in front of the media must go in the `conten
   </div>
 </mds-card>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-card>
   <mds-card-media>
     <mds-img src="/img/foto.jpg" alt="Foto"></mds-img>
@@ -207,14 +209,14 @@ Text or controls that should appear in front of the media must go in the `conten
 Placing a raw `<img>` in the default slot works visually but bypasses the lazy loading, error state, consumption-preference handling, and accessible-name fallback that `mds-img` provides.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-card>
   <mds-card-media>
     <img src="/img/prodotto.jpg" alt="Prodotto">
   </mds-card-media>
 </mds-card>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-card>
   <mds-card-media>
     <mds-img src="/img/prodotto.jpg" alt="Prodotto"></mds-img>
@@ -227,12 +229,12 @@ Placing a raw `<img>` in the default slot works visually but bypasses the lazy l
 The `content` div inside the shadow root is exposed as the `content` shadow part. Use `::part(content)` for style overrides, not `>>>`, `/deep/`, or internal class selectors - the latter couple your code to the implementation and break on minor releases.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-card-media >>> .content {
   align-items: flex-start;
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-card-media::part(content) {
   align-items: flex-start;
 }

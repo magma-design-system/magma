@@ -15,9 +15,9 @@ The `<mds-keyboard>` web component renders a keyboard shortcut as a row of physi
 
 - **Default slot is the key sequence**: The component projects slotted `<mds-keyboard-key>` elements and automatically inserts a `+` separator between consecutive keys.
 - **Compound parent**: It reads each child key's `name` to build the expected combination; during a test the children are toggled to their `pressed` state.
-- **Test mode (`try`)**: When enabled the component appends a trigger button and a tooltip; clicking the button captures keystrokes and compares the typed combination against the slotted keys.
+- **Test mode (`try`)**: When enabled the component appends a trigger button and a tooltip; clicking the button captures keystrokes and, at the first key release, compares the typed combination against the slotted keys, in slot order.
 - **Result feedback**: A pass shows a "done" icon, a fail shows a "close" icon, and the tooltip surfaces the localized success or error message; the outcome is also reflected on the host via the `test` attribute.
-- **Localization**: Trigger title, tooltip copy, and error messages resolve through the locale system (el/en/es/it).
+- **Localization**: Trigger label, tooltip copy, and error messages resolve through the locale system (el/en/es/it).
 
 #### Properties & Visual Configurations
 
@@ -31,11 +31,11 @@ This component does not use the shared `variant` / `tone` ladders from [`docs/ag
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-keyboard>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) and the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-keyboard>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Single Key Display
 
-The simplest use: one `<mds-keyboard-key>` child inside `<mds-keyboard>`. The `name` attribute selects a key from the built-in key dictionary; the component renders the physical-looking keycap with the localized alias.
+The simplest use: one `<mds-keyboard-key>` child inside `<mds-keyboard>`. The `name` attribute selects a key from the built-in key dictionary; the component renders the physical-looking keycap with the key's alias (e.g. `F1`, `Ctrl`).
 
 ```html
 <mds-keyboard>
@@ -68,7 +68,7 @@ Use the side-specific `name` values (`controlleft`, `controlright`, `shiftleft`,
 
 #### Interactive Verification Mode (`try`)
 
-Add the `try` attribute to let the user confirm the shortcut by typing it. A trigger button appears; clicking it puts the component into capture mode. After the user releases all keys the component reflects the outcome (`pass` / `fail`) on the `test` attribute and shows a localized tooltip.
+Add the `try` attribute to let the user confirm the shortcut by typing it. A trigger button appears; clicking it puts the component into capture mode. The keys must be pressed in the order they are slotted: at the first key release the component reflects the outcome (`pass` / `fail`) on the `test` attribute and shows a localized tooltip.
 
 ```html
 <mds-keyboard try>
@@ -121,7 +121,7 @@ Embed `<mds-keyboard>` inside a `<mds-table>` to build a keyboard-shortcut refer
 
 #### Reading the `test` Outcome Attribute
 
-When `try` is set the `test` attribute is reflected onto the host as `"pass"` or `"fail"` after each attempt. Use it as a CSS attribute selector or read it from JavaScript to drive follow-on UI.
+When `try` is set the `test` attribute is reflected onto the host as `"pass"` or `"fail"` after each attempt. Use it as a CSS attribute selector, or observe the attribute from JavaScript to drive follow-on UI (the component emits no event).
 
 ```html
 <mds-keyboard id="shortcut-ctrl-s" try>
@@ -131,24 +131,24 @@ When `try` is set the `test` attribute is reflected onto the host as `"pass"` or
 ```
 
 ```javascript
-document.querySelector('#shortcut-ctrl-s').addEventListener('click', () => {
-  const result = document.querySelector('#shortcut-ctrl-s').getAttribute('test');
-  if (result === 'pass') {
+const keyboard = document.querySelector('#shortcut-ctrl-s');
+new MutationObserver(() => {
+  if (keyboard.getAttribute('test') === 'pass') {
     console.log('Combinazione corretta!');
   }
-});
+}).observe(keyboard, { attributes: true, attributeFilter: ['test'] });
 ```
 
 #### Styling Customization
 
-Adjust colors and lighting only through the documented `--mds-keyboard-*` CSS custom properties. Use Magma color tokens via `rgb(var(--<token>))` so dark mode continues to work.
+Adjust colors and lighting only through the documented `--mds-keyboard-*` CSS custom properties. Use the semantic color roles via `rgb(var(--magma-<role>))` ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)) so dark mode continues to work.
 
 ```css
 .custom-keyboard mds-keyboard {
-  --mds-keyboard-background: rgb(var(--tone-neutral-02));
-  --mds-keyboard-color: rgb(var(--tone-neutral-10));
-  --mds-keyboard-key-background: rgb(var(--tone-neutral-04));
-  --mds-keyboard-padding: var(--spacing-300);
+  --mds-keyboard-background: rgb(var(--magma-surface-inverse));
+  --mds-keyboard-color: rgb(var(--magma-on-inverse));
+  --mds-keyboard-key-background: rgb(var(--magma-surface-inverse-muted));
+  --mds-keyboard-padding: calc(var(--spacing) * 300);
 }
 ```
 
@@ -162,13 +162,13 @@ Common incorrect uses of `<mds-keyboard>`. Each entry pairs the wrong form with 
 The default slot expects `<mds-keyboard-key>` children only. Slotting plain text, `<kbd>`, or other HTML breaks the separator injection logic and the test-mode key matching.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-keyboard>
   <kbd>Ctrl</kbd>
   <kbd>S</kbd>
 </mds-keyboard>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-keyboard>
   <mds-keyboard-key name="control"></mds-keyboard-key>
   <mds-keyboard-key name="s"></mds-keyboard-key>
@@ -180,14 +180,14 @@ The default slot expects `<mds-keyboard-key>` children only. Slotting plain text
 The component inserts a styled `+` between consecutive keys automatically. Adding your own separator duplicates it and breaks the visual rhythm.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-keyboard>
   <mds-keyboard-key name="control"></mds-keyboard-key>
   <span>+</span>
   <mds-keyboard-key name="c"></mds-keyboard-key>
 </mds-keyboard>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-keyboard>
   <mds-keyboard-key name="control"></mds-keyboard-key>
   <mds-keyboard-key name="c"></mds-keyboard-key>
@@ -196,15 +196,15 @@ The component inserts a styled `+` between consecutive keys automatically. Addin
 
 #### Do Not Set `try="false"` to Disable Test Mode
 
-Boolean attributes in HTML treat any non-empty string as truthy. Use attribute removal (or leave the attribute unset) to keep the component in display-only mode.
+`try` is a boolean attribute: remove it (or leave it unset) to keep the component in display-only mode. A string value is fragile: `"false"` is read as `false` on this component, but the attribute stays on the element until the component renders (attribute selectors and scripts reading it see it set), and the form-associated Magma inputs read the same string as `true`. Never write a boolean as a string.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-keyboard try="false">
   <mds-keyboard-key name="escape"></mds-keyboard-key>
 </mds-keyboard>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-keyboard>
   <mds-keyboard-key name="escape"></mds-keyboard-key>
 </mds-keyboard>
@@ -212,15 +212,15 @@ Boolean attributes in HTML treat any non-empty string as truthy. Use attribute r
 
 #### Do Not Set `test` as a Static Attribute to Signal State
 
-`test` is a reflected output prop driven by the component's own verification flow. Setting it as a static HTML attribute manually bypasses the internal logic and has no reliable effect on the visual state.
+`test` is a reflected output prop driven by the component's own verification flow. Setting it as a static HTML attribute paints the pass / fail state without any attempt behind it, and the next attempt overwrites it.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-keyboard test="pass">
   <mds-keyboard-key name="enter"></mds-keyboard-key>
 </mds-keyboard>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-keyboard try>
   <mds-keyboard-key name="enter"></mds-keyboard-key>
 </mds-keyboard>
@@ -231,10 +231,10 @@ Boolean attributes in HTML treat any non-empty string as truthy. Use attribute r
 `<mds-keyboard-key>` is a compound child and communicates with the parent via the Stencil DOM tree. Rendering it standalone loses the compound layout, the `+` separator, and test-mode driven `pressed` toggling.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-keyboard-key name="tab"></mds-keyboard-key>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-keyboard>
   <mds-keyboard-key name="tab"></mds-keyboard-key>
 </mds-keyboard>
@@ -242,19 +242,19 @@ Boolean attributes in HTML treat any non-empty string as truthy. Use attribute r
 
 #### Do Not Customize Colors with Raw CSS Values Instead of Tokens
 
-Setting `--mds-keyboard-background` or `--mds-keyboard-key-background` to a raw hex or `rgba()` literal bypasses the palette layer and breaks dark mode. Always wrap color values in `rgb(var(--<token>))`.
+Setting `--mds-keyboard-background` or `--mds-keyboard-key-background` to a raw hex or `rgba()` literal bypasses the palette layer and breaks dark mode. Always use a semantic color role, `rgb(var(--magma-<role>))` ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)).
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-keyboard {
   --mds-keyboard-background: #1a1a2e;
   --mds-keyboard-key-background: #16213e;
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-keyboard {
-  --mds-keyboard-background: rgb(var(--tone-neutral-02));
-  --mds-keyboard-key-background: rgb(var(--tone-neutral-04));
+  --mds-keyboard-background: rgb(var(--magma-surface-inverse));
+  --mds-keyboard-key-background: rgb(var(--magma-surface-inverse-muted));
 }
 ```
 

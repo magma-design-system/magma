@@ -27,12 +27,12 @@ The `<mds-paginator>` web component is the page-navigation control of the Magma 
 - **`pages`** is the total number of pages the control should represent and drives how many items are rendered; with `0` only the arrows appear.
 - **`currentPage`** marks which item is selected and which arrows are disabled; set it to control the paginator from outside, or read it back after a `mdsPaginatorChange` to follow user navigation.
 
-This component does not use the shared `variant` / `tone` ladders defined in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md); its appearance is tuned only through the CSS custom properties documented in `readme.md`.
+This component does not use the shared `variant` / `tone` ladders defined in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md); its appearance is tuned only through the CSS custom properties documented in [`readme.md`](../readme.md).
 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-paginator>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the conventions documented in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md) and the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-paginator>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Paginator
 
@@ -98,7 +98,7 @@ Override `--mds-paginator-background` on the host to change the background of th
 
 ```css
 .mia-tabella mds-paginator {
-  --mds-paginator-background: rgb(var(--tone-neutral-08));
+  --mds-paginator-background: rgb(var(--magma-wash-strong));
 }
 ```
 
@@ -114,16 +114,7 @@ Set `--mds-paginator-scroll-behavior` to `auto` to remove the animated scroll wh
 
 #### Styling Individual Items
 
-The child `mds-paginator-item` component exposes its own `--mds-paginator-item-*` custom properties. Set them on the `mds-paginator` host or a parent selector; they cascade into the shadow-rendered items.
-
-```css
-.paginatore-compatto mds-paginator {
-  --mds-paginator-item-size: 28px;
-  --mds-paginator-item-radius: var(--radius-sm);
-  --mds-paginator-item-background-selected: rgb(var(--variant-primary-03));
-  --mds-paginator-item-color-selected: rgb(var(--tone-kaolin-10));
-}
-```
+The items cannot be restyled from outside. The child `mds-paginator-item` declares its `--mds-paginator-item-*` custom properties on its own host, so a value set on the `mds-paginator` host or a parent selector does not reach the shadow-rendered items, and the paginator exposes no shadow parts. Customize the paginator through `--mds-paginator-background` and `--mds-paginator-scroll-behavior` only (see the two patterns above).
 
 
 ### 3. Antipattern
@@ -132,28 +123,28 @@ Common incorrect uses of `<mds-paginator>`. Each entry pairs the wrong form with
 
 #### Do Not Slot `mds-paginator-item` Manually
 
-`<mds-paginator>` generates all its child items from the `pages` prop and accepts no slots. Manually adding `<mds-paginator-item>` children has no effect and produces duplicate or broken controls.
+`<mds-paginator>` generates all its child items from the `pages` prop and accepts no slots. Manually added `<mds-paginator-item>` children are never rendered, so they have no effect.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-paginator pages="5">
   <mds-paginator-item selected>3</mds-paginator-item>
 </mds-paginator>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-paginator pages="5" current-page="3"></mds-paginator>
 ```
 
 #### Do Not Use `mds-paginator-item` Outside `mds-paginator`
 
-`<mds-paginator-item>` is an internal sub-part. Its `disabled`, `selected`, and `icon` props are managed exclusively by the parent. Using it standalone produces unstyled, non-functional controls.
+`<mds-paginator-item>` is an internal sub-part. Its `disabled`, `selected`, and `icon` props are managed exclusively by the parent. Using it standalone produces controls that look like page items but do nothing: the page logic lives in the parent.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-paginator-item>1</mds-paginator-item>
 <mds-paginator-item selected>2</mds-paginator-item>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-paginator pages="5" current-page="2"></mds-paginator>
 ```
 
@@ -162,19 +153,26 @@ Common incorrect uses of `<mds-paginator>`. Each entry pairs the wrong form with
 When `pages` is `0` only the two arrows render, which is visually incomplete and confusing. To conditionally hide the paginator, remove it from the DOM entirely or set `display: none` on the host.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-paginator pages="0"></mds-paginator>
 
-<!-- ✅ CORRECT -->
-<mds-paginator v-if="totalePagine > 0" :pages="totalePagine"></mds-paginator>
+<!-- CORRECT: create the paginator only when there are pages -->
+<div id="paginazione"></div>
+<script>
+  if (totalePagine > 0) {
+    const pager = document.createElement('mds-paginator');
+    pager.pages = totalePagine;
+    document.getElementById('paginazione').append(pager);
+  }
+</script>
 ```
 
 #### Do Not Listen for Native `click` to Detect Page Changes
 
-The native `click` event fires on the internal shadow items and may not bubble as expected. Use the documented `mdsPaginatorChange` event instead, which carries the selected page number in `event.detail.page`.
+A native `click` bubbles out of the shadow DOM for any click on the control, but it carries no page number. Use the documented `mdsPaginatorChange` event instead, which carries the selected page number in `event.detail.page`.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-paginator id="pager" pages="10"></mds-paginator>
 <script>
   document.getElementById('pager').addEventListener('click', (e) => {
@@ -183,7 +181,7 @@ The native `click` event fires on the internal shadow items and may not bubble a
   });
 </script>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-paginator id="pager" pages="10"></mds-paginator>
 <script>
   document.getElementById('pager').addEventListener('mdsPaginatorChange', (e) => {
@@ -192,36 +190,19 @@ The native `click` event fires on the internal shadow items and may not bubble a
 </script>
 ```
 
-#### Do Not Set `current-page` to a String
-
-`current-page` is a numeric prop. Passing a quoted string (common in plain HTML attribute authoring) forces a type coercion that can produce unexpected scroll and selection behavior.
-
-```html
-<!-- 🚫 INCORRECT -->
-<mds-paginator pages="20" current-page="5"></mds-paginator>
-<!-- The attribute form is fine; the anti-pattern is framework bindings that pass a string -->
-
-<!-- 🚫 INCORRECT (framework binding passing a string, not a number) -->
-<!-- <mds-paginator :pages="20" :current-page="'5'"></mds-paginator> -->
-
-<!-- ✅ CORRECT (bind the number directly) -->
-<!-- <mds-paginator :pages="20" :current-page="5"></mds-paginator> -->
-```
-
 #### Do Not Pierce Shadow DOM to Style Items
 
-Internal `mds-paginator-item` elements live in shadow DOM. Targeting them with `>>>`, `/deep/`, or unrecognised `::part()` names breaks on any release. Use the documented `--mds-paginator-*` and `--mds-paginator-item-*` CSS custom properties on the host instead.
+Internal `mds-paginator-item` elements live in shadow DOM. Targeting them with `>>>`, `/deep/`, or unrecognised `::part()` names breaks on any release. Use the documented `--mds-paginator-*` CSS custom properties on the host instead; the items themselves take no customization from outside (their `--mds-paginator-item-*` values are declared on each item).
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-paginator >>> mds-paginator-item {
   border-radius: 4px;
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-paginator {
-  --mds-paginator-item-radius: var(--radius-sm);
-  --mds-paginator-item-background-selected: rgb(var(--variant-primary-03));
+  --mds-paginator-background: rgb(var(--magma-wash-strong));
 }
 ```
 

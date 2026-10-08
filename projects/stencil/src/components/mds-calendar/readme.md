@@ -13,18 +13,18 @@ The `<mds-calendar>` web component is the date-selection surface of the Magma De
 
 #### Semantic Behavior
 
-- **Range vs. single mode**: range selection is the default; set `singlePicker` to pick one day. In range mode the first click sets the start, the second sets the end, and a third click resets the selection; in single mode each click replaces the prior choice.
-- **Range auto-ordering**: If the second click lands before the current start, the two endpoints are swapped so `startDate` always precedes `endDate`; setting an `endDate` earlier than `startDate` is rejected with a console warning.
+- **Range vs. single mode**: range selection is the default; set `singlePicker` to pick one day. In range mode the first click sets the start, the second sets the end, and a third click starts a new range from the clicked day; in single mode each click replaces the prior choice.
+- **Range auto-ordering**: If the second click lands before the current start, the two endpoints are swapped so `startDate` always precedes `endDate`; an `endDate` set earlier than `startDate` is not reordered: changed after load, it only logs a console warning.
 - **Hover preview**: While a range start is set, hovering over cells previews the candidate range live (range mode only).
 - **Min/max bounds**: `min` and `max` mark out-of-range day cells as disabled, blocking their selection.
 - **Multi-view navigation**: The header toggles between the day grid, a month picker, and a year picker; the year view pages in decades while the calendar view pages month by month.
-- **Localization**: Weekday names, month names, and cell titles are formatted from the host's resolved locale (`it`, `en`, `es`, `el`).
-- **Emitted events**: `mdsCalendarChange` fires with `{ startDate, endDate? }` once a selection is complete; `mdsCalendarPreselect` fires alongside it to let preselection chips re-evaluate their state.
-- **Preselection slot**: A `preselection` named slot hosts quick-pick shortcuts. The area appears automatically when the slot has content and `hidePreselection` collapses it.
+- **Localization**: Weekday names, month names, and cell titles are formatted in the page language (the `lang` attribute of `<html>`, `en` when absent).
+- **Emitted events**: `mdsCalendarChange` fires on every pick with `{ startDate, endDate? }`: in range mode the first click emits `{ startDate }` alone, the second the full range; `mdsCalendarPreselect` fires only with a completed range, to let preselection shortcuts re-evaluate their state.
+- **Preselection slot**: A `preselection` named slot hosts quick-pick shortcuts. The area appears only if, when the calendar loads, the host contains an element with the class `date-preselection--has-preselection`; `hidePreselection` collapses it.
 
 #### Properties & Visual Configurations
 
-Dates are exchanged as ISO 8601 strings (`YYYY-MM-DD`). `startDate` and `endDate` seed and reflect the current selection; on load, a valid `startDate` also determines which month is shown first.
+Dates are exchanged as ISO 8601 strings (`YYYY-MM-DD`). `startDate` and `endDate` seed the selection (a click updates the internal selection and emits `mdsCalendarChange`, it does not rewrite the attributes); on load, a valid `startDate` also determines which month is shown first.
 
 - **`singlePicker`** is the mode switch: omit it for two-ended range selection, set it for single-day pickers. When set, any `endDate` is ignored and cleared with a warning.
 - **`hidePreviousButton`** / **`hideNextButton`** remove one of the header navigation buttons, typically on calendars paired side by side; **`disableMonthYearSelection`** keeps the header on the day grid; **`hideToday`** removes the highlight on today's date.
@@ -36,7 +36,7 @@ This component does not use the shared `variant` / `tone` ladders on its host - 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-calendar>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) and the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-calendar>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Single-Day Picker
 
@@ -54,7 +54,7 @@ Set the bare `single-picker` attribute for a plain single-date selector. `mdsCal
 
 #### Range Picker (default mode)
 
-Range selection is the default: omit `single-picker`. The first click sets the start date, the second sets the end date. A third click resets the selection. Preload a range by supplying both `start-date` and `end-date`.
+Range selection is the default: omit `single-picker`. The first click sets the start date, the second sets the end date. A third click starts a new range from the clicked day. `mdsCalendarChange` fires on both clicks: after the first one `endDate` is absent. Preload a range by supplying both `start-date` and `end-date`.
 
 ```html
 <mds-calendar start-date="2025-09-01" end-date="2025-09-15"></mds-calendar>
@@ -93,13 +93,14 @@ Use the `updateCurrentDate` method to jump the visible month without changing th
 
 #### Quick-Pick Preselection Shortcuts
 
-The `preselection` named slot accepts shortcut components such as [`mds-input-date-range-preselection`](../../mds-input-date-range-preselection). When at least one child with the class `date-preselection--has-preselection` is present, the slot panel becomes visible automatically; set `hide-preselection` to keep it collapsed. `mdsCalendarPreselect` fires after each range selection so preselection chips can re-evaluate their active state.
+The `preselection` named slot hosts your own shortcuts, for example `mds-button` elements whose `click` sets `start-date` / `end-date` ([`mds-input-date-range-preselection`](../../mds-input-date-range-preselection) works only inside `mds-input-date-range`). The slot panel becomes visible only if, when the calendar loads, the host contains an element with the class `date-preselection--has-preselection`; set `hide-preselection` to keep it collapsed. `mdsCalendarPreselect` fires after each completed range selection so the shortcuts can re-evaluate their active state.
 
 ```html
 <mds-calendar start-date="2025-09-01" end-date="2025-09-07">
-  <mds-input-date-range-preselection
-    slot="preselection"
-  ></mds-input-date-range-preselection>
+  <div slot="preselection" class="date-preselection--has-preselection">
+    <mds-button variant="dark" tone="text" label="Ultimi 7 giorni"></mds-button>
+    <mds-button variant="dark" tone="text" label="Ultimi 30 giorni"></mds-button>
+  </div>
 </mds-calendar>
 ```
 
@@ -133,7 +134,9 @@ Listen on the documented `mdsCalendarChange` event - not the native `change` eve
 
 ```html
 <!-- Higher-level: input with calendar overlay -->
-<mds-input-date name="scadenza" label="Scadenza"></mds-input-date>
+<mds-input-field label="Scadenza">
+  <mds-input-date name="scadenza"></mds-input-date>
+</mds-input-field>
 
 <!-- Lower-level: always-visible standalone grid -->
 <mds-calendar single-picker></mds-calendar>
@@ -141,15 +144,14 @@ Listen on the documented `mdsCalendarChange` event - not the native `change` eve
 
 #### Styling Customization via CSS Custom Properties
 
-Adjust the calendar appearance only through the documented `--mds-calendar-*` CSS custom properties. Set them on the host element or a parent selector; use Magma color tokens so dark mode and high-contrast modes keep working.
+Adjust the calendar appearance only through the documented `--mds-calendar-*` CSS custom properties. Set them on the host element or a parent selector; use the semantic color roles so dark mode, named themes and high contrast keep working.
 
 ```css
 .booking-widget mds-calendar {
-  --mds-calendar-background: rgb(var(--tone-neutral-09));
-  --mds-calendar-border-radius: var(--radius-xl);
-  --mds-calendar-padding: var(--spacing-500);
-  --mds-calendar-cell-gap: var(--gap-100);
-  --mds-calendar-day-number-color: rgb(var(--tone-neutral-02));
+  --mds-calendar-background: rgb(var(--magma-surface-muted));
+  --mds-calendar-border-radius: var(--magma-radius-xl);
+  --mds-calendar-padding: calc(var(--spacing) * 500);
+  --mds-calendar-cell-gap: calc(var(--spacing) * 100);
   --mds-calendar-cell-other-month-visibility: hidden;
 }
 ```
@@ -161,16 +163,15 @@ Common incorrect uses of `<mds-calendar>`. Each entry pairs the wrong form with 
 
 #### Do Not Toggle Single Mode with a Quoted Boolean String
 
-`singlePicker` is a boolean prop that defaults to `false`. In HTML any non-empty attribute value is truthy, so `single-picker="false"` does not restore range mode - it turns single mode on. Use the bare attribute for single mode and omit it for the default range mode; toggle it at runtime by adding/removing the attribute or setting the property in JavaScript.
+`singlePicker` is a boolean prop that defaults to `false`. The component reads the string `"false"` as `false`, but the prop is not reflected, so `single-picker="false"` stays in the DOM and attribute selectors (`mds-calendar[single-picker]`) and any code reading the attribute still see it set. Use the bare attribute for single mode and omit it for the default range mode; toggle it at runtime by adding/removing the attribute or setting the property in JavaScript.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-calendar single-picker="false"></mds-calendar>
-<mds-calendar single-picker="true"></mds-calendar>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-calendar></mds-calendar>
-<mds-calendar single-picker></mds-calendar>
+<mds-calendar id="cal" single-picker></mds-calendar>
 <script>
   document.querySelector('#cal').singlePicker = false; // back to range mode
 </script>
@@ -181,22 +182,22 @@ Common incorrect uses of `<mds-calendar>`. Each entry pairs the wrong form with 
 When `singlePicker` is set, the component rejects `endDate` with a console warning and clears it internally. Setting both `single-picker` and `end-date` is contradictory and produces no visible selection for the end date.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-calendar single-picker start-date="2025-06-01" end-date="2025-06-15"></mds-calendar>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-calendar single-picker start-date="2025-06-01"></mds-calendar>
 ```
 
 #### Do Not Provide `startDate` After `endDate`
 
-Dates must be chronologically ordered: `startDate` must precede `endDate`. If `startDate` is set to a value later than `endDate`, the component logs a console warning and does not apply the update. Always ensure `start-date <= end-date`.
+Dates must be chronologically ordered: `startDate` must precede `endDate`. The component does not reorder them: set at load, the two ends are marked with no range between them; changed later, it only logs a console warning. Always ensure `start-date <= end-date`.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-calendar start-date="2025-12-31" end-date="2025-12-01"></mds-calendar>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-calendar start-date="2025-12-01" end-date="2025-12-31"></mds-calendar>
 ```
 
@@ -205,7 +206,7 @@ Dates must be chronologically ordered: `startDate` must precede `endDate`. If `s
 `<mds-calendar>` does not bubble a native `change` event from inside its Shadow DOM. Use the documented `mdsCalendarChange` custom event so the handler reliably receives the structured `{ startDate, endDate? }` payload.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-calendar id="cal"></mds-calendar>
 <script>
   document.querySelector('#cal').addEventListener('change', (e) => {
@@ -213,7 +214,7 @@ Dates must be chronologically ordered: `startDate` must precede `endDate`. If `s
   });
 </script>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-calendar id="cal"></mds-calendar>
 <script>
   document.querySelector('#cal').addEventListener('mdsCalendarChange', (e) => {
@@ -222,39 +223,23 @@ Dates must be chronologically ordered: `startDate` must precede `endDate`. If `s
 </script>
 ```
 
-#### Do Not Place Arbitrary Content in the `preselection` Slot
-
-The `preselection` slot is designed for preselection shortcut components - not for arbitrary labels, headings, or free text. Placing unsupported elements there disrupts the preset-panel layout and may interfere with the `mdsCalendarPreselect` coordination event.
-
-```html
-<!-- 🚫 INCORRECT -->
-<mds-calendar>
-  <span slot="preselection">Scegli un intervallo rapido</span>
-</mds-calendar>
-
-<!-- ✅ CORRECT -->
-<mds-calendar>
-  <mds-input-date-range-preselection
-    slot="preselection"
-  ></mds-input-date-range-preselection>
-</mds-calendar>
-```
-
 #### Do Not Use `<mds-calendar>` as a Drop-In Replacement for `mds-input-date`
 
 `<mds-calendar>` is not form-associated and emits no `name`/`value` pair for form submission. When you need a date picker tied to a form field, use [`mds-input-date`](../../mds-input-date) (single date) or [`mds-input-date-range`](../../mds-input-date-range) (range) instead.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <form action="/prenota" method="post">
   <mds-calendar name="check-in" single-picker></mds-calendar>
-  <button type="submit">Prenota</button>
+  <mds-button type="submit" label="Prenota"></mds-button>
 </form>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <form action="/prenota" method="post">
-  <mds-input-date name="check-in" label="Data di arrivo"></mds-input-date>
-  <button type="submit">Prenota</button>
+  <mds-input-field label="Data di arrivo">
+    <mds-input-date name="check-in"></mds-input-date>
+  </mds-input-field>
+  <mds-button type="submit" label="Prenota"></mds-button>
 </form>
 ```
 
@@ -263,7 +248,7 @@ The `preselection` slot is designed for preselection shortcut components - not f
 The only supported customization surface is the set of `--mds-calendar-*` CSS custom properties. Targeting shadow-DOM internals with `::part()` selectors that are not in the documentation couples your code to the implementation and will break on minor releases.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-calendar::part(nav) {
   background: red;
 }
@@ -271,10 +256,10 @@ mds-calendar::part(cell) {
   border: 1px solid blue;
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-calendar {
-  --mds-calendar-background: rgb(var(--tone-neutral-09));
-  --mds-calendar-border-radius: var(--radius-xl);
+  --mds-calendar-background: rgb(var(--magma-surface-muted));
+  --mds-calendar-border-radius: var(--magma-radius-xl);
   --mds-calendar-cell-other-month-visibility: hidden;
 }
 ```

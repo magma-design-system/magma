@@ -19,7 +19,7 @@ The `<mds-table-body>` web component is the row-group container of the Magma Des
 - **Parent-driven state**: Both `interactive` and `selection` are set by the parent table, so consumers normally do not toggle them by hand.
 - **Live rows**: Rows added or removed at runtime are detected and re-wired with the table's interactive/selectable state.
 - **Hover relay**: When `interactive` is set, hovering the body highlights its rows.
-- **Last-row border trimming**: The last `mds-table-body` in a table clears the bottom border of its final row, so stacked bodies join visually without a doubled separator.
+- **Last-row border trimming**: The last `mds-table-body` in a table clears the bottom border of its final row, so the final row does not double the table's own outer border.
 
 #### Properties & Visual Configurations
 
@@ -31,7 +31,7 @@ This component exposes only two boolean flags, both intended to be managed by th
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-table-body>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the compound table system documented in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md) and the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-table-body>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Table Body with Data Rows
 
@@ -40,9 +40,9 @@ The canonical form. Place `<mds-table-body>` as a direct slot child of [`<mds-ta
 ```html
 <mds-table>
   <mds-table-header>
-    <mds-table-header-cell>Nome</mds-table-header-cell>
-    <mds-table-header-cell>Ruolo</mds-table-header-cell>
-    <mds-table-header-cell>Stato</mds-table-header-cell>
+    <mds-table-header-cell label="Nome"></mds-table-header-cell>
+    <mds-table-header-cell label="Ruolo"></mds-table-header-cell>
+    <mds-table-header-cell label="Stato"></mds-table-header-cell>
   </mds-table-header>
   <mds-table-body>
     <mds-table-row>
@@ -66,8 +66,8 @@ Set `interactive` on the parent `<mds-table>`. The table propagates the flag dow
 ```html
 <mds-table interactive>
   <mds-table-header>
-    <mds-table-header-cell>Documento</mds-table-header-cell>
-    <mds-table-header-cell>Data</mds-table-header-cell>
+    <mds-table-header-cell label="Documento"></mds-table-header-cell>
+    <mds-table-header-cell label="Data"></mds-table-header-cell>
   </mds-table-header>
   <mds-table-body>
     <mds-table-row>
@@ -89,8 +89,8 @@ Set `selectable` on `<mds-table>`. The table equips every row with a checkbox an
 ```html
 <mds-table selectable id="tabella-utenti">
   <mds-table-header>
-    <mds-table-header-cell>Utente</mds-table-header-cell>
-    <mds-table-header-cell>Reparto</mds-table-header-cell>
+    <mds-table-header-cell label="Utente"></mds-table-header-cell>
+    <mds-table-header-cell label="Reparto"></mds-table-header-cell>
   </mds-table-header>
   <mds-table-body>
     <mds-table-row value="u1">
@@ -120,8 +120,8 @@ When `selectable` is set and at least one `<mds-button>` is assigned to the `bat
   <mds-button slot="batch-action" label="Archivia selezionati" variant="primary" tone="strong"></mds-button>
   <mds-button slot="batch-action" label="Elimina selezionati" variant="error" tone="text"></mds-button>
   <mds-table-header>
-    <mds-table-header-cell>Pratica</mds-table-header-cell>
-    <mds-table-header-cell>Richiedente</mds-table-header-cell>
+    <mds-table-header-cell label="Pratica"></mds-table-header-cell>
+    <mds-table-header-cell label="Richiedente"></mds-table-header-cell>
   </mds-table-header>
   <mds-table-body>
     <mds-table-row value="p1">
@@ -143,8 +143,8 @@ Use [`<mds-table-header>`](../../mds-table-header), `<mds-table-body>`, and [`<m
 ```html
 <mds-table>
   <mds-table-header>
-    <mds-table-header-cell>Voce</mds-table-header-cell>
-    <mds-table-header-cell>Importo</mds-table-header-cell>
+    <mds-table-header-cell label="Voce"></mds-table-header-cell>
+    <mds-table-header-cell label="Importo"></mds-table-header-cell>
   </mds-table-header>
   <mds-table-body>
     <mds-table-row>
@@ -157,25 +157,23 @@ Use [`<mds-table-header>`](../../mds-table-header), `<mds-table-body>`, and [`<m
     </mds-table-row>
   </mds-table-body>
   <mds-table-footer>
-    <mds-table-row>
-      <mds-table-cell>Totale</mds-table-cell>
-      <mds-table-cell>1.285,50 EUR</mds-table-cell>
-    </mds-table-row>
+    <mds-table-cell>Totale</mds-table-cell>
+    <mds-table-cell>1.285,50 EUR</mds-table-cell>
   </mds-table-footer>
 </mds-table>
 ```
 
 #### Styling Customization via CSS Custom Properties
 
-Override the five documented `--mds-table-body-*` CSS custom properties on the host or a parent selector. Use Magma color tokens wrapped in `rgb(var(...))` so dark mode and high-contrast modes stay consistent.
+Override the five documented `--mds-table-body-*` CSS custom properties on the host or a parent selector. Use the semantic color roles wrapped in `rgb(var(--magma-<role>))` so dark mode and high-contrast modes stay consistent.
 
 ```css
 .tabella-evidenziata mds-table-body {
-  --mds-table-body-background: rgb(var(--tone-neutral-10));
-  --mds-table-body-background-hover: rgb(var(--variant-primary-09));
-  --mds-table-body-background-alt: rgb(var(--variant-primary-09));
-  --mds-table-body-color: rgb(var(--tone-neutral-02));
-  --mds-table-body-color-alt: rgb(var(--variant-primary-03));
+  --mds-table-body-background: rgb(var(--magma-surface-raised));
+  --mds-table-body-background-hover: rgb(var(--magma-accent-surface));
+  --mds-table-body-background-alt: rgb(var(--magma-accent-surface));
+  --mds-table-body-color: rgb(var(--magma-text-default));
+  --mds-table-body-color-alt: rgb(var(--magma-accent-fg));
 }
 ```
 
@@ -189,17 +187,17 @@ Common incorrect uses of `<mds-table-body>`. Each entry pairs the wrong form wit
 `<mds-table-body>` is a compound child and relies on the parent table for `display: table-row-group` context and for receiving the `interactive` / `selection` flags. Used standalone, layout and state wiring both break.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-table-body>
   <mds-table-row>
     <mds-table-cell>Mario Rossi</mds-table-cell>
   </mds-table-row>
 </mds-table-body>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-table>
   <mds-table-header>
-    <mds-table-header-cell>Nome</mds-table-header-cell>
+    <mds-table-header-cell label="Nome"></mds-table-header-cell>
   </mds-table-header>
   <mds-table-body>
     <mds-table-row>
@@ -214,7 +212,7 @@ Common incorrect uses of `<mds-table-body>`. Each entry pairs the wrong form wit
 The component's slot accepts only [`<mds-table-row>`](../../mds-table-row) elements. Raw `<tr>` elements are not styled by the design-system tokens, do not receive hover or selection state, and skip accessibility roles.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-table>
   <mds-table-body>
     <tr>
@@ -224,7 +222,7 @@ The component's slot accepts only [`<mds-table-row>`](../../mds-table-row) eleme
   </mds-table-body>
 </mds-table>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-table>
   <mds-table-body>
     <mds-table-row>
@@ -240,7 +238,7 @@ The component's slot accepts only [`<mds-table-row>`](../../mds-table-row) eleme
 Both flags are managed by the parent `<mds-table>`. Setting them by hand on `<mds-table-body>` will be overwritten the next time the table propagates its own state - and it creates a mismatch between the body state and the individual row states, which are also wired by the table.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-table>
   <mds-table-body interactive selection>
     <mds-table-row>
@@ -249,7 +247,7 @@ Both flags are managed by the parent `<mds-table>`. Setting them by hand on `<md
   </mds-table-body>
 </mds-table>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-table interactive selectable>
   <mds-table-body>
     <mds-table-row>
@@ -261,15 +259,15 @@ Both flags are managed by the parent `<mds-table>`. Setting them by hand on `<md
 
 #### Do Not Set Boolean Props as Strings
 
-`interactive="false"` and `selection="false"` are non-empty strings and therefore truthy - the component treats them as the flag being set. Remove the attribute to turn it off; never assign the string `"false"`.
+Stencil reads the exact string `"false"` as `false`, but `interactive="false"` and `selection="false"` leave the attribute on the element, and the body styles its hover and selection states on the attribute (`:host([interactive]:hover)`, `:host([selection])`), so they still apply. Remove the attribute to turn it off; never assign the string `"false"`.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-table-body interactive="false" selection="false">
   ...
 </mds-table-body>
 
-<!-- ✅ CORRECT (attribute absent = prop is undefined / false) -->
+<!-- CORRECT (attribute absent = prop is undefined / false) -->
 <mds-table-body>
   ...
 </mds-table-body>
@@ -280,15 +278,15 @@ Both flags are managed by the parent `<mds-table>`. Setting them by hand on `<md
 The supported customization surface is the five `--mds-table-body-*` CSS custom properties. Piercing the shadow DOM or targeting undocumented internal classes couples your code to the implementation and breaks on minor releases.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-table-body >>> tr {
   background: lightyellow;
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-table-body {
-  --mds-table-body-background: rgb(var(--tone-neutral-09));
-  --mds-table-body-background-hover: rgb(var(--variant-primary-09));
+  --mds-table-body-background: rgb(var(--magma-surface-muted));
+  --mds-table-body-background-hover: rgb(var(--magma-accent-surface));
 }
 ```
 

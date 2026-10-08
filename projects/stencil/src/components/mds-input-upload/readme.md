@@ -13,7 +13,7 @@ The `<mds-input-upload>` web component is the Magma Design System file-upload co
 
 #### Semantic Behavior
 
-- **Form association**: The accepted files are mirrored into the form value, so inside a `<form>` it submits like a native file input with no extra wiring; a form reset clears every selected file.
+- **Form association**: The form value is the `value` string of the inner file input (`C:\fakepath\` plus the name of the first accepted file), not the files themselves: to upload the files, read them with `getFiles()` or from `mdsInputUploadChange` and send them yourself. A form reset clears every selected file.
 - **Validity reporting**: Per-file errors are reported as native validity flags - too many files, oversize, or wrong type - and the joined messages become the validation message.
 - **Drag-and-drop**: The drop zone reacts to drag events; on dragenter the prompt text swaps to a drag hint, restoring on dragleave.
 - **Per-file validation**: Each added file is checked against `accept` (MIME, wildcard MIME, or extension), `maxFileSize`, and `maxFiles`; valid files render as success previews, invalid ones render as error previews with a localized message and are excluded from the form value.
@@ -26,23 +26,33 @@ The `<mds-input-upload>` web component is the Magma Design System file-upload co
 - **`accept`** declares the allowed file types as a comma-separated list of MIME types, wildcard MIME types (e.g. `image/*`), or extensions; it both filters the native picker and drives the human-readable extension hint shown to the user.
 - **`maxFileSize`** caps the size of any single file in MB (default `20`); files above it are rejected with a size error.
 - **`maxFiles`** caps how many files may be uploaded (default `1`) and enables multi-file selection when greater than one.
-- **`initialValue`** seeds the control with files already present; reassigning it re-runs the add pipeline.
-- **`sort`** controls whether the sort chooser is shown. When `sort` is set to `'date'` or `'status'`, the sort tab bar appears once more than one file is present and lets the user switch the order interactively; the selected order also persists to `localStorage`. When `sort` is omitted, no tab bar is shown and the last `localStorage` preference (defaulting to `'date'`) is applied silently.
+- **`initialValue`** seeds the control with files already present; reassigning it re-runs the add pipeline. Files set before the first render show as previews but are not set on the inner input, so `getFiles()` and the form value miss them.
+- **`sort`** controls whether the sort chooser is shown. When `sort` is set to `'date'` or `'status'`, it is the order applied every time files are added, and the sort tab bar appears once more than one file is present and lets the user switch the order interactively; the user's choice persists to `localStorage` and the tab bar highlights that stored choice. When `sort` is omitted, no tab bar is shown and the last `localStorage` preference (defaulting to `'date'`) is applied silently.
 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-input-upload>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared conventions in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md) and the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-input-upload>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Single-File Upload (Default)
 
-The simplest form. Without any attributes the drop zone accepts one file of any type up to 20 MB. Place it inside a `<form>` so the selected file is submitted natively with no extra wiring.
+The simplest form. Without any attributes the drop zone accepts one file of any type up to 20 MB. Inside a `<form>` the field submits only the fake path of the first file (`C:\fakepath\<name>`), not the file: read the files with `getFiles()` and send them yourself.
 
 ```html
-<form action="/upload" method="post" enctype="multipart/form-data">
+<form id="modulo-upload" action="/upload" method="post">
   <mds-input-upload name="allegato"></mds-input-upload>
   <mds-button type="submit" label="Invia" variant="primary" tone="strong"></mds-button>
 </form>
+
+<script>
+  document.querySelector('#modulo-upload').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const files = await e.target.querySelector('mds-input-upload').getFiles();
+    const data = new FormData();
+    Array.from(files ?? []).forEach((file) => data.append('allegato', file));
+    await fetch(e.target.action, { method: 'POST', body: data });
+  });
+</script>
 ```
 
 #### Restricting Accepted File Types
@@ -82,7 +92,7 @@ Set `max-files` to a number greater than one to enable multiple selection. The n
 
 #### Seeding with Initial Files
 
-Pass a `FileList` or `File[]` to `initialValue` to prepopulate the control - useful when editing an existing record that already has attachments. Reassigning the prop re-runs the add pipeline, including validation.
+Pass a `FileList` or `File[]` to `initialValue` to prepopulate the control - useful when editing an existing record that already has attachments. Reassigning the prop re-runs the add pipeline, including validation. Assign it once the component has rendered: files set before the first render show as previews but do not reach `getFiles()` or the form value.
 
 ```html
 <mds-input-upload id="allegati"></mds-input-upload>
@@ -113,6 +123,8 @@ Use the imperative API for host-driven workflows. `getFiles()` returns the curre
 
 ```html
 <mds-input-upload id="upload-contratto" accept=".pdf" max-file-size="10"></mds-input-upload>
+<mds-button id="btn-verifica" label="Verifica"></mds-button>
+<mds-button id="btn-annulla" label="Annulla" tone="outline"></mds-button>
 <script>
   const upload = document.querySelector('#upload-contratto');
 
@@ -134,7 +146,7 @@ Use the imperative API for host-driven workflows. `getFiles()` returns the curre
 
 #### Exposing the Sort Chooser
 
-Setting `sort` to `"date"` or `"status"` makes the sort tab bar visible once more than one file is present, letting the user switch between date and status order interactively; the choice is persisted to `localStorage`. When `sort` is omitted, no tab bar is shown and the last `localStorage` preference is applied silently.
+Setting `sort` to `"date"` or `"status"` makes the sort tab bar visible once more than one file is present, letting the user switch between date and status order interactively; the choice is persisted to `localStorage`. `sort` is also the order applied every time files are added; the highlighted tab follows the stored choice. When `sort` is omitted, no tab bar is shown and the last `localStorage` preference is applied silently.
 
 ```html
 <!-- Mostra il selettore di ordinamento, avviato su "per data" -->
@@ -158,14 +170,14 @@ The component is form-associated: a form reset clears every selected file automa
 
 #### CSS Customization
 
-Style the component only through its documented `--mds-input-upload-*` CSS custom properties. Set them on the host or a parent selector; use the Magma color tokens via `rgb(var(--<token>))` so dark mode keeps working.
+Style the component only through its documented `--mds-input-upload-*` CSS custom properties. Set them on the host or a parent selector; use the semantic color roles via `rgb(var(--magma-<role>))` ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)) so dark mode keeps working.
 
 ```css
 .upload-area-evidenziata mds-input-upload {
-  --mds-input-upload-drag-area-background-color: rgb(var(--variant-primary-10));
-  --mds-input-upload-drag-area-background-color-on-drag: rgb(var(--variant-primary-09));
-  --mds-input-upload-drag-area-border: 3px dashed rgb(var(--variant-primary-05));
-  --mds-input-upload-drag-area-border-on-drag: 3px dashed rgb(var(--variant-primary-03));
+  --mds-input-upload-drag-area-background-color: rgb(var(--magma-accent-surface-subtle));
+  --mds-input-upload-drag-area-background-color-on-drag: rgb(var(--magma-accent-surface));
+  --mds-input-upload-drag-area-border: 3px dashed rgb(var(--magma-accent-border));
+  --mds-input-upload-drag-area-border-on-drag: 3px dashed rgb(var(--magma-accent-emphasis));
   --mds-input-upload-min-cols: 2;
 }
 ```
@@ -180,10 +192,10 @@ Common incorrect uses of `<mds-input-upload>`. Each entry pairs the wrong form w
 `<input type="file">` gives you no drag-drop, no per-file validation, no progress bar, and no consistent styling. Use `<mds-input-upload>` whenever a file upload is needed.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <input type="file" accept=".pdf" multiple>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-input-upload accept=".pdf" max-files="5"></mds-input-upload>
 ```
 
@@ -192,7 +204,7 @@ Common incorrect uses of `<mds-input-upload>`. Each entry pairs the wrong form w
 The internal `<input type="file">` lives inside shadow DOM; its native `change` event may not bubble out or may fire before internal validation completes. Always listen to the documented `mdsInputUploadChange` event instead.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-input-upload id="uploader"></mds-input-upload>
 <script>
   document.querySelector('#uploader').addEventListener('change', (e) => {
@@ -200,7 +212,7 @@ The internal `<input type="file">` lives inside shadow DOM; its native `change` 
   });
 </script>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-input-upload id="uploader"></mds-input-upload>
 <script>
   document.querySelector('#uploader').addEventListener('mdsInputUploadChange', (e) => {
@@ -209,33 +221,21 @@ The internal `<input type="file">` lives inside shadow DOM; its native `change` 
 </script>
 ```
 
-#### Do Not Disable the Component with `disabled="false"`
-
-Setting any non-empty string is truthy in HTML. Remove the attribute entirely to enable the component - do not set it to the string `"false"`.
-
-```html
-<!-- 🚫 INCORRECT -->
-<mds-input-upload disabled="false"></mds-input-upload>
-
-<!-- ✅ CORRECT -->
-<mds-input-upload></mds-input-upload>
-```
-
 #### Do Not Reach into Shadow DOM for the Hidden Input
 
 The hidden `<input type="file">` is an implementation detail inside shadow DOM. Do not query it or read `.files` directly. Use the `getFiles()` method or listen to `mdsInputUploadChange`.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-input-upload id="upload"></mds-input-upload>
 <script>
   const input = document.querySelector('#upload').shadowRoot.querySelector('input[type="file"]');
   console.log(input.files); // fragile - implementation detail
 </script>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-input-upload id="upload"></mds-input-upload>
-<script>
+<script type="module">
   const files = await document.querySelector('#upload').getFiles();
   console.log(files);
 </script>
@@ -246,10 +246,10 @@ The hidden `<input type="file">` is an implementation detail inside shadow DOM. 
 The sort tab bar only appears when `sort` is explicitly set to `"date"` or `"status"` and more than one file is present. Omitting `sort` silently applies the user's last `localStorage` preference and hides the chooser. Set `sort` when you want users to be able to switch the order interactively.
 
 ```html
-<!-- 🚫 INCORRECT - sort chooser never appears because sort is omitted -->
+<!-- INCORRECT - sort chooser never appears because sort is omitted -->
 <mds-input-upload max-files="10"></mds-input-upload>
 
-<!-- ✅ CORRECT - sort chooser appears once more than one file is added -->
+<!-- CORRECT - sort chooser appears once more than one file is added -->
 <mds-input-upload max-files="10" sort="date"></mds-input-upload>
 ```
 
@@ -258,7 +258,7 @@ The sort tab bar only appears when `sort` is explicitly set to `"date"` or `"sta
 The only supported customization surface is the five `--mds-input-upload-*` CSS custom properties. Do not target internal classes or parts not listed in the API.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-input-upload >>> .drag-area {
   background: lightblue;
 }
@@ -266,19 +266,19 @@ mds-input-upload .main-action {
   display: none;
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-input-upload {
-  --mds-input-upload-drag-area-background-color: rgb(var(--variant-primary-10));
-  --mds-input-upload-drag-area-border: 3px dashed rgb(var(--variant-primary-05));
+  --mds-input-upload-drag-area-background-color: rgb(var(--magma-accent-surface-subtle));
+  --mds-input-upload-drag-area-border: 3px dashed rgb(var(--magma-accent-border));
 }
 ```
 
 #### Do Not Use `initialValue` for Each New File Added by the User
 
-`initialValue` is for seeding the control on first render with pre-existing data - for example files already saved to a server. Updating it repeatedly as the user adds files creates duplicate entries because the add pipeline is idempotent only for files already at `Status.SUCCESS`. Let the component manage user-selected files through its own UI.
+`initialValue` is for seeding the control once with pre-existing data - for example files already saved to a server. Every assignment re-runs the add pipeline, which emits `mdsInputUploadChange` again (files already accepted are skipped by name, so nothing is added): reassigning it from that event, as below, loops without end. Let the component manage user-selected files through its own UI.
 
 ```html
-<!-- 🚫 INCORRECT - misusing initialValue as a live file binding -->
+<!-- INCORRECT - misusing initialValue as a live file binding -->
 <mds-input-upload id="uploader"></mds-input-upload>
 <script>
   document.querySelector('#uploader').addEventListener('mdsInputUploadChange', (e) => {
@@ -286,7 +286,7 @@ mds-input-upload {
   });
 </script>
 
-<!-- ✅ CORRECT - just read the value when you need it -->
+<!-- CORRECT - just read the value when you need it -->
 <mds-input-upload id="uploader"></mds-input-upload>
 <script>
   document.querySelector('#uploader').addEventListener('mdsInputUploadChange', (e) => {

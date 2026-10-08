@@ -16,9 +16,9 @@ The `<mds-breadcrumb>` web component is the navigation-trail container of the Ma
 #### Semantic Behavior
 
 - **Compound parent/child**: The default slot accepts only `<mds-breadcrumb-item>` children.
-- **Selection tracking**: When a child is selected it becomes the single current depth and the others are cleared.
-- **Back button**: Unless `hide-back` is set the host renders a leading arrow that steps selection to the previous item; it auto-disables whenever the first item is current.
-- **Change event**: `mdsBreadcrumbChange` fires after any selection change - via a child click or the back arrow - carrying the new index `id` and the originating `caller` item.
+- **Selection tracking**: When the user selects a child it becomes the single current depth and the others are cleared. Setting `selected` from code emits nothing, so the parent does not react to it.
+- **Back button**: Unless `hide-back` is set the host renders a leading arrow that steps selection to the previous item; it auto-disables whenever the first item is current (or, on load, when no item is).
+- **Change event**: `mdsBreadcrumbChange` fires after any selection change - via a child click or the back arrow - carrying the new index `id` and a `caller` item: the clicked item, or for the back arrow the item that was current before the step.
 - **Localized back button**: The back button's `title` is resolved per document language (el/en/es/it).
 
 #### Properties & Visual Configurations
@@ -27,12 +27,12 @@ This component exposes a single behavioral prop:
 
 - **`hideBack`** removes the leading arrow control. Leave it off (the default) for multi-level trails where users benefit from a one-tap step backwards; set it for shallow or display-only breadcrumbs where reverse navigation adds no value.
 
-Visual styling (button colors, current-depth color, separator arrow color) is driven by the CSS custom properties documented in [`readme.md`](../readme.md), not by props. The shared `variant` / `tone` / `size` ladders defined in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) do not apply here; per-item labels and selection state live on the `<mds-breadcrumb-item>` children.
+Visual styling (item button colors, separator arrow color) is driven by the CSS custom properties documented in [`readme.md`](../readme.md), not by props; the current item's colors are set on [`mds-breadcrumb-item`](../../mds-breadcrumb-item) with its `--mds-breadcrumb-item-button-*-selected` properties. The shared `variant` / `tone` / `size` ladders defined in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) do not apply here; per-item labels and selection state live on the `<mds-breadcrumb-item>` children.
 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-breadcrumb>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the compound-component rules documented in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md) and the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-breadcrumb>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Navigation Trail
 
@@ -59,7 +59,7 @@ Add the `hide-back` attribute for display-only or shallow breadcrumbs where reve
 
 #### Listening for Navigation Changes
 
-`mdsBreadcrumbChange` fires whenever a child item is clicked or the back arrow is activated. The detail carries the zero-based `id` string of the newly selected item and the originating `caller` element.
+`mdsBreadcrumbChange` fires whenever a child item is clicked or the back arrow is activated. The detail carries the zero-based `id` string of the newly selected item and a `caller` element: the clicked item, or for the back arrow the item that was current before the step.
 
 ```html
 <mds-breadcrumb id="nav">
@@ -78,7 +78,7 @@ Add the `hide-back` attribute for display-only or shallow breadcrumbs where reve
 
 #### Programmatic Selection
 
-Set `selected` on the item you want active - the component will deselect the others and update the back button state automatically.
+Set `selected` in the markup on the item you want active on load: the parent reads it to set the back button state (disabled on the first item). Setting `selected` later from JavaScript emits no event, so the parent neither clears the other items nor updates the back button.
 
 ```html
 <mds-breadcrumb>
@@ -90,7 +90,7 @@ Set `selected` on the item you want active - the component will deselect the oth
 
 #### Item Label via `label` Prop
 
-Always prefer the `label` prop on `<mds-breadcrumb-item>` over the default text slot. The prop is reflected as an HTML attribute, enabling CSS attribute selectors and framework bindings.
+Always set the text with the `label` prop on `<mds-breadcrumb-item>`: the item has no slot. The prop is reflected as an HTML attribute, enabling CSS attribute selectors and framework bindings.
 
 ```html
 <mds-breadcrumb>
@@ -102,14 +102,17 @@ Always prefer the `label` prop on `<mds-breadcrumb-item>` over the default text 
 
 #### Styling Customization via CSS Custom Properties
 
-Apply `--mds-breadcrumb-*` vars on the host to retheme the whole trail at once. Use Magma color tokens wrapped in `rgb(var(--<token>))` so dark mode and high-contrast modes keep working. Changes on the parent propagate into the child items because the item vars inherit from the parent vars.
+Apply `--mds-breadcrumb-*` vars on the host to retheme the whole trail at once. Use semantic color roles wrapped in `rgb(var(--magma-<role>))` so dark mode and high-contrast modes keep working. Changes on the parent propagate into the child items because the item vars inherit from the parent vars. The current item's color is set on the items: the parent's `--mds-breadcrumb-button-color-current` is not read by them.
 
 ```css
 .sidebar-nav mds-breadcrumb {
-  --mds-breadcrumb-button-color: rgb(var(--variant-secondary-03));
-  --mds-breadcrumb-button-color-hover: rgb(var(--variant-secondary-01));
-  --mds-breadcrumb-button-color-current: rgb(var(--variant-secondary-01));
-  --mds-breadcrumb-arrow-depth-color: rgb(var(--variant-secondary-05));
+  --mds-breadcrumb-button-color: rgb(var(--magma-accent-fg));
+  --mds-breadcrumb-button-color-hover: rgb(var(--magma-text-default));
+  --mds-breadcrumb-arrow-depth-color: rgb(var(--magma-accent-fg));
+}
+
+.sidebar-nav mds-breadcrumb-item {
+  --mds-breadcrumb-item-button-color-selected: rgb(var(--magma-text-default));
 }
 ```
 
@@ -134,14 +137,14 @@ Common incorrect uses of `<mds-breadcrumb>`. Each entry pairs the wrong form wit
 The default slot accepts only `<mds-breadcrumb-item>` elements; slotting arbitrary HTML breaks the internal selection-tracking and back-button logic.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-breadcrumb>
   <a href="/home">Home</a>
   <span>Archivio</span>
   <strong>Documento corrente</strong>
 </mds-breadcrumb>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-breadcrumb>
   <mds-breadcrumb-item label="Home"></mds-breadcrumb-item>
   <mds-breadcrumb-item label="Archivio"></mds-breadcrumb-item>
@@ -151,16 +154,16 @@ The default slot accepts only `<mds-breadcrumb-item>` elements; slotting arbitra
 
 #### Do Not Use `<mds-breadcrumb-item>` Outside `<mds-breadcrumb>`
 
-Child items rely on the parent for ID assignment and selection-state management. Rendering them standalone breaks both keyboard navigation and the change event.
+Child items rely on the parent for ID assignment and selection-state management. Rendered standalone they get no back button, no sibling deselection and no `mdsBreadcrumbChange`.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <div class="my-nav">
   <mds-breadcrumb-item label="Home"></mds-breadcrumb-item>
   <mds-breadcrumb-item label="Sezione" selected></mds-breadcrumb-item>
 </div>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-breadcrumb>
   <mds-breadcrumb-item label="Home"></mds-breadcrumb-item>
   <mds-breadcrumb-item label="Sezione" selected></mds-breadcrumb-item>
@@ -172,7 +175,7 @@ Child items rely on the parent for ID assignment and selection-state management.
 `<mds-breadcrumb-item>` has no default slot; the `label` prop is the only way to set the visible text. Text or HTML placed between the tags is ignored and never rendered.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-breadcrumb>
   <mds-breadcrumb-item>
     <strong>Categoria</strong>
@@ -182,7 +185,7 @@ Child items rely on the parent for ID assignment and selection-state management.
   </mds-breadcrumb-item>
 </mds-breadcrumb>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-breadcrumb>
   <mds-breadcrumb-item label="Categoria"></mds-breadcrumb-item>
   <mds-breadcrumb-item label="Sottocategoria" selected></mds-breadcrumb-item>
@@ -194,13 +197,13 @@ Child items rely on the parent for ID assignment and selection-state management.
 The parent tracks which item is selected internally; toggling CSS classes or `aria-current` on the host bypasses that logic and leaves the back button in an inconsistent state. Use the `selected` prop instead.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-breadcrumb>
   <mds-breadcrumb-item label="Home" class="is-active" aria-current="page"></mds-breadcrumb-item>
   <mds-breadcrumb-item label="Archivio"></mds-breadcrumb-item>
 </mds-breadcrumb>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-breadcrumb>
   <mds-breadcrumb-item label="Home" selected></mds-breadcrumb-item>
   <mds-breadcrumb-item label="Archivio"></mds-breadcrumb-item>
@@ -209,10 +212,10 @@ The parent tracks which item is selected internally; toggling CSS classes or `ar
 
 #### Do Not Pierce the Shadow DOM to Style the Internal Back Button
 
-The back button rendered inside `<mds-breadcrumb>` is a private implementation detail. Use the documented `--mds-breadcrumb-*` CSS custom properties to control its appearance.
+The back button rendered inside `<mds-breadcrumb>` is a private implementation detail: it exposes no part, and no documented `--mds-breadcrumb-*` CSS custom property reaches it. To remove it, set `hide-back`.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-breadcrumb >>> .back {
   background: red;
 }
@@ -220,10 +223,15 @@ mds-breadcrumb::part(back) {
   display: none;
 }
 
-/* ✅ CORRECT */
-mds-breadcrumb {
-  --mds-breadcrumb-button-background-disabled: transparent;
-}
+/* CORRECT - no part or custom property reaches the back button: remove it with hide-back */
+```
+
+```html
+<!-- CORRECT -->
+<mds-breadcrumb hide-back>
+  <mds-breadcrumb-item label="Home"></mds-breadcrumb-item>
+  <mds-breadcrumb-item label="Archivio" selected></mds-breadcrumb-item>
+</mds-breadcrumb>
 ```
 
 

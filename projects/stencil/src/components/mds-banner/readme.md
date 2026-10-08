@@ -35,7 +35,7 @@ This component uses the shared `variant` / `tone` ladders defined in [`docs/agen
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-banner>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) and the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-banner>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) and the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Informational Banner
 
@@ -133,7 +133,7 @@ Slot `<mds-button>` elements with `slot="action"` to add inline controls. The ac
 
 #### Tone for Visual Emphasis
 
-`tone` controls emphasis without changing the semantic variant. Use `strong` for maximum contrast, `weak` (default) for subtle background tints, and `box` for high-contrast placements. `mds-banner` accepts only `weak`, `strong`, and `box` - not `outline` or `text`.
+`tone` controls emphasis without changing the semantic variant. `strong` paints the status tint on the whole banner, `weak` (default) keeps a neutral raised surface and colours only the icon, and `box` adds a solid box shadow for high-contrast placements. `mds-banner` accepts only `weak`, `strong`, and `box` - not `outline` or `text`.
 
 ```html
 <!-- Bassa enfasi (default) -->
@@ -191,15 +191,15 @@ When `deletable` is set and the banner lives inside an `<mds-modal>`, activating
 
 #### CSS Custom Property Customization
 
-Override appearance only through the documented `--mds-banner-*` custom properties. Set them on the host or a parent selector; use Magma color tokens via `rgb(var(--<token>))` so dark mode and high-contrast modes keep working.
+Override appearance only through the documented `--mds-banner-*` custom properties. Set them on the host or a parent selector; use semantic color roles via `rgb(var(--magma-<role>))` so dark mode and high-contrast modes keep working.
 
 ```css
 .featured-notice mds-banner {
-  --mds-banner-background: rgb(var(--variant-primary-03));
-  --mds-banner-color: rgb(var(--tone-kaolin-10));
-  --mds-banner-headline-color: rgb(var(--tone-kaolin-10));
-  --mds-banner-radius: var(--radius-sm);
-  --mds-banner-shadow: 0 4px 16px rgb(var(--tone-neutral-02) / 0.15);
+  --mds-banner-background: rgb(var(--magma-accent-emphasis));
+  --mds-banner-color: rgb(var(--magma-accent-on-emphasis));
+  --mds-banner-headline-color: rgb(var(--magma-accent-on-emphasis));
+  --mds-banner-radius: var(--magma-radius-sm);
+  --mds-banner-shadow: 0 4px 16px rgb(var(--magma-shadow-ink) / 0.15);
 }
 ```
 
@@ -210,15 +210,15 @@ Common incorrect uses of `<mds-banner>`. Each entry pairs the wrong form with th
 
 #### Do Not Use an Invalid `tone` Value
 
-`mds-banner.tone` is typed as `ToneMinimalBoxVariantType`, which allows only `weak`, `strong`, and `box`. Values like `outline` or `text` are not accepted and will silently fall back to the default.
+`mds-banner.tone` is typed as `ToneMinimalBoxVariantType`, which allows only `weak`, `strong`, and `box`. Values like `outline` or `text` are not accepted: no tone style matches them, so the banner renders as with `strong`, not with the `weak` default.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-banner variant="info" tone="outline">
   <mds-text typography="detail">Informazione di sistema.</mds-text>
 </mds-banner>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-banner variant="info" tone="weak">
   <mds-text typography="detail">Informazione di sistema.</mds-text>
 </mds-banner>
@@ -226,15 +226,15 @@ Common incorrect uses of `<mds-banner>`. Each entry pairs the wrong form with th
 
 #### Do Not Override the ARIA Role Manually
 
-The component derives `role` and `aria-live` from `variant` - overriding them breaks the intentional severity mapping (`error`/`warning` assertive, others polite).
+The component derives `role` and `aria-live` from `variant` (`error`/`warning` assertive, others polite) and writes them on the host when it renders, overwriting a manual value. To change the announcement, change the `variant`.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-banner variant="info" role="alert" aria-live="assertive">
   <mds-text typography="detail">Aggiornamento disponibile.</mds-text>
 </mds-banner>
 
-<!-- ✅ CORRECT - let variant drive the ARIA behavior -->
+<!-- CORRECT - let variant drive the ARIA behavior -->
 <mds-banner variant="info">
   <mds-text typography="detail">Aggiornamento disponibile.</mds-text>
 </mds-banner>
@@ -245,13 +245,13 @@ The component derives `role` and `aria-live` from `variant` - overriding them br
 The `action` named slot is the correct place for inline controls. Placing buttons in the default slot renders them inside the text region, breaks layout, and loses the flex wrapping the action row provides.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-banner variant="warning">
   <mds-text typography="detail">La licenza sta per scadere.</mds-text>
   <mds-button variant="warning">Rinnova</mds-button>
 </mds-banner>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-banner variant="warning">
   <mds-text typography="detail">La licenza sta per scadere.</mds-text>
   <mds-button slot="action" variant="warning" tone="strong">Rinnova</mds-button>
@@ -260,15 +260,15 @@ The `action` named slot is the correct place for inline controls. Placing button
 
 #### Do Not Set `deletable="false"` to Hide the Close Button
 
-`deletable` is a boolean prop. Setting it to the string `"false"` evaluates as truthy in HTML and shows the close button. Remove the attribute (or omit it) to hide the button.
+`deletable` is a boolean prop, and a false boolean is an absent attribute ([`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md)). Stencil reads the string `"false"` as `false` here, so the button is hidden, but the attribute stays on the element and any `[deletable]` selector still matches it. Remove the attribute (or omit it) to hide the button.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-banner variant="error" deletable="false">
   <mds-text typography="detail">Errore permanente - non dismissibile.</mds-text>
 </mds-banner>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-banner variant="error">
   <mds-text typography="detail">Errore permanente - non dismissibile.</mds-text>
 </mds-banner>
@@ -279,12 +279,12 @@ The `action` named slot is the correct place for inline controls. Placing button
 `variant="dark"` and `variant="light"` produce `role="presentation"` with no live region - they are silent to assistive tech. Using them for error, warning, or informational content means screen reader users never receive the announcement.
 
 ```html
-<!-- 🚫 INCORRECT - errore silenzioso per tecnologie assistive -->
+<!-- INCORRECT - errore silenzioso per tecnologie assistive -->
 <mds-banner variant="dark">
   <mds-text typography="detail">Errore: impossibile caricare il documento.</mds-text>
 </mds-banner>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-banner variant="error">
   <mds-text typography="detail">Errore: impossibile caricare il documento.</mds-text>
 </mds-banner>
@@ -295,7 +295,7 @@ The `action` named slot is the correct place for inline controls. Placing button
 The only supported customization surface is the `--mds-banner-*` CSS custom properties plus the `::part(text)` shadow part. Targeting internal class names with `>>>` or undocumented `::part()` names couples your code to the implementation and breaks on minor releases.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-banner >>> .headline {
   font-size: 1.5rem;
 }
@@ -303,10 +303,10 @@ mds-banner::part(content) {
   padding: 0;
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-banner {
-  --mds-banner-headline-color: rgb(var(--variant-primary-03));
-  --mds-banner-radius: var(--radius-sm);
+  --mds-banner-headline-color: rgb(var(--magma-accent-fg));
+  --mds-banner-radius: var(--magma-radius-sm);
 }
 mds-banner::part(text) {
   line-height: 1.6;
@@ -315,10 +315,10 @@ mds-banner::part(text) {
 
 #### Do Not Listen to the Native `click` Event for Dismissal
 
-The component fires `mdsBannerClose` when the close button is activated (both pointer and keyboard). Listening to the native `click` event may miss keyboard activations and does not bubble out of Shadow DOM reliably.
+The component fires `mdsBannerClose` only when the close button is activated (both pointer and keyboard). A native `click` listener on the host fires for a click anywhere in the banner, body text and action buttons included.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-banner variant="info" deletable id="notice">
   <mds-text typography="detail">Avviso temporaneo.</mds-text>
 </mds-banner>
@@ -328,7 +328,7 @@ The component fires `mdsBannerClose` when the close button is activated (both po
   });
 </script>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-banner variant="info" deletable id="notice">
   <mds-text typography="detail">Avviso temporaneo.</mds-text>
 </mds-banner>

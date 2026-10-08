@@ -20,7 +20,7 @@ The `<mds-stepper-bar-item>` web component represents a single step inside a [`<
 - **Index resolution**: The item computes its own ordinal from its position among the parent's children; this index feeds the localized "step N" caption rendered when `step` is enabled.
 - **Three-way status badge**: When `badge` is true the item renders a status badge whose variant and localized text reflect the resolved state - `success`/done, `info`/current, or `dark`/queued.
 - **Icon swap on completion**: The displayed icon switches from `icon` to `iconChecked` once the item is done and no longer current.
-- **Selection event bubbles up**: It emits `mdsStepperBarItemDone` (detail `{ value }`), which the parent listens for to mark this item current and recompute the flow. The item is keyboard-activatable.
+- **No selection event**: It declares `mdsStepperBarItemDone` (detail `{ value }`) but never emits it, so clicking an item does not change the current step. The item is not focusable (it has no `tabindex`).
 - **Localization**: Step, badge and status strings are localized (el/en/es/it).
 
 #### Properties & Visual Configurations
@@ -30,13 +30,13 @@ Most state props are managed by the parent rather than the consumer. The props w
 - **`icon` / `iconChecked`**: Set `icon` for the default and current appearance; set `iconChecked` only when the completed step should show a different glyph (it defaults to `icon`).
 - **`step`**: Enable to surface the auto-numbered "step N" caption above the label - use it for explicitly ordered flows where the number aids orientation.
 - **`badge`**: Enable to show the queued/current/done status pill; prefer it when status legibility matters more than horizontal compactness.
-- **`value`**: The token carried in the `mdsStepperBarItemDone` event detail; set it so the parent can aggregate which steps have been completed.
+- **`value`**: The token the parent collects from the completed items into the `value` of its `mdsStepperBarChange` detail (comma-joined); set it so the parent can aggregate which steps have been completed.
 - **`typography`**: Overrides the label's typography token (defaults to `h6`); lower it for denser bars.
 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-stepper-bar-item>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the compound component rules documented in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md) and the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-stepper-bar-item>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Minimal Step Inside a Stepper Bar
 
@@ -138,7 +138,7 @@ Set `badge` to show the localized status pill (Completato / In corso / In coda).
 
 #### Carrying a Value for Event Handling
 
-Set `value` on each item so the `mdsStepperBarItemDone` event carries a meaningful identifier. Listen to the event on the parent or a common ancestor.
+Set `value` on each item: the parent collects the values of the completed items, comma-joined, into the `value` of its `mdsStepperBarChange` detail. Listen to that event on the parent or a common ancestor.
 
 ```html
 <mds-stepper-bar id="stepper" items-done="1">
@@ -171,7 +171,7 @@ Set `value` on each item so the `mdsStepperBarItemDone` event carries a meaningf
 
 #### Pairing Step Content via the `content` Slot
 
-Place panel elements with `slot="content"` inside `<mds-stepper-bar>` - one per item in order. The parent shows only the panel matching the current step.
+Place panel elements with `slot="content"` inside `<mds-stepper-bar>` - one per item in order. The parent shows only the panel matching the current step (it puts the `hidden` class on the others, so the page needs a `.hidden { display: none }` rule, such as the Tailwind utility).
 
 ```html
 <mds-stepper-bar items-done="1">
@@ -219,14 +219,14 @@ Lower the `typography` prop (default `h6`) when horizontal space is tight or whe
 
 #### Styling Customization
 
-Style items only through the documented `--mds-stepper-bar-item-*` CSS custom properties. Use Magma color tokens via `rgb(var(--<token>))` so dark mode and high-contrast modes keep working. Target the `::part(badge)` surface only when a deep visual override of the badge wrapper is required.
+Style items only through the documented `--mds-stepper-bar-item-*` CSS custom properties. Use semantic color roles via `rgb(var(--magma-<role>))` so dark mode and high-contrast modes keep working. Target the `::part(badge)` surface only when a deep visual override of the badge wrapper is required.
 
 ```css
 .checkout-flow mds-stepper-bar-item {
-  --mds-stepper-bar-item-icon-background-current: rgb(var(--variant-secondary-04));
-  --mds-stepper-bar-item-icon-color-current: rgb(var(--tone-neutral));
-  --mds-stepper-bar-item-icon-background-done: rgb(var(--status-success-05));
-  --mds-stepper-bar-item-progress-color: rgb(var(--status-success-04));
+  --mds-stepper-bar-item-icon-background-current: rgb(var(--magma-accent-emphasis));
+  --mds-stepper-bar-item-icon-color-current: rgb(var(--magma-accent-on-emphasis));
+  --mds-stepper-bar-item-icon-background-done: rgb(var(--magma-success-emphasis));
+  --mds-stepper-bar-item-progress-color: rgb(var(--magma-success-emphasis));
   --mds-stepper-bar-item-min-width: 160px;
 }
 ```
@@ -241,10 +241,10 @@ Common incorrect uses of `<mds-stepper-bar-item>`. Each entry pairs the wrong fo
 `<mds-stepper-bar-item>` is a compound child - its state (`done`, `current`, index) is resolved by the parent. Using it standalone leaves `isDone`, `isCurrent` and `index` at their defaults and produces broken visual output.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-stepper-bar-item icon="mi/baseline/person" label="Dati personali"></mds-stepper-bar-item>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-stepper-bar items-done="1">
   <mds-stepper-bar-item icon="mi/baseline/person" icon-checked="mi/baseline/done" label="Dati personali"></mds-stepper-bar-item>
   <mds-stepper-bar-item icon="mi/baseline/location-on" icon-checked="mi/baseline/done" label="Indirizzo"></mds-stepper-bar-item>
@@ -253,28 +253,28 @@ Common incorrect uses of `<mds-stepper-bar-item>`. Each entry pairs the wrong fo
 
 #### Do Not Set `done="false"` or `current="false"` as Strings
 
-`done` and `current` are boolean props; any non-empty string value is truthy in HTML. To turn them off, remove the attribute or let the parent manage state via `items-done`.
+`done` and `current` are boolean props. Stencil reads `"false"` as `false` and, since both are reflected, removes the attribute at the first render, so this happens to work; but the markup says the opposite of what it does, and on a prop that is not reflected the attribute stays in the DOM, where `[attr]` selectors still match it. To turn them off, remove the attribute or let the parent manage state via `items-done`.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-stepper-bar-item done="false" current="false" icon="mi/baseline/payment" label="Pagamento"></mds-stepper-bar-item>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-stepper-bar-item icon="mi/baseline/payment" label="Pagamento"></mds-stepper-bar-item>
 ```
 
 #### Do Not Override State Manually When the Parent Manages It
 
-`done` and `current` are driven by `<mds-stepper-bar>`'s `items-done` prop. Setting them on individual items and also setting `items-done` creates conflicting state that the parent overwrites on each render cycle.
+`done` and `current` are driven by `<mds-stepper-bar>`'s `items-done` prop. Setting them on individual items and also setting `items-done` creates conflicting state that the parent overwrites when it loads and whenever `items-done` changes.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-stepper-bar items-done="2">
   <mds-stepper-bar-item done current icon="mi/baseline/person" label="Dati personali"></mds-stepper-bar-item>
   <mds-stepper-bar-item icon="mi/baseline/location-on" label="Indirizzo"></mds-stepper-bar-item>
 </mds-stepper-bar>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-stepper-bar items-done="2">
   <mds-stepper-bar-item icon="mi/baseline/person" icon-checked="mi/baseline/done" label="Dati personali"></mds-stepper-bar-item>
   <mds-stepper-bar-item icon="mi/baseline/location-on" icon-checked="mi/baseline/done" label="Indirizzo"></mds-stepper-bar-item>
@@ -283,10 +283,10 @@ Common incorrect uses of `<mds-stepper-bar-item>`. Each entry pairs the wrong fo
 
 #### Do Not Wrap Items in Extra HTML Elements
 
-The parent queries `mds-stepper-bar-item` elements directly; a wrapper `<div>` or `<li>` breaks the parent-child communication, index resolution and scroll alignment.
+Each item numbers itself among its own siblings, and the parent's track lays out its direct children: a wrapper `<div>` or `<li>` turns every wrapped item into "Step 1" and breaks the track layout and scroll alignment.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-stepper-bar items-done="1">
   <div>
     <mds-stepper-bar-item icon="mi/baseline/person" label="Dati personali"></mds-stepper-bar-item>
@@ -296,7 +296,7 @@ The parent queries `mds-stepper-bar-item` elements directly; a wrapper `<div>` o
   </div>
 </mds-stepper-bar>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-stepper-bar items-done="1">
   <mds-stepper-bar-item icon="mi/baseline/person" icon-checked="mi/baseline/done" label="Dati personali"></mds-stepper-bar-item>
   <mds-stepper-bar-item icon="mi/baseline/location-on" icon-checked="mi/baseline/done" label="Indirizzo"></mds-stepper-bar-item>
@@ -308,7 +308,7 @@ The parent queries `mds-stepper-bar-item` elements directly; a wrapper `<div>` o
 The only documented shadow part is `badge`. Targeting internals such as `::part(icon)` or `::part(progress)` couples code to the private Shadow DOM structure and will break on minor releases. Use the `--mds-stepper-bar-item-*` CSS custom properties instead.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-stepper-bar-item::part(icon) {
   background-color: purple;
 }
@@ -316,9 +316,9 @@ mds-stepper-bar-item::part(progress) {
   height: 6px;
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-stepper-bar-item {
-  --mds-stepper-bar-item-icon-background-current: rgb(var(--variant-primary-04));
+  --mds-stepper-bar-item-icon-background-current: rgb(var(--magma-accent-emphasis));
   --mds-stepper-bar-item-progress-thickness: 6px;
 }
 ```
@@ -328,13 +328,13 @@ mds-stepper-bar-item {
 Both are required props. An item without `label` has no accessible or visual description; an item without `icon` leaves the icon area empty and breaks the progress-line layout.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-stepper-bar items-done="1">
   <mds-stepper-bar-item label="Dati personali"></mds-stepper-bar-item>
   <mds-stepper-bar-item icon="mi/baseline/location-on"></mds-stepper-bar-item>
 </mds-stepper-bar>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-stepper-bar items-done="1">
   <mds-stepper-bar-item icon="mi/baseline/person" label="Dati personali"></mds-stepper-bar-item>
   <mds-stepper-bar-item icon="mi/baseline/location-on" label="Indirizzo"></mds-stepper-bar-item>

@@ -17,13 +17,13 @@ The `<mds-breadcrumb-item>` web component represents a single navigable depth in
 
 - **Compound child only**: Must be placed as a direct default-slot child of `<mds-breadcrumb>`; it is not used standalone and the parent's slot should contain only `mds-breadcrumb-item` elements, not mixed child types.
 - **Selection is parent-orchestrated**: Clicking the item emits `mdsBreadcrumbItemSelect` with `{ id, selected }`; the parent then marks the matching item selected and clears the others, so only one item is selected at a time.
-- **Selected item is inert**: While `selected` is true the item cannot be re-activated; non-selected items remain clickable.
+- **Selected item is inert to the pointer**: While `selected` is true the item ignores pointer clicks; keyboard activation still reaches it and clears the selection. Non-selected items remain clickable.
 - **Keyboard activation**: The item responds to keyboard activation in addition to pointer clicks.
 - **Decorative separator**: The trailing arrow is decorative and carries no semantic meaning.
 
 #### Properties & Visual Configurations
 
-This child exposes essentially no visual configuration of its own - appearance is inherited from `<mds-breadcrumb>` and the shared button system, and styling overrides are done through the `--mds-breadcrumb-item-*` CSS custom properties listed in the readme.
+This child exposes essentially no visual configuration of its own - appearance is inherited from `<mds-breadcrumb>` and the shared button system, and styling overrides are done through the `--mds-breadcrumb-item-*` CSS custom properties listed in [`readme.md`](../readme.md).
 
 - **`label`**: The item's visible text. This is the only way to set the text - the component renders it through an internal `<mds-button>` and exposes no default slot. It matches the `label` prop convention used across Magma components.
 - **`selected`**: Marks this item as the current depth. In normal use you set it on at most one item as the initial state; thereafter the parent manages it in response to navigation. Use it only to seed which depth is active on first render.
@@ -31,7 +31,7 @@ This child exposes essentially no visual configuration of its own - appearance i
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-breadcrumb-item>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) and the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-breadcrumb-item>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Breadcrumb Trail
 
@@ -59,7 +59,7 @@ Set `selected` on the item that represents the user's current location on first 
 
 #### Listening for Navigation Changes
 
-Listen to `mdsBreadcrumbItemSelect` on the item (or on its parent [`<mds-breadcrumb>`](../../mds-breadcrumb) via event bubbling as `mdsBreadcrumbChange`) to react when the user navigates to a different depth.
+Listen to `mdsBreadcrumbItemSelect` on the item, or to `mdsBreadcrumbChange`, which the parent [`<mds-breadcrumb>`](../../mds-breadcrumb) emits after updating the selection, to react when the user navigates to a different depth.
 
 ```html
 <mds-breadcrumb id="nav">
@@ -77,11 +77,11 @@ Listen to `mdsBreadcrumbItemSelect` on the item (or on its parent [`<mds-breadcr
 
 #### Styling the Arrow Separator
 
-Override `--mds-breadcrumb-item-arrow-depth-color` on the host or a parent selector to recolour the separator icon without touching the button label color. Use Magma color tokens wrapped in `rgb(var(...))` so dark mode keeps working.
+Override `--mds-breadcrumb-item-arrow-depth-color` on the host or a parent selector to recolour the separator icon without touching the button label color. Use semantic color roles wrapped in `rgb(var(--magma-<role>))` so dark mode keeps working.
 
 ```css
 .header-nav mds-breadcrumb-item {
-  --mds-breadcrumb-item-arrow-depth-color: rgb(var(--variant-primary-03));
+  --mds-breadcrumb-item-arrow-depth-color: rgb(var(--magma-accent-fg));
 }
 ```
 
@@ -91,10 +91,10 @@ Override the button color and background tokens to match a custom surface. All t
 
 ```css
 .sidebar-nav mds-breadcrumb-item {
-  --mds-breadcrumb-item-button-color: rgb(var(--tone-neutral-03));
-  --mds-breadcrumb-item-button-color-hover: rgb(var(--tone-neutral-01));
-  --mds-breadcrumb-item-button-color-selected: rgb(var(--variant-primary-05));
-  --mds-breadcrumb-item-button-background-selected: rgb(var(--variant-primary-10));
+  --mds-breadcrumb-item-button-color: rgb(var(--magma-text-muted));
+  --mds-breadcrumb-item-button-color-hover: rgb(var(--magma-text-default));
+  --mds-breadcrumb-item-button-color-selected: rgb(var(--magma-accent-fg));
+  --mds-breadcrumb-item-button-background-selected: rgb(var(--magma-accent-surface-subtle));
 }
 ```
 
@@ -104,7 +104,7 @@ The internal `<mds-button>` is exposed as `::part(button)`. Use it only when the
 
 ```css
 .compact-nav mds-breadcrumb-item::part(button) {
-  --mds-button-radius: var(--radius-sm);
+  --mds-button-radius: var(--magma-radius-sm);
 }
 ```
 
@@ -118,13 +118,13 @@ Common incorrect uses of `<mds-breadcrumb-item>`. Each entry pairs the wrong for
 `<mds-breadcrumb-item>` is a compound child; it communicates with its parent through internal events and relies on the parent to assign IDs, manage selection, and control the back button. Outside the parent it renders an isolated button with no selection management.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <nav>
   <mds-breadcrumb-item label="Home"></mds-breadcrumb-item>
   <mds-breadcrumb-item label="Archivio"></mds-breadcrumb-item>
 </nav>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-breadcrumb>
   <mds-breadcrumb-item label="Home"></mds-breadcrumb-item>
   <mds-breadcrumb-item label="Archivio"></mds-breadcrumb-item>
@@ -136,11 +136,11 @@ Common incorrect uses of `<mds-breadcrumb-item>`. Each entry pairs the wrong for
 `<mds-breadcrumb-item>` has no default slot - it renders its text through an internal `<mds-button>` driven by the `label` prop. Anything placed between the tags (plain text or HTML) is ignored and never rendered. Always use the `label` prop.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-breadcrumb-item>Dettaglio</mds-breadcrumb-item>
 <mds-breadcrumb-item><strong>Dettaglio</strong></mds-breadcrumb-item>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-breadcrumb-item label="Dettaglio"></mds-breadcrumb-item>
 ```
 
@@ -149,14 +149,14 @@ Common incorrect uses of `<mds-breadcrumb-item>`. Each entry pairs the wrong for
 `selected` should be set on at most one item as the initial active depth. Marking multiple items selected puts the breadcrumb in an inconsistent state that the parent cannot resolve until the next click.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-breadcrumb>
   <mds-breadcrumb-item label="Home" selected></mds-breadcrumb-item>
   <mds-breadcrumb-item label="Archivio" selected></mds-breadcrumb-item>
   <mds-breadcrumb-item label="Dettaglio"></mds-breadcrumb-item>
 </mds-breadcrumb>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-breadcrumb>
   <mds-breadcrumb-item label="Home"></mds-breadcrumb-item>
   <mds-breadcrumb-item label="Archivio"></mds-breadcrumb-item>
@@ -166,29 +166,29 @@ Common incorrect uses of `<mds-breadcrumb-item>`. Each entry pairs the wrong for
 
 #### Do Not Set `selected="false"` to Deselect
 
-`selected` is a boolean attribute. Any non-empty string value - including `"false"` - is truthy in HTML and keeps the item selected. Remove the attribute entirely to deselect.
+`selected` is a boolean attribute. Stencil reads the string `"false"` as `false`, but the attribute stays on the element: the item keeps the selected styling and ignores pointer clicks (`:host([selected])`), and the parent's `[selected]` query still counts it. Remove the attribute entirely to deselect.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-breadcrumb-item label="Home" selected="false"></mds-breadcrumb-item>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-breadcrumb-item label="Home"></mds-breadcrumb-item>
 ```
 
 #### Do Not Listen for Native `click` to Track Navigation
 
-The component emits `mdsBreadcrumbItemSelect` when a step is activated and the parent emits `mdsBreadcrumbChange`. Native `click` events may not bubble out of shadow DOM reliably, and they fire even on the already-selected (inert) item.
+The component emits `mdsBreadcrumbItemSelect` when a step is activated and the parent emits `mdsBreadcrumbChange`. A native `click` carries no depth, and it fires even on the already-selected (inert) item and on the separator arrow.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <script>
   document.querySelector('mds-breadcrumb-item').addEventListener('click', (e) => {
-    // may not fire; fires even on the selected/inert item
+    // no depth in the event; fires even on the selected/inert item
   });
 </script>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <script>
   document.querySelector('mds-breadcrumb').addEventListener('mdsBreadcrumbChange', (e) => {
     console.log('nuovo passo attivo:', e.detail.id);
@@ -201,14 +201,14 @@ The component emits `mdsBreadcrumbItemSelect` when a step is activated and the p
 The supported customization surface is the documented `--mds-breadcrumb-item-*` CSS custom properties and the `::part(button)` export. Targeting internal classes directly couples your code to the shadow DOM implementation and will break on minor releases.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-breadcrumb-item >>> .icon {
   fill: red;
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-breadcrumb-item {
-  --mds-breadcrumb-item-arrow-depth-color: rgb(var(--variant-primary-03));
+  --mds-breadcrumb-item-arrow-depth-color: rgb(var(--magma-accent-fg));
 }
 ```
 

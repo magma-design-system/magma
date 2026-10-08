@@ -33,7 +33,7 @@ This component does not expose the shared `variant` / `tone` ladders ([`docs/age
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-url-view>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the conventions documented in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md) and the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-url-view>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Minimal Embed Inside a Modal
 
@@ -119,13 +119,13 @@ Listen for `mdsUrlViewClose` to update application state when the user clicks th
 
 #### Styling Customization
 
-Style the component only through its documented `--mds-url-view-*` CSS custom properties. Set them on the host or on a parent selector; use Magma color tokens via `rgb(var(--<token>))` so dark mode and high-contrast modes keep working.
+Style the component only through its documented `--mds-url-view-*` CSS custom properties. Set them on the host or on a parent selector; use the semantic color roles via `rgb(var(--magma-<role>))` so dark mode and high-contrast modes keep working.
 
 ```css
 .anteprima-documento mds-url-view {
-  --mds-url-view-background: rgb(var(--tone-neutral-09));
-  --mds-url-view-color: rgb(var(--tone-neutral-01));
-  --mds-url-view-radius: var(--radius-lg);
+  --mds-url-view-background: rgb(var(--magma-wash-base));
+  --mds-url-view-color: rgb(var(--magma-text-default));
+  --mds-url-view-radius: var(--magma-radius-lg);
   --mds-url-view-shadow: var(--shadow-xl);
   --mds-url-view-header-shadow: var(--shadow-md-sharp);
 }
@@ -141,12 +141,12 @@ Common incorrect uses of `<mds-url-view>`. Each entry pairs the wrong form with 
 Reaching for a bare `<iframe>` skips the header, dismiss control, accessibility labels, keyboard handling, and modal integration that `<mds-url-view>` provides. Use the component instead.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-modal position="center" opened>
   <iframe slot="window" src="https://servizi.example.it/" style="width:100%;height:80vh;"></iframe>
 </mds-modal>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-modal position="center" opened>
   <mds-url-view
     slot="window"
@@ -159,13 +159,13 @@ Reaching for a bare `<iframe>` skips the header, dismiss control, accessibility 
 
 #### Do Not Omit `src`
 
-`src` is the only required prop. Omitting it or passing an empty string throws a runtime URL parse error when the component attempts to derive the hostname.
+`src` is the only required prop. Without it the iframe loads nothing, and the header title and the ARIA labels, derived from `src`, are left empty.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-url-view slot="window"></mds-url-view>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-url-view slot="window" src="https://servizi.example.it/"></mds-url-view>
 ```
 
@@ -174,10 +174,10 @@ Reaching for a bare `<iframe>` skips the header, dismiss control, accessibility 
 `<mds-url-view>` auto-closes the nearest `mds-modal` ancestor on dismiss. Used outside a modal, the close button fires `mdsUrlViewClose` but nothing hides the component - you must listen for the event and handle visibility yourself.
 
 ```html
-<!-- 🚫 INCORRECT - dismiss button fires but nothing hides the component -->
+<!-- INCORRECT - dismiss button fires but nothing hides the component -->
 <mds-url-view src="https://servizi.example.it/" label="Portale"></mds-url-view>
 
-<!-- ✅ CORRECT - listen and hide manually when used standalone -->
+<!-- CORRECT - listen and hide manually when used standalone -->
 <div id="url-wrapper">
   <mds-url-view id="url-view" src="https://servizi.example.it/" label="Portale"></mds-url-view>
 </div>
@@ -193,7 +193,7 @@ Reaching for a bare `<iframe>` skips the header, dismiss control, accessibility 
 The supported customization surface is the five `--mds-url-view-*` CSS custom properties. Targeting shadow internals via `::part()` on undocumented parts, `>>>`, or class-name hacks couples your code to the implementation and will break on minor releases.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-url-view >>> .header {
   background: navy;
 }
@@ -201,35 +201,35 @@ mds-url-view >>> .iframe {
   border: 2px solid red;
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-url-view {
-  --mds-url-view-background: rgb(var(--variant-primary-09));
-  --mds-url-view-color: rgb(var(--variant-primary-02));
+  --mds-url-view-background: rgb(var(--magma-accent-surface));
+  --mds-url-view-color: rgb(var(--magma-accent-fg));
   --mds-url-view-header-shadow: var(--shadow-md-sharp);
 }
 ```
 
 #### Do Not Pass a Relative URL to `src`
 
-The component calls `new URL(src)` to extract the hostname for the fallback title and ARIA labels. A relative path throws a `TypeError` at render time. Always pass an absolute URL.
+The component calls `new URL(src)` to extract the hostname for the fallback title and ARIA labels. A relative path has no hostname, so the header and the ARIA labels show the raw path instead of the domain. Always pass an absolute URL.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-url-view slot="window" src="/portale/servizi"></mds-url-view>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-url-view slot="window" src="https://servizi.example.it/portale"></mds-url-view>
 ```
 
 #### Do Not Use `loading="false"` to Disable Lazy Loading
 
-`loading` accepts the string values `"lazy"` and `"eager"`, not booleans. Setting `loading="false"` is not a valid value and will not switch the iframe to eager loading.
+`loading` accepts the string values `"lazy"` and `"eager"`, not booleans. `loading="false"` is outside the type and is passed to the iframe as is: it loads eagerly only because the browser treats any unknown value as `eager`. Write the value you mean.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-url-view slot="window" src="https://example.com/" loading="false"></mds-url-view>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-url-view slot="window" src="https://example.com/" loading="eager"></mds-url-view>
 ```
 

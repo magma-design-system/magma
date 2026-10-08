@@ -17,8 +17,8 @@ The `<mds-tab-bar-item>` web component is a single selectable tab within the [`<
 
 - **Compound child only**: Must be placed as a direct default-slot child of `<mds-tab-bar>`; it is not used standalone or mixed with other child types.
 - **Parent-coordinated selection**: Clicking the item, when becoming selected, emits `mdsTabBarItemSelect` carrying its own `id`. The parent re-drives every sibling's `selected` so exactly one item is active at a time - items do not deselect each other on their own.
-- **Whole-host click target**: The entire item (icon + label) is the click surface, not just the text.
-- **Label is text**: Set the visible text with the `label` prop. The default slot is a **deprecated** fallback kept for backward compatibility - slotted text is read into `label` and a console warning is emitted; avoid placing HTML elements or other components there.
+- **Whole-host click target**: The entire item (icon + label) is the click surface, not just the text. It has no `tabindex` and no ARIA role, so it is reachable by pointer only.
+- **Label is text**: Set the visible text with the `label` prop. The default slot is a **deprecated** fallback kept for backward compatibility - slotted text is read into `label`, while nested HTML is stripped with a console warning; avoid placing HTML elements or other components there.
 
 #### Properties & Visual Configurations
 
@@ -27,12 +27,12 @@ The `<mds-tab-bar-item>` web component is a single selectable tab within the [`<
 - **`selected`**: Marks this item as the active tab. You typically do not toggle it manually at runtime - the parent manages it - but you can set it on one item as the initial active tab.
 - **`typography`**: Controls the label's text style, constrained to the smaller typography set (`tip` by default, or `option`). Pick `option` for a slightly more prominent label.
 
-The active vs. resting appearance is configured through the `--mds-tab-bar-item-*` CSS custom properties (background and color, each with a `-selected` variant) listed in `readme.md`.
+The active vs. resting appearance is configured through the `--mds-tab-bar-item-*` CSS custom properties (background and color, each with a `-selected` variant) listed in [`readme.md`](../readme.md).
 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-tab-bar-item>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the compound component rules documented in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md) and the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-tab-bar-item>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Tab Bar
 
@@ -79,21 +79,20 @@ Listen to `mdsTabBarItemSelect` on the item to react when a specific tab becomes
 
 #### Driving Selection Programmatically
 
-Set the `selected` prop on the desired item from JavaScript. The `@Watch('selected')` on the item syncs the visual state; the parent picks it up on the next interaction.
+Set the `selected` prop on the desired item from JavaScript, and remove it from the previously selected one: the item updates its own visual state, but the parent syncs the siblings only on the next click and emits no `mdsTabBarChange` for a change made from code. Do not address the items by your own `id`: the bar replaces it with `mds-tab-bar-item-<index>` when it loads.
 
 ```html
 <mds-tab-bar id="wizard-nav">
-  <mds-tab-bar-item id="step-profilo" icon="mi/baseline/person" label="Profilo"></mds-tab-bar-item>
-  <mds-tab-bar-item id="step-sicurezza" icon="mi/baseline/lock" label="Sicurezza"></mds-tab-bar-item>
+  <mds-tab-bar-item icon="mi/baseline/person" label="Profilo"></mds-tab-bar-item>
+  <mds-tab-bar-item icon="mi/baseline/lock" label="Sicurezza"></mds-tab-bar-item>
   <mds-tab-bar-item
-    id="step-notifiche"
     icon="mi/baseline/notifications"
     label="Notifiche"
   ></mds-tab-bar-item>
 </mds-tab-bar>
 
 <script>
-  document.querySelector('#step-sicurezza').selected = true;
+  document.querySelectorAll('#wizard-nav mds-tab-bar-item')[1].selected = true;
 </script>
 ```
 
@@ -124,14 +123,14 @@ Use `typography="option"` for a slightly more prominent label when the tab bar s
 
 #### Styling Customization
 
-Override colors through the four documented `--mds-tab-bar-item-*` CSS custom properties. Set them on the host or a parent selector; use Magma color tokens via `rgb(var(--<token>))` so dark mode keeps working.
+Override colors through the four documented `--mds-tab-bar-item-*` CSS custom properties. Set them on the host or a parent selector; use semantic color roles via `rgb(var(--magma-<role>))` so dark mode keeps working.
 
 ```css
 .app-bottom-nav mds-tab-bar-item {
-  --mds-tab-bar-item-background: rgb(var(--tone-neutral-09));
-  --mds-tab-bar-item-color: rgb(var(--tone-neutral-05));
-  --mds-tab-bar-item-background-selected: rgb(var(--variant-primary-10));
-  --mds-tab-bar-item-color-selected: rgb(var(--variant-primary-02));
+  --mds-tab-bar-item-background: rgb(var(--magma-wash-base));
+  --mds-tab-bar-item-color: rgb(var(--magma-text-muted));
+  --mds-tab-bar-item-background-selected: rgb(var(--magma-accent-surface-subtle));
+  --mds-tab-bar-item-color-selected: rgb(var(--magma-accent-fg));
 }
 ```
 
@@ -145,10 +144,10 @@ Common incorrect uses of `<mds-tab-bar-item>`. Each entry pairs the wrong form w
 `<mds-tab-bar-item>` relies on the parent to assign its `id`, listen for `mdsTabBarItemSelect`, and drive mutual exclusivity. Without the parent, the item has no stable id, selection does not propagate, and no other item is deselected when this one is clicked.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-tab-bar-item icon="mi/baseline/home" label="Home" selected></mds-tab-bar-item>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-tab-bar>
   <mds-tab-bar-item icon="mi/baseline/home" label="Home" selected></mds-tab-bar-item>
   <mds-tab-bar-item icon="mi/baseline/search" label="Cerca"></mds-tab-bar-item>
@@ -157,16 +156,16 @@ Common incorrect uses of `<mds-tab-bar-item>`. Each entry pairs the wrong form w
 
 #### Do Not Use the Deprecated Default Slot for Text
 
-Setting the text via the default slot is deprecated. Slotted text is read into `label` with a console warning, and any nested HTML is stripped. Use the `label` prop instead.
+Setting the text via the default slot is deprecated. Slotted text is read into `label`, and any nested HTML is stripped with a console warning. Use the `label` prop instead.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-tab-bar>
   <mds-tab-bar-item icon="mi/baseline/home">Home</mds-tab-bar-item>
   <mds-tab-bar-item icon="mi/baseline/search"><strong>Cerca</strong></mds-tab-bar-item>
 </mds-tab-bar>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-tab-bar>
   <mds-tab-bar-item icon="mi/baseline/home" label="Home"></mds-tab-bar-item>
   <mds-tab-bar-item icon="mi/baseline/search" label="Cerca"></mds-tab-bar-item>
@@ -178,7 +177,7 @@ Setting the text via the default slot is deprecated. Slotted text is read into `
 The `icon` prop renders the glyph through the shared icon service and positions it above the label automatically. Slotting `<mds-icon>` puts it in the deprecated default slot, where it is stripped and misaligns.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-tab-bar>
   <mds-tab-bar-item>
     <mds-icon name="mi/baseline/home"></mds-icon>
@@ -186,7 +185,7 @@ The `icon` prop renders the glyph through the shared icon service and positions 
   </mds-tab-bar-item>
 </mds-tab-bar>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-tab-bar>
   <mds-tab-bar-item icon="mi/baseline/home" label="Home"></mds-tab-bar-item>
 </mds-tab-bar>
@@ -194,15 +193,15 @@ The `icon` prop renders the glyph through the shared icon service and positions 
 
 #### Do Not Set `selected="false"` to Deselect
 
-`selected` is a boolean attribute. Any non-empty string value - including `"false"` - is truthy in HTML and keeps the item selected. Remove the attribute or set the property to `undefined` to deselect.
+`selected` is a boolean attribute. The item happens to style `selected="false"` as unselected, but the attribute stays on the element and contradicts the state for attribute selectors and checks. Remove the attribute or set the property to `undefined` to deselect.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-tab-bar>
   <mds-tab-bar-item icon="mi/baseline/home" label="Home" selected="false"></mds-tab-bar-item>
 </mds-tab-bar>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-tab-bar>
   <mds-tab-bar-item icon="mi/baseline/home" label="Home"></mds-tab-bar-item>
 </mds-tab-bar>
@@ -210,10 +209,10 @@ The `icon` prop renders the glyph through the shared icon service and positions 
 
 #### Do Not Listen to Raw Click Events for Tab Changes
 
-`<mds-tab-bar-item>` emits `mdsTabBarItemSelect` when selected; `<mds-tab-bar>` re-emits `mdsTabBarChange` with the resolved index. Listening to the native `click` event bypasses the parent's mutual-exclusivity logic and may fire before `selected` is updated.
+`<mds-tab-bar-item>` emits `mdsTabBarItemSelect` when selected; `<mds-tab-bar>` re-emits `mdsTabBarChange` with the resolved index. Listening to the native `click` event gives you no index, and it also fires on clicks that select nothing (every other click on the item that is already active).
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-tab-bar id="nav">
   <mds-tab-bar-item icon="mi/baseline/home" label="Home"></mds-tab-bar-item>
 </mds-tab-bar>
@@ -221,7 +220,7 @@ The `icon` prop renders the glyph through the shared icon service and positions 
   document.querySelector('mds-tab-bar-item').addEventListener('click', handler);
 </script>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-tab-bar id="nav">
   <mds-tab-bar-item icon="mi/baseline/home" label="Home"></mds-tab-bar-item>
 </mds-tab-bar>
@@ -232,15 +231,15 @@ The `icon` prop renders the glyph through the shared icon service and positions 
 
 #### Do Not Use an Invalid `typography` Value
 
-`typography` accepts only `"tip"` (default) or `"option"`. Passing any other value - such as `"caption"` or `"label"` - is outside the typed `TypographySmallerType` and silently falls back to the default.
+`typography` accepts only `"tip"` (default) or `"option"`. Passing any other value - such as `"caption"` or `"label"` - is outside the typed `TypographySmallerType`: it is passed unchecked to the inner `<mds-text>`, so the label silently leaves the tab bar's type scale.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-tab-bar>
   <mds-tab-bar-item icon="mi/baseline/home" label="Home" typography="caption"></mds-tab-bar-item>
 </mds-tab-bar>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-tab-bar>
   <mds-tab-bar-item icon="mi/baseline/home" label="Home" typography="option"></mds-tab-bar-item>
 </mds-tab-bar>

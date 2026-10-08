@@ -17,16 +17,16 @@ The `<mds-hr>` web component is the horizontal rule of the Magma Design System. 
 
 - **No interactivity**: The component has no props, slots, events, or state; it is decorative and takes no part in focus order, form association, or keyboard interaction.
 - **Full-width line**: It always spans the full inline width of its container and is sized purely by layout context.
-- **Theme-aware color**: The rule color follows the neutral tone and adapts automatically between light and dark preference themes, so it stays legible without configuration.
+- **Theme-aware color**: The rule is painted with the `wash-strong` neutral role and adapts automatically between light and dark preference themes, so it stays legible without configuration.
 
 #### Properties & Visual Configurations
 
-`<mds-hr>` exposes no props. Visual variation is achieved entirely through standard utility classes on the host - for example overriding the background color with a tone utility (`class="bg-tone-neutral-04"`) - rather than through component-specific attributes.
+`<mds-hr>` exposes no props. Visual variation is achieved entirely through standard utility classes on the host - for example overriding the background color with a semantic color utility (`class="bg-border-default"`) - rather than through component-specific attributes.
 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-hr>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) and the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-hr>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Default Divider
 
@@ -34,15 +34,15 @@ The simplest use - no attributes required. Drop it between content blocks to dra
 
 ```html
 <section>
-  <mds-text typo="h4">Dati personali</mds-text>
-  <mds-text typo="body">Nome, cognome e data di nascita.</mds-text>
+  <mds-text typography="h4">Dati personali</mds-text>
+  <mds-text typography="paragraph">Nome, cognome e data di nascita.</mds-text>
 </section>
 
 <mds-hr></mds-hr>
 
 <section>
-  <mds-text typo="h4">Dati di contatto</mds-text>
-  <mds-text typo="body">Indirizzo e-mail e numero di telefono.</mds-text>
+  <mds-text typography="h4">Dati di contatto</mds-text>
+  <mds-text typography="paragraph">Indirizzo e-mail e numero di telefono.</mds-text>
 </section>
 ```
 
@@ -52,25 +52,27 @@ Use `<mds-hr>` to split regions inside a compound component such as `<mds-card>`
 
 ```html
 <mds-card>
-  <mds-card-header slot="header" label="Riepilogo ordine"></mds-card-header>
+  <mds-card-header slot="header">
+    <mds-text typography="h6">Riepilogo ordine</mds-text>
+  </mds-card-header>
   <mds-card-content slot="content">
-    <mds-text typo="body">Articolo 1 - Servizio annuale</mds-text>
+    <mds-text typography="paragraph">Articolo 1 - Servizio annuale</mds-text>
     <mds-hr></mds-hr>
-    <mds-text typo="body">Articolo 2 - Supporto prioritario</mds-text>
+    <mds-text typography="paragraph">Articolo 2 - Supporto prioritario</mds-text>
   </mds-card-content>
 </mds-card>
 ```
 
 #### Color Tint via Utility Class
 
-`<mds-hr>` exposes no CSS custom properties. To change the line color, apply a Magma tone utility class directly on the host element. Use `rgb(var(--<token>))` values in inline CSS only when no matching utility class exists.
+`<mds-hr>` exposes no CSS custom properties. To change the line color, apply a semantic color utility class (`bg-<role>`) directly on the host element. Use `rgb(var(--magma-<role>))` values in CSS only when no matching utility class exists.
 
 ```html
-<!-- Stronger neutral for high-contrast layouts -->
-<mds-hr class="bg-tone-neutral-04"></mds-hr>
+<!-- Stronger neutral rule -->
+<mds-hr class="bg-border-default"></mds-hr>
 
 <!-- Branded primary tint -->
-<mds-hr class="bg-variant-primary-06"></mds-hr>
+<mds-hr class="bg-accent-border"></mds-hr>
 ```
 
 #### Divider Inside a Form
@@ -79,17 +81,17 @@ Use `<mds-hr>` to visually group related form fields without adding semantic str
 
 ```html
 <form>
-  <mds-input-field>
-    <mds-input slot="input" name="nome" label="Nome"></mds-input>
+  <mds-input-field label="Nome">
+    <mds-input name="nome"></mds-input>
   </mds-input-field>
-  <mds-input-field>
-    <mds-input slot="input" name="cognome" label="Cognome"></mds-input>
+  <mds-input-field label="Cognome">
+    <mds-input name="cognome"></mds-input>
   </mds-input-field>
 
   <mds-hr></mds-hr>
 
-  <mds-input-field>
-    <mds-input slot="input" name="email" label="E-mail" type="email"></mds-input>
+  <mds-input-field label="E-mail">
+    <mds-input name="email" type="email"></mds-input>
   </mds-input-field>
 </form>
 ```
@@ -114,10 +116,10 @@ Common incorrect uses of `<mds-hr>`. Each entry pairs the wrong form with the ri
 The native `<hr>` element does not pick up Magma tokens, so it renders with browser-default styling that does not adapt to themes or high-contrast preferences. Replace it with `<mds-hr>` inside any Magma-themed page.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <hr />
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-hr></mds-hr>
 ```
 
@@ -126,10 +128,10 @@ The native `<hr>` element does not pick up Magma tokens, so it renders with brow
 `<mds-hr>` manages its own `width: 100%` and `height: 1px` internally. Overriding these via inline styles or CSS produces inconsistent results across layouts and breaks the visual system contract. Use parent padding to create inset rules instead.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-hr style="width: 50%; height: 2px;"></mds-hr>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <div style="padding-inline: 2rem;">
   <mds-hr></mds-hr>
 </div>
@@ -137,33 +139,33 @@ The native `<hr>` element does not pick up Magma tokens, so it renders with brow
 
 #### Do Not Pierce Shadow DOM to Change the Line Color
 
-`<mds-hr>` exposes no `::part()` surface and no `--mds-hr-*` CSS custom properties. Targeting its `:host` internals via `>>>` or `/deep/` will break on updates. Apply a Magma tone utility class on the host element instead.
+`<mds-hr>` exposes no `::part()` surface and no `--mds-hr-*` CSS custom properties. Targeting its `:host` internals via `>>>` or `/deep/` will break on updates. Apply a semantic color utility class (`bg-<role>`) on the host element instead.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-hr >>> :host {
   background-color: red;
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 ```
 
 ```html
-<mds-hr class="bg-tone-neutral-04"></mds-hr>
+<mds-hr class="bg-border-default"></mds-hr>
 ```
 
 #### Do Not Slot Content Into `<mds-hr>`
 
-`<mds-hr>` is a self-closing presentational rule with no slot. Any children placed inside the tags are silently ignored and do not render.
+`<mds-hr>` is an empty presentational rule with no slot. Any children placed inside the tags are silently ignored and do not render.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-hr>
   <span>oppure</span>
 </mds-hr>
 
-<!-- ✅ CORRECT -->
-<mds-text typo="caption" class="text-center">oppure</mds-text>
+<!-- CORRECT -->
+<mds-text typography="caption" class="text-center">oppure</mds-text>
 <mds-hr></mds-hr>
 ```
 
@@ -172,12 +174,12 @@ mds-hr >>> :host {
 [`mds-separator`](../../mds-separator) is a **vertical** divider intended for inline or flex contexts such as toolbars and breadcrumbs. Using it to separate stacked content blocks produces incorrect orientation and layout.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <section>Sezione A</section>
 <mds-separator></mds-separator>
 <section>Sezione B</section>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <section>Sezione A</section>
 <mds-hr></mds-hr>
 <section>Sezione B</section>

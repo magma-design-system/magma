@@ -16,22 +16,22 @@ The `<mds-kpi-item>` web component is a compound child that represents a single 
 #### Semantic Behavior
 
 - **Compound constraint**: Must be placed as a direct default-slot child of [`<mds-kpi>`](../../mds-kpi); it is not used standalone, and the parent's list semantics only make sense when its children are `mds-kpi-item` elements (do not mix in other child types).
-- **Accessible name**: Each item is announced as one list entry, with its spoken text consolidated as `"{label}: {description}"`.
+- **Accessible name**: Each item is announced as one list entry, with its spoken text consolidated as `"{label}: {description}"` (a missing prop reads `undefined`).
 - **Scroll-triggered animation**: When `threshold` is greater than `0`, the `label`/`description` reveal with the `yugop` text animation once the item scrolls into the viewport. With `threshold === 0` (the default) the text is rendered immediately with no animation.
 - **Conditional rendering**: The icon, value, and description each render only when their respective prop is provided, so an item can show any subset of icon, value, and caption.
 
 #### Properties & Visual Configurations
 
-- **`threshold`**: Controls the reveal-on-scroll behavior. Leave at `0` for static KPIs that should be visible immediately; set a value between `0` and `1` (the fraction of the element that must enter the viewport) to defer the count-up style animation until the item is scrolled into view - useful for KPI strips lower on a page.
+- **`threshold`**: Controls the reveal-on-scroll behavior. Leave at `0` for static KPIs that should be visible immediately; set a value between `0` and `1` (the fraction of the element that must enter the viewport) to defer the scramble-in animation until the item is scrolled into view - useful for KPI strips lower on a page.
 - **`label`** holds the headline figure (rendered as `h2` typography) and **`description`** the supporting caption (rendered as `label` typography); together they form the item's spoken accessible name, so prefer concise, self-explanatory values.
 - **`icon`** takes an `mds-icon` name and adds a leading visual marker above the figure; omit it for text-only KPIs.
 
-Animation pacing and colors are tunable per item via the CSS custom properties documented in the readme (`--mds-kpi-item-text-animation-speed`, `--mds-kpi-item-icon-color`, and related).
+Animation pacing and colors are tunable per item via the CSS custom properties documented in [`readme.md`](../readme.md) (`--mds-kpi-item-text-animation-speed`, `--mds-kpi-item-icon-color`, and related).
 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-kpi-item>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) and the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-kpi-item>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic KPI Entry with Label and Description
 
@@ -89,7 +89,7 @@ Set `threshold` to a value between `0` and `1` to defer the yugop text animation
 
 #### Label-Only KPI (No Description)
 
-Omit `description` when the figure is self-explanatory. The accessible name falls back to just the label value; ensure the surrounding context provides enough meaning.
+Omit `description` only when the figure is self-explanatory. The accessible name is still built as `"{label}: {description}"`, so it reads `2026: undefined`; ensure the surrounding context provides enough meaning.
 
 ```html
 <mds-kpi>
@@ -99,7 +99,7 @@ Omit `description` when the figure is self-explanatory. The accessible name fall
 
 #### Icon-Only Visual Accent (No Numeric Value)
 
-Omit `label` and `description` to display only the icon as a decorative tile. In this case the accessible name is empty - add an explicit `aria-label` on the host to describe the tile to screen-reader users.
+Omit `label` and `description` to display only the icon as a decorative tile. In this case the component names the item `undefined: undefined` - add an explicit `aria-label` on the host to describe the tile to screen-reader users. The component keeps it at first render but writes its own name back at its next re-render (for example when a user preference changes).
 
 ```html
 <mds-kpi>
@@ -112,12 +112,12 @@ Omit `label` and `description` to display only the icon as a decorative tile. In
 
 #### Styling Customization
 
-Tune icon color, text-area background, and animation timing through the documented `--mds-kpi-item-*` CSS custom properties. Set them on the host or a parent selector; use Magma color tokens via `rgb(var(--<token>))` so dark mode keeps working.
+Tune icon color, text-area background, and animation timing through the documented `--mds-kpi-item-*` CSS custom properties. Set them on the host or a parent selector; use the semantic color roles via `rgb(var(--magma-<role>))` ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)) so dark mode keeps working.
 
 ```css
 .highlight-kpi mds-kpi-item {
-  --mds-kpi-item-icon-color: rgb(var(--variant-success-04));
-  --mds-kpi-item-info-background: rgb(var(--tone-neutral-02));
+  --mds-kpi-item-icon-color: rgb(var(--magma-success-emphasis));
+  --mds-kpi-item-info-background: rgb(var(--magma-surface-overlay));
   --mds-kpi-item-text-animation-speed: 0.08;
   --mds-kpi-item-text-animation-placeholder-char: "0";
 }
@@ -129,12 +129,12 @@ When the CSS custom properties are insufficient, target the three documented sha
 
 ```css
 mds-kpi-item::part(icon-container) {
-  background-color: rgb(var(--variant-primary-09));
-  border-radius: var(--radius-2xl);
+  background-color: rgb(var(--magma-accent-surface));
+  border-radius: var(--magma-radius-2xl);
 }
 
 mds-kpi-item::part(icon) {
-  fill: rgb(var(--variant-primary-03));
+  fill: rgb(var(--magma-accent-fg));
 }
 ```
 
@@ -148,10 +148,10 @@ Common incorrect uses of `<mds-kpi-item>`. Each entry pairs the wrong form with 
 `<mds-kpi-item>` is a compound child designed to be a direct slot child of [`<mds-kpi>`](../../mds-kpi). Using it standalone strips the list semantics that `<mds-kpi>` provides and breaks the expected visual layout.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-kpi-item label="1.240" description="Pratiche elaborate"></mds-kpi-item>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-kpi>
   <mds-kpi-item label="1.240" description="Pratiche elaborate"></mds-kpi-item>
 </mds-kpi>
@@ -162,7 +162,7 @@ Common incorrect uses of `<mds-kpi-item>`. Each entry pairs the wrong form with 
 `<mds-kpi-item>` has no default slot - all text content is driven by the `label` and `description` props. Slotting child nodes produces no output because the component renders nothing from its slot.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-kpi>
   <mds-kpi-item>
     <span>1.240</span>
@@ -170,7 +170,7 @@ Common incorrect uses of `<mds-kpi-item>`. Each entry pairs the wrong form with 
   </mds-kpi-item>
 </mds-kpi>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-kpi>
   <mds-kpi-item label="1.240" description="Pratiche elaborate"></mds-kpi-item>
 </mds-kpi>
@@ -181,14 +181,14 @@ Common incorrect uses of `<mds-kpi-item>`. Each entry pairs the wrong form with 
 The `icon` prop passes the slug to the internal `<mds-icon>` instance. Slotting an `<mds-icon>` directly has no effect because the component has no named slot for icons.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-kpi>
   <mds-kpi-item label="98%" description="Soddisfazione clienti">
     <mds-icon name="mi/baseline/thumb-up"></mds-icon>
   </mds-kpi-item>
 </mds-kpi>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-kpi>
   <mds-kpi-item
     label="98%"
@@ -200,14 +200,14 @@ The `icon` prop passes the slug to the internal `<mds-icon>` instance. Slotting 
 
 #### Do Not Set `threshold="0"` to Disable Animation - Omit It
 
-`threshold` defaults to `0`, so setting it explicitly to `"0"` is a no-op. More importantly, passing `threshold="false"` or `threshold="none"` sends a non-numeric string to the IntersectionObserver, which will throw at runtime.
+`threshold` defaults to `0`, so setting it explicitly to `"0"` is a no-op. More importantly, `threshold="false"` or `threshold="none"` is parsed to `NaN`, which the IntersectionObserver rejects with an error at runtime.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-kpi-item label="3.500" description="Utenti" threshold="false"></mds-kpi-item>
 <mds-kpi-item label="3.500" description="Utenti" threshold="none"></mds-kpi-item>
 
-<!-- ✅ CORRECT - omit threshold entirely for no animation (defaults to 0) -->
+<!-- CORRECT - omit threshold entirely for no animation (defaults to 0) -->
 <mds-kpi-item label="3.500" description="Utenti"></mds-kpi-item>
 ```
 
@@ -216,7 +216,7 @@ The `icon` prop passes the slug to the internal `<mds-icon>` instance. Slotting 
 The supported customization surface is `--mds-kpi-item-*` CSS custom properties and the three documented shadow parts (`icon-container`, `icon`, `content`). Reaching inside the shadow DOM via `>>>` or undocumented class names couples your code to the implementation and will break on minor releases.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-kpi-item >>> .info {
   background: white;
 }
@@ -224,26 +224,26 @@ mds-kpi-item >>> .value {
   font-size: 3rem;
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-kpi-item {
-  --mds-kpi-item-info-background: rgb(var(--tone-neutral-02));
+  --mds-kpi-item-info-background: rgb(var(--magma-surface-overlay));
 }
 mds-kpi-item::part(content) {
-  padding: var(--spacing-600);
+  padding: calc(var(--spacing) * 600);
 }
 ```
 
 #### Do Not Leave Icon-Only Items Without an Accessible Name
 
-When both `label` and `description` are omitted the component's `aria-label` resolves to `": "`, which is meaningless to screen-reader users. Supply an explicit `aria-label` on the host when the item carries no text props.
+When both `label` and `description` are omitted the component's `aria-label` resolves to `"undefined: undefined"`, which is meaningless to screen-reader users. Supply an explicit `aria-label` on the host when the item carries no text props (the component keeps it at first render, but writes its own name back at its next re-render).
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-kpi>
   <mds-kpi-item icon="mi/baseline/star"></mds-kpi-item>
 </mds-kpi>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-kpi>
   <mds-kpi-item
     icon="mi/baseline/star"

@@ -18,7 +18,7 @@ The `<mds-modal>` web component is the Magma Design System overlay container for
 - **Open state**: Visibility is driven by the `opened` prop. Setting it `true` runs the intro animation and emits `mdsModalOpen`; clearing it runs the outro animation and emits `mdsModalClose`.
 - **Programmatic close**: Exposes an async `close()` method that dismisses the modal regardless of `interaction`, mirroring the close-button action.
 - **Show/hide events**: `mdsModalShow` fires when the intro finishes (fully visible) and `mdsModalHide` when the outro finishes (fully hidden), the latter being the safe point to detach the modal to reclaim memory.
-- **Backdrop dismissal**: With `interaction="relaxed"` (default) a click on the backdrop closes the modal; with `interaction="strict"` only the close button or `close()` can dismiss it.
+- **Backdrop dismissal**: With `interaction="relaxed"` (default) a click on the backdrop or `Esc` closes the modal; with `interaction="strict"` both are ignored and only the close button, `close()` or a touch swipe (below) can dismiss it.
 - **Body scroll lock**: When `overflow="auto"` the component locks body scroll while open and restores it on close.
 - **Touch dismissal**: On touch devices a horizontal swipe past a threshold closes the modal, respecting the swipe direction implied by edge `position` values.
 - **Slot-driven layout**: With no `window` slot, the default slot renders centered content framed by optional `top` (header) and `bottom` (footer) slots, and a close button is rendered automatically. Slotting a `window` element suppresses the built-in chrome and close button so the consumer supplies the entire surface.
@@ -38,7 +38,7 @@ This component does not use the shared `variant` / `tone` ladders; its configura
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-modal>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the overlay conventions documented in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md) and the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-modal>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Modal with Inline Content
 
@@ -56,7 +56,7 @@ The simplest form: toggle `opened` from JavaScript to show the dialog. The built
 <script>
   const btn = document.getElementById('btn-apri');
   const modal = document.getElementById('dialogo');
-  btn.addEventListener('mdsButtonClick', () => { modal.opened = true; });
+  btn.addEventListener('click', () => { modal.opened = true; });
   modal.addEventListener('mdsModalClose', () => { modal.opened = undefined; });
 </script>
 ```
@@ -67,16 +67,20 @@ Use the `top` slot for a sticky header and the `bottom` slot for a sticky footer
 
 ```html
 <mds-modal id="modifica-utente" position="right">
-  <header slot="top" class="p-400 bg-tone-neutral shadow-ring-weak">
+  <header slot="top" class="p-400 bg-surface-overlay shadow-ring-weak">
     <mds-text typography="h5">Modifica utente</mds-text>
   </header>
 
   <div class="p-400 grid gap-400">
-    <mds-input name="nome" label="Nome"></mds-input>
-    <mds-input name="cognome" label="Cognome"></mds-input>
+    <mds-input-field label="Nome">
+      <mds-input name="nome"></mds-input>
+    </mds-input-field>
+    <mds-input-field label="Cognome">
+      <mds-input name="cognome"></mds-input>
+    </mds-input-field>
   </div>
 
-  <footer slot="bottom" class="p-400 flex gap-300 justify-end bg-tone-neutral shadow-ring-weak">
+  <footer slot="bottom" class="p-400 flex gap-300 justify-end bg-surface-overlay shadow-ring-weak">
     <mds-button variant="dark" tone="outline" id="btn-annulla">Annulla</mds-button>
     <mds-button variant="primary" tone="strong" id="btn-salva">Salva</mds-button>
   </footer>
@@ -105,7 +109,7 @@ Use the `top` slot for a sticky header and the `bottom` slot for a sticky footer
 
 #### Strict Interaction Mode
 
-Set `interaction="strict"` when the user must explicitly confirm or cancel before the dialog closes - for example, a form with unsaved changes. Backdrop clicks are ignored; only the close button or the `close()` method can dismiss the modal.
+Set `interaction="strict"` when the user must explicitly confirm or cancel before the dialog closes - for example, a form with unsaved changes. Backdrop clicks and `Esc` are ignored; only the close button or the `close()` method can dismiss the modal (a touch swipe still closes it).
 
 ```html
 <mds-modal id="conferma-elimina" interaction="strict">
@@ -120,7 +124,7 @@ Set `interaction="strict"` when the user must explicitly confirm or cancel befor
 </mds-modal>
 
 <script>
-  document.getElementById('btn-no').addEventListener('mdsButtonClick', () => {
+  document.getElementById('btn-no').addEventListener('click', () => {
     document.getElementById('conferma-elimina').close();
   });
 </script>
@@ -154,7 +158,9 @@ Call the async `close()` method from JavaScript when you need to dismiss the mod
 ```html
 <mds-modal id="modal-focus" position="right">
   <div class="p-400">
-    <mds-input id="input-ricerca" label="Cerca"></mds-input>
+    <mds-input-field label="Cerca">
+      <mds-input id="input-ricerca" name="ricerca"></mds-input>
+    </mds-input-field>
   </div>
 </mds-modal>
 
@@ -194,7 +200,7 @@ Call the async `close()` method from JavaScript when you need to dismiss the mod
 
 #### Custom Window via `window` Slot
 
-Slot any element with `slot="window"` to completely replace the built-in chrome (the white window surface and the close button). The slotted element receives `role="dialog"` automatically. Use this when a completely bespoke surface is needed - for example, a full-screen banner.
+Slot any element with `slot="window"` to completely replace the built-in chrome (the window surface and the close button). The slotted element gets no `role` of its own: the `<dialog>` the component renders is already the dialog. Use this when a completely bespoke surface is needed - for example, a full-screen banner.
 
 ```html
 <mds-modal id="modal-banner" animation="custom">
@@ -206,8 +212,8 @@ Slot any element with `slot="window"` to completely replace the built-in chrome 
     headline="Azione richiesta"
   >
     <mds-text typography="detail">Conferma la tua identita' per procedere.</mds-text>
-    <mds-button slot="actions" variant="primary" tone="text">Annulla</mds-button>
-    <mds-button slot="actions" variant="primary" tone="strong">Conferma</mds-button>
+    <mds-button slot="action" variant="primary" tone="text">Annulla</mds-button>
+    <mds-button slot="action" variant="primary" tone="strong">Conferma</mds-button>
   </mds-banner>
 </mds-modal>
 ```
@@ -225,7 +231,7 @@ Add `hide-backdrop` to render the modal without the dimmed overlay - useful for 
 ```
 
 ```javascript
-// Remove the backdrop at runtime
+// Remove the backdrop from JavaScript (it applies from the next opening)
 document.getElementById('pannello-info').hideBackdrop = true;
 ```
 
@@ -236,17 +242,17 @@ Style the window surface only through the documented `--mds-modal-*` CSS custom 
 ```css
 /* Rounded card-style center modal */
 #modal-card {
-  --mds-modal-window-radius: var(--radius-xl);
-  --mds-modal-window-distance: var(--spacing-600);
+  --mds-modal-window-radius: var(--magma-radius-xl);
+  --mds-modal-window-distance: calc(var(--spacing) * 600);
   --mds-modal-window-overflow: hidden;
-  --mds-modal-window-background: rgb(var(--tone-neutral));
+  --mds-modal-window-background: rgb(var(--magma-surface-overlay));
   --mds-modal-window-shadow: var(--shadow-2xl);
   --mds-modal-window-max-width: 480px;
 }
 
 /* Full-width drawer */
 #drawer-bottom {
-  --mds-modal-window-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  --mds-modal-window-radius: var(--magma-radius-lg) var(--magma-radius-lg) 0 0;
   --mds-modal-window-max-width: 100%;
   --mds-modal-window-min-width: 100%;
 }
@@ -259,22 +265,14 @@ Common incorrect uses of `<mds-modal>`. Each entry pairs the wrong form with the
 
 #### Do Not Set `opened="false"` to Close the Modal
 
-Boolean props in Stencil treat any non-empty string as truthy. Setting `opened="false"` keeps the modal open instead of closing it. Remove the attribute or set the prop to `undefined`.
+A false boolean is an absent attribute ([`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md)). The runtime does parse the string `"false"` as `false`, so the modal stays closed, but the attribute is still on the element until the first render, so `[opened]` attribute selectors and any code that reads the attribute see it set. Remove the attribute; from JavaScript set the prop to `undefined` (`false` works too: the component turns it into `undefined`).
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-modal id="dialogo" opened="false"></mds-modal>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-modal id="dialogo"></mds-modal>
-```
-
-```javascript
-// 🚫 INCORRECT
-modal.opened = false;
-
-// ✅ CORRECT
-modal.opened = undefined;
 ```
 
 #### Do Not Put Content in the `window` Slot Without Replacing the Entire Chrome
@@ -282,25 +280,25 @@ modal.opened = undefined;
 The `window` slot completely bypasses the built-in surface, header/footer regions, and close button. Do not use it to add a header element while expecting the default content area and close button to still render - they will not.
 
 ```html
-<!-- 🚫 INCORRECT: only the slotted header renders; default slot and close button are suppressed -->
+<!-- INCORRECT: only the slotted header renders; default slot and close button are suppressed -->
 <mds-modal id="modal">
   <header slot="window" class="p-400">Titolo</header>
   <div>Contenuto del dialogo</div>
 </mds-modal>
 
-<!-- ✅ CORRECT: use slot="top" for a sticky header, default slot for body -->
+<!-- CORRECT: use slot="top" for a sticky header, default slot for body -->
 <mds-modal id="modal">
-  <header slot="top" class="p-400 bg-tone-neutral">Titolo</header>
+  <header slot="top" class="p-400 bg-surface-overlay">Titolo</header>
   <div class="p-400">Contenuto del dialogo</div>
 </mds-modal>
 ```
 
 #### Do Not Reach Into Shadow Parts to Style the Window
 
-The only supported customization surface is `--mds-modal-*` CSS custom properties and the two documented shadow parts (`window`, `action-close`). Targeting internal shadow selectors couples your code to implementation details that will break on minor releases.
+The only supported customization surface is `--mds-modal-*` CSS custom properties and the documented shadow parts (`dialog`, `window`, `action-close`). Targeting internal shadow selectors couples your code to implementation details that will break on minor releases.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-modal >>> .window-content {
   padding: 0;
 }
@@ -308,40 +306,28 @@ mds-modal::part(window) > div {
   border: 2px solid red;
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-modal {
-  --mds-modal-window-background: rgb(var(--tone-neutral));
-  --mds-modal-window-radius: var(--radius-xl);
-  --mds-modal-window-distance: var(--spacing-400);
+  --mds-modal-window-background: rgb(var(--magma-surface-overlay));
+  --mds-modal-window-radius: var(--magma-radius-xl);
+  --mds-modal-window-distance: calc(var(--spacing) * 400);
 }
 ```
 
 #### Do Not Listen for Native `click` on the Backdrop to Close
 
-`mds-modal` emits `mdsModalClose` when it closes (and `mdsModalHide` when the animation finishes). Listening for a raw `click` on the host or backdrop is fragile - the event target varies by browser and shadow DOM boundary, and `interaction="strict"` will silently break your handler.
+`mds-modal` emits `mdsModalClose` when it closes (and `mdsModalHide` when the animation finishes). Listening for a raw `click` on the host or backdrop is fragile - the event target varies by browser and shadow DOM boundary, and your handler ignores `interaction="strict"`.
 
 ```javascript
-// 🚫 INCORRECT
+// INCORRECT
 document.getElementById('modal').addEventListener('click', (e) => {
   if (e.target === e.currentTarget) modal.opened = undefined;
 });
 
-// ✅ CORRECT
+// CORRECT
 document.getElementById('modal').addEventListener('mdsModalClose', () => {
   modal.opened = undefined;
 });
-```
-
-#### Do Not Skip the `close()` Method When Dismissing Programmatically from Strict Modals
-
-When `interaction="strict"` is set, the internal `closeModal` guard prevents backdrop-click dismissal. Manually setting `opened = undefined` bypasses the guard but skips the `mdsModalClose` event and animation teardown. Use the `close()` method instead.
-
-```javascript
-// 🚫 INCORRECT (skips event emission when interaction="strict")
-document.getElementById('modal-strict').opened = undefined;
-
-// ✅ CORRECT
-await document.getElementById('modal-strict').close();
 ```
 
 #### Do Not Use `<dialog>` Directly When `<mds-modal>` Is Available
@@ -349,13 +335,13 @@ await document.getElementById('modal-strict').close();
 Using a raw `<dialog>` element bypasses the system's managed animation, body-scroll locking, touch-swipe dismissal, and design-token theming. Always use `<mds-modal>` for overlays in a Magma application.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <dialog id="raw-dialog">
   <p>Contenuto del dialogo</p>
   <button>Chiudi</button>
 </dialog>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-modal id="modal">
   <div class="p-400">
     <mds-text>Contenuto del dialogo</mds-text>

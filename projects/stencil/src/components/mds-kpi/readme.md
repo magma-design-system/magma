@@ -30,7 +30,7 @@ The `<mds-kpi>` web component is the layout container of the Magma Design System
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-kpi>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) and the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-kpi>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic KPI Panel
 
@@ -46,7 +46,7 @@ The canonical form. Place one or more [`mds-kpi-item`](../../mds-kpi-item) eleme
 
 #### KPI Item with Icon
 
-Set `icon` to an icon slug to display a glyph above the value. Use slugs from the Magma icon library - `mi/baseline/*` for Material Icons or a semantic `mgg-icons` slug.
+Set `icon` to an icon slug to display a glyph above the value. Use slugs from the Magma icon library - `mi/baseline/*` for Material Icons or an `mgg/` Maggioli slug.
 
 ```html
 <mds-kpi>
@@ -108,12 +108,12 @@ Use `--mds-kpi-text-animation-speed` on the `<mds-kpi>` host to slow down or spe
 
 #### Styling Individual Items
 
-Customize a single `<mds-kpi-item>` through its own CSS custom properties. Use Magma color tokens via `rgb(var(--<token>))` so dark mode keeps working.
+Customize a single `<mds-kpi-item>` through its own CSS custom properties. Use the semantic color roles via `rgb(var(--magma-<role>))` ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)) so dark mode keeps working.
 
 ```css
 .progetto-kpi mds-kpi-item {
-  --mds-kpi-item-icon-color: rgb(var(--variant-secondary-04));
-  --mds-kpi-item-info-background: rgb(var(--tone-neutral-02));
+  --mds-kpi-item-icon-color: rgb(var(--magma-accent-emphasis));
+  --mds-kpi-item-info-background: rgb(var(--magma-surface-overlay));
 }
 ```
 
@@ -141,7 +141,7 @@ Common incorrect uses of `<mds-kpi>`. Each entry pairs the wrong form with the r
 The default slot of `<mds-kpi>` is meant exclusively for [`mds-kpi-item`](../../mds-kpi-item) elements. Arbitrary HTML has no styled placement inside the grid and breaks the list semantics the component exposes to assistive technology.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-kpi>
   <div class="metric">
     <h2>1.240</h2>
@@ -149,7 +149,7 @@ The default slot of `<mds-kpi>` is meant exclusively for [`mds-kpi-item`](../../
   </div>
 </mds-kpi>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-kpi>
   <mds-kpi-item label="1.240" description="Pratiche aperte"></mds-kpi-item>
 </mds-kpi>
@@ -160,10 +160,10 @@ The default slot of `<mds-kpi>` is meant exclusively for [`mds-kpi-item`](../../
 `<mds-kpi-item>` is a compound child and relies on the grid context and CSS custom property cascade provided by its parent. Using it as a standalone element loses the responsive layout and the shared animation-speed variables.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-kpi-item label="387" description="In lavorazione"></mds-kpi-item>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-kpi>
   <mds-kpi-item label="387" description="In lavorazione"></mds-kpi-item>
 </mds-kpi>
@@ -171,29 +171,29 @@ The default slot of `<mds-kpi>` is meant exclusively for [`mds-kpi-item`](../../
 
 #### Do Not Set `threshold="0"` Explicitly to Disable Animation
 
-`threshold` defaults to `0`, which means static rendering. Writing `threshold="0"` is redundant and, as a non-boolean numeric prop, the string `"0"` is silently coerced - but relying on string coercion is fragile. Simply omit the attribute.
+`threshold` defaults to `0`, which means static rendering. Writing `threshold="0"` is redundant: it changes nothing. Simply omit the attribute.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-kpi-item label="56" description="Scadute" threshold="0"></mds-kpi-item>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-kpi-item label="56" description="Scadute"></mds-kpi-item>
 ```
 
 #### Do Not Slot `mds-icon` to Display an Icon
 
-The `icon` prop on `<mds-kpi-item>` renders the glyph in its own styled container above the value. Slotting an `<mds-icon>` or any other element into `mds-kpi-item` puts it in the default slot, which is passed to `mds-kpi` and receives no styled placement.
+The `icon` prop on `<mds-kpi-item>` renders the glyph in its own styled container above the value. `mds-kpi-item` renders no slot, so an `<mds-icon>` or any other element slotted into it is not displayed.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-kpi>
   <mds-kpi-item label="75" description="Allenatori">
     <mds-icon name="mi/baseline/directions-walk"></mds-icon>
   </mds-kpi-item>
 </mds-kpi>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-kpi>
   <mds-kpi-item
     icon="mi/baseline/directions-walk"
@@ -205,15 +205,15 @@ The `icon` prop on `<mds-kpi-item>` renders the glyph in its own styled containe
 
 #### Do Not Override the Animation Speed by Targeting Internal Text Components
 
-`<mds-kpi-item>` forwards `--mds-kpi-text-animation-speed` and `--mds-kpi-text-animation-placeholder-char` to its internal `<mds-text>` elements. Setting `--mds-text-animation-speed` directly from outside the shadow boundary is fragile and bypasses the documented cascade. Use the published `--mds-kpi-*` or `--mds-kpi-item-*` variables instead.
+`<mds-kpi-item>` forwards `--mds-kpi-text-animation-speed` and `--mds-kpi-text-animation-placeholder-char` to its internal `<mds-text>` elements. Setting `--mds-text-animation-speed` from outside has no effect: the item sets it on its inner texts from its own variables. Use the published `--mds-kpi-*` or `--mds-kpi-item-*` variables instead.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-kpi-item {
   --mds-text-animation-speed: 0.05;
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-kpi {
   --mds-kpi-text-animation-speed: 0.05;
 }

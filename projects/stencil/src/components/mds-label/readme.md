@@ -15,10 +15,10 @@ The `<mds-label>` web component is the Magma Design System tag/chip used to disp
 
 #### Semantic Behavior
 
-- **Text content**: The visible text comes from the `label` prop; the default slot is documented for text only - avoid placing HTML elements or components in it.
-- **Deletable affordance**: When `deletable` is set, the component renders a trailing close button and emits the `mdsLabelDelete` event on activation; the deletion does not bubble to a surrounding clickable container.
+- **Text content**: The visible text comes from the `label` prop only; the component renders no `<slot>`, so content placed between the tags is not displayed.
+- **Deletable affordance**: When `deletable` is set, the component renders a trailing close button and emits the `mdsLabelDelete` event on activation; the click is stopped at the close button, so it does not reach a surrounding clickable container.
 - **Keyboard interaction**: While `deletable`, the close button can be triggered by keyboard as well as pointer.
-- **Localization**: The close button's `title` is localized (el/en/es/it).
+- **Localization**: The close button's `title` is localized (el/en/it; `es` currently gets the English string).
 
 #### Properties & Visual Configurations
 
@@ -30,13 +30,13 @@ The `variant` and `tone` props follow the shared ladders defined in [`docs/agent
 
 #### Other behavioral props
 
-- **`truncate`** controls overflow handling of the inner text: `'word'` (default) keeps it on one line, `'all'` truncates aggressively, and `'none'` allows multiline wrapping.
+- **`truncate`** controls overflow handling of the inner text: `'word'` (default) keeps it on one line, `'all'` wraps and clamps it to three lines with an ellipsis, and `'none'` allows multiline wrapping.
 - **`typography`** selects a compact type scale (`'caption'`, `'detail'`, `'tip'`) appropriate to the label's small footprint, defaulting to `'caption'`.
 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-label>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) and the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-label>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) and the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Label via `label` Prop
 
@@ -96,7 +96,7 @@ document.querySelector('mds-label').addEventListener('mdsLabelDelete', () => {
 
 #### Truncation Control via `truncate`
 
-Use `truncate="word"` (default) to clamp to one line on word boundaries. Use `truncate="none"` to allow multiline wrapping inside a constrained container.
+Use `truncate="word"` (default) to keep the text on one line, cut with an ellipsis. Use `truncate="none"` to allow multiline wrapping inside a constrained container.
 
 ```html
 <!-- Single-line truncation (default) -->
@@ -118,7 +118,7 @@ Use `truncate="word"` (default) to clamp to one line on word boundaries. Use `tr
 
 #### Typography Scale
 
-Choose `typography` to match the surrounding text hierarchy. The default `caption` suits most label contexts; use `detail` or `tip` only when the label sits alongside even smaller text.
+Choose `typography` to match the surrounding text hierarchy. The default `caption` suits most label contexts; use `detail` (larger) next to body-size text and `tip` (smaller) only when the label sits alongside even smaller text.
 
 ```html
 <mds-label label="Caption (default)" variant="aqua" typography="caption"></mds-label>
@@ -149,38 +149,37 @@ Common incorrect uses of `<mds-label>`. Each entry pairs the wrong form with the
 The component's `render()` method does not include a `<slot>` element, so content placed in the default slot is never rendered. Use the `label` prop exclusively.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-label>Stato documento</mds-label>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-label label="Stato documento"></mds-label>
 ```
 
 #### Do Not Use `<mds-label>` as a Form Input Label
 
-`<mds-label>` is a standalone decorative tag for categories and statuses. It is not a replacement for `<label>` or for `mds-input-field`'s label slot, and it has no `for` / `htmlFor` association with form controls.
+`<mds-label>` is a standalone decorative tag for categories and statuses. It is not a replacement for `<label>` or for the `label` prop of `mds-input-field`, and it has no `for` / `htmlFor` association with form controls.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-label label="Nome utente"></mds-label>
 <mds-input name="username"></mds-input>
 
-<!-- ✅ CORRECT -->
-<mds-input-field>
-  <span slot="label">Nome utente</span>
-  <mds-input slot="input" name="username"></mds-input>
+<!-- CORRECT -->
+<mds-input-field label="Nome utente">
+  <mds-input name="username"></mds-input>
 </mds-input-field>
 ```
 
 #### Do Not Set `deletable="false"` as a String
 
-`deletable` is a boolean prop. Setting it to the string `"false"` is truthy in HTML and enables the close button. Remove the attribute entirely to disable the affordance.
+`deletable` is a boolean prop, and a false boolean is an absent attribute ([`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md)). The runtime parses the string `"false"` as `false`, but the prop is not reflected, so the attribute stays on the element and `[deletable]` selectors or any code that reads the markup see a deletable tag. Remove the attribute entirely to disable the affordance.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-label label="Tag" deletable="false"></mds-label>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-label label="Tag"></mds-label>
 ```
 
@@ -189,10 +188,10 @@ The component's `render()` method does not include a `<slot>` element, so conten
 Status variants (`error`, `warning`, `success`, `info`) communicate system outcomes. Using them for neutral categories misleads users about the meaning of the label.
 
 ```html
-<!-- 🚫 INCORRECT: "Fauna" is a category, not an error state -->
+<!-- INCORRECT: "Fauna" is a category, not an error state -->
 <mds-label label="Fauna" variant="error"></mds-label>
 
-<!-- ✅ CORRECT: use a decorative palette color -->
+<!-- CORRECT: use a decorative palette color -->
 <mds-label label="Fauna" variant="green"></mds-label>
 ```
 
@@ -201,12 +200,12 @@ Status variants (`error`, `warning`, `success`, `info`) communicate system outco
 The component renders no slot; placing buttons or links in the default slot position has no effect. For a deletable label use `deletable` and listen to `mdsLabelDelete`.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-label label="Categoria">
   <button onclick="remove()">x</button>
 </mds-label>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-label label="Categoria" deletable></mds-label>
 ```
 
@@ -215,12 +214,12 @@ The component renders no slot; placing buttons or links in the default slot posi
 The supported customization surface is `--mds-label-*` CSS custom properties. Targeting shadow internals via `::part()`, `>>>`, or undocumented class names couples your code to the Shadow DOM implementation and will break on minor releases.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-label >>> .text {
   font-weight: bold;
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-label {
   --mds-label-background: rgb(var(--label-blue-08));
   --mds-label-color: rgb(var(--label-blue-02));

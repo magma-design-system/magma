@@ -35,7 +35,7 @@ This child does not use the shared `variant`/`tone` ladders; its props mirror th
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-tab-item>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the compound component rules documented in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md) and the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-tab-item>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Tab Group
 
@@ -128,7 +128,7 @@ Set `size` on `<mds-tab>` once; the parent propagates it to every child item aut
 
 #### Link Tab via `href`
 
-Set `href` (and `type="a"`) to make a tab navigate to a URL instead of switching a panel. Pair with a target attribute on the `<mds-tab-item>` if needed.
+Set `href` (and `type="a"`) to make a tab navigate to a URL instead of switching a panel. `<mds-tab-item>` has no `target` prop, so the link opens in the same window.
 
 ```html
 <mds-tab>
@@ -172,13 +172,13 @@ Set `direction="vertical"` on the parent to stack the tabs alongside the panels.
 
 #### CSS Customization
 
-Style items only through the documented `--mds-tab-item-*` CSS custom properties. Set them on the host or a parent selector; use Magma color tokens via `rgb(var(--<token>))` so dark mode keeps working.
+Style items only through the documented `--mds-tab-item-*` CSS custom properties. Set them on the host or a parent selector; use semantic color roles via `rgb(var(--magma-<role>))` so dark mode keeps working.
 
 ```css
 .schede-contratto mds-tab-item {
-  --mds-tab-item-default-background: rgb(var(--tone-neutral-02));
-  --mds-tab-item-hover-background: rgb(var(--tone-neutral-03));
-  --mds-tab-item-selected-background: rgb(var(--variant-primary-01));
+  --mds-tab-item-default-background: rgb(var(--magma-wash-soft));
+  --mds-tab-item-hover-background: rgb(var(--magma-wash-base));
+  --mds-tab-item-selected-background: rgb(var(--magma-accent-surface));
 }
 ```
 
@@ -192,10 +192,10 @@ Common incorrect uses of `<mds-tab-item>`. Each entry pairs the wrong form with 
 The item communicates with its parent through Stencil's internal listener (`mdsTabItemSelect`); used standalone it has no tab-switching behavior and no aria context.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-tab-item label="Dettagli" selected></mds-tab-item>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-tab>
   <mds-tab-item label="Dettagli" selected></mds-tab-item>
   <div slot="content"><p>Contenuto dei dettagli.</p></div>
@@ -204,10 +204,10 @@ The item communicates with its parent through Stencil's internal listener (`mdsT
 
 #### Do Not Wrap `<mds-tab-item>` in a Div or Other Element
 
-The parent queries direct children with `querySelectorAll('mds-tab-item')`; a wrapper breaks the slot pairing between items and content panels.
+The parent finds the items anywhere inside it, but it lays out and styles only its direct slot children (`::slotted(mds-tab-item)`): a wrapper takes their place in the tab strip, so the items lose the strip layout and their stacking above the slider indicator.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-tab>
   <div class="tab-group">
     <mds-tab-item label="Uno" selected></mds-tab-item>
@@ -217,7 +217,7 @@ The parent queries direct children with `querySelectorAll('mds-tab-item')`; a wr
   <div slot="content">...</div>
 </mds-tab>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-tab>
   <mds-tab-item label="Uno" selected></mds-tab-item>
   <mds-tab-item label="Due"></mds-tab-item>
@@ -228,13 +228,13 @@ The parent queries direct children with `querySelectorAll('mds-tab-item')`; a wr
 
 #### Do Not Set `selected="false"` to Deselect
 
-`selected` is a boolean attribute; the string `"false"` is truthy in HTML and will keep the item selected. Remove the attribute entirely to deselect.
+`selected` is a boolean attribute; `selected="false"` leaves a `selected` attribute on the element that contradicts the state, so attribute selectors and checks still read the item as selected. Remove the attribute entirely to deselect.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-tab-item label="Archivio" selected="false"></mds-tab-item>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-tab-item label="Archivio"></mds-tab-item>
 ```
 
@@ -243,13 +243,13 @@ The parent queries direct children with `querySelectorAll('mds-tab-item')`; a wr
 `<mds-tab-item>` has no documented default slot for content; it is a button-like leaf element. Use the `icon` prop to add a glyph.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-tab-item>
   <mds-icon name="mi/baseline/settings"></mds-icon>
   Impostazioni
 </mds-tab-item>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-tab-item label="Impostazioni" icon="mi/baseline/settings"></mds-tab-item>
 ```
 
@@ -258,7 +258,7 @@ The parent queries direct children with `querySelectorAll('mds-tab-item')`; a wr
 The parent pushes its `size` down to every child item on load and whenever `size` changes. Setting `size` on individual items is overwritten and creates confusion about the source of truth.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-tab size="sm">
   <mds-tab-item label="Uno" size="lg" selected></mds-tab-item>
   <mds-tab-item label="Due" size="sm"></mds-tab-item>
@@ -266,7 +266,7 @@ The parent pushes its `size` down to every child item on load and whenever `size
   <div slot="content">...</div>
 </mds-tab>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-tab size="sm">
   <mds-tab-item label="Uno" selected></mds-tab-item>
   <mds-tab-item label="Due"></mds-tab-item>
@@ -280,33 +280,33 @@ The parent pushes its `size` down to every child item on load and whenever `size
 The only supported customization surface is the `--mds-tab-item-*` CSS custom properties and the documented `button` shadow part. Targeting internals via `::part(button) >>> .button` or undocumented selectors couples your code to the implementation.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-tab-item::part(button) >>> .text {
   font-weight: 900;
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-tab-item {
-  --mds-tab-item-selected-background: rgb(var(--variant-primary-02));
+  --mds-tab-item-selected-background: rgb(var(--magma-accent-surface));
 }
 mds-tab-item::part(button) {
-  border-radius: var(--radius-lg);
+  border-radius: var(--magma-radius-lg);
 }
 ```
 
 #### Do Not Mix Content Panels and Tab Items Without a 1-to-1 Pairing
 
-The parent resolves each content panel by index, matching it to the `mds-tab-item` at the same position. A mismatch (more or fewer `slot="content"` elements than tab items) silently shows the wrong panel.
+The parent resolves each content panel by index, matching it to the `mds-tab-item` at the same position. A mismatch breaks it: with fewer `slot="content"` elements than tab items a tab shows no panel, with more the component throws while wiring them and no panel gets hidden.
 
 ```html
-<!-- 🚫 INCORRECT - two items, one content panel -->
+<!-- INCORRECT - two items, one content panel -->
 <mds-tab>
   <mds-tab-item label="Uno" selected></mds-tab-item>
   <mds-tab-item label="Due"></mds-tab-item>
   <div slot="content"><p>Contenuto unico.</p></div>
 </mds-tab>
 
-<!-- ✅ CORRECT - one content panel per tab item -->
+<!-- CORRECT - one content panel per tab item -->
 <mds-tab>
   <mds-tab-item label="Uno" selected></mds-tab-item>
   <mds-tab-item label="Due"></mds-tab-item>

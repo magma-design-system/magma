@@ -17,7 +17,7 @@ The `<mds-spinner>` web component is the Magma Design System's loading/await ind
 
 - **Visibility is gated by `running`**: When `running` is absent/false the spinner is hidden and its animation is paused; setting `running` reveals it and starts the animation. The animation never runs while hidden, for performance.
 - **No interactivity or accessibility role**: It is decorative - not focusable, emits no events, has no ARIA role, and is not form-associated. Any loading semantics (e.g. `aria-busy`) must be set by the surrounding context.
-- **Reduced-motion and contrast aware**: The animation adapts under `prefers-reduced-motion` and `prefers-contrast`, so motion and color degrade gracefully without consumer intervention.
+- **Reduced-motion and contrast aware**: The animation slows down (8s per turn, it never stops) under the OS `prefers-reduced-motion` setting, and the color is strengthened under the contrast preference, without consumer intervention.
 
 #### Properties & Visual Configurations
 
@@ -32,7 +32,7 @@ The component exposes a single behavioral prop:
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-spinner>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) and the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-spinner>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Spinner - Hidden by Default
 
@@ -48,7 +48,7 @@ The component is invisible and animation-paused until `running` is set. Render i
 
 #### Inline Loading Indicator
 
-Place the spinner next to a label to signal that a section is loading. The spinner inherits `color: currentColor` from its parent, so it adapts to the surrounding text colour without extra CSS.
+Place the spinner next to a label to signal that a section is loading. The spinner is painted in the accent color (`--magma-accent-fg`) by default; set `color` on the host to match the surrounding text instead.
 
 ```html
 <div class="loading-row">
@@ -88,7 +88,7 @@ Centre the spinner over a region with a wrapper. Drive `running` programmaticall
 
 #### Controlling Animation Speed
 
-Use the `--mds-spinner-duration` CSS custom property to tune the rotation speed. Set it on the host element - shorter values spin faster, longer values spin slower. Reduced-motion preferences are handled automatically by the component; this override is for brand or context-specific adjustments only.
+Use the `--mds-spinner-duration` CSS custom property to tune the rotation speed. Set it on the host element - shorter values spin faster, longer values spin slower. The component slows the spinner down under the OS reduced-motion setting by changing this same property, so an override on the host also replaces that slowdown: keep it for brand or context-specific adjustments only.
 
 ```css
 .fast-indicator mds-spinner {
@@ -112,11 +112,11 @@ Use the `--mds-spinner-duration` CSS custom property to tune the rotation speed.
 
 #### Colour Customization via CSS Color
 
-The spinner stroke inherits `color` from the host, so you can recolour it without touching shadow internals. Use a Magma colour token so dark mode and high-contrast modes keep working.
+The spinner stroke inherits `color` from the host, so you can recolour it without touching shadow internals. Use a semantic colour role so dark mode and high-contrast modes keep working.
 
 ```css
 .status-warning-spinner mds-spinner {
-  color: rgb(var(--variant-warning-03));
+  color: rgb(var(--magma-warning-text-default));
 }
 ```
 
@@ -133,13 +133,13 @@ Common incorrect uses of `<mds-spinner>`. Each entry pairs the wrong form with t
 
 #### Do Not Set `running="false"` to Hide the Spinner
 
-Any non-empty string is truthy in HTML. `running="false"` is parsed as the boolean `true` and the spinner stays visible. Remove the attribute entirely - or set the prop to `undefined` - to stop and hide the spinner.
+The component's styles key on the presence of `running` (`:host([running])`). Stencil reads `"false"` as `false` and, since `running` is reflected, removes the attribute at the first render, so this happens to work; but the markup says the opposite of what it does, and on a prop that is not reflected the attribute stays in the DOM, where `[attr]` selectors still match it. Remove the attribute entirely - or set the prop to `undefined` - to stop and hide the spinner.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-spinner running="false"></mds-spinner>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-spinner></mds-spinner>
 ```
 
@@ -148,10 +148,10 @@ Any non-empty string is truthy in HTML. `running="false"` is parsed as the boole
 The spinner renders as invisible (`opacity: 0`, `transform: scale(0)`) and with the animation paused when `running` is absent. Toggling CSS visibility or opacity from outside will not start the animation - you must set the `running` attribute.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-spinner style="opacity: 1; transform: none;"></mds-spinner>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-spinner running></mds-spinner>
 ```
 
@@ -160,10 +160,10 @@ The spinner renders as invisible (`opacity: 0`, `transform: scale(0)`) and with 
 The spinner is decorative - it has no semantic content and must not become a labelled landmark or a status region. Screen readers should be informed of loading state through a parent container with `aria-busy` / `aria-live`, not through attributes placed on `<mds-spinner>`.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-spinner running role="status" aria-label="Caricamento"></mds-spinner>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <div role="status" aria-live="polite" aria-label="Caricamento">
   <mds-spinner running></mds-spinner>
 </div>
@@ -171,14 +171,14 @@ The spinner is decorative - it has no semantic content and must not become a lab
 
 #### Do Not Add a Separate Spinner Alongside `mds-button`
 
-`mds-button` controls its own internal `<mds-spinner>` through the `await` prop. Adding an extra spinner next to the button produces a double indicator and breaks the button's built-in activation guard.
+`mds-button` controls its own internal `<mds-spinner>` through the `await` prop. An extra spinner next to the button leaves the button clickable while the operation runs; `await` shows the button's own spinner and blocks interaction.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-button label="Salva" variant="primary"></mds-button>
 <mds-spinner running></mds-spinner>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-button label="Salva" await variant="primary"></mds-button>
 ```
 
@@ -187,14 +187,14 @@ The spinner is decorative - it has no semantic content and must not become a lab
 The only documented customization surface is the `color` CSS property on the host (inherited by the internal stroke) and the `--mds-spinner-duration` CSS custom property. Targeting internals via `>>>` or undocumented selectors couples your code to the implementation and will break on minor releases.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-spinner >>> .await-icon svg {
   stroke: red;
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-spinner {
-  color: rgb(var(--variant-error-03));
+  color: rgb(var(--magma-danger-text-default));
 }
 ```
 
@@ -203,14 +203,14 @@ mds-spinner {
 Setting an extremely long or `infinite` duration is not a supported way to pause the spinner. Use the `running` attribute to start and stop the animation - the component manages animation-play-state itself.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-spinner {
   --mds-spinner-duration: 9999s;
 }
 ```
 
 ```html
-<!-- ✅ CORRECT - remove the attribute to stop -->
+<!-- CORRECT - remove the attribute to stop -->
 <mds-spinner></mds-spinner>
 ```
 

@@ -9,55 +9,56 @@
 
 ### 1. Description
 
-The `<mds-pref-theme>` web component is the theme-switcher segment of the Magma accessibility preferences panel, designed to live as a direct child of [`<mds-pref>`](../../mds-pref). It renders a labelled tab trigger that opens a dropdown of selectable theme variants and, when a variant is chosen, applies it globally to the document.
+The `<mds-pref-theme>` web component is the theme-switcher segment of the Magma accessibility preferences panel, designed to live as a direct child of [`<mds-pref>`](../../mds-pref). It renders a labelled tab trigger that opens a dropdown of selectable named themes and, when a theme is chosen, applies it globally to the document.
 
 #### Semantic Behavior
 
 - **Compound positioning**: It must be a direct slot child of `<mds-pref>` and is not used standalone.
 - **Acts as a sub-parent itself**: Its own default slot must contain one or more `mds-pref-theme-item` elements; it drives their selected state so only the active theme is marked selected.
-- **Global theme application**: Selecting an item applies the theme document-wide.
-- **Persistence and hydration**: The current name and scheme are persisted and restored across reloads regardless of the declared `name` default.
+- **Global theme application**: Selecting an item applies the theme document-wide: it writes `data-theme-name` and the `pref-theme-scheme-*` class on `<html>`.
+- **Persistence and hydration**: The current name, scheme and corner shape are persisted and restored across reloads: a stored value outranks the matching prop.
 - **Name validation**: An invalid theme name (not lowercase kebab-case matching `^[a-z]+(-[a-z]+)*$`) throws at runtime when the theme is applied. So do the reserved names `light`, `dark` and `system` (they are mode values) and `scheme` or `scheme-*` (they would collide with the `pref-theme-scheme-*` classes).
-- **Events bubbled up**: Emits `mdsPrefThemeChange` with the `{ name, scheme }` detail on selection, and `mdsPrefChange` (`preference: 'theme'`) which `<mds-pref>` listens to.
+- **Events bubbled up**: Emits `mdsPrefThemeChange` with the `{ name, scheme }` detail on each pick, which `<mds-pref>` listens to in order to lock the `<mds-pref-mode>` item a scheme-constrained theme forbids. It also emits `mdsPrefChange` (`preference: 'theme'`, and `'corner-shape'` when a corner shape is set) every time it applies them, on load and on each re-render included.
 - **Localized label**: The "Theme" heading follows the active interface language.
 
 #### Properties & Visual Configurations
 
-- **`name`**: The active theme name (default `'default'`); it is overridden at runtime by any persisted value. Use it to declare the initial theme when no preference has been stored yet.
-- **`scheme`**: Constrains the colour modes of the theme to `'light'`, `'dark'`, or `'all'` (default). Pick `'all'` for themes that ship both light and dark palettes; pick `'light'` or `'dark'` to force a single mode for a variant that only defines one.
-- **`size`**: Sets the size (`'sm'` / `'md'`) of the nested tab UI. It is normally not set directly - `<mds-pref>` propagates its own `size` down to every `mds-pref-*` segment so the panel stays visually consistent.
+- **`name`**: The active theme name (default `'default'`); it is overridden at runtime by any persisted value. Use it to declare the initial theme when no preference has been stored yet. The named themes are `cool` and `warm`; `default` is the base theme ([`docs/agents/theming.md`](../../../../../../docs/agents/theming.md)).
+- **`scheme`**: Constrains the colour modes of the theme to `'light'`, `'dark'`, or `'all'` (default). Pick `'all'` for themes that ship both light and dark palettes; pick `'light'` or `'dark'` to force a single mode for a theme offered in one mode only.
+- **`size`**: Sets the size (`'sm'` / `'md'`) of the nested tab UI. `<mds-pref>` forwards its own `size` to every `mds-pref-*` segment only when that prop changes after load, not from the initial markup: in markup, set it here (with the same value on the sibling segments, so the panel stays visually consistent).
+- **`cornerShape`** (attribute `corner-shape`): The corner geometry of the whole page - `round`, `squircle`, `bevel`, `notch`, `scoop`, `square`, or `default`. It writes `data-corner-shape` on `<html>` and is persisted like the theme; `default` removes the attribute, and leaving the prop unset touches nothing ([`docs/agents/theming.md`](../../../../../../docs/agents/theming.md)).
 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-pref-theme>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the preferences system documented in [`docs/agents/theming.md`](../../../../../../docs/agents/theming.md) and the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-pref-theme>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the preferences system documented in [`docs/agents/theming.md`](../../../../../../docs/agents/theming.md) and the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Theme Chooser
 
-The canonical form. Place `<mds-pref-theme>` inside [`<mds-pref>`](../../mds-pref) and populate its default slot with one [`<mds-pref-theme-item>`](../../mds-pref-theme-item) per available theme. The first item's `name` must match the `name` prop on the parent so the correct item starts as selected.
+The canonical form. Place `<mds-pref-theme>` inside [`<mds-pref>`](../../mds-pref) and populate its default slot with one [`<mds-pref-theme-item>`](../../mds-pref-theme-item) per available theme. The item whose `name` matches the active theme (the stored choice, or the parent's `name` on a first visit) starts as selected. The named themes are `cool` and `warm`; `default` is the base theme.
 
 ```html
 <mds-pref>
   <mds-pref-theme name="default" scheme="all">
     <mds-pref-theme-item label="Predefinito" name="default" scheme="all"></mds-pref-theme-item>
-    <mds-pref-theme-item label="Estate" name="summer" scheme="light"></mds-pref-theme-item>
-    <mds-pref-theme-item label="Crepuscolo" name="twilight" scheme="dark"></mds-pref-theme-item>
+    <mds-pref-theme-item label="Freddo" name="cool" scheme="all"></mds-pref-theme-item>
+    <mds-pref-theme-item label="Caldo" name="warm" scheme="all"></mds-pref-theme-item>
   </mds-pref-theme>
 </mds-pref>
 ```
 
 #### Scheme-Constrained Themes
 
-Use `scheme="light"` or `scheme="dark"` on a `<mds-pref-theme-item>` when the theme only defines one colour mode. The parent component propagates the chosen scheme to `<html>` and forces that mode even if the user's OS prefers the opposite.
+Use `scheme="light"` or `scheme="dark"` on a `<mds-pref-theme-item>` when the theme must be offered in one colour mode only. The parent component propagates the chosen scheme to `<html>` and forces that mode even if the user's OS or mode preference asks for the opposite; inside `<mds-pref>` the forbidden item of `<mds-pref-mode>` is locked.
 
 ```html
 <mds-pref>
   <mds-pref-theme name="default" scheme="all">
     <mds-pref-theme-item label="Predefinito" name="default" scheme="all"></mds-pref-theme-item>
-    <!-- light-only palette - dark mode will not activate for this theme -->
-    <mds-pref-theme-item label="Chiaro" name="corporate" scheme="light"></mds-pref-theme-item>
-    <!-- dark-only palette -->
-    <mds-pref-theme-item label="Notte" name="midnight" scheme="dark"></mds-pref-theme-item>
+    <!-- light only - dark mode will not activate with this item -->
+    <mds-pref-theme-item label="Freddo chiaro" name="cool" scheme="light"></mds-pref-theme-item>
+    <!-- dark only -->
+    <mds-pref-theme-item label="Caldo scuro" name="warm" scheme="dark"></mds-pref-theme-item>
   </mds-pref-theme>
 </mds-pref>
 ```
@@ -70,7 +71,7 @@ React to the user's selection via `mdsPrefThemeChange`. The event detail carries
 <mds-pref>
   <mds-pref-theme id="theme-chooser" name="default" scheme="all">
     <mds-pref-theme-item label="Predefinito" name="default" scheme="all"></mds-pref-theme-item>
-    <mds-pref-theme-item label="Estate" name="summer" scheme="light"></mds-pref-theme-item>
+    <mds-pref-theme-item label="Freddo" name="cool" scheme="all"></mds-pref-theme-item>
   </mds-pref-theme>
 </mds-pref>
 
@@ -87,35 +88,35 @@ Use the `name` prop to declare which theme should be active before the user make
 
 ```html
 <mds-pref>
-  <!-- First-visit default is "estate" -->
-  <mds-pref-theme name="summer" scheme="light">
+  <!-- First-visit default is "warm" -->
+  <mds-pref-theme name="warm" scheme="all">
     <mds-pref-theme-item label="Predefinito" name="default" scheme="all"></mds-pref-theme-item>
-    <mds-pref-theme-item label="Estate" name="summer" scheme="light"></mds-pref-theme-item>
+    <mds-pref-theme-item label="Caldo" name="warm" scheme="all"></mds-pref-theme-item>
   </mds-pref-theme>
 </mds-pref>
 ```
 
 #### Controlling Item Size
 
-Pass `size="sm"` when the preferences panel must fit a compact layout. Normally `<mds-pref>` propagates its own `size` to every `mds-pref-*` child automatically; set it directly only when using `<mds-pref-theme>` without its parent.
+Pass `size="sm"` when the preferences panel must fit a compact layout. `<mds-pref>` forwards its own `size` to every `mds-pref-*` child only when that prop changes after load, not from the initial markup: in markup, set the same `size` on every preference control.
 
 ```html
-<mds-pref size="sm">
+<mds-pref>
   <mds-pref-theme name="default" scheme="all" size="sm">
     <mds-pref-theme-item label="Predefinito" name="default" scheme="all"></mds-pref-theme-item>
-    <mds-pref-theme-item label="Estate" name="summer" scheme="light"></mds-pref-theme-item>
+    <mds-pref-theme-item label="Freddo" name="cool" scheme="all"></mds-pref-theme-item>
   </mds-pref-theme>
 </mds-pref>
 ```
 
 #### Styling Theme Items
 
-Style theme items only through their documented `--mds-pref-theme-item-*` CSS custom properties. Set them on the item host or on a parent selector; use Magma colour tokens via `rgb(var(--<token>))` to stay compatible with dark mode.
+Style theme items only through their documented `--mds-pref-theme-item-*` CSS custom properties. Set them on the item host or on a parent selector; name a semantic role, `rgb(var(--magma-<role>))` ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)), so the colours follow the mode, the theme and the contrast preference.
 
 ```css
 mds-pref-theme-item {
-  --mds-pref-theme-item-color-background: rgb(var(--tone-neutral-01));
-  --mds-pref-theme-item-color-variant-primary: rgb(var(--variant-primary-05));
+  --mds-pref-theme-item-color-background: rgb(var(--magma-surface-inverse));
+  --mds-pref-theme-item-color-variant-primary: rgb(var(--magma-accent-emphasis));
 }
 ```
 
@@ -126,15 +127,15 @@ Common incorrect uses of `<mds-pref-theme>`. Each entry pairs the wrong form wit
 
 #### Do Not Use the Component Outside `<mds-pref>`
 
-`<mds-pref-theme>` is a compound sub-part designed to slot inside [`<mds-pref>`](../../mds-pref). Using it standalone breaks the shared preferences panel layout and removes the size propagation cascade from the parent.
+`<mds-pref-theme>` is a compound sub-part designed to slot inside [`<mds-pref>`](../../mds-pref). As a standalone widget it still applies and persists the theme, but it leaves the panel: `<mds-pref>` can no longer forward `size` changes to it, nor lock the `<mds-pref-mode>` item that its `scheme` forbids.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-pref-theme name="default" scheme="all">
   <mds-pref-theme-item label="Predefinito" name="default" scheme="all"></mds-pref-theme-item>
 </mds-pref-theme>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-pref>
   <mds-pref-theme name="default" scheme="all">
     <mds-pref-theme-item label="Predefinito" name="default" scheme="all"></mds-pref-theme-item>
@@ -147,7 +148,7 @@ Common incorrect uses of `<mds-pref-theme>`. Each entry pairs the wrong form wit
 The default slot is reserved exclusively for `<mds-pref-theme-item>` elements. Any other content bypasses the component's internal selection management and will not trigger theme application.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-pref>
   <mds-pref-theme name="default" scheme="all">
     <button>Predefinito</button>
@@ -155,11 +156,11 @@ The default slot is reserved exclusively for `<mds-pref-theme-item>` elements. A
   </mds-pref-theme>
 </mds-pref>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-pref>
   <mds-pref-theme name="default" scheme="all">
     <mds-pref-theme-item label="Predefinito" name="default" scheme="all"></mds-pref-theme-item>
-    <mds-pref-theme-item label="Estate" name="summer" scheme="light"></mds-pref-theme-item>
+    <mds-pref-theme-item label="Freddo" name="cool" scheme="all"></mds-pref-theme-item>
   </mds-pref-theme>
 </mds-pref>
 ```
@@ -169,13 +170,13 @@ The default slot is reserved exclusively for `<mds-pref-theme-item>` elements. A
 The `name` prop must match the pattern `^[a-z]+(-[a-z]+)*$` (lowercase letters and hyphens only). Any other value - including uppercase, underscores, or spaces - throws a runtime error when the component tries to apply the theme class on `<html>`.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-pref-theme name="My Theme" scheme="all">...</mds-pref-theme>
 <mds-pref-theme name="my_theme" scheme="all">...</mds-pref-theme>
 <mds-pref-theme name="MyTheme" scheme="all">...</mds-pref-theme>
 
-<!-- ✅ CORRECT -->
-<mds-pref-theme name="my-theme" scheme="all">...</mds-pref-theme>
+<!-- CORRECT -->
+<mds-pref-theme name="warm" scheme="all">...</mds-pref-theme>
 ```
 
 #### Do Not Listen for the Native `change` Event
@@ -183,14 +184,14 @@ The `name` prop must match the pattern `^[a-z]+(-[a-z]+)*$` (lowercase letters a
 `<mds-pref-theme>` emits `mdsPrefThemeChange` - a documented custom event with a typed `{ name, scheme }` detail. Listening for the native `change` event will not fire because theme selection is handled entirely inside shadow DOM.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <script>
   document.querySelector('mds-pref-theme').addEventListener('change', (e) => {
     console.log(e.target.value); // undefined - wrong event, wrong detail shape
   });
 </script>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <script>
   document.querySelector('mds-pref-theme').addEventListener('mdsPrefThemeChange', (e) => {
     console.log(e.detail.name, e.detail.scheme);
@@ -198,21 +199,21 @@ The `name` prop must match the pattern `^[a-z]+(-[a-z]+)*$` (lowercase letters a
 </script>
 ```
 
-#### Do Not Set `size` Independently When Inside `<mds-pref>`
+#### Do Not Give the Parent and the Child Different Sizes
 
-`<mds-pref>` propagates its own `size` value to all `mds-pref-*` children automatically. Setting `size` directly on `<mds-pref-theme>` while it is inside `<mds-pref>` creates a conflict and the panel may render inconsistently.
+`<mds-pref>` forwards its own `size` to all `mds-pref-*` children only when that prop changes after load, not from the initial markup, and then it overwrites theirs. A `size` on `<mds-pref-theme>` that differs from the parent's renders the child's value at load and flips to the parent's on its next change: give the children one `size`.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-pref size="sm">
   <mds-pref-theme size="md" name="default" scheme="all">
     <mds-pref-theme-item label="Predefinito" name="default" scheme="all"></mds-pref-theme-item>
   </mds-pref-theme>
 </mds-pref>
 
-<!-- ✅ CORRECT -->
-<mds-pref size="sm">
-  <mds-pref-theme name="default" scheme="all">
+<!-- CORRECT -->
+<mds-pref>
+  <mds-pref-theme size="sm" name="default" scheme="all">
     <mds-pref-theme-item label="Predefinito" name="default" scheme="all"></mds-pref-theme-item>
   </mds-pref-theme>
 </mds-pref>

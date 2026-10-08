@@ -20,7 +20,7 @@ The `<mds-table>` web component is the root container of the Magma Design System
 - **Selection event**: Emits `mdsTableSelectionChange` (bubbles, composed) carrying `{ rows }`, an array of `{ index, value }` for every selected row. Selection is driven via the `updateSelection()` and `selectAll(select?)` methods rather than DOM listeners; both are no-ops unless `selectable` is true.
 - **Live children**: Rows added or removed at runtime are re-wired with the table's interactive and selectable state, so dynamically added rows behave consistently.
 - **Action overflow**: When rows carry a `[slot="action"]`, rows flip into an overlaid-action mode once content exceeds the visible width.
-- **Localization**: Resolves its display language from the host (`el`/`en`/`es`/`it`) for the batch-actions label.
+- **Localization**: Resolves its display language from the page (`<html lang>`: `el`/`en`/`es`/`it`, otherwise `en`) for the batch-actions label.
 
 #### Properties & Visual Configurations
 
@@ -35,7 +35,7 @@ The `<mds-table>` web component is the root container of the Magma Design System
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-table>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the compound-component rules documented in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md) and the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-table>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Read-Only Table
 
@@ -244,16 +244,16 @@ Slot `mds-button` elements with `slot="batch-action"` as direct children of `mds
 
 #### Styling Customization
 
-Customize the table appearance only through its documented `--mds-table-*` CSS custom properties. Set them on the host element or a parent selector; use Magma color tokens via `rgb(var(--<token>))` so dark mode keeps working.
+Customize the table appearance only through its documented `--mds-table-*` CSS custom properties. Set them on the host element or a parent selector; use the semantic color roles via `rgb(var(--magma-<role>))` so dark mode and themes keep working.
 
 ```css
 .tabella-contratti mds-table {
-  --mds-table-background: rgb(var(--tone-neutral-09));
-  --mds-table-background-alt: rgb(var(--tone-neutral-08));
-  --mds-table-border-color: rgb(var(--variant-primary-07));
+  --mds-table-background: rgb(var(--magma-surface-raised));
+  --mds-table-background-alt: rgb(var(--magma-surface-muted));
+  --mds-table-border-color: rgb(var(--magma-accent-border));
   --mds-table-border-width: 1px;
-  --mds-table-cell-padding: var(--spacing-500);
-  --mds-table-color: rgb(var(--tone-neutral-02));
+  --mds-table-cell-padding: calc(var(--spacing) * 500);
+  --mds-table-color: rgb(var(--magma-text-default));
 }
 ```
 
@@ -267,7 +267,7 @@ Common incorrect uses of `<mds-table>`. Each entry pairs the wrong form with the
 `<mds-table>` orchestrates its children via internal Stencil mechanisms. Substituting any subpart (`mds-table-header`, `mds-table-body`, `mds-table-row`, `mds-table-cell`) with a raw `<thead>`, `<tbody>`, `<tr>`, or `<td>` breaks propagation of `interactive`, `selectable`, and overflow state.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-table>
   <thead>
     <tr><th>Nome</th><th>Email</th></tr>
@@ -277,7 +277,7 @@ Common incorrect uses of `<mds-table>`. Each entry pairs the wrong form with the
   </tbody>
 </mds-table>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-table>
   <mds-table-header>
     <mds-table-header-cell label="Nome"></mds-table-header-cell>
@@ -297,7 +297,7 @@ Common incorrect uses of `<mds-table>`. Each entry pairs the wrong form with the
 The `slot="batch-action"` must be a direct child of `<mds-table>`, not nested inside `mds-table-body` or any row. The component queries `:scope > [slot="batch-action"]` at load time and the bar will not appear if the slot is misplaced.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-table selectable>
   <mds-table-body>
     <mds-table-row>...</mds-table-row>
@@ -305,7 +305,7 @@ The `slot="batch-action"` must be a direct child of `<mds-table>`, not nested in
   </mds-table-body>
 </mds-table>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-table selectable>
   <mds-table-header>...</mds-table-header>
   <mds-table-body>
@@ -317,10 +317,10 @@ The `slot="batch-action"` must be a direct child of `<mds-table>`, not nested in
 
 #### Do Not Slot Row Action Buttons Inside `mds-table-cell`
 
-Per-row action buttons use `slot="action"` on a direct child of `mds-table-row`, not wrapped inside an `mds-table-cell`. Placing them in a cell breaks the overflow-detection logic that switches rows into overlay-action mode.
+Per-row action buttons use `slot="action"` on a direct child of `mds-table-row`, not wrapped inside an `mds-table-cell`. Placing them in a cell hides them (`mds-table-cell` has no `action` slot, so the button is not rendered) and breaks the overflow-detection logic that switches rows into overlay-action mode.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-table-row>
   <mds-table-cell><mds-text typography="detail">Contratto.pdf</mds-text></mds-table-cell>
   <mds-table-cell>
@@ -328,7 +328,7 @@ Per-row action buttons use `slot="action"` on a direct child of `mds-table-row`,
   </mds-table-cell>
 </mds-table-row>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-table-row>
   <mds-table-cell><mds-text typography="detail">Contratto.pdf</mds-text></mds-table-cell>
   <mds-button slot="action" icon="mi/baseline/delete" title="Elimina" variant="error" tone="text"></mds-button>
@@ -340,14 +340,14 @@ Per-row action buttons use `slot="action"` on a direct child of `mds-table-row`,
 The batch-action bar only renders when `selectable` is set. Slotting batch-action buttons on a non-selectable table silently produces no bar and no selection count, causing the buttons to never appear.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-table>
   <mds-table-header>...</mds-table-header>
   <mds-table-body>...</mds-table-body>
   <mds-button slot="batch-action" label="Esporta" variant="primary"></mds-button>
 </mds-table>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-table selectable>
   <mds-table-header>...</mds-table-header>
   <mds-table-body>...</mds-table-body>
@@ -360,7 +360,7 @@ The batch-action bar only renders when `selectable` is set. Slotting batch-actio
 `interactive` is a table-level prop that propagates automatically to every `mds-table-row`. Setting it directly on individual rows bypasses the table's state management and leads to inconsistent behavior when rows are added or removed at runtime.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-table>
   <mds-table-body>
     <mds-table-row interactive>...</mds-table-row>
@@ -368,7 +368,7 @@ The batch-action bar only renders when `selectable` is set. Slotting batch-actio
   </mds-table-body>
 </mds-table>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-table interactive>
   <mds-table-body>
     <mds-table-row>...</mds-table-row>
@@ -382,7 +382,7 @@ The batch-action bar only renders when `selectable` is set. Slotting batch-actio
 Selection state is communicated via the `mdsTableSelectionChange` custom event. Native `change` events from the internal checkboxes do not bubble out of the shadow DOM reliably; always use the documented Magma event.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-table selectable id="tbl">...</mds-table>
 <script>
   document.getElementById('tbl').addEventListener('change', (e) => {
@@ -390,7 +390,7 @@ Selection state is communicated via the `mdsTableSelectionChange` custom event. 
   });
 </script>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-table selectable id="tbl">...</mds-table>
 <script>
   document.getElementById('tbl').addEventListener('mdsTableSelectionChange', (e) => {
@@ -401,21 +401,21 @@ Selection state is communicated via the `mdsTableSelectionChange` custom event. 
 
 #### Do Not Set `selection` Manually
 
-`selection` is a reflected read-back attribute managed internally by the table. It becomes `true` when at least one row is selected and is intended for CSS attribute selectors or conditional logic in the host app. Setting it from outside does not change which rows are selected and will be overwritten on the next selection update.
+`selection` is a reflected read-back attribute managed internally by the table. It becomes `true` when at least one row is selected and is intended for CSS attribute selectors or conditional logic in the host app. Setting it from outside does not change which rows are selected and will be overwritten on the next selection update. The table emits `mdsTableSelectionChange` before it updates `selection`, so inside that listener read `e.detail.rows`, not the attribute.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-table selectable selection>
   ...
 </mds-table>
 
-<!-- ✅ CORRECT - read it back, do not set it -->
+<!-- CORRECT - read it back, do not set it -->
 <mds-table selectable id="tbl">
   ...
 </mds-table>
 <script>
   document.getElementById('tbl').addEventListener('mdsTableSelectionChange', (e) => {
-    const hasSelection = e.target.hasAttribute('selection');
+    const hasSelection = e.detail.rows.length > 0;
     document.getElementById('panel-azioni').hidden = !hasSelection;
   });
 </script>

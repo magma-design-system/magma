@@ -16,18 +16,18 @@ The `<mds-mention>` web component renders a compact inline chip that references 
 - **Props-only**: It has no default slot and exposes its content exclusively through props.
 - **Default icon**: When `icon` is not set the component falls back to the `alternate-email` (`@`) glyph, reinforcing the mention metaphor.
 - **Opt-in remove affordance**: `deletable` adds a trailing remove button; its click emits `mdsMentionDelete`, and the component leaves the removal itself to the application.
-- **Size-driven typography**: `size` maps to a fixed typography ramp (`sm` → `caption`, `md` → `detail`, `lg` → `h6`); the label is bold at `sm` and `md`, and normal weight at `lg`.
+- **Size-driven typography**: `size` maps to a fixed typography ramp (`sm` -> `caption`, `md` -> `detail`, `lg` -> `h6`); the label is wrapped in `<b>` at `sm` and `md`, and at `lg` it takes the bold `h6` title style.
 
 #### Properties & Visual Configurations
 
 - **`deletable`** turns on the trailing remove button. Without it the mention is a read-only token: no button, no event.
 - **`icon`** is an SVG filename slug from the Magma icon library, shown at the left of the label; omit it to keep the default `@` mention glyph.
-- **`size`** controls both the physical scale and the typography of the label - pick `sm` for dense inline contexts, `lg` for prominent, headline-adjacent placements. Note that `size` also flips the label weight (bold below `lg`).
+- **`size`** controls both the physical scale and the typography of the label - pick `sm` for dense inline contexts, `lg` for prominent, headline-adjacent placements. The label is bold at every size (a `<b>` below `lg`, the `h6` title style at `lg`).
 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-mention>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) and the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-mention>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Inline Mention
 
@@ -106,7 +106,7 @@ Adjust the icon size through the documented `--mds-mention-icon-size` CSS custom
 
 ```css
 .featured-comment mds-mention {
-  --mds-mention-icon-size: var(--spacing-700);
+  --mds-mention-icon-size: calc(var(--spacing) * 700);
 }
 ```
 
@@ -120,13 +120,13 @@ Common incorrect uses of `<mds-mention>`. Each entry pairs the wrong form with t
 `<mds-mention>` has no default slot and no named slots. Any child nodes placed inside the tag are silently ignored. Pass all content through the `label` and `icon` props.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-mention>
   <mds-icon name="mi/baseline/person"></mds-icon>
   mario.rossi
 </mds-mention>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-mention label="mario.rossi" icon="mi/baseline/person"></mds-mention>
 ```
 
@@ -135,10 +135,10 @@ Common incorrect uses of `<mds-mention>`. Each entry pairs the wrong form with t
 Wrapping text in a styled `<span>` misses the remove affordance, icon handling, size ramp, and dark-mode token cascade. Use `<mds-mention>` whenever the UI needs an @-mention token.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <span class="pill">@mario.rossi</span>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-mention label="mario.rossi"></mds-mention>
 ```
 
@@ -147,10 +147,10 @@ Wrapping text in a styled `<span>` misses the remove affordance, icon handling, 
 The `size` prop drives icon dimensions, padding, and typography together as a coordinated unit. Setting `font-size`, `width`, or `height` inline breaks that coordination and can misalign the icon and label.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-mention label="anna.verdi" style="font-size: 20px; height: 40px;"></mds-mention>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-mention label="anna.verdi" size="lg"></mds-mention>
 ```
 
@@ -159,32 +159,32 @@ The `size` prop drives icon dimensions, padding, and typography together as a co
 The only supported customization surface is `--mds-mention-icon-size`. Targeting internal elements via `>>>`, `/deep/`, or undocumented `::part()` names couples your code to implementation details and will break on minor releases.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-mention >>> mds-icon {
   width: 32px;
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-mention {
-  --mds-mention-icon-size: var(--spacing-700);
+  --mds-mention-icon-size: calc(var(--spacing) * 700);
 }
 ```
 
 #### Do Not Listen for `click` on the Remove Button Directly
 
-The remove button lives inside the shadow DOM: a `click` listener on the host cannot tell it apart
-from a click on the label, and reaching into the shadow root ties your code to an internal class
-name. Listen for `mdsMentionDelete` instead - it is the contract, and it names the mention that was
+The remove button lives inside the shadow DOM and stops its own `click` from propagating: a `click`
+listener on the host never sees the remove action (it fires only for clicks on the rest of the
+pill), and reaching into the shadow root ties your code to an internal class name. Listen for `mdsMentionDelete` instead - it is the contract, and it names the mention that was
 dismissed.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-mention id="m1" label="marco.bianchi" deletable></mds-mention>
 <script>
   document.querySelector('#m1').addEventListener('click', removeMention);
 </script>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-mention id="m1" label="marco.bianchi" deletable></mds-mention>
 <script>
   document.querySelector('#m1').addEventListener('mdsMentionDelete', removeMention);

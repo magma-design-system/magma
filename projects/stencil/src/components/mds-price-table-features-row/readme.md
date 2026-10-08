@@ -22,12 +22,12 @@ The `<mds-price-table-features-row>` web component is a layout child of [`<mds-p
 
 #### Properties & Visual Configurations
 
-This component has no configurable props. Its only responsibility is layout: it groups one or more `<mds-price-table-features-cell>` elements into a single row and guarantees they share the available horizontal space equally. Visual appearance (background, text color, and their hover variants) is tuned through the CSS custom properties documented in `readme.md` (`--mds-price-table-features-row-background`, `--mds-price-table-features-row-color`, and their `-hover` counterparts). For the shared design-system conventions on compound components, refer to [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md).
+This component has no configurable props. Its only responsibility is layout: it groups one or more `<mds-price-table-features-cell>` elements into a single row and guarantees they share the available horizontal space equally. Visual appearance (background, text color, and their hover variants) is tuned through the CSS custom properties documented in [`readme.md`](../readme.md) (`--mds-price-table-features-row-background`, `--mds-price-table-features-row-color`, and their `-hover` counterparts). For the shared design-system conventions on compound components, refer to [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-price-table-features-row>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the compound-component rules documented in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md) and the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-price-table-features-row>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Standard Feature Row with Supported / Unsupported Cells
 
@@ -102,7 +102,7 @@ Use `type="custom"` when none of the standard cell types is adequate - for examp
         <mds-badge variant="success" tone="weak">Chat</mds-badge>
       </mds-price-table-features-cell>
       <mds-price-table-features-cell type="custom">
-        <mds-badge variant="primary" tone="strong">Dedicato</mds-badge>
+        <mds-badge variant="dark" tone="strong">Dedicato</mds-badge>
       </mds-price-table-features-cell>
     </mds-price-table-features-row>
   </mds-price-table-features>
@@ -122,7 +122,7 @@ A `type="text"` cell accepts arbitrary HTML in its slot, so you can pair the val
       <mds-price-table-features-cell type="text">100 GB</mds-price-table-features-cell>
       <mds-price-table-features-cell type="text">
         1 TB
-        <mds-help auto-placement="false" placement="top">
+        <mds-help disable-auto-placement placement="top">
           La capacita' puo' variare in base allo stato del server.
         </mds-help>
       </mds-price-table-features-cell>
@@ -133,14 +133,14 @@ A `type="text"` cell accepts arbitrary HTML in its slot, so you can pair the val
 
 #### Styling Customization
 
-Override the row's background and text colors for resting and hover states through the documented `--mds-price-table-features-row-*` CSS custom properties. Always use Magma color tokens via `rgb(var(--<token>))` so dark mode and high-contrast modes keep working.
+Override the row's background and text colors for resting and hover states through the documented `--mds-price-table-features-row-*` CSS custom properties. Always name a semantic role, `rgb(var(--magma-<role>))` ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)), so dark mode and high-contrast modes keep working.
 
 ```css
 .pricing-section mds-price-table-features-row {
-  --mds-price-table-features-row-background: rgb(var(--tone-neutral-09));
-  --mds-price-table-features-row-background-hover: rgb(var(--tone-neutral-08));
-  --mds-price-table-features-row-color: rgb(var(--tone-neutral-02));
-  --mds-price-table-features-row-color-hover: rgb(var(--tone-neutral-01));
+  --mds-price-table-features-row-background: rgb(var(--magma-surface-muted));
+  --mds-price-table-features-row-background-hover: rgb(var(--magma-wash-base));
+  --mds-price-table-features-row-color: rgb(var(--magma-text-muted));
+  --mds-price-table-features-row-color-hover: rgb(var(--magma-text-default));
 }
 ```
 
@@ -151,10 +151,10 @@ Common incorrect uses of `<mds-price-table-features-row>`. Each entry pairs the 
 
 #### Do Not Use the Row Outside Its Parent
 
-`<mds-price-table-features-row>` is a compound child that must be a direct slot child of [`<mds-price-table-features>`](../../mds-price-table-features). Using it standalone or inside any other element breaks the layout and the equal-width column calculation.
+`<mds-price-table-features-row>` is a compound child that must be a direct slot child of [`<mds-price-table-features>`](../../mds-price-table-features). Using it standalone or inside any other element breaks the layout: the row is a `display: table-row` box meant for the `<table>` that `<mds-price-table-features>` renders around its slot.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <div class="my-table">
   <mds-price-table-features-row>
     <mds-price-table-features-cell type="label">Funzione</mds-price-table-features-cell>
@@ -162,7 +162,7 @@ Common incorrect uses of `<mds-price-table-features-row>`. Each entry pairs the 
   </mds-price-table-features-row>
 </div>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-price-table>
   <mds-price-table-features label="Funzionalita'">
     <mds-price-table-features-row>
@@ -178,14 +178,14 @@ Common incorrect uses of `<mds-price-table-features-row>`. Each entry pairs the 
 The row's default slot expects only [`<mds-price-table-features-cell>`](../../mds-price-table-features-cell) children. Raw HTML elements bypass the automatic equal-width distribution and break column alignment across rows.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-price-table-features-row>
   <span>Funzione avanzata</span>
   <span>Si'</span>
   <span>No</span>
 </mds-price-table-features-row>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-price-table-features-row>
   <mds-price-table-features-cell type="label">Funzione avanzata</mds-price-table-features-cell>
   <mds-price-table-features-cell type="supported"></mds-price-table-features-cell>
@@ -198,14 +198,14 @@ The row's default slot expects only [`<mds-price-table-features-cell>`](../../md
 Every row should begin with a `type="label"` cell that names the feature. Omitting it leaves the row without a readable identifier, which makes the comparison table unusable for sighted users and screen readers alike.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-price-table-features-row>
   <mds-price-table-features-cell type="supported"></mds-price-table-features-cell>
   <mds-price-table-features-cell type="supported"></mds-price-table-features-cell>
   <mds-price-table-features-cell type="unsupported"></mds-price-table-features-cell>
 </mds-price-table-features-row>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-price-table-features-row>
   <mds-price-table-features-cell type="label">Backup automatico</mds-price-table-features-cell>
   <mds-price-table-features-cell type="supported"></mds-price-table-features-cell>
@@ -219,7 +219,7 @@ Every row should begin with a `type="label"` cell that names the feature. Omitti
 The only supported customization surface is the four `--mds-price-table-features-row-*` CSS custom properties. Applying inline `style` attributes or targeting shadow internals couples your code to the implementation and breaks on minor releases.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-price-table-features-row {
   background-color: #f5f5f5;
 }
@@ -230,10 +230,10 @@ mds-price-table-features-row >>> .internal-row-class {
 ```
 
 ```css
-/* ✅ CORRECT */
+/* CORRECT */
 mds-price-table-features-row {
-  --mds-price-table-features-row-background: rgb(var(--tone-neutral-09));
-  --mds-price-table-features-row-color: rgb(var(--tone-neutral-02));
+  --mds-price-table-features-row-background: rgb(var(--magma-surface-muted));
+  --mds-price-table-features-row-color: rgb(var(--magma-text-muted));
 }
 ```
 
@@ -242,7 +242,7 @@ mds-price-table-features-row {
 All rows inside a [`<mds-price-table-features>`](../../mds-price-table-features) must have the same number of cells. The equal-width calculation runs per row in isolation, so mismatched counts produce misaligned columns.
 
 ```html
-<!-- 🚫 INCORRECT - row A has 4 cells, row B has 3 -->
+<!-- INCORRECT - row A has 4 cells, row B has 3 -->
 <mds-price-table-features>
   <mds-price-table-features-row>
     <mds-price-table-features-cell type="label">Funzione A</mds-price-table-features-cell>
@@ -257,7 +257,7 @@ All rows inside a [`<mds-price-table-features>`](../../mds-price-table-features)
   </mds-price-table-features-row>
 </mds-price-table-features>
 
-<!-- ✅ CORRECT - every row has the same number of cells -->
+<!-- CORRECT - every row has the same number of cells -->
 <mds-price-table-features>
   <mds-price-table-features-row>
     <mds-price-table-features-cell type="label">Funzione A</mds-price-table-features-cell>

@@ -11,28 +11,28 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ### 1. Description
 
-The `<mds-text>` web component is the foundational typography primitive of the Magma Design System. It decouples the _semantic typography role_ of a piece of text from the _HTML element_ that renders it, replacing raw heading, paragraph, label and inline tags (`<h1>`–`<h6>`, `<p>`, `<span>`, `<label>`, `<code>`, …) with a single design-tokenized text node that is consumed internally by nearly every other Magma component.
+The `<mds-text>` web component is the foundational typography primitive of the Magma Design System. It decouples the _semantic typography role_ of a piece of text from the _HTML element_ that renders it, replacing raw heading, paragraph, label and inline tags (`<h1>`-`<h6>`, `<p>`, `<span>`, `<label>`, `<code>`, ...) with a single design-tokenized text node that is consumed internally by nearly every other Magma component.
 
 #### Semantic Behavior
 
-- **Typography drives the rendered tag**: when `tag` is left unset, a sensible default element is resolved from the chosen `typography` (e.g. `typography="h2"` → `<h2>`, `paragraph`/`detail` → `<p>`, `label`/`option` → `<label>`, `snippet`/`hack` → `<code>`, `tip` → `<div>`). Setting `tag` explicitly overrides this.
+- **Typography drives the rendered tag**: when `tag` is left unset, a sensible default element is resolved from the chosen `typography` (e.g. `typography="h2"` -> `<h2>`, `paragraph`/`detail` -> `<p>`, `label`/`option` -> `<label>`, `snippet`/`hack` -> `<code>`, `tip` -> `<div>`). Setting `tag` explicitly overrides this.
 - **Semantics vs. visual style are independent**: `typography` controls the visual ramp and the default element, but you may pin any allowed `tag` to keep the correct document outline (accessibility) while choosing a different visual scale.
 - **Text source is slot or prop**: text is normally provided through the default slot. Passing the `text` prop renders that string instead of the slotted content - required for the animation path, since the animation watches the `text` value.
 - **Default-slot is text only**: the default slot is intended for a plain text string; HTML elements or other components should not be slotted in.
-- **Animated reveal**: with `animation="yugop"` the component runs a randomized character "decode" reveal on load and re-runs it whenever the `text` prop changes; `animation="none"` (the default) skips all animation.
+- **Animated reveal**: with `animation="yugop"` the component runs a randomized character "decode" reveal whenever the `text` prop changes after load (the initial value is rendered as is); `animation="none"` (the default) skips all animation.
 - **Animation tuning via CSS**: the yugop reveal reads `--mds-text-animation-speed` and `--mds-text-animation-placeholder-char`, so speed and placeholder glyph are themeable through CSS custom properties rather than props.
 
 #### Properties & Visual Configurations
 
-- **`typography`** selects the semantic text role from the shared typography ramp (titles `h1`–`h6` and `action`; informational `detail`, `paragraph`, `caption`, `label`, `option`, `tip`; monospaced `snippet`, `hack`). It is the primary prop and also determines the default rendered tag. Defaults to `'detail'`.
-- **`variant`** refines the _tone of a typography role_ and is specific to this component - it is the typography variation (`'title'`, `'info'`, `'read'`, `'code'`), not the shared component tone/variant ladder. Only the variants valid for the chosen `typography` apply (e.g. reading roles accept `'read'`/`'info'`, code roles accept `'code'`); leaving it unset uses the role's default styling.
+- **`typography`** selects the semantic text role from the shared typography ramp (titles `h1`-`h6` and `action`; informational `detail`, `paragraph`, `caption`, `label`, `option`, `tip`; monospaced `snippet`, `hack`). It is the primary prop and also determines the default rendered tag. Defaults to `'detail'`.
+- **`variant`** refines the _tone of a typography role_ and is specific to this component - it is the typography variation (`'title'`, `'info'`, `'read'`, `'code'`), not the shared component tone/variant ladder. Only `'read'` has a visual effect, and only on `paragraph`, `detail` and `caption` (it switches them to the reading family); the other values change nothing, and leaving it unset uses the role's default styling.
 - **`tag`** is an escape hatch to force a specific HTML element independently of `typography`, e.g. rendering a visually large heading as a `<span>` or marking text as `<strong>`/`<em>`/`<mark>` without changing the visual scale.
 - **`truncate`** governs overflow clipping: `'word'` forces single-line truncation (no wrapping), `'all'` clamps to a multi-line block whose line count is controlled by `--mds-text-line-clamp`, and `'none'` lets text flow normally.
 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-text>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the typography ramp documented in [`docs/agents/typography.md`](../../../../../../docs/agents/typography.md) and the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-text>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the typography ramp documented in [`docs/agents/typography.md`](../../../../../../docs/agents/typography.md) and the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Body Text via Default Slot
 
@@ -65,7 +65,7 @@ Use the `text` prop when the string comes from a JavaScript expression or data b
 
 #### Reading Variant
 
-Apply `variant="read"` to `paragraph`, `detail`, or `caption` when rendering long-form editorial content. The reading variant uses a slightly larger, more spacious type scale optimized for sustained reading.
+Apply `variant="read"` to `paragraph`, `detail`, or `caption` when rendering long-form editorial content. The reading variant keeps the same sizes but switches to the serif reading font (lighter for `paragraph` and `detail`), optimized for sustained reading.
 
 ```html
 <mds-text typography="paragraph" variant="read">
@@ -80,7 +80,7 @@ Apply `variant="read"` to `paragraph`, `detail`, or `caption` when rendering lon
 
 #### Monospaced Code Styles
 
-Use `typography="snippet"` for inline code values or short terminal output. Use `typography="hack"` for a heavier monospaced weight suited to code-dense interfaces.
+Use `typography="snippet"` for inline code values or short terminal output. Use `typography="hack"` for a smaller monospaced size suited to code-dense interfaces.
 
 ```html
 <mds-text typography="snippet">SELECT * FROM utenti WHERE attivo = true;</mds-text>
@@ -127,14 +127,14 @@ Use `truncate="all"` to clamp text to a fixed number of lines. Control the numbe
 
 #### Animated Character Reveal
 
-Set `animation="yugop"` together with the `text` prop to run a randomized character-decode reveal on load. When `text` changes, the animation re-runs automatically. Tune speed and placeholder glyph via the CSS custom properties.
+Set `animation="yugop"` together with the `text` prop to run a randomized character-decode reveal each time `text` changes; the initial value is rendered without animation. Tune the speed via `--mds-text-animation-speed`.
 
 ```html
 <mds-text
   typography="h3"
   animation="yugop"
   text="Benvenuto nel sistema"
-  style="--mds-text-animation-speed: 1; --mds-text-animation-placeholder-char: '_';"
+  style="--mds-text-animation-speed: 1;"
 ></mds-text>
 ```
 
@@ -170,15 +170,15 @@ Common incorrect uses of `<mds-text>`. Each entry pairs the wrong form with the 
 
 #### Do Not Slot HTML Elements in the Default Slot
 
-The default slot accepts plain text strings only. HTML elements or components slotted inside are not rendered correctly and will break layout or be stripped.
+The default slot accepts plain text strings only. HTML elements or components slotted inside are outside the supported API: they keep their own browser and page styles instead of following the typography role.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-text typography="paragraph">
   <strong>Attenzione:</strong> questa operazione e' <em>irreversibile</em>.
 </mds-text>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-text typography="paragraph">Attenzione: questa operazione e' irreversibile.</mds-text>
 <mds-text typography="paragraph" tag="strong">Attenzione:</mds-text>
 ```
@@ -188,10 +188,10 @@ The default slot accepts plain text strings only. HTML elements or components sl
 When `text` is set, the component renders that string and ignores the slot entirely. Do not provide both - the slotted content is silently discarded.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-text text="Titolo dal prop">Titolo dallo slot</mds-text>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <!-- Use either the prop (preferred for dynamic / animated content) -->
 <mds-text text="Titolo dal prop"></mds-text>
 <!-- or the slot (convenient for static markup) -->
@@ -203,10 +203,10 @@ When `text` is set, the component renders that string and ignores the slot entir
 The yugop animation requires the `text` prop because it watches prop changes to retrigger. Slotted content is not observed; changing it will not re-run the animation.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-text animation="yugop">Testo animato dallo slot</mds-text>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-text animation="yugop" text="Testo animato dal prop"></mds-text>
 ```
 
@@ -215,25 +215,25 @@ The yugop animation requires the `text` prop because it watches prop changes to 
 `variant` is specific to the typography role: only `paragraph`, `detail`, and `caption` accept `variant="read"`. Applying `variant="read"` to heading or label roles silently has no visual effect and adds misleading markup.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-text typography="h2" variant="read">Impostazioni</mds-text>
 <mds-text typography="label" variant="read">Nome</mds-text>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-text typography="h2">Impostazioni</mds-text>
 <mds-text typography="paragraph" variant="read">Testo editoriale lungo.</mds-text>
 ```
 
 #### Do Not Use Raw HTML Headings Instead of `<mds-text>`
 
-Replace raw `<h1>`-`<h6>`, `<p>`, `<span>`, `<label>`, and `<code>` with `<mds-text>` in Magma-managed views. Raw elements bypass the design-token typography ramp, causing visual inconsistency across themes and sizes.
+Replace raw `<h1>`-`<h6>`, `<p>`, `<span>`, `<label>`, and `<code>` styled with generic utilities with `<mds-text>` in Magma-managed views (or apply the typography utilities of [`docs/agents/typography.md`](../../../../../../docs/agents/typography.md)). Generic sizes and weights bypass the design-token typography ramp, causing visual inconsistency across themes and sizes.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <h2 class="text-2xl font-bold">Riepilogo ordine</h2>
-<p class="text-sm text-gray-600">Totale: 128,00 EUR</p>
+<p class="text-sm text-fg-muted">Totale: 128,00 EUR</p>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-text typography="h2">Riepilogo ordine</mds-text>
 <mds-text typography="caption">Totale: 128,00 EUR</mds-text>
 ```
@@ -243,12 +243,12 @@ Replace raw `<h1>`-`<h6>`, `<p>`, `<span>`, `<label>`, and `<code>` with `<mds-t
 The component exposes five `--mds-text-*` CSS custom properties for customization. Do not pierce the shadow DOM via `::part()` or `>>>` selectors targeting the internal `.text` element - that implementation detail is not a documented part and may change.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-text >>> .text {
   letter-spacing: 0.1em;
 }
 
-/* ✅ CORRECT - set via host; the host styles cascade into the shadow text node */
+/* CORRECT - set via host; the host styles cascade into the shadow text node */
 mds-text {
   letter-spacing: 0.1em;
   --mds-text-selection-background: rgb(var(--label-sky-09));
@@ -260,12 +260,12 @@ mds-text {
 `truncate="word"` forces **single-line** truncation. `truncate="all"` enables **multi-line** clamping controlled by `--mds-text-line-clamp`. Using `"word"` when you want multi-line clamp will collapse the text to one line unexpectedly.
 
 ```html
-<!-- 🚫 INCORRECT - collapses to one line when two lines were intended -->
+<!-- INCORRECT - collapses to one line when two lines were intended -->
 <mds-text typography="paragraph" truncate="word" style="--mds-text-line-clamp: 2;">
   Testo lungo che dovrebbe mostrare due righe prima del troncamento.
 </mds-text>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-text typography="paragraph" truncate="all" style="--mds-text-line-clamp: 2;">
   Testo lungo che dovrebbe mostrare due righe prima del troncamento.
 </mds-text>

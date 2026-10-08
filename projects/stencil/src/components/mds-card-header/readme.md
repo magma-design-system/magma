@@ -30,7 +30,7 @@ The `<mds-card-header>` web component is the header region of a [`<mds-card>`](.
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-card-header>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) and the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-card-header>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Plain Title in the Default Slot
 
@@ -59,7 +59,7 @@ Place one or more `<mds-button>` elements in the `action` slot when the header n
       slot="action"
       icon="mi/baseline/edit"
       aria-label="Modifica impostazioni"
-      variant="secondary"
+      variant="primary"
       tone="text"
     ></mds-button>
   </mds-card-header>
@@ -100,13 +100,15 @@ Add multiple elements to the `action` slot when several inline controls are need
 
 #### Header with Supporting Text
 
-Pass additional descriptive text below the title by adding a second element to the default slot. The header lays both out as a single flex column.
+Pass additional descriptive text below the title by wrapping title and text in one element in the default slot. The header lays its default-slot children out in a row, spread apart (`justify-content: space-between`), so two loose elements would sit side by side.
 
 ```html
 <mds-card>
   <mds-card-header>
-    <mds-text typography="h5">Report mensile</mds-text>
-    <mds-text typography="caption">Aggiornato il 1 giugno 2026</mds-text>
+    <div class="flex flex-col">
+      <mds-text typography="h5">Report mensile</mds-text>
+      <mds-text typography="caption">Aggiornato il 1 giugno 2026</mds-text>
+    </div>
   </mds-card-header>
   <mds-card-content>
     <mds-text>Riepilogo delle attivita del mese.</mds-text>
@@ -129,7 +131,7 @@ Pass additional descriptive text below the title by adding a second element to t
       slot="action"
       icon="mi/baseline/share"
       aria-label="Condividi"
-      variant="secondary"
+      variant="primary"
       tone="text"
     ></mds-button>
   </mds-card-header>
@@ -173,12 +175,12 @@ Common incorrect uses of `<mds-card-header>`. Each entry pairs the wrong form wi
 `<mds-card-header>` is a compound child; it must be a direct child of `<mds-card>`. Using it standalone renders nothing useful - the host card's slot plumbing drives all layout.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-card-header>
   <mds-text typography="h5">Titolo</mds-text>
 </mds-card-header>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-card>
   <mds-card-header>
     <mds-text typography="h5">Titolo</mds-text>
@@ -188,17 +190,17 @@ Common incorrect uses of `<mds-card-header>`. Each entry pairs the wrong form wi
 
 #### Do Not Set `slot="header"` Manually on `<mds-card-header>`
 
-The component sets its own `slot="header"` in its `render()` host binding. Adding the attribute again on the element in the light DOM is redundant and can cause double-slotting in some framework renders.
+The component sets its own `slot="header"` in its `render()` host binding. Adding the attribute again on the element in the light DOM is redundant: the component writes it itself, overwriting any other value when it renders.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-card>
   <mds-card-header slot="header">
     <mds-text typography="h5">Titolo</mds-text>
   </mds-card-header>
 </mds-card>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-card>
   <mds-card-header>
     <mds-text typography="h5">Titolo</mds-text>
@@ -208,10 +210,10 @@ The component sets its own `slot="header"` in its `render()` host binding. Addin
 
 #### Do Not Put Action Controls in the Default Slot
 
-`<mds-button>` and other action controls belong in the `action` named slot, not in the default slot. Placing them in the default slot breaks the layout - no actions wrapper is created, and the controls appear inline with title text rather than aligned to the far end.
+`<mds-button>` and other action controls belong in the `action` named slot, not in the default slot. Placing them in the default slot breaks the layout - no actions wrapper groups them, and the header spreads every default-slot child along the row (`justify-content: space-between`), so the controls land wherever the number of siblings puts them rather than together at the far end.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-card>
   <mds-card-header>
     <mds-text typography="h5">Rapporto annuale</mds-text>
@@ -219,7 +221,7 @@ The component sets its own `slot="header"` in its `render()` host binding. Addin
   </mds-card-header>
 </mds-card>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-card>
   <mds-card-header>
     <mds-text typography="h5">Rapporto annuale</mds-text>
@@ -233,7 +235,7 @@ The component sets its own `slot="header"` in its `render()` host binding. Addin
 Using a plain `<div slot="header">` bypasses the component's conditional action wrapper, its shadow layout, and the parent's compound-child detection. The component also ensures correct alignment and spacing between title and actions.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-card>
   <div slot="header">
     <h5>Riepilogo ordini</h5>
@@ -241,7 +243,7 @@ Using a plain `<div slot="header">` bypasses the component's conditional action 
   </div>
 </mds-card>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-card>
   <mds-card-header>
     <mds-text typography="h5">Riepilogo ordini</mds-text>
@@ -255,7 +257,7 @@ Using a plain `<div slot="header">` bypasses the component's conditional action 
 `<mds-card-header>` exposes exactly two slots: the default (unnamed) slot and `action`. Assigning any other slot name silently discards the element.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-card>
   <mds-card-header>
     <mds-text typography="h5">Dashboard</mds-text>
@@ -263,7 +265,7 @@ Using a plain `<div slot="header">` bypasses the component's conditional action 
   </mds-card-header>
 </mds-card>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-card>
   <mds-card-header>
     <mds-text typography="h5">Dashboard</mds-text>

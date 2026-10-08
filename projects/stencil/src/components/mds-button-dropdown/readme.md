@@ -21,24 +21,24 @@ The `<mds-button-dropdown>` web component is a split-button control of the Magma
 
 #### Properties & Visual Configurations
 
-The shared `variant` / `tone` / `size` ladders are defined in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md); they apply here exactly as in `<mds-button>` and are forwarded to both internal buttons. `variant` defaults to `'primary'`, `tone` defaults to `'strong'`, and `size` defaults to `'md'`.
+The shared `variant` / `tone` / `size` ladders are defined in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md); they apply here as in `<mds-button>`, narrowed to `tone` `strong` / `weak` and without the `google` / `apple` variants, and are forwarded to both internal buttons. `variant` defaults to `'primary'`, `tone` defaults to `'strong'`, and `size` defaults to `'md'`.
 
 - **`label`** sets the text of the primary action button only; the chevron trigger is icon-only.
-- **`type`** defaults to `'submit'`, so inside a `<form>` the primary button submits unless set to `'button'`; switching to `'a'` (or supplying `href`) turns the buttons into links, with `target` choosing `'self'` vs `'blank'`.
+- **`type`** defaults to `'submit'` and is forwarded to both internal buttons, but they live in the component's shadow root and are not associated with an enclosing `<form>`: the control never submits or resets a form, so handle its `click` in JavaScript. `href` makes a click navigate, with `target` choosing `'self'` vs `'blank'`; it is forwarded to the chevron too, which then navigates as well as opening the menu.
 
 #### Other behavioral props
 
 - **`icon`** is an SVG filename slug from the Magma icon library, applied to the primary action button (the chevron icon on the trigger is fixed and not configurable).
-- **`truncate`** controls how an overflowing primary label is clipped, defaulting to `'word'`.
+- **`truncate`** is declared (default `'word'`) but not forwarded to the internal buttons: the primary label always truncates as `'word'`.
 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-button-dropdown>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) and the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-button-dropdown>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) and the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Split Button with Menu Items
 
-The canonical form: a `label` prop for the primary action and one or more [`mds-button`](../../mds-button) elements in the default slot as menu choices. Slot items receive `variant="dark" tone="text"` to stay visually neutral inside the dropdown panel.
+The canonical form: a `label` prop for the primary action and one or more [`mds-button`](../../mds-button) elements in the default slot as menu choices. Give the slot items `variant="dark" tone="text"` to keep them visually neutral inside the dropdown panel.
 
 ```html
 <mds-button-dropdown label="Salva come bozza" variant="success" tone="weak">
@@ -95,7 +95,7 @@ Supply the `icon` prop to add an icon to the primary action button. The chevron 
 <mds-button-dropdown
   label="Carica documento"
   icon="mi/baseline/upload"
-  variant="secondary"
+  variant="primary"
   tone="weak"
 >
   <mds-button variant="dark" tone="text" label="Carica da URL"></mds-button>
@@ -126,15 +126,13 @@ The `disabled` attribute blocks both halves of the control together.
 
 #### Hyperlink Split Button via `href`
 
-Setting `href` switches both internal buttons to anchor semantics. Use `target="blank"` to open in a new tab.
+`href` and `target` on the component are forwarded to both internal buttons, the chevron included: a click on the chevron navigates as well as opening the menu. Keep `href` off the component, handle the primary action with a `click` listener, and put the links on the menu items (`target="blank"` opens them in a new tab).
 
 ```html
 <mds-button-dropdown
   label="Apri documento"
-  href="https://example.com/doc"
-  target="blank"
-  variant="secondary"
-  tone="outline"
+  variant="primary"
+  tone="weak"
 >
   <mds-button href="https://example.com/doc/edit" target="blank" variant="dark" tone="text" label="Modifica"></mds-button>
   <mds-button href="https://example.com/doc/history" target="blank" variant="dark" tone="text" label="Cronologia"></mds-button>
@@ -143,12 +141,11 @@ Setting `href` switches both internal buttons to anchor semantics. Use `target="
 
 #### Styling Customization
 
-Style the component through its documented `--mds-button-dropdown-*` CSS custom properties or the `dropdown` shadow part. Use Magma color tokens via `rgb(var(--<token>))` so dark mode keeps working.
+Style the component through its documented `--mds-button-dropdown-*` CSS custom properties or the `dropdown` shadow part. Use the semantic color roles via `rgb(var(--magma-<role>))` so dark mode and named themes keep working.
 
 ```css
 .custom-toolbar mds-button-dropdown {
-  --mds-button-dropdown-radius: var(--radius-md);
-  --mds-button-dropdown-window-radius: var(--radius-lg);
+  --mds-button-dropdown-radius: var(--magma-radius-md);
 }
 
 /* Style the dropdown panel surface through the documented shadow part */
@@ -167,12 +164,12 @@ Common incorrect uses of `<mds-button-dropdown>`. Each entry pairs the wrong for
 The default slot feeds the `<mds-dropdown>` panel, not the button label. Text placed in the slot ends up as menu content, not as the button's visible text. Use the `label` prop.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-button-dropdown variant="primary" tone="strong">
   Salva
 </mds-button-dropdown>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-button-dropdown label="Salva" variant="primary" tone="strong">
   <mds-button variant="dark" tone="text" label="Salva come bozza"></mds-button>
 </mds-button-dropdown>
@@ -180,17 +177,17 @@ The default slot feeds the `<mds-dropdown>` panel, not the button label. Text pl
 
 #### Do Not Slot Non-Button Content as Menu Items
 
-The dropdown panel is designed for [`mds-button`](../../mds-button) elements. Slotting raw `<button>`, `<a>`, or arbitrary HTML bypasses theming, keyboard navigation, and the shared `variant` / `tone` forwarding.
+The dropdown panel is designed for [`mds-button`](../../mds-button) elements. Slotting raw `<button>`, `<a>`, or arbitrary HTML bypasses the Magma theming, focus styles and button API (`icon`, `await`, `disabled`) of the menu entries.
 
 ```html
-<!-- 🚫 INCORRECT -->
-<mds-button-dropdown label="Esporta" variant="secondary" tone="weak">
+<!-- INCORRECT -->
+<mds-button-dropdown label="Esporta" variant="primary" tone="weak">
   <button onclick="exportPDF()">PDF</button>
   <a href="/export/csv">CSV</a>
 </mds-button-dropdown>
 
-<!-- ✅ CORRECT -->
-<mds-button-dropdown label="Esporta" variant="secondary" tone="weak">
+<!-- CORRECT -->
+<mds-button-dropdown label="Esporta" variant="primary" tone="weak">
   <mds-button variant="dark" tone="text" label="Esporta PDF" icon="mi/baseline/picture-as-pdf"></mds-button>
   <mds-button variant="dark" tone="text" label="Esporta CSV" icon="mi/baseline/table-chart"></mds-button>
 </mds-button-dropdown>
@@ -198,14 +195,14 @@ The dropdown panel is designed for [`mds-button`](../../mds-button) elements. Sl
 
 #### Do Not Use Unsupported `tone` Values
 
-`<mds-button-dropdown>` accepts `ToneMinimalVariantType`, which is `strong` and `weak` only. Passing `outline`, `text`, or `box` is not valid for this component and will silently fall back to the default.
+`<mds-button-dropdown>` accepts `ToneMinimalVariantType`, which is `strong` and `weak` only. Passing `outline`, `text`, or `box` is not valid for this component: the value reaches the internal buttons unchecked, without the split-button styling that only `strong` and `weak` have.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-button-dropdown label="Azione" variant="primary" tone="outline"></mds-button-dropdown>
 <mds-button-dropdown label="Azione" variant="primary" tone="text"></mds-button-dropdown>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-button-dropdown label="Azione" variant="primary" tone="strong">
   <mds-button variant="dark" tone="text" label="Opzione"></mds-button>
 </mds-button-dropdown>
@@ -219,14 +216,14 @@ The dropdown panel is designed for [`mds-button`](../../mds-button) elements. Sl
 The chevron trigger icon is internal and fixed. There is no prop to change it. Do not attempt to override it with CSS property hacks or shadow-DOM selectors.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-button-dropdown .dropdown-action mds-icon {
   content: url('custom-arrow.svg');
 }
 
-/* ✅ CORRECT - style only through documented custom properties and the dropdown part */
+/* CORRECT - style only through documented custom properties and the dropdown part */
 mds-button-dropdown {
-  --mds-button-dropdown-radius: var(--radius-md);
+  --mds-button-dropdown-radius: var(--magma-radius-md);
 }
 mds-button-dropdown::part(dropdown) {
   box-shadow: var(--shadow-lg);
@@ -235,42 +232,16 @@ mds-button-dropdown::part(dropdown) {
 
 #### Do Not Set Boolean Attributes to `"false"`
 
-`await`, `disabled`, and `active` are boolean attributes. Setting them to the string `"false"` keeps them active because any non-empty string is truthy in HTML. Remove the attribute to turn it off.
+`await`, `disabled`, and `active` are boolean attributes. The component reads the string `"false"` as `false` and drops the attribute when it renders, but until then the attribute is in the DOM and attribute selectors (`mds-button-dropdown[disabled]`) match it. Remove the attribute to turn it off.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-button-dropdown label="Invia" await="false" disabled="false" variant="primary"></mds-button-dropdown>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-button-dropdown label="Invia" variant="primary" tone="strong">
   <mds-button variant="dark" tone="text" label="Invia come bozza"></mds-button>
 </mds-button-dropdown>
-```
-
-#### Do Not Use `type="button"` to Prevent Menu Submission Without Reviewing Both Actions
-
-Inside a `<form>`, both internal buttons share the same `type`. If you set `type="submit"` (the default) and only want the chevron to be inert, that is not possible - `type` is shared. Use `type="button"` on the whole component when neither half should submit the form.
-
-```html
-<!-- 🚫 INCORRECT: intent is only the chevron to not submit, but type is shared -->
-<form>
-  <mds-button-dropdown label="Invia" variant="primary" tone="strong">
-    <mds-button type="button" variant="dark" tone="text" label="Salva bozza"></mds-button>
-  </mds-button-dropdown>
-</form>
-
-<!-- ✅ CORRECT: set type on the host to opt the whole control in or out of form submission -->
-<form>
-  <!-- submits the form when the primary button is clicked -->
-  <mds-button-dropdown type="submit" label="Invia" variant="primary" tone="strong">
-    <mds-button variant="dark" tone="text" label="Salva bozza"></mds-button>
-  </mds-button-dropdown>
-
-  <!-- never submits: use when the action is handled via JavaScript -->
-  <mds-button-dropdown type="button" label="Invia" variant="primary" tone="strong">
-    <mds-button variant="dark" tone="text" label="Salva bozza"></mds-button>
-  </mds-button-dropdown>
-</form>
 ```
 
 

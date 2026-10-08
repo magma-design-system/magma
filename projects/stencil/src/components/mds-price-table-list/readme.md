@@ -15,10 +15,10 @@ The `<mds-price-table-list>` web component is a single pricing-plan column insid
 
 #### Semantic Behavior
 
-- **Compound child**: Designed to sit as a direct slot child of [`<mds-price-table>`](../../mds-price-table); one instance represents one pricing plan, and several siblings line up to form the comparison table. It is not used standalone.
+- **Compound child**: Designed to sit inside [`<mds-price-table>`](../../mds-price-table), directly or in its `<mds-price-table-header>`; one instance represents one pricing plan, and several siblings line up to form the comparison table. It is not used standalone.
 - **Owns the feature-list child type**: Feature rows are provided as `<mds-price-table-list-item>` elements - they are the intended child type for the list body.
-- **Conditional list region**: The feature region and the separator above it render only when feature items are present; a plan with no features collapses to header plus footer.
-- **No interactive state**: It renders pure structure with no role/ARIA defaults, no selected/active/disabled state and no emitted events; any interactivity (e.g. the CTA) comes from the components you slot in, such as `<mds-button>` in the `action` slot.
+- **Conditional list region**: The feature region and the separator above it render only when feature items are present when the card loads (items added later do not bring them back); a plan with no features collapses to header plus footer.
+- **No interactive state**: It renders pure structure with no ARIA attributes (the feature region is a `<main>` element), no selected/active/disabled state and no emitted events; any interactivity (e.g. the CTA) comes from the components you slot in, such as `<mds-button>` in the `action` slot.
 - **Footer composition**: The `price` and `action` slots are grouped together at the bottom of the card.
 
 #### Properties & Visual Configurations
@@ -26,16 +26,16 @@ The `<mds-price-table-list>` web component is a single pricing-plan column insid
 `<mds-price-table-list>` exposes no props; it is a layout-only child whose appearance is driven entirely by what you slot into it. Use the named slots to compose a plan:
 
 - **`header`**: the plan title and supporting description (typically `<mds-text>` elements); rendered at the top.
-- **default body**: the feature rows, supplied as `<mds-price-table-list-item>` children.
+- **`item`**: the feature rows. `<mds-price-table-list-item>` children assign themselves to it; any other element needs `slot="item"`. There is no default slot: content without a `slot` is not rendered.
 - **`price`**: the plan's price, shown in the grouped footer.
 - **`action`**: the call-to-action; `<mds-button>` is recommended.
 
-The only style hook is the `--mds-price-table-list-separator-color` CSS custom property, controlling the divider drawn between the header and the feature list.
+The style hooks are the `--mds-price-table-list-separator-color` CSS custom property, controlling the divider drawn between the header and the feature list, and the `header`, `content` and `footer` shadow parts.
 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-price-table-list>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the slot conventions documented in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md) and the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-price-table-list>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Minimal Plan Column (Header + Price + Action)
 
@@ -139,11 +139,11 @@ Nest an [`<mds-help>`](../../mds-help) component inside a `<mds-price-table-list
 
 #### Styling via CSS Custom Property
 
-Use `--mds-price-table-list-separator-color` to change the divider between the header and the feature list. Set it on the host element or a parent selector; use Magma color tokens via `rgb(var(--<token>))`.
+Use `--mds-price-table-list-separator-color` to change the divider between the header and the feature list. Set it on the host element or a parent selector; name a semantic role, `rgb(var(--magma-<role>))` ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)).
 
 ```css
 .highlight-plan mds-price-table-list {
-  --mds-price-table-list-separator-color: rgb(var(--variant-primary-03) / 0.4);
+  --mds-price-table-list-separator-color: rgb(var(--magma-accent-border) / 0.4);
 }
 ```
 
@@ -153,11 +153,11 @@ Use the documented `::part()` targets - `header`, `content`, and `footer` - when
 
 ```css
 mds-price-table-list::part(footer) {
-  gap: var(--spacing-300);
+  gap: calc(var(--spacing) * 300);
 }
 
 mds-price-table-list::part(header) {
-  padding-bottom: var(--spacing-200);
+  padding-bottom: calc(var(--spacing) * 200);
 }
 ```
 
@@ -168,17 +168,17 @@ Common incorrect uses of `<mds-price-table-list>`. Each entry pairs the wrong fo
 
 #### Do Not Use `<mds-price-table-list>` Outside `<mds-price-table>`
 
-The component is a compound child of [`<mds-price-table>`](../../mds-price-table) and relies on its parent for grid alignment across columns. Using it standalone breaks the multi-column layout and misrepresents the pricing comparison.
+The component is a compound child of [`<mds-price-table>`](../../mds-price-table) and relies on it (or on the `<mds-price-table-header>` inside it) for the stacking and the column grid it shares with the other plans. Using it standalone breaks the multi-column layout and misrepresents the pricing comparison.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-price-table-list>
   <mds-text typography="h5" slot="header">Piano Base</mds-text>
   <mds-text typography="h2" slot="price">49 &euro;</mds-text>
   <mds-button slot="action" variant="dark">Scegli</mds-button>
 </mds-price-table-list>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-price-table>
   <mds-price-table-list>
     <mds-text typography="h5" slot="header">Piano Base</mds-text>
@@ -190,10 +190,10 @@ The component is a compound child of [`<mds-price-table>`](../../mds-price-table
 
 #### Do Not Place Feature Items in the `header` Slot
 
-The `header` slot is for the plan title and description only. Putting feature rows there bypasses the conditional separator logic and places items outside the styled `content` region.
+The `header` slot is for the plan title and description only. `<mds-price-table-list-item>` assigns itself to the `item` slot when it renders, overwriting `slot="header"`: the attribute is dead markup that only holds the row in the header region until it hydrates, then the row moves to the `content` region anyway. Leave the `slot` attribute off.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-price-table-list>
   <mds-text typography="h5" slot="header">Piano Pro</mds-text>
   <mds-price-table-list-item slot="header" supported>Funzionalita avanzate</mds-price-table-list-item>
@@ -201,7 +201,7 @@ The `header` slot is for the plan title and description only. Putting feature ro
   <mds-button slot="action" variant="primary">Attiva</mds-button>
 </mds-price-table-list>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-price-table-list>
   <mds-text typography="h5" slot="header">Piano Pro</mds-text>
   <mds-price-table-list-item supported>Funzionalita avanzate</mds-price-table-list-item>
@@ -212,10 +212,10 @@ The `header` slot is for the plan title and description only. Putting feature ro
 
 #### Do Not Replace `<mds-price-table-list-item>` with Raw HTML List Elements
 
-Using `<li>` or `<span>` inside the list body loses the consistent supported/unsupported icon, the correct typography sizing, and the accessible structure provided by `<mds-price-table-list-item>`.
+The component has no default slot, so a `<ul>` without a `slot` attribute is not rendered at all; and even in the `item` slot, raw `<li>` or `<span>` elements lose the consistent supported/unsupported icon and the typography sizing of `<mds-price-table-list-item>`.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-price-table-list>
   <mds-text typography="h5" slot="header">Piano Base</mds-text>
   <ul>
@@ -226,7 +226,7 @@ Using `<li>` or `<span>` inside the list body loses the consistent supported/uns
   <mds-button slot="action" variant="dark">Scegli</mds-button>
 </mds-price-table-list>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-price-table-list>
   <mds-text typography="h5" slot="header">Piano Base</mds-text>
   <mds-price-table-list-item supported>Funzionalita di base</mds-price-table-list-item>
@@ -238,13 +238,13 @@ Using `<li>` or `<span>` inside the list body loses the consistent supported/uns
 
 #### Do Not Set `supported="false"` as a String
 
-`supported` is a boolean attribute. Any non-empty string value - including `"false"` - is truthy in HTML and will mark the feature as supported. Remove the attribute entirely to show the unsupported (dash) state.
+`supported` is a boolean attribute: remove it entirely to show the unsupported (dash) state, the convention for every Magma boolean ([`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md)). Stencil does parse `"false"` as `false`, but the attribute stays in the markup until the component hydrates and its reflection removes it, so a `[supported]` selector or any code reading the attribute sees it set in the meantime.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-price-table-list-item supported="false">Esportazione dati</mds-price-table-list-item>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-price-table-list-item>Esportazione dati</mds-price-table-list-item>
 ```
 
@@ -253,13 +253,13 @@ Using `<li>` or `<span>` inside the list body loses the consistent supported/uns
 The `price` slot is for the price text only; the `action` slot is where `<mds-button>` belongs. Mixing them breaks the vertical stacking order and the footer layout.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-price-table-list>
   <mds-text typography="h5" slot="header">Piano Pro</mds-text>
   <mds-button slot="price" variant="primary">Attiva piano</mds-button>
 </mds-price-table-list>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-price-table-list>
   <mds-text typography="h5" slot="header">Piano Pro</mds-text>
   <mds-text typography="h2" slot="price">79 &euro;/mese</mds-text>
@@ -272,7 +272,7 @@ The `price` slot is for the price text only; the `action` slot is where `<mds-bu
 The supported customization surface is `--mds-price-table-list-separator-color` and the three documented `::part()` targets (`header`, `content`, `footer`). Targeting undocumented class names with `>>>` or deep selectors couples your code to the internal markup and breaks on minor releases.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-price-table-list >>> .main {
   background-color: yellow;
 }
@@ -280,12 +280,12 @@ mds-price-table-list::part(separator) {
   height: 4px;
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-price-table-list {
-  --mds-price-table-list-separator-color: rgb(var(--variant-primary-03) / 0.3);
+  --mds-price-table-list-separator-color: rgb(var(--magma-accent-border) / 0.3);
 }
 mds-price-table-list::part(content) {
-  gap: var(--spacing-400);
+  gap: calc(var(--spacing) * 400);
 }
 ```
 

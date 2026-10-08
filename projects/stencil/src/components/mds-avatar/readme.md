@@ -85,19 +85,19 @@ The `<mds-avatar>` web component renders a compact, circular representation of a
 
 #### Semantic Behavior
 
-- **Content resolution priority**: Exactly one visual is shown at a time, resolved in order - `src` image, `initials` text, `count` overflow badge, `icon` glyph - and the generic person fallback covers the empty case.
-- **Deterministic identity color**: When `initials` (or `count`) are set, the component derives the color from those characters, so the same person always maps to the same color and stays distinguishable from others. Any explicit `variant` is ignored in this case.
+- **Content resolution**: Exactly one visual is shown at a time, so set one of `src`, `initials`, `count` or `icon`; the generic person fallback covers the empty case. Combinations do not follow one order: `count` hides `initials` and `icon`, `initials` hides `icon`, `icon` hides `src`, `src` hides `initials`, and `count` with `src` (or `src`, `initials` and `icon` together) renders an empty avatar.
+- **Deterministic identity color**: When `initials` is set, the component derives the color from its characters, so the same person always maps to the same color and stays distinguishable from others. Any explicit `variant` is ignored in this case; `count` derives no color and keeps the `variant`.
 - **Image load fallback**: If the `src` image fails to load, the avatar automatically swaps to the generic person fallback icon.
 - **Auto-fitting initials**: Initials and count text scale to fit the avatar, so they stay legible across every size.
-- **Initials normalization**: The `initials` value is stripped of non-alphanumeric characters, uppercased, and truncated to the first two characters before display.
+- **Initials display**: The first two characters of `initials` are displayed as they are, uppercased, so pass the initials (`MR`), not the full name. Non-alphanumeric characters are stripped only to compute the color.
 
 #### Properties & Visual Configurations
 
-The shared `variant` / `tone` ladders are defined in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md). Note that `tone` is limited to the minimal set (`'strong'` / `'weak'`), and any explicit `variant` is ignored whenever `initials` or `count` are present, since identity color takes precedence.
+The shared `variant` / `tone` ladders are defined in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md). Note that `tone` is limited to the minimal set (`'strong'` / `'weak'`), and any explicit `variant` is ignored whenever `initials` is present, since identity color takes precedence.
 
 #### Other behavioral props
 
-- **`src`** is the path to a profile image and is the highest-priority visual; prefer it when a real photo is available.
+- **`src`** is the path to a profile image; prefer it when a real photo is available. Setting `icon` or `count` as well hides it.
 - **`initials`** carries the textual stand-in for a user when no image exists; it drives the deterministic identity color.
 - **`count`** renders a `+N` overflow badge and is intended for stacked/grouped avatar scenarios rather than individual users.
 - **`icon`** is an SVG filename slug from the Magma icon library, used when the avatar represents a non-personal entity rather than a human.
@@ -105,7 +105,7 @@ The shared `variant` / `tone` ladders are defined in [`docs/agents/variants.md`]
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-avatar>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) and the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-avatar>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) and the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Profile Image via `src`
 
@@ -117,11 +117,11 @@ The most common form: supply a URL and the component loads the image lazily. If 
 
 #### Initials Fallback
 
-When no photo is available, provide the user's initials. The component strips non-alphanumeric characters, uppercases, and truncates to the first two characters. It also derives a deterministic color from the characters so the same person always maps to the same hue.
+When no photo is available, provide the user's initials. The component displays the first two characters, uppercased, so pass the initials rather than the full name. It also derives a deterministic color from the characters (ignoring non-alphanumeric ones) so the same person always maps to the same hue.
 
 ```html
-<mds-avatar initials="Marco Rossi"></mds-avatar>
-<!-- displayed as "MA" with a stable identity color -->
+<mds-avatar initials="MR"></mds-avatar>
+<!-- displayed as "MR" with a stable identity color -->
 
 <mds-avatar initials="ab"></mds-avatar>
 <!-- displayed as "AB" -->
@@ -129,7 +129,7 @@ When no photo is available, provide the user's initials. The component strips no
 
 #### Manual Variant and Tone (no initials)
 
-When neither `initials` nor `count` are set, you can control the avatar background and icon color through `variant` and `tone`. Use this for non-personal entity avatars where identity color is not required.
+When `initials` is not set, you can control the avatar background and icon color through `variant` and `tone`. Use this for non-personal entity avatars where identity color is not required.
 
 ```html
 <!-- Primary brand color, filled -->
@@ -144,13 +144,13 @@ When neither `initials` nor `count` are set, you can control the avatar backgrou
 Use `icon` when the avatar represents a system, service, or non-human entity. Reference icons by their slug (no `.svg` extension). The generic person fallback is replaced by the provided icon.
 
 ```html
-<mds-avatar icon="mi/baseline/business" variant="secondary"></mds-avatar>
+<mds-avatar icon="mi/baseline/business" variant="primary"></mds-avatar>
 <mds-avatar icon="mi/baseline/pets" variant="info"></mds-avatar>
 ```
 
 #### Overflow Count in Stacked Groups
 
-Use `count` to render a "+N" overflow badge for the last slot in an avatar stack (e.g. "3 more"). The count display overrides `src`, `initials`, and `icon`, and also derives a deterministic color like `initials` does. Use inside [`mds-avatar-stack`](../../mds-avatar-stack) and [`mds-avatar-stack-item`](../../mds-avatar-stack-item).
+Use `count` to render a "+N" overflow badge for the last slot in an avatar stack (e.g. "3 more"). The count display overrides `initials` and `icon` (with `src` set as well the avatar renders empty) and, unlike `initials`, derives no color: it keeps the `variant`. Use inside [`mds-avatar-stack`](../../mds-avatar-stack) and [`mds-avatar-stack-item`](../../mds-avatar-stack-item).
 
 ```html
 <mds-avatar-stack>
@@ -177,24 +177,24 @@ Use `count` to render a "+N" overflow badge for the last slot in an avatar stack
 
 #### Styling Customization
 
-Style the avatar only through its documented `--mds-avatar-*` CSS custom properties. Use Magma color tokens wrapped in `rgb(var(...))` so dark mode and high-contrast modes work correctly.
+Style the avatar only through its documented `--mds-avatar-*` CSS custom properties. Use semantic color roles wrapped in `rgb(var(--magma-<role>))` so dark mode and high-contrast modes work correctly.
 
 ```css
 .profilo-utente mds-avatar {
-  --mds-avatar-background-color: rgb(var(--variant-secondary-05));
-  --mds-avatar-color: rgb(var(--variant-secondary-10));
-  --mds-avatar-radius: var(--radius-md);
+  --mds-avatar-background-color: rgb(var(--magma-accent-emphasis));
+  --mds-avatar-color: rgb(var(--magma-accent-on-emphasis));
+  --mds-avatar-radius: var(--magma-radius-md);
   --mds-avatar-initials-padding: 15%;
 }
 ```
 
 #### Square Avatar via `--mds-avatar-radius`
 
-The default shape is fully circular (`--radius-full`). Override the CSS custom property to get a square or rounded-square avatar - for example when representing a product or brand logo rather than a person.
+The default shape is fully circular. Override the CSS custom property to get a square or rounded-square avatar - for example when representing a product or brand logo rather than a person.
 
 ```css
 .logo-azienda mds-avatar {
-  --mds-avatar-radius: var(--radius-md);
+  --mds-avatar-radius: var(--magma-radius-md);
 }
 ```
 
@@ -210,28 +210,28 @@ The default shape is fully circular (`--radius-full`). Override the CSS custom p
 
 Common incorrect uses of `<mds-avatar>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
-#### Do Not Set `variant` When `initials` or `count` Are Present
+#### Do Not Set `variant` When `initials` Is Present
 
-The component derives the background color deterministically from the characters when `initials` or `count` are set, and silently overrides any explicit `variant`. Setting `variant` alongside these props is a no-op and misleads readers of the markup.
+The component derives the background color deterministically from the characters when `initials` is set, and silently overrides any explicit `variant`. Setting `variant` alongside these props is a no-op and misleads readers of the markup.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-avatar initials="MR" variant="error"></mds-avatar>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-avatar initials="MR"></mds-avatar>
 ```
 
 #### Do Not Use `count` for Individual Users
 
-`count` is designed for overflow badges in stacked avatar groups ("+3 more"). Using it to represent a single user's identity (e.g. an ID number) produces a "+N" label and an identity color derived from the number, which is semantically wrong. Use `initials` for individual users.
+`count` is designed for overflow badges in stacked avatar groups ("+3 more"). Using it to represent a single user's identity (e.g. an ID number) produces a "+N" label, which is semantically wrong. Use `initials` for individual users.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-avatar count="42"></mds-avatar>
 
-<!-- ✅ CORRECT - use initials for individual users -->
-<mds-avatar initials="Giulia Verdi"></mds-avatar>
+<!-- CORRECT - use initials for individual users -->
+<mds-avatar initials="GV"></mds-avatar>
 ```
 
 #### Do Not Override Size with Inline `width` / `height` Styles
@@ -239,10 +239,10 @@ The component derives the background color deterministically from the characters
 `<mds-avatar>` keeps a 1:1 aspect ratio internally. Forcing `width` or `height` via inline styles or arbitrary CSS bypasses the design token grid and can distort the shape. Use a Magma spacing utility class on the host element instead.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-avatar src="https://example.com/foto.jpg" style="width: 73px; height: 73px;"></mds-avatar>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-avatar src="https://example.com/foto.jpg" class="w-1600"></mds-avatar>
 ```
 
@@ -251,32 +251,32 @@ The component derives the background color deterministically from the characters
 `<mds-avatar>` has no slots - it is a self-contained shadow component. Putting a raw `<img>` inside it will have no effect; the component will ignore it and show the fallback person glyph. Use the `src` prop instead.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-avatar>
   <img src="https://example.com/foto.jpg" alt="Mario Bianchi" />
 </mds-avatar>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-avatar src="https://example.com/foto.jpg"></mds-avatar>
 ```
 
 #### Do Not Pierce Shadow DOM to Change Internal Colors
 
-The supported customization surface is the five documented `--mds-avatar-*` CSS custom properties. Using `::part(wrapper)`, `::part(media)`, `>>>`, or undocumented class names to target internals couples your code to the Shadow DOM implementation and breaks on minor releases.
+The supported customization surface is the five documented `--mds-avatar-*` CSS custom properties and, for a deep customisation, the documented parts `wrapper`, `media` and `icon`. Using undocumented part names, `>>>`, or internal class names to target internals couples your code to the Shadow DOM implementation and breaks on minor releases.
 
 ```css
-/* 🚫 INCORRECT */
-mds-avatar::part(wrapper) {
+/* INCORRECT */
+mds-avatar::part(initials) {
   background-color: hotpink;
 }
 mds-avatar >>> .initials-text {
   color: white;
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-avatar {
-  --mds-avatar-background-color: rgb(var(--variant-primary-05));
-  --mds-avatar-color: rgb(var(--variant-primary-10));
+  --mds-avatar-background-color: rgb(var(--magma-accent-emphasis));
+  --mds-avatar-color: rgb(var(--magma-accent-on-emphasis));
 }
 ```
 
@@ -285,14 +285,14 @@ mds-avatar {
 When an avatar-style UI element is needed, reach for `<mds-avatar>` rather than hand-rolling a circular `<img>` or `<div>` with CSS. The component handles lazy loading, load errors, initials fallback, pending state, dark mode, and high-contrast mode automatically.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <img
   src="https://example.com/foto.jpg"
   alt="Foto di Luca"
   style="border-radius: 50%; width: 48px; height: 48px;"
 />
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-avatar src="https://example.com/foto.jpg" class="w-1200"></mds-avatar>
 ```
 

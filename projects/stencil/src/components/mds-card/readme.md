@@ -15,8 +15,8 @@ The `<mds-card>` web component is the surface container of the Magma Design Syst
 
 #### Semantic Behavior
 
-- **Layout is inferred, not declared**: The card detects which of the `media` / `header` / `content` / `footer` regions are present and reshapes itself to whatever content you provide.
-- **Compound parent/child relationship**: `<mds-card-media>`, `<mds-card-header>`, `<mds-card-content>` and `<mds-card-footer>` are recognized by tag name and mapped onto the corresponding region, so they slot in without an explicit `slot` attribute. Plain elements still work when given the matching `slot` value.
+- **Layout is inferred, not declared**: The card detects which of the `media` / `header` / `content` / `footer` regions are present (once, when it loads) and reshapes itself to whatever content you provide.
+- **Compound parent/child relationship**: `<mds-card-media>`, `<mds-card-header>`, `<mds-card-content>` and `<mds-card-footer>` are recognized by tag name and mapped onto the corresponding region, so they slot in without an explicit `slot` attribute. Plain elements given the matching `slot` value land in that region, but the card infers its grid from the tag names of its children, so with plain elements the managed grid does not apply and the regions overlap: use them with `disableAutoGrid`.
 - **Responsive by width**: The card's internal layout switches between stacked and media-beside-content arrangements based on the card's own width, independent of viewport or theme.
 - **Slot regions are fixed**: Only the four named regions are rendered; there is no default (unnamed) slot, so loose text or elements without a recognized slot/tag are not laid out.
 
@@ -31,7 +31,7 @@ Spacing is tuned through the `--mds-card-gap` and `--mds-card-padding` CSS custo
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-card>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the compound-component rules documented in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md) and the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-card>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Full Card with All Four Regions
 
@@ -122,7 +122,7 @@ Omitting the header region shifts media to the top and content immediately below
 <mds-card>
   <mds-card-media>
     <mds-img src="/immagini/evento.jpg" class="object-cover"></mds-img>
-    <mds-badge slot="content" variant="primary" tone="strong">In corso</mds-badge>
+    <mds-badge slot="content" variant="info" tone="strong">In corso</mds-badge>
   </mds-card-media>
   <mds-card-content>
     <mds-text typography="h6">Conferenza annuale 2025</mds-text>
@@ -132,10 +132,10 @@ Omitting the header region shifts media to the top and content immediately below
 
 #### Using Raw Slot Attributes Instead of Compound Children
 
-When the compound children (`mds-card-*`) do not fit the use case, assign the `slot` attribute directly on any element. The layout engine recognizes the same four values: `media`, `header`, `content`, and `footer`.
+When the compound children (`mds-card-*`) do not fit the use case, assign the `slot` attribute directly on any element, with the same four values: `media`, `header`, `content`, and `footer`. The card infers its managed grid from the tag names of its children, so plain elements need `disable-auto-grid`: without it the regions overlap. The regions then stack in slot order (media, header, content, footer).
 
 ```html
-<mds-card>
+<mds-card disable-auto-grid>
   <div slot="header" class="flex items-center gap-400 px-400 py-400">
     <mds-avatar initials="LB"></mds-avatar>
     <mds-text typography="h6">Luca Bianchi</mds-text>
@@ -149,7 +149,7 @@ When the compound children (`mds-card-*`) do not fit the use case, assign the `s
 
 #### Disabling the Auto-Grid
 
-Set `disable-auto-grid` to opt out of the managed responsive grid. All four regions stack in document order and you own all layout decisions.
+Set `disable-auto-grid` to opt out of the managed responsive grid. The regions stack in slot order (media, header, content, footer), whatever their order in the markup, and you own all layout decisions.
 
 ```html
 <mds-card disable-auto-grid>
@@ -168,8 +168,8 @@ Set `--mds-card-gap` and `--mds-card-padding` on the host or a parent selector. 
 
 ```css
 .scheda-articolo mds-card {
-  --mds-card-gap: var(--spacing-200);
-  --mds-card-padding: var(--spacing-400);
+  --mds-card-gap: calc(var(--spacing) * 200);
+  --mds-card-padding: calc(var(--spacing) * 400);
 }
 ```
 
@@ -179,7 +179,7 @@ The inner grid element is exposed as `::part(layout)`. Use it only for layout-le
 
 ```css
 .scheda-highlight mds-card::part(layout) {
-  border-radius: var(--radius-xl);
+  border-radius: var(--magma-radius-xl);
 }
 ```
 
@@ -193,13 +193,13 @@ Common incorrect uses of `<mds-card>`. Each entry pairs the wrong form with the 
 `<mds-card>` has no default (unnamed) slot. Loose text or elements placed without a recognized `slot` attribute - or without using an `mds-card-*` compound child - are silently ignored and never rendered.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-card>
   <p>Questo testo non verra' mai visualizzato.</p>
   <mds-button label="Azione"></mds-button>
 </mds-card>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-card>
   <mds-card-content>
     <mds-text>Questo testo e' correttamente posizionato nel content slot.</mds-text>
@@ -215,14 +215,14 @@ Common incorrect uses of `<mds-card>`. Each entry pairs the wrong form with the 
 Compound children (`mds-card-header`, `mds-card-media`, `mds-card-content`, `mds-card-footer`) rely on `<mds-card>` for layout context. Used standalone they render without the managed grid and without the card's visual chrome.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <div class="mia-sezione">
   <mds-card-header>
     <mds-text typography="h6">Titolo standalone</mds-text>
   </mds-card-header>
 </div>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-card>
   <mds-card-header>
     <mds-text typography="h6">Titolo nella scheda</mds-text>
@@ -235,7 +235,7 @@ Compound children (`mds-card-header`, `mds-card-media`, `mds-card-content`, `mds
 The only supported customization surface is `--mds-card-gap`, `--mds-card-padding`, and `::part(layout)`. Targeting internal class names with `>>>`, `/deep/`, or any selector that reaches inside the shadow root couples your code to implementation details and will break on minor releases.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-card >>> .layout {
   padding: 16px;
 }
@@ -243,12 +243,12 @@ mds-card .layout--cfhm {
   grid-template-columns: 1fr 1fr;
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-card {
-  --mds-card-padding: var(--spacing-400);
+  --mds-card-padding: calc(var(--spacing) * 400);
 }
 mds-card::part(layout) {
-  border-radius: var(--radius-xl);
+  border-radius: var(--magma-radius-xl);
 }
 ```
 
@@ -257,13 +257,13 @@ mds-card::part(layout) {
 `mds-card-header`, `mds-card-media`, `mds-card-content`, and `mds-card-footer` already set their own `slot` attribute on the host element from inside the component. Adding it again from the outside is redundant and may conflict with internal wiring.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-card>
   <mds-card-header slot="header">...</mds-card-header>
   <mds-card-content slot="content">...</mds-card-content>
 </mds-card>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-card>
   <mds-card-header>...</mds-card-header>
   <mds-card-content>...</mds-card-content>
@@ -275,14 +275,14 @@ mds-card::part(layout) {
 The `header` slot is intended for title and action controls. Placing an `<mds-img>` or `<img>` directly there bypasses the media region's responsive two-column behavior. Use the `media` slot (or `<mds-card-media>`) for images and videos.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-card>
   <mds-card-header>
     <mds-img src="/immagini/banner.jpg"></mds-img>
   </mds-card-header>
 </mds-card>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-card>
   <mds-card-media>
     <mds-img src="/immagini/banner.jpg" class="object-cover"></mds-img>
@@ -295,15 +295,15 @@ The `header` slot is intended for title and action controls. Placing an `<mds-im
 
 #### Do Not Override Card Dimensions with Inline Styles
 
-`<mds-card>` manages its own min-height and responsive grid. Overriding `width`, `height`, or `min-height` inline breaks the container-query breakpoints and the proportional media column.
+`<mds-card>` manages its own min-height and responsive grid. A fixed `height` clips the regions (the card hides its overflow), and a fixed `width` pins the container-query layout instead of letting it follow the space its container gives.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-card style="width: 300px; height: 200px;">
   ...
 </mds-card>
 
-<!-- ✅ CORRECT: size the card from a parent container or CSS custom properties -->
+<!-- CORRECT: size the card from a parent container or CSS custom properties -->
 <div class="w-[300px]">
   <mds-card>
     ...

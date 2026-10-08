@@ -11,7 +11,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ### 1. Description
 
-The `<mds-tab-bar>` web component is the compound container of the Magma Design System that groups a set of `<mds-tab-bar-item>` children into a single selectable navigation bar, owning the mutual-exclusion logic that keeps exactly one item active at a time.
+The `<mds-tab-bar>` web component is the compound container of the Magma Design System that groups a set of `<mds-tab-bar-item>` children into a single selectable navigation bar, owning the mutual-exclusion logic that keeps exactly one item active at a time. The bar is fixed to the bottom edge of the viewport (`position: fixed`), full width.
 
 #### Semantic Behavior
 
@@ -33,7 +33,7 @@ This component does not use the shared `variant` / `tone` ladders defined in [`d
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-tab-bar>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the compound-component rules documented in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md) and the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-tab-bar>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Navigation Bar
 
@@ -69,7 +69,7 @@ Listen for `mdsTabBarChange` on the host. The event detail carries `index` - the
 
 #### Setting the Initial Active Tab Programmatically
 
-Set `selected` on exactly one child to control the starting state. If you later need to change the active item from outside - for example, after a router navigation - update the `selected` attribute on the correct item directly; the parent will sync all siblings.
+Set `selected` on exactly one child to control the starting state. If you later need to change the active item from outside - for example, after a router navigation - set `selected` on the new item and remove it from the previous one yourself: the parent syncs the siblings only when an item is clicked, and emits no `mdsTabBarChange` for a change made from code.
 
 ```html
 <!-- Second item active on load -->
@@ -98,17 +98,17 @@ Use `typography` on individual items to match the text density to the surroundin
 
 #### Styling Customization via CSS Custom Properties
 
-Style individual items through the documented `--mds-tab-bar-item-*` CSS custom properties. Set them on the specific item or on a parent selector. Use Magma token wrappers `rgb(var(--<token>))` so dark mode and high-contrast keep working.
+Style individual items through the documented `--mds-tab-bar-item-*` CSS custom properties. Set them on the specific item or on a parent selector. Use semantic color roles via `rgb(var(--magma-<role>))` so dark mode and high-contrast keep working.
 
 ```css
 /* Brand-specific active color for the whole bar */
 mds-tab-bar mds-tab-bar-item {
-  --mds-tab-bar-item-color-selected: rgb(var(--variant-secondary-03));
+  --mds-tab-bar-item-color-selected: rgb(var(--magma-accent-fg));
 }
 
 /* A single item with a distinct idle color */
 mds-tab-bar-item.priority {
-  --mds-tab-bar-item-color: rgb(var(--status-warning-04));
+  --mds-tab-bar-item-color: rgb(var(--magma-warning-text-default));
 }
 ```
 
@@ -122,13 +122,13 @@ Common incorrect uses of `<mds-tab-bar>`. Each entry pairs the wrong form with t
 `<mds-tab-bar>` only coordinates `<mds-tab-bar-item>` children; arbitrary HTML or text in its slot breaks the mutual-exclusion logic and the change event.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-tab-bar>
   <button>Home</button>
   <a href="/cerca">Cerca</a>
 </mds-tab-bar>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-tab-bar>
   <mds-tab-bar-item icon="mi/baseline/home" label="Home" selected></mds-tab-bar-item>
   <mds-tab-bar-item icon="mi/baseline/search" label="Cerca"></mds-tab-bar-item>
@@ -137,17 +137,17 @@ Common incorrect uses of `<mds-tab-bar>`. Each entry pairs the wrong form with t
 
 #### Do Not Use the Deprecated Default Slot for an Item's Text
 
-Setting an item's text via the default slot is deprecated. Slotted text is read into `label` with a console warning, and nested HTML is stripped - use the `label` prop for the text and the `icon` prop for the glyph.
+Setting an item's text via the default slot is deprecated. Slotted text is read into `label`, and nested HTML is stripped with a console warning - use the `label` prop for the text and the `icon` prop for the glyph.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-tab-bar-item icon="mi/baseline/inbox">Messaggi</mds-tab-bar-item>
 <mds-tab-bar-item>
   <span class="bold">Messaggi</span>
   <small>(3)</small>
 </mds-tab-bar-item>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-tab-bar-item icon="mi/baseline/inbox" label="Messaggi"></mds-tab-bar-item>
 ```
 
@@ -156,39 +156,39 @@ Setting an item's text via the default slot is deprecated. Slotted text is read 
 The item's `icon` prop renders the glyph through the shared icon service and positions it correctly above the label. Slotting `<mds-icon>` puts it in the deprecated default slot, where it is misaligned or stripped.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-tab-bar-item>
   <mds-icon name="mi/baseline/home"></mds-icon>
   Home
 </mds-tab-bar-item>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-tab-bar-item icon="mi/baseline/home" label="Home"></mds-tab-bar-item>
 ```
 
 #### Do Not Set `selected="false"` to Deselect an Item
 
-`selected` is a boolean attribute - any non-empty string value (including `"false"`) is truthy in HTML. Remove the attribute entirely to deselect an item, or let the parent coordinate selection automatically.
+`selected` is a boolean attribute. The item happens to style `selected="false"` as unselected, but the attribute stays on the element and contradicts the state for attribute selectors and checks. Remove the attribute entirely to deselect an item, or let the parent coordinate selection automatically.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-tab-bar-item icon="mi/baseline/home" label="Home" selected="false"></mds-tab-bar-item>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-tab-bar-item icon="mi/baseline/home" label="Home"></mds-tab-bar-item>
 ```
 
 #### Do Not Listen for the Item's Internal Event on the Bar's Children
 
-`mdsTabBarItemSelect` is an internal coordination event consumed by `<mds-tab-bar>` itself. To react to selection changes from outside, listen for `mdsTabBarChange` on the parent instead.
+`mdsTabBarItemSelect` is the item-level event `<mds-tab-bar>` coordinates on: its `detail` is the item's `id`, which the bar overwrites with its own `mds-tab-bar-item-<index>` values. To react to selection changes from outside, listen for `mdsTabBarChange` on the parent instead, whose `detail.index` is the position of the selected item.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <script>
   document.querySelector('mds-tab-bar-item').addEventListener('mdsTabBarItemSelect', handler);
 </script>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <script>
   document.querySelector('mds-tab-bar').addEventListener('mdsTabBarChange', (e) => {
     handler(e.detail.index);
@@ -201,14 +201,14 @@ The item's `icon` prop renders the glyph through the shared icon service and pos
 The only supported customization surface is the four `--mds-tab-bar-item-*` CSS custom properties. Targeting internal nodes via `::part()`, `>>>`, or undocumented class names couples your code to the Shadow DOM implementation and will break on minor releases.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-tab-bar-item >>> mds-icon {
   fill: hotpink;
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-tab-bar mds-tab-bar-item {
-  --mds-tab-bar-item-color-selected: rgb(var(--variant-secondary-03));
+  --mds-tab-bar-item-color-selected: rgb(var(--magma-accent-fg));
 }
 ```
 

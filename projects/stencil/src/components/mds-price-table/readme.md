@@ -15,7 +15,7 @@ The `<mds-price-table>` web component is the layout container of the Magma Desig
 
 #### Semantic Behavior
 
-- **Default slot only**: Any markup placed between the tags is projected verbatim. It expects the dedicated compound children (`mds-price-table-list`, `mds-price-table-header`, `mds-price-table-features`, `mds-price-table-features-row`, `mds-price-table-features-cell`) rather than free-form content.
+- **Default slot only**: Any markup placed between the tags is projected verbatim. It expects the dedicated compound children (`mds-price-table-list`, `mds-price-table-header`, `mds-price-table-features`, which in turn holds the `mds-price-table-features-row` / `mds-price-table-features-cell` matrix) rather than free-form content.
 - **Grid layout host**: Projected blocks are spaced consistently regardless of how many plans or feature rows are supplied.
 - **Responsive composition**: It does not switch layouts internally. Two arrangements are expressed through the children and utility classes - a stacked, per-plan layout (each `mds-price-table-list` carrying its own feature matrix) for narrow viewports, and a shared `mds-price-table-header` + single `mds-price-table-features` matrix for wide viewports.
 - **No props, events, or state**: All configuration lives on the child components.
@@ -27,7 +27,7 @@ This component is a pure compound parent and intentionally has no configurable p
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-price-table>` family, ordered from most common to most specialized. Patterns assume a working knowledge of the compound-component rules documented in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md) and the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-price-table>` family, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Single-Plan Card (Mobile Layout)
 
@@ -154,7 +154,7 @@ Slot an `<mds-help>` inside a `label` or `text` cell to add an inline tooltip ex
 
 #### List Items Inside a Plan Card
 
-Use `<mds-price-table-list-item>` via the `item` slot for a bulleted feature list inside a plan card. Set `supported` to `true` for included features and leave it `false` (default) for excluded ones. The `typography` prop controls the text size.
+Use `<mds-price-table-list-item>` for a bulleted feature list inside a plan card: the item assigns itself to the `item` slot, so it needs no `slot` attribute. Add the boolean `supported` attribute for included features and omit it (default `false`) for excluded ones. The `typography` prop controls the text size.
 
 ```html
 <mds-price-table-list>
@@ -193,11 +193,11 @@ Apply a Magma label-color utility class directly to `<mds-price-table-list>` to 
 
 #### Separator Color Customization
 
-`<mds-price-table-list>` exposes one CSS custom property, `--mds-price-table-list-separator-color`, to style the horizontal rule that separates the header from the item list. Set it on the host using Magma color tokens.
+`<mds-price-table-list>` exposes one CSS custom property, `--mds-price-table-list-separator-color`, to style the horizontal rule that separates the header from the item list. Set it on the host, naming a semantic role ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)).
 
 ```css
 .featured-plan mds-price-table-list {
-  --mds-price-table-list-separator-color: rgb(var(--variant-primary-03));
+  --mds-price-table-list-separator-color: rgb(var(--magma-accent-border));
 }
 ```
 
@@ -208,16 +208,16 @@ Common incorrect uses of the `<mds-price-table>` family. Each entry pairs the wr
 
 #### Do Not Use Child Components Outside Their Parent
 
-`<mds-price-table-features-row>` and `<mds-price-table-features-cell>` communicate with `<mds-price-table-features>` through the slot mechanism. Placing them in free-form HTML breaks that relationship and the row loses its column-width distribution logic.
+`<mds-price-table-features-row>` and `<mds-price-table-features-cell>` communicate with `<mds-price-table-features>` through the slot mechanism. Placing them in free-form HTML drops the `<table>` the parent renders around them (fixed layout, collapsed borders) and the cell padding it shares through `--mds-price-table-features-padding`.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-price-table-features-row>
   <mds-price-table-features-cell type="label">Utenti</mds-price-table-features-cell>
   <mds-price-table-features-cell type="text">10</mds-price-table-features-cell>
 </mds-price-table-features-row>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-price-table-features>
   <mds-price-table-features-row>
     <mds-price-table-features-cell type="label">Utenti</mds-price-table-features-cell>
@@ -228,17 +228,17 @@ Common incorrect uses of the `<mds-price-table>` family. Each entry pairs the wr
 
 #### Do Not Omit the Slot Name on Plan Card Children
 
-`<mds-price-table-list>` routes content through named slots: `header`, `price`, and `action`. Content without a `slot` attribute falls into the default slot, which is reserved for `<mds-price-table-list-item>` via the `item` slot name, and will not appear in the header or footer regions.
+`<mds-price-table-list>` routes content through named slots: `header`, `price`, and `action`. The component has no default slot: content without a `slot` attribute is not rendered at all (only `<mds-price-table-list-item>` assigns itself to the `item` slot).
 
 ```html
-<!-- 🚫 INCORRECT - heading rendered in wrong region -->
+<!-- INCORRECT - none of these is rendered -->
 <mds-price-table-list>
   <mds-text typography="h5" tag="h4">Piano Base</mds-text>
   <mds-text typography="h2" tag="h4">49 EUR</mds-text>
   <mds-button variant="dark">Inizia</mds-button>
 </mds-price-table-list>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-price-table-list>
   <mds-text typography="h5" tag="h4" slot="header">Piano Base</mds-text>
   <mds-text typography="h2" tag="h4" slot="price">49 EUR</mds-text>
@@ -248,13 +248,13 @@ Common incorrect uses of the `<mds-price-table>` family. Each entry pairs the wr
 
 #### Do Not Pass `supported="false"` as a String on `mds-price-table-list-item`
 
-`supported` is a boolean prop. Any non-empty string value, including `"false"`, is truthy in HTML and will mark the item as included. Remove the attribute to express a missing feature.
+`supported` is a boolean prop: express a missing feature by removing the attribute, the convention for every Magma boolean ([`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md)). Stencil does parse `"false"` as `false`, but the attribute stays in the markup until the component hydrates and its reflection removes it, so a `[supported]` selector or any code reading the attribute sees it set in the meantime.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-price-table-list-item supported="false">Export report</mds-price-table-list-item>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-price-table-list-item>Export report</mds-price-table-list-item>
 ```
 
@@ -263,11 +263,11 @@ Common incorrect uses of the `<mds-price-table>` family. Each entry pairs the wr
 `type` accepts exactly five values: `label`, `text`, `supported`, `unsupported`, `custom`. An unrecognised value silently renders nothing because the component matches each value with a conditional render branch.
 
 ```html
-<!-- 🚫 INCORRECT (not a valid type value) -->
+<!-- INCORRECT (not a valid type value) -->
 <mds-price-table-features-cell type="check"></mds-price-table-features-cell>
 <mds-price-table-features-cell type="icon"></mds-price-table-features-cell>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-price-table-features-cell type="supported"></mds-price-table-features-cell>
 ```
 
@@ -276,7 +276,7 @@ Common incorrect uses of the `<mds-price-table>` family. Each entry pairs the wr
 `<mds-price-table>` is a pure layout host - its slot expects the dedicated compound children. Arbitrary HTML breaks the grid spacing contract and produces unstyled content because the component applies no visual treatment to unknown children.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-price-table>
   <div class="piano">
     <h3>Piano Base</h3>
@@ -284,7 +284,7 @@ Common incorrect uses of the `<mds-price-table>` family. Each entry pairs the wr
   </div>
 </mds-price-table>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-price-table>
   <mds-price-table-list>
     <mds-text typography="h5" tag="h4" slot="header">Piano Base</mds-text>
@@ -299,11 +299,11 @@ Common incorrect uses of the `<mds-price-table>` family. Each entry pairs the wr
 `<mds-price-table-features-cell type="supported">` and `type="unsupported"` render a fixed icon and ignore any slotted content. Only `type="text"`, `type="label"`, and `type="custom"` project slotted nodes.
 
 ```html
-<!-- 🚫 INCORRECT - slotted text is silently ignored -->
+<!-- INCORRECT - slotted text is silently ignored -->
 <mds-price-table-features-cell type="supported">Si</mds-price-table-features-cell>
 <mds-price-table-features-cell type="unsupported">No</mds-price-table-features-cell>
 
-<!-- ✅ CORRECT - leave icon cells empty or use text/custom for values -->
+<!-- CORRECT - leave icon cells empty or use text/custom for values -->
 <mds-price-table-features-cell type="supported"></mds-price-table-features-cell>
 <mds-price-table-features-cell type="text">Non disponibile</mds-price-table-features-cell>
 ```
@@ -313,7 +313,7 @@ Common incorrect uses of the `<mds-price-table>` family. Each entry pairs the wr
 `<mds-price-table-features-cell>` exposes two documented shadow parts: `icon` (the check or dash icon) and `text` (the detail text wrapper). Targeting undocumented internals via `>>>` or unlisted `::part()` names couples app code to implementation details that may change.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-price-table-features-cell >>> .icon {
   fill: red;
 }
@@ -321,9 +321,9 @@ mds-price-table-features-cell::part(cell-wrapper) {
   padding: 1rem;
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-price-table-features-cell::part(icon) {
-  fill: rgb(var(--variant-success-04));
+  fill: rgb(var(--magma-success-fg));
 }
 ```
 

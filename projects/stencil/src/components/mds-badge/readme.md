@@ -27,12 +27,12 @@ The shared `variant` / `tone` ladders are defined in [`docs/agents/variants.md`]
 
 #### Other behavioral props
 
-- **`typography`** chooses the internal text scale - `'option'` (default) or `'label'` - to align the badge's text size with the surrounding context (e.g. inside a denser table cell vs. a standalone label).
+- **`typography`** chooses the internal text scale - `'option'` (default, the smaller one) or `'label'` - to align the badge's text size with the surrounding context (e.g. inside a denser table cell vs. a standalone label).
 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-badge>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) and the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-badge>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) and the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Badge via `label` Prop
 
@@ -81,26 +81,26 @@ Use decorative label variants (`green`, `blue`, `violet`, `red`, `orange`, `yell
 
 #### Neutral Variants
 
-Use `variant="dark"` for badges on light backgrounds and `variant="light"` for badges that must appear on dark surfaces.
+`variant="dark"` and `variant="light"` are painted with neutral roles that follow the mode, so neither is tied to a light or dark background. They differ only with `tone="strong"`: `dark` is the inverse chip (dark on a light UI, light on a dark UI), `light` is the paper of the mode (white in light, black in dark). With `weak` and `outline` the two render the same.
 
 ```html
-<!-- On a light surface -->
-<mds-badge label="Categoria" variant="dark" tone="weak"></mds-badge>
+<!-- Inverse chip, flips with the mode -->
+<mds-badge label="Categoria" variant="dark" tone="strong"></mds-badge>
 
-<!-- On a dark or coloured surface -->
+<!-- Paper of the mode -->
 <mds-badge label="Categoria" variant="light" tone="strong"></mds-badge>
 ```
 
 #### Typography Scale
 
-Use `typography="label"` when the badge sits inside a denser context (such as a table cell) and the default `"option"` size is too large.
+The default `"option"` is the smaller scale and suits dense contexts such as table cells; use `typography="label"`, which is larger, when the badge needs more presence.
 
 ```html
-<!-- Default scale - standalone labels, cards, sidebars -->
-<mds-badge label="Nuovo" variant="primary" typography="option"></mds-badge>
+<!-- Default, smaller scale - inside tables or tight UI rows -->
+<mds-badge label="Nuovo" variant="sky" typography="option"></mds-badge>
 
-<!-- Compact scale - inside tables or tight UI rows -->
-<mds-badge label="Nuovo" variant="primary" typography="label"></mds-badge>
+<!-- Larger scale - standalone labels, cards, sidebars -->
+<mds-badge label="Nuovo" variant="sky" typography="label"></mds-badge>
 ```
 
 #### Badge Inside a Table Cell
@@ -112,10 +112,10 @@ Use `typography="label"` when the badge sits inside a denser context (such as a 
   <mds-table-body>
     <mds-table-row>
       <mds-table-cell>
-        <mds-badge label="Approvato" variant="success" tone="weak" typography="label"></mds-badge>
+        <mds-badge label="Approvato" variant="success" tone="weak"></mds-badge>
       </mds-table-cell>
       <mds-table-cell>
-        <mds-badge label="In revisione" variant="warning" tone="weak" typography="label"></mds-badge>
+        <mds-badge label="In revisione" variant="warning" tone="weak"></mds-badge>
       </mds-table-cell>
     </mds-table-row>
   </mds-table-body>
@@ -128,8 +128,8 @@ Use `typography="label"` when the badge sits inside a denser context (such as a 
 
 ```html
 <div class="file-meta">
-  <mds-file name="relazione-2024.pdf"></mds-file>
-  <mds-badge label="Firmato" variant="success" tone="weak" typography="label"></mds-badge>
+  <mds-file filename="relazione-2024.pdf"></mds-file>
+  <mds-badge label="Firmato" variant="success" tone="weak"></mds-badge>
 </div>
 ```
 
@@ -141,7 +141,7 @@ Style the badge only through its documented `--mds-badge-*` CSS custom propertie
 .custom-tag mds-badge {
   --mds-badge-background: rgb(var(--label-orchid-09));
   --mds-badge-color: rgb(var(--label-orchid-02));
-  --mds-badge-radius: var(--radius-full);
+  --mds-badge-radius: var(--magma-radius-full);
 }
 ```
 
@@ -164,12 +164,12 @@ Common incorrect uses of `<mds-badge>`. Each entry pairs the wrong form with the
 The default slot is deprecated and accepts plain text only; nested elements are stripped or break layout. Use the `label` prop instead.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-badge>
   <strong>Urgente</strong>
 </mds-badge>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-badge label="Urgente" variant="error" tone="strong"></mds-badge>
 ```
 
@@ -178,35 +178,35 @@ The default slot is deprecated and accepts plain text only; nested elements are 
 Slotted text still works as a legacy fallback but will be removed in a future release. The `label` prop is the documented API going forward.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-badge>Approvato</mds-badge>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-badge label="Approvato" variant="success" tone="weak"></mds-badge>
 ```
 
 #### Do Not Apply a `tone` Value Outside the Allowed Set
 
-`<mds-badge>` uses `ToneSmartVariantType`, which allows only `strong`, `weak`, and `outline`. Values like `text` or `box` are not accepted and silently fall back to the default.
+`<mds-badge>` uses `ToneSmartVariantType`, which allows only `strong`, `weak`, and `outline`. Values like `text` or `box` are not accepted: no tone style matches them, so the badge renders as with `strong`, not with the `weak` default.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-badge label="Bozza" variant="warning" tone="text"></mds-badge>
 <mds-badge label="Bozza" variant="warning" tone="box"></mds-badge>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-badge label="Bozza" variant="warning" tone="outline"></mds-badge>
 ```
 
 #### Do Not Use Legacy `ghost` or `quiet` Tone Values
 
-`tone="ghost"` and `tone="quiet"` were renamed in Magma 2.0 to `outline` and `text`. Neither name is valid for `<mds-badge>` - use `outline` (the closest equivalent) or `weak`.
+`tone="ghost"` and `tone="quiet"` are Magma 1 names: on `<mds-badge>` Magma 2.0 renamed them to `outline` and `weak` (the codemod applies the rename). Neither old name is valid any more.
 
 ```html
-<!-- 🚫 INCORRECT (Magma 1.x naming) -->
+<!-- INCORRECT (Magma 1.x naming) -->
 <mds-badge label="Archiviato" tone="ghost" variant="dark"></mds-badge>
 
-<!-- ✅ CORRECT (Magma 2.x) -->
+<!-- CORRECT (Magma 2.x) -->
 <mds-badge label="Archiviato" tone="outline" variant="dark"></mds-badge>
 ```
 
@@ -215,10 +215,10 @@ Slotted text still works as a legacy fallback but will be removed in a future re
 `variant` carries semantic meaning - status variants (`error`, `warning`, `success`, `info`) communicate state; label variants (`green`, `blue`, `violet`, etc.) communicate category. Do not choose a variant just because its color looks right.
 
 ```html
-<!-- 🚫 INCORRECT: using "error" to get a red tag for a topic, not an error state -->
+<!-- INCORRECT: using "error" to get a red tag for a topic, not an error state -->
 <mds-badge label="Ruby" variant="error" tone="weak"></mds-badge>
 
-<!-- ✅ CORRECT: use a decorative label variant for non-state tags -->
+<!-- CORRECT: use a decorative label variant for non-state tags -->
 <mds-badge label="Ruby" variant="red" tone="weak"></mds-badge>
 ```
 
@@ -227,17 +227,17 @@ Slotted text still works as a legacy fallback but will be removed in a future re
 The supported customization surface is `--mds-badge-*` CSS custom properties. Targeting shadow-DOM internals via `>>>`, `/deep/`, or undocumented `::part()` names couples your code to implementation details that can change on any release.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-badge >>> span {
   font-weight: bold;
   letter-spacing: 0.1em;
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-badge {
   --mds-badge-background: rgb(var(--label-violet-09));
   --mds-badge-color: rgb(var(--label-violet-02));
-  --mds-badge-radius: var(--radius-full);
+  --mds-badge-radius: var(--magma-radius-full);
 }
 ```
 
@@ -246,10 +246,10 @@ mds-badge {
 `<mds-badge>` is purely presentational - it emits no events and has no focus management. For a selectable or dismissible tag, use [`mds-chip`](../../mds-chip) instead.
 
 ```html
-<!-- 🚫 INCORRECT: listening to a click on a non-interactive component -->
+<!-- INCORRECT: listening to a click on a non-interactive component -->
 <mds-badge label="Rimuovi" variant="error" onclick="removeTag()"></mds-badge>
 
-<!-- ✅ CORRECT: use mds-chip for interactive tag behavior -->
+<!-- CORRECT: use mds-chip for interactive tag behavior -->
 <mds-chip label="Rimuovi" variant="error" deletable></mds-chip>
 ```
 

@@ -16,7 +16,7 @@ The `<mds-avatar-stack>` web component groups a set of overlapping `<mds-avatar-
 - **Compound parent**: It is the container half of a compound component; its visible content is the default slot of `<mds-avatar-stack-item>` children, each of which wraps an `<mds-avatar>`.
 - **Size propagation**: `size` drives the dimensions, border, and horizontal overlap of every slotted item, so the whole stack stays visually consistent without sizing each avatar individually.
 - **Overflow counter**: When `total` is set and exceeds the number of slotted children, the stack appends one extra item rendering the remainder (e.g. "+3"), so it can represent a larger group than it physically shows.
-- **Static composition**: Children and `total` are resolved at first render; the overflow indicator reflects the markup present then rather than reacting to later DOM changes.
+- **Static composition**: Children are counted once, on load: the overflow indicator follows later changes of `total`, but not children added or removed afterwards.
 
 #### Properties & Visual Configurations
 
@@ -28,7 +28,7 @@ This component does not use the shared `variant` / `tone` ladders; per-avatar ap
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-avatar-stack>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the compound component rules documented in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md) and the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-avatar-stack>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Avatar Stack
 
@@ -44,7 +44,7 @@ The canonical form. Slot one [`<mds-avatar-stack-item>`](../../mds-avatar-stack-
 
 #### Avatar Stack with Profile Images
 
-Use `src` on each item when real user photos are available. The avatar falls back to `initials` automatically if the image fails to load.
+Use `src` on each item when real user photos are available. If the image fails to load, the avatar shows the generic person glyph; while `src` is set, `initials` is not displayed.
 
 ```html
 <mds-avatar-stack>
@@ -107,14 +107,14 @@ When the represented group is larger than the number of visible avatars, set `to
 
 #### Per-Item Variant Colors
 
-Each [`<mds-avatar-stack-item>`](../../mds-avatar-stack-item) accepts its own `variant` to visually distinguish users when initials alone are not enough. `tone` accepts `strong` or `weak` (default).
+Each [`<mds-avatar-stack-item>`](../../mds-avatar-stack-item) accepts its own `variant`, which colors the avatar when it has no `initials`: initials derive their own color and override it. `tone` accepts `strong` or `weak` (default).
 
 ```html
 <mds-avatar-stack>
-  <mds-avatar-stack-item initials="mr" variant="primary" tone="strong"></mds-avatar-stack-item>
-  <mds-avatar-stack-item initials="ac" variant="success" tone="weak"></mds-avatar-stack-item>
-  <mds-avatar-stack-item initials="er" variant="warning" tone="weak"></mds-avatar-stack-item>
-  <mds-avatar-stack-item initials="mt" variant="info" tone="weak"></mds-avatar-stack-item>
+  <mds-avatar-stack-item variant="primary" tone="strong"></mds-avatar-stack-item>
+  <mds-avatar-stack-item variant="success" tone="weak"></mds-avatar-stack-item>
+  <mds-avatar-stack-item variant="warning" tone="weak"></mds-avatar-stack-item>
+  <mds-avatar-stack-item variant="info" tone="weak"></mds-avatar-stack-item>
 </mds-avatar-stack>
 ```
 
@@ -133,14 +133,14 @@ Combine `size` and `total` to produce a large, labelled stack for team-overview 
 
 #### Styling Customization
 
-Style the stack only through its documented `--mds-avatar-stack-*` CSS custom properties. Set them on the host or a parent selector; use Magma color tokens via `rgb(var(--<token>))` so dark mode keeps working.
+Style the stack only through its documented `--mds-avatar-stack-*` CSS custom properties. Set them on the host or a parent selector; use semantic color roles via `rgb(var(--magma-<role>))` so dark mode keeps working.
 
 ```css
 /* Custom ring color and overlap for a card-hero section */
 .team-hero mds-avatar-stack {
-  --mds-avatar-stack-background: rgb(var(--variant-secondary-01));
-  --mds-avatar-stack-count-background-color: rgb(var(--tone-neutral-08));
-  --mds-avatar-stack-count-color: rgb(var(--tone-neutral-02));
+  --mds-avatar-stack-background: rgb(var(--magma-accent-emphasis));
+  --mds-avatar-stack-count-background-color: rgb(var(--magma-wash-soft));
+  --mds-avatar-stack-count-color: rgb(var(--magma-text-default));
   --mds-avatar-stack-lg-offset: 2.5;
 }
 ```
@@ -152,10 +152,10 @@ Common incorrect uses of `<mds-avatar-stack>`. Each entry pairs the wrong form w
 
 #### Do Not Place `<mds-avatar-stack-item>` Inside a Wrapper Element
 
-The parent counts its **direct** `mds-avatar-stack-item` children via `:scope > mds-avatar-stack-item`. An intermediate wrapper breaks that query, so the overflow counter is wrong and size propagation may not work.
+The parent counts only its **direct** `mds-avatar-stack-item` children. An intermediate wrapper breaks that count, so the overflow counter is wrong, and the parent's `size` (applied with `::slotted`) does not reach the wrapped items.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-avatar-stack total="10">
   <div class="group">
     <mds-avatar-stack-item initials="mr"></mds-avatar-stack-item>
@@ -163,7 +163,7 @@ The parent counts its **direct** `mds-avatar-stack-item` children via `:scope > 
   </div>
 </mds-avatar-stack>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-avatar-stack total="10">
   <mds-avatar-stack-item initials="mr" tone="weak"></mds-avatar-stack-item>
   <mds-avatar-stack-item initials="ac" tone="weak"></mds-avatar-stack-item>
@@ -175,13 +175,13 @@ The parent counts its **direct** `mds-avatar-stack-item` children via `:scope > 
 [`<mds-avatar-stack-item>`](../../mds-avatar-stack-item) is the correct child for this compound component - it handles sizing, border, overlap offset, and count badge rendering. Slotting a bare `<mds-avatar>` skips all of that wiring.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-avatar-stack>
   <mds-avatar initials="mr"></mds-avatar>
   <mds-avatar initials="ac"></mds-avatar>
 </mds-avatar-stack>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-avatar-stack>
   <mds-avatar-stack-item initials="mr" tone="weak"></mds-avatar-stack-item>
   <mds-avatar-stack-item initials="ac" tone="weak"></mds-avatar-stack-item>
@@ -193,14 +193,14 @@ The parent counts its **direct** `mds-avatar-stack-item` children via `:scope > 
 When `total` does not exceed the number of slotted items, no overflow badge is rendered. Setting `total` lower than the child count is also misleading about group size and produces no visible effect.
 
 ```html
-<!-- 🚫 INCORRECT - total equals child count, badge never appears -->
+<!-- INCORRECT - total equals child count, badge never appears -->
 <mds-avatar-stack total="3">
   <mds-avatar-stack-item initials="mr" tone="weak"></mds-avatar-stack-item>
   <mds-avatar-stack-item initials="ac" tone="weak"></mds-avatar-stack-item>
   <mds-avatar-stack-item initials="er" tone="weak"></mds-avatar-stack-item>
 </mds-avatar-stack>
 
-<!-- ✅ CORRECT - total exceeds slotted count by the hidden members -->
+<!-- CORRECT - total exceeds slotted count by the hidden members -->
 <mds-avatar-stack total="10">
   <mds-avatar-stack-item initials="mr" tone="weak"></mds-avatar-stack-item>
   <mds-avatar-stack-item initials="ac" tone="weak"></mds-avatar-stack-item>
@@ -213,14 +213,14 @@ When `total` does not exceed the number of slotted items, no overflow badge is r
 `count` on `<mds-avatar-stack-item>` is reserved for the auto-generated overflow badge; the parent computes and appends it when `total` is provided. Adding a `count` item by hand alongside `total` results in a duplicate badge.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-avatar-stack total="10">
   <mds-avatar-stack-item initials="mr" tone="weak"></mds-avatar-stack-item>
   <mds-avatar-stack-item initials="ac" tone="weak"></mds-avatar-stack-item>
   <mds-avatar-stack-item count="8"></mds-avatar-stack-item>
 </mds-avatar-stack>
 
-<!-- ✅ CORRECT - let the parent handle the badge -->
+<!-- CORRECT - let the parent handle the badge -->
 <mds-avatar-stack total="10">
   <mds-avatar-stack-item initials="mr" tone="weak"></mds-avatar-stack-item>
   <mds-avatar-stack-item initials="ac" tone="weak"></mds-avatar-stack-item>
@@ -232,13 +232,13 @@ When `total` does not exceed the number of slotted items, no overflow badge is r
 [`<mds-avatar-stack-item>`](../../mds-avatar-stack-item) exposes no `size` prop; dimensions are driven by the parent's `size`. Overriding size with inline CSS on individual items breaks the uniform overlap geometry the component calculates.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-avatar-stack>
   <mds-avatar-stack-item initials="mr" style="width: 48px; height: 48px;"></mds-avatar-stack-item>
   <mds-avatar-stack-item initials="ac" style="width: 48px; height: 48px;"></mds-avatar-stack-item>
 </mds-avatar-stack>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-avatar-stack size="lg">
   <mds-avatar-stack-item initials="mr" tone="weak"></mds-avatar-stack-item>
   <mds-avatar-stack-item initials="ac" tone="weak"></mds-avatar-stack-item>
@@ -250,15 +250,15 @@ When `total` does not exceed the number of slotted items, no overflow badge is r
 The supported customization surface is the `--mds-avatar-stack-*` CSS custom properties on the parent. Targeting shadow internals via `>>>` or undocumented `::part()` names couples your code to the implementation and will break on minor releases.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-avatar-stack >>> .avatar {
   border-color: blue;
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-avatar-stack {
-  --mds-avatar-stack-background: rgb(var(--variant-primary-01));
-  --mds-avatar-stack-count-background-color: rgb(var(--tone-neutral-08));
+  --mds-avatar-stack-background: rgb(var(--magma-accent-emphasis));
+  --mds-avatar-stack-count-background-color: rgb(var(--magma-wash-soft));
 }
 ```
 

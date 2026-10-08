@@ -16,7 +16,7 @@ The `<mds-list>` web component is the structural container of the Magma Design S
 #### Semantic Behavior
 
 - **List role**: Exposes the group as a semantic list to assistive technology regardless of the surrounding markup.
-- **Compound parent**: Acts purely as the container; the visual rows, interaction, and per-item state live in the slotted `<mds-list-item>` children.
+- **Compound parent**: Acts purely as the container; the visual rows (leading glyph and text) live in the slotted `<mds-list-item>` children.
 - **Default slot is structural**: The default slot is meant to receive `<mds-list-item>` element(s) rather than free text.
 
 #### Properties & Visual Configurations
@@ -26,7 +26,7 @@ This component exposes no configurable props; it carries no `variant`, `tone`, o
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-list>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the typography scale documented in [`docs/agents/typography.md`](../../../../../../docs/agents/typography.md) and the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-list>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the typography scale documented in [`docs/agents/typography.md`](../../../../../../docs/agents/typography.md) and the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic List
 
@@ -107,7 +107,7 @@ Adjust icon spacing through the documented `--mds-list-item-icon-margin` CSS cus
 
 ```css
 .sidebar-checklist mds-list-item {
-  --mds-list-item-icon-margin: 0 var(--spacing-300) 0 0;
+  --mds-list-item-icon-margin: 0 calc(var(--spacing) * 300) 0 0;
 }
 ```
 
@@ -118,7 +118,7 @@ Reach the icon or text nodes through the documented `::part(icon)` and `::part(t
 ```css
 /* Tint the leading icon of every item in a warning context */
 .alert-list mds-list-item::part(icon) {
-  fill: rgb(var(--status-warning-05));
+  fill: rgb(var(--magma-warning-fg));
 }
 ```
 
@@ -132,13 +132,13 @@ Common incorrect uses of `<mds-list>` and `<mds-list-item>`. Each entry pairs th
 Using a raw list element bypasses the design-system layout, typography defaults, and FOUC handling built into the component pair.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <ul>
   <li>Primo elemento</li>
   <li>Secondo elemento</li>
 </ul>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-list>
   <mds-list-item>Primo elemento</mds-list-item>
   <mds-list-item>Secondo elemento</mds-list-item>
@@ -150,14 +150,14 @@ Using a raw list element bypasses the design-system layout, typography defaults,
 The default slot of `<mds-list-item>` accepts a plain text string only; placing HTML elements or other components there is explicitly discouraged in the component's API and can break layout and compound-component communication.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-list>
   <mds-list-item>
     <strong>Allegato 1</strong> - Contratto firmato
   </mds-list-item>
 </mds-list>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-list>
   <mds-list-item>Allegato 1 - Contratto firmato</mds-list-item>
 </mds-list>
@@ -168,12 +168,12 @@ The default slot of `<mds-list-item>` accepts a plain text string only; placing 
 `<mds-list-item>` is a compound child designed to work exclusively inside `<mds-list>`. Using it standalone or wrapping it in a plain `<div>` breaks the accessible list context.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <div class="my-list">
   <mds-list-item>Voce autonoma</mds-list-item>
 </div>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-list>
   <mds-list-item>Voce autonoma</mds-list-item>
 </mds-list>
@@ -181,10 +181,10 @@ The default slot of `<mds-list-item>` accepts a plain text string only; placing 
 
 #### Do Not Slot `<mds-icon>` to Override the Bullet
 
-The `icon` prop on `<mds-list-item>` is the supported way to change the leading glyph. Slotting `<mds-icon>` into the default slot puts it in a text-only slot where it is either stripped or visually broken.
+The `icon` prop on `<mds-list-item>` is the supported way to change the leading glyph. Slotting `<mds-icon>` into the default slot puts it inline in a text-only slot, misaligned, while the default bullet still renders.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-list>
   <mds-list-item>
     <mds-icon name="mi/baseline/check"></mds-icon>
@@ -192,7 +192,7 @@ The `icon` prop on `<mds-list-item>` is the supported way to change the leading 
   </mds-list-item>
 </mds-list>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-list>
   <mds-list-item icon="mi/baseline/check">Voce completata</mds-list-item>
 </mds-list>
@@ -203,14 +203,14 @@ The `icon` prop on `<mds-list-item>` is the supported way to change the leading 
 The default slot of `<mds-list>` is documented to receive `<mds-list-item>` elements. Mixing in headings, paragraphs, or other components breaks the expected structure and removes the semantic list context.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-list>
   <mds-text typography="h6">Documenti richiesti</mds-text>
   <mds-list-item>Documento d'identita'</mds-list-item>
   <mds-list-item>Codice fiscale</mds-list-item>
 </mds-list>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-text typography="h6">Documenti richiesti</mds-text>
 <mds-list>
   <mds-list-item>Documento d'identita'</mds-list-item>
@@ -220,14 +220,18 @@ The default slot of `<mds-list>` is documented to receive `<mds-list-item>` elem
 
 #### Do Not Apply an Invalid `typography` Value to `<mds-list-item>`
 
-`mds-list-item.typography` accepts `TypographyInfoType | TypographyReadType` - the allowed values are `caption`, `detail`, `label`, `option`, `paragraph`, and `tip`. Heading values such as `h1`-`h6` or `action` are not accepted and silently fall back to the default.
+`mds-list-item.typography` accepts `TypographyInfoType | TypographyReadType` - the allowed values are `caption`, `detail`, `label`, `option`, `paragraph`, and `tip`. Heading values such as `h1`-`h6` or `action` are outside the type and are not checked at runtime: the inner text renders the heading style next to a bullet aligned for body text.
 
 ```html
-<!-- 🚫 INCORRECT -->
-<mds-list-item typography="h3">Titolo non valido</mds-list-item>
+<!-- INCORRECT -->
+<mds-list>
+  <mds-list-item typography="h3">Titolo non valido</mds-list-item>
+</mds-list>
 
-<!-- ✅ CORRECT -->
-<mds-list-item typography="paragraph">Testo valido</mds-list-item>
+<!-- CORRECT -->
+<mds-list>
+  <mds-list-item typography="paragraph">Testo valido</mds-list-item>
+</mds-list>
 ```
 
 

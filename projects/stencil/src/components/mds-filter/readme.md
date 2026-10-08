@@ -17,7 +17,7 @@ The `<mds-filter>` web component is a compound container that groups a set of `<
 
 - **Compound parent**: Acts as the controller for slotted `<mds-filter-item>` children, driving their state in response to selection events.
 - **Selection coordination**: In single mode it enforces exclusive selection (selecting one deselects the others); in `multiple` mode it keeps every selected child active and tracks how many are selected.
-- **Combined change event**: `mdsFilterChange` fires whenever any child's selection changes, carrying both the live child node list and a comma-joined string of the selected items' `value`s.
+- **Combined change event**: `mdsFilterChange` fires whenever any child's selection changes, carrying both the `NodeList` of the children and a comma-joined string of the selected items' `value`s.
 - **Reset control**: When `reset` is set, a clear-all control appears once a filter is active and clears all selections when clicked.
 - **Auto-scroll**: On each selection the bar scrolls horizontally to center the most recently selected item.
 - **Default slot**: The default slot is for `<mds-filter-item>` elements only, not arbitrary text or markup.
@@ -31,7 +31,7 @@ The `<mds-filter>` web component is a compound container that groups a set of `<
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-filter>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) and the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-filter>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Single-Select Filter Bar
 
@@ -48,7 +48,7 @@ The canonical form. Slot `<mds-filter-item>` children directly; the parent enfor
 
 #### Listening to Selection Changes
 
-Listen to `mdsFilterChange` on the parent. The event detail carries `value` (comma-joined string of selected `value` attributes) and `children` (the live node list for advanced inspection).
+Listen to `mdsFilterChange` on the parent. The event detail carries `value` (comma-joined string of selected `value` attributes) and `children` (the `NodeList` of the items, for advanced inspection).
 
 ```html
 <mds-filter id="filter-stato" label="Stato">
@@ -127,7 +127,7 @@ Set `selected` on a child at page load to reflect a filter that is already activ
 
 #### Disabled Item
 
-Set `disabled` on individual `<mds-filter-item>` children to make them non-interactive. Disabled items are removed from the tab order.
+Set `disabled` on individual `<mds-filter-item>` children to remove them from the tab order. In the current release a pointer click still toggles a disabled item and no disabled style is painted, so do not rely on it alone to block a selection.
 
 ```html
 <mds-filter label="Stato pratica">
@@ -139,15 +139,15 @@ Set `disabled` on individual `<mds-filter-item>` children to make them non-inter
 
 #### Styling Customization
 
-Style the filter bar only through its documented `--mds-filter-*` CSS custom properties. Set them on the host or a parent selector; use Magma color tokens via `rgb(var(--<token>))` so dark mode and high-contrast modes keep working.
+Style the filter bar only through its documented `--mds-filter-*` CSS custom properties. Set them on the host or a parent selector; use the semantic color roles via `rgb(var(--magma-<role>))` and the `--magma-radius-*` scale so dark mode, high-contrast modes and the corner geometry keep working.
 
 ```css
 .filtri-personalizzati mds-filter {
-  --mds-filter-items-background: rgb(var(--tone-neutral-08));
-  --mds-filter-items-background-active: rgb(var(--variant-primary-09));
-  --mds-filter-items-radius: var(--radius-md);
-  --mds-filter-items-gap: var(--spacing-300);
-  --mds-filter-wrapper-shadow-color: rgb(var(--variant-primary-05));
+  --mds-filter-items-background: rgb(var(--magma-wash-strong));
+  --mds-filter-items-background-active: rgb(var(--magma-accent-surface));
+  --mds-filter-items-radius: var(--magma-radius-md);
+  --mds-filter-items-gap: calc(var(--spacing) * 300);
+  --mds-filter-wrapper-shadow-color: rgb(var(--magma-accent-border));
   --mds-filter-wrapper-shadow-opacity: 0.2;
 }
 ```
@@ -162,13 +162,13 @@ Common incorrect uses of `<mds-filter>`. Each entry pairs the wrong form with th
 The default slot accepts only `<mds-filter-item>` elements. The parent wires its coordination logic - exclusive selection, scroll-centering, value aggregation - by querying for `mds-filter-item` children. Slotting plain buttons, spans, or any other element breaks all of that coordination.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-filter label="Tipo">
   <button>Notizie</button>
   <button>Comunicati</button>
 </mds-filter>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-filter label="Tipo">
   <mds-filter-item label="Notizie" value="news"></mds-filter-item>
   <mds-filter-item label="Comunicati" value="press"></mds-filter-item>
@@ -180,13 +180,13 @@ The default slot accepts only `<mds-filter-item>` elements. The parent wires its
 `<mds-filter-item>` communicates state upward via the `mdsFilterItemSelect` event, which `<mds-filter>` listens for internally. Used standalone, the item has no parent to coordinate selection, no auto-scroll, and no combined `mdsFilterChange` output.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <div class="my-filter-bar">
   <mds-filter-item label="Tutti" value="all"></mds-filter-item>
   <mds-filter-item label="Attivi" value="active"></mds-filter-item>
 </div>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-filter>
   <mds-filter-item label="Tutti" value="all"></mds-filter-item>
   <mds-filter-item label="Attivi" value="active"></mds-filter-item>
@@ -195,10 +195,10 @@ The default slot accepts only `<mds-filter-item>` elements. The parent wires its
 
 #### Do Not Listen to Native `change` Instead of `mdsFilterChange`
 
-`<mds-filter>` emits the documented `mdsFilterChange` custom event. Native `change` and `input` events do not bubble out of shadow DOM reliably; listening for them produces no result.
+`<mds-filter>` emits the documented `mdsFilterChange` custom event. It contains no native form control, so no `change` or `input` event is ever fired; listening for them produces no result.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-filter id="f" label="Stato">
   <mds-filter-item label="Aperto" value="open"></mds-filter-item>
 </mds-filter>
@@ -206,7 +206,7 @@ The default slot accepts only `<mds-filter-item>` elements. The parent wires its
   document.getElementById('f').addEventListener('change', handler);
 </script>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-filter id="f" label="Stato">
   <mds-filter-item label="Aperto" value="open"></mds-filter-item>
 </mds-filter>
@@ -217,15 +217,15 @@ The default slot accepts only `<mds-filter-item>` elements. The parent wires its
 
 #### Do Not Set Boolean Props to the String `"false"`
 
-`auto-reset`, `multiple`, and `reset` are boolean attributes. In HTML, any non-empty string - including `"false"` - is truthy. Remove the attribute entirely to deactivate it.
+`auto-reset`, `multiple`, and `reset` are boolean attributes: remove the attribute entirely to deactivate it, as for every boolean. The runtime happens to read the string `"false"` as `false`, but the attribute stays in the markup until the component renders, and HTML, `[multiple]` selectors and `hasAttribute()` read a present attribute as set.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-filter multiple="false" reset="false" label="Tipo">
   <mds-filter-item label="Tutti" value="all"></mds-filter-item>
 </mds-filter>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-filter label="Tipo">
   <mds-filter-item label="Tutti" value="all"></mds-filter-item>
 </mds-filter>
@@ -236,13 +236,13 @@ The default slot accepts only `<mds-filter-item>` elements. The parent wires its
 `auto-reset` is meaningful only in `multiple` mode - it triggers when all items are simultaneously selected. In single-select mode only one item can ever be active, so the "all selected" condition is never reached and `auto-reset` has no effect.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-filter auto-reset label="Priorita">
   <mds-filter-item label="Alta" value="high"></mds-filter-item>
   <mds-filter-item label="Bassa" value="low"></mds-filter-item>
 </mds-filter>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-filter multiple auto-reset label="Priorita">
   <mds-filter-item label="Alta" value="high"></mds-filter-item>
   <mds-filter-item label="Bassa" value="low"></mds-filter-item>
@@ -254,13 +254,13 @@ The default slot accepts only `<mds-filter-item>` elements. The parent wires its
 The `mdsFilterChange` event's `value` field is a comma-joined string of the selected items' `value` attributes. Items without a `value` contribute an empty string to the output, making the combined value ambiguous and hard to parse in application code.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-filter label="Formato">
   <mds-filter-item label="PDF"></mds-filter-item>
   <mds-filter-item label="Word"></mds-filter-item>
 </mds-filter>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-filter label="Formato">
   <mds-filter-item label="PDF" value="pdf"></mds-filter-item>
   <mds-filter-item label="Word" value="doc"></mds-filter-item>
@@ -272,7 +272,7 @@ The `mdsFilterChange` event's `value` field is a comma-joined string of the sele
 The supported customization surface for `<mds-filter>` is the documented `--mds-filter-*` CSS custom properties. Piercing the shadow DOM via `>>>` or undocumented `::part()` names couples your code to the implementation and will break on minor releases.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-filter >>> .items {
   background: white;
 }
@@ -280,10 +280,10 @@ mds-filter::part(items-wrapper) {
   border: 2px solid red;
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-filter {
-  --mds-filter-items-background: rgb(var(--tone-neutral-08));
-  --mds-filter-wrapper-shadow-color: rgb(var(--variant-primary-05));
+  --mds-filter-items-background: rgb(var(--magma-wash-strong));
+  --mds-filter-wrapper-shadow-color: rgb(var(--magma-accent-border));
 }
 ```
 

@@ -149,11 +149,14 @@ The value is the public URL of the folder you copied the SVGs into:
 window.sessionStorage.setItem('mdsIconSvgPath', '/svg/');
 ```
 
-Alternatives (after `defineCustomElements()` has run), documented in
+Alternatives, documented in
 [`../../projects/stencil/src/components/mds-icon/readme.md`](../../projects/stencil/src/components/mds-icon/readme.md):
 
-- `mdsIcon.setSvgPath('/svg/')` - instance method on a temporary `mds-icon` node
-- `MdsIcon.setSvgPathStatic('/svg/')` - static class method
+- `IconsSetService.setSvgPath('/svg/')`, imported from
+  `@maggioli-design-system/magma/services`: sets the path in code, without
+  `sessionStorage`, and reloads the icons already mounted
+- `mdsIcon.setSvgPath('/svg/')` - instance method on a temporary `mds-icon` node, after
+  `defineCustomElements()` has run
 - dispatch `new CustomEvent('mdsIconSvgPathUpdate')` on `window` to force a refresh
   after changing the path
 

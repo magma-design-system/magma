@@ -16,23 +16,23 @@ The `<mds-horizontal-scroll>` web component is a horizontally scrolling containe
 #### Semantic Behavior
 
 - **Slotted children drive scrolling**: The default slot's children are the scrollable items.
-- **Navigation buttons**: When `controls` resolves to a viewport other than `'none'`, two arrow buttons are rendered; each advances the scroll position to the next/previous item not fully in the viewport.
+- **Navigation buttons**: When `controls` resolves to a viewport other than `'none'`, two arrow buttons are rendered; each advances the scroll position to the next/previous item not fully in the viewport. Browsers without the `scrollend` event get no arrows: the component clears `controls` there.
 - **Auto-disabled arrows**: The back arrow hides/disables when the first item is fully visible and the forward arrow when the last item is.
 - **Position indicator**: With `navigation="position"` a proportional dot is rendered; its width reflects the visible/total ratio and it translates along its track as the container scrolls.
 - **No focus or form semantics**: This is a presentational scroll container - it is not form-associated, exposes no implicit ARIA role, and emits no custom events.
 
 #### Properties & Visual Configurations
 
-- **`controls`** selects the largest viewport breakpoint at which the arrow navigation appears (default `'desktop'`); pick a wider tier like `'large'` or `'wide'` to show arrows only on big screens, or `'none'` to suppress them entirely. The chosen value is the threshold, not a single device.
+- **`controls`** selects the smallest viewport breakpoint at which the arrow navigation appears (default `'desktop'`); pick a wider tier like `'large'` or `'wide'` to show arrows only on big screens, or `'none'` to suppress them entirely. The chosen value is the threshold, not a single device.
 - **`navigation`** chooses the scroll-progress affordance: `'position'` renders the translating dot indicator, `'scrollbar'` defers to the styled native browser scrollbar, and `'none'` shows neither.
 - **`snap`** sets the scroll-snap alignment of each item against the viewport - `'start'` (default) aligns items to the leading edge, `'center'` keeps them centred, `'end'` to the trailing edge, and `'none'` disables snapping for free scrolling.
 
-This component does not use the shared `variant` / `tone` ladders defined in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md); appearance is tuned entirely through its CSS custom properties (see readme.md).
+This component does not use the shared `variant` / `tone` ladders defined in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md); appearance is tuned entirely through its CSS custom properties (see [`readme.md`](../readme.md)).
 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-horizontal-scroll>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the conventions in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md) and the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-horizontal-scroll>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Horizontal Scroll with Cards
 
@@ -145,13 +145,12 @@ Pair `controls="all"` with `snap="center"` and `navigation="position"` to produc
 
 #### Styling Customization
 
-Style the component only through its documented `--mds-horizontal-scroll-*` CSS custom properties. Set them on the host or a parent selector; use Magma tokens via `rgb(var(--<token>))` so dark mode and high-contrast modes keep working.
+Style the component only through its documented `--mds-horizontal-scroll-*` CSS custom properties. Set them on the host or a parent selector; use the semantic color roles via `rgb(var(--magma-<role>))` so dark mode and high-contrast modes keep working.
 
 ```css
 .sezione-evidenza mds-horizontal-scroll {
-  --mds-horizontal-scroll-gap: var(--spacing-400);
-  --mds-horizontal-scroll-dot-background: rgb(var(--variant-primary-03));
-  --mds-horizontal-scroll-dot-area-background: rgb(var(--variant-primary-08));
+  --mds-horizontal-scroll-dot-background: rgb(var(--magma-accent-emphasis));
+  --mds-horizontal-scroll-dot-area-background: rgb(var(--magma-accent-surface-hover));
   --mds-horizontal-scroll-max-width: 1200px;
 }
 ```
@@ -163,9 +162,9 @@ When `navigation="scrollbar"` is used, customize the native scrollbar appearance
 ```css
 mds-horizontal-scroll {
   --mds-horizontal-scroll-scrollbar-size: 6px;
-  --mds-horizontal-scroll-scrollbar-radius: 4px;
-  --mds-horizontal-scroll-scrollbar-thumb-background: rgb(var(--variant-primary-03));
-  --mds-horizontal-scroll-scrollbar-track-background: rgb(var(--tone-neutral-07));
+  --mds-horizontal-scroll-scrollbar-radius: var(--magma-radius-3xs);
+  --mds-horizontal-scroll-scrollbar-thumb-background: rgb(var(--magma-accent-emphasis));
+  --mds-horizontal-scroll-scrollbar-track-background: rgb(var(--magma-wash-strong));
 }
 ```
 
@@ -175,7 +174,7 @@ The inner scroll container is exposed as `::part(content)`. Use it sparingly - o
 
 ```css
 mds-horizontal-scroll::part(content) {
-  padding-block: var(--spacing-800);
+  padding-block: calc(var(--spacing) * 800);
 }
 ```
 
@@ -186,15 +185,15 @@ Common incorrect uses of `<mds-horizontal-scroll>`. Each entry pairs the wrong f
 
 #### Do Not Set `controls` to a Boolean
 
-`controls` is a `ViewportType` string prop, not a boolean. Setting it without a value (or as `""`) coerces to a truthy string that is not a recognized viewport tier and produces undefined behavior. Always supply an explicit string value.
+`controls` is a `ViewportType` string prop, not a boolean. Setting it without a value (or as `""`) gives an empty string, which renders no arrows at all - the opposite of what a bare boolean attribute suggests. Always supply an explicit string value.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-horizontal-scroll controls>
   <!-- slotted items -->
 </mds-horizontal-scroll>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-horizontal-scroll controls="desktop">
   <!-- slotted items -->
 </mds-horizontal-scroll>
@@ -205,7 +204,7 @@ Common incorrect uses of `<mds-horizontal-scroll>`. Each entry pairs the wrong f
 Adding a single wrapper `<div>` around all children collapses the scroll track to one item. The component's arrow and snap logic iterates over the direct slot children - each scrollable item must be a direct child, not grandchildren inside a wrapper.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-horizontal-scroll>
   <div>
     <mds-card class="min-w-[320px]">...</mds-card>
@@ -213,7 +212,7 @@ Adding a single wrapper `<div>` around all children collapses the scroll track t
   </div>
 </mds-horizontal-scroll>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-horizontal-scroll>
   <mds-card class="min-w-[320px]">...</mds-card>
   <mds-card class="min-w-[320px]">...</mds-card>
@@ -222,15 +221,15 @@ Adding a single wrapper `<div>` around all children collapses the scroll track t
 
 #### Do Not Set `controls="none"` as Boolean False
 
-`controls` has no boolean semantic. Removing arrow buttons is done with `controls="none"`, not by writing `controls="false"` or `disabled`. The string `"false"` is not a `ViewportType` and does nothing.
+`controls` has no boolean semantic. Removing arrow buttons is done with `controls="none"`, not by writing `controls="false"` or `disabled`. The string `"false"` is not a `ViewportType`: the arrows end up hidden only because no breakpoint rule matches it, and a type check rejects it.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-horizontal-scroll controls="false">
   <!-- slotted items -->
 </mds-horizontal-scroll>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-horizontal-scroll controls="none">
   <!-- slotted items -->
 </mds-horizontal-scroll>
@@ -241,13 +240,13 @@ Adding a single wrapper `<div>` around all children collapses the scroll track t
 Replacing `<mds-horizontal-scroll>` with a manually styled `<div style="overflow-x: auto">` loses the managed arrow buttons, the dot indicator, scroll-snap wiring, and the `controls` breakpoint logic. Use the component.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <div style="overflow-x: auto; display: flex; gap: 16px;">
   <mds-card class="min-w-[320px]">...</mds-card>
   <mds-card class="min-w-[320px]">...</mds-card>
 </div>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-horizontal-scroll>
   <mds-card class="min-w-[320px]">...</mds-card>
   <mds-card class="min-w-[320px]">...</mds-card>
@@ -259,7 +258,7 @@ Replacing `<mds-horizontal-scroll>` with a manually styled `<div style="overflow
 The navigation buttons and dot indicator live inside the shadow DOM. Targeting them via `>>>`, `/deep/`, or undocumented class names (`.navigation`, `.dot`) will break on future releases. Use `--mds-horizontal-scroll-*` CSS custom properties instead.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-horizontal-scroll >>> .dot {
   background: red;
 }
@@ -267,12 +266,12 @@ mds-horizontal-scroll >>> .navigation {
   border-radius: 0;
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-horizontal-scroll {
-  --mds-horizontal-scroll-dot-background: rgb(var(--variant-primary-03));
+  --mds-horizontal-scroll-dot-background: rgb(var(--magma-accent-emphasis));
 }
 mds-horizontal-scroll::part(content) {
-  padding-block: var(--spacing-800);
+  padding-block: calc(var(--spacing) * 800);
 }
 ```
 
@@ -281,13 +280,13 @@ mds-horizontal-scroll::part(content) {
 Slotted items without a declared width collapse to zero or stretch unpredictably. Always give direct children an explicit `min-width` or `width` so the container has measurable items to snap and scroll among.
 
 ```html
-<!-- 🚫 INCORRECT: card has no fixed width, items will collapse -->
+<!-- INCORRECT: card has no fixed width, items will collapse -->
 <mds-horizontal-scroll>
   <mds-card>...</mds-card>
   <mds-card>...</mds-card>
 </mds-horizontal-scroll>
 
-<!-- ✅ CORRECT: each card has a declared minimum width -->
+<!-- CORRECT: each card has a declared minimum width -->
 <mds-horizontal-scroll>
   <mds-card class="min-w-[320px]">...</mds-card>
   <mds-card class="min-w-[320px]">...</mds-card>

@@ -27,7 +27,7 @@ This component exposes no configurable props. It is a layout-only child: its sol
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-price-table-header>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the compound-component rules documented in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md) and the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-price-table-header>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Standard Three-Plan Header
 
@@ -127,7 +127,7 @@ Apply a background utility class directly to an [`<mds-price-table-list>`](../..
 
 #### Matching Column Count to Feature Rows
 
-When combined with [`<mds-price-table-features>`](../../mds-price-table-features) below the header, the breakpoint grid-column classes on `<mds-price-table-header>` and on [`<mds-price-table-features>`](../../mds-price-table-features) must match so columns align visually. Apply the same class string to both.
+When combined with [`<mds-price-table-features>`](../../mds-price-table-features) below the header, give every feature row as many cells as the header has columns (one `label` cell for the title column, then one cell per plan): each row divides its width equally among its cells. Grid-column classes have no effect on `<mds-price-table-features>`, which renders a table.
 
 ```html
 <mds-price-table>
@@ -152,8 +152,13 @@ When combined with [`<mds-price-table-features>`](../../mds-price-table-features
     </mds-price-table-list>
   </mds-price-table-header>
 
-  <mds-price-table-features class="tablet:grid-cols-3 desktop:grid-cols-4">
-    <!-- feature rows go here -->
+  <mds-price-table-features>
+    <mds-price-table-features-row>
+      <mds-price-table-features-cell type="label">Utenti</mds-price-table-features-cell>
+      <mds-price-table-features-cell type="text">10</mds-price-table-features-cell>
+      <mds-price-table-features-cell type="text">20</mds-price-table-features-cell>
+      <mds-price-table-features-cell type="text">Illimitati</mds-price-table-features-cell>
+    </mds-price-table-features-row>
   </mds-price-table-features>
 </mds-price-table>
 ```
@@ -197,15 +202,15 @@ Common incorrect uses of `<mds-price-table-header>`. Each entry pairs the wrong 
 
 #### Do Not Use Outside `<mds-price-table>`
 
-`<mds-price-table-header>` is a structural child of [`<mds-price-table>`](../../mds-price-table). Using it standalone breaks the compound component communication and the shared column grid that aligns header columns with feature rows below.
+`<mds-price-table-header>` is a structural child of [`<mds-price-table>`](../../mds-price-table). Used standalone it still lays out its columns, but it is cut off from the feature matrix it is meant to align with: `<mds-price-table>` is what stacks the header above the feature rows.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-price-table-header class="tablet:grid-cols-3">
   <mds-price-table-list>...</mds-price-table-list>
 </mds-price-table-header>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-price-table>
   <mds-price-table-header class="tablet:grid-cols-3">
     <mds-price-table-list>...</mds-price-table-list>
@@ -218,7 +223,7 @@ Common incorrect uses of `<mds-price-table-header>`. Each entry pairs the wrong 
 The auto-fit grid counts direct children; adding `<div>` wrappers around plan cards breaks the equal-column distribution and misaligns the header with feature rows.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-price-table-header class="tablet:grid-cols-3">
   <div class="plans">
     <mds-price-table-list>...</mds-price-table-list>
@@ -226,7 +231,7 @@ The auto-fit grid counts direct children; adding `<div>` wrappers around plan ca
   </div>
 </mds-price-table-header>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-price-table-header class="tablet:grid-cols-3">
   <mds-price-table-list>...</mds-price-table-list>
   <mds-price-table-list>...</mds-price-table-list>
@@ -239,12 +244,12 @@ The auto-fit grid counts direct children; adding `<div>` wrappers around plan ca
 The column count is expressed through Magma utility classes, not inline `style` attributes. Inline styles bypass the responsive utility cascade and are impossible to override with breakpoint tokens.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-price-table-header style="grid-template-columns: 1fr 1fr 1fr;">
   ...
 </mds-price-table-header>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-price-table-header class="tablet:grid-cols-3 desktop:grid-cols-4">
   ...
 </mds-price-table-header>
@@ -252,10 +257,10 @@ The column count is expressed through Magma utility classes, not inline `style` 
 
 #### Do Not Mismatch Column Count Between Header and Feature Section
 
-If `<mds-price-table-header>` and [`<mds-price-table-features>`](../../mds-price-table-features) use different breakpoint grid-column classes, plan columns do not line up. Always apply the same column count to both.
+Each `<mds-price-table-features-row>` divides its width equally among its cells, while the header lays its children on its grid columns. If a feature row has fewer or more cells than the header has columns, plan columns do not line up. Grid-column classes on [`<mds-price-table-features>`](../../mds-price-table-features) change nothing: it renders a table.
 
 ```html
-<!-- 🚫 INCORRECT: header has 4 columns, features has 3 -->
+<!-- INCORRECT: header has 4 columns, each feature row has 3 cells -->
 <mds-price-table>
   <mds-price-table-header class="desktop:grid-cols-4">
     <mds-text typography="h1">Piani</mds-text>
@@ -263,12 +268,16 @@ If `<mds-price-table-header>` and [`<mds-price-table-features>`](../../mds-price
     <mds-price-table-list>...</mds-price-table-list>
     <mds-price-table-list>...</mds-price-table-list>
   </mds-price-table-header>
-  <mds-price-table-features class="desktop:grid-cols-3">
-    ...
+  <mds-price-table-features>
+    <mds-price-table-features-row>
+      <mds-price-table-features-cell type="label">Utenti</mds-price-table-features-cell>
+      <mds-price-table-features-cell type="text">10</mds-price-table-features-cell>
+      <mds-price-table-features-cell type="text">20</mds-price-table-features-cell>
+    </mds-price-table-features-row>
   </mds-price-table-features>
 </mds-price-table>
 
-<!-- ✅ CORRECT: same column class on both -->
+<!-- CORRECT: one label cell plus one cell per plan, as many as the header columns -->
 <mds-price-table>
   <mds-price-table-header class="tablet:grid-cols-3 desktop:grid-cols-4">
     <mds-text typography="h1" class="tablet:col-span-3 desktop:col-span-1">Piani</mds-text>
@@ -276,8 +285,13 @@ If `<mds-price-table-header>` and [`<mds-price-table-features>`](../../mds-price
     <mds-price-table-list>...</mds-price-table-list>
     <mds-price-table-list>...</mds-price-table-list>
   </mds-price-table-header>
-  <mds-price-table-features class="tablet:grid-cols-3 desktop:grid-cols-4">
-    ...
+  <mds-price-table-features>
+    <mds-price-table-features-row>
+      <mds-price-table-features-cell type="label">Utenti</mds-price-table-features-cell>
+      <mds-price-table-features-cell type="text">10</mds-price-table-features-cell>
+      <mds-price-table-features-cell type="text">20</mds-price-table-features-cell>
+      <mds-price-table-features-cell type="text">Illimitati</mds-price-table-features-cell>
+    </mds-price-table-features-row>
   </mds-price-table-features>
 </mds-price-table>
 ```
@@ -287,7 +301,7 @@ If `<mds-price-table-header>` and [`<mds-price-table-features>`](../../mds-price
 The component places every direct child in its own equal-width column. A leading title or label that should span multiple columns must carry the appropriate `col-span` utility; without it, it shrinks to one narrow column and pushes the plan cards out of alignment.
 
 ```html
-<!-- 🚫 INCORRECT: leading title takes one column, disrupting plan alignment -->
+<!-- INCORRECT: leading title takes one column, disrupting plan alignment -->
 <mds-price-table-header class="desktop:grid-cols-4">
   <mds-text typography="h1">Scegli il piano</mds-text>
   <mds-price-table-list>...</mds-price-table-list>
@@ -295,7 +309,7 @@ The component places every direct child in its own equal-width column. A leading
   <mds-price-table-list>...</mds-price-table-list>
 </mds-price-table-header>
 
-<!-- ✅ CORRECT: on tablet the title spans the full row; on desktop it takes one column -->
+<!-- CORRECT: on tablet the title spans the full row; on desktop it takes one column -->
 <mds-price-table-header class="tablet:grid-cols-3 desktop:grid-cols-4">
   <mds-text
     typography="h1"

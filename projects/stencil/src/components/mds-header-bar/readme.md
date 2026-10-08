@@ -20,7 +20,7 @@ The `<mds-header-bar>` web component is the top bar of a Magma application layou
 - **Conditional nav rendering**: The `<nav>` is shown only when `nav` is not `'none'` and a `slot="nav"` child is present, also when it is added after the first render, so an empty header collapses cleanly.
 - **Hamburger trigger**: When `menu` is not `'none'` the component renders a menu button that opens the menu on click.
 - **Open event**: Clicking the hamburger emits the bubbling `mdsHeaderBarOpen` event and opens the drawer on the surrounding `mds-header`.
-- **Imperative open control**: The public `setOpened(isOpened = true)` method lets a parent or script toggle the opened state programmatically.
+- **Imperative open control**: The public `setOpened(isOpened = true)` method only records the opened state: it renders nothing and does not open or close the drawer, which is driven by `setOpened()` on the surrounding `mds-header`.
 
 #### Properties & Visual Configurations
 
@@ -29,10 +29,12 @@ The two props are both responsive visibility switches sharing the value set `'al
 - **`menu`** controls when the hamburger button appears. It defaults to `'mobile'`, so the collapsed menu surfaces only on small screens; set it to `'all'` to always expose the menu trigger or `'none'` to suppress it.
 - **`nav`** controls when the inline horizontal navigation is shown. It defaults to `'desktop'`, the typical complement to `menu`: links sit inline on wide viewports and fold into the hamburger on narrow ones.
 
+Inside `mds-header` both are written by the header from its own `menu` and `nav` when it loads, replacing the values set on the bar: set them on `mds-header` there.
+
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-header-bar>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) and the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-header-bar>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Standard Header Bar with Logo and Navigation
 
@@ -41,7 +43,7 @@ The canonical form. Place branding content in the default slot (left side) and `
 ```html
 <mds-header-bar>
   <div class="flex gap-200 items-center">
-    <mds-img src="./logo.svg" />
+    <mds-img src="./logo.svg"></mds-img>
     <mds-text typography="h6">Portale Enti</mds-text>
   </div>
   <mds-button slot="nav" variant="dark" tone="outline">Accedi</mds-button>
@@ -66,7 +68,7 @@ The canonical form. Place branding content in the default slot (left side) and `
 
 #### Controlling Hamburger Visibility
 
-Use the `menu` prop to decide when the hamburger button is shown. The default `mobile` is correct for most apps. Use `all` when you always want a drawer-style menu regardless of viewport, or `none` to remove the hamburger entirely (e.g. a public marketing bar with no drawer).
+Use the `menu` prop to decide when the hamburger button is shown (inside `mds-header`, set `menu` and `nav` on `mds-header`: it overwrites the bar's values when it loads). The default `mobile` is correct for most apps. Use `all` when you always want a drawer-style menu regardless of viewport, or `none` to remove the hamburger entirely (e.g. a public marketing bar with no drawer).
 
 ```html
 <!-- Always show the hamburger (single-column layout, any viewport) -->
@@ -76,7 +78,7 @@ Use the `menu` prop to decide when the hamburger button is shown. The default `m
 
 <!-- No hamburger at all (branding-only bar) -->
 <mds-header-bar menu="none">
-  <mds-img src="./logo.svg" />
+  <mds-img src="./logo.svg"></mds-img>
 </mds-header-bar>
 ```
 
@@ -87,7 +89,7 @@ Use the `nav` prop symmetrically with `menu`. The default `desktop` shows the na
 ```html
 <!-- Always show inline nav (no responsive collapsing) -->
 <mds-header-bar menu="none" nav="all">
-  <mds-img src="./logo.svg" />
+  <mds-img src="./logo.svg"></mds-img>
   <mds-button slot="nav" variant="dark" tone="text">Chi siamo</mds-button>
   <mds-button slot="nav" variant="dark" tone="text">Servizi</mds-button>
   <mds-button slot="nav" variant="primary" tone="strong">Contatti</mds-button>
@@ -112,27 +114,32 @@ Listen to `mdsHeaderBarOpen` (bubbles) to react when the user taps the hamburger
 
 #### Programmatic Open via `setOpened`
 
-Call the `setOpened(isOpened)` public method to toggle the opened state from external code - for instance after route navigation in a single-page app.
+The bar's own `setOpened(isOpened)` only records the state and renders nothing. To open or close the drawer from external code - for instance after route navigation in a single-page app - call `setOpened` on the surrounding `mds-header`.
 
 ```html
-<mds-header-bar id="main-bar">
-  <mds-text typography="h6">Dashboard</mds-text>
-</mds-header-bar>
+<mds-header id="main-header">
+  <mds-header-bar>
+    <mds-text typography="h6">Dashboard</mds-text>
+  </mds-header-bar>
+  <div slot="menu">
+    <mds-button label="Pratiche" variant="dark" tone="text"></mds-button>
+  </div>
+</mds-header>
 
 <script>
-  // Close the bar after the user selects a menu item
-  const bar = document.getElementById('main-bar');
-  bar.setOpened(false);
+  // Close the drawer after the user selects a menu item
+  const header = document.getElementById('main-header');
+  header.setOpened(false);
 </script>
 ```
 
 #### Styling the Hamburger Icon Color
 
-Use `--mds-header-bar-hamburger-color` to theme the hamburger icon. Set it on the host element or a parent selector; use a Magma color token wrapped with `rgb(var(...))` so dark-mode works automatically.
+Use `--mds-header-bar-hamburger-color` to theme the hamburger icon. Set it on the host element or a parent selector; use a semantic color role wrapped with `rgb(var(--magma-<role>))` so dark-mode works automatically.
 
 ```css
 mds-header-bar {
-  --mds-header-bar-hamburger-color: rgb(var(--variant-primary-03));
+  --mds-header-bar-hamburger-color: rgb(var(--magma-accent-fg));
 }
 ```
 
@@ -143,13 +150,13 @@ The four documented shadow parts (`content`, `actions`, `nav`, `hamburger`) let 
 ```css
 /* Increase the gap between the nav buttons and the hamburger */
 mds-header-bar::part(actions) {
-  gap: var(--spacing-600);
+  gap: calc(var(--spacing) * 600);
 }
 
 /* Visually highlight the hamburger button in a branded theme */
 mds-header-bar::part(hamburger) {
-  border-radius: var(--radius-md);
-  background-color: rgb(var(--variant-primary-02));
+  border-radius: var(--magma-radius-md);
+  background-color: rgb(var(--magma-accent-surface));
 }
 ```
 
@@ -163,12 +170,12 @@ Common incorrect uses of `<mds-header-bar>`. Each entry pairs the wrong form wit
 `<mds-header-bar>` is a structural sub-component of [`mds-header`](../../mds-header). Used alone, the hamburger click has no `mds-header` ancestor to call `setOpened` on, so the drawer never opens. Always place it inside `<mds-header>` unless you have fully replaced drawer management with `mdsHeaderBarOpen` listeners.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-header-bar>
   <mds-text typography="h6">Portale</mds-text>
 </mds-header-bar>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-header>
   <mds-header-bar>
     <mds-text typography="h6">Portale</mds-text>
@@ -181,16 +188,16 @@ Common incorrect uses of `<mds-header-bar>`. Each entry pairs the wrong form wit
 The default slot is the branding region (left side). Navigation actions must go in the `nav` named slot so the component can apply responsive visibility rules and wrap them in the `<nav>` element for landmark semantics.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-header-bar>
-  <mds-img src="./logo.svg" />
+  <mds-img src="./logo.svg"></mds-img>
   <mds-button variant="dark" tone="text">Servizi</mds-button>
   <mds-button variant="primary" tone="strong">Accedi</mds-button>
 </mds-header-bar>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-header-bar>
-  <mds-img src="./logo.svg" />
+  <mds-img src="./logo.svg"></mds-img>
   <mds-button slot="nav" variant="dark" tone="text">Servizi</mds-button>
   <mds-button slot="nav" variant="primary" tone="strong">Accedi</mds-button>
 </mds-header-bar>
@@ -201,15 +208,16 @@ The default slot is the branding region (left side). Navigation actions must go 
 Setting both to `none` hides all interactive regions and leaves a branding-only bar with no way to navigate, which is rarely the intended result. If the design truly needs a pure branding strip, be explicit about it and confirm it is intentional; otherwise keep at least one region visible.
 
 ```html
-<!-- 🚫 INCORRECT (navigation is invisible and unreachable) -->
+<!-- INCORRECT (navigation is invisible and unreachable) -->
 <mds-header-bar menu="none" nav="none">
-  <mds-img src="./logo.svg" />
+  <mds-img src="./logo.svg"></mds-img>
+  <mds-button slot="nav" variant="dark" tone="text">Servizi</mds-button>
 </mds-header-bar>
 
-<!-- ✅ CORRECT (branding-only bar is an intentional design choice, documented) -->
-<!-- Only do this when no navigation is needed on the page (e.g. login screen) -->
-<mds-header-bar menu="none" nav="none">
-  <mds-img src="./logo.svg" />
+<!-- CORRECT (at least one region stays visible) -->
+<mds-header-bar menu="none" nav="all">
+  <mds-img src="./logo.svg"></mds-img>
+  <mds-button slot="nav" variant="dark" tone="text">Servizi</mds-button>
 </mds-header-bar>
 ```
 
@@ -218,7 +226,7 @@ Setting both to `none` hides all interactive regions and leaves a branding-only 
 The only documented customization hooks are `--mds-header-bar-hamburger-color` (CSS custom property) and the shadow parts `content`, `actions`, `nav`, `hamburger`. Targeting undocumented internal classes couples your code to implementation details that can change at any minor release.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-header-bar >>> .menu {
   fill: red;
 }
@@ -226,27 +234,27 @@ mds-header-bar::part(icon) {
   fill: blue;
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-header-bar {
-  --mds-header-bar-hamburger-color: rgb(var(--variant-primary-03));
+  --mds-header-bar-hamburger-color: rgb(var(--magma-accent-fg));
 }
 mds-header-bar::part(hamburger) {
-  background-color: rgb(var(--tone-neutral-02));
+  background-color: rgb(var(--magma-wash-base));
 }
 ```
 
 #### Do Not Listen to `click` on the Hamburger Instead of `mdsHeaderBarOpen`
 
-The hamburger button lives inside shadow DOM; a `click` listener on the host may not behave as expected across all frameworks and browsers. Use the documented `mdsHeaderBarOpen` event, which bubbles and is the intended communication channel.
+A `click` listener on the host fires for every click inside the bar (logo, nav buttons), not only on the hamburger. Use the documented `mdsHeaderBarOpen` event, which bubbles and fires only when the hamburger is pressed.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-header-bar id="bar">...</mds-header-bar>
 <script>
   document.getElementById('bar').addEventListener('click', handleMenu);
 </script>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-header-bar id="bar">...</mds-header-bar>
 <script>
   document.getElementById('bar').addEventListener('mdsHeaderBarOpen', handleMenu);
@@ -255,14 +263,14 @@ The hamburger button lives inside shadow DOM; a `click` listener on the host may
 
 #### Do Not Set `menu` or `nav` to an Undocumented String Value
 
-The accepted values for both props are `'all' | 'desktop' | 'mobile' | 'none'`. Strings outside that set are silently ignored and the component falls back to the default, producing unexpected layout.
+The accepted values for both props are `'all' | 'desktop' | 'mobile' | 'none'`. Strings outside that set are not validated: any value other than `none` shows the region on every viewport, as `all` does, producing unexpected layout.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-header-bar menu="always" nav="never">...</mds-header-bar>
 <mds-header-bar menu="true" nav="false">...</mds-header-bar>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-header-bar menu="all" nav="none">...</mds-header-bar>
 ```
 

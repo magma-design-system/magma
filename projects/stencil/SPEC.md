@@ -109,7 +109,7 @@ At build time iconsauce emits the resolved icons through one of two output strat
 1. **Single icon font** bundling every referenced icon, or
 2. **Reorganised SVG files** mirroring the slug path - `mi/baseline/close` becomes `public/assets/mi/baseline/close.svg`
 
-**Magma uses strategy 2** (files). At runtime, `mds-icon` fetches `<mdsIconSvgPath><slug>.svg` from a path the host app configures (recommended via `sessionStorage` - see [`src/components/mds-icon/readme.md`](src/components/mds-icon/readme.md) for the `setSvgPath` / `setSvgPathStatic` / `mdsIconSvgPathUpdate` alternatives).
+**Magma uses strategy 2** (files). At runtime, `mds-icon` fetches `<mdsIconSvgPath><slug>.svg` from a path the host app configures (recommended via `sessionStorage` - see [`src/components/mds-icon/readme.md`](src/components/mds-icon/readme.md) for the `IconsSetService.setSvgPath` / `setSvgPath` / `mdsIconSvgPathUpdate` alternatives).
 
 ### Why iconsauce (not inline SVG or direct icon-lib imports)
 

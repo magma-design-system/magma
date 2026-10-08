@@ -24,12 +24,12 @@ The `<mds-accordion-item>` web component is a single collapsible panel of the Ma
 
 - **`label`** sets the always-visible header text shown whether the item is open or closed.
 - **`selected`** controls whether the panel is expanded; leave it to the parent to manage in coordinated accordions, or set it initially to have a panel start open.
-- **`typography`** picks the title style applied to the header label, defaulting to `h5`. Choose a heavier heading level (`h1`–`h4`) for more prominent section headers or `action` for a compact, control-like header; match it to the document's heading hierarchy so the accordion reads correctly to assistive technology.
+- **`typography`** picks the title style applied to the header label, defaulting to `h5`. Choose a heavier heading level (`h1`-`h4`) for more prominent section headers or `action` for a compact, control-like header; match it to the document's heading hierarchy. The header is rendered inside a `<button>`, whose content is presentational, so the level is visual: assistive technology does not announce it as a heading.
 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-accordion-item>` component, ordered from most common to most specialized. Patterns assume a working knowledge of compound component rules documented in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md) and the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-accordion-item>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Accordion
 
@@ -51,7 +51,7 @@ The canonical form. Place one or more `<mds-accordion-item>` elements as direct 
 
 #### Panel Open by Default
 
-Set `selected` on the item you want pre-expanded. The parent resolves conflicts on load in single mode, so only set it on one item unless `multiple` is also set on the parent.
+Set `selected` on the item you want pre-expanded. The parent does not resolve conflicts on load, so in single mode set it on one item only, unless `multiple` is also set on the parent.
 
 ```html
 <mds-accordion>
@@ -84,7 +84,7 @@ Add `multiple` to `<mds-accordion>` so the user can expand more than one panel a
 
 #### Non-closable Accordion
 
-Set the parent `disable-close` attribute to prevent the user from collapsing an open panel. An open item then stays open until another item is clicked (single mode only). Because `disableClose` defaults to `false`, just add the boolean attribute to enable mandatory selection.
+Set the parent `disable-close` attribute to prevent the user from collapsing an open panel. An open item then stays open until another item is clicked; with `multiple`, the last open item cannot be closed. Because `disableClose` defaults to `false`, just add the boolean attribute to enable mandatory selection.
 
 ```html
 <mds-accordion disable-close>
@@ -122,9 +122,9 @@ The default slot accepts any HTML or components - not just text. Use it for stru
   <mds-accordion-item label="Dettagli del progetto">
     <mds-text typography="h6">Tecnologie utilizzate</mds-text>
     <mds-list>
-      <mds-list-item label="StencilJS"></mds-list-item>
-      <mds-list-item label="TypeScript"></mds-list-item>
-      <mds-list-item label="Storybook"></mds-list-item>
+      <mds-list-item>StencilJS</mds-list-item>
+      <mds-list-item>TypeScript</mds-list-item>
+      <mds-list-item>Storybook</mds-list-item>
     </mds-list>
   </mds-accordion-item>
   <mds-accordion-item label="Contatti del team">
@@ -135,14 +135,14 @@ The default slot accepts any HTML or components - not just text. Use it for stru
 
 #### Listening to Item Events
 
-`mdsAccordionItemChange` fires on every toggle; `mdsAccordionItemSelect` fires only on open; `mdsAccordionItemUnselect` fires only on close. Use `mdsAccordionItemChange` when you only need to react to any state change, or the specific event when you need to handle open and close differently.
+`mdsAccordionItemChange` fires on every toggle; `mdsAccordionItemSelect` fires only on open; `mdsAccordionItemUnselect` fires only on close. Use `mdsAccordionItemChange` when you only need to react to any state change, or the specific event when you need to handle open and close differently. The parent overwrites each item's `id` with `item-<index>` on load, and that is the `detail.id`: do not select items by an `id` of your own.
 
 ```html
 <mds-accordion id="faq">
-  <mds-accordion-item id="item-faq-1" label="Domanda frequente 1">
+  <mds-accordion-item label="Domanda frequente 1">
     <mds-text>Risposta alla prima domanda.</mds-text>
   </mds-accordion-item>
-  <mds-accordion-item id="item-faq-2" label="Domanda frequente 2">
+  <mds-accordion-item label="Domanda frequente 2">
     <mds-text>Risposta alla seconda domanda.</mds-text>
   </mds-accordion-item>
 </mds-accordion>
@@ -152,7 +152,7 @@ The default slot accepts any HTML or components - not just text. Use it for stru
     console.log('item changed:', e.detail.id, 'selected:', e.detail.selected);
   });
 
-  document.querySelector('#item-faq-1').addEventListener('mdsAccordionItemSelect', (e) => {
+  document.querySelector('#faq mds-accordion-item').addEventListener('mdsAccordionItemSelect', (e) => {
     console.log('faq-1 opened');
   });
 </script>
@@ -165,14 +165,13 @@ Style each item only through its documented `--mds-accordion-item-*` CSS custom 
 ```css
 /* Customize all items via the parent */
 mds-accordion {
-  --mds-accordion-border-color: rgb(var(--variant-primary-05));
-  --mds-accordion-border-width: 1px;
+  --mds-accordion-border-color: rgb(var(--magma-accent-border));
   --mds-accordion-duration: 200ms;
 }
 
 /* Or target a single item directly */
 .sidebar mds-accordion-item {
-  --mds-accordion-item-color: rgb(var(--tone-neutral-02));
+  --mds-accordion-item-color: rgb(var(--magma-text-default));
   --mds-accordion-item-padding-selected: 1.5rem 0 2.5rem 0;
   --mds-accordion-item-padding-unselected: 1rem 0;
 }
@@ -185,15 +184,15 @@ Common incorrect uses of `<mds-accordion-item>`. Each entry pairs the wrong form
 
 #### Do Not Use `mds-accordion-item` Outside `mds-accordion`
 
-The item relies on the parent to assign its `id`, manage sibling state, and emit coordinated change events. Placing it standalone breaks selection, event coordination, and accessibility labelling.
+The item relies on the parent to assign its `id`, manage sibling state, and emit coordinated change events. Placed standalone it still toggles, but nothing coordinates it, no `mdsAccordionChange` is emitted, and its events carry an empty `id`.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-accordion-item label="Sezione autonoma">
   <mds-text>Contenuto senza accordeon genitore.</mds-text>
 </mds-accordion-item>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-accordion>
   <mds-accordion-item label="Sezione autonoma">
     <mds-text>Contenuto all'interno del genitore corretto.</mds-text>
@@ -203,10 +202,10 @@ The item relies on the parent to assign its `id`, manage sibling state, and emit
 
 #### Do Not Wrap `mds-accordion-item` in Extra Elements
 
-The parent queries its children directly with `querySelectorAll('mds-accordion-item')`; an intervening wrapper breaks that query, so items are never assigned an `id` and events are never coordinated.
+Items are direct children of `mds-accordion` by contract (see [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md)). The parent still finds wrapped items, since it queries every descendant, but the borders of an open item depend on its position among its siblings (`:first-child` / `:last-child`), which a wrapper changes.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-accordion>
   <div class="group">
     <mds-accordion-item label="FAQ 1">
@@ -215,7 +214,7 @@ The parent queries its children directly with `querySelectorAll('mds-accordion-i
   </div>
 </mds-accordion>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-accordion>
   <mds-accordion-item label="FAQ 1">
     <mds-text>Risposta alla prima domanda.</mds-text>
@@ -225,17 +224,17 @@ The parent queries its children directly with `querySelectorAll('mds-accordion-i
 
 #### Do Not Set `label` via the Default Slot
 
-`label` is a required prop that drives the header button text, `aria-expanded`, and keyboard focus; the default slot holds only the collapsible body content. Putting header text in the slot places it inside the body region and leaves the required `label` prop empty, breaking both layout and accessibility.
+`label` is a required prop that renders the header button text, which is also the button's accessible name; the default slot holds only the collapsible body content. Putting header text in the slot places it inside the body region and leaves the required `label` prop empty, breaking both layout and accessibility.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-accordion>
   <mds-accordion-item>
     Dettagli dell'ordine
   </mds-accordion-item>
 </mds-accordion>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-accordion>
   <mds-accordion-item label="Dettagli dell'ordine">
     <mds-text>Numero ordine: 12345, data: 01/06/2026.</mds-text>
@@ -245,45 +244,42 @@ The parent queries its children directly with `querySelectorAll('mds-accordion-i
 
 #### Do Not Override Open/Close State by Piercing the Shadow DOM
 
-`selected` is reflected as a host attribute and is writable via JavaScript. Targeting the internal `.content` div or `.icon` element via `::part()`, `>>>`, or undocumented class names to show/hide content manually bypasses the coordinated state machine and breaks sibling sync.
+`selected` is reflected as a host attribute and is writable via JavaScript. Targeting the internal `.content` div or `.icon` element via `>>>` or undocumented class names to show/hide content manually bypasses the coordinated state machine and breaks sibling sync. The documented `content` part styles the panel body; it does not open it. Setting `selected` from JavaScript emits no event and does not close the siblings: in single mode, unset the open item yourself.
 
 ```css
-/* 🚫 INCORRECT */
-mds-accordion-item::part(content) {
-  display: block !important;
-}
+/* INCORRECT */
 mds-accordion-item >>> .content {
   grid-template-rows: 1fr;
 }
 ```
 
 ```js
-/* ✅ CORRECT - toggle via the reflected property */
+/* CORRECT - toggle via the reflected property */
 const item = document.querySelector('mds-accordion-item#item-0');
 item.selected = true;
 ```
 
 #### Do Not Listen for Native `click` or `change` Events Instead of the Documented `mds*` Events
 
-The header click is handled inside the shadow DOM; the native `click` event does not bubble out reliably. The documented events `mdsAccordionItemChange`, `mdsAccordionItemSelect`, and `mdsAccordionItemUnselect` are the designed surface.
+A native `click` bubbles up from anywhere inside the item, body content included, and carries no state; there is no native `change` event on this component. The documented events `mdsAccordionItemChange`, `mdsAccordionItemSelect`, and `mdsAccordionItemUnselect` are the designed surface.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-accordion id="faq">
-  <mds-accordion-item id="q1" label="Domanda 1">
+  <mds-accordion-item label="Domanda 1">
     <mds-text>Risposta 1.</mds-text>
   </mds-accordion-item>
 </mds-accordion>
 
 <script>
-  document.querySelector('#q1').addEventListener('click', () => {
-    console.log('clicked - unreliable from outside shadow DOM');
+  document.querySelector('#faq mds-accordion-item').addEventListener('click', () => {
+    console.log('clicked - also fires for clicks inside the body');
   });
 </script>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <script>
-  document.querySelector('#q1').addEventListener('mdsAccordionItemChange', (e) => {
+  document.querySelector('#faq mds-accordion-item').addEventListener('mdsAccordionItemChange', (e) => {
     console.log('stato:', e.detail.selected);
   });
 </script>
@@ -294,7 +290,7 @@ The header click is handled inside the shadow DOM; the native `click` event does
 The item already is a styled disclosure widget. Nesting a native `<details>` inside the slot creates redundant expand/collapse semantics, duplicates keyboard interactions, and produces conflicting visual states.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-accordion>
   <mds-accordion-item label="Configurazione">
     <details>
@@ -304,7 +300,7 @@ The item already is a styled disclosure widget. Nesting a native `<details>` ins
   </mds-accordion-item>
 </mds-accordion>
 
-<!-- ✅ CORRECT - put content directly in the slot -->
+<!-- CORRECT - put content directly in the slot -->
 <mds-accordion>
   <mds-accordion-item label="Configurazione">
     <mds-text typography="h6">Parametri avanzati</mds-text>
