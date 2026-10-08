@@ -21,7 +21,7 @@ The `<mds-avatar-stack-item>` web component is a compound child that represents 
 
 #### Properties & Visual Configurations
 
-The shared `tone` / `variant` ladders are defined in [`projects/stencil/SPEC.md`](../../../../SPEC.md#tone-and-variant-system); `tone` accepts only the minimal set (`weak` default, `strong`) and `variant` accepts the avatar color set.
+The shared `tone` / `variant` ladders are defined in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md); `tone` accepts only the minimal set (`weak` default, `strong`) and `variant` accepts the avatar color set.
 
 - **`src`**: Use for the primary case - a real user photo. When absent the avatar falls back to `initials`, and only when neither is provided do `tone` / `variant` define the placeholder appearance.
 - **`initials`**: Provide a short identifier when no image exists; prefer it over relying on color alone, since it both labels and visually separates users in a dense stack.
@@ -30,7 +30,7 @@ The shared `tone` / `variant` ladders are defined in [`projects/stencil/SPEC.md`
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-avatar-stack-item>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the compound-component rules documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-avatar-stack-item>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the compound-component rules documented in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md) and the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Stack with Initials
 
@@ -130,7 +130,7 @@ Style individual items through their documented `--mds-avatar-stack-item-*` CSS 
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-avatar-stack-item>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-avatar-stack-item>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Use Outside `mds-avatar-stack`
 

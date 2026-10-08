@@ -25,7 +25,7 @@ The `<mds-chip>` web component is the Magma Design System's compact element for 
 
 #### Properties & Visual Configurations
 
-The shared `variant` / `tone` ladders are defined in [`projects/stencil/SPEC.md`](../../../../SPEC.md#tone-and-variant-system); the chip defaults to `variant="primary"` and `tone="strong"`, and accepts only the minimal `'strong'` / `'weak'` tone set.
+The shared `variant` / `tone` ladders are defined in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md); the chip defaults to `variant="primary"` and `tone="strong"`, and accepts only the minimal `'strong'` / `'weak'` tone set.
 
 #### Other behavioral props
 
@@ -38,7 +38,7 @@ The shared `variant` / `tone` ladders are defined in [`projects/stencil/SPEC.md`
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-chip>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-chip>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) and the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Static Tag (Label Only)
 
@@ -196,7 +196,7 @@ Style the chip only through its documented `--mds-chip-*` CSS custom properties.
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-chip>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-chip>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Use a Clickable Chip Without `clickable` or `selectable`
 

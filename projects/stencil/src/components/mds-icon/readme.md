@@ -109,12 +109,12 @@ The `<mds-icon>` web component is the single glyph primitive of the Magma Design
 
 - **`name`** is the only configurable input and is overloaded: pass an icon filename slug to pull artwork from the shared library, a base64-encoded SVG `data:` URI for inline/dynamic artwork, or a full raw SVG string when the markup is generated at runtime.
 
-This component does not use the shared `variant` / `tone` / `size` ladders defined in [`projects/stencil/SPEC.md`](../../../../SPEC.md#tone-and-variant-system); color and dimensions are inherited from the host context via CSS (e.g. `currentColor` and font size), which is how parent components tint and scale their icons.
+This component does not use the shared `variant` / `tone` / `size` ladders defined in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md); color and dimensions are inherited from the host context via CSS (e.g. `currentColor` and font size), which is how parent components tint and scale their icons.
 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-icon>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the icon slug conventions documented in [`projects/stencil/SPEC.md`](../../../../SPEC.md) and the catalogue in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md).
+Correct and idiomatic ways to use the `<mds-icon>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the icon slug conventions documented in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md) and the catalogue in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md).
 
 #### Icon Slug from the Shared Library
 
@@ -244,7 +244,7 @@ mds-icon::part(svg) {
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-icon>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-icon>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Use `<img>` or Inline `<svg>` Instead of `<mds-icon>`
 

@@ -28,7 +28,7 @@ The `<mds-button>` web component is the primary interactive action control of th
 
 #### Component-specific variants and tones
 
-The shared `variant` / `tone` ladders are defined in [`projects/stencil/SPEC.md`](../../../../SPEC.md#tone-and-variant-system). `<mds-button>` adds:
+The shared `variant` / `tone` ladders are defined in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md). `<mds-button>` adds:
 
 - **`variant="google"` / `variant="apple"`**: brand-correct chrome for SSO entry points. Do not reuse them for non-SSO buttons.
 - **`tone="box"`**: high-contrast boxed container for chrome-like placements (e.g. dense toolbars where `strong` would dominate).
@@ -42,7 +42,7 @@ The shared `variant` / `tone` ladders are defined in [`projects/stencil/SPEC.md`
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-button>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-button>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) and the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Text Button via `label` Prop
 
@@ -179,7 +179,7 @@ Style the button only through its documented `--mds-button-*` CSS custom propert
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-button>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-button>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Put HTML in the Default Slot
 

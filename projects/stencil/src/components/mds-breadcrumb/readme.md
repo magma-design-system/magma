@@ -27,12 +27,12 @@ This component exposes a single behavioral prop:
 
 - **`hideBack`** removes the leading arrow control. Leave it off (the default) for multi-level trails where users benefit from a one-tap step backwards; set it for shallow or display-only breadcrumbs where reverse navigation adds no value.
 
-Visual styling (button colors, current-depth color, separator arrow color) is driven by the CSS custom properties documented in [`readme.md`](../readme.md), not by props. The shared `variant` / `tone` / `size` ladders defined in [`projects/stencil/SPEC.md`](../../../../SPEC.md#tone-and-variant-system) do not apply here; per-item labels and selection state live on the `<mds-breadcrumb-item>` children.
+Visual styling (button colors, current-depth color, separator arrow color) is driven by the CSS custom properties documented in [`readme.md`](../readme.md), not by props. The shared `variant` / `tone` / `size` ladders defined in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) do not apply here; per-item labels and selection state live on the `<mds-breadcrumb-item>` children.
 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-breadcrumb>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the compound-component rules documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-breadcrumb>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the compound-component rules documented in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md) and the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Navigation Trail
 
@@ -127,7 +127,7 @@ mds-breadcrumb-item[selected]::part(button) {
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-breadcrumb>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-breadcrumb>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Slot Raw HTML Inside `<mds-breadcrumb>`
 

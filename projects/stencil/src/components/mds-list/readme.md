@@ -21,12 +21,12 @@ The `<mds-list>` web component is the structural container of the Magma Design S
 
 #### Properties & Visual Configurations
 
-This component exposes no configurable props; it carries no `variant`, `tone`, or `size` of its own. All appearance and behavior are delegated to the slotted `<mds-list-item>` children. For the shared ladders that govern the children, see [`projects/stencil/SPEC.md`](../../../../SPEC.md#tone-and-variant-system).
+This component exposes no configurable props; it carries no `variant`, `tone`, or `size` of its own. All appearance and behavior are delegated to the slotted `<mds-list-item>` children. For the shared ladders that govern the children, see [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md).
 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-list>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the typography scale documented in [`projects/stencil/SPEC.md`](../../../../SPEC.md) and the generic stencil rules in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md).
+Correct and idiomatic ways to use the `<mds-list>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the typography scale documented in [`docs/agents/typography.md`](../../../../../../docs/agents/typography.md) and the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic List
 
@@ -125,7 +125,7 @@ Reach the icon or text nodes through the documented `::part(icon)` and `::part(t
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-list>` and `<mds-list-item>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-list>` and `<mds-list-item>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Replace `<mds-list>` with a Native `<ul>` or `<ol>`
 

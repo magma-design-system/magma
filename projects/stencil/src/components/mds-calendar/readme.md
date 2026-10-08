@@ -31,12 +31,12 @@ Dates are exchanged as ISO 8601 strings (`YYYY-MM-DD`). `startDate` and `endDate
 - Every boolean prop defaults to `false`: the feature is on until the bare attribute turns it off.
 - **`min`** / **`max`** define the selectable window; days outside it render disabled rather than being hidden.
 
-This component does not use the shared `variant` / `tone` ladders on its host - those are defined in [`projects/stencil/SPEC.md`](../../../../SPEC.md#tone-and-variant-system) and are applied internally to the navigation buttons it renders.
+This component does not use the shared `variant` / `tone` ladders on its host - those are defined in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) and are applied internally to the navigation buttons it renders.
 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-calendar>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-calendar>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) and the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Single-Day Picker
 
@@ -157,7 +157,7 @@ Adjust the calendar appearance only through the documented `--mds-calendar-*` CS
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-calendar>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-calendar>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Toggle Single Mode with a Quoted Boolean String
 

@@ -21,7 +21,7 @@ The `<mds-button-dropdown>` web component is a split-button control of the Magma
 
 #### Properties & Visual Configurations
 
-The shared `variant` / `tone` / `size` ladders are defined in [`projects/stencil/SPEC.md`](../../../../SPEC.md#tone-and-variant-system); they apply here exactly as in `<mds-button>` and are forwarded to both internal buttons. `variant` defaults to `'primary'`, `tone` defaults to `'strong'`, and `size` defaults to `'md'`.
+The shared `variant` / `tone` / `size` ladders are defined in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md); they apply here exactly as in `<mds-button>` and are forwarded to both internal buttons. `variant` defaults to `'primary'`, `tone` defaults to `'strong'`, and `size` defaults to `'md'`.
 
 - **`label`** sets the text of the primary action button only; the chevron trigger is icon-only.
 - **`type`** defaults to `'submit'`, so inside a `<form>` the primary button submits unless set to `'button'`; switching to `'a'` (or supplying `href`) turns the buttons into links, with `target` choosing `'self'` vs `'blank'`.
@@ -34,7 +34,7 @@ The shared `variant` / `tone` / `size` ladders are defined in [`projects/stencil
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-button-dropdown>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-button-dropdown>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) and the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Split Button with Menu Items
 
@@ -160,7 +160,7 @@ Style the component through its documented `--mds-button-dropdown-*` CSS custom 
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-button-dropdown>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-button-dropdown>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Put the Label in the Default Slot
 

@@ -27,12 +27,12 @@ The `<mds-horizontal-scroll>` web component is a horizontally scrolling containe
 - **`navigation`** chooses the scroll-progress affordance: `'position'` renders the translating dot indicator, `'scrollbar'` defers to the styled native browser scrollbar, and `'none'` shows neither.
 - **`snap`** sets the scroll-snap alignment of each item against the viewport - `'start'` (default) aligns items to the leading edge, `'center'` keeps them centred, `'end'` to the trailing edge, and `'none'` disables snapping for free scrolling.
 
-This component does not use the shared `variant` / `tone` ladders defined in [`projects/stencil/SPEC.md`](../../../../SPEC.md#tone-and-variant-system); appearance is tuned entirely through its CSS custom properties (see readme.md).
+This component does not use the shared `variant` / `tone` ladders defined in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md); appearance is tuned entirely through its CSS custom properties (see readme.md).
 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-horizontal-scroll>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the conventions in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-horizontal-scroll>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the conventions in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md) and the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Horizontal Scroll with Cards
 
@@ -182,7 +182,7 @@ mds-horizontal-scroll::part(content) {
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-horizontal-scroll>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-horizontal-scroll>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Set `controls` to a Boolean
 

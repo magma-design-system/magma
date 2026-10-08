@@ -19,12 +19,12 @@ The `<mds-button-group>` web component is a layout container of the Magma Design
 
 #### Properties & Visual Configurations
 
-This component has no configurable properties. Visual outcome is determined entirely by the slotted children - typically a set of `<mds-button>` elements sharing a common `variant` / `tone` (see the shared ladder in [`projects/stencil/SPEC.md`](../../../../SPEC.md#tone-and-variant-system)) so the group reads as a cohesive cluster of actions.
+This component has no configurable properties. Visual outcome is determined entirely by the slotted children - typically a set of `<mds-button>` elements sharing a common `variant` / `tone` (see the shared ladder in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md)) so the group reads as a cohesive cluster of actions.
 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-button-group>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-button-group>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) and the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Toolbar of Icon-Only Actions
 
@@ -110,7 +110,7 @@ Disable individual buttons with the `disabled` boolean attribute. Never use `dis
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-button-group>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-button-group>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Nest Raw `<button>` Elements Inside the Group
 

@@ -22,12 +22,12 @@ The `<mds-price-table-header>` web component is the layout child that forms the 
 
 #### Properties & Visual Configurations
 
-This component exposes no configurable props. It is a layout-only child: its sole job is to project its slotted children into an equal-column grid that matches the rest of the price table. Control the arrangement through CSS utility classes (grid column counts per breakpoint, column spans on the leading title) on the host and on the slotted elements, not through component attributes. See the shared compound-component and layout conventions in [`projects/stencil/SPEC.md`](../../../../SPEC.md#tone-and-variant-system).
+This component exposes no configurable props. It is a layout-only child: its sole job is to project its slotted children into an equal-column grid that matches the rest of the price table. Control the arrangement through CSS utility classes (grid column counts per breakpoint, column spans on the leading title) on the host and on the slotted elements, not through component attributes. See the shared compound-component and layout conventions in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-price-table-header>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the compound-component rules documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-price-table-header>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the compound-component rules documented in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md) and the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Standard Three-Plan Header
 
@@ -193,7 +193,7 @@ On narrow viewports, collapse the multi-column header into a single-column stack
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-price-table-header>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-price-table-header>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Use Outside `<mds-price-table>`
 

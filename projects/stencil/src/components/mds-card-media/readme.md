@@ -27,12 +27,12 @@ The `<mds-card-media>` web component is the media region of a [`<mds-card>`](../
 - **default slot**: the media surface. Place the actual visual asset here (an `mds-img`, video, or equivalent component). This layer fills the host.
 - **`content` slot**: an overlay layer (exposed as the `content` shadow part) positioned over the media, aligned to the bottom and horizontally centered, intended for captions, titles, or action controls that should appear in front of the media rather than beside it.
 
-The host paints a neutral background, so the media region keeps a defined surface even before its asset loads. For the shared variant/tone system that governs the parent card, see [`projects/stencil/SPEC.md`](../../../../SPEC.md#tone-and-variant-system).
+The host paints a neutral background, so the media region keeps a defined surface even before its asset loads. For the shared variant/tone system that governs the parent card, see [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md).
 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-card-media>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the compound-component rules in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-card-media>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the compound-component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md) and the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Media Region with `mds-img`
 
@@ -118,7 +118,7 @@ The `content` overlay div is exposed as the `content` shadow part. Use it for la
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-card-media>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-card-media>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Use `<mds-card-media>` Outside `<mds-card>`
 

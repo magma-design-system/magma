@@ -91,12 +91,12 @@ This component has no properties. All configuration is expressed through its two
 - **`avatar` slot**: the leading element, recommended to be an `mds-avatar`. Its presence is what toggles the two-column layout.
 - **default slot**: the trailing block holding the author's textual details, laid out so multiple lines stack cleanly and truncate within the available width.
 
-See [`projects/stencil/SPEC.md`](../../../../SPEC.md) for the shared compound-component conventions and [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) for the usage contract.
+See [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md) for the shared compound-component conventions and [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md) for the usage contract.
 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-author>` component, ordered from most common to most specialized. Patterns assume a working knowledge of compound-component conventions documented in [`projects/stencil/SPEC.md`](../../../../SPEC.md) and the component catalogue in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md).
+Correct and idiomatic ways to use the `<mds-author>` component, ordered from most common to most specialized. Patterns assume a working knowledge of compound-component conventions documented in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md) and the component catalogue in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md).
 
 #### Full Byline with Avatar
 
@@ -192,7 +192,7 @@ When the author represents an organization or system - rather than a person - pa
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-author>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-author>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Put Plain Text Directly in the Default Slot
 

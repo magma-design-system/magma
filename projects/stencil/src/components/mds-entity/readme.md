@@ -25,7 +25,7 @@ The `<mds-entity>` web component represents a person, organization, or resource 
 - **`src`** is the path to an entity image; **`icon`** is a Magma icon library slug used when no image is supplied; **`initials`** is the text fallback shown when neither image nor icon is set. Provide whichever best identifies the entity - they are mutually prioritised, not combined.
 - **`await`** marks the entity as loading and takes visual precedence over any avatar source.
 
-The shared `tone` / `variant` ladders are defined in [`projects/stencil/SPEC.md`](../../../../SPEC.md#tone-and-variant-system) and color the inner avatar. `tone` is limited to the minimal `'strong'` / `'weak'` pair, and `variant` accepts the avatar colour set; pick them to colour the avatar chip in line with the entity's category.
+The shared `tone` / `variant` ladders are defined in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) and color the inner avatar. `tone` is limited to the minimal `'strong'` / `'weak'` pair, and `variant` accepts the avatar colour set; pick them to colour the avatar chip in line with the entity's category.
 
 #### Slots
 
@@ -35,7 +35,7 @@ The shared `tone` / `variant` ladders are defined in [`projects/stencil/SPEC.md`
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-entity>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-entity>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) and the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Person Entity with Image
 
@@ -155,7 +155,7 @@ Style the entity only through its documented `--mds-entity-*` CSS custom propert
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-entity>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-entity>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Put the Name as a Plain Text String in the Default Slot
 

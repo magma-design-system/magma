@@ -22,7 +22,7 @@ The `<mds-usage>` web component is a documentation-oriented annotation block of 
 
 #### Properties & Visual Configurations
 
-`variant` is the primary configuration prop. Unlike most Magma components, this is NOT the shared variant/tone ladder defined in [`projects/stencil/SPEC.md`](../../../../SPEC.md#tone-and-variant-system); it is a component-specific guidance category:
+`variant` is the primary configuration prop. Unlike most Magma components, this is NOT the shared variant/tone ladder defined in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md); it is a component-specific guidance category:
 
 - **`variant="do"`**: marks recommended / allowed usage (success styling, insertion role).
 - **`variant="dont"`**: marks discouraged / disallowed usage (error styling, deletion role).
@@ -36,7 +36,7 @@ The `<mds-usage>` web component is a documentation-oriented annotation block of 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-usage>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the conventions documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-usage>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the conventions documented in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md) and the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Default Informational Note
 
@@ -146,7 +146,7 @@ Customize the container appearance through the three documented `--mds-usage-*` 
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-usage>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-usage>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Use `variant` as the Shared Tone/Variant Ladder
 

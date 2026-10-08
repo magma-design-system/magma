@@ -24,12 +24,12 @@ The `<mds-pref-contrast>` web component is a preference control that lets users 
 - **`mode`** - the active contrast preference. Leave it unset to let the component restore the last persisted choice or fall back to `system`; set it explicitly (`more`, `system`, `no-preference`) only when the host wants to force a contrast level. Pick `more` for high-contrast output, `no-preference` for the default theme, and `system` to defer to the OS `prefers-contrast` setting.
 - **`size`** - sizes the nested tab items (`sm` / `md`). In practice this is propagated automatically by the parent `<mds-pref>`, which fans its own `size` down to every `mds-pref-*` child, so it rarely needs to be set directly on this component.
 
-The component does not use the shared `variant` / `tone` ladders documented in [`projects/stencil/SPEC.md`](../../../../SPEC.md#tone-and-variant-system); its visual states are driven entirely by the resolved `mode`.
+The component does not use the shared `variant` / `tone` ladders documented in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md); its visual states are driven entirely by the resolved `mode`.
 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-pref-contrast>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-pref-contrast>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) and the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Inside the Full Preferences Panel
 
@@ -106,7 +106,7 @@ Leave `mode` unset. On every render the component reads `localStorage` for the k
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-pref-contrast>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-pref-contrast>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Use Outside Its Parent `<mds-pref>`
 

@@ -140,47 +140,10 @@ Two facts agents must keep in mind before touching these files:
 
 ## Tone and variant system
 
-Many components accept both `variant` and `tone` props. These are independent axes:
-
-- `variant` controls the **color role**: `primary`, `secondary`, `error`, `success`, `warning`, `info`, `ai`, `dark`, `light`
-- `tone` controls the **visual intensity**: `strong` (filled), `weak` (tinted), `outline` (bordered), `text` (no background)
-
-#### Variants
-
-| Variant name | Semantic meaning | Description                                                        |
-| ------------ | ---------------- | ------------------------------------------------------------------ |
-| `primary`    | Theme            | Should be used for most important actions, or messages             |
-| `secondary`  | Theme            | Supporting actions or messages that complement the primary variant |
-| `error`      | Status           | Communicates failures, destructive actions, or validation issues   |
-| `success`    | Status           | Communicates successful operations or positive confirmation        |
-| `warning`    | Status           | Communicates caution or non-blocking issues that require attention |
-| `info`       | Status           | Communicates neutral informational content or guidance             |
-| `ai`         | Service          | Identifies AI-generated content or AI-powered features             |
-| `dark`       | Neutral          | Dark neutral coloring, typically for use over light backgrounds    |
-| `light`      | Neutral          | Light neutral coloring, typically for use over dark backgrounds    |
-| `amaranth`   | Label            | Decorative amaranth label for tags, categories, or visual grouping |
-| `red`        | Label            | Decorative red label for tags, categories, or visual grouping      |
-| `aqua`       | Label            | Decorative aqua label for tags, categories, or visual grouping     |
-| `blue`       | Label            | Decorative blue label for tags, categories, or visual grouping     |
-| `green`      | Label            | Decorative green label for tags, categories, or visual grouping    |
-| `lime`       | Label            | Decorative lime label for tags, categories, or visual grouping     |
-| `orange`     | Label            | Decorative orange label for tags, categories, or visual grouping   |
-| `orchid`     | Label            | Decorative orchid label for tags, categories, or visual grouping   |
-| `purple`     | Label            | Decorative purple label for tags, categories, or visual grouping   |
-| `sky`        | Label            | Decorative sky label for tags, categories, or visual grouping      |
-| `violet`     | Label            | Decorative violet label for tags, categories, or visual grouping   |
-| `yellow`     | Label            | Decorative yellow label for tags, categories, or visual grouping   |
-
-#### Tones
-
-| Tone name | Description | Additional note                                                       |
-| --------- | ----------- | --------------------------------------------------------------------- |
-| `strong`  | Theme       | Should be used for most important actions, or messages                |
-| `weak`    | Theme       | Subtle background tint for supporting context or medium emphasis      |
-| `outline` | Theme       | Bordered without background fill for medium-low emphasis              |
-| `text`    | Theme       | Borderless and background-less for lowest emphasis or in-text actions |
-
-> ⚠️ Magma 2.0 breaking rename: `ghost` → `outline`, `quiet` → `text`
+The `variant` (color role) and `tone` (visual intensity) axes, their values and how to
+check what one component accepts are documented once, for consumers and contributors,
+in [`docs/agents/variants.md`](../../docs/agents/variants.md) (shipped as
+`agents/variants.md`). Their typed dictionaries live in `src/type/`.
 
 ## Disabled state
 

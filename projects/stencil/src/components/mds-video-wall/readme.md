@@ -36,7 +36,7 @@ This component does not use the shared `variant` / `tone` ladders; its props map
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-video-wall>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md) and the catalogue in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md).
+Correct and idiomatic ways to use the `<mds-video-wall>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md) and the catalogue in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md).
 
 #### Minimal Ambient Background
 
@@ -131,7 +131,7 @@ Style the noise overlay and video fit only through the documented `--mds-video-w
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-video-wall>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-video-wall>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Use `autoplay="false"` or `loop="false"` to Disable Boolean Props
 

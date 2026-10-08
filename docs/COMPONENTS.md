@@ -253,114 +253,23 @@ Subparts (e.g. `mds-table-cell`, `mds-card-header`) always compose inside their 
 | ----------- | --------------- | ----------------------------------------------------------------- |
 | `mds-usage` | -               | Internal Storybook helper that renders a component-usage example. |
 
-## Cross-cutting conventions
+## Rules for using the components
 
-These apply across every component. Apply them once; do not re-derive them per component.
+The rules that apply across every component are written once, for consumers and
+contributors alike, in [`docs/agents/`](./agents/) - the same files ship inside the
+packages as `agents/*.md`:
 
-### `variant` - semantic role
+| Topic | File |
+| ----- | ---- |
+| Naming, boolean props, sizing, events, slots, compound components, icons, accessibility, styling from outside | [`agents/conventions.md`](./agents/conventions.md) |
+| `variant` (color role) and `tone` (visual weight), and what one component accepts | [`agents/variants.md`](./agents/variants.md) |
+| System-level anti-patterns | [`agents/anti-patterns.md`](./agents/anti-patterns.md) |
+| Dark mode, preferences, global design decisions, corner geometry | [`agents/theming.md`](./agents/theming.md) |
+| Color tokens and utilities | [`agents/color.md`](./agents/color.md) |
+| Typography utilities | [`agents/typography.md`](./agents/typography.md) |
 
-`variant` answers _what kind of action/state this is_. Allowed values depend on the component but draw from these families:
-
-| Family    | Values                                       | Use for                                                    |
-| --------- | -------------------------------------------- | ---------------------------------------------------------- |
-| Brand     | `primary`, `secondary`, `ai`                 | Calls to action, supporting actions, AI-driven affordances |
-| Luminance | `dark`, `light`                              | Neutral chrome buttons / chips                             |
-| Status    | `info`, `success`, `warning`, `error`        | Communicating state                                        |
-| Identity  | `google`, `apple`, etc. (component-specific) | Login / SSO buttons                                        |
-
-Pick the variant that matches the **meaning**, not the colour you happen to want.
-
-### `tone` - visual weight
-
-`tone` answers _how much emphasis this should have_, independent of `variant`. Standard ladder, supported by most interactive components:
-
-| Tone      | Weight              | Visual                                          |
-| --------- | ------------------- | ----------------------------------------------- |
-| `strong`  | Highest emphasis    | Solid filled background                         |
-| `weak`    | Medium emphasis     | Subtle tinted background                        |
-| `outline` | Medium-low emphasis | Border only, no fill                            |
-| `text`    | Lowest emphasis     | No border, no background - just the label       |
-| `box`     | Boxed container     | High-contrast container style (where supported) |
-
-The same `variant` + different `tone` is the right way to express importance - do not invent custom CSS to dim or saturate.
-
-### Per-component prop availability
-
-The values a specific component accepts for `tone`, `variant`, `size`, etc. are **narrower** than the universal ladders above. For example, `mds-button` accepts `tone="outline"` but `mds-banner` does not. The single source of truth is [`projects/stencil/src/components.d.ts`](../projects/stencil/src/components.d.ts), which Stencil regenerates on build from each component's `@Prop()` JSDoc - **never hand-edit it**.
-
-To verify a prop value before using it:
-
-1. Grep `interface Mds<Name>` in [`projects/stencil/src/components.d.ts`](../projects/stencil/src/components.d.ts).
-2. Note the prop's typed name (e.g. `tone?: ToneMinimalBoxVariantType`).
-3. Resolve the typed name against the dictionaries below (defined in [`projects/stencil/src/type/`](../projects/stencil/src/type/)).
-
-The five `tone` dictionaries (from [`projects/stencil/src/type/tone.ts`](../projects/stencil/src/type/tone.ts)):
-
-| Type                        | Allowed `tone` values                      | Example component |
-| --------------------------- | ------------------------------------------ | ----------------- |
-| `ToneMinimalVariantType`    | `strong`, `weak`                           | `mds-chip`       |
-| `ToneMinimalBoxVariantType` | `strong`, `weak`, `box`                    | `mds-banner`      |
-| `ToneSmartVariantType`      | `strong`, `weak`, `outline`                | `mds-badge` |
-| `ToneVariantType`           | `outline`, `strong`, `text`, `weak`        | `mds-radial-menu` |
-| `ToneBoxVariantType`        | `outline`, `strong`, `text`, `weak`, `box` | `mds-button`      |
-
-`variant`, `size`, and other constrained props follow the same pattern - look for the matching dictionary in [`projects/stencil/src/type/`](../projects/stencil/src/type/) (e.g. `ThemeVariantType`, `ThemeFullVariantType`, `ChipVariantType`, `ProgressBarSizeType`).
-
-### `label` prop vs. default slot
-
-When a component accepts both a `label` prop and a default slot, **prefer the prop**. Slots are for cases where the prop is insufficient and the component explicitly documents accepted slotted content. Never put nested HTML in a default slot expecting it to render - most Magma components strip non-text nodes.
-
-### Named slots
-
-When a component documents a named slot (`<mds-notification slot="notification">`), use that exact slot name on the child element. Do not invent slot names.
-
-### CSS customization
-
-Style components only through their documented `--mds-<component>-<prop>` CSS custom properties. Set those vars on the host element or on a parent selector:
-
-```css
-.featured-card mds-button {
-  --mds-button-background: rgb(var(--variant-primary-03));
-  --mds-button-radius: var(--radius-lg);
-}
-```
-
-For colour values inside CSS vars, use the Magma token wrapper `rgb(var(--<token>))` - see [`docs/TOKENS.md`](./TOKENS.md).
-
-### Event naming
-
-Magma events are prefixed with `mds` and use camelCase (e.g. `mdsInputSelectChange`). Listen for the documented event name; do not synthesize your own.
-
-### Sizing
-
-Components that expose `size` accept `sm`, `md` (default), `lg`, `xl`. Do not override size via inline `width`/`height` - use the prop.
-
-## Accessibility, theming, and preferences
-
-The component layer already handles these - **do not re-implement them in app code**:
-
-- **Dark mode** - flips at the palette level via `<html class="pref-mode-*">`. Components read tokens, not literal colours, so they invert automatically. See [`docs/TOKENS.md`](./TOKENS.md#dark-mode).
-- **High contrast / reduced motion / low consumption** - `pref-contrast-*`, `pref-animation-*`, `pref-consumption-*` classes on `<html>` cascade through.
-- **Focus styles** - apply `focus-bounce` (interactive elements) or `focus-zoom` (links / static elements). Do not write `:focus { outline: … }`.
-- **ARIA on icon-only controls** - components that accept `icon` without a label require `aria-label` (or `title`) on the host element. The component does not synthesize one.
-- **Form association** - interactive components that own a value are `formAssociated`. Place them inside `<form>` and they submit / reset natively.
-- **Disabled state** - set the `disabled` prop on the component, not on a wrapper. Disabled components are removed from the tab order automatically.
-
-## System-level anti-patterns
-
-These apply to **every** component. Per-component `3. Antipattern.md` files address component-specific mistakes; the ones below are universal.
-
-- ❌ Replacing a Magma component with a raw HTML element (`<button>`, `<input>`, `<a>` for an action) when an `mds-*` equivalent exists.
-- ❌ Wrapping an interactive `mds-*` component in another interactive element (`<a><mds-button></mds-button></a>` - use the `href` prop instead).
-- ❌ Reaching into shadow DOM via `::part()`, `>>>`, `/deep/`, or attribute-selector hacks. Use documented CSS custom properties.
-- ❌ Setting boolean attributes to the string `"false"` (e.g. `disabled="false"`, `await="false"`). In HTML/Stencil any non-empty string is truthy - **remove the attribute** to turn it off.
-- ❌ Embedding nested HTML in a default slot when the component documents a `label` prop.
-- ❌ Using raw Tailwind colour utilities (`bg-white`, `text-gray-700`) on or inside Magma components - use Magma token classes (`bg-tone-neutral`, `text-tone-neutral-03`).
-- ❌ Writing `@media (prefers-color-scheme: dark)` overrides - dark mode is handled by the palette layer.
-- ❌ Hand-rolling focus styles instead of `focus-bounce` / `focus-zoom`.
-- ❌ Listening for native DOM events (`change`, `input`) when the component emits a documented `mds*` event - they may not bubble out of shadow DOM the way you expect.
-- ❌ Applying a `tone`, `variant`, or `size` value to a component without checking its typed signature in [`projects/stencil/src/components.d.ts`](../projects/stencil/src/components.d.ts). The same prop name accepts different value sets per component - e.g. `<mds-banner tone="outline">` is invalid because `mds-banner.tone` is `ToneMinimalBoxVariantType` (`strong | weak | box` only).
-- ❌ Hand-editing a component's `readme.md` or `components.d.ts` - both are regenerated on build.
+Contributor-only anti-pattern, on top of those: never hand-edit a component's
+`readme.md` or `components.d.ts` - both are regenerated on build.
 
 ## Authoring new `usage/` docs
 
@@ -372,7 +281,7 @@ When creating `usage/` files for a component that doesn't yet have them:
 4. **Cap each file's length.** `1. Description.md` ≈ 20-40 lines, `2. Pattern.md` ≤ 12 recipes, `3. Antipattern.md` ≤ 8 entries. Longer means you're describing implementation rather than usage.
 5. **Use real, runnable code blocks.** No pseudo-code. Use prop names exactly as they appear in `readme.md`.
 6. **Do not duplicate `readme.md`.** Don't restate the prop type table; explain _combinations_ and _intent_.
-7. **Validate against this guide's anti-patterns.** If a pattern you wrote violates a system-level anti-pattern, fix the pattern.
+7. **Validate against the system-level anti-patterns** in [`agents/anti-patterns.md`](./agents/anti-patterns.md). If a pattern you wrote violates one, fix the pattern.
 
 ## Where to look next
 
@@ -380,7 +289,8 @@ When creating `usage/` files for a component that doesn't yet have them:
 | ------------------------------------------------------- | --------------------------------------------------------------------------------- |
 | Props / events / slots / CSS vars for a known component | `projects/stencil/src/components/<name>/readme.md`                                |
 | Exact TS-typed prop signatures for every component      | [`projects/stencil/src/components.d.ts`](../projects/stencil/src/components.d.ts) |
-| Tone / variant / size dictionary definitions            | [`projects/stencil/src/type/`](../projects/stencil/src/type/)                     |
+| Tone / variant / size dictionary definitions            | [`projects/stencil/src/type/`](../projects/stencil/src/type/), explained in [`agents/variants.md`](./agents/variants.md) |
+| Rules shared by every component                         | [`docs/agents/`](./agents/) - see "Rules for using the components" above        |
 | Intent and idioms for a known component                 | `projects/stencil/src/components/<name>/usage/*.md`                               |
 | Colour tokens, theming, dark mode                       | [`docs/TOKENS.md`](./TOKENS.md)                                                   |
 | Tailwind utilities, focus utilities, layer order        | [`projects/styles/SPEC.md`](../projects/styles/SPEC.md)                           |

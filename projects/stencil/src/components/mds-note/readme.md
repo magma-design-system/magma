@@ -28,12 +28,12 @@ The `<mds-note>` web component is the annotation surface of the Magma Design Sys
 
 #### Component-specific variants and tones
 
-`<mds-note>` does **not** use the shared `tone` / `variant` ladders from [`projects/stencil/SPEC.md`](../../../../SPEC.md#tone-and-variant-system). Instead, its `variant` prop selects a flat **color palette** for the note paper (the `ThemeLabelVariantType` set, e.g. `'yellow'`, `'blue'`, `'green'`, `'red'`), defaulting to `'yellow'`. Choose the color to convey the note's category or urgency, not a hierarchy of emphasis.
+`<mds-note>` does **not** use the shared `tone` / `variant` ladders from [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md). Instead, its `variant` prop selects a flat **color palette** for the note paper (the `ThemeLabelVariantType` set, e.g. `'yellow'`, `'blue'`, `'green'`, `'red'`), defaulting to `'yellow'`. Choose the color to convey the note's category or urgency, not a hierarchy of emphasis.
 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-note>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the label-color variants documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-note>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the label-color variants documented in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) and the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Plain Note with Body Text
 
@@ -136,7 +136,7 @@ Place several notes in a layout container; each note is independent and carries 
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-note>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-note>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Remove the Note Directly - Listen for `mdsNoteDelete`
 

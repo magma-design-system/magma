@@ -21,7 +21,7 @@ The `<mds-radial-menu>` web component is a floating action menu of the Magma Des
 
 #### Properties & Visual Configurations
 
-The internal trigger consumes the shared `variant` / `tone` / `size` ladders defined in [`projects/stencil/SPEC.md`](../../../../SPEC.md#tone-and-variant-system); they default to `'dark'` / `'strong'` / `'lg'` here.
+The internal trigger consumes the shared `variant` / `tone` / `size` ladders defined in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md); they default to `'dark'` / `'strong'` / `'lg'` here.
 
 #### Other behavioral props
 
@@ -34,7 +34,7 @@ The internal trigger consumes the shared `variant` / `tone` / `size` ladders def
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-radial-menu>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-radial-menu>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) and the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 `<mds-radial-menu>` is a compound component: it always needs one or more [`mds-radial-menu-item`](../../mds-radial-menu-item) children placed in the `item` slot.
 
@@ -180,7 +180,7 @@ Style the component through its documented `--mds-radial-menu-*` CSS custom prop
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-radial-menu>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-radial-menu>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Omit the `slot="item"` Attribute
 

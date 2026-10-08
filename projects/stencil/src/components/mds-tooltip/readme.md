@@ -46,7 +46,7 @@ The `<mds-tooltip>` web component is the floating contextual hint of the Magma D
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-tooltip>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md) and the component catalogue in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md).
+Correct and idiomatic ways to use the `<mds-tooltip>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md) and the component catalogue in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md).
 
 #### Basic Tooltip on a Button
 
@@ -169,7 +169,7 @@ Style the tooltip only through its documented `--mds-tooltip-*` CSS custom prope
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-tooltip>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-tooltip>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Use a Bare ID String as `target`
 

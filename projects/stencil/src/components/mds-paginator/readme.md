@@ -27,12 +27,12 @@ The `<mds-paginator>` web component is the page-navigation control of the Magma 
 - **`pages`** is the total number of pages the control should represent and drives how many items are rendered; with `0` only the arrows appear.
 - **`currentPage`** marks which item is selected and which arrows are disabled; set it to control the paginator from outside, or read it back after a `mdsPaginatorChange` to follow user navigation.
 
-This component does not use the shared `variant` / `tone` ladders defined in [`projects/stencil/SPEC.md`](../../../../SPEC.md#tone-and-variant-system); its appearance is tuned only through the CSS custom properties documented in `readme.md`.
+This component does not use the shared `variant` / `tone` ladders defined in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md); its appearance is tuned only through the CSS custom properties documented in `readme.md`.
 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-paginator>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the conventions documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-paginator>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the conventions documented in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md) and the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Paginator
 
@@ -128,7 +128,7 @@ The child `mds-paginator-item` component exposes its own `--mds-paginator-item-*
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-paginator>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-paginator>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Slot `mds-paginator-item` Manually
 

@@ -29,7 +29,7 @@ The `<mds-accordion-item>` web component is a single collapsible panel of the Ma
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-accordion-item>` component, ordered from most common to most specialized. Patterns assume a working knowledge of compound component rules documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-accordion-item>` component, ordered from most common to most specialized. Patterns assume a working knowledge of compound component rules documented in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md) and the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Accordion
 
@@ -181,7 +181,7 @@ mds-accordion {
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-accordion-item>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-accordion-item>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Use `mds-accordion-item` Outside `mds-accordion`
 

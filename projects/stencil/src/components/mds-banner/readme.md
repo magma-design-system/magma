@@ -23,7 +23,7 @@ The `<mds-banner>` web component is the Magma Design System surface for contextu
 
 #### Properties & Visual Configurations
 
-This component uses the shared `variant` / `tone` ladders defined in [`projects/stencil/SPEC.md`](../../../../SPEC.md#tone-and-variant-system); pick the `variant` according to the message's semantic weight, since it also governs the ARIA behavior described above. `tone` is limited to the minimal-box set (`'weak'`, `'strong'`, `'box'`), defaulting to `'weak'`.
+This component uses the shared `variant` / `tone` ladders defined in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md); pick the `variant` according to the message's semantic weight, since it also governs the ARIA behavior described above. `tone` is limited to the minimal-box set (`'weak'`, `'strong'`, `'box'`), defaulting to `'weak'`.
 
 #### Other behavioral props
 
@@ -35,7 +35,7 @@ This component uses the shared `variant` / `tone` ladders defined in [`projects/
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-banner>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-banner>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) and the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Informational Banner
 
@@ -206,7 +206,7 @@ Override appearance only through the documented `--mds-banner-*` custom properti
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-banner>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-banner>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Use an Invalid `tone` Value
 

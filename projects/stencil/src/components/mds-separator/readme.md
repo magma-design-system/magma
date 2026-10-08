@@ -23,12 +23,12 @@ The `<mds-separator>` web component is the visual divider of the Magma Design Sy
 
 The component defines no configurable props. The only intended customization point is the CSS custom property **`--mds-separator-background`** (default `rgb(var(--tone-neutral-08))`) that overrides the divider color while preserving its theme- and contrast-aware fallbacks.
 
-For the shared color foundations the default value draws from, see the tone ladder in [`projects/stencil/SPEC.md`](../../../../SPEC.md#tone-and-variant-system). The broader `usage/` documentation contract is defined in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md).
+For the shared color foundations the default value draws from, see the tone ladder in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md).
 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-separator>` component, ordered from most common to most specialized. Patterns assume familiarity with the conventions in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-separator>` component, ordered from most common to most specialized. Patterns assume familiarity with the conventions in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md) and the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Dividing Items in a List or Card
 
@@ -103,7 +103,7 @@ Override the divider color through the single documented CSS custom property `--
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-separator>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-separator>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Use a Raw `<hr>` Instead of `<mds-separator>`
 

@@ -21,7 +21,7 @@ The `<mds-badge>` web component is the Magma Design System's compact status and 
 
 #### Properties & Visual Configurations
 
-The shared `variant` / `tone` ladders are defined in [`projects/stencil/SPEC.md`](../../../../SPEC.md#tone-and-variant-system); `<mds-badge>` consumes them directly and does not add any component-specific values. The default appearance is `variant="green"` with `tone="weak"`.
+The shared `variant` / `tone` ladders are defined in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md); `<mds-badge>` consumes them directly and does not add any component-specific values. The default appearance is `variant="green"` with `tone="weak"`.
 
 - **`tone`** selects the chrome treatment: `'weak'` for a subtle tinted fill (the default, best for dense lists and tables), `'strong'` for a saturated high-emphasis fill, and `'outline'` for a bordered, transparent-fill badge that reads as the lightest emphasis.
 
@@ -32,7 +32,7 @@ The shared `variant` / `tone` ladders are defined in [`projects/stencil/SPEC.md`
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-badge>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-badge>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) and the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Badge via `label` Prop
 
@@ -157,7 +157,7 @@ For `tone="outline"`, also set the border properties. The outline badge is alway
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-badge>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-badge>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Put HTML in the Default Slot
 

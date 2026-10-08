@@ -22,12 +22,12 @@ The `<mds-price-table-features-row>` web component is a layout child of [`<mds-p
 
 #### Properties & Visual Configurations
 
-This component has no configurable props. Its only responsibility is layout: it groups one or more `<mds-price-table-features-cell>` elements into a single row and guarantees they share the available horizontal space equally. Visual appearance (background, text color, and their hover variants) is tuned through the CSS custom properties documented in `readme.md` (`--mds-price-table-features-row-background`, `--mds-price-table-features-row-color`, and their `-hover` counterparts). For the shared design-system conventions on compound components, refer to [`projects/stencil/SPEC.md`](../../../../SPEC.md#tone-and-variant-system).
+This component has no configurable props. Its only responsibility is layout: it groups one or more `<mds-price-table-features-cell>` elements into a single row and guarantees they share the available horizontal space equally. Visual appearance (background, text color, and their hover variants) is tuned through the CSS custom properties documented in `readme.md` (`--mds-price-table-features-row-background`, `--mds-price-table-features-row-color`, and their `-hover` counterparts). For the shared design-system conventions on compound components, refer to [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md).
 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-price-table-features-row>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the compound-component rules documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-price-table-features-row>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the compound-component rules documented in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md) and the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Standard Feature Row with Supported / Unsupported Cells
 
@@ -147,7 +147,7 @@ Override the row's background and text colors for resting and hover states throu
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-price-table-features-row>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-price-table-features-row>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Use the Row Outside Its Parent
 

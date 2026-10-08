@@ -29,12 +29,12 @@ The `<mds-input-range>` web component is the Magma Design System slider control 
 - **`value`** is the committed numeric selection, kept clamped and snapped - set it programmatically to move the thumb.
 - **`formatValue`** is a function `(value: number) => string` for presentation only: use it to render the header value as currency, a percentage, or a unit-suffixed label without changing the underlying numeric `value`.
 
-This component does not use the shared `variant` / `tone` ladders ([`projects/stencil/SPEC.md`](../../../../SPEC.md#tone-and-variant-system)); appearance is tuned through the documented CSS custom properties (thumb and track colors and sizes) listed in `readme.md`.
+This component does not use the shared `variant` / `tone` ladders ([`docs/agents/variants.md`](../../../../../../docs/agents/variants.md)); appearance is tuned through the documented CSS custom properties (thumb and track colors and sizes) listed in `readme.md`.
 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-input-range>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md) and the catalogue in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md).
+Correct and idiomatic ways to use the `<mds-input-range>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md) and the catalogue in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md).
 
 #### Basic Slider with a Label
 
@@ -139,7 +139,7 @@ Override the documented `--mds-input-range-*` custom properties on the host or a
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-input-range>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-input-range>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Use a Raw `<input type="range">` Instead of the Component
 

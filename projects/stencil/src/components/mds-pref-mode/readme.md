@@ -30,7 +30,7 @@ The `<mds-pref-mode>` web component is the mode preference control of the Magma 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-pref-mode>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared preference system documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-pref-mode>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared preference system documented in [`docs/agents/theming.md`](../../../../../../docs/agents/theming.md) and the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Default Usage Inside `mds-pref`
 
@@ -122,7 +122,7 @@ mds-pref-mode {
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-pref-mode>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-pref-mode>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Use `<mds-pref-mode>` Outside `<mds-pref>`
 

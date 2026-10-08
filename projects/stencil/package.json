@@ -50,7 +50,13 @@
     "./components": {
       "types": "./dist/components/index.d.ts",
       "import": "./dist/components/index.js"
-    }
+    },
+    "./AGENTS.md": "./AGENTS.md",
+    "./agents/*": "./agents/*",
+    "./dist/documentation.json": "./dist/documentation.json",
+    "./dist/collection/components/*.md": "./dist/collection/components/*.md",
+    "./dist/collection/components/*/documentation.json": "./dist/collection/components/*/documentation.json",
+    "./package.json": "./package.json"
   },
   "sideEffects": [
     "**/*.css"
@@ -62,7 +68,8 @@
     "agents/"
   ],
   "scripts": {
-    "build": "npm run clean && npm run build.icons && npm run sync.agent-docs && stencil build --prerender --docs-readme --docs-json dist/documentation.json && npm run patch.custom-elements",
+    "build": "npm run clean && npm run build.icons && npm run sync.agent-docs && stencil build --prerender --docs-readme --docs-json dist/documentation.json && npm run patch.custom-elements && npm run build.component-docs",
+    "build.component-docs": "tsx --tsconfig script.tsconfig.json ./scripts/component-docs.ts",
     "build.docs": "stencil docs",
     "build.icons": "iconsauce --verbose --config ./.storybook/iconsauce.config.mjs --output-dictionary ./src/fixtures/icons.json --output-svg ./assets/svg --output-dump-dictionary ./src/fixtures/icons-dictionary.json && npm run sort.icons-dictionary",
     "build.no-cache": "stencil build --no-cache",
@@ -74,7 +81,6 @@
     "clean": "tsx --tsconfig script.tsconfig.json ./scripts/clean.ts",
     "dev": "npm run clean && npm run build.icons && stencil build -c stencil.dev.config.ts --docs-readme --watch",
     "generate": "stencil generate",
-    "generate.spec": "tsx --tsconfig script.tsconfig.json ./scripts/generate-spec.ts",
     "generate.usage": "tsx --tsconfig script.tsconfig.json ./scripts/generate-usage.ts",
     "lint": "npm run lint.ts && npm run lint.css",
     "lint:fix": "npm run lint.css --fix && npm run lint.ts --fix",
@@ -88,9 +94,10 @@
     "storybook.start": "npm run storybook.clear-cache && npm run build.icons && storybook dev -p 6006 & npm run build.watch",
     "storybook.watch-no-cache": "npm run storybook.clear-cache && npm run build.watch-no-cache & storybook dev -p 6006",
     "sync.agent-docs": "tsx --tsconfig script.tsconfig.json ./scripts/sync-agent-docs.ts",
-    "test": "vitest run --project spec --project browser",
+    "test": "vitest run --project spec --project scripts --project browser",
     "test.e2e": "vitest run --project browser",
     "test.spec": "vitest run --project spec",
+    "test.scripts": "vitest run --project scripts",
     "test-storybook": "vitest --project=storybook",
     "test.watch": "stencil-test --watch --project spec --project browser",
     "update:fouc": "tsx --tsconfig script.tsconfig.json ./scripts/update-fouc.ts",

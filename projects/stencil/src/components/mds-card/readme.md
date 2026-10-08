@@ -22,7 +22,7 @@ The `<mds-card>` web component is the surface container of the Magma Design Syst
 
 #### Properties & Visual Configurations
 
-`<mds-card>` does not use the shared `variant` / `tone` ladders defined in [`projects/stencil/SPEC.md`](../../../../SPEC.md#tone-and-variant-system); it exposes a single behavioral prop.
+`<mds-card>` does not use the shared `variant` / `tone` ladders defined in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md); it exposes a single behavioral prop.
 
 - **`disableAutoGrid`** (default `false`) toggles the intrinsic responsive grid. Leave it off to let the card own the placement and reflow of its regions; set it to opt out of the managed grid and lay the slotted content out yourself.
 
@@ -31,7 +31,7 @@ Spacing is tuned through the `--mds-card-gap` and `--mds-card-padding` CSS custo
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-card>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the compound-component rules documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-card>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the compound-component rules documented in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md) and the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Full Card with All Four Regions
 
@@ -186,7 +186,7 @@ The inner grid element is exposed as `::part(layout)`. Use it only for layout-le
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-card>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-card>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Put Content Outside the Four Named Slots
 

@@ -28,12 +28,12 @@ The `<mds-policy-ai>` web component is the Magma Design System disclosure marker
 - **`headline`** sets the short title used by the `chip`, `icon`, and `banner` surfaces; **`description`** sets the longer disclaimer body shown across the variants that expose it.
 - **`href`** points to the AI policy page and defaults to the Maggioli EU AI-regulation article; override it to target a tenant-specific policy.
 
-The internal surfaces are fixed to `variant="ai"` / `tone="weak"` of their underlying Magma components and are not configurable from this component; the shared variant/tone ladder is documented in [`projects/stencil/SPEC.md`](../../../../SPEC.md#tone-and-variant-system).
+The internal surfaces are fixed to `variant="ai"` / `tone="weak"` of their underlying Magma components and are not configurable from this component; the shared variant/tone ladder is documented in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md).
 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-policy-ai>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the component catalogue documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-policy-ai>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the component catalogue documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Default Chip - Inline Disclosure Next to Generated Text
 
@@ -130,7 +130,7 @@ mds-policy-ai::part(banner) {
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-policy-ai>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-policy-ai>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Slot Custom Content Into the Component
 

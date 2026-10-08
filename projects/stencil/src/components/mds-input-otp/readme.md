@@ -29,7 +29,7 @@ The `<mds-input-otp>` web component is the Magma Design System control for enter
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-input-otp>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md) and the component catalogue in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md).
+Correct and idiomatic ways to use the `<mds-input-otp>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md) and the component catalogue in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md).
 
 #### Default Six-Digit Code
 
@@ -139,7 +139,7 @@ The host is an `inline-flex` container. Use a utility class to center it inside 
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-input-otp>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-input-otp>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Set `autosubmit="false"` to Disable Auto-Submit
 

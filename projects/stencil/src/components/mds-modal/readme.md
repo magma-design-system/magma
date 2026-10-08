@@ -38,7 +38,7 @@ This component does not use the shared `variant` / `tone` ladders; its configura
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-modal>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the overlay conventions documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-modal>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the overlay conventions documented in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md) and the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Modal with Inline Content
 
@@ -255,7 +255,7 @@ Style the window surface only through the documented `--mds-modal-*` CSS custom 
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-modal>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-modal>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Set `opened="false"` to Close the Modal
 

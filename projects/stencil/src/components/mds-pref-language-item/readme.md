@@ -23,12 +23,12 @@ The `<mds-pref-language-item>` web component represents a single selectable lang
 
 The only meaningful prop is `code`: the BCP 47 / RFC 5646 language tag (such as `it`, `en`, `es`) that both keys the label lookup and is the payload emitted on selection. The set of accepted codes is defined by the bundled dictionary in `meta/locale.json`.
 
-`selected` is a state flag managed by the parent rather than a configuration choice. Sizing and styling are fixed by the parent's layout, so this item exposes no `variant` / `tone` of its own; the shared ladders in [`projects/stencil/SPEC.md`](../../../../SPEC.md#tone-and-variant-system) are applied internally and are not configurable from the host.
+`selected` is a state flag managed by the parent rather than a configuration choice. Sizing and styling are fixed by the parent's layout, so this item exposes no `variant` / `tone` of its own; the shared ladders in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) are applied internally and are not configurable from the host.
 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-pref-language-item>` component, ordered from most common to most specialized. Patterns assume a working knowledge of compound-component rules documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-pref-language-item>` component, ordered from most common to most specialized. Patterns assume a working knowledge of compound-component rules documented in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md) and the generic stencil rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Language List Inside the Parent
 
@@ -108,7 +108,7 @@ Add as many items as needed - the parent wraps them in a scrollable dropdown. Ea
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-pref-language-item>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-pref-language-item>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Use the Item Outside Its Parent
 
