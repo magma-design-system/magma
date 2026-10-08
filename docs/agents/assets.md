@@ -37,14 +37,17 @@ in your global CSS entry point, or specificity conflicts and dark mode will brea
 /* Fonts - see section 2 */
 @import '@fontsource/karla/400.css' layer(vendor);
 @import '@fontsource/karla/700.css' layer(vendor);
+@import '@fontsource/merriweather/300.css' layer(vendor);
 @import '@fontsource/merriweather/400.css' layer(vendor);
 @import '@fontsource/merriweather/700.css' layer(vendor);
 @import '@fontsource/roboto/500.css' layer(vendor);
 @import '@fontsource/roboto/700.css' layer(vendor);
+@import '@fontsource/roboto/900.css' layer(vendor);
 @import '@fontsource/roboto-mono/400.css' layer(vendor);
 
 /* Magma styles */
 @import '@maggioli-design-system/styles/dist/css/colors-rgb.css' layer(theme);
+@import '@maggioli-design-system/styles/dist/css/typography.css' layer(theme);
 @import '@maggioli-design-system/styles/dist/css/reset.css' layer(reset);
 @import '@maggioli-design-system/styles/dist/css/hydrated.css' layer(base);
 @import '@maggioli-design-system/styles/dist/css/transitions.css' layer(base);
@@ -63,6 +66,7 @@ What each file provides:
 | File | Purpose |
 | ---- | ------- |
 | `colors-rgb.css` | RGB color tokens (`--tone-*`, `--status-*`, ...). Required by components and Tailwind. Also redefines tokens for dark / high-contrast |
+| `typography.css` | The non-color tokens as CSS vars: fonts, type sizes, spacing, radius, shadows (`--shadow-md-sharp`, ...). Components carry their own fallbacks; your CSS needs this file for `var(--shadow-*)`, `var(--radius-*)` and the `--magma-radius-*` corner scale |
 | `reset.css` | Opinionated CSS reset |
 | `hydrated.css` | Anti-FOUC for Stencil - hides components until hydrated |
 | `transitions.css`, `animations.css` | Shared motion |
@@ -76,27 +80,28 @@ used with opacity modifiers and bypass dark mode. Use `colors-rgb.css`.
 
 ### Tailwind (optional)
 
-If the consumer uses Tailwind, extend Magma's preset:
-
-```javascript
-// tailwind.config.js
-module.exports = {
-  content: ['./src/**/*.{ts,tsx,html}'],
-  presets: [require('@maggioli-design-system/styles')],
-};
-```
-
-The semantic color utilities (`bg-surface-raised`, `text-fg-muted`, ..., see
-[`color.md`](color.md)) are not in the preset: they come from Magma's Tailwind 4 theme,
-imported in your Tailwind entry point:
+With Tailwind 4, import Magma's Tailwind layer in your Tailwind entry point (the
+`./tailwind.css` of the block above), after Tailwind's own theme and utilities. Leave out
+`@import 'tailwindcss'`: its preflight would duplicate Magma's reset.
 
 ```css
-/* tailwind.css, after Tailwind's own imports */
+/* tailwind.css */
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/utilities.css' layer(utilities);
 @import '@maggioli-design-system/styles/dist/tailwind/theme.css';
+@import '@maggioli-design-system/styles/dist/tailwind/typography.css';
+@import '@maggioli-design-system/styles/dist/tailwind/utilities.css';
 ```
 
-Tailwind 3 layers are also published under
-`@maggioli-design-system/styles/dist/tailwind3/`.
+`theme.css` brings the palette, the typography tokens and the semantic color utilities
+(`bg-surface-raised`, `text-fg-muted`, ..., see [`color.md`](color.md)), `typography.css`
+the `text-title-*` / `text-info-*` / `text-read-*` / `text-code-*` utilities,
+`utilities.css` the `focus-bounce` / `focus-zoom` helpers.
+
+Do not use the JS preset (`presets: [require('@maggioli-design-system/styles')]`) with
+Tailwind 4: it is the Tailwind 3 path (with the layers in
+`@maggioli-design-system/styles/dist/tailwind3/`), its colours are Tailwind 3 colour
+functions, and Tailwind 4 generates none of the Magma utilities from it.
 
 ## 2. Fonts
 
@@ -109,9 +114,10 @@ via [`@fontsource`](https://fontsource.org/):
 npm i @fontsource/karla @fontsource/merriweather @fontsource/roboto @fontsource/roboto-mono
 ```
 
-The `@import` lines are already in the section 1 block (under `layer(vendor)`). The
-weights listed (Karla 400/700, Merriweather 400/700, Roboto 500/700, Roboto Mono 400)
-are the minimum used by the type scale; add more weights as needed.
+The `@import` lines are already in the section 1 block (under `layer(vendor)`). They
+are the weights the type scale uses: Roboto 500/700/900 (actions, h6, h1-h5), Karla
+400/700, Merriweather 300/400 (reading paragraph and detail, caption) plus 700 for bold in
+reading text, Roboto Mono 400. Add more weights as needed.
 
 Self-hosting via `@fontsource` is preferred over a CDN `<link>` so the fonts respect
 the `vendor` cascade layer and ship offline.

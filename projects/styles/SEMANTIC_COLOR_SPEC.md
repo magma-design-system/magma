@@ -498,9 +498,10 @@ working.
 
 ## 8. Theming axes
 
-Three independent axes, all driven by classes/attributes on `<html>` (cross-browser; no
-`@container style()`, which is below the browserslist floor and crashes WebKit with shadow
-DOM). Same mechanism as the existing preference system.
+Three independent color-related axes, all driven by classes/attributes on `<html>`
+(cross-browser; no `@container style()`, which is below the browserslist floor and crashes
+WebKit with shadow DOM). Same mechanism as the existing preference system. The fourth axis,
+corner geometry (`data-corner-shape`), carries no colour and is documented in `SPEC.md`.
 
 - `data-theme-name` (attribute): a named theme OVERRIDES the semantic layer. The active
   tint is ONE indirection block, `--magma-tint-*`, defaulting to the `neutral` family and
@@ -583,9 +584,9 @@ DOM). Same mechanism as the existing preference system.
   (NOT a `true|false` style query). Does not change the surface colors; only the shadow
   treatment on top.
 
-The draft `projects/styles/draft/theme.css` (`--tint-base-lv*`) is superseded by this
-spec: `lv1/lv2/lv3` -> the role names in 6.1, sourced from `--surface-*` (not the clamped
-tone steps).
+The former draft `draft/theme.css` (`--tint-base-lv*`, since removed) was superseded by
+this spec: `lv1/lv2/lv3` -> the role names in 6.1, sourced from `--surface-*` (not the
+clamped tone steps).
 
 ## 9. Accessibility - verification and de-emphasis
 

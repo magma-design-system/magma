@@ -85,6 +85,9 @@ named theme retints all of it at once.
 
 `--magma-on-backdrop` (in `globals.css`) is the ink on the modal scrim, fixed in both modes.
 
+How the five surfaces stack, their values in light and dark, why a raised element needs a
+shadow in light, and how themes and high contrast move them: [`theming.md`](theming.md#surfaces-and-elevation).
+
 ### Accent: actions and selection
 
 Two accents with the same nine roles: `accent` (the brand action colour) and `accent-ai`
@@ -137,8 +140,9 @@ measured.
   text.
 - **Elevation is a role.** Page `surface-default`, card
   `surface-raised`, floating layer `surface-overlay`, well `surface-sunken`: choose by
-  what the element is, not by the shade you want. A grey that has to look marked in both
-  modes (a pill, a chip, a hover) is a wash, not a surface.
+  what the element is, not by the shade you want, and give `raised` / `overlay` a shadow
+  ([`theming.md`](theming.md#surfaces-and-elevation)). A grey that has to look marked in
+  both modes (a pill, a chip, a hover) is a wash, not a surface.
 - **No `dark:` variants and no dark-mode media queries.** The roles already flip.
 
 ## When a raw palette colour is right
@@ -152,8 +156,8 @@ Only when the colour encodes data rather than an interface role:
   knockout; not a page or card background.
 
 Never use `--magma-tint-*`: it is the internal pointer a named theme repoints, not a role.
-The other tone families (`tone-porcelain`, `tone-bisque`, ...) are theme families: switch
-them on with `data-theme-name` ([`theming.md`](theming.md)), do not paint them by hand.
+`tone-porcelain` and `tone-bisque` back the named themes `cool` and `warm`: switch them on
+with `data-theme-name` ([`theming.md`](theming.md)), do not paint them by hand.
 `variant-*` has no role of its own: the accents are `accent` and `accent-ai`.
 
 Deprecated: `--magma-neutral-emphasis` / `--magma-neutral-on-emphasis` are aliases of

@@ -17,14 +17,17 @@ Consumer applications must import styles in this exact cascade layer order to av
 /* Fonts */
 @import '@fontsource/karla/400.css' layer(vendor);
 @import '@fontsource/karla/700.css' layer(vendor);
+@import '@fontsource/merriweather/300.css' layer(vendor);
 @import '@fontsource/merriweather/400.css' layer(vendor);
 @import '@fontsource/merriweather/700.css' layer(vendor);
 @import '@fontsource/roboto/500.css' layer(vendor);
 @import '@fontsource/roboto/700.css' layer(vendor);
+@import '@fontsource/roboto/900.css' layer(vendor);
 @import '@fontsource/roboto-mono/400.css' layer(vendor);
 
 /* Magma styles */
 @import '@maggioli-design-system/styles/dist/css/colors-rgb.css' layer(theme);
+@import '@maggioli-design-system/styles/dist/css/typography.css' layer(theme);
 @import '@maggioli-design-system/styles/dist/css/reset.css' layer(reset);
 @import '@maggioli-design-system/styles/dist/css/hydrated.css' layer(base);
 @import '@maggioli-design-system/styles/dist/css/transitions.css' layer(base);
@@ -39,17 +42,30 @@ Consumer applications must import styles in this exact cascade layer order to av
 @import './tailwind.css';
 ```
 
+The font weights are the ones the type scale uses (Karla 400/700, Merriweather 300/400,
+Roboto 500/700/900, Roboto Mono 400); Merriweather 700 covers bold inside reading text.
+
 ## Tailwind 4 configuration
 
-Magma uses Tailwind 4 with a CSS-first config. To extend in a consumer project:
+Magma's Tailwind 4 layer is CSS-first: the theme (palette, typography tokens and the
+semantic bridge), the typography utilities and the focus/utility helpers are three CSS
+files. Import them in the Tailwind entry point, after Tailwind's own theme and utilities
+(not `@import 'tailwindcss'`, whose preflight would duplicate Magma's reset):
 
-```javascript
-// tailwind.config.js
-module.exports = {
-  content: ['./src/**/*.{ts,tsx,html}'],
-  presets: [require('@maggioli-design-system/styles')],
-};
+```css
+/* tailwind.css */
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/utilities.css' layer(utilities);
+@import '@maggioli-design-system/styles/dist/tailwind/theme.css';
+@import '@maggioli-design-system/styles/dist/tailwind/typography.css';
+@import '@maggioli-design-system/styles/dist/tailwind/utilities.css';
 ```
+
+The JS preset (`presets: [require('@maggioli-design-system/styles')]`, the package
+`main`) is the Tailwind 3 path, together with the layers in `dist/tailwind3/`. It does not
+work in Tailwind 4: its colours are Tailwind 3 colour functions, and Tailwind 4 reads a
+JS config only through `@config`. Compiled with Tailwind 4.3 it generates none of the
+Magma utilities, where the imports above generate all of them.
 
 ## Color
 
@@ -111,6 +127,11 @@ retint with a named theme; the status hues never do. `--magma-neutral-emphasis` 
 `--magma-on-inverse`. `--magma-tint-*` is the layer's internal repoint block, never
 consumed.
 
+How the five surfaces stack (page, sunken and muted below it, raised and overlay above),
+their light and dark values, the shadow a raised element needs in light, and how named
+themes and `pref-contrast-more` move them: `docs/agents/theming.md`, section "Surfaces and
+elevation" (the consumer guide; the rationale is `SEMANTIC_COLOR_SPEC.md` 6.1 and 10).
+
 Interaction states: on the neutral scaffolding a state is DERIVED (an elevation step, a
 wash level, or `color-mix` on the base role). A solid fill is the exception: the ramp
 inverts between light and dark, so its states are named roles
@@ -123,7 +144,7 @@ They are right only for a colour that encodes data rather than a role (`label-*`
 of Magma 1 no longer exists (it is `-seed`). Outside Tailwind use the same `rgb()`
 wrapper: `rgb(var(--label-sky-04) / 0.15)`.
 
-## Theming axes (`css/theme.css`)
+## Theming axes
 
 Four independent axes on `<html>`, on top of the semantic layer:
 
@@ -135,13 +156,14 @@ Four independent axes on `<html>`, on top of the semantic layer:
   `bisque` for warm) and every surface, border and text role follows; it can repoint
   the accents too (`--magma-tint-accent-*`). Shipped examples: `cool`, `warm`,
   generated into `dist/css/themes.css` from the `themes` map of `semantic.config.ts`.
-- **`--depth`** (number 0..1) - shadow/elevation intensity, multiplied into every
-  term of `--mds-elevation-{raised,overlay}` via `calc()`. `--depth: 0` is
-  perfectly flat, `1` is full. Set it directly, or use `data-theme-depth="flat"`.
-  It is a scalar, NOT a `true|false` style query, so it is cross-browser and
-  inherits across shadow boundaries.
-- **`data-corner-shape`** - corner geometry: the shape AND the radius scale tuned
-  for it, moved together. See Corner geometry below.
+- **`--depth`** (number 0..1, `dist/css/theme.css`) - shadow/elevation intensity,
+  multiplied into every term of `--mds-elevation-{raised,overlay}` via `calc()`.
+  `--depth: 0` is perfectly flat, `1` is full. Set it directly, or use
+  `data-theme-depth="flat"`. It is a scalar, NOT a `true|false` style query, so it is
+  cross-browser and inherits across shadow boundaries. No component reads
+  `--mds-elevation-*` today, so the axis only affects the shadows you compose with them.
+- **`data-corner-shape`** (appended to `dist/css/globals.css`) - corner geometry: the
+  shape AND the radius scale tuned for it, moved together. See Corner geometry below.
 
 ```html
 <html class="pref-mode-dark" data-theme-name="cool" data-theme-depth="flat" data-corner-shape="round">
@@ -195,19 +217,22 @@ Consumers rarely write the attribute by hand: `mds-pref-theme` carries a
 `corner-shape` prop that writes it, persists the choice and emits `mdsPrefChange`,
 next to the theme name and scheme it already owns. Its `default` value REMOVES
 the attribute rather than writing today's shape, so a project that never chose
-keeps following the design system when the default changes.
+keeps following the design system when the default changes. The axis ships two
+shapes, `round` and `squircle`: the prop also accepts the other `corner-shape`
+keywords (`bevel`, `notch`, `scoop`, `square`), which have no block yet and leave the
+default in place.
 
 `--magma-corner-shape` on its own remains a documented escape hatch, with one
 caveat: it changes the shape and NOT the scale.
 
 ## Typography utilities
 
-Typography utilities are semantic and map directly to Magma's type scale. Use these instead of composing `font-*` and `text-*` primitives manually.
+Typography utilities are semantic and map directly to Magma's type scale. Use these instead of composing `font-*` and `text-*` primitives manually. In Tailwind they are the `text-*` utilities of `dist/tailwind/typography.css`; in plain CSS the same scale is a class per style in `dist/css/utility-typography.css`, named `typography-*` (`typography-title-h1`, `typography-info-detail`, ...).
 
 | Utility                           | Family        | Use case                              |
 | --------------------------------- | ------------- | ------------------------------------- |
-| `text-title-h1` … `text-title-h6` | Karla (title) | Page and section headings             |
-| `text-title-action`               | Karla (title) | Buttons, labels, interactive elements |
+| `text-title-h1` ... `text-title-h6` | Roboto (title) | Page and section headings (900; h6 700) |
+| `text-title-action`               | Roboto (title) | Buttons, labels, interactive elements (500) |
 | `text-info-paragraph`             | Karla         | Body copy, UI paragraphs              |
 | `text-info-detail`                | Karla         | Default UI text, form fields          |
 | `text-info-caption`               | Karla         | Secondary information, timestamps     |
@@ -248,6 +273,11 @@ Dark mode is handled at the palette level. No class changes are needed on indivi
 </html>
 ```
 
+Tailwind's `dark:` variant is NOT tied to these classes: Magma publishes no
+`@custom-variant dark`, so `dark:` follows `prefers-color-scheme` only and ignores
+`pref-mode-dark` / `pref-mode-light`. Color with the semantic roles, which flip on their
+own and need no `dark:`.
+
 ### How preferences are applied
 
 Every preference (`mode`, `theme`, `contrast`, `animation`, `consumption`) is driven by the `mds-pref` controller and its children (`mds-pref-mode`, `mds-pref-theme`, `mds-pref-contrast`, ...). Each child writes its state to the `<html>` element in two redundant forms, on purpose, so future changes stay cheap:
@@ -285,10 +315,10 @@ The visible effect is produced **globally, at the palette level**: the published
   <!-- follows OS -->
 </html>
 <html class="pref-animation-no-preference">
-  <!-- always reduced animation -->
+  <!-- always full motion -->
 </html>
 <html class="pref-animation-reduce">
-  <!-- always no animation -->
+  <!-- always reduced motion: transitions stop, loaders keep turning slowly -->
 </html>
 <html class="pref-consumption-low">
   <!-- always low consumption -->
@@ -301,7 +331,9 @@ The visible effect is produced **globally, at the palette level**: the published
 </html>
 ```
 
-For programmatic control, use the `mds-pref-mode` component.
+For programmatic control, use the `mds-pref-*` components: `mds-pref-mode`,
+`mds-pref-contrast`, `mds-pref-animation`, `mds-pref-consumption`, under an `mds-pref`
+controller.
 
 ## Global design decisions (`--magma-*` vars)
 
@@ -314,6 +346,9 @@ These CSS custom properties on `:root` control system-wide visual behaviour. Ove
 | `--magma-backdrop-opacity` | `0.1`                                        | Opacity of modal backdrops      |
 | `--magma-on-backdrop`      | `252 252 252`                                | Ink drawn on the backdrop / overlay scrim (the modal close icon); fixed in both modes because the scrim is. Override it together with `--magma-backdrop-color` |
 | `--magma-outline-focus`    | `2px solid var(--magma-outline-focus-color)` | Focus ring style                |
+| `--magma-backdrop-color` / `--magma-backdrop-blur` | `0 0 0` / `4px` | Scrim colour (channel triplet) and blur behind modals and drawers |
+| `--magma-selection-background` / `--magma-selection-color` | `rgb(var(--label-sky-09))` / `rgb(var(--label-sky-01))` | Text selection |
+| `--magma-<layer>-z-index`  | header `1000`, notification `2000`, modal `3000`, backdrop `4000`, dropdown `5000`, tooltip `6000`, theme-overlay `7000`, context-menu `8000` | The stacking scale of the floating layers; slot your own layers between them |
 
 Example override:
 

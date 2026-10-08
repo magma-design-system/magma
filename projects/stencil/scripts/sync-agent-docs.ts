@@ -164,7 +164,7 @@ Once installed, do not guess component APIs or rules - read only the file you ne
 | Mistakes to avoid with any component | [\`agents/anti-patterns.md\`](agents/anti-patterns.md) |
 | Coloring your own UI | [\`agents/color.md\`](agents/color.md) |
 | Typography utilities | [\`agents/typography.md\`](agents/typography.md) |
-| Dark mode, preferences, global design decisions, corner geometry | [\`agents/theming.md\`](agents/theming.md) |
+| Dark mode, preferences, named themes, surface levels and elevation, global design decisions, corner geometry | [\`agents/theming.md\`](agents/theming.md) |
 
 Tooling that needs structured data reads \`documentation.json\`: one per component beside
 its \`AGENTS.md\`, or \`@maggioli-design-system/magma/dist/documentation.json\` for all of them

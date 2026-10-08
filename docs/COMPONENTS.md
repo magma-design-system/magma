@@ -264,7 +264,7 @@ packages as `agents/*.md`:
 | Naming, boolean props, sizing, events, slots, compound components, icons, accessibility, styling from outside | [`agents/conventions.md`](./agents/conventions.md) |
 | `variant` (color role) and `tone` (visual weight), and what one component accepts | [`agents/variants.md`](./agents/variants.md) |
 | System-level anti-patterns | [`agents/anti-patterns.md`](./agents/anti-patterns.md) |
-| Dark mode, preferences, global design decisions, corner geometry | [`agents/theming.md`](./agents/theming.md) |
+| Dark mode, preferences, named themes, surface levels and elevation, global design decisions, corner geometry | [`agents/theming.md`](./agents/theming.md) |
 | Color tokens and utilities | [`agents/color.md`](./agents/color.md) |
 | Typography utilities | [`agents/typography.md`](./agents/typography.md) |
 
