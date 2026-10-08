@@ -5,9 +5,10 @@
  * lives in the design-tokens package (the lower of the two) so both consumers
  * import it DOWNWARD, with no dependency cycle between the packages:
  *  - the styles generator (`../styles/scripts/semantic.ts`) turns it into
- *    `css/semantic.css` (the layer) and `tailwind/semantic.css` (the Tailwind
- *    bridge), both GENERATED and NOT tracked - the layer is defined once here,
- *    in relation, instead of being hand-maintained as CSS;
+ *    `build/css/semantic.css` (the layer), `build/css/themes.css` (the named
+ *    themes) and `build/tailwind/semantic.css` (the Tailwind bridge), all
+ *    GENERATED and NOT tracked (shipped from styles `dist/`) - the layer is
+ *    defined once here, in relation, instead of being hand-maintained as CSS;
  *  - the design-tokens contrast gate (`scripts/check-contrast.ts`) verifies the
  *    resulting semantic pairs against their APCA targets.
  * The values themselves are design-tokens primitives (`--surface-*`, `--text-*`,

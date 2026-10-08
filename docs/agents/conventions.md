@@ -117,15 +117,16 @@ pierce the shadow DOM.
 mds-button { --mds-button-radius: 999px; }
 
 .featured-card mds-button {
-  --mds-button-background: rgb(var(--variant-primary-03));
+  --mds-button-background: rgb(var(--magma-accent-emphasis));
   --mds-button-radius: var(--radius-lg);
 }
 
 /* deep customisation, use sparingly */
-mds-button::part(icon) { fill: rgb(var(--variant-primary-03)); }
+mds-button::part(icon) { fill: rgb(var(--magma-accent-fg)); }
 
 /* incorrect - do not target internal nodes */
 mds-button >>> .internal { color: red; }
 ```
 
-For colour values inside CSS vars see [`color.md`](color.md).
+For colour values inside CSS vars name a semantic role, never a palette step: see
+[`color.md`](color.md).

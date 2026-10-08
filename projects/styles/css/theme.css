@@ -1,7 +1,7 @@
 /*
   Theming axes (issue #574, B2) - layered on top of the semantic layer
-  (css/semantic.css). Three INDEPENDENT axes, all driven by attributes/classes
-  on <html> (cross-browser; no @container style(), which is below the
+  (build/css/semantic.css, generated). Three INDEPENDENT axes, all driven by
+  attributes/classes on <html> (cross-browser; no @container style(), which is below the
   browserslist floor and crashes WebKit with shadow DOM):
 
     1. mode (light|dark|system)  -> the existing global --tone-* flip; the

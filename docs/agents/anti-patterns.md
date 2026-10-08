@@ -16,7 +16,8 @@
   attribute** to turn it off.
 - Embedding nested HTML in a default slot when the component documents a `label` prop.
 - Using raw Tailwind colour utilities (`bg-white`, `text-gray-700`) on or inside Magma
-  components - use Magma token classes (`bg-tone-neutral`, `text-tone-neutral-03`).
+  components - use the semantic role classes (`bg-surface-default`, `text-fg-muted`),
+  see [`color.md`](color.md).
 - Writing `@media (prefers-color-scheme: dark)` overrides - dark mode is handled by the
   palette layer.
 - Hand-rolling focus styles instead of `focus-bounce` / `focus-zoom`.

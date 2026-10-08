@@ -47,6 +47,8 @@ The layer order is thinked to be used with tailwindcss, so the first layer is th
 @import '@maggioli-design-system/styles/dist/css/reset.css' layer(reset);
 @import '@maggioli-design-system/styles/dist/css/globals.css' layer(theme);
 @import '@maggioli-design-system/styles/dist/css/colors-rgb.css' layer(theme);
+@import '@maggioli-design-system/styles/dist/css/semantic.css' layer(theme);
+@import '@maggioli-design-system/styles/dist/css/themes.css' layer(theme);
 @import '@maggioli-design-system/styles/dist/css/hydrated.css' layer(base);
 @import '@maggioli-design-system/styles/dist/css/animations.css' layer(base);
 @import '@maggioli-design-system/styles/dist/css/base.css' layer(base);
@@ -55,8 +57,6 @@ The layer order is thinked to be used with tailwindcss, so the first layer is th
 @layer overrides {
   body {
     @apply
-    bg-tone-neutral-seed
-    text-tone-neutral-03
       transition-colors
       duration-300
       ease-in-out;
@@ -68,11 +68,34 @@ The layer order is thinked to be used with tailwindcss, so the first layer is th
 }
 ```
 
-### Imports
+`base.css` already paints the `body` with the semantic roles (`--magma-surface-default`
+and `--magma-text-default`), which is why `semantic.css` is required.
 
-```ts
+### Semantic colors
 
+Color your UI with the semantic roles, not with raw palette steps: a role follows the
+mode, the named theme (`data-theme-name`) and the high-contrast preference, a palette
+step only follows the mode.
+
+```html
+<section class="bg-surface-raised text-fg-default border border-border-muted">
+  <p class="text-fg-muted">Secondary text</p>
+</section>
 ```
+
+```css
+.panel {
+  background: rgb(var(--magma-surface-raised));
+  color: rgb(var(--magma-text-default));
+}
+```
+
+The values come from `dist/css/semantic.css`, the Tailwind utilities from
+`dist/tailwind/theme.css`. The roles, their pairing rules and the Magma 1 -> 2 map are
+in the color guide shipped with the components package
+(`@maggioli-design-system/magma/agents/color.md`).
+
+### Palette
 
 #### Colors with tailwind or web components
 
@@ -87,11 +110,12 @@ import '@maggioli-design-system/styles/dist/css/colors-rgb-brand.css';
 
 You need to import colors because web components and our tailwind config works with our palette, which are custom properties in rgb format (rr, gg, bb).
 
-If for some reason you need to use colors outside tailwind:
+A raw palette step is right only for a colour that encodes data rather than an
+interface role (a `label-*` category, a `brand-*` identity). Outside tailwind:
 
 ```css
 .selector {
-  color: rgb(var(--tone-neutral-01));
+  color: rgb(var(--label-sky-04));
 }
 ```
 
@@ -258,6 +282,8 @@ The `dist` folder contains the following files:
 | --------- | ----------- | ----------- |
 | `css` | both | `globals.css` |
 | `css` | both | `reset.css` |
+| `css` | both | `semantic.css` (the semantic color roles) |
+| `css` | both | `themes.css` (the named themes) |
 | `css` | editors only, never import | `tokens.editor.css` |
 | `css` | plain css | `base.css` |
 | `css` | plain css | `colors-hex-*.css` |
@@ -265,6 +291,8 @@ The `dist` folder contains the following files:
 | `css` | plain css | `typography.css` |
 | `css` | tailwind or web components | `colors-rgb-*.css` |
 | `tailwind` | tailwind | `base.css` |
+| `tailwind` | tailwind | `theme.css` (palette, typography and semantic color utilities) |
+| `tailwind` | tailwind | `semantic.css` (the semantic color bridge, imported by `theme.css`) |
 | `tailwind` | tailwind components | `components.css` |
 
 [mds]: https://magma.maggiolicloud.it/

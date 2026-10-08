@@ -8,8 +8,8 @@ identity. The per-target tracks ([`web-components.md`](web-components.md),
 [`react.md`](react.md), [`angular.md`](angular.md)) link here instead of repeating
 this. If something about styles/fonts/icons setup is unclear, this file wins.
 
-For the deeper styles reference (Tailwind config, color classes, typography
-utilities, dark mode, `--magma-*` global vars) see
+For coloring your own UI see [`color.md`](color.md). For the deeper styles reference
+(Tailwind config, typography utilities, dark mode, `--magma-*` global vars) see
 [`../../projects/styles/SPEC.md`](../../projects/styles/SPEC.md). This file is the
 minimum to get a consumer running.
 
@@ -50,6 +50,8 @@ in your global CSS entry point, or specificity conflicts and dark mode will brea
 @import '@maggioli-design-system/styles/dist/css/transitions.css' layer(base);
 @import '@maggioli-design-system/styles/dist/css/animations.css' layer(base);
 @import '@maggioli-design-system/styles/dist/css/globals.css' layer(theme);
+@import '@maggioli-design-system/styles/dist/css/semantic.css' layer(theme);
+@import '@maggioli-design-system/styles/dist/css/themes.css' layer(theme);
 @import '@maggioli-design-system/styles/dist/css/base.css' layer(base);
 
 /* your Tailwind entry point, if any */
@@ -65,6 +67,8 @@ What each file provides:
 | `hydrated.css` | Anti-FOUC for Stencil - hides components until hydrated |
 | `transitions.css`, `animations.css` | Shared motion |
 | `globals.css` | Global `--magma-*` design decisions |
+| `semantic.css` | The semantic color roles (`--magma-surface-*`, `--magma-text-*`, ..., see [`color.md`](color.md)). Required: without it the page `body` has no colour, the Tailwind role utilities paint nothing, and components lose named themes and high contrast |
+| `themes.css` | The named themes (`data-theme-name`): retint the semantic roles. Import it after `semantic.css` |
 | `base.css` | Base element styles (sets `--font-info` body font, etc.) |
 
 DO NOT import `colors-hex-*.css` when using components or Tailwind - they cannot be
@@ -80,6 +84,15 @@ module.exports = {
   content: ['./src/**/*.{ts,tsx,html}'],
   presets: [require('@maggioli-design-system/styles')],
 };
+```
+
+The semantic color utilities (`bg-surface-raised`, `text-fg-muted`, ..., see
+[`color.md`](color.md)) are not in the preset: they come from Magma's Tailwind 4 theme,
+imported in your Tailwind entry point:
+
+```css
+/* tailwind.css, after Tailwind's own imports */
+@import '@maggioli-design-system/styles/dist/tailwind/theme.css';
 ```
 
 Tailwind 3 layers are also published under
