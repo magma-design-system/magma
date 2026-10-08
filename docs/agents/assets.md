@@ -8,10 +8,10 @@ identity. The per-target tracks ([`web-components.md`](web-components.md),
 [`react.md`](react.md), [`angular.md`](angular.md)) link here instead of repeating
 this. If something about styles/fonts/icons setup is unclear, this file wins.
 
-For coloring your own UI see [`color.md`](color.md). For the deeper styles reference
-(Tailwind config, typography utilities, dark mode, `--magma-*` global vars) see
-[`../../projects/styles/SPEC.md`](../../projects/styles/SPEC.md). This file is the
-minimum to get a consumer running.
+This file is the minimum to get a consumer running. Once it runs: coloring your own UI
+in [`color.md`](color.md), the typography utilities in [`typography.md`](typography.md),
+dark mode, preferences, named themes, the `--magma-*` global decisions and the corner
+geometry in [`theming.md`](theming.md).
 
 ## 1. Styles
 
@@ -124,10 +124,11 @@ the `vendor` cascade layer and ship offline.
 
 ## 3. Icons
 
-Icons are managed by **iconsauce** and consumed at runtime by `mds-icon`, which
-fetches each icon as an SVG file from a path the host app configures. See the icons
-section in [`../../projects/stencil/SPEC.md`](../../projects/stencil/SPEC.md) for how
-slugs resolve; this section is only the consumer-side wiring.
+Icons are consumed at runtime by `mds-icon`, which fetches each icon as an SVG file from
+a path the host app configures. A slug starts with its icon set (`mi/` Material Icons,
+`mdi/` Material Design Icons, `mgg/` Maggioli) and resolves to
+`<mdsIconSvgPath><slug>.svg`: with the path `/svg/`, `mi/baseline/email` is fetched from
+`/svg/mi/baseline/email.svg`.
 
 ### Package and asset copy
 
@@ -159,8 +160,8 @@ Alternatives (after `defineCustomElements()` has run), documented in
 Reference an icon by slug, never inline SVG and never import from an icon-set package:
 
 ```html
-<mds-icon name="action-email-send"></mds-icon>
-<mds-button icon="action-email-send">Send</mds-button>
+<mds-icon name="mi/baseline/email"></mds-icon>
+<mds-button icon="mi/baseline/send">Send</mds-button>
 ```
 
 The mgg-icons webfont (`@maggioli-design-system/icons`) is an alternative output and

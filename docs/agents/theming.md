@@ -17,9 +17,11 @@ literal colours, so they invert automatically. Activate on `<html>`:
 ```
 
 Same pattern for `pref-contrast-*`, `pref-animation-*` and `pref-consumption-*` (high
-contrast, reduced motion, low consumption): the classes on `<html>` cascade through. For
-programmatic control use the `mds-pref-mode` component. Never write `color-scheme` or
-dark-mode media queries by hand.
+contrast, reduced motion, low consumption): the classes on `<html>` cascade through. To
+let the user choose, each preference has its component - `mds-pref-mode`,
+`mds-pref-contrast`, `mds-pref-animation`, `mds-pref-consumption`, `mds-pref-theme`,
+`mds-pref-language` - and `mds-pref` groups them in one panel; they write the classes and
+remember the choice. Never write `color-scheme` or dark-mode media queries by hand.
 
 ## Named themes
 
@@ -127,3 +129,7 @@ by itself changes the shape WITHOUT the scale.
 <html data-corner-shape="round">
 <section data-corner-shape="squircle">...</section>
 ```
+
+In your own CSS take radii from the `--magma-radius-*` scale (`none`, `3xs` ... `5xl`,
+`full`), which follows the axis: `border-radius: var(--magma-radius-lg)`. A raw
+`--radius-*` token or a pixel value stays the same under every shape.

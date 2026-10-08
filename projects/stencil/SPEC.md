@@ -2,23 +2,28 @@
 
 ## Purpose
 
-Defines general rules, conventions and composition patterns that apply to all Magma web components. Read this before working on any component. For a specific component, also read its own `SPEC.md`.
+Defines the contributor rules that apply to all Magma web components: entry points, tree-shaking, token fallbacks, preference refinements, icons, tests, usage docs and scaffolding. Read this before working on any component.
+
+The rules for **using** the components (naming, boolean props, events, slots, compound components, icons, accessibility, styling from outside) are written once, for consumers and contributors alike, in [`docs/agents/conventions.md`](../../docs/agents/conventions.md); `variant` / `tone` in [`docs/agents/variants.md`](../../docs/agents/variants.md). A component you write must follow them. For a specific component read its `usage/*.md` and `readme.md` (or the generated `AGENTS.md`, see [`docs/COMPONENTS.md`](../../docs/COMPONENTS.md)).
 
 ## Public entry points
 
 Every published entry point is tree-shakeable except the lazy loader, which registers all 114 components by design.
 
-| package         | entry                       | what it gives                                         | tree-shakeable                    |
-| :-------------- | :-------------------------- | :---------------------------------------------------- | :-------------------------------- |
-| `magma`         | `/components`               | `MdsButton`, `defineCustomElementMdsButton`, ...      | ✅                                |
-| `magma`         | `/components/mds-button.js` | one component per file                                | ✅                                |
-| `magma`         | `/loader`                   | `defineCustomElements()`, registers everything lazily | ❌ by design                      |
-| `magma`         | `/hydrate`                  | `renderToString()` for SSR (server-only bundle)       | ❌ by design (server bundle)      |
-| `magma`         | `.`                         | lazy runtime + `IconsSetService` (no components)      | n/a                               |
-| `magma`         | `/services`                 | `IconsSetService`                                     | n/a                               |
-| `magma-react`   | `.`                         | barrel of `Mds*` React wrappers                       | ✅                                |
-| `magma-react`   | `/mds-button.js`            | one wrapper per file                                  | ✅                                |
-| `magma-angular` | `.`                         | standalone proxies, CVAs, `MagmaModule`               | ✅ (AOT prunes `MagmaModule` too) |
+| package         | entry                                                             | what it gives                                                                                      | tree-shakeable                    |
+| :-------------- | :---------------------------------------------------------------- | :------------------------------------------------------------------------------------------------- | :-------------------------------- |
+| `magma`         | `/components`                                                     | `MdsButton`, `defineCustomElementMdsButton`, ...                                                   | ✅                                |
+| `magma`         | `/components/mds-button.js`                                       | one component per file                                                                             | ✅                                |
+| `magma`         | `/loader`                                                         | `defineCustomElements()`, registers everything lazily                                              | ❌ by design                      |
+| `magma`         | `/hydrate`                                                        | `renderToString()` for SSR (server-only bundle)                                                    | ❌ by design (server bundle)      |
+| `magma`         | `.`                                                               | lazy runtime + `IconsSetService` (no components)                                                   | n/a                               |
+| `magma`         | `/services`                                                       | `IconsSetService`                                                                                  | n/a                               |
+| `magma`         | `/AGENTS.md`, `/agents/*`                                         | the agent docs (install guide, `docs/agents/` fragments)                                           | n/a                               |
+| `magma`         | `/dist/documentation.json`, `/dist/collection/components/<tag>/*` | the docs JSON, and per component `AGENTS.md`, `pattern.md`, `antipattern.md`, `documentation.json` | n/a                               |
+| `magma-react`   | `.`                                                               | barrel of `Mds*` React wrappers                                                                    | ✅                                |
+| `magma-react`   | `/mds-button.js`                                                  | one wrapper per file                                                                               | ✅                                |
+| `magma-react`   | `/mds-button.server.js`, `/components.server.js`                  | SSR wrappers, one per file or all at once                                                          | server only                       |
+| `magma-angular` | `.`                                                               | standalone proxies, CVAs, `MagmaModule`                                                            | ✅ (AOT prunes `MagmaModule` too) |
 
 ```javascript
 // web components
@@ -42,72 +47,16 @@ Three things hold the tree-shaking together; breaking any one of them silently s
 
 `scripts/check-treeshaking.ts` (`npm run check.treeshaking`) asserts all three and guards the bundle size; it runs in CI on every stencil build.
 
-## Naming convention
+## Authoring rules
 
-All components are prefixed with `mds-`. Tag names are lowercase kebab-case. Compound child components share the parent name as a prefix:
+What a component must do so that the consumer conventions hold:
 
-```
-mds-accordion
-mds-accordion-item       ← child of mds-accordion
-mds-accordion-timer
-mds-accordion-timer-item ← child of mds-accordion-timer
-```
-
-## Props
-
-- Props that accept a fixed set of values always have a TypeScript type and a corresponding dictionary exported from `@type/*`
-- The `label` prop is the preferred way to pass text content; the default slot is supported for convenience but may be deprecated in future versions
-- Props marked `reflect: true` are mirrored as HTML attributes and are safe to use in CSS attribute selectors
-
-### Boolean values
-
-- Boolean props default to `false` or `undefined`, not `true`
-- When possible, prefer removing attribute or set it `undefined` instead of set it `false`.
-
-## Events
-
-All custom events are named in camelCase with the component name as prefix:
-
-```
-mdsButtonClick      ← from mds-button
-mdsInputChange      ← from mds-input
-mdsAccordionChange  ← from mds-accordion
-```
-
-Listen to events via `addEventListener` or framework-specific bindings:
-
-```javascript
-document.querySelector('mds-input').addEventListener('mdsInputChange', (e) => {
-  console.log(e.detail.value);
-});
-```
-
-## Slots
-
-- The `default` slot accepts plain text strings only unless the component explicitly states otherwise
-- Named slots (e.g. `slot="header"`, `slot="footer"`) accept HTML elements and components
-- Add arbitrary HTML wrappers around slot content only when is not avoidable - it can break component layout and compound component communication
-
-## Styling components from outside
-
-The only supported customisation mechanism is **CSS custom properties** exposed by the component. Each component documents its available properties in `readme.md` under "CSS Custom Properties".
-
-```css
-/* correct */
-mds-button {
-  --mds-button-radius: 999px;
-}
-
-/* warning - use it when a deep customization is required */
-mds-button::part(icon) {
-  fill: rgb(var(--variant-primary-03));
-}
-
-/* incorrect - do not pierce shadow DOM */
-mds-button >>> .internal-class {
-  color: red;
-}
-```
+- **Tag and children**: `mds-` prefix, lowercase kebab-case; compound children share the parent prefix (`mds-accordion` / `mds-accordion-item`).
+- **Props**: a prop with a fixed set of values has a TypeScript type and a dictionary, shared in `src/type/*.ts` (e.g. `tone.ts`, `variant.ts`) or component-specific in its `meta/`. Props that CSS or the consumer select on are `reflect: true`. Text goes through a `label` prop; the default slot is a convenience.
+- **Booleans** default to `false` or `undefined`, never `true`.
+- **Events** are named `mds<Component><Action>` (`mdsInputChange`, `mdsAccordionChange`) and documented with JSDoc.
+- **Styling API**: every CSS custom property the consumer may set is documented with `@prop` in the component CSS, every shadow part with `@part` in the JSDoc. Both land in the generated docs, and they are the only styling surface consumers are allowed to use ([`conventions.md`](../../docs/agents/conventions.md#styling-components-from-outside)): rename or remove one only as a breaking change.
+- **Colours** come from the semantic roles (`rgb(var(--magma-surface-raised))`, `rgb(var(--magma-accent-emphasis))`), not from a raw palette step; the exceptions are the ones [`docs/agents/color.md`](../../docs/agents/color.md) lists (`label-*` for colours that encode data, the `--tone-neutral-seed` knockout). The contract: `projects/styles/SEMANTIC_COLOR_SPEC.md`.
 
 ### Reading a `--magma-*` token: never write its fallback
 
@@ -136,7 +85,7 @@ Some components ship `*-pref-*.css` files (e.g. `mds-modal-pref-mode.css`) that 
 Two facts agents must keep in mind before touching these files:
 
 - `:host-context()` is **Chromium-only** (not Firefox, not Safari). These per-component refinements therefore apply only in Chromium; elsewhere the component simply uses the globally-flipped tokens. This is tolerated, not a bug to "fix" with `@container style()` (which crashes WebKit in the shadow + slotted + inherited-custom-property case).
-- The only thing that crosses the shadow boundary inward is the **value of an inherited custom property** (e.g. `var(--tone-neutral)`, `var(--magma-pref-animation)`), never a selector reaching upward. To make a refinement work cross-browser, resolve it to a token at `:root` and consume the value inside the component, instead of branching on a selector. Removing `:host-context` without that value channel deletes the refinement (the rule then matches nothing inside the shadow tree).
+- The only thing that crosses the shadow boundary inward is the **value of an inherited custom property** (e.g. `var(--magma-surface-default)`, `var(--magma-pref-animation)`), never a selector reaching upward. To make a refinement work cross-browser, resolve it to a token at `:root` and consume the value inside the component, instead of branching on a selector. Removing `:host-context` without that value channel deletes the refinement (the rule then matches nothing inside the shadow tree).
 
 ## Tone and variant system
 
@@ -145,45 +94,22 @@ check what one component accepts are documented once, for consumers and contribu
 in [`docs/agents/variants.md`](../../docs/agents/variants.md) (shipped as
 `agents/variants.md`). Their typed dictionaries live in `src/type/`.
 
-## Disabled state
-
-Set `disabled` as a boolean attribute. Never use `disabled="false"` - remove the attribute instead, or set the prop to `undefined`.
-
-```html
-<!-- correct -->
-<mds-button disabled>...</mds-button>
-<mds-button>...</mds-button>
-
-<!-- incorrect -->
-<mds-button disabled="false">...</mds-button>
-```
-
-## Await / loading state
-
-Components that trigger async operations expose an `await` prop. Setting `await` to `true` shows a loading spinner and prevents interaction.
-
-```html
-<mds-button await>Saving...</mds-button>
-```
-
-Remove `await` (set to `undefined`, not `false`) when the operation completes.
-
 ## Icons
 
 Icons are managed by **iconsauce** ([wiki](https://github.com/iconsauce/docs/wiki)), our open-source build tool. The wiki is the source of truth for iconsauce's CLI, plugin API and per-plugin slug naming.
 
 ### How it works
 
-Iconsauce works through **plugins**; each plugin wraps an icon set installed as a node module and defines how a slug resolves to a source SVG file inside that module. A slug like `mi/baseline/close` is resolved by [`@iconsauce/plugin-material-icons`](https://github.com/iconsauce/plugin-material-icons) to the matching SVG inside the `material-design-icons` node module; the equivalent for our internal set is [`@iconsauce/plugin-mgg-icons`](https://github.com/iconsauce/plugin-mgg-icons), which uses semantic slugs like `action-email-send`.
+Iconsauce works through **plugins**; each plugin wraps an icon set installed as a node module and defines how a slug resolves to a source SVG file inside that module. A slug like `mi/baseline/close` is resolved by [`@iconsauce/plugin-material-icons`](https://github.com/iconsauce/plugin-material-icons) to the matching SVG inside the `material-design-icons` node module; the equivalent for our internal set is [`@iconsauce/plugin-mgg-icons`](https://github.com/iconsauce/plugin-mgg-icons), whose slugs are semantic names under `mgg/` (`mgg/ai-brain`, `mgg/check-small`).
 
-Iconsauce is driven by an `iconsauce.config.js` (in magma, [`.storybook/iconsauce.config.js`](.storybook/iconsauce.config.js)) declaring `content` globs to scan and the active plugins. Source is scanned by both the iconsauce CLI and the [PostCSS plugin](https://github.com/iconsauce/docs/wiki/PostCSS-plugin) (`postcss-iconsauce`), so CSS references like `content: url(...)` are picked up alongside `.tsx` / `.ts` / `.json` slug references.
+Iconsauce is driven by an iconsauce config (in magma, [`.storybook/iconsauce.config.mjs`](.storybook/iconsauce.config.mjs)) declaring `content` globs to scan and the active plugins. Source is scanned by both the iconsauce CLI and the [PostCSS plugin](https://github.com/iconsauce/docs/wiki/PostCSS-plugin) (`postcss-iconsauce`), so CSS references like `content: url(...)` are picked up alongside `.tsx` / `.ts` / `.json` slug references.
 
 At build time iconsauce emits the resolved icons through one of two output strategies:
 
 1. **Single icon font** bundling every referenced icon, or
 2. **Reorganised SVG files** mirroring the slug path - `mi/baseline/close` becomes `public/assets/mi/baseline/close.svg`
 
-**Magma uses strategy 2** (files). At runtime, `mds-icon` fetches each SVG by slug from a path the host app configures (recommended via `sessionStorage` - see [`src/components/mds-icon/readme.md`](src/components/mds-icon/readme.md) for the `setSvgPath` / `setSvgPathStatic` / `mdsIconSvgPathUpdate` alternatives).
+**Magma uses strategy 2** (files). At runtime, `mds-icon` fetches `<mdsIconSvgPath><slug>.svg` from a path the host app configures (recommended via `sessionStorage` - see [`src/components/mds-icon/readme.md`](src/components/mds-icon/readme.md) for the `setSvgPath` / `setSvgPathStatic` / `mdsIconSvgPathUpdate` alternatives).
 
 ### Why iconsauce (not inline SVG or direct icon-lib imports)
 
@@ -197,7 +123,7 @@ Never inline `<svg>` literals in a component template, and never import from an 
 
 ```html
 <!-- mgg-icons: semantic slug -->
-<mds-button icon="action-email-send">Send</mds-button>
+<mds-button icon="mgg/ai-brain">Ask</mds-button>
 
 <!-- material-icons: path slug -->
 <mds-icon name="mi/baseline/close"></mds-icon>
@@ -206,7 +132,7 @@ Never inline `<svg>` literals in a component template, and never import from an 
 Minimum host-app setup:
 
 ```javascript
-window.sessionStorage.setItem('mdsIconSvgPath', 'assets/img/svg/');
+window.sessionStorage.setItem('mdsIconSvgPath', '/svg/');
 ```
 
 `mds-icon` also accepts a base64-encoded data URI or a raw `<svg>` string as `name`, for dynamic icons coming from an API.
@@ -223,26 +149,11 @@ Iconsauce resolves slugs through async plugins, so the dump order is non-determi
 
 ### Adding a new icon
 
-1. Reference the slug from source - iconsauce scans `.tsx` / `.ts` / `.json` and CSS (via `postcss-iconsauce`) per [`.storybook/iconsauce.config.js`](.storybook/iconsauce.config.js)
+1. Reference the slug from source - iconsauce scans `.tsx` / `.ts` / `.json` and CSS (via `postcss-iconsauce`) per [`.storybook/iconsauce.config.mjs`](.storybook/iconsauce.config.mjs)
 2. Run `nx run stencil:build.icons` - regenerates `src/fixtures/icons.json` (tree-shaken slugs), `src/fixtures/icons-dictionary.json` (full catalog) and `assets/svg/` (reorganised SVG files)
-3. Configured plugins live in [`.storybook/iconsauce.config.js`](.storybook/iconsauce.config.js) - currently [`@iconsauce/material-icons`](https://github.com/iconsauce/plugin-material-icons), `@iconsauce/mdi-svg`, [`@iconsauce/mgg-icons`](https://github.com/iconsauce/plugin-mgg-icons). To expose a new icon set, install its node module, add the corresponding iconsauce plugin in `content`, and follow its slug convention - each plugin's README lists its slug rules, and the [iconsauce wiki](https://github.com/iconsauce/docs/wiki) has the overall config schema
+3. Configured plugins live in [`.storybook/iconsauce.config.mjs`](.storybook/iconsauce.config.mjs) - currently [`@iconsauce/material-icons`](https://github.com/iconsauce/plugin-material-icons), `@iconsauce/mdi-svg`, [`@iconsauce/mgg-icons`](https://github.com/iconsauce/plugin-mgg-icons). To expose a new icon set, install its node module, add the corresponding iconsauce plugin in `content`, and follow its slug convention - each plugin's README lists its slug rules, and the [iconsauce wiki](https://github.com/iconsauce/docs/wiki) has the overall config schema
 
 If a referenced slug isn't resolvable by any configured plugin, iconsauce reports it on build.
-
-## Accessibility
-
-- `mds-button` automatically sets `role="button"`, `aria-label`, and `title` from the `label` prop or slot content
-- Icon-only buttons must have either `label` or an explicit `aria-label` attribute
-- Form components (`mds-input`, `mds-input-select`, etc.) are form-associated and participate natively in form submission
-- Use `mds-pref-contrast` to let users activate high-contrast mode; do not hard-code high-contrast styles
-
-## Compound component rules
-
-Parent/child component pairs communicate via internal Stencil mechanisms. Rules:
-
-1. Child components must be **direct slot children** of the parent - no wrappers
-2. Never use a child component outside its parent (e.g. `mds-accordion-item` without `mds-accordion`)
-3. Never mix child types (e.g. do not put `mds-accordion-item` inside `mds-accordion-timer`)
 
 ## Tests
 
@@ -286,20 +197,16 @@ The `1. ` / `2. ` / `3. ` numeric prefixes exist to control the order of section
 ### What `usage/` must NOT contain
 
 - The full props table - it is auto-generated into `readme.md` from JSDoc
-- The list of allowed string values for a prop - that lives in `meta/*.ts` dictionaries
-- Generic stencil rules that apply to every component - those live in this SPEC
+- The list of allowed string values for a prop - that lives in the typed dictionaries (`src/type/*.ts`, or the component's `meta/`)
+- Rules that apply to every component - those live in [`docs/agents/`](../../docs/agents/) (`conventions.md`, `variants.md`, `anti-patterns.md`): link them instead of restating them
 
 ### Auto-generation flow
 
-`usage/*.md` files are bundled by the Stencil build into `documentation.json` and then injected into `readme.md`. As a consequence:
+`usage/*.md` files are bundled by the Stencil build into `dist/documentation.json` and then injected into `readme.md`; after the build, `scripts/component-docs.ts` writes the shipped per-component docs (`AGENTS.md`, `pattern.md`, `antipattern.md`, `documentation.json`) into `dist/collection/components/<tag>/`. As a consequence:
 
-- **Do not edit `readme.md` by hand** - it is regenerated on every build
-- **`documentation.json`** is a structured JSON mirror of the same content plus full prop type metadata and cross-references. It is **gitignored** (`projects/stencil/.gitignore`) and only exists after a local build - do not assume it is present in a fresh clone or on GitHub
-- **Agents reading components** should pick by task:
-  - Semantic intent → `usage/*.md` (smallest, always present)
-  - Props / events / slots / CSS vars → `readme.md` (always present, ~3-4× smaller than `documentation.json`)
-  - Typed prop value sets → `components.d.ts` + `src/type/*.ts`
-  - Full type metadata / cross-references (codemods, tooling) → `documentation.json` **if present**; otherwise build first or fall back to `components.d.ts`
+- **Do not edit `readme.md` or a generated file by hand** - they are regenerated on every build
+- **`dist/documentation.json`** is a structured JSON mirror of the same content plus full prop type metadata and cross-references. It is **gitignored** and only exists after a local build - do not assume it is present in a fresh clone or on GitHub
+- Which file to read for which question: [`docs/COMPONENTS.md`](../../docs/COMPONENTS.md#which-file-should-the-agent-read)
 
 ### Templates
 
@@ -311,19 +218,20 @@ Authoring templates with inline rules and section prompts live in [`template/usa
 nx run stencil:generate mds-component-name
 ```
 
-This creates the component folder with the standard file structure:
+This runs the Stencil CLI generator, which creates `mds-component-name.tsx`, `mds-component-name.css` and, in `test/`, a `.spec.tsx` and an `.e2e.ts`. The two tests are the Stencil boilerplate (`newSpecPage` / `newE2EPage` from `@stencil/core/testing`): rewrite them for Vitest as described in [`HOWTO.md`](HOWTO.md#tests).
+
+Then write the usage docs from the templates: `npm run generate.usage` (from `projects/stencil`, with npm and not Nx: the script prompts, and Nx hides the prompts) compiles [`template/usage/`](../../projects/stencil/template/usage) into the component's `usage/`.
+
+A finished component follows this structure:
 
 ```
 src/components/mds-component-name/
 ├── mds-component-name.tsx    ← component logic
 ├── mds-component-name.css    ← component styles
 ├── css/                      ← split CSS files (variants, sizes, etc.)
-├── meta/                     ← TypeScript enums and dictionaries
+├── meta/                     ← component-specific types, dictionaries, locales
 ├── usage/                    ← 1. Description.md, 2. Pattern.md, 3. Antipattern.md (canonical docs)
 └── test/
     ├── mds-component-name.e2e.ts
-    ├── mds-component-name.stories.tsx
-    └── mds-component-name.mdx
+    └── mds-component-name.stories.tsx
 ```
-
-After scaffolding, fill in the three `usage/*.md` files following the templates in [`template/usage/`](../../projects/stencil/template/usage).

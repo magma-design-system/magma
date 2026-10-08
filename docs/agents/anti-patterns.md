@@ -9,8 +9,10 @@
   an action) when an `mds-*` equivalent exists.
 - Wrapping an interactive `mds-*` component in another interactive element
   (`<a><mds-button></mds-button></a>` - use the `href` prop instead).
-- Reaching into shadow DOM via `::part()`, `>>>`, `/deep/`, or attribute-selector hacks.
-  Use documented CSS custom properties.
+- Reaching into shadow DOM past the documented API: undocumented `::part()` names,
+  internal class names, `>>>`, `/deep/`, or attribute-selector hacks. Use the CSS custom
+  properties and, for a deep customisation, the parts listed in the component's
+  `AGENTS.md` (see [`conventions.md`](conventions.md)).
 - Setting boolean attributes to the string `"false"` (e.g. `disabled="false"`,
   `await="false"`). In HTML/Stencil any non-empty string is truthy - **remove the
   attribute** to turn it off.

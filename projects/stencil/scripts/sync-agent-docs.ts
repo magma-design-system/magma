@@ -59,7 +59,7 @@ const TARGETS: Target[] = [
   {
     pkgDir: '../stencil-angular/magma-angular',
     track: 'angular.md',
-    framework: 'Angular (>= 18.2)',
+    framework: 'Angular (>= 20)',
     wrapperPkg: '@maggioli-design-system/magma-angular',
     register:
       "import the standalone Mds* components from '@maggioli-design-system/magma-angular' (they self-register; MagmaModule.forRoot() is deprecated and a no-op)",
@@ -121,7 +121,7 @@ Inspect the consumer project before asking anything:
 | Framework | \`package.json\` deps: \`@angular/core\` -> Angular, \`react\`/\`next\` -> React, else vanilla |
 | Magma wrapper installed | presence of \`magma-angular\` / \`magma-react\` / \`magma\` in deps |
 | Bundler / static dir | \`angular.json\` (Angular CLI assets), \`vite.config.*\`, \`next.config.*\` (\`public/\`), webpack |
-| Tailwind + version | \`tailwindcss\` in deps (v3 vs v4 -> different preset) |
+| Tailwind + version | \`tailwindcss\` in deps: v4 -> the CSS imports, v3 -> the JS preset (see agents/assets.md) |
 | SSR | \`@angular/ssr\` / Angular Universal, or Next App Router |
 | Compatible versions | derive from the installed \`@maggioli-design-system/magma\` major (see matrix in install.md) |
 

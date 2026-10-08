@@ -1,6 +1,6 @@
 # GitHub Copilot instructions - Magma
 
-Magma is the Maggioli Group Design System: ~115 web components built with StencilJS, plus design tokens, SVG icons, brand assets, and CSS / Tailwind 4 styles. Each artifact is published as a separate npm package.
+Magma is the Maggioli Group Design System: 114 web components built with StencilJS, plus design tokens, SVG icons, brand assets, and CSS / Tailwind 4 styles. Each artifact is published as a separate npm package.
 
 When generating, completing, or reviewing code in this repository, follow the rules below. They mirror what is enforced by ESLint, Stylelint, and commitlint, so suggestions that ignore them will be rejected by the pre-commit hook.
 
@@ -11,32 +11,32 @@ When generating, completing, or reviewing code in this repository, follow the ru
 - **Styles**: Tailwind 4 with CSS custom properties + cascade layers
 - **Tokens**: Style Dictionary + Adobe Leonardo
 - **Documentation**: Storybook
-- **Required build order**: `design-tokens` → `styles` → `icons` → `stencil`
+- **Required build order**: `design-tokens` → `styles`, and `svg-icons`, before `stencil` → `stencil-react`, `stencil-angular`
 
 ## Component conventions (Stencil)
 
 - All component tags are prefixed `mds-` and lowercase kebab-case (`mds-button`, `mds-accordion-item`).
 - Compound child components share the parent name as prefix and must be **direct slot children** of the parent - no wrapper elements.
-- Events are camelCase prefixed with the component name (`mdsButtonClick`, `mdsInputChange`).
+- Events are camelCase prefixed with the component name (`mdsInputChange`, `mdsAccordionChange`).
 - The `default` slot accepts plain text only; named slots accept HTML.
 - Prefer the `label` prop over the default slot for text content.
 - Boolean props default to `false`/`undefined`. **Never** write `disabled="false"` or `await="false"` - remove the attribute or set it to `undefined`. A non-empty string is truthy in HTML.
-- External styling is only via the documented CSS Custom Properties. Do not pierce the shadow DOM (`>>>`, `::part()` is allowed only when documented).
+- External styling is only via the documented CSS Custom Properties and, for a deep customisation, the documented `::part()` names. Do not pierce the shadow DOM (`>>>`, `/deep/`, undocumented parts or internal classes).
 - Keep JSX pragma imports even if they look unused: `import { h, Fragment, Component } from '@stencil/core'`.
 
 ## Tone / variant system
 
 Many components accept both `variant` (colour role) and `tone` (visual intensity):
 
-- `variant`: `primary`, `secondary`, `error`, `success`, `warning`, `info`, `ai`, `dark`, `light`, plus label colours (`amaranth`, `red`, `blue`, …)
-- `tone`: `strong` (filled), `weak` (tinted), `outline` (bordered), `text` (no background)
+- `variant`: `primary`, `secondary` (renders like `primary`), `error`, `success`, `warning`, `info`, `ai`, `dark`, `light`, plus label colours (`amaranth`, `red`, `blue`, ...)
+- `tone`: `strong` (filled), `weak` (tinted), `outline` (bordered), `text` (no background); most components accept only `strong` / `weak`
 
-The old names `ghost` and `quiet` are deprecated - use `outline` and `text`.
+Each component accepts a subset: check its typed signature. The Magma 1 tones were renamed: `ghost` -> `outline`, `quiet` -> `text` on `mds-button` / `mds-radial-menu` / `mds-radial-menu-item` and `quiet` -> `weak` elsewhere. Full reference: [`docs/agents/variants.md`](../docs/agents/variants.md).
 
 ## CSS rules (Stylelint enforced)
 
 - Colours: use modern `rgb(r g b / a)` with numeric alpha. **Never** named colours, short hex, `rgba()`, `hsl()`, or `lch()`. Long hex (`#ffffff`) is required if you need hex.
-- For Magma colour tokens, use the RGB wrapper: `rgb(var(--tone-neutral-03) / 0.5)`. Use Magma colour classes (`bg-tone-neutral`, `text-status-error`) instead of raw Tailwind primitives.
+- Paint with the semantic colour roles, in the RGB wrapper: `rgb(var(--magma-text-muted) / 0.5)`, `rgb(var(--magma-surface-raised))`; in Tailwind `bg-surface-raised`, `text-fg-muted`, `text-danger-fg-default`. Never raw Tailwind primitives, and no raw palette step (`tone-neutral-03`) for interface colours. Full reference: [`docs/agents/color.md`](../docs/agents/color.md).
 - Units: only `px`, `rem`, `%`, `vh`, `vw`, `fr`, `s`, `ms`. **Never** `em`, `cm`, `in`, `mm`, `pc`, `pt`, `ex`.
 - Properties: alphabetical order inside a block; custom properties (`--foo`) come first; one declaration per line.
 - Never use the `background` shorthand - write `background-color`, `background-image`, etc.
@@ -60,9 +60,9 @@ Dark mode is handled at the palette level via `<html>` classes (`pref-mode-syste
 
 Every component documents its semantic intent in three markdown files inside `projects/stencil/src/components/<name>/usage/`:
 
-- `description.md` - purpose, runtime behaviour, prop intent
-- `pattern.md` - numbered list of correct usage patterns with code examples
-- `antipattern.md` - numbered list of incorrect uses with `🚫 INCORRECT` / `✅ CORRECT` pairs
+- `1. Description.md` - purpose, runtime behaviour, prop intent
+- `2. Pattern.md` - numbered list of correct usage patterns with code examples
+- `3. Antipattern.md` - numbered list of incorrect uses with `🚫 INCORRECT` / `✅ CORRECT` pairs
 
 These are the **canonical source of truth**. The component's `readme.md` is auto-generated from them by the Stencil build (`usage/*.md` → `documentation.json` → `readme.md`), so **never edit `readme.md` by hand**. Templates for new components live in `projects/stencil/template/usage/*.md.hbs`; the scaffolder is `npm run generate.usage`.
 
@@ -108,7 +108,8 @@ Full rules: [`docs/WORKFLOW.md`](../docs/WORKFLOW.md).
 | Contribution workflow and git governance (branch, merge, push)          | [`docs/WORKFLOW.md`](../docs/WORKFLOW.md)                             |
 | Design tokens (structure, levels, semantics, naming)                     | [`projects/design-tokens/SPEC.md`](../projects/design-tokens/SPEC.md) |
 | CSS and Tailwind 4 conventions, semantic classes, dark mode, layer order | [`projects/styles/SPEC.md`](../projects/styles/SPEC.md)               |
-| Stencil component conventions, composition, accessibility                | [`projects/stencil/SPEC.md`](../projects/stencil/SPEC.md)             |
+| Rules for using the components (conventions, variants, color, theming)   | [`docs/agents/`](../docs/agents/)                                     |
+| Stencil contributor rules: entry points, token fallbacks, icons, tests  | [`projects/stencil/SPEC.md`](../projects/stencil/SPEC.md)             |
 | A single component's intent, patterns, and anti-patterns                 | `projects/stencil/src/components/<name>/usage/`                       |
 
 ## When suggesting a new component
@@ -120,7 +121,7 @@ Full rules: [`docs/WORKFLOW.md`](../docs/WORKFLOW.md).
 
 ## Anti-patterns Copilot must avoid
 
-- Suggesting `bg-white`, `bg-gray-500`, or other raw Tailwind colour primitives - use Magma token classes.
+- Suggesting `bg-white`, `bg-gray-500`, or other raw Tailwind colour primitives - use the semantic role classes (`bg-surface-default`, `text-fg-muted`).
 - Suggesting `disabled="false"` or `await="false"` - remove the attribute instead.
 - Hand-writing `@media (prefers-color-scheme: dark)` - use `pref-mode-*` classes.
 - Editing the generated `readme.md` directly - edit `usage/*.md`.
