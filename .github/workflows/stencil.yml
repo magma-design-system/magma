@@ -36,6 +36,8 @@ jobs:
         projects/stencil/assets
         projects/stencil-react/src
         projects/stencil/loader
+        projects/stencil/AGENTS.md
+        projects/stencil/agents
         projects/stencil-angular/magma-angular/src/stencil-generated
       artifact-download-path: projects
       run-tests: true
@@ -83,7 +85,12 @@ jobs:
       - uses: actions/upload-artifact@v7
         with:
           name: stencil-react-build
-          path: projects/stencil-react/dist
+          # rooted at the package directory (the common ancestor): dist plus the
+          # agent docs, which publish.yml packs next to it (#809)
+          path: |
+            projects/stencil-react/dist
+            projects/stencil-react/AGENTS.md
+            projects/stencil-react/agents
           retention-days: 1
           include-hidden-files: true
 
@@ -203,7 +210,7 @@ jobs:
       - uses: actions/download-artifact@v8
         with:
           name: stencil-react-build
-          path: projects/stencil-react/dist
+          path: projects/stencil-react
       - uses: actions/download-artifact@v8
         with:
           name: stencil-angular-build
