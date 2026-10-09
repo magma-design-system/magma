@@ -11,7 +11,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ### 1. Description
 
-The `<mds-table-footer>` web component is a structural child of [`<mds-table>`](../../mds-table) that groups the footer rows of a table - typically used for totals, summaries, or pagination rows. It is the design-system equivalent of the native `<tfoot>` element, exposing a single slot that accepts `mds-table-row` children.
+The `<mds-table-footer>` web component is a structural child of [`<mds-table>`](../../mds-table) that renders the footer row of a table - typically used for totals or summaries. Unlike the native `<tfoot>`, it is itself a row (`role="row"`, `display: table-row`): its single slot takes `mds-table-cell` children directly, one per column.
 
 #### Semantic Behavior
 
@@ -21,12 +21,12 @@ The `<mds-table-footer>` web component is a structural child of [`<mds-table>`](
 
 #### Properties & Visual Configurations
 
-`<mds-table-footer>` exposes no configurable props; it is a pure layout grouping element. Its only API is its **default slot**, into which you place one or more `mds-table-row` elements that form the footer section of the table. Visual styling (background, borders, cell padding) is inherited from the CSS custom properties defined on the parent `<mds-table>`.
+`<mds-table-footer>` exposes no configurable props; it is a pure layout grouping element. Its only API is its **default slot**, into which you place one `mds-table-cell` per column. Visual styling (background, borders, cell padding) is inherited from the CSS custom properties defined on the parent `<mds-table>`.
 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-table-footer>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the table family documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-table-footer>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Summary Row with Column Labels
 
@@ -74,12 +74,12 @@ Use the footer to display computed totals or aggregated values that summarize th
     <mds-table-row>
       <mds-table-cell><mds-text typography="detail">Licenze software</mds-text></mds-table-cell>
       <mds-table-cell><mds-text typography="detail">1.200,00 EUR</mds-text></mds-table-cell>
-      <mds-table-cell><mds-badge variant="success" tone="weak">Approvato</mds-badge></mds-table-cell>
+      <mds-table-cell><mds-badge variant="success" tone="weak" label="Approvato"></mds-badge></mds-table-cell>
     </mds-table-row>
     <mds-table-row>
       <mds-table-cell><mds-text typography="detail">Consulenza</mds-text></mds-table-cell>
       <mds-table-cell><mds-text typography="detail">3.500,00 EUR</mds-text></mds-table-cell>
-      <mds-table-cell><mds-badge variant="warning" tone="weak">In attesa</mds-badge></mds-table-cell>
+      <mds-table-cell><mds-badge variant="warning" tone="weak" label="In attesa"></mds-badge></mds-table-cell>
     </mds-table-row>
   </mds-table-body>
   <mds-table-footer>
@@ -90,9 +90,9 @@ Use the footer to display computed totals or aggregated values that summarize th
 </mds-table>
 ```
 
-#### Multiple Footer Rows via `mds-table-row`
+#### Multiple Footer Rows
 
-When you need more than one footer row - for example a subtotal row followed by a grand total row - wrap each row in `mds-table-row` and place both inside `mds-table-footer`.
+`mds-table-footer` is a single row, so it never wraps `mds-table-row` (a row nested in a row breaks the column layout). When you need more than one footer row - for example a subtotal row followed by a grand total row - place one `mds-table-footer` per row, one after the other.
 
 ```html
 <mds-table>
@@ -109,51 +109,49 @@ When you need more than one footer row - for example a subtotal row followed by 
     </mds-table-row>
   </mds-table-body>
   <mds-table-footer>
-    <mds-table-row>
-      <mds-table-cell><mds-text typography="detail">Subtotale</mds-text></mds-table-cell>
-      <mds-table-cell><mds-text typography="detail">800,00 EUR</mds-text></mds-table-cell>
-      <mds-table-cell><mds-text typography="detail">176,00 EUR</mds-text></mds-table-cell>
-    </mds-table-row>
-    <mds-table-row>
-      <mds-table-cell><mds-text typography="action">Totale</mds-text></mds-table-cell>
-      <mds-table-cell><mds-text typography="action">976,00 EUR</mds-text></mds-table-cell>
-      <mds-table-cell></mds-table-cell>
-    </mds-table-row>
+    <mds-table-cell><mds-text typography="detail">Subtotale</mds-text></mds-table-cell>
+    <mds-table-cell><mds-text typography="detail">800,00 EUR</mds-text></mds-table-cell>
+    <mds-table-cell><mds-text typography="detail">176,00 EUR</mds-text></mds-table-cell>
+  </mds-table-footer>
+  <mds-table-footer>
+    <mds-table-cell><mds-text typography="action">Totale</mds-text></mds-table-cell>
+    <mds-table-cell><mds-text typography="action">976,00 EUR</mds-text></mds-table-cell>
+    <mds-table-cell></mds-table-cell>
   </mds-table-footer>
 </mds-table>
 ```
 
 #### Cell-Level Styling via Parent `--mds-table-*` Custom Properties
 
-`mds-table-footer` inherits visual styling from the CSS custom properties defined on the parent `mds-table`. Set those properties on `mds-table` (or a wrapping selector) to restyle borders, backgrounds, and cell padding uniformly across the whole table - including the footer.
+`mds-table-footer` inherits visual styling from the CSS custom properties defined on the parent `mds-table`. Set those properties on `mds-table` (or a wrapping selector) to restyle borders, backgrounds, and cell padding uniformly across the whole table - including the footer. `--mds-table-cell-padding` takes a single length: the table also halves it and adds it to other measures.
 
 ```css
 .bilancio-table mds-table {
-  --mds-table-background: rgb(var(--tone-neutral-01));
-  --mds-table-border-color: rgb(var(--tone-neutral-04));
+  --mds-table-background: rgb(var(--magma-surface-raised));
+  --mds-table-border-color: rgb(var(--magma-border-default));
   --mds-table-border-width: 2px;
-  --mds-table-cell-padding: var(--spacing-300) var(--spacing-400);
+  --mds-table-cell-padding: calc(var(--spacing) * 300);
 }
 ```
 
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-table-footer>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-table-footer>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Use `mds-table-footer` Outside `mds-table`
 
 `mds-table-footer` is a compound child and must be a direct slot child of [`mds-table`](../../mds-table). Using it outside its parent breaks the internal layout communication and produces unstyled, structurally invalid output.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <div class="table-wrapper">
   <mds-table-footer>
     <mds-table-cell>Totale</mds-table-cell>
   </mds-table-footer>
 </div>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-table>
   <mds-table-body><!-- ... --></mds-table-body>
   <mds-table-footer>
@@ -164,16 +162,16 @@ Common incorrect uses of `<mds-table-footer>`. Each entry pairs the wrong form w
 
 #### Do Not Put Raw Text or `<td>` Elements in the Footer Slot
 
-The default slot of `mds-table-footer` accepts `mds-table-cell` elements (or `mds-table-row` elements containing cells). Raw text, `<td>`, or arbitrary HTML bypasses the shared border and padding tokens and yields a visually broken footer.
+The default slot of `mds-table-footer` accepts `mds-table-cell` elements. Raw text, `<td>`, or arbitrary HTML bypasses the shared border and padding tokens and yields a visually broken footer.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-table-footer>
   <td>Cognome e nome</td>
   <td>Email</td>
 </mds-table-footer>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-table-footer>
   <mds-table-cell><mds-text typography="action">Cognome e nome</mds-text></mds-table-cell>
   <mds-table-cell><mds-text typography="action">Email</mds-text></mds-table-cell>
@@ -185,7 +183,7 @@ The default slot of `mds-table-footer` accepts `mds-table-cell` elements (or `md
 Using the native `<tfoot>` inside `mds-table` bypasses the shared CSS token cascade, border transition, and reduced-motion handling that `mds-table-footer` wires up. Always use the Magma component.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-table>
   <mds-table-body><!-- ... --></mds-table-body>
   <tfoot>
@@ -193,7 +191,7 @@ Using the native `<tfoot>` inside `mds-table` bypasses the shared CSS token casc
   </tfoot>
 </mds-table>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-table>
   <mds-table-body><!-- ... --></mds-table-body>
   <mds-table-footer>
@@ -208,15 +206,15 @@ Using the native `<tfoot>` inside `mds-table` bypasses the shared CSS token casc
 `mds-table-footer` has no documented `--mds-table-footer-*` custom properties. Styling changes (background, border color, cell spacing) must go through the `--mds-table-*` custom properties on the parent `mds-table`. Targeting internals via `>>>` or undocumented selectors will break on future releases.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-table-footer >>> :host {
-  background: rgb(var(--tone-neutral-02));
+  background: rgb(var(--magma-surface-raised));
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-table {
-  --mds-table-background: rgb(var(--tone-neutral-02));
-  --mds-table-border-color: rgb(var(--tone-neutral-05));
+  --mds-table-background: rgb(var(--magma-surface-raised));
+  --mds-table-border-color: rgb(var(--magma-border-default));
 }
 ```
 
@@ -225,14 +223,14 @@ mds-table {
 `mds-table-footer` provides summary or totals context and is meaningful only when accompanied by `mds-table-body` (and usually `mds-table-header`). A footer-only table has no data for the summary to refer to.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-table>
   <mds-table-footer>
     <mds-table-cell>Nessun dato disponibile</mds-table-cell>
   </mds-table-footer>
 </mds-table>
 
-<!-- ✅ CORRECT: use mds-zero for empty states, or include mds-table-body -->
+<!-- CORRECT: use mds-zero for empty states, or include mds-table-body -->
 <mds-table>
   <mds-table-header>
     <mds-table-header-cell label="Voce"></mds-table-header-cell>

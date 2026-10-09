@@ -22,12 +22,12 @@ The `<mds-card-footer>` web component is the footer region of a [`<mds-card>`](.
 
 #### Slot semantics
 
-This component exposes a single default slot and has no configurable properties. Pass any `text`, `HTML elements`, or other components (commonly `<mds-button>` actions) into the default slot; they will be rendered in the card's footer region. Because layout, alignment, and responsive behavior are owned by the parent `<mds-card>`, the footer's only job is to mark its children as the card's footer content.
+This component exposes a single default slot and has no configurable properties. Pass any `text`, `HTML elements`, or other components (commonly `<mds-button>` actions) into the default slot; they will be rendered in the card's footer region. The footer lays its children out in a row aligned to the end, with a fixed gap and padding; the placement of the region and the responsive behavior are owned by the parent `<mds-card>`.
 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-card-footer>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the compound component rules documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-card-footer>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Action Row Inside a Full Card
 
@@ -35,7 +35,9 @@ The typical use: a card with header, content, and footer regions, the footer hol
 
 ```html
 <mds-card>
-  <mds-card-header label="Riepilogo pratica"></mds-card-header>
+  <mds-card-header>
+    <mds-text typography="h6">Riepilogo pratica</mds-text>
+  </mds-card-header>
   <mds-card-content>
     <mds-text>Verifica i dati prima di procedere.</mds-text>
   </mds-card-content>
@@ -56,7 +58,7 @@ A card with only a media region and a footer is a valid minimal composition. The
     <mds-img src="/images/documento.jpg" alt="Anteprima documento"></mds-img>
   </mds-card-media>
   <mds-card-footer>
-    <mds-button label="Scarica" icon="mi/baseline/download" variant="secondary" tone="weak"></mds-button>
+    <mds-button label="Scarica" icon="mi/baseline/download" variant="primary" tone="weak"></mds-button>
   </mds-card-footer>
 </mds-card>
 ```
@@ -67,7 +69,9 @@ Use a `variant="error"` button for destructive operations. Keep the cancel actio
 
 ```html
 <mds-card>
-  <mds-card-header label="Elimina archivio"></mds-card-header>
+  <mds-card-header>
+    <mds-text typography="h6">Elimina archivio</mds-text>
+  </mds-card-header>
   <mds-card-content>
     <mds-text>Questa operazione non puo essere annullata.</mds-text>
   </mds-card-content>
@@ -84,22 +88,26 @@ The default slot accepts any slottable content - mix an informational label with
 
 ```html
 <mds-card>
-  <mds-card-header label="Stato richiesta"></mds-card-header>
+  <mds-card-header>
+    <mds-text typography="h6">Stato richiesta</mds-text>
+  </mds-card-header>
   <mds-card-footer>
     <mds-badge label="In attesa" variant="warning" tone="weak"></mds-badge>
-    <mds-button label="Visualizza dettagli" variant="secondary" tone="outline"></mds-button>
+    <mds-button label="Visualizza dettagli" variant="primary" tone="outline"></mds-button>
   </mds-card-footer>
 </mds-card>
 ```
 
 #### Explicit `slot` Attribute on a Plain Element
 
-When you prefer a plain `<div>` or need to place a non-`mds-card-*` wrapper in the footer region, set `slot="footer"` explicitly. The outcome is identical - `<mds-card>` maps any element with `slot="footer"` to the footer grid area.
+When you prefer a plain `<div>` or need to place a non-`mds-card-*` wrapper in the footer region, set `slot="footer"` explicitly. The element lands in the footer region, but `<mds-card>` infers its managed grid from the tag names of its children: add `disable-auto-grid` to the card, otherwise the regions overlap.
 
 ```html
-<mds-card>
-  <mds-card-header label="Nota operativa"></mds-card-header>
-  <div slot="footer" style="display: flex; gap: var(--spacing-300);">
+<mds-card disable-auto-grid>
+  <mds-card-header>
+    <mds-text typography="h6">Nota operativa</mds-text>
+  </mds-card-header>
+  <div slot="footer" style="display: flex; gap: calc(var(--spacing) * 300);">
     <mds-button label="Chiudi" variant="dark" tone="outline"></mds-button>
     <mds-button label="Salva nota" variant="primary" tone="strong"></mds-button>
   </div>
@@ -109,19 +117,19 @@ When you prefer a plain `<div>` or need to place a non-`mds-card-*` wrapper in t
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-card-footer>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-card-footer>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Use `<mds-card-footer>` Outside `<mds-card>`
 
 `<mds-card-footer>` self-routes to the `footer` slot of `<mds-card>` via `<Host slot="footer">`. Outside a card it renders as a bare flex row with no visual context and communicates nothing to screen readers.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-card-footer>
   <mds-button label="Conferma" variant="primary"></mds-button>
 </mds-card-footer>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-card>
   <mds-card-footer>
     <mds-button label="Conferma" variant="primary" tone="strong"></mds-button>
@@ -131,17 +139,17 @@ Common incorrect uses of `<mds-card-footer>`. Each entry pairs the wrong form wi
 
 #### Do Not Assign `slot="footer"` on `<mds-card-footer>` Manually
 
-`<mds-card-footer>` already sets `slot="footer"` on its host via its own render output. Adding it again as an attribute in your markup is redundant and, in some frameworks, results in double-slotting or hydration mismatches.
+`<mds-card-footer>` already sets `slot="footer"` on its host via its own render output. Adding it again as an attribute in your markup is redundant: the component writes it itself, overwriting any other value when it renders.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-card>
   <mds-card-footer slot="footer">
     <mds-button label="Salva" variant="primary"></mds-button>
   </mds-card-footer>
 </mds-card>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-card>
   <mds-card-footer>
     <mds-button label="Salva" variant="primary" tone="strong"></mds-button>
@@ -151,10 +159,10 @@ Common incorrect uses of `<mds-card-footer>`. Each entry pairs the wrong form wi
 
 #### Do Not Nest `<mds-card-footer>` Inside a Wrapper Element
 
-Compound component children must be direct slot children of the parent - wrapping `<mds-card-footer>` in a `<div>` prevents `<mds-card>` from detecting the footer region and computing the correct grid layout.
+Compound component children must be direct slot children of the parent - `<mds-card>` has no default slot, so a `<div>` wrapper without a `slot` is not rendered at all, and the `<mds-card-footer>` inside it with it.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-card>
   <div class="azioni">
     <mds-card-footer>
@@ -163,7 +171,7 @@ Compound component children must be direct slot children of the parent - wrappin
   </div>
 </mds-card>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-card>
   <mds-card-footer>
     <mds-button label="Annulla" variant="dark" tone="outline"></mds-button>
@@ -176,7 +184,7 @@ Compound component children must be direct slot children of the parent - wrappin
 `<mds-card>` maps all children with the footer tag to the same grid area; multiple footers stack or overlap unpredictably. Consolidate all footer content into a single `<mds-card-footer>`.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-card>
   <mds-card-footer>
     <mds-button label="Annulla" variant="dark"></mds-button>
@@ -186,7 +194,7 @@ Compound component children must be direct slot children of the parent - wrappin
   </mds-card-footer>
 </mds-card>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-card>
   <mds-card-footer>
     <mds-button label="Annulla" variant="dark" tone="outline"></mds-button>
@@ -200,13 +208,13 @@ Compound component children must be direct slot children of the parent - wrappin
 `<mds-card-footer>` owns its internal flex layout (alignment, gap, padding). Overriding it with inline `style` or by targeting shadow internals breaks theme consistency and couples code to implementation details. If the parent card's spacing must change, use `<mds-card>`'s documented `--mds-card-gap` and `--mds-card-padding` custom properties on the card host.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-card-footer style="justify-content: flex-start; padding: 0;">
   <mds-button label="Salva" variant="primary"></mds-button>
 </mds-card-footer>
 
-<!-- ✅ CORRECT -->
-<mds-card style="--mds-card-padding: var(--spacing-400);">
+<!-- CORRECT -->
+<mds-card style="--mds-card-padding: calc(var(--spacing) * 400);">
   <mds-card-footer>
     <mds-button label="Salva" variant="primary" tone="strong"></mds-button>
   </mds-card-footer>

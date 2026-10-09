@@ -37,7 +37,7 @@ The `<mds-tab>` web component is the compound container that orchestrates a tabb
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-tab>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the compound-component rules documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-tab>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Tab Group with Managed Panels
 
@@ -129,7 +129,7 @@ Use `direction="vertical"` to stack the tab strip on the side. Pair it with `--m
 
 #### Fade Animation
 
-Switch to `animation="fade"` to cross-fade between panels without the moving slider indicator.
+Switch to `animation="fade"` to highlight the selected tab in place instead of moving the slider indicator. The panels switch without animation in both modes.
 
 ```html
 <mds-tab animation="fade">
@@ -218,14 +218,14 @@ Mark an individual tab as unavailable with `disabled`. The parent's selection me
 
 #### Styling Customization
 
-Style the component only through its documented `--mds-tab-*` CSS custom properties. Set them on the host or a parent selector; use Magma color tokens via `rgb(var(--<token>))` so dark mode and high-contrast modes keep working.
+Style the component only through its documented `--mds-tab-*` CSS custom properties. Set them on the host or a parent selector; use semantic color roles via `rgb(var(--magma-<role>))` so dark mode and high-contrast modes keep working.
 
 ```css
 .scheda-primaria mds-tab {
-  --mds-tab-tabs-background: rgb(var(--variant-primary-09));
-  --mds-tab-tabs-radius: var(--radius-xl);
-  --mds-tab-item-selected-background: rgb(var(--variant-primary-05));
-  --mds-tab-item-selected-color: rgb(var(--tone-kaolin-10));
+  --mds-tab-tabs-background: rgb(var(--magma-accent-surface));
+  --mds-tab-tabs-radius: var(--magma-radius-xl);
+  --mds-tab-item-selected-background: rgb(var(--magma-accent-emphasis));
+  --mds-tab-item-selected-color: rgb(var(--magma-accent-on-emphasis));
   --mds-tab-transition-duration: 0.3s;
 }
 ```
@@ -233,20 +233,20 @@ Style the component only through its documented `--mds-tab-*` CSS custom propert
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-tab>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-tab>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Size Individual Tab Items
 
 Setting `size` on a `<mds-tab-item>` directly is overridden by the parent at render time. Use the `size` prop on `<mds-tab>` to size all tabs uniformly.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-tab>
   <mds-tab-item label="Elenco" size="sm" selected></mds-tab-item>
   <mds-tab-item label="Griglia" size="sm"></mds-tab-item>
 </mds-tab>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-tab size="sm">
   <mds-tab-item label="Elenco" selected></mds-tab-item>
   <mds-tab-item label="Griglia"></mds-tab-item>
@@ -255,10 +255,10 @@ Setting `size` on a `<mds-tab-item>` directly is overridden by the parent at ren
 
 #### Do Not Mix Tab Items and Content Panels Out of Order
 
-Panels in `slot="content"` are wired to `<mds-tab-item>` elements by document order. A mismatched count or wrong ordering shows the wrong panel when a tab is selected.
+Panels in `slot="content"` are wired to `<mds-tab-item>` elements by document order. A missing panel leaves its tab with no content, a wrong ordering shows the wrong panel when a tab is selected.
 
 ```html
-<!-- 🚫 INCORRECT: only two content panels for three tab items -->
+<!-- INCORRECT: only two content panels for three tab items -->
 <mds-tab>
   <mds-tab-item label="A" selected></mds-tab-item>
   <mds-tab-item label="B"></mds-tab-item>
@@ -268,7 +268,7 @@ Panels in `slot="content"` are wired to `<mds-tab-item>` elements by document or
   <div slot="content"><mds-text>Pannello B.</mds-text></div>
 </mds-tab>
 
-<!-- ✅ CORRECT: one content panel per tab item, same order -->
+<!-- CORRECT: one content panel per tab item, same order -->
 <mds-tab>
   <mds-tab-item label="A" selected></mds-tab-item>
   <mds-tab-item label="B"></mds-tab-item>
@@ -285,14 +285,14 @@ Panels in `slot="content"` are wired to `<mds-tab-item>` elements by document or
 `<mds-tab-item>` communicates with its parent through internal Stencil events. Used outside `<mds-tab>` it renders as an inert button with no selection, panel, or keyboard management.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <div class="my-tab-wrapper">
   <mds-tab-item label="Scheda uno" selected></mds-tab-item>
   <mds-tab-item label="Scheda due"></mds-tab-item>
 </div>
 <div>...</div>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-tab>
   <mds-tab-item label="Scheda uno" selected></mds-tab-item>
   <mds-tab-item label="Scheda due"></mds-tab-item>
@@ -301,12 +301,12 @@ Panels in `slot="content"` are wired to `<mds-tab-item>` elements by document or
 </mds-tab>
 ```
 
-#### Do Not Listen to the Native `mdsTabItemSelect` Event from Outside
+#### Do Not Listen to the `mdsTabItemSelect` Event from Outside
 
-`mdsTabItemSelect` is the internal event that `<mds-tab-item>` fires to its parent `<mds-tab>`. It is not part of the public API. Listen to `mdsTabChange` on `<mds-tab>` instead.
+`mdsTabItemSelect` is the item-level event that `<mds-tab-item>` fires to its parent `<mds-tab>`: its `detail` carries the item element (`target`) and `value`, not the position of the tab. To react to the active tab of the group listen to `mdsTabChange` on `<mds-tab>`, whose `detail` has the tab index (`id`) and `value`.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-tab id="schede">
   <mds-tab-item label="Prima" selected></mds-tab-item>
   <mds-tab-item label="Seconda"></mds-tab-item>
@@ -316,7 +316,7 @@ Panels in `slot="content"` are wired to `<mds-tab-item>` elements by document or
   document.querySelector('#schede').addEventListener('mdsTabItemSelect', handler);
 </script>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-tab id="schede">
   <mds-tab-item label="Prima" selected></mds-tab-item>
   <mds-tab-item label="Seconda"></mds-tab-item>
@@ -329,15 +329,15 @@ Panels in `slot="content"` are wired to `<mds-tab-item>` elements by document or
 
 #### Do Not Use `scrollbar="false"` or `overflow="false"` to Turn Off Boolean Props
 
-In HTML any non-empty attribute string is truthy. Setting `scrollbar="false"` keeps the scrollbar visible. Remove the attribute entirely to disable it.
+Stencil reads `"false"` as `false` and, since both props are reflected, removes the attribute at the first render, so this happens to work; but the markup says the opposite of what it does, and on a prop that is not reflected the attribute stays in the DOM, where `[attr]` selectors still match it. Remove the attribute entirely to turn a prop off.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-tab scrollbar="false" overflow="false">
   <mds-tab-item label="Prima" selected></mds-tab-item>
 </mds-tab>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-tab>
   <mds-tab-item label="Prima" selected></mds-tab-item>
 </mds-tab>
@@ -348,7 +348,7 @@ In HTML any non-empty attribute string is truthy. Setting `scrollbar="false"` ke
 The default slot expects `<mds-tab-item>` elements only. Placing a raw `<button>` or `<a>` there bypasses the ARIA `tablist` structure, selection management, and keyboard handling that `<mds-tab>` provides.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-tab>
   <button class="tab">Documenti</button>
   <button class="tab">Messaggi</button>
@@ -356,7 +356,7 @@ The default slot expects `<mds-tab-item>` elements only. Placing a raw `<button>
   <div slot="content">...</div>
 </mds-tab>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-tab>
   <mds-tab-item label="Documenti" selected></mds-tab-item>
   <mds-tab-item label="Messaggi"></mds-tab-item>
@@ -370,7 +370,7 @@ The default slot expects `<mds-tab-item>` elements only. Placing a raw `<button>
 The supported customization surface is the `--mds-tab-*` CSS custom properties and the documented shadow parts (`tabs`, `contents`, `slider`). Targeting other internals via `>>>`, `/deep/`, or undocumented class names couples your code to the shadow DOM implementation and will break on minor releases.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-tab >>> .tabs-wrapper {
   background: red;
 }
@@ -378,14 +378,14 @@ mds-tab::part(tabs-wrapper) {
   padding: 0;
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-tab {
-  --mds-tab-tabs-background: rgb(var(--variant-primary-09));
-  --mds-tab-tabs-padding: var(--spacing-400);
-  --mds-tab-tabs-radius: var(--radius-xl);
+  --mds-tab-tabs-background: rgb(var(--magma-accent-surface));
+  --mds-tab-tabs-padding: calc(var(--spacing) * 400);
+  --mds-tab-tabs-radius: var(--magma-radius-xl);
 }
 mds-tab::part(tabs) {
-  outline: 2px solid rgb(var(--variant-primary-05));
+  outline: 2px solid rgb(var(--magma-accent-border));
 }
 ```
 

@@ -15,7 +15,7 @@ The `<mds-video-wall>` web component is the Magma Design System's full-bleed bac
 
 #### Semantic Behavior
 
-- **Ambient by default**: `autoplay`, `loop` and `muted` are all `true` out of the box, producing a self-contained background loop with no controls and no audio - the configuration browsers require for autoplay to be honored.
+- **Ambient by default**: `autoplay`, `loop` and `muted` are all `true` out of the box, producing a self-contained background loop with no controls and no audio - the configuration browsers require for autoplay to be honored. When the operating system asks for reduced motion, the video is hidden.
 - **Decorative video**: The footage is treated as presentation only; meaningful information must live in the `content` slot, not in the video itself.
 - **Noise overlay**: When `noise` is anything other than `'none'`, a decorative grain layer is rendered above the video; with `noise="none"` the layer is omitted entirely.
 - **Conditional content layer**: The `content` overlay wrapper is shown only while a `slot="content"` child is present, also when it is added after the first render, so an empty overlay never affects layout.
@@ -36,7 +36,7 @@ This component does not use the shared `variant` / `tone` ladders; its props map
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-video-wall>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md) and the catalogue in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md).
+Correct and idiomatic ways to use the `<mds-video-wall>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Minimal Ambient Background
 
@@ -75,7 +75,7 @@ Place any text, HTML elements, or Magma components in the `content` slot to rend
 
 ```html
 <mds-video-wall src="/assets/video/ambient.mp4" noise="soft">
-  <div slot="content" class="text-tone-neutral text-center">
+  <div slot="content" class="text-on-inverse text-center">
     <mds-text typography="h1">Benvenuto in Magma</mds-text>
     <mds-button label="Scopri di piu" variant="primary" tone="strong"></mds-button>
   </div>
@@ -98,8 +98,9 @@ When the video should not play automatically - for example on a media showcase p
 
 ```html
 <!--
-  Framework binding example (Angular / Lit / React attribute binding).
-  Do NOT write autoplay="false" in plain HTML - see 3. Antipattern.md.
+  autoplay and loop default to true: turn them off with a framework
+  property binding or the JS properties below.
+  Do NOT write autoplay="false" in plain HTML - see antipattern.md.
 -->
 <mds-video-wall
   src="/assets/video/showcase.mp4"
@@ -117,12 +118,12 @@ wall.loop = false;
 
 #### CSS Customization via Documented Properties
 
-Style the noise overlay and video fit only through the documented `--mds-video-wall-*` CSS custom properties. Set them on the host element or a parent selector, using Magma color tokens for palette-aware values.
+Style the noise overlay and video fit only through the documented `--mds-video-wall-*` CSS custom properties. Set them on the host element or a parent selector, using the semantic color roles for mode-aware values.
 
 ```css
 /* Warm amber noise tint, contained fit for a non-16:9 source */
 .hero-section mds-video-wall {
-  --mds-video-wall-noise-background-color: rgb(var(--status-warning-03) / 0.6);
+  --mds-video-wall-noise-background-color: rgb(var(--magma-warning-emphasis-hover) / 0.6);
   --mds-video-wall-noise-background-size: 4px;
   --mds-video-wall-video-fit: contain;
 }
@@ -131,17 +132,17 @@ Style the noise overlay and video fit only through the documented `--mds-video-w
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-video-wall>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-video-wall>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Use `autoplay="false"` or `loop="false"` to Disable Boolean Props
 
-Setting a boolean attribute to the string `"false"` does not disable it - any non-empty string is truthy in HTML. Remove the attribute, set the JS property to `false`, or use a framework binding to turn these off.
+These props default to `true`, so removing the attribute keeps them on, and a boolean attribute is never written as the string `"false"`: the attribute stays on the element, where attribute selectors and presence checks still read it as set. Set the JS property to `false`, or use a framework property binding, to turn these off.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-video-wall src="/assets/video/ambient.mp4" autoplay="false" loop="false"></mds-video-wall>
 
-<!-- ✅ CORRECT (via JS property) -->
+<!-- CORRECT (via JS property) -->
 <mds-video-wall src="/assets/video/ambient.mp4"></mds-video-wall>
 <script>
   const wall = document.querySelector('mds-video-wall');
@@ -155,12 +156,12 @@ Setting a boolean attribute to the string `"false"` does not disable it - any no
 The default slot is projected inside the native `<video>` element and is shown only by browsers that cannot play video. Captions, headlines, CTAs, and any real UI must go in the `content` slot instead.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-video-wall src="/assets/video/ambient.mp4">
   <mds-text typography="h1">Benvenuto</mds-text>
 </mds-video-wall>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-video-wall src="/assets/video/ambient.mp4">
   Il tuo browser non supporta la riproduzione video.
   <div slot="content">
@@ -174,12 +175,12 @@ The default slot is projected inside the native `<video>` element and is shown o
 `<mds-video-wall>` already wraps a `<video>` internally. Nesting it inside another `<video>` is invalid HTML, produces no visible output, and makes the fallback slot unreachable.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <video src="/assets/video/ambient.mp4" autoplay muted loop>
   <mds-video-wall src="/assets/video/ambient.mp4"></mds-video-wall>
 </video>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-video-wall src="/assets/video/ambient.mp4"></mds-video-wall>
 ```
 
@@ -188,14 +189,14 @@ The default slot is projected inside the native `<video>` element and is shown o
 The noise overlay is inside the Shadow DOM. Reach it only through the documented `--mds-video-wall-noise-background-color` custom property; do not pierce the shadow with `>>>` or undocumented selectors.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-video-wall >>> .noise {
-  background-color: rgba(255, 0, 0, 0.5);
+  background-color: rgb(var(--magma-danger-emphasis-hover) / 0.5);
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-video-wall {
-  --mds-video-wall-noise-background-color: rgb(var(--status-error-03) / 0.5);
+  --mds-video-wall-noise-background-color: rgb(var(--magma-danger-emphasis-hover) / 0.5);
 }
 ```
 
@@ -204,13 +205,13 @@ mds-video-wall {
 The browser ignores the `preload` hint entirely when `autoplay` is set (which is the default). Only set `preload` after disabling `autoplay` via a JS property or framework binding.
 
 ```html
-<!-- 🚫 INCORRECT (preload is silently ignored because autoplay is true by default) -->
+<!-- INCORRECT (preload is silently ignored because autoplay is true by default) -->
 <mds-video-wall
   src="/assets/video/ambient.mp4"
   preload="metadata"
 ></mds-video-wall>
 
-<!-- ✅ CORRECT: disable autoplay first, then preload is honoured by the browser -->
+<!-- CORRECT: disable autoplay first, then preload is honoured by the browser -->
 <mds-video-wall
   src="/assets/video/showcase.mp4"
   poster="/assets/video/showcase-preview.webp"

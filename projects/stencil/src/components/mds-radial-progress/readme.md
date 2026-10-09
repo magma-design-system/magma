@@ -17,14 +17,14 @@ The `<mds-radial-progress>` web component renders a circular progress indicator 
 - **Value clamping**: `progress` is interpreted as a 0 - 1 ratio and clamped to that range, so out-of-bounds values never overflow the ring or the displayed percentage.
 - **Centered readout**: The clamped ratio is shown as a whole-number percentage at the ring's center.
 - **Animated fill**: Changing `progress` at runtime animates the ring toward the new value (~500ms).
-- **Reduced motion**: When the user's OS signals `prefers-reduced-motion: reduce`, the ring jumps directly to the target value with no tween.
+- **Reduced motion**: When reduced motion is in effect (the Magma animation preference set to `reduce`, or the OS `prefers-reduced-motion: reduce` while the preference follows the system), the ring jumps directly to the target value with no tween.
 - **Icon prop**: Setting `icon` renders an icon above the percentage; the component has no slots.
 
 #### Properties & Visual Configurations
 
 - **`progress`** is the single source of truth for the indicator, expressed as a fraction between `0` and `1` (e.g. `0.42` shows "42"). It is the value to bind for live updates.
 
-The shared `variant` ladder is defined in [`projects/stencil/SPEC.md`](../../../../SPEC.md#tone-and-variant-system). On this component `variant` selects the ring color and is the only way to express status: pick a brand value (`'primary'`, `'secondary'`, `'ai'`) for neutral progress, or a status value (`'success'`, `'warning'`, `'error'`, `'info'`) to color the completion state. There is no separate `tone` prop.
+The shared `variant` ladder is defined in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md). On this component `variant` selects the ring color and is the only way to express status: pick a brand value (`'primary'`, `'ai'`) for neutral progress, or a status value (`'success'`, `'warning'`, `'error'`, `'info'`) to color the completion state. There is no separate `tone` prop.
 
 #### Other behavioral props
 
@@ -34,7 +34,7 @@ The shared `variant` ladder is defined in [`projects/stencil/SPEC.md`](../../../
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-radial-progress>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant ladder documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-radial-progress>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant ladder documented in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) and the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Progress Indicator
 
@@ -67,7 +67,7 @@ Use `variant` to communicate what kind of progress is being tracked. Pick a bran
 
 #### Progress with Icon
 
-Set `icon` to an iconsauce slug to show a glyph above the percentage readout. The icon is colored by the same `--mds-radial-progress-color` token as the ring.
+Set `icon` to an icon slug to show a glyph above the percentage readout. The icon takes the same color as the ring.
 
 ```html
 <!-- Caricamento file -->
@@ -113,7 +113,7 @@ Set `icon` to an iconsauce slug to show a glyph above the percentage readout. Th
 
 #### Live Updates and Animation
 
-Bind `progress` to a reactive state value. When the prop changes, the component smoothly animates the ring to the new value over ~500 ms using an ease-out curve. Respects `prefers-reduced-motion` automatically - no extra code needed.
+Bind `progress` to a reactive state value. When the prop changes, the component smoothly animates the ring to the new value over ~500 ms using an ease-out curve. Respects the reduced-motion preference (the Magma `pref-animation-*` choice, or the OS setting when it follows the system) automatically - no extra code needed.
 
 ```html
 <mds-radial-progress id="upload-ring" progress="0"></mds-radial-progress>
@@ -132,32 +132,19 @@ Bind `progress` to a reactive state value. When the prop changes, the component 
 
 #### Dark and Light Neutral Variants
 
-Use `variant="dark"` over light backgrounds and `variant="light"` when the ring sits on a dark surface. Both use neutral palette tokens so they adapt without custom CSS.
+`variant="dark"` paints an inverse ring (`surface-inverse`: dark on a light UI, light on a dark one); `variant="light"` paints a neutral ring on the wash. Both use neutral roles that follow the mode, so they adapt without custom CSS and are not tied to a light or dark background.
 
 ```html
-<!-- Su sfondo chiaro -->
+<!-- Anello invertito -->
 <mds-radial-progress progress="0.6" variant="dark"></mds-radial-progress>
 
-<!-- Su sfondo scuro -->
+<!-- Anello neutro -->
 <mds-radial-progress progress="0.6" variant="light"></mds-radial-progress>
-```
-
-#### CSS Custom Property Customization
-
-Style the component only through its documented `--mds-radial-progress-*` CSS custom properties. Set them on the host or a parent selector; use Magma color tokens via `rgb(var(--<token>))` so dark mode and high-contrast modes keep working. The `--mds-radial-progress-text-suffix` property controls the suffix appended after the number (default `'%'`).
-
-```css
-.branded-progress mds-radial-progress {
-  --mds-radial-progress-color: rgb(var(--variant-secondary-03));
-  --mds-radial-progress-background: rgb(var(--tone-neutral-08));
-  --mds-radial-progress-text-background: rgb(var(--tone-neutral));
-  --mds-radial-progress-text-suffix: '%';
-}
 ```
 
 #### Shadow Part Customization
 
-The two documented shadow parts - `value-container` and `icon` - allow deeper styling when CSS custom properties are not sufficient.
+The component documents no CSS custom properties: color it with `variant`, and use the two documented shadow parts - `value-container` and `icon` - for deeper styling.
 
 ```css
 /* Adjust the inner circle shadow */
@@ -167,24 +154,24 @@ mds-radial-progress::part(value-container) {
 
 /* Tint the icon independently from the ring color */
 mds-radial-progress::part(icon) {
-  fill: rgb(var(--status-warning-05));
+  fill: rgb(var(--magma-warning-text-default));
 }
 ```
 
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-radial-progress>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-radial-progress>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Pass `progress` Outside the 0-1 Range
 
 `progress` is a 0-1 fraction, not a 0-100 percentage. Values outside the range are silently clamped, so `progress="75"` displays "100%" rather than "75%".
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-radial-progress progress="75"></mds-radial-progress>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-radial-progress progress="0.75"></mds-radial-progress>
 ```
 
@@ -193,12 +180,12 @@ Common incorrect uses of `<mds-radial-progress>`. Each entry pairs the wrong for
 `<mds-radial-progress>` has no slots - neither a default slot nor any named slot. Placing child elements inside the tag has no effect; they are not rendered.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-radial-progress progress="0.5">
   <mds-icon name="mi/baseline/check"></mds-icon>
 </mds-radial-progress>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-radial-progress progress="0.5" icon="mi/baseline/check"></mds-radial-progress>
 ```
 
@@ -207,13 +194,13 @@ Common incorrect uses of `<mds-radial-progress>`. Each entry pairs the wrong for
 The component enforces a 1:1 `aspect-ratio` internally. Setting both dimensions independently can distort the circular ring into an ellipse.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-radial-progress {
   width: 80px;
   height: 60px;
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-radial-progress {
   width: 80px;
 }
@@ -221,45 +208,37 @@ mds-radial-progress {
 
 #### Do Not Hard-Code Colors with Inline Styles
 
-Inline `style` bypasses the `--mds-radial-progress-*` custom properties and the Magma token system, breaking dark-mode and high-contrast adaptations.
+Inline `style` bypasses `variant` and the Magma color roles, breaking dark-mode and high-contrast adaptations.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-radial-progress
   progress="0.6"
   style="color: #FF5500; background: #eee;"
 ></mds-radial-progress>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-radial-progress progress="0.6" variant="warning"></mds-radial-progress>
-```
-
-```css
-/* ✅ CORRECT for deeper customization */
-.my-context mds-radial-progress {
-  --mds-radial-progress-color: rgb(var(--status-warning-05));
-  --mds-radial-progress-background: rgb(var(--status-warning-09));
-}
 ```
 
 #### Do Not Use `variant` Values Not Accepted by the Component
 
-`<mds-radial-progress>` accepts `ThemeVariantType` (`primary`, `secondary`, `ai`, `dark`, `light`, `error`, `warning`, `success`, `info`). Decorative label variants (`'red'`, `'blue'`, `'orchid'`, etc.) defined in `ThemeFullVariantType` are not wired in this component and silently fall back to the default styling.
+`<mds-radial-progress>` accepts `ThemeVariantType` (`primary`, `ai`, `dark`, `light`, `error`, `warning`, `success`, `info`). Decorative label variants (`'red'`, `'blue'`, `'orchid'`, etc.) defined in `ThemeFullVariantType` are not wired in this component and silently fall back to the default styling.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-radial-progress progress="0.4" variant="red"></mds-radial-progress>
 
-<!-- ✅ CORRECT - use a semantic status variant for color emphasis -->
+<!-- CORRECT - use a semantic status variant for color emphasis -->
 <mds-radial-progress progress="0.4" variant="error"></mds-radial-progress>
 ```
 
 #### Do Not Pierce the Shadow DOM
 
-Targeting internal class names via `>>>` or undocumented `::part()` selectors couples your code to the component's implementation and breaks on future releases. Use the documented `--mds-radial-progress-*` properties and the `value-container` / `icon` shadow parts only.
+Targeting internal class names via `>>>` or undocumented `::part()` selectors couples your code to the component's implementation and breaks on future releases. Use `variant` and the documented `value-container` / `icon` shadow parts only.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-radial-progress >>> .value {
   font-size: 20px;
 }
@@ -267,10 +246,7 @@ mds-radial-progress::part(value-container__text) {
   display: none;
 }
 
-/* ✅ CORRECT */
-mds-radial-progress {
-  --mds-radial-progress-text-suffix: '';
-}
+/* CORRECT */
 mds-radial-progress::part(value-container) {
   box-shadow: none;
 }

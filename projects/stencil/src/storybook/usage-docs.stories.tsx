@@ -42,7 +42,7 @@ export const Button = {
     // the repository-relative links point at GitHub
     const links = canvas.getAllByRole('link').map((link) => link.getAttribute('href'));
     expect(links).toContain(
-      `${REPOSITORY_URL}/blob/${REPOSITORY_BRANCH}/docs/COMPONENTS.md#system-level-anti-patterns`,
+      `${REPOSITORY_URL}/blob/${REPOSITORY_BRANCH}/docs/agents/anti-patterns.md`,
     );
     expect(links.filter((href) => href.startsWith('.'))).toHaveLength(0);
 

@@ -26,12 +26,12 @@ This component has essentially one configurable prop:
 
 - **`label`**: Sets an optional title rendered in the header band above the matrix. Provide it to name the feature group (e.g. a section heading shared across all plan columns); omit it when the matrix should appear without a heading.
 
-All other variation comes from the slotted children rather than from props. Column widths are computed by each `mds-price-table-features-row`, and the visual treatment of each cell is driven by the `type` prop on `mds-price-table-features-cell`. Spacing and dividers can be tuned through the `--mds-price-table-features-padding` and `--mds-price-table-features-border-color` CSS custom properties listed in the readme.
+All other variation comes from the slotted children rather than from props. Column widths are computed by each `mds-price-table-features-row`, and the visual treatment of each cell is driven by the `type` prop on `mds-price-table-features-cell`. Spacing can be tuned through `--mds-price-table-features-padding` (the header band and, by inheritance, every cell) and the header band's divider through `--mds-price-table-features-border-color` (the cells draw their own dividers with `--mds-price-table-features-cell-border-color`), both listed in [`readme.md`](../readme.md).
 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-price-table-features>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the compound-component rules documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-price-table-features>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Feature Matrix
 
@@ -163,12 +163,12 @@ Compose several `<mds-price-table-features>` blocks inside one [`<mds-price-tabl
 
 #### Styling Customization
 
-Tune borders and spacing through the documented CSS custom properties. Set them on the host or on a parent selector; use Magma color tokens wrapped in `rgb(var(...))` so dark mode and high-contrast modes keep working.
+Tune the header band's divider and the cell spacing through the documented CSS custom properties. Set them on the host or on a parent selector; name a semantic role, `rgb(var(--magma-<role>))` ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)), so dark mode and high-contrast modes keep working.
 
 ```css
 .pricing-section mds-price-table-features {
-  --mds-price-table-features-border-color: rgb(var(--variant-primary-06));
-  --mds-price-table-features-padding: var(--spacing-400);
+  --mds-price-table-features-border-color: rgb(var(--magma-accent-border));
+  --mds-price-table-features-padding: calc(var(--spacing) * 400);
 }
 ```
 
@@ -176,21 +176,21 @@ To style the header band independently, target the documented `header` shadow pa
 
 ```css
 .pricing-section mds-price-table-features::part(header) {
-  background: rgb(var(--tone-neutral-09));
+  background: rgb(var(--magma-wash-base));
 }
 ```
 
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-price-table-features>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-price-table-features>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Use Outside `<mds-price-table>`
 
-`<mds-price-table-features>` is a compound child; it requires a [`<mds-price-table>`](../../mds-price-table) parent to align column widths and participate in the shared table layout. Using it standalone breaks the layout contract.
+`<mds-price-table-features>` is a compound child; it belongs inside a [`<mds-price-table>`](../../mds-price-table) parent, which stacks it with the plan header or cards it compares. Standalone it still renders its table, but it is cut off from the plans its columns refer to.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-price-table-features label="Funzioni di base">
   <mds-price-table-features-row>
     <mds-price-table-features-cell type="label">Utenti</mds-price-table-features-cell>
@@ -198,7 +198,7 @@ Common incorrect uses of `<mds-price-table-features>`. Each entry pairs the wron
   </mds-price-table-features-row>
 </mds-price-table-features>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-price-table>
   <mds-price-table-features label="Funzioni di base">
     <mds-price-table-features-row>
@@ -214,7 +214,7 @@ Common incorrect uses of `<mds-price-table-features>`. Each entry pairs the wron
 The default slot of `<mds-price-table-features>` expects only `mds-price-table-features-row` elements. Slotting raw `<tr>`, `<div>`, or other markup bypasses the row-width calculation logic and breaks the table structure.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-price-table>
   <mds-price-table-features label="Funzioni">
     <tr>
@@ -224,7 +224,7 @@ The default slot of `<mds-price-table-features>` expects only `mds-price-table-f
   </mds-price-table-features>
 </mds-price-table>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-price-table>
   <mds-price-table-features label="Funzioni">
     <mds-price-table-features-row>
@@ -240,11 +240,11 @@ The default slot of `<mds-price-table-features>` expects only `mds-price-table-f
 `type="supported"` and `type="unsupported"` render a built-in icon and ignore any slotted content. Adding text or components inside these cells is silent dead markup.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-price-table-features-cell type="supported">Incluso</mds-price-table-features-cell>
 <mds-price-table-features-cell type="unsupported">Non disponibile</mds-price-table-features-cell>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-price-table-features-cell type="supported"></mds-price-table-features-cell>
 <mds-price-table-features-cell type="unsupported"></mds-price-table-features-cell>
 ```
@@ -254,13 +254,13 @@ The default slot of `<mds-price-table-features>` expects only `mds-price-table-f
 The `type="text"` cell wraps its slot in a detail-typography `<mds-text>` element - it is meant for per-plan values, not for the feature name. Use `type="label"` for the first (feature-name) cell of each row.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-price-table-features-row>
   <mds-price-table-features-cell type="text">Spazio di archiviazione</mds-price-table-features-cell>
   <mds-price-table-features-cell type="text">10 GB</mds-price-table-features-cell>
 </mds-price-table-features-row>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-price-table-features-row>
   <mds-price-table-features-cell type="label">Spazio di archiviazione</mds-price-table-features-cell>
   <mds-price-table-features-cell type="text">10 GB</mds-price-table-features-cell>
@@ -272,7 +272,7 @@ The `type="text"` cell wraps its slot in a detail-typography `<mds-text>` elemen
 Every `mds-price-table-features-row` in the same section must have the same number of cells. The row component computes each cell width as `100% / cellCount`; mismatched counts produce misaligned columns.
 
 ```html
-<!-- 🚫 INCORRECT - first row has 4 cells, second has 3 -->
+<!-- INCORRECT - first row has 4 cells, second has 3 -->
 <mds-price-table-features>
   <mds-price-table-features-row>
     <mds-price-table-features-cell type="label">Utenti</mds-price-table-features-cell>
@@ -287,7 +287,7 @@ Every `mds-price-table-features-row` in the same section must have the same numb
   </mds-price-table-features-row>
 </mds-price-table-features>
 
-<!-- ✅ CORRECT - every row has the same number of cells -->
+<!-- CORRECT - every row has the same number of cells -->
 <mds-price-table-features>
   <mds-price-table-features-row>
     <mds-price-table-features-cell type="label">Utenti</mds-price-table-features-cell>
@@ -309,7 +309,7 @@ Every `mds-price-table-features-row` in the same section must have the same numb
 The only documented shadow part is `header`. Targeting internal elements (the `table`, `tbody`, or the `mds-text` inside the header) via other `::part()` selectors or `>>>` couples your code to the internal structure and will break on updates.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-price-table-features::part(table) {
   border-radius: 8px;
 }
@@ -317,13 +317,13 @@ mds-price-table-features >>> table {
   border: 2px solid red;
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-price-table-features {
-  --mds-price-table-features-border-color: rgb(var(--variant-primary-06));
-  --mds-price-table-features-padding: var(--spacing-400);
+  --mds-price-table-features-border-color: rgb(var(--magma-accent-border));
+  --mds-price-table-features-padding: calc(var(--spacing) * 400);
 }
 mds-price-table-features::part(header) {
-  background: rgb(var(--tone-neutral-09));
+  background: rgb(var(--magma-wash-base));
 }
 ```
 
