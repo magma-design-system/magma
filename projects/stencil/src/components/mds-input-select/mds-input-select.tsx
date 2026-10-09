@@ -306,7 +306,7 @@ export class MdsInputSelect {
           {this.required && (
             <mds-input-tip-item
               expanded={this.hasFocus}
-              variant={this.value === '' ? 'required' : 'required-success'}
+              variant={(this.value ?? '') === '' ? 'required' : 'required-success'}
             ></mds-input-tip-item>
           )}
         </mds-input-tip>

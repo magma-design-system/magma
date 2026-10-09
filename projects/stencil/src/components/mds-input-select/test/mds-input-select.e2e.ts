@@ -83,6 +83,21 @@ describe('mds-input-select', () => {
     select.remove();
   });
 
+  // the React wrapper clears the value when the placeholder arrives after load (#786)
+  it('shows the required state, not the success one, when the value is null', async () => {
+    const select = document.createElement('mds-input-select');
+    select.required = true;
+    select.placeholder = 'Choose';
+    (select as { value?: string | null }).value = null;
+    select.innerHTML = '<option value="a">A</option>';
+    document.body.appendChild(select);
+    await vi.waitFor(() => expect(select).toHaveAttribute('hydrated'));
+
+    const tip = select.shadowRoot!.querySelector('mds-input-tip-item[variant^="required"]');
+    expect(tip).toEqualAttribute('variant', 'required');
+    select.remove();
+  });
+
   describe('accessible name', () => {
     it('names the select after the aria-label of the host', async () => {
       const { root } = await render<HTMLMdsInputSelectElement>(
