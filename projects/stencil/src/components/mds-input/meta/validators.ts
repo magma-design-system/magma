@@ -120,11 +120,19 @@ export class Validator {
     this._validators = this._validators.filter((v) => !this._hasValidator(validator, v));
   }
 
-  validate(value: string): void {
+  /**
+   * Returns the errors of a value without storing them: `errors` and `isValid` keep the ones of
+   * the last `validate`.
+   */
+  check(value: string): MdsValidationErrors | null {
     const res = this._validators
       .map((v) => v(value))
       .reduce((prev, curr) => ({ ...prev, ...curr }), NullValidator);
-    this._errors = Object.keys(res).length === 0 ? null : res;
+    return Object.keys(res).length === 0 ? null : res;
+  }
+
+  validate(value: string): void {
+    this._errors = this.check(value);
     this.isValid = !this._errors;
   }
 

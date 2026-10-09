@@ -83,6 +83,21 @@ describe('mds-input-select', () => {
     select.remove();
   });
 
+  // the React wrapper clears the value when the placeholder arrives after load (#786)
+  it('shows the required state, not the success one, when the value is null', async () => {
+    const select = document.createElement('mds-input-select');
+    select.required = true;
+    select.placeholder = 'Choose';
+    (select as { value?: string | null }).value = null;
+    select.innerHTML = '<option value="a">A</option>';
+    document.body.appendChild(select);
+    await vi.waitFor(() => expect(select).toHaveAttribute('hydrated'));
+
+    const tip = select.shadowRoot!.querySelector('mds-input-tip-item[variant^="required"]');
+    expect(tip).toEqualAttribute('variant', 'required');
+    select.remove();
+  });
+
   describe('accessible name', () => {
     it('names the select after the aria-label of the host', async () => {
       const { root } = await render<HTMLMdsInputSelectElement>(
@@ -91,5 +106,39 @@ describe('mds-input-select', () => {
 
       expect(root.shadowRoot!.querySelector('select')).toEqualAttribute('aria-label', 'Film');
     });
+  });
+});
+
+// Like a native select, a required one left empty stops the submit of its form (#786)
+describe('form validity', () => {
+  it('stops the submit while a required select is empty', async () => {
+    const { root: form, waitForChanges } = await render<HTMLFormElement>(`
+      <form>
+        <mds-input-select name="s" placeholder="Choose" required>
+          <option value="a">A</option>
+        </mds-input-select>
+      </form>
+    `);
+    const select = form.querySelector('mds-input-select')!;
+
+    expect(form.checkValidity()).toBe(false);
+    expect(select.matches(':invalid')).toBe(true);
+
+    await select.setValue('a');
+    await waitForChanges();
+
+    expect(form.checkValidity()).toBe(true);
+  });
+
+  it('does not stop the submit when the select is optional', async () => {
+    const { root: form } = await render<HTMLFormElement>(`
+      <form>
+        <mds-input-select name="s" placeholder="Choose">
+          <option value="a">A</option>
+        </mds-input-select>
+      </form>
+    `);
+
+    expect(form.checkValidity()).toBe(true);
   });
 });
