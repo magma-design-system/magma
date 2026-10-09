@@ -9,31 +9,31 @@
 
 ### 1. Description
 
-The `<mds-pref-contrast>` web component is a preference control that lets users switch the application's contrast mode (`more`, `system`, or `no-preference`). It is a compound child of the [`<mds-pref>`](../../mds-pref) panel and renders as a segmented tab of icon options rather than any single native HTML primitive.
+The `<mds-pref-contrast>` web component is a preference control that lets users switch the application's contrast mode (`more`, `system`, or `no-preference`). It is usually a child of the [`<mds-pref>`](../../mds-pref) panel and renders as a segmented tab of icon options rather than any single native HTML primitive.
 
 #### Semantic Behavior
 
-- **Compound child only**: It is designed to be placed as a direct slot child of `<mds-pref>` alongside the other preference children (`mds-pref-animation`, `mds-pref-consumption`, `mds-pref-language`, `mds-pref-mode`); it is not meant to be used standalone or mixed with unrelated element types.
+- **Usually inside `<mds-pref>`**: It is designed to be placed as a direct slot child of `<mds-pref>` alongside the other preference children (`mds-pref-animation`, `mds-pref-consumption`, `mds-pref-language`, `mds-pref-mode`, `mds-pref-theme`); it also works on its own, since it applies and stores the preference by itself.
 - **Mode resolution on render**: The active mode is resolved in order from the `mode` prop, the persisted value, then the `system` default, and applied immediately - so it acts on the document even before any user interaction.
 - **Applies the preference globally**: Selecting a mode applies it across the whole document and persists the choice.
-- **System resolution**: When the host environment exposes a `prefers-contrast` media query, that value is consulted to map the OS-level preference onto the design system's contrast tokens.
-- **Change event**: Every mode change emits `mdsPrefChange` with `{ preference: 'contrast' }`; `<mds-pref>` listens for this to coordinate cross-preference behavior such as the reload-required notice.
+- **System resolution**: With `system` the component writes `pref-contrast-system` on `<html>`, and the styles follow the OS `prefers-contrast` setting through their own media query; the component does not map the OS value itself.
+- **Change event**: Every mode change emits `mdsPrefChange` with `{ preference: 'contrast' }`, and so does every render, page load included; `<mds-pref>` listens for it only in `controller` mode.
 
 #### Properties & Visual Configurations
 
 - **`mode`** - the active contrast preference. Leave it unset to let the component restore the last persisted choice or fall back to `system`; set it explicitly (`more`, `system`, `no-preference`) only when the host wants to force a contrast level. Pick `more` for high-contrast output, `no-preference` for the default theme, and `system` to defer to the OS `prefers-contrast` setting.
-- **`size`** - sizes the nested tab items (`sm` / `md`). In practice this is propagated automatically by the parent `<mds-pref>`, which fans its own `size` down to every `mds-pref-*` child, so it rarely needs to be set directly on this component.
+- **`size`** - sizes the nested tab items (`sm` / `md`). The parent `<mds-pref>` forwards a later change of its own `size` to every `mds-pref-*` child, but not the initial value, so set it on this component as well.
 
-The component does not use the shared `variant` / `tone` ladders documented in [`projects/stencil/SPEC.md`](../../../../SPEC.md#tone-and-variant-system); its visual states are driven entirely by the resolved `mode`.
+The component does not use the shared `variant` / `tone` ladders documented in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md); its visual states are driven entirely by the resolved `mode`.
 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-pref-contrast>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-pref-contrast>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Inside the Full Preferences Panel
 
-The canonical form. Slot `<mds-pref-contrast>` directly inside [`<mds-pref>`](../../mds-pref) alongside the other preference controls. The parent panel propagates `size`, coordinates the reload notice, and handles cross-preference communication automatically.
+The canonical form. Slot `<mds-pref-contrast>` directly inside [`<mds-pref>`](../../mds-pref) alongside the other preference controls. The parent panel forwards later changes of its `size` to every child.
 
 ```html
 <mds-pref>
@@ -60,13 +60,13 @@ When an application exposes only accessibility controls, slot `<mds-pref-contras
 Set the `mode` prop explicitly when the host application needs to impose a contrast level regardless of the user's last persisted choice. Valid values are `more` (high contrast), `system` (defers to OS `prefers-contrast`), and `no-preference` (design-system default).
 
 ```html
-<!-- Force high contrast for a section of the app that requires it -->
+<!-- Force high contrast: the class goes on <html>, so it applies to the whole document -->
 <mds-pref-contrast mode="more"></mds-pref-contrast>
 ```
 
 #### Reacting to Contrast Changes
 
-Listen for `mdsPrefChange` to act whenever the user switches the contrast mode. The event detail carries `{ preference: 'contrast' }` so a single handler can distinguish between the different preference controls.
+Listen for `mdsPrefChange` to act whenever the user switches the contrast mode. The event detail carries `{ preference: 'contrast' }` so a single handler can distinguish between the different preference controls; the event also fires on every render, page load included, so do not read each one as a user's choice.
 
 ```html
 <mds-pref-contrast id="contrast-ctrl"></mds-pref-contrast>
@@ -84,7 +84,7 @@ Listen for `mdsPrefChange` to act whenever the user switches the contrast mode. 
 
 #### Controlling Size
 
-Use the `size` prop when rendering `<mds-pref-contrast>` outside `<mds-pref>` and a specific tab-item size is required. Inside `<mds-pref>`, the parent propagates its own `size` automatically - setting it on this child is unnecessary.
+Use the `size` prop when rendering `<mds-pref-contrast>` outside `<mds-pref>` and a specific tab-item size is required. Inside `<mds-pref>`, the parent forwards later changes of its own `size`, not the initial value, so set it on this child as well.
 
 ```html
 <!-- Compact size for a toolbar or narrow panel -->
@@ -106,52 +106,18 @@ Leave `mode` unset. On every render the component reads `localStorage` for the k
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-pref-contrast>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
-
-#### Do Not Use Outside Its Parent `<mds-pref>`
-
-`<mds-pref-contrast>` is a compound child designed for direct slot placement inside [`<mds-pref>`](../../mds-pref). Using it standalone in page content bypasses the parent's coordination logic (size propagation, reload notice, cross-preference sequencing).
-
-```html
-<!-- 🚫 INCORRECT -->
-<div class="settings-section">
-  <mds-pref-contrast></mds-pref-contrast>
-</div>
-
-<!-- ✅ CORRECT -->
-<mds-pref>
-  <mds-pref-contrast></mds-pref-contrast>
-</mds-pref>
-```
-
-#### Do Not Set `size` Directly When Inside `<mds-pref>`
-
-The parent `<mds-pref>` fans its `size` prop down to every `mds-pref-*` child automatically. Overriding `size` on the child creates a mismatch between sibling controls.
-
-```html
-<!-- 🚫 INCORRECT -->
-<mds-pref size="md">
-  <mds-pref-contrast size="sm"></mds-pref-contrast>
-  <mds-pref-animation></mds-pref-animation>
-</mds-pref>
-
-<!-- ✅ CORRECT -->
-<mds-pref size="sm">
-  <mds-pref-contrast></mds-pref-contrast>
-  <mds-pref-animation></mds-pref-animation>
-</mds-pref>
-```
+Common incorrect uses of `<mds-pref-contrast>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Pass an Invalid `mode` Value
 
-`mode` accepts only `"more"`, `"system"`, or `"no-preference"`. Passing any other string (e.g. a legacy name or a boolean) silently fails to match any contrast entry and can throw a runtime error when the component tries to apply the CSS class.
+`mode` accepts only `"more"`, `"system"`, or `"no-preference"`. Passing any other string (e.g. a legacy name or a boolean) matches no contrast entry: applying it fails with an error when the component tries to apply the CSS class, after the value has already been stored in `localStorage` (later loads fail too).
 
 ```html
-<!-- 🚫 INCORRECT (not a valid ContrastModeType) -->
+<!-- INCORRECT (not a valid ContrastModeType) -->
 <mds-pref-contrast mode="high"></mds-pref-contrast>
 <mds-pref-contrast mode="true"></mds-pref-contrast>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-pref-contrast mode="more"></mds-pref-contrast>
 ```
 
@@ -160,13 +126,13 @@ The parent `<mds-pref>` fans its `size` prop down to every `mds-pref-*` child au
 The component emits the documented `mdsPrefChange` event; there is no native `change` event bubbling out of the shadow DOM. Listening for `change` on the host element will never fire.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-pref-contrast id="cp"></mds-pref-contrast>
 <script>
   document.getElementById('cp').addEventListener('change', handler);
 </script>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-pref-contrast id="cp"></mds-pref-contrast>
 <script>
   document.getElementById('cp').addEventListener('mdsPrefChange', handler);
@@ -175,32 +141,31 @@ The component emits the documented `mdsPrefChange` event; there is no native `ch
 
 #### Do Not Write `@media (prefers-contrast: more)` Overrides in App Code
 
-The design system manages high-contrast tokens automatically through the `pref-contrast-more` class applied to `<html>` by `<mds-pref-contrast>`. Hand-rolling media query overrides duplicates that logic and breaks when the user picks `system` (OS-driven) vs. `more` (explicit choice), because the two code paths diverge.
+The design system manages high-contrast tokens automatically through the `pref-contrast-more` class (and `pref-contrast-system`, which follows the OS) applied to `<html>` by `<mds-pref-contrast>`: the semantic roles are promoted under both. Hand-rolling media query overrides duplicates that logic and breaks when the user picks `system` (OS-driven) vs. `more` (explicit choice), because the two code paths diverge.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 @media (prefers-contrast: more) {
   .my-card {
     border: 2px solid black;
   }
 }
 
-/* ✅ CORRECT - target the class the component applies */
-:root.pref-contrast-more .my-card,
-:root.pref-contrast-system .my-card {
-  border: 2px solid black;
+/* CORRECT - paint with a role: it is promoted under high contrast, explicit or OS-driven */
+.my-card {
+  border: 1px solid rgb(var(--magma-border-default));
 }
 ```
 
 #### Do Not Set `mode="false"` to Reset the Preference
 
-Boolean idioms do not apply here. `mode` is a string union - setting it to `"false"` is not a valid value and will not clear the preference. Remove the `mode` attribute entirely (or set the prop to `undefined`) to let the component fall back to the last persisted value.
+Boolean idioms do not apply here. `mode` is a string union - setting it to `"false"` is not a valid value and will not clear the preference. Leave the `mode` attribute out of the markup to let the component fall back to the last persisted value; unsetting it at runtime (removing the attribute or setting the prop to `undefined`) fails like an invalid value.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-pref-contrast mode="false"></mds-pref-contrast>
 
-<!-- ✅ CORRECT (omit mode or unset it programmatically) -->
+<!-- CORRECT (omit mode) -->
 <mds-pref-contrast></mds-pref-contrast>
 ```
 

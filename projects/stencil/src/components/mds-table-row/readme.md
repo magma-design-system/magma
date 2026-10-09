@@ -11,11 +11,11 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ### 1. Description
 
-The `<mds-table-row>` web component represents a single data row inside a [`<mds-table>`](../../mds-table) (slotted through `mds-table-body`, `mds-table-header`, or `mds-table-footer`). It wraps a set of `mds-table-cell` children, and optionally exposes a per-row selection checkbox and an aside actions menu.
+The `<mds-table-row>` web component represents a single data row inside a [`<mds-table>`](../../mds-table) (slotted through `mds-table-body`; `mds-table-header` and `mds-table-footer` are rows themselves). It wraps a set of `mds-table-cell` children, and optionally exposes a per-row selection checkbox and an aside actions menu.
 
 #### Semantic Behavior
 
-- **Compound child only**: `<mds-table-row>` must be slotted inside an `<mds-table>` subtree (header/body/footer); it is not used standalone and its default slot must contain `mds-table-cell` elements, not arbitrary markup.
+- **Compound child only**: `<mds-table-row>` must be slotted inside the `mds-table-body` of an `<mds-table>`; it is not used standalone and its default slot must contain `mds-table-cell` elements, not arbitrary markup.
 - **Parent-driven configuration**: `interactive`, `selectable`, and `overlayActions` are set by the parent `<mds-table>` on every row, so rows stay in sync with table state rather than being configured one by one.
 - **Selection reporting**: When `selectable` is on, the row renders a leading selection checkbox; toggling it updates the row's `selected` prop and tells the table to recompute and emit the table-level selection event.
 - **Selected as two-way state**: `selected` can be read and set by the parent to drive bulk select-all behavior.
@@ -35,11 +35,11 @@ Most props are orchestrated by the parent table rather than set directly by cons
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-table-row>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the table system documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-table-row>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Row with Data Cells
 
-The minimal form: slot one or more [`mds-table-cell`](../../mds-table-cell) elements into the default slot. Always place `<mds-table-row>` inside [`mds-table-body`](../../mds-table-body) (or `mds-table-header` / `mds-table-footer`) - never standalone.
+The minimal form: slot one or more [`mds-table-cell`](../../mds-table-cell) elements into the default slot. Always place `<mds-table-row>` inside [`mds-table-body`](../../mds-table-body) - never standalone, and never inside `mds-table-header` / `mds-table-footer`, which are rows themselves.
 
 ```html
 <mds-table>
@@ -132,16 +132,21 @@ When the parent `<mds-table>` sets `selectable`, each row renders a leading chec
 
 #### Programmatic Selection
 
-`selected` is mutable and reflected. Set it from JavaScript to drive bulk "select all" or restore a previously saved selection state.
+`selected` is mutable and reflected. Set it from JavaScript to restore a previously saved selection state. Setting it updates that row only: call the parent table's `updateSelection()` afterwards so it emits `mdsTableSelectionChange` and updates the header checkbox and the batch-action bar. For bulk "select all" use the table's `selectAll()`.
 
 ```html
-<mds-table-row id="riga-principale" value="rec-1">
-  <mds-table-cell><mds-text typography="detail">Record principale</mds-text></mds-table-cell>
-</mds-table-row>
+<mds-table selectable id="tabella-record">
+  <mds-table-body>
+    <mds-table-row id="riga-principale" value="rec-1">
+      <mds-table-cell><mds-text typography="detail">Record principale</mds-text></mds-table-cell>
+    </mds-table-row>
+  </mds-table-body>
+</mds-table>
 
 <script>
   // Select the row programmatically (e.g. after restoring from storage)
   document.getElementById('riga-principale').selected = true;
+  document.getElementById('tabella-record').updateSelection();
 </script>
 ```
 
@@ -166,37 +171,37 @@ Set `interactive` on the parent `<mds-table>` to enable per-row hover highlights
 
 #### Styling Customization
 
-Override the documented `--mds-table-row-*` CSS custom properties on the row host or on a parent selector. Use Magma color tokens wrapped in `rgb(var(...))` so dark mode and high-contrast modes stay consistent.
+Override the documented `--mds-table-row-*` CSS custom properties on the row host or on a parent selector. Use the semantic color roles wrapped in `rgb(var(--magma-<role>))` so dark mode and high-contrast modes stay consistent.
 
 ```css
-/* Customize hover and alternate-row colors for a branded table */
+/* Customize hover (and selected) and sorted-row colors for a branded table */
 .tabella-brand mds-table-row {
-  --mds-table-row-background-hover: rgb(var(--variant-primary-01));
-  --mds-table-row-color-hover: rgb(var(--tone-kaolin-10));
-  --mds-table-row-background-alt: rgb(var(--tone-neutral-01));
-  --mds-table-row-color-alt: rgb(var(--tone-neutral-08));
-  --mds-table-row-actions-gap: var(--spacing-200);
+  --mds-table-row-background-hover: rgb(var(--magma-accent-emphasis));
+  --mds-table-row-color-hover: rgb(var(--magma-accent-on-emphasis));
+  --mds-table-row-background-alt: rgb(var(--magma-surface-inverse));
+  --mds-table-row-color-alt: rgb(var(--magma-on-inverse));
+  --mds-table-row-actions-gap: calc(var(--spacing) * 200);
 }
 ```
 
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-table-row>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-table-row>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Use `<mds-table-row>` Standalone
 
-`<mds-table-row>` is a compound child component and must be slotted inside [`mds-table-body`](../../mds-table-body), `mds-table-header`, or `mds-table-footer` inside an [`mds-table`](../../mds-table). Using it outside the table subtree breaks layout and the internal parent-child communication that drives selection and interactive state.
+`<mds-table-row>` is a compound child component and must be slotted inside the [`mds-table-body`](../../mds-table-body) of an [`mds-table`](../../mds-table). Using it outside the table subtree breaks layout and the internal parent-child communication that drives selection and interactive state.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <div class="my-list">
   <mds-table-row>
     <mds-table-cell>Mario Rossi</mds-table-cell>
   </mds-table-row>
 </div>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-table>
   <mds-table-body>
     <mds-table-row>
@@ -211,13 +216,13 @@ Common incorrect uses of `<mds-table-row>`. Each entry pairs the wrong form with
 The default slot of `<mds-table-row>` accepts only [`mds-table-cell`](../../mds-table-cell) elements. Slotting raw `<td>`, `<div>`, or other markup breaks the table layout model and the sort/selection logic that relies on `mds-table-cell` identity.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-table-row>
   <td>Mario Rossi</td>
   <div>mario.rossi@example.com</div>
 </mds-table-row>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-table-row>
   <mds-table-cell><mds-text typography="detail">Mario Rossi</mds-text></mds-table-cell>
   <mds-table-cell><mds-text typography="detail">mario.rossi@example.com</mds-text></mds-table-cell>
@@ -229,7 +234,7 @@ The default slot of `<mds-table-row>` accepts only [`mds-table-cell`](../../mds-
 Both props are orchestrated by the parent `<mds-table>` and propagated to every row automatically. Setting them per-row creates a desynchronized state where some rows behave differently from others, and the table's own state machine does not know about the override.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-table>
   <mds-table-body>
     <mds-table-row interactive selectable>
@@ -238,7 +243,7 @@ Both props are orchestrated by the parent `<mds-table>` and propagated to every 
   </mds-table-body>
 </mds-table>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-table interactive selectable>
   <mds-table-body>
     <mds-table-row value="p-01">
@@ -253,7 +258,7 @@ Both props are orchestrated by the parent `<mds-table>` and propagated to every 
 `<mds-table-row>` does not emit a public selection event. The table-level `mdsTableSelectionChange` event is the single aggregated source of truth for which rows are selected. Polling each row's `selected` attribute via MutationObserver or querying the DOM on every click is fragile and bypasses the table's own selection bookkeeping.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <script>
   document.querySelectorAll('mds-table-row').forEach((row) => {
     row.addEventListener('click', () => {
@@ -262,7 +267,7 @@ Both props are orchestrated by the parent `<mds-table>` and propagated to every 
   });
 </script>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <script>
   document.querySelector('mds-table').addEventListener('mdsTableSelectionChange', (e) => {
     console.log('Righe selezionate:', e.detail.rows);
@@ -272,16 +277,16 @@ Both props are orchestrated by the parent `<mds-table>` and propagated to every 
 
 #### Do Not Slot Icon-Only Action Buttons Without an Accessible Name
 
-Buttons in the `action` slot render without visible labels. A screen reader cannot announce the purpose of an `<mds-button>` that has neither `label` nor `aria-label` / `title`. Always provide `title` or `aria-label` on every action button.
+Buttons in the `action` slot render without visible labels. An `<mds-button>` that has neither `label` nor `aria-label` / `title` falls back to the last segment of its icon slug (`delete`), which names the icon, not the action. Always provide `title` or `aria-label` on every action button.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-table-row>
   <mds-table-cell><mds-text typography="detail">Documento.pdf</mds-text></mds-table-cell>
   <mds-button slot="action" icon="mi/baseline/delete" variant="error" tone="text"></mds-button>
 </mds-table-row>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-table-row>
   <mds-table-cell><mds-text typography="detail">Documento.pdf</mds-text></mds-table-cell>
   <mds-button
@@ -299,20 +304,20 @@ Buttons in the `action` slot render without visible labels. A screen reader cann
 The only supported customization surface is the five `--mds-table-row-*` CSS custom properties. Targeting internal shadow parts or setting `background-color` / `color` directly on the host element bypasses the interactive and selected state logic and will break on minor releases.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-table-row {
-  background-color: #fafafa;
-  color: #333;
+  background-color: rgb(var(--magma-surface-raised));
+  color: rgb(var(--magma-text-default));
 }
 mds-table-row::part(actions) {
   gap: 4px;
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-table-row {
-  --mds-table-row-background-alt: rgb(var(--tone-neutral-01));
-  --mds-table-row-color-alt: rgb(var(--tone-neutral-08));
-  --mds-table-row-actions-gap: var(--spacing-200);
+  --mds-table-row-background-alt: rgb(var(--magma-surface-inverse));
+  --mds-table-row-color-alt: rgb(var(--magma-on-inverse));
+  --mds-table-row-actions-gap: calc(var(--spacing) * 200);
 }
 ```
 

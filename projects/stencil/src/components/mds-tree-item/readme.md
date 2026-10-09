@@ -14,16 +14,16 @@ The `<mds-tree-item>` web component is the node primitive of the Magma Design Sy
 #### Semantic Behavior
 
 - **Compound child only**: It must be a direct slot child of `<mds-tree>` (first-level nodes) or of another `<mds-tree-item>` (nested nodes). It is not used standalone, and the default slot is reserved for further `<mds-tree-item>` children - not arbitrary content.
-- **Parent-driven defaults**: The parent `<mds-tree>` writes `toggle`, `truncate`, `actions`, `depth` and `expanded` onto its descendant items, so these props are usually orchestrated by the tree rather than set per-item. First-level items receive `depth = 0`.
+- **Parent-driven defaults**: The parent `<mds-tree>` writes `toggle`, `togglePosition`, `appearance` and `truncate` onto its descendant items when it loads (overwriting their own values), and `expanded` when its own value changes; `actions` is inherited from the nearest ancestor that sets it. These props are therefore orchestrated by the tree rather than set per-item. First-level items receive `depth = 0`.
 - **Self-managed expansion**: Clicking the toggle or label flips `expanded`, swaps the toggle icon, and animates the children container; on collapse it emits `mdsTreeItemCollapse`.
-- **Asynchronous expansion**: When `async` is set, the first expand click does not open immediately - it shows a spinner and emits `mdsTreeItemExpand` so the host can lazy-load children, then calls the public `expand()` method to finalize opening.
+- **Asynchronous expansion**: While `async` is set, an expand click does not open the node - it shows a spinner and emits `mdsTreeItemExpand` so the application can lazy-load children; the application then calls the public `expand()` method to finalize opening. Without `async`, opening emits no event.
 - **Bubbled events**: `mdsTreeItemExpand` and `mdsTreeItemCollapse` both carry `{ element }` (the host item) so the tree or application can react to node lifecycle.
-- **Leaf vs. branch**: It detects whether it contains nested items and whether it has slotted actions, adjusting the connector/branch rendering and actions visibility accordingly.
+- **Leaf vs. branch**: It detects whether it contains nested items (once, at first render) and whether it has slotted actions, adjusting the connector/branch rendering and actions visibility accordingly.
 - **Public method**: `expand()` opens the node and clears the awaiting state (used to resolve async loads).
 
 #### Properties & Visual Configurations
 
-- **`toggle`**: Picks the disclosure affordance - `chevron` (default arrow) or `folder` (closed/open folder icons that swap with `expanded`). Normally inherited from the parent tree for visual consistency.
+- **`toggle`**: Picks the disclosure affordance - `chevron` (default arrow) or `folder` (closed/open folder icons that swap as the user opens and closes the node). Normally inherited from the parent tree for visual consistency.
 - **`actions`**: Controls when slotted `action` controls appear - `auto` reveals them on hover, `visible` keeps them always shown. Place those controls in the named `action` slot.
 - **`async`**: Enable when a node's children are loaded on demand; pair it with a listener on `mdsTreeItemExpand` and a call to `expand()` once data is ready.
 - **`expanded`**: Mutable open/closed state; set it directly to pre-open a node, but expect the parent tree to override it when the whole tree expands or collapses.
@@ -34,7 +34,7 @@ The `<mds-tree-item>` web component is the node primitive of the Magma Design Sy
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-tree-item>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the compound parent [`<mds-tree>`](../../mds-tree) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-tree-item>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the compound parent [`<mds-tree>`](../../mds-tree) and the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Node Inside a Tree
 
@@ -95,7 +95,7 @@ Use the `icon` prop to add an icon before the label text. Reference icons by the
 
 #### Folder Toggle Style
 
-When the tree uses `toggle="folder"`, each item swaps between a closed-folder and open-folder icon as it expands. Set `toggle` on the parent `<mds-tree>` and all items inherit it automatically; only set it per item when you need mixed icon styles.
+When the tree uses `toggle="folder"`, each item swaps between a closed-folder and open-folder icon as it expands. Set `toggle` on the parent `<mds-tree>` and all items inherit it automatically: the tree writes its own value (default `chevron`) onto every item when it loads, so a `toggle` set on a single item is overwritten.
 
 ```html
 <mds-tree toggle="folder">
@@ -134,7 +134,7 @@ Slot `<mds-button>` or `<mds-icon>` elements into the `action` slot to attach co
 
 #### Asynchronous (Lazy-Load) Node
 
-Set `async` on a node when its children must be fetched on demand. On first expand the item shows a spinner and emits `mdsTreeItemExpand`; call `expand()` on the element once data is ready to finalize opening. After resolving, set `async` to `undefined` (or remove the attribute) so subsequent toggles work synchronously.
+Set `async` on a node when its children must be fetched on demand. On expand the item shows a spinner on its toggle and emits `mdsTreeItemExpand`; call `expand()` on the element once data is ready to finalize opening. The toggle (and so the spinner) shows only if the item already had child items at first render; children appended later do not add it. After resolving, set `async` to `undefined` (or remove the attribute) so subsequent toggles work synchronously.
 
 ```html
 <mds-tree>
@@ -165,7 +165,7 @@ Set `async` on a node when its children must be fetched on demand. On first expa
 
 #### Reacting to Expand and Collapse Events
 
-Listen to `mdsTreeItemExpand` and `mdsTreeItemCollapse` to keep external state (e.g. a sidebar breadcrumb or a selection store) in sync. Both events carry `{ element }` - the host `<mds-tree-item>` - so you can read its `label` or any other prop.
+Listen to `mdsTreeItemExpand` and `mdsTreeItemCollapse` to keep external state (e.g. a sidebar breadcrumb or a selection store) in sync. `mdsTreeItemCollapse` fires whenever an item closes; `mdsTreeItemExpand` fires only for items marked `async`, when they are asked to open. Both events carry `{ element }` - the host `<mds-tree-item>` - so you can read its `label` or any other prop.
 
 ```html
 <mds-tree id="struttura-tree">
@@ -175,6 +175,7 @@ Listen to `mdsTreeItemExpand` and `mdsTreeItemCollapse` to keep external state (
 </mds-tree>
 
 <script>
+  // emitted only by items marked async
   document.getElementById('struttura-tree').addEventListener('mdsTreeItemExpand', (event) => {
     console.log('Espanso:', event.detail.element.label);
   });
@@ -186,7 +187,7 @@ Listen to `mdsTreeItemExpand` and `mdsTreeItemCollapse` to keep external state (
 
 #### Multi-Line Label with Clamping
 
-Set `truncate="all"` on the tree (or the item) to allow multi-line text with clamping controlled by `--mds-tree-item-line-clamp`. Use this for long file paths or descriptive labels.
+Set `truncate="all"` on the tree (it overwrites the items' own value) to allow multi-line text with clamping controlled by `--mds-tree-item-line-clamp`. Use this for long file paths or descriptive labels.
 
 ```html
 <mds-tree truncate="all">
@@ -199,14 +200,14 @@ Set `truncate="all"` on the tree (or the item) to allow multi-line text with cla
 
 #### CSS Customization
 
-Customize the item's appearance only through its documented `--mds-tree-item-*` CSS custom properties. Set them on the host or a parent selector; use Magma color tokens via `rgb(var(--<token>))` to stay compatible with dark mode and high-contrast.
+Customize the item's appearance only through its documented `--mds-tree-item-*` CSS custom properties. Set them on the host or a parent selector; use the semantic color roles via `rgb(var(--magma-<role>))` to stay compatible with dark mode and high-contrast.
 
 ```css
 .archivio-tree mds-tree-item {
-  --mds-tree-item-branch-border-color: rgb(var(--variant-primary-03));
-  --mds-tree-item-branch-dot-expanded-color: rgb(var(--variant-primary-05));
-  --mds-tree-item-label-hover-background: rgb(var(--tone-kaolin-02));
-  --mds-tree-item-toggle-icon-chevron-default-color: rgb(var(--variant-primary-04));
+  --mds-tree-item-branch-border-color: rgb(var(--magma-accent-border));
+  --mds-tree-item-branch-dot-expanded-color: rgb(var(--magma-accent-fg));
+  --mds-tree-item-label-hover-background: rgb(var(--magma-wash-base));
+  --mds-tree-item-toggle-icon-chevron-default-color: rgb(var(--magma-accent-on-emphasis));
   --mds-tree-item-transition-duration: 200ms;
 }
 ```
@@ -217,32 +218,32 @@ Use `::part(actions-container)` and `::part(actions-list)` to style the wrapper 
 
 ```css
 mds-tree-item::part(actions-container) {
-  background: rgb(var(--tone-kaolin-01));
-  border-radius: var(--radius-md);
+  background: rgb(var(--magma-wash-soft));
+  border-radius: var(--magma-radius-md);
 }
 
 mds-tree-item::part(actions-list) {
-  gap: var(--spacing-200);
+  gap: calc(var(--spacing) * 200);
 }
 ```
 
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-tree-item>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-tree-item>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Use the Default Slot for Arbitrary Content
 
 The default slot accepts only `<mds-tree-item>` children. Slotting arbitrary HTML (text, icons, buttons) into the default slot does not produce a label or a nested item - use the `label` prop for text and the `action` slot for action controls.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-tree-item>
   <span>Documenti</span>
-  <mds-button icon="mi/baseline/add"></mds-button>
+  <mds-button icon="mi/baseline/add" title="Aggiungi documento"></mds-button>
 </mds-tree-item>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-tree-item label="Documenti">
   <mds-button
     slot="action"
@@ -259,12 +260,12 @@ The default slot accepts only `<mds-tree-item>` children. Slotting arbitrary HTM
 The `action` slot is for contextual controls (buttons, icons). Putting a `<mds-tree-item>` in the `action` slot removes it from the expand/collapse tree hierarchy and breaks branch rendering.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-tree-item label="Cartella">
   <mds-tree-item slot="action" label="Figlio"></mds-tree-item>
 </mds-tree-item>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-tree-item label="Cartella">
   <mds-tree-item label="Figlio"></mds-tree-item>
 </mds-tree-item>
@@ -272,13 +273,13 @@ The `action` slot is for contextual controls (buttons, icons). Putting a `<mds-t
 
 #### Do Not Set `expanded="false"` to Close a Node
 
-Boolean attributes in HTML/Stencil are truthy whenever present, regardless of string value. Setting `expanded="false"` keeps the node open. Remove the attribute (or set the property to `undefined`) to close.
+Stencil reads the exact string `"false"` as `false`, so the node renders closed, but the attribute stays on the element: the chevron, styled on the attribute, points open, and presence checks (`hasAttribute('expanded')`) read the node as open. Remove the attribute (or set the property to `undefined`) to close.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-tree-item label="Archivio" expanded="false"></mds-tree-item>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-tree-item label="Archivio"></mds-tree-item>
 ```
 
@@ -287,13 +288,13 @@ Boolean attributes in HTML/Stencil are truthy whenever present, regardless of st
 `<mds-tree-item>` is a compound child - it must be a direct slot child of `<mds-tree>` or of another `<mds-tree-item>`. Using it in isolation removes the branch context, depth assignments, and coordinated expand/collapse behavior.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <div class="my-list">
   <mds-tree-item label="Voce 1"></mds-tree-item>
   <mds-tree-item label="Voce 2"></mds-tree-item>
 </div>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-tree>
   <mds-tree-item label="Voce 1"></mds-tree-item>
   <mds-tree-item label="Voce 2"></mds-tree-item>
@@ -302,17 +303,17 @@ Boolean attributes in HTML/Stencil are truthy whenever present, regardless of st
 
 #### Do Not Set `depth` Manually
 
-`depth` is an internal prop set by the parent `<mds-tree>` to track nesting level for branch-line decoration. Overriding it from outside desynchronizes the visual indentation from the actual DOM hierarchy.
+`depth` is an internal prop set by the parent `<mds-tree>`: it marks first-level items with `0`, which removes their branch connector lines (indentation comes from the nesting, not from `depth`). A hand-set value is useless at best, and a `0` on a nested item strips the connectors from the wrong level.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-tree>
   <mds-tree-item label="Primo livello" depth="0">
     <mds-tree-item label="Secondo livello" depth="1"></mds-tree-item>
   </mds-tree-item>
 </mds-tree>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-tree>
   <mds-tree-item label="Primo livello">
     <mds-tree-item label="Secondo livello"></mds-tree-item>
@@ -325,7 +326,7 @@ Boolean attributes in HTML/Stencil are truthy whenever present, regardless of st
 The only supported customization surface is `--mds-tree-item-*` CSS custom properties and the two documented shadow parts (`actions-container`, `actions-list`). Targeting internal classes via `>>>`, `/deep/`, or undocumented `::part()` names couples your code to implementation details that can change on any minor release.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-tree-item >>> .label-action {
   font-weight: bold;
 }
@@ -333,13 +334,13 @@ mds-tree-item::part(toggle-icon) {
   color: red;
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-tree-item {
-  --mds-tree-item-label-hover-background: rgb(var(--tone-kaolin-02));
-  --mds-tree-item-toggle-icon-chevron-default-color: rgb(var(--variant-primary-04));
+  --mds-tree-item-label-hover-background: rgb(var(--magma-wash-base));
+  --mds-tree-item-toggle-icon-chevron-default-color: rgb(var(--magma-accent-on-emphasis));
 }
 mds-tree-item::part(actions-list) {
-  gap: var(--spacing-200);
+  gap: calc(var(--spacing) * 200);
 }
 ```
 
@@ -348,7 +349,7 @@ mds-tree-item::part(actions-list) {
 `expand()` is the public method for resolving an async load - it opens the node and clears the spinner. Calling it immediately on the `mdsTreeItemExpand` event (before data is fetched) opens an empty branch and discards the loading affordance. Always await the data before calling `expand()`.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <script>
   node.addEventListener('mdsTreeItemExpand', (event) => {
     event.detail.element.expand(); // opens immediately, before data arrives
@@ -356,7 +357,7 @@ mds-tree-item::part(actions-list) {
   });
 </script>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <script>
   node.addEventListener('mdsTreeItemExpand', async (event) => {
     const el = event.detail.element;

@@ -15,7 +15,7 @@ The `<mds-help>` web component is a contextual help affordance of the Magma Desi
 
 #### Semantic Behavior
 
-- **Tooltip-on-icon**: The host always renders a help icon and anchors a tooltip to it; the slotted text becomes the tooltip body and is shown on hover/focus of the icon.
+- **Tooltip-on-icon**: The host always renders a help icon and anchors a tooltip to it; the slotted text becomes the tooltip body and is shown while the pointer hovers the icon. The icon is not focusable, so keyboard users cannot open the tooltip: do not put essential information only here.
 - **Auto-placement**: Unless `disableAutoPlacement` is set (auto-placement is on by default), the tooltip repositions itself to stay near its caller and within the viewport, overriding the static `placement` when space is constrained.
 - **Default-slot is text**: The default slot is intended for a plain text string only; HTML elements or components in the slot are discouraged because the content is rendered inside the tooltip.
 
@@ -30,17 +30,17 @@ The tooltip's dimensions and reveal timing are tuned via the CSS custom properti
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-help>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-help>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Inline Help
 
-The canonical form. Drop `<mds-help>` inline next to a label or piece of text and slot in a plain string explaining the concept. The tooltip appears on hover or focus of the help icon.
+The canonical form. Drop `<mds-help>` inline next to a label or piece of text and slot in a plain string explaining the concept. The tooltip appears on hover of the help icon (the icon takes no keyboard focus).
 
 ```html
-<mds-text>
+<p>
   Periodo di fatturazione
   <mds-help>Il ciclo di fatturazione inizia il primo giorno del mese e termina l'ultimo.</mds-help>
-</mds-text>
+</p>
 ```
 
 #### Placement Preference
@@ -119,31 +119,31 @@ Increase `--mds-help-tooltip-delay` to prevent accidental tooltip flicker when u
 
 #### Icon Part Customization
 
-Tint the help icon to match a surrounding context using the documented `::part(icon)` surface. Keep using Magma color tokens so dark mode and high-contrast modes continue to work.
+Tint the help icon to match a surrounding context using the documented `::part(icon)` surface. Keep using the semantic color roles so dark mode and high-contrast modes continue to work.
 
 ```css
 /* Match the icon color to a warning banner context */
 .banner-warning mds-help::part(icon) {
-  fill: rgb(var(--status-warning-05));
+  fill: rgb(var(--magma-warning-text-default));
 }
 ```
 
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-help>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-help>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Put HTML Elements in the Default Slot
 
 The default slot is text-only; the content is rendered inside [`mds-tooltip`](../../mds-tooltip), which expects a plain string. Nested elements or components may be stripped or break the tooltip layout.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-help>
   <strong>Attenzione:</strong> il limite massimo e' <em>100 caratteri</em>.
 </mds-help>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-help>Attenzione: il limite massimo e' 100 caratteri.</mds-help>
 ```
 
@@ -152,14 +152,14 @@ The default slot is text-only; the content is rendered inside [`mds-tooltip`](..
 The only supported customization surface is `--mds-help-*` CSS custom properties and the documented `::part(icon)` shadow part. Targeting internal elements via `>>>` or undocumented selectors couples your code to the shadow DOM implementation.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-help >>> mds-icon {
   fill: red;
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-help::part(icon) {
-  fill: rgb(var(--status-warning-05));
+  fill: rgb(var(--magma-warning-text-default));
 }
 ```
 
@@ -168,13 +168,13 @@ mds-help::part(icon) {
 `<mds-help>` always renders its own help icon and wraps [`mds-tooltip`](../../mds-tooltip) internally. It is not a generic popover wrapper. If you need a tooltip on an arbitrary element, use [`mds-tooltip`](../../mds-tooltip) directly with a `target` selector.
 
 ```html
-<!-- 🚫 INCORRECT: slotting a custom trigger to replace the icon -->
+<!-- INCORRECT: slotting a custom trigger to replace the icon -->
 <mds-help>
   <mds-button slot="default" label="Dettagli"></mds-button>
   Testo di spiegazione.
 </mds-help>
 
-<!-- ✅ CORRECT: use mds-tooltip with a target for a custom trigger -->
+<!-- CORRECT: use mds-tooltip with a target for a custom trigger -->
 <mds-button id="info-btn" label="Dettagli"></mds-button>
 <mds-tooltip target="#info-btn">Testo di spiegazione.</mds-tooltip>
 ```
@@ -184,12 +184,12 @@ mds-help::part(icon) {
 Setting `style="width: ..."` on the host bypasses the component's layout contract. Use the documented `--mds-help-tooltip-*` CSS custom properties to size the tooltip, and leave the host dimensions alone.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-help style="width: 400px;">Descrizione del campo.</mds-help>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <style>
-  .sezione-avanzata mds-help {
+  mds-help.sezione-avanzata {
     --mds-help-tooltip-max-width: 400px;
   }
 </style>

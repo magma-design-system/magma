@@ -18,7 +18,7 @@ The `<mds-paginator-item>` web component is a compound child of [`<mds-paginator
 - **Compound child only**: It is rendered exclusively by `<mds-paginator>` (one per page number plus the back/forward arrows) and is not used standalone or mixed with other child types; the parent manages count, ordering, scrolling, and selection.
 - **State is parent-driven**: `selected` and `disabled` are not set by the consumer - the parent reflects them based on `currentPage` and the page boundaries, and the item only renders the resulting visual state.
 - **Click reported upward**: The item carries no internal page logic; clicking it is resolved by the parent, which emits `mdsPaginatorChange`.
-- **Keyboard activation**: The item is keyboard-activatable, but only while it is neither `disabled` nor `selected` - the active and unavailable cells are inert.
+- **Keyboard activation**: The item is keyboard-activatable, but only while it is neither `disabled` nor `selected` - the active and unavailable cells ignore activation, although they stay in the tab order.
 - **Icon vs. text rendering**: When `icon` is set the item renders an icon (used for the back/forward arrows); otherwise it renders the default slot as the page number.
 - **Text-only slot**: The default slot is meant for a plain text string (a page number); HTML elements or nested components should not be placed in it.
 
@@ -30,14 +30,14 @@ This child exposes only three props, none of which a consumer normally sets dire
 - **`selected`**: Marks the cell as the current page. Set by the parent only; it switches the item to its selected visual treatment and makes it inert.
 - **`disabled`**: Marks the cell as unavailable (e.g. the back arrow on page 1, the forward arrow on the last page). Set by the parent only; it blocks activation and applies the disabled styling.
 
-Visual appearance (size, radius, colors, shadows for the default, hover, selected, and disabled states) is tuned through the `--mds-paginator-item-*` CSS custom properties listed in the readme rather than through props.
+Visual appearance (size, radius, colors, shadows for the default, hover, selected, and disabled states) is set through the `--mds-paginator-item-*` CSS custom properties listed in [`readme.md`](../readme.md) rather than through props. They are declared on each item's own host, so a value set on `mds-paginator` or a parent selector does not reach the items the paginator renders.
 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-paginator-item>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-paginator-item>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
-> **Note:** `<mds-paginator-item>` is an internal sub-part of [`mds-paginator`](../../mds-paginator). The idiomatic way to display page navigation is to use `<mds-paginator>` directly - it renders and manages all items automatically. The patterns below document the component's surface for the rare cases where its CSS tokens must be tuned or where you need to understand how the parent assembles it.
+> **Note:** `<mds-paginator-item>` is an internal sub-part of [`mds-paginator`](../../mds-paginator). The idiomatic way to display page navigation is to use `<mds-paginator>` directly - it renders and manages all items automatically. The patterns below document the component's surface to show how the parent assembles it.
 
 #### Using mds-paginator (the normal case)
 
@@ -72,7 +72,7 @@ When `icon` is not set, the item renders the default slot content as the page nu
 
 #### Icon-Based Navigation Item
 
-When `icon` is set, the item renders an icon instead of the text slot and is used for the back and forward arrow controls. The parent passes icon slugs from the project's iconsauce icon set.
+When `icon` is set, the item renders an icon instead of the text slot and is used for the back and forward arrow controls. The parent passes its own back and forward arrow icons, bundled in the component.
 
 ```html
 <!-- Rendered internally by mds-paginator; shown here for reference only -->
@@ -94,34 +94,30 @@ When `icon` is set, the item renders an icon instead of the text slot and is use
 
 #### CSS Customization
 
-Tune the item's colors, size, radius, and state-specific styles through its documented `--mds-paginator-item-*` CSS custom properties. Set them on the parent `mds-paginator` host or on a containing selector; the custom properties inherit into each rendered item.
+The documented `--mds-paginator-item-*` CSS custom properties are declared on each item's own host, so a value set on the parent `mds-paginator` host or on a containing selector does not inherit into the rendered items: the items cannot be restyled from outside. Customize the parent through its own `--mds-paginator-background` and `--mds-paginator-scroll-behavior`.
 
 ```css
-/* Arrotondato quadrato invece di circolare, colore primario personalizzato */
 mds-paginator {
-  --mds-paginator-item-radius: var(--radius-md);
-  --mds-paginator-item-background-selected: rgb(var(--variant-secondary-03));
-  --mds-paginator-item-color-selected: rgb(var(--tone-neutral));
-  --mds-paginator-item-size: 2.5rem;
+  --mds-paginator-background: rgb(var(--magma-wash-strong));
 }
 ```
 
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-paginator-item>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-paginator-item>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Use mds-paginator-item Standalone
 
 `<mds-paginator-item>` is an internal sub-part rendered exclusively by `<mds-paginator>`. It has no standalone meaning; it relies on the parent to supply state (`selected`, `disabled`) and to handle page logic and the `mdsPaginatorChange` event.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-paginator-item>1</mds-paginator-item>
 <mds-paginator-item selected>2</mds-paginator-item>
 <mds-paginator-item>3</mds-paginator-item>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-paginator pages="10" current-page="2"></mds-paginator>
 ```
 
@@ -130,12 +126,12 @@ Common incorrect uses of `<mds-paginator-item>`. Each entry pairs the wrong form
 The default slot accepts a plain text string - the page number. Nested elements are not supported and break the item's layout.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-paginator-item>
   <strong>5</strong>
 </mds-paginator-item>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-paginator-item>5</mds-paginator-item>
 ```
 
@@ -144,7 +140,7 @@ The default slot accepts a plain text string - the page number. Nested elements 
 Both `selected` and `disabled` are driven by the parent paginator based on `currentPage` and page boundaries. Setting them manually from consumer code creates state conflicts with the parent's rendering logic.
 
 ```html
-<!-- 🚫 INCORRECT - consumer forcing selected state -->
+<!-- INCORRECT - consumer forcing selected state -->
 <mds-paginator pages="10" current-page="3">
   <!-- attempting to override individual item state externally -->
 </mds-paginator>
@@ -154,7 +150,7 @@ Both `selected` and `disabled` are driven by the parent paginator based on `curr
     .setAttribute('selected', '');
 </script>
 
-<!-- ✅ CORRECT - drive state through the parent prop -->
+<!-- CORRECT - drive state through the parent prop -->
 <mds-paginator pages="10" current-page="3"></mds-paginator>
 ```
 
@@ -163,7 +159,7 @@ Both `selected` and `disabled` are driven by the parent paginator based on `curr
 Individual item clicks are handled internally by `<mds-paginator>`. Listening for `click` on items reaches into shadow DOM and bypasses the parent's page validation and scroll logic. Use the documented `mdsPaginatorChange` event on the parent.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-paginator id="pag" pages="10" current-page="1"></mds-paginator>
 <script>
   document.querySelector('#pag').shadowRoot
@@ -171,7 +167,7 @@ Individual item clicks are handled internally by `<mds-paginator>`. Listening fo
     .forEach((item) => item.addEventListener('click', handleClick));
 </script>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-paginator id="pag" pages="10" current-page="1"></mds-paginator>
 <script>
   document.querySelector('#pag').addEventListener('mdsPaginatorChange', (e) => {
@@ -182,18 +178,17 @@ Individual item clicks are handled internally by `<mds-paginator>`. Listening fo
 
 #### Do Not Pierce Shadow DOM to Style Items
 
-The supported customization surface is the `--mds-paginator-item-*` CSS custom properties. Targeting internals via `::part()`, `>>>`, or undocumented selectors couples your code to the implementation and will break on minor releases.
+From outside, the supported customization surface is the parent's `--mds-paginator-*` CSS custom properties: the items declare their `--mds-paginator-item-*` values on their own host, so a value set on `mds-paginator` does not reach them. Targeting internals via `::part()`, `>>>`, or undocumented selectors couples your code to the implementation and will break on minor releases.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-paginator-item >>> .text {
   font-weight: 900;
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-paginator {
-  --mds-paginator-item-color-selected: rgb(var(--variant-secondary-03));
-  --mds-paginator-item-radius: var(--radius-sm);
+  --mds-paginator-background: rgb(var(--magma-wash-strong));
 }
 ```
 

@@ -14,20 +14,20 @@ The `<mds-input-date-range-preselection>` web component is a compound child of [
 #### Semantic Behavior
 
 - **Compound child only**: Must be placed as a direct child of `<mds-input-date-range>`; it auto-assigns itself to the parent's `calendar-preselection` slot and is not used standalone or mixed with other child types.
-- **Click drives the parent**: On click it applies its `start`/`end` range to the parent, which populates and validates the range, syncs the form value, and closes the dropdown.
-- **Selection is parent-managed**: Choosing one preselection clears the active state on its siblings and marks the active one; the parent also re-marks a preselection as selected whenever the current range matches its dates (including single-day matches where `end` is undefined).
+- **Click drives the parent**: On click it applies its `start`/`end` range to the parent, which populates and validates the range, syncs the form value, emits the parent's `mdsInputDateRangeValueChange` if the range changed, and closes the dropdown after the parent's `delay` (unless it is `0`).
+- **Selection is parent-managed**: Choosing one preselection clears the active state on its siblings and marks the active one; the parent also re-marks a preselection as selected when the range changes to match its dates (including single-day matches where `end` is undefined); a range set at first load is not matched until it changes or the user leaves the component.
 
 #### Properties & Visual Configurations
 
 - **`start`** (required) and **`end`**: Define the ISO date range this shortcut applies. Provide both for a true range; omit `end` to express a single-day preselection.
 - **`selected`**: Reflects whether this preselection is currently the active one. Treat it as read-only in normal use - the parent sets it; do not hand-toggle it to drive selection.
 
-The default slot holds the human-readable label. Visual states (default, hover, selected) are themed through the `--mds-date-range-preselection-*` CSS custom properties listed in `readme.md`; the component does not expose `variant`/`tone` props of its own.
+The default slot holds the human-readable label. Visual states (default, hover, selected) are themed through the `--mds-date-range-preselection-*` CSS custom properties listed in [`readme.md`](../readme.md); the component does not expose `variant`/`tone` props of its own.
 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-input-date-range-preselection>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-input-date-range-preselection>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Preset Range Shortcuts
 
@@ -35,6 +35,8 @@ Place one or more `<mds-input-date-range-preselection>` elements as direct child
 
 ```html
 <mds-input-date-range name="periodo">
+  <mds-input-date slot="start"></mds-input-date>
+  <mds-input-date slot="end"></mds-input-date>
   <mds-input-date-range-preselection start="2025-06-01" end="2025-06-30">
     Questo mese
   </mds-input-date-range-preselection>
@@ -53,6 +55,8 @@ Omit the `end` attribute to create a single-day preselection. The parent matches
 
 ```html
 <mds-input-date-range name="data-singola">
+  <mds-input-date slot="start"></mds-input-date>
+  <mds-input-date slot="end"></mds-input-date>
   <mds-input-date-range-preselection start="2025-06-05">
     Oggi
   </mds-input-date-range-preselection>
@@ -61,10 +65,12 @@ Omit the `end` attribute to create a single-day preselection. The parent matches
 
 #### Multiple Preset Windows Together
 
-Group semantically related shortcuts - short-term, medium-term, and long-term - so users can jump to the most common reporting windows without opening the calendar. Only one item carries `selected` at a time; the parent manages it automatically.
+Group semantically related shortcuts - short-term, medium-term, and long-term - so users can jump to the most common reporting windows without picking the dates on the calendar (the presets sit in the calendar dropdown, next to the calendar). Only one item carries `selected` at a time; the parent manages it automatically.
 
 ```html
 <mds-input-date-range name="finestra-report">
+  <mds-input-date slot="start"></mds-input-date>
+  <mds-input-date slot="end"></mds-input-date>
   <mds-input-date-range-preselection start="2025-05-29" end="2025-06-04">
     Ultima settimana
   </mds-input-date-range-preselection>
@@ -82,17 +88,19 @@ Group semantically related shortcuts - short-term, medium-term, and long-term - 
 
 #### Reading the Selected Value via Parent Events
 
-Listen to the parent's `mdsInputDateRangeSelect` event to read the chosen range. The preselection component itself fires no event - the parent owns the value contract.
+Listen to the parent's `mdsInputDateRangeValueChange` event to read the chosen range. The preselection component itself fires no event - the parent owns the value contract.
 
 ```html
 <mds-input-date-range id="date-range" name="periodo">
+  <mds-input-date slot="start"></mds-input-date>
+  <mds-input-date slot="end"></mds-input-date>
   <mds-input-date-range-preselection start="2025-06-01" end="2025-06-30">
     Questo mese
   </mds-input-date-range-preselection>
 </mds-input-date-range>
 
 <script>
-  document.getElementById('date-range').addEventListener('mdsInputDateRangeSelect', (e) => {
+  document.getElementById('date-range').addEventListener('mdsInputDateRangeValueChange', (e) => {
     console.log(e.detail.startDate, e.detail.endDate);
   });
 </script>
@@ -100,35 +108,37 @@ Listen to the parent's `mdsInputDateRangeSelect` event to read the chosen range.
 
 #### Styling Customization
 
-Override the three visual states - default, hover, and selected - through the documented `--mds-date-range-preselection-*` CSS custom properties. Set them on the host element or a parent selector; use Magma color tokens with `rgb(var(--<token>))` so dark mode keeps working.
+Override the three visual states - default, hover, and selected - through the documented `--mds-date-range-preselection-*` CSS custom properties. Set them on the host element or a parent selector; use the semantic color roles ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)) so dark mode and themes keep working. The background and color properties take a color (`rgb(var(--magma-<role>))`); the three `-border` properties take a bare RGB triplet (`var(--magma-<role>)`, no `rgb()`).
 
 ```css
 .dashboard mds-input-date-range-preselection {
-  --mds-date-range-preselection-default-background: rgb(var(--tone-neutral-07) / 0.1);
-  --mds-date-range-preselection-default-border: var(--tone-neutral-06);
-  --mds-date-range-preselection-selected-background: rgb(var(--variant-secondary-03));
-  --mds-date-range-preselection-selected-border: var(--variant-secondary-03);
-  --mds-date-range-preselection-selected-color: rgb(var(--tone-neutral));
+  --mds-date-range-preselection-default-background: rgb(var(--magma-wash-strong) / 0.1);
+  --mds-date-range-preselection-default-border: var(--magma-neutral-border);
+  --mds-date-range-preselection-selected-background: rgb(var(--magma-accent-emphasis-hover));
+  --mds-date-range-preselection-selected-border: var(--magma-accent-emphasis-hover);
+  --mds-date-range-preselection-selected-color: rgb(var(--magma-accent-on-emphasis));
 }
 ```
 
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-input-date-range-preselection>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-input-date-range-preselection>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Use Outside `<mds-input-date-range>`
 
 The component only works as a direct child of [`<mds-input-date-range>`](../../mds-input-date-range). Used standalone it renders an inert button because `closest('mds-input-date-range')` returns null and the click handler does nothing.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-input-date-range-preselection start="2025-06-01" end="2025-06-30">
   Questo mese
 </mds-input-date-range-preselection>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-input-date-range name="periodo">
+  <mds-input-date slot="start"></mds-input-date>
+  <mds-input-date slot="end"></mds-input-date>
   <mds-input-date-range-preselection start="2025-06-01" end="2025-06-30">
     Questo mese
   </mds-input-date-range-preselection>
@@ -140,15 +150,19 @@ The component only works as a direct child of [`<mds-input-date-range>`](../../m
 `selected` is a read-only output attribute managed entirely by the parent. Setting it by hand does not apply the range, does not clear sibling active states, and will be overwritten by the parent on the next range change.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-input-date-range name="periodo">
+  <mds-input-date slot="start"></mds-input-date>
+  <mds-input-date slot="end"></mds-input-date>
   <mds-input-date-range-preselection start="2025-06-01" end="2025-06-30" selected>
     Questo mese
   </mds-input-date-range-preselection>
 </mds-input-date-range>
 
-<!-- ✅ CORRECT: let the parent set selection by initialising it with start-date / end-date -->
+<!-- CORRECT: set the range on the parent; it marks the matching preset when the range changes -->
 <mds-input-date-range name="periodo" start-date="2025-06-01" end-date="2025-06-30">
+  <mds-input-date slot="start"></mds-input-date>
+  <mds-input-date slot="end"></mds-input-date>
   <mds-input-date-range-preselection start="2025-06-01" end="2025-06-30">
     Questo mese
   </mds-input-date-range-preselection>
@@ -157,18 +171,26 @@ The component only works as a direct child of [`<mds-input-date-range>`](../../m
 
 #### Do Not Set `selected` as a Boolean String
 
-As with every boolean prop in Stencil, any non-empty string is truthy. `selected="false"` keeps the item in the selected state. Remove the attribute to deselect it - but again, prefer letting the parent control it.
+`selected` is a boolean attribute: remove it to deselect the item - but again, prefer letting the parent control it. A string value is fragile: `"false"` is read as `false` on this component, but the attribute stays on the element until the component renders (attribute selectors and scripts reading it see it set). Never write a boolean as a string.
 
 ```html
-<!-- 🚫 INCORRECT -->
-<mds-input-date-range-preselection start="2025-06-01" end="2025-06-30" selected="false">
-  Questo mese
-</mds-input-date-range-preselection>
+<!-- INCORRECT -->
+<mds-input-date-range name="periodo">
+  <mds-input-date slot="start"></mds-input-date>
+  <mds-input-date slot="end"></mds-input-date>
+  <mds-input-date-range-preselection start="2025-06-01" end="2025-06-30" selected="false">
+    Questo mese
+  </mds-input-date-range-preselection>
+</mds-input-date-range>
 
-<!-- ✅ CORRECT: remove the attribute entirely -->
-<mds-input-date-range-preselection start="2025-06-01" end="2025-06-30">
-  Questo mese
-</mds-input-date-range-preselection>
+<!-- CORRECT: remove the attribute entirely -->
+<mds-input-date-range name="periodo">
+  <mds-input-date slot="start"></mds-input-date>
+  <mds-input-date slot="end"></mds-input-date>
+  <mds-input-date-range-preselection start="2025-06-01" end="2025-06-30">
+    Questo mese
+  </mds-input-date-range-preselection>
+</mds-input-date-range>
 ```
 
 #### Do Not Use HTML in the Default Slot
@@ -176,16 +198,24 @@ As with every boolean prop in Stencil, any non-empty string is truthy. `selected
 The default slot is the plain-text label read by the internal `<mds-button>`. Placing HTML elements inside it breaks button layout and may be stripped by the shadow DOM projection.
 
 ```html
-<!-- 🚫 INCORRECT -->
-<mds-input-date-range-preselection start="2025-06-01" end="2025-06-30">
-  <strong>Questo mese</strong>
-  <small>(giu)</small>
-</mds-input-date-range-preselection>
+<!-- INCORRECT -->
+<mds-input-date-range name="periodo">
+  <mds-input-date slot="start"></mds-input-date>
+  <mds-input-date slot="end"></mds-input-date>
+  <mds-input-date-range-preselection start="2025-06-01" end="2025-06-30">
+    <strong>Questo mese</strong>
+    <small>(giu)</small>
+  </mds-input-date-range-preselection>
+</mds-input-date-range>
 
-<!-- ✅ CORRECT -->
-<mds-input-date-range-preselection start="2025-06-01" end="2025-06-30">
-  Questo mese (giu)
-</mds-input-date-range-preselection>
+<!-- CORRECT -->
+<mds-input-date-range name="periodo">
+  <mds-input-date slot="start"></mds-input-date>
+  <mds-input-date slot="end"></mds-input-date>
+  <mds-input-date-range-preselection start="2025-06-01" end="2025-06-30">
+    Questo mese (giu)
+  </mds-input-date-range-preselection>
+</mds-input-date-range>
 ```
 
 #### Do Not Provide Only the `end` Date Without `start`
@@ -193,15 +223,19 @@ The default slot is the plain-text label read by the internal `<mds-button>`. Pl
 `start` is a required prop; omitting it leaves the component without a valid range anchor and the parent cannot apply any preselection. `end` is optional and meaningful only together with `start`.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-input-date-range name="periodo">
+  <mds-input-date slot="start"></mds-input-date>
+  <mds-input-date slot="end"></mds-input-date>
   <mds-input-date-range-preselection end="2025-06-30">
     Fine mese
   </mds-input-date-range-preselection>
 </mds-input-date-range>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-input-date-range name="periodo">
+  <mds-input-date slot="start"></mds-input-date>
+  <mds-input-date slot="end"></mds-input-date>
   <mds-input-date-range-preselection start="2025-06-01" end="2025-06-30">
     Questo mese
   </mds-input-date-range-preselection>
@@ -213,7 +247,7 @@ The default slot is the plain-text label read by the internal `<mds-button>`. Pl
 The only supported customization surface is the `--mds-date-range-preselection-*` CSS custom properties for the three visual states. Targeting the inner `mds-button` or its shadow internals couples your code to implementation details that can change without notice.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-input-date-range-preselection .action {
   background: blue;
 }
@@ -221,10 +255,10 @@ mds-input-date-range-preselection::part(button) {
   border-radius: 0;
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-input-date-range-preselection {
-  --mds-date-range-preselection-default-background: rgb(var(--tone-neutral-07) / 0.1);
-  --mds-date-range-preselection-selected-background: rgb(var(--variant-primary-03));
+  --mds-date-range-preselection-default-background: rgb(var(--magma-wash-strong) / 0.1);
+  --mds-date-range-preselection-selected-background: rgb(var(--magma-accent-emphasis-hover));
 }
 ```
 

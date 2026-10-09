@@ -83,6 +83,10 @@ export default {
       },
     ],
     'at-rule-no-vendor-prefix': true,
+    // 16.26 reads the latest specs (@csstools/css-syntax-patches-for-csstree), where
+    // `@apply` is the CSS Mixins at-rule: Tailwind's `@apply` list of utilities fails
+    // that grammar
+    'at-rule-prelude-no-invalid': [true, { ignoreAtRules: ['apply'] }],
     'at-rule-property-required-list': {
       'font-face': ['font-display', 'font-family', 'font-style'],
     },
