@@ -36,6 +36,10 @@ export const validityProblem = (
         : { rule: 'minlength', context: { minlength: constraints.minlength! } };
     case 'pattern':
       return { rule: 'pattern' };
+    case 'email':
+      return { rule: 'email' };
+    case 'url':
+      return { rule: 'url' };
     default:
       return { rule: 'invalid', message: typeErrors.includes(key) ? undefined : errors[key] };
   }

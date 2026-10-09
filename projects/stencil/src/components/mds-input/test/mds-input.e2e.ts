@@ -618,3 +618,29 @@ describe('speech-to-text', () => {
     );
   });
 });
+
+// The formats a native type="email" and type="url" check stop the submit too (#822)
+describe('email and url format', () => {
+  it.each([
+    [
+      'email',
+      ['mario.rossi@maggioli.it', 'a@b', 'mario', 'mario@', 'a b@c.it', 'a@-b.it', 'a@b..it'],
+    ],
+    ['url', ['https://www.maggioli.it', 'mailto:a@b.it', 'www.maggioli.it', '/path', 'http://']],
+  ])('agrees with a native type="%s" on every value', async (inputType, values) => {
+    const { root: form, waitForChanges: wait } = await render<HTMLFormElement>(
+      `<form><mds-input type="${inputType}"></mds-input><input type="${inputType}"></form>`,
+    );
+    await wait();
+    const field = form.querySelector('mds-input')!;
+    const native = form.querySelector<HTMLInputElement>('input:not([part])')!;
+
+    const disagreements = values.filter((value) => {
+      field.value = value;
+      native.value = value;
+      return field.matches(':invalid') !== !native.checkValidity();
+    });
+
+    expect(disagreements).toEqual([]);
+  });
+});

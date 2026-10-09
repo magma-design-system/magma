@@ -82,6 +82,26 @@ export const patternValidator = (pattern: string): MdsValidatorFn | null => {
   };
 };
 
+// the valid email address of the HTML spec, the one a native type="email" checks
+const emailExpression =
+  /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+
+export const emailValidatorFn: MdsValidatorFn = (input: string) => {
+  if (input === '') return null; // don't validate empty values to allow optional controls
+  return emailExpression.test(input) ? null : { email: 'indirizzo email non valido' };
+};
+
+// a native type="url" accepts an absolute URL, the one the URL parser reads without a base
+export const urlValidatorFn: MdsValidatorFn = (input: string) => {
+  if (input === '') return null; // don't validate empty values to allow optional controls
+  try {
+    new URL(input);
+    return null;
+  } catch {
+    return { url: 'url non valido' };
+  }
+};
+
 export const isbnValidatorFn: MdsValidatorFn = (input: string) => {
   if (input === '') return null; // don't validate empty values to allow optional controls
 

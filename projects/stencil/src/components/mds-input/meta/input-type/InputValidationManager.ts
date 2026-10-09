@@ -1,5 +1,5 @@
 import { InputFieldType } from '../types';
-import { Validator, isbnValidatorFn } from '../validators';
+import { Validator, emailValidatorFn, isbnValidatorFn, urlValidatorFn } from '../validators';
 import { InputMaskPattern } from './InputMaskPattern';
 
 // TODO use input mask when it will be supported by shadow dom
@@ -47,8 +47,13 @@ export function createInputValidationManager(type: InputFieldType): InputValidat
     case 'tel':
       inputManager = new InputValidationManager('');
       break;
+    case 'email':
+      inputManager = new InputValidationManager('');
+      inputManager.validator.addValidator(emailValidatorFn);
+      break;
     case 'url':
       inputManager = new InputValidationManager('');
+      inputManager.validator.addValidator(urlValidatorFn);
       break;
     case 'cc':
       inputManager = new InputValidationManager(InputMaskPattern.CC_MASK);

@@ -1,4 +1,11 @@
-import { MdsValidatorFn, Validator, isbnValidatorFn, patternValidator } from '../meta/validators';
+import {
+  MdsValidatorFn,
+  Validator,
+  emailValidatorFn,
+  isbnValidatorFn,
+  patternValidator,
+  urlValidatorFn,
+} from '../meta/validators';
 
 let validator = new Validator();
 
@@ -146,6 +153,41 @@ describe('patternValidator', () => {
 
   it('sets no rule for an expression that does not compile, as the browser', () => {
     expect(patternValidator('(')).toBeNull();
+  });
+});
+
+// the formats a native type="email" and type="url" check (#822)
+describe('emailValidatorFn', () => {
+  it.each(['mario.rossi@maggioli.it', 'a@b', "o'brien+tag@sub.example.com"])(
+    'accepts %s',
+    (email) => {
+      expect(emailValidatorFn(email)).toBeNull();
+    },
+  );
+
+  it.each(['mario', 'mario@', '@maggioli.it', 'mario rossi@maggioli.it', 'a@-b.it', 'a@b..it'])(
+    'rejects %s',
+    (email) => {
+      expect(emailValidatorFn(email)).toEqual({ email: 'indirizzo email non valido' });
+    },
+  );
+
+  it('leaves an empty value to required', () => {
+    expect(emailValidatorFn('')).toBeNull();
+  });
+});
+
+describe('urlValidatorFn', () => {
+  it.each(['https://www.maggioli.it', 'mailto:a@b.it', 'ftp://host/file'])('accepts %s', (url) => {
+    expect(urlValidatorFn(url)).toBeNull();
+  });
+
+  it.each(['www.maggioli.it', '/path', 'http://'])('rejects %s', (url) => {
+    expect(urlValidatorFn(url)).toEqual({ url: 'url non valido' });
+  });
+
+  it('leaves an empty value to required', () => {
+    expect(urlValidatorFn('')).toBeNull();
   });
 });
 

@@ -7,6 +7,7 @@ import localeIt from './locale.it.json';
 
 /** The rule a value breaks: it picks the validity flag and the message reported to the form. */
 type ValidityRule =
+  | 'email'
   | 'invalid'
   | 'invalidDate'
   | 'max'
@@ -17,7 +18,8 @@ type ValidityRule =
   | 'minlength'
   | 'pattern'
   | 'required'
-  | 'requiredSelect';
+  | 'requiredSelect'
+  | 'url';
 
 type ValidityProblem = {
   rule: ValidityRule;
@@ -28,6 +30,7 @@ type ValidityProblem = {
 };
 
 const flags: Record<ValidityRule, keyof ValidityStateFlags> = {
+  email: 'typeMismatch',
   invalid: 'customError',
   invalidDate: 'badInput',
   max: 'rangeOverflow',
@@ -39,6 +42,7 @@ const flags: Record<ValidityRule, keyof ValidityStateFlags> = {
   pattern: 'patternMismatch',
   required: 'valueMissing',
   requiredSelect: 'valueMissing',
+  url: 'typeMismatch',
 };
 
 const messages = new Locale({ el: localeEl, en: localeEn, es: localeEs, it: localeIt });

@@ -35,6 +35,11 @@ describe('validityProblem', () => {
     });
   });
 
+  it('reports the format of an email or a URL as a native input does', () => {
+    expect(validityProblem({ email: '' }, 'mario', {})).toEqual({ rule: 'email' });
+    expect(validityProblem({ url: '' }, 'maggioli', {})).toEqual({ rule: 'url' });
+  });
+
   it('gives the type validators the localized message instead of their Italian one', () => {
     expect(validityProblem({ 'isbn-error': 'codice isbn non valido' }, '123', {})).toEqual({
       rule: 'invalid',

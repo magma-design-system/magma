@@ -1,4 +1,5 @@
 {
+  "email": "Enter an email address.",
   "invalid": "Enter a valid value.",
   "invalidDate": "Enter a valid date.",
   "max": "The value must be {{max}} or less.",
@@ -9,5 +10,6 @@
   "minlength": ["Use at least {{minlength}} character.", "Use at least {{minlength}} characters."],
   "pattern": "Match the requested format.",
   "required": "Fill in this field.",
-  "requiredSelect": "Select an item in the list."
+  "requiredSelect": "Select an item in the list.",
+  "url": "Enter a URL."
 }
