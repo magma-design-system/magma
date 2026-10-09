@@ -161,7 +161,7 @@ Common incorrect uses of `<mds-input-tip-item>`. Each entry pairs the wrong form
 
 #### Do Not Set `expanded="false"` to Hide the Item
 
-`expanded` is a boolean attribute: remove it entirely to collapse the item. A string value is fragile: `"false"` is read as `false` on this component, but the attribute stays on the element until the component renders (attribute selectors and scripts reading it see it set), and the form-associated Magma inputs read the same string as `true`. Never write a boolean as a string.
+`expanded` is a boolean attribute: remove it entirely to collapse the item. A string value is fragile: `"false"` is read as `false` on this component, but the attribute stays on the element until the component renders (attribute selectors and scripts reading it see it set). Never write a boolean as a string.
 
 ```html
 <!-- INCORRECT -->

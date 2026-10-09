@@ -63,6 +63,64 @@ The minimal structure: `mds-table-header` with one `mds-table-header-cell` per c
 </mds-table>
 ```
 
+#### Layout: Fill the Container and Let the Table Scroll
+
+`<mds-table>` scrolls on its own: its rows sit in an inner wrapper with `overflow: auto`, so when the columns are wider than the table, the table scrolls horizontally inside its own border, and the row actions (`slot="action"`) stay pinned to the visible right edge. It needs no `overflow-x-auto` wrapper of yours, but it needs two things from the page:
+
+- **All the width its container offers**: `w-full` on `<mds-table>`. When that container is a flex or grid item (a `main` next to a sidebar, a `1fr` column), also give the item `min-w-0`: a flex or grid item never shrinks below its content by default, so without it the item grows to the full width of the table and the whole page scrolls instead of the table.
+- **Cells on one line**: `text-wrap: nowrap` on the cells (`[&_mds-table-cell]:text-nowrap` on the table). Wrapping cells squeeze the columns into tall rows and the table never scrolls. `mds-text` with `typography` `paragraph`, `detail` or `caption` sets its own `text-wrap: pretty`, which wins over what it inherits from the cell, so target it too (`[&_mds-text]:text-nowrap`). A long free-text column can keep wrapping if it reads better.
+
+```html
+<div class="flex">
+  <aside class="w-6400 shrink-0">...</aside>
+  <main class="min-w-0 flex-1">
+    <mds-table class="w-full [&_mds-table-cell]:text-nowrap [&_mds-text]:text-nowrap">
+      <mds-table-header>
+        <mds-table-header-cell label="Protocollo"></mds-table-header-cell>
+        <mds-table-header-cell label="Oggetto"></mds-table-header-cell>
+        <mds-table-header-cell label="Ufficio"></mds-table-header-cell>
+        <mds-table-header-cell label="Data"></mds-table-header-cell>
+      </mds-table-header>
+      <mds-table-body>
+        <mds-table-row>
+          <mds-table-cell><mds-text typography="detail">2026/0412</mds-text></mds-table-cell>
+          <mds-table-cell><mds-text typography="detail">Contratto di fornitura servizi cloud 2026-2028</mds-text></mds-table-cell>
+          <mds-table-cell><mds-text typography="detail">Ufficio acquisti e gare</mds-text></mds-table-cell>
+          <mds-table-cell><mds-text typography="detail">12 marzo 2026</mds-text></mds-table-cell>
+        </mds-table-row>
+      </mds-table-body>
+    </mds-table>
+  </main>
+</div>
+```
+
+To scroll vertically as well, bound the table's height: in a fixed-height panel, make the panel a flex column and give the table `flex-1 min-h-0` (or put `h-full` or a `max-h-*` on the table). The header row scrolls with the body, it is not sticky.
+
+```html
+<section class="flex h-9600 flex-col">
+  <mds-table class="min-h-0 flex-1 [&_mds-table-cell]:text-nowrap [&_mds-text]:text-nowrap">
+    ...
+  </mds-table>
+</section>
+```
+
+Without Tailwind, the same rules in CSS:
+
+```css
+.content {
+  min-width: 0;
+}
+
+.content mds-table {
+  width: 100%;
+}
+
+.content mds-table-cell,
+.content mds-table-cell mds-text {
+  text-wrap: nowrap;
+}
+```
+
 #### Table with Footer
 
 Add `mds-table-footer` after `mds-table-body` to show totals or summaries. Each cell inside the footer is an `mds-table-cell` - the same component used in body rows.

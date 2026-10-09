@@ -196,7 +196,7 @@ The component inserts a styled `+` between consecutive keys automatically. Addin
 
 #### Do Not Set `try="false"` to Disable Test Mode
 
-`try` is a boolean attribute: remove it (or leave it unset) to keep the component in display-only mode. A string value is fragile: `"false"` is read as `false` on this component, but the attribute stays on the element until the component renders (attribute selectors and scripts reading it see it set), and the form-associated Magma inputs read the same string as `true`. Never write a boolean as a string.
+`try` is a boolean attribute: remove it (or leave it unset) to keep the component in display-only mode. A string value is fragile: `"false"` is read as `false` on this component, but the attribute stays on the element until the component renders (attribute selectors and scripts reading it see it set). Never write a boolean as a string.
 
 ```html
 <!-- INCORRECT -->

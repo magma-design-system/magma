@@ -171,7 +171,7 @@ The component only works as a direct child of [`<mds-input-date-range>`](../../m
 
 #### Do Not Set `selected` as a Boolean String
 
-`selected` is a boolean attribute: remove it to deselect the item - but again, prefer letting the parent control it. A string value is fragile: `"false"` is read as `false` on this component, but the attribute stays on the element until the component renders (attribute selectors and scripts reading it see it set), and the form-associated Magma inputs read the same string as `true`. Never write a boolean as a string.
+`selected` is a boolean attribute: remove it to deselect the item - but again, prefer letting the parent control it. A string value is fragile: `"false"` is read as `false` on this component, but the attribute stays on the element until the component renders (attribute selectors and scripts reading it see it set). Never write a boolean as a string.
 
 ```html
 <!-- INCORRECT -->

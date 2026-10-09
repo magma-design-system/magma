@@ -182,7 +182,7 @@ The default slot of `<mds-input-tip>` accepts only [`mds-input-tip-item`](../../
 
 #### Do Not Set active="false" to Collapse the Tip
 
-`active` is a boolean attribute: remove it (or set the prop to `undefined`) to collapse. A string value is fragile: `"false"` is read as `false` on this component, but the attribute stays on the element until the component renders (attribute selectors and scripts reading it see it set), and the form-associated Magma inputs read the same string as `true`. Never write a boolean as a string.
+`active` is a boolean attribute: remove it (or set the prop to `undefined`) to collapse. A string value is fragile: `"false"` is read as `false` on this component, but the attribute stays on the element until the component renders (attribute selectors and scripts reading it see it set). Never write a boolean as a string.
 
 ```html
 <!-- INCORRECT -->
