@@ -607,7 +607,10 @@ export class MdsInput {
       this.value = input.value;
       setFormValue(this.internals, this.value);
     }
-    this.keyDownEvent.emit(ev as Event as KeyboardEvent);
+  };
+
+  private onKeyDown = (ev: KeyboardEvent) => {
+    this.keyDownEvent.emit(ev);
   };
 
   private onBlur = () => {
@@ -761,6 +764,7 @@ export class MdsInput {
             onBlur={this.onBlur}
             onFocus={this.onFocus}
             onInput={this.onInput}
+            onKeyDown={this.onKeyDown}
             part="field"
             placeholder={this.placeholder}
             readOnly={this.readonly}
@@ -788,6 +792,7 @@ export class MdsInput {
             onBlur={this.onBlur}
             onFocus={this.onFocus}
             onInput={this.onInput}
+            onKeyDown={this.onKeyDown}
             pattern={this.pattern}
             list={this.datalistId}
             part="field"

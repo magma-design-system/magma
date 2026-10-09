@@ -581,3 +581,19 @@ describe('pattern', () => {
     expect(mdsInput.matches(':invalid')).toBe(false);
   });
 });
+
+// The event is named after keydown and typed KeyboardEvent: it carries the key (#822)
+describe('mdsInputKeydown', () => {
+  it.each(['<mds-input></mds-input>', '<mds-input type="textarea"></mds-input>'])(
+    'carries the KeyboardEvent of the key pressed in %s',
+    async (html) => {
+      await setup(html);
+      const keys: string[] = [];
+      mdsInput.addEventListener('mdsInputKeydown', (event) => keys.push(event.detail.key));
+
+      await type(mdsInput, 'a{Enter}');
+
+      expect(keys).toEqual(['a', 'Enter']);
+    },
+  );
+});
